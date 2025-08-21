@@ -4,6 +4,7 @@ import java.io.Closeable;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 import arb.algebra.Ring;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -382,7 +383,7 @@ public class Integer implements
     {
       if (elements != null && dim > 1)
       {
-        Arrays.stream(elements).forEach(Integer::close);
+        elementStream().forEach(Integer::close);
       }
       else
       {
@@ -397,6 +398,11 @@ public class Integer implements
         }
       }
     }
+  }
+
+  public Stream<Integer> elementStream()
+  {
+    return Arrays.stream(elements);
   }
 
   @Override
