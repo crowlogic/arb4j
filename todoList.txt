@@ -11,3 +11,4 @@ implement ∂/∂x[∏ᵢ₌₁ᵏfᵢ(x)] = ∑ᵢ₌₁ᵏ[(∂/∂x fᵢ(x))�
 #722: need to make sure that identity isnt used on a Scalar.. here in this case real.. it probably acts like the unknown variable is an indetrerminant rather than a variable taht the IntegralNode failed to rename/subst properly
 UnsupportedOperationException: Derivative not implemented for function: ζ
 UnsupportedOperationException: Integration of (sin(λ*t))/t with respect to t not implemented
+recognize im(cos(I(*t))=0

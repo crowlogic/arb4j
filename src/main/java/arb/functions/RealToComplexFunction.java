@@ -6,6 +6,8 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.NotDifferentiableException;
 import arb.expressions.Context;
+import arb.expressions.Expression;
+import arb.expressions.Parser;
 import arb.functions.real.RealFunction;
 
 /**
@@ -15,6 +17,31 @@ import arb.functions.real.RealFunction;
 public interface RealToComplexFunction extends
                                        Function<Real, Complex>
 {
+
+  public static Expression<Real, Complex, RealToComplexFunction> parse(String expression)
+  {
+    return Function.parse(Parser.expressionToUniqueClassname(expression),
+                          expression,
+                          null,
+                          Real.class,
+                          Complex.class,
+                          RealToComplexFunction.class,
+                          null,
+                          null);
+  }
+
+  public static Expression<Real, Complex, RealToComplexFunction>
+         parse(String name, String expression, Context context)
+  {
+    return Function.parse(name,
+                          expression,
+                          context,
+                          Real.class,
+                          Complex.class,
+                          RealToComplexFunction.class,
+                          name,
+                          null);
+  }
 
   @Override
   default Class<Complex> coDomainType()
