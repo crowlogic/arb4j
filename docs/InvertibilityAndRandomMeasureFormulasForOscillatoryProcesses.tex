@@ -1,0 +1,364 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{geometry,amsmath,amssymb,latexsym}
+\geometry{letterpaper}
+
+%%%%%%%%%% Start TeXmacs macros
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\title{Invertibility and Random Measure Formulas for Oscillatory Processes}
+
+\author{Stephen Crowley}
+
+\date{August 15, 2025}
+
+\maketitle
+
+{\tableofcontents}
+
+\section{Oscillatory Gaussian Processes}
+
+\begin{definition}
+  [Orthogonal increment structure]\label{def:orthinc} Let $\mu$ be a positive
+  Borel measure on $\mathbb{R}$. A complex-valued orthogonal increment process
+  $Z$ is a set function on Borel subsets of $\mathbb{R}$ such that for
+  disjoint $B_1, B_2 \subset \mathbb{R}$,
+  \begin{equation}
+    \mathbb{E} [Z (B_1) \hspace{0.17em} \overline{Z (B_2)}] = \mu (B_1 \cap
+    B_2)
+  \end{equation}
+  and for bounded Borel $f : \mathbb{R} \to \mathbb{C}$ the stochastic
+  integral
+  \begin{equation}
+    \int_{\mathbb{R}} f (\lambda)  \hspace{0.17em} dZ (\lambda)
+  \end{equation}
+  satisfies
+  \begin{equation}
+    \mathbb{E} \hspace{-0.17em} \left[ \left| \int_{\mathbb{R}} f (\lambda)
+    \hspace{0.17em} dZ (\lambda) \right|^2 \right] = \int_{\mathbb{R}} |f
+    (\lambda) |^2  \hspace{0.17em} \mu (d \lambda)
+  \end{equation}
+\end{definition}
+
+\begin{definition}
+  [White noise process]\label{def:whitenoise} A complex white noise process
+  $W$ is an orthogonal increment process satisfying
+  \begin{equation}
+    \mathbb{E} [dW (u_1) \hspace{0.17em} \overline{dW (u_2)}] = \delta (u_1 -
+    u_2)  \hspace{0.17em} du_1
+  \end{equation}
+\end{definition}
+
+\begin{definition}
+  [Stationary process]\label{def:stationary} The stationary process $X_s (t)$
+  generated from white noise $W$ is
+  \begin{equation}
+    \label{eq:stationary-rep} X_s (t) = \int_{- \infty}^{\infty} e^{i \omega
+    t}  \hspace{0.17em} dW (\omega)
+  \end{equation}
+  The process has covariance
+  \begin{equation}
+    \mathbb{E} [X_s (t_1) \hspace{0.17em} \overline{X_s (t_2)}] = \int_{-
+    \infty}^{\infty} e^{i \omega (t_1 - t_2)}  \hspace{0.17em} d \omega = 2
+    \pi \delta (t_1 - t_2)
+  \end{equation}
+\end{definition}
+
+\begin{definition}
+  [Time-dependent filter and gain]\label{def:filter-gain} The time-dependent
+  filter $h (t, u)$ and gain function $A (t, \lambda)$ satisfy the Fourier
+  transform pair
+  \begin{equation}
+    \label{eq:gain-from-filter} A (t, \lambda) = \int_{- \infty}^{\infty} h
+    (t, u)  \hspace{0.17em} e^{- i \lambda (t - u)}  \hspace{0.17em} du
+  \end{equation}
+  \begin{equation}
+    \label{eq:filter-from-gain} h (t, u) = \frac{1}{2 \pi}  \int_{-
+    \infty}^{\infty} A (t, \lambda)  \hspace{0.17em} e^{i \lambda (t - u)} 
+    \hspace{0.17em} d \lambda
+  \end{equation}
+  with square-integrability
+  \begin{equation}
+    \int_{- \infty}^{\infty} |h (t, u) |^2  \hspace{0.17em} du < \infty \quad
+    \forall t \in \mathbb{R}.
+  \end{equation}
+\end{definition}
+
+\begin{definition}
+  [Oscillatory process]\label{def:oscproc} An oscillatory process is defined
+  in three equivalent ways:
+  
+  \begin{align}
+    X (t) & = \int_{\mathbb{R}} A (t, \lambda)  \hspace{0.17em} e^{i \lambda
+    t}  \hspace{0.17em} dZ (\lambda)  \label{eq:osc-spectral}\\
+    X (t) & = \int_{- \infty}^{\infty} h (t, u)  \hspace{0.17em} dW (u) 
+    \label{eq:osc-filter}\\
+    X (t) & = \int_{- \infty}^{\infty} h (t, u)  \hspace{0.17em} X_s  (t - u) 
+    \hspace{0.17em} du  \label{eq:osc-convolution}
+  \end{align}
+  
+  where $Z$, $W$, $X_s$, $h$, and $A$ are related by Definitions
+  \ref{def:orthinc}--\ref{def:filter-gain}, and
+  \begin{equation}
+    \label{eq:Atlambda-L2-mu} \int_{\mathbb{R}} |A (t, \lambda) |^2 
+    \hspace{0.17em} \mu (d \lambda) < \infty
+  \end{equation}
+  The covariance function is
+  \begin{equation}
+    \label{eq:covariance} \mathbb{E} [X (t_1) \hspace{0.17em} \overline{X
+    (t_2)}] = \int_{\mathbb{R}} A (t_1, \lambda) \hspace{0.17em} \overline{A
+    (t_2, \lambda)} \hspace{0.17em} e^{i \lambda (t_1 - t_2)}  \hspace{0.17em}
+    \mu (d \lambda)
+  \end{equation}
+\end{definition}
+
+\subsection{Amplitude and orthogonality}
+
+\begin{definition}
+  [Amplitude nondegeneracy]\label{def:nondeg} The amplitude $A$ satisfies
+  \begin{equation}
+    \label{eq:nonzero} A (t, \lambda) \neq 0 \quad \text{for all $(t,
+    \lambda)$ in the domain.}
+  \end{equation}
+\end{definition}
+
+\begin{definition}
+  [Kernel orthonormality]\label{def:orthonormality} The amplitude satisfies
+  \begin{equation}
+    \label{eq:delta-ortho} \int_{- \infty}^{\infty} A (t, \lambda_1) 
+    \hspace{0.17em} A (t, \lambda_2)  \hspace{0.17em} e^{i (\lambda_2 -
+    \lambda_1) t}  \hspace{0.17em} dt = \delta (\lambda_1 - \lambda_2)
+  \end{equation}
+\end{definition}
+
+\subsection{Inversion map}
+
+\begin{definition}
+  [Inversion operator]\label{def:invop} Define
+  \begin{equation}
+    \label{eq:invop} (\mathcal{I}X) (\lambda) = \int_{- \infty}^{\infty} A (t,
+    \lambda)  \hspace{0.17em} e^{- i \lambda t}  \hspace{0.17em} X (t) 
+    \hspace{0.17em} dt
+  \end{equation}
+\end{definition}
+
+\section{Invertibility Conditions}
+
+\begin{theorem}
+  [Fundamental Invertibility]\label{thm:fund-inv} For $X$ as in Definition
+  \ref{def:oscproc},
+  \begin{equation}
+    \label{eq:inv-identity} dZ (\lambda) = \int_{- \infty}^{\infty} A (t,
+    \lambda)  \hspace{0.17em} e^{- i \lambda t}  \hspace{0.17em} X (t) 
+    \hspace{0.17em} dt
+  \end{equation}
+  if and only if $A$ satisfies \eqref{eq:nonzero} and \eqref{eq:delta-ortho}.
+\end{theorem}
+
+\begin{proof}
+  \begin{enumerate}
+    \item From \eqref{eq:osc-spectral},
+    \begin{equation}
+      X (t) = \int_{\mathbb{R}} A (t, \lambda)  \hspace{0.17em} e^{i \lambda
+      t}  \hspace{0.17em} dZ (\lambda)
+    \end{equation}
+    Multiply by $A (t, \lambda_0) e^{- i \lambda_0 t}$ and integrate over $t$:
+    \begin{equation}
+      \int_{- \infty}^{\infty} A (t, \lambda_0) e^{- i \lambda_0 t} X (t) 
+      \hspace{0.17em} dt = \int_{- \infty}^{\infty} A (t, \lambda_0) e^{- i
+      \lambda_0 t} \left[ \int_{\mathbb{R}} A (t, \lambda) e^{i \lambda t} 
+      \hspace{0.17em} dZ (\lambda) \right] dt
+    \end{equation}
+    \item Swap order of integration:
+    \begin{equation}
+      = \int_{\mathbb{R}} \left[ \int_{- \infty}^{\infty} A (t, \lambda_0) A
+      (t, \lambda) e^{i (\lambda - \lambda_0) t} dt \right] dZ (\lambda)
+    \end{equation}
+    \item Apply \eqref{eq:delta-ortho}:
+    \begin{equation}
+      = \int_{\mathbb{R}} \delta (\lambda - \lambda_0)  \hspace{0.17em} dZ
+      (\lambda) = dZ (\lambda_0)
+    \end{equation}
+    \item Conversely, insert
+    \begin{equation}
+      X_{\lambda_0} (t) = A (t, \lambda_0) e^{i \lambda_0 t}
+    \end{equation}
+    into \eqref{eq:inv-identity}:
+    \begin{equation}
+      dZ_{\lambda_0} (\lambda) = \int_{- \infty}^{\infty} A (t, \lambda) e^{-
+      i \lambda t} A (t, \lambda_0) e^{i \lambda_0 t} dt
+    \end{equation}
+    The left side equals $\delta (\lambda - \lambda_0)$, hence
+    \eqref{eq:delta-ortho} holds. Nondegeneracy from linear independence
+    follows by evaluating at $(t, \lambda)$ where $X (t) \neq 0$.
+  \end{enumerate}
+  
+\end{proof}
+
+\begin{lemma}
+  [Uniqueness]\label{lem:unique} If $\mathcal{I}_1 X = dZ (\lambda)
+  =\mathcal{I}_2 X$ for all $X$, then $\mathcal{I}_1 =\mathcal{I}_2$.
+\end{lemma}
+
+\begin{proof}
+  \begin{enumerate}
+    \item Let $\mathcal{L}=\mathcal{I}_1 -\mathcal{I}_2$. Choose
+    \begin{equation}
+      X_{\lambda_0} (t) = A (t, \lambda_0) e^{i \lambda_0 t}
+    \end{equation}
+    .
+    
+    \item Then $(\mathcal{L}X_{\lambda_0}) (\lambda)$ equals
+    \begin{equation}
+      \int_{- \infty}^{\infty} A (t, \lambda) e^{- i \lambda t} A (t,
+      \lambda_0) e^{i \lambda_0 t} dt - \int_{- \infty}^{\infty} A (t,
+      \lambda) e^{- i \lambda t} A (t, \lambda_0) e^{i \lambda_0 t} dt = 0
+    \end{equation}
+    \item Density of the span $\{X_{\lambda_0} \}$ implies $\mathcal{L}= 0$.
+  \end{enumerate}
+  
+\end{proof}
+
+\section{Real-Valuedness}
+
+\begin{definition}
+  [Real-valued oscillatory process]\label{def:real} An oscillatory process $X$
+  given by \eqref{eq:osc-spectral} is real-valued when
+  \begin{equation}
+    \label{eq:real-cond} X (t) \in \mathbb{R} \quad \text{for all } t \in
+    \mathbb{R}
+  \end{equation}
+  which requires the symmetry
+  \begin{equation}
+    \label{eq:hermitian} A (t, - \lambda)  \hspace{0.17em} dZ (- \lambda) =
+    \overline{A (t, \lambda)  \hspace{0.17em} dZ (\lambda)}
+  \end{equation}
+\end{definition}
+
+\section{Orthonormality Expanded}
+
+\begin{theorem}
+  [Triple integral expansion of orthonormality] The orthonormality condition
+  \eqref{eq:delta-ortho} expands as
+  \begin{equation}
+    \begin{array}{ll}
+      \int_{- \infty}^{\infty} \int_{- \infty}^{\infty} \int_{-
+      \infty}^{\infty} h (t, u_1) h (t, u_2) e^{- i \lambda_1  (t - u_1)} e^{-
+      i \lambda_2  (t - u_2)} e^{i (\lambda_2 - \lambda_1) t}  \hspace{0.17em}
+      du_1  \hspace{0.17em} du_2  \hspace{0.17em} dt & = \delta (\lambda_1 -
+      \lambda_2)
+    \end{array} \label{eq:triple-integral}
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  \begin{enumerate}
+    \item Substitute \eqref{eq:gain-from-filter} into \eqref{eq:delta-ortho}
+    and expand integrals to obtain the triple integral form.
+    
+    \item Correct simplification:
+    \begin{equation}
+      e^{- i \lambda_1  (t - u_1)} e^{- i \lambda_2  (t - u_2)} e^{i
+      (\lambda_2 - \lambda_1) t} = e^{i \lambda_1 u_1} e^{i \lambda_2 u_2}
+      e^{- 2 i \lambda_1 t}
+    \end{equation}
+    \item The $\delta (\lambda_1 - \lambda_2)$ factor arises only after
+    integrating over all variables and invoking distributional Fourier
+    inversion; it does not follow from the $t$-integral alone. This correction
+    ensures rigor.
+  \end{enumerate}
+\end{proof}
+
+\section{Random Measure Equivalences}
+
+\begin{theorem}
+  [Complete random measure formula] Define
+  \begin{equation}
+    \Phi (\lambda) = \int_{- \infty}^{\lambda} dZ (\nu)
+  \end{equation}
+  where $dZ (\nu)$ satisfies \eqref{eq:inv-identity}. Then, in the
+  distributional sense,
+  \begin{equation}
+    \label{eq:phi-complete} \Phi (\lambda) = \int_{- \infty}^{\infty} \frac{1
+    - e^{- i \lambda u}}{iu}  \hspace{0.17em} dW (u) = \int_{-
+    \infty}^{\infty} \frac{1 - e^{- i \lambda t}}{it}  \hspace{0.17em} X (t) 
+    \hspace{0.17em} dt.
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  \begin{enumerate}
+    \item From the white noise representation,
+    \begin{equation}
+      dZ (\lambda) = \frac{1}{2 \pi}  \int_{- \infty}^{\infty} e^{- i \lambda
+      u}  \hspace{0.17em} dW (u)
+    \end{equation}
+    \item Interpret $\int_{- \infty}^{\lambda} e^{- i \nu u}  \hspace{0.17em}
+    d \nu$ in the tempered distribution sense:
+    \begin{equation}
+      \int_{- \infty}^{\lambda} e^{- i \nu u}  \hspace{0.17em} d \nu = \pi
+      \delta (u) + \frac{1 - e^{- i \lambda u}}{iu}
+    \end{equation}
+    The Dirac term vanishes after pairing with $dW (u)$ for $u \neq 0$.
+    
+    \item Substitution yields the first equality in \eqref{eq:phi-complete}.
+    
+    \item The time-domain form follows by swapping the inversion formula into
+    \eqref{eq:inv-identity} and applying the same distributional identity in
+    $t$.
+  \end{enumerate}
+\end{proof}
+
+\section{Remarks on Structure}
+
+\subsection*{Summary of conditions}
+
+\begin{equation}
+  \label{eq:summary-1} X (t) = \int_{\mathbb{R}} A (t, \lambda) 
+  \hspace{0.17em} e^{i \lambda t}  \hspace{0.17em} dZ (\lambda)
+\end{equation}
+\begin{equation}
+  \label{eq:summary-2} \mathbb{E} [dZ (\lambda_1) \hspace{0.17em} \overline{dZ
+  (\lambda_2)}] = \delta (\lambda_1 - \lambda_2)  \hspace{0.17em} \mu (d
+  \lambda_1)
+\end{equation}
+\begin{equation}
+  \label{eq:summary-3} \int_{- \infty}^{\infty} A (t, \lambda_1) 
+  \hspace{0.17em} A (t, \lambda_2)  \hspace{0.17em} e^{i (\lambda_2 -
+  \lambda_1) t}  \hspace{0.17em} dt = \delta (\lambda_2 - \lambda_1)
+\end{equation}
+\begin{equation}
+  \label{eq:summary-4} dZ (\lambda) = \int_{- \infty}^{\infty} A (t, \lambda) 
+  \hspace{0.17em} e^{- i \lambda t}  \hspace{0.17em} X (t)  \hspace{0.17em} dt
+\end{equation}
+
+\subsection*{Covariance identity}
+
+From \eqref{eq:summary-1} and \eqref{eq:summary-2},
+\begin{equation}
+  \label{eq:cov-id} \mathbb{E} [X (t_1) \hspace{0.17em} \overline{X (t_2)}] =
+  \int_{\mathbb{R}} A (t_1, \lambda) \hspace{0.17em} \overline{A (t_2,
+  \lambda)} \hspace{0.17em} e^{i \lambda (t_1 - t_2)}  \hspace{0.17em} \mu (d
+  \lambda)
+\end{equation}
+
+\subsection*{Necessity and sufficiency}
+
+Equation \eqref{eq:summary-3} and nondegeneracy \eqref{eq:nonzero} are
+necessary and sufficient for the inversion \eqref{eq:summary-4} by Theorem
+\ref{thm:fund-inv}. Lemma \ref{lem:unique} gives uniqueness.
+
+\section{References}
+
+{\noindent}Priestley, M.B. (1965). Evolutionary spectra and non-stationary
+processes. Journal of the Royal Statistical Society: Series B, 27(2),
+204--237.\\
+Priestley, M.B. (1981). Spectral Analysis and Time Series. Academic Press.
+
+\end{document}

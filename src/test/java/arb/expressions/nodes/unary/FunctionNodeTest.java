@@ -10,6 +10,7 @@ import junit.framework.TestCase;
 public class FunctionNodeTest extends
                               TestCase
 {
+
   public static void testDerivativeOfImaginaryPartIsRealZero()
   {
     // Expression.trace=true;

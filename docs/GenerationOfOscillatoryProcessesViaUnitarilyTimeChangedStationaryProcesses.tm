@@ -11,16 +11,16 @@
 
   <\definition>
     [Time Change Function] Let <math|T<around|(|t|)>> be a function that is
-    strictly increasing except on a set of Lebesgue measure zero.
+    strictly increasing except possibly on a set of Lebesgue measure zero.
   </definition>
 
   <\definition>
     [Stationary Gaussian Process] Let <math|X<around|(|t|)>> be a stationary
     Gaussian process with spectral representation:
 
-    <\equation*>
+    <\equation>
       X<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<lambda\>*t>*<space|0.17em>d*\<Phi\><around|(|\<lambda\>|)>
-    </equation*>
+    </equation>
 
     where <math|d*\<Phi\><around|(|\<lambda\>|)>> is an orthogonal increment
     process and <math|S<around|(|\<lambda\>|)>> is the spectral density of
@@ -31,9 +31,9 @@
     [Unitarity-Preserving Time Change] The unitarily time-changed process is
     defined as:
 
-    <\equation*>
+    <\equation>
       Z<around|(|t|)>=<sqrt|T<rprime|'><around|(|t|)>>\<cdot\>X<around|(|T<around|(|t|)>|)>
-    </equation*>
+    </equation>
 
     where <math|T<rprime|'><around|(|t|)>> is the derivative of
     <math|T<around|(|t|)>>.
@@ -43,9 +43,9 @@
     [Oscillatory Function Representation] The oscillatory function for the
     unitarily time-changed process is:
 
-    <\equation*>
+    <\equation>
       \<phi\><rsub|t><around|(|\<lambda\>|)>=<sqrt|T<rprime|'><around|(|t|)>>*e<rsup|i*\<lambda\>*T<around|(|t|)>>
-    </equation*>
+    </equation>
   </theorem>
 
   <\proof>
@@ -61,29 +61,29 @@
     [Priestley Gain Function] The gain function in Priestley's oscillatory
     process representation is:
 
-    <\equation*>
+    <\equation>
       A<around|(|t,\<lambda\>|)>=<sqrt|T<rprime|'><around|(|t|)>>*e<rsup|i*\<lambda\>*<around|(|T<around|(|t|)>-t|)>>
-    </equation*>
+    </equation>
   </theorem>
 
   <\proof>
     The Priestley representation requires:
 
-    <\equation*>
+    <\equation>
       Z<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*<space|0.17em>d*\<Phi\><around|(|\<lambda\>|)>
-    </equation*>
+    </equation>
 
     Comparing with the oscillatory function representation:
 
-    <\equation*>
+    <\equation>
       <big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>d*\<Phi\><around|(|\<lambda\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*<space|0.17em>d*\<Phi\><around|(|\<lambda\>|)>
-    </equation*>
+    </equation>
 
     Therefore:
 
-    <\equation*>
+    <\equation>
       \<phi\><rsub|t><around|(|\<lambda\>|)>=A<around|(|t,\<lambda\>|)>*e<rsup|i*\<lambda\>*t>
-    </equation*>
+    </equation>
 
     Solving for <math|A<around|(|t,\<lambda\>|)>>:
 
@@ -104,9 +104,9 @@
   <\proof>
     The covariance kernel is defined as:
 
-    <\equation*>
+    <\equation>
       R<around|(|s,t|)>=<text|Cov><around|[|Z<around|(|s|)>,Z<around|(|t|)>|]>=E<around|[|Z<around|(|s|)><wide|Z<around|(|t|)>|\<bar\>>|]>
-    </equation*>
+    </equation>
 
     Using the oscillatory function representation:
 
@@ -146,9 +146,9 @@
   <\proof>
     The time-dependent spectral density is defined as:
 
-    <\equation*>
+    <\equation>
       S<rsub|Z><around|(|t,\<lambda\>|)>=<around|\||A<around|(|t,\<lambda\>|)>|\|><rsup|2>\<cdot\>S<around|(|\<lambda\>|)>
-    </equation*>
+    </equation>
 
     Computing the modulus squared of the gain function:
 
@@ -158,27 +158,32 @@
 
     Therefore:
 
-    <\equation*>
+    <\equation>
       S<rsub|Z><around|(|t,\<lambda\>|)>=T<rprime|'><around|(|t|)>\<cdot\>S<around|(|\<lambda\>|)>
-    </equation*>
+    </equation>
   </proof>
 
   <\theorem>
     [Expected Zero Count via Kac-Rice Formula] The expected zero count of the
-    unitarily time-changed process <math|Z<around|(|t|)>> in interval
+    unitarily time-changed process <math|Z<around|(|t|)>> in the interval
     <math|<around|[|a,b|]>> is:
 
-    <\equation*>
+    <\equation>
       E<around|[|N<rsub|Z><around|[|a,b|]>|]>=\<rho\><rsub|X>\<cdot\><around|(|T<around|(|b|)>-T<around|(|a|)>|)>
-    </equation*>
+    </equation>
 
-    where <math|\<rho\><rsub|X>=<frac|1|\<pi\>>*<sqrt|<frac|-R<rsub|X><rprime|''><around|(|0|)>|\<sigma\><rsub|X><rsup|2>>>>
-    is the constant zero-crossing rate of the stationary process
+    where
+
+    <\equation>
+      \<rho\><rsub|X>=<frac|1|\<pi\>>*<sqrt|<frac|-R<rsub|X><rprime|''><around|(|0|)>|\<sigma\><rsub|X><rsup|2>>>
+    </equation>
+
+    \ is the constant zero-crossing rate of the stationary process
     <math|X<around|(|t|)>>.
   </theorem>
 
   <\proof>
-    Claude is too much of a piece of shit dumbass to write the obvious
+    TODO: merge with other paper where I stated this most excellently\ 
   </proof>
 </body>
 
