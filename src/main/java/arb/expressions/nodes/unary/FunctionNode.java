@@ -519,7 +519,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       else
       {
         expression.simplify();
-        assert false : String.format("%s: %s -> %s (expr=%s)",
+        assert false : String.format("no such function named %s from %s to %s (expr=%s)",
                                      this,
                                      domainType,
                                      coDomainType,
