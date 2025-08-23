@@ -1,0 +1,1 @@
+var f = RealFunction.express("δ(x)");
