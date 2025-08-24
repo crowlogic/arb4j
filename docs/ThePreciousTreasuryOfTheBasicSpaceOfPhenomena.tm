@@ -1,0 +1,612 @@
+<TeXmacs|2.1.4>
+
+<style|<tuple|generic|boring-white|framed-theorems>>
+
+<\body>
+  <doc-data|<doc-title|The Precious Treasury of the Basic Space of
+  Phenomena:<next-line>A Mathematical Formulation of Enlightened
+  Intent>|<doc-author|<author-data|<author-name|Dzogchen Mathematical
+  Framework>>>|<doc-date|>>
+
+  <\definition>
+    [Awakened Mind] Awakened mind is by nature primordially pure.
+  </definition>
+
+  <\definition>
+    [True Nature of Phenomena] The true nature of phenomena is such that
+    there is nothing to discard or adopt, nothing that comes or goes, nothing
+    to achieve by trying.
+  </definition>
+
+  <\theorem>
+    [Utter Lucidity] The sun and moon of utter lucidity arise when one rests
+    naturally in the spacious expanse that is the true nature of phenomena.
+  </theorem>
+
+  <\proof>
+    Without sense objects being blocked or mind being reified, if there is no
+    straying from the natural state of spontaneous equalness, you arrive at
+    the enlightened intent of supreme spaciousness\VSamantabhadra.
+  </proof>
+
+  <\definition>
+    [Naturally Limpid State] Without the arising and subsiding of thoughts,
+    there is a naturally limpid, pristine state, like the unwavering evenness
+    of a limpid ocean.
+  </definition>
+
+  <\theorem>
+    [Naturally Occurring Timeless Awareness] Free of the occurrence of or
+    involvement in thoughts, free of hope or fear, you abide within the state
+    of naturally occurring timeless awareness, the true nature of which is
+    profoundly lucid.
+  </theorem>
+
+  <\proof>
+    Without the compulsions of ordinary mind, there is an unfeigned state, a
+    natural settling, uncontrived and unadulterated, though it cannot be
+    characterized with words. This absorption in the expanse of being, the
+    true nature of which cannot be characterized, involves neither meditation
+    nor something to meditate on, and so laxity and agitation dissipate
+    naturally, and enlightened intent occurs naturally.
+  </proof>
+
+  <\lemma>
+    [Dynamic Energy of Awareness] All consuming thought patterns cannot be
+    abandoned by being renounced, for they are the dynamic energy of
+    awareness.
+  </lemma>
+
+  <\proof>
+    Their true nature is such that there are no distinctions, nothing to
+    differentiate or exclude. So that nature is not ensured by achievement,
+    but arises as basic space.
+  </proof>
+
+  <\corollary>
+    [Perception of Samsara] Without rejecting samsara, you perceive it to be
+    naturally occurring timeless awareness, through the pure yoga of the
+    dynamic energy of the vast expanse of being.
+  </corollary>
+
+  <\theorem>
+    [Meditative Absorption] In the timeless unity of sensory appearances and
+    mind, the naturally settled state that is the true nature of phenomena,
+    meditative absorption is experienced as an unwavering ongoing flow.
+  </theorem>
+
+  <\proof>
+    Thus the Vajrapani, the most excellent enlightened mind of Samantabhadra,
+    is the most sublime, spacious state, equal to space.
+  </proof>
+
+  <\proposition>
+    [Supreme Meditation] The most sublime meditation of all involves no
+    differentiation or exclusion. It is spontaneously present as a superb,
+    timelessly infinite monarch.
+  </proposition>
+
+  <\theorem>
+    [Utter Lucidity Flow] The ongoing flow of utter lucidity, timeless and
+    omnipresent, is spontaneously present within this context in which
+    nothing is discarded or adopted.
+  </theorem>
+
+  <\proof>
+    And so it is the most sublime enlightened intent, the basic space of
+    phenomena, the nature of samsara and nirvana.
+  </proof>
+
+  <\definition>
+    [Vast Expanse] This vast expanse, unwavering, indescribable and equal to
+    space, is timelessly and innately present in all beings.
+  </definition>
+
+  <\lemma>
+    [Ordinary Confused Mind] It is the ordinary confused mind that perceives
+    sensory appearances to be something other than oneself. It is the
+    ordinary confused mind that believes in meditation and making an effort.
+  </lemma>
+
+  <\theorem>
+    [True Nature of Confusion] The true nature of confusion is the realm of
+    equalness, the natural state of rest, the natural expanse that is
+    unwavering and primordially pure.
+  </theorem>
+
+  <\proof>
+    There is nothing to do and no effort to make. Whether or not you are
+    resting is irrelevant.
+  </proof>
+
+  <\theorem>
+    [Four Aspects of Omnipresent Awareness] There exist four fundamental
+    aspects of omnipresent awareness: view, meditation, conduct, and
+    fruition.
+  </theorem>
+
+  <\proof>
+    <with|font-series|bold|View:> Given the unchanging, spontaneously present
+    nature of phenomena, if you look again and again with self-knowing
+    awareness, free of any complicating conceptual framework, you will see
+    that there is nothing to look at, nothing to look at. This is the view of
+    omnipresent awareness.
+
+    <with|font-series|bold|Meditation:> Given awareness which is not
+    cultivated in meditation and which nothing is discarded or adopted, if
+    you meditate again and again, you will see that there is nothing to
+    cultivate in meditation, nothing to cultivate in meditation. This is the
+    meditation of omnipresent awareness.
+
+    <with|font-series|bold|Conduct:> Given the way of abiding, non-dual and
+    free of acceptance and rejection, if you engage in conduct again and
+    again, you will see that there is no conduct to enact, no conduct to
+    enact. This is the conduct of omnipresent awareness.
+
+    <with|font-series|bold|Fruition:> Given spontaneous presence, timelessly
+    ensured and free of hope and fear, if you strive to achieve again and
+    again, you will see that there is nothing to achieve, nothing to achieve.
+    This is the fruition of omnipresent awareness.
+  </proof>
+
+  <\definition>
+    [State of Equalness] Within the state of equalness, there are no thoughts
+    about sense objects and no reification of ordinary mind.
+  </definition>
+
+  <\lemma>
+    [Pacification of Hope and Fear] So the occurrence of an involvement in
+    hope and fear are pacified.
+  </lemma>
+
+  <\theorem>
+    [Omnipresent State] Abiding in the equalness of sense objects and mind
+    means that as a matter of course, there is no straying from the expanse
+    that is the true nature of phenomena. One abides in an omnipresent state
+    in which what are characterized as sense objects do not exist as objects.
+  </theorem>
+
+  <\corollary>
+    [Great Perfection] Since there is omnipresent awareness, timeless and
+    non-dual within the state of great perfection, the indivisibility of
+    samsara and nirvana, everything is in a state of infinite evenness
+    without acceptance or rejection.
+  </corollary>
+
+  <\theorem>
+    [Universal Equality in Basic Space] All phenomena are equal in basic
+    space.
+  </theorem>
+
+  <\proof>
+    What is tangible and what is intangible are equal in basic space. Buddhas
+    and ordinary beings are equal in basic space. Relative reality and
+    ultimate reality are equal in basic space. Flaws and positive qualities
+    are equal in basic space. And all directions above, below and in between
+    are equal in basic space.
+  </proof>
+
+  <\corollary>
+    [Equal Arising] Therefore, whatever display arises from that naturally
+    occurring state, even as it arises, things arise equally, none being
+    better or worse. What need is there to accept or reject them by applying
+    antidotes?
+  </corollary>
+
+  <\proposition>
+    [Equal Abiding and Freedom] When things abide, they abide equally, none
+    being better or worse. Whatever is now taking place in your mind, rest in
+    natural peace. When things are free, they are equally free, none being
+    better or worse. In the wake of being conscious of them, do not continue
+    to suppress or indulge in them.
+  </proposition>
+
+  <\theorem>
+    [Dynamic Energy and Display] Within awakened mind itself, the expanse of
+    the ground of being, the way in which everything arises as its dynamic
+    energy and display is unpredictable.
+  </theorem>
+
+  <\proof>
+    Even as things arise equally, they arise within that primordial expanse.
+    Even as they arise unequally, they arise within the basic space of their
+    equalness. Even as they abide equally, their true nature is a natural
+    state of rest. Even as they abide unequally, they abide within the basic
+    space of their equalness. Even as they are freed equally, this
+    constitutes the expanse of naturally occurring timeless awareness. Even
+    as they are freed unequally, they are freed within the basic space of
+    their equalness.
+  </proof>
+
+  <\lemma>
+    [Timeless Non-Existence] Given naturally occurring awareness, the
+    timeless equalness of everything:
+
+    <\itemize>
+      <item>Arising and non-arising are timelessly non-existent in basic
+      space
+
+      <item>Abiding and non-abiding are timelessly non-existent in basic
+      space
+
+      <item>Freedom and the absence of freedom are timelessly non-existent in
+      basic space
+    </itemize>
+  </lemma>
+
+  <\theorem>
+    [Natural Holding to Place] Within awareness, a supreme state of
+    unwavering equalness, even as things arise, they arise naturally, holding
+    to their own place. Even as they abide, they abide naturally, holding to
+    their own place. Even as they are freed, they are freed naturally,
+    holding to their own place.
+  </theorem>
+
+  <\theorem>
+    [Nature of Space and Timelessness] Given that awareness is unchanging and
+    free of elaboration, everything is of the nature of space.
+  </theorem>
+
+  <\proof>
+    What arises, arises timelessly. What abides, abides timelessly. And what
+    is free, is free, timelessly.
+  </proof>
+
+  <\lemma>
+    [Simultaneous Arising and Freedom] Thoughts arise, abide and are freed.
+    Their simultaneous arising and being freed is uninterrupted.
+  </lemma>
+
+  <\theorem>
+    [Transcendence of Causality] Since it is uninterrupted, there is no
+    separation into cause and effect. Since there is no cause and effect, the
+    abyss of samsara has been crossed. Since there is no longer an abyss,
+    where could one go astray?
+  </theorem>
+
+  <\corollary>
+    [Unchanging Expanse] The expanse of Samantabhadra is timelessly
+    unchanging. The expanse of Vajrasattva is without transition or change.
+    The term Buddhahood is nothing more than a label, for what is simply
+    recognition of the very essence of being, the way of abiding.
+  </corollary>
+
+  <\theorem>
+    [Infinite Evenness] With the realization of this, there are no phenomena
+    to accept or reject. So all things are in a state of infinite evenness,
+    that is their sole true nature.
+  </theorem>
+
+  <\proof>
+    As on the isle of gold, there is no division or exclusion. This nature is
+    not subject to limitation, for error and obscuration have been seen
+    through.
+  </proof>
+
+  <\proposition>
+    [Three Kayas Spontaneous Perfection] Within awakened mind itself, in
+    which there are no pitfalls, the three kayas involving no effort are
+    spontaneously perfect. So the phrase "beyond imagination or expression"
+    is a mere figure of speech.
+  </proposition>
+
+  <\theorem>
+    [Unrestricted Appearances] Sensory appearances are unrestricted,
+    awareness is evident and naturally occurring.
+  </theorem>
+
+  <\proof>
+    Since the genuine state of uncontrived rest is unobscured and
+    unobstructed, with no division into outer and inner, it is evident as the
+    supreme nature of phenomena.
+  </proof>
+
+  <\remark>
+    [Relaxation Instructions] Let your mind and body relax deeply in a
+    carefree state, with an easy going attitude like a person who has nothing
+    more to do. Let your mind and body rest in whatever way is comfortable,
+    neither tense nor loose.
+  </remark>
+
+  <\theorem>
+    [Movement Within Fundamental Nature] However things stay, they stay
+    within their fundamental nature. However they dwell, they dwell within
+    their fundamental nature. However they move, they move within their
+    fundamental nature.
+  </theorem>
+
+  <\corollary>
+    [No Coming or Going] Fundamentally there is no coming or going within the
+    basic space of enlightenment. The enlightened forms of victorious ones do
+    not come or go.
+  </corollary>
+
+  <\lemma>
+    [Description and Expression] However description occurs, it occurs within
+    its fundamental nature. However expression occurs, it occurs within its
+    fundamental nature. Fundamentally there is no description or expression
+    within awakened mind. The enlightened speech of the victorious ones of
+    the three times is indescribable and inexpressible.
+  </lemma>
+
+  <\lemma>
+    [Thinking and Conceptualization] However thinking occurs, it occurs
+    within its fundamental nature. However conceptualization occurs, it
+    occurs within its fundamental nature. There is never any thinking or
+    conceptualizing within awakened mind. The enlightened mind of the
+    victorious ones of the three times is free of thinking and
+    conceptualizing.
+  </lemma>
+
+  <\definition>
+    [Three Kayas Structure] Since what is non-existent can occur in any way
+    at all, there is nirmanakaya. Since the richness of being enjoys itself,
+    there is sambhogakaya. Since no substantial basis for these two exist,
+    there is dharmakaya. Through fruition is the expanse within which the
+    three kayas are spontaneously present.
+  </definition>
+
+  <\theorem>
+    [Enlightened Intent Recognition] Within the very state that is the vast
+    expanse of awakened mind, the concepts of ordinary thinking do not occur.
+    If the characteristics of ordinary consciousness do not stir in the mind,
+    that itself is enlightened intent, the unique state of Buddhahood.
+  </theorem>
+
+  <\proposition>
+    [Nature of Enlightenment] The nature of enlightenment is similar to the
+    spacious vault of the sky. The most sublime form of meditation involves
+    no recollection or thinking.
+  </proposition>
+
+  <\theorem>
+    [Unchanging Nature] One's nature is unwavering and uncontrived. Unplanned
+    and completely free of the formation of ideas, the true nature of
+    phenomena, the naturally settled state is without transition or change
+    throughout the three times.
+  </theorem>
+
+  <\corollary>
+    [Supreme Meditation Form] The most sublime form of meditation involves no
+    stirring or proliferation of all consuming thoughts.
+  </corollary>
+
+  <\theorem>
+    [Sacred State of Mind] Any abiding in suchness is the sacred state of
+    mind, the unique state of Buddhahood, free of all characterization.
+  </theorem>
+
+  <\proof>
+    It is the unwavering basic space of phenomena, a state of evenness that
+    transcends reifying concepts. This is the expanse of the enlightened
+    intent of the victorious ones, the sublime, spacious nature of being.
+  </proof>
+
+  <\lemma>
+    [Abandonment of Contrivance] When the bonds of physical and mental
+    contrivance are abandoned, there is an unfeigned relaxation.
+  </lemma>
+
+  <\theorem>
+    [Non-Wavering from True Nature] No matter what recollection stirs in the
+    mind, if you do not waver from the context of the true nature of
+    phenomena, that of resting in the ground of being, everything is a
+    spacious expanse of the enlightened intent of Samantabhadra.
+  </theorem>
+
+  <\corollary>
+    [Natural Settling] Since nothing is reified or discarded, there is none
+    of the tension or laxity of the compulsive mind. The unrestricted state
+    of natural settling, just as it is, is ensured as a matter of course.
+    Unwavering, infinite evenness is an expanse with no fixed dimension.
+  </corollary>
+
+  <\proposition>
+    [Sky-like Enlightened Intent] If all ordinary thinking occurs naturally
+    and is pacified naturally, that is the sky-like enlightened intent of
+    Vajrasattva.
+  </proposition>
+
+  <\theorem>
+    [Uncontrived Expanse Warning] If you maintain an undistracted state
+    within the uncontrived expanse of being, even engaging in thoughts
+    concerning sense objects is within the scope of the true nature of
+    phenomena. As for that true nature, it is non-conceptual and as spacious
+    as the sky.
+  </theorem>
+
+  <\lemma>
+    [Danger of Contrivance] But if you try to contrive it deliberately and
+    compulsively, it becomes a cage of characteristics. Though you may spend
+    day and night in such meditation, that is the bondage of fixation, pure
+    and simple. As a victorious one stated that it resembles the meditative
+    stability of the gods.
+  </lemma>
+
+  <\corollary>
+    [Crucial Settling] Therefore, it is extremely crucial that your mind,
+    which is undistracted and which effort and striving have been eradicated,
+    settle naturally beyond reifying effort.
+  </corollary>
+
+  <\theorem>
+    [Limitation-Free Awareness] Since naturally occurring, timeless awareness
+    is without limitation or bias, it cannot be characterized as some thing,
+    for all elaboration naturally subsides.
+  </theorem>
+
+  <\proof>
+    Therefore, give up creating more concepts. Train in the ultimate meaning
+    of supreme spaciousness, free of any foundation.
+  </proof>
+
+  <\definition>
+    [The Unique Nature Quintuple] The unique nature of phenomena is naturally
+    occurring timeless awareness. The unique view is freedom from the
+    limitations of elaboration. In the unique meditation, nothing is
+    discarded or adopted. Nothing comes or goes. In the unique conduct, there
+    is no duality of acceptance and rejection. The unique fruition is free of
+    the duality of renunciation and attainment. This is the enlightened
+    intent of naturally occurring spontaneous presence.
+  </definition>
+
+  <\theorem>
+    [Universal Primordial State] The true nature of all phenomena, in their
+    entirety, the universe of appearances and possibilities, whether of
+    samsara or nirvana, is the primordial state.
+  </theorem>
+
+  <\proof>
+    Since it does not stray from naturally occurring timeless awareness
+    itself, understand it to be enlightened intent with everything at rest in
+    the ground of being.
+  </proof>
+
+  <\remark>
+    [How to Rest] Concerning phenomena that manifest as myriad sense objects,
+    without thinking in any way, this is how to rest. Rest spontaneously in
+    the naturally settled state, free of the proliferation and resolution of
+    thoughts. Abide as a matter of course within the expanse of equalness,
+    the true nature of phenomena.
+
+    Neither focusing your senses on, nor letting your gaze wander to, the
+    manifestations of sensory appearances in all their variety. Neither
+    thinking of self, nor conceiving of other, rest naturally lucid in the
+    supremely spacious state of complete openness.
+  </remark>
+
+  <\theorem>
+    [Meditative Absorption Experience] Given the enlightened intent of
+    naturally occurring timeless awareness, in which everything is equal,
+    expansive and elevated mind, free of the proliferation and resolution of
+    thoughts, the experience of blending with space, without any division
+    into outer and inner, or in between, arises as meditative absorption that
+    is blissful, clear and free of elaboration.
+  </theorem>
+
+  <\lemma>
+    [No Division into Outer and Inner] Given the enlightened intent of the
+    true nature of phenomena, which never strays from a state of rest, the
+    ground of being, there is no division into outer and inner. For that
+    nature is free of the elaborations of dualistic perception.
+  </lemma>
+
+  <\proposition>
+    [Freedom from Fixation] There is no ordinary mind fixating on something
+    other, a sense object. So nothing is reified as an object, and your
+    perceptions of the universe are free of fixation. No context exists for
+    taking rebirth in samsara. This is similar to space.
+  </proposition>
+
+  <\theorem>
+    [Dharmakaya Realization] There is no inner concept of mind as self. So
+    nothing is reified as a subject. And the all-consuming thought patterns
+    of conditioned existence are stilled. The potential for rebirth in
+    samsara is cut through at the root.
+  </theorem>
+
+  <\proof>
+    At that point, you have arrived at the enlightened intent of dharmakaya,
+    like space, in which there is no division into outer and inner, and no
+    frame of reference for phenomena based on confusion. You have touched on
+    the point of resolution, and since there is no coming or going,
+    everything is an infinite expanse, the pure realm of Samantabhadra. You
+    have reached the sublime palace of dharmakaya.
+  </proof>
+
+  <\theorem>
+    [Freedom from Conditioned Existence] If awareness in the moment does not
+    stray from the ground of being, familiarization with that experience
+    negates any furthering of conditioned existence.
+  </theorem>
+
+  <\proof>
+    You are free of the karma and habitual patterns that perpetuate rebirth.
+    You have come to the decisive experience of causality, described as the
+    equalness of samsara and nirvana. You have arrived at the heart essence
+    of enlightenment, which does not abide in conditioned existence, nor the
+    state of peace. It is crucial that you distinguish between this and a
+    one-pointed state of calm abiding. This is the enlightened intent of
+    natural great perfection.
+  </proof>
+
+  <\lemma>
+    [Straying from Fundamental Nature] If you stray from your fundamental
+    nature, the functioning of conceptual mind is samsara, pure and simple.
+    It involves cause and effect. You have not come to the decisive
+    experience. The person who makes this mistake falls lower and lower.
+  </lemma>
+
+  <\theorem>
+    [Secret Great Perfection] Therefore, the sublime secret great perfection
+    does not stray from basic space and the expressions of dynamic energy
+    resolve within the ground of being. Enlightened intent abides as an
+    unwavering state of equalness.
+  </theorem>
+
+  <\corollary>
+    [No Cause and Effect in Context] Within this context there is no cause
+    and effect, no concerted effort. View, for example, cannot be cultivated
+    in meditation. Although the mode of cessation is described as having
+    neither center nor limit, when dynamic energy itself deviates from this
+    natural state, the myriad display arises as the multiplicity of the
+    universe of appearances and possibilities. So never say categorically
+    there is no cause and effect.
+  </corollary>
+
+  <\theorem>
+    [Interdependence] Interdependence ensures that conditioned composite
+    phenomena are beyond enumeration and imagination. Confused perception in
+    samsara and even states of peace and bliss are beyond enumeration and
+    imagination.
+  </theorem>
+
+  <\proof>
+    All of this constitutes the very process of interdependence, which is the
+    coming together of causes and conditions.
+  </proof>
+
+  <\theorem>
+    [Fundamentally Unconditioned Nature] If you evaluate your fundamentally
+    unconditioned nature, you find it has never existed as anything
+    whatsoever.
+  </theorem>
+
+  <\proof>
+    So too, in taking this as your path, you have no frame of reference
+    whatsoever for straying from that fundamentally unconditioned nature in
+    all its immediacy. Rather, you appreciate it within the context of
+    enlightened intent. Having reached the ultimate state in the immediacy of
+    your fundamentally unconditioned nature, you are not sullied by anything
+    at all.
+
+    Afflictive emotions, karma and habitual patterns have no support within
+    this vast expanse, but are the playing out of magical games of illusion.
+    You must be liberated from this, so please come to a decisive experience
+    of causality. As a means of doing so, there is nothing superior to this
+    approach.
+  </proof>
+
+  <\theorem>
+    [Final Advice] Therefore, it is crucial not to stray from the enlightened
+    intent of the true nature of phenomena. This is the expanse of my
+    profound and heartfelt advice. It is crucial to go beyond what everything
+    is or is not. Transcending is and is not.
+  </theorem>
+
+  <\remark>
+    [Section Identification] This is the tenth section of the precious
+    treasury of the basic space of phenomena, demonstrating that enlightened
+    intent does not deviate from the true nature of phenomena.
+  </remark>
+</body>
+
+<\initial>
+  <\collection>
+    <associate|magnification|1.2>
+    <associate|page-height|auto>
+    <associate|page-medium|paper>
+    <associate|page-type|letter>
+    <associate|page-width|auto>
+  </collection>
+</initial>
