@@ -19,6 +19,32 @@ import junit.framework.TestCase;
 public class DerivativeNodeTest extends
                                 TestCase
 {
+  public void testFirstDerivativeViaCombiningDotAboveCharacter()
+  {
+    final Context      context = new Context();
+    final RealFunction θ       = RealFunction.express("θ:im(lnΓ(¼+ⅈ*t/2))-(log(π)/2)*t", context);
+    final RealFunction Nθ      = RealFunction.express("Nθ:t➔t-θ̇(t)", context);
+    var y = Nθ.eval(2.3);
+    
+  }
+
+  public void testFirstDerivativeWithFunctionFormOfDertivative()
+  {
+    final Context      context = new Context();
+    final RealFunction θ       = RealFunction.express("θ:im(lnΓ(¼+ⅈ*t/2))-(log(π)/2)*t", context);
+    final RealFunction Nθ      = RealFunction.express("Nθ:t➔t-diff(θ(t),t)", context);
+    var y = Nθ.eval(2.3);
+    
+  }
+  
+  public void testSecondDerivativeViaCombiningTwoDotsAboveCharacter()
+  {
+    final Context      context = new Context();
+    final RealFunction θ       = RealFunction.express("θ:im(lnΓ(¼+ⅈ*t/2))-(log(π)/2)*t", context);
+    final RealFunction Nθ      = RealFunction.express("Nθ:t➔t-θ̇(t)/θ̈(t)", context);
+    var y = Nθ.eval(2.3);
+
+  }
 
   public void testDecompiledEvaluateRealBivariateFunctionWithContextVariable()
   {

@@ -1,0 +1,3 @@
+final Context                        context = new Context();
+final RealFunction                   θ       = RealFunction.express("θ:im(lnΓ(¼+ⅈ*t/2))-(log(π)/2)*t", context);
+final RealFunction                   Nθ      = RealFunction.express("Nθ:t➔t-θ̇(t)/θ̈(t)", context);
