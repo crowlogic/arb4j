@@ -1,0 +1,61 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{geometry,amsmath,amssymb,latexsym}
+\geometry{letterpaper}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\assign}{:=}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\
+
+\
+
+\begin{theorem}
+  [Integral correlation length for the Bessel kernel] Let $\rho (t) = J_0  (2
+  \pi t)$ for $t \in \mathbb{R}$, where $J_0$ denotes the Bessel function of
+  the first kind of order $0$. Define the integral correlation length
+  \begin{equation}
+    \ell \hspace{0.27em} = \hspace{0.27em} \int_{- \infty}^{\infty} \rho (t) 
+    \hspace{0.17em} dt \hspace{0.27em} = \hspace{0.27em} 2 \int_0^{\infty}
+    \rho (t)  \hspace{0.17em} dt
+  \end{equation}
+  Then $\ell = 1$. Consequently, the corresponding characteristic frequency
+  scale $f_c \assign 1 / \ell$ equals $1$ (in cycles per unit of the time
+  variable used in $\rho$).
+\end{theorem}
+
+\begin{proof}
+  By evenness of $J_0$, one has
+  \begin{equation}
+    \ell \hspace{0.27em} = \hspace{0.27em} 2 \int_0^{\infty} J_0  (2 \pi t) 
+    \hspace{0.17em} dt
+  \end{equation}
+  Apply the change of variables $u = 2 \pi t$, so that $dt = \frac{du}{2 \pi}$
+  and $t \in [0, \infty)$ corresponds to $u \in [0, \infty)$. This gives
+  \begin{equation}
+    \int_0^{\infty} J_0  (2 \pi t)  \hspace{0.17em} dt \hspace{0.27em} =
+    \hspace{0.27em} \frac{1}{2 \pi}  \int_0^{\infty} J_0 (u)  \hspace{0.17em}
+    du
+  \end{equation}
+  It is a classical integral identity that
+  \begin{equation}
+    \int_0^{\infty} J_0 (u)  \hspace{0.17em} du \hspace{0.27em} =
+    \hspace{0.27em} 1
+  \end{equation}
+  Therefore,
+  \begin{equation}
+    \int_0^{\infty} J_0  (2 \pi t)  \hspace{0.17em} dt \hspace{0.27em} =
+    \hspace{0.27em} \frac{1}{2 \pi}, \quad \text{and hence} \quad \ell
+    \hspace{0.27em} = \hspace{0.27em} 2 \cdot \frac{1}{2 \pi} \hspace{0.27em}
+    = \hspace{0.27em} 1
+  \end{equation}
+  Defining the characteristic frequency by $f_c \assign 1 / \ell$ (cycles per
+  unit time) yields $f_c = 1$.
+\end{proof}
+
+\end{document}

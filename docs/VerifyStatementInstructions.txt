@@ -1,4 +1,3 @@
-\documentclass{article}
 \usepackage{amsmath, amsthm, amssymb}
 \usepackage{xcolor}
 \title{Mathematical Verification Protocol: Instructions for Rigorous Review}
@@ -178,4 +177,3 @@ For claimed formula $F = G$:
 \end{itemize}
 
 \end{document}
-
