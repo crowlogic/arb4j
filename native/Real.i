@@ -352,14 +352,6 @@ import arb.utensils.Utensils;
     set(val);    
   }
     
-  public Real(Complex val)
-  {
-    this();
-    assert val.im().isZero() : "imaginary part must be 0 but instead it is " + val;
-    assert val.re().isExact() : "real part must be exact but instead it is " + val;
-    set(val.re());
-  }
-
   public Real pow(Fraction div, int bits, Real res)
   {
     return pow(res.set(div),bits,res);
