@@ -149,7 +149,7 @@ import arb.functions.NullaryFunction;
       {
         sb.append(name + "=");
       }
-      sb.append(getSymbolicExpression(blip));
+      sb.append(getSymbolicExpression(blip, FormulaGenerationMethod.All));
       return sb.toString();
     }
   }

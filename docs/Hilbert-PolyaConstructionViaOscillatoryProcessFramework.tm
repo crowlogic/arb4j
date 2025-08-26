@@ -103,7 +103,11 @@
       A<rsub|t>*<around|(|-\<lambda\>|)>=<wide|A<rsub|t><around|(|\<lambda\>|)>|\<bar\>>
     </equation>
 
-    holds for the amplitude <math|A<rsub|t><around|(|\<lambda\>|)>=<sqrt|<around|\||\<theta\><rprime|'><around|(|t|)>|\|>>*<space|0.17em>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>>.
+    holds for the amplitude
+
+    <\equation>
+      A<rsub|t><around|(|\<lambda\>|)>=<sqrt|<around|\||\<theta\><rprime|'><around|(|t|)>|\|>>*<space|0.17em>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>
+    </equation>
   </proposition>
 
   <\proof>
@@ -111,7 +115,7 @@
     the spectral representation,
 
     <\align>
-      <tformat|<table|<row|<cell|<wide|Z<around|(|t|)>|\<bar\>>>|<cell|=<wide|<big|int><rsub|-1><rsup|1>\<varphi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>|\<bar\>>=<big|int><rsub|-1><rsup|1><wide|\<varphi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>><space|0.17em><wide|\<Phi\>*<around|(|d*\<lambda\>|)>|\<bar\>>=<big|int><rsub|-1><rsup|1><wide|\<varphi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>\<Phi\>*<around|(|d*<around|(|-\<lambda\>|)>|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-1><rsup|1><wide|\<varphi\><rsub|t>*<around|(|-\<mu\>|)>|\<bar\>><space|0.17em>\<Phi\>*<around|(|d*\<mu\>|)>.<eq-number>>>>>
+      <tformat|<table|<row|<cell|<wide|Z<around|(|t|)>|\<bar\>>>|<cell|=<wide|<big|int><rsub|-1><rsup|1>\<varphi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>|\<bar\>>=<big|int><rsub|-1><rsup|1><wide|\<varphi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>><space|0.17em><wide|\<Phi\>*<around|(|d*\<lambda\>|)>|\<bar\>>=<big|int><rsub|-1><rsup|1><wide|\<varphi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>\<Phi\>*<around|(|d*<around|(|-\<lambda\>|)>|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-1><rsup|1><wide|\<varphi\><rsub|t>*<around|(|-\<mu\>|)>|\<bar\>><space|0.17em>\<Phi\>*<around|(|d*\<mu\>|)><eq-number>>>>>
     </align>
 
     Equality with <math|Z<around|(|t|)>=<big|int><rsub|-1><rsup|1>\<varphi\><rsub|t><around|(|\<mu\>|)>*<space|0.17em>\<Phi\>*<around|(|d*\<mu\>|)>>
@@ -187,7 +191,7 @@
 
   <\remark>
     The empirical covariance has the exact form
-    <math|<sqrt|<around|\||\<theta\><rprime|'><around|(|s|)>*\<theta\><rprime|'><around|(|t|)>|\|>>*<space|0.17em>J<rsub|0>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>.
+    <math|<sqrt|<around|\||\<theta\><rprime|'><around|(|s|)>*\<theta\><rprime|'><around|(|t|)>|\|>>*<space|0.17em>J<rsub|0>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>
   </remark>
 
   <\lemma>
@@ -198,19 +202,26 @@
       Z<rprime|'><around|(|t|)>=<big|int><rsub|-1><rsup|1>\<varphi\><rprime|'><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>
     </equation>
 
-    and <math|\<bbb-E\><around*|[|<around|(|Z<rprime|'><around|(|t|)>|)><rsup|2>|]>=<around|\||\<theta\><rprime|''><around|(|t|)>|\|><rsup|2>\<gtr\>0>.
+    and\ 
+
+    <\equation>
+      \<bbb-E\><around*|[|<around|(|Z<rprime|'><around|(|t|)>|)><rsup|2>|]>=<around|\||\<theta\><rprime|''><around|(|t|)>|\|><rsup|2>\<gtr\>0
+    </equation>
   </lemma>
 
   <\proof>
     Differentiate <math|\<varphi\><rsub|t><around|(|\<lambda\>|)>>:
 
     <\equation>
-      \<varphi\><rprime|'><rsub|t><around|(|\<lambda\>|)>=<frac|\<theta\><rprime|''><around|(|t|)>|2*<sqrt|<around|\||\<theta\><rprime|'><around|(|t|)>|\|>>>*<space|0.17em>e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>+<sqrt|<around|\||\<theta\><rprime|'><around|(|t|)>|\|>>*<space|0.17em>i*\<lambda\>*\<theta\><rprime|'><around|(|t|)>*<space|0.17em>e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>.
+      \<varphi\><rprime|'><rsub|t><around|(|\<lambda\>|)>=<frac|\<theta\><rprime|''><around|(|t|)>|2*<sqrt|<around|\||\<theta\><rprime|'><around|(|t|)>|\|>>>*<space|0.17em>e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>+<sqrt|<around|\||\<theta\><rprime|'><around|(|t|)>|\|>>*<space|0.17em>i*\<lambda\>*\<theta\><rprime|'><around|(|t|)>*<space|0.17em>e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>
     </equation>
 
     With the <math|J<rsub|0>> kernel, <math|J<rsub|0><around|(|0|)>=1> and
     <math|J<rsub|1><around|(|0|)>=0>, which yields
-    <math|\<bbb-E\><around*|[|<around|(|Z<rprime|'><around|(|t|)>|)><rsup|2>|]>=<around|\||\<theta\><rprime|''><around|(|t|)>|\|><rsup|2>>.
+
+    <\equation>
+      \<bbb-E\><around*|[|<around|(|Z<rprime|'><around|(|t|)>|)><rsup|2>|]>=<around|\||\<theta\><rprime|''><around|(|t|)>|\|><rsup|2>
+    </equation>
   </proof>
 
   <section|Non-Tangency Theorem>
@@ -221,7 +232,7 @@
     differentiability,
 
     <\equation>
-      \<bbb-P\>*<space|-0.17em><around*|[|<space|0.17em>Z<rprime|'><around|(|t|)>=0<space|0.17em><mid|\|><space|0.17em>Z<around|(|t|)>=0<space|0.17em>|]>=0.
+      \<bbb-P\>*<space|-0.17em><around*|[|<space|0.17em>Z<rprime|'><around|(|t|)>=0<space|0.17em><mid|\|><space|0.17em>Z<around|(|t|)>=0<space|0.17em>|]>=0
     </equation>
   </theorem>
 
@@ -236,7 +247,7 @@
     [Zero Localization Measure] Define
 
     <\equation>
-      \<mu\><around|(|B|)>=<big|int><rsub|\<bbb-R\>><with|math-font-family|bf|1><rsub|B><around|(|t|)>*<space|0.17em>\<delta\><space|-0.17em><around*|(|Z<around|(|t|)>|)><space|0.17em><around|\||Z<rprime|'><around|(|t|)>|\|>*<space|0.17em>d*t,
+      \<mu\><around|(|B|)>=<big|int><rsub|\<bbb-R\>><with|math-font-family|bf|1><rsub|B><around|(|t|)>*<space|0.17em>\<delta\><space|-0.17em><around*|(|Z<around|(|t|)>|)><space|0.17em><around|\||Z<rprime|'><around|(|t|)>|\|>*<space|0.17em>d*
     </equation>
 
     for Borel <math|B\<subset\>\<bbb-R\>>.
@@ -247,7 +258,7 @@
     <math|<around|{|t\<in\>\<bbb-R\>:Z<around|(|t|)>=0|}>> and
 
     <\equation>
-      <big|int><rsub|\<bbb-R\>>\<phi\><around|(|t|)>*<space|0.17em>\<delta\><space|-0.17em><around*|(|Z<around|(|t|)>|)><space|0.17em><around|\||Z<rprime|'><around|(|t|)>|\|>*<space|0.17em>d*t=<big|sum><rsub|t:Z<around|(|t|)>=0>\<phi\><around|(|t|)>,
+      <big|int><rsub|\<bbb-R\>>\<phi\><around|(|t|)>*<space|0.17em>\<delta\><space|-0.17em><around*|(|Z<around|(|t|)>|)><space|0.17em><around|\||Z<rprime|'><around|(|t|)>|\|>*<space|0.17em>d*t=<big|sum><rsub|t:Z<around|(|t|)>=0>\<phi\><around|(|t|)>
     </equation>
 
     for any test function <math|\<phi\>>.
@@ -264,7 +275,7 @@
     by
 
     <\equation>
-      \<nu\><around|(|B|)>=<big|int><rsub|\<bbb-R\>><with|math-font-family|bf|1><rsub|B><around|(|t|)>*<space|0.17em>\<delta\><space|-0.17em><around*|(|Z<around|(|t|)>|)>*<space|0.17em>d*t,
+      \<nu\><around|(|B|)>=<big|int><rsub|\<bbb-R\>><with|math-font-family|bf|1><rsub|B><around|(|t|)>*<space|0.17em>\<delta\><space|-0.17em><around*|(|Z<around|(|t|)>|)>*<space|0.17em>d*
     </equation>
 
     assigning unit mass to each zero.
@@ -276,13 +287,13 @@
     [Hilbert Space via Zero Localization] Let
 
     <\equation>
-      \<cal-H\>=L<rsup|2><around|(|\<nu\>|)>=<around*|{|f:\<bbb-R\>\<to\>\<bbb-C\><space|0.17em>:<space|0.17em><big|int><rsub|\<bbb-R\>><around|\||f<around|(|t|)>|\|><rsup|2>*<space|0.17em>\<delta\><space|-0.17em><around*|(|Z<around|(|t|)>|)>*<space|0.17em>d*t\<less\>\<infty\>|}>,
+      \<cal-H\>=L<rsup|2><around|(|\<nu\>|)>=<around*|{|f:\<bbb-R\>\<to\>\<bbb-C\><space|0.17em>:<space|0.17em><big|int><rsub|\<bbb-R\>><around|\||f<around|(|t|)>|\|><rsup|2>*<space|0.17em>\<delta\><space|-0.17em><around*|(|Z<around|(|t|)>|)>*<space|0.17em>d*t\<less\>\<infty\>|}>
     </equation>
 
     with inner product
 
     <\equation>
-      <around|\<langle\>|f,g|\<rangle\>>=<big|int><rsub|\<bbb-R\>>f<around|(|t|)><space|0.17em><wide|g<around|(|t|)>|\<bar\>><space|0.17em>\<delta\><space|-0.17em><around*|(|Z<around|(|t|)>|)>*<space|0.17em>d*t.
+      <around|\<langle\>|f,g|\<rangle\>>=<big|int><rsub|\<bbb-R\>>f<around|(|t|)><space|0.17em><wide|g<around|(|t|)>|\<bar\>><space|0.17em>\<delta\><space|-0.17em><around*|(|Z<around|(|t|)>|)>*<space|0.17em>d*t
     </equation>
   </definition>
 
@@ -290,13 +301,13 @@
     [Multiplication Operator] Define <math|L:\<cal-H\>\<to\>\<cal-H\>> by
 
     <\equation>
-      <around|(|L*f|)><around|(|s|)>=s*<space|0.17em>f<around|(|s|)>,
+      <around|(|L*f|)><around|(|s|)>=s*<space|0.17em>f<around|(|s|)>
     </equation>
 
     with domain
 
     <\equation>
-      \<cal-D\><around|(|L|)>=<around*|{|f\<in\>\<cal-H\><space|0.17em>:<space|0.17em><big|int><rsub|\<bbb-R\>><around|\||s*<space|0.17em>f<around|(|s|)>|\|><rsup|2>*<space|0.17em>\<delta\><space|-0.17em><around*|(|Z<around|(|s|)>|)>*<space|0.17em>d*s\<less\>\<infty\>|}>.
+      \<cal-D\><around|(|L|)>=<around*|{|f\<in\>\<cal-H\><space|0.17em>:<space|0.17em><big|int><rsub|\<bbb-R\>><around|\||s*<space|0.17em>f<around|(|s|)>|\|><rsup|2>*<space|0.17em>\<delta\><space|-0.17em><around*|(|Z<around|(|s|)>|)>*<space|0.17em>d*s\<less\>\<infty\>|}>
     </equation>
   </definition>
 
@@ -308,7 +319,7 @@
     For <math|f,g\<in\>\<cal-D\><around|(|L|)>>,
 
     <\align>
-      <tformat|<table|<row|<cell|<around|\<langle\>|L*f,g|\<rangle\>>>|<cell|=<big|int><rsub|\<bbb-R\>>s*<space|0.17em>f<around|(|s|)><space|0.17em><wide|g<around|(|s|)>|\<bar\>><space|0.17em>\<delta\><space|-0.17em><around*|(|Z<around|(|s|)>|)>*<space|0.17em>d*s=<big|int><rsub|\<bbb-R\>>f<around|(|s|)><space|0.17em><wide|s*<space|0.17em>g<around|(|s|)>|\<bar\>><space|0.17em>\<delta\><space|-0.17em><around*|(|Z<around|(|s|)>|)>*<space|0.17em>d*s=<around|\<langle\>|f,L*g|\<rangle\>>.<eq-number>>>>>
+      <tformat|<table|<row|<cell|<around|\<langle\>|L*f,g|\<rangle\>>>|<cell|=<big|int><rsub|\<bbb-R\>>s*<space|0.17em>f<around|(|s|)><space|0.17em><wide|g<around|(|s|)>|\<bar\>><space|0.17em>\<delta\><space|-0.17em><around*|(|Z<around|(|s|)>|)>*<space|0.17em>d*s=<big|int><rsub|\<bbb-R\>>f<around|(|s|)><space|0.17em><wide|s*<space|0.17em>g<around|(|s|)>|\<bar\>>\<delta\><space|-0.17em><around*|(|Z<around|(|s|)>|)>*<space|0.17em>d*s=<around|\<langle\>|f,L*g|\<rangle\>><eq-number>>>>>
     </align>
   </proof>
 
@@ -318,7 +329,7 @@
     [Spectrum]
 
     <\equation>
-      \<sigma\><around|(|L|)>=<around|{|t\<in\>\<bbb-R\>:Z<around|(|t|)>=0|}>.
+      \<sigma\><around|(|L|)>=<around|{|t\<in\>\<bbb-R\>:Z<around|(|t|)>=0|}>
     </equation>
 
     Each eigenvalue has geometric multiplicity one.
@@ -334,7 +345,7 @@
     [Zero Correspondence]
 
     <\equation>
-      Z<around|(|t|)>=0<space|1em>\<Longleftrightarrow\><space|1em>\<zeta\>*<space|-0.17em><around*|(|<tfrac|1|2>+i*t|)>=0.
+      Z<around|(|t|)>=0<space|1em>\<Longleftrightarrow\><space|1em>\<zeta\>*<space|-0.17em><around*|(|<tfrac|1|2>+i*t|)>=0
     </equation>
   </theorem>
 
@@ -386,7 +397,7 @@
     <associate|auto-7|<tuple|7|5|../../.TeXmacs/texts/scratch/no_name_23.tm>>
     <associate|auto-8|<tuple|8|5|../../.TeXmacs/texts/scratch/no_name_23.tm>>
     <associate|auto-9|<tuple|9|6|../../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|eq:invert|<tuple|15|?|../../.TeXmacs/texts/scratch/no_name_23.tm>>
+    <associate|eq:invert|<tuple|16|?|../../.TeXmacs/texts/scratch/no_name_23.tm>>
   </collection>
 </references>
 
