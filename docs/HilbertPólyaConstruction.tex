@@ -117,10 +117,12 @@
 
 \begin{proof}
   Construct the stochastic integral first for simple functions in $L^2 
-  (\mathbb{R}, F)$ and extend by isometry using $\mathbb{E} \left[ | \int g
-  (\lambda) \hspace{0.17em} \Phi (d \lambda) |^2 \right] = \int |g (\lambda)
-  |^2  \hspace{0.17em} dF (\lambda)$. Apply with $g = \varphi_t$ to obtain $Z
-  (t)$ and the stated covariance.
+  (\mathbb{R}, F)$ and extend by isometry using
+  \begin{equation}
+    \mathbb{E} \left[ | \int g (\lambda) \hspace{0.17em} \Phi (d \lambda) |^2
+    \right] = \int |g (\lambda) |^2  \hspace{0.17em} dF (\lambda)
+  \end{equation}
+  . Apply with $g = \varphi_t$ to obtain $Z (t)$ and the stated covariance.
 \end{proof}
 
 \section{Unitary Time Changes Map Stationary to Oscillatory}
@@ -130,12 +132,12 @@
   process $X$ with spectral measure $F$ admits
   \begin{equation}
     X (t) = \int_{\mathbb{R}} e^{i \lambda t}  \hspace{0.17em} \Phi (d
-    \lambda),
+    \lambda)
   \end{equation}
   with covariance
   \begin{equation}
     R_X  (t - s) = \int_{\mathbb{R}} e^{i \lambda (t - s)}  \hspace{0.17em} dF
-    (\lambda) .
+    (\lambda)
   \end{equation}
 \end{definition}
 
@@ -207,7 +209,7 @@
   \subset \mathbb{R}$ by
   \begin{equation}
     \mu (B) \assign \int_{\mathbb{R}} \textbf{1}_B (t)  \hspace{0.17em} \delta
-    (Z (t)) \hspace{0.17em} |Z' (t) |  \hspace{0.17em} dt.
+    (Z (t)) \hspace{0.17em} |Z' (t) |  \hspace{0.17em} dt
   \end{equation}
 \end{definition}
 
@@ -218,14 +220,19 @@
     \int_{\mathbb{R}} \phi (t)  \hspace{0.17em} \delta (Z (t)) \hspace{0.17em}
     |Z' (t) |  \hspace{0.17em} dt = \sum_{t_0 : Z (t_0) = 0} \phi (t_0),
   \end{equation}
-  and hence $\mu = \sum_{t_0 : Z (t_0) = 0} \delta_{t_0}$ is a discrete
-  measure assigning unit mass to each simple zero of $Z$.
+  and hence
+  \begin{equation}
+    \mu = \sum_{t_0 : Z (t_0) = 0} \delta_{t_0}
+  \end{equation}
+  is a discrete measure assigning unit mass to each simple zero of $Z$.
 \end{theorem}
 
 \begin{proof}
   At a simple zero $t_0$, the distributional identity holds:
-  \[ \delta (Z (t)) = \frac{\delta (t - t_0)}{|Z' (t_0) |} + \sum_{t_1 \neq
-     t_0 : Z (t_1) = 0} \frac{\delta (t - t_1)}{|Z' (t_1) |} . \]
+  \begin{equation}
+    \delta (Z (t)) = \frac{\delta (t - t_0)}{|Z' (t_0) |} + \sum_{t_1 \neq t_0
+    : Z (t_1) = 0} \frac{\delta (t - t_1)}{|Z' (t_1) |}
+  \end{equation}
   Multiplying by $|Z' (t) |$ and integrating against $\phi$ yields the stated
   identity and the atomic form of $\mu$.
 \end{proof}

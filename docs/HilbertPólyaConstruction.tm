@@ -138,8 +138,12 @@
   <\proof>
     Construct the stochastic integral first for simple functions in
     <math|L<rsup|2>*<around|(|\<bbb-R\>,F|)>> and extend by isometry using
-    <math|\<bbb-E\><around*|[|<mid|\|><big|int>g<around|(|\<lambda\>|)>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)><mid|\|><rsup|2>|]>=<big|int><around|\||g<around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>>.
-    Apply with <math|g=\<varphi\><rsub|t>> to obtain <math|Z<around|(|t|)>>
+
+    <\equation>
+      \<bbb-E\><around*|[|<mid|\|><big|int>g<around|(|\<lambda\>|)>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)><mid|\|><rsup|2>|]>=<big|int><around|\||g<around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>
+    </equation>
+
+    . Apply with <math|g=\<varphi\><rsub|t>> to obtain <math|Z<around|(|t|)>>
     and the stated covariance.
   </proof>
 
@@ -150,13 +154,13 @@
     process <math|X> with spectral measure <math|F> admits
 
     <\equation>
-      X<around|(|t|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*t>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>,
+      X<around|(|t|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*t>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>
     </equation>
 
     with covariance
 
     <\equation>
-      R<rsub|X>*<around|(|t-s|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*<around|(|t-s|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>.
+      R<rsub|X>*<around|(|t-s|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*<around|(|t-s|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>
     </equation>
   </definition>
 
@@ -232,7 +236,7 @@
     Define the measure on Borel <math|B\<subset\>\<bbb-R\>> by
 
     <\equation>
-      \<mu\><around|(|B|)>\<assign\><big|int><rsub|\<bbb-R\>><with|math-font-family|bf|1><rsub|B><around|(|t|)>*<space|0.17em>\<delta\><around|(|Z<around|(|t|)>|)><space|0.17em><around|\||Z<rprime|'><around|(|t|)>|\|>*<space|0.17em>d*t.
+      \<mu\><around|(|B|)>\<assign\><big|int><rsub|\<bbb-R\>><with|math-font-family|bf|1><rsub|B><around|(|t|)>*<space|0.17em>\<delta\><around|(|Z<around|(|t|)>|)><space|0.17em><around|\||Z<rprime|'><around|(|t|)>|\|>*<space|0.17em>d*t
     </equation>
   </definition>
 
@@ -244,17 +248,22 @@
       <big|int><rsub|\<bbb-R\>>\<phi\><around|(|t|)>*<space|0.17em>\<delta\><around|(|Z<around|(|t|)>|)><space|0.17em><around|\||Z<rprime|'><around|(|t|)>|\|>*<space|0.17em>d*t=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<phi\><around|(|t<rsub|0>|)>,
     </equation>
 
-    and hence <math|\<mu\>=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<delta\><rsub|t<rsub|0>>>
-    is a discrete measure assigning unit mass to each simple zero of
+    and hence
+
+    <\equation>
+      \<mu\>=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<delta\><rsub|t<rsub|0>>
+    </equation>
+
+    \ is a discrete measure assigning unit mass to each simple zero of
     <math|Z>.
   </theorem>
 
   <\proof>
     At a simple zero <math|t<rsub|0>>, the distributional identity holds:
 
-    <\equation*>
-      \<delta\><around|(|Z<around|(|t|)>|)>=<frac|\<delta\>*<around|(|t-t<rsub|0>|)>|<around|\||Z<rprime|'><around|(|t<rsub|0>|)>|\|>>+<big|sum><rsub|t<rsub|1>\<neq\>t<rsub|0>:Z<around|(|t<rsub|1>|)>=0><frac|\<delta\>*<around|(|t-t<rsub|1>|)>|<around|\||Z<rprime|'><around|(|t<rsub|1>|)>|\|>>.
-    </equation*>
+    <\equation>
+      \<delta\><around|(|Z<around|(|t|)>|)>=<frac|\<delta\>*<around|(|t-t<rsub|0>|)>|<around|\||Z<rprime|'><around|(|t<rsub|0>|)>|\|>>+<big|sum><rsub|t<rsub|1>\<neq\>t<rsub|0>:Z<around|(|t<rsub|1>|)>=0><frac|\<delta\>*<around|(|t-t<rsub|1>|)>|<around|\||Z<rprime|'><around|(|t<rsub|1>|)>|\|>>
+    </equation>
 
     Multiplying by <math|<around|\||Z<rprime|'><around|(|t|)>|\|>> and
     integrating against <math|\<phi\>> yields the stated identity and the
