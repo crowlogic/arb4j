@@ -90,7 +90,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       arg = arg.simplify();
     }
-    if ("sqrt".equals(functionName))
+    if (isSquareRoot())
     {
       return arg.pow(expression.newLiteralConstant("½"));
     }
@@ -132,21 +132,16 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return super.equals(obj) && Objects.equals(functionName, other.functionName);
   }
 
-  static final HashSet<String>  bitlessFunctions                   = new HashSet<>();
+  static final HashSet<String>  bitlessFunctions                = new HashSet<>();
 
-  public static HashSet<String> complexFunctionsWithComplexResults =
-                                                                   new HashSet<>(Arrays.asList("log",
-                                                                                               "logΓ",
-                                                                                               "ζ"));
-
-  public static HashSet<String> complexFunctionsWithRealResults    =
+  public static HashSet<String> complexFunctionsWithRealResults =
                                                                 new HashSet<>(Arrays.asList("arg",
                                                                                             "re",
                                                                                             "im",
                                                                                             "real",
                                                                                             "imag"));
 
-  public static HashSet<String> integerFunctionsWithRealResults    =
+  public static HashSet<String> integerFunctionsWithRealResults =
                                                                 new HashSet<>(Arrays.asList("sqrt",
                                                                                             "tanh",
                                                                                             "log"));
@@ -740,11 +735,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                 && complexFunctionsWithRealResults.contains(functionName)))
     {
       return Compiler.scalarType(expression.coDomainType);
-    }
-    else if (Complex.class.equals(expression.domainType)
-                  && complexFunctionsWithComplexResults.contains(functionName))
-    {
-      return Complex.class;
     }
     else if (mapping != null && mapping.functionName.equals(functionName))
     {
