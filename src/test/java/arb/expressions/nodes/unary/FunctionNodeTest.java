@@ -2,6 +2,7 @@ package arb.expressions.nodes.unary;
 
 import arb.Complex;
 import arb.Real;
+import arb.RealConstants;
 import arb.expressions.Expression;
 import arb.functions.RealToComplexFunction;
 import arb.functions.real.RealFunction;
@@ -11,6 +12,13 @@ public class FunctionNodeTest extends
                               TestCase
 {
 
+  public static void testDeltaFunction()
+  {
+    var f = RealFunction.express("δ(x)");
+    var y = f.evaluate(RealConstants.zero , 128);
+    assertFalse( y.isFinite() );
+  }
+  
   public static void testDerivativeOfImaginaryPartIsRealZero()
   {
     // Expression.trace=true;

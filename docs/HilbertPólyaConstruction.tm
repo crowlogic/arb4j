@@ -448,8 +448,8 @@
   <\collection>
     <associate|auto-1|<tuple|1|1|../.TeXmacs/texts/scratch/no_name_24.tm>>
     <associate|auto-2|<tuple|2|2|../.TeXmacs/texts/scratch/no_name_24.tm>>
-    <associate|auto-3|<tuple|3|2|../.TeXmacs/texts/scratch/no_name_24.tm>>
-    <associate|auto-4|<tuple|4|3|../.TeXmacs/texts/scratch/no_name_24.tm>>
+    <associate|auto-3|<tuple|3|3|../.TeXmacs/texts/scratch/no_name_24.tm>>
+    <associate|auto-4|<tuple|4|4|../.TeXmacs/texts/scratch/no_name_24.tm>>
     <associate|auto-5|<tuple|5|4|../.TeXmacs/texts/scratch/no_name_24.tm>>
     <associate|auto-6|<tuple|6|5|../.TeXmacs/texts/scratch/no_name_24.tm>>
     <associate|auto-7|<tuple|7|6|../.TeXmacs/texts/scratch/no_name_24.tm>>
