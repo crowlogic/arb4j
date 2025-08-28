@@ -1,0 +1,94 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\tmaffiliation}[1]{\\ #1}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\title{Fourier Transform Theory: Complex Exponentials and Generalized
+Functions}
+
+\author{
+  Stephen Crowley
+  \tmaffiliation{August 27, 2025}
+}
+
+\maketitle
+
+\section{Introduction}
+
+This document presents the fundamental relationships between the Fourier
+transform of complex exponentials, the Dirac delta function, and the Heaviside
+step function.
+
+\section{Definitions}
+
+\begin{definition}
+  [Complex Exponential Function] The complex exponential function is defined
+  as:
+  \[ x (t) = e^{j \omega_0 t} \]
+  where $j = \sqrt{- 1}$ is the imaginary unit and $\omega_0$ is the angular
+  frequency.
+\end{definition}
+
+\begin{definition}
+  [Dirac Delta Function] The Dirac delta function $\delta (t)$ is a
+  generalized function (distribution) with the following properties:
+  
+  \begin{align}
+    \delta (t) & = 0 \quad \text{for } t \neq 0 \\
+    \int_{- \infty}^{\infty} \delta (t)  \hspace{0.17em} dt & = 1 \\
+    \int_{- \infty}^{\infty} f (t) \delta (t - a)  \hspace{0.17em} dt & = f
+    (a) \quad \text{(sifting property)} 
+  \end{align}
+\end{definition}
+
+\begin{definition}
+  [Heaviside Step Function] The Heaviside step function $H (t)$ is defined as:
+  \[ H (t) = \left\{\begin{array}{ll}
+       0, & t < 0\\
+       1, & t \geq 0
+     \end{array}\right. \]
+\end{definition}
+
+\begin{definition}
+  [Fourier Transform] The Fourier transform of a function $f (t)$ is defined
+  as:
+  \[ F (\omega) =\mathcal{F} \{f (t)\} = \int_{- \infty}^{\infty} f (t) e^{- j
+     \omega t}  \hspace{0.17em} dt \]
+  with the inverse transform:
+  \[ f (t) =\mathcal{F}^{- 1} \{F (\omega)\} = \frac{1}{2 \pi}  \int_{-
+     \infty}^{\infty} F (\omega) e^{j \omega t}  \hspace{0.17em} d \omega \]
+\end{definition}
+
+\section{Main Theorems}
+
+\begin{theorem}
+  [Fourier Transform of Complex Exponential] The Fourier transform of the
+  complex exponential $e^{j \omega_0 t}$ is:
+  \[ \mathcal{F} \{e^{j \omega_0 t} \} = 2 \pi \delta (\omega - \omega_0) \]
+\end{theorem}
+
+Since $e^{j \omega_0 t}$ has infinite energy and is not absolutely integrable,
+we use the inverse transform approach.
+
+Starting with the frequency domain representation $2 \pi \delta (\omega -
+\omega_0)$, we apply the inverse Fourier transform:
+
+\begin{align}
+  \mathcal{F}^{- 1}  \{2 \pi \delta (\omega - \omega_0)\} & = \frac{1}{2 \pi} 
+  \int_{- \infty}^{\infty} 2 \pi \delta (\omega - \omega_0) e^{j \omega t} 
+  \hspace{0.17em} d \omega \\
+  & = \int_{- \infty}^{\infty} \delta (\omega - \omega_0) e^{j \omega t} 
+  \hspace{0.17em} d \omega \\
+  & = e^{j \omega_0 t} \quad \text{(by sifting property)} 
+\end{align}
+
+Therefore, by the uniqueness of the
+
+\end{document}
