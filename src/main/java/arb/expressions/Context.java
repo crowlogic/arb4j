@@ -192,7 +192,7 @@ public class Context
                         System.identityHashCode(this),
                         f.getClass().getName());
     }
-    variables.entrySet().forEach(entry ->
+    variables.map.entrySet().forEach(entry ->
     {
       var variableName = entry.getKey();
 
@@ -302,7 +302,7 @@ public class Context
                                            same ? "IS" : "IS NOT"));
       }
     }
-    variables.put(name, variable);
+    variables.map.put(name, variable);
     return variable;
   }
 
@@ -353,7 +353,7 @@ public class Context
 
   public Collection<Entry<String, Named>> variableEntries()
   {
-    return variables.entrySet();
+    return variables.map.entrySet();
   }
 
   public Stream<Entry<String, Named>> variableEntryStream()
