@@ -116,6 +116,7 @@ import arb.expressions.nodes.unary.LommelPolynomialNode;
 import arb.expressions.nodes.unary.SphericalBesselFunctionNodeOfTheFirstKind;
 import arb.expressions.nodes.unary.UnaryOperationNode;
 import arb.expressions.nodes.unary.WhenNode;
+import arb.expressions.nodes.unary.ZetaFunctionNode;
 import arb.expressions.viz.ExpressionTree;
 import arb.functions.Function;
 import arb.functions.RealToComplexFunction;
@@ -228,46 +229,46 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                        Cloneable,
                        Supplier<F>
 {
-  private static String    ASSERTION_ERROR_METHOD_DESCRIPTOR =
-                                                             Compiler.getMethodDescriptor(Void.class,
-                                                                                          Object.class);
+  private static String     ASSERTION_ERROR_METHOD_DESCRIPTOR =
+                                                              Compiler.getMethodDescriptor(Void.class,
+                                                                                           Object.class);
 
-  private static final char COMBINING_DOT_ABOVE      = '\u0307';
+  private static final char COMBINING_DOT_ABOVE               = '\u0307';
 
-  private static final char COMBINING_TWO_DOTS_ABOVE = '\u0308';
+  private static final char COMBINING_TWO_DOTS_ABOVE          = '\u0308';
 
-  static File              compiledClassDir                  = new File("compiled");
+  static File               compiledClassDir                  = new File("compiled");
 
-  public static String     evaluationMethodDescriptor        =
-                                                      "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
+  public static String      evaluationMethodDescriptor        =
+                                                       "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
 
-  public static Class<?>[] implementedInterfaces             = new Class[]
+  public static Class<?>[]  implementedInterfaces             = new Class[]
   { Typesettable.class, AutoCloseable.class, Initializable.class };
 
-  static HashSet<Class<?>>                             indeterminantTypes = new HashSet<>();
+  static HashSet<Class<?>>  indeterminantTypes                = new HashSet<>();
 
-  public static String     IS_INITIALIZED                    = "isInitialized";
+  public static String      IS_INITIALIZED                    = "isInitialized";
 
-  private static String    JAVA_LANG_ASSERTION_ERROR         = "java/lang/AssertionError";
+  private static String     JAVA_LANG_ASSERTION_ERROR         = "java/lang/AssertionError";
 
-  private static final char MIDDLE_DOT               = '\u00B7';
+  private static final char MIDDLE_DOT                        = '\u00B7';
 
-  public static String     nameOfInitializerFunction         = "initialize";
+  public static String      nameOfInitializerFunction         = "initialize";
 
-  public static boolean    saveClasses                       =
-                                       Boolean.valueOf(System.getProperty("arb4j.compiler.saveClasses",
+  public static boolean     saveClasses                       =
+                                        Boolean.valueOf(System.getProperty("arb4j.compiler.saveClasses",
+                                                                           "false"));
+
+  public static boolean     saveGraphs                        =
+                                       Boolean.valueOf(System.getProperty("arb4j.compiler.saveGraphs",
                                                                           "false"));
 
-  public static boolean    saveGraphs                        =
-                                      Boolean.valueOf(System.getProperty("arb4j.compiler.saveGraphs",
-                                                                         "false"));
+  public static boolean     trace                             =
+                                  Boolean.valueOf(System.getProperty("arb4j.compiler.trace",
+                                                                     "false"));
 
-  public static boolean    trace                             =
-                                 Boolean.valueOf(System.getProperty("arb4j.compiler.trace",
-                                                                    "false"));
-
-  public static String     VOID_METHOD_DESCRIPTOR            =
-                                                  Compiler.getMethodDescriptor(Void.class);
+  public static String      VOID_METHOD_DESCRIPTOR            =
+                                                   Compiler.getMethodDescriptor(Void.class);
 
   static
   {
@@ -305,24 +306,25 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Class<F>                                       compiledClass;
 
-  HashMap<Class<?>, AtomicInteger> constantCounts = new HashMap<>();
+  HashMap<Class<?>, AtomicInteger>                      constantCounts                =
+                                                                       new HashMap<>();
 
   public Context                                        context;
 
   HashSet<String>                                       declaredIntermediateVariables =
                                                                                       new HashSet<>();
 
-  public List<Dependency>                              dependencies;
+  public List<Dependency>                               dependencies;
 
   public Class<? extends D>                             domainType;
 
   public String                                         expression;
 
-  public boolean                                       functionalDependsOnIndependentVariable;
+  public boolean                                        functionalDependsOnIndependentVariable;
 
   public boolean                                        functionalDependsOnIndeterminantVariable;
 
-  private VariableNode<Object, Object, Function<?, ?>> functionalIndependentVariable;
+  private VariableNode<Object, Object, Function<?, ?>>  functionalIndependentVariable;
 
   public VariableNode<Object, Object, Function<?, ?>>   functionalIndeterminantVariable;
 
@@ -332,9 +334,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public String                                         functionName;
 
-  public boolean functionNameSpecified = true;
+  public boolean                                        functionNameSpecified         = true;
 
-  public HashMap<Node<D, C, F>, String>                generatedNodes     = new HashMap<>();
+  public HashMap<Node<D, C, F>, String>                 generatedNodes                =
+                                                                       new HashMap<>();
 
   public String                                         genericFunctionClassInternalName;
 
@@ -356,7 +359,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public HashMap<String, IntermediateVariable<D, C, F>> intermediateVariables         =
                                                                               new HashMap<>();
 
-  private ArrayList<LiteralConstantNode<D, C, F>>      literalConstantNodes;
+  private ArrayList<LiteralConstantNode<D, C, F>>       literalConstantNodes;
 
   public HashMap<String, LiteralConstantNode<D, C, F>>  literalConstants              =
                                                                          new HashMap<>();
@@ -2342,6 +2345,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     switch (reference.name)
     {
+    case "ζ":
+    case "zeta":
+      return new ZetaFunctionNode<D,C,F>(this);
     case "when":
       return new WhenNode<>(this);
     case "diff":
