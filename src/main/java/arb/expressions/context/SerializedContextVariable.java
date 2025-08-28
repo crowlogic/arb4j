@@ -3,57 +3,55 @@ package arb.expressions.context;
 import java.util.Objects;
 
 import arb.Named;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 
-/**
- *
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
- */
 public class SerializedContextVariable
 {
-  @Override
-  public int hashCode()
+  public final String type;  // Made public to fix visibility issues
+  public final String value; // Made public to fix visibility issues
+
+  public SerializedContextVariable(String type, String value)
   {
-    return Objects.hash(type, value);
+    this.type  = Objects.requireNonNull(type, "Type cannot be null");
+    this.value = Objects.requireNonNull(value, "Value cannot be null");
   }
 
+  public SerializedContextVariable(Named variable)
+  {
+    Objects.requireNonNull(variable, "Variable cannot be null");
+    this.type  = variable.getClass().getName();
+    this.value = variable.toStringWithoutName();
+  }
+
+  public String getType()
+  {
+    return type;
+  }
+
+  public String getValue()
+  {
+    return value;
+  }
 
   @Override
   public boolean equals(Object obj)
   {
     if (this == obj)
       return true;
-    if (obj == null)
+    if (obj == null || getClass() != obj.getClass())
       return false;
-    if (getClass() != obj.getClass())
-      return false;
-    SerializedContextVariable other = (SerializedContextVariable) obj;
-    return Objects.equals(type, other.type) && Objects.equals(value, other.value);
+    SerializedContextVariable that = (SerializedContextVariable) obj;
+    return Objects.equals(type, that.type) && Objects.equals(value, that.value);
   }
 
-
-  public SerializedContextVariable(String type, String value)
+  @Override
+  public int hashCode()
   {
-    this.value = value;
-    this.type  = type;
-  }
-  
-  
-  public SerializedContextVariable(Named integer)
-  {
-    value = integer.toStringWithoutName();
-    type  = integer.getClass().getName();
+    return Objects.hash(type, value);
   }
 
-  public String value;
-  public String type;
   @Override
   public String toString()
   {
     return String.format("SerializedContextVariable[type=%s, value=%s]", type, value);
   }
-
-  
 }

@@ -182,7 +182,7 @@ public final class ContextFieldListCell<D, C extends Closeable, F extends Functi
     {
       return;
     }
-    currentContext.variables.map.put(item.getName(), item);
+    currentContext.variables.put(item.getName(), item);
 
     if (item instanceof Integer)
     {

@@ -31,7 +31,7 @@ import arb.expressions.viz.ExpressionTreeView;
  *      {@link TheArb4jLibrary}
  */
 public class TypeRepresenter extends
-                                Representer
+                             Representer
 {
 
   public TypeRepresenter(DumperOptions options)
@@ -80,8 +80,8 @@ public class TypeRepresenter extends
     {
       Context context = (Context) data;
       return TypeRepresenter.this.representMapping(getTag(data.getClass(), Tag.MAP),
-                                                      context.variables.map,
-                                                      defaultFlowStyle);
+                                                   context.variables.map,
+                                                   defaultFlowStyle);
     }
   }
 }

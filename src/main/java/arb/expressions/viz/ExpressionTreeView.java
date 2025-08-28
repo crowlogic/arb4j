@@ -346,33 +346,38 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
 
         var ctx = serializedExpression.context;
         System.err.println("serialized context: " + ctx);
-        for (var k : ctx.entrySet())
+        if (ctx != null)
         {
-          var serializedContextVariable = k.getValue();
-          var name                      = k.getKey();
-          var type                      = serializedContextVariable.type;
-
-          var serializedValueString     = serializedContextVariable.value;
-          var typeClass                 = Class.forName(type);
-          var isInteger                 = typeClass.equals(Integer.class);
-          var needsBits                 = !isInteger;
-          var constructor               =
-                          !needsBits ? typeClass.getConstructor(String.class)
-                                     : typeClass.getConstructor(String.class, int.class);
-          var variable                  =
-                       !needsBits ? (Named) constructor.newInstance(serializedValueString)
-                                  : (Named) constructor.newInstance(serializedValueString, bits);
-          variable.setName(name);
-
-          if (!context.variables.map.containsKey(variable.getName()))
+          for (var k : ctx.entrySet())
           {
-            context.variables.add(variable);
-          }
-          else
-          {
-            System.err.format("Ignored duplicated variable '%s' whilst loading %s", variable, file);
-          }
+            var serializedContextVariable = k.getValue();
+            var name                      = k.getKey();
+            var type                      = serializedContextVariable.type;
 
+            var serializedValueString     = serializedContextVariable.value;
+            var typeClass                 = Class.forName(type);
+            var isInteger                 = typeClass.equals(Integer.class);
+            var needsBits                 = !isInteger;
+            var constructor               =
+                            !needsBits ? typeClass.getConstructor(String.class)
+                                       : typeClass.getConstructor(String.class, int.class);
+            var variable                  =
+                         !needsBits ? (Named) constructor.newInstance(serializedValueString)
+                                    : (Named) constructor.newInstance(serializedValueString, bits);
+            variable.setName(name);
+
+            if (!context.variables.map.containsKey(variable.getName()))
+            {
+              context.variables.add(variable);
+            }
+            else
+            {
+              System.err.format("Ignored duplicated variable '%s' whilst loading %s",
+                                variable,
+                                file);
+            }
+
+          }
         }
 
         expressor.updateContextListView();

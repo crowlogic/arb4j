@@ -2167,7 +2167,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                         Object,
                                                                         Function<?, ?>> function)
   {
-    for (var entry : context.variables.map.entrySet())
+    for (var entry : context.variables.entrySet())
     {
       var fieldName = entry.getKey();
       var fieldType = entry.getValue().getClass();
