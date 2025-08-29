@@ -9,6 +9,9 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void acb_poly_zeta_series(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, long jarg3, Complex jarg3_, int jarg4, int jarg5, int jarg6);
+  public final static native void acb_poly_set_coeff_acb(long jarg1, ComplexPolynomial jarg1_, int jarg2, long jarg3, Complex jarg3_);
+  public final static native void acb_poly_get_coeff_acb(long jarg1, Complex jarg1_, long jarg2, ComplexPolynomial jarg2_, int jarg3);
   public final static native void acb_elliptic_e(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
   public final static native void fexpr_set_symbol_str(long jarg1, SymbolicExpression jarg1_, String jarg2);
   public final static native int qqbar_set_fexpr(long jarg1, AlgebraicNumber jarg1_, long jarg2, SymbolicExpression jarg2_);
@@ -321,8 +324,6 @@ public class arblibJNI {
   public final static native void acb_poly_zero(long jarg1, ComplexPolynomial jarg1_);
   public final static native void acb_poly_one(long jarg1, ComplexPolynomial jarg1_);
   public final static native void acb_poly_set_coeff_si(long jarg1, ComplexPolynomial jarg1_, int jarg2, int jarg3);
-  public final static native void acb_poly_set_coeff_acb(long jarg1, ComplexPolynomial jarg1_, int jarg2, long jarg3, Complex jarg3_);
-  public final static native void acb_poly_get_coeff_acb(long jarg1, Complex jarg1_, long jarg2, ComplexPolynomial jarg2_, int jarg3);
   public final static native void acb_poly_set_acb(long jarg1, ComplexPolynomial jarg1_, long jarg2, Complex jarg2_);
   public final static native void acb_poly_set_arb_poly(long jarg1, ComplexPolynomial jarg1_, long jarg2, RealPolynomial jarg2_);
   public final static native void acb_sub_fmpz(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, int jarg4);

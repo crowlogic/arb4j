@@ -16,6 +16,12 @@
 #include <unistd.h>
 #include <wchar.h>
 
+void acb_poly_zeta_series(acb_poly_t res, const acb_poly_t f, const acb_t a, int deflate, slong n, slong prec);
+
+void acb_poly_set_coeff_acb(acb_poly_t poly, slong n, const acb_t x);
+
+void acb_poly_get_coeff_acb(acb_t x, const acb_poly_t poly, slong n);
+
  void acb_elliptic_e(acb_t res, const acb_t m, slong prec);
  
 void fexpr_set_symbol_str(fexpr_t res, const char * s);

@@ -9,6 +9,18 @@
 package arb;
 
 public class arblib {
+  public static void acb_poly_zeta_series(ComplexPolynomial res, ComplexPolynomial f, Complex a, int deflate, int n, int prec) {
+    arblibJNI.acb_poly_zeta_series(ComplexPolynomial.getCPtr(res), res, ComplexPolynomial.getCPtr(f), f, Complex.getCPtr(a), a, deflate, n, prec);
+  }
+
+  public static void acb_poly_set_coeff_acb(ComplexPolynomial poly, int n, Complex x) {
+    arblibJNI.acb_poly_set_coeff_acb(ComplexPolynomial.getCPtr(poly), poly, n, Complex.getCPtr(x), x);
+  }
+
+  public static void acb_poly_get_coeff_acb(Complex x, ComplexPolynomial poly, int n) {
+    arblibJNI.acb_poly_get_coeff_acb(Complex.getCPtr(x), x, ComplexPolynomial.getCPtr(poly), poly, n);
+  }
+
   public static void acb_elliptic_e(Complex res, Complex m, int prec) {
     arblibJNI.acb_elliptic_e(Complex.getCPtr(res), res, Complex.getCPtr(m), m, prec);
   }
@@ -1128,14 +1140,6 @@ public class arblib {
 
   public static void acb_poly_set_coeff_si(ComplexPolynomial poly, int n, int x) {
     arblibJNI.acb_poly_set_coeff_si(ComplexPolynomial.getCPtr(poly), poly, n, x);
-  }
-
-  public static void acb_poly_set_coeff_acb(ComplexPolynomial poly, int n, Complex x) {
-    arblibJNI.acb_poly_set_coeff_acb(ComplexPolynomial.getCPtr(poly), poly, n, Complex.getCPtr(x), x);
-  }
-
-  public static void acb_poly_get_coeff_acb(Complex x, ComplexPolynomial poly, int n) {
-    arblibJNI.acb_poly_get_coeff_acb(Complex.getCPtr(x), x, ComplexPolynomial.getCPtr(poly), poly, n);
   }
 
   public static void acb_poly_set_acb(ComplexPolynomial poly, Complex numCols) {

@@ -213,6 +213,7 @@ public class ExpressionTest extends
 
   public static void testArgOfZetaOnTheCriticalLineReal()
   {
+    Expression.saveClasses = true;
     RealFunction f    = RealFunction.express("t->arg(ζ(1/2+I*t))");
     Real         eval = f.eval(2.3, new Real());
     assertEquals(-0.452709380316814, eval.doubleValue());

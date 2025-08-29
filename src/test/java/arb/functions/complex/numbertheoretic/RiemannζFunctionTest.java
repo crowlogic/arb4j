@@ -16,7 +16,8 @@ public class RiemannζFunctionTest extends
 {
   public static void testZetaDerivative()
   {
-    var f = RealToComplexFunction.express("diff(ζ(1/2+I*t),t)");
+    arb.expressions.Expression.saveClasses = true;
+    var f = RealToComplexFunction.express("diff(ζ(½+I*t),t)");
     var y = f.eval(2.3, new Complex());
     assertEquals(4.7, y.re().doubleValue());
   }
