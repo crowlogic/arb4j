@@ -11,10 +11,18 @@ import arb.ComplexPolynomial;
 import arb.Real;
 import arb.RealPolynomial;
 import arb.arblib;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
+/**
+ * @author StΣνε
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? extends C>> extends
                                      FunctionNode<D, C, F>
 {

@@ -9,10 +9,18 @@ import org.objectweb.asm.Opcodes;
 import arb.ComplexPolynomial;
 import arb.RealPolynomial;
 import arb.arblib;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
+/**
+ * @author StΣνε
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public final class ZetaFunctionNode<D, C, F extends Function<? extends D, ? extends C>> extends
                                    PolySeriesFunctionNode<D, C, F>
 {
