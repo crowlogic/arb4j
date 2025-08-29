@@ -30,7 +30,7 @@ public final class ZetaFunctionNode<D, C, F extends Function<? extends D, ? exte
           e);
   }
 
-  private ZetaFunctionNode(Expression<D, C, F> e, Node<D, C, F> a, int o)
+  ZetaFunctionNode(Expression<D, C, F> e, Node<D, C, F> a, int o)
   {
     super("ζ",
           e,

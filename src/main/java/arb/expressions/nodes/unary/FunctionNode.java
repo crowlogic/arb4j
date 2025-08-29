@@ -311,6 +311,16 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     case "lnΓ":
     case "lnGamma":
       return arg.digamma();
+    case "ζ":
+      // TODO: in cases where the zeta functions value at the coordinate is also
+      // needed it would be good for th lower level
+      // evaluations to be skipped in the generate method and have this one construct
+      // a polynomial whose elements are references
+      // to the appropriate intermediate variables so that all of the values can be
+      // calculated without redoing redundant calculations(work)
+      return new ZetaFunctionNode<D, R, F>(expression,
+                                           arg,
+                                           1);
     default:
       throw new UnsupportedOperationException("Derivative not implemented for function: "
                                               + functionName);
