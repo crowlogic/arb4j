@@ -473,10 +473,12 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
     return sub(res.set(subtrahend),bits,res);
   }
 
+  public Real δ(int bits, Real res )
+  {
+    return isZeroUpTo(bits) ? res.posInf() : res.zero();
+  }
+
   /**
-   * 
-   * @param bits
-   * @param value
    * @return this{@link #lnΓ(int, Real)}
    */
   public Real
@@ -519,7 +521,7 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
   {
     return newVector(dim);
   }
-
+ 
   public Real one()
   {
     arblib.arb_one(this);
