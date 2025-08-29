@@ -19,17 +19,21 @@
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-2>>
 
-    <with|par-left|1tab|1.2<space|2spc>L-Functions
+    <with|par-left|1tab|1.2<space|2spc>Galois Theory and Cohomology
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-3>>
 
-    <with|par-left|1tab|1.3<space|2spc>The Conjecture
+    <with|par-left|1tab|1.3<space|2spc>L-Functions
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-4>>
 
-    <with|par-left|1tab|1.4<space|2spc>Connection to Square-Free Numbers
+    <with|par-left|1tab|1.4<space|2spc>The Conjecture
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-5>>
+
+    <with|par-left|1tab|1.5<space|2spc>Connection to Square-Free Numbers
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-6>>
   </table-of-contents>
 
   <section|The Birch and Swinnerton-Dyer Conjecture>
@@ -159,6 +163,25 @@
   </definition>
 
   <\definition>
+    A group homomorphism <math|f:G\<to\>H> between abelian groups <math|G>
+    and <math|H> is a function such that <math|f*<around|(|g<rsub|1>+g<rsub|2>|)>=f<around|(|g<rsub|1>|)>+f<around|(|g<rsub|2>|)>>
+    for all <math|g<rsub|1>,g<rsub|2>\<in\>G>.
+  </definition>
+
+  <\definition>
+    Let <math|f:G\<to\>H> be a group homomorphism between groups <math|G> and
+    <math|H> with identity elements <math|0<rsub|G>> and <math|0<rsub|H>>
+    respectively. The kernel of <math|f> is the set:
+
+    <\equation*>
+      ker <around|(|f|)>=<around|{|g\<in\>G:f<around|(|g|)>=0<rsub|H>|}>
+    </equation*>
+
+    It is a subgroup of <math|G> consisting of all elements mapped to the
+    identity element <math|0<rsub|H>> of <math|H>.
+  </definition>
+
+  <\definition>
     The set <math|E<around|(|\<bbb-Q\>|)>> of rational points on an elliptic
     curve <math|E> forms an abelian group under the chord-and-tangent law
     with identity element <math|O> and group operation defined as follows:
@@ -192,6 +215,76 @@
   <\definition>
     A square-free integer is an integer <math|n> such that no perfect square
     other than 1 divides <math|n>.
+  </definition>
+
+  <subsection|Galois Theory and Cohomology>
+
+  <\definition>
+    The algebraic closure <math|<wide|\<bbb-Q\>|\<bar\>>> of <math|\<bbb-Q\>>
+    is the field consisting of all algebraic numbers (roots of polynomials
+    with rational coefficients).
+  </definition>
+
+  <\definition>
+    The absolute Galois group <math|G<rsub|\<bbb-Q\>>=<text|Gal><around|(|<wide|\<bbb-Q\>|\<bar\>>/\<bbb-Q\>|)>>
+    is the group of all field automorphisms of
+    <math|<wide|\<bbb-Q\>|\<bar\>>> that fix every element of
+    <math|\<bbb-Q\>>.
+  </definition>
+
+  <\definition>
+    A <math|G<rsub|\<bbb-Q\>>>-module is an abelian group <math|M> together
+    with a group homomorphism <math|G<rsub|\<bbb-Q\>>\<to\><text|Aut><around|(|M|)>>.
+  </definition>
+
+  <\definition>
+    For a <math|G<rsub|\<bbb-Q\>>>-module <math|M>, the first Galois
+    cohomology group <math|H<rsup|1><around|(|\<bbb-Q\>,M|)>> is the set of
+    continuous maps <math|f:G<rsub|\<bbb-Q\>>\<to\>M> satisfying
+    <math|f*<around|(|\<sigma\>*\<tau\>|)>=f<around|(|\<sigma\>|)>+\<sigma\><around|(|f<around|(|\<tau\>|)>|)>>
+    for all <math|\<sigma\>,\<tau\>\<in\>G<rsub|\<bbb-Q\>>>, modulo the
+    equivalence relation where <math|f\<sim\>g> if there exists
+    <math|m\<in\>M> such that <math|f<around|(|\<sigma\>|)>-g<around|(|\<sigma\>|)>=\<sigma\><around|(|m|)>-m>
+    for all <math|\<sigma\>\<in\>G<rsub|\<bbb-Q\>>>.
+  </definition>
+
+  <\definition>
+    A place of <math|\<bbb-Q\>> is either a prime number <math|p> (finite
+    place) or the symbol <math|\<infty\>> (infinite place).
+  </definition>
+
+  <\definition>
+    For a finite place <math|p>, the completion <math|\<bbb-Q\><rsub|p>> is
+    the field of <math|p>-adic numbers, obtained by completing
+    <math|\<bbb-Q\>> with respect to the <math|p>-adic absolute value
+    <math|<around|\||x|\|><rsub|p>>.
+  </definition>
+
+  <\definition>
+    For the infinite place <math|\<infty\>>, the completion
+    <math|\<bbb-Q\><rsub|\<infty\>>=\<bbb-R\>> is the field of real numbers.
+  </definition>
+
+  <\definition>
+    For each place <math|v> of <math|\<bbb-Q\>>, the local Galois group is
+    <math|G<rsub|\<bbb-Q\><rsub|v>>=<text|Gal><around|(|<wide|\<bbb-Q\><rsub|v>|\<bar\>>/\<bbb-Q\><rsub|v>|)>>
+    where <math|<wide|\<bbb-Q\><rsub|v>|\<bar\>>> is the algebraic closure of
+    <math|\<bbb-Q\><rsub|v>>.
+  </definition>
+
+  <\definition>
+    The Shafarevich-Tate group <math|<math-up|X><around|(|E/\<bbb-Q\>|)>> of
+    an elliptic curve <math|E> over <math|\<bbb-Q\>> is the kernel of the
+    natural map:
+
+    <\equation*>
+      <math-up|X><around|(|E/\<bbb-Q\>|)>=ker
+      <around*|(|H<rsup|1><around|(|\<bbb-Q\>,E|)>\<to\><big|prod><rsub|v>H<rsup|1><around|(|\<bbb-Q\><rsub|v>,E|)>|)>
+    </equation*>
+
+    where the product runs over all places <math|v> of <math|\<bbb-Q\>> and
+    the maps are the natural restriction maps from global to local
+    cohomology.
   </definition>
 
   <subsection|L-Functions>
@@ -268,12 +361,6 @@
   </definition>
 
   <\definition>
-    The Shafarevich-Tate group <math|<math-up|X><around|(|E/\<bbb-Q\>|)>> is
-    the kernel of the map <math|H<rsup|1><around|(|\<bbb-Q\>,E|)>\<to\><big|prod><rsub|v>H<rsup|1><around|(|\<bbb-Q\><rsub|v>,E|)>>
-    where the product runs over all places <math|v> of <math|\<bbb-Q\>>.
-  </definition>
-
-  <\definition>
     The regulator <math|<math-up|Reg><around|(|E/\<bbb-Q\>|)>> is the
     determinant of the Gram matrix of the canonical height pairing on the
     free part of <math|E<around|(|\<bbb-Q\>|)>>.
@@ -339,7 +426,8 @@
     <associate|auto-2|<tuple|1.1|1>>
     <associate|auto-3|<tuple|1.2|3>>
     <associate|auto-4|<tuple|1.3|4>>
-    <associate|auto-5|<tuple|1.4|4>>
+    <associate|auto-5|<tuple|1.4|5>>
+    <associate|auto-6|<tuple|1.5|5>>
   </collection>
 </references>
 
@@ -355,17 +443,21 @@
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-2>>
 
-      <with|par-left|<quote|1tab>|1.2<space|2spc>L-Functions
+      <with|par-left|<quote|1tab>|1.2<space|2spc>Galois Theory and Cohomology
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-3>>
 
-      <with|par-left|<quote|1tab>|1.3<space|2spc>The Conjecture
+      <with|par-left|<quote|1tab>|1.3<space|2spc>L-Functions
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-4>>
 
-      <with|par-left|<quote|1tab>|1.4<space|2spc>Connection to Square-Free
-      Numbers <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1tab>|1.4<space|2spc>The Conjecture
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-5>>
+
+      <with|par-left|<quote|1tab>|1.5<space|2spc>Connection to Square-Free
+      Numbers <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-6>>
     </associate>
   </collection>
 </auxiliary>

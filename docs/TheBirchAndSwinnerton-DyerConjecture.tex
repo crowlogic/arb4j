@@ -166,6 +166,65 @@ many.
   than 1 divides $n$.
 \end{definition}
 
+\subsection{Galois Theory and Cohomology}
+
+\begin{definition}
+  The algebraic closure $\bar{\mathbb{Q}}$ of $\mathbb{Q}$ is the field
+  consisting of all algebraic numbers (roots of polynomials with rational
+  coefficients).
+\end{definition}
+
+\begin{definition}
+  The absolute Galois group $G_{\mathbb{Q}} = \text{Gal} (\bar{\mathbb{Q}}
+  /\mathbb{Q})$ is the group of all field automorphisms of $\bar{\mathbb{Q}}$
+  that fix every element of $\mathbb{Q}$.
+\end{definition}
+
+\begin{definition}
+  A $G_{\mathbb{Q}}$-module is an abelian group $M$ together with a group
+  homomorphism $G_{\mathbb{Q}} \to \text{Aut} (M)$.
+\end{definition}
+
+\begin{definition}
+  For a $G_{\mathbb{Q}}$-module $M$, the first Galois cohomology group $H^1
+  (\mathbb{Q}, M)$ is the set of continuous maps $f : G_{\mathbb{Q}} \to M$
+  satisfying $f (\sigma \tau) = f (\sigma) + \sigma (f (\tau))$ for all
+  $\sigma, \tau \in G_{\mathbb{Q}}$, modulo the equivalence relation where $f
+  \sim g$ if there exists $m \in M$ such that $f (\sigma) - g (\sigma) =
+  \sigma (m) - m$ for all $\sigma \in G_{\mathbb{Q}}$.
+\end{definition}
+
+\begin{definition}
+  A place of $\mathbb{Q}$ is either a prime number $p$ (finite place) or the
+  symbol $\infty$ (infinite place).
+\end{definition}
+
+\begin{definition}
+  For a finite place $p$, the completion $\mathbb{Q}_p$ is the field of
+  $p$-adic numbers, obtained by completing $\mathbb{Q}$ with respect to the
+  $p$-adic absolute value $|x|_p$.
+\end{definition}
+
+\begin{definition}
+  For the infinite place $\infty$, the completion $\mathbb{Q}_{\infty}
+  =\mathbb{R}$ is the field of real numbers.
+\end{definition}
+
+\begin{definition}
+  For each place $v$ of $\mathbb{Q}$, the local Galois group is
+  $G_{\mathbb{Q}_v} = \text{Gal} (\overline{\mathbb{Q}_v} /\mathbb{Q}_v)$
+  where $\overline{\mathbb{Q}_v}$ is the algebraic closure of $\mathbb{Q}_v$.
+\end{definition}
+
+\begin{definition}
+  The Shafarevich-Tate group $\mathrm{X} (E /\mathbb{Q})$ of an elliptic curve
+  $E$ over $\mathbb{Q}$ is the kernel of the natural map:
+  \[ \mathrm{X} (E /\mathbb{Q}) = \ker \left( H^1 (\mathbb{Q}, E) \to \prod_v
+     H^1 (\mathbb{Q}_v, E) \right) \]
+  where the product runs over all places $v$ of $\mathbb{Q}$ and the maps are
+  the natural restriction maps from global to local cohomology.
+\end{definition}
+
 \subsection{L-Functions}
 
 \begin{definition}
@@ -225,12 +284,6 @@ many.
 \end{definition}
 
 \begin{definition}
-  The Shafarevich-Tate group $\mathrm{X} (E /\mathbb{Q})$ is the kernel of the
-  map $H^1 (\mathbb{Q}, E) \to \prod_v H^1 (\mathbb{Q}_v, E)$ where the
-  product runs over all places $v$ of $\mathbb{Q}$.
-\end{definition}
-
-\begin{definition}
   The regulator $\mathrm{Reg} (E /\mathbb{Q})$ is the determinant of the Gram
   matrix of the canonical height pairing on the free part of $E (\mathbb{Q})$.
 \end{definition}
@@ -275,5 +328,7 @@ many.
 The conjecture involves square-free numbers because the behavior of
 L-functions $L (E_n, s)$ at $s = 1$ for quadratic twists by square-free
 integers $n$ determines the solvability of fundamental Diophantine equations.
+
+\
 
 \end{document}
