@@ -38,6 +38,12 @@ public class FunctionPlotter implements
                              AutoCloseable
 {
 
+  public FunctionPlotter setTitle(String title)
+  {
+    Platform.runLater(() -> chart.setTitle(title));
+    return this;
+  }
+
   public static boolean     darkStyle = true;
 
   public boolean            parallel  = true;

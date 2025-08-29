@@ -1,4 +1,7 @@
+FunctionPlotter.darkStyle=false;
 var context = new Context();
 var χ = ComplexFunction.express("χ:s➔(2*π)ˢ/(2*Γ(s))*cos(π*s/2)",context);
 var q = RealToComplexFunction.express("q:t->-1/2*log(χ(1/2+I*t))",context);
-plot(0,10,5000,q.realPart(),q.imagPart());
+var plt = plot(-10,10,5000,q.realPart(),q.imagPart());
+plt.setTitle( χ.toString() );
+
