@@ -58,12 +58,13 @@ public final class ZetaFunctionNode<D, C, F extends Function<? extends D, ? exte
     pushInt(mv, n);
     loadBitsParameterOntoStack(mv);
 
+    Class<?> polyClass = cx ? ComplexPolynomial.class : RealPolynomial.class;
     invokeStaticMethod(mv,
                        arblib.class,
                        cx ? "acb_poly_zeta_series" : "arb_poly_zeta_series",
                        Void.class,
-                       cx ? ComplexPolynomial.class : RealPolynomial.class, // res
-                       cx ? ComplexPolynomial.class : RealPolynomial.class, // arg
+                       polyClass, // res
+                       polyClass, // arg
                        S,
                        int.class,
                        int.class,

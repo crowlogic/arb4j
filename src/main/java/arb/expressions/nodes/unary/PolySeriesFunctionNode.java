@@ -191,7 +191,7 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
                                                         int n,
                                                         int oneSlot);
 
-  protected void pushInt(MethodVisitor mv, int v)
+  protected static void pushInt(MethodVisitor mv, int v)
   {
     mv.visitLdcInsn(v);
   }

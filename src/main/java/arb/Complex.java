@@ -107,6 +107,13 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
     return this;
   }
 
+  public Complex one()
+  {
+    re().one();
+    im().zero();
+    return this;
+  }
+
   public Complex pow(Complex k, int prec, Complex r)
   {
     arblib.acb_pow(r, this, k, prec);
