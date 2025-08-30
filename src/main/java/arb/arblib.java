@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static void acb_poly_gamma_series(ComplexPolynomial res, ComplexPolynomial f, int n, int prec) {
+    arblibJNI.acb_poly_gamma_series(ComplexPolynomial.getCPtr(res), res, ComplexPolynomial.getCPtr(f), f, n, prec);
+  }
+
   public static void acb_poly_zeta_series(ComplexPolynomial res, ComplexPolynomial f, Complex a, int deflate, int n, int prec) {
     arblibJNI.acb_poly_zeta_series(ComplexPolynomial.getCPtr(res), res, ComplexPolynomial.getCPtr(f), f, Complex.getCPtr(a), a, deflate, n, prec);
   }

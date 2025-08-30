@@ -263,7 +263,7 @@ public class Parser
                            .replace("!", "Bang")
                            .replace("[", "［")
                            .replace("]", "］")
-                           .replace("➔", "");
+                           .replace("➔", "To");
     // .replace("½", "Half"
 
     if (!str.isEmpty())

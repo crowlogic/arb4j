@@ -9,6 +9,7 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void acb_poly_gamma_series(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, int jarg3, int jarg4);
   public final static native void acb_poly_zeta_series(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, long jarg3, Complex jarg3_, int jarg4, int jarg5, int jarg6);
   public final static native void acb_poly_set_coeff_acb(long jarg1, ComplexPolynomial jarg1_, int jarg2, long jarg3, Complex jarg3_);
   public final static native void acb_poly_get_coeff_acb(long jarg1, Complex jarg1_, long jarg2, ComplexPolynomial jarg2_, int jarg3);

@@ -16,6 +16,8 @@
 #include <unistd.h>
 #include <wchar.h>
 
+void acb_poly_gamma_series(acb_poly_t res, const acb_poly_t f, slong n, slong prec);
+
 void acb_poly_zeta_series(acb_poly_t res, const acb_poly_t f, const acb_t a, int deflate, slong n, slong prec);
 
 void acb_poly_set_coeff_acb(acb_poly_t poly, slong n, const acb_t x);

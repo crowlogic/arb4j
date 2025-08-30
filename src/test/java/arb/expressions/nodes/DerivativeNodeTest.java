@@ -6,6 +6,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.expressions.Context;
+import arb.expressions.Expression;
 import arb.functions.complex.RealRiemannSiegelThetaFunction;
 import arb.functions.real.RealFunction;
 import arb.functions.real.θ;
@@ -24,8 +25,8 @@ public class DerivativeNodeTest extends
     final Context      context = new Context();
     final RealFunction θ       = RealFunction.express("θ:im(lnΓ(¼+ⅈ*t/2))-(log(π)/2)*t", context);
     final RealFunction Nθ      = RealFunction.express("Nθ:t➔t-θ̇(t)", context);
-    var y = Nθ.eval(2.3);
-    
+    var                y       = Nθ.eval(2.3);
+
   }
 
   public void testFirstDerivativeWithFunctionFormOfDertivative()
@@ -33,16 +34,17 @@ public class DerivativeNodeTest extends
     final Context      context = new Context();
     final RealFunction θ       = RealFunction.express("θ:im(lnΓ(¼+ⅈ*t/2))-(log(π)/2)*t", context);
     final RealFunction Nθ      = RealFunction.express("Nθ:t➔t-diff(θ(t),t)", context);
-    var y = Nθ.eval(2.3);
-    
+    var                y       = Nθ.eval(2.3);
+
   }
-  
+
   public void testSecondDerivativeViaCombiningTwoDotsAboveCharacter()
   {
+    Expression.saveClasses = true;
     final Context      context = new Context();
     final RealFunction θ       = RealFunction.express("θ:im(lnΓ(¼+ⅈ*t/2))-(log(π)/2)*t", context);
     final RealFunction Nθ      = RealFunction.express("Nθ:t➔t-θ̇(t)/θ̈(t)", context);
-    var y = Nθ.eval(2.3);
+    var                y       = Nθ.eval(2.3);
 
   }
 

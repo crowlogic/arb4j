@@ -1,7 +1,16 @@
 package arb.expressions.nodes.unary;
 
-import org.objectweb.asm.MethodVisitor;
+import static arb.expressions.Compiler.invokeStaticMethod;
+import static arb.expressions.Compiler.loadBitsParameterOntoStack;
 
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+
+import arb.Complex;
+import arb.ComplexPolynomial;
+import arb.Real;
+import arb.RealPolynomial;
+import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
@@ -42,11 +51,22 @@ public class GammaFunctionNode<D, C, F extends Function<? extends D, ? extends C
   @Override
   protected void pushSeriesCallParamsAndInvoke(MethodVisitor mv,
                                                Class<?> sType,
-                                               boolean isComplex,
+                                               boolean complex,
                                                int n,
                                                int oneSlot)
   {
-    call(mv, sType, isComplex, n, oneSlot, "acb_poly_gamma_series", "arb_poly_gamma_series");
+    Class<?> polyClass = complex ? ComplexPolynomial.class : RealPolynomial.class;
+    //mv.visitVarInsn(Opcodes.ALOAD, oneSlot);
+    pushInt(mv, n);
+    loadBitsParameterOntoStack(mv);
+    invokeStaticMethod(mv,
+                       arblib.class,
+                       complex ? "acb_poly_gamma_series" : "arb_poly_lgamma_series",
+                       Void.class,
+                       polyClass, // res
+                       polyClass, // arg
+                       int.class,
+                       int.class);
   }
 
   @Override
