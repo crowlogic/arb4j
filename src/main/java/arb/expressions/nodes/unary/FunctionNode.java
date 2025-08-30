@@ -311,6 +311,10 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     case "lnΓ":
     case "lnGamma":
       return arg.digamma();
+    case "digamma":
+      return new GammaFunctionNode<D, R, F>(expression,
+                                            arg,
+                                            1);
     case "ζ":
       // TODO: in cases where the zeta functions value at the coordinate is also
       // needed it would be good for th lower level

@@ -8,6 +8,8 @@ import org.objectweb.asm.MethodVisitor;
 import arb.Complex;
 import arb.Real;
 import arb.arblib;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
@@ -27,7 +29,7 @@ public class GammaFunctionNode<D, C, F extends Function<? extends D, ? extends C
           expression);
   }
 
-  private GammaFunctionNode(Expression<D, C, F> expression, Node<D, C, F> arg, int order)
+  GammaFunctionNode(Expression<D, C, F> expression, Node<D, C, F> arg, int order)
   {
     super("Γ",
           expression,
