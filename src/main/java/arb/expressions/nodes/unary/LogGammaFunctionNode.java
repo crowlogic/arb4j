@@ -52,34 +52,7 @@ public class LogGammaFunctionNode<D, C, F extends Function<? extends D, ? extend
                                                int n,
                                                int oneSlot)
   {
-    // n
-    pushInt(mv, n);
-    // prec
-    loadBitsParameterOntoStack(mv);
-
-    if (isComplex)
-    {
-      // (resPoly, fPoly, n, prec)
-      invokeStaticMethod(mv,
-                         arblib.class,
-                         "acb_poly_lgamma_series",
-                         Void.class,
-                         Complex.class,
-                         Complex.class,
-                         int.class,
-                         int.class);
-    }
-    else
-    {
-      invokeStaticMethod(mv,
-                         arblib.class,
-                         "arb_poly_lgamma_series",
-                         Void.class,
-                         Real.class,
-                         Real.class,
-                         int.class,
-                         int.class);
-    }
+    call(mv, sType, isComplex, n, oneSlot, "acb_poly_lgamma_series", "arb_poly_lgamma_series");
   }
 
   @Override
