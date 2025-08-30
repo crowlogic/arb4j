@@ -451,6 +451,20 @@ import arb.utensils.Utensils;
     return isZeroUpTo(bits) ? res.posInf() : res.zero();
   }
 
+  public Complex cos(int prec, Complex result)
+  {
+    cos(prec, result.re());
+    result.im().zero();
+    return result;
+  }
+
+  public Complex sin(int prec, Complex result)
+  {
+    sin(prec, result.re());
+    result.im().zero();
+    return result;
+  }
+  
   /**
    * @return this{@link #lnΓ(int, Real)}
    */
