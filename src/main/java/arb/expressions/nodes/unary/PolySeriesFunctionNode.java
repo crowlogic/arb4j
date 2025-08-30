@@ -1,6 +1,7 @@
 package arb.expressions.nodes.unary;
 
 import static arb.expressions.Compiler.invokeStaticMethod;
+import static arb.expressions.Compiler.loadBitsParameterOntoStack;
 import static arb.expressions.Compiler.scalarType;
 
 import org.objectweb.asm.MethodVisitor;
@@ -190,6 +191,31 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
                                                         boolean cx,
                                                         int n,
                                                         int oneSlot);
+
+  public void call(MethodVisitor mv,
+                      Class<?> S,
+                      boolean complex,
+                      int n,
+                      int oneSlot,
+                      String complexFunctionName,
+                      String realFunctionName)
+  {
+    Class<?> polyClass = complex ? ComplexPolynomial.class : RealPolynomial.class;
+    mv.visitVarInsn(Opcodes.ALOAD, oneSlot);
+    pushInt(mv, 0);
+    pushInt(mv, n);
+    loadBitsParameterOntoStack(mv);
+    invokeStaticMethod(mv,
+                       arblib.class,
+                       complex ? complexFunctionName : realFunctionName,
+                       Void.class,
+                       polyClass, // res
+                       polyClass, // arg
+                       S,
+                       int.class,
+                       int.class,
+                       int.class);
+  }
 
   protected static void pushInt(MethodVisitor mv, int v)
   {

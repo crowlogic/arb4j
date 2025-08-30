@@ -1,14 +1,7 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.invokeStaticMethod;
-import static arb.expressions.Compiler.loadBitsParameterOntoStack;
-
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
 
-import arb.ComplexPolynomial;
-import arb.RealPolynomial;
-import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
@@ -53,22 +46,7 @@ public final class ZetaFunctionNode<D, C, F extends Function<? extends D, ? exte
                                                int n,
                                                int oneSlot)
   {
-    mv.visitVarInsn(Opcodes.ALOAD, oneSlot);
-    pushInt(mv, 0);
-    pushInt(mv, n);
-    loadBitsParameterOntoStack(mv);
-
-    Class<?> polyClass = cx ? ComplexPolynomial.class : RealPolynomial.class;
-    invokeStaticMethod(mv,
-                       arblib.class,
-                       cx ? "acb_poly_zeta_series" : "arb_poly_zeta_series",
-                       Void.class,
-                       polyClass, // res
-                       polyClass, // arg
-                       S,
-                       int.class,
-                       int.class,
-                       int.class);
+    call(mv, S, cx, n, oneSlot, "acb_poly_zeta_series", "arb_poly_zeta_series");
   }
 
   @Override
