@@ -19,7 +19,11 @@ import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
 /**
- * @author StΣνε
+ * 
+ * TODO: modify this to use intermediate variables that will be part of the
+ * object rather than local variables
+ * 
+ * @author SτΣνε
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
@@ -57,10 +61,10 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    final Class<?> S  = scalarType(resultType);
-    final boolean  cx = Complex.class.equals(S);
-    final int      n  = Math.max(1, derivativeOrder + 1);
-    final int      k  = derivativeOrder;
+    final Class<?> S         = scalarType(resultType);
+    final boolean  isComplex = Complex.class.equals(S);
+    final int      n         = Math.max(1, derivativeOrder + 1);
+    final int      order     = derivativeOrder;
 
     // Local: outScalar, resPoly, argPoly, oneScalar
     loadOutputVariableOntoStack(mv, S);
@@ -68,35 +72,35 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
     mv.visitVarInsn(Opcodes.ASTORE, outSlot);
 
     // Create and init resPoly
-    newPoly(mv, cx);
+    newPoly(mv, isComplex);
     int resSlot = allocSlot();
     mv.visitVarInsn(Opcodes.ASTORE, resSlot);
     mv.visitVarInsn(Opcodes.ALOAD, resSlot);
     invokeStaticMethod(mv,
                        arblib.class,
-                       cx ? "acb_poly_init" : "arb_poly_init",
+                       isComplex ? "acb_poly_init" : "arb_poly_init",
                        Void.class,
-                       cx ? ComplexPolynomial.class : RealPolynomial.class);
+                       isComplex ? ComplexPolynomial.class : RealPolynomial.class);
 
     // Create and init argPoly
-    newPoly(mv, cx);
+    newPoly(mv, isComplex);
     int argSlot = allocSlot();
     mv.visitVarInsn(Opcodes.ASTORE, argSlot);
     mv.visitVarInsn(Opcodes.ALOAD, argSlot);
     invokeStaticMethod(mv,
                        arblib.class,
-                       cx ? "acb_poly_init" : "arb_poly_init",
+                       isComplex ? "acb_poly_init" : "arb_poly_init",
                        Void.class,
-                       cx ? ComplexPolynomial.class : RealPolynomial.class);
+                       isComplex ? ComplexPolynomial.class : RealPolynomial.class);
 
     // Fit length n
     mv.visitVarInsn(Opcodes.ALOAD, argSlot);
     pushInt(mv, n);
     invokeStaticMethod(mv,
                        arblib.class,
-                       cx ? "acb_poly_fit_length" : "arb_poly_fit_length",
+                       isComplex ? "acb_poly_fit_length" : "arb_poly_fit_length",
                        Void.class,
-                       cx ? ComplexPolynomial.class : RealPolynomial.class,
+                       isComplex ? ComplexPolynomial.class : RealPolynomial.class,
                        int.class);
 
     // Set coeff 0 = arg(x)
@@ -105,15 +109,15 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
     arg.generate(mv, S);
     invokeStaticMethod(mv,
                        arblib.class,
-                       cx ? "acb_poly_set_coeff_acb" : "arb_poly_set_coeff_arb",
+                       isComplex ? "acb_poly_set_coeff_acb" : "arb_poly_set_coeff_arb",
                        Void.class,
-                       cx ? ComplexPolynomial.class : RealPolynomial.class,
+                       isComplex ? ComplexPolynomial.class : RealPolynomial.class,
                        int.class,
                        S);
 
     // Allocate + prepare a temp variable for 1
     int oneSlot = allocSlot();
-    if (cx)
+    if (isComplex)
     {
       // Complex temp = new Complex(); arblib.acb_one(temp);
       mv.visitTypeInsn(Opcodes.NEW, "arb/Complex");
@@ -140,43 +144,43 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
     mv.visitVarInsn(Opcodes.ALOAD, oneSlot);
     invokeStaticMethod(mv,
                        arblib.class,
-                       cx ? "acb_poly_set_coeff_acb" : "arb_poly_set_coeff_arb",
+                       isComplex ? "acb_poly_set_coeff_acb" : "arb_poly_set_coeff_arb",
                        Void.class,
-                       cx ? ComplexPolynomial.class : RealPolynomial.class,
+                       isComplex ? ComplexPolynomial.class : RealPolynomial.class,
                        int.class,
                        S);
 
     // Call the series function with local refs
     mv.visitVarInsn(Opcodes.ALOAD, resSlot);
     mv.visitVarInsn(Opcodes.ALOAD, argSlot);
-    pushSeriesCallParamsAndInvoke(mv, S, cx, n, oneSlot);
+    pushSeriesCallParamsAndInvoke(mv, S, isComplex, n, oneSlot);
 
     // Prepare stack for get_coeff: outScalar, resPoly, k (signature: Complex x,
     // ComplexPolynomial poly, int n)
     mv.visitVarInsn(Opcodes.ALOAD, outSlot);
     mv.visitVarInsn(Opcodes.ALOAD, resSlot);
-    pushInt(mv, k);
+    pushInt(mv, order);
     invokeStaticMethod(mv,
                        arblib.class,
-                       cx ? "acb_poly_get_coeff_acb" : "arb_poly_get_coeff_arb",
+                       isComplex ? "acb_poly_get_coeff_acb" : "arb_poly_get_coeff_arb",
                        Void.class,
                        S,
-                       cx ? ComplexPolynomial.class : RealPolynomial.class,
+                       isComplex ? ComplexPolynomial.class : RealPolynomial.class,
                        int.class);
 
     // Clear polys
     mv.visitVarInsn(Opcodes.ALOAD, resSlot);
     invokeStaticMethod(mv,
                        arblib.class,
-                       cx ? "acb_poly_clear" : "arb_poly_clear",
+                       isComplex ? "acb_poly_clear" : "arb_poly_clear",
                        Void.class,
-                       cx ? ComplexPolynomial.class : RealPolynomial.class);
+                       isComplex ? ComplexPolynomial.class : RealPolynomial.class);
     mv.visitVarInsn(Opcodes.ALOAD, argSlot);
     invokeStaticMethod(mv,
                        arblib.class,
-                       cx ? "acb_poly_clear" : "arb_poly_clear",
+                       isComplex ? "acb_poly_clear" : "arb_poly_clear",
                        Void.class,
-                       cx ? ComplexPolynomial.class : RealPolynomial.class);
+                       isComplex ? ComplexPolynomial.class : RealPolynomial.class);
 
     // Reload outScalar (now filled)
     mv.visitVarInsn(Opcodes.ALOAD, outSlot);
@@ -193,12 +197,12 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
                                                         int oneSlot);
 
   public void call(MethodVisitor mv,
-                      Class<?> S,
-                      boolean complex,
-                      int n,
-                      int oneSlot,
-                      String complexFunctionName,
-                      String realFunctionName)
+                   Class<?> S,
+                   boolean complex,
+                   int n,
+                   int oneSlot,
+                   String complexFunctionName,
+                   String realFunctionName)
   {
     Class<?> polyClass = complex ? ComplexPolynomial.class : RealPolynomial.class;
     mv.visitVarInsn(Opcodes.ALOAD, oneSlot);
@@ -213,6 +217,26 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
                        polyClass, // arg
                        S,
                        int.class,
+                       int.class,
+                       int.class);
+  }
+
+  public void call(MethodVisitor mv,
+                   boolean complex,
+                   int n,
+                   String complexFunctionName,
+                   String realFunctionName)
+  {
+    Class<?> polyClass = complex ? ComplexPolynomial.class : RealPolynomial.class;
+    pushInt(mv, n);
+    loadBitsParameterOntoStack(mv);
+
+    invokeStaticMethod(mv,
+                       arblib.class,
+                       complex ? complexFunctionName : realFunctionName,
+                       Void.class,
+                       polyClass, // res
+                       polyClass, // arg
                        int.class,
                        int.class);
   }

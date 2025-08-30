@@ -1,13 +1,7 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.invokeStaticMethod;
-import static arb.expressions.Compiler.loadBitsParameterOntoStack;
-
 import org.objectweb.asm.MethodVisitor;
 
-import arb.Complex;
-import arb.Real;
-import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;

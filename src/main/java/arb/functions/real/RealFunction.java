@@ -166,31 +166,8 @@ public interface RealFunction extends
 
   public default RealFunction sub(RealFunction that)
   {
-    return new RealFunction()
-    {
-      @Override
-      public String typeset()
-      {
-        return String.format("(%s) - (%s)", RealFunction.this.typeset(), that.typeset());
-      }
-
-      @Override
-      public String toString()
-      {
-        return String.format("(%s)-(%s)", RealFunction.this.toString(), that.toString());
-      }
-
-      @Override
-      public Real evaluate(Real t, int order, int bits, Real res)
-      {
-        try ( var blip = new Real())
-        {
-          return RealFunction.this.evaluate(t, order, bits, res)
-                                  .sub(that.evaluate(t, order, bits, blip), bits, res);
-        }
-
-      };
-    };
+    return new RealSubtractionFunction(this,
+                                       that);
   }
 
   public static Expression<Real, Real, RealFunction> compile(String expression)
@@ -210,15 +187,15 @@ public interface RealFunction extends
 
   public static RealFunction express(String expression, Context context)
   {
-    Expression<Real, Real, RealFunction> parsedExpression = parse(expression, context);
+    Expression<Real, Real, RealFunction> parsedExpression   = parse(expression, context);
     Expression<Real, Real, RealFunction> compiledExpression = parsedExpression.compile();
     var                                  func               = compiledExpression.instantiate();
-    
+
     if (compiledExpression.mapping != null)
     {
       compiledExpression.mapping.instance = func;
     }
-    if ( context != null && compiledExpression.functionName != null )
+    if (context != null && compiledExpression.functionName != null)
     {
       context.registerFunction(compiledExpression.functionName, func);
     }

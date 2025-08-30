@@ -204,7 +204,7 @@ public interface ComplexFunction extends
    */
   public default ComplexFunction integral() throws NotIntegrableException
   {
-    throw new UnsupportedOperationException(getClass() + " needs to implement this method");
+    throw new UnsupportedOperationException(this + " of class " + getClass() + " needs to implement this method");
   }
 
   public default Complex eval(double t, Complex result)
