@@ -63,7 +63,18 @@ public interface Function<D, C> extends
     return parsedExpression;
   }
 
-  @SuppressWarnings("unchecked")
+  public static <D, C, F extends Function<? extends D, ? extends C>>
+         F
+         express(Class<? extends D> class1,
+                 Class<? extends C> class2,
+                 Class<? extends F> class3,
+                 String expression,
+                 Context context)
+  {
+    return express(class1, class2, class3, null, expression, context);
+
+  }
+
   public static <D, C, F extends Function<? extends D, ? extends C>>
          F
          express(Class<? extends D> domainClass,
@@ -198,7 +209,7 @@ public interface Function<D, C> extends
     {
       compiledExpression.mapping.instance = func;
     }
-    
+
 //    if ( context != null && compiledExpression.isFunctional() )
 //    {
 //      context.injectFunctionReferences(func);
@@ -253,8 +264,6 @@ public interface Function<D, C> extends
                  null);
   }
 
-  
-  
   public static <D,
                 C,
                 F extends Function<? extends D, ? extends C>,

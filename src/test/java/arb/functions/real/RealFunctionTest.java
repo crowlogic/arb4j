@@ -23,7 +23,7 @@ public class RealFunctionTest extends
     var e         = RealFunction.parse("e:θ(t)-t", context);
     var einstance = e.instantiate();
     assertEquals("e:t➔(θ(t))-t", einstance.toString());
-    assertEquals("θ:t➔(im(lnΓ(¼+((ⅈ*t)/2))))-(((log(π))/2)*t)", f.toString());
+    assertEquals("t➔(im(lnΓ(¼+((ⅈ*t)/2))))-(((log(π))/2)*t)", f.toString());
   }
 
   public static void testJOneQuarter()

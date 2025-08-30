@@ -43,31 +43,8 @@ public interface RealFunction extends
 
   public default ComplexFunction mul(ComplexFunction that)
   {
-    return new ComplexFunction()
-    {
-      @Override
-      public String typeset()
-      {
-        return String.format("%s \\cdot %s", RealFunction.this.typeset(), that.typeset());
-      }
-
-      @Override
-      public String toString()
-      {
-        return String.format("(%s)*(%s)", RealFunction.this.toString(), that.toString());
-      }
-
-      @Override
-      public Complex evaluate(Complex t, int order, int bits, Complex res)
-      {
-        try ( var blip = new Complex())
-        {
-          RealFunction.this.evaluate(t, order, bits, res);
-          return res.mul(that.evaluate(t, order, bits, blip), bits, res);
-        }
-
-      };
-    };
+    return new RealComplexMultiplicationFunction(this,
+                                                 that);
   }
 
   public default Complex evaluate(Complex t, int order, int bits, Complex res)
@@ -79,89 +56,20 @@ public interface RealFunction extends
 
   public default RealFunction mul(RealFunction that)
   {
-    return new RealFunction()
-    {
-      @Override
-      public String typeset()
-      {
-        return String.format("%s \\cdot %s", RealFunction.this.typeset(), that.typeset());
-      }
-
-      @Override
-      public String toString()
-      {
-        return String.format("(%s)*(%s)", RealFunction.this.toString(), that.toString());
-      }
-
-      @Override
-      public Real evaluate(Real t, int order, int bits, Real res)
-      {
-        try ( var blip = new Real())
-        {
-          return RealFunction.this.evaluate(t, order, bits, res)
-                                  .mul(that.evaluate(t, order, bits, blip), bits, res);
-        }
-
-      };
-    };
+    return new RealMultiplicationFunction(this,
+                                          that);
   }
 
   public default RealFunction div(RealFunction that)
   {
-    return new RealFunction()
-    {
-      @Override
-      public String typeset()
-      {
-        return String.format("\frac{%s}{%s}", RealFunction.this.typeset(), that.typeset());
-      }
-
-      @Override
-      public String toString()
-      {
-        return String.format("(%s)/(%s)", RealFunction.this.toString(), that.toString());
-      }
-
-      @Override
-      public Real evaluate(Real t, int order, int bits, Real res)
-      {
-        try ( var blip = new Real())
-        {
-          return RealFunction.this.evaluate(t, order, bits, res)
-                                  .div(that.evaluate(t, order, bits, blip), bits, res);
-        }
-
-      };
-    };
+    return new RealDivisionFunction(this,
+                                    that);
   }
 
   public default RealFunction add(RealFunction that)
   {
-    return new RealFunction()
-    {
-      @Override
-      public String typeset()
-      {
-        return String.format("(%s) + (%s)", RealFunction.this.typeset(), that.typeset());
-      }
-
-      @Override
-      public String toString()
-      {
-        return String.format("(%s)+(%s)", RealFunction.this.toString(), that.toString());
-      }
-
-      @Override
-      public Real evaluate(Real t, int order, int bits, Real res)
-      {
-        try ( var blip = new Real())
-        {
-          return RealFunction.this.evaluate(t, order, bits, res)
-                                  .add(that.evaluate(t, order, bits, blip), bits, res);
-        }
-
-      };
-    };
+    return new RealAdditionFunction(this,
+                                    that);
   }
 
   public default RealFunction sub(RealFunction that)
@@ -187,29 +95,7 @@ public interface RealFunction extends
 
   public static RealFunction express(String expression, Context context)
   {
-    Expression<Real, Real, RealFunction> parsedExpression   = parse(expression, context);
-    Expression<Real, Real, RealFunction> compiledExpression = parsedExpression.compile();
-    var                                  func               = compiledExpression.instantiate();
-
-    if (compiledExpression.mapping != null)
-    {
-      compiledExpression.mapping.instance = func;
-    }
-    if (context != null && compiledExpression.functionName != null)
-    {
-      context.registerFunction(compiledExpression.functionName, func);
-    }
-    return func;
-  }
-
-  public static RealFunction express(String expression, Context context, boolean verbose)
-  {
-    return Function.instantiate(expression,
-                                context,
-                                Real.class,
-                                Real.class,
-                                RealFunction.class,
-                                null);
+    return Function.express(Real.class, Real.class, RealFunction.class, expression, context);
   }
 
   public static RealFunction express(String expression, String string)

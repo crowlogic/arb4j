@@ -29,7 +29,7 @@ public class DerivativeNodeTest extends
 
   }
 
-  public void testFirstDerivativeWithFunctionFormOfDertivative()
+  public void testFirstDerivativeWithFunctionFormOfDerivative()
   {
     Expression.saveClasses = Expression.trace = true;
 
