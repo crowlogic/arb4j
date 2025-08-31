@@ -2708,4 +2708,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return this;
   }
 
+  public boolean hasIntermediateVariable(String string)
+  {
+    return intermediateVariables.containsKey(string);
+  }
+
 }
