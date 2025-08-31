@@ -46,7 +46,7 @@ public class LogGammaFunctionNode<D, C, F extends Function<? extends D, ? extend
                                                int n,
                                                int oneSlot)
   {
-    call(mv, sType, isComplex, n, oneSlot, "acb_poly_lgamma_series", "arb_poly_lgamma_series");
+    call(mv, isComplex, n, "acb_poly_lgamma_series", "arb_poly_lgamma_series");
   }
 
   @Override

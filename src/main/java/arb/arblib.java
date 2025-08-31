@@ -9,6 +9,14 @@
 package arb;
 
 public class arblib {
+  public static void acb_poly_lgamma_series(ComplexPolynomial res, ComplexPolynomial f, int n, int prec) {
+    arblibJNI.acb_poly_lgamma_series(ComplexPolynomial.getCPtr(res), res, ComplexPolynomial.getCPtr(f), f, n, prec);
+  }
+
+  public static void arb_poly_lgamma_series(RealPolynomial res, RealPolynomial f, int n, int prec) {
+    arblibJNI.arb_poly_lgamma_series(RealPolynomial.getCPtr(res), res, RealPolynomial.getCPtr(f), f, n, prec);
+  }
+
   public static void acb_hypgeom_si(Complex res, Complex z, int prec) {
     arblibJNI.acb_hypgeom_si(Complex.getCPtr(res), res, Complex.getCPtr(z), z, prec);
   }
@@ -23,6 +31,10 @@ public class arblib {
 
   public static void arb_hypgeom_si_series(RealPolynomial res, RealPolynomial z, int len, int prec) {
     arblibJNI.arb_hypgeom_si_series(RealPolynomial.getCPtr(res), res, RealPolynomial.getCPtr(z), z, len, prec);
+  }
+
+  public static void arb_poly_gamma_series(RealPolynomial res, RealPolynomial f, int n, int prec) {
+    arblibJNI.arb_poly_gamma_series(RealPolynomial.getCPtr(res), res, RealPolynomial.getCPtr(f), f, n, prec);
   }
 
   public static void acb_poly_gamma_series(ComplexPolynomial res, ComplexPolynomial f, int n, int prec) {

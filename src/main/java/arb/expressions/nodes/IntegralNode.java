@@ -234,7 +234,8 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   {
     assert resultType != null : "resultType cannot be null";
     generatedType = resultType;
-
+    integralNode.isResult = isResult;
+    
     if (integralNode == null)
     {
       computeIndefiniteIntegral();

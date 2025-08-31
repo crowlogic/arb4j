@@ -86,7 +86,9 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (isSincFunction(variable))
     {
+      //return variable.apply("si");
       return new SineIntegralNode<D, R, F>(expression,
+
                                            variable,
                                            0);
     }

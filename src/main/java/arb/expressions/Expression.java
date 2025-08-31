@@ -110,8 +110,10 @@ import arb.expressions.nodes.unary.FactorialNode;
 import arb.expressions.nodes.unary.FloorNode;
 import arb.expressions.nodes.unary.FunctionNode;
 import arb.expressions.nodes.unary.FunctionalEvaluationNode;
+import arb.expressions.nodes.unary.GammaFunctionNode;
 import arb.expressions.nodes.unary.HypergeometricFunctionNode;
 import arb.expressions.nodes.unary.LambertWFunctionNode;
+import arb.expressions.nodes.unary.LogGammaFunctionNode;
 import arb.expressions.nodes.unary.LommelPolynomialNode;
 import arb.expressions.nodes.unary.SineIntegralNode;
 import arb.expressions.nodes.unary.SphericalBesselFunctionNodeOfTheFirstKind;
@@ -2348,7 +2350,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
     case "ζ":
     case "zeta":
-      return new ZetaFunctionNode<D,C,F>(this);
+      return new ZetaFunctionNode<D, C, F>(this);
     case "when":
       return new WhenNode<>(this);
     case "diff":
@@ -2375,7 +2377,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     case "Beta":
     case "beta":
       return new BetaFunctionNode<D, C, F>(this);
-   
+    case "Γ":
+    case "Gamma":
+      return new GammaFunctionNode<>(this);
+    case "lnGamma":
+    case "lnΓ":
+    case "logGamma":
+    case "logΓ":
+      return new LogGammaFunctionNode<>(this);
+    case "si":
+      return new SineIntegralNode<>(this);
     default:
 
       // Regular function call with parentheses

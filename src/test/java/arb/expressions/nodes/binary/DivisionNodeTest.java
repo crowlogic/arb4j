@@ -1,6 +1,7 @@
 package arb.expressions.nodes.binary;
 
 import arb.Real;
+import arb.RealDataSet;
 import arb.expressions.Context;
 import arb.functions.complex.ComplexNullaryFunction;
 import arb.functions.real.RealFunction;
@@ -11,8 +12,11 @@ public class DivisionNodeTest extends
 {
   public void testSineIntegral()
   {
-    var f = RealFunction.express("int(sin(t)/t,t)");
+    var fe = RealFunction.parse("int(sin(t)/t,t)");
+    var f = fe.instantiate();
     assertEquals( "t➔Si(t)", f.toString() );
+    RealDataSet q = f.quantize(0, 10, 1000);
+    assertFalse( q.get(1,100) == 0.0 );
   }
 
   public void testSimplificationOfExponentialDivision()

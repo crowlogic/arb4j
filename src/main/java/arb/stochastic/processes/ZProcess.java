@@ -5,7 +5,6 @@ import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
-import arb.expressions.Expression;
 import arb.functions.RealBivariateToComplexFunction;
 import arb.functions.RealToComplexFunction;
 import arb.functions.real.RealFunction;

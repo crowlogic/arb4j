@@ -1,9 +1,10 @@
 package arb.functions;
 
-import arb.*;
+import arb.Complex;
+import arb.Real;
+import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.Expression;
 import arb.functions.real.RealFunction;
 import arb.stochastic.processes.ZProcess;
 import junit.framework.TestCase;
