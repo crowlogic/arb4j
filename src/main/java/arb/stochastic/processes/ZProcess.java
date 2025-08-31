@@ -25,8 +25,7 @@ public class ZProcess implements
 {
   public static void main(String args[])
   {
-    Expression.trace       = true;
-    Expression.saveClasses = true;
+
 
     ZProcess              Zprocess = new ZProcess();
     RealToComplexFunction A        =

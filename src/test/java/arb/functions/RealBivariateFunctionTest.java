@@ -30,7 +30,7 @@ public class RealBivariateFunctionTest extends
 
   public void testEvaluateRealBivariateFunctionWithContextVariable()
   {
-    Expression.trace = true;
+    //Expression.trace = true;
     ZProcess                       Zprocess        = new ZProcess();
     RealBivariateToComplexFunction gain            = Zprocess.gainFunction();
 

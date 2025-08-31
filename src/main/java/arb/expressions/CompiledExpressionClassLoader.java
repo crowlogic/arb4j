@@ -3,6 +3,7 @@ package arb.expressions;
 import static arb.utensils.Utensils.wrapOrThrow;
 
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -20,8 +21,28 @@ public class CompiledExpressionClassLoader extends
   @Override
   protected Class<?> findClass(String name) throws ClassNotFoundException
   {
-    System.err.format("findClass(%s) in {%s}\n", name, compiledClasses.keySet());
-    return super.findClass(name);
+    if (Expression.trace)
+    {
+      System.err.format("findClass(%s) in classes {%s} of %s\n",
+                        name,
+                        compiledClasses.keySet(),
+                        context);
+    }
+    AtomicReference<Class<?>> mapped = new AtomicReference<Class<?>>();
+    context.functions.map.values().forEach(mapping ->
+    {
+      if (mapping.functionClass != null && name.equals(mapping.functionClass.getSimpleName()))
+      {
+        assert mapped.get() == null : mapped + " is already mapped to " + mapping;
+        mapped.set(mapping.functionClass);
+        if (Expression.trace)
+        {
+          System.err.println("Mapped " + mapping + " to " + name);
+        }
+      }
+    });
+    Class<?> mappedClass = mapped.get();
+    return mappedClass != null ? mappedClass : super.findClass(name);
   }
 
   HashMap<String, Class<?>> compiledClasses = new HashMap<>();
@@ -46,10 +67,13 @@ public class CompiledExpressionClassLoader extends
     }
     // assert !compiledClasses.containsKey(className) : className + " already
     // exists";
-    try { Class<?> definedClass = defineClass(className, bytecodes, 0, bytecodes.length);
-    compiledClasses.put(className, definedClass);
-    return definedClass;
-    } catch(ClassFormatError e)
+    try
+    {
+      Class<?> definedClass = defineClass(className, bytecodes, 0, bytecodes.length);
+      compiledClasses.put(className, definedClass);
+      return definedClass;
+    }
+    catch (ClassFormatError e)
     {
       wrapOrThrow(className, e);
       return null;
