@@ -820,7 +820,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       if (trace)
       {
         String vars = varList.stream().map(f -> f.getKey()).collect(Collectors.joining(","));
-        System.out.println("declareVariables: " + vars);
+        log.debug("declareVariables: {}", vars);
       }
       for (var variable : varList)
       {
@@ -836,11 +836,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return coDomainType.equals(Integer.class);
   }
 
-  /**
-   * 
-   * @return
-   * @throws CompilerException
-   */
   public Node<D, C, F> evaluate() throws CompilerException
   {
     Node<D, C, F> node = null;
@@ -1805,10 +1800,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (verboseTrace)
     {
-      System.out.format("Expression(#%s).loadFieldOntoStack(fieldName=%s, fieldDescriptor=%s)\n",
-                        System.identityHashCode(this),
-                        fieldName,
-                        fieldDescriptor);
+      log.debug(String.format("Expression(#%s).loadFieldOntoStack(fieldName=%s, fieldDescriptor=%s)\n",
+                              System.identityHashCode(this),
+                              fieldName,
+                              fieldDescriptor));
     }
     methodVisitor.visitFieldInsn(GETFIELD, className, fieldName, fieldDescriptor);
     return methodVisitor;
@@ -1860,11 +1855,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return !literalConstants.isEmpty() | !intermediateVariables.isEmpty();
   }
 
+  /**
+   * 
+   * @return true if this {@link Expression} has context variables, registered
+   *         initializers, dependencies, referencedFunctions, or references itself
+   */
   public boolean needsInitializer()
   {
-    return (context != null && !context.variables.isEmpty()) || !initializers.isEmpty()
-                  || (dependencies != null && !dependencies.isEmpty()) || recursive
-                  || !referencedFunctions.isEmpty();
+    boolean contextHasVariables       = context != null && !context.variables.isEmpty();
+    boolean hasRegisteredInitializers = !initializers.isEmpty();
+    boolean hasDependencies           = dependencies != null && !dependencies.isEmpty();
+    boolean hasReferencedFunctions    = !referencedFunctions.isEmpty();
+    return contextHasVariables || hasRegisteredInitializers || hasDependencies || recursive
+                  || hasReferencedFunctions;
   }
 
   public <N extends Named> N newCoDomainInstance()
