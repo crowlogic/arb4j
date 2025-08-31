@@ -453,11 +453,21 @@ import arb.utensils.Utensils;
 
   public Complex cos(int prec, Complex result)
   {
-    cos(prec, result.re());
+    cos(prec, result.re());   
     result.im().zero();
     return result;
   }
 
+  public Real si(int bits)
+  {
+    return si(bits, this);
+  }
+
+  public Real si(int bits, Real result)
+  {
+    arblib.arb_hypgeom_si(result, this, bits);
+    return result;
+  }
   public Complex sin(int prec, Complex result)
   {
     sin(prec, result.re());

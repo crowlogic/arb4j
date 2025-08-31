@@ -12,7 +12,7 @@ public class DivisionNodeTest extends
   public void testSineIntegral()
   {
     var f = RealFunction.express("int(sin(t)/t,t)");
-
+    assertEquals( "t➔Si(t)", f.toString() );
   }
 
   public void testSimplificationOfExponentialDivision()

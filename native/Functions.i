@@ -16,6 +16,14 @@
 #include <unistd.h>
 #include <wchar.h>
 
+void acb_hypgeom_si(acb_t res, const acb_t z, slong prec);
+
+void acb_hypgeom_si_series(acb_poly_t res, const acb_poly_t z, slong len, slong prec);
+
+void arb_hypgeom_si(arb_t res, const arb_t z, slong prec);
+
+void arb_hypgeom_si_series(arb_poly_t res, const arb_poly_t z, slong len, slong prec);
+
 void acb_poly_gamma_series(acb_poly_t res, const acb_poly_t f, slong n, slong prec);
 
 void acb_poly_zeta_series(acb_poly_t res, const acb_poly_t f, const acb_t a, int deflate, slong n, slong prec);

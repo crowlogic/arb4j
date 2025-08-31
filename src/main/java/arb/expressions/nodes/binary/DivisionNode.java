@@ -14,6 +14,7 @@ import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.expressions.nodes.unary.FunctionNode;
+import arb.expressions.nodes.unary.SineIntegralNode;
 import arb.functions.Function;
 
 /**
@@ -83,12 +84,24 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return left.integrate(variable).div(right).simplify();
     }
 
+    if (isSincFunction(variable))
+    {
+      return new SineIntegralNode<D, R, F>(expression,
+                                           variable,
+                                           0);
+    }
+
     // More complex rational functions would need additional logic
     throw new UnsupportedOperationException("Integration of "
                                             + this
                                             + " with respect to "
                                             + variable
                                             + " not implemented");
+  }
+
+  private boolean isSincFunction(VariableNode<D, R, F> variable)
+  {
+    return right.equals(variable) && left.equals(variable.apply("sin"));
   }
 
   @Override

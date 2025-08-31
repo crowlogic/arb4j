@@ -113,6 +113,7 @@ import arb.expressions.nodes.unary.FunctionalEvaluationNode;
 import arb.expressions.nodes.unary.HypergeometricFunctionNode;
 import arb.expressions.nodes.unary.LambertWFunctionNode;
 import arb.expressions.nodes.unary.LommelPolynomialNode;
+import arb.expressions.nodes.unary.SineIntegralNode;
 import arb.expressions.nodes.unary.SphericalBesselFunctionNodeOfTheFirstKind;
 import arb.expressions.nodes.unary.UnaryOperationNode;
 import arb.expressions.nodes.unary.WhenNode;
@@ -2374,6 +2375,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     case "Beta":
     case "beta":
       return new BetaFunctionNode<D, C, F>(this);
+   
     default:
 
       // Regular function call with parentheses

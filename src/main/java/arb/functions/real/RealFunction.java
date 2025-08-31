@@ -2,7 +2,6 @@ package arb.functions.real;
 
 import java.util.stream.IntStream;
 
-import arb.Complex;
 import arb.Float;
 import arb.FloatInterval;
 import arb.Real;
@@ -16,7 +15,6 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.Parser;
 import arb.functions.Function;
-import arb.functions.complex.ComplexFunction;
 
 /**
  * 
@@ -40,19 +38,6 @@ public interface RealFunction extends
   }
 
   public boolean verbose = false;
-
-  public default ComplexFunction mul(ComplexFunction that)
-  {
-    return new RealComplexMultiplicationFunction(this,
-                                                 that);
-  }
-
-  public default Complex evaluate(Complex t, int order, int bits, Complex res)
-  {
-    evaluate(t.re(), order, bits, res.re());
-    evaluate(t.im(), order, bits, res.im());
-    return res;
-  }
 
   public default RealFunction mul(RealFunction that)
   {
