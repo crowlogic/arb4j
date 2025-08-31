@@ -277,10 +277,9 @@ public interface RealFunction extends
         }
         domain.forEach(i ->
         {
-          Real ithVal = values.get(i);
+          Real ithVal   = values.get(i);
           Real ithPoint = mesh.get(i);
           evaluate(ithPoint, 1, bits, ithVal);
-          System.out.format("i=%s ithPoint=%s ithVal=%s\n", i, ithPoint, ithVal );
         });
         return sample;
       }

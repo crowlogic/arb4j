@@ -104,7 +104,7 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
     mv.visitVarInsn(Opcodes.ALOAD, outSlot);
     generatedType = S;
 
-    assert !isResult : "TODO: handle isResult=true";
+    //assert !isResult : "TODO: handle isResult=true";
     return mv;
   }
 

@@ -477,6 +477,7 @@ public class ExpressionTest extends
 
   public void testGamma()
   {
+    Expression.saveClasses = true;
     RealFunction func   = RealFunction.express("Γ(4)");
     Real         result = func.evaluate(null, 0, 128, new Real());
     assertEquals(6.0, result.doubleValue());
