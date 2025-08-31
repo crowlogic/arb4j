@@ -2238,10 +2238,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     else
     {
-//      System.err.format("hmm %s type=%s initial=%s\n", implementedInterfaces, type, initialize);
+      System.err.format("hmm %s type=%s initial=%s\n", implementedInterfaces, type, initialize);
       // if the coDomain is a functon, then it will be an interface and thus
-      // no intermediate variables will be declare in this class, but only declared in
-      // the class that will be returned
+      // no intermediate variables will be declared in this class, rather they are
+      // instead declared in the class that will be returned
       return null;
     }
 
