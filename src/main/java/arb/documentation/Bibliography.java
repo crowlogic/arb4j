@@ -12,6 +12,8 @@ import arb.documentation.references.Book;
  * Bibliography<br>
  * <br>
  * 
+ * @author Stephen Crowley
+ * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */

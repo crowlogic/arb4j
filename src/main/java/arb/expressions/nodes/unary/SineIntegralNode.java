@@ -52,12 +52,12 @@ public class SineIntegralNode<D, C, F extends Function<? extends D, ? extends C>
   @Override
   public String toString()
   {
-    return String.format("Si(%s)", arg);
+    return String.format("si(%s)", arg);
   }
 
   @Override
   public String typeset()
   {
-    return String.format("\\\\Si(%s)", arg == null ? "" : arg.typeset());
+    return String.format("\\\\si(%s)", arg == null ? "" : arg.typeset());
   }
 }
