@@ -1,0 +1,199 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{cite}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\title{Asymptotic Solutions of Differential Equations and Their Applications}
+\author{Calvin H. Wilcox}
+\date{1964}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This paper discusses asymptotic solutions of differential equations and their applications, particularly focusing on the development of systematic methods for obtaining asymptotic expansions in various contexts. The approach emphasizes the connection between pure asymptotic theory and applied mathematics, with special attention to boundary value problems and their practical implications.
+\end{abstract}
+
+\section{Introduction}\label{sec:introduction}
+
+The purpose of this paper is to describe recent developments in the asymptotic solution of differential equations, with particular emphasis on applications to problems arising in mathematical physics. The modern theory of asymptotic expansions has developed to the point where it can provide useful approximations to solutions of many differential equations that cannot be solved exactly.
+
+A feature of this development has been the generalization of the method of steepest descent to a much broader class of problems than was originally envisioned. In this paper, the aim is to show how these generalizations can be applied systematically to obtain asymptotic solutions of boundary value problems in partial differential equations.
+
+\section{Basic Concepts and Definitions}\label{sec:basic_concepts}
+
+\begin{definition}\label{def:asymptotic_expansion}
+Let $f(x)$ and $g(x)$ be functions defined for large values of $x$. The function $f(x)$ is said to be asymptotic to $g(x)$ as $x \to \infty$, written $f(x) \sim g(x)$, if
+\begin{equation}\label{eq:asymptotic_relation}
+\lim_{x \to \infty} \frac{f(x)}{g(x)} = 1
+\end{equation}
+\end{definition}
+
+More generally, an asymptotic expansion of $f(x)$ as $x \to \infty$ is a series of the form
+\begin{equation}\label{eq:asymptotic_series}
+f(x) \sim \sum_{n=0}^{\infty} a_n \phi_n(x)
+\end{equation}
+where $\{\phi_n(x)\}$ is a sequence of functions such that $\phi_{n+1}(x) = o(\phi_n(x))$ as $x \to \infty$.
+
+\begin{definition}\label{def:poincare_expansion}
+The asymptotic expansion given in equation~\eqref{eq:asymptotic_series} is called a Poincaré expansion if for each $N$,
+\begin{equation}\label{eq:poincare_condition}
+f(x) - \sum_{n=0}^{N} a_n \phi_n(x) = O(\phi_{N+1}(x))
+\end{equation}
+as $x \to \infty$.
+\end{definition}
+
+\section{The Method of Stationary Phase}\label{sec:stationary_phase}
+
+One of the most important techniques in asymptotic analysis is the method of stationary phase. This method applies to integrals of the form
+\begin{equation}\label{eq:stationary_phase_integral}
+I(\lambda) = \int_a^b f(x) e^{i\lambda g(x)} dx
+\end{equation}
+where $\lambda$ is a large parameter.
+
+\begin{theorem}[Method of Stationary Phase]\label{thm:stationary_phase}
+Let $g(x)$ have a unique stationary point at $x = x_0 \in (a,b)$ where $g'(x_0) = 0$ and $g''(x_0) \neq 0$. If $f(x)$ is sufficiently smooth, then as $\lambda \to \infty$,
+\begin{equation}\label{eq:stationary_phase_result}
+I(\lambda) \sim f(x_0) e^{i\lambda g(x_0)} \sqrt{\frac{2\pi}{i\lambda g''(x_0)}}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The proof proceeds by expanding $g(x)$ in a Taylor series around $x_0$:
+\begin{equation}\label{eq:taylor_expansion}
+g(x) = g(x_0) + \frac{1}{2}g''(x_0)(x-x_0)^2 + O((x-x_0)^3)
+\end{equation}
+
+Making the substitution $u = (x-x_0)\sqrt{\lambda |g''(x_0)|/2}$ and using the fact that the main contribution comes from a neighborhood of $x_0$, the result follows from the evaluation of the Fresnel integral.
+\end{proof}
+
+\section{Applications to Differential Equations}\label{sec:applications}
+
+\subsection{Second-Order Linear Equations}\label{subsec:second_order}
+
+Consider the second-order linear differential equation
+\begin{equation}\label{eq:second_order_ode}
+\frac{d^2y}{dx^2} + \lambda^2 p(x) y = 0
+\end{equation}
+where $\lambda$ is a large parameter and $p(x)$ is a given function.
+
+The WKB (Wentzel-Kramers-Brillouin) method provides asymptotic solutions of the form
+\begin{equation}\label{eq:wkb_solution}
+y(x) \sim A \frac{e^{i\lambda \int^x \sqrt{p(t)} dt}}{\sqrt[4]{p(x)}} + B \frac{e^{-i\lambda \int^x \sqrt{p(t)} dt}}{\sqrt[4]{p(x)}}
+\end{equation}
+where $A$ and $B$ are constants determined by boundary conditions.
+
+\begin{theorem}[WKB Approximation]\label{thm:wkb}
+If $p(x) > 0$ and $p(x)$ is sufficiently smooth, then the solutions given by equation~\eqref{eq:wkb_solution} provide asymptotic approximations to the exact solutions of equation~\eqref{eq:second_order_ode} as $\lambda \to \infty$.
+\end{theorem}
+
+\subsection{Boundary Value Problems}\label{subsec:boundary_value}
+
+The asymptotic methods discussed above can be extended to boundary value problems. Consider the problem
+\begin{align}
+L[u] &= f \quad \text{in } \Omega \label{eq:boundary_problem_pde}\\
+B[u] &= g \quad \text{on } \partial\Omega \label{eq:boundary_problem_bc}
+\end{align}
+where $L$ is a differential operator and $B$ represents boundary conditions.
+
+The construction of asymptotic solutions typically involves:
+\begin{enumerate}[label=(\roman*)]
+\item Finding the leading order behavior in the interior
+\item Constructing boundary layer corrections near $\partial\Omega$
+\item Matching the interior and boundary layer solutions
+\end{enumerate}
+
+\section{Error Estimates and Convergence}\label{sec:error_estimates}
+
+An important aspect of asymptotic theory is the estimation of error terms. For the expansions considered above, precise error bounds can often be established.
+
+\begin{theorem}[Error Bounds]\label{thm:error_bounds}
+Under appropriate smoothness conditions, the error in truncating the asymptotic expansion~\eqref{eq:asymptotic_series} after $N$ terms is bounded by
+\begin{equation}\label{eq:error_bound}
+\left|f(x) - \sum_{n=0}^{N} a_n \phi_n(x)\right| \leq C \cdot |\phi_{N+1}(x)|
+\end{equation}
+for some constant $C$ independent of $x$.
+\end{theorem}
+
+\section{Special Functions and Asymptotic Behavior}\label{sec:special_functions}
+
+Many special functions that arise in applications have well-known asymptotic expansions. For example, the Hankel function $H_\nu^{(1)}(z)$ has the asymptotic expansion
+\begin{equation}\label{eq:hankel_asymptotic}
+H_\nu^{(1)}(z) \sim \sqrt{\frac{2}{\pi z}} e^{i(z - \nu\pi/2 - \pi/4)} \sum_{n=0}^{\infty} \frac{i^n}{n!} \frac{(\nu, n)}{(2z)^n}
+\end{equation}
+as $|z| \to \infty$, where $(\nu, n)$ represents the Pochhammer symbol.
+
+\section{Applications to Mathematical Physics}\label{sec:mathematical_physics}
+
+The methods developed in this paper have numerous applications in mathematical physics, including:
+
+\begin{itemize}
+\item Wave propagation problems
+\item Quantum mechanical scattering theory  
+\item Electromagnetic wave diffraction
+\item Heat conduction in thin domains
+\end{itemize}
+
+For instance, in quantum mechanics, the semiclassical approximation leads to asymptotic solutions of the Schrödinger equation
+\begin{equation}\label{eq:schrodinger}
+-\frac{\hbar^2}{2m} \nabla^2 \psi + V(x) \psi = E \psi
+\end{equation}
+in the limit $\hbar \to 0$.
+
+\section{Numerical Considerations}\label{sec:numerical}
+
+While asymptotic methods provide valuable theoretical insights, their practical implementation often requires careful numerical considerations. The accuracy of asymptotic approximations depends on:
+
+\begin{enumerate}
+\item The size of the asymptotic parameter
+\item The number of terms retained in the expansion
+\item The smoothness of the coefficient functions
+\end{enumerate}
+
+\section{Concluding Remarks}\label{sec:conclusion}
+
+The theory of asymptotic solutions of differential equations has reached a level of maturity where it can provide both theoretical understanding and practical computational tools. The methods discussed in this paper represent a systematic approach to problems that were previously tractable only through ad hoc techniques.
+
+Future developments in this field are likely to focus on:
+\begin{itemize}
+\item Extension to nonlinear problems
+\item Applications to partial differential equations in higher dimensions
+\item Connection with modern computational methods
+\end{itemize}
+
+The bridge between rigorous mathematical analysis and practical applications continues to be strengthened through these asymptotic methods.
+
+\begin{thebibliography}{99}
+
+\bibitem{erdelyi1956} A. Erdélyi, \emph{Asymptotic Expansions}, Dover Publications, New York, 1956.
+
+\bibitem{watson1944} G. N. Watson, \emph{A Treatise on the Theory of Bessel Functions}, 2nd ed., Cambridge University Press, Cambridge, 1944.
+
+\bibitem{whittaker1927} E. T. Whittaker and G. N. Watson, \emph{A Course of Modern Analysis}, 4th ed., Cambridge University Press, Cambridge, 1927.
+
+\bibitem{jeffreys1962} H. Jeffreys and B. S. Jeffreys, \emph{Methods of Mathematical Physics}, 3rd ed., Cambridge University Press, Cambridge, 1962.
+
+\bibitem{copson1965} E. T. Copson, \emph{Asymptotic Expansions}, Cambridge University Press, Cambridge, 1965.
+
+\bibitem{heading1962} J. Heading, \emph{An Introduction to Phase-Integral Methods}, Methuen, London, 1962.
+
+\bibitem{olver1974} F. W. J. Olver, \emph{Asymptotics and Special Functions}, Academic Press, New York, 1974.
+
+\bibitem{dingle1973} R. B. Dingle, \emph{Asymptotic Expansions: their Derivation and Interpretation}, Academic Press, London, 1973.
+
+\bibitem{wasow1965} W. Wasow, \emph{Asymptotic Expansions for Ordinary Differential Equations}, Wiley, New York, 1965.
+
+\bibitem{kevorkian1981} J. Kevorkian and J. D. Cole, \emph{Perturbation Methods in Applied Mathematics}, Springer-Verlag, New York, 1981.
+
+\end{thebibliography}
+
+\end{document}

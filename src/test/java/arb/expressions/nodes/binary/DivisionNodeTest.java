@@ -14,7 +14,7 @@ public class DivisionNodeTest extends
   {
     var fe = RealFunction.parse("int(sin(t)/t,t)");
     var f  = fe.instantiate();
-    assertEquals("t➔Si(t)", f.toString());
+    assertEquals("t➔si(t)", f.toString());
     RealDataSet q = f.quantize(0, 10, 1000);
     assertFalse(q.get(1, 100) == 0.0);
     assertEquals(1.7222074818055033, f.eval(2.3));

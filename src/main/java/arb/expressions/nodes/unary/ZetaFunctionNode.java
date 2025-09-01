@@ -11,7 +11,8 @@ import arb.functions.Function;
 /**
  * @author StΣνε
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ * @see 
+ * BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
 public final class ZetaFunctionNode<D, C, F extends Function<? extends D, ? extends C>> extends
