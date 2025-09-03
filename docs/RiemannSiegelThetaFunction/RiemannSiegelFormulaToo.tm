@@ -3,14 +3,8 @@
 <style|<tuple|generic|framed-theorems>>
 
 <\body>
-  <documentclass|article> <usepackage|amsmath, amsthm, amssymb, mathrsfs,
-  mathtools> <new-theorem|theorem|Theorem><new-theorem|lemma|Lemma><new-theorem|definition|Definition><new-theorem|corollary|Corollary>
-
-  <assign|tmscript|<macro|1|<with|math-font|cal*|<arg|1>>>><DeclarePairedDelimiter><abs|\<lvert\>|\<rvert\>>
-  <DeclarePairedDelimiter><norm|\<lVert\>|\<rVert\>>
-
-  <title|Exact Riemann-Siegel Formula: Rigorous Analytic Construction>
-  <author|Complete Mathematical Treatment><date|<date|>><maketitle>
+  <doc-data|<doc-title|Exactness of the Riemann-Siegel
+  Formula>|<doc-author|<author-data|<author-name|Stephen Crowley>>>>
 
   <section|Foundational Framework>
 
@@ -199,9 +193,13 @@
   <section|Exact Integral Analysis>
 
   <\theorem>
-    [Critical Point Structure] The phase function
-    <math|\<phi\><around|(|x|)>=-\<pi\>*\<tau\><rsup|2>-2*\<pi\>*\<tau\>*x-\<pi\>*x<rsup|2>>
-    has unique critical point at <math|x<rsub|0>=-\<tau\>> with
+    [Critical Point Structure] The phase function <math|>
+
+    <\equation>
+      \<phi\><around|(|x|)>=-\<pi\>*\<tau\><rsup|2>-2*\<pi\>*\<tau\>*x-\<pi\>*x<rsup|2>
+    </equation>
+
+    \ has unique critical point at <math|x<rsub|0>=-\<tau\>> with
     <math|\<phi\><rprime|''><around|(|x<rsub|0>|)>=-2*\<pi\>\<less\>0>.
   </theorem>
 
@@ -223,7 +221,7 @@
     The Hessian determinant for steepest descent is:
 
     <\equation*>
-      det H=<abs|\<phi\><rprime|''><around|(|x<rsub|0>|)>><rsup|2>=4*\<pi\><rsup|2>\<gtr\>0
+      det H=<around*|\||\<phi\><rprime|''><around|(|x<rsub|0>|)>|\|><rsup|2>=4*\<pi\><rsup|2>\<gtr\>0
     </equation*>
 
     confirming a proper saddle point structure.
@@ -446,19 +444,7 @@
     stage.
   </corollary>
 
-  <section|Computational Implementation>
-
-  <\theorem>
-    [Numerical Stability] For <math|t\<geq\>100> and
-    <math|m=<around|\<lfloor\>|<sqrt|t/<around|(|2*\<pi\>|)>>|\<rfloor\>>>,
-    the Riemann-Siegel formula provides numerically stable computation of
-    <math|Z<around|(|t|)>> with error bounded by machine precision.
-  </theorem>
-
-  The exactness of the Riemann-Siegel formula ensures that all approximation
-  methods derive their effectiveness from this fundamental exact
-  representation. The formula is not an approximation itself but rather the
-  exact analytic continuation of the zeta function on the critical line.
+  \;
 </body>
 
 <\initial>
