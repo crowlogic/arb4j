@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|article|boring-white|framed-theorems>>
+<style|<tuple|article|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Measure-Preserving Bijective Time Changes of
@@ -612,22 +612,22 @@
 <\references>
   <\collection>
     <associate|auto-1|<tuple|1|2>>
-    <associate|auto-10|<tuple|6|9>>
-    <associate|auto-11|<tuple|7|10>>
-    <associate|auto-12|<tuple|5|10>>
+    <associate|auto-10|<tuple|6|8>>
+    <associate|auto-11|<tuple|7|9>>
+    <associate|auto-12|<tuple|5|9>>
     <associate|auto-2|<tuple|2|2>>
     <associate|auto-3|<tuple|3|3>>
     <associate|auto-4|<tuple|4|3>>
     <associate|auto-5|<tuple|4.1|3>>
     <associate|auto-6|<tuple|4.2|5>>
-    <associate|auto-7|<tuple|4.3|6>>
-    <associate|auto-8|<tuple|4.4|7>>
-    <associate|auto-9|<tuple|5|8>>
-    <associate|bib-cramer1967|<tuple|cramer1967|10>>
-    <associate|bib-kac1943|<tuple|kac1943|10>>
-    <associate|bib-priestley1965|<tuple|priestley1965|10>>
-    <associate|bib-rice1945|<tuple|rice1945|10>>
-    <associate|cor:evolving_spec|<tuple|12|7>>
+    <associate|auto-7|<tuple|4.3|5>>
+    <associate|auto-8|<tuple|4.4|6>>
+    <associate|auto-9|<tuple|5|7>>
+    <associate|bib-cramer1967|<tuple|cramer1967|9>>
+    <associate|bib-kac1943|<tuple|kac1943|9>>
+    <associate|bib-priestley1965|<tuple|priestley1965|9>>
+    <associate|bib-rice1945|<tuple|rice1945|9>>
+    <associate|cor:evolving_spec|<tuple|12|6>>
     <associate|cor:measure_preserve|<tuple|9|5>>
     <associate|def:inverse_unitary_op|<tuple|6|3>>
     <associate|def:oscillatory|<tuple|3|2>>
@@ -636,36 +636,36 @@
     <associate|def:unitary_op|<tuple|4|3>>
     <associate|envelope|<tuple|4|2>>
     <associate|eq:L2_preserve|<tuple|12|4>>
-    <associate|eq:conjugation|<tuple|51|8>>
-    <associate|eq:evolutionary_spec|<tuple|41|7>>
-    <associate|eq:integral_op_original|<tuple|47|8>>
-    <associate|eq:integral_op_transformed|<tuple|49|8>>
-    <associate|eq:kac_rice|<tuple|63|9>>
+    <associate|eq:conjugation|<tuple|51|7>>
+    <associate|eq:evolutionary_spec|<tuple|41|6>>
+    <associate|eq:integral_op_original|<tuple|47|7>>
+    <associate|eq:integral_op_transformed|<tuple|49|7>>
+    <associate|eq:kac_rice|<tuple|63|8>>
     <associate|eq:measure_preserve|<tuple|26|5>>
     <associate|eq:measure_preserve_sets|<tuple|25|5>>
     <associate|eq:oscillatory_rep|<tuple|6|2>>
-    <associate|eq:phi_def|<tuple|30|6>>
+    <associate|eq:phi_def|<tuple|30|5>>
     <associate|eq:stationary_rep|<tuple|7|3>>
     <associate|eq:time_change|<tuple|10|3>>
-    <associate|eq:time_changed_cov|<tuple|62|9>>
+    <associate|eq:time_changed_cov|<tuple|62|8>>
     <associate|eq:unitary_inverse|<tuple|11|3>>
     <associate|eq:unitary_op|<tuple|9|3>>
-    <associate|eq:zero_count|<tuple|61|9>>
-    <associate|lem:inverse_well_defined|<tuple|7|4>>
+    <associate|eq:zero_count|<tuple|61|8>>
+    <associate|lem:inverse_well_defined|<tuple|7|3>>
     <associate|rem:inverse_properties|<tuple|2|2>>
-    <associate|sec:conclusion|<tuple|7|10>>
-    <associate|sec:conjugation|<tuple|5|8>>
+    <associate|sec:conclusion|<tuple|7|9>>
+    <associate|sec:conjugation|<tuple|5|7>>
     <associate|sec:norm_preservation|<tuple|4.2|5>>
     <associate|sec:oscillatory|<tuple|2|2>>
     <associate|sec:scaling|<tuple|1|2>>
     <associate|sec:stationary|<tuple|3|3>>
     <associate|sec:time_change|<tuple|4|3>>
-    <associate|sec:zero_count|<tuple|6|9>>
+    <associate|sec:zero_count|<tuple|6|8>>
     <associate|thm:measure_preserve|<tuple|10|5>>
-    <associate|thm:operator_conjugation|<tuple|13|8>>
-    <associate|thm:osc_rep|<tuple|11|6>>
+    <associate|thm:operator_conjugation|<tuple|13|7>>
+    <associate|thm:osc_rep|<tuple|11|5>>
     <associate|thm:unitary|<tuple|8|4>>
-    <associate|thm:zero_count|<tuple|14|9>>
+    <associate|thm:zero_count|<tuple|14|8>>
   </collection>
 </references>
 

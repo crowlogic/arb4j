@@ -1,7 +1,8 @@
 FunctionPlotter.darkStyle=false;
-var theta = RealFunction.express("im(lnΓ(1/4+I*t/2))-(log(π)/2)*t");
-var t = 2.3;
-System.out.format("θ(%s)=%s\n",t,theta.eval(t));
-var f = RealFunction.express("Z(2*pi*exp(W(0,x/(pi*exp(1)))))");
-var g = RealFunction.express("Z(t)");
-plot(0,250,5000,f,g);
+var context = new Context();
+var θ = RealFunction.express("θ:im(lnΓ(1/4+I*t/2))-(log(π)/2)*t",context);
+var diffθ = RealFunction.express("θdiff:diff(θ(t),t)",context);
+var Nθ = RealFunction.express("t->t-tanh(θ(t)/diffθ(t))",context);
+var x = Nθ.eval(2*Math.PI);
+System.out.format("x=%s\n",x);
+plot(0,10,2000,θ,diffθ,Nθ);
