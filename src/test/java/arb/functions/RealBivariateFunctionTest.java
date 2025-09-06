@@ -5,6 +5,7 @@ import arb.Real;
 import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Expression;
 import arb.functions.real.RealFunction;
 import arb.stochastic.processes.ZProcess;
 import junit.framework.TestCase;
@@ -31,7 +32,7 @@ public class RealBivariateFunctionTest extends
 
   public void testEvaluateRealBivariateFunctionWithContextVariable()
   {
-    //Expression.trace = true;
+    Expression.trace = Expression.saveClasses = true;
     ZProcess                       Zprocess        = new ZProcess();
     RealBivariateToComplexFunction gain            = Zprocess.gainFunction();
 

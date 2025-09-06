@@ -228,8 +228,9 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
 
   public String formatGenerationParameters(Class<?> resultType)
   {
-    return String.format("BinaryOperation.generate( this=%s,\n%sleft=%s    (%s %s)\n%soperation=%s,\n%sright=%s    (%s %s),"
+    return String.format("%s.generate( this=%s,\n%sleft=%s    (%s %s)\n%soperation=%s,\n%sright=%s    (%s %s),"
                          + " \n%sresultType=%s  fieldName=%s )\n\n",
+                         getClass().getSimpleName(),
                          this,
                          indent(26),
                          left,
@@ -387,9 +388,9 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   public <E, S, G extends Function<? extends E, ? extends S>>
          Node<D, C, F>
          substitute(String name, Node<E, S, G> transformation)
-  { 
+  {
     left  = left.substitute(name, transformation);
-    right = right.substitute(name, transformation); 
+    right = right.substitute(name, transformation);
     return this;
   }
 

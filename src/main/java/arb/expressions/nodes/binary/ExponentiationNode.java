@@ -1,5 +1,7 @@
 package arb.expressions.nodes.binary;
 
+import org.objectweb.asm.MethodVisitor;
+
 import arb.AlgebraicNumber;
 import arb.Fraction;
 import arb.Integer;
@@ -19,6 +21,14 @@ import arb.functions.Function;
 public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                BinaryOperationNode<D, R, F>
 {
+
+  @Override
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
+  {
+    assert !"0".equals(left.toString()) : this + " should have been simplified to 0 or 1";
+                  
+    return super.generate(mv, resultType);
+  }
 
   public ExponentiationNode(Expression<D, R, F> expression,
                             Node<D, R, F> base,
@@ -106,17 +116,20 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   public Node<D, R, F> simplify()
   {
     super.simplify();
-    if (right.isLiteralConstant() && right.asLiteralConstant().isOne())
+    if (right.isOne())
     {
       return left;
     }
-    if (right.isLiteralConstant() && right.asLiteralConstant().isZero())
+    if (right.isZero())
     {
-      return expression.newLiteralConstant(1);
+      return one();
+    }
+    if (left.isZero())
+    {
+      return right.isZero() ? one() : zero();
     }
     if (left.isLiteralConstant() && right.isLiteralConstant())
     {
-
       var lconst = left.asLiteralConstant();
       var rconst = right.asLiteralConstant();
       if (lconst.isInt && rconst.isInt)
@@ -127,6 +140,14 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
           return expression.newLiteralConstant(power.toString());
         }
       }
+//      assert false : "todo: combine constants of type "
+//                     + lconst.type()
+//                     + " and "
+//                     + rconst.type()
+//                     + " with values "
+//                     + lconst
+//                     + " and "
+//                     + rconst;
     }
     return this;
   }
