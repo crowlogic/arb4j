@@ -96,13 +96,7 @@ Mark YELLOW CIRCLE if and only if \textbf{ALL} of the following conditions hold:
 \item You have made genuine effort to understand but failed
 \end{itemize}
 
-\textbf{YELLOW REQUIREMENTS}: If you mark YELLOW, you \textbf{MUST}:
-\begin{enumerate}
-\item Explicitly state: "I cannot complete verification of this statement"
-\item Detail exactly what you do not understand
-\item Explain what specific mathematical knowledge or technique you lack
-\item State clearly: "This mark reflects my failure to understand, not any claim that the statement is incorrect"
-\end{enumerate}
+\textbf{YELLOW REQUIREMENTS}: If you mark YELLOW it must be because you fail to understand" and this is the only state allowed besides GREEN or RED
 
 \textbf{YELLOW PROHIBITION}: You \textbf{CANNOT} mark YELLOW if:
 \begin{itemize}
