@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|article|framed-theorems>>
+<style|<tuple|generic|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Measure-Preserving Bijective Time Changes of
@@ -93,14 +93,17 @@
     </enumerate>
   </definition>
 
+  \;
+
   <\remark>
     <label|rem:inverse_properties>The conditions in
     Definition<nbsp><reference|def:scaling> ensure that
-    <math|\<theta\><rsup|-1>> exists and is absolutely continuous. By the
-    inverse function theorem for absolutely continuous functions, <math|>
+    <math|\<theta\><rsup|-1><around*|(|s|)>> exists and is absolutely
+    continuous. By the inverse function theorem for absolutely continuous
+    functions, <math|>
 
     <\equation>
-      <frac|\<mathd\>|\<mathd\> s><around|(|\<theta\><rsup|-1>|)><around|(|s|)>=<frac|1|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>
+      <frac|\<mathd\>|\<mathd\> s><around|(|\<theta\><rsup|-1>|)><around|(|s|)>=<frac|1|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>=<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)><rsup|-1>
     </equation>
 
     for almost all <math|s> in the range of <math|\<theta\>>. The condition
@@ -109,11 +112,11 @@
     is well-defined almost everywhere.
   </remark>
 
-  <section|Oscillatory Processes><label|sec:oscillatory>
+  <section|Oscillatory Processes>
 
   <\definition>
     [Oscillatory Process]<label|def:oscillatory> A complex-valued,
-    second-order process <math|<around|{|X<around*|(|t|)>|}><rsub|t\<in\>\<bbb-R\>>>
+    second-order process <math|<around|{|Z<around*|(|t|)>|}><rsub|t\<in\>\<bbb-R\>>>
     is called <em|oscillatory> if there exist
 
     <\enumerate>
@@ -122,13 +125,22 @@
       with\ 
 
       <\equation>
-        \<phi\><rsub|t><around|(|\<omega\>|)>=A<rsub|t><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>
+        <tabular|<tformat|<table|<row|<cell|\<phi\><rsub|t><around|(|\<omega\>|)>>|<cell|=A<rsub|t><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around*|(|t,u|)>e<rsup|i
+        \<lambda\> u>\<mathd\>u>>>>>
       </equation>
 
-      \ and a given gain function\ 
+      \ and a given family of gain functions
 
       <\equation>
-        A<rsub|t><around|(|\<cdummy\>|)>\<in\>L<rsup|2><around|(|\<mu\>|)><label|envelope>
+        A<rsub|t><around|(|\<omega\>|)>=<frac|\<phi\><rsub|t><around*|(|\<omega\>|)>|e<rsup|i
+        \<omega\>t>>\<in\>L<rsup|2><around|(|\<mu\>|)><label|envelope>
+      </equation>
+
+      with time-dependent filter given by
+
+      <\equation>
+        h<around*|(|t,u|)>=<frac|1|2 \<pi\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>\<varphi\><rsub|t><around*|(|\<lambda\>|)>e<rsup|-i
+        \<lambda\>u>\<mathd\>u
       </equation>
 
       <item>and a complex orthogonal random measure
@@ -143,16 +155,16 @@
 
     <\equation>
       <label|eq:oscillatory_rep><tabular|<tformat|<table|<row|<cell|Z<around*|(|t|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><rsub|t><around|(|\<omega\>|)>*<space|0.17em>d*\<Phi\><around|(|\<omega\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<omega\>|)>*e<rsup|i
-      \<omega\>t>d*\<Phi\><around|(|\<omega\>|)>>>>>>
+      \<omega\>t>d*\<Phi\><around|(|\<omega\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around*|(|t,u|)>X<around*|(|t|)>\<mathd\>\<Phi\><around*|(|\<omega\>|)>>>>>>
     </equation>
 
-    All stationary processes are oscillatory with
-    <math|A<rsub|t><around*|(|\<omega\>|)>=1>
-  </definition>
+    where
 
-  TODO: insert proof of this as well as representation of Z(t) as a
-  time-dependent convolution of a stationary process with the time-dependent
-  filter given by the Fourier transform of the oscillatory function
+    <\equation>
+      X<around*|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i
+      \<lambda\> t>\<mathd\>\<Phi\><around*|(|\<omega\>|)>
+    </equation>
+  </definition>
 
   <section|Stationary Reference Process><label|sec:stationary>
 
@@ -167,11 +179,13 @@
   process with spectral density
 
   <\equation>
-    E*<around|\<lvert\>|d*\<Phi\><around|(|\<omega\>|)>|\<rvert\>><rsup|2>=d*\<mu\><around|(|\<omega\>|)>=S<around*|(|\<omega\>|)>=\<less\>fourier
-    transform of K<rsub|X>\<gtr\>
+    E*<around|\<lvert\>|d*\<Phi\><around|(|\<omega\>|)>|\<rvert\>><rsup|2>=d*\<mu\><around|(|\<omega\>|)>=S<around*|(|\<omega\>|)>=<frac|1|2
+    \<pi\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>K<around*|(|u|)>e<rsup|-i
+    \<omega\> u>\<mathd\>u=<wide|\<mu\>|\<dot\>><around*|(|\<omega\>|)>
   </equation>
 
-  \ and <math|\<mu\>> is a finite measure on <math|\<bbb-R\>>.
+  \ and <math|\<mu\>> is an absolutely continuous Lebesgue measure on
+  <math|\<bbb-R\>>\ 
 
   <section|Time-Changed Process><label|sec:time_change>
 
@@ -383,8 +397,6 @@
       A<rsub|t><around|(|\<omega\>|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>e<rsup|i*\<omega\>*<around|(|\<theta\><around|(|t|)>-t|)>>
     </equation>
 
-    .
-
     Since <math|<wide|\<theta\>|\<dot\>><around|(|t|)>\<geq\>0> almost
     everywhere and <math|<wide|\<theta\>|\<dot\>><around|(|t|)>=0> only on
     s<math|>ets of measure zero, the function
@@ -446,7 +458,7 @@
       \<lambda\> h>\<mathd\>\<lambda\>
     </equation>
 
-    , and let <math|T<rsub|K<rsub|\<theta\>>>> be the integral covariance
+    and let <math|T<rsub|K<rsub|\<theta\>>>> be the integral covariance
     operator defined by
 
     <\equation>
@@ -459,7 +471,7 @@
       K<rsub|\<theta\>><around|(|s,t|)>=K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)><sqrt|<wide|\<theta\>|\<dot\>><around*|(|t|)><wide|\<theta\>|\<dot\>><around*|(|s|)>>
     </equation>
 
-    . Then
+    Then
 
     <\equation>
       <label|eq:conjugation>T<rsub|K<rsub|\<theta\>>>=M<rsub|\<theta\>>*T<rsub|K>*M<rsub|\<theta\>><rsup|-1>
@@ -471,7 +483,7 @@
     <math|<around|(|M<rsub|\<theta\>>*T<rsub|K>*M<rsub|\<theta\>><rsup|-1>*g|)><around|(|t|)>>:
 
     <\align>
-      <tformat|<table|<row|<cell|<around|(|M<rsub|\<theta\>><rsup|-1>*g|)><around|(|s|)>>|<cell|=<frac|g<around|(|\<theta\><rsup|-1><around|(|s|)>|)>|<sqrt|\<theta\><rprime|'><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>>,<eq-number>>>|<row|<cell|<around|(|T<rsub|K>*M<rsub|\<theta\>><rsup|-1>*g|)><around|(|t|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>K<around|(|<around|\||t-s|\|>|)><frac|g<around|(|\<theta\><rsup|-1><around|(|s|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>>*d*s.<eq-number>>>>>
+      <tformat|<table|<row|<cell|<around|(|M<rsub|\<theta\>><rsup|-1>*g|)><around|(|s|)>>|<cell|=<frac|g<around|(|\<theta\><rsup|-1><around|(|s|)>|)>|<sqrt|\<theta\><rprime|'><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>><eq-number>>>|<row|<cell|<around|(|T<rsub|K>*M<rsub|\<theta\>><rsup|-1>*g|)><around|(|t|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>K<around|(|<around|\||t-s|\|>|)><frac|g<around|(|\<theta\><rsup|-1><around|(|s|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>>*d*s<eq-number>>>>>
     </align>
 
     Apply the change of variables <math|u=\<theta\><rsup|-1><around|(|s|)>>,
@@ -479,13 +491,13 @@
     <math|d*s=<wide|\<theta\>|\<dot\>><around|(|u|)>*d*u>:
 
     <\align>
-      <tformat|<table|<row|<cell|<around|(|T<rsub|K>*M<rsub|\<theta\>><rsup|-1>*g|)><around|(|t|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>K<around|(|<around|\||t-\<theta\><around|(|u|)>|\|>|)><frac|g<around|(|u|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|u|)>>>*<wide|\<theta\>|\<dot\>><around|(|u|)>*d*u<eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>K<around|(|<around|\||t-\<theta\><around|(|u|)>|\|>|)>*g<around|(|u|)><sqrt|<wide|\<theta\>|\<dot\>><around|(|u|)>>*d*u.<eq-number>>>>>
+      <tformat|<table|<row|<cell|<around|(|T<rsub|K>*M<rsub|\<theta\>><rsup|-1>*g|)><around|(|t|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>K<around|(|<around|\||t-\<theta\><around|(|u|)>|\|>|)><frac|g<around|(|u|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|u|)>>>*<wide|\<theta\>|\<dot\>><around|(|u|)>*d*u<eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>K<around|(|<around|\||t-\<theta\><around|(|u|)>|\|>|)>*g<around|(|u|)><sqrt|<wide|\<theta\>|\<dot\>><around|(|u|)>>*d*u<eq-number>>>>>
     </align>
 
     Now apply <math|M<rsub|\<theta\>>>:
 
     <\align>
-      <tformat|<table|<row|<cell|<around|(|M<rsub|\<theta\>>*T<rsub|K>*M<rsub|\<theta\>><rsup|-1>*g|)><around|(|t|)>>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<around|(|T<rsub|K>*M<rsub|\<theta\>><rsup|-1>*g|)><around|(|\<theta\><around|(|t|)>|)><eq-number>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|u|)>|\|>|)>*g<around|(|u|)><sqrt|<wide|\<theta\>|\<dot\>><around|(|u|)>>*d*u.<eq-number>>>>>
+      <tformat|<table|<row|<cell|<around|(|M<rsub|\<theta\>>*T<rsub|K>*M<rsub|\<theta\>><rsup|-1>*g|)><around|(|t|)>>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<around|(|T<rsub|K>*M<rsub|\<theta\>><rsup|-1>*g|)><around|(|\<theta\><around|(|t|)>|)><eq-number>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|u|)>|\|>|)>*g<around|(|u|)><sqrt|<wide|\<theta\>|\<dot\>><around|(|u|)>>*d*u<eq-number>>>>>
     </align>
 
     Apply the change of variables <math|s=\<theta\><around|(|u|)>> in the
@@ -534,7 +546,7 @@
     Computing the mixed partial derivative:
 
     <\align>
-      <tformat|<table|<row|<cell|<frac|\<partial\>|\<partial\>*t>*K<rsub|\<theta\>><around|(|s,t|)>>|<cell|=<frac|1|2>*<frac|<wide|\<theta\>|\<ddot\>><around|(|t|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>>*<sqrt|\<theta\><rprime|'><around|(|s|)>>*K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)><eq-number>>>|<row|<cell|>|<cell|<space|1em>+<sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>*<wide|\<theta\>|\<dot\>><around|(|t|)>>*<wide|K|\<dot\>><around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)><math-up|sgn><around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>*<wide|\<theta\>|\<dot\>><around|(|t|)>.<eq-number>>>>>
+      <tformat|<table|<row|<cell|<frac|\<partial\>|\<partial\>*t>*K<rsub|\<theta\>><around|(|s,t|)>>|<cell|=<frac|1|2>*<frac|<wide|\<theta\>|\<ddot\>><around|(|t|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>>*<sqrt|\<theta\><rprime|'><around|(|s|)>>*K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)><eq-number>>>|<row|<cell|>|<cell|<space|1em>+<sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>*<wide|\<theta\>|\<dot\>><around|(|t|)>>*<wide|K|\<dot\>><around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)><math-up|sgn><around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>*<wide|\<theta\>|\<dot\>><around|(|t|)><eq-number>>>>>
     </align>
 
     Taking the limit as <math|s\<to\>t> and using the fact that
@@ -566,19 +578,19 @@
     <item>The rigorous construction of the unitary operator
     <math|M<rsub|\<theta\>>> and its inverse, with proper treatment of the
     case where <math|<wide|\<theta\>|\<dot\>><around|(|t|)>=0> on sets of
-    measure zero.
+    measure zero
 
     <item>The explicit oscillatory representation with envelope function
-    <math|A<rsub|t><around|(|\<omega\>|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<omega\>*<around|(|\<theta\><around|(|t|)>-t|)>>>.
+    <math|A<rsub|t><around|(|\<omega\>|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<omega\>*<around|(|\<theta\><around|(|t|)>-t|)>>>
 
     <item>The evolutionary power spectrum formula
-    <math|d*F<rsub|t><around|(|\<omega\>|)>=<wide|\<theta\>|\<dot\>><around|(|t|)>*d*\<mu\><around|(|\<omega\>|)>>.
+    <math|d*F<rsub|t><around|(|\<omega\>|)>=<wide|\<theta\>|\<dot\>><around|(|t|)>*d*\<mu\><around|(|\<omega\>|)>>
 
     <item>The operator conjugation relationship
-    <math|T<rsub|K<rsub|\<theta\>>>=M<rsub|\<theta\>>*T<rsub|K>*M<rsub|\<theta\>><rsup|-1>>.
+    <math|T<rsub|K<rsub|\<theta\>>>=M<rsub|\<theta\>>*T<rsub|K>*M<rsub|\<theta\>><rsup|-1>>
 
     <item>A closed-form expression for the expected zero count in terms of
-    the range of the time transformation.
+    the range of the time transformation
   </enumerate>
 
   <\thebibliography|99>
@@ -603,7 +615,7 @@
     <associate|magnification|1.2>
     <associate|page-breaking|sloppy>
     <associate|page-height|auto>
-    <associate|page-medium|paper>
+    <associate|page-medium|beamer>
     <associate|page-type|letter>
     <associate|page-width|auto>
   </collection>
@@ -612,60 +624,59 @@
 <\references>
   <\collection>
     <associate|auto-1|<tuple|1|2>>
-    <associate|auto-10|<tuple|6|8>>
-    <associate|auto-11|<tuple|7|9>>
-    <associate|auto-12|<tuple|5|9>>
-    <associate|auto-2|<tuple|2|2>>
+    <associate|auto-10|<tuple|6|9>>
+    <associate|auto-11|<tuple|7|10>>
+    <associate|auto-12|<tuple|5|10>>
+    <associate|auto-2|<tuple|2|3>>
     <associate|auto-3|<tuple|3|3>>
-    <associate|auto-4|<tuple|4|3>>
-    <associate|auto-5|<tuple|4.1|3>>
-    <associate|auto-6|<tuple|4.2|5>>
-    <associate|auto-7|<tuple|4.3|5>>
-    <associate|auto-8|<tuple|4.4|6>>
-    <associate|auto-9|<tuple|5|7>>
-    <associate|bib-cramer1967|<tuple|cramer1967|9>>
-    <associate|bib-kac1943|<tuple|kac1943|9>>
-    <associate|bib-priestley1965|<tuple|priestley1965|9>>
-    <associate|bib-rice1945|<tuple|rice1945|9>>
-    <associate|cor:evolving_spec|<tuple|12|6>>
+    <associate|auto-4|<tuple|4|4>>
+    <associate|auto-5|<tuple|4.1|4>>
+    <associate|auto-6|<tuple|4.2|6>>
+    <associate|auto-7|<tuple|4.3|6>>
+    <associate|auto-8|<tuple|4.4|7>>
+    <associate|auto-9|<tuple|5|8>>
+    <associate|bib-cramer1967|<tuple|cramer1967|10>>
+    <associate|bib-kac1943|<tuple|kac1943|10>>
+    <associate|bib-priestley1965|<tuple|priestley1965|10>>
+    <associate|bib-rice1945|<tuple|rice1945|10>>
+    <associate|cor:evolving_spec|<tuple|12|7>>
     <associate|cor:measure_preserve|<tuple|9|5>>
-    <associate|def:inverse_unitary_op|<tuple|6|3>>
-    <associate|def:oscillatory|<tuple|3|2>>
+    <associate|def:inverse_unitary_op|<tuple|6|4>>
+    <associate|def:oscillatory|<tuple|3|3>>
     <associate|def:scaling|<tuple|1|2>>
-    <associate|def:time_changed_proc|<tuple|5|3>>
-    <associate|def:unitary_op|<tuple|4|3>>
-    <associate|envelope|<tuple|4|2>>
-    <associate|eq:L2_preserve|<tuple|12|4>>
-    <associate|eq:conjugation|<tuple|51|7>>
-    <associate|eq:evolutionary_spec|<tuple|41|6>>
-    <associate|eq:integral_op_original|<tuple|47|7>>
-    <associate|eq:integral_op_transformed|<tuple|49|7>>
-    <associate|eq:kac_rice|<tuple|63|8>>
-    <associate|eq:measure_preserve|<tuple|26|5>>
-    <associate|eq:measure_preserve_sets|<tuple|25|5>>
-    <associate|eq:oscillatory_rep|<tuple|6|2>>
-    <associate|eq:phi_def|<tuple|30|5>>
-    <associate|eq:stationary_rep|<tuple|7|3>>
-    <associate|eq:time_change|<tuple|10|3>>
-    <associate|eq:time_changed_cov|<tuple|62|8>>
-    <associate|eq:unitary_inverse|<tuple|11|3>>
-    <associate|eq:unitary_op|<tuple|9|3>>
-    <associate|eq:zero_count|<tuple|61|8>>
-    <associate|lem:inverse_well_defined|<tuple|7|3>>
+    <associate|def:time_changed_proc|<tuple|5|4>>
+    <associate|def:unitary_op|<tuple|4|4>>
+    <associate|envelope|<tuple|4|3>>
+    <associate|eq:L2_preserve|<tuple|14|4>>
+    <associate|eq:conjugation|<tuple|53|8>>
+    <associate|eq:evolutionary_spec|<tuple|43|7>>
+    <associate|eq:integral_op_original|<tuple|49|8>>
+    <associate|eq:integral_op_transformed|<tuple|51|8>>
+    <associate|eq:kac_rice|<tuple|65|9>>
+    <associate|eq:measure_preserve|<tuple|28|6>>
+    <associate|eq:measure_preserve_sets|<tuple|27|5>>
+    <associate|eq:oscillatory_rep|<tuple|7|3>>
+    <associate|eq:phi_def|<tuple|32|6>>
+    <associate|eq:stationary_rep|<tuple|9|3>>
+    <associate|eq:time_change|<tuple|12|4>>
+    <associate|eq:time_changed_cov|<tuple|64|9>>
+    <associate|eq:unitary_inverse|<tuple|13|4>>
+    <associate|eq:unitary_op|<tuple|11|4>>
+    <associate|eq:zero_count|<tuple|63|9>>
+    <associate|lem:inverse_well_defined|<tuple|7|4>>
     <associate|rem:inverse_properties|<tuple|2|2>>
-    <associate|sec:conclusion|<tuple|7|9>>
-    <associate|sec:conjugation|<tuple|5|7>>
-    <associate|sec:norm_preservation|<tuple|4.2|5>>
-    <associate|sec:oscillatory|<tuple|2|2>>
+    <associate|sec:conclusion|<tuple|7|10>>
+    <associate|sec:conjugation|<tuple|5|8>>
+    <associate|sec:norm_preservation|<tuple|4.2|6>>
     <associate|sec:scaling|<tuple|1|2>>
     <associate|sec:stationary|<tuple|3|3>>
-    <associate|sec:time_change|<tuple|4|3>>
-    <associate|sec:zero_count|<tuple|6|8>>
-    <associate|thm:measure_preserve|<tuple|10|5>>
-    <associate|thm:operator_conjugation|<tuple|13|7>>
-    <associate|thm:osc_rep|<tuple|11|5>>
+    <associate|sec:time_change|<tuple|4|4>>
+    <associate|sec:zero_count|<tuple|6|9>>
+    <associate|thm:measure_preserve|<tuple|10|6>>
+    <associate|thm:operator_conjugation|<tuple|13|8>>
+    <associate|thm:osc_rep|<tuple|11|6>>
     <associate|thm:unitary|<tuple|8|4>>
-    <associate|thm:zero_count|<tuple|14|8>>
+    <associate|thm:zero_count|<tuple|14|9>>
   </collection>
 </references>
 
