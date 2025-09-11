@@ -226,6 +226,13 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     return hash;
   }
 
+  public String formatSimplificationParameters(Class<?> resultType)
+  {
+    return String.format("%s.simplify( this=%s )\n\n",
+                         getClass().getSimpleName(),
+                         this);
+  }
+  
   public String formatGenerationParameters(Class<?> resultType)
   {
     return String.format("%s.generate( this=%s,\n%sleft=%s    (%s %s)\n%soperation=%s,\n%sright=%s    (%s %s),"
@@ -494,6 +501,11 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   @Override
   public Node<D, C, F> simplify()
   {
+    if (Expression.trace)
+    {
+      System.out.println(formatSimplificationParameters(type()));
+    }
+    
     if (left != null)
     {
       left = left.simplify();

@@ -59,8 +59,12 @@ public final class TypeSettingCellFactory<D, C, F extends Function<? extends D, 
         catch (Exception e)
         {
           setText("Error rendering formula: " + e.getMessage() + " for string '" + item + "'");
+          System.err.format("formula for which the exception is being thrown is '%s'\n",
+                            item);
+
           e.printStackTrace(System.err);
           setGraphic(null);
+
         }
       }
     }
