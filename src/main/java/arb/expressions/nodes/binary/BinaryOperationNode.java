@@ -226,7 +226,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     return hash;
   }
 
-  public String formatSimplificationParameters(Class<?> resultType)
+  public String formatSimplificationParameters()
   {
     return String.format("%s.simplify( this=%s )\n\n",
                          getClass().getSimpleName(),
@@ -503,7 +503,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   {
     if (Expression.trace)
     {
-      System.out.println(formatSimplificationParameters(type()));
+      System.out.println(formatSimplificationParameters());
     }
     
     if (left != null)
