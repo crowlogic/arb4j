@@ -92,11 +92,11 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     if (isSquareRoot())
     {
-      return arg.pow(expression.newLiteralConstant("½"));
+      return arg.pow(expression.newLiteralConstant("½")).simplify();
     }
     else
     {
-      return this;
+      return super.simplify();
     }
   }
 

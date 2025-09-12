@@ -55,7 +55,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public Node<D, R, F> simplify()
   {
-    super.simplify();
+    
 
     if (left.isZero())
     {
@@ -115,7 +115,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       }
     }
 
-    return this;
+    return super.simplify();
   }
 
   @Override
