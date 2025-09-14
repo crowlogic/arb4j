@@ -36,6 +36,7 @@ import arb.expressions.context.TopologicalSorter;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.ComplexToRealFunction;
+import arb.functions.FractionFunction;
 import arb.functions.Function;
 import arb.functions.IntegerFunction;
 import arb.functions.IntegerNullaryFunction;
@@ -517,7 +518,8 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     RealNullaryFunctional.class,
     Functional.class,
     ComplexFunctionSequence.class,
-    RealBivariateFunction.class };
+    RealBivariateFunction.class,
+    FractionFunction.class };
 
   private HBox setupTypeBoxes()
   {
@@ -665,6 +667,10 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     else if (functionType.equals(RealSequence.class))
     {
       selectTypes(Integer.class, Real.class);
+    }
+    else if (functionType.equals(FractionFunction.class))
+    {
+      selectTypes(Fraction.class, Fraction.class);
     }
     else if (functionType.equals(AlgebraicNumberFunction.class))
     {

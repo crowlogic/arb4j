@@ -1,0 +1,10 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.Fraction
+context:
+  input:
+  - arb.Fraction
+  - 1⁄4
+domain: arb.Fraction
+expression: 1/2+3/4+x
+function: arb.functions.FractionFunction
+...

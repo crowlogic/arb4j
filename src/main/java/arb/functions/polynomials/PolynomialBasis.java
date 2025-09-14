@@ -1,8 +1,8 @@
 package arb.functions.polynomials;
 
+import arb.Basis;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.functions.Basis;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the

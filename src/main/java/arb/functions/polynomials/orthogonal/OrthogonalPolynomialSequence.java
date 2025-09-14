@@ -2,9 +2,9 @@ package arb.functions.polynomials.orthogonal;
 
 import java.util.ArrayList;
 
+import arb.Basis;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.functions.Basis;
 import arb.functions.polynomials.OrthogonalSequence;
 
 /**
