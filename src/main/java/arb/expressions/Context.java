@@ -2,7 +2,6 @@ package arb.expressions;
 
 import static arb.utensils.Utensils.wrapOrThrow;
 import static java.lang.String.format;
-import static java.lang.System.err;
 
 import java.util.Collection;
 import java.util.HashMap;

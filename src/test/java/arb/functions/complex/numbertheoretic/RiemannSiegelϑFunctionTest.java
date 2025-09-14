@@ -3,7 +3,9 @@ package arb.functions.complex.numbertheoretic;
 import static arb.ComplexConstants.one;
 import static arb.ComplexConstants.ⅈ;
 
-import arb.*;
+import arb.Complex;
+import arb.ComplexConstants;
+import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.complex.ComplexRiemannSiegelThetaFunction;

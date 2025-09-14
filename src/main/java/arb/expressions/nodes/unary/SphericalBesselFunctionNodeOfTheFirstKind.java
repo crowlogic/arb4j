@@ -1,6 +1,8 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.cast;
+import static arb.expressions.Compiler.loadInputParameter;
+import static arb.expressions.Compiler.loadOrderParameter;
 import static java.lang.String.format;
 import static java.lang.System.err;
 

@@ -1,7 +1,8 @@
 package arb.differential.geometry;
 
 import arb.Field;
-
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.geometry.Manifold;
 import arb.space.topological.TopologicalSpace;
 

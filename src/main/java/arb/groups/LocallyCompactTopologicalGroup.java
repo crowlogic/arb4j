@@ -9,6 +9,7 @@ import arb.measure.HaarMeasure;
 import arb.measure.Measure;
 import arb.measure.σField;
 import arb.space.topological.TopologicalSpace;
+import io.fair_acc.bench.Measurable;
 
 /**
  * Represents a locally compact {@link Group}. A locally compact group is a

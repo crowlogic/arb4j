@@ -1,8 +1,15 @@
-package arb.functions.real;
+package arb.functions;
 
-import arb.*;
+import arb.Complex;
+import arb.ComplexConstants;
+import arb.FractionConstants;
+import arb.Initializable;
+import arb.Real;
+import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.functions.real.RealFunction;
+import arb.functions.real.RealRiemannSiegelThetaFunction;
 
 /**
  * Decompiled form of the {@link RealRiemannSiegelThetaFunction}

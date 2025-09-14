@@ -1,7 +1,10 @@
 package arb.functions.rational;
 
-import arb.*;
+import arb.Fraction;
 import arb.Integer;
+import arb.RationalFunction;
+import arb.Real;
+import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;

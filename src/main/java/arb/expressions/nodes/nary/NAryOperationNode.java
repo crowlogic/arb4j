@@ -1,6 +1,19 @@
 package arb.expressions.nodes.nary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.cast;
+import static arb.expressions.Compiler.designateLabel;
+import static arb.expressions.Compiler.getFieldFromThis;
+import static arb.expressions.Compiler.getMethodDescriptor;
+import static arb.expressions.Compiler.invokeMethod;
+import static arb.expressions.Compiler.invokeSetMethod;
+import static arb.expressions.Compiler.invokeVirtualMethod;
+import static arb.expressions.Compiler.jumpTo;
+import static arb.expressions.Compiler.jumpToIfGreaterThan;
+import static arb.expressions.Compiler.loadBitsParameterOntoStack;
+import static arb.expressions.Compiler.loadInputParameter;
+import static arb.expressions.Compiler.loadThisOntoStack;
+import static arb.expressions.Compiler.pop;
+import static arb.expressions.Compiler.putField;
 import static arb.utensils.Utensils.indent;
 import static java.lang.System.err;
 import static java.lang.System.out;
@@ -9,15 +22,23 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Type;
 
-import arb.*;
+import arb.ComplexPolynomial;
 import arb.Integer;
+import arb.Polynomial;
+import arb.Real;
+import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
-import arb.expressions.*;
+import arb.expressions.Compiler;
 import arb.expressions.Context;
+import arb.expressions.Expression;
+import arb.expressions.FunctionMapping;
+import arb.expressions.IntermediateVariable;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;

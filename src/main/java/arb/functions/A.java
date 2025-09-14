@@ -3,7 +3,6 @@ package arb.functions;
 import arb.Initializable;
 import arb.Real;
 import arb.Typesettable;
-import arb.functions.real.θ;
 
 // 
 // Decompiled by Procyon v0.6.0

@@ -8,7 +8,6 @@ import arb.Initializable;
 import arb.Integer;
 import arb.Real;
 import arb.Typesettable;
-import arb.functions.real.θ;
 
 public class Afunc implements
                    RealToComplexFunction,

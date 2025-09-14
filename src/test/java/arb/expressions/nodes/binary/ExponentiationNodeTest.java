@@ -1,6 +1,5 @@
 package arb.expressions.nodes.binary;
 
-import arb.Real;
 import arb.RealConstants;
 import arb.expressions.Context;
 import arb.expressions.Expression;

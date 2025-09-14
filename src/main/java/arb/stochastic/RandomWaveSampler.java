@@ -7,8 +7,6 @@ import static java.lang.Math.sqrt;
 import arb.FloatConstants;
 import arb.FloatInterval;
 import arb.Real;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.expressions.nodes.unary.BesselFunctionNodeOfTheFirstKind;
 import arb.functions.polynomials.orthogonal.OrthogonalPolynomialSequence;
 import arb.functions.polynomials.orthogonal.real.Type1ChebyshevPolynomials;
