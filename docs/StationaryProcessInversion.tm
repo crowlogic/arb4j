@@ -4,8 +4,24 @@
 
 <\body>
   <doc-data|<doc-title|Spectral Recovery and Pre-Envelope Theory: Formal
-  Theorems>|<doc-author|<author-data|<author-name|Mathematical
-  Analysis>>>|<doc-date|<date|>>>
+  Theorems>|<doc-author|<author-data|<author-name|Stephen
+  Crowley>|<\author-affiliation>
+    <date|>
+  </author-affiliation>>>>
+
+  <\table-of-contents|toc>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>Spectral
+    Recovery Theory> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-1><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>Envelope
+    Theory> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-2><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|3<space|2spc>Spectral
+    Inversion> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-3><vspace|0.5fn>
+  </table-of-contents>
 
   <section|Spectral Recovery Theory>
 
@@ -163,12 +179,19 @@
         <tformat|<table|<row|<cell|<label|eq:pre_envelope_variance>E<around|[|<around|\||d*\<zeta\><around|(|\<lambda\>|)>|\|><rsup|2>|]>>|<cell|=E<around|[|<around|(|d*U<around|(|\<lambda\>|)>-i*<space|0.17em>d*V<around|(|\<lambda\>|)>|)><around|(|<wide|d*U<around|(|\<lambda\>|)>-i*<space|0.17em>d*V<around|(|\<lambda\>|)>|\<bar\>>|)>|]>>>|<row|<cell|>|<cell|=E*<around|[|<around|(|d*U<around|(|\<lambda\>|)>-i*<space|0.17em>d*V<around|(|\<lambda\>|)>|)>*<around|(|d*U<around|(|\<lambda\>|)>+i*<space|0.17em>d*V<around|(|\<lambda\>|)>|)>|]>>>|<row|<cell|>|<cell|=E<around|[|<around|\||d*U<around|(|\<lambda\>|)>|\|><rsup|2>|]>+E<around|[|<around|\||d*V<around|(|\<lambda\>|)>|\|><rsup|2>|]>=d*G<around|(|\<lambda\>|)><eq-number>>>>>
       </align>
 
-      Since <math|E<around|[|<around|\||d*U<around|(|\<lambda\>|)>|\|><rsup|2>|]>=E<around|[|<around|\||d*V<around|(|\<lambda\>|)>|\|><rsup|2>|]>=<frac|1|2>*d*G<around|(|\<lambda\>|)>>
-      by symmetry.
+      Since
+
+      <\equation>
+        E<around|[|<around|\||d*U<around|(|\<lambda\>|)>|\|><rsup|2>|]>=E<around|[|<around|\||d*V<around|(|\<lambda\>|)>|\|><rsup|2>|]>=<frac|d*G<around|(|\<lambda\>|)>|2>*
+      </equation>
+
+      \ by symmetry.
 
       <item>Orthogonality follows from the orthogonality of <math|U> and
       <math|V> increments.
     </enumerate>
+
+    \;
   </proof>
 
   <section|Envelope Theory>
@@ -219,14 +242,20 @@
 
   <\proof>
     For any complex number <math|z=a+i*b>, the polar form is
-    <math|z=<around|\||z|\|>*e<rsup|i*arg <around|(|z|)>>> where:
+
+    <\equation>
+      z=<around|\||z|\|>*e<rsup|i*arg <around|(|z|)>>
+    </equation>
+
+    \ where:
 
     <\equation>
       <label|eq:complex_modulus><around|\||z|\|>=<sqrt|a<rsup|2>+b<rsup|2>>
     </equation>
 
     <\equation>
-      <label|eq:complex_argument>arg <around|(|z|)>=arctan <around|(|b/a|)>
+      <label|eq:complex_argument>arg <around|(|z|)>=arctan
+      <around*|(|<frac|b|a>|)>
     </equation>
 
     Applying this to <math|Z<around|(|t|)>=X<around|(|t|)>+i*<wide|X|^><around|(|t|)>>:
@@ -241,7 +270,13 @@
       <around*|(|<frac|<wide|X|^><around|(|t|)>|X<around|(|t|)>>|)>
     </equation>
 
-    Therefore: <math|Z<around|(|t|)>=R<around|(|t|)>*e<rsup|i*\<Theta\><around|(|t|)>>>.
+    Therefore: <math|>
+
+    <\equation>
+      Z<around|(|t|)>=R<around|(|t|)>*e<rsup|i*\<Theta\><around|(|t|)>>
+    </equation>
+
+    \;
   </proof>
 
   <\theorem>
@@ -268,7 +303,7 @@
     Using the chain rule:
 
     <\equation>
-      <label|eq:freq_chain_rule>\<omega\><around|(|t|)>=<frac|1|1+<around*|(|<frac|<wide|X|^><around|(|t|)>|X<around|(|t|)>>|)><rsup|2>>\<cdot\><frac|d|d*t><around*|(|<frac|<wide|X|^><around|(|t|)>|X<around|(|t|)>>|)>
+      <label|eq:freq_chain_rule>\<omega\><around|(|t|)>=<frac|<frac|d|d*t><around*|(|<frac|<wide|X|^><around|(|t|)>|X<around|(|t|)>>|)>|1+<around*|(|<frac|<wide|X|^><around|(|t|)>|X<around|(|t|)>>|)><rsup|2>>
     </equation>
 
     <\equation>
@@ -319,25 +354,25 @@
     <associate|eq:analytic_proof_step2|<tuple|12|2>>
     <associate|eq:analytic_proof_step3|<tuple|13|2>>
     <associate|eq:analytic_signal_def|<tuple|9|2>>
-    <associate|eq:complex_argument|<tuple|21|4>>
+    <associate|eq:complex_argument|<tuple|23|4>>
     <associate|eq:complex_exponential_rep|<tuple|11|2>>
-    <associate|eq:complex_modulus|<tuple|20|4>>
-    <associate|eq:envelope_def|<tuple|17|3>>
-    <associate|eq:envelope_polar|<tuple|22|4>>
-    <associate|eq:envelope_proof|<tuple|18|3>>
-    <associate|eq:freq_chain_rule|<tuple|26|5>>
-    <associate|eq:freq_derivative|<tuple|25|5>>
-    <associate|eq:freq_final|<tuple|28|5>>
-    <associate|eq:freq_quotient_rule|<tuple|27|5>>
-    <associate|eq:instantaneous_frequency_def|<tuple|24|4>>
-    <associate|eq:orthogonality_cos|<tuple|6|1>>
-    <associate|eq:orthogonality_sin_cos|<tuple|7|1>>
-    <associate|eq:phase_polar|<tuple|23|4>>
-    <associate|eq:polar_rep|<tuple|19|4>>
+    <associate|eq:complex_modulus|<tuple|22|4>>
+    <associate|eq:envelope_def|<tuple|18|3>>
+    <associate|eq:envelope_polar|<tuple|24|4>>
+    <associate|eq:envelope_proof|<tuple|19|3>>
+    <associate|eq:freq_chain_rule|<tuple|29|5>>
+    <associate|eq:freq_derivative|<tuple|28|5>>
+    <associate|eq:freq_final|<tuple|31|5>>
+    <associate|eq:freq_quotient_rule|<tuple|30|5>>
+    <associate|eq:instantaneous_frequency_def|<tuple|27|4>>
+    <associate|eq:orthogonality_cos|<tuple|6|2>>
+    <associate|eq:orthogonality_sin_cos|<tuple|7|2>>
+    <associate|eq:phase_polar|<tuple|25|4>>
+    <associate|eq:polar_rep|<tuple|20|4>>
     <associate|eq:pre_envelope_mean|<tuple|15|3>>
     <associate|eq:pre_envelope_variance|<tuple|2|3>>
     <associate|eq:quadrature_process|<tuple|10|2>>
-    <associate|eq:spectral_recovery_analytic|<tuple|29|5>>
+    <associate|eq:spectral_recovery_analytic|<tuple|32|5>>
     <associate|eq:spectral_rep_real|<tuple|1|1>>
     <associate|eq:u_proof_final|<tuple|8|2>>
     <associate|eq:u_proof_step1|<tuple|4|1>>

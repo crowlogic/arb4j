@@ -224,8 +224,7 @@ import arb.utensils.text.trees.TreeModel;
  *            {@link Function} interface, encapsulating the compiled expression
  *            as an evaluatable function in the sense of Java
  * @author Stephen Andrew Crowley ©2024
- * @see BusinessSourceLicenseVersionOnePointOne#gett for the terms of use of the
- *      {@link TheArb4jLibrary}
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms 
  */
 public class Expression<D, C, F extends Function<? extends D, ? extends C>> implements
                        Typesettable,

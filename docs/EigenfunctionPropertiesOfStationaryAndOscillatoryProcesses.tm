@@ -393,7 +393,7 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|?|1|../.TeXmacs/texts/scratch/no_name_29.tm>>
+    <associate|auto-1|<tuple|?|1>>
   </collection>
 </references>
 
