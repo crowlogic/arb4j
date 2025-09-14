@@ -16,6 +16,8 @@
 #include <unistd.h>
 #include <wchar.h>
 
+void qqbar_zero(qqbar_t res);
+
 void acb_poly_lgamma_series(acb_poly_t res, const acb_poly_t f, slong n, slong prec);
 void arb_poly_lgamma_series(arb_poly_t res, const arb_poly_t f, slong n, slong prec);
 

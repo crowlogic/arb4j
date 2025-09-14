@@ -108,11 +108,13 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       var leftIsExponentialFunction  = leftFunction.functionName.equals("exp");
       var rightIsExponentialFunction = rightFunction.functionName.equals("exp");
 
+      
       if (leftIsExponentialFunction && rightIsExponentialFunction)
       {
         var exponentSum = leftFunction.arg.add(rightFunction.arg).simplify();
         return exponentSum.exp();
       }
+      // TODO: handle non==exponential bases
     }
 
     return super.simplify();

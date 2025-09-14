@@ -8,7 +8,7 @@ mp.dps = 30
 def find_nonconformists():
     nonconformists = []
     
-    for n in range(1, 1100):
+    for n in range(1, 11000):
         # Find nth Gram point by solving theta(g) = pi*n
         def theta_eq(g):
             return mp.siegeltheta(g) - mp.pi * n

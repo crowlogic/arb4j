@@ -468,8 +468,8 @@ import arb.functions.NullaryFunction;
   @Override
   public AlgebraicNumber zero()
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    arblib.qqbar_zero(this);
+    return this;
   }
 
   @Override

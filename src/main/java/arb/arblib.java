@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static void qqbar_zero(AlgebraicNumber res) {
+    arblibJNI.qqbar_zero(AlgebraicNumber.getCPtr(res), res);
+  }
+
   public static void acb_poly_lgamma_series(ComplexPolynomial res, ComplexPolynomial f, int n, int prec) {
     arblibJNI.acb_poly_lgamma_series(ComplexPolynomial.getCPtr(res), res, ComplexPolynomial.getCPtr(f), f, n, prec);
   }
@@ -448,10 +452,6 @@ public class arblib {
 
   public static int qqbar_cmp_root_order(AlgebraicNumber x, AlgebraicNumber y) {
     return arblibJNI.qqbar_cmp_root_order(AlgebraicNumber.getCPtr(x), x, AlgebraicNumber.getCPtr(y), y);
-  }
-
-  public static void qqbar_zero(AlgebraicNumber res) {
-    arblibJNI.qqbar_zero(AlgebraicNumber.getCPtr(res), res);
   }
 
   public static void qqbar_one(AlgebraicNumber res) {

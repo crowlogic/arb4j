@@ -9,6 +9,7 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void qqbar_zero(long jarg1, AlgebraicNumber jarg1_);
   public final static native void acb_poly_lgamma_series(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, int jarg3, int jarg4);
   public final static native void arb_poly_lgamma_series(long jarg1, RealPolynomial jarg1_, long jarg2, RealPolynomial jarg2_, int jarg3, int jarg4);
   public final static native void acb_hypgeom_si(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
@@ -151,7 +152,6 @@ public class arblibJNI {
   public final static native int qqbar_cmpabs_im(long jarg1, AlgebraicNumber jarg1_, long jarg2, AlgebraicNumber jarg2_);
   public final static native int qqbar_cmpabs(long jarg1, AlgebraicNumber jarg1_, long jarg2, AlgebraicNumber jarg2_);
   public final static native int qqbar_cmp_root_order(long jarg1, AlgebraicNumber jarg1_, long jarg2, AlgebraicNumber jarg2_);
-  public final static native void qqbar_zero(long jarg1, AlgebraicNumber jarg1_);
   public final static native void qqbar_one(long jarg1, AlgebraicNumber jarg1_);
   public final static native long qqbar_hash(long jarg1, AlgebraicNumber jarg1_);
   public final static native void qqbar_mul(long jarg1, AlgebraicNumber jarg1_, long jarg2, AlgebraicNumber jarg2_, long jarg3, AlgebraicNumber jarg3_);
