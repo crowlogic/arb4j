@@ -228,29 +228,46 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
 
   public String formatSimplificationParameters()
   {
-    return String.format("%s.simplify( this=%s )\n\n",
-                         getClass().getSimpleName(),
-                         this);
+    return String.format("%s.simplify( this=%s )\n\n", getClass().getSimpleName(), this);
   }
-  
+
+  static String pad(String label)
+  {
+    return String.format("%-11s= ", label);
+  }
+
   public String formatGenerationParameters(Class<?> resultType)
   {
-    return String.format("%s.generate( this=%s,\n%sleft=%s    (%s %s)\n%soperation=%s,\n%sright=%s    (%s %s),"
-                         + " \n%sresultType=%s  fieldName=%s )\n\n",
+    final int LABEL_WIDTH = 11;        // 'right = ' is 9, plus space for '=' and proper padding
+    String    IND         = indent(2); // Adjust overall indentation to your taste
+
+    // Helper: pad labels, produce 'label ='
+
+    return String.format("%s.generate(\n"
+                         + "%s%s%s,\n"
+                         + "%s%s%s    (%s %s),\n"
+                         + "%s%s%s    (%s %s),\n"
+                         + "%s%s%s,\n"
+                         + "%s%s%s)\n",
                          getClass().getSimpleName(),
+                         IND,
+                         pad("this"),
                          this,
-                         indent(26),
+                         IND,
+                         pad("left"),
                          left,
                          left.type().getSimpleName(),
                          left.getClass().getSimpleName(),
-                         indent(26),
-                         operation,
-                         indent(26),
+                         IND,
+                         pad("right"),
                          right,
                          right.type().getSimpleName(),
                          right.getClass().getSimpleName(),
-                         indent(26),
-                         resultType,
+                         IND,
+                         pad("resultType"),
+                         resultType.getSimpleName(),
+                         IND,
+                         pad("fieldName"),
                          fieldName);
   }
 
@@ -505,7 +522,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     {
       System.out.println(formatSimplificationParameters());
     }
-    
+
     if (left != null)
     {
       left = left.simplify();

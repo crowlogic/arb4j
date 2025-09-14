@@ -20,6 +20,12 @@ import arb.expressions.nodes.LiteralConstantNode;
  */
 public class Parser
 {
+  public static String removeIndependentVariableSpecification(String expression)
+  {
+    int index = expression.indexOf(ⅈ);
+    return index == -1 ? expression : expression.substring(index);
+  }
+
   public static char[]                       commonFractions            =
   { '¼', '½', '¾', '⅐', '⅑', '⅒', '⅓', '⅔', '⅕', '⅖', '⅗', '⅘', '⅙', '⅚', '⅛', '⅜', '⅝', '⅞' };
 

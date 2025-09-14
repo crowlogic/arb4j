@@ -1,0 +1,8 @@
+var theta = new RealRiemannSiegelThetaFunction();
+plot(0,50,2000,theta);
+FunctionPlotter.darkStyle=false;
+plot(0,50,2000,theta);
+theta.derivative()
+var thetad = theta.derivative();
+plot(0,50,2000,thetad);
+var thetadd = thetad.derivative();

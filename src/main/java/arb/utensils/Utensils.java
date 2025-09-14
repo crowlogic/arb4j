@@ -189,15 +189,7 @@ public class Utensils
 
   public static void throwOrWrap(Throwable e)
   {
-    if (e instanceof RuntimeException q)
-    {
-      throw q;
-    }
-    else
-    {
-      throw new RuntimeException(e instanceof VerifyError ? e.getClass().getName() : e.getMessage(),
-                                 e);
-    }
+    wrapOrThrow(e);
   }
 
   public static void wrapOrThrow(Throwable e)
