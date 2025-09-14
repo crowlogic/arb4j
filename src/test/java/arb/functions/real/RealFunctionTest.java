@@ -1,6 +1,8 @@
 package arb.functions.real;
 
 import arb.Fraction;
+import arb.Integer;
+import arb.Real;
 import arb.expressions.Context;
 import junit.framework.TestCase;
 
@@ -16,6 +18,17 @@ import junit.framework.TestCase;
 public class RealFunctionTest extends
                               TestCase
 {
+  public void testEvaluateMixedExpression()
+  {
+    var context = new Context();
+    context.registerVariable(Real.named("input").set(0));
+    context.registerVariable(Integer.named("k").set(0));
+    context.registerVariable(Integer.named("j").set(0));
+    var seq = RealFunction.express("x->1/2*J(k,x)*π^(1/2)*(8*j+2)^(1/2)*(-1)^j*Γ(1/2*k+j+1/2)/Γ(-j+1/2*k+1/2)/Γ(j+1-1/2*k)/Γ(1/2*k+j+1)",context);
+    var f3 = seq.eval(2.3);
+    
+  }
+  
   public static void testParse()
   {
     var context   = new Context();
