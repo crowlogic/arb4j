@@ -18,7 +18,7 @@ Differentiable Paths}
 
 \author{
   Stephen Crowley
-  \tmaffiliation{September 6, 2025}
+  \tmaffiliation{September 14, 2025}
 }
 
 \date{}
@@ -33,7 +33,9 @@ Differentiable Paths}
   [Schwartz Test Function Space] The Schwartz space $\mathcal{S} (\mathbb{R})$
   is the space of all infinitely differentiable functions $\phi : \mathbb{R}
   \to \mathbb{R}$ such that for every pair of nonnegative integers $m, n$,
-  \[ \sup_{x \in \mathbb{R}} |x^m \phi^{(n)} (x) | < \infty . \]
+  \begin{equation}
+    \sup_{x \in \mathbb{R}} |x^m \phi^{(n)} (x) | < \infty
+  \end{equation}
   Functions in $\mathcal{S} (\mathbb{R})$ are called rapidly decreasing smooth
   test functions.
 \end{definition}
@@ -41,13 +43,17 @@ Differentiable Paths}
 \begin{definition}
   [Tempered Distribution] A tempered distribution is a continuous linear
   functional
-  \[ T : \mathcal{S} (\mathbb{R}) \to \mathbb{R}. \]
+  \begin{equation}
+    T : \mathcal{S} (\mathbb{R}) \to \mathbb{R}
+  \end{equation}
 \end{definition}
 
 \begin{definition}
   [Dirac Delta Distribution] The Dirac delta distribution $\delta_a \in
   \mathcal{S}' (\mathbb{R})$ centered at $a \in \mathbb{R}$ is defined by
-  \[ \langle \delta_a, \phi \rangle = \phi (a) \]
+  \begin{equation}
+    \langle \delta_a, \phi \rangle = \phi (a)
+  \end{equation}
   for all $\phi \in \mathcal{S} (\mathbb{R})$. When $a = 0$, one writes
   $\delta = \delta_0$.
 \end{definition}
@@ -55,10 +61,12 @@ Differentiable Paths}
 \begin{definition}
   [Heaviside Step Function] The Heaviside step function $H : \mathbb{R} \to
   \{0, 1\}$ is defined by
-  \[ H (x) = \left\{\begin{array}{ll}
-       1 & \text{if } x > 0\\
-       0 & \text{if } x \leq 0
-     \end{array}\right. \]
+  \begin{equation}
+    H (x) = \left\{\begin{array}{ll}
+      1 & \text{if } x > 0\\
+      0 & \text{if } x \leq 0
+    \end{array}\right.
+  \end{equation}
 \end{definition}
 
 \begin{definition}
@@ -73,7 +81,9 @@ Differentiable Paths}
 
 \begin{theorem}
   [Heaviside Derivative] The Heaviside step function $H$ satisfies
-  \[ H' = \delta \]
+  \begin{equation}
+    H' = \delta
+  \end{equation}
   as distributions on $\mathcal{S}' (\mathbb{R})$.
 \end{theorem}
 
@@ -90,24 +100,45 @@ Differentiable Paths}
   \end{align}
   
   where the limit vanishes since $\phi \in \mathcal{S} (\mathbb{R})$ decays
-  rapidly at infinity. Thus $\langle H', \phi \rangle = \phi (0) = \langle
-  \delta, \phi \rangle$.
+  rapidly at infinity. Thus
+  \begin{equation}
+    \langle H', \phi \rangle = \phi (0) = \langle \delta, \phi \rangle
+  \end{equation}
 \end{proof}
 
 \begin{theorem}
   [Integral of Delta] For any $a \in \mathbb{R}$ and $T \in \mathbb{R}$,
-  \[ \int_{- \infty}^T \delta (t - a)  \hspace{0.17em} dt = H (T - a) . \]
+  \begin{equation}
+    \int_{- \infty}^T \delta (t - a)  \hspace{0.17em} dt = H (T - a)
+  \end{equation}
 \end{theorem}
 
 \begin{proof}
-  Define $F (T) = \int_{- \infty}^T \delta (t - a)  \hspace{0.17em} dt$.
+  Define
+  \begin{equation}
+    F (T) = \int_{- \infty}^T \delta (t - a)  \hspace{0.17em} dt
+  \end{equation}
   Taking the distributional derivative with respect to $T$:
-  \[ F' (T) = \frac{d}{dT}  \int_{- \infty}^T \delta (t - a)  \hspace{0.17em}
-     dt = \delta (T - a) \]
-  Since $F (- \infty) = 0$ and $F' (T) = \delta (T - a) = H'  (T - a)$ from
-  the previous theorem, one has $F (T) = H (T - a) + C$ for some constant $C$.
-  The boundary condition $F (- \infty) = 0 = H (- \infty) + C$ implies $C =
-  0$, thus $F (T) = H (T - a)$.
+  \begin{equation}
+    F' (T) = \frac{d}{dT}  \int_{- \infty}^T \delta (t - a)  \hspace{0.17em}
+    dt = \delta (T - a)
+  \end{equation}
+  Since $F (- \infty) = 0$ and
+  \begin{equation}
+    F' (T) = \delta (T - a) = H'  (T - a)
+  \end{equation}
+  from the previous theorem, one has
+  \begin{equation}
+    F (T) = H (T - a) + C
+  \end{equation}
+  for some constant $C$. The boundary condition
+  \begin{equation}
+    F (- \infty) = 0 = H (- \infty) + C
+  \end{equation}
+  implies $C = 0$, thus
+  \begin{equation}
+    F (T) = H (T - a)
+  \end{equation}
 \end{proof}
 
 \section{Delta of a Smooth Function}
@@ -116,32 +147,34 @@ Differentiable Paths}
   [Delta under Change of Variables] Let $g : \mathbb{R} \to \mathbb{R}$ be
   continuously differentiable with isolated, simple zeros $\{x_i \}$ such that
   $g (x_i) = 0$ and $g' (x_i) \neq 0$. Then the identity
-  \[ \delta (g (x)) = \sum_i \frac{\delta (x - x_i)}{|g' (x_i) |} \]
+  \begin{equation}
+    \delta (g (x)) = \sum_i \frac{\delta (x - x_i)}{|g' (x_i) |}
+  \end{equation}
   holds in $\mathcal{S}' (\mathbb{R})$.
 \end{theorem}
 
 \begin{proof}
   For $\phi \in \mathcal{S} (\mathbb{R})$,
-  
-  \begin{align*}
-    \langle \delta (g (x)), \phi \rangle & = \int_{- \infty}^{\infty} \phi (x)
-    \delta (g (x))  \hspace{0.17em} dx.
-  \end{align*}
-  
+  \begin{equation}
+    \langle \delta (g (x)), \phi \rangle = \int_{- \infty}^{\infty} \phi (x)
+    \delta (g (x))  \hspace{0.17em} dx
+  \end{equation}
   Near each zero $x_i$, where $g$ is locally monotone by the implicit function
   theorem, the change of variables $u = g (x)$ gives
-  
-  \begin{align*}
-    \int_{I_i} \phi (x) \delta (g (x))  \hspace{0.17em} dx & = \int_{g (I_i)}
-    \phi (g^{- 1} (u)) \delta (u) \hspace{0.17em} \frac{1}{|g' (g^{- 1} (u))
-    |}  \hspace{0.17em} du\\
-    & = \frac{\phi (x_i)}{|g' (x_i) |}
-  \end{align*}
-  
+  \begin{equation}
+    \begin{array}{ll}
+      \int_{I_i} \phi (x) \delta (g (x))  \hspace{0.17em} dx & = \int_{g
+      (I_i)} \hspace{0.17em} \frac{\phi (g^{- 1} (u)) }{|g' (g^{- 1} (u)) |}
+      \delta (u)  \hspace{0.17em} du\\
+      & = \frac{\phi (x_i)}{|g' (x_i) |}
+    \end{array}
+  \end{equation}
   by the sifting property of $\delta$. Summing over all zeros yields
-  \[ \langle \delta (g (x)), \phi \rangle = \sum_i \frac{\phi (x_i)}{|g' (x_i)
-     |} = \left\langle \sum_i \frac{\delta (x - x_i)}{|g' (x_i) |}, \phi
-     \right\rangle . \]
+  \begin{equation}
+    \langle \delta (g (x)), \phi \rangle = \sum_i \frac{\phi (x_i)}{|g' (x_i)
+    |} = \left\langle \sum_i \frac{\delta (x - x_i)}{|g' (x_i) |}, \phi
+    \right\rangle
+  \end{equation}
   Since this holds for all $\phi \in \mathcal{S} (\mathbb{R})$, the
   distributional equality follows.
 \end{proof}
@@ -150,22 +183,31 @@ Differentiable Paths}
 
 Let $x : \mathbb{R} \to \mathbb{R}$ be continuously differentiable, and fix $u
 \in \mathbb{R}$. Assume the zeros of $g (t) \assign x (t) - u$ are isolated
-and simple; that is, for every zero $t_i$, $g' (t_i) = x' (t_i) \neq 0$.
-
+and simple; that is, for every zero $t_i$,
+\begin{equation}
+  g' (t_i) = x' (t_i) \neq 0
+\end{equation}
 \begin{definition}
-  [Level Crossing Counting Function] Define the counting function
-  \[ N (T) \assign \text{the number of zeros } t_i  \text{of } x (t) - u
-     \text{with } t_i \leq T. \]
+  \label{N}[Level Crossing Counting Function] Define the counting function
+  \begin{equation}
+    N (T) \assign \text{the number of zeros } t_i  \text{of } x (t) - u
+    \text{with } t_i \leq T
+  \end{equation}
 \end{definition}
 
 \begin{theorem}
   [Counting Function as Integral Over Delta] For every $T \in \mathbb{R}$,
-  \[ N (T) = \int_{- \infty}^T |x' (t) | \delta (x (t) - u)  \hspace{0.17em}
-     dt. \]
+  \begin{equation}
+    N (T) = \int_{- \infty}^T |x' (t) | \delta (x (t) - u)  \hspace{0.17em} dt
+  \end{equation}
 \end{theorem}
 
 \begin{proof}
-  Using the delta change of variables theorem with $g (t) = x (t) - u$,
+  Using the delta change of variables theorem with
+  \begin{equation}
+    g (t) = x (t) - u
+  \end{equation}
+  one finds that
   
   \begin{align}
     |x' (t) | \delta (x (t) - u) & = |x' (t) |  \sum_i \frac{\delta (t -
@@ -175,31 +217,60 @@ and simple; that is, for every zero $t_i$, $g' (t_i) = x' (t_i) \neq 0$.
   
   Since $x' (t_i) \neq 0$ by assumption, and $\delta (t - t_i)$ picks out the
   value at $t = t_i$,
-  \[ |x' (t) | \delta (x (t) - u) = \sum_i \frac{|x' (t_i) |}{|x' (t_i) |}
-     \delta (t - t_i) = \sum_i \delta (t - t_i) . \]
+  \begin{equation}
+    \begin{array}{ll}
+      |x' (t) | \delta (x (t) - u) & = \sum_i \frac{|x' (t_i) |}{|x' (t_i) |}
+      \delta (t - t_i)\\
+      & = \sum_i \delta (t - t_i)
+    \end{array}
+  \end{equation}
   Therefore,
-  \[ \int_{- \infty}^T |x' (t) | \delta (x (t) - u)  \hspace{0.17em} dt =
-     \sum_i \int_{- \infty}^T \delta (t - t_i)  \hspace{0.17em} dt = \sum_{t_i
-     \leq T} 1 = N (T) . \]
+  \begin{equation}
+    \begin{array}{ll}
+      \int_{- \infty}^T |x' (t) | \delta (x (t) - u)  \hspace{0.17em} dt & =
+      \sum_i \int_{- \infty}^T \delta (t - t_i)  \hspace{0.17em} dt\\
+      & = \sum_{t_i \leq T} 1\\
+      & = N (T)
+    \end{array}
+  \end{equation}
+  
 \end{proof}
 
 \begin{theorem}
-  [Counting Function as Sum of Heaviside Steps] For every $T \in \mathbb{R}$,
-  \[ N (T) = \sum_i H (T - t_i) \]
-  where the sum runs over all level crossing times $t_i$.
+  [Counting Function as Sum of Heaviside Steps] The counting function
+  (\ref{N}) is given by
+  \begin{equation}
+    N (T) = \sum_i H (T - t_i) \forall T \in \mathbb{R}
+  \end{equation}
+  where the sum runs over all zero crossing times $t_i$.
 \end{theorem}
 
 \begin{proof}
-  By definition of the Heaviside function, $H (T - t_i) = 1$ if and only if $T
-  \geq t_i$, and $H (T - t_i) = 0$ otherwise. Therefore,
-  \[ \sum_i H (T - t_i) = \sum_{t_i \leq T} 1 = N (T) . \]
+  By definition of the Heaviside function,
+  \begin{equation}
+    H (T - t_i) = 1
+  \end{equation}
+  if and only if $T \geq t_i$, and
+  \begin{equation}
+    H (T - t_i) = 0
+  \end{equation}
+  otherwise. Therefore,
+  \begin{equation}
+    \begin{array}{ll}
+      \sum_i H (T - t_i) & = \sum_{t_i \leq T} 1\\
+      & = N (T)
+    \end{array}
+  \end{equation}
+  
 \end{proof}
 
 \begin{theorem}
   [Equivalence of Representations] The delta integral representation and the
   Heaviside step sum representation are equivalent:
-  \[ \int_{- \infty}^T |x' (t) | \delta (x (t) - u)  \hspace{0.17em} dt =
-     \sum_i H (T - t_i) . \]
+  \begin{equation}
+    \int_{- \infty}^T |x' (t) | \delta (x (t) - u)  \hspace{0.17em} dt =
+    \sum_i H (T - t_i)
+  \end{equation}
 \end{theorem}
 
 \begin{proof}
