@@ -2,14 +2,12 @@ package arb.geometry;
 
 import java.util.Set;
 
-import org.apache.commons.math3.geometry.euclidean.threed.Plane;
 
 import arb.Field;
 import arb.differential.geometry.Surface;
 import arb.space.topological.EuclideanSpace;
 import arb.space.topological.TangentSpace;
 import arb.space.topological.TopologicalSpace;
-import javafx.scene.shape.Sphere;
 
 /**
  * A {@link Manifold} is a {@link TopologicalSpace} that locally resembles
