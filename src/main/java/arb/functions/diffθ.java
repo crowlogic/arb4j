@@ -8,12 +8,13 @@ import arb.Integer;
 import arb.Real;
 import arb.RealConstants;
 import arb.Typesettable;
+import arb.functions.real.RealFunction;
 
 // 
 // Decompiled by Procyon v0.6.0
 // 
 public class diffθ implements
-                   Function<Real, Real>,
+                   RealFunction,
                    Typesettable,
                    AutoCloseable,
                    Initializable
@@ -49,74 +50,74 @@ public class diffθ implements
   @Override
   public Real evaluate(final Real t, final int order, final int bits, final Real result)
   {
-    return FractionConstants.oneQuarter.add(ComplexConstants.ⅈ.mul((Real) t, bits, this.vℂ0001)
-                                                              .div(this.cⅈ0000, bits, this.vℂ0002),
+    return FractionConstants.oneQuarter.add(ComplexConstants.ⅈ.mul((Real) t, bits, vℂ0001)
+                                                              .div(cⅈ0000, bits, vℂ0002),
                                             bits,
-                                            this.vℂ0003)
-                                       .digamma(bits, this.vℂ0004)
-                                       .mul(ComplexConstants.ⅈ.mul(this.cⅈ0000, bits, this.vℂ0005)
-                                                              .div(this.cⅈ0003, bits, this.vℂ0006),
+                                            vℂ0003)
+                                       .digamma(bits, vℂ0004)
+                                       .mul(ComplexConstants.ⅈ.mul(cⅈ0000, bits, vℂ0005)
+                                                              .div(cⅈ0003, bits, vℂ0006),
                                             bits,
-                                            this.vℂ0007)
-                                       .im(bits, this.vℝ0001)
-                                       .sub(RealConstants.π.log(bits, this.vℝ0002)
-                                                           .div(this.cⅈ0000, bits, this.vℝ0003),
+                                            vℂ0007)
+                                       .im(bits, vℝ0001)
+                                       .sub(RealConstants.π.log(bits, vℝ0002)
+                                                           .div(cⅈ0000, bits, vℝ0003),
                                             bits,
                                             (Real) result);
   }
 
-  public Function derivative()
+  public RealFunction derivative()
   {
-    return Function.express((Class) Real.class,
-                            (Class) Real.class,
-                            (Class) Function.class,
+    return Function.express(Real.class,
+                            Real.class,
+                            RealFunction.class,
                             "diff(diff(im(lnΓ(¼+ⅈ*t/2))-(log(π)/2)*t,t),t)");
   }
 
   @Override
   public void initialize()
   {
-    if (this.isInitialized)
+    if (isInitialized)
     {
       throw new AssertionError((Object) "Already initialized");
     }
-    this.isInitialized = true;
+    isInitialized = true;
   }
 
   public diffθ()
   {
-    this.cⅈ0000 = new Integer("2");
-    this.cⅈ0001 = new Integer("0");
-    this.cⅈ0002 = new Integer("1");
-    this.cⅈ0003 = new Integer("4");
-    this.vℂ0001 = new Complex();
-    this.vℂ0002 = new Complex();
-    this.vℂ0003 = new Complex();
-    this.vℂ0004 = new Complex();
-    this.vℂ0005 = new Complex();
-    this.vℂ0006 = new Complex();
-    this.vℂ0007 = new Complex();
-    this.vℝ0001 = new Real();
-    this.vℝ0002 = new Real();
-    this.vℝ0003 = new Real();
+    cⅈ0000 = new Integer("2");
+    cⅈ0001 = new Integer("0");
+    cⅈ0002 = new Integer("1");
+    cⅈ0003 = new Integer("4");
+    vℂ0001 = new Complex();
+    vℂ0002 = new Complex();
+    vℂ0003 = new Complex();
+    vℂ0004 = new Complex();
+    vℂ0005 = new Complex();
+    vℂ0006 = new Complex();
+    vℂ0007 = new Complex();
+    vℝ0001 = new Real();
+    vℝ0002 = new Real();
+    vℝ0003 = new Real();
   }
 
   public void close()
   {
-    this.cⅈ0000.close();
-    this.cⅈ0001.close();
-    this.cⅈ0002.close();
-    this.cⅈ0003.close();
-    this.vℂ0001.close();
-    this.vℂ0002.close();
-    this.vℂ0003.close();
-    this.vℂ0004.close();
-    this.vℂ0005.close();
-    this.vℂ0006.close();
-    this.vℂ0007.close();
-    this.vℝ0001.close();
-    this.vℝ0002.close();
-    this.vℝ0003.close();
+    cⅈ0000.close();
+    cⅈ0001.close();
+    cⅈ0002.close();
+    cⅈ0003.close();
+    vℂ0001.close();
+    vℂ0002.close();
+    vℂ0003.close();
+    vℂ0004.close();
+    vℂ0005.close();
+    vℂ0006.close();
+    vℂ0007.close();
+    vℝ0001.close();
+    vℝ0002.close();
+    vℝ0003.close();
   }
 
   @Override

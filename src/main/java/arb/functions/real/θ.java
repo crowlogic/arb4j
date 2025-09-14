@@ -3,7 +3,6 @@ package arb.functions.real;
 import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.functions.complex.RealRiemannSiegelThetaFunction;
 
 /**
  * Decompiled form of the {@link RealRiemannSiegelThetaFunction}

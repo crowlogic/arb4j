@@ -81,7 +81,7 @@ public interface ComplexFunction extends
 
   public default RealToComplexFunction re()
   {
-    return new RealComplexPart(this);
+    return new ComplexPart(this);
   }
 
   public default RealToComplexFunction im()

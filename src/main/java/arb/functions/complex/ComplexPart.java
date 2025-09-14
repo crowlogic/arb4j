@@ -10,8 +10,8 @@ import arb.functions.RealToComplexFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public final class RealComplexPart implements
-                                   RealToComplexFunction
+public final class ComplexPart implements
+                               RealToComplexFunction
 {
   @Override
   public String toString()
@@ -21,7 +21,7 @@ public final class RealComplexPart implements
 
   final ComplexFunction f;
 
-  public RealComplexPart(ComplexFunction complexFunction)
+  public ComplexPart(ComplexFunction complexFunction)
   {
     this.f = complexFunction;
   }
@@ -29,7 +29,7 @@ public final class RealComplexPart implements
   @Override
   public Complex evaluate(Real t, int order, int bits, Complex res)
   {
-    try ( var tmp = new Complex())
+    try ( var tmp = res.borrowVariable())
     {
       tmp.getReal().set(t);
       return f.evaluate(tmp, order, bits, res);

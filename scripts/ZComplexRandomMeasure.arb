@@ -1,5 +1,5 @@
 Expression.saveClasses=true;
-FunctionPlotter.darkStyle=false;
+FunctionPlotter.darkStyle=true;
 var context = new Context();
 var λ = Real.named("λ").one();
 context.registerVariable(λ);
@@ -11,23 +11,13 @@ var Z = RealFunction.express("Z(t)");
 var Ztoo = RealToComplexFunction.express("Ztoo:t➔z(t)*f(t)",context);
 var R = RealToComplexFunction.express("R:t➔z(t)*g(t)",context);
 var p = plot( -5,120, 100*125, Z, R.realPart(), R.imagPart()  );
-
-// TODO: use p.chart.snapshot to cycle saving charts rendered as lambda varies from -1 to 1
- 
  λ.neg();
- 
 var pneg = plot( -5,120, 100*125, Z, R.realPart(), R.imagPart()  );
- 
-// use  p.chart.snapshot to cycle thru values of lambda to generate animated chart
-
  λ.zero();
-
 var pzero = plot( -5,120, 100*125, Z, R.realPart(), R.imagPart()  );
-
 System.out.println(context);
 System.out.println(context.functions);
-    
 saveImage( p, "p.png");
 saveImage( pneg, "pneg.png" );
 saveImage( pzero, "pzero.png" );
-
+FunctionPlotter.darkStyle=true;

@@ -7,8 +7,8 @@ import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
-import arb.functions.complex.RealRiemannSiegelThetaFunction;
 import arb.functions.real.RealFunction;
+import arb.functions.real.RealRiemannSiegelThetaFunction;
 import arb.functions.real.θ;
 import junit.framework.TestCase;
 

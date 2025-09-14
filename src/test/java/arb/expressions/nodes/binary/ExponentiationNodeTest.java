@@ -5,8 +5,8 @@ import arb.RealConstants;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.RealBivariateToComplexFunction;
-import arb.functions.complex.RealRiemannSiegelThetaFunction;
 import arb.functions.real.RealFunction;
+import arb.functions.real.RealRiemannSiegelThetaFunction;
 import junit.framework.TestCase;
 
 public class ExponentiationNodeTest extends
