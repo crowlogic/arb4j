@@ -21,12 +21,12 @@ public class RealFunctionTest extends
   public void testEvaluateMixedExpression()
   {
     var context = new Context();
-    context.registerVariable(Real.named("input").set(0));
-    context.registerVariable(Integer.named("k").set(0));
-    context.registerVariable(Integer.named("j").set(0));
+    context.registerVariable(Real.named("input").set("1.5",128));
+    context.registerVariable(Integer.named("k").set(1));
+    context.registerVariable(Integer.named("j").set(2));
     var seq = RealFunction.express("x->1/2*J(k,x)*π^(1/2)*(8*j+2)^(1/2)*(-1)^j*Γ(1/2*k+j+1/2)/Γ(-j+1/2*k+1/2)/Γ(j+1-1/2*k)/Γ(1/2*k+j+1)",context);
     var f3 = seq.eval(2.3);
-    
+    assertEquals( Double.NaN, f3 );
   }
   
   public static void testParse()

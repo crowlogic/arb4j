@@ -85,6 +85,18 @@ import arb.utensils.Utensils;
     }
   }
 
+  public Real add(Integer real, int bits, Real result)
+  {
+    if (result == null)
+    {
+      result = new Real();
+    }
+    try ( Real blip = result.borrowVariable())
+    {
+      return blip.set(this).add(real, bits, result);
+    }
+  } 
+  
   public Real add(Fraction real, int bits, Real result)
   {
     if (result == null)
