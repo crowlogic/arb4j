@@ -176,6 +176,14 @@ public class T implements RealPolynomialSequence, Typesettable, AutoCloseable, I
 ####  (Symbolic, Compiled, Automatic) Differentiation and Integration
 - differentiation and integration  progress can be tracked at: [GitHub Issue #253](https://github.com/crowlogic/arb4j/issues/253).
 
+## A Note Regarding Fonts
+It is recommended to use the "Noto Sans Mono" truetype font since it is one
+of the very few monospace fonts that correctly renders combining 
+diacritics on Linux—including dot above (◌̇) and diaeresis (◌̈)—directly above Greek 
+(and other) characters. Unlike most monospace fonts, Noto Sans Mono is 
+built by Google with a specific goal of full Unicode coverage and accurate 
+OpenType mark positioning, which makes it uniquely suited for this purpose.
+
 ## Forked modularized version of jlatexmath 
 See [this](https://github.com/crowlogic/jlatexmath) for a version of jlatexmath without the unnamed module warnings
 

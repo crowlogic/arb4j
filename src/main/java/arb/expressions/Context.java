@@ -244,16 +244,15 @@ public class Context
 
     if (Expression.trace)
     {
-      err.format("Context(#%s).registerFunctionMapping( functionName = %s, function = %s, domainType=%s, coDomainType=%s, functionClass=%s, expression=%s, expressionString=%s )\n",
-                 System.identityHashCode(this),
-                 functionName,
-                 function,
-                 domainType,
-                 coDomainType,
-                 functionClass,
-                 expression,
-                 expressionString);
-      err.flush();
+      log.debug(String.format("id=%s: registerFunctionMapping( functionName = %s, function = %s, domainType=%s, coDomainType=%s, functionClass=%s, expression=%s, expressionString=%s )\n",
+                              System.identityHashCode(this),
+                              functionName,
+                              function,
+                              domainType,
+                              coDomainType,
+                              functionClass,
+                              expression,
+                              expressionString));
     }
     if (!replace && functions.map.containsKey(functionName))
     {
@@ -316,13 +315,13 @@ public class Context
   {
     if (Expression.trace)
     {
-      System.err.format("Context(#%s).setFieldValue(compiledClass=%s, f=%s, variableName=%s, value=%s, overwrite=%s)\n\n",
-                        System.identityHashCode(this),
-                        compiledClass,
-                        f,
-                        variableName,
-                        value,
-                        overwrite);
+      log.debug(String.format("Context(#%s).setFieldValue(compiledClass=%s, f=%s, variableName=%s, value=%s, overwrite=%s)\n\n",
+                              System.identityHashCode(this),
+                              compiledClass,
+                              f,
+                              variableName,
+                              value,
+                              overwrite));
     }
     java.lang.reflect.Field field;
     try

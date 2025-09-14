@@ -248,7 +248,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
                          + "%s%s%s    (%s %s),\n"
                          + "%s%s%s    (%s %s),\n"
                          + "%s%s%s,\n"
-                         + "%s%s%s)\n",
+                         + "%s%s%s)",
                          getClass().getSimpleName(),
                          IND,
                          pad("this"),
@@ -271,7 +271,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
                          fieldName);
   }
 
-  Logger log = LoggerFactory.getLogger(BinaryOperationNode.class);
+  Logger log = LoggerFactory.getLogger(getClass());
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
@@ -330,7 +330,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
 
     if (Expression.trace)
     {
-      System.out.println(formatGenerationParameters(resultType));
+      log.debug(formatGenerationParameters(resultType));
     }
 
     return mv;
@@ -518,10 +518,10 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   @Override
   public Node<D, C, F> simplify()
   {
-    if (Expression.trace)
-    {
-      System.out.println(formatSimplificationParameters());
-    }
+//    if (Expression.trace)
+//    {
+//      System.out.println(formatSimplificationParameters());
+//    }
 
     if (left != null)
     {

@@ -46,9 +46,9 @@ public class DerivativeNodeTest extends
     Expression.saveClasses = true;
     final Context      context = new Context();
     final RealFunction θ       = RealFunction.express("θ:im(lnΓ(¼+ⅈ*t/2))-(log(π)/2)*t", context);
-    final RealFunction Nθ      = RealFunction.express("Nθ:t➔t-θ̇(t)/θ̈(t)", context);
-    var                y       = Nθ.eval(2.3);
-
+    final RealFunction Nθ̇     = RealFunction.express("Nθ̇:t➔t-θ̇(t)/θ̈(t)", context);
+    var                y       = Nθ̇.eval(2.3);
+    assertFalse(Double.isNaN(y));
   }
 
   public void testDecompiledEvaluateRealBivariateFunctionWithContextVariable()

@@ -1030,7 +1030,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     assert instructions == null;
     if (log.isDebugEnabled())
     {
-      log.debug("Expression(#{}).generate() className={} expression='{}'\n\n",
+      log.debug("id={}: generate(className={}, expression='{}')",
                 System.identityHashCode(this),
                 className,
                 expression);
@@ -1334,7 +1334,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     generateCodeToThrowErrorIfAlreadyInitialized(mv);
     if (trace)
     {
-      System.err.println("referencedFunctions=" + referencedFunctions);
+      log.debug("generateInitializationCode: referencedFunctions=" + referencedFunctions);
     }
     addChecksForNullVariableReferences(mv);
 
