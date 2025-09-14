@@ -96,8 +96,10 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       var rightBase = rightExp.left;
       if (leftBase.equals(rightBase))
       {
-        var exponentSum = leftExp.right.add(rightExp.right).simplify();
-        return leftBase.pow(exponentSum).simplify();
+        var rightPower = rightExp.right;
+        var leftPower  = leftExp.right;
+        var power      = leftPower.add(rightPower).simplify();
+        return leftBase.pow(power).simplify();
       }
 
     }
@@ -119,8 +121,8 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     if (left instanceof FunctionNode<D, R, F> leftFunction
                   && right instanceof FunctionNode<D, R, F> rightFunction)
     {
-      var leftIsSquareRootFunction  = leftFunction.functionName.equals("sqrt");
-      var functionsAreEqual = leftFunction.equals(rightFunction);
+      var leftIsSquareRootFunction = leftFunction.functionName.equals("sqrt");
+      var functionsAreEqual        = leftFunction.equals(rightFunction);
 
       if (leftIsSquareRootFunction && functionsAreEqual)
       {
