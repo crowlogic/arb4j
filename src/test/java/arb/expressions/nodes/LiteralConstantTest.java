@@ -2,15 +2,13 @@ package arb.expressions.nodes;
 
 import arb.RationalFunction;
 import arb.RealConstants;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealNullaryFunction;
 import junit.framework.TestCase;
 
 /**
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
  */
 public class LiteralConstantTest extends
                                  TestCase

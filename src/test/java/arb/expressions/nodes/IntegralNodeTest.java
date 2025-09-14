@@ -2,8 +2,6 @@ package arb.expressions.nodes;
 
 import arb.Real;
 import arb.RealConstants;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.polynomials.RealPolynomialNullaryFunction;
@@ -14,8 +12,8 @@ import arb.functions.real.RealNullaryFunction;
 import junit.framework.TestCase;
 
 /**
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
  */
 public class IntegralNodeTest extends
                               TestCase
@@ -32,14 +30,14 @@ public class IntegralNodeTest extends
     var g = RealFunction.express("arcsin(x)+π⁄2");
     var z = g.eval(0.75);
 
-    assertEquals(z,y);
+    assertEquals(z, y);
 
   }
 
   public void testDefiniteIntegralOfSquareRootStringRepresentation()
   {
 
-     Expression.saveClasses = true;
+    Expression.saveClasses = true;
     var e = RealFunction.express("ω➔∫λ➔1/√(1-λ²)dλ∈(-1,ω)");
     var f = RealFunction.express("x➔∫y➔1/sqrt(1-y^2)dy∈(-1,x)");
     var y = f.eval(0.75);
