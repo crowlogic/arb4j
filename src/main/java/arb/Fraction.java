@@ -112,7 +112,19 @@ public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fr
       return res.set(blip);
     }
   }
-  
+
+  public Real add(Fraction real, int bits, Real result)
+  {
+    if (result == null)
+    {
+      result = new Real();
+    }
+    try ( Real blip = result.borrowVariable())
+    {
+      return blip.set(this).add(real, bits, result);
+    }
+  } 
+    
   public ComplexPolynomial add(ComplexPolynomial that, int bits, ComplexPolynomial result)
   {
     result.set(this);

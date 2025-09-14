@@ -1145,6 +1145,11 @@ public class Integer implements
     return result;
   }
 
+  public Real sub(Fraction operand, int prec, Real result)
+  {
+    return result.set(this).sub(operand, prec);
+  }
+  
   public Real sub(Integer operand, int prec, Real result)
   {
     return result.set(this).sub(operand, prec);
