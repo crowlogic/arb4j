@@ -6,7 +6,7 @@ package arb.documentation;
  * 
  * @see TheArb4jLibrary
  * 
- * @see BusinessSourceLicenseVersionOnePointOne
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms 
  */
 public class BusinessSourceLicenseVersionOnePointOne implements
                                                      License

@@ -1,6 +1,8 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.cast;
+import static arb.expressions.Compiler.invokeMethod;
+import static arb.expressions.Compiler.loadBitsParameterOntoStack;
 
 import java.util.List;
 import java.util.Objects;
@@ -9,10 +11,14 @@ import java.util.function.Consumer;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
 
-import arb.*;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
-import arb.expressions.*;
+import arb.Complex;
+import arb.Quaternion;
+import arb.Real;
+import arb.expressions.Compiler;
+import arb.expressions.Expression;
+import arb.expressions.FunctionMapping;
+import arb.expressions.Parser;
+import arb.expressions.VariableReference;
 import arb.functions.Function;
 
 /**
@@ -35,9 +41,7 @@ import arb.functions.Function;
  * which is just as the definite case but with the limits of the integration interval specification ∈(a,b) is omitted
  * </pre>
  * 
- * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
  */
 public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> extends
                          Node<D, C, F>
@@ -233,9 +237,9 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     assert resultType != null : "resultType cannot be null";
-    generatedType = resultType;
+    generatedType         = resultType;
     integralNode.isResult = isResult;
-    
+
     if (integralNode == null)
     {
       computeIndefiniteIntegral();
@@ -279,17 +283,19 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
   public Node<D, C, F> getDefiniteIntegralEvaluationNode()
   {
-    var integralExpression      = expression;
-    var upperEval               = integralNode.spliceInto(integralExpression);
-    var lowerEval               = integralNode.spliceInto(integralExpression);
-    var independentVariableNode = expression.getIndependentVariable();
+    var           integralExpression      = expression;
+    var           upperEval               = integralNode.spliceInto(integralExpression);
+    var           lowerEval               = integralNode.spliceInto(integralExpression);
+    var           independentVariableNode = expression.getIndependentVariable();
 
-    String        integrationVariable = integrationVariableNode.getName();
+    String        integrationVariable     = integrationVariableNode.getName();
 
-    var           upperResult         = upperEval.substitute(integrationVariable, upperLimitNode);
-    var           lowerResult         = lowerEval.substitute(integrationVariable, lowerLimitNode);
+    var           upperResult             =
+                              upperEval.substitute(integrationVariable, upperLimitNode);
+    var           lowerResult             =
+                              lowerEval.substitute(integrationVariable, lowerLimitNode);
 
-    Node<D, C, F> difference          = upperResult.sub(lowerResult);
+    Node<D, C, F> difference              = upperResult.sub(lowerResult);
 
     return difference;
   }
@@ -298,19 +304,19 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   private void computeIndefiniteIntegral()
   {
     assert integralFunction == null;
-    integralExpression                      =
+    integralExpression               =
                        (Expression<Object, Object, Function<?, ?>>) expression.cloneExpression();
 
-    integralNode                            = (Node<Object,
+    integralNode                     = (Node<Object,
                   Object,
                   Function<?, ?>>) integrandNode.integrate(integrationVariableNode.asVariable());
 
-    integralExpression.instructions = null;
-    integralExpression.compiledClass        = null;
-    integralExpression.domainType           = integralNode.type();
-    integralExpression.coDomainType         = integralNode.type();
-    integralExpression.rootNode             = integralNode.spliceInto(integralExpression);
-    integralExpression.className            =
+    integralExpression.instructions  = null;
+    integralExpression.compiledClass = null;
+    integralExpression.domainType    = integralNode.type();
+    integralExpression.coDomainType  = integralNode.type();
+    integralExpression.rootNode      = integralNode.spliceInto(integralExpression);
+    integralExpression.className     =
                                  Parser.transformToJavaAcceptableCharacters(integralFunctionFieldName);
     integralExpression.updateStringRepresentation();
     integralExpression.compile();

@@ -4,8 +4,6 @@ import static java.lang.String.format;
 
 import arb.Integer;
 import arb.Quaternion;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import arb.expressions.nodes.LiteralConstantNode;
 import arb.expressions.nodes.Node;
@@ -14,8 +12,7 @@ import arb.expressions.nodes.unary.FunctionNode;
 import arb.functions.Function;
 
 /**
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
  */
 public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                BinaryOperationNode<D, R, F>

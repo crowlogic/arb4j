@@ -25,8 +25,6 @@ import arb.Fraction;
 import arb.FractionConstants;
 import arb.Integer;
 import arb.Real;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
@@ -66,8 +64,7 @@ import arb.functions.Function;
  *            nature of the operation this node represents within an expression
  *            tree.
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
  */
 public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                 Node<D, R, F>

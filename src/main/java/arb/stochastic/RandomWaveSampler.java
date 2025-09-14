@@ -29,8 +29,7 @@ import arb.functions.real.RealFunction;
  * 
  * @author Stephen Crowley
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
  */
 public class RandomWaveSampler extends
                                StationaryGaussianProcessSampler

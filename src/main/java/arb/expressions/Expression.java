@@ -81,8 +81,6 @@ import arb.RationalFunction;
 import arb.Real;
 import arb.RealPolynomial;
 import arb.Typesettable;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.expressions.context.Dependency;
 import arb.expressions.context.TopologicalSorter;
@@ -223,8 +221,8 @@ import arb.utensils.text.trees.TreeModel;
  * @param <F> The function type of the expression, extending the
  *            {@link Function} interface, encapsulating the compiled expression
  *            as an evaluatable function in the sense of Java
- * @author Stephen Andrew Crowley ©2024
- * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms 
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
  */
 public class Expression<D, C, F extends Function<? extends D, ? extends C>> implements
                        Typesettable,
