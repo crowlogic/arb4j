@@ -55,7 +55,6 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public Node<D, R, F> simplify()
   {
-    
 
     if (left.isZero())
     {
@@ -100,6 +99,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
         var exponentSum = leftExp.right.add(rightExp.right).simplify();
         return leftBase.pow(exponentSum).simplify();
       }
+
     }
 
     if (left instanceof FunctionNode<D, R, F> leftFunction
@@ -108,13 +108,25 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       var leftIsExponentialFunction  = leftFunction.functionName.equals("exp");
       var rightIsExponentialFunction = rightFunction.functionName.equals("exp");
 
-      
       if (leftIsExponentialFunction && rightIsExponentialFunction)
       {
         var exponentSum = leftFunction.arg.add(rightFunction.arg).simplify();
-        return exponentSum.exp();
+        return exponentSum.exp().simplify();
       }
-      // TODO: handle non==exponential bases
+
+    }
+
+    if (left instanceof FunctionNode<D, R, F> leftFunction
+                  && right instanceof FunctionNode<D, R, F> rightFunction)
+    {
+      var leftIsSquareRootFunction  = leftFunction.functionName.equals("sqrt");
+      var functionsAreEqual = leftFunction.equals(rightFunction);
+
+      if (leftIsSquareRootFunction && functionsAreEqual)
+      {
+        return leftFunction.arg.simplify();
+      }
+
     }
 
     return super.simplify();
