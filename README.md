@@ -182,7 +182,20 @@ of the very few monospace fonts that correctly renders combining
 diacritics on Linux—including dot above (◌̇) and diaeresis (◌̈)—directly above Greek 
 (and other) characters. Unlike most monospace fonts, Noto Sans Mono is 
 built by Google with a specific goal of full Unicode coverage and accurate 
-OpenType mark positioning, which makes it uniquely suited for this purpose.
+OpenType mark positioning, which makes it uniquely suited for this purpose. For instance, so that
+derivatives can be expressed as demonstrated by this snippet
+
+```java
+  public void testSecondDerivativeViaCombiningTwoDotsAboveCharacter()
+  {
+    Expression.saveClasses = true;
+    final Context      context = new Context();
+    final RealFunction θ       = RealFunction.express("θ:im(lnΓ(¼+ⅈ*t/2))-(log(π)/2)*t", context);
+    final RealFunction Nθ̇     = RealFunction.express("Nθ̇:t➔t-θ̇(t)/θ̈(t)", context);
+    var                y       = Nθ̇.eval(2.3);
+    assertFalse(Double.isNaN(y));
+  }
+```
 
 ## Forked modularized version of jlatexmath 
 See [this](https://github.com/crowlogic/jlatexmath) for a version of jlatexmath without the unnamed module warnings
