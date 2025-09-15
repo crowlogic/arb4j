@@ -58,7 +58,7 @@ public class Utensils
     NewCommandMacro.addNewCommand("Γ", "\\Gamma", 0);
     NewCommandMacro.addNewCommand("re", "\\operatorname{Re} {#1}", 1);
     NewCommandMacro.addNewCommand("im", "\\operatorname{Im} {#1}", 1);
-
+    NewCommandMacro.addNewCommand("mathd", "\\mathrm{d}", 0);
   }
 
   public static String repeat(final char ch, final int repeat)
