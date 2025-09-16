@@ -243,6 +243,11 @@ public class ShellFunctions
     yaml.dump(obj, pw);
   }
 
+  public static ImageViewer showFormula(String formula)
+  {
+    return showFormula(formula, 24);
+  }
+
   public static ImageViewer showFormula(Typesettable formula)
   {
     return showFormula(formula, 24);
@@ -251,8 +256,14 @@ public class ShellFunctions
   public static ImageViewer showFormula(Typesettable formula, int size)
   {
 
-    var imageViewer = new ImageViewer(formula.toString(),
-                                      Utensils.renderFormula(formula.typeset(), size));
+    String typeset = formula.typeset();
+    return showFormula(typeset, size);
+  }
+
+  private static ImageViewer showFormula(String typeset, int size)
+  {
+    var imageViewer = new ImageViewer(typeset,
+                                      Utensils.renderFormula(typeset, size));
     imageViewer.setVisible(true);
     return imageViewer;
   }

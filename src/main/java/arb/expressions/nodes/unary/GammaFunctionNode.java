@@ -58,6 +58,6 @@ public class GammaFunctionNode<D, C, F extends Function<? extends D, ? extends C
   @Override
   public String typeset()
   {
-    return String.format("\\\\Gamma(%s)", arg == null ? "" : arg.typeset());
+    return String.format("\\Gamma(%s)", arg == null ? "" : arg.typeset());
   }
 }
