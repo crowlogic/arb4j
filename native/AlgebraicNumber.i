@@ -7,19 +7,19 @@ import arb.functions.NullaryFunction;
 
 /**
  * <p>
- * A <a href="#c.qqbar_t"><code>qqbar_t</code></a> represents a real or complex algebraic number
- * (an element of ℚ̅) by its unique reduced minimal polynomial in ℤ[x] and an
- * isolating complex interval. The precision of isolating intervals is maintained
- * automatically to ensure that all operations on <a href="#c.qqbar_t"><code>qqbar_t</code></a>
- * instances are exact.
+ * An {@link AlgebraicNumber} represents a {@link Real} or {@link Complex}
+ * algebraic number (an element of ℚ̅) by its unique reduced minimal polynomial
+ * in ℤ[x] and an isolating complex interval. The precision of isolating
+ * intervals is maintained automatically to ensure that all operations on
+ * {@link AlgebraicNumber} instances are exact.
  * </p>
  * 
  * <p>
  * This representation is useful for working with individual algebraic numbers
  * of moderate degree (up to 100, say). Arithmetic in this representation is
- * expensive: an arithmetic operation on numbers of degrees <em>m</em> and <em>n</em>
- * involves computing and then factoring an annihilating polynomial of degree <em>mn</em>
- * and potentially also performing numerical root-finding.
+ * expensive: an arithmetic operation on numbers of degrees <em>m</em> and
+ * <em>n</em> involves computing and then factoring an annihilating polynomial
+ * of degree <em>mn</em> and potentially also performing numerical root-finding.
  * </p>
  * 
  * @author Stephen Crowley ©2024-2025
