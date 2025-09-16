@@ -5,9 +5,8 @@
 
 %%%%%%%%%% Start TeXmacs macros
 \newcommand{\cdummy}{\cdot}
-\newcommand{\mathd}{\mathrm{d}}
-\newcommand{\tmem}[1]{{\em #1\/}}
 \newcommand{\tmemail}[1]{\\ \textit{Email:} \texttt{#1}}
+\newcommand{\tmtextit}[1]{\text{{\itshape{#1}}}}
 \newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
 \newtheorem{corollary}{Corollary}
 \newtheorem{definition}{Definition}
@@ -46,31 +45,31 @@ Processes Constitute a Subclass of Oscillatory Gaussian Processes}
 
 {\tableofcontents}
 
-\section{Scaling Functions}\label{sec:scaling}
+\section{Preliminaries}
 
-\begin{definition}
-  [Scaling Functions]\label{def:scaling} Let $\mathcal{F}$ denote the set of
-  functions $\theta : \mathbb{R} \to \mathbb{R}$ satisfying
+\subsection{Scaling functions}\label{sec:scaling}
+
+\begin{definition}[Scaling Functions]
+  \label{def:scaling}Let $\mathcal{F}$ denote the set of functions $\theta :
+  \mathbb{R} \to \mathbb{R}$ satisfying
   \begin{enumerate}
     \item $\theta$ is absolutely continuous with
     \begin{equation}
-      \dot{\theta} (t) = \frac{\mathd}{\mathd t} \theta (t) \geq 0
+      \dot{\theta} (t) = \frac{\mathrm{d}}{\mathrm{d} t} \theta (t) \geq 0
     \end{equation}
     almost everywhere and $\dot{\theta} (t) = 0$ only on sets of Lebesgue
-    measure zero
+    measure zero.
     
     \item $\theta$ is strictly increasing and bijective.
   \end{enumerate}
 \end{definition}
-
-\
 
 \begin{remark}
   \label{rem:inverse_properties}The conditions in Definition~\ref{def:scaling}
   ensure that $\theta^{- 1} (s)$ exists and is absolutely continuous. By the
   inverse function theorem for absolutely continuous functions,
   \begin{equation}
-    \frac{\mathd}{\mathd s} (\theta^{- 1}) (s) = \frac{1}{\dot{\theta}
+    \frac{\mathrm{d}}{\mathrm{d} s} (\theta^{- 1}) (s) = \frac{1}{\dot{\theta}
     (\theta^{- 1} (s))} = \dot{\theta} (\theta^{- 1} (s))^{- 1}
   \end{equation}
   for almost all $s$ in the range of $\theta$. The condition that
@@ -79,15 +78,12 @@ Processes Constitute a Subclass of Oscillatory Gaussian Processes}
   everywhere.
 \end{remark}
 
-\section{Oscillatory Processes}
+\subsection{Stationary Gaussian reference process}\label{sec:stationary}
 
-An oscillatory process can be represented as a time-dependent filter applied
-to a stationary process
-
-\begin{definition}
-  [Stationary Process] A real--valued process $\{X (t) \}_{t \in \mathbb{R}}$
-  is a stationary Gaussian process if it can be represented by the continuous
-  spectral representation
+\begin{definition}[Stationary Process]
+  A real-valued process $\{X (t)\}_{t \in \mathbb{R}}$ is a stationary
+  Gaussian process if it can be represented by the continuous spectral
+  representation
   \begin{equation}
     \label{eq:stationary_rep} X (t) = \int_{- \infty}^{\infty} e^{i \omega t} 
     \hspace{0.17em} d \Phi (\omega)
@@ -96,98 +92,51 @@ to a stationary process
   density
   \begin{equation}
     E \lvert d \Phi (\omega) \rvert^2 = d \mu (\omega) = S (\omega) =
-    \frac{1}{2 \pi} \int_{- \infty}^{\infty} K (u) e^{- i \omega u} \mathd u =
-    \dot{\mu} (\omega) = \frac{\mathd}{\mathd \omega} \mu (\omega)
+    \frac{1}{2 \pi}  \int_{- \infty}^{\infty} K (u) e^{- i \omega u}
+    \hspace{0.17em} \mathrm{d} u = \dot{\mu} (\omega) =
+    \frac{\mathrm{d}}{\mathrm{d} \omega} \mu (\omega)
   \end{equation}
-  and $\mu$ is an absolutely continuous Lebesgue measure on $\mathbb{R}$ 
+  and $\mu$ is an absolutely continuous Lebesgue measure on $\mathbb{R}$.
 \end{definition}
 
-\begin{definition}
-  [Oscillatory Process]\label{def:oscillatory} A complex-valued, second-order
-  process $\{Z (t) \}_{t \in \mathbb{R}}$ is called {\tmem{oscillatory}} if
-  there exist
-  \begin{enumerate}
-    \item a family of oscillatory basis functions $\{\phi_t (\omega)\}_{t \in
-    \mathbb{R}}$ with
-    \begin{equation}
-      \begin{array}{ll}
-        \phi_t (\omega) & = A_t (\omega) e^{i \omega t}\\
-        & = \int_{- \infty}^{\infty} h (t, u) e^{i \omega u} \mathd u
-      \end{array}
-    \end{equation}
-    and a given family of gain functions
-    \begin{equation}
-      A_t (\omega) = \frac{\phi_t (\omega)}{e^{i \omega t}} \in L^2 (\mu)
-      \label{envelope}
-    \end{equation}
-    with time-dependent filter given by
-    \begin{equation}
-      h (t, u) = \frac{1}{2 \pi} \int_{- \infty}^{\infty} \varphi_t (\omega)
-      e^{- i \omega u} \mathd \lambda
-    \end{equation}
-    \item and a complex orthogonal random measure $\Phi (\omega)$ with
-    \begin{equation}
-      E \lvert d \Phi (\omega) \rvert^2 = d \mu (\omega) = S (\omega)
-    \end{equation}
-  \end{enumerate}
-  such that
-  \begin{equation}
-    \label{eq:oscillatory_rep} \begin{array}{ll}
-      Z (t) & = \int_{- \infty}^{\infty} \phi_t (\omega)  \hspace{0.17em} d
-      \Phi (\omega)\\
-      & = \int_{- \infty}^{\infty} A_t (\omega) e^{i \omega t} d \Phi
-      (\omega)\\
-      & = \int_{- \infty}^{\infty} h (t, u) X (u) \mathd u
-    \end{array}
-  \end{equation}
-  where
-  \begin{equation}
-    X (t) = \int_{- \infty}^{\infty} e^{i \lambda t} \mathd \Phi (\lambda)
-  \end{equation}
-\end{definition}
+\section{Unitary time change and basic properties}\label{sec:time_change}
 
-\section{Unitarily Time-Changed Process}\label{sec:time_change}
+\subsection{Definition and inverse}
 
-\subsection{Definition and Unitary Operator}
-
-\begin{definition}
-  [Unitary Time-Change Operator]\label{M}For $\theta \in \mathcal{F}$, define
-  the operator $M_{\theta} : L^2 (\mathbb{R}) \to L^2 (\mathbb{R})$ by
+\begin{definition}[Unitary Time-Change Operator]
+  \label{M}For $\theta \in \mathcal{F}$, define the operator $M_{\theta} : L^2
+  (\mathbb{R}) \to L^2 (\mathbb{R})$ by
   \begin{equation}
     \label{eq:unitary_op} (M_{\theta} f) (t) = \sqrt{\dot{\theta} (t)} 
     \hspace{0.17em} f (\theta (t))
   \end{equation}
 \end{definition}
 
-\begin{definition}
-  [Unitarily Time-Changed Stationary Process]\label{def:time_changed_proc} For
-  $\theta \in \mathcal{F}$, apply the unitary time change operator
-  $M_{\theta}$ from Definition-\ref{def:unitary_op} \ to a realization of a
-  stationary process $X (t)$ from the ensemble $\{ X (t) \}$ to define a
-  realization of the unitarily time-changed process
+\begin{definition}[Unitarily Time-Changed Stationary Process]
+  \label{def:time_changed_proc}For $\theta \in \mathcal{F}$, apply
+  $M_{\theta}$ from Definition~\ref{M} to a realization of a stationary
+  process $X (t)$ from the ensemble $\{X (t)\}$ to define a realization of the
+  unitarily time-changed process
   \begin{equation}
     \label{eq:time_change} Z (t) = \sqrt{\dot{\theta} (t)}  \hspace{0.17em} X
-    (\theta (t))  \forall t \in \mathbb{R}
+    (\theta (t)) \quad \forall t \in \mathbb{R}
   \end{equation}
 \end{definition}
 
-\
-
-\begin{definition}
-  [Inverse Unitary Time-Change Operator]\label{def:inverse_unitary_op} The
-  inverse operator $M_{\theta}^{- 1} : L^2 (\mathbb{R}) \to L^2 (\mathbb{R})$
-  corresponding to the unitary time-change operator $(M_{\theta} f) (t)$
-  defined in Equation-\ref{eq:unitary_op} is given by
+\begin{definition}[Inverse Unitary Time-Change Operator]
+  \label{def:inverse_unitary_op}The inverse operator $M_{\theta}^{- 1} : L^2
+  (\mathbb{R}) \to L^2 (\mathbb{R})$ corresponding to $M_{\theta}$ in
+  \eqref{eq:unitary_op} is
   \begin{equation}
     \label{eq:unitary_inverse} (M_{\theta}^{- 1} g) (s) = \frac{g (\theta^{-
     1} (s))}{\sqrt{\dot{\theta} (\theta^{- 1} (s))}}
   \end{equation}
 \end{definition}
 
-\begin{lemma}
-  [Well-Definedness of Inverse Operator]\label{lem:inverse_well_defined} The
-  operator $M_{\theta}^{- 1}$ in Definition~\ref{def:inverse_unitary_op} is
-  well-defined $\forall \theta \in \mathcal{F}$.
+\begin{lemma}[Well-Definedness of Inverse Operator]
+  \label{lem:inverse_well_defined}The operator $M_{\theta}^{- 1}$ in
+  Definition~\ref{def:inverse_unitary_op} is well-defined $\forall \theta \in
+  \mathcal{F}$.
 \end{lemma}
 
 \begin{proof}
@@ -200,101 +149,86 @@ to a stationary process
   an element of $L^2 (\mathbb{R})$.
 \end{proof}
 
-\begin{theorem}
-  [Unitarity of Transformation Operator]\label{thm:unitary} The operator
-  $M_{\theta}$ defined in equation~\eqref{eq:unitary_op} is unitary, i.e.,
+\subsection{Unitarity and measure preservation}
+
+\begin{theorem}[Unitarity of Transformation Operator]
+  \label{thm:unitary}The operator $M_{\theta}$ defined in
+  \eqref{eq:unitary_op} is unitary, i.e.,
   \begin{equation}
     \label{eq:L2_preserve} \int_{\mathbb{R}} \lvert (M_{\theta} f) (t)
-    \rvert^2  \hspace{0.17em} dt = \int_{\mathbb{R}} \lvert f (s) \rvert^2 
-    \hspace{0.17em} ds \forall f \in L^2 (\mathbb{R})
+    \rvert^2 \hspace{0.17em} \mathrm{d} t = \int_{\mathbb{R}} \lvert f (s)
+    \rvert^2 \hspace{0.17em} \mathrm{d} s \quad \forall f \in L^2 (\mathbb{R})
   \end{equation}
 \end{theorem}
 
 \begin{proof}
-  Let $f \in L^2 (\mathbb{R})$. The $L^2$-norm of $M_{\theta} f$ is computed
-  as follows:
+  Let $f \in L^2 (\mathbb{R})$. Then
   
   \begin{align}
-    \int_{\mathbb{R}} \lvert (M_{\theta} f) (t) \rvert^2  \hspace{0.17em} dt &
-    = \int_{\mathbb{R}} \left| \sqrt{\dot{\theta} (t)}  \hspace{0.17em} f
-    (\theta (t)) \right|^2  \hspace{0.17em} dt \\
+    \int_{\mathbb{R}} \lvert (M_{\theta} f) (t) \rvert^2 \hspace{0.17em}
+    \mathrm{d} t & = \int_{\mathbb{R}} \left| \sqrt{\dot{\theta} (t)} 
+    \hspace{0.17em} f (\theta (t)) \right|^2 \hspace{0.17em} \mathrm{d} t \\
     & = \int_{\mathbb{R}} \dot{\theta} (t) \hspace{0.17em} \lvert f (\theta
-    (t)) \rvert^2  \hspace{0.17em} dt 
+    (t)) \rvert^2 \hspace{0.17em} \mathrm{d} t 
   \end{align}
   
   Apply the change of variables $s = \theta (t)$. Since $\theta$ is absolutely
-  continuous and strictly increasing, its Jacobian is given by
-  \begin{equation}
-    ds = \dot{\theta} (t)  \hspace{0.17em} dt
-  \end{equation}
-  almost everywhere. As $t$ ranges over $\mathbb{R}$, $s = \theta (t)$ ranges
-  over $\mathbb{R}$ due to the bijectivity of $\theta$. Therefore:
+  continuous and strictly increasing, $ds = \dot{\theta} (t)  \hspace{0.17em}
+  dt$ almost everywhere. As $t$ ranges over $\mathbb{R}$, $s = \theta (t)$
+  ranges over $\mathbb{R}$ due to bijectivity. Therefore:
   
   \begin{align}
     \int_{\mathbb{R}} \dot{\theta} (t) \hspace{0.17em} \lvert f (\theta (t))
-    \rvert^2  \hspace{0.17em} dt & = \int_{\mathbb{R}} \lvert f (s) \rvert^2 
-    \hspace{0.17em} ds 
+    \rvert^2 \hspace{0.17em} \mathrm{d} t & = \int_{\mathbb{R}} \lvert f (s)
+    \rvert^2 \hspace{0.17em} \mathrm{d} s 
   \end{align}
   
-  This establishes equation~\eqref{eq:L2_preserve}. To complete the proof of
-  unitarity, it remains to show that $M_{\theta}^{- 1}$ is indeed the inverse
-  of $M_{\theta}$. For any $f \in L^2 (\mathbb{R})$:
+  To show that $M_{\theta}^{- 1}$ is the inverse of $M_{\theta}$, for any $f
+  \in L^2 (\mathbb{R})$:
   
   \begin{align}
-    (M_{\theta}^{- 1} M_{\theta} f) (s) & = (M_{\theta}^{- 1})  \left[
-    \sqrt{\dot{\theta} (\cdummy)}  \hspace{0.17em} f (\theta (\cdot)) \right]
-    (s) \\
-    & = \frac{\sqrt{\dot{\theta} (\theta^{- 1} (s))}  \hspace{0.17em} f
-    (\theta (\theta^{- 1} (s)))}{\sqrt{\dot{\theta} (\theta^{- 1} (s))}} \\
-    & = f (s) 
+    (M_{\theta}^{- 1} M_{\theta} f) (s) & = \frac{\sqrt{\dot{\theta}
+    (\theta^{- 1} (s))}  \hspace{0.17em} f (\theta (\theta^{- 1}
+    (s)))}{\sqrt{\dot{\theta} (\theta^{- 1} (s))}} = f (s) 
   \end{align}
   
-  where the last equality uses $\theta (\theta^{- 1} (s)) = s$. Similarly, for
-  any $g \in L^2 (\mathbb{R})$:
+  Similarly, for any $g \in L^2 (\mathbb{R})$:
   
   \begin{align}
-    (M_{\theta} M_{\theta}^{- 1} g) (t) & = \sqrt{\dot{\theta} (t)} 
-    \hspace{0.17em} (M_{\theta}^{- 1} g) (\theta (t)) \\
-    & = \sqrt{\dot{\theta} (t)}  \hspace{0.17em} \frac{g (\theta^{- 1}
-    (\theta (t)))}{\sqrt{\dot{\theta} (\theta^{- 1} (\theta (t)))}} \\
-    & = \sqrt{\dot{\theta} (t)}  \hspace{0.17em} \frac{g
-    (t)}{\sqrt{\dot{\theta} (t)}} \\
-    & = g (t) 
+    (M_{\theta} M_{\theta}^{- 1} g) (t) & = \sqrt{\dot{\theta} (t)}  \frac{g
+    (\theta^{- 1} (\theta (t)))}{\sqrt{\dot{\theta} (\theta^{- 1} (\theta
+    (t)))}} = g (t) 
   \end{align}
   
-  Therefore
-  \begin{equation}
-    M_{\theta} M_{\theta}^{- 1} = M_{\theta}^{- 1} M_{\theta} = I
-  \end{equation}
-  proving that $M_{\theta}$ is unitary.
+  Hence $M_{\theta} M_{\theta}^{- 1} = M_{\theta}^{- 1} M_{\theta} = I$.
 \end{proof}
 
-\begin{corollary}
-  [Measure Preservation]\label{cor:measure_preserve} The transformation
-  $M_{\theta}$ preserves the $L^2$-measure in the sense that for any
-  measurable set $A \subseteq \mathbb{R}$
+\begin{corollary}[Measure Preservation on Sets]
+  \label{cor:measure_preserve}The transformation $M_{\theta}$ preserves the
+  $L^2$-measure in the sense that for any measurable set $A \subseteq
+  \mathbb{R}$,
   \begin{equation}
     \label{eq:measure_preserve_sets} \int_A \lvert (M_{\theta} f) (t) \rvert^2
-    \hspace{0.17em} dt = \int_{\theta (A)} \lvert f (s) \rvert^2 
-    \hspace{0.17em} ds
+    \hspace{0.17em} \mathrm{d} t = \int_{\theta (A)} \lvert f (s) \rvert^2
+    \hspace{0.17em} \mathrm{d} s
   \end{equation}
 \end{corollary}
 
 \begin{proof}
-  The proof follows the same change of variables argument as in
-  Theorem~\ref{thm:unitary}, applied to the characteristic function of the set
-  $A$.
+  This follows by the same change-of-variables argument as in
+  Theorem~\ref{thm:unitary}, applied to the characteristic function of $A$.
 \end{proof}
 
-\subsection{$L^2$-Norm Preservation}\label{sec:norm_preservation}
+\subsection{$L^2$-norm preservation for
+processes}\label{sec:norm_preservation}
 
-\begin{theorem}
-  [Measure Preservation]\label{thm:measure_preserve} The transformation
-  defined in equation~\eqref{eq:time_change} preserves the $L^2$-norm in the
-  sense that
+\begin{theorem}[Measure Preservation]
+  \label{thm:measure_preserve}The transformation defined in
+  \eqref{eq:time_change} preserves the $L^2$-norm in the sense that
   \begin{equation}
-    \label{eq:measure_preserve} \int_I \mathrm{var} (Z (t))  \hspace{0.17em}
-    dt = \int_{\theta (I)} \mathrm{var} (X (s))  \hspace{0.17em} ds
+    \label{eq:measure_preserve} \int_I \mathrm{var} (Z (t)) \hspace{0.17em}
+    \mathrm{d} t = \int_{\theta (I)} \mathrm{var} (X (s)) \hspace{0.17em}
+    \mathrm{d} s
   \end{equation}
   for any measurable set $I \subseteq \mathbb{R}$.
 \end{theorem}
@@ -304,25 +238,77 @@ to a stationary process
   \hspace{0.17em} dt$:
   
   \begin{align}
-    \int_I \mathrm{var} (X (t))  \hspace{0.17em} dt & = \int_I \mathrm{var}
-    \left( \sqrt{\dot{\theta} (t)}  \hspace{0.17em} X (\theta (t)) \right) 
-    \hspace{0.17em} dt \\
-    & = \int_I \dot{\theta} (t) \hspace{0.17em} \mathrm{var} (X (\theta (t)))
-    \hspace{0.17em} dt \\
-    & = \int_{\theta (I)} \mathrm{var} (X (s))  \hspace{0.17em} ds 
+    \int_I \mathrm{var} \hspace{-0.17em} \left( \sqrt{\dot{\theta} (t)} 
+    \hspace{0.17em} X (\theta (t)) \right) \mathrm{d} t & = \int_I
+    \dot{\theta} (t) \hspace{0.17em} \mathrm{var} (X (\theta (t)))
+    \hspace{0.17em} \mathrm{d} t \\
+    & = \int_{\theta (I)} \mathrm{var} (X (s)) \hspace{0.17em} \mathrm{d} s 
   \end{align}
 \end{proof}
 
-\subsection{Oscillatory Representation}
+\section{Oscillatory processes and representation}
 
-\begin{theorem}
-  [Oscillatory Form]\label{thm:osc_rep} The process $\{ Z (t) \}$ defined in
-  equation~\eqref{eq:time_change} is oscillatory with oscillatory functions
+An oscillatory process can be represented as a time-dependent filter applied
+to a stationary process.
+
+\begin{definition}[Oscillatory Process]
+  \label{def:oscillatory}A complex-valued, second-order process $\{Z (t)\}_{t
+  \in \mathbb{R}}$ is called oscillatory if there exist:
+  \begin{enumerate}
+    \item A family of oscillatory basis functions $\{\phi_t (\omega)\}_{t \in
+    \mathbb{R}}$ with
+    \begin{equation}
+      \begin{aligned}
+        \phi_t (\omega) & = A_t (\omega) e^{i \omega t}\\
+        & = \int_{- \infty}^{\infty} h (t, u)  \hspace{0.17em} e^{i \omega u}
+        \hspace{0.17em} \mathrm{d} u,
+      \end{aligned}
+    \end{equation}
+    and a given family of gain functions
+    \begin{equation}
+      A_t (\omega) = \frac{\phi_t (\omega)}{e^{i \omega t}} \in L^2 (\mu)
+      \label{envelope}
+    \end{equation}
+    with time-dependent filter given by the inverse transform
+    \begin{equation}
+      h (t, u) = \frac{1}{2 \pi}  \int_{- \infty}^{\infty} \phi_t (\lambda) 
+      \hspace{0.17em} e^{- i \lambda u} \hspace{0.17em} \mathrm{d} \lambda .
+    \end{equation}
+    \item A complex orthogonal random measure $\Phi (\omega)$ with
+    \begin{equation}
+      E \lvert d \Phi (\omega) \rvert^2 = d \mu (\omega) = S (\omega)
+    \end{equation}
+  \end{enumerate}
+  such that
+  \begin{equation}
+    \label{eq:oscillatory_rep}
+    
+    \begin{aligned}
+      Z (t) & = \int_{- \infty}^{\infty} \phi_t (\omega)  \hspace{0.17em} d
+      \Phi (\omega)\\
+      & = \int_{- \infty}^{\infty} A_t (\omega) e^{i \omega t} 
+      \hspace{0.17em} d \Phi (\omega)\\
+      & = \int_{- \infty}^{\infty} h (t, u)  \hspace{0.17em} X (u)
+      \hspace{0.17em} \mathrm{d} u,
+    \end{aligned}
+  \end{equation}
+  where
+  \begin{equation}
+    X (t) = \int_{- \infty}^{\infty} e^{i \lambda t} \hspace{0.17em}
+    \mathrm{d} \Phi (\lambda)
+  \end{equation}
+\end{definition}
+
+\subsection{Oscillatory representation of the time-changed process}
+
+\begin{theorem}[Oscillatory Form]
+  \label{thm:osc_rep}The process $\{Z (t)\}$ defined in \eqref{eq:time_change}
+  is oscillatory with oscillatory functions
   \begin{equation}
     \label{eq:phi_def} \phi_t (\omega) = A_t (\omega) e^{i \omega t} =
     \sqrt{\dot{\theta} (t)}  \hspace{0.17em} e^{i \omega \theta (t)}
   \end{equation}
-  and gain functions \
+  and gain functions
   \begin{equation}
     A_t (\omega) = \sqrt{\dot{\theta} (t)}  \hspace{0.17em} e^{i \omega
     (\theta (t) - t)}
@@ -330,42 +316,32 @@ to a stationary process
 \end{theorem}
 
 \begin{proof}
-  Apply the unitary time change operator $(M_{\theta} f) (t)$ in Defintion
-  (\ref{M}) then substitute the spectral
-  representation~\eqref{eq:stationary_rep} of the stationary process $X (t)$:
+  Apply the unitary time change operator $M_{\theta}$ in Definition~\ref{M}
+  and substitute the spectral representation~\eqref{eq:stationary_rep} of the
+  stationary process $X (t)$:
   
   \begin{align}
     Z (t) & = (M_{\theta} X) (t) \nonumber\\
-    & = \sqrt{\dot{\theta} (t)} X (\theta (t)) \\
+    & = \sqrt{\dot{\theta} (t)}  \hspace{0.17em} X (\theta (t)) \\
     & = \sqrt{\dot{\theta} (t)}  \int_{- \infty}^{\infty} e^{i \omega \theta
     (t)}  \hspace{0.17em} d \Phi (\omega) \\
     & = \int_{- \infty}^{\infty} \sqrt{\dot{\theta} (t)}  \hspace{0.17em}
-    e^{i \omega \theta (t)}  \hspace{0.17em} d \phi (\omega) \\
+    e^{i \omega \theta (t)}  \hspace{0.17em} d \Phi (\omega) \\
     & = \int_{- \infty}^{\infty} \phi_t (\omega)  \hspace{0.17em} d \Phi
     (\omega) 
   \end{align}
   
-  where
+  where $\phi_t (\omega) = \sqrt{\dot{\theta} (t)}  \hspace{0.17em} e^{i
+  \omega \theta (t)}$. To verify this is an oscillatory representation
+  according to Definition~\ref{def:oscillatory}, express $\phi_t (\omega)$ in
+  the form $A_t (\omega) e^{i \omega t}$:
   \begin{equation}
-    \phi_t (\omega) = \sqrt{\dot{\theta} (t)}  \hspace{0.17em} e^{i \omega
-    \theta (t)}
-  \end{equation}
-  To verify this is an oscillatory representation according to
-  Definition~\ref{def:oscillatory}, express $\phi_t (\omega)$ in the form of a
-  function of the time-dependent gain $A_t (\lambda)$ as required
-  \begin{equation}
-    \begin{array}{ll}
-      \phi_t (\omega) & = A_t (\omega) e^{i \omega t}\\
+    \begin{aligned}
+      \phi_t (\omega) & = A_t (\omega)  \hspace{0.17em} e^{i \omega t}\\
       & = \sqrt{\dot{\theta} (t)}  \hspace{0.17em} e^{i \omega (\theta (t) -
       t)}  \hspace{0.17em} e^{i \omega t}\\
-      & = \sqrt{\dot{\theta} (t)} e^{i \omega (\theta (t) - t + t)}\\
       & = \sqrt{\dot{\theta} (t)}  \hspace{0.17em} e^{i \omega \theta (t)}
-    \end{array}
-  \end{equation}
-  where
-  \begin{equation}
-    A_t (\omega) = \sqrt{\dot{\theta} (t)}  \hspace{0.17em} e^{i \omega
-    (\theta (t) - t)}
+    \end{aligned}
   \end{equation}
   Since $\dot{\theta} (t) \geq 0$ almost everywhere and $\dot{\theta} (t) = 0$
   only on sets of measure zero, the function $A_t (\omega)$ is well-defined
@@ -376,84 +352,69 @@ to a stationary process
     \int_{- \infty}^{\infty} \lvert A_t (\omega) \rvert^2  \hspace{0.17em} d
     \mu (\omega) & = \int_{- \infty}^{\infty} \dot{\theta} (t) 
     \hspace{0.17em} d \mu (\omega) \\
-    & = \dot{\theta} (t) \int_{- \infty}^{\infty}  \hspace{0.17em} d \mu
-    (\omega) \nonumber\\
-    & = \dot{\theta} (t) \mu (\mathbb{R}) < \infty 
+    & = \dot{\theta} (t)  \int_{- \infty}^{\infty} d \mu (\omega) \\
+    & = \dot{\theta} (t)  \hspace{0.17em} \mu (\mathbb{R}) < \infty 
   \end{align}
   
-  where the finiteness follows from $\mu$ being a finite measure and
-  $\dot{\theta} (t)$ being finite almost everywhere.
+  where finiteness follows from $\mu$ being a finite measure and $\dot{\theta}
+  (t)$ being finite almost everywhere.
 \end{proof}
 
-\subsection{Envelope and Evolutionary Spectrum}
+\subsection{Envelope and evolutionary spectrum}
 
-\
-
-\begin{corollary}
-  [Evolutionary Spectrum]\label{cor:evolving_spec} The evolutionary power
-  spectrum is
+\begin{corollary}[Evolutionary Spectrum]
+  \label{cor:evolving_spec}The evolutionary power spectrum is
   \begin{equation}
-    \label{eq:evolutionary_spec} \begin{array}{ll}
-      dF_t (\omega) & = \lvert A_t (\omega) \rvert^2  \hspace{0.17em} d \mu
-      (\omega)\\
-      & = \dot{\theta} (t)  \hspace{0.17em} d \mu (\omega)
-    \end{array}
+    \label{eq:evolutionary_spec} dF_t (\omega) = \lvert A_t (\omega) \rvert^2 
+    \hspace{0.17em} d \mu (\omega) = \dot{\theta} (t)  \hspace{0.17em} d \mu
+    (\omega) .
   \end{equation}
 \end{corollary}
 
 \begin{proof}
-  By Definition~\ref{def:oscillatory} and the envelope from
-  Equation~\ref{envelope}, the evolutionary power spectrum is:
+  By Definition~\ref{def:oscillatory} and \eqref{envelope},
   
   \begin{align}
     dF_t (\omega) & = \lvert A_t (\omega) \rvert^2  \hspace{0.17em} d \mu
     (\omega) \\
     & = \left| \sqrt{\dot{\theta} (t)}  \hspace{0.17em} e^{i \omega (\theta
     (t) - t)} \right|^2  \hspace{0.17em} d \mu (\omega) \\
-    & = \dot{\theta} (t) \hspace{0.17em} | e^{i \omega (\theta (t) - t)} |^2 
+    & = \dot{\theta} (t) \hspace{0.17em} |e^{i \omega (\theta (t) - t)} |^2 
     \hspace{0.17em} d \mu (\omega) \\
     & = \dot{\theta} (t)  \hspace{0.17em} d \mu (\omega) 
   \end{align}
   
-  since
-  \begin{equation}
-    |e^{i \alpha} | = 1 \forall \alpha \in \mathbb{R}
-  \end{equation}
+  since $|e^{i \alpha} | = 1$ for all $\alpha \in \mathbb{R}$.
 \end{proof}
 
-\section{Operator Conjugation}\label{sec:conjugation}
+\section{Operator conjugation}\label{sec:conjugation}
 
-\begin{theorem}
-  [Operator Conjugation]\label{thm:operator_conjugation} Let $T_K$ be the \
-  integral covariance operator defined by
+\begin{theorem}[Operator Conjugation]
+  \label{thm:operator_conjugation}Let $T_K$ be the integral covariance
+  operator defined by
   \begin{equation}
-    \label{eq:integral_op_original} \begin{array}{ll}
-      (T_K f) (t) & = \int_{- \infty}^{\infty} K (|t - s|) f (s) 
-      \hspace{0.17em} ds
-    \end{array}
+    \label{eq:integral_op_original} (T_K f) (t) = \int_{- \infty}^{\infty} K
+    (|t - s|)  \hspace{0.17em} f (s) \hspace{0.17em} \mathrm{d} s
   \end{equation}
-  where $K (h)$ is the stationary kernel
+  where $K (h) = \int_{- \infty}^{\infty} S (\lambda) e^{i \lambda h}
+  \hspace{0.17em} \mathrm{d} \lambda$. Let $T_{K_{\theta}}$ be the integral
+  covariance operator defined by
   \begin{equation}
-    K (h) = \int_{- \infty}^{\infty} S (\lambda) e^{i \lambda h} \mathd
-    \lambda
-  \end{equation}
-  and let $T_{K_{\theta}}$ be the integral covariance operator defined by
-  \begin{equation}
-    \label{eq:integral_op_transformed} \begin{array}{ll}
-      (T_{K_{\theta}} f) (t) & = \int_{- \infty}^{\infty} K_{\theta} (s, t) f
-      (s)  \hspace{0.17em} ds\\
-      & = \int_{- \infty}^{\infty} K (| \theta (t) - \theta (s) |) 
-      \sqrt{\dot{\theta} (t) \dot{\theta} (s)} f (s)  \hspace{0.17em} ds
-    \end{array}
+    \label{eq:integral_op_transformed} (T_{K_{\theta}} f) (t) = \int_{-
+    \infty}^{\infty} K_{\theta} (s, t)  \hspace{0.17em} f (s) \hspace{0.17em}
+    \mathrm{d} s = \int_{- \infty}^{\infty} K (| \theta (t) - \theta (s) |)
+    \sqrt{\dot{\theta} (t)  \hspace{0.17em} \dot{\theta} (s)}  \hspace{0.17em}
+    f (s) \hspace{0.17em} \mathrm{d} s
   \end{equation}
   for the unitarily time-changed kernel
   \begin{equation}
     K_{\theta} (s, t) = K (| \theta (t) - \theta (s) |) \sqrt{\dot{\theta} (t)
-    \dot{\theta} (s)}
+    \hspace{0.17em} \dot{\theta} (s)}
   \end{equation}
   Then
   \begin{equation}
-    \label{eq:conjugation} T_{K_{\theta}} = M_{\theta} T_K M_{\theta}^{- 1}
+    \label{eq:conjugation} T_{K_{\theta}} = M_{\theta}  \hspace{0.17em} T_K 
+    \hspace{0.17em} M_{\theta}^{- 1}
   \end{equation}
 \end{theorem}
 
@@ -462,47 +423,50 @@ to a stationary process
   g) (t)$:
   
   \begin{align}
-    (M_{\theta}^{- 1} g) (s) & = \frac{g (\theta^{- 1} (s))}{\sqrt{\theta'
-    (\theta^{- 1} (s))}} \\
+    (M_{\theta}^{- 1} g) (s) & = \frac{g (\theta^{- 1}
+    (s))}{\sqrt{\dot{\theta} (\theta^{- 1} (s))}}, \\
     (T_K M_{\theta}^{- 1} g) (t) & = \int_{- \infty}^{\infty} K (|t - s|)
-    \frac{g (\theta^{- 1} (s))}{\sqrt{\dot{\theta} (\theta^{- 1} (s))}} ds 
+    \frac{g (\theta^{- 1} (s))}{\sqrt{\dot{\theta} (\theta^{- 1} (s))}}
+    \hspace{0.17em} \mathrm{d} s. 
   \end{align}
   
   Apply the change of variables $u = \theta^{- 1} (s)$, so $s = \theta (u)$
-  and $ds = \dot{\theta} (u) du$:
+  and $\mathrm{d} s = \dot{\theta} (u) \hspace{0.17em} \mathrm{d} u$:
   
   \begin{align}
     (T_K M_{\theta}^{- 1} g) (t) & = \int_{- \infty}^{\infty} K (|t - \theta
-    (u) |) \frac{g (u)}{\sqrt{\dot{\theta} (u)}}  \dot{\theta} (u) du \\
-    & = \int_{- \infty}^{\infty} K (|t - \theta (u) |) g (u)
-    \sqrt{\dot{\theta} (u)} du 
+    (u) |) \frac{g (u)}{\sqrt{\dot{\theta} (u)}}  \hspace{0.17em} \dot{\theta}
+    (u) \hspace{0.17em} \mathrm{d} u \\
+    & = \int_{- \infty}^{\infty} K (|t - \theta (u) |)  \hspace{0.17em} g (u)
+    \sqrt{\dot{\theta} (u)} \hspace{0.17em} \mathrm{d} u 
   \end{align}
   
   Now apply $M_{\theta}$:
   
   \begin{align}
-    (M_{\theta} T_K M_{\theta}^{- 1} g) (t) & = \sqrt{\dot{\theta} (t)}  (T_K
-    M_{\theta}^{- 1} g) (\theta (t)) \\
+    (M_{\theta} T_K M_{\theta}^{- 1} g) (t) & = \sqrt{\dot{\theta} (t)} 
+    \hspace{0.17em} (T_K M_{\theta}^{- 1} g) (\theta (t)) \\
     & = \sqrt{\dot{\theta} (t)}  \int_{- \infty}^{\infty} K (| \theta (t) -
-    \theta (u) |) g (u) \sqrt{\dot{\theta} (u)} du 
+    \theta (u) |)  \hspace{0.17em} g (u) \sqrt{\dot{\theta} (u)}
+    \hspace{0.17em} \mathrm{d} u 
   \end{align}
   
   Apply the change of variables $s = \theta (u)$ in the reverse direction:
   
   \begin{align}
     (M_{\theta} T_K M_{\theta}^{- 1} g) (t) & = \int_{- \infty}^{\infty} K (|
-    \theta (t) - \theta (s) |) g (s) ds \\
-    & = (T_{K_{\theta}} g) (t) 
+    \theta (t) - \theta (s) |)  \hspace{0.17em} g (s) \hspace{0.17em}
+    \mathrm{d} s \\
+    & = (T_{K_{\theta}} g) (t) . 
   \end{align}
   
   This establishes the conjugation relation~\eqref{eq:conjugation}.
 \end{proof}
 
-\section{Expected Zero Count}\label{sec:zero_count}
+\section{Expected zero count}\label{sec:zero_count}
 
-\begin{theorem}
-  [Expected Zero-Counting Function]\label{thm:zero_count} Let $\theta \in
-  \mathcal{F}$ and let
+\begin{theorem}[Expected Zero-Counting Function]
+  \label{thm:zero_count}Let $\theta \in \mathcal{F}$ and let
   \begin{equation}
     K (\tau) = \mathrm{cov} (X (t), X (\tau))
   \end{equation}
@@ -518,47 +482,49 @@ to a stationary process
   The covariance function of the time-changed process is
   \begin{equation}
     \label{eq:time_changed_cov} K_{\theta} (s, t) = \mathrm{cov} (X_s, X_t) =
-    \sqrt{\dot{\theta} (s)  \dot{\theta} (t)}  \hspace{0.17em} K (| \theta (t)
-    - \theta (s) |)
+    \sqrt{\dot{\theta} (s)  \hspace{0.17em} \dot{\theta} (t)}  \hspace{0.17em}
+    K (| \theta (t) - \theta (s) |)
   \end{equation}
   For the zero-crossing analysis, consider the normalized process. By the
   Kac-Rice formula:
   \begin{equation}
     \label{eq:kac_rice} \mathbb{E} [N_{[a, b]}] = \int_a^b \sqrt{- \lim_{s \to
-    t}  \frac{\partial^2}{\partial s \partial t} K_{\theta} (s, t)} 
-    \hspace{0.17em} dt
+    t}  \frac{\partial^2}{\partial s \hspace{0.17em} \partial t} K_{\theta}
+    (s, t)} \hspace{0.17em} \mathrm{d} t
   \end{equation}
   Computing the mixed partial derivative:
   
   \begin{align}
     \frac{\partial}{\partial t} K_{\theta} (s, t) & = \frac{1}{2} 
-    \frac{\ddot{\theta} (t)}{\sqrt{\dot{\theta} (t)}}  \sqrt{\theta' (s)} K (|
-    \theta (t) - \theta (s) |) \\
-    & \quad + \sqrt{\dot{\theta} (s)  \dot{\theta} (t)}  \dot{K} (| \theta
-    (t) - \theta (s) |) \mathrm{sgn} (\theta (t) - \theta (s))  \dot{\theta}
-    (t) 
+    \frac{\ddot{\theta} (t)}{\sqrt{\dot{\theta} (t)}}  \sqrt{\dot{\theta} (s)}
+    \hspace{0.17em} K (| \theta (t) - \theta (s) |) \\
+    & \quad + \sqrt{\dot{\theta} (s)  \hspace{0.17em} \dot{\theta} (t)} 
+    \hspace{0.17em} \dot{K} (| \theta (t) - \theta (s) |) \hspace{0.17em}
+    \mathrm{sgn} (\theta (t) - \theta (s))  \hspace{0.17em} \dot{\theta} (t) .
+    
   \end{align}
   
-  Taking the limit as $s \to t$ and using the fact that $\dot{K} (0) = 0$ for
-  stationary processes:
+  Taking the limit as $s \to t$ and using $\dot{K} (0) = 0$ for stationary
+  processes:
   
   \begin{align}
-    \lim_{s \to t}  \frac{\partial^2}{\partial s \partial t} K_{\theta} (s, t)
-    & = \dot{\theta} (s)  \dot{\theta} (t)  \ddot{K} (0) \\
-    & = \dot{\theta} (t)^2  \ddot{K} (0) 
+    \lim_{s \to t}  \frac{\partial^2}{\partial s \hspace{0.17em} \partial t}
+    K_{\theta} (s, t) & = \dot{\theta} (s)  \hspace{0.17em} \dot{\theta} (t) 
+    \hspace{0.17em} \ddot{K} (0) \\
+    & = \dot{\theta} (t)^2  \hspace{0.17em} \ddot{K} (0) 
   \end{align}
   
   Substituting into the Kac-Rice formula:
   
   \begin{align}
-    \mathbb{E} [N_{[a, b]}] & = \int_a^b \sqrt{- \dot{\theta} (t)^2  \ddot{K}
-    (0)}  \hspace{0.17em} dt \\
-    & = \sqrt{- \ddot{K} (0)}  \int_a^b \dot{\theta} (t)  \hspace{0.17em} dt
-    \\
+    \mathbb{E} [N_{[a, b]}] & = \int_a^b \sqrt{- \dot{\theta} (t)^2 
+    \hspace{0.17em} \ddot{K} (0)} \hspace{0.17em} \mathrm{d} t \\
+    & = \sqrt{- \ddot{K} (0)}  \int_a^b \dot{\theta} (t) \hspace{0.17em}
+    \mathrm{d} t \\
     & = \sqrt{- \ddot{K} (0)}  \hspace{0.17em} (\theta (b) - \theta (a)) 
   \end{align}
   
-  Here the second equality uses $\dot{\theta} (t) \geq 0$ almost everywhere.
+  where $\dot{\theta} (t) \ge 0$ almost everywhere was used.
 \end{proof}
 
 \section{Conclusion}\label{sec:conclusion}
@@ -568,41 +534,38 @@ measure-preserving bijective time changes of stationary processes form a
 well-defined subclass of oscillatory processes. The key contributions include:
 \begin{enumerate}
   \item The construction of the unitary operator $M_{\theta}$ and its inverse,
-  with proper treatment of the case where
-  \begin{equation}
-    \dot{\theta} (t) = 0
-  \end{equation}
-  on sets of measure zero
+  with proper treatment of the case where $\dot{\theta} (t) = 0$ on sets of
+  measure zero.
   
-  \item The explicit oscillatory representation with envelope function
-  \begin{equation}
-    A_t (\omega) = \sqrt{\dot{\theta} (t)} e^{i \omega (\theta (t) - t)}
-  \end{equation}
-  \item The evolutionary power spectrum formula
-  \begin{equation}
-    dF_t (\omega) = \dot{\theta} (t) d \mu (\omega)
-  \end{equation}
-  \item The operator conjugation relationship
-  \begin{equation}
-    T_{K_{\theta}} = M_{\theta} T_K M_{\theta}^{- 1}
-  \end{equation}
+  \item The explicit oscillatory representation with envelope function $A_t
+  (\omega) = \sqrt{\dot{\theta} (t)}  \hspace{0.17em} e^{i \omega (\theta (t)
+  - t)}$.
+  
+  \item The evolutionary power spectrum formula $dF_t (\omega) = \dot{\theta}
+  (t)  \hspace{0.17em} d \mu (\omega)$.
+  
+  \item The operator conjugation relationship $T_{K_{\theta}} = M_{\theta} 
+  \hspace{0.17em} T_K  \hspace{0.17em} M_{\theta}^{- 1}$.
+  
   \item A closed-form expression for the expected zero count in terms of the
-  range of the time scaling function
+  range of the time scaling function.
 \end{enumerate}
 \begin{thebibliography}{99}
-  {\bibitem{priestley1965}}M.B. Priestley. Evolutionary spectra and
-  non-stationary processes. {\tmem{Journal of the Royal Statistical Society,
-  Series B}}, 27(2):204--237, 1965.
+  {\bibitem{priestley1965}}M.{\hspace{0.17em}}B. Priestley. Evolutionary
+  spectra and non-stationary processes. \tmtextit{Journal of the Royal
+  Statistical Society, Series B}, 27(2):204--237, 1965.
   
-  {\bibitem{cramer1967}}H. Cram{\'e}r and M.R. Leadbetter. {\tmem{Stationary
-  and Related Stochastic Processes}}. Wiley, 1967.
+  {\bibitem{cramer1967}}H. Cram{\'e}r and M.{\hspace{0.17em}}R. Leadbetter.
+  \tmtextit{Stationary and Related Stochastic Processes}. Wiley, 1967.
   
   {\bibitem{kac1943}}M. Kac. On the average number of real roots of a random
-  algebraic equation. {\tmem{Bulletin of the American Mathematical Society}},
-  49(4):314--320, 1943.
+  algebraic equation. \tmtextit{Bulletin of the American Mathematical
+  Society}, 49(4):314--320, 1943.
   
-  {\bibitem{rice1945}}S.O. Rice. Mathematical analysis of random noise.
-  {\tmem{Bell System Technical Journal}}, 24(1):46--156, 1945.
+  {\bibitem{rice1945}}S.{\hspace{0.17em}}O. Rice. Mathematical analysis of
+  random noise. \tmtextit{Bell System Technical Journal}, 24(1):46--156, 1945.
 \end{thebibliography}
+
+\
 
 \end{document}
