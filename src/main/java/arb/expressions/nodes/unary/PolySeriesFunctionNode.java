@@ -31,6 +31,14 @@ import arb.functions.Function;
 abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? extends C>> extends
                                      FunctionNode<D, C, F>
 {
+  private static final String VOID_NOARG_SIGNATURE   = "()V";
+  private static final String INIT                   = "<init>";
+  private static final String ARB_REAL_POLYNOMIAL    = "arb/RealPolynomial";
+  private static final String ARB_COMPLEX_POLYNOMIAL = "arb/ComplexPolynomial";
+  private static final String ARB_COMPLEX            = "arb/Complex";
+  private static final String ARB_ONE                = "arb_one";
+  private static final String ACB_ONE                = "acb_one";
+  private static final String ARB_REAL               = "arb/Real";
   private static final String ARB_POLY_CLEAR         = "arb_poly_clear";
   private static final String ACB_POLY_CLEAR         = "acb_poly_clear";
   private static final String ARB_POLY_GET_COEFF_ARB = "arb_poly_get_coeff_arb";
@@ -104,7 +112,7 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
     mv.visitVarInsn(Opcodes.ALOAD, outSlot);
     generatedType = S;
 
-    //assert !isResult : "TODO: handle isResult=true";
+    // assert !isResult : "TODO: handle isResult=true";
     return mv;
   }
 
@@ -254,27 +262,18 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
   protected int putOneInSlot(MethodVisitor mv, final boolean isComplex)
   {
     // Allocate + prepare a temp variable for 1
-    int oneSlot = nextLocal++;
-    if (isComplex)
-    {
-      // Complex temp = new Complex(); arblib.acb_one(temp);
-      mv.visitTypeInsn(Opcodes.NEW, "arb/Complex");
-      mv.visitInsn(Opcodes.DUP);
-      mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "arb/Complex", "<init>", "()V", false);
-      mv.visitInsn(Opcodes.DUP);
-      mv.visitVarInsn(Opcodes.ASTORE, oneSlot);
-      invokeStaticMethod(mv, arblib.class, "acb_one", Void.class, Complex.class);
-    }
-    else
-    {
-      // Real temp = new Real(); arblib.arb_one(temp);
-      mv.visitTypeInsn(Opcodes.NEW, "arb/Real");
-      mv.visitInsn(Opcodes.DUP);
-      mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "arb/Real", "<init>", "()V", false);
-      mv.visitInsn(Opcodes.DUP);
-      mv.visitVarInsn(Opcodes.ASTORE, oneSlot);
-      invokeStaticMethod(mv, arblib.class, "arb_one", Void.class, Real.class);
-    }
+    int    oneSlot = nextLocal++;
+    String type    = isComplex ? ARB_COMPLEX : ARB_REAL;
+    mv.visitTypeInsn(Opcodes.NEW, type);
+    mv.visitInsn(Opcodes.DUP);
+    mv.visitMethodInsn(Opcodes.INVOKESPECIAL, type, INIT, VOID_NOARG_SIGNATURE, false);
+    mv.visitInsn(Opcodes.DUP);
+    mv.visitVarInsn(Opcodes.ASTORE, oneSlot);
+    invokeStaticMethod(mv,
+                       arblib.class,
+                       isComplex ? ACB_ONE : ARB_ONE,
+                       Void.class,
+                       isComplex ? Complex.class : Real.class);
     return oneSlot;
   }
 
@@ -354,9 +353,9 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
 
   private static void newPoly(MethodVisitor mv, boolean cx)
   {
-    String cls = cx ? "arb/ComplexPolynomial" : "arb/RealPolynomial";
+    String cls = cx ? ARB_COMPLEX_POLYNOMIAL : ARB_REAL_POLYNOMIAL;
     mv.visitTypeInsn(Opcodes.NEW, cls);
     mv.visitInsn(Opcodes.DUP);
-    mv.visitMethodInsn(Opcodes.INVOKESPECIAL, cls, "<init>", "()V", false);
+    mv.visitMethodInsn(Opcodes.INVOKESPECIAL, cls, INIT, VOID_NOARG_SIGNATURE, false);
   }
 }

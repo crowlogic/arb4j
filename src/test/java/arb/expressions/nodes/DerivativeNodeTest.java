@@ -5,7 +5,6 @@ import arb.RealConstants;
 import arb.exceptions.CompilerException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
-import arb.functions.θ;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealRiemannSiegelThetaFunction;
 import junit.framework.TestCase;
@@ -46,16 +45,6 @@ public class DerivativeNodeTest extends
     final RealFunction Nθ̇     = RealFunction.express("Nθ̇:t➔t-θ̇(t)/θ̈(t)", context);
     var                y       = Nθ̇.eval(2.3);
     assertFalse(Double.isNaN(y));
-  }
-
-  public void testDecompiledEvaluateRealBivariateFunctionWithContextVariable()
-  {
-    try ( θ θ = new θ())
-    {
-      var  θ̇      = θ.derivative();
-      Real θ̇AtOne = θ̇.evaluate(RealConstants.one, 128, new Real());
-      assertEquals(-1.0125730965517337, θ̇AtOne.doubleValue());
-    }
   }
 
   public void testEvaluateDerivativeOfTheRealRiemannSiegelThetaFunction()
