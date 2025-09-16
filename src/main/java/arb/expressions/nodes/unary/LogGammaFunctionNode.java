@@ -2,17 +2,14 @@ package arb.expressions.nodes.unary;
 
 import org.objectweb.asm.MethodVisitor;
 
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
 /**
- * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
- **/
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
+ */
 public class LogGammaFunctionNode<D, C, F extends Function<? extends D, ? extends C>> extends
                                  PolySeriesFunctionNode<D, C, F>
 {

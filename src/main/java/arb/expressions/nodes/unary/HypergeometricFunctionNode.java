@@ -22,8 +22,6 @@ import arb.Integer;
 import arb.RationalFunction;
 import arb.Real;
 import arb.RealPolynomial;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
@@ -58,8 +56,8 @@ import arb.functions.rational.RationalNullaryFunction;
  * instance where if they are {@link RealPolynomial}s then the coeffecients of
  * the polynomial are regarded as the parameters of the numerator or denominator
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
  */
 public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                        FunctionNode<D, R, F> implements
@@ -113,11 +111,11 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     var newNode = new HypergeometricFunctionNode<E, S, G>(newExpression,
                                                           false);
     newNode.elementFieldName = elementFieldName;
-    newNode.fieldName = fieldName;
-    newNode.functionName = functionName;
-    newNode.arg = arg.spliceInto(newExpression);
-    newNode.α   = α.spliceInto(newExpression);
-    newNode.β   = β.spliceInto(newExpression);
+    newNode.fieldName        = fieldName;
+    newNode.functionName     = functionName;
+    newNode.arg              = arg.spliceInto(newExpression);
+    newNode.α                = α.spliceInto(newExpression);
+    newNode.β                = β.spliceInto(newExpression);
     newNode.initialize();
     return newNode;
   }

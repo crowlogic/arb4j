@@ -16,8 +16,6 @@ import arb.Complex;
 import arb.Integer;
 import arb.Real;
 import arb.arblib;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
@@ -47,8 +45,8 @@ import arb.functions.Function;
  * used to compute the Lambert W function is described in [Joh2017b], which
  * follows the main ideas in [CGHJK1996].
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
  */
 public class LambertWFunctionNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                  FunctionNode<D, R, F>
@@ -109,7 +107,9 @@ public class LambertWFunctionNode<D, R, F extends Function<? extends D, ? extend
 
   public boolean scalar;
 
-  public LambertWFunctionNode(Expression<D, R, F> expression, Node<D, R, F> flags, Node<D, R, F> arg)
+  public LambertWFunctionNode(Expression<D, R, F> expression,
+                              Node<D, R, F> flags,
+                              Node<D, R, F> arg)
   {
     super("W",
           null,

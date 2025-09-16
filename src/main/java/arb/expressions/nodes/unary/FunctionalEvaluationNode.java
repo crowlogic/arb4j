@@ -12,8 +12,6 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 import arb.RealPolynomial;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import arb.expressions.nodes.IntegralNode;
 import arb.expressions.nodes.Node;
@@ -26,11 +24,11 @@ import arb.functions.Function;
  * {@link Function}. Used for cases like P(3)(0.75) where P(3) returns a type
  * that implements the {@link Function} interface such as {@link RealPolynomial}
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
  */
 public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? extends C>> extends
-                                   UnaryOperationNode<D, C, F>
+                                     UnaryOperationNode<D, C, F>
 {
 
   @Override
@@ -50,8 +48,8 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
   }
 
   public FunctionalEvaluationNode(Expression<D, C, F> expression,
-                                Node<D, C, F> functionNode,
-                                Node<D, C, F> argNode)
+                                  Node<D, C, F> functionNode,
+                                  Node<D, C, F> argNode)
   {
     super(expression,
           argNode);
@@ -108,8 +106,8 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
          spliceInto(Expression<E, S, G> newExpression)
   {
     return new FunctionalEvaluationNode<E, S, G>(newExpression,
-                                               functionNode.spliceInto(newExpression),
-                                               arg.spliceInto(newExpression));
+                                                 functionNode.spliceInto(newExpression),
+                                                 arg.spliceInto(newExpression));
   }
 
   @Override

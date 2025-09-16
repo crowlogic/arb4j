@@ -17,10 +17,8 @@ import arb.functions.Function;
  * @param <C>
  * @param <F>
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
- * 
- * @author ©2024 Stephen Crowley
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
  */
 public class BetaFunctionNode<D, C, F extends Function<? extends D, ? extends C>> extends
                              FunctionNode<D, C, F>

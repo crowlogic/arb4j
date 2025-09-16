@@ -1,7 +1,5 @@
 package arb.expressions.nodes.unary;
 
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
@@ -13,8 +11,8 @@ import arb.functions.Function;
  *   n! = n*(n - 1)!
  * </pre>
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
  */
 public class FactorialNode<D, R, F extends Function<? extends D, ? extends R>> extends
                           FunctionNode<D, R, F>

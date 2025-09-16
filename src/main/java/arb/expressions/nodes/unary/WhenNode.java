@@ -36,8 +36,8 @@ import arb.functions.Function;
  * when(condition1,value1,condition2,value2,..,else,valueOtherwise)
  * </pre>
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
  */
 public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extends
                      UnaryOperationNode<D, R, F>

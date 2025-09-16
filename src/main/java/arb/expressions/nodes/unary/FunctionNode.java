@@ -23,8 +23,6 @@ import arb.Complex;
 import arb.Fraction;
 import arb.Integer;
 import arb.Real;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.expressions.Compiler;
 import arb.expressions.Context;
@@ -60,8 +58,8 @@ import arb.functions.Function;
  * that the functions name as it is known by in the {@link Context} <br>
  * <br>
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
  */
 public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> extends
                          UnaryOperationNode<D, R, F>

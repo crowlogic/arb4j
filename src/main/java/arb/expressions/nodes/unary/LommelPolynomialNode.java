@@ -18,8 +18,6 @@ import org.objectweb.asm.Opcodes;
 import arb.Integer;
 import arb.RationalFunction;
 import arb.Real;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
@@ -35,8 +33,8 @@ import arb.functions.rational.LommelPolynomial;
  * @param <C>
  * @param <F>
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
  */
 public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extends C>> extends
                                  FunctionNode<D, C, F>
@@ -62,7 +60,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
       return false;
     if (getClass() != obj.getClass())
       return false;
-    LommelPolynomialNode<?,?,?> other = (LommelPolynomialNode<?,?,?>) obj;
+    LommelPolynomialNode<?, ?, ?> other = (LommelPolynomialNode<?, ?, ?>) obj;
     return Objects.equals(index, other.index) && Objects.equals(order, other.order);
   }
 
@@ -85,9 +83,12 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     expression.require(')');
     scalarType                           = Compiler.scalarType(expression.coDomainType);
     hasScalarCodomain                    = expression.hasScalarCodomain();
-    isNullaryFunctionOrHasScalarCodomain = expression.domainType.equals(Object.class) || hasScalarCodomain;
-    functionFieldName                    = expression.newIntermediateVariable("r", LommelPolynomial.class, true);
-    elementFieldName                     = expression.newIntermediateVariable("element", RationalFunction.class, true);
+    isNullaryFunctionOrHasScalarCodomain = expression.domainType.equals(Object.class)
+                  || hasScalarCodomain;
+    functionFieldName                    =
+                      expression.newIntermediateVariable("r", LommelPolynomial.class, true);
+    elementFieldName                     =
+                     expression.newIntermediateVariable("element", RationalFunction.class, true);
     expression.registerInitializer(this::generateFunctionInitializer);
   }
 
@@ -104,9 +105,10 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
       loadFunctionOntoStack(mv);
       Compiler.getField(mv, LommelPolynomial.class, "n", Integer.class);
       index.generate(mv, Integer.class);
-      assert index.getGeneratedType().equals(Integer.class) : String.format("TODO: %s needs to be cast to %s",
-                                                                            index.getGeneratedType(),
-                                                                            Integer.class);
+      assert index.getGeneratedType()
+                  .equals(Integer.class) : String.format("TODO: %s needs to be cast to %s",
+                                                         index.getGeneratedType(),
+                                                         Integer.class);
       invokeSetMethod(mv, Integer.class, Integer.class);
 
       loadFunctionOntoStack(mv);
@@ -135,7 +137,9 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     {
       if (Expression.trace)
       {
-        System.err.format("generateCastTo(Real) from generatedType=%s\n", Real.class, generatedType);
+        System.err.format("generateCastTo(Real) from generatedType=%s\n",
+                          Real.class,
+                          generatedType);
       }
       order.generateCastTo(mv, Real.class);
     }
@@ -274,8 +278,9 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, C, F> substitute(String variable,
-                                                                                       Node<E, S, G> arg)
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<D, C, F>
+         substitute(String variable, Node<E, S, G> arg)
   {
     order    = order.substitute(variable, arg);
     index    = index.substitute(variable, arg);
@@ -299,7 +304,5 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
   {
     return 'R';
   }
-
-
 
 }
