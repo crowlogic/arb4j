@@ -14,6 +14,8 @@ import java.util.function.Consumer;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import arb.AlgebraicNumber;
 import arb.Complex;
@@ -22,8 +24,6 @@ import arb.Fraction;
 import arb.GaussianInteger;
 import arb.Integer;
 import arb.Real;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.exceptions.UndefinedReferenceException;
 import arb.expressions.Compiler;
@@ -91,15 +91,13 @@ import arb.functions.Function;
  * @param <F> Type of function that maps domain to codomain, must implement
  *            {@link Function}.
  *
- * @author ©2024-2025 Stephen Crowley
- *
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
-
 public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> extends
                          Node<D, R, F>
 {
+  Logger log = LoggerFactory.getLogger(getClass());
 
   @Override
   public boolean isPossiblyNegative()
@@ -227,10 +225,10 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     if (Expression.trace)
     {
-      System.out.format("Variable(#%s).generate( this=%s, resultType=%s)\n\n",
+      log.debug(String.format("id=#%s: generate( this=%s, resultType=%s)",
                         System.identityHashCode(this),
                         this,
-                        resultType);
+                        resultType));
     }
 
     generateReference(mv, resultType);
@@ -435,9 +433,9 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       if (Expression.trace)
       {
-        System.err.format("Assigning this %s as ascendent input node=%s\n",
-                          this,
-                          ascendentInputNode);
+        log.debug(String.format("Assigning this %s as ascendent input node=%s",
+                                this,
+                                ascendentInputNode));
       }
       ascendentInput = true;
       reference.type = ascendentExpression.domainType;
@@ -485,14 +483,12 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       if (Expression.trace)
       {
-        System.err.format("Variable(#%s).resolveIndependentVariable: declaring "
-                          + reference
-                          + " as the input node to "
-                          + expression
-                          + " which currently has input variable "
-                          + expression.independentVariable
-                          + "\n\n",
-                          System.identityHashCode(this));
+
+        log.debug(String.format("id=#%s: resolveIndependentVariable: declaring %s as the input node to '%s' which currently has input variable %s",
+                                System.identityHashCode(this),
+                                reference,
+                                expression,
+                                expression.independentVariable));
       }
 
       expression.independentVariable = this;
@@ -579,10 +575,10 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (!VariableNode.this.equals(expression.indeterminateVariable) && Expression.trace)
     {
-      System.err.format("Expression(#%s) declaring %s to be the indeterminant in %s\n\n",
-                        System.identityHashCode(expression),
-                        this,
-                        expression);
+      log.debug(String.format("Expression(#%s) declaring %s to be the indeterminant in %s",
+                              System.identityHashCode(expression),
+                              this,
+                              expression));
 
     }
     expression.referencedVariables.put(reference.name, this);
