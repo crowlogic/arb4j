@@ -166,22 +166,27 @@
   \end{equation}
   The covariance is
   \begin{equation}
-    R_Z (t, s) = \int_{\mathbb{R}} A_t (\lambda) \hspace{0.17em} \overline{A_s
-    (\lambda)} \hspace{0.17em} e^{i \lambda (t - s)}  \hspace{0.17em} dF
-    (\lambda) = \int_{\mathbb{R}} \sqrt{| \theta' (t) \theta' (s) |} 
-    \hspace{0.17em} e^{i \lambda (\theta (t) - \theta (s))}  \hspace{0.17em}
-    dF (\lambda)
+    \begin{array}{ll}
+      R_Z (t, s) & = \int_{\mathbb{R}} A_t (\lambda) \hspace{0.17em}
+      \overline{A_s (\lambda)} \hspace{0.17em} e^{i \lambda (t - s)} 
+      \hspace{0.17em} dF (\lambda)\\
+      & = \int_{\mathbb{R}} \sqrt{| \theta' (t) \theta' (s) |} 
+      \hspace{0.17em} e^{i \lambda (\theta (t) - \theta (s))}  \hspace{0.17em}
+      dF (\lambda)
+    \end{array}
   \end{equation}
 \end{theorem}
 
 \begin{proof}
   Compute
   \begin{equation}
-    Z (t) = \sqrt{| \theta' (t) |}  \hspace{0.17em} X (\theta (t)) = \sqrt{|
-    \theta' (t) |}  \int_{\mathbb{R}} e^{i \lambda \theta (t)} 
-    \hspace{0.17em} \Phi (d \lambda) = \int_{\mathbb{R}} \sqrt{| \theta' (t)
-    |}  \hspace{0.17em} e^{i \lambda \theta (t)}  \hspace{0.17em} \Phi (d
-    \lambda)
+    \begin{array}{ll}
+      Z (t) & = \sqrt{| \theta' (t) |}  \hspace{0.17em} X (\theta (t))\\
+      & = \sqrt{| \theta' (t) |}  \int_{\mathbb{R}} e^{i \lambda \theta (t)} 
+      \hspace{0.17em} \Phi (d \lambda)\\
+      & = \int_{\mathbb{R}} \sqrt{| \theta' (t) |}  \hspace{0.17em} e^{i
+      \lambda \theta (t)}  \hspace{0.17em} \Phi (d \lambda)
+    \end{array}
   \end{equation}
   Thus
   \begin{equation}
