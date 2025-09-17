@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|generic>
+<style|<tuple|generic|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Unitary Time Changes of Stationary Processes Yield
@@ -458,9 +458,9 @@
     <associate|auto-2|<tuple|2|2|../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|auto-3|<tuple|3|3|../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|auto-4|<tuple|4|4|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-5|<tuple|5|4|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-6|<tuple|6|5|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-7|<tuple|7|6|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-5|<tuple|5|5|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-6|<tuple|6|6|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-7|<tuple|7|7|../.TeXmacs/texts/scratch/no_name_3.tm>>
   </collection>
 </references>
 

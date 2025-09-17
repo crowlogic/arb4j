@@ -1,15 +1,13 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|generic|framed-theorems>>
+<style|generic>
 
 <\body>
   <doc-data|<doc-title|Measure-Preserving Bijective Time Changes of
-  Stationary Gaussian Processes Constitute a Subclass of Oscillatory Gaussian
-  Processes>|<doc-author|<author-data|<author-name|Stephen
-  Crowley>|<author-email|stephencrowley214@gmail.com>>>|<doc-date|August 1,
-  2025>>
+  Stationary Gaussian Processes on <math|\<sigma\>>-Compact Domains: A
+  Subclass of Oscillatory Gaussian Processes>|<doc-author|<author-data|<author-name|Anonymous>>>|<doc-date|<date|>>>
 
-  <\abstract>
+  <abstract-data|<\abstract>
     This article establishes that Gaussian processes obtained through
     measure-preserving bijective unitary time transformations of stationary
     processes constitute a subclass of oscillatory processes in the sense of
@@ -24,7 +22,7 @@
     functions square-integrable on <math|\<sigma\>>-compact sets, preserving
     local <math|L<rsup|2>>-norms and providing a complete spectral
     characterization.
-  </abstract>
+  </abstract>>
 
   <\table-of-contents|toc>
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>Introduction>
@@ -391,10 +389,15 @@
   <\theorem>
     [Sample Paths in <math|L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>]<label|thm:sample_paths_in_L2sigma>
     Let <math|<around|{|X<around|(|t|)>|}><rsub|t\<in\>\<bbb-R\>>> be a
-    second-order stationary Gaussian process with finite second moment
-    <math|\<sigma\><rsup|2>=E<around|[|X<around|(|t|)><rsup|2>|]>\<less\>\<infty\>>.
-    Then almost surely every sample path <math|X<around|(|\<omega\>,\<cdot\>|)>>
-    belongs to <math|L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>.
+    second-order stationary Gaussian process with finite second moment\ 
+
+    <\equation>
+      \<sigma\><rsup|2>=E<around|[|X<around|(|t|)><rsup|2>|]>\<less\>\<infty\>
+    </equation>
+
+    . Then almost surely every sample path
+    <math|X<around|(|\<omega\>,\<cdot\>|)>> belongs to
+    <math|L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>.
   </theorem>
 
   <\proof>
@@ -408,19 +411,19 @@
     By stationarity and finite second moment,
 
     <\equation>
-      E<around|[|Y<rsub|<around|[|a,b|]>>|]>=<big|int><rsub|a><rsup|b>E<around|[|X<around|(|t|)><rsup|2>|]>*d*t=<big|int><rsub|a><rsup|b>\<sigma\><rsup|2>*d*t=\<sigma\><rsup|2>*<around|(|b-a|)>\<less\>\<infty\>.
+      E<around|[|Y<rsub|<around|[|a,b|]>>|]>=<big|int><rsub|a><rsup|b>E<around|[|X<around|(|t|)><rsup|2>|]>*d*t=<big|int><rsub|a><rsup|b>\<sigma\><rsup|2>*d*t=\<sigma\><rsup|2>*<around|(|b-a|)>\<less\>\<infty\>
     </equation>
 
-    By Markov's inequality, for any <math|M\<gtr\>0>,
+    By Markov's inequality, for any <math|M\<gtr\>0>
 
     <\equation>
-      P*<around|(|Y<rsub|<around|[|a,b|]>>\<gtr\>M|)>\<leq\><frac|E<around|[|Y<rsub|<around|[|a,b|]>>|]>|M>=<frac|\<sigma\><rsup|2>*<around|(|b-a|)>|M>.
+      P*<around|(|Y<rsub|<around|[|a,b|]>>\<gtr\>M|)>\<leq\><frac|E<around|[|Y<rsub|<around|[|a,b|]>>|]>|M>=<frac|\<sigma\><rsup|2>*<around|(|b-a|)>|M>
     </equation>
 
     Taking the limit as <math|M\<to\>\<infty\>>, it follows that
 
     <\equation>
-      P*<around*|(|<big|int><rsub|a><rsup|b>X<around|(|t|)><rsup|2>*d*t\<less\>\<infty\>|)>=1,
+      P*<around*|(|<big|int><rsub|a><rsup|b>X<around|(|t|)><rsup|2>*d*t\<less\>\<infty\>|)>=1
     </equation>
 
     i.e., almost surely the sample path is square integrable on
@@ -428,13 +431,13 @@
     such bounded intervals,
 
     <\equation>
-      \<bbb-R\>=<big|cup><rsub|n=1><rsup|\<infty\>><around|[|-n,n|]>,
+      \<bbb-R\>=<big|cup><rsub|n=1><rsup|\<infty\>><around|[|-n,n|]>
     </equation>
 
     then by countable subadditivity of probability
 
     <\equation>
-      P<around*|(|<big|cap><rsub|n=1><rsup|\<infty\>><around*|{|<big|int><rsub|-n><rsup|n>X<around|(|t|)><rsup|2>*d*t\<less\>\<infty\>|}>|)>=1,
+      P<around*|(|<big|cap><rsub|n=1><rsup|\<infty\>><around*|{|<big|int><rsub|-n><rsup|n>X<around|(|t|)><rsup|2>*d*t\<less\>\<infty\>|}>|)>=1
     </equation>
 
     meaning almost surely the sample path lies in
@@ -666,75 +669,68 @@
     <bibitem|rice1945>S.O. Rice. Mathematical analysis of random noise.
     <em|Bell System Technical Journal>, 24(1):46\U156, 1945.
   </thebibliography>
-
-  \;
 </body>
 
 <\initial>
   <\collection>
-    <associate|magnification|1.2>
-    <associate|page-breaking|sloppy>
-    <associate|page-height|auto>
     <associate|page-medium|paper>
-    <associate|page-type|letter>
-    <associate|page-width|auto>
   </collection>
 </initial>
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|2|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|auto-10|<tuple|4|6|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|auto-11|<tuple|5|7|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|auto-12|<tuple|5.1|7|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|auto-13|<tuple|5.2|8|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|auto-14|<tuple|5.3|9|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|auto-15|<tuple|5.4|10|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|auto-16|<tuple|6|10|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|auto-17|<tuple|5|11|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|auto-2|<tuple|2|2|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|auto-3|<tuple|2.1|2|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|auto-4|<tuple|2.2|3|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|auto-5|<tuple|2.3|3|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|auto-6|<tuple|2.4|4|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|auto-7|<tuple|3|4|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|auto-8|<tuple|3.1|4|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|auto-9|<tuple|3.2|5|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|bib-cramer1967|<tuple|cramer1967|11|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|bib-kac1943|<tuple|kac1943|11|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|bib-priestley1965|<tuple|priestley1965|11|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|bib-rice1945|<tuple|rice1945|11|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|cor:evolving_spec|<tuple|15|8|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|def:L2_sigma_compact|<tuple|2|2|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|def:inverse_unitary_op|<tuple|10|5|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|def:oscillatory|<tuple|5|3|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|def:scaling|<tuple|6|4|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|def:sigma_compact|<tuple|1|2|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|def:stationary|<tuple|4|3|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|def:time_changed_proc|<tuple|9|4|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|def:unitary_op|<tuple|8|4|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|envelope|<tuple|6|3|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|eq:conjugation|<tuple|50|9|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|eq:evolutionary_spec|<tuple|41|8|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|eq:integral_op_original|<tuple|46|9|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|eq:integral_op_transformed|<tuple|48|9|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|eq:local_L2_preserve|<tuple|16|5|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|eq:oscillatory_rep|<tuple|9|3|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|eq:phi_def|<tuple|27|7|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|eq:stationary_rep|<tuple|3|3|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|eq:time_change|<tuple|14|4|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|eq:time_changed_cov|<tuple|53|10|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|eq:unitary_inverse|<tuple|15|5|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|eq:unitary_op|<tuple|13|4|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|eq:zero_count|<tuple|52|10|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|lem:inverse_well_defined|<tuple|11|5|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|rem:inverse_properties|<tuple|7|4|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|rem:sigma_compact_properties|<tuple|3|3|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|thm:local_unitary|<tuple|12|5|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|thm:operator_conjugation|<tuple|16|9|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|thm:osc_rep|<tuple|14|7|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|thm:sample_paths_in_L2sigma|<tuple|13|6|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
-    <associate|thm:zero_count|<tuple|17|10|MeasurePreservingBijectiveTimeChangesOfStationaryGaussianProcessesWithEvolvingSpectra.tm>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-10|<tuple|4|5>>
+    <associate|auto-11|<tuple|5|5>>
+    <associate|auto-12|<tuple|5.1|5>>
+    <associate|auto-13|<tuple|5.2|6>>
+    <associate|auto-14|<tuple|5.3|7>>
+    <associate|auto-15|<tuple|5.4|7>>
+    <associate|auto-16|<tuple|6|8>>
+    <associate|auto-17|<tuple|5|8>>
+    <associate|auto-2|<tuple|2|2>>
+    <associate|auto-3|<tuple|2.1|2>>
+    <associate|auto-4|<tuple|2.2|2>>
+    <associate|auto-5|<tuple|2.3|2>>
+    <associate|auto-6|<tuple|2.4|3>>
+    <associate|auto-7|<tuple|3|4>>
+    <associate|auto-8|<tuple|3.1|4>>
+    <associate|auto-9|<tuple|3.2|4>>
+    <associate|bib-cramer1967|<tuple|cramer1967|8>>
+    <associate|bib-kac1943|<tuple|kac1943|8>>
+    <associate|bib-priestley1965|<tuple|priestley1965|8>>
+    <associate|bib-rice1945|<tuple|rice1945|8>>
+    <associate|cor:evolving_spec|<tuple|15|6>>
+    <associate|def:L2_sigma_compact|<tuple|2|2>>
+    <associate|def:inverse_unitary_op|<tuple|10|4>>
+    <associate|def:oscillatory|<tuple|5|2>>
+    <associate|def:scaling|<tuple|6|3>>
+    <associate|def:sigma_compact|<tuple|1|2>>
+    <associate|def:stationary|<tuple|4|2>>
+    <associate|def:time_changed_proc|<tuple|9|4>>
+    <associate|def:unitary_op|<tuple|8|4>>
+    <associate|envelope|<tuple|6|3>>
+    <associate|eq:conjugation|<tuple|51|7>>
+    <associate|eq:evolutionary_spec|<tuple|42|6>>
+    <associate|eq:integral_op_original|<tuple|47|7>>
+    <associate|eq:integral_op_transformed|<tuple|49|7>>
+    <associate|eq:local_L2_preserve|<tuple|16|4>>
+    <associate|eq:oscillatory_rep|<tuple|9|3>>
+    <associate|eq:phi_def|<tuple|28|5>>
+    <associate|eq:stationary_rep|<tuple|3|2>>
+    <associate|eq:time_change|<tuple|14|4>>
+    <associate|eq:time_changed_cov|<tuple|54|7>>
+    <associate|eq:unitary_inverse|<tuple|15|4>>
+    <associate|eq:unitary_op|<tuple|13|4>>
+    <associate|eq:zero_count|<tuple|53|7>>
+    <associate|lem:inverse_well_defined|<tuple|11|4>>
+    <associate|rem:inverse_properties|<tuple|7|3>>
+    <associate|rem:sigma_compact_properties|<tuple|3|2>>
+    <associate|thm:local_unitary|<tuple|12|4>>
+    <associate|thm:operator_conjugation|<tuple|16|7>>
+    <associate|thm:osc_rep|<tuple|14|5>>
+    <associate|thm:sample_paths_in_L2sigma|<tuple|13|5>>
+    <associate|thm:zero_count|<tuple|17|7>>
   </collection>
 </references>
 
