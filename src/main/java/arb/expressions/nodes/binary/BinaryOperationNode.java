@@ -243,13 +243,12 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
 
     // Helper: pad labels, produce 'label ='
 
-    return String.format("%s.generate(\n"
+    return String.format("generate(\n"
                          + "%s%s%s,\n"
                          + "%s%s%s    (%s %s),\n"
                          + "%s%s%s    (%s %s),\n"
                          + "%s%s%s,\n"
                          + "%s%s%s)",
-                         getClass().getSimpleName(),
                          IND,
                          pad("this"),
                          this,
@@ -296,7 +295,6 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     {
       fieldName = existingVar;
       if (log.isDebugEnabled())
-
       {
         log.debug("{}: reused {} for {}", expression, fieldName, this);
       }
@@ -374,21 +372,27 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
 
   public boolean loadOutput(MethodVisitor mv, Class<?> resultType)
   {
-    if (isResult)
+    try
     {
-      cast(loadResultParameter(mv), resultType);
-      fieldName = "result";
-    }
-    else
-    {
-      if (fieldName == null)
+      if (isResult)
       {
-        fieldName = expression.allocateIntermediateVariable(mv, resultType);
-        expression.generatedNodes.put(this, fieldName);
+        cast(loadResultParameter(mv), resultType);
+        fieldName = "result";
       }
-      return true;
+      else
+      {
+        if (fieldName == null)
+        {
+          fieldName = expression.allocateIntermediateVariable(mv, resultType);
+        }
+        return true;
+      }
+      return false;
     }
-    return false;
+    finally
+    {
+      expression.generatedNodes.put(this, fieldName);
+    }
   }
 
   public <E, S, G extends Function<? extends E, ? extends S>>
