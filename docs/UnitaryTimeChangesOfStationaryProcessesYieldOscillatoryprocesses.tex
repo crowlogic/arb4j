@@ -5,136 +5,48 @@
 
 %%%%%%%%%% Start TeXmacs macros
 \newcommand{\assign}{:=}
-\newcommand{\tmaffiliation}[1]{\\ #1}
+\newcommand{\tmem}[1]{{\em #1\/}}
 \newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
 \newtheorem{definition}{Definition}
+\newcounter{nndefinition}
+\def\thenndefinition{\unskip}
+\newtheorem{definition*}[nndefinition]{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
 {\theorembodyfont{\rmfamily}\newtheorem{remark}{Remark}}
 \newtheorem{theorem}{Theorem}
 %%%%%%%%%% End TeXmacs macros
 
 \begin{document}
 
-\title{Unitary Time Changes of Stationary Processes Yield Oscillatory Processes}
-
-\author{
-  Stephen Crowley
-  \tmaffiliation{August 12, 2025}
+\title{
+  Unitary Time Changes of Stationary Processes Yield Oscillatory Processes\\
+  and a Functional Framework Toward a Hilbert--P{\'o}lya Construction
 }
 
-\date{}
+\author{Stephen Crowley}
+
+\date{September 16, 2025}
 
 \maketitle
 
-\begin{theorem}
-  [Unitary time change operator] Let $\theta : \mathbb{R} \to \mathbb{R}$ be a diffeomorphism (bijective and absolutely continuous) with $\theta'(t) \neq 0$ almost everywhere. The unitary time change operator $U_{\theta}$ on $L^2(\mathbb{R})$ is defined by
-  \begin{equation}
-    (U_{\theta} f)(t) \assign \sqrt{|\theta'(t)|} \hspace{0.17em} f(\theta(t)) \qquad \text{for } f \in L^2(\mathbb{R})
-  \end{equation}
-  This operator is unitary on $L^2(\mathbb{R})$.
-\end{theorem}
+{\tableofcontents}
 
-\begin{proof}
-  The change-of-variables formula gives
-  \begin{equation}
-    \int_{\mathbb{R}} |(U_{\theta} f)(t)|^2 \hspace{0.17em} dt = \int_{\mathbb{R}} |\theta'(t)| \hspace{0.17em} |f(\theta(t))|^2 \hspace{0.17em} dt = \int_{\mathbb{R}} |f(u)|^2 \hspace{0.17em} du
-  \end{equation}
-  so $U_{\theta}$ is isometric. Since $\theta$ is a diffeomorphism, $U_{\theta^{-1}}$ exists and provides the inverse, making $U_{\theta}$ unitary.
-\end{proof}
+\section{Unitary Time Change on $L^2 (\mathbb{R})$}
 
 \begin{definition}
-  [Oscillatory processes in the sense of Priestley] An oscillatory process $Z$ is specified by a measurable gain function $A_t(\lambda)$ and has oscillatory function
+  [Unitary time change operator on $L^2 (\mathbb{R})$] Let $\theta :
+  \mathbb{R} \to \mathbb{R}$ be absolutely continuous with $\theta' (t) \neq
+  0$ almost everywhere. Define $U_{\theta} : L^2 (\mathbb{R}) \to L^2
+  (\mathbb{R})$ by
   \begin{equation}
-    \varphi_t(\lambda) \assign A_t(\lambda) \hspace{0.17em} e^{i \lambda t}
-  \end{equation}
-  The process $Z$ has spectral representation
-  \begin{equation}
-    Z(t) = \int_{\mathbb{R}} \varphi_t(\lambda) \hspace{0.17em} \Phi(d\lambda) = \int_{\mathbb{R}} A_t(\lambda) \hspace{0.17em} e^{i \lambda t} \hspace{0.17em} \Phi(d\lambda)
-  \end{equation}
-  where $\Phi$ is a complex orthogonal random measure on $\mathbb{R}$ with spectral measure $F$ satisfying
-  \begin{equation}
-    E\left[\Phi(d\lambda) \hspace{0.17em} \overline{\Phi(d\mu)}\right] = \mathbf{1}_{\{\lambda = \mu\}} \hspace{0.17em} dF(\lambda)
-  \end{equation}
-  The covariance kernel of $Z$ is
-  \begin{equation}
-    R_Z(t,s) \assign E[Z(t)\overline{Z(s)}] = \int_{\mathbb{R}} A_t(\lambda) \hspace{0.17em} \overline{A_s(\lambda)} \hspace{0.17em} e^{i\lambda(t-s)} \hspace{0.17em} dF(\lambda)
+    (U_{\theta} f) (t) \assign \sqrt{| \theta' (t) |}  \hspace{0.17em} f
+    (\theta (t))  \qquad (f \in L^2 (\mathbb{R})) .
   \end{equation}
 \end{definition}
 
-\begin{remark}
-  [Real-valuedness condition] The oscillatory process $Z$ is real-valued if and only if the gain satisfies conjugate symmetry:
-  \begin{equation}
-    A_t(-\lambda) = \overline{A_t(\lambda)} \quad \text{for $F$-almost every } \lambda, \text{for each fixed } t
-  \end{equation}
-\end{remark}
-
 \begin{theorem}
-  [Unitary time change of stationary process yields oscillatory process] Let $X$ be a zero-mean stationary Gaussian process with Cramér spectral representation
-  \begin{equation}
-    X(t) = \int_{\mathbb{R}} e^{i \lambda t} \hspace{0.17em} \Phi(d\lambda)
-  \end{equation}
-  where $\Phi$ is a complex orthogonal random measure with spectral measure $F$. Let $U_{\theta}$ be a unitary time change operator as defined above. Then the transformed process
-  \begin{equation}
-    Z(t) \assign (U_{\theta} X)(t) = \sqrt{|\theta'(t)|} \hspace{0.17em} X(\theta(t))
-  \end{equation}
-  is an oscillatory process in the sense of Priestley with oscillatory function
-  \begin{equation}
-    \varphi_t(\lambda) = \sqrt{|\theta'(t)|} \hspace{0.17em} e^{i \lambda \theta(t)}
-  \end{equation}
-\end{theorem}
-
-\begin{proof}
-  Starting from the stationary representation:
-  \begin{align}
-    Z(t) &= \sqrt{|\theta'(t)|} \hspace{0.17em} X(\theta(t)) \\
-    &= \sqrt{|\theta'(t)|} \int_{\mathbb{R}} e^{i \lambda \theta(t)} \hspace{0.17em} \Phi(d\lambda) \\
-    &= \int_{\mathbb{R}} \sqrt{|\theta'(t)|} \hspace{0.17em} e^{i \lambda \theta(t)} \hspace{0.17em} \Phi(d\lambda)
-  \end{align}
-  Defining $\varphi_t(\lambda) \assign \sqrt{|\theta'(t)|} \hspace{0.17em} e^{i \lambda \theta(t)}$, we have
-  \begin{equation}
-    Z(t) = \int_{\mathbb{R}} \varphi_t(\lambda) \hspace{0.17em} \Phi(d\lambda)
-  \end{equation}
-  which is the oscillatory form.
-\end{proof}
-
-\begin{theorem}
-  [Explicit gain function for unitary time change] In the setting of the previous theorem, the gain function for the oscillatory process $Z(t) = (U_{\theta} X)(t)$ is given by
-  \begin{equation}
-    A_t(\lambda) = \sqrt{|\theta'(t)|} \hspace{0.17em} e^{i \lambda (\theta(t) - t)}
-  \end{equation}
-  The oscillatory function is
-  \begin{equation}
-    \varphi_t(\lambda) = A_t(\lambda) \hspace{0.17em} e^{i \lambda t} = \sqrt{|\theta'(t)|} \hspace{0.17em} e^{i \lambda \theta(t)}
-  \end{equation}
-  and the covariance kernel takes the form
-  \begin{equation}
-    R_Z(t,s) = \int_{\mathbb{R}} A_t(\lambda) \hspace{0.17em} \overline{A_s(\lambda)} \hspace{0.17em} e^{i \lambda (t-s)} \hspace{0.17em} dF(\lambda)
-  \end{equation}
-\end{theorem}
-
-\begin{proof}
-  Since $\varphi_t(\lambda) = A_t(\lambda) e^{i \lambda t}$, we solve for the gain:
-  \begin{equation}
-    A_t(\lambda) = \frac{\varphi_t(\lambda)}{e^{i \lambda t}} = \frac{\sqrt{|\theta'(t)|} \hspace{0.17em} e^{i \lambda \theta(t)}}{e^{i \lambda t}} = \sqrt{|\theta'(t)|} \hspace{0.17em} e^{i \lambda (\theta(t) - t)}
-  \end{equation}
-  The covariance formula follows by substitution:
-  \begin{align}
-    R_Z(t,s) &= \int_{\mathbb{R}} \varphi_t(\lambda) \hspace{0.17em} \overline{\varphi_s(\lambda)} \hspace{0.17em} dF(\lambda) \\
-    &= \int_{\mathbb{R}} A_t(\lambda) e^{i \lambda t} \hspace{0.17em} \overline{A_s(\lambda) e^{i \lambda s}} \hspace{0.17em} dF(\lambda) \\
-    &= \int_{\mathbb{R}} A_t(\lambda) \hspace{0.17em} \overline{A_s(\lambda)} \hspace{0.17em} e^{i \lambda (t-s)} \hspace{0.17em} dF(\lambda)
-  \end{align}
-\end{proof}
-
------\hrulefill
-
-\
-
-\begin{theorem}
-  [Unitary time change on $L^2 (\mathbb{R})$] Let $\theta : \mathbb{R} \to
-  \mathbb{R}$ be absolutely continuous with $\theta' (t) \neq 0$ almost
-  everywhere. Define the operator
-  \[ (U_{\theta} f) (t) \assign \sqrt{| \theta' (t) |}  \hspace{0.17em} f
-     (\theta (t))  \qquad \text{for } f \in L^2 (\mathbb{R}) . \]
-  Then $U_{\theta}$ is unitary on $L^2 (\mathbb{R})$.
+  [Unitarity of $U_{\theta}$] $U_{\theta}$ is unitary on $L^2 (\mathbb{R})$.
 \end{theorem}
 
 \begin{proof}
@@ -143,144 +55,350 @@
   \[ \int_{\mathbb{R}} | (U_{\theta} f) (t) |^2 \hspace{0.17em} dt =
      \int_{\mathbb{R}} | \theta' (t) | \hspace{0.17em} |f (\theta (t)) |^2
      \hspace{0.17em} dt = \int_{\mathbb{R}} |f (u) |^2  \hspace{0.17em} du, \]
-  so $U_{\theta}$ is an isometry. The inverse time change $\theta^{- 1}$
-  exists a.e. and is absolutely continuous, yielding an isometric inverse by
-  the same computation; hence $U_{\theta}$ is unitary.
+  so $U_{\theta}$ is an isometry. Since $\theta$ admits an a.e. inverse
+  $\theta^{- 1}$ with the same regularity and nonvanishing derivative a.e.,
+  one has $U_{\theta^{- 1}} U_{\theta} = \mathrm{Id}$ and $U_{\theta}
+  U_{\theta^{- 1}} = \mathrm{Id}$ a.e., hence $U_{\theta}$ is unitary.
 \end{proof}
 
-\begin{theorem}
-  [Oscillatory processes (Priestley framework)] Fix a finite nonnegative
-  measure $F$ on $\mathbb{R}$. For each $t \in \mathbb{R}$, let $A_t :
-  \mathbb{R} \to \mathbb{C}$ be measurable with
-  \[ \int_{\mathbb{R}} |A_t (\lambda) |^2  \hspace{0.17em} dF (\lambda) <
-     \infty . \]
-  Define the oscillatory function by
-  \[ \varphi_t (\lambda) \assign A_t (\lambda)  \hspace{0.17em} e^{i \lambda
-     t} . \]
-  There exists a complex orthogonal random measure $\Phi$ on $\mathbb{R}$ with
-  spectral measure $F$ such that the stochastic integral
-  \[ Z (t) \assign \int_{\mathbb{R}} \varphi_t (\lambda)  \hspace{0.17em} \Phi
-     (d \lambda) \]
-  is well-defined for each $t$, and the covariance kernel satisfies
-  \[ R_Z (t, s) \assign \mathbb{E} [Z (t) \overline{Z (s)}] =
-     \int_{\mathbb{R}} \varphi_t (\lambda) \hspace{0.17em} \overline{\varphi_s
-     (\lambda)} \hspace{0.17em} dF (\lambda) = \int_{\mathbb{R}} A_t (\lambda)
-     \hspace{0.17em} \overline{A_s (\lambda)} \hspace{0.17em} e^{i \lambda (t
-     - s)}  \hspace{0.17em} dF (\lambda) . \]
-  Moreover, if $X$ is a zero-mean stationary process with spectral
-  representation $X (t) = \int_{\mathbb{R}} e^{i \lambda t}  \hspace{0.17em}
-  \Phi (d \lambda)$ for the same $F$ and $\Phi$, then $Z$ reduces to $X$ when
-  $A_t (\lambda) \equiv 1$.
-\end{theorem}
+\section{Oscillatory Processes in the Sense of Priestley}
 
-\begin{proof}
-  Given $F$, there exists a complex orthogonal random measure $\Phi$ with
-  spectral measure $F$, i.e.,
-  \[ \mathbb{E} \left[ \Phi (d \lambda) \hspace{0.17em} \overline{\Phi (d
-     \mu)} \right] = \textbf{1}_{\{\lambda = \mu\}}  \hspace{0.17em} dF
-     (\lambda) . \]
-  Square-integrability of $\varphi_t$ with respect to $F$ ensures the
-  stochastic integral isometric definition of $Z (t)$ and yields
-  \[ \mathbb{E} [Z (t) \overline{Z (s)}] = \int \varphi_t (\lambda)
-     \hspace{0.17em} \overline{\varphi_s (\lambda)} \hspace{0.17em} dF
-     (\lambda) . \]
-  Substituting $\varphi_t (\lambda) = A_t (\lambda) e^{i \lambda t}$ gives the
-  stated kernel. If $A_t \equiv 1$, then $\varphi_t (\lambda) = e^{i \lambda
-  t}$ and $Z$ coincides with the stationary Cram{\'e}r form $X$ built from the
-  same $\Phi$.
-\end{proof}
-
-\begin{theorem}
-  [Real-valuedness condition] Let $Z$ be as above with oscillatory function
-  $\varphi_t (\lambda) = A_t (\lambda) e^{i \lambda t}$. The process $Z$ is
-  real-valued if and only if, for each fixed $t$,
-  \[ A_t  (- \lambda) = \overline{A_t (\lambda)} \quad \text{for } F
-     \text{-almost every } \lambda, \]
-  equivalently,
-  \[ \varphi_t  (- \lambda) = \overline{\varphi_t (\lambda)} \quad \text{for }
-     F \text{-almost every } \lambda . \]
-\end{theorem}
-
-\begin{proof}
-  Write $Z (t) = \int \varphi_t (\lambda)  \hspace{0.17em} \Phi (d \lambda)$.
-  Real-valuedness of $Z (t)$ is equivalent to $Z (t) = \overline{Z (t)}$ in
-  $L^2 (\Omega)$, i.e.,
-  \[ \int \varphi_t (\lambda)  \hspace{0.17em} \Phi (d \lambda) =
-     \overline{\int \varphi_t (\lambda)  \hspace{0.17em} \Phi (d \lambda)} =
-     \int \overline{\varphi_t (\lambda)} \hspace{0.17em} \overline{\Phi (d
-     \lambda)} . \]
-  Using the standard symmetry relation for complex orthogonal random measures
-  associated with real processes (the negative-frequency part is the complex
-  conjugate of the positive-frequency part in the $L^2$ sense), one arrives at
-  the necessary and sufficient Hermitian symmetry of the integrand: $\varphi_t
-  (- \lambda) = \overline{\varphi_t (\lambda)}$ $F$-a.e. As $e^{i (- \lambda)
-  t} = \overline{e^{i \lambda t}}$, this is equivalent to $A_t  (- \lambda) =
-  \overline{A_t (\lambda)}$ $F$-a.e.
-\end{proof}
-
-\begin{theorem}
-  [Unitary time change of a stationary process is oscillatory; explicit gain]
-  Let $X$ be a zero-mean stationary Gaussian process with spectral
+\begin{definition}
+  [Oscillatory process, gain and oscillatory function] Let $F$ be a finite
+  nonnegative Borel measure on $\mathbb{R}$. For each $t \in \mathbb{R}$ let
+  $A_t : \mathbb{R} \to \mathbb{C}$ be measurable and square-integrable with
+  respect to $F$. Define
+  \begin{equation}
+    \varphi_t (\lambda) \assign A_t (\lambda)  \hspace{0.17em} e^{i \lambda t}
+  \end{equation}
+  An {\tmem{oscillatory process}} $Z$ is a stochastic process with spectral
   representation
-  \[ X (t) = \int_{\mathbb{R}} e^{i \lambda t}  \hspace{0.17em} \Phi (d
-     \lambda), \]
-  for a complex orthogonal random measure $\Phi$ with spectral measure $F$.
-  Let $\theta$ satisfy the hypotheses of the unitary theorem, and define
-  \[ Z (t) \assign (U_{\theta} X) (t) = \sqrt{| \theta' (t) |} 
-     \hspace{0.17em} X (\theta (t)) . \]
-  Then $Z$ is an oscillatory process in the sense above with oscillatory
-  function
-  \[ \varphi_t (\lambda) = \sqrt{| \theta' (t) |}  \hspace{0.17em} e^{i
-     \lambda \theta (t)}, \]
-  and gain
-  \[ A_t (\lambda) = \sqrt{| \theta' (t) |}  \hspace{0.17em} e^{i \lambda
-     (\theta (t) - t)} . \]
-  Its covariance kernel is
-  \[ R_Z (t, s) = \int_{\mathbb{R}} \varphi_t (\lambda) \hspace{0.17em}
-     \overline{\varphi_s (\lambda)} \hspace{0.17em} dF (\lambda) =
-     \int_{\mathbb{R}} A_t (\lambda) \hspace{0.17em} \overline{A_s (\lambda)}
-     \hspace{0.17em} e^{i \lambda (t - s)}  \hspace{0.17em} dF (\lambda) . \]
-  Moreover, $Z$ is real-valued if and only if
-  \[ A_t  (- \lambda) = \overline{A_t (\lambda)} \quad \text{for } F
-     \text{-almost every } \lambda, \text{for each } t. \]
+  \begin{equation}
+    Z (t) \assign \int_{\mathbb{R}} \varphi_t (\lambda)  \hspace{0.17em} \Phi
+    (d \lambda) = \int_{\mathbb{R}} A_t (\lambda)  \hspace{0.17em} e^{i
+    \lambda t}  \hspace{0.17em} \Phi (d \lambda)
+  \end{equation}
+  where $\Phi$ is a complex orthogonal random measure with spectral measure
+  $F$ satisfying the orthogonality of infinitesimal increments
+  \begin{equation}
+    \mathbb{E} \hspace{-0.17em} \left[ \Phi (d \lambda) \hspace{0.17em}
+    \overline{\Phi (d \mu)} \right] = \delta (\lambda - \mu)  \hspace{0.17em}
+    dF (\lambda)
+  \end{equation}
+  The covariance kernel is
+  \begin{equation}
+    R_Z (t, s) \assign \mathbb{E} \left[ Z (t) \hspace{0.17em} \overline{Z
+    (s)} \right] = \int_{\mathbb{R}} A_t (\lambda) \hspace{0.17em}
+    \overline{A_s (\lambda)} \hspace{0.17em} e^{i \lambda (t - s)} 
+    \hspace{0.17em} dF (\lambda)
+  \end{equation}
+\end{definition}
+
+\begin{remark}
+  [Real-valuedness] $Z$ is real-valued if and only if, for each fixed $t$,
+  $A_t  (- \lambda) = \overline{A_t (\lambda)}$ for $F$-a.e. $\lambda$,
+  equivalently $\varphi_t  (- \lambda) = \overline{\varphi_t (\lambda)}$ for
+  $F$-a.e. $\lambda$.
+\end{remark}
+
+\begin{theorem}
+  [Existence of oscillatory processes with prescribed $(A_t)_t$] Let $F$ be
+  finite and $(A_t)_t$ measurable with $\int |A_t (\lambda) |^2 
+  \hspace{0.17em} dF (\lambda) < \infty$ for each $t$. There exists a complex
+  orthogonal random measure $\Phi$ on $\mathbb{R}$ with spectral measure $F$
+  such that $Z (t) = \int \varphi_t (\lambda)  \hspace{0.17em} \Phi (d
+  \lambda)$ is well-defined in $L^2 (\Omega)$ and has covariance
+  \begin{equation}
+    R_Z (t, s) = \int_{\mathbb{R}} \varphi_t (\lambda) \hspace{0.17em}
+    \overline{\varphi_s (\lambda)} \hspace{0.17em} dF (\lambda) =
+    \int_{\mathbb{R}} A_t (\lambda) \hspace{0.17em} \overline{A_s (\lambda)}
+    \hspace{0.17em} e^{i \lambda (t - s)}  \hspace{0.17em} dF (\lambda)
+  \end{equation}
 \end{theorem}
 
 \begin{proof}
-  From the previous theorem, we have $\varphi_t (\lambda) = \sqrt{| \theta'
-  (t) |}  \hspace{0.17em} e^{i \lambda \theta (t)}$. Since the oscillatory
-  function must satisfy $\varphi_t (\lambda) = A_t (\lambda) e^{i \lambda t}$,
-  we solve for the gain:
-  \[ A_t (\lambda) = \frac{\varphi_t (\lambda)}{e^{i \lambda t}} =
-     \frac{\sqrt{| \theta' (t) |}  \hspace{0.17em} e^{i \lambda \theta
-     (t)}}{e^{i \lambda t}} . \]
-  Using the exponential division rule $\frac{e^a}{e^b} = e^{a - b}$, we get:
-  \[ A_t (\lambda) = \sqrt{| \theta' (t) |}  \hspace{0.17em} \frac{e^{i
-     \lambda \theta (t)}}{e^{i \lambda t}} = \sqrt{| \theta' (t) |} 
-     \hspace{0.17em} e^{i \lambda \theta (t) - i \lambda t} = \sqrt{| \theta'
-     (t) |}  \hspace{0.17em} e^{i \lambda (\theta (t) - t)} . \]
-  Substituting back into the covariance formula:
-  
-  \begin{align*}
-    R_Z (t, s) & = \int_{\mathbb{R}} \varphi_t (\lambda) \hspace{0.17em}
-    \overline{\varphi_s (\lambda)} \hspace{0.17em} dF (\lambda)\\
-    & = \int_{\mathbb{R}} A_t (\lambda) e^{i \lambda t} \hspace{0.17em}
-    \overline{A_s (\lambda) e^{i \lambda s}} \hspace{0.17em} dF (\lambda)\\
-    & = \int_{\mathbb{R}} A_t (\lambda) e^{i \lambda t} \hspace{0.17em}
-    \overline{A_s (\lambda)} \hspace{0.17em} \overline{e^{i \lambda s}}
-    \hspace{0.17em} dF (\lambda)\\
-    & = \int_{\mathbb{R}} A_t (\lambda) e^{i \lambda t} \hspace{0.17em}
-    \overline{A_s (\lambda)} \hspace{0.17em} e^{- i \lambda s} 
-    \hspace{0.17em} dF (\lambda)\\
-    & = \int_{\mathbb{R}} A_t (\lambda) \hspace{0.17em} \overline{A_s
-    (\lambda)} \hspace{0.17em} e^{i \lambda t}  \hspace{0.17em} e^{- i \lambda
-    s}  \hspace{0.17em} dF (\lambda)\\
-    & = \int_{\mathbb{R}} A_t (\lambda) \hspace{0.17em} \overline{A_s
-    (\lambda)} \hspace{0.17em} e^{i \lambda t - i \lambda s}  \hspace{0.17em}
-    dF (\lambda)\\
-    & = \int_{\mathbb{R}} A_t (\lambda) \hspace{0.17em} \overline{A_s
+  Construct the stochastic integral first for simple functions in $L^2 
+  (\mathbb{R}, F)$ and extend by isometry using
+  \begin{equation}
+    \mathbb{E} \left[ | \int g (\lambda) \hspace{0.17em} \Phi (d \lambda) |^2
+    \right] = \int |g (\lambda) |^2  \hspace{0.17em} dF (\lambda)
+  \end{equation}
+  Apply with $g = \varphi_t$ to obtain $Z (t)$ and the stated covariance.
+\end{proof}
+
+\section{Unitary Time Changes Map Stationary to Oscillatory}
+
+\begin{definition}
+  [Stationary process via Cram{\'e}r representation] A zero-mean stationary
+  process $X$ with spectral measure $F$ admits
+  \begin{equation}
+    X (t) = \int_{\mathbb{R}} e^{i \lambda t}  \hspace{0.17em} \Phi (d
+    \lambda)
+  \end{equation}
+  with covariance
+  \begin{equation}
+    R_X  (t - s) = \int_{\mathbb{R}} e^{i \lambda (t - s)}  \hspace{0.17em} dF
+    (\lambda)
+  \end{equation}
+\end{definition}
+
+\begin{theorem}
+  [Unitary time change yields an oscillatory process] Let $X$ be zero-mean
+  stationary with
+  \begin{equation}
+    X (t) = \int_{\mathbb{R}} e^{i \lambda t}  \hspace{0.17em} \Phi (d
+    \lambda)
+  \end{equation}
+  Let $\theta$ satisfy the hypotheses of the unitary time change and set
+  \begin{equation}
+    Z (t) \assign (U_{\theta} X) (t) = \sqrt{| \theta' (t) |}  \hspace{0.17em}
+    X (\theta (t))
+  \end{equation}
+  Then $Z$ is an oscillatory process with oscillatory function
+  \begin{equation}
+    \varphi_t (\lambda) = \sqrt{| \theta' (t) |}  \hspace{0.17em} e^{i \lambda
+    \theta (t)}
+  \end{equation}
+  and gain
+  \begin{equation}
+    A_t (\lambda) = \sqrt{| \theta' (t) |}  \hspace{0.17em} e^{i \lambda
+    (\theta (t) - t)}
+  \end{equation}
+  The covariance is
+  \begin{equation}
+    R_Z (t, s) = \int_{\mathbb{R}} A_t (\lambda) \hspace{0.17em} \overline{A_s
     (\lambda)} \hspace{0.17em} e^{i \lambda (t - s)}  \hspace{0.17em} dF
-    (\lambda) .
-  \end{align*}
+    (\lambda) = \int_{\mathbb{R}} \sqrt{| \theta' (t) \theta' (s) |} 
+    \hspace{0.17em} e^{i \lambda (\theta (t) - \theta (s))}  \hspace{0.17em}
+    dF (\lambda)
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  Compute
+  \begin{equation}
+    Z (t) = \sqrt{| \theta' (t) |}  \hspace{0.17em} X (\theta (t)) = \sqrt{|
+    \theta' (t) |}  \int_{\mathbb{R}} e^{i \lambda \theta (t)} 
+    \hspace{0.17em} \Phi (d \lambda) = \int_{\mathbb{R}} \sqrt{| \theta' (t)
+    |}  \hspace{0.17em} e^{i \lambda \theta (t)}  \hspace{0.17em} \Phi (d
+    \lambda)
+  \end{equation}
+  Thus
+  \begin{equation}
+    \varphi_t (\lambda) = \sqrt{| \theta' (t) |}  \hspace{0.17em} e^{i \lambda
+    \theta (t)}
+  \end{equation}
+  and
+  \begin{equation}
+    A_t (\lambda) = \varphi_t (\lambda) e^{- i \lambda t}
+  \end{equation}
+  The covariance follows from orthogonality of $\Phi$.
+\end{proof}
+
+\begin{remark}
+  [Real-valuedness under time change] If $X$ is real-valued and $\theta$ is
+  real with $\theta' (t) > 0$ a.e., then $Z$ is real-valued by the Hermitian
+  symmetry of $A_t$.
+\end{remark}
+
+\section{Zero Localization by a Functional Measure}
+
+\begin{definition}
+  [Zero localization measure] Let $Z$ be real-valued, with sample paths in
+  $C^1 (\mathbb{R})$, and such that every zero of $Z$ is simple (i.e. $Z (t_0)
+  = 0 \Longrightarrow Z' (t_0) \neq 0$). Define the measure on Borel $B
+  \subset \mathbb{R}$ by
+  \begin{equation}
+    \mu (B) \assign \int_{\mathbb{R}} \textbf{1}_B (t)  \hspace{0.17em} \delta
+    (Z (t)) \hspace{0.17em} |Z' (t) |  \hspace{0.17em} dt
+  \end{equation}
+\end{definition}
+
+\begin{theorem}
+  [Support and mass on the zero set] For any test function $\phi \in
+  C_c^{\infty} (\mathbb{R})$,
+  \begin{equation}
+    \int_{\mathbb{R}} \phi (t)  \hspace{0.17em} \delta (Z (t)) \hspace{0.17em}
+    |Z' (t) |  \hspace{0.17em} dt = \sum_{t_0 : Z (t_0) = 0} \phi (t_0)
+  \end{equation}
+  and hence $\mu = \sum_{t_0 : Z (t_0) = 0} \delta_{t_0}$ is a discrete
+  measure assigning unit mass to each simple zero of $Z$.
+\end{theorem}
+
+\begin{proof}
+  At a simple zero $t_0$, the distributional identity holds:
+  \begin{equation}
+    \delta (Z (t)) = \frac{\delta (t - t_0)}{|Z' (t_0) |} + \sum_{t_1 \neq t_0
+    : Z (t_1) = 0} \frac{\delta (t - t_1)}{|Z' (t_1) |}
+  \end{equation}
+  Multiplying by $|Z' (t) |$ and integrating against $\phi$ yields the stated
+  identity and the atomic form of $\mu$.
+\end{proof}
+
+\section{Hilbert Space on the Zero Set and Multiplication Operator}
+
+\begin{definition*}
+  [Hilbert space on the zero set via $\mu$] Define
+  \begin{equation}
+    \mathcal{H} \assign L^2 (\mu) = \left\{ f : \mathbb{R} \to \mathbb{C}
+    \hspace{0.17em} : \hspace{0.17em} \|f\|_{\mathcal{H}}^2 = \int |f (t) |^2 
+    \hspace{0.17em} \delta (Z (t)) \hspace{0.17em} |Z' (t) | \hspace{0.17em}
+    dt < \infty \right\}
+  \end{equation}
+  The inner product is
+  \begin{equation}
+    \langle f, g \rangle = \int f (t) \overline{g (t)} \hspace{0.17em} \delta
+    (Z (t)) \hspace{0.17em} |Z' (t) |  \hspace{0.17em} dt
+  \end{equation}
+\end{definition*}
+
+\begin{proposition}
+  [Atomic structure] With $\mu = \sum_{t_0 : Z (t_0) = 0} \delta_{t_0}$, one
+  has
+  \begin{equation}
+    \mathcal{H}= \left\{ f : \{t_0 : Z (t_0) = 0\} \to \mathbb{C}
+    \hspace{0.17em} : \hspace{0.17em} \sum_{Z (t_0) = 0} |f (t_0) |^2 < \infty
+    \right\} \cong \ell^2
+  \end{equation}
+  and the functions $e_{t_0}$ defined by $e_{t_0} (t_1) = \delta_{t_0 t_1}$
+  form an orthonormal basis.
+\end{proposition}
+
+\begin{proof}
+  Substitute the atomic form of $\mu$ into the $L^2$-definition to obtain the
+  $\ell^2$-structure; the canonical coordinate functions form an ONB.
+\end{proof}
+
+\begin{definition}
+  [Multiplication operator] Define $L : \mathcal{D} (L) \subset \mathcal{H}
+  \to \mathcal{H}$ by $(Lf) (t) = t \hspace{0.17em} f (t)$ on $\sup (\mu)$,
+  with
+  \begin{equation}
+    \mathcal{D} (L) = \left\{ f \in \mathcal{H} \hspace{0.17em} :
+    \hspace{0.17em} \int |t \hspace{0.17em} f (t) |^2  \hspace{0.17em} \delta
+    (Z (t)) \hspace{0.17em} |Z' (t) | \hspace{0.17em} dt < \infty \right\}
+  \end{equation}
+\end{definition}
+
+\begin{theorem}
+  [Self-adjointness and spectrum] $L$ is self-adjoint on $\mathcal{H}$, and
+  its spectrum is exactly
+  \begin{equation}
+    \sigma (L) = \{ \hspace{0.17em} t \in \mathbb{R} \hspace{0.17em} :
+    \hspace{0.17em} Z (t) = 0 \hspace{0.17em} \}
+  \end{equation}
+  with pure point spectrum consisting of simple eigenvalues $\lambda = t_0$
+  (for each zero $t_0$) and eigenvectors $e_{t_0}$.
+\end{theorem}
+
+\begin{proof}
+  For $f, g \in \mathcal{D} (L)$,
+  \begin{equation}
+    \langle Lf, g \rangle = \int t \hspace{0.17em} f (t) \hspace{0.17em}
+    \overline{g (t)} \hspace{0.17em} \delta (Z (t)) \hspace{0.17em} |Z' (t) | 
+    \hspace{0.17em} dt = \int f (t) \hspace{0.17em} \overline{t
+    \hspace{0.17em} g (t)} \hspace{0.17em} \delta (Z (t)) \hspace{0.17em} |Z'
+    (t) |  \hspace{0.17em} dt = \langle f, Lg \rangle
+  \end{equation}
+  so $L$ is symmetric. On the atomic space, $L$ is unitarily equivalent to the
+  diagonal operator $(c_{t_0}) \mapsto (t_0 c_{t_0})$ on $\ell^2$, which is
+  self-adjoint with spectrum equal to the set of diagonal entries $\{t_0 : Z
+  (t_0) = 0\}$, each simple, with eigenvectors the coordinate basis identified
+  with $e_{t_0}$.
+\end{proof}
+
+\section{Time-Changed Stationary Processes and a Hilbert--P{\'o}lya Scaffold}
+
+\begin{definition}
+  [Arithmetic phase time change] Let $\theta : \mathbb{R} \to \mathbb{R}$ be
+  an absolutely continuous phase with $\theta' (t) > 0$ a.e. encoding the
+  target arithmetic structure (e.g. a Riemann--Siegel-type phase). Let $X$ be
+  zero-mean stationary with spectral measure $F$ and orthogonal random measure
+  $\Phi$. Define the time-changed oscillatory process
+  \begin{equation}
+    Z (t) = \int_{\mathbb{R}} \sqrt{| \theta' (t) |}  \hspace{0.17em} e^{i
+    \lambda \theta (t)}  \hspace{0.17em} \Phi (d \lambda)
+  \end{equation}
+\end{definition}
+
+\begin{proposition}
+  [Covariance under time change]
+  \begin{equation}
+    R_Z (t, s) = \int_{\mathbb{R}} \sqrt{| \theta' (t) \theta' (s) |} 
+    \hspace{0.17em} e^{i \lambda (\theta (t) - \theta (s))}  \hspace{0.17em}
+    dF (\lambda)
+  \end{equation}
+  In particular, if $F$ is chosen so that $R_Z$ concentrates along $\theta (t)
+  = \theta (s)$, then the correlation structure of $Z$ is phase-aligned with
+  $\theta$.
+\end{proposition}
+
+\begin{proof}
+  Insert the oscillatory function into the covariance integral and use the
+  orthogonality relation for $\Phi$.
+\end{proof}
+
+\begin{definition}
+  [Zero-localized Hilbert space and operator] With the zero localization
+  measure $\mu (dt) = \delta (Z (t)) \hspace{0.17em} |Z' (t) | 
+  \hspace{0.17em} dt$, define $\mathcal{H}= L^2 (\mu)$ and $L$ as
+  multiplication by $t$ on $\mathcal{H}$.
+\end{definition}
+
+\begin{theorem}
+  [Spectral encoding of zero set] The spectrum of $L$ is the zero set of $Z$:
+  \begin{equation}
+    \sigma (L) = \{t : Z (t) = 0\}
+  \end{equation}
+  and $L$ has simple pure point spectrum with eigenvectors supported at
+  individual zeros.
+\end{theorem}
+
+\begin{proof}
+  Follows from the established atomic structure of $\mu$ and the diagonal form
+  of $L$ on $L^2 (\mu)$.
+\end{proof}
+
+\begin{remark}
+  [Operator scaffold] The sequence
+  \begin{equation}
+    \text{stationary } X \xrightarrow{\hspace{0.17em} U_{\theta}
+    \hspace{0.17em}} \text{oscillatory } Z \xrightarrow{\hspace{0.17em} \delta
+    (Z) \hspace{0.17em} |Z' |  \hspace{0.17em} dt \hspace{0.17em}} \mu
+    \xrightarrow{\hspace{0.17em} L^2 (\mu) \hspace{0.17em}} \mathcal{H}
+    \xrightarrow{\hspace{0.17em} t \cdot \hspace{0.17em}} L
+  \end{equation}
+  produces a concrete self-adjoint operator whose spectrum equals the
+  (constructed) zero set governed by the choice of $\theta$ and $F$. Aligning
+  $\theta$ and $F$ to a prescribed arithmetic target sets the stage for a
+  Hilbert--P{\'o}lya-type identification.
+\end{remark}
+
+\section{Appendix: Regularity and Simple Zeros}
+
+\begin{definition}
+  [Regularity and simplicity] Assume $Z \in C^1 (\mathbb{R})$ and every zero
+  of $Z$ is simple: $Z (t_0) = 0 \Longrightarrow Z' (t_0) \neq 0$.
+\end{definition}
+
+\begin{lemma}
+  [Local finiteness and decomposition] Under the above condition, zeros are
+  locally finite and the distributional identity
+  \begin{equation}
+    \delta (Z (t)) = \sum_{t_0 : Z (t_0) = 0} \frac{\delta (t - t_0)}{|Z'
+    (t_0) |}
+  \end{equation}
+  holds, yielding
+  \begin{equation}
+    \mu = \sum_{t_0} \delta_{t_0}
+  \end{equation}
+\end{lemma}
+
+\begin{proof}
+  Continuity and $Z' (t_0) \neq 0$ imply isolated zeros by the inverse
+  function theorem; the distributional identity is standard from the
+  one-dimensional change-of-variables formula for the Dirac delta under
+  monotone $C^1$ maps near each zero.
 \end{proof}
 
 \end{document}
