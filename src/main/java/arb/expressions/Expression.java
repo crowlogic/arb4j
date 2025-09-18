@@ -257,15 +257,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public static String      nameOfInitializerFunction         = "initialize";
 
   public static boolean     saveClasses                       =
-                                        Boolean.valueOf(System.getProperty("arb4j.compiler.saveClasses",
+                                        Boolean.valueOf(System.getProperty("arb4j.saveClasses",
                                                                            "false"));
 
   public static boolean     saveGraphs                        =
-                                       Boolean.valueOf(System.getProperty("arb4j.compiler.saveGraphs",
+                                       Boolean.valueOf(System.getProperty("arb4j.saveGraphs",
                                                                           "false"));
 
   public static boolean     trace                             =
-                                  Boolean.valueOf(System.getProperty("arb4j.compiler.trace",
+                                  Boolean.valueOf(System.getProperty("arb4j.trace",
                                                                      "false"));
 
   public static String      VOID_METHOD_DESCRIPTOR            =
