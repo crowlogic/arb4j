@@ -994,6 +994,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return multiplyAndDivide(exponentiate());
   }
 
+  public boolean generateDerivative = true;
+  
   /**
    * Generate the implementation of the function after this{@link #parseRoot()}
    * has been invoked
@@ -1020,7 +1022,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       generateDomainTypeMethod(classVisitor);
       generateCoDomainTypeMethod(classVisitor);
       generateEvaluationMethod(classVisitor);
-      if (!isNullaryFunction())
+      if (!isNullaryFunction() && generateDerivative )
       {
         generateDerivativeMethod(classVisitor);
       }
@@ -1157,8 +1159,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     var mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
                                       "derivative",
-                                      String.format("()L%s;", Type.getInternalName(Function.class)),
-                                      getFunctionClassTypeSignature(functionClass),
+                                      Type.getMethodDescriptor(Type.getType(Function.class)),
+                                      null,
                                       null);
     mv.visitCode();
     mv.visitLdcInsn(Type.getType(domainType));
