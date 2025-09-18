@@ -8,8 +8,9 @@ import arb.functions.Function;
 /**
  * Absolute value function
  * 
+ * 
  * @author Stephen Crowley ©2024-2025
- * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class AbsoluteValueNode<D, R, F extends Function<? extends D, ? extends R>> extends
                               FunctionNode<D, R, F>

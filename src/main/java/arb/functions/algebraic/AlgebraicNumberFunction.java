@@ -1,8 +1,6 @@
 package arb.functions.algebraic;
 
 import arb.AlgebraicNumber;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
 import arb.expressions.Context;
 import arb.expressions.Expression;
@@ -25,15 +23,14 @@ import arb.functions.Function;
  * more variables).
  * </p>
  * 
- * @author Stephen Crowley
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
  * @see AlgebraicNumber
  * @see Expression
  * @see Context
  * @see Function
+ * 
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
-
 public interface AlgebraicNumberFunction extends
                                          Function<AlgebraicNumber, AlgebraicNumber>
 {

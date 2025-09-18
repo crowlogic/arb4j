@@ -1,14 +1,12 @@
 package arb.expressions.viz;
 
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.functions.Function;
 import javafx.util.StringConverter;
 
 /**
- *
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * 
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public final class ClassStringConverter<D, C, F extends Function<D, C>> extends
                                        StringConverter<Class<?>>

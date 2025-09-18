@@ -31,8 +31,6 @@ import arb.Integer;
 import arb.Polynomial;
 import arb.Real;
 import arb.RealPolynomial;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.expressions.Compiler;
 import arb.expressions.Context;
@@ -75,8 +73,9 @@ import arb.functions.integer.Sequence;
  * @param <F> the function interface this operation implements, extending the
  *            {@link Function} interface with specific domain and coDomain types
  *
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * 
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R>> extends
                               Node<D, R, F>

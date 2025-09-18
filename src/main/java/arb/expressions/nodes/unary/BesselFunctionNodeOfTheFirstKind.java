@@ -25,8 +25,9 @@ import arb.functions.real.RealBesselFunctionOfTheFirstKind;
  * Implements the {@link RealBesselFunctionOfTheFirstKind} by generating calls
  * directly to {@link arblib#arb_hypgeom_bessel_j(Real, Real, Real, int)}
  * 
+ * 
  * @author Stephen Crowley ©2024-2025
- * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class BesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends D, ? extends R>>
                                              extends

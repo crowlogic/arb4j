@@ -66,28 +66,6 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
-  {
-    return left.spliceInto(newExpression).sub(right.spliceInto(newExpression));
-  }
-
-  @Override
-  public Class<?> type()
-  {
-    fillInNullLeftHandSide();
-    return super.type();
-  }
-
-  @Override
-  public String typeset()
-  {
-    String lhs = left == null ? "" : left.typeset();
-    return format("\\left(%s-%s\\right)", "0".equals(lhs) ? "" : lhs, right.typeset());
-  }
-
-  @Override
   public Node<D, R, F> simplify()
   {
     super.simplify();
@@ -132,5 +110,27 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
 
     return this;
 
+  }
+
+  @Override
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<E, S, G>
+         spliceInto(Expression<E, S, G> newExpression)
+  {
+    return left.spliceInto(newExpression).sub(right.spliceInto(newExpression));
+  }
+
+  @Override
+  public Class<?> type()
+  {
+    fillInNullLeftHandSide();
+    return super.type();
+  }
+
+  @Override
+  public String typeset()
+  {
+    String lhs = left == null ? "" : left.typeset();
+    return format("\\left(%s-%s\\right)", "0".equals(lhs) ? "" : lhs, right.typeset());
   }
 }
