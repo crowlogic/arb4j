@@ -86,7 +86,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (isSincFunction(variable))
     {
-      //return variable.apply("si");
+      // return variable.apply("si");
       return new SineIntegralNode<D, R, F>(expression,
 
                                            variable,
@@ -118,7 +118,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return left.isOne() && right.isLiteralConstant() && right.toString().equals("2");
   }
 
-  private boolean isOneMinusXSquared(Node<D, R, F> node, VariableNode<D, R, F> variable)
+  boolean isOneMinusXSquared(Node<D, R, F> node, VariableNode<D, R, F> variable)
   {
     if (!(node instanceof SubtractionNode sub))
       return false;
@@ -126,20 +126,17 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return sub.left.isOne() && sub.right.isVariableSquared(variable);
   }
 
-  private boolean isOneOverOnePlusXSquared(VariableNode<D, R, F> variable)
+  boolean isOneOverOnePlusXSquared(VariableNode<D, R, F> variable)
   {
-    // Check if left is 1 and right is (1+x²)
-    if (!left.isLiteralConstant() || !"1".equals(left.toString()))
-      return false;
-
-    return isOnePlusXSquared(right, variable);
+    return left.isOne() && isOnePlusXSquared(right, variable);
   }
 
-  private boolean isOneOverSqrtOneMinusXSquared(VariableNode<D, R, F> variable)
+  boolean isOneOverSqrtOneMinusXSquared(VariableNode<D, R, F> variable)
   {
-    // Check if left is 1 and right is √(1-x²)
-    if (!left.isLiteralConstant() || !"1".equals(left.toString()))
+    if (!left.isOne())
+    {
       return false;
+    }
 
     if (right.isSquareRoot())
     {
@@ -152,10 +149,12 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return false;
   }
 
-  private boolean isOnePlusXSquared(Node<D, R, F> node, VariableNode<D, R, F> variable)
+  boolean isOnePlusXSquared(Node<D, R, F> node, VariableNode<D, R, F> variable)
   {
     if (!(node instanceof AdditionNode add))
+    {
       return false;
+    }
 
     return add.left.isOne() && add.right.isVariableSquared(variable);
   }

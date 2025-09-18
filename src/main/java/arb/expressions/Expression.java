@@ -1176,7 +1176,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                 Class.class,
                                 String.class);
     mv.visitInsn(Opcodes.ARETURN);
-    mv.visitMaxs(10, 10);
+    mv.visitMaxs(0,0);
     mv.visitEnd();
     return classVisitor;
   }

@@ -73,7 +73,8 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   @Override
   public boolean isHalf()
   {
-    return toString().equals("½");
+    String str = toString();
+    return str.equals("½") || str.equals("0.5");
   }
 
   @Override

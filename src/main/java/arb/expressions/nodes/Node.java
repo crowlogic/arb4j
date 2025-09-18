@@ -4,6 +4,7 @@ import static arb.expressions.Compiler.cast;
 import static arb.expressions.Compiler.getFieldFromThis;
 import static arb.expressions.Compiler.invokeSetMethod;
 import static arb.expressions.Compiler.loadBitsParameterOntoStack;
+import static arb.expressions.Compiler.swap;
 
 import java.util.List;
 import java.util.Objects;
@@ -15,7 +16,6 @@ import org.scilab.forge.jlatexmath.LaTeXAtom;
 import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.binary.AdditionNode;
 import arb.expressions.nodes.binary.BinaryOperationNode;
@@ -233,7 +233,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   {
     cast(methodVisitor, generatedType);
     expression.allocateIntermediateVariable(methodVisitor, type);
-    Compiler.swap(methodVisitor);
+    swap(methodVisitor);
     invokeSetMethod(methodVisitor, generatedType, type);
     return generatedType = type;
   }
@@ -268,7 +268,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    * @return
    */
   public abstract Node<D, R, F> integrate(VariableNode<D, R, F> variable);
-
 
   public boolean isHalf()
   {
@@ -399,7 +398,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   {
     return this;
   }
-  
+
   public Node<D, R, F> sin()
   {
     return apply("sin");
