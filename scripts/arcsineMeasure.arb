@@ -1,2 +1,2 @@
-Expression.saveClasses = true;
+Expression.saveClasses = Expression.trace = true;
 var f = RealFunction.express("int(1/sqrt(1-λ^2),λ=-1..ω)");

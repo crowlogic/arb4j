@@ -626,11 +626,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     if (trace)
     {
-      System.err.format("\nExpression(#%s).defineClass(expression=%s\n,className=%s\n, context=%s)\n\n",
-                        System.identityHashCode(this),
-                        expression,
-                        className,
-                        context);
+      log.debug(String.format("id=%s: defineClass(expression=%s, className=%s, context=%s)",
+                              System.identityHashCode(this),
+                              expression,
+                              className,
+                              context));
     }
     if (instructions == null)
     {
@@ -903,43 +903,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected Expression<D, C, F> evaluateOptionalIndependentVariableSpecification()
   {
-    if (log.isDebugEnabled())
-    {
-      log.debug("evaluateOptionalIndependentVariableSpecification: before applying transformToJavaAcceptableCharacters expression={}",
-                expression);
-    }
+
     expression = transformToJavaAcceptableCharacters(expression);
 
     int rightArrowIndex = expression.indexOf('➔');
-
-    if (log.isDebugEnabled())
-    {
-      log.debug("evaluateOptionalIndependentVariableSpecification: after applying transformToJavaAcceptableCharacters expression={}\nrightArrowIndex={}",
-                expression,
-                rightArrowIndex);
-    }
 
     if (rightArrowIndex != -1)
     {
       String  inputVariableName        = expression.substring(0, rightArrowIndex);
       boolean isInputVariableSpecified = true;
 
-      if (log.isDebugEnabled())
-      {
-        log.debug("evaluateOptionalIndependentVariableSpecification: before assureNoNumbersInTheInputVariable inputVariableName={} isInputVariableSpecified={}\n",
-                  inputVariableName,
-                  isInputVariableSpecified);
-      }
-
       isInputVariableSpecified = assureNoNumbersInTheInputVariable(inputVariableName,
                                                                    isInputVariableSpecified);
-
-      if (log.isDebugEnabled())
-      {
-        log.debug("evaluateOptionalIndependentVariableSpecification: after assureNoNumbersInTheInputVariable inputVariableName={} isInputVariableSpecified={}\n",
-                  inputVariableName,
-                  isInputVariableSpecified);
-      }
 
       if (isInputVariableSpecified)
       {
@@ -1716,6 +1691,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected void injectReferences(F f)
   {
+    if (trace)
+    {
+      log.debug("Injecting references into " + this);
+    }
+
     if (context != null)
     {
       context.injectVariableReferences(f);
@@ -1732,15 +1712,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public F instantiate()
   {
 
-    if (trace)
-    {
-      System.err.format("\nInstantiating %s\n", this);
-    }
     instance = newInstance();
-    if (trace)
-    {
-      System.err.format("\nInjecting references %s\n", this);
-    }
 
     injectReferences(instance);
 
@@ -1944,6 +1916,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   private F newInstance()
   {
+    if (trace)
+    {
+      log.debug("Instantiating " + this);
+    }
     if (compiledClass == null)
     {
       compile();
@@ -2080,7 +2056,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     nextCharacter();
     if (log.isDebugEnabled())
     {
-      log.debug("parseRoot expression='{}' of Expression(#%s)\n",
+      log.debug("parseRoot expression='{}' of Expression(id={})",
                 expression,
                 System.identityHashCode(this));
     }
