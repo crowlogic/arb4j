@@ -12,6 +12,8 @@ import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
 import org.scilab.forge.jlatexmath.LaTeXAtom;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -71,6 +73,8 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                           Typesettable,
                           Consumer<Consumer<Node<D, R, F>>>
 {
+
+  final Logger               logger   = LoggerFactory.getLogger(getClass());
 
   public int                 bits     = 128;
 
@@ -231,6 +235,12 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public Class<?> generateCastTo(MethodVisitor methodVisitor, Class<?> type)
   {
+    if (Expression.trace)
+    {
+      logger.debug(String.format("generateCastTo(type=%s) from generatedType=%s\n",
+                                 type,
+                                 generatedType));
+    }
     cast(methodVisitor, generatedType);
     expression.allocateIntermediateVariable(methodVisitor, type);
     swap(methodVisitor);

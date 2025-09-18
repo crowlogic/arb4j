@@ -19,6 +19,8 @@ import java.util.function.Consumer;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import arb.Complex;
 import arb.Fraction;
@@ -253,12 +255,6 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
 
     if (!resultType.equals(generatedType))
     {
-      if (Expression.trace)
-      {
-        System.err.format("generateCastTo(resultType=%s) from generatedType=%s\n",
-                          resultType,
-                          generatedType);
-      }
       generateCastTo(mv, resultType);
     }
 
