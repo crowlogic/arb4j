@@ -2,23 +2,21 @@ package arb.expressions.context;
 
 import java.util.HashMap;
 
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.expressions.FunctionMapping;
 import arb.functions.Function;
 
 /**
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
- * 
- * @author ©2024 Stephen Crowley
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class FunctionMappings
 {
   @Override
   public String toString()
   {
-    return String.format("FunctionMappings(#%s)[%s] ", System.identityHashCode(this), map.entrySet());
+    return String.format("FunctionMappings(#%s)[%s] ",
+                         System.identityHashCode(this),
+                         map.entrySet());
   }
 
   public final HashMap<String, FunctionMapping<?, ?, ?>> map = new HashMap<>();

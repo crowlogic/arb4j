@@ -11,6 +11,10 @@ import java.util.stream.Collectors;
 import arb.Named;
 import javafx.collections.ModifiableObservableListBase;
 
+/**
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
+ */
 public class Variables extends
                        ModifiableObservableListBase<Named>
 {

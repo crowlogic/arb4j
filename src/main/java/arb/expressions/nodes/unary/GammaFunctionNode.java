@@ -8,7 +8,7 @@ import arb.functions.Function;
 
 /**
  * @author Stephen Crowley ©2024-2025
- * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class GammaFunctionNode<D, C, F extends Function<? extends D, ? extends C>> extends
                               PolySeriesFunctionNode<D, C, F>

@@ -221,8 +221,9 @@ import arb.utensils.text.trees.TreeModel;
  * @param <F> The function type of the expression, extending the
  *            {@link Function} interface, encapsulating the compiled expression
  *            as an evaluatable function in the sense of Java
+ * 
  * @author Stephen Crowley ©2024-2025
- * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class Expression<D, C, F extends Function<? extends D, ? extends C>> implements
                        Typesettable,
@@ -1541,10 +1542,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   private String getEvaluationMethodSignature()
   {
-    return String.format("(L%s;IIL%s;)L%s;",
-                         Type.getInternalName(domainType),
-                         Type.getInternalName(coDomainType),
-                         Type.getInternalName(coDomainType));
+    return Type.getMethodDescriptor(Type.getType(coDomainType),
+                                    Type.getType(domainType),
+                                    Type.getType(int.class),
+                                    Type.getType(int.class),
+                                    Type.getType(coDomainType));
   }
 
   protected String getFunctionClassTypeSignature(Class<? extends Function<?, ?>> functionClass)

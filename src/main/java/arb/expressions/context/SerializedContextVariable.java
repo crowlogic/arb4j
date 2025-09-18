@@ -3,13 +3,10 @@ package arb.expressions.context;
 import java.util.Objects;
 
 import arb.Named;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 
 /**
- *
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class SerializedContextVariable
 {
@@ -18,7 +15,6 @@ public class SerializedContextVariable
   {
     return Objects.hash(type, value);
   }
-
 
   @Override
   public boolean equals(Object obj)
@@ -33,14 +29,12 @@ public class SerializedContextVariable
     return Objects.equals(type, other.type) && Objects.equals(value, other.value);
   }
 
-
   public SerializedContextVariable(String type, String value)
   {
     this.value = value;
     this.type  = type;
   }
-  
-  
+
   public SerializedContextVariable(Named integer)
   {
     value = integer.toStringWithoutName();
@@ -49,11 +43,11 @@ public class SerializedContextVariable
 
   public String value;
   public String type;
+
   @Override
   public String toString()
   {
     return String.format("SerializedContextVariable[type=%s, value=%s]", type, value);
   }
 
-  
 }

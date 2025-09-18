@@ -8,15 +8,11 @@ import java.util.UUID;
 
 import arb.Fraction;
 import arb.FractionConstants;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.expressions.nodes.LiteralConstantNode;
 
 /**
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
- * 
- * @author ©2024 Stephen Crowley
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class Parser
 {

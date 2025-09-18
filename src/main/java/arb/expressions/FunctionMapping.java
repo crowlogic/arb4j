@@ -11,15 +11,12 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.functions.Function;
 
 /**
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
  * 
- * @author ©2024 Stephen Crowley
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public final class FunctionMapping<D, R, F extends Function<? extends D, ? extends R>>
 {
@@ -64,7 +61,8 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
 
   public String functionFieldDescriptor()
   {
-    return instance != null ? instance.getClass().descriptorString() : String.format("L%s;", functionName);
+    return instance != null ? instance.getClass().descriptorString()
+                            : String.format("L%s;", functionName);
   }
 
   @Override

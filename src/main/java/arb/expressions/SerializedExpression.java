@@ -2,14 +2,11 @@ package arb.expressions;
 
 import java.util.Map;
 
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.expressions.context.SerializedContextVariable;
 
 /**
- *
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class SerializedExpression
 {
@@ -17,11 +14,11 @@ public class SerializedExpression
 
   public Map<String, SerializedContextVariable> context;
 
-  public String domain;
-  
-  public String coDomain;
-  
-  public String function;
+  public String                                 domain;
+
+  public String                                 coDomain;
+
+  public String                                 function;
 
   @Override
   public String toString()
@@ -33,5 +30,5 @@ public class SerializedExpression
                          function,
                          context);
   }
-    
+
 }

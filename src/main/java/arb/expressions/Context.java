@@ -18,8 +18,6 @@ import org.slf4j.LoggerFactory;
 import arb.Integer;
 import arb.Named;
 import arb.OrderedPair;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.expressions.context.Dependency;
 import arb.expressions.context.FunctionMappings;
@@ -56,8 +54,8 @@ import arb.functions.integer.Sequence;
  * functions are localized and maintained.
  * </p>
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class Context
 {

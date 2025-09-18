@@ -6,15 +6,13 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.utensils.Utensils;
 
 /**
  * A class to organize a set of {@link SerializedExpression}s in a dir
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class Catalog
 {

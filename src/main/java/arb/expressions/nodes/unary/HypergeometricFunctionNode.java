@@ -35,7 +35,7 @@ import arb.functions.rational.RationalNullaryFunction;
 
 /**
  * https://github.com/crowlogic/arb4j/issues/527
- * 
+ * <pre>
  * Refactor the current hypergeometric function implementation to use function
  * references for arguments. Current Approach
  * 
@@ -51,13 +51,14 @@ import arb.functions.rational.RationalNullaryFunction;
  * This change aims to improve performance and maintainability.
  * 
  * The numerator α and the denominator β parameters can be specified via the
- * {@link VectorNode} syntax like F([1,n,1+n],[1],x) or symbolically like
+ * {@link VectorNode} syntax like <code>F([1,n,1+n],[1],x)</code> or symbolically like
  * F(α,β,x) where α and β are {@link Real}s or {@link RealPolynomial}s for
  * instance where if they are {@link RealPolynomial}s then the coeffecients of
  * the polynomial are regarded as the parameters of the numerator or denominator
+ * </pre>
  * 
  * @author Stephen Crowley ©2024-2025
- * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                        FunctionNode<D, R, F> implements

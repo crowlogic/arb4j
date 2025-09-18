@@ -4,15 +4,12 @@ import java.util.Objects;
 
 import org.objectweb.asm.MethodVisitor;
 
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
 /**
- * 
  * @param <D>
  * @param <C>
  * @param <F>
@@ -87,7 +84,7 @@ public class BetaFunctionNode<D, C, F extends Function<? extends D, ? extends C>
 
     definition.substitute("x", x);
     definition.substitute("y", y);
-    splicedNode = definition.rootNode.spliceInto(expression);
+    splicedNode          = definition.rootNode.spliceInto(expression);
     splicedNode.isResult = isResult;
   }
 

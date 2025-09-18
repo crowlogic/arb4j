@@ -48,11 +48,8 @@ import arb.Real;
 import arb.RealConstants;
 import arb.RealMatrix;
 import arb.RealPolynomial;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.expressions.nodes.LiteralConstantNode;
-import arb.expressions.nodes.unary.FunctionNode;
 import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.polynomials.ComplexHypergeometricPolynomialFunction;
@@ -94,12 +91,9 @@ import arb.utensils.Utensils;
  * 
  * </pre>
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
- * 
- * @author ©2024-2025 Stephen Crowley
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
-
 public class Compiler
 {
 

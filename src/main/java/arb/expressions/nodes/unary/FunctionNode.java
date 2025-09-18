@@ -59,7 +59,7 @@ import arb.functions.Function;
  * <br>
  * 
  * @author Stephen Crowley ©2024-2025
- * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> extends
                          UnaryOperationNode<D, R, F>
