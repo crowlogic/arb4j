@@ -265,8 +265,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                           "false"));
 
   public static boolean     trace                             =
-                                  Boolean.valueOf(System.getProperty("arb4j.trace",
-                                                                     "false"));
+                                  Boolean.valueOf(System.getProperty("arb4j.trace", "false"));
 
   public static String      VOID_METHOD_DESCRIPTOR            =
                                                    Compiler.getMethodDescriptor(Void.class);
@@ -336,6 +335,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public String                                         functionName;
 
   public boolean                                        functionNameSpecified         = true;
+
+  public boolean generateDerivative = true;
 
   public HashMap<Node<D, C, F>, String>                 generatedNodes                =
                                                                        new HashMap<>();
@@ -994,8 +995,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return multiplyAndDivide(exponentiate());
   }
 
-  public boolean generateDerivative = true;
-  
   /**
    * Generate the implementation of the function after this{@link #parseRoot()}
    * has been invoked
@@ -1022,7 +1021,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       generateDomainTypeMethod(classVisitor);
       generateCoDomainTypeMethod(classVisitor);
       generateEvaluationMethod(classVisitor);
-      if (!isNullaryFunction() && generateDerivative )
+      if (!isNullaryFunction() && generateDerivative)
       {
         generateDerivativeMethod(classVisitor);
       }
@@ -1176,7 +1175,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                 Class.class,
                                 String.class);
     mv.visitInsn(Opcodes.ARETURN);
-    mv.visitMaxs(0,0);
+    mv.visitMaxs(0, 0);
     mv.visitEnd();
     return classVisitor;
   }
@@ -1638,6 +1637,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     return (domainType.equals(Object.class)
                   && thisOrAnyAscendentExpressionHasIndeterminateVariable());
+  }
+
+  public boolean hasIntermediateVariable(String string)
+  {
+    return intermediateVariables.containsKey(string);
   }
 
   public boolean hasScalarCodomain()
@@ -2685,11 +2689,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       Utensils.throwOrWrap(e);
     }
     return this;
-  }
-
-  public boolean hasIntermediateVariable(String string)
-  {
-    return intermediateVariables.containsKey(string);
   }
 
 }

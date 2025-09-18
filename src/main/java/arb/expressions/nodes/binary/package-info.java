@@ -5,7 +5,8 @@
  * {@link arb.expressions.nodes.binary.AdditionNode},
  * {@link arb.expressions.nodes.binary.SubtractionNode}, etc..
  * 
- * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * 
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 package arb.expressions.nodes.binary;

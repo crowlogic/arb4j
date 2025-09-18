@@ -27,8 +27,6 @@ import arb.IntegerPolynomial;
 import arb.RationalFunction;
 import arb.Real;
 import arb.RealPolynomial;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
@@ -44,10 +42,9 @@ import arb.functions.real.RealFunction;
  * @param <C> codomain
  * @param <F> {@link Function}
  * 
- * @author Stephen Andrew Crowley ©2024
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, ? extends C>>
                                          extends

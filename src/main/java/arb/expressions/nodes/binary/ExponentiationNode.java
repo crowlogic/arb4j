@@ -5,8 +5,6 @@ import org.objectweb.asm.MethodVisitor;
 import arb.AlgebraicNumber;
 import arb.Fraction;
 import arb.Integer;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
@@ -15,8 +13,9 @@ import arb.functions.Function;
 /**
  * Represents the binary exponentiation operation: left^right<br>
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * 
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                BinaryOperationNode<D, R, F>

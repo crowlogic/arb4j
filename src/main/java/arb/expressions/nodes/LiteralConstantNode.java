@@ -19,8 +19,6 @@ import java.util.function.Consumer;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import arb.Complex;
 import arb.Fraction;
@@ -66,7 +64,7 @@ import arb.functions.Function;
  *            nature of the operation this node represents within an expression
  *            tree.
  * 
- * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                 Node<D, R, F>

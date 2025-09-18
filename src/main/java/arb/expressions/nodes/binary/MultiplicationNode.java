@@ -12,7 +12,9 @@ import arb.expressions.nodes.unary.FunctionNode;
 import arb.functions.Function;
 
 /**
- * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
+ * 
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                BinaryOperationNode<D, R, F>

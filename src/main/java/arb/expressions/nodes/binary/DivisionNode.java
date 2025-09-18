@@ -8,8 +8,6 @@ import arb.Fraction;
 import arb.Integer;
 import arb.Real;
 import arb.RealPolynomial;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
@@ -18,11 +16,10 @@ import arb.expressions.nodes.unary.SineIntegralNode;
 import arb.functions.Function;
 
 /**
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 @SuppressWarnings("unchecked")
-
 public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> extends
                          BinaryOperationNode<D, R, F>
 {

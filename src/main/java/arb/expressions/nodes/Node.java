@@ -74,8 +74,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                           Consumer<Consumer<Node<D, R, F>>>
 {
 
-  final Logger               logger   = LoggerFactory.getLogger(getClass());
-
   public int                 bits     = 128;
 
   public Expression<D, R, F> expression;
@@ -85,6 +83,8 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   public Class<?>            generatedType;
 
   public boolean             isResult = false;
+
+  final Logger               logger   = LoggerFactory.getLogger(getClass());
 
   public final int           position;
 
@@ -299,6 +299,11 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return this instanceof LiteralConstantNode;
   }
 
+  public boolean isOne()
+  {
+    return "1".equals(toString());
+  }
+
   public boolean isPossiblyNegative()
   {
     return false;
@@ -324,6 +329,11 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   public boolean isVariableSquared(VariableNode<D, R, F> variable)
   {
     return false;
+  }
+
+  public boolean isZero()
+  {
+    return "0".equals(toString());
   }
 
   protected void loadBitsOntoStack(MethodVisitor mv)
@@ -369,11 +379,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   public LiteralConstantNode<D, R, F> negativeOne()
   {
     return expression.newLiteralConstant(-1);
-  }
-
-  public LiteralConstantNode<D, R, F> zero()
-  {
-    return expression.newLiteralConstant(0);
   }
 
   public LiteralConstantNode<D, R, F> one()
@@ -479,14 +484,9 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    */
   public abstract String typeset();
 
-  public boolean isZero()
+  public LiteralConstantNode<D, R, F> zero()
   {
-    return "0".equals(toString());
-  }
-
-  public boolean isOne()
-  {
-    return "1".equals(toString());
+    return expression.newLiteralConstant(0);
   }
 
 }
