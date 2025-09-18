@@ -626,7 +626,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     if (trace)
     {
-      log.debug(String.format("id=%s: defineClass(expression=%s, className=%s, context=%s)",
+      log.debug(String.format("id=%s: compile(expression=%s, className=%s, context=%s)",
                               System.identityHashCode(this),
                               expression,
                               className,
@@ -1283,9 +1283,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (trace)
     {
-      err.format("Expression.generateFunctionInitializer( nestedFunction=%s, assignments=%s )\n\n",
-                 nestedFunction,
-                 assignments);
+      log.debug(String.format("Expression.generateFunctionInitializer( nestedFunction=%s, assignments=%s )",
+                              nestedFunction,
+                              assignments));
     }
 
     if (nestedFunction.instance != null)
@@ -1448,7 +1448,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (log.isDebugEnabled())
     {
-      log.debug("generateToStringMethod(expression={}\nfunctionName={},functionNameSpecified={},independentVariable={})",
+      log.debug("generateToStringMethod(expression={}, functionName={}, functionNameSpecified={}, independentVariable={})",
                 expression,
                 functionName,
                 functionNameSpecified,
@@ -1507,7 +1507,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (Expression.trace)
     {
-      System.err.format("generateTypesetMethod(expression=%s)\n", expression);
+      log.debug(String.format("generateTypesetMethod(expression=%s)", expression));
     }
     return Compiler.generateTypesetMethod(classVisitor, typeset());
   }

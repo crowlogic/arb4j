@@ -29,6 +29,8 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.signature.SignatureWriter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import arb.AlgebraicNumber;
 import arb.Complex;
@@ -50,6 +52,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.expressions.nodes.LiteralConstantNode;
+import arb.expressions.nodes.unary.FunctionNode;
 import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.polynomials.ComplexHypergeometricPolynomialFunction;
@@ -99,6 +102,9 @@ import arb.utensils.Utensils;
 
 public class Compiler
 {
+
+  private final static Logger             log                =
+                                              LoggerFactory.getLogger(Compiler.class);
 
   public static HashSet<Class<?>>         complexScalarTypes =
                                                              new HashSet<>(Arrays.asList(Complex.class,
@@ -840,11 +846,11 @@ public class Compiler
     assert className != null;
     if (Expression.trace)
     {
-      System.err.println("Compiler.loadFunctionClass " + className);
+      log.debug("loadFunctionClass(className={})");
     }
     try
     {
-      var loader = context != null ? context.classLoader : new CompiledExpressionClassLoader();
+      var loader = context != null ? context.classLoader : new ExpressionClassLoader();
       if (context != null && context.classLoader == null)
       {
         context.classLoader = loader;

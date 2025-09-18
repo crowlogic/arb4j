@@ -61,8 +61,8 @@ import arb.functions.integer.Sequence;
  */
 public class Context
 {
-  public CompiledExpressionClassLoader        classLoader                  =
-                                                          new CompiledExpressionClassLoader(this);
+  public ExpressionClassLoader                classLoader                  =
+                                                          new ExpressionClassLoader(this);
 
   public final FunctionMappings               functions;
 
@@ -74,7 +74,7 @@ public class Context
 
   public Context resetClassLoader()
   {
-    classLoader = new CompiledExpressionClassLoader(this);
+    classLoader = new ExpressionClassLoader(this);
     return this;
   }
 
@@ -187,9 +187,9 @@ public class Context
     assert f != null : "f is null";
     if (Expression.trace)
     {
-      System.err.format("Context(#%s).injectVariableReferences(f=%s)\n\n",
-                        System.identityHashCode(this),
-                        f.getClass().getName());
+      log.debug(String.format("Context(#%s).injectVariableReferences(f=%s)",
+                              System.identityHashCode(this),
+                              f.getClass().getName()));
     }
     variables.map.entrySet().forEach(entry ->
     {
@@ -314,7 +314,7 @@ public class Context
   {
     if (Expression.trace)
     {
-      log.debug(String.format("Context(#%s).setFieldValue(compiledClass=%s, f=%s, variableName=%s, value=%s, overwrite=%s)\n\n",
+      log.debug(String.format("Context(#%s).setFieldValue(compiledClass=%s, f=%s, variableName=%s, value=%s, overwrite=%s)",
                               System.identityHashCode(this),
                               compiledClass,
                               f,

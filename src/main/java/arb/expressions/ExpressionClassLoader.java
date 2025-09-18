@@ -5,6 +5,9 @@ import static arb.utensils.Utensils.wrapOrThrow;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 
@@ -14,19 +17,21 @@ import arb.documentation.TheArb4jLibrary;
  * 
  * @author ©2024 Stephen Crowley
  */
-public class CompiledExpressionClassLoader extends
-                                           ClassLoader
+public class ExpressionClassLoader extends
+                                   ClassLoader
 {
+
+  private final static Logger log = LoggerFactory.getLogger(ExpressionClassLoader.class);
 
   @Override
   protected Class<?> findClass(String name) throws ClassNotFoundException
   {
     if (Expression.trace)
     {
-      System.err.format("findClass(%s) in classes {%s} of %s\n",
-                        name,
-                        compiledClasses.keySet(),
-                        context);
+      log.debug(String.format("findClass(%s) in classes {%s} of %s",
+                              name,
+                              compiledClasses.keySet(),
+                              context));
     }
     AtomicReference<Class<?>> mapped = new AtomicReference<Class<?>>();
     context.functions.map.values().forEach(mapping ->
@@ -37,7 +42,7 @@ public class CompiledExpressionClassLoader extends
         mapped.set(mapping.functionClass);
         if (Expression.trace)
         {
-          System.err.println("Mapped " + mapping + " to " + name);
+          log.debug("Mapped " + mapping + " to " + name);
         }
       }
     });
@@ -48,11 +53,11 @@ public class CompiledExpressionClassLoader extends
   HashMap<String, Class<?>> compiledClasses = new HashMap<>();
   public Context            context;
 
-  public CompiledExpressionClassLoader()
+  public ExpressionClassLoader()
   {
   }
 
-  public CompiledExpressionClassLoader(Context context)
+  public ExpressionClassLoader(Context context)
   {
     this.context = context;
   }
@@ -61,9 +66,7 @@ public class CompiledExpressionClassLoader extends
   {
     if (Expression.trace)
     {
-      System.err.format("defineClass( className=%s, ... )\ncompiledClasses.keys=%s\n\n",
-                        className,
-                        compiledClasses.keySet());
+      log.debug(String.format("defineClass( className=%s )", className));
     }
     // assert !compiledClasses.containsKey(className) : className + " already
     // exists";
