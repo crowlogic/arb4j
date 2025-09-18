@@ -15,12 +15,12 @@ public class FunctionNodeTest extends
   public static void testDeltaFunction()
   {
     var f = RealFunction.express("δ(x)");
-    var y = f.evaluate(RealConstants.zero , 128);
-    assertFalse( y.isFinite() );
-    y = f.evaluate(RealConstants.one , 128);
-    assertTrue( y.isFinite() );
+    var y = f.evaluate(RealConstants.zero, 128);
+    assertFalse(y.isFinite());
+    y = f.evaluate(RealConstants.one, 128);
+    assertTrue(y.isFinite());
   }
-  
+
   public static void testDerivativeOfImaginaryPartIsRealZero()
   {
     // Expression.trace=true;
@@ -46,9 +46,16 @@ public class FunctionNodeTest extends
 
   public static void testSquareRootSimplificationMulWithConstant()
   {
-    Expression.trace = true;
-    var f = RealFunction.express("√(2)*√(2)");
-    assertEquals("2", f.toString());
+    try
+    {
+      Expression.trace = true;
+      var f = RealFunction.express("√(2)*√(2)");
+      assertEquals("2", f.toString());
+    }
+    finally
+    {
+      Expression.trace = false;
+    }
   }
 
   public static void testSquareRootSimplificationDivWithVar()

@@ -9,8 +9,15 @@ public class ZProcessTest extends
 
   public void testOscillatoryProcessGainFunction()
   {
-    Expression.trace = Expression.saveClasses = true;
-    ZProcess Zprocess = new ZProcess();
+    try
+    {
+      Expression.trace = Expression.saveClasses = true;
+      ZProcess Zprocess = new ZProcess();
+    }
+    finally
+    {
+      Expression.trace = Expression.saveClasses = false;
+    }
   }
 
 }

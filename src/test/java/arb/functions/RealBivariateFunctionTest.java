@@ -28,16 +28,22 @@ public class RealBivariateFunctionTest extends
     assertEquals(-0.91421356237309504880168872420969807857, result.doubleValue()); // ½-√2
   }
 
-
-
   public void testEvaluateRealBivariateFunctionWithContextVariable()
   {
-    Expression.trace = Expression.saveClasses = true;
-    ZProcess                       Zprocess        = new ZProcess();
-    RealBivariateToComplexFunction gain            = Zprocess.gainFunction();
+    try
+    {
+      Expression.trace = Expression.saveClasses = true;
+      ZProcess                       Zprocess        = new ZProcess();
+      RealBivariateToComplexFunction gain            = Zprocess.gainFunction();
 
-    RealToComplexFunction          gainAtFrequency = gain.evaluate(Real.named("λ").one(), 128);
-    assertEquals(-0.9308570971323369, gainAtFrequency.eval(1.0, new Complex()).re().doubleValue());
+      RealToComplexFunction          gainAtFrequency = gain.evaluate(Real.named("λ").one(), 128);
+      assertEquals(-0.9308570971323369,
+                   gainAtFrequency.eval(1.0, new Complex()).re().doubleValue());
+    }
+    finally
+    {
+      Expression.trace = Expression.saveClasses = false;
+    }
   }
 
 }
