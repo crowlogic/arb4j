@@ -1,8 +1,11 @@
 package arb.functions;
 
+import arb.Complex;
 import arb.Initializable;
 import arb.Real;
+import arb.RealConstants;
 import arb.Typesettable;
+import arb.utensils.Utensils;
 
 //
 // Decompiled by Procyon v0.6.0
@@ -13,6 +16,19 @@ public class A implements
                AutoCloseable,
                Initializable
 {
+  public static void main(String args[])
+  {
+    A                     a = new A();
+    
+    RealToComplexFunction f = a.evaluate(RealConstants.sqrt2, 0, 128);
+    
+    System.out.println("A(1)=" + Utensils.yamlString(f));
+    var y = f.eval(2.3, new Complex());
+    System.out.println("A(1)=" + Utensils.yamlString(f));
+
+    System.out.println("A(1)(2.3)=" + Utensils.yamlString(f));
+  }
+
   public boolean isInitialized;
   public θ       θ;
   public diffθ   diffθ;
