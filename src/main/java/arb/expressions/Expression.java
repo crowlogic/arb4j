@@ -1007,9 +1007,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     assert instructions == null;
     if (log.isDebugEnabled())
     {
-      log.debug("id={}: generate(className={}, expression='{}')",
+      log.debug("id={}: generate(className={}, functionName={}, expression='{}')",
                 System.identityHashCode(this),
                 className,
+                functionName,
                 expression);
     }
 

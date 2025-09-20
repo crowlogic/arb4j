@@ -20,7 +20,7 @@ public class GammaFunctionNode<D, C, F extends Function<? extends D, ? extends C
           expression);
   }
 
-  GammaFunctionNode(Expression<D, C, F> expression, Node<D, C, F> arg, int order)
+  public GammaFunctionNode(Expression<D, C, F> expression, Node<D, C, F> arg, int order)
   {
     super("Γ",
           expression,
