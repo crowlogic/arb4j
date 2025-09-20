@@ -51,6 +51,7 @@ import arb.RealPolynomial;
 import arb.exceptions.CompilerException;
 import arb.expressions.nodes.LiteralConstantNode;
 import arb.functions.Function;
+import arb.functions.RealToComplexFunction;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.polynomials.ComplexHypergeometricPolynomialFunction;
 import arb.functions.polynomials.RealHypergeometricPolynomialFunction;
@@ -107,7 +108,8 @@ public class Compiler
                                                                                          Complex.class,
                                                                                          ComplexRationalFunction.class,
                                                                                          ComplexFunction.class,
-                                                                                         ComplexFraction.class));
+                                                                                         ComplexFraction.class,
+                                                                                         RealToComplexFunction.class));
 
   public static final String              objectDesc         = Type.getInternalName(Object.class);
 
@@ -206,7 +208,7 @@ public class Compiler
     }
     else if (from.equals(Complex.class))
     {
-      if (to.equals(ComplexFraction.class) || to.equals(ComplexRationalFunction.class))
+      if (to.equals(ComplexFraction.class) || to.equals(ComplexRationalFunction.class) )
       {
         return true;
       }

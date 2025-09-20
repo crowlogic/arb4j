@@ -668,7 +668,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public boolean isLeaf()
   {
-    return false;
+    return true;
   }
 
   @Override

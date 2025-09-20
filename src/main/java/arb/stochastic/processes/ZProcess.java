@@ -25,7 +25,6 @@ public class ZProcess implements
   public static void main(String args[])
   {
 
-
     ZProcess              Zprocess = new ZProcess();
     RealToComplexFunction A        =
                             Zprocess.gainFunction()
@@ -57,12 +56,12 @@ public class ZProcess implements
                                          RealFunction.express("θ:im(lnΓ(¼+ⅈ*t/2))-(log(π)/2)*t",
                                                               context);
 
-  final RealBivariateToComplexFunction A        =
-                                         RealBivariateToComplexFunction.express("A:exp(ⅈ*λ*(θ(t)-t))*√(θ̇(t))",
-                                                                                context);
-
   final RealBivariateToComplexFunction ϕ        =
                                          RealBivariateToComplexFunction.express("ϕ:exp(ⅈ*λ*θ(t))*√(θ̇(t))",
+                                                                                context);
+
+  final RealBivariateToComplexFunction A        =
+                                         RealBivariateToComplexFunction.express("A:exp(ⅈ*λ*θ(t))*√(θ̇(t))",
                                                                                 context);
 
   public final RealToComplexFunction   z        =

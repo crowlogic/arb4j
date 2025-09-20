@@ -34,11 +34,11 @@ public class RealBivariateFunctionTest extends
     {
       Expression.trace = Expression.saveClasses = true;
       ZProcess                       Zprocess        = new ZProcess();
-      RealBivariateToComplexFunction gain            = Zprocess.gainFunction();
+      RealBivariateToComplexFunction oscillatoryFunction            = Zprocess.oscillatoryFunction();
 
-      RealToComplexFunction          gainAtFrequency = gain.evaluate(Real.named("λ").one(), 128);
+      RealToComplexFunction          oscillationAtFrequency = oscillatoryFunction.evaluate(RealConstants.one, 128);
       assertEquals(-0.9308570971323369,
-                   gainAtFrequency.eval(1.0, new Complex()).re().doubleValue());
+                   oscillationAtFrequency.eval(1.0, new Complex()).re().doubleValue());
     }
     finally
     {

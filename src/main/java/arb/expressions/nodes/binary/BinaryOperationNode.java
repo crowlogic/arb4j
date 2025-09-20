@@ -33,6 +33,7 @@ import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
+import arb.functions.RealToComplexFunction;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.real.RealFunction;
 
@@ -103,6 +104,12 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     mapTypes(ComplexFunction.class, Fraction.class, ComplexFunction.class);
     mapTypes(ComplexFunction.class, RealFunction.class, ComplexFunction.class);
     mapTypes(ComplexFunction.class, AlgebraicNumber.class, ComplexFunction.class);
+    mapTypes(RealToComplexFunction.class, Complex.class, RealToComplexFunction.class);
+    mapTypes(RealToComplexFunction.class, Real.class, RealToComplexFunction.class);
+    mapTypes(RealToComplexFunction.class, Integer.class, RealToComplexFunction.class);
+    mapTypes(RealToComplexFunction.class, Fraction.class, RealToComplexFunction.class);
+    mapTypes(RealToComplexFunction.class, RealFunction.class, RealToComplexFunction.class);
+    mapTypes(RealToComplexFunction.class, AlgebraicNumber.class, RealToComplexFunction.class);
   }
 
   public static void mapPolynomialType(Class<?> scalarType, Class<?> polynomialType)
@@ -267,7 +274,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
                          fieldName);
   }
 
-  Logger log = LoggerFactory.getLogger(getClass());
+  public Logger log = LoggerFactory.getLogger(getClass());
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)

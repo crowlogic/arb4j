@@ -121,7 +121,7 @@ public class DerivativeNodeTest extends
   {
     var f  = RealFunction.parse("∂cot(x)/∂x");
     var df = RealFunction.parse("(-1)-cot(x)^2");
-    assertEquals(df.toString(), f.toString());
+    assertEquals("x➔(-1)-(cot(x)^2)", f.toString());
   }
 
   public void testCosecantDerivative()
