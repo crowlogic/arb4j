@@ -2,6 +2,8 @@ package arb.expressions.nodes.binary;
 
 import static java.lang.String.format;
 
+import org.objectweb.asm.MethodVisitor;
+
 import arb.Integer;
 import arb.Quaternion;
 import arb.expressions.Expression;
@@ -19,6 +21,14 @@ import arb.functions.Function;
 public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                BinaryOperationNode<D, R, F>
 {
+  @Override
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
+  {
+    assert !"0".equals(left.toString());
+    assert !"0".equals(right.toString()) : this;
+    return super.generate(mv, resultType);
+  }
+
   public MultiplicationNode(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)
   {
     super(expression,
@@ -60,22 +70,17 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   public Node<D, R, F> simplify()
   {
 
-    if (left.isZero())
+    if (left.isZero() || right.isZero())
     {
-      return left;
+      return zero();
     }
     if (left.isOne())
     {
-      return right;
-    }
-
-    if (right.isZero())
-    {
-      return right;
+      return right.simplify();
     }
     if (right.isOne())
     {
-      return left;
+      return left.simplify();
     }
 
     if (left instanceof LiteralConstantNode<D, R, F> leftConstant

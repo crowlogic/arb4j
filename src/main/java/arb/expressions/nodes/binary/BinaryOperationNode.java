@@ -230,11 +230,6 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     return hash;
   }
 
-  public String formatSimplificationParameters()
-  {
-    return String.format("%s.simplify( this=%s )\n\n", getClass().getSimpleName(), this);
-  }
-
   static String pad(String label)
   {
     return String.format("%-11s= ", label);
@@ -523,21 +518,38 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
                   || (leftType.equals(b) && rightType.equals(a));
   }
 
+  public String formatSimplificationParameters()
+  {
+    return String.format("%s.simplify( this=%s )\n", getClass().getSimpleName(), this);
+  }
+
   @Override
   public Node<D, C, F> simplify()
   {
-//    if (Expression.trace)
-//    {
-//      System.out.println(formatSimplificationParameters());
-//    }
+    if (Expression.trace)
+    {
+      log.debug(formatSimplificationParameters());
+    }
 
     if (left != null)
     {
-      left = left.simplify();
+      Node<D, C, F> newLeft = left.simplify();
+
+      if (Expression.trace && !left.equals(newLeft))
+      {
+        log.debug("simplify: replacing left={} with newLeft={}", left, newLeft);
+      }
+      left = newLeft;
+
     }
     if (right != null)
     {
-      right = right.simplify();
+      Node<D, C, F> newRight = right.simplify();
+      if (Expression.trace && right != newRight )
+      {
+        log.debug("simplify: replacing right={} with newRight={}", right, newRight);
+      }
+      right = newRight;
     }
 
     return this;

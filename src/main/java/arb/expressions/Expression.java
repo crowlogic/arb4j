@@ -2065,7 +2065,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     nextCharacter();
     if (log.isDebugEnabled())
     {
-      log.debug("parseRoot expression='{}' of Expression(id={})",
+      log.debug("\n\nparseRoot expression='{}' of Expression(id={})",
                 expression,
                 System.identityHashCode(this));
     }
