@@ -18,11 +18,18 @@ import arb.documentation.TheArb4jLibrary;
 public class RealRiemannSiegelThetaFunction implements
                                             RealFunction
 {
+  @Override
+  public String toString()
+  {
+    return θ.toString();
+  }
+
+  RealFunction derivative = RealFunction.express("θ:t->diff(im(lnΓ(¼+ⅈ*t/2))-(t*log(π)/2),t)");
 
   @Override
   public RealFunction derivative()
   {
-    return RealFunction.express("θ:t->diff(im(lnΓ(¼+ⅈ*t/2))-(t*log(π)/2),t)");
+    return derivative;
   }
 
   static
