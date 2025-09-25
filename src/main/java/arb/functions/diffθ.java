@@ -65,9 +65,9 @@ public class diffθ implements
 
   public Function<Real, Real> derivative()
   {
-    return Function.express((Class) Real.class,
-                            (Class) Real.class,
-                            (Class) Function.class,
+    return Function.express(Real.class,
+                            Real.class,
+                            Function.class,
                             "diff(diff(im(lnΓ(¼+ⅈ*t/2))-(log(π)/2)*t,t),t)");
   }
 

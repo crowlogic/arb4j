@@ -50,7 +50,7 @@ public class ϕfunc implements
                              .mul(this.cℤ0000, bits, result);
   }
 
-  public Function derivative()
+  public Function<Real, Complex> derivative()
   {
     return Function.express(Real.class, Complex.class, Function.class, "diff(null,t)");
   }
