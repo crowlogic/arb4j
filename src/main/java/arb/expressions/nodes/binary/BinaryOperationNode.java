@@ -1,32 +1,17 @@
 package arb.expressions.nodes.binary;
 
-import static arb.expressions.Compiler.cast;
-import static arb.expressions.Compiler.invokeBinaryOperationMethod;
-import static arb.expressions.Compiler.loadBitsParameterOntoStack;
-import static arb.expressions.Compiler.loadResultParameter;
+import static arb.expressions.Compiler.*;
 import static arb.utensils.Utensils.indent;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import arb.AlgebraicNumber;
-import arb.Complex;
-import arb.ComplexPolynomial;
-import arb.ComplexRationalFunction;
-import arb.Fraction;
+import arb.*;
 import arb.Integer;
-import arb.IntegerPolynomial;
-import arb.RationalFunction;
-import arb.Real;
-import arb.RealPolynomial;
 import arb.exceptions.CompilerException;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
@@ -242,12 +227,12 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
 
     // Helper: pad labels, produce 'label ='
 
-    return String.format("generate(\n"
+    return String.format("\n\ngenerate(\n"
                          + "%s%s%s,\n"
                          + "%s%s%s    (%s %s),\n"
                          + "%s%s%s    (%s %s),\n"
                          + "%s%s%s,\n"
-                         + "%s%s%s)",
+                         + "%s%s%s)\n",
                          IND,
                          pad("this"),
                          this,
@@ -295,7 +280,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
       fieldName = existingVar;
       if (log.isDebugEnabled())
       {
-        log.debug("{}: reused {} for {}", expression, fieldName, this);
+        log.debug("\n\n{}: reused {} for {}\n", expression, fieldName, this);
       }
       expression.loadThisFieldOntoStack(mv, existingVar, resultType);
     }
@@ -526,18 +511,26 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   @Override
   public Node<D, C, F> simplify()
   {
-    if (Expression.trace)
-    {
-      log.debug(formatSimplificationParameters());
-    }
+    boolean changedLeft  = false;
+    boolean changedRight = false;
+    var     beforeString = toString();
 
     if (left != null)
     {
       Node<D, C, F> newLeft = left.simplify();
 
-      if (Expression.trace && !left.equals(newLeft))
+      if (!left.equals(newLeft))
       {
-        log.debug("simplify: replacing left={} with newLeft={}", left, newLeft);
+        changedLeft = true;
+      }
+      if (Expression.trace && changedLeft)
+      {
+        log.debug("\n\nsimplify: replacing left={} with newLeft={} in {} which was {}\n",
+                  left,
+                  newLeft,
+                  this,
+                  beforeString);
+        changedLeft = true;
       }
       left = newLeft;
 
@@ -545,11 +538,21 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     if (right != null)
     {
       Node<D, C, F> newRight = right.simplify();
-      if (Expression.trace && right != newRight )
+      if (right != newRight)
       {
-        log.debug("simplify: replacing right={} with newRight={}", right, newRight);
+        changedRight = true;
+      }
+      if (Expression.trace && changedRight)
+      {
+        log.debug("\n\nsimplify: replacing right={} with newRight={} in {} which was {}\n",
+                  right,
+                  newRight,
+                  this,
+                  beforeString);
+        changedRight = true;
       }
       right = newRight;
+
     }
 
     return this;

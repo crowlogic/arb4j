@@ -241,7 +241,7 @@ public class Context
 
     if (Expression.trace)
     {
-      log.debug(String.format("id=%s: registerFunctionMapping( functionName = %s, function = %s, domainType=%s, coDomainType=%s, functionClass=%s, expression=%s, expressionString=%s )",
+      log.debug(String.format("\n\nid=%s: registerFunctionMapping( functionName = %s, function = %s, domainType=%s, coDomainType=%s, functionClass=%s, expression=%s, expressionString=%s )\n",
                               System.identityHashCode(this),
                               functionName,
                               function,

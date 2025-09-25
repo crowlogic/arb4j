@@ -46,7 +46,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     Node<D, R, F> sum = a.add(b).simplify();
     if (Expression.trace)
     {
-      log.debug("{}.differentiate(variable={}) a={} b={} sum={}", this, variable, a, b, sum);
+      log.debug("\n\n{}.differentiate(variable={}) a={} b={} sum={}\n", this, variable, a, b, sum);
     }
     return sum;
   }

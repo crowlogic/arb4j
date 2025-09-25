@@ -628,7 +628,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     if (trace)
     {
-      log.debug(String.format("id=%s: compile(expression=%s, className=%s, context=%s)",
+      log.debug(String.format("\n\nid=%s: compile(expression=%s, className=%s, context=%s)\n",
                               System.identityHashCode(this),
                               expression,
                               className,

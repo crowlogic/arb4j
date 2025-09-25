@@ -225,7 +225,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     if (Expression.trace)
     {
-      log.debug(String.format("id=#%s: generate( this=%s, resultType=%s)",
+      log.debug(String.format("\n\nid=#%s: generate( this=%s, resultType=%s)\n",
                         System.identityHashCode(this),
                         this,
                         resultType));
