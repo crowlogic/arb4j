@@ -18,16 +18,15 @@ public class A implements
 {
   public static void main(String args[])
   {
-    A                     a = new A();
-    
-    RealToComplexFunction f = a.evaluate(RealConstants.sqrt2, 0, 128);
-    
-    var y = f.eval(2.3, new Complex());
-    System.out.println("A(1)=" + Utensils.yamlString(f));
-    
+    try ( A a = new A())
+    {
+      RealToComplexFunction f = a.evaluate(RealConstants.sqrt2, 0, 128);
 
+      var                   y = f.eval(2.3, new Complex());
+      System.out.println("A(1)=" + Utensils.yamlString(f));
 
-    System.out.println("A(1)(2.3)=" + Utensils.yamlString(f));
+      System.out.println("A(1)(2.3)=" + y);
+    }
   }
 
   public boolean isInitialized;
@@ -63,9 +62,9 @@ public class A implements
 
   public Function<Real, Real> derivative()
   {
-    return Function.express((Class) Real.class,
-                            (Class) RealToComplexFunction.class,
-                            (Class) Function.class,
+    return Function.express(Real.class,
+                            RealToComplexFunction.class,
+                            Function.class,
                             "diff(exp(ⅈ*λ*(θ(t)-t))*√(θ̇(t)),λ)");
   }
 

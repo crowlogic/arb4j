@@ -54,7 +54,7 @@ public class θ implements
     arblib.acb_poly_fit_length(complexPolynomial2, 1);
     arblib.acb_poly_set_coeff_acb(complexPolynomial2,
                                   0,
-                                  FractionConstants.oneQuarter.add(ComplexConstants.ⅈ.mul((Real) t,
+                                  FractionConstants.oneQuarter.add(ComplexConstants.ⅈ.mul(t,
                                                                                           bits,
                                                                                           vℂ0002)
                                                                                      .div(cℤ0000,
@@ -74,7 +74,7 @@ public class θ implements
                                      .div(cℤ0000, bits, vℝ0003)
                                      .mul((Real) t, bits, vℝ0004),
                       bits,
-                      (Real) result);
+                      result);
   }
 
   public Function<Real, Real> derivative()

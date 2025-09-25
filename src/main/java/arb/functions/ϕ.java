@@ -29,19 +29,19 @@ public class ϕ implements
   @Override
   public RealToComplexFunction evaluate(Real λ, int order, int bits, RealToComplexFunction result)
   {
-    if (!this.isInitialized)
+    if (!isInitialized)
     {
-      this.initialize();
+      initialize();
     }
 
     ϕfunc var10000 = new ϕfunc();
     var10000.λ = λ;
-    var10000.θ = this.θ;
+    var10000.θ = θ;
     var10000.initialize();
     return var10000;
   }
 
-  public Function derivative()
+  public Function<Real, RealToComplexFunction> derivative()
   {
     return Function.express(Real.class,
                             RealToComplexFunction.class,
@@ -52,18 +52,18 @@ public class ϕ implements
   @Override
   public void initialize()
   {
-    if (this.isInitialized)
+    if (isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
     else
     {
-      if (this.θ == null)
+      if (θ == null)
       {
-        this.θ = new θ();
+        θ = new θ();
       }
 
-      this.isInitialized = true;
+      isInitialized = true;
     }
   }
 
