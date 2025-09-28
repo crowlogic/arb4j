@@ -2386,14 +2386,25 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   Node<D, C, F> resolveFunctionDerivative(int startPos, VariableReference<D, C, F> reference)
   {
-    Node<D, C, F>         function     = require('(').resolveFunction(startPos, reference);
-   
+    Node<D, C, F> node = require('(').resolveFunction(startPos, reference);
+    if (node instanceof FunctionNode<D, C, F> functionNode)
+    {
+      var variable = functionNode.getInputVariable();
+      if (variable != null)
+      {
+        VariableNode<D, C, F> splicedVariable = variable.spliceInto(node.expression).asVariable();
+        Node<D, C, F>         derivative      = node.differentiate(splicedVariable);
+        return derivative;
+      }
+
+    }
+
     // this should differentiate with respect to the argument variable of the
     // function and then apply the argument
     // to the derivative of the function, rather than differentiating with respect
     // to the independent or indeterminant
     // variable of the expression it is contained within
-    return function.differentiate();
+    return node.differentiate();
   }
 
   Node<D, C, F> resolveFunctionSecondDerivative(int startPos, VariableReference<D, C, F> reference)

@@ -69,7 +69,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   public Node<D, R, F> differentiate()
   {
     Node<D, R, F> diff = super.differentiate();
-    assert !diff.isZero() : "whack: " + this + " diff=" + diff ;
+    assert !diff.isZero() : "whack: " + this + " diff=" + diff;
     return diff;
   }
 
@@ -163,6 +163,21 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   public String                   functionName;
 
   public FunctionMapping<?, ?, ?> mapping;
+
+  public VariableNode<?, ?, ?> getInputVariable()
+  {
+    if (mapping != null)
+    {
+      Expression<?, ?, ?> variableExpression = mapping.expression;
+      if (variableExpression != null)
+      {
+        var variable = variableExpression.independentVariable;
+        return variable;
+      }
+    }
+
+    return null;
+  }
 
   @SuppressWarnings("unchecked")
   public FunctionNode(String functionName, Node<D, R, F> argument, Expression<D, R, F> expression)
@@ -442,9 +457,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (Expression.trace)
     {
-      logger.debug(String.format("generate(this=%s, resultType=%s)",
-                                 this,
-                                 resultType));
+      logger.debug(String.format("generate(this=%s, resultType=%s)", this, resultType));
     }
 
     if (contextual)
