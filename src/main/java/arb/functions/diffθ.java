@@ -9,28 +9,28 @@ import arb.Real;
 import arb.RealConstants;
 import arb.Typesettable;
 
-// Decompiled by Procyon v0.6.0
 public class diffθ implements
                    Function<Real, Real>,
                    Typesettable,
                    AutoCloseable,
                    Initializable
 {
+
   public boolean       isInitialized;
-  public final Integer cℤ0000;
-  public final Integer cℤ0001;
-  public final Integer cℤ0002;
-  public final Integer cℤ0003;
-  public Complex       vℂ0001;
-  public Complex       vℂ0002;
-  public Complex       vℂ0003;
-  public Complex       vℂ0004;
-  public Complex       vℂ0005;
-  public Complex       vℂ0006;
-  public Complex       vℂ0007;
-  public Real          vℝ0001;
-  public Real          vℝ0002;
-  public Real          vℝ0003;
+  public final Integer cℤ0000 = new Integer("2");
+  public final Integer cℤ0001 = new Integer("0");
+  public final Integer cℤ0002 = new Integer("1");
+  public final Integer cℤ0003 = new Integer("4");
+  public Complex       vℂ0001 = new Complex();
+  public Complex       vℂ0002 = new Complex();
+  public Complex       vℂ0003 = new Complex();
+  public Complex       vℂ0004 = new Complex();
+  public Complex       vℂ0005 = new Complex();
+  public Complex       vℂ0006 = new Complex();
+  public Complex       vℂ0007 = new Complex();
+  public Real          vℝ0001 = new Real();
+  public Real          vℝ0002 = new Real();
+  public Real          vℝ0003 = new Real();
 
   @Override
   public Class<Real> domainType()
@@ -45,9 +45,9 @@ public class diffθ implements
   }
 
   @Override
-  public Real evaluate(final Real t, final int order, final int bits, final Real result)
+  public Real evaluate(Real t, int order, int bits, Real result)
   {
-    return FractionConstants.oneQuarter.add(ComplexConstants.ⅈ.mul((Real) t, bits, vℂ0001)
+    return FractionConstants.oneQuarter.add(ComplexConstants.ⅈ.mul(t, bits, vℂ0001)
                                                               .div(cℤ0000, bits, vℂ0002),
                                             bits,
                                             vℂ0003)
@@ -60,7 +60,7 @@ public class diffθ implements
                                        .sub(RealConstants.π.log(bits, vℝ0002)
                                                            .div(cℤ0000, bits, vℝ0003),
                                             bits,
-                                            (Real) result);
+                                            result);
   }
 
   public Function<Real, Real> derivative()
@@ -78,49 +78,35 @@ public class diffθ implements
     {
       throw new AssertionError("Already initialized");
     }
-    isInitialized = true;
+    else
+    {
+      isInitialized = true;
+    }
   }
 
-  public diffθ()
-  {
-    cℤ0000 = new Integer("2");
-    cℤ0001 = new Integer("0");
-    cℤ0002 = new Integer("1");
-    cℤ0003 = new Integer("4");
-    vℂ0001 = new Complex();
-    vℂ0002 = new Complex();
-    vℂ0003 = new Complex();
-    vℂ0004 = new Complex();
-    vℂ0005 = new Complex();
-    vℂ0006 = new Complex();
-    vℂ0007 = new Complex();
-    vℝ0001 = new Real();
-    vℝ0002 = new Real();
-    vℝ0003 = new Real();
-  }
-
+  @Override
   public void close()
   {
-    this.cℤ0000.close();
-    this.cℤ0001.close();
-    this.cℤ0002.close();
-    this.cℤ0003.close();
-    this.vℂ0001.close();
-    this.vℂ0002.close();
-    this.vℂ0003.close();
-    this.vℂ0004.close();
-    this.vℂ0005.close();
-    this.vℂ0006.close();
-    this.vℂ0007.close();
-    this.vℝ0001.close();
-    this.vℝ0002.close();
-    this.vℝ0003.close();
+    cℤ0000.close();
+    cℤ0001.close();
+    cℤ0002.close();
+    cℤ0003.close();
+    vℂ0001.close();
+    vℂ0002.close();
+    vℂ0003.close();
+    vℂ0004.close();
+    vℂ0005.close();
+    vℂ0006.close();
+    vℂ0007.close();
+    vℝ0001.close();
+    vℝ0002.close();
+    vℝ0003.close();
   }
 
   @Override
   public String toString()
   {
-    return "t↦(im((digamma(¼+((ⅈ*t)/2)))*((ⅈ*2)/4)))-((log(π))/2)";
+    return "t➔im(digamma(¼+((ⅈ*t)/2))*((ⅈ*2)/4))-(log(π)/2)";
   }
 
   @Override

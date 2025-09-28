@@ -22,9 +22,7 @@ public class Afunc implements
   public Real    vℝ0007 = new Real();
   public Real    vℝ0008 = new Real();
   public θ       θ;
-
-  public diffθ   diffθ;
-
+  public diffθ   diffθ = new diffθ();
   public Real    λ;
 
   @Override
@@ -48,16 +46,12 @@ public class Afunc implements
     }
 
     return ComplexConstants.ⅈ.mul(λ, bits, vℂ0005)
-                             .mul((θ.evaluate(t, order, bits, vℝ0005)).sub(t, bits, vℝ0006),
+                             .mul(θ.evaluate(t, order, bits, vℝ0005).sub(t, bits, vℝ0006),
                                   bits,
                                   vℂ0006)
                              .exp(bits, vℂ0007)
-                             .mul((diffθ.evaluate(t,
-                                                  order,
-                                                  bits,
-                                                  vℝ0007)).pow(FractionConstants.oneHalf,
-                                                               bits,
-                                                               vℝ0008),
+                             .mul(diffθ.evaluate(t, order, bits, vℝ0007)
+                                       .pow(FractionConstants.oneHalf, bits, vℝ0008),
                                   bits,
                                   result);
   }

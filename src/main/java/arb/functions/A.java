@@ -22,15 +22,15 @@ public class A implements
 
       double                z  = 2.3;
       var                   y  = Ax.eval(z, new Complex());
-      System.out.format("A(%s)=%s\n", x, Utensils.yamlString(Ax));
-      System.out.format("A(%s)(%s)=%s\n", x, z, Utensils.yamlString(Ax));
+      System.out.format("A(%s)=Ax=%s\n", x, Utensils.yamlString(Ax));
+      System.out.format("Ax(%s)=%s\n", z, y);
     }
   }
 
   public boolean isInitialized;
   public θ       θ;
 
-  public diffθ   diffθ;
+  public diffθ   diffθ = new diffθ();
 
   @Override
   public Class<Real> domainType()
