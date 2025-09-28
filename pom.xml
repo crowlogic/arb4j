@@ -6,7 +6,7 @@
 
     <groupId>org.arblib</groupId>
     <artifactId>arb4j</artifactId>
-    <version>0.99.9.4</version>
+    <version>0.99.9.5</version>
     <packaging>jar</packaging>
     <description>arb4j</description>
 
