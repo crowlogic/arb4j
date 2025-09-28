@@ -48,24 +48,21 @@ public class Afunc implements
     }
 
     return ComplexConstants.ⅈ.mul(λ, bits, vℂ0005)
-                             .mul(((Real) θ.evaluate(t,
-                                                          order,
-                                                          bits,
-                                                          vℝ0005)).sub(t, bits, vℝ0006),
+                             .mul((θ.evaluate(t, order, bits, vℝ0005)).sub(t, bits, vℝ0006),
                                   bits,
                                   vℂ0006)
                              .exp(bits, vℂ0007)
-                             .mul(((Real) diffθ.evaluate(t,
-                                                              order,
-                                                              bits,
-                                                              vℝ0007)).pow(FractionConstants.oneHalf,
-                                                                                bits,
-                                                                                vℝ0008),
+                             .mul((diffθ.evaluate(t,
+                                                  order,
+                                                  bits,
+                                                  vℝ0007)).pow(FractionConstants.oneHalf,
+                                                               bits,
+                                                               vℝ0008),
                                   bits,
                                   result);
   }
 
-  public Function derivative()
+  public Function<Real, Complex> derivative()
   {
     return Function.express(Real.class, Complex.class, Function.class, "diff(null,t)");
   }

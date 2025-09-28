@@ -17,12 +17,13 @@ public class A implements
   {
     try ( A a = new A())
     {
-      RealToComplexFunction f = a.evaluate(RealConstants.sqrt2, 0, 128);
+      Real                  x  = RealConstants.sqrt2;
+      RealToComplexFunction Ax = a.evaluate(x, 0, 128);
 
-      var                   y = f.eval(2.3, new Complex());
-      System.out.println("A(1)=" + Utensils.yamlString(f));
-
-      System.out.println("A(1)(2.3)=" + Utensils.yamlString(f));
+      double                z  = 2.3;
+      var                   y  = Ax.eval(z, new Complex());
+      System.out.format("A(%s)=%s\n", x, Utensils.yamlString(Ax));
+      System.out.format("A(%s)(%s)=%s\n", x, z, Utensils.yamlString(Ax));
     }
   }
 
@@ -59,7 +60,7 @@ public class A implements
     return var10000;
   }
 
-  public Function derivative()
+  public Function<Real, RealToComplexFunction> derivative()
   {
     return Function.express(Real.class,
                             RealToComplexFunction.class,
