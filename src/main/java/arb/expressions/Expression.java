@@ -2390,6 +2390,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (node instanceof FunctionNode<D, C, F> functionNode)
     {
       var variable = functionNode.getInputVariable();
+      assert variable != null : "TODO: determine VariableNode corresponding to " + functionNode;
       if (variable != null)
       {
         VariableNode<D, C, F> splicedVariable = variable.spliceInto(node.expression).asVariable();
