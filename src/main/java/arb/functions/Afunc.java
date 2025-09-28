@@ -2,30 +2,30 @@ package arb.functions;
 
 import arb.Complex;
 import arb.ComplexConstants;
+import arb.FractionConstants;
 import arb.Initializable;
-import arb.Integer;
 import arb.Real;
 import arb.Typesettable;
-import arb.functions.real.RealFunction;
 
-// 
-// Decompiled by Procyon v0.6.0
-// 
 public class Afunc implements
                    RealToComplexFunction,
                    Typesettable,
                    AutoCloseable,
                    Initializable
 {
-  public boolean       isInitialized;
-  public final Integer cℤ0000;
-  public Complex       vℂ0005;
-  public Complex       vℂ0006;
-  public Complex       vℂ0007;
-  public Real          vℝ0005;
-  public Real          vℝ0006;
-  public θ             θ;
-  public Real          λ;
+  public boolean isInitialized;
+  public Complex vℂ0005 = new Complex();
+  public Complex vℂ0006 = new Complex();
+  public Complex vℂ0007 = new Complex();
+  public Real    vℝ0005 = new Real();
+  public Real    vℝ0006 = new Real();
+  public Real    vℝ0007 = new Real();
+  public Real    vℝ0008 = new Real();
+  public θ       θ;
+
+  public diffθ   diffθ;
+
+  public Real    λ;
 
   @Override
   public Class<Real> domainType()
@@ -40,26 +40,32 @@ public class Afunc implements
   }
 
   @Override
-  public Complex evaluate(final Real t, final int order, final int bits, final Complex result)
+  public Complex evaluate(Real t, int order, int bits, Complex result)
   {
     if (!isInitialized)
     {
       initialize();
     }
+
     return ComplexConstants.ⅈ.mul(λ, bits, vℂ0005)
-                             .mul(((Real) ((RealFunction) θ).evaluate(t,
-                                                                      order,
-                                                                      bits,
-                                                                      vℝ0005)).sub((Real) t,
-                                                                                   bits,
-                                                                                   vℝ0006),
+                             .mul(((Real) θ.evaluate(t,
+                                                          order,
+                                                          bits,
+                                                          vℝ0005)).sub(t, bits, vℝ0006),
                                   bits,
                                   vℂ0006)
                              .exp(bits, vℂ0007)
-                             .mul(cℤ0000, bits, (Complex) result);
+                             .mul(((Real) diffθ.evaluate(t,
+                                                              order,
+                                                              bits,
+                                                              vℝ0007)).pow(FractionConstants.oneHalf,
+                                                                                bits,
+                                                                                vℝ0008),
+                                  bits,
+                                  result);
   }
 
-  public Function<Real, Real> derivative()
+  public Function derivative()
   {
     return Function.express(Real.class, Complex.class, Function.class, "diff(null,t)");
   }
@@ -69,45 +75,42 @@ public class Afunc implements
   {
     if (isInitialized)
     {
-      throw new AssertionError((Object) "Already initialized");
+      throw new AssertionError("Already initialized");
     }
-    if (θ == null)
+    else
     {
-      θ = new θ();
+      if (θ == null)
+      {
+        θ = new θ();
+      }
+
+      isInitialized = true;
     }
-    isInitialized = true;
   }
 
-  public Afunc()
-  {
-    cℤ0000 = new Integer("0");
-    vℂ0005 = new Complex();
-    vℂ0006 = new Complex();
-    vℂ0007 = new Complex();
-    vℝ0005 = new Real();
-    vℝ0006 = new Real();
-  }
-
+  @Override
   public void close()
   {
-    cℤ0000.close();
     vℂ0005.close();
     vℂ0006.close();
     vℂ0007.close();
     vℝ0005.close();
     vℝ0006.close();
+    vℝ0007.close();
+    vℝ0008.close();
+    diffθ.close();
     θ.close();
   }
 
   @Override
   public String toString()
   {
-    return "t➔(exp((ⅈ*λ)*((θ(t))-t)))*0";
+    return "t➔exp((ⅈ*λ)*(θ(t)-t))*(diffθ(t)^½)";
   }
 
   @Override
   public String typeset()
   {
-    return "\\left(\\exp(\\left(\\left(ⅈ \\cdot λ\\right) \\cdot \\left(θ(t)-t\\right)\\right)) \\cdot 0\\right)";
+    return "\\left(\\exp(\\left(\\left(ⅈ \\cdot λ\\right) \\cdot \\left(\\θ(t)-t\\right)\\right)) \\cdot {\\diffθ(t)}^{\\frac{1}{2}}\\right)";
   }
 }

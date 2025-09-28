@@ -7,9 +7,6 @@ import arb.RealConstants;
 import arb.Typesettable;
 import arb.utensils.Utensils;
 
-//
-// Decompiled by Procyon v0.6.0
-//
 public class A implements
                RealBivariateToComplexFunction,
                Typesettable,
@@ -25,12 +22,13 @@ public class A implements
       var                   y = f.eval(2.3, new Complex());
       System.out.println("A(1)=" + Utensils.yamlString(f));
 
-      System.out.println("A(1)(2.3)=" + y);
+      System.out.println("A(1)(2.3)=" + Utensils.yamlString(f));
     }
   }
 
   public boolean isInitialized;
   public θ       θ;
+
   public diffθ   diffθ;
 
   @Override
@@ -46,21 +44,22 @@ public class A implements
   }
 
   @Override
-  public RealToComplexFunction
-         evaluate(final Real λ, final int order, final int bits, final RealToComplexFunction result)
+  public RealToComplexFunction evaluate(Real λ, int order, int bits, RealToComplexFunction result)
   {
     if (!this.isInitialized)
     {
       this.initialize();
     }
-    final Afunc afunc = new Afunc();
-    afunc.λ = λ;
-    afunc.θ = this.θ;
-    afunc.initialize();
-    return (RealToComplexFunction) afunc;
+
+    Afunc var10000 = new Afunc();
+    var10000.λ     = λ;
+    var10000.diffθ = this.diffθ;
+    var10000.θ     = this.θ;
+    var10000.initialize();
+    return var10000;
   }
 
-  public Function<Real, Real> derivative()
+  public Function derivative()
   {
     return Function.express(Real.class,
                             RealToComplexFunction.class,
@@ -73,15 +72,20 @@ public class A implements
   {
     if (this.isInitialized)
     {
-      throw new AssertionError((Object) "Already initialized");
+      throw new AssertionError("Already initialized");
     }
-    if (this.θ == null)
+    else
     {
-      this.θ = new θ();
+      if (this.θ == null)
+      {
+        this.θ = new θ();
+      }
+
+      this.isInitialized = true;
     }
-    this.isInitialized = true;
   }
 
+  @Override
   public void close()
   {
   }
@@ -89,12 +93,12 @@ public class A implements
   @Override
   public String toString()
   {
-    return "λ➔(exp((ⅈ*λ)*((θ(t))-t)))*0";
+    return "λ➔exp((ⅈ*λ)*(θ(t)-t))*(diffθ(t)^½)";
   }
 
   @Override
   public String typeset()
   {
-    return "\\left(\\exp(\\left(\\left(ⅈ \\cdot λ\\right) \\cdot \\left(θ(t)-t\\right)\\right)) \\cdot 0\\right)";
+    return "\\left(\\exp(\\left(\\left(ⅈ \\cdot λ\\right) \\cdot \\left(\\θ(t)-t\\right)\\right)) \\cdot {\\diffθ(t)}^{\\frac{1}{2}}\\right)";
   }
 }
