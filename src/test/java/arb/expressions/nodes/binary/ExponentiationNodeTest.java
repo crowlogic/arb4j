@@ -10,7 +10,7 @@ import junit.framework.TestCase;
 public class ExponentiationNodeTest extends
                                     TestCase
 {
-  public static void testDerivativesAndExponentialsWithFunction()
+  public static void testDerivativesAndExponentials()
   {
     try
     {
@@ -30,7 +30,7 @@ public class ExponentiationNodeTest extends
   }
 
   
-  public static void testDerivativesAndExponentials()
+  public static void testDerivativesAndExponentialsWithExpressionlessFunction()
   {
     try
     {
