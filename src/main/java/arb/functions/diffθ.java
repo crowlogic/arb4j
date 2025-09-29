@@ -18,7 +18,6 @@ public class diffθ implements
 
   public boolean       isInitialized;
   public final Integer cℤ0000 = new Integer("2");
-  public final Integer cℤ0001 = new Integer("0");
   public final Integer cℤ0002 = new Integer("1");
   public final Integer cℤ0003 = new Integer("4");
   public Complex       vℂ0001 = new Complex();
@@ -88,7 +87,6 @@ public class diffθ implements
   public void close()
   {
     cℤ0000.close();
-    cℤ0001.close();
     cℤ0002.close();
     cℤ0003.close();
     vℂ0001.close();
