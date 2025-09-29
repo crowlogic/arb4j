@@ -5,6 +5,7 @@ import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
+import arb.expressions.Expression;
 import arb.functions.RealBivariateToComplexFunction;
 import arb.functions.RealToComplexFunction;
 import arb.functions.real.RealFunction;
@@ -24,7 +25,8 @@ public class ZProcess implements
 {
   public static void main(String args[])
   {
-
+    Expression.saveClasses = true;
+    Expression.trace = true;
     ZProcess              Zprocess = new ZProcess();
     RealToComplexFunction A        =
                             Zprocess.gainFunction()

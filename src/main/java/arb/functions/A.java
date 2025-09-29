@@ -5,7 +5,6 @@ import arb.Initializable;
 import arb.Real;
 import arb.RealConstants;
 import arb.Typesettable;
-import arb.utensils.Utensils;
 
 public class A implements
                RealBivariateToComplexFunction,
@@ -15,14 +14,19 @@ public class A implements
 {
   public static void main(String args[])
   {
+    /**
+     * This is not going to work correctly into the monotonized theta function is used.. because presentyl 
+     * it will return NaN when the derivative of theta is negative 
+     */
     try ( A a = new A())
     {
-      Real                  x  = RealConstants.sqrt2;
+      Real                  x  = RealConstants.half;
       RealToComplexFunction Ax = a.evaluate(x, 0, 128);
 
-      double                z  = 2.3;
+      double                z  = 14.3;
       var                   y  = Ax.eval(z, new Complex());
-      System.out.format("A(%s)=Ax=%s\n", x, Utensils.yamlString(Ax));
+      y.printPrecision = false;
+      System.out.format("Ax=A(x=%s)=%s\n", x.doubleValue(), Ax);      
       System.out.format("Ax(%s)=%s\n", z, y);
     }
   }

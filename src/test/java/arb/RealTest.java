@@ -20,6 +20,18 @@ public class RealTest extends
                       TestCase
 {
 
+  public void testPowerToFraction()
+  {
+    // test that sqrt of negative number is not finite (its Nan)
+    var bits = 128;
+    try ( var x = Real.valueOf(-0.57); var y = new Real();)
+    {
+      x.pow(FractionConstants.oneHalf, bits, y);
+      assertFalse( y.isFinite());
+    }
+
+  }
+
   public void testLogGamma()
   {
     Real x      = new Real("8.7",

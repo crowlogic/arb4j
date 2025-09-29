@@ -601,7 +601,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     return new VariableNode<E, S, G>(newExpression,
                                      reference.spliceInto(newExpression),
-                                     -1,
+                                     position,
                                      true);
   }
 

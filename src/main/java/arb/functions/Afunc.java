@@ -22,7 +22,7 @@ public class Afunc implements
   public Real    vℝ0007 = new Real();
   public Real    vℝ0008 = new Real();
   public θ       θ;
-  public diffθ   diffθ = new diffθ();
+  public diffθ   diffθ  = new diffθ();
   public Real    λ;
 
   @Override
@@ -45,15 +45,14 @@ public class Afunc implements
       initialize();
     }
 
+    diffθ.evaluate(t, order, bits, vℝ0007).pow(FractionConstants.oneHalf, bits, vℝ0008);
+    
     return ComplexConstants.ⅈ.mul(λ, bits, vℂ0005)
                              .mul(θ.evaluate(t, order, bits, vℝ0005).sub(t, bits, vℝ0006),
                                   bits,
                                   vℂ0006)
                              .exp(bits, vℂ0007)
-                             .mul(diffθ.evaluate(t, order, bits, vℝ0007)
-                                       .pow(FractionConstants.oneHalf, bits, vℝ0008),
-                                  bits,
-                                  result);
+                             .mul(vℝ0008, bits, result);
   }
 
   public Function<Real, Complex> derivative()
@@ -96,7 +95,7 @@ public class Afunc implements
   @Override
   public String toString()
   {
-    return "t➔exp((ⅈ*λ)*(θ(t)-t))*(diffθ(t)^½)";
+    return String.format("t➔exp((ⅈ*%s)*(θ(t)-t))*(diffθ(t)^½)",λ.doubleValue());
   }
 
   @Override

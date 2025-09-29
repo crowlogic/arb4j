@@ -156,9 +156,6 @@ Java_arblib_arblibJNI_Complex_1real_1get (JNIEnv *jenv, jclass jcls, jlong jarg1
   acb_struct *arg1 = (acb_struct*) 0;
   arb_struct *result = 0;
 
-  (void) jenv;
-  (void) jcls;
-  (void) jarg1_;
   arg1 = *(acb_struct**) &jarg1;
   result = (arb_struct*) &((arg1)->real);
   *(arb_struct**) &jresult = result;
@@ -172,10 +169,6 @@ Java_arblib_arblibJNI_Complex_1imag_1set (JNIEnv *jenv, jclass jcls, jlong jarg1
   acb_struct *arg1 = (acb_struct*) 0;
   arb_struct *arg2 = (arb_struct*) 0;
 
-  (void) jenv;
-  (void) jcls;
-  (void) jarg1_;
-  (void) jarg2_;
   arg1 = *(acb_struct**) &jarg1;
   arg2 = *(arb_struct**) &jarg2;
   if (arg1)
