@@ -51,15 +51,15 @@ public class A implements
   @Override
   public RealToComplexFunction evaluate(Real λ, int order, int bits, RealToComplexFunction result)
   {
-    if (!this.isInitialized)
+    if (!isInitialized)
     {
-      this.initialize();
+      initialize();
     }
 
     Afunc var10000 = new Afunc();
     var10000.λ     = λ;
-    var10000.diffθ = this.diffθ;
-    var10000.θ     = this.θ;
+    var10000.diffθ = diffθ;
+    var10000.θ     = θ;
     var10000.initialize();
     return var10000;
   }
@@ -75,18 +75,18 @@ public class A implements
   @Override
   public void initialize()
   {
-    if (this.isInitialized)
+    if (isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
     else
     {
-      if (this.θ == null)
+      if (θ == null)
       {
-        this.θ = new θ();
+        θ = new θ();
       }
 
-      this.isInitialized = true;
+      isInitialized = true;
     }
   }
 

@@ -2,8 +2,8 @@ package arb.functions;
 
 import arb.Complex;
 import arb.ComplexConstants;
+import arb.FractionConstants;
 import arb.Initializable;
-import arb.Integer;
 import arb.Real;
 import arb.Typesettable;
 
@@ -13,14 +13,16 @@ public class ϕfunc implements
                    AutoCloseable,
                    Initializable
 {
-  public boolean       isInitialized;
-  public final Integer cℤ0000 = new Integer("0");
-  public Complex       vℂ0008 = new Complex();
-  public Complex       vℂ0009 = new Complex();
-  public Complex       vℂ0010 = new Complex();
-  public Real          vℝ0007 = new Real();
-  public θ             θ;
-  public Real          λ;
+  public boolean isInitialized;
+  public Complex vℂ0005 = new Complex();
+  public Complex vℂ0006 = new Complex();
+  public Complex vℂ0007 = new Complex();
+  public Real    vℝ0005 = new Real();
+  public Real    vℝ0006 = new Real();
+  public Real    vℝ0007 = new Real();
+  public θ       θ;
+  public diffθ   diffθ;
+  public Real    λ;
 
   @Override
   public Class<Real> domainType()
@@ -37,17 +39,18 @@ public class ϕfunc implements
   @Override
   public Complex evaluate(Real t, int order, int bits, Complex result)
   {
-    if (!this.isInitialized)
+    if (!isInitialized)
     {
-      this.initialize();
+      initialize();
     }
 
-    return ComplexConstants.ⅈ.mul(this.λ, bits, this.vℂ0008)
-                             .mul((Real) this.θ.evaluate(t, order, bits, this.vℝ0007),
+    return ComplexConstants.ⅈ.mul(λ, bits, vℂ0005)
+                             .mul(θ.evaluate(t, order, bits, vℝ0005), bits, vℂ0006)
+                             .exp(bits, vℂ0007)
+                             .mul(diffθ.evaluate(t, order, bits, vℝ0006)
+                                       .pow(FractionConstants.oneHalf, bits, vℝ0007),
                                   bits,
-                                  this.vℂ0009)
-                             .exp(bits, this.vℂ0010)
-                             .mul(this.cℤ0000, bits, result);
+                                  result);
   }
 
   public Function<Real, Complex> derivative()
@@ -58,41 +61,43 @@ public class ϕfunc implements
   @Override
   public void initialize()
   {
-    if (this.isInitialized)
+    if (isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
     else
     {
-      if (this.θ == null)
+      if (θ == null)
       {
-        this.θ = new θ();
+        θ = new θ();
       }
 
-      this.isInitialized = true;
+      isInitialized = true;
     }
   }
 
   @Override
   public void close()
   {
-    this.cℤ0000.close();
-    this.vℂ0008.close();
-    this.vℂ0009.close();
-    this.vℂ0010.close();
-    this.vℝ0007.close();
-    this.θ.close();
+    vℂ0005.close();
+    vℂ0006.close();
+    vℂ0007.close();
+    vℝ0005.close();
+    vℝ0006.close();
+    vℝ0007.close();
+    diffθ.close();
+    θ.close();
   }
 
   @Override
   public String toString()
   {
-    return "t➔(exp((ⅈ*λ)*(θ(t))))*0";
+    return "t➔exp((ⅈ*λ)*θ(t))*(diffθ(t)^½)";
   }
 
   @Override
   public String typeset()
   {
-    return "\\left(\\exp(\\left(\\left(ⅈ \\cdot λ\\right) \\cdot \\θ(t)\\right)) \\cdot 0\\right)";
+    return "\\left(\\exp(\\left(\\left(ⅈ \\cdot λ\\right) \\cdot \\θ(t)\\right)) \\cdot {\\diffθ(t)}^{\\frac{1}{2}}\\right)";
   }
 }

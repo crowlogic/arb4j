@@ -35,8 +35,9 @@ public class ϕ implements
     }
 
     ϕfunc var10000 = new ϕfunc();
-    var10000.λ = λ;
-    var10000.θ = θ;
+    var10000.λ     = λ;
+    var10000.diffθ = diffθ;
+    var10000.θ     = θ;
     var10000.initialize();
     return var10000;
   }
@@ -75,12 +76,12 @@ public class ϕ implements
   @Override
   public String toString()
   {
-    return "λ➔(exp((ⅈ*λ)*(θ(t))))*0";
+    return "λ➔exp((ⅈ*λ)*θ(t))*(diffθ(t)^½)";
   }
 
   @Override
   public String typeset()
   {
-    return "\\left(\\exp(\\left(\\left(ⅈ \\cdot λ\\right) \\cdot \\θ(t)\\right)) \\cdot 0\\right)";
+    return "\\left(\\exp(\\left(\\left(ⅈ \\cdot λ\\right) \\cdot \\θ(t)\\right)) \\cdot {\\diffθ(t)}^{\\frac{1}{2}}\\right)";
   }
 }
