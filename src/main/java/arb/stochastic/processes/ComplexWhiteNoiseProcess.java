@@ -1,8 +1,6 @@
 package arb.stochastic.processes;
 
-import java.util.Iterator;
-import java.util.Spliterator;
-import java.util.Spliterators;
+import java.util.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -53,10 +51,14 @@ public final class ComplexWhiteNoiseProcess implements
 
   public Stream<Complex> stream(int bits, int limit)
   {
-    return StreamSupport.stream(Spliterators.spliterator(iterator(bits, limit),
-                                                         limit,
-                                                         Spliterator.SIZED | Spliterator.ORDERED),
-                                false);
+    return StreamSupport.stream(spliterator(bits, limit), false);
+  }
+
+  public Spliterator<Complex> spliterator(int bits, int limit)
+  {
+    return Spliterators.spliterator(iterator(bits, limit),
+                                    limit,
+                                    Spliterator.SIZED | Spliterator.ORDERED);
   }
 
   public Iterator<Complex> iterator(int bits, int limit)
