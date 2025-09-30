@@ -1,12 +1,8 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|article|std-latex|framed-theorems>>
+<style|<tuple|article|framed-theorems>>
 
 <\body>
-  <\hide-preamble>
-    \;
-  </hide-preamble>
-
   <doc-data|<doc-title|Oscillatory Process
   Inversion>|<doc-author|<author-data|<author-name|Stephen
   Crowley>|<\author-affiliation>
@@ -126,21 +122,25 @@
   <eqref|eq:inversion-formula> with kernel <eqref|eq:inverse-kernel>.
 </body>
 
-<initial|<\collection>
-</collection>>
+<\initial>
+  <\collection>
+    <associate|magnification|1.2>
+    <associate|page-medium|paper>
+  </collection>
+</initial>
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|13|?>>
-    <associate|eq:dirac-delta|<tuple|12|?>>
-    <associate|eq:inverse-kernel|<tuple|5|?>>
-    <associate|eq:inversion-formula|<tuple|7|?>>
-    <associate|eq:invertibility|<tuple|6|?>>
-    <associate|step:expand|<tuple|<with|mode|<quote|math>|\<bullet\>>|?>>
-    <associate|step:fubini|<tuple|<with|mode|<quote|math>|\<bullet\>>|?>>
-    <associate|step:inner-integral|<tuple|<with|mode|<quote|math>|\<bullet\>>|?>>
-    <associate|step:substitute|<tuple|<with|mode|<quote|math>|\<bullet\>>|?>>
-    <associate|thm:inversion|<tuple|1|?>>
+    <associate|auto-1|<tuple|13|2>>
+    <associate|eq:dirac-delta|<tuple|12|2>>
+    <associate|eq:inverse-kernel|<tuple|5|1>>
+    <associate|eq:inversion-formula|<tuple|7|1>>
+    <associate|eq:invertibility|<tuple|6|1>>
+    <associate|step:expand|<tuple|<with|mode|<quote|math>|\<bullet\>>|1>>
+    <associate|step:fubini|<tuple|<with|mode|<quote|math>|\<bullet\>>|1>>
+    <associate|step:inner-integral|<tuple|<with|mode|<quote|math>|\<bullet\>>|2>>
+    <associate|step:substitute|<tuple|<with|mode|<quote|math>|\<bullet\>>|2>>
+    <associate|thm:inversion|<tuple|1|1>>
   </collection>
 </references>
 

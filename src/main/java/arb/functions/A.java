@@ -26,7 +26,7 @@ public class A implements
       double                z  = 14.3;
       var                   y  = Ax.eval(z, new Complex());
       y.printPrecision = false;
-      System.out.format("Ax=A(x=%s)=%s\n", x.doubleValue(), Ax);      
+      System.out.format("Ax=A(λ=%s)=%s\n", x.doubleValue(), Ax);      
       System.out.format("Ax(%s)=%s\n", z, y);
     }
   }
