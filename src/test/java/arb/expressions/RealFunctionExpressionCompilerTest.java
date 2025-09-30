@@ -26,7 +26,7 @@ public class RealFunctionExpressionCompilerTest extends
 
  
 
-  public void testExpressionCommonSubtreeElimination()
+  public void testOptimizedExpressionRepresentation()
   {
     Expression<Real, Real, RealFunction> parsed = RealFunction.parse("tanh(log(1+x^2))/(1+x^2)");
     var F = parsed.generate();

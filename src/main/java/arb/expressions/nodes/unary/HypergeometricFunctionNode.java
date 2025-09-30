@@ -231,9 +231,9 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
               expression.newIntermediateVariable("hyp", hypergeometricFunctionClass, true);
 
     dependsOnInput       = α.dependsOn(expression.independentVariable)
-                  || α.dependsOn(expression.indeterminateVariable)
+                  || α.dependsOn(expression.indeterminantVariable)
                   || β.dependsOn(expression.independentVariable)
-                  || β.dependsOn(expression.indeterminateVariable);
+                  || β.dependsOn(expression.indeterminantVariable);
 
     if (isNullaryFunctionOrHasScalarCodomain)
     {

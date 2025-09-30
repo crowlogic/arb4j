@@ -351,7 +351,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public VariableNode<D, C, F>                          independentVariable;
 
-  public VariableNode<D, C, F>                          indeterminateVariable;
+  public VariableNode<D, C, F>                          indeterminantVariable;
 
   public LinkedList<Consumer<MethodVisitor>>            initializers                  =
                                                                      new LinkedList<>();
@@ -543,12 +543,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected void assignIndeterminantVariable(VariableNode<D, C, F> variable)
   {
-    indeterminateVariable                 = variable;
-    indeterminateVariable.isIndeterminate = true;
+    indeterminantVariable                 = variable;
+    indeterminantVariable.isIndeterminate = true;
   }
 
   /**
-   * Assigns a variable to either this{@link #indeterminateVariable} or
+   * Assigns a variable to either this{@link #indeterminantVariable} or
    * this{@link #independentVariable}
    * 
    * @param variable
@@ -779,7 +779,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (trace)
     {
-      System.out.println("Declaring variable of " + className + ": " + variable);
+      log.trace("Declaring variable of " + className + ": " + variable);
     }
     if (variable.getValue() != null)
     {
@@ -793,7 +793,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       if (trace)
       {
-        System.out.println("Skipping null variable of " + className + ": " + variable);
+        log.trace("Skipping null variable of " + className + ": " + variable);
       }
     }
   }
@@ -1255,10 +1255,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       functionalDependsOnIndependentVariable =
                                              function.rootNode.dependsOn(functionalIndependentVariable);
     }
-    if (indeterminateVariable != null)
+    if (indeterminantVariable != null)
     {
       functionalIndeterminantVariable          =
-                                      indeterminateVariable.spliceInto(function).asVariable();
+                                      indeterminantVariable.spliceInto(function).asVariable();
       functionalDependsOnIndeterminantVariable =
                                                function.rootNode.dependsOn(functionalIndeterminantVariable);
     }
@@ -1570,9 +1570,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected String getInputName()
   {
-    if (indeterminateVariable != null)
+    if (indeterminantVariable != null)
     {
-      return indeterminateVariable.getName();
+      return indeterminantVariable.getName();
     }
     else if (independentVariable != null)
     {
@@ -1583,7 +1583,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   VariableNode<D, C, F> getInputVariable()
   {
-    return indeterminateVariable != null ? indeterminateVariable : independentVariable;
+    return indeterminantVariable != null ? indeterminantVariable : independentVariable;
   }
 
   public String getNextConstantFieldName(Class<?> type)
@@ -1914,10 +1914,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                               funcClass);
     functionalExpression.ascendentExpression = this;
     functionalExpression.context             = context;
-    if (indeterminateVariable != null)
+    if (indeterminantVariable != null)
     {
       functionalExpression.independentVariable =
-                                               indeterminateVariable.spliceInto(functionalExpression)
+                                               indeterminantVariable.spliceInto(functionalExpression)
                                                                     .asVariable();
     }
     rootNode.isResult                      = true;
@@ -2012,6 +2012,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Expression<D, C, F> optimize()
   {
+    assert false : "TODO: expr compiler: Implement common subexpression elimination #518 https://github.com/crowlogic/arb4j/issues/518";
     if (trace)
     {
       rootNode.accept(node -> System.out.println("node=" + node + " " + node.getFieldName()));
@@ -2252,9 +2253,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       independentVariable.renameIfNamed(from, to);
     }
-    if (indeterminateVariable != null)
+    if (indeterminantVariable != null)
     {
-      indeterminateVariable.renameIfNamed(from, to);
+      indeterminantVariable.renameIfNamed(from, to);
     }
   }
 
@@ -2384,7 +2385,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-  Node<D, C, F> resolveFunctionDerivative(int startPos, VariableReference<D, C, F> functionReference)
+  Node<D, C, F> resolveFunctionDerivative(int startPos,
+                                          VariableReference<D, C, F> functionReference)
   {
     Node<D, C, F> node = require('(').resolveFunction(startPos, functionReference);
     if (node instanceof FunctionNode<D, C, F> functionNode)
@@ -2395,10 +2397,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         VariableNode<D, C, F> splicedVariable = variable.spliceInto(node.expression).asVariable();
         Node<D, C, F>         derivative      = node.differentiate(splicedVariable);
         return derivative;
-      }
-      else
-      {
-        assert false : "TODO: determine VariableNode corresponding to " + functionNode;        
       }
 
     }
@@ -2413,7 +2411,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   Node<D, C, F> resolveFunctionSecondDerivative(int startPos, VariableReference<D, C, F> reference)
   {
-    return resolveFunctionDerivative(startPos, reference).differentiate();
+    var firstDerivative = resolveFunctionDerivative(startPos, reference);
+    return firstDerivative.differentiate();
   }
 
   protected Node<D, C, F> resolveIdentifier() throws CompilerException

@@ -560,7 +560,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                  System.identityHashCode(expression),
                                                  expression.expression,
                                                  expression.independentVariable,
-                                                 expression.indeterminateVariable,
+                                                 expression.indeterminantVariable,
                                                  expression.ascendentExpression,
                                                  expression.remaining()));
   }
@@ -568,12 +568,12 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   protected void declareThisToBeTheIndeterminantVariable()
   {
 
-    if (expression.indeterminateVariable != null)
+    if (expression.indeterminantVariable != null)
     {
       throwNewIndeterminantVariableAlreadyDeclared();
     }
 
-    if (!VariableNode.this.equals(expression.indeterminateVariable) && Expression.trace)
+    if (!VariableNode.this.equals(expression.indeterminantVariable) && Expression.trace)
     {
       log.debug(String.format("Expression(#%s) declaring %s to be the indeterminant in %s",
                               System.identityHashCode(expression),
@@ -582,7 +582,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     }
     expression.referencedVariables.put(reference.name, this);
-    expression.indeterminateVariable = this;
+    expression.indeterminantVariable = this;
   }
 
   protected void throwNewIndeterminantVariableAlreadyDeclared()
@@ -592,7 +592,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                               reference,
                                               expression.position,
                                               expression,
-                                              expression.indeterminateVariable));
+                                              expression.indeterminantVariable));
   }
 
   public <E, S, G extends Function<? extends E, ? extends S>>
