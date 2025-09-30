@@ -62,63 +62,17 @@ public class Context
   public ExpressionClassLoader                classLoader                  =
                                                           new ExpressionClassLoader(this);
 
+  public Map<String, Dependency> functionReferenceGraph = new HashMap<String, Dependency>();
+
   public final FunctionMappings               functions;
 
   public final HashMap<String, AtomicInteger> intermediateVariableCounters = new HashMap<>();
 
+  private final Logger log = LoggerFactory.getLogger(Context.class);
+
   public boolean                              saveClasses                  = false;
 
   public final Variables                      variables;
-
-  public Context resetClassLoader()
-  {
-    classLoader = new ExpressionClassLoader(this);
-    return this;
-  }
-
-  public String saveDependencyGraph(List<Dependency> sortedFunctions)
-  {
-    String                      filename  = null;
-    HashMap<String, Dependency> sortedMap = new HashMap<>();
-    for (var dependency : sortedFunctions)
-    {
-      sortedMap.put(dependency.variableName,
-                    functionReferenceGraph.getOrDefault(dependency.variableName,
-                                                        new Dependency(dependency.variableName)));
-    }
-    if (sortedMap.values().stream().mapToInt(f -> f.dependencies.size()).sum() > 0)
-    {
-      filename = sortedMap.keySet().stream().collect(Collectors.joining()) + ".dot";
-      TopologicalSorter.saveToDotFile(TopologicalSorter.toDotFormatReversed(sortedMap), filename);
-    }
-    return filename;
-  }
-
-  public void populateFunctionReferenceGraph()
-  {
-    // Build dependency graph directly from referencedFunctions
-    for (var entry : functions.map.entrySet())
-    {
-      var          functionName = entry.getKey();
-      var          function     = entry.getValue();
-
-      // Get referenced functions from the function mapping
-      Dependency   depInfo      = new Dependency(functionName);
-
-      List<String> dependencies = depInfo.dependencies;
-      if (function.expression != null && function.expression.referencedFunctions != null)
-      {
-        dependencies.addAll(function.expression.referencedFunctions.keySet()
-                                                                   .stream()
-                                                                   .filter(name -> !name.equals(functionName))
-                                                                   .toList());
-      }
-
-      functionReferenceGraph.put(functionName, depInfo);
-    }
-  }
-
-  public Map<String, Dependency> functionReferenceGraph = new HashMap<String, Dependency>();
 
   public Context()
   {
@@ -147,6 +101,18 @@ public class Context
   {
     this.variables = variables;
     this.functions = functions;
+  }
+
+  public Stream<Entry<String, FunctionMapping<?, ?, ?>>> functionEntryStream()
+  {
+    return functions.map.entrySet().stream();
+  }
+
+  public <D, R, F extends Function<? extends D, ? extends R>>
+         FunctionMapping<D, R, F>
+         getFunctionMapping(String functionName)
+  {
+    return functions.get(functionName);
   }
 
   public <R> R getVariable(String name)
@@ -178,7 +144,11 @@ public class Context
     }
   }
 
-  private final Logger log = LoggerFactory.getLogger(Context.class);
+  public <D, R, F extends Function<? extends D, ? extends R>> void injectReferences(F f)
+  {
+    injectVariableReferences(f);
+    injectFunctionReferences(f);
+  }
 
   public <D, R, F extends Function<? extends D, ? extends R>> void injectVariableReferences(F f)
   {
@@ -206,6 +176,45 @@ public class Context
         wrapOrThrow(String.format("variable=%s", variableName), e);
       }
     });
+  }
+
+  public void mergeFrom(Context context)
+  {
+    if (context == null)
+    {
+      return;
+    }
+    variables.addAll(context.variables);
+    functions.map.putAll(context.functions.map);
+  }
+
+  public void populateFunctionReferenceGraph()
+  {
+    // Build dependency graph directly from referencedFunctions
+    for (var entry : functions.map.entrySet())
+    {
+      var          functionName = entry.getKey();
+      var          function     = entry.getValue();
+
+      // Get referenced functions from the function mapping
+      Dependency   depInfo      = new Dependency(functionName);
+
+      List<String> dependencies = depInfo.dependencies;
+      if (function.expression != null && function.expression.referencedFunctions != null)
+      {
+        dependencies.addAll(function.expression.referencedFunctions.keySet()
+                                                                   .stream()
+                                                                   .filter(name -> !name.equals(functionName))
+                                                                   .toList());
+      }
+
+      functionReferenceGraph.put(functionName, depInfo);
+    }
+  }
+
+  public FunctionMapping<?, ?, ?> registerFunction(String string, Function<?, ?> func)
+  {
+    return registerFunctionMapping(string, func, func.domainType(), func.coDomainType());
   }
 
   public <D, R, F extends Function<? extends D, ? extends R>>
@@ -302,6 +311,30 @@ public class Context
     return variable;
   }
 
+  public Context resetClassLoader()
+  {
+    classLoader = new ExpressionClassLoader(this);
+    return this;
+  }
+
+  public String saveDependencyGraph(List<Dependency> sortedFunctions)
+  {
+    String                      filename  = null;
+    HashMap<String, Dependency> sortedMap = new HashMap<>();
+    for (var dependency : sortedFunctions)
+    {
+      sortedMap.put(dependency.variableName,
+                    functionReferenceGraph.getOrDefault(dependency.variableName,
+                                                        new Dependency(dependency.variableName)));
+    }
+    if (sortedMap.values().stream().mapToInt(f -> f.dependencies.size()).sum() > 0)
+    {
+      filename = sortedMap.keySet().stream().collect(Collectors.joining()) + ".dot";
+      TopologicalSorter.saveToDotFile(TopologicalSorter.toDotFormatReversed(sortedMap), filename);
+    }
+    return filename;
+  }
+
   public <D, R, F extends Function<? extends D, ? extends R>>
          void
          setFieldValue(Class<?> compiledClass,
@@ -347,6 +380,13 @@ public class Context
                          variables.map.keySet());
   }
 
+  public Stream<OrderedPair<String, Class<?>>> variableClassStream()
+  {
+    return variableEntryStream().filter(entry -> entry.getValue() != null)
+                                .map(entry -> new OrderedPair<>(entry.getKey(),
+                                                                entry.getValue().getClass()));
+  }
+
   public Collection<Entry<String, Named>> variableEntries()
   {
     return variables.map.entrySet();
@@ -355,46 +395,6 @@ public class Context
   public Stream<Entry<String, Named>> variableEntryStream()
   {
     return variableEntries().stream();
-  }
-
-  public Stream<OrderedPair<String, Class<?>>> variableClassStream()
-  {
-    return variableEntryStream().filter(entry -> entry.getValue() != null)
-                                .map(entry -> new OrderedPair<>(entry.getKey(),
-                                                                entry.getValue().getClass()));
-  }
-
-  public <D, R, F extends Function<? extends D, ? extends R>> void injectReferences(F f)
-  {
-    injectVariableReferences(f);
-    injectFunctionReferences(f);
-  }
-
-  public void mergeFrom(Context context)
-  {
-    if (context == null)
-    {
-      return;
-    }
-    variables.addAll(context.variables);
-    functions.map.putAll(context.functions.map);
-  }
-
-  public <D, R, F extends Function<? extends D, ? extends R>>
-         FunctionMapping<D, R, F>
-         getFunctionMapping(String functionName)
-  {
-    return functions.get(functionName);
-  }
-
-  public FunctionMapping<?, ?, ?> registerFunction(String string, Function<?, ?> func)
-  {
-    return registerFunctionMapping(string, func, func.domainType(), func.coDomainType());
-  }
-
-  public Stream<Entry<String, FunctionMapping<?, ?, ?>>> functionEntryStream()
-  {
-    return functions.map.entrySet().stream();
   }
 
 }
