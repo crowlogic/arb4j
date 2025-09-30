@@ -1,7 +1,10 @@
 package arb.expressions.context;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import arb.expressions.FunctionMapping;
 
 /**
  * @author Stephen Crowley ©2024-2025
@@ -26,4 +29,14 @@ public class Dependency
                          dependencies,
                          reverseDependencies);
   }
+
+  public List<String> getAssignments(String className,
+                                     HashMap<String, FunctionMapping<?, ?, ?>> referencedFunctions)
+  {
+    return reverseDependencies.stream()
+                              .filter(key -> referencedFunctions.containsKey(key)
+                                            && !key.equals(className))
+                              .toList();
+  }
+
 }

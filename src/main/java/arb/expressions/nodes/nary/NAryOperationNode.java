@@ -323,7 +323,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   public Class<?> assignTypes(Class<?> resultType)
   {
-    if (!expression.thisOrAnyAscendentExpressionHasIndeterminateVariable())
+    if (!expression.thisOrAnyAscendentExpressionHasIndeterminantVariable())
     {
       resultType = scalarType(resultType);
     }
@@ -407,7 +407,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   protected void incrementIndex(MethodVisitor mv)
   {
-    ;
     invokeVirtualMethod(loadIndexVariable(mv), Integer.class, "increment", Integer.class);
   }
 

@@ -845,7 +845,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (nextCharacterIs('['))
     {
-      node = new VectorNode<D, C, F>(this);
+      node = new VectorNode<>(this);
     }
     else if (nextCharacterIs('(', '⁽'))
     {
@@ -854,23 +854,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     else if (nextCharacterIs('∂'))
     {
-      node = new DerivativeNode<D, C, F>(this);
+      node = new DerivativeNode<>(this);
     }
     else if (nextCharacterIs('Đ'))
     {
-      node = new FractionalDerivativeNode<D, C, F>(this);
+      node = new FractionalDerivativeNode<>(this);
     }
     else if (nextCharacterIs('∫'))
     {
-      node = new IntegralNode<D, C, F>(this);
+      node = new IntegralNode<>(this);
     }
     else if (nextCharacterIs('Π', '∏'))
     {
-      node = new ProductNode<D, C, F>(this);
+      node = new ProductNode<>(this);
     }
     else if (nextCharacterIs('∑', 'Σ'))
     {
-      node = new SumNode<D, C, F>(this);
+      node = new SumNode<>(this);
     }
     else if (isNumeric(character))
     {
@@ -1041,7 +1041,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
       generateToStringMethod(classVisitor);
       generateTypesetMethod(classVisitor);
-
     }
     finally
     {
@@ -1170,6 +1169,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitLdcInsn(Type.getType(domainType));
     mv.visitLdcInsn(Type.getType(coDomainType));
     mv.visitLdcInsn(Type.getType(Function.class));
+
     mv.visitLdcInsn(String.format("diff(%s,%s)", expression, independentVariable));
     Compiler.invokeStaticMethod(mv,
                                 Function.class,
@@ -1233,11 +1233,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Generate the code when the {@link #coDomainType} {@link Class#isInterface()}
-   * so that the return value is itself a {@link Function}, in this case the
-   * result argument is ignored since there is no possible way to use the
-   * {@link Function} reference as a changeable object, since it is not
-   * {@link Becomable}
+   * Generate the code when the {@link #coDomainType} is an interface so that the
+   * return value is itself a {@link Function}, in this case the result argument
+   * is ignored since there is no way to use the {@link Function} reference as a
+   * changeable object, since it is not {@link Becomable}
    * 
    * @param mv
    * @return initialized this{@link #newFunctionalExpression()}
@@ -1325,11 +1324,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       for (Dependency dependency : dependencies)
       {
-        var assignments        =
-                        dependency.reverseDependencies.stream()
-                                                      .filter(key -> referencedFunctions.containsKey(key)
-                                                                    && !key.equals(className))
-                                                      .toList();
+        var assignments        = dependency.getAssignments(className, referencedFunctions);
 
         var functionName       = dependency.variableName;
         var mapping            = referencedFunctions.get(functionName);
@@ -1476,12 +1471,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                   || independentVariable == null ? "" : (independentVariable.getName() + "➔");
     // TODO: need to generate instructions so that the toString() uses String.format
     // to include the value (only if it was part of the independent variable because
-    // thats the only timneits fixed for the whole class, if its just a Context
+    // thats the only its valued is fixed for the duration of the instance of the
+    // class, if its just a Context
     // variable then it can change between invocations
-//    assert !functionalDependsOnIndependentVariable : "TODO: handle functionalDependsOnIndependentVariable "
-//                                                     + functionalIndependentVariable + "  " + context.getVariable(functionalIndependentVariable));
-//                                                                  
-//                                                    
+
     methodVisitor.visitLdcInsn(String.format("%s%s%s",
                                              name,
                                              arrow,
@@ -1502,11 +1495,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                       null);
 
     Compiler.annotateWithOverride(mv);
-
     mv.visitCode();
     mv.visitLdcInsn(type);
     Compiler.generateReturnFromMethod(mv);
-
     return classVisitor;
   }
 
@@ -1641,7 +1632,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public boolean hasIndeterminateVariable()
   {
     return (domainType.equals(Object.class)
-                  && thisOrAnyAscendentExpressionHasIndeterminateVariable());
+                  && thisOrAnyAscendentExpressionHasIndeterminantVariable());
   }
 
   public boolean hasIntermediateVariable(String string)
@@ -2013,12 +2004,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public Expression<D, C, F> optimize()
   {
     assert false : "TODO: expr compiler: Implement common subexpression elimination #518 https://github.com/crowlogic/arb4j/issues/518";
-    if (trace)
-    {
-      rootNode.accept(node -> System.out.println("node=" + node + " " + node.getFieldName()));
-    }
-    return this;
 
+    return this;
   }
 
   public ElseNode<D, C, F> otherwise()
@@ -2081,13 +2068,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                               + "'";
     rootNode.isResult = true;
 
-    if (position < expression.length())
+    if (position < expression.length() && character != '=')
     {
-      if (character != '=')
-      {
-        throwUnexpectedCharacterException();
-      }
+      throwUnexpectedCharacterException();
     }
+
     return (E) this;
   }
 
@@ -2101,7 +2086,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * TODO: test/suppport multi-digit literal constants as superscripts
+   * TODO: test/support multi-digit literal constants as superscripts
    * 
    * @param node
    * @return
@@ -2163,7 +2148,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                         Object,
                                                                         Function<?, ?>> function)
   {
-    for (var entry : context.variables.map.entrySet())
+    for (var entry : context.variableEntries())
     {
       var fieldName = entry.getKey();
       var fieldType = entry.getValue().getClass();
@@ -2303,20 +2288,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (nextCharacterIs('!'))
     {
-      return (N) new FactorialNode<D, C, F>(this,
-                                            node);
+      return (N) new FactorialNode<>(this,
+                                     node);
     }
     if (nextCharacterIs('₍'))
     {
-      return (N) new AscendingFactorializationNode<D, C, F>(node,
-                                                            resolve(),
-                                                            require('₎'));
+      return (N) new AscendingFactorializationNode<>(node,
+                                                     resolve(),
+                                                     require('₎'));
     }
     if (nextCharacterIs('⋰'))
     {
-      return (N) new AscendingFactorializationNode<D, C, F>(node,
-                                                            resolve(),
-                                                            this);
+      return (N) new AscendingFactorializationNode<>(node,
+                                                     resolve(),
+                                                     this);
     }
 
     return node;
@@ -2326,8 +2311,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (nextCharacterIs('⌊'))
     {
-      node = new FloorNode<D, C, F>(this,
-                                    resolve());
+      node = new FloorNode<>(this,
+                             resolve());
       require('⌋');
     }
     return (N) node;
@@ -2339,15 +2324,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
     case "ζ":
     case "zeta":
-      return new ZetaFunctionNode<D, C, F>(this);
+      return new ZetaFunctionNode<>(this);
     case "when":
       return new WhenNode<>(this);
     case "diff":
-      return new DerivativeNode<D, C, F>(this,
-                                         true);
+      return new DerivativeNode<>(this,
+                                  true);
     case "int":
-      return new IntegralNode<D, C, F>(this,
-                                       true);
+      return new IntegralNode<>(this,
+                                true);
     case "J":
       return new BesselFunctionNodeOfTheFirstKind<>(this);
     case "W":
@@ -2365,7 +2350,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return new HypergeometricFunctionNode<>(this);
     case "Beta":
     case "beta":
-      return new BetaFunctionNode<D, C, F>(this);
+      return new BetaFunctionNode<>(this);
     case "Γ":
     case "Gamma":
       return new GammaFunctionNode<>(this);
@@ -2388,14 +2373,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   Node<D, C, F> resolveFunctionDerivative(int startPos,
                                           VariableReference<D, C, F> functionReference)
   {
-    Node<D, C, F> node = require('(').resolveFunction(startPos, functionReference);
+    var node = require('(').resolveFunction(startPos, functionReference);
     if (node instanceof FunctionNode<D, C, F> functionNode)
     {
       var variable = functionNode.getInputVariable();
       if (variable != null)
       {
-        VariableNode<D, C, F> splicedVariable = variable.spliceInto(node.expression).asVariable();
-        Node<D, C, F>         derivative      = node.differentiate(splicedVariable);
+        var splicedVariable = variable.spliceInto(node.expression).asVariable();
+        var derivative      = node.differentiate(splicedVariable);
         return derivative;
       }
 
@@ -2445,8 +2430,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     node = resolveAbsoluteValue(node);
     if (nextCharacterIs('('))
     {
-      node = new FunctionalEvaluationNode<D, C, F>(this,
-                                                   node);
+      node = new FunctionalEvaluationNode<>(this,
+                                            node);
     }
     return node;
   }
@@ -2538,11 +2523,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (Expression.trace)
     {
-      System.err.format("Expression(#%s).substitute %s for %s into %s\n \n\n",
-                        System.identityHashCode(this),
-                        substitution,
-                        variableToChange,
-                        this);
+      log.debug(String.format("Expression(#%s).substitute %s for %s into %s\n \n\n",
+                              System.identityHashCode(this),
+                              substitution,
+                              variableToChange,
+                              this));
     }
 
     var substituteInputVariable     = substitution.getInputVariable();
@@ -2575,11 +2560,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (Expression.trace)
     {
-      System.err.format("Expression(#%s).substitute %s for %s into %s\n \n\n",
-                        System.identityHashCode(this),
-                        substitution,
-                        variableToChange,
-                        this);
+      log.debug(String.format("Expression(#%s).substitute %s for %s into %s\n \n\n",
+                              System.identityHashCode(this),
+                              substitution,
+                              variableToChange,
+                              this));
     }
 
     rootNode = rootNode.substitute(variableToChange, substitution);
@@ -2591,17 +2576,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public ExpressionTree<D, C, F> syntaxTree()
   {
-    return new ExpressionTree<D, C, F>(rootNode);
+    return new ExpressionTree<>(rootNode);
   }
 
-  public boolean thisOrAnyAscendentExpressionHasIndeterminateVariable()
+  public boolean thisOrAnyAscendentExpressionHasIndeterminantVariable()
   {
     if (indeterminantTypes.contains(coDomainType))
     {
       return true;
     }
     return ascendentExpression != null
-                  && ascendentExpression.thisOrAnyAscendentExpressionHasIndeterminateVariable();
+                  && ascendentExpression.thisOrAnyAscendentExpressionHasIndeterminantVariable();
   }
 
   protected void throwUnexpectedCharacterException()
