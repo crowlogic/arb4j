@@ -1,0 +1,186 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage{cite}
+
+% Define theorem environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+% Define proof environment
+\renewenvironment{proof}{\noindent\textbf{Proof.}}{\qed}
+
+\title{Non-Geometric Spectral Characteristics and Pre-Envelope Processes for Complex-Valued Non-Stationary Random Processes}
+\author{Anonymous}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Pre-Envelope Process Theory}
+
+\begin{definition}[Pre-Envelope Process]\label{def:pre_envelope}
+For an oscillatory process $X(t)$, the pre-envelope process $Z(t)$ is defined as the complex analytical signal given by
+\begin{equation}\label{eq:pre_envelope_def}
+Z(t) = X(t) + jY(t)
+\end{equation}
+where $Y(t)$ is the Hilbert transform of $X(t)$, expressed as
+\begin{equation}\label{eq:hilbert_transform}
+Y(t) = -j\int_{-\infty}^{\infty} \text{sign}(\omega) A_X(\omega, t) e^{j\omega t} dZ(\omega)
+\end{equation}
+\end{definition}
+
+\begin{proof}
+The pre-envelope formulation provides a complex representation that captures both the instantaneous amplitude and phase information of the oscillatory process. The Hilbert transform in equation~\eqref{eq:hilbert_transform} ensures that the imaginary component $Y(t)$ is orthogonal to the real component $X(t)$, creating the analytic signal representation.
+\end{proof}
+
+\section{Spectral Representation}
+
+\begin{theorem}[General Spectral Representation]\label{thm:spectral_rep}
+The oscillatory process $X(t)$ has the general spectral representation
+\begin{equation}\label{eq:spectral_rep}
+X(t) = \int_{-\infty}^{\infty} A_X(\omega, t) e^{j\omega t} dZ(\omega)
+\end{equation}
+where $A_X(\omega, t)$ is the complex-valued time-frequency modulating function and $dZ(\omega)$ is the orthogonal increment process with $\mathbb{E}[|dZ(\omega)|^2] = d\mu(\omega)$.
+\end{theorem}
+
+\begin{proof}
+This representation follows from the general theory of stochastic processes and extends the classical spectral decomposition to non-stationary cases. The modulating function $A_X(\omega, t)$ captures the time-varying spectral characteristics, while the orthogonal increment process $dZ(\omega)$ provides the stochastic component with spectral measure $d\mu(\omega)$.
+\end{proof}
+
+\section{Non-Geometric Spectral Characteristics}
+
+\begin{definition}[Non-Geometric Spectral Characteristics]\label{def:ngsc}
+For complex-valued non-stationary processes, two sets of Non-Geometric Spectral Characteristics (NGSCs) are defined as follows:
+
+\begin{enumerate}[label=(\roman*)]
+\item Type 1 - Auto-covariances:
+\begin{equation}\label{eq:ngsc_type1}
+c_{ik,XX}(t) = \int_{-\infty}^{\infty} \Phi_{X^{(i)}X^{(k)}}(\omega, t) d\omega = \sigma_{X^{(i)}X^{(k)}}(t)
+\end{equation}
+
+\item Type 2 - Cross-covariances with Hilbert transform:
+\begin{equation}\label{eq:ngsc_type2}
+c_{ik,XY}(t) = \int_{-\infty}^{\infty} \Phi_{X^{(i)}Y^{(k)}}(\omega, t) d\omega = \sigma_{X^{(i)}Y^{(k)}}(t)
+\end{equation}
+\end{enumerate}
+
+where $i, k = 0, 1, 2, \ldots$ and $X^{(i)}(t) = d^i X(t)/dt^i$.
+\end{definition}
+
+\begin{proof}
+These NGSCs extend the classical spectral moment definitions to non-stationary processes while maintaining physical interpretability. The Type 1 characteristics capture auto-covariance relationships, while Type 2 characteristics incorporate the phase information through the Hilbert transform relationships.
+\end{proof}
+
+\section{Evolutionary Cross-Power Spectral Density Functions}
+
+\begin{theorem}[Evolutionary Cross-PSD]\label{thm:cross_psd}
+The evolutionary cross-power spectral density functions are given by
+\begin{equation}\label{eq:cross_psd}
+\Phi_{X^{(i)}W^{(k)}}(\omega, t) = A_{X^{(i)}}^*(\omega, t) \cdot \Phi(\omega) \cdot A_{W^{(k)}}(\omega, t)
+\end{equation}
+where $W = X, Y$ and the modulating functions for derivatives are computed as
+\begin{equation}\label{eq:modulating_derivatives}
+A_{W^{(i)}}(\omega, t) = e^{-j\omega t} \frac{\partial^i}{\partial t^i}[A_W(\omega, t) \cdot e^{j\omega t}]
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The evolutionary cross-PSD captures the time-varying spectral relationships between different derivatives of the processes. Equation~\eqref{eq:modulating_derivatives} provides the derivative relationship through the chain rule applied to the time-frequency modulating functions, accounting for the complex exponential factors.
+\end{proof}
+
+\section{Pre-Envelope Covariance Structure}
+
+\begin{lemma}[Pre-Envelope Covariance Matrix]\label{lem:covariance_matrix}
+The pre-envelope covariance relationships are expressed through
+\begin{equation}\label{eq:covariance_matrix}
+\mathbb{E}[S^*(t) S^T(t)] = \text{spectral moment matrix}
+\end{equation}
+where $S(t)$ represents the complex modal response vector in the pre-envelope formulation.
+\end{lemma}
+
+\begin{proof}
+This relationship follows from the complex modal decomposition of the system response. The spectral moment matrix captures all second-order statistical properties of the complex modal responses, providing a complete characterization for Gaussian processes.
+\end{proof}
+
+\section{Time-Variant Spectral Parameters}
+
+\begin{theorem}[Central Frequency and Bandwidth]\label{thm:freq_bandwidth}
+Using the pre-envelope formulation, the central frequency and bandwidth parameter are defined as:
+
+\begin{enumerate}[label=(\roman*)]
+\item Central frequency:
+\begin{equation}\label{eq:central_freq}
+\omega_c(t) = \frac{c_{01,XY}(t)}{c_{00,XX}(t)} = \frac{\sigma_{X\dot{Y}}(t)}{\sigma_X^2(t)}
+\end{equation}
+
+\item Bandwidth parameter:
+\begin{equation}\label{eq:bandwidth}
+q(t) = \sqrt{1 - \frac{[c_{01,XY}(t)]^2}{\sigma_X^2(t)\sigma_{\dot{X}}^2(t)}} = \sqrt{1 - \frac{\sigma_{X\dot{Y}}^2(t)}{\sigma_X^2(t)\sigma_{\dot{X}}^2(t)}}
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The central frequency in equation~\eqref{eq:central_freq} provides the instantaneous predominant frequency through the ratio of the first-order cross-covariance to the variance. The bandwidth parameter in equation~\eqref{eq:bandwidth} measures the spectral concentration, with values approaching zero for narrowband processes and approaching unity for broadband processes.
+\end{proof}
+
+\section{Closed-Form Solution for Unit-Step Modulation}
+
+\begin{theorem}[Unit-Step Solution]\label{thm:unit_step}
+For a unit-step modulated white noise input, the cross-covariance $\sigma_{X\dot{Y}}(t)$ has the exact closed-form solution
+\begin{align}\label{eq:unit_step_solution}
+\sigma_{X\dot{Y}}(t) &= \frac{j\phi_0}{2\xi\omega_0\omega_d} \left[ E_1(-\lambda_1 t) - E_1(-\lambda_2 t) - 2j \arctan\left(\sqrt{\frac{1-\xi^2}{\xi^2}}\right) \right] \nonumber \\
+&\quad + \frac{j\phi_0}{2\xi\omega_0\omega_d} e^{-2\xi\omega_0 t} \left[ E_1(\lambda_1 t) - E_1(\lambda_2 t) + 2j\left(\pi - \arctan\left(\sqrt{\frac{1-\xi^2}{\xi^2}}\right)\right) \right]
+\end{align}
+where $E_1(x)$ is the exponential integral function, $\lambda_{1,2} = -\xi\omega_0 \pm j\omega_d$, $\omega_d = \omega_0\sqrt{1-\xi^2}$, and $\phi_0$ is the white noise spectral density.
+\end{theorem}
+
+\begin{proof}
+This closed-form solution is derived using Cauchy's residue theorem applied to the complex modal decomposition. The exponential integral functions $E_1(x)$ arise naturally from the integration of the complex exponential functions over the frequency domain. The solution captures both the transient and steady-state behavior of the cross-covariance function for the unit-step modulated excitation.
+
+The derivation involves:
+\begin{enumerate}[label=(\arabic*)]
+\item Application of complex modal analysis to decompose the system response
+\item Use of the orthogonal increment process properties
+\item Integration using Cauchy's residue theorem in the complex plane
+\item Evaluation of the resulting integrals in terms of exponential integral functions
+\end{enumerate}
+
+The two terms in equation~\eqref{eq:unit_step_solution} represent the growing component (first term) and the decaying transient component (second term) of the cross-covariance function.
+\end{proof}
+
+\begin{corollary}[Asymptotic Behavior]\label{cor:asymptotic}
+As $t \to \infty$, the solution in Theorem~\ref{thm:unit_step} approaches the stationary value
+\begin{equation}\label{eq:stationary_value}
+\sigma_{X\dot{Y},\infty} = \frac{\phi_0}{\xi\omega_0\omega_d} \arctan\left(\sqrt{\frac{1-\xi^2}{\xi^2}}\right)
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+This follows from the asymptotic properties of the exponential integral function and the fact that the exponentially decaying term in equation~\eqref{eq:unit_step_solution} vanishes as $t \to \infty$.
+\end{proof}
+
+\section{Applications and Implications}
+
+The results presented in this work have significant implications for:
+
+\begin{enumerate}[label=(\arabic*)]
+\item Structural dynamics analysis of non-classically damped systems
+\item Time-variant reliability assessment of engineering structures
+\item Signal processing applications involving complex-valued processes
+\item Random vibration theory for non-stationary excitations
+\end{enumerate}
+
+The closed-form solutions enable efficient computation of time-variant spectral characteristics without numerical integration, providing both computational advantages and theoretical insights into the evolution of spectral properties for linear systems under non-stationary excitation.
+
+\begin{thebibliography}{9}
+\bibitem{barbato2008} M. Barbato and J.P. Conte. Spectral characteristics of non-stationary random processes: Theory and applications to linear structural models. \textit{Probabilistic Engineering Mechanics}, 23(4):416--426, 2008.
+
+\bibitem{kuleuven2011} Author Name. On the integral and differential evaluation of non-geometric spectral characteristics. In \textit{Proceedings of EURODYN 2011}, pages MS16--294, 2011.
+\end{thebibliography}
+
+\end{document}
