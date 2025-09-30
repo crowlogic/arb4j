@@ -208,7 +208,7 @@ public class Compiler
     }
     else if (from.equals(Complex.class))
     {
-      if (to.equals(ComplexFraction.class) || to.equals(ComplexRationalFunction.class) )
+      if (to.equals(ComplexFraction.class) || to.equals(ComplexRationalFunction.class))
       {
         return true;
       }
@@ -842,7 +842,9 @@ public class Compiler
     assert className != null;
     if (Expression.trace)
     {
-      log.debug("loadFunctionClass(className={})");
+      log.debug("loadFunctionClass(className={}) into Context#{}",
+                className,
+                System.identityHashCode(context));
     }
     try
     {
