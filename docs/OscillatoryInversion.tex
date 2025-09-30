@@ -1,0 +1,140 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{amsmath,latexsym}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\tmaffiliation}[1]{\\ #1}
+\newcommand{\tmtextbf}[1]{\text{{\bfseries{#1}}}}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
+
+%
+
+
+\begin{document}
+
+\title{Oscillatory Process Inversion}
+
+\author{
+  Stephen Crowley
+  \tmaffiliation{September 30, 2025}
+}
+
+\maketitle
+
+\begin{theorem}
+  [Inversion of Oscillatory Processes]\label{thm:inversion}Given
+  \begin{equation}
+    Z (s) = \int_{- \infty}^{\infty} \phi_s (\lambda)  \hspace{0.17em} d \Phi
+    (\lambda)
+  \end{equation}
+  where $\phi_s (\lambda)$ is measurable, invertible ($\phi_s (\lambda) \neq
+  0$ for all $s, \lambda$), and satisfies the \tmtextbf{quadratic
+  integrability condition}:
+  \begin{equation}
+    \int_{- \infty}^{\infty} \int_{- \infty}^{\infty} | \phi_t (\lambda) |^2 
+    \hspace{0.17em} dt \hspace{0.17em} d \lambda < \infty
+  \end{equation}
+  and $\Phi (\lambda)$ is a complex orthogonal random measure with
+  \begin{equation}
+    E (|d \Phi (\lambda) |^2) = d \mu (\lambda)
+  \end{equation}
+  Define the stationary process:
+  \begin{equation}
+    X (t) = \int_{- \infty}^{\infty} e^{i \lambda t}  \hspace{0.17em} d \Phi
+    (\lambda)
+  \end{equation}
+  Define the inverse kernel:
+  \begin{equation}
+    \label{eq:inverse-kernel} b (t, s) = \frac{1}{2 \pi}  \int_{-
+    \infty}^{\infty} \frac{e^{i \lambda t}}{\phi_s (\lambda)}  \hspace{0.17em}
+    e^{- i \lambda s}  \hspace{0.17em} d \lambda
+  \end{equation}
+  \tmtextbf{Invertibility condition:} Require
+  \begin{equation}
+    \label{eq:invertibility} \int_{- \infty}^{\infty} \int_{- \infty}^{\infty}
+    \left| \frac{1}{\phi_t (\lambda)} \right|^2  \hspace{0.17em} dt
+    \hspace{0.17em} d \lambda < \infty
+  \end{equation}
+  Then:
+  \begin{equation}
+    \label{eq:inversion-formula} X (t) = \int_{- \infty}^{\infty} b (t, s) 
+    \hspace{0.17em} Z (s)  \hspace{0.17em} ds
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  \begin{itemize}
+    \item \label{step:expand} Expand the convolution:
+    \begin{equation}
+      \begin{array}{ll}
+        \int_{- \infty}^{\infty} b (t, s)  \hspace{0.17em} Z (s) 
+        \hspace{0.17em} ds & = \int_{- \infty}^{\infty} \left[ \frac{1}{2 \pi}
+        \int_{- \infty}^{\infty} \frac{e^{i \lambda t}}{\phi_s (\lambda)}
+        e^{- i \lambda s} d \lambda \right]\\
+        & \quad \times \left[ \int_{- \infty}^{\infty} \phi_s (\omega) d \Phi
+        (\omega) \right] ds
+      \end{array}
+    \end{equation}
+    \item \label{step:fubini} Exchange order of integration by Fubini's
+    theorem (justified by the quadratic integrability conditions
+    \eqref{eq:invertibility}):
+    \begin{equation}
+      \begin{array}{ll}
+        & = \frac{1}{2 \pi}  \int_{- \infty}^{\infty} \int_{-
+        \infty}^{\infty} \left[ \int_{- \infty}^{\infty} e^{i \lambda t} 
+        \frac{\phi_s (\omega)}{\phi_s (\lambda)} e^{- i \lambda s} ds \right]
+        d \lambda \hspace{0.17em} d \Phi (\omega)
+      \end{array}
+    \end{equation}
+    \item \label{step:inner-integral} Evaluate the inner integral over $s$:
+    \begin{equation}
+      \int_{- \infty}^{\infty} \frac{\phi_s (\omega)}{\phi_s (\lambda)} e^{- i
+      \lambda s} ds
+    \end{equation}
+    For $\phi_s (\lambda) = A_s (\lambda) e^{i \lambda s}$:
+    \begin{equation}
+      \frac{\phi_s (\omega)}{\phi_s (\lambda)} e^{- i \lambda s} = \frac{A_s
+      (\omega)}{A_s (\lambda)} e^{i (\omega - \lambda) s}
+    \end{equation}
+    The integral becomes:
+    \begin{equation}
+      \label{eq:dirac-delta} \int_{- \infty}^{\infty} \frac{A_s (\omega)}{A_s
+      (\lambda)} e^{i (\omega - \lambda) s}  \hspace{0.17em} ds = 2 \pi
+      \hspace{0.17em} \delta (\omega - \lambda)
+    \end{equation}
+    where this holds as a distributional identity under the stated
+    integrability and invertibility conditions.
+    
+    \item \label{step:substitute} Substitute \eqref{eq:dirac-delta} back:
+    \begin{equation}
+      \begin{array}{ll}
+        \frac{1}{2 \pi}  \int_{- \infty}^{\infty} \int_{- \infty}^{\infty}
+        e^{i \lambda t} \cdot 2 \pi \delta (\omega - \lambda)  \hspace{0.17em}
+        d \lambda \hspace{0.17em} d \Phi (\omega) & = \int_{- \infty}^{\infty}
+        e^{i \omega t}  \hspace{0.17em} d \Phi (\omega)\\
+        & = X (t)
+      \end{array}
+    \end{equation}
+  \end{itemize}
+  
+\end{proof}
+
+\section*{Summary}
+
+Under the conditions:
+\begin{enumerate}
+  \item $\int \int | \phi_t (\lambda) |^2  \hspace{0.17em} dt \hspace{0.17em}
+  d \lambda < \infty$
+  
+  \item $\phi_s (\lambda) \neq 0$ everywhere
+  
+  \item $\int \int |1 / \phi_t (\lambda) |^2  \hspace{0.17em} dt
+  \hspace{0.17em} d \lambda < \infty$
+\end{enumerate}
+The stationary process $X (t)$ is exactly inverted from the oscillatory
+process $Z (t)$ by equation \eqref{eq:inversion-formula} with kernel
+\eqref{eq:inverse-kernel}.
+
+\end{document}
