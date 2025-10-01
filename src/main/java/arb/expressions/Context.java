@@ -159,7 +159,7 @@ public class Context
                               System.identityHashCode(this),
                               f.getClass().getName()));
     }
-    variables.map.entrySet().forEach(entry ->
+    variableMap().entrySet().forEach(entry ->
     {
       var variableName = entry.getKey();
 
@@ -307,7 +307,7 @@ public class Context
                                            same ? "IS" : "IS NOT"));
       }
     }
-    variables.map.put(name, variable);
+    variableMap().put(name, variable);
     return variable;
   }
 
@@ -377,7 +377,7 @@ public class Context
     return String.format("Context(#%s)[functions=%s,variables=%s]",
                          System.identityHashCode(this),
                          functions.map.keySet(),
-                         variables.map.keySet());
+                         variableMap().keySet());
   }
 
   public Stream<OrderedPair<String, Class<?>>> variableClassStream()
@@ -389,7 +389,12 @@ public class Context
 
   public Collection<Entry<String, Named>> variableEntries()
   {
-    return variables.map.entrySet();
+    return variableMap().entrySet();
+  }
+
+  public Map<String, Named> variableMap()
+  {
+    return variables.map;
   }
 
   public Stream<Entry<String, Named>> variableEntryStream()

@@ -58,8 +58,7 @@ public class ComplexFraction implements
   {
     Expression<Object,
                   ComplexFraction,
-                  NullaryFunction<ComplexFraction>> express =
-                                                            Compiler.parse(string,
+                  NullaryFunction<ComplexFraction>> express = Compiler.parse(string,
                                                                              null,
                                                                              Object.class,
                                                                              ComplexFraction.class,
