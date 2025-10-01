@@ -289,12 +289,12 @@ public class Compiler
 
     Expression<D,
                   R,
-                  F> compiledExpression = express(expression,
-                                                  context,
-                                                  domainClass,
-                                                  coDomainClass,
-                                                  functionClass,
-                                                  functionName);
+                  F> compiledExpression = parse(expression,
+                                                context,
+                                                domainClass,
+                                                coDomainClass,
+                                                functionClass,
+                                                functionName);
 
     compiledExpression.functionNameSpecified = autonamed;
 
@@ -313,14 +313,14 @@ public class Compiler
                 PR,
                 PF extends Function<? extends PD, ? extends PR>>
          Expression<D, R, F>
-         compile(String className,
-                 String expressionString,
-                 Context context,
-                 Class<? extends D> domainClass,
-                 Class<? extends R> coDomainClass,
-                 Class<? extends F> functionClass,
-                 String functionName,
-                 Expression<PD, PR, PF> containingExpression)
+         parse(String className,
+               String expressionString,
+               Context context,
+               Class<? extends D> domainClass,
+               Class<? extends R> coDomainClass,
+               Class<? extends F> functionClass,
+               String functionName,
+               Expression<PD, PR, PF> containingExpression)
   {
     return Function.parse(className,
                           expressionString,
@@ -383,22 +383,22 @@ public class Compiler
 
   public static <D, R, F extends Function<? extends D, ? extends R>>
          Expression<D, R, F>
-         express(String expression,
-                 Context context,
-                 Class<? extends D> domainClass,
-                 Class<? extends R> coDomainClass,
-                 Class<? extends F> functionClass,
-                 String functionName)
+         parse(String expression,
+               Context context,
+               Class<? extends D> domainClass,
+               Class<? extends R> coDomainClass,
+               Class<? extends F> functionClass,
+               String functionName)
   {
     String className =
                      functionName != null ? functionName : expressionToUniqueClassname(expression);
-    return express(className,
-                   expression,
-                   context,
-                   domainClass,
-                   coDomainClass,
-                   functionClass,
-                   functionName);
+    return parse(className,
+                 expression,
+                 context,
+                 domainClass,
+                 coDomainClass,
+                 functionClass,
+                 functionName);
   }
 
   public static <D, R, F extends Function<? extends D, ? extends R>>
@@ -411,33 +411,33 @@ public class Compiler
                  Class<? extends F> functionClass,
                  boolean verbose)
   {
-    return express(className,
-                   expressionString,
-                   context,
-                   domainClass,
-                   coDomainClass,
-                   functionClass,
-                   className);
+    return parse(className,
+                 expressionString,
+                 context,
+                 domainClass,
+                 coDomainClass,
+                 functionClass,
+                 className);
   }
 
   public static <D, R, F extends Function<? extends D, ? extends R>>
          Expression<D, R, F>
-         express(String className,
-                 String expressionString,
-                 Context context,
-                 Class<? extends D> domainClass,
-                 Class<? extends R> coDomainClass,
-                 Class<? extends F> functionClass,
-                 String functionName)
+         parse(String className,
+               String expressionString,
+               Context context,
+               Class<? extends D> domainClass,
+               Class<? extends R> coDomainClass,
+               Class<? extends F> functionClass,
+               String functionName)
   {
-    return compile(className,
-                   expressionString,
-                   context,
-                   domainClass,
-                   coDomainClass,
-                   functionClass,
-                   functionName,
-                   null);
+    return parse(className,
+                 expressionString,
+                 context,
+                 domainClass,
+                 coDomainClass,
+                 functionClass,
+                 functionName,
+                 null);
   }
 
   public static MethodVisitor generateCallToGetUnsignedIntValue(MethodVisitor mv)
