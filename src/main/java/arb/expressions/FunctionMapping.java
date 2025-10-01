@@ -93,7 +93,7 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
   @Override
   public String toString()
   {
-    return String.format("%s(#%s)\n[name=%s,\n instance=%s,\n domain=%s,\n coDomain=%s,\n functionClass=%s,\n expression=%s\n]",
+    return String.format("%s(#%s)[name=%s,\n instance=%s,\n domain=%s,\n coDomain=%s,\n functionClass=%s,\n expression=%s\n]",
                          getClass().getSimpleName(),
                          System.identityHashCode(this),
                          functionName,

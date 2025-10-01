@@ -24,10 +24,10 @@ public class ExpressionClassLoader extends
   {
     if (Expression.trace)
     {
-      log.debug(String.format("findClass(%s) in classes {%s} of %s",
+      log.debug("\n\nfindClass('{}') in classes {{}} of Context#{}\n",
                               name,
                               compiledClasses.keySet(),
-                              context));
+                              System.identityHashCode(context));
     }
     AtomicReference<Class<?>> mapped = new AtomicReference<Class<?>>();
     context.functions.map.values().forEach(mapping ->
@@ -38,7 +38,7 @@ public class ExpressionClassLoader extends
         mapped.set(mapping.functionClass);
         if (Expression.trace)
         {
-          log.debug("Mapped " + mapping + " to " + name);
+          log.debug("\n\nMapped {} to {}\n", mapping, name);
         }
       }
     });
