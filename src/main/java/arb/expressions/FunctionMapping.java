@@ -10,6 +10,8 @@ import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import arb.functions.Function;
 
@@ -20,19 +22,21 @@ import arb.functions.Function;
  */
 public final class FunctionMapping<D, R, F extends Function<? extends D, ? extends R>>
 {
-  public Class<?>            domain;
+  private static final Logger log = LoggerFactory.getLogger(FunctionMapping.class);
 
-  public Expression<D, R, F> expression;
+  public Class<?>             domain;
 
-  public String              expressionString;
+  public Expression<D, R, F>  expression;
 
-  public Class<?>            functionClass;
+  public String               expressionString;
 
-  public F                   instance;
+  public Class<?>             functionClass;
 
-  public String              functionName;
+  public F                    instance;
 
-  public Class<?>            coDomain;
+  public String               functionName;
+
+  public Class<?>             coDomain;
 
   public MethodVisitor call(MethodVisitor mv, Class<?> type)
   {
@@ -82,7 +86,12 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
 
   public void declare(ClassVisitor classVisitor, String name)
   {
-    classVisitor.visitField(ACC_PUBLIC, name, functionFieldDescriptor(), null, null);
+    String functionFieldDescriptor = functionFieldDescriptor();
+    if (Expression.trace)
+    {
+      log.debug("declare(name={}, fieldDescriptor={})", name, functionFieldDescriptor);
+    }
+    classVisitor.visitField(ACC_PUBLIC, name, functionFieldDescriptor, null, null);
   }
 
   public void loadReferenceOntoStack(MethodVisitor mv)

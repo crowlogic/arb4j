@@ -743,12 +743,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // Declare functions in dependency order
     for (Dependency dependency : dependencies)
     {
-      String dependencyVariableName = dependency.variableName;
-      var    function               = referencedFunctions.get(dependencyVariableName);
+      String                   dependencyVariableName = dependency.variableName;
+      FunctionMapping<?, ?, ?> functionMapping        =
+                                               referencedFunctions.get(dependencyVariableName);
 
-      if (function != null)
+      if (functionMapping != null)
       {
-        function.declare(classVisitor, dependencyVariableName);
+        functionMapping.declare(classVisitor, dependencyVariableName);
       }
     }
 
