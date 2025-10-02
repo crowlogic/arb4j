@@ -457,7 +457,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (Expression.trace)
     {
-      logger.debug(String.format("generate(this=%s, resultType=%s)", this, resultType));
+      logger.debug(String.format("generate(this=%s, resultType=%s)\n", this, resultType));
     }
 
     if (contextual)

@@ -345,7 +345,7 @@ public class Context
   {
     if (Expression.trace)
     {
-      log.debug(String.format("\n\nContext(#%s).setFieldValue(compiledClass=%s,\n compiledClass=%s,\n variableName=%s,\n value=%s,\n overwrite=%s)\n",
+      log.debug(String.format("#%s.setFieldValue(compiledClass=%s,\n compiledClass=%s,\n variableName=%s,\n value=%s,\n overwrite=%s)\n",
                               System.identityHashCode(this),
                               compiledClass,
                               f,

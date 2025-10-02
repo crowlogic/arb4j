@@ -1,17 +1,32 @@
 package arb.expressions.nodes.binary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.cast;
+import static arb.expressions.Compiler.invokeBinaryOperationMethod;
+import static arb.expressions.Compiler.loadBitsParameterOntoStack;
+import static arb.expressions.Compiler.loadResultParameter;
 import static arb.utensils.Utensils.indent;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import arb.*;
+import arb.AlgebraicNumber;
+import arb.Complex;
+import arb.ComplexPolynomial;
+import arb.ComplexRationalFunction;
+import arb.Fraction;
 import arb.Integer;
+import arb.IntegerPolynomial;
+import arb.RationalFunction;
+import arb.Real;
+import arb.RealPolynomial;
 import arb.exceptions.CompilerException;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
@@ -45,6 +60,11 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   {
     assert Integer.class.equals(arb.Integer.class) : "import statement for arb.Integer is missing";
     initializeTypeMaps();
+  }
+
+  static String basicPad(Object label)
+  {
+    return String.format("%-60s ", label);
   }
 
   protected static void initializeTypeMaps()
@@ -122,7 +142,14 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     typeMap.computeIfAbsent(rightType, type -> new HashMap<>()).put(leftType, resultantType);
   }
 
+  static String pad(Object label)
+  {
+    return String.format("%-11s= ", label);
+  }
+
   public Node<D, C, F> left;
+
+  public Logger log = LoggerFactory.getLogger(getClass());
 
   public String        operation;
 
@@ -195,66 +222,38 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
                   && Objects.equals(right, other.right);
   }
 
-  @Override
-  public int hashCode()
-  {
-    int hash = 0;
-    if (isCommutative())
-    {
-      // For commutative operations, order doesn't matter and since the sum is
-      // order-independent thats what is used as the hash
-      int operationHash = Objects.hash(operation, symbol, generatedType);
-      int operandsHash  = left.hashCode() + right.hashCode();
-      hash = operationHash + operandsHash;
-    }
-    else
-    {
-      hash = Objects.hash(left, operation, right, symbol, generatedType);
-    }
-
-    return hash;
-  }
-
-  static String pad(String label)
-  {
-    return String.format("%-11s= ", label);
-  }
-
   public String formatGenerationParameters(Class<?> resultType)
   {
-    final int LABEL_WIDTH = 11;        // 'right = ' is 9, plus space for '=' and proper padding
-    String    IND         = indent(2); // Adjust overall indentation to your taste
-
-    // Helper: pad labels, produce 'label ='
+    String    IND         = indent(2);
 
     return String.format("\n\ngenerate(\n"
-                         + "%s%s%s,\n"
+                         + "%s%s%s    (%s),\n"
                          + "%s%s%s    (%s %s),\n"
                          + "%s%s%s    (%s %s),\n"
-                         + "%s%s%s,\n"
                          + "%s%s%s)\n",
                          IND,
                          pad("this"),
-                         this,
+                         basicPad(this),
+                         resultType.getSimpleName(),
                          IND,
                          pad("left"),
-                         left,
+                         basicPad(left),
                          left.type().getSimpleName(),
                          left.getClass().getSimpleName(),
                          IND,
                          pad("right"),
-                         right,
+                         basicPad(right),
                          right.type().getSimpleName(),
                          right.getClass().getSimpleName(),
-                         IND,
-                         pad("resultType"),
-                         resultType.getSimpleName(),
                          IND,
                          pad("fieldName"),
                          fieldName);
   }
 
-  public Logger log = LoggerFactory.getLogger(getClass());
+  public String formatSimplificationParameters()
+  {
+    return String.format("%s.simplify( this=%s )\n", getClass().getSimpleName(), this);
+  }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
@@ -263,6 +262,12 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     assert right != null : "rhs is null";
 
     generatedType = resultType;
+
+    if (Expression.trace)
+    {
+      log.debug(formatGenerationParameters(resultType));
+    }
+
     var scalarType = Compiler.scalarType(type());
 
     if (!Compiler.canBeAssignedTo(type(), resultType))
@@ -310,11 +315,6 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
       invokeBinaryOperationMethod(mv, operation, leftType, rightType, resultType);
     }
 
-    if (Expression.trace)
-    {
-      log.debug(formatGenerationParameters(resultType));
-    }
-
     return mv;
 
   }
@@ -338,6 +338,26 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   public Class<?> getGeneratedType()
   {
     return generatedType;
+  }
+
+  @Override
+  public int hashCode()
+  {
+    int hash = 0;
+    if (isCommutative())
+    {
+      // For commutative operations, order doesn't matter and since the sum is
+      // order-independent thats what is used as the hash
+      int operationHash = Objects.hash(operation, symbol, generatedType);
+      int operandsHash  = left.hashCode() + right.hashCode();
+      hash = operationHash + operandsHash;
+    }
+    else
+    {
+      hash = Objects.hash(left, operation, right, symbol, generatedType);
+    }
+
+    return hash;
   }
 
   public abstract boolean isCommutative();
@@ -390,6 +410,40 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
                       transformation,
                       this,
                       getClass().getSimpleName());
+  }
+
+  @Override
+  public Node<D, C, F> simplify()
+  {
+    boolean changedLeft  = false;
+    boolean changedRight = false;
+    var     beforeString = toString();
+
+    if (left != null)
+    {
+      Node<D, C, F> newLeft = left.simplify();
+
+      if (!left.equals(newLeft))
+      {
+        changedLeft = true;
+      }
+
+      left = newLeft;
+
+    }
+    if (right != null)
+    {
+      Node<D, C, F> newRight = right.simplify();
+      if (right != newRight)
+      {
+        changedRight = true;
+      }
+
+      right = newRight;
+
+    }
+
+    return this;
   }
 
   public String stringFormat(Node<?, ?, ?> side)
@@ -501,60 +555,5 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
 
     return (leftType.equals(a) && rightType.equals(b))
                   || (leftType.equals(b) && rightType.equals(a));
-  }
-
-  public String formatSimplificationParameters()
-  {
-    return String.format("%s.simplify( this=%s )\n", getClass().getSimpleName(), this);
-  }
-
-  @Override
-  public Node<D, C, F> simplify()
-  {
-    boolean changedLeft  = false;
-    boolean changedRight = false;
-    var     beforeString = toString();
-
-    if (left != null)
-    {
-      Node<D, C, F> newLeft = left.simplify();
-
-      if (!left.equals(newLeft))
-      {
-        changedLeft = true;
-      }
-      if (Expression.trace && changedLeft)
-      {
-        log.debug("\n\nsimplify: replacing left={} with newLeft={} in {} which was {}\n",
-                  left,
-                  newLeft,
-                  this,
-                  beforeString);
-        changedLeft = true;
-      }
-      left = newLeft;
-
-    }
-    if (right != null)
-    {
-      Node<D, C, F> newRight = right.simplify();
-      if (right != newRight)
-      {
-        changedRight = true;
-      }
-      if (Expression.trace && changedRight)
-      {
-        log.debug("\n\nsimplify: replacing right={} with newRight={} in {} which was {}\n",
-                  right,
-                  newRight,
-                  this,
-                  beforeString);
-        changedRight = true;
-      }
-      right = newRight;
-
-    }
-
-    return this;
   }
 }

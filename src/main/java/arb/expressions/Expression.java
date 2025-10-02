@@ -632,7 +632,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     if (trace)
     {
-      log.debug(String.format("\n\nid=%s: compile(expression=%s, className=%s, context=%s)\n",
+      log.debug(String.format("#%s: compile(expression=%s, className=%s, context=%s)\n",
                               System.identityHashCode(this),
                               expression,
                               className,
@@ -1011,7 +1011,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     assert instructions == null;
     if (log.isDebugEnabled())
     {
-      log.debug("id={}: generate(className={}, functionName={}, expression='{}')",
+      log.debug("id={}: generate(className={}, functionName={}, expression='{}')\n",
                 System.identityHashCode(this),
                 className,
                 functionName,
@@ -1289,8 +1289,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (trace)
     {
-      log.debug(String.format("Expression.generateFunctionInitializer( nestedFunction=%s, assignments=%s )",
-                              nestedFunction,
+      log.debug(String.format("generateFunctionInitializer( nestedFunction=%s, assignments=%s )",
+                              nestedFunction.functionName,
                               assignments));
     }
 
@@ -1315,7 +1315,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     generateCodeToThrowErrorIfAlreadyInitialized(mv);
     if (trace)
     {
-      log.debug("generateInitializationCode: referencedFunctions=" + referencedFunctions);
+      log.debug("generateInitializationCode: referencedFunctions={}", referencedFunctions.keySet());
     }
     addChecksForNullVariableReferences(mv);
 
@@ -1448,14 +1448,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected ClassVisitor generateToStringMethod(ClassVisitor classVisitor)
   {
-    if (log.isDebugEnabled())
-    {
-      log.debug("generateToStringMethod(expression={}, functionName={}, functionNameSpecified={}, independentVariable={})",
-                expression,
-                functionName,
-                functionNameSpecified,
-                independentVariable);
-    }
 
     var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
                                                  "toString",
@@ -1503,10 +1495,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected ClassVisitor generateTypesetMethod(ClassVisitor classVisitor)
   {
-    if (Expression.trace)
-    {
-      log.debug(String.format("generateTypesetMethod(expression=%s)", expression));
-    }
+
     return Compiler.generateTypesetMethod(classVisitor, typeset());
   }
 
@@ -1920,10 +1909,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   private F newInstance()
   {
-    if (trace)
-    {
-      log.debug("Instantiating " + this);
-    }
     if (compiledClass == null)
     {
       compile();
@@ -2057,9 +2042,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     nextCharacter();
     if (log.isDebugEnabled())
     {
-      log.debug("\n\nparseRoot expression='{}' of Expression(id={})",
-                expression,
-                System.identityHashCode(this));
+      log.debug("#:{} parseRoot expression='{}'\n",
+                System.identityHashCode(this),
+                expression);
     }
 
     rootNode = resolve().simplify();

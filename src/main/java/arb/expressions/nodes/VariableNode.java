@@ -225,7 +225,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     if (Expression.trace)
     {
-      log.debug(String.format("\n\nid=#%s: generate( this=%s, resultType=%s)\n",
+      log.debug(String.format("#%s: generate( this=%s, resultType=%s)\n",
                         System.identityHashCode(this),
                         this,
                         resultType));
@@ -484,7 +484,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       if (Expression.trace)
       {
 
-        log.debug(String.format("id=#%s: resolveIndependentVariable: declaring %s as the input node to '%s' which currently has input variable %s",
+        log.debug(String.format("#%s: resolveIndependentVariable: declaring %s as the input node to '%s' which currently has input variable %s\n",
                                 System.identityHashCode(this),
                                 reference,
                                 expression,
