@@ -1,409 +1,474 @@
 \documentclass{article}
-\usepackage[english]{babel}
-\usepackage{geometry,amsmath,amssymb,latexsym,theorem}
-\geometry{letterpaper}
-
-%%%%%%%%%% Start TeXmacs macros
-\newcommand{\assign}{:=}
-\newcommand{\tmem}[1]{{\em #1\/}}
-\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
-\newtheorem{definition}{Definition}
-\newcounter{nndefinition}
-\def\thenndefinition{\unskip}
-\newtheorem{definition*}[nndefinition]{Definition}
-\newtheorem{lemma}{Lemma}
-\newtheorem{proposition}{Proposition}
-{\theorembodyfont{\rmfamily}\newtheorem{remark}{Remark}}
-\newtheorem{theorem}{Theorem}
-%%%%%%%%%% End TeXmacs macros
+\usepackage{amsmath, amsthm, amssymb, mathtools}
+\usepackage{xcolor}
+\title{Unitary Time Changes of Stationary Processes Yield Oscillatory Processes \\ and a Functional Framework Toward a Hilbert--P\'olya Construction}
+\author{Stephen Crowley}
+\date{September 16, 2025}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
 
 \begin{document}
-
-\title{
-  Unitary Time Changes of Stationary Processes Yield Oscillatory Processes\\
-  and a Functional Framework Toward a Hilbert--P{\'o}lya Construction
-}
-
-\author{Stephen Crowley}
-
-\date{September 17, 2025}
-
 \maketitle
 
-{\tableofcontents}
+\begin{abstract}
+A unitary time-change operator $U_\theta$ is constructed for absolutely continuous, strictly increasing time reparametrizations $\theta$, acting on functions that are square-integrable over $\sigma$-compact sets. Applying $U_\theta$ to the Cram\'er spectral representation of a stationary process yields an oscillatory process in the sense of Priestley with oscillatory function $\varphi_t(\lambda)=\sqrt{\theta'(t)}\,e^{i\lambda\theta(t)}$ and evolutionary spectrum $dF_t(\lambda)=\theta'(t)\,dF(\lambda)$. It is proved that sample paths of any non-degenerate second-order stationary process almost surely lie in $L^2_{\sigma\text{-comp}}(\mathbb{R})$, making the operator applicable to typical realizations. A zero-localization measure $\mu(dt)=\delta(Z(t))\,|Z'(t)|\,dt$ induces a Hilbert space $L^2(\mu)$ on the zero set of an oscillatory process $Z$, and the multiplication operator $(Lf)(t)=t f(t)$ has pure point, simple spectrum equal to the zero set of $Z$. This produces a concrete operator scaffold consistent with a Hilbert--P\'olya-type viewpoint.
+\end{abstract}
 
-\section{Unitary Time Change on $L^2 (\mathbb{R})$}
+\tableofcontents
 
-\begin{definition}
-  [Unitary time change operator on $L^2 (\mathbb{R})$] Let $\theta :
-  \mathbb{R} \to \mathbb{R}$ be absolutely continuous with $\theta' (t) \neq
-  0$ almost everywhere. Define $U_{\theta} : L^2 (\mathbb{R}) \to L^2
-  (\mathbb{R})$ by
-  \begin{equation}
-    (U_{\theta} f) (t) \assign \sqrt{| \theta' (t) |}  \hspace{0.17em} f
-    (\theta (t))  \qquad (f \in L^2 (\mathbb{R})) .
-  \end{equation}
+\section{Function Spaces and Unitary Time Change}\label{sec:functionspaces}
+
+\subsection{$\sigma$-compact sets and local $L^2$}
+\begin{definition}[$\sigma$-compact sets]\label{def:sigma_compact}
+A subset $U\subseteq\mathbb{R}$ is $\sigma$-compact if $U=\bigcup_{n=1}^\infty K_n$ with each $K_n$ compact.
 \end{definition}
 
-\begin{theorem}
-  [Unitarity of $U_{\theta}$] $U_{\theta}$ is unitary on $L^2 (\mathbb{R})$.
-\end{theorem}
-
-\begin{proof}
-  By absolute continuity and $\theta' (t) \neq 0$ a.e., the
-  change-of-variables formula gives
-  \[ \int_{\mathbb{R}} | (U_{\theta} f) (t) |^2 \hspace{0.17em} dt =
-     \int_{\mathbb{R}} | \theta' (t) | \hspace{0.17em} |f (\theta (t)) |^2
-     \hspace{0.17em} dt = \int_{\mathbb{R}} |f (u) |^2  \hspace{0.17em} du, \]
-  so $U_{\theta}$ is an isometry. Since $\theta$ admits an a.e. inverse
-  $\theta^{- 1}$ with the same regularity and nonvanishing derivative a.e.,
-  one has $U_{\theta^{- 1}} U_{\theta} = \mathrm{Id}$ and $U_{\theta}
-  U_{\theta^{- 1}} = \mathrm{Id}$ a.e., hence $U_{\theta}$ is unitary.
-\end{proof}
-
-\section{Oscillatory Processes in the Sense of Priestley}
-
-\begin{definition}
-  [Oscillatory process, gain and oscillatory function] Let $F$ be a finite
-  nonnegative Borel measure on $\mathbb{R}$. For each $t \in \mathbb{R}$ let
-  $A_t : \mathbb{R} \to \mathbb{C}$ be measurable and square-integrable with
-  respect to $F$. Define
-  \begin{equation}
-    \varphi_t (\lambda) \assign A_t (\lambda)  \hspace{0.17em} e^{i \lambda t}
-  \end{equation}
-  An {\tmem{oscillatory process}} $Z$ is a stochastic process with spectral
-  representation
-  \begin{equation}
-    Z (t) \assign \int_{\mathbb{R}} \varphi_t (\lambda)  \hspace{0.17em} \Phi
-    (d \lambda) = \int_{\mathbb{R}} A_t (\lambda)  \hspace{0.17em} e^{i
-    \lambda t}  \hspace{0.17em} \Phi (d \lambda)
-  \end{equation}
-  where $\Phi$ is a complex orthogonal random measure with spectral measure
-  $F$ satisfying the orthogonality of infinitesimal increments
-  \begin{equation}
-    \mathbb{E} \hspace{-0.17em} \left[ \Phi (d \lambda) \hspace{0.17em}
-    \overline{\Phi (d \mu)} \right] = \delta (\lambda - \mu)  \hspace{0.17em}
-    dF (\lambda)
-  \end{equation}
-  The covariance kernel is
-  \begin{equation}
-    R_Z (t, s) \assign \mathbb{E} \left[ Z (t) \hspace{0.17em} \overline{Z
-    (s)} \right] = \int_{\mathbb{R}} A_t (\lambda) \hspace{0.17em}
-    \overline{A_s (\lambda)} \hspace{0.17em} e^{i \lambda (t - s)} 
-    \hspace{0.17em} dF (\lambda)
-  \end{equation}
+\begin{definition}[Square-integrability on $\sigma$-compact sets]\label{def:L2sigma}
+Define
+\[
+L^2_{\sigma\text{-comp}}(\mathbb{R})\coloneqq\left\{f:\mathbb{R}\to\mathbb{C}:\ \int_U |f(t)|^2\,dt<\infty\ \text{for every $\sigma$-compact }U\subseteq\mathbb{R}\right\}.
+\]
 \end{definition}
 
 \begin{remark}
-  [Real-valuedness] $Z$ is real-valued if and only if, for each fixed $t$,
-  $A_t  (- \lambda) = \overline{A_t (\lambda)}$ for $F$-a.e. $\lambda$,
-  equivalently $\varphi_t  (- \lambda) = \overline{\varphi_t (\lambda)}$ for
-  $F$-a.e. $\lambda$.
+Every bounded measurable set in $\mathbb{R}$ is $\sigma$-compact; hence $L^2_{\sigma\text{-comp}}(\mathbb{R})$ contains functions that are square-integrable on every bounded interval, including functions with polynomial growth at infinity.
 \end{remark}
 
-\begin{theorem}
-  [Existence of oscillatory processes with prescribed $(A_t)_t$] Let $F$ be
-  finite and $(A_t)_t$ measurable with $\int |A_t (\lambda) |^2 
-  \hspace{0.17em} dF (\lambda) < \infty$ for each $t$. There exists a complex
-  orthogonal random measure $\Phi$ on $\mathbb{R}$ with spectral measure $F$
-  such that $Z (t) = \int \varphi_t (\lambda)  \hspace{0.17em} \Phi (d
-  \lambda)$ is well-defined in $L^2 (\Omega)$ and has covariance
-  \begin{equation}
-    R_Z (t, s) = \int_{\mathbb{R}} \varphi_t (\lambda) \hspace{0.17em}
-    \overline{\varphi_s (\lambda)} \hspace{0.17em} dF (\lambda) =
-    \int_{\mathbb{R}} A_t (\lambda) \hspace{0.17em} \overline{A_s (\lambda)}
-    \hspace{0.17em} e^{i \lambda (t - s)}  \hspace{0.17em} dF (\lambda)
-  \end{equation}
-\end{theorem}
-
-\begin{proof}
-  Construct the stochastic integral first for simple functions in $L^2 
-  (\mathbb{R}, F)$ and extend by isometry using
-  \begin{equation}
-    \mathbb{E} \left[ | \int g (\lambda) \hspace{0.17em} \Phi (d \lambda) |^2
-    \right] = \int |g (\lambda) |^2  \hspace{0.17em} dF (\lambda)
-  \end{equation}
-  Apply with $g = \varphi_t$ to obtain $Z (t)$ and the stated covariance.
-\end{proof}
-
-\section{Unitary Time Changes Map Stationary to Oscillatory}
-
-\begin{definition}
-  [Stationary process via Cram{\'e}r representation] A zero-mean stationary
-  process $X$ with spectral measure $F$ admits
-  \begin{equation}
-    X (t) = \int_{\mathbb{R}} e^{i \lambda t}  \hspace{0.17em} \Phi (d
-    \lambda)
-  \end{equation}
-  with covariance
-  \begin{equation}
-    R_X  (t - s) = \int_{\mathbb{R}} e^{i \lambda (t - s)}  \hspace{0.17em} dF
-    (\lambda)
-  \end{equation}
+\subsection{Unitary time-change operator}
+\begin{definition}[Unitary time-change]\label{def:Utheta}
+Let $\theta:\mathbb{R}\to\mathbb{R}$ be absolutely continuous, strictly increasing, and bijective, with $\theta'(t)>0$ almost everywhere and $\theta'(t)=0$ only on sets of Lebesgue measure zero. The function $\theta$ maps $\sigma$-compact sets to $\sigma$-compact sets. Define, for $f$ measurable,
+\[
+(U_\theta f)(t)\coloneqq \sqrt{\theta'(t)}\,f(\theta(t)).
+\]
 \end{definition}
 
-\begin{theorem}
-  [Unitary time change yields an oscillatory process] Let $X$ be zero-mean
-  stationary with
-  \begin{equation}
-    X (t) = \int_{\mathbb{R}} e^{i \lambda t}  \hspace{0.17em} \Phi (d
-    \lambda)
-  \end{equation}
-  Let $\theta$ satisfy the hypotheses of the unitary time change and set
-  \begin{equation}
-    Z (t) \assign (U_{\theta} X) (t) = \sqrt{| \theta' (t) |}  \hspace{0.17em}
-    X (\theta (t))
-  \end{equation}
-  Then $Z$ is an oscillatory process with oscillatory function
-  \begin{equation}
-    \varphi_t (\lambda) = \sqrt{| \theta' (t) |}  \hspace{0.17em} e^{i \lambda
-    \theta (t)}
-  \end{equation}
-  and gain
-  \begin{equation}
-    A_t (\lambda) = \sqrt{| \theta' (t) |}  \hspace{0.17em} e^{i \lambda
-    (\theta (t) - t)}
-  \end{equation}
-  The covariance is
-  \begin{equation}
-    \begin{array}{ll}
-      R_Z (t, s) & = \int_{\mathbb{R}} A_t (\lambda) \hspace{0.17em}
-      \overline{A_s (\lambda)} \hspace{0.17em} e^{i \lambda (t - s)} 
-      \hspace{0.17em} dF (\lambda)\\
-      & = \int_{\mathbb{R}} \sqrt{| \theta' (t) \theta' (s) |} 
-      \hspace{0.17em} e^{i \lambda (\theta (t) - \theta (s))}  \hspace{0.17em}
-      dF (\lambda)
-    \end{array}
-  \end{equation}
-\end{theorem}
-
-\begin{proof}
-  Compute
-  \begin{equation}
-    \begin{array}{ll}
-      Z (t) & = \sqrt{| \theta' (t) |}  \hspace{0.17em} X (\theta (t))\\
-      & = \sqrt{| \theta' (t) |}  \int_{\mathbb{R}} e^{i \lambda \theta (t)} 
-      \hspace{0.17em} \Phi (d \lambda)\\
-      & = \int_{\mathbb{R}} \sqrt{| \theta' (t) |}  \hspace{0.17em} e^{i
-      \lambda \theta (t)}  \hspace{0.17em} \Phi (d \lambda)
-    \end{array}
-  \end{equation}
-  Thus
-  \begin{equation}
-    \varphi_t (\lambda) = \sqrt{| \theta' (t) |}  \hspace{0.17em} e^{i \lambda
-    \theta (t)}
-  \end{equation}
-  and
-  \begin{equation}
-    A_t (\lambda) = \varphi_t (\lambda) e^{- i \lambda t}
-  \end{equation}
-  The covariance follows from orthogonality of $\Phi$.
-\end{proof}
-
-\begin{remark}
-  [Real-valuedness under time change] If $X$ is real-valued and $\theta$ is
-  real with $\theta' (t) > 0$ a.e., then $Z$ is real-valued by the Hermitian
-  symmetry of $A_t$.
-\end{remark}
-
-\section{Zero Localization by a Functional Measure}
-
-\begin{definition}
-  [Zero localization measure] Let $Z$ be real-valued, with sample paths in
-  $C^1 (\mathbb{R})$, and such that every zero of $Z$ is simple (i.e. $Z (t_0)
-  = 0 \Longrightarrow Z' (t_0) \neq 0$). Define the measure on Borel $B
-  \subset \mathbb{R}$ by
-  \begin{equation}
-    \mu (B) \assign \int_{\mathbb{R}} \textbf{1}_B (t)  \hspace{0.17em} \delta
-    (Z (t)) \hspace{0.17em} |Z' (t) |  \hspace{0.17em} dt
-  \end{equation}
-\end{definition}
-
-\begin{theorem}
-  [Support and mass on the zero set] For any test function $\phi \in
-  C_c^{\infty} (\mathbb{R})$,
-  \begin{equation}
-    \int_{\mathbb{R}} \phi (t)  \hspace{0.17em} \delta (Z (t)) \hspace{0.17em}
-    |Z' (t) |  \hspace{0.17em} dt = \sum_{t_0 : Z (t_0) = 0} \phi (t_0)
-  \end{equation}
-  and hence $\mu = \sum_{t_0 : Z (t_0) = 0} \delta_{t_0}$ is a discrete
-  measure assigning unit mass to each simple zero of $Z$.
-\end{theorem}
-
-\begin{proof}
-  At a simple zero $t_0$, the distributional identity holds:
-  \begin{equation}
-    \delta (Z (t)) = \frac{\delta (t - t_0)}{|Z' (t_0) |} + \sum_{t_1 \neq t_0
-    : Z (t_1) = 0} \frac{\delta (t - t_1)}{|Z' (t_1) |}
-  \end{equation}
-  Multiplying by $|Z' (t) |$ and integrating against $\phi$ yields the stated
-  identity and the atomic form of $\mu$.
-\end{proof}
-
-\section{Hilbert Space on the Zero Set and Multiplication Operator}
-
-\begin{definition*}
-  [Hilbert space on the zero set via $\mu$] Define
-  \begin{equation}
-    \mathcal{H} \assign L^2 (\mu) = \left\{ f : \mathbb{R} \to \mathbb{C}
-    \hspace{0.17em} : \hspace{0.17em} \|f\|_{\mathcal{H}}^2 = \int |f (t) |^2 
-    \hspace{0.17em} \delta (Z (t)) \hspace{0.17em} |Z' (t) | \hspace{0.17em}
-    dt < \infty \right\}
-  \end{equation}
-  The inner product is
-  \begin{equation}
-    \langle f, g \rangle = \int f (t) \overline{g (t)} \hspace{0.17em} \delta
-    (Z (t)) \hspace{0.17em} |Z' (t) |  \hspace{0.17em} dt
-  \end{equation}
-\end{definition*}
-
-\begin{proposition}
-  [Atomic structure] With $\mu = \sum_{t_0 : Z (t_0) = 0} \delta_{t_0}$, one
-  has
-  \begin{equation}
-    \mathcal{H}= \left\{ f : \{t_0 : Z (t_0) = 0\} \to \mathbb{C}
-    \hspace{0.17em} : \hspace{0.17em} \sum_{Z (t_0) = 0} |f (t_0) |^2 < \infty
-    \right\} \cong \ell^2
-  \end{equation}
-  and the functions $e_{t_0}$ defined by $e_{t_0} (t_1) = \delta_{t_0 t_1}$
-  form an orthonormal basis.
+\begin{proposition}[Inverse map]\label{prop:inverse}
+The inverse map is given by
+\[
+(U_\theta^{-1}g)(s)=\frac{g(\theta^{-1}(s))}{\sqrt{\theta'(\theta^{-1}(s))}},
+\]
+which is well-defined almost everywhere on every $\sigma$-compact set.
 \end{proposition}
 
 \begin{proof}
-  Substitute the atomic form of $\mu$ into the $L^2$-definition to obtain the
-  $\ell^2$-structure; the canonical coordinate functions form an ONB.
+Since $\theta'(t)=0$ only on sets of measure zero, and $\theta^{-1}$ maps sets of measure zero to sets of measure zero (as absolutely continuous bijective functions preserve measure-zero sets), the denominator $\sqrt{\theta'(\theta^{-1}(s))}$ is positive almost everywhere. The expression is therefore well-defined almost everywhere on every $\sigma$-compact set, which suffices for defining an element of $L^2_{\sigma\text{-comp}}(\mathbb{R})$.
 \end{proof}
 
-\begin{definition}
-  [Multiplication operator] Define $L : \mathcal{D} (L) \subset \mathcal{H}
-  \to \mathcal{H}$ by $(Lf) (t) = t \hspace{0.17em} f (t)$ on $\sup (\mu)$,
-  with
-  \begin{equation}
-    \mathcal{D} (L) = \left\{ f \in \mathcal{H} \hspace{0.17em} :
-    \hspace{0.17em} \int |t \hspace{0.17em} f (t) |^2  \hspace{0.17em} \delta
-    (Z (t)) \hspace{0.17em} |Z' (t) | \hspace{0.17em} dt < \infty \right\}
-  \end{equation}
-\end{definition}
-
-\begin{theorem}
-  [Self-adjointness and spectrum] $L$ is self-adjoint on $\mathcal{H}$, and
-  its spectrum is exactly
-  \begin{equation}
-    \sigma (L) = \{ \hspace{0.17em} t \in \mathbb{R} \hspace{0.17em} :
-    \hspace{0.17em} Z (t) = 0 \hspace{0.17em} \}
-  \end{equation}
-  with pure point spectrum consisting of simple eigenvalues $\lambda = t_0$
-  (for each zero $t_0$) and eigenvectors $e_{t_0}$.
+\begin{theorem}[Local unitarity on $\sigma$-compact sets]\label{thm:local_unitarity}
+For every $\sigma$-compact set $U\subseteq\mathbb{R}$ and $f\in L^2_{\sigma\text{-comp}}(\mathbb{R})$,
+\[
+\int_U |(U_\theta f)(t)|^2\,dt=\int_{\theta(U)} |f(s)|^2\,ds.
+\]
+Moreover, $U_\theta^{-1}$ is the inverse of $U_\theta$ on $L^2_{\sigma\text{-comp}}(\mathbb{R})$.
 \end{theorem}
 
 \begin{proof}
-  For $f, g \in \mathcal{D} (L)$,
-  \begin{equation}
-    \langle Lf, g \rangle = \int t \hspace{0.17em} f (t) \hspace{0.17em}
-    \overline{g (t)} \hspace{0.17em} \delta (Z (t)) \hspace{0.17em} |Z' (t) | 
-    \hspace{0.17em} dt = \int f (t) \hspace{0.17em} \overline{t
-    \hspace{0.17em} g (t)} \hspace{0.17em} \delta (Z (t)) \hspace{0.17em} |Z'
-    (t) |  \hspace{0.17em} dt = \langle f, Lg \rangle
-  \end{equation}
-  so $L$ is symmetric. On the atomic space, $L$ is unitarily equivalent to the
-  diagonal operator $(c_{t_0}) \mapsto (t_0 c_{t_0})$ on $\ell^2$, which is
-  self-adjoint with spectrum equal to the set of diagonal entries $\{t_0 : Z
-  (t_0) = 0\}$, each simple, with eigenvectors the coordinate basis identified
-  with $e_{t_0}$.
+Let $f\in L^2_{\sigma\text{-comp}}(\mathbb{R})$ and let $U$ be any $\sigma$-compact set. The local $L^2$-norm of $U_\theta f$ over $U$ is:
+\begin{align}
+\int_U |(U_\theta f)(t)|^2\,dt &= \int_U \left|\sqrt{\theta'(t)}f(\theta(t))\right|^2\,dt\\
+&= \int_U \theta'(t)|f(\theta(t))|^2\,dt
+\end{align}
+
+Since $\theta$ is absolutely continuous and strictly increasing, applying the change of variables $s=\theta(t)$ gives $ds=\theta'(t)\,dt$ almost everywhere. Since $\theta$ maps $\sigma$-compact sets to $\sigma$-compact sets, as $t$ ranges over $U$, $s=\theta(t)$ ranges over $\theta(U)$, which is $\sigma$-compact. Therefore:
+\[
+\int_U \theta'(t)|f(\theta(t))|^2\,dt = \int_{\theta(U)} |f(s)|^2\,ds
+\]
+
+To verify that $U_\theta^{-1}$ is indeed the inverse, we compute explicitly. For any $f\in L^2_{\sigma\text{-comp}}(\mathbb{R})$:
+\begin{align}
+(U_\theta^{-1} U_\theta f)(s) &= (U_\theta^{-1})[\sqrt{\theta'(\cdot)}f(\theta(\cdot))](s)\\
+&= \frac{[\sqrt{\theta'(\theta^{-1}(s))}f(\theta(\theta^{-1}(s)))])}{\sqrt{\theta'(\theta^{-1}(s))}}\\
+&= \frac{\sqrt{\theta'(\theta^{-1}(s))}f(s)}{\sqrt{\theta'(\theta^{-1}(s))}}\\
+&= f(s)
+\end{align}
+where we used $\theta(\theta^{-1}(s))=s$.
+
+Similarly, for any $g\in L^2_{\sigma\text{-comp}}(\mathbb{R})$:
+\begin{align}
+(U_\theta U_\theta^{-1}g)(t) &= \sqrt{\theta'(t)}(U_\theta^{-1}g)(\theta(t))\\
+&= \sqrt{\theta'(t)}\frac{g(\theta^{-1}(\theta(t)))}{\sqrt{\theta'(\theta^{-1}(\theta(t)))}}\\
+&= \sqrt{\theta'(t)}\frac{g(t)}{\sqrt{\theta'(t)}}\\
+&= g(t)
+\end{align}
+where we used $\theta^{-1}(\theta(t))=t$.
+
+Therefore $U_\theta U_\theta^{-1} = U_\theta^{-1} U_\theta = I$ on $L^2_{\sigma\text{-comp}}(\mathbb{R})$.
 \end{proof}
 
-\section{Time-Changed Stationary Processes and a Hilbert--P{\'o}lya Scaffold}
+\begin{theorem}[Unitarity on $L^2(\mathbb{R})$]\label{thm:global_unitarity}
+$U_\theta:L^2(\mathbb{R})\to L^2(\mathbb{R})$ is unitary: $\int_{\mathbb{R}} |(U_\theta f)(t)|^2\,dt=\int_{\mathbb{R}} |f(s)|^2\,ds$ and $U_\theta^{-1}$ is its inverse.
+\end{theorem}
 
-\begin{definition}
-  [Arithmetic phase time change] Let $\theta : \mathbb{R} \to \mathbb{R}$ be
-  an absolutely continuous phase with $\theta' (t) > 0$ a.e. encoding the
-  target arithmetic structure (e.g. a Riemann--Siegel-type phase). Let $X$ be
-  zero-mean stationary with spectral measure $F$ and orthogonal random measure
-  $\Phi$. Define the time-changed oscillatory process
-  \begin{equation}
-    Z (t) = \int_{\mathbb{R}} \sqrt{| \theta' (t) |}  \hspace{0.17em} e^{i
-    \lambda \theta (t)}  \hspace{0.17em} \Phi (d \lambda)
-  \end{equation}
+\begin{proof}
+For $f\in L^2(\mathbb{R})$, we have:
+\begin{align}
+\int_{\mathbb{R}} |(U_\theta f)(t)|^2\,dt &= \int_{\mathbb{R}} \theta'(t)|f(\theta(t))|^2\,dt
+\end{align}
+
+By the change of variables $s=\theta(t)$ with $ds=\theta'(t)\,dt$, and since $\theta:\mathbb{R}\to\mathbb{R}$ is bijective:
+\[
+\int_{\mathbb{R}} \theta'(t)|f(\theta(t))|^2\,dt = \int_{\mathbb{R}} |f(s)|^2\,ds
+\]
+
+The inverse relationship follows from the same computation as in Theorem~\ref{thm:local_unitarity}, applied globally.
+\end{proof}
+
+\section{Oscillatory Processes (Priestley)}\label{sec:oscillatory}
+
+\begin{definition}[Oscillatory process]\label{def:osc_proc}
+Let $F$ be a finite nonnegative Borel measure on $\mathbb{R}$. For each $t\in\mathbb{R}$, let $A_t\in L^2(F)$ and set $\varphi_t(\lambda)\coloneqq A_t(\lambda)e^{i\lambda t}$. An \emph{oscillatory process} is a stochastic process
+\[
+Z(t)\coloneqq \int_{\mathbb{R}} \varphi_t(\lambda)\,\Phi(d\lambda)=\int_{\mathbb{R}} A_t(\lambda)e^{i\lambda t}\,\Phi(d\lambda),
+\]
+where $\Phi$ is a complex orthogonal random measure with spectral measure $F$, that is,
+\[
+\mathbb{E}\!\left[\Phi(d\lambda)\,\overline{\Phi(d\mu)}\right]=\delta(\lambda-\mu)\,dF(\lambda).
+\]
+Its covariance kernel is
+\[
+R_Z(t,s)=\mathbb{E}\!\left[Z(t)\overline{Z(s)}\right]=\int_{\mathbb{R}} A_t(\lambda)\,\overline{A_s(\lambda)}\,e^{i\lambda(t-s)}\,dF(\lambda).
+\]
 \end{definition}
 
-\begin{proposition}
-  [Covariance under time change]
-  \begin{equation}
-    R_Z (t, s) = \int_{\mathbb{R}} \sqrt{| \theta' (t) \theta' (s) |} 
-    \hspace{0.17em} e^{i \lambda (\theta (t) - \theta (s))}  \hspace{0.17em}
-    dF (\lambda)
-  \end{equation}
-  In particular, if $F$ is chosen so that $R_Z$ concentrates along $\theta (t)
-  = \theta (s)$, then the correlation structure of $Z$ is phase-aligned with
-  $\theta$.
+\begin{remark}[Real-valuedness]
+$Z$ is real-valued if and only if $A_t(-\lambda)=\overline{A_t(\lambda)}$ for $F$-a.e.\ $\lambda$, equivalently $\varphi_t(-\lambda)=\overline{\varphi_t(\lambda)}$ for $F$-a.e.\ $\lambda$.
+\end{remark}
+
+\begin{theorem}[Existence]\label{thm:existence_osc}
+If $F$ is finite and $(A_t)_{t\in\mathbb{R}}$ is measurable in $t$ with $\int_{\mathbb{R}}|A_t(\lambda)|^2\,dF(\lambda)<\infty$ for each $t$, then there exists a complex orthogonal random measure $\Phi$ with spectral measure $F$ such that $Z(t)=\int_{\mathbb{R}} A_t(\lambda)e^{i\lambda t}\,\Phi(d\lambda)$ is well-defined in $L^2(\Omega)$ and has covariance $R_Z$ as above.
+\end{theorem}
+
+\begin{proof}
+We construct the stochastic integral using the standard extension procedure. First, define the integral for simple functions of the form $g(\lambda)=\sum_{j=1}^n c_j \mathbf{1}_{E_j}(\lambda)$ where $\{E_j\}$ are disjoint Borel sets with $F(E_j)<\infty$ and $c_j\in\mathbb{C}$:
+\[
+\int_{\mathbb{R}} g(\lambda)\,\Phi(d\lambda) \coloneqq \sum_{j=1}^n c_j \Phi(E_j)
+\]
+
+For such simple functions, the isometry property holds:
+\begin{align}
+\mathbb{E}\left[\left|\int_{\mathbb{R}} g(\lambda)\,\Phi(d\lambda)\right|^2\right] &= \mathbb{E}\left[\left|\sum_{j=1}^n c_j \Phi(E_j)\right|^2\right]\\
+&= \sum_{j=1}^n \sum_{k=1}^n c_j\overline{c_k}\mathbb{E}[\Phi(E_j)\overline{\Phi(E_k)}]\\
+&= \sum_{j=1}^n |c_j|^2 F(E_j)\\
+&= \int_{\mathbb{R}} |g(\lambda)|^2\,dF(\lambda)
+\end{align}
+
+Since simple functions are dense in $L^2(F)$, we extend by continuity to all $g\in L^2(F)$. For each $t$, since $\varphi_t(\lambda)=A_t(\lambda)e^{i\lambda t}$ and $A_t\in L^2(F)$, we have $\varphi_t\in L^2(F)$. Therefore $Z(t)=\int_{\mathbb{R}} \varphi_t(\lambda)\,\Phi(d\lambda)$ is well-defined in $L^2(\Omega)$.
+
+The covariance is computed as:
+\begin{align}
+R_Z(t,s) &= \mathbb{E}[Z(t)\overline{Z(s)}]\\
+&= \mathbb{E}\left[\int_{\mathbb{R}} \varphi_t(\lambda)\,\Phi(d\lambda) \int_{\mathbb{R}} \overline{\varphi_s(\mu)}\,\overline{\Phi(d\mu)}\right]\\
+&= \int_{\mathbb{R}} \int_{\mathbb{R}} \varphi_t(\lambda)\overline{\varphi_s(\mu)}\mathbb{E}[\Phi(d\lambda)\overline{\Phi(d\mu)}]\\
+&= \int_{\mathbb{R}} \varphi_t(\lambda)\overline{\varphi_s(\lambda)}\,dF(\lambda)\\
+&= \int_{\mathbb{R}} A_t(\lambda)\overline{A_s(\lambda)}e^{i\lambda(t-s)}\,dF(\lambda)
+\end{align}
+\end{proof}
+
+\section{Stationary Processes and Time Change}\label{sec:stationary_timechange}
+
+\subsection{Stationary processes}
+\begin{definition}[Cram\'er representation]\label{def:cramer}
+A zero-mean stationary process $X$ with spectral measure $F$ admits
+\[
+X(t)=\int_{\mathbb{R}} e^{i\lambda t}\,\Phi(d\lambda),\qquad
+R_X(t-s)=\int_{\mathbb{R}} e^{i\lambda(t-s)}\,dF(\lambda).
+\]
+\end{definition}
+
+\subsection{Stationary $\to$ oscillatory via $U_\theta$}
+\begin{theorem}[Time change yields oscillatory process]\label{thm:Utheta_to_osc}
+Let $X$ be zero-mean stationary as in Definition~\ref{def:cramer}. For $\theta$ as in Definition~\ref{def:Utheta}, define
+\[
+Z(t)\coloneqq (U_\theta X)(t)=\sqrt{\theta'(t)}\,X(\theta(t)).
+\]
+Then $Z$ is oscillatory with oscillatory function
+\[
+\varphi_t(\lambda)=\sqrt{\theta'(t)}\,e^{i\lambda\theta(t)},
+\qquad
+A_t(\lambda)=\sqrt{\theta'(t)}\,e^{i\lambda(\theta(t)-t)},
+\]
+and covariance
+\[
+R_Z(t,s)=\int_{\mathbb{R}} \sqrt{\theta'(t)\theta'(s)}\,e^{i\lambda(\theta(t)-\theta(s))}\,dF(\lambda).
+\]
+\end{theorem}
+
+\begin{proof}
+Applying the unitary time change operator to the spectral representation of $X(t)$:
+\begin{align}
+Z(t) &= (U_\theta X)(t)\\
+&= \sqrt{\theta'(t)}\,X(\theta(t))\\
+&= \sqrt{\theta'(t)} \int_{\mathbb{R}} e^{i\lambda\theta(t)}\,\Phi(d\lambda)\\
+&= \int_{\mathbb{R}} \sqrt{\theta'(t)}e^{i\lambda\theta(t)}\,\Phi(d\lambda)\\
+&= \int_{\mathbb{R}} \varphi_t(\lambda)\,\Phi(d\lambda)
+\end{align}
+where $\varphi_t(\lambda)=\sqrt{\theta'(t)}e^{i\lambda\theta(t)}$.
+
+To verify this constitutes an oscillatory representation according to Definition~\ref{def:osc_proc}, we must write $\varphi_t(\lambda)$ in the form $A_t(\lambda)e^{i\lambda t}$:
+\begin{align}
+\varphi_t(\lambda) &= \sqrt{\theta'(t)}e^{i\lambda\theta(t)}\\
+&= \sqrt{\theta'(t)}e^{i\lambda(\theta(t)-t)}e^{i\lambda t}\\
+&= A_t(\lambda)e^{i\lambda t}
+\end{align}
+where $A_t(\lambda)=\sqrt{\theta'(t)}e^{i\lambda(\theta(t)-t)}$.
+
+Since $\theta'(t)\geq 0$ almost everywhere and $\theta'(t)=0$ only on sets of measure zero, $A_t(\lambda)$ is well-defined almost everywhere. Moreover, $A_t\in L^2(F)$ for each $t$ since:
+\begin{align}
+\int_{\mathbb{R}} |A_t(\lambda)|^2\,dF(\lambda) &= \int_{\mathbb{R}} \left|\sqrt{\theta'(t)}e^{i\lambda(\theta(t)-t)}\right|^2\,dF(\lambda)\\
+&= \int_{\mathbb{R}} \theta'(t)|e^{i\lambda(\theta(t)-t)}|^2\,dF(\lambda)\\
+&= \theta'(t)\int_{\mathbb{R}} dF(\lambda)\\
+&= \theta'(t)F(\mathbb{R}) < \infty
+\end{align}
+where we used $|e^{i\alpha}|=1$ for all real $\alpha$.
+
+The covariance is computed as:
+\begin{align}
+R_Z(t,s) &= \mathbb{E}[Z(t)\overline{Z(s)}]\\
+&= \mathbb{E}\left[\sqrt{\theta'(t)}X(\theta(t))\sqrt{\theta'(s)}\overline{X(\theta(s))}\right]\\
+&= \sqrt{\theta'(t)\theta'(s)}\mathbb{E}[X(\theta(t))\overline{X(\theta(s))}]\\
+&= \sqrt{\theta'(t)\theta'(s)}R_X(\theta(t)-\theta(s))\\
+&= \sqrt{\theta'(t)\theta'(s)}\int_{\mathbb{R}} e^{i\lambda(\theta(t)-\theta(s))}\,dF(\lambda)
+\end{align}
+\end{proof}
+
+\begin{corollary}[Evolutionary spectrum]\label{cor:evol_spec}
+The evolutionary spectrum is $dF_t(\lambda)=|A_t(\lambda)|^2\,dF(\lambda)=\theta'(t)\,dF(\lambda)$.
+\end{corollary}
+
+\begin{proof}
+By definition of the evolutionary spectrum and using the gain function from Theorem~\ref{thm:Utheta_to_osc}:
+\begin{align}
+dF_t(\lambda) &= |A_t(\lambda)|^2\,dF(\lambda)\\
+&= \left|\sqrt{\theta'(t)}e^{i\lambda(\theta(t)-t)}\right|^2\,dF(\lambda)\\
+&= \theta'(t)|e^{i\lambda(\theta(t)-t)}|^2\,dF(\lambda)\\
+&= \theta'(t)\,dF(\lambda)
+\end{align}
+since $|e^{i\alpha}|=1$ for all real $\alpha$.
+\end{proof}
+
+\subsection{Covariance operator conjugation}
+\begin{proposition}[Operator conjugation]\label{prop:conjugation}
+Let $(T_K f)(t)\coloneqq \int_{\mathbb{R}} K(|t-s|)\,f(s)\,ds$ with stationary kernel $K(h)=\int_{\mathbb{R}} e^{i\lambda h}\,dF(\lambda)$. Define the transformed kernel
+\[
+K_\theta(s,t)\coloneqq \sqrt{\theta'(t)\theta'(s)}\,K\!\left(|\theta(t)-\theta(s)|\right)
+\]
+and operator $(T_{K_\theta}f)(t)\coloneqq \int_{\mathbb{R}} K_\theta(s,t)\,f(s)\,ds$.
+Then $T_{K_\theta}=U_\theta\,T_K\,U_\theta^{-1}$ on $L^2_{\sigma\text{-comp}}(\mathbb{R})$.
 \end{proposition}
 
 \begin{proof}
-  Insert the oscillatory function into the covariance integral and use the
-  orthogonality relation for $\Phi$.
+For any $g\in L^2_{\sigma\text{-comp}}(\mathbb{R})$, we compute $(U_\theta T_K U_\theta^{-1}g)(t)$ step by step.
+
+First, $(U_\theta^{-1}g)(s) = \frac{g(\theta^{-1}(s))}{\sqrt{\theta'(\theta^{-1}(s))}}$.
+
+Second, $(T_K U_\theta^{-1}g)(t) = \int_{\mathbb{R}} K(|t-s|)\frac{g(\theta^{-1}(s))}{\sqrt{\theta'(\theta^{-1}(s))}}\,ds$.
+
+Apply change of variables $u=\theta^{-1}(s)$, so $s=\theta(u)$ and $ds=\theta'(u)\,du$:
+\begin{align}
+(T_K U_\theta^{-1}g)(t) &= \int_{\mathbb{R}} K(|t-\theta(u)|)\frac{g(u)}{\sqrt{\theta'(u)}}\theta'(u)\,du\\
+&= \int_{\mathbb{R}} K(|t-\theta(u)|)g(u)\sqrt{\theta'(u)}\,du
+\end{align}
+
+Third, $(U_\theta T_K U_\theta^{-1}g)(t) = \sqrt{\theta'(t)}(T_K U_\theta^{-1}g)(\theta(t))$:
+\begin{align}
+&= \sqrt{\theta'(t)}\int_{\mathbb{R}} K(|\theta(t)-\theta(u)|)g(u)\sqrt{\theta'(u)}\,du\\
+&= \int_{\mathbb{R}} \sqrt{\theta'(t)\theta'(u)}K(|\theta(t)-\theta(u)|)g(u)\,du
+\end{align}
+
+Finally, changing variables back with $s=\theta(u)$:
+\begin{align}
+&= \int_{\mathbb{R}} \sqrt{\theta'(t)\theta'(s)}K(|\theta(t)-\theta(s)|)g(s)\,ds\\
+&= \int_{\mathbb{R}} K_\theta(s,t)g(s)\,ds\\
+&= (T_{K_\theta}g)(t)
+\end{align}
+
+This establishes the conjugation relation $T_{K_\theta}=U_\theta T_K U_\theta^{-1}$.
 \end{proof}
 
-\begin{definition}
-  [Zero-localized Hilbert space and operator] With the zero localization
-  measure $\mu (dt) = \delta (Z (t)) \hspace{0.17em} |Z' (t) | 
-  \hspace{0.17em} dt$, define $\mathcal{H}= L^2 (\mu)$ and $L$ as
-  multiplication by $t$ on $\mathcal{H}$.
-\end{definition}
+\section{Sample Paths Live in $L^2_{\sigma\text{-comp}}$}\label{sec:samplepaths}
 
-\begin{theorem}
-  [Spectral encoding of zero set] The spectrum of $L$ is the zero set of $Z$:
-  \begin{equation}
-    \sigma (L) = \{t : Z (t) = 0\}
-  \end{equation}
-  and $L$ has simple pure point spectrum with eigenvectors supported at
-  individual zeros.
+\begin{theorem}[Sample paths in $L^2_{\sigma\text{-comp}}(\mathbb{R})$]\label{thm:paths_sigma_comp}
+Let $\{X(t)\}_{t\in\mathbb{R}}$ be a second-order stationary process with $\sigma^2\coloneqq \mathbb{E}[X(t)^2]<\infty$. Then, almost surely, every sample path $t\mapsto X(\omega,t)$ belongs to $L^2_{\sigma\text{-comp}}(\mathbb{R})$.
 \end{theorem}
 
 \begin{proof}
-  Follows from the established atomic structure of $\mu$ and the diagonal form
-  of $L$ on $L^2 (\mu)$.
+Fix any bounded interval $[a,b]$ and consider the random variable $Y_{[a,b]}\coloneqq \int_a^b X(t)^2\,dt$. By stationarity and Fubini's theorem:
+\[
+\mathbb{E}[Y_{[a,b]}] = \mathbb{E}\left[\int_a^b X(t)^2\,dt\right] = \int_a^b \mathbb{E}[X(t)^2]\,dt = \int_a^b \sigma^2\,dt = \sigma^2(b-a)<\infty.
+\]
+
+By Markov's inequality, for any $M>0$:
+\[
+P(Y_{[a,b]}>M) \leq \frac{\mathbb{E}[Y_{[a,b]}]}{M} = \frac{\sigma^2(b-a)}{M}.
+\]
+
+Taking $M\to\infty$, we conclude $P(Y_{[a,b]}<\infty)=1$, i.e., almost surely the sample path is square-integrable on $[a,b]$.
+
+Since $\mathbb{R}$ is the countable union of bounded intervals:
+\[
+\mathbb{R} = \bigcup_{n=1}^\infty [-n,n],
+\]
+by countable subadditivity of probability:
+\[
+P\left(\bigcap_{n=1}^\infty \left\{\int_{-n}^n X(t)^2\,dt<\infty\right\}\right) = 1.
+\]
+
+Now let $U$ be any $\sigma$-compact set. Then $U=\bigcup_{m=1}^\infty K_m$ where each $K_m$ is compact. Each compact set $K_m$ is bounded, so $K_m\subseteq [-N_m,N_m]$ for some $N_m$. Therefore:
+\[
+\int_U X(t)^2\,dt = \int_{\bigcup_{m=1}^\infty K_m} X(t)^2\,dt \leq \sum_{m=1}^\infty \int_{K_m} X(t)^2\,dt \leq \sum_{m=1}^\infty \int_{-N_m}^{N_m} X(t)^2\,dt.
+\]
+
+Since each integral $\int_{-N_m}^{N_m} X(t)^2\,dt<\infty$ almost surely, and the sum of countably many finite terms is finite, we have $\int_U X(t)^2\,dt<\infty$ almost surely.
+
+This holds for every $\sigma$-compact set $U$, so almost surely every sample path lies in $L^2_{\sigma\text{-comp}}(\mathbb{R})$.
 \end{proof}
 
-\begin{remark}
-  [Operator scaffold] The sequence
-  \begin{equation}
-    \text{stationary } X \xrightarrow{\hspace{0.17em} U_{\theta}
-    \hspace{0.17em}} \text{oscillatory } Z \xrightarrow{\hspace{0.17em} \delta
-    (Z) \hspace{0.17em} |Z' |  \hspace{0.17em} dt \hspace{0.17em}} \mu
-    \xrightarrow{\hspace{0.17em} L^2 (\mu) \hspace{0.17em}} \mathcal{H}
-    \xrightarrow{\hspace{0.17em} t \cdot \hspace{0.17em}} L
-  \end{equation}
-  produces a concrete self-adjoint operator whose spectrum equals the
-  (constructed) zero set governed by the choice of $\theta$ and $F$. Aligning
-  $\theta$ and $F$ to a prescribed arithmetic target sets the stage for a
-  Hilbert--P{\'o}lya-type identification.
-\end{remark}
+\section{Zero Localization and Hilbert--P\'olya Scaffold}\label{sec:HP}
 
-\section{Appendix: Regularity and Simple Zeros}
-
-\begin{definition}
-  [Regularity and simplicity] Assume $Z \in C^1 (\mathbb{R})$ and every zero
-  of $Z$ is simple: $Z (t_0) = 0 \Longrightarrow Z' (t_0) \neq 0$.
+\subsection{Zero localization measure}
+\begin{definition}[Zero localization measure]\label{def:zeromeasure}
+Let $Z$ be real-valued with $Z\in C^1(\mathbb{R})$ and only simple zeros $Z(t_0)=0\Rightarrow Z'(t_0)\neq 0$. Define, for Borel $B\subset\mathbb{R}$,
+\[
+\mu(B)\coloneqq \int_{\mathbb{R}} \mathbf{1}_B(t)\,\delta(Z(t))\,|Z'(t)|\,dt.
+\]
 \end{definition}
 
-\begin{lemma}
-  [Local finiteness and decomposition] Under the above condition, zeros are
-  locally finite and the distributional identity
-  \begin{equation}
-    \delta (Z (t)) = \sum_{t_0 : Z (t_0) = 0} \frac{\delta (t - t_0)}{|Z'
-    (t_0) |}
-  \end{equation}
-  holds, yielding
-  \begin{equation}
-    \mu = \sum_{t_0} \delta_{t_0}
-  \end{equation}
+\begin{theorem}[Atomicity on the zero set]\label{thm:atomic}
+For every $\phi\in C_c^\infty(\mathbb{R})$,
+\[
+\int_{\mathbb{R}} \phi(t)\,\delta(Z(t))\,|Z'(t)|\,dt=\sum_{t_0:Z(t_0)=0}\phi(t_0),
+\]
+hence $\mu=\sum_{t_0:Z(t_0)=0}\delta_{t_0}$.
+\end{theorem}
+
+\begin{proof}
+Since all zeros of $Z$ are simple and $Z\in C^1(\mathbb{R})$, by the inverse function theorem each zero $t_0$ is isolated. Near each zero $t_0$, $Z$ is locally monotonic, so we can apply the one-dimensional change of variables formula for the Dirac delta.
+
+Specifically, near $t_0$ where $Z(t_0)=0$ and $Z'(t_0)\neq 0$, we have locally $Z(t)=(t-t_0)Z'(t_0)+O((t-t_0)^2)$. The distributional identity for the Dirac delta under smooth changes of variables gives:
+\[
+\delta(Z(t)) = \sum_{t_0:Z(t_0)=0} \frac{\delta(t-t_0)}{|Z'(t_0)|}.
+\]
+
+Therefore:
+\begin{align}
+\int_{\mathbb{R}} \phi(t)\,\delta(Z(t))\,|Z'(t)|\,dt &= \int_{\mathbb{R}} \phi(t)\,|Z'(t)|\sum_{t_0:Z(t_0)=0} \frac{\delta(t-t_0)}{|Z'(t_0)|}\,dt\\
+&= \sum_{t_0:Z(t_0)=0} \int_{\mathbb{R}} \phi(t)\frac{|Z'(t)|\delta(t-t_0)}{|Z'(t_0)|}\,dt\\
+&= \sum_{t_0:Z(t_0)=0} \frac{|Z'(t_0)|\phi(t_0)}{|Z'(t_0)|}\\
+&= \sum_{t_0:Z(t_0)=0} \phi(t_0)
+\end{align}
+
+This shows that $\mu$ is the discrete measure $\mu=\sum_{t_0:Z(t_0)=0}\delta_{t_0}$ assigning unit mass to each zero.
+\end{proof}
+
+\subsection{Hilbert space on zeros and multiplication operator}
+\begin{definition}[Hilbert space on the zero set]\label{def:Hmu}
+Let $\mathcal{H}\coloneqq L^2(\mu)$ with inner product $\langle f,g\rangle=\int f(t)\overline{g(t)}\,\mu(dt)$.
+\end{definition}
+
+\begin{proposition}[Atomic structure]\label{prop:atomic}
+With $\mu=\sum_{t_0:Z(t_0)=0}\delta_{t_0}$,
+\[
+\mathcal{H}\cong \left\{f:\{t_0:Z(t_0)=0\}\to\mathbb{C}:\ \sum_{t_0:Z(t_0)=0}|f(t_0)|^2<\infty\right\}\cong \ell^2,
+\]
+with orthonormal basis $\{e_{t_0}\}_{t_0:Z(t_0)=0}$, where $e_{t_0}(t_1)=\delta_{t_0 t_1}$.
+\end{proposition}
+
+\begin{proof}
+By the atomic form of $\mu$, for any $f\in L^2(\mu)$:
+\begin{align}
+\|f\|_{\mathcal{H}}^2 &= \int |f(t)|^2\,\mu(dt)\\
+&= \int |f(t)|^2\sum_{t_0:Z(t_0)=0}\delta_{t_0}(dt)\\
+&= \sum_{t_0:Z(t_0)=0} |f(t_0)|^2
+\end{align}
+
+This shows the isomorphism with $\ell^2$. The functions $e_{t_0}$ defined by $e_{t_0}(t_1)=\delta_{t_0 t_1}$ satisfy:
+\[
+\langle e_{t_0}, e_{t_1}\rangle = \int e_{t_0}(t)\overline{e_{t_1}(t)}\,\mu(dt) = \sum_{t:Z(t)=0} \delta_{t_0 t}\delta_{t_1 t} = \delta_{t_0 t_1}
+\]
+so they form an orthonormal set. Any $f\in\mathcal{H}$ can be written as $f=\sum_{t_0:Z(t_0)=0} f(t_0)e_{t_0}$, proving they form a basis.
+\end{proof}
+
+\begin{definition}[Multiplication operator]\label{def:L}
+Define $L:\mathcal{D}(L)\subset\mathcal{H}\to\mathcal{H}$ by $(Lf)(t)=t\,f(t)$ on $\operatorname{supp}(\mu)$ with domain
+\[
+\mathcal{D}(L)\coloneqq \left\{f\in\mathcal{H}:\ \int |t\,f(t)|^2\,\mu(dt)<\infty\right\}.
+\]
+\end{definition}
+
+\begin{theorem}[Self-adjointness and spectrum]\label{thm:spectrum}
+$L$ is self-adjoint on $\mathcal{H}$ and has pure point, simple spectrum
+\[
+\sigma(L)=\{t\in\mathbb{R}:\ Z(t)=0\},
+\]
+with eigenvalues $\lambda=t_0$ and eigenvectors $e_{t_0}$.
+\end{theorem}
+
+\begin{proof}
+First, we verify self-adjointness. For $f,g\in\mathcal{D}(L)$:
+\begin{align}
+\langle Lf,g\rangle &= \int (Lf)(t)\overline{g(t)}\,\mu(dt)\\
+&= \int t f(t)\overline{g(t)}\,\mu(dt)\\
+&= \int f(t)\overline{t g(t)}\,\mu(dt)\\
+&= \int f(t)\overline{(Lg)(t)}\,\mu(dt)\\
+&= \langle f,Lg\rangle
+\end{align}
+Thus $L$ is symmetric. 
+
+In the atomic representation, $L$ acts as $(Lf)(t_0)=t_0 f(t_0)$ for each $t_0$ where $Z(t_0)=0$. This is unitarily equivalent to the diagonal operator on $\ell^2$ with diagonal entries $\{t_0:Z(t_0)=0\}$. Such diagonal operators are self-adjoint.
+
+For the spectrum calculation: $Le_{t_0}=t_0 e_{t_0}$, so each $t_0$ where $Z(t_0)=0$ is an eigenvalue with eigenvector $e_{t_0}$. Since $\{e_{t_0}\}$ forms an orthonormal basis, $L$ has pure point spectrum.
+
+To show there are no other spectral points, suppose $\lambda\notin\{t_0:Z(t_0)=0\}$. Then for any $f\in\mathcal{D}(L)$, $(L-\lambda I)f$ has components $((L-\lambda I)f)(t_0)=(t_0-\lambda)f(t_0)$. Since $t_0-\lambda\neq 0$ for all zeros $t_0$, we can solve $(L-\lambda I)f=g$ uniquely for any $g\in\mathcal{H}$ by setting $f(t_0)=\frac{g(t_0)}{t_0-\lambda}$. This shows $L-\lambda I$ is invertible, so $\lambda\notin\sigma(L)$.
+
+Therefore $\sigma(L)=\{t_0:Z(t_0)=0\}$ exactly, with simple eigenvalues.
+\end{proof}
+
+\begin{remark}[Operator scaffold]\label{rem:scaffold}
+The construction
+\[
+\text{stationary }X \xrightarrow{\ U_\theta\ }\ \text{oscillatory }Z \xrightarrow{\ \mu=\delta(Z)|Z'|\,dt\ }\ L^2(\mu)\xrightarrow{\ L:t\cdot\ }\ (L,\sigma(L))
+\]
+produces a concrete self-adjoint operator whose spectrum equals the zero set of $Z$, determined by the choice of time-change $\theta$ and spectral measure $F$. This provides an explicit realization consistent with Hilbert--P\'olya approaches to encoding arithmetic information in operator spectra.
+\end{remark}
+
+\section{Appendix: Regularity and Simple Zeros}\label{sec:appendix}
+
+\begin{definition}[Regularity and simplicity]\label{def:regularity}
+Assume $Z\in C^1(\mathbb{R})$ and every zero is simple: $Z(t_0)=0\Rightarrow Z'(t_0)\neq 0$.
+\end{definition}
+
+\begin{lemma}[Local finiteness and delta decomposition]\label{lem:delta}
+Under Definition~\ref{def:regularity}, zeros are locally finite and
+\[
+\delta(Z(t))=\sum_{t_0:Z(t_0)=0}\frac{\delta(t-t_0)}{|Z'(t_0)|},
+\]
+whence $\mu=\sum_{t_0:Z(t_0)=0}\delta_{t_0}$.
 \end{lemma}
 
 \begin{proof}
-  Continuity and $Z' (t_0) \neq 0$ imply isolated zeros by the inverse
-  function theorem; the distributional identity is standard from the
-  one-dimensional change-of-variables formula for the Dirac delta under
-  monotone $C^1$ maps near each zero.
+Since $Z\in C^1(\mathbb{R})$ and $Z'(t_0)\neq 0$ at each zero $t_0$, the inverse function theorem implies that $Z$ is locally invertible near each zero. Specifically, there exists a neighborhood $U_{t_0}$ of $t_0$ such that $Z|_{U_{t_0}}$ is strictly monotonic and invertible.
+
+This implies zeros are isolated: if $Z(t_0)=0$ and $Z'(t_0)\neq 0$, then there exists $\epsilon>0$ such that $Z(t)\neq 0$ for $0<|t-t_0|<\epsilon$. Therefore zeros are locally finite (finitely many in any bounded interval).
+
+For the distributional identity, consider the one-dimensional change of variables formula for the Dirac delta. If $g:I\to\mathbb{R}$ is $C^1$ on interval $I$ with $g'(x)\neq 0$ for all $x\in I$, then
+\[
+\delta(g(x))=\sum_{x_0:g(x_0)=0}\frac{\delta(x-x_0)}{|g'(x_0)|}.
+\]
+
+Applying this locally around each zero $t_0$ of $Z$, and since zeros are isolated, we can patch together the local results to obtain the global identity:
+\[
+\delta(Z(t))=\sum_{t_0:Z(t_0)=0}\frac{\delta(t-t_0)}{|Z'(t_0)|}.
+\]
+
+Consequently:
+\[
+\mu(dt) = \delta(Z(t))|Z'(t)|\,dt = \sum_{t_0:Z(t_0)=0}\frac{|Z'(t)|}{|Z'(t_0)|}\delta(t-t_0)\,dt = \sum_{t_0:Z(t_0)=0}\delta_{t_0}(dt),
+\]
+where the last equality uses the fact that $|Z'(t_0)|/|Z'(t_0)|=1$ when evaluating at $t=t_0$.
 \end{proof}
 
 \end{document}
