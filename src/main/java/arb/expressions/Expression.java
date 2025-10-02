@@ -758,13 +758,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected void declareIntermediateVariables(ClassVisitor classVisitor)
   {
-    getSortedIntermediateVariables().stream()
+    sortedIntermediateVariableStream()
                                     .filter(variable -> !declaredIntermediateVariables.contains(variable.name))
                                     .forEach(variable ->
                                     {
                                       variable.declareField(classVisitor);
                                       declaredIntermediateVariables.add(variable.name);
                                     });
+  }
+
+  public Stream<IntermediateVariable<D, C, F>> sortedIntermediateVariableStream()
+  {
+    return sortedIntermediateVariables().stream();
   }
 
   protected ClassVisitor declareLiteralConstants(ClassVisitor classVisitor)
@@ -1073,7 +1078,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                                  constant.fieldName,
                                                                                  constant.type()));
 
-      getSortedIntermediateVariables().forEach(intermediateVariable -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
+      sortedIntermediateVariables().forEach(intermediateVariable -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
                                                                                               intermediateVariable.name,
                                                                                               intermediateVariable.type));
 
@@ -1391,7 +1396,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected MethodVisitor generateIntermediateVariableInitializers(MethodVisitor methodVisitor)
   {
-    for (var intermediateVariable : getSortedIntermediateVariables())
+    for (var intermediateVariable : sortedIntermediateVariables())
     {
       intermediateVariable.generateInitializer(methodVisitor);
     }
@@ -1594,7 +1599,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return referencedVariables.get(reference);
   }
 
-  protected Collection<IntermediateVariable<D, C, F>> getSortedIntermediateVariables()
+  protected Collection<IntermediateVariable<D, C, F>> sortedIntermediateVariables()
   {
     var intermediateVariableValues = new ArrayList<>(intermediateVariables.values()
                                                                           .stream()

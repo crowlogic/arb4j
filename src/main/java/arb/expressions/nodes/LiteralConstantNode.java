@@ -219,8 +219,14 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
 
   public ClassVisitor declareField(ClassVisitor classVisitor)
   {
-    classVisitor.visitField(ACC_PUBLIC
-                  | ACC_FINAL, fieldName, type().descriptorString(), null, null);
+
+    Class<?> type = type();
+    String   typeDescriptor = type.descriptorString();
+    if (Expression.trace)
+    {
+      logger.debug("declareField: fieldName={} type={} value={}", fieldName, type, toString() );
+    }
+    classVisitor.visitField(ACC_PUBLIC | ACC_FINAL, fieldName, typeDescriptor, null, null);
     return classVisitor;
   }
 
