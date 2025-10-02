@@ -1168,9 +1168,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitCode();
     mv.visitLdcInsn(Type.getType(domainType));
     mv.visitLdcInsn(Type.getType(coDomainType));
-    mv.visitLdcInsn(Type.getType(Function.class));
+    mv.visitLdcInsn(Type.getType(functionClass));
 
-    mv.visitLdcInsn(String.format("diff(%s,%s)", expression, independentVariable));
+    mv.visitLdcInsn(String.format("diff(%s,%s)", rootNode.toString(), independentVariable));
     Compiler.invokeStaticMethod(mv,
                                 Function.class,
                                 "express",
