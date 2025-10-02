@@ -1,8 +1,6 @@
-Expression.saveClasses=true;
-FunctionPlotter.darkStyle=false;
+//FunctionPlotter.darkStyle=false;
 var theta = RealFunction.express("theta","im(lnΓ(1/4+I*t/2))-(log(π)/2)*t");
-//var theta = new RealRiemannSiegelThetaFunction();
 var thetad = theta.derivative();
-var thetadd = thetad.derivative();//RealFunction.express("diff(diff(im(lnΓ(¼+ⅈ*t/2))-(t*log(π)/2),t),t)");
+var thetadd = thetad.derivative();
 
-plot(0,50,2000,(RealFunction)theta,(RealFunction)thetad,(RealFunction)thetadd);
+plot(-25,25,4000,(RealFunction)theta,(RealFunction)thetad,(RealFunction)thetadd);
