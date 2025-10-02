@@ -263,11 +263,6 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
 
     generatedType = resultType;
 
-    if (Expression.trace)
-    {
-      log.debug(formatGenerationParameters(resultType));
-    }
-
     var scalarType = Compiler.scalarType(type());
 
     if (!Compiler.canBeAssignedTo(type(), resultType))
@@ -303,6 +298,12 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
         loadBitsParameterOntoStack(mv);
       }
       loadOutput(mv, resultType);
+
+
+      if (Expression.trace)
+      {
+        log.debug(formatGenerationParameters(resultType));
+      }
 
       var leftType = left.getGeneratedType();
       leftType = leftType != null ? leftType : left.type();
