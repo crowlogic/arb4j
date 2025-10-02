@@ -18,6 +18,7 @@ import org.objectweb.asm.Type;
 
 import arb.Integer;
 import arb.exceptions.CompilerException;
+import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.ElseNode;
 import arb.expressions.nodes.LiteralConstantNode;
@@ -41,8 +42,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
                      UnaryOperationNode<D, R, F>
 {
 
-  private static final String INT_METHOD_DESCRIPTOR       =
-                                                    Type.getMethodDescriptor(Type.getType(int.class));
+  private static final String INT_METHOD_DESCRIPTOR       = Compiler.getMethodDescriptor(int.class);
   private static final String INTEGER_CLASS_INTERNAL_NAME = Type.getInternalName(Integer.class);
 
   public static <D, R, F extends Function<? extends D, ? extends R>>

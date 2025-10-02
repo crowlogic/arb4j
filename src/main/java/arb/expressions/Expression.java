@@ -1162,7 +1162,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     var mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
                                       "derivative",
-                                      Type.getMethodDescriptor(Type.getType(Function.class)),
+                                      Compiler.getMethodDescriptor(Function.class),
                                       null,
                                       null);
     mv.visitCode();
@@ -1528,11 +1528,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   private String getEvaluationMethodSignature()
   {
-    return Type.getMethodDescriptor(Type.getType(coDomainType),
-                                    Type.getType(domainType),
-                                    Type.getType(int.class),
-                                    Type.getType(int.class),
-                                    Type.getType(coDomainType));
+    return Compiler.getMethodDescriptor(coDomainType,
+                                        domainType,
+                                        int.class,
+                                        int.class,
+                                        coDomainType);
   }
 
   protected String getFunctionClassTypeSignature(Class<? extends Function<?, ?>> functionClass)
@@ -2042,9 +2042,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     nextCharacter();
     if (log.isDebugEnabled())
     {
-      log.debug("#:{} parseRoot expression='{}'\n",
-                System.identityHashCode(this),
-                expression);
+      log.debug("#:{} parseRoot expression='{}'\n", System.identityHashCode(this), expression);
     }
 
     rootNode = resolve().simplify();

@@ -82,10 +82,10 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 {
 
   public static String                            operandEvaluateMethodSignature =
-                                                                                 Type.getMethodDescriptor(Type.getType(Object.class),
-                                                                                                          Type.getType(Object.class),
-                                                                                                          Type.getType(int.class),
-                                                                                                          Type.getType(Object.class));
+                                                                                 Compiler.getMethodDescriptor(Object.class,
+                                                                                                              Object.class,
+                                                                                                              int.class,
+                                                                                                              Object.class);
 
   public Label                                    beginLoop                      = new Label();
 
