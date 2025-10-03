@@ -12,13 +12,24 @@ import arb.expressions.FunctionMapping;
  */
 public class Dependency
 {
-  public final String       variableName;
-  public final List<String> dependencies        = new ArrayList<>(); // was constructionDependencies
-  public final List<String> reverseDependencies = new ArrayList<>(); // was fieldAssignments
+  public String                   variableName;
+  public List<String>             dependencies        = new ArrayList<>(); // was
+                                                                           // constructionDependencies
+  public List<String>             reverseDependencies = new ArrayList<>(); // was fieldAssignments
+  public FunctionMapping<?, ?, ?> functionMapping;
 
-  public Dependency(String name)
+  public Dependency(FunctionMapping<?, ?, ?> functionMapping)
   {
-    this.variableName = name;
+    this.variableName    = functionMapping.functionName;
+    this.functionMapping = functionMapping;
+  }
+
+  public Dependency(Dependency dep)
+  {
+    this.variableName        = dep.variableName;
+    this.dependencies        = dep.dependencies;
+    this.reverseDependencies = dep.reverseDependencies;
+    this.functionMapping     = dep.functionMapping;
   }
 
   @Override

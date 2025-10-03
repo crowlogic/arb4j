@@ -194,15 +194,15 @@ public class Context
     for (var entry : functions.map.entrySet())
     {
       var          functionName = entry.getKey();
-      var          function     = entry.getValue();
+      var          functionMapping     = entry.getValue();
 
       // Get referenced functions from the function mapping
-      Dependency   depInfo      = new Dependency(functionName);
+      Dependency   depInfo      = new Dependency(functionMapping);
 
       List<String> dependencies = depInfo.dependencies;
-      if (function.expression != null && function.expression.referencedFunctions != null)
+      if (functionMapping.expression != null && functionMapping.expression.referencedFunctions != null)
       {
-        dependencies.addAll(function.expression.referencedFunctions.keySet()
+        dependencies.addAll(functionMapping.expression.referencedFunctions.keySet()
                                                                    .stream()
                                                                    .filter(name -> !name.equals(functionName))
                                                                    .toList());
@@ -325,7 +325,7 @@ public class Context
     {
       sortedMap.put(dependency.variableName,
                     functionReferenceGraph.getOrDefault(dependency.variableName,
-                                                        new Dependency(dependency.variableName)));
+                                                        new Dependency(dependency)));
     }
     if (sortedMap.values().stream().mapToInt(f -> f.dependencies.size()).sum() > 0)
     {
