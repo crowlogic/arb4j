@@ -728,5 +728,13 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     return '∨';
   }
+  
+  @Override
+  public boolean dependsOn(VariableNode<D, R, F> variable)
+  {
+    assert false : "TODO";
+    return false;
+  }
+
 
 }

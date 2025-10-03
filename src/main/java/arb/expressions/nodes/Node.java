@@ -177,11 +177,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return apply("cot");
   }
 
-  public boolean dependsOn(VariableNode<D, R, F> variable)
-  {
-    assert false : "TODO: implement in " + getClass();
-    return false;
-  }
+  public abstract boolean dependsOn(VariableNode<D, R, F> variable);
 
   /**
    * 

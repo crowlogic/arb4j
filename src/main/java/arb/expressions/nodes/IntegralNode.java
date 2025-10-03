@@ -48,6 +48,13 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 {
 
   @Override
+  public boolean dependsOn(VariableNode<D, C, F> variable)
+  {
+    assert false : "TODO";
+    return false;
+  }
+
+  @Override
   public int hashCode()
   {
     return Objects.hash(integrandNode, integrationVariableNode, lowerLimitNode, upperLimitNode);
@@ -436,4 +443,5 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     return '∫';
   }
 
+  
 }

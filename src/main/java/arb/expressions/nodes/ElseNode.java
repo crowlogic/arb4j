@@ -21,7 +21,7 @@ import arb.functions.Function;
  *      {@link TheArb4jLibrary}
  */
 public class ElseNode<D, R, F extends Function<? extends D, ? extends R>> extends
-                 Node<D, R, F>
+                     Node<D, R, F>
 {
 
   public ElseNode(Expression<D, R, F> expression)
@@ -35,7 +35,6 @@ public class ElseNode<D, R, F extends Function<? extends D, ? extends R>> extend
     assert false : "not intended to be generated";
     return null;
   }
-
 
   @Override
   public String typeset()
@@ -56,7 +55,6 @@ public class ElseNode<D, R, F extends Function<? extends D, ? extends R>> extend
   {
     return true;
   }
-
 
   @Override
   public List<Node<D, R, F>> getBranches()
@@ -94,26 +92,29 @@ public class ElseNode<D, R, F extends Function<? extends D, ? extends R>> extend
   }
 
   @Override
-  public Node<D, R, F>
-         differentiate(VariableNode<D, R, F> variable)
+  public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
     assert false : "TODO";
     return null;
   }
 
   @Override
-  public boolean
-         isScalar()
+  public boolean isScalar()
   {
     return true;
   }
 
   @Override
-  public char
-            symbol()
+  public char symbol()
   {
-   return '↮';
+    return '↮';
   }
 
+  @Override
+  public boolean dependsOn(VariableNode<D, R, F> variable)
+  {
+    assert false : "TODO";
+    return false;
+  }
 
 }

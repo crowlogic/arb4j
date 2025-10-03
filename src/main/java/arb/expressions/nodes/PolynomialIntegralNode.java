@@ -159,4 +159,12 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
     argumentNode.accept(visitor);
     visitor.accept(this);
   }
+  
+  @Override
+  public boolean dependsOn(VariableNode<D, C, F> variable)
+  {
+    assert false : "TODO";
+    return false;
+  }
+
 }

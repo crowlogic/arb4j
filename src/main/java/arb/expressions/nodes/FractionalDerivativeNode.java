@@ -115,5 +115,13 @@ public class FractionalDerivativeNode<D, R, F extends Function<? extends D, ? ex
     assert false : "TODO";
     return null;
   }
+  
+  @Override
+  public boolean dependsOn(VariableNode<D, R, F> variable)
+  {
+    assert false : "TODO";
+    return false;
+  }
+
 
 }
