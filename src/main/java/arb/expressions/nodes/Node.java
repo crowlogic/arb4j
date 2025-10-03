@@ -75,7 +75,8 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 {
   public boolean independentOfInput()
   {
-    return !isIndependentOf(expression.getIndependentVariable());
+    return expression.isNullaryFunction() ? true
+                                          : !isIndependentOf(expression.getIndependentVariable());
   }
 
   public int                 bits     = 128;
