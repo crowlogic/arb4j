@@ -73,6 +73,10 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                           Typesettable,
                           Consumer<Consumer<Node<D, R, F>>>
 {
+  public boolean independentOfInput()
+  {
+    return !isIndependentOf(expression.getIndependentVariable());
+  }
 
   public int                 bits     = 128;
 
