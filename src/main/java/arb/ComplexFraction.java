@@ -16,7 +16,7 @@ import arb.functions.NullaryFunction;
  */
 public class ComplexFraction implements
                              Becomable<ComplexFraction>,
-                             Field<ComplexFraction>,
+                             NamedField<ComplexFraction>,
                              AutoCloseable
 {
 
@@ -412,6 +412,21 @@ public class ComplexFraction implements
   {
     realPart.resize(arena, i);
     imaginaryPart.resize(arena, i);
+    return this;
+  }
+
+  @Override
+  public NamedRing<ComplexFraction> set(Fraction val)
+  {
+    realPart.set(val);
+    imaginaryPart.zero();
+    return this;
+  }
+
+  @Override
+  public ComplexFraction setName(String name)
+  {
+    this.name = name;
     return this;
   }
 

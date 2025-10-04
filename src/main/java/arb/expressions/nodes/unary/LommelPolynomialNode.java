@@ -8,6 +8,7 @@ import static arb.expressions.Compiler.loadBitsParameterOntoStack;
 import static arb.expressions.Compiler.loadInputParameter;
 import static arb.expressions.Compiler.loadOrderParameter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -24,6 +25,7 @@ import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 import arb.functions.rational.LommelPolynomial;
+import arb.functions.rational.RationalNullaryFunction;
 
 /**
  * Syntax: "R(n,v;z)" which corresponds to a {@link LommelPolynomial} of index
@@ -64,13 +66,14 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     return Objects.equals(index, other.index) && Objects.equals(order, other.order);
   }
 
-  public Node<D, C, F> order;
-  public Node<D, C, F> index;
-  public String        functionFieldName;
-  public String        elementFieldName;
-  public Class<?>      scalarType;
-  private boolean      hasScalarCodomain;
-  private boolean      isNullaryFunctionOrHasScalarCodomain;
+  public Node<D, C, F>        order;
+  public Node<D, C, F>        index;
+  public String               functionFieldName;
+  public String               elementFieldName;
+  public Class<?>             scalarType;
+  private boolean             hasScalarCodomain;
+  private boolean             isNullaryFunctionOrHasScalarCodomain;
+  private List<Node<D, C, F>> branches;
 
   public LommelPolynomialNode(Expression<D, C, F> expression)
   {
@@ -259,7 +262,35 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
   @Override
   public List<Node<D, C, F>> getBranches()
   {
-    return List.of(order, index, arg);
+    List<Node<D, C, F>> branches = new ArrayList<>();
+
+    // Add the existing branches (order, index, arg)
+    branches.add(order);
+    branches.add(index);
+    branches.add(arg);
+
+    // Add branches from the LommelPolynomial static expression tree
+    if (LommelPolynomial.expression != null && LommelPolynomial.expression.rootNode != null)
+    {
+      // Clone the expression to avoid modifying the original
+      Expression<D, C, F> clonedExpression = expression.cloneExpression();
+
+      // Clear the indeterminate variable constraint in the clone
+      clonedExpression.indeterminantVariable = null;
+
+      List<? extends Node<Object,
+                    RationalFunction,
+                    RationalNullaryFunction>> expressionBranches =
+                                                                 LommelPolynomial.expression.rootNode.getBranches();
+
+      for (Node<Object, RationalFunction, RationalNullaryFunction> branch : expressionBranches)
+      {
+        Node<D, C, F> splicedBranch = branch.spliceInto(clonedExpression);
+        branches.add(splicedBranch);
+      }
+    }
+
+    return branches;
   }
 
   @Override
