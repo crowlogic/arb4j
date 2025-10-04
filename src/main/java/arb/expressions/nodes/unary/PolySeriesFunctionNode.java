@@ -131,18 +131,18 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
   }
 
   public void call(MethodVisitor mv,
-                   boolean complex,
+                   boolean isComplex,
                    int n,
-                   String complexFunctionName,
-                   String realFunctionName)
+                   String realFunctionName,
+                   String complexFunctionName)
   {
-    Class<?> polyClass = complex ? ComplexPolynomial.class : RealPolynomial.class;
+    Class<?> polyClass = isComplex ? ComplexPolynomial.class : RealPolynomial.class;
     pushInt(mv, n);
     loadBitsParameterOntoStack(mv);
 
     invokeStaticMethod(mv,
                        arblib.class,
-                       complex ? complexFunctionName : realFunctionName,
+                       isComplex ? complexFunctionName : realFunctionName,
                        Void.class,
                        polyClass, // res
                        polyClass, // arg

@@ -43,7 +43,7 @@ public class GammaFunctionNode<D, C, F extends Function<? extends D, ? extends C
                                                int n,
                                                int oneSlot)
   {
-    call(mv, complex, n, "acb_poly_gamma_series", "arb_poly_gamma_series");
+    call(mv, complex, n, "arb_poly_gamma_series", "acb_poly_gamma_series");
   }
 
   @Override

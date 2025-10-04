@@ -43,7 +43,7 @@ public class SineIntegralNode<D, C, F extends Function<? extends D, ? extends C>
                                                int n,
                                                int oneSlot)
   {
-    call(mv, complex, n, "acb_hypgeom_si_series", "arb_hypgeom_si_series");
+    call(mv, complex, n, "arb_hypgeom_si_series", "acb_hypgeom_si_series");
   }
 
   @Override
