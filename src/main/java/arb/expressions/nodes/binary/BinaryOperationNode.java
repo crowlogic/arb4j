@@ -1,32 +1,17 @@
 package arb.expressions.nodes.binary;
 
-import static arb.expressions.Compiler.cast;
-import static arb.expressions.Compiler.invokeBinaryOperationMethod;
-import static arb.expressions.Compiler.loadBitsParameterOntoStack;
-import static arb.expressions.Compiler.loadResultParameter;
+import static arb.expressions.Compiler.*;
 import static arb.utensils.Utensils.indent;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import arb.AlgebraicNumber;
-import arb.Complex;
-import arb.ComplexPolynomial;
-import arb.ComplexRationalFunction;
-import arb.Fraction;
+import arb.*;
 import arb.Integer;
-import arb.IntegerPolynomial;
-import arb.RationalFunction;
-import arb.Real;
-import arb.RealPolynomial;
 import arb.exceptions.CompilerException;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
@@ -149,7 +134,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
 
   public Node<D, C, F> left;
 
-  public Logger log = LoggerFactory.getLogger(getClass());
+  public Logger        log = LoggerFactory.getLogger(getClass());
 
   public String        operation;
 
@@ -224,7 +209,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
 
   public String formatGenerationParameters(Class<?> resultType)
   {
-    String    IND         = indent(2);
+    String IND = indent(2);
 
     return String.format("\n\ngenerate(\n"
                          + "%s%s%s    (%s),\n"
@@ -298,7 +283,6 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
         loadBitsParameterOntoStack(mv);
       }
       loadOutput(mv, resultType);
-
 
       if (Expression.trace)
       {
@@ -416,32 +400,14 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   @Override
   public Node<D, C, F> simplify()
   {
-    boolean changedLeft  = false;
-    boolean changedRight = false;
-    var     beforeString = toString();
 
     if (left != null)
     {
-      Node<D, C, F> newLeft = left.simplify();
-
-      if (!left.equals(newLeft))
-      {
-        changedLeft = true;
-      }
-
-      left = newLeft;
-
+      left = left.simplify();
     }
     if (right != null)
     {
-      Node<D, C, F> newRight = right.simplify();
-      if (right != newRight)
-      {
-        changedRight = true;
-      }
-
-      right = newRight;
-
+      right = right.simplify();
     }
 
     return this;
