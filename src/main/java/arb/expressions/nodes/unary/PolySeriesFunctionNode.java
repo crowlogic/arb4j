@@ -12,6 +12,7 @@ import arb.ComplexPolynomial;
 import arb.Real;
 import arb.RealPolynomial;
 import arb.arblib;
+import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
@@ -53,7 +54,7 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
   {
     String cls = cx ? ARB_COMPLEX_POLYNOMIAL : ARB_REAL_POLYNOMIAL;
     mv.visitTypeInsn(Opcodes.NEW, cls);
-    mv.visitInsn(Opcodes.DUP);
+    Compiler.duplicateTopOfTheStack(mv);
     mv.visitMethodInsn(Opcodes.INVOKESPECIAL, cls, INIT, VOID_NOARG_SIGNATURE, false);
   }
 
@@ -182,12 +183,15 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
                                   int argSlot)
   {
     mv.visitVarInsn(Opcodes.ALOAD, resSlot);
-    invokeStaticMethod(mv,
-                       arblib.class,
-                       isComplex ? ACB_POLY_CLEAR : ARB_POLY_CLEAR,
-                       Void.class,
-                       polynomialClass);
+    invokeClearPolyMethod(mv, isComplex, polynomialClass);
     mv.visitVarInsn(Opcodes.ALOAD, argSlot);
+    invokeClearPolyMethod(mv, isComplex, polynomialClass);
+  }
+
+  protected void invokeClearPolyMethod(MethodVisitor mv,
+                                       final boolean isComplex,
+                                       Class<?> polynomialClass)
+  {
     invokeStaticMethod(mv,
                        arblib.class,
                        isComplex ? ACB_POLY_CLEAR : ARB_POLY_CLEAR,
@@ -299,9 +303,9 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
     int    oneSlot = nextLocal++;
     String type    = isComplex ? ARB_COMPLEX : ARB_REAL;
     mv.visitTypeInsn(Opcodes.NEW, type);
-    mv.visitInsn(Opcodes.DUP);
+    Compiler.duplicateTopOfTheStack(mv);
     mv.visitMethodInsn(Opcodes.INVOKESPECIAL, type, INIT, VOID_NOARG_SIGNATURE, false);
-    mv.visitInsn(Opcodes.DUP);
+    Compiler.duplicateTopOfTheStack(mv);
     mv.visitVarInsn(Opcodes.ASTORE, oneSlot);
     invokeStaticMethod(mv,
                        arblib.class,
