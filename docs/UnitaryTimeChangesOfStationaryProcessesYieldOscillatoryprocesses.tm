@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|generic>
+<style|<tuple|generic|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Unitary Time Changes of Stationary Processes Yield
@@ -380,7 +380,11 @@
       <tformat|<table|<row|<cell|Z<around|(|t|)>>|<cell|=<around|(|U<rsub|\<theta\>>*X|)><around|(|t|)><eq-number>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*<space|0.17em>X<around|(|\<theta\><around|(|t|)>|)><eq-number>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>><sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)><eq-number>>>>>
     </align>
 
-    where <math|\<varphi\><rsub|t><around|(|\<lambda\>|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>>.
+    where
+
+    <\equation>
+      \<varphi\><rsub|t><around|(|\<lambda\>|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>
+    </equation>
 
     To verify this constitutes an oscillatory representation according to
     Definition<nbsp><reference|def:osc_proc>, we must write
@@ -709,15 +713,25 @@
     Thus <math|L> is symmetric.
 
     In the atomic representation, <math|L> acts as
-    <math|<around|(|L*f|)><around|(|t<rsub|0>|)>=t<rsub|0>*f<around|(|t<rsub|0>|)>>
-    for each <math|t<rsub|0>> where <math|Z<around|(|t<rsub|0>|)>=0>. This is
-    unitarily equivalent to the diagonal operator on <math|\<ell\><rsup|2>>
-    with diagonal entries <math|<around|{|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0|}>>.
-    Such diagonal operators are self-adjoint.
 
-    For the spectrum calculation: <math|L*e<rsub|t<rsub|0>>=t<rsub|0>*e<rsub|t<rsub|0>>>,
+    <\equation>
+      <around|(|L*f|)><around|(|t<rsub|0>|)>=t<rsub|0>*f<around|(|t<rsub|0>|)>
+    </equation>
+
+    \ for each <math|t<rsub|0>> where <math|Z<around|(|t<rsub|0>|)>=0>. This
+    is unitarily equivalent to the diagonal operator on
+    <math|\<ell\><rsup|2>> with diagonal entries
+    <math|<around|{|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0|}>>. Such diagonal
+    operators are self-adjoint.
+
+    For the spectrum calculation: We have
+
+    <\equation>
+      L*e<rsub|t<rsub|0>>=t<rsub|0>*e<rsub|t<rsub|0>>
+    </equation>
+
     so each <math|t<rsub|0>> where <math|Z<around|(|t<rsub|0>|)>=0> is an
-    eigenvalue with eigenvector <math|e<rsub|t<rsub|0>>>. Since
+    eigenvalue of <math|L> with eigenvector <math|e<rsub|t<rsub|0>>>. Since
     <math|<around|{|e<rsub|t<rsub|0>>|}>> forms an orthonormal basis,
     <math|L> has pure point spectrum.
 
@@ -725,15 +739,32 @@
     <math|\<lambda\>\<nin\><around|{|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0|}>>.
     Then for any <math|f\<in\>\<cal-D\><around|(|L|)>>,
     <math|<around|(|L-\<lambda\>*I|)>*f> has components
-    <math|<around|(|<around|(|L-\<lambda\>*I|)>*f|)><around|(|t<rsub|0>|)>=<around|(|t<rsub|0>-\<lambda\>|)>*f<around|(|t<rsub|0>|)>>.
-    Since <math|t<rsub|0>-\<lambda\>\<neq\>0> for all zeros <math|t<rsub|0>>,
-    we can solve <math|<around|(|L-\<lambda\>*I|)>*f=g> uniquely for any
-    <math|g\<in\>\<cal-H\>> by setting <math|f<around|(|t<rsub|0>|)>=<frac|g<around|(|t<rsub|0>|)>|t<rsub|0>-\<lambda\>>>.
-    This shows <math|L-\<lambda\>*I> is invertible, so
-    <math|\<lambda\>\<nin\>\<sigma\><around|(|L|)>>.
 
-    Therefore <math|\<sigma\><around|(|L|)>=<around|{|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0|}>>
-    exactly, with simple eigenvalues.
+    <\equation>
+      <around|(|<around|(|L-\<lambda\>*I|)>*f|)><around|(|t<rsub|0>|)>=<around|(|t<rsub|0>-\<lambda\>|)>*f<around|(|t<rsub|0>|)>
+    </equation>
+
+    Since <math|t<rsub|0>-\<lambda\>\<neq\>0> for all zeros <math|t<rsub|0>>,
+    we can solve
+
+    <\equation>
+      <around|(|L-\<lambda\>*I|)>*f=g
+    </equation>
+
+    \ uniquely for any <math|g\<in\>\<cal-H\>> by setting
+
+    <\equation>
+      f<around|(|t<rsub|0>|)>=<frac|g<around|(|t<rsub|0>|)>|t<rsub|0>-\<lambda\>>
+    </equation>
+
+    This shows <math|L-\<lambda\>*I> is invertible, so
+    <math|\<lambda\>\<nin\>\<sigma\><around|(|L|)>>. Therefore
+
+    <\equation>
+      \<sigma\><around|(|L|)>=<around|{|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0|}>
+    </equation>
+
+    and the eigenvalues are simple.
   </proof>
 
   <\remark>
@@ -816,53 +847,56 @@
 <\initial>
   <\collection>
     <associate|magnification|1.2>
+    <associate|page-height|auto>
     <associate|page-medium|paper>
+    <associate|page-type|letter>
+    <associate|page-width|auto>
   </collection>
 </initial>
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|2|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|auto-10|<tuple|5|10|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|auto-11|<tuple|5.1|10|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|auto-12|<tuple|5.2|11|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|auto-13|<tuple|6|13|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|auto-2|<tuple|1.1|2|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|auto-3|<tuple|1.2|2|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|auto-4|<tuple|2|4|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|auto-5|<tuple|3|6|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|auto-6|<tuple|3.1|6|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|auto-7|<tuple|3.2|6|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|auto-8|<tuple|3.3|8|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|auto-9|<tuple|4|9|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|cor:evol_spec|<tuple|13|7|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|def:Hmu|<tuple|18|11|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|def:L|<tuple|20|11|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|def:L2sigma|<tuple|2|2|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|def:Utheta|<tuple|4|2|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|def:cramer|<tuple|11|6|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|def:osc_proc|<tuple|8|4|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|def:regularity|<tuple|23|13|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|def:sigma_compact|<tuple|1|2|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|def:zeromeasure|<tuple|16|10|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|lem:delta|<tuple|24|13|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|prop:atomic|<tuple|19|11|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|prop:conjugation|<tuple|14|8|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|prop:inverse|<tuple|5|2|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|rem:scaffold|<tuple|22|12|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|sec:HP|<tuple|5|10|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|sec:appendix|<tuple|6|13|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|sec:functionspaces|<tuple|1|2|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|sec:oscillatory|<tuple|2|4|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|sec:samplepaths|<tuple|4|9|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|sec:stationary_timechange|<tuple|3|6|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|thm:Utheta_to_osc|<tuple|12|6|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|thm:atomic|<tuple|17|10|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|thm:existence_osc|<tuple|10|5|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|thm:global_unitarity|<tuple|7|4|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|thm:local_unitarity|<tuple|6|2|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|thm:paths_sigma_comp|<tuple|15|9|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|thm:spectrum|<tuple|21|12|../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|auto-1|<tuple|1|2>>
+    <associate|auto-10|<tuple|5|10>>
+    <associate|auto-11|<tuple|5.1|10>>
+    <associate|auto-12|<tuple|5.2|11>>
+    <associate|auto-13|<tuple|6|13>>
+    <associate|auto-2|<tuple|1.1|2>>
+    <associate|auto-3|<tuple|1.2|2>>
+    <associate|auto-4|<tuple|2|4>>
+    <associate|auto-5|<tuple|3|6>>
+    <associate|auto-6|<tuple|3.1|6>>
+    <associate|auto-7|<tuple|3.2|6>>
+    <associate|auto-8|<tuple|3.3|8>>
+    <associate|auto-9|<tuple|4|9>>
+    <associate|cor:evol_spec|<tuple|13|7>>
+    <associate|def:Hmu|<tuple|18|11>>
+    <associate|def:L|<tuple|20|12>>
+    <associate|def:L2sigma|<tuple|2|2>>
+    <associate|def:Utheta|<tuple|4|2>>
+    <associate|def:cramer|<tuple|11|6>>
+    <associate|def:osc_proc|<tuple|8|4>>
+    <associate|def:regularity|<tuple|23|13>>
+    <associate|def:sigma_compact|<tuple|1|2>>
+    <associate|def:zeromeasure|<tuple|16|10>>
+    <associate|lem:delta|<tuple|24|14>>
+    <associate|prop:atomic|<tuple|19|11>>
+    <associate|prop:conjugation|<tuple|14|8>>
+    <associate|prop:inverse|<tuple|5|2>>
+    <associate|rem:scaffold|<tuple|22|13>>
+    <associate|sec:HP|<tuple|5|10>>
+    <associate|sec:appendix|<tuple|6|13>>
+    <associate|sec:functionspaces|<tuple|1|2>>
+    <associate|sec:oscillatory|<tuple|2|4>>
+    <associate|sec:samplepaths|<tuple|4|9>>
+    <associate|sec:stationary_timechange|<tuple|3|6>>
+    <associate|thm:Utheta_to_osc|<tuple|12|6>>
+    <associate|thm:atomic|<tuple|17|10>>
+    <associate|thm:existence_osc|<tuple|10|5>>
+    <associate|thm:global_unitarity|<tuple|7|4>>
+    <associate|thm:local_unitarity|<tuple|6|3>>
+    <associate|thm:paths_sigma_comp|<tuple|15|9>>
+    <associate|thm:spectrum|<tuple|21|12>>
   </collection>
 </references>
 
