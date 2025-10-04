@@ -13,31 +13,36 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.nodes.Node;
-import arb.expressions.viz.context.ContextFieldListCell;
-import arb.expressions.viz.context.ContextMenuListCell;
-import arb.expressions.viz.context.ContextVariableStringConverter;
 import arb.functions.Function;
 import arb.functions.polynomials.orthogonal.real.JacobiPolynomials;
 import arb.utensils.Utensils;
 import arb.viz.WindowManager;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.MapChangeListener;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.TreeItem;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
@@ -45,7 +50,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import javafx.util.StringConverter;
 
 /**
  * TODO: save/restore/copy/paste/drag&drop context variables
@@ -79,19 +83,19 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     launch(args);
   }
 
-  public int             bits                 = 128;
+  public int              bits                 = 128;
 
-  VBox                   contextBox;
+  VBox                    contextBox;
 
-  public ListView<Named> contextListView;
+  public TableView<Named> contextTableView;
 
-  private boolean        contextViewVisible   = false;
+  private boolean         contextViewVisible   = false;
 
-  private double[]       lastDividerPositions = null;
+  private double[]        lastDividerPositions = null;
 
-  private SplitPane      splitPane;
+  private SplitPane       splitPane;
 
-  private TabPane        tabPane;
+  private TabPane         tabPane;
 
   ExpressionTreeView<D, C, F> addNewExpressionTab()
   {
@@ -102,25 +106,277 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     tabPane.getTabs().add(tab);
     tabPane.getSelectionModel().select(tab);
 
-    updateContextListView();
+    updateContextTableView();
 
     tab.setOnSelectionChanged(event ->
     {
       if (tab.isSelected())
       {
-        updateContextListView();
+        updateContextTableView();
       }
     });
 
     return expressionTree;
   }
 
-  public void constructContextListView()
+  public void constructContextTableView()
   {
-    contextListView = new ListView<Named>();
+    contextTableView = new TableView<Named>();
 
-    contextListView.setOnEditCommit(new ContextVariableEditCommitHandler<D, C, F>(this));
+    // ==================== Name Column ====================
+    TableColumn<Named, String> nameColumn = new TableColumn<>("Name");
+    nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()
+                                                                                .getName()));
+    nameColumn.setPrefWidth(150);
+    nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+    nameColumn.setOnEditCommit(event ->
+    {
+      Named   item           = event.getRowValue();
+      String  oldName        = item.getName();
+      String  newName        = event.getNewValue();
 
+      Context currentContext = getCurrentContext();
+      if (currentContext != null && !oldName.equals(newName))
+      {
+        if (!currentContext.variables.containsKey(newName))
+        {
+          currentContext.rename(oldName, newName);
+          item.setName(newName);
+          contextTableView.refresh();
+        }
+        else
+        {
+          WindowManager.showAlert("Name Conflict",
+                                  "A variable named '" + newName + "' already exists");
+          contextTableView.refresh();
+        }
+      }
+    });
+
+    // ==================== Type Column ====================
+    TableColumn<Named, String> typeColumn = new TableColumn<>("Type");
+    typeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()
+                                                                                .getClass()
+                                                                                .getSimpleName()));
+    typeColumn.setPrefWidth(120);
+    typeColumn.setCellFactory(column -> new TableCell<Named, String>()
+    {
+      private ChoiceBox<Class<?>> choiceBox;
+
+      @Override
+      protected void updateItem(String item, boolean empty)
+      {
+        super.updateItem(item, empty);
+
+        if (empty || getTableRow() == null || getTableRow().getItem() == null)
+        {
+          setText(null);
+          setGraphic(null);
+        }
+        else
+        {
+          Named variable = getTableRow().getItem();
+
+          if (isEditing())
+          {
+            if (choiceBox == null)
+            {
+              choiceBox =
+                        new ChoiceBox<>(FXCollections.observableArrayList(ExpressionTreeView.TYPES));
+              choiceBox.setConverter(new javafx.util.StringConverter<Class<?>>()
+              {
+                @Override
+                public String toString(Class<?> clazz)
+                {
+                  return clazz == null ? "" : clazz.getSimpleName();
+                }
+
+                @Override
+                public Class<?> fromString(String string)
+                {
+                  return null;
+                }
+              });
+              choiceBox.setOnAction(e ->
+              {
+                Class<?> selectedType = choiceBox.getValue();
+                if (selectedType != null)
+                {
+                  commitEdit(selectedType.getSimpleName());
+                }
+              });
+            }
+            choiceBox.setValue(variable.getClass());
+            setGraphic(choiceBox);
+            setText(null);
+          }
+          else
+          {
+            setText(variable.getClass().getSimpleName());
+            setGraphic(null);
+          }
+        }
+      }
+
+      @Override
+      public void startEdit()
+      {
+        super.startEdit();
+        Named variable = getTableRow().getItem();
+        if (variable != null)
+        {
+          if (choiceBox == null)
+          {
+            choiceBox =
+                      new ChoiceBox<>(FXCollections.observableArrayList(ExpressionTreeView.TYPES));
+            choiceBox.setConverter(new javafx.util.StringConverter<Class<?>>()
+            {
+              @Override
+              public String toString(Class<?> clazz)
+              {
+                return clazz == null ? "" : clazz.getSimpleName();
+              }
+
+              @Override
+              public Class<?> fromString(String string)
+              {
+                return null;
+              }
+            });
+            choiceBox.setOnAction(e ->
+            {
+              Class<?> selectedType = choiceBox.getValue();
+              if (selectedType != null)
+              {
+                commitEdit(selectedType.getSimpleName());
+              }
+            });
+          }
+          choiceBox.setValue(variable.getClass());
+          setGraphic(choiceBox);
+          setText(null);
+        }
+      }
+
+      @Override
+      public void cancelEdit()
+      {
+        super.cancelEdit();
+        Named variable = getTableRow().getItem();
+        setText(variable == null ? null : variable.getClass().getSimpleName());
+        setGraphic(null);
+      }
+
+      @Override
+      public void commitEdit(String newValue)
+      {
+        super.commitEdit(newValue);
+
+        Named oldVariable = getTableRow().getItem();
+        if (oldVariable != null)
+        {
+          Context currentContext = getCurrentContext();
+          if (currentContext != null)
+          {
+            try
+            {
+              // Find the selected class
+              Class<?> newType = null;
+              for (Class<?> type : ExpressionTreeView.TYPES)
+              {
+                if (type.getSimpleName().equals(newValue))
+                {
+                  newType = type;
+                  break;
+                }
+              }
+
+              if (newType != null && !newType.equals(oldVariable.getClass()))
+              {
+                // Create new instance of the new type
+                Named newVariable = (Named) newType.getConstructor().newInstance();
+                newVariable.setName(oldVariable.getName());
+
+                // Replace in context
+                currentContext.variables.put(oldVariable.getName(), newVariable);
+                contextTableView.refresh();
+              }
+            }
+            catch (Exception e)
+            {
+              WindowManager.showAlert("Type Change Error",
+                                      "Could not change type: " + e.getMessage());
+              Utensils.wrapOrThrow(e);
+            }
+          }
+        }
+      }
+    });
+
+    // ==================== Value Column ====================
+    TableColumn<Named, String> valueColumn = new TableColumn<>("Value");
+    valueColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()
+                                                                                 .toString()));
+    valueColumn.setPrefWidth(200);
+    valueColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+    valueColumn.setOnEditCommit(event ->
+    {
+      Named  item        = event.getRowValue();
+      String newValueStr = event.getNewValue();
+
+      try
+      {
+        // Handle different types
+        if (item instanceof Real)
+        {
+          Real real = (Real) item;
+          real.set(newValueStr, real.bits());
+        }
+        else if (item instanceof arb.Integer)
+        {
+          arb.Integer integer = (arb.Integer) item;
+          integer.set(newValueStr);
+        }
+        else if (item instanceof arb.Complex)
+        {
+          arb.Complex complex = (arb.Complex) item;
+          complex.set(newValueStr, complex.bits());
+        }
+        else
+        {
+          // Try to use reflection to find a suitable setter
+          try
+          {
+            var method = item.getClass().getMethod("set", String.class);
+            method.invoke(item, newValueStr);
+          }
+          catch (NoSuchMethodException e)
+          {
+            try
+            {
+              var method = item.getClass().getMethod("set", String.class, int.class);
+              method.invoke(item, newValueStr, 128); // default precision
+            }
+            catch (NoSuchMethodException e2)
+            {
+              WindowManager.showAlert("Value Update Error",
+                                      "Type "
+                                                            + item.getClass().getSimpleName()
+                                                            + " does not support value editing");
+            }
+          }
+        }
+        contextTableView.refresh();
+      }
+      catch (Exception e)
+      {
+        WindowManager.showAlert("Value Parse Error", "Could not parse value: " + e.getMessage());
+        contextTableView.refresh();
+      }
+    });
+
+    contextTableView.getColumns().addAll(nameColumn, typeColumn, valueColumn);
+    contextTableView.setEditable(true);
   }
 
   public VBox createMainLayout()
@@ -155,12 +411,11 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
   {
     splitPane  = new SplitPane();
     contextBox = new VBox(10);
-    constructContextListView();
+    constructContextTableView();
 
-    var converter   = new ContextVariableStringConverter<D, C, F>(this);
-    var contextMenu = newContextMenu(converter);
-    contextListView.setContextMenu(contextMenu);
-    contextBox.getChildren().addAll(new Label("Context Variables:"), contextListView);
+    var contextMenu = newContextMenu();
+    contextTableView.setContextMenu(contextMenu);
+    contextBox.getChildren().addAll(new Label("Context Variables:"), contextTableView);
     VBox.setVgrow(splitPane, Priority.ALWAYS);
     splitPane.getItems().add(tabPane);
     return splitPane;
@@ -204,6 +459,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     if (currentTab == null)
     {
       addNewExpressionTab();
+      currentTab = tabPane.getSelectionModel().getSelectedItem();
     }
     var content       = currentTab.getContent();
     var expressionTab = (ExpressionTreeView<D, C, F>) content;
@@ -247,34 +503,26 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
                     graphButton);
   }
 
-  protected ContextMenu newContextMenu(StringConverter<Named> converter)
+  protected ContextMenu newContextMenu()
   {
     var contextMenu = new ContextMenu(newDeleteVariableMenuItem(),
                                       newNewVariableMenuItem(),
                                       newRenameVariableMenuItem());
-
-    contextListView.setCellFactory(ContextMenuListCell.forListView(contextMenu,
-                                                                   param -> new ContextFieldListCell<D, C, F>(this,
-                                                                                                              converter)));
-
-    contextListView.setEditable(true);
     return contextMenu;
   }
 
-  @SuppressWarnings("unlikely-arg-type")
   public MenuItem newDeleteVariableMenuItem()
   {
     var deleteVariableMenuItem = new MenuItem("Delete Variable");
     deleteVariableMenuItem.setOnAction(e ->
     {
-      var selectedItem = contextListView.getSelectionModel().getSelectedItem();
+      var selectedItem = contextTableView.getSelectionModel().getSelectedItem();
       if (selectedItem != null)
       {
         var currentContext = getCurrentContext();
         if (currentContext != null)
         {
           currentContext.variables.remove(selectedItem.getName());
-          contextListView.getItems().remove(selectedItem);
         }
       }
     });
@@ -300,7 +548,6 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
             if (!currentContext.variables.containsKey(newVar.getName()))
             {
               currentContext.variables.put(newVar.getName(), newInstance);
-              updateContextListView();
             }
             else
             {
@@ -323,22 +570,22 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     var renameVariable = new MenuItem("Rename Variable");
     renameVariable.setOnAction(e ->
     {
-      Named selectedItem = contextListView.getSelectionModel().getSelectedItem();
+      Named selectedItem = contextTableView.getSelectionModel().getSelectedItem();
       if (selectedItem == null)
       {
         WindowManager.showAlert("Error", "The variable to rename must be selected.");
         return;
       }
 
-      var newVar = showVariableNameDialog(true);
-      if (newVar != null)
+      var newVarName = showVariableNameDialog(true);
+      if (newVarName != null)
       {
         var currentContext = getCurrentContext();
         if (currentContext != null)
         {
           var oldName = selectedItem.getName();
-          currentContext.rename(oldName, newVar);
-          updateContextListView();
+          currentContext.rename(oldName, newVarName);
+          updateContextTableView();
         }
       }
     });
@@ -379,7 +626,8 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
   {
     var dialog = new TextInputDialog();
     dialog.setTitle("New Variable");
-    dialog.setHeaderText(rename ? "Enter the new name for the variable:" : "Enter the name for the new variable:");
+    dialog.setHeaderText(rename ? "Enter the new name for the variable:"
+                                : "Enter the name for the new variable:");
     dialog.setContentText("Variable name:");
     dialog.initOwner(tabPane.getScene().getWindow());
     var newVarName = dialog.showAndWait();
@@ -477,7 +725,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     }
     else
     {
-      contextListView.setItems(getCurrentContext().variables);
+      updateContextTableView();
       splitPane.getItems().add(0, contextBox);
       splitPane.setDividerPositions(lastDividerPositions == null ? new double[]
       { 0.19 } : lastDividerPositions);
@@ -486,12 +734,31 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     contextViewVisible = !contextViewVisible;
   }
 
-  void updateContextListView()
+  void updateContextTableView()
   {
     Context currentContext = getCurrentContext();
-    if (currentContext != null && contextListView != null)
+    if (currentContext != null && contextTableView != null)
     {
-      contextListView.setItems(currentContext.variables);
+      // Create ObservableList from map values
+      ObservableList<
+                    Named> list =
+                                FXCollections.observableArrayList(currentContext.variables.values());
+
+      // Add listener to keep synchronized with map changes
+      currentContext.variables.addListener((MapChangeListener<String, Named>) change ->
+      {
+        if (change.wasRemoved())
+        {
+          list.remove(change.getValueRemoved());
+        }
+        if (change.wasAdded())
+        {
+          list.add(change.getValueAdded());
+        }
+      });
+
+      contextTableView.setItems(list);
+      contextTableView.refresh();
     }
   }
 
@@ -511,7 +778,8 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     return false;
   }
 
-  public static HashMap<String, Boolean> applyNodeExpansionStates(HashMap<String, Boolean> states, TreeItem<?> item)
+  public static HashMap<String, Boolean> applyNodeExpansionStates(HashMap<String, Boolean> states,
+                                                                  TreeItem<?> item)
   {
     if (item != null && !item.isLeaf())
     {
@@ -529,7 +797,8 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     return states;
   }
 
-  public static HashMap<String, Boolean> enumerateNodeExpansionStates(HashMap<String, Boolean> states, TreeItem<?> item)
+  public static HashMap<String, Boolean>
+         enumerateNodeExpansionStates(HashMap<String, Boolean> states, TreeItem<?> item)
   {
     if (item != null && !item.isLeaf())
     {

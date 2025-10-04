@@ -4,11 +4,14 @@ import static java.lang.String.format;
 
 import org.objectweb.asm.MethodVisitor;
 
-import arb.*;
+import arb.Fraction;
 import arb.Integer;
+import arb.Real;
+import arb.RealPolynomial;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
+import arb.expressions.nodes.unary.FunctionNode;
 import arb.expressions.nodes.unary.SineIntegralNode;
 import arb.functions.Function;
 
@@ -178,6 +181,17 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       }
     }
 
+ 
+    if (left instanceof FunctionNode<D, R, F> leftFunction
+                  && right instanceof FunctionNode<D, R, F> rightFunction)
+    {
+      if (leftFunction.isExponential() && rightFunction.functionName.equals("exp"))
+      {
+        var exponentSum = leftFunction.arg.sub(rightFunction.arg).simplify();
+        return exponentSum.exp();
+      }
+    }
+    
     return super.simplify();
   }
 

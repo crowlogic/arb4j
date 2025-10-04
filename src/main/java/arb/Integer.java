@@ -1149,7 +1149,7 @@ public class Integer implements
   {
     return result.set(this).sub(operand, prec);
   }
-  
+
   public Real sub(Integer operand, int prec, Real result)
   {
     return result.set(this).sub(operand, prec);
@@ -1200,11 +1200,10 @@ public class Integer implements
   @Override
   public String toString()
   {
-    String nameStr = name != null ? (name + "=") : "";
 
     if (dim > 1)
     {
-      StringBuffer buf = new StringBuffer(nameStr + "[");
+      StringBuffer buf = new StringBuffer("[");
       for (int i = 0; i < dim; i++)
       {
         if (i > 0)
@@ -1218,7 +1217,7 @@ public class Integer implements
     }
     else
     {
-      return nameStr + arblib.fmpz_get_str(null, 10, swigCPtr);
+      return arblib.fmpz_get_str(null, 10, swigCPtr);
     }
   }
 

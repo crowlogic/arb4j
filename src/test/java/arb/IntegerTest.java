@@ -78,7 +78,7 @@ public class IntegerTest extends
       v2.set(2);
       assertEquals("[41 6 2]", v.toString());
       v.setName("v");
-      assertEquals("v=[41 6 2]", v.toString());
+      assertEquals("[41 6 2]", v.toString());
     }
   }
 

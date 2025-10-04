@@ -78,7 +78,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.IndexedCell;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
@@ -293,9 +292,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
   @SuppressWarnings("unchecked")
   private void updateContextView()
   {
-    ListView<Named> contextListView = (ListView<Named>) this.expressor.contextBox.getChildren()
-                                                                                 .get(1);
-    contextListView.refresh();
+    expressor.updateContextTableView();
   }
 
   public void resizeColumnsToFitContent()
@@ -433,7 +430,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
 
         }
 
-        expressor.updateContextListView();
+        expressor.updateContextTableView();
 
         if (serializedExpression.coDomain != null && codomainTypeBox != null)
         {
