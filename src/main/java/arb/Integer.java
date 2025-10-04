@@ -916,9 +916,17 @@ public class Integer implements
     return res.set(this).pow(operand, res);
   }
 
+  public Complex pow(Complex operand, int bits, Complex result)
+  {
+    try ( Complex tmp = result.borrowVariable())
+    {
+      return tmp.set(this).pow(operand, bits, result);
+    }
+  }
+
   public Complex pow(Fraction operand, int bits, Complex result)
   {
-    try ( Complex tmp = new Complex())
+    try ( Complex tmp = result.borrowVariable())
     {
       return tmp.set(this).pow(operand, bits, result);
     }
@@ -926,7 +934,7 @@ public class Integer implements
 
   public Real pow(Fraction exponent, int bits, Real result)
   {
-    try ( Real blip = new Real())
+    try ( Real blip = result.borrowVariable())
     {
       return pow(blip.set(exponent), bits, result);
     }
