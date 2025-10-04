@@ -288,7 +288,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     {
       indexVariableFieldName = expression.parseName();
     }
-    expression.context.variables.map.put(indexVariableFieldName, null);
+    expression.context.variables.put(indexVariableFieldName, null);
     expression.require('=');
     parseLowerLimit();
     parseUpperLimit();
@@ -666,7 +666,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
     // expression.reset();
     expression.context.functions.remove(this.operandFunctionFieldName);
-    expression.context.variables.map.remove(this.operandValueFieldName);
+    expression.context.variables.remove(this.operandValueFieldName);
     operandFunctionFieldName = null;
     operandValueFieldName    = null;
     operand                  = null;

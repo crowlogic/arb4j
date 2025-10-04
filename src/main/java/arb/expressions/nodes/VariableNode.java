@@ -137,7 +137,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     else
     {
-      if ((variables == null || !variables.map.containsKey(reference.name)
+      if ((variables == null || !variables.containsKey(reference.name)
                     || reference.type == null) && resolve)
       {
         resolveReference();

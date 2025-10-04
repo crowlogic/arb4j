@@ -22,11 +22,12 @@ import arb.exceptions.CompilerException;
 import arb.expressions.context.Dependency;
 import arb.expressions.context.FunctionMappings;
 import arb.expressions.context.TopologicalSorter;
-import arb.expressions.context.Variables;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 import arb.functions.integer.Sequence;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
 
 /**
  * The {@link Context} class is an integral part of the {@link Expression}
@@ -74,34 +75,38 @@ public class Context
 
   public boolean                              saveClasses                  = false;
 
-  public final Variables                      variables;
+  public final ObservableMap<String, Named>   variables;
 
   public Context()
   {
-    this.variables = new Variables();
+    this.variables = FXCollections.observableHashMap();
     this.functions = new FunctionMappings();
   }
 
   public Context(FunctionMappings funcs)
   {
-    this.variables = new Variables();
+    this.variables = FXCollections.observableHashMap();
     this.functions = funcs;
   }
 
   public Context(Named... vars)
   {
-    this(new Variables(vars));
+    this();
+    for (Named v : vars)
+    {
+      variables.put(v.getName(), v);
+    }
   }
 
-  public Context(Variables vars)
+  public Context(Map<String, Named> vars)
   {
-    this.variables = vars;
+    this.variables = FXCollections.observableMap(vars);
     this.functions = new FunctionMappings();
   }
 
-  public Context(Variables variables, FunctionMappings functions)
+  public Context(Map<String, Named> vars, FunctionMappings functions)
   {
-    this.variables = variables;
+    this.variables = FXCollections.observableMap(vars);
     this.functions = functions;
   }
 
@@ -117,9 +122,9 @@ public class Context
     return functions.get(functionName);
   }
 
-  public <R> R getVariable(String name)
+  public <R extends Named> R getVariable(String name)
   {
-    return variables.get(name);
+    return (R) variables.get(name);
   }
 
   public <D, R, F extends Function<? extends D, ? extends R>> void injectFunctionReferences(F f)
@@ -167,7 +172,7 @@ public class Context
 
       try
       {
-        R value = variables.get(variableName);
+        Named value = variables.get(variableName);
         if (value != null)
         {
           setFieldValue(f.getClass(), f, variableName, value, false);
@@ -186,7 +191,7 @@ public class Context
     {
       return;
     }
-    variables.addAll(context.variables);
+    variables.putAll(context.variables);
     functions.putAll(context.functions);
   }
 
@@ -295,7 +300,7 @@ public class Context
     assert name != null : "name cannot be null";
     assert variable != null : "variable cannot be null";
 
-    R existing = null;
+    Named existing = null;
     if ((existing = variables.get(name)) != null)
     {
       boolean same = existing.getClass().equals(variable.getClass());
@@ -395,12 +400,17 @@ public class Context
 
   public Map<String, Named> variableMap()
   {
-    return variables.map;
+    return variables;
   }
 
   public Stream<Entry<String, Named>> variableEntryStream()
   {
     return variableEntries().stream();
+  }
+
+  public void rename(String oldName, String newVar)
+  {
+    assert false : "TODO";
   }
 
 }

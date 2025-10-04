@@ -113,8 +113,9 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     x.function   = functionTypeBox.getValue().getName();
     x.expression = this.expressionInput.getText();
     x.context    = new HashMap<>();
-    context.variables.forEach(variable -> x.context.put(variable.getName(),
-                                                        new SerializedContextVariable(variable)));
+    context.variables.forEach((name,
+                               variable) -> x.context.put(variable.getName(),
+                                                          new SerializedContextVariable(variable)));
     System.out.println("Saving " + yamlFile);
     Utensils.saveToYamlFormat(yamlFile, x);
     tab.setText(yamlFile.getName().split("\\.")[0]);
@@ -421,9 +422,9 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
                                   : (Named) constructor.newInstance(serializedValueString, bits);
           variable.setName(name);
 
-          if (!context.variables.map.containsKey(variable.getName()))
+          if (!context.variables.containsKey(variable.getName()))
           {
-            context.variables.add(variable);
+            context.variables.put(variable.getName(), variable);
           }
           else
           {

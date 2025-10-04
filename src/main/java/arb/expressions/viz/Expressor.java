@@ -297,9 +297,9 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
           {
             newInstance = (Named) newVar.getType().getConstructor().newInstance();
             newInstance.setName(newVar.getName());
-            if (!currentContext.variables.map.containsKey(newVar.getName()))
+            if (!currentContext.variables.containsKey(newVar.getName()))
             {
-              currentContext.variables.add(newInstance);
+              currentContext.variables.put(newVar.getName(), newInstance);
               updateContextListView();
             }
             else
@@ -337,7 +337,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
         if (currentContext != null)
         {
           var oldName = selectedItem.getName();
-          currentContext.variables.rename(oldName, newVar);
+          currentContext.rename(oldName, newVar);
           updateContextListView();
         }
       }

@@ -80,7 +80,7 @@ public class TypeRepresenter extends
     {
       Context context = (Context) data;
       return TypeRepresenter.this.representMapping(getTag(data.getClass(), Tag.MAP),
-                                                      context.variables.map,
+                                                      context.variables,
                                                       defaultFlowStyle);
     }
   }

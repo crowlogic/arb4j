@@ -1619,9 +1619,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return literalConstantNodes;
   }
 
-  public <Q> Q getVariable(VariableReference<D, C, F> reference)
+  public <Q extends Named> Q getVariable(VariableReference<D, C, F> reference)
   {
-    return context == null ? null : context.variables.get(reference.name);
+    return context == null ? null : (Q) context.variables.get(reference.name);
   }
 
   public boolean hasIndeterminateVariable()
