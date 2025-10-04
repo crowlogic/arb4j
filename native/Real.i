@@ -408,7 +408,7 @@ import arb.utensils.Utensils;
   }
 
   @Override
-  public String toStringWithoutName()
+  public String toString()
   {
     return toString(digits());
   }
@@ -2180,11 +2180,6 @@ import arb.utensils.Utensils;
     }
     sb.append("]");
     return sb.toString();
-  }
-  
-  public String toString()
-  {
-    return ( name == null ? "" : name + "=" ) + toString(digits());
   }
 
   public String name;

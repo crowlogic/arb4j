@@ -408,9 +408,50 @@ public class Context
     return variableEntries().stream();
   }
 
-  public void rename(String oldName, String newVar)
+  public void rename(String oldName, String newName)
   {
-    assert false : "TODO";
+    if (oldName == null || newName == null)
+    {
+      throw new IllegalArgumentException("Old name and new name cannot be null");
+    }
+
+    if (oldName.equals(newName))
+    {
+      return; // Nothing to do
+    }
+
+    // Check if old variable exists
+    Named variable = variables.get(oldName);
+    if (variable == null)
+    {
+      throw new IllegalArgumentException(format("Variable '%s' does not exist in context",
+                                                oldName));
+    }
+
+    // Check if new name conflicts with existing variable
+    if (variables.containsKey(newName))
+    {
+      throw new IllegalArgumentException(format("Cannot rename '%s' to '%s': a variable with that name already exists",
+                                                oldName,
+                                                newName));
+    }
+
+    // Remove old entry
+    variables.remove(oldName);
+
+    // Update the Named object's name
+    variable.setName(newName);
+
+    // Add with new name
+    variables.put(newName, variable);
+
+    if (Expression.trace)
+    {
+      log.debug(String.format("Context(#%s).rename(oldName=%s, newName=%s) completed successfully",
+                              System.identityHashCode(this),
+                              oldName,
+                              newName));
+    }
   }
 
 }

@@ -1363,7 +1363,7 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
   }
       
   @Override
-  public String toStringWithoutName()
+  public String toString()
   {
     StringBuilder sb = new StringBuilder();
     if (dim > 1)
@@ -1404,10 +1404,6 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
     return sb.toString();
   }
 
-  public String toString()
-  {
-    return (name == null ? "" : name + "=") + toStringWithoutName();
-  }  
   public int dim = 1;
   
   public int size()

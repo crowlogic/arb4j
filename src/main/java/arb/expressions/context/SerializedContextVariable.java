@@ -37,7 +37,7 @@ public class SerializedContextVariable
 
   public SerializedContextVariable(Named integer)
   {
-    value = integer.toStringWithoutName();
+    value = integer.toString();
     type  = integer.getClass().getName();
   }
 

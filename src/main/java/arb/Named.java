@@ -14,8 +14,4 @@ public interface Named
 
   public String getName();
 
-  public default String toStringWithoutName()
-  {
-    return toString();
- }
 }

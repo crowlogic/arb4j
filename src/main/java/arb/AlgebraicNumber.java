@@ -141,10 +141,6 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
     try ( var blip = new SymbolicExpression())
     {
       StringBuilder sb = new StringBuilder();
-      if (name != null)
-      {
-        sb.append(name + "=");
-      }
       sb.append(getSymbolicExpression(blip, FormulaGenerationMethod.All));
       return sb.toString();
     }

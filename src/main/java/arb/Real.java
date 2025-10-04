@@ -435,7 +435,7 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
   }
 
   @Override
-  public String toStringWithoutName()
+  public String toString()
   {
     return toString(digits());
   }
@@ -2207,11 +2207,6 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
     }
     sb.append("]");
     return sb.toString();
-  }
-  
-  public String toString()
-  {
-    return ( name == null ? "" : name + "=" ) + toString(digits());
   }
 
   public String name;
