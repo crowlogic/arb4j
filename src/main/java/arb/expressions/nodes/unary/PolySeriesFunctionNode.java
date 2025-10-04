@@ -92,13 +92,7 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
     mv.visitVarInsn(Opcodes.ALOAD, argSlot);
     pushInt(mv, 0);
     arg.generate(mv, S);
-    invokeStaticMethod(mv,
-                       arblib.class,
-                       isComplex ? ACB_POLY_SET_COEFF_ACB : ARB_POLY_SET_COEFF_ARB,
-                       Void.class,
-                       polynomialClass,
-                       int.class,
-                       S);
+    invokePolySetCoeffMethod(mv, S, isComplex, polynomialClass);
   }
 
   protected int assignOneToElementOfPolynomial(MethodVisitor mv,
@@ -122,13 +116,7 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
     mv.visitVarInsn(Opcodes.ALOAD, argSlot);
     pushInt(mv, 1);
     mv.visitVarInsn(Opcodes.ALOAD, oneSlot);
-    invokeStaticMethod(mv,
-                       arblib.class,
-                       isComplex ? ACB_POLY_SET_COEFF_ACB : ARB_POLY_SET_COEFF_ARB,
-                       Void.class,
-                       polynomialClass,
-                       int.class,
-                       S);
+    invokePolySetCoeffMethod(mv, S, isComplex, polynomialClass);
   }
 
   public void call(MethodVisitor mv,
@@ -186,17 +174,6 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
     invokeClearPolyMethod(mv, isComplex, polynomialClass);
     mv.visitVarInsn(Opcodes.ALOAD, argSlot);
     invokeClearPolyMethod(mv, isComplex, polynomialClass);
-  }
-
-  protected void invokeClearPolyMethod(MethodVisitor mv,
-                                       final boolean isComplex,
-                                       Class<?> polynomialClass)
-  {
-    invokeStaticMethod(mv,
-                       arblib.class,
-                       isComplex ? ACB_POLY_CLEAR : ARB_POLY_CLEAR,
-                       Void.class,
-                       polynomialClass);
   }
 
   protected int createAndIninitializePolynomial(MethodVisitor mv,
@@ -272,6 +249,31 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
                        S,
                        polynomialClass,
                        int.class);
+  }
+
+  protected void invokeClearPolyMethod(MethodVisitor mv,
+                                       final boolean isComplex,
+                                       Class<?> polynomialClass)
+  {
+    invokeStaticMethod(mv,
+                       arblib.class,
+                       isComplex ? ACB_POLY_CLEAR : ARB_POLY_CLEAR,
+                       Void.class,
+                       polynomialClass);
+  }
+
+  protected void invokePolySetCoeffMethod(MethodVisitor mv,
+                                          final Class<?> S,
+                                          final boolean isComplex,
+                                          Class<?> polynomialClass)
+  {
+    invokeStaticMethod(mv,
+                       arblib.class,
+                       isComplex ? ACB_POLY_SET_COEFF_ACB : ARB_POLY_SET_COEFF_ARB,
+                       Void.class,
+                       polynomialClass,
+                       int.class,
+                       S);
   }
 
   /**
