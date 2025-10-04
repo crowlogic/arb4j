@@ -665,7 +665,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       return this;
     }
     // expression.reset();
-    expression.context.functions.map.remove(this.operandFunctionFieldName);
+    expression.context.functions.remove(this.operandFunctionFieldName);
     expression.context.variables.map.remove(this.operandValueFieldName);
     operandFunctionFieldName = null;
     operandValueFieldName    = null;
@@ -728,13 +728,12 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     return '∨';
   }
-  
+
   @Override
   public boolean dependsOn(VariableNode<D, R, F> variable)
   {
     assert false : "TODO";
     return false;
   }
-
 
 }

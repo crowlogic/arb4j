@@ -204,7 +204,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   private void lookupFunctionInContext()
   {
     mapping    =
-            (FunctionMapping<D, R, F>) this.expression.context.functions.map.get(this.functionName);
+            (FunctionMapping<D, R, F>) this.expression.context.functions.get(this.functionName);
     contextual = mapping != null;
     if (contextual)
     {

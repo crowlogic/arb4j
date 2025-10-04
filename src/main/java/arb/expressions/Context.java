@@ -62,13 +62,15 @@ public class Context
   public ExpressionClassLoader                classLoader                  =
                                                           new ExpressionClassLoader(this);
 
-  public Map<String, Dependency> functionReferenceGraph = new HashMap<String, Dependency>();
+  public Map<String, Dependency>              functionReferenceGraph       = new HashMap<String,
+                Dependency>();
 
   public final FunctionMappings               functions;
 
   public final HashMap<String, AtomicInteger> intermediateVariableCounters = new HashMap<>();
 
-  private final Logger log = LoggerFactory.getLogger(Context.class);
+  private final Logger                        log                          =
+                                                  LoggerFactory.getLogger(Context.class);
 
   public boolean                              saveClasses                  = false;
 
@@ -105,7 +107,7 @@ public class Context
 
   public Stream<Entry<String, FunctionMapping<?, ?, ?>>> functionEntryStream()
   {
-    return functions.map.entrySet().stream();
+    return functions.entrySet().stream();
   }
 
   public <D, R, F extends Function<? extends D, ? extends R>>
@@ -185,30 +187,29 @@ public class Context
       return;
     }
     variables.addAll(context.variables);
-    functions.map.putAll(context.functions.map);
+    functions.putAll(context.functions);
   }
 
   public void populateFunctionReferenceGraph()
   {
-    // Build dependency graph directly from referencedFunctions
-    for (var entry : functions.map.entrySet())
+    for (var entry : functions.entrySet())
     {
-      var          functionName = entry.getKey();
-      var          functionMapping     = entry.getValue();
+      var          functionName    = entry.getKey();
+      var          functionMapping = entry.getValue();
 
-      // Get referenced functions from the function mapping
-      Dependency   depInfo      = new Dependency(functionMapping);
+      Dependency   dependency      = new Dependency(functionMapping);
 
-      List<String> dependencies = depInfo.dependencies;
-      if (functionMapping.expression != null && functionMapping.expression.referencedFunctions != null)
+      List<String> dependencies    = dependency.dependencies;
+      if (functionMapping.expression != null
+                    && functionMapping.expression.referencedFunctions != null)
       {
         dependencies.addAll(functionMapping.expression.referencedFunctions.keySet()
-                                                                   .stream()
-                                                                   .filter(name -> !name.equals(functionName))
-                                                                   .toList());
+                                                                          .stream()
+                                                                          .filter(name -> !name.equals(functionName))
+                                                                          .toList());
       }
 
-      functionReferenceGraph.put(functionName, depInfo);
+      functionReferenceGraph.put(functionName, dependency);
     }
   }
 
@@ -260,7 +261,7 @@ public class Context
                               expression,
                               expressionString));
     }
-    if (!replace && functions.map.containsKey(functionName))
+    if (!replace && functions.containsKey(functionName))
     {
       throw new IllegalArgumentException(format("a function named %s of class %s is already registered",
                                                 functionName,
@@ -275,7 +276,7 @@ public class Context
     mapping.coDomain         = coDomainType;
     mapping.instance         = function;
     mapping.functionClass    = functionClass;
-    functions.map.put(functionName, mapping);
+    functions.put(functionName, mapping);
     return mapping;
   }
 
@@ -376,7 +377,7 @@ public class Context
   {
     return String.format("Context(#%s)[functions=%s,variables=%s]",
                          System.identityHashCode(this),
-                         functions.map.keySet(),
+                         functions.keySet(),
                          variableMap().keySet());
   }
 

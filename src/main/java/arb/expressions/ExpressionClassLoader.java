@@ -30,7 +30,7 @@ public class ExpressionClassLoader extends
                               System.identityHashCode(context));
     }
     AtomicReference<Class<?>> mapped = new AtomicReference<Class<?>>();
-    context.functions.map.values().forEach(mapping ->
+    context.functions.values().forEach(mapping ->
     {
       if (mapping.functionClass != null && name.equals(mapping.functionClass.getSimpleName()))
       {
