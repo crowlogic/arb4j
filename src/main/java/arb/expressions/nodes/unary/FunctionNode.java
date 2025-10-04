@@ -1,34 +1,21 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.loadBitsParameterOntoStack;
-import static arb.expressions.Compiler.loadOrderParameter;
-import static arb.expressions.Compiler.loadThisOntoStack;
+import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import arb.Complex;
-import arb.Fraction;
+import arb.*;
 import arb.Integer;
-import arb.Real;
 import arb.exceptions.CompilerException;
-import arb.expressions.Compiler;
+import arb.expressions.*;
 import arb.expressions.Context;
-import arb.expressions.Expression;
-import arb.expressions.FunctionMapping;
-import arb.expressions.Parser;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
@@ -96,14 +83,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       arg = arg.simplify();
     }
-    if (isSquareRoot())
-    {
-      return arg.pow(expression.newLiteralConstant("½")).simplify();
-    }
-    else
-    {
-      return super.simplify();
-    }
+
+    return super.simplify();
   }
 
   public FunctionNode(Expression<D, R, F> expression,
