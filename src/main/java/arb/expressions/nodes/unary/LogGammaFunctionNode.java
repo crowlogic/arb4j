@@ -55,6 +55,6 @@ public class LogGammaFunctionNode<D, C, F extends Function<? extends D, ? extend
   @Override
   public String typeset()
   {
-    return String.format("\\\\ln\\\\Gamma(%s)", arg == null ? "" : arg.typeset());
+    return String.format("\\\\lnGAMMA(%s)", arg == null ? "" : arg.typeset());
   }
 }

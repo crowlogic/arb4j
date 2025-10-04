@@ -1,6 +1,9 @@
-//FunctionPlotter.darkStyle=false;
-var theta = RealFunction.express("theta","im(lnΓ(1/4+I*t/2))-(log(π)/2)*t");
-var thetad = theta.derivative();
-var thetadd = thetad.derivative();
-
-plot(-25,25,4000,(RealFunction)theta,(RealFunction)thetad,(RealFunction)thetadd);
+FunctionPlotter.darkStyle=false;
+var context = new Context();
+var eye = RealFunction.express("eye","t->t");
+var theta = RealFunction.express("θ","im(lnΓ(1/4+I*t/2))-(log(π)/2)*t",context);
+var thetad = RealFunction.express("thetad","t->diff(θ(t),t)",context);
+var thetadd = RealFunction.express("thetadd","t->diff(diff(θ(t),t),t)",context);
+var Nd = RealFunction.express("Nd","t->tanh(thetad(t)/thetadd(t))",context);
+var N = RealFunction.express("N","t->t-Nd(t)",context);
+plot(0,9,4000,(RealFunction)eye,(RealFunction)theta,(RealFunction)thetad,(RealFunction)thetadd,(RealFunction)N,(RealFunction)Nd);
