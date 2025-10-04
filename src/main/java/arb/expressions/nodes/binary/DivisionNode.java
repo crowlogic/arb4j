@@ -4,14 +4,11 @@ import static java.lang.String.format;
 
 import org.objectweb.asm.MethodVisitor;
 
-import arb.Fraction;
+import arb.*;
 import arb.Integer;
-import arb.Real;
-import arb.RealPolynomial;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
-import arb.expressions.nodes.unary.FunctionNode;
 import arb.expressions.nodes.unary.SineIntegralNode;
 import arb.functions.Function;
 
@@ -159,17 +156,8 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> simplify()
   {
-    Node<D, R, F> node = this;
     right = right.simplify();
     left  = left.simplify();
-    node  = simplifyWhenEitherSideIsOne(node);
-    node  = simplifyDivisionOfCommonBases(node);
-    node  = simplifyExponentialDivision(node);
-    return node;
-  }
-
-  Node<D, R, F> simplifyWhenEitherSideIsOne(Node<D, R, F> node)
-  {
     if (right.isOne())
     {
       return left;
@@ -178,11 +166,6 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       return one();
     }
-    return node;
-  }
-
-  Node<D, R, F> simplifyDivisionOfCommonBases(Node<D, R, F> node)
-  {
     if (left instanceof ExponentiationNode<D, R, F> leftExp
                   && right instanceof ExponentiationNode<D, R, F> rightExp)
     {
@@ -194,21 +177,8 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
         return leftBase.pow(exponentDifference).simplify();
       }
     }
-    return node;
-  }
 
-  Node<D, R, F> simplifyExponentialDivision(Node<D, R, F> node)
-  {
-    if (left instanceof FunctionNode<D, R, F> leftFunction
-                  && right instanceof FunctionNode<D, R, F> rightFunction)
-    {
-      if (leftFunction.isExponential() && rightFunction.functionName.equals("exp"))
-      {
-        var exponentSum = leftFunction.arg.sub(rightFunction.arg).simplify();
-        return exponentSum.exp();
-      }
-    }
-    return node;
+    return super.simplify();
   }
 
   @Override
