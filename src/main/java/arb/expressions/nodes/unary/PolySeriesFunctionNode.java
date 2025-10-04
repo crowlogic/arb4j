@@ -6,6 +6,7 @@ import static arb.expressions.Compiler.scalarType;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 import arb.Complex;
 import arb.ComplexPolynomial;
@@ -34,16 +35,16 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
   private static final String ACB_POLY_GET_COEFF_ACB = "acb_poly_get_coeff_acb";
   private static final String ACB_POLY_INIT          = "acb_poly_init";
   private static final String ACB_POLY_SET_COEFF_ACB = "acb_poly_set_coeff_acb";
-  private static final String ARB_COMPLEX            = "arb/Complex";
-  private static final String ARB_COMPLEX_POLYNOMIAL = "arb/ComplexPolynomial";
+  private static final String ARB_COMPLEX            = Type.getInternalName(Complex.class);
+  private static final String ARB_COMPLEX_POLYNOMIAL = Type.getInternalName(ComplexPolynomial.class);
   private static final String ARB_ONE                = "arb_one";
   private static final String ARB_POLY_CLEAR         = "arb_poly_clear";
   private static final String ARB_POLY_FIT_LENGTH    = "arb_poly_fit_length";
   private static final String ARB_POLY_GET_COEFF_ARB = "arb_poly_get_coeff_arb";
   private static final String ARB_POLY_INIT          = "arb_poly_init";
   private static final String ARB_POLY_SET_COEFF_ARB = "arb_poly_set_coeff_arb";
-  private static final String ARB_REAL               = "arb/Real";
-  private static final String ARB_REAL_POLYNOMIAL    = "arb/RealPolynomial";
+  private static final String ARB_REAL               = Type.getInternalName(Real.class);
+  private static final String ARB_REAL_POLYNOMIAL    = Type.getInternalName(RealPolynomial.class);
   private static final String ARG_POLY               = "arg";
   private static final String INIT                   = "<init>";
   private static int          nextLocal              = 20;
