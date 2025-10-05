@@ -1,8 +1,6 @@
 package arb.expressions.nodes.binary;
 
-import arb.Complex;
-import arb.Real;
-import arb.RealConstants;
+import arb.*;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.RealBivariateToComplexFunction;
@@ -11,6 +9,10 @@ import arb.functions.real.RealFunction;
 import arb.functions.real.RealRiemannSiegelThetaFunction;
 import junit.framework.TestCase;
 
+/**
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
+ */
 public class ExponentiationNodeTest extends
                                     TestCase
 {
