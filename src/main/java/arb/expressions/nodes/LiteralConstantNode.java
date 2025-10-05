@@ -1,7 +1,7 @@
 package arb.expressions.nodes;
 
 import static arb.expressions.Compiler.duplicateTopOfTheStack;
-import static arb.expressions.Compiler.generateNewObjectInstruction;
+import static arb.expressions.Compiler.constructNewObject;
 import static arb.expressions.Compiler.loadComplexConstantOntoStack;
 import static arb.expressions.Compiler.loadConstantOntoStack;
 import static arb.expressions.Compiler.loadRealConstantOntoStack;

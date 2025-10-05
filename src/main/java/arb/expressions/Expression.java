@@ -6,7 +6,7 @@ import static arb.expressions.Compiler.defineMethod;
 import static arb.expressions.Compiler.designateLabel;
 import static arb.expressions.Compiler.duplicateTopOfTheStack;
 import static arb.expressions.Compiler.generateFunctionInterface;
-import static arb.expressions.Compiler.generateNewObjectInstruction;
+import static arb.expressions.Compiler.constructNewObject;
 import static arb.expressions.Compiler.generateReturnFromVoidMethod;
 import static arb.expressions.Compiler.getField;
 import static arb.expressions.Compiler.getFieldFromThis;
@@ -1270,7 +1270,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     function.generate();
 
-    generateNewObjectInstruction(mv, function.className);
+    constructNewObject(mv, function.className);
     duplicateTopOfTheStack(mv);
     invokeDefaultConstructor(mv, function.className);
 
@@ -1433,7 +1433,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected MethodVisitor generateSelfReference(MethodVisitor mv)
   {
-    generateNewObjectInstruction(loadThisOntoStack(mv), functionName);
+    constructNewObject(loadThisOntoStack(mv), functionName);
     invokeDefaultConstructor(duplicateTopOfTheStack(mv), functionName);
     putField(mv, className, functionName, String.format("L%s;", functionName));
     initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv),

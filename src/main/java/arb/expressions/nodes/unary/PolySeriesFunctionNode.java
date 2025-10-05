@@ -54,7 +54,7 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
   private static void newPoly(MethodVisitor mv, boolean cx)
   {
     String cls = cx ? ARB_COMPLEX_POLYNOMIAL : ARB_REAL_POLYNOMIAL;
-    Compiler.generateNewObjectInstruction(mv, cls);
+    Compiler.constructNewObject(mv, cls);
     Compiler.duplicateTopOfTheStack(mv);
     mv.visitMethodInsn(Opcodes.INVOKESPECIAL, cls, INIT, VOID_NOARG_SIGNATURE, false);
   }
@@ -305,7 +305,7 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
     // Allocate + prepare a temp variable for 1
     int    oneSlot = nextLocal++;
     String type    = isComplex ? ARB_COMPLEX : ARB_REAL;
-    Compiler.generateNewObjectInstruction(mv, type);
+    Compiler.constructNewObject(mv, type);
     Compiler.duplicateTopOfTheStack(mv);
     mv.visitMethodInsn(Opcodes.INVOKESPECIAL, type, INIT, VOID_NOARG_SIGNATURE, false);
     Compiler.duplicateTopOfTheStack(mv);

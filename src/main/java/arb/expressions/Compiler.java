@@ -503,7 +503,7 @@ public class Compiler
     return mv;
   }
 
-  public static MethodVisitor generateNewObjectInstruction(MethodVisitor mv,
+  public static MethodVisitor constructNewObject(MethodVisitor mv,
                                                            String functionFieldType)
   {
     mv.visitTypeInsn(Opcodes.NEW, functionFieldType);
