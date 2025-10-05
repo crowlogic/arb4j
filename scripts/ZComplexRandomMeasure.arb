@@ -17,7 +17,5 @@ var pneg = plot( -5,120, 100*125, Z, R.realPart(), R.imagPart()  );
 var pzero = plot( -5,120, 100*125, Z, R.realPart(), R.imagPart()  );
 System.out.println(context);
 System.out.println(context.functions);
-saveImage( p, "p.png");
-saveImage( pneg, "pneg.png" );
-saveImage( pzero, "pzero.png" );
+
 FunctionPlotter.darkStyle=true;

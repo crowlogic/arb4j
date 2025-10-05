@@ -2,7 +2,7 @@ FunctionPlotter.darkStyle=false;
 var context = new Context();
 var θ = RealFunction.express("θ:im(lnΓ(1/4+I*t/2))-(log(π)/2)*t",context);
 var diffθ = RealFunction.express("θdiff:diff(θ(t),t)",context);
-var Nθ = RealFunction.express("t->t-tanh(θ(t)/diffθ(t))",context);
+final RealFunction                   Nθ      = RealFunction.express("Nθ:t➔t-θ̇(t)/θ̈(t)", context);
 var x = Nθ.eval(2*Math.PI);
 System.out.format("x=%s\n",x);
 plot(0,10,2000,θ,diffθ,Nθ);

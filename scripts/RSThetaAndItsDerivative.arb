@@ -1,4 +1,0 @@
-FunctionPlotter.darkStyle=false;
-var θ = new θ();
-var θd = θ.derivative();
-plot(0,150,2000,θ,θd);

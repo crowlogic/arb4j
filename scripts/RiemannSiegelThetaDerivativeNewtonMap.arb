@@ -1,3 +1,6 @@
+//t0=6.289835988836898
+//t0d=2π-t0=-0.00665068165731153
+
 //FunctionPlotter.darkStyle=false;
 var context = new Context();
 var eye = RealFunction.express("eye","t->t");

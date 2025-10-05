@@ -1,3 +1,0 @@
-var y = ComplexRationalFunctionSequence.express("m->pFq([1,m,-m],[1/2];(I/2)/y)");
-var y3 = y.evaluate(3,128);
-var p = plot(1,15,2000,y3.re(),y3.im());
