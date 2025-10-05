@@ -1,7 +1,7 @@
 package arb.expressions.nodes;
 
 import static arb.expressions.Compiler.duplicateTopOfTheStack;
-import static arb.expressions.Compiler.constructNewObject;
+import static arb.expressions.Compiler.generateNewObjectInstruction;
 import static arb.expressions.Compiler.loadComplexConstantOntoStack;
 import static arb.expressions.Compiler.loadConstantOntoStack;
 import static arb.expressions.Compiler.loadRealConstantOntoStack;
@@ -220,11 +220,11 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   public ClassVisitor declareField(ClassVisitor classVisitor)
   {
 
-    Class<?> type = type();
+    Class<?> type           = type();
     String   typeDescriptor = type.descriptorString();
     if (Expression.trace)
     {
-      logger.debug("declareField: fieldName={} type={} value={}", fieldName, type, toString() );
+      logger.debug("declareField: fieldName={} type={} value={}", fieldName, type, toString());
     }
     classVisitor.visitField(ACC_PUBLIC | ACC_FINAL, fieldName, typeDescriptor, null, null);
     return classVisitor;

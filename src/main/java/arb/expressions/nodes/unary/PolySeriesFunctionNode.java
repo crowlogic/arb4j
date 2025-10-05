@@ -36,7 +36,8 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
   private static final String ACB_POLY_INIT          = "acb_poly_init";
   private static final String ACB_POLY_SET_COEFF_ACB = "acb_poly_set_coeff_acb";
   private static final String ARB_COMPLEX            = Type.getInternalName(Complex.class);
-  private static final String ARB_COMPLEX_POLYNOMIAL = Type.getInternalName(ComplexPolynomial.class);
+  private static final String ARB_COMPLEX_POLYNOMIAL =
+                                                     Type.getInternalName(ComplexPolynomial.class);
   private static final String ARB_ONE                = "arb_one";
   private static final String ARB_POLY_CLEAR         = "arb_poly_clear";
   private static final String ARB_POLY_FIT_LENGTH    = "arb_poly_fit_length";
@@ -310,12 +311,17 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
     mv.visitMethodInsn(Opcodes.INVOKESPECIAL, type, INIT, VOID_NOARG_SIGNATURE, false);
     Compiler.duplicateTopOfTheStack(mv);
     mv.visitVarInsn(Opcodes.ASTORE, oneSlot);
+    invokeOneMethod(mv, isComplex);
+    return oneSlot;
+  }
+
+  protected void invokeOneMethod(MethodVisitor mv, final boolean isComplex)
+  {
     invokeStaticMethod(mv,
                        arblib.class,
                        isComplex ? ACB_ONE : ARB_ONE,
                        Void.class,
                        isComplex ? Complex.class : Real.class);
-    return oneSlot;
   }
 
   public Class<?>
