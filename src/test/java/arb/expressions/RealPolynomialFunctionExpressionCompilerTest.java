@@ -1,17 +1,10 @@
 package arb.expressions;
 
-import static arb.RealConstants.half;
-import static arb.RealConstants.oneQuarter;
-import static arb.RealConstants.two;
-import static arb.RealConstants.twoπ;
-import static arb.RealConstants.zero;
-import static arb.RealConstants.π;
+import static arb.RealConstants.*;
 import static arb.functions.polynomials.RealPolynomialFunction.express;
 
 import arb.RealConstants;
 import arb.RealPolynomial;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.functions.polynomials.RealPolynomialFunction;
 import arb.functions.polynomials.orthogonal.real.JacobiPolynomials;
 import arb.functions.real.RealFunction;
@@ -19,8 +12,9 @@ import arb.functions.real.RealNullaryFunction;
 import junit.framework.TestCase;
 
 /**
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * 
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class RealPolynomialFunctionExpressionCompilerTest extends
                                                           TestCase
@@ -45,8 +39,8 @@ public class RealPolynomialFunctionExpressionCompilerTest extends
   {
 
     Context context = new Context();
-    try ( var x = new RealPolynomial(1); var y = new RealPolynomial(3); var z = new RealPolynomial();
-          var correctZ = new RealPolynomial(3))
+    try ( var x = new RealPolynomial(1); var y = new RealPolynomial(3);
+          var z = new RealPolynomial(); var correctZ = new RealPolynomial(3))
     {
       correctZ.set(two, oneQuarter, π);
       context.registerVariable("y", y);
@@ -81,8 +75,8 @@ public class RealPolynomialFunctionExpressionCompilerTest extends
   public static void testMul()
   {
     Context context = new Context();
-    try ( var x = new RealPolynomial(1); var y = new RealPolynomial(3); var z = new RealPolynomial();
-          var correctZ = new RealPolynomial(3))
+    try ( var x = new RealPolynomial(1); var y = new RealPolynomial(3);
+          var z = new RealPolynomial(); var correctZ = new RealPolynomial(3))
     {
       correctZ.set(zero, half, twoπ);
       context.registerVariable("y", y);

@@ -6,36 +6,29 @@ import static arb.functions.real.RealFunction.express;
 
 import java.util.Map;
 
-import arb.Fraction;
+import arb.*;
 import arb.Integer;
-import arb.Named;
-import arb.Real;
-import arb.RealConstants;
-import arb.RoundingMode;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealNullaryFunction;
 import junit.framework.TestCase;
 
 /**
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * 
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class RealFunctionExpressionCompilerTest extends
                                                 TestCase
 {
 
- 
-
   public void testOptimizedExpressionRepresentation()
   {
     Expression<Real, Real, RealFunction> parsed = RealFunction.parse("tanh(log(1+x^2))/(1+x^2)");
-    var F = parsed.generate();
-    var f = F.instantiate();
-    var y = f.eval(2.3);
+    var                                  F      = parsed.generate();
+    var                                  f      = F.instantiate();
+    var                                  y      = f.eval(2.3);
     assertEquals(0.151143929930069, y);
-    
+
     Expression<Real, Real, RealFunction> parsedCSE = RealFunction.parse("tanh(log(1+x^2))/(1+x^2)");
     parsedCSE.optimize();
     var Fcse = parsedCSE.generate();
@@ -45,20 +38,19 @@ public class RealFunctionExpressionCompilerTest extends
 
   }
 
-  
   public static void testRealRandomWavePropagator()
   {
-    var    f = RealFunction.express("(√(π)*Γ(3/4)*J(1/4, |s|)*2^(1/4))/|s|^(1/4)");
+    var f = RealFunction.express("(√(π)*Γ(3/4)*J(1/4, |s|)*2^(1/4))/|s|^(1/4)");
     var y = f.eval(2.3);
-    assertEquals( 0.5125173326531876, y );
+    assertEquals(0.5125173326531876, y);
   }
 
-  Context      context   = new Context();
+  Context            context   = new Context();
 
-  Map<String,Named>    variables = context.variables;
+  Map<String, Named> variables = context.variables;
 
-  private Real v;
-  private Real v3;
+  private Real       v;
+  private Real       v3;
 
   public static void testSphericalBesselFunctionViaRealNullaryFunction()
   {
@@ -143,7 +135,8 @@ public class RealFunctionExpressionCompilerTest extends
     RealFunction expression = express("t->J(k,t)", context);
     {
       Real evaluatedX = expression.evaluate(one, 1, 256, new Real());
-      assertEquals(0.01956335398266840591890532162175150825451, evaluatedX.doubleValue(RoundingMode.Up));
+      assertEquals(0.01956335398266840591890532162175150825451,
+                   evaluatedX.doubleValue(RoundingMode.Up));
     }
   }
 
