@@ -199,20 +199,14 @@
       <tformat|<table|<row|<cell|<around|(|U<rsub|\<theta\>><rsup|-1>*U<rsub|\<theta\>>*f|)><around|(|s|)>>|<cell|=<around|(|U<rsub|\<theta\>><rsup|-1>|)>*<around|[|<sqrt|\<theta\><rprime|'><around|(|\<cdummy\>|)>>*f<around|(|\<theta\>|(>\<cdot\><around|)||)>|]><around|(|s|)><eq-number>>>|<row|<cell|>|<cell|=<frac|<around|[|<sqrt|\<theta\><rprime|'><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>*f<around|(|\<theta\><around|(|\<theta\><rsup|-1><around|(|s|)>|)>|)>|]>)|<sqrt|\<theta\><rprime|'><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>><eq-number>>>|<row|<cell|>|<cell|=<frac|<sqrt|\<theta\><rprime|'><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>*f<around|(|s|)>|<sqrt|\<theta\><rprime|'><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>><eq-number>>>|<row|<cell|>|<cell|=f<around|(|s|)><eq-number>>>>>
     </align>
 
-    where we used <math|\<theta\><around|(|\<theta\><rsup|-1><around|(|s|)>|)>=s>.
-
+    where <math|\<theta\><around|(|\<theta\><rsup|-1><around|(|s|)>|)>=s>.
     Similarly, for any <math|g\<in\>L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>:
 
     <\align>
       <tformat|<table|<row|<cell|<around|(|U<rsub|\<theta\>>*U<rsub|\<theta\>><rsup|-1>*g|)><around|(|t|)>>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*<around|(|U<rsub|\<theta\>><rsup|-1>*g|)><around|(|\<theta\><around|(|t|)>|)><eq-number>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*<frac|g<around|(|\<theta\><rsup|-1><around|(|\<theta\><around|(|t|)>|)>|)>|<sqrt|\<theta\><rprime|'><around|(|\<theta\><rsup|-1><around|(|\<theta\><around|(|t|)>|)>|)>>><eq-number>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*<frac|g<around|(|t|)>|<sqrt|\<theta\><rprime|'><around|(|t|)>>><eq-number>>>|<row|<cell|>|<cell|=g<around|(|t|)><eq-number>>>>>
     </align>
 
-    where we used\ 
-
-    <\equation>
-      \<theta\><rsup|-1><around|(|\<theta\><around|(|t|)>|)>=t
-    </equation>
-
+    where <math|\<theta\><rsup|-1><around|(|\<theta\><around|(|t|)>|)>=t>.
     Therefore
 
     <\equation>
@@ -276,7 +270,7 @@
     Its covariance kernel is
 
     <\equation>
-      R<rsub|Z><around|(|t,s|)>=\<bbb-E\><space|-0.17em><around*|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]>=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)><space|0.17em><wide|A<rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>e<rsup|i*\<lambda\>*<around|(|t-s|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>
+      R<rsub|Z><around|(|t,s|)>=\<bbb-E\><space|-0.17em><around*|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]>=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)><space|0.17em><wide|A<rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>e<rsup|i*\<lambda\>*<around|(|t-s|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)><label|covar>
     </equation>
   </definition>
 
@@ -291,16 +285,21 @@
   <\theorem>
     [Existence]<label|thm:existence_osc> If <math|F> is finite and
     <math|<around|(|A<rsub|t>|)><rsub|t\<in\>\<bbb-R\>>> is measurable in
-    <math|t> with <math|<big|int><rsub|\<bbb-R\>><around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>\<less\>\<infty\>>
-    for each <math|t>, then there exists a complex orthogonal random measure
-    <math|\<Phi\>> with spectral measure <math|F> such that\ 
+    <math|t> with\ 
+
+    <\equation>
+      <big|int><rsub|\<bbb-R\>><around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>\<less\>\<infty\>\<forall\>t\<in\>\<bbb-R\>
+    </equation>
+
+    then there exists a complex orthogonal random measure <math|\<Phi\>> with
+    spectral measure <math|F> such that\ 
 
     <\equation>
       Z<around|(|t|)>=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>
     </equation>
 
     \ is well-defined in <math|L<rsup|2><around|(|\<Omega\>|)>> and has
-    covariance <math|R<rsub|Z>> as above.
+    covariance <math|R<rsub|Z>> as in (<reference|covar>) above.
   </theorem>
 
   <\proof>
@@ -378,7 +377,7 @@
     Definition<nbsp><reference|def:Utheta>, define
 
     <\equation>
-      Z<around|(|t|)>\<assign\><around|(|U<rsub|\<theta\>>*X|)><around|(|t|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*<space|0.17em>X<around|(|\<theta\><around|(|t|)>|)>
+      <tabular|<tformat|<table|<row|<cell|Z<around|(|t|)>>|<cell|=<around|(|U<rsub|\<theta\>>*X|)><around|(|t|)>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*<space|0.17em>X<around|(|\<theta\><around|(|t|)>|)>>>>>>
     </equation>
 
     Then <math|Z> is oscillatory with oscillatory function
@@ -395,18 +394,18 @@
 
     , and covariance
 
-    <\equation*>
-      R<rsub|Z><around|(|t,s|)>=<big|int><rsub|\<bbb-R\>><sqrt|\<theta\><rprime|'><around|(|t|)>*\<theta\><rprime|'><around|(|s|)>>*<space|0.17em>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>.
-    </equation*>
+    <\equation>
+      R<rsub|Z><around|(|t,s|)>=<big|int><rsub|\<bbb-R\>><sqrt|\<theta\><rprime|'><around|(|t|)>*\<theta\><rprime|'><around|(|s|)>>*<space|0.17em>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>
+    </equation>
   </theorem>
 
   <\proof>
     Applying the unitary time change operator to the spectral representation
     of <math|X<around|(|t|)>>:
 
-    <\align>
-      <tformat|<table|<row|<cell|Z<around|(|t|)>>|<cell|=<around|(|U<rsub|\<theta\>>*X|)><around|(|t|)><eq-number>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*<space|0.17em>X<around|(|\<theta\><around|(|t|)>|)><eq-number>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>><sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)><eq-number>>>>>
-    </align>
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|Z<around|(|t|)>>|<cell|=<around|(|U<rsub|\<theta\>>*X|)><around|(|t|)>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*<space|0.17em>X<around|(|\<theta\><around|(|t|)>|)>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>><sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>>>>>>
+    </equation>
 
     where
 
@@ -440,20 +439,20 @@
     </align>
 
     where we used <math|<around|\||e<rsup|i*\<alpha\>>|\|>=1> for all real
-    <math|\<alpha\>>.
+    <math|\<alpha\>>. The covariance is computed as:
 
-    The covariance is computed as:
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|R<rsub|Z><around|(|t,s|)>>|<cell|=\<bbb-E\><around|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=\<bbb-E\>*<around*|[|<sqrt|\<theta\><rprime|'><around|(|t|)>>*X<around|(|\<theta\><around|(|t|)>|)><sqrt|\<theta\><rprime|'><around|(|s|)>><wide|X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>*\<theta\><rprime|'><around|(|s|)>>*\<bbb-E\><around|[|X<around|(|\<theta\><around|(|t|)>|)><wide|X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>*\<theta\><rprime|'><around|(|s|)>>*R<rsub|X>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>*\<theta\><rprime|'><around|(|s|)>>*<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>>>>
+    </equation>
 
-    <\align>
-      <tformat|<table|<row|<cell|R<rsub|Z><around|(|t,s|)>>|<cell|=\<bbb-E\><around|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]><eq-number>>>|<row|<cell|>|<cell|=\<bbb-E\>*<around*|[|<sqrt|\<theta\><rprime|'><around|(|t|)>>*X<around|(|\<theta\><around|(|t|)>|)><sqrt|\<theta\><rprime|'><around|(|s|)>><wide|X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]><eq-number>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>*\<theta\><rprime|'><around|(|s|)>>*\<bbb-E\><around|[|X<around|(|\<theta\><around|(|t|)>|)><wide|X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]><eq-number>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>*\<theta\><rprime|'><around|(|s|)>>*R<rsub|X>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)><eq-number>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>*\<theta\><rprime|'><around|(|s|)>>*<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)><eq-number>>>>>
-    </align>
+    \;
   </proof>
 
   <\corollary>
     [Evolutionary spectrum]<label|cor:evol_spec> The evolutionary spectrum is\ 
 
     <\equation>
-      d*F<rsub|t><around|(|\<lambda\>|)>=<around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>=\<theta\><rprime|'><around|(|t|)>*<space|0.17em>d*F<around|(|\<lambda\>|)>
+      <tabular|<tformat|<table|<row|<cell|d*F<rsub|t><around|(|\<lambda\>|)>>|<cell|=<around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=\<theta\><rprime|'><around|(|t|)>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>>>>
     </equation>
   </corollary>
 
@@ -461,9 +460,9 @@
     By definition of the evolutionary spectrum and using the gain function
     from Theorem<nbsp><reference|thm:Utheta_to_osc>:
 
-    <\align>
-      <tformat|<table|<row|<cell|d*F<rsub|t><around|(|\<lambda\>|)>>|<cell|=<around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)><eq-number>>>|<row|<cell|>|<cell|=<around*|\||<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)><eq-number>>>|<row|<cell|>|<cell|=\<theta\><rprime|'><around|(|t|)><around|\||e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)><eq-number>>>|<row|<cell|>|<cell|=\<theta\><rprime|'><around|(|t|)>*<space|0.17em>d*F<around|(|\<lambda\>|)><eq-number>>>>>
-    </align>
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|d*F<rsub|t><around|(|\<lambda\>|)>>|<cell|=<around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<around*|\||<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=\<theta\><rprime|'><around|(|t|)><around|\||e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=\<theta\><rprime|'><around|(|t|)>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>>>>
+    </equation>
 
     since <math|<around|\||e<rsup|i*\<alpha\>>|\|>=1> for all real
     <math|\<alpha\>>.
@@ -490,10 +489,10 @@
       K<rsub|\<theta\>><around|(|s,t|)>\<assign\><sqrt|\<theta\><rprime|'><around|(|t|)>*\<theta\><rprime|'><around|(|s|)>>*<space|0.17em>K<space|-0.17em><around*|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>
     </equation>
 
-    and operator
+    and corresponding integral covariance operator
 
     <\equation>
-      <around|(|T<rsub|K<rsub|\<theta\>>>*f|)><around|(|t|)>\<assign\><big|int><rsub|\<bbb-R\>>K<rsub|\<theta\>><around|(|s,t|)>*<space|0.17em>f<around|(|s|)>*<space|0.17em>d*s
+      <around|(|T<rsub|K<rsub|\<theta\>>>*f|)><around|(|t|)>\<assign\><big|int><rsub|\<bbb-R\>>K<rsub|\<theta\>><around|(|s,t|)><space|0.17em>f<around|(|s|)>*<space|0.17em>d*s
     </equation>
 
     Then
@@ -502,50 +501,38 @@
       T<rsub|K<rsub|\<theta\>>>=U<rsub|\<theta\>>*<space|0.17em>T<rsub|K>*<space|0.17em>U<rsub|\<theta\>><rsup|-1>
     </equation>
 
-    \ on <math|L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>.
+    on <math|L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>.
   </proposition>
 
   <\proof>
     For any <math|g\<in\>L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>,
-    compute <math|<around|(|U<rsub|\<theta\>>*T<rsub|K>*U<rsub|\<theta\>><rsup|-1>*g|)><around|(|t|)>>
-    step by step.
+    we transform the integral operator from coordinates
+    <math|<around|(|r,w|)>> to coordinates <math|<around|(|t,s|)>> by
+    applying both coordinate transformations <math|r=\<theta\><around|(|t|)>>
+    and <math|w=\<theta\><around|(|s|)>> simultaneously with Jacobians
+    <math|d*r=\<theta\><rprime|'><around|(|t|)>*<space|0.17em>d*t> and
+    <math|d*w=\<theta\><rprime|'><around|(|s|)>*<space|0.17em>d*s>.
 
-    First,\ 
-
-    <\equation>
-      <around|(|U<rsub|\<theta\>><rsup|-1>*g|)><around|(|s|)>=<frac|g<around|(|\<theta\><rsup|-1><around|(|s|)>|)>|<sqrt|\<theta\><rprime|'><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>>
-    </equation>
-
-    Second,\ 
+    The operator <math|T<rsub|K>> in <math|<around|(|r,w|)>> coordinates is:
 
     <\equation>
-      <around|(|T<rsub|K>*U<rsub|\<theta\>><rsup|-1>*g|)><around|(|t|)>=<big|int><rsub|\<bbb-R\>>K<around|(|<around|\||t-s|\|>|)><frac|g<around|(|\<theta\><rsup|-1><around|(|s|)>|)>|<sqrt|\<theta\><rprime|'><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>>*<space|0.17em>d*s
+      <around|(|T<rsub|K>*f|)><around|(|r|)>=<big|int><rsub|\<bbb-R\>>K<around|(|<around|\||r-w|\|>|)>*f<around|(|w|)>*<space|0.17em>d*w
     </equation>
 
-    Apply change of variables <math|u=\<theta\><rsup|-1><around|(|s|)>>, so
-    <math|s=\<theta\><around|(|u|)>> and <math|d*s=\<theta\><rprime|'><around|(|u|)>*<space|0.17em>d*u>:
-
-    <\align>
-      <tformat|<table|<row|<cell|<around|(|T<rsub|K>*U<rsub|\<theta\>><rsup|-1>*g|)><around|(|t|)>>|<cell|=<big|int><rsub|\<bbb-R\>>K<around|(|<around|\||t-\<theta\><around|(|u|)>|\|>|)><frac|g<around|(|u|)>|<sqrt|\<theta\><rprime|'><around|(|u|)>>>*\<theta\><rprime|'><around|(|u|)>*<space|0.17em>d*u<eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>K<around|(|<around|\||t-\<theta\><around|(|u|)>|\|>|)>*g<around|(|u|)><sqrt|\<theta\><rprime|'><around|(|u|)>>*<space|0.17em>d*u<eq-number>>>>>
-    </align>
-
-    Third, <math|<around|(|U<rsub|\<theta\>>*T<rsub|K>*U<rsub|\<theta\>><rsup|-1>*g|)><around|(|t|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*<around|(|T<rsub|K>*U<rsub|\<theta\>><rsup|-1>*g|)><around|(|\<theta\><around|(|t|)>|)>>:
-
-    <\align>
-      <tformat|<table|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*<big|int><rsub|\<bbb-R\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|u|)>|\|>|)>*g<around|(|u|)><sqrt|\<theta\><rprime|'><around|(|u|)>>*<space|0.17em>d*u<eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>><sqrt|\<theta\><rprime|'><around|(|t|)>*\<theta\><rprime|'><around|(|u|)>>*K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|u|)>|\|>|)>*g<around|(|u|)>*<space|0.17em>d*u<eq-number>>>>>
-    </align>
-
-    Finally, changing variables back with <math|s=\<theta\><around|(|u|)>>:
-
-    <\align>
-      <tformat|<table|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>><sqrt|\<theta\><rprime|'><around|(|t|)>*\<theta\><rprime|'><around|(|s|)>>*K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>*g<around|(|s|)>*<space|0.17em>d*s<eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>K<rsub|\<theta\>><around|(|s,t|)>*g<around|(|s|)>*<space|0.17em>d*s<eq-number>>>|<row|<cell|>|<cell|=<around|(|T<rsub|K<rsub|\<theta\>>>*g|)><around|(|t|)><eq-number>>>>>
-    </align>
-
-    This establishes the conjugation relation
+    Under the simultaneous transformation <math|r=\<theta\><around|(|t|)>>
+    and <math|w=\<theta\><around|(|s|)>>:
 
     <\equation>
-      T<rsub|K<rsub|\<theta\>>>=U<rsub|\<theta\>>*T<rsub|K>*U<rsub|\<theta\>><rsup|-1>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<around|(|<around|(|U<rsub|\<theta\>>*T<rsub|K>*U<rsub|\<theta\>><rsup|-1>|)>*g|)><around|(|t|)>>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>*\<theta\><rprime|'><around|(|s|)>>*<big|int><rsub|\<bbb-R\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>*<around|(|U<rsub|\<theta\>><rsup|-1>*g|)><around|(|\<theta\><around|(|s|)>|)><frac|\<theta\><rprime|'><around|(|s|)>|<sqrt|\<theta\><rprime|'><around|(|s|)>>>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>*\<theta\><rprime|'><around|(|s|)>>*<big|int><rsub|\<bbb-R\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)><frac|g<around|(|s|)>|<sqrt|\<theta\><rprime|'><around|(|s|)>>>*<sqrt|\<theta\><rprime|'><around|(|s|)>>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>*\<theta\><rprime|'><around|(|s|)>>*<big|int><rsub|\<bbb-R\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>*g<around|(|s|)>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>><sqrt|\<theta\><rprime|'><around|(|t|)>*\<theta\><rprime|'><around|(|s|)>>*K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>*g<around|(|s|)>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>K<rsub|\<theta\>><around|(|t,s|)>*g<around|(|s|)>*<space|0.17em>d*s=<around|(|T<rsub|K<rsub|\<theta\>>>*g|)><around|(|t|)>>>>>>
     </equation>
+
+    where
+
+    <\equation>
+      K<rsub|\<theta\>><around|(|t,s|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>*\<theta\><rprime|'><around|(|s|)>>*K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>
+    </equation>
+
+    Therefore <math|T<rsub|K<rsub|\<theta\>>>=U<rsub|\<theta\>>*T<rsub|K>*U<rsub|\<theta\>><rsup|-1>>.
   </proof>
 
   <section|Sample Paths Live in <math|L<rsup|2><rsub|\<sigma\><text|-comp>>>><label|sec:samplepaths>
@@ -945,33 +932,34 @@
     <associate|auto-13|<tuple|6|15>>
     <associate|auto-2|<tuple|1.1|2>>
     <associate|auto-3|<tuple|1.2|2>>
-    <associate|auto-4|<tuple|2|4>>
-    <associate|auto-5|<tuple|3|6>>
-    <associate|auto-6|<tuple|3.1|6>>
+    <associate|auto-4|<tuple|2|5>>
+    <associate|auto-5|<tuple|3|7>>
+    <associate|auto-6|<tuple|3.1|7>>
     <associate|auto-7|<tuple|3.2|7>>
     <associate|auto-8|<tuple|3.3|9>>
     <associate|auto-9|<tuple|4|10>>
     <associate|cor:evol_spec|<tuple|13|8>>
+    <associate|covar|<tuple|23|5>>
     <associate|def:Hmu|<tuple|18|13>>
     <associate|def:L|<tuple|20|14>>
     <associate|def:L2sigma|<tuple|2|2>>
     <associate|def:Utheta|<tuple|4|2>>
-    <associate|def:cramer|<tuple|11|6>>
-    <associate|def:osc_proc|<tuple|8|4>>
+    <associate|def:cramer|<tuple|11|7>>
+    <associate|def:osc_proc|<tuple|8|5>>
     <associate|def:regularity|<tuple|23|15>>
     <associate|def:sigma_compact|<tuple|1|2>>
     <associate|def:zeromeasure|<tuple|16|12>>
-    <associate|lem:delta|<tuple|24|16>>
+    <associate|lem:delta|<tuple|24|15>>
     <associate|prop:atomic|<tuple|19|13>>
     <associate|prop:conjugation|<tuple|14|9>>
-    <associate|prop:inverse|<tuple|5|2>>
+    <associate|prop:inverse|<tuple|5|3>>
     <associate|rem:scaffold|<tuple|22|15>>
     <associate|sec:HP|<tuple|5|12>>
     <associate|sec:appendix|<tuple|6|15>>
     <associate|sec:functionspaces|<tuple|1|2>>
-    <associate|sec:oscillatory|<tuple|2|4>>
+    <associate|sec:oscillatory|<tuple|2|5>>
     <associate|sec:samplepaths|<tuple|4|10>>
-    <associate|sec:stationary_timechange|<tuple|3|6>>
+    <associate|sec:stationary_timechange|<tuple|3|7>>
     <associate|thm:Utheta_to_osc|<tuple|12|7>>
     <associate|thm:atomic|<tuple|17|12>>
     <associate|thm:existence_osc|<tuple|10|5>>
