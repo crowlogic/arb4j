@@ -4,7 +4,6 @@ import org.objectweb.asm.tree.analysis.AnalyzerException;
 
 import arb.Integer;
 import arb.Real;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.expressions.Context;
 import arb.functions.Function;
 import arb.functions.NullaryFunction;
@@ -12,11 +11,11 @@ import arb.functions.real.RealNullaryFunction;
 import junit.framework.TestCase;
 
 /**
- * @author ©2024 Stephen Crowley
- * @see BusinessSourceLicenseVersionOnePointOne for © terms
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
  */
 public class SumTest extends
-                         TestCase
+                     TestCase
 {
 
   @SuppressWarnings("resource")
@@ -29,7 +28,8 @@ public class SumTest extends
 
     α.set(1.0, 2.0, 3.0, 4.0);
 
-    Function<Integer, Real> numer = Function.express(Integer.class,
+    Function<Integer,
+                  Real>     numer = Function.express(Integer.class,
                                                      Real.class,
                                                      "F",
                                                      "n➔Z(Σα[k]₍ₙ₋₁₎{k=1…p})",
@@ -57,7 +57,12 @@ public class SumTest extends
 
     α.set(1.0, 2.0, 3.0, 4.0);
 
-    Function<Integer, Real> numer = Function.express(Integer.class, Real.class, "F", "n➔Σα[k]₍ₙ₋₁₎{k=1…p}", context);
+    Function<Integer,
+                  Real>     numer = Function.express(Integer.class,
+                                                     Real.class,
+                                                     "F",
+                                                     "n➔Σα[k]₍ₙ₋₁₎{k=1…p}",
+                                                     context);
 
     Integer                 in    = new Integer(2);
     Real                    val   = numer.evaluate(in, 128, new Real());
@@ -81,7 +86,8 @@ public class SumTest extends
     α.set(1.0, 2.0, 3.0);
     β.set(4.0);
 
-    Function<Integer, Real> ratio = Function.express(Integer.class,
+    Function<Integer,
+                  Real>     ratio = Function.express(Integer.class,
                                                      Real.class,
                                                      "F",
                                                      "n➔Σα[k]₍ₙ₋₁₎{k=1…p}/Σβ[k]₍ₙ₋₁₎{k=1…q}",
@@ -90,7 +96,7 @@ public class SumTest extends
     Real                    val   = ratio.evaluate(in, 128, new Real());
     assertEquals(1.5, val.doubleValue());
   }
-  
+
   @SuppressWarnings("resource")
   public static void testRatioOfRatioOverSumPlusOne()
   {
@@ -106,11 +112,12 @@ public class SumTest extends
     α.set(1.0, 2.0, 3.0);
     β.set(4.0);
 
-    Function<Integer, Real> ratio = Function.express(Integer.class,
-                                                     Real.class,
-                                                     "F",
-                                                     "n➔Σα[k]₍ₙ₋₁₎{k=1…p}/Σβ[k]₍ₙ₋₁₎{k=1…q}/Σβ[k]₍ₙ₋₁₎{k=1…q}+1",
-                                                     context);
+    Function<Integer, Real> ratio =
+                                  Function.express(Integer.class,
+                                                   Real.class,
+                                                   "F",
+                                                   "n➔Σα[k]₍ₙ₋₁₎{k=1…p}/Σβ[k]₍ₙ₋₁₎{k=1…q}/Σβ[k]₍ₙ₋₁₎{k=1…q}+1",
+                                                   context);
     Integer                 in    = new Integer(2);
     Real                    val   = ratio.evaluate(in, 128, new Real());
     assertEquals(1.375, val.doubleValue());
