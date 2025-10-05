@@ -95,8 +95,12 @@
   <\definition>
     [<math|\<sigma\>>-compact sets]<label|def:sigma_compact> A subset
     <math|U\<subseteq\>\<bbb-R\>> is <math|\<sigma\>>-compact if
-    <math|U=<big|cup><rsub|n=1><rsup|\<infty\>>K<rsub|n>> with each
-    <math|K<rsub|n>> compact.
+
+    <\equation>
+      U=<big|cup><rsub|n=1><rsup|\<infty\>>K<rsub|n>
+    </equation>
+
+    \ with each <math|K<rsub|n>> compact.
   </definition>
 
   <\definition>
@@ -209,8 +213,13 @@
       \<theta\><rsup|-1><around|(|\<theta\><around|(|t|)>|)>=t
     </equation>
 
-    Therefore <math|U<rsub|\<theta\>>*U<rsub|\<theta\>><rsup|-1>=U<rsub|\<theta\>><rsup|-1>*U<rsub|\<theta\>>=I>
-    on <math|L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>.
+    Therefore
+
+    <\equation>
+      U<rsub|\<theta\>>*U<rsub|\<theta\>><rsup|-1>=U<rsub|\<theta\>><rsup|-1>*U<rsub|\<theta\>>=I
+    </equation>
+
+    \ on <math|L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>.
   </proof>
 
   <\theorem>
@@ -297,8 +306,12 @@
   <\proof>
     We construct the stochastic integral using the standard extension
     procedure. First, define the integral for simple functions of the form
-    <math|g<around|(|\<lambda\>|)>=<big|sum><rsub|j=1><rsup|n>c<rsub|j>*<with|math-font-family|bf|1><rsub|E<rsub|j>><around|(|\<lambda\>|)>>
-    where <math|<around|{|E<rsub|j>|}>> are disjoint Borel sets with
+
+    <\equation>
+      g<around|(|\<lambda\>|)>=<big|sum><rsub|j=1><rsup|n>c<rsub|j>*<with|math-font-family|bf|1><rsub|E<rsub|j>><around|(|\<lambda\>|)>
+    </equation>
+
+    \ where <math|<around|{|E<rsub|j>|}>> are disjoint Borel sets with
     <math|F<around|(|E<rsub|j>|)>\<less\>\<infty\>> and
     <math|c<rsub|j>\<in\>\<bbb-C\>>:
 
@@ -314,13 +327,21 @@
 
     Since simple functions are dense in <math|L<rsup|2><around|(|F|)>>, we
     extend by continuity to all <math|g\<in\>L<rsup|2><around|(|F|)>>. For
-    each <math|t>, since <math|\<varphi\><rsub|t><around|(|\<lambda\>|)>=A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>>
-    and <math|A<rsub|t>\<in\>L<rsup|2><around|(|F|)>>, we have
-    <math|\<varphi\><rsub|t>\<in\>L<rsup|2><around|(|F|)>>. Therefore
-    <math|Z<around|(|t|)>=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>>
-    is well-defined in <math|L<rsup|2><around|(|\<Omega\>|)>>.
+    each <math|t>, since
 
-    The covariance is computed as:
+    <\equation>
+      \<varphi\><rsub|t><around|(|\<lambda\>|)>=A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>
+    </equation>
+
+    \ and <math|A<rsub|t>\<in\>L<rsup|2><around|(|F|)>>, we have
+    <math|\<varphi\><rsub|t>\<in\>L<rsup|2><around|(|F|)>>. Therefore
+
+    <\equation>
+      Z<around|(|t|)>=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>
+    </equation>
+
+    \ is well-defined in <math|L<rsup|2><around|(|\<Omega\>|)>>. The
+    covariance is computed as:
 
     <\align>
       <tformat|<table|<row|<cell|R<rsub|Z><around|(|t,s|)>>|<cell|=\<bbb-E\><around|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]><eq-number>>>|<row|<cell|>|<cell|=\<bbb-E\><around*|[|<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>*<big|int><rsub|\<bbb-R\>><wide|\<varphi\><rsub|s><around|(|\<mu\>|)>|\<bar\>><space|0.17em><wide|\<Phi\>*<around|(|d*\<mu\>|)>|\<bar\>>|]><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>><big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)><wide|\<varphi\><rsub|s><around|(|\<mu\>|)>|\<bar\>>\<bbb-E\>*<around|[|\<Phi\>*<around|(|d*\<lambda\>|)><wide|\<Phi\>*<around|(|d*\<mu\>|)>|\<bar\>>|]><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)><wide|\<varphi\><rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>d*F<around|(|\<lambda\>|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)><wide|A<rsub|s><around|(|\<lambda\>|)>|\<bar\>>e<rsup|i*\<lambda\>*<around|(|t-s|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)><eq-number>>>>>
@@ -333,11 +354,18 @@
 
   <\definition>
     [Cramér representation]<label|def:cramer> A zero-mean stationary process
-    <math|X> with spectral measure <math|F> admits
+    <math|X> with spectral measure <math|F> admits the sample path
+    representation
 
-    <\equation*>
-      X<around|(|t|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*t>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>,<space|2em>R<rsub|X>*<around|(|t-s|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*<around|(|t-s|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>.
-    </equation*>
+    <\equation>
+      X<around|(|t|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*t>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>
+    </equation>
+
+    which has covariance
+
+    <\equation>
+      R<rsub|X>*<around|(|t-s|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*<around|(|t-s|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>
+    </equation>
   </definition>
 
   <subsection|Stationary <math|\<to\>> oscillatory via
@@ -444,9 +472,18 @@
   <subsection|Covariance operator conjugation>
 
   <\proposition>
-    [Operator conjugation]<label|prop:conjugation> Let
-    <math|<around|(|T<rsub|K>*f|)><around|(|t|)>\<assign\><big|int><rsub|\<bbb-R\>>K<around|(|<around|\||t-s|\|>|)>*<space|0.17em>f<around|(|s|)>*<space|0.17em>d*s>
-    with stationary kernel <math|K<around|(|h|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*h>*<space|0.17em>d*F<around|(|\<lambda\>|)>>.
+    [Operator conjugation]<label|prop:conjugation> Let\ 
+
+    <\equation>
+      <around|(|T<rsub|K>*f|)><around|(|t|)>\<assign\><big|int><rsub|\<bbb-R\>>K<around|(|<around|\||t-s|\|>|)>*<space|0.17em>f<around|(|s|)>*<space|0.17em>d*s
+    </equation>
+
+    \ with stationary kernel\ 
+
+    <\equation>
+      K<around|(|h|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*h>*<space|0.17em>d*F<around|(|\<lambda\>|)>
+    </equation>
+
     Define the transformed kernel
 
     <\equation>
@@ -505,7 +542,10 @@
     </align>
 
     This establishes the conjugation relation
-    <math|T<rsub|K<rsub|\<theta\>>>=U<rsub|\<theta\>>*T<rsub|K>*U<rsub|\<theta\>><rsup|-1>>.
+
+    <\equation>
+      T<rsub|K<rsub|\<theta\>>>=U<rsub|\<theta\>>*T<rsub|K>*U<rsub|\<theta\>><rsup|-1>
+    </equation>
   </proof>
 
   <section|Sample Paths Live in <math|L<rsup|2><rsub|\<sigma\><text|-comp>>>><label|sec:samplepaths>
@@ -513,8 +553,13 @@
   <\theorem>
     [Sample paths in <math|L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>]<label|thm:paths_sigma_comp>
     Let <math|<around|{|X<around|(|t|)>|}><rsub|t\<in\>\<bbb-R\>>> be a
-    second-order stationary process with <math|\<sigma\><rsup|2>\<assign\>\<bbb-E\><around|[|X<around|(|t|)><rsup|2>|]>\<less\>\<infty\>>.
-    Then, almost surely, every sample path
+    second-order stationary process with\ 
+
+    <\equation>
+      \<sigma\><rsup|2>\<assign\>\<bbb-E\><around|[|X<around|(|t|)><rsup|2>|]>\<less\>\<infty\>
+    </equation>
+
+    then, almost surely, every sample path
     <math|t\<mapsto\>X<around|(|\<omega\>,t|)>> belongs to
     <math|L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>.
   </theorem>
@@ -539,9 +584,13 @@
       P*<around|(|Y<rsub|<around|[|a,b|]>>\<gtr\>M|)>\<leq\><frac|\<bbb-E\><around|[|Y<rsub|<around|[|a,b|]>>|]>|M>=<frac|\<sigma\><rsup|2>*<around|(|b-a|)>|M>
     </equation>
 
-    Taking <math|M\<to\>\<infty\>>, we conclude
-    <math|P*<around|(|Y<rsub|<around|[|a,b|]>>\<less\>\<infty\>|)>=1>, i.e.,
-    almost surely the sample path is square-integrable on
+    Taking <math|M\<to\>\<infty\>>, we conclude\ 
+
+    <\equation>
+      P*<around|(|Y<rsub|<around|[|a,b|]>>\<less\>\<infty\>|)>=1
+    </equation>
+
+    , i.e., almost surely the sample path is square-integrable on
     <math|<around|[|a,b|]>>.
 
     Since <math|\<bbb-R\>> is the countable union of bounded intervals:
@@ -557,19 +606,38 @@
     </equation>
 
     Now let <math|U> be any <math|\<sigma\>>-compact set. Then
-    <math|U=<big|cup><rsub|m=1><rsup|\<infty\>>K<rsub|m>> where each
-    <math|K<rsub|m>> is compact. Each compact set <math|K<rsub|m>> is
-    bounded, so <math|K<rsub|m>\<subseteq\><around|[|-N<rsub|m>,N<rsub|m>|]>>
-    for some <math|N<rsub|m>>. Therefore:
+
+    <\equation>
+      U=<big|cup><rsub|m=1><rsup|\<infty\>>K<rsub|m>
+    </equation>
+
+    \ where each <math|K<rsub|m>> is compact. Each compact set
+    <math|K<rsub|m>> is bounded, so
+
+    <\equation>
+      K<rsub|m>\<subseteq\><around|[|-N<rsub|m>,N<rsub|m>|]>
+    </equation>
+
+    \ for some <math|N<rsub|m>>. Therefore:
 
     <\equation>
       <big|int><rsub|U>X<around|(|t|)><rsup|2>*<space|0.17em>d*t=<big|int><rsub|<big|cup><rsub|m=1><rsup|\<infty\>>K<rsub|m>>X<around|(|t|)><rsup|2>*<space|0.17em>d*t\<leq\><big|sum><rsub|m=1><rsup|\<infty\>><big|int><rsub|K<rsub|m>>X<around|(|t|)><rsup|2>*<space|0.17em>d*t\<leq\><big|sum><rsub|m=1><rsup|\<infty\>><big|int><rsub|-N<rsub|m>><rsup|N<rsub|m>>X<around|(|t|)><rsup|2>*<space|0.17em>d*t
     </equation>
 
-    Since each integral <math|<big|int><rsub|-N<rsub|m>><rsup|N<rsub|m>>X<around|(|t|)><rsup|2>*<space|0.17em>d*t\<less\>\<infty\>>
-    almost surely, and the sum of countably many finite terms is finite, we
-    have <math|<big|int><rsub|U>X<around|(|t|)><rsup|2>*<space|0.17em>d*t\<less\>\<infty\>>
-    almost surely.
+    Since each integral
+
+    <\equation>
+      <big|int><rsub|-N<rsub|m>><rsup|N<rsub|m>>X<around|(|t|)><rsup|2>*<space|0.17em>d*t\<less\>\<infty\>
+    </equation>
+
+    \ almost surely, and the sum of countably many finite terms is finite, we
+    have
+
+    <\equation>
+      <big|int><rsub|U>X<around|(|t|)><rsup|2>*<space|0.17em>d*t\<less\>\<infty\>
+    </equation>
+
+    \ almost surely.
 
     This holds for every <math|\<sigma\>>-compact set <math|U>, so almost
     surely every sample path lies in <math|L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>.
@@ -581,8 +649,13 @@
 
   <\definition>
     [Zero localization measure]<label|def:zeromeasure> Let <math|Z> be
-    real-valued with <math|Z\<in\>C<rsup|1><around|(|\<bbb-R\>|)>> and only
-    simple zeros <math|Z<around|(|t<rsub|0>|)>=0\<Rightarrow\>Z<rprime|'><around|(|t<rsub|0>|)>\<neq\>0>.
+    real-valued with <math|Z\<in\>C<rsup|1><around|(|\<bbb-R\>|)>> having
+    only simple zeros
+
+    <\equation>
+      Z<around|(|t<rsub|0>|)>=0\<Rightarrow\>Z<rprime|'><around|(|t<rsub|0>|)>\<neq\>0
+    </equation>
+
     Define, for Borel <math|B\<subset\>\<bbb-R\>>,
 
     <\equation>
@@ -614,7 +687,12 @@
 
     Specifically, near <math|t<rsub|0>> where
     <math|Z<around|(|t<rsub|0>|)>=0> and <math|Z<rprime|'><around|(|t<rsub|0>|)>\<neq\>0>,
-    we have locally <math|Z<around|(|t|)>=<around|(|t-t<rsub|0>|)>*Z<rprime|'><around|(|t<rsub|0>|)>+O<around|(|<around|(|t-t<rsub|0>|)><rsup|2>|)>>.
+    we have locally
+
+    <\equation>
+      Z<around|(|t|)>=<around|(|t-t<rsub|0>|)>*Z<rprime|'><around|(|t<rsub|0>|)>+O<around|(|<around|(|t-t<rsub|0>|)><rsup|2>|)>
+    </equation>
+
     The distributional identity for the Dirac delta under smooth changes of
     variables gives:
 
@@ -628,9 +706,13 @@
       <tformat|<table|<row|<cell|<big|int><rsub|\<bbb-R\>>\<phi\><around|(|t|)>*<space|0.17em>\<delta\><around|(|Z<around|(|t|)>|)><space|0.17em><around|\||Z<rprime|'><around|(|t|)>|\|>*<space|0.17em>d*t>|<cell|=<big|int><rsub|\<bbb-R\>>\<phi\><around|(|t|)><space|0.17em><around|\||Z<rprime|'><around|(|t|)>|\|>*<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><frac|\<delta\>*<around|(|t-t<rsub|0>|)>|<around|\||Z<rprime|'><around|(|t<rsub|0>|)>|\|>>*<space|0.17em>d*t<eq-number>>>|<row|<cell|>|<cell|=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><big|int><rsub|\<bbb-R\>>\<phi\><around|(|t|)><frac|<around|\||Z<rprime|'><around|(|t|)>|\|>*\<delta\>*<around|(|t-t<rsub|0>|)>|<around|\||Z<rprime|'><around|(|t<rsub|0>|)>|\|>>*<space|0.17em>d*t<eq-number>>>|<row|<cell|>|<cell|=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><frac|<around|\||Z<rprime|'><around|(|t<rsub|0>|)>|\|>*\<phi\><around|(|t<rsub|0>|)>|<around|\||Z<rprime|'><around|(|t<rsub|0>|)>|\|>><eq-number>>>|<row|<cell|>|<cell|=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<phi\><around|(|t<rsub|0>|)><eq-number>>>>>
     </align>
 
-    This shows that <math|\<mu\>> is the discrete measure
-    <math|\<mu\>=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<delta\><rsub|t<rsub|0>>>
-    assigning unit mass to each zero.
+    This shows that <math|\<mu\>> is the discrete measure <math|>
+
+    <\equation>
+      \<mu\>=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<delta\><rsub|t<rsub|0>>
+    </equation>
+
+    \ assigning unit mass to each zero.
   </proof>
 
   <subsection|Hilbert space on zeros and multiplication operator>
@@ -857,46 +939,46 @@
 <\references>
   <\collection>
     <associate|auto-1|<tuple|1|2>>
-    <associate|auto-10|<tuple|5|10>>
-    <associate|auto-11|<tuple|5.1|10>>
-    <associate|auto-12|<tuple|5.2|11>>
-    <associate|auto-13|<tuple|6|13>>
+    <associate|auto-10|<tuple|5|12>>
+    <associate|auto-11|<tuple|5.1|12>>
+    <associate|auto-12|<tuple|5.2|13>>
+    <associate|auto-13|<tuple|6|15>>
     <associate|auto-2|<tuple|1.1|2>>
     <associate|auto-3|<tuple|1.2|2>>
     <associate|auto-4|<tuple|2|4>>
     <associate|auto-5|<tuple|3|6>>
     <associate|auto-6|<tuple|3.1|6>>
-    <associate|auto-7|<tuple|3.2|6>>
-    <associate|auto-8|<tuple|3.3|8>>
-    <associate|auto-9|<tuple|4|9>>
-    <associate|cor:evol_spec|<tuple|13|7>>
-    <associate|def:Hmu|<tuple|18|11>>
-    <associate|def:L|<tuple|20|12>>
+    <associate|auto-7|<tuple|3.2|7>>
+    <associate|auto-8|<tuple|3.3|9>>
+    <associate|auto-9|<tuple|4|10>>
+    <associate|cor:evol_spec|<tuple|13|8>>
+    <associate|def:Hmu|<tuple|18|13>>
+    <associate|def:L|<tuple|20|14>>
     <associate|def:L2sigma|<tuple|2|2>>
     <associate|def:Utheta|<tuple|4|2>>
     <associate|def:cramer|<tuple|11|6>>
     <associate|def:osc_proc|<tuple|8|4>>
-    <associate|def:regularity|<tuple|23|13>>
+    <associate|def:regularity|<tuple|23|15>>
     <associate|def:sigma_compact|<tuple|1|2>>
-    <associate|def:zeromeasure|<tuple|16|10>>
-    <associate|lem:delta|<tuple|24|14>>
-    <associate|prop:atomic|<tuple|19|11>>
-    <associate|prop:conjugation|<tuple|14|8>>
+    <associate|def:zeromeasure|<tuple|16|12>>
+    <associate|lem:delta|<tuple|24|16>>
+    <associate|prop:atomic|<tuple|19|13>>
+    <associate|prop:conjugation|<tuple|14|9>>
     <associate|prop:inverse|<tuple|5|2>>
-    <associate|rem:scaffold|<tuple|22|13>>
-    <associate|sec:HP|<tuple|5|10>>
-    <associate|sec:appendix|<tuple|6|13>>
+    <associate|rem:scaffold|<tuple|22|15>>
+    <associate|sec:HP|<tuple|5|12>>
+    <associate|sec:appendix|<tuple|6|15>>
     <associate|sec:functionspaces|<tuple|1|2>>
     <associate|sec:oscillatory|<tuple|2|4>>
-    <associate|sec:samplepaths|<tuple|4|9>>
+    <associate|sec:samplepaths|<tuple|4|10>>
     <associate|sec:stationary_timechange|<tuple|3|6>>
-    <associate|thm:Utheta_to_osc|<tuple|12|6>>
-    <associate|thm:atomic|<tuple|17|10>>
+    <associate|thm:Utheta_to_osc|<tuple|12|7>>
+    <associate|thm:atomic|<tuple|17|12>>
     <associate|thm:existence_osc|<tuple|10|5>>
     <associate|thm:global_unitarity|<tuple|7|4>>
     <associate|thm:local_unitarity|<tuple|6|3>>
-    <associate|thm:paths_sigma_comp|<tuple|15|9>>
-    <associate|thm:spectrum|<tuple|21|12>>
+    <associate|thm:paths_sigma_comp|<tuple|15|10>>
+    <associate|thm:spectrum|<tuple|21|14>>
   </collection>
 </references>
 

@@ -1,2 +1,7 @@
-var psi = RealFunction.express("cos(2*pi*(p^2-p-1/16))/cos(2*pi*p)");
-psi.eval(1.2)
+FunctionPlotter.darkStyle=false;
+var context = new Context();
+var psi = RealFunction.express("psi:cos(2*pi*(p^2-p-1/16))/cos(2*pi*p)",context);
+var shiftedpsi = RealFunction.express("shiftedpsi:psi(p+1/2)",context);
+plot(-8,8,50000,psi,shiftedpsi);
+
+
