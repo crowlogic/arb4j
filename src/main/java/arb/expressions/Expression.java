@@ -253,7 +253,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean                                        functionNameSpecified         = true;
 
-  public boolean                                        generateDerivative            = true;
+  public boolean                                        shouldGenerateDerivative            = true;
 
   public HashMap<Node<D, C, F>, String>                 generatedNodes                =
                                                                        new HashMap<>();
@@ -944,7 +944,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       generateDomainTypeMethod(classVisitor);
       generateCoDomainTypeMethod(classVisitor);
       generateEvaluationMethod(classVisitor);
-      if (!isNullaryFunction() && generateDerivative)
+      if (!isNullaryFunction() && shouldGenerateDerivative)
       {
         generateDerivativeMethod(classVisitor);
       }
@@ -1076,11 +1076,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   private ClassVisitor generateDerivativeMethod(ClassVisitor classVisitor)
   {
+    assert functionClass.isInterface() : functionClass + " is not an interface";
+    
     assert rootNode != null : "rootNode is null";
 
     var mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
                                       "derivative",
-                                      Compiler.getMethodDescriptor(Function.class),
+                                      Compiler.getMethodDescriptor(functionClass),
                                       null,
                                       null);
     mv.visitCode();
@@ -1092,7 +1094,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Compiler.invokeStaticMethod(mv,
                                 Function.class,
                                 "express",
-                                Function.class,
+                                functionClass,
                                 Class.class,
                                 Class.class,
                                 Class.class,

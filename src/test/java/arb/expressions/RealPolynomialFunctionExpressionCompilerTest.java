@@ -6,7 +6,7 @@ import static arb.functions.polynomials.RealPolynomialFunction.express;
 import arb.RealConstants;
 import arb.RealPolynomial;
 import arb.functions.polynomials.RealPolynomialFunction;
-import arb.functions.polynomials.orthogonal.real.JacobiPolynomials;
+import arb.functions.polynomials.orthogonal.real.JacobiPolynomialSequence;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealNullaryFunction;
 import junit.framework.TestCase;
@@ -22,7 +22,7 @@ public class RealPolynomialFunctionExpressionCompilerTest extends
   public static void testDerivativeOfPolynomial()
   {
     var context = new Context();
-    try ( var P = new JacobiPolynomials(RealConstants.negHalf,
+    try ( var P = new JacobiPolynomialSequence(RealConstants.negHalf,
                                         RealConstants.negHalf))
     {
       var y = P.evaluate(4, 128);

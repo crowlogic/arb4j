@@ -42,17 +42,15 @@ public class JacobiPolynomialExpansionTest extends
     coeffs.get(17).set("0.0251020200671198299517251326431", 128);
     coeffs.get(18).set("0", 128);
     coeffs.get(19).set("0.02126119466672988059353758060700755989414", 128);
-    RealFunction expansion = new JacobiPolynomialExpansion(coeffs);
-    Real         x         = new Real("0.76",
-                                      128);
-    var          y         = expansion.evaluate(x, 1, 128, new Real());
-
-    assertTrue(y.toString().startsWith("0.804413903516878943668546309744"));
-    if ( System.currentTimeMillis() == 0 )
+    try ( RealFunction expansion = new JacobiPolynomialExpansion(coeffs))
     {
-      ShellFunctions.plot(-1, 1, 1000, expansion, RealFunction.express("arctanh(x)"));
-      Thread.sleep(Duration.ofMinutes(1));
+      Real         x         = new Real("0.76",
+                                        128);
+      var          y         = expansion.evaluate(x, 1, 128, new Real());
+
+      assertTrue(y.toString().startsWith("0.804413903516878943668546309744"));
     }
+
   }
 
 }

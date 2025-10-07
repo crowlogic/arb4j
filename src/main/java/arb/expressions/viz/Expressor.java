@@ -14,7 +14,7 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
-import arb.functions.polynomials.orthogonal.real.JacobiPolynomials;
+import arb.functions.polynomials.orthogonal.real.JacobiPolynomialSequence;
 import arb.utensils.Utensils;
 import arb.viz.WindowManager;
 import javafx.application.Application;
@@ -58,7 +58,7 @@ import javafx.stage.WindowEvent;
  * 
  * TODO: make Expressor have only a single global Context, that will make it
  * easier to cross-reference all functions within the global context to debug
- * sets of equations like is used in {@link JacobiPolynomials}
+ * sets of equations like is used in {@link JacobiPolynomialSequence}
  * 
  * @param <D>
  * @param <C>

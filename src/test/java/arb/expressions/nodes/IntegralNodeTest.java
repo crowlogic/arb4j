@@ -5,7 +5,7 @@ import arb.RealConstants;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.polynomials.RealPolynomialNullaryFunction;
-import arb.functions.polynomials.orthogonal.real.JacobiPolynomials;
+import arb.functions.polynomials.orthogonal.real.JacobiPolynomialSequence;
 import arb.functions.polynomials.orthogonal.real.ShiftedJacobiPolynomials;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealNullaryFunction;
@@ -106,7 +106,7 @@ public class IntegralNodeTest extends
   public void testIntegralOfAElementOfAContextualSequence()
   {
     var context = new Context();
-    var P       = new JacobiPolynomials(RealConstants.negHalf,
+    var P       = new JacobiPolynomialSequence(RealConstants.negHalf,
                                         RealConstants.negHalf);
     context.registerSequence("P", P);
     var    p3norm = RealNullaryFunction.express("int(P(3)(x),x=-1...0)", context);
@@ -117,7 +117,7 @@ public class IntegralNodeTest extends
   public void testFunctionOfPolynomialElementOfAContextualSequence()
   {
     var context = new Context();
-    var P       = new JacobiPolynomials(RealConstants.negHalf,
+    var P       = new JacobiPolynomialSequence(RealConstants.negHalf,
                                         RealConstants.negHalf);
     context.registerSequence("P", P);
     var  prototype = RealNullaryFunction.parse("P(3)(0.75)", context);
@@ -131,7 +131,7 @@ public class IntegralNodeTest extends
   public void testIntegralOfAnElementOfAContextualSequenceSquared()
   {
     var context = new Context();
-    var P       = new JacobiPolynomials(RealConstants.negHalf,
+    var P       = new JacobiPolynomialSequence(RealConstants.negHalf,
                                         RealConstants.negHalf);
     context.registerSequence("P", P);
     var p3norm = RealNullaryFunction.express("int((P(3)^2)(x),x=-1..1)", context);

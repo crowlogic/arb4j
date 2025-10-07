@@ -10,7 +10,7 @@ import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.polynomials.RationalJacobiPolynomials;
-import arb.functions.polynomials.orthogonal.real.JacobiPolynomials;
+import arb.functions.polynomials.orthogonal.real.JacobiPolynomialSequence;
 import junit.framework.TestCase;
 
 /**
@@ -63,7 +63,7 @@ public class JacobiPolynomialSequenceTest extends
   public static void testP()
   {
 
-    try ( var seq = new JacobiPolynomials(negHalf,
+    try ( var seq = new JacobiPolynomialSequence(negHalf,
                                           negHalf))
     {
 
@@ -86,7 +86,7 @@ public class JacobiPolynomialSequenceTest extends
   public static void testP0()
   {
 
-    try ( var seq = new JacobiPolynomials(negHalf,
+    try ( var seq = new JacobiPolynomialSequence(negHalf,
                                           negHalf))
     {
       Integer won = new Integer("0");
@@ -105,7 +105,7 @@ public class JacobiPolynomialSequenceTest extends
   public void testP1()
   {
 
-    try ( Integer won = new Integer("1"); JacobiPolynomials seq = new JacobiPolynomials(negHalf,
+    try ( Integer won = new Integer("1"); JacobiPolynomialSequence seq = new JacobiPolynomialSequence(negHalf,
                                                                                         negHalf);
           RealPolynomial result = seq.P.evaluate(won, 0, bits, new RealPolynomial()))
     {
@@ -121,7 +121,7 @@ public class JacobiPolynomialSequenceTest extends
 
   public static void testP2()
   {
-    try ( var seq = new JacobiPolynomials(negHalf,
+    try ( var seq = new JacobiPolynomialSequence(negHalf,
                                           negHalf))
     {
       Integer too = new Integer("2");
@@ -142,7 +142,7 @@ public class JacobiPolynomialSequenceTest extends
   public static void testP3()
   {
 
-    try ( var seq = new JacobiPolynomials(negHalf,
+    try ( var seq = new JacobiPolynomialSequence(negHalf,
                                           negHalf))
     {
       Integer too = new Integer("3");
@@ -183,7 +183,7 @@ public class JacobiPolynomialSequenceTest extends
   public static void testP4()
   {
 
-    try ( var seq = new JacobiPolynomials(negHalf,
+    try ( var seq = new JacobiPolynomialSequence(negHalf,
                                           negHalf))
     {
       Integer too = new Integer("4");

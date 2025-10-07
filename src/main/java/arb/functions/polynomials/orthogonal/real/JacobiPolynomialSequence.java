@@ -50,9 +50,9 @@ import arb.utensils.ShellFunctions;
  *      {@link TheArb4jLibrary}
  */
 @SuppressWarnings("resource")
-public class JacobiPolynomials extends
-                               RealOrthogonalPolynomialSequence implements
-                               AutoCloseable
+public class JacobiPolynomialSequence extends
+                                      RealOrthogonalPolynomialSequence implements
+                                      AutoCloseable
 
 {
 
@@ -79,11 +79,10 @@ public class JacobiPolynomials extends
 
     }
 
-
     @Override
     public RealPolynomial evaluate(Integer t, int order, int bits, RealPolynomial res)
     {
-      return JacobiPolynomials.this.evaluate(t, order, bits, res).differentiate(bits, res);
+      return JacobiPolynomialSequence.this.evaluate(t, order, bits, res).differentiate(bits, res);
     }
   }
 
@@ -101,7 +100,7 @@ public class JacobiPolynomials extends
     @Override
     public RealPolynomial evaluate(Integer t, int order, int bits, RealPolynomial res)
     {
-      return JacobiPolynomials.this.evaluate(t, order, bits, res).integrate(bits, res);
+      return JacobiPolynomialSequence.this.evaluate(t, order, bits, res).integrate(bits, res);
     }
   }
 
@@ -131,11 +130,16 @@ public class JacobiPolynomials extends
   final public RealNullaryFunction    G       = RealNullaryFunction.express("G", "α²-β²", context);
 
   final public RealPolynomialSequence A       =
-                                        RealPolynomialSequence.express("A", "n➔(F(n)*x+G())*(C(n)-1)/2", context);
+                                        RealPolynomialSequence.express("A",
+                                                                       "n➔(F(n)*x+G())*(C(n)-1)/2",
+                                                                       context);
 
-  final public RealSequence           E       = RealSequence.express("E", "n➔n*C(n/2)*C(n-1)", context);
+  final public RealSequence           E       =
+                                        RealSequence.express("E", "n➔n*C(n/2)*C(n-1)", context);
 
-  final public RealSequence           B       = RealSequence.express("B", "n➔(n+α-1)*(n+β-1)*C(n)", context);
+  final public RealSequence           B       = RealSequence.express("B",
+                                                                     "n➔(n+α-1)*(n+β-1)*C(n)",
+                                                                     context);
 
   final public RealPolynomialSequence P       =
                                         RealPolynomialSequence.express("P",
@@ -144,7 +148,7 @@ public class JacobiPolynomials extends
 
   protected RealFunction              orthogonalityMeasure;
 
-  public JacobiPolynomials(Real a, Real b)
+  public JacobiPolynomialSequence(Real a, Real b)
   {
     bits = Math.max(128, Math.max(a.bits(), b.bits()));
     this.α.set(a);

@@ -14,7 +14,7 @@ import arb.documentation.TheArb4jLibrary;
  *      {@link TheArb4jLibrary}
  */
 public class JacobiPolynomialExpansion extends
-                                       RealOrthogonalPolynomialExpansion<JacobiPolynomials>
+                                       RealOrthogonalPolynomialExpansion<JacobiPolynomialSequence>
 {
 
   /**
@@ -36,7 +36,7 @@ public class JacobiPolynomialExpansion extends
 
   public JacobiPolynomialExpansion(Real α, Real β, Real projections)
   {
-    super(new JacobiPolynomials(α,
+    super(new JacobiPolynomialSequence(α,
                                 β),
           projections);
 
@@ -49,7 +49,7 @@ public class JacobiPolynomialExpansion extends
     var measure = basis.orthogonalityMeasure();
 
     result.zero();
-    try ( Real blip = new Real();)
+    try ( Real blip = result.borrowVariable() )
     {
       Iterator<RealPolynomial> basisIterator = basisElements.iterator();
 
