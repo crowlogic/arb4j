@@ -205,7 +205,7 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
     int            outSlot         = loadOutputVariableOntoElementOfOutputPolynomial(mv, S);
 
     Class<?>       polynomialClass =
-                                   registerIntermediatePolynomialVariablesIfNotAlreadyRegistered(isComplex);
+                                   registerIntermediateVariablesIfNotAlreadyRegistered(isComplex);
 
     int            resSlot         =
                            createAndIninitializePolynomial(mv, isComplex, polynomialClass);
@@ -325,7 +325,7 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
   }
 
   public Class<?>
-         registerIntermediatePolynomialVariablesIfNotAlreadyRegistered(final boolean isComplex)
+         registerIntermediateVariablesIfNotAlreadyRegistered(final boolean isComplex)
   {
     Class<?> polynomialClass = isComplex ? ComplexPolynomial.class : RealPolynomial.class;
 
