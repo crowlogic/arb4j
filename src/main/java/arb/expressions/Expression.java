@@ -253,7 +253,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean                                        functionNameSpecified         = true;
 
-  public boolean                                        shouldGenerateDerivative            = true;
+  public boolean                                        shouldGenerateDerivative      = true;
 
   public HashMap<Node<D, C, F>, String>                 generatedNodes                =
                                                                        new HashMap<>();
@@ -1077,12 +1077,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   private ClassVisitor generateDerivativeMethod(ClassVisitor classVisitor)
   {
     assert functionClass.isInterface() : functionClass + " is not an interface";
-    
+
     assert rootNode != null : "rootNode is null";
 
     var mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
                                       "derivative",
-                                      Compiler.getMethodDescriptor(functionClass),
+                                      Compiler.getMethodDescriptor(Function.class),
                                       null,
                                       null);
     mv.visitCode();
@@ -1094,7 +1094,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Compiler.invokeStaticMethod(mv,
                                 Function.class,
                                 "express",
-                                functionClass,
+                                Function.class,
                                 Class.class,
                                 Class.class,
                                 Class.class,
@@ -1244,34 +1244,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       for (Dependency dependency : dependencies)
       {
-        var assignments        = dependency.getAssignments(className, referencedFunctions);
-
-        var functionName       = dependency.variableName;
-        var mapping            = referencedFunctions.get(functionName);
-        var functionDescriptor = String.format("L%s;", functionName);
-
-        if (mapping != null)
-        {
-          if (mapping.instance != null)
-          {
-            functionDescriptor = mapping.instance.getClass().descriptorString();
-          }
-          constructReferencedFunctionInstanceIfItIsNull(mv, mapping);
-          generateFunctionInitializer(mv, mapping, assignments);
-
-          for (String assignment : assignments)
-          {
-            loadThisOntoStack(mv).visitFieldInsn(GETFIELD,
-                                                 className,
-                                                 assignment,
-                                                 String.format("L%s;", assignment));
-            loadThisOntoStack(mv).visitFieldInsn(GETFIELD,
-                                                 className,
-                                                 functionName,
-                                                 functionDescriptor);
-            mv.visitFieldInsn(PUTFIELD, assignment, functionName, functionDescriptor);
-          }
-        }
+        generateDependencyAssignments(mv, dependency);
       }
     }
 
@@ -1282,6 +1255,51 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     generateCodeToSetIsInitializedToTrue(mv);
     return mv;
+  }
+
+  protected void generateDependencyAssignments(MethodVisitor mv, Dependency dependency)
+  {
+    var assignments        = dependency.getAssignments(className, referencedFunctions);
+
+    var functionName       = dependency.variableName;
+    var mapping            = referencedFunctions.get(functionName);
+    var functionDescriptor = String.format("L%s;", functionName);
+
+    if (mapping != null)
+    {
+
+      functionDescriptor = mapping.functionFieldDescriptor();
+
+      constructReferencedFunctionInstanceIfItIsNull(mv, mapping);
+      generateFunctionInitializer(mv, mapping, assignments);
+
+      for (String assignment : assignments)
+      {
+        generateDependencyAssignment(mv, functionName, functionDescriptor, assignment);
+      }
+    }
+  }
+
+  protected void generateDependencyAssignment(MethodVisitor mv,
+                                              String functionName,
+                                              String functionDescriptor,
+                                              String assignment)
+  {
+    var otherMapping = referencedFunctions.get(assignment);
+
+    if (Expression.trace)
+    {
+      log.debug("generateDependencyAssignment: functionName={} functionDescriptor={} assignment={}",
+                functionName,
+                functionDescriptor,
+                assignment);
+    }
+    loadThisOntoStack(mv).visitFieldInsn(GETFIELD,
+                                         className,
+                                         assignment,
+                                         otherMapping.functionFieldDescriptor());
+    loadThisOntoStack(mv).visitFieldInsn(GETFIELD, className, functionName, functionDescriptor);
+    mv.visitFieldInsn(PUTFIELD, assignment, functionName, functionDescriptor);
   }
 
   protected ClassVisitor generateInitializationMethod(ClassVisitor classVisitor)

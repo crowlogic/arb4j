@@ -1,18 +1,9 @@
 package arb.functions;
 
-import arb.Complex;
-import arb.ComplexConstants;
-import arb.ComplexPolynomial;
-import arb.FractionConstants;
-import arb.Initializable;
+import arb.*;
 import arb.Integer;
-import arb.Real;
-import arb.RealConstants;
-import arb.Typesettable;
-import arb.arblib;
 import arb.functions.real.RealFunction;
 
-// Decompiled by Procyon v0.6.0
 public class θ implements
                RealFunction,
                Typesettable,
@@ -20,17 +11,17 @@ public class θ implements
                Initializable
 {
   public boolean           isInitialized;
-  public final Integer     cℤ0000;
-  public ComplexPolynomial arg;
-  public ComplexPolynomial resultPoly;
-  public Complex           vℂ0001;
-  public Complex           vℂ0002;
-  public Complex           vℂ0003;
-  public Complex           vℂ0004;
-  public Real              vℝ0001;
-  public Real              vℝ0002;
-  public Real              vℝ0003;
-  public Real              vℝ0004;
+  public final Integer     cℤ0000     = new Integer("2");
+  public ComplexPolynomial arg        = new ComplexPolynomial();
+  public ComplexPolynomial resultPoly = new ComplexPolynomial();
+  public Complex           vℂ0001     = new Complex();
+  public Complex           vℂ0002     = new Complex();
+  public Complex           vℂ0003     = new Complex();
+  public Complex           vℂ0004     = new Complex();
+  public Real              vℝ0001     = new Real();
+  public Real              vℝ0002     = new Real();
+  public Real              vℝ0003     = new Real();
+  public Real              vℝ0004     = new Real();
 
   @Override
   public Class<Real> domainType()
@@ -45,95 +36,85 @@ public class θ implements
   }
 
   @Override
-  public Real evaluate(final Real t, final int order, final int bits, final Real result)
+  public Real evaluate(Real t, int order, int bits, Real result)
   {
-    final ComplexPolynomial complexPolynomial = new ComplexPolynomial();
-    arblib.acb_poly_init(complexPolynomial);
-    final ComplexPolynomial complexPolynomial2 = new ComplexPolynomial();
-    arblib.acb_poly_init(complexPolynomial2);
-    arblib.acb_poly_fit_length(complexPolynomial2, 1);
-    arblib.acb_poly_set_coeff_acb(complexPolynomial2,
+    Complex           var20 = this.vℂ0001;
+    ComplexPolynomial var21 = new ComplexPolynomial();
+    arblib.acb_poly_init(var21);
+    ComplexPolynomial var22 = new ComplexPolynomial();
+    arblib.acb_poly_init(var22);
+    arblib.acb_poly_fit_length(var22, 1);
+    arblib.acb_poly_set_coeff_acb(var22,
                                   0,
                                   FractionConstants.oneQuarter.add(ComplexConstants.ⅈ.mul(t,
                                                                                           bits,
-                                                                                          vℂ0002)
-                                                                                     .div(cℤ0000,
+                                                                                          this.vℂ0002)
+                                                                                     .div(this.cℤ0000,
                                                                                           bits,
-                                                                                          vℂ0003),
+                                                                                          this.vℂ0003),
                                                                    bits,
-                                                                   vℂ0004));
-    final Complex complex;
-    arblib.acb_one(complex = new Complex());
-    arblib.acb_poly_set_coeff_acb(complexPolynomial2, 1, complex);
-    arblib.acb_poly_lgamma_series(complexPolynomial, complexPolynomial2, 1, bits);
-    arblib.acb_poly_get_coeff_acb(vℂ0001, complexPolynomial, 0);
-    arblib.acb_poly_clear(complexPolynomial);
-    arblib.acb_poly_clear(complexPolynomial2);
-    return vℂ0001.im(bits, vℝ0001)
-                 .sub(RealConstants.π.log(bits, vℝ0002)
-                                     .div(cℤ0000, bits, vℝ0003)
-                                     .mul((Real) t, bits, vℝ0004),
-                      bits,
-                      result);
+                                                                   this.vℂ0004));
+    Complex var23;
+    arblib.acb_one(var23 = new Complex());
+    arblib.acb_poly_set_coeff_acb(var22, 1, var23);
+    arblib.acb_poly_lgamma_series(var21, var22, 1, bits);
+    arblib.acb_poly_get_coeff_acb(var20, var21, 0);
+    arblib.acb_poly_clear(var21);
+    arblib.acb_poly_clear(var22);
+    return var20.im(bits, this.vℝ0001)
+                .sub(RealConstants.π.log(bits, this.vℝ0002)
+                                    .div(this.cℤ0000, bits, this.vℝ0003)
+                                    .mul(t, bits, this.vℝ0004),
+                     bits,
+                     result);
   }
 
-  public Function<Real, Real> derivative()
+  public RealFunction derivative()
   {
     return Function.express(Real.class,
                             Real.class,
-                            Function.class,
-                            "diff(im(lnΓ(¼+ⅈ*t/2))-(log(π)/2)*t,t)");
+                            RealFunction.class,
+                            "diff(im(lnΓ(¼+((ⅈ*t)/2)))-((log(π)/2)*t),t)");
   }
 
   @Override
   public void initialize()
   {
-    if (isInitialized)
+    if (this.isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
-    isInitialized = true;
+    else
+    {
+      this.isInitialized = true;
+    }
   }
 
-  public θ()
-  {
-    cℤ0000     = new Integer("2");
-    arg        = new ComplexPolynomial();
-    resultPoly = new ComplexPolynomial();
-    vℂ0001     = new Complex();
-    vℂ0002     = new Complex();
-    vℂ0003     = new Complex();
-    vℂ0004     = new Complex();
-    vℝ0001     = new Real();
-    vℝ0002     = new Real();
-    vℝ0003     = new Real();
-    vℝ0004     = new Real();
-  }
-
+  @Override
   public void close()
   {
-    cℤ0000.close();
-    arg.close();
-    resultPoly.close();
-    vℂ0001.close();
-    vℂ0002.close();
-    vℂ0003.close();
-    vℂ0004.close();
-    vℝ0001.close();
-    vℝ0002.close();
-    vℝ0003.close();
-    vℝ0004.close();
+    this.cℤ0000.close();
+    this.arg.close();
+    this.resultPoly.close();
+    this.vℂ0001.close();
+    this.vℂ0002.close();
+    this.vℂ0003.close();
+    this.vℂ0004.close();
+    this.vℝ0001.close();
+    this.vℝ0002.close();
+    this.vℝ0003.close();
+    this.vℝ0004.close();
   }
 
   @Override
   public String toString()
   {
-    return "t↦(im(lnΓ(¼+((ⅈ*t)/2))))-(((log(π))/2)*t)";
+    return "t➔im(lnΓ(¼+((ⅈ*t)/2)))-((log(π)/2)*t)";
   }
 
   @Override
   public String typeset()
   {
-    return "\\left(\\im(\\ln\\Gamma(\\left(\\frac{1}{4} + \\frac{\\left(ⅈ \\cdot t\\right)}{2}\\right)))-\\left(\\frac{\\log(\\pi)}{2} \\cdot t\\right)\\right)";
+    return "\\left(\\im(\\\\lnGAMMA(\\left(\\frac{1}{4} + \\frac{\\left(ⅈ \\cdot t\\right)}{2}\\right)))-\\left(\\frac{\\log(\\pi)}{2} \\cdot t\\right)\\right)";
   }
 }

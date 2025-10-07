@@ -6,10 +6,7 @@ import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 
 import java.util.Objects;
 
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,6 +62,15 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
 
   public String functionFieldDescriptor()
   {
+    return functionFieldDescriptor(false);
+  }
+
+  public String functionFieldDescriptor(boolean preferInterface)
+  {
+    if (preferInterface && functionClass != null)
+    {
+      return functionClass.descriptorString();
+    }
     return instance != null ? instance.getClass().descriptorString()
                             : String.format("L%s;", functionName);
   }

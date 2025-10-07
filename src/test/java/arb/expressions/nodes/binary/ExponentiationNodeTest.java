@@ -38,18 +38,20 @@ public class ExponentiationNodeTest extends
 
   public static void testDerivativesAndExponentialsInvolvingRealBivariateToComplexFunction()
   {
-    try
+    try ( var tmp = new Complex())
     {
       Expression.saveClasses = Expression.trace = true;
-      var                context = new Context();
-//      var θ       = new RealRiemannSiegelThetaFunction();
-//      context.registerFunction("θ", θ);
+      var                   context = new Context();
 
-      final RealFunction θ       = RealFunction.express("θ:im(lnΓ(¼+ⅈ*t/2))-(log(π)/2)*t", context);
-      var                gain    =
-                              RealBivariateToComplexFunction.express("A:exp(ⅈ*λ*(θ(t)-t))*√(θ̇(t))",
-                                                                     context);
-      gain.evaluate(RealConstants.zero, 128);
+      final RealFunction    θ       =
+                              RealFunction.express("θ:im(lnΓ(¼+ⅈ*t/2))-(log(π)/2)*t", context);
+      var                   gain    =
+                                 RealBivariateToComplexFunction.express("A:exp(ⅈ*λ*(θ(t)-t))*√(θ̇(t))",
+                                                                        context);
+      RealToComplexFunction func    = gain.evaluate(RealConstants.half, 128);
+      Complex               y       = func.eval(2.3, tmp);
+      assertEquals(0.4296015350333563, y.re().doubleValue());
+      assertEquals(-0.5684675488546744, y.im().doubleValue());
     }
     finally
     {
