@@ -267,17 +267,136 @@
     </align*>
   </proof>
 
-  <section|Expected Zero Formula>
+  <section|The Kac-Rice Formula for Zero Counting>
 
   <\theorem>
-    [Expected Zero Count]<label|thm:zerocount> Let
-    <math|K<around|(|\<tau\>|)>> be the covariance function of
-    <math|S<rsub|t>> (assumed twice differentiable at <math|0>), and
-    <math|\<theta\>\<in\>\<cal-F\>>. The expected number of real zeros of
-    <math|X<rsub|t>> on <math|<around|[|a,b|]>> is
+    <dueto|Kac-Rice Formula><label|thm:kac_rice>Let <math|Z<around|(|t|)>> be
+    a real-valued stochastic process on <math|\<bbb-R\>> with continuous
+    sample paths that are almost surely <math|C<rsup|1>>. Assume that for
+    each <math|t>, the random vector <math|<around|(|Z<around|(|t|)>,Z<rprime|'><around|(|t|)>|)>>
+    has a jointly continuous probability density function
+    <math|p<rsub|Z,Z<rprime|'>><around|(|z,v,t|)>>. Then the expected number
+    of zeros of <math|Z> in an interval <math|<around|[|a,b|]>> is given by:
 
     <\equation>
-      \<bbb-E\><around|[|N<rsub|<around|[|a,b|]>>|]>=<sqrt|-<wide|K|\<ddot\>><around|(|0|)>>*<space|0.17em><around|(|\<theta\><around|(|b|)>-\<theta\><around|(|a|)>|)>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|\<bbb-E\><around|[|N<rsub|<around|[|a,b|]>>|]>>|<cell|=<big|int><rsub|a><rsup|b>\<bbb-E\>*<around|[|<around|\||Z<rprime|'><around|(|t|)>|\|>\<mid\>Z<around|(|t|)>=0|]>*p<rsub|Z><around|(|0,t|)>*d*t>>|<row|<cell|>|<cell|=<big|int><rsub|a><rsup|b><big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||v|\|>*p<rsub|Z,Z<rprime|'>><around|(|0,v,t|)>*d*v*d*t>>>>>
+    </equation>
+
+    where <math|p<rsub|Z><around|(|z,t|)>> is the marginal density of
+    <math|Z<around|(|t|)>> and <math|N<rsub|<around|[|a,b|]>>> denotes the
+    number of zeros in <math|<around|[|a,b|]>>.
+  </theorem>
+
+  <\proof>
+    The proof uses the co-area formula from geometric measure theory.
+    Consider the zero set <math|\<cal-Z\>=<around|{|t\<in\><around|[|a,b|]>:Z<around|(|t,\<omega\>|)>=0|}>>
+    for a fixed sample path <math|\<omega\>>. Under the regularity
+    conditions, <math|\<cal-Z\>> is a discrete set of points
+    <math|<around|{|t<rsub|i>|}>> where <math|Z<around|(|t<rsub|i>|)>=0> and
+    <math|Z<rprime|'><around|(|t<rsub|i>|)>\<neq\>0> almost surely.
+
+    The counting measure on zeros can be expressed using the Dirac delta:
+
+    <\equation>
+      N<rsub|<around|[|a,b|]>>=<big|int><rsub|a><rsup|b>\<delta\><around|(|Z<around|(|t|)>|)><around|\||Z<rprime|'><around|(|t|)>|\|>*d*t
+    </equation>
+
+    Taking expectations and applying Fubini's theorem (justified by the
+    regularity assumptions):
+
+    <\equation>
+      \<bbb-E\><around|[|N<rsub|<around|[|a,b|]>>|]>=<big|int><rsub|a><rsup|b>\<bbb-E\><around|[|\<delta\><around|(|Z<around|(|t|)>|)><around|\||Z<rprime|'><around|(|t|)>|\|>|]>*d*t
+    </equation>
+
+    Using the joint density of <math|<around|(|Z<around|(|t|)>,Z<rprime|'><around|(|t|)>|)>>:
+
+    <\equation>
+      \<bbb-E\><around|[|\<delta\><around|(|Z<around|(|t|)>|)><around|\||Z<rprime|'><around|(|t|)>|\|>|]>=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>\<delta\><around|(|z|)><around|\||v|\|>*p<rsub|Z,Z<rprime|'>><around|(|z,v,t|)>*d*z*d*v
+    </equation>
+
+    Evaluating the delta function:
+
+    <\equation>
+      =<big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||v|\|>*p<rsub|Z,Z<rprime|'>><around|(|0,v,t|)>*d*v
+    </equation>
+
+    The first form follows by noting that:
+
+    <\equation>
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||v|\|>*p<rsub|Z,Z<rprime|'>><around|(|0,v,t|)>*d*v=\<bbb-E\>*<around|[|<around|\||Z<rprime|'><around|(|t|)>|\|>\<mid\>Z<around|(|t|)>=0|]>\<cdot\>p<rsub|Z><around|(|0,t|)>
+    </equation>
+  </proof>
+
+  <section|The Kac-Rice Formula for Zero Counting>
+
+  <\theorem>
+    <dueto|Kac-Rice Formula><label|thm:kac_rice>Let <math|Z<around|(|t|)>> be
+    a real-valued stochastic process on <math|\<bbb-R\>> with continuous
+    sample paths that are almost surely <math|C<rsup|1>>. Assume that for
+    each <math|t>, the random vector <math|<around|(|Z<around|(|t|)>,Z<rprime|'><around|(|t|)>|)>>
+    has a jointly continuous probability density function
+    <math|p<rsub|Z,Z<rprime|'>><around|(|z,v,t|)>>. Then the expected number
+    of zeros of <math|Z> in an interval <math|<around|[|a,b|]>> is given by:
+
+    <\equation>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|\<bbb-E\><around|[|N<rsub|<around|[|a,b|]>>|]>>|<cell|=<big|int><rsub|a><rsup|b>\<bbb-E\>*<around|[|<around|\||Z<rprime|'><around|(|t|)>|\|>\<mid\>Z<around|(|t|)>=0|]>*p<rsub|Z><around|(|0,t|)>*d*t>>|<row|<cell|>|<cell|=<big|int><rsub|a><rsup|b><big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||v|\|>*p<rsub|Z,Z<rprime|'>><around|(|0,v,t|)>*d*v*d*t>>>>>
+    </equation>
+
+    where <math|p<rsub|Z><around|(|z,t|)>> is the marginal density of
+    <math|Z<around|(|t|)>> and <math|N<rsub|<around|[|a,b|]>>> denotes the
+    number of zeros in <math|<around|[|a,b|]>>.
+  </theorem>
+
+  <\proof>
+    The proof uses the co-area formula from geometric measure theory.
+    Consider the zero set <math|\<cal-Z\>=<around|{|t\<in\><around|[|a,b|]>:Z<around|(|t,\<omega\>|)>=0|}>>
+    for a fixed sample path <math|\<omega\>>. Under the regularity
+    conditions, <math|\<cal-Z\>> is a discrete set of points
+    <math|<around|{|t<rsub|i>|}>> where <math|Z<around|(|t<rsub|i>|)>=0> and
+    <math|Z<rprime|'><around|(|t<rsub|i>|)>\<neq\>0> almost surely.
+
+    The counting measure on zeros can be expressed using the Dirac delta:
+
+    <\equation>
+      N<rsub|<around|[|a,b|]>>=<big|int><rsub|a><rsup|b>\<delta\><around|(|Z<around|(|t|)>|)><around|\||Z<rprime|'><around|(|t|)>|\|>*d*t
+    </equation>
+
+    Taking expectations and applying Fubini's theorem (justified by the
+    regularity assumptions):
+
+    <\equation>
+      \<bbb-E\><around|[|N<rsub|<around|[|a,b|]>>|]>=<big|int><rsub|a><rsup|b>\<bbb-E\><around|[|\<delta\><around|(|Z<around|(|t|)>|)><around|\||Z<rprime|'><around|(|t|)>|\|>|]>*d*t
+    </equation>
+
+    Using the joint density of <math|<around|(|Z<around|(|t|)>,Z<rprime|'><around|(|t|)>|)>>:
+
+    <\equation>
+      \<bbb-E\><around|[|\<delta\><around|(|Z<around|(|t|)>|)><around|\||Z<rprime|'><around|(|t|)>|\|>|]>=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>\<delta\><around|(|z|)><around|\||v|\|>*p<rsub|Z,Z<rprime|'>><around|(|z,v,t|)>*d*z*d*v
+    </equation>
+
+    Evaluating the delta function:
+
+    <\equation>
+      =<big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||v|\|>*p<rsub|Z,Z<rprime|'>><around|(|0,v,t|)>*d*v
+    </equation>
+
+    The first form follows by noting that:
+
+    <\equation>
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||v|\|>*p<rsub|Z,Z<rprime|'>><around|(|0,v,t|)>*d*v=\<bbb-E\>*<around|[|<around|\||Z<rprime|'><around|(|t|)>|\|>\<mid\>Z<around|(|t|)>=0|]>\<cdot\>p<rsub|Z><around|(|0,t|)>
+    </equation>
+  </proof>
+
+  <\theorem>
+    <dueto|Expected Zero Count for Oscillatory
+    Processes><label|thm:zerocount>Let <math|K<around|(|\<tau\>|)>> be the
+    covariance function of <math|S<rsub|t>> (assumed twice differentiable at
+    <math|0>), and <math|\<theta\>\<in\>\<cal-F\>>. For the oscillatory
+    process <math|X<rsub|t>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*S<rsub|\<theta\><around|(|t|)>>>,
+    the expected number of real zeros on <math|<around|[|a,b|]>> is
+
+    <\equation>
+      \<bbb-E\><around|[|N<rsub|<around|[|a,b|]>>|]>=<sqrt|-<wide|K|\<ddot\>><around|(|0|)>>*<around|(|\<theta\><around|(|b|)>-\<theta\><around|(|a|)>|)>
     </equation>
   </theorem>
 
@@ -290,26 +409,59 @@
     </equation>
 
     For <math|X<rsub|t>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*S<rsub|\<theta\><around|(|t|)>>>,
+    we have
 
     <\equation*>
       <math-up|cov><around|(|X<rsub|s>,X<rsub|t>|)>=<sqrt|\<theta\><rprime|'><around|(|s|)>*\<theta\><rprime|'><around|(|t|)>>*K*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>
     </equation*>
 
-    The relevant limit is:
+    Computing the mixed partial derivative:
 
-    <\align*>
-      <tformat|<table|<row|<cell|lim<rsub|s\<to\>t>
-      <frac|\<partial\><rsup|2>|\<partial\>*s*\<partial\>*t>*<around*|[|<sqrt|\<theta\><rprime|'><around|(|s|)>*\<theta\><rprime|'><around|(|t|)>>*K*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>|]>>|<cell|=\<theta\><rprime|'><around|(|t|)><rsup|2>*K<rprime|''><around|(|0|)>>>>>
-    </align*>
+    <\align>
+      <tformat|<table|<row|<cell|<frac|\<partial\>|\<partial\>*s><math-up|cov><around|(|X<rsub|s>,X<rsub|t>|)>>|<cell|=<frac|\<partial\>|\<partial\>*s>*<around*|[|<sqrt|\<theta\><rprime|'><around|(|s|)>*\<theta\><rprime|'><around|(|t|)>>*K*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>|]><eq-number>>>|<row|<cell|>|<cell|=<frac|\<theta\><rprime|''><around|(|s|)>|2*<sqrt|\<theta\><rprime|'><around|(|s|)>*\<theta\><rprime|'><around|(|t|)>>>*K*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>+<sqrt|\<theta\><rprime|'><around|(|s|)>*\<theta\><rprime|'><around|(|t|)>>*K<rprime|'>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>\<cdot\><around|(|-\<theta\><rprime|'><around|(|s|)>|)><eq-number>>>|<row|<cell|>|<cell|=<frac|\<theta\><rprime|''><around|(|s|)>|2*<sqrt|\<theta\><rprime|'><around|(|s|)>*\<theta\><rprime|'><around|(|t|)>>>*K*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>-\<theta\><rprime|'><around|(|s|)><sqrt|\<theta\><rprime|'><around|(|s|)>*\<theta\><rprime|'><around|(|t|)>>*K<rprime|'>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)><eq-number>>>>>
+    </align>
 
-    since the cross derivatives act on <math|K*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>,
-    and <math|\<theta\><rprime|'><around|(|t|)>> multiplies through.
-    Therefore,
+    Taking the derivative with respect to <math|t>:
 
-    <\align*>
-      <tformat|<table|<row|<cell|\<bbb-E\><around|[|N<rsub|<around|[|a,b|]>>|]>>|<cell|=<big|int><rsub|a><rsup|b><sqrt|-K<rprime|''><around|(|0|)>*<space|0.17em>\<theta\><rprime|'><around|(|t|)><rsup|2>>*d*t=<sqrt|-K<rprime|''><around|(|0|)>>*<big|int><rsub|a><rsup|b>\<theta\><rprime|'><around|(|t|)>*d*t>>|<row|<cell|>|<cell|=<sqrt|-K<rprime|''><around|(|0|)>>*<around|(|\<theta\><around|(|b|)>-\<theta\><around|(|a|)>|)>>>>>
-    </align*>
+    <\align>
+      <tformat|<table|<row|<cell|<frac|\<partial\><rsup|2>|\<partial\>*s*\<partial\>*t><math-up|cov><around|(|X<rsub|s>,X<rsub|t>|)>>|<cell|=<frac|\<partial\>|\<partial\>*t>*<around*|[|<frac|\<theta\><rprime|''><around|(|s|)>|2*<sqrt|\<theta\><rprime|'><around|(|s|)>*\<theta\><rprime|'><around|(|t|)>>>*K*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>-\<theta\><rprime|'><around|(|s|)><sqrt|\<theta\><rprime|'><around|(|s|)>*\<theta\><rprime|'><around|(|t|)>>*K<rprime|'>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>|]><eq-number>>>|<row|<cell|>|<cell|=<frac|\<theta\><rprime|''><around|(|s|)>|2*<sqrt|\<theta\><rprime|'><around|(|s|)>>>*<around*|[|-<frac|\<theta\><rprime|''><around|(|t|)>|2<around|(|\<theta\><rprime|'><around|(|t|)>|)><rsup|3/2>>*K*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>+<frac|\<theta\><rprime|'><around|(|t|)>|<sqrt|\<theta\><rprime|'><around|(|t|)>>>*K<rprime|'>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>|]><eq-number>>>|<row|<cell|>|<cell|<space|1em>-\<theta\><rprime|'><around|(|s|)>*<around*|[|<frac|\<theta\><rprime|''><around|(|t|)>|2*<sqrt|\<theta\><rprime|'><around|(|s|)>*\<theta\><rprime|'><around|(|t|)>>>*K<rprime|'>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>+<sqrt|\<theta\><rprime|'><around|(|s|)>*\<theta\><rprime|'><around|(|t|)>>*K<rprime|''>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>\<cdot\>\<theta\><rprime|'><around|(|t|)>|]><eq-number>>>>>
+    </align>
+
+    Taking the limit as <math|s\<to\>t>:
+
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|lim<rsub|s\<to\>t>
+      <frac|\<partial\><rsup|2>|\<partial\>*s*\<partial\>*t><math-up|cov><around|(|X<rsub|s>,X<rsub|t>|)>>|<cell|=<frac|\<theta\><rprime|''><around|(|t|)>|2*\<theta\><rprime|'><around|(|t|)>>*K<around|(|0|)>+\<theta\><rprime|'><around|(|t|)>*K<rprime|'><around|(|0|)>-<frac|\<theta\><rprime|''><around|(|t|)>|2*\<theta\><rprime|'><around|(|t|)>>*K<rprime|'><around|(|0|)>-\<theta\><rprime|'><around|(|t|)><rsup|2>*K<rprime|''><around|(|0|)>>>|<row|<cell|>|<cell|=<frac|\<theta\><rprime|''><around|(|t|)>|2*\<theta\><rprime|'><around|(|t|)>>\<cdot\>0+\<theta\><rprime|'><around|(|t|)>\<cdot\>0-<frac|\<theta\><rprime|''><around|(|t|)>|2*\<theta\><rprime|'><around|(|t|)>>\<cdot\>0-\<theta\><rprime|'><around|(|t|)><rsup|2>*K<rprime|''><around|(|0|)>>>|<row|<cell|>|<cell|=-\<theta\><rprime|'><around|(|t|)><rsup|2>*K<rprime|''><around|(|0|)>>>>>>
+    </equation>
+
+    where we used <math|K<around|(|0|)>=\<sigma\><rsup|2>> and
+    <math|K<rprime|'><around|(|0|)>=0> by stationarity. Therefore:
+
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|\<bbb-E\><around|[|N<rsub|<around|[|a,b|]>>|]>>|<cell|=<big|int><rsub|a><rsup|b><sqrt|-<around|(|-\<theta\><rprime|'><around|(|t|)><rsup|2>*K<rprime|''><around|(|0|)>|)>>*d*t>>|<row|<cell|>|<cell|=<big|int><rsub|a><rsup|b><sqrt|\<theta\><rprime|'><around|(|t|)><rsup|2>*<around|(|-K<rprime|''><around|(|0|)>|)>>*d*t>>|<row|<cell|>|<cell|=<big|int><rsub|a><rsup|b>\<theta\><rprime|'><around|(|t|)><sqrt|-K<rprime|''><around|(|0|)>>*d*t>>|<row|<cell|>|<cell|=<sqrt|-K<rprime|''><around|(|0|)>>*<big|int><rsub|a><rsup|b>\<theta\><rprime|'><around|(|t|)>*d*t>>|<row|<cell|>|<cell|=<sqrt|-K<rprime|''><around|(|0|)>>*<around|(|\<theta\><around|(|b|)>-\<theta\><around|(|a|)>|)>>>>>>
+    </equation>
+
+    \;
   </proof>
+
+  <\remark>
+    <dueto|Connection to Zero Localization Measure>Theorem
+    <reference|thm:zerocount> demonstrates that the time-change function
+    <math|\<theta\>> directly controls the expected zero density of the
+    oscillatory process generated by the unitary operator
+    <math|U<rsub|\<theta\>>>. The expected zero density per unit length in
+    the original time scale is <math|<sqrt|-<wide|K|\<ddot\>><around|(|0|)>>*\<theta\><rprime|'><around|(|t|)>>,
+    which varies with time according to the derivative of the time-change
+    function. While the Kac-Rice formula computes ensemble averages over all
+    realizations, the zero localization measure
+    <math|\<mu\>*<around|(|d*t|)>=\<delta\><around|(|X<around|(|t|)>|)><around|\||X<rprime|'><around|(|t|)>|\|>*d*t>
+    and the spectrum <math|\<sigma\><around|(|L|)>=<around|{|t<rsub|0>:X<around|(|t<rsub|0>|)>=0|}>>
+    of the multiplication operator are defined for a single fixed
+    realization. The Kac-Rice result thus provides the expected structure of
+    the spectrum when averaging over the probability space, with
+    <math|\<theta\>> serving as a control parameter for the expected spectral
+    density.
+  </remark>
 
   <section|Conclusion>
 
@@ -352,34 +504,36 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1|../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-2|<tuple|2|2|../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-3|<tuple|3|3|../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-4|<tuple|4|4|../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-5|<tuple|5|5|../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-6|<tuple|6|5|../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-7|<tuple|6|5|../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|bib-cramer1967|<tuple|cramer1967|5|../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|bib-kac1943|<tuple|kac1943|5|../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|bib-priestley1965|<tuple|priestley1965|5|../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|bib-rice1945|<tuple|rice1945|5|../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|def:Mtheta_inv|<tuple|6|2|../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|def:oscillatory|<tuple|3|2|../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|def:scaling|<tuple|1|1|../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|def:unitary|<tuple|4|2|../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|eq:osc_process|<tuple|6|3|../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|eq:oscillatoryrep|<tuple|7|3|../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|eq:oscrep|<tuple|1|2|../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|eq:stat_spectral|<tuple|5|3|../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|eq:unitaryM|<tuple|2|2|../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|eq:unitaryM_inverse|<tuple|4|2|../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|eq:unitnorm|<tuple|3|2|../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|lem:invert|<tuple|7|3|../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|lem:unitary|<tuple|5|2|../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|thm:L2|<tuple|10|4|../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|thm:evolve|<tuple|9|4|../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|thm:spectral|<tuple|8|3|../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|thm:zerocount|<tuple|11|5|../.TeXmacs/texts/scratch/no_name_29.tm>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-2|<tuple|2|2>>
+    <associate|auto-3|<tuple|3|3>>
+    <associate|auto-4|<tuple|4|4>>
+    <associate|auto-5|<tuple|5|5>>
+    <associate|auto-6|<tuple|6|5>>
+    <associate|auto-7|<tuple|7|5>>
+    <associate|auto-8|<tuple|7|?>>
+    <associate|bib-cramer1967|<tuple|cramer1967|5>>
+    <associate|bib-kac1943|<tuple|kac1943|5>>
+    <associate|bib-priestley1965|<tuple|priestley1965|5>>
+    <associate|bib-rice1945|<tuple|rice1945|5>>
+    <associate|def:Mtheta_inv|<tuple|6|2>>
+    <associate|def:oscillatory|<tuple|3|2>>
+    <associate|def:scaling|<tuple|1|1>>
+    <associate|def:unitary|<tuple|4|2>>
+    <associate|eq:osc_process|<tuple|6|3>>
+    <associate|eq:oscillatoryrep|<tuple|7|3>>
+    <associate|eq:oscrep|<tuple|1|2>>
+    <associate|eq:stat_spectral|<tuple|5|3>>
+    <associate|eq:unitaryM|<tuple|2|2>>
+    <associate|eq:unitaryM_inverse|<tuple|4|2>>
+    <associate|eq:unitnorm|<tuple|3|2>>
+    <associate|lem:invert|<tuple|7|3>>
+    <associate|lem:unitary|<tuple|5|2>>
+    <associate|thm:L2|<tuple|10|4>>
+    <associate|thm:evolve|<tuple|9|4>>
+    <associate|thm:kac_rice|<tuple|12|?>>
+    <associate|thm:spectral|<tuple|8|3>>
+    <associate|thm:zerocount|<tuple|13|5>>
   </collection>
 </references>
 
