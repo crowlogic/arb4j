@@ -184,12 +184,11 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   private void lookupFunctionInContext()
   {
-    mapping    =
-            (FunctionMapping<D, R, F>) this.expression.context.functions.get(this.functionName);
+    mapping    = expression.context.getFunctionMapping(functionName);
     contextual = mapping != null;
     if (contextual)
     {
-      this.expression.referencedFunctions.put(this.functionName, mapping);
+      expression.referencedFunctions.put(functionName, mapping);
       generatedType = mapping.coDomain;
     }
   }
@@ -206,7 +205,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   private void assignFunctionName()
   {
-    functionName = switch (Parser.transformToJavaAcceptableCharacters(functionName))
+    functionName = switch (functionName)
     {
     case "ln":
       yield "log";
@@ -560,7 +559,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     var functionMapping = getFunctionMapping();
     checkForUndefinedReferenced(functionMapping);
 
-
     loadFunctionReferenceOntoStack(mv, functionMapping);
     generateArgument(mv, functionMapping);
     loadOrderParameter(mv);
@@ -688,9 +686,14 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   private void loadFunctionReferenceOntoStack(MethodVisitor mv, FunctionMapping<D, R, F> mapping)
   {
+    if ( Expression.trace )
+    {
+      logger.debug("loadFunctionReferenceOntoStack(mapping={})",mapping);
+      
+    }
     expression.loadFieldOntoStack(loadThisOntoStack(mv),
                                   functionName,
-                                  mapping.functionFieldDescriptor());
+                                  mapping.functionFieldDescriptor(false));
   }
 
   public FunctionMapping<D, R, F> registerSelfReferrentialFunctionMapping()

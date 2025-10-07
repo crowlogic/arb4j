@@ -3,10 +3,7 @@ package arb.expressions;
 import static arb.utensils.Utensils.wrapOrThrow;
 import static java.lang.String.format;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -19,9 +16,7 @@ import arb.Integer;
 import arb.Named;
 import arb.OrderedPair;
 import arb.exceptions.CompilerException;
-import arb.expressions.context.Dependency;
-import arb.expressions.context.FunctionMappings;
-import arb.expressions.context.TopologicalSorter;
+import arb.expressions.context.*;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
@@ -254,18 +249,6 @@ public class Context
   {
     // assert function != null : "function cannot be null";
 
-    if (Expression.trace)
-    {
-      log.debug(String.format("\n\nid=%s: registerFunctionMapping( functionName = %s, function = %s, domainType=%s, coDomainType=%s, functionClass=%s, expression=%s, expressionString=%s )\n",
-                              System.identityHashCode(this),
-                              functionName,
-                              function,
-                              domainType,
-                              coDomainType,
-                              functionClass,
-                              expression,
-                              expressionString));
-    }
     if (!replace && functions.containsKey(functionName))
     {
       throw new IllegalArgumentException(format("a function named %s of class %s is already registered",
@@ -282,6 +265,21 @@ public class Context
     mapping.instance         = function;
     mapping.functionClass    = functionClass;
     functions.put(functionName, mapping);
+
+    if (Expression.trace)
+    {
+      log.debug(String.format("\n\nid=%s: registerFunctionMapping( functionName = %s, function = %s, domainType=%s, coDomainType=%s, functionClass=%s, expression=%s, expressionString=%s )\nmapping={}\n",
+                              System.identityHashCode(this),
+                              functionName,
+                              function,
+                              domainType,
+                              coDomainType,
+                              functionClass,
+                              expression,
+                              expressionString,
+                              mapping));
+    }
+
     return mapping;
   }
 

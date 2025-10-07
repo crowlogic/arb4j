@@ -1,9 +1,8 @@
 package arb.expressions.context;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
+import arb.expressions.Expression;
 import arb.expressions.FunctionMapping;
 
 /**
@@ -13,10 +12,14 @@ import arb.expressions.FunctionMapping;
 public class Dependency
 {
   public String                   variableName;
-  public List<String>             dependencies        = new ArrayList<>(); // was
-                                                                           // constructionDependencies
-  public List<String>             reverseDependencies = new ArrayList<>(); // was fieldAssignments
+  public List<String>             dependencies = new ArrayList<>();
+  public List<String>             provisions   = new ArrayList<>();
   public FunctionMapping<?, ?, ?> functionMapping;
+
+  public Expression<?, ?, ?> getExpression()
+  {
+    return functionMapping.expression;
+  }
 
   public Dependency(FunctionMapping<?, ?, ?> functionMapping)
   {
@@ -26,28 +29,27 @@ public class Dependency
 
   public Dependency(Dependency dep)
   {
-    this.variableName        = dep.variableName;
-    this.dependencies        = dep.dependencies;
-    this.reverseDependencies = dep.reverseDependencies;
-    this.functionMapping     = dep.functionMapping;
+    this.variableName    = dep.variableName;
+    this.dependencies    = dep.dependencies;
+    this.provisions      = dep.provisions;
+    this.functionMapping = dep.functionMapping;
   }
 
   @Override
   public String toString()
   {
-    return String.format("DependencyInfo[variableName=%s, dependencies=%s, reverseDependencies=%s]",
+    return String.format("DependencyInfo[variableName=%s, dependencies=%s, provisions=%s]",
                          variableName,
                          dependencies,
-                         reverseDependencies);
+                         provisions);
   }
 
   public List<String> getAssignments(String className,
                                      HashMap<String, FunctionMapping<?, ?, ?>> referencedFunctions)
   {
-    return reverseDependencies.stream()
-                              .filter(key -> referencedFunctions.containsKey(key)
-                                            && !key.equals(className))
-                              .toList();
+    return provisions.stream()
+                     .filter(key -> referencedFunctions.containsKey(key) && !key.equals(className))
+                     .toList();
   }
 
 }

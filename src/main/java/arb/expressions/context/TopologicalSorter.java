@@ -60,7 +60,7 @@ public class TopologicalSorter
 
     // Build reverse dependency graph
     dependencies.forEach((name,
-                          info) -> info.dependencies.forEach(dep -> dependencies.get(dep).reverseDependencies.add(name)));
+                          info) -> info.dependencies.forEach(dep -> dependencies.get(dep).provisions.add(name)));
 
     // Do DFS traversal using dependencies
     dependencies.keySet()
