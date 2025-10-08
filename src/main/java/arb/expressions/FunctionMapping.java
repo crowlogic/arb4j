@@ -68,7 +68,7 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
     {
       return functionFieldDescriptor;
     }
-    return functionFieldDescriptor(true);
+    return functionFieldDescriptor = functionFieldDescriptor(true);
   }
 
   public String functionFieldDescriptor(boolean preferInterface)

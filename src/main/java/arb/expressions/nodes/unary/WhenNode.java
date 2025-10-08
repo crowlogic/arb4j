@@ -6,6 +6,7 @@ import static java.lang.String.format;
 import static org.objectweb.asm.Opcodes.GOTO;
 
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -285,8 +286,6 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
          substitute(String variable, Node<E, S, G> arg)
   {
     cases.entrySet()
-         .stream()
-         .toList()
          .forEach(event -> cases.put(event.getKey(), event.getValue().substitute(variable, arg)));
     return this;
   }
@@ -304,16 +303,19 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   @Override
   public String toString()
   {
-    return String.format("when(%s,else,%s)",
-                         cases.entrySet()
-                              .stream()
-                              .map(node -> expression.independentVariable
-                                           + "="
-                                           + node.getKey()
-                                           + ","
-                                           + node.getValue())
-                              .collect(Collectors.joining(",")),
-                         arg);
+    String caseString = cases.entrySet()
+                             .stream()
+                             .map(node -> formatCase(node))
+                             .collect(Collectors.joining(","));
+    return String.format("when(%s,else,%s)", caseString, arg);
+  }
+
+  protected String formatCase(Entry<Integer, Node<D, R, F>> node)
+  {
+    return String.format("%s=%s,%s",
+                         expression.independentVariable,
+                         node.getKey(),
+                         node.getValue());
   }
 
   @Override
