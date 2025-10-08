@@ -1268,7 +1268,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (mapping != null)
     {
 
-      functionDescriptor = mapping.functionFieldDescriptor();
+      functionDescriptor = mapping.functionFieldDescriptor(false);
 
       constructReferencedFunctionInstanceIfItIsNull(mv, mapping);
       generateFunctionInitializer(mv, mapping, assignments);

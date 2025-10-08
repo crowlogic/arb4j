@@ -693,7 +693,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     expression.loadFieldOntoStack(loadThisOntoStack(mv),
                                   functionName,
-                                  mapping.functionFieldDescriptor(false));
+                                  mapping.functionFieldDescriptor(true));
   }
 
   public FunctionMapping<D, R, F> registerSelfReferrentialFunctionMapping()

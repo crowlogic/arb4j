@@ -90,9 +90,15 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
     return instance = expression.instantiate();
   }
 
+  /**
+   * TODO: add a declaredAsType to FunctionMapping
+   * 
+   * @param classVisitor
+   * @param name
+   */
   public void declare(ClassVisitor classVisitor, String name)
   {
-    String functionFieldDescriptor = functionFieldDescriptor();
+    String functionFieldDescriptor = functionFieldDescriptor(true);
     if (Expression.trace)
     {
       log.debug("declare(name={}, fieldDescriptor={})", name, functionFieldDescriptor);
