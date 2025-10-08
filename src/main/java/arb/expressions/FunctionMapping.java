@@ -35,6 +35,8 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
 
   public Class<?>             coDomain;
 
+  private String              functionFieldDescriptor;
+
   public MethodVisitor call(MethodVisitor mv, Class<?> type)
   {
     boolean isInterface = functionClass != null && functionClass.isInterface();
@@ -62,7 +64,11 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
 
   public String functionFieldDescriptor()
   {
-    return functionFieldDescriptor(false);
+    if ( functionFieldDescriptor != null)
+    {
+      return functionFieldDescriptor;
+    }
+    return functionFieldDescriptor(true);
   }
 
   public String functionFieldDescriptor(boolean preferInterface)
@@ -98,7 +104,7 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
    */
   public void declare(ClassVisitor classVisitor, String name)
   {
-    String functionFieldDescriptor = functionFieldDescriptor(true);
+    functionFieldDescriptor = functionFieldDescriptor(true);
     if (Expression.trace)
     {
       log.debug("declare(name={}, fieldDescriptor={})", name, functionFieldDescriptor);
@@ -108,7 +114,12 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
 
   public void loadReferenceOntoStack(MethodVisitor mv)
   {
-    expression.loadFieldOntoStack(loadThisOntoStack(mv), functionName, functionFieldDescriptor());
+    expression.loadFieldOntoStack(loadThisOntoStack(mv),
+                                  functionName,
+                                  functionFieldDescriptor
+                                                != null ? functionFieldDescriptor
+                                                        : (functionFieldDescriptor =
+                                                                                   functionFieldDescriptor()));
   }
 
   @Override

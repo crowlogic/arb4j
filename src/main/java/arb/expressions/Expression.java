@@ -1601,6 +1601,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                            Stream<OrderedPair<String,
                                                                          Class<?>>> variables)
   {
+    // TODO: #748
     String typeDesc = String.format("L%s;", fieldType);
 
     variables.forEach(variable ->
