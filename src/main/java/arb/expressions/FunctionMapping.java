@@ -116,10 +116,7 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
   {
     expression.loadFieldOntoStack(loadThisOntoStack(mv),
                                   functionName,
-                                  functionFieldDescriptor
-                                                != null ? functionFieldDescriptor
-                                                        : (functionFieldDescriptor =
-                                                                                   functionFieldDescriptor()));
+                                  functionFieldDescriptor());
   }
 
   @Override
