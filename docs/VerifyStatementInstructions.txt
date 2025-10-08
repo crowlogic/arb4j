@@ -6,7 +6,7 @@
 \begin{document}
 \maketitle
 
-\section{MANDATORY VERIFICATION PROTOCOL}
+\section{VERIFICATION PROTOCOL}
 
 You are tasked with mathematically verifying statements in a technical document. Follow these instructions \textbf{exactly} and \textbf{completely}. Failure to follow any step constitutes verification failure.
 
