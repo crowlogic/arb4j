@@ -100,7 +100,7 @@
   </definition>
 
   <\theorem>
-    <label|thm:main>Let <math|U> be a change-of-variables operator as in
+    <label|main>Let <math|U> be a change-of-variables operator as in
     Definition<nbsp><reference|def:cov-operator>. Then <math|U> is unitary if
     and only if the following conditions hold:
 
@@ -112,7 +112,7 @@
       <math|\<mu\>\<ll\>\<mu\>\<circ\>T<rsup|-1>> (mutual absolute
       continuity);
 
-      <item><math|<around|\||w<around|(|x|)>|\|><rsup|2>=<frac|d*<around|(|\<mu\>\<circ\>T|)>|d*\<mu\>><around|(|x|)>>
+      <item><math|<label|sqrtcond><around|\||w<around|(|x|)>|\|><rsup|2>=<frac|d*<around|(|\<mu\>\<circ\>T|)>|d*\<mu\>><around|(|x|)>>
       almost everywhere;
 
       <item><math|w<around|(|x|)>=<sqrt|<frac|d*<around|(|\<mu\>\<circ\>T|)>|d*\<mu\>><around|(|x|)>>\<cdot\>e<rsup|i*\<theta\><around|(|x|)>>>
@@ -120,7 +120,8 @@
     </enumerate>
 
     Furthermore, if <math|T> is differentiable almost everywhere with
-    <math|T<rprime|'><around|(|x|)>\<neq\>0> a.e., then condition (3) becomes
+    <math|T<rprime|'><around|(|x|)>\<neq\>0> a.e., then condition
+    (<reference|sqrtcond>) becomes
 
     <\equation>
       <around|\||w<around|(|x|)>|\|><rsup|2>=<around|\||T<rprime|'><around|(|x|)>|\|>
@@ -150,19 +151,22 @@
       <big|int><rsub|\<bbb-R\>><around|\||f<around|(|T<around|(|x|)>|)><around|\||<rsup|2>|\|>*w<around|(|x|)>*<around|\||<rsup|2><space|0.17em>d*\<mu\><around|(|x|)>=<big|int><rsub|\<bbb-R\>>|\|>*f<around|(|y|)>|\|><rsup|2>*<space|0.17em>d*<around|(|T<rsub|\<ast\>>*\<nu\>|)><around|(|y|)>
     </equation>
 
-    where <math|<around|(|T<rsub|\<ast\>>*\<nu\>|)><around|(|A|)>=\<nu\><around|(|T<rsup|-1><around|(|A|)>|)>>
-    for measurable sets <math|A>.
+    where\ 
 
-    From equation<nbsp><eqref|eq:isometry>, we require
+    <\equation>
+      <around|(|T<rsub|\<ast\>>*\<nu\>|)><around|(|A|)>=\<nu\><around|(|T<rsup|-1><around|(|A|)>|)>
+    </equation>
+
+    for measurable sets <math|A>. From equation<nbsp><eqref|eq:isometry>, we
+    require
 
     <\equation>
       <label|eq:measure-condition><big|int><rsub|\<bbb-R\>><around|\||f<around|(|y|)>|\|><rsup|2>*<space|0.17em>d*<around|(|T<rsub|\<ast\>>*\<nu\>|)><around|(|y|)>=<big|int><rsub|\<bbb-R\>><around|\||f<around|(|y|)>|\|><rsup|2>*<space|0.17em>d*\<mu\><around|(|y|)>
     </equation>
 
-    for all <math|f\<in\>L<rsup|2><around|(|\<bbb-R\>|)>>.
-
-    This implies <math|T<rsub|\<ast\>>*\<nu\>=\<mu\>> as measures. Therefore,
-    for any measurable set <math|A>,
+    for all <math|f\<in\>L<rsup|2><around|(|\<bbb-R\>|)>>. This implies
+    <math|T<rsub|\<ast\>>*\<nu\>=\<mu\>> as measures. Therefore, for any
+    measurable set <math|A>,
 
     <\equation>
       \<mu\><around|(|A|)>=\<nu\><around|(|T<rsup|-1><around|(|A|)>|)>=<big|int><rsub|T<rsup|-1><around|(|A|)>><around|\||w<around|(|x|)>|\|><rsup|2>*<space|0.17em>d*\<mu\><around|(|x|)>
@@ -208,12 +212,12 @@
     The phase freedom in condition (4) follows from the fact that only
     <math|<around|\||w|\|><rsup|2>> is determined by the isometry condition.
 
-    <with|font-series|bold|Sufficiency:> Conversely, assume conditions
-    (1)-(4) hold. Define <math|U> as in Definition<nbsp><reference|def:cov-operator>
-    with the specified <math|T> and <math|w>. The computation above shows
-    that <math|U> is isometric. Since <math|T> is bijective modulo null sets
-    with mutual absolute continuity, the operator <math|U<rsup|\<ast\>>>
-    exists and is given by
+    <with|font-series|bold|Sufficiency:> Conversely, assume the conditions of
+    Theorem <reference|main> hold. Define <math|U> as in
+    Definition<nbsp><reference|def:cov-operator> with the specified <math|T>
+    and <math|w>. The computation above shows that <math|U> is isometric.
+    Since <math|T> is bijective modulo null sets with mutual absolute
+    continuity, the operator <math|U<rsup|\<ast\>>> exists and is given by
 
     <\equation>
       <around|(|U<rsup|\<ast\>>*g|)><around|(|x|)>=g<around|(|T<rsup|-1><around|(|x|)>|)>\<cdot\><wide|w<around|(|T<rsup|-1><around|(|x|)>|)>|\<bar\>>\<cdot\><sqrt|<frac|d*<around|(|\<mu\>\<circ\>T<rsup|-1>|)>|d*\<mu\>><around|(|x|)>>\<cdot\>e<rsup|-i*\<theta\><around|(|T<rsup|-1><around|(|x|)>|)>>
@@ -529,31 +533,32 @@
     <associate|bib-walters1982introduction|<tuple|walters1982introduction|8>>
     <associate|def:cov-operator|<tuple|1|2>>
     <associate|def:unitary_transform|<tuple|6|5>>
-    <associate|eq:change_vars|<tuple|15|5>>
-    <associate|eq:change_vars_apply|<tuple|20|6>>
-    <associate|eq:final_norm|<tuple|21|6>>
-    <associate|eq:general_final_norm|<tuple|31|7>>
-    <associate|eq:general_norm|<tuple|22|6>>
-    <associate|eq:general_norm_calc1|<tuple|28|7>>
-    <associate|eq:general_norm_calc2|<tuple|29|7>>
-    <associate|eq:general_transform|<tuple|27|7>>
+    <associate|eq:change_vars|<tuple|16|5>>
+    <associate|eq:change_vars_apply|<tuple|21|6>>
+    <associate|eq:final_norm|<tuple|22|6>>
+    <associate|eq:general_final_norm|<tuple|32|7>>
+    <associate|eq:general_norm|<tuple|23|6>>
+    <associate|eq:general_norm_calc1|<tuple|29|7>>
+    <associate|eq:general_norm_calc2|<tuple|30|7>>
+    <associate|eq:general_transform|<tuple|28|7>>
     <associate|eq:isometry|<tuple|3|2>>
-    <associate|eq:measure-condition|<tuple|6|3>>
-    <associate|eq:norm_calc1|<tuple|18|6>>
-    <associate|eq:norm_calc2|<tuple|19|6>>
-    <associate|eq:norm_equality|<tuple|17|5>>
-    <associate|eq:phi_ae_equal|<tuple|26|7>>
-    <associate|eq:phi_comparison|<tuple|24|6>>
-    <associate|eq:phi_condition|<tuple|23|6>>
-    <associate|eq:phi_difference|<tuple|25|6>>
-    <associate|eq:pushforward_change|<tuple|30|7>>
-    <associate|eq:unitary_transform|<tuple|16|5>>
+    <associate|eq:measure-condition|<tuple|7|3>>
+    <associate|eq:norm_calc1|<tuple|19|6>>
+    <associate|eq:norm_calc2|<tuple|20|6>>
+    <associate|eq:norm_equality|<tuple|18|5>>
+    <associate|eq:phi_ae_equal|<tuple|27|7>>
+    <associate|eq:phi_comparison|<tuple|25|6>>
+    <associate|eq:phi_condition|<tuple|24|6>>
+    <associate|eq:phi_difference|<tuple|26|6>>
+    <associate|eq:pushforward_change|<tuple|31|7>>
+    <associate|eq:unitary_transform|<tuple|17|5>>
     <associate|lem:monotone|<tuple|3|4>>
+    <associate|main|<tuple|2|2>>
+    <associate|sqrtcond|<tuple|3|2>>
     <associate|thm:bijective_unbounded|<tuple|4|4>>
     <associate|thm:diff_bijective|<tuple|5|5>>
     <associate|thm:general_measures|<tuple|9|7>>
     <associate|thm:l2_preservation|<tuple|7|5>>
-    <associate|thm:main|<tuple|2|2>>
     <associate|thm:necessity|<tuple|8|6>>
   </collection>
 </references>
