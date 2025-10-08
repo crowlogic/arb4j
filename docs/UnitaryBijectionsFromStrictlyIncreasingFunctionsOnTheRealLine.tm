@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|generic|framed-theorems>>
+<style|<tuple|article|framed-theorems>>
 
 <\body>
   \<cdot\><doc-data|<doc-title|Unitary Bijections From Strictly Increasing
@@ -9,31 +9,29 @@
     <date|>
   </author-affiliation>>>>
 
+  \;
+
   <\abstract>
     This paper establishes a comprehensive theory of unitary
     change-of-variables operators on <math|L<rsup|2>> spaces, encompassing
     both the general framework for <math|L<rsup|2><around|(|\<bbb-R\>|)>> and
-    specialized results for measure-preserving transformations on unbounded
-    domains. The investigation begins with the characterization of when
-    weighted composition operators <math|<around|(|U*f|)><around|(|x|)>=f<around|(|T<around|(|x|)>|)>\<cdot\>w<around|(|x|)>>
+    specialized results for measure-preserving transformations. The
+    investigation begins with the characterization of when weighted
+    composition operators <math|<around|(|U*f|)><around|(|x|)>=f<around|(|T<around|(|x|)>|)>\<cdot\>w<around|(|x|)>>
     achieve unitarity, requiring measurable bijections modulo null sets,
     mutual absolute continuity of measures, and specific weight functions
     involving Radon-Nikodym derivatives. For differentiable transformations,
     this reduces to the condition <math|<around|\||w<around|(|x|)>|\|><rsup|2>=<around|\||T<rprime|'><around|(|x|)>|\|>>.
     The analysis then specializes to <math|C<rsup|1>> bijective
-    transformations <math|g:I\<to\>J> between unbounded intervals with
-    positive derivative almost everywhere, where <math|L<rsup|2>> norm
-    preservation under Lebesgue measure is achieved through the unitary
-    change of variables operator <math|T<rsub|g>*f=f<around|(|g<around|(|y|)>|)><sqrt|g<rprime|'><around|(|y|)>>>.
-    The framework is further extended to arbitrary \<sigma\>-finite measures
-    \<mu\> and \<nu\>, where the scaling factor becomes the square root of
-    the Radon-Nikodym derivative <math|<sqrt|<frac|d*<around|(|\<mu\>\<circ\>g<rsup|-1>|)>|d*\<mu\>><around|(|y|)>>>.
+    transformations <math|g:I\<to\>J> between intervals with positive
+    derivative almost everywhere, where <math|L<rsup|2>> norm preservation
+    under Lebesgue measure is achieved through the unitary change of
+    variables operator <math|T<rsub|g>*f=f<around|(|g<around|(|y|)>|)><sqrt|g<rprime|'><around|(|y|)>>>.
     The necessity of these specific scaling factors is rigorously established
-    through variational arguments in all settings. These findings provide a
-    unified theoretical foundation bridging the change-of-variables formula
-    in real analysis with the unitary structure of <math|L<rsup|2>> spaces
-    over general measure spaces, with applications in ergodic theory,
-    functional analysis, and measure theory.
+    through variational arguments. These findings provide a unified
+    theoretical foundation bridging the change-of-variables formula in real
+    analysis with the unitary structure of <math|L<rsup|2>> spaces, with
+    applications in ergodic theory, functional analysis, and measure theory.
   </abstract>
 
   <\table-of-contents|toc>
@@ -56,18 +54,13 @@
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-4><vspace|0.5fn>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|5<space|2spc>Extension
-    to General \<sigma\>-Finite Measures>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|5<space|2spc>Conclusion>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-5><vspace|0.5fn>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|6<space|2spc>Conclusion>
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-6><vspace|0.5fn>
-
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-7><vspace|0.5fn>
+    <no-break><pageref|auto-6><vspace|0.5fn>
   </table-of-contents>
 
   <section|Introduction>
@@ -78,8 +71,7 @@
   transformations in both general and specialized settings. The investigation
   begins with the general framework for weighted composition operators on
   <math|L<rsup|2><around|(|\<bbb-R\>|)>>, then specializes to
-  measure-preserving transformations on unbounded domains, extending from
-  classical Lebesgue measure to general \<sigma\>-finite measures.
+  measure-preserving transformations on unbounded domains.
 
   <section|General Framework: Unitary Change-of-Variables Operators>
 
@@ -100,7 +92,7 @@
   </definition>
 
   <\theorem>
-    <label|main>Let <math|U> be a change-of-variables operator as in
+    <label|thm:main>Let <math|U> be a change-of-variables operator as in
     Definition<nbsp><reference|def:cov-operator>. Then <math|U> is unitary if
     and only if the following conditions hold:
 
@@ -112,7 +104,7 @@
       <math|\<mu\>\<ll\>\<mu\>\<circ\>T<rsup|-1>> (mutual absolute
       continuity);
 
-      <item><math|<label|sqrtcond><around|\||w<around|(|x|)>|\|><rsup|2>=<frac|d*<around|(|\<mu\>\<circ\>T|)>|d*\<mu\>><around|(|x|)>>
+      <item><math|<around|\||w<around|(|x|)>|\|><rsup|2>=<frac|d*<around|(|\<mu\>\<circ\>T|)>|d*\<mu\>><around|(|x|)>>
       almost everywhere;
 
       <item><math|w<around|(|x|)>=<sqrt|<frac|d*<around|(|\<mu\>\<circ\>T|)>|d*\<mu\>><around|(|x|)>>\<cdot\>e<rsup|i*\<theta\><around|(|x|)>>>
@@ -120,8 +112,7 @@
     </enumerate>
 
     Furthermore, if <math|T> is differentiable almost everywhere with
-    <math|T<rprime|'><around|(|x|)>\<neq\>0> a.e., then condition
-    (<reference|sqrtcond>) becomes
+    <math|T<rprime|'><around|(|x|)>\<neq\>0> a.e., then condition (3) becomes
 
     <\equation>
       <around|\||w<around|(|x|)>|\|><rsup|2>=<around|\||T<rprime|'><around|(|x|)>|\|>
@@ -151,7 +142,7 @@
       <big|int><rsub|\<bbb-R\>><around|\||f<around|(|T<around|(|x|)>|)><around|\||<rsup|2>|\|>*w<around|(|x|)>*<around|\||<rsup|2><space|0.17em>d*\<mu\><around|(|x|)>=<big|int><rsub|\<bbb-R\>>|\|>*f<around|(|y|)>|\|><rsup|2>*<space|0.17em>d*<around|(|T<rsub|\<ast\>>*\<nu\>|)><around|(|y|)>
     </equation>
 
-    where\ 
+    where
 
     <\equation>
       <around|(|T<rsub|\<ast\>>*\<nu\>|)><around|(|A|)>=\<nu\><around|(|T<rsup|-1><around|(|A|)>|)>
@@ -164,9 +155,10 @@
       <label|eq:measure-condition><big|int><rsub|\<bbb-R\>><around|\||f<around|(|y|)>|\|><rsup|2>*<space|0.17em>d*<around|(|T<rsub|\<ast\>>*\<nu\>|)><around|(|y|)>=<big|int><rsub|\<bbb-R\>><around|\||f<around|(|y|)>|\|><rsup|2>*<space|0.17em>d*\<mu\><around|(|y|)>
     </equation>
 
-    for all <math|f\<in\>L<rsup|2><around|(|\<bbb-R\>|)>>. This implies
-    <math|T<rsub|\<ast\>>*\<nu\>=\<mu\>> as measures. Therefore, for any
-    measurable set <math|A>,
+    for all <math|f\<in\>L<rsup|2><around|(|\<bbb-R\>|)>>.
+
+    This implies <math|T<rsub|\<ast\>>*\<nu\>=\<mu\>> as measures. Therefore,
+    for any measurable set <math|A>,
 
     <\equation>
       \<mu\><around|(|A|)>=\<nu\><around|(|T<rsup|-1><around|(|A|)>|)>=<big|int><rsub|T<rsup|-1><around|(|A|)>><around|\||w<around|(|x|)>|\|><rsup|2>*<space|0.17em>d*\<mu\><around|(|x|)>
@@ -212,12 +204,12 @@
     The phase freedom in condition (4) follows from the fact that only
     <math|<around|\||w|\|><rsup|2>> is determined by the isometry condition.
 
-    <with|font-series|bold|Sufficiency:> Conversely, assume the conditions of
-    Theorem <reference|main> hold. Define <math|U> as in
-    Definition<nbsp><reference|def:cov-operator> with the specified <math|T>
-    and <math|w>. The computation above shows that <math|U> is isometric.
-    Since <math|T> is bijective modulo null sets with mutual absolute
-    continuity, the operator <math|U<rsup|\<ast\>>> exists and is given by
+    <with|font-series|bold|Sufficiency:> Conversely, assume conditions
+    (1)-(4) hold. Define <math|U> as in Definition<nbsp><reference|def:cov-operator>
+    with the specified <math|T> and <math|w>. The computation above shows
+    that <math|U> is isometric. Since <math|T> is bijective modulo null sets
+    with mutual absolute continuity, the operator <math|U<rsup|\<ast\>>>
+    exists and is given by
 
     <\equation>
       <around|(|U<rsup|\<ast\>>*g|)><around|(|x|)>=g<around|(|T<rsup|-1><around|(|x|)>|)>\<cdot\><wide|w<around|(|T<rsup|-1><around|(|x|)>|)>|\<bar\>>\<cdot\><sqrt|<frac|d*<around|(|\<mu\>\<circ\>T<rsup|-1>|)>|d*\<mu\>><around|(|x|)>>\<cdot\>e<rsup|-i*\<theta\><around|(|T<rsup|-1><around|(|x|)>|)>>
@@ -257,11 +249,12 @@
   <section|Bijective Transformations on Unbounded Domains>
 
   <\theorem>
-    <dueto|Bijectivity of Strictly Increasing Functions on Unbounded
-    Domains><label|thm:bijective_unbounded>Let <math|g:I\<to\>\<bbb-R\>> be a
-    strictly increasing function where <math|I\<subseteq\>\<bbb-R\>> is an
-    unbounded interval. Then <math|g> is bijective onto its range
-    <math|J=g<around|(|I|)>>, and <math|J> is also an unbounded interval.
+    [Bijectivity of Strictly Increasing Unbounded
+    Functions]<label|thm:bijective_unbounded>Let <math|g:I\<to\>\<bbb-R\>> be
+    a strictly increasing and unbounded function where
+    <math|I\<subseteq\>\<bbb-R\>> is an unbounded interval. Then <math|g> is
+    bijective onto its range <math|J=g<around|(|I|)>>, and <math|J> is also
+    an unbounded interval.
   </theorem>
 
   <\proof>
@@ -274,34 +267,39 @@
     <math|g<around|(|x|)>=y>. The uniqueness of such <math|x> follows from
     injectivity.
 
-    To establish that <math|J> is unbounded, consider two cases:
+    To establish that <math|J> is unbounded, note that since <math|g> is
+    unbounded, for any <math|M\<gtr\>0>, there exists <math|x\<in\>I> such
+    that <math|<around|\||g<around|(|x|)>|\|>\<gtr\>M>. Consider two cases:
 
     <\enumerate>
-      <item>If <math|I=<around|(|a,\<infty\>|)>> or
-      <math|I=<around|[|a,\<infty\>|)>> for some <math|a\<in\>\<bbb-R\>>,
-      then as <math|x\<to\>\<infty\>>, since <math|g> is strictly increasing,
-      either <math|g<around|(|x|)>\<to\>\<infty\>> or <math|g<around|(|x|)>>
-      approaches some finite supremum. If the latter held, then by the
-      intermediate value theorem and strict monotonicity, <math|g> would map
-      <math|<around|(|a,\<infty\>|)>> to some bounded interval, contradicting
-      the strict increase property over an unbounded domain.
+      <item>If <math|I> is unbounded above (e.g.,
+      <math|I=<around|(|a,\<infty\>|)>> or
+      <math|I=<around|[|a,\<infty\>|)>>), and <math|g> is unbounded above,
+      then as <math|x\<to\>\<infty\>> in <math|I>, we have
+      <math|g<around|(|x|)>\<to\>\<infty\>> since <math|g> is strictly
+      increasing. Thus <math|J> is unbounded above.
 
-      <item>If <math|I=<around|(|-\<infty\>,b|)>> or
-      <math|I=<around|(|-\<infty\>,b|]>>, a similar argument shows <math|J>
-      extends to <math|-\<infty\>>.
+      <item>If <math|I> is unbounded below (e.g.,
+      <math|I=<around|(|-\<infty\>,b|)>> or
+      <math|I=<around|(|-\<infty\>,b|]>>), and <math|g> is unbounded below,
+      then as <math|x\<to\>-\<infty\>> in <math|I>, we have
+      <math|g<around|(|x|)>\<to\>-\<infty\>> since <math|g> is strictly
+      increasing. Thus <math|J> is unbounded below.
 
-      <item>If <math|I=\<bbb-R\>>, then <math|J> must be unbounded in both
-      directions.
+      <item>If <math|I=\<bbb-R\>> and <math|g> is unbounded in both
+      directions, then <math|J> must be unbounded in both directions.
     </enumerate>
 
-    Therefore, <math|g:I\<to\>J> is bijective with both <math|I> and <math|J>
-    unbounded intervals.
+    Since <math|g> is continuous (being strictly monotone) and maps an
+    interval to an interval, <math|J> is indeed an interval. Therefore,
+    <math|g:I\<to\>J> is bijective with both <math|I> and <math|J> unbounded
+    intervals.
   </proof>
 
   <\theorem>
-    <dueto|Differentiable Bijections with Positive
-    Derivative><label|thm:diff_bijective>Let <math|g:I\<to\>J> be a
-    <math|C<rsup|1>> bijection between unbounded intervals
+    [Differentiable Bijections with Positive
+    Derivative]<label|thm:diff_bijective>Let <math|g:I\<to\>J> be a
+    <math|C<rsup|1>> bijection between intervals
     <math|I,J\<subseteq\>\<bbb-R\>> such that
     <math|g<rprime|'><around|(|y|)>\<gtr\>0> for all <math|y\<in\>I> except
     possibly on a set of measure zero. Then <math|g> is a well-defined change
@@ -315,7 +313,7 @@
     change of variables formula applies:
 
     <\equation>
-      <label|eq:change_vars><big|int><rsub|J>f<around|(|x|)>*<space|0.17em>d*x=<big|int><rsub|I>f<around|(|g<around|(|y|)>|)><around|\||g<rprime|'><around|(|y|)>|\|>*<space|0.17em>d*y=<big|int><rsub|I>f<around|(|g<around|(|y|)>|)>*g<rprime|'><around|(|y|)>*<space|0.17em>d*y
+      <label|eq:change_vars><aligned|<tformat|<table|<row|<cell|<big|int><rsub|J>f<around|(|x|)>*<space|0.17em>d*x>|<cell|=<big|int><rsub|I>f<around|(|g<around|(|y|)>|)><around|\||g<rprime|'><around|(|y|)>|\|>*<space|0.17em>d*y>>|<row|<cell|>|<cell|=<big|int><rsub|I>f<around|(|g<around|(|y|)>|)>*g<rprime|'><around|(|y|)>*<space|0.17em>d*y>>>>>
     </equation>
 
     where the last equality uses <math|g<rprime|'><around|(|y|)>\<gtr\>0>
@@ -326,11 +324,11 @@
   <section|<math|L<rsup|2>> Norm Preservation Under Lebesgue Measure>
 
   <\definition>
-    <dueto|Unitary Change of Variables Operator><label|def:unitary_transform>Let
-    <math|g:I\<to\>J> be a <math|C<rsup|1>> bijection between unbounded
-    intervals with <math|g<rprime|'><around|(|y|)>\<gtr\>0> almost
-    everywhere. For <math|f\<in\>L<rsup|2><around|(|J,d*x|)>>, define the
-    unitary change of variables operator <math|T<rsub|g>> by:
+    [Unitary Change of Variables Operator]<label|def:unitary_transform>Let
+    <math|g:I\<to\>J> be a <math|C<rsup|1>> bijection between intervals with
+    <math|g<rprime|'><around|(|y|)>\<gtr\>0> almost everywhere. For
+    <math|f\<in\>L<rsup|2><around|(|J,d*x|)>>, define the unitary change of
+    variables operator <math|T<rsub|g>> by:
 
     <\equation>
       <label|eq:unitary_transform><around|(|T<rsub|g>*f|)><around|(|y|)>=f<around|(|g<around|(|y|)>|)><sqrt|g<rprime|'><around|(|y|)>>
@@ -338,10 +336,9 @@
   </definition>
 
   <\theorem>
-    <dueto|<math|L<rsup|2>> Norm Preservation for Unbounded
-    Domains><label|thm:l2_preservation>Under the conditions of
-    Definition<nbsp><reference|def:unitary_transform>, the operator
-    <math|T<rsub|g>:L<rsup|2><around|(|J,d*x|)>\<to\>L<rsup|2><around|(|I,d*y|)>>
+    [<math|L<rsup|2>> Norm Preservation]<label|thm:l2_preservation>Under the
+    conditions of Definition<nbsp><reference|def:unitary_transform>, the
+    operator <math|T<rsub|g>:L<rsup|2><around|(|J,d*x|)>\<to\>L<rsup|2><around|(|I,d*y|)>>
     is an isometric isomorphism. Specifically:
 
     <\equation>
@@ -352,9 +349,7 @@
   <\proof>
     For <math|f\<in\>L<rsup|2><around|(|J,d*x|)>>, compute directly:
 
-    <\align>
-      <tformat|<table|<row|<cell|<around|\<\|\|\>|T<rsub|g>*f|\<\|\|\>><rsub|L<rsup|2><around|(|I,d*y|)>><rsup|2>>|<cell|=<big|int><rsub|I><around|\||f<around|(|g<around|(|y|)>|)><sqrt|g<rprime|'><around|(|y|)>>|\|><rsup|2>*<space|0.17em>d*y<eq-number><label|eq:norm_calc1>>>|<row|<cell|>|<cell|=<big|int><rsub|I><around|\||f<around|(|g<around|(|y|)>|)>|\|><rsup|2>*g<rprime|'><around|(|y|)>*<space|0.17em>d*y<eq-number><label|eq:norm_calc2>>>>>
-    </align>
+    <align|<tformat|<table|<row|<cell|<around|\<\|\|\>|T<rsub|g>*f|\<\|\|\>><rsub|L<rsup|2><around|(|I,d*y|)>><rsup|2>>|<cell|=<big|int><rsub|I><around|\||f<around|(|g<around|(|y|)>|)><sqrt|g<rprime|'><around|(|y|)>>|\|><rsup|2>*<space|0.17em>d*y<eq-number><label|eq:norm_calc1>>>|<row|<cell|>|<cell|=<big|int><rsub|I><around|\||f<around|(|g<around|(|y|)>|)>|\|><rsup|2>*g<rprime|'><around|(|y|)>*<space|0.17em>d*y<eq-number><label|eq:norm_calc2>>>>>>
 
     By the change of variables formula from
     Theorem<nbsp><reference|thm:diff_bijective> with
@@ -363,10 +358,6 @@
     <\equation>
       <label|eq:change_vars_apply><big|int><rsub|I><around|\||f<around|(|g<around|(|y|)>|)>*<around|\||<rsup|2>g<rprime|'><around|(|y|)>*<space|0.17em>d*y=<big|int><rsub|J>|\|>*f<around|(|x|)>|\|><rsup|2>*<space|0.17em>d*x=<around|\<\|\|\>|f|\<\|\|\>><rsub|L<rsup|2><around|(|J,d*x|)>><rsup|2>
     </equation>
-
-    Since both <math|I> and <math|J> are unbounded, the change of variables
-    is justified by approximating with bounded subintervals and applying the
-    monotone convergence theorem.
 
     Therefore:
 
@@ -377,14 +368,23 @@
     The fact that <math|T<rsub|g>*f\<in\>L<rsup|2><around|(|I,d*y|)>> follows
     immediately from equation<nbsp><eqref|eq:final_norm> and the assumption
     <math|f\<in\>L<rsup|2><around|(|J,d*x|)>>.
+
+    To show <math|T<rsub|g>> is an isomorphism, we verify bijectivity.
+    Injectivity follows from the positivity of
+    <math|<sqrt|g<rprime|'><around|(|y|)>>> almost everywhere: if
+    <math|T<rsub|g>*f<rsub|1>=T<rsub|g>*f<rsub|2>>, then
+    <math|f<rsub|1><around|(|g<around|(|y|)>|)>=f<rsub|2><around|(|g<around|(|y|)>|)>>
+    a.e., which implies <math|f<rsub|1>=f<rsub|2>> since <math|g> is
+    surjective. For surjectivity, given <math|h\<in\>L<rsup|2><around|(|I,d*y|)>>,
+    define <math|f<around|(|x|)>=h<around|(|g<rsup|-1><around|(|x|)>|)>/<sqrt|g<rprime|'><around|(|g<rsup|-1><around|(|x|)>|)>>>.
+    Then <math|f\<in\>L<rsup|2><around|(|J,d*x|)>> and <math|T<rsub|g>*f=h>.
   </proof>
 
   <\theorem>
-    <dueto|Necessity of Square Root Unitary
-    Transformation><label|thm:necessity>Let <math|g:I\<to\>J> be as in
-    Theorem<nbsp><reference|thm:l2_preservation>. If
-    <math|\<phi\>:I\<to\>\<bbb-R\><rsup|+>> is any measurable function such
-    that <math|f<around|(|g<around|(|y|)>|)>*\<phi\><around|(|y|)>\<in\>L<rsup|2><around|(|I,d*y|)>>
+    [Necessity of Square Root Unitary Transformation]<label|thm:necessity>Let
+    <math|g:I\<to\>J> be as in Theorem<nbsp><reference|thm:l2_preservation>.
+    If <math|\<phi\>:I\<to\>\<bbb-R\><rsup|+>> is any measurable function
+    such that <math|f<around|(|g<around|(|y|)>|)>*\<phi\><around|(|y|)>\<in\>L<rsup|2><around|(|I,d*y|)>>
     and
 
     <\equation>
@@ -421,61 +421,13 @@
     the fundamental lemma of calculus of variations implies:
 
     <\equation>
-      <label|eq:phi_ae_equal>\<phi\><around|(|y|)><rsup|2>=g<rprime|'><around|(|y|)><text|almost
+      <label|eq:phi_ae_equal>\<phi\><around|(|y|)><rsup|2>=g<rprime|'><around|(|y|)><space|1em><text|almost
       everywhere>
     </equation>
 
     Taking <math|\<phi\><around|(|y|)>\<gtr\>0>, one obtains
     <math|\<phi\><around|(|y|)>=<sqrt|g<rprime|'><around|(|y|)>>> almost
     everywhere.
-  </proof>
-
-  <section|Extension to General \<sigma\>-Finite Measures>
-
-  <\theorem>
-    <dueto|Extension to General Measures><label|thm:general_measures>Let
-    <math|\<mu\>> and <math|\<nu\>> be \<sigma\>-finite measures on <math|I>
-    and <math|J> respectively, and let <math|g:I\<to\>J> be a measurable
-    bijection. If <math|\<nu\>=\<mu\>\<circ\>g<rsup|-1>> (i.e.,
-    <math|\<nu\><around|(|E|)>=\<mu\><around|(|g<rsup|-1><around|(|E|)>|)>>
-    for all measurable <math|E\<subseteq\>J>), then for
-    <math|f\<in\>L<rsup|2><around|(|J,d*\<nu\>|)>>:
-
-    <\equation>
-      <label|eq:general_transform><wide|f|~><around|(|y|)>=f<around|(|g<around|(|y|)>|)><sqrt|<frac|d*<around|(|\<mu\>\<circ\>g<rsup|-1>|)>|d*\<mu\>><around|(|y|)>>
-    </equation>
-
-    satisfies <math|<around|\<\|\|\>|<wide|f|~>|\<\|\|\>><rsub|L<rsup|2><around|(|I,d*\<mu\>|)>>=<around|\<\|\|\>|f|\<\|\|\>><rsub|L<rsup|2><around|(|J,d*\<nu\>|)>>>,
-    where <math|<frac|d*<around|(|\<mu\>\<circ\>g<rsup|-1>|)>|d*\<mu\>>> is
-    the Radon-Nikodym derivative.
-  </theorem>
-
-  <\proof>
-    When <math|\<mu\>> and <math|\<nu\>> are both Lebesgue measure and
-    <math|g> is differentiable, the Radon-Nikodym derivative is
-    <math|<around|\||g<rprime|'><around|(|y|)>|\|>>, reducing to
-    Theorem<nbsp><reference|thm:l2_preservation>.
-
-    For the general case, compute:
-
-    <\align>
-      <tformat|<table|<row|<cell|<around|\<\|\|\>|<wide|f|~>|\<\|\|\>><rsub|L<rsup|2><around|(|I,d*\<mu\>|)>><rsup|2>>|<cell|=<big|int><rsub|I><around|\||f<around|(|g<around|(|y|)>|)>|\|><rsup|2><frac|d*<around|(|\<mu\>\<circ\>g<rsup|-1>|)>|d*\<mu\>><around|(|y|)>*<space|0.17em>d*\<mu\><around|(|y|)><eq-number><label|eq:general_norm_calc1>>>|<row|<cell|>|<cell|=<big|int><rsub|I><around|\||f<around|(|g<around|(|y|)>|)>|\|><rsup|2>*<space|0.17em>d*<around|(|\<mu\>\<circ\>g<rsup|-1>|)><around|(|y|)><eq-number><label|eq:general_norm_calc2>>>>>
-    </align>
-
-    By the definition of the pushforward measure
-    <math|\<mu\>\<circ\>g<rsup|-1>> and since
-    <math|\<nu\>=\<mu\>\<circ\>g<rsup|-1>>:
-
-    <\equation>
-      <label|eq:pushforward_change><big|int><rsub|I><around|\||f<around|(|g<around|(|y|)>|)>*<around|\||<rsup|2><space|0.17em>d*<around|(|\<mu\>\<circ\>g<rsup|-1>|)><around|(|y|)>=<big|int><rsub|J>|\|>*f<around|(|x|)>|\|><rsup|2>*<space|0.17em>d*\<nu\><around|(|x|)>=<around|\<\|\|\>|f|\<\|\|\>><rsub|L<rsup|2><around|(|J,d*\<nu\>|)>><rsup|2>
-    </equation>
-
-    The change of variables follows from the same argument using the
-    definition of the pushforward measure. Therefore:
-
-    <\equation>
-      <label|eq:general_final_norm><around|\<\|\|\>|<wide|f|~>|\<\|\|\>><rsub|L<rsup|2><around|(|I,d*\<mu\>|)>>=<around|\<\|\|\>|f|\<\|\|\>><rsub|L<rsup|2><around|(|J,d*\<nu\>|)>>
-    </equation>
   </proof>
 
   <section|Conclusion>
@@ -485,11 +437,13 @@
   unitarity requires measurable bijections modulo null sets, mutual absolute
   continuity, and weight functions given by square roots of Radon-Nikodym
   derivatives. For <math|L<rsup|2>> norm preservation under measurable
-  bijections, the scaling factor <math|<sqrt|g<rprime|'>>> for Lebesgue
-  measure generalizes to <math|<sqrt|<frac|d*<around|(|\<mu\>\<circ\>g<rsup|-1>|)>|d*\<mu\>>>>
-  for arbitrary \<sigma\>-finite measures. These factors are both necessary
+  bijections, the scaling factor <math|<sqrt|g<rprime|'>>> is both necessary
   and sufficient for isometry, linking the change-of-variables formula to
-  unitary structure on <math|L<rsup|2>> spaces over arbitrary measure spaces.
+  unitary structure on <math|L<rsup|2>> spaces. The key requirement that the
+  function be both strictly increasing and unbounded ensures that
+  transformations between unbounded domains preserve the unbounded nature of
+  the range, which is essential for the applicability of the theory to
+  problems in ergodic theory and functional analysis.
 
   <\thebibliography|9>
     <bibitem|petersen1989ergodic>K. Petersen, <em|Ergodic Theory>, Cambridge
@@ -520,46 +474,38 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|2>>
+    <associate|auto-1|<tuple|1|1>>
     <associate|auto-2|<tuple|2|2>>
     <associate|auto-3|<tuple|3|4>>
     <associate|auto-4|<tuple|4|5>>
-    <associate|auto-5|<tuple|5|7>>
-    <associate|auto-6|<tuple|6|8>>
-    <associate|auto-7|<tuple|6|8>>
-    <associate|bib-halmos1956lectures|<tuple|halmos1956lectures|8>>
-    <associate|bib-petersen1989ergodic|<tuple|petersen1989ergodic|8>>
-    <associate|bib-reed1980functional|<tuple|reed1980functional|8>>
-    <associate|bib-walters1982introduction|<tuple|walters1982introduction|8>>
+    <associate|auto-5|<tuple|5|6>>
+    <associate|auto-6|<tuple|5|6>>
+    <associate|bib-halmos1956lectures|<tuple|halmos1956lectures|6>>
+    <associate|bib-petersen1989ergodic|<tuple|petersen1989ergodic|6>>
+    <associate|bib-reed1980functional|<tuple|reed1980functional|6>>
+    <associate|bib-walters1982introduction|<tuple|walters1982introduction|6>>
     <associate|def:cov-operator|<tuple|1|2>>
     <associate|def:unitary_transform|<tuple|6|5>>
-    <associate|eq:change_vars|<tuple|16|5>>
-    <associate|eq:change_vars_apply|<tuple|21|6>>
-    <associate|eq:final_norm|<tuple|22|6>>
-    <associate|eq:general_final_norm|<tuple|32|7>>
-    <associate|eq:general_norm|<tuple|23|6>>
-    <associate|eq:general_norm_calc1|<tuple|29|7>>
-    <associate|eq:general_norm_calc2|<tuple|30|7>>
-    <associate|eq:general_transform|<tuple|28|7>>
+    <associate|eq:change_vars|<tuple|16|4>>
+    <associate|eq:change_vars_apply|<tuple|21|5>>
+    <associate|eq:final_norm|<tuple|22|5>>
+    <associate|eq:general_norm|<tuple|23|5>>
     <associate|eq:isometry|<tuple|3|2>>
-    <associate|eq:measure-condition|<tuple|7|3>>
-    <associate|eq:norm_calc1|<tuple|19|6>>
-    <associate|eq:norm_calc2|<tuple|20|6>>
+    <associate|eq:measure-condition|<tuple|7|2>>
+    <associate|eq:norm_calc1|<tuple|19|5>>
+    <associate|eq:norm_calc2|<tuple|20|5>>
     <associate|eq:norm_equality|<tuple|18|5>>
-    <associate|eq:phi_ae_equal|<tuple|27|7>>
+    <associate|eq:phi_ae_equal|<tuple|27|6>>
     <associate|eq:phi_comparison|<tuple|25|6>>
     <associate|eq:phi_condition|<tuple|24|6>>
     <associate|eq:phi_difference|<tuple|26|6>>
-    <associate|eq:pushforward_change|<tuple|31|7>>
     <associate|eq:unitary_transform|<tuple|17|5>>
-    <associate|lem:monotone|<tuple|3|4>>
-    <associate|main|<tuple|2|2>>
-    <associate|sqrtcond|<tuple|3|2>>
+    <associate|lem:monotone|<tuple|3|3>>
     <associate|thm:bijective_unbounded|<tuple|4|4>>
-    <associate|thm:diff_bijective|<tuple|5|5>>
-    <associate|thm:general_measures|<tuple|9|7>>
+    <associate|thm:diff_bijective|<tuple|5|4>>
     <associate|thm:l2_preservation|<tuple|7|5>>
-    <associate|thm:necessity|<tuple|8|6>>
+    <associate|thm:main|<tuple|2|2>>
+    <associate|thm:necessity|<tuple|8|5>>
   </collection>
 </references>
 
@@ -585,18 +531,13 @@
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-4><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|5<space|2spc>Extension
-      to General \<sigma\>-Finite Measures>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|5<space|2spc>Conclusion>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-5><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|6<space|2spc>Conclusion>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-6><vspace|0.5fn>
-
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-7><vspace|0.5fn>
+      <no-break><pageref|auto-6><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
