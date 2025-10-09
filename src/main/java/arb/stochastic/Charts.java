@@ -1,33 +1,13 @@
 package arb.stochastic;
 
-import java.util.Arrays;
-
-import arb.Complex;
-import arb.FloatInterval;
-import arb.Real;
-import arb.RealDataSet;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisMode;
-import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
-import io.fair_acc.chartfx.plugins.CrosshairIndicator;
-import io.fair_acc.chartfx.plugins.EditAxis;
-import io.fair_acc.chartfx.plugins.Screenshot;
-import io.fair_acc.chartfx.plugins.TableViewer;
-import io.fair_acc.chartfx.plugins.Zoomer;
-import io.fair_acc.chartfx.renderer.ErrorStyle;
-import io.fair_acc.chartfx.renderer.LineStyle;
-import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
-import io.fair_acc.dataset.spi.DoubleDataSet;
+import io.fair_acc.chartfx.plugins.*;
 import io.fair_acc.dataset.utils.DataSetStyleBuilder;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 
 public class Charts
 {
-
- 
 
   /**
    * TODO: see if there is a way to make the crosshair path and label render with
@@ -52,66 +32,55 @@ public class Charts
                             light ? "orange" : "yellow"));
   }
 
-
-
-
   public static GridPane createGridPane(XYChart[] charts)
   {
     GridPane gridPane = new GridPane();
     gridPane.setHgap(10);
     gridPane.setVgap(10);
-  
+
     var col1 = new ColumnConstraints();
     col1.setPercentWidth(50);
     var col2 = new ColumnConstraints();
     col2.setPercentWidth(50);
     gridPane.getColumnConstraints().addAll(col1, col2);
-  
+
     var row1 = new RowConstraints();
     row1.setPercentHeight(50);
     var row2 = new RowConstraints();
     row2.setPercentHeight(50);
     gridPane.getRowConstraints().addAll(row1, row2);
-  
+
     for (XYChart chart : charts)
     {
       chart.setPrefSize(10000, 10000);
       GridPane.setHgrow(chart, Priority.ALWAYS);
       GridPane.setVgrow(chart, Priority.ALWAYS);
     }
-  
+
     gridPane.add(charts[0], 0, 0);
     gridPane.add(charts[1], 1, 0);
     gridPane.add(charts[2], 0, 1);
     gridPane.add(charts[3], 1, 1);
-  
+
     return gridPane;
   }
-
- 
-
-
-
-  
 
   /**
    * Needs to set both because the drawLegendSymbol method in chartfx uses
    * {@link DataSetStyleBuilder#setMarkerColor(String)} as well as
    * {@link DataSetStyleBuilder#setLineColor(String)}
    */
-  static final String          empiricialFrequencyDatasetStyle  =
-                                                               DataSetStyleBuilder.instance()
-                                                                                  .setMarkerColor("darkgoldenrod")
-                                                                                  .setLineColor("darkgoldenrod")
-                                                                                  .build();
-  static final String          randomMeasureDatasetStyle        =
-   DataSetStyleBuilder.instance()
-                      .setMarkerType("circle")
-                      .setMarkerSize(2)
-                      .build();
-  static final String          theoreticalFrequencyDatasetStyle =
-  DataSetStyleBuilder.instance()
-                     .setLineWidth(2)
-                     .build();
+  static final String empiricialFrequencyDatasetStyle  =
+                                                      DataSetStyleBuilder.instance()
+                                                                         .setMarkerColor("darkgoldenrod")
+                                                                         .setLineColor("darkgoldenrod")
+                                                                         .build();
+  static final String randomMeasureDatasetStyle        = DataSetStyleBuilder.instance()
+                                                                            .setMarkerType("circle")
+                                                                            .setMarkerSize(2)
+                                                                            .build();
+  static final String theoreticalFrequencyDatasetStyle = DataSetStyleBuilder.instance()
+                                                                            .setLineWidth(2)
+                                                                            .build();
 
 }
