@@ -202,7 +202,8 @@
     we compute explicitly. For any <math|f\<in\>L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>:
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|<around|(|U<rsub|\<theta\>><rsup|-1>*U<rsub|\<theta\>>*f|)><around|(|s|)>>|<cell|=<around|(|U<rsub|\<theta\>><rsup|-1>|)>*<around|[|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<cdummy\>|)>>*f<around|(|\<theta\>|(>\<cdot\><around|)||)>|]><around|(|s|)>>>|<row|<cell|>|<cell|=<frac|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>*|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>>f<around|(|\<theta\><around|(|\<theta\><rsup|-1><around|(|s|)>|)>|)>>>|<row|<cell|>|<cell|=f<around|(|s|)>>>>>>
+      <tabular|<tformat|<table|<row|<cell|<around|(|U<rsub|\<theta\>><rsup|-1>*U<rsub|\<theta\>>*f|)><around|(|s|)>>|<cell|=<around*|(|U<rsub|\<theta\>><rsup|-1>
+      <sqrt|<wide|\<theta\>|\<dot\>><around|(|\<cdummy\>|)>>*f<around|(|\<theta\>|(>\<cdot\><around|)||)>|)>*<around|(|s|)>>>|<row|<cell|>|<cell|=<frac|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>*|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>>f<around|(|\<theta\><around|(|\<theta\><rsup|-1><around|(|s|)>|)>|)>>>|<row|<cell|>|<cell|=f<around|(|s|)>>>>>>
     </equation>
 
     since <math|\<theta\><around|(|\<theta\><rsup|-1><around|(|s|)>|)>=s>.
