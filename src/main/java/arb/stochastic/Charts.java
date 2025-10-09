@@ -61,7 +61,7 @@ public class Charts
     gridPane.add(charts[1], 1, 0);
     gridPane.add(charts[2], 0, 1);
     gridPane.add(charts[3], 1, 1);
-
+    
     return gridPane;
   }
 

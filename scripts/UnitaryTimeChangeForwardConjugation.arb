@@ -1,0 +1,2 @@
+var str = "\\begin{array}{ll}\n"              + "    (U_{\\theta} U_{\\theta}^{- 1} g) (t) & = \\sqrt{\\dot{\\theta} (t)} \n"              + "    (U_{\\theta}^{- 1} g) (\\theta (t))\\\\\n"              + "    & = \\frac{\\sqrt{\\dot{\\theta} (t)}}{\\sqrt{\\dot{\\theta} (\\theta^{- 1}\n"              + "    (\\theta (t)))}} g (\\theta^{- 1} (\\theta (t)))\\\\\n"              + "    & = \\frac{\\sqrt{\\dot{\\theta} (t)}}{\\sqrt{\\dot{\\theta} (t)}} g (t)\\\\\n"              + "    & = g (t)\n"              + "  \\end{array}\n";
+showFormula(str)
