@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|generic|boring-white|framed-theorems>>
+<style|<tuple|generic|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Unitary Time Changes of Stationary Processes Yield
@@ -87,6 +87,9 @@
     Regularity and Simple Zeros> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-13><vspace|0.5fn>
   </table-of-contents>
+
+  TODO: add zero counting function<space|1em>and expected zero counting
+  function!!!!!
 
   <section|Function Spaces and Unitary Time Change><label|sec:functionspaces>
 
