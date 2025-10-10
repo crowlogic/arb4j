@@ -697,13 +697,13 @@
     only simple zeros
 
     <\equation>
-      Z<around|(|t<rsub|0>|)>=0\<Rightarrow\>Z<rprime|'><around|(|t<rsub|0>|)>\<neq\>0
+      Z<around|(|t<rsub|0>|)>=0\<Rightarrow\><wide|Z|\<dot\>><around|(|t<rsub|0>|)>\<neq\>0
     </equation>
 
     Define, for Borel <math|B\<subset\>\<bbb-R\>>,
 
     <\equation>
-      \<mu\><around|(|B|)>\<assign\><big|int><rsub|\<bbb-R\>><with|math-font-family|bf|1><rsub|B><around|(|t|)>*<space|0.17em>\<delta\><around|(|Z<around|(|t|)>|)><space|0.17em><around|\||Z<rprime|'><around|(|t|)>|\|>*<space|0.17em>d*t
+      \<mu\><around|(|B|)>\<assign\><big|int><rsub|\<bbb-R\>><with|math-font-family|bf|1><rsub|B><around|(|t|)>*<space|0.17em>\<delta\><around|(|Z<around|(|t|)>|)><space|0.17em><around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*<space|0.17em>d*t
     </equation>
   </definition>
 
@@ -712,13 +712,13 @@
     <math|\<phi\>\<in\>C<rsub|c><rsup|\<infty\>><around|(|\<bbb-R\>|)>>,
 
     <\equation>
-      <big|int><rsub|\<bbb-R\>>\<phi\><around|(|t|)>*<space|0.17em>\<delta\><around|(|Z<around|(|t|)>|)><space|0.17em><around|\||Z<rprime|'><around|(|t|)>|\|>*<space|0.17em>d*t=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<phi\><around|(|t<rsub|0>|)>
+      <big|int><rsub|\<bbb-R\>>\<phi\><around|(|t|)>*<space|0.17em>\<delta\><around|(|Z<around|(|t|)>|)><space|0.17em><around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*<space|0.17em>d*t=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<phi\><around|(|t<rsub|0>|)>
     </equation>
 
     hence\ 
 
     <\equation>
-      \<mu\>=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<delta\><rsub|t<rsub|0>>
+      \<mu\><around*|(|t|)>=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<delta\><rsub|t<rsub|0>><around*|(|t|)>
     </equation>
   </theorem>
 
@@ -730,24 +730,24 @@
     one-dimensional change of variables formula for the Dirac delta.
 
     Specifically, near <math|t<rsub|0>> where
-    <math|Z<around|(|t<rsub|0>|)>=0> and <math|Z<rprime|'><around|(|t<rsub|0>|)>\<neq\>0>,
+    <math|Z<around|(|t<rsub|0>|)>=0> and <math|<wide|Z|\<dot\>><around|(|t<rsub|0>|)>\<neq\>0>,
     we have locally
 
     <\equation>
-      Z<around|(|t|)>=<around|(|t-t<rsub|0>|)>*Z<rprime|'><around|(|t<rsub|0>|)>+O<around|(|<around|(|t-t<rsub|0>|)><rsup|2>|)>
+      Z<around|(|t|)>=<around|(|t-t<rsub|0>|)>*<wide|Z|\<dot\>><around|(|t<rsub|0>|)>+O<around|(|<around|(|t-t<rsub|0>|)><rsup|2>|)>
     </equation>
 
     The distributional identity for the Dirac delta under smooth changes of
     variables gives:
 
     <\equation>
-      \<delta\><around|(|Z<around|(|t|)>|)>=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><frac|\<delta\>*<around|(|t-t<rsub|0>|)>|<around|\||Z<rprime|'><around|(|t<rsub|0>|)>|\|>>
+      \<delta\><around|(|Z<around|(|t|)>|)>=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><frac|\<delta\>*<around|(|t-t<rsub|0>|)>|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>>
     </equation>
 
     Therefore:
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|<big|int><rsub|\<bbb-R\>>\<phi\><around|(|t|)>*<space|0.17em>\<delta\><around|(|Z<around|(|t|)>|)><space|0.17em><around|\||Z<rprime|'><around|(|t|)>|\|>*<space|0.17em>d*t>|<cell|=<big|int><rsub|\<bbb-R\>>\<phi\><around|(|t|)><space|0.17em><around|\||Z<rprime|'><around|(|t|)>|\|>*<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><frac|\<delta\>*<around|(|t-t<rsub|0>|)>|<around|\||Z<rprime|'><around|(|t<rsub|0>|)>|\|>>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><big|int><rsub|\<bbb-R\>>\<phi\><around|(|t|)><frac|<around|\||Z<rprime|'><around|(|t|)>|\|>*\<delta\>*<around|(|t-t<rsub|0>|)>|<around|\||Z<rprime|'><around|(|t<rsub|0>|)>|\|>>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><frac|<around|\||Z<rprime|'><around|(|t<rsub|0>|)>|\|>*\<phi\><around|(|t<rsub|0>|)>|<around|\||Z<rprime|'><around|(|t<rsub|0>|)>|\|>>>>|<row|<cell|>|<cell|=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<phi\><around|(|t<rsub|0>|)>>>>>>
+      <tabular|<tformat|<table|<row|<cell|<big|int><rsub|\<bbb-R\>>\<phi\><around|(|t|)>*<space|0.17em>\<delta\><around|(|Z<around|(|t|)>|)><space|0.17em><around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*<space|0.17em>d*t>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><around|(|t|)><space|0.17em><around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><frac|\<delta\>*<around|(|t-t<rsub|0>|)>|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><big|int><rsub|\<bbb-R\>>\<phi\><around|(|t|)><frac|<around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*\<delta\>*<around|(|t-t<rsub|0>|)>|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><frac|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>*|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>>\<phi\><around|(|t<rsub|0>|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<phi\><around|(|t<rsub|0>|)>>>>>>
     </equation>
 
     This shows that <math|\<mu\>> is the discrete measure <math|>
@@ -763,7 +763,7 @@
 
   <\definition>
     <strong|[Hilbert space on the zero set]><label|def:Hmu> Let
-    <math|\<cal-H\>\<assign\>L<rsup|2><around|(|\<mu\>|)>> with inner product
+    <math|\<cal-H\>=L<rsup|2><around|(|\<mu\>|)>> with inner product
 
     <\equation>
       <around|\<langle\>|f,g|\<rangle\>>=<big|int>f<around|(|t|)><wide|g<around|(|t|)>|\<bar\>><space|0.17em>\<mu\>*<around|(|d*t|)>
@@ -863,42 +863,57 @@
       <around|(|L*f|)><around|(|t<rsub|0>|)>=t<rsub|0>*f<around|(|t<rsub|0>|)>
     </equation>
 
-    \ for each <math|t<rsub|0>> in the atomic representation where
-    <math|Z<around|(|t<rsub|0>|)>=0>. This is unitarily equivalent to the
-    diagonal operator on <math|\<ell\><rsup|2>> with diagonal entries
-    <math|<around|{|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0|}>>. Such diagonal
-    operators are self-adjoint. For the spectrum calculation: We have
+    \ for each <math|t<rsub|0>> in the atomic representation where <math|>
 
     <\equation>
-      L*e<rsub|t<rsub|0>>=t<rsub|0>*e<rsub|t<rsub|0>>
+      Z<around|(|t<rsub|0>|)>=0
     </equation>
 
-    so each <math|t<rsub|0>> where <math|Z<around|(|t<rsub|0>|)>=0> is an
-    eigenvalue of <math|L> with eigenvector <math|e<rsub|t<rsub|0>>>. Since
-    <math|<around|{|e<rsub|t<rsub|0>>|}>> forms an orthonormal basis,
-    <math|L> has pure point spectrum. To show there are no other spectral
-    points, suppose <math|\<lambda\>\<nin\><around|{|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0|}>>.
+    This is unitarily equivalent to the diagonal operator on
+    <math|\<ell\><rsup|2>> with diagonal entries
+
+    <\equation>
+      <around|{|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0|}>
+    </equation>
+
+    Such diagonal operators are self-adjoint. For the spectrum calculation:
+    We have
+
+    <\equation>
+      L*e<rsub|t<rsub|0>>=t<rsub|0>*e<rsub|t<rsub|0>>\<forall\><around*|{|t<rsub|0>:Z<around*|(|t<rsub|0>|)>=0|}>
+    </equation>
+
+    so each <math|t<rsub|0>> is an eigenvalue of <math|L> with eigenvector
+    <math|e<rsub|t<rsub|0>>> and since <math|<around|{|e<rsub|t<rsub|0>>|}>>
+    forms an orthonormal basis, <math|L> has pure point spectrum. To show
+    there are no other spectral points, suppose\ 
+
+    <\equation>
+      \<lambda\>\<nin\><around|{|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0|}>
+    </equation>
+
     Then for any <math|f\<in\>\<cal-D\><around|(|L|)>>,
-    <math|<around|(|L-\<lambda\>*I|)>*f> has components
+    <math|<around*|(|<around|(|L-\<lambda\>*I|)>*f|)><around*|(|t|)>> has
+    components
 
     <\equation>
       <around|(|<around|(|L-\<lambda\>*I|)>*f|)><around|(|t<rsub|0>|)>=<around|(|t<rsub|0>-\<lambda\>|)>*f<around|(|t<rsub|0>|)>
     </equation>
 
-    Since <math|t<rsub|0>-\<lambda\>\<neq\>0> for all zeros <math|t<rsub|0>>,
-    we can solve
+    Since <math|t<rsub|0>-\<lambda\>\<neq\>0> the equation
 
     <\equation>
       <around|(|L-\<lambda\>*I|)>*f=g
     </equation>
 
-    \ uniquely for any <math|g\<in\>\<cal-H\>> by setting
+    \ has a unique solution <math|\<forall\>g\<in\>\<cal-H\>> which is made
+    apparent by setting
 
     <\equation>
       f<around|(|t<rsub|0>|)>=<frac|g<around|(|t<rsub|0>|)>|t<rsub|0>-\<lambda\>>
     </equation>
 
-    This shows <math|L-\<lambda\>*I> is invertible, so
+    which shows that <math|L-\<lambda\>*I> is invertible, hence
     <math|\<lambda\>\<nin\>\<sigma\><around|(|L|)>>. Therefore
 
     <\equation>
@@ -913,7 +928,7 @@
 
     <\equation>
       <text|stationary >X<long-arrow|\<rubber-rightarrow\>|U<rsub|\<theta\>>><text|oscillatory
-      >Z<long-arrow|\<rubber-rightarrow\>|\<mu\>=\<delta\><around|(|Z|)><around|\||Z<rprime|'>|\|>*<space|0.17em>d*t>L<rsup|2><around|(|\<mu\>|)><long-arrow|\<rubber-rightarrow\>|L:t\<cdot\>><around|(|L,\<sigma\><around|(|L|)>|)>
+      >Z<long-arrow|\<rubber-rightarrow\>|\<mu\>=\<delta\><around|(|Z|)><around|\||<wide|Z|\<dot\>>|\|>*<space|0.17em>d*t>L<rsup|2><around|(|\<mu\>|)><long-arrow|\<rubber-rightarrow\>|L:t\<cdot\>><around|(|L,\<sigma\><around|(|L|)>|)>
     </equation>
 
     produces a concrete self-adjoint operator whose spectrum equals the zero
@@ -928,7 +943,7 @@
   <\definition>
     <strong|[Regularity and simplicity]<label|def:regularity>> Assume
     <math|Z\<in\>C<rsup|1><around|(|\<bbb-R\>|)>> and every zero is simple:
-    <math|Z<around|(|t<rsub|0>|)>=0\<Rightarrow\>Z<rprime|'><around|(|t<rsub|0>|)>\<neq\>0>.
+    <math|Z<around|(|t<rsub|0>|)>=0\<Rightarrow\><wide|Z|\<dot\>><around|(|t<rsub|0>|)>\<neq\>0>.
   </definition>
 
   <\lemma>
@@ -949,14 +964,14 @@
 
   <\proof>
     Since <math|Z\<in\>C<rsup|1><around|(|\<bbb-R\>|)>> and
-    <math|Z<rprime|'><around|(|t<rsub|0>|)>\<neq\>0> at each zero
+    <math|<wide|Z|\<dot\>><around|(|t<rsub|0>|)>\<neq\>0> at each zero
     <math|t<rsub|0>>, the inverse function theorem implies that <math|Z> is
     locally invertible near each zero. Specifically, there exists a
     neighborhood <math|U<rsub|t<rsub|0>>> of <math|t<rsub|0>> such that
     <math|Z\|<rsub|U<rsub|t<rsub|0>>>> is strictly monotonic and invertible.
 
     This implies zeros are isolated: if <math|Z<around|(|t<rsub|0>|)>=0> and
-    <math|Z<rprime|'><around|(|t<rsub|0>|)>\<neq\>0>, then there exists
+    <math|<wide|Z|\<dot\>><around|(|t<rsub|0>|)>\<neq\>0>, then there exists
     <math|\<epsilon\>\<gtr\>0> such that <math|Z<around|(|t|)>\<neq\>0> for
     <math|0\<less\><around|\||t-t<rsub|0>|\|>\<less\>\<epsilon\>>. Therefore
     zeros are locally finite (finitely many in any bounded interval).
@@ -964,10 +979,11 @@
     For the distributional identity, consider the one-dimensional change of
     variables formula for the Dirac delta. If <math|g:I\<to\>\<bbb-R\>> is
     <math|C<rsup|1>> on interval <math|I> with
-    <math|g<rprime|'><around|(|x|)>\<neq\>0> for all <math|x\<in\>I>, then
+    <math|<wide|g|\<dot\>><around|(|x|)>\<neq\>0> for all <math|x\<in\>I>,
+    then
 
     <\equation>
-      \<delta\><around|(|g<around|(|x|)>|)>=<big|sum><rsub|x<rsub|0>:g<around|(|x<rsub|0>|)>=0><frac|\<delta\>*<around|(|x-x<rsub|0>|)>|<around|\||g<rprime|'><around|(|x<rsub|0>|)>|\|>>
+      \<delta\><around|(|g<around|(|x|)>|)>=<big|sum><rsub|x<rsub|0>:g<around|(|x<rsub|0>|)>=0><frac|\<delta\>*<around|(|x-x<rsub|0>|)>|<around|\||<wide|g|\<dot\>><around|(|x<rsub|0>|)>|\|>>
     </equation>
 
     Applying this locally around each zero <math|t<rsub|0>> of <math|Z>, and
@@ -975,19 +991,19 @@
     obtain the global identity:
 
     <\equation>
-      \<delta\><around|(|Z<around|(|t|)>|)>=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><frac|\<delta\>*<around|(|t-t<rsub|0>|)>|<around|\||Z<rprime|'><around|(|t<rsub|0>|)>|\|>>
+      \<delta\><around|(|Z<around|(|t|)>|)>=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><frac|\<delta\>*<around|(|t-t<rsub|0>|)>|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>>
     </equation>
 
     Consequently:
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|\<mu\>*<around|(|d*t|)>>|<cell|=\<delta\><around|(|Z<around|(|t|)>|)><around|\||Z<rprime|'><around|(|t|)>|\|>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><frac|<around|\||Z<rprime|'><around|(|t|)>|\|>|<around|\||Z<rprime|'><around|(|t<rsub|0>|)>|\|>>*\<delta\>*<around|(|t-t<rsub|0>|)>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<delta\><rsub|t<rsub|0>>*<around|(|d*t|)>>>>>>
+      <tabular|<tformat|<table|<row|<cell|\<mu\>*<around|(|d*t|)>>|<cell|=\<delta\><around|(|Z<around|(|t|)>|)><around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><frac|<around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>>*\<delta\>*<around|(|t-t<rsub|0>|)>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<delta\><rsub|t<rsub|0>>*<around|(|d*t|)>>>>>>
     </equation>
 
     where the last equality uses the fact that
 
     <\equation>
-      <frac|<around|\||Z<rprime|'><around|(|t<rsub|0>|)>|\|>|<around|\||Z<rprime|'><around|(|t<rsub|0>|)>|\|>>=1
+      <frac|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>>=1
     </equation>
 
     \ when evaluating at <math|t=t<rsub|0>>.
