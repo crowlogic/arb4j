@@ -141,7 +141,7 @@
     <strong|[Inverse map]<label|prop:inverse> >The inverse map is given by
 
     <\equation>
-      <around|(|U<rsub|\<theta\>><rsup|-1>*g|)><around|(|s|)>=<frac|g<around|(|\<theta\><rsup|-1><around|(|s|)>|)>|<sqrt|\<theta\><rprime|'><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>>
+      <around|(|U<rsub|\<theta\>><rsup|-1>*g|)><around|(|s|)>=<frac|g<around|(|\<theta\><rsup|-1><around|(|s|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>>
     </equation>
 
     which is well-defined almost everywhere on every <math|\<sigma\>>-compact
@@ -162,10 +162,10 @@
   <\theorem>
     <strong|[Local unitarity on <math|\<sigma\>>-compact
     sets]<label|thm:local_unitarity>> For every <math|\<sigma\>>-compact set
-    <math|U\<subseteq\>\<bbb-R\>> and <math|f\<in\>L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>,
+    <math|C\<subseteq\>\<bbb-R\>> and <math|f\<in\>L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>,
 
     <\equation>
-      <big|int><rsub|U><around|\||<around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>*<around|\||<rsup|2><space|0.17em>d*t=<big|int><rsub|\<theta\><around|(|U|)>>|\|>*f<around|(|s|)>|\|><rsup|2>*<space|0.17em>d*s
+      <big|int><rsub|C><around|\||<around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>*<around|\||<rsup|2><space|0.17em>d*t=<big|int><rsub|\<theta\><around|(|C|)>>|\|>*f<around|(|s|)>|\|><rsup|2>*<space|0.17em>d*s
     </equation>
 
     Moreover, <math|U<rsub|\<theta\>><rsup|-1>> is the inverse of
@@ -175,10 +175,10 @@
   <\proof>
     Let <math|f\<in\>L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>
     and let <math|U> be any <math|\<sigma\>>-compact set. The local
-    <math|L<rsup|2>>-norm of <math|U<rsub|\<theta\>>*f> over <math|U> is:
+    <math|L<rsup|2>>-norm of <math|U<rsub|\<theta\>>*f> over <math|C> is:
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|<big|int><rsub|U><around|\||<around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>|\|><rsup|2>*<space|0.17em>d*t>|<cell|=<big|int><rsub|U><around*|\||<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*f<around|(|\<theta\><around|(|t|)>|)>|\|><rsup|2>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|int><rsub|U><wide|\<theta\>|\<dot\>><around|(|t|)><around|\||f<around|(|\<theta\><around|(|t|)>|)>|\|><rsup|2>*<space|0.17em>d*t>>>>>
+      <tabular|<tformat|<table|<row|<cell|<big|int><rsub|C><around|\||<around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>|\|><rsup|2>*<space|0.17em>d*t>|<cell|=<big|int><rsub|C><around*|\||<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*f<around|(|\<theta\><around|(|t|)>|)>|\|><rsup|2>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|int><rsub|C><wide|\<theta\>|\<dot\>><around|(|t|)><around|\||f<around|(|\<theta\><around|(|t|)>|)>|\|><rsup|2>*<space|0.17em>d*t>>>>>
     </equation>
 
     Since <math|\<theta\>> is absolutely continuous and strictly increasing,
@@ -189,13 +189,13 @@
     </equation>
 
     almost everywhere. Since <math|\<theta\>> maps <math|\<sigma\>>-compact
-    sets to <math|\<sigma\>>-compact sets, as <math|t> ranges over <math|U>,
+    sets to <math|\<sigma\>>-compact sets, as <math|t> ranges over <math|C>,
     <math|s=\<theta\><around|(|t|)>> ranges over
-    <math|\<theta\><around|(|U|)>>, which is <math|\<sigma\>>-compact.
+    <math|\<theta\><around|(|C|)>>, which is <math|\<sigma\>>-compact.
     Therefore:
 
     <\equation>
-      <big|int><rsub|U><wide|\<theta\>|\<dot\>><around|(|t|)>*<around|\||f<around|(|\<theta\><around|(|t|)>|)>*<around|\||<rsup|2><space|0.17em>d*t=<big|int><rsub|\<theta\><around|(|U|)>>|\|>*f<around|(|s|)>|\|><rsup|2>*<space|0.17em>d*s
+      <big|int><rsub|C><wide|\<theta\>|\<dot\>><around|(|t|)>*<around|\||f<around|(|\<theta\><around|(|t|)>|)>*<around|\||<rsup|2><space|0.17em>d*t=<big|int><rsub|\<theta\><around|(|C|)>>|\|>*f<around|(|s|)>|\|><rsup|2>*<space|0.17em>d*s
     </equation>
 
     To verify that <math|U<rsub|\<theta\>><rsup|-1>> is indeed the inverse,
@@ -203,7 +203,7 @@
 
     <\equation>
       <tabular|<tformat|<table|<row|<cell|<around|(|U<rsub|\<theta\>><rsup|-1>*U<rsub|\<theta\>>*f|)><around|(|s|)>>|<cell|=<around*|(|U<rsub|\<theta\>><rsup|-1>
-      <sqrt|<wide|\<theta\>|\<dot\>><around|(|\<cdummy\>|)>>*f<around|(|\<theta\>|(>\<cdot\><around|)||)>|)>*<around|(|s|)>>>|<row|<cell|>|<cell|=<frac|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>*|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>>f<around|(|\<theta\><around|(|\<theta\><rsup|-1><around|(|s|)>|)>|)>>>|<row|<cell|>|<cell|=f<around|(|s|)>>>>>>
+      <sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>*f<around|(|\<theta\>|(>s<around|)||)>|)>*<around|(|s|)>>>|<row|<cell|>|<cell|=<frac|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>*|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>>f<around|(|\<theta\><around|(|\<theta\><rsup|-1><around|(|s|)>|)>|)>>>|<row|<cell|>|<cell|=f<around|(|s|)>>>>>>
     </equation>
 
     since <math|\<theta\><around|(|\<theta\><rsup|-1><around|(|s|)>|)>=s>.
@@ -273,7 +273,7 @@
     be the gain function and\ 
 
     <\equation>
-      \<varphi\><rsub|t><around|(|\<lambda\>|)>\<assign\>A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>
+      \<varphi\><rsub|t><around|(|\<lambda\>|)>=A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>
     </equation>
 
     be the corresponding oscillatory function then an <em|oscillatory
