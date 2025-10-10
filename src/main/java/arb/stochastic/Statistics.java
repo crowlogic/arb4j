@@ -2,9 +2,7 @@ package arb.stochastic;
 
 import java.util.Arrays;
 
-import arb.Complex;
 import arb.Real;
-import arb.arblib;
 import arb.functions.real.RealFunction;
 
 public class Statistics
@@ -27,14 +25,14 @@ public class Statistics
   public static double[] autocorr(double[] x, int maxLagSteps)
   {
     int    n   = x.length;
-  
+
     double var = Statistics.variance(x);
-  
+
     if (var < 1e-10)
     {
       return new double[maxLagSteps];
     }
-  
+
     double[] acorr = new double[maxLagSteps];
     for (int k = 0; k < maxLagSteps; k++)
     {
@@ -53,33 +51,6 @@ public class Statistics
       }
     }
     return acorr;
-  }
-
-  public static double[] computePowerSpectralDensity(double[] path)
-  {
-  
-    try ( Complex complexPath = Complex.newVector(StationaryGaussianProcessSampler.N); Complex fft = Complex.newVector(StationaryGaussianProcessSampler.N);
-          Real mag = new Real(); Real scalingFactor = Real.valueOf(StationaryGaussianProcessSampler.dt).div(StationaryGaussianProcessSampler.N / 2, StationaryGaussianProcessSampler.bits);)
-    {
-      for (int i = 0; i < StationaryGaussianProcessSampler.N; i++)
-      {
-        complexPath.get(i).set(path[i]);
-      }
-  
-      arblib.acb_dft(fft, complexPath, StationaryGaussianProcessSampler.N, StationaryGaussianProcessSampler.bits);
-  
-      double[] periodogram = new double[StationaryGaussianProcessSampler.N];
-  
-      for (int i = 0; i < StationaryGaussianProcessSampler.N; i++)
-      {
-        periodogram[i] = fft.get(i)
-                            .norm(StationaryGaussianProcessSampler.bits, mag)
-                            .pow(2, StationaryGaussianProcessSampler.bits)
-                            .mul(scalingFactor, StationaryGaussianProcessSampler.bits)
-                            .doubleValue();
-      }
-      return periodogram;
-    }
   }
 
   /**
