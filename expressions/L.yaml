@@ -3,13 +3,13 @@ coDomain: arb.Real
 context:
   input:
   - arb.Real
-  - 2.3000000000000000000000000000000000000 +/- 1.42e-38
+  - 2.3000000000000000000000000000000000000 +/- 2.84e-38
   j:
-  - arb.Integer
+  - arb.Real
   - '3'
   k:
-  - arb.Integer
-  - '4'
+  - arb.Real
+  - '-4'
 domain: arb.Real
 expression: x->1/2*J(k,x)*π^(1/2)*(8*j+2)^(1/2)*(-1)^j*Γ(1/2*k+j+1/2)/Γ(-j+1/2*k+1/2)/Γ(j+1-1/2*k)/Γ(1/2*k+j+1)
 function: arb.functions.real.RealFunction
