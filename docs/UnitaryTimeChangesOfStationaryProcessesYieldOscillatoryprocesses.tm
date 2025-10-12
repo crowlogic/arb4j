@@ -241,13 +241,7 @@
 
     <\align>
       <tformat|<table|<row|<cell|<big|int><rsub|\<bbb-R\>><around|\||<around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>|\|><rsup|2>*<space|0.17em>d*t>|<\cell>
-        =
-
-        <big|int>
-
-        <rsub|\<bbb-R\>><wide|\<theta\>|\<dot\>><around|(|t|)><around|\||f<around|(|\<theta\><around|(|t|)>|)>|\|><rsup|2>*<space|0.17em>d*t
-
-        <eq-number>
+        =<big|int><rsub|\<bbb-R\>><wide|\<theta\>|\<dot\>><around|(|t|)><around|\||f<around|(|\<theta\><around|(|t|)>|)>|\|><rsup|2>*<space|0.17em>d*t<eq-number>
       </cell>>>>
     </align>
 
@@ -263,7 +257,7 @@
       d*s=<wide|\<theta\>|\<dot\>><around|(|t|)>*<space|0.17em>d*t
     </equation>
 
-    , and since <math|\<theta\>:\<bbb-R\>\<to\>\<bbb-R\>> is bijective:
+    and since <math|\<theta\>:\<bbb-R\>\<to\>\<bbb-R\>> is bijective:
 
     <\equation>
       <big|int><rsub|\<bbb-R\>><wide|\<theta\>|\<dot\>><around|(|t|)>*<around|\||f<around|(|\<theta\><around|(|t|)>|)>*<around|\||<rsup|2><space|0.17em>d*t=<big|int><rsub|\<bbb-R\>>|\|>*f<around|(|s|)>|\|><rsup|2>*<space|0.17em>d*s
@@ -1045,7 +1039,7 @@
     <associate|lem:delta|<tuple|24|17>>
     <associate|prop:atomic|<tuple|19|15>>
     <associate|prop:conjugation|<tuple|14|10>>
-    <associate|prop:inverse|<tuple|5|2>>
+    <associate|prop:inverse|<tuple|5|3>>
     <associate|sec:HP|<tuple|5|13>>
     <associate|sec:appendix|<tuple|6|17>>
     <associate|sec:functionspaces|<tuple|1|2>>
