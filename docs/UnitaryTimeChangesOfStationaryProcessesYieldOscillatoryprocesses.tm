@@ -8,27 +8,27 @@
   Hilbert--Pólya Construction>|<doc-author|<author-data|<author-name|Stephen
   Crowley>>>|<doc-date|September 16, 2025>>
 
-  <abstract-data|<\abstract>
+  <\abstract>
     A unitary time-change operator <math|U<rsub|\<theta\>>> is constructed
     for absolutely continuous, strictly increasing time reparametrizations
     <math|\<theta\>>, acting on functions that are square-integrable over
-    <math|\<sigma\>>-compact sets. Applying <math|U<rsub|\<theta\>>> to the
-    Cramér spectral representation of a stationary process yields an
-    oscillatory process in the sense of Priestley with oscillatory function
+    compact sets. Applying <math|U<rsub|\<theta\>>> to the Cramér spectral
+    representation of a stationary process yields an oscillatory process in
+    the sense of Priestley with oscillatory function
     <math|\<varphi\><rsub|t><around|(|\<lambda\>|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>>
     and evolutionary spectrum <math|d*F<rsub|t><around|(|\<lambda\>|)>=<wide|\<theta\>|\<dot\>><around|(|t|)>*<space|0.17em>d*F<around|(|\<lambda\>|)>>.
     It is proved that sample paths of any non-degenerate second-order
     stationary process almost surely lie in
-    <math|L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>,
-    making the operator applicable to typical realizations. A
-    zero-localization measure <math|\<mu\>*<around|(|d*t|)>=\<delta\><around|(|Z<around|(|t|)>|)><space|0.17em><around|\||Z<rprime|'><around|(|t|)>|\|>*<space|0.17em>d*t>
+    <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>, making the operator
+    applicable to typical realizations. A zero-localization measure
+    <math|\<mu\>*<around|(|d*t|)>=\<delta\><around|(|Z<around|(|t|)>|)><space|0.17em><around|\||Z<rprime|'><around|(|t|)>|\|>*<space|0.17em>d*t>
     induces a Hilbert space <math|L<rsup|2><around|(|\<mu\>|)>> on the zero
     set of an oscillatory process <math|Z>, and the multiplication operator
     <math|<around|(|L*f|)><around|(|t|)>=t*f<around|(|t|)>> has pure point,
     simple spectrum equal to the zero set of <math|Z>. This produces a
-    concrete operator scaffold consistent with a Hilbert--Pólya-type
+    concrete operator scaffold consistent with a Hilbert\UPólya-type
     viewpoint.
-  </abstract>>
+  </abstract>
 
   <\table-of-contents|toc>
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>Function
@@ -66,7 +66,7 @@
     <no-break><pageref|auto-8>>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|4<space|2spc>Sample
-    Paths Live in <with|mode|math|L<rsup|2><rsub|\<sigma\><with|mode|text|-comp>>>>
+    Paths Live in <with|mode|math|L<rsup|2><rsub|loc>>>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-9><vspace|0.5fn>
 
@@ -103,22 +103,21 @@
       U=<big|cup><rsub|n=1><rsup|\<infty\>>K<rsub|n>
     </equation>
 
-    \ with each <math|K<rsub|n>> compact.
+    with each <math|K<rsub|n>> compact.
   </definition>
 
   <\definition>
-    <strong|[Square-integrability on <math|\<sigma\>>-compact
-    sets]><label|def:L2sigma> Define
+    <strong|[Locally square-integrable functions]><label|def:L2loc> Define
 
     <\equation>
-      L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>\<assign\><around*|{|f:\<bbb-R\>\<to\>\<bbb-C\>:<big|int><rsub|U><around|\||f<around|(|t|)>|\|><rsup|2>*<space|0.17em>d*t\<less\>\<infty\>*<text|for
-      every <math|\<sigma\>>-compact >U\<subseteq\>\<bbb-R\>|}>
+      L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>\<assign\><around*|{|f:\<bbb-R\>\<to\>\<bbb-C\>:<big|int><rsub|K><around|\||f<around|(|t|)>|\|><rsup|2>*<space|0.17em>d*t\<less\>\<infty\>*<text|for
+      every compact >K\<subseteq\>\<bbb-R\>|}>
     </equation>
   </definition>
 
   <\remark>
-    Every bounded measurable set in <math|\<bbb-R\>> is
-    <math|\<sigma\>>-compact; hence <math|L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>
+    Every bounded measurable set in <math|\<bbb-R\>> is compact or contained
+    in a compact set; hence <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>
     contains functions that are square-integrable on every bounded interval,
     including functions with polynomial growth at infinity.
   </remark>
@@ -136,7 +135,7 @@
     for <math|f> measurable,
 
     <\equation>
-      <around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>f<around|(|\<theta\><around|(|t|)>|)>
+      <around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*f<around|(|\<theta\><around|(|t|)>|)>
     </equation>
   </definition>
 
@@ -159,36 +158,36 @@
     <math|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>>
     is positive almost everywhere. The expression is therefore well-defined
     almost everywhere on every <math|\<sigma\>>-compact set, which suffices
-    for defining an element of <math|L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>.
+    for defining an element of <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>.
   </proof>
 
   <\theorem>
     <strong|[Local unitarity on <math|\<sigma\>>-compact
     sets]<label|thm:local_unitarity>> For every <math|\<sigma\>>-compact set
-    <math|C\<subseteq\>\<bbb-R\>> and <math|f\<in\>L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>,
+    <math|C\<subseteq\>\<bbb-R\>> and <math|f\<in\>L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>,
 
     <\equation>
       <big|int><rsub|C><around|\||<around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>*<around|\||<rsup|2><space|0.17em>d*t=<big|int><rsub|\<theta\><around|(|C|)>>|\|>*f<around|(|s|)>|\|><rsup|2>*<space|0.17em>d*s
     </equation>
 
     Moreover, <math|U<rsub|\<theta\>><rsup|-1>> is the inverse of
-    <math|U<rsub|\<theta\>>> on <math|L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>.
+    <math|U<rsub|\<theta\>>> on <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>.
   </theorem>
 
   <\proof>
-    Let <math|f\<in\>L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>
-    and let <math|U> be any <math|\<sigma\>>-compact set. The local
+    Let <math|f\<in\>L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>> and let
+    <math|U> be any <math|\<sigma\>>-compact set. The local
     <math|L<rsup|2>>-norm of <math|U<rsub|\<theta\>>*f> over <math|C> is:
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|<big|int><rsub|C><around|\||<around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>|\|><rsup|2>*<space|0.17em>d*t>|<cell|=<big|int><rsub|C><around*|\||<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*f<around|(|\<theta\><around|(|t|)>|)>|\|><rsup|2>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|int><rsub|C><wide|\<theta\>|\<dot\>><around|(|t|)><around|\||f<around|(|\<theta\><around|(|t|)>|)>|\|><rsup|2>*<space|0.17em>d*t>>>>>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<big|int><rsub|C><around|\||<around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>|\|><rsup|2>*<space|0.17em>d*t>|<cell|=<big|int><rsub|C><around*|\||<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*f<around|(|\<theta\><around|(|t|)>|)>|\|><rsup|2>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|int><rsub|C><wide|\<theta\>|\<dot\>><around|(|t|)><around|\||f<around|(|\<theta\><around|(|t|)>|)>|\|><rsup|2>*<space|0.17em>d*t>>>>>
     </equation>
 
     Since <math|\<theta\>> is absolutely continuous and strictly increasing,
     applying the change of variables <math|s=\<theta\><around|(|t|)>> gives
 
     <\equation>
-      d*s=<wide|\<theta\>|\<dot\>><around|(|t|)>d*t
+      d*s=<wide|\<theta\>|\<dot\>><around|(|t|)>*d*t
     </equation>
 
     almost everywhere. Since <math|\<theta\>> maps <math|\<sigma\>>-compact
@@ -202,18 +201,17 @@
     </equation>
 
     To verify that <math|U<rsub|\<theta\>><rsup|-1>> is indeed the inverse,
-    we compute explicitly. For any <math|f\<in\>L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>:
+    we compute explicitly. For any <math|f\<in\>L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>:
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|<around|(|U<rsub|\<theta\>><rsup|-1>*U<rsub|\<theta\>>*f|)><around|(|s|)>>|<cell|=<around*|(|U<rsub|\<theta\>><rsup|-1>
-      <sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>*f<around|(|\<theta\>|(>s<around|)||)>|)>*<around|(|s|)>>>|<row|<cell|>|<cell|=<frac|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>*|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>>f<around|(|\<theta\><around|(|\<theta\><rsup|-1><around|(|s|)>|)>|)>>>|<row|<cell|>|<cell|=f<around|(|s|)>>>>>>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<around|(|U<rsub|\<theta\>><rsup|-1>*U<rsub|\<theta\>>*f|)><around|(|s|)>>|<cell|=<around*|(|U<rsub|\<theta\>><rsup|-1>*<sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>*f<around|(|\<theta\><around|(|s|)>|)>|)><around|(|s|)>>>|<row|<cell|>|<cell|=<frac|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>>*f<around|(|\<theta\><around|(|\<theta\><rsup|-1><around|(|s|)>|)>|)>>>|<row|<cell|>|<cell|=f<around|(|s|)>>>>>>
     </equation>
 
     since <math|\<theta\><around|(|\<theta\><rsup|-1><around|(|s|)>|)>=s>.
-    Similarly, for any <math|g\<in\>L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>:
+    Similarly, for any <math|g\<in\>L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>:
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|<around|(|U<rsub|\<theta\>>*U<rsub|\<theta\>><rsup|-1>*g|)><around|(|t|)>>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<around|(|U<rsub|\<theta\>><rsup|-1>*g|)><around|(|\<theta\><around|(|t|)>|)>>>|<row|<cell|>|<cell|=*<frac|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|\<theta\><around|(|t|)>|)>|)>>>g<around|(|\<theta\><rsup|-1><around|(|\<theta\><around|(|t|)>|)>|)>>>|<row|<cell|>|<cell|=*<frac|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>>g<around|(|t|)>>>|<row|<cell|>|<cell|=g<around|(|t|)>>>>>>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<around|(|U<rsub|\<theta\>>*U<rsub|\<theta\>><rsup|-1>*g|)><around|(|t|)>>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<around|(|U<rsub|\<theta\>><rsup|-1>*g|)><around|(|\<theta\><around|(|t|)>|)>>>|<row|<cell|>|<cell|=<frac|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|\<theta\><around|(|t|)>|)>|)>>>*g<around|(|\<theta\><rsup|-1><around|(|\<theta\><around|(|t|)>|)>|)>>>|<row|<cell|>|<cell|=<frac|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>>*g<around|(|t|)>>>|<row|<cell|>|<cell|=g<around|(|t|)>>>>>>
     </equation>
 
     since <math|\<theta\><rsup|-1><around|(|\<theta\><around|(|t|)>|)>=t>.
@@ -223,35 +221,43 @@
       U<rsub|\<theta\>>*U<rsub|\<theta\>><rsup|-1>=U<rsub|\<theta\>><rsup|-1>*U<rsub|\<theta\>>=I
     </equation>
 
-    \ on <math|L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>.
+    on <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>.
   </proof>
 
   <\theorem>
     <strong|[Unitarity on <math|L<rsup|2><around|(|\<bbb-R\>|)>>]<label|thm:global_unitarity>>
     <math|U<rsub|\<theta\>>:L<rsup|2><around|(|\<bbb-R\>|)>\<to\>L<rsup|2><around|(|\<bbb-R\>|)>>
-    is unitary: <math|>
+    is unitary:
 
     <\equation>
       <big|int><rsub|\<bbb-R\>><around|\||<around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>*<around|\||<rsup|2><space|0.17em>d*t=<big|int><rsub|\<bbb-R\>>|\|>*f<around|(|s|)>|\|><rsup|2>*<space|0.17em>d*s
     </equation>
 
-    \ and <math|U<rsub|\<theta\>><rsup|-1>> is its inverse.
+    and <math|U<rsub|\<theta\>><rsup|-1>> is its inverse.
   </theorem>
 
   <\proof>
     For <math|f\<in\>L<rsup|2><around|(|\<bbb-R\>|)>>, we have:
 
     <\align>
-      <tformat|<table|<row|<cell|<big|int><rsub|\<bbb-R\>><around|\||<around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>|\|><rsup|2>*<space|0.17em>d*t>|<cell|=<big|int><rsub|\<bbb-R\>><wide|\<theta\>|\<dot\>><around|(|t|)><around|\||f<around|(|\<theta\><around|(|t|)>|)>|\|><rsup|2>*<space|0.17em>d*t<eq-number>>>>>
+      <tformat|<table|<row|<cell|<big|int><rsub|\<bbb-R\>><around|\||<around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>|\|><rsup|2>*<space|0.17em>d*t>|<\cell>
+        =
+
+        <big|int>
+
+        <rsub|\<bbb-R\>><wide|\<theta\>|\<dot\>><around|(|t|)><around|\||f<around|(|\<theta\><around|(|t|)>|)>|\|><rsup|2>*<space|0.17em>d*t
+
+        <eq-number>
+      </cell>>>>
     </align>
 
-    By the change of variables <math|>
+    By the change of variables
 
     <\equation>
       s=\<theta\><around|(|t|)>
     </equation>
 
-    \ with\ 
+    with
 
     <\equation>
       d*s=<wide|\<theta\>|\<dot\>><around|(|t|)>*<space|0.17em>d*t
@@ -273,17 +279,17 @@
     <strong|[Oscillatory process]<label|def:osc_proc> >Let <math|F> be a
     finite nonnegative Borel measure on <math|\<bbb-R\>>. For each
     <math|t\<in\>\<bbb-R\>>, let <math|A<rsub|t>\<in\>L<rsup|2><around|(|F|)>>
-    be the gain function and\ 
+    be the gain function and
 
     <\equation>
       \<varphi\><rsub|t><around|(|\<lambda\>|)>=A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>
     </equation>
 
     be the corresponding oscillatory function then an <em|oscillatory
-    process> is a stochastic process which can be represented as\ 
+    process> is a stochastic process which can be represented as
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|Z<around|(|t|)>>|<cell|=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)>*\<mathd\>\<Phi\><around|(|*\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>\<mathd\>\<Phi\><around|(|*\<lambda\>|)>>>>>>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|Z<around|(|t|)>>|<cell|=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)>*\<mathd\>*\<Phi\><around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*\<mathd\>*\<Phi\><around|(|\<lambda\>|)>>>>>>
     </equation>
 
     where <math|\<Phi\>> is a complex orthogonal random measure with spectral
@@ -293,59 +299,60 @@
       \<bbb-E\>*<space|-0.17em><around*|[|\<Phi\>*<around|(|d*\<lambda\>|)><space|0.17em><wide|\<Phi\>*<around|(|d*\<mu\>|)>|\<bar\>>|]>=\<delta\>*<around|(|\<lambda\>-\<mu\>|)>*<space|0.17em>d*F<around|(|\<lambda\>|)>
     </equation>
 
-    and corresponding covariance kernel\ 
+    and corresponding covariance kernel
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|R<rsub|Z><around|(|t,s|)>>|<cell|=\<bbb-E\><space|-0.17em><around*|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)><space|0.17em><wide|A<rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>e<rsup|i*\<lambda\>*<around|(|t-s|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>\<phi\><rsub|t><around*|(|\<lambda\>|)><wide|\<phi\><rsub|s><around*|(|\<lambda\>|)>|\<bar\>>\<mathd\>F<around*|(|\<lambda\>|)>>>>>><label|covar>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|R<rsub|Z><around|(|t,s|)>>|<cell|=\<bbb-E\><space|-0.17em><around|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)><space|0.17em><wide|A<rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>e<rsup|i*\<lambda\>*<around|(|t-s|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>\<phi\><rsub|t><around|(|\<lambda\>|)><wide|\<phi\><rsub|s><around|(|\<lambda\>|)>|\<bar\>>\<mathd\>*F<around|(|\<lambda\>|)>>>>>><label|covar>
     </equation>
   </definition>
 
   <\remark>
-    [Real-valuedness] <math|Z> is real-valued if and only if\ 
+    [Real-valuedness] <math|Z> is real-valued if and only if
 
     <\equation>
       A<rsub|t>*<around|(|-\<lambda\>|)>=<wide|A<rsub|t><around|(|\<lambda\>|)>|\<bar\>>
     </equation>
 
-    \ for <math|F>-a.e. <math|\<lambda\>>, equivalently
+    for <math|F>-a.e. <math|\<lambda\>>, equivalently
 
     <\equation>
       \<varphi\><rsub|t>*<around|(|-\<lambda\>|)>=<wide|\<varphi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>>
     </equation>
 
-    \ for <math|F>-a.e. <math|\<lambda\>>. TODO: this needs to be recast as a
+    for <math|F>-a.e. <math|\<lambda\>>. TODO: this needs to be recast as a
     theorem
   </remark>
 
   <\theorem>
     <strong|[Existence]><label|thm:existence_osc> If <math|F> is finite and
     <math|<around|(|A<rsub|t>|)><rsub|t\<in\>\<bbb-R\>>> is measurable in
-    <math|t> with\ 
+    <math|t> with
 
     <\equation>
       <big|int><rsub|\<bbb-R\>><around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>\<less\>\<infty\>\<forall\>t\<in\>\<bbb-R\>
     </equation>
 
     then there exists a complex orthogonal random measure <math|\<Phi\>> with
-    spectral measure <math|F> such that\ 
+    spectral measure <math|F> such that
 
     <\equation>
       Z<around|(|t|)>=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>
     </equation>
 
-    \ is well-defined in <math|L<rsup|2><around|(|\<Omega\>|)>> and has
+    is well-defined in <math|L<rsup|2><around|(|\<Omega\>|)>> and has
     covariance <math|R<rsub|Z>> as in (<reference|covar>) above.
   </theorem>
 
   <\proof>
-    We construct the stochastic integral using the standard extension
-    procedure. First, define the integral for simple functions of the form
+    The proof proceeds by constructing the stochastic integral using the
+    standard extension procedure. First, the integral is defined for simple
+    functions of the form
 
     <\equation>
-      g<around|(|\<lambda\>|)>=<big|sum><rsub|j=1><rsup|n>c<rsub|j>*<with|math-font-family|bf|1><rsub|E<rsub|j>><around|(|\<lambda\>|)>
+      g<around|(|\<lambda\>|)>=<big|sum><rsub|j=1><rsup|n>c<rsub|j><text|<with|font-series|bold|1>><rsub|E<rsub|j>><around|(|\<lambda\>|)>
     </equation>
 
-    \ where <math|<around|{|E<rsub|j>|}>> are disjoint Borel sets with
+    where <math|<around|{|E<rsub|j>|}>> are disjoint Borel sets with
     <math|F<around|(|E<rsub|j>|)>\<less\>\<infty\>> and
     <math|c<rsub|j>\<in\>\<bbb-C\>>:
 
@@ -356,29 +363,29 @@
     For such simple functions, the isometry property holds:
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|\<bbb-E\><around*|[|<around*|\||<big|int><rsub|\<bbb-R\>>g<around|(|\<lambda\>|)>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>|\|><rsup|2>|]>>|<cell|=\<bbb-E\><around*|[|<around*|\||<big|sum><rsub|j=1><rsup|n>c<rsub|j>*\<Phi\><around|(|E<rsub|j>|)>|\|><rsup|2>|]>>>|<row|<cell|>|<cell|=<big|sum><rsub|j=1><rsup|n><big|sum><rsub|k=1><rsup|n>c<rsub|j><wide|c<rsub|k>|\<bar\>>\<bbb-E\><around|[|\<Phi\><around|(|E<rsub|j>|)><wide|\<Phi\><around|(|E<rsub|k>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<big|sum><rsub|j=1><rsup|n><around|\||c<rsub|j>|\|><rsup|2>*F<around|(|E<rsub|j>|\<nobracket\>>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>><around|\||g<around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>>>>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|\<bbb-E\><around*|[|<around*|\||<big|int><rsub|\<bbb-R\>>g<around|(|\<lambda\>|)>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>|\|><rsup|2>|]>>|<cell|=\<bbb-E\><around*|[|<around*|\||<big|sum><rsub|j=1><rsup|n>c<rsub|j>*\<Phi\><around|(|E<rsub|j>|)>|\|><rsup|2>|]>>>|<row|<cell|>|<cell|=<big|sum><rsub|j=1><rsup|n><big|sum><rsub|k=1><rsup|n>c<rsub|j><wide|c<rsub|k>|\<bar\>>\<bbb-E\><around|[|\<Phi\><around|(|E<rsub|j>|)><wide|\<Phi\><around|(|E<rsub|k>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<big|sum><rsub|j=1><rsup|n><around|\||c<rsub|j>|\|><rsup|2>*F(E<rsub|j>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>><around|\||g<around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>>>>
     </equation>
 
-    Since simple functions are dense in <math|L<rsup|2><around|(|F|)>>, we
-    extend by continuity to all <math|g\<in\>L<rsup|2><around|(|F|)>>. For
-    each <math|t>, since
+    Since simple functions are dense in <math|L<rsup|2><around|(|F|)>>, the
+    integral is extended by continuity to all
+    <math|g\<in\>L<rsup|2><around|(|F|)>>. For each <math|t>, since
 
     <\equation>
       \<varphi\><rsub|t><around|(|\<lambda\>|)>=A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>
     </equation>
 
-    \ and <math|A<rsub|t>\<in\>L<rsup|2><around|(|F|)>>, we have
-    <math|\<varphi\><rsub|t>\<in\>L<rsup|2><around|(|F|)>>. Therefore
+    and <math|A<rsub|t>\<in\>L<rsup|2><around|(|F|)>>,
+    <math|\<varphi\><rsub|t>\<in\>L<rsup|2><around|(|F|)>> holds. Therefore
 
     <\equation>
       Z<around|(|t|)>=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>
     </equation>
 
-    \ is well-defined in <math|L<rsup|2><around|(|\<Omega\>|)>>. The
-    covariance is computed as:
+    is well-defined in <math|L<rsup|2><around|(|\<Omega\>|)>>. The covariance
+    is computed as:
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|R<rsub|Z><around|(|t,s|)>>|<cell|=\<bbb-E\><around|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=\<bbb-E\><around*|[|<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>*<big|int><rsub|\<bbb-R\>><wide|\<varphi\><rsub|s><around|(|\<mu\>|)>|\<bar\>><space|0.17em><wide|\<Phi\>*<around|(|d*\<mu\>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>><big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)><wide|\<varphi\><rsub|s><around|(|\<mu\>|)>|\<bar\>>\<bbb-E\>*<around|[|\<Phi\>*<around|(|d*\<lambda\>|)><wide|\<Phi\>*<around|(|d*\<mu\>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)><wide|\<varphi\><rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)><wide|A<rsub|s><around|(|\<lambda\>|)>|\<bar\>>e<rsup|i*\<lambda\>*<around|(|t-s|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>>>>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|R<rsub|Z><around|(|t,s|)>>|<cell|=\<bbb-E\><around|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=\<bbb-E\><around*|[|<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>*<big|int><rsub|\<bbb-R\>><wide|\<varphi\><rsub|s><around|(|\<mu\>|)>|\<bar\>><space|0.17em><wide|\<Phi\>*<around|(|d*\<mu\>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>><big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)><wide|\<varphi\><rsub|s><around|(|\<mu\>|)>|\<bar\>>\<bbb-E\>*<around|[|\<Phi\>*<around|(|d*\<lambda\>|)><wide|\<Phi\>*<around|(|d*\<mu\>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)><wide|\<varphi\><rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)><wide|A<rsub|s><around|(|\<lambda\>|)>|\<bar\>>e<rsup|i*\<lambda\>*<around|(|t-s|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>>>>
     </equation>
   </proof>
 
@@ -412,7 +419,7 @@
     Definition<nbsp><reference|def:Utheta>, define
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|Z<around|(|t|)>>|<cell|=<around|(|U<rsub|\<theta\>>*X|)><around|(|t|)>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>X<around|(|\<theta\><around|(|t|)>|)>>>>>>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|Z<around|(|t|)>>|<cell|=<around|(|U<rsub|\<theta\>>*X|)><around|(|t|)>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>X<around|(|\<theta\><around|(|t|)>|)>>>>>>
     </equation>
 
     Then <math|Z> is oscillatory with oscillatory function
@@ -439,7 +446,7 @@
     of <math|X<around|(|t|)>>:
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|Z<around|(|t|)>>|<cell|=<around|(|U<rsub|\<theta\>>*X|)><around|(|t|)>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>X<around|(|\<theta\><around|(|t|)>|)>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>*<space|0.17em>\<mathd\>\<Phi\>*<around|(|*\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>><sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>*\<mathd\>\<Phi\>*<around|(|*\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)>\<mathd\>\<Phi\><around*|(|\<lambda\>|)>>>>>>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|Z<around|(|t|)>>|<cell|=<around|(|U<rsub|\<theta\>>*X|)><around|(|t|)>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>X<around|(|\<theta\><around|(|t|)>|)>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>*<space|0.17em>\<mathd\>*\<Phi\><around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>><sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>*\<mathd\>*\<Phi\><around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)>*\<mathd\>*\<Phi\><around|(|\<lambda\>|)>>>>>>
     </equation>
 
     where
@@ -449,12 +456,12 @@
     </equation>
 
     To verify this constitutes an oscillatory representation according to
-    Definition<nbsp><reference|def:osc_proc>, we must write
-    <math|\<varphi\><rsub|t><around|(|\<lambda\>|)>> in the form
+    Definition<nbsp><reference|def:osc_proc>,
+    <math|\<varphi\><rsub|t><around|(|\<lambda\>|)>> has the form
     <math|A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>>:
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|\<varphi\><rsub|t><around|(|\<lambda\>|)>>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>*e<rsup|i*\<lambda\>*t>>>|<row|<cell|>|<cell|=A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>>>>>>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|\<varphi\><rsub|t><around|(|\<lambda\>|)>>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>*e<rsup|i*\<lambda\>*t>>>|<row|<cell|>|<cell|=A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>>>>>>
     </equation>
 
     where
@@ -470,25 +477,23 @@
     <math|A<rsub|t>\<in\>L<rsup|2><around|(|F|)>> for each <math|t> since:
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|<big|int><rsub|\<bbb-R\>><around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>>|<cell|=<big|int><rsub|\<bbb-R\>><around*|\||<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>><wide|\<theta\>|\<dot\>><around|(|t|)><around|\||e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<wide|\<theta\>|\<dot\>><around|(|t|)>*<big|int><rsub|\<bbb-R\>>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<wide|\<theta\>|\<dot\>><around|(|t|)>*F<around|(|\<bbb-R\>|)>\<less\>\<infty\>>>>>>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<big|int><rsub|\<bbb-R\>><around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>>|<cell|=<big|int><rsub|\<bbb-R\>><around*|\||<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>><wide|\<theta\>|\<dot\>><around|(|t|)><around|\||e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<wide|\<theta\>|\<dot\>><around|(|t|)>*<big|int><rsub|\<bbb-R\>>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<wide|\<theta\>|\<dot\>><around|(|t|)>*F<around|(|\<bbb-R\>|)>\<less\>\<infty\>>>>>>
     </equation>
 
-    where we used <math|<around|\||e<rsup|i*\<alpha\>>|\|>=1> for all real
-    <math|\<alpha\>>. The covariance is computed as:
+    where <math|<around|\||e<rsup|i*\<alpha\>>|\|>=1> for all real
+    <math|\<alpha\>> is used. The covariance is computed as:
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|R<rsub|Z><around|(|t,s|)>>|<cell|=\<bbb-E\><around|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=\<bbb-E\>*<around*|[|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*X<around|(|\<theta\><around|(|t|)>|)><sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>><wide|X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*\<bbb-E\><around|[|X<around|(|\<theta\><around|(|t|)>|)><wide|X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*R<rsub|X>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>>>>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|R<rsub|Z><around|(|t,s|)>>|<cell|=\<bbb-E\><around|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=\<bbb-E\>*<around*|[|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*X<around|(|\<theta\><around|(|t|)>|)><sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>><wide|X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*\<bbb-E\><around|[|X<around|(|\<theta\><around|(|t|)>|)><wide|X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*R<rsub|X>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>>>>
     </equation>
-
-    \;
   </proof>
 
   <\corollary>
     <strong|[Evolutionary spectrum]<label|cor:evol_spec>> The evolutionary
-    spectrum is\ 
+    spectrum is
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|d*F<rsub|t><around|(|\<lambda\>|)>>|<cell|=<around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<wide|\<theta\>|\<dot\>><around|(|t|)>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>>>>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|d*F<rsub|t><around|(|\<lambda\>|)>>|<cell|=<around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<wide|\<theta\>|\<dot\>><around|(|t|)>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>>>>
     </equation>
   </corollary>
 
@@ -497,10 +502,10 @@
     from Theorem<nbsp><reference|thm:Utheta_to_osc>:
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|d*F<rsub|t><around|(|\<lambda\>|)>>|<cell|=<around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<around*|\||<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<wide|\<theta\>|\<dot\>><around|(|t|)><around|\||e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<wide|\<theta\>|\<dot\>><around|(|t|)>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>>>>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|d*F<rsub|t><around|(|\<lambda\>|)>>|<cell|=<around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<around*|\||<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<wide|\<theta\>|\<dot\>><around|(|t|)><around|\||e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<wide|\<theta\>|\<dot\>><around|(|t|)>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>>>>
     </equation>
 
-    since\ 
+    since
 
     <\equation>
       <around|\||e<rsup|i*\<alpha\>>|\|>=1\<forall\>a\<in\>\<bbb-R\>
@@ -510,13 +515,13 @@
   <subsection|Covariance operator conjugation>
 
   <\proposition>
-    <strong|[Operator conjugation]<label|prop:conjugation>> Let\ 
+    <strong|[Operator conjugation]<label|prop:conjugation>> Let
 
     <\equation>
       <around|(|T<rsub|K>*f|)><around|(|t|)>\<assign\><big|int><rsub|\<bbb-R\>>K<around|(|<around|\||t-s|\|>|)>*<space|0.17em>f<around|(|s|)>*<space|0.17em>d*s
     </equation>
 
-    \ with stationary kernel\ 
+    with stationary kernel
 
     <\equation>
       K<around|(|h|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*h>*<space|0.17em>d*F<around|(|\<lambda\>|)>
@@ -525,13 +530,13 @@
     Define the transformed kernel
 
     <\equation>
-      K<rsub|\<theta\>><around|(|s,t|)>\<assign\><sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<space|0.17em>K<space|-0.17em><around*|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>
+      K<rsub|\<theta\>><around|(|s,t|)>\<assign\><sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<space|0.17em>K<space|-0.17em><around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>
     </equation>
 
     and corresponding integral covariance operator
 
     <\equation>
-      <around|(|T<rsub|K<rsub|\<theta\>>>*f|)><around|(|t|)>\<assign\><big|int><rsub|\<bbb-R\>>K<rsub|\<theta\>><around|(|s,t|)><space|0.17em>f<around|(|s|)>*<space|0.17em>d*s
+      <around|(|T<rsub|K<rsub|\<theta\>>>*f|)><around|(|t|)>\<assign\><big|int><rsub|\<bbb-R\>>K<rsub|\<theta\>><around|(|s,t|)>*<space|0.17em>f<around|(|s|)>*<space|0.17em>d*s
     </equation>
 
     Then
@@ -540,32 +545,32 @@
       T<rsub|K<rsub|\<theta\>>>=U<rsub|\<theta\>>*<space|0.17em>T<rsub|K>*<space|0.17em>U<rsub|\<theta\>><rsup|-1>
     </equation>
 
-    on <math|L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>.
+    on <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>.
   </proposition>
 
   <\proof>
-    For any <math|g\<in\>L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>,
-    we transform the integral operator from coordinates
-    <math|<around|(|r,w|)>> to coordinates <math|<around|(|t,s|)>> by
-    applying both coordinate transformations\ 
+    For any <math|g\<in\>L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>, the
+    integral operator is transformed from coordinates <math|<around|(|r,w|)>>
+    to coordinates <math|<around|(|t,s|)>> by applying both coordinate
+    transformations
 
     <\equation>
       r=\<theta\><around|(|t|)>
     </equation>
 
-    \ and
+    and
 
     <\equation>
       w=\<theta\><around|(|s|)>
     </equation>
 
-    \ by simultaneously substitution with Jacobians\ 
+    by simultaneous substitution with Jacobians
 
     <\equation>
       d*r=<wide|\<theta\>|\<dot\>><around|(|t|)>*<space|0.17em>d*t
     </equation>
 
-    \ and
+    and
 
     <\equation>
       d*w=<wide|\<theta\>|\<dot\>><around|(|s|)>*<space|0.17em>d*s
@@ -581,7 +586,7 @@
     and <math|w=\<theta\><around|(|s|)>>:
 
     <\equation>
-      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<around|(|<around|(|U<rsub|\<theta\>>*T<rsub|K>*U<rsub|\<theta\>><rsup|-1>|)>*g|)><around|(|t|)>>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<big|int><rsub|\<bbb-R\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>*<around|(|U<rsub|\<theta\>><rsup|-1>*g|)><around|(|\<theta\><around|(|s|)>|)><frac|<wide|\<theta\>|\<dot\>><around|(|s|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>**<big|int><rsub|\<bbb-R\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)><frac|g<around|(|s|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>>*<sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>**<big|int><rsub|\<bbb-R\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>*g<around|(|s|)>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>><sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>**K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>*g<around|(|s|)>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>K<rsub|\<theta\>><around|(|t,s|)>*g<around|(|s|)>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<around|(|T<rsub|K<rsub|\<theta\>>>*g|)><around|(|t|)>>>>>>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<around|(|<around|(|U<rsub|\<theta\>>*T<rsub|K>*U<rsub|\<theta\>><rsup|-1>|)>*g|)><around|(|t|)>>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<big|int><rsub|\<bbb-R\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>*<around|(|U<rsub|\<theta\>><rsup|-1>*g|)><around|(|\<theta\><around|(|s|)>|)><frac|<wide|\<theta\>|\<dot\>><around|(|s|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<big|int><rsub|\<bbb-R\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)><frac|g<around|(|s|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>>*<sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<big|int><rsub|\<bbb-R\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>*g<around|(|s|)>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>><sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>*g<around|(|s|)>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>K<rsub|\<theta\>><around|(|t,s|)>*g<around|(|s|)>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<around|(|T<rsub|K<rsub|\<theta\>>>*g|)><around|(|t|)>>>>>>
     </equation>
 
     where
@@ -590,19 +595,19 @@
       K<rsub|\<theta\>><around|(|t,s|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>
     </equation>
 
-    Therefore\ 
+    Therefore
 
     <\equation>
       T<rsub|K<rsub|\<theta\>>>=U<rsub|\<theta\>>*T<rsub|K>*U<rsub|\<theta\>><rsup|-1>
     </equation>
   </proof>
 
-  <section|Sample Paths Live in <math|L<rsup|2><rsub|\<sigma\><text|-comp>>>><label|sec:samplepaths>
+  <section|Sample Paths Live in <math|L<rsup|2><rsub|loc>>><label|sec:samplepaths>
 
   <\theorem>
-    <strong|[Sample paths in <math|L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>]<label|thm:paths_sigma_comp>>
+    <strong|[Sample paths in <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>]<label|thm:paths_loc>>
     Let <math|<around|{|X<around|(|t|)>|}><rsub|t\<in\>\<bbb-R\>>> be a
-    second-order stationary process with\ 
+    second-order stationary process with
 
     <\equation>
       \<sigma\><rsup|2>\<assign\>\<bbb-E\><around|[|X<around|(|t|)><rsup|2>|]>\<less\>\<infty\>
@@ -610,12 +615,12 @@
 
     then, almost surely, every sample path
     <math|t\<mapsto\>X<around|(|\<omega\>,t|)>> belongs to
-    <math|L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>.
+    <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>.
   </theorem>
 
   <\proof>
     Fix any bounded interval <math|<around|[|a,b|]>> and consider the random
-    variable\ 
+    variable
 
     <\equation>
       Y<rsub|<around|[|a,b|]>>\<assign\><big|int><rsub|a><rsup|b>X<around|(|t|)><rsup|2>*<space|0.17em>d*t
@@ -624,7 +629,31 @@
     By stationarity and Fubini's theorem:
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|\<bbb-E\><around|[|Y<rsub|<around|[|a,b|]>>|]>=\<bbb-E\><around*|[|<big|int><rsub|a><rsup|b>X<around|(|t|)><rsup|2>*<space|0.17em>d*t|]>>|<cell|=<big|int><rsub|a><rsup|b>\<bbb-E\><around|[|X<around|(|t|)><rsup|2>|]>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|int><rsub|a><rsup|b>\<sigma\><rsup|2>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=\<sigma\><rsup|2>*<around|(|b-a|)>\<less\>\<infty\>>>>>>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|\<bbb-E\><around|[|Y<rsub|<around|[|a,b|]>>|]>=\<bbb-E\><around*|[|<big|int><rsub|a><rsup|b>X<around|(|t|)><rsup|2>*<space|0.17em>d*t|]>>|<cell|=<big|int><rsub|a><rsup|b>\<bbb-E\><around|[|X<around|(|t|)><rsup|2>|]>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|int><rsub|a><rsup|b>\<sigma\><rsup|2>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=\<sigma\><rsup|2>*<around|(|b-a|)>\<less\>\<infty\>>>>>>
+    </equation>
+
+    Equivalently, invoking the evolutionary spectrum\ 
+
+    <\equation>
+      d*F<rsub|t><around|(|\<lambda\>|)>=<wide|\<theta\>|\<dot\>><around|(|t|)>*d*F<around|(|\<lambda\>|)>
+    </equation>
+
+    it can be seen that the oscillatory process can be expressed as\ 
+
+    <\equation>
+      Z<around|(|t|)>=<around|(|U<rsub|\<theta\>>*X|)><around|(|t|)>
+    </equation>
+
+    whose (ensemble) variance is given by
+
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|\<bbb-E\><around|[|Z<around|(|t|)><rsup|2>|]>>|<cell|=<big|int>d*F<rsub|t><around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<wide|\<theta\>|\<dot\>><around|(|t|)>*<big|int>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<wide|\<theta\>|\<dot\>><around|(|t|)>*\<sigma\><rsup|2>>>>>>
+    </equation>
+
+    Therefore for any bounded interval <math|<around|[|a,b|]>>:
+
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|\<bbb-E\><around*|[|<big|int><rsub|a><rsup|b>Z<around|(|t|)><rsup|2>*d*t|]>>|<cell|=<big|int><rsub|a><rsup|b><wide|\<theta\>|\<dot\>><around|(|t|)>*\<sigma\><rsup|2>*d*t>>|<row|<cell|>|<cell|=\<sigma\><rsup|2>*<around|[|\<theta\><around|(|b|)>-\<theta\><around|(|a|)>|]>\<less\>\<infty\>>>>>>
     </equation>
 
     By Markov's inequality, for any <math|M\<gtr\>0>:
@@ -633,7 +662,7 @@
       P*<around|(|Y<rsub|<around|[|a,b|]>>\<gtr\>M|)>\<leq\><frac|\<bbb-E\><around|[|Y<rsub|<around|[|a,b|]>>|]>|M>=<frac|\<sigma\><rsup|2>*<around|(|b-a|)>|M>
     </equation>
 
-    Taking <math|M\<to\>\<infty\>>, we conclude\ 
+    Taking <math|M\<to\>\<infty\>>, the conclusion is
 
     <\equation>
       P*<around|(|Y<rsub|<around|[|a,b|]>>\<less\>\<infty\>|)>=1
@@ -653,41 +682,20 @@
       P<around*|(|<big|cap><rsub|n=1><rsup|\<infty\>><around*|{|<big|int><rsub|-n><rsup|n>X<around|(|t|)><rsup|2>*<space|0.17em>d*t\<less\>\<infty\>|}>|)>=1
     </equation>
 
-    Now let <math|U> be any <math|\<sigma\>>-compact set. Then
+    Now let <math|K> be any compact set. Then <math|K> is bounded, so
 
     <\equation>
-      U=<big|cup><rsub|m=1><rsup|\<infty\>>K<rsub|m>
+      K\<subseteq\><around|[|-N,N|]>
     </equation>
 
-    \ where each <math|K<rsub|m>> is compact. Each compact set
-    <math|K<rsub|m>> is bounded, so
+    for some <math|N>. Therefore:
 
     <\equation>
-      K<rsub|m>\<subseteq\><around|[|-N<rsub|m>,N<rsub|m>|]>
+      <big|int><rsub|K>X<around|(|t|)><rsup|2>*<space|0.17em>d*t\<leq\><big|int><rsub|-N><rsup|N>X<around|(|t|)><rsup|2>*<space|0.17em>d*t\<less\>\<infty\>
     </equation>
 
-    \ for some <math|N<rsub|m>>. Therefore:
-
-    <\equation>
-      <tabular|<tformat|<table|<row|<cell|<big|int><rsub|U>X<around|(|t|)><rsup|2>*<space|0.17em>d*t>|<cell|=<big|int><rsub|<big|cup><rsub|m=1><rsup|\<infty\>>K<rsub|m>>X<around|(|t|)><rsup|2>*<space|0.17em>d*t>>|<row|<cell|>|<cell|\<leq\><big|sum><rsub|m=1><rsup|\<infty\>><big|int><rsub|K<rsub|m>>X<around|(|t|)><rsup|2>*<space|0.17em>d*t>>|<row|<cell|>|<cell|\<leq\><big|sum><rsub|m=1><rsup|\<infty\>><big|int><rsub|-N<rsub|m>><rsup|N<rsub|m>>X<around|(|t|)><rsup|2>*<space|0.17em>d*t>>>>>
-    </equation>
-
-    Since each integral
-
-    <\equation>
-      <big|int><rsub|-N<rsub|m>><rsup|N<rsub|m>>X<around|(|t|)><rsup|2>*<space|0.17em>d*t\<less\>\<infty\>
-    </equation>
-
-    \ almost surely, and the sum of countably many finite terms is finite, we
-    have
-
-    <\equation>
-      <big|int><rsub|U>X<around|(|t|)><rsup|2>*<space|0.17em>d*t\<less\>\<infty\>
-    </equation>
-
-    \ almost surely. This holds for every <math|\<sigma\>>-compact set
-    <math|U>, so almost surely every sample path lies in
-    <math|L<rsup|2><rsub|\<sigma\><text|-comp>><around|(|\<bbb-R\>|)>>.
+    almost surely. This holds for every compact set <math|K>, so almost
+    surely every sample path lies in <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>.
   </proof>
 
   <section|Zero Localization and Hilbert\UPólya Scaffold><label|sec:HP>
@@ -706,7 +714,7 @@
     Define, for Borel <math|B\<subset\>\<bbb-R\>>,
 
     <\equation>
-      \<mu\><around|(|B|)>\<assign\><big|int><rsub|\<bbb-R\>><with|math-font-family|bf|1><rsub|B><around|(|t|)>*<space|0.17em>\<delta\><around|(|Z<around|(|t|)>|)><space|0.17em><around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*<space|0.17em>d*t
+      \<mu\><around|(|B|)>=<big|int><rsub|\<bbb-R\>><text|<with|font-series|bold|1>><rsub|B><around|(|t|)>*<space|0.17em>\<delta\><around|(|Z<around|(|t|)>|)><space|0.17em><around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*<space|0.17em>d*t
     </equation>
   </definition>
 
@@ -718,10 +726,10 @@
       <big|int><rsub|\<bbb-R\>>\<phi\><around|(|t|)>*<space|0.17em>\<delta\><around|(|Z<around|(|t|)>|)><space|0.17em><around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*<space|0.17em>d*t=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<phi\><around|(|t<rsub|0>|)>
     </equation>
 
-    hence\ 
+    hence
 
     <\equation>
-      \<mu\><around*|(|t|)>=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<delta\><rsub|t<rsub|0>><around*|(|t|)>
+      \<mu\><around|(|t|)>=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<delta\><rsub|t<rsub|0>><around|(|t|)>
     </equation>
   </theorem>
 
@@ -729,19 +737,19 @@
     Since all zeros of <math|Z> are simple and
     <math|Z\<in\>C<rsup|1><around|(|\<bbb-R\>|)>>, by the inverse function
     theorem each zero <math|t<rsub|0>> is isolated. Near each zero
-    <math|t<rsub|0>>, <math|Z> is locally monotonic, so we can apply the
-    one-dimensional change of variables formula for the Dirac delta.
+    <math|t<rsub|0>>, <math|Z> is locally monotonic, so the one-dimensional
+    change of variables formula for the Dirac delta can be applied.
 
     Specifically, near <math|t<rsub|0>> where
     <math|Z<around|(|t<rsub|0>|)>=0> and <math|<wide|Z|\<dot\>><around|(|t<rsub|0>|)>\<neq\>0>,
-    we have locally
+    locally
 
     <\equation>
       Z<around|(|t|)>=<around|(|t-t<rsub|0>|)>*<wide|Z|\<dot\>><around|(|t<rsub|0>|)>+O<around|(|<around|(|t-t<rsub|0>|)><rsup|2>|)>
     </equation>
 
-    The distributional identity for the Dirac delta under smooth changes of
-    variables gives:
+    holds. The distributional identity for the Dirac delta under smooth
+    changes of variables gives:
 
     <\equation>
       \<delta\><around|(|Z<around|(|t|)>|)>=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><frac|\<delta\>*<around|(|t-t<rsub|0>|)>|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>>
@@ -750,31 +758,31 @@
     Therefore:
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|<big|int><rsub|\<bbb-R\>>\<phi\><around|(|t|)>*<space|0.17em>\<delta\><around|(|Z<around|(|t|)>|)><space|0.17em><around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*<space|0.17em>d*t>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><around|(|t|)><space|0.17em><around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><frac|\<delta\>*<around|(|t-t<rsub|0>|)>|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><big|int><rsub|\<bbb-R\>>\<phi\><around|(|t|)><frac|<around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*\<delta\>*<around|(|t-t<rsub|0>|)>|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><frac|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>*|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>>\<phi\><around|(|t<rsub|0>|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<phi\><around|(|t<rsub|0>|)>>>>>>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<big|int><rsub|\<bbb-R\>>\<phi\><around|(|t|)>*<space|0.17em>\<delta\><around|(|Z<around|(|t|)>|)><space|0.17em><around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*<space|0.17em>d*t>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><around|(|t|)><space|0.17em><around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><frac|\<delta\>*<around|(|t-t<rsub|0>|)>|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><big|int><rsub|\<bbb-R\>>\<phi\><around|(|t|)><frac|<around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*\<delta\>*<around|(|t-t<rsub|0>|)>|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><frac|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>>*\<phi\><around|(|t<rsub|0>|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<phi\><around|(|t<rsub|0>|)>>>>>>
     </equation>
 
-    This shows that <math|\<mu\>> is the discrete measure <math|>
+    This shows that <math|\<mu\>> is the discrete measure
 
     <\equation>
-      \<mu\>=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<delta\><rsub|t<rsub|0>>
+      \<mu\><around*|(|t|)>=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<delta\><rsub|t<rsub|0>><around*|(|t|)>
     </equation>
 
-    \ assigning unit mass to each zero.
+    assigning unit mass to each zero.
   </proof>
 
   <subsection|Hilbert space on zeros and multiplication operator>
 
   <\definition>
-    <strong|[Hilbert space on the zero set]><label|def:Hmu> Let
+    <strong|[Hilbert space on the zero set]<label|labeldef:Hmu>> Let
     <math|\<cal-H\>=L<rsup|2><around|(|\<mu\>|)>> with inner product
 
     <\equation>
-      <around|\<langle\>|f,g|\<rangle\>>=<big|int>f<around|(|t|)><wide|g<around|(|t|)>|\<bar\>><space|0.17em>\<mu\>*<around|(|d*t|)>
+      <around|\<langle\>|f,g|\<rangle\>>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|t|)><wide|g<around|(|t|)>|\<bar\>><space|0.17em>\<mathd\>\<mu\>*<around|(|t|)>
     </equation>
   </definition>
 
   <\proposition>
-    <strong|[Atomic structure]<label|prop:atomic>> Let\ 
+    <strong|[Atomic structure]<label|prop:atomic>> Let
 
     <\equation>
       \<mu\>=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<delta\><rsub|t<rsub|0>>
@@ -790,7 +798,7 @@
     where
 
     <\equation>
-      e<rsub|t<rsub|0>><around|(|t<rsub|1>|)>=\<delta\><rsub|t<rsub|0>*t<rsub|1>>
+      e<rsub|t<rsub|0>><around|(|t<rsub|1>|)>=\<delta\><rsub|t<rsub|0>*><around*|(|t<rsub|1>|)>
     </equation>
   </proposition>
 
@@ -799,41 +807,47 @@
     <math|f\<in\>L<rsup|2><around|(|\<mu\>|)>>:
 
     <\align>
-      <tformat|<table|<row|<cell|<around|\<\|\|\>|f|\<\|\|\>><rsub|\<cal-H\>><rsup|2>>|<cell|=<big|int><around|\||f<around|(|t|)>|\|><rsup|2>*<space|0.17em>\<mu\>*<around|(|d*t|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><around|\||f<around|(|t|)>|\|><rsup|2>*<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<delta\><rsub|t<rsub|0>>*<around|(|d*t|)><eq-number>>>|<row|<cell|>|<cell|=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><around|\||f<around|(|t<rsub|0>|)>|\|><rsup|2><eq-number>>>>>
+      <tformat|<table|<row|<cell|<around|\<\|\|\>|f|\<\|\|\>><rsub|\<cal-H\>><rsup|2>>|<cell|=<big|int><around|\||f<around|(|t|)>|\|><rsup|2>*\<mathd\>\<mu\>*<around|(|t|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><around|\||f<around|(|t|)>|\|><rsup|2>*<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<delta\><rsub|t<rsub|0>>*<around|(|*t|)><eq-number>>>|<row|<cell|>|<cell|=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><around|\||f<around|(|t<rsub|0>|)>|\|><rsup|2><eq-number>>>>>
     </align>
 
-    This shows the isomorphism with <math|\<ell\><rsup|2>>. The functions
-    <math|e<rsub|t<rsub|0>>> defined by\ 
+    This shows the isomorphism with <math|\<ell\><rsup|2>> where the
+    functions <math|e<rsub|t<rsub|0>>> defined by
 
     <\equation>
-      e<rsub|t<rsub|0>><around|(|t<rsub|1>|)>=\<delta\><rsub|t<rsub|0>*t<rsub|1>>
+      e<rsub|t<rsub|0>><around|(|t<rsub|1>|)>=\<delta\><rsub|t<rsub|0>><around*|(|t<rsub|1>|)>
     </equation>
 
-    \ satisfy:
+    satisfy the relations
 
     <\equation>
-      <around|\<langle\>|e<rsub|t<rsub|0>>,e<rsub|t<rsub|1>>|\<rangle\>>=<big|int>e<rsub|t<rsub|0>><around|(|t|)><wide|e<rsub|t<rsub|1>><around|(|t|)>|\<bar\>><space|0.17em>\<mu\>*<around|(|d*t|)>=<big|sum><rsub|t:Z<around|(|t|)>=0>\<delta\><rsub|t<rsub|0>*t>*\<delta\><rsub|t<rsub|1>*t>=\<delta\><rsub|t<rsub|0>*t<rsub|1>>
+      <tabular|<tformat|<table|<row|<cell|<around|\<langle\>|e<rsub|t<rsub|0>>,e<rsub|t<rsub|1>>|\<rangle\>>>|<cell|=<big|int>e<rsub|t<rsub|0>><around|(|t|)><wide|e<rsub|t<rsub|1>><around|(|t|)>|\<bar\>>\<mathd\>\<mu\>*<around|(|t|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|t:Z<around|(|t|)>=0>\<delta\><rsub|t<rsub|0>*><around*|(|t|)>*\<delta\><rsub|t<rsub|1>><around*|(|t|)>>>|<row|<cell|>|<cell|=\<delta\><rsub|t<rsub|0><rsub|>><around*|(|t<rsub|1>|)>>>|<row|<cell|>|<cell|=\<delta\>t<rsub|1><around*|(|t<rsub|0>|)>>>>>>
     </equation>
 
-    so they form an orthonormal set. Any <math|f\<in\>\<cal-H\>> can be
-    written as\ 
+    thus forming an orthonormal set. Thus, any
+    <math|f<around*|(|t|)>\<in\>\<cal-H\>> can be written as
 
     <\equation>
-      f=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>f<around|(|t<rsub|0>|)>*e<rsub|t<rsub|0>>
+      f<around*|(|t|)>=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>f<around|(|t<rsub|0>|)>*e<rsub|t<rsub|0>><around*|(|t|)>
     </equation>
 
-    <math|>proving they form a basis.
+    proving they form a basis.
   </proof>
 
   <\definition>
-    <strong|[Multiplication operator]<label|def:L>> Define
-    <math|L:\<cal-D\><around|(|L|)>\<subset\>\<cal-H\>\<to\>\<cal-H\>> by
+    <strong|[Multiplication operator]<label|def:L>> Define the linear
+    operator
 
     <\equation>
-      <around|(|L*f|)><around|(|t|)>=t f<around|(|t|)>
+      L:\<cal-D\><around|(|L|)>\<subset\>\<cal-H\>\<to\>\<cal-H\>
     </equation>
 
-    \ on <math|<math-up|supp><around|(|\<mu\>|)>> with domain
+    \ by
+
+    <\equation>
+      <around|(|L*f|)><around|(|t|)>=t*f<around|(|t|)>
+    </equation>
+
+    on the support of <math|\<mu\>> with domain
 
     <\equation>
       \<cal-D\><around|(|L|)>\<assign\><around*|{|f\<in\>\<cal-H\>:<big|int><around|\||t*<space|0.17em>f<around|(|t|)>|\|><rsup|2>*<space|0.17em>\<mu\>*<around|(|d*t|)>\<less\>\<infty\>|}>
@@ -845,19 +859,20 @@
     self-adjoint on <math|\<cal-H\>> and has pure point, simple spectrum
 
     <\equation>
-      \<sigma\><around|(|L|)>=<around|{|t\<in\>\<bbb-R\>:Z<around|(|t|)>=0|}>
+      \<sigma\><around|(|L|)>=<wide|<around|{|t\<in\>\<bbb-R\>:Z<around|(|t|)>=0|}>|\<bar\>>
     </equation>
 
-    with eigenvalues <math|\<lambda\>=t<rsub|0>> and eigenvectors
-    <math|e<rsub|t<rsub|0>>>.
+    with eigenvalues <math|\<lambda\>=t<rsub|0>> for each zero
+    <math|t<rsub|0>> and corresponding eigenvectors <math|e<rsub|t<rsub|0>>>.
   </theorem>
 
   <\proof>
-    First, we verify self-adjointness. For
+    First, self-adjointness is verified. For
     <math|f,g\<in\>\<cal-D\><around|(|L|)>>:
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|<around|\<langle\>|L*f,g|\<rangle\>>>|<cell|=<big|int><around|(|L*f|)><around|(|t|)><wide|g<around|(|t|)>|\<bar\>><space|0.17em>\<mu\>*<around|(|d*t|)>>>|<row|<cell|>|<cell|=<big|int>t*f<around|(|t|)><wide|g<around|(|t|)>|\<bar\>><space|0.17em>\<mu\>*<around|(|d*t|)>>>|<row|<cell|>|<cell|=<big|int>f<around|(|t|)><wide|t*g<around|(|t|)>|\<bar\>><space|0.17em>\<mu\>*<around|(|d*t|)>>>|<row|<cell|>|<cell|=<big|int>f<around|(|t|)><wide|<around|(|L*g|)><around|(|t|)>|\<bar\>><space|0.17em>\<mu\>*<around|(|d*t|)>>>|<row|<cell|>|<cell|=<around|\<langle\>|f,L*g|\<rangle\>>>>>>>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<around|\<langle\>|L*f,g|\<rangle\>>>|<cell|=<big|int><around|(|L*f|)><around|(|t|)><wide|g<around|(|t|)>|\<bar\>>\<mathd\>\<mu\>*<around|(|*t|)>>>|<row|<cell|>|<cell|=<big|int>t*f<around|(|t|)><wide|g<around|(|t|)>|\<bar\>><space|0.17em>\<mathd\>\<mu\>*<around|(|*t|)>>>|<row|<cell|>|<cell|=<big|int>f<around|(|t|)><wide|t*g<around|(|t|)>|\<bar\>>
+      \<mathd\>\<mu\>*<around|(|*t|)>>>|<row|<cell|>|<cell|=<big|int>f<around|(|t|)><wide|<around|(|L*g|)><around|(|t|)>|\<bar\>>\<mathd\>\<mu\>*<around|(|*t|)>>>|<row|<cell|>|<cell|=<around|\<langle\>|f,L*g|\<rangle\>>>>>>>
     </equation>
 
     Thus <math|L> is symmetric and acts as
@@ -866,7 +881,7 @@
       <around|(|L*f|)><around|(|t<rsub|0>|)>=t<rsub|0>*f<around|(|t<rsub|0>|)>
     </equation>
 
-    \ for each <math|t<rsub|0>> in the atomic representation where <math|>
+    for each <math|t<rsub|0>> in the atomic representation where
 
     <\equation>
       Z<around|(|t<rsub|0>|)>=0
@@ -880,63 +895,36 @@
     </equation>
 
     Such diagonal operators are self-adjoint. For the spectrum calculation:
-    We have
 
     <\equation>
-      L*e<rsub|t<rsub|0>>=t<rsub|0>*e<rsub|t<rsub|0>>\<forall\><around*|{|t<rsub|0>:Z<around*|(|t<rsub|0>|)>=0|}>
+      L*e<rsub|t<rsub|0>>=t<rsub|0>*e<rsub|t<rsub|0>>\<forall\><around|{|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0|}>
     </equation>
 
-    so each <math|t<rsub|0>> is an eigenvalue of <math|L> with eigenvector
-    <math|e<rsub|t<rsub|0>>> and since <math|<around|{|e<rsub|t<rsub|0>>|}>>
-    forms an orthonormal basis, <math|L> has pure point spectrum. To show
-    there are no other spectral points, suppose\ 
+    holds, so each <math|t<rsub|0>> is an eigenvalue of <math|L> with
+    eigenvector <math|e<rsub|t<rsub|0>>> and since
+    <math|<around|{|e<rsub|t<rsub|0>>|}>> forms an orthonormal basis,
+    <math|L> has pure point spectrum. The spectrum of a diagonal operator
+    equals the closure of the set of diagonal entries, hence
 
     <\equation>
-      \<lambda\>\<nin\><around|{|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0|}>
+      \<sigma\><around|(|L|)>=<wide|<around|{|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0|}>|\<bar\>>
     </equation>
 
-    Then for any <math|f\<in\>\<cal-D\><around|(|L|)>>,
-    <math|<around*|(|<around|(|L-\<lambda\>*I|)>*f|)><around*|(|t|)>> has
-    components
-
-    <\equation>
-      <around|(|<around|(|L-\<lambda\>*I|)>*f|)><around|(|t<rsub|0>|)>=<around|(|t<rsub|0>-\<lambda\>|)>*f<around|(|t<rsub|0>|)>
-    </equation>
-
-    Since <math|t<rsub|0>-\<lambda\>\<neq\>0> the equation
-
-    <\equation>
-      <around|(|L-\<lambda\>*I|)>*f=g
-    </equation>
-
-    \ has a unique solution <math|\<forall\>g\<in\>\<cal-H\>> which is made
-    apparent by setting
-
-    <\equation>
-      f<around|(|t<rsub|0>|)>=<frac|g<around|(|t<rsub|0>|)>|t<rsub|0>-\<lambda\>>
-    </equation>
-
-    which shows that <math|L-\<lambda\>*I> is invertible, hence
-    <math|\<lambda\>\<nin\>\<sigma\><around|(|L|)>>. Therefore
-
-    <\equation>
-      \<sigma\><around|(|L|)>=<around|{|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0|}>
-    </equation>
-
-    and the eigenvalues are simple.
+    The eigenvalues are simple.
   </proof>
 
   <\remark>
-    <strong|[Operator scaffold>]<label|rem:scaffold> The construction
+    <strong|[Operator scaffold]<label|labelrem:scaffold>> The construction
 
     <\equation>
       <text|stationary >X<long-arrow|\<rubber-rightarrow\>|U<rsub|\<theta\>>><text|oscillatory
       >Z<long-arrow|\<rubber-rightarrow\>|\<mu\>=\<delta\><around|(|Z|)><around|\||<wide|Z|\<dot\>>|\|>*<space|0.17em>d*t>L<rsup|2><around|(|\<mu\>|)><long-arrow|\<rubber-rightarrow\>|L:t\<cdot\>><around|(|L,\<sigma\><around|(|L|)>|)>
     </equation>
 
-    produces a concrete self-adjoint operator whose spectrum equals the zero
-    set of <math|Z>, determined by the choice of time-change <math|\<theta\>>
-    and spectral measure <math|F>. This provides an explicit realization
+    produces a concrete self-adjoint operator whose eigenvalues equal the
+    zero set of <math|Z> and whose spectrum equals the closure of the zero
+    set, determined by the choice of time-change <math|\<theta\>> and
+    spectral measure <math|F>. This provides an explicit realization
     consistent with Hilbert\UPólya approaches to encoding arithmetic
     information in operator spectra.
   </remark>
@@ -946,7 +934,11 @@
   <\definition>
     <strong|[Regularity and simplicity]<label|def:regularity>> Assume
     <math|Z\<in\>C<rsup|1><around|(|\<bbb-R\>|)>> and every zero is simple:
-    <math|Z<around|(|t<rsub|0>|)>=0\<Rightarrow\><wide|Z|\<dot\>><around|(|t<rsub|0>|)>\<neq\>0>.
+    <math|>
+
+    <\equation>
+      Z<around|(|t<rsub|0>|)>=0\<Rightarrow\><wide|Z|\<dot\>><around|(|t<rsub|0>|)>\<neq\>0
+    </equation>
   </definition>
 
   <\lemma>
@@ -979,9 +971,9 @@
     <math|0\<less\><around|\||t-t<rsub|0>|\|>\<less\>\<epsilon\>>. Therefore
     zeros are locally finite (finitely many in any bounded interval).
 
-    For the distributional identity, consider the one-dimensional change of
-    variables formula for the Dirac delta. If <math|g:I\<to\>\<bbb-R\>> is
-    <math|C<rsup|1>> on interval <math|I> with
+    For the distributional identity, the one-dimensional change of variables
+    formula for the Dirac delta is considered. If <math|g:I\<to\>\<bbb-R\>>
+    is <math|C<rsup|1>> on interval <math|I> with
     <math|<wide|g|\<dot\>><around|(|x|)>\<neq\>0> for all <math|x\<in\>I>,
     then
 
@@ -990,7 +982,7 @@
     </equation>
 
     Applying this locally around each zero <math|t<rsub|0>> of <math|Z>, and
-    since zeros are isolated, we can patch together the local results to
+    since zeros are isolated, the local results can be patched together to
     obtain the global identity:
 
     <\equation>
@@ -1000,7 +992,7 @@
     Consequently:
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|\<mu\>*<around|(|d*t|)>>|<cell|=\<delta\><around|(|Z<around|(|t|)>|)><around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><frac|<around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>>*\<delta\>*<around|(|t-t<rsub|0>|)>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<delta\><rsub|t<rsub|0>>*<around|(|d*t|)>>>>>>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|\<mathd\>\<mu\>*<around|(|t|)>>|<cell|=\<delta\><around|(|Z<around|(|t|)>|)><around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><frac|<around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>>*\<delta\>*<around|(|t-t<rsub|0>|)>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<delta\><rsub|t<rsub|0>>*<around|(|d*t|)>>>>>>
     </equation>
 
     where the last equality uses the fact that
@@ -1009,7 +1001,7 @@
       <frac|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>>=1
     </equation>
 
-    \ when evaluating at <math|t=t<rsub|0>>.
+    when evaluating at <math|t=t<rsub|0>>.
   </proof>
 </body>
 
@@ -1040,20 +1032,20 @@
     <associate|auto-9|<tuple|4|11>>
     <associate|cor:evol_spec|<tuple|13|9>>
     <associate|covar|<tuple|20|5>>
-    <associate|def:Hmu|<tuple|18|14>>
-    <associate|def:L|<tuple|20|15>>
-    <associate|def:L2sigma|<tuple|2|2>>
+    <associate|def:L|<tuple|20|16>>
+    <associate|def:L2loc|<tuple|2|2>>
     <associate|def:Utheta|<tuple|4|2>>
     <associate|def:cramer|<tuple|11|7>>
     <associate|def:osc_proc|<tuple|8|5>>
     <associate|def:regularity|<tuple|23|17>>
     <associate|def:sigma_compact|<tuple|1|2>>
     <associate|def:zeromeasure|<tuple|16|13>>
+    <associate|labeldef:Hmu|<tuple|18|14>>
+    <associate|labelrem:scaffold|<tuple|22|17>>
     <associate|lem:delta|<tuple|24|17>>
-    <associate|prop:atomic|<tuple|19|14>>
+    <associate|prop:atomic|<tuple|19|15>>
     <associate|prop:conjugation|<tuple|14|10>>
     <associate|prop:inverse|<tuple|5|2>>
-    <associate|rem:scaffold|<tuple|22|17>>
     <associate|sec:HP|<tuple|5|13>>
     <associate|sec:appendix|<tuple|6|17>>
     <associate|sec:functionspaces|<tuple|1|2>>
@@ -1065,8 +1057,8 @@
     <associate|thm:existence_osc|<tuple|10|6>>
     <associate|thm:global_unitarity|<tuple|7|4>>
     <associate|thm:local_unitarity|<tuple|6|3>>
-    <associate|thm:paths_sigma_comp|<tuple|15|11>>
-    <associate|thm:spectrum|<tuple|21|15>>
+    <associate|thm:paths_loc|<tuple|15|11>>
+    <associate|thm:spectrum|<tuple|21|16>>
   </collection>
 </references>
 
@@ -1109,7 +1101,7 @@
       <no-break><pageref|auto-8>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>Sample
-      Paths Live in <with|mode|<quote|math>|L<rsup|2><rsub|\<sigma\><with|mode|<quote|text>|-comp>>>>
+      Paths Live in <with|mode|<quote|math>|L<rsup|2><rsub|loc>>>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-9><vspace|0.5fn>
 
