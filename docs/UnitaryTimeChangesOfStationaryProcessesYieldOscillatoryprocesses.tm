@@ -48,8 +48,8 @@
     Processes (Priestley)> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-4><vspace|0.5fn>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|3<space|2spc>Stationary
-    Processes and Time Change> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|3<space|2spc>Unitarily
+    Time-Changed Stationary Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-5><vspace|0.5fn>
 
     <with|par-left|1tab|3.1<space|2spc>Stationary processes
@@ -636,50 +636,23 @@
   </proposition>
 
   <\proof>
-    For any <math|g\<in\>L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>, the
-    integral operator is transformed from coordinates <math|<around|(|r,w|)>>
-    to coordinates <math|<around|(|t,s|)>> by applying both coordinate
-    transformations
+    For any <math|g\<in\>L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>, compute:
 
     <\equation>
-      r=\<theta\><around|(|t|)>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<around|(|<around|(|U<rsub|\<theta\>>*T<rsub|K>*U<rsub|\<theta\>><rsup|-1>|)>*g|)><around|(|t|)>>|<cell|=<around|(|U<rsub|\<theta\>>*<around|(|T<rsub|K>*U<rsub|\<theta\>><rsup|-1>*g|)>|)><around|(|t|)>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<around|(|T<rsub|K>*U<rsub|\<theta\>><rsup|-1>*g|)><around|(|\<theta\><around|(|t|)>|)>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<big|int><rsub|\<bbb-R\>>K<around|(|<around|\||\<theta\><around|(|t|)>-w|\|>|)>*<around|(|U<rsub|\<theta\>><rsup|-1>*g|)><around|(|w|)>*<space|0.17em>d*w>>>>>
     </equation>
 
-    and
+    Substitute <math|w=\<theta\><around|(|s|)>> with
+    <math|d*w=<wide|\<theta\>|\<dot\>><around|(|s|)>*<space|0.17em>d*s>:
 
     <\equation>
-      w=\<theta\><around|(|s|)>
-    </equation>
-
-    by simultaneous substitution with Jacobians
-
-    <\equation>
-      d*r=<wide|\<theta\>|\<dot\>><around|(|t|)>*<space|0.17em>d*t
-    </equation>
-
-    and
-
-    <\equation>
-      d*w=<wide|\<theta\>|\<dot\>><around|(|s|)>*<space|0.17em>d*s
-    </equation>
-
-    The operator <math|T<rsub|K>> in <math|<around|(|r,w|)>> coordinates is:
-
-    <\equation>
-      <around|(|T<rsub|K>*f|)><around|(|r|)>=<big|int><rsub|\<bbb-R\>>K<around|(|<around|\||r-w|\|>|)>*f<around|(|w|)>*<space|0.17em>d*w
-    </equation>
-
-    Under the simultaneous transformation <math|r=\<theta\><around|(|t|)>>
-    and <math|w=\<theta\><around|(|s|)>>:
-
-    <\equation>
-      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<around|(|<around|(|U<rsub|\<theta\>>*T<rsub|K>*U<rsub|\<theta\>><rsup|-1>|)>*g|)><around|(|t|)>>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<big|int><rsub|\<bbb-R\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>*<around|(|U<rsub|\<theta\>><rsup|-1>*g|)><around|(|\<theta\><around|(|s|)>|)><frac|<wide|\<theta\>|\<dot\>><around|(|s|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<big|int><rsub|\<bbb-R\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)><frac|g<around|(|s|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>>*<sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<big|int><rsub|\<bbb-R\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>*g<around|(|s|)>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>><sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>*g<around|(|s|)>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>K<rsub|\<theta\>><around|(|t,s|)>*g<around|(|s|)>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<around|(|T<rsub|K<rsub|\<theta\>>>*g|)><around|(|t|)>>>>>>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<big|int><rsub|\<bbb-R\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)><frac|g<around|(|s|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>>*<wide|\<theta\>|\<dot\>><around|(|s|)>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<big|int><rsub|\<bbb-R\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>*g<around|(|s|)><sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>><sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)><wide|\<theta\>|\<dot\>><around|(|s|)>>*K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>*g<around|(|s|)>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>K<rsub|\<theta\>><around|(|t,s|)>*g<around|(|s|)>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<around|(|T<rsub|K<rsub|\<theta\>>>*g|)><around|(|t|)>>>>>>
     </equation>
 
     where
 
     <\equation>
-      K<rsub|\<theta\>><around|(|t,s|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>
+      K<rsub|\<theta\>><around|(|t,s|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)><wide|\<theta\>|\<dot\>><around|(|s|)>>*K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>
     </equation>
 
     Therefore
@@ -719,30 +692,6 @@
       <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|\<bbb-E\><around|[|Y<rsub|<around|[|a,b|]>>|]>=\<bbb-E\><around*|[|<big|int><rsub|a><rsup|b>X<around|(|t|)><rsup|2>*<space|0.17em>d*t|]>>|<cell|=<big|int><rsub|a><rsup|b>\<bbb-E\><around|[|X<around|(|t|)><rsup|2>|]>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|int><rsub|a><rsup|b>\<sigma\><rsup|2>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=\<sigma\><rsup|2>*<around|(|b-a|)>\<less\>\<infty\>>>>>>
     </equation>
 
-    Equivalently, invoking the evolutionary spectrum\ 
-
-    <\equation>
-      d*F<rsub|t><around|(|\<lambda\>|)>=<wide|\<theta\>|\<dot\>><around|(|t|)>*d*F<around|(|\<lambda\>|)>
-    </equation>
-
-    it can be seen that the oscillatory process can be expressed as\ 
-
-    <\equation>
-      Z<around|(|t|)>=<around|(|U<rsub|\<theta\>>*X|)><around|(|t|)>
-    </equation>
-
-    whose (ensemble) variance is given by
-
-    <\equation>
-      <tabular|<tformat|<table|<row|<cell|\<bbb-E\><around|[|Z<around|(|t|)><rsup|2>|]>>|<cell|=<big|int>d*F<rsub|t><around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<wide|\<theta\>|\<dot\>><around|(|t|)>*<big|int>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<wide|\<theta\>|\<dot\>><around|(|t|)>*\<sigma\><rsup|2>>>>>>
-    </equation>
-
-    Therefore for any bounded interval <math|<around|[|a,b|]>>:
-
-    <\equation>
-      <tabular|<tformat|<table|<row|<cell|\<bbb-E\><around*|[|<big|int><rsub|a><rsup|b>Z<around|(|t|)><rsup|2>*d*t|]>>|<cell|=<big|int><rsub|a><rsup|b><wide|\<theta\>|\<dot\>><around|(|t|)>*\<sigma\><rsup|2>*d*t>>|<row|<cell|>|<cell|=\<sigma\><rsup|2>*<around|[|\<theta\><around|(|b|)>-\<theta\><around|(|a|)>|]>\<less\>\<infty\>>>>>>
-    </equation>
-
     By Markov's inequality, for any <math|M\<gtr\>0>:
 
     <\equation>
@@ -755,7 +704,7 @@
       P*<around|(|Y<rsub|<around|[|a,b|]>>\<less\>\<infty\>|)>=1
     </equation>
 
-    , i.e., almost surely the sample path is square-integrable on
+    i.e., almost surely the sample path is square-integrable on
     <math|<around|[|a,b|]>>. Since <math|\<bbb-R\>> is the countable union of
     bounded intervals:
 
@@ -1105,49 +1054,49 @@
 <\references>
   <\collection>
     <associate|auto-1|<tuple|1|2>>
-    <associate|auto-10|<tuple|5|14>>
-    <associate|auto-11|<tuple|5.1|14>>
+    <associate|auto-10|<tuple|5|13>>
+    <associate|auto-11|<tuple|5.1|13>>
     <associate|auto-12|<tuple|5.2|15>>
-    <associate|auto-13|<tuple|6|18>>
+    <associate|auto-13|<tuple|6|17>>
     <associate|auto-2|<tuple|1.1|2>>
     <associate|auto-3|<tuple|1.2|2>>
     <associate|auto-4|<tuple|2|5>>
-    <associate|auto-5|<tuple|3|9>>
-    <associate|auto-6|<tuple|3.1|9>>
+    <associate|auto-5|<tuple|3|8>>
+    <associate|auto-6|<tuple|3.1|8>>
     <associate|auto-7|<tuple|3.2|9>>
     <associate|auto-8|<tuple|3.3|11>>
-    <associate|auto-9|<tuple|4|13>>
-    <associate|cor:evol_spec|<tuple|13|11>>
+    <associate|auto-9|<tuple|4|12>>
+    <associate|cor:evol_spec|<tuple|13|10>>
     <associate|covar|<tuple|48|9>>
-    <associate|def:L|<tuple|20|17>>
+    <associate|def:L|<tuple|20|16>>
     <associate|def:L2loc|<tuple|2|2>>
     <associate|def:Utheta|<tuple|4|2>>
-    <associate|def:cramer|<tuple|11|9>>
+    <associate|def:cramer|<tuple|11|8>>
     <associate|def:osc_proc|<tuple|8|5>>
-    <associate|def:regularity|<tuple|23|18>>
+    <associate|def:regularity|<tuple|23|17>>
     <associate|def:sigma_compact|<tuple|1|2>>
-    <associate|def:zeromeasure|<tuple|16|14>>
+    <associate|def:zeromeasure|<tuple|16|13>>
     <associate|labeldef:Hmu|<tuple|18|15>>
-    <associate|labelrem:scaffold|<tuple|22|18>>
-    <associate|lem:delta|<tuple|24|18>>
+    <associate|labelrem:scaffold|<tuple|22|17>>
+    <associate|lem:delta|<tuple|24|17>>
     <associate|of|<tuple|17|5>>
-    <associate|prop:atomic|<tuple|19|16>>
+    <associate|prop:atomic|<tuple|19|15>>
     <associate|prop:conjugation|<tuple|14|11>>
-    <associate|prop:inverse|<tuple|5|3>>
-    <associate|sec:HP|<tuple|5|14>>
-    <associate|sec:appendix|<tuple|6|18>>
+    <associate|prop:inverse|<tuple|5|2>>
+    <associate|sec:HP|<tuple|5|13>>
+    <associate|sec:appendix|<tuple|6|17>>
     <associate|sec:functionspaces|<tuple|1|2>>
     <associate|sec:oscillatory|<tuple|2|5>>
-    <associate|sec:samplepaths|<tuple|4|13>>
-    <associate|sec:stationary_timechange|<tuple|3|9>>
+    <associate|sec:samplepaths|<tuple|4|12>>
+    <associate|sec:stationary_timechange|<tuple|3|8>>
     <associate|thm:Utheta_to_osc|<tuple|12|9>>
-    <associate|thm:atomic|<tuple|17|15>>
+    <associate|thm:atomic|<tuple|17|14>>
     <associate|thm:existence_osc|<tuple|10|7>>
     <associate|thm:global_unitarity|<tuple|7|4>>
     <associate|thm:local_unitarity|<tuple|6|3>>
-    <associate|thm:paths_loc|<tuple|15|13>>
-    <associate|thm:realvaluedness|<tuple|9|6>>
-    <associate|thm:spectrum|<tuple|21|17>>
+    <associate|thm:paths_loc|<tuple|15|12>>
+    <associate|thm:realvaluedness|<tuple|9|5>>
+    <associate|thm:spectrum|<tuple|21|16>>
   </collection>
 </references>
 

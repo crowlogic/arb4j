@@ -577,41 +577,26 @@ Processes}\label{sec:stationary_timechange}
 \end{proposition}
 
 \begin{proof}
-  For any $g \in L^2_{\tmop{loc}} (\mathbb{R})$, the integral operator is
-  transformed from coordinates $(r, w)$ to coordinates $(t, s)$ by applying
-  both coordinate transformations
-  \begin{equation}
-    r = \theta (t)
-  \end{equation}
-  and
-  \begin{equation}
-    w = \theta (s)
-  \end{equation}
-  by simultaneous substitution with Jacobians
-  \begin{equation}
-    dr = \dot{\theta} (t)  \hspace{0.17em} dt
-  \end{equation}
-  and
-  \begin{equation}
-    dw = \dot{\theta} (s)  \hspace{0.17em} ds
-  \end{equation}
-  The operator $T_K$ in $(r, w)$ coordinates is:
-  \begin{equation}
-    (T_K f) (r) = \int_{\mathbb{R}} K (|r - w|) f (w)  \hspace{0.17em} dw
-  \end{equation}
-  Under the simultaneous transformation $r = \theta (t)$ and $w = \theta (s)$:
+  For any $g \in L^2_{\tmop{loc}} (\mathbb{R})$, compute:
   \begin{equation}
     \begin{array}{ll}
-      ((U_{\theta} T_K U_{\theta}^{- 1}) g) (t) & = \sqrt{\dot{\theta} (t) 
-      \dot{\theta} (s)}  \int_{\mathbb{R}} K (| \theta (t) - \theta (s) |) 
-      (U_{\theta}^{- 1} g) (\theta (s)) \frac{\dot{\theta}
-      (s)}{\sqrt{\dot{\theta} (s)}}  \hspace{0.17em} ds\\
-      & = \sqrt{\dot{\theta} (t)  \dot{\theta} (s)}  \int_{\mathbb{R}} K (|
-      \theta (t) - \theta (s) |) \frac{g (s)}{\sqrt{\dot{\theta} (s)}} 
-      \sqrt{\dot{\theta} (s)}  \hspace{0.17em} ds\\
-      & = \sqrt{\dot{\theta} (t)  \dot{\theta} (s)}  \int_{\mathbb{R}} K (|
-      \theta (t) - \theta (s) |) g (s)  \hspace{0.17em} ds\\
-      & = \int_{\mathbb{R}} \sqrt{\dot{\theta} (t)  \dot{\theta} (s)} K (|
+      ((U_{\theta} T_K U_{\theta}^{- 1}) g) (t) & = (U_{\theta} (T_K
+      U_{\theta}^{- 1} g)) (t)\\
+      & = \sqrt{\dot{\theta} (t)}  (T_K U_{\theta}^{- 1} g) (\theta (t))\\
+      & = \sqrt{\dot{\theta} (t)}  \int_{\mathbb{R}} K (| \theta (t) - w|) 
+      (U_{\theta}^{- 1} g) (w)  \hspace{0.17em} dw
+    \end{array}
+  \end{equation}
+  Substitute $w = \theta (s)$ with $dw = \dot{\theta} (s)  \hspace{0.17em}
+  ds$:
+  \begin{equation}
+    \begin{array}{ll}
+      & = \sqrt{\dot{\theta} (t)}  \int_{\mathbb{R}} K (| \theta (t) - \theta
+      (s) |) \frac{g (s)}{\sqrt{\dot{\theta} (s)}}  \dot{\theta} (s) 
+      \hspace{0.17em} ds\\
+      & = \sqrt{\dot{\theta} (t)}  \int_{\mathbb{R}} K (| \theta (t) - \theta
+      (s) |) g (s) \sqrt{\dot{\theta} (s)}  \hspace{0.17em} ds\\
+      & = \int_{\mathbb{R}} \sqrt{\dot{\theta} (t) \dot{\theta} (s)} K (|
       \theta (t) - \theta (s) |) g (s)  \hspace{0.17em} ds\\
       & = \int_{\mathbb{R}} K_{\theta} (t, s) g (s)  \hspace{0.17em} ds\\
       & = (T_{K_{\theta}} g) (t)
@@ -619,7 +604,7 @@ Processes}\label{sec:stationary_timechange}
   \end{equation}
   where
   \begin{equation}
-    K_{\theta} (t, s) = \sqrt{\dot{\theta} (t)  \dot{\theta} (s)} K (| \theta
+    K_{\theta} (t, s) = \sqrt{\dot{\theta} (t) \dot{\theta} (s)} K (| \theta
     (t) - \theta (s) |)
   \end{equation}
   Therefore
@@ -656,30 +641,6 @@ Processes}\label{sec:stationary_timechange}
       & = \sigma^2  (b - a) < \infty
     \end{array}
   \end{equation}
-  Equivalently, invoking the evolutionary spectrum
-  \begin{equation}
-    dF_t (\lambda) = \dot{\theta} (t) dF (\lambda)
-  \end{equation}
-  it can be seen that the oscillatory process can be expressed as
-  \begin{equation}
-    Z (t) = (U_{\theta} X) (t)
-  \end{equation}
-  whose (ensemble) variance is given by
-  \begin{equation}
-    \begin{array}{ll}
-      \mathbb{E} [Z (t)^2] & = \int dF_t (\lambda)\\
-      & = \dot{\theta} (t)  \int dF (\lambda)\\
-      & = \dot{\theta} (t) \sigma^2
-    \end{array}
-  \end{equation}
-  Therefore for any bounded interval $[a, b]$:
-  \begin{equation}
-    \begin{array}{ll}
-      \mathbb{E} \left[ \int_a^b Z (t)^2 dt \right] & = \int_a^b \dot{\theta}
-      (t) \sigma^2 dt\\
-      & = \sigma^2  [\theta (b) - \theta (a)] < \infty
-    \end{array}
-  \end{equation}
   By Markov's inequality, for any $M > 0$:
   \begin{equation}
     P (Y_{[a, b]} > M) \leq \frac{\mathbb{E} [Y_{[a, b]}]}{M} = \frac{\sigma^2
@@ -689,8 +650,8 @@ Processes}\label{sec:stationary_timechange}
   \begin{equation}
     P (Y_{[a, b]} < \infty) = 1
   \end{equation}
-  , i.e., almost surely the sample path is square-integrable on $[a, b]$.
-  Since $\mathbb{R}$ is the countable union of bounded intervals:
+  i.e., almost surely the sample path is square-integrable on $[a, b]$. Since
+  $\mathbb{R}$ is the countable union of bounded intervals:
   \begin{equation}
     \mathbb{R}= \bigcup_{n = 1}^{\infty} [- n, n]
   \end{equation}
