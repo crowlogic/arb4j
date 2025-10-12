@@ -16,17 +16,17 @@
     representation of a stationary process yields an oscillatory process in
     the sense of Priestley with oscillatory function
     <math|\<varphi\><rsub|t><around|(|\<lambda\>|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>>
-    and evolutionary spectrum <math|d*F<rsub|t><around|(|\<lambda\>|)>=<wide|\<theta\>|\<dot\>><around|(|t|)>*<space|0.17em>d*F<around|(|\<lambda\>|)>>.
+    and evolutionary spectrum <math|d*F<rsub|t><around|(|\<lambda\>|)>=<wide|\<theta\>|\<dot\>><around|(|t|)>d*F<around|(|\<lambda\>|)>>.
     It is proved that sample paths of any non-degenerate second-order
     stationary process almost surely lie in
     <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>, making the operator
     applicable to typical realizations. A zero-localization measure
-    <math|\<mu\>*<around|(|d*t|)>=\<delta\><around|(|Z<around|(|t|)>|)><space|0.17em><around|\||Z<rprime|'><around|(|t|)>|\|>*<space|0.17em>d*t>
+    <math|\<mathd\>\<mu\>*<around|(|*t|)>=\<delta\><around|(|Z<around|(|t|)>|)><space|0.17em><around|\||Z<rprime|'><around|(|t|)>|\|>*<space|0.17em>d*t>
     induces a Hilbert space <math|L<rsup|2><around|(|\<mu\>|)>> on the zero
     set of an oscillatory process <math|Z>, and the multiplication operator
-    <math|<around|(|L*f|)><around|(|t|)>=t*f<around|(|t|)>> has pure point,
-    simple spectrum equal to the zero set of <math|Z>. This produces a
-    concrete operator scaffold consistent with a Hilbert\UPólya-type
+    <math|<around|(|L*f|)><around|(|t|)>=t*f<around|(|t|)>> has simple pure
+    point spectrum equal to the zero crossing set of <math|Z>. This produces
+    a concrete operator scaffold consistent with a Hilbert\UPólya-type
     viewpoint.
   </abstract>
 
@@ -125,9 +125,9 @@
   <subsection|Unitary time-change operator>
 
   <\definition>
-    <strong|[Unitary time-change]<label|def:Utheta>> Let
-    <math|\<theta\>:\<bbb-R\>\<to\>\<bbb-R\>> be absolutely continuous,
-    strictly increasing, and bijective, with
+    <strong|[Unitary time-change]<label|def:Utheta>> Let the time-scaling
+    function <math|\<theta\>:\<bbb-R\>\<to\>\<bbb-R\>> be absolutely
+    continuous, strictly increasing, and bijective, with
     <math|<wide|\<theta\>|\<dot\>><around|(|t|)>\<gtr\>0> almost everywhere
     and <math|<wide|\<theta\>|\<dot\>><around|(|t|)>=0> only on sets of
     Lebesgue measure zero. The function <math|\<theta\>> maps
@@ -276,7 +276,7 @@
     be the gain function and
 
     <\equation>
-      \<varphi\><rsub|t><around|(|\<lambda\>|)>=A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>
+      \<varphi\><rsub|t><around|(|\<lambda\>|)>=A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t><label|of>
     </equation>
 
     be the corresponding oscillatory function then an <em|oscillatory
@@ -300,22 +300,110 @@
     </equation>
   </definition>
 
-  <\remark>
-    [Real-valuedness] <math|Z> is real-valued if and only if
+  <\theorem>
+    <strong|[Real-valuedness criterion for oscillatory
+    processes]<label|thm:realvaluedness>>Let <math|Z> be an oscillatory
+    process with oscillatory function
+
+    <\equation>
+      \<varphi\><rsub|t><around|(|\<lambda\>|)>=A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>
+    </equation>
+
+    and spectral measure <math|F>. Then <math|Z> is real-valued if and only
+    if
 
     <\equation>
       A<rsub|t>*<around|(|-\<lambda\>|)>=<wide|A<rsub|t><around|(|\<lambda\>|)>|\<bar\>>
     </equation>
 
-    for <math|F>-a.e. <math|\<lambda\>>, equivalently
+    for <math|F>-almost every <math|\<lambda\>\<in\>\<bbb-R\>>, equivalently
 
     <\equation>
       \<varphi\><rsub|t>*<around|(|-\<lambda\>|)>=<wide|\<varphi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>>
     </equation>
 
-    for <math|F>-a.e. <math|\<lambda\>>. TODO: this needs to be recast as a
-    theorem
-  </remark>
+    for <math|F>-almost every <math|\<lambda\>\<in\>\<bbb-R\>>.
+  </theorem>
+
+  <\proof>
+    Assume <math|Z> is real-valued, i.e.
+
+    <\equation>
+      Z<around|(|t|)>=<wide|Z<around|(|t|)>|\<bar\>><space|1em>\<forall\>t\<in\>\<bbb-R\>
+    </equation>
+
+    Writing its oscillatory representation,
+
+    <\equation>
+      Z<around|(|t|)>=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*\<mathd\>\<Phi\><around|(|\<lambda\>|)>
+    </equation>
+
+    and taking the complex conjugate gives
+
+    <\equation>
+      <wide|Z<around|(|t|)>|\<bar\>>=<big|int><rsub|\<bbb-R\>><wide|A<rsub|t><around|(|\<lambda\>|)>|\<bar\>>e<rsup|-i*\<lambda\>*t>\<mathd\><wide|\<Phi\>*<around|(|\<lambda\>|)>|\<bar\>>
+    </equation>
+
+    For a real-valued process, the orthogonal random measure <math|\<Phi\>>
+    must satisfy
+
+    <\equation>
+      \<mathd\><wide|\<Phi\>*<around|(|\<lambda\>|)>|\<bar\>>=-\<mathd\>
+      \<Phi\>*<around|(|*\<lambda\>|)>
+    </equation>
+
+    which ensures that the spectral representation produces real values.
+    Substituting this identity and using the substitution\ 
+
+    <\equation>
+      \<mu\>=-\<lambda\>
+    </equation>
+
+    it is shown that
+
+    <\equation>
+      <wide|Z<around|(|t|)>|\<bar\>>=<big|int><rsub|\<bbb-R\>><wide|A<rsub|t>*<around|(|-\<mu\>|)>|\<bar\>>e<rsup|i*\<mu\>*t>*\<mathd\>
+      \<Phi\>*<around|(|\<mu\>|)>
+    </equation>
+
+    Since <math|Z<around|(|t|)>=<wide|Z<around|(|t|)>|\<bar\>>>, comparison
+    of the integrands (which are unique elements of
+    <math|L<rsup|2><around|(|F|)>>) yields
+
+    <\equation>
+      A<rsub|t><around|(|\<lambda\>|)>=<wide|A<rsub|t>*<around|(|-\<lambda\>|)>|\<bar\>><space|1em><text|for
+      >F*<text|-a.e. >\<lambda\>
+    </equation>
+
+    Equivalently, because the oscillatory function (<reference|of>) is given
+    by
+
+    <\equation>
+      \<varphi\><rsub|t><around|(|\<lambda\>|)>=A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>
+    </equation>
+
+    we have
+
+    <\equation>
+      \<varphi\><rsub|t>*<around|(|-\<lambda\>|)>=<wide|\<varphi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>><space|1em><text|for
+      >F*<text|-a.e. >\<lambda\>
+    </equation>
+
+    Conversely, if <math|>
+
+    <\equation>
+      A<rsub|t>*<around|(|-\<lambda\>|)>=<wide|A<rsub|t><around|(|\<lambda\>|)>|\<bar\>>
+    </equation>
+
+    \ for <math|F>-a.e. <math|\<lambda\>>, then the same substitution shows
+    that
+
+    <\equation>
+      <wide|Z<around|(|t|)>|\<bar\>>=Z<around|(|t|)><space|1em>\<forall\>t\<in\>\<bbb-R\>
+    </equation>
+
+    so <math|Z> is real-valued. This completes the proof.
+  </proof>
 
   <\theorem>
     <strong|[Existence]><label|thm:existence_osc> If <math|F> is finite and
@@ -330,7 +418,7 @@
     spectral measure <math|F> such that
 
     <\equation>
-      Z<around|(|t|)>=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>
+      Z<around|(|t|)>=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>\<mathd\>\<Phi\>*<around|(|\<lambda\>|)>
     </equation>
 
     is well-defined in <math|L<rsup|2><around|(|\<Omega\>|)>> and has
@@ -362,7 +450,8 @@
 
     Since simple functions are dense in <math|L<rsup|2><around|(|F|)>>, the
     integral is extended by continuity to all
-    <math|g\<in\>L<rsup|2><around|(|F|)>>. For each <math|t>, since
+    <math|g\<in\>L<rsup|2><around|(|F|)>>. For each <math|t>, since the
+    oscillatory function (<reference|of>) is defined by
 
     <\equation>
       \<varphi\><rsub|t><around|(|\<lambda\>|)>=A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>
@@ -372,18 +461,19 @@
     <math|\<varphi\><rsub|t>\<in\>L<rsup|2><around|(|F|)>> holds. Therefore
 
     <\equation>
-      Z<around|(|t|)>=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>
+      Z<around|(|t|)>=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)>*\<mathd\>\<Phi\>*<around|(|\<lambda\>|)>
     </equation>
 
     is well-defined in <math|L<rsup|2><around|(|\<Omega\>|)>>. The covariance
     is computed as:
 
     <\equation>
-      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|R<rsub|Z><around|(|t,s|)>>|<cell|=\<bbb-E\><around|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=\<bbb-E\><around*|[|<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>*<big|int><rsub|\<bbb-R\>><wide|\<varphi\><rsub|s><around|(|\<mu\>|)>|\<bar\>><space|0.17em><wide|\<Phi\>*<around|(|d*\<mu\>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>><big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)><wide|\<varphi\><rsub|s><around|(|\<mu\>|)>|\<bar\>>\<bbb-E\>*<around|[|\<Phi\>*<around|(|d*\<lambda\>|)><wide|\<Phi\>*<around|(|d*\<mu\>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)><wide|\<varphi\><rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)><wide|A<rsub|s><around|(|\<lambda\>|)>|\<bar\>>e<rsup|i*\<lambda\>*<around|(|t-s|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>>>>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|R<rsub|Z><around|(|t,s|)>>|<cell|=\<bbb-E\><around|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=\<bbb-E\><around*|[|<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)>\<mathd\>\<Phi\>*<around|(|\<lambda\>|)>*<big|int><rsub|\<bbb-R\>><wide|\<varphi\><rsub|s><around|(|\<mu\>|)>|\<bar\>>\<mathd\><wide|\<Phi\>*<around|(|\<mu\>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>><big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)><wide|\<varphi\><rsub|s><around|(|\<mu\>|)>|\<bar\>>\<bbb-E\>*<around|[|\<mathd\>\<Phi\><around|(|\<lambda\>|)>\<mathd\><wide|\<Phi\><around|(|\<mu\>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)><wide|\<varphi\><rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)><wide|A<rsub|s><around|(|\<lambda\>|)>|\<bar\>>e<rsup|i*\<lambda\>*<around|(|t-s|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>>>>
     </equation>
   </proof>
 
-  <section|Stationary Processes and Time Change><label|sec:stationary_timechange>
+  <section|Unitarily Time-Changed Stationary
+  Processes><label|sec:stationary_timechange>
 
   <subsection|Stationary processes>
 
@@ -407,31 +497,32 @@
   <math|U<rsub|\<theta\>>>>
 
   <\theorem>
-    <strong|[Time change yields oscillatory
+    <strong|[Unitary time change yields oscillatory
     process]<label|thm:Utheta_to_osc>> Let <math|X> be zero-mean stationary
-    as in Definition<nbsp><reference|def:cramer>. For <math|\<theta\>> as in
-    Definition<nbsp><reference|def:Utheta>, define
+    as in Definition<nbsp><reference|def:cramer>. For scaling function
+    <math|\<theta\>> as in Definition<nbsp><reference|def:Utheta>, define
 
     <\equation>
       <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|Z<around|(|t|)>>|<cell|=<around|(|U<rsub|\<theta\>>*X|)><around|(|t|)>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>X<around|(|\<theta\><around|(|t|)>|)>>>>>>
     </equation>
 
-    Then <math|Z> is oscillatory with oscillatory function
+    Then <math|Z> is a realization of an oscillatory process with oscillatory
+    function
 
     <\equation>
       \<varphi\><rsub|t><around|(|\<lambda\>|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>
     </equation>
 
-    , gain function
+    gain function
 
     <\equation>
       A<rsub|t><around|(|\<lambda\>|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>
     </equation>
 
-    , and covariance
+    and covariance
 
     <\equation>
-      R<rsub|Z><around|(|t,s|)>=<big|int><rsub|\<bbb-R\>><sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<space|0.17em>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>
+      <tabular|<tformat|<cwith|1|5|1|1|cell-halign|l>|<cwith|1|5|1|1|cell-lborder|0ln>|<cwith|1|5|2|2|cell-halign|l>|<cwith|1|5|2|2|cell-rborder|0ln>|<table|<row|<cell|R<rsub|Z><around|(|t,s|)>>|<cell|=\<bbb-E\><around|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=\<bbb-E\>*<around*|[|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*X<around|(|\<theta\><around|(|t|)>|)><wide|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*X<around|(|\<theta\><around|(|t|)>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*\<bbb-E\><around|[|X<around|(|\<theta\><around|(|t|)>|)><wide|X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*R<rsub|X>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>>>><label|covar>
     </equation>
   </theorem>
 
@@ -466,19 +557,21 @@
 
     Since <math|<wide|\<theta\>|\<dot\>><around|(|t|)>\<geq\>0> almost
     everywhere and <math|<wide|\<theta\>|\<dot\>><around|(|t|)>=0> only on
-    sets of measure zero, <math|A<rsub|t><around|(|\<lambda\>|)>> is
-    well-defined almost everywhere. Moreover,
-    <math|A<rsub|t>\<in\>L<rsup|2><around|(|F|)>> for each <math|t> since:
+    sets of measure zero, <math|A<rsub|t><around|(|\<lambda\>|)>> is well
+    defined almost everywhere. Moreover, <math|A<rsub|t>\<in\>L<rsup|2><around|(|F|)>>
+    for each <math|t> since:
 
     <\equation>
       <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<big|int><rsub|\<bbb-R\>><around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>>|<cell|=<big|int><rsub|\<bbb-R\>><around*|\||<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>><wide|\<theta\>|\<dot\>><around|(|t|)><around|\||e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<wide|\<theta\>|\<dot\>><around|(|t|)>*<big|int><rsub|\<bbb-R\>>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<wide|\<theta\>|\<dot\>><around|(|t|)>*F<around|(|\<bbb-R\>|)>\<less\>\<infty\>>>>>>
     </equation>
 
     where <math|<around|\||e<rsup|i*\<alpha\>>|\|>=1> for all real
-    <math|\<alpha\>> is used. The covariance is computed as:
+    <math|\<alpha\>> is used. The covariance (<reference|covar>) is computed
+    by substituting the spectral representation and applying Fubuni's theorem
+    to interchange the order of operations.
 
     <\equation>
-      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|R<rsub|Z><around|(|t,s|)>>|<cell|=\<bbb-E\><around|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=\<bbb-E\>*<around*|[|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*X<around|(|\<theta\><around|(|t|)>|)><sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>><wide|X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*\<bbb-E\><around|[|X<around|(|\<theta\><around|(|t|)>|)><wide|X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*R<rsub|X>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>>>>
+      <tabular*|<tformat|<table|<row|<cell|>|<cell|>>>>>
     </equation>
   </proof>
 
@@ -1012,47 +1105,49 @@
 <\references>
   <\collection>
     <associate|auto-1|<tuple|1|2>>
-    <associate|auto-10|<tuple|5|13>>
-    <associate|auto-11|<tuple|5.1|13>>
-    <associate|auto-12|<tuple|5.2|14>>
-    <associate|auto-13|<tuple|6|17>>
+    <associate|auto-10|<tuple|5|14>>
+    <associate|auto-11|<tuple|5.1|14>>
+    <associate|auto-12|<tuple|5.2|15>>
+    <associate|auto-13|<tuple|6|18>>
     <associate|auto-2|<tuple|1.1|2>>
     <associate|auto-3|<tuple|1.2|2>>
     <associate|auto-4|<tuple|2|5>>
-    <associate|auto-5|<tuple|3|7>>
-    <associate|auto-6|<tuple|3.1|7>>
-    <associate|auto-7|<tuple|3.2|8>>
-    <associate|auto-8|<tuple|3.3|10>>
-    <associate|auto-9|<tuple|4|11>>
-    <associate|cor:evol_spec|<tuple|13|9>>
-    <associate|covar|<tuple|20|5>>
-    <associate|def:L|<tuple|20|16>>
+    <associate|auto-5|<tuple|3|9>>
+    <associate|auto-6|<tuple|3.1|9>>
+    <associate|auto-7|<tuple|3.2|9>>
+    <associate|auto-8|<tuple|3.3|11>>
+    <associate|auto-9|<tuple|4|13>>
+    <associate|cor:evol_spec|<tuple|13|11>>
+    <associate|covar|<tuple|48|9>>
+    <associate|def:L|<tuple|20|17>>
     <associate|def:L2loc|<tuple|2|2>>
     <associate|def:Utheta|<tuple|4|2>>
-    <associate|def:cramer|<tuple|11|7>>
+    <associate|def:cramer|<tuple|11|9>>
     <associate|def:osc_proc|<tuple|8|5>>
-    <associate|def:regularity|<tuple|23|17>>
+    <associate|def:regularity|<tuple|23|18>>
     <associate|def:sigma_compact|<tuple|1|2>>
-    <associate|def:zeromeasure|<tuple|16|13>>
-    <associate|labeldef:Hmu|<tuple|18|14>>
-    <associate|labelrem:scaffold|<tuple|22|17>>
-    <associate|lem:delta|<tuple|24|17>>
-    <associate|prop:atomic|<tuple|19|15>>
-    <associate|prop:conjugation|<tuple|14|10>>
+    <associate|def:zeromeasure|<tuple|16|14>>
+    <associate|labeldef:Hmu|<tuple|18|15>>
+    <associate|labelrem:scaffold|<tuple|22|18>>
+    <associate|lem:delta|<tuple|24|18>>
+    <associate|of|<tuple|17|5>>
+    <associate|prop:atomic|<tuple|19|16>>
+    <associate|prop:conjugation|<tuple|14|11>>
     <associate|prop:inverse|<tuple|5|3>>
-    <associate|sec:HP|<tuple|5|13>>
-    <associate|sec:appendix|<tuple|6|17>>
+    <associate|sec:HP|<tuple|5|14>>
+    <associate|sec:appendix|<tuple|6|18>>
     <associate|sec:functionspaces|<tuple|1|2>>
     <associate|sec:oscillatory|<tuple|2|5>>
-    <associate|sec:samplepaths|<tuple|4|11>>
-    <associate|sec:stationary_timechange|<tuple|3|7>>
-    <associate|thm:Utheta_to_osc|<tuple|12|8>>
-    <associate|thm:atomic|<tuple|17|13>>
-    <associate|thm:existence_osc|<tuple|10|6>>
+    <associate|sec:samplepaths|<tuple|4|13>>
+    <associate|sec:stationary_timechange|<tuple|3|9>>
+    <associate|thm:Utheta_to_osc|<tuple|12|9>>
+    <associate|thm:atomic|<tuple|17|15>>
+    <associate|thm:existence_osc|<tuple|10|7>>
     <associate|thm:global_unitarity|<tuple|7|4>>
     <associate|thm:local_unitarity|<tuple|6|3>>
-    <associate|thm:paths_loc|<tuple|15|11>>
-    <associate|thm:spectrum|<tuple|21|16>>
+    <associate|thm:paths_loc|<tuple|15|13>>
+    <associate|thm:realvaluedness|<tuple|9|6>>
+    <associate|thm:spectrum|<tuple|21|17>>
   </collection>
 </references>
 
@@ -1076,8 +1171,8 @@
       Processes (Priestley)> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-4><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>Stationary
-      Processes and Time Change> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>Unitarily
+      Time-Changed Stationary Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-5><vspace|0.5fn>
 
       <with|par-left|<quote|1tab>|3.1<space|2spc>Stationary processes
