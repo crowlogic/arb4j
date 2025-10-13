@@ -44,16 +44,14 @@
   of any non-degenerate second-order stationary process almost surely lie in
   $L^2_{\tmop{loc}} (\mathbb{R})$, making the operator applicable to typical
   realizations. A zero-localization measure $\mathd \mu (t) = \delta (Z (t))
-  \hspace{0.17em} |Z' (t) |  \hspace{0.17em} dt$ induces a Hilbert space $L^2
-  (\mu)$ on the zero set of an oscillatory process $Z$, and the multiplication
-  operator $(Lf) (t) = tf (t)$ has simple pure point spectrum equal to the
-  zero crossing set of $Z$. This produces a concrete operator scaffold
-  consistent with a Hilbert--P{\'o}lya-type viewpoint.
+  \hspace{0.17em} | \dot{Z} (t) |  \hspace{0.17em} dt$ induces a Hilbert space
+  $L^2 (\mu)$ on the zero set of an oscillatory process $Z$, and the
+  multiplication operator $(Lf) (t) = tf (t)$ has simple pure point spectrum
+  equal to the zero crossing set of $Z$. This produces a concrete operator
+  scaffold consistent with a Hilbert--P{\'o}lya-type viewpoint.
 \end{abstract}
 
 {\tableofcontents}
-
-TODO: add zero counting function\quad and expected zero counting function!!!!!
 
 \section{Function Spaces and Unitary Time Change}\label{sec:functionspaces}
 
@@ -707,10 +705,8 @@ Processes}\label{sec:stationary_timechange}
   Since all zeros of $Z$ are simple and $Z \in C^1 (\mathbb{R})$, by the
   inverse function theorem each zero $t_0$ is isolated. Near each zero $t_0$,
   $Z$ is locally monotonic, so the one-dimensional change of variables formula
-  for the Dirac delta can be applied.
-  
-  Specifically, near $t_0$ where $Z (t_0) = 0$ and $\dot{Z} (t_0) \neq 0$,
-  locally
+  for the Dirac delta can be applied. Specifically, near $t_0$ where $Z (t_0)
+  = 0$ and $\dot{Z} (t_0) \neq 0$, locally
   \begin{equation}
     Z (t) = (t - t_0)  \dot{Z} (t_0) + O ((t - t_0)^2)
   \end{equation}
@@ -881,7 +877,7 @@ Processes}\label{sec:stationary_timechange}
   approaches to encoding arithmetic information in operator spectra.
 \end{remark}
 
-\section{Appendix: Regularity and Simple Zeros}\label{sec:appendix}
+\section{Regularity and Simple Zeros}\label{sec:appendix}
 
 \begin{definition}
   {\tmstrong{[Regularity and simplicity]\label{def:regularity}}} Assume $Z \in
@@ -943,6 +939,161 @@ Processes}\label{sec:stationary_timechange}
     \frac{| \dot{Z} (t_0) |}{| \dot{Z} (t_0) |} = 1
   \end{equation}
   when evaluating at $t = t_0$.
+\end{proof}
+
+\section{Kac-Rice Formula For The Expected Zero Count}
+
+\begin{theorem}[Kac-Rice Formula for Zero Crossings]
+  \label{thm:kac_rice}Let $Z (t)$ be a centered Gaussian process on $[a, b]$
+  with covariance $K (s, t) =\mathbb{E} [Z (s) Z (t)]$ then the expected
+  number of zeros in $[a, b]$ is
+  \begin{equation}
+    \label{eq:kac_rice} \mathbb{E} [N_{[a, b]}] = \int_a^b
+    \sqrt{\frac{2}{\pi}}  \frac{\sqrt{K (t, t) K_{\dot{Z}} (t, t) - K_{Z,
+    \dot{Z}} (t, t)^2}}{K (t, t)}  \hspace{0.17em} dt
+  \end{equation}
+  where
+  \begin{equation}
+    K (t, t) =\mathbb{E} [Z (t)^2]
+  \end{equation}
+  \begin{equation}
+    K_{\dot{Z}} (t, t) = - \partial^2_s \partial_t K (s, t) |_{s = t}
+  \end{equation}
+  and
+  \begin{equation}
+    K_{Z, \dot{Z}} (t, t) = \partial_s K (s, t) |_{s = t}
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  
+  \begin{enumerate}
+    The exact zero counting function is
+    \begin{equation}
+      N_{[a, b]} = \int_a^b \delta (Z (t)) | \dot{Z} (t) |  \hspace{0.17em} dt
+    \end{equation}
+    so
+    \begin{equation}
+      \label{eq:expectation} \begin{array}{ll}
+        \mathbb{E} [N_{[a, b]}] & = \int_a^b \mathbb{E} [\delta (Z (t)) |
+        \dot{Z} (t) |]  \hspace{0.17em} dt\\
+        & = \int_a^b \int_{- \infty}^{\infty} |v|  \hspace{0.17em} p_{Z,
+        \dot{Z}} (0, v)  \hspace{0.17em} dv \hspace{0.17em} dt
+      \end{array}
+    \end{equation}
+    The vector $(Z (t), \dot{Z} (t))$ is bivariate Gaussian with covariance
+    matrix
+    \begin{equation}
+      \Sigma = \left(\begin{array}{cc}
+        K (t, t) & K_{Z, \dot{Z}} (t, t)\\
+        K_{Z, \dot{Z}} (t, t) & K_{\dot{Z}} (t, t)
+      \end{array}\right)
+    \end{equation}
+    whose determinant is given by
+    \begin{equation}
+      \det \Sigma = K (t, t) K_{\dot{Z}} (t, t) - K_{Z, \dot{Z}} (t, t)^2
+    \end{equation}
+    the inverse of which satisfies
+    \begin{equation}
+      \Sigma^{- 1}_{22} = \frac{K (t, t)}{\det \Sigma}
+    \end{equation}
+    yielding
+    \begin{equation}
+      p_{Z, \dot{Z}} (0, v) = \frac{1}{\sqrt{2 \pi K (t, t)}} \cdot \frac{\exp
+      \left( - \frac{K (t, t) v^2}{2 \det \Sigma} \right)}{\sqrt{2 \pi \det
+      \Sigma / K (t, t)}}
+    \end{equation}
+    which factorizes as $p_Z (0) \cdot p_{\dot{Z} |Z} (v| 0)$ where
+    \begin{equation}
+      p_Z (0) = \frac{1}{\sqrt{2 \pi K (t, t)}}
+    \end{equation}
+    and
+    \begin{equation}
+      \dot{Z} |Z = 0 \sim \mathcal{N} (0, \det \Sigma / K (t, t))
+    \end{equation}
+    For zero-mean Gaussian $Y \sim \mathcal{N} (0, \sigma^2)$, direct
+    integration gives
+    \begin{equation}
+      \begin{array}{ll}
+        \mathbb{E} [|Y|] & = 2 \int_0^{\infty} \frac{y}{\sqrt{2 \pi \sigma^2}}
+        e^{- y^2 / (2 \sigma^2)} dy\\
+        & = \frac{2 \sigma}{\sqrt{2 \pi}}  \int_0^{\infty} e^{- u} du\\
+        & = \sqrt{\frac{2}{\pi}} \sigma
+      \end{array}
+    \end{equation}
+    so that combining results yields
+    \begin{equation}
+      \begin{array}{ll}
+        \int_{- \infty}^{\infty} |v|  \hspace{0.17em} p_{Z, \dot{Z}} (0, v) 
+        \hspace{0.17em} dv & = \frac{\sqrt{\frac{2}{\pi}}  \sqrt{\frac{\det
+        \Sigma}{K (t, t)}}}{\sqrt{2 \pi K (t, t)}}\\
+        & = \sqrt{\frac{2}{\pi}}  \frac{\sqrt{\det \Sigma}}{K (t, t)}
+      \end{array}
+    \end{equation}
+  \end{enumerate}
+\end{proof}
+
+\begin{theorem}
+  {\tmstrong{[Expected Zero-Counting
+  Function]}}\label{thm:expected_zero_counting}Let $\theta \in \mathcal{F}$
+  and let
+  \begin{equation}
+    \label{eq:covariance_def} K (t, s) = \mathrm{cov} (Z (t), Z (s))
+  \end{equation}
+  be twice differentiable at $s = 0$ and $t = 0$ then expected number of zeros
+  of the process $Z (t)$ in $[a, b]$ is
+  \begin{equation}
+    \label{eq:expected_zeros} \mathbb{E} [N_{[a, b]}] = \sqrt{- K (0)} 
+    \hspace{0.17em} (\theta (b) - \theta (a))
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  The covariance function of the time-changed process is
+  \begin{equation}
+    \label{eq:time_changed_cov} K_{\theta} (s, t) = \mathrm{cov} (Z (t), Z
+    (s)) = \sqrt{\theta (s) \theta (t)}  \hspace{0.17em} K (| \theta (t) -
+    \theta (s) |)
+  \end{equation}
+  For the zero-crossing analysis, consider the normalized process. By the
+  Kac-Rice formula:
+  \begin{equation}
+    \label{eq:kac_rice_formula} \mathbb{E} [N_{[a, b]}] = \int_a^b \sqrt{-
+    \lim_{s \to t}  \frac{\partial^2}{\partial s \partial t} K_{\theta} (s,
+    t)}  \hspace{0.17em} dt
+  \end{equation}
+  Computing the mixed partial derivative:
+  \begin{equation}
+    \label{eq:mixed_partial} \frac{\partial}{\partial t} K_{\theta} (s, t) =
+    \frac{1}{2}  \frac{\dot{\theta} (t)}{\sqrt{\theta (t)}}  \sqrt{\theta'
+    (s)}  \hspace{0.17em} K (| \theta (t) - \theta (s) |)
+  \end{equation}
+  \begin{equation}
+    \label{eq:mixed_partial_continued} + \sqrt{\theta (s)}  \sqrt{\theta (t)} 
+    \hspace{0.17em} \dot{K} (| \theta (t) - \theta (s) |) \mathrm{sgn} (\theta
+    (t) - \theta (s))  \hspace{0.17em} \dot{\theta} (t)
+  \end{equation}
+  Taking the limit as $s \to t$ and using the fact that $\dot{K} (0) = 0$ for
+  stationary processes:
+  \begin{equation}
+    \begin{array}{ll}
+      \lim_{s \to t}  \frac{\partial^2}{\partial s \partial t} K_{\theta} (s,
+      t) & = \dot{\theta} (s) \hspace{0.17em} \dot{\theta} (t) 
+      \hspace{0.17em} \ddot{K} (0)\\
+      & = \dot{\theta} (t)^2  \hspace{0.17em} \ddot{K} (0)
+    \end{array} \label{eq:limit_mixed_partial}
+  \end{equation}
+  Substituting into the Kac-Rice formula we have
+  \begin{equation}
+    \label{eq:substituted_kac_rice} \begin{array}{ll}
+      \mathbb{E} [N_{[a, b]}] & = \int_a^b \sqrt{- \dot{\theta} (t)^2 
+      \hspace{0.17em} \ddot{K} (0)}  \hspace{0.17em} dt\\
+      & = \sqrt{- \ddot{K} (0)}  \int_a^b \dot{\theta} (t)  \hspace{0.17em}
+      dt\\
+      & = \sqrt{- \ddot{K} (0)}  \hspace{0.17em} (\theta (b) - \theta (a))
+    \end{array}
+  \end{equation}
+  since $\dot{\theta} (t) \geq 0$ almost everywhere.
 \end{proof}
 
 \end{document}

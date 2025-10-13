@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|generic|framed-theorems>>
+<style|<tuple|article|boring-white|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Unitary Time Changes of Stationary Processes Yield
@@ -21,7 +21,7 @@
     stationary process almost surely lie in
     <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>, making the operator
     applicable to typical realizations. A zero-localization measure
-    <math|\<mathd\>\<mu\>*<around|(|*t|)>=\<delta\><around|(|Z<around|(|t|)>|)><space|0.17em><around|\||Z<rprime|'><around|(|t|)>|\|>*<space|0.17em>d*t>
+    <math|\<mathd\>\<mu\>*<around|(|*t|)>=\<delta\><around|(|Z<around|(|t|)>|)><space|0.17em><around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*<space|0.17em>d*t>
     induces a Hilbert space <math|L<rsup|2><around|(|\<mu\>|)>> on the zero
     set of an oscillatory process <math|Z>, and the multiplication operator
     <math|<around|(|L*f|)><around|(|t|)>=t*f<around|(|t|)>> has simple pure
@@ -83,13 +83,14 @@
     multiplication operator <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-12>>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|6<space|2spc>Appendix:
-    Regularity and Simple Zeros> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|6<space|2spc>Regularity
+    and Simple Zeros> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-13><vspace|0.5fn>
-  </table-of-contents>
 
-  TODO: add zero counting function<space|1em>and expected zero counting
-  function!!!!!
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|7<space|2spc>Kac-Rice
+    Formula For The Expected Zero Count> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-14><vspace|0.5fn>
+  </table-of-contents>
 
   <section|Function Spaces and Unitary Time Change><label|sec:functionspaces>
 
@@ -775,7 +776,6 @@
     theorem each zero <math|t<rsub|0>> is isolated. Near each zero
     <math|t<rsub|0>>, <math|Z> is locally monotonic, so the one-dimensional
     change of variables formula for the Dirac delta can be applied.
-
     Specifically, near <math|t<rsub|0>> where
     <math|Z<around|(|t<rsub|0>|)>=0> and <math|<wide|Z|\<dot\>><around|(|t<rsub|0>|)>\<neq\>0>,
     locally
@@ -965,7 +965,7 @@
     information in operator spectra.
   </remark>
 
-  <section|Appendix: Regularity and Simple Zeros><label|sec:appendix>
+  <section|Regularity and Simple Zeros><label|sec:appendix>
 
   <\definition>
     <strong|[Regularity and simplicity]<label|def:regularity>> Assume
@@ -1039,6 +1039,170 @@
 
     when evaluating at <math|t=t<rsub|0>>.
   </proof>
+
+  <section|Kac-Rice Formula For The Expected Zero Count>
+
+  <\theorem>
+    <dueto|Kac-Rice Formula for Zero Crossings><label|thm:kac_rice>Let
+    <math|Z<around|(|t|)>> be a centered Gaussian process on
+    <math|<around|[|a,b|]>> with covariance
+    <math|K<around|(|s,t|)>=\<bbb-E\>*<around|[|Z<around|(|s|)>*Z<around|(|t|)>|]>>
+    then the expected number of zeros in <math|<around|[|a,b|]>> is
+
+    <\equation>
+      <label|eq:kac_rice>\<bbb-E\><around|[|N<rsub|<around|[|a,b|]>>|]>=<big|int><rsub|a><rsup|b><sqrt|<frac|2|\<pi\>>>*<frac|<sqrt|K<around|(|t,t|)>*K<rsub|<wide|Z|\<dot\>>><around|(|t,t|)>-K<rsub|Z,<wide|Z|\<dot\>>><around|(|t,t|)><rsup|2>>|K<around|(|t,t|)>>*<space|0.17em>d*t
+    </equation>
+
+    where
+
+    <\equation>
+      K<around|(|t,t|)>=\<bbb-E\><around|[|Z<around|(|t|)><rsup|2>|]>
+    </equation>
+
+    <\equation>
+      K<rsub|<wide|Z|\<dot\>>><around|(|t,t|)>=-\<partial\><rsup|2><rsub|s>*\<partial\><rsub|t>*K<around|(|s,t|)>\|<rsub|s=t>
+    </equation>
+
+    and
+
+    <\equation>
+      K<rsub|Z,<wide|Z|\<dot\>>><around|(|t,t|)>=\<partial\><rsub|s>*K<around|(|s,t|)>\|<rsub|s=t>
+    </equation>
+  </theorem>
+
+  <\proof>
+    \;
+
+    <\enumerate>
+      The exact zero counting function is\ 
+
+      <\equation>
+        N<rsub|<around|[|a,b|]>>=<big|int><rsub|a><rsup|b>\<delta\><around|(|Z<around|(|t|)>|)><around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*<space|0.17em>d*t
+      </equation>
+
+      so
+
+      <\equation>
+        <label|eq:expectation><tabular|<tformat|<table|<row|<cell|\<bbb-E\><around|[|N<rsub|<around|[|a,b|]>>|]>>|<cell|=<big|int><rsub|a><rsup|b>\<bbb-E\><around|[|\<delta\><around|(|Z<around|(|t|)>|)><around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>|]>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|int><rsub|a><rsup|b><big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||v|\|>*<space|0.17em>p<rsub|Z,<wide|Z|\<dot\>>><around|(|0,v|)>*<space|0.17em>d*v*<space|0.17em>d*t>>>>>
+      </equation>
+
+      The vector <math|<around|(|Z<around|(|t|)>,<wide|Z|\<dot\>><around|(|t|)>|)>>
+      is bivariate Gaussian with covariance matrix\ 
+
+      <\equation>
+        \<Sigma\>=<matrix|<tformat|<table|<row|<cell|K<around|(|t,t|)>>|<cell|K<rsub|Z,<wide|Z|\<dot\>>><around|(|t,t|)>>>|<row|<cell|K<rsub|Z,<wide|Z|\<dot\>>><around|(|t,t|)>>|<cell|K<rsub|<wide|Z|\<dot\>>><around|(|t,t|)>>>>>>
+      </equation>
+
+      whose determinant is given by
+
+      <\equation>
+        det \<Sigma\>=K<around|(|t,t|)>*K<rsub|<wide|Z|\<dot\>>><around|(|t,t|)>-K<rsub|Z,<wide|Z|\<dot\>>><around|(|t,t|)><rsup|2>
+      </equation>
+
+      the inverse of which satisfies
+
+      <\equation>
+        \<Sigma\><rsup|-1><rsub|22>=<frac|K<around|(|t,t|)>|det \<Sigma\>>
+      </equation>
+
+      \ yielding
+
+      <\equation>
+        p<rsub|Z,<wide|Z|\<dot\>>><around|(|0,v|)>=<frac|1|<sqrt|2*\<pi\>*K<around|(|t,t|)>>>\<cdot\><frac|*exp
+        <around*|(|-<frac|K<around|(|t,t|)>*v<rsup|2>|2*det
+        \<Sigma\>>|)>|<sqrt|2*\<pi\>*det \<Sigma\>/K<around|(|t,t|)>>>
+      </equation>
+
+      which factorizes as <math|p<rsub|Z><around|(|0|)>\<cdot\>p<rsub|<wide|Z|\<dot\>>\|Z><around|(|v\|0|)>>
+      where
+
+      <\equation>
+        p<rsub|Z><around|(|0|)>=<frac|1|<sqrt|2*\<pi\>*K<around|(|t,t|)>>>
+      </equation>
+
+      \ and <math|>
+
+      <\equation>
+        <wide|Z|\<dot\>>\|Z=0\<sim\>\<cal-N\><around|(|0,det
+        \<Sigma\>/K<around|(|t,t|)>|)>
+      </equation>
+
+      For zero-mean Gaussian <math|Y\<sim\>\<cal-N\><around|(|0,\<sigma\><rsup|2>|)>>,
+      direct integration gives
+
+      <\equation>
+        <tabular|<tformat|<table|<row|<cell|\<bbb-E\><around|[|<around|\||Y|\|>|]>>|<cell|=2*<big|int><rsub|0><rsup|\<infty\>><frac|y|<sqrt|2*\<pi\>*\<sigma\><rsup|2>>>*e<rsup|-y<rsup|2>/<around|(|2*\<sigma\><rsup|2>|)>>*d*y>>|<row|<cell|>|<cell|=<frac|2*\<sigma\>|<sqrt|2*\<pi\>>>*<big|int><rsub|0><rsup|\<infty\>>e<rsup|-u>*d*u>>|<row|<cell|>|<cell|=<sqrt|<frac|2|\<pi\>>>*\<sigma\>>>>>>
+      </equation>
+
+      so that combining results yields
+
+      <\equation>
+        <tabular|<tformat|<table|<row|<cell|<big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||v|\|>*<space|0.17em>p<rsub|Z,<wide|Z|\<dot\>>><around|(|0,v|)>*<space|0.17em>d*v>|<cell|=<frac|<sqrt|<frac|2|\<pi\>>>*<sqrt|<frac|det
+        \<Sigma\>|K<around|(|t,t|)>>>|<sqrt|2*\<pi\>*K<around|(|t,t|)>>>>>|<row|<cell|>|<cell|=<sqrt|<frac|2|\<pi\>>>*<frac|<sqrt|det
+        \<Sigma\>>|K<around|(|t,t|)>>>>>>>
+      </equation>
+    </enumerate>
+  </proof>
+
+  <\theorem>
+    <strong|[Expected Zero-Counting Function]><label|thm:expected_zero_counting>Let
+    <math|\<theta\>\<in\>\<cal-F\>> and let
+
+    <\equation>
+      <label|eq:covariance_def>K<around|(|t,s|)>=<math-up|cov><around|(|Z<around|(|t|)>,Z<around|(|s|)>|)>
+    </equation>
+
+    be twice differentiable at <math|s=0> and <math|t=0> then expected number
+    of zeros of the process <math|Z<around*|(|t|)>> in
+    <math|<around|[|a,b|]>> is
+
+    <\equation>
+      <label|eq:expected_zeros>\<bbb-E\><around|[|N<rsub|<around|[|a,b|]>>|]>=<sqrt|-K<around|(|0|)>>*<space|0.17em><around|(|\<theta\><around|(|b|)>-\<theta\><around|(|a|)>|)>
+    </equation>
+  </theorem>
+
+  <\proof>
+    The covariance function of the time-changed process is
+
+    <\equation>
+      <label|eq:time_changed_cov>K<rsub|\<theta\>><around|(|s,t|)>=<math-up|cov><around|(|Z<around*|(|t|)>,Z<around*|(|s|)>|)>=<sqrt|\<theta\><around|(|s|)>\<theta\><around*|(|t|)>>**<space|0.17em>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>
+    </equation>
+
+    For the zero-crossing analysis, consider the normalized process. By the
+    Kac-Rice formula:
+
+    <\equation>
+      <label|eq:kac_rice_formula>\<bbb-E\><around|[|N<rsub|<around|[|a,b|]>>|]>=<big|int><rsub|a><rsup|b><sqrt|-lim<rsub|s\<to\>t>
+      <frac|\<partial\><rsup|2>|\<partial\>*s*\<partial\>*t>*K<rsub|\<theta\>><around|(|s,t|)>>*<space|0.17em>d*t
+    </equation>
+
+    Computing the mixed partial derivative:
+
+    <\equation>
+      <label|eq:mixed_partial><frac|\<partial\>|\<partial\>*t>*K<rsub|\<theta\>><around|(|s,t|)>=<frac|1|2>*<frac|<wide|\<theta\>|\<dot\>><around|(|t|)>|<sqrt|\<theta\><around|(|t|)>>>*<sqrt|\<theta\><rprime|'><around|(|s|)>>*<space|0.17em>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>
+    </equation>
+
+    <\equation>
+      <label|eq:mixed_partial_continued>+<sqrt|\<theta\><around|(|s|)>>*<sqrt|\<theta\><around|(|t|)>>*<space|0.17em><wide|K|\<dot\>><around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)><math-up|sgn><around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>*<space|0.17em><wide|\<theta\>|\<dot\>><around|(|t|)>
+    </equation>
+
+    Taking the limit as <math|s\<to\>t> and using the fact that
+    <math|<wide|K|\<dot\>><around|(|0|)>=0> for stationary processes:
+
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|lim<rsub|s\<to\>t>
+      <frac|\<partial\><rsup|2>|\<partial\>*s*\<partial\>*t>*K<rsub|\<theta\>><around|(|s,t|)>>|<cell|=<wide|\<theta\>|\<dot\>><around|(|s|)><space|0.17em><wide|\<theta\>|\<dot\>><around|(|t|)>*<space|0.17em><wide|K|\<ddot\>><around|(|0|)>>>|<row|<cell|>|<cell|=<wide|\<theta\>|\<dot\>><around|(|t|)><rsup|2>*<space|0.17em><wide|K|\<ddot\>><around|(|0|)>>>>>><label|eq:limit_mixed_partial>
+    </equation>
+
+    Substituting into the Kac-Rice formula we have
+
+    <\equation>
+      <label|eq:substituted_kac_rice><tabular|<tformat|<table|<row|<cell|\<bbb-E\><around|[|N<rsub|<around|[|a,b|]>>|]>>|<cell|=<big|int><rsub|a><rsup|b><sqrt|-<wide|\<theta\>|\<dot\>><around|(|t|)><rsup|2>*<space|0.17em><wide|K|\<ddot\>><around|(|0|)>>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<sqrt|-<wide|K|\<ddot\>><around|(|0|)>>*<big|int><rsub|a><rsup|b><wide|\<theta\>|\<dot\>><around|(|t|)>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<sqrt|-<wide|K|\<ddot\>><around|(|0|)>>*<space|0.17em><around|(|\<theta\><around|(|b|)>-\<theta\><around|(|a|)>|)>>>>>>
+    </equation>
+
+    since <math|<wide|\<theta\>|\<dot\>><around|(|t|)>\<geq\>0> almost
+    everywhere.
+  </proof>
 </body>
 
 <\initial>
@@ -1054,49 +1218,62 @@
 <\references>
   <\collection>
     <associate|auto-1|<tuple|1|2>>
-    <associate|auto-10|<tuple|5|13>>
-    <associate|auto-11|<tuple|5.1|13>>
-    <associate|auto-12|<tuple|5.2|15>>
-    <associate|auto-13|<tuple|6|17>>
+    <associate|auto-10|<tuple|5|12>>
+    <associate|auto-11|<tuple|5.1|12>>
+    <associate|auto-12|<tuple|5.2|13>>
+    <associate|auto-13|<tuple|6|16>>
+    <associate|auto-14|<tuple|7|17>>
     <associate|auto-2|<tuple|1.1|2>>
     <associate|auto-3|<tuple|1.2|2>>
     <associate|auto-4|<tuple|2|5>>
     <associate|auto-5|<tuple|3|8>>
     <associate|auto-6|<tuple|3.1|8>>
-    <associate|auto-7|<tuple|3.2|9>>
-    <associate|auto-8|<tuple|3.3|11>>
-    <associate|auto-9|<tuple|4|12>>
-    <associate|cor:evol_spec|<tuple|13|10>>
-    <associate|covar|<tuple|48|9>>
-    <associate|def:L|<tuple|20|16>>
+    <associate|auto-7|<tuple|3.2|8>>
+    <associate|auto-8|<tuple|3.3|10>>
+    <associate|auto-9|<tuple|4|11>>
+    <associate|cor:evol_spec|<tuple|13|9>>
+    <associate|covar|<tuple|48|8>>
+    <associate|def:L|<tuple|20|14>>
     <associate|def:L2loc|<tuple|2|2>>
     <associate|def:Utheta|<tuple|4|2>>
     <associate|def:cramer|<tuple|11|8>>
     <associate|def:osc_proc|<tuple|8|5>>
-    <associate|def:regularity|<tuple|23|17>>
+    <associate|def:regularity|<tuple|23|16>>
     <associate|def:sigma_compact|<tuple|1|2>>
-    <associate|def:zeromeasure|<tuple|16|13>>
-    <associate|labeldef:Hmu|<tuple|18|15>>
-    <associate|labelrem:scaffold|<tuple|22|17>>
-    <associate|lem:delta|<tuple|24|17>>
+    <associate|def:zeromeasure|<tuple|16|12>>
+    <associate|eq:covariance_def|<tuple|126|18>>
+    <associate|eq:expectation|<tuple|117|17>>
+    <associate|eq:expected_zeros|<tuple|127|18>>
+    <associate|eq:kac_rice|<tuple|112|17>>
+    <associate|eq:kac_rice_formula|<tuple|129|18>>
+    <associate|eq:limit_mixed_partial|<tuple|132|19>>
+    <associate|eq:mixed_partial|<tuple|130|18>>
+    <associate|eq:mixed_partial_continued|<tuple|131|18>>
+    <associate|eq:substituted_kac_rice|<tuple|133|19>>
+    <associate|eq:time_changed_cov|<tuple|128|18>>
+    <associate|labeldef:Hmu|<tuple|18|13>>
+    <associate|labelrem:scaffold|<tuple|22|15>>
+    <associate|lem:delta|<tuple|24|16>>
     <associate|of|<tuple|17|5>>
-    <associate|prop:atomic|<tuple|19|15>>
-    <associate|prop:conjugation|<tuple|14|11>>
-    <associate|prop:inverse|<tuple|5|2>>
-    <associate|sec:HP|<tuple|5|13>>
-    <associate|sec:appendix|<tuple|6|17>>
+    <associate|prop:atomic|<tuple|19|13>>
+    <associate|prop:conjugation|<tuple|14|10>>
+    <associate|prop:inverse|<tuple|5|3>>
+    <associate|sec:HP|<tuple|5|12>>
+    <associate|sec:appendix|<tuple|6|16>>
     <associate|sec:functionspaces|<tuple|1|2>>
     <associate|sec:oscillatory|<tuple|2|5>>
-    <associate|sec:samplepaths|<tuple|4|12>>
+    <associate|sec:samplepaths|<tuple|4|11>>
     <associate|sec:stationary_timechange|<tuple|3|8>>
-    <associate|thm:Utheta_to_osc|<tuple|12|9>>
-    <associate|thm:atomic|<tuple|17|14>>
-    <associate|thm:existence_osc|<tuple|10|7>>
+    <associate|thm:Utheta_to_osc|<tuple|12|8>>
+    <associate|thm:atomic|<tuple|17|12>>
+    <associate|thm:existence_osc|<tuple|10|6>>
+    <associate|thm:expected_zero_counting|<tuple|26|18>>
     <associate|thm:global_unitarity|<tuple|7|4>>
+    <associate|thm:kac_rice|<tuple|25|17>>
     <associate|thm:local_unitarity|<tuple|6|3>>
-    <associate|thm:paths_loc|<tuple|15|12>>
+    <associate|thm:paths_loc|<tuple|15|11>>
     <associate|thm:realvaluedness|<tuple|9|5>>
-    <associate|thm:spectrum|<tuple|21|16>>
+    <associate|thm:spectrum|<tuple|21|14>>
   </collection>
 </references>
 
@@ -1156,9 +1333,14 @@
       multiplication operator <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-12>>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|6<space|2spc>Appendix:
-      Regularity and Simple Zeros> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|6<space|2spc>Regularity
+      and Simple Zeros> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-13><vspace|0.5fn>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|7<space|2spc>Kac-Rice
+      Formula For The Expected Zero Count>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-14><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
