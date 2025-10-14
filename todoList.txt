@@ -1,0 +1,1 @@
+#748: probably need to set the declaredType in FunctionMapping beforegeneration of the evaluation or initialization methods #748
