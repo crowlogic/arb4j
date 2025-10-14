@@ -741,7 +741,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       if (trace)
       {
         String vars = varList.stream().map(f -> f.getKey()).collect(Collectors.joining(","));
-        log.debug("declareVariables: {}", vars);
+        log.debug("declareVariables for {}: {}", className, vars);
       }
       for (var variable : varList)
       {
@@ -1209,7 +1209,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (trace)
     {
-      log.debug(String.format("generateFunctionInitializer( nestedFunction=%s, assignments=%s )",
+      log.debug(String.format("generateFunctionInitializer for %s: nestedFunction=%s, assignments=%s )",
+                              functionName,
                               nestedFunction.functionName,
                               assignments));
     }
@@ -1235,7 +1236,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     generateCodeToThrowErrorIfAlreadyInitialized(mv);
     if (trace)
     {
-      log.debug("generateInitializationCode: referencedFunctions={}", referencedFunctions.keySet());
+      log.debug("generateInitializationCode for {}: referencedFunctions={}",
+                functionName,
+                referencedFunctions.keySet());
     }
     addChecksForNullVariableReferences(mv);
 

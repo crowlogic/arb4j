@@ -1,9 +1,7 @@
 package arb.expressions.nodes;
 
 import static arb.expressions.Compiler.duplicateTopOfTheStack;
-import static org.objectweb.asm.Opcodes.AASTORE;
-import static org.objectweb.asm.Opcodes.ANEWARRAY;
-import static org.objectweb.asm.Opcodes.BIPUSH;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -12,6 +10,8 @@ import java.util.stream.Collectors;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -32,6 +32,8 @@ import arb.functions.Function;
 public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> extends
                        Node<D, R, F>
 {
+
+  private final static Logger logger = LoggerFactory.getLogger(VectorNode.class);
 
   @Override
   public int dim()
@@ -117,7 +119,7 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
     });
 
     var arrayType = scalarType.arrayType();
-    
+
     if (isResult)
     {
       expression.generateSetResultInvocation(mv, arrayType);
@@ -132,7 +134,9 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
     return mv;
   }
 
-  public void assertResultTypeAndGeneratedTypeEquality(Class<?> resultType, int index, Node<D, R, F> element)
+  public void assertResultTypeAndGeneratedTypeEquality(Class<?> resultType,
+                                                       int index,
+                                                       Node<D, R, F> element)
   {
     assert resultType.equals(element.generatedType) : String.format("%s != %s at index %s",
                                                                     resultType,
@@ -140,7 +144,10 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
                                                                     index);
   }
 
-  public void convertTypeIfNecessary(MethodVisitor mv, Class<?> resultType, Node<D, R, F> element, int index)
+  public void convertTypeIfNecessary(MethodVisitor mv,
+                                     Class<?> resultType,
+                                     Node<D, R, F> element,
+                                     int index)
   {
     assert resultType != null : "result type cannot be null";
     Class<?> generatedElementType = element.getGeneratedType();
@@ -152,7 +159,10 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
     {
       if (Expression.trace)
       {
-        System.err.format("index %d: Converting from type %s to %s\n", index, generatedElementType, resultType);
+        System.err.format("index %d: Converting from type %s to %s\n",
+                          index,
+                          generatedElementType,
+                          resultType);
       }
       element.generateCastTo(mv, resultType);
     }
@@ -162,19 +172,21 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
   {
     if (Expression.trace)
     {
-      System.err.format("Vector(#%s).generating %s-th element of node %s whose type is %s:  %s\n",
-                        System.identityHashCode(this),
-                        i.get(),
-                        element.getClass(),
-                        element.type(),
-                        element);
+      logger.debug(String.format("Vector(#%s).generating %s-th element of node %s whose type is %s:  %s\n",
+                                 System.identityHashCode(this),
+                                 i.get(),
+                                 element.getClass(),
+                                 element.type(),
+                                 element));
     }
   }
 
   @Override
   public String typeset()
   {
-    return elements.stream().map(Node::typeset).collect(Collectors.joining(",", "\\left[", "\\right]"));
+    return elements.stream()
+                   .map(Node::typeset)
+                   .collect(Collectors.joining(",", "\\left[", "\\right]"));
   }
 
   @Override
@@ -183,8 +195,9 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
     return expression.coDomainType;
   }
 
-  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
-                                                                                       Node<E, S, G> arg)
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<D, R, F>
+         substitute(String variable, Node<E, S, G> arg)
   {
     elements.forEach(expr -> expr.substitute(variable, arg));
     return this;
@@ -229,7 +242,5 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
   {
     return '→';
   }
-
-
 
 }

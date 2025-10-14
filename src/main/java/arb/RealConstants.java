@@ -40,7 +40,7 @@ public class RealConstants
   public static Real indeterminant = next().indeterminate();
   public static Real two           = next().set(2);
   public static Real negInf        = next().negInf();
-  public static Real negHalf       = next().identity().div(2, prec).neg();
+  public static Real negHalf       = next().identity().div(-2, prec);
   public static Real oneQuarter    = next().identity().div(4, prec);
   public static Real threeQuarters = next().set(3).div(4, prec);
 
