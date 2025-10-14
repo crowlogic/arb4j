@@ -172,7 +172,7 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
   {
     if (Expression.trace)
     {
-      logger.debug(String.format("Vector(#%s).generating %s-th element of node %s whose type is %s:  %s\n",
+      logger.debug(String.format("#%s.generating %s-th element of node %s whose type is %s:  %s\n",
                                  System.identityHashCode(this),
                                  i.get(),
                                  element.getClass(),
