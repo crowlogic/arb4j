@@ -23,35 +23,7 @@ import javafx.application.Platform;
 public class ZProcess implements
                       RealOscillatoryProcess
 {
-  public static void main(String args[])
-  {
-    Expression.saveClasses = true;
-    Expression.trace = true;
-    ZProcess              Zprocess = new ZProcess();
-    RealToComplexFunction A        =
-                            Zprocess.gainFunction()
-                                    .evaluate(Real.named("λ").set(RealConstants.half), 128);
-    RealToComplexFunction ϕ        =
-                            Zprocess.oscillatoryFunction().evaluate(Real.named("λ").one(), 128);
-
-    FunctionPlotter       frame    = ShellFunctions.plot(0,
-                                                         200,
-                                                         20000,
-                                                         A.realPart(),
-                                                         A.imagPart(),
-                                                         ϕ.realPart(),
-                                                         ϕ.imagPart(),
-                                                         Zprocess.z.realPart(),
-                                                         Zprocess.z.imagPart(),
-                                                         Zprocess.θ,
-                                                         Zprocess.θ.sub(identity));
-
-    Platform.setImplicitExit(true);
-
-    Platform.runLater(() -> ShellFunctions.saveImage(frame.chart, "gain.png"));
-
-  }
-
+  
   final Context                        context  = new Context();
 
   final RealFunction                   θ        =

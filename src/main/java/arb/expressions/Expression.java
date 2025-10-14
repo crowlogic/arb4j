@@ -143,49 +143,49 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                        Cloneable,
                        Supplier<F>
 {
-  private static String     ASSERTION_ERROR_METHOD_DESCRIPTOR =
-                                                              Compiler.getMethodDescriptor(Void.class,
-                                                                                           Object.class);
+  private static String       ASSERTION_ERROR_METHOD_DESCRIPTOR =
+                                                                Compiler.getMethodDescriptor(Void.class,
+                                                                                             Object.class);
 
-  private static final char COMBINING_DOT_ABOVE               = '\u0307';
+  private static final char   COMBINING_DOT_ABOVE               = '\u0307';
 
-  private static final char COMBINING_TWO_DOTS_ABOVE          = '\u0308';
+  private static final char   COMBINING_TWO_DOTS_ABOVE          = '\u0308';
 
-  static File               compiledClassDir                  = new File("compiled");
+  static File                 compiledClassDir                  = new File("compiled");
 
-  public static String      evaluationMethodDescriptor        =
-                                                       Compiler.getMethodDescriptor(Object.class,
-                                                                                    Object.class,
-                                                                                    int.class,
-                                                                                    int.class,
-                                                                                    Object.class);
+  public static String        evaluationMethodDescriptor        =
+                                                         Compiler.getMethodDescriptor(Object.class,
+                                                                                      Object.class,
+                                                                                      int.class,
+                                                                                      int.class,
+                                                                                      Object.class);
 
-  public static Class<?>[]  implementedInterfaces             = new Class[]
+  public static Class<?>[]    implementedInterfaces             = new Class[]
   { Typesettable.class, AutoCloseable.class, Initializable.class };
 
-  static HashSet<Class<?>>  indeterminantTypes                = new HashSet<>();
+  static HashSet<Class<?>>    indeterminantTypes                = new HashSet<>();
 
-  public static String      IS_INITIALIZED                    = "isInitialized";
+  public static String        IS_INITIALIZED                    = "isInitialized";
 
-  private static String     JAVA_LANG_ASSERTION_ERROR         = "java/lang/AssertionError";
+  private static String       JAVA_LANG_ASSERTION_ERROR         = "java/lang/AssertionError";
 
-  private static final char MIDDLE_DOT                        = '\u00B7';
+  private static final char   MIDDLE_DOT                        = '\u00B7';
 
-  public static String      nameOfInitializerFunction         = "initialize";
+  public static String        nameOfInitializerFunction         = "initialize";
 
-  public static boolean     saveClasses                       =
-                                        Boolean.valueOf(System.getProperty("arb4j.saveClasses",
-                                                                           "false"));
+  public static boolean       saveClasses                       =
+                                          Boolean.valueOf(System.getProperty("arb4j.saveClasses",
+                                                                             "false"));
 
-  public static boolean     saveGraphs                        =
-                                       Boolean.valueOf(System.getProperty("arb4j.saveGraphs",
-                                                                          "false"));
+  public static boolean       saveGraphs                        =
+                                         Boolean.valueOf(System.getProperty("arb4j.saveGraphs",
+                                                                            "false"));
 
-  public static boolean     trace                             =
-                                  Boolean.valueOf(System.getProperty("arb4j.trace", "false"));
+  public static final boolean trace                             =
+                                    Boolean.valueOf(System.getProperty("arb4j.trace", "true"));
 
-  public static String      VOID_METHOD_DESCRIPTOR            =
-                                                   Compiler.getMethodDescriptor(Void.class);
+  public static String        VOID_METHOD_DESCRIPTOR            =
+                                                     Compiler.getMethodDescriptor(Void.class);
 
   static
   {
@@ -1263,7 +1263,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     var functionName       = dependency.variableName;
     var mapping            = referencedFunctions.get(functionName);
-    var functionDescriptor = functionClass.descriptorString(); //.format("L%s;", functionName);
+    var functionDescriptor = functionClass.descriptorString();                         // .format("L%s;",
+                                                                                       // functionName);
 
     if (mapping != null)
     {
