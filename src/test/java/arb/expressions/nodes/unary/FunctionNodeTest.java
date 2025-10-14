@@ -46,16 +46,11 @@ public class FunctionNodeTest extends
 
   public static void testSquareRootSimplificationMulWithConstant()
   {
-    try
-    {
-      Expression.trace = true;
+    
       var f = RealFunction.express("√(2)*√(2)");
       assertEquals("2", f.toString());
-    }
-    finally
-    {
-      Expression.trace = false;
-    }
+    
+    
   }
 
   public static void testSquareRootSimplificationDivWithVar()

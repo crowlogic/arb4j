@@ -37,6 +37,8 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
 
   private String              functionFieldDescriptor;
 
+  private String              declaredAs;
+
   public MethodVisitor call(MethodVisitor mv, Class<?> type)
   {
     boolean isInterface = functionClass != null && functionClass.isInterface();
@@ -69,12 +71,15 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
 
   public String functionFieldDescriptor(boolean preferInterface)
   {
-//    if (preferInterface && functionClass != null)
-//    {
-//      return functionClass.descriptorString();
-//    }
-    return instance != null ? instance.getClass().descriptorString()
-                            : String.format("L%s;", functionName);
+    if ( declaredAs != null )
+    {
+      return declaredAs;
+    }
+    if (preferInterface && functionClass != null)
+    {
+      return functionClass.descriptorString();
+    }
+    return  String.format("L%s;", functionName);
   }
 
   @Override
@@ -100,25 +105,24 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
    */
   public void declare(ClassVisitor classVisitor, String name)
   {
-    functionFieldDescriptor = functionFieldDescriptor(true);
+    functionFieldDescriptor = functionFieldDescriptor();
     if (Expression.trace)
     {
       log.debug("declare(name={}, fieldDescriptor={})", name, functionFieldDescriptor);
     }
     classVisitor.visitField(ACC_PUBLIC, name, functionFieldDescriptor, null, null);
+    declaredAs = functionFieldDescriptor;
   }
 
   public void loadReferenceOntoStack(MethodVisitor mv)
   {
-    expression.loadFieldOntoStack(loadThisOntoStack(mv),
-                                  functionName,
-                                  functionFieldDescriptor());
+    expression.loadFieldOntoStack(loadThisOntoStack(mv), functionName, functionFieldDescriptor());
   }
 
   @Override
   public String toString()
   {
-    return String.format("%s(#%s)[name=%s,\n instance=%s,\n domain=%s,\n coDomain=%s,\n functionClass=%s,\n expression=%s\n]",
+    return String.format("%s(#%s)[name=%s,\n instance=%s,\n domain=%s,\n coDomain=%s,\n functionClass=%s,\n expression=%s\n, declaredAs=%s]",
                          getClass().getSimpleName(),
                          System.identityHashCode(this),
                          functionName,
@@ -126,7 +130,8 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
                          domain != null ? domain.getName() : null,
                          coDomain != null ? coDomain.getName() : null,
                          functionClass,
-                         expression);
+                         expression,
+                         declaredAs);
   }
 
   public Class<?> type()

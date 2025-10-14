@@ -18,5 +18,5 @@
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value=""/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="arb4j"/>
     <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
-    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea --enable-native-access=arb4j -Dlogback.configurationFile=logback-debug.xml -Darb4j.saveClasses=true"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dlog4j.trace=true -ea --enable-native-access=arb4j -Dlogback.configurationFile=logback-debug.xml -Darb4j.saveClasses=true"/>
 </launchConfiguration>

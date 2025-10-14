@@ -2,7 +2,6 @@ package arb.expressions.nodes.binary;
 
 import arb.*;
 import arb.expressions.Context;
-import arb.expressions.Expression;
 import arb.functions.RealBivariateToComplexFunction;
 import arb.functions.RealToComplexFunction;
 import arb.functions.real.RealFunction;
@@ -20,7 +19,6 @@ public class ExponentiationNodeTest extends
   {
     try ( Real x = Real.named("x").set("24.75", 128))
     {
-      Expression.saveClasses = Expression.trace = true;
       var  context = new Context();
       Real λ       = Real.named("λ").set(RealConstants.half);
       context.registerVariable(λ);
@@ -30,17 +28,13 @@ public class ExponentiationNodeTest extends
       Complex            a = A.evaluate(x, 128);
       System.out.format("A(%s)=%s\n", x, a);
     }
-    finally
-    {
-      Expression.saveClasses = Expression.trace = false;
-    }
+
   }
 
   public static void testDerivativesAndExponentialsInvolvingRealBivariateToComplexFunction()
   {
     try ( var tmp = new Complex())
     {
-      Expression.saveClasses = Expression.trace = true;
       var                   context = new Context();
 
       final RealFunction    θ       =
@@ -53,28 +47,19 @@ public class ExponentiationNodeTest extends
       assertEquals(0.4296015350333563, y.re().doubleValue());
       assertEquals(-0.5684675488546744, y.im().doubleValue());
     }
-    finally
-    {
-      Expression.saveClasses = Expression.trace = false;
-    }
+
   }
 
   public static void testDerivativesAndExponentialsWithExpressionlessFunction()
   {
-    try
-    {
-      Expression.saveClasses = Expression.trace = true;
-      var context = new Context();
-      var θ       = new RealRiemannSiegelThetaFunction();
-      context.registerFunction("θ", θ);
 
-      var gain = RealBivariateToComplexFunction.express("A:exp(ⅈ*λ*(θ(t)-t))*√(θ̇(t))", context);
-      gain.evaluate(RealConstants.zero, 128);
-    }
-    finally
-    {
-      Expression.saveClasses = Expression.trace = false;
-    }
+    var context = new Context();
+    var θ       = new RealRiemannSiegelThetaFunction();
+    context.registerFunction("θ", θ);
+
+    var gain = RealBivariateToComplexFunction.express("A:exp(ⅈ*λ*(θ(t)-t))*√(θ̇(t))", context);
+    gain.evaluate(RealConstants.zero, 128);
+
   }
 
   public static void testSimplifySquaredSquareRoots()

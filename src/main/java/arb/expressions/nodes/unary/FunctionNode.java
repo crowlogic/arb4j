@@ -686,14 +686,16 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   private void loadFunctionReferenceOntoStack(MethodVisitor mv, FunctionMapping<D, R, F> mapping)
   {
-    if ( Expression.trace )
+    String functionFieldDescriptor = mapping.functionFieldDescriptor(true);
+
+    if (Expression.trace)
     {
-      logger.debug("loadFunctionReferenceOntoStack(mapping={})",mapping);
-      
+      logger.debug("loadFunctionReferenceOntoStack(mapping={} functionFieldDescripton={})",
+                   mapping,
+                   functionFieldDescriptor);
+
     }
-    expression.loadFieldOntoStack(loadThisOntoStack(mv),
-                                  functionName,
-                                  mapping.functionFieldDescriptor(true));
+    expression.loadFieldOntoStack(loadThisOntoStack(mv), functionName, functionFieldDescriptor);
   }
 
   public FunctionMapping<D, R, F> registerSelfReferrentialFunctionMapping()

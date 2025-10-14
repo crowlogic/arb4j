@@ -30,20 +30,14 @@ public class RealBivariateFunctionTest extends
 
   public void testEvaluateRealBivariateFunctionWithContextVariable()
   {
-    try
-    {
-      Expression.trace = Expression.saveClasses = true;
+    
       ZProcess                       Zprocess        = new ZProcess();
       RealBivariateToComplexFunction oscillatoryFunction            = Zprocess.oscillatoryFunction();
 
       RealToComplexFunction          oscillationAtFrequency = oscillatoryFunction.evaluate(RealConstants.one, 128);
       assertEquals(-0.9308570971323369,
                    oscillationAtFrequency.eval(1.0, new Complex()).re().doubleValue());
-    }
-    finally
-    {
-      Expression.trace = Expression.saveClasses = false;
-    }
+   
   }
 
 }

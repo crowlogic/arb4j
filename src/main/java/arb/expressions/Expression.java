@@ -1263,12 +1263,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     var functionName       = dependency.variableName;
     var mapping            = referencedFunctions.get(functionName);
-    var functionDescriptor = String.format("L%s;", functionName);
+    var functionDescriptor = functionClass.descriptorString(); //.format("L%s;", functionName);
 
     if (mapping != null)
     {
 
-      functionDescriptor = mapping.functionFieldDescriptor(false);
+      functionDescriptor = mapping.functionFieldDescriptor(true);
 
       constructReferencedFunctionInstanceIfItIsNull(mv, mapping);
       generateFunctionInitializer(mv, mapping, assignments);

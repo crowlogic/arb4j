@@ -347,12 +347,17 @@ public class Context
                        Object value,
                        boolean overwrite)
   {
+    Class<?> functionClass = f.getClass();
+    assert functionClass.equals(compiledClass) : String.format("functionClass = %s != compiledClass = %s\n",
+                                                               functionClass,
+                                                               compiledClass);
+
     if (Expression.trace)
     {
-      log.debug(String.format("#%s.setFieldValue(compiledClass=%s,\n compiledClass=%s,\n variableName=%s,\n value=%s,\n overwrite=%s)\n",
+      log.debug(String.format("#%s.setFieldValue(compiledClass=%s,\n this=#%s\n variableName=%s,\n value=%s,\n overwrite=%s)\n",
                               System.identityHashCode(this),
                               compiledClass,
-                              f,
+                              System.identityHashCode(f),
                               variableName,
                               value,
                               overwrite));
