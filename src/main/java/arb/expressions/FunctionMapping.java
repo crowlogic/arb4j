@@ -64,19 +64,15 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
 
   public String functionFieldDescriptor()
   {
-    if ( functionFieldDescriptor != null)
-    {
-      return functionFieldDescriptor;
-    }
     return functionFieldDescriptor = functionFieldDescriptor(true);
   }
 
   public String functionFieldDescriptor(boolean preferInterface)
   {
-    if (preferInterface && functionClass != null)
-    {
-      return functionClass.descriptorString();
-    }
+//    if (preferInterface && functionClass != null)
+//    {
+//      return functionClass.descriptorString();
+//    }
     return instance != null ? instance.getClass().descriptorString()
                             : String.format("L%s;", functionName);
   }
