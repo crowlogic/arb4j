@@ -1371,7 +1371,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     constructNewObject(loadThisOntoStack(mv), functionName);
     invokeDefaultConstructor(duplicateTopOfTheStack(mv), functionName);
-    putField(mv, className, functionName, String.format("L%s;", functionName));
+    FunctionMapping<?, ?, ?> mapping = referencedFunctions.get(functionName);
+    assert mapping != null : "no function mapping for " + functionName;
+    putField(mv, className, functionName, mapping.functionFieldDescriptor(false));
     initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv),
                                                    className,
                                                    functionName,
@@ -1606,23 +1608,40 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                          Class<?>>> variables)
   {
     // TODO: #748
-    String typeDesc = String.format("L%s;", fieldType);
+    // String typeDesc = String.format("L%s;", fieldType);
+    // Replace the problematic line with:
+    String typeDesc = context.functions.get(functionFieldName).functionFieldDescriptor();
 
     variables.forEach(variable ->
     {
-      var variableFieldName           = variable.getLeft();
-      var variableFieldTypeDescriptor = variable.getRight().descriptorString();
-      getField(loadThisOntoStack(mv),
-               generatedFunctionClassInternalName,
-               functionFieldName,
-               typeDesc);
-      getField(loadThisOntoStack(mv),
-               generatedFunctionClassInternalName,
-               variableFieldName,
-               variableFieldTypeDescriptor);
-      putField(mv, fieldType, variableFieldName, variableFieldTypeDescriptor);
+      linkSharedVariableToReferencedFunction(mv,
+                                             generatedFunctionClassInternalName,
+                                             fieldType,
+                                             functionFieldName,
+                                             typeDesc,
+                                             variable);
     });
 
+  }
+
+  protected void linkSharedVariableToReferencedFunction(MethodVisitor mv,
+                                                        String generatedFunctionClassInternalName,
+                                                        String fieldType,
+                                                        String functionFieldName,
+                                                        String typeDesc,
+                                                        OrderedPair<String, Class<?>> variable)
+  {
+    var variableFieldName           = variable.getLeft();
+    var variableFieldTypeDescriptor = variable.getRight().descriptorString();
+    getField(loadThisOntoStack(mv),
+             generatedFunctionClassInternalName,
+             functionFieldName,
+             typeDesc);
+    getField(loadThisOntoStack(mv),
+             generatedFunctionClassInternalName,
+             variableFieldName,
+             variableFieldTypeDescriptor);
+    putField(mv, fieldType, variableFieldName, variableFieldTypeDescriptor);
   }
 
   protected void injectReferences(F f)
