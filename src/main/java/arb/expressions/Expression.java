@@ -1272,7 +1272,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (mapping != null)
     {
 
-      functionDescriptor = mapping.functionFieldDescriptor(true);
+      functionDescriptor = mapping.functionFieldDescriptor();
 
       constructReferencedFunctionInstanceIfItIsNull(mv, mapping);
       generateFunctionInitializer(mv, mapping, assignments);
@@ -1373,7 +1373,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     invokeDefaultConstructor(duplicateTopOfTheStack(mv), functionName);
     FunctionMapping<?, ?, ?> mapping = referencedFunctions.get(functionName);
     assert mapping != null : "no function mapping for " + functionName;
-    putField(mv, className, functionName, mapping.functionFieldDescriptor(false));
+    putField(mv, className, functionName, mapping.functionFieldDescriptor());
     initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv),
                                                    className,
                                                    functionName,

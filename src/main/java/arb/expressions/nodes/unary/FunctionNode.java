@@ -686,7 +686,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   private void loadFunctionReferenceOntoStack(MethodVisitor mv, FunctionMapping<D, R, F> mapping)
   {
-    String functionFieldDescriptor = mapping.functionFieldDescriptor(false);
+    String functionFieldDescriptor = mapping.functionFieldDescriptor();
 
     if (Expression.trace)
     {
