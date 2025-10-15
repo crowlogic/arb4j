@@ -37,11 +37,18 @@ public class ExpressionClassLoader extends
                 compiledClasses.keySet(),
                 System.identityHashCode(context));
     }
+    
+    // First check compiledClasses map for direct class name match
+    Class<?> directMatch = compiledClasses.get(name);
+    if (directMatch != null)
+    {
+      return directMatch;
+    }
+    
     AtomicReference<Class<?>> mappedClassReference = new AtomicReference<Class<?>>();
     context.functions.values().forEach(mapping ->
     {
-      if ((mapping.functionClass != null && name.equals(mapping.functionClass.getSimpleName()))
-                    || (name.equals(mapping.functionName)))
+      if (name.equals(mapping.functionName))
       {
         assert mappedClassReference.get() == null : mappedClassReference + " is already mapped to " + mapping;
         mappedClassReference.set(mapping.functionClass);
@@ -51,15 +58,15 @@ public class ExpressionClassLoader extends
         }
       }
     });
+    
     Class<?> mappedClass = mappedClassReference.get();
-    if ( mappedClass == null )
+    if (mappedClass == null)
     {
       if (Expression.trace)
       {
         log.warn("\n\nNo mapping for {}", name);
       }
     }
-//    Class<?> locatedClass = mappedClass != null ? mappedClass : super.findClass(name);
     
     return mappedClass;
   }

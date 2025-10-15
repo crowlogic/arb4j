@@ -346,6 +346,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       throw new CompilerException(String.format("function named %s was not found in context.functions",
                                                 functionName));
     }
+
     var instance = functionMapping.instance;
     if (instance == null)
     {
@@ -355,8 +356,12 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
 
     var    derivative                   = instance.derivative();
-
     String derivativeFunctionName       = "diff" + functionName;
+
+    // HERE IS THE PROBLEM: The derivative Expression gets generated with the full
+    // expression as className
+    // but we need to set it to use the short derivativeFunctionName instead
+
     var    newDerivativeFunctionMapping = expression.context.functions.get(derivativeFunctionName);
     if (newDerivativeFunctionMapping == null)
     {
@@ -366,18 +371,10 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                                               derivative.domainType(),
                                                                               derivative.coDomainType());
     }
-    else
-    {
-      if (logger.isDebugEnabled())
-      {
-        logger.debug("Reusing {}", newDerivativeFunctionMapping);
-      }
-    }
 
     return new FunctionNode<D, R, F>(expression,
                                      newDerivativeFunctionMapping,
                                      arg);
-
   }
 
   private final static Logger logger = LoggerFactory.getLogger(FunctionNode.class);
