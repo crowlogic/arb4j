@@ -337,6 +337,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return one().div(one().sub(arg.pow(2)).sqrt());
   }
 
+//src/main/java/arb/expressions/nodes/unary/FunctionNode.java
+
   private Node<D, R, F> differentiateContextualFunction()
   {
     var functionMapping = expression.context.getFunctionMapping(functionName);
@@ -346,7 +348,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       throw new CompilerException(String.format("function named %s was not found in context.functions",
                                                 functionName));
     }
-
     var instance = functionMapping.instance;
     if (instance == null)
     {
@@ -358,18 +359,47 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     var    derivative                   = instance.derivative();
     String derivativeFunctionName       = "diff" + functionName;
 
-    // HERE IS THE PROBLEM: The derivative Expression gets generated with the full
-    // expression as className
-    // but we need to set it to use the short derivativeFunctionName instead
-
     var    newDerivativeFunctionMapping = expression.context.functions.get(derivativeFunctionName);
     if (newDerivativeFunctionMapping == null)
     {
+      // CRITICAL FIX: Get the derivative's Expression and set its className to the
+      // short alias
+      if (functionMapping.expression != null)
+      {
+        // Create a new derivative expression by differentiating the original expression
+        var originalExpr   = functionMapping.expression;
+        var derivativeExpr = new Expression<>(derivativeFunctionName,
+                                              originalExpr.domainType,
+                                              originalExpr.coDomainType,
+                                              originalExpr.functionClass,
+                                              "diff("
+                                                                          + originalExpr.expression
+                                                                          + ","
+                                                                          + (originalExpr.independentVariable
+                                                                                        != null ? originalExpr.independentVariable.getName()
+                                                                                                : "t")
+                                                                          + ")",
+                                              expression.context,
+                                              null,
+                                              originalExpr);
+
+        // Parse and compile the derivative with the correct short className
+        derivativeExpr.parseRoot().compile();
+        derivative = derivativeExpr.instantiate();
+      }
+
       newDerivativeFunctionMapping =
                                    expression.context.registerFunctionMapping(derivativeFunctionName,
                                                                               derivative,
                                                                               derivative.domainType(),
                                                                               derivative.coDomainType());
+    }
+    else
+    {
+      if (logger.isDebugEnabled())
+      {
+        logger.debug("Reusing {}", newDerivativeFunctionMapping);
+      }
     }
 
     return new FunctionNode<D, R, F>(expression,

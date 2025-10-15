@@ -58,6 +58,9 @@ public class ExponentiationNodeTest extends
     context.registerFunction("θ", θ);
 
     var gain = RealBivariateToComplexFunction.express("A:exp(ⅈ*λ*(θ(t)-t))*√(θ̇(t))", context);
+    Class<?>    gainClass   = gain.getClass();
+    ClassLoader classLoader = gainClass.getClassLoader();
+    System.err.println("classLoader=" + classLoader);
     gain.evaluate(RealConstants.zero, 128);
 
   }
