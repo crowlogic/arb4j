@@ -265,7 +265,11 @@ public class Context
     mapping.instance         = function;
     mapping.functionClass    = functionClass;
     functions.put(functionName, mapping);
-
+    // Add alias for class loader when function name differs from class name
+    if (classLoader != null)
+    {
+      classLoader.compiledClasses.put(functionName, functionClass);
+    }
     if (Expression.trace)
     {
       log.debug(String.format("\n\nid=%s: registerFunctionMapping( functionName = %s, function = %s, domainType=%s, coDomainType=%s, functionClass=%s, expression=%s, expressionString=%s )\nmapping={}\n",

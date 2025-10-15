@@ -71,7 +71,7 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
 
   public String functionFieldDescriptor(boolean preferInterface)
   {
-    if ( declaredAs != null )
+    if (declaredAs != null)
     {
       return declaredAs;
     }
@@ -79,7 +79,7 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
     {
       return functionClass.descriptorString();
     }
-    return  String.format("L%s;", functionName);
+    return String.format("L%s;", functionName);
   }
 
   @Override
@@ -97,12 +97,6 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
     return instance = expression.instantiate();
   }
 
-  /**
-   * TODO: add a declaredAsType to FunctionMapping
-   * 
-   * @param classVisitor
-   * @param name
-   */
   public void declare(ClassVisitor classVisitor, String name)
   {
     functionFieldDescriptor = functionFieldDescriptor();
@@ -112,6 +106,8 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
     }
     classVisitor.visitField(ACC_PUBLIC, name, functionFieldDescriptor, null, null);
     declaredAs = functionFieldDescriptor;
+
+
   }
 
   public void loadReferenceOntoStack(MethodVisitor mv)

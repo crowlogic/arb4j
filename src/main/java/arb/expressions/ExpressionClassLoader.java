@@ -17,6 +17,14 @@ public class ExpressionClassLoader extends
                                    ClassLoader
 {
 
+  @Override
+  public String toString()
+  {
+    return String.format("ExpressionClassLoader[compiledClasses=%s, context=%s]",
+                         compiledClasses,
+                         context);
+  }
+
   private final static Logger log = LoggerFactory.getLogger(ExpressionClassLoader.class);
 
   @Override
@@ -25,25 +33,35 @@ public class ExpressionClassLoader extends
     if (Expression.trace)
     {
       log.debug("\n\nfindClass('{}') in classes {{}} of Context#{}\n",
-                              name,
-                              compiledClasses.keySet(),
-                              System.identityHashCode(context));
+                name,
+                compiledClasses.keySet(),
+                System.identityHashCode(context));
     }
-    AtomicReference<Class<?>> mapped = new AtomicReference<Class<?>>();
+    AtomicReference<Class<?>> mappedClassReference = new AtomicReference<Class<?>>();
     context.functions.values().forEach(mapping ->
     {
-      if (mapping.functionClass != null && name.equals(mapping.functionClass.getSimpleName()))
+      if ((mapping.functionClass != null && name.equals(mapping.functionClass.getSimpleName()))
+                    || (name.equals(mapping.functionName)))
       {
-        assert mapped.get() == null : mapped + " is already mapped to " + mapping;
-        mapped.set(mapping.functionClass);
+        assert mappedClassReference.get() == null : mappedClassReference + " is already mapped to " + mapping;
+        mappedClassReference.set(mapping.functionClass);
         if (Expression.trace)
         {
           log.debug("\n\nMapped {} to {}\n", mapping, name);
         }
       }
     });
-    Class<?> mappedClass = mapped.get();
-    return mappedClass != null ? mappedClass : super.findClass(name);
+    Class<?> mappedClass = mappedClassReference.get();
+    if ( mappedClass == null )
+    {
+      if (Expression.trace)
+      {
+        log.warn("\n\nNo mapping for {}", name);
+      }
+    }
+//    Class<?> locatedClass = mappedClass != null ? mappedClass : super.findClass(name);
+    
+    return mappedClass;
   }
 
   HashMap<String, Class<?>> compiledClasses = new HashMap<>();

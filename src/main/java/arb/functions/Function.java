@@ -210,11 +210,6 @@ public interface Function<D, C> extends
       compiledExpression.mapping.instance = func;
     }
 
-//    if ( context != null && compiledExpression.isFunctional() )
-//    {
-//      context.injectFunctionReferences(func);
-//    }
-
     return func;
   }
 
