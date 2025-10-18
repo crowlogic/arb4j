@@ -8,6 +8,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import arb.functions.Function;
+
 /**
  * 
  * @author Stephen Crowley ©2024-2025
@@ -32,25 +34,41 @@ public class ExpressionClassLoader extends
   {
     if (Expression.trace)
     {
-      log.debug("\n\nfindClass('{}') in classes {{}} of Context#{}\n",
+      log.debug("\n\nfindClass('{}') in classes {{}} of Context#{} which has functions={}\n",
                 name,
                 compiledClasses.keySet(),
-                System.identityHashCode(context));
+                System.identityHashCode(context),
+                context.functions);
     }
-    
+
     // First check compiledClasses map for direct class name match
-    Class<?> directMatch = compiledClasses.get(name);
-    if (directMatch != null)
+//    Class<?> directMatch = compiledClasses.get(name);
+//    if (directMatch != null)
+//    {
+//      directMatch.s
+//      log.debug("Returning " + directMatch + " for " + name );
+//
+//      return directMatch;
+//    }
+//    
+    FunctionMapping<Object,
+                  Object,
+                  Function<? extends Object,
+                                ? extends Object>> functionMapping =
+                                                                   context.getFunctionMapping(name);
+    if (functionMapping != null)
     {
-      return directMatch;
+      log.debug("Returning " + functionMapping + " for " + name);
+      return functionMapping.type();
     }
-    
+
     AtomicReference<Class<?>> mappedClassReference = new AtomicReference<Class<?>>();
     context.functions.values().forEach(mapping ->
     {
-      if (name.equals(mapping.functionName))
+      if (name.equals(mapping.functionName) || name.equals(mapping.functionClass.getName()))
       {
-        assert mappedClassReference.get() == null : mappedClassReference + " is already mapped to " + mapping;
+        assert mappedClassReference.get()
+                      == null : mappedClassReference + " is already mapped to " + mapping;
         mappedClassReference.set(mapping.functionClass);
         if (Expression.trace)
         {
@@ -58,7 +76,7 @@ public class ExpressionClassLoader extends
         }
       }
     });
-    
+
     Class<?> mappedClass = mappedClassReference.get();
     if (mappedClass == null)
     {
@@ -67,7 +85,7 @@ public class ExpressionClassLoader extends
         log.warn("\n\nNo mapping for {}", name);
       }
     }
-    
+
     return mappedClass;
   }
 

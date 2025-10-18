@@ -14,11 +14,7 @@ import org.objectweb.asm.Type;
 import arb.Complex;
 import arb.Quaternion;
 import arb.Real;
-import arb.expressions.Compiler;
-import arb.expressions.Expression;
-import arb.expressions.FunctionMapping;
-import arb.expressions.Parser;
-import arb.expressions.VariableReference;
+import arb.expressions.*;
 import arb.functions.Function;
 
 /**

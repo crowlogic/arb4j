@@ -124,26 +124,17 @@ public class Context
 
   public <D, R, F extends Function<? extends D, ? extends R>> void injectFunctionReferences(F f)
   {
-    try
+    for (var field : f.getClass().getFields())
     {
-      for (var field : f.getClass().getFields())
-      {
-        var functionName    = field.getName();
+      var functionName    = field.getName();
 
-        var functionMapping = functions.get(functionName);
-        if (functionMapping != null)
-        {
-          setFieldValue(f.getClass(), f, functionName, functionMapping.instance, false);
-        }
-      }
-    }
-    catch (Throwable t)
-    {
-      if (log.isWarnEnabled())
+      var functionMapping = functions.get(functionName);
+      if (functionMapping != null)
       {
-        log.warn(t.getMessage(), t);
+        setFieldValue(f.getClass(), f, functionName, functionMapping.instance, false);
       }
     }
+
   }
 
   public <D, R, F extends Function<? extends D, ? extends R>> void injectReferences(F f)

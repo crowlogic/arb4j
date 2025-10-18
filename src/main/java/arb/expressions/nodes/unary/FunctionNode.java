@@ -100,10 +100,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public int hashCode()
   {
-    final int prime  = 31337;
-    int       result = super.hashCode();
-    result = prime * result + Objects.hash(functionName);
-    return result;
+    return 31337 * super.hashCode() + Objects.hash(functionName);
   }
 
   @Override
@@ -111,12 +108,13 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     if (this == obj)
       return true;
-    if (!super.equals(obj))
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    FunctionNode<?, ?, ?> other = (FunctionNode<?, ?, ?>) obj;
-    return super.equals(obj) && Objects.equals(functionName, other.functionName);
+
+    if (obj instanceof FunctionNode<?, ?, ?> other)
+    {
+      return super.equals(obj) && Objects.equals(functionName, other.functionName);
+    }
+    return false;
+
   }
 
   static final HashSet<String>  bitlessFunctions                = new HashSet<>();

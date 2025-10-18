@@ -25,8 +25,7 @@ import org.slf4j.LoggerFactory;
 import arb.*;
 import arb.Integer;
 import arb.exceptions.CompilerException;
-import arb.expressions.context.Dependency;
-import arb.expressions.context.TopologicalSorter;
+import arb.expressions.context.*;
 import arb.expressions.nodes.*;
 import arb.expressions.nodes.binary.*;
 import arb.expressions.nodes.nary.*;
@@ -1653,6 +1652,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (context != null)
     {
+      ClassLoader classLoader = f.getClass().getClassLoader();
+      System.err.println( "classLoader " + classLoader );
       context.injectVariableReferences(f);
       context.injectFunctionReferences(f);
     }
