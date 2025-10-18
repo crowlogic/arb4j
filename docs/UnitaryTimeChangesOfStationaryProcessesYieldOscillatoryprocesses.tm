@@ -83,13 +83,13 @@
     multiplication operator <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-12>>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|6<space|2spc>Regularity
-    and Simple Zeros> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-13><vspace|0.5fn>
+    <with|par-left|1tab|5.3<space|2spc>Regularity and Simplicity of The Zeros
+    of <with|mode|math|Z<around*|(|t|)>> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-13>>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|7<space|2spc>Kac-Rice
-    Formula For The Expected Zero Count> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-14><vspace|0.5fn>
+    <with|par-left|1tab|5.4<space|2spc>Kac-Rice Formula For The Expected Zero
+    Count <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-14>>
   </table-of-contents>
 
   <section|Function Spaces and Unitary Time Change><label|sec:functionspaces>
@@ -965,7 +965,8 @@
     information in operator spectra.
   </remark>
 
-  <section|Regularity and Simple Zeros><label|sec:appendix>
+  <subsection|Regularity and Simplicity of The Zeros of
+  <math|Z<around*|(|t|)>>>
 
   <\definition>
     <strong|[Regularity and simplicity]<label|def:regularity>> Assume
@@ -1040,7 +1041,7 @@
     when evaluating at <math|t=t<rsub|0>>.
   </proof>
 
-  <section|Kac-Rice Formula For The Expected Zero Count>
+  <subsection|Kac-Rice Formula For The Expected Zero Count>
 
   <\theorem>
     <dueto|Kac-Rice Formula for Zero Crossings><label|thm:kac_rice>Let
@@ -1221,8 +1222,8 @@
     <associate|auto-10|<tuple|5|12>>
     <associate|auto-11|<tuple|5.1|12>>
     <associate|auto-12|<tuple|5.2|13>>
-    <associate|auto-13|<tuple|6|16>>
-    <associate|auto-14|<tuple|7|17>>
+    <associate|auto-13|<tuple|5.3|16>>
+    <associate|auto-14|<tuple|5.4|17>>
     <associate|auto-2|<tuple|1.1|2>>
     <associate|auto-3|<tuple|1.2|2>>
     <associate|auto-4|<tuple|2|5>>
@@ -1259,7 +1260,6 @@
     <associate|prop:conjugation|<tuple|14|10>>
     <associate|prop:inverse|<tuple|5|3>>
     <associate|sec:HP|<tuple|5|12>>
-    <associate|sec:appendix|<tuple|6|16>>
     <associate|sec:functionspaces|<tuple|1|2>>
     <associate|sec:oscillatory|<tuple|2|5>>
     <associate|sec:samplepaths|<tuple|4|11>>
@@ -1333,14 +1333,14 @@
       multiplication operator <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-12>>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|6<space|2spc>Regularity
-      and Simple Zeros> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-13><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|7<space|2spc>Kac-Rice
-      Formula For The Expected Zero Count>
+      <with|par-left|<quote|1tab>|5.3<space|2spc>Regularity and Simplicity of
+      The Zeros of <with|mode|<quote|math>|Z<around*|(|t|)>>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-14><vspace|0.5fn>
+      <no-break><pageref|auto-13>>
+
+      <with|par-left|<quote|1tab>|5.4<space|2spc>Kac-Rice Formula For The
+      Expected Zero Count <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-14>>
     </associate>
   </collection>
 </auxiliary>

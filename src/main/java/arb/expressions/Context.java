@@ -124,14 +124,15 @@ public class Context
 
   public <D, R, F extends Function<? extends D, ? extends R>> void injectFunctionReferences(F f)
   {
-    for (var field : f.getClass().getFields())
+    Class<?> functionClass = f.getClass();
+    for (var field : functionClass.getDeclaredFields())
     {
       var functionName    = field.getName();
 
       var functionMapping = functions.get(functionName);
       if (functionMapping != null)
       {
-        setFieldValue(f.getClass(), f, functionName, functionMapping.instance, false);
+        setFieldValue(functionClass, f, functionName, functionMapping.instance, false);
       }
     }
 
