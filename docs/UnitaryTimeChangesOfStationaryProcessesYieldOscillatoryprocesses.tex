@@ -92,12 +92,14 @@
   The function $\theta$ maps $\sigma$-compact sets to $\sigma$-compact sets.
   Define, for $f$ measurable,
   \begin{equation}
-    (U_{\theta} f) (t) = \sqrt{\dot{\theta} (t)} f (\theta (t))
+    (U_{\theta} f) (t) = \sqrt{\dot{\theta} (t)} f (\theta (t)) \label{U}
   \end{equation}
 \end{definition}
 
 \begin{proposition}
-  {\tmstrong{[Inverse map]\label{prop:inverse} }}The inverse map is given by
+  {\tmstrong{[Inversion of Unitary time-change]\label{prop:inverse} }}The
+  inverse of the unitary time-change operator $U$ in Equation (\ref{U}) is
+  given by
   \begin{equation}
     (U_{\theta}^{- 1} g) (s) = \frac{g (\theta^{- 1} (s))}{\sqrt{\dot{\theta}
     (\theta^{- 1} (s))}}
@@ -107,11 +109,11 @@
 
 \begin{proof}
   Since $\dot{\theta} (t) = 0$ only on sets of measure zero, and $\theta^{-
-  1}$ maps sets of measure zero to sets of measure zero (as absolutely
-  continuous bijective functions preserve measure-zero sets), the denominator
-  $\sqrt{\dot{\theta} (\theta^{- 1} (s))}$ is positive almost everywhere. The
-  expression is therefore well-defined almost everywhere on every
-  $\sigma$-compact set, which suffices for defining an element of
+  1}$ maps sets of measure zero to sets of measure zero because of the fact
+  that absolutely continuous bijective functions preserve measure-zero sets,
+  the denominator $\sqrt{\dot{\theta} (\theta^{- 1} (s))}$ is positive almost
+  everywhere. The expression is therefore well-defined almost everywhere on
+  every $\sigma$-compact set, which suffices for defining an element of
   $L^2_{\tmop{loc}} (\mathbb{R})$.
 \end{proof}
 
@@ -177,42 +179,6 @@
     U_{\theta} U_{\theta}^{- 1} = U_{\theta}^{- 1} U_{\theta} = I
   \end{equation}
   on $L^2_{\tmop{loc}} (\mathbb{R})$.
-\end{proof}
-
-\begin{theorem}
-  {\tmstrong{[Unitarity on $L^2 (\mathbb{R})$]\label{thm:global_unitarity}}}
-  $U_{\theta} : L^2 (\mathbb{R}) \to L^2 (\mathbb{R})$ is unitary:
-  \begin{equation}
-    \int_{\mathbb{R}} | (U_{\theta} f) (t) |^2 \hspace{0.17em} dt =
-    \int_{\mathbb{R}} |f (s) |^2  \hspace{0.17em} ds
-  \end{equation}
-  and $U_{\theta}^{- 1}$ is its inverse.
-\end{theorem}
-
-\begin{proof}
-  For $f \in L^2 (\mathbb{R})$, we have:
-  
-  \begin{align}
-    \int_{\mathbb{R}} | (U_{\theta} f) (t) |^2  \hspace{0.17em} dt & =
-    \int_{\mathbb{R}} \dot{\theta} (t) |f (\theta (t)) |^2  \hspace{0.17em} dt
-    
-  \end{align}
-  
-  By the change of variables
-  \begin{equation}
-    s = \theta (t)
-  \end{equation}
-  with
-  \begin{equation}
-    ds = \dot{\theta} (t)  \hspace{0.17em} dt
-  \end{equation}
-  and since $\theta : \mathbb{R} \to \mathbb{R}$ is bijective:
-  \begin{equation}
-    \int_{\mathbb{R}} \dot{\theta} (t)  |f (\theta (t)) |^2 \hspace{0.17em} dt
-    = \int_{\mathbb{R}} |f (s) |^2  \hspace{0.17em} ds
-  \end{equation}
-  The inverse relationship follows from the same computation as in
-  Theorem~\ref{thm:local_unitarity}, applied globally.
 \end{proof}
 
 \section{Oscillatory Processes (Priestley)}\label{sec:oscillatory}
@@ -877,7 +843,7 @@ Processes}\label{sec:stationary_timechange}
   approaches to encoding arithmetic information in operator spectra.
 \end{remark}
 
-\section{Regularity and Simple Zeros}\label{sec:appendix}
+\subsection{Regularity and Simplicity of The Zeros of $Z (t)$}
 
 \begin{definition}
   {\tmstrong{[Regularity and simplicity]\label{def:regularity}}} Assume $Z \in
@@ -941,7 +907,7 @@ Processes}\label{sec:stationary_timechange}
   when evaluating at $t = t_0$.
 \end{proof}
 
-\section{Kac-Rice Formula For The Expected Zero Count}
+\subsection{Kac-Rice Formula For The Expected Zero Count}
 
 \begin{theorem}[Kac-Rice Formula for Zero Crossings]
   \label{thm:kac_rice}Let $Z (t)$ be a centered Gaussian process on $[a, b]$

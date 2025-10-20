@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|article|boring-white|framed-theorems>>
+<style|<tuple|article|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Unitary Time Changes of Stationary Processes Yield
@@ -136,12 +136,14 @@
     for <math|f> measurable,
 
     <\equation>
-      <around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*f<around|(|\<theta\><around|(|t|)>|)>
+      <around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*f<around|(|\<theta\><around|(|t|)>|)><label|U>
     </equation>
   </definition>
 
   <\proposition>
-    <strong|[Inverse map]<label|prop:inverse> >The inverse map is given by
+    <strong|[Inversion of Unitary time-change]<label|prop:inverse> >The
+    inverse of the unitary time-change operator <math|U> in Equation
+    (<reference|U>) is given by
 
     <\equation>
       <around|(|U<rsub|\<theta\>><rsup|-1>*g|)><around|(|s|)>=<frac|g<around|(|\<theta\><rsup|-1><around|(|s|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>>
@@ -154,8 +156,8 @@
   <\proof>
     Since <math|<wide|\<theta\>|\<dot\>><around|(|t|)>=0> only on sets of
     measure zero, and <math|\<theta\><rsup|-1>> maps sets of measure zero to
-    sets of measure zero (as absolutely continuous bijective functions
-    preserve measure-zero sets), the denominator
+    sets of measure zero because of the fact that absolutely continuous
+    bijective functions preserve measure-zero sets, the denominator
     <math|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>>
     is positive almost everywhere. The expression is therefore well-defined
     almost everywhere on every <math|\<sigma\>>-compact set, which suffices
@@ -223,49 +225,6 @@
     </equation>
 
     on <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>.
-  </proof>
-
-  <\theorem>
-    <strong|[Unitarity on <math|L<rsup|2><around|(|\<bbb-R\>|)>>]<label|thm:global_unitarity>>
-    <math|U<rsub|\<theta\>>:L<rsup|2><around|(|\<bbb-R\>|)>\<to\>L<rsup|2><around|(|\<bbb-R\>|)>>
-    is unitary:
-
-    <\equation>
-      <big|int><rsub|\<bbb-R\>><around|\||<around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>*<around|\||<rsup|2><space|0.17em>d*t=<big|int><rsub|\<bbb-R\>>|\|>*f<around|(|s|)>|\|><rsup|2>*<space|0.17em>d*s
-    </equation>
-
-    and <math|U<rsub|\<theta\>><rsup|-1>> is its inverse.
-  </theorem>
-
-  <\proof>
-    For <math|f\<in\>L<rsup|2><around|(|\<bbb-R\>|)>>, we have:
-
-    <\align>
-      <tformat|<table|<row|<cell|<big|int><rsub|\<bbb-R\>><around|\||<around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>|\|><rsup|2>*<space|0.17em>d*t>|<\cell>
-        =<big|int><rsub|\<bbb-R\>><wide|\<theta\>|\<dot\>><around|(|t|)><around|\||f<around|(|\<theta\><around|(|t|)>|)>|\|><rsup|2>*<space|0.17em>d*t<eq-number>
-      </cell>>>>
-    </align>
-
-    By the change of variables
-
-    <\equation>
-      s=\<theta\><around|(|t|)>
-    </equation>
-
-    with
-
-    <\equation>
-      d*s=<wide|\<theta\>|\<dot\>><around|(|t|)>*<space|0.17em>d*t
-    </equation>
-
-    and since <math|\<theta\>:\<bbb-R\>\<to\>\<bbb-R\>> is bijective:
-
-    <\equation>
-      <big|int><rsub|\<bbb-R\>><wide|\<theta\>|\<dot\>><around|(|t|)>*<around|\||f<around|(|\<theta\><around|(|t|)>|)>*<around|\||<rsup|2><space|0.17em>d*t=<big|int><rsub|\<bbb-R\>>|\|>*f<around|(|s|)>|\|><rsup|2>*<space|0.17em>d*s
-    </equation>
-
-    The inverse relationship follows from the same computation as in
-    Theorem<nbsp><reference|thm:local_unitarity>, applied globally.
   </proof>
 
   <section|Oscillatory Processes (Priestley)><label|sec:oscillatory>
@@ -1218,62 +1177,62 @@
 
 <\references>
   <\collection>
+    <associate|U|<tuple|3|2>>
     <associate|auto-1|<tuple|1|2>>
-    <associate|auto-10|<tuple|5|12>>
-    <associate|auto-11|<tuple|5.1|12>>
-    <associate|auto-12|<tuple|5.2|13>>
-    <associate|auto-13|<tuple|5.3|16>>
-    <associate|auto-14|<tuple|5.4|17>>
+    <associate|auto-10|<tuple|5|11>>
+    <associate|auto-11|<tuple|5.1|11>>
+    <associate|auto-12|<tuple|5.2|12>>
+    <associate|auto-13|<tuple|5.3|15>>
+    <associate|auto-14|<tuple|5.4|16>>
     <associate|auto-2|<tuple|1.1|2>>
     <associate|auto-3|<tuple|1.2|2>>
-    <associate|auto-4|<tuple|2|5>>
-    <associate|auto-5|<tuple|3|8>>
-    <associate|auto-6|<tuple|3.1|8>>
-    <associate|auto-7|<tuple|3.2|8>>
-    <associate|auto-8|<tuple|3.3|10>>
-    <associate|auto-9|<tuple|4|11>>
-    <associate|cor:evol_spec|<tuple|13|9>>
-    <associate|covar|<tuple|48|8>>
-    <associate|def:L|<tuple|20|14>>
+    <associate|auto-4|<tuple|2|4>>
+    <associate|auto-5|<tuple|3|7>>
+    <associate|auto-6|<tuple|3.1|7>>
+    <associate|auto-7|<tuple|3.2|7>>
+    <associate|auto-8|<tuple|3.3|9>>
+    <associate|auto-9|<tuple|4|10>>
+    <associate|cor:evol_spec|<tuple|12|9>>
+    <associate|covar|<tuple|43|7>>
+    <associate|def:L|<tuple|19|13>>
     <associate|def:L2loc|<tuple|2|2>>
     <associate|def:Utheta|<tuple|4|2>>
-    <associate|def:cramer|<tuple|11|8>>
-    <associate|def:osc_proc|<tuple|8|5>>
-    <associate|def:regularity|<tuple|23|16>>
+    <associate|def:cramer|<tuple|10|7>>
+    <associate|def:osc_proc|<tuple|7|4>>
+    <associate|def:regularity|<tuple|22|15>>
     <associate|def:sigma_compact|<tuple|1|2>>
-    <associate|def:zeromeasure|<tuple|16|12>>
-    <associate|eq:covariance_def|<tuple|126|18>>
-    <associate|eq:expectation|<tuple|117|17>>
-    <associate|eq:expected_zeros|<tuple|127|18>>
-    <associate|eq:kac_rice|<tuple|112|17>>
-    <associate|eq:kac_rice_formula|<tuple|129|18>>
-    <associate|eq:limit_mixed_partial|<tuple|132|19>>
-    <associate|eq:mixed_partial|<tuple|130|18>>
-    <associate|eq:mixed_partial_continued|<tuple|131|18>>
-    <associate|eq:substituted_kac_rice|<tuple|133|19>>
-    <associate|eq:time_changed_cov|<tuple|128|18>>
-    <associate|labeldef:Hmu|<tuple|18|13>>
-    <associate|labelrem:scaffold|<tuple|22|15>>
-    <associate|lem:delta|<tuple|24|16>>
-    <associate|of|<tuple|17|5>>
-    <associate|prop:atomic|<tuple|19|13>>
-    <associate|prop:conjugation|<tuple|14|10>>
-    <associate|prop:inverse|<tuple|5|3>>
-    <associate|sec:HP|<tuple|5|12>>
+    <associate|def:zeromeasure|<tuple|15|11>>
+    <associate|eq:covariance_def|<tuple|121|17>>
+    <associate|eq:expectation|<tuple|112|16>>
+    <associate|eq:expected_zeros|<tuple|122|17>>
+    <associate|eq:kac_rice|<tuple|107|16>>
+    <associate|eq:kac_rice_formula|<tuple|124|17>>
+    <associate|eq:limit_mixed_partial|<tuple|127|17>>
+    <associate|eq:mixed_partial|<tuple|125|17>>
+    <associate|eq:mixed_partial_continued|<tuple|126|17>>
+    <associate|eq:substituted_kac_rice|<tuple|128|18>>
+    <associate|eq:time_changed_cov|<tuple|123|17>>
+    <associate|labeldef:Hmu|<tuple|17|12>>
+    <associate|labelrem:scaffold|<tuple|21|14>>
+    <associate|lem:delta|<tuple|23|15>>
+    <associate|of|<tuple|12|4>>
+    <associate|prop:atomic|<tuple|18|13>>
+    <associate|prop:conjugation|<tuple|13|9>>
+    <associate|prop:inverse|<tuple|5|2>>
+    <associate|sec:HP|<tuple|5|11>>
     <associate|sec:functionspaces|<tuple|1|2>>
-    <associate|sec:oscillatory|<tuple|2|5>>
-    <associate|sec:samplepaths|<tuple|4|11>>
-    <associate|sec:stationary_timechange|<tuple|3|8>>
-    <associate|thm:Utheta_to_osc|<tuple|12|8>>
-    <associate|thm:atomic|<tuple|17|12>>
-    <associate|thm:existence_osc|<tuple|10|6>>
-    <associate|thm:expected_zero_counting|<tuple|26|18>>
-    <associate|thm:global_unitarity|<tuple|7|4>>
-    <associate|thm:kac_rice|<tuple|25|17>>
+    <associate|sec:oscillatory|<tuple|2|4>>
+    <associate|sec:samplepaths|<tuple|4|10>>
+    <associate|sec:stationary_timechange|<tuple|3|7>>
+    <associate|thm:Utheta_to_osc|<tuple|11|7>>
+    <associate|thm:atomic|<tuple|16|12>>
+    <associate|thm:existence_osc|<tuple|9|5>>
+    <associate|thm:expected_zero_counting|<tuple|25|17>>
+    <associate|thm:kac_rice|<tuple|24|16>>
     <associate|thm:local_unitarity|<tuple|6|3>>
-    <associate|thm:paths_loc|<tuple|15|11>>
-    <associate|thm:realvaluedness|<tuple|9|5>>
-    <associate|thm:spectrum|<tuple|21|14>>
+    <associate|thm:paths_loc|<tuple|14|10>>
+    <associate|thm:realvaluedness|<tuple|8|4>>
+    <associate|thm:spectrum|<tuple|20|14>>
   </collection>
 </references>
 
