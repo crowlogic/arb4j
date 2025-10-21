@@ -25,7 +25,8 @@ import org.slf4j.LoggerFactory;
 import arb.*;
 import arb.Integer;
 import arb.exceptions.CompilerException;
-import arb.expressions.context.*;
+import arb.expressions.context.Dependency;
+import arb.expressions.context.TopologicalSorter;
 import arb.expressions.nodes.*;
 import arb.expressions.nodes.binary.*;
 import arb.expressions.nodes.nary.*;
@@ -628,6 +629,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected void declareFields(ClassVisitor cw)
   {
     cw.visitField(Opcodes.ACC_PUBLIC, IS_INITIALIZED, "Z", null, null);
+
+    if (context != null)
+    {
+      declareContext(cw);
+    }
+
     if (!coDomainType.isInterface())
     {
       declareLiteralConstants(cw);
@@ -635,6 +642,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     declareFunctionReferences(cw);
     declareVariables(cw);
+  }
+
+  private ClassVisitor declareContext(ClassVisitor cw)
+  {
+    Class<?> type           = Context.class;
+    String   typeDescriptor = Context.class.descriptorString();
+    cw.visitField(ACC_PUBLIC, "context", typeDescriptor, null, null);
+    return cw;
   }
 
   protected ClassVisitor declareFunctionReferences(ClassVisitor classVisitor)
@@ -1052,12 +1067,29 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return mv;
   }
 
+  public MethodVisitor generateContextInitializer(MethodVisitor methodVisitor)
+  {
+
+    loadThisOntoStack(methodVisitor);
+    String contextTypeInternalName = Type.getInternalName(Context.class);
+    methodVisitor.visitTypeInsn(NEW, contextTypeInternalName);
+    methodVisitor.visitInsn(DUP);
+    methodVisitor.visitMethodInsn(INVOKESPECIAL, contextTypeInternalName, "<init>", "()V", false);
+    methodVisitor.visitFieldInsn(PUTFIELD, className, "context", Context.class.descriptorString());
+    return methodVisitor;
+  }
+
   protected ClassVisitor generateConstructor(ClassVisitor classVisitor)
   {
     MethodVisitor mv = classVisitor.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
     mv.visitCode();
 
     generateInvocationOfDefaultNoArgConstructor(mv, true);
+
+    if (context != null)
+    {
+      generateContextInitializer(mv);
+    }
 
     if (!coDomainType.isInterface())
     {
@@ -1653,7 +1685,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (context != null)
     {
       ClassLoader classLoader = f.getClass().getClassLoader();
-      System.err.println( "classLoader " + classLoader );
+      System.err.println("classLoader " + classLoader);
       context.injectVariableReferences(f);
       context.injectFunctionReferences(f);
     }
