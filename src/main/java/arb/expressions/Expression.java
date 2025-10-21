@@ -410,6 +410,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (context != null)
     {
       context.variableClassStream()
+             .filter(event -> referencedVariables.containsKey(event.getLeft()))
              .forEach(entry -> addCheckForNullField(loadThisOntoStack(mv), entry.getLeft(), true));
     }
   }
@@ -1120,7 +1121,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitLdcInsn(Type.getType(domainType));
     mv.visitLdcInsn(Type.getType(coDomainType));
     mv.visitLdcInsn(Type.getType(functionClass));
-
+    mv.visitLdcInsn("diff" + className);
     mv.visitLdcInsn(String.format("diff(%s,%s)", rootNode.toString(), independentVariable));
     Compiler.invokeStaticMethod(mv,
                                 Function.class,
@@ -1129,6 +1130,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                 Class.class,
                                 Class.class,
                                 Class.class,
+                                String.class,
                                 String.class);
     mv.visitInsn(Opcodes.ARETURN);
     mv.visitMaxs(0, 0);

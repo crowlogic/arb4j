@@ -8,10 +8,7 @@ import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
-import arb.expressions.Compiler;
-import arb.expressions.Context;
-import arb.expressions.Expression;
-import arb.expressions.Parser;
+import arb.expressions.*;
 import arb.functions.complex.ComplexFunction;
 
 /**
@@ -135,6 +132,17 @@ public interface Function<D, C> extends
                                     coDomainClass,
                                     Function.class,
                                     functionName);
+  }
+
+  public static <D, C, F extends Function<? extends D, ? extends C>>
+         F
+         express(Class<? extends D> domainClass,
+                 Class<? extends C> coDomainClass,
+                 Class<? extends F> functionClass,
+                 String expressionName,
+                 String expression)
+  {
+    return express(domainClass, coDomainClass, functionClass, expressionName, expression, null);
   }
 
   public static <D, C, F extends Function<? extends D, ? extends C>>
