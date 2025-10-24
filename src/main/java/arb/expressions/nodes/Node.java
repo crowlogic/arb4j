@@ -89,7 +89,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public boolean             isResult = false;
 
-  final Logger               logger   = LoggerFactory.getLogger(getClass());
+  protected final Logger               logger   = LoggerFactory.getLogger(getClass());
 
   public final int           position;
 

@@ -6,8 +6,8 @@ import java.util.stream.Stream;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.Compiler;
 import arb.expressions.Expression;
+import arb.expressions.Parser;
 import arb.functions.NullaryFunction;
 
 /**
@@ -58,7 +58,7 @@ public class ComplexFraction implements
   {
     Expression<Object,
                   ComplexFraction,
-                  NullaryFunction<ComplexFraction>> express = Compiler.parse(string,
+                  NullaryFunction<ComplexFraction>> express = Parser.parse(string,
                                                                              null,
                                                                              Object.class,
                                                                              ComplexFraction.class,

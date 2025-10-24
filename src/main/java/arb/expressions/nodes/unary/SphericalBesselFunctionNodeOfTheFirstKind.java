@@ -1,10 +1,7 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.cast;
-import static arb.expressions.Compiler.loadInputParameter;
-import static arb.expressions.Compiler.loadOrderParameter;
+import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
-import static java.lang.System.err;
 
 import java.util.List;
 
@@ -91,7 +88,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
     expression.insideInitializer = false;
     if (Expression.trace)
     {
-      err.printf("j.generate(ν=%s, resultType=%s\n)\n", order, resultType);
+      logger.debug(String.format("j.generate(ν=%s, resultType=%s\n)\n", order, resultType));
     }
     generatedType = resultType;
     return isNullaryFunction ? generateNullaryFunctionInvocation(mv, resultType)

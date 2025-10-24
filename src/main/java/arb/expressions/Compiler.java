@@ -1,6 +1,5 @@
 package arb.expressions;
 
-import static arb.expressions.Parser.expressionToUniqueClassname;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import static org.objectweb.asm.Opcodes.ACC_SUPER;
 import static org.objectweb.asm.Opcodes.ALOAD;
@@ -289,7 +288,7 @@ public class Compiler
 
     Expression<D,
                   R,
-                  F> compiledExpression = parse(expression,
+                  F> compiledExpression = Parser.parse(expression,
                                                 context,
                                                 domainClass,
                                                 coDomainClass,
@@ -304,33 +303,6 @@ public class Compiler
       mapping.expression = compiledExpression;
     }
     return compiledExpression;
-  }
-
-  public static <D,
-                R,
-                F extends Function<? extends D, ? extends R>,
-                PD,
-                PR,
-                PF extends Function<? extends PD, ? extends PR>>
-         Expression<D, R, F>
-         parse(String className,
-               String expressionString,
-               Context context,
-               Class<? extends D> domainClass,
-               Class<? extends R> coDomainClass,
-               Class<? extends F> functionClass,
-               String functionName,
-               Expression<PD, PR, PF> containingExpression)
-  {
-    return Function.parse(className,
-                          expressionString,
-                          context,
-                          domainClass,
-                          coDomainClass,
-                          functionClass,
-                          functionName,
-                          containingExpression);
-
   }
 
   public static <D, R, F extends Function<? extends D, ? extends R>>
@@ -383,26 +355,6 @@ public class Compiler
 
   public static <D, R, F extends Function<? extends D, ? extends R>>
          Expression<D, R, F>
-         parse(String expression,
-               Context context,
-               Class<? extends D> domainClass,
-               Class<? extends R> coDomainClass,
-               Class<? extends F> functionClass,
-               String functionName)
-  {
-    String className =
-                     functionName != null ? functionName : expressionToUniqueClassname(expression);
-    return parse(className,
-                 expression,
-                 context,
-                 domainClass,
-                 coDomainClass,
-                 functionClass,
-                 functionName);
-  }
-
-  public static <D, R, F extends Function<? extends D, ? extends R>>
-         Expression<D, R, F>
          express(String className,
                  String expressionString,
                  Context context,
@@ -411,33 +363,13 @@ public class Compiler
                  Class<? extends F> functionClass,
                  boolean verbose)
   {
-    return parse(className,
+    return Parser.parse(className,
                  expressionString,
                  context,
                  domainClass,
                  coDomainClass,
                  functionClass,
                  className);
-  }
-
-  public static <D, R, F extends Function<? extends D, ? extends R>>
-         Expression<D, R, F>
-         parse(String className,
-               String expressionString,
-               Context context,
-               Class<? extends D> domainClass,
-               Class<? extends R> coDomainClass,
-               Class<? extends F> functionClass,
-               String functionName)
-  {
-    return parse(className,
-                 expressionString,
-                 context,
-                 domainClass,
-                 coDomainClass,
-                 functionClass,
-                 functionName,
-                 null);
   }
 
   public static MethodVisitor generateCallToGetUnsignedIntValue(MethodVisitor mv)

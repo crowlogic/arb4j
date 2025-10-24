@@ -154,6 +154,18 @@ public interface Function<D, C> extends
                  String expression,
                  Context context)
   {
+    if (context != null)
+    {
+      FunctionMapping<Object,
+                    Object,
+                    Function<? extends Object,
+                                  ? extends Object>> functionMapping =
+                                                                     context.getFunctionMapping(expressionName);
+      if (functionMapping != null && functionMapping.instance != null)
+      {
+        return (F) functionMapping.instance;
+      }
+    }
     return (F) Function.instantiate(expression,
                                     context,
                                     domainClass,

@@ -9,6 +9,7 @@ import java.util.UUID;
 import arb.Fraction;
 import arb.FractionConstants;
 import arb.expressions.nodes.LiteralConstantNode;
+import arb.functions.Function;
 
 /**
  * @author Stephen Crowley ©2024-2025
@@ -483,6 +484,73 @@ public class Parser
     default:
       throw new IllegalArgumentException("Not a digit: " + digit);
     }
+  }
+
+  public static <D, R, F extends Function<? extends D, ? extends R>>
+         Expression<D, R, F>
+         parse(String className,
+               String expressionString,
+               Context context,
+               Class<? extends D> domainClass,
+               Class<? extends R> coDomainClass,
+               Class<? extends F> functionClass,
+               String functionName)
+  {
+    return Parser.parse(className,
+                 expressionString,
+                 context,
+                 domainClass,
+                 coDomainClass,
+                 functionClass,
+                 functionName,
+                 null);
+  }
+
+  public static <D,
+                R,
+                F extends Function<? extends D, ? extends R>,
+                PD,
+                PR,
+                PF extends Function<? extends PD, ? extends PR>>
+         Expression<D, R, F>
+         parse(String className,
+               String expressionString,
+               Context context,
+               Class<? extends D> domainClass,
+               Class<? extends R> coDomainClass,
+               Class<? extends F> functionClass,
+               String functionName,
+               Expression<PD, PR, PF> containingExpression)
+  {
+    return Function.parse(className,
+                          expressionString,
+                          context,
+                          domainClass,
+                          coDomainClass,
+                          functionClass,
+                          functionName,
+                          containingExpression);
+  
+  }
+
+  public static <D, R, F extends Function<? extends D, ? extends R>>
+         Expression<D, R, F>
+         parse(String expression,
+               Context context,
+               Class<? extends D> domainClass,
+               Class<? extends R> coDomainClass,
+               Class<? extends F> functionClass,
+               String functionName)
+  {
+    String className =
+                     functionName != null ? functionName : expressionToUniqueClassname(expression);
+    return parse(className,
+                 expression,
+                 context,
+                 domainClass,
+                 coDomainClass,
+                 functionClass,
+                 functionName);
   }
 
 }

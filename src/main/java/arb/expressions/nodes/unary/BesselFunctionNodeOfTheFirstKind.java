@@ -1,20 +1,14 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.duplicateTopOfTheStack;
-import static arb.expressions.Compiler.invokeStaticMethod;
-import static arb.expressions.Compiler.loadBitsParameterOntoStack;
-import static arb.expressions.Compiler.scalarType;
+import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
-import static java.lang.System.err;
 
 import java.util.List;
 import java.util.Objects;
 
 import org.objectweb.asm.MethodVisitor;
 
-import arb.Complex;
-import arb.Real;
-import arb.arblib;
+import arb.*;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
@@ -115,7 +109,7 @@ public class BesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends
   {
     if (Expression.trace)
     {
-      err.printf("J.generate(ν=%s, resultType=%s\n)\n", order, resultType);
+      logger.debug(String.format("J.generate(ν=%s, resultType=%s)\n", order, resultType));
     }
 
     var scalarType = scalarType(resultType);

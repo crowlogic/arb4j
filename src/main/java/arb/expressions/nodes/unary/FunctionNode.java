@@ -326,7 +326,10 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                            1);
     default:
       throw new UnsupportedOperationException("Derivative not implemented for function: "
-                                              + functionName);
+                                              + functionName
+                                              + " in expression '"
+                                              + expression
+                                              + "'");
     }
   }
 
@@ -375,7 +378,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                      arg);
   }
 
-  private final static Logger logger = LoggerFactory.getLogger(FunctionNode.class);
+  protected final Logger logger = LoggerFactory.getLogger(getClass());
 
   private Node<D, R, F> integrateContextualFunction()
   {

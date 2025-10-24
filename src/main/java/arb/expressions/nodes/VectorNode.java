@@ -159,10 +159,10 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
     {
       if (Expression.trace)
       {
-        System.err.format("index %d: Converting from type %s to %s\n",
-                          index,
-                          generatedElementType,
-                          resultType);
+        logger.debug(String.format("index %d: Converting from type %s to %s\n",
+                                   index,
+                                   generatedElementType,
+                                   resultType));
       }
       element.generateCastTo(mv, resultType);
     }

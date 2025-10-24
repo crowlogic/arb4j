@@ -2,7 +2,6 @@ package arb.expressions.nodes.nary;
 
 import static arb.expressions.Compiler.*;
 import static arb.utensils.Utensils.indent;
-import static java.lang.System.err;
 import static java.lang.System.out;
 
 import java.util.List;
@@ -428,11 +427,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     if (Expression.trace)
     {
-      System.err.format("%s.loadOperandValue(operandValueFieldName=%s, generatedType=%s) expression=%s\n",
-                        getClass().getSimpleName(),
-                        operandValueFieldName,
-                        generatedType,
-                        expression);
+      logger.debug(String.format("%s.loadOperandValue(operandValueFieldName=%s, generatedType=%s) expression=%s\n",
+                                 getClass().getSimpleName(),
+                                 operandValueFieldName,
+                                 generatedType,
+                                 expression));
     }
     loadFieldFromThis(mv, operandValueFieldName, generatedType);
   }
@@ -447,11 +446,10 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     if (Expression.trace)
     {
-
-      System.err.format("%s.loadResultvariable( resultVariable= %s, generatedType=%s )\n",
-                        getClass().getSimpleName(),
-                        fieldName,
-                        generatedType);
+      logger.debug(String.format("%s.loadResultvariable( resultVariable= %s, generatedType=%s )\n",
+                                 getClass().getSimpleName(),
+                                 fieldName,
+                                 generatedType));
 
     }
     getFieldFromThis(methodVisitor, expression.className, fieldName, generatedType);
@@ -467,7 +465,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     if (Expression.trace)
     {
-      err.format("extractOperandExpression(%s)\n", expression);
+      logger.debug(String.format("extractOperandExpression(%s)\n", expression));
     }
     parsed = true;
     String stringExpression = expression.expression;
@@ -581,9 +579,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     operandMapping = registerOperandFunctionMapping(operandExpression, expr);
     if (Expression.trace)
     {
-      System.err.format("\nregisterOperand(operandExpression=%s,\noperandMapping=%s\n)\n\n",
-                        operandExpression,
-                        operandMapping);
+      logger.debug(String.format("\nregisterOperand(operandExpression=%s,\noperandMapping=%s\n)\n\n",
+                                 operandExpression,
+                                 operandMapping));
     }
     expression.referencedFunctions.put(operandFunctionFieldName, operandMapping);
   }
@@ -593,7 +591,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     if (Expression.trace)
     {
-      System.err.format("registerFunctionMapping(operand=%s)\n", operand);
+      logger.debug(String.format("registerOperandFunctionMapping(operand=%s)\n", operand));
     }
     return expression.context.registerFunctionMapping(operandFunctionFieldName,
                                                       null,

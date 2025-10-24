@@ -3,12 +3,11 @@ package arb.functions;
 import java.util.Comparator;
 import java.util.stream.Stream;
 
-import arb.Complex;
-import arb.Fraction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import arb.*;
 import arb.Integer;
-import arb.NamedRing;
-import arb.Real;
-import arb.Verifiable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.ArbException;
@@ -28,7 +27,8 @@ import arb.utensils.Utensils;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public abstract class HypergeometricFunction<P extends NamedRing<P>, C extends NamedRing<C>,
+public abstract class HypergeometricFunction<P extends NamedRing<P>,
+              C extends NamedRing<C>,
               N extends NullaryFunction<C>> implements
                                             NullaryFunction<C>,
                                             Verifiable
@@ -40,22 +40,21 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>, C extends N
     return String.format("pFq(%s,%s;%s)", α, β, arg);
   }
 
+  public Context                   context;
 
-  public Context                  context;
+  public N                         f;
 
-  public N                        f;
+  public Expression<Object, C, N>  F;
 
-  public Expression<Object, C, N> F;
+  boolean                          initialized = false;
 
-  boolean                         initialized = false;
+  public Integer                   N;
 
-  public Integer                  N;
+  public Integer                   p, q;
 
-  public Integer                  p, q;
+  public P                         α, β;
 
-  public P                        α, β;
-
-  public Class<?>                 paramType;
+  public Class<?>                  paramType;
 
   private Expression<Object, C, N> arg;
 
@@ -82,6 +81,8 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>, C extends N
     return this;
   }
 
+  static final Logger logger = LoggerFactory.getLogger(HypergeometricFunction.class);
+
   @SuppressWarnings("unchecked")
   public HypergeometricFunction<P, C, N> init(Class<P> paramType,
                                               Class<C> elementType,
@@ -92,13 +93,13 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>, C extends N
   {
     if (Expression.trace)
     {
-      System.err.format("pFq.init(paramType=%s, elementType=%s, nullaryFunctionType=%s, alpha=%s, beta=%s, arg=%s)\n",
-                        paramType,
-                        elementType,
-                        nullaryFunctionType,
-                        alpha,
-                        beta,
-                        arg);
+      logger.debug(String.format("pFq.init(paramType=%s, elementType=%s, nullaryFunctionType=%s, alpha=%s, beta=%s, arg=%s)\n",
+                                 paramType,
+                                 elementType,
+                                 nullaryFunctionType,
+                                 alpha,
+                                 beta,
+                                 arg));
     }
 
     this.paramType = paramType;
@@ -151,15 +152,16 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>, C extends N
     return this;
   }
 
-  public void compile(Class<C> elementType, Class<N> nullaryFunctionType, Expression<Object, C, N> arg)
+  public void
+         compile(Class<C> elementType, Class<N> nullaryFunctionType, Expression<Object, C, N> arg)
   {
-    F = NullaryFunction.parse(elementType,
-                              nullaryFunctionType,
-                              "F",
-                              "Σn➔zⁿ⋅∏k➔αₖ₍ₙ₎{k=1…p}/(n!⋅∏k➔βₖ₍ₙ₎{k=1…q}){n=0…N}",
-                              context);
-    F = F.substitute("z", arg);
-    f = F.instantiate();
+    F        = NullaryFunction.parse(elementType,
+                                     nullaryFunctionType,
+                                     "F",
+                                     "Σn➔zⁿ⋅∏k➔αₖ₍ₙ₎{k=1…p}/(n!⋅∏k➔βₖ₍ₙ₎{k=1…q}){n=0…N}",
+                                     context);
+    F        = F.substitute("z", arg);
+    f        = F.instantiate();
     this.arg = arg;
   }
 
@@ -198,7 +200,9 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>, C extends N
     }
     else if (α instanceof Complex a)
     {
-      var min = Stream.of(a.elements).filter(Complex.isNegativeInteger).min(Comparator.naturalOrder());
+      var min = Stream.of(a.elements)
+                      .filter(Complex.isNegativeInteger)
+                      .min(Comparator.naturalOrder());
       if (!min.isPresent())
       {
         throw new IllegalArgumentException("no negative integers in " + a);
@@ -253,8 +257,8 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>, C extends N
   public boolean verify()
   {
     assert paramType.equals(α.getClass()) : String.format("paramType=%s != alpha.class=%s\n",
-                                                               paramType,
-                                                               α.getClass());
+                                                          paramType,
+                                                          α.getClass());
     int p = this.p.getSignedValue();
     if (Real.class.equals(paramType))
     {

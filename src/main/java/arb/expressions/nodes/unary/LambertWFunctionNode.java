@@ -1,21 +1,15 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.duplicateTopOfTheStack;
-import static arb.expressions.Compiler.invokeStaticMethod;
-import static arb.expressions.Compiler.loadBitsParameterOntoStack;
-import static arb.expressions.Compiler.scalarType;
+import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
-import static java.lang.System.err;
 
 import java.util.List;
 import java.util.Objects;
 
 import org.objectweb.asm.MethodVisitor;
 
-import arb.Complex;
+import arb.*;
 import arb.Integer;
-import arb.Real;
-import arb.arblib;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
@@ -132,7 +126,7 @@ public class LambertWFunctionNode<D, R, F extends Function<? extends D, ? extend
   {
     if (Expression.trace)
     {
-      err.printf("W.generate(order=%s, resultType=%s\n)\n", order, resultType);
+      logger.debug(String.format("W.generate(order=%s, resultType=%s\n)\n", order, resultType));
     }
 
     var scalarType = scalarType(resultType);

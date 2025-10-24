@@ -1,15 +1,10 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.cast;
-import static arb.expressions.Compiler.loadInputParameter;
-import static arb.expressions.Compiler.loadResultParameter;
+import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.ClassVisitor;
@@ -17,19 +12,11 @@ import org.objectweb.asm.MethodVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import arb.AlgebraicNumber;
-import arb.Complex;
-import arb.ComplexFraction;
-import arb.Fraction;
-import arb.GaussianInteger;
+import arb.*;
 import arb.Integer;
-import arb.Real;
 import arb.exceptions.CompilerException;
 import arb.exceptions.UndefinedReferenceException;
-import arb.expressions.Compiler;
-import arb.expressions.Context;
-import arb.expressions.Expression;
-import arb.expressions.VariableReference;
+import arb.expressions.*;
 import arb.expressions.nodes.nary.ProductNode;
 import arb.functions.Function;
 
@@ -137,8 +124,8 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     else
     {
-      if ((variables == null || !variables.containsKey(reference.name)
-                    || reference.type == null) && resolve)
+      if ((variables == null || !variables.containsKey(reference.name) || reference.type == null)
+                    && resolve)
       {
         resolveReference();
       }
@@ -226,9 +213,9 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     if (Expression.trace)
     {
       log.debug(String.format("#%s: generate( this=%s, resultType=%s)\n",
-                        System.identityHashCode(this),
-                        this,
-                        resultType));
+                              System.identityHashCode(this),
+                              this,
+                              resultType));
     }
 
     generateReference(mv, resultType);
@@ -458,10 +445,9 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
         reference.type = instanceVariable.getClass();
         if (Expression.trace)
         {
-          System.err.println("Declaring "
-                             + reference
-                             + " as a contextual variable of type "
-                             + reference.type());
+          log.debug("Declaring {} as a contextual variable of type {}",
+                    reference,
+                    reference.type());
 
         }
 

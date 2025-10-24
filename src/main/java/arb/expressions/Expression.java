@@ -3,7 +3,6 @@ package arb.expressions;
 import static arb.expressions.Compiler.*;
 import static arb.expressions.Parser.*;
 import static java.lang.String.format;
-import static java.lang.System.err;
 import static org.objectweb.asm.Opcodes.*;
 
 import java.io.File;
@@ -1122,7 +1121,22 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitLdcInsn(Type.getType(coDomainType));
     mv.visitLdcInsn(Type.getType(functionClass));
     mv.visitLdcInsn("diff" + className);
-    mv.visitLdcInsn(String.format("diff(%s,%s)", rootNode.toString(), independentVariable));
+    try
+    {
+      mv.visitLdcInsn(String.format("diff(%s,%s)", rootNode.toString(), independentVariable));
+
+      // mv.visitLdcInsn(rootNode.differentiate().toString());
+    }
+    catch (Throwable e)
+    {
+      mv.visitLdcInsn("TODO: implement differentiation of " + expression);
+
+    }
+
+    loadThisFieldOntoStack(mv, "context", Context.class);
+
+    // getField(mv, IS_INITIALIZED, functionName,
+    // ASSERTION_ERROR_METHOD_DESCRIPTOR);
     Compiler.invokeStaticMethod(mv,
                                 Function.class,
                                 "express",
@@ -1131,7 +1145,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                 Class.class,
                                 Class.class,
                                 String.class,
-                                String.class);
+                                String.class,
+                                Context.class);
     mv.visitInsn(Opcodes.ARETURN);
     mv.visitMaxs(0, 0);
     mv.visitEnd();
@@ -1686,10 +1701,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (context != null)
     {
-      ClassLoader classLoader = f.getClass().getClassLoader();
-      System.err.println("classLoader " + classLoader);
-      context.injectVariableReferences(f);
-      context.injectFunctionReferences(f);
+      context.injectReferences(f);
     }
   }
 
@@ -2209,10 +2221,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (trace)
     {
-      err.format("Expression(#%s).rename(from=%s, to=%s)\n",
-                 System.identityHashCode(this),
-                 from,
-                 to);
+      log.debug(String.format("Expression(#%s).rename(from=%s, to=%s)\n",
+                              System.identityHashCode(this),
+                              from,
+                              to));
     }
     if (independentVariable != null)
     {

@@ -124,17 +124,26 @@ public class Context
 
   public <D, R, F extends Function<? extends D, ? extends R>> void injectFunctionReferences(F f)
   {
-    Class<?> functionClass = f.getClass();
-    for (var field : functionClass.getDeclaredFields())
-    {
-      var functionName    = field.getName();
+    var      fields        = getFields(f);
 
-      var functionMapping = functions.get(functionName);
-      if (functionMapping != null)
+    Class<?> functionClass = f.getClass();
+    functions.forEach((functionName, functionMapping) ->
+    {
+      if (functionMapping.instance != null && fields.contains(functionName))
       {
-        setFieldValue(functionClass, f, functionName, functionMapping.instance, false);
+        setFieldValue(functionClass, f, functionName, functionMapping.instance);
       }
-    }
+    });
+//    for (var field : functionClass.getDeclaredFields())
+//    {
+//      var functionName    = field.getName();
+//
+//      var functionMapping = functions.get(functionName);
+//      if (functionMapping != null)
+//      {
+//        setFieldValue(functionClass, f, functionName, functionMapping.instance, false);
+//      }
+//    }
 
   }
 
@@ -142,6 +151,12 @@ public class Context
   {
     injectVariableReferences(f);
     injectFunctionReferences(f);
+    injectContextReference(f);
+  }
+
+  protected <D, R, F extends Function<? extends D, ? extends R>> void injectContextReference(F f)
+  {
+    setFieldValue(f.getClass(), f, "context", this);
   }
 
   public <D, R, F extends Function<? extends D, ? extends R>> void injectVariableReferences(F f)
@@ -153,6 +168,8 @@ public class Context
                               System.identityHashCode(this),
                               f.getClass().getName()));
     }
+    var fields = getFields(f);
+
     variableMap().entrySet().forEach(entry ->
     {
       var variableName = entry.getKey();
@@ -160,9 +177,9 @@ public class Context
       try
       {
         Named value = variables.get(variableName);
-        if (value != null)
+        if (value != null && fields.contains(variableName))
         {
-          setFieldValue(f.getClass(), f, variableName, value, false);
+          setFieldValue(f.getClass(), f, variableName, value);
         }
       }
       catch (Exception e)
@@ -170,6 +187,14 @@ public class Context
         wrapOrThrow(String.format("variable=%s", variableName), e);
       }
     });
+  }
+
+  protected <D, R, F extends Function<? extends D, ? extends R>> HashSet<String> getFields(F f)
+  {
+    var fields = new HashSet<>(Stream.of(f.getClass().getFields())
+                                     .map(field -> field.getName())
+                                     .toList());
+    return fields;
   }
 
   public void mergeFrom(Context context)
@@ -337,11 +362,7 @@ public class Context
 
   public <D, R, F extends Function<? extends D, ? extends R>>
          void
-         setFieldValue(Class<?> compiledClass,
-                       F f,
-                       String variableName,
-                       Object value,
-                       boolean overwrite)
+         setFieldValue(Class<?> compiledClass, F f, String variableName, Object value)
   {
     Class<?> functionClass = f.getClass();
     assert functionClass.equals(compiledClass) : String.format("functionClass = %s != compiledClass = %s\n",
@@ -350,13 +371,12 @@ public class Context
 
     if (Expression.trace)
     {
-      log.debug(String.format("#%s.setFieldValue(compiledClass=%s,\n this=#%s\n variableName=%s,\n value=%s,\n overwrite=%s)\n",
+      log.debug(String.format("#%s.setFieldValue(compiledClass=%s,\n this=#%s\n variableName=%s,\n value=%s)\n",
                               System.identityHashCode(this),
                               compiledClass,
                               System.identityHashCode(f),
                               variableName,
-                              value,
-                              overwrite));
+                              value));
     }
     java.lang.reflect.Field field;
     try
@@ -371,7 +391,9 @@ public class Context
                   + " setting field '"
                   + variableName
                   + "' in "
-                  + compiledClass,
+                  + compiledClass
+                  + " which has fields "
+                  + Stream.of(compiledClass.getFields()).map(hmm -> hmm.getName()).toList(),
                   e);
     }
   }

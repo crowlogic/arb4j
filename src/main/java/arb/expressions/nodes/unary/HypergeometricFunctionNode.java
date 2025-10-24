@@ -1,40 +1,23 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.cast;
-import static arb.expressions.Compiler.invokeStaticMethod;
-import static arb.expressions.Compiler.invokeVirtualMethod;
-import static arb.expressions.Compiler.loadInputParameter;
-import static arb.expressions.Compiler.loadOrderParameter;
-import static arb.expressions.Compiler.loadResultParameter;
-import static java.lang.System.err;
+import static arb.expressions.Compiler.*;
 import static org.objectweb.asm.Opcodes.ACONST_NULL;
 
 import java.util.List;
 
 import org.objectweb.asm.MethodVisitor;
 
-import arb.Complex;
-import arb.ComplexFraction;
-import arb.ComplexRationalFunction;
-import arb.Fraction;
-import arb.Initializable;
+import arb.*;
 import arb.Integer;
-import arb.RationalFunction;
-import arb.Real;
-import arb.RealPolynomial;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
-import arb.expressions.nodes.Node;
-import arb.expressions.nodes.VariableNode;
-import arb.expressions.nodes.VectorNode;
+import arb.expressions.nodes.*;
 import arb.functions.Function;
-import arb.functions.rational.ComplexRationalHypergeometricFunction;
-import arb.functions.rational.ComplexRationalNullaryFunction;
-import arb.functions.rational.RationalHypergeometricFunction;
-import arb.functions.rational.RationalNullaryFunction;
+import arb.functions.rational.*;
 
 /**
  * https://github.com/crowlogic/arb4j/issues/527
+ * 
  * <pre>
  * Refactor the current hypergeometric function implementation to use function
  * references for arguments. Current Approach
@@ -250,7 +233,9 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       elementFieldName = expression.newIntermediateVariable("element", elementType);
       if (Expression.trace)
       {
-        System.err.format("elementFieldName=%s of type %s", elementFieldName, elementType);
+        logger.debug(String.format("elementFieldName=%s of type %s",
+                                   elementFieldName,
+                                   elementType));
 
       }
     }
@@ -305,7 +290,9 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
     if (Expression.trace)
     {
-      err.printf("pFq.generate(resultType=%s dependsOnInput=%s)\n", resultType, dependsOnInput);
+      logger.debug(String.format("pFq.generate(resultType=%s dependsOnInput=%s)\n",
+                                 resultType,
+                                 dependsOnInput));
     }
 
     boolean loadedHypergeometricFunction = false;
@@ -381,7 +368,10 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
   {
     if (Expression.trace)
     {
-      System.err.format("initializeHypergeometricFunction(alpha=%s, beta=%s, arg=%s)\n", α, β, arg);
+      logger.debug(String.format("initializeHypergeometricFunction(alpha=%s, beta=%s, arg=%s)\n",
+                                 α,
+                                 β,
+                                 arg));
     }
     α.generate(mv, scalarType);
     β.generate(mv, scalarType);
