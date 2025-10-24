@@ -1660,7 +1660,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // TODO: #748
     // String typeDesc = String.format("L%s;", fieldType);
     // Replace the problematic line with:
-    String typeDesc = context.functions.get(functionFieldName).functionFieldDescriptor();
+    String typeDesc = context.functions.get(functionFieldName).functionFieldDescriptor(false);
 
     variables.forEach(variable ->
     {
@@ -1915,6 +1915,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     functionalExpression.rootNode          = rootNode.spliceInto(functionalExpression);
     functionalExpression.rootNode.isResult = true;
     functionalExpression.className         = className + "func";
+    functionalExpression.functionName      = functionName + "func";
+    functionalExpression.expression        = expression;
     return functionalExpression;
   }
 
@@ -2100,26 +2102,26 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return node;
   }
 
-  public void propagateContextFunctionsToFunctionalElement(MethodVisitor mv,
-                                                           Expression<Object,
-                                                                         Object,
-                                                                         Function<?, ?>> function)
+  public void propagateContextFunctions(MethodVisitor mv,
+                                        Expression<Object, Object, Function<?, ?>> function)
   {
     context.functionEntryStream()
            .filter(entry -> function.referencedFunctions.containsKey(entry.getKey())
                          && !functionName.equals(entry.getKey()))
-           .forEach(entry -> propagateContextFunctionToFunctionalElement(mv, function, entry));
+           .forEach(entry -> propagateContextualFunction(mv, function, entry));
   }
 
-  protected void propagateContextFunctionToFunctionalElement(MethodVisitor mv,
-                                                             Expression<Object,
-                                                                           Object,
-                                                                           Function<?, ?>> function,
-                                                             Map.Entry<String,
-                                                                           FunctionMapping<?,
-                                                                                         ?,
-                                                                                         ?>> entry)
+  protected void propagateContextualFunction(MethodVisitor mv,
+                                             Expression<Object, Object, Function<?, ?>> function,
+                                             Map.Entry<String, FunctionMapping<?, ?, ?>> entry)
   {
+    if (Expression.trace)
+    {
+      log.debug("propagateContextualFunction(function={}, entry={})",
+                function,
+                entry);
+
+    }
     var fieldName = entry.getKey();
     var fieldType = entry.getValue().functionClass;
     loadThisFieldOntoStack(duplicateTopOfTheStack(mv), fieldName, fieldType);
@@ -2134,7 +2136,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                                                  ?>> function)
   {
     propagateContexVariablesToFunctionalElement(mv, function);
-    propagateContextFunctionsToFunctionalElement(mv, function);
+    propagateContextFunctions(mv, function);
   }
 
   public void propagateContexVariablesToFunctionalElement(MethodVisitor mv,
