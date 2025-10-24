@@ -26,7 +26,6 @@ public class ExponentiationNodeTest extends
       final RealFunction θ = RealFunction.express("θ:im(lnΓ(¼+ⅈ*t/2))-(log(π)/2)*t", context);
       var                A = RealToComplexFunction.express("A:exp(ⅈ*λ*(θ(t)-t))*√(θ̇(t))", context);
       Complex            a = A.evaluate(x, 128);
-      System.out.format("A(%s)=%s\n", x, a);
     }
 
   }

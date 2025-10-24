@@ -71,15 +71,15 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
 
   public String functionFieldDescriptor(boolean preferInterface)
   {
+    if (preferInterface && functionClass != null)
+    {
+      return declaredAs = functionClass.descriptorString();
+    }
     if (declaredAs != null)
     {
       return declaredAs;
     }
-    if (preferInterface && functionClass != null)
-    {
-      return functionClass.descriptorString();
-    }
-    return String.format("L%s;", functionName);
+    return declaredAs = String.format("L%s;", functionName);
   }
 
   @Override

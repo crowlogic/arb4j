@@ -2,7 +2,6 @@ package arb.expressions.nodes.nary;
 
 import static arb.expressions.Compiler.*;
 import static arb.utensils.Utensils.indent;
-import static java.lang.System.out;
 
 import java.util.List;
 import java.util.Objects;
@@ -195,14 +194,17 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   protected void logFieldNameAssignment(Class<?> resultType, int indentation)
   {
-    System.out.format("%s.assignFieldNames(this=%s,resultType=%s,\n%soperandFunctionFieldName=%s,\n%soperandValueFieldName=%s)\n\n",
-                      getClass().getSimpleName(),
-                      expression.functionName,
-                      resultType,
-                      indent(indentation),
-                      operandFunctionFieldName,
-                      indent(indentation),
-                      operandValueFieldName);
+    if (Expression.trace)
+    {
+      logger.debug(String.format("%s.assignFieldNames(this=%s,resultType=%s,\n%soperandFunctionFieldName=%s,\n%soperandValueFieldName=%s)\n\n",
+                                 getClass().getSimpleName(),
+                                 expression.functionName,
+                                 resultType,
+                                 indent(indentation),
+                                 operandFunctionFieldName,
+                                 indent(indentation),
+                                 operandValueFieldName));
+    }
   }
 
   protected void assignResult(MethodVisitor mv, Class<?> resultType)
@@ -362,12 +364,12 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     if (Expression.trace)
     {
-      out.format("NAryOperation.getField(functionClass=%s,\n%sfieldName=%s,\n%sfieldTypeSignature=%s\n\n",
-                 functionClass,
-                 indent(9),
-                 fieldName,
-                 indent(9),
-                 fieldTypeSignature);
+      logger.debug(String.format("NAryOperation.getField(functionClass=%s,\n%sfieldName=%s,\n%sfieldTypeSignature=%s\n\n",
+                                 functionClass,
+                                 indent(9),
+                                 fieldName,
+                                 indent(9),
+                                 fieldTypeSignature));
     }
     getFieldFromThis(methodVisitor, functionClass, fieldName, fieldTypeSignature);
   }
@@ -562,15 +564,18 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   protected void logInputPropagationToOperand(VariableNode<D, R, F> independentVariableNode)
   {
-    System.out.format("%s.logInputPropagationToOperand( operandFunctionFieldName=%s,\n"
-                      + "%sindependentVariableNode=%s,\n"
-                      + "%sindependentVariableNode.type=%s)\n\n",
-                      getClass().getSimpleName(),
-                      operandFunctionFieldName,
-                      indent(48),
-                      independentVariableNode,
-                      indent(48),
-                      independentVariableNode.type());
+    if (Expression.trace)
+    {
+      logger.debug(String.format("%s.logInputPropagationToOperand( operandFunctionFieldName=%s,\n"
+                                 + "%sindependentVariableNode=%s,\n"
+                                 + "%sindependentVariableNode.type=%s)\n\n",
+                                 getClass().getSimpleName(),
+                                 operandFunctionFieldName,
+                                 indent(48),
+                                 independentVariableNode,
+                                 indent(48),
+                                 independentVariableNode.type()));
+    }
   }
 
   void registerOperand(String expr, Expression<Integer, R, Sequence<R>> operandExpression)

@@ -1257,7 +1257,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (trace)
     {
-      log.debug(String.format("generateFunctionInitializer for %s: nestedFunction=%s, assignments=%s )",
+      log.debug(String.format("generateFunctionInitializer for className=%s functionName=%s: nestedFunction=%s, assignments=%s )",
+                              className,
                               functionName,
                               nestedFunction.functionName,
                               assignments));
@@ -1284,7 +1285,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     generateCodeToThrowErrorIfAlreadyInitialized(mv);
     if (trace)
     {
-      log.debug("generateInitializationCode for {}: referencedFunctions={}",
+      log.debug("generateInitializationCode for className={} functionName={}: referencedFunctions={}",
+                className,
                 functionName,
                 referencedFunctions.keySet());
     }
