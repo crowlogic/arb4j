@@ -17,7 +17,7 @@ public class ComplexRealPartIterator extends
   @Override
   public Real next()
   {
-    return x.get(i++).getReal();
+    return nextComplex().getReal();
   }
 
 }

@@ -16,7 +16,7 @@ public class ComplexImaginaryPartIterator extends
   @Override
   public Real next()
   {
-    return x.get(i++).getImag();
+    return nextComplex().getImag();
   }
 
 }

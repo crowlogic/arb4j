@@ -25,4 +25,9 @@ public abstract class ComplexPartIterator implements
     return i < x.dim;
   }
 
+  protected Complex nextComplex()
+  {
+    return x.get(i++);
+  }
+
 }
