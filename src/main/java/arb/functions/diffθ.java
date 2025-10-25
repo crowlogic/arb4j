@@ -47,17 +47,17 @@ public class diffθ implements
   public Real evaluate(Real t, int order, int bits, Real result)
   {
     return FractionConstants.oneQuarter.add(ComplexConstants.ⅈ.mul(t, bits, vℂ0001)
-                                                              .div(cℤ0000, bits, vℂ0002),
+                                                              .div(2, bits, vℂ0002),
                                             bits,
                                             vℂ0003)
                                        .digamma(bits, vℂ0004)
-                                       .mul(ComplexConstants.ⅈ.mul(cℤ0000, bits, vℂ0005)
-                                                              .div(cℤ0003, bits, vℂ0006),
+                                       .mul(ComplexConstants.ⅈ.mul(2, bits, vℂ0005)
+                                                              .div(4, bits, vℂ0006),
                                             bits,
                                             vℂ0007)
                                        .im(bits, vℝ0001)
                                        .sub(RealConstants.π.log(bits, vℝ0002)
-                                                           .div(cℤ0000, bits, vℝ0003),
+                                                           .div(2, bits, vℝ0003),
                                             bits,
                                             result);
   }
@@ -67,7 +67,7 @@ public class diffθ implements
     return Function.express(Real.class,
                             Real.class,
                             Function.class,
-                            "diff(diff(im(lnΓ(¼+ⅈ*t/2))-(log(π)/2)*t,t),t)");
+                            "diff(im(digamma(¼+((ⅈ*t)/2))*((ⅈ*2)/4))-(log(π)/2),t)");
   }
 
   @Override

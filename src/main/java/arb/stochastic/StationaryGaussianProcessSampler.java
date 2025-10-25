@@ -28,14 +28,7 @@ import javafx.stage.Stage;
  * Abstract class for generating stationary Gaussian random process sample paths
  * using the fast Fourier transform (FFT). Sample paths are synthesized from
  * statistical white noise, the target power spectral density (PSD), and the
- * inverse FFT, producing time-domain signals and auxiliary quantities.
- *
- * Dumbassed contradictory AI generated bullshit removed until I get the
- * wherewithal to fucking write the shit myself. Fuck you bill gates and balmer
- * you fucking fat old nerd!! AI will never do shit and if your code is being
- * written by AI now then that shit is truly fucked and its no surprise given
- * your bullshit nearly crippled the fucking united states of america in the
- * crowdstrike incident of July 19th 2024
+ * inverse FFT, producing time-domain signals and auxiliary quantities.x
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
@@ -144,9 +137,9 @@ public abstract class StationaryGaussianProcessSampler extends
       for (int i = 0; i < N; i++)
       {
         periodogram[i] = fft.get(i)
-                            .norm(StationaryGaussianProcessSampler.bits, mag)
-                            .pow(2, StationaryGaussianProcessSampler.bits)
-                            .mul(scalingFactor, StationaryGaussianProcessSampler.bits)
+                            .norm(bits, mag)
+                            .pow(2, bits)
+                            .mul(scalingFactor, bits)
                             .doubleValue();
       }
       return periodogram;
@@ -204,7 +197,7 @@ public abstract class StationaryGaussianProcessSampler extends
     frequencies          = generateFrequencies();
     powerSpectralDensity = getPowerSpectralDensity(frequencies);
 
-    try ( ComplexWhiteNoiseProcess whiteNoiseProcess = new ComplexWhiteNoiseProcess())
+    try ( var whiteNoiseProcess = new ComplexWhiteNoiseProcess())
     {
       var W = generateRandomWhiteNoiseMeasureFromSeed(seed, whiteNoiseProcess);
       W.applyInverseDiscreteFourierTransform(bits, samplePath).mul(N, bits);
@@ -243,7 +236,7 @@ public abstract class StationaryGaussianProcessSampler extends
   Complex generateRandomWhiteNoiseMeasureFromSeed(long theSeed,
                                                   ComplexWhiteNoiseProcess whiteNoiseProcess)
   {
-    try ( Real mag = new Real())
+    try ( var mag = new Real())
     {
       whiteNoiseProcess.initializeWithSeed(theSeed);
 
