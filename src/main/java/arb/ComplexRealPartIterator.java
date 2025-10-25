@@ -1,11 +1,9 @@
 package arb;
 
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
-
 /**
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * 
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class ComplexRealPartIterator extends
                                      ComplexPartIterator
@@ -19,7 +17,7 @@ public class ComplexRealPartIterator extends
   @Override
   public Real next()
   {
-    return x.get(i++).getReal();
+    return nextComplex().getReal();
   }
 
 }

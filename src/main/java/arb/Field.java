@@ -6,8 +6,6 @@ import java.util.Iterator;
 import java.util.stream.Stream;
 
 import arb.algebra.Ring;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.expressions.nodes.binary.AdditionNode;
 import arb.expressions.nodes.binary.MultiplicationNode;
 
@@ -17,8 +15,10 @@ import arb.expressions.nodes.binary.MultiplicationNode;
  * multiplication is distributive over addition and there are two elements 0 and
  * 1; "the set of all rational numbers is a field"
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * /**
+ * 
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public interface Field<X extends Field<X>> extends
                       AutoCloseable,

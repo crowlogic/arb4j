@@ -2,16 +2,14 @@ package arb;
 
 import java.io.Closeable;
 
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import io.fair_acc.dataset.DataSet;
 import io.fair_acc.dataset.DataSet2D;
 import io.fair_acc.dataset.spi.AbstractDataSet;
 
 /**
- * @author Stephen A. Crowley ©2024
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * @author Stephen A. Crowley ©2024 /**
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class ComplexDataSet extends
                             AbstractDataSet<ComplexDataSet> implements

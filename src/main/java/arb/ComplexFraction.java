@@ -4,15 +4,13 @@ import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.util.stream.Stream;
 
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import arb.expressions.Parser;
 import arb.functions.NullaryFunction;
 
 /**
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class ComplexFraction implements
                              Becomable<ComplexFraction>,
@@ -59,11 +57,11 @@ public class ComplexFraction implements
     Expression<Object,
                   ComplexFraction,
                   NullaryFunction<ComplexFraction>> express = Parser.parse(string,
-                                                                             null,
-                                                                             Object.class,
-                                                                             ComplexFraction.class,
-                                                                             NullaryFunction.class,
-                                                                             null);
+                                                                           null,
+                                                                           Object.class,
+                                                                           ComplexFraction.class,
+                                                                           NullaryFunction.class,
+                                                                           null);
 
     return express.instantiate();
   }
