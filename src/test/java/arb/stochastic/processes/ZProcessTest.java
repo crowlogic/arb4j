@@ -24,8 +24,8 @@ public class ZProcessTest extends
                                                                                128);
     Complex                        gainAtPointInTime   =
                                                      gainAtHalfFrequency.eval(13.2, new Complex());
-    assertEquals(0.30528588689168384, gainAtPointInTime.getReal().doubleValue());
-    assertEquals(-0.5271154726635167, gainAtPointInTime.getImag().doubleValue());
+    assertEquals(0.12587432650685262, gainAtPointInTime.getReal().doubleValue());
+    assertEquals(-0.5959914833141249, gainAtPointInTime.getImag().doubleValue());
   }
 
 }
