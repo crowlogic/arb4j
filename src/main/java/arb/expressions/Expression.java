@@ -172,7 +172,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public static String        nameOfInitializerFunction         = "initialize";
 
-  public static boolean       saveClasses                       =
+  private static boolean      saveClasses                       =
                                           Boolean.valueOf(System.getProperty("arb4j.saveClasses",
                                                                              "false"));
 
@@ -1328,7 +1328,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                 referencedFunctions.keySet());
     }
     addChecksForNullVariableReferences(mv);
-  //  addChecksForNullFunctionReferences(mv);
+    // addChecksForNullFunctionReferences(mv);
 
     // Initialize in proper dependency order
     if (dependencies != null)
@@ -1713,7 +1713,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * TODO: this needs to be made copy-by-value not copy-by-reference as it is presently
+   * TODO: this needs to be made copy-by-value not copy-by-reference as it is
+   * presently
    * 
    * @param mv
    * @param generatedFunctionClassInternalName

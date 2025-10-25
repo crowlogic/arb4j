@@ -21,6 +21,7 @@ import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 import arb.functions.integer.Sequence;
+import arb.utensils.Utensils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 
@@ -173,10 +174,19 @@ public class Context
 
   protected <D, R, F extends Function<? extends D, ? extends R>> HashSet<String> getFields(F f)
   {
-    var fields = new HashSet<>(Stream.of(f.getClass().getFields())
-                                     .map(field -> field.getName())
-                                     .toList());
-    return fields;
+    try
+    {
+      var fields = new HashSet<>(Stream.of(f.getClass().getFields())
+                                       .map(field -> field.getName())
+                                       .toList());
+      return fields;
+    }
+    catch (NoClassDefFoundError noClassDefinitionFoundError)
+    {
+      var classLoader = f.getClass().getClassLoader();
+      Utensils.wrapOrThrow("classLoader=" + classLoader, noClassDefinitionFoundError);
+      return null;
+    }
   }
 
   public void mergeFrom(Context context)

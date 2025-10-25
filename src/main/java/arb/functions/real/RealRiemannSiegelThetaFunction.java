@@ -24,7 +24,7 @@ public class RealRiemannSiegelThetaFunction implements
     return θ.toString();
   }
 
-  RealFunction derivative = RealFunction.express("θ:t->diff(im(lnΓ(¼+ⅈ*t/2))-(t*log(π)/2),t)");
+  RealFunction derivative = RealFunction.express("diffθ:t->diff(im(lnΓ(¼+ⅈ*t/2))-(t*log(π)/2),t)");
 
   @Override
   public RealFunction derivative()
