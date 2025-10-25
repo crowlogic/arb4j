@@ -134,16 +134,6 @@ public class Context
         setFieldValue(functionClass, f, functionName, functionMapping.instance);
       }
     });
-//    for (var field : functionClass.getDeclaredFields())
-//    {
-//      var functionName    = field.getName();
-//
-//      var functionMapping = functions.get(functionName);
-//      if (functionMapping != null)
-//      {
-//        setFieldValue(functionClass, f, functionName, functionMapping.instance, false);
-//      }
-//    }
 
   }
 
@@ -172,19 +162,11 @@ public class Context
 
     variableMap().entrySet().forEach(entry ->
     {
-      var variableName = entry.getKey();
-
-      try
+      var   variableName = entry.getKey();
+      Named value        = variables.get(variableName);
+      if (value != null && fields.contains(variableName))
       {
-        Named value = variables.get(variableName);
-        if (value != null && fields.contains(variableName))
-        {
-          setFieldValue(f.getClass(), f, variableName, value);
-        }
-      }
-      catch (Exception e)
-      {
-        wrapOrThrow(String.format("variable=%s", variableName), e);
+        setFieldValue(f.getClass(), f, variableName, value);
       }
     });
   }

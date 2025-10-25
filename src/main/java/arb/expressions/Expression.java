@@ -388,6 +388,27 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
+  private void addCheckForNullField(MethodVisitor mv,
+                                    FunctionMapping<?, ?, ?> functionMapping,
+                                    boolean variable)
+  {
+    String fieldClassDescriptor;
+    var    varName = functionMapping.functionName;
+
+    if (variable)
+    {
+      Object field = context.getVariable(varName);
+      fieldClassDescriptor = field != null ? field.getClass().descriptorString() : null;
+    }
+    else
+    {
+      fieldClassDescriptor = functionMapping.functionFieldDescriptor();
+    }
+
+    addNullCheckForField(mv, className, varName, fieldClassDescriptor);
+
+  }
+
   protected void addCheckForNullField(MethodVisitor mv, String varName, boolean variable)
   {
     Class<?> fieldClass;
@@ -401,7 +422,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       fieldClass = context.functions.get(varName).type();
     }
 
-    addNullCheckForField(mv, className, varName, fieldClass.descriptorString());
+    if (fieldClass != null)
+    {
+      addNullCheckForField(mv, className, varName, fieldClass.descriptorString());
+    }
+  }
+
+  protected void addChecksForNullFunctionReferences(MethodVisitor mv)
+  {
+    if (context != null)
+    {
+      context.functionEntryStream()
+             .filter(event -> referencedFunctions.containsKey(event.getKey())
+                           && !event.getKey().equals(functionName))
+             .forEach(entry -> addCheckForNullField(loadThisOntoStack(mv),
+                                                    entry.getValue(),
+                                                    false));
+    }
   }
 
   protected void addChecksForNullVariableReferences(MethodVisitor mv)
@@ -1243,7 +1280,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (context != null && context.variables != null)
     {
-      propagateContextVariablesAndFunctions(mv, function);
+      propagateContext(mv, function);
     }
 
     invokeInitializationMethod(mv, function);
@@ -1291,6 +1328,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                 referencedFunctions.keySet());
     }
     addChecksForNullVariableReferences(mv);
+  //  addChecksForNullFunctionReferences(mv);
 
     // Initialize in proper dependency order
     if (dependencies != null)
@@ -1674,6 +1712,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   }
 
+  /**
+   * TODO: this needs to be made copy-by-value not copy-by-reference as it is presently
+   * 
+   * @param mv
+   * @param generatedFunctionClassInternalName
+   * @param fieldType
+   * @param functionFieldName
+   * @param typeDesc
+   * @param variable
+   */
   protected void linkSharedVariableToReferencedFunction(MethodVisitor mv,
                                                         String generatedFunctionClassInternalName,
                                                         String fieldType,
@@ -2108,7 +2156,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   public void propagateContextualFunctions(MethodVisitor mv,
-                                           Expression<Object, Object, Function<?, ?>> function)
+                                           Expression<?, ?, Function<?, ?>> function)
   {
     if (Expression.trace)
     {
@@ -2122,7 +2170,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   protected void propagateContextualFunction(MethodVisitor mv,
-                                             Expression<Object, Object, Function<?, ?>> function,
+                                             Expression<?, ?, Function<?, ?>> function,
                                              Map.Entry<String, FunctionMapping<?, ?, ?>> entry)
   {
 
@@ -2141,10 +2189,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     putField(mv, function.className, fieldName, fieldType);
   }
 
-  protected void propagateContextVariablesAndFunctions(MethodVisitor mv,
-                                                       Expression<Object,
-                                                                     Object,
-                                                                     Function<?, ?>> function)
+  protected void propagateContext(MethodVisitor mv, Expression<?, ?, Function<?, ?>> function)
   {
     if (trace)
     {
@@ -2152,12 +2197,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                               System.identityHashCode(this),
                               function));
     }
-    propagateContexVariables(mv, function);
+    propagateContextVariables(mv, function);
     propagateContextualFunctions(mv, function);
   }
 
-  public void propagateContexVariables(MethodVisitor mv,
-                                       Expression<Object, Object, Function<?, ?>> function)
+  public void propagateContextVariables(MethodVisitor mv, Expression<?, ?, Function<?, ?>> function)
   {
     if (trace)
     {

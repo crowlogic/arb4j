@@ -71,7 +71,8 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
 
   public String functionFieldDescriptor(boolean preferInterface)
   {
-    if (preferInterface && functionClass != null)
+    if ((preferInterface || (functionClass != null && !functionClass.isInterface()))
+                  && functionClass != null)
     {
       return declaredAs = functionClass.descriptorString();
     }
@@ -106,7 +107,6 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
     }
     classVisitor.visitField(ACC_PUBLIC, name, functionFieldDescriptor, null, null);
     declaredAs = functionFieldDescriptor;
-
 
   }
 

@@ -2,6 +2,7 @@ package arb.utensils;
 
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.stream.Stream;
 
 /**
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
@@ -20,12 +21,17 @@ public class LineCounter
 
   protected static long countLines(String sourceDir) throws IOException
   {
-    try ( var sourceFiles = Files.walk(Paths.get(sourceDir)))
+    try ( var sourceFiles = recursivelyListFiles(sourceDir))
     {
       return sourceFiles.filter(LineCounter::shouldBeCounted)
                         .mapToLong(LineCounter::countLines)
                         .sum();
     }
+  }
+
+  protected static Stream<Path> recursivelyListFiles(String sourceDir) throws IOException
+  {
+    return Files.walk(Paths.get(sourceDir));
   }
 
   protected static long countLines(Path p)

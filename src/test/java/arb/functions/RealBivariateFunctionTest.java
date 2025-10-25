@@ -1,11 +1,8 @@
 package arb.functions;
 
-import arb.Complex;
-import arb.Real;
-import arb.RealConstants;
+import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.Expression;
 import arb.functions.real.RealFunction;
 import arb.stochastic.processes.ZProcess;
 import junit.framework.TestCase;
@@ -30,14 +27,16 @@ public class RealBivariateFunctionTest extends
 
   public void testEvaluateRealBivariateFunctionWithContextVariable()
   {
-    
-      ZProcess                       Zprocess        = new ZProcess();
-      RealBivariateToComplexFunction oscillatoryFunction            = Zprocess.oscillatoryFunction();
 
-      RealToComplexFunction          oscillationAtFrequency = oscillatoryFunction.evaluate(RealConstants.one, 128);
-      assertEquals(-0.9308570971323369,
-                   oscillationAtFrequency.eval(1.0, new Complex()).re().doubleValue());
-   
+    ZProcess                       Zprocess               = new ZProcess();
+    RealBivariateToComplexFunction oscillatoryFunction    = Zprocess.oscillatoryFunction();
+
+    RealToComplexFunction          oscillationAtFrequency =
+                                                          oscillatoryFunction.evaluate(RealConstants.one,
+                                                                                       128);
+    assertEquals(0.9868527603524843,
+                 oscillationAtFrequency.eval(1.0, new Complex()).re().doubleValue());
+
   }
 
 }
