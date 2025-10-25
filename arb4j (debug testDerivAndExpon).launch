@@ -7,6 +7,7 @@
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
         <listEntry value="1"/>
     </listAttribute>
+    <mapAttribute key="org.eclipse.debug.core.environmentVariables"/>
     <stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value=""/>
     <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
     <stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value=""/>
@@ -19,5 +20,5 @@
     <stringAttribute key="org.eclipse.jdt.launching.MODULE_NAME" value="arb4j"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="arb4j"/>
     <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
-    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea&#10;-ea --enable-preview --illegal-native-access=allow --sun-misc-unsafe-memory-access=allow -Djava.library.path=/home/steve/git/arb4j"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea&#10;-ea --enable-preview --illegal-native-access=allow --sun-misc-unsafe-memory-access=allow -Djava.library.path=/home/crow/git/arb4j"/>
 </launchConfiguration>
