@@ -1796,6 +1796,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return loadFieldOntoStack(loadThisOntoStack(mv), name, referenceType);
   }
 
+  public MethodVisitor loadThisFieldOntoStack(MethodVisitor mv, String name, String referenceType)
+  {
+    return loadFieldOntoStack(loadThisOntoStack(mv), name, referenceType);
+  }
+
   public Expression<D, C, F> merge(Node<?, ?, ?> node)
   {
     var nodeExpression = node.expression;
@@ -2121,8 +2126,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                              Map.Entry<String, FunctionMapping<?, ?, ?>> entry)
   {
 
-    var fieldName = entry.getKey();
-    var fieldType = entry.getValue().functionClass;
+    var    fieldName = entry.getKey();
+    String fieldType = entry.getValue().functionFieldDescriptor();
     if (Expression.trace)
     {
       log.debug("propagateContextualFunction(function={}, entry={}, fieldName={}, fieldType={})",
