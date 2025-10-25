@@ -1238,12 +1238,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (functionalDependsOnIndependentVariable)
     {
-      propagateIndependentVariableToFunctionalElement(mv, function, functionalIndependentVariable);
+      propagateIndependentVariable(mv, function, functionalIndependentVariable);
     }
 
     if (context != null && context.variables != null)
     {
-      propagateContextVariablesAndFunctionsToFunctionalElement(mv, function);
+      propagateContextVariablesAndFunctions(mv, function);
     }
 
     invokeInitializationMethod(mv, function);
@@ -2102,9 +2102,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return node;
   }
 
-  public void propagateContextFunctions(MethodVisitor mv,
-                                        Expression<Object, Object, Function<?, ?>> function)
+  public void propagateContextualFunctions(MethodVisitor mv,
+                                           Expression<Object, Object, Function<?, ?>> function)
   {
+    if (Expression.trace)
+    {
+      log.debug("propagateContextualFunctions(function={})", function);
+
+    }
     context.functionEntryStream()
            .filter(entry -> function.referencedFunctions.containsKey(entry.getKey())
                          && !functionName.equals(entry.getKey()))
@@ -2115,35 +2120,46 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                              Expression<Object, Object, Function<?, ?>> function,
                                              Map.Entry<String, FunctionMapping<?, ?, ?>> entry)
   {
-    if (Expression.trace)
-    {
-      log.debug("propagateContextualFunction(function={}, entry={})",
-                function,
-                entry);
 
-    }
     var fieldName = entry.getKey();
     var fieldType = entry.getValue().functionClass;
+    if (Expression.trace)
+    {
+      log.debug("propagateContextualFunction(function={}, entry={}, fieldName={}, fieldType={})",
+                function,
+                entry,
+                fieldName,
+                fieldType);
+
+    }
     loadThisFieldOntoStack(duplicateTopOfTheStack(mv), fieldName, fieldType);
     putField(mv, function.className, fieldName, fieldType);
   }
 
-  protected void
-            propagateContextVariablesAndFunctionsToFunctionalElement(MethodVisitor mv,
-                                                                     Expression<Object,
-                                                                                   Object,
-                                                                                   Function<?,
-                                                                                                 ?>> function)
+  protected void propagateContextVariablesAndFunctions(MethodVisitor mv,
+                                                       Expression<Object,
+                                                                     Object,
+                                                                     Function<?, ?>> function)
   {
-    propagateContexVariablesToFunctionalElement(mv, function);
-    propagateContextFunctions(mv, function);
+    if (trace)
+    {
+      log.debug(String.format("Expression(#%s).propagateContextVariablesAndFunctions(function=%s)\n",
+                              System.identityHashCode(this),
+                              function));
+    }
+    propagateContexVariables(mv, function);
+    propagateContextualFunctions(mv, function);
   }
 
-  public void propagateContexVariablesToFunctionalElement(MethodVisitor mv,
-                                                          Expression<Object,
-                                                                        Object,
-                                                                        Function<?, ?>> function)
+  public void propagateContexVariables(MethodVisitor mv,
+                                       Expression<Object, Object, Function<?, ?>> function)
   {
+    if (trace)
+    {
+      log.debug(String.format("Expression(#%s).propagateContexVariables(function=%s)\n",
+                              System.identityHashCode(this),
+                              function));
+    }
     for (var entry : context.variableEntries())
     {
       var fieldName = entry.getKey();
@@ -2154,15 +2170,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   protected void
-            propagateIndependentVariableToFunctionalElement(MethodVisitor mv,
-                                                            Expression<?,
-                                                                          ?,
-                                                                          Function<?, ?>> function,
-                                                            VariableNode<?,
-                                                                          ?,
-                                                                          Function<?,
-                                                                                        ?>> independentVariableMappedToFunctional)
+            propagateIndependentVariable(MethodVisitor mv,
+                                         Expression<?, ?, Function<?, ?>> function,
+                                         VariableNode<?,
+                                                       ?,
+                                                       Function<?,
+                                                                     ?>> independentVariableMappedToFunctional)
   {
+    if (trace)
+    {
+      log.debug(String.format("Expression(#%s).propagateIndependentVariable(function=%s, independentVariableMappedToFunctional=%s)\n",
+                              System.identityHashCode(this),
+                              function,
+                              independentVariableMappedToFunctional));
+    }
     var fieldName = independentVariableMappedToFunctional.getName();
     duplicateTopOfTheStack(mv);
     independentVariable.generate(mv, domainType);
