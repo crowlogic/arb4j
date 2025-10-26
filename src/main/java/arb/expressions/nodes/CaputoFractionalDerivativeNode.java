@@ -11,24 +11,25 @@ import arb.expressions.Expression;
 import arb.functions.Function;
 
 /**
+ * Caputo fractional derivative
+ * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class FractionalDerivativeNode<D, R, F extends Function<? extends D, ? extends R>> extends
-                                     Node<D, R, F>
+public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D, ? extends R>>
+                                           extends
+                                           Node<D, R, F>
 {
 
   Node<D, R, F> power;
 
   Node<D, R, F> operand;
 
-  public FractionalDerivativeNode(Expression<D, R, F> expression)
+  public CaputoFractionalDerivativeNode(Expression<D, R, F> expression)
   {
     super(expression);
-    expression.require('^').require('(');
-    power = expression.resolve();
-    expression.require(')');
-    operand = expression.resolve();
+    power   = expression.require('^').require('(').resolve();
+    operand = expression.require(')').resolve();
   }
 
   @Override
@@ -47,7 +48,9 @@ public class FractionalDerivativeNode<D, R, F extends Function<? extends D, ? ex
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    assert false : String.format("TODO: generate %s-th fractional derivative of %s", power, operand);
+    assert false : String.format("TODO: generate %s-th fractional derivative of %s",
+                                 power,
+                                 operand);
     return null;
   }
 
@@ -71,8 +74,6 @@ public class FractionalDerivativeNode<D, R, F extends Function<? extends D, ? ex
     return isResult;
   }
 
-
-
   @Override
   public boolean isScalar()
   {
@@ -89,8 +90,9 @@ public class FractionalDerivativeNode<D, R, F extends Function<? extends D, ? ex
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
-                                                                                       Node<E, S, G> arg)
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<D, R, F>
+         substitute(String variable, Node<E, S, G> arg)
   {
     assert false : "TODO";
     return null;
@@ -115,13 +117,12 @@ public class FractionalDerivativeNode<D, R, F extends Function<? extends D, ? ex
     assert false : "TODO";
     return null;
   }
-  
+
   @Override
   public boolean dependsOn(VariableNode<D, R, F> variable)
   {
     assert false : "TODO";
     return false;
   }
-
 
 }

@@ -827,7 +827,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     else if (nextCharacterIs('Đ'))
     {
-      node = new FractionalDerivativeNode<>(this);
+      node = new CaputoFractionalDerivativeNode<>(this);
     }
     else if (nextCharacterIs('∫'))
     {
