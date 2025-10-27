@@ -1,0 +1,5 @@
+var context = new Context(Real.named("a").set(6.289835988836898));
+var eye = RealFunction.express("eye","t->t");
+var theta = RealFunction.express("θ","im(lnΓ(1/4+I*t/2))-(log(π)/2)*t",context);
+var ptheta =
+RealFunction.express("when(t<a,2*theta(a)-theta(t),else,theta(t)",context);

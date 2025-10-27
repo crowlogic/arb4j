@@ -2,24 +2,15 @@ package arb.functions.real;
 
 import java.util.stream.IntStream;
 
+import arb.*;
 import arb.Float;
-import arb.FloatInterval;
-import arb.Real;
-import arb.RealDataSet;
-import arb.RealPartition;
-import arb.RoundingMode;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
-import arb.expressions.Compiler;
-import arb.expressions.Context;
-import arb.expressions.Expression;
-import arb.expressions.Parser;
+import arb.expressions.*;
 import arb.functions.Function;
 
 /**
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public interface RealFunction extends
                               Function<Real, Real>
@@ -36,8 +27,6 @@ public interface RealFunction extends
   {
     return Real.class;
   }
-
-  public boolean verbose = false;
 
   public default RealFunction mul(RealFunction that)
   {
@@ -159,7 +148,7 @@ public interface RealFunction extends
 
   public default double eval(double t, RoundingMode roundingMode)
   {
-    try ( Real x = Real.newVector(2))
+    try ( var x = Real.newVector(2))
     {
       return evaluate(x.get(0).set(t), 1, Double.PRECISION + 5, x.get(1)).doubleValue(roundingMode);
     }
@@ -196,8 +185,8 @@ public interface RealFunction extends
    */
   public default RealDataSet quantize(double left, double right, int n, boolean parallel)
   {
-    try ( FloatInterval I = new FloatInterval(left,
-                                              right);)
+    try ( var I = new FloatInterval(left,
+                                    right);)
     {
       return quantize(I, 128, n, parallel);
     }
@@ -216,8 +205,8 @@ public interface RealFunction extends
    */
   public default RealDataSet quantize(double left, double right, int n, boolean parallel, int bits)
   {
-    try ( FloatInterval I = new FloatInterval(left,
-                                              right);)
+    try ( var I = new FloatInterval(left,
+                                    right);)
     {
       return quantize(I, bits, n, parallel);
     }
