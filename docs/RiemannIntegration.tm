@@ -27,24 +27,26 @@
     function is Riemann integrable. Therefore, <math|f> is Riemann integrable
     on <math|<around|[|a,b|]>>.
 
-    Let <math|P<rsub|h>> be the uniform partition of <math|<around|[|a,b|]>>
-    into <math|N=<frac|b-a|h>> subintervals of width <math|h>, with mesh
-    <math|<around|\||P<rsub|h>|\|>=h>. Consider the Riemann sum using
-    midpoint tags:
+    Let <math|P<rsub|h,a,b>> be the uniform partition of
+    <math|<around|[|a,b|]>> into <math|N=<frac|b-a|h>> subintervals of width
+    <math|<around|\||P<rsub|h>|\|>=h> . Consider the Riemann sum using
+    midpoint tags: TODO: define the tags explicitly!
 
     <\equation>
-      S<rsub|h>=h*<big|sum><rsub|i=0><rsup|N-1>f*<around*|(|a+<around*|(|i+<tfrac|1|2>|)>\<cdot\>h|)>
+      S<rsub|h><around*|(|f,a,b|)>=h*<big|sum><rsub|i=0><rsup|N<rsub|a,b>-1>f*<around*|(|a+<around*|(|i+<tfrac|1|2>|)>\<cdot\>h|)>
     </equation>
 
     Since <math|f> is Riemann integrable, for every
     <math|\<epsilon\>\<gtr\>0>, there exists <math|\<delta\>\<gtr\>0> such
     that for any partition <math|P> with mesh
-    <math|<around|\||P|\|>\<less\>\<delta\>> and any choice of tags, the
-    corresponding Riemann sum differs from
-    <math|<big|int><rsub|a><rsup|b>f<around|(|x|)>*<space|0.17em>d*x> by less
-    than <math|\<epsilon\>>.
+    <math|<around|\||P|\|>\<less\>\<delta\>> and any choice of tags it is the
+    case that
 
-    Since <math|h\<to\>0> implies <math|<around|\||P<rsub|h>|\|>=h\<to\>0>,
+    <\equation>
+      <around*|\||S<rsub|h><around*|(|f,a,b|)>-<big|int><rsub|a><rsup|b>f<around|(|x|)>*<space|0.17em>d*x|\|>\<less\>\<varepsilon\>
+    </equation>
+
+    and since <math|h\<to\>0> implies <math|<around|\||P<rsub|h>|\|>=h\<to\>0>,
     we have
 
     <\equation*>

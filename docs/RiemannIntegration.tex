@@ -1,32 +1,47 @@
 \documentclass{article}
-\usepackage{amsmath,amsthm}
+\usepackage[english]{babel}
+\usepackage{latexsym}
+
+%%%%%%%%%% Start TeXmacs macros
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
 
 \begin{document}
 
 \begin{theorem}[Riemann Integral, Midpoint Definition]
-Let $f$ be continuous on $[a,b]$. Then
-\[
-\int_a^b f(x)\, dx = \lim_{h \to 0} h \sum_{i=0}^{N-1} f\left(a + \left(i + \tfrac{1}{2}\right) \cdot h\right)
-\]
-where $N = \frac{b-a}{h}$.
+  Let $f$ be continuous on $[a, b]$. Then
+  \[ \int_a^b f (x)  \hspace{0.17em} dx = \lim_{h \to 0} h \sum_{i = 0}^{N -
+     1} f \left( a + \left( i + \tfrac{1}{2} \right) \cdot h \right) \]
+  where
+  \begin{equation}
+    N = \frac{b - a}{h}
+  \end{equation}
 \end{theorem}
 
 \begin{proof}
-Since $f$ is continuous on the compact set $[a,b]$, $f$ is uniformly continuous on $[a,b]$. 
-
-By a standard theorem in real analysis, every uniformly continuous function is Riemann integrable. Therefore, $f$ is Riemann integrable on $[a,b]$.
-
-Let $P_h$ be the uniform partition of $[a,b]$ into $N = \frac{b-a}{h}$ subintervals of width $h$, with mesh $|P_h| = h$. Consider the Riemann sum using midpoint tags:
-\[
-S_h = h \sum_{i=0}^{N-1} f\left(a + \left(i + \tfrac{1}{2}\right)\cdot h\right).
-\]
-
-Since $f$ is Riemann integrable, for every $\epsilon > 0$, there exists $\delta > 0$ such that for any partition $P$ with mesh $|P| < \delta$ and any choice of tags, the corresponding Riemann sum differs from $\int_a^b f(x)\,dx$ by less than $\epsilon$.
-
-Since $h \to 0$ implies $|P_h| = h \to 0$, we have
-\[
-\lim_{h \to 0} S_h = \int_a^b f(x)\,dx.
-\]
+  Since $f$ is continuous on the compact set $[a, b]$, $f$ is uniformly
+  continuous on $[a, b]$.
+  
+  By a standard theorem in real analysis, every uniformly continuous function
+  is Riemann integrable. Therefore, $f$ is Riemann integrable on $[a, b]$.
+  
+  Let $P_{h, a, b}$ be the uniform partition of $[a, b]$ into $N = \frac{b -
+  a}{h}$ subintervals of width $|P_h | = h$ . Consider the Riemann sum using
+  midpoint tags: TODO: define the tags explicitly!
+  \begin{equation}
+    S_h (f, a, b) = h \sum_{i = 0}^{N_{a, b} - 1} f \left( a + \left( i +
+    \tfrac{1}{2} \right) \cdot h \right)
+  \end{equation}
+  Since $f$ is Riemann integrable, for every $\epsilon > 0$, there exists
+  $\delta > 0$ such that for any partition $P$ with mesh $|P| < \delta$ and
+  any choice of tags it is the case that
+  \begin{equation}
+    \left| S_h (f, a, b) - \int_a^b f (x) \hspace{0.17em} dx \right| <
+    \varepsilon
+  \end{equation}
+  and since $h \to 0$ implies $|P_h | = h \to 0$, we have
+  \[ \lim_{h \to 0} S_h = \int_a^b f (x)  \hspace{0.17em} dx \]
 \end{proof}
 
 \end{document}

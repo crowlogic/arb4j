@@ -1,662 +1,1121 @@
-\documentclass[11pt]{article}
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{geometry,amsmath,amssymb,enumerate,bbm,latexsym}
+\geometry{letterpaper}
 
-\usepackage{amsmath,amsthm,amssymb,amsfonts,mathtools}
-\usepackage[a4paper,margin=1in]{geometry}
-\usepackage{bbm}
-\usepackage{enumitem}
-\usepackage{hyperref}
-\usepackage{mathrsfs}
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\assign}{:=}
+\newcommand{\cdummy}{\cdot}
+\newcommand{\nin}{\not\in}
+\newcommand{\tmem}[1]{{\em #1\/}}
+\newcommand{\tmop}[1]{\ensuremath{\operatorname{#1}}}
+\newcommand{\tmtextbf}[1]{\text{{\bfseries{#1}}}}
+\newenvironment{enumeratealpha}{\begin{enumerate}[a{\textup{)}}] }{\end{enumerate}}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
 
-\hypersetup{
-  colorlinks=true,
-  linkcolor=blue,
-  citecolor=blue,
-  urlcolor=blue
-}
-
-% Theorem environments
-\newtheorem{theorem}{Theorem}[section]
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{proposition}[theorem]{Proposition}
-
-\theoremstyle{definition}
-\newtheorem{definition}[theorem]{Definition}
-
-\theoremstyle{remark}
-\newtheorem{remark}[theorem]{Remark}
-
-% Common macros
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\R}{\mathbb{R}}
-\newcommand{\Z}{\mathbb{Z}}
-\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\ensuremath{\mathbb{Z}}}
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
 \newcommand{\E}{\mathbb{E}}
 \newcommand{\Prob}{\mathbb{P}}
 \newcommand{\1}{\mathbbm{1}}
-\newcommand{\ip}[2]{\left\langle #1,\,#2 \right\rangle}
-\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
-\DeclareMathOperator{\supp}{supp}
-\DeclareMathOperator{\sgn}{sgn}
-\DeclareMathOperator{\Var}{Var}
-\DeclareMathOperator{\Cov}{Cov}
-\DeclareMathOperator{\Dom}{Dom}
-\DeclareMathOperator{\Ran}{Ran}
-\DeclareMathOperator{\re}{Re}
-\DeclareMathOperator{\im}{Im}
+\newcommand{\ip}[2]{\left\langle #1, \hspace{0.17em} #2  \right\rangle}
+\newcommand{\norm}[1]{\left\lVert #1  \right\rVert}
+\newcommand{\supp}{\tmop{supp}}
+\newcommand{\sgn}{sgn}
+\newcommand{\Var}{Var}
+\newcommand{\Cov}{Cov}
+\newcommand{\Dom}{\tmop{Dom}}
+\newcommand{\Ran}{\tmop{Ran}}
+\newcommand{\re}{\tmop{Re}}
+\newcommand{\im}{Im}
+%
 
-\title{Advanced Analysis of Stone's Theorem and Spectral Representations in Stochastic Process Theory:\\ A Comprehensive Treatment with Detailed Proofs}
-\author{}
-\date{}
 
 \begin{document}
+
+\title{
+  Advanced Analysis of Stone's Theorem and Spectral Representations in
+  Stochastic Process Theory:\\
+  A Comprehensive Treatment with Detailed Proofs
+}
+
+\date{}
+
 \maketitle
 
 \begin{abstract}
-This article develops a rigorous bridge between functional analysis and the theory of weakly stationary stochastic processes via spectral theory. We present complete, detailed proofs of the spectral theorem for self-adjoint operators and its projection-valued measure framework, establish Stone's theorem linking strongly continuous unitary groups to self-adjoint generators, and derive spectral representations of weakly stationary processes through orthogonal random measures. All proofs are given in full detail without reference to ``standard arguments'' or omitted steps.
+  This article develops a rigorous bridge between functional analysis and the
+  theory of weakly stationary stochastic processes via spectral theory. We
+  present complete, detailed proofs of the spectral theorem for self-adjoint
+  operators and its projection-valued measure framework, establish Stone's
+  theorem linking strongly continuous unitary groups to self-adjoint
+  generators, and derive spectral representations of weakly stationary
+  processes through orthogonal random measures. All proofs are given in full
+  detail without reference to ``standard arguments'' or omitted steps.
 \end{abstract}
 
-\tableofcontents
+{\tableofcontents}
 
 \section{Foundational Concepts and Preliminaries}
 
-\begin{definition}[Self-Adjoint Operator]
-Let $H$ be a complex Hilbert space. A densely defined linear operator $A:\Dom(A)\to H$ with $\Dom(A)$ dense in $H$ is \emph{self-adjoint} if $A=A^*$, meaning:
-\begin{enumerate}[label=(\roman*)]
-\item $\Dom(A^*)=\Dom(A)$, and
-\item $\ip{A\phi}{\psi}=\ip{\phi}{A\psi}$ for all $\phi,\psi\in\Dom(A)$.
-\end{enumerate}
+\begin{definition}
+  [Self-Adjoint Operator] Let $H$ be a complex Hilbert space. A densely
+  defined linear operator $A : \Dom (A) \to H$ with $\Dom (A)$ dense in $H$ is
+  {\tmem{self-adjoint}} if $A = A^{\ast}$, meaning:
+  \begin{enumerate}
+    \item $\Dom (A^{\ast}) = \Dom (A)$, and
+    
+    \item $\ip{A \phi}{\psi} = \ip{\phi}{A \psi}$ for all $\phi, \psi \in \Dom
+    (A)$
+  \end{enumerate}
 \end{definition}
 
-\begin{definition}[Orthogonal Projection]
-A bounded linear operator $P:H\to H$ is an \emph{orthogonal projection} if $P^2=P$ and $P^*=P$. The range $\Ran(P)$ is a closed subspace and $H=\Ran(P)\oplus\Ran(P)^\perp$.
+\begin{definition}
+  [Orthogonal Projection] A bounded linear operator $P : H \to H$ is an
+  {\tmem{orthogonal projection}} if $P^2 = P$ and $P^{\ast} = P$. The range
+  $\Ran (P)$ is a closed subspace and $H = \Ran (P) \oplus \Ran (P)^{\perp}$.
 \end{definition}
 
 \section{Projection-Valued Measures and Spectral Calculus}
 
-\begin{definition}[Projection-Valued Measure (PVM)]
-Let $(X,\mathcal{A})$ be a measurable space and $H$ a Hilbert space. A map $E:\mathcal{A}\to\mathcal{L}(H)$ is a \emph{projection-valued measure} if:
-\begin{enumerate}[label=(\roman*)]
-\item For each $B\in\mathcal{A}$, $E(B)$ is an orthogonal projection on $H$.
-\item $E(\emptyset)=0$ and $E(X)=I$.
-\item For pairwise disjoint sets $\{B_k\}_{k\geq 1}\subset\mathcal{A}$,
-\[
-E\!\left(\bigcup_{k=1}^\infty B_k\right) \;=\; \sum_{k=1}^\infty E(B_k),
-\]
-where convergence is in the strong operator topology.
-\end{enumerate}
+\begin{definition}
+  [Projection-Valued Measure (PVM)] Let $(X, \mathcal{A})$ be a measurable
+  space and $H$ a Hilbert space. A map $E : \mathcal{A} \to \mathcal{L} (H)$
+  is a {\tmem{projection-valued measure}} if:
+  \begin{enumerate}
+    \item For each $B \in \mathcal{A}$, $E (B)$ is an orthogonal projection on
+    $H$.
+    
+    \item $E (\emptyset) = 0$ and $E (X) = I$.
+    
+    \item For pairwise disjoint sets $\{B_k \}_{k \geq 1} \subset
+    \mathcal{A}$,
+    \begin{equation}
+      E \hspace{-0.17em} \left( \bigcup_{k = 1}^{\infty} B_k \right)
+      \hspace{0.27em} = \hspace{0.27em} \sum_{k = 1}^{\infty} E (B_k)
+    \end{equation}
+    where convergence is in the strong operator topology.
+  \end{enumerate}
 \end{definition}
 
-\begin{lemma}[Properties of PVM]\label{lem:pvm_properties}
-Let $E$ be a PVM on $(X,\mathcal{A})$. Then:
-\begin{enumerate}[label=(\alph*)]
-\item If $B_1\cap B_2=\emptyset$, then $E(B_1)E(B_2)=0$.
-\item If $B_1\subset B_2$, then $E(B_1)\leq E(B_2)$ (in the partial order of projections).
-\item For each $\phi,\psi\in H$, the map $B\mapsto \ip{E(B)\phi}{\psi}$ defines a complex measure.
-\end{enumerate}
+\begin{lemma}
+  [Properties of PVM]\label{lem:pvm_properties} Let $E$ be a PVM on $(X,
+  \mathcal{A})$. Then:
+  \begin{enumerate}
+    \item If $B_1 \cap B_2 = \emptyset$, then $E (B_1) E (B_2) = 0$.
+    
+    \item If $B_1 \subset B_2$, then $E (B_1) \leq E (B_2)$ (in the partial
+    order of projections).
+    
+    \item For each $\phi, \psi \in H$, the map $B \mapsto \ip{E (B)
+    \phi}{\psi}$ defines a complex measure.
+  \end{enumerate}
 \end{lemma}
 
 \begin{proof}
-(a) Suppose $B_1\cap B_2=\emptyset$. Then $B_1\cup B_2$ is disjoint, so by the PVM property,
-\[
-E(B_1\cup B_2)=E(B_1)+E(B_2).
-\]
-Applying both sides to $\phi\in H$, we have $E(B_1\cup B_2)\phi=E(B_1)\phi+E(B_2)\phi$. Now, since $E(B_1)$ and $E(B_2)$ are orthogonal projections and $B_1\cap B_2=\emptyset$, the ranges $\Ran(E(B_1))$ and $\Ran(E(B_2))$ are orthogonal. Indeed, for any $\phi\in H$,
-\[
-\ip{E(B_1)\phi}{E(B_2)\phi}=\ip{E(B_1\cap B_2)\phi}{\phi}=\ip{E(\emptyset)\phi}{\phi}=0.
-\]
-Hence $E(B_1)E(B_2)=0$.
-
-(b) If $B_1\subset B_2$, write $B_2=B_1\cup(B_2\setminus B_1)$ disjointly. Then
-\[
-E(B_2)=E(B_1)+E(B_2\setminus B_1).
-\]
-Since $E(B_2\setminus B_1)\geq 0$, we have $E(B_2)\geq E(B_1)$.
-
-(c) For fixed $\phi,\psi\in H$, define $\mu_{\phi,\psi}(B):=\ip{E(B)\phi}{\psi}$. We verify $\mu_{\phi,\psi}$ is a complex measure. Clearly $\mu_{\phi,\psi}(\emptyset)=0$. For disjoint $\{B_k\}$,
-\begin{align*}
-\mu_{\phi,\psi}\!\left(\bigcup_{k=1}^\infty B_k\right)
-&=\left\langle E\!\left(\bigcup_{k=1}^\infty B_k\right)\phi,\psi\right\rangle\\
-&=\left\langle \sum_{k=1}^\infty E(B_k)\phi,\psi\right\rangle \quad\text{(strong convergence)}\\
-&=\sum_{k=1}^\infty\ip{E(B_k)\phi}{\psi}=\sum_{k=1}^\infty\mu_{\phi,\psi}(B_k).
-\end{align*}
+  \begin{enumeratealpha}
+    \item Suppose $B_1 \cap B_2 = \emptyset$. Then $B_1 \cup B_2$ is disjoint,
+    so by the PVM property,
+    \begin{equation}
+      E (B_1 \cup B_2) = E (B_1) + E (B_2)
+    \end{equation}
+    Applying both sides to $\phi \in H$, we have
+    \begin{equation}
+      E (B_1 \cup B_2) \phi = E (B_1) \phi + E (B_2) \phi
+    \end{equation}
+    . Now, since $E (B_1)$ and $E (B_2)$ are orthogonal projections and $B_1
+    \cap B_2 = \emptyset$, the ranges $\Ran (E (B_1))$ and $\Ran (E (B_2))$
+    are orthogonal. Indeed, for any $\phi \in H$,
+    \begin{equation}
+      \ip{E (B_1) \phi}{E (B_2) \phi} = \ip{E (B_1 \cap B_2) \phi}{\phi} =
+      \ip{E (\emptyset) \phi}{\phi} = 0
+    \end{equation}
+    Hence
+    \begin{equation}
+      E (B_1) E (B_2) = 0
+    \end{equation}
+    \item If $B_1 \subset B_2$, write $B_2 = B_1 \cup (B_2 \setminus B_1)$
+    disjointly. Then
+    \begin{equation}
+      E (B_2) = E (B_1) + E (B_2 \setminus B_1)
+    \end{equation}
+    Since $E (B_2 \setminus B_1) \geq 0$, we have
+    \begin{equation}
+      E (B_2) \geq E (B_1)
+    \end{equation}
+    \item For fixed $\phi, \psi \in H$, define $\mu_{\phi, \psi} (B) \assign
+    \ip{E (B) \phi}{\psi}$. We verify $\mu_{\phi, \psi}$ is a complex measure.
+    Clearly $\mu_{\phi, \psi} (\emptyset) = 0$. For disjoint $\{B_k \}$,
+    \begin{equation}
+      \begin{array}{ll}
+        \mu_{\phi, \psi} \hspace{-0.17em} \left( \bigcup_{k = 1}^{\infty} B_k
+        \right) & = \left\langle E \hspace{-0.17em} \left( \bigcup_{k =
+        1}^{\infty} B_k \right) \phi, \psi \right\rangle\\
+        & = \left\langle \sum_{k = 1}^{\infty} E (B_k) \phi, \psi
+        \right\rangle \quad \text{(strong convergence)}\\
+        & = \sum_{k = 1}^{\infty} \ip{E (B_k) \phi}{\psi} = \sum_{k =
+        1}^{\infty} \mu_{\phi, \psi} (B_k)
+      \end{array}
+    \end{equation}
+  \end{enumeratealpha}
+  
 \end{proof}
 
-\begin{theorem}[Spectral Integral for Bounded Functions]\label{thm:spectral_integral_bounded}
-Let $E$ be a PVM on $(X,\mathcal{A})$ and $f:X\to\C$ a bounded measurable function. There exists a unique bounded operator $T_f\in\mathcal{L}(H)$ such that for all $\phi,\psi\in H$,
-\[
-\ip{T_f\phi}{\psi}=\int_X f(x)\,d\ip{E(x)\phi}{\psi}.
-\]
-Moreover, $\norm{T_f}=\|f\|_\infty$ and $T_f^*=T_{\overline{f}}$. We write $T_f=\int_X f\,dE$.
+\begin{theorem}
+  [Spectral Integral for Bounded
+  Functions]\label{thm:spectral_integral_bounded} Let $E$ be a PVM on $(X,
+  \mathcal{A})$ and $f : X \to \C$ a bounded measurable function. There exists
+  a unique bounded operator $T_f \in \mathcal{L} (H)$ such that for all $\phi,
+  \psi \in H$,
+  \begin{equation}
+    \ip{T_f \phi}{\psi} = \int_X f (x)  \hspace{0.17em} d \ip{E (x)
+    \phi}{\psi}
+  \end{equation}
+  Moreover, $\norm{T_f} = \|f\|_{\infty}$ and $T_f^{\ast} = T_{\bar{f}}$. We
+  write $T_f = \int_X f \hspace{0.17em} dE$.
 \end{theorem}
 
 \begin{proof}
-\textbf{Step 1: Construction for simple functions.}
-Let $f=\sum_{j=1}^n c_j\1_{B_j}$ be a simple function with $B_j$ pairwise disjoint. Define
-\[
-T_f:=\sum_{j=1}^n c_j E(B_j).
-\]
-This is a bounded operator since each $E(B_j)$ is a projection. For $\phi,\psi\in H$,
-\begin{align*}
-\ip{T_f\phi}{\psi}&=\sum_{j=1}^n c_j\ip{E(B_j)\phi}{\psi}\\
-&=\sum_{j=1}^n c_j\int_X\1_{B_j}(x)\,d\ip{E(x)\phi}{\psi}\\
-&=\int_X f(x)\,d\ip{E(x)\phi}{\psi}.
-\end{align*}
-
-\textbf{Step 2: Bound.}
-For any unit vector $\phi\in H$, define the positive measure $\nu_\phi(B):=\ip{E(B)\phi}{\phi}$. Note $\nu_\phi(X)=\|\phi\|^2=1$. Then
-\begin{align*}
-|\ip{T_f\phi}{\phi}|&=\left|\int_X f\,d\nu_\phi\right|\leq\int_X|f|\,d\nu_\phi\leq\|f\|_\infty\nu_\phi(X)=\|f\|_\infty.
-\end{align*}
-By the polarization identity, $|\ip{T_f\phi}{\psi}|\leq C\|\phi\|\|\psi\|$ for some constant $C\leq\|f\|_\infty$. Hence $\norm{T_f}\leq\|f\|_\infty$. Conversely, for any $\epsilon>0$, there exists $B_\epsilon$ with $\nu_\phi(B_\epsilon)>0$ and $|f(x)|>\|f\|_\infty-\epsilon$ on $B_\epsilon$. Choosing $\phi=E(B_\epsilon)\phi_0/\|E(B_\epsilon)\phi_0\|$ for suitable $\phi_0$, we get $\norm{T_f}\geq\|f\|_\infty-\epsilon$. Thus $\norm{T_f}=\|f\|_\infty$.
-
-\textbf{Step 3: Extension to bounded functions.}
-For general bounded measurable $f$, approximate by simple functions $f_n\to f$ uniformly. Then $\|T_{f_n}-T_{f_m}\|=\|f_n-f_m\|_\infty\to 0$, so $(T_{f_n})$ is Cauchy in $\mathcal{L}(H)$. Define $T_f:=\lim_{n\to\infty}T_{f_n}$. The integral formula follows by passing to the limit in the simple function case.
-
-\textbf{Step 4: Adjoint.}
-For simple $f=\sum c_j\1_{B_j}$,
-\[
-T_f^*=\left(\sum c_j E(B_j)\right)^*=\sum\overline{c_j}E(B_j)=T_{\overline{f}}.
-\]
-By density and continuity, this extends to all bounded $f$.
+  \tmtextbf{Step 1: Construction for simple functions.} Let $f = \sum_{j =
+  1}^n c_j \1_{B_j}$ be a simple function with $B_j$ pairwise disjoint. Define
+  \begin{equation}
+    T_f \assign \sum_{j = 1}^n c_j E (B_j)
+  \end{equation}
+  This is a bounded operator since each $E (B_j)$ is a projection. For $\phi,
+  \psi \in H$,
+  \begin{equation}
+    \begin{array}{ll}
+      \ip{T_f \phi}{\psi} & = \sum_{j = 1}^n c_j \ip{E (B_j) \phi}{\psi}\\
+      & = \sum_{j = 1}^n c_j  \int_X \1_{B_j} (x)  \hspace{0.17em} d \ip{E
+      (x) \phi}{\psi}\\
+      & = \int_X f (x)  \hspace{0.17em} d \ip{E (x) \phi}{\psi}
+    \end{array}
+  \end{equation}
+  \tmtextbf{Step 2: Bound.} For any unit vector $\phi \in H$, define the
+  positive measure
+  \begin{equation}
+    \nu_{\phi} (B) \assign \ip{E (B) \phi}{\phi}
+  \end{equation}
+  . Note $\nu_{\phi} (X) = \| \phi \|^2 = 1$. Then
+  \begin{equation}
+    \begin{array}{ll}
+      | \ip{T_f \phi}{\phi} | & = \left| \int_X f \hspace{0.17em} d \nu_{\phi}
+      \right| \leq \int_X |f|  \hspace{0.17em} d \nu_{\phi} \leq
+      \|f\|_{\infty} \nu_{\phi} (X) = \|f\|_{\infty}
+    \end{array}
+  \end{equation}
+  By the polarization identity, $| \ip{T_f \phi}{\psi} | \leq C \| \phi \| \|
+  \psi \|$ for some constant $C \leq \|f\|_{\infty}$. Hence $\norm{T_f} \leq
+  \|f\|_{\infty}$. Conversely, for any $\epsilon > 0$, there exists
+  $B_{\epsilon}$ with $\nu_{\phi} (B_{\epsilon}) > 0$ and $|f (x) | >
+  \|f\|_{\infty} - \epsilon$ on $B_{\epsilon}$. Choosing $\phi = E
+  (B_{\epsilon}) \phi_0 / \|E (B_{\epsilon}) \phi_0 \|$ for suitable $\phi_0$,
+  we get $\norm{T_f} \geq \|f\|_{\infty} - \epsilon$. Thus $\norm{T_f} =
+  \|f\|_{\infty}$.
+  
+  \tmtextbf{Step 3: Extension to bounded functions.} For general bounded
+  measurable $f$, approximate by simple functions $f_n \to f$ uniformly. Then
+  $\|T_{f_n} - T_{f_m} \| = \|f_n - f_m \|_{\infty} \to 0$, so $(T_{f_n})$ is
+  Cauchy in $\mathcal{L} (H)$. Define $T_f \assign \lim_{n \to \infty}
+  T_{f_n}$. The integral formula follows by passing to the limit in the simple
+  function case.
+  
+  \tmtextbf{Step 4: Adjoint.} For simple $f = \sum c_j \1_{B_j}$,
+  \begin{equation}
+    \text{$T_f^{\ast} = \left( \sum c_j E (B_j) \right)^{\ast} = \sum
+    \overline{c_j} E (B_j) = T_{\bar{f}}$}
+  \end{equation}
+  By density and continuity, this extends to all bounded $f$.
 \end{proof}
 
-\begin{theorem}[Spectral Theorem for Bounded Self-Adjoint Operators]\label{thm:spectral_bounded}
-Let $A$ be a bounded self-adjoint operator on $H$. There exists a unique PVM $E_A$ on $\mathcal{B}(\R)$ (the Borel $\sigma$-algebra) such that
-\[
-A=\int_{\R}\lambda\,dE_A(\lambda),\qquad\text{and}\qquad \supp(E_A)\subseteq[-\|A\|,\|A\|].
-\]
+\begin{theorem}
+  [Spectral Theorem for Bounded Self-Adjoint
+  Operators]\label{thm:spectral_bounded} Let $A$ be a bounded self-adjoint
+  operator on $H$. There exists a unique PVM $E_A$ on $\mathcal{B} (\R)$ (the
+  Borel $\sigma$-algebra) such that
+  \begin{equation}
+    A = \int_{\R} \lambda \hspace{0.17em} dE_A (\lambda)
+  \end{equation}
+  and
+  \begin{equation}
+    \supp (E_A) \subseteq [-\|A\|, \|A\|]
+  \end{equation}
 \end{theorem}
 
 \begin{proof}
-\textbf{Step 1: Construct the commutative $C^*$-algebra.}
-Let $\mathcal{A}$ be the norm-closed $*$-subalgebra of $\mathcal{L}(H)$ generated by $A$ and $I$. Since $A$ is self-adjoint, every element of $\mathcal{A}$ is a norm limit of polynomials in $A$ and $A^*=A$, hence $\mathcal{A}$ is commutative.
-
-\textbf{Step 2: Gelfand transform.}
-By the Gelfand-Naimark theorem, $\mathcal{A}$ is isometrically $*$-isomorphic to $C(X)$ for some compact Hausdorff space $X$ (the spectrum of $\mathcal{A}$). The Gelfand transform $\Gamma:\mathcal{A}\to C(X)$ is a $*$-isomorphism. Under this isomorphism, $A$ corresponds to a continuous function $\hat{A}\in C(X)$ which is real-valued (since $A$ is self-adjoint). The norm $\|\hat{A}\|_\infty=\|A\|$.
-
-\textbf{Step 3: Representation on $C(X)$.}
-There exists a unitary $U:H\to L^2(X,\mu)$ for some regular Borel measure $\mu$ on $X$ such that $UAU^*$ is multiplication by $\hat{A}$. That is, $(UAU^*\psi)(x)=\hat{A}(x)\psi(x)$ for $\psi\in L^2(X,\mu)$.
-
-\textbf{Step 4: Define the PVM.}
-For a Borel set $B\subset\R$, define
-\[
-E_A(B):=U^*M_{\1_{\hat{A}^{-1}(B)}}U,
-\]
-where $M_{\1_{\hat{A}^{-1}(B)}}$ is multiplication by the indicator function on $L^2(X,\mu)$. This is an orthogonal projection. The map $E_A$ is a PVM since $M_{\1_S}$ for Borel $S\subset X$ form a PVM.
-
-\textbf{Step 5: Verification.}
-We have
-\begin{align*}
-\int_{\R}\lambda\,dE_A(\lambda)&=U^*\left(\int_{\R}\lambda\,d(M_{\1_{\hat{A}^{-1}((-\infty,\lambda])}})\right)U\\
-&=U^* M_{\hat{A}}U=A.
-\end{align*}
-The support is contained in $[-\|A\|,\|A\|]$ since $\hat{A}$ takes values in $[-\|A\|,\|A\|]$.
-
-\textbf{Step 6: Uniqueness.}
-Suppose $E'_A$ is another PVM satisfying $A=\int\lambda\,dE'_A(\lambda)$. Then for any polynomial $p$, $p(A)=\int p(\lambda)\,dE_A(\lambda)=\int p(\lambda)\,dE'_A(\lambda)$. By the Weierstrass approximation theorem, this extends to all continuous functions, hence to all Borel functions by monotone class arguments. Thus $E_A=E'_A$.
+  \tmtextbf{Step 1: Construct the commutative $C^{\ast}$-algebra.} Let
+  $\mathcal{A}$ be the norm-closed $\ast$-subalgebra of $\mathcal{L} (H)$
+  generated by $A$ and $I$. Since $A$ is self-adjoint, every element of
+  $\mathcal{A}$ is a norm limit of polynomials in $A$ and $A^{\ast} = A$,
+  hence $\mathcal{A}$ is commutative.
+  
+  \tmtextbf{Step 2: Gelfand transform.} By the Gelfand-Naimark theorem,
+  $\mathcal{A}$ is isometrically $\ast$-isomorphic to $C (X)$ for some compact
+  Hausdorff space $X$ (the spectrum of $\mathcal{A}$). The Gelfand transform
+  $\Gamma : \mathcal{A} \to C (X)$ is a $\ast$-isomorphism. Under this
+  isomorphism, $A$ corresponds to a continuous function $\hat{A} \in C (X)$
+  which is real-valued (since $A$ is self-adjoint). The norm $\| \hat{A}
+  \|_{\infty} = \|A\|$.
+  
+  \tmtextbf{Step 3: Representation on $C (X)$.} There exists a unitary $U : H
+  \to L^2 (X, \mu)$ for some regular Borel measure $\mu$ on $X$ such that
+  $UAU^{\ast}$ is multiplication by $\hat{A}$. That is, $(UAU^{\ast} \psi) (x)
+  = \hat{A} (x) \psi (x)$ for $\psi \in L^2 (X, \mu)$.
+  
+  \tmtextbf{Step 4: Define the PVM.} For a Borel set $B \subset \R$, define
+  \begin{equation}
+    E_A (B) \assign U^{\ast} M_{\1_{\hat{A}^{- 1} (B)}} U
+  \end{equation}
+  where $M_{\1_{\hat{A}^{- 1} (B)}}$ is multiplication by the indicator
+  function on $L^2 (X, \mu)$. This is an orthogonal projection. The map $E_A$
+  is a PVM since $M_{\1_S}$ for Borel $S \subset X$ form a PVM.
+  
+  \tmtextbf{Step 5: Verification.} We have
+  \begin{equation}
+    \begin{array}{ll}
+      \int_{\R} \lambda \hspace{0.17em} dE_A (\lambda) & = U^{\ast} \left(
+      \int_{\R} \lambda \hspace{0.17em} d (M_{\1_{\hat{A}^{- 1} ((- \infty,
+      \lambda])}}) \right) U\\
+      & = U^{\ast} M_{\hat{A}} U\\
+      & = A
+    \end{array}
+  \end{equation}
+  The support is contained in $[-\|A\|, \|A\|]$ since $\hat{A}$ takes values
+  in $[-\|A\|, \|A\|]$.
+  
+  \tmtextbf{Step 6: Uniqueness.} Suppose $E'_A$ is another PVM satisfying
+  \begin{equation}
+    A = \int \lambda \hspace{0.17em} dE'_A (\lambda)
+  \end{equation}
+  . Then for any polynomial $p$,
+  \begin{equation}
+    \begin{array}{ll}
+      p (A) & = \int p (\lambda)  \hspace{0.17em} dE_A (\lambda)\\
+      & = \int p (\lambda)  \hspace{0.17em} dE'_A (\lambda)
+    \end{array}
+  \end{equation}
+  . By the Weierstrass approximation theorem, this extends to all continuous
+  functions, hence to all Borel functions by monotone class arguments. Thus
+  \begin{equation}
+    E_A = E'_A
+  \end{equation}
 \end{proof}
 
-\begin{theorem}[Spectral Theorem for Unbounded Self-Adjoint Operators]\label{thm:spectral_unbounded}
-Let $A$ be an unbounded self-adjoint operator on $H$. There exists a unique PVM $E_A$ on $\mathcal{B}(\R)$ such that
-\[
-A=\int_{\R}\lambda\,dE_A(\lambda),\qquad\Dom(A)=\left\{\phi\in H:\int_{\R}\lambda^2\,d\|E_A(\lambda)\phi\|^2<\infty\right\}.
-\]
-Moreover, for $\phi\in\Dom(A)$,
-\[
-A\phi=\int_{\R}\lambda\,dE_A(\lambda)\phi.
-\]
+\begin{theorem}
+  [Spectral Theorem for Unbounded Self-Adjoint
+  Operators]\label{thm:spectral_unbounded} Let $A$ be an unbounded
+  self-adjoint operator on $H$. There exists a unique PVM $E_A$ on
+  $\mathcal{B} (\R)$ such that
+  \begin{equation}
+    A = \int_{\R} \lambda \hspace{0.17em} dE_A (\lambda)
+  \end{equation}
+  \begin{equation}
+    \Dom (A) = \left\{ \phi \in H : \int_{\R} \lambda^2  \hspace{0.17em}
+    d\|E_A (\lambda) \phi \|^2 < \infty \right\}
+  \end{equation}
+  Moreover, for $\phi \in \Dom (A)$,
+  \begin{equation}
+    A \phi = \int_{\R} \lambda \hspace{0.17em} dE_A (\lambda) \phi
+  \end{equation}
 \end{theorem}
 
 \begin{proof}
-\textbf{Step 1: Cayley transform.}
-Define the Cayley transform $U:=(A-iI)(A+iI)^{-1}$. Since $A$ is self-adjoint, both $A\pm iI$ are bijections from $\Dom(A)$ to $H$ with bounded inverses. Moreover, $U$ is a unitary operator on $H$. To see this, note that for $\phi\in\Dom(A)$,
-\begin{align*}
-\|U(A+iI)\phi\|^2&=\|(A-iI)\phi\|^2=\ip{(A-iI)\phi}{(A-iI)\phi}\\
-&=\ip{(A^2+I)\phi}{\phi}=\ip{(A+iI)\phi}{(A+iI)\phi}=\|(A+iI)\phi\|^2.
-\end{align*}
-Thus $U$ extends to a unitary on $H$. Note $U$ has no eigenvalue $1$ (since $A$ is self-adjoint, $A-iI$ is injective).
-
-\textbf{Step 2: Spectral theorem for $U$.}
-By Theorem \ref{thm:spectral_bounded}, there exists a PVM $F$ on $\mathcal{B}(\mathbb{T})$ (where $\mathbb{T}=\{z\in\C:|z|=1\}$) such that $U=\int_{\mathbb{T}}z\,dF(z)$. Since $1\notin\sigma(U)$, $F(\{1\})=0$.
-
-\textbf{Step 3: Inverse Cayley transform.}
-The inverse Cayley transform is $A=i(I+U)(I-U)^{-1}$. For $z\in\mathbb{T}\setminus\{1\}$, the function $\lambda(z):=i\frac{1+z}{1-z}$ maps $\mathbb{T}\setminus\{1\}$ onto $\R$. This is a homeomorphism. Define the PVM $E_A$ on $\R$ by
-\[
-E_A(B):=F(\lambda^{-1}(B))
-\]
-for Borel $B\subset\R$.
-
-\textbf{Step 4: Verification of the spectral integral.}
-We have
-\begin{align*}
-\int_{\R}\lambda\,dE_A(\lambda)&=\int_{\mathbb{T}\setminus\{1\}}i\frac{1+z}{1-z}\,dF(z)\\
-&=i\int_{\mathbb{T}}(1+z)(1-z)^{-1}\,dF(z)\\
-&=i(I+U)(I-U)^{-1}=A.
-\end{align*}
-The domain calculation follows from the fact that $\phi\in\Dom(A)$ if and only if $(I-U)^{-1}\phi\in\Dom(I+U)$, which is equivalent to
-\[
-\int_{\mathbb{T}}\left|\frac{1+z}{1-z}\right|^2\,d\|F(z)\phi\|^2=\int_{\R}\lambda^2\,d\|E_A(\lambda)\phi\|^2<\infty.
-\]
-
-\textbf{Step 5: Uniqueness.}
-Uniqueness follows from the uniqueness of the spectral theorem for the unitary operator $U$ and the bijection between PVMs for $U$ and $A$ via the Cayley transform.
+  \tmtextbf{Step 1: Cayley transform.} Define the Cayley transform
+  \begin{equation}
+    U \assign (A - iI)  (A + iI)^{- 1}
+  \end{equation}
+  . Since $A$ is self-adjoint, both $A \pm iI$ are bijections from $\Dom (A)$
+  to $H$ with bounded inverses. Moreover, $U$ is a unitary operator on $H$. To
+  see this, note that for $\phi \in \Dom (A)$,
+  \begin{equation}
+    \begin{array}{ll}
+      \|U (A + iI) \phi \|^2 & = \|(A - iI) \phi \|^2 = \ip{(A - iI) \phi}{(A
+      - iI) \phi}\\
+      & = \ip{(A^2 + I) \phi}{\phi} = \ip{(A + iI) \phi}{(A + iI) \phi} =
+      \|(A + iI) \phi \|^2
+    \end{array}
+  \end{equation}
+  Thus $U$ extends to a unitary on $H$. Note $U$ has no eigenvalue $1$ (since
+  $A$ is self-adjoint, $A - iI$ is injective).
+  
+  \tmtextbf{Step 2: Spectral theorem for $U$.} By Theorem
+  \ref{thm:spectral_bounded}, there exists a PVM $F$ on $\mathcal{B}
+  (\mathbb{T})$ (where $\mathbb{T}= \{z \in \C : |z| = 1\}$) such that
+  \begin{equation}
+    U = \int_{\mathbb{T}} z \hspace{0.17em} dF (z)
+  \end{equation}
+  . Since $1 \nin \sigma (U)$, $F (\{1\}) = 0$.
+  
+  \tmtextbf{Step 3: Inverse Cayley transform.} The inverse Cayley transform is
+  $A = i (I + U)  (I - U)^{- 1}$. For $z \in \mathbb{T} \setminus \{1\}$, the
+  function
+  \begin{equation}
+    \lambda (z) \assign i \frac{1 + z}{1 - z}
+  \end{equation}
+  maps $\mathbb{T} \setminus \{1\}$ onto $\R$. This is a homeomorphism.
+  Define the PVM $E_A$ on $\R$ by
+  \begin{equation}
+    E_A (B) \assign F (\lambda^{- 1} (B))
+  \end{equation}
+  for Borel $B \subset \R$.
+  
+  \tmtextbf{Step 4: Verification of the spectral integral.} We have
+  \begin{equation}
+    \begin{array}{ll}
+      \int_{\R} \lambda \hspace{0.17em} dE_A (\lambda) & = \int_{\mathbb{T}
+      \setminus \{1\}} i \frac{1 + z}{1 - z}  \hspace{0.17em} dF (z)\\
+      & = i \int_{\mathbb{T}} (1 + z)  (1 - z)^{- 1}  \hspace{0.17em} dF
+      (z)\\
+      & = i (I + U)  (I - U)^{- 1}\\
+      & = A
+    \end{array}
+  \end{equation}
+  The domain calculation follows from the fact that $\phi \in \Dom (A)$ if and
+  only if $(I - U)^{- 1} \phi \in \Dom (I + U)$, which is equivalent to
+  \begin{equation}
+    \int_{\mathbb{T}} \left| \frac{1 + z}{1 - z} \right|^2  \hspace{0.17em} d
+    \|F (z) \phi \|^2 = \int_{\R} \lambda^2  \hspace{0.17em} d \|E_A (\lambda)
+    \phi \|^2 < \infty
+  \end{equation}
+  \tmtextbf{Step 5: Uniqueness.} Uniqueness follows from the uniqueness of the
+  spectral theorem for the unitary operator $U$ and the bijection between PVMs
+  for $U$ and $A$ via the Cayley transform.
 \end{proof}
 
-\begin{corollary}[Functional Calculus]\label{cor:functional_calculus}
-Let $A$ be self-adjoint with spectral measure $E_A$. For any Borel function $f:\R\to\C$, define
-\[
-f(A):=\int_{\R}f(\lambda)\,dE_A(\lambda),\qquad\Dom(f(A))=\left\{\phi\in H:\int_{\R}|f(\lambda)|^2\,d\|E_A(\lambda)\phi\|^2<\infty\right\}.
-\]
-Then $f(A)$ is a normal operator (bounded if $f$ is bounded), and $(fg)(A)=f(A)g(A)$ on $\Dom(g(A))\cap\Dom((fg)(A))$.
+\begin{corollary}
+  [Functional Calculus]\label{cor:functional_calculus} Let $A$ be self-adjoint
+  with spectral measure $E_A$. For any Borel function $f : \R \to \C$, define
+  \begin{equation}
+    f (A) \assign \int_{\R} f (\lambda)  \hspace{0.17em} dE_A (\lambda)
+  \end{equation}
+  \begin{equation}
+    \Dom (f (A)) = \left\{ \phi \in H : \int_{\R} |f (\lambda) |^2 
+    \hspace{0.17em} d\|E_A (\lambda) \phi \|^2 < \infty \right\}
+  \end{equation}
+  Then $f (A)$ is a normal operator (bounded if $f$ is bounded), and
+  \begin{equation}
+    (fg) (A) = f (A) g (A)
+  \end{equation}
+  on $\Dom (g (A)) \cap \Dom ((fg) (A))$.
 \end{corollary}
 
 \begin{proof}
-This follows directly from the properties of the spectral integral established in Theorem \ref{thm:spectral_integral_bounded} and its extension to unbounded functions by truncation arguments. The composition property follows from the measure-theoretic identity $\int fg\,dE=\int f\,dE\cdot\int g\,dE$ for projection-valued integrals.
+  This follows directly from the properties of the spectral integral
+  established in Theorem \ref{thm:spectral_integral_bounded} and its extension
+  to unbounded functions by truncation arguments. The composition property
+  follows from the measure-theoretic identity
+  \begin{equation}
+    \int fg \hspace{0.17em} dE = \int f \hspace{0.17em} dE \cdot \int g
+    \hspace{0.17em} dE
+  \end{equation}
+  for projection-valued integrals.
 \end{proof}
 
 \section{Stone's Theorem on One-Parameter Unitary Groups}
 
-\begin{definition}[Strongly Continuous Unitary Group]
-A family $(U_t)_{t\in\R}\subset\mathcal{L}(H)$ is a \emph{strongly continuous one-parameter unitary group} if:
-\begin{enumerate}[label=(\roman*)]
-\item $U_t$ is unitary for all $t\in\R$,
-\item $U_{t+s}=U_tU_s$ for all $s,t\in\R$,
-\item $U_0=I$,
-\item $\lim_{t\to 0}\norm{U_t\phi-\phi}=0$ for all $\phi\in H$.
-\end{enumerate}
+\begin{definition}
+  [Strongly Continuous Unitary Group] A family $(U_t)_{t \in \R} \subset
+  \mathcal{L} (H)$ is a {\tmem{strongly continuous one-parameter unitary
+  group}} if:
+  \begin{enumerate}
+    \item $U_t$ is unitary for all $t \in \R$,
+    
+    \item $U_{t + s} = U_t U_s$ for all $s, t \in \R$,
+    
+    \item $U_0 = I$,
+    
+    \item $\lim_{t \to 0} \norm{U_t \phi - \phi} = 0$ for all $\phi \in H$.
+  \end{enumerate}
 \end{definition}
 
-\begin{definition}[Infinitesimal Generator]
-The \emph{infinitesimal generator} $A$ of $(U_t)$ is defined by
-\[
-\Dom(A):=\left\{\phi\in H:\lim_{t\to 0}\frac{U_t\phi-\phi}{t}\ \text{exists}\right\},\qquad A\phi:=\lim_{t\to 0}\frac{U_t\phi-\phi}{t}.
-\]
+\begin{definition}
+  [Infinitesimal Generator] The {\tmem{infinitesimal generator}} $A$ of
+  $(U_t)$ is defined by
+  \begin{equation}
+    \Dom (A) \assign \left\{ \phi \in H : \lim_{t \to 0}  \frac{U_t \phi -
+    \phi}{t} \text{exists} \right\} \text{}
+  \end{equation}
+  \begin{equation}
+    A \phi \assign \lim_{t \to 0}  \frac{U_t \phi - \phi}{t}
+  \end{equation}
 \end{definition}
 
-\begin{lemma}[Basic Properties of the Generator]\label{lem:generator_properties}
-Let $A$ be the generator of a strongly continuous unitary group $(U_t)$. Then:
-\begin{enumerate}[label=(\alph*)]
-\item $\Dom(A)$ is dense in $H$.
-\item For $\phi\in\Dom(A)$, the map $t\mapsto U_t\phi$ is differentiable with $\frac{d}{dt}U_t\phi=U_tA\phi=AU_t\phi$.
-\item $A$ is closed.
-\item $A$ is skew-adjoint: $iA$ is self-adjoint.
-\end{enumerate}
+\begin{lemma}
+  [Basic Properties of the Generator]\label{lem:generator_properties} Let $A$
+  be the generator of a strongly continuous unitary group $(U_t)$. Then:
+  \begin{enumerate}
+    \item $\Dom (A)$ is dense in $H$.
+    
+    \item For $\phi \in \Dom (A)$, the map $t \mapsto U_t \phi$ is
+    differentiable with
+    \begin{equation}
+      \begin{array}{ll}
+        \frac{d}{dt} U_t \phi & = U_t A \phi\\
+        & = AU_t \phi
+      \end{array}
+    \end{equation}
+    \item $A$ is closed.
+    
+    \item $A$ is skew-adjoint: $iA$ is self-adjoint.
+  \end{enumerate}
 \end{lemma}
 
 \begin{proof}
-(a) For $\phi\in H$ and $h>0$, define
-\[
-\phi_h:=\frac{1}{h}\int_0^h U_s\phi\,ds.
-\]
-This integral exists as a Riemann integral of continuous $H$-valued functions. We claim $\phi_h\in\Dom(A)$. Indeed,
-\begin{align*}
-\frac{U_t\phi_h-\phi_h}{t}&=\frac{1}{ht}\int_0^h(U_{t+s}\phi-U_s\phi)\,ds\\
-&=\frac{1}{ht}\left(\int_t^{t+h}U_s\phi\,ds-\int_0^h U_s\phi\,ds\right)\\
-&=\frac{1}{ht}\left(\int_h^{t+h}U_s\phi\,ds-\int_0^t U_s\phi\,ds\right).
-\end{align*}
-As $t\to 0$, this converges to $\frac{1}{h}(U_h\phi-\phi)$. Thus $\phi_h\in\Dom(A)$ and $A\phi_h=\frac{1}{h}(U_h\phi-\phi)$.
-
-Now, $\|\phi_h-\phi\|\leq\frac{1}{h}\int_0^h\|U_s\phi-\phi\|\,ds\to 0$ as $h\to 0$ by dominated convergence and strong continuity. Thus $\Dom(A)$ is dense.
-
-(b) For $\phi\in\Dom(A)$ and $t,h\in\R$,
-\begin{align*}
-\frac{U_{t+h}\phi-U_t\phi}{h}&=U_t\frac{U_h\phi-\phi}{h}.
-\end{align*}
-As $h\to 0$, $\frac{U_h\phi-\phi}{h}\to A\phi$. By continuity of $U_t$, $U_t\frac{U_h\phi-\phi}{h}\to U_tA\phi$. Similarly, $\frac{U_{t+h}\phi-U_t\phi}{h}=\frac{U_h(U_t\phi)-(U_t\phi)}{h}$. Since $U_t\phi\in\Dom(A)$ (by the argument below), this converges to $AU_t\phi$. Thus $\frac{d}{dt}U_t\phi=AU_t\phi=U_tA\phi$.
-
-To show $U_t(\Dom(A))\subseteq\Dom(A)$: for $\phi\in\Dom(A)$,
-\begin{align*}
-\frac{U_h(U_t\phi)-U_t\phi}{h}&=\frac{U_{t+h}\phi-U_t\phi}{h}=U_t\frac{U_h\phi-\phi}{h}\to U_tA\phi
-\end{align*}
-as $h\to 0$. Thus $U_t\phi\in\Dom(A)$ and $A(U_t\phi)=U_tA\phi$.
-
-(c) Suppose $\phi_n\in\Dom(A)$ with $\phi_n\to\phi$ and $A\phi_n\to\psi$. We need to show $\phi\in\Dom(A)$ and $A\phi=\psi$. For any $t\neq 0$,
-\begin{align*}
-\frac{U_t\phi-\phi}{t}&=\lim_{n\to\infty}\frac{U_t\phi_n-\phi_n}{t}=\lim_{n\to\infty}\frac{1}{t}\int_0^t U_sA\phi_n\,ds=\frac{1}{t}\int_0^t U_s\psi\,ds.
-\end{align*}
-As $t\to 0$, the right-hand side converges to $\psi$ by continuity. Thus $\phi\in\Dom(A)$ and $A\phi=\psi$.
-
-(d) We show $iA$ is self-adjoint. For $\phi\in\Dom(A)$ and $\psi\in H$,
-\begin{align*}
-\ip{A\phi}{\psi}&=\lim_{t\to 0}\frac{1}{t}\ip{U_t\phi-\phi}{\psi}=\lim_{t\to 0}\frac{1}{t}(\ip{U_t\phi}{\psi}-\ip{\phi}{\psi}).
-\end{align*}
-Since $U_t$ is unitary, $\ip{U_t\phi}{\psi}=\ip{\phi}{U_{-t}\psi}=\ip{\phi}{U_t^*\psi}$. Thus
-\begin{align*}
-\ip{A\phi}{\psi}&=\lim_{t\to 0}\frac{1}{t}(\ip{\phi}{U_t^*\psi}-\ip{\phi}{\psi})\\
-&=\lim_{t\to 0}\ip{\phi}{\frac{U_t^*\psi-\psi}{t}}\\
-&=\lim_{t\to 0}\ip{\phi}{\frac{U_{-t}\psi-\psi}{t}}=-\lim_{t\to 0}\ip{\phi}{\frac{U_{-t}\psi-\psi}{-t}}.
-\end{align*}
-If $\psi\in\Dom(A)$, this equals $-\ip{\phi}{A\psi}$. Thus for $\phi,\psi\in\Dom(A)$,
-\[
-\ip{A\phi}{\psi}=-\ip{\phi}{A\psi},\qquad\text{i.e.,}\quad\ip{iA\phi}{\psi}=\ip{\phi}{iA\psi}.
-\]
-Hence $iA$ is symmetric on $\Dom(A)$. To show $iA$ is self-adjoint, we use the resolvent identity. For $\lambda\in\R\setminus\{0\}$,
-\[
-R_{\lambda}:=(A-i\lambda I)^{-1}=\int_0^\infty e^{-\lambda t}U_t\,dt
-\]
-exists as a bounded operator (for $\lambda<0$ integrate $\int_0^\infty=\int_{-\infty}^0 e^{\lambda s}U_{-s}\,ds$ with $s=-t$). This formula shows $\Ran(A-i\lambda I)=H$ and $\ker(A-i\lambda I)=\{0\}$, implying $iA$ is self-adjoint.
+  (a) For $\phi \in H$ and $h > 0$, define
+  \begin{equation}
+    \phi_h \assign \frac{1}{h}  \int_0^h U_s \phi \hspace{0.17em} ds
+  \end{equation}
+  This integral exists as a Riemann integral of continuous $H$-valued
+  functions. We claim $\phi_h \in \Dom (A)$. Indeed,
+  \begin{equation}
+    \begin{array}{ll}
+      \frac{U_t \phi_h - \phi_h}{t} & = \frac{1}{ht}  \int_0^h (U_{t + s} \phi
+      - U_s \phi)  \hspace{0.17em} ds\\
+      & = \frac{1}{ht}  \left( \int_t^{t + h} U_s \phi \hspace{0.17em} ds -
+      \int_0^h U_s \phi \hspace{0.17em} ds \right)\\
+      & = \frac{1}{ht}  \left( \int_h^{t + h} U_s \phi \hspace{0.17em} ds -
+      \int_0^t U_s \phi \hspace{0.17em} ds \right) .
+    \end{array}
+  \end{equation}
+  As $t \to 0$, this converges to $\frac{1}{h}  (U_h \phi - \phi)$. Thus
+  $\phi_h \in \Dom (A)$ and $A \phi_h = \frac{1}{h}  (U_h \phi - \phi)$.
+  
+  Now, $\| \phi_h - \phi \| \leq \frac{1}{h}  \int_0^h \|U_s \phi - \phi \| 
+  \hspace{0.17em} ds \to 0$ as $h \to 0$ by dominated convergence and strong
+  continuity. Thus $\Dom (A)$ is dense.
+  
+  (b) For $\phi \in \Dom (A)$ and $t, h \in \R$,
+  \begin{equation}
+    \begin{array}{ll}
+      \frac{U_{t + h} \phi - U_t \phi}{h} & = U_t  \frac{U_h \phi - \phi}{h}
+    \end{array}
+  \end{equation}
+  As $h \to 0$, $\frac{U_h \phi - \phi}{h} \to A \phi$. By continuity of
+  $U_t$,
+  \begin{equation}
+    U_t  \frac{U_h \phi - \phi}{h} \to U_t A \phi
+  \end{equation}
+  Similarly,
+  \begin{equation}
+    \frac{U_{t + h} \phi - U_t \phi}{h} = \frac{U_h  (U_t \phi) - (U_t
+    \phi)}{h}
+  \end{equation}
+  Since $U_t \phi \in \Dom (A)$ (by the argument below), this converges to
+  $AU_t \phi$. Thus
+  \begin{equation}
+    \frac{d}{dt} U_t \phi = AU_t \phi = U_t A \phi
+  \end{equation}
+  To show $U_t (\Dom (A)) \subseteq \Dom (A)$: for $\phi \in \Dom (A)$,
+  \begin{equation}
+    \begin{array}{ll}
+      \frac{U_h  (U_t \phi) - U_t \phi}{h} & = \frac{U_{t + h} \phi - U_t
+      \phi}{h}\\
+      & = U_t  \frac{U_h \phi - \phi}{h} \to U_t A \phi
+    \end{array}
+  \end{equation}
+  as $h \to 0$. Thus $U_t \phi \in \Dom (A)$ and
+  \begin{equation}
+    A (U_t \phi) = U_t A \phi
+  \end{equation}
+  (c) Suppose $\phi_n \in \Dom (A)$ with $\phi_n \to \phi$ and $A \phi_n \to
+  \psi$. We need to show $\phi \in \Dom (A)$ and $A \phi = \psi$. For any $t
+  \neq 0$,
+  \begin{equation}
+    \begin{array}{ll}
+      \frac{U_t \phi - \phi}{t} & = \lim_{n \to \infty}  \frac{U_t \phi_n -
+      \phi_n}{t}\\
+      & = \lim_{n \to \infty}  \frac{1}{t}  \int_0^t U_s A \phi_n 
+      \hspace{0.17em} ds\\
+      & = \frac{1}{t}  \int_0^t U_s \psi \hspace{0.17em} ds
+    \end{array}
+  \end{equation}
+  As $t \to 0$, the right-hand side converges to $\psi$ by continuity. Thus
+  $\phi \in \Dom (A)$ and
+  \begin{equation}
+    A \phi = \psi
+  \end{equation}
+  (d) We show $iA$ is self-adjoint. For $\phi \in \Dom (A)$ and $\psi \in H$,
+  \begin{equation}
+    \begin{array}{ll}
+      \ip{A \phi}{\psi} & = \lim_{t \to 0}  \frac{1}{t} \ip{U_t \phi -
+      \phi}{\psi}\\
+      & = \lim_{t \to 0}  \frac{1}{t}  (\ip{U_t \phi}{\psi} -
+      \ip{\phi}{\psi})
+    \end{array}
+  \end{equation}
+  Since $U_t$ is unitary,
+  \begin{equation}
+    \ip{U_t \phi}{\psi} = \ip{\phi}{U_{- t} \psi} = \ip{\phi}{U_t^{\ast} \psi}
+  \end{equation}
+  Thus
+  \begin{equation}
+    \begin{array}{ll}
+      \ip{A \phi}{\psi} & = \lim_{t \to 0}  \frac{1}{t}  (\ip{\phi}{U_t^{\ast}
+      \psi} - \ip{\phi}{\psi})\\
+      & = \lim_{t \to 0} \ip{\phi}{\frac{U_t^{\ast} \psi - \psi}{t}}\\
+      & = \lim_{t \to 0} \ip{\phi}{\frac{U_{- t} \psi - \psi}{t}} = - \lim_{t
+      \to 0} \ip{\phi}{\frac{U_{- t} \psi - \psi}{- t}}
+    \end{array}
+  \end{equation}
+  If $\psi \in \Dom (A)$, this equals $- \ip{\phi}{A \psi}$. Thus for $\phi,
+  \psi \in \Dom (A)$,
+  \begin{equation}
+    \ip{A \phi}{\psi} = - \ip{\phi}{A \psi}
+  \end{equation}
+  i.e.,
+  \begin{equation}
+    \ip{iA \phi}{\psi} = \ip{\phi}{iA \psi}
+  \end{equation}
+  Hence $iA$ is symmetric on $\Dom (A)$. To show $iA$ is self-adjoint, we use
+  the resolvent identity. For ,
+  \begin{equation}
+    \begin{array}{ll}
+      R_{\lambda} & = (A - i \lambda I)^{- 1}\\
+      & = \int_0^{\infty} e^{- \lambda t} U_t  \hspace{0.17em} dt \forall
+      \lambda \in \R \setminus \{0\}
+    \end{array}
+  \end{equation}
+  exists as a bounded operator (for $\lambda < 0$ integrate $\int_0^{\infty} =
+  \int_{- \infty}^0 e^{\lambda s} U_{- s}  \hspace{0.17em} ds$ with $s = -
+  t$). This formula shows
+  \begin{equation}
+    \Ran (A - i \lambda I) = H
+  \end{equation}
+  and
+  \begin{equation}
+    \ker (A - i \lambda I) = \{0\}
+  \end{equation}
+  , implying $iA$ is self-adjoint.
 \end{proof}
 
-\begin{theorem}[Bochner's Theorem]\label{thm:bochner}
-Let $g:\R\to\C$ be a continuous function. Then $g$ is positive-definite (meaning $\sum_{j,k}g(t_j-t_k)\overline{c_j}c_k\geq 0$ for all finite collections $\{t_j\}$ and $\{c_j\}\subset\C$) if and only if there exists a finite positive Borel measure $\mu$ on $\R$ such that
-\[
-g(t)=\int_{\R}e^{it\lambda}\,d\mu(\lambda).
-\]
+\begin{theorem}
+  [Bochner's Theorem]\label{thm:bochner} Let $g : \R \to \C$ be a continuous
+  function. Then $g$ is positive-definite (meaning $\sum_{j, k} g (t_j - t_k)
+  \overline{c_j} c_k \geq 0$ for all finite collections $\{t_j \}$ and $\{c_j
+  \} \subset \C$) if and only if there exists a finite positive Borel measure
+  $\mu$ on $\R$ such that
+  \begin{equation}
+    g (t) = \int_{\R} e^{it \lambda}  \hspace{0.17em} d \mu (\lambda)
+  \end{equation}
 \end{theorem}
 
 \begin{proof}
-$(\Leftarrow)$ If $g(t)=\int e^{it\lambda}\,d\mu(\lambda)$ for a positive measure $\mu$, then for any $\{t_j\}$ and $\{c_j\}$,
-\begin{align*}
-\sum_{j,k}g(t_j-t_k)\overline{c_j}c_k&=\sum_{j,k}\int e^{i(t_j-t_k)\lambda}\,d\mu(\lambda)\,\overline{c_j}c_k\\
-&=\int\sum_{j,k}e^{it_j\lambda}e^{-it_k\lambda}\overline{c_j}c_k\,d\mu(\lambda)\\
-&=\int\left|\sum_j c_je^{it_j\lambda}\right|^2\,d\mu(\lambda)\geq 0.
-\end{align*}
-
-$(\Rightarrow)$ Suppose $g$ is positive-definite and continuous. 
-
-\textbf{Step 1: Construct a pre-Hilbert space.}
-Let $\mathcal{S}$ be the space of finite linear combinations $\phi=\sum_{j=1}^n c_j\delta_{t_j}$ (where $\delta_t$ is the Dirac measure at $t$). Define an inner product on $\mathcal{S}$ by
-\[
-\ip{\sum_j c_j\delta_{t_j}}{\sum_k d_k\delta_{s_k}}:=\sum_{j,k}g(t_j-s_k)\overline{c_j}d_k.
-\]
-Positive-definiteness ensures $\ip{\phi}{\phi}\geq 0$. The seminorm $\|\phi\|:=\sqrt{\ip{\phi}{\phi}}$ may have a null space $\mathcal{N}:=\{\phi:\|\phi\|=0\}$. Define the quotient $\mathcal{S}/\mathcal{N}$ and complete to obtain a Hilbert space $H$.
-
-\textbf{Step 2: Define the translation operators.}
-For $t\in\R$, define $U_t:\mathcal{S}\to\mathcal{S}$ by $U_t\delta_s:=\delta_{s+t}$. Then
-\[
-\ip{U_t\phi}{\psi}=\ip{\phi}{U_{-t}\psi}
-\]
-for all $\phi,\psi\in\mathcal{S}$, since
-\[
-\ip{U_t\delta_s}{U_t\delta_r}=g((s+t)-(r+t))=g(s-r)=\ip{\delta_s}{\delta_r}.
-\]
-Thus $U_t$ extends to a unitary operator on $H$. The group property $U_{t+s}=U_tU_s$ is clear. Strong continuity follows from $\|U_t\delta_s-\delta_s\|^2=g(0)-g(t)-\overline{g(t)}+g(0)=2\re(g(0)-g(t))\to 0$ as $t\to 0$ by continuity of $g$.
-
-\textbf{Step 3: Apply Stone's theorem.}
-By Stone's theorem (Theorem \ref{thm:stone} below), there exists a self-adjoint operator $A$ on $H$ such that $U_t=e^{itA}$. Write $A=\int\lambda\,dE_A(\lambda)$ for the spectral measure $E_A$. Then
-\[
-U_t=\int e^{it\lambda}\,dE_A(\lambda).
-\]
-Define $\mu$ by $\mu(B):=\ip{E_A(B)\delta_0}{\delta_0}$. This is a positive finite measure (finite since $\mu(\R)=\|\delta_0\|^2=g(0)<\infty$). Then
-\begin{align*}
-g(t)&=\ip{U_t\delta_0}{\delta_0}=\int e^{it\lambda}\,d\ip{E_A(\lambda)\delta_0}{\delta_0}=\int e^{it\lambda}\,d\mu(\lambda).
-\end{align*}
+  ($\Leftarrow$) If $g (t) = \int e^{it \lambda}  \hspace{0.17em} d \mu
+  (\lambda)$ for a positive measure $\mu$, then for any $\{t_j \}$ and $\{c_j
+  \}$,
+  \begin{equation}
+    \begin{array}{ll}
+      \sum_{j, k} g (t_j - t_k) \overline{c_j} c_k & = \sum_{j, k} \int e^{i
+      (t_j - t_k) \lambda}  \hspace{0.17em} d \mu (\lambda) \hspace{0.17em}
+      \overline{c_j} c_k\\
+      & = \int \sum_{j, k} e^{it_j \lambda} e^{- it_k \lambda} \overline{c_j}
+      c_k  \hspace{0.17em} d \mu (\lambda)\\
+      & = \int \left| \sum_j c_j e^{it_j \lambda} \right|^2  \hspace{0.17em}
+      d \mu (\lambda) \geq 0.
+    \end{array}
+  \end{equation}
+  ($\Rightarrow$) Suppose $g$ is positive-definite and continuous.
+  
+  \tmtextbf{Step 1: Construct a pre-Hilbert space.} Let $\mathcal{S}$ be the
+  space of finite linear combinations $\phi = \sum_{j = 1}^n c_j \delta_{t_j}$
+  (where $\delta_t$ is the Dirac measure at $t$). Define an inner product on
+  $\mathcal{S}$ by
+  \begin{equation}
+    \ip{\sum_j c_j \delta_{t_j}}{\sum_k d_k \delta_{s_k}} = \sum_{j, k} g (t_j
+    - s_k) \overline{c_j} d_k .
+  \end{equation}
+  Positive-definiteness ensures $\ip{\phi}{\phi} \geq 0$. The seminorm $\|
+  \phi \| \assign \sqrt{\ip{\phi}{\phi}}$ may have a null space $\mathcal{N}
+  \assign \{\phi : \| \phi \|= 0\}$. Define the quotient
+  $\mathcal{S}/\mathcal{N}$ and complete to obtain a Hilbert space $H$.
+  
+  \tmtextbf{Step 2: Define the translation operators.} For $t \in \R$, define
+  $U_t : \mathcal{S} \to \mathcal{S}$ by $U_t \delta_s \assign \delta_{s +
+  t}$. Then
+  \begin{equation}
+    \text{$\ip{U_t \phi}{\psi} = \ip{\phi}{U_{- t} \psi}$}
+  \end{equation}
+  for all $\phi, \psi \in \mathcal{S}$, since
+  \begin{equation}
+    \begin{array}{ll}
+      \text{$\ip{U_t \delta_s}{U_t \delta_r}$} & = g ((s + t) - (r + t))\\
+      & = g (s - r)\\
+      & = \ip{\delta_s}{\delta_r}
+    \end{array}
+  \end{equation}
+  Thus $U_t$ extends to a unitary operator on $H$. The group property $U_{t +
+  s} = U_t U_s$ is clear. Strong continuity follows from
+  \begin{equation}
+    \begin{array}{ll}
+      \lim_{t \rightarrow 0} \|U_t \delta_s - \delta_s \|^2 & = g (0) - g (t)
+      - \overline{g (t)} + g (0)\\
+      & = \lim_{t \rightarrow 0} 2 \re (g (0) - g (t))\\
+      & = 0
+    \end{array}
+  \end{equation}
+  by continuity of $g$.
+  
+  \tmtextbf{Step 3: Apply Stone's theorem.} By Stone's theorem (Theorem
+  \ref{thm:stone} below), there exists a self-adjoint operator $A$ on $H$ such
+  that
+  \begin{equation}
+    U_t = e^{itA}
+  \end{equation}
+  . Write
+  \begin{equation}
+    A = \int \lambda \hspace{0.17em} dE_A (\lambda)
+  \end{equation}
+  for the spectral measure $E_A$. Then
+  \begin{equation}
+    U_t = \int e^{it \lambda}  \hspace{0.17em} dE_A (\lambda)
+  \end{equation}
+  Define $\mu$ by $\mu (B) \assign \ip{E_A (B) \delta_0}{\delta_0}$. This is a
+  positive finite measure (finite since $\mu (\R) = \| \delta_0 \|^2 = g (0) <
+  \infty$). Then
+  \begin{equation}
+    \begin{array}{ll}
+      g (t) & = \ip{U_t \delta_0}{\delta_0} = \int e^{it \lambda} 
+      \hspace{0.17em} d \ip{E_A (\lambda) \delta_0}{\delta_0} = \int e^{it
+      \lambda}  \hspace{0.17em} d \mu (\lambda)
+    \end{array}
+  \end{equation}
+  
 \end{proof}
 
-\begin{theorem}[Stone's Theorem]\label{thm:stone}
-There is a bijective correspondence between strongly continuous one-parameter unitary groups $(U_t)_{t\in\R}$ on $H$ and self-adjoint operators $A$ on $H$ given by
-\[
-U_t=e^{itA}=\int_{\R}e^{it\lambda}\,dE_A(\lambda),
-\]
-where $E_A$ is the spectral measure of $A$, and $A$ is the infinitesimal generator of $(U_t)$.
+\begin{theorem}
+  [Stone's Theorem]\label{thm:stone} There is a bijective correspondence
+  between strongly continuous one-parameter unitary groups $(U_t)_{t \in \R}$
+  on $H$ and self-adjoint operators $A$ on $H$ given by
+  \begin{equation}
+    U_t = e^{itA} = \int_{\R} e^{it \lambda}  \hspace{0.17em} dE_A (\lambda)
+  \end{equation}
+  where $E_A$ is the spectral measure of $A$, and $A$ is the infinitesimal
+  generator of $(U_t)$.
 \end{theorem}
 
 \begin{proof}
-$(\Rightarrow)$ Given a strongly continuous unitary group $(U_t)$, let $A$ be its generator (Definition). By Lemma \ref{lem:generator_properties}(d), $iA$ is self-adjoint. Let $E_{iA}$ be the spectral measure of $iA$. Define
-\[
-V_t:=\int_{\R}e^{it\lambda}\,dE_{iA}(\lambda)=\int_{\R}e^{-t\mu}\,dE_A(\mu)
-\]
-where $E_A(\cdot):=E_{iA}(i^{-1}\cdot)$ is the spectral measure of $A=-i(iA)$. We need to show $V_t=U_t$.
-
-\textbf{Step 1: $V_t$ is a unitary group.}
-Since $e^{it\lambda}$ has modulus 1, $V_t$ is unitary. The group property follows from
-\[
-V_{t+s}=\int e^{i(t+s)\lambda}\,dE_{iA}(\lambda)=\int e^{it\lambda}e^{is\lambda}\,dE_{iA}(\lambda)=V_tV_s.
-\]
-Strong continuity: for $\phi\in H$,
-\begin{align*}
-\|V_t\phi-\phi\|^2&=\int|e^{it\lambda}-1|^2\,d\|E_{iA}(\lambda)\phi\|^2.
-\end{align*}
-By dominated convergence ($|e^{it\lambda}-1|\leq 2$), this tends to 0 as $t\to 0$.
-
-\textbf{Step 2: The generator of $V_t$ is $A$.}
-For $\phi\in\Dom(A)$,
-\begin{align*}
-\lim_{t\to 0}\frac{V_t\phi-\phi}{t}&=\lim_{t\to 0}\int\frac{e^{it\lambda}-1}{t}\,dE_{iA}(\lambda)\phi\\
-&=\int i\lambda\,dE_{iA}(\lambda)\phi\\
-&=\int\mu\,dE_A(\mu)\phi=A\phi,
-\end{align*}
-where the limit interchange is justified by dominated convergence on compact sets and the domain condition $\int\lambda^2\,d\|E_{iA}(\lambda)\phi\|^2<\infty$.
-
-\textbf{Step 3: Uniqueness of generators.}
-If $(U_t)$ and $(V_t)$ have the same generator $A$, then for $\phi\in\Dom(A)$,
-\[
-\frac{d}{dt}(U_t\phi-V_t\phi)=A(U_t\phi-V_t\phi).
-\]
-Define $\psi(t):=U_{-t}(U_t\phi-V_t\phi)$. Then $\psi(0)=0$ and
-\[
-\psi'(t)=U_{-t}(-A+A)(U_t\phi-V_t\phi)+U_{-t}\frac{d}{dt}(U_t\phi-V_t\phi)=0.
-\]
-Thus $\psi(t)=0$ for all $t$, implying $U_t\phi=V_t\phi$ for all $\phi\in\Dom(A)$. By density of $\Dom(A)$ and continuity, $U_t=V_t$.
-
-$(\Leftarrow)$ Conversely, given a self-adjoint operator $A$ with spectral measure $E_A$, define
-\[
-U_t:=\int e^{it\lambda}\,dE_A(\lambda).
-\]
-This is a unitary operator (as in Step 1 above). The group property and strong continuity follow as before. The generator is
-\begin{align*}
-\lim_{t\to 0}\frac{U_t\phi-\phi}{t}&=\lim_{t\to 0}\int\frac{e^{it\lambda}-1}{t}\,dE_A(\lambda)\phi=\int\lambda\,dE_A(\lambda)\phi=A\phi
-\end{align*}
-for $\phi\in\Dom(A)$. Thus the generator is $A$.
+  ($\Rightarrow$) Given a strongly continuous unitary group $(U_t)$, let $A$
+  be its generator (Definition). By Lemma \ref{lem:generator_properties}(d),
+  $iA$ is self-adjoint. Let $E_{iA}$ be the spectral measure of $iA$. Define
+  \begin{equation}
+    V_t \assign \int_{\R} e^{it \lambda}  \hspace{0.17em} dE_{iA} (\lambda) =
+    \int_{\R} e^{- t \mu}  \hspace{0.17em} dE_A (\mu)
+  \end{equation}
+  where $E_A (\cdummy) \assign E_{iA}  (i^{- 1} \cdot)$ is the spectral
+  measure of $A = - i (iA)$. We need to show $V_t = U_t$.
+  
+  \tmtextbf{Step 1: $V_t$ is a unitary group.} Since $e^{it \lambda}$ has
+  modulus 1, $V_t$ is unitary. The group property follows from
+  \[ V_{t + s} = \int e^{i (t + s) \lambda}  \hspace{0.17em} dE_{iA} (\lambda)
+     = \int e^{it \lambda} e^{is \lambda}  \hspace{0.17em} dE_{iA} (\lambda) =
+     V_t V_s . \]
+  Strong continuity: for $\phi \in H$,
+  \begin{equation}
+    \begin{array}{ll}
+      \|V_t \phi - \phi \|^2 & = \int |e^{it \lambda} - 1|^2  \hspace{0.17em}
+      d \|E_{iA} (\lambda) \phi \|^2
+    \end{array}
+  \end{equation}
+  By dominated convergence ($|e^{it \lambda} - 1| \leq 2$), this tends to 0 as
+  $t \to 0$.
+  
+  \tmtextbf{Step 2: The generator of $V_t$ is $A$.} For $\phi \in \Dom (A)$,
+  \begin{equation}
+    \begin{array}{ll}
+      \lim_{t \to 0}  \frac{V_t \phi - \phi}{t} & = \lim_{t \to 0}  \int
+      \frac{e^{it \lambda} - 1}{t}  \hspace{0.17em} dE_{iA} (\lambda) \phi\\
+      & = \int i \lambda \hspace{0.17em} dE_{iA} (\lambda) \phi\\
+      & = \int \mu \hspace{0.17em} dE_A (\mu) \phi = A \phi,
+    \end{array}
+  \end{equation}
+  where the limit interchange is justified by dominated convergence on compact
+  sets and the domain condition $\int \lambda^2  \hspace{0.17em} d \|E_{iA}
+  (\lambda) \phi \|^2 < \infty$.
+  
+  \tmtextbf{Step 3: Uniqueness of generators.} If $(U_t)$ and $(V_t)$ have the
+  same generator $A$, then for $\phi \in \Dom (A)$,
+  \begin{equation}
+    \frac{d}{dt}  (U_t \phi - V_t \phi) = A (U_t \phi - V_t \phi)
+  \end{equation}
+  Define $\psi (t) \assign U_{- t}  (U_t \phi - V_t \phi)$. Then $\psi (0) =
+  0$ and
+  \begin{equation}
+    \text{$\psi' (t) = U_{- t}  (- A + A)  (U_t \phi - V_t \phi) + U_{- t} 
+    \frac{d}{dt}  (U_t \phi - V_t \phi) = 0$}
+  \end{equation}
+  Thus $\psi (t) = 0$ for all $t$, implying $U_t \phi = V_t \phi$ for all
+  $\phi \in \Dom (A)$. By density of $\Dom (A)$ and continuity, $U_t = V_t$.
+  
+  ($\Leftarrow$) Conversely, given a self-adjoint operator $A$ with spectral
+  measure $E_A$, define
+  \begin{equation}
+    U_t \assign \int e^{it \lambda}  \hspace{0.17em} dE_A (\lambda)
+  \end{equation}
+  This is a unitary operator (as in Step 1 above). The group property and
+  strong continuity follow as before. The generator is
+  \begin{equation}
+    \begin{array}{ll}
+      \lim_{t \to 0}  \frac{U_t \phi - \phi}{t} & = \lim_{t \to 0}  \int
+      \frac{e^{it \lambda} - 1}{t}  \hspace{0.17em} dE_A (\lambda) \phi = \int
+      \lambda \hspace{0.17em} dE_A (\lambda) \phi = A \phi
+    \end{array}
+  \end{equation}
+  for $\phi \in \Dom (A)$. Thus the generator is $A$.
 \end{proof}
 
 \section{Essential Self-Adjointness and Nelson's Theorem}
 
-\begin{definition}[Symmetric Operator]
-A densely defined operator $S:\Dom(S)\to H$ is \emph{symmetric} if $\ip{S\phi}{\psi}=\ip{\phi}{S\psi}$ for all $\phi,\psi\in\Dom(S)$. Equivalently, $S\subseteq S^*$.
+\begin{definition}
+  [Symmetric Operator] A densely defined operator $S : \Dom (S) \to H$ is
+  {\tmem{symmetric}} if $\ip{S \phi}{\psi} = \ip{\phi}{S \psi}$ for all $\phi,
+  \psi \in \Dom (S)$. Equivalently, $S \subseteq S^{\ast}$.
 \end{definition}
 
-\begin{definition}[Essentially Self-Adjoint]
-A symmetric operator $S$ is \emph{essentially self-adjoint} if its closure $\overline{S}$ is self-adjoint, i.e., $\overline{S}=(\overline{S})^*$.
+\begin{definition}
+  [Essentially Self-Adjoint] A symmetric operator $S$ is {\tmem{essentially
+  self-adjoint}} if its closure $\bar{S}$ is self-adjoint, i.e., $\bar{S} =
+  (\bar{S})^{\ast}$.
 \end{definition}
 
-\begin{definition}[Analytic Vector]
-A vector $\phi\in H$ is an \emph{analytic vector} for an operator $S$ if $\phi\in\bigcap_{n=0}^\infty\Dom(S^n)$ and there exists $r>0$ such that
-\[
-\sum_{n=0}^\infty\frac{\norm{S^n\phi}}{n!}r^n<\infty.
-\]
+\begin{definition}
+  [Analytic Vector] A vector $\phi \in H$ is an {\tmem{analytic vector}} for
+  an operator $S$ if $\phi \in \bigcap_{n = 0}^{\infty} \Dom (S^n)$ and there
+  exists $r > 0$ such that
+  \begin{equation}
+    \sum_{n = 0}^{\infty} \frac{\norm{S^n \phi}}{n!} r^n < \infty
+  \end{equation}
 \end{definition}
 
-\begin{theorem}[Nelson's Analytic Vector Theorem]\label{thm:nelson}
-Let $S$ be a symmetric operator on $H$. If there exists a dense subspace $\mathcal{D}\subset\Dom(S)$ consisting entirely of analytic vectors for $S$, then $S$ is essentially self-adjoint.
+\begin{theorem}
+  [Nelson's Analytic Vector Theorem]\label{thm:nelson} Let $S$ be a symmetric
+  operator on $H$. If there exists a dense subspace $\mathcal{D} \subset \Dom
+  (S)$ consisting entirely of analytic vectors for $S$, then $S$ is
+  essentially self-adjoint.
 \end{theorem}
 
 \begin{proof}
-\textbf{Step 1: Define local one-parameter groups on analytic vectors.}
-For $\phi\in\mathcal{D}$, let $r_\phi>0$ be such that $\sum_{n=0}^\infty\frac{\norm{S^n\phi}}{n!}r_\phi^n<\infty$. For $|t|<r_\phi$, define
-\[
-U_t^{(\phi)}:=\sum_{n=0}^\infty\frac{(it)^n}{n!}S^n\phi.
-\]
-This series converges in $H$ by the comparison test. Moreover, $U_0^{(\phi)}=\phi$ and
-\[
-U_{t+s}^{(\phi)}=\sum_{n=0}^\infty\frac{(i(t+s))^n}{n!}S^n\phi=\left(\sum_{j=0}^\infty\frac{(it)^j}{j!}S^j\right)\left(\sum_{k=0}^\infty\frac{(is)^k}{k!}S^k\right)\phi=U_t^{(U_s^{(\phi)})}
-\]
-for $|t|,|s|,|t+s|<r_\phi$.
-
-\textbf{Step 2: Extend to a global strongly continuous unitary group.}
-For $\phi,\psi\in\mathcal{D}$, define
-\[
-f_{\phi,\psi}(t):=\ip{U_t^{(\phi)}}{U_{-t}^{(\psi)}}.
-\]
-By symmetry of $S$, $\ip{S^n\phi}{\psi}=\ip{\phi}{S^n\psi}$ (by induction), so
-\begin{align*}
-f_{\phi,\psi}(t)&=\sum_{n,m=0}^\infty\frac{(it)^n(-it)^m}{n!m!}\ip{S^n\phi}{S^m\psi}\\
-&=\sum_{n,m=0}^\infty\frac{(it)^n(-it)^m}{n!m!}\ip{S^{n+m}\phi}{\psi}\\
-&=\ip{\phi}{\psi}
-\end{align*}
-for $|t|<\min(r_\phi,r_\psi)$. This shows $\|U_t^{(\phi)}\|=\|\phi\|$ (taking $\psi=\phi$), so $U_t^{(\phi)}/\|\phi\|$ is an isometry locally.
-
-By the density of $\mathcal{D}$ and a standard extension argument (using the fact that isometric maps on a dense subset extend uniquely to the whole space), the local isometries patch together to define a global strongly continuous unitary group $(U_t)_{t\in\R}$ on $H$.
-
-\textbf{Step 3: The generator extends $S$.}
-Let $A$ be the generator of $(U_t)$. For $\phi\in\mathcal{D}$,
-\begin{align*}
-\lim_{t\to 0}\frac{U_t\phi-\phi}{t}&=\lim_{t\to 0}\frac{1}{t}\left(\sum_{n=1}^\infty\frac{(it)^n}{n!}S^n\phi\right)\\
-&=\lim_{t\to 0}\sum_{n=1}^\infty\frac{(it)^{n-1}}{(n-1)!}S^n\phi=iS\phi.
-\end{align*}
-Thus $\mathcal{D}\subset\Dom(A)$ and $A|_{\mathcal{D}}=iS$. Since $A$ is the generator, $iA$ is self-adjoint (Lemma \ref{lem:generator_properties}(d)). Hence $-iA$ is self-adjoint, so $S\subseteq -iA$. But $-iA$ is self-adjoint, so $\overline{S}\subseteq -iA=(-iA)^*\subseteq\overline{S}^*$. This forces $\overline{S}=(-iA)$ to be self-adjoint.
+  \tmtextbf{Step 1: Define local one-parameter groups on analytic vectors.}
+  For $\phi \in \mathcal{D}$, let $r_{\phi} > 0$ be such that $\sum_{n =
+  0}^{\infty} \frac{\norm{S^n \phi}}{n!} r_{\phi}^n < \infty$. For $|t| <
+  r_{\phi}$, define
+  \begin{equation}
+    U_t^{(\phi)} \assign \sum_{n = 0}^{\infty} \frac{(it)^n}{n!} S^n \phi
+  \end{equation}
+  This series converges in $H$ by the comparison test. Moreover, $U_0^{(\phi)}
+  = \phi$ and
+  \begin{equation}
+    \begin{array}{ll}
+      U_{t + s}^{(\phi)} & = \sum_{n = 0}^{\infty} \frac{(i (t + s))^n}{n!}
+      S^n \phi\\
+      & = \left( \sum_{j = 0}^{\infty} \frac{(it)^j}{j!} S^j \right) \left(
+      \sum_{k = 0}^{\infty} \frac{(is)^k}{k!} S^k \right) \phi\\
+      & = U_t^{(U_s^{(\phi)})}
+    \end{array}
+  \end{equation}
+  for $|t|, |s|, |t + s| < r_{\phi}$.
+  
+  \tmtextbf{Step 2: Extend to a global strongly continuous unitary group.} For
+  $\phi, \psi \in \mathcal{D}$, define
+  \begin{equation}
+    f_{\phi, \psi} (t) \assign \ip{U_t^{(\phi)}}{U_{- t}^{(\psi)}}
+  \end{equation}
+  By symmetry of $S$, $\ip{S^n \phi}{\psi} = \ip{\phi}{S^n \psi}$ (by
+  induction), so
+  \begin{equation}
+    \begin{array}{ll}
+      f_{\phi, \psi} (t) & = \sum_{n, m = 0}^{\infty} \frac{(it)^n  (-
+      it)^m}{n!m!} \ip{S^n \phi}{S^m \psi}\\
+      & = \sum_{n, m = 0}^{\infty} \frac{(it)^n  (- it)^m}{n!m!} \ip{S^{n +
+      m} \phi}{\psi}\\
+      & = \ip{\phi}{\psi}
+    \end{array}
+  \end{equation}
+  for $|t| < \min (r_{\phi}, r_{\psi})$. This shows $\|U_t^{(\phi)} \| = \|
+  \phi \|$ (taking $\psi = \phi$), so $U_t^{(\phi)} / \| \phi \|$ is an
+  isometry locally.
+  
+  By the density of $\mathcal{D}$ and a standard extension argument (using the
+  fact that isometric maps on a dense subset extend uniquely to the whole
+  space), the local isometries patch together to define a global strongly
+  continuous unitary group $(U_t)_{t \in \R}$ on $H$.
+  
+  \tmtextbf{Step 3: The generator extends $S$.} Let $A$ be the generator of
+  $(U_t)$. For $\phi \in \mathcal{D}$,
+  
+  \begin{align*}
+    \lim_{t \to 0}  \frac{U_t \phi - \phi}{t} & = \lim_{t \to 0}  \frac{1}{t}
+    \left( \sum_{n = 1}^{\infty} \frac{(it)^n}{n!} S^n \phi \right)\\
+    & = \lim_{t \to 0}  \sum_{n = 1}^{\infty} \frac{(it)^{n - 1}}{(n - 1) !}
+    S^n \phi = iS \phi
+  \end{align*}
+  
+  Thus $\mathcal{D} \subset \Dom (A)$ and $A|_{\mathcal{D}} = iS$. Since $A$
+  is the generator, $iA$ is self-adjoint (Lemma
+  \ref{lem:generator_properties}(d)). Hence $- iA$ is self-adjoint, so $S
+  \subseteq - iA$. But $- iA$ is self-adjoint, so $\bar{S} \subseteq - iA = (-
+  iA)^{\ast} \subseteq \bar{S}^{\ast}$. This forces $\bar{S} = (- iA)$ to be
+  self-adjoint.
 \end{proof}
 
-\begin{proposition}[Deficiency Indices Criterion]\label{prop:deficiency}
-A densely defined symmetric operator $S$ is essentially self-adjoint if and only if $\ker(S^*\pm iI)=\{0\}$ (the deficiency indices are $(0,0)$).
+\begin{proposition}
+  [Deficiency Indices Criterion]\label{prop:deficiency} A densely defined
+  symmetric operator $S$ is essentially self-adjoint if and only if $\ker
+  (S^{\ast} \pm iI) = \{0\}$ (the deficiency indices are $(0, 0)$).
 \end{proposition}
 
 \begin{proof}
-\textbf{Step 1: Necessity.}
-If $S$ is essentially self-adjoint, then $\overline{S}$ is self-adjoint. For a self-adjoint operator $A$, $\ker(A\pm iI)=\{0\}$ since $\|A\phi\pm i\phi\|^2=\|A\phi\|^2+\|\phi\|^2\geq\|\phi\|^2$.
-
-\textbf{Step 2: Sufficiency (von Neumann's theorem).}
-The adjoint $S^*$ decomposes as $\Dom(S^*)=\Dom(\overline{S})\oplus\ker(S^*-iI)\oplus\ker(S^*+iI)$ (orthogonal direct sum of graph inner products). If both deficiency spaces vanish, then $\Dom(S^*)=\Dom(\overline{S})$, so $\overline{S}=S^*$ is self-adjoint.
+  \tmtextbf{Step 1: Necessity.} If $S$ is essentially self-adjoint, then
+  $\bar{S}$ is self-adjoint. For a self-adjoint operator $A$, $\ker (A \pm iI)
+  = \{0\}$ since $\|A \phi \pm i \phi \|^2 = \|A \phi \|^2 + \| \phi \|^2 \geq
+  \| \phi \|^2$.
+  
+  \tmtextbf{Step 2: Sufficiency (von Neumann's theorem).} The adjoint
+  $S^{\ast}$ decomposes as $\Dom (S^{\ast}) = \Dom (\bar{S}) \oplus \ker
+  (S^{\ast} - iI) \oplus \ker (S^{\ast} + iI)$ (orthogonal direct sum of graph
+  inner products). If both deficiency spaces vanish, then $\Dom (S^{\ast}) =
+  \Dom (\bar{S})$, so $\bar{S} = S^{\ast}$ is self-adjoint.
 \end{proof}
 
 \section{Hilbert Space Structure of Weakly Stationary Processes}
 
-\begin{definition}[Weakly Stationary Process]
-A stochastic process $(X_t)_{t\in\R}$ on a probability space $(\Omega,\mathcal{F},\Prob)$ is \emph{weakly stationary} (or \emph{second-order stationary}) if:
-\begin{enumerate}[label=(\roman*)]
-\item $\E[X_t]=m$ for all $t$ (constant mean),
-\item $\E[|X_t|^2]<\infty$ for all $t$,
-\item The covariance function $\gamma(s,t):=\E[(X_s-m)\overline{(X_t-m)}]$ depends only on $s-t$: $\gamma(s,t)=\gamma(s-t,0)=:\gamma(s-t)$.
-\end{enumerate}
+\begin{definition}
+  [Weakly Stationary Process] A stochastic process $(X_t)_{t \in \R}$ on a
+  probability space $(\Omega, \mathcal{F}, \Prob)$ is {\tmem{weakly
+  stationary}} (or {\tmem{second-order stationary}}) if:
+  \begin{enumerate}
+    \item $\E [X_t] = m$ for all $t$ (constant mean),
+    
+    \item $\E [|X_t |^2] < \infty$ for all $t$,
+    
+    \item The covariance function $\gamma (s, t) \assign \E [(X_s - m)
+    \overline{(X_t - m)}]$ depends only on $s - t$: $\gamma (s, t) = \gamma (s
+    - t, 0) = : \gamma (s - t)$.
+  \end{enumerate}
 \end{definition}
 
-Without loss of generality, assume $m=0$ (by subtracting the mean). Then $\gamma(t):=\E[X_t\overline{X_0}]$.
+Without loss of generality, assume $m = 0$ (by subtracting the mean). Then
+$\gamma (t) \assign \E [X_t \overline{X_0}]$.
 
-\begin{lemma}[Positive-Definiteness of Covariance]\label{lem:covariance_pd}
-The covariance function $\gamma$ of a weakly stationary process is positive-definite: for any $t_1,\ldots,t_n\in\R$ and $c_1,\ldots,c_n\in\C$,
-\[
-\sum_{j,k=1}^n\gamma(t_j-t_k)\overline{c_j}c_k\geq 0.
-\]
+\begin{lemma}
+  [Positive-Definiteness of Covariance]\label{lem:covariance_pd} The
+  covariance function $\gamma$ of a weakly stationary process is
+  positive-definite: for any $t_1, \ldots, t_n \in \R$ and $c_1, \ldots, c_n
+  \in \C$,
+  \[ \sum_{j, k = 1}^n \gamma (t_j - t_k) \overline{c_j} c_k \geq 0. \]
 \end{lemma}
 
 \begin{proof}
-We have
-\begin{align*}
-\sum_{j,k=1}^n\gamma(t_j-t_k)\overline{c_j}c_k&=\sum_{j,k}\E[X_{t_j}\overline{X_{t_k}}]\overline{c_j}c_k\\
-&=\E\left[\left|\sum_j c_jX_{t_j}\right|^2\right]\geq 0.
-\end{align*}
+  We have
+  \begin{equation}
+    \begin{array}{ll}
+      \sum_{j, k = 1}^n \gamma (t_j - t_k) \overline{c_j} c_k & = \sum_{j, k}
+      \E [X_{t_j} \overline{X_{t_k}}] \overline{c_j} c_k\\
+      & = \E \left[ \left| \sum_j c_j X_{t_j} \right|^2 \right] \geq 0.
+    \end{array}
+  \end{equation}
+  
 \end{proof}
 
-\begin{theorem}[Construction of the Process Hilbert Space]\label{thm:process_hilbert}
-Let $(X_t)$ be a weakly stationary process with covariance $\gamma$. Define
-\[
-H:=\overline{\text{span}}\{X_t:t\in\R\}^{L^2(\Omega)},
-\]
-the closure in $L^2(\Omega,\Prob)$ of the linear span of $\{X_t:t\in\R\}$. Then $H$ is a Hilbert space with inner product $\ip{Y}{Z}:=\E[Y\overline{Z}]$. Moreover, the translation operators $(T_hX_t):=X_{t+h}$ extend to a strongly continuous unitary group on $H$.
+\begin{theorem}
+  [Construction of the Process Hilbert Space]\label{thm:process_hilbert} Let
+  $(X_t)$ be a weakly stationary process with covariance $\gamma$. Define
+  \begin{equation}
+    H \assign \overline{\text{span}} \{X_t : t \in \R \}^{L^2 (\Omega)}
+  \end{equation}
+  the closure in $L^2 (\Omega, \Prob)$ of the linear span of $\{X_t : t \in \R
+  \}$. Then $H$ is a Hilbert space with inner product $\ip{Y}{Z} \assign \E [Y
+  \bar{Z}]$. Moreover, the translation operators $(T_h X_t) \assign X_{t + h}$
+  extend to a strongly continuous unitary group on $H$.
 \end{theorem}
 
 \begin{proof}
-\textbf{Step 1: $H$ is a Hilbert space.}
-$H$ is a closed subspace of the Hilbert space $L^2(\Omega)$, so it is complete.
-
-\textbf{Step 2: Translation operators.}
-For $Y=\sum_{j=1}^nc_jX_{t_j}\in\text{span}\{X_t\}$, define $T_hY:=\sum_jc_jX_{t_j+h}$. Then
-\begin{align*}
-\ip{T_hY}{T_hZ}&=\E\left[\sum_j c_jX_{t_j+h}\overline{\sum_k d_kX_{s_k+h}}\right]\\
-&=\sum_{j,k}c_j\overline{d_k}\E[X_{t_j+h}\overline{X_{s_k+h}}]\\
-&=\sum_{j,k}c_j\overline{d_k}\gamma((t_j+h)-(s_k+h))\\
-&=\sum_{j,k}c_j\overline{d_k}\gamma(t_j-s_k)=\ip{Y}{Z}.
-\end{align*}
-Thus $T_h$ is an isometry on $\text{span}\{X_t\}$. Since this span is dense in $H$, $T_h$ extends uniquely to a unitary operator on $H$.
-
-\textbf{Step 3: Group property.}
-For $Y\in\text{span}\{X_t\}$, $T_{h+k}Y=T_h(T_kY)$ by definition. By density and continuity, this extends to all of $H$.
-
-\textbf{Step 4: Strong continuity.}
-For $Y=\sum_jc_jX_{t_j}$,
-\begin{align*}
-\|T_hY-Y\|^2&=\E\left|\sum_jc_j(X_{t_j+h}-X_{t_j})\right|^2\\
-&=\sum_{j,k}c_j\overline{c_k}\E[(X_{t_j+h}-X_{t_j})\overline{(X_{t_k+h}-X_{t_k})}]\\
-&=\sum_{j,k}c_j\overline{c_k}(2\gamma(0)-\gamma(t_j-t_k+h)-\gamma(t_j-t_k-h)).
-\end{align*}
-By continuity of $\gamma$ at 0, this tends to 0 as $h\to 0$. By density, $\lim_{h\to 0}\|T_h\phi-\phi\|=0$ for all $\phi\in H$.
+  \tmtextbf{Step 1: $H$ is a Hilbert space.} $H$ is a closed subspace of the
+  Hilbert space $L^2 (\Omega)$, so it is complete.
+  
+  \tmtextbf{Step 2: Translation operators.} For $Y = \sum_{j = 1}^n c_j
+  X_{t_j} \in \text{span} \{X_t \}$, define $T_h Y \assign \sum_j c_j X_{t_j +
+  h}$. Then
+  \begin{equation}
+    \begin{array}{ll}
+      \ip{T_h Y}{T_h Z} & = \E \left[ \sum_j c_j X_{t_j + h}  \overline{\sum_k
+      d_k X_{s_k + h}} \right]\\
+      & = \sum_{j, k} c_j \overline{d_k} \E [X_{t_j + h} \overline{X_{s_k +
+      h}}]\\
+      & = \sum_{j, k} c_j \overline{d_k} \gamma ((t_j + h) - (s_k + h))\\
+      & = \sum_{j, k} c_j \overline{d_k} \gamma (t_j - s_k) = \ip{Y}{Z} .
+    \end{array}
+  \end{equation}
+  Thus $T_h$ is an isometry on span$\{X_t \}$. Since this span is dense in
+  $H$, $T_h$ extends uniquely to a unitary operator on $H$.
+  
+  \tmtextbf{Step 3: Group property.} For $Y \in \text{span} \{X_t \}$, $T_{h +
+  k} Y = T_h  (T_k Y)$ by definition. By density and continuity, this extends
+  to all of $H$.
+  
+  \tmtextbf{Step 4: Strong continuity.} For $Y = \sum_j c_j X_{t_j}$,
+  \begin{equation}
+    \begin{array}{ll}
+      \|T_h Y - Y\|^2 & = \E \left| \sum_j c_j (X_{t_j + h} - X_{t_j})
+      \right|^2\\
+      & = \sum_{j, k} c_j \overline{c_k} \E [(X_{t_j + h} - X_{t_j})
+      \overline{(X_{t_k + h} - X_{t_k})}]\\
+      & = \sum_{j, k} c_j \overline{c_k} (2 \gamma (0) - \gamma (t_j - t_k +
+      h) - \gamma (t_j - t_k - h)) .
+    \end{array}
+  \end{equation}
+  By continuity of $\gamma$ at 0, this tends to 0 as $h \to 0$. By density,
+  $\lim_{h \to 0} \|T_h \phi - \phi \| = 0$ for all $\phi \in H$.
 \end{proof}
 
-\begin{theorem}[Spectral Representation of Stationary Processes - Cramér]\label{thm:cramer}
-Let $(X_t)$ be a weakly stationary process with covariance $\gamma$. There exists a right-continuous, non-decreasing function $F:\R\to\R$ with $F(-\infty)=0$ such that
-\[
-\gamma(t)=\int_{\R}e^{it\lambda}\,dF(\lambda).
-\]
-Moreover, there exists an orthogonal random measure $Z$ on $\R$ (i.e., $\E[Z(B_1)\overline{Z(B_2)}]=0$ for disjoint Borel sets $B_1,B_2$) such that
-\[
-X_t=\int_{\R}e^{it\lambda}\,dZ(\lambda),
-\]
-where the integral is in the $L^2(\Omega)$ sense, and $\E[|Z(B)|^2]=F(B)$ for Borel $B$.
+\begin{theorem}
+  [Spectral Representation of Stationary Processes -
+  Cram{\'e}r]\label{thm:cramer} Let $(X_t)$ be a weakly stationary process
+  with covariance $\gamma$. There exists a right-continuous, non-decreasing
+  function $F : \R \to \R$ with $F (- \infty) = 0$ such that
+  \begin{equation}
+    \gamma (t) = \int_{\R} e^{it \lambda}  \hspace{0.17em} dF (\lambda) . 
+  \end{equation}
+  Moreover, there exists an orthogonal random measure $Z$ on $\R$ (i.e., $\E
+  [Z (B_1) \overline{Z (B_2)}] = 0$ for disjoint Borel sets $B_1, B_2$) such
+  that
+  \begin{equation}
+    X_t = \int_{\R} e^{it \lambda}  \hspace{0.17em} dZ (\lambda)
+  \end{equation}
+  where the integral is in the $L^2 (\Omega)$ sense, and $\E [|Z (B) |^2] = F
+  (B)$ for Borel $B$.
 \end{theorem}
 
 \begin{proof}
-\textbf{Step 1: Apply Bochner's theorem.}
-By Lemma \ref{lem:covariance_pd}, $\gamma$ is positive-definite. If $\gamma$ is continuous, Bochner's theorem (Theorem \ref{thm:bochner}) yields a finite positive measure $\mu$ on $\R$ such that $\gamma(t)=\int e^{it\lambda}\,d\mu(\lambda)$. Define $F(\lambda):=\mu((-\infty,\lambda])$. Then $F$ is right-continuous, non-decreasing, and $F(-\infty)=0$, $F(\infty)=\mu(\R)=\gamma(0)=\E[|X_0|^2]$.
-
-\textbf{Step 2: Construct the spectral measure for the translation group.}
-By Theorem \ref{thm:process_hilbert}, $(T_h)$ is a strongly continuous unitary group on $H$. By Stone's theorem (Theorem \ref{thm:stone}), there exists a self-adjoint generator $A$ with spectral measure $E_A$ such that
-\[
-T_h=\int e^{ih\lambda}\,dE_A(\lambda).
-\]
-
-\textbf{Step 3: Define the orthogonal random measure.}
-For a Borel set $B\subset\R$, define the random variable
-\[
-Z(B):=E_A(B)X_0.
-\]
-This is an element of $H\subset L^2(\Omega)$, hence a random variable. We verify the orthogonality property: for disjoint $B_1,B_2$,
-\begin{align*}
-\E[Z(B_1)\overline{Z(B_2)}]&=\ip{E_A(B_1)X_0}{E_A(B_2)X_0}\\
-&=\ip{E_A(B_1\cap B_2)X_0}{X_0}=\ip{E_A(\emptyset)X_0}{X_0}=0.
-\end{align*}
-
-\textbf{Step 4: Spectral representation of $X_t$.}
-We have
-\begin{align*}
-X_t&=T_tX_0=\left(\int e^{it\lambda}\,dE_A(\lambda)\right)X_0=\int e^{it\lambda}\,dE_A(\lambda)X_0=\int e^{it\lambda}\,dZ(\lambda).
-\end{align*}
-
-\textbf{Step 5: Variance of $Z(B)$.}
-\begin{align*}
-\E[|Z(B)|^2]&=\ip{E_A(B)X_0}{E_A(B)X_0}=\ip{E_A(B)X_0}{X_0}\\
-&=\int_B 1\,d\ip{E_A(\lambda)X_0}{X_0}=\int_B\,d\mu_0(\lambda),
-\end{align*}
-where $\mu_0(B):=\ip{E_A(B)X_0}{X_0}$. To identify $\mu_0$ with the spectral distribution $F$, note that
-\begin{align*}
-\gamma(t)&=\E[X_t\overline{X_0}]=\ip{T_tX_0}{X_0}=\int e^{it\lambda}\,d\ip{E_A(\lambda)X_0}{X_0}=\int e^{it\lambda}\,d\mu_0(\lambda).
-\end{align*}
-By uniqueness in Bochner's theorem, $\mu_0=\mu$, so $F(B)=\mu_0(B)=\E[|Z(B)|^2]$.
+  \tmtextbf{Step 1: Apply Bochner's theorem.} By Lemma
+  \ref{lem:covariance_pd}, $\gamma$ is positive-definite. If $\gamma$ is
+  continuous, Bochner's theorem (Theorem \ref{thm:bochner}) yields a finite
+  positive measure $\mu$ on $\R$ such that $\gamma (t) = \int e^{it \lambda} 
+  \hspace{0.17em} d \mu (\lambda)$. Define $F (\lambda) \assign \mu ((-
+  \infty, \lambda])$. Then $F$ is right-continuous, non-decreasing, and $F (-
+  \infty) = 0$, $F (\infty) = \mu (\R) = \gamma (0) = \E [|X_0 |^2]$.
+  
+  \tmtextbf{Step 2: Construct the spectral measure for the translation group.}
+  By Theorem \ref{thm:process_hilbert}, $(T_h)$ is a strongly continuous
+  unitary group on $H$. By Stone's theorem (Theorem \ref{thm:stone}), there
+  exists a self-adjoint generator $A$ with spectral measure $E_A$ such that
+  \begin{equation}
+    T_h = \int e^{ih \lambda}  \hspace{0.17em} dE_A (\lambda)
+  \end{equation}
+  \tmtextbf{Step 3: Define the orthogonal random measure.} For a Borel set $B
+  \subset \R$, define the random variable
+  \begin{equation}
+    Z (B) \assign E_A (B) X_0
+  \end{equation}
+  This is an element of $H \subset L^2 (\Omega)$, hence a random variable. We
+  verify the orthogonality property: for disjoint $B_1, B_2$,
+  \begin{equation}
+    \begin{array}{ll}
+      \E [Z (B_1) \overline{Z (B_2)}] & = \ip{E_A (B_1) X_0}{E_A (B_2) X_0}\\
+      & = \ip{E_A  (B_1 \cap B_2) X_0}{X_0}\\
+      & = \ip{E_A (\emptyset) X_0}{X_0}\\
+      & = 0
+    \end{array}
+  \end{equation}
+  \tmtextbf{Step 4: Spectral representation of $X_t$.} We have
+  \begin{equation}
+    \begin{array}{ll}
+      X_t & = T_t X_0\\
+      & = \left( \int e^{it \lambda}  \hspace{0.17em} dE_A (\lambda) \right)
+      X_0\\
+      & = \int e^{it \lambda}  \hspace{0.17em} dE_A (\lambda) X_0\\
+      & = \int e^{it \lambda}  \hspace{0.17em} dZ (\lambda)
+    \end{array}
+  \end{equation}
+  \tmtextbf{Step 5: Variance of $Z (B)$.}
+  \begin{equation}
+    \begin{array}{ll}
+      \E [|Z (B) |^2] & = \ip{E_A (B) X_0}{E_A (B) X_0} = \ip{E_A (B)
+      X_0}{X_0}\\
+      & = \int_B 1 \hspace{0.17em} d \ip{E_A (\lambda) X_0}{X_0} = \int_B
+      \hspace{0.17em} d \mu_0 (\lambda)
+    \end{array}
+  \end{equation}
+  where $\mu_0 (B) \assign \ip{E_A (B) X_0}{X_0}$. To identify $\mu_0$ with
+  the spectral distribution $F$, note that
+  \begin{equation}
+    \begin{array}{ll}
+      \gamma (t) & = \E [X_t \overline{X_0}] = \ip{T_t X_0}{X_0} = \int e^{it
+      \lambda}  \hspace{0.17em} d \ip{E_A (\lambda) X_0}{X_0} = \int e^{it
+      \lambda}  \hspace{0.17em} d \mu_0 (\lambda)
+    \end{array}
+  \end{equation}
+  By uniqueness in Bochner's theorem, $\mu_0 = \mu$, so
+  \begin{equation}
+    F (B) = \mu_0 (B) = \E [|Z (B) |^2]
+  \end{equation}
 \end{proof}
 
-\begin{corollary}[Real-Valued Process Representation]\label{cor:real_process}
-If $(X_t)$ is real-valued and weakly stationary, the spectral measure $F$ is symmetric: $F(-B)=F(B)$ for Borel $B$, and there exist real-valued orthogonal random measures $U,V$ such that
-\[
-X_t=\int_{\R}\cos(t\lambda)\,dU(\lambda)+\int_{\R}\sin(t\lambda)\,dV(\lambda),
-\]
-with $\E[U(B_1)U(B_2)]=\E[V(B_1)V(B_2)]=2F(B_1\cap B_2)$ and $\E[U(B_1)V(B_2)]=0$.
+\begin{corollary}
+  [Real-Valued Process Representation]\label{cor:real_process} If $(X_t)$ is
+  real-valued and weakly stationary, the spectral measure $F$ is symmetric: $F
+  (- B) = F (B)$ for Borel $B$, and there exist real-valued orthogonal random
+  measures $U, V$ such that
+  \begin{equation}
+    X_t = \int_{\R} \cos (t \lambda)  \hspace{0.17em} dU (\lambda) + \int_{\R}
+    \sin (t \lambda)  \hspace{0.17em} dV (\lambda)
+  \end{equation}
+  with $\E [U (B_1) U (B_2)] = \E [V (B_1) V (B_2)] = 2 F (B_1 \cap B_2)$ and
+  $\E [U (B_1) V (B_2)] = 0$.
 \end{corollary}
 
 \begin{proof}
-For real $(X_t)$, $X_t=\overline{X_t}$, so
-\[
-\int e^{it\lambda}\,dZ(\lambda)=\int e^{-it\lambda}\,d\overline{Z(\lambda)}.
-\]
-Changing variables $\lambda\to-\lambda$ in the right-hand side,
-\[
-\int e^{it\lambda}\,dZ(\lambda)=\int e^{it\lambda}\,d\overline{Z(-\lambda)}.
-\]
-By uniqueness of the spectral representation, $Z(B)=\overline{Z(-B)}$ for all $B$. Define
-\[
-U(B):=Z(B)+\overline{Z(-B)},\qquad V(B):=i(Z(B)-\overline{Z(-B)}).
-\]
-These are real-valued. Then $Z(B)=\frac{1}{2}(U(B)-iV(B))$, so
-\begin{align*}
-X_t&=\int e^{it\lambda}\,d\left(\frac{U(\lambda)-iV(\lambda)}{2}\right)\\
-&=\int\frac{(\cos(t\lambda)+i\sin(t\lambda))(dU(\lambda)-i\,dV(\lambda))}{2}\\
-&=\int\cos(t\lambda)\,dU(\lambda)+\int\sin(t\lambda)\,dV(\lambda).
-\end{align*}
-The variance formulas follow from $\E[|Z(B)|^2]=F(B)$ and the definitions of $U,V$.
+  For real $(X_t)$, $X_t = \overline{X_t}$, so
+  \begin{equation}
+    \int e^{it \lambda}  \hspace{0.17em} dZ (\lambda) = \int e^{- it \lambda} 
+    \hspace{0.17em} d \overline{Z (\lambda)}
+  \end{equation}
+  Changing variables $\lambda \to - \lambda$ in the right-hand side,
+  \begin{equation}
+    \int e^{it \lambda}  \hspace{0.17em} dZ (\lambda) = \int e^{it \lambda} 
+    \hspace{0.17em} d \overline{Z (- \lambda)}
+  \end{equation}
+  By uniqueness of the spectral representation, $Z (B) = \overline{Z (- B)}$
+  for all $B$. Define
+  \begin{equation}
+    U (B) \assign Z (B) + \overline{Z (- B)}
+  \end{equation}
+  \begin{equation}
+    V (B) \assign i (Z (B) - \overline{Z (- B)})
+  \end{equation}
+  These are real-valued. Then $Z (B) = \frac{1}{2}  (U (B) - iV (B))$, so
+  \begin{equation}
+    \begin{array}{ll}
+      X_t & = \int e^{it \lambda}  \hspace{0.17em} d \left( \frac{U (\lambda)
+      - iV (\lambda)}{2} \right)\\
+      & = \int \frac{(\cos (t \lambda) + i \sin (t \lambda))  (dU (\lambda) -
+      i \hspace{0.17em} dV (\lambda))}{2}\\
+      & = \int \cos (t \lambda)  \hspace{0.17em} dU (\lambda) + \int \sin (t
+      \lambda)  \hspace{0.17em} dV (\lambda)
+    \end{array}
+  \end{equation}
+  The variance formulas follow from $\E [|Z (B) |^2] = F (B)$ and the
+  definitions of $U, V$.
 \end{proof}
 
 \section{Conclusion}
 
-We have provided complete, detailed proofs of the spectral theorem for both bounded and unbounded self-adjoint operators via projection-valued measures, Stone's theorem establishing the correspondence between strongly continuous unitary groups and self-adjoint generators, Bochner's theorem characterizing positive-definite functions as Fourier transforms of measures, Nelson's theorem on essential self-adjointness via analytic vectors, and Cramér's spectral representation theorem for weakly stationary stochastic processes. These results form the foundation for spectral analysis in functional analysis, quantum mechanics, stochastic process theory, and partial differential equations.
+We have provided complete, detailed proofs of the spectral theorem for both
+bounded and unbounded self-adjoint operators via projection-valued measures,
+Stone's theorem establishing the correspondence between strongly continuous
+unitary groups and self-adjoint generators, Bochner's theorem characterizing
+positive-definite functions as Fourier transforms of measures, Nelson's
+theorem on essential self-adjointness via analytic vectors, and Cram{\'e}r's
+spectral representation theorem for weakly stationary stochastic processes.
+These results form the foundation for spectral analysis in functional
+analysis, quantum mechanics, stochastic process theory, and partial
+differential equations.
 
 \end{document}
-

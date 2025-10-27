@@ -133,33 +133,53 @@
   <\proof>
     Using the angle addition formulas:
 
-    <\align>
-      <tformat|<table|<row|<cell|cos A>|<cell|=cos
-      <around*|(|<frac|A+B|2>+<frac|A-B|2>|)>=cos
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|cos A>|<cell|=cos
+      <around*|(|<frac|A+B|2>+<frac|A-B|2>|)>>>|<row|<cell|>|<cell|=cos
       <around*|(|<frac|A+B|2>|)>*cos <around*|(|<frac|A-B|2>|)>-sin
-      <around*|(|<frac|A+B|2>|)>*sin <around*|(|<frac|A-B|2>|)><eq-number>>>|<row|<cell|cos
-      B>|<cell|=cos <around*|(|<frac|A+B|2>-<frac|A-B|2>|)>=cos
-      <around*|(|<frac|A+B|2>|)>*cos <around*|(|<frac|A-B|2>|)>+sin
-      <around*|(|<frac|A+B|2>|)>*sin <around*|(|<frac|A-B|2>|)><eq-number>>>>>
-    </align>
+      <around*|(|<frac|A+B|2>|)>*sin <around*|(|<frac|A-B|2>|)>>>>>>
+    </equation>
 
-    Subtracting: <math|cos A-cos B=-2*sin <around*|(|<frac|A+B|2>|)>*sin
-    <around*|(|<frac|A-B|2>|)>>.
+    and
+
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|cos B>|<cell|=cos
+      <around*|(|<frac|A+B|2>-<frac|A-B|2>|)>>>|<row|<cell|>|<cell|=cos
+      <around*|(|<frac|A+B|2>|)>*cos <around*|(|<frac|A-B|2>|)>+sin
+      <around*|(|<frac|A+B|2>|)>*sin <around*|(|<frac|A-B|2>|)>>>>>>
+    </equation>
+
+    Subtracting:\ 
+
+    <\equation>
+      cos A-cos B=-2*sin <around*|(|<frac|A+B|2>|)>*sin
+      <around*|(|<frac|A-B|2>|)>
+    </equation>
 
     Similarly for sine:
 
-    <\align>
-      <tformat|<table|<row|<cell|sin A>|<cell|=sin
-      <around*|(|<frac|A+B|2>+<frac|A-B|2>|)>=sin
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|sin A>|<cell|=sin
+      <around*|(|<frac|A+B|2>+<frac|A-B|2>|)>>>|<row|<cell|>|<cell|sin
       <around*|(|<frac|A+B|2>|)>*cos <around*|(|<frac|A-B|2>|)>+cos
-      <around*|(|<frac|A+B|2>|)>*sin <around*|(|<frac|A-B|2>|)><eq-number>>>|<row|<cell|sin
-      B>|<cell|=sin <around*|(|<frac|A+B|2>-<frac|A-B|2>|)>=sin
-      <around*|(|<frac|A+B|2>|)>*cos <around*|(|<frac|A-B|2>|)>-cos
-      <around*|(|<frac|A+B|2>|)>*sin <around*|(|<frac|A-B|2>|)><eq-number>>>>>
-    </align>
+      <around*|(|<frac|A+B|2>|)>*sin <around*|(|<frac|A-B|2>|)>>>>>>
+    </equation>
 
-    Subtracting: <math|sin A-sin B=2*cos <around*|(|<frac|A+B|2>|)>*sin
-    <around*|(|<frac|A-B|2>|)>>.
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|sin B>|<cell|=sin
+      <around*|(|<frac|A+B|2>-<frac|A-B|2>|)>>>|<row|<cell|>|<cell|sin
+      <around*|(|<frac|A+B|2>|)>*cos <around*|(|<frac|A-B|2>|)>-cos
+      <around*|(|<frac|A+B|2>|)>*sin <around*|(|<frac|A-B|2>|)>>>>>>
+    </equation>
+
+    Subtracting: <math|>
+
+    <\equation>
+      sin A-sin B=2*cos <around*|(|<frac|A+B|2>|)>*sin
+      <around*|(|<frac|A-B|2>|)>
+    </equation>
+
+    \;
   </proof>
 
   <section|Beat Frequency and Carrier Frequency Analysis>
@@ -176,13 +196,22 @@
     where:
 
     <\itemize>
-      <item>The beat angular frequency is
-      <math|\<omega\><rsub|beat>=<frac|\<lambda\><rsub|2>-\<lambda\><rsub|1>|2>>
-      (corresponding to beat frequency <math|f<rsub|beat>=<frac|<around|\||\<lambda\><rsub|2>-\<lambda\><rsub|1>|\|>|4*\<pi\>>>)
+      <item>The beat angular frequency is\ 
 
-      <item>The carrier angular frequency is
-      <math|\<omega\><rsub|carrier>=<frac|\<lambda\><rsub|2>+\<lambda\><rsub|1>|2>>
-      (corresponding to carrier frequency
+      <\equation>
+        \<omega\><rsub|beat>=<frac|\<lambda\><rsub|2>-\<lambda\><rsub|1>|2>
+      </equation>
+
+      <math|> (corresponding to beat frequency
+      <math|f<rsub|beat>=<frac|<around|\||\<lambda\><rsub|2>-\<lambda\><rsub|1>|\|>|4*\<pi\>>>)
+
+      <item>The carrier angular frequency is\ 
+
+      <\equation>
+        \<omega\><rsub|carrier>=<frac|\<lambda\><rsub|2>+\<lambda\><rsub|1>|2>
+      </equation>
+
+      \ (corresponding to carrier frequency
       <math|f<rsub|carrier>=<frac|\<lambda\><rsub|2>+\<lambda\><rsub|1>|4*\<pi\>>>)
     </itemize>
   </theorem>
@@ -201,25 +230,15 @@
       <around*|(|<frac|<around|(|\<lambda\><rsub|2>-\<lambda\><rsub|1>|)>*t|2>|)><eq-number>>>>>
     </align>
 
-    Therefore:
+    Using the identity
 
-    <\align>
-      <tformat|<table|<row|<cell|>|<cell|<around|[|cos
-      <around|(|\<lambda\><rsub|2>*t|)>-cos
-      <around|(|\<lambda\><rsub|1>*t|)>|]>-i*<around|[|sin
-      <around|(|\<lambda\><rsub|2>*t|)>-sin
-      <around|(|\<lambda\><rsub|1>*t|)>|]><eq-number>>>|<row|<cell|>|<cell|=-2*sin
-      <around*|(|<frac|<around|(|\<lambda\><rsub|2>+\<lambda\><rsub|1>|)>*t|2>|)>*sin
-      <around*|(|<frac|<around|(|\<lambda\><rsub|2>-\<lambda\><rsub|1>|)>*t|2>|)>-i\<cdot\>2*cos
-      <around*|(|<frac|<around|(|\<lambda\><rsub|2>+\<lambda\><rsub|1>|)>*t|2>|)>*sin
-      <around*|(|<frac|<around|(|\<lambda\><rsub|2>-\<lambda\><rsub|1>|)>*t|2>|)><eq-number>>>|<row|<cell|>|<cell|=-2*sin
-      <around*|(|<frac|<around|(|\<lambda\><rsub|2>-\<lambda\><rsub|1>|)>*t|2>|)>*<around*|[|sin
-      <around*|(|<frac|<around|(|\<lambda\><rsub|2>+\<lambda\><rsub|1>|)>*t|2>|)>+i*cos
-      <around*|(|<frac|<around|(|\<lambda\><rsub|2>+\<lambda\><rsub|1>|)>*t|2>|)>|]><eq-number>>>>>
-    </align>
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|sin \<theta\>+i*cos
+      \<theta\>>|<cell|=i*<around|(|cos \<theta\>-i*sin
+      \<theta\>|)>>>|<row|<cell|>|<cell|=i*e<rsup|-i*\<theta\>>>>>>>
+    </equation>
 
-    Using the identity <math|sin \<theta\>+i*cos \<theta\>=i*<around|(|cos
-    \<theta\>-i*sin \<theta\>|)>=i*e<rsup|-i*\<theta\>>>:
+    it is demonstrated that\ 
 
     <\equation>
       sin <around*|(|<frac|<around|(|\<lambda\><rsub|2>+\<lambda\><rsub|1>|)>*t|2>|)>+i*cos
@@ -237,12 +256,22 @@
     <around*|(|<frac|<around|(|\<lambda\><rsub|2>-\<lambda\><rsub|1>|)>*t|2>|)>>
     term, which modulates the amplitude with angular frequency
     <math|<frac|<around|\||\<lambda\><rsub|2>-\<lambda\><rsub|1>|\|>|2>>,
-    corresponding to beat frequency <math|f<rsub|beat>=<frac|<around|\||\<lambda\><rsub|2>-\<lambda\><rsub|1>|\|>|4*\<pi\>>>.
+    corresponding to beat frequency <math|>
+
+    <\equation>
+      f<rsub|beat>=<frac|<around|\||\<lambda\><rsub|2>-\<lambda\><rsub|1>|\|>|4*\<pi\>>
+    </equation>
 
     The carrier frequency comes from the <math|e<rsup|-i*<frac|<around|(|\<lambda\><rsub|2>+\<lambda\><rsub|1>|)>*t|2>>>
     term, which oscillates with angular frequency
     <math|<frac|\<lambda\><rsub|2>+\<lambda\><rsub|1>|2>>, corresponding to
-    carrier frequency <math|f<rsub|carrier>=<frac|\<lambda\><rsub|2>+\<lambda\><rsub|1>|4*\<pi\>>>.
+    carrier frequency
+
+    <\equation>
+      f<rsub|carrier>=<frac|\<lambda\><rsub|2>+\<lambda\><rsub|1>|4*\<pi\>>
+    </equation>
+
+    \;
   </proof>
 
   <\corollary>
@@ -291,16 +320,24 @@
   <\itemize>
     <item><with|font-series|bold|Beat Envelope>: The factor <math|sin
     <around*|(|<frac|<around|(|\<lambda\><rsub|2>-\<lambda\><rsub|1>|)>*t|2>|)>>
-    creates an amplitude modulation envelope with beat frequency
-    <math|f<rsub|beat>=<frac|<around|\||\<lambda\><rsub|2>-\<lambda\><rsub|1>|\|>|4*\<pi\>>>.
-    This envelope determines how rapidly the interference pattern oscillates
-    between constructive and destructive interference.
+    creates an amplitude modulation envelope with beat frequency <math|>
+
+    <\equation>
+      f<rsub|beat>=<frac|<around|\||\<lambda\><rsub|2>-\<lambda\><rsub|1>|\|>|4*\<pi\>>
+    </equation>
+
+    . This envelope determines how rapidly the interference pattern
+    oscillates between constructive and destructive interference.
 
     <item><with|font-series|bold|Carrier Wave>: The factor
     <math|e<rsup|-i*<frac|<around|(|\<lambda\><rsub|2>+\<lambda\><rsub|1>|)>*t|2>>>
-    represents the carrier wave oscillating at the average frequency
-    <math|f<rsub|carrier>=<frac|\<lambda\><rsub|2>+\<lambda\><rsub|1>|4*\<pi\>>>.
-    This carrier provides the fundamental oscillation that is modulated by
+    represents the carrier wave oscillating at the average frequency <math|>
+
+    <\equation>
+      f<rsub|carrier>=<frac|\<lambda\><rsub|2>+\<lambda\><rsub|1>|4*\<pi\>>
+    </equation>
+
+    . This carrier provides the fundamental oscillation that is modulated by
     the beat envelope.
 
     <item><with|font-series|bold|Spectral Resolution>: The <math|<frac|sin
@@ -332,12 +369,12 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|auto-2|<tuple|2|2|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|auto-3|<tuple|3|2|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|auto-4|<tuple|4|2|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|auto-5|<tuple|5|3|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|auto-6|<tuple|6|5|../.TeXmacs/texts/scratch/no_name_4.tm>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-2|<tuple|2|2>>
+    <associate|auto-3|<tuple|3|2>>
+    <associate|auto-4|<tuple|4|2>>
+    <associate|auto-5|<tuple|5|3>>
+    <associate|auto-6|<tuple|6|5>>
   </collection>
 </references>
 
