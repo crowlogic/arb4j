@@ -10,7 +10,7 @@ import arb.RealConstants;
 public class HeavisideStepFunction implements
                                    RealFunction
 {
-  public static final RealFunction deltaFunction = new DiracDeltaFunction();
+  public static final DiracDeltaFunction deltaFunction = new DiracDeltaFunction();
 
   @Override
   public RealFunction derivative()
