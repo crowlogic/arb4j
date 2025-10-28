@@ -2,7 +2,6 @@ package arb.expressions.nodes.unary;
 
 import static arb.expressions.Compiler.cast;
 import static arb.expressions.Compiler.loadInputParameter;
-import static java.lang.String.format;
 import static org.objectweb.asm.Opcodes.GOTO;
 
 import java.util.List;
@@ -12,19 +11,13 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.*;
 
 import arb.Integer;
 import arb.exceptions.CompilerException;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
-import arb.expressions.nodes.ElseNode;
-import arb.expressions.nodes.LiteralConstantNode;
-import arb.expressions.nodes.Node;
-import arb.expressions.nodes.VariableNode;
+import arb.expressions.nodes.*;
 import arb.functions.Function;
 
 /**
@@ -54,9 +47,9 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     var defaultValue = expression.resolve();
     if (expression.character != ')')
     {
-      throw new CompilerException(format("expected closing ) of when statement after else at position=%d expression=%s",
-                                         expression.position,
-                                         expression));
+      throw new CompilerException(String.format("expected closing ) of when statement after else at position=%d expression=%s",
+                                                expression.position,
+                                                expression));
     }
     return defaultValue;
   }
@@ -82,7 +75,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
 
     do
     {
-      evaluateCases();
+      evaluateCase();
     }
     while (expression.nextCharacterIs(','));
     expression.require(')');
@@ -103,7 +96,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   {
     super(expression,
           null);
-    this.cases = new TreeMap<>();
+    cases = new TreeMap<>();
 
     for (var entry : cases.entrySet())
     {
@@ -138,21 +131,14 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
                                   + variable);
     }
 
-    if (!expression.nextCharacterIs('='))
-    {
-      throw new CompilerException(format("= expected in condition of when function at pos=%d expression=%s but got ch=%c and lastCh=%c",
-                                         expression.position,
-                                         expression,
-                                         expression.character,
-                                         expression.previousCharacter));
-    }
+    expression.require('=');
 
     var constant = evaluateCondition();
     var value    = expression.resolve();
     cases.put(new Integer(constant.value), value);
   }
 
-  public void evaluateCases()
+  public void evaluateCase()
   {
     Node<D, R, F> node = expression.evaluate();
     if ((node instanceof ElseNode))
@@ -249,7 +235,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   @Override
   public List<Node<D, R, F>> getBranches()
   {
-    // the default branch is stored in this.arg
+    // the default branch is stored in arg
     return Stream.concat(cases.values().stream(), Stream.of(arg)).toList();
   }
 

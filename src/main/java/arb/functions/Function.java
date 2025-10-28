@@ -30,7 +30,7 @@ public interface Function<D, C> extends
     return null;
   }
 
-  public default Function<D, C> integral()
+  public default  <F extends Function<? extends D, ? extends C>> F integral()
   {
     assert false : "TODO: " + getClass() + " should implement this";
     return null;

@@ -16,6 +16,7 @@ public interface RealFunction extends
                               Function<Real, Real>
 {
 
+ 
   @Override
   default Class<Real> coDomainType()
   {
@@ -282,10 +283,17 @@ public interface RealFunction extends
     return arrowIndex == -1 ? str : str.substring(arrowIndex + 1);
   }
 
+  @Override
+  public default RealFunction derivative()
+  {
+    assert false : "TODO: " + getClass() + " should implement this";
+    return Function.super.derivative();
+  }
+
   public default RealFunction integral()
   {
     assert false : "TODO: " + getClass() + " should implement this";
-    return null;
+    return Function.super.integral();
   }
 
 }
