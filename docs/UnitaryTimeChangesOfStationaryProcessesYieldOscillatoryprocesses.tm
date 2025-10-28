@@ -179,7 +179,7 @@
 
   <\proof>
     Let <math|f\<in\>L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>> and let
-    <math|U> be any <math|\<sigma\>>-compact set. The local
+    <math|C> be any <math|\<sigma\>>-compact set. The local
     <math|L<rsup|2>>-norm of <math|U<rsub|\<theta\>>*f> over <math|C> is:
 
     <\equation>
@@ -204,24 +204,36 @@
     </equation>
 
     To verify that <math|U<rsub|\<theta\>><rsup|-1>> is indeed the inverse,
-    we compute explicitly. For any <math|f\<in\>L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>:
+    it is seen that:
 
     <\equation>
-      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<around|(|U<rsub|\<theta\>><rsup|-1>*U<rsub|\<theta\>>*f|)><around|(|s|)>>|<cell|=<around*|(|U<rsub|\<theta\>><rsup|-1>*<sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>*f<around|(|\<theta\><around|(|s|)>|)>|)><around|(|s|)>>>|<row|<cell|>|<cell|=<frac|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>>*f<around|(|\<theta\><around|(|\<theta\><rsup|-1><around|(|s|)>|)>|)>>>|<row|<cell|>|<cell|=f<around|(|s|)>>>>>>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<around|(|U<rsub|\<theta\>><rsup|-1>*U<rsub|\<theta\>>*f|)><around|(|s|)>>|<cell|=<around*|(|U<rsub|\<theta\>><rsup|-1>*<sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>*f<around|(|\<theta\><around|(|s|)>|)>|)><around|(|s|)>>|<cell|>|<cell|>|<cell|>|<cell|>>|<row|<cell|>|<cell|=<frac|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>>*f<around|(|\<theta\><around|(|\<theta\><rsup|-1><around|(|s|)>|)>|)>>|<cell|>|<cell|>|<cell|>|<cell|\<forall\>f\<in\>L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>>|<row|<cell|>|<cell|=f<around|(|s|)>>|<cell|>|<cell|>|<cell|>|<cell|>>>>>
     </equation>
 
-    since <math|\<theta\><around|(|\<theta\><rsup|-1><around|(|s|)>|)>=s>.
-    Similarly, for any <math|g\<in\>L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>:
+    since
 
     <\equation>
-      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<around|(|U<rsub|\<theta\>>*U<rsub|\<theta\>><rsup|-1>*g|)><around|(|t|)>>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<around|(|U<rsub|\<theta\>><rsup|-1>*g|)><around|(|\<theta\><around|(|t|)>|)>>>|<row|<cell|>|<cell|=<frac|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|\<theta\><around|(|t|)>|)>|)>>>*g<around|(|\<theta\><rsup|-1><around|(|\<theta\><around|(|t|)>|)>|)>>>|<row|<cell|>|<cell|=<frac|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>>*g<around|(|t|)>>>|<row|<cell|>|<cell|=g<around|(|t|)>>>>>>
+      \<theta\><around|(|\<theta\><rsup|-1><around|(|s|)>|)>=s
     </equation>
 
-    since <math|\<theta\><rsup|-1><around|(|\<theta\><around|(|t|)>|)>=t>.
+    and similarly, its also plain to see that:
+
+    <\equation>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<around|(|U<rsub|\<theta\>>*U<rsub|\<theta\>><rsup|-1>*g|)><around|(|t|)>>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<around|(|U<rsub|\<theta\>><rsup|-1>*g|)><around|(|\<theta\><around|(|t|)>|)>>|<cell|>|<cell|>|<cell|>|<cell|>>|<row|<cell|>|<cell|=<frac|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|\<theta\><around|(|t|)>|)>|)>>>*g<around|(|\<theta\><rsup|-1><around|(|\<theta\><around|(|t|)>|)>|)>>|<cell|>|<cell|>|<cell|>|<cell|\<forall\>g\<in\>L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>>|<row|<cell|>|<cell|=<frac|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>>*g<around|(|t|)>>|<cell|>|<cell|>|<cell|>|<cell|>>|<row|<cell|>|<cell|=g<around|(|t|)>>|<cell|>|<cell|>|<cell|>|<cell|>>>>>
+    </equation>
+
+    since\ 
+
+    <\equation>
+      \<theta\><rsup|-1><around|(|\<theta\><around|(|t|)>|)>=t
+    </equation>
+
     Therefore
 
     <\equation>
-      U<rsub|\<theta\>>*U<rsub|\<theta\>><rsup|-1>=U<rsub|\<theta\>><rsup|-1>*U<rsub|\<theta\>>=I
+      <tabular|<tformat|<table|<row|<cell|<around*|(|U<rsub|\<theta\>>*U<rsub|\<theta\>><rsup|-1>
+      f|)><around*|(|t|)>>|<cell|=<around*|(|U<rsub|\<theta\>><rsup|-1>*U<rsub|\<theta\>>
+      f|)><around*|(|t|)>>>|<row|<cell|>|<cell|=f<around*|(|t|)>>>>>>
     </equation>
 
     on <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>.
@@ -231,8 +243,12 @@
 
   <\definition>
     <strong|[Oscillatory process]<label|def:osc_proc> >Let <math|F> be a
-    finite nonnegative Borel measure on <math|\<bbb-R\>>. For each
-    <math|t\<in\>\<bbb-R\>>, let <math|A<rsub|t>\<in\>L<rsup|2><around|(|F|)>>
+    finite nonnegative Borel measure on <math|\<bbb-R\>>. Let
+
+    <\equation>
+      A<rsub|t>\<in\>L<rsup|2><around|(|F|)>\<forall\>t\<in\>\<bbb-R\>
+    </equation>
+
     be the gain function and
 
     <\equation>
@@ -1179,9 +1195,9 @@
   <\collection>
     <associate|U|<tuple|3|2>>
     <associate|auto-1|<tuple|1|2>>
-    <associate|auto-10|<tuple|5|11>>
-    <associate|auto-11|<tuple|5.1|11>>
-    <associate|auto-12|<tuple|5.2|12>>
+    <associate|auto-10|<tuple|5|12>>
+    <associate|auto-11|<tuple|5.1|12>>
+    <associate|auto-12|<tuple|5.2|13>>
     <associate|auto-13|<tuple|5.3|15>>
     <associate|auto-14|<tuple|5.4|16>>
     <associate|auto-2|<tuple|1.1|2>>
@@ -1189,49 +1205,49 @@
     <associate|auto-4|<tuple|2|4>>
     <associate|auto-5|<tuple|3|7>>
     <associate|auto-6|<tuple|3.1|7>>
-    <associate|auto-7|<tuple|3.2|7>>
-    <associate|auto-8|<tuple|3.3|9>>
-    <associate|auto-9|<tuple|4|10>>
+    <associate|auto-7|<tuple|3.2|8>>
+    <associate|auto-8|<tuple|3.3|10>>
+    <associate|auto-9|<tuple|4|11>>
     <associate|cor:evol_spec|<tuple|12|9>>
-    <associate|covar|<tuple|43|7>>
-    <associate|def:L|<tuple|19|13>>
+    <associate|covar|<tuple|46|8>>
+    <associate|def:L|<tuple|19|14>>
     <associate|def:L2loc|<tuple|2|2>>
     <associate|def:Utheta|<tuple|4|2>>
     <associate|def:cramer|<tuple|10|7>>
     <associate|def:osc_proc|<tuple|7|4>>
     <associate|def:regularity|<tuple|22|15>>
     <associate|def:sigma_compact|<tuple|1|2>>
-    <associate|def:zeromeasure|<tuple|15|11>>
-    <associate|eq:covariance_def|<tuple|121|17>>
-    <associate|eq:expectation|<tuple|112|16>>
-    <associate|eq:expected_zeros|<tuple|122|17>>
-    <associate|eq:kac_rice|<tuple|107|16>>
-    <associate|eq:kac_rice_formula|<tuple|124|17>>
-    <associate|eq:limit_mixed_partial|<tuple|127|17>>
-    <associate|eq:mixed_partial|<tuple|125|17>>
-    <associate|eq:mixed_partial_continued|<tuple|126|17>>
-    <associate|eq:substituted_kac_rice|<tuple|128|18>>
-    <associate|eq:time_changed_cov|<tuple|123|17>>
-    <associate|labeldef:Hmu|<tuple|17|12>>
-    <associate|labelrem:scaffold|<tuple|21|14>>
+    <associate|def:zeromeasure|<tuple|15|12>>
+    <associate|eq:covariance_def|<tuple|124|17>>
+    <associate|eq:expectation|<tuple|115|16>>
+    <associate|eq:expected_zeros|<tuple|125|17>>
+    <associate|eq:kac_rice|<tuple|110|16>>
+    <associate|eq:kac_rice_formula|<tuple|127|18>>
+    <associate|eq:limit_mixed_partial|<tuple|130|18>>
+    <associate|eq:mixed_partial|<tuple|128|18>>
+    <associate|eq:mixed_partial_continued|<tuple|129|18>>
+    <associate|eq:substituted_kac_rice|<tuple|131|18>>
+    <associate|eq:time_changed_cov|<tuple|126|17>>
+    <associate|labeldef:Hmu|<tuple|17|13>>
+    <associate|labelrem:scaffold|<tuple|21|15>>
     <associate|lem:delta|<tuple|23|15>>
-    <associate|of|<tuple|12|4>>
+    <associate|of|<tuple|15|4>>
     <associate|prop:atomic|<tuple|18|13>>
-    <associate|prop:conjugation|<tuple|13|9>>
+    <associate|prop:conjugation|<tuple|13|10>>
     <associate|prop:inverse|<tuple|5|2>>
-    <associate|sec:HP|<tuple|5|11>>
+    <associate|sec:HP|<tuple|5|12>>
     <associate|sec:functionspaces|<tuple|1|2>>
     <associate|sec:oscillatory|<tuple|2|4>>
-    <associate|sec:samplepaths|<tuple|4|10>>
+    <associate|sec:samplepaths|<tuple|4|11>>
     <associate|sec:stationary_timechange|<tuple|3|7>>
-    <associate|thm:Utheta_to_osc|<tuple|11|7>>
+    <associate|thm:Utheta_to_osc|<tuple|11|8>>
     <associate|thm:atomic|<tuple|16|12>>
-    <associate|thm:existence_osc|<tuple|9|5>>
+    <associate|thm:existence_osc|<tuple|9|6>>
     <associate|thm:expected_zero_counting|<tuple|25|17>>
     <associate|thm:kac_rice|<tuple|24|16>>
     <associate|thm:local_unitarity|<tuple|6|3>>
-    <associate|thm:paths_loc|<tuple|14|10>>
-    <associate|thm:realvaluedness|<tuple|8|4>>
+    <associate|thm:paths_loc|<tuple|14|11>>
+    <associate|thm:realvaluedness|<tuple|8|5>>
     <associate|thm:spectrum|<tuple|20|14>>
   </collection>
 </references>
