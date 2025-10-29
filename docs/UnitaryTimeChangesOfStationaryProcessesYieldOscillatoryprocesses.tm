@@ -498,7 +498,7 @@
     and covariance
 
     <\equation>
-      <tabular|<tformat|<cwith|1|5|1|1|cell-halign|l>|<cwith|1|5|1|1|cell-lborder|0ln>|<cwith|1|5|2|2|cell-halign|l>|<cwith|1|5|2|2|cell-rborder|0ln>|<table|<row|<cell|R<rsub|Z><around|(|t,s|)>>|<cell|=\<bbb-E\><around|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=\<bbb-E\>*<around*|[|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*X<around|(|\<theta\><around|(|t|)>|)><wide|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*X<around|(|\<theta\><around|(|t|)>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*\<bbb-E\><around|[|X<around|(|\<theta\><around|(|t|)>|)><wide|X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*R<rsub|X>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>>>><label|covar>
+      <tabular|<tformat|<cwith|1|5|1|1|cell-halign|l>|<cwith|1|5|1|1|cell-lborder|0ln>|<cwith|1|5|2|2|cell-halign|l>|<cwith|1|5|2|2|cell-rborder|0ln>|<table|<row|<cell|R<rsub|Z><around|(|t,s|)>>|<cell|=\<bbb-E\><around|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=\<bbb-E\>*<around*|[|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*X<around|(|\<theta\><around|(|t|)>|)><wide|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*X<around|(|\<theta\><around|(|t|)>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*\<bbb-E\><around|[|X<around|(|\<theta\><around|(|t|)>|)><wide|X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*R<rsub|X>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>>>><label|osccovar>
     </equation>
   </theorem>
 
@@ -861,7 +861,7 @@
     on the support of <math|\<mu\>> with domain
 
     <\equation>
-      \<cal-D\><around|(|L|)>\<assign\><around*|{|f\<in\>\<cal-H\>:<big|int><around|\||t*<space|0.17em>f<around|(|t|)>|\|><rsup|2>*<space|0.17em>\<mu\>*<around|(|d*t|)>\<less\>\<infty\>|}>
+      \<cal-D\><around|(|L|)>\<assign\><around*|{|f\<in\>\<cal-H\>:<big|int><around|\||t*<space|0.17em>f<around|(|t|)>|\|><rsup|2>\<mathd\>\<mu\><around|(|t|)>\<less\>\<infty\>|}>
     </equation>
   </definition>
 
@@ -1021,9 +1021,13 @@
   <\theorem>
     <dueto|Kac-Rice Formula for Zero Crossings><label|thm:kac_rice>Let
     <math|Z<around|(|t|)>> be a centered Gaussian process on
-    <math|<around|[|a,b|]>> with covariance
-    <math|K<around|(|s,t|)>=\<bbb-E\>*<around|[|Z<around|(|s|)>*Z<around|(|t|)>|]>>
-    then the expected number of zeros in <math|<around|[|a,b|]>> is
+    <math|<around|[|a,b|]>> with covariance <math|>
+
+    <\equation>
+      \;
+    </equation>
+
+    \ then the expected number of zeros in <math|<around|[|a,b|]>> is
 
     <\equation>
       <label|eq:kac_rice>\<bbb-E\><around|[|N<rsub|<around|[|a,b|]>>|]>=<big|int><rsub|a><rsup|b><sqrt|<frac|2|\<pi\>>>*<frac|<sqrt|K<around|(|t,t|)>*K<rsub|<wide|Z|\<dot\>>><around|(|t,t|)>-K<rsub|Z,<wide|Z|\<dot\>>><around|(|t,t|)><rsup|2>>|K<around|(|t,t|)>>*<space|0.17em>d*t
@@ -1078,7 +1082,7 @@
       the inverse of which satisfies
 
       <\equation>
-        \<Sigma\><rsup|-1><rsub|22>=<frac|K<around|(|t,t|)>|det \<Sigma\>>
+        \<Sigma\><rsup|-1>=<frac|K<around|(|t,t|)>|det \<Sigma\>>
       </equation>
 
       \ yielding
@@ -1155,7 +1159,7 @@
     Computing the mixed partial derivative:
 
     <\equation>
-      <label|eq:mixed_partial><frac|\<partial\>|\<partial\>*t>*K<rsub|\<theta\>><around|(|s,t|)>=<frac|1|2>*<frac|<wide|\<theta\>|\<dot\>><around|(|t|)>|<sqrt|\<theta\><around|(|t|)>>>*<sqrt|\<theta\><rprime|'><around|(|s|)>>*<space|0.17em>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>
+      <label|eq:mixed_partial><frac|\<partial\>|\<partial\>*t>*K<rsub|\<theta\>><around|(|s,t|)>=<frac|1|2>*<frac|<wide|\<theta\>|\<dot\>><around|(|t|)>|<sqrt|\<theta\><around|(|t|)>>>*<sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>*<space|0.17em>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>
     </equation>
 
     <\equation>
@@ -1209,7 +1213,7 @@
     <associate|auto-8|<tuple|3.3|10>>
     <associate|auto-9|<tuple|4|11>>
     <associate|cor:evol_spec|<tuple|12|9>>
-    <associate|covar|<tuple|46|8>>
+    <associate|covar|<tuple|18|4>>
     <associate|def:L|<tuple|19|14>>
     <associate|def:L2loc|<tuple|2|2>>
     <associate|def:Utheta|<tuple|4|2>>
@@ -1218,20 +1222,21 @@
     <associate|def:regularity|<tuple|22|15>>
     <associate|def:sigma_compact|<tuple|1|2>>
     <associate|def:zeromeasure|<tuple|15|12>>
-    <associate|eq:covariance_def|<tuple|124|17>>
-    <associate|eq:expectation|<tuple|115|16>>
-    <associate|eq:expected_zeros|<tuple|125|17>>
-    <associate|eq:kac_rice|<tuple|110|16>>
-    <associate|eq:kac_rice_formula|<tuple|127|18>>
-    <associate|eq:limit_mixed_partial|<tuple|130|18>>
-    <associate|eq:mixed_partial|<tuple|128|18>>
-    <associate|eq:mixed_partial_continued|<tuple|129|18>>
-    <associate|eq:substituted_kac_rice|<tuple|131|18>>
-    <associate|eq:time_changed_cov|<tuple|126|17>>
+    <associate|eq:covariance_def|<tuple|125|17>>
+    <associate|eq:expectation|<tuple|116|16>>
+    <associate|eq:expected_zeros|<tuple|126|17>>
+    <associate|eq:kac_rice|<tuple|111|16>>
+    <associate|eq:kac_rice_formula|<tuple|128|18>>
+    <associate|eq:limit_mixed_partial|<tuple|131|18>>
+    <associate|eq:mixed_partial|<tuple|129|18>>
+    <associate|eq:mixed_partial_continued|<tuple|130|18>>
+    <associate|eq:substituted_kac_rice|<tuple|132|18>>
+    <associate|eq:time_changed_cov|<tuple|127|17>>
     <associate|labeldef:Hmu|<tuple|17|13>>
     <associate|labelrem:scaffold|<tuple|21|15>>
     <associate|lem:delta|<tuple|23|15>>
     <associate|of|<tuple|15|4>>
+    <associate|osccovar|<tuple|46|8>>
     <associate|prop:atomic|<tuple|18|13>>
     <associate|prop:conjugation|<tuple|13|10>>
     <associate|prop:inverse|<tuple|5|2>>

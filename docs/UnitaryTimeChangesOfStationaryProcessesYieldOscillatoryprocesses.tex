@@ -130,7 +130,7 @@
 \end{theorem}
 
 \begin{proof}
-  Let $f \in L^2_{\tmop{loc}} (\mathbb{R})$ and let $U$ be any
+  Let $f \in L^2_{\tmop{loc}} (\mathbb{R})$ and let $C$ be any
   $\sigma$-compact set. The local $L^2$-norm of $U_{\theta} f$ over $C$ is:
   \begin{equation}
     \begin{array}{ll}
@@ -151,32 +151,45 @@
     \int_C \dot{\theta} (t)  |f (\theta (t)) |^2 \hspace{0.17em} dt =
     \int_{\theta (C)} |f (s) |^2  \hspace{0.17em} ds
   \end{equation}
-  To verify that $U_{\theta}^{- 1}$ is indeed the inverse, we compute
-  explicitly. For any $f \in L^2_{\tmop{loc}} (\mathbb{R})$:
+  To verify that $U_{\theta}^{- 1}$ is indeed the inverse, it is seen that:
   \begin{equation}
-    \begin{array}{ll}
+    \begin{array}{llcccc}
       (U_{\theta}^{- 1} U_{\theta} f) (s) & = \left( U_{\theta}^{- 1} 
-      \sqrt{\dot{\theta} (s)} f (\theta (s)) \right) (s)\\
+      \sqrt{\dot{\theta} (s)} f (\theta (s)) \right) (s) &  &  &  & \\
       & = \frac{\sqrt{\dot{\theta} (\theta^{- 1} (s))}}{\sqrt{\dot{\theta}
-      (\theta^{- 1} (s))}} f (\theta (\theta^{- 1} (s)))\\
-      & = f (s)
+      (\theta^{- 1} (s))}} f (\theta (\theta^{- 1} (s))) &  &  &  & \forall f
+      \in L^2_{\tmop{loc}} (\mathbb{R})\\
+      & = f (s) &  &  &  & 
     \end{array}
   \end{equation}
-  since $\theta (\theta^{- 1} (s)) = s$. Similarly, for any $g \in
-  L^2_{\tmop{loc}} (\mathbb{R})$:
+  since
+  \begin{equation}
+    \theta (\theta^{- 1} (s)) = s
+  \end{equation}
+  and similarly, its also plain to see that:
+  \begin{equation}
+    \begin{array}{llcccc}
+      (U_{\theta} U_{\theta}^{- 1} g) (t) & = \sqrt{\dot{\theta} (t)} 
+      (U_{\theta}^{- 1} g) (\theta (t)) &  &  &  & \\
+      & = \frac{\sqrt{\dot{\theta} (t)}}{\sqrt{\dot{\theta} (\theta^{- 1}
+      (\theta (t)))}} g (\theta^{- 1} (\theta (t))) &  &  &  & \forall g \in
+      L^2_{\tmop{loc}} (\mathbb{R})\\
+      & = \frac{\sqrt{\dot{\theta} (t)}}{\sqrt{\dot{\theta} (t)}} g (t) &  & 
+      &  & \\
+      & = g (t) &  &  &  & 
+    \end{array}
+  \end{equation}
+  since
+  \begin{equation}
+    \theta^{- 1} (\theta (t)) = t
+  \end{equation}
+  Therefore
   \begin{equation}
     \begin{array}{ll}
-      (U_{\theta} U_{\theta}^{- 1} g) (t) & = \sqrt{\dot{\theta} (t)} 
-      (U_{\theta}^{- 1} g) (\theta (t))\\
-      & = \frac{\sqrt{\dot{\theta} (t)}}{\sqrt{\dot{\theta} (\theta^{- 1}
-      (\theta (t)))}} g (\theta^{- 1} (\theta (t)))\\
-      & = \frac{\sqrt{\dot{\theta} (t)}}{\sqrt{\dot{\theta} (t)}} g (t)\\
-      & = g (t)
+      (U_{\theta} U_{\theta}^{- 1} f) (t) & = (U_{\theta}^{- 1} U_{\theta} f)
+      (t)\\
+      & = f (t)
     \end{array}
-  \end{equation}
-  since $\theta^{- 1} (\theta (t)) = t$. Therefore
-  \begin{equation}
-    U_{\theta} U_{\theta}^{- 1} = U_{\theta}^{- 1} U_{\theta} = I
   \end{equation}
   on $L^2_{\tmop{loc}} (\mathbb{R})$.
 \end{proof}
@@ -185,8 +198,11 @@
 
 \begin{definition}
   {\tmstrong{[Oscillatory process]\label{def:osc_proc} }}Let $F$ be a finite
-  nonnegative Borel measure on $\mathbb{R}$. For each $t \in \mathbb{R}$, let
-  $A_t \in L^2 (F)$ be the gain function and
+  nonnegative Borel measure on $\mathbb{R}$. Let
+  \begin{equation}
+    A_t \in L^2 (F) \forall t \in \mathbb{R}
+  \end{equation}
+  be the gain function and
   \begin{equation}
     \varphi_t (\lambda) = A_t (\lambda) e^{i \lambda t} \label{of}
   \end{equation}
@@ -418,7 +434,7 @@ Processes}\label{sec:stationary_timechange}
       (s))\\
       & = \sqrt{\dot{\theta} (t)  \dot{\theta} (s)}  \int_{\mathbb{R}} e^{i
       \lambda (\theta (t) - \theta (s))}  \hspace{0.17em} dF (\lambda)
-    \end{array} \label{covar}
+    \end{array} \label{osccovar}
   \end{equation}
 \end{theorem}
 
@@ -776,7 +792,7 @@ Processes}\label{sec:stationary_timechange}
   on the support of $\mu$ with domain
   \begin{equation}
     \mathcal{D} (L) \assign \left\{ f \in \mathcal{H}: \int |t \hspace{0.17em}
-    f (t) |^2  \hspace{0.17em} \mu (dt) < \infty \right\}
+    f (t) |^2 \mathd \mu (t) < \infty \right\}
   \end{equation}
 \end{definition}
 
@@ -911,8 +927,11 @@ Processes}\label{sec:stationary_timechange}
 
 \begin{theorem}[Kac-Rice Formula for Zero Crossings]
   \label{thm:kac_rice}Let $Z (t)$ be a centered Gaussian process on $[a, b]$
-  with covariance $K (s, t) =\mathbb{E} [Z (s) Z (t)]$ then the expected
-  number of zeros in $[a, b]$ is
+  with covariance
+  \begin{equation}
+    \ 
+  \end{equation}
+  then the expected number of zeros in $[a, b]$ is
   \begin{equation}
     \label{eq:kac_rice} \mathbb{E} [N_{[a, b]}] = \int_a^b
     \sqrt{\frac{2}{\pi}}  \frac{\sqrt{K (t, t) K_{\dot{Z}} (t, t) - K_{Z,
@@ -961,7 +980,7 @@ Processes}\label{sec:stationary_timechange}
     \end{equation}
     the inverse of which satisfies
     \begin{equation}
-      \Sigma^{- 1}_{22} = \frac{K (t, t)}{\det \Sigma}
+      \Sigma^{- 1} = \frac{K (t, t)}{\det \Sigma}
     \end{equation}
     yielding
     \begin{equation}
@@ -1031,8 +1050,8 @@ Processes}\label{sec:stationary_timechange}
   Computing the mixed partial derivative:
   \begin{equation}
     \label{eq:mixed_partial} \frac{\partial}{\partial t} K_{\theta} (s, t) =
-    \frac{1}{2}  \frac{\dot{\theta} (t)}{\sqrt{\theta (t)}}  \sqrt{\theta'
-    (s)}  \hspace{0.17em} K (| \theta (t) - \theta (s) |)
+    \frac{1}{2}  \frac{\dot{\theta} (t)}{\sqrt{\theta (t)}} 
+    \sqrt{\dot{\theta} (s)}  \hspace{0.17em} K (| \theta (t) - \theta (s) |)
   \end{equation}
   \begin{equation}
     \label{eq:mixed_partial_continued} + \sqrt{\theta (s)}  \sqrt{\theta (t)} 
