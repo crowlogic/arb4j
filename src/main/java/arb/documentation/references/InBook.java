@@ -4,23 +4,29 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-import arb.documentation.AbstractBibliography;
+import arb.documentation.*;
 
-public record InCollection(String title,
-                           String author,
-                           String year,
-                           String booktitle,
-                           AtomicReference<String> publisher,
-                           AtomicReference<String> address,
-                           String pages,
-                           AtomicReference<String> editor,
-                           AtomicReference<String> volume,
-                           AtomicReference<String> number,
-                           AtomicReference<String> series,
-                           AtomicReference<String> isbn,
-                           AtomicReference<String> doi)
-                          implements
-                          Reference
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
+public record InBook(String title,
+                     String author,
+                     String year,
+                     String booktitle,
+                     String chapter,
+                     String pages,
+                     AtomicReference<String> publisher,
+                     AtomicReference<String> address,
+                     AtomicReference<String> editor,
+                     AtomicReference<String> volume,
+                     AtomicReference<String> number,
+                     AtomicReference<String> series,
+                     AtomicReference<String> edition,
+                     AtomicReference<String> isbn,
+                     AtomicReference<String> doi)
+                    implements
+                    Reference
 {
 
   @Override
@@ -36,27 +42,36 @@ public record InCollection(String title,
     fields.put("title", "title");
     fields.put("booktitle", "booktitle");
     fields.put("year", "year");
+    fields.put("chapter", "chapter");
+    fields.put("pages", "getPages");
     fields.put("editor", "getEditor");
     fields.put("publisher", "getPublisher");
     fields.put("address", "getAddress");
-    fields.put("pages", "getPages");
     fields.put("volume", "getVolume");
     fields.put("number", "getNumber");
     fields.put("series", "getSeries");
+    fields.put("edition", "getEdition");
     fields.put("isbn", "getIsbn");
     fields.put("doi", "getDoi");
     return fields;
   }
 
-  public InCollection(String title, String author, String year, String booktitle, String pages)
+  public InBook(String title,
+                String author,
+                String year,
+                String booktitle,
+                String chapter,
+                String pages)
   {
     this(title,
          author,
          year,
          booktitle,
-         new AtomicReference<>(),
-         new AtomicReference<>(),
+         chapter,
          pages,
+         new AtomicReference<>(),
+         new AtomicReference<>(),
+         new AtomicReference<>(),
          new AtomicReference<>(),
          new AtomicReference<>(),
          new AtomicReference<>(),
@@ -66,51 +81,57 @@ public record InCollection(String title,
   }
 
   @Override
-  public InCollection setPublisher(String publisher)
+  public InBook setPublisher(String publisher)
   {
     this.publisher.set(publisher);
     return this;
   }
 
   @Override
-  public InCollection setAddress(String address)
+  public InBook setAddress(String address)
   {
     this.address.set(address);
     return this;
   }
 
   @Override
-  public InCollection setVolume(String volume)
+  public InBook setVolume(String volume)
   {
     this.volume.set(volume);
     return this;
   }
 
-  public InCollection setEditor(String editor)
+  public InBook setEditor(String editor)
   {
     this.editor.set(editor);
     return this;
   }
 
-  public InCollection setNumber(String number)
+  public InBook setNumber(String number)
   {
     this.number.set(number);
     return this;
   }
 
-  public InCollection setSeries(String series)
+  public InBook setSeries(String series)
   {
     this.series.set(series);
     return this;
   }
 
-  public InCollection setIsbn(String isbn)
+  public InBook setEdition(String edition)
+  {
+    this.edition.set(edition);
+    return this;
+  }
+
+  public InBook setIsbn(String isbn)
   {
     this.isbn.set(isbn);
     return this;
   }
 
-  public InCollection setDoi(String doi)
+  public InBook setDoi(String doi)
   {
     this.doi.set(doi);
     return this;
@@ -131,7 +152,12 @@ public record InCollection(String title,
   @Override
   public String getPages()
   {
-    return pages();
+    return pages;
+  }
+
+  public String getChapter()
+  {
+    return chapter;
   }
 
   public String getEditor()
@@ -152,6 +178,11 @@ public record InCollection(String title,
   public String getSeries()
   {
     return series.get();
+  }
+
+  public String getEdition()
+  {
+    return edition.get();
   }
 
   public String getIsbn()

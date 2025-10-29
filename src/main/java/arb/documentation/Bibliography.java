@@ -3,8 +3,7 @@ package arb.documentation;
 import java.io.IOException;
 import java.nio.file.*;
 
-import arb.documentation.references.Article;
-import arb.documentation.references.Book;
+import arb.documentation.references.*;
 
 /**
  * Bibliography<br>
@@ -26,13 +25,13 @@ public class Bibliography extends
                                                                          "44",
                                                                          "261–273").setNumber("3");
 
-  public static Article grochenigSchoenbergTotallyPositiveFunctions                      =
-                                                                    new Article("Schoenberg's Theory of Totally Positive Functions and the Riemann Zeta Function",
-                                                                                "Karlheinz Gröchenig",
-                                                                                "2024",
-                                                                                "Sampling, Approximation, and Signal Analysis, Harmonic Analysis in the Spirit of J. Rowland Higgins",
-                                                                                "",
-                                                                                "193–210").setPublisher("Birkhäuser");
+  public static InBook  grochenigSchoenbergTotallyPositiveFunctions                      =
+                                                                    new InBook("Schoenberg's Theory of Totally Positive Functions and the Riemann Zeta Function",
+                                                                               "Karlheinz Gröchenig",
+                                                                               "2024",
+                                                                               "Sampling, Approximation, and Signal Analysis, Harmonic Analysis in the Spirit of J. Rowland Higgins",
+                                                                               null,
+                                                                               "193–210").setPublisher("Birkhäuser");
 
   public static Article cramerNonStationaryProcesses                                     =
                                                      new Article("On some classes of non-stationary stochastic processes",
