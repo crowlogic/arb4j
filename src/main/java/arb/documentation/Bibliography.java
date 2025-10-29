@@ -1,9 +1,7 @@
 package arb.documentation;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 
 import arb.documentation.references.Article;
 import arb.documentation.references.Book;
@@ -20,6 +18,22 @@ import arb.documentation.references.Book;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article kluschSamplingTheoremDirichletSeries                             =
+                                                             new Article("The sampling theorem, Dirichlet series and Hankel transforms",
+                                                                         "Dieter Klusch",
+                                                                         "1992",
+                                                                         "Journal of Computational and Applied Mathematics",
+                                                                         "44",
+                                                                         "261–273").setNumber("3");
+
+  public static Article grochenigSchoenbergTotallyPositiveFunctions                      =
+                                                                    new Article("Schoenberg's Theory of Totally Positive Functions and the Riemann Zeta Function",
+                                                                                "Karlheinz Gröchenig",
+                                                                                "2024",
+                                                                                "Sampling, Approximation, and Signal Analysis, Harmonic Analysis in the Spirit of J. Rowland Higgins",
+                                                                                "",
+                                                                                "193–210").setPublisher("Birkhäuser");
+
   public static Article cramerNonStationaryProcesses                                     =
                                                      new Article("On some classes of non-stationary stochastic processes",
                                                                  "H. Cramér",
