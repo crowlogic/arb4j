@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|article|boring-white|framed-theorems>>
+<style|<tuple|article|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Invertibility and Random Measure Formulas for
@@ -303,6 +303,8 @@
   </theorem>
 
   <\proof>
+    \;
+
     <\enumerate>
       <item>Substitute <eqref|eq:gain-from-filter> into
       <eqref|eq:delta-ortho> and expand integrals to obtain the triple
@@ -334,7 +336,7 @@
     Then, in the distributional sense,
 
     <\equation>
-      <label|eq:phi-complete>\<Phi\><around|(|\<lambda\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|1-e<rsup|-i*\<lambda\>*u>|i*u>*<space|0.17em>d*W<around|(|u|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|1-e<rsup|-i*\<lambda\>*t>|i*t>*<space|0.17em>X<around|(|t|)>*<space|0.17em>d*t.
+      <tabular|<tformat|<table|<row|<cell|<label|eq:phi-complete>\<Phi\><around|(|\<lambda\>|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|1-e<rsup|-i*\<lambda\>*u>|i*u>*<space|0.17em>d*W<around|(|u|)>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|1-e<rsup|-i*\<lambda\>*t>|i*t>*<space|0.17em>X<around|(|t|)>*<space|0.17em>d*t>>>>>
     </equation>
   </theorem>
 
@@ -419,50 +421,50 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|auto-10|<tuple|38|6|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|auto-11|<tuple|39|6|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|auto-12|<tuple|7|6|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|auto-2|<tuple|1.1|3|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|auto-3|<tuple|1.2|3|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|auto-4|<tuple|2|3|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|auto-5|<tuple|3|4|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|auto-6|<tuple|4|4|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|auto-7|<tuple|5|5|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|auto-8|<tuple|6|5|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|auto-9|<tuple|6|5|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|def:filter-gain|<tuple|4|2|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|def:invop|<tuple|8|3|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|def:nondeg|<tuple|6|3|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|def:orthinc|<tuple|1|1|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|def:orthonormality|<tuple|7|3|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|def:oscproc|<tuple|5|2|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|def:real|<tuple|11|4|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|def:stationary|<tuple|3|2|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|def:whitenoise|<tuple|2|2|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|eq:Atlambda-L2-mu|<tuple|13|2|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|eq:cov-id|<tuple|39|6|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|eq:covariance|<tuple|14|2|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|eq:delta-ortho|<tuple|16|3|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|eq:filter-from-gain|<tuple|8|2|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|eq:gain-from-filter|<tuple|7|2|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|eq:hermitian|<tuple|28|4|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|eq:inv-identity|<tuple|18|3|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|eq:invop|<tuple|17|3|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|eq:nonzero|<tuple|15|3|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|eq:osc-convolution|<tuple|12|2|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|eq:osc-filter|<tuple|11|2|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|eq:osc-spectral|<tuple|10|2|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|eq:phi-complete|<tuple|32|5|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|eq:real-cond|<tuple|27|4|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|eq:stationary-rep|<tuple|5|2|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|eq:summary-1|<tuple|35|5|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|eq:summary-2|<tuple|36|5|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|eq:summary-3|<tuple|37|5|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|eq:summary-4|<tuple|38|5|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|eq:triple-integral|<tuple|29|4|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|lem:unique|<tuple|10|4|../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|thm:fund-inv|<tuple|9|3|../.TeXmacs/texts/scratch/no_name_23.tm>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-10|<tuple|38|6>>
+    <associate|auto-11|<tuple|39|6>>
+    <associate|auto-12|<tuple|7|6>>
+    <associate|auto-2|<tuple|1.1|2>>
+    <associate|auto-3|<tuple|1.2|3>>
+    <associate|auto-4|<tuple|2|3>>
+    <associate|auto-5|<tuple|3|4>>
+    <associate|auto-6|<tuple|4|4>>
+    <associate|auto-7|<tuple|5|5>>
+    <associate|auto-8|<tuple|6|5>>
+    <associate|auto-9|<tuple|6|5>>
+    <associate|def:filter-gain|<tuple|4|2>>
+    <associate|def:invop|<tuple|8|3>>
+    <associate|def:nondeg|<tuple|6|2>>
+    <associate|def:orthinc|<tuple|1|1>>
+    <associate|def:orthonormality|<tuple|7|3>>
+    <associate|def:oscproc|<tuple|5|2>>
+    <associate|def:real|<tuple|11|4>>
+    <associate|def:stationary|<tuple|3|2>>
+    <associate|def:whitenoise|<tuple|2|1>>
+    <associate|eq:Atlambda-L2-mu|<tuple|13|2>>
+    <associate|eq:cov-id|<tuple|39|6>>
+    <associate|eq:covariance|<tuple|14|2>>
+    <associate|eq:delta-ortho|<tuple|16|3>>
+    <associate|eq:filter-from-gain|<tuple|8|2>>
+    <associate|eq:gain-from-filter|<tuple|7|2>>
+    <associate|eq:hermitian|<tuple|28|4>>
+    <associate|eq:inv-identity|<tuple|18|3>>
+    <associate|eq:invop|<tuple|17|3>>
+    <associate|eq:nonzero|<tuple|15|2>>
+    <associate|eq:osc-convolution|<tuple|12|2>>
+    <associate|eq:osc-filter|<tuple|11|2>>
+    <associate|eq:osc-spectral|<tuple|10|2>>
+    <associate|eq:phi-complete|<tuple|32|5>>
+    <associate|eq:real-cond|<tuple|27|4>>
+    <associate|eq:stationary-rep|<tuple|5|2>>
+    <associate|eq:summary-1|<tuple|35|5>>
+    <associate|eq:summary-2|<tuple|36|5>>
+    <associate|eq:summary-3|<tuple|37|5>>
+    <associate|eq:summary-4|<tuple|38|5>>
+    <associate|eq:triple-integral|<tuple|29|4>>
+    <associate|lem:unique|<tuple|10|4>>
+    <associate|thm:fund-inv|<tuple|9|3>>
   </collection>
 </references>
 
