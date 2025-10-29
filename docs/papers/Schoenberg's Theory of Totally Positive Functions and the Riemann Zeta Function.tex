@@ -1,0 +1,1013 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{geometry,amsmath,amssymb}
+\geometry{letterpaper}
+
+%%%%%%%%%% Start TeXmacs macros
+\catcode`\<=\active \def<{
+\fontencoding{T1}\selectfont\symbol{60}\fontencoding{\encodingdefault}}
+\catcode`\>=\active \def>{
+\fontencoding{T1}\selectfont\symbol{62}\fontencoding{\encodingdefault}}
+\newcommand{\nequiv}{\mathrel{\not\equiv}}
+\newcommand{\tmaffiliation}[1]{\\ #1}
+\newcommand{\tmem}[1]{{\em #1\/}}
+\newcommand{\tmemail}[1]{\\ \textit{Email:} \texttt{#1}}
+\newcommand{\tmnote}[1]{\thanks{\textit{Note:} #1}}
+\newcommand{\tmrsub}[1]{\ensuremath{_{\textrm{#1}}}}
+\newcommand{\tmrsup}[1]{\textsuperscript{#1}}
+\newcommand{\tmtextit}[1]{\text{{\itshape{#1}}}}
+\newtheorem{corollary}{Corollary}
+%%%%%%%%%% End TeXmacs macros
+
+\newtheorem{tm}{Theorem}
+\newtheorem{exmp}{Example}
+\newtheorem{exmps}{Examples}
+\newtheorem{alg}{Algorithm}
+\newtheorem{rems}{Remarks}
+{\newenvironmentstar{mylist}{1}{ }}
+\newcommand{\up}{uncertainty principle}
+\newcommand{\tfa}{time-frequency analysis}
+\newcommand{\tfr}{time-frequency representation}
+\newcommand{\ft}{Fourier transform}
+\newcommand{\stft}{short-time Fourier transform}
+\newcommand{\qm}{quantum mechanics}
+\newcommand{\tf}{time-frequency}
+\newcommand{\fa}{Fourier analysis}
+\newcommand{\fct}{function}
+\newcommand{\fif}{if and only if}
+\newcommand{\tfs}{time-frequency shift}
+\newcommand{\fs}{Fourier series}
+\newcommand{\on}{orthonormal}
+\newcommand{\onb}{orthonormal basis}
+\newcommand{\fco}{Fourier coefficient}
+\newcommand{\sa}{signal analysis}
+\newcommand{\psf}{Poisson summation formula}
+\newcommand{\bdl}{bandlimited}
+\newcommand{\prob}{probability}
+\newcommand{\Wd}{Wigner distribution}
+\newcommand{\gf}{Gabor frame}
+\newcommand{\frop}{frame operator}
+\newcommand{\gfrop}{Gabor frame operator}
+\newcommand{\coeff}{coefficient}
+\newcommand{\repr}{representation}
+\newcommand{\rb}{Riesz basis}
+\newcommand{\mdl}{modulation}
+\newcommand{\distr}{distribution}
+\newcommand{\modsp}{modulation space}
+\newcommand{\psdo}{pseudodifferential operator}
+\newcommand{\hei}{Heisenberg group}
+\newcommand{\rep}{representation}
+\newcommand{\ha}{harmonic analysis}
+\newcommand{\lcg}{locally compact group}
+\newcommand{\lcal}{locally compact abelian}
+\newcommand{\srep}{Schr{\"o}dinger representation}
+\newcommand{\svn}{Stone--von Neumann theorem}
+\newcommand{\iur}{irreducible unitary representation}
+\newcommand{\gs}{Gabor system}
+\newcommand{\zt}{Zak transform}
+\newcommand{\blt}{Balian--Low theorem}
+\newcommand{\wb}{Wilson bas}
+\newcommand{\ws}{Wilson system}
+\newcommand{\wt}{wavelet transform}
+\newcommand{\wth}{wavelet theory}
+\newcommand{\gex}{Gabor expansion}
+\newcommand{\wl}{Wiener's lemma}
+\newcommand{\opal}{operator algebra}
+\newcommand{\trpo}{trigonometric polynomial}
+\providecommand{\op}{operator}
+\newcommand{\pde}{partial differential equation}
+\newcommand{\knc}{Kohn--Nirenberg correspondence}
+\newcommand{\fre}{frequency}
+\newtheorem{tm}{Theorem}
+\newtheorem{exmp}{Example}
+\newtheorem{exmps}{Examples}
+\newtheorem{alg}{Algorithm}
+\newtheorem{rems}{Remarks}
+\newcommand{\beqa}{}
+\newcommand{\eeqa}{}
+\providecommand{\*}{{\opl}}
+\newcommand{\field}[1]{#1}
+\newcommand{\bR}{\field{R}}
+\newcommand{\bN}{\field{N}}
+\newcommand{\bZ}{\field{Z}}
+\newcommand{\bC}{\field{C}}
+\newcommand{\bQ}{{\field{Q}}}
+\newcommand{\bT}{{\field{T}}}
+\newcommand{\bH}{{\field{H}}}
+\newcommand{\mylistlabel}[1]{#1{\hspace*{\fill}}}
+{\newenvironmentstar{mylist}{1}{ }}
+\newcommand{\Hr}{{\bH}{\hspace{0.17em}} \tmrsub{r}}
+\newcommand{\bh}{\mathbf{h}}
+\newcommand{\arro}{\ensuremath{\Rightarrow}}
+\newcommand{\al}{{\alpha}}
+\newcommand{\be}{{\beta}}
+\newcommand{\ga}{{\gamma}}
+\newcommand{\Ga}{{\Gamma}}
+\newcommand{\de}{{\delta}}
+\newcommand{\De}{{\Delta}}
+\newcommand{\la}{{\lambda}}
+\newcommand{\La}{{\Lambda}}
+\newcommand{\vp}{{\varphi}}
+\newcommand{\ve}{{\varepsilon}}
+\newcommand{\e}{{\epsilon}}
+\newcommand{\ka}{{\kappa}}
+\newcommand{\om}{{\omega}}
+\newcommand{\Om}{{\Omega}}
+\newcommand{\si}{{\sigma}}
+\newcommand{\Si}{{\Sigma}}
+\newcommand{\cF}{\ensuremath{\mathcal{F}}}
+\newcommand{\cS}{\ensuremath{\mathcal{S}}}
+\newcommand{\cD}{\ensuremath{\mathcal{D}}}
+\newcommand{\cH}{\ensuremath{\mathcal{H}}}
+\newcommand{\cB}{\ensuremath{\mathcal{B}}}
+\newcommand{\cG}{\ensuremath{\mathcal{G}}}
+\newcommand{\cM}{\ensuremath{\mathcal{M}}}
+\newcommand{\cK}{\ensuremath{\mathcal{K}}}
+\newcommand{\cU}{\ensuremath{\mathcal{U}}}
+\newcommand{\cA}{\ensuremath{\mathcal{A}}}
+\newcommand{\cE}{\ensuremath{\mathcal{E}}}
+\newcommand{\cJ}{\ensuremath{\mathcal{J}}}
+\newcommand{\cI}{\ensuremath{\mathcal{I}}}
+\newcommand{\cC}{\ensuremath{\mathcal{C}}}
+\newcommand{\cW}{\ensuremath{\mathcal{W}}}
+\newcommand{\cO}{\mathcal{O}}
+\newcommand{\cN}{\ensuremath{\mathcal{N}}}
+\newcommand{\cP}{\ensuremath{\mathcal{P}}}
+\newcommand{\cR}{\ensuremath{\mathcal{R}}}
+\newcommand{\cT}{\ensuremath{\mathcal{T}}}
+\newcommand{\cX}{\ensuremath{\mathcal{X}}}
+\newcommand{\cZ}{\ensuremath{\mathcal{Z}}}
+\newcommand{\tma}{{\aleph}}
+\newcommand{\fhat}{\^{f}}
+\newcommand{\hg}{\^{g}}
+\newcommand{\bg}{\={g}}
+\newcommand{\hvp}{\^{{\vp}}}
+\newcommand{\wh}[1]{\^{#1}}
+\newcommand{\tW}{\~{W}}
+\newcommand{\tif}{\~{f}}
+\newcommand{\tig}{\~{g}}
+\newcommand{\tih}{\~{h}}
+\newcommand{\tz}{\~{{\zeta}}}
+\newcommand{\Lac}{{\Lambda}\tmrsup{{\circ}}}
+\newcommand{\vgf}{V\tmrsub{g}f}
+\newcommand{\cano}{\tmrsup{{\circ}}}
+\newcommand{\rd}{{\bR}\tmrsup{d}}
+\newcommand{\cd}{{\bC}\tmrsup{d}}
+\newcommand{\rdd}{{\bR}\tmrsup{2d}}
+\newcommand{\zdd}{{\bZ}\tmrsup{2d}}
+\newcommand{\ellzd}{{\ell}\tmrsup{1}({\zd})}
+\newcommand{\lr}{L\tmrsup{2}({\bR})}
+\newcommand{\lrd}{L\tmrsup{2}({\rd})}
+\newcommand{\lrdd}{L\tmrsup{2}({\rdd})}
+\newcommand{\zd}{{\bZ}\tmrsup{d}}
+\newcommand{\td}{{\bT}\tmrsup{d}}
+\newcommand{\mvv}{M\tmrsub{v}\tmrsup{1}}
+\newcommand{\intrd}{\int\tmrsub{{\rd}}}
+\newcommand{\intrdd}{\int\tmrsub{{\rdd}}}
+\newcommand{\intcd}{\int\tmrsub{{\cd}}}
+\newcommand{\infint}{\int\tmrsub{-{\infty}}\tmrsup{{\infty}}}
+\newcommand{\dint}{\int{\hspace{-0.17em}}{\hspace{-0.17em}}{\hspace{-0.17em}}\int}
+\newcommand{\tmL}{(}
+\newcommand{\R}{)}
+\newcommand{\tml}{{\langle}}
+\newcommand{\tmr}{{\rangle}}
+\newcommand{\<}{}
+\newcommand{\>}{}
+\newcommand{\ra}{{\rightarrow}}
+\newcommand{\lra}{{\longrightarrow}}
+\newcommand{\Lra}{{\Longrightarrow}}
+\newcommand{\Llra}{{\Longleftrightarrow}}
+\newcommand{\lms}{{\longmapsto}}
+\newcommand{\sset}{{\subset}}
+\newcommand{\sseq}{{\subseteq}}
+\newcommand{\IN}{{\hspace{-0.17em}}{\in}{\hspace{-0.17em}}}
+\newcommand{\hats}{{\hspace{-0.17em}}\^{}}
+\newcommand{\prt}{{\partial}}
+\newcommand{\absl}{}
+\newcommand{\absr}{}
+\newcommand{\tamb}{T\tmrsub{{\al}k}M\tmrsub{{\be}n}}
+\newcommand{\mbta}{M\tmrsub{{\be}n}T\tmrsub{{\al}k}}
+\newcommand{\dsum}{\underset{k,n {\in}{\zd}}{\sum{\hspace{-0.17em}}\sum}}
+\newcommand{\lnsum}{\underset{l,n {\in}{\zd}}{\sum{\hspace{-0.17em}}\sum}}
+\newcommand{\invbe}{{\frac{1}{{\be}}}}
+\newcommand{\inval}{{\frac{1}{{\al}}}}
+\newcommand{\inv}{^{- 1}}
+\newcommand{\ud}{{\hspace{0.17em}} \mathrm{d}}
+\newcommand{\bks}{{\backslash}}
+\newcommand{\nat}{{\hspace{0.17em}}{\natural}{\hspace{0.17em}}}
+\newcommand{\intqa}{\int\tmrsub{Q\tmrsub{1/{\al}}}}
+\newcommand{\mv}{M\tmrsub{v}\tmrsup{1}}
+\newcommand{\alp}{{\tfrac{{\alpha}}{p}}{\hspace{0.17em}}}
+\newcommand{\zaa}{Z\tmrsub{{\alpha}}}
+\newcommand{\Lmpq}{L\tmrsub{m}\tmrsup{p,q}}
+\newcommand{\lmpq}{{\ell}\tmrsub{\~{m}}\tmrsup{p,q}}
+\newcommand{\ltmpq}{{\ell}\tmrsub{\~{m}}\tmrsup{p,q}}
+\newcommand{\Mmpq}{M\tmrsub{m}\tmrsup{p,q}}
+\newcommand{\phas}{(x,{\omega})}
+\newcommand{\Hpol}{{\bH}{\hspace{0.17em}} \tmrsup{pol}}
+\newcommand{\sgg}{S\tmrsub{g,g}}
+\providecommand{\qed}{{\hspace*{\fill}}{\rule{7pt}{8pt}} .2truein}
+\newcommand{\abs}[1]{{\lvert}#1{\rvert}}
+\newcommand{\norm}[1]{{\lVert}#1{\rVert}}
+\newcommand{\tp}{totally positive}
+\newcommand{\lpc}{Laguerre-Polya class}
+\newcommand{\pff}{Polya frequency function}
+
+\begin{document}
+
+\title{Schoenberg's Theory of Totally Positive Functions and the Riemann Zeta
+Function}
+
+\author{
+  Karlheinz Gr{\"o}chenig
+  \tmnote{K. G. was supported in part by the project P31887-N32 of the
+  Austrian Science Fund (FWF)}
+  \tmaffiliation{Faculty of Mathematics\\
+  University of Vienna\\
+  Oskar-Morgenstern-Platz 1\\
+  A-1090 Vienna, Austria}
+  \tmemail{karlheinz.groechenig@univie.ac.at}
+}
+
+\date{}
+
+\maketitle
+
+\begin{abstract}
+  We review Schoenberg's characterization of totally positive functions and
+  its connection to the Laguerre-Polya class. This characterization yields a
+  new condition that is equivalent to the truth of the Riemann hypothesis.
+\end{abstract}
+
+In a series of papers in the 1950s Schoenberg investigated the properties of
+{\tp} functions~{\cite{CS66,sch47,Sch50,sch51,SW53}}. He found several
+characterizations and used total positivity to prove fundamental properties of
+splines~{\cite{SW53,Sch73}}. The purpose of this note is to survey some
+aspects of Schoenberg's work on {\tp} functions, to advertize the connection
+between {\tp} functions and the Riemann hypothesis, and to provide some
+mathematical entertainment.
+
+One may speculate whether Schoenberg himself thought about the Riemann zeta
+function. He was the son-in-law of the eminent number theorist Edmund Landau,
+he collaborated with Polya, he knew deeply the work of Polya and Schur about
+the {\lpc} of entire functions that remains influential in the study of the
+Riemann hypothesis. Yet, to my knowledge, he never mentioned any number theory
+in his work on {\tp} functions and splines; by the same token, Schoenberg's
+name is not mentioned in analytic number theory.
+
+{\tmem{Totally positive functions.}} A measurable function $\Lambda$ on $\bR$
+is {\tp}, if for every $n \in \bN$ and every two sets of increasing numbers
+$x_1 < x_2 < \ldots < x_n$ and $y_1 < y_2 < \ldots < y_n$ the matrix $(\Lambda
+(x_j - y_k))_{j, k = 1, \ldots, n}$ has non-negative determinant:
+\begin{equation}
+  \label{eq:1} \det (\Lambda (x_j - y_k))_{j, k = 1, \ldots, n} \geq 0
+\end{equation}
+If in addition $\Lambda$ is integrable, then $\Lambda$ is called a Polya
+frequency function.
+
+If $\Lambda$ is {\tp} and not equal to $e^{ax + b}$, there exist an
+exponential $e^{cx}$, such that $\Lambda_1 (x) = e^{cx} \Lambda (x)$ is a
+{\pff}, i.e., $\Lambda_1$ is {\tp} and integrable~{\cite[Lemma~4]{sch51}}. It
+is usually no loss of generality to restrict to {\pff}s.
+
+The class of {\tp} functions played and plays an important role in
+approximation theory, in particular in spline theory~{\cite{SW53}}, and in
+statistics~{\cite{Efr65,karlin}}. In a different and rather surprising
+direction, {\tp} functions appear in the representation theory of infinite
+dimensional motion groups~{\cite{Pick91}}. Recently, {\tp}
+
+functions appeared in sampling theory and in {\tfa} {\cite{GS13,GRS18,GRS20}},
+where they were instrumental in the derivation of optimal results.
+
+{\tmem{The Laguerre-Polya class.}} An entire function $\Psi$ of order at most
+$2$ belongs to the Laguerre-Polya class, if its Hadamard factorization is of
+the form
+\begin{equation}
+  \label{eq:2} \Psi (s) = Cs^m e^{- \gamma s^2 + \delta s}  \hspace{0.17em}
+  \prod_{j = 1}^{\infty} (1 + \delta_j s) e^{- \delta_j s}  \qquad s \in \bC
+  \hspace{0.17em}
+\end{equation}
+where $\delta_j \inv \in \bR$ are the zeros of $\Psi$, $m$ is the order of the
+zero at $0$, $\gamma \geq 0$, $\delta \in \bR$, and
+\begin{equation}
+  \label{eq:3} 0 < \gamma + \sum_{j = 1}^{\infty} \delta_j^2 < \infty
+  \hspace{0.17em}
+\end{equation}
+Thus the {\lpc} consists of entire functions of order two with convergence
+exponent two with only real zeros. While the study of the distribution of
+zeros of entire functions is a perennial topic in complex analysis and of
+interest in its own right~{\cite{Levin80}}, the {\lpc} has gained special
+prominence in analytic number theory: the Riemann hypothesis says that a
+relative of the Riemann zeta function belongs to the {\lpc}.
+
+{\tmem{Schoenberg's characterization of {\tp} functions.}} The fundamental
+results about {\tp} functions were derived by Schoenberg in a series of
+papers~{\cite{sch47,Sch50,sch51,SW53}}. A comprehensive treatment is contained
+in Karlin's monograph~{\cite[Ch.~7]{karlin}}.
+
+The notions of {\tp} functions and {\lpc} are seemingly unrelated, yet there
+is a deep connection between them through the following characterization of
+Schoenberg~{\cite{sch51}}.
+
+\begin{tm}
+  \label{tm:tp}(i) If $\Lambda$ is a Polya frequency function, then its
+  (two-sided) Laplace transform converges in a vertical strip $\{z \in \bC :
+  \alpha < \mathrm{Re} \hspace{0.17em} z < \beta\}, \alpha < 0 < \beta$, and
+  \begin{equation}
+    \label{eq:5} \int_{- \infty}^{\infty} \Lambda (x) e^{- sx} 
+    \hspace{0.17em} dx = \frac{1}{\Psi (s)}
+  \end{equation}
+  is the reciprocal of a function $\Psi$ in the {\lpc} with $\Psi (0) > 0$.
+  
+  (ii) Conversely, if $\Psi$ is in the {\lpc} with $\Psi (0) > 0$, then its
+  reciprocal $1 / \Psi$ is the Laplace transform of a Polya frequency function
+  $\Lambda$.
+\end{tm}
+
+This is a fascinating theorem, because it relates two function classes that
+seem to bear absolutely no resemblance to each other. Schoenberg's theorem
+establishes a bijection between the class of {\pff}s, the {\lpc}, and yields a
+parametrization by the set $(0, \infty) \times \bR \times \ell^2 (\bZ)$.
+
+By using the Fourier transform instead of the Laplace transform, Schoenberg's
+theorem can be recast as follows: A function $\Lambda$ is {\tp} and
+integrable, {\fif} its Fourier transform possesses the factorization
+\begin{equation}
+  \label{eq:6} \hat{\Lambda} (\tau) = Ce^{- \gamma \tau^2 + 2 \pi i \delta
+  \tau}  \hspace{0.17em} \prod_{j = 1}^{\infty} (1 + 2 \pi i \delta_j \tau)
+  \inv e^{2 \pi i \delta_j \tau}
+\end{equation}
+where $C > 0$, $\gamma \geq 0$, $\delta, \delta_j \in \bR$ and $\sum_{j =
+1}^{\infty} \delta_j^2 < \infty$ (and the product in \eqref{eq:6} may also be
+finite).
+
+If we drop the condition of integrability and exclude exponential functions,
+then the representation \eqref{eq:6} still holds for every {\tp} function, but
+their Laplace transform of $\Lambda$ converges in some vertical strip $\{z \in
+\bC : \alpha < \mathrm{Re} \hspace{0.17em} z < \beta\}$ that does not contain
+$0$.
+
+A similar result holds for one-sided {\tp} functions~{\cite[Thm.~2]{sch51}}.
+
+\begin{tm}
+  \label{tm:onesided}(i) If $\Lambda$ is a Polya frequency function with
+  support in $[0, \infty)$, then its Laplace transform converges in a
+  half-plane $\{z \in \bC : - \alpha < \mathrm{Re} \hspace{0.17em} z\}, \alpha
+  > 0$, and
+  \begin{equation}
+    \label{eq:5} \int_0^{\infty} \Lambda (x) e^{- sx}  \hspace{0.17em} dx =
+    \frac{1}{\Psi (s)}
+  \end{equation}
+  is the reciprocal of an entire function $\Psi$ with Hadamard factorization
+  \begin{equation}
+    \label{eq:ne1} \Psi (s) = Ce^{\delta s}  \prod_{j = 1}^{\infty} (1 +
+    \delta_j s) \hspace{0.17em},
+  \end{equation}
+  with $\delta \in \bR, \delta_j \geq 0, \sum \delta_j < \infty$.
+  
+  (ii) Conversely, if $\Psi$ possesses the factorization \eqref{eq:ne1}, then
+  its reciprocal $1 / \Psi$ is the Laplace transform of a Polya frequency
+  function $\Lambda$ with support in $[0, \infty)$.
+\end{tm}
+
+{\vspace{3mm}}
+
+{\tmem{Elementary examples.}} If $\hat{\Lambda} (\tau) = (1 + 2 \pi i \delta
+\tau) \inv$, then $\Lambda (x) = \delta \inv e^{- x / \delta} \chi_{[0,
+\infty)} (x)$ is the one-sided exponential function. For $\hat{\Lambda} (\tau)
+= e^{- \pi \gamma \tau^2}$ for $\gamma > 0$, we obtain the Gaussian $\Lambda
+(x) = \gamma^{- 1 / 2} e^{- \pi x^2 / \gamma}$. In both cases, it is easy to
+check directly that these functions are {\tp}.
+
+The proof of the implication (ii) of Theorem~\ref{tm:tp} is based on the
+(non-trivial) fact that the convolution $\Lambda = \Lambda_1 \ast \Lambda_2$
+of two {\pff}s $\Lambda_1, \Lambda_2$ is again a {\pff}. The converse in
+Theorem~\ref{tm:tp} lies much deeper, and Schoenberg used heavily several
+results of Polya about functions in the {\lpc}~{\cite{Pol15,PS1914}}. See the
+end of this note for the essential step of the argument.
+
+Schoenberg's motivation was the characterization and deeper understanding of
+{\tp} functions, and thus the implication (i) and the factorization
+\eqref{eq:6} can be considered his main insight about {\tp} functions.
+However, instead of reading Schoenberg's theorem as a characterization of
+{\tp} functions, one may read it as a characterization of the {\lpc}. {\tmem{A
+function $\Psi$ with $\Psi (0) > 0$ and $\Psi \neq e^{as + b}$ is in the
+{\lpc}, {\fif} the Fourier transform of $1 / \Psi$ is a {\pff}.}}
+
+{\tmem{The Riemann hypothesis and {\tp} functions.}} Let $\zeta (s) = \sum_{n
+= 1}^{\infty} n^{- s}$ for $s \in \bC, \mathrm{Re} \hspace{0.17em} s > 1$, be
+the Riemann zeta function and let
+
+\begin{align}
+  \xi (s) & = \tfrac{1}{2} s (s - 1) \pi^{- s / 2} \Gamma \left( \frac{s}{2}
+  \right)  \hspace{0.17em} \zeta (s)  \label{eq:6b}\\
+  \Xi (s) & = \xi \left( \frac{1}{2} + is \right)  \label{eq:7}
+\end{align}
+
+be the Riemann xi-functions (where $\Gamma$ is the usual gamma function). Then
+the functional equation for the Riemann zeta function is expressed by the
+symmetry
+\begin{equation}
+  \label{eq:8} \xi (s) = \xi (1 - s)  \qquad \text{and } \qquad \Xi (s) = \Xi
+  (- s)
+\end{equation}
+for the xi-functions.
+
+The Riemann hypothesis conjectures that all non-trivial zeros of the zeta
+function lie on the critical line $1 / 2 + it$. See the
+monographs~{\cite{Iwa14,Ivi03,Tit86}}, the two volumes about equivalents of
+the Riemann hypothesis~{\cite{Br17-1,Br17-2}} or the survey
+articles~{\cite{Bom10,Conrey03}}.
+
+Expressed in terms of the xi-functions, the Riemann hypothesis states that
+$\Xi$ has only real zeros, in other words, {\tmem{$\Xi$ belongs to the
+{\lpc}.}} Thus many investigations of the zeta function involve complex
+analysis related to the {\lpc}. Schoenberg's theorem immediately leads to the
+following equivalent condition for the Riemann hypothesis to hold.
+
+\begin{tm}
+  \label{tm:equi1}The Riemann hypothesis holds, {\fif} there exists a {\pff}
+  $\Lambda$, such that
+  \begin{equation}
+    \label{eq:9} \frac{1}{\Xi (s)} = \int_{- \infty}^{\infty} \Lambda (x) e^{-
+    sx}  \hspace{0.17em} dx \qquad \forall s \in \bC, | \mathrm{Re}
+    \hspace{0.17em} s| < t_0 \hspace{0.17em}
+  \end{equation}
+  where $1 / 2 + it_0$ is the first zero of the zeta function on the critical
+  line.
+\end{tm}
+
+Let us make this statement a bit more explicit by taking the Fourier transform
+instead of the Laplace transform.
+
+\begin{tm}
+  \label{tm:equi2}The Riemann hypothesis holds, {\fif}
+  \begin{equation}
+    \label{eq:10} \Lambda (x) = \frac{\int_{- \infty}^{\infty} \frac{e^{- ix
+    \tau}}{\xi (\tfrac{1}{2} + \tau)}  \hspace{0.17em} d \tau}{2 \pi} 
+  \end{equation}
+  is a Polya frequency function.
+\end{tm}
+
+The growth of $\xi$ in the complex plane is~{\cite{Tit86}} $| \xi (s) | = \cO
+(e^{A|s| \ln |s|}) \hspace{0.17em}$, and on the positive real line
+\begin{equation}
+  \ln \xi (\sigma) \asymp \tfrac{1}{2} \sigma \log \sigma \qquad \sigma > 1
+\end{equation}
+Consequently $\frac{1}{\xi (\sigma)} \leq Ce^{- | \sigma | \log | \sigma | /
+2}$ decays super-exponentially. Since $\zeta$ and thus $\xi$ do not have any
+real zeros in the interval $[0, 1]$ and $\zeta > 0$ on $(1, \infty)$, the
+function $\xi$ is therefore strictly positive on $\bR$ and $1 / \xi$ is
+integrable. Thus its Fourier transform is well-defined.
+
+Using $s = 2 \pi i \tau$, we can rewrite \eqref{eq:9} as a Fourier transform.
+The inversion formula for the Fourier transform now yields
+\begin{equation}
+  \begin{array}{ll}
+    \Lambda (x) & = \int_{- \infty}^{\infty} \frac{e^{2 \pi ix \tau}}{\Xi (2
+    \pi i \tau)}  \hspace{0.17em} d \tau\\
+    & = \int_{- \infty}^{\infty} \frac{e^{2 \pi ix \tau}}{\xi \left(
+    \frac{1}{2} - 2 \pi \tau \right)}  \hspace{0.17em} d \tau
+    \hspace{0.17em}\\
+    & = \frac{\int_{- \infty}^{\infty} \frac{e^{- ix \tau}}{\xi (\tfrac{1}{2}
+    + \tau)}  \hspace{0.17em} d \tau}{2 \pi}
+  \end{array}
+\end{equation}
+which is \eqref{eq:10}.
+
+Using the symmetry of $\Xi$, there is an alternative formulation of
+Theorem~\ref{tm:equi1} with the restricted {\lpc} defined in \eqref{eq:ne1}.
+Since $\Xi$ is symmetric, it can be written as $\Xi (s) = \Xi_1  (- s^2)$ for
+an entire function $\Xi_1$ of order $1 / 2$. Furthermore, $\Xi$ has only real
+zeros, {\fif} $\Xi_1$ has only negative zeros (with convergence exponent at
+most $1$). The characterization of one-sided {\pff}s yields the following
+equivalence.
+
+\begin{tm}
+  \label{tm:ones}The Riemann hypothesis holds, {\fif} there exists a {\pff}
+  $\Lambda$ with support in $[0, \infty)$, such that
+  \begin{equation}
+    \label{eq:9} \frac{1}{\Xi_1 (s)} = \int_0^{\infty} \Lambda (x) e^{- sx} 
+    \hspace{0.17em} dx \qquad \text{{\forall}} s \in \bC, \mathrm{Re}
+    \hspace{0.17em} s > \alpha
+  \end{equation}
+  for some $\alpha < 0$.
+\end{tm}
+
+These equivalences seem to be new. Schoenberg's name is not even mentioned in
+~{\cite{Br17-1,Br17-2}} on equivalents of the Riemann hypothesis.
+
+It is interesting that the characterization of Theorem~\ref{tm:equi2} is
+``orthogonal'' to most research on $\zeta$ and to the well-known criteria for
+the Riemann hypothesis. Theorem~\ref{tm:equi2} requires only {\tmem{the values
+of $\zeta$ on the real line}} to probe the secrets of $\zeta$ in the critical
+strip. This fact is remarkable, but the price to pay is the added difficulty
+to extract any meaningful statements about $\xi$ on the critical strip from
+its restriction to $\bR$. This seems much harder, if not impossible.
+
+To work with Theorem~\ref{tm:equi2}, one would need a viable expression for
+the Fourier-Laplace transform of $1 / \xi$, but there seems to be none. The
+$1$-positivity in \eqref{eq:1} says that $\Lambda \geq 0$, which is equivalent
+to the Fourier transform $\hat{\Lambda} = 1 / \xi$ to be positive definite by
+Bochner's theorem. Explicitly, we would need to know that, for all choices of
+$c_j \in \bC, \tau_j \in \bR, j = 1, \ldots, n$, and all $n \in \bN$, we have
+$\sum_{j, k = 1}^n c_j \overline{c_k} \xi (\tfrac{1}{2} + \tau_j - \tau_k)
+\inv \geq 0$. Not even this property of $1 / \xi$ seems to be known. It is
+therefore unlikely that much is gained by Theorems~\ref{tm:equi1} --
+\ref{tm:ones}.
+
+By contrast, the Fourier transform of $\Xi (x)$ on the critical line (!) was
+already known to Riemann (see~{\cite[2.16.1]{Tit86}}) and is the starting
+point of a program to prove the Riemann hypothesis that goes back to
+Polya~{\cite{Pol26}}. After important work of de Bruijn, Hejhal, and Newman
+this line of thought has recently culminated in the resolution of the Newman
+conjecture by Rodgers and Tao~{\cite{RT20}}.
+
+{\tmem{Some non-trivial {\pff}s.}} Perhaps Schoenberg had also the Riemann
+hypothesis in mind, when he investigated Polya frequency functions. The
+examples in~{\cite{sch47,sch51}} of {\tp} functions smell of the zeta
+function.
+
+(i) The zero set $\{0, - 1, - 2, \ldots\}$ with multiplicity one yields the
+entire function
+\begin{equation}
+  \label{eq:n1} \Psi (s) = e^{\gamma s} s \prod_{n = 1}^{\infty} (1 +
+  \frac{s}{n})  \hspace{0.17em} e^{- s / n} \hspace{0.17em}
+\end{equation}
+where $\gamma$ is the Euler constant. By a classical result $\Psi$ is the
+reciprocal of the $\Gamma$-function $\Gamma (s) = \int_0^{\infty} x^{s - 1}
+e^{- x}  \hspace{0.17em} dx$. Consequently, the Laplace transform of $\Psi (s)
+\inv = \Gamma (s)$ is a {\tp} function. Indeed, using the substitution $x =
+e^{- t}$ in the definition of $\Gamma$, one obtains
+\begin{equation}
+  \label{eq:n2} \Gamma (s) = \int_{- \infty}^{\infty} e^{- e^{- x}} e^{- sx} 
+  \hspace{0.17em} dx \hspace{0.17em} \qquad \mathrm{Re} \hspace{0.17em} s > 0
+  \hspace{0.17em}
+\end{equation}
+Theorem~\ref{tm:tp} implies that
+\[ \Lambda (x) = e^{- e^{- x}} \]
+is {\tp}. By removing the pole of $\Gamma$ at $0$, we obtain $\forall
+\mathrm{Re} s > - 1$
+\begin{equation}
+  \begin{array}{ll}
+    s \Gamma (s) & = \int_{- \infty}^{\infty} \Lambda' (x) e^{- sx} 
+    \hspace{0.17em} dx\\
+    & = \int_{- \infty}^{\infty} e^{- x}  \hspace{0.17em} e^{- e^{- x}} e^{-
+    sx}  \hspace{0.17em} dx \hspace{0.17em}
+  \end{array}
+\end{equation}
+Consequently
+\begin{equation}
+  \Lambda_1 (x) = e^{- x - e^{- x}}
+\end{equation}
+is a {\pff}.
+
+(ii) The zero set $\bZ$ with simple zeros yields
+\begin{equation}
+  \Psi (s) = \frac{\sin \pi s}{\pi}
+\end{equation}
+. By Theorem~\ref{tm:tp}, $1 / \Psi$ is the Laplace transform of a {\tp}
+function on a suitable strip of convergence. Schoenberg's calculation yields
+the {\tp} function
+\begin{equation}
+  \Lambda (x) = \frac{1}{1 + e^{- x}} \hspace{0.17em}
+\end{equation}
+(iii) Finally the zero set $\{- n^2 : n \in \bN \}$ yields the entire function
+\begin{equation}
+  \begin{array}{ll}
+    \Psi (s) & = s \prod_{n = 1}^{\infty} (1 + \frac{s}{n^2})\\
+    & = - \frac{1}{\pi}  \sqrt{- s} \sin \pi \sqrt{- s} \hspace{0.17em}
+  \end{array}
+\end{equation}
+The associated {\tp} function is the Jacobi theta function
+\begin{equation}
+  \Lambda (x) = \left\{\begin{array}{ll}
+    \sum_{j = - \infty}^{\infty} (- 1)^j e^{- j^2 x} & \text{for } x > 0\\
+    0 & \text{for } x \leq 0 \hspace{0.17em}
+  \end{array}\right.
+\end{equation}
+All three functions show up prominently in the treatment of the functional
+equation of the zeta function: $\Gamma$ is contained in the definition of the
+xi-function, $\sin$ in the formulation of the functional equation, and a
+Jacobi theta function is used in several proofs of the functional equation
+(Riemann's original proof, see~{\cite{Tit86}}).
+
+{\tmem{Intrinsic characterization of {\pff}s.}} The fundamental property of
+{\pff}s is their smoothing property or {\tmem{variation diminishing
+property}}. The relevance of smoothing properties for many applications is
+outlined in Schoenberg's survey~{\cite{Sch53}}. In this context the variation
+of a real-valued function on $\bR$ is measured either by the number of sign
+changes or by the number of {\tmem{real}} zeros. Formally, given $f : \bR \to
+\bR$ let
+\begin{equation}
+  \label{eq:v1} v (f) = \max \# \{n \in \bN : \exists x_j \in \bR, x_0 < x_1 <
+  \ldots < x_n  \text{with } f (x_j) f (x_{j + 1}) < 0\} \hspace{0.17em},
+\end{equation}
+and let $N (f)$ be the number of {\tmem{real}} zeros of $f$ counted with
+multiplicity.
+
+Given a function $\Lambda$, let $T_{\Lambda}$ be the convolution operator
+$T_{\Lambda} f = f \ast \Lambda$. Schoenberg's second characterization of
+{\pff}s is as follows~{\cite{Sch50}}.
+
+\begin{tm}
+  \label{tm:vd}Let $\Lambda$ be integrable and continuous. Then $\Lambda$ is
+  variation diminishing, i.e.,
+  \[ v (T_{\Lambda} f) \leq v (f) \]
+  for all functions that are locally Riemann integrable, {\fif} either
+  $\Lambda$ or $- \Lambda$ is a {\pff}.
+\end{tm}
+
+This characterization is ``intrinsic'' in the sense that it uses only the
+properties of the matrices occurring in the definition \eqref{eq:1} of total
+positivity.
+
+With a perturbation argument one can replace sign changes with zeros and
+obtains the following consequence.
+
+\begin{corollary}
+  \label{zdim}Let $\Lambda$ be a {\pff}. Then for every real-valued polynomial
+  $p$ the convolution $T_{\Lambda}$ is zero-decreasing, i.e.,
+  \[ N (T_{\Lambda} p) \leq N (p) \hspace{0.17em} . \]
+\end{corollary}
+
+{\vspace{3mm}}
+
+{\tmem{Intrinsic characterizations of the {\lpc}.}} There are several
+characterizations of the {\lpc} that require only their properties as entire
+functions. This is part of classical complex analysis and the results are due
+to Polya and Schur~{\cite{Pol15,PS1914}} building on work of Laguerre,
+Hadamard, and many others. These results relate the properties of the zero set
+to properties of the power series expansion of an entire function. Before
+formulating a sequence of equivalences, we note that every formal power series
+$F (s) \sim \sum_{j = 0}^{\infty} a_j s^j$ yields a differential operator $F
+(D) p (x) = \sum_{j = 0}^{\infty} a_j D^j p (x)$ with $D = \frac{d}{dx}$. The
+differential operator is well-defined at least on polynomials, and the mapping
+$F \mapsto F (D)$ is an algebra homomorphism and thus provides a simple
+functional calculus.
+
+\begin{tm}
+  \label{tm:lpcc}Let $\Psi (s) = \sum_{j = 0}^{\infty} \frac{\beta_j}{j!} s^j$
+  be an entire function. Then the following are equivalent:
+  
+  (i) $\Psi$ belongs to the {\lpc}.
+  
+  (ii) $\Psi$ can be approximated uniformly on compact sets by polynomials
+  with only real zeros.
+  
+  (iii) For all $n \in \bN$ the polynomials
+  \begin{equation}
+    p_n (x) = \sum_{j = 0}^n \beta_j \binom{n}{j} x^j
+  \end{equation}
+  and
+  \begin{equation}
+    q_n (x) = \sum_{j = 0}^n \beta_j \binom{n}{j} x^{n - j}
+  \end{equation}
+  have only real zeros.
+  
+  (iv) If
+  \begin{equation}
+    p (x) = \sum_{j = 0}^m c_j x^j
+  \end{equation}
+  is a polynomial with only real, {\tmem{non-positive}} zeros, then the
+  polynomial
+  \begin{equation}
+    q (x) = \sum \beta_j c_j x^j
+  \end{equation}
+  has only real zeros.
+  
+  \
+  
+  If, in addition, $\Psi (0) > 0$ and
+  \begin{equation}
+    \frac{1}{\Psi (s)} = \sum_{j = 0}^{\infty} \frac{\gamma_j}{j!} s^j
+  \end{equation}
+  , then the following property is equivalent to (i) -- (iv).
+  
+  (v) The transform $p \mapsto \frac{1}{\Psi (D)} p$ is zero-decreasing, i.e.,
+  the polynomial
+  \begin{equation}
+    q (x) = \frac{1}{\Psi (D)}
+  \end{equation}
+  \begin{equation}
+    p (x) = \sum_{j = 0}^{\infty} \frac{\gamma_j}{j!} p^{(j)} (x)
+  \end{equation}
+  
+  
+  \ has at most as many real zeros as $p$ (real-valued):
+  \begin{equation}
+    N \left( \frac{1}{\Psi (D)} p \right) \leq N (p)
+  \end{equation}
+\end{tm}
+
+Applying condition (iv) to the polynomials $x^{n - 1}  (1 + x)^2$, one obtains
+a necessary condition on the Taylor coefficients of a function in the {\lpc},
+namely the so-called Turan inequalities.
+
+\begin{corollary}
+  \label{turan}If
+  \begin{equation}
+    \Psi (s) = \sum_{j = 0}^{\infty} \frac{\beta_j}{j!} s^j
+  \end{equation}
+  belongs to the {\lpc}, then
+  \[ \beta_n^2 - \beta_{n - 1} \beta_{n + 1} \geq 0 \qquad \text{for all } n
+     \in \bN \]
+\end{corollary}
+
+Applying condition (v) to polynomials of the form
+\begin{equation}
+  p (x) = \left( \sum_{k = 1}^n a_k x^k \right)^2
+\end{equation}
+and working out $\Psi (D) \inv p$, one obtains the following necessary
+condition for the {\lpc}~{\cite[p.~235]{Pol15}}.
+
+\begin{corollary}
+  \label{hankel}Assume that $\Psi$ belongs to the {\lpc}, $\Psi (0) > 0$,
+  $\Psi (s) \neq e^{as + b}$ and $1 / \Psi$ has the Taylor expansion
+  \begin{equation}
+    \frac{1}{\Psi (s)} = \sum_{j = 0}^{\infty} \frac{\gamma_j}{j!} s^j
+  \end{equation}
+  . Then for every $n \in \bN$ the $n \times n$ Hankel matrix $(\gamma_{j +
+  k})_{j, k = 0, \ldots, n - 1}$ is positive definite (and thus invertible).
+\end{corollary}
+
+However, the positivity of the Hankel matrices is not sufficient for $\Psi$ to
+be in the {\lpc}, as was proved already by Hamburger~{\cite{Ham20}}.
+
+Theorem~\ref{tm:lpcc} and its corollaries are all contained in the seminal
+papers of Polya and Schur~{\cite{Pol15,PS1914}} from 1914 and 1915 and have
+inspired a century of exciting mathematics. Each of the equivalent conditions
+in Theorem~\ref{tm:lpcc} is a point of departure for the study of the Riemann
+hypothesis.
+
+No list can do justice to all contributions between 1914 and 2020, so let us
+mention only a few directions whose origin is in Polya's work. Further
+references and more detailed history can be found in the cited articles.
+
+Condition (iii) applied to the Riemann function $\Xi$ yields an important
+equivalence of the Riemann hypothesis. The polynomials in condition (iii) are
+nowadays called Jensen polynomials. In modern language (iii) says that ``the
+Jensen polynomials for the Riemann function $\Xi (s)$ must be hyperbolic''.
+Significant recent progress on this equivalence is reported in~{\cite{GORZ}}.
+
+The relations between the Jensen polynomials, the multiplier sequences of
+condition (iv), and the Turan inequalities and their generalizations have been
+studied in depth by Craven, Csordas, and Varga~{\cite{Cso15,CC89,CV90}} who
+found many additional equivalences to the Riemann hypothesis. A particular
+highlight is their proof that $\Xi$, or rather the Taylor coefficients of $\Xi
+(\sqrt{s})$ satisfy the Turan inequalities~{\cite{CNV86}}, thereby resolving a
+60 year old conjecture going back to --- Polya.
+
+Finally let us mention that total positivity enters the investigation of the
+{\lpc} in yet another way. A entire function belongs to the restricted {\lpc}
+defined by \eqref{eq:ne1}, {\fif} the sequence of its Taylor coefficients
+$(a_n)$ is a Polya frequency {\tmem{sequence}}~{\cite{AS52}}. This means that
+the infinite upper triangular Toeplitz matrix $A$ with entries $A_{jk} = a_{k
+- j}$, if $k \geq j$ and $A_{jk} = 0$, if $k < j$ has only positive minors.
+This aspect of total positivity has been used in~{\cite{Kat07,Nut13}} for the
+investigation of the zeta function.
+
+{\tmem{From total positivity to the {\lpc}.}} By comparing the two intrinsic
+characterizations in Theorems~\ref{tm:vd} and \ref{tm:lpcc} one may guess that
+the respective conditions on zero diminishing must play the decisive role in
+the proof of Theorem~\ref{tm:tp}(i). To give the gist of this argument, we
+cannot do better than repeat Schoenberg's beautiful argument.
+
+First, since $\Lambda$ is assumed to be a {\pff}, $\Lambda$ must decay
+exponentially~{\cite[Lemma~2]{sch51}}, therefore its moments of all orders
+exist. Let
+\begin{equation}
+  \mu_n = \int_{\bR} x^n \Lambda (x)  \hspace{0.17em} dx
+\end{equation}
+be the $n$-th moment. By expanding the exponential
+\begin{equation}
+  e^{- sx} = \sum_{j = 1}^{\infty} \frac{(- s)^j}{j!} x^j
+\end{equation}
+we express the Laplace transform of $\Lambda$ as a power series
+\begin{equation}
+  \label{eq:nn2} \begin{array}{ll}
+    \int_{\bR} e^{- sx} \Lambda (x)  \hspace{0.17em} dx & = \sum_{j =
+    0}^{\infty} \frac{(- 1)^j}{j!} s^j \mu_j  \hspace{0.17em}\\
+    & = \sum_{j = 0}^{\infty} \frac{(- 1)^j}{j!} s^j \int_{\bR} x^j \Lambda
+    (x)  \hspace{0.17em} dx\\
+    & = F (s)
+  \end{array}
+\end{equation}
+Since $\Lambda \nequiv 0$ and $\Lambda \geq 0$, we have $F (0) > 0$, and its
+reciprocal also possesses a power series expansion around $0$ with a positive
+radius of convergence
+\begin{equation}
+  \Psi (s) = \frac{1}{F (s)} = \sum_{j = 0}^{\infty} \frac{\beta_j}{j!} 
+  \hspace{0.17em} s^j \hspace{0.17em}
+\end{equation}
+Next, we consider the convolution of $\Lambda$ with a polynomial $p$ of degree
+$N$ and relate it to the moments of $\Lambda$:
+\begin{equation}
+  \begin{array}{ll}
+    q (x) & = (\Lambda \ast p) (x)\\
+    & = \int_{\bR} p (x - t) \Lambda (t)  \hspace{0.17em} dt\\
+    & = \int_{\mathbb{R}} \left( \sum_{j = 0}^N \frac{(- t)^j}{j!} p^{(j)}
+    (x) \right) \Lambda (t)  \hspace{0.17em} dt\\
+    & = \sum_{j = 0}^n \frac{(- 1)^j}{j!} \mu_j  \hspace{0.17em} p^{(j)}
+    (x)\\
+    & = F (D) p (x)
+  \end{array}
+\end{equation}
+By Corollary~\ref{zdim} the number of real zeros of $q$ (counted with
+multiplicity) does not exceed the number of real zeros of $p$,
+\begin{equation}
+  \label{eq:nn3} N (q) = N (F (D) p) \leq N (p)
+\end{equation}
+Using the functional calculus, we can invert $F (D)$ and recover $p$ from $q =
+\Lambda \ast p$ via
+\begin{equation}
+  \begin{array}{ll}
+    p (x) & = \frac{q (x)}{F (D)} \\
+    & = \Psi (D)
+  \end{array}
+\end{equation}
+\begin{equation}
+  q (x) = \sum_{j = 0}^{\infty} \frac{\beta_j}{j!}  \hspace{0.17em} q^{(j)}
+  (x) \hspace{0.17em}
+\end{equation}
+For the monomial $q (x) = x^n$ we obtain the polynomial
+\begin{equation}
+  \begin{array}{ll}
+    q_n (x) \hspace{0.17em} & = \Psi (D) x^n\\
+    & = \sum_{j = 0}^n \beta_j \binom{n}{j} x^{n - j}
+  \end{array}
+\end{equation}
+of degree $n$. Since $x^n = F (D) q_n$, \eqref{eq:nn3} implies the count of
+zeros (with multiplicities)
+\begin{equation}
+  n = N (x^n) \leq N (q_n) \leq n \hspace{0.17em}
+\end{equation}
+For every $n$, $q_n$ therefore has only real zeros. This is precisely
+condition (iii) of Theorem~\ref{tm:lpcc}, and we conclude that $\Psi$ is in
+the {\lpc}.
+
+{\tmem{Summary.}} Schoenberg's characterization of {\tp} functions implies a
+condition equivalent to the Riemann hypothesis. The characterization is
+interesting in itself because it involves only the values of the Riemann zeta
+function on the real axis. To the best of our knowledge, the characterization
+of the {\lpc} by means of {\tp} functions has not yet been tested on the
+Riemann zeta function.
+
+\begin{thebibliography}{10}
+  {\bibitem{AS52}}M.~Aissen, I.~J. Schoenberg, and A.~M. Whitney.
+  {\newblock}On the generating functions of totally positive sequences. I.
+  {\newblock}\tmtextit{J. Analyse Math.}, 2:93--103, 1952.
+  
+  {\bibitem{Bom10}}E.~Bombieri. {\newblock}The classical theory of zeta and
+  $L$-functions. {\newblock}\tmtextit{Milan J. Math.}, 78(1):11--59, 2010.
+  
+  {\bibitem{Br17-1}}K.~Broughan. {\newblock}\tmtextit{Equivalents of the
+  Riemann hypothesis. Vol. 1}, volume 164 of \tmtextit{Encyclopedia of
+  Mathematics and its Applications}. {\newblock}Cambridge University Press,
+  Cambridge, 2017. {\newblock}Arithmetic equivalents.
+  
+  {\bibitem{Br17-2}}K.~Broughan. {\newblock}\tmtextit{Equivalents of the
+  Riemann hypothesis. Vol. 2}, volume 165 of \tmtextit{Encyclopedia of
+  Mathematics and its Applications}. {\newblock}Cambridge University Press,
+  Cambridge, 2017. {\newblock}Analytic equivalents.
+  
+  {\bibitem{Conrey03}}J.~B. Conrey. {\newblock}The Riemann hypothesis.
+  {\newblock}\tmtextit{Notices Amer. Math. Soc.}, 50(3):341--353, 2003.
+  
+  {\bibitem{CC89}}T.~Craven and G.~Csordas. {\newblock}Jensen polynomials and
+  the Tur{\'a}n and Laguerre inequalities. {\newblock}\tmtextit{Pacific J.
+  Math.}, 136(2):241--260, 1989.
+  
+  {\bibitem{Cso15}}G.~Csordas. {\newblock}Fourier transforms of positive
+  definite kernels and the Riemann $\xi$-function.
+  {\newblock}\tmtextit{Comput. Methods Funct. Theory}, 15(3):373--391, 2015.
+  
+  {\bibitem{CNV86}}G.~Csordas, T.~S. Norfolk, and R.~S. Varga. {\newblock}The
+  Riemann hypothesis and the Tur{\'a}n inequalities.
+  {\newblock}\tmtextit{Trans. Amer. Math. Soc.}, 296(2):521--541, 1986.
+  
+  {\bibitem{CV90}}G.~Csordas and R.~S. Varga. {\newblock}Necessary and
+  sufficient conditions and the Riemann hypothesis. {\newblock}\tmtextit{Adv.
+  in Appl. Math.}, 11(3):328--357, 1990.
+  
+  {\bibitem{CS66}}H.~B. Curry and I.~J. Schoenberg. {\newblock}On P{\'o}lya
+  frequency functions. IV. The fundamental spline functions and their limits.
+  {\newblock}\tmtextit{J. Analyse Math.}, 17:71--107, 1966.
+  
+  {\bibitem{Efr65}}B.~Efron. {\newblock}Increasing properties of P{\'o}lya
+  frequency functions. {\newblock}\tmtextit{Ann. Math. Statist.}, 36:272--279,
+  1965.
+  
+  {\bibitem{GORZ}}M.~Griffin, K.~Ono, L.~Rolen, and D.~Zagier.
+  {\newblock}Jensen polynomials for the Riemann zeta function and other
+  sequences. {\newblock}\tmtextit{Proc. Natl. Acad. Sci. USA},
+  116(23):11103--11110, 2019.
+  
+  {\bibitem{GRS18}}K.~Gr{\"o}chenig, J.~L. Romero, and J.~St{\"o}ckler.
+  {\newblock}Sampling theorems for shift-invariant spaces, Gabor frames, and
+  totally positive functions. {\newblock}\tmtextit{Invent. Math.},
+  211(3):1119--1148, 2018.
+  
+  {\bibitem{GRS20}}K.~Gr{\"o}chenig, J.~L. Romero, and J.~St{\"o}ckler.
+  {\newblock}Sharp results on sampling with derivatives in shift-invariant
+  spaces and multi-window Gabor frames. {\newblock}\tmtextit{Constr. Approx.},
+  51(1):1--25, 2020.
+  
+  {\bibitem{GS13}}K.~Gr{\"o}chenig and J.~St{\"o}ckler. {\newblock}Gabor
+  frames and totally positive functions. {\newblock}\tmtextit{Duke Math. J.},
+  162(6):1003--1031, 2013.
+  
+  {\bibitem{Ham20}}H.~Hamburger. {\newblock}Bemerkungen zu einer Fragestellung
+  des Herrn P{\'o}lya. {\newblock}\tmtextit{Math. Z.}, 7(1-4):302--322, 1920.
+  
+  {\bibitem{Ivi03}}A.~Ivi{\'c}. {\newblock}\tmtextit{The Riemann
+  zeta-function}. {\newblock}Dover Publications, Inc., Mineola, NY, 2003.
+  {\newblock}Theory and applications, Reprint of the 1985 original [Wiley, New
+  York; MR0792089 (87d:11062)].
+  
+  {\bibitem{Iwa14}}H.~Iwaniec. {\newblock}\tmtextit{Lectures on the Riemann
+  zeta function}, volume~62 of \tmtextit{University Lecture Series}.
+  {\newblock}American Mathematical Society, Providence, RI, 2014.
+  
+  {\bibitem{karlin}}S.~Karlin. {\newblock}\tmtextit{Total positivity. Vol. I}.
+  {\newblock}Stanford University Press, Stanford, Calif, 1968.
+  
+  {\bibitem{Kat07}}O.~M. Katkova. {\newblock}Multiple positivity and the
+  Riemann zeta-function. {\newblock}\tmtextit{Comput. Methods Funct. Theory},
+  7(1):13--31, 2007.
+  
+  {\bibitem{Levin80}}B.~J. Levin. {\newblock}\tmtextit{Distribution of zeros
+  of entire functions}, volume~5 of \tmtextit{Translations of Mathematical
+  Monographs}. {\newblock}American Mathematical Society, Providence, R.I.,
+  revised edition, 1980. {\newblock}Translated from the Russian by R. P. Boas,
+  J. M. Danskin, F. M. Goodspeed, J. Korevaar, A. L. Shields and H. P.
+  Thielman.
+  
+  {\bibitem{Nut13}}J.~Nuttall. {\newblock}Wronskians, cumulants, and the
+  Riemann hypothesis. {\newblock}\tmtextit{Constr. Approx.}, 38(2):193--212,
+  2013.
+  
+  {\bibitem{Pick91}}D.~Pickrell. {\newblock}Mackey analysis of infinite
+  classical motion groups. {\newblock}\tmtextit{Pacific J. Math.},
+  150(1):139--166, 1991.
+  
+  {\bibitem{Pol15}}G.~P{\'o}lya. {\newblock}Algebraische Untersuchungen
+  {\"u}ber ganze Funktionen vom Geschlechte Null und Eins.
+  {\newblock}\tmtextit{J. Reine Angew. Math.}, 145: 224--249, 1915.
+  
+  {\bibitem{Pol26}}G.~P{\'o}lya. {\newblock}Bemerkung {\"U}ber die
+  Integraldarstellung der Riemannschen $\xi$-Funktion.
+  {\newblock}\tmtextit{Acta Math.}, 48(3-4):305--317, 1926.
+  
+  {\bibitem{Polcoll}}G.~P{\'o}lya. {\newblock}\tmtextit{Collected papers}.
+  {\newblock}The MIT Press, Cambridge, Mass.-London, 1974. {\newblock}Vol. II:
+  Location of zeros, Edited by R. P. Boas, Mathematicians of Our Time, Vol. 8.
+  
+  {\bibitem{PS1914}}G.~P{\'o}lya and J.~Schur. {\newblock}{\"U}ber zwei Arten
+  von Faktorenfolgen in der Theorie der algebraischen Gleichungen.
+  {\newblock}\tmtextit{J. Reine Angew. Math.}, 144:89--113, 1914.
+  
+  {\bibitem{RT20}}B.~Rodgers and T.~Tao. {\newblock}The de Bruijn--Newman
+  constant is non-negative. {\newblock}\tmtextit{Forum Math. Pi}, 8:e6, 62,
+  2020.
+  
+  {\bibitem{sch47}}I.~J. Schoenberg. {\newblock}On totally positive functions,
+  Laplace integrals and entire functions of the Laguerre-Polya-Schur type.
+  {\newblock}\tmtextit{Proc. Nat. Acad. Sci. U. S. A.}, 33:11--17, 1947.
+  
+  {\bibitem{Sch50}}I.~J. Schoenberg. {\newblock}On P{\'o}lya frequency
+  functions. II. Variation-diminishing integral operators of the convolution
+  type. {\newblock}\tmtextit{Acta Sci. Math. (Szeged)}, 12:97--106, 1950.
+  
+  {\bibitem{sch51}}I.~J. Schoenberg. {\newblock}On P{\'o}lya frequency
+  functions. I. The totally positive functions and their Laplace transforms.
+  {\newblock}\tmtextit{J. Analyse Math.}, 1:331--374, 1951.
+  
+  {\bibitem{Sch53}}I.~J. Schoenberg. {\newblock}On smoothing operations and
+  their generating functions. {\newblock}\tmtextit{Bull. Amer. Math. Soc.},
+  59:199--230, 1953.
+  
+  {\bibitem{Sch73}}I.~J. Schoenberg. {\newblock}\tmtextit{Cardinal spline
+  interpolation}. {\newblock}Society for Industrial and Applied Mathematics,
+  Philadelphia, Pa., 1973. {\newblock}Conference Board of the Mathematical
+  Sciences Regional Conference Series in Applied Mathematics, No. 12.
+  
+  {\bibitem{SW53}}I.~J. Schoenberg and A.~Whitney. {\newblock}On P{\'o}lya
+  frequence functions. III. The positivity of translation determinants with an
+  application to the interpolation problem by spline curves.
+  {\newblock}\tmtextit{Trans. Amer. Math. Soc.}, 74:246--259, 1953.
+  
+  {\bibitem{Tit86}}E.~C. Titchmarsh. {\newblock}\tmtextit{The theory of the
+  Riemann zeta-function}. {\newblock}The Clarendon Press, Oxford University
+  Press, New York, second edition, 1986. {\newblock}Edited and with a preface
+  by D. R. Heath-Brown.
+\end{thebibliography}
+
+The very same results of Polya~ were also the point of departure for the many
+investigations of the zeros of the Riemann zeta function after Polya, de
+Bruijn, Newman, Hejhal and many others~. Yet, in none of the investigations of
+the zeros of the Riemann zeta function via zeros of integral transforms and
+the factorization~\eqref{eq:2} one finds a hint to {\tp} functions or the work
+of Schoenberg.
+
+\end{document}

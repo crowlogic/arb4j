@@ -89,8 +89,8 @@
     Path Zero Crossings <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-14>>
 
-    <with|par-left|1tab|5.4<space|2spc>Kac-Rice Formula For The Expected Zero
-    Count <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <with|par-left|1tab|5.4<space|2spc>The Kac-Rice Formula For The Expected
+    Zero Counting Function <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-15>>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
@@ -1193,7 +1193,7 @@
 
 <\initial>
   <\collection>
-    <associate|magnification|1>
+    <associate|magnification|1.2>
     <associate|page-height|auto>
     <associate|page-medium|paper>
     <associate|page-type|letter>
@@ -1203,64 +1203,64 @@
 
 <\references>
   <\collection>
-    <associate|U|<tuple|33|5>>
-    <associate|auto-1|<tuple|1|1>>
-    <associate|auto-10|<tuple|4|9>>
-    <associate|auto-11|<tuple|5|10>>
-    <associate|auto-12|<tuple|5.1|10>>
-    <associate|auto-13|<tuple|5.2|11>>
-    <associate|auto-14|<tuple|5.3|12>>
-    <associate|auto-15|<tuple|5.4|13>>
-    <associate|auto-16|<tuple|127|15>>
-    <associate|auto-2|<tuple|1.1|1>>
+    <associate|U|<tuple|33|6>>
+    <associate|auto-1|<tuple|1|2>>
+    <associate|auto-10|<tuple|4|10>>
+    <associate|auto-11|<tuple|5|11>>
+    <associate|auto-12|<tuple|5.1|12>>
+    <associate|auto-13|<tuple|5.2|13>>
+    <associate|auto-14|<tuple|5.3|15>>
+    <associate|auto-15|<tuple|5.4|16>>
+    <associate|auto-16|<tuple|127|18>>
+    <associate|auto-2|<tuple|1.1|2>>
     <associate|auto-3|<tuple|2|2>>
     <associate|auto-4|<tuple|2.1|2>>
-    <associate|auto-5|<tuple|2.2|2>>
-    <associate|auto-6|<tuple|3|5>>
-    <associate|auto-7|<tuple|3.1|5>>
-    <associate|auto-8|<tuple|3.2|7>>
-    <associate|auto-9|<tuple|3.3|8>>
-    <associate|bib-evolutionarySpectraAndNonStationaryProcesses|<tuple|1|15>>
-    <associate|cor:evol_spec|<tuple|12|8>>
-    <associate|covar|<tuple|47|7>>
-    <associate|def:L|<tuple|19|12>>
+    <associate|auto-5|<tuple|2.2|3>>
+    <associate|auto-6|<tuple|3|6>>
+    <associate|auto-7|<tuple|3.1|6>>
+    <associate|auto-8|<tuple|3.2|8>>
+    <associate|auto-9|<tuple|3.3|10>>
+    <associate|bib-evolutionarySpectraAndNonStationaryProcesses|<tuple|1|18>>
+    <associate|cor:evol_spec|<tuple|12|9>>
+    <associate|covar|<tuple|47|8>>
+    <associate|def:L|<tuple|19|14>>
     <associate|def:L2loc|<tuple|2|2>>
-    <associate|def:Utheta|<tuple|8|5>>
+    <associate|def:Utheta|<tuple|8|6>>
     <associate|def:cramer|<tuple|4|2>>
-    <associate|def:osc_proc|<tuple|5|2>>
-    <associate|def:regularity|<tuple|21|13>>
-    <associate|def:sigma_compact|<tuple|1|1>>
-    <associate|def:zeromeasure|<tuple|15|10>>
-    <associate|eq:covariance_def|<tuple|121|14>>
-    <associate|eq:expectation|<tuple|112|14>>
-    <associate|eq:expected_zeros|<tuple|122|14>>
-    <associate|eq:kac_rice|<tuple|107|13>>
-    <associate|eq:kac_rice_formula|<tuple|124|15>>
-    <associate|eq:limit_mixed_partial|<tuple|126|15>>
-    <associate|eq:mixed_partial|<tuple|125|15>>
-    <associate|eq:mixed_partial_continued|<tuple|125|15>>
-    <associate|eq:substituted_kac_rice|<tuple|127|15>>
-    <associate|eq:time_changed_cov|<tuple|123|15>>
-    <associate|labeldef:Hmu|<tuple|17|11>>
-    <associate|lem:delta|<tuple|22|13>>
-    <associate|of|<tuple|6|2>>
-    <associate|prop:atomic|<tuple|18|11>>
-    <associate|prop:conjugation|<tuple|13|8>>
-    <associate|prop:inverse|<tuple|9|5>>
-    <associate|sec:HP|<tuple|5|10>>
-    <associate|sec:functionspaces|<tuple|1|1>>
-    <associate|sec:oscillatory|<tuple|2.2|2>>
-    <associate|sec:samplepaths|<tuple|4|9>>
-    <associate|sec:stationary_timechange|<tuple|3|5>>
-    <associate|thm:Utheta_to_osc|<tuple|11|7>>
-    <associate|thm:atomic|<tuple|16|10>>
-    <associate|thm:existence_osc|<tuple|7|4>>
-    <associate|thm:expected_zero_counting|<tuple|24|14>>
-    <associate|thm:kac_rice|<tuple|23|13>>
-    <associate|thm:local_unitarity|<tuple|10|6>>
-    <associate|thm:paths_loc|<tuple|14|9>>
+    <associate|def:osc_proc|<tuple|5|3>>
+    <associate|def:regularity|<tuple|21|15>>
+    <associate|def:sigma_compact|<tuple|1|2>>
+    <associate|def:zeromeasure|<tuple|15|12>>
+    <associate|eq:covariance_def|<tuple|121|17>>
+    <associate|eq:expectation|<tuple|112|16>>
+    <associate|eq:expected_zeros|<tuple|122|17>>
+    <associate|eq:kac_rice|<tuple|107|16>>
+    <associate|eq:kac_rice_formula|<tuple|124|18>>
+    <associate|eq:limit_mixed_partial|<tuple|126|18>>
+    <associate|eq:mixed_partial|<tuple|125|18>>
+    <associate|eq:mixed_partial_continued|<tuple|125|18>>
+    <associate|eq:substituted_kac_rice|<tuple|127|18>>
+    <associate|eq:time_changed_cov|<tuple|123|17>>
+    <associate|labeldef:Hmu|<tuple|17|13>>
+    <associate|lem:delta|<tuple|22|15>>
+    <associate|of|<tuple|6|3>>
+    <associate|prop:atomic|<tuple|18|13>>
+    <associate|prop:conjugation|<tuple|13|10>>
+    <associate|prop:inverse|<tuple|9|6>>
+    <associate|sec:HP|<tuple|5|11>>
+    <associate|sec:functionspaces|<tuple|1|2>>
+    <associate|sec:oscillatory|<tuple|2.2|3>>
+    <associate|sec:samplepaths|<tuple|4|10>>
+    <associate|sec:stationary_timechange|<tuple|3|6>>
+    <associate|thm:Utheta_to_osc|<tuple|11|8>>
+    <associate|thm:atomic|<tuple|16|12>>
+    <associate|thm:existence_osc|<tuple|7|5>>
+    <associate|thm:expected_zero_counting|<tuple|24|17>>
+    <associate|thm:kac_rice|<tuple|23|16>>
+    <associate|thm:local_unitarity|<tuple|10|7>>
+    <associate|thm:paths_loc|<tuple|14|10>>
     <associate|thm:realvaluedness|<tuple|6|3>>
-    <associate|thm:spectrum|<tuple|20|12>>
+    <associate|thm:spectrum|<tuple|20|14>>
   </collection>
 </references>
 

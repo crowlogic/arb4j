@@ -6,10 +6,12 @@
 %%%%%%%%%% Start TeXmacs macros
 \newcommand{\assign}{:=}
 \newcommand{\mathd}{\mathrm{d}}
+\newcommand{\textdots}{...}
 \newcommand{\tmem}[1]{{\em #1\/}}
 \newcommand{\tmop}[1]{\ensuremath{\operatorname{#1}}}
 \newcommand{\tmstrong}[1]{\textbf{#1}}
 \newcommand{\tmtextbf}[1]{\text{{\bfseries{#1}}}}
+\newcommand{\tmtextit}[1]{\text{{\itshape{#1}}}}
 \newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
 \newtheorem{corollary}{Corollary}
 \newtheorem{definition}{Definition}
@@ -23,7 +25,7 @@
 
 \title{
   Unitary Time Changes of Stationary Processes Yield Oscillatory Processes\\
-  and a Functional Framework Toward a Hilbert--P{\'o}lya Construction
+  
 }
 
 \author{Stephen Crowley}
@@ -53,9 +55,9 @@
 
 {\tableofcontents}
 
-\section{Function Spaces and Unitary Time Change}\label{sec:functionspaces}
+\section{Function Spaces}\label{sec:functionspaces}
 
-\subsection{$\sigma$-compact sets and local $L^2$}
+\subsection{$\sigma$-compact sets and locally square-integrable functions}
 
 \begin{definition}
   {\tmstrong{[$\sigma$-compact sets]\label{def:sigma_compact}}} A subset $U
@@ -81,6 +83,230 @@
   are square-integrable on every bounded interval, including functions with
   polynomial growth at infinity.
 \end{remark}
+
+\section{Gaussian Processes}
+
+A Gaussian process is a {\textdots}
+
+\subsection{Stationary processes}
+
+\begin{definition}
+  {\tmstrong{[Cram{\'e}r representation]\label{def:cramer}}} A zero-mean
+  stationary process $X$ with spectral measure $F$ admits the sample path
+  representation
+  \begin{equation}
+    X (t) = \int_{\mathbb{R}} e^{i \lambda t}  \hspace{0.17em} \Phi (d
+    \lambda)
+  \end{equation}
+  which has covariance
+  \begin{equation}
+    R_X  (t - s) = \int_{\mathbb{R}} e^{i \lambda (t - s)}  \hspace{0.17em} dF
+    (\lambda)
+  \end{equation}
+\end{definition}
+
+\subsection{Oscillatory Processes}\label{sec:oscillatory}
+
+A particularly tractable class of non-stationary Gaussian processes is that of
+the oscillatory processes as defined by M.B. Priestley in
+1965{\cite{evolutionarySpectraAndNonStationaryProcesses}}.
+
+\begin{definition}
+  {\tmstrong{[Oscillatory process]\label{def:osc_proc} }}link to Priestley
+  1965 Let $F$ be a finite nonnegative Borel measure on $\mathbb{R}$. Let
+  \begin{equation}
+    A_t \in L^2 (F) \forall t \in \mathbb{R}
+  \end{equation}
+  be the gain function and
+  \begin{equation}
+    \varphi_t (\lambda) = A_t (\lambda) e^{i \lambda t} \label{of}
+  \end{equation}
+  be the corresponding oscillatory function then an {\tmem{oscillatory
+  process}} is a stochastic process which can be represented as
+  \begin{equation}
+    \begin{array}{ll}
+      Z (t) & = \int_{\mathbb{R}} \varphi_t (\lambda) \mathd \Phi (\lambda)\\
+      & = \int_{\mathbb{R}} A_t (\lambda) e^{i \lambda t} \mathd \Phi
+      (\lambda)
+    \end{array}
+  \end{equation}
+  where $\Phi$ is a complex orthogonal random measure with spectral measure
+  $F$ which satisfies the relation
+  \begin{equation}
+    \mathd \mathbb{E} \hspace{-0.17em} [\Phi (\lambda) \overline{\Phi (\mu)}]
+    = \delta (\lambda - \mu)  \hspace{0.17em} dF (\lambda)
+  \end{equation}
+  and has the corresponding covariance kernel
+  \begin{equation}
+    \begin{array}{ll}
+      R_Z (t, s) & =\mathbb{E} \hspace{-0.17em} [Z (t) \overline{Z (s)}]\\
+      & = \int_{\mathbb{R}} A_t (\lambda) \hspace{0.17em} \overline{A_s
+      (\lambda)} \hspace{0.17em} e^{i \lambda (t - s)}  \hspace{0.17em} dF
+      (\lambda)\\
+      & = \int_{\mathbb{R}} \phi_t (\lambda) \overline{\phi_s (\lambda)}
+      \mathd F (\lambda)
+    \end{array} \label{covar}
+  \end{equation}
+\end{definition}
+
+\begin{theorem}
+  {\tmstrong{[Real-valuedness criterion for oscillatory
+  processes]\label{thm:realvaluedness}}}Let $Z$ be an oscillatory process with
+  oscillatory function
+  \begin{equation}
+    \varphi_t (\lambda) = A_t (\lambda) e^{i \lambda t}
+  \end{equation}
+  and spectral measure $F$. Then $Z$ is real-valued if and only if
+  \begin{equation}
+    A_t  (- \lambda) = \overline{A_t (\lambda)}
+  \end{equation}
+  for $F$-almost every $\lambda \in \mathbb{R}$, equivalently
+  \begin{equation}
+    \varphi_t  (- \lambda) = \overline{\varphi_t (\lambda)}
+  \end{equation}
+  for $F$-almost every $\lambda \in \mathbb{R}$.
+\end{theorem}
+
+\begin{proof}
+  Assume $Z$ is real-valued, i.e.
+  \begin{equation}
+    Z (t) = \overline{Z (t)} \quad \forall t \in \mathbb{R}
+  \end{equation}
+  Writing its oscillatory representation,
+  \begin{equation}
+    Z (t) = \int_{\mathbb{R}} A_t (\lambda) e^{i \lambda t} \mathd \Phi
+    (\lambda)
+  \end{equation}
+  and taking the complex conjugate gives
+  \begin{equation}
+    \overline{Z (t)} = \int_{\mathbb{R}} \overline{A_t (\lambda)} e^{- i
+    \lambda t} \mathd \overline{\Phi (\lambda)}
+  \end{equation}
+  For a real-valued process, the orthogonal random measure $\Phi$ must satisfy
+  \begin{equation}
+    \mathd \overline{\Phi (\lambda)} = - \mathd \Phi (\lambda)
+  \end{equation}
+  which ensures that the spectral representation produces real values.
+  Substituting this identity and using the substitution
+  \begin{equation}
+    \mu = - \lambda
+  \end{equation}
+  it is shown that
+  \begin{equation}
+    \overline{Z (t)} = \int_{\mathbb{R}} \overline{A_t  (- \mu)} e^{i \mu t}
+    \mathd \Phi (\mu)
+  \end{equation}
+  Since $Z (t) = \overline{Z (t)}$, comparison of the integrands (which are
+  unique elements of $L^2 (F)$) yields
+  \begin{equation}
+    A_t (\lambda) = \overline{A_t  (- \lambda)} \quad \text{for } F
+    \text{-a.e. } \lambda
+  \end{equation}
+  Equivalently, because the oscillatory function (\ref{of}) is given by
+  \begin{equation}
+    \varphi_t (\lambda) = A_t (\lambda) e^{i \lambda t}
+  \end{equation}
+  we have
+  \begin{equation}
+    \varphi_t  (- \lambda) = \overline{\varphi_t (\lambda)} \quad \text{for }
+    F \text{-a.e. } \lambda
+  \end{equation}
+  Conversely, if
+  \begin{equation}
+    A_t  (- \lambda) = \overline{A_t (\lambda)}
+  \end{equation}
+  for $F$-a.e. $\lambda$, then the same substitution shows that
+  \begin{equation}
+    \overline{Z (t)} = Z (t) \quad \forall t \in \mathbb{R}
+  \end{equation}
+  so $Z$ is real-valued. This completes the proof.
+\end{proof}
+
+\begin{theorem}
+  {\tmstrong{[Existence]}}\label{thm:existence_osc} Let $F$ be an absolutely
+  continuous spectral measure and the gain function
+  \begin{equation}
+    A_t (\lambda) \in L^2 (F) \forall \mathbb{R} \ni t < \infty
+  \end{equation}
+  be measurable in both time and frequency then the time-dependent spectral
+  density is defined by
+  \begin{equation}
+    \begin{array}{ll}
+      S_t (\lambda) & = \int_{\mathbb{R}} |A_t (\lambda) |^2  \hspace{0.17em}
+      dF (\lambda) < \infty\\
+      & = \int_{\mathbb{R}} |A_t (\lambda) |^2 S (\lambda) d \lambda
+    \end{array}
+  \end{equation}
+  and there exists a complex orthogonal random measure $\Phi$ with spectral
+  measure $F$ such that for each sample path $\varpi \in \Theta$ in the space
+  of sample paths having given covariance constituting the ensemble denoted
+  $\Theta$
+  \begin{equation}
+    Z (t) = \int_{\mathbb{R}} A_t (\lambda) e^{i \lambda t} \mathd \Phi
+    (\lambda)
+  \end{equation}
+  is well-defined in $L^2 (\Omega)$ and has covariance $R_Z$ as in
+  (\ref{covar}) above.
+\end{theorem}
+
+\begin{proof}
+  The proof proceeds by constructing the stochastic integral using the
+  standard extension procedure. First, the integral is defined for simple
+  functions of the form
+  \begin{equation}
+    g (\lambda) = \lim_{n \rightarrow \infty} \sum_{j = 1}^n c_j
+    \text{\tmtextbf{1}}_{E_j} (\lambda)
+  \end{equation}
+  where $\{E_j \}$ are disjoint Borel sets with $F (E_j) < \infty$ and $c_j
+  \in \mathbb{C}$:
+  \begin{equation}
+    \int_{\mathbb{R}} g (\lambda) \mathd \Phi (\lambda) = \lim_{n \rightarrow
+    \infty} \sum_{j = 1}^n c_j \Phi (E_j)
+  \end{equation}
+  For simple functions such as this, the isometry property holds:
+  \begin{equation}
+    \begin{array}{ll}
+      \mathbb{E} \left[ \left| \int_{\mathbb{R}} g (\lambda) \hspace{0.17em}
+      \Phi \mathd (\lambda) \right|^2 \right] & =\mathbb{E} \left[ \lim_{n
+      \rightarrow \infty} \left| \sum_{j = 1}^n c_j \Phi (E_j) \right|^2
+      \right]\\
+      & = \lim_{n \rightarrow \infty} \sum_{j = 1}^n \sum_{k = 1}^n c_j
+      \overline{c_k} \mathbb{E} [\Phi (E_j) \overline{\Phi (E_k)}]\\
+      & = \lim_{n \rightarrow \infty} \sum_{j = 1}^n |c_j |^2 F (E_j)\\
+      & = \int_{\mathbb{R}} |g (\lambda) |^2  \hspace{0.17em} dF (\lambda)
+    \end{array}
+  \end{equation}
+  Since simple functions are dense in $L^2 (F)$, the integral is extended by
+  continuity {\forall}$g \in L^2 (F)$ since the oscillatory function
+  (\ref{of}) is defined by
+  \begin{equation}
+    \varphi_t (\lambda) = A_t (\lambda) e^{i \lambda t} \in L^2 (F) \forall t
+    \in \mathbb{R}
+  \end{equation}
+  and $A_t \in$. Therefore
+  \begin{equation}
+    Z (t) = \int_{\mathbb{R}} \varphi_t (\lambda) \mathd \Phi (\lambda)
+  \end{equation}
+  is well-defined in $L^2 (\Omega)$. The covariance is computed as:
+  \begin{equation}
+    \begin{array}{ll}
+      R_Z (t, s) & =\mathbb{E} [Z (t) \overline{Z (s)}]\\
+      & =\mathbb{E} \left[ \int_{\mathbb{R}} \varphi_t (\lambda) \mathd \Phi
+      (\lambda) \int_{\mathbb{R}} \overline{\varphi_s (\mu)} \mathd
+      \overline{\Phi (\mu)} \right]\\
+      & = \int_{\mathbb{R}} \int_{\mathbb{R}} \varphi_t (\lambda)
+      \overline{\varphi_s (\mu)} \mathd \mathbb{E} [\Phi (\lambda)
+      \overline{\Phi (\mu)}]\\
+      & = \int_{\mathbb{R}} \varphi_t (\lambda) \overline{\varphi_s
+      (\lambda)} \hspace{0.17em} dF (\lambda)\\
+      & = \int_{\mathbb{R}} A_t (\lambda) \overline{A_s (\lambda)} e^{i
+      \lambda (t - s)}  \hspace{0.17em} dF (\lambda)
+    \end{array}
+  \end{equation}
+\end{proof}
+
+\section{Unitarily Time-Changed Stationary
+Processes}\label{sec:stationary_timechange}
 
 \subsection{Unitary time-change operator}
 
@@ -194,211 +420,8 @@
   on $L^2_{\tmop{loc}} (\mathbb{R})$.
 \end{proof}
 
-\section{Oscillatory Processes (Priestley)}\label{sec:oscillatory}
-
-\begin{definition}
-  {\tmstrong{[Oscillatory process]\label{def:osc_proc} }}Let $F$ be a finite
-  nonnegative Borel measure on $\mathbb{R}$. Let
-  \begin{equation}
-    A_t \in L^2 (F) \forall t \in \mathbb{R}
-  \end{equation}
-  be the gain function and
-  \begin{equation}
-    \varphi_t (\lambda) = A_t (\lambda) e^{i \lambda t} \label{of}
-  \end{equation}
-  be the corresponding oscillatory function then an {\tmem{oscillatory
-  process}} is a stochastic process which can be represented as
-  \begin{equation}
-    \begin{array}{ll}
-      Z (t) & = \int_{\mathbb{R}} \varphi_t (\lambda) \mathd \Phi (\lambda)\\
-      & = \int_{\mathbb{R}} A_t (\lambda) e^{i \lambda t} \mathd \Phi
-      (\lambda)
-    \end{array}
-  \end{equation}
-  where $\Phi$ is a complex orthogonal random measure with spectral measure
-  $F$, that is,
-  \begin{equation}
-    \mathbb{E} \hspace{-0.17em} \left[ \Phi (d \lambda) \hspace{0.17em}
-    \overline{\Phi (d \mu)} \right] = \delta (\lambda - \mu)  \hspace{0.17em}
-    dF (\lambda)
-  \end{equation}
-  and corresponding covariance kernel
-  \begin{equation}
-    \begin{array}{ll}
-      R_Z (t, s) & =\mathbb{E} \hspace{-0.17em} [Z (t) \overline{Z (s)}]\\
-      & = \int_{\mathbb{R}} A_t (\lambda) \hspace{0.17em} \overline{A_s
-      (\lambda)} \hspace{0.17em} e^{i \lambda (t - s)}  \hspace{0.17em} dF
-      (\lambda)\\
-      & = \int_{\mathbb{R}} \phi_t (\lambda) \overline{\phi_s (\lambda)}
-      \mathd F (\lambda)
-    \end{array} \label{covar}
-  \end{equation}
-\end{definition}
-
-\begin{theorem}
-  {\tmstrong{[Real-valuedness criterion for oscillatory
-  processes]\label{thm:realvaluedness}}}Let $Z$ be an oscillatory process with
-  oscillatory function
-  \begin{equation}
-    \varphi_t (\lambda) = A_t (\lambda) e^{i \lambda t}
-  \end{equation}
-  and spectral measure $F$. Then $Z$ is real-valued if and only if
-  \begin{equation}
-    A_t  (- \lambda) = \overline{A_t (\lambda)}
-  \end{equation}
-  for $F$-almost every $\lambda \in \mathbb{R}$, equivalently
-  \begin{equation}
-    \varphi_t  (- \lambda) = \overline{\varphi_t (\lambda)}
-  \end{equation}
-  for $F$-almost every $\lambda \in \mathbb{R}$.
-\end{theorem}
-
-\begin{proof}
-  Assume $Z$ is real-valued, i.e.
-  \begin{equation}
-    Z (t) = \overline{Z (t)} \quad \forall t \in \mathbb{R}
-  \end{equation}
-  Writing its oscillatory representation,
-  \begin{equation}
-    Z (t) = \int_{\mathbb{R}} A_t (\lambda) e^{i \lambda t} \mathd \Phi
-    (\lambda)
-  \end{equation}
-  and taking the complex conjugate gives
-  \begin{equation}
-    \overline{Z (t)} = \int_{\mathbb{R}} \overline{A_t (\lambda)} e^{- i
-    \lambda t} \mathd \overline{\Phi (\lambda)}
-  \end{equation}
-  For a real-valued process, the orthogonal random measure $\Phi$ must satisfy
-  \begin{equation}
-    \mathd \overline{\Phi (\lambda)} = - \mathd \Phi (\lambda)
-  \end{equation}
-  which ensures that the spectral representation produces real values.
-  Substituting this identity and using the substitution
-  \begin{equation}
-    \mu = - \lambda
-  \end{equation}
-  it is shown that
-  \begin{equation}
-    \overline{Z (t)} = \int_{\mathbb{R}} \overline{A_t  (- \mu)} e^{i \mu t}
-    \mathd \Phi (\mu)
-  \end{equation}
-  Since $Z (t) = \overline{Z (t)}$, comparison of the integrands (which are
-  unique elements of $L^2 (F)$) yields
-  \begin{equation}
-    A_t (\lambda) = \overline{A_t  (- \lambda)} \quad \text{for } F
-    \text{-a.e. } \lambda
-  \end{equation}
-  Equivalently, because the oscillatory function (\ref{of}) is given by
-  \begin{equation}
-    \varphi_t (\lambda) = A_t (\lambda) e^{i \lambda t}
-  \end{equation}
-  we have
-  \begin{equation}
-    \varphi_t  (- \lambda) = \overline{\varphi_t (\lambda)} \quad \text{for }
-    F \text{-a.e. } \lambda
-  \end{equation}
-  Conversely, if
-  \begin{equation}
-    A_t  (- \lambda) = \overline{A_t (\lambda)}
-  \end{equation}
-  for $F$-a.e. $\lambda$, then the same substitution shows that
-  \begin{equation}
-    \overline{Z (t)} = Z (t) \quad \forall t \in \mathbb{R}
-  \end{equation}
-  so $Z$ is real-valued. This completes the proof.
-\end{proof}
-
-\begin{theorem}
-  {\tmstrong{[Existence]}}\label{thm:existence_osc} If $F$ is finite and
-  $(A_t)_{t \in \mathbb{R}}$ is measurable in $t$ with
-  \begin{equation}
-    \int_{\mathbb{R}} |A_t (\lambda) |^2  \hspace{0.17em} dF (\lambda) <
-    \infty \forall t \in \mathbb{R}
-  \end{equation}
-  then there exists a complex orthogonal random measure $\Phi$ with spectral
-  measure $F$ such that
-  \begin{equation}
-    Z (t) = \int_{\mathbb{R}} A_t (\lambda) e^{i \lambda t} \mathd \Phi
-    (\lambda)
-  \end{equation}
-  is well-defined in $L^2 (\Omega)$ and has covariance $R_Z$ as in
-  (\ref{covar}) above.
-\end{theorem}
-
-\begin{proof}
-  The proof proceeds by constructing the stochastic integral using the
-  standard extension procedure. First, the integral is defined for simple
-  functions of the form
-  \begin{equation}
-    g (\lambda) = \sum_{j = 1}^n c_j \text{\tmtextbf{1}}_{E_j} (\lambda)
-  \end{equation}
-  where $\{E_j \}$ are disjoint Borel sets with $F (E_j) < \infty$ and $c_j
-  \in \mathbb{C}$:
-  \begin{equation}
-    \int_{\mathbb{R}} g (\lambda)  \hspace{0.17em} \Phi (d \lambda) \assign
-    \sum_{j = 1}^n c_j \Phi (E_j)
-  \end{equation}
-  For such simple functions, the isometry property holds:
-  \begin{equation}
-    \begin{array}{ll}
-      \mathbb{E} \left[ \left| \int_{\mathbb{R}} g (\lambda) \hspace{0.17em}
-      \Phi (d \lambda) \right|^2 \right] & =\mathbb{E} \left[ \left| \sum_{j =
-      1}^n c_j \Phi (E_j) \right|^2 \right]\\
-      & = \sum_{j = 1}^n \sum_{k = 1}^n c_j \overline{c_k} \mathbb{E} [\Phi
-      (E_j) \overline{\Phi (E_k)}]\\
-      & = \sum_{j = 1}^n |c_j |^2 F (E_j\\
-      & = \int_{\mathbb{R}} |g (\lambda) |^2  \hspace{0.17em} dF (\lambda)
-    \end{array}
-  \end{equation}
-  Since simple functions are dense in $L^2 (F)$, the integral is extended by
-  continuity to all $g \in L^2 (F)$. For each $t$, since the oscillatory
-  function (\ref{of}) is defined by
-  \begin{equation}
-    \varphi_t (\lambda) = A_t (\lambda) e^{i \lambda t}
-  \end{equation}
-  and $A_t \in L^2 (F)$, $\varphi_t \in L^2 (F)$ holds. Therefore
-  \begin{equation}
-    Z (t) = \int_{\mathbb{R}} \varphi_t (\lambda) \mathd \Phi (\lambda)
-  \end{equation}
-  is well-defined in $L^2 (\Omega)$. The covariance is computed as:
-  \begin{equation}
-    \begin{array}{ll}
-      R_Z (t, s) & =\mathbb{E} [Z (t) \overline{Z (s)}]\\
-      & =\mathbb{E} \left[ \int_{\mathbb{R}} \varphi_t (\lambda) \mathd \Phi
-      (\lambda) \int_{\mathbb{R}} \overline{\varphi_s (\mu)} \mathd
-      \overline{\Phi (\mu)} \right]\\
-      & = \int_{\mathbb{R}} \int_{\mathbb{R}} \varphi_t (\lambda)
-      \overline{\varphi_s (\mu)} \mathbb{E} [\mathd \Phi (\lambda) \mathd
-      \overline{\Phi (\mu)}]\\
-      & = \int_{\mathbb{R}} \varphi_t (\lambda) \overline{\varphi_s
-      (\lambda)} \hspace{0.17em} dF (\lambda)\\
-      & = \int_{\mathbb{R}} A_t (\lambda) \overline{A_s (\lambda)} e^{i
-      \lambda (t - s)}  \hspace{0.17em} dF (\lambda)
-    \end{array}
-  \end{equation}
-\end{proof}
-
-\section{Unitarily Time-Changed Stationary
-Processes}\label{sec:stationary_timechange}
-
-\subsection{Stationary processes}
-
-\begin{definition}
-  {\tmstrong{[Cram{\'e}r representation]\label{def:cramer}}} A zero-mean
-  stationary process $X$ with spectral measure $F$ admits the sample path
-  representation
-  \begin{equation}
-    X (t) = \int_{\mathbb{R}} e^{i \lambda t}  \hspace{0.17em} \Phi (d
-    \lambda)
-  \end{equation}
-  which has covariance
-  \begin{equation}
-    R_X  (t - s) = \int_{\mathbb{R}} e^{i \lambda (t - s)}  \hspace{0.17em} dF
-    (\lambda)
-  \end{equation}
-\end{definition}
-
-\subsection{Stationary $\to$ oscillatory via $U_{\theta}$}
+\subsection{Transformation of Stationary $\to$ Oscillatory Processes via
+$U_{\theta}$}
 
 \begin{theorem}
   {\tmstrong{[Unitary time change yields oscillatory
@@ -434,7 +457,7 @@ Processes}\label{sec:stationary_timechange}
       (s))\\
       & = \sqrt{\dot{\theta} (t)  \dot{\theta} (s)}  \int_{\mathbb{R}} e^{i
       \lambda (\theta (t) - \theta (s))}  \hspace{0.17em} dF (\lambda)
-    \end{array} \label{osccovar}
+    \end{array} \label{covar}
   \end{equation}
 \end{theorem}
 
@@ -497,12 +520,14 @@ Processes}\label{sec:stationary_timechange}
 \end{proof}
 
 \begin{corollary}
-  {\tmstrong{[Evolutionary spectrum]\label{cor:evol_spec}}} The evolutionary
-  spectrum is
+  {\tmstrong{[Evolutionary spectrum of unitarily time-changed stationary
+  process]\label{cor:evol_spec}}}{\cite{evolutionarySpectraAndNonStationaryProcesses}}
+  Link to The evolutionary spectrum, also called the time-varying spectral
+  density, is
   \begin{equation}
     \begin{array}{ll}
       dF_t (\lambda) & = |A_t (\lambda) |^2  \hspace{0.17em} dF (\lambda)\\
-      & = \dot{\theta} (t)  \hspace{0.17em} dF (\lambda)
+      & = \dot{\theta} (t) dF (\lambda)
     \end{array}
   \end{equation}
 \end{corollary}
@@ -531,29 +556,27 @@ Processes}\label{sec:stationary_timechange}
 \begin{proposition}
   {\tmstrong{[Operator conjugation]\label{prop:conjugation}}} Let
   \begin{equation}
-    (T_K f) (t) \assign \int_{\mathbb{R}} K (|t - s|)  \hspace{0.17em} f (s) 
-    \hspace{0.17em} ds
+    (T_K f) (t) \assign \int_{\mathbb{R}} K (|t - s|) f (s) ds
   \end{equation}
   with stationary kernel
   \begin{equation}
-    K (h) = \int_{\mathbb{R}} e^{i \lambda h}  \hspace{0.17em} dF (\lambda)
+    K (h) = \int_{\mathbb{R}} e^{i \lambda h} dF (\lambda)
   \end{equation}
   Define the transformed kernel
   \begin{equation}
     K_{\theta} (s, t) \assign \sqrt{\dot{\theta} (t)  \dot{\theta} (s)} 
     \hspace{0.17em} K \hspace{-0.17em} (| \theta (t) - \theta (s) |)
   \end{equation}
-  and corresponding integral covariance operator
+  then the corresponding integral covariance operator is conjugated $\forall f
+  \in L^2_{\tmop{loc}} (\mathbb{R})$ by
   \begin{equation}
-    (T_{K_{\theta}} f) (t) \assign \int_{\mathbb{R}} K_{\theta} (s, t) 
-    \hspace{0.17em} f (s)  \hspace{0.17em} ds
+    \begin{array}{ll}
+      (T_{K_{\theta}} f) (t) & = \int_{\mathbb{R}} K_{\theta} (s, t) f (s)
+      \hspace{0.17em} ds\\
+      & = \left( U_{\theta}  \hspace{0.17em} T_K  \hspace{0.17em}
+      U_{\theta}^{- 1} f \right) (t)
+    \end{array}
   \end{equation}
-  Then
-  \begin{equation}
-    T_{K_{\theta}} = U_{\theta}  \hspace{0.17em} T_K  \hspace{0.17em}
-    U_{\theta}^{- 1}
-  \end{equation}
-  on $L^2_{\tmop{loc}} (\mathbb{R})$.
 \end{proposition}
 
 \begin{proof}
@@ -563,14 +586,8 @@ Processes}\label{sec:stationary_timechange}
       ((U_{\theta} T_K U_{\theta}^{- 1}) g) (t) & = (U_{\theta} (T_K
       U_{\theta}^{- 1} g)) (t)\\
       & = \sqrt{\dot{\theta} (t)}  (T_K U_{\theta}^{- 1} g) (\theta (t))\\
-      & = \sqrt{\dot{\theta} (t)}  \int_{\mathbb{R}} K (| \theta (t) - w|) 
-      (U_{\theta}^{- 1} g) (w)  \hspace{0.17em} dw
-    \end{array}
-  \end{equation}
-  Substitute $w = \theta (s)$ with $dw = \dot{\theta} (s)  \hspace{0.17em}
-  ds$:
-  \begin{equation}
-    \begin{array}{ll}
+      & = \sqrt{\dot{\theta} (t)}  \int_{\mathbb{R}} K (| \theta (t) - \theta
+      (s) |)  (U_{\theta}^{- 1} g) (\theta (s)) \dot{\theta} (s) d s\\
       & = \sqrt{\dot{\theta} (t)}  \int_{\mathbb{R}} K (| \theta (t) - \theta
       (s) |) \frac{g (s)}{\sqrt{\dot{\theta} (s)}}  \dot{\theta} (s) 
       \hspace{0.17em} ds\\
@@ -582,18 +599,11 @@ Processes}\label{sec:stationary_timechange}
       & = (T_{K_{\theta}} g) (t)
     \end{array}
   \end{equation}
-  where
-  \begin{equation}
-    K_{\theta} (t, s) = \sqrt{\dot{\theta} (t) \dot{\theta} (s)} K (| \theta
-    (t) - \theta (s) |)
-  \end{equation}
-  Therefore
-  \begin{equation}
-    T_{K_{\theta}} = U_{\theta} T_K U_{\theta}^{- 1}
-  \end{equation}
 \end{proof}
 
-\section{Sample Paths Live in $L^2_{\tmop{loc}}$}\label{sec:samplepaths}
+\section{The Ensemble of Sample Path Realizations}\label{sec:samplepaths}
+
+Question: is this called local integrability? state this more eloquently
 
 \begin{theorem}
   {\tmstrong{[Sample paths in $L^2_{\tmop{loc}}
@@ -602,8 +612,8 @@ Processes}\label{sec:stationary_timechange}
   \begin{equation}
     \sigma^2 \assign \mathbb{E} [X (t)^2] < \infty
   \end{equation}
-  then, almost surely, every sample path $t \mapsto X (\omega, t)$ belongs to
-  $L^2_{\tmop{loc}} (\mathbb{R})$.
+  then, almost surely, every sample path $t \mapsto X (\omega, t) \in
+  L^2_{\tmop{loc}} (\mathbb{R})$.
 \end{theorem}
 
 \begin{proof}
@@ -653,7 +663,21 @@ Processes}\label{sec:stationary_timechange}
   sample path lies in $L^2_{\tmop{loc}} (\mathbb{R})$.
 \end{proof}
 
-\section{Zero Localization and Hilbert--P{\'o}lya Scaffold}\label{sec:HP}
+\section{Zero Localization}\label{sec:HP}
+
+The construction
+\begin{equation}
+  \text{stationary } X \xrightarrow{U_{\theta}} \text{oscillatory } Z
+  \xrightarrow{\mu = \delta (Z) | \dot{Z} |  \hspace{0.17em} dt} L^2 (\mu)
+  \xrightarrow{L : t f (t)} (L, \sigma (L))
+\end{equation}
+produces a self-adjoint operator whose eigenvalues equal the zero set of the
+realization sample path realization $Z (t)$ from the ensemble of possible
+sample path functions having the given covariance structure \ and whose
+spectrum equals the closure of the zero set, determined by the choice of
+time-change $\theta (t)$, spectral measure $F (\lambda)$, and complex
+orthogonal random measure $\Phi (\lambda)$ which uniquely corresponds to a
+given sample path from the ensemble.
 
 \subsection{Zero localization measure}
 
@@ -791,8 +815,8 @@ Processes}\label{sec:stationary_timechange}
   \end{equation}
   on the support of $\mu$ with domain
   \begin{equation}
-    \mathcal{D} (L) \assign \left\{ f \in \mathcal{H}: \int |t \hspace{0.17em}
-    f (t) |^2 \mathd \mu (t) < \infty \right\}
+    \mathcal{D} (L) \assign \left\{ f \in \mathcal{H}: \int |t f (t) |^2
+    \mathd \mu (t) < \infty \right\}
   \end{equation}
 \end{definition}
 
@@ -845,21 +869,11 @@ Processes}\label{sec:stationary_timechange}
   The eigenvalues are simple.
 \end{proof}
 
-\begin{remark}
-  {\tmstrong{[Operator scaffold]\label{labelrem:scaffold}}} The construction
-  \begin{equation}
-    \text{stationary } X \xrightarrow{U_{\theta}} \text{oscillatory } Z
-    \xrightarrow{\mu = \delta (Z) | \dot{Z} |  \hspace{0.17em} dt} L^2 (\mu)
-    \xrightarrow{L : t \cdot} (L, \sigma (L))
-  \end{equation}
-  produces a concrete self-adjoint operator whose eigenvalues equal the zero
-  set of $Z$ and whose spectrum equals the closure of the zero set, determined
-  by the choice of time-change $\theta$ and spectral measure $F$. This
-  provides an explicit realization consistent with Hilbert--P{\'o}lya
-  approaches to encoding arithmetic information in operator spectra.
-\end{remark}
+\subsection{Regularity and Simplicity of Sample Path Zero Crossings}
 
-\subsection{Regularity and Simplicity of The Zeros of $Z (t)$}
+TODO: insert the fundamental theorem on the non-tangency of zero crossings so
+that it doesnt have to be assumed but is in fact a fundamental theorem of
+non-degenerate Gaussian processes
 
 \begin{definition}
   {\tmstrong{[Regularity and simplicity]\label{def:regularity}}} Assume $Z \in
@@ -923,15 +937,12 @@ Processes}\label{sec:stationary_timechange}
   when evaluating at $t = t_0$.
 \end{proof}
 
-\subsection{Kac-Rice Formula For The Expected Zero Count}
+\subsection{The Kac-Rice Formula For The Expected Zero Counting Function}
 
 \begin{theorem}[Kac-Rice Formula for Zero Crossings]
   \label{thm:kac_rice}Let $Z (t)$ be a centered Gaussian process on $[a, b]$
-  with covariance
-  \begin{equation}
-    \ 
-  \end{equation}
-  then the expected number of zeros in $[a, b]$ is
+  with covariance $K (s, t) =\mathbb{E} [Z (s) Z (t)]$ then the expected
+  number of zeros in $[a, b]$ is
   \begin{equation}
     \label{eq:kac_rice} \mathbb{E} [N_{[a, b]}] = \int_a^b
     \sqrt{\frac{2}{\pi}}  \frac{\sqrt{K (t, t) K_{\dot{Z}} (t, t) - K_{Z,
@@ -980,13 +991,13 @@ Processes}\label{sec:stationary_timechange}
     \end{equation}
     the inverse of which satisfies
     \begin{equation}
-      \Sigma^{- 1} = \frac{K (t, t)}{\det \Sigma}
+      \Sigma^{- 1}_{22} = \frac{K (t, t)}{\det \Sigma}
     \end{equation}
     yielding
     \begin{equation}
-      p_{Z, \dot{Z}} (0, v) = \frac{1}{\sqrt{2 \pi K (t, t)}} \cdot \frac{\exp
-      \left( - \frac{K (t, t) v^2}{2 \det \Sigma} \right)}{\sqrt{2 \pi \det
-      \Sigma / K (t, t)}}
+      p_{Z, \dot{Z}} (0, v) = \frac{1}{\sqrt{2 \pi K (t, t)}} \cdot \frac{e^{-
+      \frac{K (t, t) v^2}{2 \det \Sigma}}}{\sqrt{2 \pi \det \Sigma / K (t,
+      t)}}
     \end{equation}
     which factorizes as $p_Z (0) \cdot p_{\dot{Z} |Z} (v| 0)$ where
     \begin{equation}
@@ -1036,9 +1047,11 @@ Processes}\label{sec:stationary_timechange}
 \begin{proof}
   The covariance function of the time-changed process is
   \begin{equation}
-    \label{eq:time_changed_cov} K_{\theta} (s, t) = \mathrm{cov} (Z (t), Z
-    (s)) = \sqrt{\theta (s) \theta (t)}  \hspace{0.17em} K (| \theta (t) -
-    \theta (s) |)
+    \label{eq:time_changed_cov} \begin{array}{ll}
+      K_{\theta} (s, t) & = \mathrm{cov} (Z (t), Z (s))\\
+      & = \sqrt{\dot{\theta} (s) \dot{\theta} (t)} K (| \theta (t) - \theta
+      (s) |)
+    \end{array}
   \end{equation}
   For the zero-crossing analysis, consider the normalized process. By the
   Kac-Rice formula:
@@ -1051,21 +1064,19 @@ Processes}\label{sec:stationary_timechange}
   \begin{equation}
     \label{eq:mixed_partial} \frac{\partial}{\partial t} K_{\theta} (s, t) =
     \frac{1}{2}  \frac{\dot{\theta} (t)}{\sqrt{\theta (t)}} 
-    \sqrt{\dot{\theta} (s)}  \hspace{0.17em} K (| \theta (t) - \theta (s) |)
-  \end{equation}
-  \begin{equation}
-    \label{eq:mixed_partial_continued} + \sqrt{\theta (s)}  \sqrt{\theta (t)} 
-    \hspace{0.17em} \dot{K} (| \theta (t) - \theta (s) |) \mathrm{sgn} (\theta
-    (t) - \theta (s))  \hspace{0.17em} \dot{\theta} (t)
+    \sqrt{\dot{\theta} (s)} K (| \theta (t) - \theta (s) |)
+    \label{eq:mixed_partial_continued} + \sqrt{\theta (s)}  \sqrt{\theta (t)}
+    \dot{K} (| \theta (t) - \theta (s) |) \mathrm{sgn} (\theta (t) - \theta
+    (s)) \hspace{0.17em} \dot{\theta} (t)
   \end{equation}
   Taking the limit as $s \to t$ and using the fact that $\dot{K} (0) = 0$ for
   stationary processes:
   \begin{equation}
     \begin{array}{ll}
       \lim_{s \to t}  \frac{\partial^2}{\partial s \partial t} K_{\theta} (s,
-      t) & = \dot{\theta} (s) \hspace{0.17em} \dot{\theta} (t) 
+      t) & = \lim_{s \to t} \dot{\theta} (s) \hspace{0.17em} \dot{\theta} (t) 
       \hspace{0.17em} \ddot{K} (0)\\
-      & = \dot{\theta} (t)^2  \hspace{0.17em} \ddot{K} (0)
+      & = \dot{\theta} (t)^2  \ddot{K} (0)
     \end{array} \label{eq:limit_mixed_partial}
   \end{equation}
   Substituting into the Kac-Rice formula we have
@@ -1080,5 +1091,12 @@ Processes}\label{sec:stationary_timechange}
   \end{equation}
   since $\dot{\theta} (t) \geq 0$ almost everywhere.
 \end{proof}
+
+\begin{thebibliography}{1}
+  \bibitem[1]{evolutionarySpectraAndNonStationaryProcesses}Maurice~B
+  Priestley. {\newblock}Evolutionary spectra and non-stationary processes.
+  {\newblock}\tmtextit{Journal of the Royal Statistical Society: Series B
+  (Methodological)}, 27(2):204--229, 1965.{\newblock}
+\end{thebibliography}
 
 \end{document}
