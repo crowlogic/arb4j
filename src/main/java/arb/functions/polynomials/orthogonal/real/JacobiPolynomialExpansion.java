@@ -7,6 +7,7 @@ import arb.RealConstants;
 import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.functions.real.RealFunction;
 
 /**
  *
@@ -20,6 +21,18 @@ public class JacobiPolynomialExpansion extends
   /**
    * Default to α=β=-½ which is the {@link Type1ChebyshevPolynomials}
    */
+
+  @Override
+  public RealFunction integral()
+  {
+    return super.integral();
+  }
+
+  @Override
+  public RealFunction derivative()
+  {
+    return super.derivative();
+  }
 
   /**
    * 
