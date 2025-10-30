@@ -79,25 +79,28 @@
 
   <section|VERIFICATION PROTOCOL>
 
-  You are tasked with mathematically verifying statements in a technical
-  document. Follow these instructions <with|font-series|bold|exactly> and
+  You are tasked with verifying matheamtical statements in a latex document.
+  Follow these instructions <with|font-series|bold|exactly> and
   <with|font-series|bold|completely>. Failure to follow any step constitutes
   verification failure.
 
-  <section|FORBIDDEN ACTIONS>
+  <section|FORBIDDEN ACTIONS OR THOUGHTS IN THE SO-CALLED \PTHINKING\Q or
+  \PREASONING\Q PROCESS>
 
   The following are <with|font-series|bold|STRICTLY PROHIBITED> during
   verification:
 
   <\enumerate>
-    <item><with|font-series|bold|NO INTUITION>: Do not use phrases like "this
-    seems," "I think," "appears to be," "looks like," or "feels wrong"
+    <item><with|font-series|bold|NO EMULATION OF INTUITION>: Do not use
+    phrases like "this seems," "I think," "appears to be," "looks like," or
+    "feels wrong"
 
     <item><with|font-series|bold|NO APPEALS TO AUTHORITY>: Do not reference
     "standard theory," "well-known results," or "familiar methods" without
     explicit computation
 
-    <item><with|font-series|bold|NO ASSUMPTIONS>: Do not assume anything is
+    <item><with|font-series|bold|NO ASSUMPTIONS OR EMULATING OF KNOWING
+    BETTER WITHOUT STATING DETAILED CORRECTION>: Do not assume anything is
     "stronger than necessary," "weaker than required," or "different from
     expected"
 
@@ -105,10 +108,10 @@
     statement as incorrect without providing explicit mathematical
     counter-proof
 
-    <item><with|font-series|bold|NO PATTERN MATCHING>: Do not reject
+    <item><with|font-series|bold|NO VAGUE PATTERN MATCHING>: Do not reject
     statements because they differ from "similar" results you may know
 
-    <item><with|font-series|bold|NO MIDDLE GROUND>: Every distinguishable
+    <item><with|font-series|bold|NO AMBIGUITY>: Every distinguishable
     mathematical statement must receive exactly one mark
   </enumerate>
 
@@ -362,7 +365,14 @@
 <\initial>
   <\collection>
     <associate|magnification|1.2>
+    <associate|page-even-footer|<htab|5mm><page-the-page><htab|5mm>>
+    <associate|page-even-header|>
+    <associate|page-height|auto>
     <associate|page-medium|paper>
+    <associate|page-odd-footer|<htab|5mm><page-the-page><htab|5mm>>
+    <associate|page-odd-header|>
+    <associate|page-type|letter>
+    <associate|page-width|auto>
   </collection>
 </initial>
 
