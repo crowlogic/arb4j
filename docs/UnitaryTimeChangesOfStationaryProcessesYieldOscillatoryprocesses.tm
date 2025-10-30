@@ -375,7 +375,7 @@
   <section|Unitarily Time-Changed Stationary
   Processes><label|sec:stationary_timechange>
 
-  <subsection|Unitary time-change operator>
+  <subsection|Unitary time-change operator <math|U<rsub|\<theta\>> f>>
 
   <\definition>
     <strong|[Unitary time-change]<label|def:Utheta>> Let the time-scaling
@@ -489,6 +489,126 @@
     </equation>
 
     on <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>.
+  </proof>
+
+  <subsubsection|Inverse Filter for Unitary Time Transformations>
+
+  <\theorem>
+    [Inverse Filter for Unitary Time Transformations]<label|thm:inverse-filter>Let
+    <math|\<theta\>:\<bbb-R\>\<to\>\<bbb-R\>> be absolutely continuous,
+    strictly increasing, and bijective with
+    <math|\<theta\><rprime|'><around|(|t|)>\<gtr\>0> almost everywhere. Let
+    <math|Y<around|(|u|)>> be a stationary process with unit variance, and
+    define
+
+    <\equation>
+      Z<around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>Y<around|(|\<theta\><around|(|t|)>|)>
+    </equation>
+
+    as the oscillatory process obtained by the unitary time transformation.
+    Then:
+
+    <\enumerate>
+      <item><label|item:forward> The forward filter kernel is
+
+      <\equation>
+        h<around|(|t,u|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>\<delta\>*<around|(|u-\<theta\><around|(|t|)>|)>
+      </equation>
+
+      <item><label|item:inverse> The inverse filter kernel is
+
+      <\equation>
+        g<around|(|t,s|)>=<frac|\<delta\>*<around|(|s-\<theta\><rsup|-1><around|(|t|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|t|)>|)>>>
+      </equation>
+
+      <item><label|item:composition> The composition
+      <math|<around|(|g\<circ\>h|)>> recovers the identity:
+
+      <\equation>
+        <tabular|<tformat|<table|<row|<cell|Y<around|(|t|)>>|<cell|=<big|int><rsub|\<bbb-R\>>g<around|(|t,s|)>*Z<around|(|s|)>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<frac|Z<around|(|\<theta\><rsup|-1><around|(|t|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|t|)>|)>>>>>>>>
+      </equation>
+    </enumerate>
+  </theorem>
+
+  <\proof>
+    We establish parts <reference|item:forward>\U<reference|item:composition>
+    in sequence.
+
+    <with|font-series|bold|Part <reference|item:forward>.> From the
+    definition of <math|Z<around|(|t|)>>,
+
+    <\equation>
+      Z<around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>Y<around|(|\<theta\><around|(|t|)>|)>=<big|int><rsub|\<bbb-R\>><sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>\<delta\>*<around|(|u-\<theta\><around|(|t|)>|)>*<space|0.17em>Y<around|(|u|)>*<space|0.17em>d*u
+    </equation>
+
+    so
+
+    <\equation>
+      h<around|(|t,u|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>\<delta\>*<around|(|u-\<theta\><around|(|t|)>|)>
+    </equation>
+
+    <with|font-series|bold|Part <reference|item:inverse>.> Define
+
+    <\equation>
+      g<around|(|t,s|)>=<frac|\<delta\>*<around|(|s-\<theta\><rsup|-1><around|(|t|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|t|)>|)>>>
+    </equation>
+
+    To verify it is the inverse filter, compute:
+
+    <\equation>
+      <big|int><rsub|\<bbb-R\>>g<around|(|t,s|)>*Z<around|(|s|)>*<space|0.17em>d*s=<big|int><rsub|\<bbb-R\>><frac|\<delta\>*<around|(|s-\<theta\><rsup|-1><around|(|t|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|t|)>|)>>>*<space|0.17em><sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>*<space|0.17em>Y<around|(|\<theta\><around|(|s|)>|)>*<space|0.17em>d*s
+    </equation>
+
+    Let <math|v=\<theta\><around|(|s|)>>, so
+    <math|s=\<theta\><rsup|-1><around|(|v|)>> and
+    <math|d*s=<frac|d*v|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|v|)>|)>>>.
+    Then
+
+    <\equation>
+      =<big|int><rsub|\<bbb-R\>><frac|\<delta\>*<around|(|\<theta\><rsup|-1><around|(|v|)>-\<theta\><rsup|-1><around|(|t|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|t|)>|)>>>*<space|0.17em><space|0.17em><frac|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|v|)>|)>>*<space|0.17em>Y<around|(|v|)>|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|v|)>|)>>d*v
+    </equation>
+
+    Simplify:
+
+    <\equation>
+      =<big|int><rsub|\<bbb-R\>><frac|\<delta\>*<around|(|\<theta\><rsup|-1><around|(|v|)>-\<theta\><rsup|-1><around|(|t|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|t|)>|)>>*<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|v|)>|)>>>*<space|0.17em>Y<around|(|v|)>*<space|0.17em>d*v
+    </equation>
+
+    Using the identity
+
+    <\equation>
+      \<delta\>*<around|(|\<theta\><rsup|-1><around|(|v|)>-\<theta\><rsup|-1><around|(|t|)>|)>=<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|t|)>|)>*<space|0.17em>\<delta\>*<around|(|v-t|)>
+    </equation>
+
+    we obtain
+
+    <\equation>
+      =<big|int><rsub|\<bbb-R\>><frac|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|t|)>|)>*<space|0.17em>\<delta\>*<around|(|v-t|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|t|)>|)>>*<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|v|)>|)>>>*<space|0.17em>Y<around|(|v|)>*<space|0.17em>d*v
+    </equation>
+
+    Evaluating at <math|v=t>,
+
+    <\equation>
+      =Y<around|(|t|)>
+    </equation>
+
+    Thus\ 
+
+    <\equation>
+      g<around|(|t,s|)>=<frac|\<delta\>*<around|(|s-\<theta\><rsup|-1><around|(|t|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|t|)>|)>>>
+    </equation>
+
+    \ is the correct inverse kernel.
+
+    <with|font-series|bold|Part <reference|item:composition>.> Substituting
+    <math|Z> explicitly yields
+
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|Y<around|(|t|)>>|<cell|=<big|int><rsub|\<bbb-R\>>g<around|(|t,s|)>*Z<around|(|s|)>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>><frac|\<delta\>*<around|(|s-\<theta\><rsup|-1><around|(|t|)>|)>|<sqrt|\<theta\><rprime|'><around|(|\<theta\><rsup|-1><around|(|t|)>|)>>>*<space|0.17em>Z<around|(|s|)>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<frac|Z<around|(|\<theta\><rsup|-1><around|(|t|)>|)>|<sqrt|\<theta\><rprime|'><around|(|\<theta\><rsup|-1><around|(|t|)>|)>>>>>>>>
+    </equation>
+
+    Hence <math|<around|(|g\<circ\>h|)><around|(|t,u|)>> acts as the identity
+    transformation in <math|L<rsup|2><around|(|\<bbb-R\>|)>>.
   </proof>
 
   <subsection|Transformation of Stationary <math|\<to\>> Oscillatory
@@ -1205,62 +1325,67 @@
   <\collection>
     <associate|U|<tuple|33|6>>
     <associate|auto-1|<tuple|1|2>>
-    <associate|auto-10|<tuple|4|10>>
-    <associate|auto-11|<tuple|5|11>>
-    <associate|auto-12|<tuple|5.1|12>>
-    <associate|auto-13|<tuple|5.2|13>>
-    <associate|auto-14|<tuple|5.3|15>>
-    <associate|auto-15|<tuple|5.4|16>>
-    <associate|auto-16|<tuple|127|18>>
+    <associate|auto-10|<tuple|3.3|12>>
+    <associate|auto-11|<tuple|4|12>>
+    <associate|auto-12|<tuple|5|13>>
+    <associate|auto-13|<tuple|5.1|14>>
+    <associate|auto-14|<tuple|5.2|15>>
+    <associate|auto-15|<tuple|5.3|17>>
+    <associate|auto-16|<tuple|5.4|18>>
+    <associate|auto-17|<tuple|142|20>>
     <associate|auto-2|<tuple|1.1|2>>
     <associate|auto-3|<tuple|2|2>>
     <associate|auto-4|<tuple|2.1|2>>
     <associate|auto-5|<tuple|2.2|3>>
     <associate|auto-6|<tuple|3|6>>
     <associate|auto-7|<tuple|3.1|6>>
-    <associate|auto-8|<tuple|3.2|8>>
-    <associate|auto-9|<tuple|3.3|10>>
-    <associate|bib-evolutionarySpectraAndNonStationaryProcesses|<tuple|1|18>>
-    <associate|cor:evol_spec|<tuple|12|9>>
-    <associate|covar|<tuple|47|8>>
-    <associate|def:L|<tuple|19|14>>
+    <associate|auto-8|<tuple|3.1.1|8>>
+    <associate|auto-9|<tuple|3.2|10>>
+    <associate|bib-evolutionarySpectraAndNonStationaryProcesses|<tuple|1|20>>
+    <associate|cor:evol_spec|<tuple|13|11>>
+    <associate|covar|<tuple|62|10>>
+    <associate|def:L|<tuple|20|16>>
     <associate|def:L2loc|<tuple|2|2>>
     <associate|def:Utheta|<tuple|8|6>>
     <associate|def:cramer|<tuple|4|2>>
     <associate|def:osc_proc|<tuple|5|3>>
-    <associate|def:regularity|<tuple|21|15>>
+    <associate|def:regularity|<tuple|22|17>>
     <associate|def:sigma_compact|<tuple|1|2>>
-    <associate|def:zeromeasure|<tuple|15|12>>
-    <associate|eq:covariance_def|<tuple|121|17>>
-    <associate|eq:expectation|<tuple|112|16>>
-    <associate|eq:expected_zeros|<tuple|122|17>>
-    <associate|eq:kac_rice|<tuple|107|16>>
-    <associate|eq:kac_rice_formula|<tuple|124|18>>
-    <associate|eq:limit_mixed_partial|<tuple|126|18>>
-    <associate|eq:mixed_partial|<tuple|125|18>>
-    <associate|eq:mixed_partial_continued|<tuple|125|18>>
-    <associate|eq:substituted_kac_rice|<tuple|127|18>>
-    <associate|eq:time_changed_cov|<tuple|123|17>>
-    <associate|labeldef:Hmu|<tuple|17|13>>
-    <associate|lem:delta|<tuple|22|15>>
+    <associate|def:zeromeasure|<tuple|16|14>>
+    <associate|eq:covariance_def|<tuple|136|19>>
+    <associate|eq:expectation|<tuple|127|18>>
+    <associate|eq:expected_zeros|<tuple|137|19>>
+    <associate|eq:kac_rice|<tuple|122|18>>
+    <associate|eq:kac_rice_formula|<tuple|139|19>>
+    <associate|eq:limit_mixed_partial|<tuple|141|20>>
+    <associate|eq:mixed_partial|<tuple|140|20>>
+    <associate|eq:mixed_partial_continued|<tuple|140|20>>
+    <associate|eq:substituted_kac_rice|<tuple|142|20>>
+    <associate|eq:time_changed_cov|<tuple|138|19>>
+    <associate|item:composition|<tuple|3|8>>
+    <associate|item:forward|<tuple|1|8>>
+    <associate|item:inverse|<tuple|2|8>>
+    <associate|labeldef:Hmu|<tuple|18|15>>
+    <associate|lem:delta|<tuple|23|17>>
     <associate|of|<tuple|6|3>>
-    <associate|prop:atomic|<tuple|18|13>>
-    <associate|prop:conjugation|<tuple|13|10>>
+    <associate|prop:atomic|<tuple|19|15>>
+    <associate|prop:conjugation|<tuple|14|12>>
     <associate|prop:inverse|<tuple|9|6>>
-    <associate|sec:HP|<tuple|5|11>>
+    <associate|sec:HP|<tuple|5|13>>
     <associate|sec:functionspaces|<tuple|1|2>>
     <associate|sec:oscillatory|<tuple|2.2|3>>
-    <associate|sec:samplepaths|<tuple|4|10>>
+    <associate|sec:samplepaths|<tuple|4|12>>
     <associate|sec:stationary_timechange|<tuple|3|6>>
-    <associate|thm:Utheta_to_osc|<tuple|11|8>>
-    <associate|thm:atomic|<tuple|16|12>>
+    <associate|thm:Utheta_to_osc|<tuple|12|10>>
+    <associate|thm:atomic|<tuple|17|14>>
     <associate|thm:existence_osc|<tuple|7|5>>
-    <associate|thm:expected_zero_counting|<tuple|24|17>>
-    <associate|thm:kac_rice|<tuple|23|16>>
+    <associate|thm:expected_zero_counting|<tuple|25|19>>
+    <associate|thm:inverse-filter|<tuple|11|8>>
+    <associate|thm:kac_rice|<tuple|24|18>>
     <associate|thm:local_unitarity|<tuple|10|7>>
-    <associate|thm:paths_loc|<tuple|14|10>>
+    <associate|thm:paths_loc|<tuple|15|12>>
     <associate|thm:realvaluedness|<tuple|6|3>>
-    <associate|thm:spectrum|<tuple|20|14>>
+    <associate|thm:spectrum|<tuple|21|16>>
   </collection>
 </references>
 
@@ -1298,47 +1423,52 @@
       <no-break><pageref|auto-6><vspace|0.5fn>
 
       <with|par-left|<quote|1tab>|3.1<space|2spc>Unitary time-change operator
+      <with|mode|<quote|math>|U<rsub|\<theta\>> f>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-7>>
+
+      <with|par-left|<quote|2tab>|3.1.1<space|2spc>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-8>>
 
       <with|par-left|<quote|1tab>|3.2<space|2spc>Transformation of Stationary
       <with|mode|<quote|math>|\<to\>> Oscillatory Processes via
       <with|mode|<quote|math>|U<rsub|\<theta\>>>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-8>>
+      <no-break><pageref|auto-9>>
 
       <with|par-left|<quote|1tab>|3.3<space|2spc>Covariance operator
       conjugation <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-9>>
+      <no-break><pageref|auto-10>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>The
       Ensemble of Sample Path Realizations>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-10><vspace|0.5fn>
+      <no-break><pageref|auto-11><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|5<space|2spc>Zero
       Localization> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-11><vspace|0.5fn>
+      <no-break><pageref|auto-12><vspace|0.5fn>
 
       <with|par-left|<quote|1tab>|5.1<space|2spc>Zero localization measure
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-12>>
+      <no-break><pageref|auto-13>>
 
       <with|par-left|<quote|1tab>|5.2<space|2spc>Hilbert space on zeros and
       multiplication operator <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-13>>
+      <no-break><pageref|auto-14>>
 
       <with|par-left|<quote|1tab>|5.3<space|2spc>Regularity and Simplicity of
       Sample Path Zero Crossings <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-14>>
+      <no-break><pageref|auto-15>>
 
       <with|par-left|<quote|1tab>|5.4<space|2spc>The Kac-Rice Formula For The
       Expected Zero Counting Function <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-15>>
+      <no-break><pageref|auto-16>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-16><vspace|0.5fn>
+      <no-break><pageref|auto-17><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
