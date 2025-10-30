@@ -6,7 +6,7 @@ import arb.exceptions.CompilerException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.real.RealFunction;
-import arb.functions.real.RealRiemannSiegelThetaFunction;
+import arb.functions.real.RiemannSiegelThetaFunction;
 import junit.framework.TestCase;
 
 /**
@@ -46,7 +46,7 @@ public class DerivativeNodeTest extends
 
   public void testEvaluateDerivativeOfTheRealRiemannSiegelThetaFunction()
   {
-    try ( RealRiemannSiegelThetaFunction θ = new RealRiemannSiegelThetaFunction())
+    try ( RiemannSiegelThetaFunction θ = new RiemannSiegelThetaFunction())
     {
       var  θ̇      = θ.derivative();
       Real θ̇AtOne = θ̇.evaluate(RealConstants.one, 128, new Real());

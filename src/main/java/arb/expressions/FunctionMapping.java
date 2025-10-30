@@ -135,4 +135,9 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
     return instance == null ? functionClass : instance.getClass();
   }
 
+  public boolean isGenerated()
+  {
+    return functionClass != null && functionClass.isInterface();
+  }
+
 }

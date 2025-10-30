@@ -1157,7 +1157,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitLdcInsn(Type.getType(domainType));
     mv.visitLdcInsn(Type.getType(coDomainType));
     mv.visitLdcInsn(Type.getType(functionClass));
-    mv.visitLdcInsn("diff" + className);
+    mv.visitLdcInsn("_diff" + className);
     try
     {
       mv.visitLdcInsn(String.format("diff(%s,%s)", rootNode.toString(), independentVariable));
@@ -1301,7 +1301,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                               assignments));
     }
 
-    if (nestedFunction.instance != null)
+    if (nestedFunction.instance != null && nestedFunction.isGenerated() )
     {
       initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv),
                                                      className,
@@ -1369,6 +1369,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       {
         generateDependencyAssignment(mv, functionName, functionDescriptor, assignment);
       }
+
     }
   }
 

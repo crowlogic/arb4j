@@ -5,7 +5,7 @@ import arb.expressions.Context;
 import arb.functions.RealBivariateToComplexFunction;
 import arb.functions.RealToComplexFunction;
 import arb.functions.real.RealFunction;
-import arb.functions.real.RealRiemannSiegelThetaFunction;
+import arb.functions.real.RiemannSiegelThetaFunction;
 import junit.framework.TestCase;
 
 /**
@@ -53,7 +53,7 @@ public class ExponentiationNodeTest extends
   {
 
     var context = new Context();
-    var θ       = new RealRiemannSiegelThetaFunction();
+    var θ       = new RiemannSiegelThetaFunction();
     context.registerFunction("θ", θ);
 
     var gain = RealBivariateToComplexFunction.express("A:exp(ⅈ*λ*(θ(t)-t))*√(θ̇(t))", context);

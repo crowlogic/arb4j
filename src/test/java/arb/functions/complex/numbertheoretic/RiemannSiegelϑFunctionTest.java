@@ -10,7 +10,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.complex.ComplexRiemannSiegelThetaFunction;
 import arb.functions.real.RealFunction;
-import arb.functions.real.RealRiemannSiegelThetaFunction;
+import arb.functions.real.RiemannSiegelThetaFunction;
 import junit.framework.TestCase;
 
 /**
@@ -47,7 +47,7 @@ public class RiemannSiegelϑFunctionTest extends
   public void testRiemannSiegelThetaAtOne()
   {
     try ( ComplexRiemannSiegelThetaFunction θ = new ComplexRiemannSiegelThetaFunction();
-          RealRiemannSiegelThetaFunction θreal = new RealRiemannSiegelThetaFunction())
+          RiemannSiegelThetaFunction θreal = new RiemannSiegelThetaFunction())
     {
       var θone     = θ.evaluate(ComplexConstants.one, 128);
       var θonereal = θreal.evaluate(RealConstants.one, 128);

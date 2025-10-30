@@ -357,11 +357,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
 
     var    derivative                   = instance.derivative();
-    String derivativeFunctionName       = "diff" + functionName;
-
-    // HERE IS THE PROBLEM: The derivative Expression gets generated with the full
-    // expression as className
-    // but we need to set it to use the short derivativeFunctionName instead
+    String derivativeFunctionName       = "_diff" + functionName;
 
     var    newDerivativeFunctionMapping = expression.context.functions.get(derivativeFunctionName);
     if (newDerivativeFunctionMapping == null)

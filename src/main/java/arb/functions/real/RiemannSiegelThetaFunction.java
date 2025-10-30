@@ -3,6 +3,7 @@ package arb.functions.real;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Context;
 
 /**
  * <pre>
@@ -15,16 +16,20 @@ import arb.documentation.TheArb4jLibrary;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RealRiemannSiegelThetaFunction implements
-                                            RealFunction
+public class RiemannSiegelThetaFunction implements
+                                        RealFunction
 {
+  Context context = new Context();
+
   @Override
   public String toString()
   {
     return θ.toString();
   }
 
-  RealFunction derivative = RealFunction.express("diffθ:t->diff(im(lnΓ(¼+ⅈ*t/2))-(t*log(π)/2),t)");
+  RealFunction θ          = RealFunction.express("θ:t->im(lnΓ(¼+ⅈ*t/2))-(t*log(π)/2)", context);
+
+  RealFunction derivative = RealFunction.express("diffθ:t->diff(θ(t),t)", context);
 
   @Override
   public RealFunction derivative()
@@ -36,9 +41,8 @@ public class RealRiemannSiegelThetaFunction implements
   {
     // Expression.saveClasses = true;
   }
-  public static final RealFunction θ = RealFunction.express("θ:t->im(lnΓ(¼+ⅈ*t/2))-(t*log(π)/2)");
 
-  public RealRiemannSiegelThetaFunction()
+  public RiemannSiegelThetaFunction()
   {
   }
 
