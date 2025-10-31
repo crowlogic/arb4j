@@ -1,0 +1,124 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{bm}
+
+\begin{document}
+
+\section*{Hamburger-Siegel Theorem and Proof}
+
+The \textbf{Hamburger-Siegel theorem} (more commonly known as \emph{Hamburger's theorem} for the moment problem) characterizes when a sequence of real numbers is a moment sequence of a positive measure on the real line.
+
+\subsection*{Statement of the Theorem}
+
+Given a sequence $(s_n)_{n \geq 0}$ of real numbers, the \textbf{Hamburger moment problem} asks whether there exists a positive Borel measure $\mu$ on $\mathbb{R}$ such that
+\[
+s_n = \int_{-\infty}^{\infty} x^n \, d\mu(x), \quad n = 0, 1, 2, \ldots
+\]
+
+\textbf{Hamburger's Theorem (Existence):} The sequence $(s_n)_{n \geq 0}$ is a moment sequence if and only if the \textbf{Hankel matrix}
+\[
+H = \begin{pmatrix}
+s_0 & s_1 & s_2 & \cdots \\
+s_1 & s_2 & s_3 & \cdots \\
+s_2 & s_3 & s_4 & \cdots \\
+\vdots & \vdots & \vdots & \ddots
+\end{pmatrix}
+\]
+is \textbf{positive semidefinite}. That is, for every finite sequence $(c_j)_{j \geq 0}$ of complex numbers with only finitely many nonzero terms,
+\[
+\sum_{j,k \geq 0} s_{j+k} c_j \overline{c_k} \geq 0.
+\]
+Equivalently, all principal minors (finite Hankel determinants) must be nonnegative:
+\[
+\det \begin{pmatrix}
+s_0 & s_1 & \cdots & s_{n-1} \\
+s_1 & s_2 & \cdots & s_n \\
+\vdots & \vdots & \ddots & \vdots \\
+s_{n-1} & s_n & \cdots & s_{2n-2}
+\end{pmatrix} \geq 0
+\]
+for all $n \geq 1$.
+
+\subsection*{Uniqueness (Determinacy)}
+
+Hamburger also addressed the uniqueness question. The moment problem is \textbf{determinate} (the measure $\mu$ is unique) if and only if
+\[
+\lim_{n \to \infty} \frac{\det(H_n)}{\det(H'_n)} = 0,
+\]
+where $H_n$ and $H'_n$ are certain finite sections of the Hankel matrix. A more practical sufficient condition for determinacy is \textbf{Carleman's criterion}: if
+\[
+\sum_{n=1}^{\infty} \frac{1}{\sqrt[2n]{s_{2n}}} = \infty,
+\]
+then the moment problem is determinate.
+
+\subsection*{Hamburger's Converse Theorem for the Riemann Zeta Function}
+
+A different but related result, also due to Hamburger, characterizes the Riemann zeta function via its functional equation:
+
+\textbf{Hamburger's Converse Theorem (1921):} Let $h(s) = \sum_{n=1}^{\infty} a_n n^{-s}$ and $g(s) = \sum_{n=1}^{\infty} b_n n^{-s}$ be absolutely convergent for $\Re(s) > 1$, and suppose both $(s-1)h(s)$ and $(s-1)g(s)$ are entire functions of finite order. If the functional equation
+\[
+\pi^{-s/2} \Gamma\left(\frac{s}{2}\right) h(s) = \pi^{-(1-s)/2} \Gamma\left(\frac{1-s}{2}\right) g(1-s)
+\]
+holds, then $h(s) = g(s) = a_1 \zeta(s)$.
+
+This says the Riemann zeta function is \textbf{uniquely determined} by its functional equation (up to a constant factor), provided suitable regularity conditions hold.
+
+\subsection*{Detailed Proof of Hamburger's Theorem}
+
+The proof uses orthogonal polynomials, functional analysis, and the theory of linear functionals on polynomial algebras.
+
+\subsubsection*{Step 1: Reformulation via Linear Functionals}
+
+For a sequence $s = (s_n)_{n \geq 0}$, define a linear functional $L_s$ on the polynomial algebra $\mathbb{R}[x]$ by
+\[
+L_s(x^n) = s_n, \quad n = 0, 1, 2, \ldots
+\]
+By linearity of integration, $(s_n)$ is a moment sequence for measure $\mu$ if and only if
+\[
+L_s(p) = \int_{-\infty}^{\infty} p(x) \, d\mu(x)
+\]
+for all polynomials $p \in \mathbb{R}[x]$.
+
+\subsubsection*{Step 2: Positive Definiteness}
+
+The measure $\mu$ is positive if and only if
+\[
+L_s(p^2) = \int_{-\infty}^{\infty} p(x)^2 \, d\mu(x) \geq 0
+\]
+for all $p \in \mathbb{R}[x]$. Writing $p(x) = \sum_{j=0}^m c_j x^j$, we have
+\[
+L_s(p^2) = L_s\left(\left(\sum_j c_j x^j\right)^2\right) = \sum_{j,k} c_j c_k s_{j+k}.
+\]
+Thus, $\mu$ is positive if and only if the associated Hankel form is positive semidefinite.
+
+\subsubsection*{Step 3: Construction via Orthogonal Polynomials}
+
+Given a positive definite sequence $(s_n)$, construct orthonormal polynomials $(P_n)$ via Gram-Schmidt orthogonalization with respect to the inner product
+\[
+\langle p, q \rangle = L_s(pq).
+\]
+These polynomials satisfy a three-term recurrence relation
+\[
+x P_n(x) = b_n P_{n+1}(x) + a_n P_n(x) + b_{n-1} P_{n-1}(x),
+\]
+with $b_n > 0$.
+
+By \textbf{Favard's theorem}, such a recurrence relation determines a positive measure $\mu$ for which $(P_n)$ are orthonormal.
+
+\subsubsection*{Step 4: Spectral Theorem}
+
+The multiplication operator $Mf(x) = xf(x)$ on $L^2(\mu)$ is self-adjoint. By the spectral theorem, $\mu$ is the spectral measure of this operator, uniquely determined by the moments.
+
+\subsubsection*{Step 5: Uniqueness (Determinacy)}
+
+Hamburger proved that the measure $\mu$ is unique if and only if the polynomials are dense in $L^2(\mu)$, or equivalently,
+\[
+\sum_{n=0}^{\infty} \left(P_n^2(0) + Q_n^2(0)\right) < \infty,
+\]
+where $Q_n$ are the polynomials of the second kind. Carleman's sufficient condition follows from analyzing growth rates of moments.
+
+\subsubsection*{Conclusion}
+
+Hamburger's theorem provides a complete solution to the existence and uniqueness questions for the moment problem on $\mathbb{R}$. The positive definiteness criterion is both necessary and sufficient for existence, and various criteria (Carleman, Krein) determine uniqueness.
+
+\end{document}
