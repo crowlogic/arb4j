@@ -1,0 +1,692 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumitem}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{The sampling theorem, Dirichlet series and Hankel transforms}
+\author{Dieter Klusch \\ Institut f\"{u}r Mathematik I (WE 1), Freie Universit\"{a}t Berlin, Germany}
+\date{Received 9 April 1991 \\ Revised 19 December 1991}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Some very surprising relations between fundamental theorems and formulas of signal analysis, of analytic number theory and of applied analysis are presented. It is shown that generalized forms of the classical Whittaker-Kotelnikov-Shannon sampling theorem as well as of the Brown-Butzer-Splettstößer approximate sampling expansion for non-band-limited signal functions can be deduced via the theory of Dirichlet series with functional equations from a new summation formula for Hankel transforms. This counterpart to Poisson's summation formula is shown to be essentially ``equivalent'' to the famous functional equation of Riemann's zeta-function, to the ``modular relation'' of the theta-function, to the Nielsen-Doetsch summation formula for Bessel functions and to the partial fraction expansion of the periodic Hilbert kernel.
+\end{abstract}
+
+\noindent\textbf{Keywords:} Approximate sampling theorem; Whittaker's cardinal series; Hankel transforms; Dirichlet series; Riemann's zeta-function; theta-transformation; Bessel functions.
+
+\section{Introduction}
+\label{sec:intro}
+
+The Whittaker-Shannon sampling theorem states that every signal function $f: \mathbb{R} \to \mathbb{C}$ that is band-limited to $[-\pi W, \pi W]$ for some $W > 0$, i.e., its Fourier transform $\hat{f}(\nu)$ vanishes for almost all $|\nu| > \pi W$, can be completely reconstructed from its sampled values $f(n/W)$, $n \in \mathbb{Z}$, in terms of Whittaker's cardinal series (cf. \cite{28,32})
+\begin{equation}
+f(t) = \sum_{n=-\infty}^{+\infty} f\left(\frac{n}{W}\right) \operatorname{sinc}\left(Wt - n\right), \quad t \in \mathbb{R},
+\label{eq:whittaker_cardinal}
+\end{equation}
+where $\operatorname{sinc}(t) := \frac{\sin \pi t}{\pi t}$, $t \neq 0$, and $\operatorname{sinc}(0) := 1$ is the Dirichlet kernel. There are various extensions of this Lagrange-type interpolation formula which is the theoretical basis of modern pulse-code modulation communication systems. It has been proved by Butzer et al. (cf. \cite{7,8,9,10}) that the Brown-Butzer-Splettstößer approximate sampling theorem for not necessarily band limited functions
+\begin{equation}
+f(t) = \sum_{n=-\infty}^{+\infty} f\left(\frac{n}{W}\right) \operatorname{sinc}\{Wt - n\}, \quad t \in \mathbb{R},
+\label{eq:brown_butzer}
+\end{equation}
+is essentially ``equivalent'' to three fundamental theorems in three different fields, namely to the Poisson summation formula of Fourier analysis, to a particular form of Cauchy's integral formula in complex function theory, as well as to the Euler-Maclaurin summation formula of numerical analysis. Hence the sampling theorem plays a unique role in various branches of analysis (cf. \cite{5}).
+
+In the present paper, it is proved by means of the theory of Dirichlet series that generalized forms of the sampling expansions \eqref{eq:whittaker_cardinal} and \eqref{eq:brown_butzer} can also be deduced via a Poisson-type duality formula (cf. Theorem~\ref{thm:poisson_type} below) from five important theorems of the theory of integral transforms, of analytic number theory and of the theory of special functions of mathematical physics. In particular, \eqref{eq:whittaker_cardinal} and \eqref{eq:brown_butzer} are deduced from a general summation formula for ordinary Hankel integral transforms (cf. Theorems~\ref{thm:hankel_shannon} and~\ref{thm:riemann_hankel} below), which is shown to be ``equivalent'' to the famous functional equation of Riemann's zeta-function (cf. Theorem~\ref{thm:riemann_functional} below), to the ``modular relation'' of Jacobi's theta-function (cf. Lemma~\ref{lem:theta_relation} below), to the well-known Nielsen-Doetsch summation formula for Bessel functions of the first kind (cf. Lemma~\ref{lem:bessel_summation} below) as well as to the partial fraction expansion of the periodic ``Hilbert-kernel'' (cf. Lemma~\ref{lem:hilbert_kernel} below).
+
+Results of this special type on nontrivial relations between fundamental theorems of signal analysis, analytic number theory and applied analysis are obviously new. Demonstrably they are unparalleled in the vast literature of signal theory and Fourier analysis (cf. \cite{8,21}).
+
+On the other hand, they also extend well-known results of the theory of Dirichlet series with functional equations and related arithmetical identities due to many authors (see, e.g., \cite{2,3,4,11,12,13,14,22}). In fact, none of these papers contains any explicit contribution to modern signal analysis or to the ``equivalent'' characterisation of Riemann's functional equation by summation properties of Hankel transforms (cf. Theorem~\ref{thm:riemann_functional} below). The same fact holds for the classical deep works \cite{15,17,19,20,27,29}, which form the basis of our considerations. By the way, we too extend an interesting result of \cite{18} (see also \cite{1,26}) on the famous Voronoi summation formula and its relation to Dirichlet series.
+
+Concerning the preliminaries, let $L^p(\mathbb{R})$, $1 \leq p \leq \infty$, denote the space of all complex-valued Lebesgue measurable functions $f$ defined on $\mathbb{R}$ for which the norms
+\begin{equation}
+\|f\|_p := \left(\int_{\mathbb{R}} |f(u)|^p \, du\right)^{1/p}, \quad 1 \leq p < \infty, \quad \|f\|_\infty := \operatorname{ess\,sup}_{u \in \mathbb{R}} |f(u)|
+\label{eq:lp_norm}
+\end{equation}
+are finite. By $C(\mathbb{R})$, denote the space of all uniformly continuous and bounded functions on $\mathbb{R}$ endowed with the supremum norm $\|\cdot\|_C$. The Fourier transform $\hat{f}$ of $f \in L^1(\mathbb{R})$ is defined by
+\begin{equation}
+\hat{f}(u) := \int_{\mathbb{R}} f(u) e^{-i u u} \, du, \quad u \in \mathbb{R},
+\label{eq:fourier_transform}
+\end{equation}
+and of $f \in L^2(\mathbb{R})$ by the limit in the $L^2(\mathbb{R})$-norm of
+\begin{equation}
+\int_{-R}^{R} f(u) e^{-i u u} \, du, \quad R \to \infty.
+\label{eq:fourier_l2}
+\end{equation}
+If $f \in L^p(\mathbb{R})$, $p = 1$ or $2$, is such that $\hat{f} \in L^1(\mathbb{R})$, then the Fourier inversion formula
+\begin{equation}
+f(t) = \frac{1}{\sqrt{2\pi}} \int_{\mathbb{R}} \hat{f}(u) e^{i u t} \, du, \quad t \in \mathbb{R},
+\label{eq:fourier_inversion}
+\end{equation}
+holds at each point of continuity of $f$. The bilateral Laplace transform $\mathcal{L}_z\{f\}$ of $f \in L^1(\mathbb{R})$ and $f$ being of bounded exponential growth is defined in its strip of convergence $S$ by
+\begin{equation}
+\mathcal{L}_z\{f\} := \int_{\mathbb{R}} f(u) e^{-zu} \, du, \quad z \in S.
+\label{eq:laplace_transform}
+\end{equation}
+The Hankel transform of $f \in L^1(\mathbb{R}_+)$ is defined for $s \in \mathbb{R}_+$ by
+\begin{equation}
+(H_\nu f)(s) := \int_0^\infty f(t) \sqrt{st} J_\nu(2\sqrt{st}) \, dt,
+\label{eq:hankel_transform}
+\end{equation}
+where $J_\nu$ is the Bessel function of the first kind of order $\nu \geq 0$.
+
+\section{Riemann's functional equation and Hankel transforms}
+\label{sec:riemann}
+
+As remarked above, one aim is to deduce the sampling theorems from Riemann's functional equation. In view of Fourier's inversion theorem (cf. \eqref{eq:fourier_inversion} below) it is quite sufficient to base further investigations on the following generalized functional equation of Riemann's type.
+
+\begin{definition}
+\label{def:riemann_functional}
+Let $\{\lambda_n\}$ and $\{\mu_n\}$ be two sequences of positive numbers strictly increasing to infinity, and $\{a_n\}$ and $\{b_n\}$ two sequences of complex numbers not identically zero. Consider the functions $\phi(s)$ and $\psi(s)$ represented as absolutely convergent Dirichlet series in the half-plane $\operatorname{Re} s > 1$:
+\begin{equation}
+\phi(s) = \sum_{n \geq 1} \frac{a_n}{\lambda_n^s}, \quad \psi(s) = \sum_{n \geq 1} \frac{b_n}{\mu_n^s}.
+\label{eq:dirichlet_series}
+\end{equation}
+
+State that $\phi$ and $\psi$ satisfy the functional equation if there exists a meromorphic function $\chi$ with the following properties:
+\begin{enumerate}[label=(\roman*)]
+\item 
+\begin{align}
+\chi(s) = \pi^{-s/2} \Gamma\left(\frac{s}{2}\right) \phi(s), & \quad \operatorname{Re} s > 1, \label{eq:chi_right}\\
+\chi(s) = \pi^{-(1-s)/2} \Gamma\left(\frac{1-s}{2}\right) \psi(1-s), & \quad \operatorname{Re} s < 0. \label{eq:chi_left}
+\end{align}
+\item $\chi(s)$ has only simple poles in $\mathbb{C}$ at $s = 0$ and $s = 1$, i.e., $\phi(s)$ is analytic in $\mathbb{C} \setminus \{1\}$ and $(s-1)\phi(s)$ is an entire function whose order one regards as finite.
+\end{enumerate}
+\end{definition}
+
+In view of \eqref{eq:chi_right}, further set:
+\begin{equation}
+a_0 := -2\psi(0), \quad b_0 := \operatorname{res}_{s=1} \phi(s), \quad \lambda_0 = \mu_0 := 0,
+\label{eq:residue_definition}
+\end{equation}
+\begin{equation}
+a_{-n} := a_n, \quad b_{-n} := b_n, \quad \lambda_{-n} := -\lambda_n, \quad \mu_{-n} := -\mu_n, \quad n \in \mathbb{N}.
+\label{eq:symmetric_extension}
+\end{equation}
+
+The following lemmas are originally due to Hamburger (cf. \cite{4,11,19}).
+
+\begin{lemma}
+\label{lem:theta_relation}
+Riemann's functional equation \eqref{eq:chi_right}--\eqref{eq:chi_left} is ``equivalent'' to the theta-relation
+\begin{equation}
+\sum_{n=-\infty}^{\infty} a_n \exp(-\pi \lambda_n^2 \tau) = \tau^{-1/2} \sum_{n=-\infty}^{\infty} b_n \exp(-\pi \mu_n^2 \tau^{-1}), \quad \operatorname{Re} \tau > 0.
+\label{eq:theta_relation_eq}
+\end{equation}
+\end{lemma}
+
+The behaviour of \eqref{eq:theta_relation_eq} under the one-sided Laplace transform is given by the generalized Nielsen-Doetsch formula for Schlömilch series (cf. \cite{11,15,16,23,24,31}):
+
+\begin{lemma}
+\label{lem:bessel_summation}
+The theta-relation \eqref{eq:theta_relation_eq} is ``equivalent'' to the Bessel summation formula
+\begin{equation}
+\frac{\Gamma(\nu+1)}{\pi^{\nu}} \left[ b_0 t^\nu + 2\sum_{n \geq 1} b_n \mu_n^\nu J_\nu(2\pi \mu_n t) \right]
+= \frac{t^{\nu-1/2}}{\pi^{\nu+1/2}} \left[ \frac{a_0}{\Gamma(\nu+1)} e^{\mu t} + 2 \sum_{n \in \mathbb{N}} a_n (t - \lambda_n)_+^{\nu-1/2} \right], \quad t \in \mathbb{R}_+, \quad \nu \geq 0.
+\label{eq:bessel_summation_eq}
+\end{equation}
+\end{lemma}
+
+We now transfer \eqref{eq:bessel_summation_eq} to the space of Hankel transforms. More generally, prove the following obviously new ``equivalence'' theorem, which extends, e.g., researches of \cite{11}.
+
+\begin{theorem}
+\label{thm:riemann_functional}
+Let $f : \mathbb{R}_+ \to \mathbb{C}$ be such that, for $\xi > 0$ and $q \geq \frac{1}{2}$,
+\begin{equation}
+g_{\xi,0}(t) := f(t) t^{1/4} (t-\xi)^{q-1/4} \in L^2(\mathbb{R}_+) \cap C(\mathbb{R}_+),
+\label{eq:hankel_condition_1}
+\end{equation}
+and, for $\xi > 0$ and $q > \frac{3}{2}$,
+\begin{equation}
+g_{\xi,q}(t) = O(t^{-\nu-1}), \quad t \to \infty.
+\label{eq:hankel_condition_2}
+\end{equation}
+
+Define the operator
+\begin{equation}
+(T_\nu f)(\xi) := \int_0^\infty g_{\xi,q}(t) \, dt.
+\label{eq:operator_definition}
+\end{equation}
+
+Then Riemann's functional equation \eqref{eq:chi_right}--\eqref{eq:chi_left} is ``equivalent'' to the Hankel summation formula
+\begin{equation}
+\frac{\Gamma(\nu+1)}{\pi^\nu} \left[ b_0 (T_\nu f)(0) + 2\sum_{n \geq 1} b_n \mu_n^\nu (H_\nu f)(T_2 \mu_n^2) \right]
+= \frac{\pi^{\nu-1/2}}{\Gamma(\nu+1/2)} \left[ a_0 (T_\nu f)(0) + 2\sum_{n \geq 1} a_n (T_\nu f)(\lambda_n) \right],
+\label{eq:hankel_summation_formula}
+\end{equation}
+valid for $\nu > \frac{1}{2}$.
+\end{theorem}
+
+\begin{proof}
+Show that \eqref{eq:theta_relation_eq} and \eqref{eq:hankel_summation_formula} are ``equivalent''. The assertion then follows from Lemma~\ref{lem:theta_relation}.
+
+Multiply \eqref{eq:bessel_summation_eq} by $g_{\xi,q}(t) = f(t) \in L^1(\mathbb{R}_+) \cap C(\mathbb{R}_+)$. Integration over $\mathbb{R}_+$ then yields by \eqref{eq:operator_definition}:
+\begin{equation}
+\frac{\pi^\nu}{\Gamma(\nu+1)} (T_\nu f)(0) + 2\sum_{n \geq 1} b_n \mu_n^\nu \int_0^\infty f(t) J_\nu(2\pi \mu_n t) \, dt
+= \frac{\pi^{\nu+1/2}}{\Gamma(\nu+1/2)} \left[ a_0 (T_\nu f)(0) + 2\sum_{m \in \mathbb{N}} a_n (T_\nu f)(\lambda_n) \right].
+\label{eq:hankel_proof_1}
+\end{equation}
+
+For $\nu > 0$ the asymptotic equality
+\begin{equation}
+J_\nu(z) = \sqrt{\frac{2}{\pi z}} \cos\left(z - \frac{\nu \pi}{2} - \frac{\pi}{4}\right), \quad z \to \infty,
+\label{eq:bessel_asymptotic}
+\end{equation}
+holds, and since $g_{\xi,q}(t) = t^{-1/4} f(t) \in L^1(\mathbb{R}_+) \cap C(\mathbb{R}_+)$, exchange by \eqref{eq:operator_definition} the order of summation and integration on the left-hand side of \eqref{eq:hankel_proof_1}. By condition \eqref{eq:hankel_condition_2} and in view of \eqref{eq:dirichlet_series} one has for $\nu > \frac{1}{2}$ and some constant $c > 0$,
+\begin{equation}
+c \left|\sum_{m \in \mathbb{N}} a_n g_{\xi,q}(t) \, dt\right| \leq c \sum_{m \geq 1} |a_n| \lambda_n^{2\mu-1}.
+\label{eq:hankel_bound}
+\end{equation}
+
+Hence the interchange of summation and integration on the right-hand side of \eqref{eq:hankel_proof_1} is permissible and:
+\begin{equation}
+\frac{\Gamma(\nu+1)}{\pi^\nu} \left[ b_0 (T_\nu f)(0) + 2\sum_{n \geq 1} b_n \mu_n^\nu \int_0^\infty f(t) J_\nu(2\pi \mu_n t) \, dt \right]
+= \frac{\pi^{\nu-1/2}}{\Gamma(\nu+1/2)} \left[ a_0 (T_\nu f)(0) + 2\sum_{n \geq 1} a_n (T_\nu f)(\lambda_n) \right],
+\label{eq:hankel_proof_2}
+\end{equation}
+which by \eqref{eq:hankel_transform} and \eqref{eq:operator_definition} yields \eqref{eq:hankel_summation_formula}.
+
+Now to the converse direction. Prove a generalized version of \eqref{eq:theta_relation_eq} by applying \eqref{eq:hankel_summation_formula} with $\nu = 2m > \frac{1}{2}$ to the function
+\begin{equation}
+f(t) = t^{2\mu - m - 1/2} \exp\{-\pi t \tau^{-1}\}, \quad t \in \mathbb{R}_+,
+\label{eq:test_function}
+\end{equation}
+where $\mu > 0$ and $\operatorname{Re} \tau > 0$. Verify directly that
+\begin{equation}
+g_{2m}(t) = f(t) t^{-\mu} (t-\xi)^{2m-1/2}, \quad \xi > 0,
+\label{eq:test_satisfies_1}
+\end{equation}
+satisfies \eqref{eq:hankel_condition_1} and \eqref{eq:hankel_condition_2}.
+
+By \eqref{eq:hankel_transform} one has for $s \in \mathbb{R}_+$,
+\begin{equation}
+(H_\nu f)(s) = \left(\frac{\pi}{2}\right)^{2\mu-m} \int_0^\infty t^{2\mu-m-1/2} e^{-\pi t \tau^{-1}} J_{2m}(2\sqrt{st}) \, dt.
+\label{eq:hankel_computed}
+\end{equation}
+
+Using Hankel's generalisation of Weber's first exponential integral (cf. \cite{31}), obtain the Hankel transform of \eqref{eq:test_function}:
+\begin{equation}
+(H_\nu f)(s) = 2^{2\mu-m} \left(\frac{\pi}{\tau}\right)^{\mu} s^{\mu-1/2} M_{2m-\mu, \mu}[2\pi s \tau^{-1}],
+\label{eq:hankel_whittaker}
+\end{equation}
+where $M(z)$ is the Whittaker function of the first kind. By \eqref{eq:operator_definition} one has for $\xi \geq 0$,
+\begin{equation}
+(T_{2m} f)(\xi) = \left(\frac{\pi}{2\mu}\right)^2 \int_{\max(0, \xi)}^\infty t^{2(\mu-m)-1/2} e^{-\pi t \tau^{-1}} \, dt.
+\label{eq:operator_computed}
+\end{equation}
+
+For the case $\xi = 0$ in \eqref{eq:operator_computed}, obtain by Euler's representation of the $\Gamma$-function,
+\begin{equation}
+(T_{2m} f)(0) = \left(\frac{\pi}{2\mu}\right)^2 \Gamma(2\mu), \quad (T_{2m+1} f)(0) = \left(\frac{\pi}{2\mu + 1/2}\right)^2 \Gamma(2\mu + 1/2).
+\label{eq:operator_zero}
+\end{equation}
+
+For the case $\xi > 0$ in \eqref{eq:operator_computed}, the Whittaker integral representation of the Whittaker function $W(z)$ of the second kind is needed (cf. \cite{33}):
+\begin{equation}
+W_{\kappa, \mu}(z) = \frac{e^{-z/2} z^{\kappa + 1/2}}{\Gamma(\mu - \kappa + 1)} \int_0^\infty e^{-zt} t^{\mu - \kappa - 1/2} (1 + t)^{\kappa + \mu} \, dt,
+\label{eq:whittaker_integral}
+\end{equation}
+valid for $\operatorname{Re} z > 0$ and $\operatorname{Re}(\mu - \kappa) > -1/2$.
+
+Now substitute $t = \xi + \tau \nu / \pi$, $\nu > 0$, in \eqref{eq:operator_computed}. Then in view of \eqref{eq:whittaker_integral}, obtain by straightforward computation:
+\begin{equation}
+(T_{2m} f)(\xi) = \left(\frac{\pi}{2\mu + 1/2}\right)^2 \xi^{\mu-1/2} \exp\left\{-\frac{\pi \xi}{\tau}\right\} W_{2m-\mu, \mu}[\pi \xi \tau^{-1}].
+\label{eq:operator_xi}
+\end{equation}
+
+Inserting \eqref{eq:hankel_whittaker}, \eqref{eq:operator_zero} and \eqref{eq:operator_xi} into \eqref{eq:hankel_summation_formula}, obtain the Whittaker transformation formula
+\begin{align}
+b_0 \sqrt{\tau} \pi + (\tau \pi)^\mu \sum_{n \geq 1} b_n \mu_n^{2m-1} \exp\left\{-\frac{\mu_n \pi}{\tau}\right\} M_{2m-\mu, \mu}[\mu_n \pi \tau] \notag \\
+= \frac{\Gamma(2m + 1) \Gamma(2\mu)}{\Gamma(2m + 1/2) \Gamma(2\mu + 1/2)} \left[ a_0 \pi + \sum_{n \geq 1} a_n \lambda_n^{\mu-1/2} \exp\left\{-\frac{\lambda_n \pi}{\tau}\right\} W_{2m-\mu, \mu}[\lambda_n \pi \tau^{-1}] \right],
+\label{eq:whittaker_theta}
+\end{align}
+valid for $\operatorname{Re} \tau > 0$, $\mu > 0$ and $m > 1/2$.
+
+Finally, observe that (cf. \cite{16})
+\begin{equation}
+M_{1/2 + m, m}(z) = z^{1/2 + m} \exp\left\{-\frac{z}{2}\right\}, \quad W_{1/4 - m, 1/4 + m}(z) = z^{1/4 - m} \exp\{z\}, \quad \operatorname{Re} z > 0, \quad m \in \mathbb{R}_+.
+\label{eq:whittaker_special}
+\end{equation}
+Hence the Whittaker theta-relation \eqref{eq:whittaker_theta} degenerates for $\mu = m + 1/4$ to \eqref{eq:theta_relation_eq} and Theorem~\ref{thm:riemann_functional} is proved.
+\end{proof}
+
+\begin{remark}
+\label{rem:remarks_2_5}
+\begin{enumerate}[label=(\roman*)]
+\item In the case $a_n = b_n = 1$ and $\lambda_n = \mu_n = n$, equation \eqref{eq:chi_right}--\eqref{eq:chi_left} becomes Riemann's functional equation for the ordinary $\zeta$-function while \eqref{eq:theta_relation_eq} reduces to the linear transformation formula for Jacobi's elliptic theta-function $\vartheta_3(0|\tau)$, \eqref{eq:bessel_summation_eq} is the classical Nielsen-Doetsch summation formula for Bessel functions (cf. \cite{15,31}) and \eqref{eq:hankel_summation_formula} degenerates to a series transformation formula which at first has been studied without rigorous proof by Erdelyi (cf. \cite{1,17}) in the theory of special functions of mathematical physics.
+\item Note that the Whittaker theta-relation \eqref{eq:whittaker_theta} is a far-reaching extension of the ``modular relation'' \eqref{eq:theta_relation_eq}. Hence the Hankel formula \eqref{eq:hankel_summation_formula} can be regarded as a counterpart to Poisson's duality formula for Fourier transforms.
+\end{enumerate}
+\end{remark}
+
+\section{Poisson formula}
+\label{sec:poisson}
+
+The following ``equivalent'' characterisation of \eqref{eq:theta_relation_eq} is originally due to Hamburger and Siegel (cf. \cite{4,11,19,29}).
+
+\begin{lemma}
+\label{lem:hilbert_kernel}
+The theta-relation \eqref{eq:theta_relation_eq} is ``equivalent'' to the partial fraction expansion
+\begin{equation}
+F(z) := a_0 + 2\sum_{n \geq 1} a_n e^{-2\pi \lambda_n^2 z} = \frac{\pi z}{\pi z} + \sum_{n \geq 1} \frac{2b_n z}{(\pi z)^2 + \mu_n^2}, \quad \operatorname{Re} z > 0.
+\label{eq:partial_fraction}
+\end{equation}
+\end{lemma}
+
+For further investigations, only the fact that \eqref{eq:theta_relation_eq} implies the expansion \eqref{eq:partial_fraction} of the generalized periodic ``Hilbert kernel'' is needed (cf. \cite{6}). In view of \eqref{eq:partial_fraction}, give the next definition.
+
+\begin{definition}
+\label{def:class_An}
+For $z = x + iy \in \mathbb{C}$ and fixed $\eta > 0$, consider the strip $S$: $|x| < \eta$, $y \in \mathbb{R}$.
+
+Denote by $A_\eta$ the class of functions $\Omega: \mathbb{C} \to \mathbb{C}$ with the following properties:
+\begin{enumerate}[label=(\roman*)]
+\item $\Omega(z)$ is analytic in $S$.
+\item There exists a positive number $\delta < \eta$ so that $\Omega(\pm \delta + iy) \in L^1(\mathbb{R})$.
+\item Two sequences of positive numbers $\{\alpha_\mu\}$ and $\{\beta_\mu\}$ strictly increasing to infinity can be determined so that uniformly for $|x| \leq \delta$,
+\begin{equation}
+\Omega(x + i\alpha_\mu) = O(1), \quad \Omega(x - i\beta_\mu) = O(1), \quad \mu \to \infty,
+\label{eq:hankel_class_1}
+\end{equation}
+and with $F(z)$ defined by \eqref{eq:partial_fraction},
+\begin{equation}
+\Omega(x + i\alpha_\mu) F(x + i\alpha_\mu) = O(1), \quad \Omega(x - i\beta_\mu) F(x - i\beta_\mu) = O(1), \quad \mu \to \infty.
+\label{eq:hankel_class_2}
+\end{equation}
+\end{enumerate}
+\end{definition}
+
+For the class $A_\eta$, prove the following theorem (cf. \cite{19}).
+
+\begin{theorem}
+\label{thm:residue_formula}
+Let $\Omega \in A_\eta$. Then the Hankel summation formula \eqref{eq:hankel_summation_formula} implies the residue formula
+\begin{equation}
+\sum_n \Omega(i\mu_n) = \sum_n a_n e^{-2\pi i \lambda_n y} + \frac{1}{2\pi i} \int_{(-\delta)} \Omega(z) F(z) \, dz.
+\label{eq:residue_formula_eq}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Function $F(z)$ defined by \eqref{eq:partial_fraction} is analytic in $\mathbb{C}$ except for simple poles at $z = i\mu_n$, $n \in \mathbb{Z}$. For $0 < \delta < \eta$, consider the fixed straight lines $(\pm\delta) := (\pm\delta - i\infty, \pm\delta + i\infty)$.
+
+By \eqref{eq:hankel_class_2}, the Phragmén-Lindelöf principle and Cauchy's theorem:
+\begin{equation}
+\int_{(\delta)} \Omega(z) F(z) \, dz = \int_{(-\delta)} \Omega(z) F(z) \, dz + 2\pi i \sum_n b_n \Omega(i\mu_n).
+\label{eq:residue_proof_1}
+\end{equation}
+
+Since $F(z)$ is an odd function of $z$:
+\begin{equation}
+\frac{1}{\pi i} \sum_{n} b_n \Omega(i\mu_n) = \frac{1}{2\pi i} \int_{(\delta)} F(z) \{\Omega(z) + \Omega(-z)\} \, dz.
+\label{eq:residue_proof_2}
+\end{equation}
+
+By Lemma~\ref{lem:hilbert_kernel}, $F(z)$ is also represented for $\operatorname{Re} z > 0$ by the absolutely convergent Dirichlet series on the left-hand side of \eqref{eq:partial_fraction}. Hence inserting in \eqref{eq:residue_proof_2}, with \eqref{eq:hankel_class_1} and Lebesgue's dominated convergence theorem:
+\begin{equation}
+\frac{1}{\pi i} \sum_{n} b_n \Omega(i\mu_n) = \frac{1}{2\pi i} \int_{(\delta)} a_0 \{\Omega(z) + \Omega(-z)\} \, dz + \frac{1}{\pi i} \sum_{n \geq 1} a_n \int_{(\delta)} e^{-2\pi \lambda_n} \{\Omega(z) + \Omega(-z)\} \, dz.
+\label{eq:residue_proof_3}
+\end{equation}
+
+Now by \eqref{eq:hankel_class_1} relation \eqref{eq:residue_proof_3} also holds for the imaginary axis. Hence:
+\begin{equation}
+\sum_n b_n \Omega(i\mu_n) = a_0 \int_{\mathbb{R}} \Omega(iy) \, dy + \sum_{n \neq 0} a_n \int_{\mathbb{R}} e^{-2\pi i \lambda_n y} \Omega(iy) \, dy.
+\label{eq:residue_proof_4}
+\end{equation}
+
+Hence by Lemma~\ref{lem:theta_relation} and Theorem~\ref{thm:riemann_functional} the assertion of Theorem~\ref{thm:residue_formula} is proved.
+\end{proof}
+
+\begin{remark}
+\label{rem:theta_special}
+As an illustration of Theorem~\ref{thm:residue_formula}, take $\Omega(z) = \exp\{z^2 \pi \tau^{-1}\}$, $\operatorname{Re} \tau > 0$, and $a_n = b_n = 1$, $\lambda_n = \mu_n = n$. Then $F(z) = i \cot(i\pi z)$ and $\Omega \in A_\eta$. Hence \eqref{eq:residue_formula_eq} yields an important special case of \eqref{eq:theta_relation_eq}, i.e., the well-known linear transformation formula for the theta-function $\vartheta_3(0|\tau)$.
+\end{remark}
+
+Now use Theorem~\ref{thm:residue_formula} to deduce a Poisson formula.
+
+Denote by $A$ the class of all functions $g: \mathbb{R} \to \mathbb{C}$ with the properties
+\begin{equation}
+g \in L^1(\mathbb{R}) \cap C(\mathbb{R}), \quad \text{with } \hat{g} \in L^1(\mathbb{R}),
+\label{eq:class_A_prop_1}
+\end{equation}
+\begin{equation}
+\mathcal{L}_{zu}\{g(au)\}, \quad a > 0, \text{ is defined in } S, \text{ and satisfies } \eqref{eq:hankel_class_1} \text{ and } \eqref{eq:hankel_class_2}.
+\label{eq:class_A_prop_2}
+\end{equation}
+
+\begin{theorem}
+\label{thm:poisson_type}
+Let $g \in A$. Then the Hankel summation formula \eqref{eq:hankel_summation_formula} implies the Poisson-type summation formula
+\begin{equation}
+\sqrt{2\pi} \sum_{n} a_n \hat{g}(2\pi \lambda_n a) = a^{-1} \sum_{n} b_n \hat{g}(\mu_n \pi a^{-1}), \quad a \in \mathbb{R}_+.
+\label{eq:poisson_summation}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By well-known facts from the theory of bilateral Laplace transforms (cf. \cite{16}), function
+\begin{equation}
+\Omega(z) := \mathcal{L}_{zu}\{g(au)\} = a^{-1} \int_{\mathbb{R}} g(u) e^{-za^{-1}u} \, du
+\label{eq:poisson_proof_1}
+\end{equation}
+is analytic in its strip of convergence $S$, and the Riemann-Lebesgue lemma yields
+\begin{equation}
+\lim_{|y| \to \infty} \Omega(x + iy) = 0,
+\label{eq:riemann_lebesgue}
+\end{equation}
+uniformly for $|x| \leq \delta < \eta$.
+
+By \eqref{eq:riemann_lebesgue}, have
+\begin{equation}
+\Omega(iy) = a^{-1} \sqrt{2\pi} \hat{g}(ya^{-1}).
+\label{eq:poisson_proof_2}
+\end{equation}
+
+Hence by Theorem~\ref{thm:residue_formula} and Fourier's inversion formula \eqref{eq:fourier_inversion}:
+\begin{equation}
+\sum_{n} b_n \hat{g}(\mu_n \pi a^{-1}) = \sum_{n} a_n e^{-2\pi i \lambda_n y} \hat{g}(ya^{-1}) \, dy = a\sqrt{2\pi} \sum_{n} a_n \hat{g}(2\pi \lambda_n a).
+\label{eq:poisson_proof_3}
+\end{equation}
+
+This proves \eqref{eq:poisson_summation}.
+\end{proof}
+
+\begin{remark}
+\label{rem:poisson_remarks}
+\begin{enumerate}[label=(\roman*)]
+\item The special case $a = 1$ of Theorem~\ref{thm:poisson_type} with the Hankel formula \eqref{eq:hankel_summation_formula} replaced by Riemann's functional equation \eqref{eq:chi_right}--\eqref{eq:chi_left} has been proved by means of the theory of almost periodic Schwarz distributions via Cauchy's theorem in \cite{22}.
+\item The special case of \eqref{eq:poisson_summation} for even functions $g$, $a = 1$ and $\lambda_n = \mu_n = n$ has been deduced from Riemann's functional equation \eqref{eq:chi_right}--\eqref{eq:chi_left} by Ferrar (cf. \cite{1,18}) and Patterson \cite{26}. Their methods of proof are mainly based upon Mellin's inversion formula and Cauchy's residue theorem.
+\end{enumerate}
+\end{remark}
+
+\section{Sampling theorems and Hankel transforms}
+\label{sec:sampling}
+
+For $\sigma \geq 0$ and $1 \leq p < \infty$, let $B_\sigma^p$ be the class of entire functions $f: \mathbb{C} \to \mathbb{C}$ of exponential type $\sigma$, i.e.,
+\begin{equation}
+|f(z)| < \exp(\sigma |y|) \|f\|_C, \quad z = x + iy \in \mathbb{C},
+\label{eq:exponential_type}
+\end{equation}
+which belong to $L^p(\mathbb{R})$ when restricted to $\mathbb{R}$. Have
+\begin{equation}
+B_\sigma^p \subseteq B_\sigma^q, \quad 1 \leq p \leq q \leq \infty,
+\label{eq:bsp_inclusion}
+\end{equation}
+and the Paley-Wiener theorem states that a function $f \in L^p(\mathbb{R})$, $1 < p < 2$, has an extension to $\mathbb{C}$ as an element of $B_\sigma^p$ if and only if $\hat{f}(\nu) = 0$ for $|\nu| \geq \sigma$. Hence in view of \eqref{eq:bsp_inclusion}, say that $f$ is band-limited to $\pi W$ if $f \in B_W^p$ for some $W > 0$ and $1 < p \leq \infty$ (cf. \cite{8}).
+
+Now use Theorem~\ref{thm:poisson_type} to deduce from \eqref{eq:hankel_summation_formula} the classical form of the Whittaker-Shannon sampling theorem (cf. \cite{8}).
+
+\begin{theorem}
+\label{thm:hankel_shannon}
+For some $W > 0$, $1 < p < \infty$, let $f \in B_W^p$ be such that \eqref{eq:class_A_prop_2} holds with $a = (2\pi W)^{-1}$. Then the Hankel summation formula \eqref{eq:hankel_summation_formula} implies
+\begin{equation}
+f(t) = \sum_{n=-\infty}^{+\infty} f\left(\frac{n}{W}\right) \operatorname{sinc}\{Wt - n\}, \quad t \in \mathbb{R},
+\label{eq:hankel_shannon_result}
+\end{equation}
+the series being absolutely and uniformly convergent.
+\end{theorem}
+
+\begin{proof}
+Trivially,
+\begin{equation}
+f(t) = \sum_{n=-\infty}^{+\infty} f\left(\frac{n}{W}\right) \operatorname{sinc}(n), \quad t \in \mathbb{R}.
+\label{eq:hankel_shannon_proof_1}
+\end{equation}
+
+Now let $g \in B_W^p$ with \eqref{eq:class_A_prop_2}. Then the Paley-Wiener theorem yields $\hat{g}(\nu) = 0$ for $|\nu| \geq 2\pi W$ and by Theorem~\ref{thm:poisson_type} with $a = b_n = 1$, $\lambda_n = \mu_n = n$, $n \in \mathbb{N}$:
+\begin{equation}
+\sqrt{2\pi} \sum_{n=-\infty}^{+\infty} \hat{g}\left(\frac{n}{W}\right) = \hat{g}(0) = \frac{1}{\sqrt{2\pi}} \int_{\mathbb{R}} g(u) \, du.
+\label{eq:hankel_shannon_proof_2}
+\end{equation}
+
+Let $f_1, f_2 \in B_W^p$ and apply \eqref{eq:hankel_shannon_proof_2} to $g_1(u) := f_1(u) f_2(t - u) \in B_W^p$ with \eqref{eq:class_A_prop_2}. Then the convolution integral $f_1 * f_2$ can be replaced by the discrete version (cf. \cite{8}):
+\begin{equation}
+(f_1 * f_2)(t) = \frac{1}{\sqrt{2\pi}} \int_{\mathbb{R}} f_1(u) f_2(t-u) \, du = \sum_{n=-\infty}^{+\infty} f_1\left(\frac{n}{W}\right) f_2\left(t - \frac{n}{W}\right), \quad t \in \mathbb{R}.
+\label{eq:hankel_shannon_proof_3}
+\end{equation}
+
+Take $f_1 = f$ and $f_2(\cdot) = \operatorname{sinc}\{W \cdot \}$ in \eqref{eq:hankel_shannon_proof_3}. Then the commutativity of the integral $f_1 * f_2$ yields
+\begin{equation}
+\sum_{n=-\infty}^{+\infty} f\left(\frac{n}{W}\right) \operatorname{sinc}\{Wt - n\} = f(t) \operatorname{sinc}(0),
+\label{eq:hankel_shannon_proof_4}
+\end{equation}
+and in view of \eqref{eq:hankel_shannon_proof_1} obtain \eqref{eq:hankel_shannon_result}.
+
+Finally, the convergence assertion follows from a theorem of Nikol'skii \cite{25}, which states that for any $h > 0$ and $f \in B_\sigma^p$, $1 < p \leq \infty$:
+\begin{equation}
+\sup_{u \in \mathbb{R}} |f(u - hn)|^p < \sum_{n} \|f\|_p^p.
+\label{eq:nikol_skii}
+\end{equation}
+
+Hence Theorem~\ref{thm:hankel_shannon} is proved.
+\end{proof}
+
+Now generalize Theorem~\ref{thm:hankel_shannon} by applying Theorem~\ref{thm:poisson_type} to a special function and to the case of Dirichlet series \eqref{eq:dirichlet_series} with $\lambda_n = \mu_n = n$.
+
+\begin{theorem}
+\label{thm:riemann_hankel}
+For $t \in \mathbb{R}$ fixed and $W > 0$, let
+\begin{equation}
+g_1(u) := f(u) \operatorname{sinc}\{W(t-u)\} \in A,
+\label{eq:riemann_hankel_setup}
+\end{equation}
+where
+\begin{equation}
+f \in L^2(\mathbb{R}) \cap C(\mathbb{R}), \quad \text{with } \hat{f} \in L^1(\mathbb{R}).
+\label{eq:riemann_hankel_condition}
+\end{equation}
+
+Then the Hankel summation formula \eqref{eq:hankel_summation_formula} implies for $t \in \mathbb{R}$,
+\begin{equation}
+f(t) = \sum_{n=-\infty}^{+\infty} a_n \hat{f}\left(\frac{n}{W}\right) \operatorname{sinc}\{Wt - n\} + R(f, \phi, \psi, W)(t),
+\label{eq:riemann_hankel_result}
+\end{equation}
+where the remainder
+\begin{equation}
+R(f, \phi, \psi, W)(t) := \frac{1}{\sqrt{2\pi}} \sum_{n=-\infty}^{+\infty} \left\{1 - b_n e^{-2\pi i n y}\right\} \int_{(2n-1)\pi W}^{(2n+1)\pi W} \hat{f}(v) e^{itv} \, dv
+\label{eq:remainder_formula}
+\end{equation}
+is uniformly bounded in $t \in \mathbb{R}$.
+\end{theorem}
+
+\begin{proof}
+Need the generalized Parseval formula
+\begin{equation}
+\int_{\mathbb{R}} f_1(u) \overline{f_2(u)} \, du = \int_{\mathbb{R}} \hat{f}_1(v) \overline{\hat{f}_2(v)} \, dv, \quad f_1, f_2 \in L^2(\mathbb{R}),
+\label{eq:parseval}
+\end{equation}
+where the bar indicates complex conjugates.
+
+Take $f_1(u) = f(u) e^{-iyu}$, $y \in \mathbb{R}$, and $f_2(u) = \operatorname{sinc}\{W(t - u)\}$. Since
+\begin{equation}
+\hat{f}_1(v) = \hat{f}(v + y)
+\label{eq:proof_f1_hat}
+\end{equation}
+and
+\begin{equation}
+\hat{f}_2(v) = \begin{cases}
+\frac{1}{\sqrt{2\pi}} W^{-1} e^{-itv}, & |v| < \pi W, \\
+0, & |v| > \pi W,
+\end{cases}
+\label{eq:proof_f2_hat}
+\end{equation}
+obtain from \eqref{eq:parseval},
+\begin{equation}
+\hat{f}(y) = e^{-iyt} \frac{1}{\sqrt{2\pi W}} \int_{-\pi W + y}^{+\pi W + y} \hat{f}(v) e^{itv} \, dv.
+\label{eq:proof_convolution}
+\end{equation}
+
+Directly show that $g_t \in L^1(\mathbb{R}) \cap C(\mathbb{R})$ and $\hat{g}_t \in L^1(\mathbb{R})$. Hence by Theorem~\ref{thm:poisson_type} with $a = (2\pi W)^{-1}$, $\lambda_n = \mu_n = n$ and by \eqref{eq:proof_convolution}:
+\begin{equation}
+\sum_{n=-\infty}^{+\infty} a_n g_t\left(\frac{n}{W}\right) = W\sqrt{2\pi} \sum_{n=-\infty}^{+\infty} b_n \hat{g}_t(2\pi W n)
+= \frac{1}{\sqrt{2\pi}} \sum_{n=-\infty}^{+\infty} \int_{(2n-1)\pi W}^{(2n+1)\pi W} \hat{f}(v) e^{itv} \, dv e^{-2\pi i n W t}.
+\label{eq:proof_poisson}
+\end{equation}
+
+Now split off the integral in Fourier's inversion formula \eqref{eq:fourier_inversion} in the form
+\begin{equation}
+f(t) = \frac{1}{\sqrt{2\pi}} \sum_{n=-\infty}^{+\infty} \int_{(2n-1)\pi W}^{(2n+1)\pi W} \hat{f}(v) e^{itv} \, dv.
+\label{eq:proof_fourier_split}
+\end{equation}
+
+Hence subtraction of \eqref{eq:proof_poisson} from \eqref{eq:proof_fourier_split} leads to the required result \eqref{eq:riemann_hankel_result} with the remainder \eqref{eq:remainder_formula}.
+
+Finally, observe that by the Hamburger-Siegel theorem (cf. \cite{19,29,30}) the sequence $\{b_n\}$ is bounded. Hence there is an absolute constant $c \geq 2$ so that
+\begin{equation}
+|R(f, \phi, \psi, W)(t)| < \frac{c}{\sqrt{2\pi}} \sum_{n=-\infty}^{+\infty} \int_{(2n-1)\pi W}^{(2n+1)\pi W} |\hat{f}(v)| \, dv = c \|\hat{f}\|_1.
+\label{eq:remainder_bound}
+\end{equation}
+
+This proves Theorem~\ref{thm:riemann_hankel}.
+\end{proof}
+
+\begin{remark}
+\label{rem:sampling_remarks}
+\begin{enumerate}[label=(\roman*)]
+\item If $b_0 = \operatorname{res}_{s=1} \zeta(s) = 1$, then with an absolute constant $c \geq 2$,
+\begin{equation}
+|R(f, \phi, \psi, W)(t)| < \frac{c}{\sqrt{2\pi}} \sum_{n \neq 0} \int_{(2n-1)\pi W}^{(2n+1)\pi W} |\hat{f}(v)| \, dv = \frac{c}{\sqrt{2\pi}} \int_{|v| > \pi W} |\hat{f}(v)| \, dv.
+\label{eq:remainder_zeta}
+\end{equation}
+
+Hence in this case, $\lim_{W \to \infty} R(f, \phi, \psi, W)(t) = 0$ uniformly in $t \in \mathbb{R}$ and \eqref{eq:riemann_hankel_result} becomes
+\begin{equation}
+f(t) = \lim_{W \to \infty} \sum_{n=-\infty}^{+\infty} a_n \hat{f}\left(\frac{n}{W}\right) \operatorname{sinc}\{Wt - n\},
+\label{eq:limit_form}
+\end{equation}
+uniformly in $t \in \mathbb{R}$.
+
+\item If, in addition, $f$ is band-limited to $[-\pi W, \pi W]$, i.e., $\hat{f}(\nu) = 0$ for almost all $|\nu| > \pi W$, then \eqref{eq:limit_form} admits the form
+\begin{equation}
+f(t) = \sum_{n=-\infty}^{+\infty} a_n \hat{f}\left(\frac{n}{W}\right) \operatorname{sinc}\{Wt - n\}, \quad t \in \mathbb{R}.
+\label{eq:band_limited_form}
+\end{equation}
+
+Since the sequence $\{a_n\}$ is bounded, it follows from \eqref{eq:nikol_skii} that the series in \eqref{eq:band_limited_form} converges absolutely and uniformly.
+
+\item Consider the special case $a_n = b_n = 1$ of Theorem~\ref{thm:riemann_hankel}. By definition \eqref{eq:residue_definition} and well-known facts from the theory of the $\zeta$-function (cf. \cite{30}), have
+\begin{equation}
+a_0 = -2\zeta(0) = 1, \quad b_0 = \operatorname{res}_{s=1} \zeta(s) = 1.
+\label{eq:zeta_values}
+\end{equation}
+
+Hence the special Hankel summation formula (cf. \cite{17,24})
+\begin{equation}
+\frac{\pi}{\Gamma(\nu+1)} (T_{\nu+1} f)(0) + 2\sum_{n \geq 1} n^{-\nu} (H_\nu f)(\pi^2 n^2)
+= \frac{\pi^{\nu-1/2}}{\Gamma(\nu+1/2)} \left[(T_{1,\nu} f)(0) + 2\sum_{n \geq 1} (T_{1,\nu} f)(n^2)\right],
+\label{eq:special_hankel}
+\end{equation}
+valid for $\nu > \frac{1}{2}$, implies the classical forms \eqref{eq:whittaker_cardinal} and \eqref{eq:brown_butzer} of the sampling theorem.
+\end{enumerate}
+\end{remark}
+
+\begin{thebibliography}{99}
+
+\bibitem{1}
+R. Bellman, \textit{A Brief Introduction to Theta Functions}, Holt, Rinehart \& Winston, New York, 1961.
+
+\bibitem{2}
+B.C. Berndt, Identities involving the coefficients of a class of Dirichlet series I, \textit{Trans. Amer. Math. Soc.} \textbf{137} (1969) 345--359.
+
+\bibitem{3}
+S. Bochner, Some properties of modular relations, \textit{Ann. of Math.} \textbf{53} (1951) 332--363.
+
+\bibitem{4}
+S. Bochner and K. Chandrasekharan, On Riemann's functional equation, \textit{Ann. of Math.} \textbf{63} (1956) 336--359.
+
+\bibitem{5}
+P.L. Butzer, M. Hauss and R.L. Stens, The sampling theorem and its unique role in various branches of mathematics, \textit{Mitt. Math. Ges. Hamburg} \textbf{12}(3) (1991) 523--547.
+
+\bibitem{6}
+P.L. Butzer and R.J. Nessel, \textit{Fourier Analysis and Approximation I}, Birkhäuser, Basel, 1971.
+
+\bibitem{7}
+P.L. Butzer, S. Ries and R.L. Stens, Shannon's sampling theorem, Cauchy's integral formula and related results, in: P.L. Butzer, R.L. Stens and B.Sz. Nagy, Eds., \textit{Anniversary Volume on Approximation Theory and Functional Analysis}, Internat. Ser. Numer. Math. \textbf{65}, Birkhäuser, Basel, 1984, pp. 363--377.
+
+\bibitem{8}
+P.L. Butzer, W. Splettstößer and R.L. Stens, The sampling theorem and linear prediction in signal analysis, \textit{Jahresber. Deutsch. Math.-Verein.} \textbf{90} (1988) 1--70.
+
+\bibitem{9}
+P.L. Butzer and R.L. Stens, The Poisson summation formula, Whittaker's cardinal series and approximate integration, in: \textit{Proc. Second Edmonton Conf. on Approximation Theory}, Canad. Math. Soc. Proc. \textbf{3}, Amer. Mathematical Soc., Providence, RI, 1983, pp. 19--36.
+
+\bibitem{10}
+P.L. Butzer and R.L. Stens, The Euler-Maclaurin summation formula, the sampling theorem, and approximate integration over the real axis, \textit{Linear Algebra Appl.} \textbf{52/53} (1983) 141--155.
+
+\bibitem{11}
+K. Chandrasekharan and H. Joris, Dirichlet series with functional equations and related arithmetical identities, \textit{Acta Arith.} \textbf{24} (1973) 165--191.
+
+\bibitem{12}
+K. Chandrasekharan and S. Mandelbrojt, On Riemann's functional equation, \textit{Ann. of Math.} \textbf{66} (1957) 285--296.
+
+\bibitem{13}
+K. Chandrasekharan and R. Narasimhan, Hecke's functional equation and arithmetical identities, \textit{Ann. of Math.} \textbf{74} (1961) 1--23.
+
+\bibitem{14}
+K. Chandrasekharan and R. Narasimhan, Functional equations with multiple gamma factors and the average order of arithmetical functions, \textit{Ann. of Math.} \textbf{76} (1962) 93--136.
+
+\bibitem{15}
+G. Doetsch, Summatorische Eigenschaften der Besselschen Funktionen und andere Funktionalrelationen, die mit der linearen Transformationsformel der Thetafunktion äquivalent sind, \textit{Compositio Math.} \textbf{1} (1935) 85--97.
+
+\bibitem{16}
+G. Doetsch, \textit{Handbuch der Laplace-Transformation}, Vols. I--III, Birkhäuser, Basel, 1955.
+
+\bibitem{17}
+A. Erdelyi, Gewisse Reihentransformationen, die mit der linearen Transformationsformel der Thetafunktion zusammenhängen, \textit{Compositio Math.} \textbf{4} (1937) 406--423.
+
+\bibitem{18}
+W.L. Ferrar, Summation formulae and their relation to Dirichlet Series II, \textit{Compositio Math.} \textbf{4} (1936--37) 394--405.
+
+\bibitem{19}
+H. Hamburger, Über einige Beziehungen, die mit der Funktionalgleichung der Riemannschen $\zeta$-Funktion äquivalent sind, \textit{Math. Ann.} \textbf{85} (1922) 129--140.
+
+\bibitem{20}
+E. Hecke, \textit{Dirichlet Series, Modular Functions and Quadratic Forms}, Princeton Univ. Press, Princeton, NJ, 1938.
+
+\bibitem{21}
+J.R. Higgins, Five short stories about the cardinal series, \textit{Bull. Amer. Math. Soc.} \textbf{12} (1985) 45--89.
+
+\bibitem{22}
+J.P. Kahane and S. Mandelbrojt, L'équation fonctionelle de Riemann et la formule sommatoire de Poisson, \textit{Ann. Sci. École Norm. Sup.} \textbf{75} (1958) 57--80.
+
+\bibitem{23}
+D. Klusch, The sampling theorem, Dirichlet series and Bessel functions, \textit{Math. Nachr.} \textbf{154} (1991) 129--139.
+
+\bibitem{24}
+D. Klusch, On the summation of Bessel functions and Hankel transforms, \textit{J. Math. Anal. Appl.} \textbf{160} (1991) 303--313.
+
+\bibitem{25}
+S.M. Nikol'skii, \textit{Approximation of Functions of Several Variables and Imbedding Theorems}, Springer, Berlin, 1975.
+
+\bibitem{26}
+S.J. Patterson, \textit{An Introduction to the Theory of the Riemann Zeta-function}, Cambridge Univ. Press, Cambridge, 1989.
+
+\bibitem{27}
+B. Riemann, Über die Anzahl der Primzahlen unter einer gegebenen Grösse, \textit{Monatsber. Akad. Berlin} (1859) 671--680.
+
+\bibitem{28}
+C.E. Shannon, Communication in the presence of noise, \textit{Proc. IRE} \textbf{37} (1949) 10--21.
+
+\bibitem{29}
+C.L. Siegel, Bemerkung zu einem Satz von Hamburger über die Funktionalgleichung der Riemannschen Zetafunktion, \textit{Math. Ann.} \textbf{86} (1922) 276--279.
+
+\bibitem{30}
+E.C. Titchmarsh, \textit{The Theory of the Riemann Zeta-function}, Oxford Univ. Press, Oxford, 1967.
+
+\bibitem{31}
+G.N. Watson, \textit{A Treatise on the Theory of Bessel Functions}, Cambridge Univ. Press, Cambridge, 1922.
+
+\bibitem{32}
+E.T. Whittaker, On the functions which are represented by the expansion of the interpolation-theory, \textit{Proc. Roy. Soc. Edinburgh} \textbf{35} (1915) 181--194.
+
+\bibitem{33}
+E.T. Whittaker and G.N. Watson, \textit{A Course of Modern Analysis}, Cambridge Univ. Press, Cambridge, 4th ed., 1973.
+
+\end{thebibliography}
+
+\end{document}
