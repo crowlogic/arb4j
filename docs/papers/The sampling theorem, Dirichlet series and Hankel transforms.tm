@@ -64,7 +64,7 @@
   <cite|28|32>)
 
   <\equation>
-    f<around|(|t|)>=<big|sum><rsub|n=-\<infty\>><rsup|+\<infty\>>f<around*|(|<frac|n|W>|)><math-up|sinc><around*|(|W*t-n|)>,<space|1em>t\<in\>\<bbb-R\>,<label|eq:whittaker_cardinal>
+    f<around|(|t|)>=<big|sum><rsub|n=-\<infty\>><rsup|+\<infty\>>f<around*|(|<frac|n|W>|)><math-up|sinc><around*|(|W*t-n|)>\<forall\>t\<in\>\<bbb-R\><label|eq:whittaker_cardinal>
   </equation>
 
   where <math|<math-up|sinc><around|(|t|)>\<assign\><frac|sin
@@ -77,7 +77,7 @@
   theorem for not necessarily band limited functions
 
   <\equation>
-    f<around|(|t|)>=<big|sum><rsub|n=-\<infty\>><rsup|+\<infty\>>f<around*|(|<frac|n|W>|)><math-up|sinc><around|{|W*t-n|}>,<space|1em>t\<in\>\<bbb-R\>,<label|eq:brown_butzer>
+    f<around|(|t|)>=<big|sum><rsub|n=-\<infty\>><rsup|+\<infty\>>f<around*|(|<frac|n|W>|)><math-up|sinc><around|{|W*t-n|}>\<forall\>t\<in\>\<bbb-R\><label|eq:brown_butzer>
   </equation>
 
   is essentially \Pequivalent\Q to three fundamental theorems in three
@@ -130,7 +130,7 @@
   which the norms
 
   <\equation>
-    <around|\<\|\|\>|f|\<\|\|\>><rsub|p>\<assign\><around*|(|<big|int><rsub|\<bbb-R\>><around|\||f<around|(|u|)>|\|><rsup|p>*<space|0.17em>d*u|)><rsup|1/p>,<space|1em>1\<leq\>p\<less\>\<infty\>,<space|1em><around|\<\|\|\>|f|\<\|\|\>><rsub|\<infty\>>\<assign\><with|math-font-family|rm|ess<space|0.17em>sup><rsub|u\<in\>\<bbb-R\>><around|\||f<around|(|u|)>|\|><label|eq:lp_norm>
+    <around|\<\|\|\>|f|\<\|\|\>><rsub|p>\<assign\><around*|(|<big|int><rsub|\<bbb-R\>><around|\||f<around|(|u|)>|\|><rsup|p>*<space|0.17em>d*u|)><rsup|<frac|1|p>>\<forall\>1\<leq\>p\<less\>\<infty\><space|1em><around|\<\|\|\>|f|\<\|\|\>><rsub|\<infty\>>\<assign\><with|math-font-family|rm|ess<space|0.17em>sup><rsub|u\<in\>\<bbb-R\>><around|\||f<around|(|u|)>|\|><label|eq:lp_norm>
   </equation>
 
   are finite. By <math|C<around|(|\<bbb-R\>|)>>, denote the space of all
@@ -140,14 +140,14 @@
   is defined by
 
   <\equation>
-    <wide|f|^><around|(|u|)>\<assign\><big|int><rsub|\<bbb-R\>>f<around|(|u|)>*e<rsup|-i*u*u>*<space|0.17em>d*u,<space|1em>u\<in\>\<bbb-R\>,<label|eq:fourier_transform>
+    <wide|f|^><around|(|u|)>\<assign\><big|int><rsub|\<bbb-R\>>f<around|(|u|)>*e<rsup|-i*u*u>*<space|0.17em>d*u\<forall\>u\<in\>\<bbb-R\><label|eq:fourier_transform>
   </equation>
 
   and of <math|f\<in\>L<rsup|2><around|(|\<bbb-R\>|)>> by the limit in the
   <math|L<rsup|2><around|(|\<bbb-R\>|)>>-norm of
 
   <\equation>
-    <big|int><rsub|-R><rsup|R>f<around|(|u|)>*e<rsup|-i*u*u>*<space|0.17em>d*u,<space|1em>R\<to\>\<infty\>.<label|eq:fourier_l2>
+    <big|int><rsub|-R><rsup|R>f<around|(|u|)>*e<rsup|-i*u*u>*<space|0.17em>d*u\<forall\>R\<to\>\<infty\><label|eq:fourier_l2>
   </equation>
 
   If <math|f\<in\>L<rsup|p><around|(|\<bbb-R\>|)>>, <math|p=1> or <math|2>,
@@ -155,7 +155,7 @@
   the Fourier inversion formula
 
   <\equation>
-    f<around|(|t|)>=<frac|1|<sqrt|2*\<pi\>>>*<big|int><rsub|\<bbb-R\>><wide|f|^><around|(|u|)>*e<rsup|i*u*t>*<space|0.17em>d*u,<space|1em>t\<in\>\<bbb-R\>,<label|eq:fourier_inversion>
+    f<around|(|t|)>=<frac|1|<sqrt|2*\<pi\>>>*<big|int><rsub|\<bbb-R\>><wide|f|^><around|(|u|)>*e<rsup|i*u*t>*<space|0.17em>d*u\<forall\>t\<in\>\<bbb-R\><label|eq:fourier_inversion>
   </equation>
 
   holds at each point of continuity of <math|f>. The bilateral Laplace
@@ -164,14 +164,14 @@
   exponential growth is defined in its strip of convergence <math|S> by
 
   <\equation>
-    \<cal-L\><rsub|z><around|{|f|}>\<assign\><big|int><rsub|\<bbb-R\>>f<around|(|u|)>*e<rsup|-z*u>*<space|0.17em>d*u,<space|1em>z\<in\>S.<label|eq:laplace_transform>
+    \<cal-L\><rsub|z><around|{|f|}>\<assign\><big|int><rsub|\<bbb-R\>>f<around|(|u|)>*e<rsup|-z*u>*<space|0.17em>d*u\<forall\>z\<in\>S<label|eq:laplace_transform>
   </equation>
 
   The Hankel transform of <math|f\<in\>L<rsup|1><around|(|\<bbb-R\><rsub|+>|)>>
   is defined for <math|s\<in\>\<bbb-R\><rsub|+>> by
 
   <\equation>
-    <around|(|H<rsub|\<nu\>>*f|)><around|(|s|)>\<assign\><big|int><rsub|0><rsup|\<infty\>>f<around|(|t|)><sqrt|s*t>*J<rsub|\<nu\>>*<around|(|2*<sqrt|s*t>|)>*<space|0.17em>d*t,<label|eq:hankel_transform>
+    <around|(|H<rsub|\<nu\>>*f|)><around|(|s|)>\<assign\><big|int><rsub|0><rsup|\<infty\>>f<around|(|t|)><sqrt|s*t>*J<rsub|\<nu\>>*<around|(|2*<sqrt|s*t>|)>*<space|0.17em>d*t<label|eq:hankel_transform>
   </equation>
 
   where <math|J<rsub|\<nu\>>> is the Bessel function of the first kind of
@@ -220,17 +220,18 @@
     </enumerate>
   </definition>
 
-  In view of <eqref|eq:chi_right>, further set:
+  In view of <eqref|eq:chi_right>, let
 
   <\equation>
     a<rsub|0>\<assign\>-2*\<psi\><around|(|0|)>,<space|1em>b<rsub|0>\<assign\><math-up|res><rsub|s=1>\<phi\><around|(|s|)>,<space|1em>\<lambda\><rsub|0>=\<mu\><rsub|0>\<assign\>0,<label|eq:residue_definition>
   </equation>
 
   <\equation>
-    a<rsub|-n>\<assign\>a<rsub|n>,<space|1em>b<rsub|-n>\<assign\>b<rsub|n>,<space|1em>\<lambda\><rsub|-n>\<assign\>-\<lambda\><rsub|n>,<space|1em>\<mu\><rsub|-n>\<assign\>-\<mu\><rsub|n>,<space|1em>n\<in\>\<bbb-N\>.<label|eq:symmetric_extension>
+    a<rsub|-n>\<assign\>a<rsub|n>,<space|1em>b<rsub|-n>\<assign\>b<rsub|n>,<space|1em>\<lambda\><rsub|-n>\<assign\>-\<lambda\><rsub|n>,<space|1em>\<mu\><rsub|-n>\<assign\>-\<mu\><rsub|n><label|eq:symmetric_extension>
   </equation>
 
-  The following lemmas are originally due to Hamburger (cf. <cite|4|11|19>).
+  <math|\<forall\>n\<in\>\<bbb-N\>>. The following lemmas are originally due
+  to Hamburger (cf. <cite|4|11|19>).
 
   <\lemma>
     <label|lem:theta_relation>Riemann's functional equation
@@ -240,7 +241,7 @@
     <\equation>
       <big|sum><rsub|n=-\<infty\>><rsup|\<infty\>>a<rsub|n>*exp
       <around|(|-\<pi\>*\<lambda\><rsub|n><rsup|2>*\<tau\>|)>=\<tau\><rsup|-1/2>*<big|sum><rsub|n=-\<infty\>><rsup|\<infty\>>b<rsub|n>*exp
-      <around|(|-\<pi\>*\<mu\><rsub|n><rsup|2>*\<tau\><rsup|-1>|)>,<space|1em><math-up|Re>\<tau\>\<gtr\>0.<label|eq:theta_relation_eq>
+      <around|(|-\<pi\>*\<mu\><rsub|n><rsup|2>*\<tau\><rsup|-1>|)>\<forall\><space|1em><math-up|Re>\<tau\>\<gtr\>0.<label|eq:theta_relation_eq>
     </equation>
   </lemma>
 
@@ -277,20 +278,20 @@
     and, for <math|\<xi\>\<gtr\>0> and <math|q\<gtr\><frac|3|2>>,
 
     <\equation>
-      g<rsub|\<xi\>,q><around|(|t|)>=O<around|(|t<rsup|-\<nu\>-1>|)>,<space|1em>t\<to\>\<infty\>.<label|eq:hankel_condition_2>
+      g<rsub|\<xi\>,q><around|(|t|)>=O<around|(|t<rsup|-\<nu\>-1>|)>\<forall\>t\<to\>\<infty\>.<label|eq:hankel_condition_2>
     </equation>
 
     Define the operator
 
     <\equation>
-      <around|(|T<rsub|\<nu\>>*f|)><around|(|\<xi\>|)>\<assign\><big|int><rsub|0><rsup|\<infty\>>g<rsub|\<xi\>,q><around|(|t|)>*<space|0.17em>d*t.<label|eq:operator_definition>
+      <around|(|T<rsub|\<nu\>>*f|)><around|(|\<xi\>|)>\<assign\><big|int><rsub|0><rsup|\<infty\>>g<rsub|\<xi\>,q><around|(|t|)>*<space|0.17em>d*t<label|eq:operator_definition>
     </equation>
 
     Then Riemann's functional equation <eqref|eq:chi_right>\U<eqref|eq:chi_left>
     is \Pequivalent\Q to the Hankel summation formula
 
     <\equation>
-      <frac|\<Gamma\>*<around|(|\<nu\>+1|)>|\<pi\><rsup|\<nu\>>>*<around*|[|b<rsub|0>*<around|(|T<rsub|\<nu\>>*f|)><around|(|0|)>+2*<big|sum><rsub|n\<geq\>1>b<rsub|n>*\<mu\><rsub|n><rsup|\<nu\>>*<around|(|H<rsub|\<nu\>>*f|)>*<around|(|T<rsub|2>*\<mu\><rsub|n><rsup|2>|)>|]>=<frac|\<pi\><rsup|\<nu\>-1/2>|\<Gamma\>*<around|(|\<nu\>+1/2|)>>*<around*|[|a<rsub|0>*<around|(|T<rsub|\<nu\>>*f|)><around|(|0|)>+2*<big|sum><rsub|n\<geq\>1>a<rsub|n>*<around|(|T<rsub|\<nu\>>*f|)><around|(|\<lambda\><rsub|n>|)>|]><label|eq:hankel_summation_formula>
+      <with|font-base-size|10|<tabular|<tformat|<table|<row|<cell|<text|<space|2em>><frac|\<Gamma\>*<around|(|\<nu\>+1|)>|\<pi\><rsup|\<nu\>>>*<around*|[|b<rsub|0>*<around|(|T<rsub|\<nu\>>*f|)><around|(|0|)>+2*<big|sum><rsub|n\<geq\>1>b<rsub|n>*\<mu\><rsub|n><rsup|\<nu\>>*<around|(|H<rsub|\<nu\>>*f|)>*<around|(|T<rsub|2>*\<mu\><rsub|n><rsup|2>|)>|]>>>|<row|<cell|=<frac|\<pi\><rsup|\<nu\>-1/2>|\<Gamma\>*<around|(|\<nu\>+1/2|)>>*<around*|[|a<rsub|0>*<around|(|T<rsub|\<nu\>>*f|)><around|(|0|)>+2*<big|sum><rsub|n\<geq\>1>a<rsub|n>*<around|(|T<rsub|\<nu\>>*f|)><around|(|\<lambda\><rsub|n>|)>|]>>>>>>><label|eq:hankel_summation_formula>
     </equation>
 
     valid for <math|\<nu\>\<gtr\><frac|1|2>>.
@@ -307,7 +308,7 @@
     <eqref|eq:operator_definition>:
 
     <\equation>
-      <with|font-base-size|9|<frac|\<pi\><rsup|\<nu\>>|\<Gamma\>*<around|(|\<nu\>+1|)>>*<around|(|T<rsub|\<nu\>>*f|)><around|(|0|)>+2*<big|sum><rsub|n\<geq\>1>b<rsub|n>*\<mu\><rsub|n><rsup|\<nu\>>*<big|int><rsub|0><rsup|\<infty\>>f<around|(|t|)>*J<rsub|\<nu\>>*<around|(|2*\<pi\>*\<mu\><rsub|n>*t|)>*<space|0.17em>d*t=<frac|\<pi\><rsup|\<nu\>+1/2>|\<Gamma\>*<around|(|\<nu\>+1/2|)>>*<around*|[|a<rsub|0>*<around|(|T<rsub|\<nu\>>*f|)><around|(|0|)>+2*<big|sum><rsub|m\<in\>\<bbb-N\>>a<rsub|n>*<around|(|T<rsub|\<nu\>>*f|)><around|(|\<lambda\><rsub|n>|)>|]><label|eq:hankel_proof_1>>
+      <with|font-base-size|9|<tabular|<tformat|<table|<row|<cell|<text|><frac|\<pi\><rsup|\<nu\>>|\<Gamma\>*<around|(|\<nu\>+1|)>>*<around|(|T<rsub|\<nu\>>*f|)><around|(|0|)>+2*<big|sum><rsub|n\<geq\>1>b<rsub|n>*\<mu\><rsub|n><rsup|\<nu\>>*<big|int><rsub|0><rsup|\<infty\>>f<around|(|t|)>*J<rsub|\<nu\>>*<around|(|2*\<pi\>*\<mu\><rsub|n>*t|)>*<space|0.17em>d*t>>|<row|<cell|=<frac|\<pi\><rsup|\<nu\>+1/2>|\<Gamma\>*<around|(|\<nu\>+1/2|)>>*<around*|[|a<rsub|0>*<around|(|T<rsub|\<nu\>>*f|)><around|(|0|)>+2*<big|sum><rsub|m\<in\>\<bbb-N\>>a<rsub|n>*<around|(|T<rsub|\<nu\>>*f|)><around|(|\<lambda\><rsub|n>|)>|]>>>>>><label|eq:hankel_proof_1>>
     </equation>
 
     For <math|\<nu\>\<gtr\>0> the asymptotic equality
@@ -332,20 +333,18 @@
     of <eqref|eq:hankel_proof_1> is permissible and:
 
     <\equation>
-      <with|font-base-size|9|<frac|\<Gamma\>*<around|(|\<nu\>+1|)>|\<pi\><rsup|\<nu\>>>*<around*|[|b<rsub|0>*<around|(|T<rsub|\<nu\>>*f|)><around|(|0|)>+2*<big|sum><rsub|n\<geq\>1>b<rsub|n>*\<mu\><rsub|n><rsup|\<nu\>>*<big|int><rsub|0><rsup|\<infty\>>f<around|(|t|)>*J<rsub|\<nu\>>*<around|(|2*\<pi\>*\<mu\><rsub|n>*t|)>*<space|0.17em>d*t|]>=<frac|\<pi\><rsup|\<nu\>-1/2>|\<Gamma\>*<around|(|\<nu\>+1/2|)>>*<around*|[|a<rsub|0>*<around|(|T<rsub|\<nu\>>*f|)><around|(|0|)>+2*<big|sum><rsub|n\<geq\>1>a<rsub|n>*<around|(|T<rsub|\<nu\>>*f|)><around|(|\<lambda\><rsub|n>|)>|]><label|eq:hankel_proof_2>>
+      <with|font-base-size|9|<tabular|<tformat|<table|<row|<cell|<with|font-base-size|10|<frac|\<Gamma\>*<around|(|\<nu\>+1|)>|\<pi\><rsup|\<nu\>>>*<around*|[|b<rsub|0>*<around|(|T<rsub|\<nu\>>*f|)><around|(|0|)>+2*<big|sum><rsub|n\<geq\>1>b<rsub|n>*\<mu\><rsub|n><rsup|\<nu\>>*<big|int><rsub|0><rsup|\<infty\>>f<around|(|t|)>*J<rsub|\<nu\>>*<around|(|2*\<pi\>*\<mu\><rsub|n>*t|)>*<space|0.17em>d*t|]>>>>|<row|<cell|=<frac|\<pi\><rsup|\<nu\>-1/2>|\<Gamma\>*<around|(|\<nu\>+1/2|)>>*<around*|[|a<rsub|0>*<around|(|T<rsub|\<nu\>>*f|)><around|(|0|)>+2*<big|sum><rsub|n\<geq\>1>a<rsub|n>*<around|(|T<rsub|\<nu\>>*f|)><around|(|\<lambda\><rsub|n>|)>|]>>>>>><label|eq:hankel_proof_2>>
     </equation>
 
     which by <eqref|eq:hankel_transform> and <eqref|eq:operator_definition>
-    yields <eqref|eq:hankel_summation_formula>.
-
-    Now to the converse direction. Prove a generalized version of
-    <eqref|eq:theta_relation_eq> by applying
-    <eqref|eq:hankel_summation_formula> with
+    yields <eqref|eq:hankel_summation_formula>. Now to the converse
+    direction. Prove a generalized version of <eqref|eq:theta_relation_eq> by
+    applying <eqref|eq:hankel_summation_formula> with
     <math|\<nu\>=2*m\<gtr\><frac|1|2>> to the function
 
     <\equation>
       f<around|(|t|)>=t<rsup|2*\<mu\>-m-1/2>*exp
-      <around|{|-\<pi\>*t*\<tau\><rsup|-1>|}>\<forall\>t\<in\>\<bbb-R\><rsub|+>,<label|eq:test_function>
+      <around|{|-\<pi\>*t*\<tau\><rsup|-1>|}>\<forall\>t\<in\>\<bbb-R\><rsub|+><label|eq:test_function>
     </equation>
 
     where <math|\<mu\>\<gtr\>0> and <math|<math-up|Re>\<tau\>\<gtr\>0>.
@@ -377,14 +376,14 @@
 
     <\equation>
       <around|(|T<rsub|2*m>*f|)><around|(|\<xi\>|)>=<around*|(|<frac|\<pi\>|2*\<mu\>>|)><rsup|2>*<big|int><rsub|max
-      <around|(|0,\<xi\>|)>><rsup|\<infty\>>t<rsup|2*<around|(|\<mu\>-m|)>-1/2>*e<rsup|-\<pi\>*t*\<tau\><rsup|-1>>*<space|0.17em>d*t.<label|eq:operator_computed>
+      <around|(|0,\<xi\>|)>><rsup|\<infty\>>t<rsup|2*<around|(|\<mu\>-m|)>-1/2>*e<rsup|-\<pi\>*t*\<tau\><rsup|-1>>*<space|0.17em>d*t<label|eq:operator_computed>
     </equation>
 
     For the case <math|\<xi\>=0> in <eqref|eq:operator_computed>, obtain by
     Euler's representation of the <math|\<Gamma\>>-function,
 
     <\equation>
-      <around|(|T<rsub|2*m>*f|)><around|(|0|)>=<around*|(|<frac|\<pi\>|2*\<mu\>>|)><rsup|2>*\<Gamma\>*<around|(|2*\<mu\>|)>,<space|1em><around|(|T<rsub|2*m+1>*f|)><around|(|0|)>=<around*|(|<frac|\<pi\>|2*\<mu\>+1/2>|)><rsup|2>*\<Gamma\>*<around|(|2*\<mu\>+1/2|)>.<label|eq:operator_zero>
+      <around|(|T<rsub|2*m>*f|)><around|(|0|)>=<around*|(|<frac|\<pi\>|2*\<mu\>>|)><rsup|2>*\<Gamma\>*<around|(|2*\<mu\>|)>,<space|1em><around|(|T<rsub|2*m+1>*f|)><around|(|0|)>=<around*|(|<frac|\<pi\>|2*\<mu\>+1/2>|)><rsup|2>*\<Gamma\>*<around|(|2*\<mu\>+1/2|)><label|eq:operator_zero>
     </equation>
 
     For the case <math|\<xi\>\<gtr\>0> in <eqref|eq:operator_computed>, the
@@ -392,19 +391,17 @@
     <math|W<around|(|z|)>> of the second kind is needed (cf. <cite|33>):
 
     <\equation>
-      W<rsub|\<kappa\>,\<mu\>><around|(|z|)>=<frac|e<rsup|-z/2>*z<rsup|\<kappa\>+1/2>|\<Gamma\>*<around|(|\<mu\>-\<kappa\>+1|)>>*<big|int><rsub|0><rsup|\<infty\>>e<rsup|-z*t>*t<rsup|\<mu\>-\<kappa\>-1/2>*<around|(|1+t|)><rsup|\<kappa\>+\<mu\>>*<space|0.17em>d*t,<label|eq:whittaker_integral>
+      W<rsub|\<kappa\>,\<mu\>><around|(|z|)>=<frac|e<rsup|-<frac|z|2>>*z<rsup|\<kappa\>+<frac|1|2>>|\<Gamma\>*<around|(|\<mu\>-\<kappa\>+1|)>>*<big|int><rsub|0><rsup|\<infty\>>e<rsup|-z*t>*t<rsup|\<mu\>-\<kappa\>-<frac|1|2>>*<around|(|1+t|)><rsup|\<kappa\>+\<mu\>>*<space|0.17em>d*t<label|eq:whittaker_integral>
     </equation>
 
     valid for <math|<math-up|Re>z\<gtr\>0> and
-    <math|<math-up|Re><around|(|\<mu\>-\<kappa\>|)>\<gtr\>-1/2>.
-
-    Now substitute <math|t=\<xi\>+\<tau\>*\<nu\>/\<pi\>>,
+    <math|<math-up|Re><around|(|\<mu\>-\<kappa\>|)>\<gtr\>-<frac|1|2>>. Now
+    substitute <math|t=\<xi\>+<frac|\<tau\>*\<nu\>|\<pi\>>>,
     <math|\<nu\>\<gtr\>0>, in <eqref|eq:operator_computed>. Then in view of
     <eqref|eq:whittaker_integral>, obtain by straightforward computation:
 
     <\equation>
-      <around|(|T<rsub|2*m>*f|)><around|(|\<xi\>|)>=<around*|(|<frac|\<pi\>|2*\<mu\>+1/2>|)><rsup|2>*\<xi\><rsup|\<mu\>-1/2>*exp
-      <around*|{|-<frac|\<pi\>*\<xi\>|\<tau\>>|}>*W<rsub|2*m-\<mu\>,\<mu\>>*<around|[|\<pi\>*\<xi\>*\<tau\><rsup|-1>|]>.<label|eq:operator_xi>
+      <around|(|T<rsub|2*m>*f|)><around|(|\<xi\>|)>=<around*|(|<frac|\<pi\>|2*\<mu\>+<frac|1|2>>|)><rsup|2>*\<xi\><rsup|\<mu\>-<frac|1|2>>*e<rsup|-<frac|\<pi\>*\<xi\>|\<tau\>>>*W<rsub|2*m-\<mu\>,\<mu\>>*<around|[|\<pi\>*\<xi\>*\<tau\><rsup|-1>|]><label|eq:operator_xi>
     </equation>
 
     Inserting <eqref|eq:hankel_whittaker>, <eqref|eq:operator_zero> and
@@ -412,24 +409,25 @@
     the Whittaker transformation formula
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|b<rsub|0>*<sqrt|\<tau\>>*\<pi\>+<around|(|\<tau\>*\<pi\>|)><rsup|\<mu\>>*<big|sum><rsub|n\<geq\>1>b<rsub|n>*\<mu\><rsub|n><rsup|2*m-1>*exp
-      <around*|{|-<frac|\<mu\><rsub|n>*\<pi\>|\<tau\>>|}>*M<rsub|2*m-\<mu\>,\<mu\>>*<around|[|\<mu\><rsub|n>*\<pi\>*\<tau\>|]><eq-number>>>|<row|<cell|=<frac|\<Gamma\>*<around|(|2*m+1|)>*\<Gamma\>*<around|(|2*\<mu\>|)>|\<Gamma\>*<around|(|2*m+1/2|)>*\<Gamma\>*<around|(|2*\<mu\>+1/2|)>>*<around*|[|a<rsub|0>*\<pi\>+<big|sum><rsub|n\<geq\>1>a<rsub|n>*\<lambda\><rsub|n><rsup|\<mu\>-1/2>*exp
-      <around*|{|-<frac|\<lambda\><rsub|n>*\<pi\>|\<tau\>>|}>*W<rsub|2*m-\<mu\>,\<mu\>>*<around|[|\<lambda\><rsub|n>*\<pi\>*\<tau\><rsup|-1>|]>|]><label|eq:whittaker_theta>>>>>>
+      <tabular|<tformat|<table|<row|<cell|b<rsub|0>*<sqrt|\<tau\>>*\<pi\>+<around|(|\<tau\>*\<pi\>|)><rsup|\<mu\>>*<big|sum><rsub|n\<geq\>1>b<rsub|n>*\<mu\><rsub|n><rsup|2*m-1>*e<rsup|-<frac|\<mu\><rsub|n>*\<pi\>|\<tau\>>>*M<rsub|2*m-\<mu\>,\<mu\>>*<around|[|\<mu\><rsub|n>*\<pi\>*\<tau\>|]>>>|<row|<cell|=<frac|\<Gamma\>*<around|(|2*m+1|)>*\<Gamma\>*<around|(|2*\<mu\>|)>|\<Gamma\>*<around|(|2*m+1/2|)>*\<Gamma\>*<around|(|2*\<mu\>+1/2|)>>*<around*|[|a<rsub|0>*\<pi\>+<big|sum><rsub|n\<geq\>1>a<rsub|n>*\<lambda\><rsub|n><rsup|\<mu\>-<frac|1|2>>*e<rsup|-<frac|\<lambda\><rsub|n>*\<pi\>|\<tau\>>>*W<rsub|2*m-\<mu\>,\<mu\>>*<around|[|\<lambda\><rsub|n>*\<pi\>*\<tau\><rsup|-1>|]>|]><label|eq:whittaker_theta>>>>>>
     </equation>
 
     valid for <math|<math-up|Re>\<tau\>\<gtr\>0>, <math|\<mu\>\<gtr\>0> and
-    <math|m\<gtr\>1/2>.
-
-    Finally, observe that (cf. <cite|16>)
+    <math|m\<gtr\><frac|1|2>>. Finally, observe that (cf. <cite|16>)
 
     <\equation>
-      M<rsub|1/2+m,m><around|(|z|)>=z<rsup|1/2+m>*exp
-      <around*|{|-<frac|z|2>|}>,<space|1em>W<rsub|1/4-m,1/4+m><around|(|z|)>=z<rsup|1/4-m>*exp
-      <around|{|z|}>,<space|1em><math-up|Re>z\<gtr\>0,<space|1em>m\<in\>\<bbb-R\><rsub|+>.<label|eq:whittaker_special>
+      M<rsub|<frac|1|2>+m,m><around|(|z|)>=z<rsup|<frac|1|2>+m>*e<rsup|-<frac|z|2>><label|eq:whittaker_special>
     </equation>
 
-    Hence the Whittaker theta-relation <eqref|eq:whittaker_theta> degenerates
-    for <math|\<mu\>=m+1/4> to <eqref|eq:theta_relation_eq> and
+    and
+
+    <\equation>
+      W<rsub|<frac|1|4>-m,<frac|1|4>+m><around|(|z|)>=z<rsup|<frac|1|4>-m>*e<rsup|z>
+    </equation>
+
+    <math|\<forall\><math-up|Re>z\<gtr\>0,m\<in\>\<bbb-R\><rsub|+>.> Hence
+    the Whittaker theta-relation <eqref|eq:whittaker_theta> reduces for
+    <math|\<mu\>=m+<frac|1|4>> to <eqref|eq:theta_relation_eq> and
     Theorem<nbsp><reference|thm:riemann_functional> is proved.
   </proof>
 
@@ -552,7 +550,7 @@
     dominated convergence theorem:
 
     <\equation>
-      <frac|1|\<pi\>*i>*<big|sum><rsub|n>b<rsub|n>*\<Omega\>*<around|(|i*\<mu\><rsub|n>|)>=<frac|1|2*\<pi\>*i>*<big|int><rsub|<around|(|\<delta\>|)>>a<rsub|0>*<around|{|\<Omega\><around|(|z|)>+\<Omega\>*<around|(|-z|)>|}>*<space|0.17em>d*z+<frac|1|\<pi\>*i>*<big|sum><rsub|n\<geq\>1>a<rsub|n>*<big|int><rsub|<around|(|\<delta\>|)>>e<rsup|-2*\<pi\>*\<lambda\><rsub|n>>*<around|{|\<Omega\><around|(|z|)>+\<Omega\>*<around|(|-z|)>|}>*<space|0.17em>d*z.<label|eq:residue_proof_3>
+      <tabular|<tformat|<table|<row|<cell|<frac|1|\<pi\>*i>*<big|sum><rsub|n>b<rsub|n>*\<Omega\>*<around|(|i*\<mu\><rsub|n>|)>>|<cell|=<frac|1|2*\<pi\>*i>*<big|int><rsub|<around|(|\<delta\>|)>>a<rsub|0>*<around|{|\<Omega\><around|(|z|)>+\<Omega\>*<around|(|-z|)>|}>*<space|0.17em>d*z>>|<row|<cell|>|<cell|+<frac|1|\<pi\>*i>*<big|sum><rsub|n\<geq\>1>a<rsub|n>*<big|int><rsub|<around|(|\<delta\>|)>>e<rsup|-2*\<pi\>*\<lambda\><rsub|n>>*<around|{|\<Omega\><around|(|z|)>+\<Omega\>*<around|(|-z|)>|}>*<space|0.17em>d*z>>>>><label|eq:residue_proof_3>
     </equation>
 
     Now by <eqref|eq:hankel_class_1> relation <eqref|eq:residue_proof_3> also
@@ -587,12 +585,12 @@
   <math|g:\<bbb-R\>\<to\>\<bbb-C\>> with the properties
 
   <\equation>
-    g\<in\>L<rsup|1><around|(|\<bbb-R\>|)>\<cap\>C<around|(|\<bbb-R\>|)>,<space|1em><text|with
+    g\<in\>L<rsup|1><around|(|\<bbb-R\>|)>\<cap\>C<around|(|\<bbb-R\>|)><space|1em><text|with
     ><wide|g|^>\<in\>L<rsup|1><around|(|\<bbb-R\>|)>,<label|eq:class_A_prop_1>
   </equation>
 
   <\equation>
-    \<cal-L\><rsub|z*u>*<around|{|g*<around|(|a*u|)>|}>,<space|1em>a\<gtr\>0,<text|is
+    \<cal-L\><rsub|z*u>*<around|{|g*<around|(|a*u|)>|}>\<forall\>a\<gtr\>0<text|is
     defined in >S,<text|and satisfies ><eqref|eq:hankel_class_1><text|and
     ><eqref|eq:hankel_class_2>.<label|eq:class_A_prop_2>
   </equation>
@@ -603,7 +601,7 @@
     summation formula
 
     <\equation>
-      <sqrt|2*\<pi\>>*<big|sum><rsub|n>a<rsub|n>*<wide|g|^><around|(|2*\<pi\>*\<lambda\><rsub|n>*a|)>=a<rsup|-1>*<big|sum><rsub|n>b<rsub|n>*<wide|g|^><around|(|\<mu\><rsub|n>*\<pi\>*a<rsup|-1>|)>,<space|1em>a\<in\>\<bbb-R\><rsub|+>.<label|eq:poisson_summation>
+      <sqrt|2*\<pi\>>*<big|sum><rsub|n>a<rsub|n>*<wide|g|^><around|(|2*\<pi\>*\<lambda\><rsub|n>*a|)>=a<rsup|-1>*<big|sum><rsub|n>b<rsub|n>*<wide|g|^><around|(|\<mu\><rsub|n>*\<pi\>*a<rsup|-1>|)>\<forall\>a\<in\>\<bbb-R\><rsub|+><label|eq:poisson_summation>
     </equation>
   </theorem>
 
@@ -620,22 +618,21 @@
 
     <\equation>
       lim<rsub|<around|\||y|\|>\<to\>\<infty\>>
-      \<Omega\>*<around|(|x+i*y|)>=0,<label|eq:riemann_lebesgue>
+      \<Omega\>*<around|(|x+i*y|)>=0<label|eq:riemann_lebesgue>
     </equation>
 
-    uniformly for <math|<around|\||x|\|>\<leq\>\<delta\>\<less\>\<eta\>>.
-
-    By <eqref|eq:riemann_lebesgue>, have
+    uniformly for <math|<around|\||x|\|>\<leq\>\<delta\>\<less\>\<eta\>>. By
+    <eqref|eq:riemann_lebesgue>, have
 
     <\equation>
-      \<Omega\>*<around|(|i*y|)>=a<rsup|-1>*<sqrt|2*\<pi\>>*<wide|g|^><around|(|y*a<rsup|-1>|)>.<label|eq:poisson_proof_2>
+      \<Omega\>*<around|(|i*y|)>=a<rsup|-1>*<sqrt|2*\<pi\>>*<wide|g|^><around|(|y*a<rsup|-1>|)><label|eq:poisson_proof_2>
     </equation>
 
     Hence by Theorem<nbsp><reference|thm:residue_formula> and Fourier's
     inversion formula <eqref|eq:fourier_inversion>:
 
     <\equation>
-      <big|sum><rsub|n>b<rsub|n>*<wide|g|^><around|(|\<mu\><rsub|n>*\<pi\>*a<rsup|-1>|)>=<big|sum><rsub|n>a<rsub|n>*e<rsup|-2*\<pi\>*i*\<lambda\><rsub|n>*y>*<wide|g|^><around|(|y*a<rsup|-1>|)>*<space|0.17em>d*y=a*<sqrt|2*\<pi\>>*<big|sum><rsub|n>a<rsub|n>*<wide|g|^><around|(|2*\<pi\>*\<lambda\><rsub|n>*a|)>.<label|eq:poisson_proof_3>
+      <tabular|<tformat|<table|<row|<cell|<big|sum><rsub|n>b<rsub|n>*<wide|g|^><around|(|\<mu\><rsub|n>*\<pi\>*a<rsup|-1>|)>>|<cell|=<big|sum><rsub|n>a<rsub|n>*e<rsup|-2*\<pi\>*i*\<lambda\><rsub|n>*y>*<wide|g|^><around|(|y*a<rsup|-1>|)>*<space|0.17em>d*y>>|<row|<cell|>|<cell|=a*<sqrt|2*\<pi\>>*<big|sum><rsub|n>a<rsub|n>*<wide|g|^><around|(|2*\<pi\>*\<lambda\><rsub|n>*a|)>>>>>><label|eq:poisson_proof_3>
     </equation>
 
     This proves <eqref|eq:poisson_summation>.
@@ -669,15 +666,14 @@
   i.e.,
 
   <\equation>
-    <around|\||f<around|(|z|)>|\|>\<less\>exp
-    <around|(|\<sigma\><around|\||y|\|>|)><around|\<\|\|\>|f|\<\|\|\>><rsub|C>,<space|1em>z=x+i*y\<in\>\<bbb-C\>,<label|eq:exponential_type>
+    <around|\||f<around|(|z|)>|\|>\<less\>e<rsup|\<sigma\><around|\||y|\|>><around|\<\|\|\>|f|\<\|\|\>><rsub|C>\<forall\>z=x+i*y\<in\>\<bbb-C\>,<label|eq:exponential_type>
   </equation>
 
   which belong to <math|L<rsup|p><around|(|\<bbb-R\>|)>> when restricted to
   <math|\<bbb-R\>>. Have
 
   <\equation>
-    B<rsub|\<sigma\>><rsup|p>\<subseteq\>B<rsub|\<sigma\>><rsup|q>,<space|1em>1\<leq\>p\<leq\>q\<leq\>\<infty\>,<label|eq:bsp_inclusion>
+    B<rsub|\<sigma\>><rsup|p>\<subseteq\>B<rsub|\<sigma\>><rsup|q>\<forall\>1\<leq\>p\<leq\>q\<leq\>\<infty\><label|eq:bsp_inclusion>
   </equation>
 
   and the Paley-Wiener theorem states that a function
@@ -722,7 +718,7 @@
     <math|\<lambda\><rsub|n>=\<mu\><rsub|n>=n>, <math|n\<in\>\<bbb-N\>>:
 
     <\equation>
-      <sqrt|2*\<pi\>>*<big|sum><rsub|n=-\<infty\>><rsup|+\<infty\>><wide|g|^><around*|(|<frac|n|W>|)>=<wide|g|^><around|(|0|)>=<frac|1|<sqrt|2*\<pi\>>>*<big|int><rsub|\<bbb-R\>>g<around|(|u|)>*<space|0.17em>d*u.<label|eq:hankel_shannon_proof_2>
+      <sqrt|2*\<pi\>>*<big|sum><rsub|n=-\<infty\>><rsup|+\<infty\>><wide|g|^><around*|(|<frac|n|W>|)>=<wide|g|^><around|(|0|)>=<frac|1|<sqrt|2*\<pi\>>>*<big|int><rsub|\<bbb-R\>>g<around|(|u|)>*<space|0.17em>d*u<label|eq:hankel_shannon_proof_2>
     </equation>
 
     Let <math|f<rsub|1>,f<rsub|2>\<in\>B<rsub|W><rsup|p>> and apply
@@ -732,7 +728,7 @@
     (cf. <cite|8>):
 
     <\equation>
-      <around|(|f<rsub|1>\<ast\>f<rsub|2>|)><around|(|t|)>=<frac|1|<sqrt|2*\<pi\>>>*<big|int><rsub|\<bbb-R\>>f<rsub|1><around|(|u|)>*f<rsub|2>*<around|(|t-u|)>*<space|0.17em>d*u=<big|sum><rsub|n=-\<infty\>><rsup|+\<infty\>>f<rsub|1><around*|(|<frac|n|W>|)>*f<rsub|2>*<around*|(|t-<frac|n|W>|)>,<space|1em>t\<in\>\<bbb-R\>.<label|eq:hankel_shannon_proof_3>
+      <tabular|<tformat|<table|<row|<cell|<around|(|f<rsub|1>\<ast\>f<rsub|2>|)><around|(|t|)>>|<cell|=<frac|1|<sqrt|2*\<pi\>>>*<big|int><rsub|\<bbb-R\>>f<rsub|1><around|(|u|)>*f<rsub|2>*<around|(|t-u|)>*<space|0.17em>d*u>>|<row|<cell|>|<cell|=<big|sum><rsub|n=-\<infty\>><rsup|+\<infty\>>f<rsub|1><around*|(|<frac|n|W>|)>*f<rsub|2>*<around*|(|t-<frac|n|W>|)>>>>>><label|eq:hankel_shannon_proof_3>\<forall\>t\<in\>\<bbb-R\>
     </equation>
 
     Take <math|f<rsub|1>=f> and <math|f<rsub|2><around|(|\<cdummy\>|)>=<math-up|sinc><around|{|W\<cdot\>|}>>
@@ -740,7 +736,7 @@
     integral <math|f<rsub|1>\<ast\>f<rsub|2>> yields
 
     <\equation>
-      <big|sum><rsub|n=-\<infty\>><rsup|+\<infty\>>f<around*|(|<frac|n|W>|)><math-up|sinc><around|{|W*t-n|}>=f<around|(|t|)><math-up|sinc><around|(|0|)>,<label|eq:hankel_shannon_proof_4>
+      <big|sum><rsub|n=-\<infty\>><rsup|+\<infty\>>f<around*|(|<frac|n|W>|)><math-up|sinc><around|{|W*t-n|}>=f<around|(|t|)><math-up|sinc><around|(|0|)><label|eq:hankel_shannon_proof_4>
     </equation>
 
     and in view of <eqref|eq:hankel_shannon_proof_1> obtain
@@ -752,7 +748,7 @@
     <math|1\<less\>p\<leq\>\<infty\>>:
 
     <\equation>
-      sup<rsub|u\<in\>\<bbb-R\>><around|\||f*<around|(|u-h*n|)>|\|><rsup|p>\<less\><big|sum><rsub|n><around|\<\|\|\>|f|\<\|\|\>><rsub|p><rsup|p>.<label|eq:nikol_skii>
+      sup<rsub|u\<in\>\<bbb-R\>><around|\||f*<around|(|u-h*n|)>|\|><rsup|p>\<less\><big|sum><rsub|n><around|\<\|\|\>|f|\<\|\|\>><rsub|p><rsup|p><label|eq:nikol_skii>
     </equation>
 
     Hence Theorem<nbsp><reference|thm:hankel_shannon> is proved.
@@ -831,27 +827,26 @@
     <eqref|eq:proof_convolution>:
 
     <\equation>
-      <big|sum><rsub|n=-\<infty\>><rsup|+\<infty\>>a<rsub|n>*g<rsub|t><around*|(|<frac|n|W>|)>=W*<sqrt|2*\<pi\>>*<big|sum><rsub|n=-\<infty\>><rsup|+\<infty\>>b<rsub|n>*<wide|g|^><rsub|t>*<around|(|2*\<pi\>*W*n|)>=<frac|1|<sqrt|2*\<pi\>>>*<big|sum><rsub|n=-\<infty\>><rsup|+\<infty\>><big|int><rsub|<around|(|2*n-1|)>*\<pi\>*W><rsup|<around|(|2*n+1|)>*\<pi\>*W><wide|f|^><around|(|v|)>*e<rsup|i*t*v>*<space|0.17em>d*v*e<rsup|-2*\<pi\>*i*n*W*t>.<label|eq:proof_poisson>
+      <tabular|<tformat|<table|<row|<cell|<big|sum><rsub|n=-\<infty\>><rsup|+\<infty\>>a<rsub|n>*g<rsub|t><around*|(|<frac|n|W>|)>>|<cell|=W*<sqrt|2*\<pi\>>*<big|sum><rsub|n=-\<infty\>><rsup|+\<infty\>>b<rsub|n>*<wide|g|^><rsub|t>*<around|(|2*\<pi\>*W*n|)>>>|<row|<cell|>|<cell|=<frac|1|<sqrt|2*\<pi\>>>*<big|sum><rsub|n=-\<infty\>><rsup|+\<infty\>><big|int><rsub|<around|(|2*n-1|)>*\<pi\>*W><rsup|<around|(|2*n+1|)>*\<pi\>*W><wide|f|^><around|(|v|)>*e<rsup|i*t*v>*<space|0.17em>d*v*e<rsup|-2*\<pi\>*i*n*W*t>>>>>><label|eq:proof_poisson>
     </equation>
 
     Now split off the integral in Fourier's inversion formula
     <eqref|eq:fourier_inversion> in the form
 
     <\equation>
-      f<around|(|t|)>=<frac|1|<sqrt|2*\<pi\>>>*<big|sum><rsub|n=-\<infty\>><rsup|+\<infty\>><big|int><rsub|<around|(|2*n-1|)>*\<pi\>*W><rsup|<around|(|2*n+1|)>*\<pi\>*W><wide|f|^><around|(|v|)>*e<rsup|i*t*v>*<space|0.17em>d*v.<label|eq:proof_fourier_split>
+      f<around|(|t|)>=<frac|1|<sqrt|2*\<pi\>>>*<big|sum><rsub|n=-\<infty\>><rsup|+\<infty\>><big|int><rsub|<around|(|2*n-1|)>*\<pi\>*W><rsup|<around|(|2*n+1|)>*\<pi\>*W><wide|f|^><around|(|v|)>*e<rsup|i*t*v>*<space|0.17em>d*v<label|eq:proof_fourier_split>
     </equation>
 
     Hence subtraction of <eqref|eq:proof_poisson> from
     <eqref|eq:proof_fourier_split> leads to the required result
     <eqref|eq:riemann_hankel_result> with the remainder
-    <eqref|eq:remainder_formula>.
-
-    Finally, observe that by the Hamburger-Siegel theorem (cf.
-    <cite|19|29|30>) the sequence <math|<around|{|b<rsub|n>|}>> is bounded.
-    Hence there is an absolute constant <math|c\<geq\>2> so that
+    <eqref|eq:remainder_formula>. Finally, observe that by the
+    Hamburger-Siegel theorem (cf. <cite|19|29|30>) the sequence
+    <math|<around|{|b<rsub|n>|}>> is bounded. Hence there is an absolute
+    constant <math|c\<geq\>2> so that
 
     <\equation>
-      <around|\||R<around|(|f,\<phi\>,\<psi\>,W|)><around|(|t|)>|\|>\<less\><frac|c|<sqrt|2*\<pi\>>>*<big|sum><rsub|n=-\<infty\>><rsup|+\<infty\>><big|int><rsub|<around|(|2*n-1|)>*\<pi\>*W><rsup|<around|(|2*n+1|)>*\<pi\>*W><around|\||<wide|f|^><around|(|v|)>|\|>*<space|0.17em>d*v=c<around|\<\|\|\>|<wide|f|^>|\<\|\|\>><rsub|1>.<label|eq:remainder_bound>
+      <around|\||R<around|(|f,\<phi\>,\<psi\>,W|)><around|(|t|)>|\|>\<less\><frac|c|<sqrt|2*\<pi\>>>*<big|sum><rsub|n=-\<infty\>><rsup|+\<infty\>><big|int><rsub|<around|(|2*n-1|)>*\<pi\>*W><rsup|<around|(|2*n+1|)>*\<pi\>*W><around|\||<wide|f|^><around|(|v|)>|\|>*<space|0.17em>d*v=c<around|\<\|\|\>|<wide|f|^>|\<\|\|\>><rsub|1><label|eq:remainder_bound>
     </equation>
 
     This proves Theorem<nbsp><reference|thm:riemann_hankel>.
@@ -865,7 +860,7 @@
       then with an absolute constant <math|c\<geq\>2>,
 
       <\equation>
-        <around|\||R<around|(|f,\<phi\>,\<psi\>,W|)><around|(|t|)>|\|>\<less\><frac|c|<sqrt|2*\<pi\>>>*<big|sum><rsub|n\<neq\>0><big|int><rsub|<around|(|2*n-1|)>*\<pi\>*W><rsup|<around|(|2*n+1|)>*\<pi\>*W><around|\||<wide|f|^><around|(|v|)>*<around|\||<space|0.17em>d*v=<frac|c|<sqrt|2*\<pi\>>>*<big|int><rsub|<around|\||v|\|>\<gtr\>\<pi\>*W>|\|>*<wide|f|^><around|(|v|)>|\|>*<space|0.17em>d*v.<label|eq:remainder_zeta>
+        <around|\||R<around|(|f,\<phi\>,\<psi\>,W|)><around|(|t|)>|\|>\<less\><frac|c|<sqrt|2*\<pi\>>>*<big|sum><rsub|n\<neq\>0><big|int><rsub|<around|(|2*n-1|)>*\<pi\>*W><rsup|<around|(|2*n+1|)>*\<pi\>*W><around|\||<wide|f|^><around|(|v|)>*<around|\||<space|0.17em>d*v=<frac|c|<sqrt|2*\<pi\>>>*<big|int><rsub|<around|\||v|\|>\<gtr\>\<pi\>*W>|\|>*<wide|f|^><around|(|v|)>|\|>*<space|0.17em>d*v<label|eq:remainder_zeta>
       </equation>
 
       Hence in this case, <math|lim<rsub|W\<to\>\<infty\>>
@@ -874,7 +869,7 @@
 
       <\equation>
         f<around|(|t|)>=lim<rsub|W\<to\>\<infty\>>
-        <big|sum><rsub|n=-\<infty\>><rsup|+\<infty\>>a<rsub|n>*<wide|f|^><around*|(|<frac|n|W>|)><math-up|sinc><around|{|W*t-n|}>,<label|eq:limit_form>
+        <big|sum><rsub|n=-\<infty\>><rsup|+\<infty\>>a<rsub|n>*<wide|f|^><around*|(|<frac|n|W>|)><math-up|sinc><around|{|W*t-n|}><label|eq:limit_form>
       </equation>
 
       uniformly in <math|t\<in\>\<bbb-R\>>.
@@ -886,7 +881,7 @@
       admits the form
 
       <\equation>
-        f<around|(|t|)>=<big|sum><rsub|n=-\<infty\>><rsup|+\<infty\>>a<rsub|n>*<wide|f|^><around*|(|<frac|n|W>|)><math-up|sinc><around|{|W*t-n|}>,<space|1em>t\<in\>\<bbb-R\>.<label|eq:band_limited_form>
+        f<around|(|t|)>=<big|sum><rsub|n=-\<infty\>><rsup|+\<infty\>>a<rsub|n>*<wide|f|^><around*|(|<frac|n|W>|)><math-up|sinc><around|{|W*t-n|}>\<forall\>t\<in\>\<bbb-R\><label|eq:band_limited_form>
       </equation>
 
       Since the sequence <math|<around|{|a<rsub|n>|}>> is bounded, it follows
@@ -899,13 +894,14 @@
       the <math|\<zeta\>>-function (cf. <cite|30>), have
 
       <\equation>
-        a<rsub|0>=-2*\<zeta\><around|(|0|)>=1,<space|1em>b<rsub|0>=<math-up|res><rsub|s=1>\<zeta\><around|(|s|)>=1.<label|eq:zeta_values>
+        a<rsub|0>=-2*\<zeta\><around|(|0|)>=1
+        <text|<space|1em>and<space|1em>> b<rsub|0>=<math-up|res><rsub|s=1>\<zeta\><around|(|s|)>=1<label|eq:zeta_values>
       </equation>
 
       Hence the special Hankel summation formula (cf. <cite|17|24>)
 
       <\equation>
-        <frac|\<pi\>|\<Gamma\>*<around|(|\<nu\>+1|)>>*<around|(|T<rsub|\<nu\>+1>*f|)><around|(|0|)>+2*<big|sum><rsub|n\<geq\>1>n<rsup|-\<nu\>>*<around|(|H<rsub|\<nu\>>*f|)>*<around|(|\<pi\><rsup|2>*n<rsup|2>|)>=<frac|\<pi\><rsup|\<nu\>-1/2>|\<Gamma\>*<around|(|\<nu\>+1/2|)>>*<around*|[|<around|(|T<rsub|1,\<nu\>>*f|)><around|(|0|)>+2*<big|sum><rsub|n\<geq\>1><around|(|T<rsub|1,\<nu\>>*f|)><around|(|n<rsup|2>|)>|]>,<label|eq:special_hankel>
+        <tabular|<tformat|<table|<row|<cell|<frac|\<pi\>|\<Gamma\>*<around|(|\<nu\>+1|)>>*<around|(|T<rsub|\<nu\>+1>*f|)><around|(|0|)>+2*<big|sum><rsub|n\<geq\>1>n<rsup|-\<nu\>>*<around|(|H<rsub|\<nu\>>*f|)>*<around|(|\<pi\><rsup|2>*n<rsup|2>|)>>>|<row|<cell|=<frac|\<pi\><rsup|\<nu\>-1/2>|\<Gamma\>*<around|(|\<nu\>+1/2|)>>*<around*|[|<around|(|T<rsub|1,\<nu\>>*f|)><around|(|0|)>+2*<big|sum><rsub|n\<geq\>1><around|(|T<rsub|1,\<nu\>>*f|)><around|(|n<rsup|2>|)>|]>>>>>><label|eq:special_hankel>
       </equation>
 
       valid for <math|\<nu\>\<gtr\><frac|1|2>>, implies the classical forms
@@ -1061,7 +1057,7 @@
 
 <\initial>
   <\collection>
-    <associate|magnification|1>
+    <associate|magnification|1.2>
     <associate|page-height|auto>
     <associate|page-medium|paper>
     <associate|page-type|letter>
@@ -1071,134 +1067,134 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1>>
-    <associate|auto-2|<tuple|2|3>>
-    <associate|auto-3|<tuple|3|6>>
-    <associate|auto-4|<tuple|4|8>>
-    <associate|auto-5|<tuple|73|11>>
-    <associate|bib-1|<tuple|1|11>>
-    <associate|bib-10|<tuple|10|11>>
-    <associate|bib-11|<tuple|11|11>>
-    <associate|bib-12|<tuple|12|11>>
-    <associate|bib-13|<tuple|13|11>>
-    <associate|bib-14|<tuple|14|11>>
-    <associate|bib-15|<tuple|15|11>>
-    <associate|bib-16|<tuple|16|11>>
-    <associate|bib-17|<tuple|17|11>>
-    <associate|bib-18|<tuple|18|11>>
-    <associate|bib-19|<tuple|19|12>>
-    <associate|bib-2|<tuple|2|11>>
-    <associate|bib-20|<tuple|20|12>>
-    <associate|bib-21|<tuple|21|12>>
-    <associate|bib-22|<tuple|22|12>>
-    <associate|bib-23|<tuple|23|12>>
-    <associate|bib-24|<tuple|24|12>>
-    <associate|bib-25|<tuple|25|12>>
-    <associate|bib-26|<tuple|26|12>>
-    <associate|bib-27|<tuple|27|12>>
-    <associate|bib-28|<tuple|28|12>>
-    <associate|bib-29|<tuple|29|12>>
-    <associate|bib-3|<tuple|3|11>>
-    <associate|bib-30|<tuple|30|12>>
-    <associate|bib-31|<tuple|31|12>>
-    <associate|bib-32|<tuple|32|12>>
-    <associate|bib-33|<tuple|33|12>>
-    <associate|bib-4|<tuple|4|11>>
-    <associate|bib-5|<tuple|5|11>>
-    <associate|bib-6|<tuple|6|11>>
-    <associate|bib-7|<tuple|7|11>>
-    <associate|bib-8|<tuple|8|11>>
-    <associate|bib-9|<tuple|9|11>>
-    <associate|def:class_An|<tuple|7|6>>
-    <associate|def:riemann_functional|<tuple|1|3>>
-    <associate|eq:band_limited_form|<tuple|71|11>>
-    <associate|eq:bessel_asymptotic|<tuple|21|4>>
-    <associate|eq:bessel_summation_eq|<tuple|15|3>>
-    <associate|eq:brown_butzer|<tuple|2|1>>
-    <associate|eq:bsp_inclusion|<tuple|51|8>>
-    <associate|eq:chi_left|<tuple|11|3>>
-    <associate|eq:chi_right|<tuple|10|3>>
-    <associate|eq:class_A_prop_1|<tuple|43|7>>
-    <associate|eq:class_A_prop_2|<tuple|44|7>>
-    <associate|eq:dirichlet_series|<tuple|9|3>>
-    <associate|eq:exponential_type|<tuple|50|8>>
-    <associate|eq:fourier_inversion|<tuple|6|2>>
-    <associate|eq:fourier_l2|<tuple|5|2>>
-    <associate|eq:fourier_transform|<tuple|4|2>>
-    <associate|eq:hankel_bound|<tuple|22|4>>
-    <associate|eq:hankel_class_1|<tuple|36|6>>
-    <associate|eq:hankel_class_2|<tuple|37|6>>
-    <associate|eq:hankel_computed|<tuple|26|5>>
-    <associate|eq:hankel_condition_1|<tuple|16|4>>
-    <associate|eq:hankel_condition_2|<tuple|17|4>>
-    <associate|eq:hankel_proof_1|<tuple|20|4>>
-    <associate|eq:hankel_proof_2|<tuple|23|4>>
-    <associate|eq:hankel_shannon_proof_1|<tuple|53|9>>
-    <associate|eq:hankel_shannon_proof_2|<tuple|54|9>>
-    <associate|eq:hankel_shannon_proof_3|<tuple|55|9>>
-    <associate|eq:hankel_shannon_proof_4|<tuple|56|9>>
-    <associate|eq:hankel_shannon_result|<tuple|52|8>>
-    <associate|eq:hankel_summation_formula|<tuple|19|4>>
-    <associate|eq:hankel_transform|<tuple|8|2>>
-    <associate|eq:hankel_whittaker|<tuple|27|5>>
-    <associate|eq:laplace_transform|<tuple|7|2>>
-    <associate|eq:limit_form|<tuple|70|10>>
-    <associate|eq:lp_norm|<tuple|3|2>>
-    <associate|eq:nikol_skii|<tuple|57|9>>
-    <associate|eq:operator_computed|<tuple|28|5>>
-    <associate|eq:operator_definition|<tuple|18|4>>
-    <associate|eq:operator_xi|<tuple|31|5>>
-    <associate|eq:operator_zero|<tuple|29|5>>
-    <associate|eq:parseval|<tuple|62|10>>
-    <associate|eq:partial_fraction|<tuple|35|6>>
-    <associate|eq:poisson_proof_1|<tuple|46|7>>
-    <associate|eq:poisson_proof_2|<tuple|48|8>>
-    <associate|eq:poisson_proof_3|<tuple|49|8>>
-    <associate|eq:poisson_summation|<tuple|45|7>>
-    <associate|eq:proof_convolution|<tuple|65|10>>
-    <associate|eq:proof_f1_hat|<tuple|63|10>>
-    <associate|eq:proof_f2_hat|<tuple|64|10>>
-    <associate|eq:proof_fourier_split|<tuple|67|10>>
-    <associate|eq:proof_poisson|<tuple|66|10>>
-    <associate|eq:remainder_bound|<tuple|68|10>>
-    <associate|eq:remainder_formula|<tuple|61|9>>
-    <associate|eq:remainder_zeta|<tuple|69|10>>
-    <associate|eq:residue_definition|<tuple|12|3>>
-    <associate|eq:residue_formula_eq|<tuple|38|6>>
-    <associate|eq:residue_proof_1|<tuple|39|7>>
-    <associate|eq:residue_proof_2|<tuple|40|7>>
-    <associate|eq:residue_proof_3|<tuple|41|7>>
-    <associate|eq:residue_proof_4|<tuple|42|7>>
-    <associate|eq:riemann_hankel_condition|<tuple|59|9>>
-    <associate|eq:riemann_hankel_result|<tuple|60|9>>
-    <associate|eq:riemann_hankel_setup|<tuple|58|9>>
-    <associate|eq:riemann_lebesgue|<tuple|47|7>>
-    <associate|eq:special_hankel|<tuple|73|11>>
-    <associate|eq:symmetric_extension|<tuple|13|3>>
-    <associate|eq:test_function|<tuple|24|4>>
-    <associate|eq:test_satisfies_1|<tuple|25|5>>
-    <associate|eq:theta_relation_eq|<tuple|14|3>>
-    <associate|eq:whittaker_cardinal|<tuple|1|1>>
-    <associate|eq:whittaker_integral|<tuple|30|5>>
-    <associate|eq:whittaker_special|<tuple|34|5>>
-    <associate|eq:whittaker_theta|<tuple|33|5>>
-    <associate|eq:zeta_values|<tuple|72|11>>
-    <associate|lem:bessel_summation|<tuple|3|3>>
-    <associate|lem:hilbert_kernel|<tuple|6|6>>
-    <associate|lem:theta_relation|<tuple|2|3>>
-    <associate|rem:poisson_remarks|<tuple|11|8>>
-    <associate|rem:remarks_2_5|<tuple|5|6>>
-    <associate|rem:sampling_remarks|<tuple|14|10>>
-    <associate|rem:theta_special|<tuple|9|7>>
-    <associate|sec:intro|<tuple|1|1>>
-    <associate|sec:poisson|<tuple|3|6>>
-    <associate|sec:riemann|<tuple|2|3>>
-    <associate|sec:sampling|<tuple|4|8>>
-    <associate|thm:hankel_shannon|<tuple|12|8>>
-    <associate|thm:poisson_type|<tuple|10|7>>
-    <associate|thm:residue_formula|<tuple|8|6>>
-    <associate|thm:riemann_functional|<tuple|4|4>>
-    <associate|thm:riemann_hankel|<tuple|13|9>>
+    <associate|auto-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|auto-2|<tuple|2|3|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|auto-3|<tuple|3|8|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|auto-4|<tuple|4|10|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|auto-5|<tuple|73|14|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-1|<tuple|1|14|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-10|<tuple|10|15|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-11|<tuple|11|15|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-12|<tuple|12|15|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-13|<tuple|13|15|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-14|<tuple|14|15|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-15|<tuple|15|15|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-16|<tuple|16|15|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-17|<tuple|17|15|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-18|<tuple|18|15|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-19|<tuple|19|15|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-2|<tuple|2|14|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-20|<tuple|20|15|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-21|<tuple|21|15|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-22|<tuple|22|15|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-23|<tuple|23|15|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-24|<tuple|24|15|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-25|<tuple|25|15|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-26|<tuple|26|15|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-27|<tuple|27|15|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-28|<tuple|28|15|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-29|<tuple|29|15|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-3|<tuple|3|14|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-30|<tuple|30|15|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-31|<tuple|31|15|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-32|<tuple|32|15|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-33|<tuple|33|15|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-4|<tuple|4|14|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-5|<tuple|5|14|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-6|<tuple|6|14|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-7|<tuple|7|14|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-8|<tuple|8|14|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|bib-9|<tuple|9|14|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|def:class_An|<tuple|7|8|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|def:riemann_functional|<tuple|1|4|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:band_limited_form|<tuple|71|14|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:bessel_asymptotic|<tuple|21|5|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:bessel_summation_eq|<tuple|15|4|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:brown_butzer|<tuple|2|2|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:bsp_inclusion|<tuple|51|11|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:chi_left|<tuple|11|4|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:chi_right|<tuple|10|4|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:class_A_prop_1|<tuple|43|9|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:class_A_prop_2|<tuple|44|9|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:dirichlet_series|<tuple|9|4|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:exponential_type|<tuple|50|10|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:fourier_inversion|<tuple|6|3|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:fourier_l2|<tuple|5|3|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:fourier_transform|<tuple|4|3|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:hankel_bound|<tuple|22|6|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:hankel_class_1|<tuple|36|8|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:hankel_class_2|<tuple|37|8|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:hankel_computed|<tuple|26|6|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:hankel_condition_1|<tuple|16|5|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:hankel_condition_2|<tuple|17|5|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:hankel_proof_1|<tuple|20|5|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:hankel_proof_2|<tuple|23|6|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:hankel_shannon_proof_1|<tuple|53|11|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:hankel_shannon_proof_2|<tuple|54|11|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:hankel_shannon_proof_3|<tuple|55|11|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:hankel_shannon_proof_4|<tuple|56|11|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:hankel_shannon_result|<tuple|52|11|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:hankel_summation_formula|<tuple|19|5|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:hankel_transform|<tuple|8|3|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:hankel_whittaker|<tuple|27|6|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:laplace_transform|<tuple|7|3|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:limit_form|<tuple|70|13|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:lp_norm|<tuple|3|3|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:nikol_skii|<tuple|57|12|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:operator_computed|<tuple|28|6|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:operator_definition|<tuple|18|5|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:operator_xi|<tuple|31|7|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:operator_zero|<tuple|29|6|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:parseval|<tuple|62|12|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:partial_fraction|<tuple|35|8|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:poisson_proof_1|<tuple|46|10|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:poisson_proof_2|<tuple|48|10|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:poisson_proof_3|<tuple|49|10|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:poisson_summation|<tuple|45|10|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:proof_convolution|<tuple|65|13|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:proof_f1_hat|<tuple|63|12|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:proof_f2_hat|<tuple|64|13|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:proof_fourier_split|<tuple|67|13|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:proof_poisson|<tuple|66|13|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:remainder_bound|<tuple|68|13|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:remainder_formula|<tuple|61|12|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:remainder_zeta|<tuple|69|13|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:residue_definition|<tuple|12|4|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:residue_formula_eq|<tuple|38|8|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:residue_proof_1|<tuple|39|9|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:residue_proof_2|<tuple|40|9|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:residue_proof_3|<tuple|41|9|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:residue_proof_4|<tuple|42|9|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:riemann_hankel_condition|<tuple|59|12|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:riemann_hankel_result|<tuple|60|12|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:riemann_hankel_setup|<tuple|58|12|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:riemann_lebesgue|<tuple|47|10|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:special_hankel|<tuple|73|14|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:symmetric_extension|<tuple|13|4|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:test_function|<tuple|24|6|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:test_satisfies_1|<tuple|25|6|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:theta_relation_eq|<tuple|14|4|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:whittaker_cardinal|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:whittaker_integral|<tuple|30|7|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:whittaker_special|<tuple|33|7|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:whittaker_theta|<tuple|32|7|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|eq:zeta_values|<tuple|72|14|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|lem:bessel_summation|<tuple|3|4|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|lem:hilbert_kernel|<tuple|6|8|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|lem:theta_relation|<tuple|2|4|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|rem:poisson_remarks|<tuple|11|10|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|rem:remarks_2_5|<tuple|5|7|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|rem:sampling_remarks|<tuple|14|13|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|rem:theta_special|<tuple|9|9|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|sec:intro|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|sec:poisson|<tuple|3|8|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|sec:riemann|<tuple|2|3|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|sec:sampling|<tuple|4|10|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|thm:hankel_shannon|<tuple|12|11|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|thm:poisson_type|<tuple|10|10|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|thm:residue_formula|<tuple|8|8|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|thm:riemann_functional|<tuple|4|5|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|thm:riemann_hankel|<tuple|13|12|../../.TeXmacs/texts/scratch/no_name_7.tm>>
   </collection>
 </references>
 
