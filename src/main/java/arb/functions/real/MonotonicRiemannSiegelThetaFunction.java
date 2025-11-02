@@ -50,7 +50,8 @@ public class MonotonicRiemannSiegelThetaFunction implements
 
   @Override
   public Real evaluate(Real t, int order, int bits, Real res)
-  {    return monotoneθ.evaluate(t, order, bits, res);
+  {
+    return monotoneθ.evaluate(t, order, bits, res);
   }
 
 }
