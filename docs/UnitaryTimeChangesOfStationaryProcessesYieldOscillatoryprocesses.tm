@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|article|metal|framed-theorems>>
+<style|<tuple|article|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Unitary Time Changes of Stationary Processes Yield
@@ -20,13 +20,11 @@
     stationary process almost surely lie in
     <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>, making the operator
     applicable to typical realizations. A zero-localization measure
-    <math|\<mathd\>\<mu\>*<around|(|*t|)>=\<delta\><around|(|Z<around|(|t|)>|)><space|0.17em><around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*<space|0.17em>d*t>
+    <math|\<mathd\>\<mu\>*<around|(|*t|)>=\<delta\><around|(|Z<around|(|t|)>|)><space|0.17em><around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*d*t>
     induces a Hilbert space <math|L<rsup|2><around|(|\<mu\>|)>> on the zero
     set of an oscillatory process <math|Z>, and the multiplication operator
     <math|<around|(|L*f|)><around|(|t|)>=t*f<around|(|t|)>> has simple pure
-    point spectrum equal to the zero crossing set of <math|Z>. This produces
-    a concrete operator scaffold consistent with a Hilbert\UPólya-type
-    viewpoint.
+    point spectrum equal to the zero crossing set of <math|Z>.\ 
   </abstract>
 
   <\table-of-contents|toc>
@@ -71,34 +69,29 @@
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-10>>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|3<space|2spc>The
-    Ensemble of Sample Path Realizations>
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|3<space|2spc>Zero
+    Localization> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-11><vspace|0.5fn>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|4<space|2spc>Zero
-    Localization> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-12><vspace|0.5fn>
-
-    <with|par-left|1tab|4.1<space|2spc>Zero localization measure
+    <with|par-left|1tab|3.1<space|2spc>Zero localization measure
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-12>>
+
+    <with|par-left|1tab|3.2<space|2spc>Hilbert space on zeros and
+    multiplication operator <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-13>>
 
-    <with|par-left|1tab|4.2<space|2spc>Hilbert space on zeros and
-    multiplication operator <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <with|par-left|1tab|3.3<space|2spc>Regularity and Simplicity of Sample
+    Path Zero Crossings <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-14>>
 
-    <with|par-left|1tab|4.3<space|2spc>Regularity and Simplicity of Sample
-    Path Zero Crossings <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-15>>
-
-    <with|par-left|1tab|4.4<space|2spc>The Kac-Rice Formula For The Expected
+    <with|par-left|1tab|3.4<space|2spc>The Kac-Rice Formula For The Expected
     Zero Counting Function <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-16>>
+    <no-break><pageref|auto-15>>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-17><vspace|0.5fn>
+    <no-break><pageref|auto-16><vspace|0.5fn>
   </table-of-contents>
 
   <section|Gaussian Processes>
@@ -106,51 +99,35 @@
   <subsection|Definition>
 
   <\definition>
-    <dueto|Gaussian Process>A <em|Gaussian process>
-    <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>> indexed by a set <math|T> is
-    a collection of real-valued random variables <math|X<rsub|t>>, all
-    defined on the same probability space
-    <math|<around|(|\<Omega\>,\<cal-F\>,\<bbb-P\>|)>>, such that for every
-    finite subset <math|F=<around|{|t<rsub|1>,\<ldots\>,t<rsub|n>|}>\<subset\>T>,
-    the random vector
+    <strong|(Gaussian process)> Let <math|<around|(|\<Omega\>,\<cal-F\>,\<bbb-P\>|)>>
+    be a probability space and <math|T> a nonempty index set. A family
+    <math|<around|{|X<rsub|t>:t\<in\>T|}>> of real-valued random variables on
+    <math|<around|(|\<Omega\>,\<cal-F\>,\<bbb-P\>|)>> is called a Gaussian
+    process if for every finite subset <math|F=<around|{|t<rsub|1>,\<ldots\>,t<rsub|n>|}>\<subset\>T>
+    the random vector <math|<around|(|X<rsub|t<rsub|1>>,\<ldots\>,X<rsub|t<rsub|n>>|)>>
+    is multivariate normal (possibly degenerate). Equivalently, every finite
+    linear combination <math|<big|sum><rsub|i=1><rsup|n>a<rsub|i>*X<rsub|t<rsub|i>>>
+    is either almost surely constant or Gaussian. The mean function is
+    <math|m<around|(|t|)>\<assign\>\<bbb-E\><around|[|X<rsub|t>|]>> and the
+    covariance kernel is\ 
 
     <\equation>
-      <math-bf|X><rsub|F>=<around|(|X<rsub|t<rsub|1>>,\<ldots\>,X<rsub|t<rsub|n>>|)><rsup|\<top\>>
+      K<around|(|s,t|)>=<math-up|Cov><around|(|X<rsub|s>,X<rsub|t>|)>
     </equation>
 
-    has a (possibly degenerate) multivariate Gaussian distribution.
+    For any finite <math|<around|(|t<rsub|i>|)><rsub|i=1><rsup|n>\<subset\>T>,
+    the matrix <math|K<rsub|i*j>=K<around|(|t<rsub|i>,t<rsub|j>|)>> is
+    symmetric positive semidefinite, and a Gaussian process is completely
+    determined in law by <math|m> and <math|K>.
   </definition>
 
-  Equivalently, <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>> is a Gaussian
-  process if and only if every finite linear combination
+  <\definition>
+    \ The canonical metric associated with a Gaussian process is
 
-  <\equation>
-    <big|sum><rsub|i=1><rsup|n>a<rsub|i>*X<rsub|t<rsub|i>><space|1em>
-  </equation>
-
-  where <math|a<rsub|i>\<in\>\<bbb-R\>,<space|0.17em>t<rsub|i>\<in\>T> is
-  either identically zero or has a univariate Gaussian distribution. A
-  Gaussian process is completely characterized by its mean function
-  <math|\<mu\>:T\<to\>\<bbb-R\>>
-
-  <\equation>
-    \<mu\><around|(|t|)>=\<bbb-E\><around|[|X<rsub|t>|]>
-  </equation>
-
-  and covariance kernel function <math|K:T\<times\>T\<to\>\<bbb-R\>>\ 
-
-  <\equation>
-    <tabular|<tformat|<table|<row|<cell|K<around|(|s,t|)>>|<cell|=<text|Cov><around|(|X<rsub|s>,X<rsub|t>|)>>>|<row|<cell|>|<cell|=\<bbb-E\>*<around|[|<around|(|X<rsub|s>-m<around|(|s|)>|)>*<around|(|X<rsub|t>-m<around|(|t|)>|)>|]>>>>>>
-  </equation>
-
-  which must be positive semi-definite. The process
-  <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>> is denoted
-
-  <\equation>
-    X\<sim\><with|math-font|cal|G*P><around|(|\<mu\>,K|)>
-  </equation>
-
-  \;
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|d<around|(|s,t|)>>|<cell|=<sqrt|\<bbb-E\><around*|[|<around|(|X<rsub|s>-X<rsub|t>|)><rsup|2>|]>>>>|<row|<cell|>|<cell|=<sqrt|K<around|(|s,s|)>+K<around|(|t,t|)>-2*K<around|(|s,t|)>>>>>>>
+    </equation>
+  </definition>
 
   <subsection|Sample Path Realizations>
 
@@ -170,10 +147,80 @@
     including functions with polynomial growth at infinity.
   </remark>
 
+  <\theorem>
+    <strong|[Sample paths in <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>]<label|thm:paths_loc>>
+    Let <math|<around|{|X<around|(|t|)>|}><rsub|t\<in\>\<bbb-R\>>> be a
+    second-order stationary process with
+
+    <\equation>
+      \<sigma\><rsup|2>\<assign\>\<bbb-E\><around|[|X<around|(|t|)><rsup|2>|]>\<less\>\<infty\>
+    </equation>
+
+    then, almost surely, every sample path
+    <math|t\<mapsto\>X<rsub|><around|(|t|)>\<in\>L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>.
+  </theorem>
+
+  <\proof>
+    Fix any bounded interval <math|<around|[|a,b|]>> and consider the random
+    variable
+
+    <\equation>
+      Y<rsub|<around|[|a,b|]>>\<assign\><big|int><rsub|a><rsup|b>X<around|(|t|)><rsup|2>*<space|0.17em>d*t
+    </equation>
+
+    By stationarity and Fubini's theorem:
+
+    <\equation>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|\<bbb-E\><around|[|Y<rsub|<around|[|a,b|]>>|]>=\<bbb-E\><around*|[|<big|int><rsub|a><rsup|b>X<around|(|t|)><rsup|2>*<space|0.17em>d*t|]>>|<cell|=<big|int><rsub|a><rsup|b>\<bbb-E\><around|[|X<around|(|t|)><rsup|2>|]>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|int><rsub|a><rsup|b>\<sigma\><rsup|2>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=\<sigma\><rsup|2>*<around|(|b-a|)>\<less\>\<infty\>>>>>>
+    </equation>
+
+    By Markov's inequality, for any <math|M\<gtr\>0>:
+
+    <\equation>
+      P*<around|(|Y<rsub|<around|[|a,b|]>>\<gtr\>M|)>\<leq\><frac|\<bbb-E\><around|[|Y<rsub|<around|[|a,b|]>>|]>|M>=<frac|\<sigma\><rsup|2>*<around|(|b-a|)>|M>
+    </equation>
+
+    Taking <math|M\<to\>\<infty\>>, the conclusion is
+
+    <\equation>
+      P*<around|(|Y<rsub|<around|[|a,b|]>>\<less\>\<infty\>|)>=1
+    </equation>
+
+    i.e., almost surely the sample path is square-integrable on
+    <math|<around|[|a,b|]>>. Since <math|\<bbb-R\>> is the countable union of
+    bounded intervals:
+
+    <\equation>
+      \<bbb-R\>=<big|cup><rsub|n=1><rsup|\<infty\>><around|[|-n,n|]>
+    </equation>
+
+    by countable subadditivity of probability:
+
+    <\equation>
+      P<around*|(|<big|cap><rsub|n=1><rsup|\<infty\>><around*|{|<big|int><rsub|-n><rsup|n>X<around|(|t|)><rsup|2>*<space|0.17em>d*t\<less\>\<infty\>|}>|)>=1
+    </equation>
+
+    Now let <math|K> be any compact set. Then <math|K> is bounded, so
+
+    <\equation>
+      K\<subseteq\><around|[|-N,N|]>
+    </equation>
+
+    for some <math|N>. Therefore:
+
+    <\equation>
+      <big|int><rsub|K>X<around|(|t|)><rsup|2>*<space|0.17em>d*t\<leq\><big|int><rsub|-N><rsup|N>X<around|(|t|)><rsup|2>*<space|0.17em>d*t\<less\>\<infty\>
+    </equation>
+
+    almost surely. This holds for every compact set <math|K>, so almost
+    surely every sample path lies in <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>.
+  </proof>
+
   <subsection|Stationary processes>
 
   <\definition>
-    <strong|[Cramér representation]<label|def:cramer>> A zero-mean stationary
+    <strong|[Cramér representation]<label|def:cramer>>
+    <cite|stationaryAndRelatedStochasticProcesses>A zero-mean stationary
     process <math|X> with spectral measure <math|F> admits the sample path
     representation
 
@@ -191,7 +238,7 @@
   <subsection|Oscillatory Processes><label|sec:oscillatory>
 
   A particularly tractable class of non-stationary Gaussian processes is that
-  of the oscillatory processes as defined by M.B. Priestley in
+  of the oscillatory processes as defined by Maurice Priestley in
   1965<cite|evolutionarySpectraAndNonStationaryProcesses>.
 
   <\definition>
@@ -288,8 +335,8 @@
       A<rsub|t><around*|(|\<lambda\>|)>\<in\>L<rsup|2><around|(|F|)>\<forall\>\<bbb-R\>\<ni\>t\<less\>\<infty\>
     </equation>
 
-    \ be measurable in both time and frequency then the time-dependent
-    spectral density is defined by
+    be measurable in both time and frequency then the time-dependent spectral
+    density is defined by
 
     <\equation>
       <tabular|<tformat|<table|<row|<cell|S<rsub|t><around*|(|\<lambda\>|)>>|<cell|=<big|int><rsub|\<bbb-R\>><around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>\<less\>\<infty\>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>><around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*S<around*|(|\<lambda\>|)>d\<lambda\>>>>>>
@@ -364,9 +411,7 @@
     continuous, strictly increasing, and bijective, with
     <math|<wide|\<theta\>|\<dot\>><around|(|t|)>\<gtr\>0> almost everywhere
     and <math|<wide|\<theta\>|\<dot\>><around|(|t|)>=0> only on sets of
-    Lebesgue measure zero. The function <math|\<theta\>> maps
-    <math|\<sigma\>>-compact sets to <math|\<sigma\>>-compact sets. Define,
-    for <math|f> measurable,
+    Lebesgue measure zero. Define, for <math|f> measurable,
 
     <\equation>
       <around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*f<around|(|\<theta\><around|(|t|)>|)><label|U>
@@ -374,16 +419,15 @@
   </definition>
 
   <\proposition>
-    <strong|[Inversion of Unitary time-change]<label|prop:inverse> >The
-    inverse of the unitary time-change operator <math|U> in Equation
-    (<reference|U>) is given by
+    <strong|[Invere unitary time-change]<label|prop:inverse> >The inverse of
+    the unitary time-change operator <math|U> in Equation (<reference|U>) is
+    given by
 
     <\equation>
       <around|(|U<rsub|\<theta\>><rsup|-1>*g|)><around|(|s|)>=<frac|g<around|(|\<theta\><rsup|-1><around|(|s|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>>
     </equation>
 
-    which is well-defined almost everywhere on every <math|\<sigma\>>-compact
-    set.
+    which is well-defined almost everywhere.
   </proposition>
 
   <\proof>
@@ -393,18 +437,18 @@
     bijective functions preserve measure-zero sets, the denominator
     <math|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>>
     is positive almost everywhere. The expression is therefore well-defined
-    almost everywhere on every <math|\<sigma\>>-compact set, which suffices
-    for defining an element of <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>.
+    almost everywhere, which suffices for defining an element of
+    <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>.
   </proof>
 
   <\theorem>
-    <strong|[Local unitarity on <math|\<sigma\>>-compact
-    sets]<label|thm:local_unitarity>> For every <math|\<sigma\>>-compact set
-    <math|C\<subseteq\>\<bbb-R\>> and <math|f\<in\>L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>,
+    <strong|[Local unitarity on compact sets]<label|thm:local_unitarity>> For
+    every compact set <math|K\<subseteq\>\<bbb-R\>> and
+    <math|f\<in\>L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>,
 
     <\equation>
-      <big|int><rsub|C><around|\||<around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>*<around|\||<rsup|2><space|0.17em>d*t=<big|int><rsub|\<theta\><around|(|C|)>>|\|>*f<around|(|s|)>|\|><rsup|2>*<space|0.17em>d*s
-    </equation>
+      <big|int><rsub|K><around|\||<around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>|\|><rsup|2>*<space|0.17em>d*t=<big|int><rsub|\<theta\><around|(|K|)>>
+    </equation|f<around|(|s|)>|<rsup|2>*<space|0.17em>d*s >
 
     Moreover, <math|U<rsub|\<theta\>><rsup|-1>> is the inverse of
     <math|U<rsub|\<theta\>>> on <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>.
@@ -412,11 +456,11 @@
 
   <\proof>
     Let <math|f\<in\>L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>> and let
-    <math|C> be any <math|\<sigma\>>-compact set. The local
-    <math|L<rsup|2>>-norm of <math|U<rsub|\<theta\>>*f> over <math|C> is:
+    <math|K> be any compact set. The local <math|L<rsup|2>>-norm of
+    <math|U<rsub|\<theta\>>*f> over <math|K> is:
 
     <\equation>
-      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<big|int><rsub|C><around|\||<around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>|\|><rsup|2>*<space|0.17em>d*t>|<cell|=<big|int><rsub|C><around*|\||<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*f<around|(|\<theta\><around|(|t|)>|)>|\|><rsup|2>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|int><rsub|C><wide|\<theta\>|\<dot\>><around|(|t|)><around|\||f<around|(|\<theta\><around|(|t|)>|)>|\|><rsup|2>*<space|0.17em>d*t>>>>>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<big|int><rsub|K><around|\||<around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>|\|><rsup|2>*<space|0.17em>d*t>|<cell|=<big|int><rsub|K><around*|\||<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*f<around|(|\<theta\><around|(|t|)>|)>|\|><rsup|2>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|int><rsub|K><wide|\<theta\>|\<dot\>><around|(|t|)><around|\||f<around|(|\<theta\><around|(|t|)>|)>|\|><rsup|2>*<space|0.17em>d*t>>>>>
     </equation>
 
     Since <math|\<theta\>> is absolutely continuous and strictly increasing,
@@ -426,15 +470,13 @@
       d*s=<wide|\<theta\>|\<dot\>><around|(|t|)>*d*t
     </equation>
 
-    almost everywhere. Since <math|\<theta\>> maps <math|\<sigma\>>-compact
-    sets to <math|\<sigma\>>-compact sets, as <math|t> ranges over <math|C>,
+    almost everywhere. As <math|t> ranges over the compact set <math|K>,
     <math|s=\<theta\><around|(|t|)>> ranges over
-    <math|\<theta\><around|(|C|)>>, which is <math|\<sigma\>>-compact.
-    Therefore:
+    <math|\<theta\><around|(|K|)>>, which is compact. Therefore:
 
     <\equation>
-      <big|int><rsub|C><wide|\<theta\>|\<dot\>><around|(|t|)>*<around|\||f<around|(|\<theta\><around|(|t|)>|)>*<around|\||<rsup|2><space|0.17em>d*t=<big|int><rsub|\<theta\><around|(|C|)>>|\|>*f<around|(|s|)>|\|><rsup|2>*<space|0.17em>d*s
-    </equation>
+      <big|int><rsub|K><wide|\<theta\>|\<dot\>><around|(|t|)><around|\||f<around|(|\<theta\><around|(|t|)>|)>|\|><rsup|2>*<space|0.17em>d*t=<big|int><rsub|\<theta\><around|(|K|)>>
+    </equation|f<around|(|s|)>|<rsup|2>*<space|0.17em>d*s >
 
     To verify that <math|U<rsub|\<theta\>><rsup|-1>> is indeed the inverse,
     it is seen that:
@@ -449,13 +491,13 @@
       \<theta\><around|(|\<theta\><rsup|-1><around|(|s|)>|)>=s
     </equation>
 
-    and similarly, its also plain to see that:
+    and similarly:
 
     <\equation>
       <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<around|(|U<rsub|\<theta\>>*U<rsub|\<theta\>><rsup|-1>*g|)><around|(|t|)>>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<around|(|U<rsub|\<theta\>><rsup|-1>*g|)><around|(|\<theta\><around|(|t|)>|)>>|<cell|>|<cell|>|<cell|>|<cell|>>|<row|<cell|>|<cell|=<frac|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|\<theta\><around|(|t|)>|)>|)>>>*g<around|(|\<theta\><rsup|-1><around|(|\<theta\><around|(|t|)>|)>|)>>|<cell|>|<cell|>|<cell|>|<cell|\<forall\>g\<in\>L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>>|<row|<cell|>|<cell|=<frac|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>>*g<around|(|t|)>>|<cell|>|<cell|>|<cell|>|<cell|>>|<row|<cell|>|<cell|=g<around|(|t|)>>|<cell|>|<cell|>|<cell|>|<cell|>>>>>
     </equation>
 
-    since\ 
+    since
 
     <\equation>
       \<theta\><rsup|-1><around|(|\<theta\><around|(|t|)>|)>=t
@@ -490,7 +532,7 @@
     Then:
 
     <\enumerate>
-      <item><label|item:forward> The forward filter kernel is
+      <item><label|item:forward>The forward filter kernel is
 
       <\equation>
         h<around|(|t,u|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>\<delta\>*<around|(|u-\<theta\><around|(|t|)>|)><label|h>
@@ -512,10 +554,8 @@
   </theorem>
 
   <\proof>
-    Parts <reference|item:forward>\U<reference|item:composition> are
-    established in sequence.
-
-    Let
+    Parts <reference|item:forward>-<reference|item:composition> are
+    established in sequence. Let
 
     <\equation>
       v=\<theta\><around|(|s|)> <text| and
@@ -563,8 +603,8 @@
   <\theorem>
     <strong|[Unitary time change yields oscillatory
     process]<label|thm:Utheta_to_osc>> Let <math|X> be zero-mean stationary
-    as in Definition<nbsp><reference|def:cramer>. For scaling function
-    <math|\<theta\>> as in Definition<nbsp><reference|def:Utheta>, define
+    as in Definition <reference|def:cramer>. For scaling function
+    <math|\<theta\>> as in Definition <reference|def:Utheta>, define
 
     <\equation>
       <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|Z<around|(|t|)>>|<cell|=<around|(|U<rsub|\<theta\>>*X|)><around|(|t|)>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>X<around|(|\<theta\><around|(|t|)>|)>>>>>>
@@ -586,7 +626,7 @@
     and covariance
 
     <\equation>
-      <tabular|<tformat|<cwith|1|5|1|1|cell-halign|l>|<cwith|1|5|1|1|cell-lborder|0ln>|<cwith|1|5|2|2|cell-halign|l>|<cwith|1|5|2|2|cell-rborder|0ln>|<table|<row|<cell|R<rsub|Z><around|(|t,s|)>>|<cell|=\<bbb-E\><around|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=\<bbb-E\>*<around*|[|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*X<around|(|\<theta\><around|(|t|)>|)><wide|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*X<around|(|\<theta\><around|(|t|)>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*\<bbb-E\><around|[|X<around|(|\<theta\><around|(|t|)>|)><wide|X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*R<rsub|X>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>>>><label|covar>
+      <tabular|<tformat|<cwith|1|5|1|1|cell-halign|l>|<cwith|1|5|1|1|cell-lborder|0ln>|<cwith|1|5|2|2|cell-halign|l>|<cwith|1|5|2|2|cell-rborder|0ln>|<table|<row|<cell|R<rsub|Z><around|(|t,s|)>>|<cell|=\<bbb-E\><around|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=\<bbb-E\>*<around*|[|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*X<around|(|\<theta\><around|(|t|)>|)><wide|<sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>*X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*\<bbb-E\><around|[|X<around|(|\<theta\><around|(|t|)>|)><wide|X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*R<rsub|X>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>>>><label|covar>
     </equation>
   </theorem>
 
@@ -605,9 +645,8 @@
     </equation>
 
     To verify this constitutes an oscillatory representation according to
-    Definition<nbsp><reference|def:osc_proc>,
-    <math|\<varphi\><rsub|t><around|(|\<lambda\>|)>> has the form
-    <math|A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>>:
+    Definition <reference|def:osc_proc>, <math|\<varphi\><rsub|t><around|(|\<lambda\>|)>>
+    has the form <math|A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>>:
 
     <\equation>
       <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|\<varphi\><rsub|t><around|(|\<lambda\>|)>>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>*e<rsup|i*\<lambda\>*t>>>|<row|<cell|>|<cell|=A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>>>>>>
@@ -631,39 +670,20 @@
 
     where <math|<around|\||e<rsup|i*\<alpha\>>|\|>=1> for all real
     <math|\<alpha\>> is used. The covariance (<reference|covar>) is computed
-    by substituting the spectral representation and applying Fubuni's theorem
+    by substituting the spectral representation and applying Fubini's theorem
     to interchange the order of operations.
-
-    <\equation>
-      <tabular*|<tformat|<table|<row|<cell|>|<cell|>>>>>
-    </equation>
   </proof>
 
   <\corollary>
     <strong|[Evolutionary spectrum of unitarily time-changed stationary
     process]<label|cor:evol_spec>><cite|evolutionarySpectraAndNonStationaryProcesses>
-    Link to The evolutionary spectrum, also called the time-varying spectral
-    density, is
+    The evolutionary spectrum, also called the time-varying spectral density,
+    is
 
     <\equation>
       <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|d*F<rsub|t><around|(|\<lambda\>|)>>|<cell|=<around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<wide|\<theta\>|\<dot\>><around|(|t|)>d*F<around|(|\<lambda\>|)>>>>>>
     </equation>
   </corollary>
-
-  <\proof>
-    By definition of the evolutionary spectrum and using the gain function
-    from Theorem<nbsp><reference|thm:Utheta_to_osc>:
-
-    <\equation>
-      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|d*F<rsub|t><around|(|\<lambda\>|)>>|<cell|=<around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<around*|\||<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<wide|\<theta\>|\<dot\>><around|(|t|)><around|\||e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<wide|\<theta\>|\<dot\>><around|(|t|)>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>>>>
-    </equation>
-
-    since
-
-    <\equation>
-      <around|\||e<rsup|i*\<alpha\>>|\|>=1\<forall\>a\<in\>\<bbb-R\>
-    </equation>
-  </proof>
 
   <subsection|Covariance operator conjugation>
 
@@ -698,83 +718,10 @@
   <\proof>
     For any <math|g\<in\>L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>, compute:
 
-    <\equation>
+    <\equation*>
       <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<cwith|4|7|2|2|cell-halign|l>|<cwith|4|7|2|2|cell-rborder|0ln>|<table|<row|<cell|<around|(|<around|(|U<rsub|\<theta\>>*T<rsub|K>*U<rsub|\<theta\>><rsup|-1>|)>*g|)><around|(|t|)>>|<cell|=<around|(|U<rsub|\<theta\>>*<around|(|T<rsub|K>*U<rsub|\<theta\>><rsup|-1>*g|)>|)><around|(|t|)>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<around|(|T<rsub|K>*U<rsub|\<theta\>><rsup|-1>*g|)><around|(|\<theta\><around|(|t|)>|)>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<big|int><rsub|\<bbb-R\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around*|(|s|)>|\|>|)>*<around|(|U<rsub|\<theta\>><rsup|-1>*g|)><around|(|\<theta\><around|(|s|)>|)><wide|\<theta\>|\<dot\>><around*|(|s|)>d
       s>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<big|int><rsub|\<bbb-R\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)><frac|g<around|(|s|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>>*<wide|\<theta\>|\<dot\>><around|(|s|)>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<big|int><rsub|\<bbb-R\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>*g<around|(|s|)><sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>><sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)><wide|\<theta\>|\<dot\>><around|(|s|)>>*K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>*g<around|(|s|)>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>K<rsub|\<theta\>><around|(|t,s|)>*g<around|(|s|)>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<around|(|T<rsub|K<rsub|\<theta\>>>*g|)><around|(|t|)>>>>>>
-    </equation>
-  </proof>
-
-  <section|The Ensemble of Sample Path Realizations><label|sec:samplepaths>
-
-  Question: is this called local integrability? state this more eloquently\ 
-
-  <\theorem>
-    <strong|[Sample paths in <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>]<label|thm:paths_loc>>
-    Let <math|<around|{|X<around|(|t|)>|}><rsub|t\<in\>\<bbb-R\>>> be a
-    second-order stationary process with
-
-    <\equation>
-      \<sigma\><rsup|2>\<assign\>\<bbb-E\><around|[|X<around|(|t|)><rsup|2>|]>\<less\>\<infty\>
-    </equation>
-
-    then, almost surely, every sample path
-    <math|t\<mapsto\>X<around|(|\<omega\>,t|)>\<in\>L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>.
-  </theorem>
-
-  <\proof>
-    Fix any bounded interval <math|<around|[|a,b|]>> and consider the random
-    variable
-
-    <\equation>
-      Y<rsub|<around|[|a,b|]>>\<assign\><big|int><rsub|a><rsup|b>X<around|(|t|)><rsup|2>*<space|0.17em>d*t
-    </equation>
-
-    By stationarity and Fubini's theorem:
-
-    <\equation>
-      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|\<bbb-E\><around|[|Y<rsub|<around|[|a,b|]>>|]>=\<bbb-E\><around*|[|<big|int><rsub|a><rsup|b>X<around|(|t|)><rsup|2>*<space|0.17em>d*t|]>>|<cell|=<big|int><rsub|a><rsup|b>\<bbb-E\><around|[|X<around|(|t|)><rsup|2>|]>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|int><rsub|a><rsup|b>\<sigma\><rsup|2>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=\<sigma\><rsup|2>*<around|(|b-a|)>\<less\>\<infty\>>>>>>
-    </equation>
-
-    By Markov's inequality, for any <math|M\<gtr\>0>:
-
-    <\equation>
-      P*<around|(|Y<rsub|<around|[|a,b|]>>\<gtr\>M|)>\<leq\><frac|\<bbb-E\><around|[|Y<rsub|<around|[|a,b|]>>|]>|M>=<frac|\<sigma\><rsup|2>*<around|(|b-a|)>|M>
-    </equation>
-
-    Taking <math|M\<to\>\<infty\>>, the conclusion is
-
-    <\equation>
-      P*<around|(|Y<rsub|<around|[|a,b|]>>\<less\>\<infty\>|)>=1
-    </equation>
-
-    i.e., almost surely the sample path is square-integrable on
-    <math|<around|[|a,b|]>>. Since <math|\<bbb-R\>> is the countable union of
-    bounded intervals:
-
-    <\equation>
-      \<bbb-R\>=<big|cup><rsub|n=1><rsup|\<infty\>><around|[|-n,n|]>
-    </equation>
-
-    by countable subadditivity of probability:
-
-    <\equation>
-      P<around*|(|<big|cap><rsub|n=1><rsup|\<infty\>><around*|{|<big|int><rsub|-n><rsup|n>X<around|(|t|)><rsup|2>*<space|0.17em>d*t\<less\>\<infty\>|}>|)>=1
-    </equation>
-
-    Now let <math|K> be any compact set. Then <math|K> is bounded, so
-
-    <\equation>
-      K\<subseteq\><around|[|-N,N|]>
-    </equation>
-
-    for some <math|N>. Therefore:
-
-    <\equation>
-      <big|int><rsub|K>X<around|(|t|)><rsup|2>*<space|0.17em>d*t\<leq\><big|int><rsub|-N><rsup|N>X<around|(|t|)><rsup|2>*<space|0.17em>d*t\<less\>\<infty\>
-    </equation>
-
-    almost surely. This holds for every compact set <math|K>, so almost
-    surely every sample path lies in <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>.
+    </equation*>
   </proof>
 
   <section|Zero Localization><label|sec:HP>
@@ -1248,8 +1195,14 @@
   </proof>
 
   <\bibliography|bib|tm-plain|refs>
-    <\bib-list|1>
-      <bibitem*|1><label|bib-evolutionarySpectraAndNonStationaryProcesses>Maurice<nbsp>B
+    <\bib-list|2>
+      <bibitem*|1><label|bib-stationaryAndRelatedStochasticProcesses>Harald
+      Cramér<localize| and >M.R.<nbsp>Leadbetter.
+      <newblock><with|font-shape|italic|Stationary and Related Processes:
+      Sample Function Properties and Their Applications>. <newblock>Wiley
+      Series in Probability and Mathematical Statistics. 1967.<newblock>
+
+      <bibitem*|2><label|bib-evolutionarySpectraAndNonStationaryProcesses>Maurice<nbsp>B
       Priestley. <newblock>Evolutionary spectra and non-stationary processes.
       <newblock><with|font-shape|italic|Journal of the Royal Statistical
       Society: Series B (Methodological)>, 27(2):204\U229, 1965.<newblock>
@@ -1259,7 +1212,6 @@
 
 <\initial>
   <\collection>
-    <associate|magnification|1.2>
     <associate|page-height|auto>
     <associate|page-medium|paper>
     <associate|page-type|letter>
@@ -1269,75 +1221,76 @@
 
 <\references>
   <\collection>
-    <associate|U|<tuple|26|6>>
-    <associate|Z|<tuple|37|8>>
-    <associate|auto-1|<tuple|1|2>>
-    <associate|auto-10|<tuple|2.3|12>>
-    <associate|auto-11|<tuple|3|12>>
-    <associate|auto-12|<tuple|4|14>>
-    <associate|auto-13|<tuple|4.1|14>>
-    <associate|auto-14|<tuple|4.2|15>>
-    <associate|auto-15|<tuple|4.3|17>>
-    <associate|auto-16|<tuple|4.4|19>>
-    <associate|auto-17|<tuple|130|21>>
-    <associate|auto-2|<tuple|1.1|2>>
-    <associate|auto-3|<tuple|1.2|2>>
-    <associate|auto-4|<tuple|1.3|3>>
-    <associate|auto-5|<tuple|1.4|3>>
-    <associate|auto-6|<tuple|2|6>>
-    <associate|auto-7|<tuple|2.1|6>>
-    <associate|auto-8|<tuple|2.1.1|8>>
-    <associate|auto-9|<tuple|2.2|10>>
-    <associate|bib-evolutionarySpectraAndNonStationaryProcesses|<tuple|1|21>>
-    <associate|cor:evol_spec|<tuple|13|11>>
-    <associate|covar|<tuple|50|10>>
-    <associate|def:L|<tuple|20|16>>
-    <associate|def:L2loc|<tuple|2|2>>
-    <associate|def:Utheta|<tuple|8|6>>
-    <associate|def:cramer|<tuple|4|3>>
-    <associate|def:osc_proc|<tuple|5|3>>
-    <associate|def:regularity|<tuple|22|18>>
-    <associate|def:zeromeasure|<tuple|16|14>>
-    <associate|eq:covariance_def|<tuple|124|20>>
-    <associate|eq:expectation|<tuple|115|19>>
-    <associate|eq:expected_zeros|<tuple|125|20>>
-    <associate|eq:kac_rice|<tuple|110|19>>
-    <associate|eq:kac_rice_formula|<tuple|127|20>>
-    <associate|eq:limit_mixed_partial|<tuple|129|21>>
-    <associate|eq:mixed_partial|<tuple|128|20>>
-    <associate|eq:mixed_partial_continued|<tuple|128|20>>
-    <associate|eq:substituted_kac_rice|<tuple|130|21>>
-    <associate|eq:time_changed_cov|<tuple|126|20>>
-    <associate|h|<tuple|38|8>>
-    <associate|item:composition|<tuple|3|8>>
-    <associate|item:forward|<tuple|1|8>>
-    <associate|item:inverse|<tuple|2|8>>
-    <associate|labeldef:Hmu|<tuple|18|15>>
-    <associate|lem:delta|<tuple|23|18>>
-    <associate|of|<tuple|10|3>>
-    <associate|prop:atomic|<tuple|19|15>>
-    <associate|prop:conjugation|<tuple|14|12>>
-    <associate|prop:inverse|<tuple|9|6>>
-    <associate|sec:HP|<tuple|4|14>>
-    <associate|sec:oscillatory|<tuple|1.4|3>>
-    <associate|sec:samplepaths|<tuple|3|12>>
-    <associate|sec:stationary_timechange|<tuple|2|6>>
-    <associate|thm:Utheta_to_osc|<tuple|12|10>>
-    <associate|thm:atomic|<tuple|17|14>>
-    <associate|thm:existence_osc|<tuple|7|4>>
-    <associate|thm:expected_zero_counting|<tuple|25|20>>
-    <associate|thm:inverse-filter|<tuple|11|8>>
-    <associate|thm:kac_rice|<tuple|24|19>>
-    <associate|thm:local_unitarity|<tuple|10|6>>
-    <associate|thm:paths_loc|<tuple|15|13>>
-    <associate|thm:realvaluedness|<tuple|6|4>>
-    <associate|thm:spectrum|<tuple|21|16>>
+    <associate|U|<tuple|32|5|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|Z|<tuple|43|6|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|auto-1|<tuple|1|1|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|auto-10|<tuple|2.3|9|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|auto-11|<tuple|3|10|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|auto-12|<tuple|3.1|10|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|auto-13|<tuple|3.2|11|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|auto-14|<tuple|3.3|12|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|auto-15|<tuple|3.4|13|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|auto-16|<tuple|123|15|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|auto-2|<tuple|1.1|1|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|auto-3|<tuple|1.2|2|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|auto-4|<tuple|1.3|3|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|auto-5|<tuple|1.4|3|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|auto-6|<tuple|2|5|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|auto-7|<tuple|2.1|5|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|auto-8|<tuple|2.1.1|6|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|auto-9|<tuple|2.2|8|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|bib-evolutionarySpectraAndNonStationaryProcesses|<tuple|2|15|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|bib-stationaryAndRelatedStochasticProcesses|<tuple|1|15|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|cor:evol_spec|<tuple|15|9|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|covar|<tuple|56|8|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|def:L|<tuple|21|11|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|def:L2loc|<tuple|3|2|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|def:Utheta|<tuple|10|5|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|def:cramer|<tuple|6|3|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|def:osc_proc|<tuple|7|3|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|def:regularity|<tuple|23|12|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|def:zeromeasure|<tuple|17|10|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|eq:covariance_def|<tuple|117|14|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|eq:expectation|<tuple|108|13|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|eq:expected_zeros|<tuple|118|14|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|eq:kac_rice|<tuple|103|13|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|eq:kac_rice_formula|<tuple|120|14|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|eq:limit_mixed_partial|<tuple|122|15|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|eq:mixed_partial|<tuple|121|15|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|eq:mixed_partial_continued|<tuple|121|15|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|eq:substituted_kac_rice|<tuple|123|15|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|eq:time_changed_cov|<tuple|119|14|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|h|<tuple|44|6|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|item:composition|<tuple|3|6|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|item:forward|<tuple|1|6|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|item:inverse|<tuple|2|6|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|labeldef:Hmu|<tuple|19|11|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|lem:delta|<tuple|24|12|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|of|<tuple|16|3|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|prop:atomic|<tuple|20|11|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|prop:conjugation|<tuple|16|9|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|prop:inverse|<tuple|11|5|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|sec:HP|<tuple|3|10|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|sec:oscillatory|<tuple|1.4|3|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|sec:stationary_timechange|<tuple|2|5|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|thm:Utheta_to_osc|<tuple|14|8|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|thm:atomic|<tuple|18|10|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|thm:existence_osc|<tuple|9|4|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|thm:expected_zero_counting|<tuple|26|14|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|thm:inverse-filter|<tuple|13|6|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|thm:kac_rice|<tuple|25|13|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|thm:local_unitarity|<tuple|12|5|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|thm:paths_loc|<tuple|5|2|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|thm:realvaluedness|<tuple|8|3|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|thm:spectrum|<tuple|22|12|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
   </collection>
 </references>
 
 <\auxiliary>
   <\collection>
     <\associate|bib>
+      stationaryAndRelatedStochasticProcesses
+
       evolutionarySpectraAndNonStationaryProcesses
 
       evolutionarySpectraAndNonStationaryProcesses
@@ -1386,34 +1339,29 @@
       conjugation <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-10>>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>The
-      Ensemble of Sample Path Realizations>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>Zero
+      Localization> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-11><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>Zero
-      Localization> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-12><vspace|0.5fn>
-
-      <with|par-left|<quote|1tab>|4.1<space|2spc>Zero localization measure
+      <with|par-left|<quote|1tab>|3.1<space|2spc>Zero localization measure
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-12>>
+
+      <with|par-left|<quote|1tab>|3.2<space|2spc>Hilbert space on zeros and
+      multiplication operator <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-13>>
 
-      <with|par-left|<quote|1tab>|4.2<space|2spc>Hilbert space on zeros and
-      multiplication operator <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1tab>|3.3<space|2spc>Regularity and Simplicity of
+      Sample Path Zero Crossings <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-14>>
 
-      <with|par-left|<quote|1tab>|4.3<space|2spc>Regularity and Simplicity of
-      Sample Path Zero Crossings <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-15>>
-
-      <with|par-left|<quote|1tab>|4.4<space|2spc>The Kac-Rice Formula For The
+      <with|par-left|<quote|1tab>|3.4<space|2spc>The Kac-Rice Formula For The
       Expected Zero Counting Function <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-16>>
+      <no-break><pageref|auto-15>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-17><vspace|0.5fn>
+      <no-break><pageref|auto-16><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
