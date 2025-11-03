@@ -1301,7 +1301,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                               assignments));
     }
 
-    if (nestedFunction.instance != null && nestedFunction.isGenerated() )
+    if (nestedFunction.instance != null && nestedFunction.isGenerated())
     {
       initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv),
                                                      className,
@@ -1731,6 +1731,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                         String typeDesc,
                                                         OrderedPair<String, Class<?>> variable)
   {
+    if (trace)
+    {
+      log.debug("{}: linkSharedVariableToReferencedFunction(generatedFunctionClassInternalName={}, fieldType={}, functionFieldName={}, typeDesc={}, variable={}",
+                functionName,
+                generatedFunctionClassInternalName,
+                fieldType,
+                functionFieldName,
+                typeDesc,
+                variable);
+    }
     var variableFieldName           = variable.getLeft();
     var variableFieldTypeDescriptor = variable.getRight().descriptorString();
     getField(loadThisOntoStack(mv),
