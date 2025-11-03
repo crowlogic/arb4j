@@ -14,14 +14,6 @@ public class DeltaFunctionNode<D, R, F extends Function<? extends D, ? extends R
                               FunctionNode<D, R, F>
 {
 
-  public DeltaFunctionNode(Expression<D, R, F> expression,
-                           FunctionMapping<?, ?, ?> newIntegralFunctionMapping,
-                           Node<D, R, F> arg)
-  {
-    super(expression,
-          newIntegralFunctionMapping,
-          arg);
-  }
 
   public DeltaFunctionNode(String functionName,
                            Node<D, R, F> argument,

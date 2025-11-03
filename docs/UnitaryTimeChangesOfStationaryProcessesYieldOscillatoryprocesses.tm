@@ -136,7 +136,50 @@
 
   <section|Gaussian Processes>
 
-  A Gaussian process is a <text-dots>
+  <\definition>
+    <dueto|Gaussian Process>A <em|Gaussian process>
+    <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>> indexed by a set <math|T> is
+    a collection of real-valued random variables <math|X<rsub|t>>, all
+    defined on the same probability space
+    <math|<around|(|\<Omega\>,\<cal-F\>,\<bbb-P\>|)>>, such that for every
+    finite subset <math|F=<around|{|t<rsub|1>,\<ldots\>,t<rsub|n>|}>\<subset\>T>,
+    the random vector
+
+    <\equation>
+      <math-bf|X><rsub|F>=<around|(|X<rsub|t<rsub|1>>,\<ldots\>,X<rsub|t<rsub|n>>|)><rsup|\<top\>>
+    </equation>
+
+    has a (possibly degenerate) multivariate Gaussian distribution.
+  </definition>
+
+  Equivalently, <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>> is a Gaussian
+  process if and only if every finite linear combination
+
+  <\equation>
+    <big|sum><rsub|i=1><rsup|n>a<rsub|i>*X<rsub|t<rsub|i>><space|1em>
+  </equation>
+
+  where <math|a<rsub|i>\<in\>\<bbb-R\>,<space|0.17em>t<rsub|i>\<in\>T> is
+  either identically zero or has a univariate Gaussian distribution. A
+  Gaussian process is completely characterized by its mean function
+  <math|\<mu\>:T\<to\>\<bbb-R\>>
+
+  <\equation>
+    \<mu\><around|(|t|)>=\<bbb-E\><around|[|X<rsub|t>|]>
+  </equation>
+
+  and covariance kernel function <math|K:T\<times\>T\<to\>\<bbb-R\>>\ 
+
+  <\equation>
+    <tabular|<tformat|<table|<row|<cell|K<around|(|s,t|)>>|<cell|=<text|Cov><around|(|X<rsub|s>,X<rsub|t>|)>>>|<row|<cell|>|<cell|=\<bbb-E\>*<around|[|<around|(|X<rsub|s>-m<around|(|s|)>|)>*<around|(|X<rsub|t>-m<around|(|t|)>|)>|]>>>>>>
+  </equation>
+
+  which must be positive semi-definite. The process
+  <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>> is denoted
+
+  <\equation>
+    X\<sim\><with|math-font|cal|G*P><around|(|\<mu\>,K|)>
+  </equation>
 
   <subsection|Stationary processes>
 
@@ -1292,8 +1335,8 @@
 
 <\references>
   <\collection>
-    <associate|U|<tuple|33|6>>
-    <associate|Z|<tuple|44|8>>
+    <associate|U|<tuple|38|6>>
+    <associate|Z|<tuple|49|8>>
     <associate|auto-1|<tuple|1|2>>
     <associate|auto-10|<tuple|3.3|12>>
     <associate|auto-11|<tuple|4|12>>
@@ -1302,61 +1345,61 @@
     <associate|auto-14|<tuple|5.2|15>>
     <associate|auto-15|<tuple|5.3|17>>
     <associate|auto-16|<tuple|5.4|18>>
-    <associate|auto-17|<tuple|137|20>>
+    <associate|auto-17|<tuple|142|20>>
     <associate|auto-2|<tuple|1.1|2>>
     <associate|auto-3|<tuple|2|2>>
-    <associate|auto-4|<tuple|2.1|2>>
+    <associate|auto-4|<tuple|2.1|3>>
     <associate|auto-5|<tuple|2.2|3>>
     <associate|auto-6|<tuple|3|6>>
     <associate|auto-7|<tuple|3.1|6>>
     <associate|auto-8|<tuple|3.1.1|8>>
     <associate|auto-9|<tuple|3.2|10>>
     <associate|bib-evolutionarySpectraAndNonStationaryProcesses|<tuple|1|20>>
-    <associate|cor:evol_spec|<tuple|13|11>>
-    <associate|covar|<tuple|57|10>>
-    <associate|def:L|<tuple|20|16>>
+    <associate|cor:evol_spec|<tuple|14|11>>
+    <associate|covar|<tuple|62|10>>
+    <associate|def:L|<tuple|21|16>>
     <associate|def:L2loc|<tuple|2|2>>
-    <associate|def:Utheta|<tuple|8|6>>
-    <associate|def:cramer|<tuple|4|2>>
-    <associate|def:osc_proc|<tuple|5|3>>
-    <associate|def:regularity|<tuple|22|17>>
+    <associate|def:Utheta|<tuple|9|6>>
+    <associate|def:cramer|<tuple|5|3>>
+    <associate|def:osc_proc|<tuple|6|3>>
+    <associate|def:regularity|<tuple|23|17>>
     <associate|def:sigma_compact|<tuple|1|2>>
-    <associate|def:zeromeasure|<tuple|16|14>>
-    <associate|eq:covariance_def|<tuple|131|19>>
-    <associate|eq:expectation|<tuple|122|18>>
-    <associate|eq:expected_zeros|<tuple|132|19>>
-    <associate|eq:kac_rice|<tuple|117|18>>
-    <associate|eq:kac_rice_formula|<tuple|134|19>>
-    <associate|eq:limit_mixed_partial|<tuple|136|20>>
-    <associate|eq:mixed_partial|<tuple|135|20>>
-    <associate|eq:mixed_partial_continued|<tuple|135|20>>
-    <associate|eq:substituted_kac_rice|<tuple|137|20>>
-    <associate|eq:time_changed_cov|<tuple|133|19>>
-    <associate|h|<tuple|45|8>>
+    <associate|def:zeromeasure|<tuple|17|14>>
+    <associate|eq:covariance_def|<tuple|136|19>>
+    <associate|eq:expectation|<tuple|127|18>>
+    <associate|eq:expected_zeros|<tuple|137|19>>
+    <associate|eq:kac_rice|<tuple|122|18>>
+    <associate|eq:kac_rice_formula|<tuple|139|19>>
+    <associate|eq:limit_mixed_partial|<tuple|141|20>>
+    <associate|eq:mixed_partial|<tuple|140|20>>
+    <associate|eq:mixed_partial_continued|<tuple|140|20>>
+    <associate|eq:substituted_kac_rice|<tuple|142|20>>
+    <associate|eq:time_changed_cov|<tuple|138|19>>
+    <associate|h|<tuple|50|8>>
     <associate|item:composition|<tuple|3|8>>
     <associate|item:forward|<tuple|1|8>>
     <associate|item:inverse|<tuple|2|8>>
-    <associate|labeldef:Hmu|<tuple|18|15>>
-    <associate|lem:delta|<tuple|23|17>>
-    <associate|of|<tuple|6|3>>
-    <associate|prop:atomic|<tuple|19|15>>
-    <associate|prop:conjugation|<tuple|14|12>>
-    <associate|prop:inverse|<tuple|9|6>>
+    <associate|labeldef:Hmu|<tuple|19|15>>
+    <associate|lem:delta|<tuple|24|17>>
+    <associate|of|<tuple|11|3>>
+    <associate|prop:atomic|<tuple|20|15>>
+    <associate|prop:conjugation|<tuple|15|12>>
+    <associate|prop:inverse|<tuple|10|6>>
     <associate|sec:HP|<tuple|5|13>>
     <associate|sec:functionspaces|<tuple|1|2>>
     <associate|sec:oscillatory|<tuple|2.2|3>>
     <associate|sec:samplepaths|<tuple|4|12>>
     <associate|sec:stationary_timechange|<tuple|3|6>>
-    <associate|thm:Utheta_to_osc|<tuple|12|10>>
-    <associate|thm:atomic|<tuple|17|14>>
-    <associate|thm:existence_osc|<tuple|7|5>>
-    <associate|thm:expected_zero_counting|<tuple|25|19>>
-    <associate|thm:inverse-filter|<tuple|11|8>>
-    <associate|thm:kac_rice|<tuple|24|18>>
-    <associate|thm:local_unitarity|<tuple|10|7>>
-    <associate|thm:paths_loc|<tuple|15|12>>
-    <associate|thm:realvaluedness|<tuple|6|3>>
-    <associate|thm:spectrum|<tuple|21|16>>
+    <associate|thm:Utheta_to_osc|<tuple|13|10>>
+    <associate|thm:atomic|<tuple|18|14>>
+    <associate|thm:existence_osc|<tuple|8|5>>
+    <associate|thm:expected_zero_counting|<tuple|26|19>>
+    <associate|thm:inverse-filter|<tuple|12|8>>
+    <associate|thm:kac_rice|<tuple|25|18>>
+    <associate|thm:local_unitarity|<tuple|11|7>>
+    <associate|thm:paths_loc|<tuple|16|12>>
+    <associate|thm:realvaluedness|<tuple|7|4>>
+    <associate|thm:spectrum|<tuple|22|16>>
   </collection>
 </references>
 
