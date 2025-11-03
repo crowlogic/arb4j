@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|article|framed-theorems>>
+<style|<tuple|article|metal|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Unitary Time Changes of Stationary Processes Yield
@@ -30,70 +30,69 @@
   </abstract>
 
   <\table-of-contents|toc>
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>Function
-    Spaces> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>Gaussian
+    Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-1><vspace|0.5fn>
 
-    <with|par-left|1tab|1.1<space|2spc><with|mode|math|\<sigma\>>-compact
-    sets and locally square-integrable functions
+    <with|par-left|1tab|1.1<space|2spc>Definition
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-2>>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>Gaussian
-    Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-3><vspace|0.5fn>
+    <with|par-left|1tab|1.2<space|2spc>Sample Path Realizations
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-3>>
 
-    <with|par-left|1tab|2.1<space|2spc>Stationary processes
+    <with|par-left|1tab|1.3<space|2spc>Stationary processes
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-4>>
 
-    <with|par-left|1tab|2.2<space|2spc>Oscillatory Processes
+    <with|par-left|1tab|1.4<space|2spc>Oscillatory Processes
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-5>>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|3<space|2spc>Unitarily
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>Unitarily
     Time-Changed Stationary Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-6><vspace|0.5fn>
 
-    <with|par-left|1tab|3.1<space|2spc>Unitary time-change operator
+    <with|par-left|1tab|2.1<space|2spc>Unitary time-change operator
     <with|mode|math|U<rsub|\<theta\>> f> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-7>>
 
-    <with|par-left|2tab|3.1.1<space|2spc>Inverse Filter for Unitary Time
+    <with|par-left|2tab|2.1.1<space|2spc>Inverse Filter for Unitary Time
     Transformations <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-8>>
 
-    <with|par-left|1tab|3.2<space|2spc>Transformation of Stationary
+    <with|par-left|1tab|2.2<space|2spc>Transformation of Stationary
     <with|mode|math|\<to\>> Oscillatory Processes via
     <with|mode|math|U<rsub|\<theta\>>> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-9>>
 
-    <with|par-left|1tab|3.3<space|2spc>Covariance operator conjugation
+    <with|par-left|1tab|2.3<space|2spc>Covariance operator conjugation
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-10>>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|4<space|2spc>The
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|3<space|2spc>The
     Ensemble of Sample Path Realizations>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-11><vspace|0.5fn>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|5<space|2spc>Zero
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|4<space|2spc>Zero
     Localization> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-12><vspace|0.5fn>
 
-    <with|par-left|1tab|5.1<space|2spc>Zero localization measure
+    <with|par-left|1tab|4.1<space|2spc>Zero localization measure
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-13>>
 
-    <with|par-left|1tab|5.2<space|2spc>Hilbert space on zeros and
+    <with|par-left|1tab|4.2<space|2spc>Hilbert space on zeros and
     multiplication operator <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-14>>
 
-    <with|par-left|1tab|5.3<space|2spc>Regularity and Simplicity of Sample
+    <with|par-left|1tab|4.3<space|2spc>Regularity and Simplicity of Sample
     Path Zero Crossings <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-15>>
 
-    <with|par-left|1tab|5.4<space|2spc>The Kac-Rice Formula For The Expected
+    <with|par-left|1tab|4.4<space|2spc>The Kac-Rice Formula For The Expected
     Zero Counting Function <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-16>>
 
@@ -102,39 +101,9 @@
     <no-break><pageref|auto-17><vspace|0.5fn>
   </table-of-contents>
 
-  <section|Function Spaces><label|sec:functionspaces>
-
-  <subsection|<math|\<sigma\>>-compact sets and locally square-integrable
-  functions>
-
-  <\definition>
-    <strong|[<math|\<sigma\>>-compact sets]<label|def:sigma_compact>> A
-    subset <math|U\<subseteq\>\<bbb-R\>> is <math|\<sigma\>>-compact if
-
-    <\equation>
-      U=<big|cup><rsub|n=1><rsup|\<infty\>>K<rsub|n>
-    </equation>
-
-    with each <math|K<rsub|n>> compact.
-  </definition>
-
-  <\definition>
-    <strong|[Locally square-integrable functions]><label|def:L2loc> Define
-
-    <\equation>
-      L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>\<assign\><around*|{|f:\<bbb-R\>\<to\>\<bbb-C\>:<big|int><rsub|K><around|\||f<around|(|t|)>|\|><rsup|2>*<space|0.17em>d*t\<less\>\<infty\>*<text|for
-      every compact >K\<subseteq\>\<bbb-R\>|}>
-    </equation>
-  </definition>
-
-  <\remark>
-    Every bounded measurable set in <math|\<bbb-R\>> is compact or contained
-    in a compact set; hence <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>
-    contains functions that are square-integrable on every bounded interval,
-    including functions with polynomial growth at infinity.
-  </remark>
-
   <section|Gaussian Processes>
+
+  <subsection|Definition>
 
   <\definition>
     <dueto|Gaussian Process>A <em|Gaussian process>
@@ -181,6 +150,26 @@
     X\<sim\><with|math-font|cal|G*P><around|(|\<mu\>,K|)>
   </equation>
 
+  \;
+
+  <subsection|Sample Path Realizations>
+
+  <\definition>
+    <strong|[Locally square-integrable functions]><label|def:L2loc> Define
+
+    <\equation>
+      L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>\<assign\><around*|{|f:\<bbb-R\>\<to\>\<bbb-C\>:<big|int><rsub|K><around|\||f<around|(|t|)>|\|><rsup|2>*<space|0.17em>d*t\<less\>\<infty\>*<text|for
+      every compact >K\<subseteq\>\<bbb-R\>|}>
+    </equation>
+  </definition>
+
+  <\remark>
+    Every bounded measurable set in <math|\<bbb-R\>> is compact or contained
+    in a compact set; hence <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>
+    contains functions that are square-integrable on every bounded interval,
+    including functions with polynomial growth at infinity.
+  </remark>
+
   <subsection|Stationary processes>
 
   <\definition>
@@ -189,7 +178,7 @@
     representation
 
     <\equation>
-      X<around|(|t|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*t>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>
+      X<around|(|t|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*t>\<mathd\>\<Phi\><around|(|\<lambda\>|)>
     </equation>
 
     which has covariance
@@ -206,9 +195,8 @@
   1965<cite|evolutionarySpectraAndNonStationaryProcesses>.
 
   <\definition>
-    <strong|[Oscillatory process]<label|def:osc_proc> >link to Priestley 1965
-    Let <math|F> be a finite nonnegative Borel measure on <math|\<bbb-R\>>.
-    Let
+    <strong|[Oscillatory process]<label|def:osc_proc> >Let <math|F> be a
+    finite nonnegative Borel measure on <math|\<bbb-R\>>. Let
 
     <\equation>
       A<rsub|t>\<in\>L<rsup|2><around|(|F|)>\<forall\>t\<in\>\<bbb-R\>
@@ -267,83 +255,29 @@
   </theorem>
 
   <\proof>
-    Assume <math|Z> is real-valued, i.e.
-
-    <\equation>
-      Z<around|(|t|)>=<wide|Z<around|(|t|)>|\<bar\>><space|1em>\<forall\>t\<in\>\<bbb-R\>
-    </equation>
-
-    Writing its oscillatory representation,
-
-    <\equation>
-      Z<around|(|t|)>=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*\<mathd\>\<Phi\><around|(|\<lambda\>|)>
-    </equation>
-
+    Assume <math|Z> is real-valued, i.e. <math|Z<around|(|t|)>=<wide|Z<around|(|t|)>|\<bar\>>\<forall\>t\<in\>\<bbb-R\>>.Writing
+    its oscillatory representation, <math|Z<around|(|t|)>=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*\<mathd\>\<Phi\><around|(|\<lambda\>|)>>
     and taking the complex conjugate gives
-
-    <\equation>
-      <wide|Z<around|(|t|)>|\<bar\>>=<big|int><rsub|\<bbb-R\>><wide|A<rsub|t><around|(|\<lambda\>|)>|\<bar\>>e<rsup|-i*\<lambda\>*t>\<mathd\><wide|\<Phi\>*<around|(|\<lambda\>|)>|\<bar\>>
-    </equation>
-
+    <math|<wide|Z<around|(|t|)>|\<bar\>>=<big|int><rsub|\<bbb-R\>><wide|A<rsub|t><around|(|\<lambda\>|)>|\<bar\>>e<rsup|-i*\<lambda\>*t>\<mathd\><wide|\<Phi\>*<around|(|\<lambda\>|)>|\<bar\>>>
     For a real-valued process, the orthogonal random measure <math|\<Phi\>>
-    must satisfy
-
-    <\equation>
-      \<mathd\><wide|\<Phi\>*<around|(|\<lambda\>|)>|\<bar\>>=-\<mathd\>
-      \<Phi\>*<around|(|*\<lambda\>|)>
-    </equation>
-
-    which ensures that the spectral representation produces real values.
-    Substituting this identity and using the substitution\ 
-
-    <\equation>
-      \<mu\>=-\<lambda\>
-    </equation>
-
-    it is shown that
-
-    <\equation>
-      <wide|Z<around|(|t|)>|\<bar\>>=<big|int><rsub|\<bbb-R\>><wide|A<rsub|t>*<around|(|-\<mu\>|)>|\<bar\>>e<rsup|i*\<mu\>*t>*\<mathd\>
-      \<Phi\>*<around|(|\<mu\>|)>
-    </equation>
-
-    Since <math|Z<around|(|t|)>=<wide|Z<around|(|t|)>|\<bar\>>>, comparison
-    of the integrands (which are unique elements of
+    must satisfy <math|\<mathd\><wide|\<Phi\>*<around|(|\<lambda\>|)>|\<bar\>>=-\<mathd\>
+    \<Phi\>*<around|(|*\<lambda\>|)>> which ensures that the spectral
+    representation produces real values. Substituting this identity and using
+    the substitution <math|\<mu\>=-\<lambda\>> it is shown that
+    <math|<wide|Z<around|(|t|)>|\<bar\>>=<big|int><rsub|\<bbb-R\>><wide|A<rsub|t>*<around|(|-\<mu\>|)>|\<bar\>>e<rsup|i*\<mu\>*t>*\<mathd\>
+    \<Phi\>*<around|(|\<mu\>|)>>. Since <math|Z<around|(|t|)>=<wide|Z<around|(|t|)>|\<bar\>>>,
+    comparison of the integrands (which are unique elements of
     <math|L<rsup|2><around|(|F|)>>) yields
-
-    <\equation>
-      A<rsub|t><around|(|\<lambda\>|)>=<wide|A<rsub|t>*<around|(|-\<lambda\>|)>|\<bar\>><space|1em><text|for
-      >F*<text|-a.e. >\<lambda\>
-    </equation>
-
-    Equivalently, because the oscillatory function (<reference|of>) is given
-    by
-
-    <\equation>
-      \<varphi\><rsub|t><around|(|\<lambda\>|)>=A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>
-    </equation>
-
-    we have
-
-    <\equation>
-      \<varphi\><rsub|t>*<around|(|-\<lambda\>|)>=<wide|\<varphi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>><space|1em><text|for
-      >F*<text|-a.e. >\<lambda\>
-    </equation>
-
-    Conversely, if <math|>
-
-    <\equation>
-      A<rsub|t>*<around|(|-\<lambda\>|)>=<wide|A<rsub|t><around|(|\<lambda\>|)>|\<bar\>>
-    </equation>
-
-    \ for <math|F>-a.e. <math|\<lambda\>>, then the same substitution shows
-    that
-
-    <\equation>
-      <wide|Z<around|(|t|)>|\<bar\>>=Z<around|(|t|)><space|1em>\<forall\>t\<in\>\<bbb-R\>
-    </equation>
-
-    so <math|Z> is real-valued. This completes the proof.
+    <math|A<rsub|t><around|(|\<lambda\>|)>=<wide|A<rsub|t>*<around|(|-\<lambda\>|)>|\<bar\>><space|1em><text|for
+    >F*<text|-a.e.>\<lambda\>>. Equivalently, because the oscillatory
+    function (<reference|of>) is given by
+    <math|\<varphi\><rsub|t><around|(|\<lambda\>|)>=A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>>
+    we have <math|\<varphi\><rsub|t>*<around|(|-\<lambda\>|)>=<wide|\<varphi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>><space|1em><text|for
+    >F*<text|-a.e. >\<lambda\>>. Conversely, if
+    <math|><math|A<rsub|t>*<around|(|-\<lambda\>|)>=<wide|A<rsub|t><around|(|\<lambda\>|)>|\<bar\>>>
+    for <math|F>-a.e. <math|\<lambda\>>, then the same substitution shows
+    that <math|<wide|Z<around|(|t|)>|\<bar\>>=Z<around|(|t|)>\<forall\>t\<in\>\<bbb-R\>>
+    so <math|Z> is real-valued.\ 
   </proof>
 
   <\theorem>
@@ -1335,71 +1269,69 @@
 
 <\references>
   <\collection>
-    <associate|U|<tuple|38|6>>
-    <associate|Z|<tuple|49|8>>
+    <associate|U|<tuple|26|6>>
+    <associate|Z|<tuple|37|8>>
     <associate|auto-1|<tuple|1|2>>
-    <associate|auto-10|<tuple|3.3|12>>
-    <associate|auto-11|<tuple|4|12>>
-    <associate|auto-12|<tuple|5|13>>
-    <associate|auto-13|<tuple|5.1|14>>
-    <associate|auto-14|<tuple|5.2|15>>
-    <associate|auto-15|<tuple|5.3|17>>
-    <associate|auto-16|<tuple|5.4|18>>
-    <associate|auto-17|<tuple|142|20>>
+    <associate|auto-10|<tuple|2.3|12>>
+    <associate|auto-11|<tuple|3|12>>
+    <associate|auto-12|<tuple|4|14>>
+    <associate|auto-13|<tuple|4.1|14>>
+    <associate|auto-14|<tuple|4.2|15>>
+    <associate|auto-15|<tuple|4.3|17>>
+    <associate|auto-16|<tuple|4.4|19>>
+    <associate|auto-17|<tuple|130|21>>
     <associate|auto-2|<tuple|1.1|2>>
-    <associate|auto-3|<tuple|2|2>>
-    <associate|auto-4|<tuple|2.1|3>>
-    <associate|auto-5|<tuple|2.2|3>>
-    <associate|auto-6|<tuple|3|6>>
-    <associate|auto-7|<tuple|3.1|6>>
-    <associate|auto-8|<tuple|3.1.1|8>>
-    <associate|auto-9|<tuple|3.2|10>>
-    <associate|bib-evolutionarySpectraAndNonStationaryProcesses|<tuple|1|20>>
-    <associate|cor:evol_spec|<tuple|14|11>>
-    <associate|covar|<tuple|62|10>>
-    <associate|def:L|<tuple|21|16>>
+    <associate|auto-3|<tuple|1.2|2>>
+    <associate|auto-4|<tuple|1.3|3>>
+    <associate|auto-5|<tuple|1.4|3>>
+    <associate|auto-6|<tuple|2|6>>
+    <associate|auto-7|<tuple|2.1|6>>
+    <associate|auto-8|<tuple|2.1.1|8>>
+    <associate|auto-9|<tuple|2.2|10>>
+    <associate|bib-evolutionarySpectraAndNonStationaryProcesses|<tuple|1|21>>
+    <associate|cor:evol_spec|<tuple|13|11>>
+    <associate|covar|<tuple|50|10>>
+    <associate|def:L|<tuple|20|16>>
     <associate|def:L2loc|<tuple|2|2>>
-    <associate|def:Utheta|<tuple|9|6>>
-    <associate|def:cramer|<tuple|5|3>>
-    <associate|def:osc_proc|<tuple|6|3>>
-    <associate|def:regularity|<tuple|23|17>>
-    <associate|def:sigma_compact|<tuple|1|2>>
-    <associate|def:zeromeasure|<tuple|17|14>>
-    <associate|eq:covariance_def|<tuple|136|19>>
-    <associate|eq:expectation|<tuple|127|18>>
-    <associate|eq:expected_zeros|<tuple|137|19>>
-    <associate|eq:kac_rice|<tuple|122|18>>
-    <associate|eq:kac_rice_formula|<tuple|139|19>>
-    <associate|eq:limit_mixed_partial|<tuple|141|20>>
-    <associate|eq:mixed_partial|<tuple|140|20>>
-    <associate|eq:mixed_partial_continued|<tuple|140|20>>
-    <associate|eq:substituted_kac_rice|<tuple|142|20>>
-    <associate|eq:time_changed_cov|<tuple|138|19>>
-    <associate|h|<tuple|50|8>>
+    <associate|def:Utheta|<tuple|8|6>>
+    <associate|def:cramer|<tuple|4|3>>
+    <associate|def:osc_proc|<tuple|5|3>>
+    <associate|def:regularity|<tuple|22|18>>
+    <associate|def:zeromeasure|<tuple|16|14>>
+    <associate|eq:covariance_def|<tuple|124|20>>
+    <associate|eq:expectation|<tuple|115|19>>
+    <associate|eq:expected_zeros|<tuple|125|20>>
+    <associate|eq:kac_rice|<tuple|110|19>>
+    <associate|eq:kac_rice_formula|<tuple|127|20>>
+    <associate|eq:limit_mixed_partial|<tuple|129|21>>
+    <associate|eq:mixed_partial|<tuple|128|20>>
+    <associate|eq:mixed_partial_continued|<tuple|128|20>>
+    <associate|eq:substituted_kac_rice|<tuple|130|21>>
+    <associate|eq:time_changed_cov|<tuple|126|20>>
+    <associate|h|<tuple|38|8>>
     <associate|item:composition|<tuple|3|8>>
     <associate|item:forward|<tuple|1|8>>
     <associate|item:inverse|<tuple|2|8>>
-    <associate|labeldef:Hmu|<tuple|19|15>>
-    <associate|lem:delta|<tuple|24|17>>
-    <associate|of|<tuple|11|3>>
-    <associate|prop:atomic|<tuple|20|15>>
-    <associate|prop:conjugation|<tuple|15|12>>
-    <associate|prop:inverse|<tuple|10|6>>
-    <associate|sec:HP|<tuple|5|13>>
-    <associate|sec:functionspaces|<tuple|1|2>>
-    <associate|sec:oscillatory|<tuple|2.2|3>>
-    <associate|sec:samplepaths|<tuple|4|12>>
-    <associate|sec:stationary_timechange|<tuple|3|6>>
-    <associate|thm:Utheta_to_osc|<tuple|13|10>>
-    <associate|thm:atomic|<tuple|18|14>>
-    <associate|thm:existence_osc|<tuple|8|5>>
-    <associate|thm:expected_zero_counting|<tuple|26|19>>
-    <associate|thm:inverse-filter|<tuple|12|8>>
-    <associate|thm:kac_rice|<tuple|25|18>>
-    <associate|thm:local_unitarity|<tuple|11|7>>
-    <associate|thm:paths_loc|<tuple|16|12>>
-    <associate|thm:realvaluedness|<tuple|7|4>>
-    <associate|thm:spectrum|<tuple|22|16>>
+    <associate|labeldef:Hmu|<tuple|18|15>>
+    <associate|lem:delta|<tuple|23|18>>
+    <associate|of|<tuple|10|3>>
+    <associate|prop:atomic|<tuple|19|15>>
+    <associate|prop:conjugation|<tuple|14|12>>
+    <associate|prop:inverse|<tuple|9|6>>
+    <associate|sec:HP|<tuple|4|14>>
+    <associate|sec:oscillatory|<tuple|1.4|3>>
+    <associate|sec:samplepaths|<tuple|3|12>>
+    <associate|sec:stationary_timechange|<tuple|2|6>>
+    <associate|thm:Utheta_to_osc|<tuple|12|10>>
+    <associate|thm:atomic|<tuple|17|14>>
+    <associate|thm:existence_osc|<tuple|7|4>>
+    <associate|thm:expected_zero_counting|<tuple|25|20>>
+    <associate|thm:inverse-filter|<tuple|11|8>>
+    <associate|thm:kac_rice|<tuple|24|19>>
+    <associate|thm:local_unitarity|<tuple|10|6>>
+    <associate|thm:paths_loc|<tuple|15|13>>
+    <associate|thm:realvaluedness|<tuple|6|4>>
+    <associate|thm:spectrum|<tuple|21|16>>
   </collection>
 </references>
 
@@ -1411,72 +1343,71 @@
       evolutionarySpectraAndNonStationaryProcesses
     </associate>
     <\associate|toc>
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Function
-      Spaces> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Gaussian
+      Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-1><vspace|0.5fn>
 
-      <with|par-left|<quote|1tab>|1.1<space|2spc><with|mode|<quote|math>|\<sigma\>>-compact
-      sets and locally square-integrable functions
+      <with|par-left|<quote|1tab>|1.1<space|2spc>Definition
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-2>>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Gaussian
-      Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-3><vspace|0.5fn>
+      <with|par-left|<quote|1tab>|1.2<space|2spc>Sample Path Realizations
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-3>>
 
-      <with|par-left|<quote|1tab>|2.1<space|2spc>Stationary processes
+      <with|par-left|<quote|1tab>|1.3<space|2spc>Stationary processes
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-4>>
 
-      <with|par-left|<quote|1tab>|2.2<space|2spc>Oscillatory Processes
+      <with|par-left|<quote|1tab>|1.4<space|2spc>Oscillatory Processes
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-5>>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>Unitarily
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Unitarily
       Time-Changed Stationary Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-6><vspace|0.5fn>
 
-      <with|par-left|<quote|1tab>|3.1<space|2spc>Unitary time-change operator
+      <with|par-left|<quote|1tab>|2.1<space|2spc>Unitary time-change operator
       <with|mode|<quote|math>|U<rsub|\<theta\>> f>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-7>>
 
-      <with|par-left|<quote|2tab>|3.1.1<space|2spc>Inverse Filter for Unitary
+      <with|par-left|<quote|2tab>|2.1.1<space|2spc>Inverse Filter for Unitary
       Time Transformations <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-8>>
 
-      <with|par-left|<quote|1tab>|3.2<space|2spc>Transformation of Stationary
+      <with|par-left|<quote|1tab>|2.2<space|2spc>Transformation of Stationary
       <with|mode|<quote|math>|\<to\>> Oscillatory Processes via
       <with|mode|<quote|math>|U<rsub|\<theta\>>>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-9>>
 
-      <with|par-left|<quote|1tab>|3.3<space|2spc>Covariance operator
+      <with|par-left|<quote|1tab>|2.3<space|2spc>Covariance operator
       conjugation <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-10>>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>The
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>The
       Ensemble of Sample Path Realizations>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-11><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|5<space|2spc>Zero
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>Zero
       Localization> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-12><vspace|0.5fn>
 
-      <with|par-left|<quote|1tab>|5.1<space|2spc>Zero localization measure
+      <with|par-left|<quote|1tab>|4.1<space|2spc>Zero localization measure
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-13>>
 
-      <with|par-left|<quote|1tab>|5.2<space|2spc>Hilbert space on zeros and
+      <with|par-left|<quote|1tab>|4.2<space|2spc>Hilbert space on zeros and
       multiplication operator <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-14>>
 
-      <with|par-left|<quote|1tab>|5.3<space|2spc>Regularity and Simplicity of
+      <with|par-left|<quote|1tab>|4.3<space|2spc>Regularity and Simplicity of
       Sample Path Zero Crossings <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-15>>
 
-      <with|par-left|<quote|1tab>|5.4<space|2spc>The Kac-Rice Formula For The
+      <with|par-left|<quote|1tab>|4.4<space|2spc>The Kac-Rice Formula For The
       Expected Zero Counting Function <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-16>>
 
