@@ -181,7 +181,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                             "false"));
 
   public static final boolean trace                             =
-                                    Boolean.valueOf(System.getProperty("arb4j.trace", "true"));
+                                    Boolean.valueOf(System.getProperty("arb4j.trace", "false"));
 
   public static String        VOID_METHOD_DESCRIPTOR            =
                                                      Compiler.getMethodDescriptor(Void.class);
