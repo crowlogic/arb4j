@@ -1,8 +1,6 @@
 package arb.expressions.nodes.unary;
 
 import arb.expressions.Expression;
-import arb.expressions.FunctionMapping;
-import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
 /**
@@ -14,14 +12,11 @@ public class DeltaFunctionNode<D, R, F extends Function<? extends D, ? extends R
                               FunctionNode<D, R, F>
 {
 
-
-  public DeltaFunctionNode(String functionName,
-                           Node<D, R, F> argument,
-                           Expression<D, R, F> expression)
+  public DeltaFunctionNode(Expression<D, R, F> expression)
   {
-    super(functionName,
-          argument,
-          expression);
+    super("δ",
+          expression.resolve(),
+          expression.require(')'));
   }
 
 }

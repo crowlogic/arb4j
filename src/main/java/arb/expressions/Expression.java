@@ -1721,14 +1721,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * @param generatedFunctionClassInternalName
    * @param fieldType
    * @param functionFieldName
-   * @param typeDesc
+   * @param functionTypeDesc
    * @param variable
    */
   protected void linkSharedVariableToReferencedFunction(MethodVisitor mv,
                                                         String generatedFunctionClassInternalName,
                                                         String fieldType,
                                                         String functionFieldName,
-                                                        String typeDesc,
+                                                        String functionTypeDesc,
                                                         OrderedPair<String, Class<?>> variable)
   {
     if (trace)
@@ -1738,7 +1738,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                 generatedFunctionClassInternalName,
                 fieldType,
                 functionFieldName,
-                typeDesc,
+                functionTypeDesc,
                 variable);
     }
     var variableFieldName           = variable.getLeft();
@@ -1746,7 +1746,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     getField(loadThisOntoStack(mv),
              generatedFunctionClassInternalName,
              functionFieldName,
-             typeDesc);
+             functionTypeDesc);
     getField(loadThisOntoStack(mv),
              generatedFunctionClassInternalName,
              variableFieldName,
@@ -2400,6 +2400,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     switch (reference.name)
     {
+    case "δ":
+      return new DeltaFunctionNode<>(this);
     case "ζ":
     case "zeta":
       return new ZetaFunctionNode<>(this);
