@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|article|framed-theorems>>
+<style|<tuple|article|boring-white|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Unitary Time Changes of Stationary Processes Yield
@@ -626,7 +626,7 @@
     and covariance
 
     <\equation>
-      <tabular|<tformat|<cwith|1|5|1|1|cell-halign|l>|<cwith|1|5|1|1|cell-lborder|0ln>|<cwith|1|5|2|2|cell-halign|l>|<cwith|1|5|2|2|cell-rborder|0ln>|<table|<row|<cell|R<rsub|Z><around|(|t,s|)>>|<cell|=\<bbb-E\><around|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=\<bbb-E\>*<around*|[|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*X<around|(|\<theta\><around|(|t|)>|)><wide|<sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>*X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*\<bbb-E\><around|[|X<around|(|\<theta\><around|(|t|)>|)><wide|X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*R<rsub|X>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>>>><label|covar>
+      <tabular|<tformat|<cwith|1|5|1|1|cell-halign|l>|<cwith|1|5|1|1|cell-lborder|0ln>|<cwith|1|5|2|2|cell-halign|l>|<cwith|1|5|2|2|cell-rborder|0ln>|<table|<row|<cell|R<rsub|Z><around|(|t,s|)>>|<cell|=\<bbb-E\><around|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=\<bbb-E\>*<around*|[|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*X<around|(|\<theta\><around|(|t|)>|)><wide|<sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>*X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*\<bbb-E\><around|[|X<around|(|\<theta\><around|(|t|)>|)><wide|X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*R<rsub|X>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>>>><label|UTCcovar>
     </equation>
   </theorem>
 
@@ -1221,68 +1221,69 @@
 
 <\references>
   <\collection>
-    <associate|U|<tuple|32|5|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|Z|<tuple|43|6|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|auto-1|<tuple|1|1|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|auto-10|<tuple|2.3|9|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|auto-11|<tuple|3|10|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|auto-12|<tuple|3.1|10|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|auto-13|<tuple|3.2|11|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|auto-14|<tuple|3.3|12|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|auto-15|<tuple|3.4|13|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|auto-16|<tuple|123|15|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|auto-2|<tuple|1.1|1|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|auto-3|<tuple|1.2|2|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|auto-4|<tuple|1.3|3|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|auto-5|<tuple|1.4|3|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|auto-6|<tuple|2|5|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|auto-7|<tuple|2.1|5|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|auto-8|<tuple|2.1.1|6|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|auto-9|<tuple|2.2|8|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|bib-evolutionarySpectraAndNonStationaryProcesses|<tuple|2|15|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|bib-stationaryAndRelatedStochasticProcesses|<tuple|1|15|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|cor:evol_spec|<tuple|15|9|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|covar|<tuple|56|8|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|def:L|<tuple|21|11|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|def:L2loc|<tuple|3|2|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|def:Utheta|<tuple|10|5|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|def:cramer|<tuple|6|3|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|def:osc_proc|<tuple|7|3|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|def:regularity|<tuple|23|12|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|def:zeromeasure|<tuple|17|10|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|eq:covariance_def|<tuple|117|14|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|eq:expectation|<tuple|108|13|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|eq:expected_zeros|<tuple|118|14|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|eq:kac_rice|<tuple|103|13|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|eq:kac_rice_formula|<tuple|120|14|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|eq:limit_mixed_partial|<tuple|122|15|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|eq:mixed_partial|<tuple|121|15|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|eq:mixed_partial_continued|<tuple|121|15|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|eq:substituted_kac_rice|<tuple|123|15|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|eq:time_changed_cov|<tuple|119|14|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|h|<tuple|44|6|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|item:composition|<tuple|3|6|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|item:forward|<tuple|1|6|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|item:inverse|<tuple|2|6|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|labeldef:Hmu|<tuple|19|11|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|lem:delta|<tuple|24|12|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|of|<tuple|16|3|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|prop:atomic|<tuple|20|11|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|prop:conjugation|<tuple|16|9|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|prop:inverse|<tuple|11|5|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|sec:HP|<tuple|3|10|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|sec:oscillatory|<tuple|1.4|3|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|sec:stationary_timechange|<tuple|2|5|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|thm:Utheta_to_osc|<tuple|14|8|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|thm:atomic|<tuple|18|10|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|thm:existence_osc|<tuple|9|4|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|thm:expected_zero_counting|<tuple|26|14|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|thm:inverse-filter|<tuple|13|6|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|thm:kac_rice|<tuple|25|13|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|thm:local_unitarity|<tuple|12|5|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|thm:paths_loc|<tuple|5|2|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|thm:realvaluedness|<tuple|8|3|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
-    <associate|thm:spectrum|<tuple|22|12|UnitaryTimeChangesOfStationaryProcessesYieldOscillatoryprocesses2.tm>>
+    <associate|U|<tuple|32|5>>
+    <associate|UTCcovar|<tuple|56|9>>
+    <associate|Z|<tuple|43|7>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-10|<tuple|2.3|10>>
+    <associate|auto-11|<tuple|3|11>>
+    <associate|auto-12|<tuple|3.1|11>>
+    <associate|auto-13|<tuple|3.2|12>>
+    <associate|auto-14|<tuple|3.3|13>>
+    <associate|auto-15|<tuple|3.4|14>>
+    <associate|auto-16|<tuple|123|16>>
+    <associate|auto-2|<tuple|1.1|1>>
+    <associate|auto-3|<tuple|1.2|2>>
+    <associate|auto-4|<tuple|1.3|3>>
+    <associate|auto-5|<tuple|1.4|3>>
+    <associate|auto-6|<tuple|2|5>>
+    <associate|auto-7|<tuple|2.1|5>>
+    <associate|auto-8|<tuple|2.1.1|7>>
+    <associate|auto-9|<tuple|2.2|9>>
+    <associate|bib-evolutionarySpectraAndNonStationaryProcesses|<tuple|2|16>>
+    <associate|bib-stationaryAndRelatedStochasticProcesses|<tuple|1|16>>
+    <associate|cor:evol_spec|<tuple|15|10>>
+    <associate|covar|<tuple|19|3>>
+    <associate|def:L|<tuple|21|13>>
+    <associate|def:L2loc|<tuple|3|2>>
+    <associate|def:Utheta|<tuple|10|5>>
+    <associate|def:cramer|<tuple|6|3>>
+    <associate|def:osc_proc|<tuple|7|3>>
+    <associate|def:regularity|<tuple|23|13>>
+    <associate|def:zeromeasure|<tuple|17|11>>
+    <associate|eq:covariance_def|<tuple|117|15>>
+    <associate|eq:expectation|<tuple|108|15>>
+    <associate|eq:expected_zeros|<tuple|118|15>>
+    <associate|eq:kac_rice|<tuple|103|14>>
+    <associate|eq:kac_rice_formula|<tuple|120|16>>
+    <associate|eq:limit_mixed_partial|<tuple|122|16>>
+    <associate|eq:mixed_partial|<tuple|121|16>>
+    <associate|eq:mixed_partial_continued|<tuple|121|16>>
+    <associate|eq:substituted_kac_rice|<tuple|123|16>>
+    <associate|eq:time_changed_cov|<tuple|119|16>>
+    <associate|h|<tuple|44|7>>
+    <associate|item:composition|<tuple|3|7>>
+    <associate|item:forward|<tuple|1|7>>
+    <associate|item:inverse|<tuple|2|7>>
+    <associate|labeldef:Hmu|<tuple|19|12>>
+    <associate|lem:delta|<tuple|24|14>>
+    <associate|of|<tuple|16|3>>
+    <associate|prop:atomic|<tuple|20|12>>
+    <associate|prop:conjugation|<tuple|16|10>>
+    <associate|prop:inverse|<tuple|11|5>>
+    <associate|sec:HP|<tuple|3|11>>
+    <associate|sec:oscillatory|<tuple|1.4|3>>
+    <associate|sec:stationary_timechange|<tuple|2|5>>
+    <associate|thm:Utheta_to_osc|<tuple|14|9>>
+    <associate|thm:atomic|<tuple|18|11>>
+    <associate|thm:existence_osc|<tuple|9|4>>
+    <associate|thm:expected_zero_counting|<tuple|26|15>>
+    <associate|thm:inverse-filter|<tuple|13|7>>
+    <associate|thm:kac_rice|<tuple|25|14>>
+    <associate|thm:local_unitarity|<tuple|12|6>>
+    <associate|thm:paths_loc|<tuple|5|2>>
+    <associate|thm:realvaluedness|<tuple|8|4>>
+    <associate|thm:spectrum|<tuple|22|13>>
   </collection>
 </references>
 
