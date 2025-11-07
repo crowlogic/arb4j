@@ -15,10 +15,13 @@ public class HardyThetaInversion
 
   private RiemannSiegelThetaFunction riemannSiegelTheta = new RiemannSiegelThetaFunction();
 
-  public Real invertTheta(Real thetaValue, Real centerPoint, int seriesOrder, int precision)
+  public Real
+         invertTheta(Real thetaValue, Real centerPoint, int seriesOrder, int precision, Real result)
   {
-    try ( Real result = new Real();
-          RealPolynomial series = buildTaylorSeries(centerPoint, seriesOrder, precision);
+    try ( RealPolynomial series = buildTaylorSeries(centerPoint,
+                                                    seriesOrder,
+                                                    precision,
+                                                    new RealPolynomial());
           RealPolynomial reversed = new RealPolynomial(); Real thetaAtCenter = new Real();
           Real delta = new Real())
     {
@@ -28,34 +31,31 @@ public class HardyThetaInversion
       thetaValue.sub(thetaAtCenter, precision, delta);
 
       reversed.evaluate(delta, 0, precision, result);
-      result.add(centerPoint, precision);
-
-      return new Real().set(result);
+      return result.add(centerPoint, precision);
     }
   }
 
-  private RealPolynomial buildTaylorSeries(Real t, int order, int precision)
+  private RealPolynomial buildTaylorSeries(Real t, int order, int precision, RealPolynomial result)
   {
-    RealPolynomial series = new RealPolynomial();
-    series.fitLength(order);
+    result.fitLength(order);
 
     try ( Real coeff = new Real())
     {
-      series.set(0, RealConstants.zero);
+      result.set(0, RealConstants.zero);
 
       riemannSiegelTheta.derivative().evaluate(t, 0, precision, coeff);
-      series.set(1, coeff);
+      result.set(1, coeff);
 
       for (int n = 2; n < order; n++)
       {
-        series.set(n, Real.valueOf(0.0));
+        result.set(n, Real.valueOf(0.0));
       }
 
-      return series;
+      return result;
     }
   }
 
-  private Real evaluateTheta(Real t, Real result, int precision)
+  private Real evaluateTheta(Real t, int precision, Real result)
   {
     return riemannSiegelTheta.evaluate(t, 0, precision, result);
   }
@@ -67,10 +67,10 @@ public class HardyThetaInversion
 
     HardyThetaInversion inverter    = new HardyThetaInversion();
 
-    try ( Real thetaValue = new Real().set(1.0); Real centerPoint = new Real().set(2.0);
-          Real result = new Real())
+    try ( Real thetaValue = Real.valueOf(1); Real result = new Real();
+          Real centerPoint = Real.valueOf(2);)
     {
-      result.set(inverter.invertTheta(thetaValue, centerPoint, seriesOrder, precision));
+      inverter.invertTheta(thetaValue, centerPoint, seriesOrder, precision, result);
       System.out.println("Result: " + result.toString(20));
     }
   }
