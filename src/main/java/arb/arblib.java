@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static void arb_poly_revert_series(RealPolynomial Qinv, RealPolynomial Q, int n, int prec) {
+    arblibJNI.arb_poly_revert_series(RealPolynomial.getCPtr(Qinv), Qinv, RealPolynomial.getCPtr(Q), Q, n, prec);
+  }
+
   public static void qqbar_zero(AlgebraicNumber res) {
     arblibJNI.qqbar_zero(AlgebraicNumber.getCPtr(res), res);
   }

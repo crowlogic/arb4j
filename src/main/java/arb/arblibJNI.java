@@ -9,6 +9,7 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void arb_poly_revert_series(long jarg1, RealPolynomial jarg1_, long jarg2, RealPolynomial jarg2_, int jarg3, int jarg4);
   public final static native void qqbar_zero(long jarg1, AlgebraicNumber jarg1_);
   public final static native void acb_poly_lgamma_series(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, int jarg3, int jarg4);
   public final static native void arb_poly_lgamma_series(long jarg1, RealPolynomial jarg1_, long jarg2, RealPolynomial jarg2_, int jarg3, int jarg4);
