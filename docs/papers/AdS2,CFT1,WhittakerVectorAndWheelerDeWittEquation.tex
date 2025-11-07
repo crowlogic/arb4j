@@ -1,0 +1,931 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{geometry,amsmath,amssymb,hyperref}
+\geometry{letterpaper}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\assign}{:=}
+\newcommand{\nobracket}{}
+\newcommand{\tmrsub}[1]{\ensuremath{_{\textrm{#1}}}}
+\newcommand{\tmtextbf}[1]{\text{{\bfseries{#1}}}}
+\newcommand{\tmtextit}[1]{\text{{\itshape{#1}}}}
+\newcommand{\tmtexttt}[1]{\text{{\ttfamily{#1}}}}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\begin{center}
+  {\Large AdS\tmrsub{$2$}/CFT\tmrsub{$1$}, Whittaker vector and Wheeler-DeWitt
+  equation}
+  
+  Tadashi Okazaki\footnote{tadashiokazaki@phys.ntu.edu.tw}
+  
+  \tmtextit{Department of Physics and Center for Theoretical Sciences
+  
+  National Taiwan University, Taipei 10617, Taiwan }
+\end{center}
+
+\begin{abstract}
+  We study the energy representation of conformal quantum mechanics as the
+  Whittaker vector without specifying classical Lagrangian. We show that a
+  generating function of expectation values among two excited states of the
+  dilatation operator in conformal quantum mechanics is a solution to the
+  Wheeler-DeWitt equation and it corresponds to the AdS\tmrsub{$2$} partition
+  function evaluated as the minisuperspace wave function in Liouville field
+  theory. We also show that the dilatation expectation values in conformal
+  quantum mechanics lead to the asymptotic smoothed counting function of the
+  Riemann zeros.
+\end{abstract}
+
+The holographic principle {\cite{'tHooft:1993gx,Susskind:1994vu}} states that
+quantum gravity on $(d + 1)$-dimensional manifold can be described by a theory
+on its $d$-dimensional boundary. The AdS\tmrsub{$d + 1$}/CFT\tmrsub{$d$}
+correspondence {\cite{Maldacena:1997re}} which is one of the greatest
+productions of string theory provides the most successful realization as the
+relationship between effective gauge theories of the brane dynamics and string
+theory on the near horizon AdS geometry. The AdS\tmrsub{$2$}/CFT\tmrsub{$1$}
+could conceivably be the most significant case in that all the extremal black
+holes contain an AdS\tmrsub{$2$} factor in their near horizon geometry
+{\cite{Kunduri:2007vf,Figueras:2008qh}}. In spite of a lot of interesting
+works
+{\cite{Strominger:1998yg,Maldacena:1998uz,Nakatsu:1998st,Townsend:1998qp,Spradlin:1999bn,Cadoni:1999ja,Blum:1999pc,NavarroSalas:1999up,Caldarelli:2000xk,Cadoni:2000gm,Bellucci:2002va,Strominger:2003tm,Leiva:2003kd,Giveon:2004zz,Azeyanagi:2007bj,Alishahiha:2008tv,Gupta:2008ki,Hartman:2008dq,Galajinsky:2008ce,Sen:2008vm,Sen:2008yk,Sen:2011cn,Chamon:2011xk,MolinaVilaplana:2012xe,Jackiw:2012ur}}
+it would be fair to say that we have not yet gained a fully satisfactory
+understanding of the correspondence due to the peculiarities of the
+AdS\tmrsub{$2$}/CFT\tmrsub{$1$}, including the fact that only the
+AdS\tmrsub{$2$} has two disconnected boundaries and it is a long-standing
+question whether the dual CFT\tmrsub{$1$} description is a single CFT or two
+systems living on the two boundaries.
+
+In this letter we study conformal quantum mechanics (CQM) without specifying
+classical Lagrangian description. One important consequence is a generic
+evidence of the AdS\tmrsub{$2$}/CFT\tmrsub{$1$} as the relationship between a
+generating function of the dilatation expectation values in the boundary CQM
+and a partition function of the bulk AdS\tmrsub{$2$}. We show that the
+expectation values are not associated with the ground state but with two
+excited states in the correspondence. Our result is in favor of the statement
+{\cite{Zamolodchikov:2001ah,Sen:2008vm,Balasubramanian:1998sn,Balasubramanian:1998de,Balasubramanian:2010ys}}
+that the dual CFT\tmrsub{$1$}'s on two boundaries of AdS\tmrsub{$2$}
+space-time are excited and entangled. We also claim that the energies on the
+boundary CQM would be responsible for the AdS\tmrsub{$2$} radius so that the
+ground state would correspond to a flat space in the bulk with an infinitely
+large AdS\tmrsub{$2$} radius.
+
+Another intriguing thing is the speculative implication of the resulting
+expectation values of the dilatation operator in CQM. When we consider the
+DFF-model {\cite{deAlfaro:1976je}} as CQM, the dilatation operator takes the
+form of $xp$. Such operator has been proposed as a strong candidate for the
+realization of the Hilbert-P{\'o}lya conjecture that the imaginary part of the
+non-trivial Riemann zeros are eigenvalues of a self-adjoint operator (see
+{\cite{MR1694895,berry1999h,MR1684543,MR2443603,Sierra:2011tb,MR2812337}} and
+references therein). Unlike a lot of efforts undertaken thus far we here
+propose a novel approach to obtain the counts of the Riemann zeros from CQM
+point of view. The fact that the operator $xp$ is the dilatation operator in
+CQM rather than the Hamiltonian enables us to jump into a fairly general
+setting beyond the operator with the form of $xp$. We show that the
+expectation values of the dilatation operator in CQM naturally lead to the
+asymptotic form of the smoothed counting function of the Riemann zeros.
+
+We shall begin by considering CQM that is invariant under the conformal
+symmetric transformation of the time coordinate $t$ {\cite{deAlfaro:1976je}}
+
+\begin{align}
+  \delta t & = \epsilon_1 + \epsilon_2 t + \epsilon_3 t^2  \label{conf1c}
+\end{align}
+
+where $\epsilon_1$, $\epsilon_2$ and $\epsilon_3$ are identified with the
+infinitesimal parameters of the translation, the dilatation and the conformal
+boost transformation respectively. The corresponding generators, the
+Hamiltonian $H = id / dt$, the dilatation operator $D = it (d / dt)$, and the
+conformal boost operator $K = it^2  (d / dt)$ obey the commutation relations
+
+\begin{align}
+  {}[H, D] & = iH  \label{conf1e1}\\
+  {}[K, D] & = - iK  \label{conf1e2}\\
+  {}[H, K] & = 2 iD  \label{conf1e3}
+\end{align}
+
+of $SL (2, \mathbb{R})$, which we call the one-dimensional conformal group.
+Hence the Hilbert space of conformal quantum mechanical system exhibits the
+$SL (2, \mathbb{R})$ conformal symmetry and the physical states would be
+classified by its irreducible representation. Since we wish to make all
+integrals convergent, we require the unitarity of the representation. The
+classification of the irreducible unitary representations of $SL (2,
+\mathbb{R})$ was studied in {\cite{Bargmann:1946me}} and the irreducible
+unitary representation of $SL (2, \mathbb{R})$ conformal group as a function
+of the continuous time coordinate $t$ can be generalized by taking the
+principal spherical series of the representation which is induced by the
+one-dimensional representation of the Borel subgroup. Let $V_{\lambda}$ be a
+set of the irreducible unitary representations of $SL (2, \mathbb{R})$ with
+weight $\lambda$. Then the Hamiltonian $H$, the dilatation operator $D$ and
+the conformal boost operator $K$ can be expressed as
+
+\begin{align}
+  H & = i \frac{d}{dt}  \label{conf1d1}\\
+  D & = it \frac{d}{dt} + \frac{\lambda}{2 i}  \label{conf1d2}\\
+  K & = it^2  \frac{d}{dt} + \frac{1}{i} \lambda t  \label{conf1d3}
+\end{align}
+
+satisfying the commutation relations (\ref{conf1e1}), (\ref{conf1e2}) and
+(\ref{conf1e3}). The unitarity implies that $\frac{1}{2}  (\lambda + 1)$ is
+pure imaginary. The finite conformal transformation is
+
+\begin{align}
+  t^n & \rightarrow \frac{(\alpha t + \beta)^n}{(\gamma t + \delta)^{\lambda +
+  n}}  \label{conf1a}
+\end{align}
+
+where the parameters $\alpha$, $\beta$, $\gamma$ and $\delta$ are the elements
+of real two by two matrices with determinant one
+
+\begin{align}
+  A & = \left( \begin{array}{cc}
+    \alpha & \gamma\\
+    \beta & \delta
+  \end{array} \right), & \alpha \delta - \beta \gamma & = 1  \label{conf1b}
+\end{align}
+
+which forms the one-dimensional conformal group $SL (2, \mathbb{R})$. The
+quadratic Casimir operator is given by
+
+\begin{align}
+  \label{conf1e} \mathcal{C}_2 & = HK - iD - D^2 \nonumber\\
+  & = \frac{\lambda^2}{4} + \frac{\lambda}{2} 
+\end{align}
+
+Let us define the ground state $|0 \rangle_{\Delta}$ by
+
+\begin{align}
+  H| 0 \rangle_{\Delta} & = 0  \label{conf1f1}\\
+  D| 0 \rangle_{\Delta} & = \Delta |0 \rangle_{\Delta}  \label{conf1f2}
+\end{align}
+
+From the equations (\ref{conf1e})-(\ref{conf1f2}) we see that the eigenvalue
+$\Delta$ of the ground state $|0 \rangle_{\Delta}$ is $\Delta =
+\frac{\lambda}{2 i}$ and we thus write the ground state as $|0
+\rangle_{\lambda}$. Now consider the energy eigenstate obeying
+
+\begin{align}
+  H|E \rangle = E|E \rangle .  \label{conf1f3}
+\end{align}
+
+This eigenvector $|E \rangle$ is known as the Whittaker vector in the
+representation theory of $SL (2, \mathbb{R})$
+{\cite{MR0271275,MR0311838,MR507800}}. Given eigenvalue $E$ and irreducible
+representation with weight $\lambda$, there is a unique Whittaker vector and
+we can write
+
+\begin{align}
+  |E \rangle_{\lambda} & = - \sum_k \sum_n C_k  \frac{(- EK)^n}{n! \lambda
+  (\lambda - 1) \cdots (\lambda - n + 1)} |0 \rangle_{\lambda, k} 
+  \label{conf1g3}
+\end{align}
+
+where $k$ parametrizes the degenerate ground states which might arise from
+some symmetries in the theories and $C_k$ is the weighted coefficient for
+$k$-th ground state. For simplicity let us assume the vanishing of tunneling
+amplitudes; $_{\lambda, l} \langle 0|0 \rangle_{\lambda, k} = \delta_{l, k}$
+and the normalization of the ground states; $\sum_k |C_k |^2 = 1$ so that we
+shall omit the indices $k$. Correspondingly we can take the dual energy
+eigenstate vector $_{\lambda} \langle E|$ as the dual Whittaker vector which
+satisfies the relation \footnote{The choice of pair of the Whittaker vector
+and the dual Whittaker vector results in the consistent Hamiltonian reduction.
+}
+
+\begin{align}
+  _{\lambda} \langle E|K & = E_{\lambda} \langle E|  \label{conf1h1}
+\end{align}
+
+and it can be represented by
+
+\begin{align}
+  _{\lambda} \langle E| \assign -_{\lambda} \langle 0| \sum_{k, n} C_k^{\ast} 
+  \frac{(- EH)^n}{n! \lambda (\lambda - 1) \cdots (\lambda - n + 1)} 
+  \label{conf1h2}
+\end{align}
+
+With the Whittaker vector $|E \rangle_{\lambda}$ and its dual vector
+$_{\lambda} \langle E|$ as the energy eigenstate vector and its dual vector in
+conformal quantum mechanics, we will consider the situation where the theory
+is coupled to two-dimensional bulk theory to investigate the
+AdS\tmrsub{$2$}/CFT\tmrsub{$1$} correspondence. Let us consider the function
+defined by
+
+\begin{align}
+  W_{\lambda, E_L, E_R} (\phi) & \assign_{\lambda} \langle E_L |e^{- 2 i \phi
+  D} |E_R \rangle_{\lambda}  \label{conf1h3}
+\end{align}
+
+where $E_L, E_R$ are the eigenvalues of the Whittaker vector (\ref{conf1f3})
+and the dual Whittaker vector (\ref{conf1h1}) respectively. Here $\phi$ is
+regarded as the restriction of some bulk field in AdS\tmrsub{$2$} space-time
+on the boundary that is coupled to the dilatation operator $D$ in conformal
+quantum mechanics on the boundaries. By acting the quadratic Casimir operator
+(\ref{conf1e}) on the function (\ref{conf1h3}), one obtains the differential
+equation
+
+\begin{align}
+  \left[ \frac{1}{2}  \frac{\partial^2}{\partial \phi^2} -
+  \frac{\partial}{\partial \phi} - 2 E_L E_R e^{2 \phi} \right] W_{\lambda,
+  E_L, E_R} (\phi) & = \left( \frac{\lambda^2}{2} + \lambda \right)
+  W_{\lambda, E_L, E_R} (\phi)  \label{conf1h4}
+\end{align}
+
+The function $W_{\lambda, E_L, E_R} (\phi)$ is known as the $SL (2,
+\mathbb{R})$ Whittaker function
+{\cite{MR0271275,MR0311838,MR507800,MR1729357}}. At first sight one might
+expect that the Whittaker function $W_{\lambda, E_L, E_R}$ plays a role of the
+generating function of the expectation values of the operator $D$. However,
+the unitarity asserts that the eigenvalue $\Delta$ of the operator $D$
+associated with the ground state $|0 \rangle_{\lambda}$ are not real-valued
+observables. Alternatively if we consider a shifted operator $\left( D -
+\frac{i}{2} \right)$, the corresponding eigenvalues would provide real-valued
+physical quantities. Furthermore in a more precise treatment one can express
+the bulk filed $\phi$ as $\beta \phi_0$ where $\phi_0$ is the time-dependent
+part while $\beta$ is the time-independent part. Instead of the Whittaker
+function (\ref{conf1h3}) let us consider the function
+
+\begin{align}
+  \Psi_{\lambda, \beta, E_L, E_R} (\phi_0) \assign_{\lambda} \langle E_L |e^{-
+  2 i \beta \phi_0 (D - \frac{i}{2})} |E_R \rangle_{\lambda}  \label{conf1h5}
+\end{align}
+
+Applying the quadratic Casimir operator (\ref{conf1e}) on the function
+(\ref{conf1h5}), we get
+
+\begin{align}
+  \left[ \frac{1}{2}  \frac{\partial^2}{\partial \phi_0^2} - 2 \beta^2 E_L E_R
+  e^{2 \beta \phi_0} \right] \Psi_{\lambda, \beta, E_L, E_R} (\phi_0) & =
+  \frac{1}{2} \beta^2  (\lambda + 1)^2 \Psi_{\lambda, \beta, E_L, E_R}
+  (\phi_0)  \label{conf1h6}
+\end{align}
+
+We see that the equation (\ref{conf1h6}) is the Wheeler-DeWitt equation that
+is encountered in the minisuperspace approximation of Liouville field theory
+(LFT).
+
+Local properties of LFT can be described by the Lagrangian
+
+\begin{align}
+  \mathcal{L} & = \frac{1}{4 \pi} \partial^{\mu} \phi \partial_{\mu} \phi +
+  \mu e^{2 b \phi}  \label{lft1a1}
+\end{align}
+
+where $b$ is the dimensionless coupling constant and $\mu$ is the cosmological
+coupling constant. The equation of motion is
+
+\begin{align}
+  \Delta \phi & = 4 \pi b \mu e^{2 b \phi}  \label{lft1a2}
+\end{align}
+
+In two dimensions it is always possible to make any metric $g_{\mu \nu}$
+conformally flat by coordinate redefinition $g_{\mu \nu} = e^{2 b \phi}
+\eta_{\mu \nu}$. Furthermore, in two dimensions, the curvature can be
+determined by the scalar curvature. Equation (\ref{lft1a2}) asserts that the
+curvature is a negative constant $- 8 \pi b^2 \mu$ and $g_{\mu \nu}$ describes
+a two-dimensional surface with constant negative curvature, thus the
+corresponding Lorentzian surface can be identified with AdS\tmrsub{$2$}
+space-time locally.
+
+In order to quantize LFT via canonical quantization, we shall employ the
+Fourier decomposition of the Liouville field $\phi$ and its canonical momentum
+$\Pi$ on the cylinder
+
+\begin{align}
+  \label{lft1a3} \phi (t, \sigma) & = \phi_0 (t) + \sum_{n \neq 0} \frac{i}{n}
+  [a_n (t) e^{- in \sigma} + b_n (t) e^{in \sigma}] \nonumber\\
+  \Pi (t, \sigma) & = p_0 (t) + \sum_{n \neq 0} [a_n (t) e^{- in \sigma} + b_n
+  (t) e^{in \sigma}] 
+\end{align}
+
+with $a_n^{\dag} = a_{- n}$, $b_n^{\dag} = b_{- n}$. The canonical relation
+
+\begin{align}
+  {}[\phi (t, \sigma), \Pi (t, \sigma')] = i \delta (\sigma - \sigma') 
+  \label{lft1a4}
+\end{align}
+
+leads to the commutation relations
+
+\begin{align}
+  {}[\phi_0, p_0] & = i, & [a_n, a_m] & = \frac{n}{2} \delta_{n, - m}, & [b_n,
+  b_m] & = \frac{n}{2} \delta_{n, - m}  \label{lft1a5}
+\end{align}
+
+which imply that $a_n, b_n$ are creation operators while $a_{- n}, b_{- n}$
+are annihilation operators. The spectrum of LFT has been discussed in the
+minisuperspace approximation {\cite{Seiberg:1990eb}}. The minisuperspace
+approximation was originally proposed in quantum gravity
+{\cite{DeWitt:1967yk,Misner:1972js}} where the problem is simplified by only
+treating the zero mode and truncating the higher excited modes. Whether
+physics in minisuperspace quantization gives a faithful properties of quantum
+gravity remains an open question, however, it has been discussed that the
+minisuperspace approximation would be exact in pure two-dimensional gravity
+{\cite{Moore:1991ir,Fateev:2000ik}}. Replacing the canonical momentum $p_0 =
+\frac{\dot{\phi}_0}{2 \pi}$ with differential operator $- i (\partial /
+\partial \phi_0)$, we obtain the minisuperspace Schr{\"o}dinger equation
+
+\begin{align}
+  \left[ - \frac{1}{2}  \frac{\partial^2}{\partial \phi_0^2} + 2 \pi \mu e^{2
+  b \phi_0} \right] \Psi_P (\phi_0) & = 2 P^2 \Psi_P (\phi_0)  \label{lft1a6}
+\end{align}
+
+where $P$ is the Liouville momentum, the eigenvalue of the Hamiltonian and
+$\Psi_P (\phi_0)$ is the minisuperspace wave function. For $\phi_0 \rightarrow
+- \infty$ the interaction is small and the wave function is a linear
+combination of $e^{\pm iP \phi_0}$. Because of the complete reflection
+potential at $\phi_0 \rightarrow 0$, $P$ is restricted to be positive so that
+the incoming wave uniquely determines the reflected wave.
+
+The function $\Psi_{\lambda, \beta, E_L, E_R} (\phi_0)$ in CQM plays a role of
+the generating function of the expectation values evaluated among two excited
+states. On the other hand, the Liouville wave function $\Psi_P (\phi_0)$ would
+be regarded as the partition function of AdS\tmrsub{$2$}, which is a function
+of the boundary values in the sense that a partition function generically
+transforms as a wave function under a change of polarization on field space
+specified at a boundary
+{\cite{Aganagic:2003qj,KashaniPoor:2006nc,Cheng:2010yw,Beem:2012mb}} and LFT
+describes AdS\tmrsub{$2$} space-time in the classical solution. Therefore we
+come to the interesting conclusion that AdS\tmrsub{$2$} bulk mode $\phi$ that
+behaves as the zero-mode $\phi_0$ near the boundary is dual to a source term
+$\phi_0  (D - \frac{i}{2})$ in the CQM on the boundary of AdS\tmrsub{$2$} via
+AdS\tmrsub{$2$}/CFT\tmrsub{$1$} correspondence
+
+\begin{align}
+  \label{ads2cft1a0} \Psi_{\lambda, \beta, E_L, E_R} (\phi_0) & = \left\langle
+  E_L \left| e^{- 2 i \beta \phi_0  \left( D - \frac{i}{2} \right)} \right|
+  E_R \right\rangle_{\mathrm{CQM}} \nonumber\\
+  & = Z_{\mathrm{AdS}_2} (\phi |_{\mathrm{bdy}} = \phi_0) = \Psi_P (\phi_0) 
+\end{align}
+
+We observe that the expectation values in the CQM are evaluated between two
+excited states defined by the Whittaker vector (\ref{conf1f3}) and the dual
+Whittaker vector (\ref{conf1h1}) in the correspondence (\ref{ads2cft1a0}). The
+two distinct states in the correspondence (\ref{ads2cft1a0}) would would
+enable us to have two independent dynamical systems. This is consistent to the
+statement
+{\cite{Azeyanagi:2007bj,Sen:2008vm,Balasubramanian:2010ys,Chamon:2011xk}} that
+unlike higher dimensional cases AdS\tmrsub{$2$} in the global coordinate has
+two boundaries and the dual conformal field theory of asymptotically
+AdS\tmrsub{$2$} is realized as two systems or two copies of CFT\tmrsub{$1$} on
+the two boundaries although we cannot exclude the possibility of a single
+CFT\tmrsub{$1$} as the dual description. The appearance of the excited states
+could also be in favor of the statement that in the Lorentzian AdS/CFT
+operator expectation values in excited CFT states differ from vacuum
+expectation values due to the existence of normalizable propagating states in
+the bulk {\cite{Balasubramanian:1998sn,Balasubramanian:1998de}}.
+
+The comparison of the two Wheeler-DeWitt equations (\ref{conf1h6}) and
+(\ref{lft1a6}) identifies the coupling constant $b$ in LFT with the constant
+parameter $\beta$ in CQM and establishes the dictionary of parameters between
+the bulk LFT of AdS\tmrsub{$2$} and the boundary CQM as
+
+\begin{align}
+  \frac{\pi \mu}{b^2} & = E_L E_R  \label{cor1}\\
+  \frac{P^2}{b^2} & = - \frac{1}{4}  (\lambda + 1)^2 = \left( \Delta -
+  \frac{i}{2} \right)^2  \label{cor2}
+\end{align}
+
+Therefore the relations (\ref{cor1}) and (\ref{cor2}) indicate that the
+quantum gravity on AdS\tmrsub{$2$} can be described by two conformal quantum
+mechanical systems on the boundary with energies $E_L$ and $E_R$ as a
+holographic principle {\cite{'tHooft:1993gx,Susskind:1994vu}}.
+
+The equation (\ref{cor1}) says that the excited states with non-vanishing
+energy eigenvalues $E_L$, $E_R$ in the boundary CQM are needed to realize
+negative constant curvature of AdS\tmrsub{$2$} space-time which is generated
+by the non-trivial interaction term with finite and non-vanishing parameters
+$b$, $\mu$ in two-dimensional gravity theory. It is illustrative to compare
+our result with the analogous statement in the AdS\tmrsub{$3$}/CFT\tmrsub{$2$}
+that the AdS\tmrsub{$3$} radius $l_3$ is represented by the central charge $c$
+of the CFT\tmrsub{$2$} through the Brown-Henneaux relation $c = \frac{3 l_3}{2
+G_3}$ {\cite{Brown:1986nw}} where $G_3$ is the three-dimensional Newton
+constant. Instead of the central charge the energies of the states play an
+important role in the AdS\tmrsub{$2$}/CFT\tmrsub{$1$}, however, the relation
+between the AdS\tmrsub{$2$} radius and the energies is even more attractive in
+that one of the other parameters in LFT necessarily comes about. In terms of
+the coupling constant $b$ controlling the quantum effect in LFT we can write
+the AdS\tmrsub{$2$} radius $l_2$ as
+
+\begin{align}
+  \frac{1}{\sqrt{E_L E_R}} & = 2 b^2 l_2  \label{cor3}
+\end{align}
+
+The semiclassical analysis in LFT is valid for small $b$, and accordingly our
+formula (\ref{cor3}) would reflect the fact that the ground states with
+vanishing energies in the boundary CQM force the AdS\tmrsub{$2$} radius to go
+to infinity and the classical AdS\tmrsub{$2$} geometry then becomes flat
+space-time.
+
+We see from the equation (\ref{cor2}) that the Liouville momentum $P$ in
+two-dimensional gravity theory corresponds to the conformal dimension of the
+ground state in the dual CQM. As we have discussed, the unitarity condition in
+CQM requires that $\frac{1}{2}  (\lambda + 1)$ is pure imaginary. This is
+consistent to the fact that the Liouville momentum $P$ is real in the dual
+two-dimensional gravity theory.
+
+We would like to emphasize that the correspondence (\ref{ads2cft1a0}) and the
+dictionaries (\ref{cor1}), (\ref{cor2}), (\ref{cor3}) are quite universal
+since we have not specified the conformal quantum mechanical systems so far.
+However, if we contain more specific information characterizing dynamical
+properties and symmetries, there would be more fruitful statements (the
+GKP-Witten relation {\cite{Gubser:1998bc,Witten:1998qj}}) in the
+AdS\tmrsub{$2$}/CFT\tmrsub{$1$} as the extension of the relation
+(\ref{ads2cft1a0})
+
+\begin{align}
+  \langle e^{h_0 \mathcal{O}} \rangle_{\mathrm{CQM}} & = Z_{\mathrm{AdS}_2}
+  (h|_{\mathrm{bdy}} = h_0)  \label{ads2cft1b0}
+\end{align}
+
+where $h_0$ is some function of the boundary values for the bulk field $h$
+while $\mathcal{O}$ is the dual operator in CQM. For a non-flat space the left
+values in the correspondence (\ref{ads2cft1b0}) are generally presumed to be
+computed between two excited states from the relation (\ref{cor3}). It would
+be interesting that there has been proposals for such relation associated with
+the DFF-model in {\cite{Chamon:2011xk}} and with the counting of microstates
+of BPS extremal black holes in {\cite{Sen:2008yk,Sen:2008vm}}.
+
+We now consider the resulting expectation values
+
+\begin{align}
+  _{\lambda} \langle E_L | \left( D - \frac{i}{2} \right) |E_R
+  \rangle_{\lambda} & = \frac{i}{2}  \frac{\delta}{\delta \phi} \Psi_{\lambda,
+  E_L, E_R} (\phi) |_{\phi = 0} \nobracket  \label{conf1h7b}
+\end{align}
+
+and its possible application to one of the deepest mathematical problem, the
+Riemann hypothesis. The equation (\ref{conf1h6}) has two linearly independent
+solutions, which are known to be cylindric functions
+{\cite{gradshteyn2000table}}. By requiring the unitarity we can write the
+solutions as
+
+\begin{align}
+  \Psi_{\lambda, E_L, E_R} (\phi) & = \frac{1}{i} K_{\lambda + 1}  \left( 2
+  \sqrt{E_L E_R} e^{\phi} \right)  \label{conf1h8}
+\end{align}
+
+where $K_{\nu} (z)$ is the Macdonald function. We should note that the
+Macdonald functions of purely imaginary order $\lambda + 1$ with positive
+argument are real. The prefactor $\frac{1}{i}$ in the generating function
+(\ref{conf1h8}) guarantees the reality condition of the expectation values in
+CQM. Making use of the recurrence relation
+
+\begin{align}
+  K_{\nu - 1} (z) + K_{\nu + 1} (z) & = - 2 \frac{d}{dz} K_{\nu} (z) 
+  \label{conf1h9}
+\end{align}
+
+and the formula (\ref{conf1h7b}) we can write the expectation values between
+the excited states as
+
+\begin{align}
+  _{\lambda} \langle E_L | \left( D - \frac{i}{2} \right) |E_R
+  \rangle_{\lambda} & = - \frac{z}{4}  (K_{\lambda} (z) + K_{\lambda + 2} (z))
+  \label{conf1i1}
+\end{align}
+
+where $z = 2 \sqrt{E_L E_R}$. Let us now consider a one particle conformal
+quantum mechanical model known as the DFF-model {\cite{deAlfaro:1976je}}
+\begin{equation}
+  S = \frac{1}{2}  \int  \left( \dot{x} (t)^2 - \frac{g}{x (t)^2} \right) dt
+  \label{dff1}
+\end{equation}
+with $g$ being a dimensionless coupling constant. For the DFF-model the
+dilatation operator can be expressed as $D = - \frac{1}{2} xp + \frac{i}{4}$
+where $p$ is the canonical momentum and the equation (\ref{conf1i1}) becomes
+
+\begin{align}
+  _{\lambda} \langle E_L | \left( xp + \frac{i}{2} \right) |E_R
+  \rangle_{\lambda} & = \frac{z}{2}  (K_{\lambda} (z) + K_{\lambda + 2} (z)) 
+  \label{conf1i2}
+\end{align}
+
+It is speculated that the Riemann zeros would be realized as eigenvalues of
+the operator which takes the form of $xp$
+{\cite{MR1694895,berry1999h,MR1684543}} as a promising candidate of the
+Riemann operator in the Hilbert-P{\'o}lya conjecture whose eigenvalues are the
+imaginary part of the non-trivial Riemann zeros. Berry and Keating
+{\cite{berry1999h,MR1684543}} identified the operator $xp$ with the
+Hamiltonian and imposed the conditions $|x| \ge l_x$, $|p| \ge l_p$ so that
+$l_x l_p = 2 \pi \hbar$ in the phase space. Then they found that the
+semiclassical number $N (E)$ of states with the energy between $0$ and $E$ is
+given by the area in the phase space divided by the Planck cell $h = 2 \pi$
+
+\begin{align}
+  N (E) & = \frac{E}{2 \pi}  \left( \log \frac{E}{2 \pi} - 1 \right)
+  +\mathcal{O} (1)  \label{rh1a}
+\end{align}
+
+and observed that (\ref{rh1a}) precisely coincides with the asymptotics of the
+smoothed counting function of the number of Riemann zeros {\cite{MR0466039}}.
+Connes {\cite{MR1694895}} introduced the constraints $|x| \le \Lambda$, $|p|
+\le \Lambda$ where $\Lambda$ is a common cutoff and counted the number of such
+semiclassical states as
+
+\begin{align}
+  N (E) & = \frac{E}{\pi} \log \Lambda - \frac{E}{2 \pi}  \left( \log
+  \frac{E}{2 \pi} - 1 \right)  \label{rh1b}
+\end{align}
+
+He interpreted the counting formula (\ref{rh1b}) as missing spectral lines
+associated to the smooth Riemann zeros which arise in the limit $\Lambda
+\rightarrow \infty$, however, it was reinterpreted as a finite size correction
+from a physical system later in {\cite{MR2443603}}. According to these
+semiclassical proposals of the Hilbert-P{\'o}lya conjecture it has been
+desirable to replace these artificially imposed semiclassical regularizations
+of the operator $xp$ with the proper quantum treatment which naturally
+generates a discrete spectrum. In order to obtain the discrete spectrum via
+quantization, there has been proposed various attempts including the
+modifications of the $xp$ operator (see, e.g.,
+{\cite{Sierra:2011tb,MR2812337}}) and the adoption of the regularization
+methods (see, e.g., {\cite{MR2443603}}). Nevertheless, these attempts seem to
+be quite artificial and difficult fo find the quantum mechanical explanation
+to follow these ideas.
+
+Here we wish to propose a novel perspective to acquire the distribution of the
+spectrum of the Riemann operator from conformal quantum mechanics point of
+view. Consider now the eigenfunction $\Phi_{\rho} (x)$ of the operator $\left(
+xp + \frac{i}{2} \right)$ in the equation (\ref{conf1i2}) satisfying
+\begin{equation}
+  \left[ \frac{1}{i} x \frac{d}{dx} + \frac{i}{2} \right] \Phi_{\rho} (x) =
+  \rho \Phi_{\rho} (x) \label{conf1i3}
+\end{equation}
+They take the form
+\begin{equation}
+  \Phi_{\rho} (x) = Cx^{\frac{1}{2} + i \rho} \label{conf1i4}
+\end{equation}
+
+
+with $C$ a constant of integration. The non-trivial zeros of the Riemann zeta
+function $\zeta (s)$ which is conjectured to be $s = \frac{1}{2} + i \rho$,
+$\rho \in \mathbb{R}$ in the Riemann hypothesis appears in the power $x^s$ of
+the eigenfunction $\Phi_{\rho} (x)$. The eigenvalues $\rho$ of the operator
+$\left( xp + \frac{i}{2} \right)$ which would be the candidates of the Riemann
+zeros can be continuous in the position eigenfunction. This is the same
+situation as has been already discussed in many literatures.
+
+However, in CQM the operator $\left( xp + \frac{i}{2} \right)$ should not be
+recognized as the Hamiltonian but rather as the dilatation operator whose
+expectation values can be measured by the energy eigenstates as
+
+\begin{align}
+  D (z ; \rho) & = \frac{z}{2}  (K_{1 - i \rho} (z) + K_{1 + i \rho} (z)) 
+  \label{conf1i50}
+\end{align}
+
+Note that the expression (\ref{conf1i50}) can evidently be lifted to arbitrary
+conformal quantum mechanical systems by qualifying $\rho$ as the eigenvalue of
+the operator $- 2 \left( D - \frac{i}{2} \right)$. Although almost all quantum
+approaches so far have tried to identify the operator $xp$ with the
+Hamiltonian and simultaneously diagonalize it with the position $x$ or the
+momentum $p$, CQM would provide an alternative avenue to the Riemann
+hypothesis as the diagonalization of the dilatation operator. We observe that
+the ground state $|0 \rangle_{\lambda}$ is the eigenfunction of both of the
+Hamiltonian and the dilatation operator. Since the excited states are not
+eigenvectors of the dilatation operator, the limit $E_L$, $E_R \rightarrow 0$
+of the expectation values (\ref{conf1i50}) would naturally give rise to the
+eigenfunction of the operator $- 2 \left( D - \frac{i}{2} \right)$ multiplied
+by its eigenvalue $\rho$. In other words, the limit in which $z = 2 \sqrt{E_L
+E_R}$ goes to zero yields the definite eigenvalue $\rho$ and the distribution
+function $D (\rho)$ of the ground state. Hence the expectation values
+(\ref{conf1i50}) are in some sense the regularized functions which produce the
+distribution of the eigenvalues $\rho$ as
+
+\begin{align}
+  \rho D (\rho) & = \lim_{z \rightarrow 0}  \frac{z}{2}  (K_{1 - i \rho} (z) +
+  K_{1 + i \rho} (z))  \label{conf1i5}
+\end{align}
+
+where we have used the relation $\lambda = - (1 + i \rho)$ and the formula
+$K_{\nu} (z) = K_{- \nu} (z)$. The asymptotic behavior of the Macdonald
+function
+
+\begin{align}
+  K_{1 + i \rho} (z) \sim \sqrt{\frac{\pi}{z}} e^{- \frac{\pi}{2} \rho} \left(
+  \frac{2 \rho}{ze} \right)^{i \rho}  \label{conf1i6}
+\end{align}
+
+for large $\rho$ allows us to write (\ref{conf1i5}) as
+
+\begin{align}
+  \rho D (\rho) & = \lim_{z \rightarrow 0}  \sqrt{\pi z} e^{- \frac{\pi}{2}
+  \rho} \cos \left[ \rho \ln \left( \frac{2 \rho}{ze} \right) \right] 
+  \label{conf1i7}
+\end{align}
+
+The semiclassical distribution of (\ref{conf1i7}) for large $\rho$ is realized
+when the cosine function is at its maximum
+
+\begin{align}
+  \cos \left[ \rho \ln \left( \frac{2 \rho}{ze} \right) \right] = 1 
+  \label{conf1i8}
+\end{align}
+
+so that
+
+\begin{align}
+  \frac{\rho}{\pi}  \left[ \ln \left( \frac{\rho}{E_L E_R} \right) - 1 \right]
+  & = 2 n, \forall n \in \mathbb{Z}.  \label{conf1i9}
+\end{align}
+
+Since the expression (\ref{conf1i9}) diverges when $E_L, E_R \rightarrow 0$, a
+low energy cutoff is required to make sense of the expression (\ref{conf1i9}).
+Let us introduce the cutoff $\Lambda$ such that $E_L E_R = 2 \pi / \Lambda$.
+Then we obtain the behavior of the large eigenvalues $\rho$ as
+
+\begin{align}
+  N (\rho) & = \frac{\rho}{2 \pi} \ln \Lambda + \frac{\rho}{2 \pi}  \left( \ln
+  \frac{\rho}{2 \pi} - 1 \right)  \label{conf1i10}
+\end{align}
+
+Remarkably the first term is a continuum in the limit $\Lambda \rightarrow
+\infty$ while the second term leads to the asymptotics of the counting
+function of the Riemann zeros as in (\ref{rh1a}) and (\ref{rh1b}). It would be
+interesting to note that the equation (\ref{conf1i10}) also counts the large
+conformal dimensions for the ground state in CQM. Combining the semiclassical
+realization (\ref{conf1i10}) of the counting Riemann zeros with our proposed
+holographic correspondence (\ref{cor2}) would indicate underlying profound
+relation among essential ingredients in number theory, in quantum mechanics
+and in gravity.
+
+\subsection*{Acknowledgments}
+
+The author would like to thank Pei-Ming Ho, Kazuo Hosomichi, Takeo Inami and
+Dharmesh Jain for communications and discussions and Yu Nakayama for
+enlightening comments and remarks about Liouville field theory and Michael
+Berry, Jon Keating, Paul Townsend and especially Germ{\'a}n Sierra for helpful
+comments and explanations of their works on Riemann zeros. This work was
+supported by National Taiwan University and the National Center for
+Theoretical Science (NCTS).
+
+\begin{thebibliography}{10}
+  \bibitem[1]{'tHooft:1993gx}G.~'t~Hooft, ``Dimensional reduction in quantum
+  gravity,'' in \tmtextit{Salamfest 1993:0284-296}, pp.~0284--296, 1993.
+  {\newblock}\href{http://xxx.lanl.gov/abs/gr-qc/9310026}{\tmtexttt{gr-qc/9310026}}.
+  
+  \bibitem[2]{Susskind:1994vu}L.~Susskind, ``The World as a hologram,''
+  \tmtextit{J.Math.Phys.} \tmtextbf{36} (1995) 6377--6396,
+  \href{http://xxx.lanl.gov/abs/hep-th/9409089}{\tmtexttt{hep-th/9409089}}.
+  
+  \bibitem[3]{Maldacena:1997re}J.~M. Maldacena, ``The Large N limit of
+  superconformal field theories and supergravity,''
+  \tmtextit{Adv.Theor.Math.Phys.} \tmtextbf{2} (1998) 231--252,
+  \href{http://xxx.lanl.gov/abs/hep-th/9711200}{\tmtexttt{hep-th/9711200}}.
+  
+  \bibitem[4]{Kunduri:2007vf}H.~K. Kunduri, J.~Lucietti, and H.~S. Reall,
+  ``Near-horizon symmetries of extremal black holes,'' \tmtextit{Class. Quant.
+  Grav.} \tmtextbf{24} (2007) 4169--4190,
+  \href{http://xxx.lanl.gov/abs/0705.4214}{\tmtexttt{0705.4214}}.
+  
+  \bibitem[5]{Figueras:2008qh}P.~Figueras, H.~K. Kunduri, J.~Lucietti, and
+  M.~Rangamani, ``Extremal vacuum black holes in higher dimensions,''
+  \tmtextit{Phys.Rev.} \tmtextbf{D78} (2008) 044042,
+  \href{http://xxx.lanl.gov/abs/0803.2998}{\tmtexttt{0803.2998}}.
+  
+  \bibitem[6]{Strominger:1998yg}A.~Strominger, ``AdS(2) quantum gravity and
+  string theory,'' \tmtextit{JHEP} \tmtextbf{9901} (1999) 007,
+  \href{http://xxx.lanl.gov/abs/hep-th/9809027}{\tmtexttt{hep-th/9809027}}.
+  
+  \bibitem[7]{Maldacena:1998uz}J.~M. Maldacena, J.~Michelson, and
+  A.~Strominger, ``Anti-de Sitter fragmentation,'' \tmtextit{JHEP}
+  \tmtextbf{9902} (1999) 011,
+  \href{http://xxx.lanl.gov/abs/hep-th/9812073}{\tmtexttt{hep-th/9812073}}.
+  
+  \bibitem[8]{Nakatsu:1998st}T.~Nakatsu and N.~Yokoi, ``Comments on
+  Hamiltonian formalism of AdS / CFT correspondence,''
+  \tmtextit{Mod.Phys.Lett.} \tmtextbf{A14} (1999) 147--160,
+  \href{http://xxx.lanl.gov/abs/hep-th/9812047}{\tmtexttt{hep-th/9812047}}.
+  
+  \bibitem[9]{Townsend:1998qp}P.~Townsend, ``The M(atrix) model / AdS(2)
+  correspondence,''
+  \href{http://xxx.lanl.gov/abs/hep-th/9903043}{\tmtexttt{hep-th/9903043}}.
+  
+  \bibitem[10]{Spradlin:1999bn}M.~Spradlin and A.~Strominger, ``Vacuum states
+  for AdS(2) black holes,'' \tmtextit{JHEP} \tmtextbf{9911} (1999) 021,
+  \href{http://xxx.lanl.gov/abs/hep-th/9904143}{\tmtexttt{hep-th/9904143}}.
+  
+  \bibitem[11]{Cadoni:1999ja}M.~Cadoni and S.~Mignemi, ``Asymptotic symmetries
+  of AdS(2) and conformal group in d = 1,'' \tmtextit{Nucl. Phys.}
+  \tmtextbf{B557} (1999) 165--180,
+  \href{http://xxx.lanl.gov/abs/hep-th/9902040}{\tmtexttt{hep-th/9902040}}.
+  
+  \bibitem[12]{Blum:1999pc}J.~D. Blum, ``Supersymmetric quantum mechanical
+  description of four-dimensional black holes,'' \tmtextit{JHEP}
+  \tmtextbf{0001} (2000) 006,
+  \href{http://xxx.lanl.gov/abs/hep-th/9907101}{\tmtexttt{hep-th/9907101}}.
+  
+  \bibitem[13]{NavarroSalas:1999up}J.~Navarro-Salas and P.~Navarro, ``AdS(2) /
+  CFT(1) correspondence and near extremal black hole entropy,''
+  \tmtextit{Nucl. Phys.} \tmtextbf{B579} (2000) 250--266,
+  \href{http://xxx.lanl.gov/abs/hep-th/9910076}{\tmtexttt{hep-th/9910076}}.
+  
+  \bibitem[14]{Caldarelli:2000xk}M.~Caldarelli, G.~Catelani, and L.~Vanzo,
+  ``Action, Hamiltonian and CFT for 2-D black holes,'' \tmtextit{JHEP}
+  \tmtextbf{10} (2000) 005,
+  \href{http://xxx.lanl.gov/abs/hep-th/0008058}{\tmtexttt{hep-th/0008058}}.
+  
+  \bibitem[15]{Cadoni:2000gm}M.~Cadoni, P.~Carta, D.~Klemm, and S.~Mignemi,
+  ``AdS(2) gravity as conformally invariant mechanical system,''
+  \tmtextit{Phys. Rev.} \tmtextbf{D63} (2001) 125021,
+  \href{http://xxx.lanl.gov/abs/hep-th/0009185}{\tmtexttt{hep-th/0009185}}.
+  
+  \bibitem[16]{Bellucci:2002va}S.~Bellucci, A.~Galajinsky, E.~Ivanov, and
+  S.~Krivonos, ``AdS(2) / CFT(1), canonical transformations and superconformal
+  mechanics,'' \tmtextit{Phys.Lett.} \tmtextbf{B555} (2003) 99--106,
+  \href{http://xxx.lanl.gov/abs/hep-th/0212204}{\tmtexttt{hep-th/0212204}}.
+  
+  \bibitem[17]{Strominger:2003tm}A.~Strominger, ``A Matrix model for AdS(2),''
+  \tmtextit{JHEP} \tmtextbf{0403} (2004) 066,
+  \href{http://xxx.lanl.gov/abs/hep-th/0312194}{\tmtexttt{hep-th/0312194}}.
+  
+  \bibitem[18]{Leiva:2003kd}C.~Leiva and M.~S. Plyushchay, ``Conformal
+  symmetry of relativistic and nonrelativistic systems and Ads / CFT
+  correspondence,'' \tmtextit{Annals Phys.} \tmtextbf{307} (2003) 372--391,
+  \href{http://xxx.lanl.gov/abs/hep-th/0301244}{\tmtexttt{hep-th/0301244}}.
+  
+  \bibitem[19]{Giveon:2004zz}A.~Giveon and A.~Sever, ``Strings in a 2-d
+  extremal black hole,'' \tmtextit{JHEP} \tmtextbf{0502} (2005) 065,
+  \href{http://xxx.lanl.gov/abs/hep-th/0412294}{\tmtexttt{hep-th/0412294}}.
+  
+  \bibitem[20]{Azeyanagi:2007bj}T.~Azeyanagi, T.~Nishioka, and T.~Takayanagi,
+  ``Near Extremal Black Hole Entropy as Entanglement Entropy via
+  AdS(2)/CFT(1),'' \tmtextit{Phys.Rev.} \tmtextbf{D77} (2008) 064005,
+  \href{http://xxx.lanl.gov/abs/0710.2956}{\tmtexttt{0710.2956}}.
+  
+  \bibitem[21]{Alishahiha:2008tv}M.~Alishahiha and F.~Ardalan, ``Central
+  Charge for 2D Gravity on AdS(2) and AdS(2)/CFT(1) Correspondence,''
+  \tmtextit{JHEP} \tmtextbf{08} (2008) 079,
+  \href{http://xxx.lanl.gov/abs/0805.1861}{\tmtexttt{0805.1861}}.
+  
+  \bibitem[22]{Gupta:2008ki}R.~K. Gupta and A.~Sen, ``Ads(3)/CFT(2) to
+  Ads(2)/CFT(1),'' \tmtextit{JHEP} \tmtextbf{0904} (2009) 034,
+  \href{http://xxx.lanl.gov/abs/0806.0053}{\tmtexttt{0806.0053}}.
+  
+  \bibitem[23]{Hartman:2008dq}T.~Hartman and A.~Strominger, ``Central Charge
+  for AdS(2) Quantum Gravity,'' \tmtextit{JHEP} \tmtextbf{04} (2009) 026,
+  \href{http://xxx.lanl.gov/abs/0803.3621}{\tmtexttt{0803.3621}}.
+  
+  \bibitem[24]{Galajinsky:2008ce}A.~Galajinsky, ``Particle dynamics on AdS(2)
+  x S**2 background with two-form flux,'' \tmtextit{Phys.Rev.} \tmtextbf{D78}
+  (2008) 044014,
+  \href{http://xxx.lanl.gov/abs/0806.1629}{\tmtexttt{0806.1629}}.
+  
+  \bibitem[25]{Sen:2008vm}A.~Sen, ``Quantum Entropy Function from
+  AdS(2)/CFT(1) Correspondence,'' \tmtextit{Int.J.Mod.Phys.} \tmtextbf{A24}
+  (2009) 4225--4244,
+  \href{http://xxx.lanl.gov/abs/0809.3304}{\tmtexttt{0809.3304}}.
+  
+  \bibitem[26]{Sen:2008yk}A.~Sen, ``Entropy Function and AdS(2) / CFT(1)
+  Correspondence,'' \tmtextit{JHEP} \tmtextbf{0811} (2008) 075,
+  \href{http://xxx.lanl.gov/abs/0805.0095}{\tmtexttt{0805.0095}}.
+  
+  \bibitem[27]{Sen:2011cn}A.~Sen, ``State Operator Correspondence and
+  Entanglement in $AdS_2 / CFT_1$,'' \tmtextit{Entropy} \tmtextbf{13} (2011)
+  1305--1323, \href{http://xxx.lanl.gov/abs/1101.4254}{\tmtexttt{1101.4254}}.
+  
+  \bibitem[28]{Chamon:2011xk}C.~Chamon, R.~Jackiw, S.-Y. Pi, and L.~Santos,
+  ``Conformal quantum mechanics as the CFT\tmrsub{$1$} dual to
+  AdS\tmrsub{$2$},'' \tmtextit{Phys.Lett.} \tmtextbf{B701} (2011) 503--507,
+  \href{http://xxx.lanl.gov/abs/1106.0726}{\tmtexttt{1106.0726}}.
+  
+  \bibitem[29]{MolinaVilaplana:2012xe}J.~Molina-Vilaplana and G.~Sierra, ``An
+  $xp$ model on $AdS_2$ spacetime,'' \tmtextit{Nucl. Phys.} \tmtextbf{B877}
+  (2013) 107--123,
+  \href{http://xxx.lanl.gov/abs/1212.2436}{\tmtexttt{1212.2436}}.
+  
+  \bibitem[30]{Jackiw:2012ur}R.~Jackiw and S.-Y. Pi, ``Conformal Blocks for
+  the 4-Point Function in Conformal Quantum Mechanics,'' \tmtextit{Phys.Rev.}
+  \tmtextbf{D86} (2012) 045017,
+  \href{http://xxx.lanl.gov/abs/1205.0443}{\tmtexttt{1205.0443}}.
+  
+  \bibitem[31]{Zamolodchikov:2001ah}A.~B. Zamolodchikov and A.~B.
+  Zamolodchikov, ``Liouville field theory on a pseudosphere,''
+  \href{http://xxx.lanl.gov/abs/hep-th/0101152}{\tmtexttt{hep-th/0101152}}.
+  
+  \bibitem[32]{Balasubramanian:1998sn}V.~Balasubramanian, P.~Kraus, and A.~E.
+  Lawrence, ``Bulk versus boundary dynamics in anti-de Sitter space-time,''
+  \tmtextit{Phys. Rev.} \tmtextbf{D59} (1999) 046003,
+  \href{http://xxx.lanl.gov/abs/hep-th/9805171}{\tmtexttt{hep-th/9805171}}.
+  
+  \bibitem[33]{Balasubramanian:1998de}V.~Balasubramanian, P.~Kraus, A.~E.
+  Lawrence, and S.~P. Trivedi, ``Holographic probes of anti-de Sitter
+  space-times,'' \tmtextit{Phys. Rev.} \tmtextbf{D59} (1999) 104021,
+  \href{http://xxx.lanl.gov/abs/hep-th/9808017}{\tmtexttt{hep-th/9808017}}.
+  
+  \bibitem[34]{Balasubramanian:2010ys}V.~Balasubramanian, J.~Parsons, and
+  S.~F. Ross, ``States of a chiral 2d CFT,'' \tmtextit{Class. Quant. Grav.}
+  \tmtextbf{28} (2011) 045004,
+  \href{http://xxx.lanl.gov/abs/1011.1803}{\tmtexttt{1011.1803}}.
+  
+  \bibitem[35]{deAlfaro:1976je}V.~de~Alfaro, S.~Fubini, and G.~Furlan,
+  ``Conformal Invariance in Quantum Mechanics,'' \tmtextit{Nuovo Cim.}
+  \tmtextbf{A34} (1976) 569.
+  
+  \bibitem[36]{MR1694895}A.~Connes, ``Trace formula in noncommutative geometry
+  and the zeros of the Riemann zeta function,'' \tmtextit{Selecta Math.
+  (N.S.)} \tmtextbf{5} (1999), no.~1 29--106.
+  
+  \bibitem[37]{berry1999h}M.~V. Berry and J.~P. Keating, ``H= xp and the
+  riemann zeros,'' in \tmtextit{Supersymmetry and Trace Formulae},
+  pp.~355--367. {\newblock}Springer, 1999.
+  
+  \bibitem[38]{MR1684543}M.~V. Berry and J.~P. Keating, ``The Riemann zeros
+  and eigenvalue asymptotics,'' \tmtextit{SIAM Rev.} \tmtextbf{41} (1999),
+  no.~2 236--266 (electronic).
+  
+  \bibitem[39]{MR2443603}G.~Sierra and P.~K. Townsend, ``Landau levels and
+  Riemann zeros,'' \tmtextit{Phys. Rev. Lett.} \tmtextbf{101} (2008), no.~11
+  110201, 4.
+  
+  \bibitem[40]{Sierra:2011tb}G.~Sierra and J.~Rodriguez-Laguna, ``The H=xp
+  model revisited and the Riemann zeros,'' \tmtextit{Phys.Rev.Lett.}
+  \tmtextbf{106} (2011) 200201,
+  \href{http://xxx.lanl.gov/abs/1102.5356}{\tmtexttt{1102.5356}}.
+  
+  \bibitem[41]{MR2812337}M.~V. Berry and J.~P. Keating, ``A compact
+  Hamiltonian with the same asymptotic mean spectral density as the Riemann
+  zeros,'' \tmtextit{J. Phys. A} \tmtextbf{44} (2011), no.~28 285203, 14.
+  
+  \bibitem[42]{Bargmann:1946me}V.~Bargmann, ``Irreducible unitary
+  representations of the Lorentz group,'' \tmtextit{Annals Math.}
+  \tmtextbf{48} (1947) 568--640.
+  
+  \bibitem[43]{MR0271275}H.~Jacquet, ``Fonctions de Whittaker associ{\'e}es
+  aux groupes de Chevalley,'' \tmtextit{Bull. Soc. Math. France} \tmtextbf{95}
+  (1967) 243--309.
+  
+  \bibitem[44]{MR0311838}G.~Schiffmann, ``Int{\'e}grales d'entrelacement et
+  fonctions de Whittaker,'' \tmtextit{Bull. Soc. Math. France} \tmtextbf{99}
+  (1971) 3--72.
+  
+  \bibitem[45]{MR507800}B.~Kostant, ``On Whittaker vectors and representation
+  theory,'' \tmtextit{Invent. Math.} \tmtextbf{48} (1978), no.~2 101--184.
+  
+  \bibitem[46]{MR1729357}P.~Etingof, ``Whittaker functions on quantum groups
+  and $q$-deformed Toda operators,'' in \tmtextit{Differential topology,
+  infinite-dimensional Lie algebras, and applications}, vol.~194 of
+  \tmtextit{Amer. Math. Soc. Transl. Ser. 2}, pp.~9--25. {\newblock}Amer.
+  Math. Soc., Providence, RI, 1999.
+  
+  \bibitem[47]{Seiberg:1990eb}N.~Seiberg, ``Notes on quantum Liouville theory
+  and quantum gravity,'' \tmtextit{Prog.Theor.Phys.Suppl.} \tmtextbf{102}
+  (1990) 319--349.
+  
+  \bibitem[48]{DeWitt:1967yk}B.~S. DeWitt, ``Quantum Theory of Gravity. 1. The
+  Canonical Theory,'' \tmtextit{Phys. Rev.} \tmtextbf{160} (1967) 1113--1148.
+  
+  \bibitem[49]{Misner:1972js}C.~W. Misner, ``MINISUPERSPACE,''.
+  
+  \bibitem[50]{Moore:1991ir}G.~W. Moore, N.~Seiberg, and M.~Staudacher, ``From
+  loops to states in 2-D quantum gravity,'' \tmtextit{Nucl. Phys.}
+  \tmtextbf{B362} (1991) 665--709.
+  
+  \bibitem[51]{Fateev:2000ik}V.~Fateev, A.~B. Zamolodchikov, and A.~B.
+  Zamolodchikov, ``Boundary Liouville field theory. 1. Boundary state and
+  boundary two point function,''
+  \href{http://xxx.lanl.gov/abs/hep-th/0001012}{\tmtexttt{hep-th/0001012}}.
+  
+  \bibitem[52]{Aganagic:2003qj}M.~Aganagic, R.~Dijkgraaf, A.~Klemm, M.~Marino,
+  and C.~Vafa, ``Topological strings and integrable hierarchies,''
+  \tmtextit{Commun.Math.Phys.} \tmtextbf{261} (2006) 451--516,
+  \href{http://xxx.lanl.gov/abs/hep-th/0312085}{\tmtexttt{hep-th/0312085}}.
+  
+  \bibitem[53]{KashaniPoor:2006nc}A.-K. Kashani-Poor, ``The Wave Function
+  Behavior of the Open Topological String Partition Function on the
+  Conifold,'' \tmtextit{JHEP} \tmtextbf{04} (2007) 004,
+  \href{http://xxx.lanl.gov/abs/hep-th/0606112}{\tmtexttt{hep-th/0606112}}.
+  
+  \bibitem[54]{Cheng:2010yw}M.~C.~N. Cheng, R.~Dijkgraaf, and C.~Vafa,
+  ``Non-Perturbative Topological Strings And Conformal Blocks,''
+  \tmtextit{JHEP} \tmtextbf{09} (2011) 022,
+  \href{http://xxx.lanl.gov/abs/1010.4573}{\tmtexttt{1010.4573}}.
+  
+  \bibitem[55]{Beem:2012mb}C.~Beem, T.~Dimofte, and S.~Pasquetti,
+  ``Holomorphic Blocks in Three Dimensions,'' \tmtextit{JHEP} \tmtextbf{1412}
+  (2014) 177, \href{http://xxx.lanl.gov/abs/1211.1986}{\tmtexttt{1211.1986}}.
+  
+  \bibitem[56]{Brown:1986nw}J.~D. Brown and M.~Henneaux, ``Central Charges in
+  the Canonical Realization of Asymptotic Symmetries: An Example from
+  Three-Dimensional Gravity,'' \tmtextit{Commun.Math.Phys.} \tmtextbf{104}
+  (1986) 207--226.
+  
+  \bibitem[57]{Gubser:1998bc}S.~Gubser, I.~R. Klebanov, and A.~M. Polyakov,
+  ``Gauge theory correlators from noncritical string theory,''
+  \tmtextit{Phys.Lett.} \tmtextbf{B428} (1998) 105--114,
+  \href{http://xxx.lanl.gov/abs/hep-th/9802109}{\tmtexttt{hep-th/9802109}}.
+  
+  \bibitem[58]{Witten:1998qj}E.~Witten, ``Anti-de Sitter space and
+  holography,'' \tmtextit{Adv.Theor.Math.Phys.} \tmtextbf{2} (1998) 253--291,
+  \href{http://xxx.lanl.gov/abs/hep-th/9802150}{\tmtexttt{hep-th/9802150}}.
+  
+  \bibitem[59]{gradshteyn2000table}I.~S. Gradshteyn and I.~Ryzhik, ``Table of
+  integrals, series, and products. translated from the russian. translation
+  edited and with a preface by alan jeffrey and daniel zwillinger,'' 2000.
+  
+  \bibitem[60]{MR0466039}H.~M. Edwards, \tmtextit{Riemann's zeta function}.
+  {\newblock}Academic Press [A subsidiary of Harcourt Brace Jovanovich,
+  Publishers], New York-London, 1974. {\newblock}Pure and Applied Mathematics,
+  Vol. 58.
+\end{thebibliography}
+
+\end{document}
