@@ -893,7 +893,128 @@
     Integration over <math|v> produces the claimed formula.
   </proof>
 
-  \;
+  <\theorem>
+    <dueto|Expected Zero-Counting Function Of Unitarily Time-Changed
+    Stationary Processes><label|thmexpectedzerocount>Let
+    <math|\<theta\>:\<bbb-R\>\<to\>\<bbb-R\>> be absolutely continuous,
+    strictly increasing, and bijective with
+    <math|\<theta\><rprime|'><around|(|t|)>\<gtr\>0> almost everywhere. Let
+    <math|X> be a centered stationary Gaussian process with spectral measure
+    <math|F> and covariance function
+
+    <\equation>
+      <label|eqstationarycov>K<around|(|h|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<omega\>*h>*<space|0.17em>d*F<around|(|\<omega\>|)>
+    </equation>
+
+    twice differentiable at <math|h=0>. Define the unitarily time-changed
+    process
+
+    <\equation>
+      <label|eqZprocess>Z<around|(|t|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*<space|0.17em>X<around|(|\<theta\><around|(|t|)>|)>
+    </equation>
+
+    Then <math|Z> is a centered Gaussian process with covariance
+
+    <\equation>
+      <label|eqZcovariance>K<rsub|Z><around|(|t,s|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>*\<theta\><rprime|'><around|(|s|)>>*<space|0.17em>K*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>
+    </equation>
+
+    and the expected number of zeros in <math|<around|[|0,T|]>> is
+
+    <\equation>
+      <label|eqexpectedzeros>\<bbb-E\><around|[|N<rsub|<around|[|0,T|]>>|]>=<sqrt|<frac|-K<rprime|''><around|(|0|)>|\<pi\>*K<around|(|0|)>>>*<space|0.17em><around|[|\<theta\><around|(|T|)>-\<theta\><around|(|0|)>|]>
+    </equation>
+  </theorem>
+
+  <\proof>
+    <\enumerate>
+      <item>From the Kac-Rice formula <eqref|eqexpectedzeros>, the expected
+      number of zeros is
+
+      <\equation>
+        <label|eqKRapplication>\<bbb-E\><around|[|N<rsub|<around|[|0,T|]>>|]>=<big|int><rsub|0><rsup|T><sqrt|<frac|det
+        \<Sigma\><around|(|t|)>|2*\<pi\>*K<rsub|Z><around|(|t,t|)>>>*<space|0.17em>d*t
+      </equation>
+
+      where <math|\<Sigma\><around|(|t|)>> is the covariance matrix of
+      <math|<around|(|Z<around|(|t|)>,<wide|Z|\<dot\>><around|(|t|)>|)>>.
+
+      <item>Compute the variance of <math|Z<around|(|t|)>>. From
+      <eqref|eqZcovariance> with <math|s=t>,
+
+      <\equation>
+        <label|eqZvariance>K<rsub|Z><around|(|t,t|)>=\<theta\><rprime|'><around|(|t|)>*<space|0.17em>K<around|(|0|)>
+      </equation>
+
+      <item>Compute <math|K<rsub|<wide|Z|\<dot\>>><around|(|t,t|)>=\<bbb-E\><around|[|<wide|Z|\<dot\>><around|(|t|)><rsup|2>|]>>.
+      Differentiate <eqref|eqZcovariance> with respect to <math|t>:
+
+      <\align>
+        <tformat|<table|<row|<cell|<label|eqZdotcomputation><frac|\<partial\>|\<partial\>*t>*K<rsub|Z><around|(|t,s|)>>|<cell|=<frac|\<partial\>|\<partial\>*t>*<around*|[|<sqrt|\<theta\><rprime|'><around|(|t|)>*\<theta\><rprime|'><around|(|s|)>>*<space|0.17em>K*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>|]>>>|<row|<cell|>|<cell|=<frac|\<theta\><rprime|''><around|(|t|)>|2*<sqrt|\<theta\><rprime|'><around|(|t|)>*\<theta\><rprime|'><around|(|s|)>>>*<space|0.17em>K*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>+<sqrt|\<theta\><rprime|'><around|(|t|)>*\<theta\><rprime|'><around|(|s|)>>*<space|0.17em>K<rprime|'>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>*<space|0.17em>\<theta\><rprime|'><around|(|t|)><eq-number>>>>>
+      </align>
+
+      Setting <math|s=t> in <eqref|eqZdotcomputation>,
+
+      <\equation>
+        <label|eqKZdot>K<rsub|<wide|Z|\<dot\>>,Z><around|(|t,t|)>=<frac|\<partial\>|\<partial\>*t>*K<rsub|Z><around|(|t,t|)><mid|\|><rsub|s=t>=<frac|\<theta\><rprime|''><around|(|t|)>|2*\<theta\><rprime|'><around|(|t|)>>*<space|0.17em>K<around|(|0|)>+\<theta\><rprime|'><around|(|t|)><rsup|2>*<space|0.17em>K<rprime|'><around|(|0|)>
+      </equation>
+
+      <item>Since <math|K> is the covariance of a real stationary process,
+      <math|K*<around|(|-h|)>=K<around|(|h|)>>, hence <math|K> is even and
+      <math|K<rprime|'><around|(|0|)>=0>. Therefore <eqref|eqKZdot>
+      simplifies to
+
+      <\equation>
+        <label|eqKZdotsimplified>K<rsub|<wide|Z|\<dot\>>,Z><around|(|t,t|)>=<frac|\<theta\><rprime|''><around|(|t|)>|2*\<theta\><rprime|'><around|(|t|)>>*<space|0.17em>K<around|(|0|)>
+      </equation>
+
+      <item>Differentiate <eqref|eqZdotcomputation> with respect to <math|s>
+      and set <math|s=t>:
+
+      <\align>
+        <tformat|<table|<row|<cell|<label|eqsecondderivativecomputation><frac|\<partial\><rsup|2>|\<partial\>*s*\<partial\>*t>*K<rsub|Z><around|(|t,s|)><mid|\|><rsub|s=t>>|<cell|=<frac|\<partial\>|\<partial\>*s>*<around*|[|<frac|\<theta\><rprime|''><around|(|t|)>|2*<sqrt|\<theta\><rprime|'><around|(|t|)>*\<theta\><rprime|'><around|(|s|)>>>*<space|0.17em>K*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>+<sqrt|<frac|\<theta\><rprime|'><around|(|t|)>|\<theta\><rprime|'><around|(|s|)>>>*<space|0.17em>\<theta\><rprime|'><around|(|t|)>*<space|0.17em>K<rprime|'>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>|]><mid|\|><rsub|s=t>>>|<row|<cell|>|<cell|=-<frac|\<theta\><rprime|''><around|(|t|)><rsup|2>|4*\<theta\><rprime|'><around|(|t|)><rsup|2>>*<space|0.17em>K<around|(|0|)>-<frac|\<theta\><rprime|''><around|(|t|)>|2*\<theta\><rprime|'><around|(|t|)>>*<space|0.17em>\<theta\><rprime|'><around|(|t|)>*<space|0.17em>K<rprime|'><around|(|0|)>-<frac|\<theta\><rprime|''><around|(|t|)>|2*\<theta\><rprime|'><around|(|t|)>>*<space|0.17em>\<theta\><rprime|'><around|(|t|)>*<space|0.17em>K<rprime|'><around|(|0|)>+\<theta\><rprime|'><around|(|t|)><rsup|2>*<space|0.17em>K<rprime|''><around|(|0|)><eq-number>>>>>
+      </align>
+
+      Using <math|K<rprime|'><around|(|0|)>=0>,
+
+      <\equation>
+        <label|eqKZdotdot>K<rsub|<wide|Z|\<dot\>>><around|(|t,t|)>=-<frac|\<theta\><rprime|''><around|(|t|)><rsup|2>|4*\<theta\><rprime|'><around|(|t|)><rsup|2>>*<space|0.17em>K<around|(|0|)>+\<theta\><rprime|'><around|(|t|)><rsup|2>*<space|0.17em>K<rprime|''><around|(|0|)>
+      </equation>
+
+      <item>Compute the determinant of <math|\<Sigma\><around|(|t|)>>:
+
+      <\align>
+        <tformat|<table|<row|<cell|<label|eqdetcomputation>det
+        \<Sigma\><around|(|t|)>>|<cell|=K<rsub|Z><around|(|t,t|)>*<space|0.17em>K<rsub|<wide|Z|\<dot\>>><around|(|t,t|)>-K<rsub|<wide|Z|\<dot\>>,Z><around|(|t,t|)><rsup|2>>>|<row|<cell|>|<cell|=\<theta\><rprime|'><around|(|t|)>*<space|0.17em>K<around|(|0|)>*<around*|[|-<frac|\<theta\><rprime|''><around|(|t|)><rsup|2>|4*\<theta\><rprime|'><around|(|t|)><rsup|2>>*<space|0.17em>K<around|(|0|)>+\<theta\><rprime|'><around|(|t|)><rsup|2>*<space|0.17em>K<rprime|''><around|(|0|)>|]>-<around*|[|<frac|\<theta\><rprime|''><around|(|t|)>|2*\<theta\><rprime|'><around|(|t|)>>*<space|0.17em>K<around|(|0|)>|]><rsup|2>>>|<row|<cell|>|<cell|=-<frac|\<theta\><rprime|''><around|(|t|)><rsup|2>*<space|0.17em>K<around|(|0|)><rsup|2>|4*\<theta\><rprime|'><around|(|t|)>>+\<theta\><rprime|'><around|(|t|)><rsup|3>*<space|0.17em>K<around|(|0|)>*<space|0.17em>K<rprime|''><around|(|0|)>-<frac|\<theta\><rprime|''><around|(|t|)><rsup|2>*<space|0.17em>K<around|(|0|)><rsup|2>|4*\<theta\><rprime|'><around|(|t|)>>>>|<row|<cell|>|<cell|=\<theta\><rprime|'><around|(|t|)><rsup|3>*<space|0.17em>K<around|(|0|)>*<space|0.17em>K<rprime|''><around|(|0|)>-<frac|\<theta\><rprime|''><around|(|t|)><rsup|2>*<space|0.17em>K<around|(|0|)><rsup|2>|2*\<theta\><rprime|'><around|(|t|)>><eq-number>>>>>
+      </align>
+
+      <item>Substitute <eqref|eqZvariance> and <eqref|eqdetcomputation> into
+      <eqref|eqKRapplication>:
+
+      <\align>
+        <tformat|<table|<row|<cell|<label|eqKRsubstitution>\<bbb-E\><around|[|N<rsub|<around|[|0,T|]>>|]>>|<cell|=<big|int><rsub|0><rsup|T><sqrt|<frac|\<theta\><rprime|'><around|(|t|)><rsup|3>*<space|0.17em>K<around|(|0|)>*<space|0.17em>K<rprime|''><around|(|0|)>-<frac|\<theta\><rprime|''><around|(|t|)><rsup|2>*<space|0.17em>K<around|(|0|)><rsup|2>|2*\<theta\><rprime|'><around|(|t|)>>|2*\<pi\>*<space|0.17em>\<theta\><rprime|'><around|(|t|)>*<space|0.17em>K<around|(|0|)>>>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|T><sqrt|<frac|\<theta\><rprime|'><around|(|t|)><rsup|2>*<space|0.17em>K<rprime|''><around|(|0|)>-<frac|\<theta\><rprime|''><around|(|t|)><rsup|2>*<space|0.17em>K<around|(|0|)>|2*\<theta\><rprime|'><around|(|t|)><rsup|2>>|2*\<pi\>>>*<space|0.17em>d*t<eq-number>>>>>
+      </align>
+
+      <item>For <math|\<theta\><rprime|''><around|(|t|)>=0> (linear time
+      change), <eqref|eqKRsubstitution> simplifies to
+
+      <\align>
+        <tformat|<table|<row|<cell|<label|eqlinearsimplification>\<bbb-E\><around|[|N<rsub|<around|[|0,T|]>>|]>>|<cell|=<big|int><rsub|0><rsup|T><sqrt|<frac|\<theta\><rprime|'><around|(|t|)><rsup|2>*<space|0.17em>K<rprime|''><around|(|0|)>|2*\<pi\>>>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<sqrt|<frac|K<rprime|''><around|(|0|)>|2*\<pi\>>>*<big|int><rsub|0><rsup|T>\<theta\><rprime|'><around|(|t|)>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<sqrt|<frac|-K<rprime|''><around|(|0|)>|2*\<pi\>>>*<space|0.17em><around|[|\<theta\><around|(|T|)>-\<theta\><around|(|0|)>|]><eq-number>>>>>
+      </align>
+
+      where we used <math|K<rprime|''><around|(|0|)>\<less\>0> for
+      non-degenerate processes.
+
+      <item>Express <eqref|eqlinearsimplification> in terms of
+      <math|K<around|(|0|)>>:
+
+      <\equation>
+        <label|eqfinalform>\<bbb-E\><around|[|N<rsub|<around|[|0,T|]>>|]>=<sqrt|<frac|-K<rprime|''><around|(|0|)>|2*\<pi\>>>*<space|0.17em><around|[|\<theta\><around|(|T|)>-\<theta\><around|(|0|)>|]>=<frac|1|\<pi\>>*<sqrt|<frac|-K<rprime|''><around|(|0|)>|K<around|(|0|)>>>*<space|0.17em><sqrt|<frac|K<around|(|0|)>|2>>*<space|0.17em><around|[|\<theta\><around|(|T|)>-\<theta\><around|(|0|)>|]>
+      </equation>
+
+      which yields <eqref|eqexpectedzeros>.
+    </enumerate>
+  </proof>
 </body>
 
 <\initial>
@@ -928,6 +1049,21 @@
     <associate|def:cramer|<tuple|6|3>>
     <associate|def:osc_proc|<tuple|7|3>>
     <associate|def:zeromeasure|<tuple|16|9>>
+    <associate|eqKRapplication|<tuple|90|?>>
+    <associate|eqKRsubstitution|<tuple|7|?>>
+    <associate|eqKZdot|<tuple|93|?>>
+    <associate|eqKZdotdot|<tuple|96|?>>
+    <associate|eqKZdotsimplified|<tuple|94|?>>
+    <associate|eqZcovariance|<tuple|88|?>>
+    <associate|eqZdotcomputation|<tuple|3|?>>
+    <associate|eqZprocess|<tuple|87|?>>
+    <associate|eqZvariance|<tuple|91|?>>
+    <associate|eqdetcomputation|<tuple|6|?>>
+    <associate|eqexpectedzeros|<tuple|89|?>>
+    <associate|eqfinalform|<tuple|100|?>>
+    <associate|eqlinearsimplification|<tuple|8|?>>
+    <associate|eqsecondderivativecomputation|<tuple|5|?>>
+    <associate|eqstationarycov|<tuple|86|?>>
     <associate|labeldef:Hmu|<tuple|18|9>>
     <associate|prop:atomic|<tuple|19|9>>
     <associate|prop:conjugation|<tuple|15|8>>
@@ -943,6 +1079,7 @@
     <associate|thm:paths_loc|<tuple|5|2>>
     <associate|thm:realvaluedness|<tuple|8|4>>
     <associate|thm:spectrum|<tuple|21|10>>
+    <associate|thmexpectedzerocount|<tuple|23|?>>
   </collection>
 </references>
 

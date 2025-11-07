@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|article|boring-white|framed-theorems>>
+<style|<tuple|article|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Unitary Time Changes of Stationary Processes Yield
@@ -10,20 +10,22 @@
   <\abstract>
     A unitary time-change operator <math|U<rsub|\<theta\>>> is constructed
     for absolutely continuous, strictly increasing time reparametrizations
-    <math|\<theta\>>, acting on functions that are square-integrable over
-    compact sets. Applying <math|U<rsub|\<theta\>>> to the Cramï¿½r spectral
-    representation of a stationary process yields an oscillatory process in
-    the sense of Priestley with oscillatory function
-    <math|\<varphi\><rsub|t><around|(|\<lambda\>|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>>
-    and evolutionary spectrum <math|d*F<rsub|t><around|(|\<lambda\>|)>=<wide|\<theta\>|\<dot\>><around|(|t|)>*d*F<around|(|\<lambda\>|)>>.
-    It is proved that sample paths of any non-degenerate second-order
-    stationary process lie in <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>,
-    making the operator applicable to typical realizations. A
+    <math|\<theta\>>, acting on functions that are locally
+    square-integrable(meaning over compact sets). Applying
+    <math|U<rsub|\<theta\>>> to the Cramér spectral representation of a
+    stationary process yields an oscillatory process in the sense of
+    Priestley with oscillatory function <math|\<varphi\><rsub|t><around|(|\<lambda\>|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>>,
+    evolutionary spectrum <math|d*F<rsub|t><around|(|\<lambda\>|)>=<wide|\<theta\>|\<dot\>><around|(|t|)>*d*F<around|(|\<lambda\>|)>>
+    and expected zero-counting function <math|\<bbb-E\><around|[|N<rsub|<around|[|0,T|]>>|]>=<sqrt|-<wide|K|\<ddot\>><around|(|0|)>>*<space|0.17em><around|[|\<theta\><around|(|T|)>-\<theta\><around|(|0|)>|]><with|font-series|bold|>>.
+    The sample paths of any non-degenerate second-order stationary process
+    are locally square integrable, making the unitary time-change operator
+    <math|U<rsub|\<theta\>>> applicable to typical realizations. A
     zero-localization measure <math|d*\<mu\><around|(|t|)>=\<delta\><around|(|Z<around|(|t|)>|)><around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*d*t>
     induces a Hilbert space <math|L<rsup|2><around|(|\<mu\>|)>> on the zero
-    set of an oscillatory process <math|Z>, and the multiplication operator
-    <math|<around|(|L*f|)><around|(|t|)>=t*f<around|(|t|)>> has simple pure
-    point spectrum equal to the zero crossing set of <math|Z>.
+    set of each oscillatory process realization <math|Z<around*|(|t|)>>, and
+    the multiplication operator <math|<around|(|L*f|)><around|(|t|)>=t*f<around|(|t|)>>
+    has simple pure point spectrum equal to the zero crossing set of
+    <math|Z>.
   </abstract>
 
   <\table-of-contents|toc>
@@ -51,7 +53,7 @@
     Time-Changed Stationary Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-6><vspace|0.5fn>
 
-    <with|par-left|1tab|2.1<space|2spc>Unitary time-change operator
+    <with|par-left|1tab|2.1<space|2spc>Unitary Time-Change Operator
     <with|mode|math|U<rsub|\<theta\>>*f> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-7>>
 
@@ -75,6 +77,15 @@
     <with|par-left|1tab|3.1<space|2spc>The Kac-Rice Formula For The Expected
     Zero Counting Function <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-12>>
+
+    <with|par-left|2tab|3.1.1<space|2spc>The Expected Zero Counting Function
+    for Unitarily Time-Changed Stationary Processes
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-13>>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-14><vspace|0.5fn>
   </table-of-contents>
 
   <section|Gaussian Processes>
@@ -274,7 +285,8 @@
   <subsection|Stationary processes>
 
   <\definition>
-    <label|def:cramer><with|font-series|bold|[Cramï¿½r representation]> A
+    <label|def:cramer><with|font-series|bold|[Cramér spectral
+    representation]><cite|stationaryAndRelatedStochasticProcesses> A
     zero-mean stationary process <math|X> with spectral measure <math|F>
     admits the sample path representation
 
@@ -292,8 +304,9 @@
   <subsection|Oscillatory Processes><label|sec:oscillatory>
 
   <\definition>
-    <label|def:osc_proc><with|font-series|bold|[Oscillatory process]> Let
-    <math|F> be a finite nonnegative Borel measure on <math|\<bbb-R\>>. Let
+    <label|def:osc_proc><with|font-series|bold|[Oscillatory
+    process]<cite|evolutionarySpectraAndNonStationaryProcesses>> Let <math|F>
+    be a finite nonnegative Borel measure on <math|\<bbb-R\>>. Let
 
     <\equation>
       <label|eq:gain_L2>A<rsub|t>\<in\>L<rsup|2><around|(|F|)><space|1em>\<forall\>t\<in\>\<bbb-R\>
@@ -436,8 +449,9 @@
   </proof>
 
   <\theorem>
-    <label|thm:existence_osc><with|font-series|bold|[Existence]> Let <math|F>
-    be an absolutely continuous spectral measure and the gain function
+    <label|thm:existence_osc><with|font-series|bold|[Existence of Oscillatory
+    Processes]> Let <math|F> be an absolutely continuous spectral measure and
+    the gain function
 
     <\equation>
       <label|eq:gain_condition>A<rsub|t><around|(|\<lambda\>|)>\<in\>L<rsup|2><around|(|F|)><space|1em>\<forall\>t\<in\>\<bbb-R\>
@@ -580,16 +594,20 @@
   <section|Unitarily Time-Changed Stationary
   Processes><label|sec:stationary_timechange>
 
-  <subsection|Unitary time-change operator <math|U<rsub|\<theta\>>*f>>
+  <subsection|Unitary Time-Change Operator <math|U<rsub|\<theta\>>*f>>
 
   <\theorem>
     <label|thm:local_unitarity><with|font-series|bold|[Unitary time-change
     and local unitarity]> Let the time-scaling function
     <math|\<theta\>:\<bbb-R\>\<to\>\<bbb-R\>> be absolutely continuous,
-    strictly increasing, and bijective, with
-    <math|<wide|\<theta\>|\<dot\>><around|(|t|)>\<gtr\>0> almost everywhere
-    and <math|<wide|\<theta\>|\<dot\>><around|(|t|)>=0> only on sets of
-    Lebesgue measure zero. For <math|f> measurable, define
+    strictly increasing, and bijective, with\ 
+
+    <\equation>
+      <wide|\<theta\>|\<dot\>><around|(|t|)>\<gtr\>0<label|pd>
+    </equation>
+
+    \ almost everywhere and <math|<wide|\<theta\>|\<dot\>><around|(|t|)>=0>
+    only on sets of Lebesgue measure zero. For <math|f> measurable, define
 
     <\equation>
       <label|eq:U_theta_def><around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*f<around|(|\<theta\><around|(|t|)>|)>
@@ -874,7 +892,8 @@
 
   <\proof>
     <\enumerate>
-      <item>From the Cramï¿½r representation <eqref|eq:cramer_representation>,
+      <item>From the Cramï¿½r representation
+      <eqref|eq:cramer_representation>,
 
       <\equation>
         <label|eq:X_cramer>X<around|(|u|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*u>*d*\<Phi\><around|(|\<lambda\>|)>
@@ -1557,13 +1576,111 @@
     </enumerate>
   </proof>
 
+  <subsubsection|The Expected Zero Counting Function for Unitarily
+  Time-Changed Stationary Processes>
+
   \;
+
+  <\theorem>
+    <dueto|Expected Zero-Counting Function Of The Oscillatory Process
+    Subclass of Unitarily Time-Changed Stationary
+    Processes><label|thmexpectedzerocount>Let
+    <math|\<theta\>:\<bbb-R\>\<to\>\<bbb-R\>> be absolutely continuous,
+    strictly increasing, and bijective with
+    <math|<wide|\<theta\>|\<dot\>><around|(|t|)>\<gtr\>0> almost everywhere.
+    Let <math|X> be a centered stationary Gaussian process with spectral
+    measure <math|F> and covariance function
+
+    <\equation>
+      <label|eqstationarycov>K<around|(|h|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<omega\>*h>*<space|0.17em>d*F<around|(|\<omega\>|)>
+    </equation>
+
+    twice differentiable at <math|h=0>. Define the unitarily time-changed
+    process
+
+    <\equation>
+      <label|eqZprocess>Z<around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>X<around|(|\<theta\><around|(|t|)>|)>
+    </equation>
+
+    Then <math|Z> is a centered Gaussian process with covariance
+
+    <\equation>
+      <label|eqZcovariance>K<rsub|Z><around|(|t,s|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)><wide|\<theta\>|\<dot\>><around|(|s|)>>*<space|0.17em>K*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>
+    </equation>
+
+    and the expected number of zeros in <math|<around|[|0,T|]>> is
+
+    <\equation>
+      <label|eqexpectedzeros>\<bbb-E\><around|[|N<rsub|<around|[|0,T|]>>|]>=<sqrt|<frac|-<wide|K|\<ddot\>><around|(|0|)>|\<pi\>*K<around|(|0|)>>>*<space|0.17em><around|[|\<theta\><around|(|T|)>-\<theta\><around|(|0|)>|]>
+    </equation>
+  </theorem>
+
+  <\proof>
+    <\enumerate>
+      <item>By the Kac-Rice formula:
+
+      <\equation>
+        <label|eqkacrice>\<bbb-E\><around|[|N<rsub|<around|[|0,T|]>>|]>=<big|int><rsub|0><rsup|T><sqrt|-lim<rsub|s\<to\>t>
+        <frac|\<partial\><rsup|2>|\<partial\>*s*\<partial\>*t>*K<rsub|Z><around|(|s,t|)>>*<space|0.17em>d*t
+      </equation>
+
+      <item>Differentiate <eqref|eqZcovariance> with respect to <math|s>:
+
+      <\equation>
+        <label|eqfirstpartial><frac|\<partial\>|\<partial\>*s>*K<rsub|Z><around|(|s,t|)>=<frac|<wide|\<theta\>|\<ddot\>><around|(|s|)>|2*<sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)><wide|\<theta\>|\<dot\>><around|(|t|)>>>*<space|0.17em>K*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>-<wide|\<theta\>|\<dot\>><around|(|s|)><sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)><wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em><wide|K|\<dot\>>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>
+      </equation>
+
+      <item>Differentiate <eqref|eqfirstpartial> with respect to <math|t> and
+      take <math|s\<to\>t>. Since <math|<wide|K|\<dot\>><around|(|0|)>=0> by
+      stationarity:
+
+      <\equation>
+        <label|eqlimit>lim<rsub|s\<to\>t>
+        <frac|\<partial\><rsup|2>|\<partial\>*s*\<partial\>*t>*K<rsub|Z><around|(|s,t|)>=-<wide|\<theta\>|\<dot\>><around|(|t|)><rsup|2>*<wide|K|\<ddot\>><around|(|0|)>
+      </equation>
+
+      <item>Substitute <eqref|eqlimit> into <eqref|eqkacrice>:
+
+      <\equation>
+        <label|eqsubstitute>\<bbb-E\><around|[|N<rsub|<around|[|0,T|]>>|]>=<big|int><rsub|0><rsup|T><sqrt|-<around|(|-<wide|\<theta\>|\<dot\>><around|(|t|)><rsup|2>*<wide|K|\<ddot\>><around|(|0|)>|)>>*<space|0.17em>d*t=<big|int><rsub|0><rsup|T><sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)><rsup|2>*<around|(|-<wide|K|\<ddot\>><around|(|0|)>|)>>*<space|0.17em>d*t
+      </equation>
+
+      <item>Since <math|<wide|\<theta\>|\<dot\>><around|(|t|)>\<gtr\>0> and
+      <math|<wide|K|\<ddot\>><around|(|0|)>\<less\>0>:
+
+      <\equation>
+        <label|eqsimplify>\<bbb-E\><around|[|N<rsub|<around|[|0,T|]>>|]>=<big|int><rsub|0><rsup|T><wide|\<theta\>|\<dot\>><around|(|t|)><sqrt|-<wide|K|\<ddot\>><around|(|0|)>>*<space|0.17em>d*t=<sqrt|-<wide|K|\<ddot\>><around|(|0|)>>*<big|int><rsub|0><rsup|T><wide|\<theta\>|\<dot\>><around|(|t|)>*<space|0.17em>d*t
+      </equation>
+
+      <item>Evaluate the integral:
+
+      <\equation>
+        <label|eqfinal>\<bbb-E\><around|[|N<rsub|<around|[|0,T|]>>|]>=<sqrt|-<wide|K|\<ddot\>><around|(|0|)>>*<space|0.17em><around|[|\<theta\><around|(|T|)>-\<theta\><around|(|0|)>|]>
+      </equation>
+    </enumerate>
+  </proof>
+
+  <\bibliography|bib|tm-plain|refs>
+    <\bib-list|2>
+      <bibitem*|1><label|bib-stationaryAndRelatedStochasticProcesses>Harald
+      Cramér<localize| and >M.R.<nbsp>Leadbetter.
+      <newblock><with|font-shape|italic|Stationary and Related Processes:
+      Sample Function Properties and Their Applications>. <newblock>Wiley
+      Series in Probability and Mathematical Statistics. 1967.<newblock>
+
+      <bibitem*|2><label|bib-evolutionarySpectraAndNonStationaryProcesses>Maurice<nbsp>B
+      Priestley. <newblock>Evolutionary spectra and non-stationary processes.
+      <newblock><with|font-shape|italic|Journal of the Royal Statistical
+      Society: Series B (Methodological)>, 27(2):204\U229, 1965.<newblock>
+    </bib-list>
+  </bibliography>
 
   \;
 </body>
 
 <\initial>
   <\collection>
+    <associate|magnification|1>
     <associate|page-height|auto>
     <associate|page-medium|paper>
     <associate|page-type|letter>
@@ -1573,74 +1690,244 @@
 
 <\references>
   <\collection>
-    <associate|U|<tuple|32|5>>
-    <associate|UTCcovar|<tuple|56|9>>
-    <associate|Z|<tuple|43|7>>
+    <associate|UTCcovar|<tuple|93|9>>
     <associate|auto-1|<tuple|1|1>>
-    <associate|auto-10|<tuple|2.3|10>>
-    <associate|auto-11|<tuple|3|11>>
-    <associate|auto-12|<tuple|3.1|11>>
-    <associate|auto-13|<tuple|3.2|12>>
-    <associate|auto-14|<tuple|3.3|13>>
-    <associate|auto-15|<tuple|3.4|14>>
-    <associate|auto-16|<tuple|123|16>>
+    <associate|auto-10|<tuple|2.4|11>>
+    <associate|auto-11|<tuple|3|12>>
+    <associate|auto-12|<tuple|3.1|15>>
+    <associate|auto-13|<tuple|3.1.1|16>>
+    <associate|auto-14|<tuple|188|17>>
     <associate|auto-2|<tuple|1.1|1>>
     <associate|auto-3|<tuple|1.2|2>>
     <associate|auto-4|<tuple|1.3|3>>
     <associate|auto-5|<tuple|1.4|3>>
-    <associate|auto-6|<tuple|2|5>>
-    <associate|auto-7|<tuple|2.1|5>>
-    <associate|auto-8|<tuple|2.1.1|7>>
-    <associate|auto-9|<tuple|2.2|9>>
-    <associate|bib-evolutionarySpectraAndNonStationaryProcesses|<tuple|2|16>>
-    <associate|bib-stationaryAndRelatedStochasticProcesses|<tuple|1|16>>
-    <associate|cor:evol_spec|<tuple|15|10>>
-    <associate|covar|<tuple|19|3>>
-    <associate|def:L|<tuple|21|13>>
+    <associate|auto-6|<tuple|2|6>>
+    <associate|auto-7|<tuple|2.1|6>>
+    <associate|auto-8|<tuple|2.2|8>>
+    <associate|auto-9|<tuple|2.3|9>>
+    <associate|bib-evolutionarySpectraAndNonStationaryProcesses|<tuple|2|17>>
+    <associate|bib-stationaryAndRelatedStochasticProcesses|<tuple|1|17>>
+    <associate|cor:evol_spec|<tuple|13|10>>
+    <associate|def:Hmu|<tuple|17|13>>
+    <associate|def:L|<tuple|19|14>>
     <associate|def:L2loc|<tuple|3|2>>
-    <associate|def:Utheta|<tuple|10|5>>
+    <associate|def:canonical_metric|<tuple|2|2>>
     <associate|def:cramer|<tuple|6|3>>
+    <associate|def:gaussian_process|<tuple|1|1>>
     <associate|def:osc_proc|<tuple|7|3>>
-    <associate|def:regularity|<tuple|23|13>>
-    <associate|def:zeromeasure|<tuple|17|11>>
-    <associate|eq:covariance_def|<tuple|117|15>>
-    <associate|eq:expectation|<tuple|108|15>>
-    <associate|eq:expected_zeros|<tuple|118|15>>
-    <associate|eq:kac_rice|<tuple|103|14>>
-    <associate|eq:kac_rice_formula|<tuple|120|16>>
-    <associate|eq:limit_mixed_partial|<tuple|122|16>>
-    <associate|eq:mixed_partial|<tuple|121|16>>
-    <associate|eq:mixed_partial_continued|<tuple|121|16>>
-    <associate|eq:substituted_kac_rice|<tuple|123|16>>
-    <associate|eq:time_changed_cov|<tuple|119|16>>
-    <associate|h|<tuple|44|7>>
-    <associate|item:composition|<tuple|3|7>>
-    <associate|item:forward|<tuple|1|7>>
-    <associate|item:inverse|<tuple|2|7>>
-    <associate|labeldef:Hmu|<tuple|19|12>>
-    <associate|lem:delta|<tuple|24|14>>
-    <associate|of|<tuple|16|3>>
-    <associate|prop:atomic|<tuple|20|12>>
-    <associate|prop:conjugation|<tuple|16|10>>
-    <associate|prop:inverse|<tuple|11|5>>
-    <associate|sec:HP|<tuple|3|11>>
+    <associate|def:zeromeasure|<tuple|15|12>>
+    <associate|eq:A_t_explicit|<tuple|101|10>>
+    <associate|eq:A_t_magnitude|<tuple|112|10>>
+    <associate|eq:A_t_magnitude_start|<tuple|110|10>>
+    <associate|eq:H_isomorphism|<tuple|143|13>>
+    <associate|eq:K_Z_dotZ|<tuple|169|15>>
+    <associate|eq:K_def|<tuple|115|11>>
+    <associate|eq:K_dotZ|<tuple|168|15>>
+    <associate|eq:K_finite|<tuple|14|2>>
+    <associate|eq:K_integral_bound|<tuple|13|2>>
+    <associate|eq:K_theta_def|<tuple|116|11>>
+    <associate|eq:K_theta_recognition|<tuple|126|11>>
+    <associate|eq:K_tt|<tuple|167|15>>
+    <associate|eq:L2_norm_mu|<tuple|145|13>>
+    <associate|eq:L2_norm_simple|<tuple|49|5>>
+    <associate|eq:L_action|<tuple|153|14>>
+    <associate|eq:L_basis|<tuple|161|14>>
+    <associate|eq:L_def|<tuple|152|14>>
+    <associate|eq:L_domain|<tuple|154|14>>
+    <associate|eq:Lf_g_inner|<tuple|156|14>>
+    <associate|eq:Lf_substitution|<tuple|157|14>>
+    <associate|eq:MCT_application|<tuple|18|3>>
+    <associate|eq:R_Z_factored|<tuple|105|10>>
+    <associate|eq:R_Z_final|<tuple|107|10>>
+    <associate|eq:R_Z_start|<tuple|103|10>>
+    <associate|eq:R_Z_substituted|<tuple|104|10>>
+    <associate|eq:T_K_application|<tuple|119|11>>
+    <associate|eq:T_K_def|<tuple|114|11>>
+    <associate|eq:U_inv_application|<tuple|120|11>>
+    <associate|eq:U_theta_def|<tuple|59|6>>
+    <associate|eq:U_theta_inverse|<tuple|60|6>>
+    <associate|eq:Utheta_norm_start|<tuple|62|6>>
+    <associate|eq:X_covariance|<tuple|106|10>>
+    <associate|eq:X_cramer|<tuple|94|9>>
+    <associate|eq:X_theta_t|<tuple|95|9>>
+    <associate|eq:Yab_def|<tuple|5|2>>
+    <associate|eq:Yab_finite_expectation|<tuple|8|2>>
+    <associate|eq:Yab_finite_probability|<tuple|10|2>>
+    <associate|eq:Z_at_inverse|<tuple|87|8>>
+    <associate|eq:Z_conjugate|<tuple|32|4>>
+    <associate|eq:Z_conjugate_substituted|<tuple|34|4>>
+    <associate|eq:Z_def|<tuple|90|9>>
+    <associate|eq:Z_expanded|<tuple|96|9>>
+    <associate|eq:Z_integral|<tuple|97|9>>
+    <associate|eq:Z_oscillatory_form|<tuple|99|10>>
+    <associate|eq:Z_representation|<tuple|31|4>>
+    <associate|eq:Z_transformation|<tuple|78|8>>
+    <associate|eq:Z_well_defined|<tuple|53|6>>
+    <associate|eq:after_substitution|<tuple|65|7>>
+    <associate|eq:apply_forward_def|<tuple|68|7>>
+    <associate|eq:apply_inverse_def|<tuple|67|7>>
+    <associate|eq:apply_inverse_second|<tuple|73|7>>
+    <associate|eq:basis_expansion|<tuple|151|14>>
+    <associate|eq:basis_inner_product|<tuple|150|13>>
+    <associate|eq:basis_vectors|<tuple|144|13>>
+    <associate|eq:both_inverses|<tuple|77|8>>
+    <associate|eq:cancel_derivative|<tuple|138|12>>
+    <associate|eq:change_of_variables|<tuple|35|4>>
+    <associate|eq:change_var_differential|<tuple|64|7>>
+    <associate|eq:change_var_s|<tuple|122|11>>
+    <associate|eq:compact_bounded|<tuple|11|2>>
+    <associate|eq:composition_1|<tuple|66|7>>
+    <associate|eq:composition_2|<tuple|72|7>>
+    <associate|eq:conjugate_t|<tuple|158|14>>
+    <associate|eq:conjugation|<tuple|117|11>>
+    <associate|eq:conjugation_expand|<tuple|118|11>>
+    <associate|eq:covariance_Z|<tuple|93|9>>
+    <associate|eq:covariance_computation|<tuple|54|6>>
+    <associate|eq:covariance_final|<tuple|57|6>>
+    <associate|eq:covariance_kernel|<tuple|1|1>>
+    <associate|eq:covariance_matrix|<tuple|170|15>>
+    <associate|eq:cramer_representation|<tuple|20|3>>
+    <associate|eq:delta_Z_decomp|<tuple|136|12>>
+    <associate|eq:delta_change_var|<tuple|132|12>>
+    <associate|eq:delta_decomposition|<tuple|130|12>>
+    <associate|eq:delta_equality|<tuple|135|12>>
+    <associate|eq:density_at_zero|<tuple|174|15>>
+    <associate|eq:density_integral|<tuple|177|16>>
+    <associate|eq:density_simple|<tuple|51|5>>
+    <associate|eq:determinant|<tuple|171|15>>
+    <associate|eq:eigenvalue_equation|<tuple|163|14>>
+    <associate|eq:evol_spec_def|<tuple|109|10>>
+    <associate|eq:evol_spec_final|<tuple|113|10>>
+    <associate|eq:evolutionary_spectrum|<tuple|108|10>>
+    <associate|eq:exp_magnitude|<tuple|111|10>>
+    <associate|eq:expand_square|<tuple|63|7>>
+    <associate|eq:expectation_Yab|<tuple|7|2>>
+    <associate|eq:expectation_divergence|<tuple|17|3>>
+    <associate|eq:expectation_growth|<tuple|16|3>>
+    <associate|eq:f_Lg_inner|<tuple|159|14>>
+    <associate|eq:factor_inside|<tuple|125|11>>
+    <associate|eq:filter_identity|<tuple|81|8>>
+    <associate|eq:final_conjugation|<tuple|127|11>>
+    <associate|eq:final_density|<tuple|178|16>>
+    <associate|eq:final_inverse|<tuple|89|9>>
+    <associate|eq:finite_variance|<tuple|4|2>>
+    <associate|eq:forward_integral|<tuple|82|8>>
+    <associate|eq:forward_kernel|<tuple|79|8>>
+    <associate|eq:forward_substitution|<tuple|83|8>>
+    <associate|eq:fubini_stochastic|<tuple|55|6>>
+    <associate|eq:full_expression|<tuple|124|11>>
+    <associate|eq:gain_L2|<tuple|22|3>>
+    <associate|eq:gain_condition|<tuple|40|5>>
+    <associate|eq:gain_equality|<tuple|37|4>>
+    <associate|eq:gain_function_Z|<tuple|92|9>>
+    <associate|eq:gain_symmetry|<tuple|28|4>>
+    <associate|eq:gaussian_integral|<tuple|176|15>>
+    <associate|eq:global_divergence|<tuple|19|3>>
+    <associate|eq:inner_product_mu|<tuple|141|13>>
+    <associate|eq:integral_simple|<tuple|44|5>>
+    <associate|eq:integral_substitution|<tuple|121|11>>
+    <associate|eq:integrand_equality|<tuple|36|4>>
+    <associate|eq:integrate_v|<tuple|175|15>>
+    <associate|eq:interchange_sum_integral|<tuple|134|12>>
+    <associate|eq:interval_N_finite|<tuple|12|2>>
+    <associate|eq:inverse_integral|<tuple|85|8>>
+    <associate|eq:inverse_kernel|<tuple|80|8>>
+    <associate|eq:isometry_Psi|<tuple|149|13>>
+    <associate|eq:isometry_established|<tuple|50|5>>
+    <associate|eq:isometry_simple|<tuple|48|5>>
+    <associate|eq:isomorphism_map|<tuple|148|13>>
+    <associate|eq:joint_density|<tuple|173|15>>
+    <associate|eq:kac_rice|<tuple|166|15>>
+    <associate|eq:kac_rice_general|<tuple|172|15>>
+    <associate|eq:left_inverse|<tuple|71|7>>
+    <associate|eq:linearity_expectation|<tuple|46|5>>
+    <associate|eq:local_isometry|<tuple|61|6>>
+    <associate|eq:markov_inequality|<tuple|9|2>>
+    <associate|eq:mu_atomic|<tuple|131|12>>
+    <associate|eq:mu_atomic_assumption|<tuple|142|13>>
+    <associate|eq:mu_atomic_final|<tuple|140|13>>
+    <associate|eq:mu_def|<tuple|129|12>>
+    <associate|eq:mu_substitution|<tuple|137|12>>
+    <associate|eq:mu_sum|<tuple|139|13>>
+    <associate|eq:norm_equivalence|<tuple|147|13>>
+    <associate|eq:norm_sum|<tuple|146|13>>
+    <associate|eq:orthogonality_application|<tuple|47|5>>
+    <associate|eq:orthogonality_integral|<tuple|56|6>>
+    <associate|eq:orthogonality_phi|<tuple|25|3>>
+    <associate|eq:osc_func_conjugate|<tuple|39|4>>
+    <associate|eq:osc_func_def|<tuple|27|4>>
+    <associate|eq:osc_func_neg|<tuple|38|4>>
+    <associate|eq:osc_symmetry|<tuple|29|4>>
+    <associate|eq:oscillatory_covariance|<tuple|26|3>>
+    <associate|eq:oscillatory_function|<tuple|23|3>>
+    <associate|eq:oscillatory_function_Z|<tuple|91|9>>
+    <associate|eq:oscillatory_process|<tuple|24|3>>
+    <associate|eq:oscillatory_well_defined|<tuple|42|5>>
+    <associate|eq:phi_symmetry|<tuple|33|4>>
+    <associate|eq:real_valued_condition|<tuple|30|4>>
+    <associate|eq:right_inverse|<tuple|76|7>>
+    <associate|eq:sample_path_L2loc|<tuple|15|3>>
+    <associate|eq:second_moment_simple|<tuple|45|5>>
+    <associate|eq:self_adjoint|<tuple|160|14>>
+    <associate|eq:sift_basis|<tuple|162|14>>
+    <associate|eq:sifting_forward|<tuple|84|8>>
+    <associate|eq:sifting_inverse|<tuple|86|8>>
+    <associate|eq:simple_function|<tuple|43|5>>
+    <associate|eq:simple_zeros|<tuple|128|12>>
+    <associate|eq:simplify_composition|<tuple|70|7>>
+    <associate|eq:simplify_integral|<tuple|123|11>>
+    <associate|eq:simplify_second|<tuple|75|7>>
+    <associate|eq:spectrum|<tuple|155|14>>
+    <associate|eq:spectrum_closure|<tuple|165|15>>
+    <associate|eq:spectrum_result|<tuple|164|15>>
+    <associate|eq:stationary_covariance|<tuple|21|3>>
+    <associate|eq:sum_form|<tuple|133|12>>
+    <associate|eq:theta_composition|<tuple|74|7>>
+    <associate|eq:theta_composition_Y|<tuple|88|9>>
+    <associate|eq:theta_inverse_composition|<tuple|69|7>>
+    <associate|eq:time_dependent_spectrum|<tuple|41|5>>
+    <associate|eq:tonelli_application|<tuple|6|2>>
+    <associate|eq:varphi_L2|<tuple|52|6>>
+    <associate|eq:varphi_as_gain|<tuple|102|10>>
+    <associate|eq:varphi_factored|<tuple|100|10>>
+    <associate|eq:varphi_t_explicit|<tuple|98|9>>
+    <associate|eqZcovariance|<tuple|181|16>>
+    <associate|eqZprocess|<tuple|180|16>>
+    <associate|eqexpectedzeros|<tuple|182|16>>
+    <associate|eqfinal|<tuple|188|17>>
+    <associate|eqfirstpartial|<tuple|184|16>>
+    <associate|eqkacrice|<tuple|183|16>>
+    <associate|eqlimit|<tuple|185|16>>
+    <associate|eqsimplify|<tuple|187|16>>
+    <associate|eqstationarycov|<tuple|179|16>>
+    <associate|eqsubstitute|<tuple|186|16>>
+    <associate|pd|<tuple|58|6>>
+    <associate|prop:atomic|<tuple|18|13>>
+    <associate|prop:conjugation|<tuple|14|11>>
+    <associate|rem:L2loc_properties|<tuple|4|2>>
+    <associate|sec:HP|<tuple|3|12>>
     <associate|sec:oscillatory|<tuple|1.4|3>>
-    <associate|sec:stationary_timechange|<tuple|2|5>>
-    <associate|thm:Utheta_to_osc|<tuple|14|9>>
-    <associate|thm:atomic|<tuple|18|11>>
-    <associate|thm:existence_osc|<tuple|9|4>>
-    <associate|thm:expected_zero_counting|<tuple|26|15>>
-    <associate|thm:inverse-filter|<tuple|13|7>>
-    <associate|thm:kac_rice|<tuple|25|14>>
-    <associate|thm:local_unitarity|<tuple|12|6>>
+    <associate|sec:stationary_timechange|<tuple|2|6>>
+    <associate|thm:Utheta_to_osc|<tuple|12|9>>
+    <associate|thm:atomicity|<tuple|16|12>>
+    <associate|thm:existence_osc|<tuple|9|5>>
+    <associate|thm:inverse_filter|<tuple|11|8>>
+    <associate|thm:kac_rice|<tuple|21|15>>
+    <associate|thm:local_unitarity|<tuple|10|6>>
     <associate|thm:paths_loc|<tuple|5|2>>
     <associate|thm:realvaluedness|<tuple|8|4>>
-    <associate|thm:spectrum|<tuple|22|13>>
+    <associate|thm:spectrum|<tuple|20|14>>
+    <associate|thmexpectedzerocount|<tuple|22|16>>
   </collection>
 </references>
 
 <\auxiliary>
   <\collection>
+    <\associate|bib>
+      stationaryAndRelatedStochasticProcesses
+
+      evolutionarySpectraAndNonStationaryProcesses
+    </associate>
     <\associate|toc>
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Gaussian
       Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
@@ -1666,7 +1953,7 @@
       Time-Changed Stationary Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-6><vspace|0.5fn>
 
-      <with|par-left|<quote|1tab>|2.1<space|2spc>Unitary time-change operator
+      <with|par-left|<quote|1tab>|2.1<space|2spc>Unitary Time-Change Operator
       <with|mode|<quote|math>|U<rsub|\<theta\>>*f>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-7>>
@@ -1692,6 +1979,15 @@
       <with|par-left|<quote|1tab>|3.1<space|2spc>The Kac-Rice Formula For The
       Expected Zero Counting Function <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-12>>
+
+      <with|par-left|<quote|2tab>|3.1.1<space|2spc>The Expected Zero Counting
+      Function for Unitarily Time-Changed Stationary Processes
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-13>>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-14><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>

@@ -5,8 +5,10 @@
 
 %%%%%%%%%% Start TeXmacs macros
 \newcommand{\assign}{:=}
+\newcommand{\tmmathbf}[1]{\ensuremath{\boldsymbol{#1}}}
 \newcommand{\tmop}[1]{\ensuremath{\operatorname{#1}}}
 \newcommand{\tmtextbf}[1]{\text{{\bfseries{#1}}}}
+\newcommand{\tmtextit}[1]{\text{{\itshape{#1}}}}
 \newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
 \newtheorem{corollary}{Corollary}
 \newtheorem{definition}{Definition}
@@ -31,18 +33,21 @@
 \begin{abstract}
   A unitary time-change operator $U_{\theta}$ is constructed for absolutely
   continuous, strictly increasing time reparametrizations $\theta$, acting on
-  functions that are square-integrable over compact sets. Applying
-  $U_{\theta}$ to the Cram{\'e}r spectral representation of a stationary
-  process yields an oscillatory process in the sense of Priestley with
-  oscillatory function $\varphi_t (\lambda) = \sqrt{\dot{\theta} (t)} e^{i
-  \lambda \theta (t)}$ and evolutionary spectrum $dF_t (\lambda) =
-  \dot{\theta} (t) dF (\lambda)$. It is proved that sample paths of any
-  non-degenerate second-order stationary process lie in $L^2_{\tmop{loc}}
-  (\mathbb{R})$, making the operator applicable to typical realizations. A
-  zero-localization measure $d \mu (t) = \delta (Z (t)) | \dot{Z} (t) | dt$
-  induces a Hilbert space $L^2 (\mu)$ on the zero set of an oscillatory
-  process $Z$, and the multiplication operator $(Lf) (t) = tf (t)$ has simple
-  pure point spectrum equal to the zero crossing set of $Z$.
+  functions that are locally square-integrable(meaning over compact sets).
+  Applying $U_{\theta}$ to the Cram{\'e}r spectral representation of a
+  stationary process yields an oscillatory process in the sense of Priestley
+  with oscillatory function $\varphi_t (\lambda) = \sqrt{\dot{\theta} (t)}
+  e^{i \lambda \theta (t)}$, evolutionary spectrum $dF_t (\lambda) =
+  \dot{\theta} (t) dF (\lambda)$ and expected zero-counting function
+  $\mathbb{E} [N_{[0, T]}] = \sqrt{- \ddot{K} (0)}  \hspace{0.17em} [\theta
+  (T) - \theta (0)] \tmmathbf{}$. The sample paths of any non-degenerate
+  second-order stationary process are locally square integrable, making the
+  unitary time-change operator $U_{\theta}$ applicable to typical
+  realizations. A zero-localization measure $d \mu (t) = \delta (Z (t)) |
+  \dot{Z} (t) | dt$ induces a Hilbert space $L^2 (\mu)$ on the zero set of
+  each oscillatory process realization $Z (t)$, and the multiplication
+  operator $(Lf) (t) = tf (t)$ has simple pure point spectrum equal to the
+  zero crossing set of $Z$.
 \end{abstract}
 
 {\tableofcontents}
@@ -205,7 +210,8 @@
 \subsection{Stationary processes}
 
 \begin{definition}
-  \label{def:cramer}\tmtextbf{[Cram{\'e}r representation]} A zero-mean
+  \label{def:cramer}\tmtextbf{[Cram{\'e}r spectral
+  representation]}{\cite{stationaryAndRelatedStochasticProcesses}} A zero-mean
   stationary process $X$ with spectral measure $F$ admits the sample path
   representation
   \begin{equation}
@@ -222,8 +228,9 @@
 \subsection{Oscillatory Processes}\label{sec:oscillatory}
 
 \begin{definition}
-  \label{def:osc_proc}\tmtextbf{[Oscillatory process]} Let $F$ be a finite
-  nonnegative Borel measure on $\mathbb{R}$. Let
+  \label{def:osc_proc}\tmtextbf{[Oscillatory
+  process]{\cite{evolutionarySpectraAndNonStationaryProcesses}}} Let $F$ be a
+  finite nonnegative Borel measure on $\mathbb{R}$. Let
   \begin{equation}
     \label{eq:gain_L2} A_t \in L^2 (F) \quad \forall t \in \mathbb{R}
   \end{equation}
@@ -347,8 +354,8 @@
 \end{proof}
 
 \begin{theorem}
-  \label{thm:existence_osc}\tmtextbf{[Existence]} Let $F$ be an absolutely
-  continuous spectral measure and the gain function
+  \label{thm:existence_osc}\tmtextbf{[Existence of Oscillatory Processes]} Let
+  $F$ be an absolutely continuous spectral measure and the gain function
   \begin{equation}
     \label{eq:gain_condition} A_t (\lambda) \in L^2 (F) \quad \forall t \in
     \mathbb{R}
@@ -487,14 +494,18 @@
 \section{Unitarily Time-Changed Stationary
 Processes}\label{sec:stationary_timechange}
 
-\subsection{Unitary time-change operator $U_{\theta} f$}
+\subsection{Unitary Time-Change Operator $U_{\theta} f$}
 
 \begin{theorem}
   \label{thm:local_unitarity}\tmtextbf{[Unitary time-change and local
   unitarity]} Let the time-scaling function $\theta : \mathbb{R} \to
   \mathbb{R}$ be absolutely continuous, strictly increasing, and bijective,
-  with $\dot{\theta} (t) > 0$ almost everywhere and $\dot{\theta} (t) = 0$
-  only on sets of Lebesgue measure zero. For $f$ measurable, define
+  with
+  \begin{equation}
+    \dot{\theta} (t) > 0 \label{pd}
+  \end{equation}
+  almost everywhere and $\dot{\theta} (t) = 0$ only on sets of Lebesgue
+  measure zero. For $f$ measurable, define
   \begin{equation}
     \label{eq:U_theta_def} (U_{\theta} f) (t) = \sqrt{\dot{\theta} (t)} f
     (\theta (t))
@@ -731,15 +742,26 @@ $U_{\theta}$}
   \end{equation}
   and covariance
   \begin{equation}
-    \label{eq:covariance_Z} R_Z (t, s) = \sqrt{\dot{\theta} (t)  \dot{\theta}
-    (s)}  \int_{\mathbb{R}} e^{i \lambda (\theta (t) - \theta (s))} dF
-    (\lambda)
+    \begin{array}{ll}
+      R_Z (t, s) & =\mathbb{E} [Z (t) \overline{Z (s)}]\\
+      & =\mathbb{E} \left[ \sqrt{\dot{\theta} (t)} X (\theta (t))
+      \overline{\sqrt{\dot{\theta} (s)} X (\theta (s))} \right]\\
+      & = \sqrt{\dot{\theta} (t)  \dot{\theta} (s)} \mathbb{E} [X (\theta
+      (t)) \overline{X (\theta (s))}]\\
+      & = \sqrt{\dot{\theta} (t)  \dot{\theta} (s)} R_X  (\theta (t) - \theta
+      (s))\\
+      & = \sqrt{\dot{\theta} (t)  \dot{\theta} (s)}  \int_{\mathbb{R}} e^{i
+      \lambda (\theta (t) - \theta (s))}  \hspace{0.17em} dF (\lambda)
+    \end{array} \label{UTCcovar}  \label{eq:covariance_Z} R_Z (t, s) =
+    \sqrt{\dot{\theta} (t)  \dot{\theta} (s)}  \int_{\mathbb{R}} e^{i \lambda
+    (\theta (t) - \theta (s))} dF (\lambda)
   \end{equation}
 \end{theorem}
 
 \begin{proof}
   \begin{enumerate}
-    \item From the Cram{\'e}r representation \eqref{eq:cramer_representation},
+    \item From the Cram{\"\i}{\textsterling}{\textexclamdown}r representation
+    \eqref{eq:cramer_representation},
     \begin{equation}
       \label{eq:X_cramer} X (u) = \int_{\mathbb{R}} e^{i \lambda u} d \Phi
       (\lambda)
@@ -1323,7 +1345,91 @@ $U_{\theta}$}
   \end{enumerate}
 \end{proof}
 
+\subsubsection{The Expected Zero Counting Function for Unitarily Time-Changed
+Stationary Processes}
+
 \
+
+\begin{theorem}[Expected Zero-Counting Function Of The Oscillatory Process
+Subclass of Unitarily Time-Changed Stationary Processes]
+  \label{thmexpectedzerocount}Let $\theta : \mathbb{R} \to \mathbb{R}$ be
+  absolutely continuous, strictly increasing, and bijective with $\dot{\theta}
+  (t) > 0$ almost everywhere. Let $X$ be a centered stationary Gaussian
+  process with spectral measure $F$ and covariance function
+  \begin{equation}
+    \label{eqstationarycov} K (h) = \int_{\mathbb{R}} e^{i \omega h} 
+    \hspace{0.17em} dF (\omega)
+  \end{equation}
+  twice differentiable at $h = 0$. Define the unitarily time-changed process
+  \begin{equation}
+    \label{eqZprocess} Z (t) = \sqrt{\dot{\theta} (t)}  \hspace{0.17em} X
+    (\theta (t))
+  \end{equation}
+  Then $Z$ is a centered Gaussian process with covariance
+  \begin{equation}
+    \label{eqZcovariance} K_Z (t, s) = \sqrt{\dot{\theta} (t) \dot{\theta}
+    (s)}  \hspace{0.17em} K (\theta (t) - \theta (s))
+  \end{equation}
+  and the expected number of zeros in $[0, T]$ is
+  \begin{equation}
+    \label{eqexpectedzeros} \mathbb{E} [N_{[0, T]}] = \sqrt{\frac{- \ddot{K}
+    (0)}{\pi K (0)}}  \hspace{0.17em} [\theta (T) - \theta (0)]
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  \begin{enumerate}
+    \item By the Kac-Rice formula:
+    \begin{equation}
+      \label{eqkacrice} \mathbb{E} [N_{[0, T]}] = \int_0^T \sqrt{- \lim_{s \to
+      t}  \frac{\partial^2}{\partial s \partial t} K_Z (s, t)} 
+      \hspace{0.17em} dt
+    \end{equation}
+    \item Differentiate \eqref{eqZcovariance} with respect to $s$:
+    \begin{equation}
+      \label{eqfirstpartial} \frac{\partial}{\partial s} K_Z (s, t) =
+      \frac{\ddot{\theta} (s)}{2 \sqrt{\dot{\theta} (s) \dot{\theta} (t)}} 
+      \hspace{0.17em} K (\theta (t) - \theta (s)) - \dot{\theta} (s)
+      \sqrt{\dot{\theta} (s) \dot{\theta} (t)}  \hspace{0.17em} \dot{K} 
+      (\theta (t) - \theta (s))
+    \end{equation}
+    \item Differentiate \eqref{eqfirstpartial} with respect to $t$ and take $s
+    \to t$. Since $\dot{K} (0) = 0$ by stationarity:
+    \begin{equation}
+      \label{eqlimit} \lim_{s \to t}  \frac{\partial^2}{\partial s \partial t}
+      K_Z (s, t) = - \dot{\theta} (t)^2  \ddot{K} (0)
+    \end{equation}
+    \item Substitute \eqref{eqlimit} into \eqref{eqkacrice}:
+    \begin{equation}
+      \label{eqsubstitute} \mathbb{E} [N_{[0, T]}] = \int_0^T \sqrt{- (-
+      \dot{\theta} (t)^2  \ddot{K} (0))}  \hspace{0.17em} dt = \int_0^T
+      \sqrt{\dot{\theta} (t)^2  (- \ddot{K} (0))}  \hspace{0.17em} dt
+    \end{equation}
+    \item Since $\dot{\theta} (t) > 0$ and $\ddot{K} (0) < 0$:
+    \begin{equation}
+      \label{eqsimplify} \mathbb{E} [N_{[0, T]}] = \int_0^T \dot{\theta} (t)
+      \sqrt{- \ddot{K} (0)}  \hspace{0.17em} dt = \sqrt{- \ddot{K} (0)} 
+      \int_0^T \dot{\theta} (t)  \hspace{0.17em} dt
+    \end{equation}
+    \item Evaluate the integral:
+    \begin{equation}
+      \label{eqfinal} \mathbb{E} [N_{[0, T]}] = \sqrt{- \ddot{K} (0)} 
+      \hspace{0.17em} [\theta (T) - \theta (0)]
+    \end{equation}
+  \end{enumerate}
+\end{proof}
+
+\begin{thebibliography}{1}
+  \bibitem[1]{stationaryAndRelatedStochasticProcesses}Harald Cram{\'e}r  and 
+  M.R.~Leadbetter. {\newblock}\tmtextit{Stationary and Related Processes:
+  Sample Function Properties and Their Applications}. {\newblock}Wiley Series
+  in Probability and Mathematical Statistics. 1967.{\newblock}
+  
+  \bibitem[2]{evolutionarySpectraAndNonStationaryProcesses}Maurice~B
+  Priestley. {\newblock}Evolutionary spectra and non-stationary processes.
+  {\newblock}\tmtextit{Journal of the Royal Statistical Society: Series B
+  (Methodological)}, 27(2):204--229, 1965.{\newblock}
+\end{thebibliography}
 
 \
 
