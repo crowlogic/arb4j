@@ -3,6 +3,7 @@ package arb.functions.complex;
 import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.functions.real.RealFunction;
 import arb.functions.real.RiemannSiegelThetaFunction;
 
 /**
@@ -35,20 +36,20 @@ public class HardyThetaInversion
     }
   }
 
+  RealFunction rsThetaDerivative = riemannSiegelTheta.derivative();
+
   private RealPolynomial buildTaylorSeries(Real t, int order, int precision, RealPolynomial result)
   {
     result.fitLength(order);
 
     try ( Real coeff = new Real())
     {
-      result.set(0, RealConstants.zero);
-
-      riemannSiegelTheta.derivative().evaluate(t, 0, precision, coeff);
-      result.set(1, coeff);
+      result.get(0).zero();
+      result.set(1, rsThetaDerivative.evaluate(t, 0, precision, coeff));
 
       for (int n = 2; n < order; n++)
       {
-        result.set(n, Real.valueOf(0.0));
+        result.get(n).zero();
       }
 
       return result;
