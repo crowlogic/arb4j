@@ -28,10 +28,15 @@ public class HardyThetaInversion
     {
       arblib.arb_poly_revert_series(reversed, series, seriesOrder, precision);
 
-      riemannSiegelTheta.evaluate(centerPoint, 0, precision, thetaAtCenter);
-      thetaValue.sub(thetaAtCenter, precision, delta);
-
-      reversed.evaluate(delta, 0, precision, result);
+      reversed.evaluate(thetaValue.sub(riemannSiegelTheta.evaluate(centerPoint,
+                                                                   0,
+                                                                   precision,
+                                                                   thetaAtCenter),
+                                       precision,
+                                       delta),
+                        0,
+                        precision,
+                        result);
       return result.add(centerPoint, precision);
     }
   }

@@ -20,7 +20,6 @@ void arb_poly_revert_series(arb_poly_t Qinv, const arb_poly_t Q, slong n, slong 
 
 void qqbar_zero(qqbar_t res);
 
-void acb_poly_lgamma_series(acb_poly_t res, const acb_poly_t f, slong n, slong prec);
 void arb_poly_lgamma_series(arb_poly_t res, const arb_poly_t f, slong n, slong prec);
 
 void acb_hypgeom_si(acb_t res, const acb_t z, slong prec);
