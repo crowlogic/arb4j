@@ -1230,16 +1230,10 @@ $U_{\theta}$}
     (Proposition \ref{prop:atomic}), the spectrum is pure point.
     
     \item Each eigenspace is one-dimensional (spanned by $e_{t_0}$), so the
-    spectrum is simple.
-    
-    \item Therefore
+    spectrum is simple and given by the closure of the zero set
     \begin{equation}
-      \label{eq:spectrum_result} \sigma (L) = \{t_0 : Z (t_0) = 0\}
-    \end{equation}
-    \item If the zero set accumulates, the spectrum is the closure:
-    \begin{equation}
-      \label{eq:spectrum_closure} \sigma (L) = \overline{\{t \in \mathbb{R}: Z
-      (t) = 0\}}
+      \label{eq:spectrum_result} \sigma (L) = \{t_0 : Z (t_0) = 0\} =
+      \overline{\{t \in \mathbb{R}: Z (t) = 0\}}
     \end{equation}
   \end{enumerate}
 \end{proof}
@@ -1387,11 +1381,12 @@ Subclass of Unitarily Time-Changed Stationary Processes]
     \end{equation}
     \item Differentiate \eqref{eqZcovariance} with respect to $s$:
     \begin{equation}
-      \label{eqfirstpartial} \frac{\partial}{\partial s} K_Z (s, t) =
-      \frac{\ddot{\theta} (s)}{2 \sqrt{\dot{\theta} (s) \dot{\theta} (t)}} 
-      \hspace{0.17em} K (\theta (t) - \theta (s)) - \dot{\theta} (s)
-      \sqrt{\dot{\theta} (s) \dot{\theta} (t)}  \hspace{0.17em} \dot{K} 
-      (\theta (t) - \theta (s))
+      \label{eqfirstpartial} \begin{array}{l}
+        \frac{\partial}{\partial s} K_Z (s, t) = \frac{\ddot{\theta} (s)}{2
+        \sqrt{\dot{\theta} (s) \dot{\theta} (t)}}  \hspace{0.17em} K (\theta
+        (t) - \theta (s)) - \dot{\theta} (s) \sqrt{\dot{\theta} (s)
+        \dot{\theta} (t)}  \hspace{0.17em} \dot{K}  (\theta (t) - \theta (s))
+      \end{array}
     \end{equation}
     \item Differentiate \eqref{eqfirstpartial} with respect to $t$ and take $s
     \to t$. Since $\dot{K} (0) = 0$ by stationarity:
@@ -1416,6 +1411,93 @@ Subclass of Unitarily Time-Changed Stationary Processes]
       \label{eqfinal} \mathbb{E} [N_{[0, T]}] = \sqrt{- \ddot{K} (0)} 
       \hspace{0.17em} [\theta (T) - \theta (0)]
     \end{equation}
+  \end{enumerate}
+\end{proof}
+
+\begin{theorem}
+  \label{thm:deterministic_zero}\tmtextbf{[Deterministic zero-crossing at
+  vanishing derivative]} Let $X$ be a zero-mean stationary process with
+  spectral measure $F$ as in Definition \ref{def:cramer} and finite variance
+  $\sigma^2 =\mathbb{E} [X (t)^2] < \infty$. Let $\theta : \mathbb{R} \to
+  \mathbb{R}$ be the time-change function from Theorem
+  \ref{thm:local_unitarity}, which is absolutely continuous (has derivative
+  $\dot{\theta}$ that exists almost everywhere and is Lebesgue integrable),
+  strictly increasing (so $\theta (t_1) < \theta (t_2)$ whenever $t_1 < t_2$),
+  and bijective (one-to-one and onto). The derivative $\dot{\theta} (t)$ is
+  strictly positive almost everywhere, meaning $\dot{\theta} (t) > 0$ for all
+  $t$ except possibly on a set of Lebesgue measure zero. Define the
+  transformed process
+  \begin{equation}
+    \label{eq:Z_def_det} Z (t) = (U_{\theta} X) (t) = \sqrt{\dot{\theta} (t)}
+    X (\theta (t))
+  \end{equation}
+  as in equation \eqref{eq:U_theta_def}. Consider a point $t_0 \in \mathbb{R}$
+  where the derivative vanishes: $\dot{\theta} (t_0) = 0$. Then
+  \tmtextbf{every sample path of $Z$ passes through zero at $t_0$}: for all
+  $\omega \in \Omega$,
+  \begin{equation}
+    \label{eq:deterministic_zero_statement} Z (t_0, \omega) = 0
+  \end{equation}
+  This is a \tmtextbf{deterministic zero-crossing}: unlike the random
+  zero-crossings of the stationary process $X$, which occur probabilistically
+  according to Bulinskaya's statistics, the zero at $t_0$ occurs with
+  certainty in every realization of $Z$. The randomness of $X$ is completely
+  suppressed at $t_0$ by the vanishing amplitude factor $\sqrt{\dot{\theta}
+  (t_0)} = 0$.
+\end{theorem}
+
+\begin{proof}
+  \begin{enumerate}
+    \item Consider a point $t_0 \in \mathbb{R}$ where $\dot{\theta} (t_0) =
+    0$.
+    
+    \item From the definition \eqref{eq:Z_def_det}, the value of $Z$ at $t_0$
+    for any sample path $\omega \in \Omega$ is
+    \begin{equation}
+      \label{eq:Z_at_t0_expanded} Z (t_0, \omega) = \sqrt{\dot{\theta} (t_0)}
+      \cdot X (\theta (t_0), \omega)
+    \end{equation}
+    \item Since $\dot{\theta} (t_0) = 0$ by hypothesis,
+    \begin{equation}
+      \label{eq:sqrt_zero_eval} \sqrt{\dot{\theta} (t_0)} = \sqrt{0} = 0
+    \end{equation}
+    \item Substituting \eqref{eq:sqrt_zero_eval} into
+    \eqref{eq:Z_at_t0_expanded},
+    \begin{equation}
+      \label{eq:zero_product} Z (t_0, \omega) = 0 \cdot X (\theta (t_0),
+      \omega) = 0
+    \end{equation}
+    regardless of the value of $X (\theta (t_0), \omega)$.
+    
+    \item Since $\omega \in \Omega$ was arbitrary, equation
+    \eqref{eq:zero_product} holds for every sample path:
+    \begin{equation}
+      \label{eq:all_sample_paths} Z (t_0, \omega) = 0 \quad \forall \omega \in
+      \Omega
+    \end{equation}
+    \item Therefore $t_0$ is a deterministic zero-crossing: the process $Z$
+    reaches zero at $t_0$ in every realization, not probabilistically.
+    
+    \item As a direct consequence, the variance of $Z$ at $t_0$ is zero:
+    \begin{equation}
+      \label{eq:variance_zero_consequence} \text{Var} [Z (t_0)] =\mathbb{E}
+      [(Z (t_0) -\mathbb{E}[Z (t_0)])^2] =\mathbb{E} [0^2] = 0
+    \end{equation}
+    \item By Corollary \ref{cor:evol_spec}, the evolutionary spectrum at $t_0$
+    vanishes:
+    \begin{equation}
+      \label{eq:evol_spectrum_vanish} dF_{t_0} (\lambda) = \dot{\theta} (t_0)
+      dF (\lambda) = 0 \cdot dF (\lambda) = 0
+    \end{equation}
+    meaning there is no spectral energy at $t_0$.
+    
+    \item The point $t_0$ belongs to the zero set $\{t \in \mathbb{R}: Z (t,
+    \omega) = 0\}$ for every $\omega \in \Omega$. By Definition
+    \ref{def:L2loc}, this deterministic zero-crossing differs fundamentally
+    from the random zero-crossings governed by the statistics of the
+    stationary process $X$: it occurs because the amplitude factor
+    $\sqrt{\dot{\theta} (t_0)}$ vanishes, completely eliminating the influence
+    of the random process $X$ at that instant.
   \end{enumerate}
 \end{proof}
 

@@ -1445,18 +1445,11 @@
       is pure point.
 
       <item>Each eigenspace is one-dimensional (spanned by
-      <math|e<rsub|t<rsub|0>>>), so the spectrum is simple.
-
-      <item>Therefore
-
-      <\equation>
-        <label|eq:spectrum_result>\<sigma\><around|(|L|)>=<around|{|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0|}>
-      </equation>
-
-      <item>If the zero set accumulates, the spectrum is the closure:
+      <math|e<rsub|t<rsub|0>>>), so the spectrum is simple and given by the
+      closure of the zero set\ 
 
       <\equation>
-        <label|eq:spectrum_closure>\<sigma\><around|(|L|)>=<wide|<around|{|t\<in\>\<bbb-R\>:Z<around|(|t|)>=0|}>|\<bar\>>
+        <label|eq:spectrum_result>\<sigma\><around|(|L|)>=<around|{|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0|}>=<wide|<around|{|t\<in\>\<bbb-R\>:Z<around|(|t|)>=0|}>|\<bar\>>
       </equation>
     </enumerate>
   </proof>
@@ -1627,7 +1620,7 @@
       <item>Differentiate <eqref|eqZcovariance> with respect to <math|s>:
 
       <\equation>
-        <label|eqfirstpartial><frac|\<partial\>|\<partial\>*s>*K<rsub|Z><around|(|s,t|)>=<frac|<wide|\<theta\>|\<ddot\>><around|(|s|)>|2*<sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)><wide|\<theta\>|\<dot\>><around|(|t|)>>>*<space|0.17em>K*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>-<wide|\<theta\>|\<dot\>><around|(|s|)><sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)><wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em><wide|K|\<dot\>>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>
+        <label|eqfirstpartial><tabular|<tformat|<table|<row|<cell|<frac|\<partial\>|\<partial\>*s>*K<rsub|Z><around|(|s,t|)>=<frac|<wide|\<theta\>|\<ddot\>><around|(|s|)>|2*<sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)><wide|\<theta\>|\<dot\>><around|(|t|)>>>*<space|0.17em>K*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>-<wide|\<theta\>|\<dot\>><around|(|s|)><sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)><wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em><wide|K|\<dot\>>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>>>>>
       </equation>
 
       <item>Differentiate <eqref|eqfirstpartial> with respect to <math|t> and
@@ -1657,6 +1650,114 @@
       <\equation>
         <label|eqfinal>\<bbb-E\><around|[|N<rsub|<around|[|0,T|]>>|]>=<sqrt|-<wide|K|\<ddot\>><around|(|0|)>>*<space|0.17em><around|[|\<theta\><around|(|T|)>-\<theta\><around|(|0|)>|]>
       </equation>
+    </enumerate>
+  </proof>
+
+  <\theorem>
+    <label|thm:deterministic_zero><with|font-series|bold|[Deterministic
+    zero-crossing at vanishing derivative]> Let <math|X> be a zero-mean
+    stationary process with spectral measure <math|F> as in Definition
+    <reference|def:cramer> and finite variance
+    <math|\<sigma\><rsup|2>=\<bbb-E\><around|[|X<around|(|t|)><rsup|2>|]>\<less\>\<infty\>>.
+    Let <math|\<theta\>:\<bbb-R\>\<to\>\<bbb-R\>> be the time-change function
+    from Theorem <reference|thm:local_unitarity>, which is absolutely
+    continuous (has derivative <math|<wide|\<theta\>|\<dot\>>> that exists
+    almost everywhere and is Lebesgue integrable), strictly increasing (so
+    <math|\<theta\><around|(|t<rsub|1>|)>\<less\>\<theta\><around|(|t<rsub|2>|)>>
+    whenever <math|t<rsub|1>\<less\>t<rsub|2>>), and bijective (one-to-one
+    and onto). The derivative <math|<wide|\<theta\>|\<dot\>><around|(|t|)>>
+    is strictly positive almost everywhere, meaning
+    <math|<wide|\<theta\>|\<dot\>><around|(|t|)>\<gtr\>0> for all <math|t>
+    except possibly on a set of Lebesgue measure zero. Define the transformed
+    process
+
+    <\equation>
+      <label|eq:Z_def_det>Z<around|(|t|)>=<around|(|U<rsub|\<theta\>>*X|)><around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*X<around|(|\<theta\><around|(|t|)>|)>
+    </equation>
+
+    as in equation <eqref|eq:U_theta_def>. Consider a point
+    <math|t<rsub|0>\<in\>\<bbb-R\>> where the derivative vanishes:
+    <math|<wide|\<theta\>|\<dot\>><around|(|t<rsub|0>|)>=0>. Then
+    <with|font-series|bold|every sample path of <math|Z> passes through zero
+    at <math|t<rsub|0>>>: for all <math|\<omega\>\<in\>\<Omega\>>,
+
+    <\equation>
+      <label|eq:deterministic_zero_statement>Z<around|(|t<rsub|0>,\<omega\>|)>=0
+    </equation>
+
+    This is a <with|font-series|bold|deterministic zero-crossing>: unlike the
+    random zero-crossings of the stationary process <math|X>, which occur
+    probabilistically according to Bulinskaya's statistics, the zero at
+    <math|t<rsub|0>> occurs with certainty in every realization of <math|Z>.
+    The randomness of <math|X> is completely suppressed at <math|t<rsub|0>>
+    by the vanishing amplitude factor <math|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t<rsub|0>|)>>=0>.
+  </theorem>
+
+  <\proof>
+    <\enumerate>
+      <item>Consider a point <math|t<rsub|0>\<in\>\<bbb-R\>> where
+      <math|<wide|\<theta\>|\<dot\>><around|(|t<rsub|0>|)>=0>.
+
+      <item>From the definition <eqref|eq:Z_def_det>, the value of <math|Z>
+      at <math|t<rsub|0>> for any sample path <math|\<omega\>\<in\>\<Omega\>>
+      is
+
+      <\equation>
+        <label|eq:Z_at_t0_expanded>Z<around|(|t<rsub|0>,\<omega\>|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t<rsub|0>|)>>\<cdot\>X<around|(|\<theta\><around|(|t<rsub|0>|)>,\<omega\>|)>
+      </equation>
+
+      <item>Since <math|<wide|\<theta\>|\<dot\>><around|(|t<rsub|0>|)>=0> by
+      hypothesis,
+
+      <\equation>
+        <label|eq:sqrt_zero_eval><sqrt|<wide|\<theta\>|\<dot\>><around|(|t<rsub|0>|)>>=<sqrt|0>=0
+      </equation>
+
+      <item>Substituting <eqref|eq:sqrt_zero_eval> into
+      <eqref|eq:Z_at_t0_expanded>,
+
+      <\equation>
+        <label|eq:zero_product>Z<around|(|t<rsub|0>,\<omega\>|)>=0\<cdot\>X<around|(|\<theta\><around|(|t<rsub|0>|)>,\<omega\>|)>=0
+      </equation>
+
+      regardless of the value of <math|X<around|(|\<theta\><around|(|t<rsub|0>|)>,\<omega\>|)>>.
+
+      <item>Since <math|\<omega\>\<in\>\<Omega\>> was arbitrary, equation
+      <eqref|eq:zero_product> holds for every sample path:
+
+      <\equation>
+        <label|eq:all_sample_paths>Z<around|(|t<rsub|0>,\<omega\>|)>=0<space|1em>\<forall\>\<omega\>\<in\>\<Omega\>
+      </equation>
+
+      <item>Therefore <math|t<rsub|0>> is a deterministic zero-crossing: the
+      process <math|Z> reaches zero at <math|t<rsub|0>> in every realization,
+      not probabilistically.
+
+      <item>As a direct consequence, the variance of <math|Z> at
+      <math|t<rsub|0>> is zero:
+
+      <\equation>
+        <label|eq:variance_zero_consequence><text|Var><around|[|Z<around|(|t<rsub|0>|)>|]>=\<bbb-E\><around|[|<around|(|Z<around|(|t<rsub|0>|)>-\<bbb-E\><around|[|Z<around|(|t<rsub|0>|)>|]>|)><rsup|2>|]>=\<bbb-E\><around|[|0<rsup|2>|]>=0
+      </equation>
+
+      <item>By Corollary <reference|cor:evol_spec>, the evolutionary spectrum
+      at <math|t<rsub|0>> vanishes:
+
+      <\equation>
+        <label|eq:evol_spectrum_vanish>d*F<rsub|t<rsub|0>><around|(|\<lambda\>|)>=<wide|\<theta\>|\<dot\>><around|(|t<rsub|0>|)>*d*F<around|(|\<lambda\>|)>=0\<cdot\>d*F<around|(|\<lambda\>|)>=0
+      </equation>
+
+      meaning there is no spectral energy at <math|t<rsub|0>>.
+
+      <item>The point <math|t<rsub|0>> belongs to the zero set
+      <math|<around|{|t\<in\>\<bbb-R\>:Z<around|(|t,\<omega\>|)>=0|}>> for
+      every <math|\<omega\>\<in\>\<Omega\>>. By Definition
+      <reference|def:L2loc>, this deterministic zero-crossing differs
+      fundamentally from the random zero-crossings governed by the statistics
+      of the stationary process <math|X>: it occurs because the amplitude
+      factor <math|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t<rsub|0>|)>>>
+      vanishes, completely eliminating the influence of the random process
+      <math|X> at that instant.
     </enumerate>
   </proof>
 
@@ -1696,7 +1797,7 @@
     <associate|auto-11|<tuple|3|12>>
     <associate|auto-12|<tuple|3.1|15>>
     <associate|auto-13|<tuple|3.1.1|16>>
-    <associate|auto-14|<tuple|188|17>>
+    <associate|auto-14|<tuple|9|18>>
     <associate|auto-2|<tuple|1.1|1>>
     <associate|auto-3|<tuple|1.2|2>>
     <associate|auto-4|<tuple|1.3|3>>
@@ -1705,8 +1806,8 @@
     <associate|auto-7|<tuple|2.1|6>>
     <associate|auto-8|<tuple|2.2|8>>
     <associate|auto-9|<tuple|2.3|9>>
-    <associate|bib-evolutionarySpectraAndNonStationaryProcesses|<tuple|2|17>>
-    <associate|bib-stationaryAndRelatedStochasticProcesses|<tuple|1|17>>
+    <associate|bib-evolutionarySpectraAndNonStationaryProcesses|<tuple|2|18>>
+    <associate|bib-stationaryAndRelatedStochasticProcesses|<tuple|1|18>>
     <associate|cor:evol_spec|<tuple|13|10>>
     <associate|def:Hmu|<tuple|17|13>>
     <associate|def:L|<tuple|19|14>>
@@ -1720,14 +1821,14 @@
     <associate|eq:A_t_magnitude|<tuple|112|10>>
     <associate|eq:A_t_magnitude_start|<tuple|110|10>>
     <associate|eq:H_isomorphism|<tuple|143|13>>
-    <associate|eq:K_Z_dotZ|<tuple|169|15>>
+    <associate|eq:K_Z_dotZ|<tuple|168|15>>
     <associate|eq:K_def|<tuple|115|11>>
-    <associate|eq:K_dotZ|<tuple|168|15>>
+    <associate|eq:K_dotZ|<tuple|167|15>>
     <associate|eq:K_finite|<tuple|14|2>>
     <associate|eq:K_integral_bound|<tuple|13|2>>
     <associate|eq:K_theta_def|<tuple|116|11>>
     <associate|eq:K_theta_recognition|<tuple|126|11>>
-    <associate|eq:K_tt|<tuple|167|15>>
+    <associate|eq:K_tt|<tuple|166|15>>
     <associate|eq:L2_norm_mu|<tuple|145|13>>
     <associate|eq:L2_norm_simple|<tuple|49|5>>
     <associate|eq:L_action|<tuple|153|14>>
@@ -1754,9 +1855,11 @@
     <associate|eq:Yab_finite_expectation|<tuple|8|2>>
     <associate|eq:Yab_finite_probability|<tuple|10|2>>
     <associate|eq:Z_at_inverse|<tuple|87|8>>
+    <associate|eq:Z_at_t0_expanded|<tuple|190|17>>
     <associate|eq:Z_conjugate|<tuple|32|4>>
     <associate|eq:Z_conjugate_substituted|<tuple|34|4>>
     <associate|eq:Z_def|<tuple|90|9>>
+    <associate|eq:Z_def_det|<tuple|188|17>>
     <associate|eq:Z_expanded|<tuple|96|9>>
     <associate|eq:Z_integral|<tuple|97|9>>
     <associate|eq:Z_oscillatory_form|<tuple|99|10>>
@@ -1764,6 +1867,7 @@
     <associate|eq:Z_transformation|<tuple|78|8>>
     <associate|eq:Z_well_defined|<tuple|53|6>>
     <associate|eq:after_substitution|<tuple|65|7>>
+    <associate|eq:all_sample_paths|<tuple|193|17>>
     <associate|eq:apply_forward_def|<tuple|68|7>>
     <associate|eq:apply_inverse_def|<tuple|67|7>>
     <associate|eq:apply_inverse_second|<tuple|73|7>>
@@ -1785,19 +1889,21 @@
     <associate|eq:covariance_computation|<tuple|54|6>>
     <associate|eq:covariance_final|<tuple|57|6>>
     <associate|eq:covariance_kernel|<tuple|1|1>>
-    <associate|eq:covariance_matrix|<tuple|170|15>>
+    <associate|eq:covariance_matrix|<tuple|169|15>>
     <associate|eq:cramer_representation|<tuple|20|3>>
     <associate|eq:delta_Z_decomp|<tuple|136|12>>
     <associate|eq:delta_change_var|<tuple|132|12>>
     <associate|eq:delta_decomposition|<tuple|130|12>>
     <associate|eq:delta_equality|<tuple|135|12>>
-    <associate|eq:density_at_zero|<tuple|174|15>>
-    <associate|eq:density_integral|<tuple|177|16>>
+    <associate|eq:density_at_zero|<tuple|173|15>>
+    <associate|eq:density_integral|<tuple|176|16>>
     <associate|eq:density_simple|<tuple|51|5>>
-    <associate|eq:determinant|<tuple|171|15>>
+    <associate|eq:determinant|<tuple|170|15>>
+    <associate|eq:deterministic_zero_statement|<tuple|189|17>>
     <associate|eq:eigenvalue_equation|<tuple|163|14>>
     <associate|eq:evol_spec_def|<tuple|109|10>>
     <associate|eq:evol_spec_final|<tuple|113|10>>
+    <associate|eq:evol_spectrum_vanish|<tuple|195|17>>
     <associate|eq:evolutionary_spectrum|<tuple|108|10>>
     <associate|eq:exp_magnitude|<tuple|111|10>>
     <associate|eq:expand_square|<tuple|63|7>>
@@ -1808,7 +1914,7 @@
     <associate|eq:factor_inside|<tuple|125|11>>
     <associate|eq:filter_identity|<tuple|81|8>>
     <associate|eq:final_conjugation|<tuple|127|11>>
-    <associate|eq:final_density|<tuple|178|16>>
+    <associate|eq:final_density|<tuple|177|16>>
     <associate|eq:final_inverse|<tuple|89|9>>
     <associate|eq:finite_variance|<tuple|4|2>>
     <associate|eq:forward_integral|<tuple|82|8>>
@@ -1821,13 +1927,13 @@
     <associate|eq:gain_equality|<tuple|37|4>>
     <associate|eq:gain_function_Z|<tuple|92|9>>
     <associate|eq:gain_symmetry|<tuple|28|4>>
-    <associate|eq:gaussian_integral|<tuple|176|15>>
+    <associate|eq:gaussian_integral|<tuple|175|15>>
     <associate|eq:global_divergence|<tuple|19|3>>
     <associate|eq:inner_product_mu|<tuple|141|13>>
     <associate|eq:integral_simple|<tuple|44|5>>
     <associate|eq:integral_substitution|<tuple|121|11>>
     <associate|eq:integrand_equality|<tuple|36|4>>
-    <associate|eq:integrate_v|<tuple|175|15>>
+    <associate|eq:integrate_v|<tuple|174|15>>
     <associate|eq:interchange_sum_integral|<tuple|134|12>>
     <associate|eq:interval_N_finite|<tuple|12|2>>
     <associate|eq:inverse_integral|<tuple|85|8>>
@@ -1836,9 +1942,9 @@
     <associate|eq:isometry_established|<tuple|50|5>>
     <associate|eq:isometry_simple|<tuple|48|5>>
     <associate|eq:isomorphism_map|<tuple|148|13>>
-    <associate|eq:joint_density|<tuple|173|15>>
-    <associate|eq:kac_rice|<tuple|166|15>>
-    <associate|eq:kac_rice_general|<tuple|172|15>>
+    <associate|eq:joint_density|<tuple|172|15>>
+    <associate|eq:kac_rice|<tuple|165|15>>
+    <associate|eq:kac_rice_general|<tuple|171|15>>
     <associate|eq:left_inverse|<tuple|71|7>>
     <associate|eq:linearity_expectation|<tuple|46|5>>
     <associate|eq:local_isometry|<tuple|61|6>>
@@ -1878,8 +1984,8 @@
     <associate|eq:simplify_integral|<tuple|123|11>>
     <associate|eq:simplify_second|<tuple|75|7>>
     <associate|eq:spectrum|<tuple|155|14>>
-    <associate|eq:spectrum_closure|<tuple|165|15>>
     <associate|eq:spectrum_result|<tuple|164|15>>
+    <associate|eq:sqrt_zero_eval|<tuple|191|17>>
     <associate|eq:stationary_covariance|<tuple|21|3>>
     <associate|eq:sum_form|<tuple|133|12>>
     <associate|eq:theta_composition|<tuple|74|7>>
@@ -1887,20 +1993,22 @@
     <associate|eq:theta_inverse_composition|<tuple|69|7>>
     <associate|eq:time_dependent_spectrum|<tuple|41|5>>
     <associate|eq:tonelli_application|<tuple|6|2>>
+    <associate|eq:variance_zero_consequence|<tuple|194|17>>
     <associate|eq:varphi_L2|<tuple|52|6>>
     <associate|eq:varphi_as_gain|<tuple|102|10>>
     <associate|eq:varphi_factored|<tuple|100|10>>
     <associate|eq:varphi_t_explicit|<tuple|98|9>>
-    <associate|eqZcovariance|<tuple|181|16>>
-    <associate|eqZprocess|<tuple|180|16>>
-    <associate|eqexpectedzeros|<tuple|182|16>>
-    <associate|eqfinal|<tuple|188|17>>
-    <associate|eqfirstpartial|<tuple|184|16>>
-    <associate|eqkacrice|<tuple|183|16>>
-    <associate|eqlimit|<tuple|185|16>>
-    <associate|eqsimplify|<tuple|187|16>>
-    <associate|eqstationarycov|<tuple|179|16>>
-    <associate|eqsubstitute|<tuple|186|16>>
+    <associate|eq:zero_product|<tuple|192|17>>
+    <associate|eqZcovariance|<tuple|180|16>>
+    <associate|eqZprocess|<tuple|179|16>>
+    <associate|eqexpectedzeros|<tuple|181|16>>
+    <associate|eqfinal|<tuple|187|17>>
+    <associate|eqfirstpartial|<tuple|183|16>>
+    <associate|eqkacrice|<tuple|182|16>>
+    <associate|eqlimit|<tuple|184|16>>
+    <associate|eqsimplify|<tuple|186|16>>
+    <associate|eqstationarycov|<tuple|178|16>>
+    <associate|eqsubstitute|<tuple|185|16>>
     <associate|pd|<tuple|58|6>>
     <associate|prop:atomic|<tuple|18|13>>
     <associate|prop:conjugation|<tuple|14|11>>
@@ -1910,6 +2018,7 @@
     <associate|sec:stationary_timechange|<tuple|2|6>>
     <associate|thm:Utheta_to_osc|<tuple|12|9>>
     <associate|thm:atomicity|<tuple|16|12>>
+    <associate|thm:deterministic_zero|<tuple|23|17>>
     <associate|thm:existence_osc|<tuple|9|5>>
     <associate|thm:inverse_filter|<tuple|11|8>>
     <associate|thm:kac_rice|<tuple|21|15>>
