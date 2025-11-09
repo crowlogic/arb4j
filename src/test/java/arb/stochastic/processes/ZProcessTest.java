@@ -17,7 +17,7 @@ public class ZProcessTest extends
 
   public void testZProcessGainFunction()
   {
-
+    System.loadLibrary("arblib");
     ZProcess                       Zprocess            = new ZProcess();
     RealBivariateToComplexFunction gainFunction        = Zprocess.gainFunction();
     RealToComplexFunction          gainAtHalfFrequency = gainFunction.evaluate(RealConstants.half,

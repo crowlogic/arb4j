@@ -18,7 +18,6 @@
   }
 %}
 
-
 typedef unsigned long* unsigned_long_ptr;
 
 #define __signed__
@@ -71,9 +70,9 @@ typedef unsigned long int mp_limb_t;
 %rename (denominatorAddress) den;
 %rename (numeratorAddress) num;
 %rename (Fraction) fmpq;
-%rename (rowPointers) rows;
+%rename (rowPointers) stride;
 %rename (initialized) gmp_init;
-%rename (gmpRandomState) gmp_state;
+%rename (gmpRandomState) __gmp_state;
 %rename (algorithmData) _mp_algdata;
 %rename (randomValue) __randval;
 %rename (randomValue2) __randval2;
@@ -105,7 +104,7 @@ typedef unsigned long int mp_limb_t;
 %rename (ComplexPolynomial) acb_poly_struct;
 %rename (ComplexMatrix) acb_mat_struct;
 %rename (RealMatrix) arb_mat_struct;
-%rename (RandomState) flint_rand_s;
+%rename (RandomState) flint_rand_struct;
 %typemap(javafinalize) dirichlet_prime_group_struct ""
 %typemap(javafinalize) dirichlet_char_struct ""
 %typemap(javafinalize) dirichlet_group_struct ""

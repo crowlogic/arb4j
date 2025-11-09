@@ -18,6 +18,7 @@ public interface RealToComplexFunction extends
                                        Function<Real, Complex>
 {
 
+  
   public static Expression<Real, Complex, RealToComplexFunction> parse(String expression)
   {
     return Function.parse(Parser.expressionToUniqueClassname(expression),

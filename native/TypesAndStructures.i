@@ -186,22 +186,32 @@ typedef struct
 
 typedef __gmp_randstate_struct gmp_randstate_t[1];
 
+typedef const __mpz_struct *mpz_srcptr;
+typedef __mpz_struct *mpz_ptr;
+typedef const __mpf_struct *mpf_srcptr;
+typedef __mpf_struct *mpf_ptr;
+typedef const __mpq_struct *mpq_srcptr;
+typedef __mpq_struct *mpq_ptr;
+typedef __gmp_randstate_struct *gmp_randstate_ptr;
+typedef const __gmp_randstate_struct *gmp_randstate_srcptr;
+
 typedef struct
 {
-    gmp_randstate_t gmp_state;
-    int gmp_init;
-    mp_limb_t __randval;
-    mp_limb_t __randval2;
-} flint_rand_s;
+    gmp_randstate_ptr __gmp_state;
+    ulong __randval;
+    ulong __randval2;
+}
+flint_rand_struct;
 
-typedef flint_rand_s flint_rand_t[1];
+typedef flint_rand_struct flint_rand_t[1];
  
+
 typedef struct
 {
     arb_ptr entries;
     slong r;
     slong c;
-    jlong rows;
+    slong stride;
 }
 arb_mat_struct;
 
@@ -212,7 +222,7 @@ typedef struct
     acb_ptr entries;
     slong r;
     slong c;
-    jlong rows;
+    slong stride;
 }
 acb_mat_struct;
 

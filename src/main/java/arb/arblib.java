@@ -17,10 +17,6 @@ public class arblib {
     arblibJNI.qqbar_zero(AlgebraicNumber.getCPtr(res), res);
   }
 
-  public static void acb_poly_lgamma_series(ComplexPolynomial res, ComplexPolynomial f, int n, int prec) {
-    arblibJNI.acb_poly_lgamma_series(ComplexPolynomial.getCPtr(res), res, ComplexPolynomial.getCPtr(f), f, n, prec);
-  }
-
   public static void arb_poly_lgamma_series(RealPolynomial res, RealPolynomial f, int n, int prec) {
     arblibJNI.arb_poly_lgamma_series(RealPolynomial.getCPtr(res), res, RealPolynomial.getCPtr(f), f, n, prec);
   }

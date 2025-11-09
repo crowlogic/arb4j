@@ -45,9 +45,9 @@ public class RandomState implements AutoCloseable {
 
   public RandomState initialize()
   {
-    arblib.gmp_randinit_default(getGmpRandomState());
-    setInitialized(1);
-    return this;
+	throw new UnsupportedOperationException( "TODO");
+    //arblib.gmp_randinit_default(getGmpRandomState());
+    //return this;
   }
   
   public RandomState seed(long seed)
@@ -64,14 +64,6 @@ public class RandomState implements AutoCloseable {
   public GMPRandomState getGmpRandomState() {
     long cPtr = arblibJNI.RandomState_gmpRandomState_get(swigCPtr, this);
     return (cPtr == 0) ? null : new GMPRandomState(cPtr, false);
-  }
-
-  public void setInitialized(int value) {
-    arblibJNI.RandomState_initialized_set(swigCPtr, this, value);
-  }
-
-  public int getInitialized() {
-    return arblibJNI.RandomState_initialized_get(swigCPtr, this);
   }
 
   public void setRandomValue(long value) {

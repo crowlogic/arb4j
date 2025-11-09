@@ -1,9 +1,9 @@
 
 
-%typemap(javafinalize) flint_rand_s ""
-%typemap(javainterfaces) flint_rand_s "AutoCloseable"
+%typemap(javafinalize) flint_rand_struct""
+%typemap(javainterfaces) flint_rand_struct "AutoCloseable"
 
-%typemap(javacode) flint_rand_s %{
+%typemap(javacode) flint_rand_struct %{
 
  static
  {
@@ -18,8 +18,8 @@
 
   public RandomState initialize()
   {
+	throw new UnsupportedOperationException( "TODO");
     arblib.gmp_randinit_default(getGmpRandomState());
-    setInitialized(1);
     return this;
   }
   
