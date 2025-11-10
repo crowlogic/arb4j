@@ -56,6 +56,11 @@ import javafx.collections.ObservableMap;
  */
 public class Context
 {
+  static
+  {
+    System.loadLibrary("arblib");
+  }
+
   public ExpressionClassLoader                classLoader                  =
                                                           new ExpressionClassLoader(this);
 

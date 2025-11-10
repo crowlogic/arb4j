@@ -22,6 +22,7 @@ void arb_poly_revert_series(arb_poly_t Qinv, const arb_poly_t Q, slong n, slong 
 void qqbar_zero(qqbar_t res);
 
 void arb_poly_lgamma_series(arb_poly_t res, const arb_poly_t f, slong n, slong prec);
+void acb_poly_lgamma_series(acb_poly_t res, const acb_poly_t f, slong n, slong prec);
 
 void acb_hypgeom_si(acb_t res, const acb_t z, slong prec);
 
@@ -827,8 +828,8 @@ arb_mat_swap_rows(arb_mat_t mat, slong * perm, slong r, slong s)
 {
     if (r != s)
     {
-        arb_ptr u;
         slong t;
+        slong c;
 
         if (perm != NULL)
         {
@@ -837,9 +838,12 @@ arb_mat_swap_rows(arb_mat_t mat, slong * perm, slong r, slong s)
             perm[r] = t;
         }
 
-        u = mat->rows[s];
-        mat->rows[s] = mat->rows[r];
-        mat->rows[r] = u;
+        // Swap entries using stride-based addressing
+        for (c = 0; c < mat->c; c++)
+        {
+            arb_swap(mat->entries + r * mat->stride + c,
+                     mat->entries + s * mat->stride + c);
+        }
     }
 }
 
@@ -1181,6 +1185,8 @@ void arb_mat_transpose(arb_mat_t dest, const arb_mat_t src);
 void acb_poly_clear(acb_poly_t poly);
 
 arb_ptr arb_mat_entry_ptr(arb_mat_t mat, slong i, slong j);
+
+acb_ptr acb_mat_entry_ptr(acb_mat_t mat, slong i, slong j);
 
 void flint_cleanup(void);
 void flint_cleanup_master(void);

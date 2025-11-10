@@ -21,6 +21,10 @@ public class arblib {
     arblibJNI.arb_poly_lgamma_series(RealPolynomial.getCPtr(res), res, RealPolynomial.getCPtr(f), f, n, prec);
   }
 
+  public static void acb_poly_lgamma_series(ComplexPolynomial res, ComplexPolynomial f, int n, int prec) {
+    arblibJNI.acb_poly_lgamma_series(ComplexPolynomial.getCPtr(res), res, ComplexPolynomial.getCPtr(f), f, n, prec);
+  }
+
   public static void acb_hypgeom_si(Complex res, Complex z, int prec) {
     arblibJNI.acb_hypgeom_si(Complex.getCPtr(res), res, Complex.getCPtr(z), z, prec);
   }
@@ -2283,6 +2287,11 @@ public class arblib {
   public static Real arb_mat_entry_ptr(RealMatrix mat, int i, int j) {
     long cPtr = arblibJNI.arb_mat_entry_ptr(RealMatrix.getCPtr(mat), mat, i, j);
     return (cPtr == 0) ? null : new Real(cPtr, false);
+  }
+
+  public static Complex acb_mat_entry_ptr(ComplexMatrix mat, int i, int j) {
+    long cPtr = arblibJNI.acb_mat_entry_ptr(ComplexMatrix.getCPtr(mat), mat, i, j);
+    return (cPtr == 0) ? null : new Complex(cPtr, false);
   }
 
   public static void flint_cleanup() {

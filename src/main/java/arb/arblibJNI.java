@@ -12,6 +12,7 @@ public class arblibJNI {
   public final static native void arb_poly_revert_series(long jarg1, RealPolynomial jarg1_, long jarg2, RealPolynomial jarg2_, int jarg3, int jarg4);
   public final static native void qqbar_zero(long jarg1, AlgebraicNumber jarg1_);
   public final static native void arb_poly_lgamma_series(long jarg1, RealPolynomial jarg1_, long jarg2, RealPolynomial jarg2_, int jarg3, int jarg4);
+  public final static native void acb_poly_lgamma_series(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, int jarg3, int jarg4);
   public final static native void acb_hypgeom_si(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
   public final static native void acb_hypgeom_si_series(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, int jarg3, int jarg4);
   public final static native void arb_hypgeom_si(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
@@ -609,6 +610,7 @@ public class arblibJNI {
   public final static native void arb_mat_init(long jarg1, RealMatrix jarg1_, int jarg2, int jarg3);
   public final static native void acb_poly_clear(long jarg1, ComplexPolynomial jarg1_);
   public final static native long arb_mat_entry_ptr(long jarg1, RealMatrix jarg1_, int jarg2, int jarg3);
+  public final static native long acb_mat_entry_ptr(long jarg1, ComplexMatrix jarg1_, int jarg2, int jarg3);
   public final static native void flint_cleanup();
   public final static native void flint_cleanup_master();
   public final static native int arf_cmp(long jarg1, Float jarg1_, long jarg2, Float jarg2_);

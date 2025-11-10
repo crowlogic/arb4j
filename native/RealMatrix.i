@@ -125,10 +125,11 @@ import arb.algebra.Ring;
       rows = new Real[getNumRows()];
     }
     
-    Real entries = getEntries();
-    long entriesPtr = entries.swigCPtr;
     for (int i = 0; i < getNumRows(); i++) {
-      long rowPtr = entriesPtr + (i * getStride());
+      // Use FLINT's arb_mat_entry_ptr to get correct pointer
+      Real rowEntry = arblib.arb_mat_entry_ptr(this, i, 0);
+      long rowPtr = rowEntry.swigCPtr;
+      
       if (rows[i] == null) {
         rows[i] = new Real(rowPtr, false);
       } else {
@@ -137,6 +138,7 @@ import arb.algebra.Ring;
       rows[i].elements = new Real[rows[i].dim = getNumCols()];
     }
   }
+
   
   /**
    * Apply this{@link #swapRows(LongBuffer, int, int)} to each element of a permutation array
@@ -157,8 +159,6 @@ import arb.algebra.Ring;
     return this;
   }
     
-  LongBuffer rowPointers;
-
   /**
    * Multiplies each element of this matrix by a {@link Real} scalar
    * 

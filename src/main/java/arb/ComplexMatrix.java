@@ -139,10 +139,11 @@ public class ComplexMatrix implements AutoCloseable, Iterable<Complex>, Ring<Com
       rows = new Complex[getNumRows()];
     }
     
-    Complex entries = getEntries();
-    long entriesPtr = entries.swigCPtr;
     for (int i = 0; i < getNumRows(); i++) {
-      long rowPtr = entriesPtr + (i * getStride());
+      // Use FLINT's arb_mat_entry_ptr to get correct pointer
+      Complex rowEntry = arblib.acb_mat_entry_ptr(this, i, 0);
+      long rowPtr = rowEntry.swigCPtr;
+      
       if (rows[i] == null) {
         rows[i] = new Complex(rowPtr, false);
       } else {
@@ -151,6 +152,7 @@ public class ComplexMatrix implements AutoCloseable, Iterable<Complex>, Ring<Com
       rows[i].elements = new Complex[rows[i].dim = getNumCols()];
     }
   }
+
 
 
   public ComplexMatrix permute(LongBuffer permutation) {
