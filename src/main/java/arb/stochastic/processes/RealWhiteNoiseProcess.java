@@ -75,6 +75,7 @@ public final class RealWhiteNoiseProcess implements
   public RealWhiteNoiseProcess initializeWithSeed(long seed)
   {
     hasCached = false;
+    state.initialize();
     state.seed(seed);
     return this;
   }

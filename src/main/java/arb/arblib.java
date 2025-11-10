@@ -25,6 +25,10 @@ public class arblib {
     arblibJNI.acb_poly_lgamma_series(ComplexPolynomial.getCPtr(res), res, ComplexPolynomial.getCPtr(f), f, n, prec);
   }
 
+  public static void acb_poly_inv_series(ComplexPolynomial Qinv, ComplexPolynomial Q, int n, int prec) {
+    arblibJNI.acb_poly_inv_series(ComplexPolynomial.getCPtr(Qinv), Qinv, ComplexPolynomial.getCPtr(Q), Q, n, prec);
+  }
+
   public static void acb_hypgeom_si(Complex res, Complex z, int prec) {
     arblibJNI.acb_hypgeom_si(Complex.getCPtr(res), res, Complex.getCPtr(z), z, prec);
   }
