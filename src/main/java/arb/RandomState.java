@@ -40,46 +40,44 @@ public class RandomState implements AutoCloseable {
   @Override
   public void close() throws Exception
   {
-    delete();
+    arblib.flint_rand_clear(this);
   }
 
   public RandomState initialize()
   {
-	throw new UnsupportedOperationException( "TODO");
-    //arblib.gmp_randinit_default(getGmpRandomState());
-    //return this;
+    arblib.flint_rand_init(this);
+    return this;
   }
   
   public RandomState seed(long seed)
   {
-    arblib.gmp_randseed_ui(getGmpRandomState(), seed);
+    arblib.flint_rand_set_seed(this, seed, seed >>> 32);
     return this;
   }  
      
 
-  public void setGmpRandomState(GMPRandomState value) {
-    arblibJNI.RandomState_gmpRandomState_set(swigCPtr, this, GMPRandomState.getCPtr(value), value);
+  public void set__gmp_state(SWIGTYPE_p_gmp_randstate_ptr value) {
+    arblibJNI.RandomState___gmp_state_set(swigCPtr, this, SWIGTYPE_p_gmp_randstate_ptr.getCPtr(value));
   }
 
-  public GMPRandomState getGmpRandomState() {
-    long cPtr = arblibJNI.RandomState_gmpRandomState_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new GMPRandomState(cPtr, false);
+  public SWIGTYPE_p_gmp_randstate_ptr get__gmp_state() {
+    return new SWIGTYPE_p_gmp_randstate_ptr(arblibJNI.RandomState___gmp_state_get(swigCPtr, this), true);
   }
 
-  public void setRandomValue(long value) {
-    arblibJNI.RandomState_randomValue_set(swigCPtr, this, value);
+  public void set__randval(long value) {
+    arblibJNI.RandomState___randval_set(swigCPtr, this, value);
   }
 
-  public long getRandomValue() {
-    return arblibJNI.RandomState_randomValue_get(swigCPtr, this);
+  public long get__randval() {
+    return arblibJNI.RandomState___randval_get(swigCPtr, this);
   }
 
-  public void setRandomValue2(long value) {
-    arblibJNI.RandomState_randomValue2_set(swigCPtr, this, value);
+  public void set__randval2(long value) {
+    arblibJNI.RandomState___randval2_set(swigCPtr, this, value);
   }
 
-  public long getRandomValue2() {
-    return arblibJNI.RandomState_randomValue2_get(swigCPtr, this);
+  public long get__randval2() {
+    return arblibJNI.RandomState___randval2_get(swigCPtr, this);
   }
 
   public RandomState() {

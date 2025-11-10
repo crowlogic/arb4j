@@ -70,15 +70,6 @@ typedef unsigned long int mp_limb_t;
 %rename (denominatorAddress) den;
 %rename (numeratorAddress) num;
 %rename (Fraction) fmpq;
-%rename (rowPointers) stride;
-%rename (initialized) gmp_init;
-%rename (gmpRandomState) __gmp_state;
-%rename (algorithmData) _mp_algdata;
-%rename (randomValue) __randval;
-%rename (randomValue2) __randval2;
-%rename (RandomAlgorithmData) __gmp_randstate_struct__mp_algdata;
-%rename ($ignore) gmp_randalg_t;
-%rename (GMPRandomState) __gmp_randstate_struct;
 %rename (FastDFTBluesteinScheme) acb_dft_bluestein_struct;
 %rename (FastDFTPrecomputedCyclicScheme) acb_dft_cyc_precomp;
 %rename (FastDFTRadix2Scheme) acb_dft_rad2_struct;
@@ -117,8 +108,6 @@ typedef unsigned long int mp_limb_t;
 %typemap(javafinalize) acb_dft_pre_struct ""
 %typemap(javafinalize) acb_dft_pre_struct_t ""
 %typemap(javafinalize) struct acb_dft_step_struct ""
-%typemap(javafinalize) __gmp_randstate_struct ""
-%typemap(javafinalize) __gmp_randstate_struct__mp_algdata ""
 %typemap(javafinalize) mantissa_struct ""
 %typemap(javafinalize) mantissa_ptr_struct ""
 %typemap(javafinalize) mantissa_noptr_struct ""

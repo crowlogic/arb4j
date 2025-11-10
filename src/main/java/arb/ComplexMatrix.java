@@ -466,12 +466,12 @@ public class ComplexMatrix implements AutoCloseable, Iterable<Complex>, Ring<Com
     return arblibJNI.ComplexMatrix_numCols_get(swigCPtr, this);
   }
 
-  public void setRowPointers(int value) {
-    arblibJNI.ComplexMatrix_rowPointers_set(swigCPtr, this, value);
+  public void setStride(int value) {
+    arblibJNI.ComplexMatrix_stride_set(swigCPtr, this, value);
   }
 
-  public int getRowPointers() {
-    return arblibJNI.ComplexMatrix_rowPointers_get(swigCPtr, this);
+  public int getStride() {
+    return arblibJNI.ComplexMatrix_stride_get(swigCPtr, this);
   }
 
   public ComplexMatrix() {

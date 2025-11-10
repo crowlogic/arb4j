@@ -13,19 +13,18 @@
   @Override
   public void close() throws Exception
   {
-    delete();
+    arblib.flint_rand_clear(this);
   }
 
   public RandomState initialize()
   {
-	throw new UnsupportedOperationException( "TODO");
-    arblib.gmp_randinit_default(getGmpRandomState());
+    arblib.flint_rand_init(this);
     return this;
   }
   
   public RandomState seed(long seed)
   {
-    arblib.gmp_randseed_ui(getGmpRandomState(), seed);
+    arblib.flint_rand_set_seed(this, seed, seed >>> 32);
     return this;
   }  
      

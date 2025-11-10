@@ -16,6 +16,7 @@
 #include <unistd.h>
 #include <wchar.h>
 
+
 void arb_poly_revert_series(arb_poly_t Qinv, const arb_poly_t Q, slong n, slong prec);
 
 void qqbar_zero(qqbar_t res);
@@ -122,9 +123,9 @@ void acb_mat_get_imag(arb_mat_t im, const acb_mat_t mat);
 
 void acb_mat_set_real_imag(acb_mat_t mat, const arb_mat_t re, const arb_mat_t im);
 
-void gmp_randseed_ui (gmp_randstate_t, unsigned long int);
-
-void gmp_randinit_default (gmp_randstate_t);
+void flint_rand_init(flint_rand_t state);
+void flint_rand_clear(flint_rand_t state);
+void flint_rand_set_seed(flint_rand_t state, ulong seed1, ulong seed2);
 
 void arb_urandom(arb_t x, flint_rand_t state, slong prec);
 

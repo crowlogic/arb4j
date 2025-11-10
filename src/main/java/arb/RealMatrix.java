@@ -861,12 +861,12 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
     return arblibJNI.RealMatrix_numCols_get(swigCPtr, this);
   }
 
-  public void setRowPointers(int value) {
-    arblibJNI.RealMatrix_rowPointers_set(swigCPtr, this, value);
+  public void setStride(int value) {
+    arblibJNI.RealMatrix_stride_set(swigCPtr, this, value);
   }
 
-  public int getRowPointers() {
-    return arblibJNI.RealMatrix_rowPointers_get(swigCPtr, this);
+  public int getStride() {
+    return arblibJNI.RealMatrix_stride_get(swigCPtr, this);
   }
 
   public RealMatrix() {

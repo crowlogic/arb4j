@@ -213,12 +213,16 @@ public class arblib {
     arblibJNI.acb_mat_set_real_imag(ComplexMatrix.getCPtr(mat), mat, RealMatrix.getCPtr(re), re, RealMatrix.getCPtr(im), im);
   }
 
-  public static void gmp_randseed_ui(GMPRandomState arg0, long arg1) {
-    arblibJNI.gmp_randseed_ui(GMPRandomState.getCPtr(arg0), arg0, arg1);
+  public static void flint_rand_init(RandomState state) {
+    arblibJNI.flint_rand_init(RandomState.getCPtr(state), state);
   }
 
-  public static void gmp_randinit_default(GMPRandomState arg0) {
-    arblibJNI.gmp_randinit_default(GMPRandomState.getCPtr(arg0), arg0);
+  public static void flint_rand_clear(RandomState state) {
+    arblibJNI.flint_rand_clear(RandomState.getCPtr(state), state);
+  }
+
+  public static void flint_rand_set_seed(RandomState state, long seed1, long seed2) {
+    arblibJNI.flint_rand_set_seed(RandomState.getCPtr(state), state, seed1, seed2);
   }
 
   public static void arb_urandom(Real x, RandomState state, int prec) {
