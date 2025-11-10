@@ -85,7 +85,6 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
   {
     close();
     this.rows           = that.rows;
-    this.rowPointers    = that.rowPointers;
     this.printPrecision = that.printPrecision;
     this.diagonal       = that.diagonal;
     swigCPtr            = that.swigCPtr;
@@ -149,29 +148,23 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
     return rows[i].swigCPtr;
   }      
   
-  private void initRows()
-  {
-    assert rowPointers != null : "rowPointers is null";
-    if ( rows == null )
-    {
-      rows        = new Real[getNumRows()];
+  private void initRows() {
+    if (rows == null) {
+      rows = new Real[getNumRows()];
     }
     
-    for (int i = 0; i < getNumRows(); i++)
-    {
-      if ( rows[i] == null )
-      {
-        rows[i]          = new Real(rowPointers.get(i), false);
-      }
-      else
-      {                                   
-        rows[i].swigCPtr = rowPointers.get(i);
+    Real entries = getEntries();
+    long entriesPtr = entries.swigCPtr;
+    for (int i = 0; i < getNumRows(); i++) {
+      long rowPtr = entriesPtr + (i * getStride());
+      if (rows[i] == null) {
+        rows[i] = new Real(rowPtr, false);
+      } else {
+        rows[i].swigCPtr = rowPtr;
       }
       rows[i].elements = new Real[rows[i].dim = getNumCols()];
     }
-    
   }
-
   
   /**
    * Apply this{@link #swapRows(LongBuffer, int, int)} to each element of a permutation array
@@ -458,16 +451,8 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
     RealMatrix m = new RealMatrix();
     m.init(rows, cols);
     m.rows = new Real[rows];
-    m.initRowPointers();
     m.initRows();
     return m;
-  }
-
-  public RealMatrix initRowPointers()
-  {
-    MemorySegment ms = MemorySegment.ofAddress(getRowPointers()).reinterpret(Long.BYTES * rows.length);
-    rowPointers = ms.asByteBuffer().order(ByteOrder.nativeOrder()).asLongBuffer();
-    return this;
   }
   
   /**
@@ -844,6 +829,15 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
   {
     return 1;
   }  
+
+  public void setEntries(Real value) {
+    arblibJNI.RealMatrix_entries_set(swigCPtr, this, Real.getCPtr(value), value);
+  }
+
+  public Real getEntries() {
+    long cPtr = arblibJNI.RealMatrix_entries_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new Real(cPtr, false);
+  }
 
   public void setNumRows(int value) {
     arblibJNI.RealMatrix_numRows_set(swigCPtr, this, value);

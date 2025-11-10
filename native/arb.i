@@ -53,10 +53,9 @@ typedef unsigned long int mp_limb_t;
 %ignore phi;
 %ignore pe;
 %ignore mod;
-%ignore entries;
 %ignore _mp_alg;
 %ignore _mp_lc;
-
+%ignore __gmp_state;
 
 %rename (numRows) r;
 %rename (numCols) c;

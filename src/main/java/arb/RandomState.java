@@ -56,14 +56,6 @@ public class RandomState implements AutoCloseable {
   }  
      
 
-  public void set__gmp_state(SWIGTYPE_p_gmp_randstate_ptr value) {
-    arblibJNI.RandomState___gmp_state_set(swigCPtr, this, SWIGTYPE_p_gmp_randstate_ptr.getCPtr(value));
-  }
-
-  public SWIGTYPE_p_gmp_randstate_ptr get__gmp_state() {
-    return new SWIGTYPE_p_gmp_randstate_ptr(arblibJNI.RandomState___gmp_state_get(swigCPtr, this), true);
-  }
-
   public void set__randval(long value) {
     arblibJNI.RandomState___randval_set(swigCPtr, this, value);
   }

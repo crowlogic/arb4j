@@ -57,7 +57,6 @@ import arb.algebra.Ring;
   {
     close();
     this.rows           = that.rows;
-    this.rowPointers    = that.rowPointers;
     this.printPrecision = that.printPrecision;
     this.diagonal       = that.diagonal;
     swigCPtr            = that.swigCPtr;
@@ -121,29 +120,23 @@ import arb.algebra.Ring;
     return rows[i].swigCPtr;
   }      
   
-  private void initRows()
-  {
-    assert rowPointers != null : "rowPointers is null";
-    if ( rows == null )
-    {
-      rows        = new Real[getNumRows()];
+  private void initRows() {
+    if (rows == null) {
+      rows = new Real[getNumRows()];
     }
     
-    for (int i = 0; i < getNumRows(); i++)
-    {
-      if ( rows[i] == null )
-      {
-        rows[i]          = new Real(rowPointers.get(i), false);
-      }
-      else
-      {                                   
-        rows[i].swigCPtr = rowPointers.get(i);
+    Real entries = getEntries();
+    long entriesPtr = entries.swigCPtr;
+    for (int i = 0; i < getNumRows(); i++) {
+      long rowPtr = entriesPtr + (i * getStride());
+      if (rows[i] == null) {
+        rows[i] = new Real(rowPtr, false);
+      } else {
+        rows[i].swigCPtr = rowPtr;
       }
       rows[i].elements = new Real[rows[i].dim = getNumCols()];
     }
-    
   }
-
   
   /**
    * Apply this{@link #swapRows(LongBuffer, int, int)} to each element of a permutation array
@@ -430,16 +423,8 @@ import arb.algebra.Ring;
     RealMatrix m = new RealMatrix();
     m.init(rows, cols);
     m.rows = new Real[rows];
-    m.initRowPointers();
     m.initRows();
     return m;
-  }
-
-  public RealMatrix initRowPointers()
-  {
-    MemorySegment ms = MemorySegment.ofAddress(getRowPointers()).reinterpret(Long.BYTES * rows.length);
-    rowPointers = ms.asByteBuffer().order(ByteOrder.nativeOrder()).asLongBuffer();
-    return this;
   }
   
   /**

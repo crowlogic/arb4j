@@ -90,7 +90,6 @@ public class ComplexMatrix implements AutoCloseable, Iterable<Complex>, Ring<Com
   public ComplexMatrix become(ComplexMatrix that) {
     close();
     this.rows = that.rows;
-    this.rowPointers = that.rowPointers;
     this.printPrecision = that.printPrecision;
     this.diagonal = that.diagonal;
     swigCPtr = that.swigCPtr;
@@ -136,20 +135,23 @@ public class ComplexMatrix implements AutoCloseable, Iterable<Complex>, Ring<Com
   }      
   
   private void initRows() {
-    assert rowPointers != null : "rowPointers is null";
     if (rows == null) {
       rows = new Complex[getNumRows()];
     }
     
+    Complex entries = getEntries();
+    long entriesPtr = entries.swigCPtr;
     for (int i = 0; i < getNumRows(); i++) {
+      long rowPtr = entriesPtr + (i * getStride());
       if (rows[i] == null) {
-        rows[i] = new Complex(rowPointers.get(i), false);
-      } else {                                   
-        rows[i].swigCPtr = rowPointers.get(i);
+        rows[i] = new Complex(rowPtr, false);
+      } else {
+        rows[i].swigCPtr = rowPtr;
       }
       rows[i].elements = new Complex[rows[i].dim = getNumCols()];
     }
   }
+
 
   public ComplexMatrix permute(LongBuffer permutation) {
     final int n = permutation.capacity();
@@ -162,8 +164,6 @@ public class ComplexMatrix implements AutoCloseable, Iterable<Complex>, Ring<Com
     return this;
   }
     
-  LongBuffer rowPointers;
-
   public ComplexMatrix mul(Complex scalar, int bits, ComplexMatrix result) {
     assert getNumRows() == result.getNumRows() : String.format("this.numRows=%d != that.numRows = %d\n", getNumRows(), result.getNumRows());
     assert getNumCols() == result.getNumCols() : String.format("this.numCols=%d != that.numCols = %d\n", getNumCols(), result.getNumCols());
@@ -306,16 +306,10 @@ public class ComplexMatrix implements AutoCloseable, Iterable<Complex>, Ring<Com
     ComplexMatrix m = new ComplexMatrix();
     m.init(rows, cols);
     m.rows = new Complex[rows];
-    m.initRowPointers();
     m.initRows();
     return m;
   }
 
-  public ComplexMatrix initRowPointers() {
-    MemorySegment ms = MemorySegment.ofAddress(getRowPointers()).reinterpret(Long.BYTES * rows.length);
-    rowPointers = ms.asByteBuffer().order(ByteOrder.nativeOrder()).asLongBuffer();
-    return this;
-  }
   
   public ComplexMatrix inverse(int prec, ComplexMatrix result) {
     if (acb_mat_inv(result, this, prec) == 0) {
@@ -449,6 +443,15 @@ public class ComplexMatrix implements AutoCloseable, Iterable<Complex>, Ring<Com
     return this;
   } 
   
+
+  public void setEntries(Complex value) {
+    arblibJNI.ComplexMatrix_entries_set(swigCPtr, this, Complex.getCPtr(value), value);
+  }
+
+  public Complex getEntries() {
+    long cPtr = arblibJNI.ComplexMatrix_entries_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new Complex(cPtr, false);
+  }
 
   public void setNumRows(int value) {
     arblibJNI.ComplexMatrix_numRows_set(swigCPtr, this, value);

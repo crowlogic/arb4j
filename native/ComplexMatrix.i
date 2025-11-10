@@ -64,7 +64,6 @@ import arb.utensils.text.tables.TextTable;
   public ComplexMatrix become(ComplexMatrix that) {
     close();
     this.rows = that.rows;
-    this.rowPointers = that.rowPointers;
     this.printPrecision = that.printPrecision;
     this.diagonal = that.diagonal;
     swigCPtr = that.swigCPtr;
@@ -110,20 +109,23 @@ import arb.utensils.text.tables.TextTable;
   }      
   
   private void initRows() {
-    assert rowPointers != null : "rowPointers is null";
     if (rows == null) {
       rows = new Complex[getNumRows()];
     }
     
+    Complex entries = getEntries();
+    long entriesPtr = entries.swigCPtr;
     for (int i = 0; i < getNumRows(); i++) {
+      long rowPtr = entriesPtr + (i * getStride());
       if (rows[i] == null) {
-        rows[i] = new Complex(rowPointers.get(i), false);
-      } else {                                   
-        rows[i].swigCPtr = rowPointers.get(i);
+        rows[i] = new Complex(rowPtr, false);
+      } else {
+        rows[i].swigCPtr = rowPtr;
       }
       rows[i].elements = new Complex[rows[i].dim = getNumCols()];
     }
   }
+
 
   public ComplexMatrix permute(LongBuffer permutation) {
     final int n = permutation.capacity();
@@ -136,8 +138,6 @@ import arb.utensils.text.tables.TextTable;
     return this;
   }
     
-  LongBuffer rowPointers;
-
   public ComplexMatrix mul(Complex scalar, int bits, ComplexMatrix result) {
     assert getNumRows() == result.getNumRows() : String.format("this.numRows=%d != that.numRows = %d\n", getNumRows(), result.getNumRows());
     assert getNumCols() == result.getNumCols() : String.format("this.numCols=%d != that.numCols = %d\n", getNumCols(), result.getNumCols());
@@ -280,16 +280,10 @@ import arb.utensils.text.tables.TextTable;
     ComplexMatrix m = new ComplexMatrix();
     m.init(rows, cols);
     m.rows = new Complex[rows];
-    m.initRowPointers();
     m.initRows();
     return m;
   }
 
-  public ComplexMatrix initRowPointers() {
-    MemorySegment ms = MemorySegment.ofAddress(getRowPointers()).reinterpret(Long.BYTES * rows.length);
-    rowPointers = ms.asByteBuffer().order(ByteOrder.nativeOrder()).asLongBuffer();
-    return this;
-  }
   
   public ComplexMatrix inverse(int prec, ComplexMatrix result) {
     if (acb_mat_inv(result, this, prec) == 0) {

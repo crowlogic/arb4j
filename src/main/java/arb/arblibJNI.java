@@ -853,14 +853,14 @@ public class arblibJNI {
   public final static native long Fraction_denominatorAddress_get(long jarg1, Fraction jarg1_);
   public final static native long new_Fraction();
   public final static native void delete_Fraction(long jarg1);
-  public final static native void RandomState___gmp_state_set(long jarg1, RandomState jarg1_, long jarg2);
-  public final static native long RandomState___gmp_state_get(long jarg1, RandomState jarg1_);
   public final static native void RandomState___randval_set(long jarg1, RandomState jarg1_, long jarg2);
   public final static native long RandomState___randval_get(long jarg1, RandomState jarg1_);
   public final static native void RandomState___randval2_set(long jarg1, RandomState jarg1_, long jarg2);
   public final static native long RandomState___randval2_get(long jarg1, RandomState jarg1_);
   public final static native long new_RandomState();
   public final static native void delete_RandomState(long jarg1);
+  public final static native void RealMatrix_entries_set(long jarg1, RealMatrix jarg1_, long jarg2, Real jarg2_);
+  public final static native long RealMatrix_entries_get(long jarg1, RealMatrix jarg1_);
   public final static native void RealMatrix_numRows_set(long jarg1, RealMatrix jarg1_, int jarg2);
   public final static native int RealMatrix_numRows_get(long jarg1, RealMatrix jarg1_);
   public final static native void RealMatrix_numCols_set(long jarg1, RealMatrix jarg1_, int jarg2);
@@ -869,6 +869,8 @@ public class arblibJNI {
   public final static native int RealMatrix_stride_get(long jarg1, RealMatrix jarg1_);
   public final static native long new_RealMatrix();
   public final static native void delete_RealMatrix(long jarg1);
+  public final static native void ComplexMatrix_entries_set(long jarg1, ComplexMatrix jarg1_, long jarg2, Complex jarg2_);
+  public final static native long ComplexMatrix_entries_get(long jarg1, ComplexMatrix jarg1_);
   public final static native void ComplexMatrix_numRows_set(long jarg1, ComplexMatrix jarg1_, int jarg2);
   public final static native int ComplexMatrix_numRows_get(long jarg1, ComplexMatrix jarg1_);
   public final static native void ComplexMatrix_numCols_set(long jarg1, ComplexMatrix jarg1_, int jarg2);

@@ -167,7 +167,7 @@ typedef fmpq fmpq_t[1];
 
 typedef struct
 {
-    gmp_randstate_ptr __gmp_state;
+    void *__gmp_state;
     ulong __randval;
     ulong __randval2;
 }
