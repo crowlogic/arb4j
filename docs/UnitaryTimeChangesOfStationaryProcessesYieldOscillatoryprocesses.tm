@@ -10,22 +10,28 @@
   <\abstract>
     A unitary time-change operator <math|U<rsub|\<theta\>>> is constructed
     for absolutely continuous, strictly increasing time reparametrizations
-    <math|\<theta\>>, acting on functions that are locally
-    square-integrable(meaning over compact sets). Applying
-    <math|U<rsub|\<theta\>>> to the Cramér spectral representation of a
-    stationary process yields an oscillatory process in the sense of
-    Priestley with oscillatory function <math|\<varphi\><rsub|t><around|(|\<lambda\>|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>>,
-    evolutionary spectrum <math|d*F<rsub|t><around|(|\<lambda\>|)>=<wide|\<theta\>|\<dot\>><around|(|t|)>*d*F<around|(|\<lambda\>|)>>
-    and expected zero-counting function <math|\<bbb-E\><around|[|N<rsub|<around|[|0,T|]>>|]>=<sqrt|-<wide|K|\<ddot\>><around|(|0|)>>*<space|0.17em><around|[|\<theta\><around|(|T|)>-\<theta\><around|(|0|)>|]><with|font-series|bold|>>.
+    <math|\<theta\>>, acting on functions that are locally square-integrable
+    (meaning over compact sets). Applying <math|U<rsub|\<theta\>>> to the
+    Cramér spectral representation of a stationary process
+    <math|X<around|(|t|)>> produces the transformed process
+    <math|Z<around|(|t|)>=U<rsub|\<theta\>>*X<around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>X<around|(|\<theta\><around|(|t|)>|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>*<space|0.17em>d*\<Phi\><around|(|\<lambda\>|)>>,
+    which is an oscillatory process in the sense of Priestley with
+    oscillatory function <math|\<varphi\><rsub|t><around|(|\<lambda\>|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>>,
+    evolutionary spectrum <math|d*F<rsub|t><around|(|\<lambda\>|)>=<wide|\<theta\>|\<dot\>><around|(|t|)>*<space|0.17em>d*F<around|(|\<lambda\>|)>>,
+    and covariance kernel <math|K<rsub|Z><around|(|t,s|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<space|0.17em>K<rsub|X><around|(|\<theta\><around|(|t|)>,\<theta\><around|(|s|)>|)>>
+    where <math|K<rsub|X>> is the stationary covariance of
+    <math|X<around|(|t|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*t>*<space|0.17em>d*\<Phi\><around|(|\<lambda\>|)>>,
+    and the expected zero-counting function
+    <math|\<bbb-E\><around|[|N<rsub|<around|[|a,b|]>>|]>> of the oscillatory
+    process paths equals <math|<sqrt|-<wide|K|\<ddot\>><around|(|0|)>>*<space|0.17em><around|(|\<theta\><around|(|a|)>-\<theta\><around|(|b|)>|)>>.
     The sample paths of any non-degenerate second-order stationary process
     are locally square integrable, making the unitary time-change operator
     <math|U<rsub|\<theta\>>> applicable to typical realizations. A
-    zero-localization measure <math|d*\<mu\><around|(|t|)>=\<delta\><around|(|Z<around|(|t|)>|)><around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*d*t>
+    zero-localization measure <math|d*\<mu\><around|(|t|)>=\<delta\><around|(|Z<around|(|t|)>|)><space|0.17em><around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*<space|0.17em>d*t>
     induces a Hilbert space <math|L<rsup|2><around|(|\<mu\>|)>> on the zero
-    set of each oscillatory process realization <math|Z<around*|(|t|)>>, and
+    set of each oscillatory process realization <math|Z<around|(|t|)>>, and
     the multiplication operator <math|<around|(|L*f|)><around|(|t|)>=t*f<around|(|t|)>>
-    has simple pure point spectrum equal to the zero crossing set of
-    <math|Z>.
+    has simple pure point spectrum equal to the zero crossing set of <math|Z>
   </abstract>
 
   <\table-of-contents|toc>
@@ -37,15 +43,15 @@
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-2>>
 
-    <with|par-left|1tab|1.2<space|2spc>Sample Path Realizations
+    <with|par-left|1tab|1.2<space|2spc>Stationary processes
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-3>>
 
-    <with|par-left|1tab|1.3<space|2spc>Stationary processes
+    <with|par-left|2tab|1.2.1<space|2spc>Sample path realizations
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-4>>
 
-    <with|par-left|1tab|1.4<space|2spc>Oscillatory Processes
+    <with|par-left|1tab|1.3<space|2spc>(Non-Stationary) Oscillatory Processes
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-5>>
 
@@ -53,39 +59,35 @@
     Time-Changed Stationary Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-6><vspace|0.5fn>
 
-    <with|par-left|1tab|2.1<space|2spc>Unitary Time-Change Operator
+    <with|par-left|1tab|2.1<space|2spc>Unitary time-change operator
     <with|mode|math|U<rsub|\<theta\>>*f> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-7>>
 
-    <with|par-left|1tab|2.2<space|2spc>Inverse Filter for Unitary Time
-    Transformations <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <with|par-left|1tab|2.2<space|2spc>Time-Varying (Convolution) Filter
+    Representations <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-8>>
 
-    <with|par-left|1tab|2.3<space|2spc>Transformation of Stationary
-    <with|mode|math|\<to\>> Oscillatory Processes via
-    <with|mode|math|U<rsub|\<theta\>>> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <with|par-left|2tab|2.2.1<space|2spc>The Oscillatory Subclass
+    <with|mode|math|Z<around*|(|t|)>=U<rsub|\<theta\>> X<around*|(|t|)>>
+    \ <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-9>>
 
-    <with|par-left|1tab|2.4<space|2spc>Covariance operator conjugation
+    <with|par-left|1tab|2.3<space|2spc>Transformation of stationary to
+    oscillatory processes via <with|mode|math|U<rsub|\<theta\>>>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-10>>
 
+    <with|par-left|1tab|2.4<space|2spc>Covariance operator conjugation
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-11>>
+
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|3<space|2spc>Zero
     Localization> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-11><vspace|0.5fn>
-
-    <with|par-left|1tab|3.1<space|2spc>The Kac-Rice Formula For The Expected
-    Zero Counting Function <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-12>>
-
-    <with|par-left|2tab|3.1.1<space|2spc>The Expected Zero Counting Function
-    for Unitarily Time-Changed Stationary Processes
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-13>>
+    <no-break><pageref|auto-12><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-14><vspace|0.5fn>
+    <no-break><pageref|auto-13><vspace|0.5fn>
   </table-of-contents>
 
   <section|Gaussian Processes>
@@ -113,174 +115,8 @@
     For any finite <math|<around|(|t<rsub|i>|)><rsub|i=1><rsup|n>\<subset\>T>,
     the matrix <math|K<rsub|i*j>=K<around|(|t<rsub|i>,t<rsub|j>|)>> is
     symmetric positive semidefinite, and a Gaussian process is completely
-    determined in law by <math|m> and <math|K>.
+    determined in law by <math|m> and <math|K>
   </definition>
-
-  <\definition>
-    <label|def:canonical_metric>The canonical metric associated with a
-    Gaussian process is
-
-    <\equation>
-      d*<around|(|s,t|)>=<sqrt|\<bbb-E\><around|[|<around|(|X<rsub|s>-X<rsub|t>|)><rsup|2>|]>>=<sqrt|K<around|(|s,s|)>+K<around|(|t,t|)>-2*K<around|(|s,t|)>>
-    </equation>
-  </definition>
-
-  <subsection|Sample Path Realizations>
-
-  <\definition>
-    <label|def:L2loc><with|font-series|bold|[Locally square-integrable
-    functions]> Define
-
-    <\equation>
-      L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>\<assign\><around*|{|f:\<bbb-R\>\<to\>\<bbb-C\>:<big|int><rsub|K><around|\||f<around|(|t|)>|\|><rsup|2>*d*t\<less\>\<infty\>*<text|for
-      every compact >K\<subseteq\>\<bbb-R\>|}>
-    </equation>
-  </definition>
-
-  <\remark>
-    <label|rem:L2loc_properties>Every bounded measurable set in
-    <math|\<bbb-R\>> is compact or contained in a compact set; hence
-    <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>> contains functions that
-    are square-integrable on every bounded interval, including functions with
-    polynomial growth at infinity.
-  </remark>
-
-  <\theorem>
-    <label|thm:paths_loc><with|font-series|bold|[Sample paths in
-    <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>]> Let
-    <math|<around|{|X<around|(|t|)>|}><rsub|t\<in\>\<bbb-R\>>> be a
-    second-order stationary process with
-
-    <\equation>
-      <label|eq:finite_variance>\<sigma\><rsup|2>\<assign\>\<bbb-E\><around|[|X<around|(|t|)><rsup|2>|]>\<less\>\<infty\>
-    </equation>
-
-    Then almost every sample path lies in
-    <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>. However, for
-    non-degenerate processes with <math|\<sigma\><rsup|2>\<gtr\>0>, sample
-    paths are not globally square-integrable.
-  </theorem>
-
-  <\proof>
-    Fix an arbitrary bounded interval <math|<around|[|a,b|]>\<subset\>\<bbb-R\>>
-    with <math|a\<less\>b>. Define the random variable
-
-    <\equation>
-      <label|eq:Yab_def>Y<rsub|<around|[|a,b|]>>\<assign\><big|int><rsub|a><rsup|b>X<around|(|t|)><rsup|2>*d*t
-    </equation>
-
-    <\enumerate>
-      <item>By Tonelli's theorem, since <math|X<around|(|t|)><rsup|2>\<geq\>0>,
-
-      <\equation>
-        <label|eq:tonelli_application>\<bbb-E\><around|[|Y<rsub|<around|[|a,b|]>>|]>=\<bbb-E\><around*|[|<big|int><rsub|a><rsup|b>X<around|(|t|)><rsup|2>*d*t|]>=<big|int><rsub|a><rsup|b>\<bbb-E\><around|[|X<around|(|t|)><rsup|2>|]>*d*t
-      </equation>
-
-      <item>By stationarity of <math|X>, <math|\<bbb-E\><around|[|X<around|(|t|)><rsup|2>|]>=\<sigma\><rsup|2>>
-      for all <math|t\<in\>\<bbb-R\>>. Therefore
-
-      <\equation>
-        <label|eq:expectation_Yab>\<bbb-E\><around|[|Y<rsub|<around|[|a,b|]>>|]>=<big|int><rsub|a><rsup|b>\<sigma\><rsup|2>*d*t=\<sigma\><rsup|2>*<around|(|b-a|)>
-      </equation>
-
-      <item>Since <math|b-a\<less\>\<infty\>> and
-      <math|\<sigma\><rsup|2>\<less\>\<infty\>> by assumption
-      <eqref|eq:finite_variance>,
-
-      <\equation>
-        <label|eq:Yab_finite_expectation>\<bbb-E\><around|[|Y<rsub|<around|[|a,b|]>>|]>\<less\>\<infty\>
-      </equation>
-
-      <item>By Markov's inequality, for any <math|M\<gtr\>0>,
-
-      <\equation>
-        <label|eq:markov_inequality>\<bbb-P\>*<around|(|Y<rsub|<around|[|a,b|]>>\<gtr\>M|)>\<leq\><frac|\<bbb-E\><around|[|Y<rsub|<around|[|a,b|]>>|]>|M>=<frac|\<sigma\><rsup|2>*<around|(|b-a|)>|M>
-      </equation>
-
-      <item>Taking <math|M\<to\>\<infty\>> in <eqref|eq:markov_inequality>,
-
-      <\equation>
-        <label|eq:Yab_finite_probability>\<bbb-P\>*<around|(|Y<rsub|<around|[|a,b|]>>\<less\>\<infty\>|)>=1
-      </equation>
-
-      <item>Now let <math|K\<subset\>\<bbb-R\>> be an arbitrary compact set.
-      Since <math|K> is compact in <math|\<bbb-R\>>, it is closed and
-      bounded. Therefore there exists <math|N\<gtr\>0> such that
-
-      <\equation>
-        <label|eq:compact_bounded>K\<subseteq\><around|[|-N,N|]>
-      </equation>
-
-      <item>By <eqref|eq:Yab_finite_probability> applied to
-      <math|<around|[|a,b|]>=<around|[|-N,N|]>>,
-
-      <\equation>
-        <label|eq:interval_N_finite>\<bbb-P\>*<around*|(|<big|int><rsub|-N><rsup|N>X<around|(|t|)><rsup|2>*d*t\<less\>\<infty\>|)>=1
-      </equation>
-
-      <item>Since <math|K\<subseteq\><around|[|-N,N|]>> by
-      <eqref|eq:compact_bounded>,
-
-      <\equation>
-        <label|eq:K_integral_bound><big|int><rsub|K>X<around|(|t|)><rsup|2>*d*t\<leq\><big|int><rsub|-N><rsup|N>X<around|(|t|)><rsup|2>*d*t
-      </equation>
-
-      <item>Combining <eqref|eq:interval_N_finite> and
-      <eqref|eq:K_integral_bound>,
-
-      <\equation>
-        <label|eq:K_finite>\<bbb-P\>*<around*|(|<big|int><rsub|K>X<around|(|t|)><rsup|2>*d*t\<less\>\<infty\>|)>=1
-      </equation>
-
-      <item>Since <math|K> was arbitrary, <eqref|eq:K_finite> holds for every
-      compact set <math|K\<subset\>\<bbb-R\>>. Therefore, almost every sample
-      path <math|t\<mapsto\>X<around|(|t,\<omega\>|)>> satisfies
-
-      <\equation>
-        <label|eq:sample_path_L2loc><big|int><rsub|K><around|\||X<around|(|t,\<omega\>|)>|\|><rsup|2>*d*t\<less\>\<infty\><space|1em>\<forall\><text|compact
-        >K\<subset\>\<bbb-R\>
-      </equation>
-
-      which means almost every sample path lies in
-      <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>.
-
-      <item>For the global divergence statement, assume
-      <math|\<sigma\><rsup|2>\<gtr\>0>. For each <math|n\<in\>\<bbb-N\>>, by
-      <eqref|eq:expectation_Yab>,
-
-      <\equation>
-        <label|eq:expectation_growth>\<bbb-E\><around*|[|<big|int><rsub|-n><rsup|n>X<around|(|t|)><rsup|2>*d*t|]>=2*n*\<sigma\><rsup|2>
-      </equation>
-
-      <item>As <math|n\<to\>\<infty\>>, the right side of
-      <eqref|eq:expectation_growth> diverges:
-
-      <\equation>
-        <label|eq:expectation_divergence>lim<rsub|n\<to\>\<infty\>>
-        \<bbb-E\><around*|[|<big|int><rsub|-n><rsup|n>X<around|(|t|)><rsup|2>*d*t|]>=lim<rsub|n\<to\>\<infty\>>
-        2*n*\<sigma\><rsup|2>=\<infty\>
-      </equation>
-
-      <item>By monotone convergence theorem, since
-      <math|<big|int><rsub|-n><rsup|n>X<around|(|t|)><rsup|2>*d*t> increases
-      monotonically with <math|n>,
-
-      <\equation>
-        <label|eq:MCT_application>\<bbb-E\><around*|[|lim<rsub|n\<to\>\<infty\>>
-        <big|int><rsub|-n><rsup|n>X<around|(|t|)><rsup|2>*d*t|]>=lim<rsub|n\<to\>\<infty\>>
-        \<bbb-E\><around*|[|<big|int><rsub|-n><rsup|n>X<around|(|t|)><rsup|2>*d*t|]>=\<infty\>
-      </equation>
-
-      <item>Therefore
-
-      <\equation>
-        <label|eq:global_divergence>\<bbb-P\>*<around*|(|<big|int><rsub|-\<infty\>><rsup|\<infty\>>X<around|(|t|)><rsup|2>*d*t=\<infty\>|)>=1
-      </equation>
-
-      <item>Thus sample paths are not in <math|L<rsup|2><around|(|\<bbb-R\>|)>>,
-      only in <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>.
-    </enumerate>
-  </proof>
 
   <subsection|Stationary processes>
 
@@ -291,326 +127,320 @@
     admits the sample path representation
 
     <\equation>
-      <label|eq:cramer_representation>X<around|(|t|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*t>*d*\<Phi\><around|(|\<lambda\>|)>
+      <label|eq:cramer_representation>X<around|(|t|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*t>*<space|0.17em>d*\<Phi\><around|(|\<lambda\>|)>
     </equation>
 
     which has covariance
 
     <\equation>
-      <label|eq:stationary_covariance>R<rsub|X>*<around|(|t-s|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*<around|(|t-s|)>>*d*F<around|(|\<lambda\>|)>
+      <label|eq:stationary_covariance>R<rsub|X>*<around|(|t-s|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*<around|(|t-s|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>
     </equation>
   </definition>
 
-  <subsection|Oscillatory Processes><label|sec:oscillatory>
+  <subsubsection|Sample path realizations>
+
+  <\definition>
+    <label|def:L2loc><with|font-series|bold|[Locally square-integrable
+    functions]> Define
+
+    <\equation>
+      L<rsup|2><rsub|<math-up|loc>><around|(|\<bbb-R\>|)>\<assign\><around*|{|f:\<bbb-R\>\<to\>\<bbb-C\><space|0.17em>:<space|0.17em><big|int><rsub|K><around|\||f<around|(|t|)>|\|><rsup|2>*<space|0.17em>d*t\<less\>\<infty\>*<text|for
+      every compact >K\<subseteq\>\<bbb-R\>|}>
+    </equation>
+  </definition>
+
+  <\remark>
+    <label|rem:L2loc_properties>Every bounded measurable set in
+    <math|\<bbb-R\>> is compact or contained in a compact set; hence
+    <math|L<rsup|2><rsub|<math-up|loc>><around|(|\<bbb-R\>|)>> contains
+    functions that are square-integrable on every bounded interval, including
+    functions with polynomial growth at infinity
+  </remark>
+
+  <\theorem>
+    <label|thm:paths_loc><with|font-series|bold|[Sample paths in
+    <math|L<rsup|2><rsub|<math-up|loc>><around|(|\<bbb-R\>|)>>]> Let
+    <math|<around|{|X<around|(|t|)>|}><rsub|t\<in\>\<bbb-R\>>> be a
+    second-order stationary process with
+
+    <\equation>
+      <label|eq:finite_variance>\<sigma\><rsup|2>\<assign\>\<bbb-E\><around|[|X<around|(|t|)><rsup|2>|]>\<less\>\<infty\>
+    </equation>
+
+    Then almost every sample path lies in
+    <math|L<rsup|2><rsub|<math-up|loc>><around|(|\<bbb-R\>|)>>
+  </theorem>
+
+  <\proof>
+    Fix an arbitrary bounded interval <math|<around|[|a,b|]>\<subset\>\<bbb-R\>>
+    with <math|a\<less\>b>. Define
+
+    <\equation>
+      <label|eq:Yab_def>Y<rsub|<around|[|a,b|]>>\<assign\><big|int><rsub|a><rsup|b>X<around|(|t|)><rsup|2>*<space|0.17em>d*t
+    </equation>
+
+    By Tonelli's theorem, since <math|X<around|(|t|)><rsup|2>\<ge\>0>,
+
+    <\equation>
+      <label|eq:tonelli_application>\<bbb-E\><around|[|Y<rsub|<around|[|a,b|]>>|]>=\<bbb-E\><space|-0.17em><around*|[|<big|int><rsub|a><rsup|b>X<around|(|t|)><rsup|2>*<space|0.17em>d*t|]>=<big|int><rsub|a><rsup|b>\<bbb-E\><around|[|X<around|(|t|)><rsup|2>|]>*<space|0.17em>d*t
+    </equation>
+
+    By stationarity, <math|\<bbb-E\><around|[|X<around|(|t|)><rsup|2>|]>=\<sigma\><rsup|2>>
+    for all <math|t>, hence
+
+    <\equation>
+      <label|eq:expectation_Yab>\<bbb-E\><around|[|Y<rsub|<around|[|a,b|]>>|]>=\<sigma\><rsup|2>*<around|(|b-a|)>\<less\>\<infty\>
+    </equation>
+
+    Markov's inequality yields, for <math|M\<gtr\>0>,
+
+    <\equation>
+      <label|eq:markov_inequality>\<bbb-P\>*<around|(|Y<rsub|<around|[|a,b|]>>\<gtr\>M|)>\<le\><frac|\<bbb-E\><around|[|Y<rsub|<around|[|a,b|]>>|]>|M>=<frac|\<sigma\><rsup|2>*<around|(|b-a|)>|M>
+    </equation>
+
+    and letting <math|M\<to\>\<infty\>> gives
+    <math|\<bbb-P\>*<around|(|Y<rsub|<around|[|a,b|]>>\<less\>\<infty\>|)>=1>.
+    Now let <math|K\<subset\>\<bbb-R\>> be compact, so
+    <math|K\<subseteq\><around|[|-N,N|]>> for some <math|N\<gtr\>0>. Then
+
+    <\equation>
+      <big|int><rsub|K>X<around|(|t|)><rsup|2>*<space|0.17em>d*t\<le\><big|int><rsub|-N><rsup|N>X<around|(|t|)><rsup|2>*<space|0.17em>d*t\<less\>\<infty\><space|1em><text|a.s.>
+    </equation>
+
+    hence almost every path satisfies <math|<big|int><rsub|K><around|\||X<around|(|t,\<omega\>|)>|\|><rsup|2>*<space|0.17em>d*t\<less\>\<infty\>>
+    for every compact <math|K>, i.e. <math|X<around|(|\<cdummy\>,\<omega\>|)>\<in\>L<rsup|2><rsub|<math-up|loc>><around|(|\<bbb-R\>|)>>
+  </proof>
+
+  <subsection|(Non-Stationary) Oscillatory Processes><label|sec:oscillatory>
 
   <\definition>
     <label|def:osc_proc><with|font-series|bold|[Oscillatory
-    process]<cite|evolutionarySpectraAndNonStationaryProcesses>> Let <math|F>
+    process]><cite|evolutionarySpectraAndNonStationaryProcesses> Let <math|F>
     be a finite nonnegative Borel measure on <math|\<bbb-R\>>. Let
 
     <\equation>
-      <label|eq:gain_L2>A<rsub|t>\<in\>L<rsup|2><around|(|F|)><space|1em>\<forall\>t\<in\>\<bbb-R\>
+      <label|eq:gain_L2>A<rsub|t>\<in\>L<rsup|2><around|(|F|)><space|1em>\<forall\><space|0.17em>t\<in\>\<bbb-R\>
     </equation>
 
     be the gain function and
 
     <\equation>
-      <label|eq:oscillatory_function>\<varphi\><rsub|t><around|(|\<lambda\>|)>=A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>
+      <label|eq:oscillatory_function>\<varphi\><rsub|t><around|(|\<lambda\>|)>=A<rsub|t><around|(|\<lambda\>|)>*<space|0.17em>e<rsup|i*\<lambda\>*t>
     </equation>
 
-    be the corresponding oscillatory function then an oscillatory process is
-    a stochastic process which can be represented as
+    the corresponding oscillatory function. An oscillatory process is a
+    stochastic process represented as
 
     <\equation>
-      <label|eq:oscillatory_process>Z<around|(|t|)>=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)>*d*\<Phi\><around|(|\<lambda\>|)>=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*d*\<Phi\><around|(|\<lambda\>|)>
+      <label|eq:oscillatory_process>Z<around|(|t|)><space|0.27em>=<space|0.27em><big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>d*\<Phi\><around|(|\<lambda\>|)><space|0.27em>=<space|0.27em><big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)>*<space|0.17em>e<rsup|i*\<lambda\>*t>*<space|0.17em>d*\<Phi\><around|(|\<lambda\>|)>
     </equation>
 
     where <math|\<Phi\>> is a complex orthogonal random measure with spectral
-    measure <math|F> which satisfies the relation
+    measure <math|F> satisfying
 
     <\equation>
-      <label|eq:orthogonality_phi>d*\<bbb-E\><around|[|\<Phi\><around|(|\<lambda\>|)><wide|\<Phi\><around|(|\<mu\>|)>|\<bar\>>|]>=\<delta\>*<around|(|\<lambda\>-\<mu\>|)>*d*F<around|(|\<lambda\>|)>
+      <label|eq:orthogonality_phi>d*\<bbb-E\><space|-0.17em><around*|[|\<Phi\><around|(|\<lambda\>|)><space|0.17em><wide|\<Phi\><around|(|\<mu\>|)>|\<bar\>>|]><space|0.27em>=<space|0.27em>\<delta\>*<around|(|\<lambda\>-\<mu\>|)>*<space|0.17em>d*F<around|(|\<lambda\>|)>
     </equation>
 
-    and has the corresponding covariance kernel
+    and covariance
 
     <\equation>
-      <label|eq:oscillatory_covariance>R<rsub|Z><around|(|t,s|)>=\<bbb-E\><around|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]>=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)><wide|A<rsub|s><around|(|\<lambda\>|)>|\<bar\>>e<rsup|i*\<lambda\>*<around|(|t-s|)>>*d*F<around|(|\<lambda\>|)>=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)><wide|\<varphi\><rsub|s><around|(|\<lambda\>|)>|\<bar\>>d*F<around|(|\<lambda\>|)>
+      <label|eq:oscillatory_covariance>
+
+      <\aligned>
+        <tformat|<table|<row|<cell|R<rsub|Z><around|(|t,s|)><space|0.27em>=<space|0.27em>\<bbb-E\><space|-0.17em><around*|[|Z<around|(|t|)><space|0.17em><wide|Z<around|(|s|)>|\<bar\>>|]>>|<cell|=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)><space|0.17em><wide|A<rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>e<rsup|i*\<lambda\>*<around|(|t-s|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)><space|0.17em><wide|\<varphi\><rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>d*F<around|(|\<lambda\>|\<nobracket\>>>>>>
+      </aligned>
+    </equation>
+
+    \;
+  </definition>
+
+  <\definition>
+    <label|cor:evol_spec><with|font-series|bold|[Evolutionary spectrum]> The
+    evolutionary power spectral density of an oscillatory process is given by
+    is
+
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|<label|eq:evolutionary_spectrum>d*F<rsub|t><around|(|\<lambda\>|)>>|<cell|=S<rsub|t><around*|(|\<lambda\>|)>\<mathd\>\<lambda\>>>|<row|<cell|>|<cell|=<around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)><with|font-series|bold|>>>|<row|<cell|>|<cell|=<around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>S<around*|(|\<lambda\>|)>d\<lambda\>>>>>>
+    </equation>
+  </definition>
+
+  <\definition>
+    <strong|[Variance of evolutionary process]> The variance of an
+    evolutionary process <math|Z<around*|(|t|)>> is given by integrating the
+    evolutionary power spectral density <math|S<rsub|t><around*|(|\<lambda\>|)>>
+    over all frequencues
+
+    <\equation>
+      var<around*|(|Z<around*|(|t|)>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>S<rsub|t><around*|(|\<lambda\><rsub|>|)>\<mathd\>\<lambda\>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<mathd\>F<rsub|t><around*|(|\<lambda\>|)>
     </equation>
   </definition>
 
   <\theorem>
     <label|thm:realvaluedness><with|font-series|bold|[Real-valuedness
     criterion for oscillatory processes]> Let <math|Z> be an oscillatory
-    process with oscillatory function
-
-    <\equation>
-      <label|eq:osc_func_def>\<varphi\><rsub|t><around|(|\<lambda\>|)>=A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>
-    </equation>
-
+    process with oscillatory function <math|\<varphi\><rsub|t><around|(|\<lambda\>|)>=A<rsub|t><around|(|\<lambda\>|)>*<space|0.17em>e<rsup|i*\<lambda\>*t>>
     and spectral measure <math|F>. Then <math|Z> is real-valued if and only
     if
 
     <\equation>
-      <label|eq:gain_symmetry>A<rsub|t>*<around|(|-\<lambda\>|)>=<wide|A<rsub|t><around|(|\<lambda\>|)>|\<bar\>>
+      <label|eq:gain_symmetry>A<rsub|t>*<around|(|-\<lambda\>|)>=<wide|A<rsub|t><around|(|\<lambda\>|)>|\<bar\>><space|1em><text|for
+      >F*<text|-a.e. >\<lambda\>\<in\>\<bbb-R\>
     </equation>
 
-    for <math|F>-almost every <math|\<lambda\>\<in\>\<bbb-R\>>, equivalently
+    equivalently
 
     <\equation>
-      <label|eq:osc_symmetry>\<varphi\><rsub|t>*<around|(|-\<lambda\>|)>=<wide|\<varphi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>>
+      <label|eq:osc_symmetry>\<varphi\><rsub|t>*<around|(|-\<lambda\>|)>=<wide|\<varphi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>><space|1em><text|for
+      >F*<text|-a.e. >\<lambda\>\<in\>\<bbb-R\>
     </equation>
-
-    for <math|F>-almost every <math|\<lambda\>\<in\>\<bbb-R\>>.
   </theorem>
 
   <\proof>
-    <\enumerate>
-      <item>Assume <math|Z> is real-valued. Then for all
-      <math|t\<in\>\<bbb-R\>>,
-
-      <\equation>
-        <label|eq:real_valued_condition>Z<around|(|t|)>=<wide|Z<around|(|t|)>|\<bar\>>
-      </equation>
-
-      <item>From the oscillatory representation
-      <eqref|eq:oscillatory_process>,
-
-      <\equation>
-        <label|eq:Z_representation>Z<around|(|t|)>=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*d*\<Phi\><around|(|\<lambda\>|)>
-      </equation>
-
-      <item>Taking the complex conjugate of both sides of
-      <eqref|eq:Z_representation>,
-
-      <\equation>
-        <label|eq:Z_conjugate><wide|Z<around|(|t|)>|\<bar\>>=<wide|<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*d*\<Phi\><around|(|\<lambda\>|)>|\<bar\>>=<big|int><rsub|\<bbb-R\>><wide|A<rsub|t><around|(|\<lambda\>|)>|\<bar\>>e<rsup|-i*\<lambda\>*t>*d<wide|\<Phi\><around|(|\<lambda\>|)>|\<bar\>>
-      </equation>
-
-      <item>For a real-valued process, the orthogonal random measure must
-      satisfy the symmetry property
-
-      <\equation>
-        <label|eq:phi_symmetry>d<wide|\<Phi\><around|(|\<lambda\>|)>|\<bar\>>=-d*\<Phi\>*<around|(|-\<lambda\>|)>
-      </equation>
-
-      <item>Substituting <eqref|eq:phi_symmetry> into <eqref|eq:Z_conjugate>,
-
-      <\equation>
-        <label|eq:Z_conjugate_substituted><wide|Z<around|(|t|)>|\<bar\>>=-<big|int><rsub|\<bbb-R\>><wide|A<rsub|t><around|(|\<lambda\>|)>|\<bar\>>e<rsup|-i*\<lambda\>*t>*d*\<Phi\>*<around|(|-\<lambda\>|)>
-      </equation>
-
-      <item>Apply the change of variables <math|\<mu\>=-\<lambda\>>, so
-      <math|d*\<Phi\>*<around|(|-\<lambda\>|)>=-d*\<Phi\><around|(|\<mu\>|)>>
-      and <math|e<rsup|-i*\<lambda\>*t>=e<rsup|i*\<mu\>*t>>:
-
-      <\equation>
-        <label|eq:change_of_variables><wide|Z<around|(|t|)>|\<bar\>>=-<big|int><rsub|\<bbb-R\>><wide|A<rsub|t>*<around|(|-\<mu\>|)>|\<bar\>>e<rsup|i*\<mu\>*t>*<around|(|-d*\<Phi\><around|(|\<mu\>|)>|)>=<big|int><rsub|\<bbb-R\>><wide|A<rsub|t>*<around|(|-\<mu\>|)>|\<bar\>>e<rsup|i*\<mu\>*t>*d*\<Phi\><around|(|\<mu\>|)>
-      </equation>
-
-      <item>By <eqref|eq:real_valued_condition>, the right sides of
-      <eqref|eq:Z_representation> and <eqref|eq:change_of_variables> must be
-      equal:
-
-      <\equation>
-        <label|eq:integrand_equality><big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<mu\>|)>*e<rsup|i*\<mu\>*t>*d*\<Phi\><around|(|\<mu\>|)>=<big|int><rsub|\<bbb-R\>><wide|A<rsub|t>*<around|(|-\<mu\>|)>|\<bar\>>e<rsup|i*\<mu\>*t>*d*\<Phi\><around|(|\<mu\>|)>
-      </equation>
-
-      <item>Since the stochastic integral representation is unique in
-      <math|L<rsup|2><around|(|F|)>>, the integrands must be equal
-      <math|F>-almost everywhere:
-
-      <\equation>
-        <label|eq:gain_equality>A<rsub|t><around|(|\<lambda\>|)>=<wide|A<rsub|t>*<around|(|-\<lambda\>|)>|\<bar\>><space|1em><text|for
-        >F*<text|-a.e. >\<lambda\>
-      </equation>
-
-      <item>This is equivalent to <eqref|eq:gain_symmetry>. From
-      <eqref|eq:osc_func_def>,
-
-      <\equation>
-        <label|eq:osc_func_neg>\<varphi\><rsub|t>*<around|(|-\<lambda\>|)>=A<rsub|t>*<around|(|-\<lambda\>|)>*e<rsup|-i*\<lambda\>*t>
-      </equation>
-
-      <item>Using <eqref|eq:gain_symmetry>,
-
-      <\equation>
-        <label|eq:osc_func_conjugate>\<varphi\><rsub|t>*<around|(|-\<lambda\>|)>=<wide|A<rsub|t><around|(|\<lambda\>|)>|\<bar\>>e<rsup|-i*\<lambda\>*t>=<wide|A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>|\<bar\>>=<wide|\<varphi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>>
-      </equation>
-
-      establishing <eqref|eq:osc_symmetry>.
-
-      <item>Conversely, assume <eqref|eq:gain_symmetry> holds. Reversing the
-      steps from <eqref|eq:change_of_variables> to
-      <eqref|eq:real_valued_condition> shows that
-      <math|<wide|Z<around|(|t|)>|\<bar\>>=Z<around|(|t|)>> for all <math|t>,
-      so <math|Z> is real-valued.
-    </enumerate>
+    If <math|Z> is real-valued, then <math|Z<around|(|t|)>=<wide|Z<around|(|t|)>|\<bar\>>>
+    for all <math|t>. Taking conjugates in the representation
+    <math|Z<around|(|t|)>=<big|int><space|-0.17em>A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*<space|0.17em>d*\<Phi\><around|(|\<lambda\>|)>>
+    and using the symmetry relation for the orthogonal random measure
+    appropriate for real-valued processes, a change of variable
+    <math|\<mu\>=-\<lambda\>> shows that the
+    <math|L<rsup|2><around|(|F|)>>-integrands must agree <math|F>-a.e., i.e.
+    <math|A<rsub|t><around|(|\<lambda\>|)>=<wide|A<rsub|t>*<around|(|-\<lambda\>|)>|\<bar\>>>,
+    which is equivalent to <eqref|eq:gain_symmetry>. Using
+    <math|\<varphi\><rsub|t><around|(|\<lambda\>|)>=A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>>
+    then gives <eqref|eq:osc_symmetry>. The converse follows by reversing the
+    steps
   </proof>
 
   <\theorem>
-    <label|thm:existence_osc><with|font-series|bold|[Existence of Oscillatory
-    Processes]> Let <math|F> be an absolutely continuous spectral measure and
-    the gain function
+    <label|thm:existence_osc><with|font-series|bold|[Existence of oscillatory
+    processes with explicit <math|L<rsup|2>>-limit construction]> Let
+    <math|F> be an absolutely continuous spectral measure and the gain
+    function <math|A<rsub|t><around|(|\<lambda\>|)>\<in\>L<rsup|2><around|(|F|)>>
+    for all <math|t\<in\>\<bbb-R\>>, measurable jointly in
+    <math|<around|(|t,\<lambda\>|)>>. Define the time-dependent spectrum
 
     <\equation>
-      <label|eq:gain_condition>A<rsub|t><around|(|\<lambda\>|)>\<in\>L<rsup|2><around|(|F|)><space|1em>\<forall\>t\<in\>\<bbb-R\>
+      <label|eq:time_dependent_spectrum>S<rsub|t>\<assign\><big|int><rsub|\<bbb-R\>><around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)><space|0.27em>=<space|0.27em><big|int><rsub|\<bbb-R\>><around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>S<around|(|\<lambda\>|)>*<space|0.17em>d*\<lambda\><space|0.27em>\<less\><space|0.27em>\<infty\>
     </equation>
 
-    be measurable in both time and frequency then the time-dependent spectral
-    density is defined by
+    Then there exists a complex orthogonal random measure <math|\<Phi\>> with
+    spectral measure <math|F> such that for each fixed <math|t> the
+    stochastic integral
 
     <\equation>
-      <label|eq:time_dependent_spectrum>S<rsub|t><around|(|\<lambda\>|)>=<big|int><rsub|\<bbb-R\>><around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*d*F<around|(|\<lambda\>|)>\<less\>\<infty\>=<big|int><rsub|\<bbb-R\>><around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*S<around|(|\<lambda\>|)>*d*\<lambda\>
+      <label|eq:oscillatory_well_defined>Z<around|(|t|)><space|0.27em>=<space|0.27em><big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)>*<space|0.17em>e<rsup|i*\<lambda\>*t>*<space|0.17em>d*\<Phi\><around|(|\<lambda\>|)>
     </equation>
 
-    and there exists a complex orthogonal random measure <math|\<Phi\>> with
-    spectral measure <math|F> such that for each sample path
-    <math|\<omega\><rsub|0>\<in\>\<Omega\>>
-
-    <\equation>
-      <label|eq:oscillatory_well_defined>Z<around|(|t,\<omega\><rsub|0>|)>=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*d*\<Phi\><around|(|\<lambda\>,\<omega\><rsub|0>|)>
-    </equation>
-
-    is well-defined in <math|L<rsup|2><around|(|\<Omega\>|)>> and has
-    covariance <math|R<rsub|Z>> as in <eqref|eq:oscillatory_covariance>.
+    is well-defined as an <math|L<rsup|2><around|(|\<Omega\>|)>>-limit and
+    has covariance <math|R<rsub|Z>> as in <eqref|eq:oscillatory_covariance>
   </theorem>
 
   <\proof>
-    <\enumerate>
-      <item>Define the space of simple functions on <math|\<bbb-R\>>: for
-      disjoint Borel sets <math|<around|{|E<rsub|j>|}><rsub|j=1><rsup|n>>
-      with <math|F<around|(|E<rsub|j>|)>\<less\>\<infty\>> and coefficients
-      <math|<around|{|c<rsub|j>|}><rsub|j=1><rsup|n>\<subset\>\<bbb-C\>>,
+    Step 1 (simple functions and isometry). Let <math|<math-ss|S>> denote the
+    set of simple functions
 
-      <\equation>
-        <label|eq:simple_function>g<around|(|\<lambda\>|)>=<big|sum><rsub|j=1><rsup|n>c<rsub|j>*<with|math-font-family|bf|1><rsub|E<rsub|j>><around|(|\<lambda\>|)>
-      </equation>
+    <\equation>
+      <label|eq:simple_function>g<around|(|\<lambda\>|)><space|0.27em>=<space|0.27em><big|sum><rsub|j=1><rsup|n>c<rsub|j>*<space|0.17em><with|math-font-family|bf|1><rsub|E<rsub|j>><around|(|\<lambda\>|)>
+    </equation>
 
-      <item>For simple functions, define the stochastic integral
+    with disjoint Borel <math|E<rsub|j>> and
+    <math|F<around|(|E<rsub|j>|)>\<less\>\<infty\>>,
+    <math|c<rsub|j>\<in\>\<bbb-C\>>. Define the stochastic integral on
+    <math|<math-ss|S>> by
 
-      <\equation>
-        <label|eq:integral_simple><big|int><rsub|\<bbb-R\>>g<around|(|\<lambda\>|)>*d*\<Phi\><around|(|\<lambda\>|)>\<assign\><big|sum><rsub|j=1><rsup|n>c<rsub|j>*\<Phi\><around|(|E<rsub|j>|)>
-      </equation>
+    <\equation>
+      <label|eq:integral_simple><big|int><rsub|\<bbb-R\>>g<around|(|\<lambda\>|)>*<space|0.17em>d*\<Phi\><around|(|\<lambda\>|)><space|0.27em>\<assign\><space|0.27em><big|sum><rsub|j=1><rsup|n>c<rsub|j>*<space|0.17em>\<Phi\><around|(|E<rsub|j>|)>
+    </equation>
 
-      <item>Compute the second moment:
+    Using orthogonality of <math|\<Phi\>>,
 
-      <\equation>
-        <label|eq:second_moment_simple>\<bbb-E\><around*|[|<around*|\||<big|int><rsub|\<bbb-R\>>g<around|(|\<lambda\>|)>*d*\<Phi\><around|(|\<lambda\>|)>|\|><rsup|2>|]>=\<bbb-E\><around*|[|<around*|\||<big|sum><rsub|j=1><rsup|n>c<rsub|j>*\<Phi\><around|(|E<rsub|j>|)>|\|><rsup|2>|]>=\<bbb-E\><around*|[|<big|sum><rsub|j=1><rsup|n><big|sum><rsub|k=1><rsup|n>c<rsub|j><wide|c<rsub|k>|\<bar\>>\<Phi\><around|(|E<rsub|j>|)><wide|\<Phi\><around|(|E<rsub|k>|)>|\<bar\>>|]>
-      </equation>
+    <\equation>
+      <label|eq:isometry_simple>\<bbb-E\><space|-0.17em><around*|[|<around*|\||<big|int>g*<space|0.17em>d*\<Phi\>|\|><rsup|2>|]>=<big|sum><rsub|j=1><rsup|n><around|\||c<rsub|j>|\|><rsup|2>*<space|0.17em>F<around|(|E<rsub|j>|)>=<big|int><rsub|\<bbb-R\>><around|\||g<around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>
+    </equation>
 
-      <item>By linearity of expectation,
+    Thus the map <math|I:<math-ss|S>\<to\>L<rsup|2><around|(|\<Omega\>|)>>,
+    <math|I<around|(|g|)>=<big|int>g*<space|0.17em>d*\<Phi\>>, is an isometry
+    with respect to the <math|L<rsup|2><around|(|F|)>>-norm.
 
-      <\equation>
-        <label|eq:linearity_expectation>\<bbb-E\><around*|[|<big|sum><rsub|j=1><rsup|n><big|sum><rsub|k=1><rsup|n>c<rsub|j><wide|c<rsub|k>|\<bar\>>\<Phi\><around|(|E<rsub|j>|)><wide|\<Phi\><around|(|E<rsub|k>|)>|\<bar\>>|]>=<big|sum><rsub|j=1><rsup|n><big|sum><rsub|k=1><rsup|n>c<rsub|j><wide|c<rsub|k>|\<bar\>>\<bbb-E\><around|[|\<Phi\><around|(|E<rsub|j>|)><wide|\<Phi\><around|(|E<rsub|k>|)>|\<bar\>>|]>
-      </equation>
+    Step 2 (density and Cauchy property). Simple functions are dense in
+    <math|L<rsup|2><around|(|F|)>>: for any
+    <math|h\<in\>L<rsup|2><around|(|F|)>> there exists
+    <math|g<rsub|n>\<in\><math-ss|S>> with
+    <math|<around|\<\|\|\>|h-g<rsub|n>|\<\|\|\>><rsub|L<rsup|2><around|(|F|)>>\<to\>0>.
+    By <eqref|eq:isometry_simple>,
 
-      <item>By the orthogonality relation <eqref|eq:orthogonality_phi>, since
-      <math|E<rsub|j>\<cap\>E<rsub|k>=\<emptyset\>> for <math|j\<neq\>k>,
+    <\equation>
+      <label|eq:cauchy_sequence>\<bbb-E\><space|-0.17em><around*|[|<around*|\||<big|int>g<rsub|n>*<space|0.17em>d*\<Phi\>-<big|int>g<rsub|m>*<space|0.17em>d*\<Phi\>|\|><rsup|2>|]>=<around|\<\|\|\>|g<rsub|n>-g<rsub|m>|\<\|\|\>><rsub|L<rsup|2><around|(|F|)>><rsup|2><space|0.27em><long-arrow|\<rubber-rightarrow\>|n,m\<to\>\<infty\>|>0
+    </equation>
 
-      <\equation>
-        <label|eq:orthogonality_application>\<bbb-E\><around|[|\<Phi\><around|(|E<rsub|j>|)><wide|\<Phi\><around|(|E<rsub|k>|)>|\<bar\>>|]>=<choice|<tformat|<table|<row|<cell|F<around|(|E<rsub|j>|)>>|<cell|<text|if
-        >j=k>>|<row|<cell|0>|<cell|<text|if >j\<neq\>k>>>>>
-      </equation>
+    so <math|<around*|{|<big|int>g<rsub|n>*<space|0.17em>d*\<Phi\>|}>> is
+    Cauchy in <math|L<rsup|2><around|(|\<Omega\>|)>>.
 
-      <item>Substituting <eqref|eq:orthogonality_application> into
-      <eqref|eq:linearity_expectation>,
+    Step 3 (definition by <math|L<rsup|2>>-limit and independence of
+    approximating sequence). Since <math|L<rsup|2><around|(|\<Omega\>|)>> is
+    complete, the limit exists. Define, for
+    <math|h\<in\>L<rsup|2><around|(|F|)>>,
 
-      <\equation>
-        <label|eq:isometry_simple><big|sum><rsub|j=1><rsup|n><big|sum><rsub|k=1><rsup|n>c<rsub|j><wide|c<rsub|k>|\<bar\>>\<bbb-E\><around|[|\<Phi\><around|(|E<rsub|j>|)><wide|\<Phi\><around|(|E<rsub|k>|)>|\<bar\>>|]>=<big|sum><rsub|j=1><rsup|n><around|\||c<rsub|j>|\|><rsup|2>*F<around|(|E<rsub|j>|)>
-      </equation>
+    <\equation>
+      <label|eq:L2_limit_def><big|int><rsub|\<bbb-R\>>h<around|(|\<lambda\>|)>*<space|0.17em>d*\<Phi\><around|(|\<lambda\>|)><space|0.27em>\<assign\><space|0.27em>lim<rsub|n\<to\>\<infty\>>
+      <big|int><rsub|\<bbb-R\>>g<rsub|n><around|(|\<lambda\>|)>*<space|0.17em>d*\<Phi\><around|(|\<lambda\>|)>
+    </equation>
 
-      <item>The right side of <eqref|eq:isometry_simple> equals
+    where <math|g<rsub|n>\<in\><math-ss|S>> and
+    <math|<around|\<\|\|\>|h-g<rsub|n>|\<\|\|\>><rsub|L<rsup|2><around|(|F|)>>\<to\>0>.
+    If <math|g<rsub|n>> and <math|<wide|g|~><rsub|n>> are two such
+    approximating sequences, then <math|<around|\<\|\|\>|g<rsub|n>-<wide|g|~><rsub|n>|\<\|\|\>><rsub|L<rsup|2><around|(|F|)>>\<to\>0>
+    and again by <eqref|eq:isometry_simple> the corresponding integrals
+    differ by an <math|L<rsup|2><around|(|\<Omega\>|)>>-null sequence, so the
+    limit is independent of the sequence.
 
-      <\equation>
-        <label|eq:L2_norm_simple><big|sum><rsub|j=1><rsup|n><around|\||c<rsub|j>|\|><rsup|2>*F<around|(|E<rsub|j>|)>=<big|int><rsub|\<bbb-R\>><around|\||g<around|(|\<lambda\>|)>|\|><rsup|2>*d*F<around|(|\<lambda\>|)>
-      </equation>
+    Step 4 (isometry and linearity extend). By continuity from
+    <eqref|eq:isometry_simple> and <eqref|eq:L2_limit_def>,
 
-      <item>Therefore the isometry property holds for simple functions:
+    <\equation>
+      <label|eq:L2_isometry_extension>\<bbb-E\><space|-0.17em><around*|[|<around*|\||<big|int>h*<space|0.17em>d*\<Phi\>|\|><rsup|2>|]>=<big|int><rsub|\<bbb-R\>><around|\||h<around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>
+    </equation>
 
-      <\equation>
-        <label|eq:isometry_established>\<bbb-E\><around*|[|<around*|\||<big|int><rsub|\<bbb-R\>>g<around|(|\<lambda\>|)>*d*\<Phi\><around|(|\<lambda\>|)>|\|><rsup|2>|]>=<big|int><rsub|\<bbb-R\>><around|\||g<around|(|\<lambda\>|)>|\|><rsup|2>*d*F<around|(|\<lambda\>|)>
-      </equation>
+    for <math|h\<in\>L<rsup|2><around|(|F|)>>, and the map
+    <math|h\<mapsto\><big|int>h*<space|0.17em>d*\<Phi\>> is linear and
+    isometric.
 
-      <item>The space of simple functions is dense in
-      <math|L<rsup|2><around|(|F|)>>. For any
-      <math|h\<in\>L<rsup|2><around|(|F|)>> and <math|\<epsilon\>\<gtr\>0>,
-      there exists a simple function <math|g> such that
+    Step 5 (apply to <math|\<varphi\><rsub|t>>). Since
+    <math|<around|\||e<rsup|i*\<lambda\>*t>|\|>=1>,
+    <math|\<varphi\><rsub|t><around|(|\<lambda\>|)>=A<rsub|t><around|(|\<lambda\>|)>*<space|0.17em>e<rsup|i*\<lambda\>*t>\<in\>L<rsup|2><around|(|F|)>>
+    and
 
-      <\equation>
-        <label|eq:density_simple><big|int><rsub|\<bbb-R\>><around|\||h<around|(|\<lambda\>|)>-g<around|(|\<lambda\>|)>|\|><rsup|2>*d*F<around|(|\<lambda\>|)>\<less\>\<epsilon\>
-      </equation>
+    <\equation>
+      <big|int><rsub|\<bbb-R\>><around|\||\<varphi\><rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>=<big|int><rsub|\<bbb-R\>><around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>=S<rsub|t>\<less\>\<infty\>
+    </equation>
 
-      <item>By the isometry <eqref|eq:isometry_established> and completeness
-      of <math|L<rsup|2><around|(|\<Omega\>|)>>, the integral extends
-      uniquely by continuity to all <math|h\<in\>L<rsup|2><around|(|F|)>>.
-
-      <item>Since <math|A<rsub|t>\<in\>L<rsup|2><around|(|F|)>> by assumption
-      <eqref|eq:gain_condition>, and <math|<around|\||e<rsup|i*\<lambda\>*t>|\|>=1>,
-
-      <\equation>
-        <label|eq:varphi_L2><big|int><rsub|\<bbb-R\>><around|\||\<varphi\><rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*d*F<around|(|\<lambda\>|)>=<big|int><rsub|\<bbb-R\>><around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*d*F<around|(|\<lambda\>|)>\<less\>\<infty\>
-      </equation>
-
-      so <math|\<varphi\><rsub|t>\<in\>L<rsup|2><around|(|F|)>>.
-
-      <item>Therefore
-
-      <\equation>
-        <label|eq:Z_well_defined>Z<around|(|t|)>=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)>*d*\<Phi\><around|(|\<lambda\>|)>=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*d*\<Phi\><around|(|\<lambda\>|)>
-      </equation>
-
-      is well-defined in <math|L<rsup|2><around|(|\<Omega\>|)>>.
-
-      <item>To compute the covariance, use the sesquilinearity of the
-      stochastic integral:
-
-      <\equation>
-        <label|eq:covariance_computation>R<rsub|Z><around|(|t,s|)>=\<bbb-E\><around|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]>=\<bbb-E\><around*|[|<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)>*d*\<Phi\><around|(|\<lambda\>|)>*<wide|<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|s><around|(|\<mu\>|)>*d*\<Phi\><around|(|\<mu\>|)>|\<bar\>>|]>
-      </equation>
-
-      <item>By Fubini's theorem for stochastic integrals,
-
-      <\equation>
-        <label|eq:fubini_stochastic>\<bbb-E\><around*|[|<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)>*d*\<Phi\><around|(|\<lambda\>|)>*<wide|<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|s><around|(|\<mu\>|)>*d*\<Phi\><around|(|\<mu\>|)>|\<bar\>>|]>=<big|int><rsub|\<bbb-R\>><big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)><wide|\<varphi\><rsub|s><around|(|\<mu\>|)>|\<bar\>>\<bbb-E\>*<around|[|d*\<Phi\><around|(|\<lambda\>|)><wide|d*\<Phi\><around|(|\<mu\>|)>|\<bar\>>|]>
-      </equation>
-
-      <item>Using the orthogonality relation <eqref|eq:orthogonality_phi>,
-
-      <\equation>
-        <label|eq:orthogonality_integral><big|int><rsub|\<bbb-R\>><big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)><wide|\<varphi\><rsub|s><around|(|\<mu\>|)>|\<bar\>>\<delta\>*<around|(|\<lambda\>-\<mu\>|)>*d*F<around|(|\<lambda\>|)>*d*F<around|(|\<mu\>|)>=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)><wide|\<varphi\><rsub|s><around|(|\<lambda\>|)>|\<bar\>>d*F<around|(|\<lambda\>|)>
-      </equation>
-
-      <item>Substituting the definition <eqref|eq:oscillatory_function>,
-
-      <\equation>
-        <label|eq:covariance_final>R<rsub|Z><around|(|t,s|)>=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)><wide|A<rsub|s><around|(|\<lambda\>|)>|\<bar\>>e<rsup|i*\<lambda\>*<around|(|t-s|)>>*d*F<around|(|\<lambda\>|)>
-      </equation>
-
-      as claimed in <eqref|eq:oscillatory_covariance>.
-    </enumerate>
+    Hence <math|Z<around|(|t|)>> in <eqref|eq:oscillatory_well_defined> is
+    well-defined as the <math|L<rsup|2><around|(|\<Omega\>|)>>-limit
+    <eqref|eq:L2_limit_def> with <math|h=\<varphi\><rsub|t>>. Computing
+    covariance via sesquilinearity together with <eqref|eq:orthogonality_phi>
+    yields <eqref|eq:oscillatory_covariance>
   </proof>
 
   <section|Unitarily Time-Changed Stationary
   Processes><label|sec:stationary_timechange>
 
-  <subsection|Unitary Time-Change Operator <math|U<rsub|\<theta\>>*f>>
+  <subsection|Unitary time-change operator <math|U<rsub|\<theta\>>*f>>
 
   <\theorem>
     <label|thm:local_unitarity><with|font-series|bold|[Unitary time-change
-    and local unitarity]> Let the time-scaling function
+    and local isometry]> Let the time-scaling function
     <math|\<theta\>:\<bbb-R\>\<to\>\<bbb-R\>> be absolutely continuous,
-    strictly increasing, and bijective, with\ 
+    strictly increasing, and bijective, with
 
     <\equation>
-      <wide|\<theta\>|\<dot\>><around|(|t|)>\<gtr\>0<label|pd>
+      <wide|\<theta\>|\<dot\>><around|(|t|)>\<gtr\>0
     </equation>
 
-    \ almost everywhere and <math|<wide|\<theta\>|\<dot\>><around|(|t|)>=0>
+    almost everywhere and <math|<wide|\<theta\>|\<dot\>><around|(|t|)>=0>
     only on sets of Lebesgue measure zero. For <math|f> measurable, define
 
     <\equation>
-      <label|eq:U_theta_def><around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*f<around|(|\<theta\><around|(|t|)>|)>
+      <label|eq:U_theta_def><around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>f<around|(|\<theta\><around|(|t|)>|)>
     </equation>
 
     Its inverse is given by
@@ -620,374 +450,134 @@
     </equation>
 
     For every compact set <math|K\<subseteq\>\<bbb-R\>> and
-    <math|f\<in\>L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>,
+    <math|f\<in\>L<rsup|2><rsub|<math-up|loc>><around|(|\<bbb-R\>|)>>,
 
     <\equation>
-      <label|eq:local_isometry><big|int><rsub|K><around|\||<around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>*<around|\||<rsup|2>d*t=<big|int><rsub|\<theta\><around|(|K|)>>|\|>*f<around|(|s|)>|\|><rsup|2>*d*s
+      <label|eq:local_isometry><big|int><rsub|K><around|\||<around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>*<around|\||<rsup|2><space|0.17em>d*t=<big|int><rsub|\<theta\><around|(|K|)>>|\|>*f<around|(|s|)>|\|><rsup|2>*<space|0.17em>d*s
     </equation>
 
     Moreover, <math|U<rsub|\<theta\>><rsup|-1>> is the inverse of
-    <math|U<rsub|\<theta\>>> on <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>.
+    <math|U<rsub|\<theta\>>> on <math|L<rsup|2><rsub|<math-up|loc>><around|(|\<bbb-R\>|)>>
   </theorem>
 
   <\proof>
-    <\enumerate>
-      <item>Let <math|f\<in\>L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>> and
-      let <math|K\<subset\>\<bbb-R\>> be compact. From the definition
-      <eqref|eq:U_theta_def>,
-
-      <\equation>
-        <label|eq:Utheta_norm_start><big|int><rsub|K><around|\||<around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>|\|><rsup|2>*d*t=<big|int><rsub|K><around*|\||<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*f<around|(|\<theta\><around|(|t|)>|)>|\|><rsup|2>*d*t
-      </equation>
-
-      <item>Expanding the square,
-
-      <\equation>
-        <label|eq:expand_square><big|int><rsub|K><around*|\||<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*f<around|(|\<theta\><around|(|t|)>|)>|\|><rsup|2>*d*t=<big|int><rsub|K><wide|\<theta\>|\<dot\>><around|(|t|)><around|\||f<around|(|\<theta\><around|(|t|)>|)>|\|><rsup|2>*d*t
-      </equation>
-
-      <item>Since <math|\<theta\>> is absolutely continuous and strictly
-      increasing, <math|\<theta\><rprime|'>=<wide|\<theta\>|\<dot\>>> exists
-      almost everywhere and <math|<wide|\<theta\>|\<dot\>><around|(|t|)>\<gtr\>0>
-      a.e.
-
-      <item>Apply the change of variables <math|s=\<theta\><around|(|t|)>>.
-      Then
-
-      <\equation>
-        <label|eq:change_var_differential>d*s=<wide|\<theta\>|\<dot\>><around|(|t|)>*d*t
-      </equation>
-
-      <item>The inverse function <math|t=\<theta\><rsup|-1><around|(|s|)>>
-      exists since <math|\<theta\>> is strictly increasing and bijective.
-
-      <item>As <math|t> ranges over <math|K>, the variable
-      <math|s=\<theta\><around|(|t|)>> ranges over
-      <math|\<theta\><around|(|K|)>>.
-
-      <item>Since <math|\<theta\>> is continuous and <math|K> is compact,
-      <math|\<theta\><around|(|K|)>> is compact.
-
-      <item>Substituting <eqref|eq:change_var_differential> into
-      <eqref|eq:expand_square>,
-
-      <\equation>
-        <label|eq:after_substitution><big|int><rsub|K><wide|\<theta\>|\<dot\>><around|(|t|)>*<around|\||f<around|(|\<theta\><around|(|t|)>|)>*<around|\||<rsup|2>d*t=<big|int><rsub|\<theta\><around|(|K|)>>|\|>*f<around|(|s|)>|\|><rsup|2>*d*s
-      </equation>
-
-      <item>This establishes the local isometry <eqref|eq:local_isometry>.
-
-      <item>To verify <math|U<rsub|\<theta\>><rsup|-1>> is the inverse,
-      compute:
-
-      <\equation>
-        <label|eq:composition_1><around|(|U<rsub|\<theta\>><rsup|-1>*U<rsub|\<theta\>>*f|)><around|(|s|)>=U<rsub|\<theta\>><rsup|-1>*<around|(|U<rsub|\<theta\>>*f|)><around|(|s|)>
-      </equation>
-
-      <item>By definition <eqref|eq:U_theta_inverse>,
-
-      <\equation>
-        <label|eq:apply_inverse_def>U<rsub|\<theta\>><rsup|-1>*<around|(|U<rsub|\<theta\>>*f|)><around|(|s|)>=<frac|<around|(|U<rsub|\<theta\>>*f|)><around|(|\<theta\><rsup|-1><around|(|s|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>>
-      </equation>
-
-      <item>By definition <eqref|eq:U_theta_def>,
-
-      <\equation>
-        <label|eq:apply_forward_def><around|(|U<rsub|\<theta\>>*f|)><around|(|\<theta\><rsup|-1><around|(|s|)>|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>*f<around|(|\<theta\><around|(|\<theta\><rsup|-1><around|(|s|)>|)>|)>
-      </equation>
-
-      <item>Since <math|\<theta\>\<circ\>\<theta\><rsup|-1>=>id,
-
-      <\equation>
-        <label|eq:theta_inverse_composition>f<around|(|\<theta\><around|(|\<theta\><rsup|-1><around|(|s|)>|)>|)>=f<around|(|s|)>
-      </equation>
-
-      <item>Substituting <eqref|eq:apply_forward_def> and
-      <eqref|eq:theta_inverse_composition> into <eqref|eq:apply_inverse_def>,
-
-      <\equation>
-        <label|eq:simplify_composition><frac|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>*f<around|(|s|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>>=f<around|(|s|)>
-      </equation>
-
-      <item>Therefore
-
-      <\equation>
-        <label|eq:left_inverse>U<rsub|\<theta\>><rsup|-1>*U<rsub|\<theta\>>=<text|id>
-      </equation>
-
-      <item>Similarly, compute:
-
-      <\equation>
-        <label|eq:composition_2><around|(|U<rsub|\<theta\>>*U<rsub|\<theta\>><rsup|-1>*g|)><around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<around|(|U<rsub|\<theta\>><rsup|-1>*g|)><around|(|\<theta\><around|(|t|)>|)>
-      </equation>
-
-      <item>By definition <eqref|eq:U_theta_inverse>,
-
-      <\equation>
-        <label|eq:apply_inverse_second><around|(|U<rsub|\<theta\>><rsup|-1>*g|)><around|(|\<theta\><around|(|t|)>|)>=<frac|g<around|(|\<theta\><rsup|-1><around|(|\<theta\><around|(|t|)>|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|\<theta\><around|(|t|)>|)>|)>>>
-      </equation>
-
-      <item>Since <math|\<theta\><rsup|-1>\<circ\>\<theta\>=>id,
-
-      <\equation>
-        <label|eq:theta_composition>g<around|(|\<theta\><rsup|-1><around|(|\<theta\><around|(|t|)>|)>|)>=g<around|(|t|)>,<space|1em>\<theta\><rsup|-1><around|(|\<theta\><around|(|t|)>|)>=t
-      </equation>
-
-      <item>Substituting <eqref|eq:theta_composition> into
-      <eqref|eq:apply_inverse_second>,
-
-      <\equation>
-        <label|eq:simplify_second><frac|g<around|(|t|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>>
-      </equation>
-
-      <item>Therefore from <eqref|eq:composition_2>,
-
-      <\equation>
-        <label|eq:right_inverse><around|(|U<rsub|\<theta\>>*U<rsub|\<theta\>><rsup|-1>*g|)><around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>\<cdot\><frac|g<around|(|t|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>>=g<around|(|t|)>
-      </equation>
-
-      <item>Thus
-
-      <\equation>
-        <label|eq:both_inverses>U<rsub|\<theta\>>*U<rsub|\<theta\>><rsup|-1>=<text|id>
-      </equation>
-
-      <item>Combining <eqref|eq:left_inverse> and <eqref|eq:both_inverses>,
-      <math|U<rsub|\<theta\>><rsup|-1>> is the two-sided inverse of
-      <math|U<rsub|\<theta\>>> on <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>.
-    </enumerate>
+    By <eqref|eq:U_theta_def>, <math|<big|int><rsub|K><around|\||<around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>|\|><rsup|2>*d*t=<big|int><rsub|K><wide|\<theta\>|\<dot\>><around|(|t|)><space|0.17em><around|\||f<around|(|\<theta\><around|(|t|)>|)>|\|><rsup|2>*<space|0.17em>d*t>.
+    With the change of variables <math|s=\<theta\><around|(|t|)>> and
+    <math|d*s=<wide|\<theta\>|\<dot\>><around|(|t|)>*d*t>, the domain maps to
+    <math|\<theta\><around|(|K|)>>, giving <eqref|eq:local_isometry>. The
+    two-sided inverse identities follow from direct substitution into
+    <eqref|eq:U_theta_def> and <eqref|eq:U_theta_inverse>
   </proof>
 
-  <subsection|Inverse Filter for Unitary Time Transformations>
+  <subsection|Time-Varying (Convolution) Filter Representations>
 
   <\theorem>
-    <label|thm:inverse_filter><with|font-series|bold|[Inverse Filter for
-    Unitary Time Transformations]> Let <math|\<theta\>:\<bbb-R\>\<to\>\<bbb-R\>>
-    be absolutely continuous, strictly increasing, and bijective with
-    <math|\<theta\><rprime|'><around|(|t|)>\<gtr\>0> almost everywhere. Let
-    <math|Y<around|(|u|)>> be a stationary process with unit variance, and
-    define
+    TODO: insert time-varying filter representations (both forward and
+    reverse)
+  </theorem>
+
+  <subsubsection|The Oscillatory Subclass
+  <math|Z<around*|(|t|)>=U<rsub|\<theta\>> X<around*|(|t|)>> >
+
+  \;
+
+  \;
+
+  \;
+
+  <\theorem>
+    <label|thm:inverse_filter><with|font-series|bold|[Filter representations
+    of unitarily time-changed stationary processes]> Let
+    <math|\<theta\>:\<bbb-R\>\<to\>\<bbb-R\>> be absolutely continuous,
+    strictly increasing, and bijective with
+    <math|\<theta\><rprime|'><around|(|t|)>\<gtr\>0> a.e. Let
+    <math|X<around|(|u|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i \<lambda\>
+    t>\<mathd\>\<Phi\><around*|(|\<lambda\>|)>> be a realization of a
+    stationary process , and set
 
     <\equation>
-      <label|eq:Z_transformation>Z<around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*Y<around|(|\<theta\><around|(|t|)>|)>
+      <label|eq:Z_transformation>Z<around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>Y<around|(|\<theta\><around|(|t|)>|)>
     </equation>
 
-    as the oscillatory process obtained by the unitary time transformation.
     Then:
 
     <\enumerate>
       <item>The forward filter kernel is
 
       <\equation>
-        <label|eq:forward_kernel>h<around|(|t,u|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*\<delta\>*<around|(|u-\<theta\><around|(|t|)>|)>
+        <label|eq:forward_kernel>h*<around|(|t,u|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>\<delta\>*<around|(|u-\<theta\><around|(|t|)>|)>
       </equation>
 
       <item>The inverse filter kernel is
 
       <\equation>
-        <label|eq:inverse_kernel>g<around|(|t,s|)>=<frac|\<delta\>*<around|(|s-\<theta\><rsup|-1><around|(|t|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|t|)>|)>>>
+        <label|eq:inverse_kernel>g*<around|(|t,s|)>=<frac|\<delta\>*<around*|(|s-\<theta\><rsup|-1><around|(|t|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|t|)>|)>>>
       </equation>
 
       <item>The composition <math|<around|(|g\<circ\>h|)>> recovers the
       identity:
 
       <\equation>
-        <label|eq:filter_identity>Y<around|(|t|)>=<big|int><rsub|\<bbb-R\>>g<around|(|t,s|)>*Z<around|(|s|)>*d*s=<frac|Z<around|(|\<theta\><rsup|-1><around|(|t|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|t|)>|)>>>
+        <label|eq:filter_identity>Y<around|(|t|)>=<big|int><rsub|\<bbb-R\>>g*<around|(|t,s|)>*<space|0.17em>Z<around|(|s|)>*<space|0.17em>d*s=<frac|Z<around|(|\<theta\><rsup|-1><around|(|t|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|t|)>|)>>>
       </equation>
     </enumerate>
   </theorem>
 
   <\proof>
-    <\enumerate>
-      <item>From <eqref|eq:Z_transformation>, the forward transformation is
-
-      <\equation>
-        <label|eq:forward_integral>Z<around|(|t|)>=<big|int><rsub|\<bbb-R\>>h<around|(|t,u|)>*Y<around|(|u|)>*d*u
-      </equation>
-
-      <item>Substituting <eqref|eq:forward_kernel>,
-
-      <\equation>
-        <label|eq:forward_substitution><big|int><rsub|\<bbb-R\>>h<around|(|t,u|)>*Y<around|(|u|)>*d*u=<big|int><rsub|\<bbb-R\>><sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*\<delta\>*<around|(|u-\<theta\><around|(|t|)>|)>*Y<around|(|u|)>*d*u
-      </equation>
-
-      <item>By the sifting property of the Dirac delta,
-
-      <\equation>
-        <label|eq:sifting_forward><big|int><rsub|\<bbb-R\>><sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*\<delta\>*<around|(|u-\<theta\><around|(|t|)>|)>*Y<around|(|u|)>*d*u=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*Y<around|(|\<theta\><around|(|t|)>|)>
-      </equation>
-
-      <item>This confirms <eqref|eq:Z_transformation>.
-
-      <item>For the inverse, compute:
-
-      <\equation>
-        <label|eq:inverse_integral><big|int><rsub|\<bbb-R\>>g<around|(|t,s|)>*Z<around|(|s|)>*d*s=<big|int><rsub|\<bbb-R\>><frac|\<delta\>*<around|(|s-\<theta\><rsup|-1><around|(|t|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|t|)>|)>>>*Z<around|(|s|)>*d*s
-      </equation>
-
-      <item>By the sifting property,
-
-      <\equation>
-        <label|eq:sifting_inverse><big|int><rsub|\<bbb-R\>><frac|\<delta\>*<around|(|s-\<theta\><rsup|-1><around|(|t|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|t|)>|)>>>*Z<around|(|s|)>*d*s=<frac|Z<around|(|\<theta\><rsup|-1><around|(|t|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|t|)>|)>>>
-      </equation>
-
-      <item>Substituting <eqref|eq:Z_transformation> with <math|t> replaced
-      by <math|\<theta\><rsup|-1><around|(|t|)>>,
-
-      <\equation>
-        <label|eq:Z_at_inverse>Z<around|(|\<theta\><rsup|-1><around|(|t|)>|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|t|)>|)>>*Y<around|(|\<theta\><around|(|\<theta\><rsup|-1><around|(|t|)>|)>|)>
-      </equation>
-
-      <item>Since <math|\<theta\>\<circ\>\<theta\><rsup|-1>=>id,
-
-      <\equation>
-        <label|eq:theta_composition_Y>Y<around|(|\<theta\><around|(|\<theta\><rsup|-1><around|(|t|)>|)>|)>=Y<around|(|t|)>
-      </equation>
-
-      <item>Substituting <eqref|eq:Z_at_inverse> and
-      <eqref|eq:theta_composition_Y> into <eqref|eq:sifting_inverse>,
-
-      <\equation>
-        <label|eq:final_inverse><frac|Z<around|(|\<theta\><rsup|-1><around|(|t|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|t|)>|)>>>=<frac|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|t|)>|)>>*Y<around|(|t|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|t|)>|)>>>=Y<around|(|t|)>
-      </equation>
-
-      <item>This establishes <eqref|eq:filter_identity>, confirming that
-      <math|g\<circ\>h=>id.
-    </enumerate>
+    Using the sifting property of the Dirac delta in
+    <eqref|eq:forward_kernel> gives <eqref|eq:Z_transformation>. Likewise,
+    applying <eqref|eq:inverse_kernel>, then substituting
+    <eqref|eq:Z_transformation> at <math|s=\<theta\><rsup|-1><around|(|t|)>>
+    and <math|\<theta\>\<circ\>\<theta\><rsup|-1>=<math-up|id>> yields
+    <eqref|eq:filter_identity>
   </proof>
 
-  <subsection|Transformation of Stationary <math|\<to\>> Oscillatory
-  Processes via <math|U<rsub|\<theta\>>>>
+  <subsection|Transformation of stationary to oscillatory processes via
+  <math|U<rsub|\<theta\>>>>
 
   <\theorem>
     <label|thm:Utheta_to_osc><with|font-series|bold|[Unitary time change
-    yields oscillatory process]> Let <math|X> be zero-mean stationary as in
-    Definition <reference|def:cramer>. For scaling function <math|\<theta\>>
-    as in Theorem <reference|thm:local_unitarity>, define
+    produces oscillatory process]> Let <math|X> be zero-mean stationary as in
+    Definition <reference|def:cramer>. For a scaling function
+    <math|\<theta\>> as in Theorem <reference|thm:local_unitarity>, define
 
     <\equation>
-      <label|eq:Z_def>Z<around|(|t|)>=<around|(|U<rsub|\<theta\>>*X|)><around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*X<around|(|\<theta\><around|(|t|)>|)>
+      <label|eq:Z_def>Z<around|(|t|)>=<around|(|U<rsub|\<theta\>>*X|)><around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>X<around|(|\<theta\><around|(|t|)>|)>
     </equation>
 
     Then <math|Z> is a realization of an oscillatory process with oscillatory
     function
 
     <\equation>
-      <label|eq:oscillatory_function_Z>\<varphi\><rsub|t><around|(|\<lambda\>|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>
+      <label|eq:oscillatory_function_Z>\<varphi\><rsub|t><around|(|\<lambda\>|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>
     </equation>
 
     gain function
 
     <\equation>
-      <label|eq:gain_function_Z>A<rsub|t><around|(|\<lambda\>|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>
+      <label|eq:gain_function_Z>A<rsub|t><around|(|\<lambda\>|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>
     </equation>
 
     and covariance
 
     <\equation>
-      <tabular|<tformat|<cwith|1|5|1|1|cell-halign|l>|<cwith|1|5|1|1|cell-lborder|0ln>|<cwith|1|5|2|2|cell-halign|l>|<cwith|1|5|2|2|cell-rborder|0ln>|<table|<row|<cell|R<rsub|Z><around|(|t,s|)>>|<cell|=\<bbb-E\><around|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=\<bbb-E\>*<around*|[|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*X<around|(|\<theta\><around|(|t|)>|)><wide|<sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>*X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*\<bbb-E\><around|[|X<around|(|\<theta\><around|(|t|)>|)><wide|X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*R<rsub|X>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>>>><label|UTCcovar>
-      <label|eq:covariance_Z>R<rsub|Z><around|(|t,s|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>*d*F<around|(|\<lambda\>|)>
+      <tabular|<tformat|<table|<row|<cell|R<rsub|Z><around|(|t,s|)>>|<cell|=\<bbb-E\><space|-0.17em><around*|[|Z<around|(|t|)><space|0.17em><wide|Z<around|(|s|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<space|0.17em>\<bbb-E\><space|-0.17em><around*|[|X<around|(|\<theta\><around|(|t|)>|)><space|0.17em><wide|X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<space|0.17em>R<rsub|X>*<space|-0.17em><around*|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>>>><label|UTCovar>
     </equation>
   </theorem>
 
   <\proof>
-    <\enumerate>
-      <item>From the Cramï¿½r representation
-      <eqref|eq:cramer_representation>,
+    From the Cramér representation <eqref|eq:cramer_representation>,
+    <math|X<around|(|\<theta\><around|(|t|)>|)>=<big|int>e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>*<space|0.17em>d*\<Phi\><around|(|\<lambda\>|)>>.
+    Therefore
 
-      <\equation>
-        <label|eq:X_cramer>X<around|(|u|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*u>*d*\<Phi\><around|(|\<lambda\>|)>
-      </equation>
+    <\equation*>
+      Z<around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>*<space|0.17em>d*\<Phi\><around|(|\<lambda\>|)>=<big|int><rsub|\<bbb-R\>><around*|(|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>|)>*d*\<Phi\><around|(|\<lambda\>|)>=<big|int>\<varphi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>d*\<Phi\><around|(|\<lambda\>|)>
+    </equation*>
 
-      <item>Substituting <math|u=\<theta\><around|(|t|)>> into
-      <eqref|eq:X_cramer>,
-
-      <\equation>
-        <label|eq:X_theta_t>X<around|(|\<theta\><around|(|t|)>|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>*d*\<Phi\><around|(|\<lambda\>|)>
-      </equation>
-
-      <item>From the definition <eqref|eq:Z_def>,
-
-      <\equation>
-        <label|eq:Z_expanded>Z<around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*X<around|(|\<theta\><around|(|t|)>|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>*d*\<Phi\><around|(|\<lambda\>|)>
-      </equation>
-
-      <item>By linearity of the stochastic integral,
-
-      <\equation>
-        <label|eq:Z_integral>Z<around|(|t|)>=<big|int><rsub|\<bbb-R\>><sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>*d*\<Phi\><around|(|\<lambda\>|)>
-      </equation>
-
-      <item>Define
-
-      <\equation>
-        <label|eq:varphi_t_explicit>\<varphi\><rsub|t><around|(|\<lambda\>|)>\<assign\><sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>
-      </equation>
-
-      <item>Then <eqref|eq:Z_integral> becomes
-
-      <\equation>
-        <label|eq:Z_oscillatory_form>Z<around|(|t|)>=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)>*d*\<Phi\><around|(|\<lambda\>|)>
-      </equation>
-
-      which is the oscillatory representation <eqref|eq:oscillatory_process>.
-
-      <item>To express this in terms of the standard oscillatory function
-      form, write
-
-      <\equation>
-        <label|eq:varphi_factored>\<varphi\><rsub|t><around|(|\<lambda\>|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>*e<rsup|i*\<lambda\>*t>
-      </equation>
-
-      <item>Define the gain function
-
-      <\equation>
-        <label|eq:A_t_explicit>A<rsub|t><around|(|\<lambda\>|)>\<assign\><sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>
-      </equation>
-
-      <item>Then
-
-      <\equation>
-        <label|eq:varphi_as_gain>\<varphi\><rsub|t><around|(|\<lambda\>|)>=A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>
-      </equation>
-
-      confirming the oscillatory function form
-      <eqref|eq:oscillatory_function>.
-
-      <item>To compute the covariance, use <eqref|eq:oscillatory_covariance>:
-
-      <\equation>
-        <label|eq:R_Z_start>R<rsub|Z><around|(|t,s|)>=\<bbb-E\><around|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]>
-      </equation>
-
-      <item>Substituting <eqref|eq:Z_def>,
-
-      <\equation>
-        <label|eq:R_Z_substituted>R<rsub|Z><around|(|t,s|)>=\<bbb-E\>*<around*|[|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*X<around|(|\<theta\><around|(|t|)>|)><wide|<sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>*X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]>
-      </equation>
-
-      <item>Since <math|<wide|\<theta\>|\<dot\>>> is deterministic,
-
-      <\equation>
-        <label|eq:R_Z_factored>R<rsub|Z><around|(|t,s|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>*\<bbb-E\><around|[|X<around|(|\<theta\><around|(|t|)>|)><wide|X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]>
-      </equation>
-
-      <item>By stationarity of <math|X>, using
-      <eqref|eq:stationary_covariance>,
-
-      <\equation>
-        <label|eq:X_covariance>\<bbb-E\><around|[|X<around|(|\<theta\><around|(|t|)>|)><wide|X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]>=R<rsub|X>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>*d*F<around|(|\<lambda\>|)>
-      </equation>
-
-      <item>Substituting <eqref|eq:X_covariance> into
-      <eqref|eq:R_Z_factored>,
-
-      <\equation>
-        <label|eq:R_Z_final>R<rsub|Z><around|(|t,s|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>*d*F<around|(|\<lambda\>|)>
-      </equation>
-
-      establishing <eqref|eq:covariance_Z>.
-    </enumerate>
+    which is of the oscillatory form with <math|\<varphi\><rsub|t>> as in
+    <eqref|eq:oscillatory_function_Z> and <math|A<rsub|t>> as in
+    <eqref|eq:gain_function_Z>. The covariance follows from stationarity via
+    <eqref|eq:stationary_covariance>
   </proof>
 
   <\corollary>
@@ -995,44 +585,14 @@
     unitarily time-changed stationary process]> The evolutionary spectrum is
 
     <\equation>
-      <label|eq:evolutionary_spectrum>d*F<rsub|t><around|(|\<lambda\>|)>=<wide|\<theta\>|\<dot\>><around|(|t|)>*d*F<around|(|\<lambda\>|)>
+      <label|eq:evolutionary_spectrum>d*F<rsub|t><around|(|\<lambda\>|)>=<around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>=<wide|\<theta\>|\<dot\>><around|(|t|)>*<space|0.17em>d*F<around|(|\<lambda\>|)>
     </equation>
   </corollary>
 
   <\proof>
-    <\enumerate>
-      <item>The evolutionary spectrum is defined by
-
-      <\equation>
-        <label|eq:evol_spec_def>d*F<rsub|t><around|(|\<lambda\>|)>=<around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*d*F<around|(|\<lambda\>|)>
-      </equation>
-
-      <item>From <eqref|eq:gain_function_Z>,
-
-      <\equation>
-        <label|eq:A_t_magnitude_start><around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>=<around*|\||<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>|\|><rsup|2>
-      </equation>
-
-      <item>Since <math|<around|\||e<rsup|i*\<alpha\>>|\|>=1> for all real
-      <math|\<alpha\>>,
-
-      <\equation>
-        <label|eq:exp_magnitude><around*|\||e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>|\|><rsup|2>=1
-      </equation>
-
-      <item>Therefore
-
-      <\equation>
-        <label|eq:A_t_magnitude><around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>=<around*|(|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>|)><rsup|2>\<cdot\>1=<wide|\<theta\>|\<dot\>><around|(|t|)>
-      </equation>
-
-      <item>Substituting <eqref|eq:A_t_magnitude> into
-      <eqref|eq:evol_spec_def>,
-
-      <\equation>
-        <label|eq:evol_spec_final>d*F<rsub|t><around|(|\<lambda\>|)>=<wide|\<theta\>|\<dot\>><around|(|t|)>*d*F<around|(|\<lambda\>|)>
-      </equation>
-    </enumerate>
+    Since <math|<around|\||e<rsup|i*\<alpha\>>|\|>=1>,
+    <math|<around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>=<wide|\<theta\>|\<dot\>><around|(|t|)>>,
+    giving <eqref|eq:evolutionary_spectrum>
   </proof>
 
   <subsection|Covariance operator conjugation>
@@ -1042,97 +602,42 @@
     Let
 
     <\equation>
-      <label|eq:T_K_def><around|(|T<rsub|K>*f|)><around|(|t|)>\<assign\><big|int><rsub|\<bbb-R\>>K<around|(|<around|\||t-s|\|>|)>*f<around|(|s|)>*d*s
+      <label|eq:T_K_def><around|(|T<rsub|K>*f|)><around|(|t|)>\<assign\><big|int><rsub|\<bbb-R\>>K<around|(|<around|\||t-s|\|>|)>*<space|0.17em>f<around|(|s|)>*<space|0.17em>d*s
     </equation>
 
     with stationary kernel
 
     <\equation>
-      <label|eq:K_def>K<around|(|h|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*h>*d*F<around|(|\<lambda\>|)>
+      <label|eq:K_def>K<around|(|h|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*h>*<space|0.17em>d*F<around|(|\<lambda\>|)>
     </equation>
 
     Define the transformed kernel
 
     <\equation>
-      <label|eq:K_theta_def>K<rsub|\<theta\>><around|(|s,t|)>\<assign\><sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>
+      <label|eq:K_theta_def>K<rsub|\<theta\>><around|(|s,t|)>\<assign\><sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<space|0.17em>K<space|-0.17em><around*|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>
     </equation>
 
-    then the corresponding integral covariance operator is conjugated for all
-    <math|f\<in\>L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>> by
+    Then for all <math|f\<in\>L<rsup|2><rsub|<math-up|loc>><around|(|\<bbb-R\>|)>>,
 
     <\equation>
-      <label|eq:conjugation><around|(|T<rsub|K<rsub|\<theta\>>>*f|)><around|(|t|)>=<around|(|U<rsub|\<theta\>>*T<rsub|K>*U<rsub|\<theta\>><rsup|-1>*f|)><around|(|t|)>
+      <label|eq:conjugation><around|(|T<rsub|K<rsub|\<theta\>>>*f|)><around|(|t|)>=<around*|(|U<rsub|\<theta\>>*<space|0.17em>T<rsub|K>*<space|0.17em>U<rsub|\<theta\>><rsup|-1>*f|)><around|(|t|)>
     </equation>
   </proposition>
 
   <\proof>
-    <\enumerate>
-      <item>From <eqref|eq:conjugation>, expand the right side:
+    Compute
 
-      <\equation>
-        <label|eq:conjugation_expand><around|(|U<rsub|\<theta\>>*T<rsub|K>*U<rsub|\<theta\>><rsup|-1>*f|)><around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<around|(|T<rsub|K>*U<rsub|\<theta\>><rsup|-1>*f|)><around|(|\<theta\><around|(|t|)>|)>
-      </equation>
+    <\equation*>
+      <around*|(|U<rsub|\<theta\>>*T<rsub|K>*U<rsub|\<theta\>><rsup|-1>*f|)><around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em><around|(|T<rsub|K>*U<rsub|\<theta\>><rsup|-1>*f|)><around|(|\<theta\><around|(|t|)>|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<big|int><rsub|\<bbb-R\>>K<around|(|<around|\||\<theta\><around|(|t|)>-s|\|>|)><frac|f<around|(|\<theta\><rsup|-1><around|(|s|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>>*<space|0.17em>d*s
+    </equation*>
 
-      <item>By definition <eqref|eq:T_K_def>,
+    With <math|s=\<theta\><around|(|u|)>>,
+    <math|d*s=<wide|\<theta\>|\<dot\>><around|(|u|)>*<space|0.17em>d*u>,
+    obtain
 
-      <\equation>
-        <label|eq:T_K_application><around|(|T<rsub|K>*U<rsub|\<theta\>><rsup|-1>*f|)><around|(|\<theta\><around|(|t|)>|)>=<big|int><rsub|\<bbb-R\>>K<around|(|<around|\||\<theta\><around|(|t|)>-s|\|>|)>*<around|(|U<rsub|\<theta\>><rsup|-1>*f|)><around|(|s|)>*d*s
-      </equation>
-
-      <item>By definition <eqref|eq:U_theta_inverse>,
-
-      <\equation>
-        <label|eq:U_inv_application><around|(|U<rsub|\<theta\>><rsup|-1>*f|)><around|(|s|)>=<frac|f<around|(|\<theta\><rsup|-1><around|(|s|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>>
-      </equation>
-
-      <item>Substituting <eqref|eq:U_inv_application> into
-      <eqref|eq:T_K_application>,
-
-      <\equation>
-        <label|eq:integral_substitution><big|int><rsub|\<bbb-R\>>K<around|(|<around|\||\<theta\><around|(|t|)>-s|\|>|)><frac|f<around|(|\<theta\><rsup|-1><around|(|s|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>>*d*s
-      </equation>
-
-      <item>Apply the change of variables <math|s=\<theta\><around|(|u|)>>,
-      so <math|d*s=<wide|\<theta\>|\<dot\>><around|(|u|)>*d*u> and
-      <math|\<theta\><rsup|-1><around|(|s|)>=u>:
-
-      <\equation>
-        <label|eq:change_var_s><big|int><rsub|\<bbb-R\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|u|)>|\|>|)><frac|f<around|(|u|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|u|)>>>*<wide|\<theta\>|\<dot\>><around|(|u|)>*d*u
-      </equation>
-
-      <item>Simplify:
-
-      <\equation>
-        <label|eq:simplify_integral><big|int><rsub|\<bbb-R\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|u|)>|\|>|)><frac|<wide|\<theta\>|\<dot\>><around|(|u|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|u|)>>>*f<around|(|u|)>*d*u=<big|int><rsub|\<bbb-R\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|u|)>|\|>|)><sqrt|<wide|\<theta\>|\<dot\>><around|(|u|)>>*f<around|(|u|)>*d*u
-      </equation>
-
-      <item>Substituting <eqref|eq:simplify_integral> into
-      <eqref|eq:conjugation_expand>,
-
-      <\equation>
-        <label|eq:full_expression><sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<big|int><rsub|\<bbb-R\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|u|)>|\|>|)><sqrt|<wide|\<theta\>|\<dot\>><around|(|u|)>>*f<around|(|u|)>*d*u
-      </equation>
-
-      <item>Bring the constant inside the integral:
-
-      <\equation>
-        <label|eq:factor_inside><big|int><rsub|\<bbb-R\>><sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<sqrt|<wide|\<theta\>|\<dot\>><around|(|u|)>>*K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|u|)>|\|>|)>*f<around|(|u|)>*d*u
-      </equation>
-
-      <item>By definition <eqref|eq:K_theta_def>,
-
-      <\equation>
-        <label|eq:K_theta_recognition><sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<sqrt|<wide|\<theta\>|\<dot\>><around|(|u|)>>*K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|u|)>|\|>|)>=K<rsub|\<theta\>><around|(|u,t|)>
-      </equation>
-
-      <item>Therefore
-
-      <\equation>
-        <label|eq:final_conjugation><big|int><rsub|\<bbb-R\>>K<rsub|\<theta\>><around|(|u,t|)>*f<around|(|u|)>*d*u=<around|(|T<rsub|K<rsub|\<theta\>>>*f|)><around|(|t|)>
-      </equation>
-
-      establishing <eqref|eq:conjugation>.
-    </enumerate>
+    <\equation*>
+      <sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<big|int><rsub|\<bbb-R\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|u|)>|\|>|)><space|0.17em><sqrt|<wide|\<theta\>|\<dot\>><around|(|u|)>>*<space|0.17em>f<around|(|u|)>*<space|0.17em>d*u=<big|int><rsub|\<bbb-R\>>K<rsub|\<theta\>><around|(|u,t|)>*<space|0.17em>f<around|(|u|)>*<space|0.17em>d*u=<around|(|T<rsub|K<rsub|\<theta\>>>*f|)><around|(|t|)>
+    </equation*>
   </proof>
 
   <section|Zero Localization><label|sec:HP>
@@ -1143,623 +648,26 @@
     <math|Z\<in\>C<rsup|1><around|(|\<bbb-R\>|)>> having only simple zeros
 
     <\equation>
-      <label|eq:simple_zeros>Z<around|(|t<rsub|0>|)>=0\<Rightarrow\><wide|Z|\<dot\>><around|(|t<rsub|0>|)>\<neq\>0
+      <label|eq:simple_zeros>Z<around|(|t<rsub|0>|)>=0<space|0.27em>\<Rightarrow\><space|0.27em><wide|Z|\<dot\>><around|(|t<rsub|0>|)>\<neq\>0
     </equation>
 
     Define, for Borel <math|B\<subset\>\<bbb-R\>>,
 
     <\equation>
-      <label|eq:mu_def>\<mu\><around|(|B|)>=<big|int><rsub|\<bbb-R\>><with|math-font-family|bf|1><rsub|B><around|(|t|)>*\<delta\><around|(|Z<around|(|t|)>|)><around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*d*t
+      <label|eq:mu_def>\<mu\><around|(|B|)>\<assign\><big|int><rsub|B>\<delta\><around|(|Z<around|(|t|)>|)><space|0.17em><around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*<space|0.17em>d*t
     </equation>
+
+    so that <math|\<mu\>> places unit mass at each simple zero of <math|Z>
+    counted by the co-area/change-of-variables identity for <math|C<rsup|1>>
+    functions. The induced space <math|L<rsup|2><around|(|\<mu\>|)>> consists
+    of (equivalence classes of) functions supported on the zero set of
+    <math|Z>, and the multiplication operator
+    <math|<around|(|L*f|)><around|(|t|)>=t*f<around|(|t|)>> is essentially
+    self-adjoint on <math|C<rsub|c><rsup|\<infty\>>> functions supported on
+    the zero set with pure point spectrum equal to the zero-crossing set
   </definition>
-
-  <\theorem>
-    <label|thm:atomicity><with|font-series|bold|[Atomicity and local
-    finiteness of zeros and delta decomposition]> Under the assumptions of
-    Definition <reference|def:zeromeasure>, zeros are locally finite and one
-    has
-
-    <\equation>
-      <label|eq:delta_decomposition>\<delta\><around|(|Z<around|(|t|)>|)>=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><frac|\<delta\>*<around|(|t-t<rsub|0>|)>|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>>
-    </equation>
-
-    whence
-
-    <\equation>
-      <label|eq:mu_atomic>\<mu\>=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<delta\><rsub|t<rsub|0>>
-    </equation>
-  </theorem>
-
-  <\proof>
-    <\enumerate>
-      <item>For any smooth test function <math|\<phi\>> with compact support,
-      apply the standard change of variables formula for the delta function.
-      Let <math|<around|{|t<rsub|0><rsup|<around|(|1|)>>,t<rsub|0><rsup|<around|(|2|)>>,\<ldots\>|}>>
-      denote the zeros of <math|Z>.
-
-      <item>By the change of variables formula for distributions,
-
-      <\equation>
-        <label|eq:delta_change_var><big|int><rsub|\<bbb-R\>>\<phi\><around|(|t|)>*\<delta\><around|(|Z<around|(|t|)>|)>*d*t=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><frac|\<phi\><around|(|t<rsub|0>|)>|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>>
-      </equation>
-
-      <item>The right side of <eqref|eq:delta_change_var> equals
-
-      <\equation>
-        <label|eq:sum_form><big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><frac|\<phi\><around|(|t<rsub|0>|)>|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>>=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><big|int><rsub|\<bbb-R\>>\<phi\><around|(|t|)><frac|\<delta\>*<around|(|t-t<rsub|0>|)>|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>>*d*t
-      </equation>
-
-      <item>By Fubini's theorem (justified since the sum has locally finite
-      terms due to <math|C<rsup|1>> regularity and simple zeros),
-
-      <\equation>
-        <label|eq:interchange_sum_integral><big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><big|int><rsub|\<bbb-R\>>\<phi\><around|(|t|)><frac|\<delta\>*<around|(|t-t<rsub|0>|)>|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>>*d*t=<big|int><rsub|\<bbb-R\>>\<phi\><around|(|t|)>*<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><frac|\<delta\>*<around|(|t-t<rsub|0>|)>|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>>*d*t
-      </equation>
-
-      <item>Comparing <eqref|eq:delta_change_var> and
-      <eqref|eq:interchange_sum_integral>,
-
-      <\equation>
-        <label|eq:delta_equality><big|int><rsub|\<bbb-R\>>\<phi\><around|(|t|)>*\<delta\><around|(|Z<around|(|t|)>|)>*d*t=<big|int><rsub|\<bbb-R\>>\<phi\><around|(|t|)>*<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><frac|\<delta\>*<around|(|t-t<rsub|0>|)>|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>>*d*t
-      </equation>
-
-      <item>Since <math|\<phi\>> is arbitrary,
-
-      <\equation>
-        <label|eq:delta_Z_decomp>\<delta\><around|(|Z<around|(|t|)>|)>=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><frac|\<delta\>*<around|(|t-t<rsub|0>|)>|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>>
-      </equation>
-
-      establishing <eqref|eq:delta_decomposition>.
-
-      <item>Substituting <eqref|eq:delta_Z_decomp> into the definition
-      <eqref|eq:mu_def>,
-
-      <\equation>
-        <label|eq:mu_substitution>\<mu\><around|(|B|)>=<big|int><rsub|\<bbb-R\>><with|math-font-family|bf|1><rsub|B><around|(|t|)>*<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><frac|\<delta\>*<around|(|t-t<rsub|0>|)>|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>><around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*d*t
-      </equation>
-
-      <item>By the sifting property of the delta function,
-      <math|<around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>> evaluated at
-      <math|t=t<rsub|0>> gives <math|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>>:
-
-      <\equation>
-        <label|eq:cancel_derivative><big|int><rsub|\<bbb-R\>><with|math-font-family|bf|1><rsub|B><around|(|t|)><frac|\<delta\>*<around|(|t-t<rsub|0>|)>|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>><around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*d*t=<frac|<with|math-font-family|bf|1><rsub|B><around|(|t<rsub|0>|)><around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>|<around|\||<wide|Z|\<dot\>><around|(|t<rsub|0>|)>|\|>>=<with|math-font-family|bf|1><rsub|B><around|(|t<rsub|0>|)>
-      </equation>
-
-      <item>Summing over all zeros,
-
-      <\equation>
-        <label|eq:mu_sum>\<mu\><around|(|B|)>=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><with|math-font-family|bf|1><rsub|B><around|(|t<rsub|0>|)>=<big|sum><rsub|t<rsub|0>\<in\>B:Z<around|(|t<rsub|0>|)>=0>1
-      </equation>
-
-      <item>This is precisely the atomic measure
-
-      <\equation>
-        <label|eq:mu_atomic_final>\<mu\>=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<delta\><rsub|t<rsub|0>>
-      </equation>
-
-      establishing <eqref|eq:mu_atomic>.
-    </enumerate>
-  </proof>
-
-  <\definition>
-    <label|def:Hmu><with|font-series|bold|[Hilbert space on the zero set]>
-    Let <math|\<cal-H\>=L<rsup|2><around|(|\<mu\>|)>> with inner product
-
-    <\equation>
-      <label|eq:inner_product_mu><around|\<langle\>|f,g|\<rangle\>>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|t|)><wide|g<around|(|t|)>|\<bar\>>d*\<mu\><around|(|t|)>
-    </equation>
-  </definition>
-
-  <\proposition>
-    <label|prop:atomic><with|font-series|bold|[Atomic structure]> Let
-
-    <\equation>
-      <label|eq:mu_atomic_assumption>\<mu\>=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<delta\><rsub|t<rsub|0>>
-    </equation>
-
-    then
-
-    <\equation>
-      <label|eq:H_isomorphism>\<cal-H\>\<cong\><around*|{|f:<around|{|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0|}>\<to\>\<bbb-C\>:<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><around|\||f<around|(|t<rsub|0>|)>|\|><rsup|2>\<less\>\<infty\>|}>\<cong\>\<ell\><rsup|2>
-    </equation>
-
-    with orthonormal basis <math|<around|{|e<rsub|t<rsub|0>>|}><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>>
-    where
-
-    <\equation>
-      <label|eq:basis_vectors>e<rsub|t<rsub|0>><around|(|t<rsub|1>|)>=\<delta\><rsub|t<rsub|0>,t<rsub|1>>
-    </equation>
-  </proposition>
-
-  <\proof>
-    <\enumerate>
-      <item>By <eqref|eq:mu_atomic_assumption>, <math|\<mu\>> is a purely
-      atomic measure with atoms at the zero set.
-
-      <item>For any <math|f\<in\>L<rsup|2><around|(|\<mu\>|)>>, the
-      <math|L<rsup|2>> norm is
-
-      <\equation>
-        <label|eq:L2_norm_mu><around|\<\|\|\>|f|\<\|\|\>><rsub|L<rsup|2><around|(|\<mu\>|)>><rsup|2>=<big|int><rsub|\<bbb-R\>><around|\||f<around|(|t|)>|\|><rsup|2>*d*\<mu\><around|(|t|)>
-      </equation>
-
-      <item>Substituting <eqref|eq:mu_atomic_assumption>,
-
-      <\equation>
-        <label|eq:norm_sum><big|int><rsub|\<bbb-R\>><around|\||f<around|(|t|)>|\|><rsup|2>*d*\<mu\><around|(|t|)>=<big|int><rsub|\<bbb-R\>><around|\||f<around|(|t|)>|\|><rsup|2>*<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>\<delta\><rsub|t<rsub|0>>*<around|(|d*t|)>=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><around|\||f<around|(|t<rsub|0>|)>|\|><rsup|2>
-      </equation>
-
-      <item>Therefore
-
-      <\equation>
-        <label|eq:norm_equivalence><around|\<\|\|\>|f|\<\|\|\>><rsub|L<rsup|2><around|(|\<mu\>|)>><rsup|2>=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><around|\||f<around|(|t<rsub|0>|)>|\|><rsup|2>
-      </equation>
-
-      <item>This is precisely the <math|\<ell\><rsup|2>> norm on the zero
-      set.
-
-      <item>Define the map <math|\<Psi\>:L<rsup|2><around|(|\<mu\>|)>\<to\>\<ell\><rsup|2>>
-      by
-
-      <\equation>
-        <label|eq:isomorphism_map>\<Psi\><around|(|f|)>=<around|(|f<around|(|t<rsub|0>|)>|)><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>
-      </equation>
-
-      <item>From <eqref|eq:norm_equivalence>, <math|\<Psi\>> is an isometry:
-
-      <\equation>
-        <label|eq:isometry_Psi><around|\<\|\|\>|\<Psi\><around|(|f|)>|\<\|\|\>><rsub|\<ell\><rsup|2>><rsup|2>=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0><around|\||f<around|(|t<rsub|0>|)>|\|><rsup|2>=<around|\<\|\|\>|f|\<\|\|\>><rsub|L<rsup|2><around|(|\<mu\>|)>><rsup|2>
-      </equation>
-
-      <item><math|\<Psi\>> is surjective: for any sequence
-      <math|<around|(|c<rsub|t<rsub|0>>|)>\<in\>\<ell\><rsup|2>>, define
-      <math|f<around|(|t|)>=<big|sum><rsub|t<rsub|0>>c<rsub|t<rsub|0>>*\<delta\><rsub|t<rsub|0>><around|(|t|)>>,
-      which is in <math|L<rsup|2><around|(|\<mu\>|)>>.
-
-      <item>Therefore <math|\<Psi\>> is a Hilbert space isomorphism,
-      establishing <eqref|eq:H_isomorphism>.
-
-      <item>For the orthonormal basis, define <math|e<rsub|t<rsub|0>>> by
-      <eqref|eq:basis_vectors>.
-
-      <item>Then
-
-      <\equation>
-        <label|eq:basis_inner_product><around|\<langle\>|e<rsub|t<rsub|0>>,e<rsub|t<rsub|1>>|\<rangle\>>=<big|int><rsub|\<bbb-R\>>e<rsub|t<rsub|0>><around|(|t|)><wide|e<rsub|t<rsub|1>><around|(|t|)>|\<bar\>>d*\<mu\><around|(|t|)>=<big|sum><rsub|s:Z<around|(|s|)>=0>\<delta\><rsub|t<rsub|0>,s>*\<delta\><rsub|t<rsub|1>,s>=\<delta\><rsub|t<rsub|0>,t<rsub|1>>
-      </equation>
-
-      <item>Therefore <math|<around|{|e<rsub|t<rsub|0>>|}>> is an orthonormal
-      set.
-
-      <item>Since every <math|f\<in\>L<rsup|2><around|(|\<mu\>|)>> can be
-      written as
-
-      <\equation>
-        <label|eq:basis_expansion>f=<big|sum><rsub|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0>f<around|(|t<rsub|0>|)>*e<rsub|t<rsub|0>>
-      </equation>
-
-      the set <math|<around|{|e<rsub|t<rsub|0>>|}>> is complete, hence an
-      orthonormal basis.
-    </enumerate>
-  </proof>
-
-  <\definition>
-    <label|def:L><with|font-series|bold|[Multiplication operator]> Define the
-    linear operator
-
-    <\equation>
-      <label|eq:L_def>L:\<cal-D\><around|(|L|)>\<subset\>\<cal-H\>\<to\>\<cal-H\>
-    </equation>
-
-    by
-
-    <\equation>
-      <label|eq:L_action><around|(|L*f|)><around|(|t|)>=t*f<around|(|t|)>
-    </equation>
-
-    on the support of <math|\<mu\>> with domain
-
-    <\equation>
-      <label|eq:L_domain>\<cal-D\><around|(|L|)>\<assign\><around*|{|f\<in\>\<cal-H\>:<big|int><around|\||t*f<around|(|t|)>|\|><rsup|2>*d*\<mu\><around|(|t|)>\<less\>\<infty\>|}>
-    </equation>
-  </definition>
-
-  <\theorem>
-    <label|thm:spectrum><with|font-series|bold|[Self-adjointness and
-    spectrum]> <math|L> is self-adjoint on <math|\<cal-H\>> and has pure
-    point, simple spectrum
-
-    <\equation>
-      <label|eq:spectrum>\<sigma\><around|(|L|)>=<wide|<around|{|t\<in\>\<bbb-R\>:Z<around|(|t|)>=0|}>|\<bar\>>
-    </equation>
-
-    with eigenvalues <math|\<lambda\>=t<rsub|0>> for each zero
-    <math|t<rsub|0>> and corresponding eigenvectors <math|e<rsub|t<rsub|0>>>.
-  </theorem>
-
-  <\proof>
-    <\enumerate>
-      <item>For <math|f,g\<in\>\<cal-D\><around|(|L|)>>, compute the inner
-      product:
-
-      <\equation>
-        <label|eq:Lf_g_inner><around|\<langle\>|L*f,g|\<rangle\>>=<big|int><rsub|\<bbb-R\>><around|(|L*f|)><around|(|t|)><wide|g<around|(|t|)>|\<bar\>>d*\<mu\><around|(|t|)>
-      </equation>
-
-      <item>By definition <eqref|eq:L_action>,
-
-      <\equation>
-        <label|eq:Lf_substitution><big|int><rsub|\<bbb-R\>>t*f<around|(|t|)><wide|g<around|(|t|)>|\<bar\>>d*\<mu\><around|(|t|)>
-      </equation>
-
-      <item>Since <math|t> is real-valued, <math|<wide|t|\<bar\>>=t>, so
-
-      <\equation>
-        <label|eq:conjugate_t><big|int><rsub|\<bbb-R\>>t*f<around|(|t|)><wide|g<around|(|t|)>|\<bar\>>d*\<mu\><around|(|t|)>=<big|int><rsub|\<bbb-R\>>f<around|(|t|)><wide|t*g<around|(|t|)>|\<bar\>>d*\<mu\><around|(|t|)>
-      </equation>
-
-      <item>The right side of <eqref|eq:conjugate_t> is
-
-      <\equation>
-        <label|eq:f_Lg_inner><big|int><rsub|\<bbb-R\>>f<around|(|t|)><wide|<around|(|L*g|)><around|(|t|)>|\<bar\>>d*\<mu\><around|(|t|)>=<around|\<langle\>|f,L*g|\<rangle\>>
-      </equation>
-
-      <item>Therefore
-
-      <\equation>
-        <label|eq:self_adjoint><around|\<langle\>|L*f,g|\<rangle\>>=<around|\<langle\>|f,L*g|\<rangle\>>
-      </equation>
-
-      for all <math|f,g\<in\>\<cal-D\><around|(|L|)>>, establishing that
-      <math|L> is symmetric.
-
-      <item>Since <math|L> is a multiplication operator on
-      <math|L<rsup|2><around|(|\<mu\>|)>>, it is self-adjoint (by standard
-      functional analysis).
-
-      <item>To determine the spectrum, compute the action on basis vectors.
-      From <eqref|eq:L_action> and <eqref|eq:basis_vectors>,
-
-      <\equation>
-        <label|eq:L_basis><around|(|L*e<rsub|t<rsub|0>>|)><around|(|t|)>=t*e<rsub|t<rsub|0>><around|(|t|)>=t*\<delta\><rsub|t<rsub|0>><around|(|t|)>
-      </equation>
-
-      <item>By the sifting property,
-
-      <\equation>
-        <label|eq:sift_basis>t*\<delta\><rsub|t<rsub|0>><around|(|t|)>=t<rsub|0>*\<delta\><rsub|t<rsub|0>><around|(|t|)>=t<rsub|0>*e<rsub|t<rsub|0>><around|(|t|)>
-      </equation>
-
-      <item>Therefore
-
-      <\equation>
-        <label|eq:eigenvalue_equation>L*e<rsub|t<rsub|0>>=t<rsub|0>*e<rsub|t<rsub|0>>
-      </equation>
-
-      <item>This shows that each <math|t<rsub|0>> is an eigenvalue with
-      eigenvector <math|e<rsub|t<rsub|0>>>.
-
-      <item>Since the <math|<around|{|e<rsub|t<rsub|0>>|}>> form a complete
-      orthonormal basis (Proposition <reference|prop:atomic>), the spectrum
-      is pure point.
-
-      <item>Each eigenspace is one-dimensional (spanned by
-      <math|e<rsub|t<rsub|0>>>), so the spectrum is simple and given by the
-      closure of the zero set\ 
-
-      <\equation>
-        <label|eq:spectrum_result>\<sigma\><around|(|L|)>=<around|{|t<rsub|0>:Z<around|(|t<rsub|0>|)>=0|}>=<wide|<around|{|t\<in\>\<bbb-R\>:Z<around|(|t|)>=0|}>|\<bar\>>
-      </equation>
-    </enumerate>
-  </proof>
-
-  <subsection|The Kac-Rice Formula For The Expected Zero Counting Function>
-
-  <\theorem>
-    <label|thm:kac_rice><with|font-series|bold|[Kac-Rice Formula for Zero
-    Crossings]> Let <math|Z<around|(|t|)>> be a centered Gaussian process on
-    <math|<around|[|a,b|]>> with covariance
-    <math|K<around|(|s,t|)>=\<bbb-E\>*<around|[|Z<around|(|s|)>*Z<around|(|t|)>|]>>
-    then the expected number of zeros in <math|<around|[|a,b|]>> is
-
-    <\equation>
-      <label|eq:kac_rice>\<bbb-E\><around|[|N<rsub|<around|[|a,b|]>>|]>=<big|int><rsub|a><rsup|b><sqrt|<frac|2|\<pi\>>>*<frac|<sqrt|K<around|(|t,t|)>*K<rsub|<wide|Z|\<dot\>>><around|(|t,t|)>-K<rsub|Z,<wide|Z|\<dot\>>><around|(|t,t|)><rsup|2>>|K<around|(|t,t|)>>*d*t
-    </equation>
-
-    where
-
-    <\equation>
-      <label|eq:K_tt>K<around|(|t,t|)>=\<bbb-E\><around|[|Z<around|(|t|)><rsup|2>|]>
-    </equation>
-
-    <\equation>
-      <label|eq:K_dotZ>K<rsub|<wide|Z|\<dot\>>><around|(|t,t|)>=-\<partial\><rsup|2><rsub|s>*\<partial\><rsub|t>*K<around|(|s,t|)>\|<rsub|s=t>
-    </equation>
-
-    and
-
-    <\equation>
-      <label|eq:K_Z_dotZ>K<rsub|Z,<wide|Z|\<dot\>>><around|(|t,t|)>=\<partial\><rsub|s>*K<around|(|s,t|)>\|<rsub|s=t>
-    </equation>
-  </theorem>
-
-  <\proof>
-    <\enumerate>
-      <item>The expected number of zeros is given by the Kac-Rice formula for
-      the level crossing density at level zero.
-
-      <item>For a Gaussian process <math|Z<around|(|t|)>>, the joint
-      distribution of <math|<around|(|Z<around|(|t|)>,<wide|Z|\<dot\>><around|(|t|)>|)>>
-      is bivariate normal with covariance matrix
-
-      <\equation>
-        <label|eq:covariance_matrix>\<Sigma\><around|(|t|)>=<matrix|<tformat|<table|<row|<cell|K<around|(|t,t|)>>|<cell|K<rsub|Z,<wide|Z|\<dot\>>><around|(|t,t|)>>>|<row|<cell|K<rsub|Z,<wide|Z|\<dot\>>><around|(|t,t|)>>|<cell|K<rsub|<wide|Z|\<dot\>>><around|(|t,t|)>>>>>>
-      </equation>
-
-      <item>The determinant of <math|\<Sigma\><around|(|t|)>> is
-
-      <\equation>
-        <label|eq:determinant>det \<Sigma\><around|(|t|)>=K<around|(|t,t|)>*K<rsub|<wide|Z|\<dot\>>><around|(|t,t|)>-K<rsub|Z,<wide|Z|\<dot\>>><around|(|t,t|)><rsup|2>
-      </equation>
-
-      <item>The Kac-Rice formula states that the expected number of zeros in
-      <math|<around|[|a,b|]>> is
-
-      <\equation>
-        <label|eq:kac_rice_general>\<bbb-E\><around|[|N<rsub|<around|[|a,b|]>>|]>=<big|int><rsub|a><rsup|b>p<rsub|Z<around|(|t|)>,<wide|Z|\<dot\>><around|(|t|)>><around|(|0,v|)><around|\||v|\|>*d*v*<space|0.17em>d*t
-      </equation>
-
-      where <math|p<rsub|Z<around|(|t|)>,<wide|Z|\<dot\>><around|(|t|)>>> is
-      the joint density of <math|<around|(|Z<around|(|t|)>,<wide|Z|\<dot\>><around|(|t|)>|)>>.
-
-      <item>For a centered bivariate normal distribution with covariance
-      <math|\<Sigma\><around|(|t|)>>,
-
-      <\equation>
-        <label|eq:joint_density>p<rsub|Z<around|(|t|)>,<wide|Z|\<dot\>><around|(|t|)>><around|(|z,v|)>=<frac|1|2*\<pi\>*<sqrt|det
-        \<Sigma\><around|(|t|)>>>*exp <around*|(|-<frac|1|2><matrix|<tformat|<table|<row|<cell|z>>|<row|<cell|v>>>>><rsup|T>\<Sigma\><around|(|t|)><rsup|-1><matrix|<tformat|<table|<row|<cell|z>>|<row|<cell|v>>>>>|)>
-      </equation>
-
-      <item>At <math|z=0>,
-
-      <\equation>
-        <label|eq:density_at_zero>p<rsub|Z<around|(|t|)>,<wide|Z|\<dot\>><around|(|t|)>><around|(|0,v|)>=<frac|1|2*\<pi\>*<sqrt|det
-        \<Sigma\><around|(|t|)>>>*exp <around*|(|-<frac|v<rsup|2>*K<around|(|t,t|)>|2*det
-        \<Sigma\><around|(|t|)>>|)>
-      </equation>
-
-      <item>Integrating <eqref|eq:density_at_zero> against
-      <math|<around|\||v|\|>>,
-
-      <\equation>
-        <label|eq:integrate_v><big|int><rsub|-\<infty\>><rsup|\<infty\>>p<rsub|Z<around|(|t|)>,<wide|Z|\<dot\>><around|(|t|)>><around|(|0,v|)><around|\||v|\|>*d*v=<frac|1|2*\<pi\>*<sqrt|det
-        \<Sigma\><around|(|t|)>>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||v|\|>*exp
-        <around*|(|-<frac|v<rsup|2>*K<around|(|t,t|)>|2*det
-        \<Sigma\><around|(|t|)>>|)>*d*v
-      </equation>
-
-      <item>Using symmetry, <math|<big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||v|\|>*e<rsup|-a*v<rsup|2>>*d*v=2*<big|int><rsub|0><rsup|\<infty\>>v*e<rsup|-a*v<rsup|2>>*d*v=<frac|1|a>*<sqrt|<frac|\<pi\>|a>>>:
-
-      <\equation>
-        <label|eq:gaussian_integral><big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||v|\|>*exp
-        <around*|(|-<frac|v<rsup|2>*K<around|(|t,t|)>|2*det
-        \<Sigma\><around|(|t|)>>|)>*d*v=<sqrt|<frac|2*\<pi\>*det
-        \<Sigma\><around|(|t|)>|K<around|(|t,t|)>>>
-      </equation>
-
-      <item>Substituting <eqref|eq:gaussian_integral> into
-      <eqref|eq:integrate_v>,
-
-      <\equation>
-        <label|eq:density_integral><frac|1|2*\<pi\>*<sqrt|det
-        \<Sigma\><around|(|t|)>>>\<cdot\><sqrt|<frac|2*\<pi\>*det
-        \<Sigma\><around|(|t|)>|K<around|(|t,t|)>>>=<sqrt|<frac|2|\<pi\>>>*<frac|<sqrt|det
-        \<Sigma\><around|(|t|)>>|K<around|(|t,t|)>>
-      </equation>
-
-      <item>Using <eqref|eq:determinant>,
-
-      <\equation>
-        <label|eq:final_density><sqrt|<frac|2|\<pi\>>>*<frac|<sqrt|K<around|(|t,t|)>*K<rsub|<wide|Z|\<dot\>>><around|(|t,t|)>-K<rsub|Z,<wide|Z|\<dot\>>><around|(|t,t|)><rsup|2>>|K<around|(|t,t|)>>
-      </equation>
-
-      <item>Integrating <eqref|eq:final_density> over <math|<around|[|a,b|]>>
-      yields <eqref|eq:kac_rice>.
-    </enumerate>
-  </proof>
-
-  <subsubsection|The Expected Zero Counting Function for Unitarily
-  Time-Changed Stationary Processes>
 
   \;
-
-  <\theorem>
-    <dueto|Expected Zero-Counting Function Of The Oscillatory Process
-    Subclass of Unitarily Time-Changed Stationary
-    Processes><label|thmexpectedzerocount>Let
-    <math|\<theta\>:\<bbb-R\>\<to\>\<bbb-R\>> be absolutely continuous,
-    strictly increasing, and bijective with
-    <math|<wide|\<theta\>|\<dot\>><around|(|t|)>\<gtr\>0> almost everywhere.
-    Let <math|X> be a centered stationary Gaussian process with spectral
-    measure <math|F> and covariance function
-
-    <\equation>
-      <label|eqstationarycov>K<around|(|h|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<omega\>*h>*<space|0.17em>d*F<around|(|\<omega\>|)>
-    </equation>
-
-    twice differentiable at <math|h=0>. Define the unitarily time-changed
-    process
-
-    <\equation>
-      <label|eqZprocess>Z<around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>X<around|(|\<theta\><around|(|t|)>|)>
-    </equation>
-
-    Then <math|Z> is a centered Gaussian process with covariance
-
-    <\equation>
-      <label|eqZcovariance>K<rsub|Z><around|(|t,s|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)><wide|\<theta\>|\<dot\>><around|(|s|)>>*<space|0.17em>K*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>
-    </equation>
-
-    and the expected number of zeros in <math|<around|[|0,T|]>> is
-
-    <\equation>
-      <label|eqexpectedzeros>\<bbb-E\><around|[|N<rsub|<around|[|0,T|]>>|]>=<sqrt|-<wide|K|\<ddot\>><around|(|0|)>>*<space|0.17em><around|[|\<theta\><around|(|T|)>-\<theta\><around|(|0|)>|]>
-    </equation>
-  </theorem>
-
-  <\proof>
-    <\enumerate>
-      <item>By the Kac-Rice formula:
-
-      <\equation>
-        <label|eqkacrice>\<bbb-E\><around|[|N<rsub|<around|[|0,T|]>>|]>=<big|int><rsub|0><rsup|T><sqrt|-lim<rsub|s\<to\>t>
-        <frac|\<partial\><rsup|2>|\<partial\>*s*\<partial\>*t>*K<rsub|Z><around|(|s,t|)>>*<space|0.17em>d*t
-      </equation>
-
-      <item>Differentiate <eqref|eqZcovariance> with respect to <math|s>:
-
-      <\equation>
-        <label|eqfirstpartial><tabular|<tformat|<table|<row|<cell|<frac|\<partial\>|\<partial\>*s>*K<rsub|Z><around|(|s,t|)>=<frac|<wide|\<theta\>|\<ddot\>><around|(|s|)>|2*<sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)><wide|\<theta\>|\<dot\>><around|(|t|)>>>*<space|0.17em>K*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>-<wide|\<theta\>|\<dot\>><around|(|s|)><sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)><wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em><wide|K|\<dot\>>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>>>>>
-      </equation>
-
-      <item>Differentiate <eqref|eqfirstpartial> with respect to <math|t> and
-      take <math|s\<to\>t>. Since <math|<wide|K|\<dot\>><around|(|0|)>=0> by
-      stationarity:
-
-      <\equation>
-        <label|eqlimit>lim<rsub|s\<to\>t>
-        <frac|\<partial\><rsup|2>|\<partial\>*s*\<partial\>*t>*K<rsub|Z><around|(|s,t|)>=-<wide|\<theta\>|\<dot\>><around|(|t|)><rsup|2>*<wide|K|\<ddot\>><around|(|0|)>
-      </equation>
-
-      <item>Substitute <eqref|eqlimit> into <eqref|eqkacrice>:
-
-      <\equation>
-        <label|eqsubstitute>\<bbb-E\><around|[|N<rsub|<around|[|0,T|]>>|]>=<big|int><rsub|0><rsup|T><sqrt|-<around|(|-<wide|\<theta\>|\<dot\>><around|(|t|)><rsup|2>*<wide|K|\<ddot\>><around|(|0|)>|)>>*<space|0.17em>d*t=<big|int><rsub|0><rsup|T><sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)><rsup|2>*<around|(|-<wide|K|\<ddot\>><around|(|0|)>|)>>*<space|0.17em>d*t
-      </equation>
-
-      <item>Since <math|<wide|\<theta\>|\<dot\>><around|(|t|)>\<gtr\>0> and
-      <math|<wide|K|\<ddot\>><around|(|0|)>\<less\>0>:
-
-      <\equation>
-        <label|eqsimplify>\<bbb-E\><around|[|N<rsub|<around|[|0,T|]>>|]>=<big|int><rsub|0><rsup|T><wide|\<theta\>|\<dot\>><around|(|t|)><sqrt|-<wide|K|\<ddot\>><around|(|0|)>>*<space|0.17em>d*t=<sqrt|-<wide|K|\<ddot\>><around|(|0|)>>*<big|int><rsub|0><rsup|T><wide|\<theta\>|\<dot\>><around|(|t|)>*<space|0.17em>d*t
-      </equation>
-
-      <item>Evaluate the integral:
-
-      <\equation>
-        <label|eqfinal>\<bbb-E\><around|[|N<rsub|<around|[|0,T|]>>|]>=<sqrt|-<wide|K|\<ddot\>><around|(|0|)>>*<space|0.17em><around|[|\<theta\><around|(|T|)>-\<theta\><around|(|0|)>|]>
-      </equation>
-    </enumerate>
-  </proof>
-
-  <\theorem>
-    <label|thm:deterministic_zero><with|font-series|bold|[Deterministic
-    zero-crossing at vanishing derivative]> Let <math|X> be a zero-mean
-    stationary process with spectral measure <math|F> as in Definition
-    <reference|def:cramer> and finite variance
-    <math|\<sigma\><rsup|2>=\<bbb-E\><around|[|X<around|(|t|)><rsup|2>|]>\<less\>\<infty\>>.
-    Let <math|\<theta\>:\<bbb-R\>\<to\>\<bbb-R\>> be the time-change function
-    from Theorem <reference|thm:local_unitarity>, which is absolutely
-    continuous (has derivative <math|<wide|\<theta\>|\<dot\>>> that exists
-    almost everywhere and is Lebesgue integrable), strictly increasing (so
-    <math|\<theta\><around|(|t<rsub|1>|)>\<less\>\<theta\><around|(|t<rsub|2>|)>>
-    whenever <math|t<rsub|1>\<less\>t<rsub|2>>), and bijective (one-to-one
-    and onto). The derivative <math|<wide|\<theta\>|\<dot\>><around|(|t|)>>
-    is strictly positive almost everywhere, meaning
-    <math|<wide|\<theta\>|\<dot\>><around|(|t|)>\<gtr\>0> for all <math|t>
-    except possibly on a set of Lebesgue measure zero. Define the transformed
-    process
-
-    <\equation>
-      <label|eq:Z_def_det>Z<around|(|t|)>=<around|(|U<rsub|\<theta\>>*X|)><around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*X<around|(|\<theta\><around|(|t|)>|)>
-    </equation>
-
-    as in equation <eqref|eq:U_theta_def>. Consider a point
-    <math|t<rsub|0>\<in\>\<bbb-R\>> where the derivative vanishes:
-    <math|<wide|\<theta\>|\<dot\>><around|(|t<rsub|0>|)>=0>. Then
-    <with|font-series|bold|every sample path of <math|Z> passes through zero
-    at <math|t<rsub|0>>>: for all <math|\<omega\>\<in\>\<Omega\>>,
-
-    <\equation>
-      <label|eq:deterministic_zero_statement>Z<around|(|t<rsub|0>,\<omega\>|)>=0
-    </equation>
-
-    This is a <with|font-series|bold|deterministic zero-crossing>: unlike the
-    random zero-crossings of the stationary process <math|X>, which occur
-    probabilistically according to Bulinskaya's statistics, the zero at
-    <math|t<rsub|0>> occurs with certainty in every realization of <math|Z>.
-    The randomness of <math|X> is completely suppressed at <math|t<rsub|0>>
-    by the vanishing amplitude <math|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t<rsub|0>|)>>=0>.
-  </theorem>
-
-  <\proof>
-    <\enumerate>
-      <item>Consider a point <math|t<rsub|0>\<in\>\<bbb-R\>> where
-      <math|<wide|\<theta\>|\<dot\>><around|(|t<rsub|0>|)>=0>.
-
-      <item>From the definition <eqref|eq:Z_def_det>, the value of <math|Z>
-      at <math|t<rsub|0>> for any sample path <math|\<omega\>\<in\>\<Omega\>>
-      is
-
-      <\equation>
-        <label|eq:Z_at_t0_expanded>Z<around|(|t<rsub|0>,\<omega\>|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t<rsub|0>|)>>\<cdot\>X<around|(|\<theta\><around|(|t<rsub|0>|)>,\<omega\>|)>
-      </equation>
-
-      <item>Since <math|<wide|\<theta\>|\<dot\>><around|(|t<rsub|0>|)>=0> by
-      hypothesis,
-
-      <\equation>
-        <label|eq:sqrt_zero_eval><sqrt|<wide|\<theta\>|\<dot\>><around|(|t<rsub|0>|)>>=<sqrt|0>=0
-      </equation>
-
-      <item>Substituting <eqref|eq:sqrt_zero_eval> into
-      <eqref|eq:Z_at_t0_expanded>,
-
-      <\equation>
-        <label|eq:zero_product>Z<around|(|t<rsub|0>,\<omega\>|)>=0\<cdot\>X<around|(|\<theta\><around|(|t<rsub|0>|)>,\<omega\>|)>=0
-      </equation>
-
-      regardless of the value of <math|X<around|(|\<theta\><around|(|t<rsub|0>|)>,\<omega\>|)>>.
-
-      <item>Since <math|\<omega\>\<in\>\<Omega\>> was arbitrary, equation
-      <eqref|eq:zero_product> holds for every sample path:
-
-      <\equation>
-        <label|eq:all_sample_paths>Z<around|(|t<rsub|0>,\<omega\>|)>=0<space|1em>\<forall\>\<omega\>\<in\>\<Omega\>
-      </equation>
-
-      <item>Therefore <math|t<rsub|0>> is a deterministic zero-crossing: the
-      process <math|Z> reaches zero at <math|t<rsub|0>> in every realization,
-      not probabilistically.
-
-      <item>As a direct consequence, the variance of <math|Z> at
-      <math|t<rsub|0>> is zero:
-
-      <\equation>
-        <label|eq:variance_zero_consequence><text|Var><around|[|Z<around|(|t<rsub|0>|)>|]>=\<bbb-E\><around|[|<around|(|Z<around|(|t<rsub|0>|)>-\<bbb-E\><around|[|Z<around|(|t<rsub|0>|)>|]>|)><rsup|2>|]>=\<bbb-E\><around|[|0<rsup|2>|]>=0
-      </equation>
-
-      <item>By Corollary <reference|cor:evol_spec>, the evolutionary spectrum
-      at <math|t<rsub|0>> vanishes:
-
-      <\equation>
-        <label|eq:evol_spectrum_vanish>d*F<rsub|t<rsub|0>><around|(|\<lambda\>|)>=<wide|\<theta\>|\<dot\>><around|(|t<rsub|0>|)>*d*F<around|(|\<lambda\>|)>=0\<cdot\>d*F<around|(|\<lambda\>|)>=0
-      </equation>
-
-      meaning there is no spectral energy at <math|t<rsub|0>>.
-
-      <item>The point <math|t<rsub|0>> belongs to the zero set
-      <math|<around|{|t\<in\>\<bbb-R\>:Z<around|(|t,\<omega\>|)>=0|}>> for
-      every <math|\<omega\>\<in\>\<Omega\>>. By Definition
-      <reference|def:L2loc>, this deterministic zero-crossing differs
-      fundamentally from the random zero-crossings governed by the statistics
-      of the stationary process <math|X>: it occurs because the amplitude
-      factor <math|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t<rsub|0>|)>>>
-      vanishes, completely eliminating the influence of the random process
-      <math|X> at that instant.
-    </enumerate>
-  </proof>
 
   <\bibliography|bib|tm-plain|refs>
     <\bib-list|2>
@@ -1775,8 +683,6 @@
       Society: Series B (Methodological)>, 27(2):204\U229, 1965.<newblock>
     </bib-list>
   </bibliography>
-
-  \;
 </body>
 
 <\initial>
@@ -1791,242 +697,79 @@
 
 <\references>
   <\collection>
-    <associate|UTCcovar|<tuple|93|12>>
+    <associate|UTCovar|<tuple|40|8>>
     <associate|auto-1|<tuple|1|2>>
-    <associate|auto-10|<tuple|2.4|14>>
-    <associate|auto-11|<tuple|3|15>>
-    <associate|auto-12|<tuple|3.1|19>>
-    <associate|auto-13|<tuple|3.1.1|20>>
-    <associate|auto-14|<tuple|9|23>>
+    <associate|auto-10|<tuple|2.3|8>>
+    <associate|auto-11|<tuple|2.4|9>>
+    <associate|auto-12|<tuple|3|9>>
+    <associate|auto-13|<tuple|47|10>>
     <associate|auto-2|<tuple|1.1|2>>
     <associate|auto-3|<tuple|1.2|2>>
-    <associate|auto-4|<tuple|1.3|4>>
-    <associate|auto-5|<tuple|1.4|4>>
-    <associate|auto-6|<tuple|2|8>>
-    <associate|auto-7|<tuple|2.1|8>>
-    <associate|auto-8|<tuple|2.2|10>>
-    <associate|auto-9|<tuple|2.3|12>>
-    <associate|bib-evolutionarySpectraAndNonStationaryProcesses|<tuple|2|23>>
-    <associate|bib-stationaryAndRelatedStochasticProcesses|<tuple|1|23>>
-    <associate|cor:evol_spec|<tuple|13|13>>
-    <associate|def:Hmu|<tuple|17|17>>
-    <associate|def:L|<tuple|19|18>>
+    <associate|auto-4|<tuple|1.2.1|2>>
+    <associate|auto-5|<tuple|1.3|3>>
+    <associate|auto-6|<tuple|2|6>>
+    <associate|auto-7|<tuple|2.1|6>>
+    <associate|auto-8|<tuple|2.2|6>>
+    <associate|auto-9|<tuple|2.2.1|6>>
+    <associate|bib-evolutionarySpectraAndNonStationaryProcesses|<tuple|2|10>>
+    <associate|bib-stationaryAndRelatedStochasticProcesses|<tuple|1|10>>
+    <associate|cor:evol_spec|<tuple|15|8>>
     <associate|def:L2loc|<tuple|3|2>>
-    <associate|def:canonical_metric|<tuple|2|2>>
-    <associate|def:cramer|<tuple|6|4>>
+    <associate|def:cramer|<tuple|2|2>>
     <associate|def:gaussian_process|<tuple|1|2>>
-    <associate|def:osc_proc|<tuple|7|4>>
-    <associate|def:zeromeasure|<tuple|15|15>>
-    <associate|eq:A_t_explicit|<tuple|101|13>>
-    <associate|eq:A_t_magnitude|<tuple|112|14>>
-    <associate|eq:A_t_magnitude_start|<tuple|110|13>>
-    <associate|eq:H_isomorphism|<tuple|143|17>>
-    <associate|eq:K_Z_dotZ|<tuple|168|19>>
-    <associate|eq:K_def|<tuple|115|14>>
-    <associate|eq:K_dotZ|<tuple|167|19>>
-    <associate|eq:K_finite|<tuple|14|3>>
-    <associate|eq:K_integral_bound|<tuple|13|3>>
-    <associate|eq:K_theta_def|<tuple|116|14>>
-    <associate|eq:K_theta_recognition|<tuple|126|15>>
-    <associate|eq:K_tt|<tuple|166|19>>
-    <associate|eq:L2_norm_mu|<tuple|145|17>>
-    <associate|eq:L2_norm_simple|<tuple|49|7>>
-    <associate|eq:L_action|<tuple|153|18>>
-    <associate|eq:L_basis|<tuple|161|19>>
-    <associate|eq:L_def|<tuple|152|18>>
-    <associate|eq:L_domain|<tuple|154|18>>
-    <associate|eq:Lf_g_inner|<tuple|156|18>>
-    <associate|eq:Lf_substitution|<tuple|157|18>>
-    <associate|eq:MCT_application|<tuple|18|4>>
-    <associate|eq:R_Z_factored|<tuple|105|13>>
-    <associate|eq:R_Z_final|<tuple|107|13>>
-    <associate|eq:R_Z_start|<tuple|103|13>>
-    <associate|eq:R_Z_substituted|<tuple|104|13>>
-    <associate|eq:T_K_application|<tuple|119|14>>
-    <associate|eq:T_K_def|<tuple|114|14>>
-    <associate|eq:U_inv_application|<tuple|120|14>>
-    <associate|eq:U_theta_def|<tuple|59|8>>
-    <associate|eq:U_theta_inverse|<tuple|60|8>>
-    <associate|eq:Utheta_norm_start|<tuple|62|8>>
-    <associate|eq:X_covariance|<tuple|106|13>>
-    <associate|eq:X_cramer|<tuple|94|12>>
-    <associate|eq:X_theta_t|<tuple|95|12>>
-    <associate|eq:Yab_def|<tuple|5|2>>
-    <associate|eq:Yab_finite_expectation|<tuple|8|3>>
-    <associate|eq:Yab_finite_probability|<tuple|10|3>>
-    <associate|eq:Z_at_inverse|<tuple|87|11>>
-    <associate|eq:Z_at_t0_expanded|<tuple|190|22>>
-    <associate|eq:Z_conjugate|<tuple|32|5>>
-    <associate|eq:Z_conjugate_substituted|<tuple|34|5>>
-    <associate|eq:Z_def|<tuple|90|12>>
-    <associate|eq:Z_def_det|<tuple|188|22>>
-    <associate|eq:Z_expanded|<tuple|96|12>>
-    <associate|eq:Z_integral|<tuple|97|12>>
-    <associate|eq:Z_oscillatory_form|<tuple|99|12>>
-    <associate|eq:Z_representation|<tuple|31|5>>
-    <associate|eq:Z_transformation|<tuple|78|10>>
-    <associate|eq:Z_well_defined|<tuple|53|7>>
-    <associate|eq:after_substitution|<tuple|65|9>>
-    <associate|eq:all_sample_paths|<tuple|193|22>>
-    <associate|eq:apply_forward_def|<tuple|68|9>>
-    <associate|eq:apply_inverse_def|<tuple|67|9>>
-    <associate|eq:apply_inverse_second|<tuple|73|9>>
-    <associate|eq:basis_expansion|<tuple|151|18>>
-    <associate|eq:basis_inner_product|<tuple|150|18>>
-    <associate|eq:basis_vectors|<tuple|144|17>>
-    <associate|eq:both_inverses|<tuple|77|10>>
-    <associate|eq:cancel_derivative|<tuple|138|16>>
-    <associate|eq:change_of_variables|<tuple|35|5>>
-    <associate|eq:change_var_differential|<tuple|64|9>>
-    <associate|eq:change_var_s|<tuple|122|14>>
-    <associate|eq:compact_bounded|<tuple|11|3>>
-    <associate|eq:composition_1|<tuple|66|9>>
-    <associate|eq:composition_2|<tuple|72|9>>
-    <associate|eq:conjugate_t|<tuple|158|18>>
-    <associate|eq:conjugation|<tuple|117|14>>
-    <associate|eq:conjugation_expand|<tuple|118|14>>
-    <associate|eq:covariance_Z|<tuple|93|12>>
-    <associate|eq:covariance_computation|<tuple|54|7>>
-    <associate|eq:covariance_final|<tuple|57|8>>
+    <associate|def:osc_proc|<tuple|6|3>>
+    <associate|def:zeromeasure|<tuple|17|9>>
+    <associate|eq:K_def|<tuple|43|9>>
+    <associate|eq:K_theta_def|<tuple|44|9>>
+    <associate|eq:L2_isometry_extension|<tuple|27|5>>
+    <associate|eq:L2_limit_def|<tuple|26|5>>
+    <associate|eq:T_K_def|<tuple|42|9>>
+    <associate|eq:U_theta_def|<tuple|30|6>>
+    <associate|eq:U_theta_inverse|<tuple|31|6>>
+    <associate|eq:Yab_def|<tuple|6|2>>
+    <associate|eq:Z_def|<tuple|37|8>>
+    <associate|eq:Z_transformation|<tuple|33|7>>
+    <associate|eq:cauchy_sequence|<tuple|25|5>>
+    <associate|eq:conjugation|<tuple|45|9>>
     <associate|eq:covariance_kernel|<tuple|1|2>>
-    <associate|eq:covariance_matrix|<tuple|169|20>>
-    <associate|eq:cramer_representation|<tuple|20|4>>
-    <associate|eq:delta_Z_decomp|<tuple|136|16>>
-    <associate|eq:delta_change_var|<tuple|132|16>>
-    <associate|eq:delta_decomposition|<tuple|130|15>>
-    <associate|eq:delta_equality|<tuple|135|16>>
-    <associate|eq:density_at_zero|<tuple|173|20>>
-    <associate|eq:density_integral|<tuple|176|20>>
-    <associate|eq:density_simple|<tuple|51|7>>
-    <associate|eq:determinant|<tuple|170|20>>
-    <associate|eq:deterministic_zero_statement|<tuple|189|22>>
-    <associate|eq:eigenvalue_equation|<tuple|163|19>>
-    <associate|eq:evol_spec_def|<tuple|109|13>>
-    <associate|eq:evol_spec_final|<tuple|113|14>>
-    <associate|eq:evol_spectrum_vanish|<tuple|195|23>>
-    <associate|eq:evolutionary_spectrum|<tuple|108|13>>
-    <associate|eq:exp_magnitude|<tuple|111|13>>
-    <associate|eq:expand_square|<tuple|63|8>>
-    <associate|eq:expectation_Yab|<tuple|7|3>>
-    <associate|eq:expectation_divergence|<tuple|17|3>>
-    <associate|eq:expectation_growth|<tuple|16|3>>
-    <associate|eq:f_Lg_inner|<tuple|159|18>>
-    <associate|eq:factor_inside|<tuple|125|15>>
-    <associate|eq:filter_identity|<tuple|81|10>>
-    <associate|eq:final_conjugation|<tuple|127|15>>
-    <associate|eq:final_density|<tuple|177|20>>
-    <associate|eq:final_inverse|<tuple|89|11>>
-    <associate|eq:finite_variance|<tuple|4|2>>
-    <associate|eq:forward_integral|<tuple|82|10>>
-    <associate|eq:forward_kernel|<tuple|79|10>>
-    <associate|eq:forward_substitution|<tuple|83|11>>
-    <associate|eq:fubini_stochastic|<tuple|55|7>>
-    <associate|eq:full_expression|<tuple|124|15>>
-    <associate|eq:gain_L2|<tuple|22|4>>
-    <associate|eq:gain_condition|<tuple|40|6>>
-    <associate|eq:gain_equality|<tuple|37|5>>
-    <associate|eq:gain_function_Z|<tuple|92|12>>
-    <associate|eq:gain_symmetry|<tuple|28|5>>
-    <associate|eq:gaussian_integral|<tuple|175|20>>
-    <associate|eq:global_divergence|<tuple|19|4>>
-    <associate|eq:inner_product_mu|<tuple|141|17>>
-    <associate|eq:integral_simple|<tuple|44|6>>
-    <associate|eq:integral_substitution|<tuple|121|14>>
-    <associate|eq:integrand_equality|<tuple|36|5>>
-    <associate|eq:integrate_v|<tuple|174|20>>
-    <associate|eq:interchange_sum_integral|<tuple|134|16>>
-    <associate|eq:interval_N_finite|<tuple|12|3>>
-    <associate|eq:inverse_integral|<tuple|85|11>>
-    <associate|eq:inverse_kernel|<tuple|80|10>>
-    <associate|eq:isometry_Psi|<tuple|149|17>>
-    <associate|eq:isometry_established|<tuple|50|7>>
-    <associate|eq:isometry_simple|<tuple|48|7>>
-    <associate|eq:isomorphism_map|<tuple|148|17>>
-    <associate|eq:joint_density|<tuple|172|20>>
-    <associate|eq:kac_rice|<tuple|165|19>>
-    <associate|eq:kac_rice_general|<tuple|171|20>>
-    <associate|eq:left_inverse|<tuple|71|9>>
-    <associate|eq:linearity_expectation|<tuple|46|6>>
-    <associate|eq:local_isometry|<tuple|61|8>>
+    <associate|eq:cramer_representation|<tuple|2|2>>
+    <associate|eq:evolutionary_spectrum|<tuple|41|8>>
+    <associate|eq:expectation_Yab|<tuple|8|3>>
+    <associate|eq:filter_identity|<tuple|36|7>>
+    <associate|eq:finite_variance|<tuple|5|2>>
+    <associate|eq:forward_kernel|<tuple|34|7>>
+    <associate|eq:gain_L2|<tuple|11|3>>
+    <associate|eq:gain_function_Z|<tuple|39|8>>
+    <associate|eq:gain_symmetry|<tuple|18|4>>
+    <associate|eq:integral_simple|<tuple|23|5>>
+    <associate|eq:inverse_kernel|<tuple|35|7>>
+    <associate|eq:isometry_simple|<tuple|24|5>>
+    <associate|eq:local_isometry|<tuple|32|6>>
     <associate|eq:markov_inequality|<tuple|9|3>>
-    <associate|eq:mu_atomic|<tuple|131|15>>
-    <associate|eq:mu_atomic_assumption|<tuple|142|17>>
-    <associate|eq:mu_atomic_final|<tuple|140|16>>
-    <associate|eq:mu_def|<tuple|129|15>>
-    <associate|eq:mu_substitution|<tuple|137|16>>
-    <associate|eq:mu_sum|<tuple|139|16>>
-    <associate|eq:norm_equivalence|<tuple|147|17>>
-    <associate|eq:norm_sum|<tuple|146|17>>
-    <associate|eq:orthogonality_application|<tuple|47|7>>
-    <associate|eq:orthogonality_integral|<tuple|56|8>>
-    <associate|eq:orthogonality_phi|<tuple|25|4>>
-    <associate|eq:osc_func_conjugate|<tuple|39|6>>
-    <associate|eq:osc_func_def|<tuple|27|5>>
-    <associate|eq:osc_func_neg|<tuple|38|6>>
-    <associate|eq:osc_symmetry|<tuple|29|5>>
-    <associate|eq:oscillatory_covariance|<tuple|26|4>>
-    <associate|eq:oscillatory_function|<tuple|23|4>>
-    <associate|eq:oscillatory_function_Z|<tuple|91|12>>
-    <associate|eq:oscillatory_process|<tuple|24|4>>
-    <associate|eq:oscillatory_well_defined|<tuple|42|6>>
-    <associate|eq:phi_symmetry|<tuple|33|5>>
-    <associate|eq:real_valued_condition|<tuple|30|5>>
-    <associate|eq:right_inverse|<tuple|76|10>>
-    <associate|eq:sample_path_L2loc|<tuple|15|3>>
-    <associate|eq:second_moment_simple|<tuple|45|6>>
-    <associate|eq:self_adjoint|<tuple|160|19>>
-    <associate|eq:sift_basis|<tuple|162|19>>
-    <associate|eq:sifting_forward|<tuple|84|11>>
-    <associate|eq:sifting_inverse|<tuple|86|11>>
-    <associate|eq:simple_function|<tuple|43|6>>
-    <associate|eq:simple_zeros|<tuple|128|15>>
-    <associate|eq:simplify_composition|<tuple|70|9>>
-    <associate|eq:simplify_integral|<tuple|123|15>>
-    <associate|eq:simplify_second|<tuple|75|10>>
-    <associate|eq:spectrum|<tuple|155|18>>
-    <associate|eq:spectrum_result|<tuple|164|19>>
-    <associate|eq:sqrt_zero_eval|<tuple|191|22>>
-    <associate|eq:stationary_covariance|<tuple|21|4>>
-    <associate|eq:sum_form|<tuple|133|16>>
-    <associate|eq:theta_composition|<tuple|74|10>>
-    <associate|eq:theta_composition_Y|<tuple|88|11>>
-    <associate|eq:theta_inverse_composition|<tuple|69|9>>
-    <associate|eq:time_dependent_spectrum|<tuple|41|6>>
-    <associate|eq:tonelli_application|<tuple|6|2>>
-    <associate|eq:variance_zero_consequence|<tuple|194|23>>
-    <associate|eq:varphi_L2|<tuple|52|7>>
-    <associate|eq:varphi_as_gain|<tuple|102|13>>
-    <associate|eq:varphi_factored|<tuple|100|13>>
-    <associate|eq:varphi_t_explicit|<tuple|98|12>>
-    <associate|eq:zero_product|<tuple|192|22>>
-    <associate|eqZcovariance|<tuple|180|21>>
-    <associate|eqZprocess|<tuple|179|21>>
-    <associate|eqexpectedzeros|<tuple|181|21>>
-    <associate|eqfinal|<tuple|187|22>>
-    <associate|eqfirstpartial|<tuple|183|21>>
-    <associate|eqkacrice|<tuple|182|21>>
-    <associate|eqlimit|<tuple|184|21>>
-    <associate|eqsimplify|<tuple|186|21>>
-    <associate|eqstationarycov|<tuple|178|21>>
-    <associate|eqsubstitute|<tuple|185|21>>
-    <associate|pd|<tuple|58|8>>
-    <associate|prop:atomic|<tuple|18|17>>
-    <associate|prop:conjugation|<tuple|14|14>>
+    <associate|eq:mu_def|<tuple|47|9>>
+    <associate|eq:orthogonality_phi|<tuple|14|3>>
+    <associate|eq:osc_symmetry|<tuple|19|4>>
+    <associate|eq:oscillatory_covariance|<tuple|15|3>>
+    <associate|eq:oscillatory_function|<tuple|12|3>>
+    <associate|eq:oscillatory_function_Z|<tuple|38|8>>
+    <associate|eq:oscillatory_process|<tuple|13|3>>
+    <associate|eq:oscillatory_well_defined|<tuple|21|4>>
+    <associate|eq:simple_function|<tuple|22|5>>
+    <associate|eq:simple_zeros|<tuple|46|9>>
+    <associate|eq:stationary_covariance|<tuple|3|2>>
+    <associate|eq:time_dependent_spectrum|<tuple|20|4>>
+    <associate|eq:tonelli_application|<tuple|7|3>>
+    <associate|prop:conjugation|<tuple|16|9>>
     <associate|rem:L2loc_properties|<tuple|4|2>>
-    <associate|sec:HP|<tuple|3|15>>
-    <associate|sec:oscillatory|<tuple|1.4|4>>
-    <associate|sec:stationary_timechange|<tuple|2|8>>
-    <associate|thm:Utheta_to_osc|<tuple|12|12>>
-    <associate|thm:atomicity|<tuple|16|15>>
-    <associate|thm:deterministic_zero|<tuple|23|22>>
-    <associate|thm:existence_osc|<tuple|9|6>>
-    <associate|thm:inverse_filter|<tuple|11|10>>
-    <associate|thm:kac_rice|<tuple|21|19>>
-    <associate|thm:local_unitarity|<tuple|10|8>>
+    <associate|sec:HP|<tuple|3|9>>
+    <associate|sec:oscillatory|<tuple|1.3|3>>
+    <associate|sec:stationary_timechange|<tuple|2|6>>
+    <associate|thm:Utheta_to_osc|<tuple|14|8>>
+    <associate|thm:existence_osc|<tuple|10|4>>
+    <associate|thm:inverse_filter|<tuple|13|7>>
+    <associate|thm:local_unitarity|<tuple|11|6>>
     <associate|thm:paths_loc|<tuple|5|2>>
-    <associate|thm:realvaluedness|<tuple|8|5>>
-    <associate|thm:spectrum|<tuple|20|18>>
-    <associate|thmexpectedzerocount|<tuple|22|21>>
+    <associate|thm:realvaluedness|<tuple|9|4>>
   </collection>
 </references>
 
@@ -2046,57 +789,52 @@
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-2>>
 
-      <with|par-left|<quote|1tab>|1.2<space|2spc>Sample Path Realizations
+      <with|par-left|<quote|1tab>|1.2<space|2spc>Stationary processes
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-3>>
 
-      <with|par-left|<quote|1tab>|1.3<space|2spc>Stationary processes
+      <with|par-left|<quote|2tab>|1.2.1<space|2spc>Sample path realizations
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-4>>
 
-      <with|par-left|<quote|1tab>|1.4<space|2spc>Oscillatory Processes
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1tab>|1.3<space|2spc>(Non-Stationary) Oscillatory
+      Processes <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-5>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Unitarily
       Time-Changed Stationary Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-6><vspace|0.5fn>
 
-      <with|par-left|<quote|1tab>|2.1<space|2spc>Unitary Time-Change Operator
+      <with|par-left|<quote|1tab>|2.1<space|2spc>Unitary time-change operator
       <with|mode|<quote|math>|U<rsub|\<theta\>>*f>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-7>>
 
-      <with|par-left|<quote|1tab>|2.2<space|2spc>Inverse Filter for Unitary
-      Time Transformations <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1tab>|2.2<space|2spc>Time-Varying (Convolution)
+      Filter Representations <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-8>>
 
-      <with|par-left|<quote|1tab>|2.3<space|2spc>Transformation of Stationary
-      <with|mode|<quote|math>|\<to\>> Oscillatory Processes via
-      <with|mode|<quote|math>|U<rsub|\<theta\>>>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|2tab>|2.2.1<space|2spc>The Oscillatory Subclass
+      <with|mode|<quote|math>|Z<around*|(|t|)>=U<rsub|\<theta\>>
+      X<around*|(|t|)>> \ <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-9>>
+
+      <with|par-left|<quote|1tab>|2.3<space|2spc>Transformation of stationary
+      to oscillatory processes via <with|mode|<quote|math>|U<rsub|\<theta\>>>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-10>>
 
       <with|par-left|<quote|1tab>|2.4<space|2spc>Covariance operator
       conjugation <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-10>>
+      <no-break><pageref|auto-11>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>Zero
       Localization> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-11><vspace|0.5fn>
-
-      <with|par-left|<quote|1tab>|3.1<space|2spc>The Kac-Rice Formula For The
-      Expected Zero Counting Function <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-12>>
-
-      <with|par-left|<quote|2tab>|3.1.1<space|2spc>The Expected Zero Counting
-      Function for Unitarily Time-Changed Stationary Processes
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-13>>
+      <no-break><pageref|auto-12><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-14><vspace|0.5fn>
+      <no-break><pageref|auto-13><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
