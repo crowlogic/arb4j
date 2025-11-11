@@ -1,7 +1,5 @@
 package arb;
 
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.expressions.Context;
 import arb.functions.rational.ComplexRationalFunctionSequence;
@@ -10,15 +8,14 @@ import arb.utensils.Utensils;
 import junit.framework.TestCase;
 
 /**
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * 
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class ComplexRationalFunctionTest extends
                                          TestCase
 {
 
- 
- 
   public static void testEvaluateWithComplexFraction()
   {
     try ( var f = new ComplexRationalFunction())
