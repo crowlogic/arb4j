@@ -190,9 +190,9 @@
 
   and it can be represented by
 
-  <\align>
-    <tformat|<table|<row|<cell|<rsub|\<lambda\>><around|\<langle\>|E|\|>\<assign\>-<rsub|\<lambda\>>\<langle\>0\|<big|sum><rsub|k,n>C<rsub|k><rsup|\<ast\>>*<frac|<around|(|-E*H|)><rsup|n>|n!\<lambda\>*<around|(|\<lambda\>-1|)>*\<cdots\>*<around|(|\<lambda\>-n+1|)>><eq-number><label|conf1h2>>>>>
-  </align>
+  <\equation>
+    <rsub|\<lambda\>><around|\<langle\>|E|\|>\<assign\>-<rsub|\<lambda\>>\<langle\>0\|<big|sum><rsub|k,n>C<rsub|k><rsup|\<ast\>>*<frac|<around|(|-E*H|)><rsup|n>|n!\<lambda\>*<around|(|\<lambda\>-1|)>*\<cdots\>*<around|(|\<lambda\>-n+1|)>><label|conf1h2>
+  </equation>
 
   With the Whittaker vector <math|<around|\||E|\<rangle\>><rsub|\<lambda\>>>
   and its dual vector <math|<rsub|\<lambda\>><around|\<langle\>|E|\|>> as the
@@ -291,9 +291,19 @@
 
   leads to the commutation relations
 
-  <\align>
-    <tformat|<table|<row|<cell|<around|[|\<phi\><rsub|0>,p<rsub|0>|]>>|<cell|=i,>|<cell|<around|[|a<rsub|n>,a<rsub|m>|]>>|<cell|=<frac|n|2>*\<delta\><rsub|n,-m>,>|<cell|<around|[|b<rsub|n>,b<rsub|m>|]>>|<cell|=<frac|n|2>*\<delta\><rsub|n,-m><eq-number><label|lft1a5>>>>>
-  </align>
+  <\equation>
+    <around|[|\<phi\><rsub|0>,p<rsub|0>|]>=i
+  </equation>
+
+  <\equation>
+    <around|[|a<rsub|n>,a<rsub|m>|]>=<frac|n|2>*\<delta\><rsub|n,-m>
+  </equation>
+
+  <\equation>
+    <around|[|b<rsub|n>,b<rsub|m>|]>=<frac|n|2>*\<delta\><rsub|n,-m>
+  </equation>
+
+  \;
 
   which imply that <math|a<rsub|n>,b<rsub|n>> are creation operators while
   <math|a<rsub|-n>,b<rsub|-n>> are annihilation operators. The spectrum of
@@ -615,16 +625,13 @@
   The semiclassical distribution of (<reference|conf1i7>) for large
   <math|\<rho\>> is realized when the cosine function is at its maximum
 
-  <\align>
-    <tformat|<table|<row|<cell|cos <around*|[|\<rho\>*ln
-    <around*|(|<frac|2*\<rho\>|z*e>|)>|]>=1<eq-number><label|conf1i8>>>>>
-  </align>
-
-  so that
+  <\equation>
+    cos <around*|[|\<rho\>*ln <around*|(|<frac|2*\<rho\>|z*e>|)>|]>=1<label|conf1i8>
+  </equation>
 
   <\align>
     <tformat|<table|<row|<cell|<frac|\<rho\>|\<pi\>>*<around*|[|ln
-    <around*|(|<frac|\<rho\>|E<rsub|L>*E<rsub|R>>|)>-1|]>>|<cell|=2*n,\<forall\>n\<in\>\<bbb-Z\>.<eq-number><label|conf1i9>>>>>
+    <around*|(|<frac|\<rho\>|E<rsub|L>*E<rsub|R>>|)>-1|]>>|<cell|=2*n,\<forall\>n\<in\>\<bbb-Z\><eq-number><label|conf1i9>>>>>
   </align>
 
   Since the expression (<reference|conf1i9>) diverges when
@@ -997,120 +1004,120 @@
 
 <\references>
   <\collection>
-    <associate|ads2cft1a0|<tuple|26|6|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|ads2cft1b0|<tuple|31|7|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|auto-1|<tuple|48|11|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|auto-2|<tuple|48|11|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-'tHooft:1993gx|<tuple|1|11|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Aganagic:2003qj|<tuple|52|13|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Alishahiha:2008tv|<tuple|21|12|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Azeyanagi:2007bj|<tuple|20|12|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Balasubramanian:1998de|<tuple|33|12|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Balasubramanian:1998sn|<tuple|32|12|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Balasubramanian:2010ys|<tuple|34|12|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Bargmann:1946me|<tuple|42|13|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Beem:2012mb|<tuple|55|13|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Bellucci:2002va|<tuple|16|12|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Blum:1999pc|<tuple|12|12|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Brown:1986nw|<tuple|56|13|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Cadoni:1999ja|<tuple|11|12|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Cadoni:2000gm|<tuple|15|12|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Caldarelli:2000xk|<tuple|14|12|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Chamon:2011xk|<tuple|28|12|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Cheng:2010yw|<tuple|54|13|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-DeWitt:1967yk|<tuple|48|13|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Fateev:2000ik|<tuple|51|13|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Figueras:2008qh|<tuple|5|11|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Galajinsky:2008ce|<tuple|24|12|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Giveon:2004zz|<tuple|19|12|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Gubser:1998bc|<tuple|57|13|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Gupta:2008ki|<tuple|22|12|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Hartman:2008dq|<tuple|23|12|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Jackiw:2012ur|<tuple|30|12|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-KashaniPoor:2006nc|<tuple|53|13|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Kunduri:2007vf|<tuple|4|11|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Leiva:2003kd|<tuple|18|12|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-MR0271275|<tuple|43|13|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-MR0311838|<tuple|44|13|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-MR0466039|<tuple|60|13|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-MR1684543|<tuple|38|13|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-MR1694895|<tuple|36|12|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-MR1729357|<tuple|46|13|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-MR2443603|<tuple|39|13|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-MR2812337|<tuple|41|13|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-MR507800|<tuple|45|13|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Maldacena:1997re|<tuple|3|11|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Maldacena:1998uz|<tuple|7|11|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Misner:1972js|<tuple|49|13|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-MolinaVilaplana:2012xe|<tuple|29|12|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Moore:1991ir|<tuple|50|13|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Nakatsu:1998st|<tuple|8|11|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-NavarroSalas:1999up|<tuple|13|12|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Seiberg:1990eb|<tuple|47|13|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Sen:2008vm|<tuple|25|12|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Sen:2008yk|<tuple|26|12|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Sen:2011cn|<tuple|27|12|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Sierra:2011tb|<tuple|40|13|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Spradlin:1999bn|<tuple|10|12|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Strominger:1998yg|<tuple|6|11|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Strominger:2003tm|<tuple|17|12|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Susskind:1994vu|<tuple|2|11|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Townsend:1998qp|<tuple|9|12|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Witten:1998qj|<tuple|58|13|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-Zamolodchikov:2001ah|<tuple|31|12|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-berry1999h|<tuple|37|13|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-deAlfaro:1976je|<tuple|35|12|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|bib-gradshteyn2000table|<tuple|59|13|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1a|<tuple|8|3|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1b|<tuple|9|3|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1c|<tuple|1|2|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1d1|<tuple|5|2|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1d2|<tuple|6|2|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1d3|<tuple|7|2|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1e|<tuple|9|3|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1e1|<tuple|2|2|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1e2|<tuple|3|2|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1e3|<tuple|4|2|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1f1|<tuple|11|3|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1f2|<tuple|12|3|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1f3|<tuple|13|3|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1g3|<tuple|14|3|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1h1|<tuple|15|4|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1h2|<tuple|16|4|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1h3|<tuple|17|4|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1h4|<tuple|18|4|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1h5|<tuple|19|4|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1h6|<tuple|20|5|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1h7b|<tuple|32|8|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1h8|<tuple|33|8|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1h9|<tuple|34|8|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1i1|<tuple|35|8|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1i10|<tuple|48|11|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1i2|<tuple|37|8|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1i3|<tuple|40|9|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1i4|<tuple|41|9|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1i5|<tuple|43|10|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1i50|<tuple|42|10|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1i6|<tuple|44|10|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1i7|<tuple|45|10|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1i8|<tuple|46|10|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|conf1i9|<tuple|47|11|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|cor1|<tuple|28|7|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|cor2|<tuple|29|7|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|cor3|<tuple|30|7|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|dff1|<tuple|36|8|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|footnote-1|<tuple|1|1|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|footnote-2|<tuple|2|4|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|footnr-1|<tuple|1|1|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|footnr-2|<tuple|2|4|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|lft1a1|<tuple|21|5|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|lft1a2|<tuple|22|5|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|lft1a3|<tuple|22|5|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|lft1a4|<tuple|24|5|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|lft1a5|<tuple|25|5|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|lft1a6|<tuple|26|6|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|rh1a|<tuple|38|9|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
-    <associate|rh1b|<tuple|39|9|../../../.TeXmacs/texts/scratch/no_name_30.tm>>
+    <associate|ads2cft1a0|<tuple|28|6>>
+    <associate|ads2cft1b0|<tuple|33|7>>
+    <associate|auto-1|<tuple|50|11>>
+    <associate|auto-2|<tuple|50|11>>
+    <associate|bib-'tHooft:1993gx|<tuple|1|11>>
+    <associate|bib-Aganagic:2003qj|<tuple|52|13>>
+    <associate|bib-Alishahiha:2008tv|<tuple|21|12>>
+    <associate|bib-Azeyanagi:2007bj|<tuple|20|12>>
+    <associate|bib-Balasubramanian:1998de|<tuple|33|12>>
+    <associate|bib-Balasubramanian:1998sn|<tuple|32|12>>
+    <associate|bib-Balasubramanian:2010ys|<tuple|34|12>>
+    <associate|bib-Bargmann:1946me|<tuple|42|13>>
+    <associate|bib-Beem:2012mb|<tuple|55|13>>
+    <associate|bib-Bellucci:2002va|<tuple|16|12>>
+    <associate|bib-Blum:1999pc|<tuple|12|12>>
+    <associate|bib-Brown:1986nw|<tuple|56|13>>
+    <associate|bib-Cadoni:1999ja|<tuple|11|12>>
+    <associate|bib-Cadoni:2000gm|<tuple|15|12>>
+    <associate|bib-Caldarelli:2000xk|<tuple|14|12>>
+    <associate|bib-Chamon:2011xk|<tuple|28|12>>
+    <associate|bib-Cheng:2010yw|<tuple|54|13>>
+    <associate|bib-DeWitt:1967yk|<tuple|48|13>>
+    <associate|bib-Fateev:2000ik|<tuple|51|13>>
+    <associate|bib-Figueras:2008qh|<tuple|5|11>>
+    <associate|bib-Galajinsky:2008ce|<tuple|24|12>>
+    <associate|bib-Giveon:2004zz|<tuple|19|12>>
+    <associate|bib-Gubser:1998bc|<tuple|57|13>>
+    <associate|bib-Gupta:2008ki|<tuple|22|12>>
+    <associate|bib-Hartman:2008dq|<tuple|23|12>>
+    <associate|bib-Jackiw:2012ur|<tuple|30|12>>
+    <associate|bib-KashaniPoor:2006nc|<tuple|53|13>>
+    <associate|bib-Kunduri:2007vf|<tuple|4|11>>
+    <associate|bib-Leiva:2003kd|<tuple|18|12>>
+    <associate|bib-MR0271275|<tuple|43|13>>
+    <associate|bib-MR0311838|<tuple|44|13>>
+    <associate|bib-MR0466039|<tuple|60|13>>
+    <associate|bib-MR1684543|<tuple|38|13>>
+    <associate|bib-MR1694895|<tuple|36|12>>
+    <associate|bib-MR1729357|<tuple|46|13>>
+    <associate|bib-MR2443603|<tuple|39|13>>
+    <associate|bib-MR2812337|<tuple|41|13>>
+    <associate|bib-MR507800|<tuple|45|13>>
+    <associate|bib-Maldacena:1997re|<tuple|3|11>>
+    <associate|bib-Maldacena:1998uz|<tuple|7|11>>
+    <associate|bib-Misner:1972js|<tuple|49|13>>
+    <associate|bib-MolinaVilaplana:2012xe|<tuple|29|12>>
+    <associate|bib-Moore:1991ir|<tuple|50|13>>
+    <associate|bib-Nakatsu:1998st|<tuple|8|11>>
+    <associate|bib-NavarroSalas:1999up|<tuple|13|12>>
+    <associate|bib-Seiberg:1990eb|<tuple|47|13>>
+    <associate|bib-Sen:2008vm|<tuple|25|12>>
+    <associate|bib-Sen:2008yk|<tuple|26|12>>
+    <associate|bib-Sen:2011cn|<tuple|27|12>>
+    <associate|bib-Sierra:2011tb|<tuple|40|13>>
+    <associate|bib-Spradlin:1999bn|<tuple|10|12>>
+    <associate|bib-Strominger:1998yg|<tuple|6|11>>
+    <associate|bib-Strominger:2003tm|<tuple|17|12>>
+    <associate|bib-Susskind:1994vu|<tuple|2|11>>
+    <associate|bib-Townsend:1998qp|<tuple|9|12>>
+    <associate|bib-Witten:1998qj|<tuple|58|13>>
+    <associate|bib-Zamolodchikov:2001ah|<tuple|31|12>>
+    <associate|bib-berry1999h|<tuple|37|13>>
+    <associate|bib-deAlfaro:1976je|<tuple|35|12>>
+    <associate|bib-gradshteyn2000table|<tuple|59|13>>
+    <associate|conf1a|<tuple|8|3>>
+    <associate|conf1b|<tuple|9|3>>
+    <associate|conf1c|<tuple|1|2>>
+    <associate|conf1d1|<tuple|5|2>>
+    <associate|conf1d2|<tuple|6|2>>
+    <associate|conf1d3|<tuple|7|2>>
+    <associate|conf1e|<tuple|9|3>>
+    <associate|conf1e1|<tuple|2|2>>
+    <associate|conf1e2|<tuple|3|2>>
+    <associate|conf1e3|<tuple|4|2>>
+    <associate|conf1f1|<tuple|11|3>>
+    <associate|conf1f2|<tuple|12|3>>
+    <associate|conf1f3|<tuple|13|3>>
+    <associate|conf1g3|<tuple|14|3>>
+    <associate|conf1h1|<tuple|15|4>>
+    <associate|conf1h2|<tuple|16|4>>
+    <associate|conf1h3|<tuple|17|4>>
+    <associate|conf1h4|<tuple|18|4>>
+    <associate|conf1h5|<tuple|19|4>>
+    <associate|conf1h6|<tuple|20|5>>
+    <associate|conf1h7b|<tuple|34|8>>
+    <associate|conf1h8|<tuple|35|8>>
+    <associate|conf1h9|<tuple|36|8>>
+    <associate|conf1i1|<tuple|37|8>>
+    <associate|conf1i10|<tuple|50|11>>
+    <associate|conf1i2|<tuple|39|8>>
+    <associate|conf1i3|<tuple|42|9>>
+    <associate|conf1i4|<tuple|43|9>>
+    <associate|conf1i5|<tuple|45|10>>
+    <associate|conf1i50|<tuple|44|10>>
+    <associate|conf1i6|<tuple|46|10>>
+    <associate|conf1i7|<tuple|47|10>>
+    <associate|conf1i8|<tuple|48|10>>
+    <associate|conf1i9|<tuple|49|11>>
+    <associate|cor1|<tuple|30|7>>
+    <associate|cor2|<tuple|31|7>>
+    <associate|cor3|<tuple|32|7>>
+    <associate|dff1|<tuple|38|8>>
+    <associate|footnote-1|<tuple|1|1>>
+    <associate|footnote-2|<tuple|2|4>>
+    <associate|footnr-1|<tuple|1|1>>
+    <associate|footnr-2|<tuple|2|4>>
+    <associate|lft1a1|<tuple|21|5>>
+    <associate|lft1a2|<tuple|22|5>>
+    <associate|lft1a3|<tuple|22|5>>
+    <associate|lft1a4|<tuple|24|5>>
+    <associate|lft1a5|<tuple|28|5>>
+    <associate|lft1a6|<tuple|28|6>>
+    <associate|rh1a|<tuple|40|9>>
+    <associate|rh1b|<tuple|41|9>>
   </collection>
 </references>
 
