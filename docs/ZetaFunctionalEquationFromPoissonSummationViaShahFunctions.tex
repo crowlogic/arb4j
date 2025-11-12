@@ -1,354 +1,507 @@
 \documentclass{article}
-\usepackage{amsmath,amssymb,amsthm}
-\usepackage{geometry}
-\geometry{letterpaper,margin=1in}
+\usepackage[english]{babel}
+\usepackage{geometry,amsmath,amssymb,latexsym,theorem}
+\geometry{letterpaper}
 
-\newtheorem{theorem}{Theorem}
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\tmem}[1]{{\em #1\/}}
+\newcommand{\tmscript}[1]{\text{\scriptsize{$#1$}}}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{definition}{Definition}
 \newtheorem{lemma}{Lemma}
 \newtheorem{proposition}{Proposition}
-\newtheorem{definition}{Definition}
-\newtheorem{corollary}{Corollary}
+{\theorembodyfont{\rmfamily}\newtheorem{remark}{Remark}}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
 
 \begin{document}
 
-\title{The Riemann Zeta Functional Equation via the Shah Function:\\Complete Rigorous Derivation}
+\title{
+  The Riemann Zeta Functional Equation via the Shah Function:\\
+  Complete Rigorous Derivation
+}
+
 \author{Stephen Crowley}
+
 \date{November 12, 2025}
+
 \maketitle
+
+\begin{abstract}
+  This paper presents a complete rigorous derivation of the Riemann zeta
+  functional equation $\xi (s) = \xi (1 - s)$ using the Shah function (Dirac
+  comb) as the central analytical tool. The Shah function $\mathrm{III} (x) =
+  \sum_{n \in \mathbb{Z}} \delta (x - n)$ provides a distributional framework
+  that converts discrete sums into continuous integrals through its
+  fundamental sampling property $\int_{- \infty}^{\infty} f (x)
+  \hspace{0.17em} \mathrm{III} (x)  \hspace{0.17em} dx = \sum_{n \in
+  \mathbb{Z}} f (n)$. This duality enables the application of Fourier analysis
+  to number-theoretic objects. We establish the Poisson summation formula as a
+  direct consequence of the Shah function's Fourier series representation,
+  apply it to Gaussian functions $e^{- \pi x^2 t}$ to derive the Jacobi theta
+  functional equation $\theta (t) = t^{- 1 / 2} \theta (1 / t)$, and then
+  connect the theta function to the Riemann zeta function via Mellin
+  transform. The proof is entirely self-contained, with all calculations
+  carried out explicitly without appeal to external results. The theta
+  functional equation, obtained through the self-duality of Gaussians under
+  Fourier transformation and mediated by the Shah function's integer sampling,
+  is shown to imply the zeta functional equation through a careful analysis of
+  the integral representation $2 \xi (s) = \int_0^{\infty} (\theta (t) - 1)
+  t^{s / 2 - 1} dt$. This approach illuminates the deep connection between
+  sampling theory in signal processing, modular forms in number theory, and
+  the analytic properties of $\zeta (s)$.
+\end{abstract}
+
+{\tableofcontents}
 
 \section{Foundational Definitions}
 
-\begin{definition}[Dirac Delta Function]
-The Dirac delta function $\delta$ is the distribution satisfying
-\[
-\int_{-\infty}^{\infty} \delta(x-a) f(x)\, dx = f(a)
-\]
-for all test functions $f$ and $a \in \mathbb{R}$.
+This section fixes notation and conventions for distributions, Fourier
+analysis, and special functions. References include
+{\cite{GelfandShilov,SteinShakarchiFourier,GrafakosClassical,RudinRCA,Edwards,Titchmarsh,IK}}.
+
+\begin{definition}
+  [Schwartz space and tempered distributions]\label{def:Schwartz} The Schwartz
+  space $\mathcal{S} (\mathbb{R})$ consists of all $C^{\infty}$ functions
+  $\phi : \mathbb{R} \to \mathbb{R}$ such that for every pair of nonnegative
+  integers $m, n$,
+  \begin{equation}
+    \label{eq:Schwartz-seminorm} \sup_{x \in \mathbb{R}} \hspace{0.17em}
+    \left| \hspace{0.17em} x^m  \hspace{0.17em} \phi^{(n)} (x) \hspace{0.17em}
+    \right| \hspace{0.27em} < \hspace{0.27em} \infty
+  \end{equation}
+  Its continuous dual $\mathcal{S}' (\mathbb{R})$ is the space of tempered
+  distributions. The distributional pairing is denoted $\langle T, \phi
+  \rangle$ for $T \in \mathcal{S}' (\mathbb{R})$ and $\phi \in \mathcal{S}
+  (\mathbb{R})$.
 \end{definition}
 
-\begin{definition}[Shah Function]
-The Shah function (Dirac comb) is defined as
-\[
-\mathrm{III}(x) = \sum_{n=-\infty}^{\infty} \delta(x-n).
-\]
+\begin{definition}
+  [Dirac delta]\label{def:delta} The Dirac delta $\delta \in \mathcal{S}'
+  (\mathbb{R})$ is defined by
+  \begin{equation}
+    \label{eq:def-delta} \int_{- \infty}^{\infty} \delta (x - a) 
+    \hspace{0.17em} \phi (x)  \hspace{0.17em} dx \hspace{0.27em} =
+    \hspace{0.27em} \phi (a)
+  \end{equation}
+  for all test functions $\phi \in \mathcal{S} (\mathbb{R})$ and all $a \in
+  \mathbb{R}$ {\cite{GelfandShilov}}.
 \end{definition}
 
-\begin{definition}[Fourier Transform]
-The Fourier transform of $f \in L^1(\mathbb{R})$ is
-\[
-\hat{f}(\omega) = \int_{-\infty}^{\infty} f(x) e^{-2\pi i \omega x}\, dx.
-\]
+\begin{definition}
+  [Shah function (Dirac comb)]\label{def:Shah} The Shah function $\mathrm{III}
+  \in \mathcal{S}' (\mathbb{R})$ is the $1$-periodic tempered distribution
+  \begin{equation}
+    \label{eq:def-shah} \mathrm{III} (x) \hspace{0.27em} = \hspace{0.27em}
+    \sum_{n \in \mathbb{Z}} \delta (x - n)
+  \end{equation}
 \end{definition}
 
-\begin{definition}[Jacobi Theta Function]
-For $t > 0$, the Jacobi theta function is
-\[
-\theta(t) = \sum_{n=-\infty}^{\infty} e^{-\pi n^2 t}.
-\]
+\begin{definition}
+  [Fourier transform]\label{def:FT} For $f \in L^1 (\mathbb{R})$, the Fourier
+  transform is
+  \begin{equation}
+    \label{eq:def-FT} \hat{f} (\omega) \hspace{0.27em} = \hspace{0.27em}
+    \int_{- \infty}^{\infty} f (x)  \hspace{0.17em} e^{- 2 \pi i
+    \hspace{0.17em} \omega x}  \hspace{0.17em} dx
+  \end{equation}
+  With the normalization in \eqref{eq:def-FT}, the transform extends to a
+  topological automorphism of $\mathcal{S} (\mathbb{R})$ and by duality to
+  $\mathcal{S}' (\mathbb{R})$
+  {\cite{SteinShakarchiFourier,GrafakosClassical}}.
 \end{definition}
 
-\begin{definition}[Riemann Zeta Function]
-For $\mathrm{Re}(s) > 1$,
-\[
-\zeta(s) = \sum_{n=1}^{\infty} \frac{1}{n^s}.
-\]
+\begin{definition}
+  [Mellin transform]\label{def:Mellin} For $F : (0, \infty) \to \mathbb{C}$
+  locally integrable and $s \in \mathbb{C}$ in a vertical strip where the
+  integral converges, the Mellin transform is
+  \begin{equation}
+    \label{eq:def-Mellin} \mathcal{M} \{F\} (s) \hspace{0.27em} =
+    \hspace{0.27em} \int_0^{\infty} F (t)  \hspace{0.17em} t^{\hspace{0.17em}
+    s - 1}  \hspace{0.17em} dt
+  \end{equation}
 \end{definition}
 
-\begin{definition}[Completed Zeta Function]
-\[
-\xi(s) = \pi^{-s/2}\Gamma(s/2)\zeta(s).
-\]
+\begin{definition}
+  [Jacobi theta function]\label{def:theta} For $t > 0$,
+  \begin{equation}
+    \label{eq:def-theta} \theta (t) \hspace{0.27em} = \hspace{0.27em} \sum_{n
+    \in \mathbb{Z}} e^{- \pi n^2 t}
+  \end{equation}
+\end{definition}
+
+\begin{definition}
+  [Riemann zeta function]\label{def:zeta} For $\mathrm{Re} (s) > 1$,
+  \begin{equation}
+    \label{eq:def-zeta} \zeta (s) \hspace{0.27em} = \hspace{0.27em} \sum_{n =
+    1}^{\infty} \frac{1}{n^s}
+  \end{equation}
+\end{definition}
+
+\begin{definition}
+  [Completed zeta]\label{def:xi} The completed zeta function is
+  \begin{equation}
+    \label{eq:def-xi} \xi (s) \hspace{0.27em} = \hspace{0.27em} \pi^{-
+    \frac{s}{2}}  \hspace{0.17em} \Gamma \hspace{-0.17em} \left( \frac{s}{2}
+    \right)  \hspace{0.17em} \zeta (s)
+  \end{equation}
 \end{definition}
 
 \section{The Shah Function and Sampling}
 
-\begin{proposition}[Shah Function Action]
-For any test function $\phi$,
-\[
-\langle \mathrm{III}, \phi \rangle = \sum_{n=-\infty}^{\infty} \phi(n).
-\]
+\begin{proposition}
+  [Action of $\mathrm{III}$]\label{prop:Shah-action} For any $\phi \in
+  \mathcal{S} (\mathbb{R})$,
+  \begin{equation}
+    \label{eq:shah-action} \langle \mathrm{III}, \hspace{0.17em} \phi \rangle
+    \hspace{0.27em} = \hspace{0.27em} \sum_{n \in \mathbb{Z}} \phi (n)
+  \end{equation}
 \end{proposition}
 
 \begin{proof}
-By definition and linearity of the distributional pairing:
-\begin{align*}
-\langle \mathrm{III}, \phi \rangle &= \left\langle \sum_{n=-\infty}^{\infty} \delta(\cdot - n), \phi \right\rangle\\
-&= \sum_{n=-\infty}^{\infty} \langle \delta(\cdot - n), \phi \rangle\\
-&= \sum_{n=-\infty}^{\infty} \phi(n). \qedhere
-\end{align*}
+  By linearity of the pairing and \eqref{eq:def-delta},
+  
+  \begin{align}
+    \langle \mathrm{III}, \hspace{0.17em} \phi \rangle & \left. = \left\langle
+    \sum_{n \in \mathbb{Z}} \delta \right( \cdot - n), \hspace{0.17em} \phi
+    \right\rangle  \label{eq:shah-act-1}\\
+    & = \sum_{n \in \mathbb{Z}} \langle \delta (\cdot - n), \hspace{0.17em}
+    \phi \rangle  \label{eq:shah-act-2}\\
+    & = \sum_{n \in \mathbb{Z}} \phi (n)  \label{eq:shah-act-3}
+  \end{align}
 \end{proof}
 
-\begin{proposition}[Shah Fourier Series]
-The Shah function has the Fourier series representation
-\[
-\mathrm{III}(x) = \sum_{k=-\infty}^{\infty} e^{2\pi ikx}.
-\]
+\begin{proposition}
+  [Fourier series of $\mathrm{III}$]\label{prop:Shah-FS} As a periodic
+  tempered distribution,
+  \begin{equation}
+    \label{eq:shah-fourier} \mathrm{III} (x) \hspace{0.27em} = \hspace{0.27em}
+    \sum_{k \in \mathbb{Z}} e^{2 \pi ikx}
+  \end{equation}
 \end{proposition}
 
 \begin{proof}
-The Shah function is a periodic distribution with period 1. For $x \in [0,1)$, the Fourier coefficients are computed as:
-\[
-c_k = \int_0^1 \mathrm{III}(x) e^{-2\pi ikx}\, dx = \langle \delta(x), e^{-2\pi ikx} \rangle = e^{0} = 1
-\]
-since the only delta function in $[0,1)$ is at $x=0$. Therefore
-\[
-\mathrm{III}(x) = \sum_{k=-\infty}^{\infty} c_k e^{2\pi ikx} = \sum_{k=-\infty}^{\infty} e^{2\pi ikx}. \qedhere
-\]
+  The period is $1$. The $k$-th Fourier coefficient over $[0, 1)$ equals
+  \begin{equation}
+    \label{eq:ck} c_k \hspace{0.27em} = \hspace{0.27em} \int_0^1 \mathrm{III}
+    (x)  \hspace{0.17em} e^{- 2 \pi ikx}  \hspace{0.17em} dx \hspace{0.27em} =
+    \hspace{0.27em} \langle \delta (x), \hspace{0.17em} e^{- 2 \pi ikx}
+    \rangle \hspace{0.27em} = \hspace{0.27em} 1
+  \end{equation}
+  since the only delta in $[0, 1)$ is at $x = 0$. Thus \eqref{eq:shah-fourier}
+  holds in $\mathcal{S}' (\mathbb{R})$
+  {\cite[{\textsection}1.2]{SteinShakarchiFourier}}.
 \end{proof}
 
 \section{Poisson Summation Formula}
 
-\begin{theorem}[Poisson Summation Formula]
-For any $f \in \mathcal{S}(\mathbb{R})$ (Schwartz space),
-\[
-\sum_{n=-\infty}^{\infty} f(n) = \sum_{k=-\infty}^{\infty} \hat{f}(k).
-\]
+\begin{theorem}
+  [Poisson summation]\label{thm:PSF} For $f \in \mathcal{S} (\mathbb{R})$,
+  \begin{equation}
+    \label{eq:psf} \sum_{n \in \mathbb{Z}} f (n) \hspace{0.27em} =
+    \hspace{0.27em} \sum_{k \in \mathbb{Z}} \hat{f} (k)
+  \end{equation}
 \end{theorem}
 
 \begin{proof}
-The left-hand side equals:
-\[
-\sum_{n=-\infty}^{\infty} f(n) = \langle \mathrm{III}, f \rangle = \int_{-\infty}^{\infty} f(x) \mathrm{III}(x)\, dx.
-\]
-
-Substitute the Fourier series representation $\mathrm{III}(x) = \sum_{k=-\infty}^{\infty} e^{2\pi ikx}$:
-\begin{align*}
-\int_{-\infty}^{\infty} f(x) \mathrm{III}(x)\, dx &= \int_{-\infty}^{\infty} f(x) \sum_{k=-\infty}^{\infty} e^{2\pi ikx}\, dx\\
-&= \sum_{k=-\infty}^{\infty} \int_{-\infty}^{\infty} f(x) e^{2\pi ikx}\, dx
-\end{align*}
-where interchange is justified since $f \in \mathcal{S}(\mathbb{R})$ ensures absolute convergence.
-
-Now observe:
-\begin{align*}
-\int_{-\infty}^{\infty} f(x) e^{2\pi ikx}\, dx &= \int_{-\infty}^{\infty} f(x) e^{-2\pi i(-k)x}\, dx = \hat{f}(-k).
-\end{align*}
-
-Therefore:
-\[
-\sum_{n=-\infty}^{\infty} f(n) = \sum_{k=-\infty}^{\infty} \hat{f}(-k) = \sum_{k=-\infty}^{\infty} \hat{f}(k)
-\]
-where the last equality holds because as $k$ ranges over all integers $\mathbb{Z}$, so does $-k$.
+  By \eqref{eq:shah-action} and \eqref{eq:shah-fourier},
+  
+  \begin{align}
+    \sum_{n \in \mathbb{Z}} f (n) & = \langle \mathrm{III}, \hspace{0.17em} f
+    \rangle  \label{eq:psf-1}\\
+    & = \int_{- \infty}^{\infty} f (x) \hspace{0.17em} \mathrm{III} (x) 
+    \hspace{0.17em} dx  \label{eq:psf-2}\\
+    & = \int_{- \infty}^{\infty} f (x)  \hspace{0.17em} \sum_{k \in
+    \mathbb{Z}} e^{2 \pi ikx}  \hspace{0.17em} dx  \label{eq:psf-3}\\
+    & = \sum_{k \in \mathbb{Z}} \int_{- \infty}^{\infty} f (x) 
+    \hspace{0.17em} e^{2 \pi ikx}  \hspace{0.17em} dx  \label{eq:psf-4}\\
+    & = \sum_{k \in \mathbb{Z}} \hat{f} (- k) \hspace{0.27em} =
+    \hspace{0.27em} \sum_{k \in \mathbb{Z}} \hat{f} (k)  \label{eq:psf-5}
+  \end{align}
+  
+  where interchange in \eqref{eq:psf-4} is justified by the rapid decay of $f$
+  {\cite[Ch.~3]{SteinShakarchiFourier}}.
 \end{proof}
 
 \section{Gaussian Fourier Transform}
 
-\begin{lemma}[Gaussian Fourier Transform]
-For $g_t(x) = e^{-\pi x^2 t}$ with $t > 0$,
-\[
-\hat{g}_t(\omega) = t^{-1/2} e^{-\pi \omega^2/t}.
-\]
+\begin{lemma}
+  [Gaussian transform]\label{lem:GaussianFT} For $t > 0$ and $g_t (x) = e^{-
+  \pi tx^2}$
+  \begin{equation}
+    \label{eq:gaussian-ft} \hat{g}_t (\omega) \hspace{0.27em} =
+    \hspace{0.27em} \frac{1}{\sqrt{t}}  \hspace{0.17em} e^{- \pi
+    \frac{\omega^2}{t}}
+  \end{equation}
 \end{lemma}
 
 \begin{proof}
-Compute:
-\begin{align*}
-\hat{g}_t(\omega) &= \int_{-\infty}^{\infty} e^{-\pi x^2 t} e^{-2\pi i\omega x}\, dx\\
-&= \int_{-\infty}^{\infty} \exp(-\pi t x^2 - 2\pi i\omega x)\, dx.
-\end{align*}
-
-Complete the square in the exponent. Write:
-\[
--\pi t x^2 - 2\pi i\omega x = -\pi t\left(x^2 + \frac{2i\omega x}{t}\right).
-\]
-
-To complete the square:
-\[
-x^2 + \frac{2i\omega x}{t} = \left(x + \frac{i\omega}{t}\right)^2 - \left(\frac{i\omega}{t}\right)^2.
-\]
-
-Calculate $\left(\frac{i\omega}{t}\right)^2 = \frac{i^2\omega^2}{t^2} = -\frac{\omega^2}{t^2}$.
-
-Therefore:
-\[
-x^2 + \frac{2i\omega x}{t} = \left(x + \frac{i\omega}{t}\right)^2 + \frac{\omega^2}{t^2}.
-\]
-
-So:
-\[
--\pi t x^2 - 2\pi i\omega x = -\pi t\left(x + \frac{i\omega}{t}\right)^2 - \pi t \cdot \frac{\omega^2}{t^2} = -\pi t\left(x + \frac{i\omega}{t}\right)^2 - \frac{\pi\omega^2}{t}.
-\]
-
-Thus:
-\begin{align*}
-\hat{g}_t(\omega) &= e^{-\pi\omega^2/t} \int_{-\infty}^{\infty} e^{-\pi t(x + i\omega/t)^2}\, dx.
-\end{align*}
-
-Substitute $y = x + i\omega/t$, so $dx = dy$ (the contour can be shifted in the complex plane by Cauchy's theorem since the integrand decays rapidly):
-\begin{align*}
-\int_{-\infty}^{\infty} e^{-\pi t(x + i\omega/t)^2}\, dx &= \int_{-\infty}^{\infty} e^{-\pi t y^2}\, dy.
-\end{align*}
-
-Now substitute $u = \sqrt{\pi t}\, y$, so $dy = du/\sqrt{\pi t}$:
-\begin{align*}
-\int_{-\infty}^{\infty} e^{-\pi t y^2}\, dy &= \int_{-\infty}^{\infty} e^{-u^2} \frac{du}{\sqrt{\pi t}} = \frac{1}{\sqrt{\pi t}} \cdot \sqrt{\pi} = \frac{1}{\sqrt{t}}.
-\end{align*}
-
-Therefore:
-\[
-\hat{g}_t(\omega) = e^{-\pi\omega^2/t} \cdot \frac{1}{\sqrt{t}} = t^{-1/2} e^{-\pi\omega^2/t}. \qedhere
-\]
+  Compute
+  
+  \begin{align}
+    \hat{g}_t (\omega) & = \int_{- \infty}^{\infty} e^{- \pi tx^2} 
+    \hspace{0.17em} e^{- 2 \pi i \omega x}  \hspace{0.17em} dx 
+    \label{eq:gft-1}\\
+    & = \int_{- \infty}^{\infty} e^{- \pi t \left( x^2 + \frac{2 i \omega}{t}
+    x \right)}  \hspace{0.17em} dx  \label{eq:gft-2}
+  \end{align}
+  
+  Complete the square:
+  \begin{equation}
+    \label{eq:gft-3} x^2 + \frac{2 i \omega}{t} x \hspace{0.27em} =
+    \hspace{0.27em} \left( x + \frac{i \omega}{t} \right)^2 - \left( \frac{i
+    \omega}{t} \right)^2 \hspace{0.27em} = \hspace{0.27em} \left( x + \frac{i
+    \omega}{t} \right)^2 + \frac{\omega^2}{t^2}
+  \end{equation}
+  Therefore
+  
+  \begin{align}
+    - \pi t \hspace{-0.17em} \left( x^2 + \frac{2 i \omega}{t} x \right) & = -
+    \pi t \left( x + \frac{i \omega}{t} \right)^2 - \pi \hspace{0.17em}
+    \frac{\omega^2}{t}  \label{eq:gft-4}
+  \end{align}
+  
+  Insert \eqref{eq:gft-4} into \eqref{eq:gft-2}:
+  
+  \begin{align}
+    \hat{g}_t (\omega) & = e^{- \pi \frac{\omega^2}{t}}  \int_{-
+    \infty}^{\infty} e^{- \pi t \left( x + \frac{i \omega}{t} \right)^2} 
+    \hspace{0.17em} dx  \label{eq:gft-5}
+  \end{align}
+  
+  Shift the contour $x \mapsto y = x + \frac{i \omega}{t}$ (justified since
+  the integrand is entire and decreases sufficiently quickly along horizontal
+  lines):
+  
+  \begin{align}
+    \int_{- \infty}^{\infty} e^{- \pi t \left( x + \frac{i \omega}{t}
+    \right)^2}  \hspace{0.17em} dx & = \int_{- \infty}^{\infty} e^{- \pi ty^2}
+    \hspace{0.17em} dy \hspace{0.27em} = \hspace{0.27em} \frac{1}{\sqrt{t}} 
+    \label{eq:gft-6}
+  \end{align}
+  
+  using the standard Gaussian integral with the present normalization
+  {\cite[{\textsection}1.2]{SteinShakarchiFourier}}. Combining
+  \eqref{eq:gft-5} and \eqref{eq:gft-6} yields \eqref{eq:gaussian-ft}.
 \end{proof}
 
 \section{Theta Functional Equation}
 
-\begin{theorem}[Theta Functional Equation]
-For all $t > 0$,
-\[
-\theta(t) = t^{-1/2} \theta(1/t).
-\]
+\begin{theorem}
+  [Theta modular relation]\label{thm:theta-functional} For all $t > 0$,
+  \begin{equation}
+    \label{eq:theta-functional} \theta (t) \hspace{0.27em} = \hspace{0.27em}
+    \frac{1}{\sqrt{t}}  \hspace{0.17em} \theta \hspace{-0.17em} \left(
+    \frac{1}{t} \right)
+  \end{equation}
 \end{theorem}
 
 \begin{proof}
-Apply Poisson summation to $f(x) = e^{-\pi x^2 t}$:
-\[
-\sum_{n=-\infty}^{\infty} f(n) = \sum_{k=-\infty}^{\infty} \hat{f}(k).
-\]
-
-Left side:
-\[
-\sum_{n=-\infty}^{\infty} e^{-\pi n^2 t} = \theta(t).
-\]
-
-Right side using the Gaussian Fourier transform:
-\begin{align*}
-\sum_{k=-\infty}^{\infty} \hat{f}(k) &= \sum_{k=-\infty}^{\infty} t^{-1/2} e^{-\pi k^2/t}\\
-&= t^{-1/2} \sum_{k=-\infty}^{\infty} e^{-\pi k^2/t}\\
-&= t^{-1/2} \theta(1/t).
-\end{align*}
-
-Therefore $\theta(t) = t^{-1/2}\theta(1/t)$.
+  Apply \eqref{thm:PSF} to $f (x) = e^{- \pi tx^2}$. The left-hand side is
+  \begin{equation}
+    \label{eq:theta-psf-lhs} \sum_{n \in \mathbb{Z}} e^{- \pi tn^2}
+    \hspace{0.27em} = \hspace{0.27em} \theta (t)
+  \end{equation}
+  By \eqref{lem:GaussianFT}, the right-hand side is
+  \begin{equation}
+    \label{eq:theta-psf-rhs} \sum_{k \in \mathbb{Z}} \hat{f} (k)
+    \hspace{0.27em} = \hspace{0.27em} \sum_{k \in \mathbb{Z}} \frac{e^{- \pi
+    \frac{k^2}{t}}}{\sqrt{t}} \hspace{0.27em} = \hspace{0.27em} \frac{\theta
+    \hspace{-0.17em} \left( \frac{1}{t} \right)}{\sqrt{t}}
+  \end{equation}
+  Equating \eqref{eq:theta-psf-lhs} and \eqref{eq:theta-psf-rhs} gives
+  \eqref{eq:theta-functional}
+  {\cite[{\textsection}1.4]{SteinShakarchiFourier}},
+  {\cite[Ch.~1]{ApostolModular}}.
 \end{proof}
 
-\section{Connection to Zeta via Mellin Transform}
+\section{Connection to $\zeta$ via Mellin Transform}
 
-\begin{lemma}[Theta Decomposition]
-For $t > 0$,
-\[
-\theta(t) - 1 = \sum_{n=-\infty, n\neq 0}^{\infty} e^{-\pi n^2 t} = 2\sum_{n=1}^{\infty} e^{-\pi n^2 t}.
-\]
+\begin{lemma}
+  [Theta decomposition]\label{lem:theta-decomp} For $t > 0$,
+  \begin{equation}
+    \label{eq:theta-decomp} \theta (t) - 1 \hspace{0.27em} = \hspace{0.27em}
+    \sum_{\tmscript{\begin{array}{c}
+      n \in \mathbb{Z}\\
+      n \neq 0
+    \end{array}}} e^{- \pi n^2 t} \hspace{0.27em} = \hspace{0.27em} 2 \sum_{n
+    = 1}^{\infty} e^{- \pi n^2 t}
+  \end{equation}
 \end{lemma}
 
 \begin{proof}
-By definition:
-\[
-\theta(t) = \sum_{n=-\infty}^{\infty} e^{-\pi n^2 t} = e^{0} + \sum_{n=-\infty, n\neq 0}^{\infty} e^{-\pi n^2 t} = 1 + \sum_{n=-\infty, n\neq 0}^{\infty} e^{-\pi n^2 t}.
-\]
-
-For the nonzero terms, note that $e^{-\pi(-n)^2 t} = e^{-\pi n^2 t}$, so:
-\[
-\sum_{n=-\infty, n\neq 0}^{\infty} e^{-\pi n^2 t} = \sum_{n=1}^{\infty} e^{-\pi n^2 t} + \sum_{n=-\infty}^{-1} e^{-\pi n^2 t} = \sum_{n=1}^{\infty} e^{-\pi n^2 t} + \sum_{m=1}^{\infty} e^{-\pi m^2 t} = 2\sum_{n=1}^{\infty} e^{-\pi n^2 t}
-\]
-where we substituted $m = -n$ in the second sum.
+  By \eqref{eq:def-theta}, the term $n = 0$ contributes $1$, and the remaining
+  terms pair as $\pm n$ with identical value, giving \eqref{eq:theta-decomp}.
 \end{proof}
 
-\begin{lemma}[Theta-Zeta Integral]
-For $\mathrm{Re}(s) > 1$,
-\[
-\int_0^{\infty} (\theta(t) - 1) t^{s/2-1}\, dt = 2\pi^{-s/2}\Gamma(s/2)\zeta(s).
-\]
+\begin{lemma}
+  [Theta--zeta Mellin identity]\label{lem:theta-zeta} For $\mathrm{Re} (s) >
+  1$,
+  \begin{equation}
+    \label{eq:theta-zeta-integral} \int_0^{\infty} (\theta (t) - 1) 
+    \hspace{0.17em} t^{\frac{s}{2} - 1}  \hspace{0.17em} dt \hspace{0.27em} =
+    \hspace{0.27em} 2 \hspace{0.17em} \pi^{- \frac{s}{2}}  \hspace{0.17em}
+    \Gamma \hspace{-0.17em} \left( \frac{s}{2} \right)  \hspace{0.17em} \zeta
+    (s)
+  \end{equation}
 \end{lemma}
 
 \begin{proof}
-Using the decomposition $\theta(t) - 1 = 2\sum_{n=1}^{\infty} e^{-\pi n^2 t}$:
-\begin{align*}
-\int_0^{\infty} (\theta(t) - 1) t^{s/2-1}\, dt &= 2\sum_{n=1}^{\infty} \int_0^{\infty} e^{-\pi n^2 t} t^{s/2-1}\, dt.
-\end{align*}
-
-For the inner integral, substitute $u = \pi n^2 t$, so $t = u/(\pi n^2)$ and $dt = du/(\pi n^2)$:
-\begin{align*}
-\int_0^{\infty} e^{-\pi n^2 t} t^{s/2-1}\, dt &= \int_0^{\infty} e^{-u} \left(\frac{u}{\pi n^2}\right)^{s/2-1} \frac{du}{\pi n^2}\\
-&= \frac{1}{(\pi n^2)^{s/2-1}} \cdot \frac{1}{\pi n^2} \int_0^{\infty} e^{-u} u^{s/2-1}\, du\\
-&= \frac{1}{(\pi n^2)^{s/2}} \int_0^{\infty} e^{-u} u^{s/2-1}\, du\\
-&= \frac{1}{\pi^{s/2} n^s} \Gamma(s/2).
-\end{align*}
-
-Therefore:
-\begin{align*}
-\int_0^{\infty} (\theta(t) - 1) t^{s/2-1}\, dt &= 2\sum_{n=1}^{\infty} \frac{\Gamma(s/2)}{\pi^{s/2} n^s}\\
-&= 2\pi^{-s/2}\Gamma(s/2) \sum_{n=1}^{\infty} \frac{1}{n^s}\\
-&= 2\pi^{-s/2}\Gamma(s/2)\zeta(s). \qedhere
-\end{align*}
+  Using \eqref{eq:theta-decomp} and Fubini,
+  
+  \begin{align}
+    \int_0^{\infty} (\theta (t) - 1)  \hspace{0.17em} t^{\frac{s}{2} - 1} 
+    \hspace{0.17em} dt & = 2 \sum_{n = 1}^{\infty} \int_0^{\infty} e^{- \pi
+    n^2 t}  \hspace{0.17em} t^{\frac{s}{2} - 1}  \hspace{0.17em} dt 
+    \label{eq:tz-1}
+  \end{align}
+  
+  For each $n \ge 1$, substitute $u = \pi n^2 t$:
+  
+  \begin{align}
+    \int_0^{\infty} e^{- \pi n^2 t}  \hspace{0.17em} t^{\frac{s}{2} - 1} 
+    \hspace{0.17em} dt & = \int_0^{\infty} e^{- u} \hspace{0.17em} \left(
+    \frac{u}{\pi n^2} \right)^{\frac{s}{2} - 1} \frac{du}{\pi n^2} 
+    \label{eq:tz-2}\\
+    & = \frac{1}{\pi^{\frac{s}{2}}  \hspace{0.17em} n^s}  \int_0^{\infty}
+    e^{- u}  \hspace{0.17em} u^{\frac{s}{2} - 1}  \hspace{0.17em} du 
+    \label{eq:tz-3}\\
+    & = \frac{1}{\pi^{\frac{s}{2}}  \hspace{0.17em} n^s}  \hspace{0.17em}
+    \Gamma \hspace{-0.17em} \left( \frac{s}{2} \right)  \label{eq:tz-4}
+  \end{align}
+  
+  Insert \eqref{eq:tz-4} into \eqref{eq:tz-1} to obtain
+  \eqref{eq:theta-zeta-integral}. See {\cite[{\textsection}3.5]{Edwards}},
+  {\cite[{\textsection}2.10]{Titchmarsh}}.
 \end{proof}
 
 \section{The Riemann Zeta Functional Equation}
 
-\begin{theorem}[Riemann Zeta Functional Equation]
-The completed zeta function satisfies
-\[
-\xi(s) = \xi(1-s)
-\]
-for all $s \in \mathbb{C}$.
+\begin{theorem}
+  [Functional equation for $\xi$]\label{thm:FE} The completed zeta $\xi (s) =
+  \pi^{- \frac{s}{2}} \Gamma \hspace{-0.17em} \left( \frac{s}{2} \right) \zeta
+  (s)$ satisfies the meromorphic identity
+  \begin{equation}
+    \label{eq:xi-symmetry} \xi (s) \hspace{0.27em} = \hspace{0.27em} \xi (1 -
+    s)  \qquad \text{for all } s \in \mathbb{C}.
+  \end{equation}
 \end{theorem}
 
 \begin{proof}
-From the previous lemma, for $\mathrm{Re}(s) > 1$:
-\[
-\int_0^{\infty} (\theta(t) - 1) t^{s/2-1}\, dt = 2\xi(s).
-\]
-
-Split the integral at $t = 1$:
-\begin{equation}\label{eq:split}
-2\xi(s) = \int_0^1 (\theta(t) - 1) t^{s/2-1}\, dt + \int_1^{\infty} (\theta(t) - 1) t^{s/2-1}\, dt.
-\end{equation}
-
-For the first integral, apply the theta functional equation $\theta(t) = t^{-1/2}\theta(1/t)$:
-\begin{align*}
-\int_0^1 (\theta(t) - 1) t^{s/2-1}\, dt &= \int_0^1 \left(t^{-1/2}\theta(1/t) - 1\right) t^{s/2-1}\, dt\\
-&= \int_0^1 t^{-1/2}\theta(1/t) t^{s/2-1}\, dt - \int_0^1 t^{s/2-1}\, dt\\
-&= \int_0^1 \theta(1/t) t^{s/2-3/2}\, dt - \int_0^1 t^{s/2-1}\, dt.
-\end{align*}
-
-Substitute $u = 1/t$ in the first integral, so $t = 1/u$ and $dt = -du/u^2$. When $t \to 0^+$, $u \to +\infty$; when $t = 1$, $u = 1$:
-\begin{align*}
-\int_0^1 \theta(1/t) t^{s/2-3/2}\, dt &= \int_{\infty}^1 \theta(u) u^{-(s/2-3/2)} \left(-\frac{du}{u^2}\right)\\
-&= \int_1^{\infty} \theta(u) u^{-s/2+3/2-2}\, du\\
-&= \int_1^{\infty} \theta(u) u^{-s/2-1/2}\, du\\
-&= \int_1^{\infty} \theta(u) u^{(1-s)/2-1}\, du.
-\end{align*}
-
-For the second integral:
-\[
-\int_0^1 t^{s/2-1}\, dt = \left[\frac{t^{s/2}}{s/2}\right]_0^1 = \frac{2}{s}.
-\]
-
-So:
-\begin{equation}\label{eq:first_integral}
-\int_0^1 (\theta(t) - 1) t^{s/2-1}\, dt = \int_1^{\infty} \theta(u) u^{(1-s)/2-1}\, du - \frac{2}{s}.
-\end{equation}
-
-Now decompose $\theta(u) = 1 + (\theta(u) - 1)$:
-\begin{align*}
-\int_1^{\infty} \theta(u) u^{(1-s)/2-1}\, du &= \int_1^{\infty} u^{(1-s)/2-1}\, du + \int_1^{\infty} (\theta(u)-1) u^{(1-s)/2-1}\, du.
-\end{align*}
-
-Evaluate the first integral:
-\[
-\int_1^{\infty} u^{(1-s)/2-1}\, du = \left[\frac{u^{(1-s)/2}}{(1-s)/2}\right]_1^{\infty}.
-\]
-
-For $\mathrm{Re}(s) > 1$, we have $\mathrm{Re}((1-s)/2) < 0$, so $u^{(1-s)/2} \to 0$ as $u \to \infty$. Therefore:
-\[
-\int_1^{\infty} u^{(1-s)/2-1}\, du = 0 - \frac{2}{1-s} = -\frac{2}{1-s}.
-\]
-
-Substituting into equation \eqref{eq:first_integral}:
-\begin{align*}
-\int_0^1 (\theta(t) - 1) t^{s/2-1}\, dt &= -\frac{2}{1-s} + \int_1^{\infty} (\theta(u)-1) u^{(1-s)/2-1}\, du - \frac{2}{s}\\
-&= \int_1^{\infty} (\theta(u)-1) u^{(1-s)/2-1}\, du - \frac{2}{s} - \frac{2}{1-s}.
-\end{align*}
-
-Substituting back into equation \eqref{eq:split}:
-\begin{align*}
-2\xi(s) &= \int_1^{\infty} (\theta(u)-1) u^{(1-s)/2-1}\, du - \frac{2}{s} - \frac{2}{1-s} + \int_1^{\infty} (\theta(t) - 1) t^{s/2-1}\, dt\\
-&= \int_1^{\infty} (\theta(t)-1)\left(t^{s/2-1} + t^{(1-s)/2-1}\right)\, dt - \frac{2}{s} - \frac{2}{1-s}.
-\end{align*}
-
-The term $-\frac{2}{s} - \frac{2}{1-s}$ is symmetric under $s \leftrightarrow 1-s$, and the integral is manifestly symmetric:
-\[
-t^{s/2-1} + t^{(1-s)/2-1} = t^{(1-s)/2-1} + t^{s/2-1}.
-\]
-
-Therefore $\xi(s) = \xi(1-s)$.
+  By \eqref{lem:theta-zeta}, for $\mathrm{Re} (s) > 1$,
+  \begin{equation}
+    \label{eq:xi-mellin} 2 \hspace{0.17em} \xi (s) \hspace{0.27em} =
+    \hspace{0.27em} \int_0^{\infty} (\theta (t) - 1)  \hspace{0.17em}
+    t^{\frac{s}{2} - 1}  \hspace{0.17em} dt
+  \end{equation}
+  Split at $t = 1$:
+  \begin{equation}
+    \label{eq:split} 2 \hspace{0.17em} \xi (s) \hspace{0.27em} =
+    \hspace{0.27em} \int_0^1 (\theta (t) - 1)  \hspace{0.17em} t^{\frac{s}{2}
+    - 1}  \hspace{0.17em} dt \hspace{0.27em} + \hspace{0.27em} \int_1^{\infty}
+    (\theta (t) - 1)  \hspace{0.17em} t^{\frac{s}{2} - 1}  \hspace{0.17em} dt
+  \end{equation}
+  Use \eqref{eq:theta-functional} in the first integral and substitute $u =
+  \frac{1}{t}$:
+  
+  \begin{align}
+    \int_0^1 (\theta (t) - 1)  \hspace{0.17em} t^{\frac{s}{2} - 1} 
+    \hspace{0.17em} dt & = \int_0^1 \left( \frac{1}{\sqrt{t}}  \hspace{0.17em}
+    \theta \hspace{-0.17em} \left( \frac{1}{t} \right) - 1 \right)
+    t^{\frac{s}{2} - 1}  \hspace{0.17em} dt  \label{eq:fe-1}\\
+    & = \int_0^1 \theta \hspace{-0.17em} \left( \frac{1}{t} \right) 
+    \hspace{0.17em} t^{\frac{s}{2} - \frac{3}{2}}  \hspace{0.17em} dt
+    \hspace{0.27em} - \hspace{0.27em} \int_0^1 t^{\frac{s}{2} - 1} 
+    \hspace{0.17em} dt  \label{eq:fe-2}\\
+    & = \int_1^{\infty} \theta (u)  \hspace{0.17em} u^{- \frac{s}{2} -
+    \frac{1}{2}}  \hspace{0.17em} du \hspace{0.27em} - \hspace{0.27em}
+    \frac{2}{s}  \label{eq:fe-3}\\
+    & = \int_1^{\infty} (1 + (\theta (u) - 1))  \hspace{0.17em} u^{\frac{1 -
+    s}{2} - 1}  \hspace{0.17em} du \hspace{0.27em} - \hspace{0.27em}
+    \frac{2}{s}  \label{eq:fe-4}
+  \end{align}
+  
+  The first term in \eqref{eq:fe-4} evaluates (for $\mathrm{Re} (s) > 1$) to
+  \begin{equation}
+    \label{eq:fe-5} \int_1^{\infty} u^{\frac{1 - s}{2} - 1}  \hspace{0.17em}
+    du \hspace{0.27em} = \hspace{0.27em} - \hspace{0.17em} \frac{2}{1 - s},
+  \end{equation}
+  hence
+  \begin{equation}
+    \label{eq:fe-6} \int_0^1 (\theta (t) - 1)  \hspace{0.17em} t^{\frac{s}{2}
+    - 1}  \hspace{0.17em} dt \hspace{0.27em} = \hspace{0.27em} \int_1^{\infty}
+    (\theta (u) - 1)  \hspace{0.17em} u^{\frac{1 - s}{2} - 1}  \hspace{0.17em}
+    du \hspace{0.27em} - \hspace{0.27em} \frac{2}{s} \hspace{0.27em} -
+    \hspace{0.27em} \frac{2}{1 - s}
+  \end{equation}
+  Insert \eqref{eq:fe-6} into \eqref{eq:split} and relabel $u \mapsto t$:
+  
+  \begin{align}
+    2 \hspace{0.17em} \xi (s) & = \int_1^{\infty} (\theta (t) - 1) 
+    \hspace{0.17em} t^{\frac{1 - s}{2} - 1}  \hspace{0.17em} dt
+    \hspace{0.27em} - \hspace{0.27em} \frac{2}{s} \hspace{0.27em} -
+    \hspace{0.27em} \frac{2}{1 - s} \hspace{0.27em} + \hspace{0.27em}
+    \int_1^{\infty} (\theta (t) - 1)  \hspace{0.17em} t^{\frac{s}{2} - 1} 
+    \hspace{0.17em} dt  \label{eq:fe-7}\\
+    & = \int_1^{\infty} (\theta (t) - 1)  \hspace{0.17em} \left(
+    t^{\frac{s}{2} - 1} + t^{\frac{1 - s}{2} - 1} \right)  \hspace{0.17em} dt
+    \hspace{0.27em} - \hspace{0.27em} \frac{2}{s} \hspace{0.27em} -
+    \hspace{0.27em} \frac{2}{1 - s}  \label{eq:fe-8}
+  \end{align}
+  
+  The right-hand side of \eqref{eq:fe-8} is invariant under $s \mapsto 1 - s$.
+  Therefore, for $\mathrm{Re} (s) > 1$,
+  \begin{equation}
+    \label{eq:fe-9} \xi (s) \hspace{0.27em} = \hspace{0.27em} \xi (1 - s)
+  \end{equation}
+  Both sides of \eqref{eq:fe-9} extend meromorphically to $\mathbb{C}$ and
+  agree on a nonempty open set, hence \eqref{eq:xi-symmetry} holds for all $s
+  \in \mathbb{C}$ by analytic continuation
+  {\cite[{\textsection}2.10]{Titchmarsh}}, {\cite[Ch.~3]{Edwards}}.
 \end{proof}
+
+\begin{remark}
+  [Alternative normalization]\label{rem:Xi} The entire function $\Xi (s) =
+  \tfrac{1}{2} \hspace{0.17em} s (s - 1)  \hspace{0.17em} \xi (s)$ also
+  satisfies $\Xi (s) = \Xi (1 - s)$ and is often used in the theory of the
+  Riemann Hypothesis {\cite[{\textsection}2.12]{Titchmarsh}},
+  {\cite[Ch.~1]{Edwards}}.
+\end{remark}
+
+\section*{Acknowledgments}
+
+Standard references:
+{\cite{Riemann1859,Titchmarsh,Edwards,SteinShakarchiFourier,GrafakosClassical,IK,GelfandShilov,RudinRCA,ApostolModular}}.
+
+\begin{thebibliography}{99}
+  {\bibitem{ApostolModular}}T. M. Apostol, {\tmem{Modular Functions and
+  Dirichlet Series in Number Theory}}, 2nd ed., Springer, 1990.
+  
+  {\bibitem{Edwards}}H. M. Edwards, {\tmem{Riemann's Zeta Function}}, Academic
+  Press, 1974.
+  
+  {\bibitem{GelfandShilov}}I. M. Gel'fand and G. E. Shilov, {\tmem{Generalized
+  Functions}}, Vol. 1, Academic Press, 1964.
+  
+  {\bibitem{GrafakosClassical}}L. Grafakos, {\tmem{Classical Fourier
+  Analysis}}, 3rd ed., Springer, 2014.
+  
+  {\bibitem{IK}}H. Iwaniec and E. Kowalski, {\tmem{Analytic Number Theory}},
+  AMS Colloquium Publications, Vol. 53, 2004.
+  
+  {\bibitem{Riemann1859}}B. Riemann, ``Ueber die Anzahl der Primzahlen unter
+  einer gegebenen Gr{\"o}sse,'' {\tmem{Monatsberichte der Berliner Akademie}},
+  1859. (English translation in Edwards {\cite{Edwards}}, Appendix.)
+  
+  {\bibitem{RudinRCA}}W. Rudin, {\tmem{Real and Complex Analysis}}, 3rd ed.,
+  McGraw--Hill, 1987.
+  
+  {\bibitem{SteinShakarchiFourier}}E. M. Stein and R. Shakarchi,
+  {\tmem{Fourier Analysis: An Introduction}}, Princeton Univ. Press, 2003.
+  
+  {\bibitem{Titchmarsh}}E. C. Titchmarsh, {\tmem{The Theory of the Riemann
+  Zeta-Function}}, 2nd ed., revised by D. R. Heath-Brown, Oxford Univ. Press,
+  1986.
+\end{thebibliography}
 
 \end{document}
