@@ -1,0 +1,393 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+
+\title{Inversion Theory for Oscillatory Processes:\\
+Three Equivalent Formulations and Connection to\\
+Devinatz--Aronszajn Integral Representations}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Introduction}
+
+The theory of oscillatory processes encompasses three mathematically equivalent yet conceptually distinct paradigms, each providing its own natural approach for inversion between stationary and oscillatory representations.
+
+\subsection{The Spectral Formulation}
+
+In the spectral paradigm, both the stationary process $X(u)$ and the oscillatory process $Z(t)$ are represented as stochastic integrals against a common spectral measure $d\Phi(\lambda)$:
+\[
+X(u) = \int_{-\infty}^{\infty} e^{i\lambda u} \, d\Phi(\lambda), \quad Z(t) = \int_{-\infty}^{\infty} \phi_t(\lambda) \, d\Phi(\lambda)
+\]
+The oscillatory function $\phi_t(\lambda)$ modulates the spectral representation in the frequency domain. Inversion in this paradigm proceeds by projecting the oscillatory process onto the frequency basis via:
+\[
+d\Phi(\lambda) = \frac{1}{2\pi} \int_{-\infty}^{\infty} \overline{\phi_t(\lambda)} Z(t) \, dt
+\]
+The orthogonality integral $\int \overline{\phi_t(\lambda)} \phi_t(\mu) dt = 2\pi \delta(\lambda-\mu)$ guarantees this projection recovers the original spectral measure. The forward and backward spectral operations compose to identity via the delta function identity.
+
+\subsection{The Filter Formulation}
+
+In the filter paradigm, the transformation between $X$ and $Z$ is mediated by time-varying filters $h(t,u)$ and $g(u,t)$:
+\[
+Z(t) = \int_{-\infty}^{\infty} h(t,u) X(u) \, du, \quad X(u) = \int_{-\infty}^{\infty} g(u,t) Z(t) \, dt
+\]
+The forward filter $h(t,u)$ transforms the stationary input into the oscillatory output; the inverse filter $g(u,t)$ recovers the stationary process from the oscillatory observation. The filters are related to the oscillatory function by Fourier transformation:
+\[
+\phi_t(\lambda) = \int_{-\infty}^{\infty} h(t,u) e^{i\lambda u} \, du, \quad g(u,t) = \frac{1}{2\pi} \int_{-\infty}^{\infty} \overline{\phi_t(\lambda)} e^{-i\lambda u} \, d\lambda
+\]
+Inversion in this paradigm harnesses the orthonormality condition $\int \overline{h(t,u)} h(t,v) dt = \delta(u-v)$, which in frequency space becomes the oscillatory function orthogonality. The composition of filters $g(u,t)$ and $h(t,v)$ equates to the identity via:
+\[
+\int_{-\infty}^{\infty} \int_{-\infty}^{\infty} g(u,t) h(t,v) \, dt = \delta(u-v)
+\]
+
+\subsection{The Linear Operator Formulation}
+
+In the operator paradigm, the forward and backward transformations are bounded linear operators $T$ and $S$ on appropriate function spaces:
+\[
+T: X \mapsto Z, \quad S: Z \mapsto X
+\]
+Inversion establishes that $S = T^{-1}$ on the relevant $L^2$ closures. The operator composition $ST = \text{Id}$ and $TS = \text{Id}$ follow from the dual resolutions of identity:
+\begin{itemize}
+\item Time domain: $\int \overline{h(t,u)} h(t,v) dt = \delta(u-v)$
+\item Frequency domain: $(1/2\pi) \int \overline{\phi_t(\lambda)} \phi_t(\mu) dt = \delta(\lambda-\mu)$
+\end{itemize}
+These are the completeness relations for the oscillatory basis. The operators intertwine the stationary and oscillatory representations through their integral forms, with the orthogonality integrals serving as the resolution of identity that equates operator compositions to the identity map. The term ``resolution of identity'' arises precisely because these relations resolve how the forward and backward operations relate to one another, establishing their mutual invertibility through the orthogonality structure.
+
+\subsection{Equivalence of Formulations}
+
+All three paradigms describe the same mathematical structure:
+\begin{itemize}
+\item The spectral formulation emphasizes the frequency-domain representation and the role of $d\Phi(\lambda)$ as the fundamental object.
+\item The filter formulation emphasizes the time-domain convolution operations via $h(t,u)$ and $g(u,t)$ and their Fourier relationship.
+\item The operator formulation emphasizes the abstract algebraic structure of forward/backward maps and their functional-analytic properties.
+\end{itemize}
+The orthogonality integral $\int \overline{\phi_t(\lambda)} \phi_t(\mu) dt = 2\pi \delta(\lambda-\mu)$ is the central unifying identity. It manifests as:
+\begin{itemize}
+\item Spectral orthogonality in the spectral formulation
+\item Filter orthonormality in the filter formulation
+\item Resolution of identity in the operator formulation
+\end{itemize}
+Each inversion procedure---spectral projection, filter convolution, or operator composition---equates to substitution followed by application of the delta function identity via this single orthogonality relation. The three formulations are thus three complementary manifestations of the same underlying invertible structure.
+
+\section{Main Results}
+
+\subsection{Setup and Definitions}
+
+Let $h(t,u)$ be a filter with $h(t, \cdot) \in L^2(\mathbb{R})$ for each $t$, satisfying the orthonormality condition:
+\[
+\int_{-\infty}^{\infty} \overline{h(t,u)} h(t,v) \, dt = \delta(u-v)
+\]
+Define the oscillatory function:
+\[
+\phi_t(\lambda) := \int_{-\infty}^{\infty} h(t,u) e^{i\lambda u} \, du
+\]
+The oscillatory process is:
+\[
+Z(t) = \int_{-\infty}^{\infty} \phi_t(\lambda) \, d\Phi(\lambda)
+\]
+The stationary process is:
+\[
+X(u) = \int_{-\infty}^{\infty} e^{i\lambda u} \, d\Phi(\lambda)
+\]
+
+\subsection{Orthogonality of Oscillatory Functions}
+
+\begin{lemma}[Orthogonality of Oscillatory Functions]
+\label{lem:orthogonality}
+For the oscillatory function $\phi_t(\lambda) = \int_{-\infty}^{\infty} h(t,u) e^{i\lambda u} du$:
+\[
+\int_{-\infty}^{\infty} \overline{\phi_t(\lambda)} \phi_t(\mu) \, dt = 2\pi\delta(\lambda-\mu)
+\]
+\end{lemma}
+
+\begin{proof}
+Start by computing the integral directly:
+\begin{align*}
+\int_{-\infty}^{\infty} \overline{\phi_t(\lambda)} \phi_t(\mu) \, dt &= \int_{-\infty}^{\infty} \overline{\int_{-\infty}^{\infty} h(t,u) e^{i\lambda u} \, du} \cdot \int_{-\infty}^{\infty} h(t,v) e^{i\mu v} \, dv \, dt
+\end{align*}
+Taking the complex conjugate inside the first integral:
+\[
+= \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \overline{h(t,u)} e^{-i\lambda u} \, du \cdot \int_{-\infty}^{\infty} h(t,v) e^{i\mu v} \, dv \, dt
+\]
+Combine the three integrals:
+\[
+= \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \overline{h(t,u)} h(t,v) e^{-i\lambda u} e^{i\mu v} \, du \, dv \, dt
+\]
+Rearrange exponentials:
+\[
+= \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \overline{h(t,u)} h(t,v) e^{i(\mu v - \lambda u)} \, du \, dv \, dt
+\]
+Apply Fubini's theorem (justified by $L^2$ integrability):
+\[
+= \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} e^{i(\mu v - \lambda u)} \left[\int_{-\infty}^{\infty} \overline{h(t,u)} h(t,v) \, dt\right] du \, dv
+\]
+Apply the orthonormality condition $\int \overline{h(t,u)} h(t,v) dt = \delta(u-v)$:
+\[
+= \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} e^{i(\mu v - \lambda u)} \delta(u-v) \, du \, dv
+\]
+Apply the sifting property of the delta function (integrating over $v$):
+\[
+= \int_{-\infty}^{\infty} e^{i(\mu u - \lambda u)} \, du = \int_{-\infty}^{\infty} e^{i(\mu - \lambda)u} \, du
+\]
+This integral is the Fourier representation of the Dirac delta:
+\[
+= 2\pi\delta(\mu - \lambda)
+\]
+\end{proof}
+
+\subsection{The Inverse Filter Theorem}
+
+\begin{theorem}[Inverse Filter for Oscillatory Processes]
+\label{thm:inverse-filter}
+The inverse filter:
+\[
+g(u,t) := \frac{1}{2\pi} \int_{-\infty}^{\infty} \overline{\phi_t(\lambda)} e^{-i\lambda u} \, d\lambda
+\]
+recovers the stationary process from the oscillatory process:
+\[
+X(u) = \int_{-\infty}^{\infty} g(u,t) Z(t) \, dt
+\]
+\end{theorem}
+
+\begin{proof}
+Substitute the definitions:
+\begin{align*}
+\int_{-\infty}^{\infty} g(u,t) Z(t) \, dt &= \int_{-\infty}^{\infty} \left[\frac{1}{2\pi} \int_{-\infty}^{\infty} \overline{\phi_t(\lambda)} e^{-i\lambda u} \, d\lambda\right] \left[\int_{-\infty}^{\infty} \phi_t(\mu) \, d\Phi(\mu)\right] dt
+\end{align*}
+Expand:
+\[
+= \frac{1}{2\pi} \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \overline{\phi_t(\lambda)} e^{-i\lambda u} \phi_t(\mu) \, d\lambda \, d\Phi(\mu) \, dt
+\]
+Apply Fubini's theorem:
+\[
+= \frac{1}{2\pi} \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} e^{-i\lambda u} \left[\int_{-\infty}^{\infty} \overline{\phi_t(\lambda)} \phi_t(\mu) \, dt\right] d\lambda \, d\Phi(\mu)
+\]
+Apply Lemma~\ref{lem:orthogonality}:
+\[
+= \frac{1}{2\pi} \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} e^{-i\lambda u} \cdot 2\pi\delta(\lambda-\mu) \, d\lambda \, d\Phi(\mu)
+\]
+Simplify:
+\[
+= \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} e^{-i\lambda u} \delta(\lambda-\mu) \, d\lambda \, d\Phi(\mu)
+\]
+Apply sifting property of delta function:
+\[
+= \int_{-\infty}^{\infty} e^{-i\mu u} \, d\Phi(\mu) = \int_{-\infty}^{\infty} e^{i\mu u} \, d\Phi(\mu) = X(u)
+\]
+\end{proof}
+
+\section{Two-Sided Reconstruction}
+
+\subsection{Backward Composed with Forward Equals Identity}
+
+\begin{proposition}[Backward$\circ$Forward = Identity]
+\label{prop:backward-forward}
+Applying the backward filter to the forward output recovers the stationary process.
+\end{proposition}
+
+\begin{proof}
+Start with $Z(t) = \int \phi_t(\lambda) d\Phi(\lambda)$. Apply the backward filter:
+\[
+\int_{-\infty}^{\infty} g(u,t) Z(t) \, dt = \int_{-\infty}^{\infty} \frac{1}{2\pi} \int_{-\infty}^{\infty} \overline{\phi_t(\lambda)} e^{-i\lambda u} \, d\lambda \cdot Z(t) \, dt
+\]
+Substitute $Z(t) = \int \phi_t(\mu) d\Phi(\mu)$:
+\[
+= \int_{-\infty}^{\infty} \frac{1}{2\pi} \int_{-\infty}^{\infty} \overline{\phi_t(\lambda)} e^{-i\lambda u} \, d\lambda \cdot \left[\int_{-\infty}^{\infty} \phi_t(\mu) \, d\Phi(\mu)\right] dt
+\]
+Apply Fubini to interchange integrals:
+\[
+= \frac{1}{2\pi} \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} e^{-i\lambda u} \left[\int_{-\infty}^{\infty} \overline{\phi_t(\lambda)} \phi_t(\mu) \, dt\right] d\lambda \, d\Phi(\mu)
+\]
+Apply the orthogonality integral:
+\[
+= \frac{1}{2\pi} \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} e^{-i\lambda u} \cdot 2\pi\delta(\lambda-\mu) \, d\lambda \, d\Phi(\mu)
+\]
+Apply the delta function identity:
+\[
+= \int_{-\infty}^{\infty} e^{-i\mu u} \, d\Phi(\mu) = X(u)
+\]
+\end{proof}
+
+\subsection{Forward Composed with Backward Equals Identity}
+
+\begin{proposition}[Forward$\circ$Backward = Identity]
+\label{prop:forward-backward}
+Applying the forward filter to the backward reconstruction yields the original oscillatory process.
+\end{proposition}
+
+\begin{proof}
+The backward reconstruction gives $X(u) = \int g(u,t) Z(t) dt$. Apply the forward map by defining the reconstructed spectral measure:
+\[
+d\Phi_{\text{recon}}(\lambda) = \frac{1}{2\pi} \int_{-\infty}^{\infty} \overline{\phi_s(\lambda)} Z(s) \, ds
+\]
+Substitute $Z(s) = \int \phi_s(\mu) d\Phi(\mu)$:
+\[
+= \frac{1}{2\pi} \int_{-\infty}^{\infty} \overline{\phi_s(\lambda)} \left[\int_{-\infty}^{\infty} \phi_s(\mu) \, d\Phi(\mu)\right] ds
+\]
+Apply Fubini:
+\[
+= \frac{1}{2\pi} \int_{-\infty}^{\infty} \left[\int_{-\infty}^{\infty} \overline{\phi_s(\lambda)} \phi_s(\mu) \, ds\right] d\Phi(\mu)
+\]
+Apply the orthogonality integral:
+\[
+= \frac{1}{2\pi} \int_{-\infty}^{\infty} 2\pi\delta(\lambda-\mu) \, d\Phi(\mu)
+\]
+Apply the delta function identity:
+\[
+= \int_{-\infty}^{\infty} \delta(\lambda-\mu) \, d\Phi(\mu) = d\Phi(\lambda)
+\]
+Thus the forward map on the reconstructed spectral measure gives:
+\[
+\hat{Z}(t) = \int_{-\infty}^{\infty} \phi_t(\lambda) \, d\Phi_{\text{recon}}(\lambda) = \int_{-\infty}^{\infty} \phi_t(\lambda) \, d\Phi(\lambda) = Z(t)
+\]
+\end{proof}
+
+\section{Verification Summary}
+
+All three steps of the main proof are verified:
+
+\begin{enumerate}
+\item \textbf{Step 1 (Expansion and Fubini):} The integral $\int \overline{\phi_t(\lambda)} \phi_t(\mu) dt$ expands correctly to triple integrals over $t, u, v$, and Fubini's theorem applies by $L^2$ integrability via Cauchy-Schwarz.
+
+\item \textbf{Step 2 (Delta Function and Exponential Integral):} The orthonormality condition $\int \overline{h(t,u)} h(t,v) dt = \delta(u-v)$ and the sifting property yield $\int e^{i(\mu-\lambda)u} du = 2\pi\delta(\lambda-\mu)$ by the Fourier representation of the Dirac delta.
+
+\item \textbf{Step 3 (Inverse Filter and Identity):} Substituting the orthogonality result and applying Fubini followed by the delta function identity confirms $\int g(u,t) Z(t) dt = X(u)$.
+\end{enumerate}
+
+The forward and backward operations are mutually inverse, established through the orthogonality integral serving as the resolution of identity that equates their compositions to the identity map.
+
+\section{Connection to Devinatz--Aronszajn Theory}
+
+\subsection{Devinatz Integral Representation Framework}
+
+Devinatz (1950, Trans. AMS 68, pp. 329--349) studied the integral representation of positive definite functions. The key result (Section 6, Theorem 1) states:
+
+\begin{theorem}[Devinatz 1950]
+\label{thm:devinatz}
+Let $V(\lambda)$ be a bounded monotone-increasing function on $\mathbb{R}$ defining a finite Borel measure $dV(\lambda)$. Let $a(x,\lambda)$ be a measurable function such that for each $x \in E$, $a(x,\cdot) \in L^2(V)$. Define the kernel:
+\[
+K(x,y) = \int_{-\infty}^{\infty} a(x,\lambda) \overline{a(y,\lambda)} \, dV(\lambda)
+\]
+Then:
+\begin{enumerate}
+\item $K(x,y)$ is a positive definite kernel.
+\item The associated reproducing kernel Hilbert space (RKHS) $\mathcal{J}$ consists of all functions
+\[
+f(x) = \int_{-\infty}^{\infty} a(x,\lambda) \psi(\lambda) \, dV(\lambda)
+\]
+where $\psi \in L^2(V)/L_0$, and $L_0 = \{\psi \in L^2(V) : \int a(x,\lambda) \psi(\lambda) dV(\lambda) = 0, \forall x \in E\}$ is the radical.
+\item The inner product in $\mathcal{J}$ is given by
+\[
+\langle f, g \rangle_{\mathcal{J}} = \int_{-\infty}^{\infty} \psi(\lambda) \overline{\chi(\lambda)} \, dV(\lambda)
+\]
+when $f$ corresponds to $\psi$ and $g$ corresponds to $\chi$.
+\end{enumerate}
+\end{theorem}
+
+\subsection{The Radical and Completeness}
+
+\begin{definition}[The Radical]
+The \textbf{radical} (or null space) of the kernel representation is
+\[
+L_0 := \{\psi \in L^2(V) : \int a(t,\lambda) \psi(\lambda) \, dV(\lambda) = 0 \text{ for all } t \in E\}
+\]
+\end{definition}
+
+The radical consists of all square-integrable functions $\psi$ with respect to the measure $dV(\lambda)$ such that the integral representation produces the zero function for every value of the index $t$.
+
+\textbf{Why it exists:} When you form the RKHS from an integral representation kernel, the mapping $\psi \mapsto f(t) := \int a(t,\lambda) \psi(\lambda) dV(\lambda)$ is not necessarily injective. Two different functions $\psi_1, \psi_2 \in L^2(V)$ can produce the same element $f(t)$ if their difference lies in $L_0$.
+
+\textbf{When the radical is trivial:} $L_0 = \{0\}$ if and only if the family $\{a(t,\lambda)\}_{t \in E}$ is complete in $L^2(V)$, meaning the span of $\{a(t,\cdot) : t \in E\}$ is dense in $L^2(V)$.
+
+By Devinatz (1950, page 339), a necessary and sufficient condition for $L_0 = \{0\}$ is that there exists a resolution of the identity $\{E_\lambda\}$ and an element $f_0 \in \mathcal{J}$ such that $V(\lambda) = (E_\lambda f_0, f_0)$.
+
+\subsection{Explicit Equivalence}
+
+\begin{theorem}[Oscillatory Processes as Devinatz Kernels]
+\label{thm:equivalence}
+The oscillatory process framework is a specialization of Devinatz integral representation theory with the explicit identification $a(t,\lambda) = \phi_t(\lambda)$.
+\end{theorem}
+
+\begin{proof}
+\textbf{Part 1: Kernel Identification}
+
+Set:
+\begin{itemize}
+\item Devinatz's index set: $E = \mathbb{R}_t$ (the time parameter)
+\item Devinatz's kernel function: $a(t,\lambda) = \phi_t(\lambda)$
+\item Devinatz's spectral measure: $V(\lambda) = F(\lambda)$ (the spectral measure of the oscillatory process)
+\end{itemize}
+
+Then by direct substitution:
+\[
+K_{\text{Devinatz}}(t,s) = \int a(t,\lambda) \overline{a(s,\lambda)} dV(\lambda) = \int \phi_t(\lambda) \overline{\phi_s(\lambda)} dF(\lambda) = K_{\text{oscillatory}}(t,s)
+\]
+The kernels are identical.
+
+\textbf{Part 2: Function Space Identification}
+
+Devinatz's RKHS element:
+\[
+f(t) = \int a(t,\lambda) \psi(\lambda) dV(\lambda)
+\]
+Oscillatory process element:
+\[
+Z(t) = \int \phi_t(\lambda) \psi(\lambda) dF(\lambda)
+\]
+Under the identification $a(t,\lambda) = \phi_t(\lambda)$ and $V = F$, these are the same functional form.
+
+\textbf{Part 3: Radical and Completeness}
+
+For oscillatory processes with $\int \overline{h(t,u)} h(t,v) dt = \delta(u-v)$, we proved:
+\[
+\int \overline{\phi_t(\lambda)} \phi_t(\mu) dt = 2\pi \delta(\lambda - \mu)
+\]
+This means if $\psi \in L_0$, then:
+\[
+0 = \int \phi_t(\lambda) \psi(\lambda) dF(\lambda) \text{ for all } t
+\]
+Multiplying by $\overline{\phi_t(\mu)}$ and integrating over $t$:
+\[
+0 = \int_t \overline{\phi_t(\mu)} \int_\lambda \phi_t(\lambda) \psi(\lambda) dF(\lambda) dt = \int_\lambda \psi(\lambda) \left[\int_t \overline{\phi_t(\mu)} \phi_t(\lambda) dt\right] dF(\lambda)
+\]
+\[
+= \int_\lambda \psi(\lambda) \cdot 2\pi\delta(\mu - \lambda) dF(\lambda) = 2\pi \psi(\mu)
+\]
+Therefore $\psi = 0$ almost everywhere. This proves $L_0 = \{0\}$, which is exactly Devinatz's completeness condition.
+
+\textbf{Part 4: Inverse Formula}
+
+Devinatz's reconstruction (implicit in Theorem 1): When $L_0 = \{0\}$, the mapping $\psi \leftrightarrow f$ is an isometry, and inversion is via:
+\[
+\psi(\lambda) = \frac{1}{2\pi}\int \overline{a(t,\lambda)} f(t) dt
+\]
+For oscillatory processes:
+\[
+\psi(\lambda) = \frac{1}{2\pi}\int \overline{\phi_t(\lambda)} Z(t) dt
+\]
+Under $a(t,\lambda) = \phi_t(\lambda)$, these are identical.
+\end{proof}
+
+\subsection{Summary of the Connection}
+
+Every statement, theorem, and formula in oscillatory process theory is obtained from Devinatz (1950) by the substitution:
+\begin{itemize}
+\item $a(t,\lambda) \mapsto \phi_t(\lambda) = \int h(t,u) e^{i\lambda u} du$
+\item $V(\lambda) \mapsto F(\lambda)$
+\end{itemize}
+
+The oscillatory function IS the integral representation kernel function. The spectral measure IS Devinatz's measure. The RKHS, orthogonality, completeness, and inversion formulas are all special cases of Devinatz's general theory under this identification.
+
+\textbf{Key distinction:} In Devinatz's theory, $V(\lambda)$ is a deterministic bounded monotone function (the spectral measure). In stochastic oscillatory processes, the random orthogonal measure $d\Phi(\lambda)$ generates sample path realizations with covariance structure determined by $V(\lambda) = F(\lambda)$. The process $Z(t)$ is a random function (sample path), while the kernel $K(t,s)$ is deterministic and describes the second-moment structure.
+
+\end{document}

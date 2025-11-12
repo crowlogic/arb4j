@@ -1,0 +1,18 @@
+\contentsline {section}{\numberline {1}Introduction}{1}{}%
+\contentsline {subsection}{\numberline {1.1}The Spectral Formulation}{1}{}%
+\contentsline {subsection}{\numberline {1.2}The Filter Formulation}{1}{}%
+\contentsline {subsection}{\numberline {1.3}The Linear Operator Formulation}{2}{}%
+\contentsline {subsection}{\numberline {1.4}Equivalence of Formulations}{2}{}%
+\contentsline {section}{\numberline {2}Main Results}{3}{}%
+\contentsline {subsection}{\numberline {2.1}Setup and Definitions}{3}{}%
+\contentsline {subsection}{\numberline {2.2}Orthogonality of Oscillatory Functions}{3}{}%
+\contentsline {subsection}{\numberline {2.3}The Inverse Filter Theorem}{4}{}%
+\contentsline {section}{\numberline {3}Two-Sided Reconstruction}{5}{}%
+\contentsline {subsection}{\numberline {3.1}Backward Composed with Forward Equals Identity}{5}{}%
+\contentsline {subsection}{\numberline {3.2}Forward Composed with Backward Equals Identity}{6}{}%
+\contentsline {section}{\numberline {4}Verification Summary}{7}{}%
+\contentsline {section}{\numberline {5}Connection to Devinatz--Aronszajn Theory}{7}{}%
+\contentsline {subsection}{\numberline {5.1}Devinatz Integral Representation Framework}{7}{}%
+\contentsline {subsection}{\numberline {5.2}The Radical and Completeness}{8}{}%
+\contentsline {subsection}{\numberline {5.3}Explicit Equivalence}{8}{}%
+\contentsline {subsection}{\numberline {5.4}Summary of the Connection}{9}{}%

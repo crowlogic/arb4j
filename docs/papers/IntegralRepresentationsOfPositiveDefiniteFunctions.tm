@@ -1695,7 +1695,10 @@
 <\initial>
   <\collection>
     <associate|magnification|1.2>
+    <associate|page-height|auto>
     <associate|page-medium|paper>
+    <associate|page-type|letter>
+    <associate|page-width|auto>
   </collection>
 </initial>
 
@@ -1730,7 +1733,7 @@
     <associate|bib-widder2|<tuple|widder2|22>>
     <associate|bib-widder3|<tuple|widder3|22>>
     <associate|def:correspondence|<tuple|1|3>>
-    <associate|eq:adjoint-correspondence|<tuple|4|4>>
+    <associate|eq:adjoint-correspondence|<tuple|4|5>>
     <associate|eq:alternative-representation|<tuple|19|11>>
     <associate|eq:analytic-function|<tuple|34|13>>
     <associate|eq:aronszajn-representation|<tuple|8|6>>
@@ -1739,7 +1742,7 @@
     <associate|eq:commutation-decomposition|<tuple|54|18>>
     <associate|eq:commutation-result|<tuple|57|18>>
     <associate|eq:commutation-step1|<tuple|52|17>>
-    <associate|eq:commutation-step2|<tuple|53|17>>
+    <associate|eq:commutation-step2|<tuple|53|18>>
     <associate|eq:continuous-spectral|<tuple|42|15>>
     <associate|eq:convergence-setup|<tuple|23|11>>
     <associate|eq:cosine-bound|<tuple|47|16>>
@@ -1755,7 +1758,7 @@
     <associate|eq:half-power|<tuple|40|15>>
     <associate|eq:higher-dimensional-representation|<tuple|51|17>>
     <associate|eq:integral-equality|<tuple|56|18>>
-    <associate|eq:joint-spectral-family|<tuple|61|18>>
+    <associate|eq:joint-spectral-family|<tuple|61|19>>
     <associate|eq:kernel-representation|<tuple|44|15>>
     <associate|eq:limit-function|<tuple|26|11>>
     <associate|eq:limit-representation|<tuple|45|16>>
@@ -1787,7 +1790,7 @@
     <associate|eq:spectral-properties|<tuple|30|12>>
     <associate|eq:spectral-representation|<tuple|17|10>>
     <associate|eq:stone-representation|<tuple|49|16>>
-    <associate|eq:sufficiency-conclusion|<tuple|77|20>>
+    <associate|eq:sufficiency-conclusion|<tuple|77|21>>
     <associate|eq:sufficiency-step1|<tuple|71|20>>
     <associate|eq:sufficiency-step2|<tuple|72|20>>
     <associate|eq:sufficiency-step3|<tuple|73|20>>
@@ -1799,7 +1802,7 @@
     <associate|eq:uniqueness-step2|<tuple|66|19>>
     <associate|eq:uniqueness-step3|<tuple|67|19>>
     <associate|eq:uniqueness-step4|<tuple|69|19>>
-    <associate|eq:uniqueness-step5|<tuple|70|19>>
+    <associate|eq:uniqueness-step5|<tuple|70|20>>
     <associate|eq:unitary-representation|<tuple|60|18>>
     <associate|eq:unitary-spectral|<tuple|48|16>>
     <associate|eq:v1-definition|<tuple|55|18>>
@@ -1819,8 +1822,8 @@
     <associate|footnote-21|<tuple|21|19>>
     <associate|footnote-3|<tuple|3|3>>
     <associate|footnote-4|<tuple|4|4>>
-    <associate|footnote-5|<tuple|5|4>>
-    <associate|footnote-6|<tuple|6|5>>
+    <associate|footnote-5|<tuple|5|5>>
+    <associate|footnote-6|<tuple|6|6>>
     <associate|footnote-7|<tuple|7|5>>
     <associate|footnote-8|<tuple|8|6>>
     <associate|footnote-9|<tuple|9|6>>
@@ -1840,8 +1843,8 @@
     <associate|footnr-21|<tuple|21|19>>
     <associate|footnr-3|<tuple|3|3>>
     <associate|footnr-4|<tuple|4|4>>
-    <associate|footnr-5|<tuple|5|4>>
-    <associate|footnr-6|<tuple|6|5>>
+    <associate|footnr-5|<tuple|5|5>>
+    <associate|footnr-6|<tuple|6|6>>
     <associate|footnr-7|<tuple|7|6>>
     <associate|footnr-8|<tuple|8|6>>
     <associate|footnr-9|<tuple|9|6>>
