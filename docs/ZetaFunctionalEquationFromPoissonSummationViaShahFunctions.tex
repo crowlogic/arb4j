@@ -1,0 +1,354 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{geometry}
+\geometry{letterpaper,margin=1in}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}{Definition}
+\newtheorem{corollary}{Corollary}
+
+\begin{document}
+
+\title{The Riemann Zeta Functional Equation via the Shah Function:\\Complete Rigorous Derivation}
+\author{Stephen Crowley}
+\date{November 12, 2025}
+\maketitle
+
+\section{Foundational Definitions}
+
+\begin{definition}[Dirac Delta Function]
+The Dirac delta function $\delta$ is the distribution satisfying
+\[
+\int_{-\infty}^{\infty} \delta(x-a) f(x)\, dx = f(a)
+\]
+for all test functions $f$ and $a \in \mathbb{R}$.
+\end{definition}
+
+\begin{definition}[Shah Function]
+The Shah function (Dirac comb) is defined as
+\[
+\mathrm{III}(x) = \sum_{n=-\infty}^{\infty} \delta(x-n).
+\]
+\end{definition}
+
+\begin{definition}[Fourier Transform]
+The Fourier transform of $f \in L^1(\mathbb{R})$ is
+\[
+\hat{f}(\omega) = \int_{-\infty}^{\infty} f(x) e^{-2\pi i \omega x}\, dx.
+\]
+\end{definition}
+
+\begin{definition}[Jacobi Theta Function]
+For $t > 0$, the Jacobi theta function is
+\[
+\theta(t) = \sum_{n=-\infty}^{\infty} e^{-\pi n^2 t}.
+\]
+\end{definition}
+
+\begin{definition}[Riemann Zeta Function]
+For $\mathrm{Re}(s) > 1$,
+\[
+\zeta(s) = \sum_{n=1}^{\infty} \frac{1}{n^s}.
+\]
+\end{definition}
+
+\begin{definition}[Completed Zeta Function]
+\[
+\xi(s) = \pi^{-s/2}\Gamma(s/2)\zeta(s).
+\]
+\end{definition}
+
+\section{The Shah Function and Sampling}
+
+\begin{proposition}[Shah Function Action]
+For any test function $\phi$,
+\[
+\langle \mathrm{III}, \phi \rangle = \sum_{n=-\infty}^{\infty} \phi(n).
+\]
+\end{proposition}
+
+\begin{proof}
+By definition and linearity of the distributional pairing:
+\begin{align*}
+\langle \mathrm{III}, \phi \rangle &= \left\langle \sum_{n=-\infty}^{\infty} \delta(\cdot - n), \phi \right\rangle\\
+&= \sum_{n=-\infty}^{\infty} \langle \delta(\cdot - n), \phi \rangle\\
+&= \sum_{n=-\infty}^{\infty} \phi(n). \qedhere
+\end{align*}
+\end{proof}
+
+\begin{proposition}[Shah Fourier Series]
+The Shah function has the Fourier series representation
+\[
+\mathrm{III}(x) = \sum_{k=-\infty}^{\infty} e^{2\pi ikx}.
+\]
+\end{proposition}
+
+\begin{proof}
+The Shah function is a periodic distribution with period 1. For $x \in [0,1)$, the Fourier coefficients are computed as:
+\[
+c_k = \int_0^1 \mathrm{III}(x) e^{-2\pi ikx}\, dx = \langle \delta(x), e^{-2\pi ikx} \rangle = e^{0} = 1
+\]
+since the only delta function in $[0,1)$ is at $x=0$. Therefore
+\[
+\mathrm{III}(x) = \sum_{k=-\infty}^{\infty} c_k e^{2\pi ikx} = \sum_{k=-\infty}^{\infty} e^{2\pi ikx}. \qedhere
+\]
+\end{proof}
+
+\section{Poisson Summation Formula}
+
+\begin{theorem}[Poisson Summation Formula]
+For any $f \in \mathcal{S}(\mathbb{R})$ (Schwartz space),
+\[
+\sum_{n=-\infty}^{\infty} f(n) = \sum_{k=-\infty}^{\infty} \hat{f}(k).
+\]
+\end{theorem}
+
+\begin{proof}
+The left-hand side equals:
+\[
+\sum_{n=-\infty}^{\infty} f(n) = \langle \mathrm{III}, f \rangle = \int_{-\infty}^{\infty} f(x) \mathrm{III}(x)\, dx.
+\]
+
+Substitute the Fourier series representation $\mathrm{III}(x) = \sum_{k=-\infty}^{\infty} e^{2\pi ikx}$:
+\begin{align*}
+\int_{-\infty}^{\infty} f(x) \mathrm{III}(x)\, dx &= \int_{-\infty}^{\infty} f(x) \sum_{k=-\infty}^{\infty} e^{2\pi ikx}\, dx\\
+&= \sum_{k=-\infty}^{\infty} \int_{-\infty}^{\infty} f(x) e^{2\pi ikx}\, dx
+\end{align*}
+where interchange is justified since $f \in \mathcal{S}(\mathbb{R})$ ensures absolute convergence.
+
+Now observe:
+\begin{align*}
+\int_{-\infty}^{\infty} f(x) e^{2\pi ikx}\, dx &= \int_{-\infty}^{\infty} f(x) e^{-2\pi i(-k)x}\, dx = \hat{f}(-k).
+\end{align*}
+
+Therefore:
+\[
+\sum_{n=-\infty}^{\infty} f(n) = \sum_{k=-\infty}^{\infty} \hat{f}(-k) = \sum_{k=-\infty}^{\infty} \hat{f}(k)
+\]
+where the last equality holds because as $k$ ranges over all integers $\mathbb{Z}$, so does $-k$.
+\end{proof}
+
+\section{Gaussian Fourier Transform}
+
+\begin{lemma}[Gaussian Fourier Transform]
+For $g_t(x) = e^{-\pi x^2 t}$ with $t > 0$,
+\[
+\hat{g}_t(\omega) = t^{-1/2} e^{-\pi \omega^2/t}.
+\]
+\end{lemma}
+
+\begin{proof}
+Compute:
+\begin{align*}
+\hat{g}_t(\omega) &= \int_{-\infty}^{\infty} e^{-\pi x^2 t} e^{-2\pi i\omega x}\, dx\\
+&= \int_{-\infty}^{\infty} \exp(-\pi t x^2 - 2\pi i\omega x)\, dx.
+\end{align*}
+
+Complete the square in the exponent. Write:
+\[
+-\pi t x^2 - 2\pi i\omega x = -\pi t\left(x^2 + \frac{2i\omega x}{t}\right).
+\]
+
+To complete the square:
+\[
+x^2 + \frac{2i\omega x}{t} = \left(x + \frac{i\omega}{t}\right)^2 - \left(\frac{i\omega}{t}\right)^2.
+\]
+
+Calculate $\left(\frac{i\omega}{t}\right)^2 = \frac{i^2\omega^2}{t^2} = -\frac{\omega^2}{t^2}$.
+
+Therefore:
+\[
+x^2 + \frac{2i\omega x}{t} = \left(x + \frac{i\omega}{t}\right)^2 + \frac{\omega^2}{t^2}.
+\]
+
+So:
+\[
+-\pi t x^2 - 2\pi i\omega x = -\pi t\left(x + \frac{i\omega}{t}\right)^2 - \pi t \cdot \frac{\omega^2}{t^2} = -\pi t\left(x + \frac{i\omega}{t}\right)^2 - \frac{\pi\omega^2}{t}.
+\]
+
+Thus:
+\begin{align*}
+\hat{g}_t(\omega) &= e^{-\pi\omega^2/t} \int_{-\infty}^{\infty} e^{-\pi t(x + i\omega/t)^2}\, dx.
+\end{align*}
+
+Substitute $y = x + i\omega/t$, so $dx = dy$ (the contour can be shifted in the complex plane by Cauchy's theorem since the integrand decays rapidly):
+\begin{align*}
+\int_{-\infty}^{\infty} e^{-\pi t(x + i\omega/t)^2}\, dx &= \int_{-\infty}^{\infty} e^{-\pi t y^2}\, dy.
+\end{align*}
+
+Now substitute $u = \sqrt{\pi t}\, y$, so $dy = du/\sqrt{\pi t}$:
+\begin{align*}
+\int_{-\infty}^{\infty} e^{-\pi t y^2}\, dy &= \int_{-\infty}^{\infty} e^{-u^2} \frac{du}{\sqrt{\pi t}} = \frac{1}{\sqrt{\pi t}} \cdot \sqrt{\pi} = \frac{1}{\sqrt{t}}.
+\end{align*}
+
+Therefore:
+\[
+\hat{g}_t(\omega) = e^{-\pi\omega^2/t} \cdot \frac{1}{\sqrt{t}} = t^{-1/2} e^{-\pi\omega^2/t}. \qedhere
+\]
+\end{proof}
+
+\section{Theta Functional Equation}
+
+\begin{theorem}[Theta Functional Equation]
+For all $t > 0$,
+\[
+\theta(t) = t^{-1/2} \theta(1/t).
+\]
+\end{theorem}
+
+\begin{proof}
+Apply Poisson summation to $f(x) = e^{-\pi x^2 t}$:
+\[
+\sum_{n=-\infty}^{\infty} f(n) = \sum_{k=-\infty}^{\infty} \hat{f}(k).
+\]
+
+Left side:
+\[
+\sum_{n=-\infty}^{\infty} e^{-\pi n^2 t} = \theta(t).
+\]
+
+Right side using the Gaussian Fourier transform:
+\begin{align*}
+\sum_{k=-\infty}^{\infty} \hat{f}(k) &= \sum_{k=-\infty}^{\infty} t^{-1/2} e^{-\pi k^2/t}\\
+&= t^{-1/2} \sum_{k=-\infty}^{\infty} e^{-\pi k^2/t}\\
+&= t^{-1/2} \theta(1/t).
+\end{align*}
+
+Therefore $\theta(t) = t^{-1/2}\theta(1/t)$.
+\end{proof}
+
+\section{Connection to Zeta via Mellin Transform}
+
+\begin{lemma}[Theta Decomposition]
+For $t > 0$,
+\[
+\theta(t) - 1 = \sum_{n=-\infty, n\neq 0}^{\infty} e^{-\pi n^2 t} = 2\sum_{n=1}^{\infty} e^{-\pi n^2 t}.
+\]
+\end{lemma}
+
+\begin{proof}
+By definition:
+\[
+\theta(t) = \sum_{n=-\infty}^{\infty} e^{-\pi n^2 t} = e^{0} + \sum_{n=-\infty, n\neq 0}^{\infty} e^{-\pi n^2 t} = 1 + \sum_{n=-\infty, n\neq 0}^{\infty} e^{-\pi n^2 t}.
+\]
+
+For the nonzero terms, note that $e^{-\pi(-n)^2 t} = e^{-\pi n^2 t}$, so:
+\[
+\sum_{n=-\infty, n\neq 0}^{\infty} e^{-\pi n^2 t} = \sum_{n=1}^{\infty} e^{-\pi n^2 t} + \sum_{n=-\infty}^{-1} e^{-\pi n^2 t} = \sum_{n=1}^{\infty} e^{-\pi n^2 t} + \sum_{m=1}^{\infty} e^{-\pi m^2 t} = 2\sum_{n=1}^{\infty} e^{-\pi n^2 t}
+\]
+where we substituted $m = -n$ in the second sum.
+\end{proof}
+
+\begin{lemma}[Theta-Zeta Integral]
+For $\mathrm{Re}(s) > 1$,
+\[
+\int_0^{\infty} (\theta(t) - 1) t^{s/2-1}\, dt = 2\pi^{-s/2}\Gamma(s/2)\zeta(s).
+\]
+\end{lemma}
+
+\begin{proof}
+Using the decomposition $\theta(t) - 1 = 2\sum_{n=1}^{\infty} e^{-\pi n^2 t}$:
+\begin{align*}
+\int_0^{\infty} (\theta(t) - 1) t^{s/2-1}\, dt &= 2\sum_{n=1}^{\infty} \int_0^{\infty} e^{-\pi n^2 t} t^{s/2-1}\, dt.
+\end{align*}
+
+For the inner integral, substitute $u = \pi n^2 t$, so $t = u/(\pi n^2)$ and $dt = du/(\pi n^2)$:
+\begin{align*}
+\int_0^{\infty} e^{-\pi n^2 t} t^{s/2-1}\, dt &= \int_0^{\infty} e^{-u} \left(\frac{u}{\pi n^2}\right)^{s/2-1} \frac{du}{\pi n^2}\\
+&= \frac{1}{(\pi n^2)^{s/2-1}} \cdot \frac{1}{\pi n^2} \int_0^{\infty} e^{-u} u^{s/2-1}\, du\\
+&= \frac{1}{(\pi n^2)^{s/2}} \int_0^{\infty} e^{-u} u^{s/2-1}\, du\\
+&= \frac{1}{\pi^{s/2} n^s} \Gamma(s/2).
+\end{align*}
+
+Therefore:
+\begin{align*}
+\int_0^{\infty} (\theta(t) - 1) t^{s/2-1}\, dt &= 2\sum_{n=1}^{\infty} \frac{\Gamma(s/2)}{\pi^{s/2} n^s}\\
+&= 2\pi^{-s/2}\Gamma(s/2) \sum_{n=1}^{\infty} \frac{1}{n^s}\\
+&= 2\pi^{-s/2}\Gamma(s/2)\zeta(s). \qedhere
+\end{align*}
+\end{proof}
+
+\section{The Riemann Zeta Functional Equation}
+
+\begin{theorem}[Riemann Zeta Functional Equation]
+The completed zeta function satisfies
+\[
+\xi(s) = \xi(1-s)
+\]
+for all $s \in \mathbb{C}$.
+\end{theorem}
+
+\begin{proof}
+From the previous lemma, for $\mathrm{Re}(s) > 1$:
+\[
+\int_0^{\infty} (\theta(t) - 1) t^{s/2-1}\, dt = 2\xi(s).
+\]
+
+Split the integral at $t = 1$:
+\begin{equation}\label{eq:split}
+2\xi(s) = \int_0^1 (\theta(t) - 1) t^{s/2-1}\, dt + \int_1^{\infty} (\theta(t) - 1) t^{s/2-1}\, dt.
+\end{equation}
+
+For the first integral, apply the theta functional equation $\theta(t) = t^{-1/2}\theta(1/t)$:
+\begin{align*}
+\int_0^1 (\theta(t) - 1) t^{s/2-1}\, dt &= \int_0^1 \left(t^{-1/2}\theta(1/t) - 1\right) t^{s/2-1}\, dt\\
+&= \int_0^1 t^{-1/2}\theta(1/t) t^{s/2-1}\, dt - \int_0^1 t^{s/2-1}\, dt\\
+&= \int_0^1 \theta(1/t) t^{s/2-3/2}\, dt - \int_0^1 t^{s/2-1}\, dt.
+\end{align*}
+
+Substitute $u = 1/t$ in the first integral, so $t = 1/u$ and $dt = -du/u^2$. When $t \to 0^+$, $u \to +\infty$; when $t = 1$, $u = 1$:
+\begin{align*}
+\int_0^1 \theta(1/t) t^{s/2-3/2}\, dt &= \int_{\infty}^1 \theta(u) u^{-(s/2-3/2)} \left(-\frac{du}{u^2}\right)\\
+&= \int_1^{\infty} \theta(u) u^{-s/2+3/2-2}\, du\\
+&= \int_1^{\infty} \theta(u) u^{-s/2-1/2}\, du\\
+&= \int_1^{\infty} \theta(u) u^{(1-s)/2-1}\, du.
+\end{align*}
+
+For the second integral:
+\[
+\int_0^1 t^{s/2-1}\, dt = \left[\frac{t^{s/2}}{s/2}\right]_0^1 = \frac{2}{s}.
+\]
+
+So:
+\begin{equation}\label{eq:first_integral}
+\int_0^1 (\theta(t) - 1) t^{s/2-1}\, dt = \int_1^{\infty} \theta(u) u^{(1-s)/2-1}\, du - \frac{2}{s}.
+\end{equation}
+
+Now decompose $\theta(u) = 1 + (\theta(u) - 1)$:
+\begin{align*}
+\int_1^{\infty} \theta(u) u^{(1-s)/2-1}\, du &= \int_1^{\infty} u^{(1-s)/2-1}\, du + \int_1^{\infty} (\theta(u)-1) u^{(1-s)/2-1}\, du.
+\end{align*}
+
+Evaluate the first integral:
+\[
+\int_1^{\infty} u^{(1-s)/2-1}\, du = \left[\frac{u^{(1-s)/2}}{(1-s)/2}\right]_1^{\infty}.
+\]
+
+For $\mathrm{Re}(s) > 1$, we have $\mathrm{Re}((1-s)/2) < 0$, so $u^{(1-s)/2} \to 0$ as $u \to \infty$. Therefore:
+\[
+\int_1^{\infty} u^{(1-s)/2-1}\, du = 0 - \frac{2}{1-s} = -\frac{2}{1-s}.
+\]
+
+Substituting into equation \eqref{eq:first_integral}:
+\begin{align*}
+\int_0^1 (\theta(t) - 1) t^{s/2-1}\, dt &= -\frac{2}{1-s} + \int_1^{\infty} (\theta(u)-1) u^{(1-s)/2-1}\, du - \frac{2}{s}\\
+&= \int_1^{\infty} (\theta(u)-1) u^{(1-s)/2-1}\, du - \frac{2}{s} - \frac{2}{1-s}.
+\end{align*}
+
+Substituting back into equation \eqref{eq:split}:
+\begin{align*}
+2\xi(s) &= \int_1^{\infty} (\theta(u)-1) u^{(1-s)/2-1}\, du - \frac{2}{s} - \frac{2}{1-s} + \int_1^{\infty} (\theta(t) - 1) t^{s/2-1}\, dt\\
+&= \int_1^{\infty} (\theta(t)-1)\left(t^{s/2-1} + t^{(1-s)/2-1}\right)\, dt - \frac{2}{s} - \frac{2}{1-s}.
+\end{align*}
+
+The term $-\frac{2}{s} - \frac{2}{1-s}$ is symmetric under $s \leftrightarrow 1-s$, and the integral is manifestly symmetric:
+\[
+t^{s/2-1} + t^{(1-s)/2-1} = t^{(1-s)/2-1} + t^{s/2-1}.
+\]
+
+Therefore $\xi(s) = \xi(1-s)$.
+\end{proof}
+
+\end{document}

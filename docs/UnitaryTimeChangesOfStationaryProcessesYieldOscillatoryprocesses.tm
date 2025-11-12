@@ -245,11 +245,7 @@
     and covariance
 
     <\equation>
-      <label|eq:oscillatory_covariance>
-
-      <\aligned>
-        <tformat|<table|<row|<cell|R<rsub|Z><around|(|t,s|)><space|0.27em>=<space|0.27em>\<bbb-E\><space|-0.17em><around*|[|Z<around|(|t|)><space|0.17em><wide|Z<around|(|s|)>|\<bar\>>|]>>|<cell|=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)><space|0.17em><wide|A<rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>e<rsup|i*\<lambda\>*<around|(|t-s|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)><space|0.17em><wide|\<varphi\><rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>d*F<around|(|\<lambda\>|\<nobracket\>>>>>>
-      </aligned>
+      <label|eq:oscillatory_covariance><tabular|<tformat|<table|<row|<cell|R<rsub|Z><around|(|t,s|)><space|0.27em>=<space|0.27em>\<bbb-E\><space|-0.17em><around*|[|Z<around|(|t|)><space|0.17em><wide|Z<around|(|s|)>|\<bar\>>|]>>|<cell|=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)><space|0.17em><wide|A<rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>e<rsup|i*\<lambda\>*<around|(|t-s|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)><space|0.17em><wide|\<varphi\><rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>d*F<around|(|\<lambda\>|\<nobracket\>>>>>>><with|font-series|bold|>
     </equation>
 
     \;
