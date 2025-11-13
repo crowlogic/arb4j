@@ -1,0 +1,21 @@
+oscillatory process inversion
+completeness
+Inverse filter to generate the stationary dilation process corresponding to a given oscillatory process.
+Filter representation of oscillatory processes.
+inversion
+Cosmological speculation
+Orthogonal random measures of Gaussian processes are projection-valued measures of the corresponding Hilbert spaces.
+generated derivative method needst to have virtual bridge method created so it can return the specialized interface implementation rather than the generic Function interface
+Implement Caputo fractional derivative.
+publish Unitary time changes of stationary processes are oscillatory processes paper
+An Increasing Bijective Transformation of the Riemann-Siegel Theta Function
+use native java ints for literal constant integers when possible
+Implement superscript negative 1 for inverse function syntax
+RandomWaveSampler: implement this plot style for the random white noise measure
+fix null field names in Expression AST view
+implement polynomial integration-by-parts
+expression compiler optimization: move expression evaluation that doesnt depend on input to the evaluate method to the initialization method
+expression compiler: implement caching
+Expression Compiler: implement switching of order-of-integration via Fubini's or Tonelli's theorem
+expr compiler: Implement common subexpression elimination
+Create Fractional Riccati Differential Equation solver using Jacobi Tau Method

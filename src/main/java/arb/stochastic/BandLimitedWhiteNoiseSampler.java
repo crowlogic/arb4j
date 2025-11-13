@@ -1,8 +1,6 @@
 package arb.stochastic;
 
-import arb.FloatConstants;
-import arb.FloatInterval;
-import arb.Real;
+import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
@@ -24,13 +22,18 @@ public class BandLimitedWhiteNoiseSampler extends
                                           StationaryGaussianProcessSampler
 {
 
+  private static final FloatInterval support = new FloatInterval(FloatConstants.negOne,
+                                                                 FloatConstants.one);
+
   @Override
   protected FloatInterval getSpectralSupport()
   {
-    return new FloatInterval(FloatConstants.negOne,
-                             FloatConstants.one);
+    return support;
   }
 
+  /**
+   * The sinc kernel
+   */
   public RealFunction kernel = RealFunction.express("sin(t*2*π)/(t*2*π)");
 
   @Override
