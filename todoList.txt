@@ -19,3 +19,4 @@ expression compiler: implement caching
 Expression Compiler: implement switching of order-of-integration via Fubini's or Tonelli's theorem
 expr compiler: Implement common subexpression elimination
 Create Fractional Riccati Differential Equation solver using Jacobi Tau Method
+change Expression.generateFunctionInitializer so that it copies by value instead of reference #772
