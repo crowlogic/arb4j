@@ -12,9 +12,9 @@ import arb.functions.real.RiemannSiegelThetaFunction;
  */
 public class HardyThetaInversion
 {
-  private static final int           DEFAULT_PRECISION  = 128;
+  private static final int           DEFAULT_PRECISION = 128;
 
-  private RiemannSiegelThetaFunction riemannSiegelTheta = new RiemannSiegelThetaFunction();
+  private RiemannSiegelThetaFunction θ                 = new RiemannSiegelThetaFunction();
 
   public Real
          invertTheta(Real thetaValue, Real centerPoint, int seriesOrder, int precision, Real result)
@@ -28,20 +28,17 @@ public class HardyThetaInversion
     {
       arblib.arb_poly_revert_series(reversed, series, seriesOrder, precision);
 
-      reversed.evaluate(thetaValue.sub(riemannSiegelTheta.evaluate(centerPoint,
-                                                                   0,
-                                                                   precision,
-                                                                   thetaAtCenter),
-                                       precision,
-                                       delta),
-                        0,
-                        precision,
-                        result);
-      return result.add(centerPoint, precision);
+      return reversed.evaluate(thetaValue.sub(θ.evaluate(centerPoint, 0, precision, thetaAtCenter),
+                                              precision,
+                                              delta),
+                               0,
+                               precision,
+                               result)
+                     .add(centerPoint, precision);
     }
   }
 
-  RealFunction rsThetaDerivative = riemannSiegelTheta.derivative();
+  RealFunction rsThetaDerivative = θ.derivative();
 
   private RealPolynomial buildTaylorSeries(Real t, int order, int precision, RealPolynomial result)
   {
@@ -63,7 +60,7 @@ public class HardyThetaInversion
 
   private Real evaluateTheta(Real t, int precision, Real result)
   {
-    return riemannSiegelTheta.evaluate(t, 0, precision, result);
+    return θ.evaluate(t, 0, precision, result);
   }
 
   public static void main(String[] args)
