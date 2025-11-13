@@ -1,6 +1,7 @@
 package arb.functions.complex;
 
-import arb.*;
+import arb.Real;
+import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
@@ -19,40 +20,34 @@ public class HardyThetaInversion
   public Real
          invertTheta(Real thetaValue, Real centerPoint, int seriesOrder, int precision, Real result)
   {
-    try ( RealPolynomial series = buildTaylorSeries(centerPoint,
-                                                    seriesOrder,
-                                                    precision,
-                                                    new RealPolynomial());
+    try ( RealPolynomial series = buildTaylorSeries(centerPoint, precision, new RealPolynomial());
           RealPolynomial reversed = new RealPolynomial(); Real thetaAtCenter = new Real();
           Real delta = new Real())
     {
-      arblib.arb_poly_revert_series(reversed, series, seriesOrder, precision);
+      System.out.println("series=" + series);
 
-      return reversed.evaluate(thetaValue.sub(θ.evaluate(centerPoint, 0, precision, thetaAtCenter),
-                                              precision,
-                                              delta),
-                               0,
-                               precision,
-                               result)
-                     .add(centerPoint, precision);
+      return series.invert(seriesOrder, precision, reversed)
+                   .evaluate(thetaValue.sub(θ.evaluate(centerPoint, 0, precision, thetaAtCenter),
+                                            precision,
+                                            delta),
+                             0,
+                             precision,
+                             result)
+                   .add(centerPoint, precision);
     }
   }
 
   RealFunction rsThetaDerivative = θ.derivative();
 
-  private RealPolynomial buildTaylorSeries(Real t, int order, int precision, RealPolynomial result)
+  private RealPolynomial buildTaylorSeries(Real t, int precision, RealPolynomial result)
   {
-    result.fitLength(order);
+    result.setLength(2);
+    result.fitLength(2);
 
     try ( Real coeff = new Real())
     {
       result.get(0).zero();
       result.set(1, rsThetaDerivative.evaluate(t, 0, precision, coeff));
-
-      for (int n = 2; n < order; n++)
-      {
-        result.get(n).zero();
-      }
 
       return result;
     }

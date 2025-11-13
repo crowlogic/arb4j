@@ -100,7 +100,13 @@ import arb.functions.real.RealFunction;
   {
     return differentiate(get(0).bits(), new RealPolynomial());
   }
-    
+
+  public RealPolynomial invert(int order, int bits, RealPolynomial result)
+  {
+    arblib.arb_poly_revert_series(result, this, order, bits);
+    return result;
+  }
+      
  @Override
   public int
          dim()
