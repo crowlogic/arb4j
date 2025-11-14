@@ -55,39 +55,43 @@
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-5>>
 
+    <with|par-left|1tab|1.4<space|2spc>Operator Representations
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-6>>
+
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>Unitarily
     Time-Changed Stationary Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-6><vspace|0.5fn>
+    <no-break><pageref|auto-7><vspace|0.5fn>
 
     <with|par-left|1tab|2.1<space|2spc>Unitary time-change operator
     <with|mode|math|U<rsub|\<theta\>>*f> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-7>>
+    <no-break><pageref|auto-8>>
 
     <with|par-left|1tab|2.2<space|2spc>Time-Varying (Convolution) Filter
     Representations <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-8>>
+    <no-break><pageref|auto-9>>
 
     <with|par-left|2tab|2.2.1<space|2spc>The Oscillatory Subclass
     <with|mode|math|Z<around*|(|t|)>=U<rsub|\<theta\>> X<around*|(|t|)>>
     \ <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-9>>
+    <no-break><pageref|auto-10>>
 
     <with|par-left|1tab|2.3<space|2spc>Transformation of stationary to
     oscillatory processes via <with|mode|math|U<rsub|\<theta\>>>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-10>>
+    <no-break><pageref|auto-11>>
 
     <with|par-left|1tab|2.4<space|2spc>Covariance operator conjugation
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-11>>
+    <no-break><pageref|auto-12>>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|3<space|2spc>Zero
     Localization> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-12><vspace|0.5fn>
+    <no-break><pageref|auto-13><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-13><vspace|0.5fn>
+    <no-break><pageref|auto-14><vspace|0.5fn>
   </table-of-contents>
 
   <section|Gaussian Processes>
@@ -417,6 +421,10 @@
     yields <eqref|eq:oscillatory_covariance>
   </proof>
 
+  <subsection|Operator Representations>
+
+  <cite|characterizationOscillatoryProcesses>
+
   <section|Unitarily Time-Changed Stationary
   Processes><label|sec:stationary_timechange>
 
@@ -666,14 +674,19 @@
   \;
 
   <\bibliography|bib|tm-plain|refs>
-    <\bib-list|2>
+    <\bib-list|3>
       <bibitem*|1><label|bib-stationaryAndRelatedStochasticProcesses>Harald
       Cramér<localize| and >M.R.<nbsp>Leadbetter.
       <newblock><with|font-shape|italic|Stationary and Related Processes:
       Sample Function Properties and Their Applications>. <newblock>Wiley
       Series in Probability and Mathematical Statistics. 1967.<newblock>
 
-      <bibitem*|2><label|bib-evolutionarySpectraAndNonStationaryProcesses>Maurice<nbsp>B
+      <bibitem*|2><label|bib-characterizationOscillatoryProcesses>V.<nbsp>Mandrekar.
+      <newblock>A characterization of oscillatory processes and their
+      prediction. <newblock><with|font-shape|italic|Proceedings of the
+      American Mathematical Society>, 32(1):280\U284, 1972.<newblock>
+
+      <bibitem*|3><label|bib-evolutionarySpectraAndNonStationaryProcesses>Maurice<nbsp>B
       Priestley. <newblock>Evolutionary spectra and non-stationary processes.
       <newblock><with|font-shape|italic|Journal of the Royal Statistical
       Society: Series B (Methodological)>, 27(2):204\U229, 1965.<newblock>
@@ -693,40 +706,42 @@
 
 <\references>
   <\collection>
-    <associate|UTCovar|<tuple|40|8>>
+    <associate|UTCovar|<tuple|40|7>>
     <associate|auto-1|<tuple|1|2>>
-    <associate|auto-10|<tuple|2.3|8>>
-    <associate|auto-11|<tuple|2.4|9>>
-    <associate|auto-12|<tuple|3|9>>
-    <associate|auto-13|<tuple|47|10>>
+    <associate|auto-10|<tuple|2.2.1|6>>
+    <associate|auto-11|<tuple|2.3|7>>
+    <associate|auto-12|<tuple|2.4|8>>
+    <associate|auto-13|<tuple|3|9>>
+    <associate|auto-14|<tuple|47|9>>
     <associate|auto-2|<tuple|1.1|2>>
     <associate|auto-3|<tuple|1.2|2>>
     <associate|auto-4|<tuple|1.2.1|2>>
     <associate|auto-5|<tuple|1.3|3>>
-    <associate|auto-6|<tuple|2|6>>
-    <associate|auto-7|<tuple|2.1|6>>
-    <associate|auto-8|<tuple|2.2|6>>
-    <associate|auto-9|<tuple|2.2.1|6>>
-    <associate|bib-evolutionarySpectraAndNonStationaryProcesses|<tuple|2|10>>
-    <associate|bib-stationaryAndRelatedStochasticProcesses|<tuple|1|10>>
+    <associate|auto-6|<tuple|1.4|6>>
+    <associate|auto-7|<tuple|2|6>>
+    <associate|auto-8|<tuple|2.1|6>>
+    <associate|auto-9|<tuple|2.2|6>>
+    <associate|bib-characterizationOscillatoryProcesses|<tuple|2|9>>
+    <associate|bib-evolutionarySpectraAndNonStationaryProcesses|<tuple|3|9>>
+    <associate|bib-stationaryAndRelatedStochasticProcesses|<tuple|1|9>>
     <associate|cor:evol_spec|<tuple|15|8>>
     <associate|def:L2loc|<tuple|3|2>>
     <associate|def:cramer|<tuple|2|2>>
     <associate|def:gaussian_process|<tuple|1|2>>
     <associate|def:osc_proc|<tuple|6|3>>
     <associate|def:zeromeasure|<tuple|17|9>>
-    <associate|eq:K_def|<tuple|43|9>>
-    <associate|eq:K_theta_def|<tuple|44|9>>
+    <associate|eq:K_def|<tuple|43|8>>
+    <associate|eq:K_theta_def|<tuple|44|8>>
     <associate|eq:L2_isometry_extension|<tuple|27|5>>
     <associate|eq:L2_limit_def|<tuple|26|5>>
-    <associate|eq:T_K_def|<tuple|42|9>>
+    <associate|eq:T_K_def|<tuple|42|8>>
     <associate|eq:U_theta_def|<tuple|30|6>>
     <associate|eq:U_theta_inverse|<tuple|31|6>>
-    <associate|eq:Yab_def|<tuple|6|2>>
-    <associate|eq:Z_def|<tuple|37|8>>
+    <associate|eq:Yab_def|<tuple|6|3>>
+    <associate|eq:Z_def|<tuple|37|7>>
     <associate|eq:Z_transformation|<tuple|33|7>>
     <associate|eq:cauchy_sequence|<tuple|25|5>>
-    <associate|eq:conjugation|<tuple|45|9>>
+    <associate|eq:conjugation|<tuple|45|8>>
     <associate|eq:covariance_kernel|<tuple|1|2>>
     <associate|eq:cramer_representation|<tuple|2|2>>
     <associate|eq:evolutionary_spectrum|<tuple|41|8>>
@@ -735,7 +750,7 @@
     <associate|eq:finite_variance|<tuple|5|2>>
     <associate|eq:forward_kernel|<tuple|34|7>>
     <associate|eq:gain_L2|<tuple|11|3>>
-    <associate|eq:gain_function_Z|<tuple|39|8>>
+    <associate|eq:gain_function_Z|<tuple|39|7>>
     <associate|eq:gain_symmetry|<tuple|18|4>>
     <associate|eq:integral_simple|<tuple|23|5>>
     <associate|eq:inverse_kernel|<tuple|35|7>>
@@ -747,7 +762,7 @@
     <associate|eq:osc_symmetry|<tuple|19|4>>
     <associate|eq:oscillatory_covariance|<tuple|15|3>>
     <associate|eq:oscillatory_function|<tuple|12|3>>
-    <associate|eq:oscillatory_function_Z|<tuple|38|8>>
+    <associate|eq:oscillatory_function_Z|<tuple|38|7>>
     <associate|eq:oscillatory_process|<tuple|13|3>>
     <associate|eq:oscillatory_well_defined|<tuple|21|4>>
     <associate|eq:simple_function|<tuple|22|5>>
@@ -755,12 +770,12 @@
     <associate|eq:stationary_covariance|<tuple|3|2>>
     <associate|eq:time_dependent_spectrum|<tuple|20|4>>
     <associate|eq:tonelli_application|<tuple|7|3>>
-    <associate|prop:conjugation|<tuple|16|9>>
+    <associate|prop:conjugation|<tuple|16|8>>
     <associate|rem:L2loc_properties|<tuple|4|2>>
     <associate|sec:HP|<tuple|3|9>>
     <associate|sec:oscillatory|<tuple|1.3|3>>
     <associate|sec:stationary_timechange|<tuple|2|6>>
-    <associate|thm:Utheta_to_osc|<tuple|14|8>>
+    <associate|thm:Utheta_to_osc|<tuple|14|7>>
     <associate|thm:existence_osc|<tuple|10|4>>
     <associate|thm:inverse_filter|<tuple|13|7>>
     <associate|thm:local_unitarity|<tuple|11|6>>
@@ -775,6 +790,8 @@
       stationaryAndRelatedStochasticProcesses
 
       evolutionarySpectraAndNonStationaryProcesses
+
+      characterizationOscillatoryProcesses
     </associate>
     <\associate|toc>
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Gaussian
@@ -797,40 +814,44 @@
       Processes <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-5>>
 
+      <with|par-left|<quote|1tab>|1.4<space|2spc>Operator Representations
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-6>>
+
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Unitarily
       Time-Changed Stationary Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-6><vspace|0.5fn>
+      <no-break><pageref|auto-7><vspace|0.5fn>
 
       <with|par-left|<quote|1tab>|2.1<space|2spc>Unitary time-change operator
       <with|mode|<quote|math>|U<rsub|\<theta\>>*f>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-7>>
+      <no-break><pageref|auto-8>>
 
       <with|par-left|<quote|1tab>|2.2<space|2spc>Time-Varying (Convolution)
       Filter Representations <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-8>>
+      <no-break><pageref|auto-9>>
 
       <with|par-left|<quote|2tab>|2.2.1<space|2spc>The Oscillatory Subclass
       <with|mode|<quote|math>|Z<around*|(|t|)>=U<rsub|\<theta\>>
       X<around*|(|t|)>> \ <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-9>>
+      <no-break><pageref|auto-10>>
 
       <with|par-left|<quote|1tab>|2.3<space|2spc>Transformation of stationary
       to oscillatory processes via <with|mode|<quote|math>|U<rsub|\<theta\>>>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-10>>
+      <no-break><pageref|auto-11>>
 
       <with|par-left|<quote|1tab>|2.4<space|2spc>Covariance operator
       conjugation <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-11>>
+      <no-break><pageref|auto-12>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>Zero
       Localization> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-12><vspace|0.5fn>
+      <no-break><pageref|auto-13><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-13><vspace|0.5fn>
+      <no-break><pageref|auto-14><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>

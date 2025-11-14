@@ -5,8 +5,13 @@
 
 %%%%%%%%%% Start TeXmacs macros
 \newcommand{\assign}{:=}
+\newcommand{\cdummy}{\cdot}
+\newcommand{\mathd}{\mathrm{d}}
+\newcommand{\tmmathbf}[1]{\ensuremath{\boldsymbol{#1}}}
 \newcommand{\tmop}[1]{\ensuremath{\operatorname{#1}}}
+\newcommand{\tmstrong}[1]{\textbf{#1}}
 \newcommand{\tmtextbf}[1]{\text{{\bfseries{#1}}}}
+\newcommand{\tmtextit}[1]{\text{{\itshape{#1}}}}
 \newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
 \newtheorem{corollary}{Corollary}
 \newtheorem{definition}{Definition}
@@ -34,24 +39,25 @@
   functions that are locally square-integrable (meaning over compact sets).
   Applying $U_{\theta}$ to the Cram{\'e}r spectral representation of a
   stationary process $X (t)$ produces the transformed process $Z (t) =
-  U_{\theta} X (t) = \sqrt{\dot{\theta} (t)} X (\theta (t)) =
-  \sqrt{\dot{\theta} (t)}  \int_{\mathbb{R}} e^{i \lambda \theta (t)} d \Phi
-  (\lambda)$, which is an oscillatory process in the sense of Priestley with
-  oscillatory function $\varphi_t (\lambda) = \sqrt{\dot{\theta} (t)} e^{i
-  \lambda \theta (t)}$, evolutionary spectrum $dF_t (\lambda) = \dot{\theta}
-  (t) \tmop{dF} (\lambda)$, and covariance kernel $K_Z (t, s) =
-  \sqrt{\dot{\theta} (t)  \dot{\theta} (s)} K_X (\theta (t), \theta (s))$
-  where $K_X$ is the stationary covariance of $X (t) = \int_{\mathbb{R}} e^{i
-  \lambda t} d \Phi (\lambda)$, and expected zero-counting function
+  U_{\theta} X (t) = \sqrt{\dot{\theta} (t)}  \hspace{0.17em} X (\theta (t)) =
+  \sqrt{\dot{\theta} (t)}  \int_{\mathbb{R}} e^{i \lambda \theta (t)} 
+  \hspace{0.17em} d \Phi (\lambda)$, which is an oscillatory process in the
+  sense of Priestley with oscillatory function $\varphi_t (\lambda) =
+  \sqrt{\dot{\theta} (t)}  \hspace{0.17em} e^{i \lambda \theta (t)}$,
+  evolutionary spectrum $dF_t (\lambda) = \dot{\theta} (t)  \hspace{0.17em} dF
+  (\lambda)$, and covariance kernel $K_Z (t, s) = \sqrt{\dot{\theta} (t) 
+  \dot{\theta} (s)}  \hspace{0.17em} K_X (\theta (t), \theta (s))$ where $K_X$
+  is the stationary covariance of $X (t) = \int_{\mathbb{R}} e^{i \lambda t} 
+  \hspace{0.17em} d \Phi (\lambda)$, and the expected zero-counting function
   $\mathbb{E} [N_{[a, b]}]$ of the oscillatory process paths equals $\sqrt{-
-  \ddot{K} (0)}  (\theta (a) - \theta (b))$. The sample paths of any
-  non-degenerate second-order stationary process are locally square
+  \ddot{K} (0)}  \hspace{0.17em} (\theta (a) - \theta (b))$. The sample paths
+  of any non-degenerate second-order stationary process are locally square
   integrable, making the unitary time-change operator $U_{\theta}$ applicable
   to typical realizations. A zero-localization measure $d \mu (t) = \delta (Z
-  (t)) | \dot{Z} (t) | dt$ induces a Hilbert space $L^2 (\mu)$ on the zero set
-  of each oscillatory process realization $Z (t)$, and the multiplication
-  operator $(Lf) (t) = tf (t)$ has simple pure point spectrum equal to the
-  zero crossing set of $Z$.
+  (t)) \hspace{0.17em} | \dot{Z} (t) |  \hspace{0.17em} dt$ induces a Hilbert
+  space $L^2 (\mu)$ on the zero set of each oscillatory process realization $Z
+  (t)$, and the multiplication operator $(Lf) (t) = tf (t)$ has simple pure
+  point spectrum equal to the zero crossing set of $Z$
 \end{abstract}
 
 {\tableofcontents}
@@ -75,566 +81,360 @@
   \end{equation}
   For any finite $(t_i)_{i = 1}^n \subset T$, the matrix $K_{ij} = K (t_i,
   t_j)$ is symmetric positive semidefinite, and a Gaussian process is
-  completely determined in law by $m$ and $K$.
+  completely determined in law by $m$ and $K$
 \end{definition}
 
 \subsection{Stationary processes}
 
 \begin{definition}
-  \label{def:cramer}\tmtextbf{[Cram{\'e}r spectral representation]} A
-  zero-mean stationary process $X$ with spectral measure $F$ admits the sample
-  path representation
+  \label{def:cramer}\tmtextbf{[Cram{\'e}r spectral
+  representation]}{\cite{stationaryAndRelatedStochasticProcesses}} A zero-mean
+  stationary process $X$ with spectral measure $F$ admits the sample path
+  representation
   \begin{equation}
     \label{eq:cramer_representation} X (t) = \int_{\mathbb{R}} e^{i \lambda t}
-    d \Phi (\lambda)
+    \hspace{0.17em} d \Phi (\lambda)
   \end{equation}
   which has covariance
   \begin{equation}
     \label{eq:stationary_covariance} R_X  (t - s) = \int_{\mathbb{R}} e^{i
-    \lambda (t - s)} dF (\lambda)
+    \lambda (t - s)}  \hspace{0.17em} dF (\lambda)
   \end{equation}
 \end{definition}
 
-\subsubsection{Sample Path Realizations}
+\subsubsection{Sample path realizations}
 
 \begin{definition}
   \label{def:L2loc}\tmtextbf{[Locally square-integrable functions]} Define
   \begin{equation}
-    L^2_{\tmop{loc}} (\mathbb{R}) \assign \left\{ f : \mathbb{R} \to
-    \mathbb{C}: \int_K |f (t) |^2 dt < \infty \text{for every compact } K
-    \subseteq \mathbb{R} \right\}
+    L^2_{\mathrm{loc}} (\mathbb{R}) \assign \left\{ f : \mathbb{R} \to
+    \mathbb{C} \hspace{0.17em} : \hspace{0.17em} \int_K |f (t) |^2 
+    \hspace{0.17em} dt < \infty \text{for every compact } K \subseteq
+    \mathbb{R} \right\}
   \end{equation}
 \end{definition}
 
 \begin{remark}
   \label{rem:L2loc_properties}Every bounded measurable set in $\mathbb{R}$ is
-  compact or contained in a compact set; hence $L^2_{\tmop{loc}} (\mathbb{R})$
-  contains functions that are square-integrable on every bounded interval,
-  including functions with polynomial growth at infinity.
+  compact or contained in a compact set; hence $L^2_{\mathrm{loc}}
+  (\mathbb{R})$ contains functions that are square-integrable on every bounded
+  interval, including functions with polynomial growth at infinity
 \end{remark}
 
 \begin{theorem}
-  \label{thm:paths_loc}\tmtextbf{[Sample paths in $L^2_{\tmop{loc}}
+  \label{thm:paths_loc}\tmtextbf{[Sample paths in $L^2_{\mathrm{loc}}
   (\mathbb{R})$]} Let $\{X (t)\}_{t \in \mathbb{R}}$ be a second-order
   stationary process with
   \begin{equation}
     \label{eq:finite_variance} \sigma^2 \assign \mathbb{E} [X (t)^2] < \infty
   \end{equation}
-  Then almost every sample path lies in $L^2_{\tmop{loc}} (\mathbb{R})$.
+  Then almost every sample path lies in $L^2_{\mathrm{loc}} (\mathbb{R})$
 \end{theorem}
 
 \begin{proof}
   Fix an arbitrary bounded interval $[a, b] \subset \mathbb{R}$ with $a < b$.
-  Define the random variable
+  Define
   \begin{equation}
-    \label{eq:Yab_def} Y_{[a, b]} \assign \int_a^b X (t)^2 dt
+    \label{eq:Yab_def} Y_{[a, b]} \assign \int_a^b X (t)^2  \hspace{0.17em} dt
   \end{equation}
-  \begin{enumerate}
-    \item By Tonelli's theorem, since $X (t)^2 \geq 0$,
-    \begin{equation}
-      \label{eq:tonelli_application} \mathbb{E} [Y_{[a, b]}] =\mathbb{E}
-      \left[ \int_a^b X (t)^2 dt \right] = \int_a^b \mathbb{E} [X (t)^2] dt
-    \end{equation}
-    \item By stationarity of $X$, $\mathbb{E} [X (t)^2] = \sigma^2$ for all $t
-    \in \mathbb{R}$. Therefore
-    \begin{equation}
-      \label{eq:expectation_Yab} \mathbb{E} [Y_{[a, b]}] = \int_a^b \sigma^2
-      dt = \sigma^2  (b - a)
-    \end{equation}
-    \item Since $b - a < \infty$ and $\sigma^2 < \infty$ by assumption
-    \eqref{eq:finite_variance},
-    \begin{equation}
-      \label{eq:Yab_finite_expectation} \mathbb{E} [Y_{[a, b]}] < \infty
-    \end{equation}
-    \item By Markov's inequality, for any $M > 0$,
-    \begin{equation}
-      \label{eq:markov_inequality} \mathbb{P} (Y_{[a, b]} > M) \leq
-      \frac{\mathbb{E} [Y_{[a, b]}]}{M} = \frac{\sigma^2  (b - a)}{M}
-    \end{equation}
-    \item Taking $M \to \infty$ in \eqref{eq:markov_inequality},
-    \begin{equation}
-      \label{eq:Yab_finite_probability} \mathbb{P} (Y_{[a, b]} < \infty) = 1
-    \end{equation}
-    \item Now let $K \subset \mathbb{R}$ be an arbitrary compact set. Since
-    $K$ is compact in $\mathbb{R}$, it is closed and bounded. Therefore there
-    exists $N > 0$ such that
-    \begin{equation}
-      \label{eq:compact_bounded} K \subseteq [- N, N]
-    \end{equation}
-    \item By \eqref{eq:Yab_finite_probability} applied to $[a, b] = [- N, N]$,
-    \begin{equation}
-      \label{eq:interval_N_finite} \mathbb{P} \left( \int_{- N}^N X (t)^2 dt <
-      \infty \right) = 1
-    \end{equation}
-    \item Since $K \subseteq [- N, N]$ by \eqref{eq:compact_bounded},
-    \begin{equation}
-      \label{eq:K_integral_bound} \int_K X (t)^2 dt \leq \int_{- N}^N X (t)^2
-      dt
-    \end{equation}
-    \item Combining \eqref{eq:interval_N_finite} and
-    \eqref{eq:K_integral_bound},
-    \begin{equation}
-      \label{eq:K_finite} \mathbb{P} \left( \int_K X (t)^2 dt < \infty \right)
-      = 1
-    \end{equation}
-    \item Since $K$ was arbitrary, \eqref{eq:K_finite} holds for every compact
-    set $K \subset \mathbb{R}$. Therefore, almost every sample path $t \mapsto
-    X (t, \omega)$ satisfies
-    \begin{equation}
-      \label{eq:sample_path_L2loc} \int_K |X (t, \omega) |^2 dt < \infty \quad
-      \forall \text{compact } K \subset \mathbb{R}
-    \end{equation}
-    which means almost every sample path lies in $L^2_{\tmop{loc}}
-    (\mathbb{R})$.
-  \end{enumerate}
+  By Tonelli's theorem, since $X (t)^2 \ge 0$,
+  \begin{equation}
+    \label{eq:tonelli_application} \mathbb{E} [Y_{[a, b]}] =\mathbb{E}
+    \hspace{-0.17em} \left[ \int_a^b X (t)^2  \hspace{0.17em} dt \right] =
+    \int_a^b \mathbb{E} [X (t)^2]  \hspace{0.17em} dt
+  \end{equation}
+  By stationarity, $\mathbb{E} [X (t)^2] = \sigma^2$ for all $t$, hence
+  \begin{equation}
+    \label{eq:expectation_Yab} \mathbb{E} [Y_{[a, b]}] = \sigma^2  (b - a) <
+    \infty
+  \end{equation}
+  Markov's inequality yields, for $M > 0$,
+  \begin{equation}
+    \label{eq:markov_inequality} \mathbb{P} (Y_{[a, b]} > M) \le
+    \frac{\mathbb{E} [Y_{[a, b]}]}{M} = \frac{\sigma^2  (b - a)}{M}
+  \end{equation}
+  and letting $M \to \infty$ gives $\mathbb{P} (Y_{[a, b]} < \infty) = 1$. Now
+  let $K \subset \mathbb{R}$ be compact, so $K \subseteq [- N, N]$ for some $N
+  > 0$. Then
+  \begin{equation}
+    \int_K X (t)^2  \hspace{0.17em} dt \le \int_{- N}^N X (t)^2 
+    \hspace{0.17em} dt < \infty \quad \text{a.s.}
+  \end{equation}
+  hence almost every path satisfies $\int_K |X (t, \omega) |^2 
+  \hspace{0.17em} dt < \infty$ for every compact $K$, i.e. $X (\cdummy,
+  \omega) \in L^2_{\mathrm{loc}} (\mathbb{R})$
 \end{proof}
 
 \subsection{(Non-Stationary) Oscillatory Processes}\label{sec:oscillatory}
 
 \begin{definition}
-  \label{def:osc_proc}\tmtextbf{[Oscillatory process]} Let $F$ be a finite
-  nonnegative Borel measure on $\mathbb{R}$. Let
+  \label{def:osc_proc}\tmtextbf{[Oscillatory
+  process]}{\cite{evolutionarySpectraAndNonStationaryProcesses}} Let $F$ be a
+  finite nonnegative Borel measure on $\mathbb{R}$. Let
   \begin{equation}
-    \label{eq:gain_L2} A_t \in L^2 (F) \quad \forall t \in \mathbb{R}
+    \label{eq:gain_L2} A_t \in L^2 (F) \quad \forall \hspace{0.17em} t \in
+    \mathbb{R}
   \end{equation}
   be the gain function and
   \begin{equation}
-    \label{eq:oscillatory_function} \varphi_t (\lambda) = A_t (\lambda) e^{i
-    \lambda t}
+    \label{eq:oscillatory_function} \varphi_t (\lambda) = A_t (\lambda) 
+    \hspace{0.17em} e^{i \lambda t}
   \end{equation}
-  be the corresponding oscillatory function then an oscillatory process is a
-  stochastic process which can be represented as
+  the corresponding oscillatory function. An oscillatory process is a
+  stochastic process represented as
   \begin{equation}
-    \label{eq:oscillatory_process} Z (t) = \int_{\mathbb{R}} \varphi_t
-    (\lambda) d \Phi (\lambda) = \int_{\mathbb{R}} A_t (\lambda) e^{i \lambda
-    t} d \Phi (\lambda)
+    \label{eq:oscillatory_process} Z (t) \hspace{0.27em} = \hspace{0.27em}
+    \int_{\mathbb{R}} \varphi_t (\lambda)  \hspace{0.17em} d \Phi (\lambda)
+    \hspace{0.27em} = \hspace{0.27em} \int_{\mathbb{R}} A_t (\lambda) 
+    \hspace{0.17em} e^{i \lambda t}  \hspace{0.17em} d \Phi (\lambda)
   \end{equation}
   where $\Phi$ is a complex orthogonal random measure with spectral measure
-  $F$ which satisfies the relation
+  $F$ satisfying
   \begin{equation}
-    \label{eq:orthogonality_phi} d\mathbb{E} [\Phi (\lambda) \overline{\Phi
-    (\mu)}] = \delta (\lambda - \mu) dF (\lambda)
+    \label{eq:orthogonality_phi} d\mathbb{E} \hspace{-0.17em} \left[ \Phi
+    (\lambda) \hspace{0.17em} \overline{\Phi (\mu)} \right] \hspace{0.27em} =
+    \hspace{0.27em} \delta (\lambda - \mu)  \hspace{0.17em} dF (\lambda)
   \end{equation}
-  and has the corresponding covariance kernel
+  and covariance
   \begin{equation}
-    \label{eq:oscillatory_covariance} R_Z (t, s) =\mathbb{E} [Z (t)
-    \overline{Z (s)}] = \int_{\mathbb{R}} A_t (\lambda) \overline{A_s
-    (\lambda)} e^{i \lambda (t - s)} dF (\lambda) = \int_{\mathbb{R}}
-    \varphi_t (\lambda) \overline{\varphi_s (\lambda)} dF (\lambda)
+    \label{eq:oscillatory_covariance} \begin{array}{ll}
+      R_Z (t, s) \hspace{0.27em} = \hspace{0.27em} \mathbb{E} \hspace{-0.17em}
+      \left[ Z (t) \hspace{0.17em} \overline{Z (s)} \right] & =
+      \int_{\mathbb{R}} A_t (\lambda) \hspace{0.17em} \overline{A_s (\lambda)}
+      \hspace{0.17em} e^{i \lambda (t - s)}  \hspace{0.17em} dF (\lambda)\\
+      & = \int_{\mathbb{R}} \varphi_t (\lambda) \hspace{0.17em}
+      \overline{\varphi_s (\lambda)} \hspace{0.17em} dF (\lambda
+    \end{array} \tmmathbf{}
+  \end{equation}
+  
+\end{definition}
+
+\begin{definition}
+  \label{cor:evol_spec}\tmtextbf{[Evolutionary spectrum]} The evolutionary
+  power spectral density of an oscillatory process is given by is
+  \begin{equation}
+    \begin{array}{ll}
+      \label{eq:evolutionary_spectrum} dF_t (\lambda) & = S_t (\lambda) \mathd
+      \lambda\\
+      & = |A_t (\lambda) |^2  \hspace{0.17em} dF (\lambda) \tmmathbf{}\\
+      & = |A_t (\lambda) |^2  \hspace{0.17em} S (\lambda) d \lambda
+    \end{array}
+  \end{equation}
+\end{definition}
+
+\begin{definition}
+  {\tmstrong{[Variance of evolutionary process]}} The variance of an
+  evolutionary process $Z (t)$ is given by integrating the evolutionary power
+  spectral density $S_t (\lambda)$ over all frequencues
+  \begin{equation}
+    \tmop{var} (Z (t)) = \int_{- \infty}^{\infty} S_t (\lambda ) \mathd
+    \lambda = \int_{- \infty}^{\infty} \mathd F_t (\lambda)
   \end{equation}
 \end{definition}
 
 \begin{theorem}
   \label{thm:realvaluedness}\tmtextbf{[Real-valuedness criterion for
   oscillatory processes]} Let $Z$ be an oscillatory process with oscillatory
-  function
+  function $\varphi_t (\lambda) = A_t (\lambda)  \hspace{0.17em} e^{i \lambda
+  t}$ and spectral measure $F$. Then $Z$ is real-valued if and only if
   \begin{equation}
-    \label{eq:osc_func_def} \varphi_t (\lambda) = A_t (\lambda) e^{i \lambda
-    t}
+    \label{eq:gain_symmetry} A_t  (- \lambda) = \overline{A_t (\lambda)} \quad
+    \text{for } F \text{-a.e. } \lambda \in \mathbb{R}
   \end{equation}
-  and spectral measure $F$. Then $Z$ is real-valued if and only if
-  \begin{equation}
-    \label{eq:gain_symmetry} A_t  (- \lambda) = \overline{A_t (\lambda)}
-  \end{equation}
-  for $F$-almost every $\lambda \in \mathbb{R}$, equivalently
+  equivalently
   \begin{equation}
     \label{eq:osc_symmetry} \varphi_t  (- \lambda) = \overline{\varphi_t
-    (\lambda)}
+    (\lambda)} \quad \text{for } F \text{-a.e. } \lambda \in \mathbb{R}
   \end{equation}
-  for $F$-almost every $\lambda \in \mathbb{R}$.
 \end{theorem}
 
 \begin{proof}
-  \begin{enumerate}
-    \item Assume $Z$ is real-valued. Then for all $t \in \mathbb{R}$,
-    \begin{equation}
-      \label{eq:real_valued_condition} Z (t) = \overline{Z (t)}
-    \end{equation}
-    \item From the oscillatory representation \eqref{eq:oscillatory_process},
-    \begin{equation}
-      \label{eq:Z_representation} Z (t) = \int_{\mathbb{R}} A_t (\lambda) e^{i
-      \lambda t} d \Phi (\lambda)
-    \end{equation}
-    \item Taking the complex conjugate of both sides of
-    \eqref{eq:Z_representation},
-    \begin{equation}
-      \label{eq:Z_conjugate} \overline{Z (t)} = \overline{\int_{\mathbb{R}}
-      A_t (\lambda) e^{i \lambda t} d \Phi (\lambda)} = \int_{\mathbb{R}}
-      \overline{A_t (\lambda)} e^{- i \lambda t} d \overline{\Phi (\lambda)}
-    \end{equation}
-    \item For a real-valued process, the orthogonal random measure must
-    satisfy the symmetry property
-    \begin{equation}
-      \label{eq:phi_symmetry} d \overline{\Phi (\lambda)} = - d \Phi (-
-      \lambda)
-    \end{equation}
-    \item Substituting \eqref{eq:phi_symmetry} into \eqref{eq:Z_conjugate},
-    \begin{equation}
-      \label{eq:Z_conjugate_substituted} \overline{Z (t)} = -
-      \int_{\mathbb{R}} \overline{A_t (\lambda)} e^{- i \lambda t} d \Phi (-
-      \lambda)
-    \end{equation}
-    \item Apply the change of variables $\mu = - \lambda$, so $d \Phi (-
-    \lambda) = - d \Phi (\mu)$ and $e^{- i \lambda t} = e^{i \mu t}$:
-    \begin{equation}
-      \label{eq:change_of_variables} \overline{Z (t)} = - \int_{\mathbb{R}}
-      \overline{A_t  (- \mu)} e^{i \mu t}  (- d \Phi (\mu)) =
-      \int_{\mathbb{R}} \overline{A_t  (- \mu)} e^{i \mu t} d \Phi (\mu)
-    \end{equation}
-    \item By \eqref{eq:real_valued_condition}, the right sides of
-    \eqref{eq:Z_representation} and \eqref{eq:change_of_variables} must be
-    equal:
-    \begin{equation}
-      \label{eq:integrand_equality} \int_{\mathbb{R}} A_t (\mu) e^{i \mu t} d
-      \Phi (\mu) = \int_{\mathbb{R}} \overline{A_t  (- \mu)} e^{i \mu t} d
-      \Phi (\mu)
-    \end{equation}
-    \item Since the stochastic integral representation is unique in $L^2 (F)$,
-    the integrands must be equal $F$-almost everywhere:
-    \begin{equation}
-      \label{eq:gain_equality} A_t (\lambda) = \overline{A_t  (- \lambda)}
-      \quad \text{for } F \text{-a.e. } \lambda
-    \end{equation}
-    \item This is equivalent to \eqref{eq:gain_symmetry}. From
-    \eqref{eq:osc_func_def},
-    \begin{equation}
-      \label{eq:osc_func_neg} \varphi_t  (- \lambda) = A_t  (- \lambda) e^{- i
-      \lambda t}
-    \end{equation}
-    \item Using \eqref{eq:gain_symmetry},
-    \begin{equation}
-      \label{eq:osc_func_conjugate} \varphi_t  (- \lambda) = \overline{A_t
-      (\lambda)} e^{- i \lambda t} = \overline{A_t (\lambda) e^{i \lambda t}}
-      = \overline{\varphi_t (\lambda)}
-    \end{equation}
-    establishing \eqref{eq:osc_symmetry}.
-    
-    \item Conversely, assume \eqref{eq:gain_symmetry} holds. Reversing the
-    steps from \eqref{eq:change_of_variables} to
-    \eqref{eq:real_valued_condition} shows that $\overline{Z (t)} = Z (t)$ for
-    all $t$, so $Z$ is real-valued.
-  \end{enumerate}
+  If $Z$ is real-valued, then $Z (t) = \overline{Z (t)}$ for all $t$. Taking
+  conjugates in the representation $Z (t) = \int \hspace{-0.17em} A_t
+  (\lambda) e^{i \lambda t}  \hspace{0.17em} d \Phi (\lambda)$ and using the
+  symmetry relation for the orthogonal random measure appropriate for
+  real-valued processes, a change of variable $\mu = - \lambda$ shows that the
+  $L^2 (F)$-integrands must agree $F$-a.e., i.e. $A_t (\lambda) =
+  \overline{A_t  (- \lambda)}$, which is equivalent to
+  \eqref{eq:gain_symmetry}. Using $\varphi_t (\lambda) = A_t (\lambda) e^{i
+  \lambda t}$ then gives \eqref{eq:osc_symmetry}. The converse follows by
+  reversing the steps
 \end{proof}
 
 \begin{theorem}
-  \label{thm:existence_osc}\tmtextbf{[Existence of Oscillatory Processes]} Let
-  $F$ be an absolutely continuous spectral measure and the gain function
+  \label{thm:existence_osc}\tmtextbf{[Existence of oscillatory processes with
+  explicit $L^2$-limit construction]} Let $F$ be an absolutely continuous
+  spectral measure and the gain function $A_t (\lambda) \in L^2 (F)$ for all
+  $t \in \mathbb{R}$, measurable jointly in $(t, \lambda)$. Define the
+  time-dependent spectrum
   \begin{equation}
-    \label{eq:gain_condition} A_t (\lambda) \in L^2 (F) \quad \forall t \in
-    \mathbb{R}
+    \label{eq:time_dependent_spectrum} S_t \assign \int_{\mathbb{R}} |A_t
+    (\lambda) |^2  \hspace{0.17em} dF (\lambda) \hspace{0.27em} =
+    \hspace{0.27em} \int_{\mathbb{R}} |A_t (\lambda) |^2  \hspace{0.17em} S
+    (\lambda)  \hspace{0.17em} d \lambda \hspace{0.27em} < \hspace{0.27em}
+    \infty
   \end{equation}
-  be measurable in both time and frequency then the time-dependent spectral
-  density is defined by
+  Then there exists a complex orthogonal random measure $\Phi$ with spectral
+  measure $F$ such that for each fixed $t$ the stochastic integral
   \begin{equation}
-    \label{eq:time_dependent_spectrum} S_t (\lambda) = \int_{\mathbb{R}} |A_t
-    (\lambda) |^2 dF (\lambda) < \infty = \int_{\mathbb{R}} |A_t (\lambda) |^2
-    S (\lambda) d \lambda
+    \label{eq:oscillatory_well_defined} Z (t) \hspace{0.27em} =
+    \hspace{0.27em} \int_{\mathbb{R}} A_t (\lambda)  \hspace{0.17em} e^{i
+    \lambda t}  \hspace{0.17em} d \Phi (\lambda)
   \end{equation}
-  and there exists a complex orthogonal random measure $\Phi$ with spectral
-  measure $F$ such that for each sample path $\omega_0 \in \Omega$
-  \begin{equation}
-    \label{eq:oscillatory_well_defined} Z (t, \omega_0) = \int_{\mathbb{R}}
-    A_t (\lambda) e^{i \lambda t} d \Phi (\lambda, \omega_0)
-  \end{equation}
-  is well-defined in $L^2 (\Omega)$ and has covariance $R_Z$ as in
-  \eqref{eq:oscillatory_covariance}.
+  is well-defined as an $L^2 (\Omega)$-limit and has covariance $R_Z$ as in
+  \eqref{eq:oscillatory_covariance}
 \end{theorem}
 
 \begin{proof}
-  \begin{enumerate}
-    \item Define the space of simple functions on $\mathbb{R}$: for disjoint
-    Borel sets $\{E_j \}_{j = 1}^n$ with $F (E_j) < \infty$ and coefficients
-    $\{c_j \}_{j = 1}^n \subset \mathbb{C}$,
-    \begin{equation}
-      \label{eq:simple_function} g (\lambda) = \sum_{j = 1}^n c_j 
-      \textbf{1}_{E_j} (\lambda)
-    \end{equation}
-    \item For simple functions, define the stochastic integral
-    \begin{equation}
-      \label{eq:integral_simple} \int_{\mathbb{R}} g (\lambda) d \Phi
-      (\lambda) = \sum_{j = 1}^n c_j \Phi (E_j)
-    \end{equation}
-    \item Compute the second moment:
-    \begin{equation}
-      \label{eq:second_moment_simple} \mathbb{E} \left[ \left|
-      \int_{\mathbb{R}} g (\lambda) d \Phi (\lambda) \right|^2 \right]
-      =\mathbb{E} \left[ \left| \sum_{j = 1}^n c_j \Phi (E_j) \right|^2
-      \right] =\mathbb{E} \left[ \sum_{j = 1}^n \sum_{k = 1}^n c_j
-      \overline{c_k} \Phi (E_j) \overline{\Phi (E_k)} \right]
-    \end{equation}
-    \item By linearity of expectation,
-    \begin{equation}
-      \label{eq:linearity_expectation} \mathbb{E} \left[ \sum_{j = 1}^n
-      \sum_{k = 1}^n c_j \overline{c_k} \Phi (E_j) \overline{\Phi (E_k)}
-      \right] = \sum_{j = 1}^n \sum_{k = 1}^n c_j \overline{c_k} \mathbb{E}
-      [\Phi (E_j) \overline{\Phi (E_k)}]
-    \end{equation}
-    \item By the orthogonality relation \eqref{eq:orthogonality_phi}, since
-    $E_j \cap E_k = \emptyset$ for $j \neq k$,
-    \begin{equation}
-      \label{eq:orthogonality_application} \mathbb{E} [\Phi (E_j)
-      \overline{\Phi (E_k)}] = \left\{\begin{array}{ll}
-        F (E_j) & \text{if } j = k\\
-        0 & \text{if } j \neq k
-      \end{array}\right.
-    \end{equation}
-    \item Substituting \eqref{eq:orthogonality_application} into
-    \eqref{eq:linearity_expectation},
-    \begin{equation}
-      \label{eq:isometry_simple} \sum_{j = 1}^n \sum_{k = 1}^n c_j
-      \overline{c_k} \mathbb{E} [\Phi (E_j) \overline{\Phi (E_k)}] = \sum_{j =
-      1}^n |c_j |^2 F (E_j)
-    \end{equation}
-    \item The right side of \eqref{eq:isometry_simple} equals
-    \begin{equation}
-      \label{eq:L2_norm_simple} \sum_{j = 1}^n |c_j |^2 F (E_j) =
-      \int_{\mathbb{R}} |g (\lambda) |^2 dF (\lambda)
-    \end{equation}
-    \item Therefore the isometry property holds for simple functions:
-    \begin{equation}
-      \label{eq:isometry_established} \mathbb{E} \left[ \left|
-      \int_{\mathbb{R}} g (\lambda) d \Phi (\lambda) \right|^2 \right] =
-      \int_{\mathbb{R}} |g (\lambda) |^2 dF (\lambda)
-    \end{equation}
-    \item The space of simple functions is dense in $L^2 (F)$. For any $h \in
-    L^2 (F)$ and $\epsilon > 0$, there exists a simple function $g$ such that
-    \begin{equation}
-      \label{eq:density_simple} \int_{\mathbb{R}} |h (\lambda) - g (\lambda)
-      |^2 dF (\lambda) < \epsilon
-    \end{equation}
-    \item For any $A_t \in L^2 (F)$, construct a sequence of simple functions
-    $\{g_n \}$ such that
-    \begin{equation}
-      \label{eq:simple_approximation} \lim_{n \to \infty}  \int_{\mathbb{R}}
-      |A_t (\lambda) - g_n (\lambda) |^2 dF (\lambda) = 0
-    \end{equation}
-    \item By the isometry \eqref{eq:isometry_established}, the corresponding
-    stochastic integrals form a Cauchy sequence in $L^2 (\Omega)$:
-    \begin{equation}
-      \label{eq:cauchy_sequence} \mathbb{E} \left[ \left| \int_{\mathbb{R}}
-      g_n (\lambda) d \Phi (\lambda) - \int_{\mathbb{R}} g_m (\lambda) d \Phi
-      (\lambda) \right|^2 \right] = \int_{\mathbb{R}} |g_n (\lambda) - g_m
-      (\lambda) |^2 dF (\lambda) \to 0
-    \end{equation}
-    as $n, m \to \infty$.
-    
-    \item Since $L^2 (\Omega)$ is complete, the limit
-    \begin{equation}
-      \label{eq:limit_definition} \int_{\mathbb{R}} A_t (\lambda) d \Phi
-      (\lambda) \assign \lim_{n \to \infty}  \int_{\mathbb{R}} g_n (\lambda) d
-      \Phi (\lambda)
-    \end{equation}
-    exists in the $L^2 (\Omega)$-sense (mean-square convergence), is
-    independent of the choice of approximating sequence, and inherits the
-    isometry property.
-    
-    \item Since $A_t \in L^2 (F)$ by assumption \eqref{eq:gain_condition}, and
-    $|e^{i \lambda t} | = 1$,
-    \begin{equation}
-      \label{eq:varphi_L2} \int_{\mathbb{R}} | \varphi_t (\lambda) |^2 dF
-      (\lambda) = \int_{\mathbb{R}} |A_t (\lambda) |^2 dF (\lambda) < \infty
-    \end{equation}
-    so $\varphi_t \in L^2 (F)$.
-    
-    \item Therefore
-    \begin{equation}
-      \label{eq:Z_well_defined} Z (t) = \int_{\mathbb{R}} \varphi_t (\lambda)
-      d \Phi (\lambda) = \int_{\mathbb{R}} A_t (\lambda) e^{i \lambda t} d
-      \Phi (\lambda)
-    \end{equation}
-    is well-defined in $L^2 (\Omega)$.
-    
-    \item To compute the covariance, use the sesquilinearity of the stochastic
-    integral:
-    \begin{equation}
-      \label{eq:covariance_computation} R_Z (t, s) =\mathbb{E} [Z (t)
-      \overline{Z (s)}] =\mathbb{E} \left[ \int_{\mathbb{R}} \varphi_t
-      (\lambda) d \Phi (\lambda) \overline{\int_{\mathbb{R}} \varphi_s (\mu) d
-      \Phi (\mu)} \right]
-    \end{equation}
-    \item By Fubini's theorem for stochastic integrals,
-    \begin{equation}
-      \label{eq:fubini_stochastic} \mathbb{E} \left[ \int_{\mathbb{R}}
-      \varphi_t (\lambda) d \Phi (\lambda) \overline{\int_{\mathbb{R}}
-      \varphi_s (\mu) d \Phi (\mu)} \right] = \int_{\mathbb{R}}
-      \int_{\mathbb{R}} \varphi_t (\lambda) \overline{\varphi_s (\mu)}
-      \mathbb{E} [d \Phi (\lambda) \overline{d \Phi (\mu)}]
-    \end{equation}
-    \item Using the orthogonality relation \eqref{eq:orthogonality_phi},
-    \begin{equation}
-      \label{eq:orthogonality_integral} \int_{\mathbb{R}} \int_{\mathbb{R}}
-      \varphi_t (\lambda) \overline{\varphi_s (\mu)} \delta (\lambda - \mu) dF
-      (\lambda) dF (\mu) = \int_{\mathbb{R}} \varphi_t (\lambda)
-      \overline{\varphi_s (\lambda)} dF (\lambda)
-    \end{equation}
-    \item Substituting the definition \eqref{eq:oscillatory_function},
-    \begin{equation}
-      \label{eq:covariance_final} R_Z (t, s) = \int_{\mathbb{R}} A_t (\lambda)
-      \overline{A_s (\lambda)} e^{i \lambda (t - s)} dF (\lambda)
-    \end{equation}
-    as claimed in \eqref{eq:oscillatory_covariance}.
-  \end{enumerate}
+  Step 1 (simple functions and isometry). Let $\mathsf{S}$ denote the set of
+  simple functions
+  \begin{equation}
+    \label{eq:simple_function} g (\lambda) \hspace{0.27em} = \hspace{0.27em}
+    \sum_{j = 1}^n c_j  \hspace{0.17em} \textbf{1}_{E_j} (\lambda)
+  \end{equation}
+  with disjoint Borel $E_j$ and $F (E_j) < \infty$, $c_j \in \mathbb{C}$.
+  Define the stochastic integral on $\mathsf{S}$ by
+  \begin{equation}
+    \label{eq:integral_simple} \int_{\mathbb{R}} g (\lambda)  \hspace{0.17em}
+    d \Phi (\lambda) \hspace{0.27em} \assign \hspace{0.27em} \sum_{j = 1}^n
+    c_j  \hspace{0.17em} \Phi (E_j)
+  \end{equation}
+  Using orthogonality of $\Phi$,
+  \begin{equation}
+    \label{eq:isometry_simple} \mathbb{E} \hspace{-0.17em} \left[ \left| \int
+    g \hspace{0.17em} d \Phi \right|^2 \right] = \sum_{j = 1}^n |c_j |^2 
+    \hspace{0.17em} F (E_j) = \int_{\mathbb{R}} |g (\lambda) |^2 
+    \hspace{0.17em} dF (\lambda)
+  \end{equation}
+  Thus the map $I : \mathsf{S} \to L^2 (\Omega)$, $I (g) = \int g
+  \hspace{0.17em} d \Phi$, is an isometry with respect to the $L^2 (F)$-norm.
+  
+  Step 2 (density and Cauchy property). Simple functions are dense in $L^2
+  (F)$: for any $h \in L^2 (F)$ there exists $g_n \in \mathsf{S}$ with $\|h -
+  g_n \|_{L^2 (F)} \to 0$. By \eqref{eq:isometry_simple},
+  \begin{equation}
+    \label{eq:cauchy_sequence} \mathbb{E} \hspace{-0.17em} \left[ \left| \int
+    g_n  \hspace{0.17em} d \Phi - \int g_m  \hspace{0.17em} d \Phi \right|^2
+    \right] = \|g_n - g_m \|_{L^2 (F)}^2 \hspace{0.27em} \xrightarrow[]{n, m
+    \to \infty} 0
+  \end{equation}
+  so $\left\{ \int g_n  \hspace{0.17em} d \Phi \right\}$ is Cauchy in $L^2
+  (\Omega)$.
+  
+  Step 3 (definition by $L^2$-limit and independence of approximating
+  sequence). Since $L^2 (\Omega)$ is complete, the limit exists. Define, for
+  $h \in L^2 (F)$,
+  \begin{equation}
+    \label{eq:L2_limit_def} \int_{\mathbb{R}} h (\lambda)  \hspace{0.17em} d
+    \Phi (\lambda) \hspace{0.27em} \assign \hspace{0.27em} \lim_{n \to \infty}
+    \int_{\mathbb{R}} g_n (\lambda)  \hspace{0.17em} d \Phi (\lambda)
+  \end{equation}
+  where $g_n \in \mathsf{S}$ and $\|h - g_n \|_{L^2 (F)} \to 0$. If $g_n$ and
+  $\tilde{g}_n$ are two such approximating sequences, then $\|g_n -
+  \tilde{g}_n \|_{L^2 (F)} \to 0$ and again by \eqref{eq:isometry_simple} the
+  corresponding integrals differ by an $L^2 (\Omega)$-null sequence, so the
+  limit is independent of the sequence.
+  
+  Step 4 (isometry and linearity extend). By continuity from
+  \eqref{eq:isometry_simple} and \eqref{eq:L2_limit_def},
+  \begin{equation}
+    \label{eq:L2_isometry_extension} \mathbb{E} \hspace{-0.17em} \left[ \left|
+    \int h \hspace{0.17em} d \Phi \right|^2 \right] = \int_{\mathbb{R}} |h
+    (\lambda) |^2  \hspace{0.17em} dF (\lambda)
+  \end{equation}
+  for $h \in L^2 (F)$, and the map $h \mapsto \int h \hspace{0.17em} d \Phi$
+  is linear and isometric.
+  
+  Step 5 (apply to $\varphi_t$). Since $|e^{i \lambda t} | = 1$, $\varphi_t
+  (\lambda) = A_t (\lambda)  \hspace{0.17em} e^{i \lambda t} \in L^2 (F)$ and
+  \begin{equation}
+    \int_{\mathbb{R}} | \varphi_t (\lambda) |^2  \hspace{0.17em} dF (\lambda)
+    = \int_{\mathbb{R}} |A_t (\lambda) |^2  \hspace{0.17em} dF (\lambda) = S_t
+    < \infty
+  \end{equation}
+  Hence $Z (t)$ in \eqref{eq:oscillatory_well_defined} is well-defined as the
+  $L^2 (\Omega)$-limit \eqref{eq:L2_limit_def} with $h = \varphi_t$. Computing
+  covariance via sesquilinearity together with \eqref{eq:orthogonality_phi}
+  yields \eqref{eq:oscillatory_covariance}
 \end{proof}
+
+\subsection{Operator Representations}
+
+{\cite{characterizationOscillatoryProcesses}}
 
 \section{Unitarily Time-Changed Stationary
 Processes}\label{sec:stationary_timechange}
 
-\subsection{Unitary Time-Change Operator $U_{\theta} f$}
+\subsection{Unitary time-change operator $U_{\theta} f$}
 
 \begin{theorem}
   \label{thm:local_unitarity}\tmtextbf{[Unitary time-change and local
-  unitarity]} Let the time-scaling function $\theta : \mathbb{R} \to
+  isometry]} Let the time-scaling function $\theta : \mathbb{R} \to
   \mathbb{R}$ be absolutely continuous, strictly increasing, and bijective,
   with
   \begin{equation}
-    \dot{\theta} (t) > 0 \label{pd}
+    \dot{\theta} (t) > 0
   \end{equation}
   almost everywhere and $\dot{\theta} (t) = 0$ only on sets of Lebesgue
   measure zero. For $f$ measurable, define
   \begin{equation}
-    \label{eq:U_theta_def} (U_{\theta} f) (t) = \sqrt{\dot{\theta} (t)} f
-    (\theta (t))
+    \label{eq:U_theta_def} (U_{\theta} f) (t) = \sqrt{\dot{\theta} (t)} 
+    \hspace{0.17em} f (\theta (t))
   \end{equation}
   Its inverse is given by
   \begin{equation}
     \label{eq:U_theta_inverse} (U_{\theta}^{- 1} g) (s) = \frac{g (\theta^{-
     1} (s))}{\sqrt{\dot{\theta} (\theta^{- 1} (s))}}
   \end{equation}
-  For every compact set $K \subseteq \mathbb{R}$ and $f \in L^2_{\tmop{loc}}
+  For every compact set $K \subseteq \mathbb{R}$ and $f \in L^2_{\mathrm{loc}}
   (\mathbb{R})$,
   \begin{equation}
-    \label{eq:local_isometry} \int_K | (U_{\theta} f) (t) |^2 dt =
-    \int_{\theta (K)} |f (s) |^2 ds
+    \label{eq:local_isometry} \int_K | (U_{\theta} f) (t) |^2 \hspace{0.17em}
+    dt = \int_{\theta (K)} |f (s) |^2  \hspace{0.17em} ds
   \end{equation}
   Moreover, $U_{\theta}^{- 1}$ is the inverse of $U_{\theta}$ on
-  $L^2_{\tmop{loc}} (\mathbb{R})$.
+  $L^2_{\mathrm{loc}} (\mathbb{R})$
 \end{theorem}
 
 \begin{proof}
-  \begin{enumerate}
-    \item Let $f \in L^2_{\tmop{loc}} (\mathbb{R})$ and let $K \subset
-    \mathbb{R}$ be compact. From the definition \eqref{eq:U_theta_def},
-    \begin{equation}
-      \label{eq:Utheta_norm_start} \int_K | (U_{\theta} f) (t) |^2 dt = \int_K
-      \left| \sqrt{\dot{\theta} (t)} f (\theta (t)) \right|^2 dt
-    \end{equation}
-    \item Expanding the square,
-    \begin{equation}
-      \label{eq:expand_square} \int_K \left| \sqrt{\dot{\theta} (t)} f (\theta
-      (t)) \right|^2 dt = \int_K \dot{\theta} (t) |f (\theta (t)) |^2 dt
-    \end{equation}
-    \item Since $\theta$ is absolutely continuous and strictly increasing,
-    $\theta' = \dot{\theta}$ exists almost everywhere and $\dot{\theta} (t) >
-    0$ a.e.
-    
-    \item Apply the change of variables $s = \theta (t)$. Then
-    \begin{equation}
-      \label{eq:change_var_differential} ds = \dot{\theta} (t) dt
-    \end{equation}
-    \item The inverse function $t = \theta^{- 1} (s)$ exists since $\theta$ is
-    strictly increasing and bijective.
-    
-    \item As $t$ ranges over $K$, the variable $s = \theta (t)$ ranges over
-    $\theta (K)$.
-    
-    \item Since $\theta$ is continuous and $K$ is compact, $\theta (K)$ is
-    compact.
-    
-    \item Substituting \eqref{eq:change_var_differential} into
-    \eqref{eq:expand_square},
-    \begin{equation}
-      \label{eq:after_substitution} \int_K \dot{\theta} (t)  |f (\theta (t))
-      |^2 dt = \int_{\theta (K)} |f (s) |^2 ds
-    \end{equation}
-    \item This establishes the local isometry \eqref{eq:local_isometry}.
-    
-    \item To verify $U_{\theta}^{- 1}$ is the inverse, compute:
-    \begin{equation}
-      \label{eq:composition_1} (U_{\theta}^{- 1} U_{\theta} f) (s) =
-      U_{\theta}^{- 1}  (U_{\theta} f) (s)
-    \end{equation}
-    \item By definition \eqref{eq:U_theta_inverse},
-    \begin{equation}
-      \label{eq:apply_inverse_def} U_{\theta}^{- 1}  (U_{\theta} f) (s) =
-      \frac{(U_{\theta} f) (\theta^{- 1} (s))}{\sqrt{\dot{\theta} (\theta^{-
-      1} (s))}}
-    \end{equation}
-    \item By definition \eqref{eq:U_theta_def},
-    \begin{equation}
-      \label{eq:apply_forward_def} (U_{\theta} f) (\theta^{- 1} (s)) =
-      \sqrt{\dot{\theta} (\theta^{- 1} (s))} f (\theta (\theta^{- 1} (s)))
-    \end{equation}
-    \item Since $\theta \circ \theta^{- 1} =$id,
-    \begin{equation}
-      \label{eq:theta_inverse_composition} f (\theta (\theta^{- 1} (s))) = f
-      (s)
-    \end{equation}
-    \item Substituting \eqref{eq:apply_forward_def} and
-    \eqref{eq:theta_inverse_composition} into \eqref{eq:apply_inverse_def},
-    \begin{equation}
-      \label{eq:simplify_composition} \frac{\sqrt{\dot{\theta} (\theta^{- 1}
-      (s))} f (s)}{\sqrt{\dot{\theta} (\theta^{- 1} (s))}} = f (s)
-    \end{equation}
-    \item Therefore
-    \begin{equation}
-      \label{eq:left_inverse} U_{\theta}^{- 1} U_{\theta} = \text{id}
-    \end{equation}
-    \item Similarly, compute:
-    \begin{equation}
-      \label{eq:composition_2} (U_{\theta} U_{\theta}^{- 1} g) (t) =
-      \sqrt{\dot{\theta} (t)}  (U_{\theta}^{- 1} g) (\theta (t))
-    \end{equation}
-    \item By definition \eqref{eq:U_theta_inverse},
-    \begin{equation}
-      \label{eq:apply_inverse_second} (U_{\theta}^{- 1} g) (\theta (t)) =
-      \frac{g (\theta^{- 1} (\theta (t)))}{\sqrt{\dot{\theta} (\theta^{- 1}
-      (\theta (t)))}}
-    \end{equation}
-    \item Since $\theta^{- 1} \circ \theta =$id,
-    \begin{equation}
-      \label{eq:theta_composition} g (\theta^{- 1} (\theta (t))) = g (t),
-      \quad \theta^{- 1} (\theta (t)) = t
-    \end{equation}
-    \item Substituting \eqref{eq:theta_composition} into
-    \eqref{eq:apply_inverse_second},
-    \begin{equation}
-      \label{eq:simplify_second} \frac{g (t)}{\sqrt{\dot{\theta} (t)}}
-    \end{equation}
-    \item Therefore from \eqref{eq:composition_2},
-    \begin{equation}
-      \label{eq:right_inverse} (U_{\theta} U_{\theta}^{- 1} g) (t) =
-      \sqrt{\dot{\theta} (t)} \cdot \frac{g (t)}{\sqrt{\dot{\theta} (t)}} = g
-      (t)
-    \end{equation}
-    \item Thus
-    \begin{equation}
-      \label{eq:both_inverses} U_{\theta} U_{\theta}^{- 1} = \text{id}
-    \end{equation}
-    \item Combining \eqref{eq:left_inverse} and \eqref{eq:both_inverses},
-    $U_{\theta}^{- 1}$ is the two-sided inverse of $U_{\theta}$ on
-    $L^2_{\tmop{loc}} (\mathbb{R})$.
-  \end{enumerate}
+  By \eqref{eq:U_theta_def}, $\int_K | (U_{\theta} f) (t) |^2 dt = \int_K
+  \dot{\theta} (t) \hspace{0.17em} |f (\theta (t)) |^2  \hspace{0.17em} dt$.
+  With the change of variables $s = \theta (t)$ and $ds = \dot{\theta} (t)
+  dt$, the domain maps to $\theta (K)$, giving \eqref{eq:local_isometry}. The
+  two-sided inverse identities follow from direct substitution into
+  \eqref{eq:U_theta_def} and \eqref{eq:U_theta_inverse}
 \end{proof}
 
-\subsection{Forward and Inverse Filter Representations for The Oscillatory
-Subclass of Unitary Time Transformations}
+\subsection{Time-Varying (Convolution) Filter Representations}
 
 \begin{theorem}
-  \label{thm:inverse_filter}\tmtextbf{[Inverse Filter for Unitary Time
-  Transformations]} Let $\theta : \mathbb{R} \to \mathbb{R}$ be absolutely
-  continuous, strictly increasing, and bijective with $\theta' (t) > 0$ almost
-  everywhere. Let $Y (u)$ be a stationary process with unit variance, and
-  define
+  TODO: insert time-varying filter representations (both forward and reverse)
+\end{theorem}
+
+\subsubsection{The Oscillatory Subclass $Z (t) = U_{\theta} X (t)$ }
+
+\
+
+\
+
+\
+
+\begin{theorem}
+  \label{thm:inverse_filter}\tmtextbf{[Filter representations of unitarily
+  time-changed stationary processes]} Let $\theta : \mathbb{R} \to \mathbb{R}$
+  be absolutely continuous, strictly increasing, and bijective with $\theta'
+  (t) > 0$ a.e. Let $X (u) = \int_{\mathbb{R}} e^{i \lambda t} \mathd \Phi
+  (\lambda)$ be a realization of a stationary process , and set
   \begin{equation}
-    \label{eq:Z_transformation} Z (t) = \sqrt{\dot{\theta} (t)} Y (\theta (t))
+    \label{eq:Z_transformation} Z (t) = \sqrt{\dot{\theta} (t)} 
+    \hspace{0.17em} Y (\theta (t))
   \end{equation}
-  as the oscillatory process obtained by the unitary time transformation.
   Then:
   \begin{enumerate}
     \item The forward filter kernel is
     \begin{equation}
-      \label{eq:forward_kernel} h (t, u) = \sqrt{\dot{\theta} (t)} \delta (u -
-      \theta (t))
+      \label{eq:forward_kernel} h (t, u) = \sqrt{\dot{\theta} (t)} 
+      \hspace{0.17em} \delta (u - \theta (t))
     \end{equation}
     \item The inverse filter kernel is
     \begin{equation}
@@ -643,213 +443,88 @@ Subclass of Unitary Time Transformations}
     \end{equation}
     \item The composition $(g \circ h)$ recovers the identity:
     \begin{equation}
-      \label{eq:filter_identity} Y (t) = \int_{\mathbb{R}} g (t, s) Z (s) ds =
-      \frac{Z (\theta^{- 1} (t))}{\sqrt{\dot{\theta} (\theta^{- 1} (t))}}
+      \label{eq:filter_identity} Y (t) = \int_{\mathbb{R}} g (t, s) 
+      \hspace{0.17em} Z (s)  \hspace{0.17em} ds = \frac{Z (\theta^{- 1}
+      (t))}{\sqrt{\dot{\theta} (\theta^{- 1} (t))}}
     \end{equation}
   \end{enumerate}
 \end{theorem}
 
 \begin{proof}
-  \begin{enumerate}
-    \item From \eqref{eq:Z_transformation}, the forward transformation is
-    \begin{equation}
-      \label{eq:forward_integral} Z (t) = \int_{\mathbb{R}} h (t, u) Y (u) du
-    \end{equation}
-    \item Substituting \eqref{eq:forward_kernel},
-    \begin{equation}
-      \label{eq:forward_substitution} \int_{\mathbb{R}} h (t, u) Y (u) du =
-      \int_{\mathbb{R}} \sqrt{\dot{\theta} (t)} \delta (u - \theta (t)) Y (u)
-      du
-    \end{equation}
-    \item By the sifting property of the Dirac delta,
-    \begin{equation}
-      \label{eq:sifting_forward} \int_{\mathbb{R}} \sqrt{\dot{\theta} (t)}
-      \delta (u - \theta (t)) Y (u) du = \sqrt{\dot{\theta} (t)} Y (\theta
-      (t))
-    \end{equation}
-    \item This confirms \eqref{eq:Z_transformation}.
-    
-    \item For the inverse, compute:
-    \begin{equation}
-      \label{eq:inverse_integral} \int_{\mathbb{R}} g (t, s) Z (s) ds =
-      \int_{\mathbb{R}} \frac{\delta (s - \theta^{- 1}
-      (t))}{\sqrt{\dot{\theta} (\theta^{- 1} (t))}} Z (s) ds
-    \end{equation}
-    \item By the sifting property,
-    \begin{equation}
-      \label{eq:sifting_inverse} \int_{\mathbb{R}} \frac{\delta (s - \theta^{-
-      1} (t))}{\sqrt{\dot{\theta} (\theta^{- 1} (t))}} Z (s) ds = \frac{Z
-      (\theta^{- 1} (t))}{\sqrt{\dot{\theta} (\theta^{- 1} (t))}}
-    \end{equation}
-    \item Substituting \eqref{eq:Z_transformation} with $t$ replaced by
-    $\theta^{- 1} (t)$,
-    \begin{equation}
-      \label{eq:Z_at_inverse} Z (\theta^{- 1} (t)) = \sqrt{\dot{\theta}
-      (\theta^{- 1} (t))} Y (\theta (\theta^{- 1} (t)))
-    \end{equation}
-    \item Since $\theta \circ \theta^{- 1} =$id,
-    \begin{equation}
-      \label{eq:theta_composition_Y} Y (\theta (\theta^{- 1} (t))) = Y (t)
-    \end{equation}
-    \item Substituting \eqref{eq:Z_at_inverse} and
-    \eqref{eq:theta_composition_Y} into \eqref{eq:sifting_inverse},
-    \begin{equation}
-      \label{eq:final_inverse} \frac{Z (\theta^{- 1} (t))}{\sqrt{\dot{\theta}
-      (\theta^{- 1} (t))}} = \frac{\sqrt{\dot{\theta} (\theta^{- 1} (t))} Y
-      (t)}{\sqrt{\dot{\theta} (\theta^{- 1} (t))}} = Y (t)
-    \end{equation}
-    \item This establishes \eqref{eq:filter_identity}, confirming that $g
-    \circ h =$id.
-  \end{enumerate}
+  Using the sifting property of the Dirac delta in \eqref{eq:forward_kernel}
+  gives \eqref{eq:Z_transformation}. Likewise, applying
+  \eqref{eq:inverse_kernel}, then substituting \eqref{eq:Z_transformation} at
+  $s = \theta^{- 1} (t)$ and $\theta \circ \theta^{- 1} = \mathrm{id}$ yields
+  \eqref{eq:filter_identity}
 \end{proof}
 
-\subsection{Transformation of Stationary $\to$ Oscillatory Processes via
+\subsection{Transformation of stationary to oscillatory processes via
 $U_{\theta}$}
 
 \begin{theorem}
   \label{thm:Utheta_to_osc}\tmtextbf{[Unitary time change produces oscillatory
   process]} Let $X$ be zero-mean stationary as in Definition \ref{def:cramer}.
-  For scaling function $\theta$ as in Theorem \ref{thm:local_unitarity},
+  For a scaling function $\theta$ as in Theorem \ref{thm:local_unitarity},
   define
   \begin{equation}
-    \label{eq:Z_def} Z (t) = (U_{\theta} X) (t) = \sqrt{\dot{\theta} (t)} X
-    (\theta (t))
+    \label{eq:Z_def} Z (t) = (U_{\theta} X) (t) = \sqrt{\dot{\theta} (t)} 
+    \hspace{0.17em} X (\theta (t))
   \end{equation}
   Then $Z$ is a realization of an oscillatory process with oscillatory
   function
   \begin{equation}
     \label{eq:oscillatory_function_Z} \varphi_t (\lambda) = \sqrt{\dot{\theta}
-    (t)} e^{i \lambda \theta (t)}
+    (t)}  \hspace{0.17em} e^{i \lambda \theta (t)}
   \end{equation}
   gain function
   \begin{equation}
-    \label{eq:gain_function_Z} A_t (\lambda) = \sqrt{\dot{\theta} (t)} e^{i
-    \lambda (\theta (t) - t)}
+    \label{eq:gain_function_Z} A_t (\lambda) = \sqrt{\dot{\theta} (t)} 
+    \hspace{0.17em} e^{i \lambda (\theta (t) - t)}
   \end{equation}
   and covariance
   \begin{equation}
-    \label{UTCovar}
-    
-    \begin{aligned}
-      R_Z (t, s) & =\mathbb{E} [Z (t) \overline{Z (s)}]\\
-      & =\mathbb{E} \left[ \sqrt{\dot{\theta} (t)} X (\theta (t))
-      \overline{\sqrt{\dot{\theta} (s)} X (\theta (s))} \right]\\
-      & = \sqrt{\dot{\theta} (t)  \dot{\theta} (s)} \mathbb{E} [X (\theta
-      (t)) \overline{X (\theta (s))}]\\
-      & = \sqrt{\dot{\theta} (t)  \dot{\theta} (s)} R_X  (\theta (t) - \theta
-      (s))\\
+    \begin{array}{ll}
+      R_Z (t, s) & =\mathbb{E} \hspace{-0.17em} \left[ Z (t) \hspace{0.17em}
+      \overline{Z (s)} \right]\\
+      & = \sqrt{\dot{\theta} (t)  \dot{\theta} (s)}  \hspace{0.17em}
+      \mathbb{E} \hspace{-0.17em} \left[ X (\theta (t)) \hspace{0.17em}
+      \overline{X (\theta (s))} \right]\\
+      & = \sqrt{\dot{\theta} (t)  \dot{\theta} (s)}  \hspace{0.17em} R_X 
+      \hspace{-0.17em} (\theta (t) - \theta (s))\\
       & = \sqrt{\dot{\theta} (t)  \dot{\theta} (s)}  \int_{\mathbb{R}} e^{i
-      \lambda (\theta (t) - \theta (s))} dF (\lambda)
-    \end{aligned}
+      \lambda (\theta (t) - \theta (s))}  \hspace{0.17em} dF (\lambda)
+    \end{array} \label{UTCovar}
   \end{equation}
 \end{theorem}
 
 \begin{proof}
-  \begin{enumerate}
-    \item From the Cram{\'e}r representation \eqref{eq:cramer_representation},
-    \begin{equation}
-      \label{eq:X_cramer} X (u) = \int_{\mathbb{R}} e^{i \lambda u} d \Phi
-      (\lambda)
-    \end{equation}
-    \item Substituting $u = \theta (t)$ into \eqref{eq:X_cramer},
-    \begin{equation}
-      \label{eq:X_theta_t} X (\theta (t)) = \int_{\mathbb{R}} e^{i \lambda
-      \theta (t)} d \Phi (\lambda)
-    \end{equation}
-    \item From the definition \eqref{eq:Z_def},
-    \begin{equation}
-      \label{eq:Z_expanded} Z (t) = \sqrt{\dot{\theta} (t)} X (\theta (t)) =
-      \sqrt{\dot{\theta} (t)}  \int_{\mathbb{R}} e^{i \lambda \theta (t)} d
-      \Phi (\lambda)
-    \end{equation}
-    \item Recognize the oscillatory function
-    \begin{equation}
-      \label{eq:varphi_t_explicit} \varphi_t (\lambda) = \sqrt{\dot{\theta}
-      (t)} e^{i \lambda \theta (t)} = A_t (\lambda) e^{it \lambda} =
-      \sqrt{\dot{\theta} (t)} e^{i \lambda (\theta (t) - t)} e^{i \lambda t}
-    \end{equation}
-    \item Where the gain function is defined by
-    \begin{equation}
-      \label{eq:A_t_explicit} A_t (\lambda) = \sqrt{\dot{\theta} (t)} e^{i
-      \lambda (\theta (t) - t)} = \varphi_t (\lambda) e^{- i \lambda t} =
-      \frac{\varphi_t (\lambda)}{e^{i \lambda t}}
-    \end{equation}
-    \item By linearity of the stochastic integral, \eqref{eq:Z_expanded}
-    becomes
-    \begin{equation}
-      \label{eq:Z_integral} Z (t) = \int_{\mathbb{R}} \sqrt{\dot{\theta} (t)}
-      e^{i \lambda \theta (t)} d \Phi (\lambda) = \int_{\mathbb{R}} \varphi_t
-      (\lambda) d \Phi (\lambda)
-    \end{equation}
-    \item To compute the covariance, use \eqref{eq:oscillatory_covariance}:
-    \begin{equation}
-      \label{eq:R_Z_start} R_Z (t, s) =\mathbb{E} [Z (t) \overline{Z (s)}]
-    \end{equation}
-    \item Substitute \eqref{eq:Z_def},
-    \begin{equation}
-      \label{eq:R_Z_substituted} R_Z (t, s) =\mathbb{E} \left[
-      \sqrt{\dot{\theta} (t)} X (\theta (t)) \overline{\sqrt{\dot{\theta} (s)}
-      X (\theta (s))} \right]
-    \end{equation}
-    \item Since $\dot{\theta} (t)$ does not depend on frequency it can be
-    taken outside the integral
-    \begin{equation}
-      \label{eq:R_Z_factored} R_Z (t, s) = \sqrt{\dot{\theta} (t)} 
-      \sqrt{\dot{\theta} (s)} \mathbb{E} [X (\theta (t)) \overline{X (\theta
-      (s))}]
-    \end{equation}
-    \item By stationarity of $X$, using \eqref{eq:stationary_covariance},
-    \begin{equation}
-      \label{eq:X_covariance} \mathbb{E} [X (\theta (t)) \overline{X (\theta
-      (s))}] = R_X  (\theta (t) - \theta (s)) = \int_{\mathbb{R}} e^{i \lambda
-      (\theta (t) - \theta (s))} dF (\lambda)
-    \end{equation}
-    \item Substituting \eqref{eq:X_covariance} into \eqref{eq:R_Z_factored},
-    \begin{equation}
-      \label{eq:R_Z_final} R_Z (t, s) = \sqrt{\dot{\theta} (t)  \dot{\theta}
-      (s)}  \int_{\mathbb{R}} e^{i \lambda (\theta (t) - \theta (s))} dF
-      (\lambda)
-    \end{equation}
-    establishing \eqref{UTCovar}.
-  \end{enumerate}
+  From the Cram{\'e}r representation \eqref{eq:cramer_representation}, $X
+  (\theta (t)) = \int e^{i \lambda \theta (t)}  \hspace{0.17em} d \Phi
+  (\lambda)$. Therefore
+  \[ Z (t) = \sqrt{\dot{\theta} (t)}  \int_{\mathbb{R}} e^{i \lambda \theta
+     (t)}  \hspace{0.17em} d \Phi (\lambda) = \int_{\mathbb{R}} \left(
+     \sqrt{\dot{\theta} (t)}  \hspace{0.17em} e^{i \lambda \theta (t)} \right)
+     d \Phi (\lambda) = \int \varphi_t (\lambda)  \hspace{0.17em} d \Phi
+     (\lambda) \]
+  which is of the oscillatory form with $\varphi_t$ as in
+  \eqref{eq:oscillatory_function_Z} and $A_t$ as in
+  \eqref{eq:gain_function_Z}. The covariance follows from stationarity via
+  \eqref{eq:stationary_covariance}
 \end{proof}
 
 \begin{corollary}
   \label{cor:evol_spec}\tmtextbf{[Evolutionary spectrum of unitarily
   time-changed stationary process]} The evolutionary spectrum is
   \begin{equation}
-    \label{eq:evolutionary_spectrum} dF_t (\lambda) = \dot{\theta} (t) dF
+    \label{eq:evolutionary_spectrum} dF_t (\lambda) = |A_t (\lambda) |^2 
+    \hspace{0.17em} dF (\lambda) = \dot{\theta} (t)  \hspace{0.17em} dF
     (\lambda)
   \end{equation}
 \end{corollary}
 
 \begin{proof}
-  \begin{enumerate}
-    \item The evolutionary spectrum is defined by
-    \begin{equation}
-      \label{eq:evol_spec_def} dF_t (\lambda) = |A_t (\lambda) |^2 dF
-      (\lambda)
-    \end{equation}
-    \item From \eqref{eq:gain_function_Z},
-    \begin{equation}
-      \label{eq:A_t_magnitude_start} |A_t (\lambda) |^2 = \left|
-      \sqrt{\dot{\theta} (t)} e^{i \lambda (\theta (t) - t)} \right|^2
-    \end{equation}
-    \item Since $|e^{i \alpha} | = 1$ for all real $\alpha$,
-    \begin{equation}
-      \label{eq:exp_magnitude} |e^{i \lambda (\theta (t) - t)} |^2 = 1
-    \end{equation}
-    \item Therefore
-    \begin{equation}
-      \label{eq:A_t_magnitude} |A_t (\lambda) |^2 = \left( \sqrt{\dot{\theta}
-      (t)} \right)^2 \cdot 1 = \dot{\theta} (t)
-    \end{equation}
-    \item Substituting \eqref{eq:A_t_magnitude} into \eqref{eq:evol_spec_def},
-    \begin{equation}
-      \label{eq:evol_spec_final} dF_t (\lambda) = \dot{\theta} (t) dF
-      (\lambda)
-    \end{equation}
-  \end{enumerate}
+  Since $|e^{i \alpha} | = 1$, $|A_t (\lambda) |^2 = \dot{\theta} (t)$, giving
+  \eqref{eq:evolutionary_spectrum}
 \end{proof}
 
 \subsection{Covariance operator conjugation}
@@ -857,86 +532,39 @@ $U_{\theta}$}
 \begin{proposition}
   \label{prop:conjugation}\tmtextbf{[Operator conjugation]} Let
   \begin{equation}
-    \label{eq:T_K_def} (T_K f) (t) \assign \int_{\mathbb{R}} K (|t - s|) f (s)
-    ds
+    \label{eq:T_K_def} (T_K f) (t) \assign \int_{\mathbb{R}} K (|t - s|) 
+    \hspace{0.17em} f (s)  \hspace{0.17em} ds
   \end{equation}
   with stationary kernel
   \begin{equation}
-    \label{eq:K_def} K (h) = \int_{\mathbb{R}} e^{i \lambda h} dF (\lambda)
+    \label{eq:K_def} K (h) = \int_{\mathbb{R}} e^{i \lambda h} 
+    \hspace{0.17em} dF (\lambda)
   \end{equation}
   Define the transformed kernel
   \begin{equation}
     \label{eq:K_theta_def} K_{\theta} (s, t) \assign \sqrt{\dot{\theta} (t) 
-    \dot{\theta} (s)} K (| \theta (t) - \theta (s) |)
+    \dot{\theta} (s)}  \hspace{0.17em} K \hspace{-0.17em} (| \theta (t) -
+    \theta (s) |)
   \end{equation}
-  then the corresponding integral covariance operator is conjugated for all $f
-  \in L^2_{\tmop{loc}} (\mathbb{R})$ by
+  Then for all $f \in L^2_{\mathrm{loc}} (\mathbb{R})$,
   \begin{equation}
-    \label{eq:conjugation} (T_{K_{\theta}} f) (t) = (U_{\theta} T_K
-    U_{\theta}^{- 1} f) (t)
+    \label{eq:conjugation} (T_{K_{\theta}} f) (t) = \left( U_{\theta} 
+    \hspace{0.17em} T_K  \hspace{0.17em} U_{\theta}^{- 1} f \right) (t)
   \end{equation}
 \end{proposition}
 
 \begin{proof}
-  \begin{enumerate}
-    \item From \eqref{eq:conjugation}, expand the right side:
-    \begin{equation}
-      \label{eq:conjugation_expand} (U_{\theta} T_K U_{\theta}^{- 1} f) (t) =
-      \sqrt{\dot{\theta} (t)}  (T_K U_{\theta}^{- 1} f) (\theta (t))
-    \end{equation}
-    \item By definition \eqref{eq:T_K_def},
-    \begin{equation}
-      \label{eq:T_K_application} (T_K U_{\theta}^{- 1} f) (\theta (t)) =
-      \int_{\mathbb{R}} K (| \theta (t) - s|)  (U_{\theta}^{- 1} f) (s) ds
-    \end{equation}
-    \item By definition \eqref{eq:U_theta_inverse},
-    \begin{equation}
-      \label{eq:U_inv_application} (U_{\theta}^{- 1} f) (s) = \frac{f
-      (\theta^{- 1} (s))}{\sqrt{\dot{\theta} (\theta^{- 1} (s))}}
-    \end{equation}
-    \item Substituting \eqref{eq:U_inv_application} into
-    \eqref{eq:T_K_application},
-    \begin{equation}
-      \label{eq:integral_substitution} \int_{\mathbb{R}} K (| \theta (t) - s|)
-      \frac{f (\theta^{- 1} (s))}{\sqrt{\dot{\theta} (\theta^{- 1} (s))}} ds
-    \end{equation}
-    \item Apply the change of variables $s = \theta (u)$, so $ds =
-    \dot{\theta} (u) du$ and $\theta^{- 1} (s) = u$:
-    \begin{equation}
-      \label{eq:change_var_s} \int_{\mathbb{R}} K (| \theta (t) - \theta (u)
-      |) \frac{f (u)}{\sqrt{\dot{\theta} (u)}}  \dot{\theta} (u) du
-    \end{equation}
-    \item Simplify:
-    \begin{equation}
-      \label{eq:simplify_integral} \int_{\mathbb{R}} K (| \theta (t) - \theta
-      (u) |) \frac{\dot{\theta} (u)}{\sqrt{\dot{\theta} (u)}} f (u) du =
-      \int_{\mathbb{R}} K (| \theta (t) - \theta (u) |) \sqrt{\dot{\theta}
-      (u)} f (u) du
-    \end{equation}
-    \item Substituting \eqref{eq:simplify_integral} into
-    \eqref{eq:conjugation_expand},
-    \begin{equation}
-      \label{eq:full_expression} \sqrt{\dot{\theta} (t)}  \int_{\mathbb{R}} K
-      (| \theta (t) - \theta (u) |) \sqrt{\dot{\theta} (u)} f (u) du
-    \end{equation}
-    \item Bring the constant inside the integral:
-    \begin{equation}
-      \label{eq:factor_inside} \int_{\mathbb{R}} \sqrt{\dot{\theta} (t)} 
-      \sqrt{\dot{\theta} (u)} K (| \theta (t) - \theta (u) |) f (u) du
-    \end{equation}
-    \item By definition \eqref{eq:K_theta_def},
-    \begin{equation}
-      \label{eq:K_theta_recognition} \sqrt{\dot{\theta} (t)} 
-      \sqrt{\dot{\theta} (u)} K (| \theta (t) - \theta (u) |) = K_{\theta} (u,
-      t)
-    \end{equation}
-    \item Therefore
-    \begin{equation}
-      \label{eq:final_conjugation} \int_{\mathbb{R}} K_{\theta} (u, t) f (u)
-      du = (T_{K_{\theta}} f) (t)
-    \end{equation}
-    establishing \eqref{eq:conjugation}.
-  \end{enumerate}
+  Compute
+  \[ (U_{\theta} T_K U_{\theta}^{- 1} f) (t) = \sqrt{\dot{\theta} (t)} 
+     \hspace{0.17em} (T_K U_{\theta}^{- 1} f) (\theta (t)) =
+     \sqrt{\dot{\theta} (t)}  \int_{\mathbb{R}} K (| \theta (t) - s|) \frac{f
+     (\theta^{- 1} (s))}{\sqrt{\dot{\theta} (\theta^{- 1} (s))}} 
+     \hspace{0.17em} ds \]
+  With $s = \theta (u)$, $ds = \dot{\theta} (u)  \hspace{0.17em} du$, obtain
+  \[ \sqrt{\dot{\theta} (t)}  \int_{\mathbb{R}} K (| \theta (t) - \theta (u)
+     |) \hspace{0.17em} \sqrt{\dot{\theta} (u)}  \hspace{0.17em} f (u) 
+     \hspace{0.17em} du = \int_{\mathbb{R}} K_{\theta} (u, t)  \hspace{0.17em}
+     f (u)  \hspace{0.17em} du = (T_{K_{\theta}} f) (t) \]
 \end{proof}
 
 \section{Zero Localization}\label{sec:HP}
@@ -945,78 +573,39 @@ $U_{\theta}$}
   \label{def:zeromeasure}\tmtextbf{[Zero localization measure]} Let $Z$ be
   real-valued with $Z \in C^1 (\mathbb{R})$ having only simple zeros
   \begin{equation}
-    \label{eq:simple_zeros} Z (t_0) = 0 \Rightarrow \dot{Z} (t_0) \neq 0
+    \label{eq:simple_zeros} Z (t_0) = 0 \hspace{0.27em} \Rightarrow
+    \hspace{0.27em} \dot{Z} (t_0) \neq 0
   \end{equation}
   Define, for Borel $B \subset \mathbb{R}$,
   \begin{equation}
-    \label{eq:mu_def} \mu (B) = \int_B \delta (Z (t)) | \dot{Z} (t) | dt
+    \label{eq:mu_def} \mu (B) \assign \int_B \delta (Z (t)) \hspace{0.17em} |
+    \dot{Z} (t) |  \hspace{0.17em} dt
   \end{equation}
-  where $\delta$ is the Dirac delta distribution. This measure concentrates
-  mass at the zeros of $Z$.
+  so that $\mu$ places unit mass at each simple zero of $Z$ counted by the
+  co-area/change-of-variables identity for $C^1$ functions. The induced space
+  $L^2 (\mu)$ consists of (equivalence classes of) functions supported on the
+  zero set of $Z$, and the multiplication operator $(Lf) (t) = tf (t)$ is
+  essentially self-adjoint on $C_c^{\infty}$ functions supported on the zero
+  set with pure point spectrum equal to the zero-crossing set
 \end{definition}
 
-\begin{proposition}
-  \label{prop:zero_set}\tmtextbf{[Support of zero localization measure]} The
-  support of $\mu$ is precisely the zero set of $Z$:
-  \begin{equation}
-    \label{eq:supp_mu} \tmop{supp} (\mu) = \{t \in \mathbb{R}: Z (t) = 0\}
-  \end{equation}
-\end{proposition}
-
-\begin{proof}
-  By definition \eqref{eq:mu_def}, $\mu$ assigns positive mass to a set $B$
-  only if $B$ contains at least one zero of $Z$. Since all zeros are simple by
-  \eqref{eq:simple_zeros}, each zero contributes a discrete mass proportional
-  to $| \dot{Z} (t_0) |^{- 1}$ via the delta function property. Therefore
-  $\tmop{supp} (\mu)$ consists exactly of the zero set.
-\end{proof}
-
-\begin{theorem}
-  \label{thm:L2_mu}\tmtextbf{[Hilbert space structure on zero set]} Let $\mu$
-  be the zero localization measure from Definition \ref{def:zeromeasure}. Then
-  $L^2 (\mu)$ is a Hilbert space with inner product
-  \begin{equation}
-    \label{eq:L2_mu_inner} \langle f, g \rangle_{L^2 (\mu)} =
-    \int_{\mathbb{R}} f (t) \overline{g (t)} d \mu (t)
-  \end{equation}
-\end{theorem}
-
-\begin{proof}
-  Standard Hilbert space theory: $L^2 (\mu)$ is complete with respect to the
-  norm induced by the inner product \eqref{eq:L2_mu_inner} for any finite
-  measure $\mu$.
-\end{proof}
-
-\begin{theorem}
-  \label{thm:multiplication_spectrum}\tmtextbf{[Spectrum of multiplication
-  operator]} Define the multiplication operator $L : L^2 (\mu) \to L^2 (\mu)$
-  by
-  \begin{equation}
-    \label{eq:L_def} (Lf) (t) = tf (t)
-  \end{equation}
-  Then $L$ has simple pure point spectrum equal to the zero set of $Z$:
-  \begin{equation}
-    \label{eq:spectrum_L} \sigma (L) = \{t \in \mathbb{R}: Z (t) = 0\}
-  \end{equation}
-  Each eigenvalue $t_0$ has eigenfunction $\delta_{t_0}$ (the indicator
-  function at $t_0$ in the discrete support of $\mu$).
-\end{theorem}
-
-\begin{proof}
-  Since $\mu$ is supported on the discrete zero set, $L^2 (\mu)$ decomposes as
-  a direct sum of one-dimensional spaces corresponding to each zero. For each
-  zero $t_0$, the eigenvalue equation
-  \begin{equation}
-    L \delta_{t_0} = \lambda \delta_{t_0}
-  \end{equation}
-  becomes
-  \begin{equation}
-    t_0 \delta_{t_0} (t) = \lambda \delta_{t_0} (t)
-  \end{equation}
-  which holds if and only if $\lambda = t_0$. Thus each zero is an eigenvalue
-  with multiplicity one.
-\end{proof}
-
 \
+
+\begin{thebibliography}{1}
+  \bibitem[1]{stationaryAndRelatedStochasticProcesses}Harald Cram{\'e}r  and 
+  M.R.~Leadbetter. {\newblock}\tmtextit{Stationary and Related Processes:
+  Sample Function Properties and Their Applications}. {\newblock}Wiley Series
+  in Probability and Mathematical Statistics. 1967.{\newblock}
+  
+  \bibitem[2]{characterizationOscillatoryProcesses}V.~Mandrekar. {\newblock}A
+  characterization of oscillatory processes and their prediction.
+  {\newblock}\tmtextit{Proceedings of the American Mathematical Society},
+  32(1):280--284, 1972.{\newblock}
+  
+  \bibitem[3]{evolutionarySpectraAndNonStationaryProcesses}Maurice~B
+  Priestley. {\newblock}Evolutionary spectra and non-stationary processes.
+  {\newblock}\tmtextit{Journal of the Royal Statistical Society: Series B
+  (Methodological)}, 27(2):204--229, 1965.{\newblock}
+\end{thebibliography}
 
 \end{document}
