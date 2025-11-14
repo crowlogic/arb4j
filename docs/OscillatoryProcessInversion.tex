@@ -5,6 +5,7 @@
 
 %%%%%%%%%% Start TeXmacs macros
 \newcommand{\assign}{:=}
+\newcommand{\tmaffiliation}[1]{\\ #1}
 \newcommand{\tmop}[1]{\ensuremath{\operatorname{#1}}}
 \newcommand{\tmtextbf}[1]{\text{{\bfseries{#1}}}}
 \newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
@@ -20,6 +21,11 @@
   Inversion Theory for Oscillatory Processes:\\
   Three Equivalent Formulations and Connection to\\
   Devinatz--Aronszajn Integral Representations
+}
+
+\author{
+  Stephen Crowley
+  \tmaffiliation{November 13, 2025}
 }
 
 \date{}
@@ -130,14 +136,20 @@ underlying invertible structure.
 
 Let $h (t, u)$ be a filter with $h (t, \cdot) \in L^2 (\mathbb{R})$ for each
 $t$, satisfying the orthonormality condition:
-\[ \int_{- \infty}^{\infty} \overline{h (t, u)} h (t, v)  \hspace{0.17em} dt =
-   \delta (u - v) \]
+\begin{equation}
+  \int_{- \infty}^{\infty} \overline{h (t, u)} h (t, v)  \hspace{0.17em} dt =
+  \delta (u - v)
+\end{equation}
 Define the oscillatory function:
-\[ \phi_t (\lambda) \assign \int_{- \infty}^{\infty} h (t, u) e^{i \lambda u} 
-   \hspace{0.17em} du \]
+\begin{equation}
+  \phi_t (\lambda) \assign \int_{- \infty}^{\infty} h (t, u) e^{i \lambda u} 
+  \hspace{0.17em} du
+\end{equation}
 The oscillatory process is:
-\[ Z (t) = \int_{- \infty}^{\infty} \phi_t (\lambda)  \hspace{0.17em} d \Phi
-   (\lambda) \]
+\begin{equation}
+  Z (t) = \int_{- \infty}^{\infty} \phi_t (\lambda)  \hspace{0.17em} d \Phi
+  (\lambda)
+\end{equation}
 The stationary process is:
 \[ X (u) = \int_{- \infty}^{\infty} e^{i \lambda u}  \hspace{0.17em} d \Phi
    (\lambda) \]

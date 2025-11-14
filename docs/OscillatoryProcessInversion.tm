@@ -5,7 +5,11 @@
 <\body>
   <doc-data|<doc-title|Inversion Theory for Oscillatory
   Processes:<next-line>Three Equivalent Formulations and Connection
-  to<next-line>Devinatz--Aronszajn Integral Representations>|<doc-date|>>
+  to<next-line>Devinatz--Aronszajn Integral
+  Representations>|<doc-author|<author-data|<author-name|Stephen
+  Crowley>|<\author-affiliation>
+    <date|>
+  </author-affiliation>>>|<doc-date|>>
 
   <\table-of-contents|toc>
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>Introduction>
@@ -214,21 +218,21 @@
   <math|h<around|(|t,\<cdot\>|)>\<in\>L<rsup|2><around|(|\<bbb-R\>|)>> for
   each <math|t>, satisfying the orthonormality condition:
 
-  <\equation*>
+  <\equation>
     <big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|h<around|(|t,u|)>|\<bar\>>h<around|(|t,v|)>*<space|0.17em>d*t=\<delta\>*<around|(|u-v|)>
-  </equation*>
+  </equation>
 
   Define the oscillatory function:
 
-  <\equation*>
+  <\equation>
     \<phi\><rsub|t><around|(|\<lambda\>|)>\<assign\><big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|t,u|)>*e<rsup|i*\<lambda\>*u>*<space|0.17em>d*u
-  </equation*>
+  </equation>
 
   The oscillatory process is:
 
-  <\equation*>
+  <\equation>
     Z<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>d*\<Phi\><around|(|\<lambda\>|)>
-  </equation*>
+  </equation>
 
   The stationary process is:
 
@@ -702,7 +706,7 @@
     <associate|auto-16|<tuple|5.2|9>>
     <associate|auto-17|<tuple|5.3|9>>
     <associate|auto-18|<tuple|5.4|11>>
-    <associate|auto-2|<tuple|1.1|1>>
+    <associate|auto-2|<tuple|1.1|2>>
     <associate|auto-3|<tuple|1.2|2>>
     <associate|auto-4|<tuple|1.3|2>>
     <associate|auto-5|<tuple|1.4|3>>
