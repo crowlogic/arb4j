@@ -585,11 +585,11 @@
   </proof>
 
   <\corollary>
-    <label|cor:evol_spec><with|font-series|bold|[Evolutionary spectrum of
+    <label|cor:evol_specUT><with|font-series|bold|[Evolutionary spectrum of
     unitarily time-changed stationary process]> The evolutionary spectrum is
 
     <\equation>
-      <label|eq:evolutionary_spectrum>d*F<rsub|t><around|(|\<lambda\>|)>=<around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>=<wide|\<theta\>|\<dot\>><around|(|t|)>*<space|0.17em>d*F<around|(|\<lambda\>|)>
+      <label|eq:evolutionary_spectrumUT><tabular|<tformat|<table|<row|<cell|d*F<rsub|t><around|(|\<lambda\>|)>>|<cell|=<around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<wide|\<theta\>|\<dot\>><around|(|t|)>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>>>>
     </equation>
   </corollary>
 
@@ -724,7 +724,8 @@
     <associate|bib-characterizationOscillatoryProcesses|<tuple|2|9>>
     <associate|bib-evolutionarySpectraAndNonStationaryProcesses|<tuple|3|9>>
     <associate|bib-stationaryAndRelatedStochasticProcesses|<tuple|1|9>>
-    <associate|cor:evol_spec|<tuple|15|8>>
+    <associate|cor:evol_spec|<tuple|7|4>>
+    <associate|cor:evol_specUT|<tuple|15|8>>
     <associate|def:L2loc|<tuple|3|2>>
     <associate|def:cramer|<tuple|2|2>>
     <associate|def:gaussian_process|<tuple|1|2>>
@@ -744,7 +745,8 @@
     <associate|eq:conjugation|<tuple|45|8>>
     <associate|eq:covariance_kernel|<tuple|1|2>>
     <associate|eq:cramer_representation|<tuple|2|2>>
-    <associate|eq:evolutionary_spectrum|<tuple|41|8>>
+    <associate|eq:evolutionary_spectrum|<tuple|16|4>>
+    <associate|eq:evolutionary_spectrumUT|<tuple|41|8>>
     <associate|eq:expectation_Yab|<tuple|8|3>>
     <associate|eq:filter_identity|<tuple|36|7>>
     <associate|eq:finite_variance|<tuple|5|2>>
