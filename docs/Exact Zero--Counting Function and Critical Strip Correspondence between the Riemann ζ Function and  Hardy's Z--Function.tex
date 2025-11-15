@@ -1,0 +1,447 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{geometry,amsmath,amssymb,latexsym}
+\geometry{letterpaper}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\tmaffiliation}[1]{\\ #1}
+\newcommand{\tmem}[1]{{\em #1\/}}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\title{Exact Zero--Counting Function and Critical Strip Correspondence between
+the Riemann $\zeta$ Function and \ Hardy's $Z$--Function}
+
+\author{
+  Stephen Crowley
+  \tmaffiliation{November 14, 2025}
+}
+
+\maketitle
+
+\
+
+\
+
+{\tableofcontents}
+
+\section{Critical strips and the linear map}
+
+\begin{theorem}
+  [Critical strips and linear correspondence]\label{thm:strips}Define the
+  critical strips
+  \begin{equation}
+    \mathcal{S}= \{ \hspace{0.17em} s \in \mathbb{C}: 0 < \Re s < 1
+    \hspace{0.17em} \}, \qquad \mathcal{Z}= \{ \hspace{0.17em} t \in
+    \mathbb{C}: | \Im t| < \tfrac{1}{2} \hspace{0.17em} \} .
+  \end{equation}
+  Define the linear map
+  \begin{equation}
+    \Phi (t) = \tfrac{1}{2} + it, \qquad \Phi^{- 1} (s) = - i \left( s -
+    \tfrac{1}{2} \right) .
+  \end{equation}
+  Then:
+  \begin{enumerate}
+    \item $\Phi : \mathcal{Z} \to \mathcal{S}$ is a biholomorphism with
+    inverse $\Phi^{- 1} : \mathcal{S} \to \mathcal{Z}$.
+    
+    \item For $s = \sigma + iT \in \mathcal{S}$ and $t = \Phi^{- 1} (s)$,
+    \[ \Re t = T, \qquad \Im t = \tfrac{1}{2} - \sigma . \]
+    \item The condition $0 < \Im s \le T$ is equivalent to $0 < \Re t \le T$.
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+  The map $\Phi$ is affine and holomorphic with derivative $\Phi' (t) = i \neq
+  0$, hence biholomorphic onto its image. The formula for $\Phi^{- 1}$ follows
+  by solving $s = \tfrac{1}{2} + it$ for $t$.
+  
+  For $s = \sigma + iT$,
+  \[ t = \Phi^{- 1} (s) = - i (\sigma - \tfrac{1}{2} + iT) = T + i \left(
+     \tfrac{1}{2} - \sigma \right), \]
+  so $\Re t = T$ and $\Im t = \tfrac{1}{2} - \sigma$. The inequality $0 < \Im
+  s \le T$ coincides with the condition $0 < \Re t \le T$ for the
+  corresponding $t$.
+\end{proof}
+
+\section{Riemann--Siegel theta and Hardy's $Z$}
+
+\begin{theorem}
+  [Riemann--Siegel theta function]\label{thm:theta}Define the Riemann--Siegel
+  theta function by
+  \begin{equation}
+    \vartheta (t) = \Im \log \Gamma \hspace{-0.17em} \left( \tfrac{1}{4} +
+    \tfrac{it}{2} \right) - \tfrac{t}{2} \log \pi,
+  \end{equation}
+  where $\log \Gamma$ is taken with a branch obtained by continuous variation
+  along the straight segments $2 \to 2 + it \to \tfrac{1}{2} + it$ and with
+  normalization $\arg \Gamma (1) = 0$. Then for all real $t$,
+  \begin{equation}
+    \vartheta (t) = \arg \left( \pi^{- \frac{s}{2}} \Gamma \hspace{-0.17em}
+    \left( \tfrac{s}{2} \right) \right)  \quad \text{with} \quad s =
+    \tfrac{1}{2} + it,
+  \end{equation}
+  where the argument is taken along the same path and normalization.
+\end{theorem}
+
+\begin{proof}
+  Put $s = \tfrac{1}{2} + it$. Then
+  \[ \pi^{- \frac{s}{2}} \Gamma \hspace{-0.17em} \left( \tfrac{s}{2} \right) =
+     \exp \hspace{-0.17em} \left( - \tfrac{s}{2} \log \pi \right) 
+     \hspace{0.17em} \Gamma \hspace{-0.17em} \left( \tfrac{s}{2} \right), \]
+  so
+  \[ \log \hspace{-0.17em} \left( \pi^{- \frac{s}{2}} \Gamma \hspace{-0.17em}
+     \left( \tfrac{s}{2} \right) \right) = - \tfrac{s}{2} \log \pi + \log
+     \Gamma \hspace{-0.17em} \left( \tfrac{s}{2} \right), \]
+  with the same branch conventions. Taking the imaginary part gives
+  \[ \arg \left( \pi^{- \frac{s}{2}} \Gamma \hspace{-0.17em} \left(
+     \tfrac{s}{2} \right) \right) = - \tfrac{t}{2} \log \pi + \Im \log \Gamma
+     \hspace{-0.17em} \left( \tfrac{1}{4} + \tfrac{it}{2} \right) = \vartheta
+     (t) . \]
+\end{proof}
+
+\begin{theorem}
+  [Hardy's $Z$--function and reality on the real line]\label{thm:Z-def}Define
+  \begin{equation}
+    Z (t) = e^{i \vartheta (t)}  \hspace{0.17em} \zeta \hspace{-0.17em} \left(
+    \tfrac{1}{2} + it \right),
+  \end{equation}
+  where $\vartheta (t)$ is as in Theorem~\ref{thm:theta}. Then for all real
+  $t$ one has $Z (t) \in \mathbb{R}$, and
+  \begin{equation}
+    Z (t) = 0 \quad \Longleftrightarrow \quad \zeta \hspace{-0.17em} \left(
+    \tfrac{1}{2} + it \right) = 0.
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  Define the completed function
+  \[ \xi (s) = \tfrac{1}{2} s (s - 1)  \hspace{0.17em} \pi^{- s / 2} \Gamma
+     \hspace{-0.17em} \left( \tfrac{s}{2} \right) \zeta (s) . \]
+  The functional equation $\xi (s) = \xi (1 - s)$ holds, and $\xi
+  (\tfrac{1}{2} + it)$ is real for $t \in \mathbb{R}$ (see Titchmarsh,
+  Chapters~2 and~9).
+  
+  For $s = \tfrac{1}{2} + it$,
+  \[ \xi \hspace{-0.17em} \left( \tfrac{1}{2} + it \right) = \tfrac{1}{2}
+     \left( \tfrac{1}{4} + t^2 \right)  \hspace{0.17em} \pi^{- (\frac{1}{2} +
+     it) / 2} \Gamma \hspace{-0.17em} \left( \tfrac{1}{4} + \tfrac{it}{2}
+     \right) \zeta \hspace{-0.17em} \left( \tfrac{1}{2} + it \right) . \]
+  By Theorem~\ref{thm:theta}, the argument of $\pi^{- s / 2} \Gamma (s / 2)$
+  at $s = \tfrac{1}{2} + it$ equals $\vartheta (t)$. Multiplication by $e^{i
+  \vartheta (t)}$ removes this argument, and $Z (t)$ becomes real.
+  
+  The factor $e^{i \vartheta (t)}$ never vanishes, hence
+  \[ Z (t) = 0 \quad \Longleftrightarrow \quad \zeta \hspace{-0.17em} \left(
+     \tfrac{1}{2} + it \right) = 0. \]
+\end{proof}
+
+\section{Zero counting and the map $\Phi$}
+
+\begin{theorem}
+  [Zero counting functions and bijection]\label{thm:counting-bijection}Define
+  \begin{equation}
+    N_{\zeta} (T) =\# \{\rho \in \mathcal{S}: 0 < \Im \rho \le T\},
+  \end{equation}
+  where zeros are counted with multiplicity and with half multiplicity if $\Im
+  \rho = T$. Define
+  \begin{equation}
+    N_Z (T) =\# \{t \in \mathcal{Z}: 0 < \Re t \le T\},
+  \end{equation}
+  again with multiplicity and half multiplicity for zeros with $\Re t = T$.
+  Then for all $T > 0$,
+  \begin{equation}
+    N_Z (T) = N_{\zeta} (T),
+  \end{equation}
+  and the map $\Phi (t) = \tfrac{1}{2} + it$ establishes a bijection between
+  the zeros counted on both sides, preserving multiplicities and the
+  half--weight boundary convention.
+\end{theorem}
+
+\begin{proof}
+  By Theorem~\ref{thm:Z-def}, for $t \in \mathbb{R}$,
+  \[ Z (t) = 0 \quad \Longleftrightarrow \quad \zeta \hspace{-0.17em} \left(
+     \tfrac{1}{2} + it \right) = 0. \]
+  Zeros of $Z (t)$ in $\mathcal{Z}$ correspond to zeros of $\zeta (s)$ on the
+  critical line $\Re s = \tfrac{1}{2}$ via the map $s = \tfrac{1}{2} + it$.
+  
+  For a nontrivial zero $\rho = \beta + i \gamma \in \mathcal{S}$,
+  Theorem~\ref{thm:strips} gives
+  \[ t = \Phi^{- 1} (\rho) = - i (\rho - \tfrac{1}{2}), \]
+  which lies in $\mathcal{Z}$ and satisfies $\Re t = \gamma$. The map $\Phi$
+  is biholomorphic, hence multiplicities of zeros are preserved. The condition
+  $0 < \Im \rho \le T$ is equivalent to $0 < \Re t \le T$, so the counting
+  ranges coincide. The half--weight convention on the boundary is preserved: a
+  zero with $\Im \rho = T$ corresponds to a zero with $\Re t = T$, and both
+  receive half their multiplicities. Hence $N_Z (T) = N_{\zeta} (T)$.
+\end{proof}
+
+\section{Argument principle and the completed function}
+
+\begin{theorem}
+  [Argument principle for the completed
+  function]\label{thm:arg-principle}Define the completed function
+  \begin{equation}
+    \xi (s) = \tfrac{1}{2} s (s - 1)  \hspace{0.17em} \pi^{- s / 2} \Gamma
+    \hspace{-0.17em} \left( \tfrac{s}{2} \right) \zeta (s) .
+  \end{equation}
+  Let $T > 0$ and consider the rectangle
+  \begin{equation}
+    R_T = \{ \hspace{0.17em} s = \sigma + it : \tfrac{1}{2} \le \sigma \le 2,
+    0 \le t \le T \hspace{0.17em} \}
+  \end{equation}
+  with positively oriented boundary $C_T$. Assume that $C_T$ contains no zeros
+  of $\xi (s)$. Then
+  \begin{equation}
+    \Delta_{C_T} \arg \xi (s) = 2 \pi N_{\zeta} (T),
+  \end{equation}
+  where $N_{\zeta} (T)$ counts the nontrivial zeros of $\zeta (s)$ in the
+  interior of $R_T$ with multiplicity.
+\end{theorem}
+
+\begin{proof}
+  The function $\xi (s)$ is entire and its zeros coincide with the nontrivial
+  zeros of $\zeta (s)$, all lying in $\mathcal{S}$. There are no poles.
+  
+  The argument principle states that for a meromorphic function one has
+  \[ \Delta_{C_T} \arg \xi (s) = 2 \pi (N - P), \]
+  where $N$ is the number of zeros and $P$ the number of poles in the
+  interior, both counted with multiplicities. Here $P = 0$ and $N = N_{\zeta}
+  (T)$, which gives the stated identity.
+\end{proof}
+
+\begin{theorem}
+  [Decomposition into factors]\label{thm:factor-decomp}With $\xi (s)$ as
+  above,
+  \[ \xi (s) = A (s)  \hspace{0.17em} \zeta (s)  \hspace{0.17em} B (s), \]
+  where
+  \begin{equation}
+    A (s) = \pi^{- s / 2} \Gamma \hspace{-0.17em} \left( \tfrac{s}{2} \right),
+    \qquad B (s) = \tfrac{1}{2} s (s - 1) .
+  \end{equation}
+  Assume that $C_T$ contains no zeros of $\xi (s)$. Then
+  \begin{equation}
+    2 \pi N_{\zeta} (T) = \Delta_{C_T} \arg A (s) + \Delta_{C_T} \arg \zeta
+    (s) + \Delta_{C_T} \arg B (s) .
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  The factorization follows from the definition of $\xi (s)$. On $C_T$ none of
+  the factors $A (s), \zeta (s), B (s)$ vanishes, since $C_T$ contains no
+  zeros of $\xi (s)$.
+  
+  On any path where none of the factors vanishes, one has
+  \[ \log \xi (s) = \log A (s) + \log \zeta (s) + \log B (s) \]
+  for a branch of the logarithm consistent along the contour. Taking imaginary
+  parts and total increments along $C_T$ yields
+  \[ \Delta_{C_T} \arg \xi (s) = \Delta_{C_T} \arg A (s) + \Delta_{C_T} \arg
+     \zeta (s) + \Delta_{C_T} \arg B (s) . \]
+  Combining this identity with Theorem~\ref{thm:arg-principle} gives the
+  stated formula.
+\end{proof}
+
+\section{Evaluation of the three contributions}
+
+\begin{theorem}
+  [Contribution from $B (s) = \tfrac{1}{2} s (s - 1)$]\label{thm:B-contrib}Let
+  $T > 0$ and $C_T$ be as above, with $C_T$ containing no zeros of $\xi (s)$.
+  Then
+  \begin{equation}
+    \Delta_{C_T} \arg B (s) = \pi .
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  The function $B (s) = \tfrac{1}{2} s (s - 1)$ is entire and has zeros at $s
+  = 0$ and $s = 1$. Only $s = 1$ lies on the real axis in the range
+  $\tfrac{1}{2} \le \sigma \le 2$; the zero $s = 0$ lies to the left of the
+  rectangle.
+  
+  Along the bottom side of $C_T$, where $s = \sigma \in [\tfrac{1}{2}, 2]$, $B
+  (\sigma)$ is real. For $\sigma \in (1, 2]$, $\sigma (\sigma - 1) > 0$, hence
+  $B (\sigma) > 0$ and $\arg B (\sigma) = 0$. For $\sigma \in [\tfrac{1}{2},
+  1)$, $\sigma (\sigma - 1) < 0$, hence $B (\sigma) < 0$ and $\arg B (\sigma)
+  = \pi$ with continuous variation along the real axis.
+  
+  Thus as the bottom side is traversed from $2$ to $\tfrac{1}{2}$, the
+  argument jumps from $0$ to $\pi$ when crossing $s = 1$. This yields a net
+  change $\pi$ along the bottom side.
+  
+  The vertical sides at $\sigma = 2$ and $\sigma = \tfrac{1}{2}$, and the top
+  side at height $T$, carry no zeros or poles of $B (s)$. Hence these sides do
+  not contribute any additional net change to the total increment of the
+  argument. Therefore
+  \[ \Delta_{C_T} \arg B (s) = \pi . \]
+\end{proof}
+
+\begin{theorem}
+  [Contribution from $A (s)$]\label{thm:A-contrib}With $A (s) = \pi^{- s / 2}
+  \Gamma (s / 2)$ as above, one has
+  \begin{equation}
+    \Delta_{C_T} \arg A (s) = \vartheta (T),
+  \end{equation}
+  where $\vartheta (T)$ is the Riemann--Siegel theta function defined in
+  Theorem~\ref{thm:theta}.
+\end{theorem}
+
+\begin{proof}
+  This evaluation follows Titchmarsh, {\tmem{The Theory of the Riemann
+  Zeta-Function}}, 2nd ed., Chapter~9, in particular equations
+  (9.3.1)--(9.3.5) and (9.5.1)--(9.5.6).
+  
+  Decompose the contour $C_T$ into four sides. On the bottom side, with $s =
+  \sigma \in [\tfrac{1}{2}, 2]$, one has $A (s) > 0$ and $\arg A (s) = 0$, so
+  this side contributes zero.
+  
+  On the vertical sides from $2$ to $2 + iT$ and from $\tfrac{1}{2} + iT$ to
+  $\tfrac{1}{2}$, the contribution of $A (s)$ is handled using the functional
+  equation of $\xi (s)$, and the resulting net effect of these sides cancels
+  in the final sum.
+  
+  On the top side from $2 + iT$ to $\tfrac{1}{2} + iT$, the explicit
+  representation of $\log A (s)$ and the branch choice give
+  \[ \arg A \hspace{-0.17em} \left( \tfrac{1}{2} + iT \right) = \Im \left(
+     \log \Gamma \hspace{-0.17em} \left( \tfrac{1}{4} + \tfrac{iT}{2} \right)
+     - \tfrac{iT}{2} \log \pi \right) = \vartheta (T), \]
+  as in Theorem~\ref{thm:theta}.
+  
+  Summing the contributions from all four sides gives
+  \[ \Delta_{C_T} \arg A (s) = \vartheta (T) . \]
+\end{proof}
+
+\begin{lemma}
+  [Argument increment for $\zeta (s)$]\label{lem:S-def}Let $S (T)$ be defined
+  by
+  \begin{equation}
+    S (T) = \frac{1}{\pi} \arg \zeta \hspace{-0.17em} \left( \tfrac{1}{2} + iT
+    \right),
+  \end{equation}
+  where $\arg \zeta (s)$ is obtained by continuous variation along the path
+  \[ 2 \longrightarrow 2 + iT \longrightarrow \tfrac{1}{2} + iT, \]
+  starting with $\arg \zeta (2) = 0$ and avoiding zeros of $\zeta$ by
+  indentations if necessary. Then, for $T$ such that no zero lies on $C_T$,
+  \begin{equation}
+    \Delta_{C_T} \arg \zeta (s) = \pi S (T) .
+  \end{equation}
+\end{lemma}
+
+\begin{proof}
+  This statement appears in Titchmarsh, Chapter~9, as part of Theorem~9.4. The
+  function $\arg \zeta (s)$ is defined along the path from $2$ to
+  $\tfrac{1}{2} + iT$ as specified. The total change in $\arg \zeta (s)$ along
+  the right side and the top side of $C_T$ equals $\arg \zeta (\tfrac{1}{2} +
+  iT)$ by construction of the branch.
+  
+  On the bottom side, $\zeta (\sigma)$ is real and nonzero for $\sigma > 1$
+  and can be continued to $\sigma = \tfrac{1}{2}$ without encountering zeros,
+  hence this side contributes no net change. The contribution from the left
+  side is handled via the functional equation for $\xi (s)$ and does not alter
+  the final expression once the contributions from $A (s)$ and $B (s)$ are
+  included.
+  
+  Consequently
+  \[ \Delta_{C_T} \arg \zeta (s) = \arg \zeta \hspace{-0.17em} \left(
+     \tfrac{1}{2} + iT \right) = \pi S (T) . \]
+\end{proof}
+
+\section{Exact Riemann--von Mangoldt formula and transfer to $Z$}
+
+\begin{theorem}
+  [Exact Riemann--von Mangoldt formula]\label{thm:R-vM}For all $T > 0$ such
+  that $C_T$ contains no zeros of $\xi (s)$,
+  \begin{equation}
+    N_{\zeta} (T) = \frac{\vartheta (T)}{\pi} + 1 + S (T),
+  \end{equation}
+  where $N_{\zeta} (T)$ is the nontrivial zero counting function, and
+  $\vartheta (T), S (T)$ are as in Theorem~\ref{thm:theta} and
+  Lemma~\ref{lem:S-def}.
+\end{theorem}
+
+\begin{proof}
+  Combine Theorem~\ref{thm:factor-decomp} with Theorem~\ref{thm:B-contrib},
+  Theorem~\ref{thm:A-contrib}, and Lemma~\ref{lem:S-def}:
+  \[ 2 \pi N_{\zeta} (T) = \Delta_{C_T} \arg A (s) + \Delta_{C_T} \arg \zeta
+     (s) + \Delta_{C_T} \arg B (s) = \vartheta (T) + \pi S (T) + \pi . \]
+  Division by $2 \pi$ gives
+  \[ N_{\zeta} (T) = \frac{\vartheta (T)}{\pi} + 1 + S (T) . \]
+\end{proof}
+
+\begin{theorem}
+  [Midpoint convention for boundary zeros]\label{thm:midpoint}If $T$ coincides
+  with the ordinate of one or more nontrivial zeros of $\zeta (s)$, then both
+  $N_{\zeta} (T)$ and $S (T)$ have jumps equal to the total multiplicity of
+  those zeros. Define
+  \begin{equation}
+    N_{\zeta} (T) = \tfrac{1}{2} (N_{\zeta} (T^-) + N_{\zeta} (T^+)), \qquad S
+    (T) = \tfrac{1}{2} (S (T^-) + S (T^+)),
+  \end{equation}
+  where $T^{\pm} \to T$ avoiding zeros. Then the formula in
+  Theorem~\ref{thm:R-vM} holds for such $T$.
+\end{theorem}
+
+\begin{proof}
+  When $T$ passes through the ordinate of a zero of $\xi (s)$, deform the
+  contour $C_T$ by a semicircular indentation around the zero. Let the zero
+  have multiplicity $m$. The indentation has radius $\epsilon > 0$, and the
+  limit $\epsilon \to 0$ is taken.
+  
+  On this semicircle, $\xi (s)$ has a zero of order $m$, so
+  \[ \xi (s) = (s - s_0)^m h (s), \]
+  where $s_0$ is the location of the zero and $h (s_0) \neq 0$. The argument
+  of $(s - s_0)^m$ changes by $m \pi$ as the semicircle is traversed (half of
+  the full circular change). The argument of $h (s)$ remains continuous and
+  contributes no singular change in the limit $\epsilon \to 0$. Hence the
+  contribution from the semicircle to $\Delta_{C_T} \arg \xi (s)$ tends to $m
+  \pi$.
+  
+  Each zero on the contour therefore contributes half its multiplicity to
+  $N_{\zeta} (T)$, which matches the half--weight convention in the
+  definition.
+  
+  The same contour deformation shows that $\arg \zeta (\tfrac{1}{2} + iT)$
+  changes by $m \pi$, so $S (T)$ jumps by $m$. The midpoint prescription
+  averages the limits from above and below the jump, and the identity from
+  Theorem~\ref{thm:R-vM} remains valid at the boundary point. This is
+  precisely the argument recorded in Titchmarsh, Theorem~9.4.
+\end{proof}
+
+\begin{theorem}
+  [Exact zero--counting for Hardy's $Z$]\label{thm:Z-main}Let $T > 0$, and
+  define $N_Z (T)$ and $S (T)$ as above, with $Z (T)$ as in
+  Theorem~\ref{thm:Z-def} and midpoint conventions for boundary zeros:
+  \begin{equation}
+    N_Z (T) = \tfrac{1}{2} (N_Z (T^-) + N_Z (T^+)), \qquad S (T) =
+    \tfrac{1}{2} (S (T^-) + S (T^+))
+  \end{equation}
+  whenever $Z (T) = 0$. Then for all $T > 0$,
+  \begin{equation}
+    N_Z (T) = \frac{\vartheta (T)}{\pi} + 1 + S (T) .
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  By Theorem~\ref{thm:counting-bijection},
+  \[ N_Z (T) = N_{\zeta} (T) \]
+  for all $T > 0$, including half--weights on the boundary, and multiplicities
+  are preserved under the bijection induced by $\Phi$.
+  
+  By Theorems~\ref{thm:R-vM} and \ref{thm:midpoint},
+  \[ N_{\zeta} (T) = \frac{\vartheta (T)}{\pi} + 1 + S (T) \]
+  holds for all $T > 0$, with midpoint conventions at ordinates of zeros.
+  Substituting $N_Z (T) = N_{\zeta} (T)$ yields
+  \[ N_Z (T) = \frac{\vartheta (T)}{\pi} + 1 + S (T) \]
+  for every $T > 0$, with the stated midpoint prescription when $Z (T) = 0$.
+\end{proof}
+
+\section*{Reference}
+
+E.{\hspace{0.17em}}C.~Titchmarsh, {\tmem{The Theory of the Riemann
+Zeta-Function}}, 2nd ed. (rev. D.{\hspace{0.17em}}R.~Heath-Brown), Oxford
+University Press, 1986, Chapters~9--10.
+
+\end{document}

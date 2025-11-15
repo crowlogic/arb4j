@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|generic|metal|framed-theorems>>
+<style|<tuple|generic|boring-white|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Evolutionary Spectra and Non-Stationary
@@ -53,7 +53,7 @@
   assumed that the process under study, <math|X<rsub|t>>, is stationary, at
   least up to the second order. That is, we assume that
   <math|E<around*|(|X<rsub|t>|)>=\<mu\>>, a constant (independent of
-  <math|t>) which we may take to be zero, and that, for each <math|s> and
+  <math|t>) which we may take jto be zero, and that, for each <math|s> and
   <math|t>, the covariance
 
   <\equation>
@@ -179,7 +179,7 @@
     <label|eq:page_spectrum4>\<rho\><rsub|t><around|(|\<omega\>|)>=<frac|d|d*t><around|{|f<rsub|t><rsup|\<ast\>><around|(|\<omega\>|)>|}>
   </equation>
 
-  and
+  andj
 
   <\equation>
     <label|eq:page_spectrum5>f<rsup|\<ast\>><around|(|\<omega\>|)>=<big|int><rsub|0><rsup|\<infty\>>\<rho\><rsub|t><around|(|\<omega\>|)>*d*t
@@ -413,12 +413,16 @@
 
   <\definition>
     <label|def:evol_spectrum>Let <math|<with|math-font|cal*|F>> denote a
-    particular family of oscillatory functions,
-    <math|<around|{|\<phi\><rsub|t><around|(|\<omega\>|)>|}>\<equiv\><around|{|A<rsub|t><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>|}>>,
-    and let <math|<around|{|X<rsub|t>|}>> be an oscillatory process having a
-    representation of the form <eqref|eq:process_rep3> in terms of the family
-    <math|<with|math-font|cal*|F>>. We define the evolutionary power spectrum
-    at time <math|t> with respect to the family
+    particular family of oscillatory functions,\ 
+
+    <\equation>
+      <around|{|\<phi\><rsub|t><around|(|\<omega\>|)>|}>\<equiv\><around|{|A<rsub|t><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>|}>
+    </equation>
+
+    , and let <math|<around|{|X<rsub|t>|}>> be an oscillatory process having
+    a representation of the form <eqref|eq:process_rep3> in terms of the
+    family <math|<with|math-font|cal*|F>>. We define the evolutionary power
+    spectrum at time <math|t> with respect to the family
     <math|<with|math-font|cal*|F>>, <math|d*F<rsub|t><around|(|\<omega\>|)>>,
     by
 
@@ -549,8 +553,12 @@
 
 <\initial>
   <\collection>
+    <associate|info-flag|minimal>
     <associate|magnification|1.2>
+    <associate|page-height|auto>
     <associate|page-medium|paper>
+    <associate|page-type|letter>
+    <associate|page-width|auto>
   </collection>
 </initial>
 
@@ -560,11 +568,11 @@
     <associate|auto-2|<tuple|4|3>>
     <associate|auto-3|<tuple|10|4>>
     <associate|auto-4|<tuple|21|7>>
-    <associate|auto-5|<tuple|29|8>>
+    <associate|auto-5|<tuple|30|8>>
     <associate|bib-bartlett1955|<tuple|bartlett1955|8>>
     <associate|bib-cramer1960|<tuple|cramer1960|8>>
     <associate|bib-grenander1957|<tuple|grenander1957|8>>
-    <associate|bib-herbst1963a|<tuple|herbst1963a|8>>
+    <associate|bib-herbst1963a|<tuple|herbst1963a|9>>
     <associate|bib-herbst1963b|<tuple|herbst1963b|9>>
     <associate|bib-herbst1963c|<tuple|herbst1963c|9>>
     <associate|bib-jowett1957|<tuple|jowett1957|9>>
@@ -580,10 +588,10 @@
     <associate|eq:covar_representation|<tuple|12|4>>
     <associate|eq:covar_representation2|<tuple|18|6>>
     <associate|eq:covariance|<tuple|1|1>>
-    <associate|eq:evol_spectrum|<tuple|23|7>>
-    <associate|eq:filter_fourier|<tuple|27|8>>
-    <associate|eq:filter_representation|<tuple|28|8>>
-    <associate|eq:integral_spectrum|<tuple|24|7>>
+    <associate|eq:evol_spectrum|<tuple|24|7>>
+    <associate|eq:filter_fourier|<tuple|28|8>>
+    <associate|eq:filter_representation|<tuple|29|8>>
+    <associate|eq:integral_spectrum|<tuple|25|7>>
     <associate|eq:integrated_spectrum|<tuple|5|3>>
     <associate|eq:modulating_function|<tuple|17|6>>
     <associate|eq:orthogonal_process|<tuple|14|5>>
@@ -598,10 +606,10 @@
     <associate|eq:process_rep2|<tuple|13|5>>
     <associate|eq:process_rep3|<tuple|19|6>>
     <associate|eq:spectral_rep|<tuple|2|2>>
-    <associate|eq:standardize|<tuple|25|8>>
-    <associate|eq:stationary_process|<tuple|29|8>>
+    <associate|eq:standardize|<tuple|26|8>>
+    <associate|eq:stationary_process|<tuple|30|8>>
     <associate|eq:total_energy|<tuple|22|7>>
-    <associate|eq:unit_integral|<tuple|26|8>>
+    <associate|eq:unit_integral|<tuple|27|8>>
   </collection>
 </references>
 
