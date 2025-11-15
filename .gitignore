@@ -1,7 +1,6 @@
 /target/
 /libarblib.so
 /class.path
-/*.yaml
 /*.arb*
 /*.log
 /*~
