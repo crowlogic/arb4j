@@ -585,11 +585,11 @@
   </proof>
 
   <\corollary>
-    <label|cor:evol_spec><with|font-series|bold|[Evolutionary spectrum of
+    <label|cor:evol_specUT><with|font-series|bold|[Evolutionary spectrum of
     unitarily time-changed stationary process]> The evolutionary spectrum is
 
     <\equation>
-      <label|eq:evolutionary_spectrum>d*F<rsub|t><around|(|\<lambda\>|)>=<around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>=<wide|\<theta\>|\<dot\>><around|(|t|)>*<space|0.17em>d*F<around|(|\<lambda\>|)>
+      <label|eq:evolutionary_spectrumUT>d*F<rsub|t><around|(|\<lambda\>|)>=<around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>=<wide|\<theta\>|\<dot\>><around|(|t|)>*<space|0.17em>d*F<around|(|\<lambda\>|)>
     </equation>
   </corollary>
 
@@ -724,12 +724,12 @@
     <associate|bib-characterizationOscillatoryProcesses|<tuple|2|9>>
     <associate|bib-evolutionarySpectraAndNonStationaryProcesses|<tuple|3|9>>
     <associate|bib-stationaryAndRelatedStochasticProcesses|<tuple|1|9>>
-    <associate|cor:evol_spec|<tuple|15|8>>
+    <associate|cor:evol_spec|<tuple|7|4>>
+    <associate|cor:evol_specUT|<tuple|15|8>>
     <associate|def:L2loc|<tuple|3|2>>
     <associate|def:cramer|<tuple|2|2>>
     <associate|def:gaussian_process|<tuple|1|2>>
     <associate|def:osc_proc|<tuple|6|3>>
-    <associate|def:oscillatory_function|<tuple|6|?>>
     <associate|def:zeromeasure|<tuple|17|9>>
     <associate|eq:K_def|<tuple|43|8>>
     <associate|eq:K_theta_def|<tuple|44|8>>
@@ -743,10 +743,10 @@
     <associate|eq:Z_transformation|<tuple|33|7>>
     <associate|eq:cauchy_sequence|<tuple|25|5>>
     <associate|eq:conjugation|<tuple|45|8>>
-    <associate|eq:covar_representation2|<tuple|12|?>>
     <associate|eq:covariance_kernel|<tuple|1|2>>
     <associate|eq:cramer_representation|<tuple|2|2>>
-    <associate|eq:evolutionary_spectrum|<tuple|41|8>>
+    <associate|eq:evolutionary_spectrum|<tuple|16|4>>
+    <associate|eq:evolutionary_spectrumUT|<tuple|41|8>>
     <associate|eq:expectation_Yab|<tuple|8|3>>
     <associate|eq:filter_identity|<tuple|36|7>>
     <associate|eq:finite_variance|<tuple|5|2>>
@@ -759,7 +759,6 @@
     <associate|eq:isometry_simple|<tuple|24|5>>
     <associate|eq:local_isometry|<tuple|32|6>>
     <associate|eq:markov_inequality|<tuple|9|3>>
-    <associate|eq:modulating_function|<tuple|11|?>>
     <associate|eq:mu_def|<tuple|47|9>>
     <associate|eq:orthogonality_phi|<tuple|14|3>>
     <associate|eq:osc_symmetry|<tuple|19|4>>
@@ -768,7 +767,6 @@
     <associate|eq:oscillatory_function_Z|<tuple|38|7>>
     <associate|eq:oscillatory_process|<tuple|13|3>>
     <associate|eq:oscillatory_well_defined|<tuple|21|4>>
-    <associate|eq:process_rep3|<tuple|13|?>>
     <associate|eq:simple_function|<tuple|22|5>>
     <associate|eq:simple_zeros|<tuple|46|9>>
     <associate|eq:stationary_covariance|<tuple|3|2>>
