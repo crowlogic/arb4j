@@ -83,7 +83,7 @@
     processes are defined in <cite|Priestley> (see Note A below) as
 
     <\equation>
-      x<rsub|t>=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>e<rsup|i*t*\<lambda\>>*a<rsub|t><around|(|\<lambda\>|)>*d*\<Phi\><around|(|\<lambda\>|)><label|eq:oscillatory>
+      x<around*|(|t|)>=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>e<rsup|i*t*\<lambda\>>*a<rsub|t><around|(|\<lambda\>|)>*d*\<Phi\><around|(|\<lambda\>|)><label|eq:oscillatory>
     </equation>
 
     where
@@ -150,7 +150,7 @@
     by
 
     <\equation>
-      y<rsub|t>=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>e<rsup|i*t*\<lambda\>>*d*E<around|(|\<lambda\>|)>*y<around|(|0|)>
+      y<around*|(|t|)>=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>e<rsup|i*t*\<lambda\>>*d*E<around|(|\<lambda\>|)>*y<around|(|0|)>
     </equation>
 
     where <math|E<around|(|\<cdummy\>|)>> is the spectral measure associated
@@ -183,7 +183,7 @@
     and <math|h\<in\><math-up|Dom><around|(|A|)>>. Furthermore,
 
     <\align>
-      <tformat|<table|<row|<cell|<around|(|A*y|)><around|(|t|)>>|<cell|=<around*|(|<big|int><rsub|-\<infty\>><rsup|+\<infty\>>a<rsub|t><around|(|\<lambda\>|)>*d*E<around|(|\<lambda\>|)>|)><around*|[|<big|int><rsub|-\<infty\>><rsup|+\<infty\>>e<rsup|i*t*\<lambda\>>*d*E<around|(|\<lambda\>|)>*y<around|(|0|)>|]><eq-number><label|eq:At_yt>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>a<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*t*\<lambda\>>*d*E<around|(|\<lambda\>|)>*y<around|(|0|)>>>|<row|<cell|>|<cell|=x<rsub|t>>>>>
+      <tformat|<table|<row|<cell|<around|(|A*y|)><around|(|t|)>>|<cell|=<around*|(|<big|int><rsub|-\<infty\>><rsup|+\<infty\>>a<rsub|t><around|(|\<lambda\>|)>*d*E<around|(|\<lambda\>|)>|)><around*|[|<big|int><rsub|-\<infty\>><rsup|+\<infty\>>e<rsup|i*t*\<lambda\>>*d*E<around|(|\<lambda\>|)>*y<around|(|0|)>|]><eq-number><label|eq:At_yt>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>a<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*t*\<lambda\>>*d*E<around|(|\<lambda\>|)>*y<around|(|0|)>>>|<row|<cell|>|<cell|=x<around*|(|t|)>>>>>
     </align>
 
     since
@@ -236,17 +236,21 @@
     <label|rem:spectrum>We now observe that since
 
     <\equation>
-      x<rsub|t>=<around|(|U<rsub|t>*A*y|)><around|(|0|)>
+      x<around*|(|t|)>=<around|(|U<rsub|t>*A*y|)><around|(|0|)>
     </equation>
 
-    the spectrum of <math|x<rsub|t>> is given by
+    the spectrum of <math|x<around*|(|t|)>> is given by
     <math|<around|\<\|\|\>|<around|(|E<around|(|A|)>*A*y|)><around|(|0|)>|\<\|\|\>><rsup|2>>.
     This definition of spectrum was given in <cite|Priestley>.
   </remark>
 
   We now give sufficient conditions for a deformed stationary curve
-  <math|x<rsub|t>=<around|(|A*y|)><around|(|t|)>> to be purely
-  nondeterministic.
+
+  <\equation>
+    x<rsub|t>=<around|(|A*y|)><around|(|t|)>
+  </equation>
+
+  \ to be purely nondeterministic.
 
   <\corollary>
     <label|cor:nondeterministic>Let <math|x> be a deformed stationary curve
@@ -285,13 +289,13 @@
 
   <\corollary>
     <dueto|Moving average representation><label|cor:moving_avg>Let
-    <math|x<rsub|t>> be a deformed stationary curve with associated
+    <math|x<around*|(|t|)>> be a deformed stationary curve with associated
     stationary curve purely nondeterministic. Assume that
     <math|A<around|(|t|)>> satisfies the assumptions of Corollary
     <reference|cor:nondeterministic>. Then
 
     <\enumerate>
-      <item><math|y<rsub|t>=<big|int><rsub|-\<infty\>><rsup|t>f*<around|(|t-u|)>*d*\<xi\><around|(|u|)>>
+      <item><math|y<around*|(|t|)>=<big|int><rsub|-\<infty\>><rsup|t>f*<around|(|t-u|)>*d*\<xi\><around|(|u|)>>
       where <math|\<xi\><around|(|\<cdummy\>|)>> is a c.a. set function with
       values in <math|H<rsub|y>*<around|(|+\<infty\>|)>> such that
 
@@ -311,7 +315,7 @@
         <big|int><rsub|-\<infty\>><rsup|0><around|\||f<around|(|u|)>|\|><rsup|2>*d*\<mu\><around|(|u|)>\<less\>\<infty\><label|eq:f_integral>
       </equation>
 
-      <item><math|x<rsub|t>=<big|int><rsub|-\<infty\>><rsup|t>h<around|(|t,u|)>*d*\<xi\><around|(|u|)>>
+      <item><math|x<around*|(|t|)>=<big|int><rsub|-\<infty\>><rsup|t>h<around|(|t,u|)>*d*\<xi\><around|(|u|)>>
       where <math|\<xi\>> is as in (a).
     </enumerate>
   </corollary>
@@ -423,7 +427,7 @@
     <associate|eq:A_def|<tuple|11|3>>
     <associate|eq:A_def_converse|<tuple|18|4>>
     <associate|eq:At_yt|<tuple|14|3>>
-    <associate|eq:f_integral|<tuple|26|5>>
+    <associate|eq:f_integral|<tuple|27|5>>
     <associate|eq:oscillatory|<tuple|4|2>>
     <associate|eq:rho|<tuple|5|2>>
     <associate|eq:shift_group|<tuple|7|2>>
@@ -431,7 +435,7 @@
     <associate|eq:subspace2|<tuple|2|1>>
     <associate|eq:subspace3|<tuple|3|1>>
     <associate|eq:unitary_group|<tuple|10|3>>
-    <associate|eq:x_moving_avg|<tuple|27|6>>
+    <associate|eq:x_moving_avg|<tuple|28|6>>
     <associate|eq:xt_spectral|<tuple|21|4>>
     <associate|eq:y_def|<tuple|6|2>>
     <associate|rem:discrete|<tuple|11|6>>
