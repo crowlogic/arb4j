@@ -16,672 +16,359 @@
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-1><vspace|0.5fn>
 
-    <with|par-left|1tab|1.1<space|2spc>The Spectral Formulation
+    <with|par-left|1tab|1.1<space|2spc>Spectral Formulation
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-2>>
 
-    <with|par-left|1tab|1.2<space|2spc>The Filter Formulation
+    <with|par-left|1tab|1.2<space|2spc>Filter Formulation
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-3>>
 
-    <with|par-left|1tab|1.3<space|2spc>The Linear Operator Formulation
+    <with|par-left|1tab|1.3<space|2spc>Operator Formulation
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-4>>
 
-    <with|par-left|1tab|1.4<space|2spc>Equivalence of Formulations
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-5>>
-
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>Main
     Results> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-6><vspace|0.5fn>
+    <no-break><pageref|auto-5><vspace|0.5fn>
 
-    <with|par-left|1tab|2.1<space|2spc>Setup and Definitions
+    <with|par-left|1tab|2.1<space|2spc>Orthogonality of Oscillatory Functions
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-6>>
+
+    <with|par-left|1tab|2.2<space|2spc>Inverse Filter Kernel
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-7>>
 
-    <with|par-left|1tab|2.2<space|2spc>Orthogonality of Oscillatory Functions
+    <with|par-left|1tab|2.3<space|2spc>Inverse Filter Theorem
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-8>>
 
-    <with|par-left|1tab|2.3<space|2spc>The Inverse Filter Theorem
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-9>>
-
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|3<space|2spc>Two-Sided
     Reconstruction> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-9><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|4<space|2spc>Connection
+    to Devinatz\UAronszajn Theory> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-10><vspace|0.5fn>
 
-    <with|par-left|1tab|3.1<space|2spc>Backward Composed with Forward Equals
-    Identity <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-11>>
-
-    <with|par-left|1tab|3.2<space|2spc>Forward Composed with Backward Equals
-    Identity <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-12>>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|4<space|2spc>Verification
-    Summary> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-13><vspace|0.5fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|5<space|2spc>Connection
-    to Devinatz\UAronszajn Theory> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-14><vspace|0.5fn>
-
-    <with|par-left|1tab|5.1<space|2spc>Devinatz Integral Representation
-    Framework <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-15>>
-
-    <with|par-left|1tab|5.2<space|2spc>The Radical and Completeness
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|5<space|2spc>Summary>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-16>>
-
-    <with|par-left|1tab|5.3<space|2spc>Explicit Equivalence
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-17>>
-
-    <with|par-left|1tab|5.4<space|2spc>Summary of the Connection
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-18>>
+    <no-break><pageref|auto-11><vspace|0.5fn>
   </table-of-contents>
+
+  \;
 
   <section|Introduction>
 
-  The theory of oscillatory processes encompasses three mathematically
-  equivalent yet conceptually distinct paradigms, each providing its own
-  natural approach for inversion between stationary and oscillatory
-  representations.
+  The theory of oscillatory processes unites three equivalent formulations:
+  spectral, filter, and operator. Each provides a rigorous mechanism for
+  inverting between stationary and oscillatory representations. All
+  derivations below concern real-valued processes, where the symmetry of the
+  spectral measure ensures that no imaginary asymmetries arise.
 
-  <subsection|The Spectral Formulation>
+  <inactive|<\assumption|Real-Valued Process and Symmetric Spectrum>
+    \;
+  </assumption>>
 
-  In the spectral paradigm, both the stationary process
-  <math|X<around|(|u|)>> and the oscillatory process <math|Z<around|(|t|)>>
-  are represented as stochastic integrals against a common spectral measure
-  <math|d*\<Phi\><around|(|\<lambda\>|)>>:
+  <\theorem>
+    <label|asm:real>Let <math|X<around|(|u|)>> be a real-valued process:
 
-  <\equation*>
-    X<around|(|u|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<lambda\>*u>*<space|0.17em>d*\<Phi\><around|(|\<lambda\>|)>,<space|1em>Z<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>d*\<Phi\><around|(|\<lambda\>|)>
-  </equation*>
+    <\equation>
+      X<around|(|u|)>\<in\>\<bbb-R\>\<forall\>u\<in\>\<bbb-R\><label|eq:1>
+    </equation>
 
-  The oscillatory function <math|\<phi\><rsub|t><around|(|\<lambda\>|)>>
-  modulates the spectral representation in the frequency domain. Inversion in
-  this paradigm proceeds by projecting the oscillatory process onto the
-  frequency basis via:
+    Then its (complex-valued) random orthogonal spectral measure satisfies
 
-  <\equation*>
-    d*\<Phi\><around|(|\<lambda\>|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|\<phi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>>Z<around|(|t|)>*<space|0.17em>d*t
-  </equation*>
+    <\equation>
+      d*<wide|\<Phi\>|\<bar\>><around|(|\<lambda\>|)>=d*\<Phi\>*<around|(|-\<lambda\>|)><label|eq:2>
+    </equation>
 
-  The orthogonality integral <math|<big|int><wide|\<phi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>>\<phi\><rsub|t><around|(|\<mu\>|)>*d*t=2*\<pi\>*\<delta\>*<around|(|\<lambda\>-\<mu\>|)>>
-  guarantees this projection recovers the original spectral measure. The
-  forward and backward spectral operations compose to identity via the delta
-  function identity.
+    and the corresponding covariance spectral measure <math|F> is even:
 
-  <subsection|The Filter Formulation>
+    <\equation>
+      F*<around|(|-A|)>=F<around|(|A|)><label|eq:3>
+    </equation>
+  </theorem>
 
-  In the filter paradigm, the transformation between <math|X> and <math|Z> is
-  mediated by time-varying filters <math|h<around|(|t,u|)>> and
-  <math|g<around|(|u,t|)>>:
+  <\proof>
+    <text-dots> insert proof here..
 
-  <\equation*>
-    Z<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|t,u|)>*X<around|(|u|)>*<space|0.17em>d*u,<space|1em>X<around|(|u|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|u,t|)>*Z<around|(|t|)>*<space|0.17em>d*t
-  </equation*>
+    \;
+  </proof>
 
-  The forward filter <math|h<around|(|t,u|)>> transforms the stationary input
-  into the oscillatory output; the inverse filter <math|g<around|(|u,t|)>>
-  recovers the stationary process from the oscillatory observation. The
-  filters are related to the oscillatory function by Fourier transformation:
+  <subsection|Spectral Formulation>
 
-  <\equation*>
-    \<phi\><rsub|t><around|(|\<lambda\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|t,u|)>*e<rsup|i*\<lambda\>*u>*<space|0.17em>d*u,<space|1em>g<around|(|u,t|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|\<phi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>>e<rsup|-i*\<lambda\>*u>*<space|0.17em>d*\<lambda\>
-  </equation*>
+  The stationary and oscillatory processes are given by
 
-  Inversion in this paradigm harnesses the orthonormality condition
-  <math|<big|int><wide|h<around|(|t,u|)>|\<bar\>>h<around|(|t,v|)>*d*t=\<delta\>*<around|(|u-v|)>>,
-  which in frequency space becomes the oscillatory function orthogonality.
-  The composition of filters <math|g<around|(|u,t|)>> and
-  <math|h<around|(|t,v|)>> equates to the identity via:
+  <\align>
+    <tformat|<table|<row|<cell|X<around|(|u|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<lambda\>*u>*<space|0.17em>d*\<Phi\><around|(|\<lambda\>|)><eq-number><label|eq:4>>>|<row|<cell|Z<around|(|t|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>d*\<Phi\><around|(|\<lambda\>|)><eq-number><label|eq:5>>>>>
+  </align>
 
-  <\equation*>
-    <big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|u,t|)>*h<around|(|t,v|)>*<space|0.17em>d*t=\<delta\>*<around|(|u-v|)>
-  </equation*>
+  Inversion follows by the projection integral
 
-  <subsection|The Linear Operator Formulation>
+  <\equation>
+    d*\<Phi\><around|(|\<lambda\>|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|\<phi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>Z<around|(|t|)>*<space|0.17em>d*t<label|eq:6>
+  </equation>
 
-  In the operator paradigm, the forward and backward transformations are
-  bounded linear operators <math|T> and <math|S> on appropriate function
-  spaces:
+  The fundamental orthogonality relation is
 
-  <\equation*>
-    T:X\<mapsto\>Z,<space|1em>S:Z\<mapsto\>X
-  </equation*>
+  <\equation>
+    <big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|\<phi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>\<phi\><rsub|t><around|(|\<mu\>|)>*<space|0.17em>d*t=2*\<pi\>*\<delta\>*<around|(|\<lambda\>-\<mu\>|)><label|eq:7>
+  </equation>
 
-  Inversion establishes that <math|S=T<rsup|-1>> on the relevant
-  <math|L<rsup|2>> closures. The operator composition <math|S*T=>Id and
-  <math|T*S=>Id follow from the dual resolutions of identity:
+  <subsection|Filter Formulation>
 
-  <\itemize>
-    <item>Time domain: <math|<big|int><wide|h<around|(|t,u|)>|\<bar\>>h<around|(|t,v|)>*d*t=\<delta\>*<around|(|u-v|)>>
+  Transformation between <math|X> and <math|Z> proceeds through time-varying
+  filters:
 
-    <item>Frequency domain: <math|<around|(|1/2*\<pi\>|)>*<big|int><wide|\<phi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>>\<phi\><rsub|t><around|(|\<mu\>|)>*d*t=\<delta\>*<around|(|\<lambda\>-\<mu\>|)>>
-  </itemize>
+  <\align>
+    <tformat|<table|<row|<cell|Z<around|(|t|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|t,u|)>*<space|0.17em>X<around|(|u|)>*<space|0.17em>d*u<eq-number><label|eq:8>>>|<row|<cell|X<around|(|u|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|u,t|)>*<space|0.17em>Z<around|(|t|)>*<space|0.17em>d*t<eq-number><label|eq:9>>>>>
+  </align>
 
-  These are the completeness relations for the oscillatory basis. The
-  operators intertwine the stationary and oscillatory representations through
-  their integral forms, with the orthogonality integrals serving as the
-  resolution of identity that equates operator compositions to the identity
-  map. The term \Presolution of identity\Q arises precisely because these
-  relations resolve how the forward and backward operations relate to one
-  another, establishing their mutual invertibility through the orthogonality
-  structure.
+  The filters relate to the oscillatory function as
 
-  <subsection|Equivalence of Formulations>
+  <\align>
+    <tformat|<table|<row|<cell|\<phi\><rsub|t><around|(|\<lambda\>|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|t,u|)>*<space|0.17em>e<rsup|i*\<lambda\>*u>*<space|0.17em>d*u<eq-number><label|eq:10>>>|<row|<cell|g<around|(|u,t|)>>|<cell|=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|\<phi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>e<rsup|i*\<lambda\>*u>*<space|0.17em>d*\<lambda\><eq-number><label|eq:11>>>>>
+  </align>
 
-  All three paradigms describe the same mathematical structure:
+  and satisfy
 
-  <\itemize>
-    <item>The spectral formulation emphasizes the frequency-domain
-    representation and the role of <math|d*\<Phi\><around|(|\<lambda\>|)>> as
-    the fundamental object.
+  <\equation>
+    <big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|h<around|(|t,u|)>|\<bar\>><space|0.17em>h<around|(|t,v|)>*<space|0.17em>d*t=\<delta\>*<around|(|u-v|)><label|eq:12>
+  </equation>
 
-    <item>The filter formulation emphasizes the time-domain convolution
-    operations via <math|h<around|(|t,u|)>> and <math|g<around|(|u,t|)>> and
-    their Fourier relationship.
+  which implies
 
-    <item>The operator formulation emphasizes the abstract algebraic
-    structure of forward/backward maps and their functional-analytic
-    properties.
-  </itemize>
+  <\equation>
+    <big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|u,t|)>*<space|0.17em>h<around|(|t,v|)>*<space|0.17em>d*t=\<delta\>*<around|(|u-v|)><label|eq:13>
+  </equation>
 
-  The orthogonality integral <math|<big|int><wide|\<phi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>>\<phi\><rsub|t><around|(|\<mu\>|)>*d*t=2*\<pi\>*\<delta\>*<around|(|\<lambda\>-\<mu\>|)>>
-  is the central unifying identity. It manifests as:
+  <subsection|Operator Formulation>
 
-  <\itemize>
-    <item>Spectral orthogonality in the spectral formulation
+  The operator relations express the same structure as maps between
+  <math|L<rsup|2>> function spaces:
 
-    <item>Filter orthonormality in the filter formulation
+  <\equation>
+    T:X\<mapsto\>Z,<space|1em>S:Z\<mapsto\>X<label|eq:14>
+  </equation>
 
-    <item>Resolution of identity in the operator formulation
-  </itemize>
+  Mutual invertibility follows as
 
-  Each inversion procedure\Vspectral projection, filter convolution, or
-  operator composition\Vequates to substitution followed by application of
-  the delta function identity via this single orthogonality relation. The
-  three formulations are thus three complementary manifestations of the same
-  underlying invertible structure.
+  <\equation>
+    S*T=T*S=<math-up|Id><label|eq:15>
+  </equation>
+
+  with completeness conditions identical to <eqref|eq:12> and <eqref|eq:7>.
 
   <section|Main Results>
-
-  <subsection|Setup and Definitions>
-
-  Let <math|h<around|(|t,u|)>> be a filter with
-  <math|h<around|(|t,\<cdot\>|)>\<in\>L<rsup|2><around|(|\<bbb-R\>|)>> for
-  each <math|t>, satisfying the orthonormality condition:
-
-  <\equation>
-    <big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|h<around|(|t,u|)>|\<bar\>>h<around|(|t,v|)>*<space|0.17em>d*t=\<delta\>*<around|(|u-v|)>
-  </equation>
-
-  Define the oscillatory function:
-
-  <\equation>
-    \<phi\><rsub|t><around|(|\<lambda\>|)>\<assign\><big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|t,u|)>*e<rsup|i*\<lambda\>*u>*<space|0.17em>d*u
-  </equation>
-
-  The oscillatory process is:
-
-  <\equation>
-    Z<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>d*\<Phi\><around|(|\<lambda\>|)>
-  </equation>
-
-  The stationary process is:
-
-  <\equation*>
-    X<around|(|u|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<lambda\>*u>*<space|0.17em>d*\<Phi\><around|(|\<lambda\>|)>
-  </equation*>
 
   <subsection|Orthogonality of Oscillatory Functions>
 
   <\lemma>
-    [Orthogonality of Oscillatory Functions]<label|lem:orthogonality>For the
-    oscillatory function <math|\<phi\><rsub|t><around|(|\<lambda\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|t,u|)>*e<rsup|i*\<lambda\>*u>*d*u>:
+    <dueto|Orthogonality of Oscillatory Functions><label|lem:orth>Let
+    <math|h<around|(|t,u|)>> satisfy <eqref|eq:12> and define
+    <math|\<phi\><rsub|t><around|(|\<lambda\>|)>> by <eqref|eq:10>. Then
 
-    <\equation*>
-      <big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|\<phi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>>\<phi\><rsub|t><around|(|\<mu\>|)>*<space|0.17em>d*t=2*\<pi\>*\<delta\>*<around|(|\<lambda\>-\<mu\>|)>
-    </equation*>
+    <\equation>
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|\<phi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>\<phi\><rsub|t><around|(|\<mu\>|)>*<space|0.17em>d*t=2*\<pi\>*\<delta\>*<around|(|\<lambda\>-\<mu\>|)><label|eq:16>
+    </equation>
   </lemma>
 
   <\proof>
-    Start by computing the integral directly:
+    From <eqref|eq:10>,
 
-    <\align*>
-      <tformat|<table|<row|<cell|<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|\<phi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>>\<phi\><rsub|t><around|(|\<mu\>|)>*<space|0.17em>d*t>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|t,u|)>*e<rsup|i*\<lambda\>*u>*<space|0.17em>d*u|\<bar\>>\<cdot\><big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|t,v|)>*e<rsup|i*\<mu\>*v>*<space|0.17em>d*v*<space|0.17em>d*t>>>>
-    </align*>
+    <\align>
+      <tformat|<table|<row|<cell|<wide|\<phi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|h<around|(|t,u|)>|\<bar\>><space|0.17em>e<rsup|-i*\<lambda\>*u>*<space|0.17em>d*u<eq-number><label|eq:17>>>|<row|<cell|\<phi\><rsub|t><around|(|\<mu\>|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|t,v|)>*<space|0.17em>e<rsup|i*\<mu\>*v>*<space|0.17em>d*v<eq-number><label|eq:18>>>>>
+    </align>
 
-    Taking the complex conjugate inside the first integral:
+    so that
 
-    <\equation*>
-      =<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|h<around|(|t,u|)>|\<bar\>>e<rsup|-i*\<lambda\>*u>*<space|0.17em>d*u\<cdot\><big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|t,v|)>*e<rsup|i*\<mu\>*v>*<space|0.17em>d*v*<space|0.17em>d*t
-    </equation*>
+    <\equation>
+      <big|int><rsub|t><wide|\<phi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>\<phi\><rsub|t><around|(|\<mu\>|)>*<space|0.17em>d*t=<big|int><rsub|t,u,v><wide|h<around|(|t,u|)>|\<bar\>><space|0.17em>h<around|(|t,v|)>*<space|0.17em>e<rsup|-i*\<lambda\>*u>*<space|0.17em>e<rsup|i*\<mu\>*v>*<space|0.17em>d*u*<space|0.17em>d*v*<space|0.17em>d*t<label|eq:19>
+    </equation>
 
-    Combine the three integrals:
+    Using <eqref|eq:12>,
 
-    <\equation*>
-      =<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|h<around|(|t,u|)>|\<bar\>>h<around|(|t,v|)>*e<rsup|-i*\<lambda\>*u>*e<rsup|i*\<mu\>*v>*<space|0.17em>d*u*<space|0.17em>d*v*<space|0.17em>d*t
-    </equation*>
+    <\equation>
+      <big|int><rsub|u,v>e<rsup|i*<around|(|\<mu\>*v-\<lambda\>*u|)>>*<space|0.17em>\<delta\>*<around|(|u-v|)>*<space|0.17em>d*u*<space|0.17em>d*v=<big|int><rsub|u>e<rsup|i*<around|(|\<mu\>-\<lambda\>|)>*u>*<space|0.17em>d*u=2*\<pi\>*\<delta\>*<around|(|\<lambda\>-\<mu\>|)><label|eq:20>
+    </equation>
 
-    Rearrange exponentials:
-
-    <\equation*>
-      =<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|h<around|(|t,u|)>|\<bar\>>h<around|(|t,v|)>*e<rsup|i*<around|(|\<mu\>*v-\<lambda\>*u|)>>*<space|0.17em>d*u*<space|0.17em>d*v*<space|0.17em>d*t
-    </equation*>
-
-    Apply Fubini's theorem (justified by <math|L<rsup|2>> integrability):
-
-    <\equation*>
-      =<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*<around|(|\<mu\>*v-\<lambda\>*u|)>><around*|[|<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|h<around|(|t,u|)>|\<bar\>>h<around|(|t,v|)>*<space|0.17em>d*t|]>*d*u*<space|0.17em>d*v
-    </equation*>
-
-    Apply the orthonormality condition <math|<big|int><wide|h<around|(|t,u|)>|\<bar\>>h<around|(|t,v|)>*d*t=\<delta\>*<around|(|u-v|)>>:
-
-    <\equation*>
-      =<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*<around|(|\<mu\>*v-\<lambda\>*u|)>>*\<delta\>*<around|(|u-v|)>*<space|0.17em>d*u*<space|0.17em>d*v
-    </equation*>
-
-    Apply the sifting property of the delta function (integrating over
-    <math|v>):
-
-    <\equation*>
-      =<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*<around|(|\<mu\>*u-\<lambda\>*u|)>>*<space|0.17em>d*u=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*<around|(|\<mu\>-\<lambda\>|)>*u>*<space|0.17em>d*u
-    </equation*>
-
-    This integral is the Fourier representation of the Dirac delta:
-
-    <\equation*>
-      =2*\<pi\>*\<delta\>*<around|(|\<mu\>-\<lambda\>|)>
-    </equation*>
+    This proves the lemma.
   </proof>
 
-  <subsection|The Inverse Filter Theorem>
+  <subsection|Inverse Filter Kernel>
+
+  <\lemma>
+    <dueto|Inverse Filter Relation><label|lem:ginverse>The kernel
+    <math|g<around|(|u,t|)>> defined by <eqref|eq:11> satisfies
+
+    <\equation>
+      g<around|(|u,t|)>=<wide|h<around|(|t,u|)>|\<bar\>><label|eq:21>
+    </equation>
+  </lemma>
+
+  <\proof>
+    Substitute <eqref|eq:17> into <eqref|eq:11>:
+
+    <\align>
+      <tformat|<table|<row|<cell|g<around|(|u,t|)>>|<cell|=<frac|1|2*\<pi\>>*<big|int><rsub|\<lambda\>><big|int><rsub|x><wide|h<around|(|t,x|)>|\<bar\>><space|0.17em>e<rsup|-i*\<lambda\>*x>*<space|0.17em>d*x*<space|0.17em>e<rsup|i*\<lambda\>*u>*<space|0.17em>d*\<lambda\><eq-number><label|eq:22>>>|<row|<cell|>|<cell|=<frac|1|2*\<pi\>>*<big|int><rsub|x><wide|h<around|(|t,x|)>|\<bar\>><big|int><rsub|\<lambda\>>e<rsup|i*\<lambda\>*<around|(|u-x|)>>*<space|0.17em>d*\<lambda\>*<space|0.17em>d*x<eq-number><label|eq:23>>>|<row|<cell|>|<cell|=<big|int><rsub|x><wide|h<around|(|t,x|)>|\<bar\>><space|0.17em>\<delta\>*<around|(|u-x|)>*<space|0.17em>d*x=<wide|h<around|(|t,u|)>|\<bar\>><eq-number><label|eq:24>>>>>
+    </align>
+  </proof>
+
+  <subsection|Inverse Filter Theorem>
 
   <\theorem>
-    [Inverse Filter for Oscillatory Processes]<label|thm:inverse-filter>The
-    inverse filter:
+    <dueto|Exact Inversion><label|thm:inverse>For <math|g<around|(|u,t|)>>
+    defined as above and <math|Z<around|(|t|)>> given by <eqref|eq:5>,
 
-    <\equation*>
-      g<around|(|u,t|)>\<assign\><frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|\<phi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>>e<rsup|-i*\<lambda\>*u>*<space|0.17em>d*\<lambda\>
-    </equation*>
-
-    recovers the stationary process from the oscillatory process:
-
-    <\equation*>
-      X<around|(|u|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|u,t|)>*Z<around|(|t|)>*<space|0.17em>d*t
-    </equation*>
+    <\equation>
+      X<around|(|u|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|u,t|)>*<space|0.17em>Z<around|(|t|)>*<space|0.17em>d*t<label|eq:25>
+    </equation>
   </theorem>
 
   <\proof>
-    Substitute the definitions:
+    Insert the definitions from <eqref|eq:11> and <eqref|eq:5>:
 
-    <\align*>
-      <tformat|<table|<row|<cell|<big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|u,t|)>*Z<around|(|t|)>*<space|0.17em>d*t>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|[|<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|\<phi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>>e<rsup|-i*\<lambda\>*u>*<space|0.17em>d*\<lambda\>|]><around*|[|<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><rsub|t><around|(|\<mu\>|)>*<space|0.17em>d*\<Phi\><around|(|\<mu\>|)>|]>*d*t>>>>
-    </align*>
+    <\align>
+      <tformat|<table|<row|<cell|<big|int><rsub|t>g<around|(|u,t|)>*<space|0.17em>Z<around|(|t|)>*<space|0.17em>d*t>|<cell|=<frac|1|2*\<pi\>>*<big|int><rsub|t><big|int><rsub|\<lambda\>><wide|\<phi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>e<rsup|i*\<lambda\>*u>*<space|0.17em>d*\<lambda\>*<big|int><rsub|\<mu\>>\<phi\><rsub|t><around|(|\<mu\>|)>*<space|0.17em>d*\<Phi\><around|(|\<mu\>|)>*<space|0.17em>d*t<eq-number><label|eq:26>>>>>
+    </align>
 
-    Expand:
+    Exchange the order of integration:
 
-    <\equation*>
-      =<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|\<phi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>>e<rsup|-i*\<lambda\>*u>*\<phi\><rsub|t><around|(|\<mu\>|)>*<space|0.17em>d*\<lambda\>*<space|0.17em>d*\<Phi\><around|(|\<mu\>|)>*<space|0.17em>d*t
-    </equation*>
+    <\align>
+      <tformat|<table|<row|<cell|<frac|1|2*\<pi\>>*<big|int><rsub|\<lambda\>,\<mu\>>e<rsup|i*\<lambda\>*u><around*|(|<big|int><rsub|t><wide|\<phi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>\<phi\><rsub|t><around|(|\<mu\>|)>*<space|0.17em>d*t|)>*d*\<lambda\>*<space|0.17em>d*\<Phi\><around|(|\<mu\>|)><eq-number><label|eq:27>>>>>
+    </align>
 
-    Apply Fubini's theorem:
+    Apply Lemma <reference|lem:orth>:
 
-    <\equation*>
-      =<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*\<lambda\>*u><around*|[|<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|\<phi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>>\<phi\><rsub|t><around|(|\<mu\>|)>*<space|0.17em>d*t|]>*d*\<lambda\>*<space|0.17em>d*\<Phi\><around|(|\<mu\>|)>
-    </equation*>
+    <\equation>
+      <frac|1|2*\<pi\>>*<big|int><rsub|\<lambda\>,\<mu\>>e<rsup|i*\<lambda\>*u>*<space|0.17em>2*\<pi\>*\<delta\>*<around|(|\<lambda\>-\<mu\>|)>*<space|0.17em>d*\<lambda\>*<space|0.17em>d*\<Phi\><around|(|\<mu\>|)>=<big|int><rsub|\<mu\>>e<rsup|i*\<mu\>*u>*<space|0.17em>d*\<Phi\><around|(|\<mu\>|)><label|eq:28>
+    </equation>
 
-    Apply Lemma<nbsp><reference|lem:orthogonality>:
-
-    <\equation*>
-      =<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*\<lambda\>*u>\<cdot\>2*\<pi\>*\<delta\>*<around|(|\<lambda\>-\<mu\>|)>*<space|0.17em>d*\<lambda\>*<space|0.17em>d*\<Phi\><around|(|\<mu\>|)>
-    </equation*>
-
-    Simplify:
-
-    <\equation*>
-      =<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*\<lambda\>*u>*\<delta\>*<around|(|\<lambda\>-\<mu\>|)>*<space|0.17em>d*\<lambda\>*<space|0.17em>d*\<Phi\><around|(|\<mu\>|)>
-    </equation*>
-
-    Apply sifting property of delta function:
-
-    <\equation*>
-      =<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*\<mu\>*u>*<space|0.17em>d*\<Phi\><around|(|\<mu\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<mu\>*u>*<space|0.17em>d*\<Phi\><around|(|\<mu\>|)>=X<around|(|u|)>
-    </equation*>
+    which equals <math|X<around|(|u|)>> by <eqref|eq:4>.
   </proof>
 
   <section|Two-Sided Reconstruction>
 
-  <subsection|Backward Composed with Forward Equals Identity>
-
-  <\proposition>
-    [Backward<math|\<circ\>>Forward = Identity]<label|prop:backward-forward>Applying
-    the backward filter to the forward output recovers the stationary
-    process.
-  </proposition>
-
-  <\proof>
-    Start with <math|Z<around|(|t|)>=<big|int>\<phi\><rsub|t><around|(|\<lambda\>|)>*d*\<Phi\><around|(|\<lambda\>|)>>.
-    Apply the backward filter:
-
-    <\equation*>
-      <big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|u,t|)>*Z<around|(|t|)>*<space|0.17em>d*t=<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|\<phi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>>e<rsup|-i*\<lambda\>*u>*<space|0.17em>d*\<lambda\>\<cdot\>Z<around|(|t|)>*<space|0.17em>d*t
-    </equation*>
-
-    Substitute <math|Z<around|(|t|)>=<big|int>\<phi\><rsub|t><around|(|\<mu\>|)>*d*\<Phi\><around|(|\<mu\>|)>>:
-
-    <\equation*>
-      =<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|\<phi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>>e<rsup|-i*\<lambda\>*u>*<space|0.17em>d*\<lambda\>\<cdot\><around*|[|<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><rsub|t><around|(|\<mu\>|)>*<space|0.17em>d*\<Phi\><around|(|\<mu\>|)>|]>*d*t
-    </equation*>
-
-    Apply Fubini to interchange integrals:
-
-    <\equation*>
-      =<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*\<lambda\>*u><around*|[|<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|\<phi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>>\<phi\><rsub|t><around|(|\<mu\>|)>*<space|0.17em>d*t|]>*d*\<lambda\>*<space|0.17em>d*\<Phi\><around|(|\<mu\>|)>
-    </equation*>
-
-    Apply the orthogonality integral:
-
-    <\equation*>
-      =<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*\<lambda\>*u>\<cdot\>2*\<pi\>*\<delta\>*<around|(|\<lambda\>-\<mu\>|)>*<space|0.17em>d*\<lambda\>*<space|0.17em>d*\<Phi\><around|(|\<mu\>|)>
-    </equation*>
-
-    Apply the delta function identity:
-
-    <\equation*>
-      =<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*\<mu\>*u>*<space|0.17em>d*\<Phi\><around|(|\<mu\>|)>=X<around|(|u|)>
-    </equation*>
-  </proof>
-
-  <subsection|Forward Composed with Backward Equals Identity>
-
-  <\proposition>
-    [Forward<math|\<circ\>>Backward = Identity]<label|prop:forward-backward>Applying
-    the forward filter to the backward reconstruction yields the original
-    oscillatory process.
-  </proposition>
-
-  <\proof>
-    The backward reconstruction gives <math|X<around|(|u|)>=<big|int>g<around|(|u,t|)>*Z<around|(|t|)>*d*t>.
-    Apply the forward map by defining the reconstructed spectral measure:
-
-    <\equation*>
-      d*\<Phi\><rsub|recon><around|(|\<lambda\>|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|\<phi\><rsub|s><around|(|\<lambda\>|)>|\<bar\>>Z<around|(|s|)>*<space|0.17em>d*s
-    </equation*>
-
-    Substitute <math|Z<around|(|s|)>=<big|int>\<phi\><rsub|s><around|(|\<mu\>|)>*d*\<Phi\><around|(|\<mu\>|)>>:
-
-    <\equation*>
-      =<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|\<phi\><rsub|s><around|(|\<lambda\>|)>|\<bar\>><around*|[|<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><rsub|s><around|(|\<mu\>|)>*<space|0.17em>d*\<Phi\><around|(|\<mu\>|)>|]>*d*s
-    </equation*>
-
-    Apply Fubini:
-
-    <\equation*>
-      =<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|[|<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|\<phi\><rsub|s><around|(|\<lambda\>|)>|\<bar\>>\<phi\><rsub|s><around|(|\<mu\>|)>*<space|0.17em>d*s|]>*d*\<Phi\><around|(|\<mu\>|)>
-    </equation*>
-
-    Apply the orthogonality integral:
-
-    <\equation*>
-      =<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>2*\<pi\>*\<delta\>*<around|(|\<lambda\>-\<mu\>|)>*<space|0.17em>d*\<Phi\><around|(|\<mu\>|)>
-    </equation*>
-
-    Apply the delta function identity:
-
-    <\equation*>
-      =<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<delta\>*<around|(|\<lambda\>-\<mu\>|)>*<space|0.17em>d*\<Phi\><around|(|\<mu\>|)>=d*\<Phi\><around|(|\<lambda\>|)>
-    </equation*>
-
-    Thus the forward map on the reconstructed spectral measure gives:
-
-    <\equation*>
-      <wide|Z|^><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>d*\<Phi\><rsub|recon><around|(|\<lambda\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>d*\<Phi\><around|(|\<lambda\>|)>=Z<around|(|t|)>
-    </equation*>
-  </proof>
-
-  <section|Verification Summary>
-
-  All three steps of the main proof are verified:
-
   <\enumerate>
-    <item><with|font-series|bold|Step 1 (Expansion and Fubini):> The integral
-    <math|<big|int><wide|\<phi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>>\<phi\><rsub|t><around|(|\<mu\>|)>*d*t>
-    expands correctly to triple integrals over <math|t,u,v>, and Fubini's
-    theorem applies by <math|L<rsup|2>> integrability via Cauchy-Schwarz.
+    <item>Backward followed by forward recovers <math|X<around|(|u|)>>:
 
-    <item><with|font-series|bold|Step 2 (Delta Function and Exponential
-    Integral):> The orthonormality condition
-    <math|<big|int><wide|h<around|(|t,u|)>|\<bar\>>h<around|(|t,v|)>*d*t=\<delta\>*<around|(|u-v|)>>
-    and the sifting property yield <math|<big|int>e<rsup|i*<around|(|\<mu\>-\<lambda\>|)>*u>*d*u=2*\<pi\>*\<delta\>*<around|(|\<lambda\>-\<mu\>|)>>
-    by the Fourier representation of the Dirac delta.
+    <\equation>
+      <big|int><rsub|t>g<around|(|u,t|)>*<space|0.17em>Z<around|(|t|)>*<space|0.17em>d*t=X<around|(|u|)><label|eq:29>
+    </equation>
 
-    <item><with|font-series|bold|Step 3 (Inverse Filter and Identity):>
-    Substituting the orthogonality result and applying Fubini followed by the
-    delta function identity confirms <math|<big|int>g<around|(|u,t|)>*Z<around|(|t|)>*d*t=X<around|(|u|)>>.
+    <item>Forward followed by backward recovers <math|Z<around|(|t|)>>:
+
+    <\align>
+      <tformat|<table|<row|<cell|d*\<Phi\><rsub|<math-up|recon>><around|(|\<lambda\>|)>>|<cell|=<frac|1|2*\<pi\>>*<big|int><rsub|s><wide|\<phi\><rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>Z<around|(|s|)>*<space|0.17em>d*s<eq-number><label|eq:30>>>|<row|<cell|>|<cell|=<frac|1|2*\<pi\>>*<big|int><rsub|\<mu\>><around*|(|<big|int><rsub|s><wide|\<phi\><rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>\<phi\><rsub|s><around|(|\<mu\>|)>*<space|0.17em>d*s|)>*d*\<Phi\><around|(|\<mu\>|)><eq-number><label|eq:31>>>|<row|<cell|>|<cell|=<big|int><rsub|\<mu\>>\<delta\>*<around|(|\<lambda\>-\<mu\>|)>*<space|0.17em>d*\<Phi\><around|(|\<mu\>|)>=d*\<Phi\><around|(|\<lambda\>|)><eq-number><label|eq:32>>>>>
+    </align>
+
+    Hence
+
+    <\equation>
+      <wide|Z|^><around|(|t|)>=<big|int>\<phi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>d*\<Phi\><rsub|<math-up|recon>><around|(|\<lambda\>|)>=Z<around|(|t|)><label|eq:33>
+    </equation>
   </enumerate>
-
-  The forward and backward operations are mutually inverse, established
-  through the orthogonality integral serving as the resolution of identity
-  that equates their compositions to the identity map.
 
   <section|Connection to Devinatz\UAronszajn Theory>
 
-  <subsection|Devinatz Integral Representation Framework>
-
-  Devinatz (1950, Trans. AMS 68, pp. 329\U349) studied the integral
-  representation of positive definite functions. The key result (Section 6,
-  Theorem 1) states:
-
   <\theorem>
-    [Devinatz 1950]<label|thm:devinatz>Let <math|V<around|(|\<lambda\>|)>> be
-    a bounded monotone-increasing function on <math|\<bbb-R\>> defining a
-    finite Borel measure <math|d*V<around|(|\<lambda\>|)>>. Let
-    <math|a<around|(|x,\<lambda\>|)>> be a measurable function such that for
-    each <math|x\<in\>E>, <math|a<around|(|x,\<cdot\>|)>\<in\>L<rsup|2><around|(|V|)>>.
-    Define the kernel:
+    <dueto|Devinatz Integral Representation><label|thm:devinatz>Let
+    <math|V<around|(|\<lambda\>|)>> be a bounded non-decreasing function with
+    measure <math|d*V<around|(|\<lambda\>|)>> and
+    <math|a<around|(|x,\<lambda\>|)>\<in\>L<rsup|2><around|(|V|)>> for each
+    <math|x>. Then
 
-    <\equation*>
-      K<around|(|x,y|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>a<around|(|x,\<lambda\>|)><wide|a<around|(|y,\<lambda\>|)>|\<bar\>><space|0.17em>d*V<around|(|\<lambda\>|)>
-    </equation*>
+    <\equation>
+      K<around|(|x,y|)>=<big|int>a<around|(|x,\<lambda\>|)><space|0.17em><wide|a<around|(|y,\<lambda\>|)>|\<bar\>><space|0.17em>d*V<around|(|\<lambda\>|)><label|eq:34>
+    </equation>
 
-    Then:
+    is positive definite, and
 
     <\enumerate>
-      <item><math|K<around|(|x,y|)>> is a positive definite kernel.
+      <item>Each function <math|f<around|(|x|)>> in the associated RKHS has
+      the form
 
-      <item>The associated reproducing kernel Hilbert space (RKHS)
-      <math|\<cal-J\>> consists of all functions
+      <\equation>
+        f<around|(|x|)>=<big|int>a<around|(|x,\<lambda\>|)>*<space|0.17em>\<psi\><around|(|\<lambda\>|)>*<space|0.17em>d*V<around|(|\<lambda\>|)><label|eq:35>
+      </equation>
 
-      <\equation*>
-        f<around|(|x|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>a<around|(|x,\<lambda\>|)>*\<psi\><around|(|\<lambda\>|)>*<space|0.17em>d*V<around|(|\<lambda\>|)>
-      </equation*>
+      <item>The radical is
 
-      where <math|\<psi\>\<in\>L<rsup|2><around|(|V|)>/L<rsub|0>>, and
-      <math|L<rsub|0>=<around|{|\<psi\>\<in\>L<rsup|2><around|(|V|)>:<big|int>a<around|(|x,\<lambda\>|)>*\<psi\><around|(|\<lambda\>|)>*d*V<around|(|\<lambda\>|)>=0,\<forall\>x\<in\>E|}>>
-      is the radical.
+      <\equation>
+        L<rsub|0>=<around|{|\<psi\>\<in\>L<rsup|2><around|(|V|)>:<big|int>a<around|(|x,\<lambda\>|)>*<space|0.17em>\<psi\><around|(|\<lambda\>|)>*<space|0.17em>d*V<around|(|\<lambda\>|)>=0,\<forall\>x|}><label|eq:36>
+      </equation>
 
-      <item>The inner product in <math|\<cal-J\>> is given by
+      <item>The inner product satisfies
 
-      <\equation*>
-        <around|\<langle\>|f,g|\<rangle\>><rsub|\<cal-J\>>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<psi\><around|(|\<lambda\>|)><wide|\<chi\><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>d*V<around|(|\<lambda\>|)>
-      </equation*>
-
-      when <math|f> corresponds to <math|\<psi\>> and <math|g> corresponds to
-      <math|\<chi\>>.
+      <\equation>
+        <around|\<langle\>|f,g|\<rangle\>><rsub|\<cal-J\>>=<big|int>\<psi\><around|(|\<lambda\>|)><space|0.17em><wide|\<chi\><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>d*V<around|(|\<lambda\>|)><label|eq:37>
+      </equation>
     </enumerate>
   </theorem>
 
-  <subsection|The Radical and Completeness>
-
-  <\definition>
-    [The Radical] The <with|font-series|bold|radical> (or null space) of the
-    kernel representation is
-
-    <\equation*>
-      L<rsub|0>\<assign\><around|{|\<psi\>\<in\>L<rsup|2><around|(|V|)>:<big|int>a<around|(|t,\<lambda\>|)>*\<psi\><around|(|\<lambda\>|)>*<space|0.17em>d*V<around|(|\<lambda\>|)>=0*<text|for
-      all >t\<in\>E|}>
-    </equation*>
-  </definition>
-
-  The radical consists of all square-integrable functions <math|\<psi\>> with
-  respect to the measure <math|d*V<around|(|\<lambda\>|)>> such that the
-  integral representation produces the zero function for every value of the
-  index <math|t>.
-
-  <with|font-series|bold|Why it exists:> When you form the RKHS from an
-  integral representation kernel, the mapping
-  <math|\<psi\>\<mapsto\>f<around|(|t|)>\<assign\><big|int>a<around|(|t,\<lambda\>|)>*\<psi\><around|(|\<lambda\>|)>*d*V<around|(|\<lambda\>|)>>
-  is not necessarily injective. Two different functions
-  <math|\<psi\><rsub|1>,\<psi\><rsub|2>\<in\>L<rsup|2><around|(|V|)>> can
-  produce the same element <math|f<around|(|t|)>> if their difference lies in
-  <math|L<rsub|0>>.
-
-  <with|font-series|bold|When the radical is trivial:>
-  <math|L<rsub|0>=<around|{|0|}>> if and only if the family
-  <math|<around|{|a<around|(|t,\<lambda\>|)>|}><rsub|t\<in\>E>> is complete
-  in <math|L<rsup|2><around|(|V|)>>, meaning the span of
-  <math|<around|{|a<around|(|t,\<cdot\>|)>:t\<in\>E|}>> is dense in
-  <math|L<rsup|2><around|(|V|)>>.
-
-  By Devinatz (1950, page 339), a necessary and sufficient condition for
-  <math|L<rsub|0>=<around|{|0|}>> is that there exists a resolution of the
-  identity <math|<around|{|E<rsub|\<lambda\>>|}>> and an element
-  <math|f<rsub|0>\<in\>\<cal-J\>> such that
-  <math|V<around|(|\<lambda\>|)>=<around|(|E<rsub|\<lambda\>>*f<rsub|0>,f<rsub|0>|)>>.
-
-  <subsection|Explicit Equivalence>
-
   <\theorem>
-    [Oscillatory Processes as Devinatz Kernels]<label|thm:equivalence>The
-    oscillatory process framework is a specialization of Devinatz integral
-    representation theory with the explicit identification
-    <math|a<around|(|t,\<lambda\>|)>=\<phi\><rsub|t><around|(|\<lambda\>|)>>.
+    <dueto|Equivalence with Oscillatory Kernels><label|thm:equiv>Under
+    Assumption <reference|asm:real>, the oscillatory process formulation
+    coincides with the Devinatz framework when
+    <math|a<around|(|t,\<lambda\>|)>=\<phi\><rsub|t><around|(|\<lambda\>|)>>
+    and <math|d*V=d*F>.
   </theorem>
 
   <\proof>
-    <with|font-series|bold|Part 1: Kernel Identification>
+    <\enumerate>
+      <item>Kernel correspondence:
 
-    Set:
+      <\equation>
+        K<rsub|<math-up|osc>><around|(|t,s|)>=<big|int>\<phi\><rsub|t><around|(|\<lambda\>|)><space|0.17em><wide|\<phi\><rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>d*F<around|(|\<lambda\>|)><label|eq:38>
+      </equation>
 
-    <\itemize>
-      <item>Devinatz's index set: <math|E=\<bbb-R\><rsub|t>> (the time
-      parameter)
+      <item>Representations coincide since
 
-      <item>Devinatz's kernel function: <math|a<around|(|t,\<lambda\>|)>=\<phi\><rsub|t><around|(|\<lambda\>|)>>
+      <\equation>
+        Z<around|(|t|)>=<big|int>\<phi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>\<psi\><around|(|\<lambda\>|)>*<space|0.17em>d*F<around|(|\<lambda\>|)><label|eq:39>
+      </equation>
 
-      <item>Devinatz's spectral measure: <math|V<around|(|\<lambda\>|)>=F<around|(|\<lambda\>|)>>
-      (the spectral measure of the oscillatory process)
-    </itemize>
+      <item>If <math|\<psi\>\<in\>L<rsub|0>>, then
 
-    Then by direct substitution:
+      <\equation>
+        0=<big|int>\<phi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>\<psi\><around|(|\<lambda\>|)>*<space|0.17em>d*F<around|(|\<lambda\>|)>,<space|1em>\<forall\>t<label|eq:40>
+      </equation>
 
-    <\equation*>
-      K<rsub|Devinatz><around|(|t,s|)>=<big|int>a<around|(|t,\<lambda\>|)><wide|a<around|(|s,\<lambda\>|)>|\<bar\>>d*V<around|(|\<lambda\>|)>=<big|int>\<phi\><rsub|t><around|(|\<lambda\>|)><wide|\<phi\><rsub|s><around|(|\<lambda\>|)>|\<bar\>>d*F<around|(|\<lambda\>|)>=K<rsub|oscillatory><around|(|t,s|)>
-    </equation*>
+      Multiply by <math|<wide|\<phi\><rsub|t><around|(|\<mu\>|)>|\<bar\>>>
+      and integrate over <math|t>:
 
-    The kernels are identical.
+      <\align>
+        <tformat|<table|<row|<cell|0>|<cell|=<big|int><rsub|\<lambda\>>\<psi\><around|(|\<lambda\>|)><around*|(|<big|int><rsub|t><wide|\<phi\><rsub|t><around|(|\<mu\>|)>|\<bar\>><space|0.17em>\<phi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>d*t|)>*d*F<around|(|\<lambda\>|)><eq-number><label|eq:41>>>|<row|<cell|>|<cell|=2*\<pi\>*\<psi\><around|(|\<mu\>|)><eq-number><label|eq:42>>>>>
+      </align>
 
-    <with|font-series|bold|Part 2: Function Space Identification>
+      so <math|\<psi\>=0>, hence <math|L<rsub|0>=<around|{|0|}>>.
 
-    Devinatz's RKHS element:
+      <item>Inversion formula:
 
-    <\equation*>
-      f<around|(|t|)>=<big|int>a<around|(|t,\<lambda\>|)>*\<psi\><around|(|\<lambda\>|)>*d*V<around|(|\<lambda\>|)>
-    </equation*>
+      <\equation>
+        \<psi\><around|(|\<lambda\>|)>=<frac|1|2*\<pi\>>*<big|int><wide|\<phi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>Z<around|(|t|)>*<space|0.17em>d*t<label|eq:43>
+      </equation>
 
-    Oscillatory process element:
-
-    <\equation*>
-      Z<around|(|t|)>=<big|int>\<phi\><rsub|t><around|(|\<lambda\>|)>*\<psi\><around|(|\<lambda\>|)>*d*F<around|(|\<lambda\>|)>
-    </equation*>
-
-    Under the identification <math|a<around|(|t,\<lambda\>|)>=\<phi\><rsub|t><around|(|\<lambda\>|)>>
-    and <math|V=F>, these are the same functional form.
-
-    <with|font-series|bold|Part 3: Radical and Completeness>
-
-    For oscillatory processes with <math|<big|int><wide|h<around|(|t,u|)>|\<bar\>>h<around|(|t,v|)>*d*t=\<delta\>*<around|(|u-v|)>>,
-    we proved:
-
-    <\equation*>
-      <big|int><wide|\<phi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>>\<phi\><rsub|t><around|(|\<mu\>|)>*d*t=2*\<pi\>*\<delta\>*<around|(|\<lambda\>-\<mu\>|)>
-    </equation*>
-
-    This means if <math|\<psi\>\<in\>L<rsub|0>>, then:
-
-    <\equation*>
-      0=<big|int>\<phi\><rsub|t><around|(|\<lambda\>|)>*\<psi\><around|(|\<lambda\>|)>*d*F<around|(|\<lambda\>|)>*<text|for
-      all >t
-    </equation*>
-
-    Multiplying by <math|<wide|\<phi\><rsub|t><around|(|\<mu\>|)>|\<bar\>>>
-    and integrating over <math|t>:
-
-    <\equation*>
-      0=<big|int><rsub|t><wide|\<phi\><rsub|t><around|(|\<mu\>|)>|\<bar\>><big|int><rsub|\<lambda\>>\<phi\><rsub|t><around|(|\<lambda\>|)>*\<psi\><around|(|\<lambda\>|)>*d*F<around|(|\<lambda\>|)>*d*t=<big|int><rsub|\<lambda\>>\<psi\><around|(|\<lambda\>|)><around*|[|<big|int><rsub|t><wide|\<phi\><rsub|t><around|(|\<mu\>|)>|\<bar\>>\<phi\><rsub|t><around|(|\<lambda\>|)>*d*t|]>*d*F<around|(|\<lambda\>|)>
-    </equation*>
-
-    <\equation*>
-      =<big|int><rsub|\<lambda\>>\<psi\><around|(|\<lambda\>|)>\<cdot\>2*\<pi\>*\<delta\>*<around|(|\<mu\>-\<lambda\>|)>*d*F<around|(|\<lambda\>|)>=2*\<pi\>*\<psi\><around|(|\<mu\>|)>
-    </equation*>
-
-    Therefore <math|\<psi\>=0> almost everywhere. This proves
-    <math|L<rsub|0>=<around|{|0|}>>, which is exactly Devinatz's completeness
-    condition.
-
-    <with|font-series|bold|Part 4: Inverse Formula>
-
-    Devinatz's reconstruction (implicit in Theorem 1): When
-    <math|L<rsub|0>=<around|{|0|}>>, the mapping
-    <math|\<psi\>\<leftrightarrow\>f> is an isometry, and inversion is via:
-
-    <\equation*>
-      \<psi\><around|(|\<lambda\>|)>=<frac|1|2*\<pi\>>*<big|int><wide|a<around|(|t,\<lambda\>|)>|\<bar\>>f<around|(|t|)>*d*t
-    </equation*>
-
-    For oscillatory processes:
-
-    <\equation*>
-      \<psi\><around|(|\<lambda\>|)>=<frac|1|2*\<pi\>>*<big|int><wide|\<phi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>>Z<around|(|t|)>*d*t
-    </equation*>
-
-    Under <math|a<around|(|t,\<lambda\>|)>=\<phi\><rsub|t><around|(|\<lambda\>|)>>,
-    these are identical.
+      which matches <eqref|eq:6>.
+    </enumerate>
   </proof>
 
-  <subsection|Summary of the Connection>
+  <section|Summary>
 
-  Every statement, theorem, and formula in oscillatory process theory is
-  obtained from Devinatz (1950) by the substitution:
+  <\enumerate>
+    <item>Lemma <reference|lem:orth> establishes oscillatory orthogonality.
 
-  <\itemize>
-    <item><math|a<around|(|t,\<lambda\>|)>\<mapsto\>\<phi\><rsub|t><around|(|\<lambda\>|)>=<big|int>h<around|(|t,u|)>*e<rsup|i*\<lambda\>*u>*d*u>
+    <item>Lemma <reference|lem:ginverse> provides the identity
+    <math|g<around|(|u,t|)>=<wide|h<around|(|t,u|)>|\<bar\>>>.
 
-    <item><math|V<around|(|\<lambda\>|)>\<mapsto\>F<around|(|\<lambda\>|)>>
-  </itemize>
+    <item>Theorem <reference|thm:inverse> verifies that
+    <math|<big|int>g<around|(|u,t|)>*<space|0.17em>Z<around|(|t|)>*<space|0.17em>d*t=X<around|(|u|)>>.
 
-  The oscillatory function IS the integral representation kernel function.
-  The spectral measure IS Devinatz's measure. The RKHS, orthogonality,
-  completeness, and inversion formulas are all special cases of Devinatz's
-  general theory under this identification.
-
-  <with|font-series|bold|Key distinction:> In Devinatz's theory,
-  <math|V<around|(|\<lambda\>|)>> is a deterministic bounded monotone
-  function (the spectral measure). In stochastic oscillatory processes, the
-  random orthogonal measure <math|d*\<Phi\><around|(|\<lambda\>|)>> generates
-  sample path realizations with covariance structure determined by
-  <math|V<around|(|\<lambda\>|)>=F<around|(|\<lambda\>|)>>. The process
-  <math|Z<around|(|t|)>> is a random function (sample path), while the kernel
-  <math|K<around|(|t,s|)>> is deterministic and describes the second-moment
-  structure.
+    <item>Theorem <reference|thm:equiv> shows equivalence with Devinatz's
+    kernel framework.
+  </enumerate>
 </body>
 
 <\initial>
@@ -696,30 +383,66 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1>>
-    <associate|auto-10|<tuple|3|6>>
-    <associate|auto-11|<tuple|3.1|6>>
-    <associate|auto-12|<tuple|3.2|7>>
-    <associate|auto-13|<tuple|4|7>>
-    <associate|auto-14|<tuple|5|8>>
-    <associate|auto-15|<tuple|5.1|8>>
-    <associate|auto-16|<tuple|5.2|9>>
-    <associate|auto-17|<tuple|5.3|9>>
-    <associate|auto-18|<tuple|5.4|11>>
+    <associate|asm:real|<tuple|1|2>>
+    <associate|auto-1|<tuple|1|2>>
+    <associate|auto-10|<tuple|4|6>>
+    <associate|auto-11|<tuple|5|7>>
     <associate|auto-2|<tuple|1.1|2>>
-    <associate|auto-3|<tuple|1.2|2>>
-    <associate|auto-4|<tuple|1.3|2>>
-    <associate|auto-5|<tuple|1.4|3>>
-    <associate|auto-6|<tuple|2|3>>
-    <associate|auto-7|<tuple|2.1|3>>
-    <associate|auto-8|<tuple|2.2|4>>
-    <associate|auto-9|<tuple|2.3|5>>
-    <associate|lem:orthogonality|<tuple|1|4>>
-    <associate|prop:backward-forward|<tuple|3|6>>
-    <associate|prop:forward-backward|<tuple|4|7>>
-    <associate|thm:devinatz|<tuple|5|8>>
-    <associate|thm:equivalence|<tuple|7|9>>
-    <associate|thm:inverse-filter|<tuple|2|5>>
+    <associate|auto-3|<tuple|1.2|3>>
+    <associate|auto-4|<tuple|1.3|3>>
+    <associate|auto-5|<tuple|2|4>>
+    <associate|auto-6|<tuple|2.1|4>>
+    <associate|auto-7|<tuple|2.2|4>>
+    <associate|auto-8|<tuple|2.3|5>>
+    <associate|auto-9|<tuple|3|5>>
+    <associate|eq:1|<tuple|1|2>>
+    <associate|eq:10|<tuple|10|3>>
+    <associate|eq:11|<tuple|11|3>>
+    <associate|eq:12|<tuple|12|3>>
+    <associate|eq:13|<tuple|13|3>>
+    <associate|eq:14|<tuple|14|3>>
+    <associate|eq:15|<tuple|15|3>>
+    <associate|eq:16|<tuple|16|4>>
+    <associate|eq:17|<tuple|17|4>>
+    <associate|eq:18|<tuple|18|4>>
+    <associate|eq:19|<tuple|19|4>>
+    <associate|eq:2|<tuple|2|2>>
+    <associate|eq:20|<tuple|20|4>>
+    <associate|eq:21|<tuple|21|4>>
+    <associate|eq:22|<tuple|22|4>>
+    <associate|eq:23|<tuple|23|4>>
+    <associate|eq:24|<tuple|24|4>>
+    <associate|eq:25|<tuple|25|5>>
+    <associate|eq:26|<tuple|26|5>>
+    <associate|eq:27|<tuple|27|5>>
+    <associate|eq:28|<tuple|28|5>>
+    <associate|eq:29|<tuple|29|5>>
+    <associate|eq:3|<tuple|3|2>>
+    <associate|eq:30|<tuple|30|5>>
+    <associate|eq:31|<tuple|31|5>>
+    <associate|eq:32|<tuple|32|5>>
+    <associate|eq:33|<tuple|33|5>>
+    <associate|eq:34|<tuple|34|6>>
+    <associate|eq:35|<tuple|35|6>>
+    <associate|eq:36|<tuple|36|6>>
+    <associate|eq:37|<tuple|37|6>>
+    <associate|eq:38|<tuple|38|6>>
+    <associate|eq:39|<tuple|39|6>>
+    <associate|eq:4|<tuple|4|2>>
+    <associate|eq:40|<tuple|40|6>>
+    <associate|eq:41|<tuple|41|7>>
+    <associate|eq:42|<tuple|42|7>>
+    <associate|eq:43|<tuple|43|7>>
+    <associate|eq:5|<tuple|5|2>>
+    <associate|eq:6|<tuple|6|2>>
+    <associate|eq:7|<tuple|7|3>>
+    <associate|eq:8|<tuple|8|3>>
+    <associate|eq:9|<tuple|9|3>>
+    <associate|lem:ginverse|<tuple|3|4>>
+    <associate|lem:orth|<tuple|2|4>>
+    <associate|thm:devinatz|<tuple|5|6>>
+    <associate|thm:equiv|<tuple|6|6>>
+    <associate|thm:inverse|<tuple|4|5>>
   </collection>
 </references>
 
@@ -730,73 +453,45 @@
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-1><vspace|0.5fn>
 
-      <with|par-left|<quote|1tab>|1.1<space|2spc>The Spectral Formulation
+      <with|par-left|<quote|1tab>|1.1<space|2spc>Spectral Formulation
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-2>>
 
-      <with|par-left|<quote|1tab>|1.2<space|2spc>The Filter Formulation
+      <with|par-left|<quote|1tab>|1.2<space|2spc>Filter Formulation
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-3>>
 
-      <with|par-left|<quote|1tab>|1.3<space|2spc>The Linear Operator
-      Formulation <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-4>>
-
-      <with|par-left|<quote|1tab>|1.4<space|2spc>Equivalence of Formulations
+      <with|par-left|<quote|1tab>|1.3<space|2spc>Operator Formulation
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-5>>
+      <no-break><pageref|auto-4>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Main
       Results> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-6><vspace|0.5fn>
+      <no-break><pageref|auto-5><vspace|0.5fn>
 
-      <with|par-left|<quote|1tab>|2.1<space|2spc>Setup and Definitions
+      <with|par-left|<quote|1tab>|2.1<space|2spc>Orthogonality of Oscillatory
+      Functions <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-6>>
+
+      <with|par-left|<quote|1tab>|2.2<space|2spc>Inverse Filter Kernel
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-7>>
 
-      <with|par-left|<quote|1tab>|2.2<space|2spc>Orthogonality of Oscillatory
-      Functions <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-8>>
-
-      <with|par-left|<quote|1tab>|2.3<space|2spc>The Inverse Filter Theorem
+      <with|par-left|<quote|1tab>|2.3<space|2spc>Inverse Filter Theorem
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-9>>
+      <no-break><pageref|auto-8>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>Two-Sided
       Reconstruction> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-9><vspace|0.5fn>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>Connection
+      to Devinatz\UAronszajn Theory> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-10><vspace|0.5fn>
 
-      <with|par-left|<quote|1tab>|3.1<space|2spc>Backward Composed with
-      Forward Equals Identity <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-11>>
-
-      <with|par-left|<quote|1tab>|3.2<space|2spc>Forward Composed with
-      Backward Equals Identity <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-12>>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>Verification
-      Summary> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-13><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|5<space|2spc>Connection
-      to Devinatz\UAronszajn Theory> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-14><vspace|0.5fn>
-
-      <with|par-left|<quote|1tab>|5.1<space|2spc>Devinatz Integral
-      Representation Framework <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-15>>
-
-      <with|par-left|<quote|1tab>|5.2<space|2spc>The Radical and Completeness
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|5<space|2spc>Summary>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-16>>
-
-      <with|par-left|<quote|1tab>|5.3<space|2spc>Explicit Equivalence
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-17>>
-
-      <with|par-left|<quote|1tab>|5.4<space|2spc>Summary of the Connection
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-18>>
+      <no-break><pageref|auto-11><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
