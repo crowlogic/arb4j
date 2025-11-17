@@ -128,28 +128,12 @@
   representations one obtains a prediction theory which is almost an exact
   parallel of the Wiener-Kolmogorov theory.
 
-  The basic idea underlying this approach is the introduction of the
-  evolutionary (i.e., time-dependent) spectrum of a nonstationary process,
-  whose form completely determines the values of the \Pcoefficients\Q of the
-  optimal linear predictor. This means that even if we are presented with
-  observations from a process whose structure is completely unknown we may
-  still usefully apply this prediction theory by first estimating the
-  evolutionary spectrum (methods for estimating evolutionary spectra have
-  been discussed by <cite|Priestley1965|Priestley1966>). Of course, this
-  estimation procedure introduces further complications which will not be
-  discussed here (see also Section<nbsp><reference|sec:discussion>). In this
-  paper we assume throughout that the second-order properties of the process
-  are known a priori. We should point out, further, that in this account we
-  are not aiming at complete mathematical rigour: rather we aim to show how
-  our approach may be used to obtain explicit results for non-stationary
-  processes.
-
-  Before discussing the prediction problem, we summarize briefly relevant
-  parts of the theory of evolutionary spectra.
+  Before discussing the prediction problem, briefly relevant parts of the
+  theory of evolutionary spectra are summarized.
 
   <section|Evolutionary Spectral Representations>
 
-  We consider a class of continuous parameter processes,
+  Consider a class of continuous parameter processes,
   <math|<around|{|X<around|(|t|)>|}>>, with
   <math|E<around|{|X<around|(|t|)>|}>=0>,
   <math|E<around|{|X<rsup|2><around|(|t|)>|}>\<less\>\<infty\>> for all
@@ -161,12 +145,17 @@
   form
 
   <\equation>
-    X<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><rsub|t><around|(|\<omega\>|)>*d*Z<around|(|\<omega\>|)><label|eq:evspec-cont>
+    X<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><rsub|t><around|(|\<omega\>|)>*d*\<Phi\><around|(|\<omega\>|)><label|eq:evspec-cont>
   </equation>
 
   where <math|<around|{|Z<around|(|\<omega\>|)>|}>> is an orthogonal process
-  with <math|E*<around|\||d*Z<around|(|\<omega\>|)>|\|><rsup|2>=\<mu\>*<around|(|d*\<omega\>|)>>
-  (see also <cite|GrangerHatanaka1964>).
+  with\ 
+
+  <\equation>
+    <tabular|<tformat|<table|<row|<cell|E*<around|\||d*Z<around|(|\<omega\>|)>|\|><rsup|2>>|<cell|=\<mathd\>\<mu\>*<around|(|*\<omega\>|)>>>|<row|<cell|>|<cell|=f*<around*|(|\<lambda\>|)>\<mathd\>\<lambda\>>>>>>
+  </equation>
+
+  \ (see also <cite|GrangerHatanaka1964>).\ 
 
   If there exists a family <math|<with|math-font|cal*|F>> for which each
   <math|\<phi\><rsub|t>> may be written in the form
@@ -183,111 +172,126 @@
   <math|<with|math-font|cal*|F>> is defined by
 
   <\equation>
-    d*F<rsub|t><around|(|\<omega\>|)>=<around|\||A<rsub|t><around|(|\<omega\>|)>|\|><rsup|2>*\<mu\>*<around|(|d*\<omega\>|)>,<space|1em>-\<infty\>\<less\>\<omega\>\<less\>\<infty\><label|eq:evspec>
+    d*F<rsub|t><around|(|\<omega\>|)>=<around|\||A<rsub|t><around|(|\<omega\>|)>|\|><rsup|2>*\<mathd\>\<mu\><around|(|*\<omega\>|)><space|1em>-\<infty\>\<less\>\<omega\>\<less\>\<infty\><label|eq:evspec>
   </equation>
 
-  For discrete parameter oscillatory processes (i.e., processes defined only
-  for <math|t=0,\<pm\>1,\<pm\>2,\<ldots\>>), we have a corresponding
-  evolutionary spectral representation,
+  <\definition>
+    When the measure <math|\<mu\>> is absolutely continuous (with respect to
+    Lebesgue measure), the derivative <math|f<rsub|t><around|(|\<omega\>|)>=F<rsub|t><rprime|'><around|(|\<omega\>|)>>
+    exists for all <math|\<omega\>>, and is termed the <em|evolutionary
+    spectral density function> at time <math|t>.
+  </definition>
 
-  <\equation>
-    X<around|(|t|)>=<big|int><rsub|-\<pi\>><rsup|\<pi\>>e<rsup|i*\<omega\>*t>*A<rsub|t><around|(|\<omega\>|)>*d*Z<around|(|\<omega\>|)><label|eq:evspec-disc>
-  </equation>
+  <\remark>
+    The functions <math|A<rsub|t><around|(|\<omega\>|)>> may be normalize so
+    that <math|A<rsub|0><around|(|\<omega\>|)>=1>\<forall\><math|\<omega\>>.
+    With this convention, <math|>
 
-  and the evolutionary spectrum at time <math|t> with respect to
-  <math|<with|math-font|cal*|F>> is defined by
+    <\equation>
+      \<mathd\>\<mu\><around|(|*\<omega\>|)>\<equiv\>d*F<rsub|0><around|(|\<omega\>|)>
+    </equation>
 
-  <\equation>
-    d*F<rsub|t><around|(|\<omega\>|)>=<around|\||A<rsub|t><around|(|\<omega\>|)>|\|><rsup|2>*\<mu\>*<around|(|d*\<omega\>|)>,<space|1em>-\<pi\>\<leq\>\<omega\>\<leq\>\<pi\><label|eq:evspec-disc2>
-  </equation>
-
-  When the measure <math|\<mu\>> is absolutely continuous (with respect to
-  Lebesgue measure), the derivative <math|f<rsub|t><around|(|\<omega\>|)>=F<rsub|t><rprime|'><around|(|\<omega\>|)>>
-  exists for all <math|\<omega\>>, and is termed the <em|evolutionary
-  spectral density function> at time <math|t>.
-
-  In both the continuous and discrete cases we may normalize the functions
-  <math|A<rsub|t><around|(|\<omega\>|)>> so that
-  <math|A<rsub|0><around|(|\<omega\>|)>=1> for all <math|\<omega\>>. With
-  this convention, <math|\<mu\>*<around|(|d*\<omega\>|)>\<equiv\>d*F<rsub|0><around|(|\<omega\>|)>>,
-  the evolutionary spectrum at time zero.
+    the evolutionary spectrum at time zero.
+  </remark>
 
   <section|Moving-average Representations for Oscillatory Processes>
 
-  As in the prediction theory of stationary processes, we begin by
-  constructing a one-sided moving-average representation for a class of
-  oscillatory processes, the distinction with the stationary case being that
-  the coefficients in the moving-average scheme are now time-dependent.
+  As in the prediction theory of stationary processes, \ a one-sided
+  moving-average representation for a class of oscillatory processes can be
+  constr, the distinction with the stationary case being that the
+  coefficients in the moving-average scheme are now time-dependent.
 
   <subsection|Continuous-parameter Processes>
 
   As in the case of stationary processes (see<nbsp><cite|Whittle1963>), the
   results for discrete-parameter processes can readily be adapted to the
-  continuous case. The measure <math|\<mu\>> is again assumed to be
-  absolutely continuous (with respect to Lebesgue measure) and, in place of
-  C1, we assume that
+  continuous case. Let the measure <math|\<mu\>> be absolutely continuous
+  (with respect to Lebesgue measure). If the following conditions are met
+
+  <\enumerate-Alpha>
+    <item>V-integrability
+
+    <\equation>
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|log
+      f<around|(|\<omega\>|)>|1+\<omega\><rsup|2>>*d*\<omega\>\<gtr\>-\<infty\><label|eq:C1star>
+    </equation>
+
+    <item>Then there exists a function <math|\<psi\><around|(|\<omega\>|)>>
+    having no poles or zeros in the lower half-planesuch that
+
+    <\equation>
+      <around|\||\<psi\><around|(|\<omega\>|)>|\|><rsup|2>=f<around|(|\<omega\>|)>
+    </equation>
+
+    The function <math|\<psi\><around|(|\<omega\>|)>> may now be written as a
+    one-sided Fourier integral. Corresponding to<nbsp><eqref|eq:At>, we
+    assume now that, for each <math|t>,
+
+    <\equation>
+      A<rsub|t><around|(|\<omega\>|)>=<big|int><rsub|0><rsup|\<infty\>>e<rsup|-i*\<omega\>*u>*g<rsub|t><around|(|u|)>*d*u<label|eq:Atcont>
+    </equation>
+
+    A necessary condition being
+
+    <\equation>
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|log
+      <around|\||A<rsub|t><around|(|\<omega\>|)>|\|><rsup|2>|1+\<omega\><rsup|2>>*d*\<omega\>\<gtr\>-\<infty\><label|eq:C3star>
+    </equation>
+
+    for all <math|t>
+
+    <item>It then follows that we may write <math|X<around|(|t|)>> in the
+    form
+
+    <\equation>
+      X<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*t*\<omega\>>*A<rsub|t><around|(|\<omega\>|)>*d*\<Phi\><around|(|\<omega\>|)><label|eq:XtalphaCont>
+    </equation>
+
+    where <math|z<around|(|\<omega\>|)>> is an orthogonal process on
+    <math|<around|(|-\<infty\>,\<infty\>|)>>, with\ 
+
+    <\equation>
+      E*<around|\||d*<around|\<nobracket\>|\<Phi\>\<omega\>|)>|\|><rsup|2>=d*\<omega\>
+    </equation>
+
+    , and <math|A<rsub|t><around|(|\<omega\>|)>> has a one-sided Fourier
+    integral representation of the form
+
+    <\equation>
+      A<rsub|t><around|(|\<omega\>|)>=<big|int><rsub|0><rsup|\<infty\>>e<rsup|-i*\<omega\>*u>*h<rsub|t><around|(|u|)>*d*u<label|eq:alphahCont>
+    </equation>
+
+    and <math|<around|\||\<Alpha\><rsub|t><around|(|\<omega\>|)>|\|><rsup|2>=f<rsub|t><around|(|\<omega\>|)>>.
+    A necessary condition for the validity of<nbsp><eqref|eq:alphahCont> is
+
+    <\equation>
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|log
+      f<rsub|t><around|(|\<omega\>|)>|1+\<omega\><rsup|2>>*d*\<omega\>\<gtr\>-\<infty\><label|eq:C4star>
+    </equation>
+
+    for all <math|t>\ 
+  </enumerate-Alpha>
+
+  Then, we may write
 
   <\equation>
-    <big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|log
-    f<around|(|\<omega\>|)>|1+\<omega\><rsup|2>>*d*\<omega\>\<gtr\>-\<infty\><label|eq:C1star>
+    <tabular|<tformat|<table|<row|<cell|X<around|(|t|)>>|<cell|=<big|int><rsub|0><rsup|\<infty\>>h<rsub|t><around|(|u|)>*\<xi\>*<around|(|t-u|)>*d*u>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*<around*|(|t-u|)>>***h<rsub|t><around|(|u|)>d*u
+    d\<Phi\><around|(|\<omega\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>>e<rsup|i
+    \<omega\> t><around*|(|<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*\<omega\>*u>***h<rsub|t><around|(|u|)>d*u|)>
+    d\<Phi\><around|(|\<omega\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>>e<rsup|i
+    \<omega\> t>A<rsub|t><around*|(|\<omega\>|)>
+    d\<Phi\><around|(|\<omega\>|)>>>>>><label|eq:contMA>
   </equation>
 
-  (Condition<nbsp>C1<rsup|<math|\<ast\>>>)
-
-  Then there exists a function <math|\<psi\><around|(|\<omega\>|)>> such that
-  <math|<around|\||\<psi\><around|(|\<omega\>|)>|\|><rsup|2>=f<around|(|\<omega\>|)>>,
-  <math|\<psi\><around|(|z|)>> having no poles or zeros in the lower
-  half-plane. The function <math|\<psi\><around|(|\<omega\>|)>> may now be
-  written as a one-sided Fourier integral. Corresponding
-  to<nbsp><eqref|eq:At>, we assume now that, for each <math|t>,
+  where
 
   <\equation>
-    A<rsub|t><around|(|\<omega\>|)>=<big|int><rsub|0><rsup|\<infty\>>e<rsup|-i*\<omega\>*u>*g<rsub|t><around|(|u|)>*d*u<label|eq:Atcont>
+    \<xi\><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*t>*d\<Phi\><around|(|\<omega\>|)>
   </equation>
 
-  A necessary condition being
-
-  <\equation>
-    <big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|log
-    <around|\||A<rsub|t><around|(|\<omega\>|)>|\|><rsup|2>|1+\<omega\><rsup|2>>*d*\<omega\>\<gtr\>-\<infty\><label|eq:C3star>
-  </equation>
-
-  for all <math|t> (Condition<nbsp>C3<rsup|<math|\<ast\>>>).
-
-  It then follows that we may write <math|X<around|(|t|)>> in the form
-
-  <\equation>
-    X<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*t*\<omega\>>*\<alpha\><rsub|t><around|(|\<omega\>|)>*d*z<around|(|\<omega\>|)><label|eq:XtalphaCont>
-  </equation>
-
-  where <math|z<around|(|\<omega\>|)>> is an orthogonal process on
-  <math|<around|(|-\<infty\>,\<infty\>|)>>, with
-  <math|E*<around|\||d*z<around|(|\<omega\>|)>|\|><rsup|2>=d*\<omega\>>, and
-  <math|\<alpha\><rsub|t><around|(|\<omega\>|)>> has a one-sided Fourier
-  integral representation of the form
-
-  <\equation>
-    \<alpha\><rsub|t><around|(|\<omega\>|)>=<big|int><rsub|0><rsup|\<infty\>>e<rsup|-i*\<omega\>*u>*h<rsub|t><around|(|u|)>*d*u<label|eq:alphahCont>
-  </equation>
-
-  and <math|<around|\||\<alpha\><rsub|t><around|(|\<omega\>|)>|\|><rsup|2>=f<rsub|t><around|(|\<omega\>|)>>.
-
-  A necessary condition for the validity of<nbsp><eqref|eq:alphahCont> is
-
-  <\equation>
-    <big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|log
-    f<rsub|t><around|(|\<omega\>|)>|1+\<omega\><rsup|2>>*d*\<omega\>\<gtr\>-\<infty\><label|eq:C4star>
-  </equation>
-
-  for all <math|t> (Condition<nbsp>C4<rsup|<math|\<ast\>>>).
-
-  Then, formally, we may write
-
-  <\equation>
-    X<around|(|t|)>=<big|int><rsub|0><rsup|\<infty\>>h<rsub|t><around|(|u|)>*\<xi\>*<around|(|t-u|)>*d*u<label|eq:contMA>
-  </equation>
-
-  where <math|\<xi\><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*t>*d*z<around|(|\<omega\>|)>>.
+  and <math|\<Phi\><around*|(|\<omega\>|)>> is the complex orthogonal random
+  measure which is isomorphic to the sample path
+  <math|\<xi\><around*|(|t|)>>.
 
   <section|The Time-domain Approach>
 
@@ -303,11 +307,10 @@
     M<around|(|m|)>=E*<around|{|<wide|X|~>*<around|(|t+m|)>-X*<around|(|t+m|)>|}><rsup|2><label|eq:predvar>
   </equation>
 
-  is minimized.
-
-  Assuming that the process has a one-sided moving average form, we may
-  easily obtain an explicit expression for <math|<wide|X|~>*<around|(|t+m|)>>
-  in terms of the process <math|<around|{|\<xi\><around|(|t|)>|}>>.
+  is minimized. Assuming that the process has a one-sided moving average
+  form, we may easily obtain an explicit expression for
+  <math|<wide|X|~>*<around|(|t+m|)>> in terms of the process
+  <math|<around|{|\<xi\><around|(|t|)>|}>>.
 
   <subsection|Continuous-parameter Processes>
 
@@ -361,20 +364,12 @@
   write the predictor as
 
   <\equation>
-    <wide|X|~>*<around|(|t+m|)>=<big|int><rsub|0><rsup|\<infty\>>b<rsub|t><around|(|u|)>*X*<around|(|t-u|)>*d*u<label|eq:freqpred>
-  </equation>
-
-  or, formally,
-
-  <\equation>
-    <wide|X|~>*<around|(|t+m|)>=<big|int><rsub|0><rsup|\<infty\>>X*<around|(|t-u|)>*d*\<beta\><rsub|t><around|(|u|)><label|eq:freqpred2>
+    <tabular|<tformat|<table|<row|<cell|<wide|X|~>*<around|(|t+m|)>>|<cell|=<big|int><rsub|0><rsup|\<infty\>>b<rsub|t><around|(|u|)>*X*<around|(|t-u|)>*d*u>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>>X*<around|(|t-u|)>*d*\<beta\><rsub|t><around|(|u|)><label|eq:freqpred2>>>>>><label|eq:freqpred>
   </equation>
 
   where <math|b<rsub|t><around|(|u|)>> may depend on both <math|t> and
-  <math|m>.
-
-  Using the evolutionary spectral representation, the predictor may be
-  written
+  <math|m>. Using the evolutionary spectral representation, the predictor may
+  be written
 
   <\equation>
     <wide|X|~>*<around|(|t+m|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*t>*B<rsub|t><around|(|\<omega\>|)>*d*z<around|(|\<omega\>|)><label|eq:freqpredspec>
@@ -395,7 +390,7 @@
   The mean squared error is
 
   <\equation>
-    M<around|(|m|)>=E*<around|\||<wide|X|~>*<around|(|t+m|)>-X*<around|(|t+m|)>|\|><rsup|2>=<big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||e<rsup|i*\<omega\>*m>*\<alpha\><rsub|t+m><around|(|\<omega\>|)>-B<rsub|t><around|(|\<omega\>|)>|\|><rsup|2>*d*\<omega\><label|eq:freqM>
+    <tabular|<tformat|<table|<row|<cell|M<around|(|m|)>>|<cell|=E*<around|\||<wide|X|~>*<around|(|t+m|)>-X*<around|(|t+m|)>|\|><rsup|2>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||e<rsup|i*\<omega\>*m>*\<alpha\><rsub|t+m><around|(|\<omega\>|)>-B<rsub|t><around|(|\<omega\>|)>|\|><rsup|2>*d*\<omega\>>>>>><label|eq:freqM>
   </equation>
 
   Let
@@ -437,12 +432,15 @@
     <big|int><rsub|0><rsup|v>b<rsub|t><around|(|u|)>*h<rsub|t-u>*<around|(|v-u|)>*d*u=h<rsub|t+m>*<around|(|v+m|)><label|eq:freqtriangular>
   </equation>
 
-  for all <math|t> and <math|v\<geq\>0>.
+  for all <math|t> and <math|v\<geq\>0>. If
+  <math|h<rsub|t-v><around|(|0|)>\<neq\>0> for all
+  <math|v\<in\><around|(|0,\<infty\>|)>> and <math|>
 
-  If <math|h<rsub|t-v><around|(|0|)>\<neq\>0> for all
-  <math|v\<in\><around|(|0,\<infty\>|)>> and
-  <math|\<partial\>*h<rsub|t-u>*<around|(|v-u|)>/\<partial\>*v=h<rsub|t-u,v><rprime|'>*<around|(|v-u|)>>
-  exists and is continuous, then by differentiating both sides with respect
+  <\equation>
+    \<partial\>*h<rsub|t-u>*<around|(|v-u|)>/\<partial\>*v=h<rsub|t-u,v><rprime|'>*<around|(|v-u|)>
+  </equation>
+
+  \ exists and is continuous, then by differentiating both sides with respect
   to <math|v>,
 
   <\equation>
@@ -465,7 +463,7 @@
   is
 
   <\equation>
-    H<rsub|t><rsup|\<ast\>><around|(|v,u,-1|)>=-<big|sum><rsub|p=0><rsup|\<infty\>><around|(|-1|)><rsup|p>*K<rsub|t,p+1><rsup|\<ast\>><around|(|u,v|)><label|eq:resolvent>
+    H<rsub|t><rsup|\<ast\>><around|(|v,u,-1|)>=-<big|sum><rsub|k=0><rsup|\<infty\>><around|(|-1|)><rsup|p>*K<rsub|t,k+1><rsup|\<ast\>><around|(|u,v|)><label|eq:resolvent>
   </equation>
 
   with the \Piterated kernels\Q
@@ -479,56 +477,6 @@
   <\equation>
     K<rsub|t,1><rsup|\<ast\>><around|(|u,v|)>=<frac|h<rsub|t-u,v><rprime|'>*<around|(|v-u|)>|h<rsub|t-v><around|(|0|)>><label|eq:firstkernel>
   </equation>
-
-  <section|Discussion><label|sec:discussion>
-
-  As mentioned in Section<nbsp>1, in this paper we are concerned primarily
-  with the problem of determining the optimum predictor on the assumption
-  that the second-order properties of the process are fully known. However,
-  we have shown that the predictor <math|<wide|X|~>*<around|(|t+m|)>> is
-  determined uniquely by the form of the evolutionary spectra
-  <math|<around|{|f<rsub|t><around|(|\<omega\>|)>|}>>, so that in cases where
-  we have no precise knowledge of the underlying model we may attack the
-  problem by first estimating the functions
-  <math|<around|{|f<rsub|t><around|(|\<omega\>|)>|}>>.
-
-  It will be seen from Section<nbsp>5 that <math|<wide|X|~>*<around|(|t+m|)>>
-  depends on the form of <math|h<rsub|t+m><around|(|u|)>>, i.e., on the form
-  of the evolutionary spectrum at the future time point
-  <math|<around|(|t+m|)>>. In a purely empirical analysis we would not, of
-  course, be able to estimate <math|f<rsub|t+m><around|(|\<omega\>|)>>
-  directly from observations extending only up to time <math|t>, and we would
-  have to assume that the spectra were changing with sufficient
-  \Psmoothness\Q over time to enable the form of
-  <math|f<rsub|t+m><around|(|\<omega\>|)>> to be inferred from the spectra
-  which have been estimated up to time <math|t>.
-
-  If the prediction step <math|m> is much smaller than the characteristic
-  width <math|B<rsub|X>> of the process (see<nbsp><cite|Priestley1965>), it
-  would be a reasonable approximation to replace
-  <math|f<rsub|t+m><around|(|\<omega\>|)>> by
-  <math|f<rsub|t><around|(|\<omega\>|)>>\Vthe most recently available
-  spectrum. In fact, it seems clear intuitively that the very nature of a
-  non-stationary process precludes long-range prediction, unless we are
-  prepared to make assumptions about the character of the non-stationarity.
-  Consequently, if <math|m\<gg\>B<rsub|X>>, we would have to extrapolate the
-  available spectra to the time point <math|<around|(|t+m|)>>. This
-  extrapolation could be performed on the spectral ordinates themselves (by
-  fitting suitable functions of <math|t> to a range of values of
-  <math|\<omega\>>), but in general we would presumably start from a model of
-  the process which determines the form of the evolutionary spectra in terms
-  of a set of time-varying parameters <math|<around|{|\<alpha\><rsub|i><around|(|t|)>|}>>,
-  and then extrapolate the values of these parameters. If our model specifies
-  further the functional time-dependence of the
-  <math|<around|{|\<alpha\><rsub|i><around|(|t|)>|}>> in terms of another set
-  of constant parameters <math|<around|{|\<beta\><rsub|j>|}>>, then the
-  extrapolation is a straightforward problem and involves merely the
-  estimation of the <math|<around|{|\<beta\><rsub|j>|}>>. If, on the other
-  hand, the functional form of the <math|<around|{|\<alpha\><rsub|i><around|(|t|)>|}>>
-  is not specified by the model, the extrapolation would have to be performed
-  by regression techniques.
-
-  <section*|References>
 
   <\thebibliography|99>
     <bibitem|Bartlett1955>Bartlett, M.<nbsp>S. (1955). <em|An Introduction to
@@ -621,8 +569,8 @@
     <associate|auto-5|<tuple|4|5>>
     <associate|auto-6|<tuple|4.1|5>>
     <associate|auto-7|<tuple|5|6>>
-    <associate|auto-8|<tuple|6|8>>
-    <associate|auto-9|<tuple|6|9>>
+    <associate|auto-8|<tuple|40|8>>
+    <associate|auto-9|<tuple|37|9>>
     <associate|bib-Bartlett1955|<tuple|Bartlett1955|9>>
     <associate|bib-Bendat1956|<tuple|Bendat1956|9>>
     <associate|bib-Bendat1957|<tuple|Bendat1957|9>>
@@ -643,43 +591,43 @@
     <associate|bib-Whittle1965|<tuple|Whittle1965|10>>
     <associate|bib-Yaglom1962|<tuple|Yaglom1962|10>>
     <associate|bib-Zadeh1953|<tuple|Zadeh1953|10>>
-    <associate|eq:Atcont|<tuple|7|4>>
-    <associate|eq:Bt|<tuple|23|7>>
-    <associate|eq:Btopt|<tuple|28|7>>
+    <associate|eq:Atcont|<tuple|8|4>>
+    <associate|eq:Bt|<tuple|25|7>>
+    <associate|eq:Btopt|<tuple|30|7>>
     <associate|eq:C1star|<tuple|6|4>>
-    <associate|eq:C3star|<tuple|8|4>>
-    <associate|eq:C4star|<tuple|11|5>>
-    <associate|eq:Csplit|<tuple|26|7>>
-    <associate|eq:Kt|<tuple|30|7>>
-    <associate|eq:XtalphaCont|<tuple|9|4>>
-    <associate|eq:Xtplusmspec|<tuple|24|7>>
-    <associate|eq:alphahCont|<tuple|10|5>>
-    <associate|eq:btfinal|<tuple|34|8>>
-    <associate|eq:contMA|<tuple|12|5>>
-    <associate|eq:contpredX|<tuple|14|5>>
-    <associate|eq:contpredsol|<tuple|16|6>>
-    <associate|eq:contpredxi|<tuple|15|6>>
-    <associate|eq:conttriangular|<tuple|18|6>>
-    <associate|eq:conttriangular2|<tuple|19|6>>
-    <associate|eq:contxitok|<tuple|17|6>>
-    <associate|eq:evspec|<tuple|3|3>>
+    <associate|eq:C3star|<tuple|9|4>>
+    <associate|eq:C4star|<tuple|13|5>>
+    <associate|eq:Csplit|<tuple|28|7>>
+    <associate|eq:Kt|<tuple|32|7>>
+    <associate|eq:XtalphaCont|<tuple|10|4>>
+    <associate|eq:Xtplusmspec|<tuple|26|7>>
+    <associate|eq:alphahCont|<tuple|12|5>>
+    <associate|eq:btfinal|<tuple|37|8>>
+    <associate|eq:contMA|<tuple|14|5>>
+    <associate|eq:contpredX|<tuple|17|5>>
+    <associate|eq:contpredsol|<tuple|19|6>>
+    <associate|eq:contpredxi|<tuple|18|6>>
+    <associate|eq:conttriangular|<tuple|21|6>>
+    <associate|eq:conttriangular2|<tuple|22|6>>
+    <associate|eq:contxitok|<tuple|20|6>>
+    <associate|eq:evspec|<tuple|4|3>>
     <associate|eq:evspec-cont|<tuple|1|3>>
-    <associate|eq:evspec-disc|<tuple|4|3>>
-    <associate|eq:evspec-disc2|<tuple|5|3>>
-    <associate|eq:firstkernel|<tuple|37|8>>
-    <associate|eq:freqM|<tuple|25|7>>
-    <associate|eq:freqMmin|<tuple|29|7>>
-    <associate|eq:freqMsplit|<tuple|27|7>>
-    <associate|eq:freqpred|<tuple|20|6>>
-    <associate|eq:freqpred2|<tuple|21|6>>
-    <associate|eq:freqpredspec|<tuple|22|6>>
-    <associate|eq:freqtriangular|<tuple|31|7>>
-    <associate|eq:freqtriangular2|<tuple|32|8>>
-    <associate|eq:freqtriangular3|<tuple|33|8>>
-    <associate|eq:iteratedkernels|<tuple|36|8>>
-    <associate|eq:phiA|<tuple|2|3>>
-    <associate|eq:predvar|<tuple|13|5>>
-    <associate|eq:resolvent|<tuple|35|8>>
+    <associate|eq:evspec-disc|<tuple|5|3>>
+    <associate|eq:evspec-disc2|<tuple|6|3>>
+    <associate|eq:firstkernel|<tuple|40|8>>
+    <associate|eq:freqM|<tuple|27|7>>
+    <associate|eq:freqMmin|<tuple|31|7>>
+    <associate|eq:freqMsplit|<tuple|29|7>>
+    <associate|eq:freqpred|<tuple|23|6>>
+    <associate|eq:freqpred2|<tuple|23|6>>
+    <associate|eq:freqpredspec|<tuple|24|6>>
+    <associate|eq:freqtriangular|<tuple|33|7>>
+    <associate|eq:freqtriangular2|<tuple|35|8>>
+    <associate|eq:freqtriangular3|<tuple|36|8>>
+    <associate|eq:iteratedkernels|<tuple|39|8>>
+    <associate|eq:phiA|<tuple|3|3>>
+    <associate|eq:predvar|<tuple|16|5>>
+    <associate|eq:resolvent|<tuple|38|8>>
     <associate|sec:discussion|<tuple|6|8>>
   </collection>
 </references>
