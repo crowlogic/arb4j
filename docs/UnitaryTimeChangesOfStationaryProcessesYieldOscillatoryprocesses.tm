@@ -74,8 +74,8 @@
     Localization> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-11><vspace|0.5fn>
 
-    <with|par-left|1tab|4.1<space|2spc>The Kac-Rice Formula For The Expected
-    Zero Counting Function <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <with|par-left|1tab|4.1<space|2spc>Simplicity of Zeros and Their Expected
+    Counting Function <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-12>>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
@@ -1482,213 +1482,265 @@
     </enumerate>
   </proof>
 
-  <subsection|The Kac-Rice Formula For The Expected Zero Counting Function>
+  <subsection|Simplicity of Zeros and Their Expected Counting Function>
 
   <\theorem>
-    [Expected Zero-Counting Function Of The Oscillatory Process Subclass of
-    Unitarily Time-Changed Stationary Processes]<label|thmexpectedzerocount>Let
-    <math|\<theta\>:\<bbb-R\>\<to\>\<bbb-R\>> be absolutely continuous,
-    strictly increasing, and bijective with
+    <dueto|Bulinskaya><label|thm:bulinskaya>Let <math|X<around|(|t|)>> be a
+    centered stationary Gaussian process with covariance function
+    <math|K<around|(|h|)>=\<bbb-E\>*<around|[|X<around|(|t|)>*X*<around|(|t+h|)>|]>>
+    that is twice differentiable at <math|h=0> with
+    <math|K<around|(|0|)>\<gtr\>0> and <math|<wide|K|\<ddot\>><around|(|0|)>\<less\>0>.
+    Then the zero set of <math|X> has no accumulation points almost surely.
+    In particular, on any compact interval <math|<around|[|a,b|]>>, the
+    number of zeros is almost surely finite.
+  </theorem>
+
+  <\proof>
+    \;
+
+    <\enumerate>
+      <item>The twice-differentiability of <math|K> at <math|h=0> implies
+      that the spectral measure <math|F> has finite second moment:
+
+      <\equation>
+        \<lambda\><rsub|2>=<big|int><rsub|\<bbb-R\>>\<omega\><rsup|2>*d*F<around|(|\<omega\>|)>=-<wide|K|\<ddot\>><around|(|0|)>\<less\>\<infty\>.
+      </equation>
+
+      <item>This finite second moment implies that <math|X> has mean-square
+      continuous derivative <math|<wide|X|\<dot\>><around|(|t|)>>, with
+
+      <\equation>
+        \<bbb-E\><around|[|<wide|X|\<dot\>><around|(|t|)><rsup|2>|]>=-<wide|K|\<ddot\>><around|(|0|)>=\<lambda\><rsub|2>\<gtr\>0.
+      </equation>
+
+      <item>Since <math|<wide|X|\<dot\>><around|(|t|)>> is a non-degenerate
+      centered Gaussian process, it is continuous almost surely and does not
+      vanish identically on any interval.
+
+      <item>For any zero <math|t<rsub|0>> of <math|X> (i.e.,
+      <math|X<around|(|t<rsub|0>|)>=0>), if
+      <math|<wide|X|\<dot\>><around|(|t<rsub|0>|)>\<ne\>0>, then <math|X>
+      crosses transversally through zero at <math|t<rsub|0>>, making
+      <math|t<rsub|0>> an isolated zero.
+
+      <item>The joint distribution of <math|<around|(|X<around|(|t<rsub|0>|)>,<wide|X|\<dot\>><around|(|t<rsub|0>|)>|)>>
+      is bivariate Gaussian with covariance matrix
+
+      <\equation>
+        <matrix|<tformat|<table|<row|<cell|K<around|(|0|)>>|<cell|K<rprime|'><around|(|0|)>>>|<row|<cell|K<rprime|'><around|(|0|)>>|<cell|-<wide|K|\<ddot\>><around|(|0|)>>>>>>=<matrix|<tformat|<table|<row|<cell|K<around|(|0|)>>|<cell|0>>|<row|<cell|0>|<cell|-<wide|K|\<ddot\>><around|(|0|)>>>>>>,
+      </equation>
+
+      where <math|K<rprime|'><around|(|0|)>=0> by evenness of <math|K>. Since
+      <math|X> and <math|<wide|X|\<dot\>>> are uncorrelated Gaussians, they
+      are independent.
+
+      <item>At any zero <math|t<rsub|0>> of <math|X>, the derivative
+      <math|<wide|X|\<dot\>><around|(|t<rsub|0>|)>> is Gaussian with mean
+      zero and variance <math|-<wide|K|\<ddot\>><around|(|0|)>\<gtr\>0>,
+      hence
+
+      <\equation>
+        \<bbb-P\>*<around|[|<wide|X|\<dot\>><around|(|t<rsub|0>|)>=0\<mid\>X<around|(|t<rsub|0>|)>=0|]>=\<bbb-P\>*<around|[|<wide|X|\<dot\>><around|(|t<rsub|0>|)>=0|]>=0.
+      </equation>
+
+      Thus almost surely <math|<wide|X|\<dot\>><around|(|t<rsub|0>|)>\<ne\>0>,
+      making <math|t<rsub|0>> an isolated zero.
+
+      <item>Since every zero of <math|X> is isolated almost surely, the zero
+      set can have no accumulation points almost surely.
+
+      <item>On a compact interval <math|<around|[|a,b|]>>, a set with no
+      accumulation points is finite, completing the proof.
+    </enumerate>
+  </proof>
+
+  <\theorem>
+    <dueto|Expected Zero-Counting Function with Deterministic
+    Atoms><label|thm:kac_rice_merged>Let <math|\<theta\>:\<bbb-R\>\<to\>\<bbb-R\>>
+    be absolutely continuous, strictly increasing, and bijective with
+    <math|<wide|\<theta\>|\<dot\>><around|(|t|)>\<ge\>0> for all <math|t> and
     <math|<wide|\<theta\>|\<dot\>><around|(|t|)>\<gtr\>0> almost everywhere.
+    Define the zero-derivative set
+
+    <\equation>
+      T<rsub|0>\<assign\><around|{|t\<in\>\<bbb-R\>:<wide|\<theta\>|\<dot\>><around|(|t|)>=0|}>
+    </equation>
+
     Let <math|X> be a centered stationary Gaussian process with spectral
     measure <math|F> and covariance function
 
     <\equation>
-      <label|eqstationarycov>K<around|(|h|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<omega\>*h>*<space|0.17em>d*F<around|(|\<omega\>|)>
+      K<around|(|h|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<omega\>*h>*<space|0.17em>d*F<around|(|\<omega\>|)>
     </equation>
 
     twice differentiable at <math|h=0> with
-    <math|<wide|K|\<ddot\>><around|(|0|)>\<less\>0>. Define the unitarily
-    time-changed process
+    <math|<wide|K|\<ddot\>><around|(|0|)>\<less\>0> and
+    <math|K<around|(|0|)>\<gtr\>0>. Define the unitarily time-changed process
 
     <\equation>
-      <label|eqZprocess>Z<around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>X<around|(|\<theta\><around|(|t|)>|)>
+      Z<around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>X<around|(|\<theta\><around|(|t|)>|)>
     </equation>
 
     Then <math|Z> is a centered Gaussian process with covariance
 
     <\equation>
-      <label|eqZcovariance>K<rsub|Z><around|(|t,s|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<space|0.17em>K*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>
+      K<rsub|Z><around|(|t,s|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)><wide|\<theta\>|\<dot\>><around|(|s|)>>*<space|0.17em>K*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>
     </equation>
 
-    and the expected number of zeros in <math|<around|[|0,T|]>> is
+    For any compact interval <math|<around|[|0,T|]>>, define
 
     <\equation>
-      <label|eqexpectedzeros>\<bbb-E\><around|[|N<rsub|<around|[|0,T|]>>|]>=<frac|<around|[|\<theta\><around|(|T|)>-\<theta\><around|(|0|)>|]>|\<pi\>>*<sqrt|-<frac|<wide|K|\<ddot\>><around|(|0|)>|K<around|(|0|)>>>
+      N<rsub|<math-up|det>><around|(|<around|[|0,T|]>|)>\<assign\>#<around|(|T<rsub|0>\<cap\><around|[|0,T|]>|)>
+    </equation>
+
+    By Theorem <reference|thm:bulinskaya>,
+    <math|N<rsub|<math-up|det>><around|(|<around|[|0,T|]>|)>> is finite
+    almost surely. The expected number of zeros of <math|Z> in
+    <math|<around|[|0,T|]>> decomposes as
+
+    <\equation>
+      \<bbb-E\><around|[|N<rsub|<around|[|0,T|]>><around|(|Z|)>|]>=N<rsub|<math-up|det>><around|(|<around|[|0,T|]>|)>+<frac|\<theta\><around|(|T|)>-\<theta\><around|(|0|)>|\<pi\>>*<sqrt|-<frac|<wide|K|\<ddot\>><around|(|0|)>|K<around|(|0|)>>>
     </equation>
   </theorem>
 
   <\proof>
+    \;
+
     <\enumerate>
-      <item>Observe that the amplitude factor
-      <math|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>> is positive almost
-      everywhere (by hypothesis <math|<wide|\<theta\>|\<dot\>><around|(|t|)>\<gtr\>0>
-      a.e.). Therefore, the zero set of <math|Z<around|(|t|)>> coincides
-      exactly with the zero set of the time-changed process
-      <math|Y<around|(|t|)>=X<around|(|\<theta\><around|(|t|)>|)>>:
+      <item>Define
 
       <\equation>
-        Z<around|(|t|)>=0\<Longleftrightarrow\>X<around|(|\<theta\><around|(|t|)>|)>=0
+        T<rsub|0>\<assign\><around|{|t\<in\>\<bbb-R\>:<wide|\<theta\>|\<dot\>><around|(|t|)>=0|}>,<space|2em>I<rsub|T>\<assign\><around|[|0,T|]>\<setminus\>T<rsub|0>
       </equation>
 
-      <item>The covariance of <math|Y<around|(|t|)>=X<around|(|\<theta\><around|(|t|)>|)>>
-      is:
+      For any <math|t<rsub|0>\<in\>T<rsub|0>>,
 
       <\equation>
-        K<rsub|Y><around|(|t,s|)>=\<bbb-E\>*<around|[|Y<around|(|t|)>*Y<around|(|s|)>|]>=K*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>
+        Z<around|(|t<rsub|0>|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t<rsub|0>|)>>*<space|0.17em>X<around|(|\<theta\><around|(|t<rsub|0>|)>|)>=0\<cdot\>X<around|(|\<theta\><around|(|t<rsub|0>|)>|)>=
       </equation>
 
-      <item>By the Kac-Rice formula for non-stationary centered Gaussian
-      processes, the expected zero count is:
+      so each <math|t<rsub|0>\<in\>T<rsub|0>> is a deterministic zero of
+      <math|Z> on every sample path.
+
+      <item>By Theorem <reference|thm:bulinskaya>, the zero set of <math|X>
+      has no accumulation points almost surely. Since <math|\<theta\>> is
+      strictly increasing and continuous, the image
+      <math|\<theta\>*<around|(|T<rsub|0>\<cap\><around|[|0,T|]>|)>> inherits
+      this property: points in <math|T<rsub|0>\<cap\><around|[|0,T|]>> cannot
+      accumulate because their images under <math|\<theta\>> would then be
+      accumulation points of zeros of <math|X>. Therefore
+      <math|T<rsub|0>\<cap\><around|[|0,T|]>> is at most countable with no
+      accumulation points, hence finite on the compact interval
+      <math|<around|[|0,T|]>>. Thus
 
       <\equation>
-        <label|eqkacrice>\<bbb-E\><around|[|N<rsub|<around|[|0,T|]>>|]>=<big|int><rsub|0><rsup|T><frac|1|\<pi\>>*<sqrt|<frac|K<rsub|Y><around|(|t,t|)>\<cdot\>lim<rsub|s\<to\>t>
-        <frac|\<partial\><rsup|2>|\<partial\>*s*\<partial\>*t>*K<rsub|Y><around|(|s,t|)>-<around*|(|lim<rsub|s\<to\>t>
-        <frac|\<partial\>|\<partial\>*s>*K<rsub|Y><around|(|s,t|)>|)><rsup|2>|K<rsub|Y><around|(|t,t|)><rsup|2>>>*<space|0.17em>d*t
+        N<rsub|<math-up|det>><around|(|<around|[|0,T|]>|)>=#<around|(|T<rsub|0>\<cap\><around|[|0,T|]>|)>\<less\>\<infty\>
       </equation>
 
-      <item>Compute <math|K<rsub|Y><around|(|t,t|)>=K<around|(|0|)>>.
-
-      <item>Compute <math|\<partial\><rsub|s>*K<rsub|Y><around|(|s,t|)>=-<wide|\<theta\>|\<dot\>><around|(|s|)>*<wide|K|\<dot\>>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>.
-      Taking <math|s\<to\>t> gives <math|lim<rsub|s\<to\>t>
-      \<partial\><rsub|s>*K<rsub|Y><around|(|s,t|)>=-<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|K|\<dot\>><around|(|0|)>=0>
-      by stationarity of <math|X>.
-
-      <item>Compute <math|\<partial\><rsub|s*t><rsup|2>*K<rsub|Y><around|(|s,t|)>=<wide|\<theta\>|\<dot\>><around|(|s|)>*<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|K|\<ddot\>>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>.
-      Taking <math|s\<to\>t> gives <math|lim<rsub|s\<to\>t>
-      \<partial\><rsub|s*t><rsup|2>*K<rsub|Y><around|(|s,t|)>=<wide|\<theta\>|\<dot\>><around|(|t|)><rsup|2>*<wide|K|\<ddot\>><around|(|0|)>>.
-
-      <item>Substituting into the Kac-Rice formula:
+      <item>On the complement <math|I<rsub|T>=<around|[|0,T|]>\<setminus\>T<rsub|0>>,
+      the derivative satisfies <math|<wide|\<theta\>|\<dot\>><around|(|t|)>\<gtr\>0>,
+      hence
 
       <\equation>
-        \<bbb-E\><around|[|N<rsub|<around|[|0,T|]>>|]>=<big|int><rsub|0><rsup|T><frac|1|\<pi\>>*<sqrt|<frac|K<around|(|0|)>\<cdot\><wide|\<theta\>|\<dot\>><around|(|t|)><rsup|2>*<wide|K|\<ddot\>><around|(|0|)>-0|K<around|(|0|)><rsup|2>>>*<space|0.17em>d*t=<big|int><rsub|0><rsup|T><frac|<wide|\<theta\>|\<dot\>><around|(|t|)>|\<pi\>>*<sqrt|<frac|<wide|K|\<ddot\>><around|(|0|)>|K<around|(|0|)>>>*<space|0.17em>d*t
+        Z<around|(|t|)>=0<space|1em>\<Longleftrightarrow\><space|1em>X<around|(|\<theta\><around|(|t|)>|)>=0,<space|2em>t\<in\>I<rsub|T>
       </equation>
 
-      <item>Since <math|<wide|K|\<ddot\>><around|(|0|)>\<less\>0>, we have
-      <math|<sqrt|<frac|<wide|K|\<ddot\>><around|(|0|)>|K<around|(|0|)>>>=i*<sqrt|-<frac|<wide|K|\<ddot\>><around|(|0|)>|K<around|(|0|)>>>>.
-      Taking the magnitude gives:
+      Define
 
       <\equation>
-        \<bbb-E\><around|[|N<rsub|<around|[|0,T|]>>|]>=<big|int><rsub|0><rsup|T><frac|<wide|\<theta\>|\<dot\>><around|(|t|)>|\<pi\>>*<sqrt|-<frac|<wide|K|\<ddot\>><around|(|0|)>|K<around|(|0|)>>>*<space|0.17em>d*t=<frac|1|\<pi\>>*<sqrt|-<frac|<wide|K|\<ddot\>><around|(|0|)>|K<around|(|0|)>>>*<big|int><rsub|0><rsup|T><wide|\<theta\>|\<dot\>><around|(|t|)>*<space|0.17em>d*t
+        Y<around|(|t|)>\<assign\>X<around|(|\<theta\><around|(|t|)>|)>.
       </equation>
 
-      <item>Evaluate the integral:
+      The random zero set of <math|Z> on <math|<around|[|0,T|]>> coincides
+      with the zero set of <math|Y> on <math|I<rsub|T>>, and the total zero
+      count decomposes as
 
       <\equation>
-        <label|eqfinal>\<bbb-E\><around|[|N<rsub|<around|[|0,T|]>>|]>=<frac|<around|[|\<theta\><around|(|T|)>-\<theta\><around|(|0|)>|]>|\<pi\>>*<sqrt|-<frac|<wide|K|\<ddot\>><around|(|0|)>|K<around|(|0|)>>>
+        N<rsub|<around|[|0,T|]>><around|(|Z|)>=N<rsub|<math-up|det>><around|(|<around|[|0,T|]>|)>+N<rsub|<math-up|rand>><around|(|<around|[|0,T|]>|)>
+      </equation>
+
+      where <math|N<rsub|<math-up|rand>><around|(|<around|[|0,T|]>|)>> counts
+      zeros of <math|Y> in <math|I<rsub|T>>.
+
+      <item>For <math|t,s\<in\>\<bbb-R\>>,
+
+      <\equation>
+        K<rsub|Y><around|(|t,s|)>=\<bbb-E\>*<around|[|X<around|(|\<theta\><around|(|t|)>|)>*X<around|(|\<theta\><around|(|s|)>|)>|]>=K*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>
+      </equation>
+
+      Differentiate with respect to <math|s>:
+
+      <\equation>
+        <frac|\<partial\>|\<partial\>*s>*K<rsub|Y><around|(|s,t|)>=-<wide|\<theta\>|\<dot\>><around|(|s|)>*<space|0.17em><wide|K|\<dot\>>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>
+      </equation>
+
+      Since <math|K<around|(|h|)>> is even,
+      <math|<wide|K|\<dot\>><around|(|0|)>=0>. Taking <math|s\<to\>t>,
+
+      <\equation>
+        lim<rsub|s\<to\>t> <frac|\<partial\>|\<partial\>*s>*K<rsub|Y><around|(|s,t|)>=0
+      </equation>
+
+      <item>The mixed partial derivative is
+
+      <\equation>
+        <frac|\<partial\><rsup|2>|\<partial\>*s*\<partial\>*t>*K<rsub|Y><around|(|t,s|)>=-<wide|\<theta\>|\<dot\>><around|(|t|)><wide|\<theta\>|\<dot\>><around|(|s|)>*<space|0.17em><wide|K|\<ddot\>>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>
+      </equation>
+
+      Taking <math|s\<to\>t>,
+
+      <\equation>
+        lim<rsub|s\<to\>t> <frac|\<partial\><rsup|2>|\<partial\>*s*\<partial\>*t>*K<rsub|Y><around|(|t,s|)>=-<wide|\<theta\>|\<dot\>><around|(|t|)><rsup|2>*<wide|K|\<ddot\>><around|(|0|)>
+      </equation>
+
+      Also <math|K<rsub|Y><around|(|t,t|)>=K<around|(|0|)>>.
+
+      <item>The Kac\URice zero intensity for <math|Y> on <math|I<rsub|T>> is
+
+      <\equation>
+        \<rho\><rsub|Y><around|(|t|)>=<frac|1|\<pi\>>*<sqrt|<frac|K<rsub|Y><around|(|t,t|)>\<cdot\>lim<rsub|s\<to\>t>
+        <frac|\<partial\><rsup|2>|\<partial\>*s*\<partial\>*t>*K<rsub|Y><around|(|t,s|)>-<around*|(|lim<rsub|s\<to\>t>
+        <frac|\<partial\>|\<partial\>*s>*K<rsub|Y><around|(|s,t|)>|)><rsup|2>|K<rsub|Y><around|(|t,t|)><rsup|2>>>
+      </equation>
+
+      Substituting,
+
+      <\equation>
+        K<rsub|Y><around|(|t,t|)>\<cdot\>lim<rsub|s\<to\>t>
+        <frac|\<partial\><rsup|2>|\<partial\>*s*\<partial\>*t>*K<rsub|Y><around|(|t,s|)>-0<rsup|2>=K<around|(|0|)>\<cdot\><around*|(|-<wide|\<theta\>|\<dot\>><around|(|t|)><rsup|2>*<wide|K|\<ddot\>><around|(|0|)>|)>=K<around|(|0|)><wide|\<theta\>|\<dot\>><around|(|t|)><rsup|2>*<around|(|-<wide|K|\<ddot\>><around|(|0|)>|)>
+      </equation>
+
+      Therefore,
+
+      <\equation>
+        \<rho\><rsub|Y><around|(|t|)>=<frac|1|\<pi\>>*<sqrt|<frac|<wide|\<theta\>|\<dot\>><around|(|t|)><rsup|2>*<around|(|-<wide|K|\<ddot\>><around|(|0|)>|)>|K<around|(|0|)>>>=<frac|<wide|\<theta\>|\<dot\>><around|(|t|)>|\<pi\>>*<sqrt|-<frac|<wide|K|\<ddot\>><around|(|0|)>|K<around|(|0|)>>>
+      </equation>
+
+      <item>The expected random zero count is
+
+      <\equation>
+        \<bbb-E\><around|[|N<rsub|<math-up|rand>><around|(|<around|[|0,T|]>|)>|]>=<big|int><rsub|I<rsub|T>>\<rho\><rsub|Y><around|(|t|)>*<space|0.17em>d*t
+      </equation>
+
+      Since <math|T<rsub|0>> has Lebesgue measure zero,
+
+      <\equation>
+        \<bbb-E\><around|[|N<rsub|<math-up|rand>><around|(|<around|[|0,T|]>|)>|]>=<big|int><rsub|0><rsup|T><frac|<wide|\<theta\>|\<dot\>><around|(|t|)>|\<pi\>>*<sqrt|-<frac|<wide|K|\<ddot\>><around|(|0|)>|K<around|(|0|)>>>*<space|0.17em>d*t=<frac|\<theta\><around|(|T|)>-\<theta\><around|(|0|)>|\<pi\>>*<sqrt|-<frac|<wide|K|\<ddot\>><around|(|0|)>|K<around|(|0|)>>>
+      </equation>
+
+      <item>The total zero count decomposes as
+
+      <\equation>
+        N<rsub|<around|[|0,T|]>><around|(|Z|)>=N<rsub|<math-up|det>><around|(|<around|[|0,T|]>|)>+N<rsub|<math-up|rand>><around|(|<around|[|0,T|]>|)>
+      </equation>
+
+      so
+
+      <\equation>
+        \<bbb-E\><around|[|N<rsub|<around|[|0,T|]>><around|(|Z|)>|]>=N<rsub|<math-up|det>><around|(|<around|[|0,T|]>|)>+<frac|\<theta\><around|(|T|)>-\<theta\><around|(|0|)>|\<pi\>>*<sqrt|-<frac|<wide|K|\<ddot\>><around|(|0|)>|K<around|(|0|)>>>
       </equation>
     </enumerate>
   </proof>
-
-  <\theorem>
-    <label|thm:deterministic_zero><with|font-series|bold|[Deterministic
-    zero-crossing at vanishing derivative]> Let <math|X> be a zero-mean
-    stationary process with spectral measure <math|F> as in Definition
-    <reference|def:cramer> and finite variance
-    <math|\<sigma\><rsup|2>=\<bbb-E\><around|[|X<around|(|t|)><rsup|2>|]>\<less\>\<infty\>>.
-    Let <math|\<theta\>:\<bbb-R\>\<to\>\<bbb-R\>> be the time-change function
-    from Theorem <reference|thm:local_unitarity>, which is absolutely
-    continuous (has derivative <math|<wide|\<theta\>|\<dot\>>> that exists
-    almost everywhere and is Lebesgue integrable), strictly increasing (so
-    <math|\<theta\><around|(|t<rsub|1>|)>\<less\>\<theta\><around|(|t<rsub|2>|)>>
-    whenever <math|t<rsub|1>\<less\>t<rsub|2>>), and bijective (one-to-one
-    and onto). The derivative <math|<wide|\<theta\>|\<dot\>><around|(|t|)>>
-    is strictly positive almost everywhere, meaning
-    <math|<wide|\<theta\>|\<dot\>><around|(|t|)>\<gtr\>0> for all <math|t>
-    except possibly on a set of Lebesgue measure zero. Define the transformed
-    process
-
-    <\equation>
-      <label|eq:Z_def_det>Z<around|(|t|)>=<around|(|U<rsub|\<theta\>>*X|)><around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*X<around|(|\<theta\><around|(|t|)>|)>
-    </equation>
-
-    as in equation <eqref|eq:U_theta_def>. Consider a point
-    <math|t<rsub|0>\<in\>\<bbb-R\>> where the derivative vanishes:
-    <math|<wide|\<theta\>|\<dot\>><around|(|t<rsub|0>|)>=0>. Then
-    <with|font-series|bold|every sample path of <math|Z> passes through zero
-    at <math|t<rsub|0>>>: for all <math|\<omega\>\<in\>\<Omega\>>,
-
-    <\equation>
-      <label|eq:deterministic_zero_statement>Z<around|(|t<rsub|0>,\<omega\>|)>=0
-    </equation>
-
-    This is a <with|font-series|bold|deterministic zero-crossing>: unlike the
-    random zero-crossings of the stationary process <math|X>, which occur
-    probabilistically according to Bulinskaya's statistics, the zero at
-    <math|t<rsub|0>> occurs with certainty in every realization of <math|Z>.
-    The randomness of <math|X> is completely suppressed at <math|t<rsub|0>>
-    by the vanishing amplitude <math|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t<rsub|0>|)>>=0>.
-  </theorem>
-
-  <\proof>
-    <\enumerate>
-      <item>Consider a point <math|t<rsub|0>\<in\>\<bbb-R\>> where
-      <math|<wide|\<theta\>|\<dot\>><around|(|t<rsub|0>|)>=0>.
-
-      <item>From the definition <eqref|eq:Z_def_det>, the value of <math|Z>
-      at <math|t<rsub|0>> for any sample path <math|\<omega\>\<in\>\<Omega\>>
-      is
-
-      <\equation>
-        <label|eq:Z_at_t0_expanded>Z<around|(|t<rsub|0>,\<omega\>|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t<rsub|0>|)>>\<cdot\>X<around|(|\<theta\><around|(|t<rsub|0>|)>,\<omega\>|)>
-      </equation>
-
-      <item>Since <math|<wide|\<theta\>|\<dot\>><around|(|t<rsub|0>|)>=0> by
-      hypothesis,
-
-      <\equation>
-        <label|eq:sqrt_zero_eval><sqrt|<wide|\<theta\>|\<dot\>><around|(|t<rsub|0>|)>>=<sqrt|0>=0
-      </equation>
-
-      <item>Substituting <eqref|eq:sqrt_zero_eval> into
-      <eqref|eq:Z_at_t0_expanded>,
-
-      <\equation>
-        <label|eq:zero_product>Z<around|(|t<rsub|0>,\<omega\>|)>=0\<cdot\>X<around|(|\<theta\><around|(|t<rsub|0>|)>,\<omega\>|)>=0
-      </equation>
-
-      regardless of the value of <math|X<around|(|\<theta\><around|(|t<rsub|0>|)>,\<omega\>|)>>.
-
-      <item>Since <math|\<omega\>\<in\>\<Omega\>> was arbitrary, equation
-      <eqref|eq:zero_product> holds for every sample path:
-
-      <\equation>
-        <label|eq:all_sample_paths>Z<around|(|t<rsub|0>,\<omega\>|)>=0<space|1em>\<forall\>\<omega\>\<in\>\<Omega\>
-      </equation>
-
-      <item>Therefore <math|t<rsub|0>> is a deterministic zero-crossing: the
-      process <math|Z> reaches zero at <math|t<rsub|0>> in every realization,
-      not probabilistically.
-
-      <item>As a direct consequence, the variance of <math|Z> at
-      <math|t<rsub|0>> is zero:
-
-      <\equation>
-        <label|eq:variance_zero_consequence><math-up|Var><around|[|Z<around|(|t<rsub|0>|)>|]>=\<bbb-E\><around|[|<around|(|Z<around|(|t<rsub|0>|)>-\<bbb-E\><around|[|Z<around|(|t<rsub|0>|)>|]>|)><rsup|2>|]>=\<bbb-E\><around|[|0<rsup|2>|]>=0
-      </equation>
-
-      <item>By Corollary <reference|cor:evol_spec>, the evolutionary spectrum
-      at <math|t<rsub|0>> vanishes:
-
-      <\equation>
-        <label|eq:evol_spectrum_vanish>d*F<rsub|t<rsub|0>><around|(|\<lambda\>|)>=<wide|\<theta\>|\<dot\>><around|(|t<rsub|0>|)>*d*F<around|(|\<lambda\>|)>=0\<cdot\>d*F<around|(|\<lambda\>|)>=0
-      </equation>
-
-      meaning there is no spectral energy at <math|t<rsub|0>>.
-
-      <item>The point <math|t<rsub|0>> belongs to the zero set
-      <math|<around|{|t\<in\>\<bbb-R\>:Z<around|(|t,\<omega\>|)>=0|}>> for
-      every <math|\<omega\>\<in\>\<Omega\>>. By Definition
-      <reference|def:L2loc>, this deterministic zero-crossing differs
-      fundamentally from the random zero-crossings governed by the statistics
-      of the stationary process <math|X>: it occurs because the amplitude
-      factor <math|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t<rsub|0>|)>>>
-      vanishes, completely eliminating the influence of the random process
-      <math|X> at that instant.
-    </enumerate>
-  </proof>
-
-  <bibitem-with-key|1|stationaryAndRelatedStochasticProcesses>\ 
 
   <\bibliography|bib|tm-plain|refs>
     <\bib-list|2>
@@ -1726,7 +1778,7 @@
     <associate|auto-10|<tuple|3.3|15>>
     <associate|auto-11|<tuple|4|17>>
     <associate|auto-12|<tuple|4.1|21>>
-    <associate|auto-13|<tuple|1|23>>
+    <associate|auto-13|<tuple|201|24>>
     <associate|auto-2|<tuple|1.1|3>>
     <associate|auto-3|<tuple|1.2|3>>
     <associate|auto-4|<tuple|1.2.1|4>>
@@ -1735,8 +1787,8 @@
     <associate|auto-7|<tuple|3.1|9>>
     <associate|auto-8|<tuple|3.2|11>>
     <associate|auto-9|<tuple|3.2.1|13>>
-    <associate|bib-evolutionarySpectraAndNonStationaryProcesses|<tuple|2|23>>
-    <associate|bib-stationaryAndRelatedStochasticProcesses|<tuple|1|23>>
+    <associate|bib-evolutionarySpectraAndNonStationaryProcesses|<tuple|2|24>>
+    <associate|bib-stationaryAndRelatedStochasticProcesses|<tuple|1|24>>
     <associate|cor:evol_spec|<tuple|13|15>>
     <associate|def:Hmu|<tuple|17|18>>
     <associate|def:L|<tuple|19|19>>
@@ -1779,11 +1831,9 @@
     <associate|eq:X_sifting_inverse|<tuple|108|14>>
     <associate|eq:X_theta_t|<tuple|85|11>>
     <associate|eq:Yab_def|<tuple|22|4>>
-    <associate|eq:Z_at_t0_expanded|<tuple|186|22>>
     <associate|eq:Z_conjugate|<tuple|34|6>>
     <associate|eq:Z_conjugate_substituted|<tuple|36|6>>
     <associate|eq:Z_def|<tuple|80|11>>
-    <associate|eq:Z_def_det|<tuple|184|22>>
     <associate|eq:Z_expanded|<tuple|86|12>>
     <associate|eq:Z_integral|<tuple|87|12>>
     <associate|eq:Z_oscillatory_form|<tuple|89|12>>
@@ -1793,7 +1843,6 @@
     <associate|eq:Z_transformation|<tuple|97|13>>
     <associate|eq:Z_well_defined|<tuple|55|8>>
     <associate|eq:after_substitution|<tuple|67|10>>
-    <associate|eq:all_sample_paths|<tuple|189|23>>
     <associate|eq:apply_forward_def|<tuple|70|10>>
     <associate|eq:apply_inverse_def|<tuple|69|10>>
     <associate|eq:apply_inverse_second|<tuple|75|10>>
@@ -1821,11 +1870,9 @@
     <associate|eq:delta_decomposition|<tuple|139|17>>
     <associate|eq:delta_equality|<tuple|144|17>>
     <associate|eq:density_simple|<tuple|53|8>>
-    <associate|eq:deterministic_zero_statement|<tuple|185|22>>
     <associate|eq:eigenvalue_equation|<tuple|172|20>>
     <associate|eq:evol_spec_def|<tuple|118|15>>
     <associate|eq:evol_spec_final|<tuple|122|15>>
-    <associate|eq:evol_spectrum_vanish|<tuple|191|23>>
     <associate|eq:evolutionary_spectrum|<tuple|117|15>>
     <associate|eq:exp_magnitude|<tuple|120|15>>
     <associate|eq:expand_square|<tuple|65|9>>
@@ -1893,24 +1940,15 @@
     <associate|eq:simplify_integral|<tuple|132|16>>
     <associate|eq:simplify_second|<tuple|77|11>>
     <associate|eq:spectrum|<tuple|164|20>>
-    <associate|eq:spectrum_result|<tuple|173|20>>
-    <associate|eq:sqrt_zero_eval|<tuple|187|23>>
+    <associate|eq:spectrum_result|<tuple|173|21>>
     <associate|eq:stationary_covariance|<tuple|19|3>>
     <associate|eq:sum_form|<tuple|142|17>>
     <associate|eq:theta_composition|<tuple|76|10>>
     <associate|eq:theta_inverse_composition|<tuple|71|10>>
     <associate|eq:time_dependent_spectrum|<tuple|43|7>>
-    <associate|eq:variance_zero_consequence|<tuple|190|23>>
     <associate|eq:varphi_L2|<tuple|54|8>>
     <associate|eq:varphi_as_gain|<tuple|91|12>>
     <associate|eq:varphi_t_explicit|<tuple|88|12>>
-    <associate|eq:zero_product|<tuple|188|23>>
-    <associate|eqZcovariance|<tuple|176|21>>
-    <associate|eqZprocess|<tuple|175|21>>
-    <associate|eqexpectedzeros|<tuple|177|21>>
-    <associate|eqfinal|<tuple|183|22>>
-    <associate|eqkacrice|<tuple|180|21>>
-    <associate|eqstationarycov|<tuple|174|21>>
     <associate|pd|<tuple|60|9>>
     <associate|prop:atomic|<tuple|18|18>>
     <associate|prop:conjugation|<tuple|14|15>>
@@ -1919,14 +1957,14 @@
     <associate|sec:stationary_timechange|<tuple|3|9>>
     <associate|thm:Utheta_to_osc|<tuple|11|11>>
     <associate|thm:atomicity|<tuple|16|17>>
-    <associate|thm:deterministic_zero|<tuple|22|22>>
+    <associate|thm:bulinskaya|<tuple|21|21>>
     <associate|thm:existence_osc|<tuple|9|7>>
     <associate|thm:inverse_filter|<tuple|12|13>>
+    <associate|thm:kac_rice_merged|<tuple|22|22>>
     <associate|thm:local_unitarity|<tuple|10|9>>
     <associate|thm:paths_loc|<tuple|6|4>>
     <associate|thm:realvaluedness|<tuple|8|5>>
     <associate|thm:spectrum|<tuple|20|20>>
-    <associate|thmexpectedzerocount|<tuple|21|21>>
   </collection>
 </references>
 
@@ -1985,8 +2023,8 @@
       Localization> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-11><vspace|0.5fn>
 
-      <with|par-left|<quote|1tab>|4.1<space|2spc>The Kac-Rice Formula For The
-      Expected Zero Counting Function <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1tab>|4.1<space|2spc>Simplicity of Zeros and
+      Their Expected Counting Function <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-12>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
