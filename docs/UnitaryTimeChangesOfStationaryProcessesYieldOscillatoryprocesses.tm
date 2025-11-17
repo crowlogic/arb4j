@@ -16,7 +16,7 @@
     stationary process yields an oscillatory process in the sense of
     Priestley with oscillatory function <math|\<varphi\><rsub|t><around|(|\<lambda\>|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>>,
     evolutionary spectrum <math|d*F<rsub|t><around|(|\<lambda\>|)>=<wide|\<theta\>|\<dot\>><around|(|t|)>*d*F<around|(|\<lambda\>|)>>
-    and expected zero-counting function <math|\<bbb-E\><around|[|N<rsub|<around|[|0,T|]>>|]>=<sqrt|-<wide|K|\<ddot\>><around|(|0|)>>*<space|0.17em><around|[|\<theta\><around|(|T|)>-\<theta\><around|(|0|)>|]><with|font-series|bold|>>.
+    and expected zero-counting function <math|\<bbb-E\><around|[|N<rsub|<around|[|0,T|]>>|]>=<sqrt|*-2\<pi\><frac|<wide|K|\<ddot\>><around|(|0|)>|K<around|(|0|)>>>*<around|[|\<theta\><around|(|T|)>-\<theta\><around|(|0|)>|]><with|font-series|bold|>>.
     The sample paths of any non-degenerate second-order stationary process
     are locally square integrable, making the unitary time-change operator
     <math|U<rsub|\<theta\>>> applicable to typical realizations. A
@@ -83,14 +83,9 @@
     Zero Counting Function <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-13>>
 
-    <with|par-left|2tab|3.1.1<space|2spc>The Expected Zero Counting Function
-    for Unitarily Time-Changed Stationary Processes
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-14>>
-
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-15><vspace|0.5fn>
+    <no-break><pageref|auto-14><vspace|0.5fn>
   </table-of-contents>
 
   <section|Gaussian Processes>
@@ -271,9 +266,7 @@
     </equation>
 
     Then almost every sample path lies in
-    <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>. However, for
-    non-degenerate processes with <math|\<sigma\><rsup|2>\<gtr\>0>, sample
-    paths are not globally square-integrable.
+    <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>.
   </theorem>
 
   <\proof>
@@ -283,118 +276,6 @@
     <\equation>
       <label|eq:Yab_def>Y<rsub|<around|[|a,b|]>>\<assign\><big|int><rsub|a><rsup|b>X<around|(|t|)><rsup|2>*d*t
     </equation>
-
-    <\enumerate>
-      <item>By Tonelli's theorem, since <math|X<around|(|t|)><rsup|2>\<geq\>0>,
-
-      <\equation>
-        <label|eq:tonelli_application>\<bbb-E\><around|[|Y<rsub|<around|[|a,b|]>>|]>=\<bbb-E\><around*|[|<big|int><rsub|a><rsup|b>X<around|(|t|)><rsup|2>*d*t|]>=<big|int><rsub|a><rsup|b>\<bbb-E\><around|[|X<around|(|t|)><rsup|2>|]>*d*t
-      </equation>
-
-      <item>By stationarity of <math|X>, <math|\<bbb-E\><around|[|X<around|(|t|)><rsup|2>|]>=\<sigma\><rsup|2>>
-      for all <math|t\<in\>\<bbb-R\>>. Therefore
-
-      <\equation>
-        <label|eq:expectation_Yab>\<bbb-E\><around|[|Y<rsub|<around|[|a,b|]>>|]>=<big|int><rsub|a><rsup|b>\<sigma\><rsup|2>*d*t=\<sigma\><rsup|2>*<around|(|b-a|)>
-      </equation>
-
-      <item>Since <math|b-a\<less\>\<infty\>> and
-      <math|\<sigma\><rsup|2>\<less\>\<infty\>> by assumption
-      <eqref|eq:finite_variance>,
-
-      <\equation>
-        <label|eq:Yab_finite_expectation>\<bbb-E\><around|[|Y<rsub|<around|[|a,b|]>>|]>\<less\>\<infty\>
-      </equation>
-
-      <item>By Markov's inequality, for any <math|M\<gtr\>0>,
-
-      <\equation>
-        <label|eq:markov_inequality>\<bbb-P\>*<around|(|Y<rsub|<around|[|a,b|]>>\<gtr\>M|)>\<leq\><frac|\<bbb-E\><around|[|Y<rsub|<around|[|a,b|]>>|]>|M>=<frac|\<sigma\><rsup|2>*<around|(|b-a|)>|M>
-      </equation>
-
-      <item>Taking <math|M\<to\>\<infty\>> in <eqref|eq:markov_inequality>,
-
-      <\equation>
-        <label|eq:Yab_finite_probability>\<bbb-P\>*<around|(|Y<rsub|<around|[|a,b|]>>\<less\>\<infty\>|)>=1
-      </equation>
-
-      <item>Now let <math|K\<subset\>\<bbb-R\>> be an arbitrary compact set.
-      Since <math|K> is compact in <math|\<bbb-R\>>, it is closed and
-      bounded. Therefore there exists <math|N\<gtr\>0> such that
-
-      <\equation>
-        <label|eq:compact_bounded>K\<subseteq\><around|[|-N,N|]>
-      </equation>
-
-      <item>By <eqref|eq:Yab_finite_probability> applied to
-      <math|<around|[|a,b|]>=<around|[|-N,N|]>>,
-
-      <\equation>
-        <label|eq:interval_N_finite>\<bbb-P\>*<around*|(|<big|int><rsub|-N><rsup|N>X<around|(|t|)><rsup|2>*d*t\<less\>\<infty\>|)>=1
-      </equation>
-
-      <item>Since <math|K\<subseteq\><around|[|-N,N|]>> by
-      <eqref|eq:compact_bounded>,
-
-      <\equation>
-        <label|eq:K_integral_bound><big|int><rsub|K>X<around|(|t|)><rsup|2>*d*t\<leq\><big|int><rsub|-N><rsup|N>X<around|(|t|)><rsup|2>*d*t
-      </equation>
-
-      <item>Combining <eqref|eq:interval_N_finite> and
-      <eqref|eq:K_integral_bound>,
-
-      <\equation>
-        <label|eq:K_finite>\<bbb-P\>*<around*|(|<big|int><rsub|K>X<around|(|t|)><rsup|2>*d*t\<less\>\<infty\>|)>=1
-      </equation>
-
-      <item>Since <math|K> was arbitrary, <eqref|eq:K_finite> holds for every
-      compact set <math|K\<subset\>\<bbb-R\>>. Therefore, almost every sample
-      path <math|t\<mapsto\>X<around|(|t,\<omega\>|)>> satisfies
-
-      <\equation>
-        <label|eq:sample_path_L2loc><big|int><rsub|K><around|\||X<around|(|t,\<omega\>|)>|\|><rsup|2>*d*t\<less\>\<infty\><space|1em>\<forall\><text|compact
-        >K\<subset\>\<bbb-R\>
-      </equation>
-
-      which means almost every sample path lies in
-      <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>.
-
-      <item>For the global divergence statement, assume
-      <math|\<sigma\><rsup|2>\<gtr\>0>. For each <math|n\<in\>\<bbb-N\>>, by
-      <eqref|eq:expectation_Yab>,
-
-      <\equation>
-        <label|eq:expectation_growth>\<bbb-E\><around*|[|<big|int><rsub|-n><rsup|n>X<around|(|t|)><rsup|2>*d*t|]>=2*n*\<sigma\><rsup|2>
-      </equation>
-
-      <item>As <math|n\<to\>\<infty\>>, the right side of
-      <eqref|eq:expectation_growth> diverges:
-
-      <\equation>
-        <label|eq:expectation_divergence>lim<rsub|n\<to\>\<infty\>>
-        \<bbb-E\><around*|[|<big|int><rsub|-n><rsup|n>X<around|(|t|)><rsup|2>*d*t|]>=lim<rsub|n\<to\>\<infty\>>
-        2*n*\<sigma\><rsup|2>=\<infty\>
-      </equation>
-
-      <item>By monotone convergence theorem, since
-      <math|<big|int><rsub|-n><rsup|n>X<around|(|t|)><rsup|2>*d*t> increases
-      monotonically with <math|n>,
-
-      <\equation>
-        <label|eq:MCT_application>\<bbb-E\><around*|[|lim<rsub|n\<to\>\<infty\>>
-        <big|int><rsub|-n><rsup|n>X<around|(|t|)><rsup|2>*d*t|]>=lim<rsub|n\<to\>\<infty\>>
-        \<bbb-E\><around*|[|<big|int><rsub|-n><rsup|n>X<around|(|t|)><rsup|2>*d*t|]>=\<infty\>
-      </equation>
-
-      <item>Therefore
-
-      <\equation>
-        <label|eq:global_divergence>\<bbb-P\>*<around*|(|<big|int><rsub|-\<infty\>><rsup|\<infty\>>X<around|(|t|)><rsup|2>*d*t=\<infty\>|)>=1
-      </equation>
-
-      <item>Thus sample paths are not in <math|L<rsup|2><around|(|\<bbb-R\>|)>>,
-      only in <math|L<rsup|2><rsub|loc><around|(|\<bbb-R\>|)>>.
-    </enumerate>
   </proof>
 
   \;
@@ -997,10 +878,8 @@
   <subsubsection|Time-Varying Filter Representations>
 
   <\theorem>
-    <label|thm:inverse_filter><with|font-series|bold|[Forward and Inverse
-    Time-Dependent Convolution Representations for Unitary Time
-    Transformations]> Let <math|\<theta\>:\<bbb-R\>\<to\>\<bbb-R\>> be
-    absolutely continuous, strictly increasing, and bijective with
+    <label|thm:inverse_filter>Let <math|\<theta\>:\<bbb-R\>\<to\>\<bbb-R\>>
+    be absolutely continuous, strictly increasing, and bijective with
     <math|\<theta\><rprime|'><around|(|t|)>\<gtr\>0> almost everywhere. Let
     <math|X<around|(|u|)>> be a stationary process, and define the
     oscillatory process obtained by the forward unitary time transformation
@@ -1013,7 +892,7 @@
     where the (forward) impulse response function is given by
 
     <\equation>
-      h<around*|(|t,u|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*\<delta\>*<around|(|u-\<theta\><around|(|t|)>|)>
+      h<around|(|t,u|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*\<delta\>*<around|(|u-\<theta\><around|(|t|)>|)>
     </equation>
 
     then likewise the transformation can be reversed by expression the
@@ -1025,17 +904,134 @@
 
     where the inverse impulse response function is
 
-    \;
-
     <\equation>
       <label|eq:inverse_kernel>g<around|(|u,t|)>=<frac|\<delta\>*<around|(|t-\<theta\><rsup|-1><around|(|u|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|u|)>|)>>>
     </equation>
-
-    \;
   </theorem>
 
   <\proof>
-    TODO: insert proof here
+    <\enumerate>
+      <item>Recall the forward unitary transformation from Theorem
+      <reference|thm:local_unitarity>:
+
+      <\equation>
+        <label|eq:forward_unitary_recall>Z<around|(|t|)>=<around|(|U<rsub|\<theta\>>*X|)><around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*X<around|(|\<theta\><around|(|t|)>|)>
+      </equation>
+
+      <item>To express this as a convolution integral, note that the Dirac
+      delta function satisfies the sifting property: for any continuous
+      function <math|f:\<bbb-R\>\<to\>\<bbb-R\>>,
+
+      <\equation>
+        <label|eq:sifting_property><big|int><rsub|\<bbb-R\>>f<around|(|u|)>*\<delta\>*<around|(|u-a|)>*d*u=f<around|(|a|)>
+      </equation>
+
+      for any <math|a\<in\>\<bbb-R\>>.
+
+      <item>Substituting <math|f<around|(|u|)>=X<around|(|u|)>> and
+      <math|a=\<theta\><around|(|t|)>>, which is well-defined since
+      <math|\<theta\>> is bijective and continuous,
+
+      <\equation>
+        <label|eq:X_sifting>X<around|(|\<theta\><around|(|t|)>|)>=<big|int><rsub|\<bbb-R\>>X<around|(|u|)>*\<delta\>*<around|(|u-\<theta\><around|(|t|)>|)>*d*u
+      </equation>
+
+      <item>Multiplying both sides by <math|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>>
+      and substituting into <eqref|eq:forward_unitary_recall>,
+
+      <\equation>
+        <label|eq:Z_sifting>Z<around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<big|int><rsub|\<bbb-R\>>X<around|(|u|)>*\<delta\>*<around|(|u-\<theta\><around|(|t|)>|)>*d*u=<big|int><rsub|\<bbb-R\>><around*|[|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*\<delta\>*<around|(|u-\<theta\><around|(|t|)>|)>|]>*X<around|(|u|)>*d*u
+      </equation>
+
+      <item>Thus, the forward impulse response function is
+
+      <\equation>
+        <label|eq:h_explicit>h<around|(|t,u|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*\<delta\>*<around|(|u-\<theta\><around|(|t|)>|)>
+      </equation>
+
+      establishing <eqref|eq:Z_transformation>.
+
+      <item>For the inverse transformation, recall from Theorem
+      <reference|thm:local_unitarity> that
+
+      <\equation>
+        <label|eq:inverse_unitary_recall>X<around|(|u|)>=<around|(|U<rsub|\<theta\>><rsup|-1>*Z|)><around|(|u|)>=<frac|Z<around|(|\<theta\><rsup|-1><around|(|u|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|u|)>|)>>>
+      </equation>
+
+      <item>Let <math|s=\<theta\><rsup|-1><around|(|u|)>>, so
+      <math|u=\<theta\><around|(|s|)>> and
+      <math|Z<around|(|\<theta\><rsup|-1><around|(|u|)>|)>=Z<around|(|s|)>>.
+      The sifting property applied to <math|Z<around|(|t|)>> with point
+      <math|\<theta\><rsup|-1><around|(|u|)>> gives
+
+      <\equation>
+        <label|eq:Z_sifting_inverse>Z<around|(|\<theta\><rsup|-1><around|(|u|)>|)>=<big|int><rsub|\<bbb-R\>>Z<around|(|t|)>*\<delta\>*<around|(|t-\<theta\><rsup|-1><around|(|u|)>|)>*d*t
+      </equation>
+
+      <item>Substituting into <eqref|eq:inverse_unitary_recall>,
+
+      <\equation>
+        <label|eq:X_sifting_inverse>X<around|(|u|)>=<frac|1|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|u|)>|)>>>*<big|int><rsub|\<bbb-R\>>Z<around|(|t|)>*\<delta\>*<around|(|t-\<theta\><rsup|-1><around|(|u|)>|)>*d*t=<big|int><rsub|\<bbb-R\>><around*|[|<frac|\<delta\>*<around|(|t-\<theta\><rsup|-1><around|(|u|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|u|)>|)>>>|]>*Z<around|(|t|)>*d*t
+      </equation>
+
+      <item>Thus, the inverse impulse response function is
+
+      <\equation>
+        <label|eq:g_explicit>g<around|(|u,t|)>=<frac|\<delta\>*<around|(|t-\<theta\><rsup|-1><around|(|u|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|u|)>|)>>>
+      </equation>
+
+      establishing <eqref|eq:inverse_transformation> and
+      <eqref|eq:inverse_kernel>.
+
+      <item>To confirm invertibility, substitute <eqref|eq:Z_sifting> into
+      <eqref|eq:X_sifting_inverse>. The integral becomes
+
+      <\equation>
+        <label|eq:composition_forward>X<around|(|u|)>=<big|int><rsub|\<bbb-R\>>g<around|(|u,t|)><around*|[|<big|int><rsub|\<bbb-R\>>h<around|(|t,v|)>*X<around|(|v|)>*d*v|]>*d*t
+      </equation>
+
+      <item>By Fubini's theorem, since all measures are positive and the
+      delta functions ensure finite support,
+
+      <\equation>
+        <label|eq:fubini_composition>X<around|(|u|)>=<big|int><rsub|\<bbb-R\>><big|int><rsub|\<bbb-R\>>g<around|(|u,t|)>*h<around|(|t,v|)>*X<around|(|v|)>*d*v*<space|0.17em>d*t
+      </equation>
+
+      <item>Integrating the kernel
+
+      <\equation>
+        g<around|(|u,t|)>*h<around|(|t,v|)>=<frac|\<delta\>*<around|(|t-\<theta\><rsup|-1><around|(|u|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|u|)>|)>>>\<cdot\><sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*\<delta\>*<around|(|v-\<theta\><around|(|t|)>|)>
+      </equation>
+
+      over <math|t> results in <math|t=\<theta\><rsup|-1><around|(|u|)>>, so
+      <math|>
+
+      <\equation>
+        <sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|u|)>|)>>
+      </equation>
+
+      \ and\ 
+
+      <\equation>
+        \<delta\>*<around|(|v-\<theta\><around|(|t|)>|)>=\<delta\>*<around|(|v-u|)>
+      </equation>
+
+      yielding
+
+      <\equation>
+        <label|eq:kernel_simplification><big|int><rsub|\<bbb-R\>>g<around|(|u,t|)>*h<around|(|t,v|)>*d*t=\<delta\>*<around|(|v-u|)>
+      </equation>
+
+      <item>Thus, <eqref|eq:fubini_composition> simplifies to <math|>
+
+      <\equation>
+        <big|int><rsub|\<bbb-R\>>\<delta\>*<around|(|v-u|)>*X<around|(|v|)>*d*v=X<around|(|u|)>
+      </equation>
+
+      confirming the transformations are inverses.
+    </enumerate>
+
+    \;
   </proof>
 
   \;
@@ -1043,8 +1039,7 @@
   \;
 
   <\corollary>
-    <label|cor:evol_spec><with|font-series|bold|[Evolutionary spectrum of
-    unitarily time-changed stationary process]> The evolutionary spectrum is
+    <label|cor:evol_spec>The evolutionary spectrum is
 
     <\equation>
       <label|eq:evolutionary_spectrum>d*F<rsub|t><around|(|\<lambda\>|)>=<wide|\<theta\>|\<dot\>><around|(|t|)>*d*F<around|(|\<lambda\>|)>
@@ -1090,8 +1085,7 @@
   <subsection|Covariance operator conjugation>
 
   <\proposition>
-    <label|prop:conjugation><with|font-series|bold|[Operator conjugation]>
-    Let
+    <label|prop:conjugation> Let
 
     <\equation>
       <label|eq:T_K_def><around|(|T<rsub|K>*f|)><around|(|t|)>\<assign\><big|int><rsub|\<bbb-R\>>K<around|(|<around|\||t-s|\|>|)>*f<around|(|s|)>*d*s
@@ -1190,8 +1184,7 @@
   <section|Zero Localization><label|sec:HP>
 
   <\definition>
-    <label|def:zeromeasure><with|font-series|bold|[Zero localization
-    measure]> Let <math|Z> be real-valued with
+    <label|def:zeromeasure>Let <math|Z> be real-valued with
     <math|Z\<in\>C<rsup|1><around|(|\<bbb-R\>|)>> having only simple zeros
 
     <\equation>
@@ -1206,8 +1199,7 @@
   </definition>
 
   <\theorem>
-    <label|thm:atomicity><with|font-series|bold|[Atomicity and local
-    finiteness of zeros and delta decomposition]> Under the assumptions of
+    <label|thm:atomicity><with|font-series|bold|> Under the assumptions of
     Definition <reference|def:zeromeasure>, zeros are locally finite and one
     has
 
@@ -1223,6 +1215,8 @@
   </theorem>
 
   <\proof>
+    \;
+
     <\enumerate>
       <item>For any smooth test function <math|\<phi\>> with compact support,
       apply the standard change of variables formula for the delta function.
@@ -1295,8 +1289,8 @@
   </proof>
 
   <\definition>
-    <label|def:Hmu><with|font-series|bold|[Hilbert space on the zero set]>
-    Let <math|\<cal-H\>=L<rsup|2><around|(|\<mu\>|)>> with inner product
+    <label|def:Hmu>Let <math|\<cal-H\>=L<rsup|2><around|(|\<mu\>|)>> be the
+    Hilbert space with inner product
 
     <\equation>
       <label|eq:inner_product_mu><around|\<langle\>|f,g|\<rangle\>>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|t|)><wide|g<around|(|t|)>|\<bar\>>d*\<mu\><around|(|t|)>
@@ -1508,122 +1502,6 @@
 
   <subsection|The Kac-Rice Formula For The Expected Zero Counting Function>
 
-  <\theorem>
-    <label|thm:kac_rice><with|font-series|bold|[Kac-Rice Formula for Zero
-    Crossings]> Let <math|Z<around|(|t|)>> be a centered Gaussian process on
-    <math|<around|[|a,b|]>> with covariance
-    <math|K<around|(|s,t|)>=\<bbb-E\>*<around|[|Z<around|(|s|)>*Z<around|(|t|)>|]>>
-    then the expected number of zeros in <math|<around|[|a,b|]>> is
-
-    <\equation>
-      <label|eq:kac_rice>\<bbb-E\><around|[|N<rsub|<around|[|a,b|]>>|]>=<big|int><rsub|a><rsup|b><sqrt|<frac|2|\<pi\>>>*<frac|<sqrt|K<around|(|t,t|)>*K<rsub|<wide|Z|\<dot\>>><around|(|t,t|)>-K<rsub|Z,<wide|Z|\<dot\>>><around|(|t,t|)><rsup|2>>|K<around|(|t,t|)>>*d*t
-    </equation>
-
-    where
-
-    <\equation>
-      <label|eq:K_tt>K<around|(|t,t|)>=\<bbb-E\><around|[|Z<around|(|t|)><rsup|2>|]>
-    </equation>
-
-    <\equation>
-      <label|eq:K_dotZ>K<rsub|<wide|Z|\<dot\>>><around|(|t,t|)>=-\<partial\><rsup|2><rsub|s>*\<partial\><rsub|t>*K<around|(|s,t|)>\|<rsub|s=t>
-    </equation>
-
-    and
-
-    <\equation>
-      <label|eq:K_Z_dotZ>K<rsub|Z,<wide|Z|\<dot\>>><around|(|t,t|)>=\<partial\><rsub|s>*K<around|(|s,t|)>\|<rsub|s=t>
-    </equation>
-  </theorem>
-
-  <\proof>
-    <\enumerate>
-      <item>The expected number of zeros is given by the Kac-Rice formula for
-      the level crossing density at level zero.
-
-      <item>For a Gaussian process <math|Z<around|(|t|)>>, the joint
-      distribution of <math|<around|(|Z<around|(|t|)>,<wide|Z|\<dot\>><around|(|t|)>|)>>
-      is bivariate normal with covariance matrix
-
-      <\equation>
-        <label|eq:covariance_matrix>\<Sigma\><around|(|t|)>=<matrix|<tformat|<table|<row|<cell|K<around|(|t,t|)>>|<cell|K<rsub|Z,<wide|Z|\<dot\>>><around|(|t,t|)>>>|<row|<cell|K<rsub|Z,<wide|Z|\<dot\>>><around|(|t,t|)>>|<cell|K<rsub|<wide|Z|\<dot\>>><around|(|t,t|)>>>>>>
-      </equation>
-
-      <item>The determinant of <math|\<Sigma\><around|(|t|)>> is
-
-      <\equation>
-        <label|eq:determinant>det \<Sigma\><around|(|t|)>=K<around|(|t,t|)>*K<rsub|<wide|Z|\<dot\>>><around|(|t,t|)>-K<rsub|Z,<wide|Z|\<dot\>>><around|(|t,t|)><rsup|2>
-      </equation>
-
-      <item>The Kac-Rice formula states that the expected number of zeros in
-      <math|<around|[|a,b|]>> is
-
-      <\equation>
-        <label|eq:kac_rice_general>\<bbb-E\><around|[|N<rsub|<around|[|a,b|]>>|]>=<big|int><rsub|a><rsup|b>p<rsub|Z<around|(|t|)>,<wide|Z|\<dot\>><around|(|t|)>><around|(|0,v|)><around|\||v|\|>*d*v*<space|0.17em>d*t
-      </equation>
-
-      where <math|p<rsub|Z<around|(|t|)>,<wide|Z|\<dot\>><around|(|t|)>>> is
-      the joint density of <math|<around|(|Z<around|(|t|)>,<wide|Z|\<dot\>><around|(|t|)>|)>>.
-
-      <item>For a centered bivariate normal distribution with covariance
-      <math|\<Sigma\><around|(|t|)>>,
-
-      <\equation>
-        <label|eq:joint_density>p<rsub|Z<around|(|t|)>,<wide|Z|\<dot\>><around|(|t|)>><around|(|z,v|)>=<frac|1|2*\<pi\>*<sqrt|det
-        \<Sigma\><around|(|t|)>>>*exp <around*|(|-<frac|1|2><matrix|<tformat|<table|<row|<cell|z>>|<row|<cell|v>>>>><rsup|T>\<Sigma\><around|(|t|)><rsup|-1><matrix|<tformat|<table|<row|<cell|z>>|<row|<cell|v>>>>>|)>
-      </equation>
-
-      <item>At <math|z=0>,
-
-      <\equation>
-        <label|eq:density_at_zero>p<rsub|Z<around|(|t|)>,<wide|Z|\<dot\>><around|(|t|)>><around|(|0,v|)>=<frac|1|2*\<pi\>*<sqrt|det
-        \<Sigma\><around|(|t|)>>>*exp <around*|(|-<frac|v<rsup|2>*K<around|(|t,t|)>|2*det
-        \<Sigma\><around|(|t|)>>|)>
-      </equation>
-
-      <item>Integrating <eqref|eq:density_at_zero> against
-      <math|<around|\||v|\|>>,
-
-      <\equation>
-        <label|eq:integrate_v><big|int><rsub|-\<infty\>><rsup|\<infty\>>p<rsub|Z<around|(|t|)>,<wide|Z|\<dot\>><around|(|t|)>><around|(|0,v|)><around|\||v|\|>*d*v=<frac|1|2*\<pi\>*<sqrt|det
-        \<Sigma\><around|(|t|)>>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||v|\|>*exp
-        <around*|(|-<frac|v<rsup|2>*K<around|(|t,t|)>|2*det
-        \<Sigma\><around|(|t|)>>|)>*d*v
-      </equation>
-
-      <item>Using symmetry, <math|<big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||v|\|>*e<rsup|-a*v<rsup|2>>*d*v=2*<big|int><rsub|0><rsup|\<infty\>>v*e<rsup|-a*v<rsup|2>>*d*v=<frac|1|a>*<sqrt|<frac|\<pi\>|a>>>:
-
-      <\equation>
-        <label|eq:gaussian_integral><big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||v|\|>*exp
-        <around*|(|-<frac|v<rsup|2>*K<around|(|t,t|)>|2*det
-        \<Sigma\><around|(|t|)>>|)>*d*v=<sqrt|<frac|2*\<pi\>*det
-        \<Sigma\><around|(|t|)>|K<around|(|t,t|)>>>
-      </equation>
-
-      <item>Substituting <eqref|eq:gaussian_integral> into
-      <eqref|eq:integrate_v>,
-
-      <\equation>
-        <label|eq:density_integral><frac|1|2*\<pi\>*<sqrt|det
-        \<Sigma\><around|(|t|)>>>\<cdot\><sqrt|<frac|2*\<pi\>*det
-        \<Sigma\><around|(|t|)>|K<around|(|t,t|)>>>=<sqrt|<frac|2|\<pi\>>>*<frac|<sqrt|det
-        \<Sigma\><around|(|t|)>>|K<around|(|t,t|)>>
-      </equation>
-
-      <item>Using <eqref|eq:determinant>,
-
-      <\equation>
-        <label|eq:final_density><sqrt|<frac|2|\<pi\>>>*<frac|<sqrt|K<around|(|t,t|)>*K<rsub|<wide|Z|\<dot\>>><around|(|t,t|)>-K<rsub|Z,<wide|Z|\<dot\>>><around|(|t,t|)><rsup|2>>|K<around|(|t,t|)>>
-      </equation>
-
-      <item>Integrating <eqref|eq:final_density> over <math|<around|[|a,b|]>>
-      yields <eqref|eq:kac_rice>.
-    </enumerate>
-  </proof>
-
-  <subsubsection|The Expected Zero Counting Function for Unitarily
-  Time-Changed Stationary Processes>
-
   \;
 
   <\theorem>
@@ -1656,7 +1534,7 @@
     and the expected number of zeros in <math|<around|[|0,T|]>> is
 
     <\equation>
-      <label|eqexpectedzeros>\<bbb-E\><around|[|N<rsub|<around|[|0,T|]>>|]>=<frac|1|<sqrt|2*\<pi\>*K<around|(|0|)>>>*<sqrt|-<wide|K|\<ddot\>><around|(|0|)>>*<space|0.17em><around|[|\<theta\><around|(|T|)>-\<theta\><around|(|0|)>|]>
+      <label|eqexpectedzeros>\<bbb-E\><around|[|N<rsub|<around|[|0,T|]>>|]>=<sqrt|-2*\<pi\>*<frac|<wide|K|\<ddot\>><around|(|0|)>|K<around|(|0|)>>>*<around|[|\<theta\><around|(|T|)>-\<theta\><around|(|0|)>|]>
     </equation>
   </theorem>
 
@@ -1855,238 +1733,221 @@
 
 <\references>
   <\collection>
-    <associate|UTCcovar|<tuple|96|12>>
+    <associate|UTCcovar|<tuple|82|11>>
     <associate|asm:real|<tuple|1|2>>
     <associate|auto-1|<tuple|1|2>>
-    <associate|auto-10|<tuple|2.2.1|14>>
+    <associate|auto-10|<tuple|2.2.1|13>>
     <associate|auto-11|<tuple|2.3|15>>
-    <associate|auto-12|<tuple|3|16>>
-    <associate|auto-13|<tuple|3.1|20>>
-    <associate|auto-14|<tuple|3.1.1|22>>
-    <associate|auto-15|<tuple|9|24>>
+    <associate|auto-12|<tuple|3|17>>
+    <associate|auto-13|<tuple|3.1|21>>
+    <associate|auto-14|<tuple|9|23>>
     <associate|auto-2|<tuple|1.1|3>>
-    <associate|auto-3|<tuple|1.2|3>>
+    <associate|auto-3|<tuple|1.2|4>>
     <associate|auto-4|<tuple|1.2.1|4>>
-    <associate|auto-5|<tuple|1.3|6>>
-    <associate|auto-6|<tuple|1.3.1|10>>
-    <associate|auto-7|<tuple|2|10>>
-    <associate|auto-8|<tuple|2.1|10>>
-    <associate|auto-9|<tuple|2.2|12>>
-    <associate|bib-evolutionarySpectraAndNonStationaryProcesses|<tuple|3|24>>
-    <associate|bib-integralRepresentationsOfPositiveDefiniteFunctions|<tuple|2|24>>
-    <associate|bib-stationaryAndRelatedStochasticProcesses|<tuple|1|24>>
-    <associate|cor:evol_spec|<tuple|13|14>>
+    <associate|auto-5|<tuple|1.3|5>>
+    <associate|auto-6|<tuple|1.3.1|9>>
+    <associate|auto-7|<tuple|2|9>>
+    <associate|auto-8|<tuple|2.1|9>>
+    <associate|auto-9|<tuple|2.2|11>>
+    <associate|bib-evolutionarySpectraAndNonStationaryProcesses|<tuple|3|23>>
+    <associate|bib-integralRepresentationsOfPositiveDefiniteFunctions|<tuple|2|23>>
+    <associate|bib-stationaryAndRelatedStochasticProcesses|<tuple|1|23>>
+    <associate|cor:evol_spec|<tuple|13|15>>
     <associate|def:Hmu|<tuple|17|18>>
     <associate|def:L|<tuple|19|19>>
     <associate|def:L2loc|<tuple|4|4>>
-    <associate|def:cramer|<tuple|3|3>>
+    <associate|def:cramer|<tuple|3|4>>
     <associate|def:gaussian_process|<tuple|2|3>>
-    <associate|def:osc_proc|<tuple|7|6>>
-    <associate|def:zeromeasure|<tuple|15|16>>
+    <associate|def:osc_proc|<tuple|7|5>>
+    <associate|def:zeromeasure|<tuple|15|17>>
     <associate|eq:1|<tuple|1|2>>
     <associate|eq:2|<tuple|2|2>>
     <associate|eq:3|<tuple|3|2>>
-    <associate|eq:A_t_explicit|<tuple|103|13>>
-    <associate|eq:A_t_magnitude|<tuple|118|15>>
-    <associate|eq:A_t_magnitude_start|<tuple|116|14>>
-    <associate|eq:H_isomorphism|<tuple|149|18>>
-    <associate|eq:K_Z_dotZ|<tuple|174|20>>
-    <associate|eq:K_def|<tuple|121|15>>
-    <associate|eq:K_dotZ|<tuple|173|20>>
-    <associate|eq:K_finite|<tuple|31|5>>
-    <associate|eq:K_integral_bound|<tuple|30|5>>
-    <associate|eq:K_theta_def|<tuple|122|15>>
-    <associate|eq:K_theta_recognition|<tuple|132|16>>
-    <associate|eq:K_tt|<tuple|172|20>>
-    <associate|eq:L2_norm_mu|<tuple|151|18>>
-    <associate|eq:L2_norm_simple|<tuple|64|9>>
-    <associate|eq:L_action|<tuple|159|19>>
-    <associate|eq:L_basis|<tuple|167|20>>
-    <associate|eq:L_def|<tuple|158|19>>
-    <associate|eq:L_domain|<tuple|160|19>>
-    <associate|eq:Lf_g_inner|<tuple|162|19>>
-    <associate|eq:Lf_substitution|<tuple|163|19>>
-    <associate|eq:MCT_application|<tuple|35|5>>
-    <associate|eq:R_Z_factored|<tuple|107|13>>
-    <associate|eq:R_Z_final|<tuple|109|13>>
-    <associate|eq:R_Z_start|<tuple|105|13>>
-    <associate|eq:R_Z_substituted|<tuple|106|13>>
-    <associate|eq:T_K_application|<tuple|125|15>>
-    <associate|eq:T_K_def|<tuple|120|15>>
-    <associate|eq:U_inv_application|<tuple|126|15>>
-    <associate|eq:U_theta_def|<tuple|74|10>>
-    <associate|eq:U_theta_inverse|<tuple|75|10>>
-    <associate|eq:Utheta_norm_start|<tuple|77|10>>
-    <associate|eq:X_covariance|<tuple|108|13>>
-    <associate|eq:X_cramer|<tuple|97|12>>
-    <associate|eq:X_theta_t|<tuple|98|12>>
+    <associate|eq:A_t_explicit|<tuple|89|12>>
+    <associate|eq:A_t_magnitude|<tuple|120|15>>
+    <associate|eq:A_t_magnitude_start|<tuple|118|15>>
+    <associate|eq:H_isomorphism|<tuple|151|18>>
+    <associate|eq:K_def|<tuple|123|15>>
+    <associate|eq:K_theta_def|<tuple|124|15>>
+    <associate|eq:K_theta_recognition|<tuple|134|16>>
+    <associate|eq:L2_norm_mu|<tuple|153|18>>
+    <associate|eq:L2_norm_simple|<tuple|50|8>>
+    <associate|eq:L_action|<tuple|161|19>>
+    <associate|eq:L_basis|<tuple|169|20>>
+    <associate|eq:L_def|<tuple|160|19>>
+    <associate|eq:L_domain|<tuple|162|19>>
+    <associate|eq:Lf_g_inner|<tuple|164|20>>
+    <associate|eq:Lf_substitution|<tuple|165|20>>
+    <associate|eq:R_Z_factored|<tuple|93|12>>
+    <associate|eq:R_Z_final|<tuple|95|13>>
+    <associate|eq:R_Z_start|<tuple|91|12>>
+    <associate|eq:R_Z_substituted|<tuple|92|12>>
+    <associate|eq:T_K_application|<tuple|127|16>>
+    <associate|eq:T_K_def|<tuple|122|15>>
+    <associate|eq:U_inv_application|<tuple|128|16>>
+    <associate|eq:U_theta_def|<tuple|60|9>>
+    <associate|eq:U_theta_inverse|<tuple|61|9>>
+    <associate|eq:Utheta_norm_start|<tuple|63|9>>
+    <associate|eq:X_covariance|<tuple|94|12>>
+    <associate|eq:X_cramer|<tuple|83|11>>
+    <associate|eq:X_sifting|<tuple|102|13>>
+    <associate|eq:X_sifting_inverse|<tuple|107|14>>
+    <associate|eq:X_theta_t|<tuple|84|12>>
     <associate|eq:Yab_def|<tuple|22|4>>
-    <associate|eq:Yab_finite_expectation|<tuple|25|4>>
-    <associate|eq:Yab_finite_probability|<tuple|27|4>>
-    <associate|eq:Z_at_t0_expanded|<tuple|197|23>>
-    <associate|eq:Z_conjugate|<tuple|47|7>>
-    <associate|eq:Z_conjugate_substituted|<tuple|49|7>>
-    <associate|eq:Z_def|<tuple|93|12>>
-    <associate|eq:Z_def_det|<tuple|195|23>>
-    <associate|eq:Z_expanded|<tuple|99|13>>
-    <associate|eq:Z_integral|<tuple|100|13>>
-    <associate|eq:Z_oscillatory_form|<tuple|102|13>>
-    <associate|eq:Z_representation|<tuple|46|7>>
-    <associate|eq:Z_transformation|<tuple|110|14>>
-    <associate|eq:Z_well_defined|<tuple|68|9>>
-    <associate|eq:after_substitution|<tuple|80|11>>
-    <associate|eq:all_sample_paths|<tuple|200|24>>
-    <associate|eq:apply_forward_def|<tuple|83|11>>
-    <associate|eq:apply_inverse_def|<tuple|82|11>>
-    <associate|eq:apply_inverse_second|<tuple|88|11>>
-    <associate|eq:basis_expansion|<tuple|157|19>>
-    <associate|eq:basis_inner_product|<tuple|156|19>>
-    <associate|eq:basis_vectors|<tuple|150|18>>
-    <associate|eq:both_inverses|<tuple|92|12>>
-    <associate|eq:cancel_derivative|<tuple|144|17>>
-    <associate|eq:change_of_variables|<tuple|50|7>>
-    <associate|eq:change_var_differential|<tuple|79|11>>
-    <associate|eq:change_var_s|<tuple|128|15>>
-    <associate|eq:compact_bounded|<tuple|28|5>>
-    <associate|eq:composition_1|<tuple|81|11>>
-    <associate|eq:composition_2|<tuple|87|11>>
-    <associate|eq:conjugate_t|<tuple|164|19>>
-    <associate|eq:conjugation|<tuple|123|15>>
-    <associate|eq:conjugation_expand|<tuple|124|15>>
-    <associate|eq:covariance_Z|<tuple|96|12>>
-    <associate|eq:covariance_computation|<tuple|69|9>>
-    <associate|eq:covariance_final|<tuple|72|10>>
+    <associate|eq:Z_at_t0_expanded|<tuple|186|22>>
+    <associate|eq:Z_conjugate|<tuple|33|6>>
+    <associate|eq:Z_conjugate_substituted|<tuple|35|6>>
+    <associate|eq:Z_def|<tuple|79|11>>
+    <associate|eq:Z_def_det|<tuple|184|22>>
+    <associate|eq:Z_expanded|<tuple|85|12>>
+    <associate|eq:Z_integral|<tuple|86|12>>
+    <associate|eq:Z_oscillatory_form|<tuple|88|12>>
+    <associate|eq:Z_representation|<tuple|32|6>>
+    <associate|eq:Z_sifting|<tuple|103|13>>
+    <associate|eq:Z_sifting_inverse|<tuple|106|14>>
+    <associate|eq:Z_transformation|<tuple|96|13>>
+    <associate|eq:Z_well_defined|<tuple|54|8>>
+    <associate|eq:after_substitution|<tuple|66|10>>
+    <associate|eq:all_sample_paths|<tuple|189|23>>
+    <associate|eq:apply_forward_def|<tuple|69|10>>
+    <associate|eq:apply_inverse_def|<tuple|68|10>>
+    <associate|eq:apply_inverse_second|<tuple|74|10>>
+    <associate|eq:basis_expansion|<tuple|159|19>>
+    <associate|eq:basis_inner_product|<tuple|158|19>>
+    <associate|eq:basis_vectors|<tuple|152|18>>
+    <associate|eq:both_inverses|<tuple|78|11>>
+    <associate|eq:cancel_derivative|<tuple|146|18>>
+    <associate|eq:change_of_variables|<tuple|36|6>>
+    <associate|eq:change_var_differential|<tuple|65|10>>
+    <associate|eq:change_var_s|<tuple|130|16>>
+    <associate|eq:composition_1|<tuple|67|10>>
+    <associate|eq:composition_2|<tuple|73|10>>
+    <associate|eq:composition_forward|<tuple|109|14>>
+    <associate|eq:conjugate_t|<tuple|166|20>>
+    <associate|eq:conjugation|<tuple|125|15>>
+    <associate|eq:conjugation_expand|<tuple|126|15>>
+    <associate|eq:covariance_Z|<tuple|82|11>>
+    <associate|eq:covariance_computation|<tuple|55|8>>
+    <associate|eq:covariance_final|<tuple|58|9>>
     <associate|eq:covariance_kernel|<tuple|17|3>>
-    <associate|eq:covariance_matrix|<tuple|175|21>>
-    <associate|eq:cramer_representation|<tuple|18|3>>
-    <associate|eq:delta_Z_decomp|<tuple|142|17>>
-    <associate|eq:delta_change_var|<tuple|138|17>>
-    <associate|eq:delta_decomposition|<tuple|136|16>>
-    <associate|eq:delta_equality|<tuple|141|17>>
-    <associate|eq:density_at_zero|<tuple|179|21>>
-    <associate|eq:density_integral|<tuple|182|21>>
-    <associate|eq:density_simple|<tuple|66|9>>
-    <associate|eq:determinant|<tuple|176|21>>
-    <associate|eq:deterministic_zero_statement|<tuple|196|23>>
-    <associate|eq:eigenvalue_equation|<tuple|169|20>>
-    <associate|eq:evol_spec_def|<tuple|115|14>>
-    <associate|eq:evol_spec_final|<tuple|119|15>>
-    <associate|eq:evol_spectrum_vanish|<tuple|202|24>>
-    <associate|eq:evolutionary_spectrum|<tuple|114|14>>
-    <associate|eq:exp_magnitude|<tuple|117|14>>
-    <associate|eq:expand_square|<tuple|78|10>>
-    <associate|eq:expectation_Yab|<tuple|24|4>>
-    <associate|eq:expectation_divergence|<tuple|34|5>>
-    <associate|eq:expectation_growth|<tuple|33|5>>
-    <associate|eq:f_Lg_inner|<tuple|165|19>>
-    <associate|eq:factor_inside|<tuple|131|16>>
-    <associate|eq:final_conjugation|<tuple|133|16>>
-    <associate|eq:final_density|<tuple|183|21>>
+    <associate|eq:cramer_representation|<tuple|18|4>>
+    <associate|eq:delta_Z_decomp|<tuple|144|17>>
+    <associate|eq:delta_change_var|<tuple|140|17>>
+    <associate|eq:delta_decomposition|<tuple|138|17>>
+    <associate|eq:delta_equality|<tuple|143|17>>
+    <associate|eq:density_simple|<tuple|52|8>>
+    <associate|eq:deterministic_zero_statement|<tuple|185|22>>
+    <associate|eq:eigenvalue_equation|<tuple|171|20>>
+    <associate|eq:evol_spec_def|<tuple|117|15>>
+    <associate|eq:evol_spec_final|<tuple|121|15>>
+    <associate|eq:evol_spectrum_vanish|<tuple|191|23>>
+    <associate|eq:evolutionary_spectrum|<tuple|116|15>>
+    <associate|eq:exp_magnitude|<tuple|119|15>>
+    <associate|eq:expand_square|<tuple|64|10>>
+    <associate|eq:f_Lg_inner|<tuple|167|20>>
+    <associate|eq:factor_inside|<tuple|133|16>>
+    <associate|eq:final_conjugation|<tuple|135|16>>
     <associate|eq:finite_variance|<tuple|21|4>>
-    <associate|eq:fubini_stochastic|<tuple|70|9>>
-    <associate|eq:full_expression|<tuple|130|16>>
-    <associate|eq:gain_L2|<tuple|37|6>>
-    <associate|eq:gain_condition|<tuple|55|8>>
-    <associate|eq:gain_equality|<tuple|52|7>>
-    <associate|eq:gain_function_Z|<tuple|95|12>>
-    <associate|eq:gain_symmetry|<tuple|43|6>>
-    <associate|eq:gaussian_integral|<tuple|181|21>>
-    <associate|eq:global_divergence|<tuple|36|5>>
-    <associate|eq:inner_product_mu|<tuple|147|18>>
-    <associate|eq:integral_simple|<tuple|59|8>>
-    <associate|eq:integral_substitution|<tuple|127|15>>
-    <associate|eq:integrand_equality|<tuple|51|7>>
-    <associate|eq:integrate_v|<tuple|180|21>>
-    <associate|eq:interchange_sum_integral|<tuple|140|17>>
-    <associate|eq:interval_N_finite|<tuple|29|5>>
-    <associate|eq:inverse_kernel|<tuple|113|14>>
-    <associate|eq:inverse_transformation|<tuple|112|14>>
-    <associate|eq:isometry_Psi|<tuple|155|18>>
-    <associate|eq:isometry_established|<tuple|65|9>>
-    <associate|eq:isometry_simple|<tuple|63|9>>
-    <associate|eq:isomorphism_map|<tuple|154|18>>
-    <associate|eq:joint_density|<tuple|178|21>>
-    <associate|eq:kac_rice|<tuple|171|20>>
-    <associate|eq:kac_rice_general|<tuple|177|21>>
-    <associate|eq:left_inverse|<tuple|86|11>>
-    <associate|eq:linearity_expectation|<tuple|61|8>>
-    <associate|eq:local_isometry|<tuple|76|10>>
-    <associate|eq:markov_inequality|<tuple|26|4>>
-    <associate|eq:mu_atomic|<tuple|137|16>>
-    <associate|eq:mu_atomic_assumption|<tuple|148|18>>
-    <associate|eq:mu_atomic_final|<tuple|146|17>>
-    <associate|eq:mu_def|<tuple|135|16>>
-    <associate|eq:mu_substitution|<tuple|143|17>>
-    <associate|eq:mu_sum|<tuple|145|17>>
-    <associate|eq:norm_equivalence|<tuple|153|18>>
-    <associate|eq:norm_sum|<tuple|152|18>>
-    <associate|eq:orthogonality_application|<tuple|62|9>>
-    <associate|eq:orthogonality_integral|<tuple|71|10>>
-    <associate|eq:orthogonality_phi|<tuple|40|6>>
-    <associate|eq:osc_func_conjugate|<tuple|54|7>>
-    <associate|eq:osc_func_def|<tuple|42|6>>
-    <associate|eq:osc_func_neg|<tuple|53|7>>
-    <associate|eq:osc_symmetry|<tuple|44|6>>
-    <associate|eq:oscillatory_covariance|<tuple|41|6>>
-    <associate|eq:oscillatory_function|<tuple|38|6>>
-    <associate|eq:oscillatory_function_Z|<tuple|94|12>>
-    <associate|eq:oscillatory_process|<tuple|39|6>>
-    <associate|eq:oscillatory_well_defined|<tuple|57|8>>
-    <associate|eq:phi_symmetry|<tuple|48|7>>
-    <associate|eq:real_valued_condition|<tuple|45|6>>
-    <associate|eq:right_inverse|<tuple|91|12>>
-    <associate|eq:sample_path_L2loc|<tuple|32|5>>
-    <associate|eq:second_moment_simple|<tuple|60|8>>
-    <associate|eq:self_adjoint|<tuple|166|20>>
-    <associate|eq:sift_basis|<tuple|168|20>>
-    <associate|eq:simple_function|<tuple|58|8>>
-    <associate|eq:simple_zeros|<tuple|134|16>>
-    <associate|eq:simplify_composition|<tuple|85|11>>
-    <associate|eq:simplify_integral|<tuple|129|16>>
-    <associate|eq:simplify_second|<tuple|90|12>>
-    <associate|eq:spectrum|<tuple|161|19>>
-    <associate|eq:spectrum_result|<tuple|170|20>>
-    <associate|eq:sqrt_zero_eval|<tuple|198|23>>
-    <associate|eq:stationary_covariance|<tuple|19|3>>
-    <associate|eq:sum_form|<tuple|139|17>>
-    <associate|eq:theta_composition|<tuple|89|11>>
-    <associate|eq:theta_inverse_composition|<tuple|84|11>>
-    <associate|eq:time_dependent_spectrum|<tuple|56|8>>
-    <associate|eq:tonelli_application|<tuple|23|4>>
-    <associate|eq:variance_zero_consequence|<tuple|201|24>>
-    <associate|eq:varphi_L2|<tuple|67|9>>
-    <associate|eq:varphi_as_gain|<tuple|104|13>>
-    <associate|eq:varphi_t_explicit|<tuple|101|13>>
-    <associate|eq:zero_product|<tuple|199|23>>
-    <associate|eqKZdiag|<tuple|191|22>>
-    <associate|eqZcovariance|<tuple|186|22>>
-    <associate|eqZprocess|<tuple|185|22>>
-    <associate|eqexpectedzeros|<tuple|187|22>>
-    <associate|eqfinal|<tuple|194|23>>
-    <associate|eqfirstpartial|<tuple|189|22>>
-    <associate|eqkacrice|<tuple|188|22>>
-    <associate|eqlimit|<tuple|190|22>>
-    <associate|eqsimplify|<tuple|193|23>>
-    <associate|eqstationarycov|<tuple|184|22>>
-    <associate|eqsubstitute|<tuple|192|22>>
-    <associate|pd|<tuple|73|10>>
+    <associate|eq:forward_unitary_recall|<tuple|100|13>>
+    <associate|eq:fubini_composition|<tuple|110|14>>
+    <associate|eq:fubini_stochastic|<tuple|56|9>>
+    <associate|eq:full_expression|<tuple|132|16>>
+    <associate|eq:g_explicit|<tuple|108|14>>
+    <associate|eq:gain_L2|<tuple|23|5>>
+    <associate|eq:gain_condition|<tuple|41|7>>
+    <associate|eq:gain_equality|<tuple|38|6>>
+    <associate|eq:gain_function_Z|<tuple|81|11>>
+    <associate|eq:gain_symmetry|<tuple|29|5>>
+    <associate|eq:h_explicit|<tuple|104|14>>
+    <associate|eq:inner_product_mu|<tuple|149|18>>
+    <associate|eq:integral_simple|<tuple|45|7>>
+    <associate|eq:integral_substitution|<tuple|129|16>>
+    <associate|eq:integrand_equality|<tuple|37|6>>
+    <associate|eq:interchange_sum_integral|<tuple|142|17>>
+    <associate|eq:inverse_kernel|<tuple|99|13>>
+    <associate|eq:inverse_transformation|<tuple|98|13>>
+    <associate|eq:inverse_unitary_recall|<tuple|105|14>>
+    <associate|eq:isometry_Psi|<tuple|157|19>>
+    <associate|eq:isometry_established|<tuple|51|8>>
+    <associate|eq:isometry_simple|<tuple|49|8>>
+    <associate|eq:isomorphism_map|<tuple|156|19>>
+    <associate|eq:kernel_simplification|<tuple|114|14>>
+    <associate|eq:left_inverse|<tuple|72|10>>
+    <associate|eq:linearity_expectation|<tuple|47|7>>
+    <associate|eq:local_isometry|<tuple|62|9>>
+    <associate|eq:mu_atomic|<tuple|139|17>>
+    <associate|eq:mu_atomic_assumption|<tuple|150|18>>
+    <associate|eq:mu_atomic_final|<tuple|148|18>>
+    <associate|eq:mu_def|<tuple|137|17>>
+    <associate|eq:mu_substitution|<tuple|145|18>>
+    <associate|eq:mu_sum|<tuple|147|18>>
+    <associate|eq:norm_equivalence|<tuple|155|19>>
+    <associate|eq:norm_sum|<tuple|154|19>>
+    <associate|eq:orthogonality_application|<tuple|48|8>>
+    <associate|eq:orthogonality_integral|<tuple|57|9>>
+    <associate|eq:orthogonality_phi|<tuple|26|5>>
+    <associate|eq:osc_func_conjugate|<tuple|40|6>>
+    <associate|eq:osc_func_def|<tuple|28|5>>
+    <associate|eq:osc_func_neg|<tuple|39|6>>
+    <associate|eq:osc_symmetry|<tuple|30|5>>
+    <associate|eq:oscillatory_covariance|<tuple|27|5>>
+    <associate|eq:oscillatory_function|<tuple|24|5>>
+    <associate|eq:oscillatory_function_Z|<tuple|80|11>>
+    <associate|eq:oscillatory_process|<tuple|25|5>>
+    <associate|eq:oscillatory_well_defined|<tuple|43|7>>
+    <associate|eq:phi_symmetry|<tuple|34|6>>
+    <associate|eq:real_valued_condition|<tuple|31|5>>
+    <associate|eq:right_inverse|<tuple|77|11>>
+    <associate|eq:second_moment_simple|<tuple|46|7>>
+    <associate|eq:self_adjoint|<tuple|168|20>>
+    <associate|eq:sift_basis|<tuple|170|20>>
+    <associate|eq:sifting_property|<tuple|101|13>>
+    <associate|eq:simple_function|<tuple|44|7>>
+    <associate|eq:simple_zeros|<tuple|136|17>>
+    <associate|eq:simplify_composition|<tuple|71|10>>
+    <associate|eq:simplify_integral|<tuple|131|16>>
+    <associate|eq:simplify_second|<tuple|76|11>>
+    <associate|eq:spectrum|<tuple|163|20>>
+    <associate|eq:spectrum_result|<tuple|172|20>>
+    <associate|eq:sqrt_zero_eval|<tuple|187|22>>
+    <associate|eq:stationary_covariance|<tuple|19|4>>
+    <associate|eq:sum_form|<tuple|141|17>>
+    <associate|eq:theta_composition|<tuple|75|11>>
+    <associate|eq:theta_inverse_composition|<tuple|70|10>>
+    <associate|eq:time_dependent_spectrum|<tuple|42|7>>
+    <associate|eq:variance_zero_consequence|<tuple|190|23>>
+    <associate|eq:varphi_L2|<tuple|53|8>>
+    <associate|eq:varphi_as_gain|<tuple|90|12>>
+    <associate|eq:varphi_t_explicit|<tuple|87|12>>
+    <associate|eq:zero_product|<tuple|188|22>>
+    <associate|eqKZdiag|<tuple|180|21>>
+    <associate|eqZcovariance|<tuple|175|21>>
+    <associate|eqZprocess|<tuple|174|21>>
+    <associate|eqexpectedzeros|<tuple|176|21>>
+    <associate|eqfinal|<tuple|183|22>>
+    <associate|eqfirstpartial|<tuple|178|21>>
+    <associate|eqkacrice|<tuple|177|21>>
+    <associate|eqlimit|<tuple|179|21>>
+    <associate|eqsimplify|<tuple|182|22>>
+    <associate|eqstationarycov|<tuple|173|21>>
+    <associate|eqsubstitute|<tuple|181|21>>
+    <associate|pd|<tuple|59|9>>
     <associate|prop:atomic|<tuple|18|18>>
     <associate|prop:conjugation|<tuple|14|15>>
     <associate|rem:L2loc_properties|<tuple|5|4>>
-    <associate|sec:HP|<tuple|3|16>>
-    <associate|sec:oscillatory|<tuple|1.3|6>>
-    <associate|sec:stationary_timechange|<tuple|2|10>>
-    <associate|thm:Utheta_to_osc|<tuple|11|12>>
-    <associate|thm:atomicity|<tuple|16|16>>
-    <associate|thm:deterministic_zero|<tuple|23|23>>
-    <associate|thm:existence_osc|<tuple|9|8>>
-    <associate|thm:inverse_filter|<tuple|12|14>>
-    <associate|thm:kac_rice|<tuple|21|20>>
-    <associate|thm:local_unitarity|<tuple|10|10>>
+    <associate|sec:HP|<tuple|3|17>>
+    <associate|sec:oscillatory|<tuple|1.3|5>>
+    <associate|sec:stationary_timechange|<tuple|2|9>>
+    <associate|thm:Utheta_to_osc|<tuple|11|11>>
+    <associate|thm:atomicity|<tuple|16|17>>
+    <associate|thm:deterministic_zero|<tuple|22|22>>
+    <associate|thm:existence_osc|<tuple|9|7>>
+    <associate|thm:inverse_filter|<tuple|12|13>>
+    <associate|thm:local_unitarity|<tuple|10|9>>
     <associate|thm:paths_loc|<tuple|6|4>>
-    <associate|thm:realvaluedness|<tuple|8|6>>
-    <associate|thm:spectrum|<tuple|20|19>>
-    <associate|thmexpectedzerocount|<tuple|22|22>>
+    <associate|thm:realvaluedness|<tuple|8|5>>
+    <associate|thm:spectrum|<tuple|20|20>>
+    <associate|thmexpectedzerocount|<tuple|21|21>>
   </collection>
 </references>
 
@@ -2156,14 +2017,9 @@
       Expected Zero Counting Function <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-13>>
 
-      <with|par-left|<quote|2tab>|3.1.1<space|2spc>The Expected Zero Counting
-      Function for Unitarily Time-Changed Stationary Processes
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-14>>
-
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-15><vspace|0.5fn>
+      <no-break><pageref|auto-14><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
