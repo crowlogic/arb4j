@@ -40,41 +40,33 @@
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-3><vspace|0.5fn>
 
-    <with|par-left|1tab|3.1<space|2spc>Discrete-parameter Processes
+    <with|par-left|1tab|3.1<space|2spc>Continuous-parameter Processes
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-4>>
 
-    <with|par-left|1tab|3.2<space|2spc>Continuous-parameter Processes
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-5>>
-
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|4<space|2spc>The
     Time-domain Approach> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-6><vspace|0.5fn>
+    <no-break><pageref|auto-5><vspace|0.5fn>
 
-    <with|par-left|1tab|4.1<space|2spc>Discrete-parameter Processes
+    <with|par-left|1tab|4.1<space|2spc>Continuous-parameter Processes
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-7>>
-
-    <with|par-left|1tab|4.2<space|2spc>Continuous-parameter Processes
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-8>>
+    <no-break><pageref|auto-6>>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|5<space|2spc>The
     Frequency-domain Approach> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-9><vspace|0.5fn>
+    <no-break><pageref|auto-7><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|6<space|2spc>Discussion>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-10><vspace|0.5fn>
+    <no-break><pageref|auto-8><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|References>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-11><vspace|0.5fn>
+    <no-break><pageref|auto-9><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-12><vspace|0.5fn>
+    <no-break><pageref|auto-10><vspace|0.5fn>
   </table-of-contents>
 
   <section|Introduction>
@@ -227,127 +219,6 @@
   oscillatory processes, the distinction with the stationary case being that
   the coefficients in the moving-average scheme are now time-dependent.
 
-  <subsection|Discrete-parameter Processes>
-
-  Suppose that <math|X<around|(|t|)>> has a representation of the
-  form<nbsp><eqref|eq:evspec-disc>, and that <math|\<mu\>> is absolutely
-  continuous with respect to <math|d*\<omega\>>. Then we may write
-  <math|f<rsub|t><around|(|\<omega\>|)>> in the form
-
-  <\equation>
-    f<rsub|t><around|(|\<omega\>|)>=<around|\||A<rsub|t><around|(|\<omega\>|)>|\|><rsup|2>*f<around|(|\<omega\>|)><label|eq:ftA>
-  </equation>
-
-  where <math|f<around|(|\<omega\>|)>=d*\<mu\>/d*\<omega\>>. Note that
-  <math|f<around|(|\<omega\>|)>\<equiv\>f<rsub|0><around|(|\<omega\>|)>> must
-  be integrable. Suppose now that
-
-  <\equation>
-    <big|int><rsub|-\<pi\>><rsup|\<pi\>>log
-    f<around|(|\<omega\>|)>*d*\<omega\>\<gtr\>-\<infty\><label|eq:C1>
-  </equation>
-
-  (Condition<nbsp>C1)
-
-  Then it follows that (see<nbsp><cite|Doob1953>, p.<nbsp>160) there exists a
-  function <math|\<psi\><around|(|\<omega\>|)>> such that
-
-  <\equation>
-    <around|\||\<psi\><around|(|\<omega\>|)>|\|><rsup|2>=f<around|(|\<omega\>|)><label|eq:psi>
-  </equation>
-
-  where <math|\<psi\><around|(|z|)>>, considered as a function of the complex
-  variable <math|z=e<rsup|i*\<omega\>>>, has no poles or zeros inside the
-  unit circle, <math|<around|\||z|\|>\<less\>1>. The function
-  <math|\<psi\><around|(|\<omega\>|)>> may be written as a one-sided Fourier
-  transform, viz.
-
-  <\equation>
-    \<psi\><around|(|\<omega\>|)>=<big|sum><rsub|u=0><rsup|\<infty\>>e<rsup|-i*\<omega\>*u>*g<rsup|\<ast\>><around|(|u|)><label|eq:psiFT>
-  </equation>
-
-  for some suitable sequence <math|g<rsup|\<ast\>><around|(|u|)>>.
-
-  Suppose further that:
-
-  <\equation>
-    <text|(C2)><space|1em><text|the family ><with|math-font|cal*|F>*<text|can
-    be chosen so that, for each >t,A<rsub|t><around|(|z|)>*<text|(as a
-    function of >z)<text|also has no poles or zeros inside the unit circle,
-    so that, for each >t,
-  </equation>
-
-  <\equation>
-    A<rsub|t><around|(|\<omega\>|)>=<big|sum><rsub|u=0><rsup|\<infty\>>e<rsup|-i*\<omega\>*u>*g<rsub|t><around|(|u|)><label|eq:At>
-  </equation>
-
-  A necessary condition for the validity of<nbsp><eqref|eq:At> is
-
-  <\equation>
-    <big|int><rsub|-\<pi\>><rsup|\<pi\>>log
-    <around|\||A<rsub|t><around|(|\<omega\>|)>|\|><rsup|2>*d*\<omega\>\<gtr\>-\<infty\><label|eq:C3>
-  </equation>
-
-  for all <math|t> (Condition<nbsp>C3).
-
-  Now write <math|X<around|(|t|)>> in the form
-
-  <\equation>
-    X<around|(|t|)>=<big|int><rsub|-\<pi\>><rsup|\<pi\>>e<rsup|i*t*\<omega\>>*\<alpha\><rsub|t><around|(|\<omega\>|)>*d*z<around|(|\<omega\>|)><label|eq:Xtalpha>
-  </equation>
-
-  where <math|\<alpha\><rsub|t><around|(|\<omega\>|)>=A<rsub|t><around|(|\<omega\>|)>*\<psi\><around|(|\<omega\>|)>>,
-  so that
-
-  <\equation>
-    <around|\||\<alpha\><rsub|t><around|(|\<omega\>|)>|\|><rsup|2>=f<rsub|t><around|(|\<omega\>|)><label|eq:alphaft>
-  </equation>
-
-  and <math|z<around|(|\<omega\>|)>> is an orthogonal process on
-  <math|<around|(|-\<pi\>,\<pi\>|)>> with
-  <math|E*<around|\||d*z<around|(|\<omega\>|)>|\|><rsup|2>=d*\<omega\>>.
-
-  Since both <math|\<psi\><around|(|\<omega\>|)>> and
-  <math|A<rsub|t><around|(|\<omega\>|)>> have one-sided Fourier transforms,
-  it follows that, for each <math|t>, <math|\<alpha\><rsub|t><around|(|\<omega\>|)>>
-  has a one-sided Fourier transform, i.e.,
-
-  <\equation>
-    \<alpha\><rsub|t><around|(|\<omega\>|)>=<big|sum><rsub|u=0><rsup|\<infty\>>e<rsup|i*\<omega\>*u>*h<rsub|t><around|(|u|)><label|eq:alphah>
-  </equation>
-
-  A necessary condition for the validity of<nbsp><eqref|eq:alphah> is
-
-  <\equation>
-    <big|int><rsub|-\<pi\>><rsup|\<pi\>>log
-    f<rsub|t><around|(|\<omega\>|)>*d*\<omega\>\<gtr\>-\<infty\><label|eq:C4>
-  </equation>
-
-  for each <math|t> (Condition<nbsp>C4).
-
-  <\theorem>
-    <label|thm:discMA>Let <math|<around|{|X<around|(|t|)>|}>> be a
-    discrete-parameter oscillatory process. If there exists a family
-    <math|<with|math-font|cal*|F>> satisfying Condition<nbsp>C2, and with
-    respect to which <math|<around|{|X<around|(|t|)>|}>> has an absolutely
-    continuous evolutionary spectrum satisfying Condition<nbsp>C4, then
-    <math|<around|{|X<around|(|t|)>|}>> may be represented as a one-sided
-    moving average process of the form
-
-    <\equation>
-      X<around|(|t|)>=<big|sum><rsub|u=0><rsup|\<infty\>>h<rsub|t><around|(|u|)>*\<xi\>*<around|(|t-u|)><label|eq:discMA>
-    </equation>
-
-    where <math|<around|{|\<xi\><around|(|t|)>|}>> is a stationary
-    uncorrelated process. Conversely, if <math|<around|{|X<around|(|t|)>|}>>
-    has a one-sided moving average representation of the
-    form<nbsp><eqref|eq:discMA>, Condition<nbsp>C4 must be satisfied.
-  </theorem>
-
-  <\proof>
-    See discussion leading up to and following equation<nbsp><eqref|eq:C4>.
-  </proof>
-
   <subsection|Continuous-parameter Processes>
 
   As in the case of stationary processes (see<nbsp><cite|Whittle1963>), the
@@ -437,82 +308,6 @@
   Assuming that the process has a one-sided moving average form, we may
   easily obtain an explicit expression for <math|<wide|X|~>*<around|(|t+m|)>>
   in terms of the process <math|<around|{|\<xi\><around|(|t|)>|}>>.
-
-  <subsection|Discrete-parameter Processes>
-
-  Assume <math|X<around|(|t|)>> has a one-sided moving average representation
-  of the form<nbsp><eqref|eq:discMA>, so that
-
-  <\equation>
-    X<around|(|t|)>=<big|sum><rsub|u=0><rsup|\<infty\>>h<rsub|t><around|(|u|)>*\<xi\>*<around|(|t-u|)>=<big|sum><rsub|u=-\<infty\>><rsup|t>h<rsub|t>*<around|(|t-u|)>*\<xi\><around|(|u|)><label|eq:XtMA>
-  </equation>
-
-  Then
-
-  <\equation>
-    X*<around|(|t+m|)>=<big|sum><rsub|u=-\<infty\>><rsup|t>h<rsub|t+m>*<around|(|t+m-u|)>*\<xi\><around|(|u|)>+<big|sum><rsub|u=t+1><rsup|m>h<rsub|t+m>*<around|(|t+m-u|)>*\<xi\><around|(|u|)><label|eq:Xtplusm>
-  </equation>
-
-  The predictor is to be chosen as a linear combination of
-  <math|<around|{|X<around|(|s|)>,s\<leq\>t|}>>:
-
-  <\equation>
-    <wide|X|~>*<around|(|t+m|)>=<big|sum><rsub|s=-\<infty\>><rsup|t>b<around|(|s|)>*X<around|(|s|)><label|eq:predX>
-  </equation>
-
-  Alternatively, as each <math|X<around|(|t|)>> is a linear combination of
-  the <math|<around|{|\<xi\>*<around|(|t-u|)>|}>> (<math|u\<geq\>0>), we may
-  write
-
-  <\equation>
-    <wide|X|~>*<around|(|t+m|)>=<big|sum><rsub|u=-\<infty\>><rsup|t>a<around|(|u|)>*\<xi\><around|(|u|)><label|eq:predxi>
-  </equation>
-
-  The problem reduces to finding the coefficients
-  <math|<around|{|a<around|(|u|)>|}>> which minimize <math|M<around|(|m|)>>.
-  The solution is
-
-  <\equation>
-    <wide|X|~>*<around|(|t+m|)>=<big|sum><rsub|u=-\<infty\>><rsup|t>h<rsub|t+m>*<around|(|t+m-u|)>*\<xi\><around|(|u|)>=<big|sum><rsub|u=m><rsup|\<infty\>>h<rsub|t+m><around|(|u|)>*\<xi\><rsub|t+m-u><label|eq:predsol>
-  </equation>
-
-  so that
-
-  <\equation>
-    a<around|(|u|)>=h<rsub|t+m>*<around|(|t+m-u|)><label|eq:au>
-  </equation>
-
-  for all <math|u>.
-
-  The prediction variance is
-
-  <\equation>
-    M<around|(|m|)>=2*\<pi\>*<big|sum><rsub|u=0><rsup|m-1>h<rsub|t+m><rsup|2><around|(|u|)><label|eq:predvar2>
-  </equation>
-
-  To express <math|<wide|X|~>*<around|(|t+m|)>> in terms of the <math|X>'s,
-  write
-
-  <\equation>
-    \<xi\><around|(|t|)>=<big|sum><rsub|v=0><rsup|\<infty\>>k<rsub|t><around|(|v|)>*X*<around|(|t-v|)><label|eq:xitok>
-  </equation>
-
-  Substituting<nbsp><eqref|eq:xitok> in<nbsp><eqref|eq:XtMA> and equating
-  coefficients, we obtain the triangular system
-
-  <\align>
-    <tformat|<table|<row|<cell|>|<cell|h<rsub|t><around|(|0|)>*k<rsub|t><around|(|0|)>=1>>|<row|<cell|>|<cell|h<rsub|t><around|(|1|)>*k<rsub|t><around|(|0|)>+h<rsub|t-1><around|(|0|)>*k<rsub|t><around|(|1|)>=0>>|<row|<cell|>|<cell|h<rsub|t><around|(|2|)>*k<rsub|t><around|(|0|)>+h<rsub|t-1><around|(|1|)>*k<rsub|t><around|(|1|)>+h<rsub|t-2><around|(|0|)>*k<rsub|t><around|(|2|)>=0<eq-number><label|eq:triangular>>>>>
-  </align>
-
-  and so on.
-
-  Alternatively, equating coefficients in the other order,
-
-  <\equation>
-    <big|sum><rsub|v=0><rsup|p>k<rsub|t-v>*<around|(|p-v|)>*h<rsub|t><around|(|v|)>=\<delta\><rsub|p,0><space|1em><around|(|p=0,1,2,\<ldots\>|)><label|eq:triangular2>
-  </equation>
-
-  where <math|\<delta\><rsub|p,0>> is the Kronecker delta.
 
   <subsection|Continuous-parameter Processes>
 
@@ -685,30 +480,6 @@
     K<rsub|t,1><rsup|\<ast\>><around|(|u,v|)>=<frac|h<rsub|t-u,v><rprime|'>*<around|(|v-u|)>|h<rsub|t-v><around|(|0|)>><label|eq:firstkernel>
   </equation>
 
-  For discrete-parameter processes, the predictor is
-
-  <\equation>
-    <wide|X|~>*<around|(|t+m|)>=<big|sum><rsub|u=0><rsup|\<infty\>>b<rsub|t><around|(|u|)>*X*<around|(|t-u|)><label|eq:discpred>
-  </equation>
-
-  and the system
-
-  <\equation>
-    <big|sum><rsub|u=0><rsup|v>b<rsub|t><around|(|u|)>*h<rsub|t-u>*<around|(|v-u|)>=h<rsub|t+m>*<around|(|v+m|)>*<space|1em><around|(|v=0,1,2,\<ldots\>|)><label|eq:discfreqtriangular>
-  </equation>
-
-  is triangular and easily solved by back-substitution.
-
-  Attempting to obtain <math|b<rsub|t><around|(|u|)>> directly from the
-  covariance function <math|R<around|(|s,t|)>=E*<around|{|X<around|(|s|)>*X<rsup|\<ast\>><around|(|t|)>|}>>
-  would yield the system
-
-  <\equation>
-    <big|sum><rsub|u=0><rsup|\<infty\>>b<rsub|t><around|(|u|)>*R<around|(|t-u,t-v|)>=R<around|(|t-v,t+m|)>*<space|1em><around|(|v\<geq\>0|)><label|eq:covariance-integral>
-  </equation>
-
-  which is not as tractable as the spectral approach.
-
   <section|Discussion><label|sec:discussion>
 
   As mentioned in Section<nbsp>1, in this paper we are concerned primarily
@@ -842,101 +613,74 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|2>>
-    <associate|auto-10|<tuple|6|12>>
-    <associate|auto-11|<tuple|6|12>>
-    <associate|auto-12|<tuple|6|12>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-10|<tuple|6|9>>
     <associate|auto-2|<tuple|2|3>>
     <associate|auto-3|<tuple|3|4>>
     <associate|auto-4|<tuple|3.1|4>>
-    <associate|auto-5|<tuple|3.2|6>>
-    <associate|auto-6|<tuple|4|7>>
-    <associate|auto-7|<tuple|4.1|7>>
-    <associate|auto-8|<tuple|4.2|9>>
-    <associate|auto-9|<tuple|5|9>>
-    <associate|bib-Bartlett1955|<tuple|Bartlett1955|12>>
-    <associate|bib-Bendat1956|<tuple|Bendat1956|13>>
-    <associate|bib-Bendat1957|<tuple|Bendat1957|13>>
-    <associate|bib-Bendat1959|<tuple|Bendat1959|13>>
-    <associate|bib-Booton1952|<tuple|Booton1952|13>>
-    <associate|bib-Cramer1961a|<tuple|Cramer1961a|13>>
-    <associate|bib-Cramer1961b|<tuple|Cramer1961b|13>>
-    <associate|bib-Davis1952|<tuple|Davis1952|13>>
-    <associate|bib-Doob1953|<tuple|Doob1953|13>>
-    <associate|bib-GrangerHatanaka1964|<tuple|GrangerHatanaka1964|13>>
-    <associate|bib-GrenanderRosenblatt1957|<tuple|GrenanderRosenblatt1957|13>>
-    <associate|bib-Kalman1960|<tuple|Kalman1960|13>>
-    <associate|bib-Parzen1961|<tuple|Parzen1961|13>>
-    <associate|bib-Priestley1965|<tuple|Priestley1965|13>>
-    <associate|bib-Priestley1966|<tuple|Priestley1966|13>>
-    <associate|bib-Tricomi1957|<tuple|Tricomi1957|13>>
-    <associate|bib-Whittle1963|<tuple|Whittle1963|13>>
-    <associate|bib-Whittle1965|<tuple|Whittle1965|13>>
-    <associate|bib-Yaglom1962|<tuple|Yaglom1962|13>>
-    <associate|bib-Zadeh1953|<tuple|Zadeh1953|13>>
-    <associate|eq:At|<tuple|11|5>>
-    <associate|eq:Atcont|<tuple|19|6>>
-    <associate|eq:Bt|<tuple|45|10>>
-    <associate|eq:Btopt|<tuple|50|10>>
-    <associate|eq:C1|<tuple|7|4>>
-    <associate|eq:C1star|<tuple|18|6>>
-    <associate|eq:C3|<tuple|12|5>>
-    <associate|eq:C3star|<tuple|20|6>>
-    <associate|eq:C4|<tuple|16|5>>
-    <associate|eq:C4star|<tuple|23|7>>
-    <associate|eq:Csplit|<tuple|48|10>>
-    <associate|eq:Kt|<tuple|52|10>>
-    <associate|eq:XtMA|<tuple|26|7>>
-    <associate|eq:Xtalpha|<tuple|13|5>>
-    <associate|eq:XtalphaCont|<tuple|21|6>>
-    <associate|eq:Xtplusm|<tuple|27|7>>
-    <associate|eq:Xtplusmspec|<tuple|46|10>>
-    <associate|eq:alphaft|<tuple|14|5>>
-    <associate|eq:alphah|<tuple|15|5>>
-    <associate|eq:alphahCont|<tuple|22|7>>
-    <associate|eq:au|<tuple|31|8>>
-    <associate|eq:btfinal|<tuple|56|11>>
-    <associate|eq:contMA|<tuple|24|7>>
-    <associate|eq:contpredX|<tuple|36|9>>
-    <associate|eq:contpredsol|<tuple|38|9>>
-    <associate|eq:contpredxi|<tuple|37|9>>
-    <associate|eq:conttriangular|<tuple|40|9>>
-    <associate|eq:conttriangular2|<tuple|41|9>>
-    <associate|eq:contxitok|<tuple|39|9>>
-    <associate|eq:covariance-integral|<tuple|62|12>>
-    <associate|eq:discMA|<tuple|17|6>>
-    <associate|eq:discfreqtriangular|<tuple|61|11>>
-    <associate|eq:discpred|<tuple|60|11>>
+    <associate|auto-5|<tuple|4|5>>
+    <associate|auto-6|<tuple|4.1|5>>
+    <associate|auto-7|<tuple|5|6>>
+    <associate|auto-8|<tuple|6|8>>
+    <associate|auto-9|<tuple|6|9>>
+    <associate|bib-Bartlett1955|<tuple|Bartlett1955|9>>
+    <associate|bib-Bendat1956|<tuple|Bendat1956|9>>
+    <associate|bib-Bendat1957|<tuple|Bendat1957|9>>
+    <associate|bib-Bendat1959|<tuple|Bendat1959|9>>
+    <associate|bib-Booton1952|<tuple|Booton1952|9>>
+    <associate|bib-Cramer1961a|<tuple|Cramer1961a|9>>
+    <associate|bib-Cramer1961b|<tuple|Cramer1961b|9>>
+    <associate|bib-Davis1952|<tuple|Davis1952|9>>
+    <associate|bib-Doob1953|<tuple|Doob1953|9>>
+    <associate|bib-GrangerHatanaka1964|<tuple|GrangerHatanaka1964|9>>
+    <associate|bib-GrenanderRosenblatt1957|<tuple|GrenanderRosenblatt1957|9>>
+    <associate|bib-Kalman1960|<tuple|Kalman1960|9>>
+    <associate|bib-Parzen1961|<tuple|Parzen1961|9>>
+    <associate|bib-Priestley1965|<tuple|Priestley1965|9>>
+    <associate|bib-Priestley1966|<tuple|Priestley1966|9>>
+    <associate|bib-Tricomi1957|<tuple|Tricomi1957|10>>
+    <associate|bib-Whittle1963|<tuple|Whittle1963|10>>
+    <associate|bib-Whittle1965|<tuple|Whittle1965|10>>
+    <associate|bib-Yaglom1962|<tuple|Yaglom1962|10>>
+    <associate|bib-Zadeh1953|<tuple|Zadeh1953|10>>
+    <associate|eq:Atcont|<tuple|7|4>>
+    <associate|eq:Bt|<tuple|23|7>>
+    <associate|eq:Btopt|<tuple|28|7>>
+    <associate|eq:C1star|<tuple|6|4>>
+    <associate|eq:C3star|<tuple|8|4>>
+    <associate|eq:C4star|<tuple|11|5>>
+    <associate|eq:Csplit|<tuple|26|7>>
+    <associate|eq:Kt|<tuple|30|7>>
+    <associate|eq:XtalphaCont|<tuple|9|4>>
+    <associate|eq:Xtplusmspec|<tuple|24|7>>
+    <associate|eq:alphahCont|<tuple|10|5>>
+    <associate|eq:btfinal|<tuple|34|8>>
+    <associate|eq:contMA|<tuple|12|5>>
+    <associate|eq:contpredX|<tuple|14|5>>
+    <associate|eq:contpredsol|<tuple|16|6>>
+    <associate|eq:contpredxi|<tuple|15|6>>
+    <associate|eq:conttriangular|<tuple|18|6>>
+    <associate|eq:conttriangular2|<tuple|19|6>>
+    <associate|eq:contxitok|<tuple|17|6>>
     <associate|eq:evspec|<tuple|3|3>>
     <associate|eq:evspec-cont|<tuple|1|3>>
     <associate|eq:evspec-disc|<tuple|4|3>>
-    <associate|eq:evspec-disc2|<tuple|5|4>>
-    <associate|eq:firstkernel|<tuple|59|11>>
-    <associate|eq:freqM|<tuple|47|10>>
-    <associate|eq:freqMmin|<tuple|51|10>>
-    <associate|eq:freqMsplit|<tuple|49|10>>
-    <associate|eq:freqpred|<tuple|42|9>>
-    <associate|eq:freqpred2|<tuple|43|10>>
-    <associate|eq:freqpredspec|<tuple|44|10>>
-    <associate|eq:freqtriangular|<tuple|53|11>>
-    <associate|eq:freqtriangular2|<tuple|54|11>>
-    <associate|eq:freqtriangular3|<tuple|55|11>>
-    <associate|eq:ftA|<tuple|6|4>>
-    <associate|eq:iteratedkernels|<tuple|58|11>>
+    <associate|eq:evspec-disc2|<tuple|5|3>>
+    <associate|eq:firstkernel|<tuple|37|8>>
+    <associate|eq:freqM|<tuple|25|7>>
+    <associate|eq:freqMmin|<tuple|29|7>>
+    <associate|eq:freqMsplit|<tuple|27|7>>
+    <associate|eq:freqpred|<tuple|20|6>>
+    <associate|eq:freqpred2|<tuple|21|6>>
+    <associate|eq:freqpredspec|<tuple|22|6>>
+    <associate|eq:freqtriangular|<tuple|31|7>>
+    <associate|eq:freqtriangular2|<tuple|32|8>>
+    <associate|eq:freqtriangular3|<tuple|33|8>>
+    <associate|eq:iteratedkernels|<tuple|36|8>>
     <associate|eq:phiA|<tuple|2|3>>
-    <associate|eq:predX|<tuple|28|8>>
-    <associate|eq:predsol|<tuple|30|8>>
-    <associate|eq:predvar|<tuple|25|7>>
-    <associate|eq:predvar2|<tuple|32|8>>
-    <associate|eq:predxi|<tuple|29|8>>
-    <associate|eq:psi|<tuple|8|4>>
-    <associate|eq:psiFT|<tuple|9|4>>
-    <associate|eq:resolvent|<tuple|57|11>>
-    <associate|eq:triangular|<tuple|34|8>>
-    <associate|eq:triangular2|<tuple|35|8>>
-    <associate|eq:xitok|<tuple|33|8>>
-    <associate|sec:discussion|<tuple|6|12>>
-    <associate|thm:discMA|<tuple|1|6>>
+    <associate|eq:predvar|<tuple|13|5>>
+    <associate|eq:resolvent|<tuple|35|8>>
+    <associate|sec:discussion|<tuple|6|8>>
   </collection>
 </references>
 
@@ -981,8 +725,6 @@
 
       Priestley1965
 
-      Doob1953
-
       Whittle1963
 
       Bartlett1955
@@ -1005,41 +747,33 @@
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-3><vspace|0.5fn>
 
-      <with|par-left|<quote|1tab>|3.1<space|2spc>Discrete-parameter Processes
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-4>>
-
-      <with|par-left|<quote|1tab>|3.2<space|2spc>Continuous-parameter
+      <with|par-left|<quote|1tab>|3.1<space|2spc>Continuous-parameter
       Processes <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-5>>
+      <no-break><pageref|auto-4>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>The
       Time-domain Approach> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-6><vspace|0.5fn>
+      <no-break><pageref|auto-5><vspace|0.5fn>
 
-      <with|par-left|<quote|1tab>|4.1<space|2spc>Discrete-parameter Processes
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-7>>
-
-      <with|par-left|<quote|1tab>|4.2<space|2spc>Continuous-parameter
+      <with|par-left|<quote|1tab>|4.1<space|2spc>Continuous-parameter
       Processes <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-8>>
+      <no-break><pageref|auto-6>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|5<space|2spc>The
       Frequency-domain Approach> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-9><vspace|0.5fn>
+      <no-break><pageref|auto-7><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|6<space|2spc>Discussion>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-10><vspace|0.5fn>
+      <no-break><pageref|auto-8><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|References>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-11><vspace|0.5fn>
+      <no-break><pageref|auto-9><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-12><vspace|0.5fn>
+      <no-break><pageref|auto-10><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
