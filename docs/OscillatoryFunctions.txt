@@ -1,40 +1,40 @@
-Theorem (Existence of the Oscillatory Process: Integrability Condition for the Gain and Oscillatory Function).
+Theorem (Existence of the Oscillatory Process: Integrability Condition for the Gain and Oscillatory Function)
 
 Let (Ω, 𝒜, μ) be a σ-finite measure space, and let Φ be a complex-valued orthogonal random measure with second moment measure μ. Consider the gain function
 
     A : ℝ × Ω → ℂ
 
-and define, for each t ∈ ℝ, the oscillatory function
+that is measurable in each variable and define, for each t ∈ ℝ, the oscillatory function
 
-    φₜ(ω) = A(t, ω) e^{i ω t}.
+    φₜ(ω) = A(t, ω) e^{iωt}.
 
 The process
 
     Xₜ = ∫_Ω φₜ(ω) dΦ(ω)
 
-exists for each fixed t ∈ ℝ if and only if, for that t,
-
-    ∫_Ω |A(t, ω)|² dμ(ω) < ∞.
-
-Equivalently, the oscillatory function φₜ(ω) is quadratically integrable with respect to μ for each t,
+exists for each fixed t ∈ ℝ if and only if φₜ(ω) is quadratically integrable with respect to μ for that t, that is,
 
     ∫_Ω |φₜ(ω)|² dμ(ω) < ∞.
 
-The constraint on A is immediate and exact: for fixed t, the gain function ω ↦ A(t, ω) must be square-integrable with respect to μ. This condition determines the integrability of φₜ(ω), since for all t and ω,
+Equivalently, for fixed t, the gain function ω ↦ A(t, ω) must be square-integrable with respect to μ:
+
+    ∫_Ω |A(t, ω)|² dμ(ω) < ∞.
+
+This condition is immediate and exact: for all t and ω,
 
     |φₜ(ω)|² = |A(t, ω)|²,
 
-because |e^{i ω t}| = 1 for all real ω, t. Thus, imposing
+because |e^{iωt}| = 1 for all real ω, t. Thus, if
 
     ∫_Ω |A(t, ω)|² dμ(ω) < ∞
 
-guarantees integrability of φₜ(ω), and the process Xₜ can be defined.
+then φₜ(ω) is integrable, and the process Xₜ is well-defined.
 
 Proof.
 
-Consider the computation
+The measurability of A in each variable ensures that φₜ(ω) = A(t, ω) e^{iωt} is measurable in ω for each fixed t. Consider the computation
 
-    |φₜ(ω)|² = |A(t, ω)|² |e^{i ω t}|² = |A(t, ω)|².
+    |φₜ(ω)|² = |A(t, ω)|² |e^{iωt}|² = |A(t, ω)|².
 
 Therefore
 
