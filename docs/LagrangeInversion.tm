@@ -3,394 +3,276 @@
 <style|<tuple|generic|framed-theorems>>
 
 <\body>
-  <doc-data|<doc-title|The Lagrange Inversion Theorem: A Comprehensive Proof
-  with Measure-Theoretic Considerations>|<doc-author|<author-data|<author-name|Stephen
-  Crowley>|<\author-affiliation>
-    <date|>
-  </author-affiliation>>>>
-
-  <abstract-data|<\abstract>
-    A proof of the Lagrange inversion theorem for analytic functions is
-    presented, with particular attention to the case where the underlying
-    function is monotonically increasing or decreasing and therefore
-    bijective. Points where the derivative may vanish on sets of measure zero
-    are carefully considered, establishing conditions under which the
-    inversion formula remains valid.
-  </abstract>>
+  <doc-data|<doc-title|Lagrange Inversion Formula for the Riemann-Siegel
+  Theta Function>>
 
   <\table-of-contents|toc>
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>Introduction>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Introduction>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-1><vspace|0.5fn>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>Preliminaries
-    and Definitions> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>General
+    Lagrange-Bürmann Inversion Formula> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-2><vspace|0.5fn>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|3<space|2spc>The
-    Main Theorem> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>Application
+    to the Riemann-Siegel Theta Function>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-3><vspace|0.5fn>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|4<space|2spc>Proof>
+    <with|par-left|1tab|2.1<space|2spc>Definition and Properties
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-4><vspace|0.5fn>
+    <no-break><pageref|auto-4>>
 
-    <with|par-left|1tab|4.1<space|2spc>Step 1: Establishing the Bijective
-    Property <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <with|par-left|1tab|2.2<space|2spc>Construction of the Auxiliary Function
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-5>>
 
-    <with|par-left|1tab|4.2<space|2spc>Step 2: Handling the Measure Zero
-    Condition <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <with|par-left|1tab|2.3<space|2spc>Inversion via Lagrange-Bürmann Formula
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-6>>
 
-    <with|par-left|1tab|4.3<space|2spc>Step 3: The Core Proof via Residue
-    Theory <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <with|par-left|1tab|2.4<space|2spc>Explicit Coefficient Formula
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-7>>
 
-    <with|par-left|1tab|4.4<space|2spc>Step 4: Special Case and Corollary
+    <with|par-left|1tab|2.5<space|2spc>Summary
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-8>>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|5<space|2spc>Applications
-    and Remarks> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-9><vspace|0.5fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|6<space|2spc>Examples>
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-10><vspace|0.5fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|7<space|2spc>Conclusion>
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-11><vspace|0.5fn>
   </table-of-contents>
 
-  <section|Introduction>
+  <section*|Introduction>
 
-  The Lagrange inversion theorem provides an explicit formula for the
-  coefficients of the power series expansion of the inverse of an analytic
-  function. This fundamental result in complex analysis has profound
-  applications in combinatorics, probability theory, and the study of
-  generating functions. The approach presented here emphasizes its
-  measure-theoretic foundations and the role of monotonic bijective
-  functions.
+  The Riemann-Siegel theta function admits a convergent Taylor series
+  expansion in a neighborhood of the origin. The inversion of this series via
+  the Lagrange-Bürmann formula yields the compositional inverse. This
+  exposition develops the general theory and applies it to the Riemann-Siegel
+  theta function.
 
-  <section|Preliminaries and Definitions>
-
-  <\definition>
-    [Analytic Function] A function <math|f:\<bbb-C\>\<to\>\<bbb-C\>> is
-    analytic at a point <math|a\<in\>\<bbb-C\>> if there exists a
-    neighborhood <math|U> of <math|a> such that <math|f> can be represented
-    by a convergent power series
-
-    <\equation>
-      f<around|(|z|)>=<big|sum><rsub|n=0><rsup|\<infty\>>a<rsub|n>*<around|(|z-a|)><rsup|n>\<forall\>z\<in\>U
-    </equation>
-  </definition>
-
-  <\definition>
-    [Monotonic Function] A real-valued function <math|g:I\<to\>\<bbb-R\>> on
-    an interval <math|I> is monotonically increasing if for all
-    <math|x<rsub|1>,x<rsub|2>\<in\>I> with <math|x<rsub|1>\<less\>x<rsub|2>>,
-    we have <math|g<around|(|x<rsub|1>|)>\<leq\>g<around|(|x<rsub|2>|)>>. It
-    is strictly monotonic if the inequality is strict whenever
-    <math|x<rsub|1>\<neq\>x<rsub|2>>.
-  </definition>
-
-  <\definition>
-    [Measure Zero Set] A set <math|E\<subset\>\<bbb-R\>> has Lebesgue measure
-    zero if for every <math|\<epsilon\>\<gtr\>0>, there exists a countable
-    collection of intervals <math|<around|{|I<rsub|k>|}><rsub|k=1><rsup|\<infty\>>>
-    such that <math|E\<subset\><big|cup><rsub|k=1><rsup|\<infty\>>I<rsub|k>>
-    and <math|<big|sum><rsub|k=1><rsup|\<infty\>><around|\||I<rsub|k>|\|>\<less\>\<epsilon\>>,
-    where <math|<around|\||I<rsub|k>|\|>> denotes the length of interval
-    <math|I<rsub|k>>.
-  </definition>
-
-  <section|The Main Theorem>
+  <section|General Lagrange-Bürmann Inversion Formula>
 
   <\theorem>
-    [Lagrange Inversion Theorem with Measure-Theoretic Extension] Let
-    <math|f:\<bbb-C\>\<to\>\<bbb-C\>> be analytic in a neighborhood of the
-    origin with <math|f<around|(|0|)>=0> and
-    <math|f<rprime|'><around|(|0|)>\<neq\>0>. Suppose there exists an
-    analytic function <math|\<phi\>:\<bbb-C\>\<to\>\<bbb-C\>> with
-    <math|\<phi\><around|(|0|)>\<neq\>0> such that
+    [Lagrange-Bürmann Inversion] Let <math|\<phi\>:U\<to\>\<bbb-C\>> be an
+    analytic function on the disk <math|U=<around|{|t\<in\>\<bbb-C\>:<around|\||t|\|>\<less\>R|}>>
+    with <math|\<phi\><around|(|0|)>=1> and Taylor series
+    <math|\<phi\><around|(|t|)>=<big|sum><rsub|j=0><rsup|\<infty\>>\<phi\><rsub|j>*t<rsup|j>>.
+    Define <math|w<around|(|t|)>=<frac|t|\<phi\><around|(|t|)>>>. The
+    compositional inverse <math|t<around|(|w|)>> satisfying
+    <math|w<around|(|t<around|(|w|)>|)>=w> has the representation
 
-    <\equation>
-      f<around|(|w|)>=<frac|w|\<phi\><around|(|w|)>>
-    </equation>
+    <\equation*>
+      t<around|(|w|)>=<big|sum><rsub|n=1><rsup|\<infty\>>c<rsub|n>*w<rsup|n>
+    </equation*>
 
-    Let <math|g> be the compositional inverse of <math|f>, so that <math|>
+    where
 
-    <\equation>
-      f<around|(|g<around|(|z|)>|)>=z
-    </equation>
+    <\equation*>
+      c<rsub|n>=<frac|1|n*<around|(|n-1|)>!>*<frac|d<rsup|n-1>|d*t<rsup|n-1>><around|(|\<phi\><around|(|t|)>|)><rsup|n><mid|\|><rsub|t=0>
+    </equation*>
 
-    \ in a neighborhood of the origin.
-
-    Furthermore, assume that the real part of <math|f> restricted to the real
-    axis is monotonically increasing or decreasing, making <math|f> bijective
-    on its domain of convergence, and that the derivative <math|f<rprime|'>>
-    vanishes only on a set of measure zero.
-
-    Then for any analytic function <math|H<around|(|w|)>> and for
-    <math|n\<geq\>1>:
-
-    <\equation>
-      <around|[|z<rsup|n>|]>*H<around|(|g<around|(|z|)>|)>=<frac|1|n><around|[|w<rsup|n-1>|]>*<around*|(|H<rprime|'><around|(|w|)>*\<phi\><around|(|w|)><rsup|n>|)>
-    </equation>
-
-    where <math|<around|[|w<rsup|k>|]>> denotes the coefficient of
-    <math|w<rsup|k>> in the power series expansion.
-
-    In particular, taking <math|H<around|(|w|)>=w>, we obtain:
-
-    <\equation>
-      <around|[|z<rsup|n>|]>*g<around|(|z|)>=<frac|1|n><around|[|w<rsup|n-1>|]>*\<phi\><around|(|w|)><rsup|n>
-    </equation>
+    for each positive integer <math|n>.
   </theorem>
 
-  <section|Proof>
-
-  <subsection|Step 1: Establishing the Bijective Property>
-
-  <\lemma>
-    [Monotonic Analytic Functions are Locally Bijective] Let <math|f> be
-    analytic in a neighborhood <math|U> of the origin with
-    <math|f<around|(|0|)>=0> and <math|f<rprime|'><around|(|0|)>\<neq\>0>. If
-    Re<math|<around|(|f|)>> is monotonic on <math|U\<cap\>\<bbb-R\>>, then
-    <math|f> is locally bijective.
-  </lemma>
-
   <\proof>
-    Since <math|f<rprime|'><around|(|0|)>\<neq\>0>, the inverse function
-    theorem for complex analytic functions guarantees that <math|f> is
-    locally invertible in some neighborhood <math|V> of the origin. The
-    monotonicity condition on Re<math|<around|(|f|)>> ensures that <math|f>
-    is injective when restricted to real values, and by the identity theorem
-    for analytic functions, this injectivity extends to the complex
-    neighborhood.
+    Consider the functional equation <math|w=<frac|t|\<phi\><around|(|t|)>>>.
+    The Cauchy residue formula applied to
+
+    <\equation*>
+      t<around|(|w|)>=<frac|1|2*\<pi\>*i>*<big|oint><rsub|C><frac|t*\<phi\><rprime|'><around|(|t|)>|w*\<phi\><around|(|t|)>-t>*d*t
+    </equation*>
+
+    where <math|C> is a positively oriented circle of radius
+    <math|\<epsilon\>> centered at the origin with
+    <math|0\<less\>\<epsilon\>\<less\>R> and <math|<around|\||w|\|>> small
+    enough that <math|<around|\||w*\<phi\><around|(|t|)>|\|>\<less\><around|\||t|\|>>
+    on <math|C>.
+
+    Expanding the denominator,
+
+    <\equation*>
+      <frac|1|w*\<phi\><around|(|t|)>-t>=-<frac|1|t>*<big|sum><rsub|n=0><rsup|\<infty\>><around*|(|<frac|w*\<phi\><around|(|t|)>|t>|)><rsup|n>=-<big|sum><rsub|n=0><rsup|\<infty\>><frac|w<rsup|n><around|(|\<phi\><around|(|t|)>|)><rsup|n>|t<rsup|n+1>>
+    </equation*>
+
+    gives
+
+    <\equation*>
+      t<around|(|w|)>=-<frac|1|2*\<pi\>*i>*<big|sum><rsub|n=0><rsup|\<infty\>>w<rsup|n>*<big|oint><rsub|C><frac|\<phi\><rprime|'><around|(|t|)><around|(|\<phi\><around|(|t|)>|)><rsup|n>|t<rsup|n+1>>*d*t
+    </equation*>
+
+    The residue at <math|t=0> of <math|<frac|\<phi\><rprime|'><around|(|t|)><around|(|\<phi\><around|(|t|)>|)><rsup|n>|t<rsup|n+1>>>
+    equals <math|<frac|1|n!>*<frac|d<rsup|n>|d*t<rsup|n>><around|(|\<phi\><around|(|t|)>|)><rsup|n+1><mid|\|><rsub|t=0>>.
+    By the residue theorem,
+
+    <\equation*>
+      <big|oint><rsub|C><frac|\<phi\><rprime|'><around|(|t|)><around|(|\<phi\><around|(|t|)>|)><rsup|n>|t<rsup|n+1>>*d*t=2*\<pi\>*i\<cdot\><frac|1|n!>*<frac|d<rsup|n>|d*t<rsup|n>><around|(|\<phi\><around|(|t|)>|)><rsup|n+1><mid|\|><rsub|t=0>
+    </equation*>
+
+    Substituting yields
+
+    <\equation*>
+      t<around|(|w|)>=<big|sum><rsub|n=0><rsup|\<infty\>><frac|w<rsup|n>|n!>*<frac|d<rsup|n>|d*t<rsup|n>><around|(|\<phi\><around|(|t|)>|)><rsup|n+1><mid|\|><rsub|t=0>
+    </equation*>
+
+    Reindexing with <math|m=n+1> gives <math|n=m-1>, so
+
+    <\equation*>
+      t<around|(|w|)>=<big|sum><rsub|m=1><rsup|\<infty\>><frac|w<rsup|m-1>|<around|(|m-1|)>!>*<frac|d<rsup|m-1>|d*t<rsup|m-1>><around|(|\<phi\><around|(|t|)>|)><rsup|m><mid|\|><rsub|t=0>=<big|sum><rsub|m=1><rsup|\<infty\>><frac|1|m*<around|(|m-1|)>!>*<frac|d<rsup|m-1>|d*t<rsup|m-1>><around|(|\<phi\><around|(|t|)>|)><rsup|m><mid|\|><rsub|t=0>w<rsup|m>
+    </equation*>
+
+    Define <math|c<rsub|m>\<assign\><frac|1|m*<around|(|m-1|)>!>*<frac|d<rsup|m-1>|d*t<rsup|m-1>><around|(|\<phi\><around|(|t|)>|)><rsup|m><mid|\|><rsub|t=0>>
+    for each positive integer <math|m>.
   </proof>
 
-  <subsection|Step 2: Handling the Measure Zero Condition>
+  <section|Application to the Riemann-Siegel Theta Function>
 
-  <\lemma>
-    [Derivative Vanishing on Measure Zero Sets] Let <math|f> be analytic with
-    <math|f<rprime|'>> vanishing only on a set <math|E> of measure zero. Then
-    the Cauchy integral formula and residue calculations remain valid for the
-    inversion process.
-  </lemma>
+  <subsection|Definition and Properties>
 
-  <\proof>
-    Since <math|E> has measure zero, the set
-    <math|<around|{|z:f<rprime|'><around|(|z|)>=0|}>> cannot accumulate at
-    any point in the domain of analyticity (by the identity theorem).
-    Therefore, <math|f<rprime|'><around|(|z|)>\<neq\>0> for all but a
-    discrete set of points, and the standard residue-theoretic proof of the
-    Lagrange inversion theorem applies without modification.
-
-    The key observation is that in complex analysis, sets of measure zero (in
-    the real sense) correspond to discrete or at most countable sets when
-    dealing with zeros of analytic functions. Since analytic functions are
-    determined by their behavior on any open set, the vanishing of
-    <math|f<rprime|'>> on a measure zero set does not affect the global
-    analytic properties required for the inversion formula.
-  </proof>
-
-  <subsection|Step 3: The Core Proof via Residue Theory>
-
-  The proof proceeds using the residue theorem and contour integration. Let
-
-  <\equation>
-    g<around|(|z|)>=<big|sum><rsub|n=1><rsup|\<infty\>>g<rsub|n>*z<rsup|n>
-  </equation>
-
-  \ be the inverse function of <math|f>, so that
-  <math|f<around|(|g<around|(|z|)>|)>=z>. By observing
-
-  <\equation>
-    f<around|(|w|)>=<frac|w|\<phi\><around|(|w|)>>
-  </equation>
-
-  \;
-
-  it is seen that
-
-  <\equation>
-    z=f<around|(|g<around|(|z|)>|)>=<frac|g<around|(|z|)>|\<phi\><around|(|g<around|(|z|)>|)>>
-  </equation>
-
-  which gives\ 
-
-  <\equation>
-    g<around|(|z|)>=z*\<phi\><around|(|g<around|(|z|)>|)>
-  </equation>
-
-  For any analytic function <math|H<around|(|w|)>>, consider the coefficient
-  <math|<around|[|z<rsup|n>|]>*H<around|(|g<around|(|z|)>|)>>. By the Cauchy
-  integral formula:
-
-  <\equation>
-    <around|[|z<rsup|n>|]>*H<around|(|g<around|(|z|)>|)>=<frac|1|2*\<pi\>*i>*<big|oint><rsub|<around|\||z|\|>=r><frac|H<around|(|g<around|(|z|)>|)>|z<rsup|n+1>>*d*z
-  </equation>
-
-  for sufficiently small <math|r\<gtr\>0>. The substitution <math|>
-
-  <\equation>
-    z=f<around|(|w|)>=<frac|w|\<phi\><around|(|w|)>>
-  </equation>
-
-  \ is made so that
-
-  <\equation>
-    d*z=f<rprime|'><around|(|w|)>*d*w=<frac|\<phi\><around|(|w|)>-w*\<phi\><rprime|'><around|(|w|)>|<around|(|\<phi\><around|(|w|)>|)><rsup|2>>*d*w
-  </equation>
-
-  Since <math|g<around|(|z|)>=w> when <math|z=f<around|(|w|)>>, it is the
-  case that:
-
-  <\equation>
-    <around|[|z<rsup|n>|]>*H<around|(|g<around|(|z|)>|)>=<frac|1|2*\<pi\>*i>*<big|oint><rsub|C><frac|H<around|(|w|)>|<around*|(|<frac|w|\<phi\><around|(|w|)>>|)><rsup|n+1>>\<cdot\><frac|\<phi\><around|(|w|)>-w*\<phi\><rprime|'><around|(|w|)>|<around|(|\<phi\><around|(|w|)>|)><rsup|2>>*d*w
-  </equation>
-
-  where <math|C> is the image of the circle <math|<around|\||z|\|>=r> under
-  the mapping <math|w\<mapsto\>f<around|(|w|)>>. Simplifying the integrand:
-
-  <\equation>
-    <tabular|<tformat|<table|<row|<cell|<frac|H<around|(|w|)>|<around*|(|<frac|w|\<phi\><around|(|w|)>>|)><rsup|n+1>>\<cdot\><frac|\<phi\><around|(|w|)>-w*\<phi\><rprime|'><around|(|w|)>|<around|(|\<phi\><around|(|w|)>|)><rsup|2>>>|<cell|=<frac|H<around|(|w|)>*\<phi\><around|(|w|)><rsup|n+1>|w<rsup|n+1>>\<cdot\><frac|\<phi\><around|(|w|)>-w*\<phi\><rprime|'><around|(|w|)>|<around|(|\<phi\><around|(|w|)>|)><rsup|2>>>>|<row|<cell|>|<cell|=<frac|H<around|(|w|)>*\<phi\><around|(|w|)><rsup|n-1>*<around|(|\<phi\><around|(|w|)>-w*\<phi\><rprime|'><around|(|w|)>|)>|w<rsup|n+1>>>>>>>
-  </equation>
-
-  Now, observe that:
+  The Riemann-Siegel theta function is defined for real <math|t> by
 
   <\equation*>
-    <frac|d|d*w><around*|(|<frac|H<around|(|w|)>*\<phi\><around|(|w|)><rsup|n>|n>|)>=<frac|H<rprime|'><around|(|w|)>*\<phi\><around|(|w|)><rsup|n>+H<around|(|w|)>*n*\<phi\><around|(|w|)><rsup|n-1>*\<phi\><rprime|'><around|(|w|)>|n>
+    \<theta\><around|(|t|)>=<frac|1|2>*arg
+    \<Gamma\>*<around*|(|<frac|1|4>+<frac|i*t|2>|)>-<frac|t|2>*log \<pi\>
   </equation*>
+
+  where the argument is continuous with <math|arg
+  \<Gamma\>*<around|(|1/4|)>=0>. The function <math|\<theta\><around|(|t|)>>
+  is real-valued, odd, and satisfies <math|\<theta\><around|(|0|)>=0>.
+
+  The Taylor series expansion is
 
   <\equation*>
-    =<frac|H<rprime|'><around|(|w|)>*\<phi\><around|(|w|)><rsup|n>+H<around|(|w|)>*w*\<phi\><around|(|w|)><rsup|n-1>*\<phi\><rprime|'><around|(|w|)>|n>.
+    \<theta\><around|(|t|)>=<big|sum><rsub|k=0><rsup|\<infty\>>a<rsub|k>*t<rsup|k>
   </equation*>
 
-  Therefore:
-
-  <\equation>
-    <tabular|<tformat|<table|<row|<cell|H<around|(|w|)>*\<phi\><around|(|w|)><rsup|n-1>*<around|(|\<phi\><around|(|w|)>-w*\<phi\><rprime|'><around|(|w|)>|)>>|<cell|=\<phi\><around|(|w|)><rsup|n>*H<around|(|w|)>-H<around|(|w|)>*w*\<phi\><around|(|w|)><rsup|n-1>*\<phi\><rprime|'><around|(|w|)>>>|<row|<cell|>|<cell|=n*<frac|d|d*w><around*|(|<frac|H<around|(|w|)>*\<phi\><around|(|w|)><rsup|n>|n>|)>-H<rprime|'><around|(|w|)>*\<phi\><around|(|w|)><rsup|n>>>>>>
-  </equation>
-
-  Substituting back:
+  where
 
   <\equation*>
-    <around|[|z<rsup|n>|]>*H<around|(|g<around|(|z|)>|)>=<frac|1|2*\<pi\>*i>*<big|oint><rsub|C><frac|n*<frac|d|d*w><around*|(|<frac|H<around|(|w|)>*\<phi\><around|(|w|)><rsup|n>|n>|)>-H<rprime|'><around|(|w|)>*\<phi\><around|(|w|)><rsup|n>|w<rsup|n+1>>*d*w
+    a<rsub|k>=<frac|1|k!>*<frac|d<rsup|k>|d*t<rsup|k>>*\<theta\><around|(|t|)><mid|\|><rsub|t=0>
   </equation*>
 
-  By the residue theorem, the integral of the exact differential vanishes,
-  leaving:
+  for each nonnegative integer <math|k>. Since <math|\<theta\><around|(|t|)>>
+  is odd, <math|a<rsub|k>=0> whenever <math|k> is even. For odd <math|k>, the
+  coefficient <math|a<rsub|k>> is nonzero in general, with
+  <math|a<rsub|1>=-<frac|1|2>*log \<pi\>\<neq\>0>.
 
-  <\equation>
-    <tabular|<tformat|<table|<row|<cell|>>>>><tabular|<tformat|<table|<row|<cell|<around|[|z<rsup|n>|]>*H<around|(|g<around|(|z|)>|)>>|<cell|=-<frac|1|2*\<pi\>*i>*<big|oint><rsub|C><frac|H<rprime|'><around|(|w|)>*\<phi\><around|(|w|)><rsup|n>|w<rsup|n+1>>*d*w>>|<row|<cell|>|<cell|=<frac|1|n>\<cdot\><frac|1|2*\<pi\>*i>*<big|oint><rsub|C><frac|n*H<rprime|'><around|(|w|)>*\<phi\><around|(|w|)><rsup|n>|w<rsup|n+1>>*d*w>>|<row|<cell|>|<cell|=<frac|1|n><around|[|w<rsup|n-1>|]>*<around*|(|H<rprime|'><around|(|w|)>*\<phi\><around|(|w|)><rsup|n>|)>>>>>>
-  </equation>
+  <subsection|Construction of the Auxiliary Function>
 
-  The measure zero condition on the vanishing of <math|f<rprime|'>> ensures
-  that this residue calculation is well-defined, as the contour can be chosen
-  to avoid the discrete set where <math|f<rprime|'>> vanishes.
+  Define the auxiliary function <math|\<phi\>:\<bbb-R\>\<to\>\<bbb-R\>> by
 
-  <subsection|Step 4: Special Case and Corollary>
+  <\equation*>
+    \<phi\><around|(|t|)>=<frac|t|\<theta\><around|(|t|)>>
+  </equation*>
 
-  <\corollary>
-    [Classical Lagrange Inversion Formula] Under the conditions of the main
-    theorem, with <math|H<around|(|w|)>=w>:
+  with <math|\<phi\><around|(|0|)>\<assign\>a<rsub|1><rsup|-1>>. Since
+  <math|\<theta\><around|(|t|)>=t*<big|sum><rsub|k=0><rsup|\<infty\>>a<rsub|2*k+1>*t<rsup|2*k>>,
+  the function <math|\<phi\><around|(|t|)>> is given by
 
-    <\equation>
-      g<rsub|n>=<around|[|z<rsup|n>|]>*g<around|(|z|)>=<frac|1|n><around|[|w<rsup|n-1>|]>*\<phi\><around|(|w|)><rsup|n>
-    </equation>
-  </corollary>
+  <\equation*>
+    \<phi\><around|(|t|)>=<frac|1|<big|sum><rsub|k=0><rsup|\<infty\>>a<rsub|2*k+1>*t<rsup|2*k>>=<big|sum><rsub|j=0><rsup|\<infty\>>\<phi\><rsub|j>*t<rsup|j>
+  </equation*>
 
-  <\proof>
-    This follows immediately from the main theorem by setting
-    <math|H<around|(|w|)>=w>, so that <math|H<rprime|'><around|(|w|)>=1>.
-  </proof>
+  where
 
-  <section|Applications and Remarks>
+  <\equation*>
+    \<phi\><rsub|j>=<frac|1|j!>*<frac|d<rsup|j>|d*t<rsup|j>>*\<phi\><around|(|t|)><mid|\|><rsub|t=0>
+  </equation*>
 
-  <\remark>
-    [Monotonicity and Bijectivity] The monotonicity condition ensures global
-    invertibility of the function on its real restriction, which extends to
-    local bijectivity in the complex domain. This is crucial for the validity
-    of the power series inversion.
-  </remark>
+  for each nonnegative integer <math|j>.
 
-  <\remark>
-    [Measure Zero Sets and Analyticity] In the context of complex analytic
-    functions, the condition that <math|f<rprime|'>> vanishes only on a set
-    of measure zero is automatically satisfied in most practical
-    applications, since the zeros of a non-trivial analytic function form a
-    discrete set.
-  </remark>
+  Since the denominator <math|<big|sum><rsub|k=0><rsup|\<infty\>>a<rsub|2*k+1>*t<rsup|2*k>>
+  contains only even powers of <math|t>, the reciprocal
+  <math|\<phi\><around|(|t|)>> contains only even powers. Define the
+  subsequence
 
-  <\proposition>
-    [Convergence Properties] Under the conditions of the main theorem, the
-    series <math|g<around|(|z|)>=<big|sum><rsub|n=1><rsup|\<infty\>>g<rsub|n>*z<rsup|n>>
-    converges in a disk <math|<around|\||z|\|>\<less\>R> where <math|R> is
-    determined by the radius of convergence of the original function <math|f>
-    and the behavior of <math|\<phi\>>.
-  </proposition>
+  <\equation*>
+    \<psi\><rsub|i>=\<phi\><rsub|2*i>
+  </equation*>
 
-  <section|Examples>
+  for each nonnegative integer <math|i>, so
+  <math|\<phi\><around|(|t|)>=<big|sum><rsub|i=0><rsup|\<infty\>>\<psi\><rsub|i>*t<rsup|2*i>>
+  with <math|\<psi\><rsub|0>=a<rsub|1><rsup|-1>>
 
-  <with|font-series|bold|Example 1:> Consider <math|>
+  <subsection|Inversion via Lagrange-Bürmann Formula>
 
-  <\equation>
-    f<around|(|w|)>=<frac|w|1+w>
-  </equation>
+  Apply Theorem 1 with <math|\<phi\><around|(|t|)>=<frac|t|\<theta\><around|(|t|)>>>
+  and <math|w=\<theta\><around|(|t|)>>. The compositional inverse satisfies
 
-  \ with\ 
+  <\equation*>
+    t<around|(|w|)>=<big|sum><rsub|n=1><rsup|\<infty\>>c<rsub|n>*w<rsup|n>
+  </equation*>
 
-  <\equation>
-    \<phi\><around|(|w|)>=1+w
-  </equation>
+  where
 
-  . Then:
+  <\equation*>
+    c<rsub|n>=<frac|1|n*<around|(|n-1|)>!>*<frac|d<rsup|n-1>|d*t<rsup|n-1>><around|(|\<phi\><around|(|t|)>|)><rsup|n><mid|\|><rsub|t=0>
+  </equation*>
 
-  <\equation>
-    g<rsub|n>=<frac|1|n><around|[|w<rsup|n-1>|]>*<around|(|1+w|)><rsup|n>=<frac|1|n><binom|n|n-1>=1
-  </equation>
+  Since <math|\<phi\><around|(|t|)>=<big|sum><rsub|i=0><rsup|\<infty\>>\<psi\><rsub|i>*t<rsup|2*i>>
+  contains only even powers, the power <math|<around|(|\<phi\><around|(|t|)>|)><rsup|n>>
+  contains only even powers of <math|t>. When <math|n> is even, the function
+  <math|<around|(|\<phi\><around|(|t|)>|)><rsup|n>> is even, so all odd
+  derivatives vanish at <math|t=0>. For even <math|n>, write <math|n=2*m>, so
+  <math|n-1=2*m-1> is odd, giving <math|c<rsub|2*m>=0>.
 
-  for all <math|n\<geq\>1>, giving <math|>
+  When <math|n> is odd, write <math|n=2*m-1> for a positive integer <math|m>.
+  Then <math|n-1=2*m-2> is even, and the derivative is nonzero. Define
 
-  <\equation>
-    g<around|(|z|)>=<big|sum><rsub|n=1><rsup|\<infty\>>z<rsup|n>=<frac|z|1-z>
-  </equation>
+  <\equation*>
+    b<rsub|m>=c<rsub|2*m-1>=<frac|1|<around|(|2*m-1|)>*<around|(|2*m-2|)>!>*<frac|d<rsup|2*m-2>|d*t<rsup|2*m-2>><around|(|\<phi\><around|(|t|)>|)><rsup|2*m-1><mid|\|><rsub|t=0>
+  </equation*>
 
-  , which is indeed the inverse of <math|f>.
+  for each positive integer <math|m>.
 
-  <with|font-series|bold|Example 2:> For <math|>
+  <subsection|Explicit Coefficient Formula>
 
-  <\equation>
-    f<around|(|w|)>=w*e<rsup|-w>
-  </equation>
+  The derivative <math|<frac|d<rsup|2*m-2>|d*t<rsup|2*m-2>><around|(|\<phi\><around|(|t|)>|)><rsup|2*m-1><mid|\|><rsub|t=0>>
+  equals <math|<around|(|2*m-2|)>>! times the coefficient of
+  <math|t<rsup|2*m-2>> in the Taylor expansion of
+  <math|<around|(|\<phi\><around|(|t|)>|)><rsup|2*m-1>>.
 
-  \ we have\ 
+  Write <math|<around|(|\<phi\><around|(|t|)>|)><rsup|2*m-1>=<around*|(|<big|sum><rsub|i=0><rsup|\<infty\>>\<psi\><rsub|i>*t<rsup|2*i>|)><rsup|2*m-1>>.
+  Define <math|\<cal-K\><around|(|m|)>> as the set of all sequences
+  <math|\<kappa\>=<around|(|\<kappa\><rsub|0>,\<kappa\><rsub|1>,\<kappa\><rsub|2>,\<ldots\>|)>>
+  of nonnegative integers with finite support satisfying
 
-  <\equation>
-    \<phi\><around|(|w|)>=e<rsup|w>
-  </equation>
+  <\equation*>
+    <big|sum><rsub|i=0><rsup|\<infty\>>\<kappa\><rsub|i>=2*m-1*<space|1em><text|and><space|1em><big|sum><rsub|i=0><rsup|\<infty\>>2*i*\<kappa\><rsub|i>=2*m-2
+  </equation*>
 
-  , leading to:
+  For each sequence <math|\<kappa\>\<in\>\<cal-K\><around|(|m|)>>, the
+  multinomial coefficient is
 
-  <\equation>
-    g<rsub|n>=<frac|1|n><around|[|w<rsup|n-1>|]>*e<rsup|n*w>=<frac|n<rsup|n-1>|n!>
-  </equation>
+  <\equation*>
+    <frac|<around|(|2*m-1|)>!|<big|prod><rsub|i=0><rsup|\<infty\>>\<kappa\><rsub|i>!>.
+  </equation*>
 
-  recovering the well-known series expansion for the Lambert W function.
+  The derivative is
 
-  <section|Conclusion>
+  <\equation*>
+    <frac|d<rsup|2*m-2>|d*t<rsup|2*m-2>><around|(|\<phi\><around|(|t|)>|)><rsup|2*m-1><mid|\|><rsub|t=0>=<around|(|2*m-2|)>!<big|sum><rsub|\<kappa\>\<in\>\<cal-K\><around|(|m|)>><frac|<around|(|2*m-1|)>!|<big|prod><rsub|i=0><rsup|\<infty\>>\<kappa\><rsub|i>!>*<big|prod><rsub|i=0><rsup|\<infty\>>\<psi\><rsub|i><rsup|\<kappa\><rsub|i>>
+  </equation*>
 
-  We have established the Lagrange inversion theorem with explicit attention
-  to monotonic bijective functions and measure-theoretic considerations. The
-  proof demonstrates that the classical inversion formula remains valid even
-  when the derivative vanishes on sets of measure zero, provided the
-  underlying function maintains its analytic and bijective properties. This
-  framework provides a robust foundation for applications in combinatorics,
-  probability theory, and the analysis of special functions.
+  Therefore
+
+  <\equation*>
+    b<rsub|m>=<frac|1|2*m-1>*<big|sum><rsub|\<kappa\>\<in\>\<cal-K\><around|(|m|)>><frac|<around|(|2*m-1|)>!|<big|prod><rsub|i=0><rsup|\<infty\>>\<kappa\><rsub|i>!>*<big|prod><rsub|i=0><rsup|\<infty\>>\<psi\><rsub|i><rsup|\<kappa\><rsub|i>>
+  </equation*>
+
+  <subsection|Summary>
+
+  The compositional inverse of the Riemann-Siegel theta function is
+
+  <\equation*>
+    t<around|(|w|)>=<big|sum><rsub|m=1><rsup|\<infty\>>b<rsub|m>*w<rsup|2*m-1>
+  </equation*>
+
+  where each coefficient <math|b<rsub|m>> is defined by
+
+  <\equation*>
+    b<rsub|m>=<frac|1|<around|(|2*m-1|)>*<around|(|2*m-2|)>!>*<frac|d<rsup|2*m-2>|d*t<rsup|2*m-2>><around*|(|<frac|t|\<theta\><around|(|t|)>>|)><rsup|2*m-1><mid|\|><rsub|t=0>
+  </equation*>
+
+  for each positive integer <math|m>.
 </body>
 
 <\initial>
@@ -405,66 +287,53 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-10|<tuple|6|6|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-11|<tuple|7|7|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-2|<tuple|2|2|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-3|<tuple|3|3|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-4|<tuple|4|3|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-5|<tuple|4.1|3|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-6|<tuple|4.2|4|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-7|<tuple|4.3|4|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-8|<tuple|4.4|6|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-9|<tuple|5|6|../../.TeXmacs/texts/scratch/no_name_29.tm>>
+    <associate|auto-1|<tuple|?|1|../.TeXmacs/texts/scratch/no_name_8.tm>>
+    <associate|auto-2|<tuple|1|1|../.TeXmacs/texts/scratch/no_name_8.tm>>
+    <associate|auto-3|<tuple|2|2|../.TeXmacs/texts/scratch/no_name_8.tm>>
+    <associate|auto-4|<tuple|2.1|2|../.TeXmacs/texts/scratch/no_name_8.tm>>
+    <associate|auto-5|<tuple|2.2|3|../.TeXmacs/texts/scratch/no_name_8.tm>>
+    <associate|auto-6|<tuple|2.3|3|../.TeXmacs/texts/scratch/no_name_8.tm>>
+    <associate|auto-7|<tuple|2.4|4|../.TeXmacs/texts/scratch/no_name_8.tm>>
+    <associate|auto-8|<tuple|2.5|5|../.TeXmacs/texts/scratch/no_name_8.tm>>
   </collection>
 </references>
 
 <\auxiliary>
   <\collection>
     <\associate|toc>
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Introduction>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Introduction>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-1><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Preliminaries
-      and Definitions> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>General
+      Lagrange-Bürmann Inversion Formula>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-2><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>The
-      Main Theorem> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Application
+      to the Riemann-Siegel Theta Function>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-3><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>Proof>
+      <with|par-left|<quote|1tab>|2.1<space|2spc>Definition and Properties
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-4><vspace|0.5fn>
+      <no-break><pageref|auto-4>>
 
-      <with|par-left|<quote|1tab>|4.1<space|2spc>Step 1: Establishing the
-      Bijective Property <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1tab>|2.2<space|2spc>Construction of the
+      Auxiliary Function <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-5>>
 
-      <with|par-left|<quote|1tab>|4.2<space|2spc>Step 2: Handling the Measure
-      Zero Condition <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1tab>|2.3<space|2spc>Inversion via
+      Lagrange-Bürmann Formula <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-6>>
 
-      <with|par-left|<quote|1tab>|4.3<space|2spc>Step 3: The Core Proof via
-      Residue Theory <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1tab>|2.4<space|2spc>Explicit Coefficient Formula
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-7>>
 
-      <with|par-left|<quote|1tab>|4.4<space|2spc>Step 4: Special Case and
-      Corollary <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1tab>|2.5<space|2spc>Summary
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-8>>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|5<space|2spc>Applications
-      and Remarks> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-9><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|6<space|2spc>Examples>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-10><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|7<space|2spc>Conclusion>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-11><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>

@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|generic|metal|framed-theorems>>
+<style|<tuple|generic|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Injective Measure-Preserving Time-Changes of
@@ -249,8 +249,8 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|auto-4|<tuple|1|1|../.TeXmacs/texts/scratch/no_name_11.tm>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-4|<tuple|1|1>>
   </collection>
 </references>
 

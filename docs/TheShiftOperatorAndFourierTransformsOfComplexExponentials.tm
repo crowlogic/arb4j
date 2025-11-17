@@ -85,8 +85,7 @@
       <around|\<langle\>|\<delta\><rsub|a>,\<phi\>|\<rangle\>>=\<phi\><around|(|a|)>
     </equation>
 
-    for all <math|\<phi\>\<in\>\<cal-S\><around|(|\<bbb-R\>|)>>. When
-    <math|a=0>, one writes <math|\<delta\>=\<delta\><rsub|0>>.
+    for all <math|\<phi\>\<in\>\<cal-S\><around|(|\<bbb-R\>|)>>.\ 
   </definition>
 
   <\definition>
