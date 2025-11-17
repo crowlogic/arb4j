@@ -1,0 +1,235 @@
+SPECTRAL RECOVERY FROM SAMPLE PATHS: THEOREMS AND PROOFS
+Date: 2025-11-16
+
+DEFINITIONS
+
+Let X(t) be a real-valued, zero-mean, stationary Gaussian sample path indexed by t in ℝ.
+
+The complex orthogonal random measure is denoted:
+  Φ(λ) = U(λ) - i V(λ)
+where U(λ) and V(λ) are orthogonal random measures indexed by λ ≥ 0.
+
+The sample path representation of X(t) is:
+  X(t) = ∫₀^∞ cos(λ t) dU(λ) + sin(λ t) dV(λ)
+
+The orthogonal random measures U and V form a factorization of Φ.
+
+The orthogonal random measures U and V are absolutely continuous with respect to Lebesgue measure. The Radon–Nikodym density of U is denoted u(λ) such that dU(λ) = u(λ) dλ. The Radon–Nikodym density of V is denoted v(λ) such that dV(λ) = v(λ) dλ.
+
+The Radon–Nikodym density of the complex orthogonal random measure Φ is defined as:
+  φ(λ) = u(λ) - i v(λ)
+
+The quadrature component is:
+  Ĥ(t) = ∫₀^∞ sin(λ t) dU(λ) - cos(λ t) dV(λ)
+
+The pre-envelope process is:
+  Z(t) = X(t) + i Ĥ(t)
+
+---
+
+THEOREM 1: SAMPLE PATH REPRESENTATION IN TERMS OF THE COMPLEX ORTHOGONAL RANDOM MEASURE
+
+The pre-envelope process Z(t) admits the representation:
+  Z(t) = ∫₀^∞ e^{i λ t} dΦ(λ)
+       = ∫₀^∞ e^{i λ t} φ(λ) dλ
+
+PROOF:
+
+Start with the pre-envelope process Z(t) = X(t) + i Ĥ(t).
+
+Substitute the sample path representation of X(t):
+  Z(t) = ∫₀^∞ cos(λ t) dU(λ) + sin(λ t) dV(λ)
+       + i ∫₀^∞ sin(λ t) dU(λ) - cos(λ t) dV(λ)
+
+Collect the terms by measure:
+  Z(t) = ∫₀^∞ [cos(λ t) + i sin(λ t)] dU(λ)
+       + ∫₀^∞ [sin(λ t) - i cos(λ t)] dV(λ)
+
+Apply Euler's formula to the first integral:
+  cos(λ t) + i sin(λ t) = e^{i λ t}
+
+Apply the identity to the second integral. Recognize that:
+  sin(λ t) - i cos(λ t) = -i [cos(λ t) + i sin(λ t)] = -i e^{i λ t}
+
+Therefore:
+  Z(t) = ∫₀^∞ e^{i λ t} dU(λ) - i ∫₀^∞ e^{i λ t} dV(λ)
+       = ∫₀^∞ e^{i λ t} [dU(λ) - i dV(λ)]
+       = ∫₀^∞ e^{i λ t} dΦ(λ)
+
+Since U and V are absolutely continuous, dΦ(λ) = φ(λ) dλ where φ(λ) = u(λ) - i v(λ).
+
+Thus Z(t) = ∫₀^∞ e^{i λ t} φ(λ) dλ.  QED.
+
+---
+
+THEOREM 2: INVERSION OF THE RADON–NIKODYM DENSITY φ(λ) FROM THE PRE-ENVELOPE PROCESS
+
+Let Z(t) be the pre-envelope process derived from X(t). The Radon–Nikodym density φ(λ) of the complex orthogonal random measure Φ is recovered by:
+  φ(λ) = (1 / 2π) ∫_{-∞}^{∞} Z(t) e^{-i λ t} dt
+
+PROOF:
+
+The representation from Theorem 1 is:
+  Z(t) = ∫₀^∞ e^{i λ t} φ(λ) dλ
+
+Apply the inverse Fourier transform. Multiply both sides by e^{-i ω t} and integrate over t from negative infinity to positive infinity:
+
+  ∫_{-∞}^{∞} Z(t) e^{-i ω t} dt = ∫_{-∞}^{∞} ∫₀^∞ e^{i λ t} φ(λ) dλ  e^{-i ω t} dt
+
+Interchange the order of integration (justified by Fubini's theorem under suitable integrability conditions):
+
+  ∫_{-∞}^{∞} Z(t) e^{-i ω t} dt = ∫₀^∞ φ(λ) [∫_{-∞}^{∞} e^{i (λ - ω) t} dt] dλ
+
+The inner integral is the Dirac delta function:
+  ∫_{-∞}^{∞} e^{i (λ - ω) t} dt = 2π δ(λ - ω)
+
+Therefore:
+  ∫_{-∞}^{∞} Z(t) e^{-i ω t} dt = ∫₀^∞ φ(λ) 2π δ(λ - ω) dλ = 2π φ(ω)
+
+Solve for φ(ω):
+  φ(ω) = (1 / 2π) ∫_{-∞}^{∞} Z(t) e^{-i ω t} dt
+
+The result holds for ω ≥ 0 because the delta function δ(λ - ω) vanishes when λ ∈ [0, ∞) and ω < 0.  QED.
+
+---
+
+THEOREM 3: INVERSION OF THE RADON–NIKODYM DENSITY u(λ) VIA COSINE TRANSFORM
+
+The Radon–Nikodym density u(λ) of the orthogonal random measure U is given by:
+  u(λ) = (2 / π) ∫₀^∞ X(t) cos(λ t) dt
+
+PROOF:
+
+Start with the sample path representation:
+  X(t) = ∫₀^∞ cos(λ t) dU(λ) + sin(λ t) dV(λ)
+
+Multiply both sides by cos(ω t) and integrate over t from 0 to infinity:
+  ∫₀^∞ X(t) cos(ω t) dt = ∫₀^∞ [∫₀^∞ cos(λ t) dU(λ) + sin(λ t) dV(λ)] cos(ω t) dt
+
+Interchange the order of integration:
+  ∫₀^∞ X(t) cos(ω t) dt = ∫₀^∞ dU(λ) ∫₀^∞ cos(λ t) cos(ω t) dt
+                         + ∫₀^∞ dV(λ) ∫₀^∞ sin(λ t) cos(ω t) dt
+
+Apply the orthogonality relations for trigonometric functions:
+  ∫₀^∞ cos(λ t) cos(ω t) dt = (π / 2) δ(λ - ω)
+  ∫₀^∞ sin(λ t) cos(ω t) dt = 0
+
+Therefore:
+  ∫₀^∞ X(t) cos(ω t) dt = (π / 2) ∫ dU(λ) δ(λ - ω) = (π / 2) u(ω)
+
+Solve for u(ω):
+  u(ω) = (2 / π) ∫₀^∞ X(t) cos(ω t) dt  QED.
+
+---
+
+THEOREM 4: THE ORTHOGONAL RANDOM MEASURE U(λ) FROM ITS RADON–NIKODYM DENSITY u(λ)
+
+Given the Radon–Nikodym density u(λ) from Theorem 3, the orthogonal random measure U(λ) is obtained by integration:
+  U(λ) = ∫₀^λ u(ω) dω = (2 / π) ∫₀^∞ X(t) [sin(λ t) / t] dt
+
+PROOF:
+
+By definition of measure and Radon–Nikodym density:
+  U(λ) = ∫₀^λ dU(ω) = ∫₀^λ u(ω) dω
+
+Substitute the formula for u(ω) from Theorem 3:
+  U(λ) = ∫₀^λ [(2 / π) ∫₀^∞ X(t) cos(ω t) dt] dω
+
+Interchange the order of integration:
+  U(λ) = (2 / π) ∫₀^∞ X(t) [∫₀^λ cos(ω t) dω] dt
+
+Evaluate the inner integral with respect to ω:
+  ∫₀^λ cos(ω t) dω = [sin(ω t) / t]_{ω=0}^{ω=λ} = sin(λ t) / t
+
+(The lower bound at ω = 0 contributes zero.)
+
+Substitute back:
+  U(λ) = (2 / π) ∫₀^∞ X(t) [sin(λ t) / t] dt  QED.
+
+---
+
+THEOREM 5: INVERSION OF THE RADON–NIKODYM DENSITY v(λ) VIA SINE TRANSFORM
+
+The Radon–Nikodym density v(λ) of the orthogonal random measure V is given by:
+  v(λ) = (2 / π) ∫₀^∞ X(t) sin(λ t) dt
+
+PROOF:
+
+Start with the sample path representation:
+  X(t) = ∫₀^∞ cos(λ t) dU(λ) + sin(λ t) dV(λ)
+
+Multiply both sides by sin(ω t) and integrate over t from 0 to infinity:
+  ∫₀^∞ X(t) sin(ω t) dt = ∫₀^∞ dU(λ) ∫₀^∞ cos(λ t) sin(ω t) dt
+                         + ∫₀^∞ dV(λ) ∫₀^∞ sin(λ t) sin(ω t) dt
+
+Apply the orthogonality relations:
+  ∫₀^∞ cos(λ t) sin(ω t) dt = 0
+  ∫₀^∞ sin(λ t) sin(ω t) dt = (π / 2) δ(λ - ω)
+
+Therefore:
+  ∫₀^∞ X(t) sin(ω t) dt = (π / 2) ∫ dV(λ) δ(λ - ω) = (π / 2) v(ω)
+
+Solve for v(ω):
+  v(ω) = (2 / π) ∫₀^∞ X(t) sin(ω t) dt  QED.
+
+---
+
+THEOREM 6: THE ORTHOGONAL RANDOM MEASURE V(λ) FROM ITS RADON–NIKODYM DENSITY v(λ)
+
+Given the Radon–Nikodym density v(λ) from Theorem 5, the orthogonal random measure V(λ) is obtained by integration:
+  V(λ) = ∫₀^λ v(ω) dω = (2 / π) ∫₀^∞ X(t) [1 - cos(λ t)] / t dt
+
+PROOF:
+
+By definition:
+  V(λ) = ∫₀^λ dV(ω) = ∫₀^λ v(ω) dω
+
+Substitute the formula for v(ω) from Theorem 5:
+  V(λ) = ∫₀^λ [(2 / π) ∫₀^∞ X(t) sin(ω t) dt] dω
+
+Interchange the order of integration:
+  V(λ) = (2 / π) ∫₀^∞ X(t) [∫₀^λ sin(ω t) dω] dt
+
+Evaluate the inner integral with respect to ω:
+  ∫₀^λ sin(ω t) dω = [-cos(ω t) / t]_{ω=0}^{ω=λ} = [-cos(λ t) / t + 1 / t]
+                   = [1 - cos(λ t)] / t
+
+Substitute back:
+  V(λ) = (2 / π) ∫₀^∞ X(t) [1 - cos(λ t)] / t dt  QED.
+
+---
+
+THEOREM 7: RECOVERY OF THE COMPLEX ORTHOGONAL RANDOM MEASURE Φ(λ)
+
+The complex orthogonal random measure Φ(λ) = U(λ) - i V(λ) is given by:
+  Φ(λ) = U(λ) - i V(λ)
+        = (2 / π) ∫₀^∞ X(t) [sin(λ t) / t] dt - i (2 / π) ∫₀^∞ X(t) [1 - cos(λ t)] / t dt
+
+The Radon–Nikodym density φ(λ) of Φ satisfies:
+  φ(λ) = u(λ) - i v(λ)
+        = (2 / π) ∫₀^∞ X(t) [cos(λ t) - i sin(λ t)] dt
+        = (2 / π) ∫₀^∞ X(t) e^{-i λ t} dt
+
+PROOF:
+
+From Theorem 4, U(λ) = (2 / π) ∫₀^∞ X(t) [sin(λ t) / t] dt.
+
+From Theorem 6, V(λ) = (2 / π) ∫₀^∞ X(t) [1 - cos(λ t)] / t dt.
+
+By definition, Φ(λ) = U(λ) - i V(λ).
+
+Therefore:
+  Φ(λ) = (2 / π) ∫₀^∞ X(t) {[sin(λ t) / t] - i [1 - cos(λ t)] / t} dt
+
+For the Radon–Nikodym density, from Theorems 3 and 5:
+  φ(λ) = u(λ) - i v(λ)
+        = (2 / π) ∫₀^∞ X(t) [cos(λ t) - i sin(λ t)] dt
+        = (2 / π) ∫₀^∞ X(t) e^{-i λ t} dt
+
+where the last equality follows from Euler's formula.
+
+The relationship between Radon–Nikodym density and measure is:
+  dΦ(λ) = φ(λ) dλ
+  Φ(λ) = ∫₀^λ φ(ω) dω
+
+QED.
