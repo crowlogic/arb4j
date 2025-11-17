@@ -6,7 +6,7 @@ Let (Ω, 𝒜, μ) be a σ-finite measure space, and let Φ be a complex-valued 
 
 that is measurable in each variable and define, for each t ∈ ℝ, the oscillatory function
 
-    φₜ(ω) = A(t, ω) e^{iωt}.
+    φₜ(ω) = A(t, ω) e^{iωt}
 
 The process
 
@@ -14,15 +14,15 @@ The process
 
 exists for each fixed t ∈ ℝ if and only if φₜ(ω) is quadratically integrable with respect to μ for that t, that is,
 
-    ∫_Ω |φₜ(ω)|² dμ(ω) < ∞.
+    ∫_Ω |φₜ(ω)|² dμ(ω) < ∞
 
 Equivalently, for fixed t, the gain function ω ↦ A(t, ω) must be square-integrable with respect to μ:
 
-    ∫_Ω |A(t, ω)|² dμ(ω) < ∞.
+    ∫_Ω |A(t, ω)|² dμ(ω) < ∞
 
 This condition is immediate and exact: for all t and ω,
 
-    |φₜ(ω)|² = |A(t, ω)|²,
+    |φₜ(ω)|² = |A(t, ω)|²
 
 because |e^{iωt}| = 1 for all real ω, t. Thus, if
 
