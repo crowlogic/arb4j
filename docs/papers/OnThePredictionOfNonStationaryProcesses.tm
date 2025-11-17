@@ -437,7 +437,7 @@
   <math|v\<in\><around|(|0,\<infty\>|)>> and <math|>
 
   <\equation>
-    \<partial\>*h<rsub|t-u>*<around|(|v-u|)>/\<partial\>*v=h<rsub|t-u,v><rprime|'>*<around|(|v-u|)>
+    <frac|\<partial\>*|\<partial\>*v>h<rsub|t-u>*<around|(|v-u|)>=h<rsub|t-u,v><rprime|'>*<around|(|v-u|)>
   </equation>
 
   \ exists and is continuous, then by differentiating both sides with respect
@@ -563,67 +563,67 @@
   <\collection>
     <associate|auto-1|<tuple|1|1>>
     <associate|auto-10|<tuple|6|9>>
-    <associate|auto-2|<tuple|2|3>>
-    <associate|auto-3|<tuple|3|4>>
-    <associate|auto-4|<tuple|3.1|4>>
+    <associate|auto-2|<tuple|2|2>>
+    <associate|auto-3|<tuple|3|3>>
+    <associate|auto-4|<tuple|3.1|3>>
     <associate|auto-5|<tuple|4|5>>
     <associate|auto-6|<tuple|4.1|5>>
     <associate|auto-7|<tuple|5|6>>
     <associate|auto-8|<tuple|40|8>>
     <associate|auto-9|<tuple|37|9>>
-    <associate|bib-Bartlett1955|<tuple|Bartlett1955|9>>
-    <associate|bib-Bendat1956|<tuple|Bendat1956|9>>
-    <associate|bib-Bendat1957|<tuple|Bendat1957|9>>
-    <associate|bib-Bendat1959|<tuple|Bendat1959|9>>
-    <associate|bib-Booton1952|<tuple|Booton1952|9>>
-    <associate|bib-Cramer1961a|<tuple|Cramer1961a|9>>
-    <associate|bib-Cramer1961b|<tuple|Cramer1961b|9>>
-    <associate|bib-Davis1952|<tuple|Davis1952|9>>
-    <associate|bib-Doob1953|<tuple|Doob1953|9>>
-    <associate|bib-GrangerHatanaka1964|<tuple|GrangerHatanaka1964|9>>
-    <associate|bib-GrenanderRosenblatt1957|<tuple|GrenanderRosenblatt1957|9>>
-    <associate|bib-Kalman1960|<tuple|Kalman1960|9>>
-    <associate|bib-Parzen1961|<tuple|Parzen1961|9>>
-    <associate|bib-Priestley1965|<tuple|Priestley1965|9>>
-    <associate|bib-Priestley1966|<tuple|Priestley1966|9>>
-    <associate|bib-Tricomi1957|<tuple|Tricomi1957|10>>
-    <associate|bib-Whittle1963|<tuple|Whittle1963|10>>
-    <associate|bib-Whittle1965|<tuple|Whittle1965|10>>
-    <associate|bib-Yaglom1962|<tuple|Yaglom1962|10>>
-    <associate|bib-Zadeh1953|<tuple|Zadeh1953|10>>
+    <associate|bib-Bartlett1955|<tuple|Bartlett1955|8>>
+    <associate|bib-Bendat1956|<tuple|Bendat1956|8>>
+    <associate|bib-Bendat1957|<tuple|Bendat1957|8>>
+    <associate|bib-Bendat1959|<tuple|Bendat1959|8>>
+    <associate|bib-Booton1952|<tuple|Booton1952|8>>
+    <associate|bib-Cramer1961a|<tuple|Cramer1961a|8>>
+    <associate|bib-Cramer1961b|<tuple|Cramer1961b|8>>
+    <associate|bib-Davis1952|<tuple|Davis1952|8>>
+    <associate|bib-Doob1953|<tuple|Doob1953|8>>
+    <associate|bib-GrangerHatanaka1964|<tuple|GrangerHatanaka1964|8>>
+    <associate|bib-GrenanderRosenblatt1957|<tuple|GrenanderRosenblatt1957|8>>
+    <associate|bib-Kalman1960|<tuple|Kalman1960|8>>
+    <associate|bib-Parzen1961|<tuple|Parzen1961|8>>
+    <associate|bib-Priestley1965|<tuple|Priestley1965|8>>
+    <associate|bib-Priestley1966|<tuple|Priestley1966|8>>
+    <associate|bib-Tricomi1957|<tuple|Tricomi1957|8>>
+    <associate|bib-Whittle1963|<tuple|Whittle1963|8>>
+    <associate|bib-Whittle1965|<tuple|Whittle1965|8>>
+    <associate|bib-Yaglom1962|<tuple|Yaglom1962|8>>
+    <associate|bib-Zadeh1953|<tuple|Zadeh1953|8>>
     <associate|eq:Atcont|<tuple|8|4>>
-    <associate|eq:Bt|<tuple|25|7>>
+    <associate|eq:Bt|<tuple|25|6>>
     <associate|eq:Btopt|<tuple|30|7>>
-    <associate|eq:C1star|<tuple|6|4>>
+    <associate|eq:C1star|<tuple|6|3>>
     <associate|eq:C3star|<tuple|9|4>>
-    <associate|eq:C4star|<tuple|13|5>>
-    <associate|eq:Csplit|<tuple|28|7>>
+    <associate|eq:C4star|<tuple|13|4>>
+    <associate|eq:Csplit|<tuple|28|6>>
     <associate|eq:Kt|<tuple|32|7>>
     <associate|eq:XtalphaCont|<tuple|10|4>>
-    <associate|eq:Xtplusmspec|<tuple|26|7>>
-    <associate|eq:alphahCont|<tuple|12|5>>
-    <associate|eq:btfinal|<tuple|37|8>>
-    <associate|eq:contMA|<tuple|14|5>>
+    <associate|eq:Xtplusmspec|<tuple|26|6>>
+    <associate|eq:alphahCont|<tuple|12|4>>
+    <associate|eq:btfinal|<tuple|37|7>>
+    <associate|eq:contMA|<tuple|14|4>>
     <associate|eq:contpredX|<tuple|17|5>>
-    <associate|eq:contpredsol|<tuple|19|6>>
-    <associate|eq:contpredxi|<tuple|18|6>>
+    <associate|eq:contpredsol|<tuple|19|5>>
+    <associate|eq:contpredxi|<tuple|18|5>>
     <associate|eq:conttriangular|<tuple|21|6>>
     <associate|eq:conttriangular2|<tuple|22|6>>
-    <associate|eq:contxitok|<tuple|20|6>>
+    <associate|eq:contxitok|<tuple|20|5>>
     <associate|eq:evspec|<tuple|4|3>>
-    <associate|eq:evspec-cont|<tuple|1|3>>
+    <associate|eq:evspec-cont|<tuple|1|2>>
     <associate|eq:evspec-disc|<tuple|5|3>>
     <associate|eq:evspec-disc2|<tuple|6|3>>
     <associate|eq:firstkernel|<tuple|40|8>>
-    <associate|eq:freqM|<tuple|27|7>>
+    <associate|eq:freqM|<tuple|27|6>>
     <associate|eq:freqMmin|<tuple|31|7>>
     <associate|eq:freqMsplit|<tuple|29|7>>
     <associate|eq:freqpred|<tuple|23|6>>
     <associate|eq:freqpred2|<tuple|23|6>>
     <associate|eq:freqpredspec|<tuple|24|6>>
     <associate|eq:freqtriangular|<tuple|33|7>>
-    <associate|eq:freqtriangular2|<tuple|35|8>>
-    <associate|eq:freqtriangular3|<tuple|36|8>>
+    <associate|eq:freqtriangular2|<tuple|35|7>>
+    <associate|eq:freqtriangular3|<tuple|36|7>>
     <associate|eq:iteratedkernels|<tuple|39|8>>
     <associate|eq:phiA|<tuple|3|3>>
     <associate|eq:predvar|<tuple|16|5>>
@@ -665,10 +665,6 @@
 
       Priestley1965
 
-      Priestley1965
-
-      Priestley1966
-
       GrangerHatanaka1964
 
       Priestley1965
@@ -678,8 +674,6 @@
       Bartlett1955
 
       Tricomi1957
-
-      Priestley1965
     </associate>
     <\associate|toc>
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Introduction>
@@ -711,17 +705,9 @@
       Frequency-domain Approach> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-7><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|6<space|2spc>Discussion>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-8><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|References>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-9><vspace|0.5fn>
-
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-10><vspace|0.5fn>
+      <no-break><pageref|auto-8><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>

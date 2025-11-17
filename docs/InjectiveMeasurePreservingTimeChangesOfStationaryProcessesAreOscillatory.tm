@@ -53,62 +53,7 @@
     </equation>
   </definition*>
 
-  <\theorem>
-    [Time-Varying Filter for Injective Time-Change] Let <math|S<rsub|t>> be a
-    stationary process and <math|\<theta\>:\<bbb-R\>\<to\>\<bbb-R\>> be
-    smooth and strictly increasing with <math|\<theta\><rprime|'><around|(|t|)>\<gtr\>0>.
-    To achieve the transformation
-
-    <\equation>
-      X<rsub|t>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*S<rsub|\<theta\><around|(|t|)>>
-    </equation>
-
-    via convolution
-
-    <\equation>
-      X<rsub|t>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>S<rsub|t-u>*h<rsub|t><around|(|u|)>*d*u
-    </equation>
-
-    the time-varying impulse response must be
-
-    <\equation>
-      h<rsub|t><around|(|u|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*\<delta\>*<around|(|u-<around|(|t-\<theta\><around|(|t|)>|)>|)>
-    </equation>
-  </theorem>
-
-  <\proof>
-    For the convolution to yield
-
-    <\equation>
-      X<rsub|t>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*S<rsub|\<theta\><around|(|t|)>>
-    </equation>
-
-    the argument of <math|S> in the integrand must equal
-    <math|\<theta\><around|(|t|)>> when the delta function is activated. This
-    requires:
-
-    <\equation>
-      t-u=\<theta\><around|(|t|)>
-    </equation>
-
-    Solving for <math|u>:
-
-    <\equation>
-      u=t-\<theta\><around|(|t|)>
-    </equation>
-
-    Therefore:
-
-    <\equation>
-      h<rsub|t><around|(|u|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*\<delta\>*<around|(|u-<around|(|t-\<theta\><around|(|t|)>|)>|)>
-    </equation>
-
-    Verification by direct computation:
-
-    <\align>
-      <tformat|<table|<row|<cell|X<rsub|t>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>S<rsub|t-u>*h<rsub|t><around|(|u|)>*d*u<eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>S<rsub|t-u>*<sqrt|\<theta\><rprime|'><around|(|t|)>>*\<delta\>*<around|(|u-<around|(|t-\<theta\><around|(|t|)>|)>|)>*d*u<eq-number>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*S<rsub|t-<around|(|t-\<theta\><around|(|t|)>|)>><eq-number>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*S<rsub|\<theta\><around|(|t|)>><eq-number>>>>>
-    </align>
-  </proof>
+  \;
 
   <\theorem>
     [Oscillatory Representation of Injective Time-Change] The process
