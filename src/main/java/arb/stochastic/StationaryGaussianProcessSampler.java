@@ -33,7 +33,6 @@ import javafx.stage.Stage;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-
 public abstract class StationaryGaussianProcessSampler extends
                                                        Application implements
                                                        AutoCloseable
@@ -368,13 +367,13 @@ public abstract class StationaryGaussianProcessSampler extends
                                                                           positiveFrequencyCount))
                                                        .setStyle(Charts.empiricialFrequencyDatasetStyle);
 
-    var theoryDataSet       =
-                      new DoubleDataSet("Theoretical").set(positiveFrequencies,
-                                                           theoreticalPowerSpectralDensities)
-                                                      .setStyle(Charts.theoreticalFrequencyDatasetStyle);
+    var theoreticalDataSet  =
+                           new DoubleDataSet("Theoretical").set(positiveFrequencies,
+                                                                theoreticalPowerSpectralDensities)
+                                                           .setStyle(Charts.theoreticalFrequencyDatasetStyle);
     scatterPlotRenderer.getDatasets().add(empiricalDataSet);
 
-    lineRenderer.getDatasets().add(theoryDataSet);
+    lineRenderer.getDatasets().add(theoreticalDataSet);
 
     chart.getRenderers().setAll(scatterPlotRenderer, lineRenderer);
 
