@@ -1,32 +1,33 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|article|framed-theorems>>
+<style|article>
 
 <\body>
-  <doc-data|<doc-title|Unitary Time Changes of Stationary Processes Yield
-  Oscillatory Processes<next-line>>|<doc-author|<author-data|<author-name|Stephen
+  <doc-data|<\doc-title>
+    Unitary Time Changes of Stationary Processes Yield Oscillatory Processes
+  </doc-title>|<doc-author|<author-data|<author-name|Stephen
   Crowley>>>|<doc-date|September 16, 2025>>
 
-  <\abstract>
-    A unitary time-change operator <math|U<rsub|\<theta\>>> is constructed
-    for absolutely continuous, strictly increasing time reparametrizations
-    <math|\<theta\>>, acting on functions that are locally square-integrable
-    (meaning over compact sets). Applying <math|U<rsub|\<theta\>>> to the
-    Cramér spectral representation of a stationary process yields an
-    oscillatory process in the sense of Priestley with oscillatory function
-    <math|\<varphi\><rsub|t><around|(|\<lambda\>|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>>,
-    evolutionary spectrum <math|d*F<rsub|t><around|(|\<lambda\>|)>=<wide|\<theta\>|\<dot\>><around|(|t|)>*d*F<around|(|\<lambda\>|)>>,
-    and expected zero-counting function <math|\<bbb-E\><around|[|N<rsub|<around|[|0,T|]>>|]>=<frac|<around|[|\<theta\><around|(|T|)>-\<theta\><around|(|0|)>|]>|\<pi\>>*<sqrt|-<frac|<wide|K|\<ddot\>><around|(|0|)>|K<around|(|0|)>>>>.
-    The sample paths of any non-degenerate second-order stationary process
-    are locally square integrable, making the unitary time-change operator
-    <math|U<rsub|\<theta\>>> applicable to typical realizations. A
-    zero-localization measure <math|d*\<mu\><around|(|t|)>=\<delta\><around|(|Z<around|(|t|)>|)><around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*d*t>
-    induces a Hilbert space <math|L<rsup|2><around|(|\<mu\>|)>> on the zero
-    set of each oscillatory process realization <math|Z<around|(|t|)>>, and
-    the multiplication operator <math|<around|(|L*f|)><around|(|t|)>=t*f<around|(|t|)>>
-    has simple pure point spectrum equal to the zero crossing set of
-    <math|Z>.
-  </abstract>
+  <abstract-data|<abstract|A unitary time-change operator
+  <math|U<rsub|\<theta\>>> is constructed for absolutely continuous, strictly
+  increasing time reparametrizations <math|\<theta\>>, acting on functions
+  that are locally square-integrable. Applying <math|U<rsub|\<theta\>>> to
+  the Cramér spectral representation of a stationary process yields an
+  oscillatory process in the sense of Priestley with oscillatory function
+  <math|\<varphi\><rsub|t><around|(|\<lambda\>|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>>,
+  evolutionary spectrum <math|d*F<rsub|t><around|(|\<lambda\>|)>=<wide|\<theta\>|\<dot\>><around|(|t|)>*d*F<around|(|\<lambda\>|)>>,
+  and expected zero-counting function <math|\<bbb-E\><around|[|N<rsub|<around|[|0,T|]>>|]>=N<rsub|<math-up|det>><around|(|<around|[|0,T|]>|)>+<frac|<around|[|\<theta\><around|(|T|)>-\<theta\><around|(|0|)>|]>|\<pi\>>*<sqrt|-<frac|<wide|K|\<ddot\>><around|(|0|)>|K<around|(|0|)>>>>,
+  where <math|N<rsub|<math-up|det>><around|(|<around|[|0,T|]>|)>> counts
+  deterministic zeros from critical points of the time-change. The sample
+  paths of any non-degenerate second-order stationary process are locally
+  square integrable, making the unitary time-change operator
+  <math|U<rsub|\<theta\>>> applicable to typical realizations. A
+  zero-localization measure <math|d*\<mu\><around|(|t|)>=\<delta\><around|(|Z<around|(|t|)>|)><around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*d*t>
+  induces a Hilbert space <math|L<rsup|2><around|(|\<mu\>|)>> on the zero set
+  of each oscillatory process realization <math|Z<around|(|t|)>>, and the
+  multiplication operator <math|<around|(|L*f|)><around|(|t|)>=t*f<around|(|t|)>>
+  has simple pure point spectrum equal to the zero crossing set of
+  <math|Z>.>>
 
   <\table-of-contents|toc>
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>Gaussian
@@ -267,7 +268,7 @@
 
   <\remark>
     <label|rem:L2loc_properties>Every bounded measurable set in
-    <math|\<bbb-R\>> is compact or contained in a compact set; hence
+    <math|\<bbb-R\>> is contained in a compact set; hence
     <math|L<rsup|2><rsub|<math-up|loc>><around|(|\<bbb-R\>|)>> contains
     functions that are square-integrable on every bounded interval, including
     functions with polynomial growth at infinity.
@@ -874,7 +875,7 @@
     and covariance kernel
 
     <\equation>
-      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|R<rsub|Z><around|(|t,s|)>>|<cell|=\<bbb-E\><around|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=\<bbb-E\>*<around*|[|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*X<around|(|\<theta\><around|(|t|)>|)><wide|<sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>*X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*\<bbb-E\><around|[|X<around|(|\<theta\><around|(|t|)>|)><wide|X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*R<rsub|X>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>>>><label|UTCcovar><label|eq:covariance_Z>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|R<rsub|Z><around|(|t,s|)>>|<cell|=\<bbb-E\><around|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=\<bbb-E\>*<around*|[|<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*X<around|(|\<theta\><around|(|t|)>|)><wide|<sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>*X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*\<bbb-E\><around|[|X<around|(|\<theta\><around|(|t|)>|)><wide|X<around|(|\<theta\><around|(|s|)>|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*R<rsub|X>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>>>><label|eq:covariance_Z>
     </equation>
   </theorem>
 
@@ -1620,8 +1621,6 @@
   </theorem>
 
   <\proof>
-    \;
-
     <\enumerate>
       <item>The twice-differentiability of <math|K> at <math|h=0> implies
       that the spectral measure <math|F> has finite second moment:
@@ -1681,17 +1680,19 @@
   <\theorem>
     <dueto|Expected Zero-Counting Function with Deterministic
     Atoms><label|thm:kac_rice_merged>Let <math|\<theta\>:\<bbb-R\>\<to\>\<bbb-R\>>
-    be absolutely continuous, strictly increasing, and bijective with
-    <math|<wide|\<theta\>|\<dot\>><around|(|t|)>\<ge\>0> for all <math|t> and
-    <math|<wide|\<theta\>|\<dot\>><around|(|t|)>\<gtr\>0> almost everywhere.
-    Define the zero-derivative set
+    be <math|C<rsup|1>> (continuously differentiable), strictly increasing,
+    and bijective with <math|<wide|\<theta\>|\<dot\>><around|(|t|)>\<ge\>0>
+    for all <math|t> and <math|<wide|\<theta\>|\<dot\>><around|(|t|)>\<gtr\>0>
+    almost everywhere. Define the zero-derivative set
 
     <\equation>
       T<rsub|0>\<assign\><around|{|t\<in\>\<bbb-R\>:<wide|\<theta\>|\<dot\>><around|(|t|)>=0|}>
     </equation>
 
-    Let <math|X> be a centered stationary Gaussian process with spectral
-    measure <math|F> and covariance function
+    and assume that <math|T<rsub|0>> is at most countable with no
+    accumulation points on any compact interval. Let <math|X> be a centered
+    stationary Gaussian process with spectral measure <math|F> and covariance
+    function
 
     <\equation>
       K<around|(|h|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<omega\>*h>*<space|0.17em>d*F<around|(|\<omega\>|)>
@@ -1717,19 +1718,17 @@
       N<rsub|<math-up|det>><around|(|<around|[|0,T|]>|)>\<assign\>#<around|(|T<rsub|0>\<cap\><around|[|0,T|]>|)>
     </equation>
 
-    By Theorem <reference|thm:bulinskaya>,
-    <math|N<rsub|<math-up|det>><around|(|<around|[|0,T|]>|)>> is finite
-    almost surely. The expected number of zeros of <math|Z> in
-    <math|<around|[|0,T|]>> decomposes as
+    By the assumption on <math|T<rsub|0>>,
+    <math|N<rsub|<math-up|det>><around|(|<around|[|0,T|]>|)>> is finite. The
+    expected number of zeros of <math|Z> in <math|<around|[|0,T|]>>
+    decomposes as
 
     <\equation>
-      \<bbb-E\><around|[|N<rsub|<around|[|0,T|]>><around|(|Z|)>|]>=N<rsub|<math-up|det>><around|(|<around|[|0,T|]>|)>+<frac|\<theta\><around|(|T|)>-\<theta\><around|(|0|)>|*\<pi\>>*<sqrt|-<frac|<wide|K|\<ddot\>><around|(|0|)>|K<around|(|0|)>>>
+      \<bbb-E\><around|[|N<rsub|<around|[|0,T|]>><around|(|Z|)>|]>=N<rsub|<math-up|det>><around|(|<around|[|0,T|]>|)>+<frac|\<theta\><around|(|T|)>-\<theta\><around|(|0|)>|\<pi\>>*<sqrt|-<frac|<wide|K|\<ddot\>><around|(|0|)>|K<around|(|0|)>>>
     </equation>
   </theorem>
 
   <\proof>
-    \;
-
     <\enumerate>
       <item>Define
 
@@ -1746,19 +1745,12 @@
       so each <math|t<rsub|0>\<in\>T<rsub|0>> is a deterministic zero of
       <math|Z> on every sample path.
 
-      <item>By Theorem <reference|thm:bulinskaya>, the zero set of <math|X>
-      has no accumulation points almost surely. Since <math|\<theta\>> is
-      strictly increasing and continuous, the image
-      <math|\<theta\>*<around|(|T<rsub|0>\<cap\><around|[|0,T|]>|)>> inherits
-      this property: points in <math|T<rsub|0>\<cap\><around|[|0,T|]>> cannot
-      accumulate because their images under <math|\<theta\>> would then be
-      accumulation points of zeros of <math|X>. Therefore
-      <math|T<rsub|0>\<cap\><around|[|0,T|]>> is at most countable with no
-      accumulation points, hence finite on the compact interval
-      <math|<around|[|0,T|]>>. Thus
+      <item>By the assumption that <math|T<rsub|0>> has no accumulation
+      points on compact intervals, <math|T<rsub|0>\<cap\><around|[|0,T|]>> is
+      finite. Thus
 
       <\equation>
-        N<rsub|<math-up|det>><around|(|<around|[|0,T|]>|)>=#<around|(|T<rsub|0>\<cap\><around|[|0,T|]>|)>\<less\>\<infty\>
+        N<rsub|<math-up|det>><around|(|<around|[|0,T|]>|)>=#<around|(|T<rsub|0>\<cap\><around|[|0,T|]>|)>\<less\>\<infty\>.
       </equation>
 
       <item>On the complement <math|I<rsub|T>=<around|[|0,T|]>\<setminus\>T<rsub|0>>,
@@ -1837,7 +1829,7 @@
       Therefore,
 
       <\equation>
-        \<rho\><rsub|Y><around|(|t|)>=<frac|1|\<pi\>>*<sqrt|<frac|<wide|\<theta\>|\<dot\>><around|(|t|)><rsup|2>*<around|(|-<wide|K|\<ddot\>><around|(|0|)>|)>|K<around|(|0|)>>>=<frac|<wide|\<theta\>|\<dot\>><around|(|t|)>|*\<pi\>>*<sqrt|-<frac|<wide|K|\<ddot\>><around|(|0|)>|K<around|(|0|)>>>
+        \<rho\><rsub|Y><around|(|t|)>=<frac|1|\<pi\>>*<sqrt|<frac|<wide|\<theta\>|\<dot\>><around|(|t|)><rsup|2>*<around|(|-<wide|K|\<ddot\>><around|(|0|)>|)>|K<around|(|0|)>>>=<frac|<wide|\<theta\>|\<dot\>><around|(|t|)>|\<pi\>>*<sqrt|-<frac|<wide|K|\<ddot\>><around|(|0|)>|K<around|(|0|)>>>
       </equation>
 
       <item>The expected random zero count is
@@ -1846,10 +1838,10 @@
         \<bbb-E\><around|[|N<rsub|<math-up|rand>><around|(|<around|[|0,T|]>|)>|]>=<big|int><rsub|I<rsub|T>>\<rho\><rsub|Y><around|(|t|)>*<space|0.17em>d*t
       </equation>
 
-      Since <math|T<rsub|0>> has Lebesgue measure zero,
+      Since <math|T<rsub|0>> is countable (hence Lebesgue measure zero),
 
       <\equation>
-        \<bbb-E\><around|[|N<rsub|<math-up|rand>><around|(|<around|[|0,T|]>|)>|]>=<big|int><rsub|0><rsup|T><frac|<wide|\<theta\>|\<dot\>><around|(|t|)>|*\<pi\>>*<sqrt|-<frac|<wide|K|\<ddot\>><around|(|0|)>|K<around|(|0|)>>>*<space|0.17em>d*t=<frac|\<theta\><around|(|T|)>-\<theta\><around|(|0|)>|*\<pi\>>*<sqrt|-<frac|<wide|K|\<ddot\>><around|(|0|)>|K<around|(|0|)>>>
+        \<bbb-E\><around|[|N<rsub|<math-up|rand>><around|(|<around|[|0,T|]>|)>|]>=<big|int><rsub|0><rsup|T><frac|<wide|\<theta\>|\<dot\>><around|(|t|)>|\<pi\>>*<sqrt|-<frac|<wide|K|\<ddot\>><around|(|0|)>|K<around|(|0|)>>>*<space|0.17em>d*t=<frac|\<theta\><around|(|T|)>-\<theta\><around|(|0|)>|\<pi\>>*<sqrt|-<frac|<wide|K|\<ddot\>><around|(|0|)>|K<around|(|0|)>>>
       </equation>
 
       <item>The total zero count factors as
@@ -1861,25 +1853,25 @@
       so
 
       <\equation>
-        \<bbb-E\><around|[|N<rsub|<around|[|0,T|]>><around|(|Z|)>|]>=N<rsub|<math-up|det>><around|(|<around|[|0,T|]>|)>+<frac|\<theta\><around|(|T|)>-\<theta\><around|(|0|)>|*\<pi\>>*<sqrt|-<frac|<wide|K|\<ddot\>><around|(|0|)>|K<around|(|0|)>>>
+        \<bbb-E\><around|[|N<rsub|<around|[|0,T|]>><around|(|Z|)>|]>=N<rsub|<math-up|det>><around|(|<around|[|0,T|]>|)>+<frac|\<theta\><around|(|T|)>-\<theta\><around|(|0|)>|\<pi\>>*<sqrt|-<frac|<wide|K|\<ddot\>><around|(|0|)>|K<around|(|0|)>>>
       </equation>
     </enumerate>
   </proof>
 
-  <\thebibliography|1>
-    <bibitem-with-key|1|stationaryAndRelatedStochasticProcesses>Harald Cramér
-    and M.R.<nbsp>Leadbetter. <newblock><with|font-shape|italic|Stationary
-    and Related Processes: Sample Function Properties and Their
-    Applications>. <newblock>Wiley Series in Probability and Mathematical
-    Statistics. 1967.<newblock>
+  <\bibliography|bib|tm-plain|refs>
+    <\bib-list|2>
+      <bibitem*|1><label|bib-stationaryAndRelatedStochasticProcesses>Harald
+      Cramér<localize| and >M.R.<nbsp>Leadbetter.
+      <newblock><with|font-shape|italic|Stationary and Related Processes:
+      Sample Function Properties and Their Applications>. <newblock>Wiley
+      Series in Probability and Mathematical Statistics. 1967.<newblock>
 
-    <bibitem-with-key|2|evolutionarySpectraAndNonStationaryProcesses>Maurice<nbsp>B
-    Priestley. <newblock>Evolutionary spectra and non-stationary processes.
-    <newblock><with|font-shape|italic|Journal of the Royal Statistical
-    Society: Series B (Methodological)>, 27(2):204\U229, 1965.<newblock>
-  </thebibliography>
-
-  \;
+      <bibitem*|2><label|bib-evolutionarySpectraAndNonStationaryProcesses>Maurice<nbsp>B
+      Priestley. <newblock>Evolutionary spectra and non-stationary processes.
+      <newblock><with|font-shape|italic|Journal of the Royal Statistical
+      Society: Series B (Methodological)>, 27(2):204\U229, 1965.<newblock>
+    </bib-list>
+  </bibliography>
 </body>
 
 <\initial>
@@ -1894,207 +1886,206 @@
 
 <\references>
   <\collection>
-    <associate|UTCcovar|<tuple|93|13>>
-    <associate|asm:real|<tuple|1|2>>
-    <associate|auto-1|<tuple|1|2>>
-    <associate|auto-10|<tuple|3.2.1|15>>
-    <associate|auto-11|<tuple|3.3|18>>
-    <associate|auto-12|<tuple|4|19>>
-    <associate|auto-13|<tuple|4.1|23>>
-    <associate|auto-14|<tuple|213|26>>
-    <associate|auto-2|<tuple|1.1|3>>
-    <associate|auto-3|<tuple|1.2|4>>
-    <associate|auto-4|<tuple|1.2.1|4>>
-    <associate|auto-5|<tuple|1.2.2|4>>
-    <associate|auto-6|<tuple|2|5>>
-    <associate|auto-7|<tuple|3|11>>
-    <associate|auto-8|<tuple|3.1|11>>
-    <associate|auto-9|<tuple|3.2|13>>
-    <associate|bib-evolutionarySpectraAndNonStationaryProcesses|<tuple|2|26>>
-    <associate|bib-stationaryAndRelatedStochasticProcesses|<tuple|1|26>>
-    <associate|cor:evol_spec|<tuple|16|17>>
-    <associate|def:Hmu|<tuple|20|20>>
-    <associate|def:L|<tuple|22|22>>
-    <associate|def:L2loc|<tuple|5|4>>
-    <associate|def:cramer|<tuple|3|4>>
-    <associate|def:filter_impulse_response|<tuple|11|10>>
-    <associate|def:fourier_conventions|<tuple|4|4>>
-    <associate|def:gaussian_process|<tuple|2|3>>
-    <associate|def:osc_proc|<tuple|8|5>>
-    <associate|def:zeromeasure|<tuple|18|19>>
-    <associate|eq:1|<tuple|1|2>>
-    <associate|eq:2|<tuple|2|2>>
-    <associate|eq:3|<tuple|3|2>>
-    <associate|eq:A_t_explicit|<tuple|100|14>>
-    <associate|eq:A_t_magnitude|<tuple|133|17>>
-    <associate|eq:A_t_magnitude_start|<tuple|131|17>>
-    <associate|eq:H_isomorphism|<tuple|164|21>>
-    <associate|eq:K_def|<tuple|136|18>>
-    <associate|eq:K_theta_def|<tuple|137|18>>
-    <associate|eq:K_theta_recognition|<tuple|147|19>>
-    <associate|eq:L2_norm_mu|<tuple|166|21>>
-    <associate|eq:L2_norm_simple|<tuple|53|8>>
-    <associate|eq:L_action|<tuple|174|22>>
-    <associate|eq:L_basis|<tuple|182|23>>
-    <associate|eq:L_def|<tuple|173|22>>
-    <associate|eq:L_domain|<tuple|175|22>>
-    <associate|eq:Lf_g_inner|<tuple|177|22>>
-    <associate|eq:Lf_substitution|<tuple|178|22>>
-    <associate|eq:R_Z_factored|<tuple|104|14>>
-    <associate|eq:R_Z_final|<tuple|106|14>>
-    <associate|eq:R_Z_start|<tuple|102|14>>
-    <associate|eq:R_Z_substituted|<tuple|103|14>>
-    <associate|eq:T_K_application|<tuple|140|18>>
-    <associate|eq:T_K_def|<tuple|135|18>>
-    <associate|eq:U_inv_application|<tuple|141|18>>
-    <associate|eq:U_theta_def|<tuple|71|11>>
-    <associate|eq:U_theta_inverse|<tuple|72|11>>
-    <associate|eq:Utheta_norm_start|<tuple|74|11>>
-    <associate|eq:X_covariance|<tuple|105|14>>
-    <associate|eq:X_cramer|<tuple|94|13>>
-    <associate|eq:X_sifting|<tuple|114|15>>
-    <associate|eq:X_sifting_inverse|<tuple|120|16>>
-    <associate|eq:X_theta_t|<tuple|95|13>>
-    <associate|eq:Yab_def|<tuple|24|5>>
-    <associate|eq:Z_conjugate|<tuple|36|6>>
-    <associate|eq:Z_conjugate_substituted|<tuple|38|6>>
-    <associate|eq:Z_def|<tuple|90|13>>
-    <associate|eq:Z_expanded|<tuple|96|13>>
-    <associate|eq:Z_integral|<tuple|97|13>>
-    <associate|eq:Z_oscillatory_form|<tuple|99|14>>
-    <associate|eq:Z_representation|<tuple|35|6>>
-    <associate|eq:Z_sifting|<tuple|115|16>>
-    <associate|eq:Z_sifting_inverse|<tuple|119|16>>
-    <associate|eq:Z_transformation|<tuple|107|15>>
-    <associate|eq:Z_well_defined|<tuple|57|9>>
-    <associate|eq:after_substitution|<tuple|77|12>>
-    <associate|eq:apply_forward_def|<tuple|80|12>>
-    <associate|eq:apply_inverse_def|<tuple|79|12>>
-    <associate|eq:apply_inverse_second|<tuple|85|12>>
-    <associate|eq:basis_expansion|<tuple|172|22>>
-    <associate|eq:basis_inner_product|<tuple|171|21>>
-    <associate|eq:basis_vectors|<tuple|165|21>>
-    <associate|eq:both_inverses|<tuple|89|13>>
-    <associate|eq:cancel_derivative|<tuple|159|20>>
-    <associate|eq:change_of_variables|<tuple|39|6>>
-    <associate|eq:change_var_differential|<tuple|76|11>>
-    <associate|eq:change_var_s|<tuple|143|18>>
-    <associate|eq:composition_1|<tuple|78|12>>
-    <associate|eq:composition_2|<tuple|84|12>>
-    <associate|eq:composition_forward|<tuple|122|16>>
-    <associate|eq:conjugate_t|<tuple|179|22>>
-    <associate|eq:conjugation|<tuple|138|18>>
-    <associate|eq:conjugation_expand|<tuple|139|18>>
-    <associate|eq:covariance_Z|<tuple|93|13>>
-    <associate|eq:covariance_computation|<tuple|58|9>>
-    <associate|eq:covariance_final|<tuple|61|9>>
-    <associate|eq:covariance_kernel|<tuple|17|3>>
-    <associate|eq:cramer_representation|<tuple|18|4>>
-    <associate|eq:delta_Z_decomp|<tuple|157|20>>
-    <associate|eq:delta_change_var|<tuple|153|19>>
-    <associate|eq:delta_decomposition|<tuple|151|19>>
-    <associate|eq:delta_equality|<tuple|156|20>>
-    <associate|eq:density_simple|<tuple|55|8>>
-    <associate|eq:eigenvalue_equation|<tuple|184|23>>
-    <associate|eq:evol_spec_def|<tuple|130|17>>
-    <associate|eq:evol_spec_final|<tuple|134|17>>
-    <associate|eq:evolutionary_spectrum|<tuple|129|17>>
-    <associate|eq:exp_magnitude|<tuple|132|17>>
-    <associate|eq:expand_square|<tuple|75|11>>
-    <associate|eq:f_Lg_inner|<tuple|180|22>>
-    <associate|eq:factor_inside|<tuple|146|19>>
-    <associate|eq:filter_representation|<tuple|63|10>>
-    <associate|eq:final_conjugation|<tuple|148|19>>
-    <associate|eq:finite_variance|<tuple|23|4>>
-    <associate|eq:forward_unitary_recall|<tuple|112|15>>
-    <associate|eq:fourier_forward|<tuple|20|4>>
-    <associate|eq:fourier_inverse|<tuple|21|4>>
-    <associate|eq:fubini_composition|<tuple|123|17>>
-    <associate|eq:fubini_stochastic|<tuple|59|9>>
-    <associate|eq:full_expression|<tuple|145|19>>
-    <associate|eq:g_explicit|<tuple|121|16>>
-    <associate|eq:gain_L2|<tuple|26|5>>
-    <associate|eq:gain_condition|<tuple|44|7>>
-    <associate|eq:gain_equality|<tuple|41|7>>
-    <associate|eq:gain_function_Z|<tuple|92|13>>
-    <associate|eq:gain_symmetry|<tuple|32|6>>
-    <associate|eq:h_explicit|<tuple|116|16>>
-    <associate|eq:impulse_response_fourier|<tuple|62|10>>
-    <associate|eq:impulse_simplification|<tuple|127|17>>
-    <associate|eq:inner_product_mu|<tuple|162|20>>
-    <associate|eq:integral_simple|<tuple|48|8>>
-    <associate|eq:integral_substitution|<tuple|142|18>>
-    <associate|eq:integrand_equality|<tuple|40|6>>
-    <associate|eq:interchange_sum_integral|<tuple|155|20>>
-    <associate|eq:inverse_impulse_response|<tuple|111|15>>
-    <associate|eq:inverse_transformation|<tuple|110|15>>
-    <associate|eq:inverse_unitary_recall|<tuple|118|16>>
-    <associate|eq:isometry_Psi|<tuple|170|21>>
-    <associate|eq:isometry_established|<tuple|54|8>>
-    <associate|eq:isometry_simple|<tuple|52|8>>
-    <associate|eq:isomorphism_map|<tuple|169|21>>
-    <associate|eq:left_inverse|<tuple|83|12>>
-    <associate|eq:linearity_expectation|<tuple|50|8>>
-    <associate|eq:local_isometry|<tuple|73|11>>
-    <associate|eq:mu_atomic|<tuple|152|19>>
-    <associate|eq:mu_atomic_assumption|<tuple|163|21>>
-    <associate|eq:mu_atomic_final|<tuple|161|20>>
-    <associate|eq:mu_def|<tuple|150|19>>
-    <associate|eq:mu_substitution|<tuple|158|20>>
-    <associate|eq:mu_sum|<tuple|160|20>>
-    <associate|eq:norm_equivalence|<tuple|168|21>>
-    <associate|eq:norm_sum|<tuple|167|21>>
-    <associate|eq:orthogonality_application|<tuple|51|8>>
-    <associate|eq:orthogonality_integral|<tuple|60|9>>
-    <associate|eq:orthogonality_phi|<tuple|29|5>>
-    <associate|eq:osc_func_conjugate|<tuple|43|7>>
-    <associate|eq:osc_func_def|<tuple|31|6>>
-    <associate|eq:osc_func_neg|<tuple|42|7>>
-    <associate|eq:osc_symmetry|<tuple|33|6>>
-    <associate|eq:oscillatory_covariance|<tuple|30|5>>
-    <associate|eq:oscillatory_function|<tuple|27|5>>
-    <associate|eq:oscillatory_function_Z|<tuple|91|13>>
-    <associate|eq:oscillatory_process|<tuple|28|5>>
-    <associate|eq:oscillatory_well_defined|<tuple|46|7>>
-    <associate|eq:phi_symmetry|<tuple|37|6>>
-    <associate|eq:real_valued_condition|<tuple|34|6>>
-    <associate|eq:right_inverse|<tuple|88|12>>
-    <associate|eq:second_moment_simple|<tuple|49|8>>
-    <associate|eq:self_adjoint|<tuple|181|22>>
-    <associate|eq:sift_basis|<tuple|183|23>>
-    <associate|eq:sifting_property|<tuple|113|15>>
-    <associate|eq:simple_function|<tuple|47|7>>
-    <associate|eq:simple_zeros|<tuple|149|19>>
-    <associate|eq:simplify_composition|<tuple|82|12>>
-    <associate|eq:simplify_integral|<tuple|144|18>>
-    <associate|eq:simplify_second|<tuple|87|12>>
-    <associate|eq:spectrum|<tuple|176|22>>
-    <associate|eq:spectrum_result|<tuple|185|23>>
-    <associate|eq:stationary_covariance|<tuple|19|4>>
-    <associate|eq:sum_form|<tuple|154|20>>
-    <associate|eq:theta_composition|<tuple|86|12>>
-    <associate|eq:theta_inverse_composition|<tuple|81|12>>
-    <associate|eq:time_dependent_spectrum|<tuple|45|7>>
-    <associate|eq:varphi_L2|<tuple|56|9>>
-    <associate|eq:varphi_as_gain|<tuple|101|14>>
-    <associate|eq:varphi_t_explicit|<tuple|98|14>>
-    <associate|pd|<tuple|70|11>>
-    <associate|prop:atomic|<tuple|21|21>>
-    <associate|prop:conjugation|<tuple|17|18>>
-    <associate|rem:L2loc_properties|<tuple|6|4>>
-    <associate|sec:HP|<tuple|4|19>>
-    <associate|sec:stationary_timechange|<tuple|3|11>>
-    <associate|thm:Utheta_to_osc|<tuple|14|13>>
-    <associate|thm:atomicity|<tuple|19|19>>
-    <associate|thm:bulinskaya|<tuple|24|23>>
-    <associate|thm:existence_osc|<tuple|10|7>>
-    <associate|thm:filter_representation|<tuple|12|10>>
-    <associate|thm:inverse_filter|<tuple|15|15>>
-    <associate|thm:kac_rice_merged|<tuple|25|24>>
-    <associate|thm:local_unitarity|<tuple|13|11>>
-    <associate|thm:paths_loc|<tuple|7|4>>
-    <associate|thm:realvaluedness|<tuple|9|6>>
-    <associate|thm:spectrum|<tuple|23|22>>
+    <associate|asm:real|<tuple|1|2|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|auto-1|<tuple|1|2|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|auto-10|<tuple|3.2.1|13|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|auto-11|<tuple|3.3|16|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|auto-12|<tuple|4|18|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|auto-13|<tuple|4.1|21|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|auto-14|<tuple|213|24|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|auto-2|<tuple|1.1|3|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|auto-3|<tuple|1.2|3|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|auto-4|<tuple|1.2.1|4|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|auto-5|<tuple|1.2.2|4|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|auto-6|<tuple|2|4|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|auto-7|<tuple|3|10|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|auto-8|<tuple|3.1|10|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|auto-9|<tuple|3.2|12|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|bib-evolutionarySpectraAndNonStationaryProcesses|<tuple|2|24|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|bib-stationaryAndRelatedStochasticProcesses|<tuple|1|24|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|cor:evol_spec|<tuple|16|16|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|def:Hmu|<tuple|20|19|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|def:L|<tuple|22|20|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|def:L2loc|<tuple|5|4|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|def:cramer|<tuple|3|3|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|def:filter_impulse_response|<tuple|11|9|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|def:fourier_conventions|<tuple|4|4|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|def:gaussian_process|<tuple|2|3|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|def:osc_proc|<tuple|8|4|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|def:zeromeasure|<tuple|18|18|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:1|<tuple|1|2|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:2|<tuple|2|2|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:3|<tuple|3|2|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:A_t_explicit|<tuple|100|13|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:A_t_magnitude|<tuple|133|16|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:A_t_magnitude_start|<tuple|131|16|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:H_isomorphism|<tuple|164|19|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:K_def|<tuple|136|16|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:K_theta_def|<tuple|137|16|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:K_theta_recognition|<tuple|147|17|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:L2_norm_mu|<tuple|166|19|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:L2_norm_simple|<tuple|53|7|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:L_action|<tuple|174|20|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:L_basis|<tuple|182|21|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:L_def|<tuple|173|20|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:L_domain|<tuple|175|20|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:Lf_g_inner|<tuple|177|20|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:Lf_substitution|<tuple|178|20|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:R_Z_factored|<tuple|104|13|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:R_Z_final|<tuple|106|13|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:R_Z_start|<tuple|102|13|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:R_Z_substituted|<tuple|103|13|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:T_K_application|<tuple|140|17|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:T_K_def|<tuple|135|16|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:U_inv_application|<tuple|141|17|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:U_theta_def|<tuple|71|10|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:U_theta_inverse|<tuple|72|10|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:Utheta_norm_start|<tuple|74|10|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:X_covariance|<tuple|105|13|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:X_cramer|<tuple|94|12|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:X_sifting|<tuple|114|14|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:X_sifting_inverse|<tuple|120|15|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:X_theta_t|<tuple|95|12|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:Yab_def|<tuple|24|4|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:Z_conjugate|<tuple|36|5|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:Z_conjugate_substituted|<tuple|38|6|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:Z_def|<tuple|90|12|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:Z_expanded|<tuple|96|12|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:Z_integral|<tuple|97|12|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:Z_oscillatory_form|<tuple|99|13|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:Z_representation|<tuple|35|5|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:Z_sifting|<tuple|115|14|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:Z_sifting_inverse|<tuple|119|15|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:Z_transformation|<tuple|107|13|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:Z_well_defined|<tuple|57|8|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:after_substitution|<tuple|77|10|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:apply_forward_def|<tuple|80|11|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:apply_inverse_def|<tuple|79|11|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:apply_inverse_second|<tuple|85|11|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:basis_expansion|<tuple|172|20|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:basis_inner_product|<tuple|171|20|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:basis_vectors|<tuple|165|19|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:both_inverses|<tuple|89|11|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:cancel_derivative|<tuple|159|19|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:change_of_variables|<tuple|39|6|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:change_var_differential|<tuple|76|10|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:change_var_s|<tuple|143|17|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:composition_1|<tuple|78|11|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:composition_2|<tuple|84|11|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:composition_forward|<tuple|122|15|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:conjugate_t|<tuple|179|21|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:conjugation|<tuple|138|17|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:conjugation_expand|<tuple|139|17|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:covariance_Z|<tuple|93|12|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:covariance_computation|<tuple|58|8|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:covariance_final|<tuple|61|8|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:covariance_kernel|<tuple|17|3|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:cramer_representation|<tuple|18|3|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:delta_Z_decomp|<tuple|157|18|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:delta_change_var|<tuple|153|18|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:delta_decomposition|<tuple|151|18|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:delta_equality|<tuple|156|18|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:density_simple|<tuple|55|8|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:eigenvalue_equation|<tuple|184|21|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:evol_spec_def|<tuple|130|16|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:evol_spec_final|<tuple|134|16|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:evolutionary_spectrum|<tuple|129|16|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:exp_magnitude|<tuple|132|16|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:expand_square|<tuple|75|10|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:f_Lg_inner|<tuple|180|21|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:factor_inside|<tuple|146|17|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:filter_representation|<tuple|63|9|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:final_conjugation|<tuple|148|17|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:finite_variance|<tuple|23|4|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:forward_unitary_recall|<tuple|112|14|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:fourier_forward|<tuple|20|4|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:fourier_inverse|<tuple|21|4|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:fubini_composition|<tuple|123|15|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:fubini_stochastic|<tuple|59|8|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:full_expression|<tuple|145|17|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:g_explicit|<tuple|121|15|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:gain_L2|<tuple|26|4|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:gain_condition|<tuple|44|6|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:gain_equality|<tuple|41|6|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:gain_function_Z|<tuple|92|12|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:gain_symmetry|<tuple|32|5|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:h_explicit|<tuple|116|14|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:impulse_response_fourier|<tuple|62|9|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:impulse_simplification|<tuple|127|16|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:inner_product_mu|<tuple|162|19|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:integral_simple|<tuple|48|7|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:integral_substitution|<tuple|142|17|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:integrand_equality|<tuple|40|6|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:interchange_sum_integral|<tuple|155|18|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:inverse_impulse_response|<tuple|111|14|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:inverse_transformation|<tuple|110|14|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:inverse_unitary_recall|<tuple|118|15|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:isometry_Psi|<tuple|170|20|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:isometry_established|<tuple|54|8|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:isometry_simple|<tuple|52|7|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:isomorphism_map|<tuple|169|20|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:left_inverse|<tuple|83|11|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:linearity_expectation|<tuple|50|7|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:local_isometry|<tuple|73|10|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:mu_atomic|<tuple|152|18|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:mu_atomic_assumption|<tuple|163|19|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:mu_atomic_final|<tuple|161|19|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:mu_def|<tuple|150|18|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:mu_substitution|<tuple|158|19|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:mu_sum|<tuple|160|19|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:norm_equivalence|<tuple|168|19|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:norm_sum|<tuple|167|19|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:orthogonality_application|<tuple|51|7|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:orthogonality_integral|<tuple|60|8|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:orthogonality_phi|<tuple|29|5|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:osc_func_conjugate|<tuple|43|6|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:osc_func_def|<tuple|31|5|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:osc_func_neg|<tuple|42|6|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:osc_symmetry|<tuple|33|5|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:oscillatory_covariance|<tuple|30|5|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:oscillatory_function|<tuple|27|5|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:oscillatory_function_Z|<tuple|91|12|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:oscillatory_process|<tuple|28|5|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:oscillatory_well_defined|<tuple|46|7|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:phi_symmetry|<tuple|37|6|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:real_valued_condition|<tuple|34|5|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:right_inverse|<tuple|88|11|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:second_moment_simple|<tuple|49|7|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:self_adjoint|<tuple|181|21|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:sift_basis|<tuple|183|21|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:sifting_property|<tuple|113|14|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:simple_function|<tuple|47|7|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:simple_zeros|<tuple|149|18|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:simplify_composition|<tuple|82|11|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:simplify_integral|<tuple|144|17|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:simplify_second|<tuple|87|11|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:spectrum|<tuple|176|20|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:spectrum_result|<tuple|185|21|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:stationary_covariance|<tuple|19|3|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:sum_form|<tuple|154|18|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:theta_composition|<tuple|86|11|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:theta_inverse_composition|<tuple|81|11|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:time_dependent_spectrum|<tuple|45|6|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:varphi_L2|<tuple|56|8|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:varphi_as_gain|<tuple|101|13|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|eq:varphi_t_explicit|<tuple|98|12|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|pd|<tuple|70|10|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|prop:atomic|<tuple|21|19|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|prop:conjugation|<tuple|17|16|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|rem:L2loc_properties|<tuple|6|4|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|sec:HP|<tuple|4|18|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|sec:stationary_timechange|<tuple|3|10|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|thm:Utheta_to_osc|<tuple|14|12|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|thm:atomicity|<tuple|19|18|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|thm:bulinskaya|<tuple|24|21|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|thm:existence_osc|<tuple|10|6|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|thm:filter_representation|<tuple|12|9|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|thm:inverse_filter|<tuple|15|13|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|thm:kac_rice_merged|<tuple|25|22|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|thm:local_unitarity|<tuple|13|10|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|thm:paths_loc|<tuple|7|4|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|thm:realvaluedness|<tuple|9|5|../.TeXmacs/texts/scratch/no_name_36.tm>>
+    <associate|thm:spectrum|<tuple|23|20|../.TeXmacs/texts/scratch/no_name_36.tm>>
   </collection>
 </references>
 
