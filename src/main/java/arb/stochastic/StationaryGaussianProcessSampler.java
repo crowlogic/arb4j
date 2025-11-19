@@ -28,7 +28,7 @@ import javafx.stage.Stage;
  * Abstract class for generating stationary Gaussian random process sample paths
  * using the fast Fourier transform (FFT). Sample paths are synthesized from
  * statistical white noise, the target power spectral density (PSD), and the
- * inverse FFT, producing time-domain signals and auxiliary quantities.x
+ * inverse FFT, producing time-domain signals and auxiliary quantities.
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
@@ -54,8 +54,7 @@ public abstract class StationaryGaussianProcessSampler extends
 
   private boolean        light;
 
-  final FloatInterval    timeSpan                          = new FloatInterval(0,
-                                                                               1000);
+  final FloatInterval    timeSpan                          = new FloatInterval(0, 1000);
 
   final Float            interval                          = timeSpan.length(128, new Float());
 
@@ -68,10 +67,6 @@ public abstract class StationaryGaussianProcessSampler extends
   public final double    nyquistFrequency                  = 1.0 / (2 * dt);
 
   public final int       nyquistIndex                      = N / 2;
-
-  final int              positiveFrequencyCount            = N / 2 + 1;
-
-  private final double[] positiveFrequencies               = new double[positiveFrequencyCount];
 
   public final double    df                                = 1.0 / L;
 
@@ -90,8 +85,6 @@ public abstract class StationaryGaussianProcessSampler extends
   final FloatInterval    spectralSupport;
 
   private Stage[]        stages;
-
-  private final double[] theoreticalPowerSpectralDensities = new double[positiveFrequencyCount];
 
   public Complex         whiteNoise;
 
@@ -120,7 +113,6 @@ public abstract class StationaryGaussianProcessSampler extends
 
   public double[] computePowerSpectralDensity(double[] path)
   {
-
     try ( Complex complexPath = Complex.newVector(N); Complex fft = Complex.newVector(N);
           Real mag = new Real(); Real scalingFactor = Real.valueOf(dt).div(N / 2, bits);)
     {
@@ -151,25 +143,20 @@ public abstract class StationaryGaussianProcessSampler extends
     { newTimeDomainChart(spectralSupport, samplingTimes, samplePath, envelope),
       newRandomWhiteNoiseMeasureChart(frequencies, whiteNoise),
       newAutoCorrelationChart(this, samplePath),
-      newPowerSpectralDensityChart(samplePath,
-                                   positiveFrequencies,
-                                   frequencies,
-                                   theoreticalPowerSpectralDensities,
-                                   powerSpectralDensity) })
+      newPowerSpectralDensityChart(samplePath, frequencies, powerSpectralDensity) })
           .forEach(chart -> Charts.configureChart(chart, light));
   }
 
   public void configurePowerSpectralDensityAxes(XYChart chart)
   {
     configureXAxisOfPowerSpectralDensityChart(chart);
-
     configureYAxisOfPowerSpectralDensityChart(chart);
   }
 
   public void configureXAxisOfPowerSpectralDensityChart(XYChart chart)
   {
     chart.getXAxis().setAutoRanging(false);
-    chart.getXAxis().setMin(0);
+    chart.getXAxis().setMin(-1.0);
     chart.getXAxis().setMax(1.0);
   }
 
@@ -211,7 +198,6 @@ public abstract class StationaryGaussianProcessSampler extends
       }
 
       return this;
-
     }
   }
 
@@ -246,19 +232,18 @@ public abstract class StationaryGaussianProcessSampler extends
                                                        bits,
                                                        randomMeasure.get(k));
       }
+      
+      for (int k = nyquistIndex + 1; k < N; k++)
+      {
+        int mirrorIndex = N - k;
+        randomMeasure.get(k).set(randomMeasure.get(mirrorIndex)).conj();
+      }
     }
     return randomMeasure;
   }
 
   public abstract RealFunction getKernel();
 
-  /**
-   * FIXME: Use {@link FloatInterval} and
-   * {@link RealFunction#quantize(FloatInterval, int, int, boolean)}
-   * 
-   * @param times
-   * @param values
-   */
   public abstract void getKernel(double[] times, double[] values);
 
   public abstract double[] getPowerSpectralDensity(double[] freq);
@@ -312,10 +297,8 @@ public abstract class StationaryGaussianProcessSampler extends
   public XYChart newAutoCorrelationChart(StationaryGaussianProcessSampler sampler,
                                          Complex samplePath)
   {
-    XYChart chart = new XYChart(new DefaultNumericAxis("Δt",
-                                                       ""),
-                                new DefaultNumericAxis("Correlation",
-                                                       ""));
+    XYChart chart = new XYChart(new DefaultNumericAxis("Δt", ""),
+                                new DefaultNumericAxis("Correlation", ""));
     chart.setTitle("Covariance");
     int      maxLag = (int) (StationaryGaussianProcessSampler.autocorrelationLength
                   / StationaryGaussianProcessSampler.dt) + 1;
@@ -339,44 +322,28 @@ public abstract class StationaryGaussianProcessSampler extends
   }
 
   public XYChart newPowerSpectralDensityChart(Complex samplePath,
-                                              double[] positiveFrequencies,
                                               double[] frequencies,
-                                              double[] theoreticalPowerSpectralDensities,
                                               double[] powerSpectralDensity)
   {
-    // Chart 4: PSD
-    XYChart chart = new XYChart(new DefaultNumericAxis("Frequency",
-                                                       ""),
-                                new DefaultNumericAxis("PSD",
-                                                       ""));
+    XYChart chart = new XYChart(new DefaultNumericAxis("Frequency", ""),
+                                new DefaultNumericAxis("PSD", ""));
     chart.setTitle("Power Spectral Density");
-    double[] empiricalPowerSpectralDensity = computePowerSpectralDensity(samplePath.im()
-                                                                                   .doubleValues());
-    for (int i = 0; i < positiveFrequencyCount; i++)
-    {
-      positiveFrequencies[i]               = frequencies[i];
-      theoreticalPowerSpectralDensities[i] = powerSpectralDensity[i];
-    }
+    
+    double[] empiricalPowerSpectralDensity = computePowerSpectralDensity(samplePath.im().doubleValues());
 
     var scatterPlotRenderer = newScatterChartRenderer();
     var lineRenderer        = new ErrorDataSetRenderer();
 
-    var empiricalDataSet    =
-                         new DoubleDataSet("Empirical").set(positiveFrequencies,
-                                                            Arrays.copyOf(empiricalPowerSpectralDensity,
-                                                                          positiveFrequencyCount))
-                                                       .setStyle(Charts.empiricialFrequencyDatasetStyle);
+    var empiricalDataSet    = new DoubleDataSet("Empirical").set(frequencies, empiricalPowerSpectralDensity)
+                                                             .setStyle(Charts.empiricialFrequencyDatasetStyle);
 
-    var theoreticalDataSet  =
-                           new DoubleDataSet("Theoretical").set(positiveFrequencies,
-                                                                theoreticalPowerSpectralDensities)
-                                                           .setStyle(Charts.theoreticalFrequencyDatasetStyle);
+    var theoreticalDataSet  = new DoubleDataSet("Theoretical").set(frequencies, powerSpectralDensity)
+                                                               .setStyle(Charts.theoreticalFrequencyDatasetStyle);
+    
     scatterPlotRenderer.getDatasets().add(empiricalDataSet);
-
     lineRenderer.getDatasets().add(theoreticalDataSet);
 
     chart.getRenderers().setAll(scatterPlotRenderer, lineRenderer);
-
     configurePowerSpectralDensityAxes(chart);
 
     return chart;
@@ -384,30 +351,24 @@ public abstract class StationaryGaussianProcessSampler extends
 
   public XYChart newRandomWhiteNoiseMeasureChart(double[] frequencies, Complex whiteNoise)
   {
-    XYChart chart = new XYChart(new DefaultNumericAxis("Frequency",
-                                                       ""),
-                                new DefaultNumericAxis("Measure",
-                                                       ""));
+    XYChart chart = new XYChart(new DefaultNumericAxis("Frequency", ""),
+                                new DefaultNumericAxis("Measure", ""));
     chart.setTitle("Random White Noise Measure");
 
-    final ErrorDataSetRenderer scatterPlotRenderer    = newScatterChartRenderer();
+    final ErrorDataSetRenderer scatterPlotRenderer = newScatterChartRenderer();
 
-    int                        positiveFrequencyCount = frequencies.length;
-    double[]                   realNoise              = new double[positiveFrequencyCount];
-    double[]                   imagNoise              = new double[positiveFrequencyCount];
-    double[]                   normalizedFrequencies  = new double[positiveFrequencyCount];
+    double[] realNoise = new double[N];
+    double[] imagNoise = new double[N];
 
-    for (int i = 0; i < positiveFrequencyCount; i++)
+    for (int i = 0; i < N; i++)
     {
       Complex element = whiteNoise.get(i);
-      realNoise[i]             = element.re().doubleValue();
-      imagNoise[i]             = element.im().doubleValue();
-      normalizedFrequencies[i] = frequencies[i] / nyquistFrequency; // Normalize to [0, 1]
+      realNoise[i] = element.re().doubleValue();
+      imagNoise[i] = element.im().doubleValue();
     }
 
-    DoubleDataSet realDataSet = new DoubleDataSet("Real").set(normalizedFrequencies, realNoise);
-    DoubleDataSet imagDataSet =
-                              new DoubleDataSet("Imaginary").set(normalizedFrequencies, imagNoise);
+    DoubleDataSet realDataSet = new DoubleDataSet("Real").set(frequencies, realNoise);
+    DoubleDataSet imagDataSet = new DoubleDataSet("Imaginary").set(frequencies, imagNoise);
 
     realDataSet.setStyle(Charts.randomMeasureDatasetStyle);
     imagDataSet.setStyle(Charts.randomMeasureDatasetStyle);
@@ -416,7 +377,7 @@ public abstract class StationaryGaussianProcessSampler extends
     scatterPlotRenderer.getDatasets().addAll(realDataSet, imagDataSet);
 
     chart.getXAxis().setAutoRanging(false);
-    chart.getXAxis().setMin(0.0);
+    chart.getXAxis().setMin(-1.0);
     chart.getXAxis().setMax(1.0);
 
     return chart;
@@ -438,35 +399,27 @@ public abstract class StationaryGaussianProcessSampler extends
                                     Complex samplePath,
                                     Real envelope)
   {
-    XYChart chart = new XYChart(new DefaultNumericAxis("Time",
-                                                       "?"),
-                                new DefaultNumericAxis("Level",
-                                                       "?"));
+    XYChart chart = new XYChart(new DefaultNumericAxis("Time", "?"),
+                                new DefaultNumericAxis("Level", "?"));
 
     chart.setTitle("In-Phase, Quadrature, and Envelope (±) via Hilbert Transform");
 
-    RealDataSet inPhase = new RealDataSet("In-phase",
-                                          N,
-                                          spectralSupport);
+    RealDataSet inPhase = new RealDataSet("In-phase", N, spectralSupport);
     inPhase.getTimes().set(samplingTimes);
     inPhase.getValues().set(samplePath.re());
 
-    RealDataSet quad = new RealDataSet("Quadrature",
-                                       N,
-                                       spectralSupport);
-
+    RealDataSet quad = new RealDataSet("Quadrature", N, spectralSupport);
     quad.getTimes().set(samplingTimes);
     quad.getValues().set(samplePath.im());
 
     DoubleDataSet envPos = new DoubleDataSet("Envelope (+)").set(samplingTimes.doubleValues(),
                                                                  envelope.doubleValues());
-    double[]      negEnv = new double[N];
+    double[] negEnv = new double[N];
     for (int i = 0; i < N; i++)
     {
       negEnv[i] = -envelope.get(i).doubleValue();
     }
-    DoubleDataSet envNeg = new DoubleDataSet("Envelope (–)").set(samplingTimes.doubleValues(),
-                                                                 negEnv);
+    DoubleDataSet envNeg = new DoubleDataSet("Envelope (–)").set(samplingTimes.doubleValues(), negEnv);
     chart.getDatasets().addAll(inPhase, quad, envPos, envNeg);
     return chart;
   }
@@ -496,7 +449,6 @@ public abstract class StationaryGaussianProcessSampler extends
   public void start(Stage stage)
   {
     processParameters();
-
     charts = generateAndConfigureCharts();
 
     if (separateWindows)
@@ -508,8 +460,6 @@ public abstract class StationaryGaussianProcessSampler extends
     {
       initializeWindowContainingAllCharts(stage);
       stage.show();
-
     }
   }
-
 }

@@ -1,29 +1,26 @@
 \documentclass{article}
-\usepackage[english]{babel}
-\usepackage{geometry,amsmath,amssymb,latexsym,theorem}
-\geometry{letterpaper}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathrsfs}
+\usepackage{graphicx}
+\usepackage{hyperref}
 
-%%%%%%%%%% Start TeXmacs macros
-\newcommand{\assign}{:=}
-\newcommand{\cdummy}{\cdot}
-\newcommand{\tmtextbf}[1]{\text{{\bfseries{#1}}}}
-\newcommand{\tmtextit}[1]{\text{{\itshape{#1}}}}
-\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
-\newtheorem{corollary}{Corollary}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
 \newtheorem{definition}{Definition}
 \newtheorem{proposition}{Proposition}
-{\theorembodyfont{\rmfamily}\newtheorem{remark}{Remark}}
-\newtheorem{theorem}{Theorem}
-%%%%%%%%%% End TeXmacs macros
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\tmtextbf}[1]{\textbf{#1}}
+
+
+\title{Unitary Time Changes of Stationary Processes Yield Oscillatory Processes}
+\author{Stephen Crowley}
+\date{September 16, 2025}
+
+\makeindex
 
 \begin{document}
-
-\title{Unitary Time Changes of Stationary Processes Yield Oscillatory
-Processes}
-
-\author{Stephen Crowley}
-
-\date{September 16, 2025}
 
 \maketitle
 
@@ -48,7 +45,6 @@ Processes}
   zero crossing set of $Z$.
 \end{abstract}
 
-{\tableofcontents}
 
 \section{Gaussian Processes}
 
@@ -143,7 +139,7 @@ Unless otherwise stated, all processes considered will be real-valued.
 \subsection{Definition}
 
 \begin{definition}
-  \label{def:gaussian_process}\tmtextbf{(Gaussian process)} Let $(\Omega,
+  \label{def:gaussian_process}\textbf{(Gaussian process)} Let $(\Omega,
   \mathcal{F}, \mathbb{P})$ be a probability space and $T$ a nonempty index
   set. A family $\{X_t : t \in T\}$ of real-valued random variables on
   $(\Omega, \mathcal{F}, \mathbb{P})$ is called a Gaussian process if for
@@ -163,7 +159,7 @@ Unless otherwise stated, all processes considered will be real-valued.
 \subsection{Stationary processes}
 
 \begin{definition}
-  \label{def:cramer}\tmtextbf{[Cram{\'e}r spectral representation]}
+  \label{def:cramer}\textbf{[Cram{\'e}r spectral representation]}
   {\cite{stationaryAndRelatedStochasticProcesses}} A zero-mean stationary
   process $X$ with spectral measure $F$ admits the sample path representation
   \begin{equation}
@@ -180,7 +176,7 @@ Unless otherwise stated, all processes considered will be real-valued.
 \subsubsection{Fourier Transform Conventions}
 
 \begin{definition}
-  \label{def:fourier_conventions}\tmtextbf{[Fourier transform conventions]}
+  \label{def:fourier_conventions}\textbf{[Fourier transform conventions]}
   The forward and inverse Fourier transforms on $L^2 (\mathbb{R})$ are defined
   by
   \begin{equation}
@@ -199,7 +195,7 @@ Unless otherwise stated, all processes considered will be real-valued.
 \subsubsection{Sample Path Realizations}
 
 \begin{definition}
-  \label{def:L2loc}\tmtextbf{[Locally square-integrable functions]} Define
+  \label{def:L2loc}\textbf{[Locally square-integrable functions]} Define
   \begin{equation}
     L^2_{\mathrm{loc}} (\mathbb{R}) \assign \left\{ f : \mathbb{R} \to
     \mathbb{C}: \int_K |f (t) |^2 dt < \infty \text{for every compact } K
@@ -248,7 +244,7 @@ Unless otherwise stated, all processes considered will be real-valued.
   {\cite{evolutionarySpectraAndNonStationaryProcesses}} Let $F$ be a finite
   nonnegative Borel measure on $\mathbb{R}$. Let
   \begin{equation}
-    \label{eq:gain_L2} A_t \in L^2 (F) \quad \forall t \in \mathbb{R}
+    A_t \in L^2 (F) \quad \forall t \in \mathbb{R} \label{eq:gain_L2}
   \end{equation}
   be the gain function and
   \begin{equation}
@@ -280,6 +276,206 @@ Unless otherwise stated, all processes considered will be real-valued.
     \end{array}
   \end{equation}
 \end{definition}
+
+\subsection{Triad of Gain Representations}
+
+\begin{theorem}
+  [Triad of Gain Representations]\label{thm:duality_complete}Let $A_t
+  (\omega)$ be a gain function as in \eqref{eq:gain_L2} such that for each
+  fixed $t \in \mathbb{R}$, the map $\omega \mapsto A_t (\omega)$ belongs to
+  $L^2 (\mathbb{R})$.  Then the following relationships hold
+  simultaneously:
+  \begin{equation}
+    A_t (\omega) = \int_{- \infty}^{\infty} e^{i \lambda t}  \hspace{0.17em}
+    dH_{\omega} (\lambda) = \int_{- \infty}^{\infty} h_t (u) e^{i \omega u} 
+    \hspace{0.17em} du \label{gain}
+  \end{equation}
+  \begin{equation}
+    h_t (u) = \frac{1}{2 \pi}  \int_{- \infty}^{\infty} A_t (\omega) e^{- i
+    \omega u}  \hspace{0.17em} d \omega \label{filterGain}
+  \end{equation}
+  \begin{equation}
+    H_{\omega} (\lambda) = \frac{1}{2 \pi}  \int_{- \infty}^{\infty} A_t
+    (\omega) e^{- i \lambda t}  \hspace{0.17em} dt \label{gainDistribution}
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  \begin{enumerate}
+    \
+    
+    \item Define $h (t, u)$ by \eqref{filterGain}:
+    \begin{equation}
+      h_t (u) \assign \frac{1}{2 \pi}  \int_{- \infty}^{\infty} A_t (\omega)
+      e^{- i \omega u}  \hspace{0.17em} d \omega \label{eq:def_ht}
+    \end{equation}
+    which is well-defined in $L^2(\mathbb{R})$ by Plancherel's theorem since
+    $A_t \in L^2(\mathbb{R})$ by hypothesis. Substituting \eqref{eq:def_ht}
+    into the right-hand side of \eqref{gain} yields
+    \begin{equation}
+      \begin{array}{ll}
+        \int_{- \infty}^{\infty} h_t (u) e^{i \omega u}  \hspace{0.17em} du &
+        = \int_{- \infty}^{\infty} \left( \frac{1}{2 \pi}  \int_{-
+        \infty}^{\infty} A_t (\nu) e^{- i \nu u}  \hspace{0.17em} d \nu
+        \right) e^{i \omega u}  \hspace{0.17em} du\\
+        & = \frac{1}{2 \pi}  \int_{- \infty}^{\infty} A_t (\nu) \left(
+        \int_{- \infty}^{\infty} e^{i (\omega - \nu) u}  \hspace{0.17em} du
+        \right) d \nu
+      \end{array}
+    \end{equation}
+    The inner integral is the delta function
+    \begin{equation}
+      \int_{- \infty}^{\infty} e^{i (\omega - \nu) u}  \hspace{0.17em} du = 2
+      \pi \delta (\omega - \nu)
+    \end{equation}
+    therefore,
+    \begin{equation}
+      \int_{- \infty}^{\infty} h_t (u) e^{i \omega u}  \hspace{0.17em} du =
+      \int_{- \infty}^{\infty} A_t (\nu) \delta (\omega - \nu) 
+      \hspace{0.17em} d \nu = A_t (\omega)
+    \end{equation}
+    which establishes \eqref{gain}.
+    
+    \item To show that the gain $A_t (\lambda)$ and gain distributions
+    $H_{\omega} (\lambda)$ are Fourier transform pairs fix $\omega \in
+    \mathbb{R}$. By \eqref{gain}, the function $t \mapsto A_t (\omega)$ is the
+    Fourier transform (in $t$) of the tempered distribution $H_{\omega}$:
+    \begin{equation}
+      A_t (\omega) = \int_{- \infty}^{\infty} e^{i \lambda t}  \hspace{0.17em}
+      dH_{\omega} (\lambda) =\mathcal{F}_{\lambda} [H_{\omega}] (t)
+    \end{equation}
+    where $\mathcal{F}_{\lambda}$ denotes the Fourier transform with respect
+    to $\lambda$. Consider the Fourier transform of $A_t (\omega)$ with
+    respect to $t$:
+    \begin{equation}
+      \mathcal{F}_t [A_t (\omega)] (\lambda) = \int_{- \infty}^{\infty} A_t
+      (\omega) e^{- i \lambda t}  \hspace{0.17em} dt
+    \end{equation}
+    Substituting the representation of $A_t (\omega)$,
+    \begin{equation}
+      \begin{array}{ll}
+        \int_{- \infty}^{\infty} A_t (\omega) e^{- i \lambda t} 
+        \hspace{0.17em} dt & = \int_{- \infty}^{\infty} \left( \int_{-
+        \infty}^{\infty} e^{i \lambda' t}  \hspace{0.17em} dH_{\omega}
+        (\lambda') \right) e^{- i \lambda t}  \hspace{0.17em} dt\\
+        & = \int_{- \infty}^{\infty} \left( \int_{- \infty}^{\infty} e^{i
+        (\lambda' - \lambda) t}  \hspace{0.17em} dt \right) dH_{\omega}
+        (\lambda')\\
+        & = \int_{- \infty}^{\infty} 2 \pi \delta (\lambda' - \lambda) 
+        \hspace{0.17em} dH_{\omega} (\lambda')\\
+        & = 2 \pi H_{\omega} (\lambda)
+      \end{array}
+    \end{equation}
+    Thus,
+    \begin{equation}
+      \int_{- \infty}^{\infty} A_t (\omega) e^{- i \lambda t}  \hspace{0.17em}
+      dt = 2 \pi H_{\omega} (\lambda)
+    \end{equation}
+    and rearranging gives
+    \begin{equation}
+      H_{\omega} (\lambda) = \frac{1}{2 \pi}  \int_{- \infty}^{\infty} A_t
+      (\omega) e^{- i \lambda t}  \hspace{0.17em} dt
+    \end{equation}
+    as an identity in $\mathcal{S}' (\mathbb{R})$ with respect to the
+    $\lambda$-variable. This is precisely \eqref{gain}.
+  \end{enumerate}
+  
+\end{proof}
+
+\begin{theorem}[Duality of Gain Representations]
+  \label{thm:duality}Let $A_t (\omega)$ be a complex-valued function on
+  $\mathbb{R} \times \mathbb{R}$ satisfying:
+  \begin{enumerate}
+    \item \label{item:hypothesis_t} For each fixed $\omega \in \mathbb{R}$,
+    the map $t \mapsto A_t (\omega)$ defines a tempered distribution in the
+    time variable and admits a Fourier representation in the sense that there
+    exists a tempered distribution $H_{\omega} \in \mathcal{S}' (\mathbb{R})$
+    with
+    \[ A_t (\omega) = \langle H_{\omega}, e^{i \lambda t} \rangle  \quad
+       \text{for all } t \in \mathbb{R}. \]
+    \item \label{item:hypothesis_omega} For each fixed $t \in \mathbb{R}$, the
+    function $\omega \mapsto A_t (\omega)$ belongs to $L^2 (\mathbb{R})$.
+  \end{enumerate}
+  Then there exist a family of tempered distributions $\{H_{\omega} \}_{\omega
+  \in \mathbb{R}}$ on $\mathbb{R}$ and a function $h_t (u)$ on $\mathbb{R}
+  \times \mathbb{R}$ such that the following relationships hold
+  simultaneously:
+  \begin{enumerate}
+    \item \label{eq:gain_from_measure} $A_t (\omega) = \langle H_{\omega},
+    e^{i \lambda t} \rangle$ for all $t \in \mathbb{R}$;
+    
+    \item \label{eq:gain_from_filter} $A_t (\omega) = \int_{- \infty}^{\infty}
+    h_t (u)  \hspace{0.17em} e^{i \omega u}  \hspace{0.17em} du$ for all
+    $\omega \in \mathbb{R}$, where the integral is taken in the sense of
+    $L^2$-limits;
+    
+    \item \label{eq:filter_from_gain} $h_t (u) = \frac{1}{2 \pi}  \int_{-
+    \infty}^{\infty} A_t (\omega)  \hspace{0.17em} e^{- i \omega u} 
+    \hspace{0.17em} d \omega$ for almost every $u \in \mathbb{R}$, with
+    convergence in $L^2 (\mathbb{R})$;
+    
+    \item \label{eq:measure_from_gain} as an identity in $\mathcal{S}'
+    (\mathbb{R})$ with respect to the variable $\lambda$,
+    \[ H_{\omega} = \frac{1}{2 \pi}  \int_{- \infty}^{\infty} A_t (\omega) 
+       \hspace{0.17em} e^{- i \lambda t}  \hspace{0.17em} dt, \]
+    i.e.
+    \[ \langle H_{\omega}, \varphi (\lambda) \rangle = \frac{1}{2 \pi} 
+       \int_{- \infty}^{\infty} A_t (\omega) \left( \int_{- \infty}^{\infty}
+       \varphi (\lambda) \hspace{0.17em} e^{- i \lambda t}  \hspace{0.17em} d
+       \lambda \right) dt \quad \text{for all } \varphi \in \mathcal{S}
+       (\mathbb{R}) . \]
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+  \begin{enumerate}
+    \item \tmtextbf{Proof of \eqref{eq:gain_from_measure}.} By hypothesis
+    \ref{item:hypothesis_t}, for each fixed $\omega$ there exists a tempered
+    distribution $H_{\omega} \in \mathcal{S}' (\mathbb{R})$ such that
+    \[ A_t (\omega) = \langle H_{\omega}, e^{i \lambda t} \rangle  \quad
+       \text{for all } t \in \mathbb{R}. \]
+    This is precisely the content of \eqref{eq:gain_from_measure}.
+    
+    \item \tmtextbf{Proof of \eqref{eq:filter_from_gain}.} Fix $t \in
+    \mathbb{R}$. Hypothesis \ref{item:hypothesis_omega} gives $A_t (\cdummy)
+    \in L^2 (\mathbb{R})$. By Plancherel's theorem, there exists a unique $h_t
+    \in L^2 (\mathbb{R})$ such that
+    \[ h_t (u) = \frac{1}{2 \pi}  \int_{- \infty}^{\infty} A_t (\omega) 
+       \hspace{0.17em} e^{- i \omega u}  \hspace{0.17em} d \omega \]
+    holds as an $L^2$-identity in $u$, with the integral understood as the
+    $L^2$-limit over symmetric compact intervals in $\omega$. This is exactly
+    \eqref{eq:filter_from_gain}.
+    
+    \item \tmtextbf{Proof of \eqref{eq:gain_from_filter}.} For each fixed $t$,
+    $A_t (\cdummy) \in L^2 (\mathbb{R})$ and $h_t$ is its inverse Fourier
+    transform in the $L^2$ sense. Applying the forward Fourier transform in
+    the $u$-variable to $h_t$, one obtains
+    \[ A_t (\omega) = \int_{- \infty}^{\infty} h_t (u)  \hspace{0.17em} e^{i
+       \omega u}  \hspace{0.17em} du \]
+    as an $L^2$-identity in $\omega$, again with the integral interpreted as
+    the $L^2$-limit over symmetric compact intervals. This proves
+    \eqref{eq:gain_from_filter}.
+    
+    \item \tmtextbf{Proof of \eqref{eq:measure_from_gain}.} For each fixed
+    $\omega$, hypothesis \ref{item:hypothesis_t} and
+    \eqref{eq:gain_from_measure} say that $A_{\cdot} (\omega)$ is the Fourier
+    transform (in $t$) of $H_{\omega}$:
+    \[ A_t (\omega) = \langle H_{\omega}, e^{i \lambda t} \rangle = \int_{-
+       \infty}^{\infty} e^{i \lambda t}  \hspace{0.17em} dH_{\omega} (\lambda)
+    \]
+    in the distributional sense. Taking the Fourier transform in $t$ of both
+    sides and using the usual Fourier inversion formula in $\mathcal{S}'
+    (\mathbb{R})$ yields
+    \[ \int_{- \infty}^{\infty} A_t (\omega)  \hspace{0.17em} e^{- i \lambda
+       t}  \hspace{0.17em} dt = 2 \pi \hspace{0.17em} H_{\omega} \]
+    as an identity in $\mathcal{S}' (\mathbb{R})$ with respect to $\lambda$.
+    Thus
+    \[ H_{\omega} = \frac{1}{2 \pi}  \int_{- \infty}^{\infty} A_t (\omega) 
+       \hspace{0.17em} e^{- i \lambda t}  \hspace{0.17em} dt \]
+    in $\mathcal{S}' (\mathbb{R})$, which is the statement of
+    \eqref{eq:measure_from_gain}.
+  \end{enumerate}
+\end{proof}
 
 \begin{theorem}
   \label{thm:realvaluedness}\tmtextbf{[Real-valuedness criterion for
@@ -1616,3 +1812,4 @@ $U_{\theta}$}
 \end{thebibliography}
 
 \end{document}
+
