@@ -2111,7 +2111,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * @return this
    * @throws CompilerException
    */
-  public <E extends Expression<D, C, F>> E parseRoot()
+  public <E extends Expression<? extends D, ? extends C, F>> E parseRoot()
   {
     assert rootNode
                   == null : "parse must only be called before anything else has been parsed but rootNode="
