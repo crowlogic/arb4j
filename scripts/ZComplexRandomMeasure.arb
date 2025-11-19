@@ -1,4 +1,3 @@
-Expression.saveClasses=true;
 FunctionPlotter.darkStyle=true;
 var context = new Context();
 var λ = Real.named("λ").one();
@@ -17,5 +16,11 @@ var pneg = plot( -5,120, 100*125, Z, R.realPart(), R.imagPart()  );
 var pzero = plot( -5,120, 100*125, Z, R.realPart(), R.imagPart()  );
 System.out.println(context);
 System.out.println(context.functions);
-
 FunctionPlotter.darkStyle=true;
+var Q = RealFunction.express("Z(t)/sqrt(|diff(im(lnΓ(1/4+I*t/2))-(log(π)/2)*t,t)|)",context);
+plot(qs)
+plot(qs)
+plot(qs)
+var q = Q.quantize(Math.PI,10000,250000,false,128);
+var qs=q.structure(500);
+plot(qs)
