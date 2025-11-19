@@ -46,19 +46,6 @@ public class RealDataSet extends
     domain.length(128, resolution).div(length, 128);
   }
 
-  public RealDataSet(String name, FloatInterval domain, Real x, Real y)
-  {
-    super(name,
-          2);
-    assert x.size() == y.size() : String.format("x.size = %d > y.size = %d\n", x.size(), y.size());
-    int length = x.size();
-    data        = RealMatrix.newMatrix(2, length);
-    this.domain = domain;
-    domain.length(128, resolution).div(length, 128);
-    getRealXValues().set(x);
-    getRealYValues().set(y);
-  }
-
   public RealMatrix data;
 
   public Real getRealXValues()
@@ -135,10 +122,10 @@ public class RealDataSet extends
   {
     return data.getRow(0);
   }
-
+  
   public Real getValues()
   {
     return data.getRow(1);
   }
-
+  
 }

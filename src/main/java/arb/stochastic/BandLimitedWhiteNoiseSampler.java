@@ -58,16 +58,13 @@ public class BandLimitedWhiteNoiseSampler extends
   }
 
   @Override
-  public Real getPowerSpectralDensity(Real freq, Real psd)
+  public double[] getPowerSpectralDensity(double[] freq)
   {
-    assert psd.size() == freq.size() : String.format("psd.size = %d != freq.size = %d",
-                                                     psd.size(),
-                                                     freq.size());
+    double[] psd = new double[freq.length];
 
-    for (int i = 0; i < freq.size(); i++)
+    for (int i = 0; i < freq.length; i++)
     {
-      double fi = freq.get(i).doubleValue();
-      psd.get(i).set(Math.abs(freq.get(i).doubleValue()) <= 1.0 ? 1.0 : 0);
+      psd[i] = Math.abs(freq[i]) <= 1.0 ? 1.0 : 0;
     }
     return psd;
   }
