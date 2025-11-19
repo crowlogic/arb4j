@@ -72,13 +72,16 @@ public class RandomWaveSampler extends
    * {@link Type1ChebyshevPolynomials}
    */
   @Override
-  public double[] getPowerSpectralDensity(double[] freq)
+  public Real getPowerSpectralDensity(Real freq, Real psd)
   {
-    double[] psd = new double[freq.length];
+    assert psd.size() == freq.size() : String.format("psd.size = %d != freq.size = %d",
+                                                     psd.size(),
+                                                     freq.size());
 
-    for (int i = 0; i < freq.length; i++)
+    for (int i = 0; i < freq.size(); i++)
     {
-      psd[i] = Math.abs(freq[i]) < 1.0 ? 1.0 / (PI * sqrt(1 - pow(freq[i], 2))) : 0;
+      double fi = freq.get(i).doubleValue();
+      psd.get(i).set(Math.abs(fi) < 1.0 ? 1.0 / (PI * sqrt(1 - pow(fi, 2))) : 0);
     }
     return psd;
   }
