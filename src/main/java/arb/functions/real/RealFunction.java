@@ -16,7 +16,6 @@ public interface RealFunction extends
                               Function<Real, Real>
 {
 
- 
   @Override
   default Class<Real> coDomainType()
   {
@@ -94,7 +93,7 @@ public interface RealFunction extends
                                 functionName);
   }
 
-  public static Expression<Real, Real, RealFunction> parse(String expression)
+  public static <E extends Expression<Real, Real, RealFunction>> E parse(String expression)
   {
     return Function.parse(Parser.expressionToUniqueClassname(expression),
                           expression,

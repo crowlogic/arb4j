@@ -17,19 +17,19 @@ import junit.framework.TestCase;
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
-public class RealFunctionExpressionCompilerTest extends
-                                                TestCase
+public class RealExpressionTest extends
+                                TestCase
 {
 
   public void testOptimizedExpressionRepresentation()
   {
-    Expression<Real, Real, RealFunction> parsed = RealFunction.parse("tanh(log(1+x²))/(1+x²)");
-    var                                  F      = parsed.generate();
-    var                                  f      = F.instantiate();
-    var                                  y      = f.eval(2.3);
+    RealExpression parsed = RealFunction.parse("tanh(log(1+x²))/(1+x²)");
+    var            F      = parsed.generate();
+    var            f      = F.instantiate();
+    var            y      = f.eval(2.3);
     assertEquals(0.151143929930069, y);
 
-    Expression<Real, Real, RealFunction> parsedCSE = RealFunction.parse("tanh(log(1+x²))/(1+x²)");
+    RealExpression parsedCSE = RealFunction.parse("tanh(log(1+x²))/(1+x²)");
     parsedCSE.optimize();
     var Fcse = parsedCSE.generate();
     var fcse = Fcse.instantiate();

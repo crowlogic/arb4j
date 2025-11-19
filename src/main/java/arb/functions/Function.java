@@ -30,7 +30,7 @@ public interface Function<D, C> extends
     return null;
   }
 
-  public default  <F extends Function<? extends D, ? extends C>> F integral()
+  public default <F extends Function<? extends D, ? extends C>> F integral()
   {
     assert false : "TODO: " + getClass() + " should implement this";
     return null;
@@ -284,8 +284,9 @@ public interface Function<D, C> extends
                 F extends Function<? extends D, ? extends C>,
                 PD,
                 PC,
-                PF extends Function<? extends PD, ? extends PC>>
-         Expression<D, C, F>
+                PF extends Function<? extends PD, ? extends PC>,
+                E extends Expression<D, C, F>>
+         E
          parse(String className,
                String expression,
                Context context,
