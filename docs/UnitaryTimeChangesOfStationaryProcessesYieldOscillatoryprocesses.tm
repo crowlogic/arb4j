@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|article>
+<style|<tuple|article|framed-theorems>>
 
 <\body>
   <doc-data|<\doc-title>
@@ -54,38 +54,42 @@
     Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-6><vspace|0.5fn>
 
+    <with|par-left|1tab|2.1<space|2spc>Triad of Gain Representations
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-7>>
+
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|3<space|2spc>Unitarily
     Time-Changed Stationary Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-7><vspace|0.5fn>
+    <no-break><pageref|auto-8><vspace|0.5fn>
 
     <with|par-left|1tab|3.1<space|2spc>Unitary Time-Change Operator
     <with|mode|math|U<rsub|\<theta\>>*f> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-8>>
+    <no-break><pageref|auto-9>>
 
     <with|par-left|1tab|3.2<space|2spc>Transformation of Stationary
     <with|mode|math|\<to\>> Oscillatory Processes via
     <with|mode|math|U<rsub|\<theta\>>> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-9>>
+    <no-break><pageref|auto-10>>
 
     <with|par-left|2tab|3.2.1<space|2spc>Time-Varying Filter Representations
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-10>>
+    <no-break><pageref|auto-11>>
 
     <with|par-left|1tab|3.3<space|2spc>Covariance operator conjugation
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-11>>
+    <no-break><pageref|auto-12>>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|4<space|2spc>Zero
     Localization> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-12><vspace|0.5fn>
+    <no-break><pageref|auto-13><vspace|0.5fn>
 
     <with|par-left|1tab|4.1<space|2spc>Simplicity of Zeros and Their Expected
     Counting Function <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-13>>
+    <no-break><pageref|auto-14>>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-14><vspace|0.5fn>
+    <no-break><pageref|auto-15><vspace|0.5fn>
   </table-of-contents>
 
   <section|Gaussian Processes>
@@ -317,7 +321,7 @@
     finite nonnegative Borel measure on <math|\<bbb-R\>>. Let
 
     <\equation>
-      <label|eq:gain_L2>A<rsub|t>\<in\>L<rsup|2><around|(|F|)><space|1em>\<forall\>t\<in\>\<bbb-R\>
+      A<rsub|t>\<in\>L<rsup|2><around|(|F|)><space|1em>\<forall\>t\<in\>\<bbb-R\><label|eq:gain_L2>
     </equation>
 
     be the gain function and
@@ -346,6 +350,240 @@
       <label|eq:oscillatory_covariance><tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|R<rsub|Z><around|(|t,s|)>>|<cell|=\<bbb-E\><around|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)><wide|A<rsub|s><around|(|\<lambda\>|)>|\<bar\>>e<rsup|i*\<lambda\>*<around|(|t-s|)>>*d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)><wide|\<varphi\><rsub|s><around|(|\<lambda\>|)>|\<bar\>>d*F<around|(|\<lambda\>|)>>>>>>
     </equation>
   </definition>
+
+  <subsection|Triad of Gain Representations>
+
+  <\theorem>
+    [Triad of Gain Representations]<label|thm:duality_complete>Let
+    <math|A<rsub|t><around|(|\<omega\>|)>> a gain function as in
+    <eqref|eq:gain_L2> then:
+
+    <\equation>
+      A<rsub|t><around|(|\<omega\>|)>=<with|math-display|true|<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<lambda\>*t>*<space|0.17em>d*H<rsub|\<omega\>><around|(|\<lambda\>|)>>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<rsub|t><around|(|u|)>*e<rsup|i*\<omega\>*u>*<space|0.17em>d*u<label|gain>
+    </equation>
+
+    <\equation>
+      h<rsub|t><around|(|u|)>=<with|math-display|true|<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<omega\>|)>*e<rsup|-i*\<omega\>*u>*<space|0.17em>d*\<omega\>><label|filterGain>
+    </equation>
+
+    <\equation>
+      H<rsub|\<omega\>><around|(|\<lambda\>|)>=<with|math-display|true|<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<omega\>|)>*e<rsup|-i*\<lambda\>*t>*<space|0.17em>d*t><label|gainDistribution>
+    </equation>
+  </theorem>
+
+  <\proof>
+    <\enumerate>
+      \;
+
+      <item>To show that the filter <math|h<around*|(|t,u|)>> is the inverse
+      Fourier transorm of the gain <math|A<rsub|t><around*|(|\<lambda\>|)>>
+
+      <\equation>
+        h<rsub|t><around|(|u|)>\<assign\><frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<omega\>|)>*e<rsup|-i*\<omega\>*u>*<space|0.17em>d*\<omega\><label|eq:def_ht>
+      </equation>
+
+      \ Substitute the definition from <eqref|eq:def_ht> into the right-hand
+      side of <eqref|filterGain> to yield
+
+      <\equation>
+        <tabular|<tformat|<table|<row|<cell|<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<rsub|t><around|(|u|)>*e<rsup|i*\<omega\>*u>*<space|0.17em>d*u>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|(|<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<nu\>|)>*e<rsup|-i*\<nu\>*u>*<space|0.17em>d*\<nu\>|)>*e<rsup|i*\<omega\>*u>*<space|0.17em>d*u>>|<row|<cell|>|<cell|=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<nu\>|)><around*|(|<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*<around|(|\<omega\>-\<nu\>|)>*u>*<space|0.17em>d*u|)>*d*\<nu\>>>>>>
+      </equation>
+
+      The inner integral is the delta function
+
+      <\equation>
+        <big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*<around|(|\<omega\>-\<nu\>|)>*u>*<space|0.17em>d*u=2*\<pi\>*\<delta\>*<around|(|\<omega\>-\<nu\>|)>
+      </equation>
+
+      therefore,
+
+      <\equation>
+        <big|int><rsub|-\<infty\>><rsup|\<infty\>>h<rsub|t><around|(|u|)>*e<rsup|i*\<omega\>*u>*<space|0.17em>d*u=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<nu\>|)>*\<delta\>*<around|(|\<omega\>-\<nu\>|)>*<space|0.17em>d*\<nu\>=A<rsub|t><around|(|\<omega\>|)>
+      </equation>
+
+      which establishes <eqref|filterGain>.
+
+      <item>To show that the gain <math|A<rsub|t><around*|(|\<lambda\>|)>>
+      and gain distributions <math|H<rsub|\<omega\>><around*|(|\<lambda\>|)>>
+      are Fourier transform pairs fix <math|\<omega\>\<in\>\<bbb-R\>>. By
+      <eqref|gain>, the function <math|t\<mapsto\>A<rsub|t><around|(|\<omega\>|)>>
+      is the Fourier transform (in <math|t>) of the tempered distribution
+      <math|H<rsub|\<omega\>>>:
+
+      <\equation>
+        A<rsub|t><around|(|\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<lambda\>*t>*<space|0.17em>d*H<rsub|\<omega\>><around|(|\<lambda\>|)>=\<cal-F\><rsub|\<lambda\>><around|[|H<rsub|\<omega\>>|]><around|(|t|)>
+      </equation>
+
+      where <math|\<cal-F\><rsub|\<lambda\>>> denotes the Fourier transform
+      with respect to <math|\<lambda\>>. Consider the Fourier transform of
+      <math|A<rsub|t><around|(|\<omega\>|)>> with respect to <math|t>:
+
+      <\equation>
+        \<cal-F\><rsub|t><around|[|A<rsub|t><around|(|\<omega\>|)>|]><around|(|\<lambda\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<omega\>|)>*e<rsup|-i*\<lambda\>*t>*<space|0.17em>d*t
+      </equation>
+
+      \ Substituting the representation of
+      <math|A<rsub|t><around|(|\<omega\>|)>>,
+
+      <\equation>
+        <tabular|<tformat|<table|<row|<cell|<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<omega\>|)>*e<rsup|-i*\<lambda\>*t>*<space|0.17em>d*t>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|(|<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<lambda\><rprime|'>*t>*<space|0.17em>d*H<rsub|\<omega\>><around|(|\<lambda\><rprime|'>|)>|)>*e<rsup|-i*\<lambda\>*t>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|(|<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*<around|(|\<lambda\><rprime|'>-\<lambda\>|)>*t>*<space|0.17em>d*t|)>*d*H<rsub|\<omega\>><around|(|\<lambda\><rprime|'>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>2*\<pi\>*\<delta\>*<around|(|\<lambda\><rprime|'>-\<lambda\>|)>*<space|0.17em>d*H<rsub|\<omega\>><around|(|\<lambda\><rprime|'>|)>>>|<row|<cell|>|<cell|=2*\<pi\>*H<rsub|\<omega\>><around|(|\<lambda\>|)>>>>>>
+      </equation>
+
+      Thus,
+
+      <\equation>
+        <big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<omega\>|)>*e<rsup|-i*\<lambda\>*t>*<space|0.17em>d*t=2*\<pi\>*H<rsub|\<omega\>><around|(|\<lambda\>|)>
+      </equation>
+
+      and rearranging gives
+
+      <\equation>
+        H<rsub|\<omega\>><around|(|\<lambda\>|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<omega\>|)>*e<rsup|-i*\<lambda\>*t>*<space|0.17em>d*t
+      </equation>
+
+      as an identity in <math|\<cal-S\><rprime|'><around|(|\<bbb-R\>|)>> with
+      respect to the <math|\<lambda\>>-variable. This is precisely
+      <eqref|gain>.
+    </enumerate>
+
+    \;
+  </proof>
+
+  \;
+
+  <\theorem>
+    <dueto|Duality of Gain Representations><label|thm:duality>Let
+    <math|A<rsub|t><around|(|\<omega\>|)>> be a complex-valued function on
+    <math|\<bbb-R\>\<times\>\<bbb-R\>> satisfying:
+
+    <\enumerate>
+      <item><label|item:hypothesis_t> For each fixed
+      <math|\<omega\>\<in\>\<bbb-R\>>, the map
+      <math|t\<mapsto\>A<rsub|t><around|(|\<omega\>|)>> defines a tempered
+      distribution in the time variable and admits a Fourier representation
+      in the sense that there exists a tempered distribution
+      <math|H<rsub|\<omega\>>\<in\>\<cal-S\><rprime|'><around|(|\<bbb-R\>|)>>
+      with
+
+      <\equation*>
+        A<rsub|t><around|(|\<omega\>|)>=<around|\<langle\>|H<rsub|\<omega\>>,e<rsup|i*\<lambda\>*t>|\<rangle\>>*<space|1em><text|for
+        all >t\<in\>\<bbb-R\>.
+      </equation*>
+
+      <item><label|item:hypothesis_omega> For each fixed
+      <math|t\<in\>\<bbb-R\>>, the function
+      <math|\<omega\>\<mapsto\>A<rsub|t><around|(|\<omega\>|)>> belongs to
+      <math|L<rsup|2><around|(|\<bbb-R\>|)>>.
+    </enumerate>
+
+    Then there exist a family of tempered distributions
+    <math|<around|{|H<rsub|\<omega\>>|}><rsub|\<omega\>\<in\>\<bbb-R\>>> on
+    <math|\<bbb-R\>> and a function <math|h<rsub|t><around|(|u|)>> on
+    <math|\<bbb-R\>\<times\>\<bbb-R\>> such that the following relationships
+    hold simultaneously:
+
+    <\enumerate>
+      <item><label|eq:gain_from_measure> <math|A<rsub|t><around|(|\<omega\>|)>=<around|\<langle\>|H<rsub|\<omega\>>,e<rsup|i*\<lambda\>*t>|\<rangle\>>>
+      for all <math|t\<in\>\<bbb-R\>>;
+
+      <item><label|eq:gain_from_filter> <math|A<rsub|t><around|(|\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<rsub|t><around|(|u|)>*<space|0.17em>e<rsup|i*\<omega\>*u>*<space|0.17em>d*u>
+      for all <math|\<omega\>\<in\>\<bbb-R\>>, where the integral is taken in
+      the sense of <math|L<rsup|2>>-limits;
+
+      <item><label|eq:filter_from_gain> <math|h<rsub|t><around|(|u|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<omega\>|)>*<space|0.17em>e<rsup|-i*\<omega\>*u>*<space|0.17em>d*\<omega\>>
+      for almost every <math|u\<in\>\<bbb-R\>>, with convergence in
+      <math|L<rsup|2><around|(|\<bbb-R\>|)>>;
+
+      <item><label|eq:measure_from_gain> as an identity in
+      <math|\<cal-S\><rprime|'><around|(|\<bbb-R\>|)>> with respect to the
+      variable <math|\<lambda\>>,
+
+      <\equation*>
+        H<rsub|\<omega\>>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<omega\>|)>*<space|0.17em>e<rsup|-i*\<lambda\>*t>*<space|0.17em>d*t,
+      </equation*>
+
+      i.e.
+
+      <\equation*>
+        <around|\<langle\>|H<rsub|\<omega\>>,\<varphi\><around|(|\<lambda\>|)>|\<rangle\>>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<omega\>|)><around*|(|<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<varphi\><around|(|\<lambda\>|)>*<space|0.17em>e<rsup|-i*\<lambda\>*t>*<space|0.17em>d*\<lambda\>|)>*d*t*<space|1em><text|for
+        all >\<varphi\>\<in\>\<cal-S\><around|(|\<bbb-R\>|)>.
+      </equation*>
+    </enumerate>
+  </theorem>
+
+  <\proof>
+    <\enumerate>
+      <item><with|font-series|bold|Proof of <eqref|eq:gain_from_measure>.> By
+      hypothesis <reference|item:hypothesis_t>, for each fixed
+      <math|\<omega\>> there exists a tempered distribution
+      <math|H<rsub|\<omega\>>\<in\>\<cal-S\><rprime|'><around|(|\<bbb-R\>|)>>
+      such that
+
+      <\equation*>
+        A<rsub|t><around|(|\<omega\>|)>=<around|\<langle\>|H<rsub|\<omega\>>,e<rsup|i*\<lambda\>*t>|\<rangle\>>*<space|1em><text|for
+        all >t\<in\>\<bbb-R\>.
+      </equation*>
+
+      This is precisely the content of <eqref|eq:gain_from_measure>.
+
+      <item><with|font-series|bold|Proof of <eqref|eq:filter_from_gain>.> Fix
+      <math|t\<in\>\<bbb-R\>>. Hypothesis <reference|item:hypothesis_omega>
+      gives <math|A<rsub|t><around|(|\<cdummy\>|)>\<in\>L<rsup|2><around|(|\<bbb-R\>|)>>.
+      By Plancherel's theorem, there exists a unique
+      <math|h<rsub|t>\<in\>L<rsup|2><around|(|\<bbb-R\>|)>> such that
+
+      <\equation*>
+        h<rsub|t><around|(|u|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<omega\>|)>*<space|0.17em>e<rsup|-i*\<omega\>*u>*<space|0.17em>d*\<omega\>
+      </equation*>
+
+      holds as an <math|L<rsup|2>>-identity in <math|u>, with the integral
+      understood as the <math|L<rsup|2>>-limit over symmetric compact
+      intervals in <math|\<omega\>>. This is exactly
+      <eqref|eq:filter_from_gain>.
+
+      <item><with|font-series|bold|Proof of <eqref|eq:gain_from_filter>.> For
+      each fixed <math|t>, <math|A<rsub|t><around|(|\<cdummy\>|)>\<in\>L<rsup|2><around|(|\<bbb-R\>|)>>
+      and <math|h<rsub|t>> is its inverse Fourier transform in the
+      <math|L<rsup|2>> sense. Applying the forward Fourier transform in the
+      <math|u>-variable to <math|h<rsub|t>>, one obtains
+
+      <\equation*>
+        A<rsub|t><around|(|\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<rsub|t><around|(|u|)>*<space|0.17em>e<rsup|i*\<omega\>*u>*<space|0.17em>d*u
+      </equation*>
+
+      as an <math|L<rsup|2>>-identity in <math|\<omega\>>, again with the
+      integral interpreted as the <math|L<rsup|2>>-limit over symmetric
+      compact intervals. This proves <eqref|eq:gain_from_filter>.
+
+      <item><with|font-series|bold|Proof of <eqref|eq:measure_from_gain>.>
+      For each fixed <math|\<omega\>>, hypothesis
+      <reference|item:hypothesis_t> and <eqref|eq:gain_from_measure> say that
+      <math|A<rsub|\<cdot\>><around|(|\<omega\>|)>> is the Fourier transform
+      (in <math|t>) of <math|H<rsub|\<omega\>>>:
+
+      <\equation*>
+        A<rsub|t><around|(|\<omega\>|)>=<around|\<langle\>|H<rsub|\<omega\>>,e<rsup|i*\<lambda\>*t>|\<rangle\>>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<lambda\>*t>*<space|0.17em>d*H<rsub|\<omega\>><around|(|\<lambda\>|)>
+      </equation*>
+
+      in the distributional sense. Taking the Fourier transform in <math|t>
+      of both sides and using the usual Fourier inversion formula in
+      <math|\<cal-S\><rprime|'><around|(|\<bbb-R\>|)>> yields
+
+      <\equation*>
+        <big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<omega\>|)>*<space|0.17em>e<rsup|-i*\<lambda\>*t>*<space|0.17em>d*t=2*\<pi\>*<space|0.17em>H<rsub|\<omega\>>
+      </equation*>
+
+      as an identity in <math|\<cal-S\><rprime|'><around|(|\<bbb-R\>|)>> with
+      respect to <math|\<lambda\>>. Thus
+
+      <\equation*>
+        H<rsub|\<omega\>>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<omega\>|)>*<space|0.17em>e<rsup|-i*\<lambda\>*t>*<space|0.17em>d*t
+      </equation*>
+
+      in <math|\<cal-S\><rprime|'><around|(|\<bbb-R\>|)>>, which is the
+      statement of <eqref|eq:measure_from_gain>.
+    </enumerate>
+  </proof>
 
   <\theorem>
     <label|thm:realvaluedness><with|font-series|bold|[Real-valuedness
@@ -1888,204 +2126,217 @@
   <\collection>
     <associate|asm:real|<tuple|1|2>>
     <associate|auto-1|<tuple|1|2>>
-    <associate|auto-10|<tuple|3.2.1|13>>
-    <associate|auto-11|<tuple|3.3|16>>
-    <associate|auto-12|<tuple|4|18>>
-    <associate|auto-13|<tuple|4.1|21>>
-    <associate|auto-14|<tuple|213|24>>
+    <associate|auto-10|<tuple|3.2|15>>
+    <associate|auto-11|<tuple|3.2.1|17>>
+    <associate|auto-12|<tuple|3.3|20>>
+    <associate|auto-13|<tuple|4|21>>
+    <associate|auto-14|<tuple|4.1|25>>
+    <associate|auto-15|<tuple|225|28>>
     <associate|auto-2|<tuple|1.1|3>>
     <associate|auto-3|<tuple|1.2|3>>
     <associate|auto-4|<tuple|1.2.1|4>>
     <associate|auto-5|<tuple|1.2.2|4>>
-    <associate|auto-6|<tuple|2|4>>
-    <associate|auto-7|<tuple|3|10>>
-    <associate|auto-8|<tuple|3.1|10>>
-    <associate|auto-9|<tuple|3.2|12>>
-    <associate|bib-evolutionarySpectraAndNonStationaryProcesses|<tuple|2|24>>
-    <associate|bib-stationaryAndRelatedStochasticProcesses|<tuple|1|24>>
-    <associate|cor:evol_spec|<tuple|16|16>>
-    <associate|def:Hmu|<tuple|20|19>>
-    <associate|def:L|<tuple|22|20>>
+    <associate|auto-6|<tuple|2|5>>
+    <associate|auto-7|<tuple|2.1|5>>
+    <associate|auto-8|<tuple|3|13>>
+    <associate|auto-9|<tuple|3.1|13>>
+    <associate|bib-evolutionarySpectraAndNonStationaryProcesses|<tuple|2|28>>
+    <associate|bib-stationaryAndRelatedStochasticProcesses|<tuple|1|28>>
+    <associate|cor:evol_spec|<tuple|18|19>>
+    <associate|def:Hmu|<tuple|22|22>>
+    <associate|def:L|<tuple|24|24>>
     <associate|def:L2loc|<tuple|5|4>>
     <associate|def:cramer|<tuple|3|3>>
-    <associate|def:filter_impulse_response|<tuple|11|9>>
+    <associate|def:filter_impulse_response|<tuple|13|12>>
     <associate|def:fourier_conventions|<tuple|4|4>>
     <associate|def:gaussian_process|<tuple|2|3>>
-    <associate|def:osc_proc|<tuple|8|4>>
-    <associate|def:zeromeasure|<tuple|18|18>>
+    <associate|def:osc_proc|<tuple|8|5>>
+    <associate|def:zeromeasure|<tuple|20|21>>
     <associate|eq:1|<tuple|1|2>>
     <associate|eq:2|<tuple|2|2>>
     <associate|eq:3|<tuple|3|2>>
-    <associate|eq:A_t_explicit|<tuple|100|13>>
-    <associate|eq:A_t_magnitude|<tuple|133|16>>
-    <associate|eq:A_t_magnitude_start|<tuple|131|16>>
-    <associate|eq:H_isomorphism|<tuple|164|19>>
-    <associate|eq:K_def|<tuple|136|16>>
-    <associate|eq:K_theta_def|<tuple|137|16>>
-    <associate|eq:K_theta_recognition|<tuple|147|17>>
-    <associate|eq:L2_norm_mu|<tuple|166|19>>
-    <associate|eq:L2_norm_simple|<tuple|53|7>>
-    <associate|eq:L_action|<tuple|174|20>>
-    <associate|eq:L_basis|<tuple|182|21>>
-    <associate|eq:L_def|<tuple|173|20>>
-    <associate|eq:L_domain|<tuple|175|20>>
-    <associate|eq:Lf_g_inner|<tuple|177|20>>
-    <associate|eq:Lf_substitution|<tuple|178|20>>
-    <associate|eq:R_Z_factored|<tuple|104|13>>
-    <associate|eq:R_Z_final|<tuple|106|13>>
-    <associate|eq:R_Z_start|<tuple|102|13>>
-    <associate|eq:R_Z_substituted|<tuple|103|13>>
-    <associate|eq:T_K_application|<tuple|140|17>>
-    <associate|eq:T_K_def|<tuple|135|16>>
-    <associate|eq:U_inv_application|<tuple|141|17>>
-    <associate|eq:U_theta_def|<tuple|71|10>>
-    <associate|eq:U_theta_inverse|<tuple|72|10>>
-    <associate|eq:Utheta_norm_start|<tuple|74|10>>
-    <associate|eq:X_covariance|<tuple|105|13>>
-    <associate|eq:X_cramer|<tuple|94|12>>
-    <associate|eq:X_sifting|<tuple|114|14>>
-    <associate|eq:X_sifting_inverse|<tuple|120|15>>
-    <associate|eq:X_theta_t|<tuple|95|12>>
+    <associate|eq:A_t_explicit|<tuple|112|16>>
+    <associate|eq:A_t_magnitude|<tuple|145|20>>
+    <associate|eq:A_t_magnitude_start|<tuple|143|19>>
+    <associate|eq:H_isomorphism|<tuple|176|23>>
+    <associate|eq:K_def|<tuple|148|20>>
+    <associate|eq:K_theta_def|<tuple|149|20>>
+    <associate|eq:K_theta_recognition|<tuple|159|21>>
+    <associate|eq:L2_norm_mu|<tuple|178|23>>
+    <associate|eq:L2_norm_simple|<tuple|65|11>>
+    <associate|eq:L_action|<tuple|186|24>>
+    <associate|eq:L_basis|<tuple|194|25>>
+    <associate|eq:L_def|<tuple|185|24>>
+    <associate|eq:L_domain|<tuple|187|24>>
+    <associate|eq:Lf_g_inner|<tuple|189|24>>
+    <associate|eq:Lf_substitution|<tuple|190|24>>
+    <associate|eq:R_Z_factored|<tuple|116|16>>
+    <associate|eq:R_Z_final|<tuple|118|17>>
+    <associate|eq:R_Z_start|<tuple|114|16>>
+    <associate|eq:R_Z_substituted|<tuple|115|16>>
+    <associate|eq:T_K_application|<tuple|152|20>>
+    <associate|eq:T_K_def|<tuple|147|20>>
+    <associate|eq:U_inv_application|<tuple|153|20>>
+    <associate|eq:U_theta_def|<tuple|83|13>>
+    <associate|eq:U_theta_inverse|<tuple|84|13>>
+    <associate|eq:Utheta_norm_start|<tuple|86|13>>
+    <associate|eq:X_covariance|<tuple|117|16>>
+    <associate|eq:X_cramer|<tuple|106|15>>
+    <associate|eq:X_sifting|<tuple|126|18>>
+    <associate|eq:X_sifting_inverse|<tuple|132|18>>
+    <associate|eq:X_theta_t|<tuple|107|16>>
     <associate|eq:Yab_def|<tuple|24|4>>
-    <associate|eq:Z_conjugate|<tuple|36|5>>
-    <associate|eq:Z_conjugate_substituted|<tuple|38|6>>
-    <associate|eq:Z_def|<tuple|90|12>>
-    <associate|eq:Z_expanded|<tuple|96|12>>
-    <associate|eq:Z_integral|<tuple|97|12>>
-    <associate|eq:Z_oscillatory_form|<tuple|99|13>>
-    <associate|eq:Z_representation|<tuple|35|5>>
-    <associate|eq:Z_sifting|<tuple|115|14>>
-    <associate|eq:Z_sifting_inverse|<tuple|119|15>>
-    <associate|eq:Z_transformation|<tuple|107|13>>
-    <associate|eq:Z_well_defined|<tuple|57|8>>
-    <associate|eq:after_substitution|<tuple|77|10>>
-    <associate|eq:apply_forward_def|<tuple|80|11>>
-    <associate|eq:apply_inverse_def|<tuple|79|11>>
-    <associate|eq:apply_inverse_second|<tuple|85|11>>
-    <associate|eq:basis_expansion|<tuple|172|20>>
-    <associate|eq:basis_inner_product|<tuple|171|20>>
-    <associate|eq:basis_vectors|<tuple|165|19>>
-    <associate|eq:both_inverses|<tuple|89|11>>
-    <associate|eq:cancel_derivative|<tuple|159|19>>
-    <associate|eq:change_of_variables|<tuple|39|6>>
-    <associate|eq:change_var_differential|<tuple|76|10>>
-    <associate|eq:change_var_s|<tuple|143|17>>
-    <associate|eq:composition_1|<tuple|78|11>>
-    <associate|eq:composition_2|<tuple|84|11>>
-    <associate|eq:composition_forward|<tuple|122|15>>
-    <associate|eq:conjugate_t|<tuple|179|21>>
-    <associate|eq:conjugation|<tuple|138|17>>
-    <associate|eq:conjugation_expand|<tuple|139|17>>
-    <associate|eq:covariance_Z|<tuple|93|12>>
-    <associate|eq:covariance_computation|<tuple|58|8>>
-    <associate|eq:covariance_final|<tuple|61|8>>
+    <associate|eq:Z_conjugate|<tuple|48|9>>
+    <associate|eq:Z_conjugate_substituted|<tuple|50|9>>
+    <associate|eq:Z_def|<tuple|102|15>>
+    <associate|eq:Z_expanded|<tuple|108|16>>
+    <associate|eq:Z_integral|<tuple|109|16>>
+    <associate|eq:Z_oscillatory_form|<tuple|111|16>>
+    <associate|eq:Z_representation|<tuple|47|8>>
+    <associate|eq:Z_sifting|<tuple|127|18>>
+    <associate|eq:Z_sifting_inverse|<tuple|131|18>>
+    <associate|eq:Z_transformation|<tuple|119|17>>
+    <associate|eq:Z_well_defined|<tuple|69|11>>
+    <associate|eq:after_substitution|<tuple|89|14>>
+    <associate|eq:apply_forward_def|<tuple|92|14>>
+    <associate|eq:apply_inverse_def|<tuple|91|14>>
+    <associate|eq:apply_inverse_second|<tuple|97|14>>
+    <associate|eq:basis_expansion|<tuple|184|24>>
+    <associate|eq:basis_inner_product|<tuple|183|23>>
+    <associate|eq:basis_vectors|<tuple|177|23>>
+    <associate|eq:both_inverses|<tuple|101|15>>
+    <associate|eq:cancel_derivative|<tuple|171|22>>
+    <associate|eq:change_of_variables|<tuple|51|9>>
+    <associate|eq:change_var_differential|<tuple|88|14>>
+    <associate|eq:change_var_s|<tuple|155|20>>
+    <associate|eq:composition_1|<tuple|90|14>>
+    <associate|eq:composition_2|<tuple|96|14>>
+    <associate|eq:composition_forward|<tuple|134|19>>
+    <associate|eq:conjugate_t|<tuple|191|24>>
+    <associate|eq:conjugation|<tuple|150|20>>
+    <associate|eq:conjugation_expand|<tuple|151|20>>
+    <associate|eq:covariance_Z|<tuple|105|15>>
+    <associate|eq:covariance_computation|<tuple|70|11>>
+    <associate|eq:covariance_final|<tuple|73|12>>
     <associate|eq:covariance_kernel|<tuple|17|3>>
     <associate|eq:cramer_representation|<tuple|18|3>>
-    <associate|eq:delta_Z_decomp|<tuple|157|18>>
-    <associate|eq:delta_change_var|<tuple|153|18>>
-    <associate|eq:delta_decomposition|<tuple|151|18>>
-    <associate|eq:delta_equality|<tuple|156|18>>
-    <associate|eq:density_simple|<tuple|55|8>>
-    <associate|eq:eigenvalue_equation|<tuple|184|21>>
-    <associate|eq:evol_spec_def|<tuple|130|16>>
-    <associate|eq:evol_spec_final|<tuple|134|16>>
-    <associate|eq:evolutionary_spectrum|<tuple|129|16>>
-    <associate|eq:exp_magnitude|<tuple|132|16>>
-    <associate|eq:expand_square|<tuple|75|10>>
-    <associate|eq:f_Lg_inner|<tuple|180|21>>
-    <associate|eq:factor_inside|<tuple|146|17>>
-    <associate|eq:filter_representation|<tuple|63|9>>
-    <associate|eq:final_conjugation|<tuple|148|17>>
+    <associate|eq:def_ht|<tuple|34|5>>
+    <associate|eq:delta_Z_decomp|<tuple|169|22>>
+    <associate|eq:delta_change_var|<tuple|165|22>>
+    <associate|eq:delta_decomposition|<tuple|163|21>>
+    <associate|eq:delta_equality|<tuple|168|22>>
+    <associate|eq:density_simple|<tuple|67|11>>
+    <associate|eq:eigenvalue_equation|<tuple|196|25>>
+    <associate|eq:evol_spec_def|<tuple|142|19>>
+    <associate|eq:evol_spec_final|<tuple|146|20>>
+    <associate|eq:evolutionary_spectrum|<tuple|141|19>>
+    <associate|eq:exp_magnitude|<tuple|144|19>>
+    <associate|eq:expand_square|<tuple|87|13>>
+    <associate|eq:f_Lg_inner|<tuple|192|24>>
+    <associate|eq:factor_inside|<tuple|158|21>>
+    <associate|eq:filter_from_gain|<tuple|3|7>>
+    <associate|eq:filter_representation|<tuple|75|12>>
+    <associate|eq:final_conjugation|<tuple|160|21>>
     <associate|eq:finite_variance|<tuple|23|4>>
-    <associate|eq:forward_unitary_recall|<tuple|112|14>>
+    <associate|eq:forward_unitary_recall|<tuple|124|17>>
     <associate|eq:fourier_forward|<tuple|20|4>>
     <associate|eq:fourier_inverse|<tuple|21|4>>
-    <associate|eq:fubini_composition|<tuple|123|15>>
-    <associate|eq:fubini_stochastic|<tuple|59|8>>
-    <associate|eq:full_expression|<tuple|145|17>>
-    <associate|eq:g_explicit|<tuple|121|15>>
-    <associate|eq:gain_L2|<tuple|26|4>>
-    <associate|eq:gain_condition|<tuple|44|6>>
-    <associate|eq:gain_equality|<tuple|41|6>>
-    <associate|eq:gain_function_Z|<tuple|92|12>>
-    <associate|eq:gain_symmetry|<tuple|32|5>>
-    <associate|eq:h_explicit|<tuple|116|14>>
-    <associate|eq:impulse_response_fourier|<tuple|62|9>>
-    <associate|eq:impulse_simplification|<tuple|127|16>>
-    <associate|eq:inner_product_mu|<tuple|162|19>>
-    <associate|eq:integral_simple|<tuple|48|7>>
-    <associate|eq:integral_substitution|<tuple|142|17>>
-    <associate|eq:integrand_equality|<tuple|40|6>>
-    <associate|eq:interchange_sum_integral|<tuple|155|18>>
-    <associate|eq:inverse_impulse_response|<tuple|111|14>>
-    <associate|eq:inverse_transformation|<tuple|110|14>>
-    <associate|eq:inverse_unitary_recall|<tuple|118|15>>
-    <associate|eq:isometry_Psi|<tuple|170|20>>
-    <associate|eq:isometry_established|<tuple|54|8>>
-    <associate|eq:isometry_simple|<tuple|52|7>>
-    <associate|eq:isomorphism_map|<tuple|169|20>>
-    <associate|eq:left_inverse|<tuple|83|11>>
-    <associate|eq:linearity_expectation|<tuple|50|7>>
-    <associate|eq:local_isometry|<tuple|73|10>>
-    <associate|eq:mu_atomic|<tuple|152|18>>
-    <associate|eq:mu_atomic_assumption|<tuple|163|19>>
-    <associate|eq:mu_atomic_final|<tuple|161|19>>
-    <associate|eq:mu_def|<tuple|150|18>>
-    <associate|eq:mu_substitution|<tuple|158|19>>
-    <associate|eq:mu_sum|<tuple|160|19>>
-    <associate|eq:norm_equivalence|<tuple|168|19>>
-    <associate|eq:norm_sum|<tuple|167|19>>
-    <associate|eq:orthogonality_application|<tuple|51|7>>
-    <associate|eq:orthogonality_integral|<tuple|60|8>>
+    <associate|eq:fubini_composition|<tuple|135|19>>
+    <associate|eq:fubini_stochastic|<tuple|71|12>>
+    <associate|eq:full_expression|<tuple|157|21>>
+    <associate|eq:g_explicit|<tuple|133|18>>
+    <associate|eq:gain_L2|<tuple|26|5>>
+    <associate|eq:gain_condition|<tuple|56|10>>
+    <associate|eq:gain_equality|<tuple|53|9>>
+    <associate|eq:gain_from_filter|<tuple|2|7>>
+    <associate|eq:gain_from_measure|<tuple|1|7>>
+    <associate|eq:gain_function_Z|<tuple|104|15>>
+    <associate|eq:gain_symmetry|<tuple|44|8>>
+    <associate|eq:h_explicit|<tuple|128|18>>
+    <associate|eq:impulse_response_fourier|<tuple|74|12>>
+    <associate|eq:impulse_simplification|<tuple|139|19>>
+    <associate|eq:inner_product_mu|<tuple|174|22>>
+    <associate|eq:integral_simple|<tuple|60|10>>
+    <associate|eq:integral_substitution|<tuple|154|20>>
+    <associate|eq:integrand_equality|<tuple|52|9>>
+    <associate|eq:interchange_sum_integral|<tuple|167|22>>
+    <associate|eq:inverse_impulse_response|<tuple|123|17>>
+    <associate|eq:inverse_transformation|<tuple|122|17>>
+    <associate|eq:inverse_unitary_recall|<tuple|130|18>>
+    <associate|eq:isometry_Psi|<tuple|182|23>>
+    <associate|eq:isometry_established|<tuple|66|11>>
+    <associate|eq:isometry_simple|<tuple|64|11>>
+    <associate|eq:isomorphism_map|<tuple|181|23>>
+    <associate|eq:left_inverse|<tuple|95|14>>
+    <associate|eq:linearity_expectation|<tuple|62|10>>
+    <associate|eq:local_isometry|<tuple|85|13>>
+    <associate|eq:measure_from_gain|<tuple|4|7>>
+    <associate|eq:mu_atomic|<tuple|164|21>>
+    <associate|eq:mu_atomic_assumption|<tuple|175|23>>
+    <associate|eq:mu_atomic_final|<tuple|173|22>>
+    <associate|eq:mu_def|<tuple|162|21>>
+    <associate|eq:mu_substitution|<tuple|170|22>>
+    <associate|eq:mu_sum|<tuple|172|22>>
+    <associate|eq:norm_equivalence|<tuple|180|23>>
+    <associate|eq:norm_sum|<tuple|179|23>>
+    <associate|eq:orthogonality_application|<tuple|63|11>>
+    <associate|eq:orthogonality_integral|<tuple|72|12>>
     <associate|eq:orthogonality_phi|<tuple|29|5>>
-    <associate|eq:osc_func_conjugate|<tuple|43|6>>
-    <associate|eq:osc_func_def|<tuple|31|5>>
-    <associate|eq:osc_func_neg|<tuple|42|6>>
-    <associate|eq:osc_symmetry|<tuple|33|5>>
+    <associate|eq:osc_func_conjugate|<tuple|55|9>>
+    <associate|eq:osc_func_def|<tuple|43|8>>
+    <associate|eq:osc_func_neg|<tuple|54|9>>
+    <associate|eq:osc_symmetry|<tuple|45|8>>
     <associate|eq:oscillatory_covariance|<tuple|30|5>>
     <associate|eq:oscillatory_function|<tuple|27|5>>
-    <associate|eq:oscillatory_function_Z|<tuple|91|12>>
+    <associate|eq:oscillatory_function_Z|<tuple|103|15>>
     <associate|eq:oscillatory_process|<tuple|28|5>>
-    <associate|eq:oscillatory_well_defined|<tuple|46|7>>
-    <associate|eq:phi_symmetry|<tuple|37|6>>
-    <associate|eq:real_valued_condition|<tuple|34|5>>
-    <associate|eq:right_inverse|<tuple|88|11>>
-    <associate|eq:second_moment_simple|<tuple|49|7>>
-    <associate|eq:self_adjoint|<tuple|181|21>>
-    <associate|eq:sift_basis|<tuple|183|21>>
-    <associate|eq:sifting_property|<tuple|113|14>>
-    <associate|eq:simple_function|<tuple|47|7>>
-    <associate|eq:simple_zeros|<tuple|149|18>>
-    <associate|eq:simplify_composition|<tuple|82|11>>
-    <associate|eq:simplify_integral|<tuple|144|17>>
-    <associate|eq:simplify_second|<tuple|87|11>>
-    <associate|eq:spectrum|<tuple|176|20>>
-    <associate|eq:spectrum_result|<tuple|185|21>>
+    <associate|eq:oscillatory_well_defined|<tuple|58|10>>
+    <associate|eq:phi_symmetry|<tuple|49|9>>
+    <associate|eq:real_valued_condition|<tuple|46|8>>
+    <associate|eq:right_inverse|<tuple|100|15>>
+    <associate|eq:second_moment_simple|<tuple|61|10>>
+    <associate|eq:self_adjoint|<tuple|193|24>>
+    <associate|eq:sift_basis|<tuple|195|25>>
+    <associate|eq:sifting_property|<tuple|125|17>>
+    <associate|eq:simple_function|<tuple|59|10>>
+    <associate|eq:simple_zeros|<tuple|161|21>>
+    <associate|eq:simplify_composition|<tuple|94|14>>
+    <associate|eq:simplify_integral|<tuple|156|21>>
+    <associate|eq:simplify_second|<tuple|99|15>>
+    <associate|eq:spectrum|<tuple|188|24>>
+    <associate|eq:spectrum_result|<tuple|197|25>>
     <associate|eq:stationary_covariance|<tuple|19|3>>
-    <associate|eq:sum_form|<tuple|154|18>>
-    <associate|eq:theta_composition|<tuple|86|11>>
-    <associate|eq:theta_inverse_composition|<tuple|81|11>>
-    <associate|eq:time_dependent_spectrum|<tuple|45|6>>
-    <associate|eq:varphi_L2|<tuple|56|8>>
-    <associate|eq:varphi_as_gain|<tuple|101|13>>
-    <associate|eq:varphi_t_explicit|<tuple|98|12>>
-    <associate|pd|<tuple|70|10>>
-    <associate|prop:atomic|<tuple|21|19>>
-    <associate|prop:conjugation|<tuple|17|16>>
+    <associate|eq:sum_form|<tuple|166|22>>
+    <associate|eq:theta_composition|<tuple|98|15>>
+    <associate|eq:theta_inverse_composition|<tuple|93|14>>
+    <associate|eq:time_dependent_spectrum|<tuple|57|10>>
+    <associate|eq:varphi_L2|<tuple|68|11>>
+    <associate|eq:varphi_as_gain|<tuple|113|16>>
+    <associate|eq:varphi_t_explicit|<tuple|110|16>>
+    <associate|filterGain|<tuple|32|5>>
+    <associate|gain|<tuple|31|5>>
+    <associate|gainDistribution|<tuple|33|5>>
+    <associate|item:hypothesis_omega|<tuple|2|7>>
+    <associate|item:hypothesis_t|<tuple|1|7>>
+    <associate|pd|<tuple|82|13>>
+    <associate|prop:atomic|<tuple|23|23>>
+    <associate|prop:conjugation|<tuple|19|20>>
     <associate|rem:L2loc_properties|<tuple|6|4>>
-    <associate|sec:HP|<tuple|4|18>>
-    <associate|sec:stationary_timechange|<tuple|3|10>>
-    <associate|thm:Utheta_to_osc|<tuple|14|12>>
-    <associate|thm:atomicity|<tuple|19|18>>
-    <associate|thm:bulinskaya|<tuple|24|21>>
-    <associate|thm:existence_osc|<tuple|10|6>>
-    <associate|thm:filter_representation|<tuple|12|9>>
-    <associate|thm:inverse_filter|<tuple|15|13>>
-    <associate|thm:kac_rice_merged|<tuple|25|22>>
-    <associate|thm:local_unitarity|<tuple|13|10>>
+    <associate|sec:HP|<tuple|4|21>>
+    <associate|sec:stationary_timechange|<tuple|3|13>>
+    <associate|thm:Utheta_to_osc|<tuple|16|15>>
+    <associate|thm:atomicity|<tuple|21|21>>
+    <associate|thm:bulinskaya|<tuple|26|25>>
+    <associate|thm:duality|<tuple|10|7>>
+    <associate|thm:duality_complete|<tuple|9|5>>
+    <associate|thm:existence_osc|<tuple|12|10>>
+    <associate|thm:filter_representation|<tuple|14|12>>
+    <associate|thm:inverse_filter|<tuple|17|17>>
+    <associate|thm:kac_rice_merged|<tuple|27|26>>
+    <associate|thm:local_unitarity|<tuple|15|13>>
     <associate|thm:paths_loc|<tuple|7|4>>
-    <associate|thm:realvaluedness|<tuple|9|5>>
-    <associate|thm:spectrum|<tuple|23|20>>
+    <associate|thm:realvaluedness|<tuple|11|8>>
+    <associate|thm:spectrum|<tuple|25|24>>
   </collection>
 </references>
 
@@ -2121,40 +2372,44 @@
       Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-6><vspace|0.5fn>
 
+      <with|par-left|<quote|1tab>|2.1<space|2spc>Triad of Gain
+      Representations <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-7>>
+
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>Unitarily
       Time-Changed Stationary Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-7><vspace|0.5fn>
+      <no-break><pageref|auto-8><vspace|0.5fn>
 
       <with|par-left|<quote|1tab>|3.1<space|2spc>Unitary Time-Change Operator
       <with|mode|<quote|math>|U<rsub|\<theta\>>*f>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-8>>
+      <no-break><pageref|auto-9>>
 
       <with|par-left|<quote|1tab>|3.2<space|2spc>Transformation of Stationary
       <with|mode|<quote|math>|\<to\>> Oscillatory Processes via
       <with|mode|<quote|math>|U<rsub|\<theta\>>>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-9>>
+      <no-break><pageref|auto-10>>
 
       <with|par-left|<quote|2tab>|3.2.1<space|2spc>Time-Varying Filter
       Representations <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-10>>
+      <no-break><pageref|auto-11>>
 
       <with|par-left|<quote|1tab>|3.3<space|2spc>Covariance operator
       conjugation <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-11>>
+      <no-break><pageref|auto-12>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>Zero
       Localization> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-12><vspace|0.5fn>
+      <no-break><pageref|auto-13><vspace|0.5fn>
 
       <with|par-left|<quote|1tab>|4.1<space|2spc>Simplicity of Zeros and
       Their Expected Counting Function <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-13>>
+      <no-break><pageref|auto-14>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-14><vspace|0.5fn>
+      <no-break><pageref|auto-15><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
