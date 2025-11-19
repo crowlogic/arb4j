@@ -200,8 +200,8 @@ public class SymbolPalette extends
     // Superscript numbers
     addAliases("⁰", "sup0", "power0", "superscript0", "0");
     addAliases("¹", "sup1", "power1", "superscript1", "1");
-    addAliases("²", "sup2", "power2", "squared", "2");
-    addAliases("³", "sup3", "power3", "cubed", "3");
+    addAliases("²", "sup2", "power2", "squared", "square", "2");
+    addAliases("³", "sup3", "power3", "cubed", "cube", "3");    
     addAliases("⁴", "sup4", "power4", "4'");
     addAliases("⁵", "sup5", "power5", "5");
     addAliases("⁶", "sup6", "power6", "6");
@@ -224,7 +224,7 @@ public class SymbolPalette extends
 
     // Fractions
     addAliases("¼", "fourth", "quarter");
-    addAliases("½", "half");
+    addAliases("½", "half", "halve");
     addAliases("¾", "threefourths", "threequarters");
     addAliases("⅐", "seventh");
     addAliases("⅑", "ninth");
