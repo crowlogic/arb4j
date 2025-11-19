@@ -40,7 +40,7 @@ public class RealFunctionExpressionCompilerTest extends
 
   public static void testRealRandomWavePropagator()
   {
-    var f = RealFunction.express("(√(π)*Γ(3/4)*J(1/4, |s|)*2^(1/4))/|s|^(1/4)");
+    var f = RealFunction.express("√(π)*Γ(¾)*J(¼,|s|)*2^¼/|s|^¼");
     var y = f.eval(2.3);
     assertEquals(0.5125173326531876, y);
   }
