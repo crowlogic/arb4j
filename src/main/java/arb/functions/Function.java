@@ -285,7 +285,7 @@ public interface Function<D, C> extends
                 PD,
                 PC,
                 PF extends Function<? extends PD, ? extends PC>,
-                E extends Expression<? extends D, ? extends C, F>>
+                E extends Expression<D,C, F>>
          E
          parse(String className,
                String expression,

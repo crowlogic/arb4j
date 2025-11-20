@@ -23,13 +23,13 @@ public class RealExpressionTest extends
 
   public void testOptimizedExpressionRepresentation()
   {
-    RealExpression parsed = RealFunction.parse("tanh(log(1+x²))/(1+x²)");
-    var            F      = parsed.generate();
-    var            f      = F.instantiate();
-    var            y      = f.eval(2.3);
+    var parsed = RealFunction.parse("tanh(log(1+x²))/(1+x²)");
+    var F      = parsed.generate();
+    var f      = F.instantiate();
+    var y      = f.eval(2.3);
     assertEquals(0.151143929930069, y);
 
-    RealExpression parsedCSE = RealFunction.parse("tanh(log(1+x²))/(1+x²)");
+    var parsedCSE = RealFunction.parse("tanh(log(1+x²))/(1+x²)");
     parsedCSE.optimize();
     var Fcse = parsedCSE.generate();
     var fcse = Fcse.instantiate();
