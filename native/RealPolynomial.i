@@ -1,8 +1,5 @@
 %typemap(javaimports) arb_poly_struct %{
-import static arb.arblib.arb_poly_clear;
-import static arb.arblib.arb_poly_evaluate;
-import static arb.arblib.arb_poly_evaluate2;
-import static arb.arblib.arb_poly_product_roots;
+import static arb.arblib.*;
 
 import java.io.Closeable;
 
