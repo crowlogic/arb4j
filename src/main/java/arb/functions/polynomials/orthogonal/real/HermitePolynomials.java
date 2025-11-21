@@ -1,6 +1,8 @@
 package arb.functions.polynomials.orthogonal.real;
 
+import arb.Integer;
 import arb.Real;
+import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
@@ -16,6 +18,24 @@ import arb.functions.real.RealFunction;
 public class HermitePolynomials extends
                                 RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence
 {
+  boolean normalized = false;
+
+  @Override
+  public RealPolynomial evaluate(Integer n, int order, int bits, RealPolynomial res)
+  {
+    try ( var fact = new Real())
+    {
+      super.evaluate(n, order, bits, res);
+      return normalized ? res.div(n.factorial(bits, fact), bits) : res;
+    }
+  }
+
+  public HermitePolynomials(int bits, boolean normalize )
+  {
+    this(bits);
+    normalized = normalize;
+  }
+  
   public HermitePolynomials(int bits)
   {
     super(bits,
@@ -31,7 +51,7 @@ public class HermitePolynomials extends
     return ExtendedRealLine.instance;
   }
 
-  public final RealFunction w = RealFunction.express("exp(-x²)");
+  public static final RealFunction w = RealFunction.express("exp(-x²)");
 
   @Override
   public RealFunction orthogonalityMeasure()

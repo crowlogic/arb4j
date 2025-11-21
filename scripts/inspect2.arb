@@ -1,5 +1,0 @@
-var P = new P();
-P.α = P.β = RealConstants.negHalf;
-var P3 = P.evaluate(3,128);
-var expr = P.expression();
-System.out.println(expr.inspect(P));

@@ -1,7 +1,0 @@
-import arb.functions.integer.HammingWeights;
-var H = new HammingWeights();
-out.println("HammingWeights from 0 to 100 are " + seq(0,100,k->H.evaluate(k,128)).stream().toList() );
-
-
-
-
