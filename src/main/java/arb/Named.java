@@ -10,7 +10,11 @@ import arb.documentation.TheArb4jLibrary;
  */
 public interface Named
 {
-  public <N extends Named> N setName(String name);
+  public default <N extends Named> N setName(String name)
+  {
+    assert false : "either this shouldn't be called or " + getClass() + " needs to implement this";
+    return (N) this;
+  }
 
   public String getName();
 

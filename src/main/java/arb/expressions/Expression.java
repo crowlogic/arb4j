@@ -160,7 +160,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                                       Object.class);
 
   public static Class<?>[]    implementedInterfaces             = new Class[]
-  { Typesettable.class, AutoCloseable.class, Initializable.class };
+  { Typesettable.class, AutoCloseable.class, Initializable.class, Named.class };
 
   static HashSet<Class<?>>    indeterminantTypes                = new HashSet<>();
 
@@ -1007,7 +1007,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       {
         generateCloseMethod(classVisitor);
       }
-
+      generateGetNameMethod(classVisitor);
       generateToStringMethod(classVisitor);
       generateTypesetMethod(classVisitor);
     }
@@ -1154,6 +1154,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                       null,
                                       null);
     mv.visitCode();
+    Compiler.annotateWithOverride(mv);
+    
     mv.visitLdcInsn(Type.getType(domainType));
     mv.visitLdcInsn(Type.getType(coDomainType));
     mv.visitLdcInsn(Type.getType(functionClass));
@@ -1477,6 +1479,29 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     cast(mv, coDomainType);
     swap(mv);
     return invokeSetMethod(mv, inputType, coDomainType);
+  }
+
+  protected ClassVisitor generateGetNameMethod(ClassVisitor classVisitor)
+  {
+    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
+                                                 "getName",
+                                                 Compiler.getMethodDescriptor(String.class),
+                                                 null,
+                                                 null);
+
+    methodVisitor.visitCode();
+    Compiler.annotateWithOverride(methodVisitor);
+
+    if (functionName != null)
+    {
+      methodVisitor.visitLdcInsn(functionName);
+    }
+    else
+    {
+      methodVisitor.visitInsn(Opcodes.ACONST_NULL);
+    }
+    Compiler.generateReturnFromMethod(methodVisitor);
+    return classVisitor;
   }
 
   protected ClassVisitor generateToStringMethod(ClassVisitor classVisitor)

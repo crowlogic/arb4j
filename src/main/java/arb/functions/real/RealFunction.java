@@ -246,7 +246,8 @@ public interface RealFunction extends
     {
       Δ.div(n, bits);
       RealDataSet sample = new RealDataSet(
-                                           String.format("%s over %s..%s (#=%d Δ=%s)",
+                                           String.format("%s%s over %s..%s (#=%d Δ=%s)",
+                                                         getName() == null ? "" : (getName() + ":"),
                                                          toString(),
                                                          interval.left().toString(5),
                                                          interval.right().toString(5),

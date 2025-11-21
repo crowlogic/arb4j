@@ -4,6 +4,7 @@ import static arb.utensils.Utensils.throwOrWrap;
 
 import java.io.Closeable;
 
+import arb.Named;
 import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -21,8 +22,15 @@ import arb.functions.complex.ComplexFunction;
 public interface Function<D, C> extends
                          Closeable,
                          AutoCloseable,
-                         Typesettable
+                         Typesettable,
+                         Named
 {
+
+  @Override
+  default String getName()
+  {
+    return null;
+  }
 
   public default <F extends Function<? extends D, ? extends C>> F derivative()
   {
@@ -285,7 +293,7 @@ public interface Function<D, C> extends
                 PD,
                 PC,
                 PF extends Function<? extends PD, ? extends PC>,
-                E extends Expression<D,C, F>>
+                E extends Expression<D, C, F>>
          E
          parse(String className,
                String expression,
