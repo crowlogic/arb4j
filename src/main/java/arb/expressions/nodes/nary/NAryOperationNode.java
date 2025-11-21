@@ -62,20 +62,48 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     if (independentOfInput())
     {
-      String fieldName = expression.newIntermediateVariable("const", type(), false);
+      if (Expression.trace)
+      {
+        log.debug("NAryOperationNode.cache(): node={}, existing fieldName={}",
+                  this,
+                  this.fieldName);
+      }
+
+      deregisterPreviousFieldName();
+
+      String fieldName = expression.newIntermediateVariable("cached", type(), false);
       this.fieldName = fieldName;
-      expression.registerConstantForInitialization(this);
+
+      if (Expression.trace)
+      {
+        log.debug("  assigned new fieldName={}", fieldName);
+      }
+
+      expression.registerCachedNode(this);
       return new CachedNode<>(expression,
                               this,
                               fieldName);
     }
 
+    if (Expression.trace)
+    {
+      log.debug("NAryOperationNode.cache(): node={} depends on input, caching children", this);
+    }
+
     if (lowerLimit != null)
     {
+      if (Expression.trace)
+      {
+        log.debug("  caching lowerLimit: {}", lowerLimit);
+      }
       lowerLimit = lowerLimit.cache();
     }
     if (upperLimit != null)
     {
+      if (Expression.trace)
+      {
+        log.debug("  caching upperLimit: {}", upperLimit);
+      }
       upperLimit = upperLimit.cache();
     }
 
@@ -220,14 +248,14 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     if (Expression.trace)
     {
-      logger.debug(String.format("%s.assignFieldNames(this=%s,resultType=%s,\n%soperandFunctionFieldName=%s,\n%soperandValueFieldName=%s)\n\n",
-                                 getClass().getSimpleName(),
-                                 expression.functionName,
-                                 resultType,
-                                 indent(indentation),
-                                 operandFunctionFieldName,
-                                 indent(indentation),
-                                 operandValueFieldName));
+      log.debug(String.format("%s.assignFieldNames(this=%s,resultType=%s,\n%soperandFunctionFieldName=%s,\n%soperandValueFieldName=%s)\n\n",
+                              getClass().getSimpleName(),
+                              expression.functionName,
+                              resultType,
+                              indent(indentation),
+                              operandFunctionFieldName,
+                              indent(indentation),
+                              operandValueFieldName));
     }
   }
 
@@ -388,12 +416,12 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     if (Expression.trace)
     {
-      logger.debug(String.format("NAryOperation.getField(functionClass=%s,\n%sfieldName=%s,\n%sfieldTypeSignature=%s\n\n",
-                                 functionClass,
-                                 indent(9),
-                                 fieldName,
-                                 indent(9),
-                                 fieldTypeSignature));
+      log.debug(String.format("NAryOperation.getField(functionClass=%s,\n%sfieldName=%s,\n%sfieldTypeSignature=%s\n\n",
+                              functionClass,
+                              indent(9),
+                              fieldName,
+                              indent(9),
+                              fieldTypeSignature));
     }
     getFieldFromThis(methodVisitor, functionClass, fieldName, fieldTypeSignature);
   }
@@ -453,11 +481,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     if (Expression.trace)
     {
-      logger.debug(String.format("%s.loadOperandValue(operandValueFieldName=%s, generatedType=%s) expression=%s\n",
-                                 getClass().getSimpleName(),
-                                 operandValueFieldName,
-                                 generatedType,
-                                 expression));
+      log.debug(String.format("%s.loadOperandValue(operandValueFieldName=%s, generatedType=%s) expression=%s\n",
+                              getClass().getSimpleName(),
+                              operandValueFieldName,
+                              generatedType,
+                              expression));
     }
     loadFieldFromThis(mv, operandValueFieldName, generatedType);
   }
@@ -472,10 +500,10 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     if (Expression.trace)
     {
-      logger.debug(String.format("%s.loadResultvariable( resultVariable= %s, generatedType=%s )\n",
-                                 getClass().getSimpleName(),
-                                 fieldName,
-                                 generatedType));
+      log.debug(String.format("%s.loadResultvariable( resultVariable= %s, generatedType=%s )\n",
+                              getClass().getSimpleName(),
+                              fieldName,
+                              generatedType));
 
     }
     getFieldFromThis(methodVisitor, expression.className, fieldName, generatedType);
@@ -491,7 +519,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     if (Expression.trace)
     {
-      logger.debug(String.format("extractOperandExpression(%s)\n", expression));
+      log.debug(String.format("extractOperandExpression(%s)\n", expression));
     }
     parsed = true;
     String stringExpression = expression.expression;
@@ -590,15 +618,15 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     if (Expression.trace)
     {
-      logger.debug(String.format("%s.logInputPropagationToOperand( operandFunctionFieldName=%s,\n"
-                                 + "%sindependentVariableNode=%s,\n"
-                                 + "%sindependentVariableNode.type=%s)\n\n",
-                                 getClass().getSimpleName(),
-                                 operandFunctionFieldName,
-                                 indent(48),
-                                 independentVariableNode,
-                                 indent(48),
-                                 independentVariableNode.type()));
+      log.debug(String.format("%s.logInputPropagationToOperand( operandFunctionFieldName=%s,\n"
+                              + "%sindependentVariableNode=%s,\n"
+                              + "%sindependentVariableNode.type=%s)\n\n",
+                              getClass().getSimpleName(),
+                              operandFunctionFieldName,
+                              indent(48),
+                              independentVariableNode,
+                              indent(48),
+                              independentVariableNode.type()));
     }
   }
 
@@ -608,9 +636,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     operandMapping = registerOperandFunctionMapping(operandExpression, expr);
     if (Expression.trace)
     {
-      logger.debug(String.format("\nregisterOperand(operandExpression=%s,\noperandMapping=%s\n)\n\n",
-                                 operandExpression,
-                                 operandMapping));
+      log.debug(String.format("\nregisterOperand(operandExpression=%s,\noperandMapping=%s\n)\n\n",
+                              operandExpression,
+                              operandMapping));
     }
     expression.referencedFunctions.put(operandFunctionFieldName, operandMapping);
   }
@@ -620,7 +648,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     if (Expression.trace)
     {
-      logger.debug(String.format("registerOperandFunctionMapping(operand=%s)\n", operand));
+      log.debug(String.format("registerOperandFunctionMapping(operand=%s)\n", operand));
     }
     return expression.context.registerFunctionMapping(operandFunctionFieldName,
                                                       null,

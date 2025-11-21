@@ -62,20 +62,64 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                           Typesettable,
                           Consumer<Consumer<Node<D, R, F>>>
 {
+  protected void deregisterPreviousFieldName()
+  {
+    if (this.fieldName != null)
+    {
+      if (Expression.trace)
+      {
+        log.debug("{}.deregisterPreviousFieldName: removing fieldName={} from maps",
+                     getClass().getSimpleName(),
+                     this.fieldName);
+      }
+      expression.literalConstants.remove(this.fieldName);
+      expression.intermediateVariables.remove(this.fieldName);
+      if (Expression.trace)
+      {
+        log.debug("  literalConstants.size()={}, intermediateVariables.size()={}",
+                     expression.literalConstants.size(),
+                     expression.intermediateVariables.size());
+      }
+    }
+  }
 
-  public Node<D, R, F> cache() {
-    if (independentOfInput()) {
-      String fieldName = expression.newIntermediateVariable("const", type(), false);
+  public Node<D, R, F> cache()
+  {
+    if (independentOfInput())
+    {
+      if (Expression.trace)
+      {
+        log.debug("{}.cache(): node={}, existing fieldName={}",
+                     getClass().getSimpleName(),
+                     this,
+                     this.fieldName);
+      }
+
+      deregisterPreviousFieldName();
+
+      String fieldName = expression.newIntermediateVariable("cached", type(), false);
       this.fieldName = fieldName;
-      expression.registerConstantForInitialization(this);
-      return new CachedNode<>(expression, this, fieldName);
+
+      if (Expression.trace)
+      {
+        log.debug("  assigned new fieldName={}", fieldName);
+      }
+
+      expression.registerCachedNode(this);
+      return new CachedNode<>(expression,
+                              this,
+                              fieldName);
+    }
+
+    if (Expression.trace)
+    {
+      log.debug("{}.cache(): node={} depends on input, returning this",
+                   getClass().getSimpleName(),
+                   this);
     }
     return this;
   }
 
-
-
-  
   /**
    * @return true if this node's evaluation is independent of all input parameters
    */
@@ -100,7 +144,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public boolean hoisted;
 
-  
   public boolean independentOfInput()
   {
     return expression.isNullaryFunction() ? true
@@ -117,7 +160,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public boolean             isResult = false;
 
-  protected final Logger     logger   = LoggerFactory.getLogger(getClass());
+  protected final Logger     log   = LoggerFactory.getLogger(getClass());
 
   public final int           position;
 
@@ -268,7 +311,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   {
     if (Expression.trace)
     {
-      logger.debug(String.format("generateCastTo(type=%s) from generatedType=%s\n",
+      log.debug(String.format("generateCastTo(type=%s) from generatedType=%s\n",
                                  type,
                                  generatedType));
     }

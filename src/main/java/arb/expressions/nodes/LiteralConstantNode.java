@@ -1,34 +1,17 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.duplicateTopOfTheStack;
-import static arb.expressions.Compiler.generateNewObjectInstruction;
-import static arb.expressions.Compiler.loadComplexConstantOntoStack;
-import static arb.expressions.Compiler.loadConstantOntoStack;
-import static arb.expressions.Compiler.loadRealConstantOntoStack;
-import static arb.expressions.Compiler.loadThisOntoStack;
-import static org.objectweb.asm.Opcodes.ACC_FINAL;
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
-import static org.objectweb.asm.Opcodes.SIPUSH;
+import static arb.expressions.Compiler.*;
+import static org.objectweb.asm.Opcodes.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.*;
 
-import arb.Complex;
-import arb.Fraction;
-import arb.FractionConstants;
+import arb.*;
 import arb.Integer;
-import arb.Real;
 import arb.domains.Domain;
-import arb.expressions.Compiler;
-import arb.expressions.Expression;
-import arb.expressions.Parser;
+import arb.expressions.*;
 import arb.functions.Function;
 
 /**
@@ -69,6 +52,16 @@ import arb.functions.Function;
 public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                 Node<D, R, F>
 {
+
+  @Override
+  public Node<D, R, F> cache()
+  {
+    if (Expression.trace)
+    {
+      log.debug("LiteralConstantNode.cache(): returning this (literals not cached), node={}", this);
+    }
+    return this;
+  }
 
   @Override
   public boolean isHalf()
@@ -224,7 +217,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     String   typeDescriptor = type.descriptorString();
     if (Expression.trace)
     {
-      logger.debug("declareField: fieldName={} type={} value={}", fieldName, type, toString());
+      log.debug("declareField: fieldName={} type={} value={}", fieldName, type, toString());
     }
     classVisitor.visitField(ACC_PUBLIC | ACC_FINAL, fieldName, typeDescriptor, null, null);
     return classVisitor;
