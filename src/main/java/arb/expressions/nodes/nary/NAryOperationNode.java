@@ -14,8 +14,7 @@ import arb.Integer;
 import arb.exceptions.CompilerException;
 import arb.expressions.*;
 import arb.expressions.Context;
-import arb.expressions.nodes.Node;
-import arb.expressions.nodes.VariableNode;
+import arb.expressions.nodes.*;
 import arb.functions.Function;
 import arb.functions.integer.Sequence;
 
@@ -57,6 +56,31 @@ import arb.functions.integer.Sequence;
 public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R>> extends
                               Node<D, R, F>
 {
+
+  @Override
+  public Node<D, R, F> cache()
+  {
+    if (independentOfInput())
+    {
+      String fieldName = expression.newIntermediateVariable("const", type(), false);
+      this.fieldName = fieldName;
+      expression.registerConstantForInitialization(this);
+      return new CachedNode<>(expression,
+                              this,
+                              fieldName);
+    }
+
+    if (lowerLimit != null)
+    {
+      lowerLimit = lowerLimit.cache();
+    }
+    if (upperLimit != null)
+    {
+      upperLimit = upperLimit.cache();
+    }
+
+    return this;
+  }
 
   public static String                            operandEvaluateMethodSignature =
                                                                                  Compiler.getMethodDescriptor(Object.class,

@@ -1,10 +1,6 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.cast;
-import static arb.expressions.Compiler.getFieldFromThis;
-import static arb.expressions.Compiler.invokeSetMethod;
-import static arb.expressions.Compiler.loadBitsParameterOntoStack;
-import static arb.expressions.Compiler.swap;
+import static arb.expressions.Compiler.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -19,15 +15,8 @@ import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
-import arb.expressions.nodes.binary.AdditionNode;
-import arb.expressions.nodes.binary.BinaryOperationNode;
-import arb.expressions.nodes.binary.DivisionNode;
-import arb.expressions.nodes.binary.ExponentiationNode;
-import arb.expressions.nodes.binary.MultiplicationNode;
-import arb.expressions.nodes.binary.SubtractionNode;
-import arb.expressions.nodes.unary.AbsoluteValueNode;
-import arb.expressions.nodes.unary.FunctionNode;
-import arb.expressions.nodes.unary.NegationNode;
+import arb.expressions.nodes.binary.*;
+import arb.expressions.nodes.unary.*;
 import arb.expressions.viz.ExpressionTree;
 import arb.functions.Function;
 
@@ -73,6 +62,45 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                           Typesettable,
                           Consumer<Consumer<Node<D, R, F>>>
 {
+
+  public Node<D, R, F> cache() {
+    if (independentOfInput()) {
+      String fieldName = expression.newIntermediateVariable("const", type(), false);
+      this.fieldName = fieldName;
+      expression.registerConstantForInitialization(this);
+      return new CachedNode<>(expression, this, fieldName);
+    }
+    return this;
+  }
+
+
+
+  
+  /**
+   * @return true if this node's evaluation is independent of all input parameters
+   */
+  public boolean isConstantExpression()
+  {
+    if (independentOfInput())
+    {
+      // Check that all branches are also constant using functional traversal
+      final boolean[] allConstant =
+      { true };
+      accept(node ->
+      {
+        if (node != this && !node.independentOfInput())
+        {
+          allConstant[0] = false;
+        }
+      });
+      return allConstant[0];
+    }
+    return false;
+  }
+
+  public boolean hoisted;
+
+  
   public boolean independentOfInput()
   {
     return expression.isNullaryFunction() ? true
@@ -89,7 +117,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public boolean             isResult = false;
 
-  protected final Logger               logger   = LoggerFactory.getLogger(getClass());
+  protected final Logger     logger   = LoggerFactory.getLogger(getClass());
 
   public final int           position;
 

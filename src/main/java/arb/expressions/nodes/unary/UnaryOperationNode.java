@@ -8,8 +8,7 @@ import java.util.Objects;
 import org.objectweb.asm.MethodVisitor;
 
 import arb.expressions.Expression;
-import arb.expressions.nodes.Node;
-import arb.expressions.nodes.VariableNode;
+import arb.expressions.nodes.*;
 import arb.functions.Function;
 
 /**
@@ -19,6 +18,27 @@ import arb.functions.Function;
 public abstract class UnaryOperationNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                         Node<D, R, F>
 {
+
+  @Override
+  public Node<D, R, F> cache()
+  {
+    if (independentOfInput())
+    {
+      String fieldName = expression.newIntermediateVariable("const", type(), false);
+      this.fieldName = fieldName;
+      expression.registerConstantForInitialization(this);
+      return new CachedNode<>(expression,
+                              this,
+                              fieldName);
+    }
+
+    if (arg != null)
+    {
+      arg = arg.cache();
+    }
+
+    return this;
+  }
 
   @Override
   public int hashCode()

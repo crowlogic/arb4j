@@ -15,8 +15,7 @@ import arb.Integer;
 import arb.exceptions.CompilerException;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
-import arb.expressions.nodes.Node;
-import arb.expressions.nodes.VariableNode;
+import arb.expressions.nodes.*;
 import arb.functions.Function;
 import arb.functions.RealToComplexFunction;
 import arb.functions.complex.ComplexFunction;
@@ -395,6 +394,31 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
                       transformation,
                       this,
                       getClass().getSimpleName());
+  }
+
+  @Override
+  public Node<D, C, F> cache()
+  {
+    if (independentOfInput())
+    {
+      String fieldName = expression.newIntermediateVariable("const", type(), false);
+      this.fieldName = fieldName;
+      expression.registerConstantForInitialization(this);
+      return new CachedNode<>(expression,
+                              this,
+                              fieldName);
+    }
+
+    if (left != null)
+    {
+      left = left.cache();
+    }
+    if (right != null)
+    {
+      right = right.cache();
+    }
+
+    return this;
   }
 
   @Override
