@@ -83,42 +83,34 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     }
   }
 
-  public Node<D, R, F> cache()
-  {
-    if (independentOfInput())
-    {
-      if (Expression.trace)
-      {
-        log.debug("{}.cache(): node={}, existing fieldName={}",
-                     getClass().getSimpleName(),
-                     this,
-                     this.fieldName);
+  public Node<D, R, F> cache() {
+    if (independentOfInput()) {
+      if (Expression.trace) {
+        log.debug("{}.cache(): node={}, existing fieldName={}", 
+                     getClass().getSimpleName(), this, this.fieldName);
       }
-
+      
       deregisterPreviousFieldName();
-
-      String fieldName = expression.newIntermediateVariable("cached", type(), false);
+      
+      // Don't call registerIntermediateVariable - just create the field name
+      String fieldName = expression.getNextIntermediateVariableFieldName("cached", type());
       this.fieldName = fieldName;
-
-      if (Expression.trace)
-      {
+      
+      if (Expression.trace) {
         log.debug("  assigned new fieldName={}", fieldName);
       }
-
+      
       expression.registerCachedNode(this);
-      return new CachedNode<>(expression,
-                              this,
-                              fieldName);
+      return new CachedNode<>(expression, this, fieldName);
     }
-
-    if (Expression.trace)
-    {
-      log.debug("{}.cache(): node={} depends on input, returning this",
-                   getClass().getSimpleName(),
-                   this);
+    
+    if (Expression.trace) {
+      log.debug("{}.cache(): node={} depends on input, returning this", 
+                   getClass().getSimpleName(), this);
     }
     return this;
   }
+
 
   /**
    * @return true if this node's evaluation is independent of all input parameters

@@ -27,13 +27,13 @@ public abstract class UnaryOperationNode<D, R, F extends Function<? extends D, ?
       if (Expression.trace)
       {
         log.debug("UnaryOperationNode.cache(): node={}, existing fieldName={}",
-                     this,
-                     this.fieldName);
+                  this,
+                  this.fieldName);
       }
 
       deregisterPreviousFieldName();
 
-      String fieldName = expression.newIntermediateVariable("cached", type(), false);
+      String fieldName = expression.getNextIntermediateVariableFieldName("cached", type());
       this.fieldName = fieldName;
 
       if (Expression.trace)

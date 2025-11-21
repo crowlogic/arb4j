@@ -71,7 +71,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
       deregisterPreviousFieldName();
 
-      String fieldName = expression.newIntermediateVariable("cached", type(), false);
+      String fieldName = expression.getNextIntermediateVariableFieldName("cached", type());
       this.fieldName = fieldName;
 
       if (Expression.trace)

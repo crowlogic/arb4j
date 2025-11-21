@@ -410,7 +410,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
 
       deregisterPreviousFieldName();
 
-      String fieldName = expression.newIntermediateVariable("cached", type(), false);
+      String fieldName = expression.getNextIntermediateVariableFieldName("cached", type());
       this.fieldName = fieldName;
 
       if (Expression.trace)
