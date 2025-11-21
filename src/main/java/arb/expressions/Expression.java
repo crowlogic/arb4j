@@ -145,6 +145,48 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   private List<Node<D, C, F>> cachedNodes = new ArrayList<>();
 
+  public void registerCachedNode(Node<D, C, F> node)
+  {
+    if (trace)
+    {
+      log.debug("registerCachedNode: node={}, fieldName={}, type={}",
+                node,
+                node.fieldName,
+                node.type().getSimpleName());
+    }
+    cachedNodes.add(node);
+    if (trace)
+    {
+      log.debug("  cachedNodes.size() now: {}", cachedNodes.size());
+    }
+  }
+
+  protected void cacheConstantSubexpressions()
+  {
+    if (rootNode == null)
+    {
+      if (trace)
+      {
+        log.debug("cacheConstantSubexpressions: rootNode is null, skipping");
+      }
+      return;
+    }
+
+    if (trace)
+    {
+      log.debug("cacheConstantSubexpressions: before caching, rootNode={}", rootNode);
+    }
+
+    rootNode = rootNode.cache();
+
+    if (trace)
+    {
+      log.debug("cacheConstantSubexpressions: after caching, rootNode={}, cachedNodes.size()={}",
+                rootNode,
+                cachedNodes.size());
+    }
+  }
+
   protected void declareCachedNodeFields(ClassVisitor cw)
   {
     if (trace)
@@ -183,22 +225,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-  public void registerCachedNode(Node<D, C, F> node)
-  {
-    if (trace)
-    {
-      log.debug("registerCachedNode: node={}, fieldName={}, type={}",
-                node,
-                node.fieldName,
-                node.type().getSimpleName());
-    }
-    cachedNodes.add(node);
-    if (trace)
-    {
-      log.debug("  cachedNodes.size() now: {}", cachedNodes.size());
-    }
-  }
-
   protected void generateCachedNodeInitializations(MethodVisitor mv)
   {
     if (trace)
@@ -217,19 +243,219 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
 
       loadThisOntoStack(mv);
-
-      if (trace)
-      {
-        log.debug("    generating node value");
-      }
       cached.generate(mv, cached.type());
-
-      if (trace)
-      {
-        log.debug("    storing to field {}", cached.fieldName);
-      }
       putField(mv, className, cached.fieldName, cached.type());
     }
+  }
+
+  protected void declareFields(ClassVisitor cw)
+  {
+    if (trace)
+    {
+      log.debug("declareFields: className={}", className);
+    }
+
+    cw.visitField(Opcodes.ACC_PUBLIC, IS_INITIALIZED, "Z", null, null);
+
+    if (context != null)
+    {
+      declareContext(cw);
+    }
+
+    declareLiteralConstants(cw);
+    declareCachedNodeFields(cw);
+    declareIntermediateVariables(cw);
+    declareFunctionReferences(cw);
+    declareVariables(cw);
+
+    if (trace)
+    {
+      log.debug("declareFields: complete");
+    }
+  }
+
+  protected MethodVisitor generateInitializationCode(MethodVisitor mv)
+  {
+    if (trace)
+    {
+      log.debug("generateInitializationCode: className={}, functionName={}",
+                className,
+                functionName);
+    }
+
+    generateCodeToThrowErrorIfAlreadyInitialized(mv);
+
+    if (trace)
+    {
+      log.debug("  referencedFunctions: {}", referencedFunctions.keySet());
+    }
+
+    addChecksForNullVariableReferences(mv);
+
+    if (dependencies != null)
+    {
+      if (trace)
+      {
+        log.debug("  processing {} dependencies", dependencies.size());
+      }
+      for (Dependency dependency : dependencies)
+      {
+        generateDependencyAssignments(mv, dependency);
+      }
+    }
+
+    insideInitializer = true;
+    if (trace)
+    {
+      log.debug("  generating cached node initializations");
+    }
+    generateCachedNodeInitializations(mv);
+    insideInitializer = false;
+
+    if (trace)
+    {
+      log.debug("  processing {} initializers", initializers.size());
+    }
+    initializers.forEach(initializer -> initializer.accept(mv));
+
+    if (recursive)
+    {
+      if (trace)
+      {
+        log.debug("  generating self reference (recursive)");
+      }
+      generateSelfReference(mv);
+    }
+
+    generateCodeToSetIsInitializedToTrue(mv);
+
+    if (trace)
+    {
+      log.debug("generateInitializationCode: complete");
+    }
+
+    return mv;
+  }
+
+  public Expression<D, C, F> generate() throws CompilerException
+  {
+    assert instructions == null;
+
+    if (log.isDebugEnabled())
+    {
+      log.debug("id={}: generate(className={}, functionName={}, expression='{}')\n",
+                System.identityHashCode(this),
+                className,
+                functionName,
+                expression);
+    }
+
+    if (trace)
+    {
+      log.debug("calling cacheConstantSubexpressions()");
+    }
+    cacheConstantSubexpressions();
+
+    ClassVisitor classVisitor = Compiler.constructClassVisitor();
+
+    try
+    {
+      generateFunctionInterface(this, className, classVisitor);
+      generateDomainTypeMethod(classVisitor);
+      generateCoDomainTypeMethod(classVisitor);
+      generateEvaluationMethod(classVisitor);
+
+      if (!isNullaryFunction() && shouldGenerateDerivative)
+      {
+        generateDerivativeMethod(classVisitor);
+      }
+
+      declareFields(classVisitor);
+      generateInitializationMethod(classVisitor);
+      generateConstructor(classVisitor);
+      declareIntermediateVariables(classVisitor);
+
+      if (needsCloseMethod())
+      {
+        generateCloseMethod(classVisitor);
+      }
+
+      generateGetNameMethod(classVisitor);
+      generateToStringMethod(classVisitor);
+      generateTypesetMethod(classVisitor);
+    }
+    finally
+    {
+      classVisitor.visitEnd();
+    }
+
+    return storeInstructions(classVisitor);
+  }
+
+  public String
+         registerIntermediateVariable(String intermediateVarName, Class<?> type, boolean initialize)
+  {
+    assert !type.isInterface() : "cannot instantiate interface " + type;
+
+    if (!isFunctional())
+    {
+      if (trace)
+      {
+        log.debug("registerIntermediateVariable: className={}, intermediateVarName={}, type={}, initialize={}",
+                  className,
+                  intermediateVarName,
+                  type.getSimpleName(),
+                  initialize);
+      }
+
+      var newIntermediateVariable = new IntermediateVariable<>(this,
+                                                               intermediateVarName,
+                                                               type,
+                                                               initialize);
+
+      if (intermediateVariables.containsKey(intermediateVarName))
+      {
+        if (trace)
+        {
+          log.debug("  ERROR: intermediate variable {} already exists", intermediateVarName);
+        }
+        throw new CompilerException(String.format("an intermediate variable named %s already exists",
+                                                  intermediateVarName));
+      }
+
+      intermediateVariables.put(intermediateVarName, newIntermediateVariable);
+
+      if (trace)
+      {
+        log.debug("  registered {}, total intermediateVariables: {}",
+                  intermediateVarName,
+                  intermediateVariables.size());
+      }
+    }
+    else
+    {
+      if (trace)
+      {
+        log.debug("registerIntermediateVariable: skipping {} (isFunctional=true)",
+                  intermediateVarName);
+      }
+      return null;
+    }
+
+    return intermediateVarName;
+  }
+
+  public Expression<D, C, F> registerInitializer(Consumer<MethodVisitor> consumer)
+  {
+    if (trace)
+    {
+      log.debug("registerInitializer: className={}, functionName={}, initializers.size()={}",
+                className,
+                functionName,
+                initializers.size());
+    }
+    initializers.add(consumer);
+    return this;
   }
 
   private static String       ASSERTION_ERROR_METHOD_DESCRIPTOR =
@@ -753,32 +979,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return methodVisitor;
   }
 
-  protected void declareFields(ClassVisitor cw)
-  {
-    if (trace)
-    {
-      log.debug("declareFields: className={}", className);
-    }
-
-    cw.visitField(Opcodes.ACC_PUBLIC, IS_INITIALIZED, "Z", null, null);
-
-    if (context != null)
-    {
-      declareContext(cw);
-    }
-
-    declareLiteralConstants(cw);
-    declareCachedNodeFields(cw);
-    declareIntermediateVariables(cw);
-    declareFunctionReferences(cw);
-    declareVariables(cw);
-
-    if (trace)
-    {
-      log.debug("declareFields: complete");
-    }
-  }
-
   private ClassVisitor declareContext(ClassVisitor cw)
   {
     Class<?> type           = Context.class;
@@ -1063,94 +1263,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected Node<D, C, F> exponentiateMultiplyAndDivide()
   {
     return multiplyAndDivide(exponentiate());
-  }
-
-  protected void cacheConstantSubexpressions()
-  {
-    if (rootNode == null)
-    {
-      if (trace)
-      {
-        log.debug("cacheConstantSubexpressions: rootNode is null, skipping");
-      }
-      return;
-    }
-
-    if (trace)
-    {
-      log.debug("cacheConstantSubexpressions: before caching, rootNode={}", rootNode);
-    }
-
-    rootNode = rootNode.cache();
-
-    if (trace)
-    {
-      log.debug("cacheConstantSubexpressions: after caching, rootNode={}, cachedNodes.size()={}",
-                rootNode,
-                cachedNodes.size());
-    }
-  }
-
-  /**
-   * Generate the implementation of the function after this{@link #parseRoot()}
-   * has been invoked
-   * 
-   * @return this
-   * @throws CompilerException
-   */
-  public Expression<D, C, F> generate() throws CompilerException
-  {
-    assert instructions == null;
-
-    if (log.isDebugEnabled())
-    {
-      log.debug("id={}: generate(className={}, functionName={}, expression='{}')\n",
-                System.identityHashCode(this),
-                className,
-                functionName,
-                expression);
-    }
-
-    if (trace)
-    {
-      log.debug("calling cacheConstantSubexpressions()");
-    }
-    cacheConstantSubexpressions();
-
-    ClassVisitor classVisitor = Compiler.constructClassVisitor();
-
-    try
-    {
-      generateFunctionInterface(this, className, classVisitor);
-      generateDomainTypeMethod(classVisitor);
-      generateCoDomainTypeMethod(classVisitor);
-      generateEvaluationMethod(classVisitor);
-
-      if (!isNullaryFunction() && shouldGenerateDerivative)
-      {
-        generateDerivativeMethod(classVisitor);
-      }
-
-      declareFields(classVisitor);
-      generateInitializationMethod(classVisitor);
-      generateConstructor(classVisitor);
-      declareIntermediateVariables(classVisitor);
-
-      if (needsCloseMethod())
-      {
-        generateCloseMethod(classVisitor);
-      }
-
-      generateGetNameMethod(classVisitor);
-      generateToStringMethod(classVisitor);
-      generateTypesetMethod(classVisitor);
-    }
-    finally
-    {
-      classVisitor.visitEnd();
-    }
-
-    return storeInstructions(classVisitor);
   }
 
   protected MethodVisitor generateCloseFieldCall(MethodVisitor methodVisitor,
@@ -1446,69 +1558,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     else
     {
       referencedFunctions.put(nestedFunction.functionName, nestedFunction);
-    }
-
-    return mv;
-  }
-
-  protected MethodVisitor generateInitializationCode(MethodVisitor mv)
-  {
-    if (trace)
-    {
-      log.debug("generateInitializationCode: className={}, functionName={}",
-                className,
-                functionName);
-    }
-
-    generateCodeToThrowErrorIfAlreadyInitialized(mv);
-
-    if (trace)
-    {
-      log.debug("  referencedFunctions: {}", referencedFunctions.keySet());
-    }
-
-    addChecksForNullVariableReferences(mv);
-
-    if (dependencies != null)
-    {
-      if (trace)
-      {
-        log.debug("  processing {} dependencies", dependencies.size());
-      }
-      for (Dependency dependency : dependencies)
-      {
-        generateDependencyAssignments(mv, dependency);
-      }
-    }
-
-    insideInitializer = true;
-    if (trace)
-    {
-      log.debug("  generating cached node initializations");
-    }
-    generateCachedNodeInitializations(mv);
-    insideInitializer = false;
-
-    if (trace)
-    {
-      log.debug("  processing {} initializers", initializers.size());
-    }
-    initializers.forEach(initializer -> initializer.accept(mv));
-
-    if (recursive)
-    {
-      if (trace)
-      {
-        log.debug("  generating self reference (recursive)");
-      }
-      generateSelfReference(mv);
-    }
-
-    generateCodeToSetIsInitializedToTrue(mv);
-
-    if (trace)
-    {
-      log.debug("generateInitializationCode: complete");
     }
 
     return mv;
@@ -2448,72 +2497,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public boolean references(VariableReference<D, C, F> reference)
   {
     return referencedVariables.containsKey(reference.name);
-  }
-
-  public Expression<D, C, F> registerInitializer(Consumer<MethodVisitor> consumer)
-  {
-    if (trace)
-    {
-      log.debug("registerInitializer: className={}, functionName={}, initializers.size()={}",
-                className,
-                functionName,
-                initializers.size());
-    }
-    initializers.add(consumer);
-    return this;
-  }
-
-  public String
-         registerIntermediateVariable(String intermediateVarName, Class<?> type, boolean initialize)
-  {
-    assert !type.isInterface() : "cannot instantiate interface " + type;
-
-    if (!isFunctional())
-    {
-      if (trace)
-      {
-        log.debug("registerIntermediateVariable: className={}, intermediateVarName={}, type={}, initialize={}",
-                  className,
-                  intermediateVarName,
-                  type.getSimpleName(),
-                  initialize);
-      }
-
-      var newIntermediateVariable = new IntermediateVariable<>(this,
-                                                               intermediateVarName,
-                                                               type,
-                                                               initialize);
-
-      if (intermediateVariables.containsKey(intermediateVarName))
-      {
-        if (trace)
-        {
-          log.debug("  ERROR: intermediate variable {} already exists", intermediateVarName);
-        }
-        throw new CompilerException(String.format("an intermediate variable named %s already exists",
-                                                  intermediateVarName));
-      }
-
-      intermediateVariables.put(intermediateVarName, newIntermediateVariable);
-
-      if (trace)
-      {
-        log.debug("  registered {}, total intermediateVariables: {}",
-                  intermediateVarName,
-                  intermediateVariables.size());
-      }
-    }
-    else
-    {
-      if (trace)
-      {
-        log.debug("registerIntermediateVariable: skipping {} (isFunctional=true)",
-                  intermediateVarName);
-      }
-      return null;
-    }
-
-    return intermediateVarName;
   }
 
   public String remaining()

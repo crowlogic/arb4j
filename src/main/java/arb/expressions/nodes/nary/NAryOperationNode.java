@@ -62,6 +62,16 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     if (independentOfInput())
     {
+      if (isResult)
+      {
+        if (Expression.trace)
+        {
+          log.debug("NAryOperationNode.cache(): node={} has fieldName=result (root), skipping cache",
+                    this);
+        }
+        return this;
+      }
+
       if (Expression.trace)
       {
         log.debug("NAryOperationNode.cache(): node={}, existing fieldName={}",
@@ -227,6 +237,13 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     lowerLimit.accept(t);
     upperLimit.accept(t);
     t.accept(this);
+  }
+
+  @Override
+  public boolean dependsOn(VariableNode<D, R, F> variable)
+  {
+    return upperLimit.dependsOn(variable) || lowerLimit.dependsOn(variable)
+                  || ( operand != null && operand.rootNode.spliceInto(expression).dependsOn(variable) );
   }
 
   protected void assignFieldNamesIfNecessary(Class<?> resultType)
@@ -761,13 +778,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   public char symbol()
   {
     return '∨';
-  }
-
-  @Override
-  public boolean dependsOn(VariableNode<D, R, F> variable)
-  {
-    assert false : "TODO";
-    return false;
   }
 
 }

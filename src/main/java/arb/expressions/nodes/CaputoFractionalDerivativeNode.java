@@ -121,7 +121,6 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   @Override
   public boolean dependsOn(VariableNode<D, R, F> variable)
   {
-    assert false : "TODO";
     return false;
   }
 
