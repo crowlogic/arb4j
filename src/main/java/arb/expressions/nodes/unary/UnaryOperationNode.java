@@ -120,6 +120,13 @@ public abstract class UnaryOperationNode<D, R, F extends Function<? extends D, ?
 
   public void loadOutputVariableOntoStack(MethodVisitor methodVisitor, Class<?> resultType)
   {
+    log.debug("loadOutputVariableOntoStack( this={}, resultType={} ) independentOfInput={} isResult={}",
+              this,
+              resultType,
+              independentOfInput(),
+              isResult);
+
+    assert !expression.insideInitializer : "BUG: tried to load the output(last argument in the 4th slot of the evaluate method) in the initialization method. it should not be cached if the result is being written to the output";
     if (isResult)
     {
       cast(loadResultParameter(methodVisitor), resultType);
@@ -134,6 +141,6 @@ public abstract class UnaryOperationNode<D, R, F extends Function<? extends D, ?
   @Override
   public boolean dependsOn(VariableNode<D, R, F> variable)
   {
-    return arg == null || arg.dependsOn(variable);
+    return arg != null && arg.dependsOn(variable);
   }
 }

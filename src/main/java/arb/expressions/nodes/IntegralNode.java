@@ -1,8 +1,6 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.cast;
-import static arb.expressions.Compiler.invokeMethod;
-import static arb.expressions.Compiler.loadBitsParameterOntoStack;
+import static arb.expressions.Compiler.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -11,9 +9,7 @@ import java.util.function.Consumer;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
 
-import arb.Complex;
-import arb.Quaternion;
-import arb.Real;
+import arb.*;
 import arb.expressions.*;
 import arb.functions.Function;
 
@@ -44,10 +40,9 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 {
 
   @Override
-  public boolean dependsOn(VariableNode<D, C, F> variable)
+  public Node<D, C, F> cache()
   {
-    assert false : "TODO";
-    return false;
+   return this;
   }
 
   @Override
@@ -136,6 +131,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   public IntegralNode(Expression<D, C, F> expression, boolean functionForm)
   {
     super(expression);
+
     if (!functionForm)
     {
 
@@ -182,6 +178,8 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
                       VariableNode<D, C, F> variable)
   {
     super(expression);
+    integralNode.isResult = isResult;
+
     integrandNode           = functionEvaluationNode;
     integrationVariableNode = variable;
   }
@@ -241,7 +239,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   {
     assert resultType != null : "resultType cannot be null";
     generatedType         = resultType;
-    integralNode.isResult = isResult;
 
     if (integralNode == null)
     {
@@ -313,6 +310,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     integralNode                     = (Node<Object,
                   Object,
                   Function<?, ?>>) integrandNode.integrate(integrationVariableNode.asVariable());
+    integralNode.isResult = isResult;
 
     integralExpression.instructions  = null;
     integralExpression.compiledClass = null;
@@ -439,5 +437,11 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     return '∫';
   }
 
-  
+  @Override
+  public boolean dependsOn(VariableNode<D, C, F> variable)
+  {
+    return integrationVariableNode.dependsOn(variable) || integrandNode.dependsOn(variable)
+                  || lowerLimitNode.dependsOn(variable) || upperLimitNode.dependsOn(variable);
+  }
+
 }
