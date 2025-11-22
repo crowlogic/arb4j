@@ -24,7 +24,7 @@ import arb.space.topological.Space;
  * 
  * In other words, a measure space consists of a {@link MeasurableSpace} (Σ,A )
  * together with a {@link Measure} on it and thus {@link MeasureSpace} extends
- * {@link MeasurableSpace} and provides the method this{@link #μ()} to specify
+ * {@link MeasurableSpace} and provides the method {@link #μ()} to specify
  * the measure
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
