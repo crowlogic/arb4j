@@ -14,7 +14,7 @@ import arb.space.topological.Space;
  * A measurable space consists of the first two components without a specific
  * measure, thus.
  * 
- * A measure space is a triple <b>(X,Σ,μ)</b> where<br>
+ * A {@link MeasureSpace} is a triple <b>(X,Σ,μ)</b> where<br>
  * 
  * <pre>
  * X is a set
