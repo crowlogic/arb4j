@@ -19,7 +19,7 @@ import arb.space.topological.Space;
  * <pre>
  * X is a set
  * Σ is the {@link σField} of the set X
- * μ is a {@link Measure} on (X,Σ)
+ * μ is a {@link Measure} on the {@link MeasurableSpace} (X,Σ)
  * </pre>
  * 
  * In other words, a measure space consists of a {@link MeasurableSpace} (Σ,A )
