@@ -1,0 +1,57 @@
+1. Set Theoretic
+2. Containment: Subsets and Supersets
+
+Containment of A by B (i.e. every element of A is in B) is written
+
+A⊂B
+
+or, allowing equality,
+
+A⊆B
+
+Equivalently, this can be expressed as
+
+B⊃A
+
+or, expressing the fact that the sets B and A are possiby equal
+
+B⊇A
+
+2.2 Measure-Theoretic Considerations
+
+The statement requires qualification based on context:
+
+2.2.1 Finite Sets
+
+For finite sets with A ⊂ B, the cardinality satisfies |A| < |B|
+necessarily.
+
+Proof: Suppose A ⊂ B with both finite. By definition of proper subset,
+A ⊆ B and A ≠ B. Since A ⊆ B, every element of A is in B. Since A ≠ B,
+there exists b ∈ B with b ∉ A. Thus B contains all elements of A plus
+at least one additional element. For finite sets, this forces |B| ≥
+|A| + 1, hence |A| < |B|.
+
+2.2.2 Infinite Sets
+
+For infinite sets, proper subsets can have equal cardinality to the
+superset.
+
+Counterexample: The even natural numbers form a proper subset of ℕ:
+{2,4,6,...} ⊂ ℕ. However, the bijection f(n) = 2n demonstrates
+|{2,4,6,...}| = |ℕ|.
+
+Similarly, ℕ ⊂ ℤ but |ℕ| = |ℤ| (both countably infinite).
+
+2.2.3 Measure Theory
+
+For measurable sets in ℝⁿ with Lebesgue measure μ, proper subsets can
+have equal measure.
+
+Counterexample: Let A = [0,1] \ {1/2} and B = [0,1]. Then A ⊂ B but
+μ(A) = μ(B) = 1 since singleton sets have measure zero.
+
+The original statement holds only for finite sets. For infinite
+cardinalities or continuous measures, proper containment does not
+imply strictly smaller "volume."
+

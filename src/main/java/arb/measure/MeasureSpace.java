@@ -5,11 +5,11 @@ import arb.documentation.TheArb4jLibrary;
 import arb.space.topological.Space;
 
 /**
- * A {@link MeasureSpace} is a basic {@link Space} of {@link MeasureTheory} which
- * generalizes the notion of volume. It contains an underlying set, the subsets
- * of this set that are feasible for measuring (the {@link σField}) and the
- * method that is used for measuring (the {@link Measure}). One important
- * example of a measure space is a {@link ProbabilitySpace}.
+ * A {@link MeasureSpace} is a basic {@link Space} of {@link MeasureTheory}
+ * which generalizes the notion of volume. It contains an underlying set X, the
+ * measurable subsets constituting the {@link σField} and the method that is
+ * used for measuring (the {@link Measure}). One important example of a measure
+ * space is a {@link ProbabilitySpace}.
  * 
  * A measurable space consists of the first two components without a specific
  * measure, thus.
@@ -31,8 +31,8 @@ import arb.space.topological.Space;
  *      {@link TheArb4jLibrary}
  * 
  */
-public interface MeasureSpace<X, Σ extends σField<? extends X>> extends
-                             MeasurableSpace<X,Σ>
+public interface MeasureSpace<X, Σ extends σField<? extends X>, μ extends Measure<X, Σ>> extends
+                             MeasurableSpace<X, Σ>
 {
   public Measure<X, Σ> μ();
 }

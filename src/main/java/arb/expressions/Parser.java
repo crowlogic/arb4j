@@ -1,10 +1,7 @@
 package arb.expressions;
 
 import java.text.Normalizer;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.UUID;
+import java.util.*;
 
 import arb.Fraction;
 import arb.FractionConstants;
@@ -238,7 +235,8 @@ public class Parser
 
     for (int i = 0; i < superscripts.length; i++)
     {
-      expression = expression.replace(superscripts[i], String.format("^(%s)", normals[i]));
+      expression = expression.replace(String.valueOf(superscripts[i]),
+                                      String.format("^(%s)", normals[i]));
     }
 
     return Normalizer.normalize(expression, Normalizer.Form.NFD);
@@ -294,7 +292,7 @@ public class Parser
   public static final char[]             SUBSCRIPT_CHARACTERS_ARRAY   =
   { 'ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ', 'ₜ' };
 
-  public static int[]                    lowercaseSuperscriptAlphabet =
+  public static Character[]              lowercaseSuperscriptAlphabet =
   { 'ᵃ',
     'ᵇ',
     'ᶜ',
@@ -311,7 +309,7 @@ public class Parser
     'ⁿ',
     'ᵒ',
     'ᵖ',
-    0x107A5,
+    (char) 0x107A5,
     'ʳ',
     'ˢ',
     'ᵗ',
@@ -322,50 +320,61 @@ public class Parser
     'ʸ',
     'ᶻ' };
 
-  public static final HashSet<
-                Character>               lowercaseSubscriptAlphabet   = new HashSet<
-                              Character>(Arrays.asList('ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ', 'ₜ'));
+  public static final HashSet<Character> lowercaseSubscriptAlphabet   =
+                                                                    new HashSet<>(Arrays.asList('ₐ',
+                                                                                                'ₑ',
+                                                                                                'ₒ',
+                                                                                                'ₓ',
+                                                                                                'ₔ',
+                                                                                                'ₕ',
+                                                                                                'ₖ',
+                                                                                                'ₗ',
+                                                                                                'ₘ',
+                                                                                                'ₙ',
+                                                                                                'ₚ',
+                                                                                                'ₛ',
+                                                                                                'ₜ'));
   /**
    * Not all uppercase letters have UTF superscript representations
    */
-  public static int[]                    uppercaseSuperscriptAlphabet =
+  public static Character[]                    uppercaseSuperscriptAlphabet =
   { 'ᴬ', 'ᴮ', 'ᴰ', 'ᴱ', 'ᴳ', 'ᴴ', 'ᴵ', 'ᴶ', 'ᴷ', 'ᴸ', 'ᴹ', 'ᴺ', 'ᴼ', 'ᴾ', 'ᴿ', 'ᵀ', 'ᵁ', 'ⱽ', 'ᵂ' };
 
-  public static final String[]           superscripts                 =
-  { "ᵃ",
-    "ᵇ",
-    "ᶜ",
-    "ᵈ",
-    "ᵉ",
-    "ᶠ",
-    "ᵍ",
-    "ʰ",
-    "ⁱ",
-    "ʲ",
-    "ᵏ",
-    "ˡ",
-    "ᵐ",
-    "ⁿ",
-    "ᵒ",
-    "ᵖ",
-    String.format("%c", 0x107A5),
-    "ʳ",
-    "ˢ",
-    "ᵗ",
-    "ᵘ",
-    "ᵛ",
-    "ʷ",
-    "ˣ",
-    "ʸ",
-    "ᶻ",
-    "ᵅ",
-    "ᵝ",
-    "ᵞ",
-    "ᵟ",
-    "ᵋ",
-    "ᶿ",
-    "ᵠ",
-    "ᵡ" };
+  public static final Character[]        superscripts                 =
+  { 'ᵃ',
+    'ᵇ',
+    'ᶜ',
+    'ᵈ',
+    'ᵉ',
+    'ᶠ',
+    'ᵍ',
+    'ʰ',
+    'ⁱ',
+    'ʲ',
+    'ᵏ',
+    'ˡ',
+    'ᵐ',
+    'ⁿ',
+    'ᵒ',
+    'ᵖ',
+    (char) 0x107A5,
+    'ʳ',
+    'ˢ',
+    'ᵗ',
+    'ᵘ',
+    'ᵛ',
+    'ʷ',
+    'ˣ',
+    'ʸ',
+    'ᶻ',
+    'ᵅ',
+    'ᵝ',
+    'ᵞ',
+    'ᵟ',
+    'ᵋ',
+    'ᶿ',
+    'ᵠ',
+    'ᵡ' };
 
   public static final String[]           normals                      =
   { "a",
@@ -403,8 +412,8 @@ public class Parser
     "φ",
     "χ" };
 
-  public static final HashSet<Character> superscriptChars             = new HashSet<
-                Character>(Arrays.asList(superscripts).stream().map(s -> s.charAt(0)).toList());
+  public static final HashSet<Character> superscriptChars             =
+                                                          new HashSet<>(Arrays.asList(superscripts));
 
   public static boolean isSuperscript(char character)
   {
@@ -497,13 +506,13 @@ public class Parser
                String functionName)
   {
     return Parser.parse(className,
-                 expressionString,
-                 context,
-                 domainClass,
-                 coDomainClass,
-                 functionClass,
-                 functionName,
-                 null);
+                        expressionString,
+                        context,
+                        domainClass,
+                        coDomainClass,
+                        functionClass,
+                        functionName,
+                        null);
   }
 
   public static <D,
@@ -530,7 +539,7 @@ public class Parser
                           functionClass,
                           functionName,
                           containingExpression);
-  
+
   }
 
   public static <D, R, F extends Function<? extends D, ? extends R>>

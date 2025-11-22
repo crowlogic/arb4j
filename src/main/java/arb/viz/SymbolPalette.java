@@ -1,18 +1,10 @@
 package arb.viz;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.Compiler;
-import arb.expressions.Expression;
-import arb.expressions.Parser;
+import arb.expressions.*;
 import arb.expressions.viz.Stylesheet;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
@@ -20,18 +12,10 @@ import javafx.beans.binding.ObjectBinding;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.input.*;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -54,70 +38,71 @@ import javafx.stage.WindowEvent;
 public class SymbolPalette extends
                            Application
 {
-  public static final String[]                  SYMBOLS           =
-  { "∞",
-    "✅",
-    "❌",
-    "±",
-    "χ",
-    "ϱ",
-    "0",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "9",
-    "⁄",
-    "/",
-    "+",
-    "-",
-    "*",
-    "π",
-    "Γ",
-    "ᵅ",
-    "ⅈ",
-    "∈",
-    "₋",
-    "₊",
-    "⇒",
-    "➔",
-    "√",
-    "π",
-    "⌊",
-    "⌋",
-    "≀",
-    "₍",
-    "₎",
-    "∫",
-    "Π",
-    "∏",
-    "Σ",
-    "∑",
-    "½",
-    "²",
-    "ⁿ",
-    "∀",
-    "∃",
-    "μ",
-    "ν",
-    "ξ",
-    "⋰",
-    "ℭ",
-    "α",
-    "β",
-    "∂",
-    "σ",
-    "*",
-    "×",
-    "ₓ",
-    "⋅" };
+  public static final Character[]                      SYMBOLS           =
+  { '⊂',
+    '∞',
+    '✅',
+    '❌',
+    '±',
+    'χ',
+    'ϱ',
+    '0',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '9',
+    '⁄',
+    '/',
+    '+',
+    '-',
+    '*',
+    'π',
+    'Γ',
+    'ᵅ',
+    'ⅈ',
+    '∈',
+    '₋',
+    '₊',
+    '⇒',
+    '➔',
+    '√',
+    'π',
+    '⌊',
+    '⌋',
+    '≀',
+    '₍',
+    '₎',
+    '∫',
+    'Π',
+    '∏',
+    'Σ',
+    '∑',
+    '½',
+    '²',
+    'ⁿ',
+    '∀',
+    '∃',
+    'μ',
+    'ν',
+    'ξ',
+    '⋰',
+    'ℭ',
+    'α',
+    'β',
+    '∂',
+    'σ',
+    '*',
+    '×',
+    'ₓ',
+    '⋅' };
 
-  private static final String                   STYLESHEET        = """
+  private static final String                          STYLESHEET        = """
                  .highlighted-button
                  {
                      -fx-background-color: rgba(255, 255, 0, 0.5);
@@ -142,7 +127,7 @@ public class SymbolPalette extends
                 }
                   """;
 
-  private static final Map<String, Set<String>> CHARACTER_ALIASES = new HashMap<>();
+  private static final HashMap<Character, Set<String>> CHARACTER_ALIASES = new HashMap<>();
 
   static
   {
@@ -151,265 +136,275 @@ public class SymbolPalette extends
 
   private static void initializeAliases()
   {
-    addAliases("∞", "infinity", "infty", "inf");
-    addAliases("❌", "x");
-    addAliases("✅", "check");
-    addAliases("ᵡ", "supchi");
-    addAliases("ʰ", "suph");
-    addAliases("ʲ", "supj");
-    addAliases("ʳ", "supr");
-    addAliases("ʷ", "supw");
-    addAliases("ʸ", "supy");
-    addAliases("ˡ", "supl");
-    addAliases("ˢ", "sups");
-    addAliases("ˣ", "supx");
+    associateAliases('⊂', "subset", "contained");
+    associateAliases('⊃', "superset", "contains");
 
-    addAliases("σ", "sigma");
-    addAliases("α", "alpha");
-    addAliases("β", "beta");
+    associateAliases('∞', "infinity", "infty", "inf");
+    associateAliases('❌', "x");
+    associateAliases('✅', "check");
+    associateAliases('ᵡ', "supchi");
+    associateAliases('ʰ', "suph");
+    associateAliases('ʲ', "supj");
+    associateAliases('ʳ', "supr");
+    associateAliases('ʷ', "supw");
+    associateAliases('ʸ', "supy");
+    associateAliases('ˡ', "supl");
+    associateAliases('ˢ', "sups");
+    associateAliases('ˣ', "supx");
 
-    addAliases("⁄", "fraction", "slash", "div", "frac", "ratio");
+    associateAliases('σ', "sigma");
+    associateAliases('α', "alpha");
+    associateAliases('β', "beta");
 
-    addAliases("ⁱ", "supi");
-    addAliases("ⁿ", "supn");
+    associateAliases('⁄', "fraction", "slash", "div", "frac", "ratio");
 
-    addAliases("ₔ", "subschwa");
+    associateAliases('ⁱ', "supi");
+    associateAliases('ⁿ', "supn");
 
-    addAliases("ⱽ", "supV");
+    associateAliases('ₔ', "subschwa");
 
-    addAliases("𐞥", "q");
+    associateAliases('ⱽ', "supV");
+
+    associateAliases((char) 0x107A5, "q");
 
     // Basic operators
-    addAliases("*", "multiply", "times", "mult", "star", "asterisk");
-    addAliases("+", "plus", "add", "addition");
-    addAliases("-", "minus", "subtract", "dash", "hyphen");
-    addAliases("/", "divide", "div", "slash", "fraction");
+    associateAliases('*', "multiply", "times", "mult", "star", "asterisk");
+    associateAliases('+', "plus", "add", "addition");
+    associateAliases('-', "minus", "subtract", "dash", "hyphen");
+    associateAliases('/', "divide", "div", "slash", "fraction");
 
     // Numbers 0-9
-    addAliases("0", "zero");
-    addAliases("1", "one");
-    addAliases("2", "two");
-    addAliases("3", "three");
-    addAliases("4", "four");
-    addAliases("5", "five");
-    addAliases("6", "six");
-    addAliases("7", "seven");
-    addAliases("8", "eight");
-    addAliases("9", "nine");
+    associateAliases('0', "zero");
+    associateAliases('1', "one");
+    associateAliases('2', "two");
+    associateAliases('3', "three");
+    associateAliases('4', "four");
+    associateAliases('5', "five");
+    associateAliases('6', "six");
+    associateAliases('7', "seven");
+    associateAliases('8', "eight");
+    associateAliases('9', "nine");
 
     // Superscript numbers
-    addAliases("⁰", "sup0", "power0", "superscript0", "0");
-    addAliases("¹", "sup1", "power1", "superscript1", "1");
-    addAliases("²", "sup2", "power2", "squared", "square", "2");
-    addAliases("³", "sup3", "power3", "cubed", "cube", "3");    
-    addAliases("⁴", "sup4", "power4", "4'");
-    addAliases("⁵", "sup5", "power5", "5");
-    addAliases("⁶", "sup6", "power6", "6");
-
-    addAliases("⁷", "sup7", "power7", "7");
-    addAliases("⁸", "sup8", "power8", "8");
-    addAliases("⁹", "sup9", "power9", "9");
+    associateAliases('⁰', "sup0", "power0", "superscript0", "0");
+    associateAliases('¹', "sup1", "power1", "superscript1", "1");
+    associateAliases('²', "sup2", "power2", "squared", "square", "2");
+    associateAliases('³', "sup3", "power3", "cubed", "cube", "3");
+    associateAliases('⁴', "sup4", "power4", "4'");
+    associateAliases('⁵', "sup5", "power5", "5");
+    associateAliases('⁶', "sup6", "power6", "6");
+    associateAliases('⁷', "sup7", "power7", "7");
+    associateAliases('⁸', "sup8", "power8", "8");
+    associateAliases('⁹', "sup9", "power9", "9");
 
     // Subscript numbers
-    addAliases("₀", "sub0");
-    addAliases("₁", "sub1");
-    addAliases("₂", "sub2");
-    addAliases("₃", "sub3");
-    addAliases("₄", "sub4");
-    addAliases("₅", "sub5");
-    addAliases("₆", "sub6");
-    addAliases("₇", "sub7");
-    addAliases("₈", "sub8");
-    addAliases("₉", "sub9");
+    associateAliases('₀', "sub0");
+    associateAliases('₁', "sub1");
+    associateAliases('₂', "sub2");
+    associateAliases('₃', "sub3");
+    associateAliases('₄', "sub4");
+    associateAliases('₅', "sub5");
+    associateAliases('₆', "sub6");
+    associateAliases('₇', "sub7");
+    associateAliases('₈', "sub8");
+    associateAliases('₉', "sub9");
 
     // Fractions
-    addAliases("¼", "fourth", "quarter");
-    addAliases("½", "half", "halve");
-    addAliases("¾", "threefourths", "threequarters");
-    addAliases("⅐", "seventh");
-    addAliases("⅑", "ninth");
-    addAliases("⅒", "tenth");
-    addAliases("⅓", "third");
-    addAliases("⅔", "twothirds");
-    addAliases("⅕", "fifth");
-    addAliases("⅖", "twofifths");
-    addAliases("⅗", "threefifths");
-    addAliases("⅘", "fourfifths");
-    addAliases("⅙", "sixth");
-    addAliases("⅚", "fivesixths");
-    addAliases("⅛", "eighth");
-    addAliases("⅜", "threeeighths");
-    addAliases("⅝", "fiveeighths");
-    addAliases("⅞", "seveneighths");
+    associateAliases('¼', "fourth", "quarter");
+    associateAliases('½', "half", "halve");
+    associateAliases('¾', "threefourths", "threequarters");
+    associateAliases('⅐', "seventh");
+    associateAliases('⅑', "ninth");
+    associateAliases('⅒', "tenth");
+    associateAliases('⅓', "third");
+    associateAliases('⅔', "twothirds");
+    associateAliases('⅕', "fifth");
+    associateAliases('⅖', "twofifths");
+    associateAliases('⅗', "threefifths");
+    associateAliases('⅘', "fourfifths");
+    associateAliases('⅙', "sixth");
+    associateAliases('⅚', "fivesixths");
+    associateAliases('⅛', "eighth");
+    associateAliases('⅜', "threeeighths");
+    associateAliases('⅝', "fiveeighths");
+    associateAliases('⅞', "seveneighths");
 
     // Greek Letters (uppercase and lowercase together)
-    addAliases("Χ χ", "chi");
-    addAliases("Γ γ", "gamma");
-    addAliases("Δ δ", "delta");
-    addAliases("η", "eta");
-    addAliases("Θ θ", "theta");
-    addAliases("Λ λ", "lambda");
-    addAliases("Ξ ξ", "xi");
-    addAliases("Π π", "pi");
-    addAliases("Σ σ", "sigma");
-    addAliases("Φ φ", "phi");
-    addAliases("Ψ ψ", "psi");
-    addAliases("Ω ω", "omega");
-    addAliases("ζ", "zeta");
-    addAliases("μ", "mu");
-    addAliases("ν", "nu");
-    addAliases("ς", "finalsigma");
-    addAliases("ϑ", "theta");
-    addAliases("ϒ", "upsilon");
-    addAliases("ϕ", "phi");
-    addAliases("ϖ", "pi");
-    addAliases("ϰ", "kappa");
-    addAliases("ϱ", "rho");
-    addAliases("𝜏", "tau");
+    associateAliases('Χ', "chi");
+    associateAliases('χ', "chi");
+    associateAliases('Γ', "gamma");
+    associateAliases('γ', "gamma");
+    associateAliases('Δ', "delta");
+    associateAliases('δ', "delta");
+    associateAliases('η', "eta");
+    associateAliases('Θ', "theta");
+    associateAliases('θ', "theta");
+    associateAliases('Λ', "lambda");
+    associateAliases('λ', "lambda");
+    associateAliases('Ξ', "xi");
+    associateAliases('ξ', "xi");
+    associateAliases('Π', "pi");
+    associateAliases('π', "pi");
+    associateAliases('Σ', "sigma");
+    associateAliases('σ', "sigma");
+    associateAliases('Φ', "phi");
+    associateAliases('φ', "phi");
+    associateAliases('Ψ', "psi");
+    associateAliases('ψ', "psi");
+    associateAliases('Ω', "omega");
+    associateAliases('ω', "omega");
+    associateAliases('ζ', "zeta");
+    associateAliases('μ', "mu");
+    associateAliases('ν', "nu");
+    associateAliases('ς', "finalsigma");
+    associateAliases('ϑ', "theta");
+    associateAliases('ϒ', "upsilon");
+    associateAliases('ϕ', "phi");
+    associateAliases('ϖ', "pi");
+    associateAliases('ϰ', "kappa");
+    associateAliases('ϱ', "rho");
+    associateAliases((char) 0x1D70F, "tau");
 
-    addAliases("∫", "integral", "int");
-    addAliases("∂", "partial", "del");
-    addAliases("∀", "forall", "universal");
-    addAliases("∃", "exists", "existential");
-    addAliases("∈", "in", "element", "member");
-    addAliases("∏", "product", "prod");
-    addAliases("∑", "sum", "summation");
-    addAliases("√", "sqrt", "root", "radical");
-    addAliases("≀", "wreath");
-    addAliases("⋰", "dots", "diagonaldots", "ellipsis");
-    addAliases("⌊", "floor", "leftfloor");
-    addAliases("⌋", "floor", "rightfloor");
-    addAliases("⇒", "implies", "therefore", "rightarrow");
-    addAliases("➔", "arrow", "to", "rightarrow");
+    associateAliases('∫', "integral", "int");
+    associateAliases('∂', "partial", "del");
+    associateAliases('∀', "forall", "universal");
+    associateAliases('∃', "exists", "existential");
+    associateAliases('∈', "in", "element", "member");
+    associateAliases('∏', "product", "prod");
+    associateAliases('∑', "sum", "summation");
+    associateAliases('√', "sqrt", "root", "radical");
+    associateAliases('≀', "wreath");
+    associateAliases('⋰', "dots", "diagonaldots", "ellipsis");
+    associateAliases('⌊', "floor", "leftfloor");
+    associateAliases('⌋', "floor", "rightfloor");
+    associateAliases('⇒', "implies", "therefore", "rightarrow");
+    associateAliases('➔', "arrow", "to", "rightarrow");
 
     // Superscript Latin letters
-    addAliases("ᴬ", "supA");
-    addAliases("ᴮ", "supB");
-    addAliases("ᴰ", "supD");
-    addAliases("ᴱ", "supE");
-    addAliases("ᴳ", "supG");
-    addAliases("ᴴ", "supH");
-    addAliases("ᴵ", "supI");
-    addAliases("ᴶ", "supJ");
-    addAliases("ᴷ", "supK");
-    addAliases("ᴸ", "supL");
-    addAliases("ᴹ", "supM");
-    addAliases("ᴺ", "supN");
-    addAliases("ᴼ", "supO");
-    addAliases("ᴾ", "supP");
-    addAliases("ᴿ", "supR");
-    addAliases("ᵀ", "supT");
-    addAliases("ᵁ", "supU");
-    addAliases("ᵂ", "supW");
+    associateAliases('ᴬ', "supA");
+    associateAliases('ᴮ', "supB");
+    associateAliases('ᴰ', "supD");
+    associateAliases('ᴱ', "supE");
+    associateAliases('ᴳ', "supG");
+    associateAliases('ᴴ', "supH");
+    associateAliases('ᴵ', "supI");
+    associateAliases('ᴶ', "supJ");
+    associateAliases('ᴷ', "supK");
+    associateAliases('ᴸ', "supL");
+    associateAliases('ᴹ', "supM");
+    associateAliases('ᴺ', "supN");
+    associateAliases('ᴼ', "supO");
+    associateAliases('ᴾ', "supP");
+    associateAliases('ᴿ', "supR");
+    associateAliases('ᵀ', "supT");
+    associateAliases('ᵁ', "supU");
+    associateAliases('ᵂ', "supW");
 
     // Lowercase superscripts
-    addAliases("ᵃ", "supa");
-    addAliases("ᵅ", "supalpha");
-    addAliases("ᵇ", "supb");
-    addAliases("ᵈ", "supd");
-    addAliases("ᵉ", "supe");
-    addAliases("ᵋ", "supepsilon");
-    addAliases("ᵍ", "supg");
-    addAliases("ᵏ", "supk");
-    addAliases("ᵐ", "supm");
-    addAliases("ᵒ", "supo");
-    addAliases("ᵖ", "supp");
-    addAliases("ᵗ", "supt");
-    addAliases("ᵘ", "supu");
-    addAliases("ᵛ", "supv");
-    addAliases("ᵝ", "supbeta");
-    addAliases("ᵞ", "supgamma");
-    addAliases("ᵟ", "supdelta");
-    addAliases("ᵠ", "supphi");
-    addAliases("ᵡ", "supchi");
-    addAliases("ᶜ", "supc");
-    addAliases("ᶠ", "supf");
-    addAliases("ᶻ", "supz");
-    addAliases("ᶿ", "suptheta");
+    associateAliases('ᵃ', "supa");
+    associateAliases('ᵅ', "supalpha");
+    associateAliases('ᵇ', "supb");
+    associateAliases('ᵈ', "supd");
+    associateAliases('ᵉ', "supe");
+    associateAliases('ᵋ', "supepsilon");
+    associateAliases('ᵍ', "supg");
+    associateAliases('ᵏ', "supk");
+    associateAliases('ᵐ', "supm");
+    associateAliases('ᵒ', "supo");
+    associateAliases('ᵖ', "supp");
+    associateAliases('ᵗ', "supt");
+    associateAliases('ᵘ', "supu");
+    associateAliases('ᵛ', "supv");
+    associateAliases('ᵝ', "supbeta");
+    associateAliases('ᵞ', "supgamma");
+    associateAliases('ᵟ', "supdelta");
+    associateAliases('ᵠ', "supphi");
+    associateAliases('ᵡ', "supchi");
+    associateAliases('ᶜ', "supc");
+    associateAliases('ᶠ', "supf");
+    associateAliases('ᶻ', "supz");
+    associateAliases('ᶿ', "suptheta");
 
     // Subscript operators and letters
-    addAliases("₊", "subplus");
-    addAliases("₋", "subminus");
-    addAliases("₍", "subleftparen");
-    addAliases("₎", "subrightparen");
-    addAliases("ₐ", "suba");
-    addAliases("ₑ", "sube");
-    addAliases("ₒ", "subo");
-    addAliases("ₓ", "subx");
-    addAliases("ₕ", "subh");
-    addAliases("ₖ", "subk");
-    addAliases("ₗ", "subl");
-    addAliases("ₘ", "subm");
-    addAliases("ₙ", "subn");
-    addAliases("ₚ", "subp");
-    addAliases("ₛ", "subs");
-    addAliases("ₜ", "subt");
+    associateAliases('₊', "subplus");
+    associateAliases('₋', "subminus");
+    associateAliases('₍', "subleftparen");
+    associateAliases('₎', "subrightparen");
+    associateAliases('ₐ', "suba");
+    associateAliases('ₑ', "sube");
+    associateAliases('ₒ', "subo");
+    associateAliases('ₓ', "subx");
+    associateAliases('ₕ', "subh");
+    associateAliases('ₖ', "subk");
+    associateAliases('ₗ', "subl");
+    associateAliases('ₘ', "subm");
+    associateAliases('ₙ', "subn");
+    associateAliases('ₚ', "subp");
+    associateAliases('ₛ', "subs");
+    associateAliases('ₜ', "subt");
 
     // Complex numbers and special
-    addAliases("ⅈ", "i", "imaginary");
-    addAliases("ℭ", "complex", "mathcalc");
+    associateAliases('ⅈ', "i", "imaginary");
+    associateAliases('ℭ', "complex", "mathcalc");
   }
 
-  private static void addAliases(String characters, String... aliases)
+  private static void associateAliases(Character character, String... aliasesToBeAssociated)
   {
-    String[] chars = characters.split(" ");
-    for (String character : chars)
+    Set<String> associatedAliases = CHARACTER_ALIASES.computeIfAbsent(character,
+                                                                      k -> new HashSet<String>());
+    for (String alias : aliasesToBeAssociated)
     {
-      Set<String> aliasSet = CHARACTER_ALIASES.computeIfAbsent(character, k -> new HashSet<>());
-      aliasSet.add(character);
-      Collections.addAll(aliasSet, aliases);
+      associatedAliases.add(alias);
     }
   }
 
-  private TextField             textField;
-  private TextField             searchField;
-  private FlowPane              buttonPane;
-  private Map<Button, String>   buttonMap = new HashMap<>();
+  private TextField                textField;
+  private TextField                searchField;
+  private FlowPane                 buttonPane;
+  private Map<Button, Character>   buttonMap = new HashMap<>();
 
-  public static TreeSet<String> chars     = new TreeSet<>();
+  public static TreeSet<Character> chars     = new TreeSet<>();
 
   static
   {
-    chars.addAll(Parser.SUBSCRIPT_CHARACTERS.stream().map(String::valueOf).toList());
+    chars.addAll(Parser.SUBSCRIPT_CHARACTERS);
 
-    for (String s : SYMBOLS)
+    for (Character s : SYMBOLS)
     {
       chars.add(s);
     }
 
     for (Character s : Parser.greekAndBlackLetterChars)
     {
-      chars.add(String.format("%c", s));
+      chars.add(s);
     }
-    chars.addAll(Parser.fractions.keySet().stream().map(String::valueOf).toList());
+    chars.addAll(Parser.fractions.keySet());
 
-    for (int c : Parser.lowercaseSuperscriptAlphabet)
+    for (Character c : Parser.lowercaseSuperscriptAlphabet)
     {
-      chars.add(String.format("%c", c));
+      chars.add(c);
     }
-    for (int c : Parser.uppercaseSuperscriptAlphabet)
+    for (Character c : Parser.uppercaseSuperscriptAlphabet)
     {
-      chars.add(String.format("%c", c));
+      chars.add(c);
     }
-    for (char c : Parser.SUBSCRIPT_DIGITS_ARRAY)
+    for (Character c : Parser.SUBSCRIPT_DIGITS_ARRAY)
     {
-      chars.add(String.valueOf(c));
+      chars.add(c);
     }
-    for (char c : Parser.SUPERSCRIPT_DIGITS_ARRAY)
+    for (Character c : Parser.SUPERSCRIPT_DIGITS_ARRAY)
     {
-      chars.add(String.valueOf(c));
+      chars.add(c);
     }
-    for (String s : Parser.superscripts)
+    for (Character s : Parser.superscripts)
     {
       chars.add(s);
     }
 
-    chars.add("π");
-
-    characters = chars.toArray(new String[chars.size()]);
+    characters = chars.toArray(new Character[chars.size()]);
   }
 
-  public static String[] characters;
+  public static Character[] characters;
 
   @Override
   public void start(Stage primaryStage)
@@ -433,14 +428,14 @@ public class SymbolPalette extends
 
     Arrays.sort(characters, (a, b) -> a.compareTo(b));
 
-    for (String character : characters)
+    for (Character ch : characters)
     {
-      Button button = new Button(character);
-      button.setOnAction(e -> appendCharacter(character));
+      Button button = new Button(String.valueOf(ch));
+      button.setOnAction(e -> appendCharacter(ch));
       button.setMaxWidth(Double.MAX_VALUE);
       button.setMaxHeight(Double.MAX_VALUE);
       buttonPane.getChildren().add(button);
-      buttonMap.put(button, character);
+      buttonMap.put(button, ch);
     }
 
     BorderPane root = new BorderPane();
@@ -538,8 +533,8 @@ public class SymbolPalette extends
     {
       if (node instanceof Button button)
       {
-        String  character = buttonMap.get(button);
-        boolean matches   = false;
+        Character character = buttonMap.get(button);
+        boolean   matches   = false;
 
         for (String term : searchTerms)
         {
@@ -563,7 +558,7 @@ public class SymbolPalette extends
     });
   }
 
-  private void appendCharacter(String character)
+  private void appendCharacter(Character character)
   {
     textField.setText(textField.getText() + character);
   }
