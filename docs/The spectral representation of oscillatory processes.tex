@@ -1,0 +1,316 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\begin{document}
+
+\title{Spectral Theory of Oscillatory Processes}
+\author{}
+\date{}
+\maketitle
+
+\section{Fundamental Definitions}
+
+\begin{definition}[Oscillatory Function]
+A complex-valued function \(\phi_t(\omega)\), considered as a function of \(t\) for fixed \(\omega\), is called \emph{oscillatory} if it can be written as
+\[
+\phi_t(\omega) = A_t(\omega) e^{i\omega t}
+\]
+where \(A_t(\omega)\) admits a generalized Fourier representation
+\[
+A_t(\omega) = \int_{-\infty}^\infty e^{i\theta t} \, dH_\omega(\theta)
+\]
+with \(|dH_\omega(\theta)|\) achieving its maximum at \(\theta = 0\).
+\end{definition}
+
+\begin{definition}[Oscillatory Process]
+A centered stochastic process \(\{X_t\}_{t \in \mathbb{R}}\) is called an \emph{oscillatory process} if there exists a finite Borel measure \(\mu\) on \(\mathbb{R}\), a family of oscillatory functions \(\{A_t(\omega)\}_{t,\omega \in \mathbb{R}}\), and a complex orthogonal random measure \(\Phi\) such that
+\[
+X_t = \int_{\mathbb{R}} A_t(\omega) e^{i\omega t} \, d\Phi(\omega)
+\]
+where \(\mathbb{E}[|\Phi(B)|^2] = \mu(B)\) for all Borel sets \(B\), and for disjoint sets \(B_1, B_2\),
+\[
+\mathbb{E}[\Phi(B_1) \overline{\Phi(B_2)}] = 0, \quad \mathbb{E}[\Phi(B_1) \Phi(B_2)] = 0.
+\]
+\end{definition}
+
+\begin{definition}[Evolutionary Spectral Measure]
+For an oscillatory process \(X_t\) with amplitude family \(\{A_t(\omega)\}\) and control measure \(\mu\), the \emph{evolutionary spectral measure} at time \(t\) is defined by
+\[
+dF_t(\omega) = |A_t(\omega)|^2 \, d\mu(\omega).
+\]
+\end{definition}
+
+\section{Spectral Representation Theorems}
+
+\begin{theorem}[Existence of Spectral Representation]
+Let \(\{X_t\}\) be a centered oscillatory process with covariance function \(R_{s,t} = \mathbb{E}[X_s \overline{X_t}]\). Then there exist:
+\begin{itemize}
+\item a finite Borel measure \(\mu\) on \(\mathbb{R}\),
+\item a family of oscillatory functions \(\{A_t(\omega)\}\) with \(A_0(\omega) = 1\),
+\item a complex orthogonal random measure \(\Phi\) with \(\mathbb{E}[|\Phi(B)|^2] = \mu(B)\),
+\end{itemize}
+such that
+\[
+X_t = \int_{\mathbb{R}} A_t(\omega) e^{i\omega t} \, d\Phi(\omega)
+\]
+and
+\[
+R_{s,t} = \int_{\mathbb{R}} A_s(\omega) \overline{A_t(\omega)} e^{i\omega(s-t)} \, d\mu(\omega).
+\]
+\end{theorem}
+
+\begin{proof}
+We assume that \(R_{s,t}\) admits a representation of the form
+\[
+R_{s,t} = \int_{\mathbb{R}} \phi_s(\omega) \overline{\phi_t(\omega)} \, d\mu(\omega)
+\]
+for some family of functions \(\{\phi_t(\omega)\}\) in \(L^2(\mathbb{R}, \mu)\) for each \(t\). By the theory of covariance kernels, such a representation exists whenever \(R_{s,t}\) defines a non-negative definite kernel.
+
+Since \(\{\phi_t(\omega)\}\) is oscillatory, we can write \(\phi_t(\omega) = A_t(\omega) e^{i\omega t}\) where \(A_t(\omega)\) satisfies the oscillatory condition. Normalizing by setting \(A_0(\omega) = 1\) absorbs the initial amplitude into \(\mu\).
+
+By the Kolmogorov existence theorem for orthogonal random measures, there exists a complex orthogonal random measure \(\Phi\) on \((\mathbb{R}, \mathcal{B}(\mathbb{R}))\) with
+\[
+\mathbb{E}[|\Phi(B)|^2] = \mu(B)
+\]
+and orthogonality properties as specified. Define
+\[
+X_t = \int_{\mathbb{R}} A_t(\omega) e^{i\omega t} \, d\Phi(\omega).
+\]
+This integral exists in \(L^2(\Omega)\) since
+\[
+\mathbb{E}[|X_t|^2] = \int_{\mathbb{R}} |A_t(\omega)|^2 \, d\mu(\omega) < \infty.
+\]
+Computing the covariance:
+\begin{align*}
+\mathbb{E}[X_s \overline{X_t}] &= \mathbb{E}\left[\int_{\mathbb{R}} A_s(\omega) e^{i\omega s} \, d\Phi(\omega) \int_{\mathbb{R}} \overline{A_t(\nu) e^{i\nu t}} \, d\overline{\Phi(\nu)}\right] \\
+&= \int_{\mathbb{R}} A_s(\omega) \overline{A_t(\omega)} e^{i\omega s} e^{-i\omega t} \, \mathbb{E}[|d\Phi(\omega)|^2] \\
+&= \int_{\mathbb{R}} A_s(\omega) \overline{A_t(\omega)} e^{i\omega(s-t)} \, d\mu(\omega) = R_{s,t}.
+\end{align*}
+\end{proof}
+
+\begin{theorem}[Uniqueness of Spectral Data]
+The triple \((\mu, \Phi, A_t)\) is unique up to measure-theoretic equivalence: if two triples \((\mu_1, \Phi_1, A_t^{(1)})\) and \((\mu_2, \Phi_2, A_t^{(2)})\) generate the same process \(\{X_t\}\), then \(\mu_1 = \mu_2\) (modulo null sets) and \(A_t^{(1)}(\omega) = A_t^{(2)}(\omega)\) for \(\mu\)-almost every \(\omega\).
+\end{theorem}
+
+\begin{proof}
+Suppose
+\[
+X_t = \int_{\mathbb{R}} A_t^{(1)}(\omega) e^{i\omega t} \, d\Phi_1(\omega) = \int_{\mathbb{R}} A_t^{(2)}(\omega) e^{i\omega t} \, d\Phi_2(\omega).
+\]
+The covariance function determines
+\[
+R_{s,t} = \int_{\mathbb{R}} A_s^{(1)}(\omega) \overline{A_t^{(1)}(\omega)} e^{i\omega(s-t)} \, d\mu_1(\omega) = \int_{\mathbb{R}} A_s^{(2)}(\omega) \overline{A_t^{(2)}(\omega)} e^{i\omega(s-t)} \, d\mu_2(\omega).
+\]
+Define the measures \(\nu_1(B) = \int_B |A_t^{(1)}(\omega)|^2 \, d\mu_1(\omega)\) and \(\nu_2(B) = \int_B |A_t^{(2)}(\omega)|^2 \, d\mu_2(\omega)\). Setting \(s = t\) gives
+\[
+\mathbb{E}[|X_t|^2] = \nu_1(\mathbb{R}) = \nu_2(\mathbb{R}).
+\]
+By the uniqueness theorem for Fourier-Stieltjes transforms, the measures \(dF_t(\omega) = |A_t^{(1)}(\omega)|^2 d\mu_1(\omega)\) and \(|A_t^{(2)}(\omega)|^2 d\mu_2(\omega)\) are equal. Since this holds for all \(t\) and the normalization \(A_0(\omega) = 1\) is fixed, we conclude \(\mu_1 = \mu_2\) and \(A_t^{(1)} = A_t^{(2)}\) almost everywhere.
+\end{proof}
+
+\section{The Time-Shift Operator}
+
+\begin{theorem}[Action of the Time-Shift Operator]
+Let \(U_\tau: \mathcal{H}_T \to \mathcal{H}_T\) be the time-shift operator defined by \(U_\tau X_t = X_{t+\tau}\). Under the spectral representation
+\[
+X_t = \int_{\mathbb{R}} A_t(\omega) e^{i\omega t} \, d\Phi(\omega),
+\]
+the shifted process is given by
+\[
+U_\tau X_t = X_{t+\tau} = \int_{\mathbb{R}} A_{t+\tau}(\omega) e^{i\omega(t+\tau)} \, d\Phi(\omega).
+\]
+In the frequency domain, this is
+\[
+U_\tau X_t = \int_{\mathbb{R}} e^{i\omega\tau} A_{t+\tau}(\omega) e^{i\omega t} \, d\Phi(\omega).
+\]
+\end{theorem}
+
+\begin{proof}
+By definition of the spectral representation,
+\[
+X_{t+\tau} = \int_{\mathbb{R}} A_{t+\tau}(\omega) e^{i\omega(t+\tau)} \, d\Phi(\omega).
+\]
+We factor the exponential:
+\[
+e^{i\omega(t+\tau)} = e^{i\omega t} e^{i\omega\tau}.
+\]
+Thus,
+\[
+X_{t+\tau} = \int_{\mathbb{R}} A_{t+\tau}(\omega) e^{i\omega\tau} e^{i\omega t} \, d\Phi(\omega) = \int_{\mathbb{R}} e^{i\omega\tau} \left[A_{t+\tau}(\omega) e^{i\omega t}\right] \, d\Phi(\omega).
+\]
+The phase factor \(e^{i\omega\tau}\) can be factored outside the stochastic integral as a multiplicative constant (in \(\omega\)) acting on the integrand. This is valid because the integral is defined pathwise or in \(L^2\), and measurable functions multiply integrands in the usual sense.
+\end{proof}
+
+\begin{remark}
+The ability to factor \(e^{i\omega\tau}\) relies on the fact that it is a measurable function of \(\omega\) alone. The stochastic integral
+\[
+\int_{\mathbb{R}} f(\omega) \, d\Phi(\omega)
+\]
+is linear in \(f\), so
+\[
+\int_{\mathbb{R}} e^{i\omega\tau} g(\omega) \, d\Phi(\omega) = \int_{\mathbb{R}} [e^{i\omega\tau} g(\omega)] \, d\Phi(\omega)
+\]
+is simply the integral with respect to the integrand \(e^{i\omega\tau} g(\omega)\). The factorization \(e^{i\omega(t+\tau)} = e^{i\omega t} e^{i\omega\tau}\) is a property of the exponential function, and the term \(e^{i\omega\tau}\) depends only on \(\omega\) and \(\tau\), not on the random measure.
+\end{remark}
+
+\section{Time-Dependent Convolution Representation}
+
+\begin{theorem}[Oscillatory Process as Filtered Stationary Process]
+Every oscillatory process \(X_t\) can be represented as a time-dependent convolution:
+\[
+X_t = \int_{-\infty}^\infty S_{t-u} h_t(u) \, du
+\]
+where \(S_t = \int_{\mathbb{R}} e^{i\omega t} \, d\Phi(\omega)\) is a stationary process with spectral measure \(\mu\), and \(h_t(u)\) is a time-varying filter with transfer function \(A_t(\omega)\):
+\[
+A_t(\omega) = \int_{-\infty}^\infty h_t(u) e^{i\omega u} \, du.
+\]
+\end{theorem}
+
+\begin{proof}
+Define \(S_t = \int_{\mathbb{R}} e^{i\omega t} \, d\Phi(\omega)\). This is a stationary process since
+\[
+\mathbb{E}[S_s \overline{S_t}] = \int_{\mathbb{R}} e^{i\omega s} e^{-i\omega t} \, d\mu(\omega) = \int_{\mathbb{R}} e^{i\omega(s-t)} \, d\mu(\omega),
+\]
+which depends only on \(s - t\).
+
+Now, using the inverse Fourier transform, write
+\[
+h_t(u) = \frac{1}{2\pi} \int_{\mathbb{R}} A_t(\omega) e^{-i\omega u} \, d\omega
+\]
+(assuming \(A_t(\omega)\) is sufficiently regular). Then
+\begin{align*}
+\int_{-\infty}^\infty S_{t-u} h_t(u) \, du &= \int_{-\infty}^\infty \left[\int_{\mathbb{R}} e^{i\omega(t-u)} \, d\Phi(\omega)\right] h_t(u) \, du \\
+&= \int_{\mathbb{R}} e^{i\omega t} \left[\int_{-\infty}^\infty e^{-i\omega u} h_t(u) \, du\right] d\Phi(\omega) \\
+&= \int_{\mathbb{R}} e^{i\omega t} A_t(\omega) \, d\Phi(\omega) = X_t.
+\end{align*}
+The interchange of integrals is justified by Fubini's theorem for stochastic integrals, given the \(L^2\) integrability conditions.
+\end{proof}
+
+
+\subsubsection*{Equivalent Filter Representation Equations}
+
+The oscillatory process admits the equation
+\[
+X_t = \int_{-\infty}^\infty S_{t-u} h_t(u) \, du,
+\]
+where \(S_u\) is the stationary process with spectral measure \(\mu\) and \(h_t(u)\) is the time-varying filter. For real-valued stationary processes, this is equal to
+\[
+X_t = \int_{-\infty}^\infty S_u h_t(u) \, du.
+\]
+
+To establish this equality for real-valued \(S_u\), substitute \(v = t - u\) in the first equation. Then \(u = t - v\) and \(du = -dv\):
+\[
+X_t = \int_{-\infty}^\infty S_v h_t(t-v) \, (-dv) = -\int_{-\infty}^\infty S_v h_t(t-v) \, dv.
+\]
+
+Since \(S_u\) is real-valued and the integral is over the entire real line, substituting \(w = -v\) gives \(dv = -dw\):
+\[
+X_t = -\int_{\infty}^{-\infty} S_{-w} h_t(-w) \, (-dw) = -\int_{\infty}^{-\infty} S_{-w} h_t(-w) \, dw = \int_{-\infty}^\infty S_{-w} h_t(-w) \, dw.
+\]
+
+For a real-valued stationary process, \(S_{-w} = S_w\). Relabeling \(w \to u\):
+\[
+X_t = \int_{-\infty}^\infty S_u h_t(u) \, du.
+\]
+
+The two equations are therefore equal when \(S_u\) is real-valued.
+
+For complex-valued stationary processes, the two equations are not equal. Substituting \(v = t - u\) in the first equation yields
+\[
+X_t = -\int_{-\infty}^\infty S_v h_t(t-v) \, dv.
+\]
+
+The negative sign cannot be eliminated when \(S_u\) is complex-valued because complex conjugation is not involved. Thus, the equation
+\[
+X_t = \int_{-\infty}^\infty S_u h_t(u) \, du
+\]
+yields the negative of the correct result. The correct equation for complex-valued processes is
+\[
+X_t = \int_{-\infty}^\infty S_{t-u} h_t(u) \, du.
+\]
+
+
+\section{Isomorphism and Bidirectional Determination}
+
+\begin{theorem}[Unitary Isomorphism]
+Define the map \(U: \mathcal{H}_T \to L^2(\mathbb{R}, \mu)\) by \(U(X_t) = A_t(\omega) e^{i\omega t}\). Then \(U\) extends to a unitary isomorphism with
+\[
+\langle X_s, X_t \rangle_{L^2(\Omega)} = \langle U(X_s), U(X_t) \rangle_{L^2(\mathbb{R}, \mu)}.
+\]
+\end{theorem}
+
+\begin{proof}
+We have
+\[
+\langle X_s, X_t \rangle_{L^2(\Omega)} = \mathbb{E}[X_s \overline{X_t}] = \int_{\mathbb{R}} A_s(\omega) \overline{A_t(\omega)} e^{i\omega(s-t)} \, d\mu(\omega).
+\]
+On the other hand,
+\[
+\langle U(X_s), U(X_t) \rangle_{L^2(\mathbb{R}, \mu)} = \int_{\mathbb{R}} A_s(\omega) e^{i\omega s} \overline{A_t(\omega) e^{i\omega t}} \, d\mu(\omega) = \int_{\mathbb{R}} A_s(\omega) \overline{A_t(\omega)} e^{i\omega(s-t)} \, d\mu(\omega).
+\]
+Thus \(U\) preserves inner products and extends by linearity and continuity to a unitary map.
+\end{proof}
+
+\begin{theorem}[Bidirectional Determination]
+The oscillatory process \(\{X_t\}\) and the spectral data \((\mu, \Phi, A_t)\) are in one-to-one correspondence. Given \(\{X_t\}\), the triple \((\mu, \Phi, A_t)\) is uniquely determined (up to measure-theoretic equivalence). Conversely, given \((\mu, \Phi, A_t)\), the process is uniquely reconstructed via
+\[
+X_t = \int_{\mathbb{R}} A_t(\omega) e^{i\omega t} \, d\Phi(\omega).
+\]
+\end{theorem}
+
+\begin{proof}
+The forward direction follows from Theorem 2.2. For the reverse, given \((\mu, \Phi, A_t)\), the stochastic integral defines \(X_t\) uniquely in \(L^2(\Omega)\), and the covariance function
+\[
+R_{s,t} = \int_{\mathbb{R}} A_s(\omega) \overline{A_t(\omega)} e^{i\omega(s-t)} \, d\mu(\omega)
+\]
+determines the second-order structure. For Gaussian processes, this determines the full distribution.
+\end{proof}
+
+\section{Gaussian Oscillatory Processes}
+
+\begin{theorem}[Gaussian Structure]
+If \(\{X_t\}\) is a Gaussian oscillatory process, then the orthogonal random measure \(\Phi\) is Gaussian: for each Borel set \(B\), \(\Phi(B)\) is a complex Gaussian random variable with
+\[
+\Phi(B) = \Phi_R(B) + i \Phi_I(B),
+\]
+where \(\Phi_R, \Phi_I\) are independent real Gaussian orthogonal measures with \(\mathbb{E}[\Phi_R(B)^2] = \mathbb{E}[\Phi_I(B)^2] = \mu(B)/2\).
+\end{theorem}
+
+\begin{proof}
+Since \(X_t\) is Gaussian and
+\[
+X_t = \int_{\mathbb{R}} A_t(\omega) e^{i\omega t} \, d\Phi(\omega),
+\]
+any finite linear combination \(\sum_{j=1}^n c_j X_{t_j}\) is Gaussian. This implies that
+\[
+\sum_{j=1}^n c_j \int_{\mathbb{R}} A_{t_j}(\omega) e^{i\omega t_j} \, d\Phi(\omega) = \int_{\mathbb{R}} \left[\sum_{j=1}^n c_j A_{t_j}(\omega) e^{i\omega t_j}\right] d\Phi(\omega)
+\]
+is Gaussian for all choices of \(c_j\) and \(t_j\). By the Cramér-Wold theorem, this implies \(\Phi(B)\) is Gaussian for all Borel \(B\). The decomposition into real and imaginary parts and the independence follow from the complex orthogonality condition \(\mathbb{E}[\Phi(B_1) \Phi(B_2)] = 0\).
+\end{proof}
+
+\subsubsection*{The Envelope Spectrum}
+
+The temporal Fourier-transform of the amplitude,
+\[
+H_\omega(\lambda) = \int_{-\infty}^\infty A_t(\omega) e^{i\lambda t} \, dt,
+\]
+is called the \emph{envelope spectrum} at carrier frequency \(\omega\). It describes how the modulation \(A_t(\omega)\) distributes across temporal frequencies \(\lambda\). The oscillatory condition requires that the modulus \(|H_\omega(\lambda)|\) achieves its maximum at \(\lambda = 0\), meaning \(|H_\omega(0)| \geq |H_\omega(\lambda)|\) for all \(\lambda \in \mathbb{R}\). This means that \(|H_\omega(\lambda)|\) is concentrated at zero temporal frequency in the sense that for any \(\epsilon > 0\), there exists \(\delta > 0\) such that 
+\[
+\int_{|\lambda| > \delta} |H_\omega(\lambda)| \, d\lambda < \epsilon \cdot \int_{-\infty}^\infty |H_\omega(\lambda)| \, d\lambda.
+\]
+The mass of the envelope spectrum is negligible in the sense described above outside arbitrarily small neighborhoods of \(\lambda = 0\).
+
+\end{document}
+ 
