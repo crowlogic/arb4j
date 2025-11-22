@@ -21,6 +21,9 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
+ * TODO: strike a red line through a word if its not an alias for any character
+ * on the keyboard
+ * 
  * A virtual keyboard to generate the UTF characters used by the
  * {@link Expression} {@link Compiler}
  * 
@@ -40,6 +43,7 @@ public class SymbolPalette extends
 {
   public static final Character[]                      SYMBOLS           =
   { '⊂',
+    '⊃',
     '∞',
     '✅',
     '❌',
@@ -165,8 +169,6 @@ public class SymbolPalette extends
 
     associateAliases('ⱽ', "supV");
 
-    associateAliases((char) 0x107A5, "q");
-
     // Basic operators
     associateAliases('*', "multiply", "times", "mult", "star", "asterisk");
     associateAliases('+', "plus", "add", "addition");
@@ -213,21 +215,21 @@ public class SymbolPalette extends
     associateAliases('¼', "fourth", "quarter");
     associateAliases('½', "half", "halve");
     associateAliases('¾', "threefourths", "threequarters");
-    associateAliases('⅐', "seventh");
-    associateAliases('⅑', "ninth");
-    associateAliases('⅒', "tenth");
-    associateAliases('⅓', "third");
-    associateAliases('⅔', "twothirds");
-    associateAliases('⅕', "fifth");
-    associateAliases('⅖', "twofifths");
-    associateAliases('⅗', "threefifths");
-    associateAliases('⅘', "fourfifths");
-    associateAliases('⅙', "sixth");
-    associateAliases('⅚', "fivesixths");
-    associateAliases('⅛', "eighth");
-    associateAliases('⅜', "threeeighths");
-    associateAliases('⅝', "fiveeighths");
-    associateAliases('⅞', "seveneighths");
+    associateAliases('⅐', "seventh", "7");
+    associateAliases('⅑', "ninth", "9");
+    associateAliases('⅒', "tenth", "10");
+    associateAliases('⅓', "third", "3");
+    associateAliases('⅔', "twothirds", "23");
+    associateAliases('⅕', "fifth", "5");
+    associateAliases('⅖', "twofifths", "25");
+    associateAliases('⅗', "threefifths", "35");
+    associateAliases('⅘', "fourfifths", "45");
+    associateAliases('⅙', "sixth", "6");
+    associateAliases('⅚', "fivesixths", "56");
+    associateAliases('⅛', "eighth", "eight");
+    associateAliases('⅜', "threeeighths", "38");
+    associateAliases('⅝', "fiveeighths", "58");
+    associateAliases('⅞', "seveneighths", "78");
 
     // Greek Letters (uppercase and lowercase together)
     associateAliases('Χ', "chi");
@@ -401,6 +403,7 @@ public class SymbolPalette extends
       chars.add(s);
     }
 
+    System.out.println("chars=" + chars);
     characters = chars.toArray(new Character[chars.size()]);
   }
 
@@ -426,7 +429,7 @@ public class SymbolPalette extends
 
     buttonPane = new FlowPane();
 
-    Arrays.sort(characters, (a, b) -> a.compareTo(b));
+    // Arrays.sort(characters, (a, b) -> a.compareTo(b));
 
     for (Character ch : characters)
     {
@@ -521,7 +524,7 @@ public class SymbolPalette extends
       {
         if (node instanceof Button button)
         {
-          button.setStyle(null); // <-- This was the problem
+          button.setStyle(null);
         }
       });
       return;
@@ -531,6 +534,10 @@ public class SymbolPalette extends
 
     buttonPane.getChildren().forEach(node ->
     {
+      /**
+       * TODO: this sucks, a better way to do it would be to have a hashmap from alias
+       * to button
+       */
       if (node instanceof Button button)
       {
         Character character = buttonMap.get(button);
