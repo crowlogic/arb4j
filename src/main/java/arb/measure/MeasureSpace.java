@@ -31,8 +31,10 @@ import arb.space.topological.Space;
  *      {@link TheArb4jLibrary}
  * 
  */
-public interface MeasureSpace<X, Σ extends σField<? extends X>, μ extends Measure<X, Σ>> extends
+public interface MeasureSpace<X,
+              Σ extends σField<? extends X>,
+              μ extends Measure<? extends X, ? extends Σ>> extends
                              MeasurableSpace<X, Σ>
 {
-  public Measure<X, Σ> μ();
+  public Measure<? extends X, Σ> μ();
 }
