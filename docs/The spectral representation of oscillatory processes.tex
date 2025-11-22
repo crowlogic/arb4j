@@ -150,11 +150,11 @@ Thus,
 \[
 X_{t+\tau} = \int_{\mathbb{R}} A_{t+\tau}(\omega) e^{i\omega\tau} e^{i\omega t} \, d\Phi(\omega) = \int_{\mathbb{R}} e^{i\omega\tau} \left[A_{t+\tau}(\omega) e^{i\omega t}\right] \, d\Phi(\omega).
 \]
-The phase factor \(e^{i\omega\tau}\) is deterministic and can be factored outside the stochastic integral as a multiplicative constant (in \(\omega\)) acting on the integrand. This is valid because the integral is defined pathwise or in \(L^2\), and deterministic measurable functions multiply integrands in the usual sense.
+The phase factor \(e^{i\omega\tau}\) can be factored outside the stochastic integral as a multiplicative constant (in \(\omega\)) acting on the integrand. This is valid because the integral is defined pathwise or in \(L^2\), and measurable functions multiply integrands in the usual sense.
 \end{proof}
 
 \begin{remark}
-The ability to factor \(e^{i\omega\tau}\) relies on the fact that it is a deterministic, measurable function of \(\omega\) alone. The stochastic integral
+The ability to factor \(e^{i\omega\tau}\) relies on the fact that it is a measurable function of \(\omega\) alone. The stochastic integral
 \[
 \int_{\mathbb{R}} f(\omega) \, d\Phi(\omega)
 \]
@@ -198,6 +198,7 @@ h_t(u) = \frac{1}{2\pi} \int_{\mathbb{R}} A_t(\omega) e^{-i\omega u} \, d\omega
 The interchange of integrals is justified by Fubini's theorem for stochastic integrals, given the \(L^2\) integrability conditions.
 \end{proof}
 
+
 \subsubsection*{Equivalent Filter Representation Equations}
 
 The oscillatory process admits the equation
@@ -211,15 +212,15 @@ X_t = \int_{-\infty}^\infty S_u h_t(u) \, du.
 
 To establish this equality for real-valued \(S_u\), substitute \(v = t - u\) in the first equation. Then \(u = t - v\) and \(du = -dv\):
 \[
-X_t = \int_{-\infty}^\infty S_v h_t(t-v) \, (-dv).
+X_t = \int_{-\infty}^\infty S_v h_t(t-v) \, (-dv) = -\int_{-\infty}^\infty S_v h_t(t-v) \, dv.
 \]
 
-Reversing the limits of integration eliminates the negative sign:
+Since \(S_u\) is real-valued and the integral is over the entire real line, substituting \(w = -v\) gives \(dv = -dw\):
 \[
-X_t = \int_{\infty}^{-\infty} S_v h_t(t-v) \, dv = \int_{-\infty}^\infty S_v h_t(t-v) \, dv.
+X_t = -\int_{\infty}^{-\infty} S_{-w} h_t(-w) \, (-dw) = -\int_{\infty}^{-\infty} S_{-w} h_t(-w) \, dw = \int_{-\infty}^\infty S_{-w} h_t(-w) \, dw.
 \]
 
-Changing the dummy variable from \(v\) back to \(u\) and recognizing that \(t - u\) in the argument of \(h_t\) becomes \(u\) under this substitution:
+For a real-valued stationary process, \(S_{-w} = S_w\). Relabeling \(w \to u\):
 \[
 X_t = \int_{-\infty}^\infty S_u h_t(u) \, du.
 \]
@@ -228,18 +229,17 @@ The two equations are therefore equal when \(S_u\) is real-valued.
 
 For complex-valued stationary processes, the two equations are not equal. Substituting \(v = t - u\) in the first equation yields
 \[
-X_t = \int_{-\infty}^\infty S_v h_t(t-v) \, (-dv) = -\int_{-\infty}^\infty S_v h_t(t-v) \, dv.
+X_t = -\int_{-\infty}^\infty S_v h_t(t-v) \, dv.
 \]
 
-The negative sign persists because for complex-valued integrands, the sign flip from the Jacobian cannot be absorbed by reversing integration limits. Thus, the equation
+The negative sign cannot be eliminated when \(S_u\) is complex-valued because complex conjugation is not involved. Thus, the equation
 \[
 X_t = \int_{-\infty}^\infty S_u h_t(u) \, du
 \]
 yields the negative of the correct result. The correct equation for complex-valued processes is
 \[
-X_t = \int_{-\infty}^\infty S_{t-u} h_t(u) \, du,
+X_t = \int_{-\infty}^\infty S_{t-u} h_t(u) \, du.
 \]
-and the argument of the stationary process must remain \(t - u\).
 
 
 \section{Isomorphism and Bidirectional Determination}
