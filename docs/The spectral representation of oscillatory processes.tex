@@ -312,5 +312,172 @@ is called the \emph{envelope spectrum} at carrier frequency \(\omega\). It descr
 \]
 The mass of the envelope spectrum is negligible in the sense described above outside arbitrarily small neighborhoods of \(\lambda = 0\).
 
+
+\begin{theorem}[Inverse Spectral Theorem for Oscillatory Processes]
+Let \(\{X_t\}_{t \in \mathbb{R}}\) be a Gaussian oscillatory process with spectral representation
+\[
+X_t = \int_{\mathbb{R}} A_t(\omega) e^{i\omega t} \, d\Phi(\omega),
+\]
+where \(\Phi\) is a complex orthogonal random measure with control measure \(\mu\), and \(\{A_t(\omega)\}\) is a family of oscillatory functions. Given a sample path \(\{X_t\}_{t \in \mathbb{R}}\), the orthogonal random measure \(\Phi\) is recovered via
+\[
+\Phi(B) = \lim_{T \to \infty} \frac{1}{2\pi T} \int_{-T}^T X_t \left[ \int_B \frac{e^{-i\omega t}}{A_t(\omega)} \, d\omega \right] dt.
+\]
+\end{theorem}
+
+\begin{proof}
+\textit{Forward-then-Inverse:} Substitute the spectral representation of \(X_t\) into the recovery formula:
+\[
+\Phi(B) = \lim_{T \to \infty} \frac{1}{2\pi T}
+\int_{-T}^T
+\left[
+\int_{\mathbb{R}} A_t(\lambda) e^{i\lambda t} \, d\Phi(\lambda)
+\right]
+\left[
+\int_B \frac{e^{-i\omega t}}{A_t(\omega)} \, d\omega
+\right]
+dt.
+\]
+
+Apply Fubini's theorem:
+\[
+\Phi(B)
+= \lim_{T \to \infty} \frac{1}{2\pi T}
+\int_{\mathbb{R}} d\Phi(\lambda)
+\int_B d\omega
+\int_{-T}^T
+A_t(\lambda) \frac{e^{i(\lambda - \omega)t}}{A_t(\omega)} \, dt.
+\]
+
+Evaluate the integral over \(t\):
+\[
+\int_{-T}^T e^{i(\lambda - \omega)t} \, dt
+= \frac{2\sin((\lambda - \omega)T)}{\lambda - \omega}.
+\]
+
+Thus,
+\[
+\Phi(B)
+= \lim_{T \to \infty} \frac{1}{2\pi T}
+\int_{\mathbb{R}} d\Phi(\lambda)
+\int_B d\omega \,
+\frac{A_t(\lambda)}{A_t(\omega)}
+\frac{2\sin((\lambda - \omega)T)}{\lambda - \omega}.
+\]
+
+For \(\lambda = \omega\), apply L'Hôpital's rule:
+\[
+\lim_{\omega \to \lambda}
+\frac{\sin((\lambda - \omega)T)}{\lambda - \omega}
+= T.
+\]
+The contribution from \(\lambda = \omega\) is
+\[
+\lim_{T \to \infty}
+\frac{1}{2\pi T}
+\int_B d\Phi(\lambda) \cdot 2T
+= \Phi(B).
+\]
+
+For \(\lambda \neq \omega\), let
+\[
+C_1 = \sup_{t,\lambda,\omega}
+\left|
+\frac{A_t(\lambda)}{A_t(\omega)}
+\right|.
+\]
+For any \(\lambda\) and B,
+\[
+\left|
+\int_{B \setminus \{\lambda\}}
+\frac{A_t(\lambda)}{A_t(\omega)}
+\frac{2\sin((\lambda - \omega)T)}{\lambda - \omega}
+\, d\omega
+\right|
+\leq 2 C_1 |B|.
+\]
+Thus,
+\[
+\left|
+\frac{1}{2\pi T}
+\int_{\mathbb{R}} d\Phi(\lambda)
+\int_{B \setminus \{\lambda\}} d\omega \,
+\frac{A_t(\lambda)}{A_t(\omega)}
+\frac{2\sin((\lambda - \omega)T)}{\lambda - \omega}
+\right|
+\leq
+\frac{2 C_1 |B|}{2\pi T} \, \mathbb{E}[|\Phi(\mathbb{R})|]
+\to 0
+\quad \text{as } T \to \infty.
+\]
+
+Combining gives
+\[
+\Phi(B) = \Phi(B).
+\]
+
+\textit{Inverse-then-Forward:} Substitute the recovered measure into the spectral representation:
+\[
+X_t
+= \int_{\mathbb{R}} A_t(\omega) e^{i\omega t}
+\left[
+\lim_{S \to \infty} \frac{1}{2\pi S}
+\int_{-S}^S X_s \frac{e^{-i\omega s}}{A_s(\omega)} \, ds
+\right]
+d\omega.
+\]
+
+Apply Fubini's theorem:
+\[
+X_t
+= \lim_{S \to \infty} \frac{1}{2\pi S}
+\int_{-S}^S X_s
+\left[
+\int_{\mathbb{R}} A_t(\omega) e^{i\omega(t-s)} \frac{1}{A_s(\omega)} \, d\omega
+\right]
+ds.
+\]
+
+For \(s = t\), the inner integral is
+\[
+\int_{\mathbb{R}} \frac{A_t(\omega)}{A_t(\omega)} \, d\omega
+= \int_{\mathbb{R}} 1 \, d\omega
+= 2\pi \delta(0).
+\]
+The contribution from \(s = t\) is
+\[
+\lim_{S \to \infty} \frac{1}{2\pi S} X_t \cdot 2\pi \int_{-S}^S \delta(0) \, ds
+= X_t.
+\]
+
+For \(s \neq t\), define
+\[
+I(t,s)
+= \int_{\mathbb{R}} \frac{A_t(\omega)}{A_s(\omega)} e^{i\omega(t-s)} \, d\omega.
+\]
+Let
+\[
+C_2 = \sup_{t,s : t \neq s} |I(t,s)|.
+\]
+Then
+\[
+\left|
+\frac{1}{2\pi S}
+\int_{\{s : s \neq t,\ |s| \leq S\}}
+X_s I(t,s) \, ds
+\right|
+\leq
+\frac{1}{2\pi S} \cdot 2S \cdot
+\sup_{|s| \leq S} |X_s| \cdot C_2
+\to 0
+\quad \text{as } S \to \infty.
+\]
+
+Combining contributions,
+\[
+X_t = X_t.
+\]
+\end{proof}
+
+
 \end{document}
  
