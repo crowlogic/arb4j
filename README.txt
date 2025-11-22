@@ -32,7 +32,7 @@ Beyond direct library bindings, arb4j features a sophisticated expression compil
 17. Variable substitution and expression simplification
 
 In summary, arb4j gives Java programs the ability to perform arbitrary-precision calculations in a very high-performance fashion, while adding a high-level expression compilation 
-which is unrivaled in the open-source and even the proprietary-software world.
+system which is unrivaled in the open-source(free) or even the proprietary(non-free) software world.
 
 
 
