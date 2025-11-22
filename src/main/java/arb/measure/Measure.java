@@ -14,9 +14,7 @@ import arb.functions.Function;
  * Null empty set: μ(∅)=0 
  * σ-additivity  : μ(∑Eₖ(k=1..∞))=∑μ(Eₖ)(k=1..∞) ∀ {Eₖ}⊂Σ
  * </pre>
- * 
- * @see <a href=
- *      "https://en.wikipedia.org/wiki/Measure_(mathematics)">Wikipedia</a>
+
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
