@@ -364,7 +364,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     {
       if (isResult)
       {
-        cast(loadResultParameter(mv), resultType);
+        cast(Compiler.loadResultParameter(mv), resultType);
         fieldName = "result";
       }
       else
@@ -395,12 +395,24 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
                       this,
                       getClass().getSimpleName());
   }
+  
+  protected boolean shouldCache()
+  {
+    return independentOfInput() && !Function.class.isAssignableFrom(type());
+  }
 
   @Override
   public Node<D, C, F> cache()
   {
-    if (independentOfInput())
+
+
+    if (shouldCache())
     {
+      if (Expression.trace)
+      {
+        log.debug("cache(): this={} ", this );
+      }
+      
       if (isResult)
       {
         if (Expression.trace)
@@ -411,12 +423,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
         return this;
       }
 
-      if (Expression.trace)
-      {
-        log.debug("BinaryOperationNode.cache(): node={}, existing fieldName={}",
-                  this,
-                  this.fieldName);
-      }
+      String existingFieldName = fieldName;
 
       deregisterPreviousFieldName();
 
@@ -425,7 +432,12 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
 
       if (Expression.trace)
       {
-        log.debug("  assigned new fieldName={}", fieldName);
+
+        log.debug("BinaryOperationNode.cache(): node={}, existingFieldName={} newFieldName={}",
+                  this,
+                  existingFieldName,
+                  this.fieldName);
+
       }
 
       expression.registerCachedNode(this);
@@ -434,25 +446,12 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
                               fieldName);
     }
 
-    if (Expression.trace)
-    {
-      log.debug("BinaryOperationNode.cache(): node={} depends on input, caching children", this);
-    }
-
     if (left != null)
     {
-      if (Expression.trace)
-      {
-        log.debug("  caching left child: {}", left);
-      }
       left = left.cache();
     }
     if (right != null)
     {
-      if (Expression.trace)
-      {
-        log.debug("  caching right child: {}", right);
-      }
       right = right.cache();
     }
 

@@ -1,9 +1,6 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.cast;
-import static arb.expressions.Compiler.duplicateTopOfTheStack;
-import static arb.expressions.Compiler.invokeStaticMethod;
-import static arb.expressions.Compiler.loadResultParameter;
+import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
 
 import org.objectweb.asm.MethodVisitor;
@@ -33,7 +30,7 @@ public class BinomialCoefficientNode<D, R, F extends Function<? extends D, ? ext
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    Compiler.loadPointer(cast(duplicateTopOfTheStack(loadResultParameter(mv)), Integer.class));
+    Compiler.loadPointer(cast(duplicateTopOfTheStack(Compiler.loadResultParameter(mv)), Integer.class));
 
     Compiler.generateCallToLoadUnsignedLong(combinations.generate(mv, Integer.class));
 

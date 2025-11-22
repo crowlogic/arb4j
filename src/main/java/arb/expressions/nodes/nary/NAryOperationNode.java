@@ -280,6 +280,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     if (isResult)
     {
+      assert !expression.insideInitializer : "BUG: tried to load the output(last argument in the 4th slot of the evaluate method) in the initialization method. it should not be cached if the result is being written to the output";
+
       Compiler.loadResultParameter(mv);
       var type = type();
       Compiler.cast(mv, type);

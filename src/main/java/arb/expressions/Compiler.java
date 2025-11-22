@@ -837,22 +837,7 @@ public class Compiler
     loadConstantOntoStack(mv, fn, Real.class, RealConstants.class);
   }
 
-  /**
-   * Loads the 4th (last) argument onto the stack, and since this follows the
-   * fluent pattern, it is also the return variable
-   * 
-   * The argument pattern for {@link Function#evaluate(Object, int, int, Object)}
-   * methods is (this,order,bits,result)
-   * 
-   * @param methodVisitor the {@link MethodVisitor} to receive the instructions
-   * 
-   * @return methodVisitor
-   */
-  public static MethodVisitor loadResultParameter(MethodVisitor methodVisitor)
-  {
-    methodVisitor.visitVarInsn(Opcodes.ALOAD, 4);
-    return methodVisitor;
-  }
+
 
   public static MethodVisitor loadThisOntoStack(MethodVisitor methodVisitor)
   {
@@ -912,6 +897,23 @@ public class Compiler
   {
     mv.visitInsn(Opcodes.SWAP);
     return mv;
+  }
+
+  /**
+   * Loads the 4th (last) argument onto the stack, and since this follows the
+   * fluent pattern, it is also the return variable
+   * 
+   * The argument pattern for {@link Function#evaluate(Object, int, int, Object)}
+   * methods is (this,order,bits,result)
+   * 
+   * @param methodVisitor the {@link MethodVisitor} to receive the instructions
+   * 
+   * @return methodVisitor
+   */
+  public static MethodVisitor loadResultParameter(MethodVisitor methodVisitor)
+  {
+    methodVisitor.visitVarInsn(Opcodes.ALOAD, 4);
+    return methodVisitor;
   }
 
 }

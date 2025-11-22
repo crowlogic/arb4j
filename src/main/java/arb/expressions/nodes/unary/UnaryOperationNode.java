@@ -1,8 +1,5 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.cast;
-import static arb.expressions.Compiler.loadResultParameter;
-
 import java.util.Objects;
 
 import org.objectweb.asm.MethodVisitor;
@@ -21,7 +18,11 @@ public abstract class UnaryOperationNode<D, R, F extends Function<? extends D, ?
   @Override
   public Node<D, R, F> cache()
   {
-    if (independentOfInput())
+    if ( Expression.trace )
+    {
+      log.debug("cache(): independentOfInput={}", shouldCache() );
+    }
+    if (shouldCache()  )
     {
       if (isResult)
       {
@@ -56,11 +57,6 @@ public abstract class UnaryOperationNode<D, R, F extends Function<? extends D, ?
                               fieldName);
     }
 
-    if (Expression.trace)
-    {
-      log.debug("UnaryOperationNode.cache(): node={} depends on input, caching child", this);
-    }
-
     if (arg != null)
     {
       if (Expression.trace)
@@ -71,6 +67,11 @@ public abstract class UnaryOperationNode<D, R, F extends Function<? extends D, ?
     }
 
     return this;
+  }
+
+  protected boolean shouldCache()
+  {
+    return independentOfInput() && !Function.class.isAssignableFrom(type());
   }
 
   @Override
@@ -116,26 +117,6 @@ public abstract class UnaryOperationNode<D, R, F extends Function<? extends D, ?
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     return arg.generate(mv, resultType);
-  }
-
-  public void loadOutputVariableOntoStack(MethodVisitor methodVisitor, Class<?> resultType)
-  {
-    log.debug("loadOutputVariableOntoStack( this={}, resultType={} ) independentOfInput={} isResult={}",
-              this,
-              resultType,
-              independentOfInput(),
-              isResult);
-
-    assert !expression.insideInitializer : "BUG: tried to load the output(last argument in the 4th slot of the evaluate method) in the initialization method. it should not be cached if the result is being written to the output";
-    if (isResult)
-    {
-      cast(loadResultParameter(methodVisitor), resultType);
-      fieldName = "result";
-    }
-    else
-    {
-      fieldName = expression.allocateIntermediateVariable(methodVisitor, resultType);
-    }
   }
 
   @Override
