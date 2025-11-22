@@ -18,14 +18,14 @@ import arb.space.topological.Space;
  * 
  * <pre>
  * X is a set
- * Σ is the σField of the set X
+ * Σ is the {@link σField} of the set X
  * μ is a {@link Measure} on (X,Σ)
  * </pre>
  * 
  * In other words, a measure space consists of a {@link MeasurableSpace} (Σ,A )
  * together with a {@link Measure} on it and thus {@link MeasureSpace} extends
- * {@link MeasurableSpace} and provides the method {@link #μ()} to specify
- * the measure
+ * {@link MeasurableSpace} and provides the method {@link #μ()} to specify the
+ * measure
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
