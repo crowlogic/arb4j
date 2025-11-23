@@ -274,6 +274,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     switch (functionName)
     {
+    case "θ":
+      return arg.δ();
     case "sqrt":
       return one().div(mul(2));
     case "arctan":
@@ -630,6 +632,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     switch (functionName)
     {
+    case "δ":
+      return arg.θ();
     case "sqrt":
       return two().div(three()).mul(arg.pow(three().div(two())));
     case "sin":

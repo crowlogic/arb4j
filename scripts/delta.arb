@@ -1,1 +1,4 @@
-var f = RealFunction.express("δ(x)");
+
+var δ = RealFunction.express("δ(x)");
+var H = δ.integral();
+

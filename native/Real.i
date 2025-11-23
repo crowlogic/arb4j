@@ -138,6 +138,16 @@ import arb.utensils.Utensils;
 
   static { System.loadLibrary( "arblib" ); }
 
+  public Real θ( int bits, Real result )
+  {
+    return isNonNegative() ? one() : zero();
+  }
+
+  public boolean isNonNegative()
+  {
+    return arblib.arb_is_nonnegative(this) != 0;
+  }
+  
   // Two-list pooling implementation
   private final Queue<Real> available = new ArrayDeque<>();
   private final Set<Real>   allocated = new HashSet<>();

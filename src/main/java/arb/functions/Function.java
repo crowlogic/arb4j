@@ -31,7 +31,7 @@ public interface Function<D, C> extends
   {
     return null;
   }
-
+ 
   public default <F extends Function<? extends D, ? extends C>> F derivative()
   {
     assert false : "TODO: " + getClass() + " should implement this";

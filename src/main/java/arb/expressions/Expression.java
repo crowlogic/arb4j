@@ -35,6 +35,7 @@ import arb.functions.Function;
 import arb.functions.RealToComplexFunction;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.integer.Sequence;
+import arb.functions.real.HeavisideStepFunction;
 import arb.functions.real.RealFunction;
 import arb.utensils.Utensils;
 import arb.utensils.text.trees.TextTree;
@@ -142,8 +143,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                        Cloneable,
                        Supplier<F>
 {
-
-
 
   private static String       ASSERTION_ERROR_METHOD_DESCRIPTOR =
                                                                 Compiler.getMethodDescriptor(Void.class,
@@ -254,8 +253,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public String                                         functionName;
 
   public boolean                                        functionNameSpecified         = true;
-
-  public boolean                                        shouldGenerateDerivative      = true;
 
   public HashMap<Node<D, C, F>, String>                 generatedNodes                =
                                                                        new HashMap<>();
@@ -990,7 +987,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                 expression);
     }
 
-
     ClassVisitor classVisitor = Compiler.constructClassVisitor();
 
     try
@@ -999,9 +995,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       generateDomainTypeMethod(classVisitor);
       generateCoDomainTypeMethod(classVisitor);
       generateEvaluationMethod(classVisitor);
-      if (!isNullaryFunction() && shouldGenerateDerivative)
+      if (!isNullaryFunction())
       {
         generateDerivativeMethod(classVisitor);
+        generateIntegralMethod(classVisitor);
       }
       declareFields(classVisitor);
       generateInitializationMethod(classVisitor);
@@ -1146,6 +1143,60 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return classVisitor;
   }
 
+  private ClassVisitor generateIntegralMethod(ClassVisitor classVisitor)
+  {
+    assert functionClass.isInterface() : functionClass + " is not an interface";
+
+    assert rootNode != null : "rootNode is null";
+
+    var mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
+                                      "integral",
+                                      Compiler.getMethodDescriptor(functionClass),
+                                      null,
+                                      null);
+    mv.visitCode();
+    Compiler.annotateWithOverride(mv);
+
+    mv.visitLdcInsn(Type.getType(domainType));
+    mv.visitLdcInsn(Type.getType(coDomainType));
+    mv.visitLdcInsn(Type.getType(functionClass));
+    mv.visitLdcInsn("_int" + className);
+    mv.visitLdcInsn(String.format("int(%s,%s)", rootNode.toString(), independentVariable));
+
+    if (context != null)
+    {
+      loadThisFieldOntoStack(mv, "context", Context.class);
+
+      Compiler.invokeStaticMethod(mv,
+                                  Function.class,
+                                  "express",
+                                  Function.class,
+                                  Class.class,
+                                  Class.class,
+                                  Class.class,
+                                  String.class,
+                                  String.class,
+                                  Context.class);
+    }
+    else
+    {
+      Compiler.invokeStaticMethod(mv,
+                                  Function.class,
+                                  "express",
+                                  Function.class,
+                                  Class.class,
+                                  Class.class,
+                                  Class.class,
+                                  String.class,
+                                  String.class);
+
+    }
+    mv.visitInsn(Opcodes.ARETURN);
+    mv.visitMaxs(0, 0);
+    mv.visitEnd();
+    return classVisitor;
+  }
+
   private ClassVisitor generateDerivativeMethod(ClassVisitor classVisitor)
   {
     assert functionClass.isInterface() : functionClass + " is not an interface";
@@ -1154,7 +1205,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     var mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
                                       "derivative",
-                                      Compiler.getMethodDescriptor(Function.class),
+                                      Compiler.getMethodDescriptor(functionClass),
                                       null,
                                       null);
     mv.visitCode();
@@ -1178,8 +1229,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     loadThisFieldOntoStack(mv, "context", Context.class);
 
-    // getField(mv, IS_INITIALIZED, functionName,
-    // ASSERTION_ERROR_METHOD_DESCRIPTOR);
     Compiler.invokeStaticMethod(mv,
                                 Function.class,
                                 "express",
@@ -2431,6 +2480,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     switch (reference.name)
     {
+    case "θ":
+      return new StepFunctionNode<>(this);
     case "δ":
       return new DeltaFunctionNode<>(this);
     case "ζ":

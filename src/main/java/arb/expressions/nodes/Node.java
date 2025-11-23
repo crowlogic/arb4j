@@ -178,6 +178,16 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return null;
   }
 
+  public Node<D, R, F> δ()
+  {
+    return apply("δ");
+  }
+
+  public Node<D, R, F> θ()
+  {
+    return apply("θ");
+  }
+  
   public Node<D, R, F> cos()
   {
     return apply("cos");
