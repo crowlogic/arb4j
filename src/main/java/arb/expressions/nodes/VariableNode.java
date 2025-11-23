@@ -306,7 +306,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     if (isResult)
     {
-      cast(Compiler.loadResultParameter(mv), reference.type);
+      cast(loadResultParameter(mv), reference.type);
     }
     else
     {

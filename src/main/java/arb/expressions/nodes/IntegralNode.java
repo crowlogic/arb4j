@@ -39,8 +39,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
                          Node<D, C, F>
 {
 
-
-
   @Override
   public Node<D, C, F> cache()
   {
@@ -272,7 +270,14 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     evaluateIndefiniteIntegralAt(mv, upperLimitNode, resultType, lowerIntegralValueFieldName);
     evaluateIndefiniteIntegralAt(mv, lowerLimitNode, resultType, upperIntegralValueFieldName);
     loadBitsParameterOntoStack(mv);
-    loadOutputVariableOntoStack(mv, resultType);
+    if (isResult)
+    {
+      Compiler.cast(Compiler.loadResultParameter(mv), resultType);
+    }
+    else
+    {
+      fieldName = expression.allocateIntermediateVariable(mv, "integralDifference", resultType);
+    }
     Compiler.invokeBinaryOperationMethod(mv, "sub", resultType, resultType, resultType);
   }
 

@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.binary.*;
 import arb.expressions.nodes.unary.*;
@@ -63,27 +62,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                           Typesettable,
                           Consumer<Consumer<Node<D, R, F>>>
 {
-  
-  public void loadOutputVariableOntoStack(MethodVisitor methodVisitor, Class<?> resultType)
-  {
-    log.debug("loadOutputVariableOntoStack( this={}, resultType={} ) independentOfInput={} isResult={}",
-              this,
-              resultType,
-              independentOfInput(),
-              isResult);
-
-    assert !expression.insideInitializer : "BUG: tried to load the output(last argument in the 4th slot of the evaluate method) in the initialization method. it should not be cached if the result is being written to the output";
-    if (isResult)
-    {
-      cast(Compiler.loadResultParameter(methodVisitor), resultType);
-      fieldName = "result";
-    }
-    else
-    {
-      fieldName = expression.allocateIntermediateVariable(methodVisitor, resultType);
-    }
-  }
-  
   protected void deregisterPreviousFieldName()
   {
     if (this.fieldName != null)

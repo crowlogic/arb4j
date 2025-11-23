@@ -408,7 +408,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     if (isResult)
     {
 
-      cast(Compiler.loadResultParameter(mv), resultType);
+      cast(loadResultParameter(mv), resultType);
 
     }
     else
