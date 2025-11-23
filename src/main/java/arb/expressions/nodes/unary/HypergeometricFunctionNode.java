@@ -261,11 +261,11 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
   {
     var previousInsideInitializerValue = expression.insideInitializer;
     assert previousInsideInitializerValue : "tried to generate initializer when not inside one";
-    loadOutputVariableOntoStack(mv, type());
+    loadOutputVariableOntoStack(mv, hypergeometricFunctionClass);
     initializeHypergeometricFunction(mv);
     if (isNullaryFunctionOrHasScalarCodomain)
     {
-      loadOutputVariableOntoStack(mv, type());
+      loadOutputVariableOntoStack(mv, hypergeometricFunctionClass);
       mv.visitInsn(ACONST_NULL);
       mv.visitLdcInsn(1);
       loadBitsOntoStack(mv);
