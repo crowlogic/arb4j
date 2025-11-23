@@ -143,92 +143,42 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                        Supplier<F>
 {
 
-  private List<Node<D, C, F>> cachedNodes = new ArrayList<>();
+  private Set<Node<D, C, F>> constantSubexpressions = new LinkedHashSet<>();
 
-  protected void declareCachedNodeFields(ClassVisitor cw)
+  protected void collectConstantSubexpressions()
   {
-    if (trace)
-    {
-      log.debug("declareCachedNodeFields: cachedNodes.size()={}", cachedNodes.size());
-    }
+    if (rootNode == null)
+      return;
 
-    for (Node<D, C, F> cached : cachedNodes)
+    rootNode.accept(node ->
     {
-      if (trace)
+      if (node.independentOfInput())
       {
-        log.debug("  cached node: type={}, fieldName={}, class={}, toString={}",
-                  cached.type(),
-                  cached.fieldName,
-                  cached.getClass().getSimpleName(),
-                  cached);
+        constantSubexpressions.add(node);
       }
+    });
+  }
 
-      if (cached.fieldName != null)
-      {
-        if (trace)
-        {
-          log.debug("    declaring field: name={}, descriptor={}",
-                    cached.fieldName,
-                    cached.type().descriptorString());
-        }
-        cw.visitField(ACC_PUBLIC, cached.fieldName, cached.type().descriptorString(), null, null);
-      }
-      else
-      {
-        if (trace)
-        {
-          log.debug("    WARNING: skipping cached node with null fieldName");
-        }
-      }
+  protected void declareConstantSubexpressionFields(ClassVisitor cw)
+  {
+    for (Node<D, C, F> constant : constantSubexpressions)
+    {
+      cw.visitField(ACC_PUBLIC, constant.fieldName, constant.type().descriptorString(), null, null);
     }
   }
 
-  public void registerCachedNode(Node<D, C, F> node)
+  public void registerConstantForInitialization(Node<D, C, F> node)
   {
-    if (trace)
-    {
-      log.debug("registerCachedNode: node={}, fieldName={}, type={}",
-                node,
-                node.fieldName,
-                node.type().getSimpleName());
-    }
-    cachedNodes.add(node);
-    if (trace)
-    {
-      log.debug("  cachedNodes.size() now: {}", cachedNodes.size());
-    }
+    constantSubexpressions.add(node);
   }
 
-  protected void generateCachedNodeInitializations(MethodVisitor mv)
+  protected void generateConstantSubexpressionInitializations(MethodVisitor mv)
   {
-    if (trace)
+    for (Node<D, C, F> constant : constantSubexpressions)
     {
-      log.debug("generateCachedNodeInitializations: cachedNodes.size()={}", cachedNodes.size());
-    }
-
-    for (Node<D, C, F> cached : cachedNodes)
-    {
-      if (trace)
-      {
-        log.debug("  initializing cached node: fieldName={}, type={}, node={}",
-                  cached.fieldName,
-                  cached.type().getSimpleName(),
-                  cached);
-      }
-
       loadThisOntoStack(mv);
-
-      if (trace)
-      {
-        log.debug("    generating node value");
-      }
-      cached.generate(mv, cached.type());
-
-      if (trace)
-      {
-        log.debug("    storing to field {}", cached.fieldName);
-      }
-      putField(mv, className, cached.fieldName, cached.type());
+      constant.generate(mv, constant.type());
+      putField(mv, className, constant.fieldName, constant.type());
     }
   }
 
@@ -755,11 +705,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected void declareFields(ClassVisitor cw)
   {
-    if (trace)
-    {
-      log.debug("declareFields: className={}", className);
-    }
-
     cw.visitField(Opcodes.ACC_PUBLIC, IS_INITIALIZED, "Z", null, null);
 
     if (context != null)
@@ -767,16 +712,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       declareContext(cw);
     }
 
-    declareLiteralConstants(cw);
-    declareCachedNodeFields(cw);
-    declareIntermediateVariables(cw);
+    if (!coDomainType.isInterface())
+    {
+      declareLiteralConstants(cw);
+      declareConstantSubexpressionFields(cw);
+      declareIntermediateVariables(cw);
+    }
     declareFunctionReferences(cw);
     declareVariables(cw);
-
-    if (trace)
-    {
-      log.debug("declareFields: complete");
-    }
   }
 
   private ClassVisitor declareContext(ClassVisitor cw)
@@ -823,7 +766,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     sortedIntermediateVariableStream().filter(variable -> !declaredIntermediateVariables.contains(variable.name))
                                       .forEach(variable ->
                                       {
-                                        variable.declareIntermediateVariable(classVisitor);
+                                        variable.declareField(classVisitor);
+                                        declaredIntermediateVariables.add(variable.name);
                                       });
   }
 
@@ -834,7 +778,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected ClassVisitor declareLiteralConstants(ClassVisitor classVisitor)
   {
-    for (var constant : getLiteralConstantNodes())
+    for (var constant : getSortedLiteralConstantNodes())
     {
       constant.declareField(classVisitor);
     }
@@ -1065,32 +1009,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return multiplyAndDivide(exponentiate());
   }
 
-  protected void cacheConstantSubexpressions()
-  {
-    if (rootNode == null)
-    {
-      if (trace)
-      {
-        log.debug("cacheConstantSubexpressions: rootNode is null, skipping");
-      }
-      return;
-    }
-
-    if (trace)
-    {
-      log.debug("cacheConstantSubexpressions: before caching, rootNode={}", rootNode);
-    }
-
-    rootNode = rootNode.cache();
-
-    if (trace)
-    {
-      log.debug("cacheConstantSubexpressions: after caching, rootNode={}, cachedNodes.size()={}",
-                rootNode,
-                cachedNodes.size());
-    }
-  }
-
   /**
    * Generate the implementation of the function after this{@link #parseRoot()}
    * has been invoked
@@ -1101,7 +1019,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public Expression<D, C, F> generate() throws CompilerException
   {
     assert instructions == null;
-
     if (log.isDebugEnabled())
     {
       log.debug("id={}: generate(className={}, functionName={}, expression='{}')\n",
@@ -1111,11 +1028,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                 expression);
     }
 
-    if (trace)
-    {
-      log.debug("calling cacheConstantSubexpressions()");
-    }
-    cacheConstantSubexpressions();
+    collectConstantSubexpressions();
 
     ClassVisitor classVisitor = Compiler.constructClassVisitor();
 
@@ -1125,22 +1038,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       generateDomainTypeMethod(classVisitor);
       generateCoDomainTypeMethod(classVisitor);
       generateEvaluationMethod(classVisitor);
-
       if (!isNullaryFunction() && shouldGenerateDerivative)
       {
         generateDerivativeMethod(classVisitor);
       }
-
       declareFields(classVisitor);
       generateInitializationMethod(classVisitor);
       generateConstructor(classVisitor);
       declareIntermediateVariables(classVisitor);
-
       if (needsCloseMethod())
       {
         generateCloseMethod(classVisitor);
       }
-
       generateGetNameMethod(classVisitor);
       generateToStringMethod(classVisitor);
       generateTypesetMethod(classVisitor);
@@ -1150,7 +1059,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       classVisitor.visitEnd();
     }
 
-    return storeInstructions(classVisitor);
+    return
+
+    storeInstructions(classVisitor);
   }
 
   protected MethodVisitor generateCloseFieldCall(MethodVisitor methodVisitor,
@@ -1169,9 +1080,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (!coDomainType.isInterface())
     {
-      getLiteralConstantNodes().forEach(constant -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
-                                                                           constant.fieldName,
-                                                                           constant.type()));
+      getSortedLiteralConstantNodes().forEach(constant -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
+                                                                                 constant.fieldName,
+                                                                                 constant.type()));
 
       sortedIntermediateVariables().forEach(intermediateVariable -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
                                                                                            intermediateVariable.name,
@@ -1453,64 +1364,35 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected MethodVisitor generateInitializationCode(MethodVisitor mv)
   {
-    if (trace)
-    {
-      log.debug("generateInitializationCode: className={}, functionName={}",
-                className,
-                functionName);
-    }
-
     generateCodeToThrowErrorIfAlreadyInitialized(mv);
-
     if (trace)
     {
-      log.debug("  referencedFunctions: {}", referencedFunctions.keySet());
+      log.debug("generateInitializationCode for className={} functionName={}: referencedFunctions={}",
+                className,
+                functionName,
+                referencedFunctions.keySet());
     }
-
     addChecksForNullVariableReferences(mv);
+    // addChecksForNullFunctionReferences(mv);
 
+    // Initialize in proper dependency order
     if (dependencies != null)
     {
-      if (trace)
-      {
-        log.debug("  processing {} dependencies", dependencies.size());
-      }
       for (Dependency dependency : dependencies)
       {
         generateDependencyAssignments(mv, dependency);
       }
     }
-
+    // ADD THESE THREE LINES
     insideInitializer = true;
-    if (trace)
-    {
-      log.debug("  generating cached node initializations");
-    }
-    generateCachedNodeInitializations(mv);
+    generateConstantSubexpressionInitializations(mv);
     insideInitializer = false;
-
-    if (trace)
-    {
-      log.debug("  processing {} initializers", initializers.size());
-    }
     initializers.forEach(initializer -> initializer.accept(mv));
-
     if (recursive)
     {
-      if (trace)
-      {
-        log.debug("  generating self reference (recursive)");
-      }
       generateSelfReference(mv);
     }
-
     generateCodeToSetIsInitializedToTrue(mv);
-
-    if (trace)
-    {
-      log.debug("generateInitializationCode: complete");
-    }
-
     return mv;
   }
 
@@ -1608,7 +1490,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected MethodVisitor generateLiteralConstantInitializers(MethodVisitor methodVisitor)
   {
-    for (var literal : getLiteralConstantNodes())
+    for (var literal : getSortedLiteralConstantNodes())
     {
       literal.generateLiteralConstantInitializer(methodVisitor);
     }
@@ -1824,7 +1706,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return intermediateVariableValues;
   }
 
-  protected ArrayList<LiteralConstantNode<D, C, F>> getLiteralConstantNodes()
+  protected ArrayList<LiteralConstantNode<D, C, F>> getSortedLiteralConstantNodes()
   {
     if (literalConstantNodes == null)
     {
@@ -2452,13 +2334,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Expression<D, C, F> registerInitializer(Consumer<MethodVisitor> consumer)
   {
-    if (trace)
-    {
-      log.debug("registerInitializer: className={}, functionName={}, initializers.size()={}",
-                className,
-                functionName,
-                initializers.size());
-    }
     initializers.add(consumer);
     return this;
   }
@@ -2470,46 +2345,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (!isFunctional())
     {
-      if (trace)
-      {
-        log.debug("registerIntermediateVariable: className={}, intermediateVarName={}, type={}, initialize={}",
-                  className,
-                  intermediateVarName,
-                  type.getSimpleName(),
-                  initialize);
-      }
-
       var newIntermediateVariable = new IntermediateVariable<>(this,
                                                                intermediateVarName,
                                                                type,
                                                                initialize);
-
       if (intermediateVariables.containsKey(intermediateVarName))
       {
-        if (trace)
-        {
-          log.debug("  ERROR: intermediate variable {} already exists", intermediateVarName);
-        }
         throw new CompilerException(String.format("an intermediate variable named %s already exists",
                                                   intermediateVarName));
       }
 
       intermediateVariables.put(intermediateVarName, newIntermediateVariable);
-
-      if (trace)
-      {
-        log.debug("  registered {}, total intermediateVariables: {}",
-                  intermediateVarName,
-                  intermediateVariables.size());
-      }
     }
     else
     {
-      if (trace)
-      {
-        log.debug("registerIntermediateVariable: skipping {} (isFunctional=true)",
-                  intermediateVarName);
-      }
+      // if the coDomain is a functon, then it will be an interface and thus
+      // no intermediate variables will be declared in this class, rather they are
+      // instead declared in the class that will be returned
       return null;
     }
 

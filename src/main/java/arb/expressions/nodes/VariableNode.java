@@ -87,16 +87,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   Logger log = LoggerFactory.getLogger(getClass());
 
   @Override
-  public Node<D, R, F> cache()
-  {
-    if (Expression.trace)
-    {
-      log.debug("VariableNode.cache(): returning this (variables not cached), node={}", this);
-    }
-    return this;
-  }
-
-  @Override
   public boolean isPossiblyNegative()
   {
     return true;

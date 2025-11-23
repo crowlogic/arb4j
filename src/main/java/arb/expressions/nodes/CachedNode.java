@@ -8,36 +8,36 @@ import org.objectweb.asm.MethodVisitor;
 import arb.expressions.Expression;
 import arb.functions.Function;
 
+/**
+ * Wrapper node that loads a pre-computed value from a field instead of
+ * regenerating.
+ * 
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
+ */
 public class CachedNode<D, C, F extends Function<? extends D, ? extends C>> extends
                        Node<D, C, F>
 {
 
   private final Node<D, C, F> originalNode;
+  private final String        cacheFieldName;
+  private final Class<?>      cachedType;
 
   public CachedNode(Expression<D, C, F> expression,
                     Node<D, C, F> originalNode,
                     String cacheFieldName)
   {
     super(expression);
-    this.originalNode = originalNode;
-    this.fieldName    = cacheFieldName;
-
-    if (Expression.trace)
-    {
-      log.debug("CachedNode.<init>: originalNode={}, cacheFieldName={}",
-                   originalNode,
-                   cacheFieldName);
-    }
+    this.originalNode   = originalNode;
+    this.cacheFieldName = cacheFieldName;
+    this.cachedType     = originalNode.type();
+    this.fieldName      = cacheFieldName;
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    if (Expression.trace)
-    {
-      log.debug("CachedNode.generate: loading field {} of type {}", fieldName, type());
-    }
-    return loadFieldFromThis(mv, fieldName, type());
+    return loadFieldFromThis(mv, cacheFieldName, cachedType);
   }
 
   @Override
@@ -81,7 +81,9 @@ public class CachedNode<D, C, F extends Function<? extends D, ? extends C>> exte
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    return (Node<E, S, G>) originalNode.spliceInto(newExpression);
+    return (Node<E, S, G>) new CachedNode<>(newExpression,
+                                            (Node<E, S, G>) originalNode.spliceInto(newExpression),
+                                            cacheFieldName);
   }
 
   @Override
@@ -89,16 +91,6 @@ public class CachedNode<D, C, F extends Function<? extends D, ? extends C>> exte
          Node<D, C, F>
          substitute(String variable, Node<E, S, G> arg)
   {
-    return this;
-  }
-
-  @Override
-  public Node<D, C, F> cache()
-  {
-    if (Expression.trace)
-    {
-      log.debug("CachedNode.cache: returning this (already cached)");
-    }
     return this;
   }
 
@@ -111,7 +103,7 @@ public class CachedNode<D, C, F extends Function<? extends D, ? extends C>> exte
   @Override
   public Class<?> type()
   {
-    return originalNode.type();
+    return cachedType;
   }
 
   @Override

@@ -401,48 +401,20 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   {
     if (independentOfInput())
     {
-      if (Expression.trace)
-      {
-        log.debug("BinaryOperationNode.cache(): node={}, existing fieldName={}",
-                  this,
-                  this.fieldName);
-      }
-
-      deregisterPreviousFieldName();
-
-      String fieldName = expression.newIntermediateVariable("cached", type(), false);
+      String fieldName = expression.newIntermediateVariable("const", type(), false);
       this.fieldName = fieldName;
-
-      if (Expression.trace)
-      {
-        log.debug("  assigned new fieldName={}", fieldName);
-      }
-
-      expression.registerCachedNode(this);
+      expression.registerConstantForInitialization(this);
       return new CachedNode<>(expression,
                               this,
                               fieldName);
     }
 
-    if (Expression.trace)
-    {
-      log.debug("BinaryOperationNode.cache(): node={} depends on input, caching children", this);
-    }
-
     if (left != null)
     {
-      if (Expression.trace)
-      {
-        log.debug("  caching left child: {}", left);
-      }
       left = left.cache();
     }
     if (right != null)
     {
-      if (Expression.trace)
-      {
-        log.debug("  caching right child: {}", right);
-      }
       right = right.cache();
     }
 

@@ -24,40 +24,16 @@ public abstract class UnaryOperationNode<D, R, F extends Function<? extends D, ?
   {
     if (independentOfInput())
     {
-      if (Expression.trace)
-      {
-        log.debug("UnaryOperationNode.cache(): node={}, existing fieldName={}",
-                     this,
-                     this.fieldName);
-      }
-
-      deregisterPreviousFieldName();
-
-      String fieldName = expression.newIntermediateVariable("cached", type(), false);
+      String fieldName = expression.newIntermediateVariable("const", type(), false);
       this.fieldName = fieldName;
-
-      if (Expression.trace)
-      {
-        log.debug("  assigned new fieldName={}", fieldName);
-      }
-
-      expression.registerCachedNode(this);
+      expression.registerConstantForInitialization(this);
       return new CachedNode<>(expression,
                               this,
                               fieldName);
     }
 
-    if (Expression.trace)
-    {
-      log.debug("UnaryOperationNode.cache(): node={} depends on input, caching child", this);
-    }
-
     if (arg != null)
     {
-      if (Expression.trace)
-      {
-        log.debug("  caching arg child: {}", arg);
-      }
       arg = arg.cache();
     }
 
