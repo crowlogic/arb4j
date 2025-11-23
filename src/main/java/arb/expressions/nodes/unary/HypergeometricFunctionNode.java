@@ -298,14 +298,9 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
     if (Expression.trace)
     {
-      logger.debug(String.format("pFq.generate(insideInitializer=%s, fieldName=%s, resultType=%s dependsOnInput=%s resultType=%s type()=%s hypergeometricFunctionClass=%s)\n",
-                                 expression.insideInitializer,
-                                 fieldName,
+      logger.debug(String.format("pFq.generate(resultType=%s dependsOnInput=%s)\n",
                                  resultType,
-                                 dependsOnInput,
-                                 resultType,
-                                 type(),
-                                 hypergeometricFunctionClass));
+                                 dependsOnInput));
     }
 
     boolean loadedHypergeometricFunction = false;
@@ -409,5 +404,9 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                         scalarType,
                         Expression.class);
   }
+
+
+
+
 
 }

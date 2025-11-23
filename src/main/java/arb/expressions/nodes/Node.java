@@ -68,48 +68,30 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   {
     if (Expression.trace)
     {
-      log.debug("loadOutputVariableOntoStack( this={}, resultType={} ) inputIndependent={} isResult={} insideInitializer={} fieldName={}",
+      log.debug("loadOutputVariableOntoStack( this={}, resultType={} ) inputIndependent)_={} isResult={}",
                 this,
                 resultType,
                 inputIndependent(),
-                isResult,
-                expression.insideInitializer,
-                fieldName);
+                isResult);
     }
 
     try
     {
-      // Only write to result parameter if NOT in initializer AND this is the result
-      if (isResult && !expression.insideInitializer)
+      if (isResult)
       {
-        // In evaluate(): write to result parameter
+        assert !expression.insideInitializer : String.format("BUG: (this=%s, isResult=%s, fieldName=%s) tried to load the output(last argument in the 4th slot of the evaluate method) in the initialization method. it should not be foldd if the result is being written to the output",
+                                                             this,
+                                                             isResult,
+                                                             fieldName);
         cast(Compiler.loadResultParameter(mv), resultType);
         fieldName = "result";
       }
       else
       {
-        // Either: intermediate value (!isResult) OR result in initializer (isResult &&
-        // insideInitializer)
-        if ( "result".equals(fieldName) )
+        if (fieldName == null)
         {
-          assert isResult;
-        }
-        if (fieldName == null || ("result".equals(fieldName) && expression.insideInitializer))
-        {
-          // Allocate new field and load it onto stack
           fieldName = expression.allocateIntermediateVariable(mv, resultType);
-          log.debug("assigned fieldName={}", fieldName );
         }
-        else
-        {
-          assert expression.insideInitializer;
-          // In initializer with pre-existing field: load it onto stack
-          // This happens when the node was already processed and fieldName was set
-          expression.loadThisFieldOntoStack(mv, fieldName, resultType);
-        }
-        // else: fieldName != null && !insideInitializer
-        // This means the value is already on stack from previous generation
-        // Don't generate any bytecode
       }
     }
     finally
