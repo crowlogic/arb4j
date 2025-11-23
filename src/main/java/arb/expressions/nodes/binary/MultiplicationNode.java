@@ -24,8 +24,6 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    assert !"0".equals(left.toString());
-    assert !"0".equals(right.toString()) : this;
     return super.generate(mv, resultType);
   }
 
