@@ -18,21 +18,12 @@ import arb.functions.Function;
 public abstract class UnaryOperationNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                         Node<D, R, F>
 {
+
   @Override
   public Node<D, R, F> cache()
   {
     if (independentOfInput())
     {
-      if (isResult)
-      {
-        if (Expression.trace)
-        {
-          log.debug("UnaryOperationNode.cache(): node={} has fieldName=result (root), skipping cache",
-                    this);
-        }
-        return this;
-      }
-
       if (Expression.trace)
       {
         log.debug("UnaryOperationNode.cache(): node={}, existing fieldName={}",
@@ -134,6 +125,6 @@ public abstract class UnaryOperationNode<D, R, F extends Function<? extends D, ?
   @Override
   public boolean dependsOn(VariableNode<D, R, F> variable)
   {
-    return arg == null || arg.dependsOn(variable);
+    return arg.dependsOn(variable);
   }
 }

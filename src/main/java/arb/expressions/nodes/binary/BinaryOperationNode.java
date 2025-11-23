@@ -401,16 +401,6 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   {
     if (independentOfInput())
     {
-      if (isResult)
-      {
-        if (Expression.trace)
-        {
-          log.debug("BinaryOperationNode.cache(): node={} has fieldName=result (root), skipping cache",
-                    this);
-        }
-        return this;
-      }
-
       if (Expression.trace)
       {
         log.debug("BinaryOperationNode.cache(): node={}, existing fieldName={}",
