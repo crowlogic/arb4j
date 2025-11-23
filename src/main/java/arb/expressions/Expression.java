@@ -2482,8 +2482,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
     case "θ":
       return new StepFunctionNode<>(this);
-    case "δ":
-      return new DeltaFunctionNode<>(this);
     case "ζ":
     case "zeta":
       return new ZetaFunctionNode<>(this);

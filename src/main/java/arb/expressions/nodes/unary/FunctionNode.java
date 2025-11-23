@@ -632,6 +632,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     switch (functionName)
     {
+    case "θ":
+      return arg.mul(arg.θ());
     case "δ":
       return arg.θ();
     case "sqrt":
@@ -825,6 +827,11 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   public boolean isExponential()
   {
     return functionName.equals("exp");
+  }
+
+  public boolean is(String string)
+  {
+    return functionName.equals(string);
   }
 
 }

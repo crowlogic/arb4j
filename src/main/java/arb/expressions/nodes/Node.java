@@ -63,7 +63,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                           Consumer<Consumer<Node<D, R, F>>>
 {
 
-  
   /**
    * @return true if this node's evaluation is independent of all input parameters
    */
@@ -88,7 +87,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public boolean hoisted;
 
-  
   public boolean independentOfInput()
   {
     return expression.isNullaryFunction() ? true
@@ -145,7 +143,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return apply("arctan");
   }
 
-  public BinaryOperationNode<D, R, F> asBinaryOperationNode()
+  public BinaryOperationNode<D, R, F> asBinaryOperation()
   {
     assert this instanceof BinaryOperationNode : this + " isn't a BinaryOperationNode";
     return (BinaryOperationNode<D, R, F>) this;
@@ -153,7 +151,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public FunctionNode<D, R, F> asFunction()
   {
-    assert this instanceof FunctionNode : this + " isn't a FunctionNode";
+    assert isFunction() : this + " isn't a FunctionNode";
     return (FunctionNode<D, R, F>) this;
   }
 
@@ -187,7 +185,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   {
     return apply("θ");
   }
-  
+
   public Node<D, R, F> cos()
   {
     return apply("cos");
@@ -516,6 +514,11 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   public LiteralConstantNode<D, R, F> zero()
   {
     return expression.newLiteralConstant(0);
+  }
+
+  public boolean isFunction()
+  {
+    return this instanceof FunctionNode;
   }
 
 }

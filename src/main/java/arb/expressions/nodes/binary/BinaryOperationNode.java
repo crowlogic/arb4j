@@ -15,7 +15,8 @@ import arb.Integer;
 import arb.exceptions.CompilerException;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
-import arb.expressions.nodes.*;
+import arb.expressions.nodes.Node;
+import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 import arb.functions.RealToComplexFunction;
 import arb.functions.complex.ComplexFunction;
@@ -396,7 +397,6 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
                       getClass().getSimpleName());
   }
 
- 
   @Override
   public Node<D, C, F> simplify()
   {
@@ -408,6 +408,16 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     if (right != null)
     {
       right = right.simplify();
+    }
+
+    if ((left.isVariable() && right.isFunction() && right.asFunction().is("δ"))
+                  || (right.isVariable() && left.isFunction() && left.asFunction().is("δ")))
+    {
+      boolean xleft    = left.isVariable();
+      var     variable = xleft ? left.asVariable() : right.asVariable();
+      var     delta    = xleft ? right.asFunction() : left.asFunction();
+      var     deltaArg = delta.arg;
+      return variable.equals(deltaArg) ? zero() : this;
     }
 
     return this;
