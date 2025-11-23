@@ -110,8 +110,8 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     if (left instanceof FunctionNode<D, R, F> leftFunction
                   && right instanceof FunctionNode<D, R, F> rightFunction)
     {
-      var leftIsExponentialFunction  = leftFunction.functionName.equals("exp");
-      var rightIsExponentialFunction = rightFunction.functionName.equals("exp");
+      var leftIsExponentialFunction  = leftFunction.is("exp");
+      var rightIsExponentialFunction = rightFunction.is("exp");
 
       if (leftIsExponentialFunction && rightIsExponentialFunction)
       {
@@ -124,7 +124,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     if (left instanceof FunctionNode<D, R, F> leftFunction
                   && right instanceof FunctionNode<D, R, F> rightFunction)
     {
-      var leftIsSquareRootFunction = leftFunction.functionName.equals("sqrt");
+      var leftIsSquareRootFunction = leftFunction.is("sqrt");
       var functionsAreEqual        = leftFunction.equals(rightFunction);
 
       if (leftIsSquareRootFunction && functionsAreEqual)
@@ -133,6 +133,18 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       }
 
     }
+    
+
+    if ((left.isVariable() && right.isFunction() && right.asFunction().is("δ"))
+                  || (right.isVariable() && left.isFunction() && left.asFunction().is("δ")))
+    {
+      boolean xleft    = left.isVariable();
+      var     variable = xleft ? left.asVariable() : right.asVariable();
+      var     delta    = xleft ? right.asFunction() : left.asFunction();
+      var     deltaArg = delta.arg;
+      return variable.equals(deltaArg) ? zero() : this;
+    }
+    
 
     return super.simplify();
   }

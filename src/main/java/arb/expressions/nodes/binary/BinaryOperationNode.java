@@ -410,15 +410,6 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
       right = right.simplify();
     }
 
-    if ((left.isVariable() && right.isFunction() && right.asFunction().is("δ"))
-                  || (right.isVariable() && left.isFunction() && left.asFunction().is("δ")))
-    {
-      boolean xleft    = left.isVariable();
-      var     variable = xleft ? left.asVariable() : right.asVariable();
-      var     delta    = xleft ? right.asFunction() : left.asFunction();
-      var     deltaArg = delta.arg;
-      return variable.equals(deltaArg) ? zero() : this;
-    }
 
     return this;
   }
