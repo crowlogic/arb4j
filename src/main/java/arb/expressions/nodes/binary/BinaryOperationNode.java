@@ -396,31 +396,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
                       getClass().getSimpleName());
   }
 
-  @Override
-  public Node<D, C, F> cache()
-  {
-    if (independentOfInput())
-    {
-      String fieldName = expression.newIntermediateVariable("const", type(), false);
-      this.fieldName = fieldName;
-      expression.registerConstantForInitialization(this);
-      return new CachedNode<>(expression,
-                              this,
-                              fieldName);
-    }
-
-    if (left != null)
-    {
-      left = left.cache();
-    }
-    if (right != null)
-    {
-      right = right.cache();
-    }
-
-    return this;
-  }
-
+ 
   @Override
   public Node<D, C, F> simplify()
   {

@@ -20,27 +20,6 @@ public abstract class UnaryOperationNode<D, R, F extends Function<? extends D, ?
 {
 
   @Override
-  public Node<D, R, F> cache()
-  {
-    if (independentOfInput())
-    {
-      String fieldName = expression.newIntermediateVariable("const", type(), false);
-      this.fieldName = fieldName;
-      expression.registerConstantForInitialization(this);
-      return new CachedNode<>(expression,
-                              this,
-                              fieldName);
-    }
-
-    if (arg != null)
-    {
-      arg = arg.cache();
-    }
-
-    return this;
-  }
-
-  @Override
   public int hashCode()
   {
     return Objects.hash(arg);

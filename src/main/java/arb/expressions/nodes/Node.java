@@ -63,18 +63,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                           Consumer<Consumer<Node<D, R, F>>>
 {
 
-  public Node<D, R, F> cache() {
-    if (independentOfInput()) {
-      String fieldName = expression.newIntermediateVariable("const", type(), false);
-      this.fieldName = fieldName;
-      expression.registerConstantForInitialization(this);
-      return new CachedNode<>(expression, this, fieldName);
-    }
-    return this;
-  }
-
-
-
   
   /**
    * @return true if this node's evaluation is independent of all input parameters

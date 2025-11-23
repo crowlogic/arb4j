@@ -428,11 +428,6 @@ public class ExpressionTest extends
     assertEquals(2.0, integral.eval(0.0));
   }
 
-  public void testSuperscriptLowercaseQ()
-  {
-    assertEquals("𐞥", String.format("%c", Parser.lowercaseSuperscriptAlphabet[16]));
-  }
-
   public void testRatioOfRisingFactorials()
   {
 

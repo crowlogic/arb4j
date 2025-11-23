@@ -143,44 +143,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                        Supplier<F>
 {
 
-  private Set<Node<D, C, F>> constantSubexpressions = new LinkedHashSet<>();
 
-  protected void collectConstantSubexpressions()
-  {
-    if (rootNode == null)
-      return;
-
-    rootNode.accept(node ->
-    {
-      if (node.independentOfInput())
-      {
-        constantSubexpressions.add(node);
-      }
-    });
-  }
-
-  protected void declareConstantSubexpressionFields(ClassVisitor cw)
-  {
-    for (Node<D, C, F> constant : constantSubexpressions)
-    {
-      cw.visitField(ACC_PUBLIC, constant.fieldName, constant.type().descriptorString(), null, null);
-    }
-  }
-
-  public void registerConstantForInitialization(Node<D, C, F> node)
-  {
-    constantSubexpressions.add(node);
-  }
-
-  protected void generateConstantSubexpressionInitializations(MethodVisitor mv)
-  {
-    for (Node<D, C, F> constant : constantSubexpressions)
-    {
-      loadThisOntoStack(mv);
-      constant.generate(mv, constant.type());
-      putField(mv, className, constant.fieldName, constant.type());
-    }
-  }
 
   private static String       ASSERTION_ERROR_METHOD_DESCRIPTOR =
                                                                 Compiler.getMethodDescriptor(Void.class,
@@ -715,7 +678,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (!coDomainType.isInterface())
     {
       declareLiteralConstants(cw);
-      declareConstantSubexpressionFields(cw);
       declareIntermediateVariables(cw);
     }
     declareFunctionReferences(cw);
@@ -1028,7 +990,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                 expression);
     }
 
-    collectConstantSubexpressions();
 
     ClassVisitor classVisitor = Compiler.constructClassVisitor();
 
@@ -1383,11 +1344,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         generateDependencyAssignments(mv, dependency);
       }
     }
-    // ADD THESE THREE LINES
     insideInitializer = true;
-    generateConstantSubexpressionInitializations(mv);
-    insideInitializer = false;
     initializers.forEach(initializer -> initializer.accept(mv));
+    insideInitializer = false;
+
     if (recursive)
     {
       generateSelfReference(mv);
