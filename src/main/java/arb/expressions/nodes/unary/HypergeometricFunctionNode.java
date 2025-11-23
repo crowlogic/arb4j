@@ -49,6 +49,12 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 {
 
   @Override
+  public Node<D, R, F> fold()
+  {
+    return this;
+  }
+
+  @Override
   public String getFieldName()
   {
     return elementFieldName;
@@ -253,12 +259,13 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
   public void generateHypergeometricFunctionInitializer(MethodVisitor mv)
   {
-    expression.insideInitializer = true;
-    loadHypergeometricFunctionOntoStack(mv);
+    var previousInsideInitializerValue = expression.insideInitializer;
+    assert previousInsideInitializerValue : "tried to generate initializer when not inside one";
+    loadOutputVariableOntoStack(mv, type());
     initializeHypergeometricFunction(mv);
     if (isNullaryFunctionOrHasScalarCodomain)
     {
-      loadHypergeometricFunctionOntoStack(mv);
+      loadOutputVariableOntoStack(mv, type());
       mv.visitInsn(ACONST_NULL);
       mv.visitLdcInsn(1);
       loadBitsOntoStack(mv);
@@ -274,6 +281,8 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                           Object.class);
 
     }
+    expression.insideInitializer = previousInsideInitializerValue;
+
   }
 
   /**
@@ -286,7 +295,6 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    expression.insideInitializer = false;
 
     if (Expression.trace)
     {
@@ -300,7 +308,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     if (dependsOnInput)
     {
       loadedHypergeometricFunction = true;
-      loadHypergeometricFunctionOntoStack(mv);
+      loadOutputVariableOntoStack(mv, resultType);
       initializeHypergeometricFunction(mv);
     }
 
@@ -308,13 +316,13 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     {
       if (!loadedHypergeometricFunction)
       {
-        loadHypergeometricFunctionOntoStack(mv);
+        loadOutputVariableOntoStack(mv, resultType);
       }
 
       mv.visitInsn(ACONST_NULL);
       mv.visitLdcInsn(1);
       loadBitsOntoStack(mv);
-      loadOutputOntoStack(mv, resultType);
+      loadOutputVariableOntoStack(mv, resultType);
       invokeVirtualMethod(mv,
                           hypergeometricFunctionClass,
                           "evaluate",
@@ -330,7 +338,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     {
       if (resultType.equals(elementType))
       {
-        loadOutputOntoStack(mv, resultType);
+        loadOutputVariableOntoStack(mv, resultType);
         expression.loadThisFieldOntoStack(mv, elementFieldName, elementType);
 
         Compiler.invokeSetMethod(mv, resultType, resultType);
@@ -340,14 +348,14 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
         assert resultType.equals(expression.coDomainType) : String.format("TODO: handle resultType = %s != expression.coDomainType = %s",
                                                                           resultType,
                                                                           expression.coDomainType);
-        loadOutputOntoStack(mv, resultType);
+        loadOutputVariableOntoStack(mv, resultType);
         expression.loadThisFieldOntoStack(mv, elementFieldName, elementType);
         cast(mv, elementType);
         loadInputParameter(mv);
         cast(mv, expression.domainType);
         loadOrderParameter(mv);
         loadBitsOntoStack(mv);
-        loadOutputOntoStack(mv, resultType);
+        loadOutputVariableOntoStack(mv, resultType);
         invokeVirtualMethod(mv,
                             elementType,
                             "evaluate",
@@ -397,25 +405,8 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                         Expression.class);
   }
 
-  protected void loadHypergeometricFunctionOntoStack(MethodVisitor mv)
-  {
-    expression.loadThisFieldOntoStack(mv, fieldName, hypergeometricFunctionClass);
-  }
 
-  protected void loadOutputOntoStack(MethodVisitor mv, Class<?> resultType)
-  {
-    generatedType = resultType;
-    if (isResult)
-    {
 
-      cast(Compiler.loadResultParameter(mv), resultType);
 
-    }
-    else
-    {
-
-      expression.allocateIntermediateVariable(mv, resultType);
-    }
-  }
 
 }

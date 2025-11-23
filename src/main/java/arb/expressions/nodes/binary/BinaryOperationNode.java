@@ -358,29 +358,9 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     return (left == null || left.isScalar()) && (right == null || right.isScalar());
   }
 
-  public boolean loadOutput(MethodVisitor mv, Class<?> resultType)
+  public void loadOutput(MethodVisitor mv, Class<?> resultType)
   {
-    try
-    {
-      if (isResult)
-      {
-        cast(Compiler.loadResultParameter(mv), resultType);
-        fieldName = "result";
-      }
-      else
-      {
-        if (fieldName == null)
-        {
-          fieldName = expression.allocateIntermediateVariable(mv, resultType);
-        }
-        return true;
-      }
-      return false;
-    }
-    finally
-    {
-      expression.generatedNodes.put(this, fieldName);
-    }
+    loadOutputVariableOntoStack(mv, resultType);
   }
 
   public <E, S, G extends Function<? extends E, ? extends S>>
@@ -396,17 +376,18 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
                       getClass().getSimpleName());
   }
   
-  protected boolean shouldCache()
+  protected boolean shouldFold()
   {
-    return independentOfInput() && !Function.class.isAssignableFrom(type());
+    return inputIndependent() && !Function.class.isAssignableFrom(type());
   }
 
   @Override
-  public Node<D, C, F> cache()
+  public Node<D, C, F> fold()
   {
 
+    if ( true ) return this;
 
-    if (shouldCache())
+    if (shouldFold())
     {
       if (Expression.trace)
       {
@@ -415,11 +396,6 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
       
       if (isResult)
       {
-        if (Expression.trace)
-        {
-          log.debug("BinaryOperationNode.cache(): node={} has fieldName=result (root), skipping cache",
-                    this);
-        }
         return this;
       }
 
@@ -440,19 +416,19 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
 
       }
 
-      expression.registerCachedNode(this);
-      return new CachedNode<>(expression,
+      expression.registerFoldedNode(this);
+      return new FoldedNode<>(expression,
                               this,
                               fieldName);
     }
 
     if (left != null)
     {
-      left = left.cache();
+      left = left.fold();
     }
     if (right != null)
     {
-      right = right.cache();
+      right = right.fold();
     }
 
     return this;

@@ -145,7 +145,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   private List<Node<D, C, F>> cachedNodes = new ArrayList<>();
 
-  public void registerCachedNode(Node<D, C, F> node)
+  public void registerFoldedNode(Node<D, C, F> node)
   {
     if (trace)
     {
@@ -177,7 +177,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       log.debug("cacheConstantSubexpressions: before caching, rootNode={}", rootNode);
     }
 
-    rootNode = rootNode.cache();
+    rootNode = rootNode.fold();
 
     if (trace)
     {
@@ -225,22 +225,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-  protected void generateCachedNodeInitializations(MethodVisitor mv)
+  protected void generateFoldedNodeInitializations(MethodVisitor mv)
   {
     if (trace)
     {
-      log.debug("generateCachedNodeInitializations: cachedNodes.size()={}", cachedNodes.size());
+      log.debug("generateFoldedNodeInitializations: cachedNodes.size()={}", cachedNodes.size());
     }
 
     for (Node<D, C, F> cached : cachedNodes)
     {
-      if (trace)
-      {
-        log.debug("  initializing cached node: fieldName={}, type={}, node={}",
-                  cached.fieldName,
-                  cached.type().getSimpleName(),
-                  cached);
-      }
 
       loadThisOntoStack(mv);
       cached.generate(mv, cached.type());
@@ -285,45 +278,26 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     generateCodeToThrowErrorIfAlreadyInitialized(mv);
 
-    if (trace)
-    {
-      log.debug("  referencedFunctions: {}", referencedFunctions.keySet());
-    }
-
     addChecksForNullVariableReferences(mv);
 
     if (dependencies != null)
     {
-      if (trace)
-      {
-        log.debug("  processing {} dependencies", dependencies.size());
-      }
       for (Dependency dependency : dependencies)
       {
         generateDependencyAssignments(mv, dependency);
       }
     }
 
+    var prev = insideInitializer;
     insideInitializer = true;
-    if (trace)
-    {
-      log.debug("  generating cached node initializations");
-    }
-    generateCachedNodeInitializations(mv);
-    insideInitializer = false;
 
-    if (trace)
-    {
-      log.debug("  processing {} initializers", initializers.size());
-    }
+    generateFoldedNodeInitializations(mv);
+
     initializers.forEach(initializer -> initializer.accept(mv));
+    insideInitializer = prev;
 
     if (recursive)
     {
-      if (trace)
-      {
-        log.debug("  generating self reference (recursive)");
-      }
       generateSelfReference(mv);
     }
 
@@ -350,10 +324,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                 expression);
     }
 
-    if (trace)
-    {
-      log.debug("calling cacheConstantSubexpressions()");
-    }
     cacheConstantSubexpressions();
 
     ClassVisitor classVisitor = Compiler.constructClassVisitor();
@@ -1688,6 +1658,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public MethodVisitor generateSetResultInvocation(MethodVisitor mv, Class<?> inputType)
   {
+    assert !insideInitializer : "tried to load output inside initializer for this=" + this + " , output is the 4th and last argument to evaluate and this method shouldnt be called "
+                                + "if the function has been folded so that its calculated without any result variable to be stored in so it stores its values in a field "
+                                + "and the generated evaluate method must get the value from the field to the result when its called";
     loadResultParameter(mv);
     cast(mv, coDomainType);
     swap(mv);
@@ -2598,7 +2571,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return (N) node;
   }
 
-  
   protected Node<D, C, F> resolveFunction(int startPos, VariableReference<D, C, F> reference)
   {
     switch (reference.name)

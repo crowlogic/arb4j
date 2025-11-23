@@ -54,7 +54,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
 {
 
   @Override
-  public Node<D, R, F> cache()
+  public Node<D, R, F> fold()
   {
     if (Expression.trace)
     {

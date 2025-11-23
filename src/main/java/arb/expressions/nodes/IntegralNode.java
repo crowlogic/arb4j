@@ -42,7 +42,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
 
   @Override
-  public Node<D, C, F> cache()
+  public Node<D, C, F> fold()
   {
    return this;
   }

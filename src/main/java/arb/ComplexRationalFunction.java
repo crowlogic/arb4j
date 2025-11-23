@@ -636,9 +636,7 @@ public class ComplexRationalFunction implements
   {
     realPart.pow(2, bits, result.realPart);
     imaginaryPart.pow(2, bits, result.imaginaryPart);
-    // result.real=this.real^2-this.imag^2
     result.realPart.sub(result.imaginaryPart, bits);
-    // result.imag=2*this.real*this.imag
     realPart.mul(imaginaryPart, bits, result.imaginaryPart).mul(2, bits);
     return result;
   }

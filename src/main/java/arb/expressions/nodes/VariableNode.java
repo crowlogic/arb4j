@@ -87,7 +87,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   Logger log = LoggerFactory.getLogger(getClass());
 
   @Override
-  public Node<D, R, F> cache()
+  public Node<D, R, F> fold()
   {
     if (Expression.trace)
     {
@@ -272,6 +272,8 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     if (isIndependent)
     {
+      assert !expression.insideInitializer : "generateReference called when insideInitializer is true, this=" + this;
+
       Compiler.cast(loadInputParameter(mv), expression.domainType);
     }
     else if (isIndeterminate)
@@ -306,12 +308,16 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     if (isResult)
     {
+      assert !expression.insideInitializer : "generateReferenceToIndeterminantVariable called when insideInitializer is true, this="
+                                             + this;
       cast(Compiler.loadResultParameter(mv), reference.type);
     }
     else
     {
       if (reference.type.equals(Object.class))
       {
+        assert !expression.insideInitializer : "generateReferenceToIndeterminantVariable called when insideInitializer is true, this="
+                                               + this;
         Compiler.loadInputParameter(mv);
       }
       else
