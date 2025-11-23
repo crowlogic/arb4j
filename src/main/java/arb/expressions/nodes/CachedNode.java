@@ -8,13 +8,13 @@ import org.objectweb.asm.MethodVisitor;
 import arb.expressions.Expression;
 import arb.functions.Function;
 
-public class FoldedNode<D, C, F extends Function<? extends D, ? extends C>> extends
+public class CachedNode<D, C, F extends Function<? extends D, ? extends C>> extends
                        Node<D, C, F>
 {
 
   private final Node<D, C, F> originalNode;
 
-  public FoldedNode(Expression<D, C, F> expression,
+  public CachedNode(Expression<D, C, F> expression,
                     Node<D, C, F> originalNode,
                     String cacheFieldName)
   {
@@ -93,7 +93,7 @@ public class FoldedNode<D, C, F extends Function<? extends D, ? extends C>> exte
   }
 
   @Override
-  public Node<D, C, F> fold()
+  public Node<D, C, F> cache()
   {
     if (Expression.trace)
     {

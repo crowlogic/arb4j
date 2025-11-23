@@ -403,14 +403,14 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
   @Override
   public String toString()
   {
-    int rowCount = Math.min(100, getNumRows());
-    int colCount = Math.min(100, getNumCols());
-    Object[][] strings    = new String[rowCount][colCount];
+    int clippedRowCount = Math.min(100, getNumRows());
+    int clippedColCount = Math.min(100, getNumCols());
+    Object[][] strings    = new String[clippedRowCount][clippedColCount];
     int        maxLength  = 0;
     int        maxDecimal = 0;
-    for (int i = 0; i < rowCount; ++i)
+    for (int i = 0; i < clippedRowCount; ++i)
     {
-      for (int j = 0; j < getNumCols(); ++j)
+      for (int j = 0; j < clippedColCount; ++j)
       {
         Real x = get(i, j);
         String string  = printPrecision ? x.toString() : x.toFixedString();

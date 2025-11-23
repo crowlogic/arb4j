@@ -58,9 +58,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 {
 
   @Override
-  public Node<D, R, F> fold()
+  public Node<D, R, F> cache()
   {
-    if (inputIndependent())
+    if (independentOfInput())
     {
       if (isResult)
       {
@@ -89,8 +89,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
         log.debug("  assigned new fieldName={}", fieldName);
       }
 
-      expression.registerFoldedNode(this);
-      return new FoldedNode<>(expression,
+      expression.registerCachedNode(this);
+      return new CachedNode<>(expression,
                               this,
                               fieldName);
     }
@@ -106,7 +106,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       {
         log.debug("  caching lowerLimit: {}", lowerLimit);
       }
-      lowerLimit = lowerLimit.fold();
+      lowerLimit = lowerLimit.cache();
     }
     if (upperLimit != null)
     {
@@ -114,7 +114,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       {
         log.debug("  caching upperLimit: {}", upperLimit);
       }
-      upperLimit = upperLimit.fold();
+      upperLimit = upperLimit.cache();
     }
 
     return this;

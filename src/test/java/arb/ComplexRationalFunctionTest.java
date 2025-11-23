@@ -57,11 +57,21 @@ public class ComplexRationalFunctionTest extends
     var    R       =
              ComplexRationalNullaryFunction.express("v₍ₙ₎*(z/2)^(-n)*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)",
                                                     context);
-
-    var    x       = R;                                                                                    // .();
+//    var    R       = Function.compile(Object.class,
+//                                      ComplexRationalFunction.class,
+//                                      Function.class,
+//                                      "v₍ₙ₎*(z/2)^(-n)*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)",
+//                                      context);
+//    var    R       = Function.compile(Object.class,
+//                                      ComplexRationalFunction.class,
+//                                      ComplexRationalNullaryFunction.class,
+//                                      "v₍ₙ₎*(z/2)^(-n)*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)",
+//                                      context);    
+    var    x       = R;                                                                                    // .instantiate();
 
     Object x3      = x.evaluate(128);
-
+    // System.out.println("gr8=" + x3);
+    // System.out.println(" should also be gr8 " + R);
     assertEquals("(-6*x^2+15)/(x^3) + 0i", x3.toString());
   }
 

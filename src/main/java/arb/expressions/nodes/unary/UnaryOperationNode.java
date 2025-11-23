@@ -16,7 +16,7 @@ public abstract class UnaryOperationNode<D, R, F extends Function<? extends D, ?
                                         Node<D, R, F>
 {
   @Override
-  public Node<D, R, F> fold()
+  public Node<D, R, F> cache()
   {
     if ( Expression.trace )
     {
@@ -51,8 +51,8 @@ public abstract class UnaryOperationNode<D, R, F extends Function<? extends D, ?
         log.debug("  assigned new fieldName={}", fieldName);
       }
 
-      expression.registerFoldedNode(this);
-      return new FoldedNode<>(expression,
+      expression.registerCachedNode(this);
+      return new CachedNode<>(expression,
                               this,
                               fieldName);
     }
@@ -63,7 +63,7 @@ public abstract class UnaryOperationNode<D, R, F extends Function<? extends D, ?
       {
         log.debug("  caching arg child: {}", arg);
       }
-      arg = arg.fold();
+      arg = arg.cache();
     }
 
     return this;
@@ -71,7 +71,7 @@ public abstract class UnaryOperationNode<D, R, F extends Function<? extends D, ?
 
   protected boolean shouldCache()
   {
-    return inputIndependent() && !Function.class.isAssignableFrom(type());
+    return independentOfInput() && !Function.class.isAssignableFrom(type());
   }
 
   @Override

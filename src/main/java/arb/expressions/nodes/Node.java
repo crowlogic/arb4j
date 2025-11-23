@@ -63,44 +63,27 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                           Typesettable,
                           Consumer<Consumer<Node<D, R, F>>>
 {
-
-  public MethodVisitor loadOutputVariableOntoStack(MethodVisitor mv, Class<?> resultType)
+  
+  public void loadOutputVariableOntoStack(MethodVisitor methodVisitor, Class<?> resultType)
   {
-    if (Expression.trace)
-    {
-      log.debug("loadOutputVariableOntoStack( this={}, resultType={} ) inputIndependent)_={} isResult={}",
-                this,
-                resultType,
-                inputIndependent(),
-                isResult);
-    }
+    log.debug("loadOutputVariableOntoStack( this={}, resultType={} ) independentOfInput={} isResult={}",
+              this,
+              resultType,
+              independentOfInput(),
+              isResult);
 
-    try
+    assert !expression.insideInitializer : "BUG: tried to load the output(last argument in the 4th slot of the evaluate method) in the initialization method. it should not be cached if the result is being written to the output";
+    if (isResult)
     {
-      if (isResult)
-      {
-        assert !expression.insideInitializer : String.format("BUG: (this=%s, isResult=%s, fieldName=%s) tried to load the output(last argument in the 4th slot of the evaluate method) in the initialization method. it should not be foldd if the result is being written to the output",
-                                                             this,
-                                                             isResult,
-                                                             fieldName);
-        cast(Compiler.loadResultParameter(mv), resultType);
-        fieldName = "result";
-      }
-      else
-      {
-        if (fieldName == null)
-        {
-          fieldName = expression.allocateIntermediateVariable(mv, resultType);
-        }
-      }
+      cast(Compiler.loadResultParameter(methodVisitor), resultType);
+      fieldName = "result";
     }
-    finally
+    else
     {
-      expression.generatedNodes.put(this, fieldName);
+      fieldName = expression.allocateIntermediateVariable(methodVisitor, resultType);
     }
-    return mv;
   }
-
+  
   protected void deregisterPreviousFieldName()
   {
     if (this.fieldName != null)
@@ -115,33 +98,52 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     }
   }
 
-  public Node<D, R, F> fold()
+  public Node<D, R, F> cache()
   {
-    // result.imag=2*this.real*this.imag
+    if (independentOfInput())
+    {
+      if (isResult)
+      {
+        if (Expression.trace)
+        {
+          log.debug("{}.cache(): node={} has fieldName=result (root), skipping cache",
+                    getClass().getSimpleName(),
+                    this);
+        }
+        return this;
+      }
+
+      if (Expression.trace)
+      {
+        log.debug("{}.cache(): node={}, existing fieldName={}",
+                  getClass().getSimpleName(),
+                  this,
+                  this.fieldName);
+      }
+
+      deregisterPreviousFieldName();
+
+      String fieldName = expression.getNextIntermediateVariableFieldName("cached", type());
+      this.fieldName = fieldName;
+
+      if (Expression.trace)
+      {
+        log.debug("  assigned new fieldName={}", fieldName);
+      }
+
+      expression.registerCachedNode(this);
+      return new CachedNode<>(expression,
+                              this,
+                              fieldName);
+    }
 
     if (Expression.trace)
     {
-      log.debug("{}.fold(): node={}, existing fieldName={}",
+      log.debug("{}.cache(): node={} depends on input, returning this",
                 getClass().getSimpleName(),
-                this,
-                this.fieldName);
+                this);
     }
-
-    deregisterPreviousFieldName();
-
-    String fieldName = expression.getNextIntermediateVariableFieldName("foldd", type());
-    this.fieldName = fieldName;
-
-    if (Expression.trace)
-    {
-      log.debug("  assigned new fieldName={}", fieldName);
-    }
-
-    expression.registerFoldedNode(this);
-    return new FoldedNode<>(expression,
-                            this,
-                            fieldName);
-
+    return this;
   }
 
   /**
@@ -149,14 +151,14 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    */
   public boolean isConstantExpression()
   {
-    if (inputIndependent())
+    if (independentOfInput())
     {
       // Check that all branches are also constant using functional traversal
       final boolean[] allConstant =
       { true };
       accept(node ->
       {
-        if (node != this && !node.inputIndependent())
+        if (node != this && !node.independentOfInput())
         {
           allConstant[0] = false;
         }
@@ -168,7 +170,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public boolean hoisted;
 
-  public boolean inputIndependent()
+  public boolean independentOfInput()
   {
     return expression.isNullaryFunction() ? true : !dependsOn(expression.getIndependentVariable());
   }

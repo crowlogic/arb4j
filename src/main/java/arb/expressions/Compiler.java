@@ -912,7 +912,6 @@ public class Compiler
    */
   public static MethodVisitor loadResultParameter(MethodVisitor methodVisitor)
   {
-    
     methodVisitor.visitVarInsn(Opcodes.ALOAD, 4);
     return methodVisitor;
   }

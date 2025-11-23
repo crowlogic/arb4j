@@ -1,8 +1,16 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.cast;
+import static arb.expressions.Compiler.invokeMethod;
+import static arb.expressions.Compiler.invokeSetMethod;
+import static arb.expressions.Compiler.invokeVirtualMethod;
+import static arb.expressions.Compiler.loadBitsParameterOntoStack;
+import static arb.expressions.Compiler.loadInputParameter;
+import static arb.expressions.Compiler.loadOrderParameter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
@@ -89,8 +97,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
 
   public void generateFunctionInitializer(MethodVisitor mv)
   {
-    log.debug("generateFunctionInitializer(): insideInitializer={}", expression.insideInitializer);
-
+    expression.insideInitializer = true;
     loadFunctionOntoStack(mv);
     Compiler.getField(mv, LommelPolynomial.class, "v", Real.class);
     generateOrder(mv);
@@ -154,6 +161,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
   {
     boolean isRationalFunctionSequence = RationalFunction.class.equals(expression.coDomainType)
                   && Integer.class.equals(expression.domainType);
+    expression.insideInitializer = false;
 
     expression.loadThisFieldOntoStack(mv, elementFieldName, RationalFunction.class);
 
