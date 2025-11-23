@@ -2598,7 +2598,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return (N) node;
   }
 
-  
   protected Node<D, C, F> resolveFunction(int startPos, VariableReference<D, C, F> reference)
   {
     switch (reference.name)
