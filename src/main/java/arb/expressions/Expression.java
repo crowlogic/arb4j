@@ -143,7 +143,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                        Supplier<F>
 {
 
-  private List<Node<D, C, F>> cachedNodes = new ArrayList<>();
+  private List<Node<D, C, F>> foldedNodes = new ArrayList<>();
 
   public void registerFoldedNode(Node<D, C, F> node)
   {
@@ -154,90 +154,62 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                 node.fieldName,
                 node.type().getSimpleName());
     }
-    cachedNodes.add(node);
+    foldedNodes.add(node);
     if (trace)
     {
-      log.debug("  cachedNodes.size() now: {}", cachedNodes.size());
+      log.debug("  cachedNodes.size() now: {}", foldedNodes.size());
     }
   }
 
-  protected void cacheConstantSubexpressions()
+  protected void foldNodes()
   {
+    log.debug("foldNodes()");
     if (rootNode == null)
     {
-      if (trace)
-      {
-        log.debug("cacheConstantSubexpressions: rootNode is null, skipping");
-      }
       return;
-    }
-
-    if (trace)
-    {
-      log.debug("cacheConstantSubexpressions: before caching, rootNode={}", rootNode);
     }
 
     rootNode = rootNode.fold();
 
     if (trace)
     {
-      log.debug("cacheConstantSubexpressions: after caching, rootNode={}, cachedNodes.size()={}",
-                rootNode,
-                cachedNodes.size());
+      log.debug("foldNodes: after folding, foldedNodes={}", rootNode, foldedNodes);
     }
   }
 
-  protected void declareCachedNodeFields(ClassVisitor cw)
+  protected void declareFoldedFields(ClassVisitor cw)
   {
     if (trace)
     {
-      log.debug("declareCachedNodeFields: cachedNodes.size()={}", cachedNodes.size());
+      log.debug("declareFoldedFields: foldedNodes={}", foldedNodes);
     }
 
-    for (Node<D, C, F> cached : cachedNodes)
+    for (var foldedNode : foldedNodes)
     {
-      if (trace)
-      {
-        log.debug("  cached node: type={}, fieldName={}, class={}, toString={}",
-                  cached.type(),
-                  cached.fieldName,
-                  cached.getClass().getSimpleName(),
-                  cached);
-      }
+      assert foldedNode.fieldName != null : foldedNode + " has a null fieldName";
 
-      if (cached.fieldName != null)
-      {
-        if (trace)
-        {
-          log.debug("    declaring field: name={}, descriptor={}",
-                    cached.fieldName,
-                    cached.type().descriptorString());
-        }
-        cw.visitField(ACC_PUBLIC, cached.fieldName, cached.type().descriptorString(), null, null);
-      }
-      else
-      {
-        if (trace)
-        {
-          log.debug("    WARNING: skipping cached node with null fieldName");
-        }
-      }
+      cw.visitField(ACC_PUBLIC,
+                    foldedNode.fieldName,
+                    foldedNode.type().descriptorString(),
+                    null,
+                    null);
     }
+
   }
 
   protected void generateFoldedNodeInitializations(MethodVisitor mv)
   {
     if (trace)
     {
-      log.debug("generateFoldedNodeInitializations: cachedNodes.size()={}", cachedNodes.size());
+      log.debug("generateFoldedNodeInitializations: cachedNodes.size()={}", foldedNodes.size());
     }
 
-    for (Node<D, C, F> cached : cachedNodes)
+    for (var foldedNode : foldedNodes)
     {
 
       loadThisOntoStack(mv);
-      cached.generate(mv, cached.type());
-      putField(mv, className, cached.fieldName, cached.type());
+      foldedNode.generate(mv, foldedNode.type());
+      putField(mv, className, foldedNode.fieldName, foldedNode.type());
     }
   }
 
@@ -256,7 +228,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
 
     declareLiteralConstants(cw);
-    declareCachedNodeFields(cw);
+    declareFoldedFields(cw);
     declareIntermediateVariables(cw);
     declareFunctionReferences(cw);
     declareVariables(cw);
@@ -324,7 +296,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                 expression);
     }
 
-    cacheConstantSubexpressions();
+    foldNodes();
 
     ClassVisitor classVisitor = Compiler.constructClassVisitor();
 
@@ -1658,7 +1630,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public MethodVisitor generateSetResultInvocation(MethodVisitor mv, Class<?> inputType)
   {
-    assert !insideInitializer : "tried to load output inside initializer for this=" + this + " , output is the 4th and last argument to evaluate and this method shouldnt be called "
+    assert !insideInitializer : "tried to load output inside initializer for this="
+                                + this
+                                + " , output is the 4th and last argument to evaluate and this method shouldnt be called "
                                 + "if the function has been folded so that its calculated without any result variable to be stored in so it stores its values in a field "
                                 + "and the generated evaluate method must get the value from the field to the result when its called";
     loadResultParameter(mv);
