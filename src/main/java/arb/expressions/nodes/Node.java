@@ -94,7 +94,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
         {
           assert isResult;
         }
-        if (fieldName == null || ( ( isResult || "result".equals(fieldName)) ) && expression.insideInitializer)
+        if (fieldName == null || ("result".equals(fieldName) && expression.insideInitializer))
         {
           // Allocate new field and load it onto stack
           fieldName = expression.allocateIntermediateVariable(mv, resultType);
@@ -102,8 +102,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
         }
         else
         {
-          assert !isResult;
-          //assert expression.insideInitializer;
+          assert expression.insideInitializer;
           // In initializer with pre-existing field: load it onto stack
           // This happens when the node was already processed and fieldName was set
           expression.loadThisFieldOntoStack(mv, fieldName, resultType);

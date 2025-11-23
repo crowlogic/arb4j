@@ -270,7 +270,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   private void generateReference(MethodVisitor mv, Class<?> neededType)
   {
-    if (!inputIndependent())
+    if (isIndependent)
     {
       assert !expression.insideInitializer : "generateReference called when insideInitializer is true, this=" + this;
 
