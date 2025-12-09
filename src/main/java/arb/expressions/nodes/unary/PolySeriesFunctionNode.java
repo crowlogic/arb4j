@@ -24,23 +24,20 @@ public [ResultType] evaluate([ScalarType] t, int order, int bits, [ResultType] r
     // Create input polynomial: h(x) = t + x
     [PolyType] h = new [PolyType](order);
     h.fitLength(order);
-    h.setLength(order);
     h.get(0).set(t);           // constant term = t
     h.get(1).one();            // linear coefficient = 1
     
     // Create output polynomial for results
     [PolyType] out = new [PolyType](order);
     out.fitLength(order);
-    out.setLength(order);
     
-    // Call ARB/FLINT series function to compute all derivatives at once
-    // Example: arblib.arb_poly_riemann_siegel_theta_series(out, h, order, bits);
-    [LIBRARY_FUNCTION_NAME](out, h, order, bits);
+    // Call ARB/FLINT series function to compute all derivatives
+    arblib.[series_function](out, h, order, bits);
     
-    // Extract result at the requested derivative order
-    result.set(out.getCoeff(order));
+    // Extract result at requested derivative order
+    result.set(out.getCoeff(derivativeOrder));
     
-    // Clean up polynomial resources
+    // Clean up resources
     h.clear();
     out.clear();
     
@@ -69,7 +66,6 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
   private static final String ACB_POLY_GET_COEFF_ACB = "acb_poly_get_coeff_acb";
   private static final String ACB_POLY_INIT          = "acb_poly_init";
   private static final String ACB_POLY_SET_COEFF_ACB = "acb_poly_set_coeff_acb";
-  private static final String ACB_POLY_SET_LENGTH    = "acb_poly_set_length";
   private static final String ARB_COMPLEX            = Type.getInternalName(Complex.class);
   private static final String ARB_COMPLEX_POLYNOMIAL = Type.getInternalName(ComplexPolynomial.class);
   private static final String ARB_ONE                = "arb_one";
@@ -78,14 +74,12 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
   private static final String ARB_POLY_GET_COEFF_ARB = "arb_poly_get_coeff_arb";
   private static final String ARB_POLY_INIT          = "arb_poly_init";
   private static final String ARB_POLY_SET_COEFF_ARB = "arb_poly_set_coeff_arb";
-  private static final String ARB_POLY_SET_LENGTH    = "arb_poly_set_length";
   private static final String ARB_REAL               = Type.getInternalName(Real.class);
   private static final String ARB_REAL_POLYNOMIAL    = Type.getInternalName(RealPolynomial.class);
   private static final String ARG_POLY               = "arg";
   private static final String INIT                   = "<init>";
   private static final String RESULT_POLY            = "resultPoly";
   private static final String VOID_NOARG_SIGNATURE   = "()V";
-  private static final String VOID_INT_SIGNATURE     = "(I)V";
 
   // ============================================================================
   // Instance Variables
@@ -167,7 +161,7 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
    * 2. Register intermediate polynomial variables
    * 3. Initialize result polynomial
    * 4. Initialize argument polynomial
-   * 5. Set polynomial lengths to accommodate derivatives
+   * 5. Fit polynomial lengths to accommodate derivatives
    * 6. Construct h(x) = t + x:
    *    - h[0] = t (constant term)
    *    - h[1] = 1 (linear coefficient)
@@ -276,7 +270,7 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
    * Allocates a new local variable slot and stores an output scalar variable in it.
    * Also loads it onto the stack for subsequent operations.
    *
-   * @param mv        the MethodVisitor for bytecode generation
+   * @param mv         the MethodVisitor for bytecode generation
    * @param scalarType the scalar type (Real or Complex)
    * @return the local variable slot index where the output scalar is stored
    */
@@ -295,8 +289,7 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
    * 1. Create new polynomial
    * 2. Call poly_init() to initialize internal structure
    * 3. Call poly_fit_length() to allocate sufficient storage
-   * 4. Call poly_set_length() to set logical length for coefficients
-   * 5. Store in local variable slot
+   * 4. Store in local variable slot
    *
    * @param mv               the MethodVisitor for bytecode generation
    * @param isComplex        whether to use Complex (true) or Real (false) polynomial
@@ -330,16 +323,6 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
     invokeStaticMethod(mv,
                        arblib.class,
                        isComplex ? ACB_POLY_FIT_LENGTH : ARB_POLY_FIT_LENGTH,
-                       Void.class,
-                       polynomialClass,
-                       int.class);
-    
-    // Set polynomial length
-    mv.visitVarInsn(Opcodes.ALOAD, polySlot);
-    pushInt(mv, length);
-    invokeStaticMethod(mv,
-                       arblib.class,
-                       isComplex ? ACB_POLY_SET_LENGTH : ARB_POLY_SET_LENGTH,
                        Void.class,
                        polynomialClass,
                        int.class);
