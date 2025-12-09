@@ -1,0 +1,339 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{geometry,amsmath,latexsym}
+\geometry{letterpaper}
+
+%%%%%%%%%% Start TeXmacs macros
+\catcode`\<=\active \def<{
+\fontencoding{T1}\selectfont\symbol{60}\fontencoding{\encodingdefault}}
+\catcode`\>=\active \def>{
+\fontencoding{T1}\selectfont\symbol{62}\fontencoding{\encodingdefault}}
+\newcommand{\tmaffiliation}[1]{\\ #1}
+\newcommand{\tmop}[1]{\ensuremath{\operatorname{#1}}}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
+
+%
+
+
+\begin{document}
+
+\title{A Bijective Modification of the Riemann-Siegel $\tmop{Theta}$ Function}
+
+\author{
+  Stephen Crowley <Stephencrowley214@gmail.com>
+  \tmaffiliation{August 9, 2025}
+}
+
+\maketitle
+
+\begin{abstract}
+  A monotonically increasing version $\vartheta^+ (t)$ of the Riemann--Siegel
+  theta function $\vartheta (t)$ is constructed by modifying through
+  reflection about its unique nonzero critical point. {\cdot}
+\end{abstract}
+
+{\tableofcontents}
+
+\section{The Riemann--Siegel Theta Function}
+
+\begin{definition}
+  [Riemann--Siegel Theta Function]\label{def:theta} The Riemann--Siegel theta
+  function is defined as:
+  \begin{equation}
+    \vartheta (t) = \arg \Gamma \hspace{-0.17em} \left( \frac{1}{4} +
+    \frac{it}{2} \right) - \frac{t}{2} \log \pi
+  \end{equation}
+  where $\Gamma$ is the gamma function and arg denotes the principal argument,
+  taken continuously along the path.
+\end{definition}
+
+\begin{definition}
+  [Digamma and Trigamma Functions]\label{def:psi} The digamma function
+  $\psi^{(0)} (z)$ and trigamma function $\psi^{(1)} (z)$ are defined by:
+  
+  \begin{align}
+    \psi^{(0)} (z) & = \frac{d}{dz} \log \Gamma (z) = \frac{\Gamma'
+    (z)}{\Gamma (z)} \quad \text{{\cite{DLMF5.2.1}}} \\
+    \psi^{(1)} (z) & = \frac{d}{dz} \psi^{(0)} (z) = \sum_{n = 0}^{\infty}
+    \frac{1}{(n + z)^2} \quad \text{{\cite{DLMF5.4.2}}} 
+  \end{align}
+  
+  for $\Re (z) > 0$.
+\end{definition}
+
+\begin{proposition}
+  [Derivative Properties]\label{prop:derivative} The derivative of the
+  Riemann--Siegel theta function is:
+  \begin{equation}
+    \vartheta' (t) = \frac{1}{2} \Im \hspace{-0.17em} \left[ \psi^{(0)} 
+    \hspace{-0.17em} \left( \frac{1}{4} + \frac{it}{2} \right) \right] -
+    \frac{\log \pi}{2}
+  \end{equation}
+\end{proposition}
+
+\begin{proof}
+  Let $w (t) = \frac{1}{4} + \frac{it}{2}$. Along the curve $t \mapsto w (t)$
+  the principal argument of $\Gamma$ can be chosen continuously, so
+  \begin{equation}
+    \frac{d}{dt} \arg \Gamma (w (t)) = \Im \hspace{-0.17em} \left(
+    \frac{d}{dt} \log \Gamma (w (t)) \right) = \Im \hspace{-0.17em} \left(
+    \psi^{(0)} (w (t)) \hspace{0.17em} w' (t) \right)
+  \end{equation}
+  Since $w' (t) = i / 2$, this derivative equals $\frac{1}{2} \Im \psi^{(0)}
+  (w (t))$. Differentiating $- \frac{t}{2} \log \pi$ gives $- \frac{\log
+  \pi}{2}$.
+\end{proof}
+
+\begin{theorem}
+  [Limit at the Origin]\label{thm:limit}
+  \begin{equation}
+    \lim_{t \to 0^+} \Im \hspace{-0.17em} \left[ \psi^{(0)}  \hspace{-0.17em}
+    \left( \frac{1}{4} + \frac{it}{2} \right) \right] = 0
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  Using the integral representation {\cite{AbramowitzStegun6.3.1}} and
+  dominated convergence (or by analyticity and Taylor expansion in $t$), the
+  imaginary part vanishes as $t \to 0^+$.
+\end{proof}
+
+\begin{theorem}
+  [Monotonicity of the Digamma Imaginary Part]\label{thm:monotonicity} For
+  fixed $\sigma > 0$, the function $t \mapsto \Im [\psi^{(0)} (\sigma + it)]$
+  is strictly increasing for $t > 0$.
+\end{theorem}
+
+\begin{proof}
+  Differentiating with respect to $t$ gives
+  \begin{equation}
+    \frac{\partial}{\partial t} \Im [\psi^{(0)} (\sigma + it)] = \Re
+    \hspace{-0.17em} \left[ \frac{\partial}{\partial t} \psi^{(0)} (\sigma +
+    it) \right] = \Re \hspace{-0.17em} \left[ i \hspace{0.17em} \psi^{(1)}
+    (\sigma + it) \right] = - \hspace{0.17em} \Im \hspace{-0.17em} [\psi^{(1)}
+    (\sigma + it)]
+  \end{equation}
+  Using the absolutely convergent series {\cite{DLMF5.4.2}}
+  \begin{equation}
+    \psi^{(1)} (z) = \sum_{n = 0}^{\infty} \frac{1}{(n + z)^2}, \quad \Re z >
+    0
+  \end{equation}
+  and setting $z = \sigma + it$, we have
+  \begin{equation}
+    \frac{1}{(n + \sigma + it)^2} = \frac{(n + \sigma)^2 - t^2 - 2 i (n +
+    \sigma) t}{((n + \sigma)^2 + t^2)^2}
+  \end{equation}
+  Thus
+  \begin{equation}
+    \Im \hspace{-0.17em} [\psi^{(1)} (\sigma + it)] = \sum_{n = 0}^{\infty}
+    \frac{- \hspace{0.17em} 2 (n + \sigma) t}{((n + \sigma)^2 + t^2)^2} < 0
+  \end{equation}
+  for $\sigma > 0$, $t > 0$. Hence $\frac{\partial}{\partial t} \Im
+  [\psi^{(0)} (\sigma + it)] > 0$.
+\end{proof}
+
+\begin{theorem}
+  [Asymptotic Limit]\label{thm:growth}
+  \begin{equation}
+    \lim_{t \to \infty} \Im \hspace{-0.17em} \left[ \psi^{(0)} 
+    \hspace{-0.17em} \left( \frac{1}{4} + \frac{it}{2} \right) \right] =
+    \frac{\pi}{2}
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  From the asymptotic expansion {\cite{DLMF5.11.1}}, $\psi^{(0)} (z) = \log z
+  - \frac{1}{2 z} + O (|z|^{- 2})$ as $|z| \to \infty$ with $| \arg z| < \pi$.
+  Writing $z = \frac{1}{4} + \frac{it}{2}$, we have $\Im \log z = \arg z \to
+  \frac{\pi}{2}$, and $\Im (- 1 / (2 z)) = O (1 / t)$, so the limit is $\pi /
+  2$.
+\end{proof}
+
+\begin{theorem}
+  [Unique Critical Point]\label{thm:critical} There exists a unique $a > 0$
+  such that $\vartheta' (a) = 0$, equivalently
+  \begin{equation}
+    \Im \hspace{-0.17em} \left[ \psi^{(0)}  \hspace{-0.17em} \left(
+    \frac{1}{4} + \frac{ia}{2} \right) \right] = \log \pi
+  \end{equation}
+  Moreover:
+  \begin{itemize}
+    \item $\vartheta' (t) < 0$ for $t \in (0, a)$
+    
+    \item $\vartheta' (t) = 0$ at $t = a$
+    
+    \item $\vartheta' (t) > 0$ for $t > a$
+  \end{itemize}
+\end{theorem}
+
+\begin{proof}
+  By Theorems \ref{thm:limit}, \ref{thm:monotonicity}, and \ref{thm:growth},
+  the function $t \mapsto \Im [\psi^{(0)} (1 / 4 + it / 2)]$ is continuous,
+  strictly increasing from $0$ to $\pi / 2$, and therefore attains the value
+  $\log \pi$ at a unique $a > 0$. The sign changes for $\vartheta' (t)$ follow
+  from Proposition \ref{prop:derivative}.
+\end{proof}
+
+\section{Monotonization Construction}
+
+\begin{definition}
+  [Monotonized Theta Function]\label{def:monotonized} Define the monotonized
+  Riemann--Siegel theta function
+  \begin{equation}
+    \vartheta^+ (t) = \left\{\begin{array}{ll}
+      2 \vartheta (a) - \vartheta (t) & t \in [0, a]\\
+      \vartheta (t) & t > a
+    \end{array}\right.
+  \end{equation}
+  where $a$ is the unique critical point from Theorem \ref{thm:critical}.
+\end{definition}
+
+\begin{theorem}
+  [Monotonicity of $\vartheta^+$]\label{thm:mono_construction} The function
+  $\vartheta^+ (t)$ is nondecreasing on $[0, \infty)$ and strictly increasing
+  on $[0, \infty) \setminus \{a\}$:
+  \begin{equation}
+    \frac{d}{dt} \vartheta^+ (t) = \left\{\begin{array}{ll}
+      - \vartheta' (t) > 0, & t \in (0, a)\\
+      0, & t = a\\
+      \vartheta' (t) > 0 & t > a
+    \end{array}\right.
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  Immediate from the definition and the sign of $\vartheta' (t)$.
+\end{proof}
+
+\begin{proposition}
+  [Continuity and Differentiability]\label{prop:continuity} The function
+  $\vartheta^+ (t)$ is continuous and differentiable everywhere, including at
+  $t = a$.
+\end{proposition}
+
+\begin{proof}
+  Continuity at $a$:
+  \begin{equation}
+    \lim_{t \to a^-} \vartheta^+ (t) = 2 \vartheta (a) - \vartheta (a) =
+    \vartheta (a) = \lim_{t \to a^+} \vartheta^+ (t) = \vartheta^+ (a)
+  \end{equation}
+  Differentiability at $a$:
+  \[ \lim_{t \to a^-}  \frac{d}{dt} \vartheta^+ (t) = - \vartheta' (a) = 0 =
+     \lim_{t \to a^+}  \frac{d}{dt} \vartheta^+ (t) \]
+\end{proof}
+
+\section{Phase Information Preservation}
+
+\begin{definition}
+  [Phase Representation]\label{def:phase} On the critical line,
+  \begin{equation}
+    \zeta \hspace{-0.17em} \left( \frac{1}{2} + it \right) = e^{- i \vartheta
+    (t)}  \hspace{0.17em} Z (t)
+  \end{equation}
+  where $Z (t)$ is real-valued (the Hardy $Z$-function).
+\end{definition}
+
+\begin{theorem}
+  [Phase Preservation]\label{thm:phase_preservation} Define
+  \begin{equation}
+    \tilde{Z} (t) = e^{i \vartheta^+ (t)}  \hspace{0.17em} \zeta
+    \hspace{-0.17em} \left( \frac{1}{2} + it \right)
+  \end{equation}
+  Then
+  \begin{equation}
+    \tilde{Z} (t) = \left\{\begin{array}{ll}
+      e^{2 i \vartheta (a)}  \hspace{0.17em} Z (t), & t \in [0, a],\\
+      Z (t), & t > a.
+    \end{array}\right.
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  For $t > a$, $\vartheta^+ (t) = \vartheta (t)$, so $\tilde{Z} (t) = Z (t)$.
+  For $t \in [0, a]$,
+  \[ \tilde{Z} (t) = e^{i (2 \vartheta (a) - \vartheta (t))} \zeta
+     \hspace{-0.17em} \left( \tfrac{1}{2} + it \right) = e^{2 i \vartheta (a)}
+     \hspace{0.17em} e^{- i \vartheta (t)} \zeta \hspace{-0.17em} \left(
+     \tfrac{1}{2} + it \right) = e^{2 i \vartheta (a)}  \hspace{0.17em} Z (t)
+  \]
+\end{proof}
+
+\begin{corollary}
+  [Zero Preservation]\label{cor:zeros} The zeros of $\zeta \hspace{-0.17em}
+  \left( \frac{1}{2} + it \right)$ correspond exactly to the zeros of both $Z
+  (t)$ and $\tilde{Z} (t)$ for $t > 0$.
+\end{corollary}
+
+\begin{proof}
+  Multiplication by nonzero phase factors preserves zeros.
+\end{proof}
+
+\begin{proposition}
+  [Bijectivity]\label{prop:bijective} The function $\vartheta^+ (t) : [0,
+  \infty) \to [\vartheta^+ (0), \infty)$ is bijective.
+\end{proposition}
+
+\begin{proof}
+  Injectivity: By Theorem \ref{thm:mono_construction}, $\vartheta^+$ is
+  strictly increasing except at $t = a$ where the derivative is $0$ but the
+  function increases through $a$; hence injective. Surjectivity: $\vartheta^+$
+  is continuous and increases without bound as $t \to \infty$ (matching
+  $\vartheta$ asymptotically), so by the Intermediate Value Theorem its range
+  is $[\vartheta^+ (0), \infty)$.
+\end{proof}
+
+\begin{theorem}
+  [Modulating Function Criteria]\label{thm:modulating} The function
+  $\vartheta^+ (t)$ satisfies:
+  \begin{enumerate}
+    \item Piecewise $C^1$ with piecewise continuous first derivative and
+    matching at $t = a$,
+    
+    \item Monotonically nondecreasing with $\frac{d}{dt} \vartheta^+ (t) \ge
+    0$ and equality only at $t = a$,
+    
+    \item Bijective with $\lim_{t \to \infty} \vartheta^+ (t) = \infty$.
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+  Immediate from Propositions \ref{prop:continuity}, \ref{prop:bijective} and
+  Theorem \ref{thm:mono_construction}.
+\end{proof}
+
+\section{Conclusion}
+
+The monotonized Riemann--Siegel theta function $\vartheta^+ (t)$ constructed
+through geometric reflection about its unique critical point provides a
+bijective, monotonically increasing transformation that preserves all
+essential phase information of the original theta function. This construction
+maintains exact correspondence with zeros of the Riemann zeta function while
+enabling applications requiring monotonic phase functions.
+
+\begin{thebibliography}{99}
+  {\bibitem{DLMF5.2.1}}NIST Digital Library of Mathematical Functions. Section
+  5.2.1: Definitions.
+  
+  {\bibitem{DLMF5.4.2}}NIST Digital Library of Mathematical Functions. Section
+  5.4.2: Series Representations.
+  
+  {\bibitem{DLMF5.11.1}}NIST Digital Library of Mathematical Functions.
+  Section 5.11.1: Asymptotic Expansions.
+  
+  {\bibitem{AbramowitzStegun6.3.1}}Abramowitz, M. and Stegun, I. A. (1964).
+  Handbook of Mathematical Functions. National Bureau of Standards. Chapter 6,
+  Equation 6.3.1.
+  
+  {\bibitem{Elezovic1999}}Elezovi{\'c}, N., Giordano, C., and Pe{\v
+  c}ari{\'c}, J. (1999). The best bounds in Gautschi's inequality.
+  Mathematical Inequalities \& Applications, 2(2), 239--252.
+\end{thebibliography}
+
+\
+
+\end{document}

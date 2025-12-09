@@ -1,0 +1,5 @@
+var context = new Context(  );
+var δ = RealFunction.parse("δ(x)",context);
+var H = RealFunction.parse("H:int(δ(x),x)",context)
+var H2 = RealFunction.parse("H2:int(H(x),x)",context);
+var H3 = RealFunction.parse("H3:int(H2(x),x)",context);

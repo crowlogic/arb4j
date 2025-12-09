@@ -1,0 +1,26 @@
+FunctionPlotter.darkStyle=true;
+var context = new Context();
+var λ = Real.named("λ").one();
+context.registerVariable(λ);
+RealFunction.express("θ","t➔im(lnΓ(1/4+I*t/2))-(log(π)/2)*t",context);
+var z = RealToComplexFunction.express("z","t➔ζ(1/2+I*t)",context);
+var f = RealToComplexFunction.express("f:t➔exp(I*λ*θ(t))",context);
+var g = RealToComplexFunction.express("g:t➔exp(I*(1-λ)*θ(t))",context);
+var Z = RealFunction.express("Z(t)");
+var Ztoo = RealToComplexFunction.express("Ztoo:t➔z(t)*f(t)",context);
+var R = RealToComplexFunction.express("R:t➔z(t)*g(t)",context);
+var p = plot( -5,120, 100*125, Z, R.realPart(), R.imagPart()  );
+ λ.neg();
+var pneg = plot( -5,120, 100*125, Z, R.realPart(), R.imagPart()  );
+ λ.zero();
+var pzero = plot( -5,120, 100*125, Z, R.realPart(), R.imagPart()  );
+System.out.println(context);
+System.out.println(context.functions);
+FunctionPlotter.darkStyle=true;
+var Q = RealFunction.express("Z(t)/sqrt(|diff(im(lnΓ(1/4+I*t/2))-(log(π)/2)*t,t)|)",context);
+plot(qs)
+plot(qs)
+plot(qs)
+var q = Q.quantize(Math.PI,10000,250000,false,128);
+var qs=q.structure(500);
+plot(qs)

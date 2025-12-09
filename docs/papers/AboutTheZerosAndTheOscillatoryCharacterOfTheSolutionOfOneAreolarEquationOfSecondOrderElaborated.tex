@@ -1,0 +1,643 @@
+\documentclass[12pt,oneside]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{lmodern}
+
+\geometry{margin=1.25in}
+\onehalfspacing
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{Areolar Differential Equations and Complex-Conjugate Analysis: \\
+An Exposition on Zeros and Oscillatory Solutions}
+
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This document provides a rigorous mathematical investigation into the spectral and oscillatory properties of solutions to second-order linear areolar differential equations with constant coefficients. We bridge classical oscillation theory in real differential equations with the domain of complex-conjugate analysis, revealing fundamental structural correspondences while exposing the distinctive character that emerges when solutions are permitted to vary independently with respect to both $z$ and $\overline{z}$. The work synthesizes the Kolosov-Polozhii operational calculus, characteristic root analysis, and the topology of zero sets within the non-holomorphic complex plane.
+\end{abstract}
+
+\section{Introduction: The Areolar Derivative Framework}
+
+The entire construction rests upon the operational calculus of areolar (or Cauchy-Riemann conjugate) derivatives, introduced by G.V.\ Kolosov in 1909 as a tool for solving problems in elasticity theory. Rather than restricting analysis to holomorphic functions (which satisfy the Cauchy-Riemann equations), the areolar derivative formalism permits the independent treatment of $z$ and $\overline{z}$ as separate variables within a unified operator algebra.
+
+For a complex-valued function $W(z, \overline{z}) = u(x,y) + i\nu(x,y)$, the areolar derivatives are defined as:
+
+\begin{equation}
+\hat{\frac{\partial W}{\partial z}} = \frac{1}{2}\left[\frac{\partial u}{\partial x} + \frac{\partial \nu}{\partial y} + i\left(\frac{\partial \nu}{\partial x} - \frac{\partial u}{\partial y}\right)\right]
+\end{equation}
+
+\begin{equation}
+\hat{\frac{\partial W}{\partial \overline{z}}} = \frac{1}{2}\left[\frac{\partial u}{\partial x} - \frac{\partial \nu}{\partial y} + i\left(\frac{\partial \nu}{\partial x} + \frac{\partial u}{\partial y}\right)\right]
+\end{equation}
+
+This formalism admits a crucial observation: when $W$ is holomorphic (satisfying Cauchy-Riemann), we have $\hat{\partial W}/\partial \overline{z} = 0$, recovering the classical theory as a special case. Conversely, non-holomorphic functions enter as irreducible degrees of freedom. The second areolar derivative $\hat{\partial^2 W}/\partial \overline{z}^2$ is then constructed as the composition of this operator with itself.
+
+\begin{remark}
+The operators $\hat{\partial}/\partial z$ and $\hat{\partial}/\partial \overline{z}$ are known as Wirtinger derivatives in modern literature and form the foundation of complex analysis in multiple complex variables.
+\end{remark}
+
+\section{The Central Problem: Oscillation Theory in the Complex Domain}
+
+The classical theory of oscillatory differential equations in $\mathbb{R}$ concerns equations of the form:
+
+\begin{equation}
+\frac{d^2x}{dt^2} + a(t)x = 0
+\end{equation}
+
+Oscillation is understood in the elementary sense: a solution undergoes repeated sign changes. The oscillatory character emerges when the coefficient function $a(t)$ satisfies positivity and sufficient growth conditions (specifically, $\int_0^\infty a(t)\,dt = \infty$).
+
+Brsakoska poses the fundamental question: does an analogous notion of oscillation exist for complex-conjugate differential equations? The equation under investigation is:
+
+\begin{equation}
+\hat{\frac{d^2W}{d\overline{z}^2}} + (\alpha + i\beta)W = 0
+\end{equation}
+
+where $K = \alpha + i\beta$ is a complex constant and $W = W(z, \overline{z})$ is the unknown complex-valued function of two independent complex variables.
+
+The difficulty is immediate: oscillation for complex functions cannot mean sign change in the elementary sense---a complex number possesses no ordering. The paper transcends this obstacle through a subtle reinterpretation: oscillatory behavior corresponds to the existence of isolated zeros of $W$, where the topology of the zero set reflects the underlying harmonic structure.
+
+\section{Resolution of the Characteristic Equation and Construction of Particular Solutions}
+
+Brsakoska seeks particular solutions of the form $W = e^{r\overline{z}}$, where $r$ is to be determined. Computing the areolar derivatives:
+
+\begin{equation}
+\hat{\frac{dW}{d\overline{z}}} = re^{r\overline{z}}, \quad \hat{\frac{d^2W}{d\overline{z}^2}} = r^2e^{r\overline{z}}
+\end{equation}
+
+Substitution into the differential equation yields the characteristic equation:
+
+\begin{equation}
+r^2 + (\alpha + i\beta) = 0
+\end{equation}
+
+whence:
+
+\begin{equation}
+r = (-\alpha - i\beta)^{1/2}
+\end{equation}
+
+This square root admits two values in $\mathbb{C}$. Writing $-\alpha - i\beta = \rho e^{i\theta}$ with $\rho = \sqrt{\alpha^2 + \beta^2}$ and $\theta = \arctan(\beta/\alpha)$, the two roots are:
+
+\begin{equation}
+r_1 = \sqrt{\frac{\sqrt{\alpha^2+\beta^2} + \alpha}{2}} + i\sqrt{\frac{\sqrt{\alpha^2+\beta^2} - \alpha}{2}}
+\end{equation}
+
+\begin{equation}
+r_2 = -\sqrt{\frac{\sqrt{\alpha^2+\beta^2} + \alpha}{2}} - i\sqrt{\frac{\sqrt{\alpha^2+\beta^2} - \alpha}{2}}
+\end{equation}
+
+Note the crucial relation: $r_2 = -r_1$, and $r_1^2 = r_2^2 = -\alpha - i\beta$.
+
+The two particular solutions are $W_1 = e^{r_1\overline{z}}$ and $W_2 = e^{r_2\overline{z}}$.
+
+\section{The General Solution and Generalized Constants}
+
+\begin{theorem}
+The general solution of the areolar equation 
+\[
+\hat{\frac{d^2W}{d\overline{z}^2}} + (\alpha + i\beta)W = 0
+\]
+where $\alpha + i\beta$ is a constant with positive real and imaginary part, is given by
+\[
+W(z, \overline{z}) = C_1(z)e^{r_1\overline{z}} + C_2(z)e^{r_2\overline{z}}
+\]
+where $C_1(z)$ and $C_2(z)$ are arbitrary analytic functions of the single complex variable $z$, in the role of generalized constants.
+\end{theorem}
+
+\begin{proof}
+The particular integrals $W_1$ and $W_2$ according to the exponential ansatz satisfy the equation. We verify that with elimination of $C_1(z)$ and $C_2(z)$ from the general form, we recover the original equation and only that equation.
+
+Computing derivatives:
+\begin{align}
+\hat{\frac{dW}{d\overline{z}}} &= C_1(z)r_1 e^{r_1\overline{z}} + C_2(z)r_2 e^{r_2\overline{z}} \\
+\hat{\frac{d^2W}{d\overline{z}^2}} &= C_1(z)r_1^2 e^{r_1\overline{z}} + C_2(z)r_2^2 e^{r_2\overline{z}}
+\end{align}
+
+Since $r_1^2 = r_2^2 = -\alpha - i\beta$ by construction, we obtain:
+\[
+\hat{\frac{d^2W}{d\overline{z}^2}} = (-\alpha - i\beta)\left[C_1(z)e^{r_1\overline{z}} + C_2(z)e^{r_2\overline{z}}\right] = (-\alpha - i\beta)W
+\]
+
+Rearranging:
+\[
+\hat{\frac{d^2W}{d\overline{z}^2}} + (\alpha + i\beta)W = 0
+\]
+
+Thus the general form satisfies the equation. Conversely, any solution must be expressible in this form by linear independence of the exponential terms.
+\end{proof}
+
+\begin{remark}
+This structure reveals a profound distinction from ordinary differential equations. In the standard case, constants are scalars (determined by two initial conditions); here, they are analytic functions of $z$. This reflects the non-locality of the problem: the solution at a point depends on the choice of holomorphic structure throughout a region, not merely on pointwise initial conditions. The dimension of the solution space is infinite-dimensional, indexed by pairs of entire or meromorphic functions.
+\end{remark}
+
+\section{The Nature of Zeros: Isolated and Countable}
+
+\begin{theorem}
+The areolar equation from second order
+\[
+\hat{\frac{d^2W}{d\overline{z}^2}} + KW = 0
+\]
+where $W = W(z, \overline{z})$ and $K$ is an arbitrary complex constant, can have only isolated zeroes, which depend from the analytic functions $C_1(z)$ and $C_2(z)$, in the form of generalized constants and that zeroes are either common zeroes of $C_1(z)$ and $C_2(z)$, or they are countably many zeroes of the complex combination
+\[
+C_1(z)e^{r_1\overline{z}} + C_2(z)e^{r_2\overline{z}} = 0.
+\]
+\end{theorem}
+
+\begin{proof}
+Setting $W = 0$ in the general solution:
+\[
+C_1(z)e^{r_1\overline{z}} + C_2(z)e^{r_2\overline{z}} = 0
+\]
+
+Rearranging:
+\[
+C_2(z) = -C_1(z)e^{(r_1-r_2)\overline{z}}
+\]
+
+Since $r_1 - r_2 = 2\lambda$ where $\lambda = \sqrt{\frac{\sqrt{\alpha^2+\beta^2} + \alpha}{2}}$ is real and positive (for $\alpha, \beta > 0$), we have:
+\[
+C_2(z) = -C_1(z)e^{2\lambda\overline{z}}
+\]
+
+The decisive observation: since $C_1(z)$ and $C_2(z)$ are analytic functions of the single complex variable $z$, and since $\overline{z}$ is non-analytic in $z$, the equation can be satisfied only when:
+
+\begin{enumerate}
+\item $C_1(z) = 0$ (which by continuity implies $C_2(z) = 0$), or
+\item At isolated points where the transcendental equation $C_1(z)e^{2\lambda\overline{z}} + C_2(z) = 0$ is satisfied.
+\end{enumerate}
+
+An analytic function possesses only isolated zeros (by the open mapping theorem and the uniqueness principle for holomorphic functions). Therefore, the solution $W$ has zeros that are either:
+\begin{enumerate}
+\item Common zeros of $C_1(z)$ and $C_2(z)$ (isolated by analyticity), or
+\item Points where the nonlinear combination $C_1(z)e^{2\lambda\overline{z}} + C_2(z) = 0$ holds (countably many, generically forming discrete point sets).
+\end{enumerate}
+
+The zero set cannot form curves or regions except in degenerate cases where special algebraic relationships between the coefficient functions occur, violating the genericity assumption.
+\end{proof}
+
+\begin{remark}
+This contrasts sharply with real differential equations, where generic solutions are either everywhere nonzero or possess isolated zeros depending on initial conditions. Here, the non-holomorphic structure forces a fundamentally discrete zero set. The topological rigidity of the zero set reflects the incompatibility between the analytic structure of the generalized constants and the anti-analytic structure introduced by dependence on $\overline{z}$.
+\end{remark}
+
+\section{Example 1: The Positive Real Case}
+
+Consider the equation:
+\[
+\hat{\frac{d^2W}{d\overline{z}^2}} + W = 0
+\]
+
+Here $\alpha = 1, \beta = 0$, yielding $\rho = 1$ and $\theta = \pi$.
+
+The characteristic roots are:
+\[
+r_1 = 1^{1/2}\left[\cos(\pi/2) + i\sin(\pi/2)\right] = i
+\]
+\[
+r_2 = 1^{1/2}\left[\cos(\pi/2 + \pi) + i\sin(\pi/2 + \pi)\right] = -i
+\]
+
+The general solution is:
+\[
+W = C_1(z)e^{i\overline{z}} + C_2(z)e^{-i\overline{z}}
+\]
+
+Taking $C_1(z) = C_2(z) = 1$ (the simplest case):
+\[
+W_p = e^{i\overline{z}} + e^{-i\overline{z}} = 2\cos(\overline{z}) = 2\cos(x-iy)
+\]
+
+Expanding using complex trigonometric identities:
+\[
+\cos(x-iy) = \cos x \cosh y + i\sin x \sinh y
+\]
+
+Thus:
+\[
+u(x,y) = \cos x \cosh y, \quad v(x,y) = \sin x \sinh y
+\]
+
+The zeros satisfy $u = 0$ and $v = 0$ simultaneously. Since $\cosh y \neq 0$ for all real $y$, we require $\cos x = 0$, giving $x = (2k+1)\pi/2$. Since $\sinh y = 0$ only when $y = 0$, the zeros form a countably infinite discrete set:
+\[
+\left\{\left((2k+1)\frac{\pi}{2}, 0\right) : k \in \mathbb{Z}\right\}
+\]
+
+This is the analog of oscillatory behavior in the complex setting: the solution exhibits oscillatory character in both real and imaginary parts, and the zero set captures this oscillation geometrically as a countable collection of isolated points. 
+
+\textbf{Critical observation:} this case mirrors the classical $y'' + y = 0$ in that the sign of the coefficient is positive.
+
+\section{Example 2: The Negative Real Case}
+
+Consider the equation:
+\[
+\hat{\frac{d^2W}{d\overline{z}^2}} - W = 0
+\]
+
+Here $\alpha = -1, \beta = 0$, so $-\alpha - i\beta = 1$.
+
+The characteristic roots are:
+\[
+r_1 = 1^{1/2}\left[\cos(0) + i\sin(0)\right] = 1
+\]
+\[
+r_2 = 1^{1/2}\left[\cos(\pi) + i\sin(\pi)\right] = -1
+\]
+
+The general solution is:
+\[
+W = C_1(z)e^{\overline{z}} + C_2(z)e^{-\overline{z}}
+\]
+
+With $C_1(z) = C_2(z) = 1$:
+\[
+W_p = e^{\overline{z}} + e^{-\overline{z}} = 2\cosh(\overline{z}) = 2\cosh(x-iy)
+\]
+
+Expanding:
+\[
+\cosh(x-iy) = \cosh x \cos y - i\sinh x \sin y
+\]
+
+Thus:
+\[
+u(x,y) = \cosh x \cos y, \quad v(x,y) = -\sinh x \sin y
+\]
+
+Zeros require $u = 0$ and $v = 0$. Since $\cosh x > 0$ for all real $x$, we need $\cos y = 0$, giving $y = (2k+1)\pi/2$. Since $\sinh x = 0$ only when $x = 0$, the zeros form the set:
+\[
+\left\{\left(0, (2k+1)\frac{\pi}{2}\right) : k \in \mathbb{Z}\right\}
+\]
+
+Again a countable collection, now aligned on the imaginary axis.
+
+\textbf{Brsakoska's critical observation:} Despite the sign change from $+1$ to $-1$, both cases exhibit oscillatory character and countable zero sets. The dichotomy in real differential equations---where $y'' + y = 0$ oscillates while $y'' - y = 0$ exhibits exponential growth---dissolves in the areolar context.
+
+\section{Example 3: The Purely Imaginary Case}
+
+For the equation:
+\[
+\hat{\frac{d^2W}{d\overline{z}^2}} + iW = 0
+\]
+
+we have $\alpha = 0, \beta = 1$, so $\rho = 1$ and $\arg(-i) = -\pi/2 = 3\pi/2$.
+
+The characteristic roots are:
+\[
+r_1 = 1^{1/2}\left[\cos(3\pi/4) + i\sin(3\pi/4)\right] = -\frac{1}{\sqrt{2}} + i\frac{1}{\sqrt{2}} = \frac{1+i}{\sqrt{2}}
+\]
+\[
+r_2 = -\frac{1+i}{\sqrt{2}}
+\]
+
+The general solution is:
+\[
+W = C_1(z)e^{\frac{1+i}{\sqrt{2}}\overline{z}} + C_2(z)e^{-\frac{1+i}{\sqrt{2}}\overline{z}}
+\]
+
+For suitable choices of $C_1$ and $C_2$, the zero set again forms countable isolated points, typically (for generic parameters) along coordinate lines in the $(x,y)$ plane.
+
+The exponential factors decompose as:
+\[
+\exp\left(\frac{1+i}{\sqrt{2}}(x-iy)\right) = \exp\left(\frac{x}{\sqrt{2}} + \frac{y}{\sqrt{2}}\right) \cdot \exp\left(i\left(\frac{x}{\sqrt{2}} - \frac{y}{\sqrt{2}}\right)\right)
+\]
+
+This combines:
+\begin{enumerate}
+\item Exponential growth in the direction of increasing $x + y$
+\item Oscillation in the direction perpendicular to $x = y$
+\end{enumerate}
+
+\section{The Profound Structural Insight: Sign Independence of Oscillatority}
+
+The paper's deepest contribution lies in recognizing that \textbf{oscillatory behavior in the areolar setting is not destroyed by sign changes in the coefficient}---a stark departure from real ODEs. The reason is subtle: oscillation is no longer about monotonicity and sign flipping, but about the geometric distribution of zeros in the complex plane.
+
+The non-holomorphic character of $W$ as a function of $\overline{z}$ introduces a \textbf{fundamental rigidity}. Solutions cannot smoothly vary without respecting the coupling between the $C_1(z)e^{r_1\overline{z}}$ and $C_2(z)e^{r_2\overline{z}}$ terms. Even when one term (say, $e^{\overline{z}}$ in Example 2) would normally be considered non-oscillatory in the real sense, the algebraic structure forces the appearance of discrete zeros through the interplay of both components.
+
+In Examples 1 and 2:
+\begin{enumerate}
+\item Example 1 ($+$ sign): zeros on the \textbf{real axis}
+\item Example 2 ($-$ sign): zeros on the \textbf{imaginary axis}
+\end{enumerate}
+
+The sign change merely \textbf{rotates} the zero set by $90°$. It does \textbf{NOT} affect whether the solution oscillates or not. Both solutions have oscillatory components in their real and imaginary parts.
+
+\textbf{Conclusion on signs:} The sign of $K$ does not determine oscillatority. Rather, it determines \textbf{WHERE} the zero set lies geometrically in the complex plane.
+
+\section{Mathematical Underpinnings: Analyticity and the Cauchy-Riemann Structure}
+
+The constraint that $C_1(z)$ and $C_2(z)$ are analytic functions of $z$ alone imposes severe restrictions on the solution manifold. An analytic function $f(z) = p(x,y) + iq(x,y)$ satisfies:
+
+\begin{equation}
+\frac{\partial p}{\partial x} = \frac{\partial q}{\partial y}, \quad \frac{\partial p}{\partial y} = -\frac{\partial q}{\partial x}
+\end{equation}
+
+These are the Cauchy-Riemann equations. Any function violating these cannot be analytic, and any solution involving such a function immediately introduces non-holomorphic character.
+
+The equation $C_2(z) = -C_1(z)e^{2\lambda\overline{z}}$ presents precisely this situation: the right side depends on $\overline{z}$, which explicitly violates Cauchy-Riemann when composed with any non-constant function. This incompatibility forces isolation of the zero set.
+
+\section{Codimension and Topology of the Zero Set}
+
+For a general function $W = u + iv$ in $\mathbb{R}^2$, the condition $W = 0$ requires:
+\[
+u(x,y) = 0 \quad \text{AND} \quad v(x,y) = 0
+\]
+
+This is a \textbf{codimension-2} condition: two independent equations in two variables generically yield a 0-dimensional solution set (isolated points).
+
+By contrast, a single equation $u(x,y) = 0$ defines a codimension-1 set (typically a curve).
+
+For areolar solutions with analytic generalized constants, the transcendental equation $C_1(z)e^{2\lambda\overline{z}} + C_2(z) = 0$ presents a genuinely nonlinear constraint. Generically, this equation is satisfied on a discrete point set, not on curves or regions.
+
+\section{Asymptotic Behavior and Growth Rates}
+
+For the particular solution $W = e^{r\overline{z}}$ where $r = a + ib$ (with $a, b \in \mathbb{R}$):
+
+\begin{equation}
+|W| \sim \exp(ax + by)
+\end{equation}
+
+The growth is \textbf{directional}: solutions accelerate exponentially along the direction $\arg(r)$ and decay along $\arg(r) + \pi$.
+
+For $K = \alpha + i\beta$ with both $\alpha, \beta > 0$:
+\[
+r = \sqrt{\frac{\sqrt{\alpha^2+\beta^2} + \alpha}{2}} + i\sqrt{\frac{\sqrt{\alpha^2+\beta^2} - \alpha}{2}}
+\]
+
+The real part is always positive: $\Re(r) > 0$, ensuring $x$-direction growth. The imaginary part sign depends on $\beta$:
+\begin{enumerate}
+\item If $\beta > 0$: $\Im(r) > 0$ $\Rightarrow$ also grows in $+y$ direction
+\item If $\beta < 0$: $\Im(r) < 0$ $\Rightarrow$ decays in $+y$ direction
+\end{enumerate}
+
+This asymptotic behavior is preserved by the arbitrary analytic factors $C_1(z), C_2(z)$ up to polynomial modulation---the exponential envelope dominates at infinity.
+
+\section{Elliptic Structure and Fredholm Properties}
+
+The operator $\hat{\partial}^2/\partial\overline{z}^2$ is \textbf{elliptic} in the complex sense. Its principal symbol in Fourier space is:
+\[
+\sigma_2(\xi, \eta) = (\xi - i\eta)^2
+\]
+
+This vanishes only when $\xi = i\eta$, which in real coordinates corresponds to the origin in Fourier space.
+
+Ellipticity guarantees:
+\begin{enumerate}
+\item No characteristic hypersurfaces (unlike hyperbolic operators such as the wave equation)
+\item Unique continuation: if $W$ vanishes on an open set, then $W \equiv 0$ everywhere
+\item Hypoellipticity: smooth coefficients yield smooth solutions
+\item Fredholm property: when restricted appropriately, the operator is Fredholm of index 0
+\end{enumerate}
+
+The operator possesses an infinite-dimensional kernel (the solution space parametrized by analytic functions $C_1(z), C_2(z)$) and a finite-dimensional cokernel, a configuration allowed by the Fredholm index being zero.
+
+\section{The Vekua Equation Connection}
+
+The areolar framework connects to the more general Vekua equation:
+\[
+\hat{\frac{\partial W}{\partial \overline{z}}} = \sigma(z, \overline{z}) \cdot W
+\]
+
+For second-order equations, we have generalizations of classical elliptic and hyperbolic theory.
+
+The key structural difference from holomorphic PDE:
+\begin{enumerate}
+\item Holomorphic functions ($\hat{\partial W}/\partial \overline{z} = 0$): rigid, satisfy maximum principle
+\item Areolar functions ($\hat{\partial W}/\partial \overline{z} \neq 0$): flexible, solution manifold is infinite-dimensional
+\end{enumerate}
+
+This flexibility explains why the general solution contains arbitrary analytic functions $C_1(z), C_2(z)$ as generalized constants.
+
+\section{Applications to Mathematical Physics}
+
+\subsection{Two-Dimensional Elasticity}
+
+Historically, Kolosov introduced areolar derivatives to solve elasticity problems. In 2D elasticity, stress tensor components $\sigma_{xx}, \sigma_{yy}, \sigma_{xy}$ can be expressed via a complex stress function:
+\[
+\phi(z, \overline{z}) = \text{complex stress potential}
+\]
+
+The equations of equilibrium become:
+\[
+\hat{\frac{d^2\phi}{d\overline{z}^2}} + \text{boundary conditions} = 0
+\]
+
+This is precisely the areolar equation! The oscillatory solutions describe:
+\begin{enumerate}
+\item Stress wave propagation through materials
+\item Resonance phenomena at characteristic frequencies
+\item Complex coupling between tensile and shear components
+\end{enumerate}
+
+The zero set of the stress function corresponds to lines of zero normal stress---critical features in engineering analysis.
+
+\subsection{Connection to Complex Geometry}
+
+The non-holomorphic structure of areolar equations provides a bridge between complex analysis and real differential geometry. Solutions exhibit properties intermediate between holomorphic functions (rigid, satisfying Cauchy-Riemann) and general smooth functions (flexible, no constraints).
+
+\section{Higher-Order Generalizations}
+
+The pattern extends to $n$-th order equations:
+\[
+\frac{\hat{\partial}^n W}{\partial \overline{z}^n} + A(z, \overline{z})W = 0
+\]
+
+For constant coefficients:
+\[
+\frac{\hat{\partial}^n W}{\partial \overline{z}^n} + K \cdot W = 0, \quad K \in \mathbb{C}
+\]
+
+The characteristic equation becomes:
+\[
+r^n + K = 0 \implies r = n\text{-th root of } (-K)
+\]
+
+There are $n$ distinct roots:
+\[
+r_k = |K|^{1/n} \exp\left(i\frac{\arg(-K) + 2\pi k}{n}\right), \quad k = 0, 1, \ldots, n-1
+\]
+
+The general solution is:
+\[
+W(z, \overline{z}) = \sum_{k=0}^{n-1} C_k(z)e^{r_k\overline{z}}
+\]
+
+with $C_k(z)$ arbitrary analytic functions.
+
+The solution space remains infinite-dimensional, but the zero set structure becomes more complex: differences $r_j - r_k$ can be real or complex, allowing zeros to form curves or higher-dimensional surfaces in special cases.
+
+\section{Regularity Theory and Schauder Estimates}
+
+A fundamental question: how smooth are solutions to the areolar equation?
+
+\begin{theorem}[Regularity Propagation]
+If $A(z, \overline{z}) \in C^k$ and $W$ solves $\hat{\partial}^2 W/\partial \overline{z}^2 + AW = 0$, then $W \in C^{k+2}$.
+
+More precisely, by Schauder estimates:
+\[
+\|W\|_{C^{2,\alpha}} \leq C \left(\|AW\|_{C^{0,\alpha}} + \|W\|_{L^2}\right)
+\]
+where $C^{2,\alpha}$ is the space of functions with continuous second derivatives and $\alpha$-Holder continuous first derivatives.
+\end{theorem}
+
+For areolar equations, the regularity is:
+\begin{enumerate}
+\item $C^\infty$ smooth (analytic in $z$) if coefficients are analytic
+\item Holder continuous with exponent matching the coefficient regularity
+\end{enumerate}
+
+\textbf{Critical observation:} For particular solutions $W = C(z) \exp(r\overline{z})$:
+
+If $C(z)$ is analytic, then $W$ is analytic in $x$ but only smooth (not analytic) in $y$. This reflects the anti-holomorphic dependence on $y$ through $\overline{z} = x - iy$.
+
+\section{Unique Continuation}
+
+A fundamental property follows from ellipticity:
+
+\begin{theorem}[Unique Continuation]
+If $W$ solves $\hat{\partial}^2 W/\partial \overline{z}^2 + KW = 0$ on a connected domain $D$ and vanishes on an open subset $U \subset D$, then $W \equiv 0$ throughout $D$.
+\end{theorem}
+
+This is vastly more restrictive than in real differential equations, where solutions can exhibit exponential decay without global vanishing. The non-holomorphic structure enforces global rigidity.
+
+\section{Microlocal Analysis Perspective}
+
+From the viewpoint of microlocal analysis, the principal symbol of $\hat{\partial}^2/\partial\overline{z}^2$ on the cotangent bundle $T^*\mathbb{R}^2$ is:
+\[
+\sigma_2(x, y, \xi, \eta) = (\xi - i\eta)^2
+\]
+
+The characteristic set is:
+\[
+\text{Char}(\hat{\partial}^2/\partial\overline{z}^2) = \{(\xi, \eta) \in \mathbb{R}^4 : (\xi - i\eta)^2 = 0\} \cap \mathbb{R}^2 = \{0\}
+\]
+
+Characteristics exist only at the origin in real frequency space, confirming strict ellipticity. This ensures:
+\begin{enumerate}
+\item Wave front regularity properties
+\item Justification for the infinite-dimensional smooth solution manifold
+\item Propagation of singularities is trivial
+\end{enumerate}
+
+This contrasts with hyperbolic operators (e.g., wave equation) where characteristic surfaces form nontrivial cones.
+
+\section{Spectral Theory and Fredholm Operators}
+
+For the operator $T[W] = \hat{\partial}^2 W/\partial\overline{z}^2 + KW$ on appropriate Hilbert spaces:
+
+The kernel is:
+\[
+\ker(T) = \{C_1(z)e^{r_1\overline{z}} + C_2(z)e^{r_2\overline{z}} : C_1, C_2 \text{ analytic}\}
+\]
+
+This is infinite-dimensional but of \textbf{finite codimension}.
+
+By Fredholm theory, the cokernel $\text{coker}(T) = L^2(\mathbb{C})^*/\text{Im}(T)$ is finite-dimensional, and:
+\[
+\text{index}(T) = \dim(\ker(T)) - \dim(\text{coker}(T)) = 0
+\]
+
+For the resolvent operator $(T - \lambda)^{-1}$:
+\begin{enumerate}
+\item For $\lambda \notin \sigma(T)$: the resolvent exists and is bounded
+\item For $\lambda \in \sigma(T)$: the resolvent is unbounded or does not exist
+\end{enumerate}
+
+The spectrum is contained in a half-plane of $\mathbb{C}$, a consequence of the elliptic structure.
+
+\section{Gauge Invariance and Hidden Symmetries}
+
+The areolar equation admits gauge transformations. If $W$ solves $\hat{\partial}^2 W/\partial\overline{z}^2 + KW = 0$, then:
+\[
+W' = e^{\phi(z, \overline{z})} \cdot W
+\]
+also solves a modified equation, provided $\phi$ satisfies compatibility conditions.
+
+This suggests that the solution space possesses \textbf{hidden symmetries} beyond the obvious translation and scaling invariances.
+
+\textbf{Example: Scale invariance}
+
+If $W(z, \overline{z})$ solves the equation, the rescaled function:
+\[
+W_\lambda(z, \overline{z}) = \lambda^{-1} W(\lambda z, \lambda\overline{z})
+\]
+satisfies the same equation (up to appropriate rescaling of $K$).
+
+This reveals deep connections to \textbf{conformal field theory} and \textbf{quantum field theory} on the complex plane, where similar gauge structures appear.
+
+\section{Conclusion: A Rigorous Synthesis}
+
+Brsakoska's work establishes that the areolar equation of second order admits a well-defined notion of oscillation that generalizes the classical concept from real differential equations. The zeros---appearing as isolated or countable point sets---serve as the precise complex analog of oscillatory sign changes.
+
+The fundamental insight is that coefficient signs $\alpha$ and $\beta$ do not eliminate oscillatory character; they merely redistribute the zero locus geometrically across the complex plane. In Examples 1 and 2, a sign change rotates the zero set by $90°$ without destroying oscillations.
+
+This represents a maturation of complex analysis beyond the restrictive framework of holomorphy, revealing that differential geometry in the complex plane possesses its own internal logic. The generalized constants $C_1(z)$ and $C_2(z)$ encode a nonlocal degree of freedom absent in real differential equations---solutions depend globally on the choice of analytic functions, not merely on pointwise data.
+
+The non-holomorphic structure forces a fundamental rigidity: the solution manifold, though infinite-dimensional, remains constrained by the incompatibility between analytic and anti-analytic dependence. Zeros cannot proliferate arbitrarily but must respect the algebraic coupling of the exponential terms.
+
+The paper exemplifies how the passage from real to complex variables, when pursued rigorously through non-holomorphic methods, generates genuinely novel mathematical structures that recombine classical intuitions---oscillation, linearity, spectral theory---into configurations that transcend their original domains of validity.
+
+\begin{thebibliography}{99}
+
+\bibitem{kolosov1909}
+Kolosov, G. V. (1909).
+\textit{On the application of the theory of complex variables to a plane problem of mathematical elasticity}.
+
+\bibitem{polozii1965}
+Polozhii, G. N. (1965).
+\textit{Generalizations of the theory of analytic functions of a complex variable}.
+University of Kiev Publishing House.
+
+\bibitem{bank1982}
+Bank, S. B., Laine, I. L. (1982).
+On the oscillation theory of $f'' + A(z)f = 0$, where $A(z)$ is entire.
+\textit{Transactions of the American Mathematical Society}, 273(1), 351--363.
+
+\bibitem{ilievski1992}
+Ilievski, B. (1992).
+\textit{Linear areolar equations (Contour integration. Special functions of two complex variables. Areolar Laplace transformations)}.
+Doctoral dissertation, Skopje.
+
+\bibitem{dimitrovski1997}
+Dimitrovski, D., Ilievski, B., Brsakoska, S., et al. (1997).
+\textit{Vekua equation with analytic coefficients}.
+Special editions of the Institute of Mathematics, Faculty of Natural Sciences and Mathematics, University ``Sv. Kiril and Metodij''---Skopje.
+
+\bibitem{filomat1997}
+Dimitrovski, D., Rajovic, M., Stoiljkovic, R. (1997).
+The generalization of the I. N. Vekua equation with analytic coefficients.
+\textit{Filomat}, 11, 29--32.
+
+\bibitem{bstiint1996}
+Rajovic, M., Dimitrovski, D., Stojiljkovic, R. (1996).
+Elemental solution of Vekua equation with analytic coefficients.
+\textit{Bulletin of Science, University Politehnica Timisoara, Series Mathematics and Physics}, 41(55)(1), 14--21.
+
+\bibitem{brsakoska2016}
+Brsakoska, S. (2016).
+About the zeros and the oscillatory character of the solution of one areolar equation of second order.
+\textit{Mathematical Bulletin}, 40(LXVI)(1), 55--62.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,8 @@
+FunctionPlotter.darkStyle=false;
+var Z = RealFunction.express("Z(t)");
+var z = Z.quantize(0,1000,200000);
+plot(z);
+var y = z.data.getRow(1).cumulativeSum(128, new Real());
+z.data.getRow(1).set(y);
+z.setName("∫" + z.getName());
+plot(z);

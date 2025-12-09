@@ -1,0 +1,407 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{geometry,amsmath}
+\geometry{letterpaper}
+
+%%%%%%%%%% Start TeXmacs macros
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
+
+%
+
+
+\begin{document}
+
+{\documentclassstar{11pt}{article}} {\usepackage{amsmath}}
+{\usepackage{amssymb}} {\usepackage{amsthm}} {\usepackage{enumitem}}
+
+{\title{Error Bounds for Asymptotic Expansions, with an Application to
+Cylinder Functions of Large Argument}} {\author{Frank W. J. Olver}}
+
+{\tableofcontents}
+
+\section{Introduction}\label{sec:introduction}
+
+In 1886, Poincar{\'e} {\cite{poincare1886}} introduced the notion of an
+asymptotic expansion
+\begin{equation}
+  \label{eq:asymptotic_expansion} f (x) \sim t_0 + \frac{t_1}{x} +
+  \frac{t_2}{x^2} + \cdots
+\end{equation}
+of an arbitrary function $f (x)$. According to his definition the coefficients
+$t_s$ are independent of $x$, and
+\begin{equation}
+  \label{eq:remainder_definition} f (x) = \sum_{s = 0}^{m - 1} \frac{t_s}{x^s}
+  + \epsilon_m (x)
+\end{equation}
+where, for each $m$, $\epsilon_m (x) = o (1 / x^{m - 1})$ as $x \to \infty$.
+This concept admitted a new class of divergent series expansions to be useful
+in analysis, enabling them to be manipulated in much the same way as
+convergent power series. In turn, this has led to the development of a new
+calculus, later called ``pure asymptotics'' by van der Corput
+{\cite{van_der_corput}}. A feature of this development has been the
+generalization of the original definition of Poincar{\'e}. Schmidt
+{\cite{schmidt}} showed that the restrictive assumption in Poincar{\'e}'s
+definition is not necessary. More recently, Erd{\'e}lyi {\cite{erdelyi}} has
+extended the concept still further, and, with Wyman, applied it to the
+asymptotic evaluation of certain integrals {\cite{erdelyi_wyman}}.
+Erd{\'e}lyi's generalization is given in {\cite{erdelyi_generalization}}
+below.
+
+For some time, however, many numerical mathematicians have been aware that in
+quite another way, the Poincar{\'e} definition is not restrictive enough. To
+understand this point of view, consider for example the well-known asymptotic
+expansion for the Hankel function $H_{\nu}^{(1)} (z)$ for large $|z|$ and
+fixed $\nu$, given by
+\begin{equation}
+  \label{eq:hankel_expansion} H_{\nu}^{(1)} (z) \sim \left( \frac{2}{\pi z}
+  \right)^{1 / 2} e^{i \phi}  \sum_{s = 0}^{\infty} \frac{i^s a_s}{z^s}
+\end{equation}
+in which
+\begin{equation}
+  \label{eq:hankel_coefficients} \phi = z - \frac{1}{2} \nu \pi - \frac{1}{4}
+  \pi, \quad a_s = \frac{(\frac{1}{2} - \nu^2)  (\frac{9}{4} - \nu^2) \cdots
+  ((\frac{s}{2})^2 - \nu^2)}{s! 8^s}
+\end{equation}
+This expansion holds in Poincar{\'e}'s sense {\cite{poincare_sense}} when $-
+\pi < \arg z < 2 \pi$; in fact for arbitrary values of a positive number
+$\delta$, it is uniformly valid in the sector $- \pi + \delta \leq \arg z \leq
+2 \pi - \delta$ in the accepted sense that if the series is truncated after
+$m$ terms, then the constant implied in the error term $O (|z|^{- m})$ can be
+assigned independently of $\arg z$.
+
+Now it will be seen later {\cite{later_reference}} that when $z$ is large and
+if $\arg z$ is not too close to the constant in the uniform error bound
+depends on $z$ and becomes increasingly large as $\delta \to 0$. As a
+consequence, the concept of ``uniform validity'' can be quite misleading in
+applications: an unsuspecting computer evaluating the series
+\eqref{eq:hankel_expansion} by the usual computational procedure of truncation
+at the smallest term may obtain inaccurate results in the sectors $- \pi <
+\arg z < - \pi + \delta$ and $2 \pi - \delta < \arg z < 2 \pi$, grossly so in
+the neighbourhoods of $\arg z = - \pi$ and $2 \pi$.
+
+This situation, although perhaps not widely appreciated, is really a fairly
+surprising, because \eqref{eq:hankel_expansion} is known to break down
+completely on crossing the boundaries $\arg z = - \pi$ and $2 \pi$. It is more
+natural {\cite{natural_reference}} to expect this failure to be gradual than
+abrupt as the boundaries are approached. The behaviour of an ordinary
+Taylor-series expansion of an analytic function is somewhat similar, inasmuch
+as the circle of convergence is approached. The analogy is not complete,
+however. A computer is warned of the inaccuracy of a truncated Taylor series
+near the boundary of its region of validity by a diminution in the rate of
+convergence. No similar warning is available for an asymptotic expansion.
+
+Some way of excluding the direct use of an asymptotic expansion near the
+boundaries of its region of validity is therefore desirable, and it is in this
+sense that the Poincar{\'e} definition is insufficiently restrictive enough.
+To understand this point of view, the restrictive definition should be
+modified. The specific problem of Hankel and Bessel functions of large
+arguments and derive some new results in connection with the expansion
+\eqref{eq:hankel_expansion}.
+
+\section{Complete asymptotic expansions}\label{sec:complete_expansions}
+
+Practical dangers attending the use of asymptotic expansions have been
+stressed previously by Miller {\cite{miller1}} {\cite{miller2}}. In the
+expansions for the Weber functions given in these references, Miller
+distinguishes between regions of validity in the sense of Poincar{\'e} and the
+more restrictive ``complete sense of Watson.'' Essentially, the difference is
+that in the former sense of contributions of an exponentially small character
+are neglected (as they may be, according to the definition), whereas in the
+latter sense they are retained if they have numerical significance.
+
+For example, if $z$ is not an odd integer, then the definition, whereas in the
+complete sense they are retained if they have numerical significance.
+
+For example, if $z$ is not an odd integer then according to the definition
+\eqref{eq:remainder_definition}, the quadrant $\frac{1}{2} \pi < \arg z \leq
+\pi$; this is demonstrated in {\cite{watson_reference}} below. To achieve
+complete validity in the quadrant $- \pi < \arg z \leq 2 \pi$ it is necessary
+to add the series
+\begin{equation}
+  \label{eq:additional_series} (1 + e^{- 2 \nu i \pi}) \left( \frac{2}{\pi z}
+  \right)^{1 / 2} e^{- i \phi}  \sum_{s = 0}^{\infty} (- i)^s \frac{a_s}{z^s}
+\end{equation}
+to the right of \eqref{eq:hankel_expansion}, whereas of course in the
+Poincar{\'e} sense \eqref{eq:additional_series} is negligible compared with
+the right of \eqref{eq:hankel_expansion} when $\frac{\pi}{2} < \arg z < 2
+\pi$. Similarly, to achieve complete validity in the quadrant $- \pi < \arg z
+< - \frac{\pi}{2}$, \eqref{eq:additional_series} is subtracted from the right
+of \eqref{eq:hankel_expansion}.
+
+By introducing exponentially small contributions of this type the numerical
+difficulties can be overcome satisfactorily in many cases, and in other cases,
+the precise is difficult to justify mathematically, however, without an
+investigation of the remainder term of the given in {\cite{watson_reference}}
+below. There is no readily applicable general definition of complete validity
+available, nor is it easy to find what ``numerical significance'' is too vague
+a criterion by itself. A drawback in practice of Watson's theory of the
+uniqueness of asymptotic expansions {\cite{watson_uniqueness}} is the need to
+assess properties of the remainder term which are not immediately available in
+many applications. Furthermore, in cases where these properties are known it
+quite possible that the statistic bound for the remainder term is also known,
+thereby obviating the need for the theory for numerical purposes. This is
+certainly true of the example given in Watson's paper {\cite{watson_paper}}.
+
+The difficulty of recognizing when to include the numerical contribution of an
+exponentially small term in an asymptotic expansion is illustrated by the
+following example, which arose some years ago in computations at the National
+Physical Laboratory, Teddington.
+
+Let
+\begin{equation}
+  \label{eq:integral_example} I (n) = \int_0^{\pi} \frac{\cos nt}{t^2 + 1} dt
+\end{equation}
+By repeated integration by parts, one readily shows that for large positive
+integer values of $n$, $I (n)$ has the Poincar{\'e} expansion
+\begin{equation}
+  \label{eq:poincare_expansion} I (n) \sim (- 1)^{n - 1}  \left(
+  \frac{\lambda_1}{n} - \frac{\lambda_2}{n^2} + \frac{\lambda_3}{n^3} - \cdots
+  \right)
+\end{equation}
+in which the coefficients $\lambda_s$ are given by
+\begin{equation}
+  \label{eq:lambda_coefficients} \lambda_s = (n^2 + 1)^{- 2 s} p_{2 s - 1} (n)
+\end{equation}
+the $p_s (t)$ being polynomials in $t$ of degree $s$, defined recursively by
+$p_0 (t) = 1$, and
+\begin{equation}
+  \label{eq:recursive_polynomials} p_s (t) = 2 at \cdot p_{s - 1} (t) - (t^2 +
+  1) p'_{s - 1} (t) \quad (s = 1, 2, \ldots) .
+\end{equation}
+Explicit expressions for the first six polynomials are
+
+\begin{align}
+  p_0 (t) & = 1 \quad p_1 (t) = 2 t \quad p_2 (t) = 2 (3 t^2 - 1) \quad p_3
+  (t) = 24 (t^3 - t)  \label{eq:explicit_polynomials}\\
+  p_4 (t) & = 24 (5 t^4 - 10 t^2 + 1) \quad p_5 (t) = 240 (3 t^5 - 10 t^3 + 3
+  t) 
+\end{align}
+
+and on numerical evaluation, one obtains to five decimals
+\begin{equation}
+  \label{eq:numerical_values} \lambda_1 = 0.05318 \quad \lambda_2 = 0.04791
+  \quad \lambda_3 = 0.08985
+\end{equation}
+Thus for $n = 10$, the series \eqref{eq:poincare_expansion} gives
+\begin{equation}
+  \label{eq:series_result} I (10) \approx - (0.0005318 - 0.0000048 + 0.0000001
+  - \cdots) = - 0.0005271.
+\end{equation}
+This answer is quite incorrect however, because direct numerical quadrature of
+the expression \eqref{eq:integral_example} yields, to seven decimals,
+\begin{equation}
+  \label{eq:quadrature_result} I (10) = - 0.0004558
+\end{equation}
+The inclusion of additional terms in the expansion would not help matters, and
+a partial explanation of the discrepancy is as follows. One may write
+\begin{equation}
+  \label{eq:integral_split} I (n) = \int_0^{\infty} \frac{\cos nt}{t^2 + 1} dt
+  - \int_{\pi}^{\infty} \frac{\cos nt}{t^2 + 1} dt
+\end{equation}
+The first of these integrals equals $\frac{\pi}{2} e^{- n}$; the second may
+again be expanded by repeated partial integration. In this way, one finds that
+\begin{equation}
+  \label{eq:alternative_expansion} I (n) \sim \frac{1}{2} \pi e^{- n} + (-
+  1)^{n - 1}  \left( \frac{\lambda_1}{n^2} - \frac{\lambda_2}{n^4} +
+  \frac{\lambda_3}{n^6} - \cdots \right)
+\end{equation}
+where the $\lambda_s$ are the same as in \eqref{eq:lambda_coefficients}. From
+this result one obtains the correct numerical value at $n = 10$, because
+\begin{equation}
+  \label{eq:correct_value} \frac{1}{2} \pi e^{- 10} = 0.0000713
+\end{equation}
+which is exactly the discrepancy between the values \eqref{eq:series_result}
+and \eqref{eq:quadrature_result}.
+
+An alternative way of deriving \eqref{eq:alternative_expansion} is to apply
+the Residue theorem and Watson's lemma {\cite{watson_lemma}}, page 236, to the
+contour integral
+\begin{equation}
+  \label{eq:contour_integral} \int_C \frac{e^{int}}{t^2 + 1} dt
+\end{equation}
+where $C$ is the rectangle having vertices $\pm \pi$ and $\pm \pi + i$.
+
+In the sense of Miller and Watson, \eqref{eq:alternative_expansion} is
+apparently a complete asymptotic expansion for positive integer $n$, whereas
+\eqref{eq:poincare_expansion} is incomplete. There is, however, no
+self-evident conclusive mathematical reason why this should be so, in fact
+\eqref{eq:alternative_expansion} was obtained by less obvious procedures. It
+is even possible that \eqref{eq:alternative_expansion} is itself incomplete,
+for without further investigation one does not know whether or not there have
+been neglected other exponential terms, for example $e^{- 2 n}$, which make
+numerically significant contributions for smaller values of $n$.
+
+\section{The need for error bounds}\label{sec:need_error_bounds}
+
+The difficulty illustrated by the examples of the previous sections is linked
+to a fundamental weakness of the Poincar{\'e} definition: it provides no
+direct answer to the question ``What is the precise relation between an
+asymptotic expansion and the function from which it is derived?'' Thus
+strictly speaking there is no connection between pure asymptotics and applied
+mathematics, except in the limit $|z| = \infty$. To establish a connection,
+two courses are open. Either one can seek upper bounds for the differences
+between the partial sums of an asymptotic expansion and the function from
+which it was obtained, or one can endeavour to transform the expansion into a
+convergent form, as, for example, in {\cite{reference17}} and
+{\cite{reference19}}. In the present paper the authors confine themselves to
+the former possibility.
+
+Although the theory of pure asymptotics has been extensively developed and
+applied, the corresponding theory of error bounds has been comparatively
+neglected. The literature on this aspect consists mainly of scattered results
+applicable to special functions.
+
+The few theorems of a general nature which have been discovered
+{\cite{reference3}}, {\cite{reference5}}, are concerned with asymptotic
+expansions of integral representations with real variables. (The example of
+\eqref{eq:integral_example}, incidentally, is not covered by these theorems.)
+A possible reason for this neglect is the belief {\cite{reference1}},
+{\cite{reference17}}, that when error bounds are needed they can be obtained
+merely by retracing the steps of the asymptotic proof. This is frequently a
+difficult and tedious undertaking, and the bounds it yields are often quite
+unrealistic. There is no readily applicable general theorem, and the writer's
+experience with expansions arising from differential equations indicates that
+it may often be necessary to develop entirely new proofs of the theorems of
+pure asymptotics before attempting to follow through explicit treatment of the
+error terms.
+
+In this connection, attention may be drawn to the suggestion of Wyman
+{\cite{wyman}} that the main direction in which the modern theory of
+asymptotics will move is towards the use of more general concepts in the
+theory of pure asymptotics. The importance of investigating such
+generalizations is indisputable, but perhaps there is a need to stress that
+the bridging of a gap between pure and applied mathematics in this branch of
+analysis by the development of satisfactory theories of error bounds is also
+of importance. Moreover, such theories may sometimes provide an alternative
+way of overcoming one of the difficulties which has helped stimulate the
+recent further generalizations {\cite{reference6}} in the definition of an
+asymptotic expansion: the need to avoid narrow concepts concerning both the
+choice of asymptotic variable for a given expansion, and the nature of the
+uniformity of the expansion with respect to other variables.
+
+This observation may be illustrated briefly by the following example. In
+{\cite{reference17}}, \eqref{eq:reference_6_31}, Erd{\'e}lyi and Wyman have
+published a generalized series expansion in terms of Airy functions for the
+Hankel function $H_{\nu}^{(1)} (x)$ when $\nu$ and $x$ are real and positive,
+having a ``scale''
+\begin{equation}
+  \label{eq:scale_function} \tau^{- 1}  (2 m / 3)  \quad \text{as} \quad \tau
+  \to \infty, \quad \text{where}
+\end{equation}
+\begin{equation}
+  \label{eq:tau_definition} \tau = | \frac{1}{4} (\nu^2 - x^2) |^{1 / 2} +
+  (\frac{1}{2} \nu)^{3 / 2} .
+\end{equation}
+This means that for each fixed integer $m$, the $(m + 1)$th partial sum of the
+series differs from $H_{\nu}^{(1)} (x)$ by $o (\tau^{- 1 - (2 m / 3)})$ as
+$\tau \to \infty$. Thus these authors have succeeded in describing the
+behaviour of $H_{\nu}^{(1)} (x)$ when either $x$ or $\nu$ is large by means of
+a single asymptotic expansion. Other investigators, using Poincar{\'e}
+expansions, have had to distinguish between the two cases. Recently however,
+the present writer {\cite{present_writer}} has derived sharp error bounds for
+the most
+
+powerful of the existing Poincar{\'e}-type expansions for $H_{\nu}^{(1)} (x)$
+for large $x$, namely the uniform expansion in terms of Airy functions. From
+these bounds it can be seen that although the expansion was derived on the
+assumption that $\nu$ is large, it also has an asymptotic property for large
+$x$. Indeed, without going into detailed proof, it can be stated that the
+uniform expansion in terms of Airy functions for large $x$ is also a
+generalized expansion, in the sense of Erd{\'e}lyi, this time with respect to
+the scale $| (\nu t)^{- m (x - \nu)} |$ as $x \to \infty$, for any
+non-negative number $\delta$. This is, in fact, a considerably more powerful
+scale than that of the new expansion.
+
+(Notwithstanding the generally and greater power of the Airy function
+expansion, the Poincar{\'e}-type expansion of $H_{\nu}^{(1)} (x)$ for fixed
+$\nu$ and large $x$ remains important, owing to its simplicity, and a further
+study of it is made in \eqref{eq:sections_5_7}.)
+
+\section{Nature of the error bounds}\label{sec:nature_error_bounds}
+
+In seeking bounds for the error term of the partial expansion of the form
+\eqref{eq:remainder_definition}, what kind of success can be hoped for? If
+$t_m$ is non-zero, then on replacing $x$ by the complex variable $z$, the
+bound $| \epsilon_m (z) | \sim |t_m z^{- m} |$. Hence the most that can be
+established, in general, is that $| \epsilon_m (z) |$ is bounded by the
+modulus of the first (non-vanishing) neglected term of the series. This bound
+cannot apply when $| \arg t_{m + 1} / (zt_m) | < \frac{1}{2} \pi$, however,
+for the modulus of the right side of the equation
+\begin{equation}
+  \label{eq:error_bound_equation} \epsilon_m (z) = t_m z^{- m} + t_{m + 1}
+  z^{- m - 1} + o (|z|^{- m - 1})
+\end{equation}
+would exceed that of its first term for all sufficiently large $|z|$. In
+particular, this happens when $t_m$ and $t_{m + 1}$ are real and of the same
+sign, and $z$ is real and positive.
+
+A modest error bound which would always be feasible is a multiple $(> 1)$ of
+the modulus of the first non-vanishing neglected term. This multiple itself
+could depend on $z$, and then ideally it would tend to unity as $|z| \to
+\infty$. The last condition is not essential from the standpoint of most
+applications however, and a bound of this kind if likely to be quite
+satisfactory with any value of $|z|$ not too large. Perhaps this can be
+appreciated best by observing that for a specified precision in $(z)$, the
+difference between having $|p_m t_m z^{- m} |$ and $|t_m z^{- m} |$ as bounds
+for $\epsilon_m (z)$ only affects the minimum allowable value of $|z|$ by the
+factor $(p_m)^{1 / m}$. Certainly, for example, if $p_m < 10$ there are few
+situations in which such a reduction in the region of applicability is likely
+to be of importance. From this point of view, the expenditure of heavy
+analytical effort to achieve a slight reduction in the value of $p_m$ is
+unjustified, except possibly in the case of the dominant term $(m = 1)$ of the
+expansion.
+
+\section{Hankel functions of large argument}\label{sec:hankel_functions}
+
+The following theorem is obtained from Theorem 7 of {\cite{reference12}} by
+taking the parameter $u$ occurring there to be unity, and making minor
+changes:
+
+\begin{theorem}
+  \label{thm:hankel_functions}Let $f (z)$ be regular in a simply-connected
+  complex domain $D$, and a sequence of functions $A_s (z)$ be defined by $A_0
+  (z) = 1$ and
+  \begin{equation}
+    \label{eq:hankel_recurrence} A_{s + 1} (z) = - \frac{1}{2} A_s' (z) +
+    \frac{1}{4}  \int f (z) A_s (z) dz \quad (s = 0, 1, \ldots)
+  \end{equation}
+\end{theorem}
+
+Then the differential equation
+\begin{equation}
+  \label{eq:hankel_differential} \frac{d^2 w}{dz^2} = \{1 + f (z)\} w
+\end{equation}
+has a solution $w_m (z)$, depending on an arbitrary point $a$ of $D$ and an
+arbitrary positive integer $m$, such that
+\begin{equation}
+  \label{eq:hankel_solution} w_m (z) = e^z \left[ \sum_{s = 0}^{m - 1}
+  \frac{A_s (z) + \epsilon_m (z)}{z^s} \right]
+\end{equation}
+and
+\begin{equation}
+  \label{eq:hankel_solution_prime} w_m' (z) = e^z  \left[ \sum_{s = 0}^{m - 1}
+  \{A_s (z) + A_s' (z)\}+ \eta_m (z) \right]
+\end{equation}
+where
+
+A form of error bound which has emerged from recent investigations by the
+writer {\cite{reference12}}, {\cite{reference13}} of the asymptotic solutions
+of certain second-order differential equations with respect to a parameter
+effectively consists of the variation, that is, the integral of the modulus of
+the derivative, of the first neglected term of the series taken over a
+suitable contour. More recent work, in preparation for publication, has shown
+that bounds of this type are also applicable, in certain cases, to asymptotic
+expansions of solutions for differential equations without a parameter $z \to
+\infty$ and $(1.01)$, and from the observations made in
+\eqref{eq:sections_1_1} might expect that as $z$ approaches the boundaries of
+the regions of validity, the contour of integration would naturally be subject
+to certain restrictions, and from the observations made in
+\eqref{eq:sections_1_1} we might expect that the bound it decreases in $\Re
+z$.
+
+In the remaining part of this paper, it is shown that this variational form of
+error bound is applicable to the standard cylinder functions of large
+argument, and that it does indeed have the feature just described.
+
+\end{document}

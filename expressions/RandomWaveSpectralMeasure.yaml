@@ -1,0 +1,8 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.Real
+context: {
+  }
+domain: arb.Real
+expression: ω➔∫λ➔1/√(1-λ²)dλ∈(0,ω)
+function: arb.functions.real.RealFunction
+...

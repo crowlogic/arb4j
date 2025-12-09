@@ -1,0 +1,16 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.Real
+context:
+  input:
+  - arb.Real
+  - 2.3000000000000000000000000000000000000 +/- 1.42e-38
+  j:
+  - arb.Real
+  - 4.3000000000000000000000000000000000000 +/- 3.77e-38
+  k:
+  - arb.Real
+  - 3.2000000000000000000000000000000000000 +/- 2.12e-38
+domain: arb.Real
+expression: x->Γ(j+1-1/2*k)
+function: arb.functions.real.RealFunction
+...

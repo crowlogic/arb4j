@@ -1,0 +1,5 @@
+#!/bin/sh
+
+FMDIR=$(dirname $(readlink -f $0))/..
+cd $FMDIR
+mvn dependency:build-classpath

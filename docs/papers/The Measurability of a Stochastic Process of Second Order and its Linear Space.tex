@@ -1,0 +1,323 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath,amsthm,amssymb,enumitem}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue}
+
+% Theorem environments
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+
+% Custom commands
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\R}{\mathbb{R}}
+\renewcommand{\P}{\mathbb{P}}
+
+\begin{document}
+
+\title{The Measurability of a Stochastic Process of Second Order and its Linear Space\thanks{This research was supported by the Air Force Office of Scientific Research under Grant AFOSR-68-1415.}}
+\author{Stamatis Cambanis\\ Department of Statistics\\ University of North Carolina at Chapel Hill}
+\date{Institute of Statistics Mimeo Series No.~832\\ June, 1972}
+\maketitle
+
+\section{The Measurability of a Stochastic Process of Second Order}
+
+Let $T$ be a separable metric space and $\B(T)$ the $\sigma$-algebra of Borel sets of $T$, and let $X_t$, $t \in T$, be a real stochastic process on the probability space $(\Omega, \F, P)$. $X_t$, $t \in T$, is called measurable if the map $(t,\omega) \to X_t(\omega)$ is $\B(T) \times \F$-measurable. A process $Y_t$, $t \in T$, on $(\Omega, \F, P)$ is called a modification of $X_t$, $t \in T$, if $P\{X_t = Y_t\} = 1$ for all $t$ in $T$. $X_t$, $t \in T$, is of second order if $E(X_t^2) < +\infty$ for all $t$ in $T$, and then its autocorrelation $R$ is defined by 
+\begin{equation}\label{eq:autocorrelation}
+R(t,s) = E(X_t X_s) \quad \text{for all } t,s \in T.
+\end{equation}
+It is clear from Fubini's theorem that if a second order process $X_t$, $t \in T$, has a measurable modification then $R$ is $\B(T) \times \B(T)$-measurable. That the measurability of $R$ is not sufficient for the existence of a measurable modification of $X_t$, $t \in T$, is demonstrated in Remark~\ref{rem:counterexample}. It is thus of interest to find a condition which along with the measurability of $R$ would imply the existence of a measurable modification of $X_t$, $t \in T$. This question is answered in Theorem~\ref{thm:measurability}, where in fact necessary and sufficient conditions are given for a second order process to have a measurable modification. A remarkable consequence of these conditions is that the existence of a measurable modification of a second order process is a second order property.
+
+The proof of Theorem~\ref{thm:measurability} is based on the necessary and sufficient conditions for a process (not necessarily of second order) to have a measurable modification given in \cite{chung1965fields}, which are expressed as follows (here the terminology of \cite{cohn1972measurable} is followed). Let $M$ be the space of all real random variables on $(\Omega, \F, P)$ with the topology of convergence in probability, where random variables that are equal a.e.~$[P]$ are considered identical. If $\xi$ is a real random variable, its class in $M$ is denoted by $[\xi]$. Then $X_t$, $t \in T$, has a measurable modification if and only if the map from $T$ to $M$ taking $t$ to $[X_t]$ is measurable and has separable range \cite{chung1965fields,cohn1972measurable}. Moreover, the measurable modification can be taken to be separable and also progressively measurable, the latter if $T$ is an interval and a nondecreasing family $\F_t$, $t \in T$, of sub-$\sigma$-algebras of $\F$ is given.
+
+For a second order process $X_t$, $t \in T$, we denote by $H(X)$ the closure in $L_2(\Omega, \F, P)$ of the linear space of the random variables $\{X_t, t \in T\}$ and we call it the linear space of the process. We also denote by $R(K)$ the reproducing kernel Hilbert space of a real, symmetric, nonnegative definite function $K$ on $T \times T$. It is well known that $R(R)$ consists of all functions $f$ on $T$ of the form $f(t) = E(\xi X_t)$, $t \in T$, for some $\xi \in H(X)$, and that the map $\xi \to E(\xi X_t)$ defines an inner product preserving isomorphism between $H(X)$ and $R(R)$ \cite{parzen1967time}.
+
+\begin{theorem}\label{thm:measurability}
+Let $X_t$, $t \in T$, be a real, second order process with autocorrelation $R$. The following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item \label{item:modification} $X_t$, $t \in T$, has a measurable modification.
+\item \label{item:separable} $R$ is $\B(T) \times \B(T)$-measurable and $H(X)$ (or $R(R)$) is separable.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(a) We first show that \eqref{item:separable} implies \eqref{item:modification}. It suffices to verify the conditions of \cite{chung1965fields,cohn1972measurable}; the construction of a measurable modification is the same as in \cite{chung1965fields} or in \cite{cohn1972measurable}.
+
+Since convergence in $L_2(\Omega, \F, P)$ implies convergence in probability, the separability of $H(X)$ as a subset of $L_2(\Omega, \F, P)$ implies its separability as a subset of $M$. Thus its subset $\{[X_t], t \in T\}$ is separable in $M$. To complete the proof it suffices to show that the map $X: T \to M$ defined by $X(t) = [X_t]$ is measurable. The metric $\rho$ on $M$ defined by $\rho(\xi, \eta) = E\left[\frac{|\xi-\eta|}{1+|\xi-\eta|}\right]$, $\xi, \eta \in M$ metrizes the topology of convergence in probability. Thus for the measurability of $X$ it suffices to show that $X^{-1}(B) \in \B(T)$ for every set $B$ in $M$ of the form $B = \{Y \in M: \rho(Y, Y_0) \leq r\}$, where $Y_0 \in M$ and $r > 0$. Since $X^{-1}(B) = \{t \in T: \rho([X_t], Y_0) < r\}$, it suffices to prove that the real function $\rho([X_t], Y_0)$ on $T$ is $\B(T)$-measurable for all $Y_0 \in M$.
+
+Let $\{\xi_n\}_{n=1}^\infty$ be a complete orthonormal sequence in $H(X)$ (which exists because $H(X)$ is separable). Then for all $t \in T$ we have
+\begin{equation}\label{eq:series_representation}
+X_t = \sum_{n=1}^\infty a_n(t) \xi_n \quad \text{in } L_2(\Omega, \F, P),
+\end{equation}
+where 
+\begin{equation}\label{eq:coefficient}
+a_n(t) = E(\xi_n X_t).
+\end{equation}
+Thus $a_n \in R(R)$, and in fact $\{a_n\}_{n=1}^\infty$ is a complete orthonormal sequence in $R(R)$. If for every $t \in T$ we let
+\begin{equation}\label{eq:partial_sum}
+X_t^{(N)} = \sum_{n=1}^N a_n(t) \xi_n,
+\end{equation}
+then $X_t^{(N)}$ converges to $X_t$ in $L_2(\Omega, \F, P)$ and thus in probability. Let $Y_0 \in M$ be fixed and $Y_t = X_t - Y_0$ and $Y_t^{(N)} = X_t^{(N)} - Y_0$ for all $t \in T$. Then $Y_t^{(N)}$ converges to $Y_t$ in probability, i.e., $\rho([Y_t^{(N)}], [Y_t]) \to 0$ as $N \to \infty$. Dropping the index $t$ for simplicity we have
+\begin{equation}\label{eq:metric_inequality}
+\rho([X^{(N)}], [X]) \leq \frac{E\left[\frac{|X^{(N)}-X|}{1+|X^{(N)}-X|}\right]}{E\left[\frac{|X|}{1+|X|}\right]}.
+\end{equation}
+Thus
+\begin{equation}\label{eq:metric_limit}
+\rho([X_t], Y_0) = \lim_{N \to \infty} E\left[\frac{|X_t^{(N)}-Y_0|}{1+|X_t^{(N)}-Y_0|}\right] \quad \text{for all } t \in T.
+\end{equation}
+Note that every function in $R(R)$ is either a finite linear combination of the functions $\{R(t,\cdot), t \in T\}$ or a pointwise limit on $T$ of such functions. Hence, since $R$ is $\B(T) \times \B(T)$-measurable, $R(t,\cdot)$ is $\B(T)$-measurable for all $t \in T$, and it follows that every $f$ in $R(R)$ is $\B(T)$-measurable. Consequently $Y_t^{(N)} = \sum_{n=1}^N a_n(t) \xi_n - Y_0$ is $\B(T) \times \F$-measurable. By Fubini's theorem $E\left[\frac{|X_t^{(N)}-Y_0|}{1+|X_t^{(N)}-Y_0|}\right]$ is $\B(T)$-measurable, and thus so is $\rho([X_t], Y_0)$, which completes the proof.
+
+(b) We now show that \eqref{item:modification} implies \eqref{item:separable}. The measurability of $R$ follows from Fubini's theorem and \eqref{item:modification}. In order to prove the separability of $H(X)$ we first assume that $R$ is uniformly bounded on $T$:
+\begin{equation}\label{eq:boundedness}
+R(t,t) \leq C < +\infty \quad \text{for all } t \in T.
+\end{equation}
+We will show that this implies the uniform integrability of the family of random variables $\{X_t, t \in T\}$. Indeed we have for all $a > 0$,
+$$\int_{\{|X_t| > a\}} |X_t| dP \leq \left[P\{|X_t| > a\} \cdot E(X_t^2)\right]^{1/2} \leq \left[\frac{E(X_t^2)}{a^2} \cdot E(X_t^2)\right]^{1/2} = \frac{R(t,t)}{a}.$$
+Thus
+\begin{equation}\label{eq:uniform_integrability}
+\lim_{a \to \infty} \sup_{t \in T} \int_{\{|X_t| > a\}} |X_t| dP = 0,
+\end{equation}
+and $\{X_t, t \in T\}$ is uniformly integrable.
+
+Now \eqref{item:modification} implies that $\{[X_t], t \in T\}$ is separable in $M$. Thus there exists a countable subset $M'$ of $\{[X_t], t \in T\}$ such that for every $t \in T$, $[X_t]$ is the limit in probability of a sequence in $M'$, and hence also in $L_2(\Omega, \F, P)$, since $M'$ is uniformly integrable \cite{neveu1965mathematical}. It follows that $H(X)$ equals the $L_2(\Omega, \F, P)$ closure of the linear span of $M'$ and, since $M'$ is countable, $H(X)$ is separable.
+
+We now consider the general case and define for $N = 1,2,\ldots$
+\begin{equation}\label{eq:tn_definition}
+T_N = \{t \in T: R(t,t) \leq N\}.
+\end{equation}
+Since $R$ is measurable, $T_N \in \B(T)$ and by \eqref{item:modification} $\{X_t, t \in T_N\}$ has a measurable modification. It follows by what has been proven that the $L_2(\Omega, \F, P)$ closure of the linear span of the random variables $\{X_t, t \in T_N\}$, $H_N(X)$, is separable. Since $X_t$ is of second order, $R$ is finite valued and thus $\bigcup_{N=1}^\infty T_N = T$. It follows that $H(X)$ is the $L_2(\Omega, \F, P)$ closure of $\bigcup_{N=1}^\infty H_N(X)$ and thus $H(X)$ is separable.
+
+Thus a $\B(T) \times \B(T)$-measurable, symmetric, nonnegative definite, real function $R$ on $T \times T$ is the autocorrelation of a measurable process if and only if $R(R)$ is separable.
+\end{proof}
+
+\begin{remark}\label{rem:mean_covariance}
+The mean $m$ and the covariance $C$ of a real second order process $X_t$, $t \in T$, are defined by $m(t) = E(X_t)$ and $C(t,s) = E([X_t - m(t)][X_s - m(s)])$ for all $t, s \in T$. Then $R(t,s) = m(t)m(s) + C(t,s)$. In connection with \eqref{item:separable} of Theorem~\ref{thm:measurability} it should be noted that $R$ is $\B(T) \times \B(T)$-measurable if and only if $m$ is $\B(T)$-measurable and $C$ is $\B(T) \times \B(T)$-measurable.
+
+The ``if'' part is obvious. The ``only if'' part is shown as follows. We have $m(t) = E(X_t I_\Omega)$ for all $t \in T$, where $I_\Omega$ is the indicator function. Denote by $\xi$ the projection of $I_\Omega \in L_2(\Omega, \F, P)$ onto the subspace $H(X)$. Then $m(t) = E(X_t \xi)$ for all $t \in T$ and $\xi \in H(X)$, and thus $m \in R(R)$. Since $R$ is $\B(T) \times \B(T)$-measurable, $m$ is $\B(T)$-measurable (see part (a) of the proof of Theorem~\ref{thm:measurability}) and $C(t,s) = R(t,s) - m(t)m(s)$ is $\B(T) \times \B(T)$-measurable.
+\end{remark}
+
+\begin{remark}\label{rem:counterexample}
+Let $T = [0,1]$ and $R(t,s) = 1$ for $t = s$ in $T$ and $R(t,s) = 0$ for $t \neq s$ in $T$. Since $R$ is symmetric and nonnegative definite, there exists a probability space $(\Omega, \F, P)$ and a real process $X_t$, $t \in T$, on it with autocorrelation $R$. $R$ is clearly $\B(T) \times \B(T)$-measurable, but since the values of $X_t$ are orthogonal in $L_2(\Omega, \F, P)$, $E(X_t X_s) = 0$ for $t \neq s$ in $T$, $H(X)$ is not separable and by Theorem~\ref{thm:measurability}, $X_t$, $t \in T$, does not have a measurable modification. This can be also shown without using Theorem~\ref{thm:measurability}. Indeed, assume that $X_t$, $t \in T$, has a measurable modification $Y_t$, $t \in T$. Then
+\begin{equation}\label{eq:lebesgue_integral}
+\int_T R(t,t) dt = 1 < \infty
+\end{equation}
+implies that $\int_T Y_t^2 dt < +\infty$ a.e.~$[P]$. If $\{\Phi_n\}_{n=1}^\infty$ is a complete orthonormal set in $L_2(T, \B(T), \text{Leb})$, then
+\begin{equation}\label{eq:orthonormal_expansion}
+Y_t = \sum_{n=1}^\infty \Phi_n(t) \int_T Y_s \Phi_n(s) ds \quad \text{a.e. }[P],
+\end{equation}
+where the convergence is in $L_2(T)$ a.e.~$[P]$, and thus
+$$E\left[\int_T Y_t^2 dt\right] = \sum_{n=1}^\infty \int_T \int_T R(t,s) \Phi_n(t) \Phi_n(s) dt ds = 0 \quad \text{a.e. }[P],$$
+which contradicts $E\left[\int_T Y_t^2 dt\right] = 1$. It follows that $X_t$, $t \in T$, does not have a measurable modification.
+\end{remark}
+
+\begin{remark}\label{rem:gaussian}
+For Gaussian processes it can be easily shown that \eqref{item:separable} implies \eqref{item:modification} without relying on the results of \cite{chung1965fields}; this is done in \cite{neveu1968processus}.
+\end{remark}
+
+\begin{corollary}\label{cor:equivalence}
+Let $R$ be a symmetric, nonnegative definite, real function on $T \times T$. If $R(R)$ is separable the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item \label{item:rt_measurable} $R(t,\cdot)$ is $\B(T)$-measurable for all $t \in T$.
+\item \label{item:r_measurable} $R$ is $\B(T) \times \B(T)$-measurable.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+It suffices to show that \eqref{item:rt_measurable} implies \eqref{item:r_measurable}. Since $R$ is symmetric, nonnegative definite and real, there exists a probability space $(\Omega, \F, P)$ and a real process $X_t$, $t \in T$, on it with autocorrelation $R$. It is clear from part (a) of the proof of Theorem~\ref{thm:measurability} that the separability of $R(R)$ and \eqref{item:rt_measurable} imply the existence of a measurable modification of $X_t$, $t \in T$, and thus \eqref{item:r_measurable}. This result can be shown in a simpler way without using an associated process. Indeed, if $\{f_n\}_{n=1}^\infty$ is a complete orthonormal set in $R(R)$, then it is easily seen that $R(t,s) = \sum_{n=1}^\infty f_n(t) f_n(s)$ for all $t,s \in T$. Now \eqref{item:rt_measurable} implies as in part (a) of the proof of Theorem~\ref{thm:measurability} that every $f_n$ is $\B(T)$-measurable and thus \eqref{item:r_measurable} holds.
+\end{proof}
+
+\begin{corollary}\label{cor:sufficient}
+A second order process $X_t$, $t \in T$, which satisfies any of the following conditions has a measurable modification (in \eqref{item:martingale} also progressively measurable):
+\begin{enumerate}[label=(\roman*)]
+\item \label{item:weakly_continuous} $X_t$, $t \in T$, is weakly continuous on $T$.
+\item \label{item:orthogonal_increments} $T$ is an arbitrary interval and $X_t$, $t \in T$, has orthogonal increments.
+\item \label{item:martingale} $T$ is an arbitrary interval and $X_t$, $t \in T$, is a martingale.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+\eqref{item:weakly_continuous}: Since $T$ is separable and $X_t$ weakly continuous on $T$, $H(X)$ is separable \cite{parzen1967time}. By the weak continuity of $X_t$, $R(t,\cdot)$ is continuous, hence $\B(T)$-measurable, for all $t \in T$. The conclusion follows from Corollary~\ref{cor:equivalence} and Theorem~\ref{thm:measurability}.
+
+\eqref{item:orthogonal_increments}: It is known that $H(X)$ is separable \cite{cramer1967stationary}. Also, $X_t$ has left and right $L_2(\Omega, \F, P)$ limits on $T$ and that except on a countable subset of $T$, $X_{t-} = X_t = X_{t+}$. This implies the measurability of $R$ and the result follows from Theorem~\ref{thm:measurability}.
+
+\eqref{item:martingale}: Define the function $F$ by $F(t) = E(X_t^2)$ for all $t \in T$. By the martingale property, with respect to the nondecreasing family $\F_t$, $t \in T$, of sub-$\sigma$-algebras of $\F$, we have for all $s < t$ in $T$,
+$$E(X_t X_s) = E[E(X_t X_s \mid \F_s)] = E[X_s E(X_t \mid \F_s)] = E(X_s^2)$$
+and thus
+$$E(\{X_t - X_s\}^2) = F(t) - F(s).$$
+It follows from this relationship, as in \cite{cramer1967stationary} and in \eqref{item:orthogonal_increments}, that $H(X)$ is separable and $R$ is $\B(T) \times \B(T)$-measurable.
+\end{proof}
+
+\begin{remark}\label{rem:mean_square_diff}
+Let $X_t$, $t \in T$, $T$ an arbitrary interval, be a real separable process of second order with autocorrelation $R$. If $X_t$ is mean square differentiable on $T$ and $\frac{\partial R(t,s)}{\partial t}$ and $\frac{\partial R(t,s)}{\partial s}$ are locally Lebesgue integrable in $T$ and in $t,s$ respectively, then with probability one the paths of $X_t$, $t \in T$, are absolutely continuous on every compact subinterval of $T$. This is shown in \cite{gikhman1969introduction} with the additional assumption that the mean square derivative $\dot{X}_t$ of $X_t$ has a measurable modification, which is always satisfied because of Theorem~\ref{thm:measurability}. Indeed, since $X_t$ is mean square differentiable on $T$, it is mean square continuous on $T$. Thus $H(X)$ is separable and the continuity of $R$ implies the measurability of $R$. Since $\dot{X}_t$ is the autocorrelation of $X_t$ and since $H(\dot{X}) \subset H(X)$, the conclusion follows from Theorem~\ref{thm:measurability}.
+\end{remark}
+
+\begin{corollary}\label{cor:sigma_algebra}
+If a real process $X_t$, $t \in T$, has a measurable modification, then $\F(X)$ coincides mod $0$ with a separable $\sigma$-algebra.
+\end{corollary}
+
+\begin{proof}
+Since $X_t$, $t \in T$, has a measurable modification, $\{[X_t], t \in T\}$ is a separable subset of $M$. Thus there exists a countable subset $M' = \{[X_t], t \in S\}$ of $\{[X_t], t \in T\}$ ($S$ is a countable subset of $T$) such that for every $t \in T$, $[X_t]$ is the limit in probability of a sequence from $M'$, and thus $X_t$ is the a.e.~$[P]$ limit of a sequence from $\{X_t, t \in S\}$. If $\F'$ is the sub-$\sigma$-algebra of $\F$ generated by the random variables $\{X_t, t \in S\}$, then $\F' \subset \F(X)$, $\F'$ is separable and $\F(X)$ coincides with $\F'$ mod $0$.
+\end{proof}
+
+\section{On the Separability of the Linear Space of a Second Order Process}
+
+The linear space $H(X)$ of a second order process $X_t$, $t \in T$, plays an important role in the structure of such processes and in a variety of problems in statistical inference. If $H(X)$ is separable then $X_t$ admits series representations and also integral representations (Theorem~\ref{thm:separability}) that can be effectively used in problems such as linear mean square estimation. Also the separability of $H(X)$ is the only condition needed for a second order process to have the Hida-Cramér representation \cite{kallianpur1965multiplicity}. It is thus of interest that a measurable second order process has a separable linear space. $H(X)$ is known to be separable when the process $X_t$, $t \in T$, is weakly continuous \cite{parzen1967time}, has orthogonal increments \cite{cramer1967stationary}, or is a martingale (Corollary~\ref{cor:sufficient}\eqref{item:martingale}). In Theorem~\ref{thm:separability} necessary and sufficient conditions are given for $H(X)$ to be separable in terms of integral representations of $X_t$.
+
+Before stating the theorem we mention a few basic facts about random measures, that can be found for instance in \cite{cramer1951contribution,cramer1967stationary}. Let $(V, \mathcal{V})$ be a measurable space. A random measure $Z$ on $(V, \mathcal{V})$ is a countably additive map from $\mathcal{V}$ to $L_2(\Omega, \F, P)$; i.e., whenever $A$ is the disjoint union of the sets $A_k \in \mathcal{V}$, $Z(A) = \sum_{k=1}^\infty Z(A_k)$ in $L_2(\Omega, \F, P)$. (Here we consider the case where $Z$ is defined on the entire $\sigma$-algebra $\mathcal{V}$). To each random measure $Z$ on $V$ there corresponds a finite signed measure $\mu$ on $V \times V$ by $\mu(A \times B) = E[Z(A)Z(B)]$, $A, B \in \mathcal{V}$. $\mu$ is symmetric and nonnegative definite on the measurable rectangles of $V \times V$. A random measure $Z$ is called orthogonal if $\mu(A \times B) = 0$ whenever $A$ and $B$ are disjoint, and to each orthogonal random measure there corresponds a finite nonnegative measure $\nu$ on $V$ by $\nu(A) = E[Z^2(A)]$, $A \in \mathcal{V}$. Let $H(Z)$ be the closure in $L_2(\Omega, \F, P)$ of the linear span of $\{Z(A), A \in \mathcal{V}\}$, and let $\Lambda_2(\mu)$ be the Hilbert space of real, $\mathcal{V}$-measurable functions on $V$ with inner product $\langle f, g \rangle_{\Lambda_2(\mu)} = \int_V \int_V f(u)g(v) d\mu(u,v)$ (of course $\Lambda_2(\mu)$ consists of equivalence classes of functions, two functions $f$ and $g$ considered identical if $\langle f-g, f-g \rangle_{\Lambda_2(\mu)} = 0$). There is an inner product preserving isomorphism between $\Lambda_2(\mu)$ and $H(Z)$, denoted by $\leftrightarrow$, such that $I_A \leftrightarrow Z(A)$, $A \in \mathcal{V}$, and integration of functions $f \in \Lambda_2(\mu)$ with respect to $Z$ is defined by $\int_V f(u) dZ(u) \leftrightarrow f$. If $Z$ is orthogonal, there is an inner product preserving isomorphism between $L_2(\nu) = L_2(V, \mathcal{V}, \nu)$ and $H(Z)$, denoted again by $\leftrightarrow$, such that $I_A \leftrightarrow Z(A)$, $A \in \mathcal{V}$, and integration of functions in $L_2(\nu)$ with respect to $Z$ is defined by $\int_V f(u) dZ(u) \leftrightarrow f$.
+
+\begin{theorem}\label{thm:separability}
+Let $X_t$, $t \in T$, be a second order process.
+\begin{enumerate}[label=(\roman*)]
+\item \label{item:orthogonal_rep} If $H(X)$ is separable then for every finite measure space $(V, \mathcal{V}, \nu)$ such that $L_2(\nu) = L_2(V, \mathcal{V}, \nu)$ is separable and infinite dimensional, $X_t$ has a representation
+\begin{equation}\label{eq:integral_representation_orthogonal}
+X_t = \int_V f(t,u) dZ(u) \quad \text{for all } t \in T,
+\end{equation}
+where $Z$ is an orthogonal measure on $V$ with corresponding measure $\nu$ and $f(t,\cdot) \in L_2(\nu)$ for all $t \in T$. Conversely, if $X_t$ has such a representation, $H(X)$ is separable.
+
+\item \label{item:general_rep} If $H(X)$ is separable, then for every measurable space $(V, \mathcal{V})$ and every finite signed measure $\mu$ on $V \times V$ which is symmetric and nonnegative definite on the measurable rectangles of $V \times V$, and such that $\Lambda_2(\mu)$ is separable and infinite dimensional, $X_t$ has a representation
+\begin{equation}\label{eq:integral_representation_general}
+X_t = \int_V f(t,u) dZ(u) \quad \text{for all } t \in T,
+\end{equation}
+where $Z$ is a random measure on $V$ with corresponding measure $\mu$ and $f(t,\cdot) \in \Lambda_2(\mu)$ for all $t \in T$. Conversely, if $X_t$ has such a representation, $H(X)$ is separable.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\eqref{item:general_rep} being a particular case of \eqref{item:orthogonal_rep}, we will prove only \eqref{item:general_rep}. We start with the second claim. If $X_t$ has such a representation then $X_t \in H(Z)$ for all $t \in T$, hence $H(X) \subset H(Z)$ and the conclusion follows from the isomorphism between $H(Z)$ and $\Lambda_2(\mu)$ and the separability of the latter.
+
+We now prove the first claim. Assume that $H(X)$ is separable and let $\{\xi_n\}_{n=1}^\infty$ be a complete orthonormal set. Then for all $t \in T$,
+\begin{equation}
+X_t = \sum_{n=1}^\infty a_n(t) \xi_n \quad \text{in } L_2(\Omega, \F, P),
+\end{equation}
+where $a_n(t) = E(X_t \xi_n)$. Let $\{f_n\}_{n=1}^\infty$ be a complete orthonormal set in $\Lambda_2(\mu)$. Since $\mu$ is finite, $I_A \in \Lambda_2(\mu)$ for all $A \in \mathcal{V}$. Then
+\begin{equation}
+I_A = \sum_{n=1}^\infty \langle I_A, f_n \rangle f_n \quad \text{in } \Lambda_2(\mu),
+\end{equation}
+where $\langle I_A, f_n \rangle = \int_V \int_V f_n(v) d\mu(u,v)$. Throughout the proof we will write $\langle \cdot, \cdot \rangle$ for $\langle \cdot, \cdot \rangle_{\Lambda_2(\mu)}$. Thus for all $n$, $\lambda_n$ is a finite signed measure on $(V, \mathcal{V})$. We also have
+\begin{equation}
+\langle I_A, I_A \rangle = \sum_{n=1}^\infty \lambda_n^2(A) = \mu(A \times A) < +\infty.
+\end{equation}
+Hence
+\begin{equation}
+Z(A) = \sum_{n=1}^\infty \lambda_n(A) \xi_n
+\end{equation}
+defines a function from $\mathcal{V}$ to $L_2(\Omega, \F, P)$ (the convergence being in $L_2(\Omega, \F, P)$). We will show that $Z$ is a random measure with corresponding measure $\mu$. The latter is clear since for all $A, B \in \mathcal{V}$ we have
+\begin{equation}
+E[Z(A)Z(B)] = \sum_{n=1}^\infty \lambda_n(A) \lambda_n(B) = \langle I_A, I_B \rangle = \mu(A \times B).
+\end{equation}
+For the countable additivity of $Z$ let $A = \bigcup_{k=1}^\infty A_k$ where $\{A_k\}_{k=1}^\infty$ is a disjoint sequence of sets in $\mathcal{V}$. Then
+\begin{equation}
+E\left[\left(Z(A) - \sum_{k=1}^K Z(A_k)\right)^2\right] = \mu\left(\left(\bigcup_{k=K+1}^\infty A_k\right) \times \left(\bigcup_{k=K+1}^\infty A_k\right)\right) \to 0 \quad \text{as } K \to \infty.
+\end{equation}
+Thus $Z(A) = \sum_{k=1}^\infty Z(A_k)$.
+
+We now show that for every $g \in \Lambda_2(\mu)$,
+\begin{equation}\label{eq:integral_isomorphism}
+\int_V g(u) dZ(u) = \sum_{n=1}^\infty \langle g, f_n \rangle \xi_n \quad \text{in } L_2(\Omega, \F, P).
+\end{equation}
+This is true for indicator functions by definition of $Z$, and therefore also for simple functions. Since $H(Z)$ is defined as the $L_2(\Omega, \F, P)$ closure of the linear space of $\{Z(A), A \in \mathcal{V}\}$, it follows by the isomorphism between $\Lambda_2(\mu)$ and $H(Z)$ that the linear span of $\{I_A, A \in \mathcal{V}\}$ is dense in $\Lambda_2(\mu)$. Thus every $g \in \Lambda_2(\mu)$ is the limit of a sequence of simple functions. The result follows from
+\begin{equation}
+E\left[\left(\int_V g dZ - \sum_{n=1}^\infty \langle g, f_n \rangle \xi_n\right)^2\right] = \langle g - g_k, g - g_k \rangle \to 0,
+\end{equation}
+which implies that $H(Z) = H(X)$.
+
+In particular we have
+\begin{equation}
+\int_V f(t,u) dZ(u) = \sum_{n=1}^\infty a_n(t) \xi_n.
+\end{equation}
+Now since $f(t) \in \Lambda_2(\mu)$ for all $t \in T$ and $f(t) \leftrightarrow X_t$, we can define $f(t,\cdot) \in \Lambda_2(\mu)$ for all $t \in T$ by
+\begin{equation}
+f(t,u) = \sum_{n=1}^\infty a_n(t) f_n(u),
+\end{equation}
+where the convergence is in $\Lambda_2(\mu)$. It follows from the property of the integral just proven that for all $t \in T$ we have the following equality in $L_2(\Omega, \F, P)$,
+\begin{equation}
+\int_V f(t,u) dZ(u) = \sum_{n=1}^\infty a_n(t) \xi_n = X_t,
+\end{equation}
+which concludes the proof.
+\end{proof}
+
+\begin{remark}\label{rem:assumptions}
+We assume throughout this remark that $H(X)$ is separable. Then it is clear that the first claim in \eqref{item:orthogonal_rep} and \eqref{item:general_rep} is valid provided the dimensionality of $L_2(\nu)$ and $\Lambda_2(\mu)$ is no less than the dimensionality of the integers. Also, one can take $(V, \mathcal{V}) = (T, \B(T))$ or as $V$ any interval and $\mathcal{V}$ its Borel sets; in the latter case $\nu$ may be taken the Lebesgue measure or one absolutely continuous to it, and $\mu$ may be taken absolutely continuous to the Lebesgue measure on $V \times V$. If a series (respectively, integral) representation of $X_t$ is known then one can obtain integral (respectively, series) representations of $X_t$ as indicated in the proof of Theorem~\ref{thm:separability}. These representations will be explicitly obtained if one can find complete orthonormal sets in the spaces $L_2(\nu)$ and $\Lambda_2(\mu)$. If $V$ is an interval and $\mathcal{V}$ its Borel sets, complete orthonormal sets in $L_2(\nu)$ are given in \cite{cambanis1971bases} (see also \cite{masry1968series}), and complete sets in $\Lambda_2(\mu)$ are given in \cite{cambanis1970harmonizable} (In \cite{cambanis1970harmonizable} the case where $V$ is the entire real line is treated and the case where $V$ is an interval can be treated similarly). If neither an integral nor a series representation of $X_t$ is available, the problem arises how to obtain explicitly such a representation (in terms of the process $X_t$, $t \in T$, and its autocorrelation $R$). This problem is solved in \cite{cambanis1971representation} for weakly continuous processes $X_t$, $t \in T$, and $T$ an arbitrary interval.
+\end{remark}
+
+\begin{remark}\label{rem:autocorrelation}
+Theorem~\ref{thm:separability} may also be stated in terms of integral representation of the autocorrelation $R$, which for \eqref{item:orthogonal_rep} and \eqref{item:general_rep} are respectively
+\begin{equation}\label{eq:autocorrelation_orthogonal}
+R(t,s) = \int_V f(t,u) f(s,u) d\nu(u) \quad \text{for all } t,s \in T,
+\end{equation}
+and
+\begin{equation}\label{eq:autocorrelation_general}
+R(t,s) = \int_V \int_V f(t,u) f(s,v) d\mu(u,v) \quad \text{for all } t,s \in T.
+\end{equation}
+\end{remark}
+
+\begin{remark}\label{rem:oscillatory}
+In \cite{mandrekar1972characterization} a second order process $X_t$, $t \in \R = (-\infty, +\infty)$, is called oscillatory if it has a representation
+\begin{equation}
+X_t = \int_{-\infty}^\infty e^{itu} a_t(u) dZ(u) \quad \text{for all } t \in \R,
+\end{equation}
+where $Z$ is an orthogonal random measure on $(\R, \B(\R))$ with corresponding measure $\nu$ and $a_t(\cdot) \in L_2(\nu)$ for all $t \in T$ (this is a generalization of a concept introduced by Priestley). If $X_t$, $t \in \R$, is oscillatory then $H(X)$ is separable, since $L_2(\R, \B(\R), \nu)$ is separable. Conversely, if $H(X)$ is separable it follows by Theorem~\ref{thm:separability}\eqref{item:orthogonal_rep} that for any finite measure $\nu$ on $(\R, \B(\R))$ we have $X_t = \int_{-\infty}^\infty f(t,u) dZ(u)$ for all $t \in T$, where $Z$ is an orthogonal random measure on $(\R, \B(\R))$ with corresponding measure $\nu$ and $f(t,\cdot) \in L_2(\nu)$ for all $t \in T$. If we define $a_t(u) = e^{-itu} f(t,u)$, it becomes clear that $X_t$, $t \in \R$, is oscillatory. Thus a second order process is oscillatory if and only if its linear space is separable.
+\end{remark}
+
+\begin{remark}\label{rem:sufficient_conditions}
+Some simple sufficient conditions for $H(X)$ to be separable are as follows. If $X_t$, $t \in T$, is a linear operation on a second order process $Y_s$, $s \in S$, with separable linear space, then $H(X) \subset H(Y)$ and the separability of $H(X)$ follows from that of $H(Y)$. Also, because of the isomorphism between $H(X)$ and $R(R)$, $H(X)$ is separable if there is a symmetric, nonnegative definite function $K$ on $T \times T$ such that $R(R) \subset R(K)$ and $R(K)$ is separable. A sufficient condition for $R(R) \subset R(K)$ is that $K - R$ be nonnegative definite \cite{aronszajn1950theory}.
+\end{remark}
+
+\begin{thebibliography}{18}
+\bibitem{aronszajn1950theory}
+Aronszajn, N.: Theory of reproducing kernels. Trans. Amer. Math. Soc. \textbf{68}, 337--404 (1950).
+
+\bibitem{cambanis1971bases}
+Cambanis, S.: Bases in $L_2$ spaces with applications to stochastic processes with orthogonal increments. Proc. Amer. Math. Soc. \textbf{29}, 284--290 (1971).
+
+\bibitem{cambanis1970harmonizable}
+Cambanis, S., Liu, B.: On harmonizable stochastic processes. Information and Control \textbf{17}, 183--202 (1970).
+
+\bibitem{cambanis1971representation}
+Cambanis, S., Masry, E.: On the representation of weakly continuous processes. Information Sci. \textbf{3}, 277--290 (1971).
+
+\bibitem{chung1965fields}
+Chung, K.L., Doob, J.L.: Fields, optionality and measurability. Amer. J. Math. \textbf{87}, 397--424 (1965).
+
+\bibitem{cohn1972measurable}
+Cohn, D.L.: Measurable choice of limit points and the existence of separable and measurable processes. Z. Wahrscheinlichkeitstheorie verw. Geb. \textbf{22}, 161--165 (1972).
+
+\bibitem{cramer1951contribution}
+Cramer, H.: A contribution to the theory of stochastic processes. Proc. Second Berkeley Symp. Math. Statist. Prob., 329--339. Berkeley: Univ. California Press 1951.
+
+\bibitem{cramer1967stationary}
+Cramer, H., Leadbetter, M.R.: Stationary and Related Stochastic Processes. New York: Wiley 1967.
+
+\bibitem{doob1953stochastic}
+Doob, J.L.: Stochastic Processes. New York: Wiley 1953.
+
+\bibitem{gikhman1969introduction}
+Gikhman, I.I., Skorokhod, A.V.: Introduction to the Theory of Random Process. Philadelphia: Saunders 1969.
+
+\bibitem{kallianpur1965multiplicity}
+Kallianpur, G., Mandrekar, V.: Multiplicity and representation theory of purely non-deterministic stochastic processes. Theor. Probability Appl. \textbf{10}, 553--581 (1965).
+
+\bibitem{mandrekar1972characterization}
+Mandrekar, V.: A characterization of oscillatory processes and their prediction. Proc. Amer. Math. Soc. \textbf{32}, 280--284 (1972).
+
+\bibitem{masry1968series}
+Masry, E., Liu, B., Steiglitz, K.: Series expansion of wide-sense stationary random processes. IEEE Trans. Information Theory \textbf{14}, 792--796 (1968).
+
+\bibitem{neveu1965mathematical}
+Neveu, J.: Mathematical Foundations of the Calculus of Probability. San Francisco: Holden-Day 1965.
+
+\bibitem{neveu1968processus}
+Neveu, J.: Processus Aléatoires Gaussiens. Montréal: Presses Univ. Montréal 1968.
+
+\bibitem{parzen1967time}
+Parzen, E.: Time Series Analysis Papers. San Francisco: Holden-Day 1967.
+
+\bibitem{rasanov1967stationary}
+Rasanov, Yu.A.: Stationary Random Processes. San Francisco: Holden-Day 1967.
+\end{thebibliography}
+
+\end{document}

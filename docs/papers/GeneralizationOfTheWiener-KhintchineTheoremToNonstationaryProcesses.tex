@@ -1,0 +1,183 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{amssymb}
+\geometry{margin=1in}
+
+% Theorem environments
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+
+% For boxed equations
+\usepackage{empheq}
+
+\title{Generalization of the Wiener-Khintchine Theorem to Nonstationary Processes}
+\author{D. G. Lampard\thanks{The Engineering Laboratory, Cambridge University, Cambridge, England}}
+\date{Received November 30, 1953}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+The Wiener-Khintchine theorem which connects the autocorrelation function and the power spectrum of a stationary time series by means of a Fourier cosine transform is well known. It is the purpose of this paper to generalize the theorem to deal with nonstationary time series.
+\end{abstract}
+
+\section{Introduction}
+
+In a recent paper\cite{Lampard1953} the author gave a generalization of the Wiener-Khintchine theorem which connected the time dependent power spectra and correlation functions of the outputs of a set of linear filters which were excited at $t=0$ by suddenly applying stationary random noise. In this paper we shall give a slightly modified treatment which will enable us to carry this generalization to its logical conclusion. To do this it will be necessary to use extended definitions of correlation functions and power spectra, definitions which remain valid even for nonstationary time series.
+
+\section{Analysis}
+
+Let us consider a pair of nonstationary time series $i_1(x)$ and $i_2(x)$ which are defined in the range $-\infty < x \leq t$ and which are zero for $x > t$.
+
+We note that in the case of autocorrelation of a stationary time series this definition is equivalent to the temporal one usually given in the literature (see Rice,\cite{Rice1944} p.~312) (see Wiener,\cite{Wiener1950} p.~38), namely,
+\begin{equation}\label{eq:stationary-autocorrelation}
+\psi(\tau)=\lim_{T\to\infty}\frac{1}{2T}\int_{-T}^{+T} i(t)i(t+\tau)\,dt.
+\end{equation}
+
+We now define the (cross)correlation function $\psi_{12}(t;\tau)$ of the $i_1$ and $i_2$ in this order by
+\begin{equation}\label{eq:correlation-definition}
+\psi_{12}(t;\tau)=\langle i_{1}(t)i_{2}(t-\tau)\rangle_{\text{av}},
+\end{equation}
+where the angular brackets denote that the ensemble average of the product is to be taken. It is clear that in this work concerning nonstationary time series, ensemble rather than time averaging must be employed.
+
+If we denote their Fourier transforms by $S_{1}(t;f)$ and $S_{2}(t;f)$, respectively, we have
+\begin{align}
+S_{1}(t;f) &= \int_{-\infty}^{t} i_{1}(t_{1})e^{-i2\pi f t_{1}}\,dt_{1}, \label{eq:fourier-transform-s1}\\
+S_{2}^{*}(t;f) &= \int_{-\infty}^{t} i_{2}(t_{2})e^{+i2\pi f t_{2}}\,dt_{2}, \label{eq:fourier-transform-s2}
+\end{align}
+where the star notation for the complex conjugate has been used.
+
+Now the ``joint energy'' of the component of frequency $f$ of the $i_1$ and $i_2$ in this order is
+\begin{equation}\label{eq:joint-energy}
+\begin{aligned}
+E_{12}(t;f) &= S_{1}(t;f)S_{2}^{*}(t;f)\\
+&= \int_{-\infty}^{t}\int_{-\infty}^{t} i_{1}(t_{1})i_{2}(t_{2})e^{i2\pi f(t_{2}-t_{1})}\,dt_{1}\,dt_{2}.
+\end{aligned}
+\end{equation}
+
+Let us now take the ensemble average of both sides of Eq.~\eqref{eq:joint-energy} and make use of Eq.~\eqref{eq:correlation-definition}. We obtain
+\begin{equation}\label{eq:ensemble-average}
+\langle E_{12}(t;f)\rangle_{\text{av}}=\int_{-\infty}^{t}\int_{-\infty}^{t} \psi_{12}(t_{1};t_{1}-t_{2})e^{i2\pi f(t_{2}-t_{1})}\,dt_{1}\,dt_{2}.
+\end{equation}
+
+If we make the substitution $\tau=t_{2}-t_{1}$ we may write symbolically
+\begin{equation}\label{eq:substitution}
+\int_{-\infty}^{t}\int_{-\infty}^{t}\,dt_{1}\,dt_{2}=\int_{-\infty}^{t}\int_{0}^{\infty}\,dt_{2}\,d\tau+\int_{-\infty}^{t}\int_{-\infty}^{0}\,dt_{1}\,d\tau.
+\end{equation}
+
+But by Eq.~\eqref{eq:correlation-definition} we have
+\begin{equation}\label{eq:correlation-property}
+\begin{aligned}
+\psi_{12}(t_{1}-\tau;-\tau) &= \langle i_{1}(t_{1}-\tau)i_{2}(t_{1})\rangle_{\text{av}}\\
+&= \psi_{21}(t_{1};\tau),
+\end{aligned}
+\end{equation}
+so that Eq.~\eqref{eq:ensemble-average} becomes
+\begin{equation}\label{eq:ensemble-average-expanded}
+\langle E_{12}(t;f)\rangle_{\text{av}}=\int_{-\infty}^{t}\int_{0}^{\infty}\{\psi_{12}(t_{1};\tau)e^{-i2\pi f\tau}+\psi_{21}(t_{1};\tau)e^{+i2\pi f\tau}\}\,dt_{1}\,d\tau.
+\end{equation}
+
+We now define\footnote{This definition of power spectrum is essentially equivalent to that of C.~H.~Page,\cite{Page1952} The author is grateful to Professor Zadeh of Columbia University for drawing his attention, in a private communication, to Page's important paper and pointing out this equivalence.} the (cross)power spectrum $w_{12}(t;f)$ by the relation
+\begin{equation}\label{eq:power-spectrum-definition}
+w_{12}(t;f)=2\frac{\partial}{\partial t}\{\langle E_{12}(t;f)\rangle_{\text{av}}\},
+\end{equation}
+where the factor 2 has been introduced to make the integral of $w_{12}(t;f)$ over all positive real frequencies equal the total (cross)power.
+
+If we carry out the indicated differentiation we have immediately
+\begin{theorem}[Generalized Wiener-Khintchine Theorem]\label{thm:main}
+The cross-power spectrum for nonstationary processes is given by
+\begin{empheq}[box=\fbox]{equation}\label{eq:main-result}
+w_{12}(t;f)=2\int_{0}^{\infty}\{\psi_{12}(t;\tau)e^{-i2\pi f\tau}+\psi_{21}(t;\tau)e^{+i2\pi f\tau}\}\,d\tau,
+\end{empheq}
+which is the main result of this paper.
+\end{theorem}
+
+\begin{proof}
+The result follows directly from differentiating Eq.~\eqref{eq:ensemble-average-expanded} with respect to $t$ and applying the definition in Eq.~\eqref{eq:power-spectrum-definition}.
+\end{proof}
+
+If $i_1=i_2$, we have, dropping the subscripts,
+\begin{equation}\label{eq:autocorrelation-result}
+w(t;f)=4\int_{0}^{\infty}\psi(t;\tau)\cos 2\pi f\tau\,d\tau,
+\end{equation}
+and this equation clearly reduces to the Wiener-Khintchine result if the time series is stationary.
+
+Finally, let us find the inversion of Eq.~\eqref{eq:main-result}. We have
+\begin{equation}\label{eq:inversion-1}
+\int_{0}^{\infty}w_{12}(t;f)e^{i2\pi f\rho}\,df=2\int_{0}^{\infty}\int_{0}^{\infty}\{\psi_{12}(t;\tau)e^{i2\pi f(\rho-\tau)}+\psi_{21}(t;\tau)e^{i2\pi f(\rho+\tau)}\}\,d\tau\,df
+\end{equation}
+and
+\begin{equation}\label{eq:inversion-2}
+\int_{0}^{\infty}w_{21}(t;f)e^{-i2\pi f\rho}\,df=2\int_{0}^{\infty}\int_{0}^{\infty}\{\psi_{21}(t;\tau)e^{-i2\pi f(\rho+\tau)}+\psi_{12}(t;\tau)e^{-i2\pi f(\rho-\tau)}\}\,d\tau\,df.
+\end{equation}
+
+Adding these gives
+\begin{equation}\label{eq:inversion-sum}
+\begin{aligned}
+\int_{0}^{\infty}\{w_{12}(t;f)e^{i2\pi f\rho}+w_{21}(t;f)e^{-i2\pi f\rho}\}\,df &= 4\int_{0}^{\infty}\int_{0}^{\infty}\{\psi_{12}(t;\tau)\cos 2\pi f(\rho-\tau)\\
+&\quad+\psi_{21}(t;\tau)\cos 2\pi f(\rho+\tau)\}\,d\tau\,df.
+\end{aligned}
+\end{equation}
+
+We now carry out the integration with respect to $f$ on the right-hand side, getting
+\begin{equation}\label{eq:inversion-delta}
+\begin{aligned}
+\int_{0}^{\infty}\{w_{12}(t;f)e^{i2\pi f\rho}+w_{21}(t;f)e^{-i2\pi f\rho}\}\,df &= 2\int_{0}^{\infty}\{\psi_{12}(t;\tau)\delta(\rho-\tau)\\
+&\quad+\psi_{21}(t;\tau)\delta(\rho+\tau)\}\,d\tau,
+\end{aligned}
+\end{equation}
+where the interpretation (see Rice,\cite{Rice1944} p.~314)
+\begin{equation}\label{eq:delta-identity}
+\int_{0}^{\infty}\cos 2\pi f x\,df=\frac{1}{2}\delta(x)
+\end{equation}
+has been used. Here $\delta(x)$ is the even unit impulse function (Dirac $\delta$-function).
+
+Performing the remaining integration gives at once if $\rho \geq 0$,
+\begin{theorem}[Inversion Formula]\label{thm:inversion}
+The correlation function can be recovered from the power spectrum via
+\begin{equation}\label{eq:inversion-final}
+\psi_{12}(t;\rho)=\frac{1}{2}\int_{0}^{\infty}\{w_{12}(t;f)e^{i2\pi f\rho}+w_{21}(t;f)e^{-i2\pi f\rho}\}\,df,
+\end{equation}
+which is the required inversion of Eq.~\eqref{eq:main-result}.
+\end{theorem}
+
+\begin{proof}
+The result follows from Eq.~\eqref{eq:inversion-delta} and the properties of the Dirac delta function, noting that $\delta(\rho+\tau)=0$ for $\rho,\tau \geq 0$.
+\end{proof}
+
+Again if $i_1=i_2$, we obtain
+\begin{equation}\label{eq:autocorrelation-inversion}
+\psi(t;\rho)=\int_{0}^{\infty}w(t;f)\cos 2\pi f\rho\,df,
+\end{equation}
+which also reduces to the Wiener-Khintchine result in the stationary case. We note finally the work of Fano,\cite{Fano1950} in which another aspect of this problem is discussed.
+
+\section*{Acknowledgment}
+
+This work was done while the author was the holder of a C.S.I.R.O. (Australia) Studentship and was working at the Engineering Laboratory, Cambridge, under the supervision of J. G. Yates.
+
+\begin{thebibliography}{9}
+
+\bibitem{Lampard1953}
+D. G. Lampard, ``The response of linear networks to suddenly applied stationary random inputs'' (to be published).
+
+\bibitem{Rice1944}
+S. O. Rice, Bell System Tech.\ J. \textbf{23}, No.~3 (1944).
+
+\bibitem{Wiener1950}
+N. Wiener, \textit{Extrapolation, Interpolation, and Smoothing of Data of Stationary Time Series} (Technology Press and John Wiley \& Sons, Inc., New York, 1950), p.~38.
+
+\bibitem{Page1952}
+C. H. Page, J. Appl. Phys. \textbf{23}, 103 (1952).
+
+\bibitem{Fano1950}
+R. M. Fano, J. Acoust. Soc. Am. \textbf{22}, 546 (1950).
+
+\end{thebibliography}
+
+\end{document}

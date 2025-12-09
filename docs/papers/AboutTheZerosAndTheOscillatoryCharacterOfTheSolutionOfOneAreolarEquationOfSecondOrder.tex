@@ -1,0 +1,528 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[english]{babel}
+\usepackage{amsmath,amssymb,amsthm
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\begin{document}
+
+\thispagestyle{empty}
+
+\begin{center}
+\textbf{Математички Билтен}\\[2mm]
+ISSN 0351-336X (print) \\
+Vol. 40(LXVI) No. 1 \\[3mm]
+ISSN 1857-9914 (online) \\
+2016 (55--62) \\[3mm]
+UDC: 517.925.4 \\
+Скопје, Македонија
+\end{center}
+
+\vspace{8mm}
+
+\begin{center}
+\textbf{ABOUT THE ZEROS AND THE OSCILLATORY CHARACTER\\
+OF THE SOLUTION OF ONE AREOLAR EQUATION OF\\
+SECOND ORDER}\\[5mm]
+Slagjana Brsakoska
+\end{center}
+
+\vspace{5mm}
+
+\noindent
+\textbf{Abstract.}
+In the paper, one linear areolar equation of second order with constant coefficients is considered, regarding the zeroes and the oscillatory character of its general solution. In this equation the first derivative is missing. Some theorems will be proven and some examples will be given for different cases of the coefficients.
+
+\vspace{5mm}
+
+\noindent
+\textbf{1. INTRODUCTION}
+
+\vspace{2mm}
+
+The notion of the term complex number, complex variable and complex function $f(z)$ is a few centuries old and more than a century old is the idea for expanding the operations derivative and integral to a function of complex--conjugated variable, $\overline{z} = x - iy$.
+
+In 1909, G.V.~Kolosov \cite{kolosov1909}, during his efforts to solve a problem from the theory of elasticity, has introduced the expressions
+\begin{equation*}
+\hat{\frac{dW}{dz}}
+=
+\frac{1}{2}
+\left[
+\frac{\partial u}{\partial x}
++
+\frac{\partial \nu}{\partial y}
++
+i\left(
+\frac{\partial \nu}{\partial x}
+-
+\frac{\partial u}{\partial y}
+\right)
+\right]
+\end{equation*}
+and
+\begin{equation}
+\hat{\frac{dW}{d\overline{z}}}
+=
+\frac{1}{2}
+\left[
+\frac{\partial u}{\partial x}
+-
+\frac{\partial \nu}{\partial y}
++
+i\left(
+\frac{\partial \nu}{\partial x}
++
+\frac{\partial u}{\partial y}
+\right)
+\right],
+\tag{1}
+\end{equation}
+known as operatory derivatives of a complex function
+\[
+W = W(z,\overline{z}) = u(x,y) + i\nu(x,y)
+\]
+from a complex variable $z = x+iy$ and $\overline{z} = x-iy$, respectively. The operator rules for these derivatives are given in the monograph of G.N.~Polozhii \cite{polozii1965} (pages 18--31). In the mentioned monograph, are also defined the so called operatory integrals
+\[
+\int f(z)\,\hat{d}z
+\qquad\text{and}\qquad
+\int f(\overline{z})\,\hat{d}\overline{z}
+\]
+by $z = x+iy$ and $\overline{z} = x-iy$, respectively, from the complex function $f = f(z)$ in the area $D\subset\mathbb{C}$, where their operatory rules are proven as well, page 32--41.
+
+\vspace{3mm}
+
+\noindent
+2010 Mathematics Subject Classification. 34M45, 35Q74.
+
+\noindent
+Key words and phrases. areolar derivative, areolar equation, solution, zeros of solution, oscillatory character.
+
+\vspace{5mm}
+
+\noindent
+\textbf{2. REASONS FOR INTRODUCING THIS EQUATION AND\\
+FORMULATION OF THE PROBLEM}
+
+\vspace{2mm}
+
+In the theory of real functions a big role has the term oscillatory and especially the term periodical, as a direct consequence of the Newton's laws. The equation
+\[
+\frac{d^2x}{dt^2} + \frac{k}{m}x = 0
+\]
+is one of the oldest differential equations and at the same time the equation of oscillatory processes (from stretching the spring pendulum, to rotating motion of bodies bounded by mutual action of gravitational forces).
+
+In the case when $k$, i.e. $m$ is variable --- it is a resistance to the environment, i.e. variable mass, respectively, in the general case we have a differential equation
+\[
+\ddot{x} + k(t)x = 0,
+\]
+so, if we introduce here a general function $y(x)$ and a regulator of the appearance $a(x)$ (which contains and causes the appearance and the elements throughout the appearance --- internal resistance, etc.) we get a differential equation
+\begin{equation}
+y'' + a(x)y = 0,
+\tag{3}
+\end{equation}
+which is called an equation of oscillations, if
+\begin{enumerate}
+\item $a(x) > 0$ and
+\item $a(x)$ is big enough to cause oscillations, which is expressed analytically with the condition the integral
+\[
+\int_0^{\infty} a(x)\,dx
+\]
+to be divergent.
+\end{enumerate}
+
+Analogous to the equation (3) for the functions of two complex variables
+$W = W(z,\overline{z})$, would be the equation with areolar derivatives from second order
+\begin{equation}
+\hat{\frac{d^2W}{d\overline{z}^2}} + A(z,\overline{z})W = 0,
+\tag{4}
+\end{equation}
+where $A(z,\overline{z})$ is a given function and
+\[
+W(z,\overline{z}) = u(x,y) + i\nu(x,y)
+\]
+is an unknown function by the variables $z$ and $\overline{z}$, which is a subject of analysis in this paper. Here, the derivative
+\[
+\hat{\frac{d^2W}{d\overline{z}^2}}
+=
+\hat{\frac{d}{d\overline{z}}}\left(\hat{\frac{dW}{d\overline{z}}}\right),
+\]
+and the derivative $\hat{dW}/d\overline{z}$ is defined with (1). One of the questions raised here is the following: Is there an analogy with real oscillations and whether (4) can be called areolar equation of oscillations? Whether the solutions of the equation (4) have zeros and what is their nature?
+
+\vspace{5mm}
+
+\noindent
+\textbf{3. MAIN RESULT}
+
+\vspace{2mm}
+
+Let us try to answer with the simplest case, which is also the closest to the real oscillations, i.e. let
+\[
+A(z,\overline{z}) = K = \alpha + i\beta
+\]
+where $K$ is a complex constant. Then, we have an areolar equation with constant coefficients
+\begin{equation}
+\hat{\frac{d^2W}{d\overline{z}^2}} + (\alpha + i\beta)W = 0.
+\tag{5}
+\end{equation}
+Let us try to find a solution of this equation with the substitute
+\begin{equation}
+W = e^{r\overline{z}},
+\tag{6}
+\end{equation}
+where $r$ is a constant to be determined. From the derivatives
+\[
+\hat{\frac{dW}{d\overline{z}}} = r e^{r\overline{z}},\qquad
+\hat{\frac{d^2W}{d\overline{z}^2}} = r^2 e^{r\overline{z}},
+\]
+we have
+\[
+r^2 + (\alpha + i\beta) = 0,
+\]
+what leads to
+\begin{equation}
+r = \left( -\alpha - i\beta \right)^{1/2}.
+\tag{7}
+\end{equation}
+If we put
+\[
+-\alpha - i\beta = \rho e^{i\theta},
+\qquad
+\rho = \sqrt{\alpha^2 + \beta^2},\quad
+\theta = \arctan\frac{\beta}{\alpha},
+\]
+for (7) we have
+\[
+r_k = \rho^{1/2}
+\left[
+\cos\left(\frac{\theta + 2k\pi}{2}\right)
++
+i\sin\left(\frac{\theta + 2k\pi}{2}\right)
+\right],\quad k = 0,1,
+\]
+i.e.
+\[
+r_1 = \rho^{1/2}\left(\cos\frac{\theta}{2} + i\sin\frac{\theta}{2}\right)
+\]
+and
+\[
+r_2 = \rho^{1/2}\left(\cos\left(\frac{\theta}{2} + \pi\right) + i\sin\left(\frac{\theta}{2} + \pi\right)\right).
+\]
+If we put $\alpha$ and $\beta$ to be positive (then in (7) they are negative) and if we use some of the trigonometric formulas that are useful here, with short transformations we get
+\begin{equation}
+r_1 = \sqrt{\frac{\sqrt{\alpha^2+\beta^2} + \alpha}{2}}
++
+i\sqrt{\frac{\sqrt{\alpha^2+\beta^2} - \alpha}{2}},
+\tag{8}
+\end{equation}
+\begin{equation}
+r_2 = -\sqrt{\frac{\sqrt{\alpha^2+\beta^2} + \alpha}{2}}
+-
+i\sqrt{\frac{\sqrt{\alpha^2+\beta^2} - \alpha}{2}}.
+\tag{9}
+\end{equation}
+If $r_1$ and $r_2$ are defined with (8) and (9), then we get the following particular integrals of (5):
+\begin{equation}
+W_1 = e^{r_1\overline{z}},\qquad
+W_2 = e^{r_2\overline{z}}.
+\tag{10}
+\end{equation}
+
+By analogy with the case of ordinary differential equation of second order, we can assume that with
+\begin{equation}
+W = C_1(z)e^{r_1\overline{z}} + C_2(z)e^{r_2\overline{z}}
+\tag{11}
+\end{equation}
+is given the general solution of (5), where $C_1(z)$ and $C_2(z)$ are arbitrary analytic functions from $z$, in the role of generalized constants.
+
+\medskip
+
+\noindent
+\textbf{Theorem 1.}
+\textit{The general solution of the areolar equation (5), where $\alpha + i\beta$ is a constant with positive real and imaginary part, is given with (11), where $C_1(z)$ and $C_2(z)$ are arbitrary analytic functions from $z$, in the role of generalized constants.}
+
+\medskip
+
+\noindent
+\textit{Proof.}
+The particular integrals $W_1$ and $W_2$ according to (6), satisfy the equation (5). We should prove that with elimination of $C_1(z)$ and $C_2(z)$ from (11) we get the equation (5) and only that one. So, we have:
+\[
+\hat{\frac{dW}{d\overline{z}}}
+=
+C_1(z)r_1 e^{r_1\overline{z}} + C_2(z)r_2 e^{r_2\overline{z}},
+\]
+\[
+\hat{\frac{d^2W}{d\overline{z}^2}}
+=
+C_1(z)r_1^2 e^{r_1\overline{z}} + C_2(z)r_2^2 e^{r_2\overline{z}}.
+\]
+But since $r_1^2$ and $r_2^2$, according to (7), have one same value $-\alpha - i\beta$, from the second derivative, we get
+\[
+\hat{\frac{d^2W}{d\overline{z}^2}}
+=
+(-\alpha - i\beta)
+\left[
+C_1(z)e^{r_1\overline{z}} + C_2(z)e^{r_2\overline{z}}
+\right]
+=
+(-\alpha - i\beta)W,
+\]
+or
+\[
+\hat{\frac{d^2W}{d\overline{z}^2}} + (\alpha + i\beta)W = 0,
+\]
+i.e. (11) satisfies the equation (5). So (11) is the general solution of (5), what is the end of this proof.
+
+\hfill $\square$
+
+\medskip
+
+But, does the oscillations in $W$ exist? Oscillation by definition is a change of the sign from $W>0$ to $W<0$ or vice versa. This is not very well determined in the case of complex functions. It can be discussed only on the real or only on the imaginary part. Then, if $\Re W + i\Im W$ is continuous, there will be parts where $\Re W = 0$ or $\Im W = 0$ and then it is possible that $|W| = 0 \Leftrightarrow W = 0$. So, $W=0$ and continuity, replaces oscillatority.
+
+If we put $W=0$ in (11), then
+\[
+C_1(z)e^{r_1\overline{z}} + C_2(z)e^{r_2\overline{z}} = 0,
+\]
+so
+\begin{equation}
+C_2(z) = -C_1(z)e^{(r_1-r_2)\overline{z}}.
+\tag{12}
+\end{equation}
+Since the ratio from two analytic functions is an analytic function, here we are stating the question: could one analytic function can be equal to non analytic function, in some point or on some continuous lines and what would be the zeroes of $W(z,\overline{z})$ in that case?
+
+According to (8) and (9) we have
+\begin{equation}
+r_1 - r_2 = 2\sqrt{\frac{\sqrt{\alpha^2+\beta^2} + \alpha}{2}} = 2\lambda,
+\tag{13}
+\end{equation}
+and (12) can be written as
+\begin{equation}
+C_2(z) = -C_1(z)\exp(2\lambda\overline{z}).
+\tag{14}
+\end{equation}
+Because $C_1(z)$ and $C_2(z)$ are analytic functions from $z$, this can be fulfilled only in certain determined number of points or countable many points. The equation
+$W(z,\overline{z}) = 0$ corresponds with the equation
+\[
+C_1(z)e^{r_1\overline{z}} + C_2(z)e^{r_2\overline{z}} = 0
+\]
+or
+\[
+C_1(z)e^{(r_1-r_2)\overline{z}} + C_2(z) = 0,
+\]
+and since $r_1 - r_2 = 2\lambda$, then
+\[
+C_1(z) = 0,
+\qquad\text{i.e.}\qquad
+C_2(z) = 0.
+\]
+Because an analytic function $f(z) = u+iv$, $(u_x = v_y,\,u_y = -v_x)$ can have only isolated zeroes, that means that the solution $W(z,\overline{z})$ of the areolar equation (5) with constant coefficient can have only isolated zeroes.
+
+\medskip
+
+\noindent
+\textbf{Theorem 2.}
+\textit{The areolar equation from II order}
+\[
+\hat{\frac{d^2W}{d\overline{z}^2}} + KW = 0
+\]
+\textit{where $W = W(z,\overline{z})$ and $K$ is an arbitrary complex constant, can have only isolated zeroes, which depend from the analytic functions $C_1(z)$ and $C_2(z)$, in the form of generalized constants and that zeroes are either common zeroes of $C_1(z)$ and $C_2(z)$, or they are countable many zeroes of the complex combination}
+\[
+C_1(z)e^{r_1\overline{z}} + C_2(z)e^{r_2\overline{z}} = 0.
+\]
+
+In the ordinary differential equations, there is a drastic difference between the equations
+\[
+y'' + y = 0
+\qquad\text{and}\qquad
+y'' - y = 0.
+\]
+They have only one sign that is different, but the first one has oscillatory solutions and the second one has monotonous solutions. So it is natural to ask whether it is the case with the corresponding areolar equation and what is the intensity of the influence of this on the oscillatory or monotony character of the solution. Let us see some examples.
+
+\medskip
+
+\noindent
+\textbf{Example 1.}
+For the equation
+\[
+\hat{\frac{d^2W}{d\overline{z}^2}} + W = 0
+\]
+$K = 1;\ \alpha = 1,\ \beta = 0$. From (8) and (9) we have
+\[
+r_1 = i,\quad r_2 = -i,
+\]
+so, the general solution is
+\[
+W = C_1(z)e^{i\overline{z}} + C_2(z)e^{-i\overline{z}}.
+\]
+Specially for $C_1(z) = C_2(z) = 1$ we have
+\[
+W_p = \cos\overline{z} = \cos(x-iy)
+= \cos x\cosh y + i\sin x\sinh y.
+\]
+Does this function have any zeroes? For $W_p = 0$ should be
+\[
+\cos x\cosh y = 0\quad\text{and}\quad \sin x\sinh y = 0.
+\]
+Because $\cosh x \neq 0$, it remains $\cos x = 0$ and $\sinh y = 0$. We get:
+\[
+x = (2k+1)\frac{\pi}{2},\quad y = 0,
+\]
+i.e. countless many isolated zeroes on the $x$--axis.
+
+So, the equation
+\[
+\hat{\frac{d^2W}{d\overline{z}^2}} + W = 0
+\]
+has a solution $W = \cos\overline{z} = u + iv$ where
+\[
+u(x,y) = \cos x\cosh y,\qquad
+v(x,y) = \sin x\sinh y,
+\]
+which are oscillatory functions and also have common zeroes.
+
+So, we have analogy with this equation and the ordinary differential equation
+$y'' + y = 0$ regarding the oscillations.
+
+\medskip
+
+\noindent
+\textbf{Example 2.}
+Let us see now the equation
+\[
+\hat{\frac{d^2W}{d\overline{z}^2}} - W = 0.
+\]
+Here $K = -1;\ \alpha = -1,\ \beta = 0$. From (8) and (9) we have
+\[
+r_1 = 1,\quad r_2 = -1,
+\]
+so, the general solution is
+\[
+W = C_1(z)e^{\overline{z}} + C_2(z)e^{-\overline{z}}.
+\]
+Specially for $C_1(z) = C_2(z) = 1$ we get
+\[
+W_p = \cosh\overline{z} = \cosh(x-iy)
+= \cosh x\cos y - i\sinh x\sin y.
+\]
+Because
+\[
+u(x,y) = \cosh x\cos y,\qquad
+v(x,y) = -\sinh x\sin y,
+\]
+common zeroes of $u$ and $v$ exist, only if $\sinh x = 0$ and $\cos y = 0$, i.e. for $x=0$,
+\[
+y = (2k+1)\frac{\pi}{2},
+\]
+i.e. we have the same set of common zeroes also on the $y$--axis.
+
+So, the sign in front of the coefficient in the equation
+\[
+\hat{\frac{d^2W}{d\overline{z}^2}} \pm W = 0
+\]
+does not have any significant influence on the oscillatory character of the solutions.
+
+\medskip
+
+\noindent
+\textbf{Example 3.}
+In the equation
+\[
+\hat{\frac{d^2W}{d\overline{z}^2}} + iW = 0,
+\]
+$K = i;\ \alpha = 0,\ \beta = 1$, that is why from (8) and (9) we have
+\[
+r_1 = \frac{1+i}{\sqrt{2}},\quad r_2 = -\frac{1+i}{\sqrt{2}},
+\]
+so, the general solution is
+\[
+W = C_1(z)e^{\frac{1+i}{\sqrt{2}}\overline{z}} + C_2(z)e^{-\frac{1+i}{\sqrt{2}}\overline{z}}.
+\]
+Further on, we have
+\[
+e^{\frac{1+i}{\sqrt{2}}\overline{z}}
+= e^{\frac{1+i}{\sqrt{2}}(x-iy)},\qquad
+e^{-\frac{1+i}{\sqrt{2}}\overline{z}}
+= e^{-\frac{1+i}{\sqrt{2}}(x-iy)},
+\]
+if we put $C_1(z) = C_2(z)$ we get
+\[
+W_p = C_1(z)
+\left[
+e^{\frac{1+i}{\sqrt{2}}(x-iy)}
++ e^{-\frac{1+i}{\sqrt{2}}(x-iy)}
+\right]
+\]
+and the equation $W=0$ gets us to $C_1(z)=0$ or to a system which, after simplifications, gives again countably many isolated zeroes depending on $x$ and $y$.
+
+We get that the zeroes are again on the $y$--axis (for the corresponding choice of parameters), as a set of countable many isolated points.
+
+Similar case and result is for the equation
+\[
+\hat{\frac{d^2W}{d\overline{z}^2}} - iW = 0.
+\]
+So, in this case also the oscillatory character of the solution does not depend on the sign in front of the coefficient $K$ in
+\[
+\hat{\frac{d^2W}{d\overline{z}^2}} \pm iW = 0,\quad (\alpha,\beta) = (0,1).
+\]
+
+\vspace{5mm}
+
+\noindent
+\textbf{4. CONCLUSION}
+
+\vspace{2mm}
+
+From the previous examples we can conclude that in this linear areolar equation from II order, the oscillatority exists in the solution both in the real and in the imaginary part and $W(z,\overline{z}) = 0$ has zeroes, where the signs of $\alpha$ and $\beta$ in the coefficient $K = \alpha + i\beta$ does not has any influence on that oscillarity.
+
+\vspace{5mm}
+
+\begin{thebibliography}{9}
+
+\bibitem{kolosov1909}
+Г.В.~Колосов,
+Об одном приложении теории функции комплесного переменного к плоское задаче математическои упругости, 1909.
+
+\bibitem{polozii1965}
+Г.Н.~Положи\u{\i},
+Обопштение теории аналитических фукции комплесного переменного,
+Издателство Киевского Университета, 1965.
+
+\bibitem{bank1982}
+S.B.~Bank, I.L.~Laine,
+On the oscillation theory of $f'' + A(z)f = 0$, where $A(z)$ is entire,
+Trans.\ Amer.\ Math.\ Soc.\ 273 (1982), no.~1, 351--363.
+
+\bibitem{ilievski1992}
+Б.~Илиевски,
+Линеарни ареоларни равенки (Контурна интеграција. Специјални функции од две комплексни променливи. Ареоларни Лапласови трансформации),
+Докторска дисертација, Скопје, 1992.
+
+\bibitem{dimitrovski1997}
+Д.~Димитровски, Б.~Илиевски, С.~Брсакоска и други:
+Равенка Векуа со аналитички коефициенти,
+Специјални изданија на Институтот за математика при ПМФ на Универзитетот
+„Св. Кирил и Методиј“--Скопје, 1997.
+
+\bibitem{filomat1997}
+D.~Dimitrovski, M.~Rajovi\'c, R.~Stoiljkovi\'c,
+The generalization of the I.N.~Vekua equation with the analytic coefficients,
+Filomat 11 (1997), 29--32.
+
+\bibitem{bstiint1996}
+M.~Rajovi\'c, D.~Dimitrovski, R.~Stojiljkovi\'c,
+Elemental solution of Vekua equation with analytic coefficients,
+Bul.\ \c{S}tiin\c{t}.\ Univ.\ Politeh.\ Timi\c{s}oara Ser.\ Mat.\ Fiz.\ 41(55), no.~1 (1996), 14--21.
+
+\end{thebibliography}
+
+\vspace{5mm}
+
+\noindent
+Ss. Cyril and Methodius University\\
+Faculty of Natural Sciences and Mathematics, Arhimedova 3,\\
+1000 Skopje, R. Macedonia\\
+e-mail: sbrsakoska@gmail.com
+
+\end{document}
+

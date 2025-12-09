@@ -1,0 +1,13 @@
+<configuration>
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%thread] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="console" />
+    </root>
+
+    <logger name="arb.expressions.Expression" level="DEBUG" />
+</configuration>

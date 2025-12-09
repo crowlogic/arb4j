@@ -1,0 +1,912 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{geometry,amsmath}
+\geometry{letterpaper}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\tmtextbf}[1]{\text{{\bfseries{#1}}}}
+\newcommand{\tmtextit}[1]{\text{{\itshape{#1}}}}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\title{Error Bounds for Asymptotic Expansions, with an Application to Cylinder
+Functions of Large Argument}
+
+\author{Frank W. J. Olver}
+
+\maketitle
+
+{\tableofcontents}
+
+\section{Introduction}\label{sec:introduction}
+
+In 1886, Poincar{\'e} {\cite{poincare1886}} introduced the notion of an
+asymptotic expansion
+\begin{equation}
+  \label{eq:asymptotic_expansion} f (x) \sim t_0 + \frac{t_1}{x} +
+  \frac{t_2}{x^2} + \cdots
+\end{equation}
+of an arbitrary function $f (x)$. According to his definition the coefficients
+$t_s$ are independent of $x$, and
+\begin{equation}
+  \label{eq:remainder_definition} f (x) = \sum_{s = 0}^{m - 1} \frac{t_s}{x^s}
+  + \epsilon_m (x)
+\end{equation}
+where, for each $m$, $\epsilon_m (x) = o (1 / x^{m - 1})$ as $x \to \infty$.
+This concept admitted a new class of divergent series expansions to be useful
+in analysis, enabling them to be manipulated in much the same way as
+convergent power series. In turn, this has led to the development of a new
+calculus, later called ``pure asymptotics'' by van der Corput
+{\cite{van_der_corput}}. A feature of this development has been the
+generalization of the original definition of Poincar{\'e}. Schmidt
+{\cite{schmidt}} showed that the restrictive assumption in Poincar{\'e}'s
+definition is not necessary. More recently, Erd{\'e}lyi {\cite{erdelyi}} has
+extended the concept still further, and, with Wyman, applied it to the
+asymptotic evaluation of certain integrals {\cite{erdelyi_wyman}}.
+Erd{\'e}lyi's generalization is given in {\cite{erdelyi_generalization}}
+below.
+
+For some time, however, many numerical mathematicians have been aware that in
+quite another way, the Poincar{\'e} definition is not restrictive enough. To
+understand this point of view, consider for example the well-known asymptotic
+expansion for the Hankel function $H_{\nu}^{(1)} (z)$ for large $|z|$ and
+fixed $\nu$, given by
+\begin{equation}
+  \label{eq:hankel_expansion} H_{\nu}^{(1)} (z) \sim \left( \frac{2}{\pi z}
+  \right)^{1 / 2} e^{i \phi}  \sum_{s = 0}^{\infty} \frac{i^s a_s}{z^s}
+\end{equation}
+in which
+\begin{equation}
+  \label{eq:hankel_coefficients} \phi = z - \frac{1}{2} \nu \pi - \frac{1}{4}
+  \pi, \quad a_s = \frac{(\frac{1}{2} - \nu^2)  (\frac{9}{4} - \nu^2) \cdots
+  ((\frac{s}{2})^2 - \nu^2)}{s! 8^s}
+\end{equation}
+This expansion holds in Poincar{\'e}'s sense {\cite{poincare_sense}} when $-
+\pi < \arg z < 2 \pi$; in fact for arbitrary values of a positive number
+$\delta$, it is uniformly valid in the sector $- \pi + \delta \leq \arg z \leq
+2 \pi - \delta$ in the accepted sense that if the series is truncated after
+$m$ terms, then the constant implied in the error term $O (|z|^{- m})$ can be
+assigned independently of $\arg z$.
+
+Now it will be seen later {\cite{later_reference}} that when $z$ is large and
+if $\arg z$ is not too close to the constant in the uniform error bound
+depends on $z$ and becomes increasingly large as $\delta \to 0$. As a
+consequence, the concept of ``uniform validity'' can be quite misleading in
+applications: an unsuspecting computer evaluating the series
+\eqref{eq:hankel_expansion} by the usual computational procedure of truncation
+at the smallest term may obtain inaccurate results in the sectors $- \pi <
+\arg z < - \pi + \delta$ and $2 \pi - \delta < \arg z < 2 \pi$, grossly so in
+the neighbourhoods of $\arg z = - \pi$ and $2 \pi$.
+
+This situation, although perhaps not widely appreciated, is really a fairly
+surprising, because \eqref{eq:hankel_expansion} is known to break down
+completely on crossing the boundaries $\arg z = - \pi$ and $2 \pi$. It is more
+natural {\cite{natural_reference}} to expect this failure to be gradual than
+abrupt as the boundaries are approached. The behaviour of an ordinary
+Taylor-series expansion of an analytic function is somewhat similar, inasmuch
+as the circle of convergence is approached. The analogy is not complete,
+however. A computer is warned of the inaccuracy of a truncated Taylor series
+near the boundary of its region of validity by a diminution in the rate of
+convergence. No similar warning is available for an asymptotic expansion.
+
+Some way of excluding the direct use of an asymptotic expansion near the
+boundaries of its region of validity is therefore desirable, and it is in this
+sense that the Poincar{\'e} definition is insufficiently restrictive enough.
+To understand this point of view, the restrictive definition should be
+modified. The specific problem of Hankel and Bessel functions of large
+arguments and derive some new results in connection with the expansion
+\eqref{eq:hankel_expansion}.
+
+\section{Complete asymptotic expansions}\label{sec:complete_expansions}
+
+Practical dangers attending the use of asymptotic expansions have been
+stressed previously by Miller {\cite{miller1}} {\cite{miller2}}. In the
+expansions for the Weber functions given in these references, Miller
+distinguishes between regions of validity in the sense of Poincar{\'e} and the
+more restrictive ``complete sense of Watson.'' Essentially, the difference is
+that in the former sense of contributions of an exponentially small character
+are neglected (as they may be, according to the definition), whereas in the
+latter sense they are retained if they have numerical significance.
+
+For example, if $z$ is not an odd integer, then the definition, whereas in the
+complete sense they are retained if they have numerical significance.
+
+For example, if $z$ is not an odd integer then according to the definition
+\eqref{eq:remainder_definition}, the quadrant $\frac{1}{2} \pi < \arg z \leq
+\pi$; this is demonstrated in {\cite{watson_reference}} below. To achieve
+complete validity in the quadrant $- \pi < \arg z \leq 2 \pi$ it is necessary
+to add the series
+\begin{equation}
+  \label{eq:additional_series} (1 + e^{- 2 \nu i \pi}) \sqrt{\frac{2}{\pi z}}
+  e^{- i \phi}  \sum_{s = 0}^{\infty} (- i)^s \frac{a_s}{z^s}
+\end{equation}
+to the right of \eqref{eq:hankel_expansion}, whereas of course in the
+Poincar{\'e} sense \eqref{eq:additional_series} is negligible compared with
+the right of \eqref{eq:hankel_expansion} when $\frac{\pi}{2} < \arg z < 2
+\pi$. Similarly, to achieve complete validity in the quadrant $- \pi < \arg z
+< - \frac{\pi}{2}$, \eqref{eq:additional_series} is subtracted from the right
+of \eqref{eq:hankel_expansion}.
+
+By introducing exponentially small contributions of this type the numerical
+difficulties can be overcome satisfactorily in many cases, and in other cases,
+the precise is difficult to justify mathematically, however, without an
+investigation of the remainder term of the given in {\cite{watson_reference}}
+below. There is no readily applicable general definition of complete validity
+available, nor is it easy to find what ``numerical significance'' is too vague
+a criterion by itself. A drawback in practice of Watson's theory of the
+uniqueness of asymptotic expansions {\cite{watson_uniqueness}} is the need to
+assess properties of the remainder term which are not immediately available in
+many applications. Furthermore, in cases where these properties are known it
+quite possible that the statistic bound for the remainder term is also known,
+thereby obviating the need for the theory for numerical purposes. This is
+certainly true of the example given in Watson's paper {\cite{watson_paper}}.
+
+The difficulty of recognizing when to include the numerical contribution of an
+exponentially small term in an asymptotic expansion is illustrated by the
+following example, which arose some years ago in computations at the National
+Physical Laboratory, Teddington.
+
+Let
+\begin{equation}
+  \label{eq:integral_example} I (n) = \int_0^{\pi} \frac{\cos nt}{t^2 + 1} dt
+\end{equation}
+By repeated integration by parts, one readily shows that for large positive
+integer values of $n$, $I (n)$ has the Poincar{\'e} expansion
+\begin{equation}
+  \label{eq:poincare_expansion} I (n) \sim (- 1)^{n - 1}  \left(
+  \frac{\lambda_1}{n} - \frac{\lambda_2}{n^2} + \frac{\lambda_3}{n^3} - \cdots
+  \right)
+\end{equation}
+in which the coefficients $\lambda_s$ are given by
+\begin{equation}
+  \label{eq:lambda_coefficients} \lambda_s = (n^2 + 1)^{- 2 s} p_{2 s - 1} (n)
+\end{equation}
+the $p_s (t)$ being polynomials in $t$ of degree $s$, defined recursively by
+$p_0 (t) = 1$, and
+\begin{equation}
+  \label{eq:recursive_polynomials} p_s (t) = 2 at \cdot p_{s - 1} (t) - (t^2 +
+  1) p'_{s - 1} (t) \quad (s = 1, 2, \ldots) .
+\end{equation}
+Explicit expressions for the first six polynomials are
+
+\begin{align}
+  p_0 (t) & = 1 \quad p_1 (t) = 2 t \quad p_2 (t) = 2 (3 t^2 - 1) \quad p_3
+  (t) = 24 (t^3 - t)  \label{eq:explicit_polynomials}\\
+  p_4 (t) & = 24 (5 t^4 - 10 t^2 + 1) \quad p_5 (t) = 240 (3 t^5 - 10 t^3 + 3
+  t) 
+\end{align}
+
+and on numerical evaluation, one obtains to five decimals
+\begin{equation}
+  \label{eq:numerical_values} \lambda_1 = 0.05318 \quad \lambda_2 = 0.04791
+  \quad \lambda_3 = 0.08985
+\end{equation}
+Thus for $n = 10$, the series \eqref{eq:poincare_expansion} gives
+\begin{equation}
+  \label{eq:series_result} I (10) \approx - (0.0005318 - 0.0000048 + 0.0000001
+  - \cdots) = - 0.0005271.
+\end{equation}
+This answer is quite incorrect however, because direct numerical quadrature of
+the expression \eqref{eq:integral_example} yields, to seven decimals,
+\begin{equation}
+  \label{eq:quadrature_result} I (10) = - 0.0004558
+\end{equation}
+The inclusion of additional terms in the expansion would not help matters, and
+a partial explanation of the discrepancy is as follows. One may write
+\begin{equation}
+  \label{eq:integral_split} I (n) = \int_0^{\infty} \frac{\cos nt}{t^2 + 1} dt
+  - \int_{\pi}^{\infty} \frac{\cos nt}{t^2 + 1} dt
+\end{equation}
+The first of these integrals equals $\frac{\pi}{2} e^{- n}$; the second may
+again be expanded by repeated partial integration. In this way, one finds that
+\begin{equation}
+  \label{eq:alternative_expansion} I (n) \sim \frac{1}{2} \pi e^{- n} + (-
+  1)^{n - 1}  \left( \frac{\lambda_1}{n^2} - \frac{\lambda_2}{n^4} +
+  \frac{\lambda_3}{n^6} - \cdots \right)
+\end{equation}
+where the $\lambda_s$ are the same as in \eqref{eq:lambda_coefficients}. From
+this result one obtains the correct numerical value at $n = 10$, because
+\begin{equation}
+  \label{eq:correct_value} \frac{1}{2} \pi e^{- 10} = 0.0000713
+\end{equation}
+which is exactly the discrepancy between the values \eqref{eq:series_result}
+and \eqref{eq:quadrature_result}.
+
+An alternative way of deriving \eqref{eq:alternative_expansion} is to apply
+the Residue theorem and Watson's lemma {\cite{watson_lemma}}, page 236, to the
+contour integral
+\begin{equation}
+  \label{eq:contour_integral} \int_C \frac{e^{int}}{t^2 + 1} dt
+\end{equation}
+where $C$ is the rectangle having vertices $\pm \pi$ and $\pm \pi + i$.
+
+In the sense of Miller and Watson, \eqref{eq:alternative_expansion} is
+apparently a complete asymptotic expansion for positive integer $n$, whereas
+\eqref{eq:poincare_expansion} is incomplete. There is, however, no
+self-evident conclusive mathematical reason why this should be so, in fact
+\eqref{eq:alternative_expansion} was obtained by less obvious procedures. It
+is even possible that \eqref{eq:alternative_expansion} is itself incomplete,
+for without further investigation one does not know whether or not there have
+been neglected other exponential terms, for example $e^{- 2 n}$, which make
+numerically significant contributions for smaller values of $n$.
+
+\section{The need for error bounds}\label{sec:need_error_bounds}
+
+The difficulty illustrated by the examples of the previous sections is linked
+to a fundamental weakness of the Poincar{\'e} definition: it provides no
+direct answer to the question ``What is the precise relation between an
+asymptotic expansion and the function from which it is derived?'' Thus
+strictly speaking there is no connection between pure asymptotics and applied
+mathematics, except in the limit $|z| = \infty$. To establish a connection,
+two courses are open. Either one can seek upper bounds for the differences
+between the partial sums of an asymptotic expansion and the function from
+which it was obtained, or one can endeavour to transform the expansion into a
+convergent form, as, for example, in {\cite{reference17}} and
+{\cite{reference19}}. In the present paper the authors confine themselves to
+the former possibility.
+
+Although the theory of pure asymptotics has been extensively developed and
+applied, the corresponding theory of error bounds has been comparatively
+neglected. The literature on this aspect consists mainly of scattered results
+applicable to special functions.
+
+The few theorems of a general nature which have been discovered
+{\cite{reference3}}, {\cite{reference5}}, are concerned with asymptotic
+expansions of integral representations with real variables. (The example of
+\eqref{eq:integral_example}, incidentally, is not covered by these theorems.)
+A possible reason for this neglect is the belief {\cite{reference1}},
+{\cite{reference17}}, that when error bounds are needed they can be obtained
+merely by retracing the steps of the asymptotic proof. This is frequently a
+difficult and tedious undertaking, and the bounds it yields are often quite
+unrealistic. There is no readily applicable general theorem, and the writer's
+experience with expansions arising from differential equations indicates that
+it may often be necessary to develop entirely new proofs of the theorems of
+pure asymptotics before attempting to follow through explicit treatment of the
+error terms.
+
+In this connection, attention may be drawn to the suggestion of Wyman
+{\cite{wyman}} that the main direction in which the modern theory of
+asymptotics will move is towards the use of more general concepts in the
+theory of pure asymptotics. The importance of investigating such
+generalizations is indisputable, but perhaps there is a need to stress that
+the bridging of a gap between pure and applied mathematics in this branch of
+analysis by the development of satisfactory theories of error bounds is also
+of importance. Moreover, such theories may sometimes provide an alternative
+way of overcoming one of the difficulties which has helped stimulate the
+recent further generalizations {\cite{reference6}} in the definition of an
+asymptotic expansion: the need to avoid narrow concepts concerning both the
+choice of asymptotic variable for a given expansion, and the nature of the
+uniformity of the expansion with respect to other variables.
+
+This observation may be illustrated briefly by the following example. In
+{\cite{reference17}}, \eqref{eq:reference_6_31}, Erd{\'e}lyi and Wyman have
+published a generalized series expansion in terms of Airy functions for the
+Hankel function $H_{\nu}^{(1)} (x)$ when $\nu$ and $x$ are real and positive,
+having a ``scale''
+\begin{equation}
+  \label{eq:scale_function} \tau^{- 1}  (2 m / 3)  \quad \text{as} \quad \tau
+  \to \infty, \quad \text{where}
+\end{equation}
+\begin{equation}
+  \label{eq:tau_definition} \tau = | \frac{1}{4} (\nu^2 - x^2) |^{1 / 2} +
+  (\frac{1}{2} \nu)^{3 / 2}
+\end{equation}
+This means that for each fixed integer $m$, the $(m + 1)$th partial sum of the
+series differs from $H_{\nu}^{(1)} (x)$ by $o (\tau^{- 1 - (2 m / 3)})$ as
+$\tau \to \infty$. Thus these authors have succeeded in describing the
+behaviour of $H_{\nu}^{(1)} (x)$ when either $x$ or $\nu$ is large by means of
+a single asymptotic expansion. Other investigators, using Poincar{\'e}
+expansions, have had to distinguish between the two cases. Recently however,
+the present writer {\cite{present_writer}} has derived sharp error bounds for
+the most
+
+powerful of the existing Poincar{\'e}-type expansions for $H_{\nu}^{(1)} (x)$
+for large $x$, namely the uniform expansion in terms of Airy functions. From
+these bounds it can be seen that although the expansion was derived on the
+assumption that $\nu$ is large, it also has an asymptotic property for large
+$x$. Indeed, without going into detailed proof, it can be stated that the
+uniform expansion in terms of Airy functions for large $x$ is also a
+generalized expansion, in the sense of Erd{\'e}lyi, this time with respect to
+the scale $| (\nu t)^{- m (x - \nu)} |$ as $x \to \infty$, for any
+non-negative number $\delta$. This is, in fact, a considerably more powerful
+scale than that of the new expansion.
+
+(Notwithstanding the generally and greater power of the Airy function
+expansion, the Poincar{\'e}-type expansion of $H_{\nu}^{(1)} (x)$ for fixed
+$\nu$ and large $x$ remains important, owing to its simplicity, and a further
+study of it is made in \eqref{eq:sections_5_7}.)
+
+\section{Nature of the error bounds}\label{sec:nature_error_bounds}
+
+In seeking bounds for the error term of the partial expansion of the form
+\eqref{eq:remainder_definition}, what kind of success can be hoped for? If
+$t_m$ is non-zero, then on replacing $x$ by the complex variable $z$, the
+bound $| \epsilon_m (z) | \sim |t_m z^{- m} |$. Hence the most that can be
+established, in general, is that $| \epsilon_m (z) |$ is bounded by the
+modulus of the first (non-vanishing) neglected term of the series. This bound
+cannot apply when $| \arg t_{m + 1} / (zt_m) | < \frac{1}{2} \pi$, however,
+for the modulus of the right side of the equation
+\begin{equation}
+  \label{eq:error_bound_equation} \epsilon_m (z) = t_m z^{- m} + t_{m + 1}
+  z^{- m - 1} + o (|z|^{- m - 1})
+\end{equation}
+would exceed that of its first term for all sufficiently large $|z|$. In
+particular, this happens when $t_m$ and $t_{m + 1}$ are real and of the same
+sign, and $z$ is real and positive.
+
+A modest error bound which would always be feasible is a multiple $(> 1)$ of
+the modulus of the first non-vanishing neglected term. This multiple itself
+could depend on $z$, and then ideally it would tend to unity as $|z| \to
+\infty$. The last condition is not essential from the standpoint of most
+applications however, and a bound of this kind if likely to be quite
+satisfactory with any value of $|z|$ not too large. Perhaps this can be
+appreciated best by observing that for a specified precision in $(z)$, the
+difference between having $|p_m t_m z^{- m} |$ and $|t_m z^{- m} |$ as bounds
+for $\epsilon_m (z)$ only affects the minimum allowable value of $|z|$ by the
+factor $(p_m)^{1 / m}$. Certainly, for example, if $p_m < 10$ there are few
+situations in which such a reduction in the region of applicability is likely
+to be of importance. From this point of view, the expenditure of heavy
+analytical effort to achieve a slight reduction in the value of $p_m$ is
+unjustified, except possibly in the case of the dominant term $(m = 1)$ of the
+expansion.
+
+\section{Hankel functions of large argument}\label{sec:hankel_functions}
+
+The following theorem is obtained from Theorem 7 of {\cite{reference12}} by
+taking the parameter $u$ occurring there to be unity, and making minor
+changes:
+
+\begin{theorem}
+  \label{thm:hankel_functions}Let $f (z)$ be regular in a simply-connected
+  complex domain $D$, and a sequence of functions $A_s (z)$ be defined by $A_0
+  (z) = 1$ and
+  \begin{equation}
+    \label{eq:hankel_recurrence} A_{s + 1} (z) = - \frac{1}{2} A_s' (z) +
+    \frac{1}{4}  \int f (z) A_s (z) dz \quad (s = 0, 1, \ldots)
+  \end{equation}
+\end{theorem}
+
+Then the differential equation
+\begin{equation}
+  \label{eq:hankel_differential} \frac{d^2 w}{dz^2} = \{1 + f (z)\} w
+\end{equation}
+has a solution $w_m (z)$, depending on an arbitrary point $a$ of $D$ and an
+arbitrary positive integer $m$, such that
+\begin{equation}
+  \label{eq:hankel_solution} w_m (z) = e^z \left[ \sum_{s = 0}^{m - 1}
+  \frac{A_s (z) + \epsilon_m (z)}{z^s} \right]
+\end{equation}
+and
+\begin{equation}
+  \label{eq:hankel_solution_prime} w_m' (z) = e^z  \left[ \sum_{s = 0}^{m - 1}
+  \{A_s (z) + A_s' (z)\}+ \eta_m (z) \right]
+\end{equation}
+where
+
+A form of error bound which has emerged from recent investigations by the
+writer {\cite{reference12}}, {\cite{reference13}} of the asymptotic solutions
+of certain second-order differential equations with respect to a parameter
+effectively consists of the variation, that is, the integral of the modulus of
+the derivative, of the first neglected term of the series taken over a
+suitable contour. More recent work, in preparation for publication, has shown
+that bounds of this type are also applicable, in certain cases, to asymptotic
+expansions of solutions for differential equations without a parameter $z \to
+\infty$ and $(1.01)$, and from the observations made in
+\eqref{eq:sections_1_1} might expect that as $z$ approaches the boundaries of
+the regions of validity, the contour of integration would naturally be subject
+to certain restrictions, and from the observations made in
+\eqref{eq:sections_1_1} we might expect that the bound it decreases in $\Re
+z$.
+
+In the remaining part of this paper, it is shown that this variational form of
+error bound is applicable to the standard cylinder functions of large
+argument, and that it does indeed have the feature just described.
+\begin{equation}
+  \label{eq:epsilon_m_bound} | \epsilon_m (z) |, | \eta_m (z) | \leq 2 \exp
+  \{2| u| \cdot (A_s)_P \} \cdot (A_s)_P \cdot \epsilon_m \cdot H (a)
+\end{equation}
+In this result the symbol $V_{a, z} (A_s)$ denotes the variation of the
+function $A_s$ over a path $P$ connecting $a$ and $z$, given by
+\begin{equation}
+  \label{eq:variation_definition} V_{a, z} (A_s) = \int_P |A_s' (t) | dt
+\end{equation}
+similarly for $V_{a, z} (A_s')$. The region $H (a)$ is the subset of $D$
+comprising those points for which there exists a path $P$ such that:
+\begin{enumerate}
+  \item $P$ lies entirely in $D$;
+  
+  \item $P$ consists of a finite number of Jordan arcs, each having a
+  parametric equation of the form $t = t (\tau)$ with $t' (\tau)$ continuous
+  and $t' (\tau)$ non-vanishing;
+  
+  \item $\Re t$ is monotonic non-decreasing as $t$ traverses $P$ from $a$ to
+  $z$.
+\end{enumerate}
+The point $a$, incidentally, may be the point at infinity on a straight line
+$t$ lying in $D$; in this event one supposes that $P$ coincides with $t$ for
+all sufficiently large $|t|$.
+
+The original purpose of this theorem was to provide asymptotic developments of
+solutions of \eqref{eq:hankel_differential}, complete with error bounds, when
+$f (z)$ depends on a large parameter $u$. Suppose, however, that the parameter
+is absent, and
+\begin{equation}
+  \label{eq:f_asymptotic} f (z) \sim kz^{- 1 - \sigma} \quad \text{as} \quad
+  |z| \to \infty
+\end{equation}
+where $k, \sigma$ are constants and $\sigma > 0$. Then for large $|z|$,
+\eqref{eq:hankel_solution} and \eqref{eq:hankel_solution_prime} are
+generalized asymptotic developments, complete with error bounds. For if the
+limits of integration on the right of \eqref{eq:hankel_solution} are taken to
+be $a = \infty$ and $z$, it readily follows by induction that $A_s (z) = O
+(|z|^{- s \sigma_1})$ ($s = 1, 2, \ldots$), where $\sigma_1 = \min (\sigma,
+1)$. Moreover, from \eqref{eq:variation_definition}, with $a = \infty$, one
+derives $\epsilon_m (z), \eta_m (z) = O (|z|^{- m \sigma_1})$.
+
+Thus in the sense of Erd{\'e}lyi {\cite{erdelyi}}, equations
+\eqref{eq:hankel_solution} and \eqref{eq:hankel_solution_prime} are
+generalized asymptotic expansions with respect to the scale $\{|z|^{- s
+\sigma_1} \}$ as $|z| \to \infty$.
+
+The expansion \eqref{eq:hankel_solution} is generally less convenient than the
+usual Thom{\'e} asymptotic expansions in descending powers of $z$
+{\cite{reference5}}, {\cite{reference2}}, because of the need to evaluate the
+functions $A_s (z)$ for $s \geq 1$. The case of Bessel's differential equation
+is special, however, in that the two forms of expansion become the same with a
+suitable choice of $f (z)$.
+
+Set
+\begin{equation}
+  \label{eq:bessel_f} f (z) = (\nu^2 - \frac{1}{4}) / z^2
+\end{equation}
+where $\nu$ is a constant. The solution of equation
+\eqref{eq:hankel_differential} is then given by $w = z^{1 / 2} C_{\nu}  (\pm
+iz)$, where $C_{\nu}$ denotes the general cylinder function of order $\nu$.
+Applying the theorem with $a = - \infty$, and replacing $z$ by $iz$, one
+constructs a solution
+\begin{equation}
+  \label{eq:bessel_solution} w_m = e^{iz}  \left\{ \sum_{s = 0}^{m - 1}
+  \frac{a_s}{z^s} + \epsilon_m \right\}
+\end{equation}
+in which $a_s$ is defined by \eqref{eq:hankel_coefficients} and
+\begin{equation}
+  \label{eq:bessel_error_bound} | \epsilon_m | \leq 2 \exp \{| \nu^2 -
+  \frac{1}{4} |V_{i \infty, z} (\tau^{- m})\} V_{i \infty, z}  (a_m \tau^{-
+  m})
+\end{equation}
+The path of variation is subject to the condition that $\Im t$ is monotonic,
+and this restricts $z$ to the region $- \pi < \arg z < 2 \pi$.
+
+Clearly
+\begin{equation}
+  \label{eq:bessel_hankel_relation} w_m = Az^{1 / 2} H_{\nu}^{(1)} (z) + Bz^{1
+  / 2} H_{\nu}^{(2)} (z),
+\end{equation}
+where $A, B$ are independent of $z$. Letting $z \to i \infty$, one sees that
+$C = 0$ and $e^{i \nu \pi} = - 1$. Using the known asymptotic forms of the
+Hankel functions {\cite{reference18}}, one deduces that $B = 0$ and $A =
+(\frac{1}{2} i)^{1 / 2} e^{i (\frac{1}{2} \nu + \frac{1}{4}) \pi}$. Thus one
+derives the main result of this section:
+\begin{equation}
+  \label{eq:main_hankel_result} H_{\nu}^{(1)} (z) = \left( \frac{2}{\pi z}
+  \right)^{1 / 2} e^{i (z - \frac{1}{2} \nu \pi - \frac{1}{4} \pi)}  \left\{
+  \sum_{s = 0}^{m - 1} \frac{i^s a_s}{z^s} + \epsilon_m \right\}
+\end{equation}
+when $- \pi < \arg z < 2 \pi$, where $\epsilon_m$ is subject to
+\eqref{eq:bessel_error_bound}. The bound is now proceed to an evaluation of
+this bound.
+
+\section{Evaluation of the variations}\label{sec:evaluation_variations}
+
+The problem discussed in this section is the choice of the path $P$ connecting
+$i \infty$ and $z$ to minimize the quantity
+\begin{equation}
+  \label{eq:minimize_quantity} V_{i \infty, z} (\tau^{- m}) = m \int_P |
+  \tau^{- m - 1} | dt| \quad (m \geq 1)
+\end{equation}
+One writes $\theta = \arg z - \frac{1}{2} \pi$, and considers in turn the
+cases $| \theta | \leq \frac{1}{2} \pi$, $\frac{1}{2} \pi < | \theta | \leq
+\pi$, $\pi < | \theta | < \frac{3}{2} \pi$.
+\begin{enumerate}
+  \item $| \theta | \leq \frac{1}{2} \pi$. Consider the path which is
+  indicated on Figure~\ref{fig:path_1} when $\theta$ is positive and is its
+  image in the imaginary axis when $\theta$ is negative. It comprises part of
+  the imaginary axis, a circular arc of radius $R$ centred at the origin,
+  where $R > |z|$ is arbitrary, and the straight line with parametric equation
+  \begin{equation}
+    \label{eq:parametric_line} t = z + \tau e^{i (\theta + \frac{1}{2} \pi)} 
+    \quad (0 \leq \tau \leq R - |z|)
+  \end{equation}
+  As $R \to \infty$ the contributions to the variation from the imaginary axis
+  and the circular arc both vanish, and one obtains
+  \begin{equation}
+    \label{eq:variation_limit_1} \lim_{R \to \infty} V_{i \infty, z} (\tau^{-
+    m}) = \int_0^{\infty} \frac{m}{|z + \tau e^{i (\theta + \frac{1}{2} \pi)}
+    |^{m + 1}} dt = \int_0^{\infty} \frac{m}{|z|^m} dt
+  \end{equation}
+  Since this actually equals the modulus of the difference between the values
+  of $\tau^{- m}$ at the extremities of the path, no other path can yield a
+  smaller variation.
+  
+  \item $\frac{1}{2} \pi < | \theta | \leq \pi$. Consider the path indicated
+  in Figure~\ref{fig:path_2}. Again, as the radius $R$ of the circular arc
+  tends to infinity the contributions from this arc and the imaginary axis
+  both vanish, and one obtains
+  \begin{equation}
+    \label{eq:variation_limit_2} V_{i \infty, z} (\tau^{- m}) =
+    \int_0^{\infty} \frac{mdt}{|z - \tau |^{m + 1}} = \int_0^{\infty}
+    \frac{mdt}{(\tau + |z|)^2 + y^2} \cdot \frac{1}{| \tau |^{m + 1}}
+  \end{equation}
+  where $x$ and $y$ denote the real and imaginary parts of $z$, respectively.
+  
+  That this path minimizes the variation can be seen as follows. Let one
+  travel a prescribed distance $\tau$ along any admissible path from $z$,
+  arriving at $t_0$ say. For the path of Figure~\ref{fig:path_2} one has $t_0
+  = z - \tau$, and for any other path $t$ lies within or on the circle centred
+  at $z$ and passing through $t_0$; see Figure~\ref{fig:path_3}. Clearly $|t|
+  > |t_0 |$ only if $t$ lies within the shaded lune bounded by this circle and
+  the circular arc centred at the origin and passing through $t_0$. No path
+  can be admitted to this lune however, because $\Im t < \Im z$ in its
+  interior. Hence $|t| \leq |t_0 |$, which leads to the stated result of this
+  paragraph.
+  
+  The integral \eqref{eq:variation_limit_2} can be evaluated in terms of
+  elementary functions for all integer values of $m$; for example
+  \begin{equation}
+    \label{eq:variation_elementary} V_{i \infty, z} (\tau^{- 1}) = \left|
+    \frac{1}{2} - \tan^{- 1}  \frac{|z|}{y} \right|  \quad (y \neq 0),
+  \end{equation}
+  \begin{equation}
+    \label{eq:variation_y_zero} V_{i \infty, z} (\tau^{- 1}) = \frac{1}{|x|} 
+    \quad (y = 0) .
+  \end{equation}
+  To avoid unnecessary complication however, the bound is established by the
+  slightly weaker form
+  \begin{equation}
+    \label{eq:weaker_bound} V_{i \infty, z} (\tau^{- m}) \leq \int_0^{\infty}
+    \frac{md \tau}{(\tau^2 + x^2 + y^2)^{1 / 2 m + 1 / 2}} = \frac{\chi
+    (m)}{|z|^m},
+  \end{equation}
+  in which
+  \begin{equation}
+    \label{eq:chi_definition} \chi (m) = \sqrt{\pi}  \frac{\Gamma (\frac{1}{2}
+    m + 1)}{\Gamma (\frac{1}{2} m + \frac{1}{2})} .
+  \end{equation}
+  This bound is in fact attained when $x = 0$.
+  
+  \item $\pi < | \theta | < \frac{3}{2} \pi$. The minimizing path is indicated
+  on Figure~\ref{fig:path_4}. To prove this assertion, let any other path
+  intersect the negative imaginary axis at the point $i \mu$. If $\kappa \neq
+  y$ the result follows immediately from (ii), hence one supposes that $\kappa
+  = y > 0$. On travelling a distance $\tau$ from $i \mu$ towards $z$ one
+  arrives at a point $t$ somewhere within or on the smaller circle of
+  Figure~\ref{fig:path_5}, whereas on the minimizing path one arrives at $t_0
+  = i \mu + \tau$. Again one has $|t| \leq |t_0 |$ except within the
+  inadmissible lune.
+  
+  On letting $R \to \infty$, one obtains
+  \begin{equation}
+    \label{eq:path_4_variation} V_{i \infty, z} (\tau^{- m}) = \int_y^{\infty}
+    \frac{md \tau}{|m + 1|} = \int_0^{\infty} \frac{md \tau}{|iy + \tau |^{m +
+    1}} + \int_0^{\infty} \frac{md \tau}{|iy + \tau |^{m + 1}}
+  \end{equation}
+  The last of these integrals equals $\chi (m) |y|^{- m}$ and the one before
+  it is bounded by this quantity. Therefore
+  \begin{equation}
+    \label{eq:final_bound} V_{i \infty, z} (\tau^{- m}) < 2 \chi (m)  | \Im
+    z|^{- m}
+  \end{equation}
+  One observes that as $\arg z$ approaches either of its extreme values $-
+  \pi$ and $2 \pi$, $V_{i \infty, z} (\tau^{- m})$ becomes increasingly large,
+  as anticipated in {\textsection}{\textsection}1 and 4 above.
+  
+  \section{Collected results for cylinder
+  functions}\label{sec:collected_results}
+  
+  On combining the analysis of the last two sections and extending it by means
+  of \eqref{eq:hankel_solution_prime} to the derivative $\frac{d}{dz}
+  H_{\nu}^{(1)} (z)$, one has the following results, in which $\nu$ is an
+  unrestricted real or complex number.
+  \begin{equation}
+    \label{eq:hankel_main_result} H_{\nu}^{(1)} (z) = \left( \frac{2}{\pi z}
+    \right)^{1 / 2} e^{i \phi}  \left\{ \sum_{s = 0}^{m - 1} \frac{i^s
+    a_s}{z^s} + \epsilon_m \right\}
+  \end{equation}
+  \begin{equation}
+    \label{eq:hankel_derivative_result} \frac{d}{dz} H_{\nu}^{(1)} (z) =
+    \left( \frac{2}{\pi z} \right)^{1 / 2} ie^{i \phi}  \left\{ \sum_{s =
+    0}^{m - 1} i^s  \frac{b_s}{z^s} + i^m  \frac{(b_m - a_m)}{z^m} + \eta_m +
+    \frac{1}{2 z} \epsilon_m \right\}
+  \end{equation}
+  where $\phi = z - \frac{1}{2} \nu \pi - \frac{1}{4} \pi$
+  \begin{equation}
+    \label{eq:coefficient_formulas} a_s = \frac{(\frac{1}{4} \nu^2 -
+    \frac{1}{4})  (\frac{1}{4} \nu^2 - \frac{9}{4}) \cdots (\frac{1}{4} \nu^2
+    - (2 s - 1)^2)}{8^s s!} \quad b_s = \frac{4 \nu^2 + 4 s^2 - 1}{8} a_s
+  \end{equation}
+  \begin{equation}
+    \label{eq:error_bounds_final} | \epsilon_m |, | \eta_m | \leq 2 |a_m |
+    \exp \{| \nu^2 - \frac{1}{4} |V_{i \infty, z} (\tau^{- 1})\} V_{i \infty,
+    z} (\tau^{- m})
+  \end{equation}
+  and
+  \begin{equation}
+    \label{eq:variation_bounds} V_{i \infty, z} (\tau^{- m}) \leq
+    \left\{\begin{array}{ll}
+      |z|^{- m} & (0 \leq \arg z \leq \pi)\\
+      \chi (m) |z|^{- m} & (- \frac{1}{2} \pi < \arg z < 0 \text{or } \pi <
+      \arg z \leq \frac{3}{2} \pi)\\
+      2 \chi (m)  | \Im z|^{- m} & (- \pi < \arg z < - \frac{1}{2} \pi
+      \text{or } \frac{3}{2} \pi < \arg z < 2 \pi)
+    \end{array}\right.
+  \end{equation}
+  In \eqref{eq:hankel_main_result} and \eqref{eq:hankel_derivative_result} the
+  branch of $z^{1 / 2}$ is $\exp (\frac{1}{2} \ln |z| + \frac{1}{2} i \arg
+  z)$, and in \eqref{eq:variation_bounds} $\chi (m)$ is defined by
+  \eqref{eq:chi_definition}. The values of the first ten $\chi (m)$ to two
+  decimal places are as follows:
+  
+  \begin{center}
+    \begin{tabular}{cc|cc}
+      $m$ & $\chi (m)$ & $m$ & $\chi (m)$\\
+      \hline
+      1 & 1.57 & 6 & 3.20\\
+      2 & 2.00 & 7 & 3.44\\
+      3 & 2.36 & 8 & 3.66\\
+      4 & 2.67 & 9 & 3.87\\
+      5 & 2.95 & 10 & 4.06
+    \end{tabular}
+  \end{center}
+  
+  For large $m$, $\chi (m) \sim \sqrt{\frac{1}{2} m \pi}$.
+  
+  The corresponding results for $H_{\nu}^{(2)} (z)$ and its derivative are
+  obtained by changing the sign of $i$ throughout, and replacing the
+  $z$-exponential by its respective conjugates.
+  
+  In applying these results, the bounds for the quantity $V_{i \infty, z}
+  (\tau^{- 1})$ appearing in \eqref{eq:error_bounds_final} are obtained by
+  setting $m = 1$ and $\chi (1) = \frac{\pi}{2}$ in
+  \eqref{eq:variation_bounds}. It should be observed that for all values of
+  $z$ in the region $- \frac{\pi}{2} \leq \arg z \leq \frac{3 \pi}{2}$ for
+  which the expansions \eqref{eq:hankel_main_result} and
+  \eqref{eq:hankel_derivative_result} are computationally useful, the factor
+  $\exp \{| \nu^2 - \frac{1}{4} |V_{i \infty, z} (\tau^{- 1})\}$ is
+  approximately unity, because a necessary condition that $|a_{s + 1}^m |$ be
+  small compared with the leading term 1 of each series is that $|z| > | \nu^2
+  - \frac{1}{4} |$.
+  
+  For other ranges of $\arg z$ use may be made of the connection formula
+  {\cite{reference18}}, {\textsection}3.62,
+  \begin{equation}
+    \label{eq:connection_formula} H_{\nu}^{(1)}  (ze^{n \pi i}) = \sin (1 - n)
+    \nu \pi \cos ec \nu \pi H_{\nu}^{(1)} (z) + \sin n \pi \cos ec \nu \pi
+    H_{\nu}^{(1)}  (ze^{n \pi}),
+  \end{equation}
+  in which $n$ is a positive or negative integer. In the application of this
+  formula, $\arg z$ can always be taken in the range $(- \frac{\pi}{2},
+  \frac{3 \pi}{2})$, which means that the use of \eqref{eq:hankel_main_result}
+  and \eqref{eq:hankel_derivative_result} can be confined to the sector $-
+  \frac{\pi}{2} \leq \arg z \leq \frac{3 \pi}{2}$. Thus the direct use of
+  \eqref{eq:hankel_main_result} and \eqref{eq:hankel_derivative_result} in the
+  sectors $- \pi < \arg z < - \frac{\pi}{2}$ and $\frac{3 \pi}{2} < \arg z < 2
+  \pi$ is fraught with the danger of a large error term; it can be avoided
+  altogether. In effect, the more accurate connection-formula procedure
+  improves the accuracy of \eqref{eq:hankel_main_result} and
+  \eqref{eq:hankel_derivative_result} in these two sectors by adding in
+  appropriate contributions of an exponentially small nature, and accordingly
+  provides a rigorous justification, in the present example, of Miller's use
+  of complete asymptotic expansions {\cite{reference2}}.
+  
+  Corresponding results for the functions $J_{\nu} (z)$ and $Y_{\nu} (z)$ are
+  immediately deducible from those for the Hankel functions by means of the
+  relations
+  \begin{equation}
+    \label{eq:bessel_jy_relation} J_{\nu} (z) = \frac{1}{2}  (H_{\nu}^{(1)}
+    (z) + H_{\nu}^{(2)} (z)), \quad Y_{\nu} (z) = \frac{1}{2 i} 
+    (H_{\nu}^{(2)} (z) - H_{\nu}^{(1)} (z)) .
+  \end{equation}
+  One finds that
+  
+  \begin{align}
+    J_{\nu} (z) & = \left( \frac{2}{\pi z} \right)^{1 / 2}  \left\{ \cos \phi
+    \sum_{s = 0}^{m - 1} (- 1)^s \frac{a_{2 s}}{z^{2 s}} - \sin \phi \sum_{s =
+    0}^{m - 1} (- 1)^s \frac{a_{2 s + 1}}{z^{2 s + 1}} + \epsilon_{2 m}
+    \right\}  \label{eq:j_nu_expansion}\\
+    & = \left( \frac{2}{\pi z} \right)^{1 / 2}  \left\{ \cos \phi \sum_{s =
+    0}^m (- 1)^s \frac{a_{2 s}}{z^{2 s}} - \sin \phi \sum_{s = 0}^{m - 1} (-
+    1)^s \frac{a_{2 s + 1}}{z^{2 s + 1}} + \epsilon_{2 m + 1} \right\}, 
+    \label{eq:j_nu_expansion_alt}
+  \end{align}
+  
+  and
+  
+  \begin{align}
+    Y_{\nu} (z) & = \left( \frac{2}{\pi z} \right)^{1 / 2}  \left\{ \sin \phi
+    \sum_{s = 0}^{m - 1} (- 1)^s \frac{a_{2 s}}{z^{2 s}} + \cos \phi \sum_{s =
+    0}^{m - 1} (- 1)^s \frac{a_{2 s + 1}}{z^{2 s + 1}} + \beta_{2 m} \right\} 
+    \label{eq:y_nu_expansion}\\
+    & = \left( \frac{2}{\pi z} \right)^{1 / 2}  \left\{ \sin \phi \sum_{s =
+    0}^m (- 1)^s \frac{a_{2 s}}{z^{2 s}} + \cos \phi \sum_{s = 0}^{m - 1} (-
+    1)^s \frac{a_{2 s + 1}}{z^{2 s + 1}} + \beta_{2 m + 1} \right\}, 
+    \label{eq:y_nu_expansion_alt}
+  \end{align}
+  
+  where
+  \begin{equation}
+    \label{eq:error_bounds_jy_1} | \alpha_m |, | \beta_m | \leq (|e^{\nu \pi i
+    / 2} | + |e^{- \nu \pi i / 2} |) \exp \left\{ \frac{| \nu^2 - \frac{1}{4}
+    |}{2}  \frac{|a_m |}{z^m} \right\}  \quad (\arg z = 0),
+  \end{equation}
+  \begin{equation}
+    \label{eq:error_bounds_jy_2} | \alpha_m |, | \beta_m | \leq (|e^{\pi | \nu
+    | / 2} | + \chi (m) |e^{\pi | \nu | / 2} |) \exp \left\{ \frac{\pi | \nu^2
+    - \frac{1}{4} |}{2| z|} \right\} \frac{|a_m |}{|z|^m}  \quad (0 < | \arg
+    z| \leq \frac{1}{2} \pi),
+  \end{equation}
+  \begin{equation}
+    \label{eq:error_bounds_jy_3} | \alpha_m |, | \beta_m | \leq (|e^{\pi | \nu
+    |} | + 2 \chi (m) |e^{\pi | \nu |} |) \exp \left\{ \frac{\pi | \nu^2 -
+    \frac{1}{4} |}{| \Im z|} \right\} \frac{|a_m |}{| \Re z|^m}  \quad
+    (\frac{1}{2} \pi < | \arg z| < \pi) .
+  \end{equation}
+  The upper or lower signs are taken in \eqref{eq:error_bounds_jy_2} and
+  \eqref{eq:error_bounds_jy_3}, according as $\arg z$ is positive or negative.
+  Again, one sees that to achieve maximum accuracy the use of
+  \eqref{eq:j_nu_expansion} and \eqref{eq:y_nu_expansion} should be confined
+  to the half-plane $| \arg z| \leq \frac{1}{2} \pi$ and connection formulae
+  used elsewhere.
+  
+  Next, the modified Bessel functions are considered:
+  \begin{equation}
+    \label{eq:modified_bessel_definition} K_{\nu} (z) = \frac{\pi}{2} 
+    \frac{i^{\nu + 1} H_{\nu}^{(1)}  (iz)}{i^{1 / 2}}, \quad I_{\nu} (z) =
+    \frac{1}{2} i^{- \nu - 1}  (H_{\nu}^{(1)} (iz) + H_{\nu}^{(2)} (iz)) .
+  \end{equation}
+  For the former, one derives immediately from \eqref{eq:hankel_main_result}
+  \begin{equation}
+    \label{eq:k_nu_expansion} K_{\nu} (z) = \left( \frac{\pi}{2 z} \right)^{1
+    / 2} e^{- z}  \left\{ \sum_{s = 0}^{m - 1} \frac{a_s}{z^s} + \gamma_m
+    \right\},
+  \end{equation}
+  where
+  \begin{equation}
+    \label{eq:k_nu_error_bounds} | \gamma_m | \leq \left\{\begin{array}{ll}
+      2 \exp \left\{ - \frac{| \nu^2 - \frac{1}{4} |}{|z|} \right\} \frac{|a_m
+      |}{|z|^m} & (| \arg z| \leq \frac{3}{2} \pi),\\
+      2 \chi (m) \exp \left\{ \frac{\pi | \nu^2 - \frac{1}{4} |}{2| z|}
+      \right\} \frac{|a_m |}{|z|^m} & (\frac{1}{2} \pi < | \arg z| \leq
+      \pi),\\
+      4 \chi (m) \exp \left\{ \frac{\pi | \nu^2 - \frac{1}{4} |}{| \Re z|}
+      \right\} \frac{|a_m |}{| \Re z|^m} & (\pi < | \arg z| < \frac{3}{2} \pi)
+      .
+    \end{array}\right.
+  \end{equation}
+  For the latter, one finds that
+  \begin{equation}
+    \label{eq:i_nu_expansion} I_{\nu} (z) = \frac{e^z}{(2 \pi z)^{1 / 2}} 
+    \left\{ \sum_{s = 0}^{m - 1} (- 1)^s \frac{a_s}{z^s} + \delta_m \right\} -
+    ie^{- \nu \pi i}  \frac{e^{- z}}{(2 \pi z)^{1 / 2}}  \left\{ \sum_{s =
+    0}^{m - 1} \frac{a_s}{z^s} + \gamma_m \right\}  \quad (- \frac{3}{2} \pi <
+    \arg z < \frac{1}{2} \pi) .
+  \end{equation}
+  Here $\gamma_m$ is the same as in \eqref{eq:k_nu_expansion} and is therefore
+  bounded by \eqref{eq:k_nu_error_bounds}; $\delta_m$ also is subject to
+  \eqref{eq:k_nu_error_bounds} except that the applicable regions are changed
+  to
+  
+  $- \frac{3}{2} \pi \leq \arg z \leq - \frac{1}{2} \pi$, $- \frac{1}{2} \pi <
+  \arg z \leq 0$, $0 < \arg z < \frac{1}{2} \pi$,
+  
+  respectively.
+  
+  Again, the use of \eqref{eq:k_nu_expansion} and \eqref{eq:i_nu_expansion}
+  should be confined to the regions $| \arg z| \leq \pi$ and $- \pi \leq \arg
+  z \leq 0$, respectively, and connection formulae used elsewhere. In
+  particular, by using the relation
+  
+  $I_{\nu} (z) = e^{- \nu \pi i} I_{\nu}  (ze^{\pi i})$ one deduces from
+  \eqref{eq:i_nu_expansion} its conjugate form applicable to the region $0
+  \leq \arg z \leq \pi$.
+  
+  Finally, one observes that by setting $\nu = \frac{1}{2}$ and $\frac{3}{2}$
+  one may deduce error bounds for the asymptotic expansions of the Airy
+  functions and their derivatives, but these shall not be recorded here.
+  
+  The above bounds are by no means the first which have been given for the
+  remainder terms in the Hankel expansions of Watson {\cite{watson_hankel}},
+  pages 205--220, describes in detail researches of Hankel, Stieltjes and
+  himself for real $\nu$ and positive $z$, and of Weber and Schl{\"a}fli for
+  complex $\nu$ and $z$. Subsequently Schl{\"a}fli's results have been
+  extended by D{\"o}ring {\cite{döring}} and Meijer {\cite{meijer}}. Quite
+  recently, D{\"o}ring {\cite{döring_recent}} has critically examined the
+  bounds of Schl{\"a}fli and Meijer in the case of real $\nu$ and complex $z$,
+  and made simplifications to make them more readily computable.
+  
+  Except for Weber each author derives his results from integral
+  representations of the Hankel functions. Weber uses a defining differential
+  equation in a way which bears some resemblance to the theorem of
+  {\textsection}5 above, but it is more complicated.
+  
+  It is not claimed that the present bounds are superior to previous results
+  in every respect. Indeed, for certain combinations of $\nu$ and $z$,
+  particularly real $\nu$, some of the earlier results are sharper. However,
+  although it must be added that in regions where the expansions are
+  meaningfully the sharpening seldom exceeds a factor of 2 (compare the
+  remarks made in the second paragraph of {\textsection}4), one does claim,
+  however, that for the general combination of complex values of $\nu$ and
+  $z$, the present results are considerably simpler than the aggregate of
+  earlier results, and furthermore they are completely realistic for all
+  combinations of the variables. Of the earlier results, the most complete are
+  those of Meijer. They are more complicated than
+  \eqref{eq:hankel_main_result} to \eqref{eq:variation_bounds}, involving the
+  solution of a transcendental equation in some regions. Moreover, they break
+  down for complex values of $\nu$ arbitrarily close to, though not lying on,
+  the lines $\Re \nu = \pm \frac{1}{2}, \pm 1, \pm \frac{3}{2}, \ldots$.
+  
+  \section{Summary}\label{sec:summary}
+  
+  In the first part of this paper the authors discussed, in general terms,
+  practical difficulties in the use of asymptotic expansions, particularly in
+  the vicinity of the boundaries of their regions of validity in the complex
+  plane. It was pointed out that the use of ``complete asymptotic expansions''
+  in the sense of Watson and Miller, though often expedient in practice, is
+  difficult to place on a firm mathematical foundation. It was indicated,
+  however, that the practical difficulties could be overcome by the
+  development of satisfactory theories of error bounds. It was also suggested
+  that such theories might provide an alternative or supplementary
+  mathematical tool to generalizations of Poincar{\'e}'s definition.
+  
+  In the second part of the paper new error bounds were derived for the
+  well-known Hankel asymptotic expansions for cylinder functions of large
+  complex argument and given real or complex order. These bounds were obtained
+  by application of the asymptotic theory of ordinary differential equations.
+  A characteristic feature of their evaluation was the minimization of the
+  variation of the first neglected term of the series over a prescribed type
+  of contour in the complex plane; the bounds appear to be the first ones for
+  the Hankel expansions which are completely satisfactory for all combinations
+  of the variables. They are well adapted to the control of accuracy in the
+  construction of general-purpose automatic computing routines for the
+  cylinder functions.
+  
+  \begin{thebibliography}{9}
+    {\bibitem{reference1}}N. G. de Bruijn, \tmtextit{Asymptotic methods in
+    analysis}, (Amsterdam, North-Holland; Interscience, New York, 1958).
+    
+    {\bibitem{reference2}}J. G. van der Corput, \tmtextit{Asymptotic
+    developments 1. Fundamental theorems of asymptotics}, J. d'Analyse Math.,
+    \tmtextbf{4} (1956), 341--418.
+    
+    {\bibitem{reference3}}J. G. van der Corput and J. Franklin,
+    \tmtextit{Approximation of integrals by integration by parts}, Kninki.
+    Nederlandse Akad. Wetensch. Proc., \tmtextbf{54} (1951), 215--295.
+    
+    {\bibitem{reference4}}B. D{\"o}ring, \tmtextit{{\"U}ber Fehlerschranken zu
+    den Hankelschen asymptotischen Entwicklungen der Besselfunktionen f{\"u}r
+    komplexes Argument und beliebigen Index}, Z. angew. Math. Mech.,
+    \tmtextbf{42} (1962), 62--76.
+    
+    {\bibitem{reference5}}A. Erd{\'e}lyi, \tmtextit{Asymptotic expansions},
+    (Dover, New York, 1956).
+    
+    {\bibitem{reference6}}\tmtextit{General asymptotic expansions of Laplace
+    integrals}, Arch. Rational Mech. Anal., \tmtextbf{7} (1961), 1--20.
+    
+    {\bibitem{reference7}}A. Erd{\'e}lyi and M. Wyman, \tmtextit{The
+    asymptotic evaluation of certain integrals}, Arch. Rational Mech. Anal.,
+    \tmtextbf{14} (1963), 217--260.
+    
+    {\bibitem{reference8}}G. E. Forsythe, \tmtextit{Singularity and near
+    singularity in numerical analysis}, Amer. Math. Mon., \tmtextbf{65}
+    (1958), 229--240.
+    
+    {\bibitem{reference9}}C. S. Meijer, \tmtextit{Asymptotische Entwicklungen
+    von Besselschen, Hankelschen und verwandten Funktionen}. I--IV. Kninki.
+    Nederlandse Akad. Wetensch. Proc., \tmtextbf{35} (1932), 656--667,
+    852--866, 948--959, 1079--1090.
+  \end{thebibliography}
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,6 @@
+var f = RealFunction.express("Z(t)/sqrt(diff(ϑ(t),t))");
+var g = RealFunction.express("diff(Z(t)/sqrt(diff(ϑ(t),t)),t)");
+var h = RealFunction.express("diff(diff(Z(t)/sqrt(diff(ϑ(t),t)),t),t)");
+var j = RealFunction.express("diff(diff(diff(Z(t)/sqrt(diff(ϑ(t),t)),t),t),t)");
+
+//plot(20,200,5000,f,g)

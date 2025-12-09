@@ -1,0 +1,13 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.Complex
+context:
+  a:
+  - arb.Real
+  - '1'
+  input:
+  - arb.Real
+  - 2.4000000000000000000000000000000000000 +/- 3.78e-38
+domain: arb.Complex
+expression: diff(exp(I*a*t),t)
+function: arb.functions.complex.ComplexFunction
+...

@@ -1,0 +1,5 @@
+var Θ = new MonotonicRiemannSiegelThetaFunction();
+var eye = RealFunction.express("t");
+var approxθ = RealFunction.express("approxθ:(t/2)*log(t/(2*π))−t/2−π/8+1/48/t");
+
+plot(-100,350,5000,Θ,eye,approxθ,Θ.ϑ,Θ.ϑ.sub(approxθ),Θ.ϑ.sub(eye));

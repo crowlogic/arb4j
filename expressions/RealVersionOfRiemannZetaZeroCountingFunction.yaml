@@ -1,0 +1,10 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.Real
+context:
+  input:
+  - arb.Integer
+  - '85'
+domain: arb.Real
+expression: 1+(-((lnΓ(1/4 + t*I/2) - lnΓ(1/4 - t*I/2))*I)/2 -ln(π)*t/2)/π + 1 - I*((ln(ζ(1/2 + I*t)) - ln(ζ(1/2 - I*t))))/(2*π)
+function: arb.functions.real.RealFunction
+...

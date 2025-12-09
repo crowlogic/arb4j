@@ -1,0 +1,6 @@
+var f = RealFunction.express("ϑ(t)");
+var g = RealFunction.express("diff(ϑ(t),t)");
+var h = RealFunction.express("diff(diff(ϑ(t),t),t)");
+var j = RealFunction.express("diff(diff(diff(ϑ(t),t),t),t)");
+
+plot(0,100,5000,f,g,h,j)

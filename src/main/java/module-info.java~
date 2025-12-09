@@ -1,0 +1,85 @@
+/**
+ * A high-performance Java API for <a href="http://arblib.org">arblib</a>
+ * 
+ * @param <R>
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
+module arb4j
+{
+  requires java.base;
+
+  requires transitive java.desktop;
+  requires transitive java.instrument;
+  requires transitive java.logging;
+  requires transitive javafx.base;
+  requires transitive javafx.fxml;
+  requires transitive javafx.graphics;
+  requires transitive javafx.controls;
+  requires transitive javafx.swing;
+  requires transitive junit;
+  requires transitive jlatexmath;
+  requires transitive jdk.unsupported;
+  requires transitive jdk.jshell;
+  requires transitive io.fair_acc.chartfx;
+  requires transitive io.fair_acc.dataset;
+  requires transitive io.fair_acc.bench;
+  requires transitive org.fxyz3d.core;
+  requires transitive vineflower;
+  requires transitive org.objectweb.asm;
+  requires transitive org.objectweb.asm.util;
+  requires transitive org.objectweb.asm.commons;
+  requires transitive org.apache.commons.lang3;
+
+  exports arb;
+  exports arb.annotations;
+  exports arb.logic;
+  exports arb.decisions;
+  exports arb.decisions.inference;
+  exports arb.documentation;
+  exports arb.documentation.concepts;
+  exports arb.documentation.annotations;
+  exports arb.documentation.examples;
+  exports arb.documentation.references;
+  exports arb.documentation.examples.quantum.mechanics;
+  exports arb.expressions;
+  exports arb.expressions.decompiler;
+  exports arb.expressions.nodes;
+  exports arb.expressions.nodes.nary;
+  exports arb.expressions.nodes.binary;
+  exports arb.expressions.nodes.unary;
+  exports arb.algebra;
+  exports arb.geometry;
+  exports arb.geometry.symplectic;
+  exports arb.geometry.curves;
+  exports arb.geometry.surfaces;
+  exports arb.differential.geometry;
+  exports arb.domains;
+  exports arb.dynamical.systems;
+  exports arb.exceptions;
+  exports arb.functions;
+  exports arb.operators;
+  exports arb.functions.polynomials;
+  exports arb.functions.polynomials.orthogonal;
+  exports arb.functions.real;
+  exports arb.functions.complex;
+  exports arb.functions.complex.numbertheoretic;
+  exports arb.functions.complex.elliptic;
+  exports arb.functions.complex.hyperbolic;
+  exports arb.functions.complex.dynamics;
+  exports arb.functions.complex.trigonometric;
+  exports arb.functions.sequences;
+  exports arb.functions.sequences.triangles;
+  exports arb.groups;
+  exports arb.space.bornological;
+  exports arb.space.topological;
+  exports arb.measure;
+  exports arb.stochastic;
+  exports arb.stochastic.processes;
+  exports arb.stochastic.processes.correlationfunctions;
+  exports arb.stochastic.processes.integrators;
+  exports arb.utensils;
+  exports arb.utensils.treetext;
+  exports arb.viz;
+}

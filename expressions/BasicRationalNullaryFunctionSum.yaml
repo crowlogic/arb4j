@@ -1,0 +1,8 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.RationalFunction
+context: {
+  }
+domain: java.lang.Object
+expression: ∑x➔x^2{x=3...4}
+function: arb.functions.rational.RationalNullaryFunction
+...

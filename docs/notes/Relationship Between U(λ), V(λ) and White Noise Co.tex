@@ -1,0 +1,216 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{\textbf{#1}}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\begin{document}
+
+\section{Relationship Between U(λ), V(λ) and White Noise
+Components}\label{relationship-between-uux3bb-vux3bb-and-white-noise-components}
+
+The orthogonal processes U(λ) and V(λ) are \textbf{direct linear
+transformations} of the underlying white noise components, scaled by the
+square root of the power spectral density. This relationship embodies
+the fundamental connection between time-domain randomness and
+frequency-domain spectral structure.
+
+\subsection{Mathematical Foundation}\label{mathematical-foundation}
+
+In the spectral representation theorem, a real-valued stationary
+Gaussian process has the form:
+
+\(X(t) = \int_0^{\infty} [\cos(\lambda t) \, dU(\lambda) + \sin(\lambda t) \, dV(\lambda)]\)
+
+The orthogonal increment processes U(λ) and V(λ) are constructed from
+\textbf{complex-valued white noise measures} as described in the
+literature\footnote{https://arxiv.org/pdf/2111.01084.pdf}.
+
+\subsection{Direct Construction
+Relationship}\label{direct-construction-relationship}
+
+In the discrete implementation, the relationship is explicit:
+
+\textbf{White Noise Components:}
+
+\begin{itemize}
+\tightlist
+\item
+  \(W_k^{re} \sim \mathcal{N}(0,1)\) (real part)
+\item
+  \(W_k^{im} \sim \mathcal{N}(0,1)\) (imaginary part)
+\item
+  Independent across frequencies and between real/imaginary parts
+\end{itemize}
+
+\textbf{Spectral Scaling:}
+\(Z_k = \sqrt{S(\lambda_k) \Delta\lambda} \cdot (W_k^{re} + i W_k^{im})\)
+
+\textbf{Orthogonal Process Increments:}
+
+\begin{itemize}
+\tightlist
+\item
+  \(dU(\lambda_k) = \text{Re}(Z_k) = \sqrt{S(\lambda_k) \Delta\lambda} \cdot W_k^{re}\)
+\item
+  \(dV(\lambda_k) = \text{Im}(Z_k) = \sqrt{S(\lambda_k) \Delta\lambda} \cdot W_k^{im}\)
+\end{itemize}
+
+\subsection{Key Properties}\label{key-properties}
+
+\textbf{Isometry Preservation:} The white noise isometry
+property\footnote{https://www.math.utah.edu/\textasciitilde davar/math7880/S15/Chapter6.pdf}
+ensures that orthogonal white noise components map to orthogonal
+increments in U(λ) and V(λ). This means:
+
+\(E[dU(\lambda_i) dU(\lambda_j)] = E[dV(\lambda_i) dV(\lambda_j)] = 0 \text{ for } i \neq j\)
+\(E[dU(\lambda_i) dV(\lambda_j)] = 0 \text{ for all } i,j\)
+
+\textbf{Independence Structure:} Since the underlying white noise
+components are independent Gaussians, and linear transformations
+preserve Gaussian distributions, the orthogonal increments maintain
+independence across frequencies\footnote{https://dsp.stackexchange.com/questions/35802/gaussian-white-noise-relation-between-distribution-and-correlation}\footnote{https://www.math.utah.edu/\textasciitilde davar/math7880/S15/Chapter6.pdf}.
+
+\textbf{Spectral Coloring:} The power spectral density S(λ) acts as a
+\textbf{frequency-dependent amplification factor} that transforms white
+(flat spectrum) noise into colored noise with the desired spectral
+characteristics.
+
+\subsection{Physical Interpretation}\label{physical-interpretation}
+
+\textbf{U(λ) Process:} Captures the \textbf{cosine components} of the
+spectral decomposition. Each increment \(dU(\lambda_k)\) represents the
+contribution of frequency \(\lambda_k\) to the ``even'' or ``symmetric''
+part of the process.
+
+\textbf{V(λ) Process:} Captures the \textbf{sine components} of the
+spectral decomposition. Each increment \(dV(\lambda_k)\) represents the
+contribution of frequency \(\lambda_k\) to the ``odd'' or
+``antisymmetric'' part of the process.
+
+\textbf{Randomness Inheritance:} The statistical properties
+(Gaussianity, independence, zero mean) are \textbf{inherited directly}
+from the white noise, while the frequency-dependent variance structure
+comes from the spectral density.
+
+\subsection{Computational
+Implementation}\label{computational-implementation}
+
+In the code implementation:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// White noise generation (innovation)}
+\NormalTok{element}\OperatorTok{.}\FunctionTok{re}\OperatorTok{().}\FunctionTok{set}\OperatorTok{(}\NormalTok{random}\OperatorTok{.}\FunctionTok{nextGaussian}\OperatorTok{());}  \CommentTok{// W\_k\^{}re}
+\NormalTok{element}\OperatorTok{.}\FunctionTok{im}\OperatorTok{().}\FunctionTok{set}\OperatorTok{(}\NormalTok{random}\OperatorTok{.}\FunctionTok{nextGaussian}\OperatorTok{());}  \CommentTok{// W\_k\^{}im}
+
+\CommentTok{// Spectral scaling (coloring)}
+\NormalTok{complexSignal}\OperatorTok{.}\FunctionTok{get}\OperatorTok{(}\NormalTok{k}\OperatorTok{).}\FunctionTok{set}\OperatorTok{(}\NormalTok{element}\OperatorTok{).}\FunctionTok{mul}\OperatorTok{(}\NormalTok{mag}\OperatorTok{,}\NormalTok{ bits}\OperatorTok{);}  \CommentTok{// Z\_k = sqrt(S(λ\_k)) * W\_k}
+
+\CommentTok{// Orthogonal process extraction}
+\NormalTok{uProcess}\OperatorTok{[}\NormalTok{k}\OperatorTok{]} \OperatorTok{=}\NormalTok{ complexSignal}\OperatorTok{.}\FunctionTok{get}\OperatorTok{(}\NormalTok{k}\OperatorTok{).}\FunctionTok{re}\OperatorTok{().}\FunctionTok{doubleValue}\OperatorTok{();}  \CommentTok{// dU(λ\_k)}
+\NormalTok{vProcess}\OperatorTok{[}\NormalTok{k}\OperatorTok{]} \OperatorTok{=}\NormalTok{ complexSignal}\OperatorTok{.}\FunctionTok{get}\OperatorTok{(}\NormalTok{k}\OperatorTok{).}\FunctionTok{im}\OperatorTok{().}\FunctionTok{doubleValue}\OperatorTok{();}  \CommentTok{// dV(λ\_k)}
+\end{Highlighting}
+\end{Shaded}
+
+This reveals that U(λ) and V(λ) are \textbf{not independent random
+processes}, but rather \textbf{deterministic linear functionals} of the
+same underlying white noise field, differentiated only by their real
+versus imaginary parts and their trigonometric roles in the spectral
+representation.
+
+The white noise provides the fundamental \textbf{innovation} or
+\textbf{unpredictability}, while the spectral density determines how
+this innovation is \textbf{distributed across frequencies} to create the
+desired correlation structure in the time domain.
+
+⁂
+
+\end{document}

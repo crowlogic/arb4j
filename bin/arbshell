@@ -1,0 +1,13 @@
+#!/bin/sh 
+
+
+BASEDIR=$(dirname $(readlink -f $0))/..
+BUILDIR=$BASEDIR/build/classes
+mkdir -p $BUILDIR
+CLASSPATH=`cat $BASEDIR/class.path`:$BASEDIR/build/classes:$BUILDIR
+LD_LIBRARY_PATH=$BASEDIR jshell  -R-ea -R-verbose:jni $MODS -q -R--enable-native-access=arb4j --enable-preview --add-modules ALL-MODULE-PATH --module-path $CLASSPATH --add-module arb4j -R--add-modules -Rjavafx.controls -R--add-opens -Rjavafx.controls/javafx.scene.control.skin=arb4j -R--add-opens -Rjavafx.graphics/com.sun.javafx.tk.quantum=arb4j -R--add-opens -Rjavafx.graphics/javafx.stage=arb4j --startup $BASEDIR/shell.start $@
+
+
+
+
+

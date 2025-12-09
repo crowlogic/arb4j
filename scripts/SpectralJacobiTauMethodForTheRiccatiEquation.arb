@@ -1,0 +1,16 @@
+var context = new Context();
+context.registerFunction("p",null);
+RealFunction.express("p(t)+q(t)*h(t)+r(t)*h(t)^2+diff(h(t),t)");
+context
+var p = RealFunction.express("p:2",context);
+var q = RealFunction.express("q:sin(t)",context);
+var r = RealFunction.express("r:3*t",context);
+context.functions.remove("h")
+var h = RealFunction.express("h:t",context);
+h
+context.functions.remove("dh")
+var dh = RealFunction.express("dh:p(t)+q(t)*h(t)+r(t)*h(t)^2+diff(h(t),t)",context);
+dh
+dh.eval(2.3)
+plot(0,50,1000,dh)
+plot(-5,5,1000,dh)

@@ -1,0 +1,6 @@
+var F = RealFunction.parse("√(π)*Γ(3/4)*J(1/4, |s|)*2^(1/4)/|s|^(1/4)");
+var f = F.instantiate();
+System.out.println(F.inspect(f));
+f.eval(3)
+System.out.println(F.inspect(f));
+

@@ -1,0 +1,14 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}Gaussian Processes}{2}{}%
+\contentsline {subsection}{\numberline {1.1}Definition}{3}{}%
+\contentsline {subsection}{\numberline {1.2}Stationary processes}{3}{}%
+\contentsline {subsubsection}{\numberline {1.2.1}Fourier Transform Conventions}{4}{}%
+\contentsline {subsubsection}{\numberline {1.2.2}Sample Path Realizations}{4}{}%
+\contentsline {section}{\numberline {2}Oscillatory Processes}{4}{}%
+\contentsline {section}{\numberline {3}Unitarily Time-Changed Stationary Processes}{9}{}%
+\contentsline {subsection}{\numberline {3.1}Unitary Time-Change Operator $U_{\theta } f$}{9}{}%
+\contentsline {subsection}{\numberline {3.2}Transformation of Stationary $\to $ Oscillatory Processes via $U_{\theta }$}{12}{}%
+\contentsline {subsubsection}{\numberline {3.2.1}Time-Varying Filter Representations}{14}{}%
+\contentsline {subsection}{\numberline {3.3}Covariance operator conjugation}{17}{}%
+\contentsline {section}{\numberline {4}Zero Localization}{18}{}%
+\contentsline {subsection}{\numberline {4.1}Simplicity of Zeros and Their Expected Counting Function}{22}{}%

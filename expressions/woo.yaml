@@ -1,0 +1,10 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.Complex
+context:
+  input:
+  - arb.Integer
+  - '20'
+domain: arb.Complex
+expression: √(woo)+woo+sin(woo)^sqrt(sin(woo))
+function: arb.functions.complex.ComplexFunction
+...

@@ -1,0 +1,7 @@
+!!arb.expressions.SerializedExpression
+coDomain: arb.Complex
+context: {
+  }
+domain: java.lang.Object
+expression: sqrt(3+4*I)+sqrt(6+8*I)
+function: arb.functions.complex.ComplexNullaryFunction

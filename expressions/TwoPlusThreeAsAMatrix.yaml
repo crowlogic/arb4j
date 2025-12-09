@@ -1,0 +1,8 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.RealMatrix
+context: {
+  }
+domain: java.lang.Object
+expression: 2+3
+function: arb.functions.NullaryFunction
+...

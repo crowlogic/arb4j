@@ -1,0 +1,16 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.Complex
+context:
+  input:
+  - arb.Real
+  - 2.2000000000000000000000000000000000000 +/- 2.12e-38
+  v:
+  - arb.Real
+  - 0.70000000000000000000000000000000000000 +/- 3.53e-39
+  n:
+  - arb.Integer
+  - '4'
+domain: arb.Complex
+expression: z->R(n,v;z)
+function: arb.functions.complex.ComplexFunction
+...

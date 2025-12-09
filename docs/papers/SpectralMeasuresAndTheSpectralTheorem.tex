@@ -1,0 +1,431 @@
+\documentclass[12pt]{article}
+\usepackage[margin=0.5in]{geometry}  % Fix margins
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+% Theorem-like environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{Spectral Measures and the Spectral Theorem}
+\author{Sam Raskin\\\texttt{sraskin@uchicago.edu}}
+\date{University of Chicago REU 2006}
+
+\begin{document}
+
+\maketitle
+
+\section{Preliminary Facts about Hilbert Spaces}
+\label{sec:prelim}
+
+We work in a Hilbert space $\mathcal{H}$ with the inner product of $v$ and $w$ denoted $(v \mid w)$.
+
+\subsection{The Riesz Lemma}
+\label{subsec:riesz_linear}
+
+\begin{lemma}[Riesz Representation for Linear Functionals]
+\label{lem:riesz_linear}
+If $\psi$ is a continuous linear functional on $\mathcal{H}$, then there exists a (not necessarily unique if $\psi = 0$) vector $w \in \mathcal{H}$ such that
+\begin{equation}
+\psi(v) = (v \mid w)
+\label{eq:riesz_linear}
+\end{equation}
+for all $v \in \mathcal{H}$.
+\end{lemma}
+
+\begin{proof}
+Let $K = \ker(\psi)$. If $K^\perp = \{0\}$, then $\psi \equiv 0$, and the lemma holds with $w = 0$. Otherwise, choose a nonzero $w \in K^\perp$. Normalize $w$ so that
+\begin{equation}
+\psi(w) = \|w\|^2.
+\label{eq:riesz_normalize}
+\end{equation}
+For a given vector $v \in \mathcal{H}$, decompose $v$ as
+\begin{equation}
+v = v_1 + v_2,
+\qquad
+v_1 = \frac{\psi(v)}{\|w\|^2}\, w,
+\qquad
+v_2 = v - v_1.
+\label{eq:riesz_decomp}
+\end{equation}
+Then
+\begin{equation}
+\psi(v_2)
+= \psi(v) - \psi\!\left(\frac{\psi(v)}{\|w\|^2} w\right)
+= \psi(v) - \frac{\psi(v)}{\|w\|^2} \psi(w)
+= \psi(v) - \psi(v) = 0,
+\label{eq:riesz_v2}
+\end{equation}
+so $v_2 \in K$. Hence $v_2 \perp w$, and
+\begin{equation}
+(v \mid w)
+= (v_1 + v_2 \mid w)
+= (v_1 \mid w) + (v_2 \mid w)
+= (v_1 \mid w)
+= \left( \frac{\psi(v)}{\|w\|^2} w \mid w \right)
+= \psi(v).
+\label{eq:riesz_conclusion}
+\end{equation}
+Thus $\psi(v) = (v \mid w)$ for all $v$.
+\end{proof}
+
+\begin{definition}
+\label{def:bounded_sesquilinear}
+A bounded sesquilinear functional is a map
+\begin{equation}
+\varphi: \mathcal{H} \times \mathcal{H} \to \mathbb{C}
+\label{eq:sesquilinear_def}
+\end{equation}
+which is linear in the first variable, conjugate-linear in the second, and such that there exists a constant $M \ge 0$ with
+\begin{equation}
+|\varphi(v,w)| \leq M \,\|v\|\,\|w\|
+\label{eq:sesquilinear_bound}
+\end{equation}
+for all $v,w \in \mathcal{H}$. The least such $M$ is denoted $\|\varphi\|$.
+\end{definition}
+
+\begin{lemma}[Riesz Representation for Bounded Sesquilinear Forms]
+\label{lem:riesz_sesquilinear}
+If $\varphi$ is a bounded sesquilinear functional on $\mathcal{H}$, then there exists a unique bounded operator $A$ on $\mathcal{H}$ such that
+\begin{equation}
+\varphi(v,w) = (A v \mid w)
+\label{eq:riesz_sesquilinear}
+\end{equation}
+for all $v,w \in \mathcal{H}$.
+\end{lemma}
+
+\begin{proof}
+Fix $v \in \mathcal{H}$ and define
+\begin{equation}
+\psi_v(w) = \overline{\varphi(v,w)}.
+\label{eq:psi_v_def}
+\end{equation}
+Then $\psi_v$ is a bounded linear functional of $w$. By Lemma~\ref{lem:riesz_linear}, there exists a unique vector (which we denote $A v$) such that
+\begin{equation}
+\psi_v(w) = (w \mid A v)
+\quad\text{for all } w \in \mathcal{H}.
+\label{eq:psi_v_repr}
+\end{equation}
+Thus
+\begin{equation}
+\varphi(v,w)
+= \overline{\psi_v(w)}
+= \overline{(w \mid A v)}
+= (A v \mid w),
+\label{eq:varphi_repr}
+\end{equation}
+so \eqref{eq:riesz_sesquilinear} holds.
+
+Linearity of $A$ in $v$ follows from the linearity of $\varphi$ in the first argument. To see boundedness, take $w = A v$ in \eqref{eq:riesz_sesquilinear}:
+\begin{equation}
+\|A v\|^2
+= |(A v \mid A v)|
+= |\varphi(v, A v)|
+\le \|\varphi\| \,\|v\|\,\|A v\|.
+\label{eq:A_bounded}
+\end{equation}
+If $A v \neq 0$, cancel $\|A v\|$ to get
+\begin{equation}
+\|A v\| \le \|\varphi\| \,\|v\|.
+\label{eq:A_bounded_final}
+\end{equation}
+If $A v = 0$, then \eqref{eq:A_bounded_final} is trivial. Hence $\|A\| \le \|\varphi\|$.
+\end{proof}
+
+\subsection{Adjoints}
+\label{subsec:adjoints}
+
+\begin{theorem}[Existence and Uniqueness of Adjoints]
+\label{thm:adjoint}
+For a bounded operator $A$ on $\mathcal{H}$, there exists a unique bounded operator $A^*$, the adjoint of $A$, satisfying
+\begin{equation}
+(A v \mid w) = (v \mid A^* w)
+\label{eq:adjoint_def}
+\end{equation}
+for all $v,w \in \mathcal{H}$.
+\end{theorem}
+
+\begin{proof}
+Define
+\begin{equation}
+\varphi(w,v) = (w \mid A v).
+\label{eq:adjoint_varphi}
+\end{equation}
+Then $\varphi$ is a bounded sesquilinear functional. By Lemma~\ref{lem:riesz_sesquilinear}, there exists a unique bounded operator $A^*$ such that
+\begin{equation}
+\varphi(w,v) = (A^* w \mid v)
+\quad\text{for all } v,w \in \mathcal{H}.
+\label{eq:adjoint_Riesz}
+\end{equation}
+Thus
+\begin{equation}
+(A v \mid w) = (w \mid A v) = \overline{(A^* w \mid v)} = (v \mid A^* w),
+\end{equation}
+which is exactly \eqref{eq:adjoint_def}.
+\end{proof}
+
+\begin{definition}
+\label{def:hermitian_normal}
+An operator $A$ is called \emph{Hermitian} (or self-adjoint) if $A = A^*$. An operator $A$ is called \emph{normal} if
+\begin{equation}
+\|A v\| = \|A^* v\|
+\label{eq:normal_def}
+\end{equation}
+for all $v \in \mathcal{H}$.
+\end{definition}
+
+\begin{proposition}
+\label{prop:normal_commute}
+An operator $A$ is normal if and only if
+\begin{equation}
+A A^* = A^* A.
+\label{eq:normal_comm}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+For any $v \in \mathcal{H}$,
+\begin{equation}
+\|A v\|^2 = (A v \mid A v) = (A^* A v \mid v),
+\qquad
+\|A^* v\|^2 = (A^* v \mid A^* v) = (A A^* v \mid v).
+\label{eq:norms_normal}
+\end{equation}
+Thus \eqref{eq:normal_def} is equivalent to
+\begin{equation}
+(A^* A v \mid v) = (A A^* v \mid v)
+\quad\text{for all } v.
+\label{eq:normal_form}
+\end{equation}
+Since the inner product is nondegenerate, \eqref{eq:normal_form} holds for all $v$ if and only if $A^* A = A A^*$, i.e., \eqref{eq:normal_comm} holds.
+\end{proof}
+
+\begin{remark}
+\label{rem:hermitian_from_symmetric}
+In Lemma~\ref{lem:riesz_sesquilinear}, if $\varphi$ is symmetric, i.e.
+\begin{equation}
+\varphi(v,w) = \overline{\varphi(w,v)},
+\label{eq:symmetric_form}
+\end{equation}
+then the resulting operator $A$ is Hermitian.
+\end{remark}
+
+\subsection{Projections}
+\label{subsec:projections}
+
+\begin{definition}[Orthogonal Projection]
+\label{def:projection}
+If $\mathcal{M}$ is a closed subspace of $\mathcal{H}$, then every vector $v \in \mathcal{H}$ admits a unique decomposition
+\begin{equation}
+v = v_1 + v_2,
+\quad
+v_1 \in \mathcal{M},
+\quad
+v_2 \in \mathcal{M}^\perp.
+\label{eq:proj_decomp}
+\end{equation}
+The orthogonal projection onto $\mathcal{M}$ is the map
+\begin{equation}
+P: \mathcal{H} \to \mathcal{H},
+\quad
+P v = v_1.
+\label{eq:projection_def}
+\end{equation}
+This $P$ is a bounded linear operator. If $\mathcal{M} = \mathcal{H}$, then $P = I$; if $\mathcal{M} = \{0\}$, then $P = 0$.
+\end{definition}
+
+\begin{definition}[Order and Sum of Projections]
+\label{def:proj_order_sum}
+Let $\{P_i\}_{i \in I}$ be projections onto closed subspaces $\mathcal{M}_i \subset \mathcal{H}$. Define a partial order by
+\begin{equation}
+P_i \le P_j
+\quad\Longleftrightarrow\quad
+\mathcal{M}_i \subset \mathcal{M}_j.
+\label{eq:proj_order}
+\end{equation}
+We define
+\begin{equation}
+\sum_{i \in I} P_i
+\label{eq:proj_sum}
+\end{equation}
+to be the orthogonal projection onto the closed linear span of $\bigcup_{i \in I} \mathcal{M}_i$ (interpreted as a strong-operator limit when $I$ is infinite).
+\end{definition}
+
+\begin{theorem}[Characterization of Projections]
+\label{thm:proj_characterization}
+An operator $P$ on $\mathcal{H}$ is an orthogonal projection if and only if it is Hermitian and idempotent:
+\begin{equation}
+P^2 = P,
+\quad
+P^* = P.
+\label{eq:proj_char}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+If $P$ is an orthogonal projection onto a closed subspace $\mathcal{M}$, then $P^2 = P$ is immediate from the definition. To see that $P$ is Hermitian, take $v,w \in \mathcal{H}$ and write $v = v_1 + v_2$, $w = w_1 + w_2$ with $v_1,w_1 \in \mathcal{M}$ and $v_2,w_2 \in \mathcal{M}^\perp$. Then
+\begin{equation}
+(P v \mid w) = (v_1 \mid w_1 + w_2) = (v_1 \mid w_1) + (v_1 \mid w_2) = (v_1 \mid w_1),
+\label{eq:proj_herm1}
+\end{equation}
+and
+\begin{equation}
+(v \mid P w) = (v_1 + v_2 \mid w_1) = (v_1 \mid w_1) + (v_2 \mid w_1) = (v_1 \mid w_1).
+\label{eq:proj_herm2}
+\end{equation}
+Thus $(P v \mid w) = (v \mid P w)$ for all $v,w$, so $P$ is Hermitian.
+
+Conversely, suppose $P$ is Hermitian and idempotent. Define
+\begin{equation}
+\mathcal{M} = \{ v \in \mathcal{H} : P v = v\}.
+\label{eq:M_fix}
+\end{equation}
+We claim $P$ is the orthogonal projection onto $\mathcal{M}$. It suffices to show that
+\begin{equation}
+(P v \mid v - P v) = 0
+\label{eq:proj_orth}
+\end{equation}
+for all $v \in \mathcal{H}$. Indeed,
+\begin{equation}
+(P v \mid v - P v)
+= (P v \mid v) - (P v \mid P v)
+= (P v \mid v) - (P^2 v \mid v)
+= (P v \mid v) - (P v \mid v) = 0.
+\end{equation}
+Thus $P v$ and $v - P v$ are orthogonal, with $P v \in \mathcal{M}$ and $v - P v \in \mathcal{M}^\perp$, so $P$ is the orthogonal projection onto $\mathcal{M}$.
+\end{proof}
+
+\begin{corollary}
+\label{cor:proj_norm}
+If $P$ is an orthogonal projection, then for all $v \in \mathcal{H}$,
+\begin{equation}
+\|P v\|^2 = (P v \mid v).
+\label{eq:proj_norm}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Using $P^2 = P$ and Hermitian symmetry,
+\begin{equation}
+\|P v\|^2 = (P v \mid P v) = (P^2 v \mid v) = (P v \mid v),
+\end{equation}
+as claimed.
+\end{proof}
+
+\section{Spectral Measures}
+\label{sec:spectral_measures}
+
+\subsection{Definition and Basic Properties}
+\label{subsec:spectral_basic}
+
+Let $\mathcal{B}(\mathbb{C})$ be the Borel $\sigma$-algebra on $\mathbb{C}$ and $P(\mathcal{H})$ the set of orthogonal projections on $\mathcal{H}$.
+
+\begin{definition}[Spectral Measure]
+\label{def:spectral_measure}
+A (complex) spectral measure is a function
+\begin{equation}
+E : \mathcal{B}(\mathbb{C}) \to P(\mathcal{H})
+\label{eq:E_def}
+\end{equation}
+satisfying:
+\begin{enumerate}[label=(\roman*)]
+\item $E(\emptyset) = 0$ and $E(\mathbb{C}) = I$.
+\item If $\{B_n\}_{n \in \mathbb{N}}$ is a family of pairwise disjoint Borel sets, then
+\begin{equation}
+E\Bigl(\bigcup_{n} B_n\Bigr) = \sum_{n} E(B_n),
+\label{eq:spec_countable_additivity}
+\end{equation}
+where the sum is taken in the strong operator topology.
+\end{enumerate}
+\end{definition}
+
+\begin{remark}
+\label{rem:spectral_measure_properties}
+Standard measure-theoretic arguments adapt to spectral measures:
+\begin{enumerate}[label=(\alph*)]
+\item The condition $E(\emptyset) = 0$ follows from \eqref{eq:spec_countable_additivity}.
+\item If $B_0 \subset B_1$, then $E(B_0) \le E(B_1)$ in the projection order.
+\item Spectral measures are modular:
+\begin{equation}
+E(B_0 \cup B_1) + E(B_0 \cap B_1) = E(B_0) + E(B_1).
+\label{eq:modularity}
+\end{equation}
+In particular, one obtains
+\begin{equation}
+E(B_0 \cap B_1) = E(B_0) E(B_1).
+\label{eq:intersection_product}
+\end{equation}
+\end{enumerate}
+\end{remark}
+
+\begin{proposition}
+\label{prop:spectral_measure_characterization}
+Suppose $E : \mathcal{B}(\mathbb{C}) \to P(\mathcal{H})$ is such that for all $v,w \in \mathcal{H}$, the scalar-valued function
+\begin{equation}
+E^{*}_{v,w}(B) = (E(B) v \mid w)
+\label{eq:E_star}
+\end{equation}
+satisfies
+\begin{equation}
+E^{*}_{v,w}\Bigl(\bigcup_n B_n\Bigr) = \sum_n E^{*}_{v,w}(B_n)
+\label{eq:E_star_additivity}
+\end{equation}
+for all disjoint families $\{B_n\}$, and $E(\mathbb{C}) = I$. Then $E$ is a spectral measure.
+\end{proposition}
+
+\begin{proof}
+By Remark~\ref{rem:spectral_measure_properties}, it suffices to verify \eqref{eq:spec_countable_additivity}. Let $\{B_n\}$ be a disjoint family of Borel sets. For any $v \in \mathcal{H}$,
+\begin{equation}
+\sum_{n} \|E(B_n) v\|^2
+= \sum_{n} (E(B_n) v \mid v)
+= \sum_{n} E^{*}_{v,v}(B_n)
+= E^{*}_{v,v}\Bigl(\bigcup_n B_n\Bigr)
+= (E(\bigcup_n B_n) v \mid v).
+\label{eq:spectral_Pythag}
+\end{equation}
+Thus $\sum_n E(B_n) v$ converges in $\mathcal{H}$, and the strong operator limit
+\begin{equation}
+\sum_n E(B_n)
+\label{eq:spectral_sum_strong}
+\end{equation}
+exists. For disjoint $B,C$ and any $v,w$,
+\begin{equation}
+(E(B) v + E(C) v \mid w)
+= (E(B) v \mid w) + (E(C) v \mid w)
+= E^{*}_{v,w}(B) + E^{*}_{v,w}(C)
+= E^{*}_{v,w}(B \cup C),
+\end{equation}
+so
+\begin{equation}
+(E(B \cup C) v \mid w) = \bigl( (E(B) + E(C)) v \mid w \bigr).
+\end{equation}
+By induction and taking limits, we obtain \eqref{eq:spec_countable_additivity}.
+\end{proof}
+
+% Further sections would continue similarly...
+
+\begin{thebibliography}{9}
+\bibitem{Ha}
+P.~R.~Halmos,
+\textit{Introduction to Hilbert Space},
+Chelsea Publishing, New York, 1951.
+
+\bibitem{R1}
+W.~Rudin,
+\textit{Principles of Mathematical Analysis},
+3rd ed., McGraw--Hill, New York, 1976.
+
+\bibitem{R2}
+W.~Rudin,
+\textit{Real and Complex Analysis},
+3rd ed., McGraw--Hill, New York, 1987.
+\end{thebibliography}
+
+\end{document}

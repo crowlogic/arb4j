@@ -1,0 +1,83 @@
+package arb.expressions.nodes.unary;
+
+import arb.*;
+import arb.expressions.Context;
+import arb.expressions.Expression;
+import arb.functions.RealToComplexFunction;
+import arb.functions.real.RealFunction;
+import junit.framework.TestCase;
+
+public class FunctionNodeTest extends
+                              TestCase
+{
+  
+  public static void testintegralOfDeltaFunction()
+  {
+    var context = new Context();
+    var f = RealFunction.parse("int(δ(x),x)",context);
+    var g = RealFunction.parse("θ(x)",context);
+    assertEquals( f.toString(), g.toString());
+  }
+  
+  public static void testDerivativeOfStepFunction()
+  {
+    var context = new Context();
+    var f = RealFunction.parse("diff(θ(x),x)",context);
+    var g = RealFunction.parse("δ(x)",context);
+    assertEquals( f.toString(), g.toString());
+  }
+  
+
+  public static void testDeltaFunction()
+  {
+    var f = RealFunction.express("δ(x)");
+    var y = f.evaluate(RealConstants.zero, 128);
+    assertFalse(y.isFinite());
+    y = f.evaluate(RealConstants.one, 128);
+    assertTrue(y.isFinite());
+  }
+
+  public static void testDerivativeOfImaginaryPartIsRealZero()
+  {
+    // Expression.trace=true;
+    Expression<Real,
+                  Complex,
+                  RealToComplexFunction> fexpr =
+                                               RealToComplexFunction.parse("diff(im(cos(I*t)),t)");
+    assertEquals(Real.class, fexpr.rootNode.type());
+    RealToComplexFunction f = fexpr.instantiate();
+
+    var                   g = f.eval(2.3, new Complex());
+    assertTrue(g.toString(), g.isZero());
+
+    g = f.eval(3.4, g);
+    assertTrue(g.toString(), g.isZero());
+  }
+
+  public static void testSquareRootSimplificationMulWithVar()
+  {
+    var f = RealFunction.express("sqrt(x)*sqrt(x)");
+    assertEquals("x➔x", f.toString());
+  }
+
+  public static void testSquareRootSimplificationMulWithConstant()
+  {
+    
+      var f = RealFunction.express("√(2)*√(2)");
+      assertEquals("2", f.toString());
+    
+    
+  }
+
+  public static void testSquareRootSimplificationDivWithVar()
+  {
+    var f = RealFunction.express("sqrt(x)/sqrt(x)");
+    assertEquals("x➔1", f.toString());
+  }
+
+  public static void testSquareRootSimplificationDivWithConstant()
+  {
+    var f = RealFunction.express("sqrt(2)/sqrt(2)");
+    assertEquals("1", f.toString());
+  }
+}

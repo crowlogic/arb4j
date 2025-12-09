@@ -1,0 +1,16 @@
+//t0=6.289835988836898
+//t0d=2π-t0=-0.00665068165731153
+
+//FunctionPlotter.darkStyle=false;
+var context = new Context();
+var eye = RealFunction.express("eye","t->t");
+var theta = RealFunction.express("θ","im(lnΓ(1/4+I*t/2))-(log(π)/2)*t",context);
+var thetad = RealFunction.express("thetad","t->diff(θ(t),t)",context);
+var thetadd = RealFunction.express("thetadd","t->diff(diff(θ(t),t),t)",context);
+var Nd = RealFunction.express("Nd","t->(thetad(t)/thetadd(t))",context);
+var N = RealFunction.express("N","t->t-tanh(Nd(t))",context);
+plot(0,9,4000,(RealFunction)eye,(RealFunction)theta,(RealFunction)thetad,(RealFunction)thetadd,(RealFunction)N,(RealFunction)Nd);
+var t0 = Math.PI*2;
+for ( int i = 0; i <= 333; i++ ) { System.out.format("%s = %s\n", i, t0 = N.eval(t0));}
+var t0d = Math.PI*2 - t0;
+System.out.format("t0=%s\nt0d=2π-t0=%s\n", t0, t0d );

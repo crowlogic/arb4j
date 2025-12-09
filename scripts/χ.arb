@@ -1,0 +1,11 @@
+FunctionPlotter.darkStyle=false;
+var context = new Context();
+var χ = RealToComplexFunction.express("χ:s➔(2*π)ˢ/(2*Γ(s))*cos(π*s/2)",context);
+var χsin = RealToComplexFunction.express("χsin:s➔2^s*π^(s-1)*sin(π*s/2)*Γ(1-s)",context);
+var χΓ = RealToComplexFunction.express("χΓ:s➔Γ((1-s)/2)/Γ(s/2)*π^(s-1/2)",context);
+var plt = plot(-10,10,5000,χ.realPart(),χ.imagPart(),χsin.realPart(),χsin.imagPart(),χΓ.realPart(),χΓ.imagPart());
+plt.setTitle( χ.toString() );
+var a = χ.eval(2.3, new Complex());
+var b = χsin.eval(2.3, new Complex());
+var c = χΓ.eval(2.3,new Complex());
+System.out.format( "χ(2.3)=%s\nχsin(2.3)=%s\nχΓ(2.3)=%s\n",a,b,c);

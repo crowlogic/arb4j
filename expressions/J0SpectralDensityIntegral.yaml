@@ -1,0 +1,6 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.Real
+domain: arb.Real
+expression: int(1/sqrt(1-x^2),x)
+function: arb.functions.real.RealFunction
+...

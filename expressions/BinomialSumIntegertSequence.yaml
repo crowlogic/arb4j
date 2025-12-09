@@ -1,0 +1,10 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.Integer
+context:
+  input:
+  - arb.Integer
+  - '3'
+domain: arb.Integer
+expression: n->Σk->ℭ(n, 2*k){k=0...⌊n/2⌋}
+function: arb.functions.integer.IntegerSequence
+...

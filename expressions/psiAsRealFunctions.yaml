@@ -1,0 +1,13 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.Real
+context:
+  input:
+  - arb.Real
+  - '3'
+  k:
+  - arb.Integer
+  - '11'
+domain: arb.Real
+expression: x->√((8*k+2)/π)*(-1)^k*j(2*k,x)
+function: arb.functions.real.RealFunction
+...

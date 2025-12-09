@@ -1,0 +1,8 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.Quaternion
+context: {
+  }
+domain: java.lang.Object
+expression: sqrt(2.2)
+function: arb.functions.Function
+...

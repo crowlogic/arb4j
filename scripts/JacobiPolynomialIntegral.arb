@@ -1,0 +1,9 @@
+var P = new JacobiPolynomialSequence(RealConstants.negHalf,RealConstants.negHalf);
+var P4 = P.evaluate(4,128);
+var context = new Context();
+context.registerFunction("P4",P4);
+context.registerSequence("P",P);
+
+var f = RealNullaryFunction.express("int(P(4)(x),x=-1..1)",context);
+var h = RealNullaryFunction.express("int(P4(x),x=-1..1)",context);
+var g = RealPolynomialNullaryFunction.express("int(P(3),x)",context);

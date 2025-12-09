@@ -1,0 +1,3 @@
+FunctionPlotter.darkStyle=false;
+var R = RealToComplexFunction.express("t->ζ(1/2+I*t)");
+plot( 0, 100, 100*100, R.realPart(), R.imagPart() );

@@ -1,0 +1,16 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.Real
+context:
+  α:
+  - arb.Real
+  - '0.5'
+  input:
+  - arb.Real
+  - 1.2000000000000000000000000000000000000 +/- 9.41e-39
+  β:
+  - arb.Real
+  - '0.75'
+domain: arb.Real
+expression: ((1+|h|)ᵅ)^(-(β/α)-1)*(1+(1-β)*|h|ᵅ)
+function: arb.functions.real.RealFunction
+...

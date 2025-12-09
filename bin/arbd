@@ -1,0 +1,12 @@
+#!/bin/sh 
+
+
+BASEDIR=$(dirname $(readlink -f $0))/..
+$BASEDIR/bin/arbshell $@ -R-Darb4j.trace=true -R-Darb4j.saveClasses=true -R-Dlogback.configurationFile=logback-debug.xml
+
+
+
+
+
+
+

@@ -1,0 +1,13 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.Complex
+context:
+  s:
+  - arb.Real
+  - '3'
+  t:
+  - arb.Real
+  - '2'
+domain: java.lang.Object
+expression: (exp((ⅈ*λ)*t))*(exp(-(ⅈ*λ)*s))
+function: arb.functions.complex.ComplexNullaryFunction
+...

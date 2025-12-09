@@ -1,0 +1,29 @@
+package arb;
+
+import java.util.stream.Stream;
+
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
+
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
+public interface NamedField<A extends NamedField<A>> extends
+                           NamedRing<A>,
+                           Field<A>
+{
+
+  @Override
+  public void
+         close();
+
+  @Override
+  default Stream<A>
+          stream()
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+}

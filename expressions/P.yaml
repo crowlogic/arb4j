@@ -1,0 +1,16 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.RationalFunction
+context:
+  input:
+  - arb.Integer
+  - 2
+  β:
+  - arb.Real
+  - '-0.5'
+  α:
+  - arb.Real
+  - '-0.5'
+domain: arb.Integer
+expression: n➔when(n=0,1,n=1,(C(1)*x-β+α)/2.0,else,(A(n)*P(n-1)-B(n)*P(n-2))/E(n))
+function: arb.functions.rational.RationalFunctionSequence
+...

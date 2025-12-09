@@ -1,0 +1,32 @@
+Question:
+is this true? prove it if so  ½T ∫[-T,T] eⁱ(λ−ω)t dt = sin((λ−ω)T) / ((λ−ω)T) = sinc((λ−ω)T)
+
+Response:
+Yes, the statement is correct. Here is the derivation.
+
+Let 
+I = (1 / (2T)) ∫[-T,T] eⁱ(λ−ω)t dt.
+
+Compute the integral explicitly:
+
+∫[-T,T] eⁱ(λ−ω)t dt
+= [ eⁱ(λ−ω)t / (i(λ−ω)) ]₋Tᵀ
+= ( eⁱ(λ−ω)T − e⁻ⁱ(λ−ω)T ) / (i(λ−ω)).
+
+Using the sine identity eⁱx − e⁻ⁱx = 2i sin x:
+
+∫[-T,T] eⁱ(λ−ω)t dt
+= ( 2i sin((λ−ω)T) ) / (i(λ−ω))
+= 2 sin((λ−ω)T) / (λ−ω).
+
+Now multiply by (1 / (2T)):
+
+I = (1 / (2T)) × (2 sin((λ−ω)T) / (λ−ω))
+  = sin((λ−ω)T) / ((λ−ω)T)
+  = sinc((λ−ω)T).
+
+Thus,
+(1 / (2T)) ∫[-T,T] eⁱ(λ−ω)t dt = sin((λ−ω)T) / ((λ−ω)T) = sinc((λ−ω)T).
+
+So the given equality is true.
+

@@ -1,0 +1,10 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.Real
+context:
+  input:
+  - arb.Real
+  - 2.3000000000000000000000000000000000000 +/- 1.42e-38
+domain: arb.Real
+expression: √(π)*Γ(¾)*J(¼,|s|)*2^¼÷|s|^¼
+function: arb.functions.real.RealFunction
+...

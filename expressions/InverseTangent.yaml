@@ -1,0 +1,10 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.Complex
+context:
+  input:
+  - arb.Complex
+  - 2.3000000000000000000000000000000000000 +/- 1.42e-38
+domain: arb.Complex
+expression: atan(x)
+function: arb.functions.complex.ComplexFunction
+...

@@ -1,0 +1,10 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.Real
+context:
+  input:
+  - arb.Real
+  - 6.2800000000000000000000000000000000000 +/- 4.61e-38
+domain: arb.Real
+expression: ∂im(lnΓ(1/4+I*t/2))-(log(π)/2)*t/∂t
+function: arb.functions.real.RealFunction
+...

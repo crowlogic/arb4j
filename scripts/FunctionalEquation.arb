@@ -1,0 +1,8 @@
+FunctionPlotter.darkStyle=false;
+var context = new Context();
+var zero = RealFunction.express("0");
+var θ = RealFunction.express("θ:im(lnΓ(1/4+I*t/2))-(log(π)/2)*t",context);
+var θd = RealFunction.express("θd:t➔|im((lnΓ(¼+((ⅈ*t)/2)))-(((log(π))/2)*t))|",context);
+var g = RealFunction.express("g:θd(t)/sqrt(θd(t))",context);
+var h = RealFunction.express("h:sqrt(θd(t))",context);
+plot(0,150,10000,zero,θ,θd,g,h)

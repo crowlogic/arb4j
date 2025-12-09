@@ -1,0 +1,10 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.functions.real.RealFunction
+context:
+  input:
+  - arb.Real
+  - 4.2000000000000000000000000000000000000 +/- 3.30e-38
+domain: arb.Real
+expression: x-y
+function: arb.functions.RealBivariateFunction
+...

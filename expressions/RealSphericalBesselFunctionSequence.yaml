@@ -1,0 +1,10 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.functions.real.RealFunction
+context:
+  input:
+  - arb.Integer
+  - '3'
+domain: arb.Integer
+expression: k->2*j(k,x)
+function: arb.functions.integer.RealFunctionSequence
+...

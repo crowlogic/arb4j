@@ -1,0 +1,8 @@
+#!/bin/sh
+
+BASEDIR=$(dirname $(readlink -f $0))/..
+
+cat $BASEDIR/pom.xml | grep "<version>" | head -1 | cut -d \> -f 2 | cut -d \< -f 1
+
+
+

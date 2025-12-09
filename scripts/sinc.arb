@@ -1,0 +1,4 @@
+Expression.saveClasses=true;
+FunctionPlotter.darkStyle=false;
+var sinc = RealFunction.express("sinc:t➔sin(t)/t");
+plot(-50,50,1000,sinc);
