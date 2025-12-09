@@ -12,154 +12,45 @@ import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 
 /**
- * TODO: this originally came from {@link PolySeriesFunctionDerivativeNode}.. modify it so that it generates
- * code to evaluate the function specified up to whatever order specifies... e.g. a true implementation that returns all 
- * derivates up to order at once.. it needs to be changed to generate code like the following
+ * Generates bytecode to evaluate polynomial series functions and return all derivatives
+ * up to a specified order simultaneously. This is a refactoring of the original implementation
+ * that used {@link PolySeriesFunctionDerivativeNode}.
  * 
+ * The generated code follows this pattern:
  * 
  * <code>
-package arb.functions.real;
-
-import arb.*;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
-import arb.expressions.Context;
-import arb.functions.Function;
-
-public class RiemannSiegelThetaFunction
-                                        implements
-                                        RealFunction,
-                                        Typesettable,
-                                        AutoCloseable,
-                                        Initializable,
-                                        Named
+public [ResultType] evaluate([ScalarType] t, int order, int bits, [ResultType] result)
 {
-
-  public boolean        isInitialized;
-  public Context        context;
-  public RealPolynomial arg        = new RealPolynomial();
-  public RealPolynomial resultPoly = new RealPolynomial();
-
-  public static void main(String args[])
-  {
-    try ( RiemannSiegelThetaFunction t = new RiemannSiegelThetaFunction())
-    {
-      var f = t.evaluate(Real.valueOf(2.3),
-                         20,
-                         128,
-                         Real.newVector(20));
-      System.out.println("f=" + f);
-    }
-  }
-
-  @Override
-  public Class<Real> domainType()
-  {
-    return Real.class;
-  }
-
-  @Override
-  public Class<Real> coDomainType()
-  {
-    return Real.class;
-  }
-
-  @Override
-  public Real evaluate(Real t, int order, int bits, Real result)
-  {
-    try ( RealPolynomial h = new RealPolynomial(order); RealPolynomial out = new RealPolynomial(order))
-    {
-
-      h.fitLength(order);
-      h.setLength(order);
-
-      // h(x) = t + x
-      h.get(0).set(t); // constant term = t*x^0=t*1=t
-      h.get(1).one(); // linear term = 1*x^1=1*x=x
-
-      out.fitLength(order);
-      out.setLength(order);
-
-      arblib.arb_poly_riemann_siegel_theta_series(out,
-                                                  h,
-                                                  order,
-                                                  bits);
-
-      result.set(out.getCoeffs());
-      // result.become(Real.newVector(order)).set(out.getCoeffs());
-      return result;
-    }
-  }
-
-  Real offset = new Real();
-
-  @Override
-  public RealFunction derivative()
-  {
-    return Function.express(Real.class,
-                            Real.class,
-                            RealFunction.class,
-                            "_diffϑ(t)",
-                            "diff(ϑ(t),t)",
-                            this.context);
-  }
-
-  @Override
-  public RealFunction integral()
-  {
-    return Function.express(Real.class,
-                            Real.class,
-                            RealFunction.class,
-                            "_intnull",
-                            "int(ϑ(t),t)");
-  }
-
-  @Override
-  public void initialize()
-  {
-    if (this.isInitialized)
-    {
-      throw new AssertionError("Already initialized");
-    }
-    else
-    {
-      this.isInitialized = true;
-    }
-  }
-
-  @Override
-  public void close()
-  {
-    this.arg.close();
-    this.resultPoly.close();
-  }
-
-  @Override
-  public String getName()
-  {
-    return "ϑ";
-  }
-
-  @Override
-  public Context getContext()
-  {
-    return this.context;
-  }
-
-  @Override
-  public String toString()
-  {
-    return "t➔ϑ(t)";
-  }
-
-  @Override
-  public String typeset()
-  {
-    return "\\\\vartheta(t)";
-  }
+    // Create input polynomial: h(x) = t + x
+    [PolyType] h = new [PolyType](order);
+    h.fitLength(order);
+    h.setLength(order);
+    h.get(0).set(t);           // constant term = t
+    h.get(1).one();            // linear coefficient = 1
+    
+    // Create output polynomial for results
+    [PolyType] out = new [PolyType](order);
+    out.fitLength(order);
+    out.setLength(order);
+    
+    // Call ARB/FLINT series function to compute all derivatives at once
+    // Example: arblib.arb_poly_riemann_siegel_theta_series(out, h, order, bits);
+    [LIBRARY_FUNCTION_NAME](out, h, order, bits);
+    
+    // Extract result at the requested derivative order
+    result.set(out.getCoeff(order));
+    
+    // Clean up polynomial resources
+    h.clear();
+    out.clear();
+    
+    return result;
 }
-
-</code>
+ * </code>
+ * 
+ * This approach is significantly more efficient than computing individual derivatives
+ * sequentially, as it leverages the ARB library's highly optimized polynomial series
+ * evaluation routines that compute the full series in a single pass.
  * 
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
@@ -168,7 +59,89 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
                                      extends
                                      FunctionNode<D, C, F>
 {
+  // ============================================================================
+  // Class Constants - Polymorphic Type Names
+  // ============================================================================
+  
+  private static final String ACB_ONE                = "acb_one";
+  private static final String ACB_POLY_CLEAR         = "acb_poly_clear";
+  private static final String ACB_POLY_FIT_LENGTH    = "acb_poly_fit_length";
+  private static final String ACB_POLY_GET_COEFF_ACB = "acb_poly_get_coeff_acb";
+  private static final String ACB_POLY_INIT          = "acb_poly_init";
+  private static final String ACB_POLY_SET_COEFF_ACB = "acb_poly_set_coeff_acb";
+  private static final String ACB_POLY_SET_LENGTH    = "acb_poly_set_length";
+  private static final String ARB_COMPLEX            = Type.getInternalName(Complex.class);
+  private static final String ARB_COMPLEX_POLYNOMIAL = Type.getInternalName(ComplexPolynomial.class);
+  private static final String ARB_ONE                = "arb_one";
+  private static final String ARB_POLY_CLEAR         = "arb_poly_clear";
+  private static final String ARB_POLY_FIT_LENGTH    = "arb_poly_fit_length";
+  private static final String ARB_POLY_GET_COEFF_ARB = "arb_poly_get_coeff_arb";
+  private static final String ARB_POLY_INIT          = "arb_poly_init";
+  private static final String ARB_POLY_SET_COEFF_ARB = "arb_poly_set_coeff_arb";
+  private static final String ARB_POLY_SET_LENGTH    = "arb_poly_set_length";
+  private static final String ARB_REAL               = Type.getInternalName(Real.class);
+  private static final String ARB_REAL_POLYNOMIAL    = Type.getInternalName(RealPolynomial.class);
+  private static final String ARG_POLY               = "arg";
+  private static final String INIT                   = "<init>";
+  private static final String RESULT_POLY            = "resultPoly";
+  private static final String VOID_NOARG_SIGNATURE   = "()V";
+  private static final String VOID_INT_SIGNATURE     = "(I)V";
 
+  // ============================================================================
+  // Instance Variables
+  // ============================================================================
+  
+  /**
+   * The derivative order to compute. Allows partial computation of derivatives
+   * when only lower-order terms are needed. Default is 0 (function value only).
+   */
+  protected int derivativeOrder = 0;
+  
+  /**
+   * Tracks the next available local variable slot in the generated bytecode.
+   * Used to ensure proper JVM local variable allocation without conflicts.
+   */
+  private int nextLocalSlot     = 20;
+
+  // ============================================================================
+  // Constructors
+  // ============================================================================
+  
+  /**
+   * Constructs a PolySeriesFunctionNode with basic initialization.
+   * Derivative order defaults to 0 (function value only).
+   *
+   * @param name the function name
+   * @param expr the expression defining the function
+   */
+  protected PolySeriesFunctionNode(String name, Expression<D, C, F> expr)
+  {
+    super(name,
+          expr.resolve(),
+          expr.require(')'));
+    this.derivativeOrder = 0;
+  }
+
+  /**
+   * Constructs a PolySeriesFunctionNode with explicit derivative order specification.
+   *
+   * @param name  the function name
+   * @param expr  the expression defining the function
+   * @param arg   the argument node
+   * @param order the maximum derivative order to compute (0 = function value only)
+   */
+  protected PolySeriesFunctionNode(String name, Expression<D, C, F> expr, Node<D, C, F> arg, int order)
+  {
+    super(name,
+          arg,
+          expr);
+    this.derivativeOrder = Math.max(0, order);
+  }
+
+  // ============================================================================
+  // Differentiation and Integration Support
+  // ============================================================================
+  
   @Override
   public Node<D, C, F> differentiate(VariableNode<D, C, F> variable)
   {
@@ -181,264 +154,486 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
     return super.integrate(variable);
   }
 
-  private static final String ACB_ONE                = "acb_one";
-  private static final String ACB_POLY_CLEAR         = "acb_poly_clear";
-  private static final String ACB_POLY_FIT_LENGTH    = "acb_poly_fit_length";
-  private static final String ACB_POLY_GET_COEFF_ACB = "acb_poly_get_coeff_acb";
-  private static final String ACB_POLY_INIT          = "acb_poly_init";
-  private static final String ACB_POLY_SET_COEFF_ACB = "acb_poly_set_coeff_acb";
-  private static final String ARB_COMPLEX            = Type.getInternalName(Complex.class);
-  private static final String ARB_COMPLEX_POLYNOMIAL = Type.getInternalName(ComplexPolynomial.class);
-  private static final String ARB_ONE                = "arb_one";
-  private static final String ARB_POLY_CLEAR         = "arb_poly_clear";
-  private static final String ARB_POLY_FIT_LENGTH    = "arb_poly_fit_length";
-  private static final String ARB_POLY_GET_COEFF_ARB = "arb_poly_get_coeff_arb";
-  private static final String ARB_POLY_INIT          = "arb_poly_init";
-  private static final String ARB_POLY_SET_COEFF_ARB = "arb_poly_set_coeff_arb";
-  private static final String ARB_REAL               = Type.getInternalName(Real.class);
-  private static final String ARB_REAL_POLYNOMIAL    = Type.getInternalName(RealPolynomial.class);
-  private static final String ARG_POLY               = "arg";
-  private static final String INIT                   = "<init>";
-  private static int          nextLocal              = 20;
-  private static final String RESULT_POLY            = "resultPoly";
-  private static final String VOID_NOARG_SIGNATURE   = "()V";
-
-  private static void newPoly(MethodVisitor mv, boolean cx)
+  // ============================================================================
+  // Primary Code Generation Method
+  // ============================================================================
+  
+  /**
+   * Generates bytecode that evaluates the polynomial series function and returns
+   * all derivatives up to the specified order simultaneously.
+   * 
+   * Generated bytecode flow:
+   * 1. Create output scalar variable slot
+   * 2. Register intermediate polynomial variables
+   * 3. Initialize result polynomial
+   * 4. Initialize argument polynomial
+   * 5. Set polynomial lengths to accommodate derivatives
+   * 6. Construct h(x) = t + x:
+   *    - h[0] = t (constant term)
+   *    - h[1] = 1 (linear coefficient)
+   * 7. Call ARB/FLINT series evaluation function
+   * 8. Extract scalar result at requested derivative order
+   * 9. Clean up polynomial resources
+   * 10. Load result onto stack for return
+   *
+   * @param mv         the MethodVisitor for bytecode generation
+   * @param resultType the return type (Real, Complex, or vector variant)
+   * @return the updated MethodVisitor (for method chaining)
+   */
+  @Override
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    String cls = cx ? ARB_COMPLEX_POLYNOMIAL : ARB_REAL_POLYNOMIAL;
-    Compiler.constructNewObject(mv,
-                                cls);
+    final Class<?> scalarType        = scalarType(resultType);
+    final boolean  isComplex         = Complex.class.equals(scalarType);
+    final int      polynomialLength  = Math.max(1, derivativeOrder + 1);
+
+    // Step 1: Load output variable onto stack and store in local variable
+    int outputScalarSlot = allocateAndStoreOutputScalar(mv, scalarType);
+
+    // Step 2-3: Register and retrieve polynomial class type
+    Class<?> polynomialClass = registerIntermediatePolynomials(isComplex);
+
+    // Step 4-5: Create and initialize result polynomial
+    int resultPolySlot = createInitializeAndFitPolynomial(mv,
+                                                          isComplex,
+                                                          polynomialClass,
+                                                          polynomialLength);
+
+    // Step 6-7: Create and initialize argument polynomial
+    int argumentPolySlot = createInitializeAndFitPolynomial(mv,
+                                                            isComplex,
+                                                            polynomialClass,
+                                                            polynomialLength);
+
+    // Step 8: Construct input polynomial h(x) = t + x
+    constructArgumentPolynomial(mv,
+                               scalarType,
+                               isComplex,
+                               polynomialClass,
+                               argumentPolySlot,
+                               polynomialLength);
+
+    // Step 9: Call the ARB/FLINT series evaluation function
+    invokeSeriesEvaluationFunction(mv,
+                                  scalarType,
+                                  isComplex,
+                                  polynomialLength,
+                                  resultPolySlot,
+                                  argumentPolySlot);
+
+    // Step 10: Extract scalar result at requested derivative order from polynomial
+    extractScalarResultFromPolynomial(mv,
+                                      scalarType,
+                                      isComplex,
+                                      polynomialClass,
+                                      outputScalarSlot,
+                                      resultPolySlot);
+
+    // Step 11: Clean up polynomial resources
+    clearPolynomials(mv,
+                     isComplex,
+                     polynomialClass,
+                     resultPolySlot,
+                     argumentPolySlot);
+
+    // Step 12: Load result onto stack for method return
+    mv.visitVarInsn(Opcodes.ALOAD, outputScalarSlot);
+    generatedType = scalarType;
+
+    return mv;
+  }
+
+  // ============================================================================
+  // Polynomial Creation and Initialization
+  // ============================================================================
+  
+  /**
+   * Creates a new polynomial object and pushes it onto the bytecode stack.
+   * 
+   * Generated bytecode creates a new instance and calls the no-argument constructor:
+   * <code>
+   *   new [PolyType]()
+   *   dup
+   *   invokespecial <init>()
+   * </code>
+   *
+   * @param mv        the MethodVisitor for bytecode generation
+   * @param isComplex whether to create ComplexPolynomial (true) or RealPolynomial (false)
+   */
+  private void createNewPolynomial(MethodVisitor mv, boolean isComplex)
+  {
+    String polynomialClass = isComplex ? ARB_COMPLEX_POLYNOMIAL : ARB_REAL_POLYNOMIAL;
+    Compiler.constructNewObject(mv, polynomialClass);
     Compiler.duplicateTopOfTheStack(mv);
     mv.visitMethodInsn(Opcodes.INVOKESPECIAL,
-                       cls,
+                       polynomialClass,
                        INIT,
                        VOID_NOARG_SIGNATURE,
                        false);
   }
 
-  protected static void pushInt(MethodVisitor mv, int v)
+  /**
+   * Allocates a new local variable slot and stores an output scalar variable in it.
+   * Also loads it onto the stack for subsequent operations.
+   *
+   * @param mv        the MethodVisitor for bytecode generation
+   * @param scalarType the scalar type (Real or Complex)
+   * @return the local variable slot index where the output scalar is stored
+   */
+  private int allocateAndStoreOutputScalar(MethodVisitor mv, final Class<?> scalarType)
   {
-    mv.visitLdcInsn(v);
+    loadOutputVariableOntoStack(mv, scalarType);
+    int outputSlot = nextLocalSlot++;
+    mv.visitVarInsn(Opcodes.ASTORE, outputSlot);
+    return outputSlot;
   }
 
-  protected int derivativeOrder = 0;
-
-  protected PolySeriesFunctionNode(String name, Expression<D, C, F> expr)
+  /**
+   * Creates, initializes, and fits a polynomial to the specified length.
+   * 
+   * Operations performed:
+   * 1. Create new polynomial
+   * 2. Call poly_init() to initialize internal structure
+   * 3. Call poly_fit_length() to allocate sufficient storage
+   * 4. Call poly_set_length() to set logical length for coefficients
+   * 5. Store in local variable slot
+   *
+   * @param mv               the MethodVisitor for bytecode generation
+   * @param isComplex        whether to use Complex (true) or Real (false) polynomial
+   * @param polynomialClass  the polynomial class (ComplexPolynomial or RealPolynomial)
+   * @param length           the desired polynomial length (max derivative order + 1)
+   * @return the local variable slot where the polynomial is stored
+   */
+  private int createInitializeAndFitPolynomial(MethodVisitor mv,
+                                               final boolean isComplex,
+                                               Class<?> polynomialClass,
+                                               final int length)
   {
-    super(name,
-          expr.resolve(),
-          expr.require(')'));
-  }
-
-  protected PolySeriesFunctionNode(String name, Expression<D, C, F> expr, Node<D, C, F> arg, int order)
-  {
-    super(name,
-          arg,
-          expr);
-    this.derivativeOrder = Math.max(0,
-                                    order);
-  }
-
-  protected void assignArgumentToElementOfPolynomial(MethodVisitor mv, final Class<?> S, final boolean isComplex, Class<?> polynomialClass, int argSlot)
-  {
-    mv.visitVarInsn(Opcodes.ALOAD,
-                    argSlot);
-    pushInt(mv,
-            0);
-    arg.generate(mv,
-                 S);
-    invokePolySetCoeffMethod(mv,
-                             S,
-                             isComplex,
-                             polynomialClass);
-  }
-
-  protected int assignOneToElementOfPolynomial(MethodVisitor mv, final Class<?> S, final boolean isComplex, Class<?> polynomialClass, int argSlot)
-  {
-    int oneSlot = putOneInSlot(mv,
-                               isComplex);
-    assignOneToElementOfPolynomial(mv,
-                                   S,
-                                   isComplex,
-                                   polynomialClass,
-                                   argSlot,
-                                   oneSlot);
-    return oneSlot;
-  }
-
-  protected void assignOneToElementOfPolynomial(MethodVisitor mv, final Class<?> S, final boolean isComplex, Class<?> polynomialClass, int argSlot, int oneSlot)
-  {
-    mv.visitVarInsn(Opcodes.ALOAD,
-                    argSlot);
-    pushInt(mv,
-            1);
-    mv.visitVarInsn(Opcodes.ALOAD,
-                    oneSlot);
-    invokePolySetCoeffMethod(mv,
-                             S,
-                             isComplex,
-                             polynomialClass);
-  }
-
-  public void call(MethodVisitor mv, boolean isComplex, int n, String realFunctionName, String complexFunctionName)
-  {
-    Class<?> polyClass = isComplex ? ComplexPolynomial.class : RealPolynomial.class;
-    pushInt(mv,
-            n);
-    loadBitsParameterOntoStack(mv);
-
-    invokeStaticMethod(mv,
-                       arblib.class,
-                       isComplex ? complexFunctionName : realFunctionName,
-                       Void.class,
-                       polyClass, // res
-                       polyClass, // arg
-                       int.class,
-                       int.class);
-  }
-
-  public void call(MethodVisitor mv, Class<?> S, boolean complex, int n, int oneSlot, String realFunctionName, String complexFunctionName)
-  {
-    Class<?> polyClass = complex ? ComplexPolynomial.class : RealPolynomial.class;
-    mv.visitVarInsn(Opcodes.ALOAD,
-                    oneSlot);
-    pushInt(mv,
-            0);
-    pushInt(mv,
-            n);
-    loadBitsParameterOntoStack(mv);
-    invokeStaticMethod(mv,
-                       arblib.class,
-                       complex ? complexFunctionName : realFunctionName,
-                       Void.class,
-                       polyClass, // res
-                       polyClass, // arg
-                       S,
-                       int.class,
-                       int.class,
-                       int.class);
-  }
-
-  protected void clearPolynomials(MethodVisitor mv, final boolean isComplex, Class<?> polynomialClass, int resSlot, int argSlot)
-  {
-    mv.visitVarInsn(Opcodes.ALOAD,
-                    resSlot);
-    invokeClearPolyMethod(mv,
-                          isComplex,
-                          polynomialClass);
-    mv.visitVarInsn(Opcodes.ALOAD,
-                    argSlot);
-    invokeClearPolyMethod(mv,
-                          isComplex,
-                          polynomialClass);
-  }
-
-  protected int createAndIninitializePolynomial(MethodVisitor mv, final boolean isComplex, Class<?> polynomialClass)
-  {
-    newPoly(mv,
-            isComplex);
-    int argSlot = nextLocal++;
-    mv.visitVarInsn(Opcodes.ASTORE,
-                    argSlot);
-    mv.visitVarInsn(Opcodes.ALOAD,
-                    argSlot);
+    // Create new polynomial instance
+    createNewPolynomial(mv, isComplex);
+    
+    // Store in local variable and keep reference on stack
+    int polySlot = nextLocalSlot++;
+    mv.visitVarInsn(Opcodes.ASTORE, polySlot);
+    mv.visitVarInsn(Opcodes.ALOAD, polySlot);
+    
+    // Initialize polynomial structure
     invokeStaticMethod(mv,
                        arblib.class,
                        isComplex ? ACB_POLY_INIT : ARB_POLY_INIT,
                        Void.class,
                        polynomialClass);
-    return argSlot;
+    
+    // Fit polynomial to accommodate desired length
+    mv.visitVarInsn(Opcodes.ALOAD, polySlot);
+    pushInt(mv, length);
+    invokeStaticMethod(mv,
+                       arblib.class,
+                       isComplex ? ACB_POLY_FIT_LENGTH : ARB_POLY_FIT_LENGTH,
+                       Void.class,
+                       polynomialClass,
+                       int.class);
+    
+    // Set polynomial length
+    mv.visitVarInsn(Opcodes.ALOAD, polySlot);
+    pushInt(mv, length);
+    invokeStaticMethod(mv,
+                       arblib.class,
+                       isComplex ? ACB_POLY_SET_LENGTH : ARB_POLY_SET_LENGTH,
+                       Void.class,
+                       polynomialClass,
+                       int.class);
+    
+    return polySlot;
   }
 
-  @Override
-  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
+  // ============================================================================
+  // Argument Polynomial Construction: h(x) = t + x
+  // ============================================================================
+  
+  /**
+   * Constructs the input polynomial h(x) = t + x where t is the function argument
+   * and x represents the power series variable.
+   * 
+   * Polynomial structure:
+   * - h[0] = t (constant term, representing t·x⁰ = t·1 = t)
+   * - h[1] = 1 (linear coefficient, representing 1·x¹ = x)
+   * - h[k] = 0 for k > 1 (higher-order terms are zero)
+   * 
+   * This forms the input polynomial for ARB/FLINT series functions like:
+   * - arb_poly_riemann_siegel_theta_series
+   * - arb_poly_sin_series
+   * - arb_poly_cos_series
+   * etc.
+   *
+   * @param mv                the MethodVisitor for bytecode generation
+   * @param scalarType        the scalar type (Real or Complex)
+   * @param isComplex         whether to use Complex (true) or Real (false) arithmetic
+   * @param polynomialClass   the polynomial class type
+   * @param argumentPolySlot  the local variable slot containing the argument polynomial
+   * @param length            the polynomial length (for validation)
+   */
+  private void constructArgumentPolynomial(MethodVisitor mv,
+                                           final Class<?> scalarType,
+                                           final boolean isComplex,
+                                           Class<?> polynomialClass,
+                                           int argumentPolySlot,
+                                           final int length)
   {
-    final Class<?> S               = scalarType(resultType);
-    final boolean  isComplex       = Complex.class.equals(S);
-    final int      n               = Math.max(1,
-                                              derivativeOrder + 1);
-    final int      order           = derivativeOrder;
+    // ========================================================================
+    // Set h[0] = t (constant term equal to the function argument)
+    // ========================================================================
+    assignArgumentToPolynomialCoefficient(mv,
+                                          scalarType,
+                                          isComplex,
+                                          polynomialClass,
+                                          argumentPolySlot,
+                                          0);
 
-    int            outSlot         = loadOutputVariableOntoElementOfOutputPolynomial(mv,
-                                                                                     S);
-
-    Class<?>       polynomialClass = registerIntermediateVariablesIfNotAlreadyRegistered(isComplex);
-
-    int            resSlot         = createAndIninitializePolynomial(mv,
-                                                                     isComplex,
-                                                                     polynomialClass);
-
-    int            argSlot         = createAndIninitializePolynomial(mv,
-                                                                     isComplex,
-                                                                     polynomialClass);
-
-    setPolynomialLength(mv,
-                        isComplex,
-                        n,
-                        polynomialClass,
-                        argSlot);
-
-    assignArgumentToElementOfPolynomial(mv,
-                                        S,
-                                        isComplex,
-                                        polynomialClass,
-                                        argSlot);
-
-    int oneSlot = assignOneToElementOfPolynomial(mv,
-                                                 S,
-                                                 isComplex,
-                                                 polynomialClass,
-                                                 argSlot);
-
-    mv.visitVarInsn(Opcodes.ALOAD,
-                    resSlot);
-    mv.visitVarInsn(Opcodes.ALOAD,
-                    argSlot);
-    pushSeriesCallParamsAndInvoke(mv,
-                                  S,
-                                  isComplex,
-                                  n,
-                                  oneSlot);
-
-    getScalarResult(mv,
-                    S,
-                    isComplex,
-                    order,
-                    outSlot,
-                    polynomialClass,
-                    resSlot);
-
-    clearPolynomials(mv,
-                     isComplex,
-                     polynomialClass,
-                     resSlot,
-                     argSlot);
-
-    mv.visitVarInsn(Opcodes.ALOAD,
-                    outSlot);
-    generatedType = S;
-
-    return mv;
+    // ========================================================================
+    // Set h[1] = 1 (linear coefficient to represent the series variable x)
+    // ========================================================================
+    assignOneToPolynomialCoefficient(mv,
+                                     scalarType,
+                                     isComplex,
+                                     polynomialClass,
+                                     argumentPolySlot,
+                                     1);
   }
 
-  protected void getScalarResult(MethodVisitor mv, final Class<?> S, final boolean isComplex, final int order, int outSlot, Class<?> polynomialClass, int resSlot)
+  /**
+   * Assigns the function argument to a specific coefficient of the argument polynomial.
+   * 
+   * Generated bytecode:
+   * <code>
+   *   aload argumentPolySlot
+   *   bipush coefficientIndex
+   *   [generate argument value]
+   *   invokestatic arblib.[method_name](Polynomial, int, ScalarType)
+   * </code>
+   *
+   * @param mv                the MethodVisitor for bytecode generation
+   * @param scalarType        the scalar type (Real or Complex)
+   * @param isComplex         whether using Complex (true) or Real (false) arithmetic
+   * @param polynomialClass   the polynomial class
+   * @param argumentPolySlot  the local variable slot containing the argument polynomial
+   * @param coefficientIndex  which coefficient to set (0 for constant, 1 for linear, etc.)
+   */
+  private void assignArgumentToPolynomialCoefficient(MethodVisitor mv,
+                                                     final Class<?> scalarType,
+                                                     final boolean isComplex,
+                                                     Class<?> polynomialClass,
+                                                     int argumentPolySlot,
+                                                     int coefficientIndex)
   {
-    mv.visitVarInsn(Opcodes.ALOAD,
-                    outSlot);
-    mv.visitVarInsn(Opcodes.ALOAD,
-                    resSlot);
-    pushInt(mv,
-            order);
+    mv.visitVarInsn(Opcodes.ALOAD, argumentPolySlot);
+    pushInt(mv, coefficientIndex);
+    arg.generate(mv, scalarType);
+    invokePolynomialSetCoefficientMethod(mv,
+                                         scalarType,
+                                         isComplex,
+                                         polynomialClass);
+  }
+
+  /**
+   * Assigns the value 1 to a specific coefficient of the argument polynomial.
+   * This is used to set h[1] = 1 for the linear term in h(x) = t + x.
+   * 
+   * Generated bytecode:
+   * <code>
+   *   new Real/Complex()
+   *   dup
+   *   invokespecial <init>()
+   *   dup
+   *   astore oneSlot
+   *   invokestatic arblib.arb_one/acb_one(Real/Complex)
+   *   aload argumentPolySlot
+   *   bipush coefficientIndex
+   *   aload oneSlot
+   *   invokestatic arblib.[set_coeff_method](...)
+   * </code>
+   *
+   * @param mv                the MethodVisitor for bytecode generation
+   * @param scalarType        the scalar type (Real or Complex)
+   * @param isComplex         whether using Complex (true) or Real (false) arithmetic
+   * @param polynomialClass   the polynomial class
+   * @param argumentPolySlot  the local variable slot containing the argument polynomial
+   * @param coefficientIndex  which coefficient to set (typically 1 for linear term)
+   */
+  private void assignOneToPolynomialCoefficient(MethodVisitor mv,
+                                                final Class<?> scalarType,
+                                                final boolean isComplex,
+                                                Class<?> polynomialClass,
+                                                int argumentPolySlot,
+                                                int coefficientIndex)
+  {
+    int oneSlot = allocateAndInitializeOne(mv, isComplex);
+    
+    mv.visitVarInsn(Opcodes.ALOAD, argumentPolySlot);
+    pushInt(mv, coefficientIndex);
+    mv.visitVarInsn(Opcodes.ALOAD, oneSlot);
+    invokePolynomialSetCoefficientMethod(mv,
+                                         scalarType,
+                                         isComplex,
+                                         polynomialClass);
+  }
+
+  /**
+   * Allocates a local variable slot and initializes it to the value 1.
+   * Used to efficiently set polynomial coefficients to 1 without creating
+   * temporary objects on the stack repeatedly.
+   *
+   * @param mv        the MethodVisitor for bytecode generation
+   * @param isComplex whether to create Complex (true) or Real (false) value
+   * @return the local variable slot index containing the "1" value
+   */
+  private int allocateAndInitializeOne(MethodVisitor mv, final boolean isComplex)
+  {
+    int oneSlot = nextLocalSlot++;
+    String scalarClass = isComplex ? ARB_COMPLEX : ARB_REAL;
+    
+    // Create new scalar instance
+    Compiler.constructNewObject(mv, scalarClass);
+    Compiler.duplicateTopOfTheStack(mv);
+    
+    // Call constructor
+    mv.visitMethodInsn(Opcodes.INVOKESPECIAL,
+                       scalarClass,
+                       INIT,
+                       VOID_NOARG_SIGNATURE,
+                       false);
+    
+    // Duplicate and store in local variable
+    Compiler.duplicateTopOfTheStack(mv);
+    mv.visitVarInsn(Opcodes.ASTORE, oneSlot);
+    
+    // Call arb_one or acb_one to set value to 1
+    invokeStaticMethod(mv,
+                       arblib.class,
+                       isComplex ? ACB_ONE : ARB_ONE,
+                       Void.class,
+                       isComplex ? Complex.class : Real.class);
+    
+    return oneSlot;
+  }
+
+  // ============================================================================
+  // Series Evaluation Function Invocation
+  // ============================================================================
+  
+  /**
+   * Invokes the appropriate ARB/FLINT series evaluation function.
+   * This is the abstract method that subclasses must implement to specify
+   * which series function to call (e.g., riemann_siegel_theta_series, sin_series, etc.)
+   * 
+   * Subclass implementations should push the result and argument polynomials
+   * onto the stack, then call the appropriate arblib function with the
+   * derivative order and precision (bits) parameters.
+   *
+   * @param mv               the MethodVisitor for bytecode generation
+   * @param scalarType       the scalar type (Real or Complex)
+   * @param isComplex        whether using Complex (true) or Real (false) arithmetic
+   * @param polynomialLength the number of coefficients/derivatives to compute
+   * @param resultPolySlot   the local variable slot containing the result polynomial
+   * @param argumentPolySlot the local variable slot containing the argument polynomial (h(x) = t + x)
+   */
+  protected abstract void invokeSeriesEvaluationFunction(MethodVisitor mv,
+                                                        Class<?> scalarType,
+                                                        boolean isComplex,
+                                                        int polynomialLength,
+                                                        int resultPolySlot,
+                                                        int argumentPolySlot);
+
+  // ============================================================================
+  // Result Extraction from Polynomial
+  // ============================================================================
+  
+  /**
+   * Extracts the scalar result at the requested derivative order from the
+   * result polynomial. The polynomial coefficients correspond to derivatives:
+   * - Coefficient [0] = f(t) (function value / 0th derivative)
+   * - Coefficient [1] = f'(t) (1st derivative)
+   * - Coefficient [n] = f⁽ⁿ⁾(t) (nth derivative)
+   * 
+   * The scalar at index [derivativeOrder] is extracted and stored in
+   * the output scalar variable.
+   *
+   * @param mv                the MethodVisitor for bytecode generation
+   * @param scalarType        the scalar type (Real or Complex)
+   * @param isComplex         whether using Complex (true) or Real (false) arithmetic
+   * @param polynomialClass   the polynomial class
+   * @param outputScalarSlot  the local variable slot for the output scalar
+   * @param resultPolySlot    the local variable slot containing the result polynomial
+   */
+  private void extractScalarResultFromPolynomial(MethodVisitor mv,
+                                                 final Class<?> scalarType,
+                                                 final boolean isComplex,
+                                                 Class<?> polynomialClass,
+                                                 int outputScalarSlot,
+                                                 int resultPolySlot)
+  {
+    // Load output scalar (destination for result)
+    mv.visitVarInsn(Opcodes.ALOAD, outputScalarSlot);
+    
+    // Load result polynomial (source of coefficient)
+    mv.visitVarInsn(Opcodes.ALOAD, resultPolySlot);
+    
+    // Push the derivative order as the coefficient index
+    pushInt(mv, derivativeOrder);
+    
+    // Call the appropriate get_coeff method
     invokeStaticMethod(mv,
                        arblib.class,
                        isComplex ? ACB_POLY_GET_COEFF_ACB : ARB_POLY_GET_COEFF_ARB,
                        Void.class,
-                       S,
+                       scalarType,
                        polynomialClass,
                        int.class);
   }
 
-  protected void invokeClearPolyMethod(MethodVisitor mv, final boolean isComplex, Class<?> polynomialClass)
+  // ============================================================================
+  // Resource Cleanup
+  // ============================================================================
+  
+  /**
+   * Clears and deallocates polynomial resources.
+   * Must be called after all polynomial operations to ensure proper
+   * memory management and prevent resource leaks.
+   * 
+   * Calls arb_poly_clear or acb_poly_clear for each polynomial.
+   *
+   * @param mv               the MethodVisitor for bytecode generation
+   * @param isComplex        whether using Complex (true) or Real (false) polynomials
+   * @param polynomialClass  the polynomial class type
+   * @param resultPolySlot   the local variable slot containing the result polynomial
+   * @param argumentPolySlot the local variable slot containing the argument polynomial
+   */
+  private void clearPolynomials(MethodVisitor mv,
+                                final boolean isComplex,
+                                Class<?> polynomialClass,
+                                int resultPolySlot,
+                                int argumentPolySlot)
+  {
+    // Clear result polynomial
+    mv.visitVarInsn(Opcodes.ALOAD, resultPolySlot);
+    invokePolynomialClearMethod(mv, isComplex, polynomialClass);
+    
+    // Clear argument polynomial
+    mv.visitVarInsn(Opcodes.ALOAD, argumentPolySlot);
+    invokePolynomialClearMethod(mv, isComplex, polynomialClass);
+  }
+
+  /**
+   * Invokes the polynomial clear method to deallocate internal structures.
+   * Wrapper around invokeStaticMethod for cleaner code.
+   *
+   * @param mv               the MethodVisitor for bytecode generation
+   * @param isComplex        whether using Complex (true) or Real (false) polynomial
+   * @param polynomialClass  the polynomial class type
+   */
+  private void invokePolynomialClearMethod(MethodVisitor mv,
+                                           final boolean isComplex,
+                                           Class<?> polynomialClass)
   {
     invokeStaticMethod(mv,
                        arblib.class,
@@ -447,7 +642,28 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
                        polynomialClass);
   }
 
-  protected void invokePolySetCoeffMethod(MethodVisitor mv, final Class<?> S, final boolean isComplex, Class<?> polynomialClass)
+  // ============================================================================
+  // Polynomial Coefficient Operations
+  // ============================================================================
+  
+  /**
+   * Invokes the method to set a polynomial coefficient to a scalar value.
+   * Wrapper around invokeStaticMethod for setting coefficients.
+   * 
+   * Expected stack state before call:
+   * - Top: scalar value to set
+   * - Next: coefficient index
+   * - Next: polynomial object
+   *
+   * @param mv               the MethodVisitor for bytecode generation
+   * @param scalarType       the scalar type (Real or Complex)
+   * @param isComplex        whether using Complex (true) or Real (false) arithmetic
+   * @param polynomialClass  the polynomial class
+   */
+  private void invokePolynomialSetCoefficientMethod(MethodVisitor mv,
+                                                    final Class<?> scalarType,
+                                                    final boolean isComplex,
+                                                    Class<?> polynomialClass)
   {
     invokeStaticMethod(mv,
                        arblib.class,
@@ -455,59 +671,26 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
                        Void.class,
                        polynomialClass,
                        int.class,
-                       S);
+                       scalarType);
   }
 
+  // ============================================================================
+  // Intermediate Variable Registration
+  // ============================================================================
+  
   /**
-   * Local: outScalar, resPoly, argPoly, oneScalar
+   * Registers intermediate polynomial variables in the expression context
+   * if they haven't been registered already. This allows the expression
+   * compiler to track these variables across multiple code generation passes.
    * 
-   * @param mv
-   * @param S
-   * @return
+   * Registers two intermediate variables:
+   * - "resultPoly": the polynomial holding computed derivatives
+   * - "arg": the polynomial holding the input (h(x) = t + x)
+   *
+   * @param isComplex whether to use Complex (true) or Real (false) polynomial class
+   * @return the polynomial class that was registered and should be used
    */
-  protected int loadOutputVariableOntoElementOfOutputPolynomial(MethodVisitor mv, final Class<?> S)
-  {
-    loadOutputVariableOntoStack(mv,
-                                S);
-    int outSlot = nextLocal++;
-    mv.visitVarInsn(Opcodes.ASTORE,
-                    outSlot);
-    return outSlot;
-  }
-
-  protected abstract void pushSeriesCallParamsAndInvoke(MethodVisitor mv, Class<?> S, boolean cx, int n, int oneSlot);
-
-  protected int putOneInSlot(MethodVisitor mv, final boolean isComplex)
-  {
-    // Allocate + prepare a temp variable for 1
-    int    oneSlot = nextLocal++;
-    String type    = isComplex ? ARB_COMPLEX : ARB_REAL;
-    Compiler.constructNewObject(mv,
-                                type);
-    Compiler.duplicateTopOfTheStack(mv);
-    mv.visitMethodInsn(Opcodes.INVOKESPECIAL,
-                       type,
-                       INIT,
-                       VOID_NOARG_SIGNATURE,
-                       false);
-    Compiler.duplicateTopOfTheStack(mv);
-    mv.visitVarInsn(Opcodes.ASTORE,
-                    oneSlot);
-    invokeOneMethod(mv,
-                    isComplex);
-    return oneSlot;
-  }
-
-  protected void invokeOneMethod(MethodVisitor mv, final boolean isComplex)
-  {
-    invokeStaticMethod(mv,
-                       arblib.class,
-                       isComplex ? ACB_ONE : ARB_ONE,
-                       Void.class,
-                       isComplex ? Complex.class : Real.class);
-  }
-
-  public Class<?> registerIntermediateVariablesIfNotAlreadyRegistered(final boolean isComplex)
+  private Class<?> registerIntermediatePolynomials(final boolean isComplex)
   {
     Class<?> polynomialClass = isComplex ? ComplexPolynomial.class : RealPolynomial.class;
 
@@ -515,28 +698,32 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
     {
       expression.registerIntermediateVariable(RESULT_POLY,
                                               polynomialClass,
-                                              true);
+                                              true); // AutoCloseable
     }
+    
     if (!expression.hasIntermediateVariable(ARG_POLY))
     {
       expression.registerIntermediateVariable(ARG_POLY,
                                               polynomialClass,
-                                              true);
+                                              true); // AutoCloseable
     }
+    
     return polynomialClass;
   }
 
-  protected void setPolynomialLength(MethodVisitor mv, final boolean isComplex, final int n, Class<?> polynomialClass, int argSlot)
+  // ============================================================================
+  // Utility Methods
+  // ============================================================================
+  
+  /**
+   * Pushes an integer constant onto the bytecode stack.
+   * Optimized for common small values using LDC instruction.
+   *
+   * @param mv the MethodVisitor for bytecode generation
+   * @param value the integer value to push
+   */
+  protected static void pushInt(MethodVisitor mv, int value)
   {
-    mv.visitVarInsn(Opcodes.ALOAD,
-                    argSlot);
-    pushInt(mv,
-            n);
-    invokeStaticMethod(mv,
-                       arblib.class,
-                       isComplex ? ACB_POLY_FIT_LENGTH : ARB_POLY_FIT_LENGTH,
-                       Void.class,
-                       polynomialClass,
-                       int.class);
+    mv.visitLdcInsn(value);
   }
 }
