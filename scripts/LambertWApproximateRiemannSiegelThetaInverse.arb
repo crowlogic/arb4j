@@ -1,10 +1,16 @@
 Expression.saveClasses=true;
 FunctionPlotter.darkStyle=false;
 var context = new Context();
-var Z = RealFunction.express("Z(t)");
-var θ = RealFunction.express("θ:im(lnΓ(1/4+I*t/2))-(log(π)/2)*t",context);
+var Z = RealFunction.express("Z(t*pi)");
+var θ = RealFunction.express("θ:im(lnΓ(1/4+I*pi*t/2))-(log(π)/2)*(t*pi)",context);
 var V = RealFunction.express("V:(2*(u+π/8))/W(0,(u+π/8)/(π*exp(1)))",context);
-var f = RealFunction.express("Z(V(t))",context);
-var Q = RealFunction.express("Q:θ(V(t))",context);
-var line = RealFunction.express("line:t->t-Q(0.0000000001)",context);
-plot(0.00001,50,5000,Q,line,f,V,θ,Z);
+var f = RealFunction.express("f:Z(V(t*pi))",context);
+var Q = RealFunction.express("Q:θ(V(t*pi))",context);
+var line = RealFunction.express("line:t->t*pi-Q(0.0000000001)",context);
+var N = RealToComplexFunction.express("N:1+(-((lnΓ(¼ + t*I/2) - lnΓ(¼ - t*I/2))*I)/2 -ln(π)*t/2)/π + 1 - I*((ln(ζ(½ + I*t)) - ln(ζ(½ - I*t))))/(2*π)",context);
+var M = RealToComplexFunction.express("M:t->log(N(V(t*pi)))",context);
+plot(0.00001,150,25000,Q,line,f,V,θ,Z,M.realPart(),RealFunction.express("log(t+1)"));
+//TODO: add verticle markers where time is a positive integer,coinciding with a crest or a trough which are roots of the derivative of the Z function
+//# show time-warped zero counting function
+//#var n = N.re().realPart();
+//#plot(0,100,10000,n);

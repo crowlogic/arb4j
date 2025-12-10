@@ -1,2 +1,2 @@
 seq(0,9,k->RealFunction.express(String.format("J(%d,x)",k)))
-plot(-2,30,5000,rfarray($1));
+plot(0,30,5000,rfarray($1));
