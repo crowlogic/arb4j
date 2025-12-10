@@ -2,30 +2,21 @@ package arb.utensils;
 
 import static arb.utensils.Utensils.wrapOrThrow;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.IntFunction;
 import java.util.stream.IntStream;
 
-import arb.Real;
-import arb.RealDataSet;
-import arb.RealPolynomial;
-import arb.SequenceDataSet;
-import arb.Typesettable;
+import arb.Integer;
+import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
-import arb.utensils.text.trees.FileNode;
-import arb.utensils.text.trees.FileTreeModel;
-import arb.utensils.text.trees.TextTree;
+import arb.utensils.text.trees.*;
 import arb.viz.FunctionPlotter;
 import arb.viz.WindowManager;
 import io.fair_acc.chartfx.Chart;
@@ -91,7 +82,7 @@ public class ShellFunctions
     return array(funcs, RealFunction.class);
   }
 
-  public static FunctionPlotter plot(RealDataSet sequence)
+  public static FunctionPlotter plot(RealDataSet... datasets)
   {
     WindowManager.initializeJavaFxIfNecessary();
     AtomicReference<FunctionPlotter> ref = new AtomicReference<>();
@@ -99,7 +90,6 @@ public class ShellFunctions
 
     Platform.runLater(() ->
     {
-      RealDataSet dataSet = sequence;
 
       try
       {
@@ -107,7 +97,10 @@ public class ShellFunctions
         ref.set(plotter);
         plotter.createScene();
         plotter.chart.getDatasets().clear();
-        plotter.chart.getDatasets().add(dataSet);
+        for (RealDataSet dataset : datasets)
+        {
+          plotter.chart.getDatasets().add(dataset);
+        }
         plotter.stage.show();
       }
       finally
