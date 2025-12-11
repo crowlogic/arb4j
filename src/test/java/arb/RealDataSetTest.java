@@ -128,7 +128,7 @@ public class RealDataSetTest extends
   public void testToString()
   {
     String result = dataSet.toString();
-    assertEquals("RealTwoDimensionalDataSet[testDataSet]", result);
+    assertEquals("RealDataSet[testDataSet]", result);
   }
 
   public void testSetThrowsAssertion()
