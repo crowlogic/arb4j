@@ -12,8 +12,7 @@ import arb.functions.Function;
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
-public interface RealFunction
-                              extends
+public interface RealFunction extends
                               Function<Real, Real>
 {
 
@@ -55,52 +54,36 @@ public interface RealFunction
 
   public static Expression<Real, Real, RealFunction> compile(String expression)
   {
-    return compile(expression,
-                   null);
+    return compile(expression, null);
   }
 
   public static Expression<Real, Real, RealFunction> compile(String expression, Context context)
   {
-    return Compiler.compile(expression,
-                            context,
-                            Real.class,
-                            Real.class,
-                            RealFunction.class,
-                            null);
+    return Compiler.compile(expression, context, Real.class, Real.class, RealFunction.class, null);
   }
 
   public static RealFunction express(String expression)
   {
-    return express(null,
-                   expression,
-                   null);
+    return express(null, expression, null);
   }
 
   public static RealFunction express(String expression, Context context)
   {
-    return Function.express(Real.class,
-                            Real.class,
-                            RealFunction.class,
-                            expression,
-                            context);
+    return Function.express(Real.class, Real.class, RealFunction.class, expression, context);
   }
 
   public static RealFunction express(String expression, String string)
   {
-    return express(expression,
-                   string,
-                   null);
+    return express(expression, string, null);
   }
 
   public static RealFunction express(String functionName, String expression, Context context)
   {
-    return express(functionName,
-                   expression,
-                   context,
-                   false);
+    return express(functionName, expression, context, false);
   }
 
-  public static RealFunction express(String functionName, String expression, Context context, boolean verbose)
+  public static RealFunction
+         express(String functionName, String expression, Context context, boolean verbose)
   {
     return Function.instantiate(expression,
                                 context,
@@ -110,10 +93,11 @@ public interface RealFunction
                                 functionName);
   }
 
-  public static <E extends Expression<Real, Real, RealFunction>> Expression<Real, Real, RealFunction> parse(String expression)
+  public static <E extends Expression<Real, Real, RealFunction>>
+         Expression<Real, Real, RealFunction>
+         parse(String expression)
   {
-    return parse(expression,
-                 null);
+    return parse(expression, null);
   }
 
   public static Expression<Real, Real, RealFunction> parse(String expression, Context context)
@@ -130,23 +114,25 @@ public interface RealFunction
                                          null);
 
     var    functionName = parsed.functionName;
-    parsed.updateStringRepresentation(); 
-    
+    parsed.updateStringRepresentation();
+
     if (functionName != null && context != null)
     {
-      FunctionMapping<Real, Real, RealFunction> mapping = context.registerFunctionMapping(functionName,
-                                                                                          null,
-                                                                                          parsed.domainType,
-                                                                                          parsed.coDomainType,
-                                                                                          parsed.functionClass,
-                                                                                          true,
-                                                                                          null,
-                                                                                          expression);
-      parsed.mapping = mapping;
+      FunctionMapping<Real,
+                    Real,
+                    RealFunction> mapping = context.registerFunctionMapping(functionName,
+                                                                            null,
+                                                                            parsed.domainType,
+                                                                            parsed.coDomainType,
+                                                                            parsed.functionClass,
+                                                                            true,
+                                                                            null,
+                                                                            expression);
+      parsed.mapping           = mapping;
       mapping.expressionString = parsed.expression;
     }
 
-    return parsed;   
+    return parsed;
   }
 
   @Override
@@ -156,8 +142,9 @@ public interface RealFunction
   }
 
   /**
-   * double wrappeRealFunction foRealFunction this{@link #evaluate(Real, int, int, Real)}
-   * which is called with {@link Double#PRECISION} bits
+   * double wrappeRealFunction foRealFunction
+   * this{@link #evaluate(Real, int, int, Real)} which is called with
+   * {@link Double#PRECISION} bits
    * 
    * @param t
    * @return the {@link Real#doubleValue()} applied to the result of the
@@ -167,42 +154,31 @@ public interface RealFunction
   {
     try ( Real x = Real.newVector(2))
     {
-      return evaluate(x.get(0).set(t),
-                      1,
-                      Double.PRECISION + 5,
-                      x.get(1)).doubleValue();
+      return evaluate(x.get(0).set(t), 1, Double.PRECISION + 5, x.get(1)).doubleValue();
     }
   }
 
   public default Real eval(double t, Real res)
   {
-    return evaluate(res.set(t),
-                    1,
-                    Double.PRECISION + 5,
-                    res);
+    return evaluate(res.set(t), 1, Double.PRECISION + 5, res);
   }
 
   public default double eval(double t, RoundingMode roundingMode)
   {
     try ( var x = Real.newVector(2))
     {
-      return evaluate(x.get(0).set(t),
-                      1,
-                      Double.PRECISION + 5,
-                      x.get(1)).doubleValue(roundingMode);
+      return evaluate(x.get(0).set(t), 1, Double.PRECISION + 5, x.get(1)).doubleValue(roundingMode);
     }
   }
 
   public default Real evaluate(Real x, int bits, Real result)
   {
-    return evaluate(x,
-                    1,
-                    bits,
-                    result);
+    return evaluate(x, 1, bits, result);
   }
 
   /**
-   * Default to 128 bits foRealFunction this{@link #quantize(double, double, int, int)}
+   * Default to 128 bits foRealFunction
+   * this{@link #quantize(double, double, int, int)}
    * 
    * @param left
    * @param right
@@ -211,15 +187,12 @@ public interface RealFunction
    */
   public default RealDataSet quantize(double left, double right, int n)
   {
-    return quantize(left,
-                    right,
-                    n,
-                    false,
-                    Double.SIZE);
+    return quantize(left, right, n, false, Double.SIZE);
   }
 
   /**
-   * Default to 128 bits foRealFunction this{@link #quantize(double, double, int, int)}
+   * Default to 128 bits foRealFunction
+   * this{@link #quantize(double, double, int, int)}
    * 
    * @param left
    * @param right
@@ -232,10 +205,7 @@ public interface RealFunction
     try ( var I = new FloatInterval(left,
                                     right);)
     {
-      return quantize(I,
-                      128,
-                      n,
-                      parallel);
+      return quantize(I, 128, n, parallel);
     }
   }
 
@@ -255,15 +225,13 @@ public interface RealFunction
     try ( var I = new FloatInterval(left,
                                     right);)
     {
-      return quantize(I,
-                      bits,
-                      n,
-                      parallel);
+      return quantize(I, bits, n, parallel);
     }
   }
 
   /**
-   * Default to parallel=false for this{@link #quantize(double, double, int, boolean, int)}
+   * Default to parallel=false for
+   * this{@link #quantize(double, double, int, boolean, int)}
    * 
    * @param left
    * @param right
@@ -273,16 +241,13 @@ public interface RealFunction
    */
   public default RealDataSet quantize(double left, double right, int n, int bits)
   {
-    return quantize(left,
-                    right,
-                    n,
-                    false,
-                    bits);
+    return quantize(left, right, n, false, bits);
   }
 
   /**
    * Generate a {@link RealPartition} covering the specified interval and call
-   * this{@link #evaluate(Real, int, int, Real)} at each of the n points of the partition.
+   * this{@link #evaluate(Real, int, int, Real)} at each of the n points of the
+   * partition.
    * 
    * 
    * @param interval
@@ -294,28 +259,25 @@ public interface RealFunction
    */
   public default RealDataSet quantize(FloatInterval interval, int bits, int n, boolean parallel)
   {
-    try ( var Δ = interval.length(bits,
-                                  new Float()))
+    try ( var Δ = interval.length(bits, new Float()))
     {
-      Δ.div(n,
-            bits);
-      RealDataSet sample = new RealDataSet(String.format("%s%s over %s..%s (#=%d Δ=%s)",
+      Δ.div(n, bits);
+      RealDataSet sample = new RealDataSet(
+                                           String.format("%s%s over %s..%s (#=%d Δ=%s)",
                                                          getName() == null ? "" : (getName() + ":"),
                                                          toString(),
-                                                         interval.left().toString(5),
-                                                         interval.right().toString(5),
+                                                         interval.left().doubleValue(),
+                                                         interval.right().doubleValue(),
                                                          n,
                                                          Δ),
                                            n,
                                            interval);
       Real        values = sample.getRealYValues();
 
-      try ( RealPartition mesh = interval.generateRealPartition(bits,
-                                                                false,
-                                                                sample.getRealXValues()))
+      try ( RealPartition mesh =
+                               interval.generateRealPartition(bits, false, sample.getRealXValues()))
       {
-        IntStream domain = IntStream.range(0,
-                                           n);
+        IntStream domain = IntStream.range(0, n);
         if (parallel)
         {
           domain = domain.parallel();
@@ -324,10 +286,7 @@ public interface RealFunction
         {
           Real ithVal   = values.get(i);
           Real ithPoint = mesh.get(i);
-          evaluate(ithPoint,
-                   1,
-                   bits,
-                   ithVal);
+          evaluate(ithPoint, 1, bits, ithVal);
         });
         return sample;
       }
@@ -344,7 +303,7 @@ public interface RealFunction
   @Override
   public default RealFunction integral()
   {
-  
+
     assert false : "TODO: " + getClass() + " should implement this";
     return Function.super.integral();
   }
