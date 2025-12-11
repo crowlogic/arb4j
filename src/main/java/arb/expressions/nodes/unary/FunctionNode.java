@@ -49,6 +49,11 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>>
                          extends
                          UnaryOperationNode<D, R, F>
 {
+  /**
+   * Derivative order for special functions like δ(x), δ'(x), δ''(x), etc.
+   * 0 = base function, 1 = first derivative, 2 = second derivative, etc.
+   */
+  protected int derivativeOrder = 0;
 
   @Override
   public Node<D, R, F> differentiate()
@@ -221,6 +226,15 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>>
 
   }
 
+  /**
+   * Constructor with derivative order support for special functions.
+   */
+  public FunctionNode(String functionName, Node<D, R, F> argument, Expression<D, R, F> expression, int derivativeOrder)
+  {
+    this(functionName, argument, expression);
+    this.derivativeOrder = Math.max(0, derivativeOrder);
+  }
+
   private void lookupFunctionInContext()
   {
     mapping    = expression.context.getFunctionMapping(functionName);
@@ -321,8 +335,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>>
     switch (functionName)
     {
     case "δ": // Dirac delta function
-      // The derivative of δ(x) is 0
-      return zero();
+      // The derivative of δ(x) is δ^(1)(x), δ'(x) is δ^(2)(x), etc.
+      return new FunctionNode<>(functionName, arg, expression, derivativeOrder + 1);
     case "θ": // Heaviside step function
       return arg.δ();
     case "sqrt":
@@ -912,13 +926,31 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>>
     {
       return mapping.expressionString;
     }
-    return String.format("%s(%s)",
+    String suffix = getDerivativeSuffix();
+    return String.format("%s%s(%s)",
                          functionName,
+                         suffix,
                          arg == null ? "" : arg.toStringWithoutIndependentVariableSpecified())
                  .replaceAll("sqrt",
                              "√")
                  .replaceAll("J0",
                              "J₀");
+  }
+
+  /**
+   * Get the derivative notation suffix for this function (e.g., '' for second derivative)
+   */
+  private String getDerivativeSuffix()
+  {
+    if (derivativeOrder == 0)
+      return "";
+    if (derivativeOrder == 1)
+      return "'";
+    if (derivativeOrder == 2)
+      return "''";
+    if (derivativeOrder == 3)
+      return "'''";
+    return "^(" + derivativeOrder + ")";
   }
 
   @Override
@@ -942,8 +974,10 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>>
                                           "J_0")
                               .replaceAll("ζ",
                                           "zeta");
-    return format(name.equals("sqrt") ? "\\%s{%s}" : "\\%s(%s)",
+    String suffix = getDerivativeSuffix();
+    return format(name.equals("sqrt") ? "\\%s{%s}" : "\\%s%s(%s)",
                   name,
+                  suffix,
                   arg == null ? "" : arg.typeset());
   }
 
