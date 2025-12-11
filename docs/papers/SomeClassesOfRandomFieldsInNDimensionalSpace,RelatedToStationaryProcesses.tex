@@ -1,0 +1,279 @@
+\documentclass{article}
+\usepackage{amsmath, amsthm, amssymb, enumitem, graphicx, hyperref}
+\usepackage{mathtools}
+
+% Theorem environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+% Custom commands
+\newcommand{\VIX}{\operatorname{VIX}}
+\newcommand{\SPX}{\operatorname{SPX}}
+
+\begin{document}
+
+% Title and authors
+\title{The quadratic rough Heston model and the joint S\&P 500/VIX smile calibration problem}
+\author{Jim Gatheral\thanks{Baruch College, CUNY, \texttt{jim.gatheral@baruch.cuny.edu}} \and Paul Jusselin\thanks{École Polytechnique, \texttt{paul.jusselin@polytechnique.edu}} \and Mathieu Rosenbaum\thanks{École Polytechnique, \texttt{mathieu.rosenbaum@polytechnique.edu}}}
+\date{January 8, 2020}
+\maketitle
+
+% Header
+\begin{center}
+arXiv:2001.01789v1[q-fin.MF] 6 Jan 2020
+\end{center}
+
+% Abstract
+\begin{abstract}
+Fitting simultaneously SPX and VIX smiles is known to be one of the most challenging problems in volatility modeling. A long-standing conjecture due to Julien Guyon is that it may not be possible to calibrate jointly these two quantities with a model with continuous sample paths. We present the quadratic rough Heston model as a counterexample to this conjecture. The key idea is the combination of rough volatility together with a price-feedback (Zumbach) effect.
+
+\textbf{Keywords:} SPX smiles, VIX smiles, rough Heston model, Zumbach effect, quadratic rough Heston model, Guyon's conjecture.
+\end{abstract}
+
+\section{Introduction}\label{sec:introduction}
+
+The Volatility Index, or VIX, was introduced in 1993 by the Chicago Board Options Exchange (CBOE for short) and was originally designed according to \cite{cboe2003vix} to ``measure the markets expectation of 30-day volatility implied by at-the-money S\&P 100 Index option price''. Since 2003, the VIX has been redefined as the square root of the price of a specific basket of options on the S\&P 500 Index (SPX) with maturity 30 days. The basket coefficients are chosen so that at any time $t$, the VIX represents the annualized square root of the price of a contract with payoff equal to $\log(S_{t+\Delta}/S_{t})$ where $\Delta=30$ days and $S$ denotes the value of the SPX. Consequently, it can be formally written via risk-neutral expectation under the form
+
+\begin{equation}\label{eq:vix_definition}
+\VIX_{t}=\sqrt{\mathbb{E}[\log(S_{t+\Delta}/S_{t})|\mathcal{F}_{t}]}\times100,
+\end{equation}
+
+where $(\mathcal{F}_{t})_{t\geq0}$ is the natural filtration of the market.
+
+Since 2004, investors have been able to trade VIX futures. Quoting the CBOE white paper, they ``provide market participants with a variety of opportunities to implement their view using volatility trading strategies, including risk management, alpha generation and portfolio diversification''\footnote{\url{https://cfe.cboe.com/cfe-products/vx-cboe-volatility-index-vix-futures}}. Subsequently in 2006, CBOE introduced VIX options ``providing market participants with another tool to manage volatility. VIX options enable market participants to hedge portfolio volatility risk distinct from market price risk and trade based on their view of the future direction or movement of volatility''\footnote{\url{http://www.cboe.com/products/vix-index-volatility/vix-options-and-futures/vix-options}}. Those products are now among the most liquid financial instruments in the world. There are indeed more than 500,000 VIX options traded each day, with most of the liquidity concentrated on the first three monthly contracts.
+
+Nevertheless, despite that more vega is now traded in the VIX market than in the SPX market, the wide bid-ask spreads in the VIX options market betray its lack of maturity. One of the reasons underlying these wide spreads is that the market lacks a reliable pricing methodology for VIX options; since the VIX is by definition a derivative of the SPX, any reasonable methodology must necessarily be consistent with the pricing of SPX options. Designing a model that jointly calibrates SPX and VIX options prices is known to be extremely challenging. Indeed, this problem is sometimes considered to be the holy grail of volatility modeling. We will simply refer to it as the joint calibration problem.
+
+The joint calibration problem has been extensively studied by Julien Guyon who provides a review of various approaches in \cite{guyon2019joint_review}. We can split the different attempts to solve it into three categories:
+
+\begin{enumerate}
+    \item In probably the most technical and original proposal, and the first to have succeeded in obtaining a perfect joint calibration, the joint calibration problem is interpreted as a model-free constrained martingale transport problem, as initially observed in \cite{demarco2015linking}. In his recent paper \cite{guyon2019joint_review}, using this viewpoint, Guyon manages to get a perfect calibration of VIX options smile at time $T_1$ and SPX options smiles at dates $T_1$ and $T_2=T_1+30$ days. As noticed by the author, although this methodology can theoretically be extended to any set of maturities, it is much more intricate in practice because of the computational complexity.
+    
+    \item The second approach is to attempt joint calibration with models where SPX trajectories are continuous, see in particular \cite{goutte2017regime}. Unfortunately, for now, continuous models have not been completely successful in this task. An interpretation for this failure is given in \cite{guyon2019joint_review} where the author explains that ``the very large negative skew of short-term SPX options, which in continuous models implies a very large volatility of volatility, seems inconsistent with the comparatively low levels of VIX implied volatilities''. To circumvent this issue, it is then natural to think of rough volatility models as recently introduced in \cite{gatheral2018volatility}. However, these models also appear unsuccessful thus far, see \cite{guyon2018joint_slides}.
+    
+    \item The last approach is to allow for jumps in the dynamic of the SPX, see \cite{baldeaux2014consistent, cont2013consistent, kokholm2015joint, pacati2018smiling, papanicolaou2014regime}. Doing so, one can reconcile the skewness of SPX options with the level of VIX implied volatilities. Nevertheless, probably besides those in \cite{cont2013consistent} and \cite{pacati2018smiling}, existing models with jumps do not really achieve a satisfying accuracy for the joint calibration problem. Specifically, most of them fail to reproduce VIX smiles for maturities shorter than one month.
+\end{enumerate}
+
+In summary, according to Guyon in \cite{guyon2019joint_review}, despite the many efforts ``so far all the attempts at solving the joint SPX/VIX smile calibration problem [using a continuous time model] only produced imperfect, approximate fits''. In particular, regarding continuous models, Guyon concludes that ``joint calibration seems out of the reach of continuous-time models with continuous SPX paths''. In this paper, we provide a counterexample to Guyon's conjecture, namely a model with continuous SPX and VIX paths that enables us to fit SPX and VIX options smiles simultaneously.
+
+\section{Rough volatility and the Zumbach effect}\label{sec:rough_volatility}
+
+Recently rough volatility models, where volatility trajectories, though continuous, are very irregular, have generated a lot of attention. The reason for this success is the ability of these very parsimonious models to reproduce all the main stylized facts of historical volatility time series and to fit SPX options smiles, see \cite{bayer2016pricing, el2019roughening, gatheral2018volatility}. One particularly interesting rough volatility model is the rough Heston model introduced in \cite{euch2019characteristic} which, as its name suggests, is a rough version of the classical Heston model. This model arises as limit of natural Hawkes process-based models of price and order flow, see \cite{euch2018microstructural, jaisson2016rough, jusselin2018no}. Moreover, there is a quasi-closed form formula for the characteristic function of the rough Heston model, just as in the classical case. So fast pricing of European options is possible, see \cite{callegaro2018rough, gatheral2019rational}. In addition derivatives hedging is fully understood as shown in \cite{euch2018perfect, euch2019characteristic}, see also \cite{abi2019affine, cuchiero2018generalized}.
+
+Despite these successes, a subtle question raised by Jean-Philippe Bouchaud remains: can a rough volatility model reproduce the so-called Zumbach effect, the observation originally due to Gilles Zumbach, see \cite{lynch2003market, zumbach2009time, zumbach2010volatility}, that financial time series are not time-reversal invariant? To answer this question, we introduce two notions, each of which corresponds to different aspects of the Zumbach effect:
+
+\begin{itemize}
+    \item The weak Zumbach effect (typically considered in the econophysics literature, see \cite{zumbach2009time}): Past squared returns forecast better future integrated volatilities than past integrated volatilities forecast future squared returns. This property is not satisfied in classical stochastic volatility models. However, rough stochastic volatility models are consistent with the weak Zumbach effect, see \cite{euch2019zumbach} for explicit computations in the rough Heston model.
+    
+    \item The strong Zumbach effect: Conditional dynamics of volatility with respect to the past depend not only on the past volatility trajectory but also on the historical price path; specifically, price trends tend to increase volatility, see \cite{zumbach2010volatility}. Such feedback of the historical price path on volatility also occurs on implied volatility as illustrated in Figure~1 of \cite{foschi2008path} and in \cite{zumbach2010volatility}. Rough stochastic volatility models such as the rough Heston model are not consistent with the strong Zumbach effect, see \cite{euch2018perfect}.
+\end{itemize}
+
+The quest for a rough volatility model consistent with the strong Zumbach effect and the empirical success of quadratic Hawkes process-based models documented in \cite{blanc2017quadratic} led to the development of super-Heston rough volatility models in \cite{dandapani2019quadratic}. These extensions of the rough Heston model arise as limits of quadratic Hawkes process-based microstructural models just as the rough Heston model arises as the continuous-time limit of a linear Hawkes process-based microstructural model.
+
+The idea of using super-Heston rough volatility models to solve the joint calibration problem came after a presentation of Julien Guyon at École Polytechnique in March 2019. In this talk, he gave a necessary condition for a continuous model to fit simultaneously SPX and VIX smiles: The inversion of convex ordering between volatility and the local volatility implied by option prices, see \cite{acciaio2019inversion, guyon2019inversion}. The intuition behind this condition could be reinterpreted as some kind of strong Zumbach effect. It was then natural for us to investigate the ability of super-Heston rough volatility models to solve the joint calibration problem.
+
+\section{The quadratic rough Heston model}\label{sec:quadratic_model}
+
+The quadratic rough Heston model that we consider is a special case of the super-Heston rough volatility models of \cite{dandapani2019quadratic}. The joint dynamics of the asset $S$ (here the SPX), and its spot variance $V$ satisfy
+
+\begin{equation}\label{eq:qrh_dynamics}
+dS_{t}=S_{t}\sqrt{V_{t}}\,dW_{t},\quad V_{t}=a(Z_{t}-b)^{2}+c,
+\end{equation}
+
+where $W$ is a Brownian motion, $a$, $b$ and $c$ some positive constants and $Z_{t}$ follows a rough Heston model. More precisely,
+
+\begin{equation}\label{eq:z_process}
+Z_{t}=\int_{0}^{t}(t-s)^{\alpha-1}\frac{\lambda}{\Gamma(\alpha)}\big(\theta_{0}(s)-Z_{s}\big)\,ds+\int_{0}^{t}(t-s)^{\alpha-1}\frac{\lambda}{\Gamma(\alpha)}\eta\sqrt{V_{s}}\,dW_{s},
+\end{equation}
+
+with $\alpha\in(1/2,1)$, $\lambda>0$, $\eta>0$ and $\theta_{0}$ a deterministic function. In this special case of a quadratic rough Heston model, the asset $S$ and its volatility depend on the history of only one Brownian motion. The model is thus a pure feedback model; volatility is driven only by the price dynamics, with no additional source of randomness. For simplicity however, we will refer to this pure feedback version of the quadratic rough Heston model as the quadratic rough Heston model.
+
+\subsection{The quadratic rough Heston process}\label{subsec:qrh_process}
+
+The process $Z_{t}$ may be understood as a weighted moving average of past price log returns. Indeed from Lemma~A.1 in \cite{euch2018perfect}, we have that
+
+\begin{lemma}\label{lem:z_representation}
+The process $Z_t$ admits the representation
+\begin{equation}\label{eq:z_representation}
+Z_{t}=\int_{0}^{t}f^{\alpha,\lambda}(t-s)\theta_{0}(s)\,ds+\int_{0}^{t}f^{\alpha,\lambda}(t-s)\eta\sqrt{V_{s}}\,dW_{s},
+\end{equation}
+where $f^{\alpha,\lambda}(t)$ is the Mittag-Leffler density function defined for $t\geq0$ as
+\begin{equation}\label{eq:mittag_leffler_density}
+f^{\alpha,\lambda}(t)=\lambda t^{\alpha-1}E_{\alpha,\alpha}(-\lambda t^{\alpha}),
+\end{equation}
+with
+\begin{equation}\label{eq:mittag_leffler_function}
+E_{\alpha,\beta}(z)=\sum_{n\geq0}\frac{z^{n}}{\Gamma(\alpha n+\beta)}.
+\end{equation}
+\end{lemma}
+
+The variable $Z_t$ is therefore path-dependent, a weighted average of past returns of the type typically considered in path-dependent volatility models, see \cite{hobson1998complete}. As explained in \cite{guyon2014path}, modeling with path-dependent variables is a natural way to reproduce the fact that volatility depends on recent price changes. However the kernels used to model this dependency are typically exponential, see for example \cite{hobson1998complete}. Here a crucial idea, motivated by our previous work \cite{dandapani2019quadratic}, is to use a rough kernel, more precisely the Mittag-Leffler density function. Thanks to this kernel, the ``memory'' of $Z$ decays as a power law and $Z$ is highly sensitive to recent returns since
+
+\begin{equation}\label{eq:mittag_asymptotic}
+f^{\alpha,\lambda}(t)\sim_{t\to+\infty}\frac{\alpha}{\lambda\Gamma(1-\alpha)}t^{-\alpha-1}\quad\text{and}\quad f^{\alpha,\lambda}(t)\sim_{t\to0^{+}}\frac{\lambda}{\Gamma(\alpha)}t^{\alpha-1}.
+\end{equation}
+
+This essentially means that long periods of trends or sudden upwards or downwards moves of the price generate large values for $|Z|$ and so high volatility, in particular when $Z$ is negative. Such link is clearly observed on data, see Figure~\ref{fig:spx_vix_2004_2019} where the VIX index spikes almost instantaneously after large negative returns of the SPX and then decreases slowly afterwards. We plot in Figure~\ref{fig:sample_paths} an example of sample paths of SPX and VIX indexes in our model. The feedback of negative price trends on volatility is very well reproduced. Finally the choice of $f^{\alpha,\lambda}$ as kernel ensures that the volatility process is rough, with Hurst parameter equal to $H=\alpha-1/2$. As shown in \cite{gatheral2018volatility}, this enables us to reproduce the behavior of historical volatility time series provided $H$ is taken of order $0.1$.
+
+As explained above, an immediate consequence of the feedback effect is that negative price trends generate high volatility levels. But such trends also impact the instantaneous variance of volatility in our model. To see this, consider the classical case with $\alpha=1$. In that case, an application of Itô's Formula gives that up to a drift term,
+
+\begin{equation}\label{eq:dv_classical}
+dV_{t}=2a(Z_{t}-b)\lambda\eta\sqrt{V_{t}}\,dW_{t}.
+\end{equation}
+
+Thus the ``variance of instantaneous variance'' coefficient is proportional to $a(Z_{t}-b)^{2}$ which, up to $c$, is equal to the variance of $\log S$. Thus when volatility is high, volatility of volatility is also high. In particular, conditional on a large downwards move in SPX, we would expect $V$ to be high and so also the volatility of $V$. This explains why our model generates upward sloping VIX smiles.
+
+We remark that incorporating the influence of price trends on volatility and instantaneous variance of volatility is the main motivation underlying the model of \cite{goutte2017regime}. That model, although not solving the joint calibration problem, is probably the best of the continuous models introduced so far. In this switching model, the price follows a classical Heston dynamic where the parameters can change depending on the value of a hidden Markov chain with three states. It is motivated by a 100-days rolling calibration of the classical Heston model performed by the authors, see Figure~2 in \cite{goutte2017regime}. This rolling calibration suggests that volatility, leverage and volatility of volatility are higher in period of crisis. Hence they introduce a Markov chain to trigger crisis phases and switch the parameters of the Heston model depending on the situation. The three possible states of the chain can therefore be interpreted as corresponding to the following situations:
+
+\begin{itemize}
+    \item Flat or increasing SPX.
+    \item Transition phase between flat SPX and crisis.
+    \item Crisis with dramatically decreasing SPX.
+\end{itemize}
+
+The Markov chain in \cite{goutte2017regime} can therefore somehow be seen as an ad hoc version of the process $Z$ in the quadratic rough Heston model.
+
+\subsection{Parameter interpretation}\label{subsec:parameter_interpretation}
+
+The parameters $a$, $b$ and $c$ in the specification
+
+\begin{equation}\label{eq:parameter_spec}
+V_{t}=a(Z_{t}-b)^{2}+c
+\end{equation}
+
+can be interpreted in the following way.
+
+\begin{description}
+    \item[$c$] represents the minimal instantaneous variance. When calibrating the model, we use $c$ to shift upward or downward the smiles of SPX options.
+    
+    \item[$b>0$] encodes the asymmetry of the feedback effect. Indeed for the same absolute value of $Z$, volatility is higher when $Z$ is negative than when it is positive. Such asymmetry aims at reproducing the empirical behavior of the VIX. This is illustrated in Figure~\ref{fig:spx_vix_2004_2019} where we observe that the VIX spikes when the SPX tumbles down, but not after it goes up. From a calibration viewpoint, the higher $b$ the more SPX options smiles are shifted to the right.
+    
+    \item[$a$] is the sensitivity of the volatility to the feedback of price returns. The greater $a$, the greater the role of feedback in the model and the higher is volatility of volatility. Consistent with this SPX smiles become more extreme as $a$ increases.
+\end{description}
+
+\subsection{Infinite dimensional Markovian representation}\label{subsec:infinite_dim}
+
+Though the quadratic rough Heston model is not Markovian in the variables $(S,V)$, it does admit an infinite dimensional Markovian representation. Inspired by the computations in \cite{euch2018perfect}, we obtain that for any $t$ and $t_0$ positive
+
+\begin{theorem}\label{thm:markovian_representation}
+For any $t, t_0 > 0$, the process $Z$ satisfies
+\begin{equation}\label{eq:z_shifted}
+Z_{t_{0}+t}=\int_{0}^{t}(t-s)^{\alpha-1}\frac{\lambda}{\Gamma(\alpha)}\big(\theta_{t_{0}}(s)-Z_{t_{0}+s}\big)\,ds+\int_{0}^{t}(t-s)^{\alpha-1}\frac{\lambda}{\Gamma(\alpha)}\eta\sqrt{V_{t_{0}+s}}\,dW_{t_{0}+s},
+\end{equation}
+with $\theta_{t_{0}}$ an $\mathcal{F}_{t_{0}}$-measurable function. More precisely $\theta_{t_{0}}$ is given by
+\begin{equation}\label{eq:theta_shifted}
+\theta_{t_{0}}(u)=\theta_{0}(t+u)+\frac{\alpha}{\lambda\Gamma(1-\alpha)}\int_{0}^{t_{0}}(t_{0}-v+u)^{-1-\alpha}(Z_{v}-Z_{t_{0}})\,dv.
+\end{equation}
+Equation~\eqref{eq:z_shifted} implies that the law of $(S_{t},V_{t})_{t\geq t_{0}}$ only depends on $S_{t_{0}}$ and $\theta_{t_{0}}$. In view of \eqref{eq:qrh_dynamics} and using the same methodology as in \cite{euch2018perfect}, it means that we can express the VIX at time $t$ as a function of $\theta_{t}$ and $S_{t}$. Consequently we can write the price of any European option with pay-off depending on SPX and VIX as a function of time, $S$ and $\theta$.
+\end{theorem}
+
+\section{Numerical results}\label{sec:numerical_results}
+
+In this section, we illustrate how successfully we can fit both SPX and VIX smiles on May 19, 2017\footnote{Market data is from OptionMetrics via Wharton Data Research Services (WRDS).}, one of the dates considered in \cite{el2019roughening}, an otherwise randomly chosen date. We focus on short expirations, from 2 to 5 weeks, where the bulk of VIX liquidity is. Moreover, short-dated smiles are the ones that are typically poorly fitted by conventional models.
+
+In the quadratic rough Heston model, the function $\theta_{0}(\cdot)$ needs to be calibrated to market data. In the rough Heston model there is a simple bijection between $\theta_{0}(\cdot)$ and the forward variance curve. In the quadratic rough Heston model, this connection is more intricate and so for simplicity we choose the following restrictive parametric form for $Z$:
+
+\begin{equation}\label{eq:z_restricted}
+Z_{t}=Z_{0}-\int_{0}^{t}(t-s)^{\alpha-1}\frac{\lambda}{\Gamma(\alpha)}Z_{s}\,ds+\int_{0}^{t}(t-s)^{\alpha-1}\frac{\lambda}{\Gamma(\alpha)}\eta\sqrt{V_{s}}\,dW_{s},
+\end{equation}
+
+which is equivalent to taking
+\begin{equation}\label{eq:theta0_equivalent}
+\theta_{0}(t)=\frac{Z_{0}}{\lambda\Gamma(1-\alpha)}t^{-\alpha}.
+\end{equation}
+
+Allowing $\theta_{0}(\cdot)$ to belong to a larger space would obviously lead to even better results, but would require a more complex calibration methodology. Thus we are left to calibrate the parameters $\nu=(\alpha,\lambda,a,b,c,Z_{0})$. We use the following objective function:
+
+\begin{equation}\label{eq:objective_function}
+F(\nu)=\frac{1}{\#\mathcal{O}^{\SPX}}\sum_{o\in\mathcal{O}^{\SPX}}(\sigma^{o,\text{mid}}-\sigma^{o,\nu})^{2}+\frac{1}{\#\mathcal{O}^{\VIX}}\sum_{o\in\mathcal{O}^{\VIX}}(\sigma^{o,\text{mid}}-\sigma^{o,\nu})^{2},
+\end{equation}
+
+where $\mathcal{O}^{\SPX}$ is the set of SPX options, $\mathcal{O}^{\VIX}$ the set of VIX options, $\sigma^{o,\text{mid}}$ denotes the market mid implied volatility for the option $o$ and $\sigma^{o,\nu}$ is the implied volatility of the option $o$ in the quadratic rough Heston model with parameter $\nu$ obtained by Monte-Carlo simulations. To calibrate the model, we minimize the function $F$ over a grid centered around an initial guess $\nu_0$.
+
+We obtain the following parameters:
+
+\begin{equation}\label{eq:calibrated_parameters}
+\alpha=0.51;\quad \lambda=1.2;\quad a=0.384;\quad b=0.095;\quad c=0.0025;\quad Z_{0}=0.1.
+\end{equation}
+
+Despite that our calibration methodology is suboptimal and we only have six parameters, VIX smiles generated by the model with parameters \eqref{eq:calibrated_parameters} fall systematically within market bid-ask spreads. The whole SPX volatility surface is also very well reproduced, in particular the overall shape of the SPX smiles, including extreme left tails. Obviously fits can be made even greater by reducing the range of strikes of interest or by fine tuning the calibration, notably through improving the $\theta_{0}(\cdot)$ function. We are currently working on a fast calibration approach, inspired by recent works on neural networks, see for example \cite{horvath2019deep}.
+
+\section*{Acknowledgments}
+
+We thank Julien Guyon for numerous inspiring discussions and Stefano de Marco for relevant comments. Paul Jusselin and Mathieu Rosenbaum gratefully acknowledge the financial support of the ERC Grant 679836 Staqamof and of the chair Analytics and Models for Regulation.
+
+\begin{thebibliography}{99}
+
+\bibitem{abi2019affine} E. Abi Jaber, M. Larsson, and S. Pulido. \textit{Affine Volterra processes}. The Annals of Applied Probability, 29(5):3155--3200, 2019.
+
+\bibitem{acciaio2019inversion} B. Acciaio and J. Guyon. \textit{Inversion of convex ordering: Local volatility does not maximize the price of VIX futures}. arXiv preprint arXiv:1910.05750, 2019.
+
+\bibitem{baldeaux2014consistent} J. Baldeaux and A. Badran. \textit{Consistent modelling of VIX and equity derivatives using a 3/2 plus jumps model}. Applied Mathematical Finance, 21(4):299--312, 2014.
+
+\bibitem{bayer2016pricing} C. Bayer, P. Friz, and J. Gatheral. \textit{Pricing under rough volatility}. Quantitative Finance, 16(6):887--904, 2016.
+
+\bibitem{blanc2017quadratic} P. Blanc, J. Donier, and J.-P. Bouchaud. \textit{Quadratic Hawkes processes for financial prices}. Quantitative Finance, 17(2):171--188, 2017.
+
+\bibitem{callegaro2018rough} G. Callegaro, M. Grasselli, and G. Pagès. \textit{Rough but not so tough: Fast hybrid schemes for fractional Riccati equations}. arXiv preprint arXiv:1805.12587, 2018.
+
+\bibitem{cboe2003vix} CBOE. \textit{VIX: Cboe volatility index}. \url{http://www.cboe.com/micro/vix/vixwhite.pdf}, 2003.
+
+\bibitem{cont2013consistent} R. Cont and T. Kokholm. \textit{A consistent pricing model for index options and volatility derivatives}. Mathematical Finance: An International Journal of Mathematics, Statistics and Financial Economics, 23(2):248--274, 2013.
+
+\bibitem{cuchiero2018generalized} C. Cuchiero and J. Teichmann. \textit{Generalized Feller processes and Markovian lifts of stochastic Volterra processes: the affine case}. arXiv preprint arXiv:1804.10450, 2018.
+
+\bibitem{dandapani2019quadratic} A. Dandapani, P. Jusselin, and M. Rosenbaum. \textit{From quadratic Hawkes processes to super-Heston rough volatility models with Zumbach effect}. arXiv preprint arXiv:1907.06151, 2019.
+
+\bibitem{demarco2015linking} S. De Marco and P. Henry-Labordere. \textit{Linking vanillas and VIX options: a constrained martingale optimal transport problem}. SIAM Journal on Financial Mathematics, 6(1):1171--1194, 2015.
+
+\bibitem{euch2018microstructural} O. El Euch, M. Fukasawa, and M. Rosenbaum. \textit{The microstructural foundations of leverage effect and rough volatility}. Finance and Stochastics, 22(2):241--280, 2018.
+
+\bibitem{euch2019zumbach} O. El Euch, J. Gatheral, R. Radoičić, and M. Rosenbaum. \textit{The Zumbach effect under rough Heston}. Quantitative Finance, pages 1--7, 2019.
+
+\bibitem{el2019roughening} O. El Euch, J. Gatheral, and M. Rosenbaum. \textit{Roughening Heston}. Risk, May 2019.
+
+\bibitem{euch2018perfect} O. El Euch and M. Rosenbaum. \textit{Perfect hedging in rough Heston models}. The Annals of Applied Probability, 28(6):3813--3856, 2018.
+
+\bibitem{euch2019characteristic} O. El Euch and M. Rosenbaum. \textit{The characteristic function of rough Heston models}. Mathematical Finance, 29(1):3--38, 2019.
+
+\bibitem{foschi2008path} P. Foschi and A. Pascucci. \textit{Path dependent volatility}. Decisions in Economics and Finance, 31(1):13--32, 2008.
+
+\bibitem{gatheral2018volatility} J. Gatheral, T. Jaisson, and M. Rosenbaum. \textit{Volatility is rough}. Quantitative Finance, 18(6):933--949, 2018.
+
+\bibitem{gatheral2019rational} J. Gatheral and R. Radoičić. \textit{Rational approximation of the rough Heston solution}. International Journal of Theoretical and Applied Finance, 22(3):1950010, 2019.
+
+\bibitem{goutte2017regime} S. Goutte, A. Ismail, and H. Pham. \textit{Regime-switching stochastic volatility model: estimation and calibration to VIX options}. Applied Mathematical Finance, 24(1):38--75, 2017.
+
+\bibitem{guyon2014path} J. Guyon. \textit{Path-dependent volatility}. \url{https://ieor.columbia.edu/files/seas/content/docs/pathdepvol_slides_columbia_ieor_17sep2018.pdf}, 2014.
+
+\bibitem{guyon2018joint_slides} J. Guyon. \textit{On the joint calibration of SPX and VIX options}. \url{https://wwwf.imperial.ac.uk/~ajacquie/Gatheral60/Slides/Gatheral60\%20-\%20Guyon.pdf}, 2018.
+
+\bibitem{guyon2019inversion} J. Guyon. \textit{Inversion of convex ordering in the VIX market}. Available at SSRN 3504022, 2019.
+
+\bibitem{guyon2019joint_review} J. Guyon. \textit{The joint S\&P 500/VIX smile calibration puzzle solved}. Available at SSRN 3397382, 2019.
+
+\bibitem{hobson1998complete} D. G. Hobson and L. C. Rogers. \textit{Complete models with stochastic volatility}. Mathematical Finance, 8(1):27--48, 1998.
+
+\bibitem{horvath2019deep} B. Horvath, A. Muguruza, and M. Tomas. \textit{Deep learning volatility}. Available at SSRN 3322085, 2019.
+
+\bibitem{jaisson2016rough} T. Jaisson and M. Rosenbaum. \textit{Rough fractional diffusions as scaling limits of nearly unstable heavy tailed Hawkes processes}. The Annals of Applied Probability, 26(5):2860--2882, 2016.
+
+\bibitem{jusselin2018no} P. Jusselin and M. Rosenbaum. \textit{No-arbitrage implies power-law market impact and rough volatility}. To appear in Mathematical Finance, 2018.
+
+\bibitem{kokholm2015joint} T. Kokholm and M. Stisen. \textit{Joint pricing of VIX and SPX options with stochastic volatility and jump models}. The Journal of Risk Finance, 16(1):27--48, 2015.
+
+\bibitem{lynch2003market} P. E. Lynch and G. Zumbach. \textit{Market heterogeneities and the causal structure of volatility}. Quantitative Finance, 3(4):320--331, 2003.
+
+\bibitem{pacati2018smiling} C. Pacati, G. Pompa, and R. Renò. \textit{Smiling twice: The Heston++ model}. Journal of Banking \& Finance, 96:185--206, 2018.
+
+\bibitem{papanicolaou2014regime} A. Papanicolaou and R. Sircar. \textit{A regime-switching Heston model for VIX and S\&P 500 implied volatilities}. Quantitative Finance, 14(10):1811--1827, 2014.
+
+\bibitem{zumbach2009time} G. Zumbach. \textit{Time reversal invariance in finance}. Quantitative Finance, 9(5):505--515, 2009.
+
+\bibitem{zumbach2010volatility} G. Zumbach. \textit{Volatility conditional on price trends}. Quantitative Finance, 10(4):431--442, 2010.
+
+\end{thebibliography}
+
+\end{document}
