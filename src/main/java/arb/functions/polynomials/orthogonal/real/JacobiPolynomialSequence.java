@@ -57,6 +57,12 @@ public class JacobiPolynomialSequence extends
 {
 
   @Override
+  public Context getContext()
+  {
+   return context;
+  }
+
+  @Override
   public DerivativeSequence derivative()
   {
     return new DerivativeSequence();

@@ -1,8 +1,6 @@
 package arb.functions.polynomials.orthogonal.real;
 
-import arb.Real;
-import arb.RealMatrix;
-import arb.RealConstants;
+import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
@@ -33,7 +31,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
   public JacobiFractionalDerivativeOperationalMatrixBuilder()
   {
     this.basis           = null;
-    this.fractionalOrder = new Real(128).set(RealConstants.half);
+    this.fractionalOrder = new Real(128).setName("γ").set(RealConstants.half);
     this.bits            = 128;
   }
 
@@ -51,7 +49,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
    */
   public JacobiFractionalDerivativeOperationalMatrixBuilder setFractionalOrder(Real order)
   {
-    this.fractionalOrder = new Real(bits).set(order);
+    this.fractionalOrder = new Real(bits).setName("γ").set(order);
     return this;
   }
 
@@ -61,7 +59,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
   public JacobiFractionalDerivativeOperationalMatrixBuilder setBits(int bits)
   {
     this.bits            = bits;
-    this.fractionalOrder = new Real(bits).set(fractionalOrder);
+    this.fractionalOrder = new Real(bits).setName("γ").set(fractionalOrder);
     return this;
   }
 
@@ -79,7 +77,8 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
       try ( Real alpha = new Real(bits).set(RealConstants.half);
             Real beta = new Real(bits).set(RealConstants.half))
       {
-        basis = new JacobiPolynomialSequence(alpha, beta);
+        basis = new JacobiPolynomialSequence(alpha,
+                                             beta);
       }
     }
 
@@ -87,26 +86,27 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
     ctx.registerVariable(fractionalOrder);
 
     // Power series coefficients ω(j,k)
-    RealSequenceSequence ω = RealSequenceSequence.express(
-        "j->(-1)^(j-k)*Γ(j+β+1)*Γ(j+k+α+β+1)/(Γ(k+β+1)*Γ(j+α+β+1)*factorial(j-k)*factorial(k))",
-        ctx);
+    RealSequenceSequence ω      =
+                           RealSequenceSequence.express("j->(-1)^(j-k)*Γ(j+β+1)*Γ(j+k+α+β+1)/(Γ(k+β+1)*Γ(j+α+β+1)*factorial(j-k)*factorial(k))",
+                                                        ctx);
 
     // Polynomial norm squared normSq(i)
-    RealFunction normSq = RealFunction.express("normSq",
-        "i->2^(α+β+1)*Γ(i+α+1)*Γ(i+β+1)/((2*i+α+β+1)*Γ(i+1)*Γ(i+α+β+1))",
-        ctx);
+    RealFunction         normSq =
+                                RealFunction.express("normSq",
+                                                     "i->2^(α+β+1)*Γ(i+α+1)*Γ(i+β+1)/((2*i+α+β+1)*Γ(i+1)*Γ(i+α+β+1))",
+                                                     ctx);
 
     // Projection coefficients χ(i,p)
-    RealSequenceSequence χ = RealSequenceSequence.express(
-        "i->∫(-1,1,t^p*(1-t)^β*(1+t)^α*jacobi(i,α,β,t))/normSq(i)",
-        ctx);
+    RealSequenceSequence χ      =
+                           RealSequenceSequence.express("i->∫(-1,1,t^p*(1-t)^β*(1+t)^α*jacobi(i,α,β,t))/normSq(i)",
+                                                        ctx);
 
     // Operational matrix elements μ(i,j)
-    RealSequenceSequence μ = RealSequenceSequence.express(
-        "i->sum(ω(j,k)*Γ(k+1)/Γ(k+1-γ)*χ(i,k-γ){k=⌈γ⌉..j})",
-        ctx);
+    RealSequenceSequence μ      =
+                           RealSequenceSequence.express("i->sum(ω(j,k)*Γ(k+1)/Γ(k+1-γ)*χ(i,k-γ){k=⌈γ⌉..j})",
+                                                        ctx);
 
-    RealMatrix result = RealMatrix.newMatrix(maxDegree + 1, maxDegree + 1);
+    RealMatrix           result = RealMatrix.newMatrix(maxDegree + 1, maxDegree + 1);
     for (int i = 0; i <= maxDegree; i++)
     {
       for (int j = 0; j <= maxDegree; j++)
