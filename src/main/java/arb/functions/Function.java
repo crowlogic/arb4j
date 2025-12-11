@@ -78,6 +78,7 @@ public interface Function<D, C>
 
   }
 
+  @SuppressWarnings("unchecked")
   public static <D, C, F extends Function<? extends D, ? extends C>> F express(Class<? extends D> domainClass, Class<? extends C> coDomainClass, String expression)
   {
     return (F) Function.instantiate(expression,
@@ -134,6 +135,7 @@ public interface Function<D, C>
                    null);
   }
 
+  @SuppressWarnings("unchecked")
   public static <D, C, F extends Function<? extends D, ? extends C>> F express(Class<? extends D> domainClass,
                                                                                Class<? extends C> coDomainClass,
                                                                                Class<? extends F> functionClass,
@@ -206,7 +208,6 @@ public interface Function<D, C>
     }
 
     int     punctuationMarkIndex = expression.indexOf(":");
-    boolean autonamed            = true;
     if (punctuationMarkIndex != -1)
     {
       String inlineFunctionName = expression.substring(0,
@@ -220,7 +221,6 @@ public interface Function<D, C>
       functionName = inlineFunctionName;
       expression   = expression.substring(punctuationMarkIndex + 1,
                                           expression.length());
-      autonamed    = false;
     }
     expression = expression.replaceAll(" ",
                                        "");
