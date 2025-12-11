@@ -28,46 +28,52 @@ import javafx.collections.ObservableMap;
 /**
  * The {@link Context} class is an integral part of the {@link Expression}
  * {@link Compiler} which facilitates the resolution of {@link VariableNode} and
- * {@link Function} references (in addition to those which are member-functions of the
- * types)
+ * {@link Function} references (in addition to those which are member-functions
+ * of the types)
  * 
  * <p>
- * This class functions similarly to a closure in functional programming. It encapsulates
- * an environment of {@link Variables}, and {@link FunctionMappings}, providing a
- * {@link Context} in which {@link Expression}s are synthesized into {@link Function}
- * implementations which can then be {@link Function#evaluate(Object, int)}d. Unlike a
+ * This class functions similarly to a closure in functional programming. It
+ * encapsulates an environment of {@link Variables}, and
+ * {@link FunctionMappings}, providing a {@link Context} in which
+ * {@link Expression}s are synthesized into {@link Function} implementations
+ * which can then be {@link Function#evaluate(Object, int)}d. Unlike a
  * traditional closure, it does not contain the expression itself but rather the
- * environment for such expressions and therefore fulfills its essential function by
- * facilitating the organization and reification of mathematical expressions into cohesive
- * functional units via the {@link Compiler} class, the {@link Expression} class, the
- * {@link Node} class, and all of its extensions.
+ * environment for such expressions and therefore fulfills its essential
+ * function by facilitating the organization and reification of mathematical
+ * expressions into cohesive functional units via the {@link Compiler} class,
+ * the {@link Expression} class, the {@link Node} class, and all of its
+ * extensions.
  * </p>
  * 
  * <p>
- * When considering this class as a reduction system, it can be thought of as managing the
- * 'environment' part of a closure, where the variables and functions are localized and
- * maintained.
+ * When considering this class as a reduction system, it can be thought of as
+ * managing the 'environment' part of a closure, where the variables and
+ * functions are localized and maintained.
  * </p>
  * 
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
-public class Context
+public class Context implements
+                     AutoCloseable
 {
   static
   {
     System.loadLibrary("arblib");
   }
 
-  public ExpressionClassLoader                classLoader                  = new ExpressionClassLoader(this);
+  public ExpressionClassLoader                classLoader                  =
+                                                          new ExpressionClassLoader(this);
 
-  public Map<String, Dependency>              functionReferenceGraph       = new HashMap<String, Dependency>();
+  public Map<String, Dependency>              functionReferenceGraph       = new HashMap<String,
+                Dependency>();
 
   public final FunctionMappings               functions;
 
   public final HashMap<String, AtomicInteger> intermediateVariableCounters = new HashMap<>();
 
-  private final Logger                        log                          = LoggerFactory.getLogger(Context.class);
+  private final Logger                        log                          =
+                                                  LoggerFactory.getLogger(Context.class);
 
   public boolean                              saveClasses                  = false;
 
@@ -90,8 +96,7 @@ public class Context
     this();
     for (Named v : vars)
     {
-      variables.put(v.getName(),
-                    v);
+      variables.put(v.getName(), v);
     }
   }
 
@@ -112,10 +117,12 @@ public class Context
     return functions.entrySet().stream();
   }
 
-  public <D, R, F extends Function<? extends D, ? extends R>> FunctionMapping<D, R, F> getFunctionMapping(String functionName)
+  public <D, R, F extends Function<? extends D, ? extends R>>
+         FunctionMapping<D, R, F>
+         getFunctionMapping(String functionName)
   {
     FunctionMapping<D, R, F> functionMapping = functions.get(functionName);
-       return functionMapping;
+    return functionMapping;
   }
 
   public <R extends Named> R getVariable(String name)
@@ -132,10 +139,7 @@ public class Context
     {
       if (functionMapping.instance != null && fields.contains(functionName))
       {
-        setFieldValue(functionClass,
-                      f,
-                      functionName,
-                      functionMapping.instance);
+        setFieldValue(functionClass, f, functionName, functionMapping.instance);
       }
     });
 
@@ -150,10 +154,7 @@ public class Context
 
   protected <D, R, F extends Function<? extends D, ? extends R>> void injectContextReference(F f)
   {
-    setFieldValue(f.getClass(),
-                  f,
-                  "context",
-                  this);
+    setFieldValue(f.getClass(), f, "context", this);
   }
 
   public <D, R, F extends Function<? extends D, ? extends R>> void injectVariableReferences(F f)
@@ -173,10 +174,7 @@ public class Context
       Named value        = variables.get(variableName);
       if (value != null && fields.contains(variableName))
       {
-        setFieldValue(f.getClass(),
-                      f,
-                      variableName,
-                      value);
+        setFieldValue(f.getClass(), f, variableName, value);
       }
     });
   }
@@ -185,14 +183,15 @@ public class Context
   {
     try
     {
-      var fields = new HashSet<>(Stream.of(f.getClass().getFields()).map(field -> field.getName()).toList());
+      var fields = new HashSet<>(Stream.of(f.getClass().getFields())
+                                       .map(field -> field.getName())
+                                       .toList());
       return fields;
     }
     catch (NoClassDefFoundError noClassDefinitionFoundError)
     {
       var classLoader = f.getClass().getClassLoader();
-      Utensils.wrapOrThrow("classLoader=" + classLoader,
-                           noClassDefinitionFoundError);
+      Utensils.wrapOrThrow("classLoader=" + classLoader, noClassDefinitionFoundError);
       return null;
     }
   }
@@ -217,28 +216,30 @@ public class Context
       Dependency   dependency      = new Dependency(functionMapping);
 
       List<String> dependencies    = dependency.dependencies;
-      if (functionMapping.expression != null && functionMapping.expression.referencedFunctions != null)
+      if (functionMapping.expression != null
+                    && functionMapping.expression.referencedFunctions != null)
       {
-        dependencies.addAll(functionMapping.expression.referencedFunctions.keySet().stream().filter(name -> !name.equals(functionName)).toList());
+        dependencies.addAll(functionMapping.expression.referencedFunctions.keySet()
+                                                                          .stream()
+                                                                          .filter(name -> !name.equals(functionName))
+                                                                          .toList());
       }
 
-      functionReferenceGraph.put(functionName,
-                                 dependency);
+      functionReferenceGraph.put(functionName, dependency);
     }
   }
 
   public FunctionMapping<?, ?, ?> registerFunction(String string, Function<?, ?> func)
   {
-    return registerFunctionMapping(string,
-                                   func,
-                                   func.domainType(),
-                                   func.coDomainType());
+    return registerFunctionMapping(string, func, func.domainType(), func.coDomainType());
   }
 
-  public <D, R, F extends Function<? extends D, ? extends R>> FunctionMapping<D, R, F> registerFunctionMapping(String functionName,
-                                                                                                               Class<? extends F> functionClass,
-                                                                                                               Class<? extends D> domainType,
-                                                                                                               Class<? extends R> coDomainType)
+  public <D, R, F extends Function<? extends D, ? extends R>>
+         FunctionMapping<D, R, F>
+         registerFunctionMapping(String functionName,
+                                 Class<? extends F> functionClass,
+                                 Class<? extends D> domainType,
+                                 Class<? extends R> coDomainType)
   {
     return registerFunctionMapping(functionName,
                                    null,
@@ -250,7 +251,12 @@ public class Context
                                    null);
   }
 
-  public <D, R, F extends Function<? extends D, ? extends R>> FunctionMapping<D, R, F> registerFunctionMapping(String functionName, F function, Class<?> domainType, Class<?> coDomainType)
+  public <D, R, F extends Function<? extends D, ? extends R>>
+         FunctionMapping<D, R, F>
+         registerFunctionMapping(String functionName,
+                                 F function,
+                                 Class<?> domainType,
+                                 Class<?> coDomainType)
   {
     return registerFunctionMapping(functionName,
                                    function,
@@ -262,14 +268,16 @@ public class Context
                                    null);
   }
 
-  public <D, R, F extends Function<? extends D, ? extends R>> FunctionMapping<D, R, F> registerFunctionMapping(String functionName,
-                                                                                                               F function,
-                                                                                                               Class<?> domainType,
-                                                                                                               Class<?> coDomainType,
-                                                                                                               Class<?> functionClass,
-                                                                                                               boolean replace,
-                                                                                                               Expression<D, R, F> expression,
-                                                                                                               String expressionString)
+  public <D, R, F extends Function<? extends D, ? extends R>>
+         FunctionMapping<D, R, F>
+         registerFunctionMapping(String functionName,
+                                 F function,
+                                 Class<?> domainType,
+                                 Class<?> coDomainType,
+                                 Class<?> functionClass,
+                                 boolean replace,
+                                 Expression<D, R, F> expression,
+                                 String expressionString)
   {
     // assert function != null : "function cannot be null";
 
@@ -297,8 +305,7 @@ public class Context
       mapping.coDomain      = coDomainType;
       mapping.instance      = function;
       mapping.functionClass = functionClass;
-      functions.put(functionName,
-                    mapping);
+      functions.put(functionName, mapping);
     }
     int colonIndex = -1;
     if (expressionString != null && (colonIndex = expressionString.indexOf(':')) != -1)
@@ -310,8 +317,7 @@ public class Context
     // Add alias for class loader when function name differs from class name
     if (classLoader != null)
     {
-      classLoader.compiledClasses.put(functionName,
-                                      functionClass);
+      classLoader.compiledClasses.put(functionName, functionClass);
     }
     if (Expression.trace)
     {
@@ -332,16 +338,12 @@ public class Context
 
   public <R> FunctionMapping<Integer, R, Sequence<R>> registerSequence(String name, Sequence<R> seq)
   {
-    return registerFunctionMapping(name,
-                                   seq,
-                                   seq.domainType(),
-                                   seq.coDomainType());
+    return registerFunctionMapping(name, seq, seq.domainType(), seq.coDomainType());
   }
 
   public <R extends Named> R registerVariable(R var)
   {
-    return registerVariable(var.getName(),
-                            var);
+    return registerVariable(var.getName(), var);
   }
 
   public <R extends Named> R registerVariable(String name, R variable)
@@ -362,8 +364,7 @@ public class Context
                                            same ? "IS" : "IS NOT"));
       }
     }
-    variableMap().put(name,
-                      variable);
+    variableMap().put(name, variable);
     return variable;
   }
 
@@ -386,13 +387,14 @@ public class Context
     if (sortedMap.values().stream().mapToInt(f -> f.dependencies.size()).sum() > 0)
     {
       filename = sortedMap.keySet().stream().collect(Collectors.joining()) + ".dot";
-      TopologicalSorter.saveToDotFile(TopologicalSorter.toDotFormatReversed(sortedMap),
-                                      filename);
+      TopologicalSorter.saveToDotFile(TopologicalSorter.toDotFormatReversed(sortedMap), filename);
     }
     return filename;
   }
 
-  public <D, R, F extends Function<? extends D, ? extends R>> void setFieldValue(Class<?> compiledClass, F f, String variableName, Object value)
+  public <D, R, F extends Function<? extends D, ? extends R>>
+         void
+         setFieldValue(Class<?> compiledClass, F f, String variableName, Object value)
   {
     Class<?> functionClass = f.getClass();
     assert functionClass.equals(compiledClass) : String.format("functionClass = %s != compiledClass = %s\n",
@@ -412,12 +414,18 @@ public class Context
     try
     {
       field = compiledClass.getField(variableName);
-      field.set(f,
-                value);
+      field.set(f, value);
     }
     catch (Throwable e)
     {
-      wrapOrThrow("threw " + e.toString() + " setting field '" + variableName + "' in " + compiledClass + " which has fields " + Stream.of(compiledClass.getFields()).map(hmm -> hmm.getName()).toList(),
+      wrapOrThrow("threw "
+                  + e.toString()
+                  + " setting field '"
+                  + variableName
+                  + "' in "
+                  + compiledClass
+                  + " which has fields "
+                  + Stream.of(compiledClass.getFields()).map(hmm -> hmm.getName()).toList(),
                   e);
     }
   }
@@ -486,10 +494,8 @@ public class Context
 
     // Update the Named object's name
     variable.setName(newName);
-
     // Add with new name
-    variables.put(newName,
-                  variable);
+    variables.put(newName, variable);
 
     if (Expression.trace)
     {
@@ -498,6 +504,32 @@ public class Context
                               oldName,
                               newName));
     }
+  }
+
+  @Override
+  public void close()
+  {
+    functions.values().forEach(f ->
+    {
+      if (f.instance != null)
+      {
+        f.instance.close();
+      }
+    });
+    variables.values().forEach(v ->
+    {
+      if (v instanceof AutoCloseable)
+      {
+        try
+        {
+          ((AutoCloseable) v).close();
+        }
+        catch (Exception e)
+        {
+          Utensils.throwOrWrap(e);
+        }
+      }
+    });
   }
 
 }
