@@ -320,6 +320,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>>
 
     switch (functionName)
     {
+    case "δ": // Dirac delta function
+      // The derivative of δ(x) is 0
+      return zero();
     case "θ": // Heaviside step function
       return arg.δ();
     case "sqrt":
