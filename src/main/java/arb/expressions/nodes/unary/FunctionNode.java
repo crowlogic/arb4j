@@ -145,6 +145,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     this.mapping = newIntegralFunctionMapping;
   }
 
+  /**
+   * Constructor with derivative order support for special functions.
+   */
   public FunctionNode(String functionName,
                       Node<D, R, F> argument,
                       Expression<D, R, F> expression,
@@ -153,7 +156,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     this(functionName,
          argument,
          expression);
-    this.derivativeOrder = derivativeOrder;
+    this.derivativeOrder = Math.max(0, derivativeOrder);
   }
 
   @Override
@@ -351,7 +354,10 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       }
       else
       {
-        return new FunctionNode<>(functionName, arg, expression, derivativeOrder + 1);
+        return new FunctionNode<>(functionName,
+                                  arg,
+                                  expression,
+                                  derivativeOrder + 1);
       }
     case "θ": // Heaviside step function
       return arg.δ();
@@ -400,10 +406,13 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                     arg,
                                     1);
     default:
-      throw new UnsupportedOperationException("Derivative not implemented for function: " + functionName + " in expression '" + expression + "'");
+      throw new UnsupportedOperationException("Derivative not implemented for function: "
+                                              + functionName
+                                              + " in expression '"
+                                              + expression
+                                              + "'");
     }
   }
-
 
   public Node<D, R, F> arcsinDerivative()
   {
@@ -963,6 +972,23 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       return baseName.replace("(", "^(" + derivativeOrder + ")(");
     }
+  }
+
+  /**
+   * Get the derivative notation suffix for this function (e.g., '' for second
+   * derivative)
+   */
+  private String getDerivativeSuffix()
+  {
+    if (derivativeOrder == 0)
+      return "";
+    if (derivativeOrder == 1)
+      return "'";
+    if (derivativeOrder == 2)
+      return "''";
+    if (derivativeOrder == 3)
+      return "'''";
+    return "^(" + derivativeOrder + ")";
   }
 
   @Override
