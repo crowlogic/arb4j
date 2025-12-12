@@ -79,8 +79,10 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>>
     if (!functionForm)
     {
 
+      String name = expression.parseName();
+      assert name != null : "name is null in " + expression;
       integrationVariableNode = new VariableNode<>(expression,
-                                                   new VariableReference<>(expression.parseName()),
+                                                   new VariableReference<>(name),
                                                    expression.position,
                                                    true);
 
