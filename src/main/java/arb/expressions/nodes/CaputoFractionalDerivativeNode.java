@@ -32,19 +32,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     operand = expression.require(')').resolve();
   }
 
-  @Override
-  public void accept(Consumer<Node<D, R, F>> t)
-  {
-    assert false : "TODO";
-  }
-
-  @Override
-  public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
-  {
-    assert false : "TODO";
-    return null;
-  }
-
+  
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
@@ -54,19 +42,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     return null;
   }
 
-  @Override
-  public List<? extends Node<D, R, F>> getBranches()
-  {
-    assert false : "TODO";
-    return null;
-  }
-
-  @Override
-  public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
-  {
-    assert false : "TODO";
-    return null;
-  }
+  
 
   @Override
   public boolean isLeaf()
@@ -78,15 +54,6 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   public boolean isScalar()
   {
     return isResult;
-  }
-
-  @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
-  {
-    assert false : "TODO";
-    return null;
   }
 
   @Override
@@ -104,25 +71,71 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     return 'Đ';
   }
 
-  @Override
-  public <C> Class<? extends C> type()
-  {
-    assert false : "TODO";
-    return null;
-  }
+
 
   @Override
-  public String typeset()
+  public void accept(Consumer<Node<D, R, F>> t)
   {
-    assert false : "TODO";
-    return null;
+    assert false : "Consumer<Consumer<Node<D,R,F>>>.accept has yet to be implemented as of Dec 11, 2025 6:18:13 PM";
+    
   }
+
 
   @Override
   public boolean dependsOn(VariableNode<D, R, F> variable)
   {
-    assert false : "TODO";
+    assert false : "Node<D,R,F>.dependsOn has yet to be implemented as of Dec 11, 2025 6:18:37 PM";
     return false;
+  }
+
+
+  @Override
+  public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
+  {
+    assert false : "Node<D,R,F>.differentiate has yet to be implemented as of Dec 11, 2025 6:18:37 PM";
+    return null;
+  }
+
+
+  @Override
+  public List<? extends Node<D, R, F>> getBranches()
+  {
+    assert false : "Node<D,R,F>.getBranches has yet to be implemented as of Dec 11, 2025 6:18:37 PM";
+    return null;
+  }
+
+
+  @Override
+  public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
+  {
+    assert false : "Node<D,R,F>.integrate has yet to be implemented as of Dec 11, 2025 6:18:37 PM";
+    return null;
+  }
+
+
+  @Override
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<E, S, G>
+         spliceInto(Expression<E, S, G> newExpression)
+  {
+    assert false : "Node<D,R,F>.spliceInto has yet to be implemented as of Dec 11, 2025 6:18:37 PM";
+    return null;
+  }
+
+
+  @Override
+  public <C> Class<? extends C> type()
+  {
+    assert false : "Node<D,R,F>.type has yet to be implemented as of Dec 11, 2025 6:18:37 PM";
+    return null;
+  }
+
+
+  @Override
+  public String typeset()
+  {
+    assert false : "Node<D,R,F>.typeset has yet to be implemented as of Dec 11, 2025 6:18:37 PM";
+    return null;
   }
 
 }
