@@ -2764,6 +2764,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return node;
   }
 
+  @SuppressWarnings("unchecked")
   protected <N extends Node<D, C, F>> N resolveFactorials(N node)
   {
     if (nextCharacterIs('!'))
@@ -2787,6 +2788,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return node;
   }
 
+  @SuppressWarnings("unchecked")
+  protected <N extends Node<D, C, F>> N resolveCeiling(Node<D, C, F> node)
+  {
+    if (nextCharacterIs('⌈'))
+    {
+      node = new CeilingNode<>(this,
+                               resolve());
+      require('⌉');
+    }
+    return (N) node;
+  }
+
+  @SuppressWarnings("unchecked")
   protected <N extends Node<D, C, F>> N resolveFloor(Node<D, C, F> node)
   {
     if (nextCharacterIs('⌊'))
@@ -2918,6 +2932,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     node = resolveFactorials(node);
     node = resolveFloor(node);
+    node = resolveCeiling(node);
     node = resolveAbsoluteValue(node);
     if (nextCharacterIs('('))
     {

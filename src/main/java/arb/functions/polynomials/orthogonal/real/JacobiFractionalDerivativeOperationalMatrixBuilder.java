@@ -10,9 +10,6 @@ import arb.functions.real.RealFunction;
 /**
  * Builder for Jacobi polynomial fractional derivative operational matrices.
  * 
- * Constructs operational matrices D^γ for varying fractional orders γ and
- * degrees N, with configurable Hurst exponent (α=β).
- * 
  * @author Stephen Crowley
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
@@ -21,100 +18,115 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
                                                                 AutoCloseable
 {
   private JacobiPolynomialSequence basis;
-  private Real                     fractionalOrder;
+  private final Real               alpha;
+  private final Real               beta;
+  private final Real               fractionalOrder;
   private int                      bits;
 
-  /**
-   * Creates builder with sensible defaults. Jacobi basis created lazily on first
-   * build() if not set.
-   */
   public JacobiFractionalDerivativeOperationalMatrixBuilder()
   {
-    this.basis           = null;
-    this.fractionalOrder = new Real(128).setName("γ").set(RealConstants.half);
     this.bits            = 128;
+    this.alpha           = new Real(bits).setName("α").set(RealConstants.half);
+    this.beta            = new Real(bits).setName("β").set(RealConstants.half);
+    this.fractionalOrder = new Real(bits).setName("γ").set(RealConstants.half);
+    this.basis           = null;
   }
 
-  /**
-   * Sets custom Jacobi polynomial basis
-   */
   public JacobiFractionalDerivativeOperationalMatrixBuilder setBasis(JacobiPolynomialSequence basis)
   {
     this.basis = basis;
     return this;
   }
 
-  /**
-   * Sets fractional order γ
-   */
-  public JacobiFractionalDerivativeOperationalMatrixBuilder setFractionalOrder(Real order)
+  public JacobiFractionalDerivativeOperationalMatrixBuilder setAlpha(Real a)
   {
-    this.fractionalOrder = new Real(bits).setName("γ").set(order);
+    this.alpha.set(a);
     return this;
   }
 
-  /**
-   * Sets working precision in bits
-   */
+  public JacobiFractionalDerivativeOperationalMatrixBuilder setBeta(Real b)
+  {
+    this.beta.set(b);
+    return this;
+  }
+
+  public JacobiFractionalDerivativeOperationalMatrixBuilder setFractionalOrder(Real order)
+  {
+    this.fractionalOrder.set(order);
+    return this;
+  }
+
   public JacobiFractionalDerivativeOperationalMatrixBuilder setBits(int bits)
   {
-    this.bits            = bits;
-    this.fractionalOrder = new Real(bits).setName("γ").set(fractionalOrder);
+    this.bits = bits;
     return this;
   }
 
   public RealMatrix build(int maxDegree)
   {
+    // Lazy initialization of default basis if not set
     if (basis == null)
     {
-      try ( Real alpha = new Real(bits).set(RealConstants.half);
-            Real beta = new Real(bits).set(RealConstants.half))
-      {
-        basis = new JacobiPolynomialSequence(alpha,
-                                             beta);
-      }
+      basis = new JacobiPolynomialSequence(alpha,
+                                           beta);
     }
 
-    try ( Context ctx = new Context(basis.α,
-                                    basis.β,
-                                    fractionalOrder))
+    Context ctx = basis.getContext();
+    ctx.registerVariable("γ", fractionalOrder);
+
+    // normSq(i) = 2^(α+β+1)*Γ(i+α+1)*Γ(i+β+1)/((2*i+α+β+1)*Γ(i+1)*Γ(i+α+β+1))
+    RealFunction         normSq     =
+                                RealFunction.express("normSq",
+                                                     "i➔2^(α+β+1)*Γ(i+α+1)*Γ(i+β+1)/((2*i+α+β+1)*Γ(i+1)*Γ(i+α+β+1))",
+                                                     ctx);
+
+    // ω(j,k) =
+    // (-1)^(j-k)*Γ(j+β+1)*Γ(j+k+α+β+1)/(Γ(k+β+1)*Γ(j+α+β+1)*factorial(j-k)*factorial(k))
+    RealSequenceSequence ω          =
+                           RealSequenceSequence.express("j➔k➔(-1)^(j-k)*Γ(j+β+1)*Γ(j+k+α+β+1)/(Γ(k+β+1)*Γ(j+α+β+1)*factorial(j-k)*factorial(k))",
+                                                        ctx);
+
+ // gammaRatio(k) = Γ(k+1)/Γ(k+1-γ)
+    RealFunction gammaRatio = RealFunction.express("gammaRatio",
+                                                   "k➔Γ(k+1)/Γ(k+1-γ)",
+                                                   ctx);
+
+    // χ(i,p) = int(t^p*(1-t)^β*(1+t)^α*P(i)(t), t=-1..1) / normSq(i)
+    RealSequenceSequence χ = RealSequenceSequence.express("chi",
+      "i➔p➔int(t^p*(1-t)^β*(1+t)^α*P(i)(t), t=-1..1)/normSq(i)",
+      ctx);
+
+    // μ(i,j) = sum(ω(j)(k)*gammaRatio(k)*χ(i)(k-γ), k=⌈γ⌉..j)
+    RealSequenceSequence μ = RealSequenceSequence.express("mu",
+      "i➔j➔sum(ω(j)(k)*gammaRatio(k)*χ(i)(k-γ), k=⌈γ⌉..j)",
+      ctx);
+
+    RealMatrix           result     = RealMatrix.newMatrix(maxDegree + 1, maxDegree + 1);
+
+    for (int i = 0; i <= maxDegree; i++)
     {
-      // Polynomial norm squared normSq(i)
-      RealFunction         normSq =
-                                  RealFunction.express("normSq",
-                                                       "i->2^(α+β+1)*Γ(i+α+1)*Γ(i+β+1)/((2*i+α+β+1)*Γ(i+1)*Γ(i+α+β+1))",
-                                                       ctx);
-
-      // Power series coefficients ω(j)(k)
-      RealSequenceSequence ω      =
-                             RealSequenceSequence.express("j->k->(-1)^(j-k)*Γ(j+β+1)*Γ(j+k+α+β+1)/(Γ(k+β+1)*Γ(j+α+β+1)*factorial(j-k)*factorial(k))",
-                                                          ctx);
-
-      // Projection coefficients χ(i)(p)
-      RealSequenceSequence χ      =
-                             RealSequenceSequence.express("i->∫(-1,1,t^p*(1-t)^β*(1+t)^α*jacobi(i,α,β,t))/normSq(i)",
-                                                          ctx);
-
-      // Operational matrix elements μ(i)(j)
-      RealSequenceSequence μ      =
-                             RealSequenceSequence.express("i->sum(ω(j)(k)*Γ(k+1)/Γ(k+1-γ)*χ(i)(k-γ){k=⌈γ⌉..j})",
-                                                          ctx);
-
-      RealMatrix           result = RealMatrix.newMatrix(maxDegree + 1, maxDegree + 1);
-      for (int i = 0; i <= maxDegree; i++)
+      for (int j = 0; j <= maxDegree; j++)
       {
-        for (int j = 0; j <= maxDegree; j++)
-        {
-          μ.evaluate(i, bits).evaluate(j, bits, result.get(i, j));
-        }
+        μ.evaluate(i, bits).evaluate(j, bits, result.get(i, j));
       }
-      return result;
     }
+
+    return result;
   }
 
   public JacobiPolynomialSequence getBasis()
   {
     return basis;
+  }
+
+  public Real getAlpha()
+  {
+    return alpha;
+  }
+
+  public Real getBeta()
+  {
+    return beta;
   }
 
   public Real getFractionalOrder()
@@ -130,13 +142,17 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
   @Override
   public void close()
   {
+    if (alpha != null)
+    {
+      alpha.close();
+    }
+    if (beta != null)
+    {
+      beta.close();
+    }
     if (fractionalOrder != null)
     {
       fractionalOrder.close();
-    }
-    if (basis != null)
-    {
-      basis.close();
     }
   }
 
@@ -145,7 +161,9 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
   {
     if (basis == null)
     {
-      return String.format("JacobiFractionalDerivativeOperationalMatrixBuilder[basis=default(1/2,1/2), γ=%.6f, bits=%d]",
+      return String.format("JacobiFractionalDerivativeOperationalMatrixBuilder[basis=null, α=%.6f, β=%.6f, γ=%.6f, bits=%d]",
+                           alpha.doubleValue(),
+                           beta.doubleValue(),
                            fractionalOrder.doubleValue(),
                            bits);
     }
