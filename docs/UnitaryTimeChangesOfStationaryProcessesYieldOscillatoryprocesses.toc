@@ -1,14 +1,20 @@
-\babel@toc {english}{}\relax 
-\contentsline {section}{\numberline {1}Gaussian Processes}{2}{}%
-\contentsline {subsection}{\numberline {1.1}Definition}{3}{}%
-\contentsline {subsection}{\numberline {1.2}Stationary processes}{3}{}%
-\contentsline {subsubsection}{\numberline {1.2.1}Fourier Transform Conventions}{4}{}%
-\contentsline {subsubsection}{\numberline {1.2.2}Sample Path Realizations}{4}{}%
-\contentsline {section}{\numberline {2}Oscillatory Processes}{4}{}%
-\contentsline {section}{\numberline {3}Unitarily Time-Changed Stationary Processes}{9}{}%
-\contentsline {subsection}{\numberline {3.1}Unitary Time-Change Operator $U_{\theta } f$}{9}{}%
-\contentsline {subsection}{\numberline {3.2}Transformation of Stationary $\to $ Oscillatory Processes via $U_{\theta }$}{12}{}%
-\contentsline {subsubsection}{\numberline {3.2.1}Time-Varying Filter Representations}{14}{}%
-\contentsline {subsection}{\numberline {3.3}Covariance operator conjugation}{17}{}%
-\contentsline {section}{\numberline {4}Zero Localization}{18}{}%
-\contentsline {subsection}{\numberline {4.1}Simplicity of Zeros and Their Expected Counting Function}{22}{}%
+\contentsline {section}{\numberline {1}Gaussian Processes}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Definition}{2}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Stationary processes}{2}{subsection.1.2}%
+\contentsline {subsubsection}{\numberline {1.2.1}Sample path realizations}{2}{subsubsection.1.2.1}%
+\contentsline {section}{\numberline {2}(Non-Stationary) Oscillatory Processes}{3}{section.2}%
+\contentsline {section}{\numberline {3}Filter Representations and Invertibility for Oscillatory Processes}{4}{section.3}%
+\contentsline {section}{\numberline {4}Unitarily Time-Changed Stationary Processes}{5}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Unitary time-change operator}{5}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}The subclass and exact inversion}{5}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Filter representations}{5}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Stationary to oscillatory}{6}{subsection.4.4}%
+\contentsline {section}{\numberline {5}Zero Localization}{6}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Kac--Rice}{6}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Bulinskaya}{6}{subsection.5.2}%
+\contentsline {section}{\numberline {6}Example: The Hardy $Z$-Function}{7}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Definitions}{7}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Stationary candidate and exact inversion}{7}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}$L^2_{\mathrm {loc}}$ identity on finite intervals}{7}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}Limit-form mean-square statements}{7}{subsection.6.4}%
+\contentsline {section}{\numberline {7}Time-average covariance conjectures}{8}{section.7}%

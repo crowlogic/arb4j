@@ -1,468 +1,582 @@
 \documentclass{article}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{amsthm}
-\usepackage{mathtools}
-\usepackage{hyperref}
+\usepackage[english]{babel}
+\usepackage{amsmath,amssymb,latexsym,theorem}
 
-\theoremstyle{definition}
-\newtheorem{definition}{Definition}[section]
-\newtheorem{theorem}{Theorem}[section]
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{remark}[theorem]{Remark}
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\cdummy}{\cdot}
+\newcommand{\tmem}[1]{{\em #1\/}}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+{\theorembodyfont{\rmfamily}\newtheorem{remark}{Remark}}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
 
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\E}{\mathbb{E}}
-\newcommand{\tmem}[1]{\emph{#1}}
-
-\title{The Spectral Representation of Oscillatory Processes}
-\author{Stephen Crowley}
-\date{November 25, 2025}
+\providecommand{\tmem}[1]{{\tmem{#1}}}
 
 \begin{document}
 
+\title{The Spectral Representation of Oscillatory Processes}
+
+\author{Stephen Crowley}
+
+\date{November 25, 2025}
+
 \maketitle
 
-\tableofcontents
+{\tableofcontents}
 
 \section{Definitions and Assumptions}
 
 \begin{remark}
-Unless otherwise stated:
-\begin{enumerate}
-  \item All parametric families $\{f_t(\omega)\}$ are jointly measurable with respect to $\mathcal{B}(\R) \otimes \mathcal{B}(\R)$.
-  \item Dirac delta identities such as $\int e^{i(\mu - \lambda)u}\,du = 2\pi\delta(\mu - \lambda)$ are distributional.
-  \item Integrals of the form $\int f(\omega)\,d\nu(\omega)$ denote Lebesgue-Stieltjes integration with respect to measure $\nu$, while $\int g(u)\,du$ denotes Lebesgue integration.
-  \item Integrals with respect to orthogonal random measures $\Phi$, written $\int h(\omega)\,d\Phi(\omega)$, are Lebesgue-Stieltjes integrals in $L^2(\Omega)$ with variance $\E[|\int h\,d\Phi|^2] = \int |h|^2\,d\mu$.
-  \item Limit interchange is justified by dominated convergence under uniform $L^2$ bounds.
-\end{enumerate}
+  Unless otherwise stated:
+  \begin{enumerate}
+    \item All parametric families $\{f_t (\omega)\}$ are jointly measurable
+    with respect to $\mathcal{B} (\R) \otimes \mathcal{B} (\R)$.
+    
+    \item Dirac delta identities such as $\int e^{i (\mu - \lambda) u} 
+    \hspace{0.17em} du = 2 \pi \delta (\mu - \lambda)$ are distributional.
+    
+    \item Integrals of the form $\int f (\omega)  \hspace{0.17em} d \nu
+    (\omega)$ denote Lebesgue-Stieltjes integration with respect to measure
+    $\nu$, while $\int g (u)  \hspace{0.17em} du$ denotes Lebesgue
+    integration.
+    
+    \item Integrals with respect to orthogonal random measures $\Phi$, written
+    $\int h (\omega)  \hspace{0.17em} d \Phi (\omega)$, are Lebesgue-Stieltjes
+    integrals in $L^2 (\Omega)$ with variance $\E [| \int h \hspace{0.17em} d
+    \Phi |^2] = \int |h|^2  \hspace{0.17em} d \mu$.
+    
+    \item Limit interchange is justified by dominated convergence under
+    uniform $L^2$ bounds.
+  \end{enumerate}
 \end{remark}
 
-Throughout, $(\Omega, \mathcal{F}, \mathbb{P})$ is a fixed probability space and $\mu$ is a finite Borel measure on $\R$.
+Throughout, $(\Omega, \mathcal{F}, \mathbb{P})$ is a fixed probability space
+and $\mu$ is a finite Borel measure on $\R$.
 
-\begin{definition}[Oscillatory Function Family]
-\label{def:oscillatory}
-A family $\{\phi_t(\omega)\}_{t \in \R} \subset L^2(\R,\mu)$ is called \tmem{oscillatory} if there exists a family $\{A_t(\omega)\}_{t \in \R, \omega \in \R}$ satisfying:
-\begin{enumerate}
-  \item \tmem{Factorization:} For all $t, \omega \in \R$,
-  \[
-    \phi_t(\omega) = A_t(\omega)e^{i\omega t}.
-  \]
-  \item \tmem{Amplitude Representation:} For $\mu$-almost every $\omega$, there exists a probability measure $H_\omega$ on $\R$ with $\int |\lambda|\,dH_\omega(\lambda) < \infty$ such that
-  \[
-    A_t(\omega) = \int_{-\infty}^{\infty} e^{i\lambda t}\,dH_\omega(\lambda)
-    \quad \text{for all } t \in \R.
-  \]
-  \item \tmem{Concentration:} For $\mu$-almost every $\omega$, the measure $H_\omega$ concentrates at the origin in the sense that
-  \[
-    H_\omega(\{0\}) > H_\omega(\R \setminus \{0\}),
-  \]
-  equivalently, the point mass at zero exceeds the total remaining mass.
-  \item \tmem{Normalization:} For $\mu$-almost every $\omega$, $A_0(\omega) = 1$.
-\end{enumerate}
-The family $\{A_t(\omega)\}$ is called the \tmem{amplitude family} associated to $\{\phi_t\}$.
+\begin{definition}
+  [Oscillatory Function Family]\label{def:oscillatory}A family $\{\phi_t
+  (\omega)\}_{t \in \R} \subset L^2 (\R, \mu)$ is called {\tmem{oscillatory}}
+  if there exists a family $\{A_t (\omega)\}_{t \in \R, \omega \in \R}$
+  satisfying:
+  \begin{enumerate}
+    \item {\tmem{Factorization:}} For all $t, \omega \in \R$,
+    \[ \phi_t (\omega) = A_t (\omega) e^{i \omega t} . \]
+    \item {\tmem{Amplitude Representation:}} For $\mu$-almost every $\omega$,
+    there exists a probability measure $H_{\omega}$ on $\R$ with $\int |
+    \lambda |  \hspace{0.17em} dH_{\omega} (\lambda) < \infty$ such that
+    \[ A_t (\omega) = \int_{- \infty}^{\infty} e^{i \lambda t} 
+       \hspace{0.17em} dH_{\omega} (\lambda)  \quad \text{for all } t \in \R .
+    \]
+    \item {\tmem{Concentration:}} For $\mu$-almost every $\omega$, the measure
+    $H_{\omega}$ concentrates at the origin in the sense that
+    \[ H_{\omega} (\{0\}) > H_{\omega}  (\R \setminus \{0\}), \]
+    equivalently, the point mass at zero exceeds the total remaining mass.
+    
+    \item {\tmem{Normalization:}} For $\mu$-almost every $\omega$, $A_0
+    (\omega) = 1$.
+  \end{enumerate}
+  The family $\{A_t (\omega)\}$ is called the {\tmem{amplitude family}}
+  associated to $\{\phi_t \}$.
 \end{definition}
 
-\begin{proposition}[Non-vanishing from Concentration]
-\label{prop:nonvanishing}
-Under the concentration condition, the amplitude satisfies $A_t(\omega) \neq 0$ for all $t \in \R$ and $\mu$-almost every $\omega$.
+\begin{proposition}
+  [Non-vanishing from Concentration]\label{prop:nonvanishing}Under the
+  concentration condition, the amplitude satisfies $A_t (\omega) \neq 0$ for
+  all $t \in \R$ and $\mu$-almost every $\omega$.
 \end{proposition}
 
 \begin{proof}
-Fix $\omega$ in the full-measure set where the representation and concentration properties hold. Write
-\[
-  H_\omega = h_0\,\delta_0 + \tilde{H}_\omega,
-\]
-where $h_0 = H_\omega(\{0\})$ and $\tilde{H}_\omega$ is supported on $\R \setminus \{0\}$ with total mass
-\[
-  m = \tilde{H}_\omega(\R \setminus \{0\}) = H_\omega(\R \setminus \{0\}).
-\]
-The concentration condition gives $h_0 > m$. The Fourier--Stieltjes representation of $A_t(\omega)$ becomes
-\[
-  A_t(\omega) = \int_\R e^{i\lambda t}\,dH_\omega(\lambda) = h_0 + \int_{\R \setminus \{0\}} e^{i\lambda t}\,d\tilde{H}_\omega(\lambda).
-\]
-Since $|e^{i\lambda t}| = 1$ for all $\lambda, t \in \R$, the triangle inequality for complex integrals yields
-\[
-  \left|\int_{\R \setminus \{0\}} e^{i\lambda t}\,d\tilde{H}_\omega(\lambda)\right|
-  \leq \int_{\R \setminus \{0\}} |e^{i\lambda t}|\,d\tilde{H}_\omega(\lambda)
-  = \int_{\R \setminus \{0\}} d\tilde{H}_\omega(\lambda)
-  = m.
-\]
-The real part of $A_t(\omega)$ can be bounded from below:
-\[
-  \Re A_t(\omega)
-  = \Re\left(h_0 + \int_{\R \setminus \{0\}} e^{i\lambda t}\,d\tilde{H}_\omega(\lambda)\right)
-  \geq h_0 - \left|\int_{\R \setminus \{0\}} e^{i\lambda t}\,d\tilde{H}_\omega(\lambda)\right|
-  \geq h_0 - m > 0
-\]
-for all $t \in \R$. A complex number with strictly positive real part cannot be zero, so $A_t(\omega) \neq 0$ for all $t \in \R$ and $\mu$-a.e. $\omega$.
+  Fix $\omega$ in the full-measure set where the representation and
+  concentration properties hold. Write
+  \[ H_{\omega} = h_0  \hspace{0.17em} \delta_0 + \tilde{H}_{\omega}, \]
+  where $h_0 = H_{\omega} (\{0\})$ and $\tilde{H}_{\omega}$ is supported on
+  $\R \setminus \{0\}$ with total mass
+  \[ m = \tilde{H}_{\omega}  (\R \setminus \{0\}) = H_{\omega}  (\R \setminus
+     \{0\}) . \]
+  The concentration condition gives $h_0 > m$. The Fourier--Stieltjes
+  representation of $A_t (\omega)$ becomes
+  \[ A_t (\omega) = \int_{\R} e^{i \lambda t}  \hspace{0.17em} dH_{\omega}
+     (\lambda) = h_0 + \int_{\R \setminus \{0\}} e^{i \lambda t} 
+     \hspace{0.17em} d \tilde{H}_{\omega} (\lambda) . \]
+  Since $|e^{i \lambda t} | = 1$ for all $\lambda, t \in \R$, the triangle
+  inequality for complex integrals yields
+  \[ \left| \int_{\R \setminus \{0\}} e^{i \lambda t}  \hspace{0.17em} d
+     \tilde{H}_{\omega} (\lambda) \right| \leq \int_{\R \setminus \{0\}} |e^{i
+     \lambda t} |  \hspace{0.17em} d \tilde{H}_{\omega} (\lambda) = \int_{\R
+     \setminus \{0\}} d \tilde{H}_{\omega} (\lambda) = m. \]
+  The real part of $A_t (\omega)$ can be bounded from below:
+  \[ \Re A_t (\omega) = \Re \left( h_0 + \int_{\R \setminus \{0\}} e^{i
+     \lambda t}  \hspace{0.17em} d \tilde{H}_{\omega} (\lambda) \right) \geq
+     h_0 - \left| \int_{\R \setminus \{0\}} e^{i \lambda t}  \hspace{0.17em} d
+     \tilde{H}_{\omega} (\lambda) \right| \geq h_0 - m > 0 \]
+  for all $t \in \R$. A complex number with strictly positive real part cannot
+  be zero, so $A_t (\omega) \neq 0$ for all $t \in \R$ and $\mu$-a.e.
+  $\omega$.
 \end{proof}
 
-\begin{definition}[Oscillatory Stochastic Process]
-\label{def:oscillatory-process}
-A centered stochastic process $\{X_t\}_{t \in \R}$ is \tmem{oscillatory} if there exists:
-\begin{enumerate}
-  \item a finite Borel measure $\mu$ on $\R$,
-  \item a complex orthogonal random measure $\Phi$ on $(\R,\mathcal{B}(\R))$ with $\E[|\Phi(B)|^2] = \mu(B)$,
-  \item an amplitude family $\{A_t(\omega)\}$ satisfying Definition~\ref{def:oscillatory},
-\end{enumerate}
-such that for each $t \in \R$,
-\[
-  X_t = \int_\R A_t(\omega)e^{i\omega t}\,d\Phi(\omega) \quad \text{in } L^2(\Omega).
-\]
+\begin{definition}
+  [Oscillatory Stochastic Process]\label{def:oscillatory-process}A centered
+  stochastic process $\{X_t \}_{t \in \R}$ is {\tmem{oscillatory}} if there
+  exists:
+  \begin{enumerate}
+    \item a finite Borel measure $\mu$ on $\R$,
+    
+    \item a complex orthogonal random measure $\Phi$ on $(\R,
+    \mathcal{B}(\R))$ with $\E [| \Phi (B) |^2] = \mu (B)$,
+    
+    \item an amplitude family $\{A_t (\omega)\}$ satisfying
+    Definition~\ref{def:oscillatory},
+  \end{enumerate}
+  such that for each $t \in \R$,
+  \[ X_t = \int_{\R} A_t (\omega) e^{i \omega t}  \hspace{0.17em} d \Phi
+     (\omega)  \quad \text{in } L^2 (\Omega) . \]
 \end{definition}
 
 \section{Existence and Regularity}
 
-\begin{lemma}[Existence and Regularity of Oscillatory Processes]
-\label{lem:existence-regularity}
-Let $\{X_t\}_{t \in \R}$ be a centered stochastic process with covariance function $R_{s,t} = \E[X_s\overline{X_t}]$. Suppose $R_{s,t}$ admits a representation
-\[
-  R_{s,t} = \int_\R \phi_s(\omega)\overline{\phi_t(\omega)}\,d\mu(\omega)
-\]
-for some finite Borel measure $\mu$ and an oscillatory function family $\{\phi_t\}$ in the sense of Definition~\ref{def:oscillatory} with associated amplitude family $\{A_t\}$. Then the process admits the spectral representation
-\[
-  X_t = \int_\R A_t(\omega)e^{i\omega t}\,d\Phi(\omega)
-\]
-where $\Phi$ is a complex orthogonal random measure with $\E[|\Phi(B)|^2] = \mu(B)$, and the amplitude family satisfies the following regularity conditions:
-\begin{enumerate}
-  \item \label{cond:nonvanishing} \tmem{Non-vanishing:} For $\mu$-almost every $\omega \in \R$,
-  \[
-    A_t(\omega) \neq 0 \quad \text{for all } t \in \R.
-  \]
-  \item \label{cond:fourier} \tmem{Fourier--Stieltjes structure:} For $\mu$-almost every $\omega \in \R$, the representation
-  \[
-    A_t(\omega) = \int_{-\infty}^{\infty} e^{i\lambda t}\,dH_\omega(\lambda)
-  \]
-  holds with $H_\omega(\R) = 1$, $H_\omega(\{0\}) > H_\omega(\R \setminus \{0\})$, and $\int |\lambda|\,dH_\omega(\lambda) < \infty$.
-  \item \label{cond:l2integrability} \tmem{Quadratic integrability:} For each fixed $t \in \R$,
-  \[
-    \int_\R |A_t(\omega)|^2\,d\mu(\omega) < \infty.
-  \]
-  \item \label{cond:normalization} \tmem{Normalization:} For $\mu$-almost every $\omega \in \R$,
-  \[
-    A_0(\omega) = 1.
-  \]
-\end{enumerate}
+\begin{lemma}
+  [Existence and Regularity of Oscillatory
+  Processes]\label{lem:existence-regularity}Let $\{X_t \}_{t \in \R}$ be a
+  centered stochastic process with covariance function $R_{s, t} = \E [X_s
+  \overline{X_t}]$. Suppose $R_{s, t}$ admits a representation
+  \[ R_{s, t} = \int_{\R} \phi_s (\omega) \overline{\phi_t (\omega)}
+     \hspace{0.17em} d \mu (\omega) \]
+  for some finite Borel measure $\mu$ and an oscillatory function family
+  $\{\phi_t \}$ in the sense of Definition~\ref{def:oscillatory} with
+  associated amplitude family $\{A_t \}$. Then the process admits the spectral
+  representation
+  \[ X_t = \int_{\R} A_t (\omega) e^{i \omega t}  \hspace{0.17em} d \Phi
+     (\omega) \]
+  where $\Phi$ is a complex orthogonal random measure with $\E [| \Phi (B)
+  |^2] = \mu (B)$, and the amplitude family satisfies the following regularity
+  conditions:
+  \begin{enumerate}
+    \item \label{cond:nonvanishing} {\tmem{Non-vanishing:}} For $\mu$-almost
+    every $\omega \in \R$,
+    \[ A_t (\omega) \neq 0 \quad \text{for all } t \in \R . \]
+    \item \label{cond:fourier} {\tmem{Fourier--Stieltjes structure:}} For
+    $\mu$-almost every $\omega \in \R$, the representation
+    \[ A_t (\omega) = \int_{- \infty}^{\infty} e^{i \lambda t} 
+       \hspace{0.17em} dH_{\omega} (\lambda) \]
+    holds with $H_{\omega} (\R) = 1$, $H_{\omega} (\{0\}) > H_{\omega}  (\R
+    \setminus \{0\})$, and $\int | \lambda |  \hspace{0.17em} dH_{\omega}
+    (\lambda) < \infty$.
+    
+    \item \label{cond:l2integrability} {\tmem{Quadratic integrability:}} For
+    each fixed $t \in \R$,
+    \[ \int_{\R} |A_t (\omega) |^2  \hspace{0.17em} d \mu (\omega) < \infty .
+    \]
+    \item \label{cond:normalization} {\tmem{Normalization:}} For $\mu$-almost
+    every $\omega \in \R$,
+    \[ A_0 (\omega) = 1. \]
+  \end{enumerate}
 \end{lemma}
 
 \begin{proof}
-Factorization and existence of $\Phi$ follow from Definition~\ref{def:oscillatory} and the spectral theorem for covariance kernels. The non-vanishing property is given by Proposition~\ref{prop:nonvanishing}.
-
-For quadratic integrability, for $\mu$-a.e. $\omega$,
-\[
-  |A_t(\omega)| \leq \int |e^{i\lambda t}|\,dH_\omega(\lambda) = H_\omega(\R) = 1.
-\]
-Therefore,
-\[
-  \int_\R |A_t(\omega)|^2\,d\mu(\omega) \leq \int_\R 1\,d\mu(\omega) = \mu(\R) < \infty,
-\]
-which proves condition~\ref{cond:l2integrability} and ensures the stochastic integral defining $X_t$ is well-defined in $L^2(\Omega)$.
-
-For covariance verification, use orthogonality of $\Phi$ and the isometry property of stochastic integrals:
-\begin{align*}
-  \E[X_s\overline{X_t}]
-  &= \E\left[\int_\R A_s(\omega)e^{i\omega s}\,d\Phi(\omega) \cdot \overline{\int_\R A_t(\nu)e^{i\nu t}\,d\Phi(\nu)}\right]\\
-  &= \int_\R A_s(\omega)\overline{A_t(\omega)}e^{i\omega(s-t)}\,d\E[|\Phi(\omega)|^2]\\
-  &= \int_\R A_s(\omega)\overline{A_t(\omega)}e^{i\omega(s-t)}\,d\mu(\omega)\\
-  &= R_{s,t}.
-\end{align*}
+  Factorization and existence of $\Phi$ follow from
+  Definition~\ref{def:oscillatory} and the spectral theorem for covariance
+  kernels. The non-vanishing property is given by
+  Proposition~\ref{prop:nonvanishing}.
+  
+  For quadratic integrability, for $\mu$-a.e. $\omega$,
+  \[ |A_t (\omega) | \leq \int |e^{i \lambda t} |  \hspace{0.17em} dH_{\omega}
+     (\lambda) = H_{\omega} (\R) = 1. \]
+  Therefore,
+  \[ \int_{\R} |A_t (\omega) |^2  \hspace{0.17em} d \mu (\omega) \leq
+     \int_{\R} 1 \hspace{0.17em} d \mu (\omega) = \mu (\R) < \infty, \]
+  which proves condition~\ref{cond:l2integrability} and ensures the stochastic
+  integral defining $X_t$ is well-defined in $L^2 (\Omega)$.
+  
+  For covariance verification, use orthogonality of $\Phi$ and the isometry
+  property of stochastic integrals:
+  
+  \begin{align*}
+    \E [X_s \overline{X_t}] & = \E \left[ \int_{\R} A_s (\omega) e^{i \omega
+    s}  \hspace{0.17em} d \Phi (\omega) \cdot \overline{\int_{\R} A_t (\nu)
+    e^{i \nu t}  \hspace{0.17em} d \Phi (\nu)} \right]\\
+    & = \int_{\R} A_s (\omega) \overline{A_t (\omega)} e^{i \omega (s - t)} 
+    \hspace{0.17em} d \E [| \Phi (\omega) |^2]\\
+    & = \int_{\R} A_s (\omega) \overline{A_t (\omega)} e^{i \omega (s - t)} 
+    \hspace{0.17em} d \mu (\omega)\\
+    & = R_{s, t} .
+  \end{align*}
 \end{proof}
 
-\begin{corollary}[Derived Regularity Properties]
-\label{cor:regularity}
-Under the conditions of Lemma~\ref{lem:existence-regularity}, the following hold:
-\begin{enumerate}
-  \item \label{prop:local-bound} For any compact interval $[a,b] \subset \R$ and Borel set $E$ with $\mu(E) < \infty$,
-  \[
-    \sup_{t \in [a,b]} \int_E |A_t(\omega)|^2\,d\mu(\omega) \leq \mu(E).
-  \]
-  \item \label{prop:differentiable} For $\mu$-almost every $\omega \in \R$, the temporal derivative
-  \[
-    \frac{\partial A_t(\omega)}{\partial t} = \int_{-\infty}^{\infty} i\lambda e^{i\lambda t}\,dH_\omega(\lambda)
-  \]
-  exists for all $t \in \R$ and is continuous in $t$.
-\end{enumerate}
+\begin{corollary}
+  [Derived Regularity Properties]\label{cor:regularity}Under the conditions of
+  Lemma~\ref{lem:existence-regularity}, the following hold:
+  \begin{enumerate}
+    \item \label{prop:local-bound} For any compact interval $[a, b] \subset
+    \R$ and Borel set $E$ with $\mu (E) < \infty$,
+    \[ \sup_{t \in [a, b]}  \int_E |A_t (\omega) |^2  \hspace{0.17em} d \mu
+       (\omega) \leq \mu (E) . \]
+    \item \label{prop:differentiable} For $\mu$-almost every $\omega \in \R$,
+    the temporal derivative
+    \[ \frac{\partial A_t (\omega)}{\partial t} = \int_{- \infty}^{\infty} i
+       \lambda e^{i \lambda t}  \hspace{0.17em} dH_{\omega} (\lambda) \]
+    exists for all $t \in \R$ and is continuous in $t$.
+  \end{enumerate}
 \end{corollary}
 
 \begin{proof}
-For Item~\ref{prop:local-bound}, Lemma~\ref{lem:existence-regularity} implies $|A_t(\omega)| \leq 1$ for $\mu$-a.e. $\omega$ and all $t \in \R$. Therefore,
-\[
-  \sup_{t \in [a,b]} \int_E |A_t(\omega)|^2\,d\mu(\omega) \leq \int_E 1\,d\mu(\omega) = \mu(E) < \infty.
-\]
-
-For Item~\ref{prop:differentiable}, the Fourier--Stieltjes representation gives
-\[
-  A_t(\omega) = \int_{-\infty}^{\infty} e^{i\lambda t}\,dH_\omega(\lambda).
-\]
-Differentiation under the integral sign is justified by the finite first moment condition $\int |\lambda|\,dH_\omega(\lambda) < \infty$ and dominated convergence. For any $t \in \R$ and $h \neq 0$,
-\[
-  \frac{A_{t+h}(\omega) - A_t(\omega)}{h} = \int_{-\infty}^{\infty} e^{i\lambda t}\frac{e^{i\lambda h} - 1}{h}\,dH_\omega(\lambda).
-\]
-Since $|\frac{e^{i\lambda h}-1}{h}| \leq |\lambda|$ for all $h \neq 0$ and $\int |\lambda|\,dH_\omega(\lambda) < \infty$, dominated convergence gives
-\[
-  \lim_{h \to 0} \frac{A_{t+h}(\omega) - A_t(\omega)}{h} = \int_{-\infty}^{\infty} i\lambda e^{i\lambda t}\,dH_\omega(\lambda).
-\]
-Continuity of the derivative follows from the same argument applied to the derivative itself.
+  For Item~\ref{prop:local-bound}, Lemma~\ref{lem:existence-regularity}
+  implies $|A_t (\omega) | \leq 1$ for $\mu$-a.e. $\omega$ and all $t \in \R$.
+  Therefore,
+  \[ \sup_{t \in [a, b]}  \int_E |A_t (\omega) |^2  \hspace{0.17em} d \mu
+     (\omega) \leq \int_E 1 \hspace{0.17em} d \mu (\omega) = \mu (E) < \infty
+     . \]
+  For Item~\ref{prop:differentiable}, the Fourier--Stieltjes representation
+  gives
+  \[ A_t (\omega) = \int_{- \infty}^{\infty} e^{i \lambda t}  \hspace{0.17em}
+     dH_{\omega} (\lambda) . \]
+  Differentiation under the integral sign is justified by the finite first
+  moment condition $\int | \lambda |  \hspace{0.17em} dH_{\omega} (\lambda) <
+  \infty$ and dominated convergence. For any $t \in \R$ and $h \neq 0$,
+  \[ \frac{A_{t + h} (\omega) - A_t (\omega)}{h} = \int_{- \infty}^{\infty}
+     e^{i \lambda t}  \frac{e^{i \lambda h} - 1}{h}  \hspace{0.17em}
+     dH_{\omega} (\lambda) . \]
+  Since $| \frac{e^{i \lambda h} - 1}{h} | \leq | \lambda |$ for all $h \neq
+  0$ and $\int | \lambda |  \hspace{0.17em} dH_{\omega} (\lambda) < \infty$,
+  dominated convergence gives
+  \[ \lim_{h \to 0}  \frac{A_{t + h} (\omega) - A_t (\omega)}{h} = \int_{-
+     \infty}^{\infty} i \lambda e^{i \lambda t}  \hspace{0.17em} dH_{\omega}
+     (\lambda) . \]
+  Continuity of the derivative follows from the same argument applied to the
+  derivative itself.
 \end{proof}
 
 \section{Spectral Representation Theorems}
 
-\begin{theorem}[Existence of Spectral Representation]
-\label{thm:existence}
-Let $\{X_t\}$ be a centered oscillatory process with covariance function $R_{s,t} = \E[X_s\overline{X_t}]$. Then there exist a finite Borel measure $\mu$ on $\R$, a family of oscillatory functions $\{A_t(\omega)\}$ satisfying Lemma~\ref{lem:existence-regularity}, and a complex orthogonal random measure $\Phi$ with $\E[|\Phi(B)|^2] = \mu(B)$, such that
-\[
-  X_t = \int_\R A_t(\omega)e^{i\omega t}\,d\Phi(\omega)
-\]
-and
-\[
-  R_{s,t} = \int_\R A_s(\omega)\overline{A_t(\omega)}e^{i\omega(s-t)}\,d\mu(\omega).
-\]
+\begin{theorem}
+  [Existence of Spectral Representation]\label{thm:existence}Let $\{X_t \}$ be
+  a centered oscillatory process with covariance function $R_{s, t} = \E [X_s
+  \overline{X_t}]$. Then there exist a finite Borel measure $\mu$ on $\R$, a
+  family of oscillatory functions $\{A_t (\omega)\}$ satisfying
+  Lemma~\ref{lem:existence-regularity}, and a complex orthogonal random
+  measure $\Phi$ with $\E [| \Phi (B) |^2] = \mu (B)$, such that
+  \[ X_t = \int_{\R} A_t (\omega) e^{i \omega t}  \hspace{0.17em} d \Phi
+     (\omega) \]
+  and
+  \[ R_{s, t} = \int_{\R} A_s (\omega) \overline{A_t (\omega)} e^{i \omega (s
+     - t)}  \hspace{0.17em} d \mu (\omega) . \]
 \end{theorem}
 
 \begin{proof}
-By Definition~\ref{def:oscillatory-process}, an oscillatory process has a representation $X_t = \int_\R A_t(\omega)e^{i\omega t}\,d\Phi(\omega)$. The covariance formula follows from the covariance verification in Lemma~\ref{lem:existence-regularity}. The existence of such a representation is guaranteed by the construction in that lemma.
+  By Definition~\ref{def:oscillatory-process}, an oscillatory process has a
+  representation $X_t = \int_{\R} A_t (\omega) e^{i \omega t}  \hspace{0.17em}
+  d \Phi (\omega)$. The covariance formula follows from the covariance
+  verification in Lemma~\ref{lem:existence-regularity}. The existence of such
+  a representation is guaranteed by the construction in that lemma.
 \end{proof}
 
-\begin{theorem}[Uniqueness of the Spectral Triple]
-\label{thm:uniqueness}
-The triple $(\mu, \Phi, A_t)$ is unique pathwise up to a scalar multiple: if two triples $(\mu_1, \Phi_1, A_t^{(1)})$ and $(\mu_2, \Phi_2, A_t^{(2)})$ generate the same process $\{X_t\}$, then $\mu_1 = \mu_2$ (modulo null sets), $A_t^{(1)}(\omega) = A_t^{(2)}(\omega)$ for $\mu$-almost every $\omega$, and there exists $c \in \C$ with $|c| = 1$ such that $\Phi_2(B) = c\Phi_1(B)$ for all Borel sets $B$.
+\begin{theorem}
+  [Uniqueness of the Spectral Triple]\label{thm:uniqueness}The triple $(\mu,
+  \Phi, A_t)$ is unique pathwise up to a scalar multiple: if two triples
+  $(\mu_1, \Phi_1, A_t^{(1)})$ and $(\mu_2, \Phi_2, A_t^{(2)})$ generate the
+  same process $\{X_t \}$, then $\mu_1 = \mu_2$ (modulo null sets), $A_t^{(1)}
+  (\omega) = A_t^{(2)} (\omega)$ for $\mu$-almost every $\omega$, and there
+  exists $c \in \C$ with $|c| = 1$ such that $\Phi_2 (B) = c \Phi_1 (B)$ for
+  all Borel sets $B$.
 \end{theorem}
 
 \begin{proof}
-Suppose
-\[
-  X_t = \int_\R A_t^{(1)}(\omega)e^{i\omega t}\,d\Phi_1(\omega)
-      = \int_\R A_t^{(2)}(\omega)e^{i\omega t}\,d\Phi_2(\omega).
-\]
-Setting $s = t$ gives
-\[
-  \int_\R |A_t^{(1)}(\omega)|^2\,d\mu_1(\omega) = \E[|X_t|^2] = \int_\R |A_t^{(2)}(\omega)|^2\,d\mu_2(\omega)
-\]
-for all $t$. Taking $t = 0$ and using $A_0^{(1)} = A_0^{(2)} = 1$, one obtains $\mu_1(\R) = \mu_2(\R)$.
-
-For any Borel set $E$, define $Y_t^{(E)} = \int_E A_t^{(1)}(\omega)e^{i\omega t}\,d\Phi_1(\omega)$. By orthogonality,
-\[
-  \E[|Y_t^{(E)}|^2] = \int_E |A_t^{(1)}(\omega)|^2\,d\mu_1(\omega).
-\]
-The same quantity computed using $(\mu_2, \Phi_2, A_t^{(2)})$ must be equal, so by polarization and the non-vanishing property, $\mu_1(E) = \mu_2(E)$ is obtained. Hence $\mu_1 = \mu_2$ as measures.
-
-With $\mu_1 = \mu_2$, the equality of spectral representations implies that for each $t$,
-\[
-  \int_\R (A_t^{(1)}(\omega) - A_t^{(2)}(\omega))e^{i\omega t}\,d\Phi_1(\omega) = 0 \quad \text{a.s.}
-\]
-By the non-vanishing property and the isometry, $A_t^{(1)}(\omega) = A_t^{(2)}(\omega)$ for $\mu$-a.e. $\omega$.
-
-Finally, since the amplitude family is unique, the random measures must satisfy $\Phi_2(B) = c\Phi_1(B)$ for some $c$ with $|c| = 1$ by the uniqueness of orthogonal random measures with prescribed variance.
+  Suppose
+  \[ X_t = \int_{\R} A_t^{(1)} (\omega) e^{i \omega t}  \hspace{0.17em} d
+     \Phi_1 (\omega) = \int_{\R} A_t^{(2)} (\omega) e^{i \omega t} 
+     \hspace{0.17em} d \Phi_2 (\omega) . \]
+  Setting $s = t$ gives
+  \[ \int_{\R} |A_t^{(1)} (\omega) |^2  \hspace{0.17em} d \mu_1 (\omega) = \E
+     [|X_t |^2] = \int_{\R} |A_t^{(2)} (\omega) |^2  \hspace{0.17em} d \mu_2
+     (\omega) \]
+  for all $t$. Taking $t = 0$ and using $A_0^{(1)} = A_0^{(2)} = 1$, one
+  obtains $\mu_1 (\R) = \mu_2 (\R)$.
+  
+  For any Borel set $E$, define $Y_t^{(E)} = \int_E A_t^{(1)} (\omega) e^{i
+  \omega t}  \hspace{0.17em} d \Phi_1 (\omega)$. By orthogonality,
+  \[ \E [|Y_t^{(E)} |^2] = \int_E |A_t^{(1)} (\omega) |^2  \hspace{0.17em} d
+     \mu_1 (\omega) . \]
+  The same quantity computed using $(\mu_2, \Phi_2, A_t^{(2)})$ must be equal,
+  so by polarization and the non-vanishing property, $\mu_1 (E) = \mu_2 (E)$
+  is obtained. Hence $\mu_1 = \mu_2$ as measures.
+  
+  With $\mu_1 = \mu_2$, the equality of spectral representations implies that
+  for each $t$,
+  \[ \int_{\R} (A_t^{(1)} (\omega) - A_t^{(2)} (\omega)) e^{i \omega t} 
+     \hspace{0.17em} d \Phi_1 (\omega) = 0 \quad \text{a.s.} \]
+  By the non-vanishing property and the isometry, $A_t^{(1)} (\omega) =
+  A_t^{(2)} (\omega)$ for $\mu$-a.e. $\omega$.
+  
+  Finally, since the amplitude family is unique, the random measures must
+  satisfy $\Phi_2 (B) = c \Phi_1 (B)$ for some $c$ with $|c| = 1$ by the
+  uniqueness of orthogonal random measures with prescribed variance.
 \end{proof}
 
 \section{The Shift Operator}
 
-\begin{theorem}[Action of the Shift Operator]
-\label{thm:shift}
-Let $U_\tau : \mathcal{H}_T \to \mathcal{H}_T$ be the time-shift operator defined by $U_\tau X_t = X_{t+\tau}$. Under the spectral representation in Definition~\ref{def:oscillatory-process},
-\[
-  U_\tau X_t = X_{t+\tau}
-  = \int_\R A_{t+\tau}(\omega)e^{i\omega(t+\tau)}\,d\Phi(\omega)
-  = \int_\R A_{t+\tau}(\omega)e^{i\omega t}e^{i\omega\tau}\,d\Phi(\omega).
-\]
+\begin{theorem}
+  [Action of the Shift Operator]\label{thm:shift}Let $U_{\tau} : \mathcal{H}_T
+  \to \mathcal{H}_T$ be the time-shift operator defined by $U_{\tau} X_t =
+  X_{t + \tau}$. Under the spectral representation in
+  Definition~\ref{def:oscillatory-process},
+  \[ U_{\tau} X_t = X_{t + \tau} = \int_{\R} A_{t + \tau} (\omega) e^{i \omega
+     (t + \tau)}  \hspace{0.17em} d \Phi (\omega) = \int_{\R} A_{t + \tau}
+     (\omega) e^{i \omega t} e^{i \omega \tau}  \hspace{0.17em} d \Phi
+     (\omega) . \]
 \end{theorem}
 
 \begin{proof}
-By Definition~\ref{def:oscillatory-process},
-\[
-  X_{t+\tau} = \int_\R A_{t+\tau}(\omega)e^{i\omega(t+\tau)}\,d\Phi(\omega).
-\]
-Factoring the exponential $e^{i\omega(t+\tau)} = e^{i\omega t}e^{i\omega\tau}$ and applying the isometry property of stochastic integrals:
-\[
-  \E\left|\int_\R A_{t+\tau}(\omega)e^{i\omega t}e^{i\omega\tau}\,d\Phi(\omega)\right|^2
-  = \int_\R |A_{t+\tau}(\omega)|^2|e^{i\omega\tau}|^2\,d\mu(\omega)
-  = \int_\R |A_{t+\tau}(\omega)|^2\,d\mu(\omega)
-  = \E[|X_{t+\tau}|^2] < \infty.
-\]
-Thus the representation holds in $L^2(\Omega)$.
+  By Definition~\ref{def:oscillatory-process},
+  \[ X_{t + \tau} = \int_{\R} A_{t + \tau} (\omega) e^{i \omega (t + \tau)} 
+     \hspace{0.17em} d \Phi (\omega) . \]
+  Factoring the exponential $e^{i \omega (t + \tau)} = e^{i \omega t} e^{i
+  \omega \tau}$ and applying the isometry property of stochastic integrals:
+  \[ \E \left| \int_{\R} A_{t + \tau} (\omega) e^{i \omega t} e^{i \omega
+     \tau}  \hspace{0.17em} d \Phi (\omega) \right|^2 = \int_{\R} |A_{t +
+     \tau} (\omega) |^2 |e^{i \omega \tau} |^2  \hspace{0.17em} d \mu (\omega)
+     = \int_{\R} |A_{t + \tau} (\omega) |^2  \hspace{0.17em} d \mu (\omega) =
+     \E [|X_{t + \tau} |^2] < \infty . \]
+  Thus the representation holds in $L^2 (\Omega)$.
 \end{proof}
 
 \section{Time-Dependent Convolution Representation}
 
-\begin{theorem}[Filter Representation]
-\label{thm:filter}
-Let $Y$ be a zero-mean stationary process with spectral representation
-\[
-  Y(u) = \int_\R e^{i\lambda u}\,d\Psi(\lambda)
-\]
-and spectral measure with associated orthogonal random measure $\Psi$. Let $X$ be an oscillatory process with oscillatory function $\varphi_t(\lambda) = A_t(\lambda)e^{i\lambda t}$ and the same orthogonal random measure $\Psi$. Then
-\[
-  X(t) = \int_{-\infty}^{\infty} h(t,u)Y(u)\,du
-\]
-where
-\[
-  h(t,u) = \frac{1}{2\pi}\int_{-\infty}^{\infty} A_t(\lambda)e^{-i\lambda u}\,d\lambda
-\]
-is the time-dependent impulse response function.
+\begin{theorem}
+  [Filter Representation]\label{thm:filter}Let $Y$ be a zero-mean stationary
+  process with spectral representation
+  \[ Y (u) = \int_{\R} e^{i \lambda u}  \hspace{0.17em} d \Psi (\lambda) \]
+  and spectral measure with associated orthogonal random measure $\Psi$. Let
+  $X$ be an oscillatory process with oscillatory function $\varphi_t (\lambda)
+  = A_t (\lambda) e^{i \lambda t}$ and the same orthogonal random measure
+  $\Psi$. Then
+  \[ X (t) = \int_{- \infty}^{\infty} h (t, u) Y (t - u)  \hspace{0.17em} du
+  \]
+  where
+  \[ h (t, u) = \frac{1}{2 \pi}  \int_{- \infty}^{\infty} A_t (\lambda) e^{- i
+     \lambda u}  \hspace{0.17em} d \lambda \]
+  is the time-dependent impulse response function.
 \end{theorem}
 
 \begin{proof}
-Substitute the definitions of $h(t,u)$ and $Y(u)$:
-\begin{align*}
-  \int_{-\infty}^{\infty} h(t,u)Y(u)\,du
-  &= \int_{-\infty}^{\infty} \frac{1}{2\pi}\int_{-\infty}^{\infty} A_t(\lambda)e^{-i\lambda u}\,d\lambda \int_{-\infty}^{\infty} e^{i\nu u}\,d\Psi(\nu)\,du.
-\end{align*}
-By Fubini's theorem (justified by absolute convergence), the order of integration may be exchanged:
-\begin{align*}
-  &= \frac{1}{2\pi}\int_{-\infty}^{\infty}\int_{-\infty}^{\infty} A_t(\lambda) \left[\int_{-\infty}^{\infty} e^{i(\nu-\lambda)u}\,du\right] d\lambda\,d\Psi(\nu).
-\end{align*}
-The inner integral over $u$ is the distributional identity $\int e^{i(\nu-\lambda)u}\,du = 2\pi\delta(\nu-\lambda)$. Applying the sifting property:
-\begin{align*}
-  &= \frac{1}{2\pi}\int_{-\infty}^{\infty}\int_{-\infty}^{\infty} A_t(\lambda) \cdot 2\pi\delta(\nu-\lambda)\,d\lambda\,d\Psi(\nu)\\
-  &= \int_{-\infty}^{\infty}\int_{-\infty}^{\infty} A_t(\lambda)\delta(\nu-\lambda)\,d\lambda\,d\Psi(\nu)\\
-  &= \int_{-\infty}^{\infty} A_t(\nu)e^{i\nu t}\,d\Psi(\nu)\\
-  &= X(t).
-\end{align*}
+  Substitute the definitions of $h (t, u)$ and $Y (u)$:
+  
+  \begin{align*}
+    \int_{- \infty}^{\infty} h (t, u) Y (t - u)  \hspace{0.17em} du & =
+    \int_{- \infty}^{\infty} \frac{1}{2 \pi}  \int_{- \infty}^{\infty} A_t
+    (\lambda) e^{- i \lambda (t - u)}  \hspace{0.17em} d \lambda \int_{-
+    \infty}^{\infty} e^{i \nu u}  \hspace{0.17em} d \Psi (\nu) 
+    \hspace{0.17em} du
+  \end{align*}
+  
+  By Fubini's theorem (justified by absolute convergence), the order of
+  integration may be exchanged:
+  
+  \begin{align*}
+    & = \frac{1}{2 \pi}  \int_{- \infty}^{\infty} \int_{- \infty}^{\infty}
+    A_t (\lambda) \left[ \int_{- \infty}^{\infty} e^{i (\nu - \lambda) (t -
+    u)}  \hspace{0.17em} du \right] d \lambda \hspace{0.17em} d \Psi (\nu)
+  \end{align*}
+  
+  The inner integral over $u$ is the distributional identity $\int e^{i (\nu -
+  \lambda)  (t - u)}  \hspace{0.17em} du = 2 \pi \delta (t (\nu - \lambda))$.
+  Applying the sifting property:
+  
+  \begin{align*}
+    & = \frac{1}{2 \pi}  \int_{- \infty}^{\infty} \int_{- \infty}^{\infty}
+    A_t (\lambda) \cdot 2 \pi \delta (t (\nu - \lambda))  \hspace{0.17em} d
+    \lambda \hspace{0.17em} d \Psi (\nu)\\
+    & = \int_{- \infty}^{\infty} \int_{- \infty}^{\infty} A_t (\lambda)
+    \delta (t (\nu - \lambda))  \hspace{0.17em} d \lambda \hspace{0.17em} d
+    \Psi (\nu)\\
+    & = \int_{- \infty}^{\infty} A_t (\nu) e^{i \nu t}  \hspace{0.17em} d
+    \Psi (\nu)\\
+    & = X (t) .
+  \end{align*}
 \end{proof}
 
 \section{Isomorphism and Bidirectional Determination}
 
-\begin{theorem}[Unitary Isomorphism]
-\label{thm:unitary}
-Define the map $U : \mathcal{H}_T \to L^2(\R,\mu)$ by $U(X_t)(\omega) = A_t(\omega)e^{i\omega t}$. The map extends to a unitary isomorphism with
-\[
-  \langle X_s, X_t \rangle_{L^2(\Omega)} = \langle U(X_s), U(X_t) \rangle_{L^2(\R,\mu)}.
-\]
+\begin{theorem}
+  [Unitary Isomorphism]\label{thm:unitary}Define the map $U : \mathcal{H}_T
+  \to L^2 (\R, \mu)$ by $U (X_t) (\omega) = A_t (\omega) e^{i \omega t}$. The
+  map extends to a unitary isomorphism with
+  \[ \langle X_s, X_t \rangle_{L^2 (\Omega)} = \langle U (X_s), U (X_t)
+     \rangle_{L^2 (\R, \mu)} . \]
 \end{theorem}
 
 \begin{proof}
-The map $U$ is well-defined on the linear span $\mathcal{H}_0 = \mathrm{span}\{X_t : t \in \R\}$. For $Y = \sum_{j=1}^n c_j X_{t_j}$, define
-\[
-  U(Y)(\omega) = \sum_{j=1}^n c_j A_{t_j}(\omega)e^{i\omega t_j}.
-\]
-Linearity follows from the definition. The isometry property follows from the covariance calculation:
-\[
-  \langle X_s, X_t \rangle_{L^2(\Omega)} = \E[X_s\overline{X_t}] = \int_\R A_s(\omega)\overline{A_t(\omega)}e^{i\omega(s-t)}\,d\mu(\omega) = \langle U(X_s), U(X_t) \rangle_{L^2(\R,\mu)}.
-\]
-Thus $\|U(Y)\|_{L^2(\mu)}^2 = \|Y\|_{L^2(\Omega)}^2$ for all $Y \in \mathcal{H}_0$, so $U$ is an isometry. Since $\mathcal{H}_0$ is dense in $\mathcal{H}_T$ and the image $U(\mathcal{H}_0)$ contains all functions of the form $\sum c_j A_{t_j}(\omega)e^{i\omega t_j}$, which are dense in $L^2(\R,\mu)$ by non-vanishing, $U$ extends uniquely to a unitary isomorphism.
+  The map $U$ is well-defined on the linear span $\mathcal{H}_0 =
+  \mathrm{span} \{X_t : t \in \R \}$. For $Y = \sum_{j = 1}^n c_j X_{t_j}$,
+  define
+  \[ U (Y) (\omega) = \sum_{j = 1}^n c_j A_{t_j} (\omega) e^{i \omega t_j} .
+  \]
+  Linearity follows from the definition. The isometry property follows from
+  the covariance calculation:
+  \[ \langle X_s, X_t \rangle_{L^2 (\Omega)} = \E [X_s \overline{X_t}] =
+     \int_{\R} A_s (\omega) \overline{A_t (\omega)} e^{i \omega (s - t)} 
+     \hspace{0.17em} d \mu (\omega) = \langle U (X_s), U (X_t) \rangle_{L^2
+     (\R, \mu)} . \]
+  Thus $\|U (Y)\|_{L^2 (\mu)}^2 = \|Y\|_{L^2 (\Omega)}^2$ for all $Y \in
+  \mathcal{H}_0$, so $U$ is an isometry. Since $\mathcal{H}_0$ is dense in
+  $\mathcal{H}_T$ and the image $U (\mathcal{H}_0)$ contains all functions of
+  the form $\sum c_j A_{t_j} (\omega) e^{i \omega t_j}$, which are dense in
+  $L^2 (\R, \mu)$ by non-vanishing, $U$ extends uniquely to a unitary
+  isomorphism.
 \end{proof}
 
-\begin{theorem}[Bidirectional Determination]
-\label{thm:bidirectional}
-The oscillatory process $\{X_t\}$ and the triple $(\mu, \Phi, \{A_t(\omega)\})$ are in one-to-one correspondence. Given $\{X_t\}$, the triple is uniquely determined (up to measure-theoretic equivalence) by Theorem~\ref{thm:uniqueness}. Conversely, given the triple satisfying Lemma~\ref{lem:existence-regularity}, the process is uniquely reconstructed via Definition~\ref{def:oscillatory-process}.
+\begin{theorem}
+  [Bidirectional Determination]\label{thm:bidirectional}The oscillatory
+  process $\{X_t \}$ and the triple $(\mu, \Phi, \{A_t (\omega)\})$ are in
+  one-to-one correspondence. Given $\{X_t \}$, the triple is uniquely
+  determined (up to measure-theoretic equivalence) by
+  Theorem~\ref{thm:uniqueness}. Conversely, given the triple satisfying
+  Lemma~\ref{lem:existence-regularity}, the process is uniquely reconstructed
+  via Definition~\ref{def:oscillatory-process}.
 \end{theorem}
 
 \begin{proof}
-The forward direction is covered by Theorem~\ref{thm:uniqueness}. For the reverse direction, given $(\mu, \Phi, \{A_t\})$ satisfying Lemma~\ref{lem:existence-regularity}, the stochastic integral
-\[
-  X_t = \int_\R A_t(\omega)e^{i\omega t}\,d\Phi(\omega)
-\]
-is well-defined in $L^2(\Omega)$ by condition~\ref{cond:l2integrability}. The covariance is given by
-\[
-  R_{s,t} = \E[X_s\overline{X_t}] = \int_\R A_s(\omega)\overline{A_t(\omega)}e^{i\omega(s-t)}\,d\mu(\omega).
-\]
-For a Gaussian process, the pair $(X_t, R_{s,t})$ uniquely determines the finite-dimensional distributions and hence the law of the process, establishing the bijective correspondence.
+  The forward direction is covered by Theorem~\ref{thm:uniqueness}. For the
+  reverse direction, given $(\mu, \Phi, \{A_t \})$ satisfying
+  Lemma~\ref{lem:existence-regularity}, the stochastic integral
+  \[ X_t = \int_{\R} A_t (\omega) e^{i \omega t}  \hspace{0.17em} d \Phi
+     (\omega) \]
+  is well-defined in $L^2 (\Omega)$ by condition~\ref{cond:l2integrability}.
+  The covariance is given by
+  \[ R_{s, t} = \E [X_s \overline{X_t}] = \int_{\R} A_s (\omega) \overline{A_t
+     (\omega)} e^{i \omega (s - t)}  \hspace{0.17em} d \mu (\omega) . \]
+  For a Gaussian process, the pair $(X_t, R_{s, t})$ uniquely determines the
+  finite-dimensional distributions and hence the law of the process,
+  establishing the bijective correspondence.
 \end{proof}
 
 \section{Gaussian Oscillatory Processes}
 
-\begin{theorem}[Gaussian Structure]
-\label{thm:gaussian}
-If $\{X_t\}$ is a Gaussian oscillatory process satisfying Definition~\ref{def:oscillatory-process}, the orthogonal random measure $\Phi$ is Gaussian: for each Borel set $B$, $\Phi(B)$ is a complex Gaussian random variable with
-\[
-  \Phi(B) = \Phi_R(B) + i\Phi_I(B)
-\]
-where $\Phi_R, \Phi_I$ are independent real Gaussian orthogonal measures with $\E[\Phi_R(B)^2] = \E[\Phi_I(B)^2] = \mu(B)/2$.
+\begin{theorem}
+  [Gaussian Structure]\label{thm:gaussian}If $\{X_t \}$ is a Gaussian
+  oscillatory process satisfying Definition~\ref{def:oscillatory-process}, the
+  orthogonal random measure $\Phi$ is Gaussian: for each Borel set $B$, $\Phi
+  (B)$ is a complex Gaussian random variable with
+  \[ \Phi (B) = \Phi_R (B) + i \Phi_I (B) \]
+  where $\Phi_R, \Phi_I$ are independent real Gaussian orthogonal measures
+  with $\E [\Phi_R (B)^2] = \E [\Phi_I (B)^2] = \mu (B) / 2$.
 \end{theorem}
 
 \begin{proof}
-Since $X_t$ is Gaussian and any finite linear combination $\sum_{j=1}^n c_j X_{t_j}$ is Gaussian, the spectral representation gives
-\[
-  \sum_{j=1}^n c_j X_{t_j} = \int_\R \left[\sum_{j=1}^n c_j A_{t_j}(\omega)e^{i\omega t_j}\right] d\Phi(\omega)
-\]
-as Gaussian for all $c_j, t_j$. By the Cramér–Wold theorem, $\Phi(B)$ is Gaussian for all Borel $B$. The complex orthogonality condition $\E[\Phi(B_1)\overline{\Phi(B_2)}] = 0$ for disjoint $B_1, B_2$ implies $\E[\Phi_R(B_1)\Phi_R(B_2)] = \E[\Phi_I(B_1)\Phi_I(B_2)] = 0$ and $\E[\Phi_R(B_1)\Phi_I(B_2)] = 0$. The variance is
-\[
-  \mu(B) = \E[|\Phi(B)|^2] = \E[\Phi_R(B)^2] + \E[\Phi_I(B)^2],
-\]
-and by symmetry $\E[\Phi_R(B)^2] = \E[\Phi_I(B)^2] = \mu(B)/2$.
+  Since $X_t$ is Gaussian and any finite linear combination $\sum_{j = 1}^n
+  c_j X_{t_j}$ is Gaussian, the spectral representation gives
+  \[ \sum_{j = 1}^n c_j X_{t_j} = \int_{\R} \left[ \sum_{j = 1}^n c_j A_{t_j}
+     (\omega) e^{i \omega t_j} \right] d \Phi (\omega) \]
+  as Gaussian for all $c_j, t_j$. By the Cram{\'e}r--Wold theorem, $\Phi (B)$
+  is Gaussian for all Borel $B$. The complex orthogonality condition $\E [\Phi
+  (B_1) \overline{\Phi (B_2)}] = 0$ for disjoint $B_1, B_2$ implies $\E
+  [\Phi_R (B_1) \Phi_R (B_2)] = \E [\Phi_I (B_1) \Phi_I (B_2)] = 0$ and $\E
+  [\Phi_R (B_1) \Phi_I (B_2)] = 0$. The variance is
+  \[ \mu (B) = \E [| \Phi (B) |^2] = \E [\Phi_R (B)^2] + \E [\Phi_I (B)^2], \]
+  and by symmetry $\E [\Phi_R (B)^2] = \E [\Phi_I (B)^2] = \mu (B) / 2$.
 \end{proof}
 
 \subsection{The Envelope Spectrum}
 
-\begin{definition}[Envelope Spectrum]
-\label{def:envelope}
-The temporal Fourier transform of the amplitude,
-\[
-  \hat{A}_\omega(\lambda) = \int_{-\infty}^{\infty} A_t(\omega)e^{i\lambda t}\,dt,
-\]
-is called the \tmem{envelope spectrum} at carrier frequency $\omega$. It describes how the modulation $A_t(\omega)$ distributes across temporal frequencies $\lambda$.
+\begin{definition}
+  [Envelope Spectrum]\label{def:envelope}The temporal Fourier transform of the
+  amplitude,
+  \[ \hat{A}_{\omega} (\lambda) = \int_{- \infty}^{\infty} A_t (\omega) e^{i
+     \lambda t}  \hspace{0.17em} dt, \]
+  is called the {\tmem{envelope spectrum}} at carrier frequency $\omega$. It
+  describes how the modulation $A_t (\omega)$ distributes across temporal
+  frequencies $\lambda$.
 \end{definition}
 
 \section{Inverse Spectral Theorem}
 
-\begin{theorem}[Inverse Spectral Theorem for Oscillatory Processes]
-\label{thm:inverse}
-Let $\{X_t\}_{t \in \R}$ be a Gaussian oscillatory process satisfying Definition~\ref{def:oscillatory-process} with amplitude family satisfying Lemma~\ref{lem:existence-regularity}. Given a sample path $\{X_t\}_{t \in \R}$, the underlying stationary process $\{Y_u\}_{u \in \R}$ is first recovered via the inverse time-dependent filter by removing the amplitude modulation. Specifically, for each $t \in \R$, form
-\[
-  \tilde{Y}_t = \int_{-\infty}^{\infty} \frac{e^{-i\lambda t}}{A_t(\lambda)} X_t\,d\lambda.
-\]
-The resulting process is stationary in its spectral decomposition. The orthogonal random measure $\Phi$ is then recovered pathwise via the Wiener--Khinchin--type inversion from the stationary component:
-\[
-  \Phi(B) = \lim_{T \to \infty} \frac{1}{2\pi T}\int_{-T}^T \tilde{Y}_u \left[\int_B e^{-i\omega u}\,d\omega\right] du.
-\]
-Equivalently, the measure $\Phi$ may be recovered directly via
-\[
-  \Phi(B) = \lim_{T \to \infty} \frac{1}{2\pi T}\int_{-T}^T X_t \left[\int_B \frac{e^{-i\omega t}}{A_t(\omega)}\,d\omega\right] dt,
-\]
-where the division by $A_t(\omega)$ is well-defined by condition~\ref{cond:nonvanishing} of Lemma~\ref{lem:existence-regularity}.
+\begin{theorem}
+  [Inverse Spectral Theorem for Oscillatory Processes]\label{thm:inverse}Let
+  $\{X_t \}_{t \in \R}$ be a Gaussian oscillatory process satisfying
+  Definition~\ref{def:oscillatory-process} with amplitude family satisfying
+  Lemma~\ref{lem:existence-regularity}. Given a sample path $\{X_t \}_{t \in
+  \R}$, the underlying stationary process $\{Y_u \}_{u \in \R}$ is first
+  recovered via the inverse time-dependent filter by removing the amplitude
+  modulation. Specifically, for each $t \in \R$, form
+  \[ \tilde{Y}_t = \int_{- \infty}^{\infty} \frac{e^{- i \lambda t}}{A_t
+     (\lambda)} X_t  \hspace{0.17em} d \lambda . \]
+  The resulting process is stationary in its spectral decomposition. The
+  orthogonal random measure $\Phi$ is then recovered pathwise via the
+  Wiener--Khinchin--type inversion from the stationary component:
+  \[ \Phi (B) = \lim_{T \to \infty}  \frac{1}{2 \pi T}  \int_{- T}^T
+     \tilde{Y}_u \left[ \int_B e^{- i \omega u}  \hspace{0.17em} d \omega
+     \right] du. \]
+  Equivalently, the measure $\Phi$ may be recovered directly via
+  \[ \Phi (B) = \lim_{T \to \infty}  \frac{1}{2 \pi T}  \int_{- T}^T X_t
+     \left[ \int_B \frac{e^{- i \omega t}}{A_t (\omega)}  \hspace{0.17em} d
+     \omega \right] dt, \]
+  where the division by $A_t (\omega)$ is well-defined by
+  condition~\ref{cond:nonvanishing} of Lemma~\ref{lem:existence-regularity}.
 \end{theorem}
 
 \begin{proof}
-The inversion proceeds in two conceptual steps, which can be combined.
-
-\paragraph{Step 1: De-modulation to Recover Stationary Component.}
-Write the oscillatory process as
-\[
-  X_t = \int_\R A_t(\omega)e^{i\omega t}\,d\Phi(\omega).
-\]
-Multiply both sides formally by the inverse of the amplitude via time-dependent inverse filtering:
-\[
-  \frac{X_t}{A_t(\cdot)} = \int_\R e^{i\omega t}\,d\Phi(\omega) =: Y_t.
-\]
-This formal product represents the de-modulated process, which is now purely stationary in spectral form, with no time-dependent amplitude $A_t(\omega)$.
-
-\paragraph{Step 2: Recover the Measure from the Stationary Component.}
-For the stationary process $\{Y_t\}_{t \in \R}$ with spectral representation
-\[
-  Y_t = \int_\R e^{i\omega t}\,d\Phi(\omega),
-\]
-the standard Wiener--Khinchin inverse theorem applies. Define the approximate identity kernel
-\[
-  K_T(\lambda, \omega) = \frac{1}{2\pi T}\int_{-T}^T e^{i(\lambda - \omega)t}\,dt = \frac{\sin((\lambda - \omega)T)}{\pi(\lambda - \omega)T}.
-\]
-For each fixed $\lambda$, as $T \to \infty$, $K_T(\lambda,\cdot)$ approximates the Dirac delta: $K_T(\lambda, \omega) \to \delta_\lambda(\omega)$.
-
-Compute
-\[
-  \frac{1}{2\pi T}\int_{-T}^T Y_t \left[\int_B e^{-i\omega t}\,d\omega\right] dt
-  = \frac{1}{2\pi T}\int_{-T}^T \left[\int_\R e^{i\lambda t}\,d\Phi(\lambda)\right] \left[\int_B e^{-i\omega t}\,d\omega\right] dt.
-\]
-By Fubini's theorem,
-\[
-  = \int_\R \left[\int_B \frac{1}{2\pi T}\int_{-T}^T e^{i(\lambda-\omega)t}\,dt\,d\omega\right] d\Phi(\lambda)
-  = \int_\R \left[\int_B K_T(\lambda,\omega)\,d\omega\right] d\Phi(\lambda).
-\]
-As $T \to \infty$, $\int_B K_T(\lambda,\omega)\,d\omega \to \mathbf{1}_B(\lambda)$ for $\mu$-a.e. $\lambda$. By dominated convergence for orthogonal random measures,
-\[
-  \lim_{T \to \infty} \int_\R \left[\int_B K_T(\lambda,\omega)\,d\omega\right] d\Phi(\lambda) = \Phi(B).
-\]
-
-\paragraph{Step 3: Direct Combined Inversion Formula.}
-To recover $\Phi$ directly from $X_t$ without explicitly constructing the intermediate de-modulated process, substitute $Y_t = \int_\R e^{i\omega t}\,d\Phi(\omega)$ and $X_t = \int_\R A_t(\omega)e^{i\omega t}\,d\Phi(\omega)$ into the stationary inversion formula. The ratio $X_t / A_t(\cdot)$ is understood as a generalized form acting on the spectral measure. This gives
-\[
-  \Phi(B) = \lim_{T \to \infty} \frac{1}{2\pi T}\int_{-T}^T X_t \left[\int_B \frac{e^{-i\omega t}}{A_t(\omega)}\,d\omega\right] dt.
-\]
-The well-posedness of the division by $A_t(\omega)$ is guaranteed by condition~\ref{cond:nonvanishing}, which ensures $A_t(\omega) \neq 0$ for all $t$ and $\mu$-a.e. $\omega$. The dominated convergence for orthogonal random measures and standard approximate identity arguments complete the proof.
+  The inversion proceeds in two conceptual steps, which can be combined.
+  
+  \paragraph{Step 1: De-modulation to Recover Stationary Component.} Write the
+  oscillatory process as
+  \[ X_t = \int_{\R} A_t (\omega) e^{i \omega t}  \hspace{0.17em} d \Phi
+     (\omega) . \]
+  Multiply both sides formally by the inverse of the amplitude via
+  time-dependent inverse filtering:
+  \[ \frac{X_t}{A_t (\cdummy)} = \int_{\R} e^{i \omega t}  \hspace{0.17em} d
+     \Phi (\omega) = : Y_t . \]
+  This formal product represents the de-modulated process, which is now purely
+  stationary in spectral form, with no time-dependent amplitude $A_t
+  (\omega)$.
+  
+  \paragraph{Step 2: Recover the Measure from the Stationary Component.} For
+  the stationary process $\{Y_t \}_{t \in \R}$ with spectral representation
+  \[ Y_t = \int_{\R} e^{i \omega t}  \hspace{0.17em} d \Phi (\omega), \]
+  the standard Wiener--Khinchin inverse theorem applies. Define the
+  approximate identity kernel
+  \[ K_T (\lambda, \omega) = \frac{1}{2 \pi T}  \int_{- T}^T e^{i (\lambda -
+     \omega) t}  \hspace{0.17em} dt = \frac{\sin ((\lambda - \omega) T)}{\pi
+     (\lambda - \omega) T} . \]
+  For each fixed $\lambda$, as $T \to \infty$, $K_T (\lambda, \cdot)$
+  approximates the Dirac delta: $K_T (\lambda, \omega) \to \delta_{\lambda}
+  (\omega)$.
+  
+  Compute
+  \[ \frac{1}{2 \pi T}  \int_{- T}^T Y_t \left[ \int_B e^{- i \omega t} 
+     \hspace{0.17em} d \omega \right] dt = \frac{1}{2 \pi T}  \int_{- T}^T
+     \left[ \int_{\R} e^{i \lambda t}  \hspace{0.17em} d \Phi (\lambda)
+     \right] \left[ \int_B e^{- i \omega t}  \hspace{0.17em} d \omega \right]
+     dt. \]
+  By Fubini's theorem,
+  \[ = \int_{\R} \left[ \int_B \frac{1}{2 \pi T}  \int_{- T}^T e^{i (\lambda -
+     \omega) t}  \hspace{0.17em} dt \hspace{0.17em} d \omega \right] d \Phi
+     (\lambda) = \int_{\R} \left[ \int_B K_T (\lambda, \omega) \hspace{0.17em}
+     d \omega \right] d \Phi (\lambda) . \]
+  As $T \to \infty$, $\int_B K_T (\lambda, \omega)  \hspace{0.17em} d \omega
+  \to \textbf{1}_B (\lambda)$ for $\mu$-a.e. $\lambda$. By dominated
+  convergence for orthogonal random measures,
+  \[ \lim_{T \to \infty}  \int_{\R} \left[ \int_B K_T (\lambda, \omega)
+     \hspace{0.17em} d \omega \right] d \Phi (\lambda) = \Phi (B) . \]
+  \paragraph{Step 3: Direct Combined Inversion Formula.} To recover $\Phi$
+  directly from $X_t$ without explicitly constructing the intermediate
+  de-modulated process, substitute $Y_t = \int_{\R} e^{i \omega t} 
+  \hspace{0.17em} d \Phi (\omega)$ and $X_t = \int_{\R} A_t (\omega) e^{i
+  \omega t}  \hspace{0.17em} d \Phi (\omega)$ into the stationary inversion
+  formula. The ratio $X_t / A_t (\cdummy)$ is understood as a generalized form
+  acting on the spectral measure. This gives
+  \[ \Phi (B) = \lim_{T \to \infty}  \frac{1}{2 \pi T}  \int_{- T}^T X_t
+     \left[ \int_B \frac{e^{- i \omega t}}{A_t (\omega)}  \hspace{0.17em} d
+     \omega \right] dt. \]
+  The well-posedness of the division by $A_t (\omega)$ is guaranteed by
+  condition~\ref{cond:nonvanishing}, which ensures $A_t (\omega) \neq 0$ for
+  all $t$ and $\mu$-a.e. $\omega$. The dominated convergence for orthogonal
+  random measures and standard approximate identity arguments complete the
+  proof.
 \end{proof}
 
 \end{document}
-
