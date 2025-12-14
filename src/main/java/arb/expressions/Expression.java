@@ -144,12 +144,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                        Supplier<F>
 {
 
-  @Override
-  public boolean equals(Object obj)
-  {
-    return obj instanceof Expression exp ? Objects.equals(rootNode, exp.rootNode) : false;
-  }
-
   private static String       ASSERTION_ERROR_METHOD_DESCRIPTOR =
                                                                 Compiler.getMethodDescriptor(Void.class,
                                                                                              Object.class);
@@ -633,6 +627,68 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
+  protected void
+            copyNestedFunctionFieldByValueIfNestedFunctionFieldIsNotNull(MethodVisitor mv,
+                                                                         String generatedFunctionClassInternalName,
+                                                                         String functionFieldName,
+                                                                         String functionTypeDesc,
+                                                                         String variableFieldName,
+                                                                         String variableFieldTypeDescriptor,
+                                                                         Class<?> variableType,
+                                                                         String nestedFunctionClassInternalName,
+                                                                         Label labelEnd)
+  {
+    // Create new instance and PUTFIELD
+    loadThisOntoStack(mv); // Stack: [this]
+    mv.visitFieldInsn(GETFIELD,
+                      generatedFunctionClassInternalName,
+                      functionFieldName,
+                      functionTypeDesc);
+    // Stack: [this.nestFunctionField]
+    generateNewObjectInstruction(mv, variableType);
+    // Stack: [this.nestFunctionField, newInstance]
+    duplicateTopOfTheStack(mv);
+    // Stack: [this.nestFunctionField, newInstance, newInstance]
+    invokeDefaultConstructor(mv, variableType);
+    // Stack: [this.nestFunctionField, newInstance]
+    mv.visitFieldInsn(PUTFIELD,
+                      nestedFunctionClassInternalName,
+                      variableFieldName,
+                      variableFieldTypeDescriptor);
+    // Stack: [] (PUTFIELD pops owner and value)
+
+    // Copy by value: Load both and call set
+    loadThisOntoStack(mv);
+    // Stack: [this]
+    mv.visitFieldInsn(GETFIELD,
+                      generatedFunctionClassInternalName,
+                      functionFieldName,
+                      functionTypeDesc);
+    // Stack: [this.nestFunctionField]
+    mv.visitFieldInsn(GETFIELD,
+                      nestedFunctionClassInternalName,
+                      variableFieldName,
+                      variableFieldTypeDescriptor);
+    // Stack: [nestFunctionField.variableField]
+    loadThisOntoStack(mv);
+    // Stack: [nestFunctionField.variableField, this]
+    mv.visitFieldInsn(GETFIELD,
+                      generatedFunctionClassInternalName,
+                      variableFieldName,
+                      variableFieldTypeDescriptor);
+    // Stack: [nestFunctionField.variableField, this.variableField]
+    invokeVirtualMethod(mv, variableType, "set", variableType, variableType);
+    // Stack: [nestFunctionField.variableField]
+    // (set() returns the object)
+
+    mv.visitInsn(Opcodes.POP);
+    // Stack: [] (pop the return value from set())
+
+    mv.visitJumpInsn(GOTO, labelEnd);
+    // Stack: [] (GOTO doesn't affect stack)
+
+  }
+
   protected VariableNode<D, C, F> createNewVariableReference(String inputVariableName)
   {
     return new VariableNode<>(this,
@@ -641,6 +697,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                       coDomainType),
                               position,
                               false);
+  }
+
+  private ClassVisitor declareContext(ClassVisitor cw)
+  {
+    Class<?> type           = Context.class;
+    String   typeDescriptor = Context.class.descriptorString();
+    cw.visitField(ACC_PUBLIC, "context", typeDescriptor, null, null);
+    return cw;
   }
 
   protected MethodVisitor declareEvaluateMethodsLocalVariableArguments(MethodVisitor methodVisitor,
@@ -686,14 +750,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     declareVariables(cw);
   }
 
-  private ClassVisitor declareContext(ClassVisitor cw)
-  {
-    Class<?> type           = Context.class;
-    String   typeDescriptor = Context.class.descriptorString();
-    cw.visitField(ACC_PUBLIC, "context", typeDescriptor, null, null);
-    return cw;
-  }
-
   protected ClassVisitor declareFunctionReferences(ClassVisitor classVisitor)
   {
     if (context == null)
@@ -733,11 +789,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                         variable.declareField(classVisitor);
                                         declaredIntermediateVariables.add(variable.name);
                                       });
-  }
-
-  public Stream<IntermediateVariable<D, C, F>> sortedIntermediateVariableStream()
-  {
-    return sortedIntermediateVariables().stream();
   }
 
   protected ClassVisitor declareLiteralConstants(ClassVisitor classVisitor)
@@ -813,6 +864,35 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return coDomainType.equals(Integer.class);
   }
 
+  @Override
+  public boolean equals(Object obj)
+  {
+    return obj instanceof Expression exp ? Objects.equals(rootNode, exp.rootNode) : false;
+  }
+
+  /**
+   * 
+   * @return the results of this{@link #evaluateSquareBracketedIndex()} and
+   *         this{@link #evaluateSubscriptedIndex()} being applied in succession
+   */
+  protected Node<D, C, F> evaluateIndex()
+  {
+    var index = evaluateSquareBracketedIndex();
+    return index == null ? index = evaluateSubscriptedIndex() : index;
+  }
+
+  protected Node<D, C, F> evaluateNumericLiteralConstant()
+  {
+    int startingPosition = position;
+    while (isNumeric(character))
+    {
+      nextCharacter();
+    }
+    assert position > startingPosition : "didn't read any digits";
+
+    return newLiteralConstant(expression.substring(startingPosition, position));
+  }
+
   private Node<D, C, F> evaluateOperand() throws CompilerException
   {
     Node<D, C, F> node = null;
@@ -856,29 +936,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
 
     return resolvePostfixOperators(node);
-  }
-
-  /**
-   * 
-   * @return the results of this{@link #evaluateSquareBracketedIndex()} and
-   *         this{@link #evaluateSubscriptedIndex()} being applied in succession
-   */
-  protected Node<D, C, F> evaluateIndex()
-  {
-    var index = evaluateSquareBracketedIndex();
-    return index == null ? index = evaluateSubscriptedIndex() : index;
-  }
-
-  protected Node<D, C, F> evaluateNumericLiteralConstant()
-  {
-    int startingPosition = position;
-    while (isNumeric(character))
-    {
-      nextCharacter();
-    }
-    assert position > startingPosition : "didn't read any digits";
-
-    return newLiteralConstant(expression.substring(startingPosition, position));
   }
 
   protected Expression<D, C, F> evaluateOptionalIndependentVariableSpecification()
@@ -1041,6 +1098,34 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     storeInstructions(classVisitor);
   }
 
+  protected void generateAssertionThatOrderIsLessThanOrEqualTo1(MethodVisitor mv)
+  {
+
+    Label label1 = new Label();
+    mv.visitVarInsn(ILOAD, 2);
+    mv.visitInsn(ICONST_1);
+    mv.visitJumpInsn(IF_ICMPLE, label1);
+    mv.visitTypeInsn(NEW, "java/lang/AssertionError");
+    mv.visitInsn(DUP);
+    mv.visitVarInsn(ILOAD, 2);
+    mv.visitInvokeDynamicInsn("makeConcatWithConstants",
+                              "(I)Ljava/lang/String;",
+                              new Handle(Opcodes.H_INVOKESTATIC,
+                                         "java/lang/invoke/StringConcatFactory",
+                                         "makeConcatWithConstants",
+                                         "(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/invoke/CallSite;",
+                                         false),
+                              new Object[]
+                              { "TODO: implement order=\u0001>1" });
+    mv.visitMethodInsn(INVOKESPECIAL,
+                       "java/lang/AssertionError",
+                       "<init>",
+                       "(Ljava/lang/Object;)V",
+                       false);
+    mv.visitInsn(ATHROW);
+    mv.visitLabel(label1);
+  }
+
   protected MethodVisitor generateCloseFieldCall(MethodVisitor methodVisitor,
                                                  String fieldName,
                                                  Class<?> fieldType)
@@ -1124,18 +1209,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return mv;
   }
 
-  public MethodVisitor generateContextInitializer(MethodVisitor methodVisitor)
-  {
-
-    loadThisOntoStack(methodVisitor);
-    String contextTypeInternalName = Type.getInternalName(Context.class);
-    methodVisitor.visitTypeInsn(NEW, contextTypeInternalName);
-    methodVisitor.visitInsn(DUP);
-    methodVisitor.visitMethodInsn(INVOKESPECIAL, contextTypeInternalName, "<init>", "()V", false);
-    methodVisitor.visitFieldInsn(PUTFIELD, className, "context", Context.class.descriptorString());
-    return methodVisitor;
-  }
-
   protected ClassVisitor generateConstructor(ClassVisitor classVisitor)
   {
     MethodVisitor mv = classVisitor.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
@@ -1162,92 +1235,63 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return classVisitor;
   }
 
-  private ClassVisitor generateIntegralMethod(ClassVisitor classVisitor)
+  public MethodVisitor generateContextInitializer(MethodVisitor methodVisitor)
   {
-    assert functionClass.isInterface() : functionClass + " is not an interface";
 
-    assert rootNode != null : "rootNode is null";
-
-    var mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                      "integral",
-                                      Compiler.getMethodDescriptor(functionClass),
-                                      null,
-                                      null);
-    mv.visitCode();
-    Compiler.annotateWithOverride(mv);
-
-    mv.visitLdcInsn(Type.getType(domainType));
-    mv.visitLdcInsn(Type.getType(coDomainType));
-    mv.visitLdcInsn(Type.getType(functionClass));
-    mv.visitLdcInsn("_int" + functionName);
-    mv.visitLdcInsn(String.format("int(%s,%s)", rootNode.toString(), independentVariable));
-
-    if (context != null)
-    {
-      loadThisFieldOntoStack(mv, "context", Context.class);
-
-      Compiler.invokeStaticMethod(mv,
-                                  Function.class,
-                                  "express",
-                                  Function.class,
-                                  Class.class,
-                                  Class.class,
-                                  Class.class,
-                                  String.class,
-                                  String.class,
-                                  Context.class);
-    }
-    else
-    {
-      Compiler.invokeStaticMethod(mv,
-                                  Function.class,
-                                  "express",
-                                  Function.class,
-                                  Class.class,
-                                  Class.class,
-                                  Class.class,
-                                  String.class,
-                                  String.class);
-
-    }
-    mv.visitInsn(Opcodes.ARETURN);
-    mv.visitMaxs(0, 0);
-    mv.visitEnd();
-    return classVisitor;
+    loadThisOntoStack(methodVisitor);
+    String contextTypeInternalName = Type.getInternalName(Context.class);
+    methodVisitor.visitTypeInsn(NEW, contextTypeInternalName);
+    methodVisitor.visitInsn(DUP);
+    methodVisitor.visitMethodInsn(INVOKESPECIAL, contextTypeInternalName, "<init>", "()V", false);
+    methodVisitor.visitFieldInsn(PUTFIELD, className, "context", Context.class.descriptorString());
+    return methodVisitor;
   }
 
-  protected ClassVisitor generatePolynomialMethod(ClassVisitor classVisitor, String operation)
+  protected void generateDependencyAssignment(MethodVisitor mv,
+                                              String functionName,
+                                              String functionDescriptor,
+                                              String assignment)
   {
+    var otherMapping = referencedFunctions.get(assignment);
 
-    assert functionClass.isInterface() : functionClass + " is not an interface";
+    if (Expression.trace)
+    {
+      log.debug("generateDependencyAssignment: functionName={} functionDescriptor={} assignment={}",
+                functionName,
+                functionDescriptor,
+                assignment);
+    }
+    loadThisOntoStack(mv).visitFieldInsn(GETFIELD,
+                                         className,
+                                         assignment,
+                                         otherMapping.functionFieldDescriptor());
+    loadThisOntoStack(mv).visitFieldInsn(GETFIELD, className, functionName, functionDescriptor);
+    mv.visitFieldInsn(PUTFIELD, assignment, functionName, functionDescriptor);
+  }
 
-    assert rootNode != null : "rootNode is null";
+  protected void generateDependencyAssignments(MethodVisitor mv, Dependency dependency)
+  {
+    var assignments        = dependency.getAssignments(className, referencedFunctions);
 
-    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                                 operation,
-                                                 Compiler.getMethodDescriptor(Function.class),
-                                                 null,
-                                                 null);
-    methodVisitor.visitCode();
-    Compiler.annotateWithOverride(methodVisitor);
+    var functionName       = dependency.variableName;
+    var mapping            = referencedFunctions.get(functionName);
+    var functionDescriptor = functionClass.descriptorString();                         // .format("L%s;",
+                                                                                       // functionName);
 
-    methodVisitor.visitVarInsn(ALOAD, 0);
-    methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
-                                  className,
-                                  "evaluate",
-                                  Compiler.getMethodDescriptor(Object.class),
-                                  false);
-    methodVisitor.visitTypeInsn(CHECKCAST, Type.getInternalName(coDomainType));
+    if (mapping != null)
+    {
 
-    methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
-                                  Type.getInternalName(coDomainType),
-                                  operation,
-                                  Compiler.getMethodDescriptor(coDomainType),
-                                  false);
-    methodVisitor.visitInsn(ARETURN);
-    methodVisitor.visitMaxs(0, 0);
-    methodVisitor.visitEnd();
-    return classVisitor;
+      functionDescriptor = mapping.functionFieldDescriptor();
+
+      constructReferencedFunctionInstanceIfItIsNull(mv, mapping);
+      generateFunctionInitializer(mv, mapping, assignments);
+
+      for (String assignment : assignments)
+      {
+        generateDependencyAssignment(mv, functionName, functionDescriptor, assignment);
+      }
+
+    }
   }
 
   private ClassVisitor generateDerivativeMethod(ClassVisitor classVisitor)
@@ -1351,39 +1395,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return classVisitor;
   }
 
-  protected boolean orderLimited()
-  {
-    return !(rootNode instanceof RiemannSiegelThetaFunctionNode);
-  }
-
-  protected void generateAssertionThatOrderIsLessThanOrEqualTo1(MethodVisitor mv)
-  {
-
-    Label label1 = new Label();
-    mv.visitVarInsn(ILOAD, 2);
-    mv.visitInsn(ICONST_1);
-    mv.visitJumpInsn(IF_ICMPLE, label1);
-    mv.visitTypeInsn(NEW, "java/lang/AssertionError");
-    mv.visitInsn(DUP);
-    mv.visitVarInsn(ILOAD, 2);
-    mv.visitInvokeDynamicInsn("makeConcatWithConstants",
-                              "(I)Ljava/lang/String;",
-                              new Handle(Opcodes.H_INVOKESTATIC,
-                                         "java/lang/invoke/StringConcatFactory",
-                                         "makeConcatWithConstants",
-                                         "(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/invoke/CallSite;",
-                                         false),
-                              new Object[]
-                              { "TODO: implement order=\u0001>1" });
-    mv.visitMethodInsn(INVOKESPECIAL,
-                       "java/lang/AssertionError",
-                       "<init>",
-                       "(Ljava/lang/Object;)V",
-                       false);
-    mv.visitInsn(ATHROW);
-    mv.visitLabel(label1);
-  }
-
   /**
    * Generate the code when the {@link #coDomainType} is an interface so that the
    * return value is itself a {@link Function}, in this case the result argument
@@ -1464,6 +1475,46 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return mv;
   }
 
+  protected ClassVisitor generateGetContextMethod(ClassVisitor classVisitor)
+  {
+    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
+                                                 "getContext",
+                                                 Compiler.getMethodDescriptor(Context.class),
+                                                 null,
+                                                 null);
+
+    methodVisitor.visitCode();
+    Compiler.annotateWithOverride(methodVisitor);
+
+    Compiler.getFieldFromThis(methodVisitor, className, "context", Context.class);
+
+    Compiler.generateReturnFromMethod(methodVisitor);
+    return classVisitor;
+  }
+
+  protected ClassVisitor generateGetNameMethod(ClassVisitor classVisitor)
+  {
+    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
+                                                 "getName",
+                                                 Compiler.getMethodDescriptor(String.class),
+                                                 null,
+                                                 null);
+
+    methodVisitor.visitCode();
+    Compiler.annotateWithOverride(methodVisitor);
+
+    if (functionName != null)
+    {
+      methodVisitor.visitLdcInsn(functionName);
+    }
+    else
+    {
+      methodVisitor.visitInsn(Opcodes.ACONST_NULL);
+    }
+    Compiler.generateReturnFromMethod(methodVisitor);
+    return classVisitor;
+  }
+
   protected MethodVisitor generateInitializationCode(MethodVisitor mv)
   {
     generateCodeToThrowErrorIfAlreadyInitialized(mv);
@@ -1497,53 +1548,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return mv;
   }
 
-  protected void generateDependencyAssignments(MethodVisitor mv, Dependency dependency)
-  {
-    var assignments        = dependency.getAssignments(className, referencedFunctions);
-
-    var functionName       = dependency.variableName;
-    var mapping            = referencedFunctions.get(functionName);
-    var functionDescriptor = functionClass.descriptorString();                         // .format("L%s;",
-                                                                                       // functionName);
-
-    if (mapping != null)
-    {
-
-      functionDescriptor = mapping.functionFieldDescriptor();
-
-      constructReferencedFunctionInstanceIfItIsNull(mv, mapping);
-      generateFunctionInitializer(mv, mapping, assignments);
-
-      for (String assignment : assignments)
-      {
-        generateDependencyAssignment(mv, functionName, functionDescriptor, assignment);
-      }
-
-    }
-  }
-
-  protected void generateDependencyAssignment(MethodVisitor mv,
-                                              String functionName,
-                                              String functionDescriptor,
-                                              String assignment)
-  {
-    var otherMapping = referencedFunctions.get(assignment);
-
-    if (Expression.trace)
-    {
-      log.debug("generateDependencyAssignment: functionName={} functionDescriptor={} assignment={}",
-                functionName,
-                functionDescriptor,
-                assignment);
-    }
-    loadThisOntoStack(mv).visitFieldInsn(GETFIELD,
-                                         className,
-                                         assignment,
-                                         otherMapping.functionFieldDescriptor());
-    loadThisOntoStack(mv).visitFieldInsn(GETFIELD, className, functionName, functionDescriptor);
-    mv.visitFieldInsn(PUTFIELD, assignment, functionName, functionDescriptor);
-  }
-
   protected ClassVisitor generateInitializationMethod(ClassVisitor classVisitor)
   {
     var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
@@ -1565,6 +1569,60 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       methodVisitor.visitEnd();
     }
 
+    return classVisitor;
+  }
+
+  private ClassVisitor generateIntegralMethod(ClassVisitor classVisitor)
+  {
+    assert functionClass.isInterface() : functionClass + " is not an interface";
+
+    assert rootNode != null : "rootNode is null";
+
+    var mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
+                                      "integral",
+                                      Compiler.getMethodDescriptor(functionClass),
+                                      null,
+                                      null);
+    mv.visitCode();
+    Compiler.annotateWithOverride(mv);
+
+    mv.visitLdcInsn(Type.getType(domainType));
+    mv.visitLdcInsn(Type.getType(coDomainType));
+    mv.visitLdcInsn(Type.getType(functionClass));
+    mv.visitLdcInsn("_int" + functionName);
+    mv.visitLdcInsn(String.format("int(%s,%s)", rootNode.toString(), independentVariable));
+
+    if (context != null)
+    {
+      loadThisFieldOntoStack(mv, "context", Context.class);
+
+      Compiler.invokeStaticMethod(mv,
+                                  Function.class,
+                                  "express",
+                                  Function.class,
+                                  Class.class,
+                                  Class.class,
+                                  Class.class,
+                                  String.class,
+                                  String.class,
+                                  Context.class);
+    }
+    else
+    {
+      Compiler.invokeStaticMethod(mv,
+                                  Function.class,
+                                  "express",
+                                  Function.class,
+                                  Class.class,
+                                  Class.class,
+                                  Class.class,
+                                  String.class,
+                                  String.class);
+
+    }
+    mv.visitInsn(Opcodes.ARETURN);
+    mv.visitMaxs(0, 0);
+    mv.visitEnd();
     return classVisitor;
   }
 
@@ -1598,6 +1656,40 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return methodVisitor;
   }
 
+  protected ClassVisitor generatePolynomialMethod(ClassVisitor classVisitor, String operation)
+  {
+
+    assert functionClass.isInterface() : functionClass + " is not an interface";
+
+    assert rootNode != null : "rootNode is null";
+
+    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
+                                                 operation,
+                                                 Compiler.getMethodDescriptor(Function.class),
+                                                 null,
+                                                 null);
+    methodVisitor.visitCode();
+    Compiler.annotateWithOverride(methodVisitor);
+
+    methodVisitor.visitVarInsn(ALOAD, 0);
+    methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
+                                  className,
+                                  "evaluate",
+                                  Compiler.getMethodDescriptor(Object.class),
+                                  false);
+    methodVisitor.visitTypeInsn(CHECKCAST, Type.getInternalName(coDomainType));
+
+    methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
+                                  Type.getInternalName(coDomainType),
+                                  operation,
+                                  Compiler.getMethodDescriptor(coDomainType),
+                                  false);
+    methodVisitor.visitInsn(ARETURN);
+    methodVisitor.visitMaxs(0, 0);
+    methodVisitor.visitEnd();
+    return classVisitor;
+  }
+
   public void generateReferencedFunctionInstances(MethodVisitor mv)
   {
     referencedFunctions.values()
@@ -1626,46 +1718,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     cast(mv, coDomainType);
     swap(mv);
     return invokeSetMethod(mv, inputType, coDomainType);
-  }
-
-  protected ClassVisitor generateGetNameMethod(ClassVisitor classVisitor)
-  {
-    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                                 "getName",
-                                                 Compiler.getMethodDescriptor(String.class),
-                                                 null,
-                                                 null);
-
-    methodVisitor.visitCode();
-    Compiler.annotateWithOverride(methodVisitor);
-
-    if (functionName != null)
-    {
-      methodVisitor.visitLdcInsn(functionName);
-    }
-    else
-    {
-      methodVisitor.visitInsn(Opcodes.ACONST_NULL);
-    }
-    Compiler.generateReturnFromMethod(methodVisitor);
-    return classVisitor;
-  }
-
-  protected ClassVisitor generateGetContextMethod(ClassVisitor classVisitor)
-  {
-    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                                 "getContext",
-                                                 Compiler.getMethodDescriptor(Context.class),
-                                                 null,
-                                                 null);
-
-    methodVisitor.visitCode();
-    Compiler.annotateWithOverride(methodVisitor);
-
-    Compiler.getFieldFromThis(methodVisitor, className, "context", Context.class);
-
-    Compiler.generateReturnFromMethod(methodVisitor);
-    return classVisitor;
   }
 
   /**
@@ -1809,23 +1861,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
            + String.format("%04d", getConstantCounter(type).getAndIncrement());
   }
 
-  public FunctionMapping<Object, Object, Function<?, ?>>
-         registerSubexpression(Expression<Object, Object, Function<?, ?>> expr)
-  {
-    if (context == null)
-    {
-      context = new Context();
-    }
-    return context.registerFunctionMapping(expr.className,
-                                           expr.instantiate(),
-                                           expr.domainType,
-                                           expr.coDomainType,
-                                           Function.class,
-                                           true,
-                                           expr,
-                                           null);
-  }
-
   public String getNextIntermediateVariableFieldName(String name, Class<?> type)
   {
     if (context == null)
@@ -1846,13 +1881,32 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return referencedVariables.get(reference);
   }
 
-  protected Collection<IntermediateVariable<D, C, F>> sortedIntermediateVariables()
+  public void getReferencedFunctionFromThis(MethodVisitor mv,
+                                            String generatedFunctionClassInternalName,
+                                            String functionFieldName,
+                                            String functionTypeDesc)
   {
-    var intermediateVariableValues = new ArrayList<>(intermediateVariables.values()
-                                                                          .stream()
-                                                                          .toList());
-    Collections.sort(intermediateVariableValues, (a, b) -> a.name.compareTo(b.name));
-    return intermediateVariableValues;
+    getField(loadThisOntoStack(mv),
+             generatedFunctionClassInternalName,
+             functionFieldName,
+             functionTypeDesc);
+  }
+
+  public void getReferencedFunctionVariableInstance(MethodVisitor mv,
+                                                    String generatedFunctionClassInternalName,
+                                                    String functionFieldName,
+                                                    String functionTypeDesc,
+                                                    String variableFieldName,
+                                                    String variableFieldTypeDescriptor)
+  {
+    getReferencedFunctionFromThis(mv,
+                                  generatedFunctionClassInternalName,
+                                  functionFieldName,
+                                  functionTypeDesc);
+    getReferencedFunctionFromThis(mv,
+                                  generatedFunctionClassInternalName,
+                                  variableFieldName,
+                                  variableFieldTypeDescriptor);
   }
 
   protected ArrayList<LiteralConstantNode<D, C, F>> getSortedLiteralConstantNodes()
@@ -1916,23 +1970,136 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                            Stream<OrderedPair<String,
                                                                          Class<?>>> variables)
   {
-    // TODO: #748
-    // String typeDesc = String.format("L%s;", fieldType);
-    // Replace the problematic line with:
     var    functionMapping = context.functions.get(functionFieldName);
     String typeDesc        = functionMapping.functionFieldDescriptor(false);
 
-    variables.forEach(variable ->
-    {
-      linkSharedVariableToReferencedFunction(mv,
-                                             functionMapping,
-                                             generatedFunctionClassInternalName,
-                                             fieldType,
-                                             functionFieldName,
-                                             typeDesc,
-                                             variable);
-    });
+    variables.forEach(variable -> linkSharedVariableToReferencedFunction(mv,
+                                                                         functionMapping,
+                                                                         generatedFunctionClassInternalName,
+                                                                         fieldType,
+                                                                         functionFieldName,
+                                                                         typeDesc,
+                                                                         variable));
 
+  }
+
+  protected void injectReferences(F f)
+  {
+    if (trace)
+    {
+      log.debug("Injecting references into " + this);
+    }
+
+    if (context != null)
+    {
+      context.injectReferences(f);
+    }
+  }
+
+  public TextTree<Node<D, C, F>> inspect(F f)
+  {
+    return new TextTree<>(syntaxTree(),
+                          f);
+  }
+
+  public F instantiate()
+  {
+
+    instance = newInstance();
+
+    injectReferences(instance);
+
+    return instance;
+  }
+
+  protected void invokeInitializationMethod(MethodVisitor mv,
+                                            Expression<Object, Object, Function<?, ?>> function)
+  {
+    duplicateTopOfTheStack(mv);
+    Compiler.invokeMethod(mv, function.className, "initialize", "()V", false);
+  }
+
+  /**
+   * 
+   * @return true if this{@link #coDomainType} is an interface (that extends
+   *         {@link Function})
+   */
+  public boolean isFunctional()
+  {
+    return coDomainType.isInterface();
+  }
+
+  protected boolean isIdentifierCharacter()
+  {
+    return isIdentifyingCharacter(character, false) || isSubscript(character)
+                  || isSuperscriptLetter(character);
+  }
+
+  public boolean isNullaryFunction()
+  {
+    return domainType.equals(Object.class);
+  }
+
+  protected void jumpIfNestedFunctionFieldIsNull(MethodVisitor mv,
+                                                 String generatedFunctionClassInternalName,
+                                                 String functionFieldName,
+                                                 String functionTypeDesc,
+                                                 String variableFieldName,
+                                                 String variableFieldTypeDescriptor,
+                                                 String nestedFunctionClassInternalName,
+                                                 Label labelCopyByReference)
+  {
+    loadThisOntoStack(mv); // Stack: [this]
+    mv.visitFieldInsn(GETFIELD,
+                      generatedFunctionClassInternalName,
+                      functionFieldName,
+                      functionTypeDesc);
+    // Stack: [this.nestFunctionField]
+    mv.visitFieldInsn(GETFIELD,
+                      nestedFunctionClassInternalName,
+                      variableFieldName,
+                      variableFieldTypeDescriptor);
+    // Stack: [nestedFunctionField.variableField]
+
+    mv.visitJumpInsn(IFNONNULL, labelCopyByReference);
+    // Stack: [] (IFNULL pops the value being tested)
+  }
+
+  void linkNestedFunctionFieldByReferenceWhenItIsNull(MethodVisitor mv,
+                                                      String generatedFunctionClassInternalName,
+                                                      String functionFieldName,
+                                                      String functionTypeDesc,
+                                                      String variableFieldName,
+                                                      String variableFieldTypeDescriptor,
+                                                      String nestedFunctionClassInternalName,
+                                                      Label labelCopyByReference,
+                                                      Label labelEnd)
+  {
+    // destination object has null field, set the reference directly
+
+    mv.visitLabel(labelCopyByReference);
+
+    loadThisOntoStack(mv);
+    // Stack: [this]
+    mv.visitFieldInsn(GETFIELD,
+                      generatedFunctionClassInternalName,
+                      functionFieldName,
+                      functionTypeDesc);
+    // Stack: [this.nestFunctionField]
+    loadThisOntoStack(mv);
+    // Stack: [this.nestFunctionField, this]
+    mv.visitFieldInsn(GETFIELD,
+                      generatedFunctionClassInternalName,
+                      variableFieldName,
+                      variableFieldTypeDescriptor);
+    // Stack: [this.nestFunctionField, this.variableField]
+    mv.visitFieldInsn(PUTFIELD,
+                      nestedFunctionClassInternalName,
+                      variableFieldName,
+                      variableFieldTypeDescriptor);
+    // Stack: [] (PUTFIELD pops owner and value)
+
+    mv.visitLabel(labelEnd);
   }
 
   protected void
@@ -1998,213 +2165,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // Stack: [] (both paths end with empty stack)
   }
 
-  protected void jumpIfNestedFunctionFieldIsNull(MethodVisitor mv,
-                                                 String generatedFunctionClassInternalName,
-                                                 String functionFieldName,
-                                                 String functionTypeDesc,
-                                                 String variableFieldName,
-                                                 String variableFieldTypeDescriptor,
-                                                 String nestedFunctionClassInternalName,
-                                                 Label labelCopyByReference)
+  public Node<D, C, F> literal(int i)
   {
-    loadThisOntoStack(mv); // Stack: [this]
-    mv.visitFieldInsn(GETFIELD,
-                      generatedFunctionClassInternalName,
-                      functionFieldName,
-                      functionTypeDesc);
-    // Stack: [this.nestFunctionField]
-    mv.visitFieldInsn(GETFIELD,
-                      nestedFunctionClassInternalName,
-                      variableFieldName,
-                      variableFieldTypeDescriptor);
-    // Stack: [nestedFunctionField.variableField]
-
-    mv.visitJumpInsn(IFNONNULL, labelCopyByReference);
-    // Stack: [] (IFNULL pops the value being tested)
+    return newLiteralConstant(i);
   }
 
-  protected void
-            copyNestedFunctionFieldByValueIfNestedFunctionFieldIsNotNull(MethodVisitor mv,
-                                                                         String generatedFunctionClassInternalName,
-                                                                         String functionFieldName,
-                                                                         String functionTypeDesc,
-                                                                         String variableFieldName,
-                                                                         String variableFieldTypeDescriptor,
-                                                                         Class<?> variableType,
-                                                                         String nestedFunctionClassInternalName,
-                                                                         Label labelEnd)
+  public Node<D, C, F> literal(String i)
   {
-    // Create new instance and PUTFIELD
-    loadThisOntoStack(mv); // Stack: [this]
-    mv.visitFieldInsn(GETFIELD,
-                      generatedFunctionClassInternalName,
-                      functionFieldName,
-                      functionTypeDesc);
-    // Stack: [this.nestFunctionField]
-    generateNewObjectInstruction(mv, variableType);
-    // Stack: [this.nestFunctionField, newInstance]
-    duplicateTopOfTheStack(mv);
-    // Stack: [this.nestFunctionField, newInstance, newInstance]
-    invokeDefaultConstructor(mv, variableType);
-    // Stack: [this.nestFunctionField, newInstance]
-    mv.visitFieldInsn(PUTFIELD,
-                      nestedFunctionClassInternalName,
-                      variableFieldName,
-                      variableFieldTypeDescriptor);
-    // Stack: [] (PUTFIELD pops owner and value)
-
-    // Copy by value: Load both and call set
-    loadThisOntoStack(mv);
-    // Stack: [this]
-    mv.visitFieldInsn(GETFIELD,
-                      generatedFunctionClassInternalName,
-                      functionFieldName,
-                      functionTypeDesc);
-    // Stack: [this.nestFunctionField]
-    mv.visitFieldInsn(GETFIELD,
-                      nestedFunctionClassInternalName,
-                      variableFieldName,
-                      variableFieldTypeDescriptor);
-    // Stack: [nestFunctionField.variableField]
-    loadThisOntoStack(mv);
-    // Stack: [nestFunctionField.variableField, this]
-    mv.visitFieldInsn(GETFIELD,
-                      generatedFunctionClassInternalName,
-                      variableFieldName,
-                      variableFieldTypeDescriptor);
-    // Stack: [nestFunctionField.variableField, this.variableField]
-    invokeVirtualMethod(mv, variableType, "set", variableType, variableType);
-    // Stack: [nestFunctionField.variableField]
-    // (set() returns the object)
-
-    mv.visitInsn(Opcodes.POP);
-    // Stack: [] (pop the return value from set())
-
-    mv.visitJumpInsn(GOTO, labelEnd);
-    // Stack: [] (GOTO doesn't affect stack)
-
-  }
-
-  void linkNestedFunctionFieldByReferenceWhenItIsNull(MethodVisitor mv,
-                                                      String generatedFunctionClassInternalName,
-                                                      String functionFieldName,
-                                                      String functionTypeDesc,
-                                                      String variableFieldName,
-                                                      String variableFieldTypeDescriptor,
-                                                      String nestedFunctionClassInternalName,
-                                                      Label labelCopyByReference,
-                                                      Label labelEnd)
-  {
-    // destination object has null field, set the reference directly
-
-    mv.visitLabel(labelCopyByReference);
-
-    loadThisOntoStack(mv);
-    // Stack: [this]
-    mv.visitFieldInsn(GETFIELD,
-                      generatedFunctionClassInternalName,
-                      functionFieldName,
-                      functionTypeDesc);
-    // Stack: [this.nestFunctionField]
-    loadThisOntoStack(mv);
-    // Stack: [this.nestFunctionField, this]
-    mv.visitFieldInsn(GETFIELD,
-                      generatedFunctionClassInternalName,
-                      variableFieldName,
-                      variableFieldTypeDescriptor);
-    // Stack: [this.nestFunctionField, this.variableField]
-    mv.visitFieldInsn(PUTFIELD,
-                      nestedFunctionClassInternalName,
-                      variableFieldName,
-                      variableFieldTypeDescriptor);
-    // Stack: [] (PUTFIELD pops owner and value)
-
-    mv.visitLabel(labelEnd);
-  }
-
-  public void getReferencedFunctionVariableInstance(MethodVisitor mv,
-                                                    String generatedFunctionClassInternalName,
-                                                    String functionFieldName,
-                                                    String functionTypeDesc,
-                                                    String variableFieldName,
-                                                    String variableFieldTypeDescriptor)
-  {
-    getReferencedFunctionFromThis(mv,
-                                  generatedFunctionClassInternalName,
-                                  functionFieldName,
-                                  functionTypeDesc);
-    getReferencedFunctionFromThis(mv,
-                                  generatedFunctionClassInternalName,
-                                  variableFieldName,
-                                  variableFieldTypeDescriptor);
-  }
-
-  public void getReferencedFunctionFromThis(MethodVisitor mv,
-                                            String generatedFunctionClassInternalName,
-                                            String functionFieldName,
-                                            String functionTypeDesc)
-  {
-    getField(loadThisOntoStack(mv),
-             generatedFunctionClassInternalName,
-             functionFieldName,
-             functionTypeDesc);
-  }
-
-  protected void injectReferences(F f)
-  {
-    if (trace)
-    {
-      log.debug("Injecting references into " + this);
-    }
-
-    if (context != null)
-    {
-      context.injectReferences(f);
-    }
-  }
-
-  public TextTree<Node<D, C, F>> inspect(F f)
-  {
-    return new TextTree<>(syntaxTree(),
-                          f);
-  }
-
-  public F instantiate()
-  {
-
-    instance = newInstance();
-
-    injectReferences(instance);
-
-    return instance;
-  }
-
-  protected void invokeInitializationMethod(MethodVisitor mv,
-                                            Expression<Object, Object, Function<?, ?>> function)
-  {
-    duplicateTopOfTheStack(mv);
-    Compiler.invokeMethod(mv, function.className, "initialize", "()V", false);
-  }
-
-  /**
-   * 
-   * @return true if this{@link #coDomainType} is an interface (that extends
-   *         {@link Function})
-   */
-  public boolean isFunctional()
-  {
-    return coDomainType.isInterface();
-  }
-
-  protected boolean isIdentifierCharacter()
-  {
-    return isIdentifyingCharacter(character, false) || isSubscript(character)
-                  || isSuperscriptLetter(character);
-  }
-
-  public boolean isNullaryFunction()
-  {
-    return domainType.equals(Object.class);
+    return newLiteralConstant(i);
   }
 
   protected MethodVisitor
@@ -2378,7 +2346,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                indeterminateVariable.spliceInto(functionalExpression)
                                                                     .asVariable();
     }
-  
+
     rootNode.isResult                      = true;
 
     functionalExpression.className         = className + "func";
@@ -2473,6 +2441,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     assert false : "TODO: expr compiler: Implement common subexpression elimination #518 https://github.com/crowlogic/arb4j/issues/518";
 
     return this;
+  }
+
+  protected boolean orderLimited()
+  {
+    return !(rootNode instanceof RiemannSiegelThetaFunctionNode);
   }
 
   public ElseNode<D, C, F> otherwise()
@@ -2571,18 +2544,21 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return node;
   }
 
-  public void propagateContextualFunctions(MethodVisitor mv,
-                                           Expression<?, ?, Function<?, ?>> function)
+  public VariableReference<D, C, F> parseVariableReference()
   {
-    if (Expression.trace)
-    {
-      log.debug("propagateContextualFunctions(function={})", function);
+    return new VariableReference<>(parseName());
+  }
 
+  protected void propagateContext(MethodVisitor mv, Expression<?, ?, Function<?, ?>> function)
+  {
+    if (trace)
+    {
+      log.debug(String.format("Expression(#%s).propagateContextVariablesAndFunctions(function=%s)\n",
+                              System.identityHashCode(this),
+                              function));
     }
-    context.functionEntryStream()
-           .filter(entry -> function.referencedFunctions.containsKey(entry.getKey())
-                         && !functionName.equals(entry.getKey()))
-           .forEach(entry -> propagateContextualFunction(mv, function, entry));
+    propagateContextVariables(mv, function);
+    propagateContextualFunctions(mv, function);
   }
 
   protected void propagateContextualFunction(MethodVisitor mv,
@@ -2605,16 +2581,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     putField(mv, function.className, fieldName, fieldType);
   }
 
-  protected void propagateContext(MethodVisitor mv, Expression<?, ?, Function<?, ?>> function)
+  public void propagateContextualFunctions(MethodVisitor mv,
+                                           Expression<?, ?, Function<?, ?>> function)
   {
-    if (trace)
+    if (Expression.trace)
     {
-      log.debug(String.format("Expression(#%s).propagateContextVariablesAndFunctions(function=%s)\n",
-                              System.identityHashCode(this),
-                              function));
+      log.debug("propagateContextualFunctions(function={})", function);
+
     }
-    propagateContextVariables(mv, function);
-    propagateContextualFunctions(mv, function);
+    context.functionEntryStream()
+           .filter(entry -> function.referencedFunctions.containsKey(entry.getKey())
+                         && !functionName.equals(entry.getKey()))
+           .forEach(entry -> propagateContextualFunction(mv, function, entry));
   }
 
   public void propagateContextVariables(MethodVisitor mv, Expression<?, ?, Function<?, ?>> function)
@@ -2701,6 +2679,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return intermediateVarName;
   }
 
+  public FunctionMapping<Object, Object, Function<?, ?>>
+         registerSubexpression(Expression<Object, Object, Function<?, ?>> expr)
+  {
+    if (context == null)
+    {
+      context = new Context();
+    }
+    return context.registerFunctionMapping(expr.className,
+                                           expr.instantiate(),
+                                           expr.domainType,
+                                           expr.coDomainType,
+                                           Function.class,
+                                           true,
+                                           expr,
+                                           null);
+  }
+
   public String remaining()
   {
     return expression == null ? null
@@ -2767,6 +2762,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   @SuppressWarnings("unchecked")
+  protected <N extends Node<D, C, F>> N resolveCeiling(Node<D, C, F> node)
+  {
+    if (nextCharacterIs('⌈'))
+    {
+      node = new CeilingNode<>(this,
+                               resolve());
+      require('⌉');
+    }
+    return (N) node;
+  }
+
+  @SuppressWarnings("unchecked")
   protected <N extends Node<D, C, F>> N resolveFactorials(N node)
   {
     if (nextCharacterIs('!'))
@@ -2788,18 +2795,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
 
     return node;
-  }
-
-  @SuppressWarnings("unchecked")
-  protected <N extends Node<D, C, F>> N resolveCeiling(Node<D, C, F> node)
-  {
-    if (nextCharacterIs('⌈'))
-    {
-      node = new CeilingNode<>(this,
-                               resolve());
-      require('⌉');
-    }
-    return (N) node;
   }
 
   @SuppressWarnings("unchecked")
@@ -2986,6 +2981,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       nextCharacter();
     }
+  }
+
+  protected Collection<IntermediateVariable<D, C, F>> sortedIntermediateVariables()
+  {
+    var intermediateVariableValues = new ArrayList<>(intermediateVariables.values()
+                                                                          .stream()
+                                                                          .toList());
+    Collections.sort(intermediateVariableValues, (a, b) -> a.name.compareTo(b.name));
+    return intermediateVariableValues;
+  }
+
+  public Stream<IntermediateVariable<D, C, F>> sortedIntermediateVariableStream()
+  {
+    return sortedIntermediateVariables().stream();
   }
 
   protected Expression<D, C, F> storeInstructions(ClassVisitor classVisitor)
@@ -3201,21 +3210,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       Utensils.throwOrWrap(e);
     }
     return this;
-  }
-
-  public VariableReference<D, C, F> parseVariableReference()
-  {
-    return new VariableReference<>(parseName());
-  }
-
-  public Node<D, C, F> literal(int i)
-  {
-    return newLiteralConstant(i);
-  }
-
-  public Node<D, C, F> literal(String i)
-  {
-    return newLiteralConstant(i);
   }
 
 }
