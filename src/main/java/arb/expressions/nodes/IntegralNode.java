@@ -340,13 +340,11 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     Node<D, C, F> otherFactor   = null;
     Node<D, C, F> shiftValue    = null;
 
-    // Check if integrand is a multiplication node
-    if (integrandNode instanceof MultiplicationNode<D, C, F> multNode)
+    if (integrandNode instanceof MultiplicationNode<D, C, F> multiplicand)
     {
-      var left  = multNode.left;
-      var right = multNode.right;
+      var left  = multiplicand.left;
+      var right = multiplicand.right;
 
-      // Check which factor contains the delta function
       if (left.containsDeltaFunction())
       {
         deltaFunction = left;
@@ -358,39 +356,32 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
         otherFactor   = left;
       }
 
-      // Extract the shift value from δ(x-a)
       if (deltaFunction != null && deltaFunction.isFunction())
       {
+
         var deltaFunc = deltaFunction.asFunction();
         if (deltaFunc.is("δ"))
         {
-          // The argument to delta is (x-a), we need to extract 'a'
           var deltaArg = deltaFunc.arg;
 
-          // Handle δ(x-a) case
-          if (deltaArg instanceof SubtractionNode)
+          if (deltaArg instanceof SubtractionNode<D, C, F> subtrahend)
           {
-            var subNode = (SubtractionNode<D, C, F>) deltaArg;
-            var left2   = subNode.left;
-            var right2  = subNode.right;
+            var left2  = subtrahend.left;
+            var right2 = subtrahend.right;
 
-            // Check if left is the integration variable
             if (left2.isVariableNamed(integrationVariableNode.getName()))
             {
               shiftValue = right2;
             }
           }
-          // Handle δ(x) case (shift is 0)
           else if (deltaArg.isVariableNamed(integrationVariableNode.getName()))
           {
             shiftValue = zero();
           }
-          // Handle δ(a-x) case (need to use same shift)
-          else if (deltaArg instanceof SubtractionNode)
+          else if (deltaArg instanceof SubtractionNode<D, C, F> subNode)
           {
-            var subNode = (SubtractionNode<D, C, F>) deltaArg;
-            var left2   = subNode.left;
-            var right2  = subNode.right;
+            var left2  = subNode.left;
+            var right2 = subNode.right;
 
             if (right2.isVariableNamed(integrationVariableNode.getName()))
             {
@@ -400,39 +391,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
         }
       }
     }
-    // Handle case where integrand is just δ(x-a) without other factors
-    else if (integrandNode.isFunction())
-    {
-      var deltaFunc = integrandNode.asFunction();
-      if (deltaFunc.is("δ"))
-      {
-        var deltaArg = deltaFunc.arg;
 
-        if (deltaArg instanceof SubtractionNode<D, C, F> subNode)
-        {
-          var left  = subNode.left;
-          var right = subNode.right;
-
-          if (left.isVariableNamed(integrationVariableNode.getName()))
-          {
-            shiftValue = right;
-          }
-          else if (right.isVariableNamed(integrationVariableNode.getName()))
-          {
-            shiftValue = left;
-          }
-        }
-        else if (deltaArg.isVariableNamed(integrationVariableNode.getName()))
-        {
-          shiftValue = zero();
-        }
-
-        // If integrand is just delta function, result is 1
-        return one();
-      }
-    }
-
-    // Apply sifting: substitute x=a into f(x) to get f(a)
     if (otherFactor != null && shiftValue != null)
     {
       var result = otherFactor.cloneNode();
