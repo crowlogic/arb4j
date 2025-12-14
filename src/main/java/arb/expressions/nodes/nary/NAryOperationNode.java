@@ -163,7 +163,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       expression.context = new Context();
     }
     this.operandExpressionString = operandExpression;
-    assert functionClass != null : "functionClass=expression.className shan't be null";
+    functionClass                = expression.className;
+    assert functionClass != null : "functionClass=expression.className shan't be null, expression=" + expression;
     generatedType   = expression.coDomainType;
     this.lowerLimit = lowerLimit;
     this.upperLimit = upperLimit;

@@ -2378,12 +2378,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                indeterminateVariable.spliceInto(functionalExpression)
                                                                     .asVariable();
     }
+  
     rootNode.isResult                      = true;
-    functionalExpression.rootNode          = rootNode.spliceInto(functionalExpression);
-    functionalExpression.rootNode.isResult = true;
+
     functionalExpression.className         = className + "func";
     functionalExpression.functionName      = functionName + "func";
     functionalExpression.expression        = expression;
+    functionalExpression.rootNode          = rootNode.spliceInto(functionalExpression);
+    functionalExpression.rootNode.isResult = true;
     return functionalExpression;
   }
 

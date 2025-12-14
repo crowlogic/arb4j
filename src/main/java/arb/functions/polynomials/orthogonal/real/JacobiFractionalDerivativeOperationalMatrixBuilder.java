@@ -98,7 +98,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
 
     // μ(i,j) = sum(ω(j)(k)*gammaRatio(k)*χ(i)(k-γ), k=⌈γ⌉..j)
     RealSequenceSequence μ = RealSequenceSequence.express("mu",
-      "i➔j➔sum(ω(j)(k)*gammaRatio(k)*χ(i)(k-γ), k=⌈γ⌉..j)",
+      "i➔j➔sum(ω(j)(k)*gammaRatio(k)*χ(i)(k-γ){k=⌈γ⌉..j})",
       ctx);
 
     RealMatrix           result     = RealMatrix.newMatrix(maxDegree + 1, maxDegree + 1);
