@@ -57,7 +57,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                               Node<D, R, F>
 {
 
-
   public static String                            operandEvaluateMethodSignature =
                                                                                  Compiler.getMethodDescriptor(Object.class,
                                                                                                               Object.class,
@@ -164,7 +163,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
     this.operandExpressionString = operandExpression;
     functionClass                = expression.className;
-    assert functionClass != null : "functionClass=expression.className shan't be null, expression=" + expression;
+    assert functionClass != null : "functionClass=expression.className shan't be null, expression="
+                                   + expression;
     generatedType   = expression.coDomainType;
     this.lowerLimit = lowerLimit;
     this.upperLimit = upperLimit;
@@ -283,7 +283,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
     assignFieldNamesIfNecessary(resultType);
     prepareIndexVariable();
-   
+
     if (operand == null)
     {
       compileOperandExpression(resultType);
@@ -716,8 +716,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   @Override
   public boolean dependsOn(VariableNode<D, R, F> variable)
   {
-    assert false : "TODO";
-    return false;
+    return lowerLimit.dependsOn(variable) || upperLimit.dependsOn(variable)
+                  || operand.rootNode.dependsOn(variable.spliceInto(operand).asVariable());
   }
 
 }

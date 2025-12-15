@@ -946,7 +946,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     int rightArrowIndex;
 
     // Keep finding arrows until none left
-    while ((rightArrowIndex = expression.indexOf('➔', searchPos)) != -1)
+    if ((rightArrowIndex = expression.indexOf('➔', searchPos)) != -1)
     {
       String  inputVariableName        = expression.substring(searchPos, rightArrowIndex).trim();
       boolean isInputVariableSpecified = true;
@@ -960,10 +960,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         assignVariable(createNewVariableReference(inputVariableName), hasIndeterminateVariable());
         searchPos = rightArrowIndex + 1; // Move past this arrow, search for next
       }
-      else
-      {
-        break; // Not a valid variable, stop processing
-      }
+     
     }
 
     position = searchPos - 1; // Position should be just before the expression starts

@@ -83,7 +83,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
     // ω(j,k) =
     // (-1)^(j-k)*Γ(j+β+1)*Γ(j+k+α+β+1)/(Γ(k+β+1)*Γ(j+α+β+1)*factorial(j-k)*factorial(k))
     RealSequenceSequence ω          =
-                           RealSequenceSequence.express("j➔k➔(-1)^(j-k)*Γ(j+β+1)*Γ(j+k+α+β+1)/(Γ(k+β+1)*Γ(j+α+β+1)*factorial(j-k)*factorial(k))",
+                           RealSequenceSequence.express("j➔(-1)^(j-k)*Γ(j+β+1)*Γ(j+k+α+β+1)/(Γ(k+β+1)*Γ(j+α+β+1)*factorial(j-k)*factorial(k))",
                                                         ctx);
 
  // gammaRatio(k) = Γ(k+1)/Γ(k+1-γ)
