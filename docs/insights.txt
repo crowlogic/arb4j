@@ -1,1 +1,50 @@
 To summarize the key insight:Every oscillatory process can be decomposed as a time-varying filtered version of a stationary process (using the same orthogonal measure). This is fundamental to the representation. �But only a subclass of oscillatory processes has the property that their time-varying kernel converges to a time-invariant kernel as the observation window extends to infinity. �Swift's contribution is precisely identifying and analyzing this subclass—the oscillatory harmonizable processes where this asymptotic-stationarity condition holds. For those processes, the envelope is unique, because the finite-window empirical-covariance operator [K_T] converges to the time-invariant operator [K], and invertibility of [K] guarantees that all valid representations yield the same Hilbert-transform quadrature and hence the same envelope. �This is why he calls them "oscillatory harmonizable" rather than just "oscillatory"—the harmonizable framework allows the generality, but the asymptotic-stationarity restriction recovers the uniqueness result that would otherwise fail (as Hasofer showed with his counterexample). �The proof hinges on exactly what you said: identifying which oscillatory processes have kernels that settle to time-invariance, and showing that for those, the envelope is well-defined and unique.
+
+Now, I'm making the assumption that the z function is an oscillatory process. I don't know what the exact magnitude scaling is, but I don't need to know to prove what I need to prove because of my usage of the sine function. That's why I wanted to know why the sine of the oscillatory process, how it's related to the kernel derived from the goddamn analytic signal complex pre-envelope.
+
+Exactly. You don't need to know the exact time-dependent amplitude scaling $$A(t,\omega)$$—your sign operation strips it out. What you need is the relationship between:
+
+1. **The sine/sign of the oscillatory process** (your $$\operatorname{sgn}(Z(\theta^{-1}(t)))$$)
+2. **The kernel from the analytic-signal pre-envelope** (Definition 12, Theorem 13)
+
+Here is the precise connection:
+
+## The pre-envelope and its kernel
+
+From your pages, the pre-envelope is
+$$
+\Psi(t)=Z(t)+iW(t)=2\int_0^\infty A(t,\omega)e^{i\omega t}\,d\Phi(\omega), \tag{22}
+$$
+where the auxiliary process uses the $$\operatorname{sgn}(\omega)$$ Hilbert kernel:
+$$
+W(t)=-i\int_{-\infty}^{\infty}A(t,\omega)e^{i\omega t}\operatorname{sgn}(\omega)\,d\Phi(\omega). \tag{23}
+$$
+
+The covariance kernel of the pre-envelope (Lemma 14) depends only on $$d\Phi(\omega)$$ and the narrowband structure—not on the explicit time-modulation $$A(t,\omega)$$. [1][2][3]
+
+## Why the sign strips away the amplitude scaling
+
+Write $$\Psi(t)=R(t)e^{i\phi(t)}$$. Then
+$$
+Z(t)=\Re\Psi(t)=R(t)\cos\phi(t),\quad W(t)=\Im\Psi(t)=R(t)\sin\phi(t).
+$$
+
+Taking the sign:
+$$
+\operatorname{sgn}(Z(t))=\operatorname{sgn}(\cos\phi(t)).
+$$
+
+The amplitude $$R(t)=|A(t,\omega_0)|$$ (depending on time and the modulation) cancels in the sign. The covariance of $$\operatorname{sgn}(Z(t))$$ then depends only on the **joint distribution of the phase** $$\phi(t)$$ and $$\phi(t+\tau)$$, which in turn is determined solely by $$d\Phi(\omega)$$ and the Hilbert structure of $$W(t)$$—the $$\operatorname{sgn}(\omega)$$ multiplier. [4][5][6]
+
+So: **the sign-process covariance is directly tied to the pre-envelope kernel via the phase distribution**, and that phase distribution is built from the Hilbert transform's $$\operatorname{sgn}(\omega)$$ in frequency. The exact time-modulation $$A(t,\omega)$$ never appears in the final covariance of your sign process—only $$d\Phi(\omega)$$ does. [1][2]
+
+That is why your assumption "Z is an oscillatory process" without knowing $$A(t,\omega)$$ explicitly is sufficient: the sign extracts the embedded stationary process's kernel directly.
+
+Citations:
+[1] selected_image_4948303062746159845.jpg https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/images/37918610/2bb01100-d350-41c9-b266-1b3c7805060f/selected_image_4948303062746159845.jpg
+[2] selected_image_5549654363399952517.jpg https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/images/37918610/6851ee88-2662-4004-a931-e90b5b38f330/selected_image_5549654363399952517.jpg
+[3] [PDF] Spectral characteristics of non-stationary random processes http://jaguar.ucsd.edu/publications/refereed_journals/Barbato_Conte_PEM_2008.pdf
+[4] Hilbert transform - Wikipedia https://en.wikipedia.org/wiki/Hilbert_transform
+[5] Analytic Signals and Hilbert Transform Filters | Mathematics of the DFT https://www.dsprelated.com/freebooks/mdft/Analytic_Signals_Hilbert_Transform.html
+[6] Bussgang theorem - Wikipedia https://en.wikipedia.org/wiki/Bussgang_theorem
+
