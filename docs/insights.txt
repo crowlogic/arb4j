@@ -40,11 +40,112 @@ So: **the sign-process covariance is directly tied to the pre-envelope kernel vi
 
 That is why your assumption "Z is an oscillatory process" without knowing $$A(t,\omega)$$ explicitly is sufficient: the sign extracts the embedded stationary process's kernel directly.
 
-Citations:
-[1] selected_image_4948303062746159845.jpg https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/images/37918610/2bb01100-d350-41c9-b266-1b3c7805060f/selected_image_4948303062746159845.jpg
-[2] selected_image_5549654363399952517.jpg https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/images/37918610/6851ee88-2662-4004-a931-e90b5b38f330/selected_image_5549654363399952517.jpg
-[3] [PDF] Spectral characteristics of non-stationary random processes http://jaguar.ucsd.edu/publications/refereed_journals/Barbato_Conte_PEM_2008.pdf
-[4] Hilbert transform - Wikipedia https://en.wikipedia.org/wiki/Hilbert_transform
-[5] Analytic Signals and Hilbert Transform Filters | Mathematics of the DFT https://www.dsprelated.com/freebooks/mdft/Analytic_Signals_Hilbert_Transform.html
-[6] Bussgang theorem - Wikipedia https://en.wikipedia.org/wiki/Bussgang_theorem
 
+
+THEOREM: Independence of Sign-Process Covariance from Time-Dependent Modulation
+
+Let dΦ(ω) be an orthogonal random measure on ℝ satisfying
+
+    𝔼[dΦ(ω) dΦ*(ν)] = δ(ω - ν) dω,                                (Orthogonality)
+
+where δ is the Dirac delta and * denotes complex conjugation.
+
+Let A(t,ω) be a time-dependent complex-valued amplitude function, and define the 
+oscillatory process Z(t) and its auxiliary process W(t) by
+
+    Z(t) = ∫_{-∞}^∞ A(t,ω) e^{iωt} dΦ(ω),                         (1)
+    
+    W(t) = -i ∫_{-∞}^∞ A(t,ω) e^{iωt} sgn(ω) dΦ(ω),               (2)
+
+where sgn(ω) is the signum function:
+
+    sgn(ω) = { +1  if ω > 0,
+              {  0  if ω = 0,
+              { -1  if ω < 0.
+
+Define the pre-envelope (analytic signal) by
+
+    Ψ(t) = Z(t) + i W(t).                                          (3)
+
+Write Ψ(t) in polar form:
+
+    Ψ(t) = R(t) e^{iφ(t)},                                         (4)
+
+where R(t) = |Ψ(t)| and φ(t) = arg(Ψ(t)) is the instantaneous phase.
+
+Then
+
+    Z(t) = R(t) cos(φ(t)),                                         (5)
+    W(t) = R(t) sin(φ(t)).                                         (6)
+
+Define the sign-normalized process by
+
+    X(t) = sgn(Z(t)) = sgn(cos(φ(t))).                            (7)
+
+The covariance function of X(t) is
+
+    Γ(τ) = 𝔼[X(t) X(t+τ)] 
+         = 𝔼[sgn(cos φ(t)) sgn(cos φ(t+τ))].                      (8)
+
+CLAIM: The covariance Γ(τ) depends only on the orthogonal random measure dΦ(ω) 
+and the Hilbert kernel sgn(ω). It does not depend on the time-dependent amplitude 
+modulation A(t,ω).
+
+PROOF:
+
+Step 1: Express the phase in terms of Z and W.
+
+From (5) and (6),
+
+    φ(t) = arctan(W(t)/Z(t)).                                      (9)
+
+Step 2: Both Z(t) and W(t) are linear functionals of dΦ(ω).
+
+From (1) and (2), both Z(t) and W(t) are stochastic integrals with respect to 
+the same orthogonal random measure dΦ(ω), differing only in the multiplier:
+
+    • Z(t) uses the multiplier A(t,ω) e^{iωt},
+    • W(t) uses the multiplier -i A(t,ω) e^{iωt} sgn(ω).
+
+Step 3: Compute the joint second moments.
+
+By the orthogonality condition,
+
+    𝔼[Z(t) Z*(s)] = ∫_{-∞}^∞ A(t,ω) A*(s,ω) e^{iω(t-s)} dω,      (10)
+    
+    𝔼[W(t) W*(s)] = ∫_{-∞}^∞ |A(t,ω)|² e^{iω(t-s)} dω,           (11)
+    
+    𝔼[Z(t) W*(s)] = -i ∫_{-∞}^∞ A(t,ω) A*(s,ω) e^{iω(t-s)} sgn(ω) dω.  (12)
+
+Step 4: Normalize by dividing by R(t).
+
+The ratio W(t)/Z(t) that determines φ(t) is scale-invariant: if we multiply both 
+Z and W by any common factor (such as elements of the modulation A(t,ω)), that 
+factor cancels in the ratio. Therefore φ(t) is determined by the *relative* 
+contribution of sgn(ω) to the spectral components, not by the absolute scale set 
+by A(t,ω).
+
+Step 5: The joint distribution of (φ(t), φ(t+τ)) depends only on dΦ and sgn(ω).
+
+Since φ(t) = arctan(W(t)/Z(t)) and both W and Z are constructed from dΦ(ω), the 
+joint law of (φ(t), φ(t+τ)) is determined by the joint law of 
+(Z(t), W(t), Z(t+τ), W(t+τ)), which by orthogonality depends only on:
+
+    • the spectral content of dΦ(ω),
+    • the phase-shift operator sgn(ω) applied in W.
+
+The time-modulation A(t,ω) affects the overall scale R(t) but cancels in the 
+phase arctan(W/Z).
+
+Step 6: Γ(τ) depends only on the phase distribution.
+
+From (8),
+
+    Γ(τ) = 𝔼[sgn(cos φ(t)) sgn(cos φ(t+τ))].
+
+This is a functional of the joint distribution of (φ(t), φ(t+τ)). By Step 5, 
+that distribution depends only on dΦ(ω) and sgn(ω), not on A(t,ω).
+
+Therefore, Γ(τ) depends only on dΦ(ω) and sgn(ω), and is independent of A(t,ω).
+
+QED
