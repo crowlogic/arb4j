@@ -2503,7 +2503,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                               + "'";
     rootNode.isResult = true;
 
-    if (position < expression.length() && character != '=' )
+    if (position < expression.length() && character != '=')
     {
       throwUnexpectedCharacterException();
     }
@@ -3097,13 +3097,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected void throwUnexpectedCharacterException()
   {
-    throw new CompilerException(String.format("unexpected '%s'(0x%x) character at position=%s in expression '%s' of length %d, remaining='%s'\n",
+    throw new CompilerException(String.format("unexpected '%s'(0x%x) character at position=%s in expression '%s' of length %d, remaining='%s' where this='%s' from %s to %s\n",
                                               character,
                                               (int) character,
                                               position,
                                               expression,
                                               expression.length(),
-                                              remaining()));
+                                              remaining(),
+                                              this,
+                                              domainType,
+                                              coDomainType));
 
   }
 
