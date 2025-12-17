@@ -1,6 +1,7 @@
 package arb.expressions.nodes.binary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.invokeBinaryOperationMethod;
+import static arb.expressions.Compiler.loadBitsParameterOntoStack;
 import static arb.utensils.Utensils.indent;
 
 import java.util.*;
@@ -102,7 +103,11 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     mapTypes(RealToComplexFunction.class, Fraction.class, RealToComplexFunction.class);
     mapTypes(RealToComplexFunction.class, RealFunction.class, RealToComplexFunction.class);
     mapTypes(RealToComplexFunction.class, AlgebraicNumber.class, RealToComplexFunction.class);
-    mapTypes(Integer.class, RealSequence.class, RealSequenceSequence.class );
+    mapTypes(Integer.class, RealSequence.class, RealSequenceSequence.class);
+    mapTypes(RealSequenceSequence.class, Real.class, RealSequenceSequence.class);
+    mapTypes(RealSequenceSequence.class, Integer.class, RealSequenceSequence.class);
+    mapTypes(RealSequence.class, Real.class, RealSequence.class);
+
   }
 
   public static void mapPolynomialType(Class<?> scalarType, Class<?> polynomialType)
@@ -362,7 +367,6 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     return (left == null || left.isScalar()) && (right == null || right.isScalar());
   }
 
-
   public <E, S, G extends Function<? extends E, ? extends S>>
          void
          logSubstitution(String name, Node<E, S, G> transformation, String tense)
@@ -388,7 +392,6 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     {
       right = right.simplify();
     }
-
 
     return this;
   }

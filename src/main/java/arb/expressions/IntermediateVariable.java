@@ -23,12 +23,13 @@ public class IntermediateVariable<D, R, F extends Function<? extends D, ? extend
   @Override
   public String toString()
   {
-    return String.format("IntermediateVariable[name=%s, type=%s]",
-                         name,
-                         type);
+    return String.format("IntermediateVariable[name=%s, type=%s]", name, type);
   }
 
-  public IntermediateVariable(Expression<D, R, F> expression, String name, Class<?> type, boolean initialize)
+  public IntermediateVariable(Expression<D, R, F> expression,
+                              String name,
+                              Class<?> type,
+                              boolean initialize)
   {
     this.expression = expression;
     this.type       = type;
@@ -46,18 +47,14 @@ public class IntermediateVariable<D, R, F extends Function<? extends D, ? extend
     {
       loadThisOntoStack(methodVisitor);
       String intermediateTypeInternalName = Type.getInternalName(type);
-      methodVisitor.visitTypeInsn(NEW,
-                                  intermediateTypeInternalName);
+      methodVisitor.visitTypeInsn(NEW, intermediateTypeInternalName);
       methodVisitor.visitInsn(DUP);
       methodVisitor.visitMethodInsn(INVOKESPECIAL,
                                     intermediateTypeInternalName,
                                     "<init>",
                                     "()V",
                                     false);
-      methodVisitor.visitFieldInsn(PUTFIELD,
-                                   expression.className,
-                                   name,
-                                   type.descriptorString());
+      methodVisitor.visitFieldInsn(PUTFIELD, expression.className, name, type.descriptorString());
     }
     return methodVisitor;
   }
@@ -66,14 +63,9 @@ public class IntermediateVariable<D, R, F extends Function<? extends D, ? extend
   {
     if (Expression.trace)
     {
-      logger.debug("declareField(): this={}",
-                   this);
+      logger.debug("declareField(): this={} in {}", this, expression);
     }
-    classVisitor.visitField(ACC_PUBLIC,
-                            name,
-                            type.descriptorString(),
-                            null,
-                            null);
+    classVisitor.visitField(ACC_PUBLIC, name, type.descriptorString(), null, null);
     return classVisitor;
   }
 }

@@ -960,7 +960,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         assignVariable(createNewVariableReference(inputVariableName), hasIndeterminateVariable());
         searchPos = rightArrowIndex + 1; // Move past this arrow, search for next
       }
-     
+
     }
 
     position = searchPos - 1; // Position should be just before the expression starts
@@ -2503,7 +2503,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                               + "'";
     rootNode.isResult = true;
 
-    if (position < expression.length() && character != '=')
+    if (position < expression.length() && character != '=' && character != '➔')
     {
       throwUnexpectedCharacterException();
     }

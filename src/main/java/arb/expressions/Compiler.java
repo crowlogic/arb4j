@@ -17,6 +17,8 @@ import arb.expressions.nodes.LiteralConstantNode;
 import arb.functions.Function;
 import arb.functions.RealToComplexFunction;
 import arb.functions.complex.ComplexFunction;
+import arb.functions.integer.RealSequence;
+import arb.functions.integer.RealSequenceSequence;
 import arb.functions.polynomials.ComplexHypergeometricPolynomialFunction;
 import arb.functions.polynomials.RealHypergeometricPolynomialFunction;
 import arb.functions.rational.*;
@@ -217,19 +219,12 @@ public class Compiler
                  Class<? extends F> functionClass,
                  String functionName)
   {
-
-   
-    Expression<D,
-                  R,
-                  F> compiledExpression = Parser.parse(expression,
-                                                       context,
-                                                       domainClass,
-                                                       coDomainClass,
-                                                       functionClass,
-                                                       functionName);
-
-
-    return compiledExpression;
+    return Parser.parse(expression,
+                        context,
+                        domainClass,
+                        coDomainClass,
+                        functionClass,
+                        functionName);
   }
 
   public static <D, R, F extends Function<? extends D, ? extends R>>
@@ -798,9 +793,9 @@ public class Compiler
   }
 
   public static MethodVisitor putField(MethodVisitor mv,
-                              String fieldType,
-                              String variableFieldName,
-                              Class<?> variableFieldType)
+                                       String fieldType,
+                                       String variableFieldName,
+                                       Class<?> variableFieldType)
   {
     mv.visitFieldInsn(Opcodes.PUTFIELD,
                       fieldType,
@@ -835,6 +830,14 @@ public class Compiler
     {
       return Quaternion.class;
     }
+    else if (RealSequenceSequence.class.equals(resultType))
+    {
+      return Real.class;
+    }
+    else if (RealSequence.class.equals(resultType))
+    {
+      return Real.class;
+    }
     else
     {
       throw new CompilerException("dont know what the scalar type is for " + resultType);
@@ -852,12 +855,13 @@ public class Compiler
     return scalarTypes.contains(t);
   }
 
-  public static final HashSet<Class<?>> scalarTypes = new HashSet<>(Arrays.asList(Real.class,
-  Complex.class,
-  Integer.class,
-  Fraction.class,
-  ComplexFraction.class,
-  AlgebraicNumber.class,
-  GaussianInteger.class));
+  public static final HashSet<
+                Class<?>> scalarTypes = new HashSet<>(Arrays.asList(Real.class,
+                                                                    Complex.class,
+                                                                    Integer.class,
+                                                                    Fraction.class,
+                                                                    ComplexFraction.class,
+                                                                    AlgebraicNumber.class,
+                                                                    GaussianInteger.class));
 
 }

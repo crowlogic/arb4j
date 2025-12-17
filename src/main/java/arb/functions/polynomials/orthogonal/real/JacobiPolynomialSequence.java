@@ -59,15 +59,17 @@ public class JacobiPolynomialSequence extends
   @Override
   public Context getContext()
   {
-   return context;
+    return context;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public DerivativeSequence derivative()
   {
     return new DerivativeSequence();
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public IntegralSequence integral()
   {
@@ -117,42 +119,49 @@ public class JacobiPolynomialSequence extends
 
   }
 
-  public static Real                  domain  = new Real("0+/-1",
-                                                         128);
+  public static Real                  domain               = new Real("0+/-1",
+                                                                      128);
 
-  public int                          bits    = 128;
+  public int                          bits                 = 128;
 
-  public final Real                   α       = new Real().setName("α");
+  public final Real                   α                    = Real.named("α");
 
-  public final Real                   β       = new Real().setName("β");
+  public final Real                   β                    = Real.named("β");
 
-  final public Context                context = new Context(α,
-                                                            β);
+  final public Context                context              = new Context(α,
+                                                                         β);
 
-  final public RealFunction           C       = RealFunction.express("C", "n➔2*n+α+β", context);
+  final public RealFunction           C                    =
+                                        RealFunction.express("C", "n➔2*n+α+β", context);
 
-  final public RealSequence           F       = RealSequence.express("F", "n➔C(n-1)*C(n)", context);
+  final public RealSequence           F                    =
+                                        RealSequence.express("F", "n➔C(n-1)*C(n)", context);
 
-  final public RealNullaryFunction    G       = RealNullaryFunction.express("G", "α²-β²", context);
+  final public RealNullaryFunction    G                    =
+                                        RealNullaryFunction.express("G", "α²-β²", context);
 
-  final public RealPolynomialSequence A       =
+  final public RealPolynomialSequence A                    =
                                         RealPolynomialSequence.express("A",
                                                                        "n➔(F(n)*x+G())*(C(n)-1)/2",
                                                                        context);
 
-  final public RealSequence           E       =
+  final public RealSequence           E                    =
                                         RealSequence.express("E", "n➔n*C(n/2)*C(n-1)", context);
 
-  final public RealSequence           B       = RealSequence.express("B",
-                                                                     "n➔(n+α-1)*(n+β-1)*C(n)",
-                                                                     context);
+  final public RealSequence           B                    =
+                                        RealSequence.express("B",
+                                                             "n➔(n+α-1)*(n+β-1)*C(n)",
+                                                             context);
 
-  final public RealPolynomialSequence P       =
+  final public RealPolynomialSequence P                    =
                                         RealPolynomialSequence.express("P",
                                                                        "n➔when(n=0,1,n=1,(C(1)*x-β+α)/2,else,(A(n)*P(n-1)-B(n)*P(n-2))/E(n))",
                                                                        context);
 
-  protected RealFunction              orthogonalityMeasure;
+  protected RealFunction              orthogonalityMeasure =
+                                                           RealFunction.express("w",
+                                                                                "x➔(1-x)^α*(1+x)^β",
+                                                                                context);
 
   public JacobiPolynomialSequence(Real a, Real b)
   {
@@ -185,10 +194,6 @@ public class JacobiPolynomialSequence extends
   @Override
   public RealFunction orthogonalityMeasure()
   {
-    if (orthogonalityMeasure == null)
-    {
-      orthogonalityMeasure = RealFunction.express("w", "x➔(1-x)^α*(1+x)^β", context);
-    }
     return orthogonalityMeasure;
   }
 

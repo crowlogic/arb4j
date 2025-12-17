@@ -1,4 +1,5 @@
 package arb.functions;
+
 import static arb.utensils.Utensils.throwOrWrap;
 
 import java.io.Closeable;
@@ -15,10 +16,10 @@ import arb.functions.complex.ComplexFunction;
  * 
  * @param <D> the domain
  * @param <C> the co-domain
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the {@link TheArb4jLibrary}
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
-public interface Function<D, C>
-                         extends
+public interface Function<D, C> extends
                          Closeable,
                          AutoCloseable,
                          Typesettable,
@@ -48,38 +49,47 @@ public interface Function<D, C>
     return null;
   }
 
-  public static <D, C, F extends Function<? extends D, ? extends C>> Expression<D, C, F> compile(Class<? extends D> domainClass,
-                                                                                                 Class<? extends C> coDomainClass,
-                                                                                                 Class<? extends F> functionClass,
-                                                                                                 String expression,
-                                                                                                 Context context)
+  public static <D, C, F extends Function<? extends D, ? extends C>>
+         Expression<D, C, F>
+         compile(Class<? extends D> domainClass,
+                 Class<? extends C> coDomainClass,
+                 Class<? extends F> functionClass,
+                 String expression,
+                 Context context)
   {
-    Expression<D, C, F> parsedExpression = Function.parse(Parser.hashString(expression),
-                                                          expression,
-                                                          context,
-                                                          domainClass,
-                                                          coDomainClass,
-                                                          functionClass,
-                                                          null,
-                                                          null);
+    Expression<D,
+                  C,
+                  F> parsedExpression = Function.parse(Parser.hashString(expression),
+                                                       expression,
+                                                       context,
+                                                       domainClass,
+                                                       coDomainClass,
+                                                       functionClass,
+                                                       null,
+                                                       null);
     parsedExpression.compile();
 
     return parsedExpression;
   }
 
-  public static <D, C, F extends Function<? extends D, ? extends C>> F express(Class<? extends D> class1, Class<? extends C> class2, Class<? extends F> class3, String expression, Context context)
+  public static <D, C, F extends Function<? extends D, ? extends C>>
+         F
+         express(Class<? extends D> class1,
+                 Class<? extends C> class2,
+                 Class<? extends F> class3,
+                 String expression,
+                 Context context)
   {
-    return express(class1,
-                   class2,
-                   class3,
-                   null,
-                   expression,
-                   context);
+    return express(class1, class2, class3, null, expression, context);
 
   }
 
   @SuppressWarnings("unchecked")
-  public static <D, C, F extends Function<? extends D, ? extends C>> F express(Class<? extends D> domainClass, Class<? extends C> coDomainClass, String expression)
+  public static <D, C, F extends Function<? extends D, ? extends C>>
+         F
+         express(Class<? extends D> domainClass,
+                 Class<? extends C> coDomainClass,
+                 String expression)
   {
     return (F) Function.instantiate(expression,
                                     new Context(),
@@ -89,7 +99,12 @@ public interface Function<D, C>
                                     null);
   }
 
-  public static <D, C, F extends Function<? extends D, ? extends C>> F express(Class<? extends D> domainClass, Class<? extends C> coDomainClass, Class<? extends F> functionClass, String expression)
+  public static <D, C, F extends Function<? extends D, ? extends C>>
+         F
+         express(Class<? extends D> domainClass,
+                 Class<? extends C> coDomainClass,
+                 Class<? extends F> functionClass,
+                 String expression)
   {
     return (F) Function.instantiate(expression,
                                     new Context(),
@@ -100,7 +115,12 @@ public interface Function<D, C>
   }
 
   @SuppressWarnings("unchecked")
-  public static <D, C, F extends Function<? extends D, ? extends C>> F express(Class<? extends D> domainClass, Class<? extends C> coDomainClass, String expression, Context context)
+  public static <D, C, F extends Function<? extends D, ? extends C>>
+         F
+         express(Class<? extends D> domainClass,
+                 Class<? extends C> coDomainClass,
+                 String expression,
+                 Context context)
   {
     return (F) Function.instantiate(expression,
                                     context,
@@ -111,7 +131,13 @@ public interface Function<D, C>
   }
 
   @SuppressWarnings("unchecked")
-  public static <D, C, F extends Function<? extends D, ? extends C>> F express(Class<? extends D> domainClass, Class<? extends C> coDomainClass, String functionName, String expression, Context context)
+  public static <D, C, F extends Function<? extends D, ? extends C>>
+         F
+         express(Class<? extends D> domainClass,
+                 Class<? extends C> coDomainClass,
+                 String functionName,
+                 String expression,
+                 Context context)
   {
     return (F) Function.instantiate(expression,
                                     context,
@@ -121,31 +147,34 @@ public interface Function<D, C>
                                     functionName);
   }
 
-  public static <D, C, F extends Function<? extends D, ? extends C>> F express(Class<? extends D> domainClass,
-                                                                               Class<? extends C> coDomainClass,
-                                                                               Class<? extends F> functionClass,
-                                                                               String expressionName,
-                                                                               String expression)
+  public static <D, C, F extends Function<? extends D, ? extends C>>
+         F
+         express(Class<? extends D> domainClass,
+                 Class<? extends C> coDomainClass,
+                 Class<? extends F> functionClass,
+                 String expressionName,
+                 String expression)
   {
-    return express(domainClass,
-                   coDomainClass,
-                   functionClass,
-                   expressionName,
-                   expression,
-                   null);
+    return express(domainClass, coDomainClass, functionClass, expressionName, expression, null);
   }
 
   @SuppressWarnings("unchecked")
-  public static <D, C, F extends Function<? extends D, ? extends C>> F express(Class<? extends D> domainClass,
-                                                                               Class<? extends C> coDomainClass,
-                                                                               Class<? extends F> functionClass,
-                                                                               String expressionName,
-                                                                               String expression,
-                                                                               Context context)
+  public static <D, C, F extends Function<? extends D, ? extends C>>
+         F
+         express(Class<? extends D> domainClass,
+                 Class<? extends C> coDomainClass,
+                 Class<? extends F> functionClass,
+                 String expressionName,
+                 String expression,
+                 Context context)
   {
     if (context != null)
     {
-      FunctionMapping<Object, Object, Function<? extends Object, ? extends Object>> functionMapping = context.getFunctionMapping(expressionName);
+      FunctionMapping<Object,
+                    Object,
+                    Function<? extends Object,
+                                  ? extends Object>> functionMapping =
+                                                                     context.getFunctionMapping(expressionName);
       if (functionMapping != null && functionMapping.instance != null)
       {
         return (F) functionMapping.instance;
@@ -159,7 +188,11 @@ public interface Function<D, C>
                                     expressionName);
   }
 
-  public static <D, C, F extends Function<D, C>> F express(String functionName, Class<? extends D> domainClass, Class<? extends C> coDomainClass, Class<? extends F> functionClass, String expression)
+  public static <D, C, F extends Function<D, C>> F express(String functionName,
+                                                           Class<? extends D> domainClass,
+                                                           Class<? extends C> coDomainClass,
+                                                           Class<? extends F> functionClass,
+                                                           String expression)
   {
     return Function.instantiate(expression,
                                 new Context(),
@@ -169,12 +202,14 @@ public interface Function<D, C>
                                 functionName);
   }
 
-  public static <D, C, F extends Function<? extends D, ? extends C>> F express(String functionName,
-                                                                               Class<? extends D> domainClass,
-                                                                               Class<? extends C> coDomainClass,
-                                                                               Class<? extends F> functionClass,
-                                                                               String expression,
-                                                                               Context context)
+  public static <D, C, F extends Function<? extends D, ? extends C>>
+         F
+         express(String functionName,
+                 Class<? extends D> domainClass,
+                 Class<? extends C> coDomainClass,
+                 Class<? extends F> functionClass,
+                 String expression,
+                 Context context)
   {
     return Function.instantiate(expression,
                                 context,
@@ -184,19 +219,39 @@ public interface Function<D, C>
                                 functionName);
   }
 
-  static <D, C, F extends Function<? extends D, ? extends C>> F instantiate(String expression,
-                                                                            Context context,
-                                                                            Class<? extends D> domainClass,
-                                                                            Class<? extends C> coDomainClass,
-                                                                            Class<? extends F> functionClass,
-                                                                            String functionName)
+  static <D, C, F extends Function<? extends D, ? extends C>>
+         F
+         instantiate(String expression,
+                     Context context,
+                     Class<? extends D> domainClass,
+                     Class<? extends C> coDomainClass,
+                     Class<? extends F> functionClass,
+                     String functionName)
+  {
+    return instantiate(expression,
+                       context,
+                       domainClass,
+                       coDomainClass,
+                       functionClass,
+                       functionName,
+                       false);
+  }
+
+  static <D, C, F extends Function<? extends D, ? extends C>>
+         F
+         instantiate(String expression,
+                     Context context,
+                     Class<? extends D> domainClass,
+                     Class<? extends C> coDomainClass,
+                     Class<? extends F> functionClass,
+                     String functionName,
+                     boolean replace)
   {
     int colonIndex = expression.indexOf(':');
 
     if (colonIndex != -1)
     {
-      var thisFunctionName = expression.substring(0,
-                                                  colonIndex);
+      var thisFunctionName = expression.substring(0, colonIndex);
       if (functionName != null && !functionName.equals(thisFunctionName))
       {
         throw new CompilerException(String.format("name='%s' specified with : syntax does not match name specified another way '%s'",
@@ -207,11 +262,10 @@ public interface Function<D, C>
       functionName = thisFunctionName;
     }
 
-    int     punctuationMarkIndex = expression.indexOf(":");
+    int punctuationMarkIndex = expression.indexOf(":");
     if (punctuationMarkIndex != -1)
     {
-      String inlineFunctionName = expression.substring(0,
-                                                       punctuationMarkIndex);
+      String inlineFunctionName = expression.substring(0, punctuationMarkIndex);
       if (functionName != null && !functionName.equals(inlineFunctionName))
       {
         throw new CompilerException(String.format("functionName='%s' specified via function argument != inlineFunctionName='%s'",
@@ -219,11 +273,9 @@ public interface Function<D, C>
                                                   inlineFunctionName));
       }
       functionName = inlineFunctionName;
-      expression   = expression.substring(punctuationMarkIndex + 1,
-                                          expression.length());
+      expression   = expression.substring(punctuationMarkIndex + 1, expression.length());
     }
-    expression = expression.replaceAll(" ",
-                                       "");
+    expression = expression.replaceAll(" ", "");
 
     FunctionMapping<D, C, F> mapping = null;
     if (functionName != null && context != null)
@@ -233,18 +285,20 @@ public interface Function<D, C>
                                                 domainClass,
                                                 coDomainClass,
                                                 functionClass,
-                                                false,
+                                                replace,
                                                 null,
                                                 expression);
 
     }
 
-    Expression<D, C, F> compiledExpression = Compiler.compile(expression,
-                                                              context,
-                                                              domainClass,
-                                                              coDomainClass,
-                                                              functionClass,
-                                                              functionName);
+    Expression<D,
+                  C,
+                  F> compiledExpression = Compiler.compile(expression,
+                                                           context,
+                                                           domainClass,
+                                                           coDomainClass,
+                                                           functionClass,
+                                                           functionName);
 
     compiledExpression.mapping = mapping;
     if (mapping != null)
@@ -259,14 +313,17 @@ public interface Function<D, C>
       compiledExpression.mapping.instance = func;
     }
 
-    if ( context != null)
+    if (context != null)
     {
       context.registerFunctionMapping(functionName, functionClass, domainClass, coDomainClass);
     }
     return func;
   }
 
-  public static <D, C, F extends Function<D,C>> Expression<D, C, F> parse(Class<D> domainClass, Class<C> coDomainClass, Class<F> functionClass, String expression)
+  public static <D, C, F extends Function<D, C>> Expression<D, C, F> parse(Class<D> domainClass,
+                                                                           Class<C> coDomainClass,
+                                                                           Class<F> functionClass,
+                                                                           String expression)
   {
     return parse(Parser.transformToJavaAcceptableCharacters(expression),
                  expression,
@@ -278,11 +335,13 @@ public interface Function<D, C>
                  null);
   }
 
-  public static <D, C, F extends Function<? extends D, ? extends C>> Expression<D, C, F> parse(Class<? extends D> domainClass,
-                                                                                               Class<? extends C> coDomainClass,
-                                                                                               Class<? extends F> functionClass,
-                                                                                               String expression,
-                                                                                               Context context)
+  public static <D, C, F extends Function<? extends D, ? extends C>>
+         Expression<D, C, F>
+         parse(Class<? extends D> domainClass,
+               Class<? extends C> coDomainClass,
+               Class<? extends F> functionClass,
+               String expression,
+               Context context)
   {
     return parse(Parser.hashString(expression),
                  expression,
@@ -294,22 +353,31 @@ public interface Function<D, C>
                  null);
   }
 
-  public static <D, C, F extends Function<? extends D, ? extends C>, PD, PC, PF extends Function<? extends PD, ? extends PC>, E extends Expression<D, C, F>> E parse(String className,
-                                                                                                                                                                     String expression,
-                                                                                                                                                                     Context context,
-                                                                                                                                                                     Class<? extends D> domainClass,
-                                                                                                                                                                     Class<? extends C> coDomainClass,
-                                                                                                                                                                     Class<? extends F> functionClass,
-                                                                                                                                                                     String functionName,
-                                                                                                                                                                     Expression<PD, PC, PF> containingExpression)
+  public static <D,
+                C,
+                F extends Function<? extends D, ? extends C>,
+                PD,
+                PC,
+                PF extends Function<? extends PD, ? extends PC>,
+                E extends Expression<D, C, F>>
+         E
+         parse(String className,
+               String expression,
+               Context context,
+               Class<? extends D> domainClass,
+               Class<? extends C> coDomainClass,
+               Class<? extends F> functionClass,
+               String functionName,
+               Expression<PD, PC, PF> containingExpression)
   {
-    assert !(functionName != null && functionName.contains(":")) : "functionName shan't return colons " + functionName;
+    assert !(functionName != null
+                  && functionName.contains(":")) : "functionName shan't return colons "
+                                                   + functionName;
 
     int punctuationMarkIndex = expression.indexOf(":");
     if (punctuationMarkIndex != -1)
     {
-      String inlineFunctionName = expression.substring(0,
-                                                       punctuationMarkIndex);
+      String inlineFunctionName = expression.substring(0, punctuationMarkIndex);
       if (functionName != null && !functionName.equals(inlineFunctionName))
       {
         throw new CompilerException(String.format("functionName='%s' specified via function argument != inlineFunctionName='%s'",
@@ -318,8 +386,7 @@ public interface Function<D, C>
       }
       functionName = inlineFunctionName;
 
-      expression   = expression.substring(punctuationMarkIndex + 1,
-                                          expression.length());
+      expression   = expression.substring(punctuationMarkIndex + 1, expression.length());
     }
 
     var expr = new Expression<D, C, F>(className,
@@ -331,7 +398,7 @@ public interface Function<D, C>
                                        functionName,
                                        containingExpression);
     expr.functionNameSpecified = expr.functionName != null;
-    
+
     return expr.parseRoot();
   }
 
@@ -355,13 +422,12 @@ public interface Function<D, C>
 
   public default C evaluate(D t, int bits)
   {
-    return evaluate(t,
-                    1,
-                    bits);
+    return evaluate(t, 1, bits);
   }
 
   /**
-   * shortcut that maps to this{@link #evaluate(Object, int, int, Object)} with order=1
+   * shortcut that maps to this{@link #evaluate(Object, int, int, Object)} with
+   * order=1
    * 
    * @param t
    * @param bits
@@ -370,63 +436,62 @@ public interface Function<D, C>
    */
   public default C evaluate(D t, int bits, C res)
   {
-    return evaluate(t,
-                    1,
-                    bits,
-                    res);
+    return evaluate(t, 1, bits, res);
   }
 
   public default C evaluate(D t, int order, int bits)
   {
     C result = coDomainType().isInterface() ? null : newCoDomainInstance();
-    return evaluate(t,
-                    order,
-                    bits,
-                    result);
+    return evaluate(t, order, bits, result);
   }
 
   /**
    * <pre>
-   * Evaluates this function f(t). When called with order = 0, func should write to out the
-   * value of f at the point t, evaluated at a precision of prec bits.
+   * Evaluates this function f(t). When called with order = 0, func should write
+   * to out the value of f at the point t, evaluated at a precision of prec bits.
    * 
-   * In this case, f can be an arbitrary complex function, which may have branch cuts or
-   * even be non-holomorphic.
+   * In this case, f can be an arbitrary complex function, which may have branch
+   * cuts or even be non-holomorphic.
    * 
-   * When called with order = n >= 1, the this{@link #evaluate(Object, int, int, Object)}
-   * method should write to res the first n coefficients in the Taylor series expansion of f
-   * at the point t, evaluated at a precision of prec bits.
+   * When called with order = n >= 1, the
+   * this{@link #evaluate(Object, int, int, Object)} method should write to res
+   * the first n coefficients in the Taylor series expansion of f at the point t,
+   * evaluated at a precision of prec bits.
    * 
    * NOTE: In this case, the implementation should verify that f is a
-   * {@link ComplexFunction} on the complex interval defined by t, and set the coefficients
-   * in the result(res) to non-finite values otherwise.
+   * {@link ComplexFunction} on the complex interval defined by t, and set the
+   * coefficients in the result(res) to non-finite values otherwise.
    * 
    * For algorithms that do not rely on derivatives,
-   * this{@link #evaluate(Object, int, int, Object)} will always get called with order = 0
-   * or order = 1, in which case the user only needs to implement evaluation of the direct
-   * function value (without derivatives).
+   * this{@link #evaluate(Object, int, int, Object)} will always get called with
+   * order = 0 or order = 1, in which case the user only needs to implement
+   * evaluation of the direct function value (without derivatives).
    * 
    * With order = 1, func must verify holomorphicity (unlike the order = 0 case).
    * 
-   * If f is built from field operations and meromorphic functions, then no special action
-   * is necessary when order is positive since division by zero or evaluation of builtin
-   * functions at poles automatically produces infinite enclosures.
+   * If f is built from field operations and meromorphic functions, then no
+   * special action is necessary when order is positive since division by zero or
+   * evaluation of builtin functions at poles automatically produces infinite
+   * enclosures.
    * 
-   * <b>However,special care is needed for bounded functions with branch cuts. </b> For
-   * example, when evaluating f , <b>the output must be set to a non-finite value if it
-   * overlaps with the branch cut.</b>
+   * <b>However,special care is needed for bounded functions with branch cuts.
+   * </b> For example, when evaluating f , <b>the output must be set to a
+   * non-finite value if it overlaps with the branch cut.</b>
    * 
-   * The easiest way to accomplish this is to use versions of basic functions (sqrt, log,
-   * pow, etc.) that test holomorphicity of their arguments individually.
+   * The easiest way to accomplish this is to use versions of basic functions
+   * (sqrt, log, pow, etc.) that test holomorphicity of their arguments
+   * individually.
    * 
    * Some functions with branch cut detection are available as builtins: see
-   * acb_sqrt_analytic(), acb_rsqrt_analytic(), acb_log_analytic(), acb_pow_analytic().
+   * acb_sqrt_analytic(), acb_rsqrt_analytic(), acb_log_analytic(),
+   * acb_pow_analytic().
    * 
    * @param t     point
    * @param order
    * @param bits  bits of precision the result should be evaluated with
    * @param res   output result
-   * @return res after it has been assigned the values of the function evaluated at t
+   * @return res after it has been assigned the values of the function evaluated
+   *         at t
    */
   public C evaluate(D t, int order, int bits, C res);
 
@@ -445,7 +510,8 @@ public interface Function<D, C>
 
   public default C newCoDomainInstance()
   {
-    assert !coDomainType().isInterface() : "cannot instantiate the interface class " + coDomainType();
+    assert !coDomainType().isInterface() : "cannot instantiate the interface class "
+                                           + coDomainType();
     try
     {
       return coDomainType().getConstructor().newInstance();
@@ -463,6 +529,5 @@ public interface Function<D, C>
     assert false : getClass() + " needs to implement this";
     return null;
   }
-
 
 }
