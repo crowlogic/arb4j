@@ -26,5 +26,14 @@ public class RealSequenceSequenceTest extends
     
   }
 
+  public void testExpressString3()
+  {
+    RealSequenceSequence express = RealSequenceSequence.express("i->j->i+j");
+    System.out.println( "express=" + express );
+    RealSequence row = express.apply(3);
+    Real val = row.apply(5);
+    assertEquals( "8", val.toString() );
+    
+  }
   
 }
