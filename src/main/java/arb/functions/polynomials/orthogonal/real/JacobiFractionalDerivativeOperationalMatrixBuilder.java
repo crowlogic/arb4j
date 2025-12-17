@@ -4,6 +4,7 @@ import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
+import arb.functions.integer.RealSequence;
 import arb.functions.integer.RealSequenceSequence;
 import arb.functions.real.RealFunction;
 
@@ -27,11 +28,11 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
 
   public RealSequenceSequence      χ;
 
-  private RealSequenceSequence     ω;
+  public RealSequenceSequence      ω;
 
-  private RealFunction             normSq;
+  public RealFunction              normSq;
 
-  private Context                  context;
+  public Context                   context;
 
   public JacobiFractionalDerivativeOperationalMatrixBuilder()
   {
@@ -54,7 +55,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
       RealSequenceSequence.express("χ", "i➔p->int(t^p*w(t)*P(i)(t), t=-1..1)/normSq(i)", context);
 
     μ      = RealSequenceSequence.express("μ",
-                                          "i➔j➔sum(ω(j)(k)*Γ(k+1)/Γ(k+1-γ)*χ(i)(k-γ){k=⌈γ⌉..j})",
+                                          "i➔j➔k➔sum(ω(j)(k)*Γ(k+1)/Γ(k+1-γ)*χ(i)(k-γ){k=⌈γ⌉..j})",
                                           context);
   }
 
@@ -83,9 +84,10 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
 
     for (int i = 0; i <= maxDegree; i++)
     {
+      RealSequence row = μ.evaluate(i, bits);
       for (int j = 0; j <= maxDegree; j++)
       {
-        μ.evaluate(i, bits).evaluate(j, bits, result.get(i, j));
+        row.evaluate(j, bits, result.get(i, j));
       }
     }
 

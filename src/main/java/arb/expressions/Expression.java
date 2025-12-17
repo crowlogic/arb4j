@@ -2503,7 +2503,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                               + "'";
     rootNode.isResult = true;
 
-    if (position < expression.length() && character != '=' && character != '➔')
+    if (position < expression.length() && character != '=' )
     {
       throwUnexpectedCharacterException();
     }

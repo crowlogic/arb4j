@@ -1,7 +1,8 @@
 import arb.Integer;
 import arb.*;
 import arb.viz.FunctionPlotter;
-import arb.functions.polynomials.orthogonal.real.*;
+import arb.functions.polynomials.orthogonal.real.Type1ChebyshevPolynomials;
+import arb.functions.polynomials.orthogonal.real.JacobiPolynomialExpansion;
 import arb.viz.WindowManager;
 import javafx.application.Platform;
 import arb.functions.*;
