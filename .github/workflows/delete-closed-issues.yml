@@ -1,17 +1,11 @@
-# .github/workflows/delete-closed-issues.yml
 name: Delete Closed Issues
 
 on:
-  workflow_dispatch: # Manual trigger
-  schedule:
-    - cron: '0 0 * * 0' # Weekly on Sunday at midnight (optional)
+  workflow_dispatch:
 
 jobs:
   delete-closed-issues:
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
-      contents: read
     
     steps:
       - name: Checkout repository
@@ -19,12 +13,11 @@ jobs:
       
       - name: Delete closed issues
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
           REPO: ${{ github.repository }}
         run: |
           echo "🔍 Fetching closed issues..."
           
-          # Get all closed issues (up to 1000)
           CLOSED_ISSUES=$(gh issue list \
             --repo "${REPO}" \
             --state closed \
