@@ -42,7 +42,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
 
     context   = basis.getContext();
     context.registerVariable("γ", γ);
-
+    context.registerVariable(Real.named("t"));
     normSq = RealFunction.express("normSq",
                                   "i➔2^(α+β+1)*Γ(i+α+1)*Γ(i+β+1)/((2*i+α+β+1)*Γ(i+1)*Γ(i+α+β+1))",
                                   context);
@@ -52,10 +52,10 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
                                    context);
 
     χ      =
-      RealSequenceSequence.express("χ", "i➔p->int(t^p*w(t)*P(i)(t), t=-1..1)/normSq(i)", context);
+      RealSequenceSequence.express("χ", "i➔int(t^p*w(t)*P(i)(t), t=-1..1)/normSq(i)", context);
 
     μ      = RealSequenceSequence.express("μ",
-                                          "i➔j➔k➔sum(ω(j)(k)*Γ(k+1)/Γ(k+1-γ)*χ(i)(k-γ){k=⌈γ⌉..j})",
+                                          "i➔j➔sum(ω(j)(k)*Γ(k+1)/Γ(k+1-γ)*χ(i)(k-γ){k=⌈γ⌉..j})",
                                           context);
   }
 

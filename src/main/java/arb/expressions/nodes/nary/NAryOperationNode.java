@@ -717,7 +717,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   public boolean dependsOn(VariableNode<D, R, F> variable)
   {
     return lowerLimit.dependsOn(variable) || upperLimit.dependsOn(variable)
-                  || operand.rootNode.dependsOn(variable.spliceInto(operand).asVariable());
+                  || ( operand != null && operand.rootNode.dependsOn(variable.spliceInto(operand).asVariable()) );
   }
 
 }
