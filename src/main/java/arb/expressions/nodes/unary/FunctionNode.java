@@ -84,10 +84,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> simplify()
   {
-    if (Expression.trace)
-    {
-      logger.debug("simplify() on entry: this={}", this);
-    }
+  
     if (arg != null)
     {
       arg = arg.simplify();
@@ -106,10 +103,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
 
     node = simplifyExponential(node);
-    if (Expression.trace)
-    {
-      logger.debug("simplify() on return: this={} arg={}", this, arg);
-    }
+  
 
     return node;
   }

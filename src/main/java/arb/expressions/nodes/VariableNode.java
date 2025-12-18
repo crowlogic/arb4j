@@ -511,35 +511,37 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>>
 
   public VariableNode<D, R, F> resolveReference()
   {
+      var inputVariable = expression.independentVariable;
 
-    var inputVariable = expression.independentVariable;
-
-    if (resolveContextualVariable())
-    {
-      return this;
-    }
-
-    if (isIndependent = isIndependent(inputVariable))
-    {
-      resolveIndependentVariable(inputVariable);
-    }
-    else
-    {
-      if (isIndeterminate = (!expression.anyAscendentIndependentVariableIsNamed(getName())))
+      if (resolveContextualVariable())
       {
-        declareThisToBeTheIndeterminantVariable();
+        return this;
+      }
+
+      if (isIndependent = isIndependent(inputVariable))
+      {
+        resolveIndependentVariable(inputVariable);
       }
       else
       {
-        resolveInheritedVariableReference(inputVariable);
+        if (isIndeterminate = (!expression.anyAscendentIndependentVariableIsNamed(getName())
+                               && !expression.anyAscendentIndeterminateVariableIsNamed(getName())))
+        {
+          declareThisToBeTheIndeterminantVariable();
+        }
+        else
+        {
+          resolveInheritedVariableReference(inputVariable);
+        }
       }
-    }
-    if (expression.independentVariable != null && !isIndeterminate && !isIndependent && !ascendentInput)
-    {
-      throwNewUndefinedReferenceException();
-    }
-    return this;
+      if (expression.independentVariable != null && !isIndeterminate && !isIndependent && !ascendentInput)
+      {
+        throwNewUndefinedReferenceException();
+      }
+      return this;
   }
+
+
 
   protected void throwNewUndefinedReferenceException()
   {

@@ -204,8 +204,7 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
   @Override
   public boolean dependsOn(VariableNode<D, C, F> variable)
   {
-    assert false : "TODO";
-    return false;
+    return polynomialNode.dependsOn(variable) || argumentNode.dependsOn(variable);
   }
 
 }

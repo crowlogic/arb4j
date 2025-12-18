@@ -864,6 +864,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return coDomainType.equals(Integer.class);
   }
 
+  public boolean anyAscendentIndeterminateVariableIsNamed(String name)
+  {
+      if (indeterminateVariable != null && indeterminateVariable.getName().equals(name))
+      {
+          return true;
+      }
+      if (ascendentExpression != null)
+      {
+          if (ascendentExpression.anyAscendentIndeterminateVariableIsNamed(name))
+          {
+              return true;
+          }
+      }
+      return false;
+  }
+
+  
   @Override
   public boolean equals(Object obj)
   {
@@ -895,48 +912,82 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   private Node<D, C, F> evaluateOperand() throws CompilerException
   {
-    Node<D, C, F> node = null;
+      Node<D, C, F> node = null;
 
-    if (nextCharacterIs('['))
-    {
-      node = new VectorNode<>(this);
-    }
-    else if (nextCharacterIs('(', '⁽'))
-    {
-      node = resolve();
-      require(')', '⁾');
-    }
-    else if (nextCharacterIs('∂'))
-    {
-      node = new DerivativeNode<>(this);
-    }
-    else if (nextCharacterIs('Đ'))
-    {
-      node = new CaputoFractionalDerivativeNode<>(this);
-    }
-    else if (nextCharacterIs('∫'))
-    {
-      node = new IntegralNode<>(this);
-    }
-    else if (nextCharacterIs('Π', '∏'))
-    {
-      node = new ProductNode<>(this);
-    }
-    else if (nextCharacterIs('∑', 'Σ'))
-    {
-      node = new SumNode<>(this);
-    }
-    else if (isNumeric(character))
-    {
-      node = evaluateNumericLiteralConstant();
-    }
-    else if (isIdentifierCharacter())
-    {
-      node = resolveIdentifier();
-    }
+      if (nextCharacterIs('['))
+      {
+        node = new VectorNode<>(this);
+      }
+      else if (nextCharacterIs('(', '⁽'))
+      {
+        node = resolve();
+        require(')', '⁾');
+      }
+      else if (nextCharacterIs('∂'))
+      {
+        node = new DerivativeNode<>(this);
+      }
+      else if (nextCharacterIs('Đ'))
+      {
+        node = new CaputoFractionalDerivativeNode<>(this);
+      }
+      else if (nextCharacterIs('∫'))
+      {
+        node = new IntegralNode<>(this);
+      }
+      else if (nextCharacterIs('Π', '∏'))
+      {
+        node = new ProductNode<>(this);
+      }
+      else if (nextCharacterIs('∑', 'Σ'))
+      {
+        node = new SumNode<>(this);
+      }
+      else if (isNumeric(character))
+      {
+        node = evaluateNumericLiteralConstant();
+      }
+      else if (isIdentifierCharacter())
+      {
+        // PEEK AHEAD: check if identifier is followed by arrow (nested lambda)
+        int savedPos = position;
+        char savedChar = character;
+        
+        String potentialParam = parseName();
+        skipSpaces();
+        
+        if ((character == '➔') && coDomainType.isInterface())
+        {
+          // This is a nested lambda - the parameter is the indeterminate variable
+          // of the function being returned, not an independent variable
+          position = savedPos;
+          character = savedChar;
+          
+          String paramName = parseName();
+          require('➔');
+          
+          // Parse the body which contains the actual expression
+          node = resolve();
+          
+          // Create parameter variable and assign as INDETERMINATE variable
+          // (since the codomain is a function, this parameter becomes the
+          // independent variable of that returned function)
+          VariableNode<D, C, F> paramVar = createNewVariableReference(paramName);
+          assignIndeterminantVariable(paramVar);
+        }
+        else
+        {
+          // Not a lambda, reset and parse normally
+          position = savedPos;
+          character = savedChar;
+          node = resolveIdentifier();
+        }
+      }
 
-    return resolvePostfixOperators(node);
+      return resolvePostfixOperators(node);
   }
+
+
 
   protected Expression<D, C, F> evaluateOptionalIndependentVariableSpecification()
   {
