@@ -252,30 +252,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                  true);
   }
 
-  public Node<D, R, F> parseOperatorLimitSpecifications()
-  {
-    expression.require('{');
-    if (indexVariableFieldName != null)
-    {
-      String shouldBe = expression.parseName();
-      if (!indexVariableFieldName.equals(shouldBe))
-      {
-        throw new CompilerException(String.format("index variable specified in the codomain specification '%s' != the index variable specified between the operator symbol and the right arrow '%s'",
-                                                  shouldBe,
-                                                  indexVariableFieldName));
-      }
-    }
-    else
-    {
-      indexVariableFieldName = expression.parseName();
-    }
-    expression.context.variables.put(indexVariableFieldName, null);
-    expression.require('=');
-    parseLowerLimit();
-    parseUpperLimit();
-    return this;
-  }
-
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
@@ -364,6 +340,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   void getField(MethodVisitor methodVisitor, String fieldName, String fieldTypeSignature)
   {
+    assert fieldName != null : String.format("field is null %s\n", this);
     if (Expression.trace)
     {
       logger.debug(String.format("NAryOperation.getField(functionClass=%s,\n%sfieldName=%s,\n%sfieldTypeSignature=%s\n\n",
@@ -442,7 +419,10 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   MethodVisitor loadIndexVariable(MethodVisitor methodVisitor)
   {
+    assert fieldName != null : String.format("field is null %s\n", this);
+    assert indexVariableFieldName != null : String.format("indexVariableFieldName is null %s\n", this);
     getField(methodVisitor, getIndexVariableFieldName(), Integer.class.descriptorString());
+
     return methodVisitor;
   }
 
@@ -464,7 +444,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     upperLimit = expression.resolve();
     expression.require('}');
   }
-
   protected String extractOperandExpression()
   {
     if (Expression.trace)
@@ -473,33 +452,61 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
     parsed = true;
     String stringExpression = expression.expression;
-    int    startPos         = expression.position;
-    int    arrowIndex       = stringExpression.indexOf('➔', expression.position);
+    int startPos = expression.position;
+    int arrowIndex = stringExpression.indexOf('➔', expression.position);
 
     if (arrowIndex != -1)
     {
-      indexVariableFieldName = stringExpression.substring(startPos, arrowIndex);
+      indexVariableFieldName = stringExpression.substring(startPos, arrowIndex).trim();
     }
-    String lookingFor                 =
-                      indexVariableFieldName != null ? String.format("{%s=", indexVariableFieldName)
-                                                     : "{";
-    int    rangeSpecificationPosition = stringExpression.indexOf(lookingFor, expression.position);
+    
+    String lookingFor = indexVariableFieldName != null ? String.format("{%s=", indexVariableFieldName)
+                                                       : "{";
+    int rangeSpecificationPosition = stringExpression.indexOf(lookingFor, expression.position);
     if (rangeSpecificationPosition == -1)
     {
       expression.throwUnexpectedCharacterException("didn't find '"
                                                    + lookingFor
                                                    + "' remaining="
                                                    + expression.remaining());
-
     }
-    String operandExpression = stringExpression.substring(startPos, rangeSpecificationPosition)
-                                               .trim();
-    expression.character =
-                         expression.expression.charAt(expression.position +=
-                                                                          operandExpression.length());
+    String operandExpression = stringExpression.substring(startPos, rangeSpecificationPosition).trim();
+    expression.position = rangeSpecificationPosition;
+    expression.character = stringExpression.charAt(rangeSpecificationPosition);
     return operandExpression;
-
   }
+
+  public Node<D, R, F> parseOperatorLimitSpecifications()
+  {
+    expression.require('{');
+    
+    String specifiedName = expression.parseName();
+    if (specifiedName == null || specifiedName.isEmpty())
+    {
+      expression.throwUnexpectedCharacterException("index variable name cannot be null or empty");
+    }
+    
+    if (indexVariableFieldName != null)
+    {
+      if (!indexVariableFieldName.equals(specifiedName))
+      {
+        throw new CompilerException(String.format("index variable specified in the codomain specification '%s' != the index variable specified between the operator symbol and the right arrow '%s'",
+                                                  specifiedName,
+                                                  indexVariableFieldName));
+      }
+    }
+    else
+    {
+      indexVariableFieldName = specifiedName;
+    }
+    
+    expression.context.variables.put(indexVariableFieldName, null);
+    expression.require('=');
+    parseLowerLimit();
+    parseUpperLimit();
+    return this;
+  }
+
 
   @SuppressWarnings("unchecked")
   protected void compileOperandExpression(Class<?> resultType)

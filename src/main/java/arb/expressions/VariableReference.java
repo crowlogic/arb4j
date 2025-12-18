@@ -96,6 +96,7 @@ public class VariableReference<D, R, F extends Function<? extends D, ? extends R
          VariableReference<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
+
     return new VariableReference<E, S, G>(name,
                                           index == null ? null : index.spliceInto(newExpression),
                                           type);

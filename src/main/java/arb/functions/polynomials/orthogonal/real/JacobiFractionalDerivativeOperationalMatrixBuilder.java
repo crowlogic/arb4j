@@ -48,14 +48,15 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
                                   context);
 
     ω      =
-      RealSequenceSequence.express("j➔(-1)^(j-k)*Γ(j+β+1)*Γ(j+k+α+β+1)/(Γ(k+β+1)*Γ(j+α+β+1)*(j-k)!*k!)",
+      RealSequenceSequence.express("ω",
+                                   "j➔(-1)^(j-k)*Γ(j+β+1)*Γ(j+k+α+β+1)/(Γ(k+β+1)*Γ(j+α+β+1)*(j-k)!*k!)",
                                    context);
 
     χ      =
-      RealSequenceSequence.express("χ", "i➔int(t^p*w(t)*P(i)(t), t=-1..1)/normSq(i)", context);
+      RealSequenceSequence.express("χ", "i➔int(t->t^p*w(t)*P(i)(t), t=-1..1)/normSq(i)", context);
 
     μ      = RealSequenceSequence.express("μ",
-                                          "i➔j➔sum(ω(j)(k)*Γ(k+1)/Γ(k+1-γ)*χ(i)(k-γ){k=⌈γ⌉..j})",
+                                          "i➔sum(k->ω(j)(k)*Γ(k+1)/Γ(k+1-γ)*χ(i)(k-γ){k=⌈γ⌉..j})",
                                           context);
   }
 
