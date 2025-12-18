@@ -55,9 +55,10 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
     χ      =
       RealSequenceSequence.express("χ", "i➔int(t->t^p*w(t)*P(i)(t), t=-1..1)/normSq(i)", context);
 
-    μ      = RealSequenceSequence.express("μ",
-                                          "i➔sum(k->ω(j)(k)*Γ(k+1)/Γ(k+1-γ)*χ(i)(k-γ){k=⌈γ⌉..j})",
-                                          context);
+    μ = RealSequenceSequence.express("μ",
+                                     "i➔Σk➔(ω(j)(k)*Γ(k+1)/Γ(k+1-γ)*χ(i)(k-γ)){k=⌈γ⌉..j}",
+                                     context);
+
   }
 
   public JacobiFractionalDerivativeOperationalMatrixBuilder setBasis(JacobiPolynomialSequence basis)

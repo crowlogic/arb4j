@@ -458,10 +458,32 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     if (arrowIndex != -1)
     {
       indexVariableFieldName = stringExpression.substring(startPos, arrowIndex).trim();
+      if (Expression.trace)
+      {
+        logger.debug(String.format("extractOperandExpression: found arrow at index %d, extracted indexVariableFieldName='%s' from substring [%d:%d]='%s'\n",
+                                   arrowIndex, 
+                                   indexVariableFieldName, 
+                                   startPos, 
+                                   arrowIndex,
+                                   stringExpression.substring(startPos, arrowIndex)));
+      }
+      assert indexVariableFieldName != null && !indexVariableFieldName.isEmpty() : 
+        String.format("indexVariableFieldName extracted from expression substring is null or empty: expression='%s', substring='%s'",
+                      stringExpression,
+                      stringExpression.substring(startPos, arrowIndex));
+    }
+    else if (Expression.trace)
+    {
+      logger.debug(String.format("extractOperandExpression: no arrow found, indexVariableFieldName remains null\n"));
     }
     
     String lookingFor = indexVariableFieldName != null ? String.format("{%s=", indexVariableFieldName)
                                                        : "{";
+    if (Expression.trace)
+    {
+      logger.debug(String.format("extractOperandExpression: looking for '%s' in remaining expression\n", lookingFor));
+    }
+    
     int rangeSpecificationPosition = stringExpression.indexOf(lookingFor, expression.position);
     if (rangeSpecificationPosition == -1)
     {
@@ -473,8 +495,17 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     String operandExpression = stringExpression.substring(startPos, rangeSpecificationPosition).trim();
     expression.position = rangeSpecificationPosition;
     expression.character = stringExpression.charAt(rangeSpecificationPosition);
+    
+    if (Expression.trace)
+    {
+      logger.debug(String.format("extractOperandExpression: extracted operandExpression='%s', position now at %d\n",
+                                 operandExpression,
+                                 expression.position));
+    }
+    
     return operandExpression;
   }
+
 
   public Node<D, R, F> parseOperatorLimitSpecifications()
   {
@@ -674,6 +705,22 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   @Override
   public String toString()
   {
+    if (Expression.trace)
+    {
+      logger.debug(String.format("NAryOperationNode.toString(): indexVariableFieldName=%s, operand=%s, operandExpressionString=%s, lowerLimit=%s, upperLimit=%s\n",
+                                 indexVariableFieldName,
+                                 operand,
+                                 operandExpressionString,
+                                 lowerLimit,
+                                 upperLimit));
+    }
+    
+    assert indexVariableFieldName != null : 
+      String.format("indexVariableFieldName is null in toString() for %s%s{null=%s…%s}",
+                    symbol,
+                    operand != null ? operand.toString() : operandExpressionString,
+                    lowerLimit,
+                    upperLimit);
 
     return String.format("%s%s{%s=%s…%s}",
                          symbol,
@@ -681,7 +728,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                          indexVariableFieldName,
                          lowerLimit,
                          upperLimit);
-
   }
 
   @Override
