@@ -111,6 +111,7 @@ public class Compiler
     typePrefixes.put(SphericalBesselFunction.class, "sph");
     typePrefixes.put(IntegerPolynomial.class, "Xℤ");
 
+
   }
 
   public static void addNullCheckForField(MethodVisitor mv,

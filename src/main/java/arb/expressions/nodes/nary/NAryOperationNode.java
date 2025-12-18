@@ -667,7 +667,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    return new NAryOperationNode<E, S, G>(newExpression,
+    NAryOperationNode<E, S, G> nAryOperationNode = new NAryOperationNode<E, S, G>(newExpression,
                                           identity,
                                           prefix,
                                           operation,
@@ -675,6 +675,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                           operandExpressionString,
                                           lowerLimit.spliceInto(newExpression),
                                           upperLimit.spliceInto(newExpression));
+    nAryOperationNode.indexVariableFieldName = indexVariableFieldName;
+    return nAryOperationNode;
   }
 
   @Override

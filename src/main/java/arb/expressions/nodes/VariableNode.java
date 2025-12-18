@@ -526,10 +526,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                        expression.anyAscendentIndeterminateVariableIsNamed(getName());
       if (isIndeterminate = (!isAscendenttIndependent && !isAscendentIndeterminant))
       {
-        System.out.format("this=%s\nisAscendenttIndependent=%s\nisAscendentIndeterminant=%s\n\n",
-                          this,
-                          isAscendenttIndependent,
-                          isAscendentIndeterminant);
         declareThisToBeTheIndeterminantVariable();
       }
       else

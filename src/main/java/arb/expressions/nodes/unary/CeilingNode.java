@@ -39,7 +39,7 @@ public class CeilingNode<D, R, F extends Function<? extends D, ? extends R>> ext
 
   public CeilingNode(Expression<D, R, F> parser, Node<D, R, F> argument)
   {
-    super("ceiling",
+    super("ceil",
           argument,
           parser);
   }

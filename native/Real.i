@@ -155,6 +155,16 @@ import arb.utensils.Utensils;
   // Reference to the pool owner for temp instances
   Real                      poolOwner = null;
 
+  public Integer ceil(int prec, Integer res)
+  {
+    try ( var blip = borrowVariable())
+    {
+      arblib.arb_ceil(blip, this, prec);
+      assert blip.isInteger() : "ceil " + blip + " isn't an integer?!";
+      return blip.getInteger(res);
+    }
+ }
+
   public Real borrowVariable()
   {
     synchronized (this)
