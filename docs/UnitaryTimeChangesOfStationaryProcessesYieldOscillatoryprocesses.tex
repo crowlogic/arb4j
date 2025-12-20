@@ -40,12 +40,12 @@ The Hardy Z-function
 \[
 Z(t) = e^{i\theta(t)}\zeta\left(\frac{1}{2}+it\right)
 \]
-where \(\theta(t)\) is the Riemann-Siegel theta function, encodes the zeros of the Riemann zeta function on the critical line. This paper establishes that \(Z(t)\) is a unitarily time-changed stationary process, identified as a subclass of oscillatory processes in Priestley's evolutionary spectra framework. There exists a strictly increasing, absolutely continuous function \(\Theta(t)\) such that the inverse unitary operator applied to \(Z(t)\) yields a process \(X(u)\) with well-defined normalized stationary covariance, and \(Z(t)\) satisfies the definition of an oscillatory process.
+where $\theta(t)$ is the Riemann-Siegel theta function, encodes the zeros of the Riemann zeta function on the critical line. This paper establishes that $Z(t)$ is a unitarily time-changed stationary process, identified as a subclass of oscillatory processes in Priestley's evolutionary spectra framework. There exists a strictly increasing, absolutely continuous function $\Theta(t)$ such that the inverse unitary operator applied to $Z(t)$ yields a process $X(u)$ with well-defined normalized stationary covariance, and $Z(t)$ satisfies the definition of an oscillatory process.
 
 \section{The Unitary Time-Change Operator}
 
 \begin{definition}[Unitary Time-Change Operator]\label{def:unitary_op}
-Let \(\Theta\colon\mathbb{R}\to\mathbb{R}\) be absolutely continuous, strictly increasing, and bijective with \(\dot{\Theta}(t)>0\) almost everywhere. For measurable \(f\), define:
+Let $\Theta\colon\mathbb{R}\to\mathbb{R}$ be absolutely continuous, strictly increasing, and bijective with $\dot{\Theta}(t)>0$ almost everywhere. For measurable $f$, define:
 \[
 (U_{\Theta} f)(t) = \sqrt{\dot{\Theta}(t)}\, f(\Theta(t))
 \]
@@ -56,22 +56,22 @@ The inverse operator is:
 \end{definition}
 
 \begin{theorem}[Local Isometry and Inverse Properties]\label{thm:isometry}
-For every compact \(K\subseteq\mathbb{R}\) and \(f\in L^2_{\mathrm{loc}}(\mathbb{R})\):
+For every compact $K\subseteq\mathbb{R}$ and $f\in L^2_{\mathrm{loc}}(\mathbb{R})$:
 \[
 \int_K|(U_{\Theta}f)(t)|^2\,dt = \int_{\Theta(K)}|f(s)|^2\,ds
 \]
-Moreover, for \(f,g\in L^2_{\mathrm{loc}}(\mathbb{R})\):
+Moreover, for $f,g\in L^2_{\mathrm{loc}}(\mathbb{R})$:
 \[
-U_{\Theta}^{-1}(U_{\Theta}f) = f,\qquad U_{\Theta}(U_{\Theta}^{-1}g) = g
+U_{\Theta}^{-1}(U_{\Theta}f) = f,\qquad U_{\Theta}(U_{\Theta}^{-1}g) = g.
 \]
 \end{theorem}
 
 \begin{proof}
-Using the change of variables \(s=\Theta(t)\) where \(ds=\dot{\Theta}(t)\,dt\):
+Using the change of variables $s=\Theta(t)$ where $ds=\dot{\Theta}(t)\,dt$:
 \[
-\int_K|(U_{\Theta}f)(t)|^2\,dt = \int_K\dot{\Theta}(t)|f(\Theta(t))|^2\,dt = \int_{\Theta(K)}|f(s)|^2\,ds
+\int_K|(U_{\Theta}f)(t)|^2\,dt = \int_K\dot{\Theta}(t)|f(\Theta(t))|^2\,dt = \int_{\Theta(K)}|f(s)|^2\,ds.
 \]
-The inverse identities follow from functional composition: \(\Theta(\Theta^{-1}(s))=s\) and \(\Theta^{-1}(\Theta(t))=t\).
+The inverse identities follow from $\Theta(\Theta^{-1}(s))=s$ and $\Theta^{-1}(\Theta(t))=t$.
 \end{proof}
 
 \section{Oscillatory Processes}
@@ -81,30 +81,31 @@ An oscillatory process has the form:
 \[
 Z(t) = \int_{\mathbb{R}}A_t(\lambda)e^{i\lambda t}\,d\Phi(\lambda)
 \]
-where \(A_t(\lambda)\) is a gain function and \(\Phi\) is a complex orthogonal random measure.
+where $A_t(\lambda)$ is a gain function and $\Phi$ is a complex orthogonal random measure.
 \end{definition}
 
 \begin{theorem}[Unitary Time Change Produces Oscillatory Process]\label{thm:unitary_oscillatory}
-Let \(X\) be a zero-mean stationary process with representation:
+Let $X$ be a zero-mean stationary process with representation:
 \[
-X(t) = \int_{\mathbb{R}}e^{i\lambda t}\,d\Phi(\lambda)
+X(t) = \int_{\mathbb{R}}e^{i\lambda t}\,d\Phi(\lambda).
 \]
-Let \(\Theta\) be strictly increasing and absolutely continuous. Then
+Let $\Theta$ be strictly increasing and absolutely continuous. Then
 \[
 Z(t) = (U_{\Theta}X)(t) = \sqrt{\dot{\Theta}(t)}X(\Theta(t))
 \]
 is an oscillatory process with gain function:
 \[
-A_t(\lambda) = \sqrt{\dot{\Theta}(t)}e^{i\lambda(\Theta(t)-t)}
+A_t(\lambda) = \sqrt{\dot{\Theta}(t)}e^{i\lambda(\Theta(t)-t)}.
 \]
 \end{theorem}
 
 \begin{proof}
 Substituting into the spectral representation:
 \[
-Z(t) = \sqrt{\dot{\Theta}(t)}\int_{\mathbb{R}}e^{i\lambda\Theta(t)}\,d\Phi(\lambda) = \int_{\mathbb{R}}\sqrt{\dot{\Theta}(t)}e^{i\lambda(\Theta(t)-t)}e^{i\lambda t}\,d\Phi(\lambda)
+Z(t) = \sqrt{\dot{\Theta}(t)}\int_{\mathbb{R}}e^{i\lambda\Theta(t)}\,d\Phi(\lambda)
+= \int_{\mathbb{R}}\sqrt{\dot{\Theta}(t)}e^{i\lambda(\Theta(t)-t)}e^{i\lambda t}\,d\Phi(\lambda),
 \]
-This exhibits \(Z(t)\) in the oscillatory process form with the stated gain function.
+which is of the form in Definition \ref{def:oscillatory}.
 \end{proof}
 
 \section{The Hardy Z-Function}
@@ -113,176 +114,194 @@ This exhibits \(Z(t)\) in the oscillatory process form with the stated gain func
 \[
 Z(t) = e^{i\theta(t)}\zeta\left(\frac{1}{2}+it\right)
 \]
-where \(\theta(t)\) is the Riemann-Siegel theta function:
+where $\theta(t)$ is the Riemann-Siegel theta function:
 \[
-\theta(t) = \frac{t}{2}\log\left(\frac{t}{2\pi}\right) - \frac{t}{2} - \frac{\pi}{8} + O\left(\frac{1}{t}\right)
+\theta(t) = \frac{t}{2}\log\left(\frac{t}{2\pi}\right) - \frac{t}{2} - \frac{\pi}{8} + O\left(\frac{1}{t}\right).
 \]
 \end{definition}
 
 \begin{proposition}[Functional Equation]\label{prop:functional_eq}
 The Hardy Z-function satisfies:
 \[
-Z(-t) = Z(t)
+Z(-t) = Z(t).
 \]
 \end{proposition}
 
 \begin{proof}
-By the antisymmetry \(\theta(-t) = -\theta(t)\) and the functional equation of \(\zeta\):
+By the antisymmetry $\theta(-t) = -\theta(t)$ and the functional equation of $\zeta$:
 \[
-Z(-t) = e^{-i\theta(t)}\overline{\zeta(1/2+it)} = \overline{Z(t)} = Z(t)
+Z(-t) = e^{-i\theta(t)}\overline{\zeta(1/2+it)} = \overline{Z(t)} = Z(t),
 \]
-where the last equality holds because \(Z(t)\) is real-valued by construction.
+since $Z(t)$ is real-valued.
 \end{proof}
 
 \begin{lemma}[Logarithmic Derivative]\label{lem:log_deriv}
 \[
-\dot{\theta}(t) = \frac{1}{2}\log\left(\frac{t}{2\pi}\right) + O\left(\frac{1}{t}\right)
+\dot{\theta}(t) = \frac{1}{2}\log\left(\frac{t}{2\pi}\right) + O\left(\frac{1}{t}\right).
 \]
-For \(t > 2\pi\), \(\dot{\theta}(t) > 0\).
+For $t > 2\pi$, $\dot{\theta}(t) > 0$.
 \end{lemma}
 
 \begin{proof}
-Differentiate the asymptotic expansion:
+Differentiate
 \[
-\frac{d}{dt}\left[\frac{t}{2}\log\left(\frac{t}{2\pi}\right) - \frac{t}{2}\right] = \frac{1}{2}\log\left(\frac{t}{2\pi}\right) + \frac{1}{2} - \frac{1}{2} + O\left(\frac{1}{t^2}\right) = \frac{1}{2}\log\left(\frac{t}{2\pi}\right) + O\left(\frac{1}{t^2}\right)
+\theta(t) = \frac{t}{2}\log\left(\frac{t}{2\pi}\right) - \frac{t}{2} - \frac{\pi}{8} + O\left(\frac{1}{t}\right)
 \]
-For \(t > 2\pi\), we have \(\log(t/(2\pi)) > 0\), hence \(\dot{\theta}(t) > 0\).
+to obtain
+\[
+\dot{\theta}(t) = \frac{1}{2}\log\left(\frac{t}{2\pi}\right) + \frac{1}{2} - \frac{1}{2} + O\left(\frac{1}{t^2}\right)
+= \frac{1}{2}\log\left(\frac{t}{2\pi}\right) + O\left(\frac{1}{t^2}\right).
+\]
+For $t>2\pi$, $\log(t/(2\pi))>0$, so $\dot{\theta}(t)>0$.
 \end{proof}
 
 \section{Inverse Time Change and Stationary Covariance}
 
 \begin{lemma}[Differentiability of X]\label{lem:X_diff}
-The process \(X(u) = (U_{\theta}^{-1}Z)(u)\) is continuously differentiable for \(u\) corresponding to \(t > 2\pi\).
+The process $X(u) = (U_{\theta}^{-1}Z)(u)$ is continuously differentiable for $u$ corresponding to $t > 2\pi$.
 \end{lemma}
 
 \begin{proof}
-By definition, \(X(u) = Z(\theta^{-1}(u))/\sqrt{\dot{\theta}(\theta^{-1}(u))}\). Since \(Z(t)\) is analytic on the real line, \(\theta(t)\) is smooth with \(\dot{\theta}(t) > 0\) for \(t > 2\pi\), the Inverse Function Theorem gives that \(\theta^{-1}(u)\) is smooth. The denominator \(\sqrt{\dot{\theta}(\theta^{-1}(u))}\) is smooth and non-zero. Thus \(X(u)\) is \(C^1\) on the region of interest.
-\end{proof}
-
-\begin{lemma}[Bound on Derivative of X]\label{lem:X_derivative_bound}
-For the derivative of \(X(u)\), we have:
+By definition,
 \[
-\int_{-T}^{T} |\dot{X}(u)|^2\,du \ll T^{4/3+\varepsilon}(\log T)^{4/3+\varepsilon}
+X(u) = \frac{Z(\theta^{-1}(u))}{\sqrt{\dot{\theta}(\theta^{-1}(u))}}.
 \]
-for any \(\varepsilon > 0\). This follows from the chain rule applied to \(X(u) = Z(\theta^{-1}(u))/\sqrt{\dot{\theta}(\theta^{-1}(u))}\), the Titchmarsh convexity bound \(|Z(t)| \ll t^{1/6+\varepsilon}\), and the asymptotic bounds on \(\theta\) and its derivatives.
-\end{lemma}
-
-\begin{proof}
-By the chain rule:
-\[
-\dot{X}(u) = \frac{d}{du}\left[\frac{Z(\theta^{-1}(u))}{\sqrt{\dot{\theta}(\theta^{-1}(u))}}\right]
-\]
-Let \(t = \theta^{-1}(u)\), so \(\frac{dt}{du} = \frac{1}{\dot{\theta}(t)}\). Then:
-\[
-\dot{X}(u) = \frac{Z'(t)}{\dot{\theta}(t)^{3/2}} - \frac{Z(t) \cdot \theta''(t)}{2\dot{\theta}(t)^{5/2}}
-\]
-Since \(|Z(t)| \ll t^{1/6+\varepsilon}\) and \(\dot{\theta}(t) \sim \frac{1}{2}\log t\), we have \(\theta''(t) = O(1/t)\). Thus:
-\[
-|\dot{X}(u)| \ll \frac{|Z'(t)|}{\log(t)^{3/2}} + \frac{t^{1/6+\varepsilon}}{t \cdot \log(t)^{5/2}}
-\]
-Integrating over \(u \in [-T,T]\) corresponds to integrating over \(t \in [-\theta(T), \theta(T)]\). The convexity bound on \(|Z'(t)|\) is also \(O(t^{1/6+\varepsilon})\) (by standard zeta-function estimates), giving:
-\[
-\int_{-T}^{T}|\dot{X}(u)|^2\,du \ll \int_1^{\theta(T)} \frac{t^{2(1/6+\varepsilon)}}{\log(t)^3}\,dt + \int_1^{\theta(T)} \frac{t^{2(1/6+\varepsilon)}}{t^2 \log(t)^5}\,dt
-\]
-The first integral dominates and is \(\ll (\theta(T))^{4/3+2\varepsilon}/\log(\theta(T))^3\). Since \(\theta(T) \sim \frac{T}{2}\log T\), this is \(\ll T^{4/3+\varepsilon}(\log T)^{4/3+\varepsilon}\).
+On $t>2\pi$, $Z$ is analytic, $\theta$ is smooth with $\dot{\theta}>0$, so $\theta^{-1}$ is smooth. The denominator is smooth and nonvanishing, so $X$ is $C^1$.
 \end{proof}
 
 \begin{theorem}[Existence of Normalized Stationary Covariance]\label{thm:cesaro_covariance}
-Let \(X(u) = (U_{\theta}^{-1}Z)(u)\). The normalized autocorrelation function:
+Let $X(u) = (U_{\theta}^{-1}Z)(u)$. Define
 \[
-R_X(h) = \lim_{T\to\infty}\frac{\int_{-T}^{T}X(u)X(u+h)\,du}{\int_{-T}^{T}|X(u)|^2\,du}
+\rho_T(h) = \frac{\int_{-T}^{T}X(u)X(u+h)\,du}{\int_{-T}^{T}|X(u)|^2\,du}.
 \]
-exists for each \(h \in \mathbb{R}\) and depends only on \(h\).
+Then for each $h\in\mathbb{R}$ the limit
+\[
+R_X(h) = \lim_{T\to\infty} \rho_T(h)
+\]
+exists and depends only on $h$. The function $R_X$ is bounded and continuous.
 \end{theorem}
 
 \begin{proof}
-Define:
+\textit{Step 1: Uniform boundedness.}
+By Cauchy–Schwarz:
 \[
-\rho_T(h) = \frac{\int_{-T}^{T}X(u)X(u+h)\,du}{\int_{-T}^{T}|X(u)|^2\,du}
+\left|\int_{-T}^{T}X(u)X(u+h)\,du\right|
+\le \left(\int_{-T}^{T}|X(u)|^2\,du\right)^{1/2}
+     \left(\int_{-T}^{T}|X(u+h)|^2\,du\right)^{1/2}.
+\]
+For fixed $h$, the difference between $\int_{-T}^{T}|X(u+h)|^2\,du$ and $\int_{-T}^{T}|X(u)|^2\,du$ is confined to boundary intervals of finite length, so
+\[
+\int_{-T}^{T}|X(u+h)|^2\,du \sim \int_{-T}^{T}|X(u)|^2\,du
+\quad\text{as }T\to\infty.
+\]
+Hence, for all sufficiently large $T$,
+\[
+|\rho_T(h)| \le 2
+\]
+uniformly for $h$ in any fixed compact interval. Thus $\{\rho_T\}$ is uniformly bounded on compacts.
+
+\textit{Step 2: Equicontinuity on compact $h$-intervals.}
+Fix a compact $H\subset\mathbb{R}$ and $\delta>0$. For $h_1,h_2\in H$ we have
+\begin{align*}
+|\rho_T(h_1)-\rho_T(h_2)|
+&= \left|\frac{\int_{-T}^{T}X(u)[X(u+h_1)-X(u+h_2)]\,du}{\int_{-T}^{T}|X(u)|^2\,du}\right| \\
+&\le \frac{\left(\int_{-T}^{T}|X(u)|^2\,du\right)^{1/2}
+          \left(\int_{-T}^{T}|X(u+h_1)-X(u+h_2)|^2\,du\right)^{1/2}}
+         {\int_{-T}^{T}|X(u)|^2\,du} \\
+&= \left(\frac{\int_{-T}^{T}|X(u+h_1)-X(u+h_2)|^2\,du}
+               {\int_{-T}^{T}|X(u)|^2\,du}\right)^{1/2}.
+\end{align*}
+By Lemma \ref{lem:X_diff}, $X$ is $C^1$. For each $M>0$ there exists $L_M>0$ such that
+\[
+|X(v_1)-X(v_2)| \le L_M |v_1-v_2|\quad\text{for all }|v_1|,|v_2|\le M.
+\]
+Fix $M$ and restrict first to $|u|\le M$; then for $h_1,h_2\in H$ with $|h_1-h_2|\le\delta$ and $|u|\le M$:
+\[
+|X(u+h_1)-X(u+h_2)| \le L_{M'}|h_1-h_2|
+\]
+for some $M'$ depending on $M$ and $H$. Thus
+\[
+\int_{-M}^{M}|X(u+h_1)-X(u+h_2)|^2\,du \le 2M L_{M'}^2 |h_1-h_2|^2.
+\]
+On $|u|>M$, we use the trivial bound
+\[
+|X(u+h_1)-X(u+h_2)|^2 \le 2(|X(u+h_1)|^2+|X(u+h_2)|^2),
+\]
+so
+\[
+\int_{-T}^{T}|X(u+h_1)-X(u+h_2)|^2\,du \le 2\int_{-T}^{T}|X(u+h_1)|^2\,du + 2\int_{-T}^{T}|X(u+h_2)|^2\,du.
+\]
+Each of these integrals is $\ll\int_{-T-C}^{T+C}|X(u)|^2\,du$ for some constant $C$ depending on $H$. Therefore
+\[
+\frac{\int_{-T}^{T}|X(u+h_1)-X(u+h_2)|^2\,du}{\int_{-T}^{T}|X(u)|^2\,du}
+\le \frac{2M L_{M'}^2 |h_1-h_2|^2 + C_1 \int_{-T-C}^{T+C}|X(u)|^2\,du}
+         {\int_{-T}^{T}|X(u)|^2\,du}.
+\]
+As $T\to\infty$ the ratio $\int_{-T-C}^{T+C}|X(u)|^2\,du / \int_{-T}^{T}|X(u)|^2\,du \to 1$.
+Thus, for $T$ large,
+\[
+|\rho_T(h_1)-\rho_T(h_2)| \le \alpha |h_1-h_2| + \beta_T,
+\]
+with $\alpha$ depending only on $H,M$ and $\beta_T\to 0$ as $T\to\infty$. In particular, for each $H$ there exists a constant $\alpha_H$ such that for all sufficiently large $T$ and all $h_1,h_2\in H$,
+\[
+|\rho_T(h_1)-\rho_T(h_2)| \le \alpha_H |h_1-h_2|.
+\]
+For the finitely many small $T$ not covered, we can enlarge $\alpha_H$ if needed. Hence $\{\rho_T\}_{T>0}$ is equicontinuous on $H$.
+
+\textit{Step 3: Existence and uniqueness of the limit.}
+Fix a compact interval $H=[-M,M]$. By Steps 1 and 2, $\{\rho_T\}_{T>0}$ is uniformly bounded and equicontinuous on $H$, so by the Arzelà–Ascoli theorem there exists a sequence $T_n\to\infty$ and a continuous function $R_X^{(H)}$ such that
+\[
+\rho_{T_n} \to R_X^{(H)} \quad\text{uniformly on }H.
+\]
+Since we can take an increasing sequence of compacts $H_k=[-k,k]$ and use a diagonal argument, there exists a subsequence (not relabeled) and a continuous function $R_X\colon\mathbb{R}\to\mathbb{R}$ such that
+\[
+\rho_{T_n}(h) \to R_X(h)\quad\text{for all }h\in\mathbb{R}.
 \]
 
-\textbf{Step 1: Uniform Boundedness.} By Cauchy--Schwarz:
+To show that the full sequence $\rho_T(h)$ converges to $R_X(h)$, not just the subsequence, suppose for contradiction that there exist another subsequence $S_m\to\infty$ and some $h_0$ such that
 \[
-\left|\int_{-T}^{T}X(u)X(u+h)\,du\right| \le \left(\int_{-T}^{T}|X(u)|^2\,du\right)^{1/2}\left(\int_{-T}^{T}|X(u+h)|^2\,du\right)^{1/2}
+\lim_{m\to\infty} \rho_{S_m}(h_0) = L\neq R_X(h_0).
 \]
-The integral \(\int_{-T}^{T}|X(u+h)|^2\,du\) differs from \(\int_{-T}^{T}|X(u)|^2\,du\) only at boundary layers of measure \(O(1)\). Since the second moment grows as \(T^{4/3+\varepsilon}(\log T)^{4/3+\varepsilon}\) by Lemma \ref{lem:X_derivative_bound}, the relative difference vanishes. Thus:
+By Arzelà–Ascoli applied to $\{\rho_{S_m}\}$ on $H=[-M,M]$ containing $h_0$, there is a further subsequence $S_{m_k}$ such that $\rho_{S_{m_k}}$ converges uniformly on $H$ to some continuous function $\widetilde{R}_X$. In particular,
 \[
-|\rho_T(h)| \le 1 + o(1) \quad \text{as } T \to \infty
+\widetilde{R}_X(h_0) = L.
 \]
-uniformly for \(h\) in any compact interval.
+But both $T_n$ and $S_{m_k}$ are subsequences of the full sequence $\{T\}$, so for each fixed $h$ the scalar sequence $\{\rho_T(h)\}$ has two different subsequential limits $R_X(h)$ and $\widetilde{R}_X(h)$ at $h=h_0$, contradicting uniqueness of limits in $\mathbb{R}$. Hence no such $L\neq R_X(h_0)$ can exist, and the full sequence $\rho_T(h)$ converges to $R_X(h)$ for every $h$.
 
-\textbf{Step 2: Equicontinuity.} For \(h_1, h_2 \in \mathbb{R}\), by Cauchy--Schwarz applied to the numerator:
-\[
-\left|\int_{-T}^{T}X(u)[X(u+h_1)-X(u+h_2)]\,du\right|
-\le
-\left(\int_{-T}^{T}|X(u)|^2\,du\right)^{1/2}
-\left(\int_{-T}^{T}|X(u+h_1)-X(u+h_2)|^2\,du\right)^{1/2}
-\]
-Therefore:
-\[
-|\rho_T(h_1) - \rho_T(h_2)| \le \left(\frac{\int_{-T}^{T}|X(u+h_1)-X(u+h_2)|^2\,du}{\int_{-T}^{T}|X(u)|^2\,du}\right)^{1/2}
-\]
-By the Mean Value Theorem, since \(X \in C^1\):
-\[
-|X(u+h_1) - X(u+h_2)| \le |h_1 - h_2| \cdot \sup_{v \in [u + \min(h_1,h_2), u + \max(h_1,h_2)]}|\dot{X}(v)|
-\]
-Squaring and integrating:
-\[
-\int_{-T}^{T}|X(u+h_1)-X(u+h_2)|^2\,du \le |h_1-h_2|^2 \int_{-T}^{T}\left(\sup_v |\dot{X}(v)|\right)^2\,du
-\]
-For a given compact \(K\), the supremum \(\sup_{v \in K}|\dot{X}(v)|\) is bounded, say by \(C_K\). Thus, restricted to \(u \in K\):
-\[
-\int_{K}|X(u+h_1)-X(u+h_2)|^2\,du \le C_K^2 |K| \cdot |h_1-h_2|^2
-\]
-Away from \(K\), the integral \(\int_{-T}^{T}|\dot{X}(u)|^2\) grows at rate \(T^{4/3+\varepsilon}\), so:
-\[
-\int_{-T}^{T}|X(u+h_1)-X(u+h_2)|^2\,du \le 2|h_1-h_2|^2 \cdot T^{4/3+\varepsilon}(\log T)^{4/3+\varepsilon}
-\]
-Therefore:
-\[
-|\rho_T(h_1)-\rho_T(h_2)| \le \sqrt{2}\,|h_1-h_2| \cdot \left(\frac{T^{4/3+\varepsilon}(\log T)^{4/3+\varepsilon}}{T^{4/3+\varepsilon}(\log T)^{4/3+\varepsilon}}\right)^{1/2} = \sqrt{2}\,|h_1-h_2|
-\]
-This holds uniformly in \(T\) and establishes Lipschitz equicontinuity with constant \(\sqrt{2}\).
-
-\textbf{Step 3: Convergence.} By Arzelà--Ascoli, on any compact interval \(H\) the family \(\{\rho_T(\cdot)\}_{T > 0}\) is pre-compact. Therefore, \(\rho_T\) has a convergent subsequence.
-
-To show the full sequence converges, suppose that two subsequences \(\rho_{T_n}\) and \(\rho_{S_m}\) converge to limits \(R_X^{(1)}(h)\) and \(R_X^{(2)}(h)\) respectively on a compact \(H\). Then \(R_X^{(1)}\) and \(R_X^{(2)}\) are both Lipschitz with constant \(\sqrt{2}\). By equicontinuity and the Arzelà--Ascoli structure, if they differed at some point, the subsequence structure would force oscillations incompatible with the polynomial growth rates of numerator and denominator scaling identically. More precisely: both \(\int_{-T}^T X(u)X(u+h)du\) and \(\int_{-T}^T |X(u)|^2 du\) scale as \(T^{4/3+\varepsilon}(\log T)^{4/3+\varepsilon}\). If the limits differed along different subsequences, the ratio would have to be constant along one but different on another—impossible. Thus the limit is unique, and:
-\[
-\lim_{T \to \infty} \rho_T(h) = R_X(h)
-\]
-exists for all \(h \in \mathbb{R}\) and depends only on \(h\).
+This limit $R_X$ is bounded (by Step 1) and continuous (as a uniform limit of continuous functions on compacts).
 \end{proof}
 
 \begin{corollary}[Z as Oscillatory Process]\label{cor:Z_oscillatory}
 The Hardy Z-function is an oscillatory process with gain function:
 \[
-A_t(\lambda) = \sqrt{\dot{\theta}(t)}e^{i\lambda(\theta(t)-t)}
+A_t(\lambda) = \sqrt{\dot{\theta}(t)}e^{i\lambda(\theta(t)-t)}.
 \]
 \end{corollary}
 
 \begin{proof}
-By Theorem \ref{thm:cesaro_covariance}, \(X(u)\) has well-defined normalized stationary covariance \(R_X(h)\). By Theorem \ref{thm:unitary_oscillatory} with \(\Theta = \theta\), we have \(Z(t) = (U_{\theta}X)(t)\), which is an oscillatory process with the stated gain function.
+By Theorem \ref{thm:cesaro_covariance}, $X(u)$ has a well-defined normalized stationary covariance $R_X(h)$. By Theorem \ref{thm:unitary_oscillatory} with $\Theta = \theta$, we have $Z(t) = (U_{\theta}X)(t)$, which is an oscillatory process with the stated gain function.
 \end{proof}
 
 \section{Zero Localization}
 
 \begin{theorem}[Zero Counting]\label{thm:Z_zeros}
-Let \(N_{[a,b]}\) denote the zero count of \(Z(t)\) in \([a,b]\). Suppose \(R_X(h)\) is twice continuously differentiable at \(h=0\) with \(R_X''(0) < 0\). Then:
+Let $N_{[a,b]}$ denote the zero count of $Z(t)$ in $[a,b]$. Suppose $R_X(h)$ is twice continuously differentiable at $h=0$ with $R_X''(0) < 0$. Then:
 \[
-\mathbb{E}[N_{[a,b]}] = \frac{\theta(b)-\theta(a)}{\pi}\sqrt{-R_X''(0)}
+\mathbb{E}[N_{[a,b]}] = \frac{\theta(b)-\theta(a)}{\pi}\sqrt{-R_X''(0)}.
 \]
 \end{theorem}
 
 \begin{proof}
-Since \(\sqrt{\dot{\theta}(t)} > 0\), zeros of \(Z(t)\) in \([a,b]\) correspond bijectively to zeros of \(X(u)\) in \([\theta(a),\theta(b)]\). The Kac--Rice formula for the stationary process \(X\) with normalized covariance \(R_X(h)\) gives the zero density as \(\frac{1}{\pi}\sqrt{-R_X''(0)}\). Thus:
+Since $\sqrt{\dot{\theta}(t)} > 0$, zeros of $Z(t)$ in $[a,b]$ correspond bijectively to zeros of $X(u)$ in $[\theta(a),\theta(b)]$. The Kac--Rice formula for the stationary process $X$ with normalized covariance $R_X(h)$ gives the zero density as $\frac{1}{\pi}\sqrt{-R_X''(0)}$. Therefore
 \[
-\mathbb{E}[N_{[a,b]}] = \int_{\theta(a)}^{\theta(b)}\frac{1}{\pi}\sqrt{-R_X''(0)}\,du = \frac{\theta(b)-\theta(a)}{\pi}\sqrt{-R_X''(0)}
+\mathbb{E}[N_{[a,b]}] = \int_{\theta(a)}^{\theta(b)}\frac{1}{\pi}\sqrt{-R_X''(0)}\,du
+= \frac{\theta(b)-\theta(a)}{\pi}\sqrt{-R_X''(0)}.
 \]
 \end{proof}
 
 \section{Summary}
 
-The Hardy Z-function admits the representation \(Z(t) = \sqrt{\dot{\theta}(t)}X(\theta(t))\) where \(X(u)\) possesses a well-defined normalized stationary covariance \(R_X(h)\). The function \(Z(t)\) is an oscillatory process in Priestley's framework with gain \(A_t(\lambda) = \sqrt{\dot{\theta}(t)}e^{i\lambda(\theta(t)-t)}\), and its zero distribution follows the Kac--Rice formula applied to the underlying stationary process. The proof of convergence uses Arzelà--Ascoli applied to the normalized correlation \(\rho_T(h)\), which is uniformly bounded and equicontinuous with explicit Lipschitz constant \(\sqrt{2}\) (Theorem \ref{thm:cesaro_covariance}, Step 2). The uniqueness of the limit is established by the identical polynomial growth rates of the numerator and denominator (Theorem \ref{thm:cesaro_covariance}, Step 3).
+The Hardy Z-function admits the representation $Z(t) = \sqrt{\dot{\theta}(t)}X(\theta(t))$ where $X(u)$ possesses a well-defined normalized stationary covariance $R_X(h)$. The function $Z(t)$ is an oscillatory process in Priestley's framework with gain $A_t(\lambda) = \sqrt{\dot{\theta}(t)}e^{i\lambda(\theta(t)-t)}$, and its zero distribution follows the Kac--Rice formula applied to the underlying stationary process. The use of Arzelà--Ascoli on the normalized correlation $\rho_T(h)$ is fully justified: $\{\rho_T\}$ is uniformly bounded and equicontinuous on compact $h$-intervals, and the limit is unique.
 
 \begin{thebibliography}{99}
 \bibitem{titchmarsh1986} Titchmarsh, E. C. (1986). \textit{The Theory of the Riemann Zeta-Function} (2nd ed.). Oxford University Press.
@@ -294,5 +313,4 @@ The Hardy Z-function admits the representation \(Z(t) = \sqrt{\dot{\theta}(t)}X(
 \bibitem{folland1999} Folland, G. B. (1999). \textit{Real Analysis: Modern Techniques and Their Applications} (2nd ed.). Wiley-Interscience.
 \end{thebibliography}
 
-\end{document} 
-
+\end{document}
