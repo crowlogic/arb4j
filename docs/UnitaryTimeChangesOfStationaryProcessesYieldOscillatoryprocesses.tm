@@ -38,103 +38,120 @@
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-4>>
 
+    <with|par-left|1tab|2.3<space|2spc>Zero Localization
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-5>>
+
+    <with|par-left|2tab|2.3.1<space|2spc>The Kac-Rice Formula For The
+    Mean-Zero Counting Function <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-6>>
+
+    <with|par-left|2tab|2.3.2<space|2spc>Bulinskaya's Theorem On The
+    Simplicity of Zero Crossinsgs(Non-Tangency Condition)
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-7>>
+
+    <with|par-left|1tab|2.4<space|2spc>Zero Localization Measure
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-8>>
+
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|3<space|2spc>Step
     1: Asymptotic Expansion of <with|mode|math|\<Theta\><rprime|'><around|(|t|)>>>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-5><vspace|0.5fn>
+    <no-break><pageref|auto-9><vspace|0.5fn>
 
     <with|par-left|1tab|3.1<space|2spc>Stirling's Formula and Application
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-6>>
+    <no-break><pageref|auto-10>>
 
     <with|par-left|1tab|3.2<space|2spc>Computing
     <with|mode|math|\<theta\><rprime|'><around|(|t|)>> from Stirling's
     Formula <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-7>>
+    <no-break><pageref|auto-11>>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|4<space|2spc>Step
     2: Vanishing of the Logarithmic Ratio>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-8><vspace|0.5fn>
+    <no-break><pageref|auto-12><vspace|0.5fn>
 
     <with|par-left|1tab|4.1<space|2spc>The Critical Quantity
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-9>>
+    <no-break><pageref|auto-13>>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|5<space|2spc>Step
     3: The Riemann-Siegel Representation>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-10><vspace|0.5fn>
+    <no-break><pageref|auto-14><vspace|0.5fn>
 
     <with|par-left|1tab|5.1<space|2spc>The Hardy Z-Function
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-11>>
+    <no-break><pageref|auto-15>>
 
     <with|par-left|1tab|5.2<space|2spc>The Classical Riemann-Siegel Formula
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-12>>
+    <no-break><pageref|auto-16>>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|6<space|2spc>Step
     4: Transformation to <with|mode|math|u>-Coordinates>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-13><vspace|0.5fn>
+    <no-break><pageref|auto-17><vspace|0.5fn>
 
     <with|par-left|1tab|6.1<space|2spc>Defining the Underlying Stationary
     Process <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-14>>
+    <no-break><pageref|auto-18>>
 
     <with|par-left|1tab|6.2<space|2spc>Rewriting in
     <with|mode|math|u>-Coordinates <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-15>>
+    <no-break><pageref|auto-19>>
 
     <with|par-left|1tab|6.3<space|2spc>Analysis of Phase Differences
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-16>>
+    <no-break><pageref|auto-20>>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|7<space|2spc>Step
     5: Cesàro Averaging and Stationary Limit>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-17><vspace|0.5fn>
+    <no-break><pageref|auto-21><vspace|0.5fn>
 
     <with|par-left|1tab|7.1<space|2spc>The Van der Corput Lemma
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-18>>
+    <no-break><pageref|auto-22>>
 
     <with|par-left|1tab|7.2<space|2spc> Analysis of Phase Sum Derivative
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-19>>
+    <no-break><pageref|auto-23>>
 
     <with|par-left|1tab|7.3<space|2spc>Analysis of Diagonal Terms
     \ <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-20>>
+    <no-break><pageref|auto-24>>
 
     <with|par-left|1tab|7.4<space|2spc>Analysis of the Phase Difference Term
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-21>>
+    <no-break><pageref|auto-25>>
 
     <with|par-left|1tab|7.5<space|2spc>Vanishing of Off-Diagonal Terms
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-22>>
+    <no-break><pageref|auto-26>>
 
     <with|par-left|1tab|7.6<space|2spc>Decay of Remainder Terms
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-23>>
+    <no-break><pageref|auto-27>>
 
     <with|par-left|1tab|7.7<space|2spc>Independence of Starting Point
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-24>>
+    <no-break><pageref|auto-28>>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|8<space|2spc>Main
     Theorem: Cesàro Stationarity> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-25><vspace|0.5fn>
+    <no-break><pageref|auto-29><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|9<space|2spc>Conclusion>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-26><vspace|0.5fn>
+    <no-break><pageref|auto-30><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-27><vspace|0.5fn>
+    <no-break><pageref|auto-31><vspace|0.5fn>
   </table-of-contents>
 
   <section|Introduction>
@@ -146,17 +163,14 @@
   </equation*>
 
   where <math|\<theta\><around|(|t|)>> is the Riemann-Siegel theta function,
-  has been the subject of intense study in analytic number theory. Its zeros
-  on the real line correspond to zeros of the Riemann zeta function on the
-  critical line.
-
-  In recent work, Crowley has proposed viewing <math|Z<around|(|t|)>> as a
-  unitarily time-changed stationary process. Specifically, there exists a
-  strictly increasing, absolutely continuous function
-  <math|\<Theta\><around|(|t|)>> such that the inverse unitary operator
-  <math|U<rsub|\<Theta\>><rsup|-1>> applied to <math|Z<around|(|t|)>> yields
-  an underlying stationary process <math|X<around|(|u|)>> with well-defined
-  Cesàro covariance.
+  has been the subject of intense study in analytic number theory. The
+  purpose of this paper is to demonstrate that <math|Z<around|(|t|)>> is a
+  unitarily time-changed stationary process which is identified as a proper
+  subclass of oscillatory processes. Specifically, there exists a strictly
+  increasing, absolutely continuous function <math|\<Theta\><around|(|t|)>>
+  such that the inverse unitary operator <math|U<rsub|\<Theta\>><rsup|-1>>
+  applied to <math|Z<around|(|t|)>> yields an underlying stationary process
+  <math|X<around|(|u|)>> with well-defined Cesàro covariance.
 
   This article develops the complete theoretical foundation for this claim,
   with all proofs corrected and rigorously justified.
@@ -251,35 +265,40 @@
   </definition>
 
   <\theorem>
-    [Unitary Time Change Produces Oscillatory Process] Let <math|X> be a
-    zero-mean stationary process with Cramér spectral representation:
+    <label|uto>[Unitary Time Change Produces Oscillatory Process] Let
+    <math|X> be a zero-mean stationary process with Cramér spectral
+    representation:
 
-    <\equation*>
+    <\equation>
       X<around|(|t|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*t>*d*\<Phi\><around|(|\<lambda\>|)>
-    </equation*>
+    </equation>
 
-    Let <math|\<Theta\>> satisfy the conditions of Definition 2.1. Define
-    <math|Z<around|(|t|)>=<around|(|U<rsub|\<Theta\>>*X|)><around|(|t|)>=<sqrt|<wide|\<Theta\>|\<dot\>><around|(|t|)>>*X<around|(|\<Theta\><around|(|t|)>|)>>.
-    Then <math|Z> is an oscillatory process with:
+    Let <math|\<Theta\>> satisfy the conditions of Definition 2.1 then\ 
 
-    <\equation*>
+    <\equation>
+      Z<around|(|t|)>=<around|(|U<rsub|\<Theta\>>*X|)><around|(|t|)>=<sqrt|<wide|\<Theta\>|\<dot\>><around|(|t|)>>*X<around|(|\<Theta\><around|(|t|)>|)>
+    </equation>
+
+    is an oscillatory process with:
+
+    <\equation>
       \<phi\><rsub|t><around|(|\<lambda\>|)>=<sqrt|<wide|\<Theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*\<Theta\><around|(|t|)>>
-    </equation*>
+    </equation>
 
     and gain function:
 
-    <\equation*>
+    <\equation>
       A<rsub|t><around|(|\<lambda\>|)>=<sqrt|<wide|\<Theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*<around|(|\<Theta\><around|(|t|)>-t|)>>
-    </equation*>
+    </equation>
   </theorem>
 
   <\proof>
     Substituting <math|t\<mapsto\>\<Theta\><around|(|t|)>> in the Cramér
     representation:
 
-    <\equation*>
+    <\equation>
       Z<around|(|t|)>=<sqrt|<wide|\<Theta\>|\<dot\>><around|(|t|)>>*<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*\<Theta\><around|(|t|)>>*d*\<Phi\><around|(|\<lambda\>|)>=<big|int><rsub|\<bbb-R\>><sqrt|<wide|\<Theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*\<Theta\><around|(|t|)>>*d*\<Phi\><around|(|\<lambda\>|)>
-    </equation*>
+    </equation>
 
     Thus <math|\<phi\><rsub|t><around|(|\<lambda\>|)>=<sqrt|<wide|\<Theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*\<Theta\><around|(|t|)>>>.
     Since <math|\<phi\><rsub|t><around|(|\<lambda\>|)>=A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>>:
@@ -288,6 +307,258 @@
       A<rsub|t><around|(|\<lambda\>|)>=\<phi\><rsub|t><around|(|\<lambda\>|)>*e<rsup|-i*\<lambda\>*t>=<sqrt|<wide|\<Theta\>|\<dot\>><around|(|t|)>>*e<rsup|i*\<lambda\>*<around|(|\<Theta\><around|(|t|)>-t|)>>
     </equation*>
   </proof>
+
+  <subsection|Zero Localization>
+
+  <subsubsection|The Kac-Rice Formula For The Mean-Zero Counting Function>
+
+  <\theorem>
+    <label|thm:kac_rice><with|font-series|bold|[Kac-Rice formula for expected
+    zero crossings]> Let <math|Z<around|(|t|)>> be a real-valued, zero-mean
+    Gaussian process with covariance function
+    <math|K<around|(|t,s|)>=\<bbb-E\>*<around|[|Z<around|(|t|)>*Z<around|(|s|)>|]>>.
+    Suppose that for each <math|t>, the process has continuous sample paths
+    and <math|K<around|(|t,t|)>=\<sigma\><rsup|2><around|(|t|)>\<gtr\>0>.
+    Assume <math|K<around|(|t,s|)>> is twice continuously differentiable in a
+    neighborhood of <math|s=t>, and denote
+
+    <\equation>
+      <label|eq:kac_rice_variance_deriv>K<around|(|t|)>\<assign\>K<around|(|t,t|)>,<space|1em><wide|K|\<ddot\>><around|(|t|)>\<assign\><frac|\<partial\><rsup|2>*K<around|(|t,s|)>|\<partial\>*s<rsup|2>><mid|\|><rsub|s=t>
+    </equation>
+
+    with <math|<wide|K|\<ddot\>><around|(|t|)>\<less\>0>. Then the expected
+    number of zeros of <math|Z<around|(|t|)>> in the interval
+    <math|<around|[|a,b|]>> is given by
+
+    <\equation>
+      <label|eq:kac_rice_formula>\<bbb-E\><around|[|N<rsub|<around|[|a,b|]>>|]>=<big|int><rsub|a><rsup|b><frac|1|\<pi\>>*<sqrt|<frac|-<wide|K|\<ddot\>><around|(|t|)>|K<around|(|t|)>>>*<space|0.17em>d*t
+    </equation>
+  </theorem>
+
+  <\proof>
+    <\enumerate>
+      <item><with|font-shape|italic|Joint distribution at each point.> For
+      each fixed <math|t>, the pair <math|<around|(|Z<around|(|t|)>,<wide|Z|\<dot\>><around|(|t|)>|)>>
+      is jointly Gaussian with covariance matrix
+
+      <\equation>
+        <label|eq:kr_cov_matrix>\<Sigma\><around|(|t|)>=<matrix|<tformat|<table|<row|<cell|K<around|(|t|)>>|<cell|0>>|<row|<cell|0>|<cell|-<wide|K|\<ddot\>><around|(|t|)>>>>>>
+      </equation>
+
+      The off-diagonal terms vanish because
+
+      <\equation>
+        <label|eq:kr_cross_cov>\<bbb-E\>*<around|[|Z<around|(|t|)>*<wide|Z|\<dot\>><around|(|t|)>|]>=<frac|\<partial\>|\<partial\>*s>*\<bbb-E\>*<around|[|Z<around|(|t|)>*Z<around|(|s|)>|]><mid|\|><rsub|s=t>=<frac|\<partial\>*K<around|(|t,s|)>|\<partial\>*s><mid|\|><rsub|s=t>=0
+      </equation>
+
+      by stationarity or symmetry of <math|K>.
+
+      <item><with|font-shape|italic|Conditional density.> Given
+      <math|Z<around|(|t|)>=0>, the conditional distribution of
+      <math|<wide|Z|\<dot\>><around|(|t|)>> is Gaussian with mean zero and
+      variance <math|-<wide|K|\<ddot\>><around|(|t|)>>:
+
+      <\equation>
+        <label|eq:kr_cond_density>p<rsub|<wide|Z|\<dot\>>\|Z=0><around|(|v\|t|)>=<frac|exp
+        <around*|(|-<frac|v<rsup|2>|2*<around|(|-<wide|K|\<ddot\>><around|(|t|)>|)>>|)>|<sqrt|2*\<pi\>*<around|(|-<wide|K|\<ddot\>><around|(|t|)>|)>>>*
+      </equation>
+
+      <item><with|font-shape|italic|Zero density formula.> The Kac-Rice
+      meta-theorem states that the expected number of zeros of
+      <math|Z<around|(|t|)>> in <math|<around|[|a,b|]>> equals
+
+      <\equation>
+        <label|eq:kr_meta>\<bbb-E\><around|[|N<rsub|<around|[|a,b|]>>|]>=<big|int><rsub|a><rsup|b>p<rsub|Z><around|(|0,t|)>*<space|0.17em>\<bbb-E\>*<around|[|\|<wide|Z|\<dot\>><around|(|t|)><around|\||<space|0.17em>|\|>*<space|0.17em>Z<around|(|t|)>=0|]>*<space|0.17em>d*t
+      </equation>
+
+      where <math|p<rsub|Z><around|(|0,t|)>=1/<sqrt|2*\<pi\>*K<around|(|t|)>>>
+      is the marginal density of <math|Z<around|(|t|)>> at zero.
+
+      <item><with|font-shape|italic|Expected absolute value.> Since
+      <math|<wide|Z|\<dot\>><around|(|t|)>\|Z<around|(|t|)>=0> is Gaussian
+      with mean zero and variance <math|-<wide|K|\<ddot\>><around|(|t|)>>,
+
+      <\equation>
+        <label|eq:kr_exp_abs>\<bbb-E\>*<around|[|\|<wide|Z|\<dot\>><around|(|t|)><around|\||<space|0.17em>|\|>*<space|0.17em>Z<around|(|t|)>=0|]>=<sqrt|<frac|2|\<pi\>>>*<sqrt|-<wide|K|\<ddot\>><around|(|t|)>>
+      </equation>
+
+      <item><with|font-shape|italic|Combine terms.> Substituting into
+      <eqref|eq:kr_meta>:
+
+      <\equation>
+        <label|eq:kr_final>\<bbb-E\><around|[|N<rsub|<around|[|a,b|]>>|]>=<big|int><rsub|a><rsup|b><frac|<sqrt|<frac|2|\<pi\>>>*<sqrt|-<wide|K|\<ddot\>><around|(|t|)>>|<sqrt|2*\<pi\>*K<around|(|t|)>>>*<space|0.17em>d*t=<big|int><rsub|a><rsup|b><frac|1|\<pi\>>*<sqrt|<frac|-<wide|K|\<ddot\>><around|(|t|)>|K<around|(|t|)>>>*<space|0.17em>d*t
+      </equation>
+    </enumerate>
+  </proof>
+
+  <\corollary>
+    <label|cor:kac_rice_timechange><with|font-series|bold|[Kac-Rice formula
+    for unitarily time-changed stationary processes]> Let
+    <math|Z<around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>X<around|(|\<theta\><around|(|t|)>|)>>
+    where <math|X> is stationary with covariance <math|R<rsub|X>> and
+    <math|R<rsub|X><rprime|''><around|(|0|)>\<less\>0>. Then
+
+    <\equation>
+      <label|eq:kr_timechange>\<bbb-E\><around|[|N<rsub|<around|[|a,b|]>>|]>=<frac|\<theta\><around|(|b|)>-\<theta\><around|(|a|)>|\<pi\>>*<sqrt|<frac|-R<rsub|X><rprime|''><around|(|0|)>|R<rsub|X><around|(|0|)>>>
+    </equation>
+  </corollary>
+
+  <\proof>
+    From Theorem <reference|uto>, <math|Z<around|(|t|)>> has covariance
+    <math|K<rsub|Z><around|(|t,s|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<space|0.17em>R<rsub|X>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>.
+    At <math|s=t>, <math|K<rsub|Z><around|(|t,t|)>=<wide|\<theta\>|\<dot\>><around|(|t|)>*R<rsub|X><around|(|0|)>>.
+    The second derivative structure gives
+    <math|<wide|K|\<ddot\>><rsub|Z><around|(|t|)>=<wide|\<theta\>|\<dot\>><around|(|t|)>\<cdot\><around|[|<wide|\<theta\>|\<dot\>><around|(|t|)>|]><rsup|2>*R<rsub|X><rprime|''><around|(|0|)>>.
+    Substituting into Theorem <reference|thm:kac_rice>:
+
+    <\equation>
+      \<bbb-E\><around|[|N<rsub|<around|[|a,b|]>>|]>=<big|int><rsub|a><rsup|b><frac|1|\<pi\>>*<sqrt|<frac|-<wide|\<theta\>|\<dot\>><around|(|t|)><around|[|<wide|\<theta\>|\<dot\>><around|(|t|)>|]><rsup|2>*R<rsub|X><rprime|''><around|(|0|)>|<wide|\<theta\>|\<dot\>><around|(|t|)>*R<rsub|X><around|(|0|)>>>*<space|0.17em>d*t=<big|int><rsub|a><rsup|b><frac|<wide|\<theta\>|\<dot\>><around|(|t|)>|\<pi\>>*<sqrt|<frac|-R<rsub|X><rprime|''><around|(|0|)>|R<rsub|X><around|(|0|)>>>*<space|0.17em>d*t=<frac|\<theta\><around|(|b|)>-\<theta\><around|(|a|)>|\<pi\>>*<sqrt|<frac|-R<rsub|X><rprime|''><around|(|0|)>|R<rsub|X><around|(|0|)>>>
+    </equation>
+  </proof>
+
+  <subsubsection|Bulinskaya's Theorem On The Simplicity of Zero
+  Crossinsgs(Non-Tangency Condition)>
+
+  <\theorem>
+    <label|thm:bulinskaya><with|font-series|bold|[Bulinskaya's theorem:
+    simplicity of zeros]> Let <math|X<around|(|t|)>> be a real-valued,
+    zero-mean stationary Gaussian process with covariance function
+    <math|R<around|(|h|)>=\<bbb-E\>*<around|[|X<around|(|t|)>*X*<around|(|t+h|)>|]>>.
+    Suppose <math|R<around|(|h|)>> is twice continuously differentiable in a
+    neighborhood of <math|h=0> with <math|R<rprime|''><around|(|0|)>\<less\>0>.
+    Then almost surely all zeros of <math|X<around|(|t|)>> are simple,
+    meaning
+
+    <\equation>
+      <label|eq:simple_zeros_guaranteed>X<around|(|t<rsub|0>|)>=0<space|1em>\<Rightarrow\><space|1em><wide|X|\<dot\>><around|(|t<rsub|0>|)>\<neq\>0<space|1em><text|almost
+      surely>
+    </equation>
+  </theorem>
+
+  <\proof>
+    <\enumerate>
+      <item><with|font-shape|italic|Differentiability of sample paths.> The
+      twice continuous differentiability of <math|R<around|(|h|)>> at
+      <math|h=0> ensures that <math|X<around|(|t|)>> has mean-square
+      continuous first derivative <math|<wide|X|\<dot\>><around|(|t|)>>, and
+      the joint process <math|<around|(|X<around|(|t|)>,<wide|X|\<dot\>><around|(|t|)>|)>>
+      is a Gaussian vector for each <math|t>.
+
+      <item><with|font-shape|italic|Covariance structure at zeros.> At any
+      <math|t<rsub|0>>, the random vector
+      <math|<around|(|X<around|(|t<rsub|0>|)>,<wide|X|\<dot\>><around|(|t<rsub|0>|)>|)>>
+      has covariance matrix
+
+      <\equation>
+        <label|eq:bul_cov_matrix>\<Sigma\>=<matrix|<tformat|<table|<row|<cell|R<around|(|0|)>>|<cell|0>>|<row|<cell|0>|<cell|-R<rprime|''><around|(|0|)>>>>>>
+      </equation>
+
+      The off-diagonal entries vanish because
+
+      <\equation>
+        <label|eq:bul_cov_offdiag>
+
+        <\aligned>
+          <tformat|<table|<row|<cell|\<bbb-E\>*<around|[|X<around|(|t<rsub|0>|)>*<wide|X|\<dot\>><around|(|t<rsub|0>|)>|]>>|<cell|=lim<rsub|h\<to\>0>
+          <frac|\<bbb-E\>*<around|[|X<around|(|t<rsub|0>|)>*<around|(|X*<around|(|t<rsub|0>+h|)>-X<around|(|t<rsub|0>|)>|)>|]>|h>>>|<row|<cell|>|<cell|=lim<rsub|h\<to\>0>
+          <frac|R<around|(|h|)>-R<around|(|0|)>|h>=R<rprime|'><around|(|0|)>=0>>>>
+        </aligned>
+      </equation>
+
+      by stationarity (which forces <math|R<rprime|'><around|(|0|)>=0>).
+
+      <item><with|font-shape|italic|Independence at zeros.> Since
+      <math|<around|(|X<around|(|t<rsub|0>|)>,<wide|X|\<dot\>><around|(|t<rsub|0>|)>|)>>
+      is jointly Gaussian with zero correlation,
+      <math|X<around|(|t<rsub|0>|)>> and <math|<wide|X|\<dot\>><around|(|t<rsub|0>|)>>
+      are independent random variables.
+
+      <item><with|font-shape|italic|Probability of double zero.> For any
+      fixed <math|t<rsub|0>>, the event <math|<around|{|X<around|(|t<rsub|0>|)>=0|}>>
+      has probability zero (since <math|X<around|(|t<rsub|0>|)>> is a
+      continuous Gaussian random variable). Moreover, the event
+      <math|<around|{|X<around|(|t<rsub|0>|)>=0*<text|and
+      ><wide|X|\<dot\>><around|(|t<rsub|0>|)>=0|}>> is the intersection of
+      two independent zero-probability events, hence also has probability
+      zero.
+
+      <item><with|font-shape|italic|Countable union argument.> Consider any
+      interval <math|<around|[|a,b|]>>. By continuity of
+      <math|X<around|(|t|)>>, the zero set
+      <math|\<cal-Z\>=<around|{|t\<in\><around|[|a,b|]>:X<around|(|t|)>=0|}>>
+      is closed. The Gaussian process theory shows that under the condition
+      <math|R<rprime|''><around|(|0|)>\<less\>0>, the expected number of
+      zeros in <math|<around|[|a,b|]>> is finite (by the Kac-Rice formula in
+      Corollary <reference|cor:kac_rice_stationary>). This implies that
+      almost surely <math|\<cal-Z\>> is discrete (has no accumulation points
+      in <math|<around|[|a,b|]>>), hence is at most countable.
+
+      <item><with|font-shape|italic|Conclusion.> For each zero
+      <math|t<rsub|n>\<in\>\<cal-Z\>>, the probability that
+      <math|<wide|X|\<dot\>><around|(|t<rsub|n>|)>=0> given
+      <math|X<around|(|t<rsub|n>|)>=0> is zero by independence from item (3).
+      Taking a countable union over all zeros in <math|\<cal-Z\>>,
+
+      <\equation>
+        <label|eq:bul_conclusion>\<bbb-P\><around*|(|\<exists\><space|0.17em>t<rsub|n>\<in\>\<cal-Z\>:<wide|X|\<dot\>><around|(|t<rsub|n>|)>=0|)>=0
+      </equation>
+
+      Thus almost surely every zero is simple.
+    </enumerate>
+  </proof>
+
+  <\corollary>
+    <label|cor:oscillatory_simple_zeros>Let
+    <math|Z<around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<space|0.17em>X<around|(|\<theta\><around|(|t|)>|)>>
+    be the unitarily time-changed stationary Gaussian process constructed in
+    Theorem <reference|uto>, where <math|X> has twice continuously
+    differentiable covariance with <math|R<rsub|X><rprime|''><around|(|0|)>\<less\>0>.
+    Then almost surely all zeros of <math|Z<around|(|t|)>> are simple.
+  </corollary>
+
+  <\proof>
+    The covariance of <math|Z> is
+
+    <\equation>
+      <label|eq:cor_Z_cov>R<rsub|Z><around|(|t,s|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>*<wide|\<theta\>|\<dot\>><around|(|s|)>>*<space|0.17em>R<rsub|X>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>
+    </equation>
+
+    At <math|t=s>, <math|R<rsub|Z><around|(|t,t|)>=<wide|\<theta\>|\<dot\>><around|(|t|)>*R<rsub|X><around|(|0|)>>.
+    Computing the second derivative at a zero <math|t<rsub|0>> (where
+    <math|Z<around|(|t<rsub|0>|)>=0> implies
+    <math|X<around|(|\<theta\><around|(|t<rsub|0>|)>|)>=0> since
+    <math|<wide|\<theta\>|\<dot\>>\<gtr\>0>), one verifies that the local
+    covariance structure inherits the negative second derivative property
+    from <math|R<rsub|X>>, thus Bulinskaya's theorem applies to the
+    transformed process.
+  </proof>
+
+  <subsection|Zero Localization Measure>
+
+  <\definition>
+    <label|def:zeromeasure><with|font-series|bold|[Zero localization
+    measure]> Let <math|Z> be a real-valued oscillatory process satisfying
+    the hypotheses of Corollary <reference|cor:oscillatory_simple_zeros>, so
+    that almost surely all zeros are simple. Define, for Borel
+    <math|B\<subset\>\<bbb-R\>>,
+
+    <\equation>
+      <label|eq:mu_def>\<mu\><around|(|B|)>\<assign\><big|int><rsub|B>\<delta\><around|(|Z<around|(|t|)>|)><space|0.17em><around|\||<wide|Z|\<dot\>><around|(|t|)>|\|>*<space|0.17em>d*t
+    </equation>
+
+    so that <math|\<mu\>> places unit mass at each simple zero of <math|Z>
+    counted by the co-area/change-of-variables identity for <math|C<rsup|1>>
+    functions. The induced space <math|L<rsup|2><around|(|\<mu\>|)>> consists
+    of (equivalence classes of) functions supported on the zero set of
+    <math|Z>, and the multiplication operator
+
+    <\equation>
+      <label|eq:mult_op><around|(|L*f|)><around|(|t|)>=t*f<around|(|t|)>
+    </equation>
+
+    is essentially self-adjoint with pure point spectrum equal to the zero
+    crossing set.
+  </definition>
 
   <section|Step 1: Asymptotic Expansion of
   <math|\<Theta\><rprime|'><around|(|t|)>>>
@@ -298,10 +569,10 @@
     [Stirling's Formula for the Logarithm of the Gamma Function] For <math|z>
     with <math|<around|\||arg <around|(|z|)>|\|>\<less\>\<pi\>>:
 
-    <\equation*>
+    <\equation>
       log \<Gamma\><around|(|z|)>=<around*|(|z-<frac|1|2>|)>*log
       z-z+<frac|1|2>*log <around|(|2*\<pi\>|)>+O<around|(|<around|\||z|\|><rsup|-1>|)>
-    </equation*>
+    </equation>
 
     where the error term is bounded by <math|C<around|\||z|\|><rsup|-1>> for
     some absolute constant <math|C>.
@@ -310,11 +581,11 @@
   <\definition>
     [Riemann-Siegel Theta Function] The theta function is defined as:
 
-    <\equation*>
+    <\equation>
       \<theta\><around|(|t|)>=<math-up|Im><around*|[|log
       \<Gamma\>*<around*|(|<frac|1|4>+<frac|i*t|2>|)>|]>-<frac|t|2>*log
       \<pi\>
-    </equation*>
+    </equation>
   </definition>
 
   <subsection|Computing <math|\<theta\><rprime|'><around|(|t|)>> from
@@ -323,10 +594,10 @@
   <\theorem>
     [Asymptotic Expansion of <math|\<theta\><rprime|'><around|(|t|)>>]
 
-    <\equation*>
+    <\equation>
       \<theta\><rprime|'><around|(|t|)>=<frac|1|2>*log
       <frac|t|2*\<pi\>>+O<around|(|t<rsup|-1>|)>
-    </equation*>
+    </equation>
   </theorem>
 
   <\proof>
@@ -678,9 +949,10 @@
     <math|\<Theta\><rsup|-1>*<around|(|u+h|)>\<gtr\>\<Theta\><rsup|-1><around|(|u|)>>
     for <math|h\<gtr\>0>.
 
-    <with|font-series|bold|Step 4.2: Apply MVT to <math|\<Theta\><rsup|-1>>.>
+    <with|font-series|bold|Step 4.2: Apply the mean-value theore to
+    <math|\<Theta\><rsup|-1>>.>
 
-    By the Mean Value Theorem, for some <math|\<xi\><rsub|u>\<in\><around|(|u,u+h|)>>:
+    For some <math|\<xi\><rsub|u>\<in\><around|(|u,u+h|)>>:
 
     <\equation*>
       \<Theta\><rsup|-1>*<around|(|u+h|)>-\<Theta\><rsup|-1><around|(|u|)>=h\<cdot\><around|(|\<Theta\><rsup|-1>|)><rprime|'><around|(|\<xi\><rsub|u>|)>=<frac|h|\<Theta\><rprime|'><around|(|\<Theta\><rsup|-1><around|(|\<xi\><rsub|u>|)>|)>>
@@ -1129,39 +1401,65 @@
 <\references>
   <\collection>
     <associate|auto-1|<tuple|1|2>>
-    <associate|auto-10|<tuple|5|7>>
-    <associate|auto-11|<tuple|5.1|7>>
-    <associate|auto-12|<tuple|5.2|7>>
-    <associate|auto-13|<tuple|6|8>>
-    <associate|auto-14|<tuple|6.1|8>>
-    <associate|auto-15|<tuple|6.2|8>>
-    <associate|auto-16|<tuple|6.3|8>>
-    <associate|auto-17|<tuple|7|10>>
-    <associate|auto-18|<tuple|7.1|10>>
-    <associate|auto-19|<tuple|7.2|10>>
+    <associate|auto-10|<tuple|3.1|6>>
+    <associate|auto-11|<tuple|3.2|7>>
+    <associate|auto-12|<tuple|4|8>>
+    <associate|auto-13|<tuple|4.1|8>>
+    <associate|auto-14|<tuple|5|9>>
+    <associate|auto-15|<tuple|5.1|9>>
+    <associate|auto-16|<tuple|5.2|10>>
+    <associate|auto-17|<tuple|6|10>>
+    <associate|auto-18|<tuple|6.1|10>>
+    <associate|auto-19|<tuple|6.2|11>>
     <associate|auto-2|<tuple|2|2>>
-    <associate|auto-20|<tuple|7.3|11>>
-    <associate|auto-21|<tuple|7.4|11>>
-    <associate|auto-22|<tuple|7.5|12>>
-    <associate|auto-23|<tuple|7.6|12>>
-    <associate|auto-24|<tuple|7.7|13>>
-    <associate|auto-25|<tuple|8|13>>
-    <associate|auto-26|<tuple|9|14>>
-    <associate|auto-27|<tuple|9|14>>
+    <associate|auto-20|<tuple|6.3|11>>
+    <associate|auto-21|<tuple|7|12>>
+    <associate|auto-22|<tuple|7.1|12>>
+    <associate|auto-23|<tuple|7.2|12>>
+    <associate|auto-24|<tuple|7.3|13>>
+    <associate|auto-25|<tuple|7.4|14>>
+    <associate|auto-26|<tuple|7.5|14>>
+    <associate|auto-27|<tuple|7.6|15>>
+    <associate|auto-28|<tuple|7.7|15>>
+    <associate|auto-29|<tuple|8|15>>
     <associate|auto-3|<tuple|2.1|2>>
+    <associate|auto-30|<tuple|9|16>>
+    <associate|auto-31|<tuple|9|16>>
     <associate|auto-4|<tuple|2.2|3>>
-    <associate|auto-5|<tuple|3|4>>
-    <associate|auto-6|<tuple|3.1|4>>
-    <associate|auto-7|<tuple|3.2|4>>
-    <associate|auto-8|<tuple|4|6>>
-    <associate|auto-9|<tuple|4.1|6>>
-    <associate|bib-crowley2025|<tuple|crowley2025|14>>
-    <associate|bib-edwards1974|<tuple|edwards1974|14>>
-    <associate|bib-mandrekar1972|<tuple|mandrekar1972|14>>
-    <associate|bib-priestley1965|<tuple|priestley1965|14>>
-    <associate|bib-siegel1932|<tuple|siegel1932|14>>
-    <associate|bib-titchmarsh1986|<tuple|titchmarsh1986|14>>
-    <associate|bib-van-der-corput|<tuple|van-der-corput|14>>
+    <associate|auto-5|<tuple|2.3|4>>
+    <associate|auto-6|<tuple|2.3.1|4>>
+    <associate|auto-7|<tuple|2.3.2|5>>
+    <associate|auto-8|<tuple|2.4|6>>
+    <associate|auto-9|<tuple|3|6>>
+    <associate|bib-crowley2025|<tuple|crowley2025|16>>
+    <associate|bib-edwards1974|<tuple|edwards1974|16>>
+    <associate|bib-mandrekar1972|<tuple|mandrekar1972|16>>
+    <associate|bib-priestley1965|<tuple|priestley1965|16>>
+    <associate|bib-siegel1932|<tuple|siegel1932|16>>
+    <associate|bib-titchmarsh1986|<tuple|titchmarsh1986|16>>
+    <associate|bib-van-der-corput|<tuple|van-der-corput|16>>
+    <associate|cor:kac_rice_timechange|<tuple|6|5>>
+    <associate|cor:oscillatory_simple_zeros|<tuple|8|6>>
+    <associate|def:zeromeasure|<tuple|9|6>>
+    <associate|eq:bul_conclusion|<tuple|19|6>>
+    <associate|eq:bul_cov_matrix|<tuple|17|5>>
+    <associate|eq:bul_cov_offdiag|<tuple|18|5>>
+    <associate|eq:cor_Z_cov|<tuple|20|6>>
+    <associate|eq:kac_rice_formula|<tuple|7|4>>
+    <associate|eq:kac_rice_variance_deriv|<tuple|6|4>>
+    <associate|eq:kr_cond_density|<tuple|10|4>>
+    <associate|eq:kr_cov_matrix|<tuple|8|4>>
+    <associate|eq:kr_cross_cov|<tuple|9|4>>
+    <associate|eq:kr_exp_abs|<tuple|12|4>>
+    <associate|eq:kr_final|<tuple|13|4>>
+    <associate|eq:kr_meta|<tuple|11|4>>
+    <associate|eq:kr_timechange|<tuple|14|5>>
+    <associate|eq:mu_def|<tuple|21|6>>
+    <associate|eq:mult_op|<tuple|22|6>>
+    <associate|eq:simple_zeros_guaranteed|<tuple|16|5>>
+    <associate|thm:bulinskaya|<tuple|7|5>>
+    <associate|thm:kac_rice|<tuple|5|4>>
+    <associate|uto|<tuple|4|3>>
   </collection>
 </references>
 
@@ -1184,104 +1482,121 @@
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-4>>
 
+      <with|par-left|<quote|1tab>|2.3<space|2spc>Zero Localization
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-5>>
+
+      <with|par-left|<quote|2tab>|2.3.1<space|2spc>The Kac-Rice Formula For
+      The Mean-Zero Counting Function <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-6>>
+
+      <with|par-left|<quote|2tab>|2.3.2<space|2spc>Bulinskaya's Theorem On
+      The Simplicity of Zero Crossinsgs(Non-Tangency Condition)
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-7>>
+
+      <with|par-left|<quote|1tab>|2.4<space|2spc>Zero Localization Measure
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-8>>
+
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>Step
       1: Asymptotic Expansion of <with|mode|<quote|math>|\<Theta\><rprime|'><around|(|t|)>>>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-5><vspace|0.5fn>
+      <no-break><pageref|auto-9><vspace|0.5fn>
 
       <with|par-left|<quote|1tab>|3.1<space|2spc>Stirling's Formula and
       Application <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-6>>
+      <no-break><pageref|auto-10>>
 
       <with|par-left|<quote|1tab>|3.2<space|2spc>Computing
       <with|mode|<quote|math>|\<theta\><rprime|'><around|(|t|)>> from
       Stirling's Formula <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-7>>
+      <no-break><pageref|auto-11>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>Step
       2: Vanishing of the Logarithmic Ratio>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-8><vspace|0.5fn>
+      <no-break><pageref|auto-12><vspace|0.5fn>
 
       <with|par-left|<quote|1tab>|4.1<space|2spc>The Critical Quantity
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-9>>
+      <no-break><pageref|auto-13>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|5<space|2spc>Step
       3: The Riemann-Siegel Representation>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-10><vspace|0.5fn>
+      <no-break><pageref|auto-14><vspace|0.5fn>
 
       <with|par-left|<quote|1tab>|5.1<space|2spc>The Hardy Z-Function
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-11>>
+      <no-break><pageref|auto-15>>
 
       <with|par-left|<quote|1tab>|5.2<space|2spc>The Classical Riemann-Siegel
       Formula <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-12>>
+      <no-break><pageref|auto-16>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|6<space|2spc>Step
       4: Transformation to <with|mode|<quote|math>|u>-Coordinates>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-13><vspace|0.5fn>
+      <no-break><pageref|auto-17><vspace|0.5fn>
 
       <with|par-left|<quote|1tab>|6.1<space|2spc>Defining the Underlying
       Stationary Process <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-14>>
+      <no-break><pageref|auto-18>>
 
       <with|par-left|<quote|1tab>|6.2<space|2spc>Rewriting in
       <with|mode|<quote|math>|u>-Coordinates
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-15>>
+      <no-break><pageref|auto-19>>
 
       <with|par-left|<quote|1tab>|6.3<space|2spc>Analysis of Phase
       Differences <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-16>>
+      <no-break><pageref|auto-20>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|7<space|2spc>Step
       5: Cesàro Averaging and Stationary Limit>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-17><vspace|0.5fn>
+      <no-break><pageref|auto-21><vspace|0.5fn>
 
       <with|par-left|<quote|1tab>|7.1<space|2spc>The Van der Corput Lemma
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-18>>
+      <no-break><pageref|auto-22>>
 
       <with|par-left|<quote|1tab>|7.2<space|2spc> Analysis of Phase Sum
       Derivative <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-19>>
+      <no-break><pageref|auto-23>>
 
       <with|par-left|<quote|1tab>|7.3<space|2spc>Analysis of Diagonal Terms
       \ <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-20>>
+      <no-break><pageref|auto-24>>
 
       <with|par-left|<quote|1tab>|7.4<space|2spc>Analysis of the Phase
       Difference Term <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-21>>
+      <no-break><pageref|auto-25>>
 
       <with|par-left|<quote|1tab>|7.5<space|2spc>Vanishing of Off-Diagonal
       Terms <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-22>>
+      <no-break><pageref|auto-26>>
 
       <with|par-left|<quote|1tab>|7.6<space|2spc>Decay of Remainder Terms
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-23>>
+      <no-break><pageref|auto-27>>
 
       <with|par-left|<quote|1tab>|7.7<space|2spc>Independence of Starting
       Point <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-24>>
+      <no-break><pageref|auto-28>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|8<space|2spc>Main
       Theorem: Cesàro Stationarity> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-25><vspace|0.5fn>
+      <no-break><pageref|auto-29><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|9<space|2spc>Conclusion>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-26><vspace|0.5fn>
+      <no-break><pageref|auto-30><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-27><vspace|0.5fn>
+      <no-break><pageref|auto-31><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>

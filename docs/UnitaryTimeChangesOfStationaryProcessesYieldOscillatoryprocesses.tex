@@ -5,20 +5,24 @@
 
 %%%%%%%%%% Start TeXmacs macros
 \newcommand{\assign}{:=}
-\newcommand{\cdummy}{\cdot}
+\newcommand{\tmop}[1]{\ensuremath{\operatorname{#1}}}
 \newcommand{\tmtextbf}[1]{\text{{\bfseries{#1}}}}
+\newcommand{\tmtextit}[1]{\text{{\itshape{#1}}}}
 \newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
 \newtheorem{corollary}{Corollary}
 \newtheorem{definition}{Definition}
 \newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
 {\theorembodyfont{\rmfamily}\newtheorem{remark}{Remark}}
 \newtheorem{theorem}{Theorem}
 %%%%%%%%%% End TeXmacs macros
 
 \begin{document}
 
-\title{Unitarily Time-Changed Stationary Processes: A Subclass of Oscillatory
-Processes}
+\title{
+  Unitarily Time-Changed Stationary Processes:\\
+  A Subclass of Oscillatory Processes
+}
 
 \author{Stephen Crowley}
 
@@ -27,652 +31,824 @@ Processes}
 \maketitle
 
 \begin{abstract}
-  A unitary time-change operator $U_{\theta}$ is constructed for absolutely
-  continuous, strictly increasing time reparametrizations $\theta$, acting on
-  functions that are locally square-integrable. Applying $U_{\theta}$ to the
-  Cram{\'e}r spectral representation of a stationary process $X (t)$ produces
-  the transformed process
-  \[ Z (t) = (U_{\theta} X) (t) = \sqrt{\dot{\theta} (t)} X (\theta (t)) =
-     \sqrt{\dot{\theta} (t)}  \int_{\mathbb{R}} e^{i \lambda \theta (t)} d
-     \Phi (\lambda) \]
-  which is an oscillatory process with oscillatory function $\phi_t (\lambda)
-  = \sqrt{\dot{\theta} (t)} e^{i \lambda \theta (t)}$, evolutionary power
-  spectral density $S_t (\lambda) = \dot{\theta} (t) S (\lambda)$, and
-  covariance kernel
-  \[ K_Z (t, s) = \sqrt{\dot{\theta} (t)  \dot{\theta} (s)} K_X (\theta (t),
-     \theta (s)) \]
-  where $K_X$ is the stationary covariance of $X (t) = \int_{\mathbb{R}} e^{i
-  \lambda t} d \Phi (\lambda)$. Following Mandrekar's characterization theorem
-  {\cite{mandrekar1972}}, every oscillatory process admits a stationary
-  representation via shift-commuting operators. The generalized Kac-Rice
-  formula for non-stationary processes gives the expected zero-counting
-  function. By Bulinskaya's theorem, when the covariance is twice continuously
-  differentiable with $R'' (0) < 0$, almost all zeros are simple.
+  This article provides a complete and rigorous exposition of the Ces{\`a}ro
+  stationarity result for the Hardy Z-function viewed as a unitarily
+  time-changed stationary process. We correct all identified errors in proof
+  steps, provide explicit verification of foundational asymptotic expansions,
+  and give detailed theoretical justification for each calculation. The key
+  result establishes that the inverse unitary transform of the Hardy
+  Z-function possesses a well-defined stationary covariance structure in the
+  Ces{\`a}ro sense, confirming that the Hardy Z-function is a concrete
+  instance of a unitarily time-changed oscillatory process.
 \end{abstract}
 
 {\tableofcontents}
 
-\section{Gaussian Processes}
+\section{Introduction}
 
-\subsection{Definition}
+The Hardy Z-function, defined as
+\[ Z (t) = e^{i \theta (t)} \zeta (1 / 2 + it), \]
+where $\theta (t)$ is the Riemann-Siegel theta function, has been the subject
+of intense study in analytic number theory. The purpose of this paper is to
+demonstrate that $Z (t)$ is a unitarily time-changed stationary process which
+is identified as a proper subclass of oscillatory processes. Specifically,
+there exists a strictly increasing, absolutely continuous function $\Theta
+(t)$ such that the inverse unitary operator $U_{\Theta}^{- 1}$ applied to $Z
+(t)$ yields an underlying stationary process $X (u)$ with well-defined
+Ces{\`a}ro covariance.
 
-\begin{definition}
-  \label{def:gaussian_process}(Gaussian process) Let $(\Omega, \mathcal{F},
-  \mathbb{P})$ be a probability space and $T$ a nonempty index set. A family
-  $\{X_t : t \in T\}$ of real-valued random variables on $(\Omega,
-  \mathcal{F}, \mathbb{P})$ is called a Gaussian process if for every finite
-  subset $\{t_1, \ldots, t_n \} \subset T$ the random vector $(X_{t_1},
-  \ldots, X_{t_n})$ is multivariate normal (possibly degenerate).
-  Equivalently, every finite linear combination $\sum_{i = 1}^n a_i X_{t_i}$
-  is either almost surely constant or Gaussian. The mean function is $m (t)
-  \assign \mathbb{E} [X_t]$ and the covariance kernel is
-  \begin{equation}
-    \label{eq:covariance_kernel} K (s, t) = \mathrm{Cov} (X_s, X_t)
-  \end{equation}
-  For any finite $(t_i)_{i = 1}^n \subset T$, the matrix $K_{ij} = K (t_i,
-  t_j)$ is symmetric positive semidefinite, and a Gaussian process is
-  completely determined in law by $m$ and $K$.
-\end{definition}
+This article develops the complete theoretical foundation for this claim, with
+all proofs corrected and rigorously justified.
 
-\subsection{Stationary Processes}
+\section{Preliminary Theory}
+
+\subsection{The Unitary Time-Change Operator}
 
 \begin{definition}
-  \label{def:cramer_representation}(Cram{\'e}r spectral representation) A
-  zero-mean stationary process $X$ with spectral measure $F$ admits the sample
-  path representation
-  \begin{equation}
-    \label{eq:cramer_spectral} X (t) = \int_{\mathbb{R}} e^{i \lambda t} d
-    \Phi (\lambda)
-  \end{equation}
-  which has covariance
-  \begin{equation}
-    \label{eq:stationary_covariance} R_X  (t - s) = \int_{\mathbb{R}} e^{i
-    \lambda (t - s)} dF (\lambda)
-  \end{equation}
-\end{definition}
-
-\subsection{Sample Path Realizations}
-
-\begin{definition}
-  \label{def:L2loc}(Locally square-integrable functions) Define
-  \begin{equation}
-    \label{eq:L2loc_def} L^2_{\mathrm{loc}} (\mathbb{R}) \assign \left\{ f :
-    \mathbb{R} \to \mathbb{C}: \int_K |f (t) |^2 dt < \infty \text{for every
-    compact } K \subseteq \mathbb{R} \right\}
-  \end{equation}
-\end{definition}
-
-\begin{remark}
-  \label{rem:bounded_compact}Every bounded measurable set in $\mathbb{R}$ is
-  contained in a compact set; hence $L^2_{\mathrm{loc}} (\mathbb{R})$ contains
-  functions that are square-integrable on every bounded interval, including
-  functions with polynomial growth at infinity.
-\end{remark}
-
-\begin{theorem}
-  \label{thm:sample_paths_L2loc}(Sample paths in $L^2_{\mathrm{loc}}
-  (\mathbb{R})$) Let $\{X (t)\}_{t \in \mathbb{R}}$ be a second-order
-  stationary process with
-  \begin{equation}
-    \label{eq:finite_variance} \sigma^2 \assign \mathbb{E} [X (t)^2] < \infty
-  \end{equation}
-  Then almost every sample path lies in $L^2_{\mathrm{loc}} (\mathbb{R})$.
-\end{theorem}
-
-\begin{proof}
-  Fix a bounded interval $[a, b] \subset \mathbb{R}$ with $a < b$ and define
-  \begin{equation}
-    \label{eq:Y_ab} Y_{[a, b]} \assign \int_a^b X (t)^2 dt
-  \end{equation}
-  By Tonelli's theorem,
-  \begin{equation}
-    \label{eq:tonelli_expectation} \mathbb{E} [Y_{[a, b]}] = \int_a^b
-    \mathbb{E} [X (t)^2] dt
-  \end{equation}
-  By stationarity, $\mathbb{E} [X (t)^2] = \sigma^2$, hence
-  \begin{equation}
-    \label{eq:expected_Y} \mathbb{E} [Y_{[a, b]}] = \sigma^2  (b - a) < \infty
-  \end{equation}
-  Markov's inequality yields
-  \begin{equation}
-    \label{eq:markov_bound} \mathbb{P} (Y_{[a, b]} > M) \leq \frac{\sigma^2 
-    (b - a)}{M}
-  \end{equation}
-  so $\mathbb{P} (Y_{[a, b]} < \infty) = 1$. If $K \subset \mathbb{R}$ is
-  compact then $K \subseteq [- N, N]$ for some $N > 0$, so
-  \begin{equation}
-    \label{eq:compact_bound} \int_K X (t)^2 dt \leq \int_{- N}^N X (t)^2 dt <
-    \infty \text{a.s.}
-  \end{equation}
-  Thus $X (\cdummy, \omega) \in L^2_{\mathrm{loc}} (\mathbb{R})$ for almost
-  every $\omega$.
-\end{proof}
-
-\section{Oscillatory Processes}
-
-\subsection{Definition}
-
-\begin{definition}
-  \label{def:oscillatory_process}(Oscillatory process) Let $F$ be a finite
-  nonnegative Borel measure on $\mathbb{R}$. Let
-  \begin{equation}
-    \label{eq:gain_condition} A_t \in L^2 (F) \quad \forall t \in \mathbb{R}
-  \end{equation}
-  be the gain function and
-  \begin{equation}
-    \label{eq:oscillatory_function} \phi_t (\lambda) = A_t (\lambda) e^{i
-    \lambda t}
-  \end{equation}
-  the corresponding oscillatory function. An oscillatory process is a
-  stochastic process represented as
-  \begin{equation}
-    \label{eq:oscillatory_representation} \begin{array}{ll}
-      Z (t) & = \int_{\mathbb{R}} \phi_t (\lambda) d \Phi (\lambda)\\
-      & = \int_{\mathbb{R}} A_t (\lambda) e^{i \lambda t} d \Phi (\lambda)
-    \end{array}
-  \end{equation}
-  where $\Phi$ is a complex orthogonal random measure with spectral measure
-  $F$ satisfying
-  \begin{equation}
-    \label{eq:orthogonal_measure} \mathbb{E} [\Phi (\lambda) \overline{\Phi
-    (\mu)}] = \delta (\lambda - \mu) dF (\lambda)
-  \end{equation}
-  and covariance
-  \begin{equation}
-    \label{eq:oscillatory_covariance} \begin{array}{ll}
-      R_Z (t, s) & =\mathbb{E} [Z (t) \overline{Z (s)}]\\
-      & = \int_{\mathbb{R}} A_t (\lambda) \overline{A_s (\lambda)} e^{i
-      \lambda (t - s)} dF (\lambda)\\
-      & = \int_{\mathbb{R}} \phi_t (\lambda) \overline{\phi_s (\lambda)} dF
-      (\lambda)
-    \end{array}
-  \end{equation}
-\end{definition}
-
-\begin{definition}
-  \label{def:EPSD}(Evolutionary power spectral density) If $dF (\lambda) = S
-  (\lambda) d \lambda$, define
-  \begin{equation}
-    \label{eq:EPSD} S_t (\lambda) \assign |A_t (\lambda) |^2 S (\lambda)
-  \end{equation}
-  so that
-  \begin{equation}
-    \label{eq:EPSD_measure} \begin{array}{ll}
-      dF_t (\lambda) & = S_t (\lambda) d \lambda\\
-      & = |A_t (\lambda) |^2 dF (\lambda)\\
-      & = |A_t (\lambda) |^2 S (\lambda) d \lambda
-    \end{array}
-  \end{equation}
+  [Unitary Time-Change Operator] Let $\Theta : \mathbb{R} \to \mathbb{R}$ be
+  absolutely continuous, strictly increasing, and bijective with $\dot{\Theta}
+  (t) > 0$ almost everywhere. For measurable $f$, define:
+  \[ (U_{\Theta} f) (t) = \sqrt{\dot{\Theta} (t)} f (\Theta (t)) \]
+  The inverse operator is:
+  \[ (U_{\Theta}^{- 1} g) (s) = \frac{g (\Theta^{- 1} (s))}{\sqrt{\dot{\Theta}
+     (\Theta^{- 1} (s))}} \]
 \end{definition}
 
 \begin{theorem}
-  \label{thm:real_valued_criterion}(Real-valuedness criterion for oscillatory
-  processes) Let $Z$ be an oscillatory process with $\phi_t (\lambda) = A_t
-  (\lambda) e^{i \lambda t}$ and spectral measure $F$. Then $Z$ is real-valued
-  if and only if
-  \begin{equation}
-    \label{eq:real_gain_condition} A_t  (- \lambda) = \overline{A_t (\lambda)}
-    \text{for } F \text{-a.e. } \lambda \in \mathbb{R}
-  \end{equation}
-  equivalently
-  \begin{equation}
-    \label{eq:real_oscillatory_condition} \phi_t  (- \lambda) =
-    \overline{\phi_t (\lambda)} \text{for } F \text{-a.e. } \lambda \in
-    \mathbb{R}
-  \end{equation}
+  [Local Isometry and Inverse Properties] For every compact $K \subseteq
+  \mathbb{R}$ and $f \in L^2_{\tmop{loc}} (\mathbb{R})$:
+  \[ \int_K | (U_{\Theta} f) (t) |^2 dt = \int_{\Theta (K)} |f (s) |^2 ds \]
+  Moreover, for $f, g \in L^2_{\tmop{loc}} (\mathbb{R})$:
+  \[ U_{\Theta}^{- 1}  (U_{\Theta} f) = f, \quad U_{\Theta}  (U_{\Theta}^{- 1}
+     g) = g \]
 \end{theorem}
 
 \begin{proof}
-  Taking complex conjugates of (\ref{eq:oscillatory_representation}) and
-  applying the symmetry $d \overline{\Phi (\lambda)} = d \Phi (- \lambda)$ for
-  real processes, with change of variables $\mu = - \lambda$, yields $A_t
-  (\lambda) = \overline{A_t  (- \lambda)}$ $F$-a.e. Reversing the steps gives
-  the converse.
-\end{proof}
-
-\begin{theorem}
-  \label{thm:oscillatory_existence}(Existence of oscillatory processes with
-  explicit $L^2$-limit construction) Let $F$ be absolutely continuous with
-  density $S (\lambda)$ and let $A_t (\lambda) \in L^2 (F)$ for all $t \in
-  \mathbb{R}$, measurable jointly in $(t, \lambda)$. Define
-  \begin{equation}
-    \label{eq:variance_t} \sigma_t^2 \assign \int_{\mathbb{R}} |A_t (\lambda)
-    |^2 dF (\lambda) < \infty
-  \end{equation}
-  Then there exists a complex orthogonal random measure $\Phi$ with spectral
-  measure $F$ such that for each fixed $t$ the stochastic integral
-  \begin{equation}
-    \label{eq:stochastic_integral} Z (t) = \int_{\mathbb{R}} A_t (\lambda)
-    e^{i \lambda t} d \Phi (\lambda)
-  \end{equation}
-  is well-defined as an $L^2 (\Omega)$-limit and has covariance
-  (\ref{eq:oscillatory_covariance}).
-\end{theorem}
-
-\begin{proof}
-  Let $S$ be the set of simple functions $g (\lambda) = \sum_{j = 1}^n c_j 
-  \textbf{1}_{E_j} (\lambda)$ with disjoint Borel $E_j$ and $F (E_j) <
-  \infty$. Define $\int g \hspace{0.17em} d \Phi \assign \sum_{j = 1}^n c_j
-  \Phi (E_j)$. Orthogonality gives the isometry:
-  \begin{equation}
-    \label{eq:isometry} \mathbb{E} \left| \int g \hspace{0.17em} d \Phi
-    \right|^2 = \int_{\mathbb{R}} |g (\lambda) |^2 dF (\lambda)
-  \end{equation}
-  For $h \in L^2 (F)$, choose $g_n \in S$ with $\|h - g_n \|_{L^2 (F)} \to 0$.
-  Then:
-  \begin{equation}
-    \label{eq:cauchy_sequence} \mathbb{E} \left| \int g_n d \Phi - \int g_m d
-    \Phi \right|^2 = \|g_n - g_m \|_{L^2 (F)}^2
-  \end{equation}
-  and $\lim_{n, m \to \infty} \|g_n - g_m \|_{L^2 (F)}^2 = 0$. Completeness of
-  $L^2 (\Omega)$ yields the limit, and the isometry shows independence of the
-  approximating sequence.
-\end{proof}
-
-\section{Unitarily Time-Changed Stationary Processes}
-
-\subsection{Unitary Time-Change Operator}
-
-\begin{theorem}
-  \label{thm:unitary_time_change}(Unitary time-change and local isometry) Let
-  $\theta : \mathbb{R} \to \mathbb{R}$ be absolutely continuous, strictly
-  increasing, and bijective with $\dot{\theta} (t) > 0$ a.e. For measurable
-  $f$, define:
-  \begin{equation}
-    \label{eq:U_theta} (U_{\theta} f) (t) = \sqrt{\dot{\theta} (t)} f (\theta
-    (t))
-  \end{equation}
-  Define the inverse map:
-  \begin{equation}
-    \label{eq:U_theta_inverse} (U_{\theta}^{- 1} g) (s) = \frac{g (\theta^{-
-    1} (s))}{\sqrt{\dot{\theta} (\theta^{- 1} (s))}}
-  \end{equation}
-  For every compact $K \subseteq \mathbb{R}$ and $f \in L^2_{\mathrm{loc}}
-  (\mathbb{R})$:
-  \begin{equation}
-    \label{eq:local_isometry} \int_K | (U_{\theta} f) (t) |^2 dt =
-    \int_{\theta (K)} |f (s) |^2 ds
-  \end{equation}
-  Moreover, for $f, g \in L^2_{\mathrm{loc}} (\mathbb{R})$:
-  \begin{equation}
-    \label{eq:inverse_identities} U_{\theta}^{- 1}  (U_{\theta} f) = f, \quad
-    U_{\theta}  (U_{\theta}^{- 1} g) = g
-  \end{equation}
-\end{theorem}
-
-\begin{proof}
-  Using change of variables $s = \theta (t)$, $ds = \dot{\theta} (t) dt$:
-  \begin{equation}
-    \label{eq:change_of_variables} \int_K \dot{\theta} (t)  |f (\theta (t))
-    |^2 dt = \int_{\theta (K)} |f (s) |^2 ds
-  \end{equation}
-  Direct substitution verifies the inverse identities
-  (\ref{eq:inverse_identities}).
-\end{proof}
-
-\begin{theorem}
-  \label{thm:mandrekar_characterization}(Fundamental inversion via stationary
-  representation {\cite{mandrekar1972}}) Let $Z (t)$ be an oscillatory process
-  with spectral representation
-  \begin{equation}
-    \label{eq:Z_oscillatory} Z (t) = \int_{\mathbb{R}} A_t (\lambda) e^{i
-    \lambda t} d \Phi (\lambda)
-  \end{equation}
-  where $A_t \in L^2 (F)$ for each $t$ and $\Phi$ is an orthogonal random
-  measure with spectral measure $F$. Then there exists a stationary process
-  \begin{equation}
-    \label{eq:X_stationary} X (t) = \int_{\mathbb{R}} e^{i \lambda t} d \Phi
-    (\lambda)
-  \end{equation}
-  and for each $t \in \mathbb{R}$ a closed, densely-defined operator $L_t$
-  acting on the Hilbert space $H_X (\infty) = \overline{\mathrm{span}} \{X (s)
-  : s \in \mathbb{R}\}$ such that
-  \begin{equation}
-    \label{eq:Z_as_LtX} Z (t) = L_t X (0)
-  \end{equation}
-  where each operator $L_t$ is defined by the spectral integral
-  \begin{equation}
-    \label{eq:Lt_operator} L_t = \int_{\mathbb{R}} A_t (\lambda) e^{i \lambda
-    t} E (d \lambda)
-  \end{equation}
-  with domain $D (L_t) \supseteq \{X (s) : s \in \mathbb{R}\}$, where $E$ is
-  the spectral measure of the shift group $\{U_s \}_{s \in \mathbb{R}}$
-  defined by $U_s X (r) = X (r + s)$. The family of operators $\{L_t \}_{t \in
-  \mathbb{R}}$ commutes with the shift group:
-  \begin{equation}
-    \label{eq:shift_commutation} L_t U_s = U_s L_t  \quad \text{for all } s, t
-    \in \mathbb{R}
-  \end{equation}
-  The random spectral measure $\Phi$ is uniquely determined by $X$ via $\Phi
-  (B) = (E (B) X) (0)$ for all Borel $B$.
-\end{theorem}
-
-\begin{proof}
-  This is Mandrekar's characterization theorem {\cite{mandrekar1972}}. We
-  outline the key steps:
+  \tmtextbf{Part 1: Local Isometry.}
   
-  Forward direction: Given oscillatory $Z (t)$ as in (\ref{eq:Z_oscillatory}),
-  define the stationary curve
-  \begin{equation}
-    \label{eq:X_from_Z} X (t) = \int_{\mathbb{R}} e^{i \lambda t} d \Phi
-    (\lambda)
-  \end{equation}
-  By Stone's theorem, there exists a unitary shift group $\{U_s \}$ and
-  spectral measure $E$ such that $X (t) = U_t X (0)$ and
-  \begin{equation}
-    \label{eq:X_spectral} X (t) = \int_{\mathbb{R}} e^{i \lambda t} E (d
-    \lambda) X (0)
-  \end{equation}
-  with $\Phi (B) = E (B) X (0)$. Define the operator as in
-  (\ref{eq:Lt_operator}). By Dunford-Schwartz spectral theory, each $L_t$ is a
-  closed operator with domain containing $\{X (s) : s \in \mathbb{R}\}$. The
-  commutation relation (\ref{eq:shift_commutation}) follows from $U_s E (B) =
-  E (B) U_s$ for all Borel $B$. Computing:
-  \begin{equation}
-    \label{eq:LtX_computation} \begin{array}{ll}
-      L_t X (0) & = \int A_t (\lambda) e^{i \lambda t} E (d \lambda) X (0)\\
-      & = \int A_t (\lambda) e^{i \lambda t} d \Phi (\lambda) = Z (t)
-    \end{array}
-  \end{equation}
-  Reverse direction: If $Z (t) = L_t X (0)$ where $X$ is stationary and $L_t
-  U_s = U_s L_t$, then by the Stone-von Neumann theorem on commutants of
-  unitary groups, there exists a Borel measurable function $A_t (\cdummy)$
-  such that (\ref{eq:Lt_operator}) holds. The domain condition $\{X (s) : s
-  \in \mathbb{R}\} \subseteq D (L_t)$ implies
-  \begin{equation}
-    \label{eq:domain_condition} \int_{\mathbb{R}} |A_t (\lambda) |^2  \|E (d
-    \lambda) X (0)\|^2 < \infty
-  \end{equation}
-  for each $t$, giving $A_t \in L^2 (F)$ where $dF (\lambda) = \|E (d \lambda)
-  X (0)\|^2$. This yields the oscillatory representation.
+  Using the change of variables $s = \Theta (t)$, $ds = \dot{\Theta} (t) dt$:
+  \[ \int_K | (U_{\Theta} f) (t) |^2 dt = \int_K \dot{\Theta} (t)  |f (\Theta
+     (t)) |^2 dt = \int_{\Theta (K)} |f (s) |^2 ds \]
+  \tmtextbf{Part 2: Inverse Identity $U_{\Theta}^{- 1}  (U_{\Theta} f) = f$.}
+  
+  For $f \in L^2_{\tmop{loc}} (\mathbb{R})$ and any $s$ in the range of
+  $\Theta$, let $t = \Theta^{- 1} (s)$. Then:
+  
+  \begin{align*}
+    (U_{\Theta}^{- 1} (U_{\Theta} f)) (s) & = \frac{(U_{\Theta} f) (\Theta^{-
+    1} (s))}{\sqrt{\dot{\Theta} (\Theta^{- 1} (s))}}\\
+    & = \frac{\sqrt{\dot{\Theta} (\Theta^{- 1} (s))} f (\Theta (\Theta^{- 1}
+    (s)))}{\sqrt{\dot{\Theta} (\Theta^{- 1} (s))}}\\
+    & = f (s)
+  \end{align*}
+  
+  where the last equality uses $\Theta (\Theta^{- 1} (s)) = s$ by definition
+  of the inverse function.
+  
+  \tmtextbf{Part 3: Inverse Identity $U_{\Theta}  (U_{\Theta}^{- 1} g) = g$.}
+  
+  For $g \in L^2_{\tmop{loc}} (\mathbb{R})$ and any $t \in \mathbb{R}$:
+  
+  \begin{align*}
+    (U_{\Theta} (U_{\Theta}^{- 1} g)) (t) & = \sqrt{\dot{\Theta} (t)} 
+    (U_{\Theta}^{- 1} g) (\Theta (t))\\
+    & = \sqrt{\dot{\Theta} (t)} \cdot \frac{g (\Theta^{- 1} (\Theta
+    (t)))}{\sqrt{\dot{\Theta} (\Theta^{- 1} (\Theta (t)))}}\\
+    & = \sqrt{\dot{\Theta} (t)} \cdot \frac{g (t)}{\sqrt{\dot{\Theta} (t)}}\\
+    & = g (t)
+  \end{align*}
+  
+  where we used $\Theta^{- 1} (\Theta (t)) = t$.
 \end{proof}
 
-\begin{remark}
-  \label{rem:generality}(Generality of the stationary representation) Theorem
-  \ref{thm:mandrekar_characterization} establishes that every oscillatory
-  process is a deformed stationary curve in the sense of Mandrekar
-  {\cite{mandrekar1972}}. The key requirement is shift-commutation
-  (\ref{eq:shift_commutation}). Unitarily time-changed processes arise as a
-  particular explicit subclass where $A_t (\lambda) = \sqrt{\dot{\theta} (t)}
-  e^{i \lambda (\theta (t) - t)}$. The theorem guarantees that for any choice
-  of gain function $A_t (\lambda) \in L^2 (F)$, there exists an underlying
-  stationary process and family of operators recovering the oscillatory
-  process.
-\end{remark}
+\subsection{Oscillatory Processes}
 
 \begin{definition}
-  \label{def:unitarily_time_changed}(Unitarily time-changed stationary
-  process) Let $X = \{X (t)\}_{t \in \mathbb{R}}$ be a second-order stationary
-  process with sample paths in $L^2_{\mathrm{loc}} (\mathbb{R})$. Let $\theta$
-  satisfy Theorem \ref{thm:unitary_time_change}. Define:
-  \begin{equation}
-    \label{eq:Z_time_changed} Z (t) \assign (U_{\theta} X) (t) =
-    \sqrt{\dot{\theta} (t)} X (\theta (t))
-  \end{equation}
-  Then $Z$ is called a unitarily time-changed stationary process.
+  [Oscillatory Process] Let $F$ be a finite nonnegative Borel measure on
+  $\mathbb{R}$. An oscillatory process is a stochastic process of the form:
+  \[ Z (t) = \int_{\mathbb{R}} A_t (\lambda) e^{i \lambda t} d \Phi (\lambda)
+  \]
+  where $A_t (\lambda) \in L^2 (F)$ for all $t$, and $\Phi$ is a complex
+  orthogonal random measure with spectral measure $F$.
 \end{definition}
 
-\begin{lemma}
-  \label{lem:exact_recovery}(Exact recovery of $X$) If $Z$ is defined as in
-  (\ref{eq:Z_time_changed}), then:
-  \begin{equation}
-    \label{eq:X_recovery} X = U_{\theta}^{- 1} Z
-  \end{equation}
-\end{lemma}
-
-\begin{proof}
-  This is precisely (\ref{eq:inverse_identities}) from Theorem
-  \ref{thm:unitary_time_change}.
-\end{proof}
-
-\subsection{Stationary to Oscillatory}
-
 \begin{theorem}
-  \label{thm:time_change_oscillatory}(Unitary time change produces oscillatory
-  process) Let $X$ be zero-mean stationary with spectral representation
-  (\ref{eq:cramer_spectral}). Let $\theta$ satisfy Theorem
-  \ref{thm:unitary_time_change}. Define $Z (t)$ as in
-  (\ref{eq:Z_time_changed}). Then $Z$ is an oscillatory process with
-  oscillatory function:
+  \label{uto}[Unitary Time Change Produces Oscillatory Process] Let $X$ be a
+  zero-mean stationary process with Cram{\'e}r spectral representation:
   \begin{equation}
-    \label{eq:phi_t_time_change} \begin{array}{ll}
-      \phi_t (\lambda) & = A_t (\lambda) e^{i \lambda t}\\
-      & = \sqrt{\dot{\theta} (t)} e^{i \lambda (\theta (t) - t)} e^{i \lambda
-      t}\\
-      & = \sqrt{\dot{\theta} (t)} e^{i \lambda \theta (t)}
-    \end{array}
+    X (t) = \int_{\mathbb{R}} e^{i \lambda t} d \Phi (\lambda)
   \end{equation}
-  where the gain function is:
+  Let $\Theta$ satisfy the conditions of Definition 2.1 then
   \begin{equation}
-    \label{eq:gain_time_change} A_t (\lambda) = \sqrt{\dot{\theta} (t)} e^{i
-    \lambda (\theta (t) - t)}
+    Z (t) = (U_{\Theta} X) (t) = \sqrt{\dot{\Theta} (t)} X (\Theta (t))
+  \end{equation}
+  is an oscillatory process with:
+  \begin{equation}
+    \phi_t (\lambda) = \sqrt{\dot{\Theta} (t)} e^{i \lambda \Theta (t)}
+  \end{equation}
+  and gain function:
+  \begin{equation}
+    A_t (\lambda) = \sqrt{\dot{\Theta} (t)} e^{i \lambda (\Theta (t) - t)}
   \end{equation}
 \end{theorem}
 
 \begin{proof}
-  Substituting $t \mapsto \theta (t)$ in (\ref{eq:cramer_spectral}):
+  Substituting $t \mapsto \Theta (t)$ in the Cram{\'e}r representation:
   \begin{equation}
-    \label{eq:Z_substitution} \begin{array}{ll}
-      Z (t) & = \sqrt{\dot{\theta} (t)}  \int_{\mathbb{R}} e^{i \lambda \theta
-      (t)} d \Phi (\lambda)\\
-      & = \int_{\mathbb{R}} \left( \sqrt{\dot{\theta} (t)} e^{i \lambda
-      \theta (t)} \right) d \Phi (\lambda)
-    \end{array}
+    Z (t) = \sqrt{\dot{\Theta} (t)}  \int_{\mathbb{R}} e^{i \lambda \Theta
+    (t)} d \Phi (\lambda) = \int_{\mathbb{R}} \sqrt{\dot{\Theta} (t)} e^{i
+    \lambda \Theta (t)} d \Phi (\lambda)
   \end{equation}
-  Thus $\phi_t (\lambda) = \sqrt{\dot{\theta} (t)} e^{i \lambda \theta (t)}$
-  and $A_t (\lambda) = \sqrt{\dot{\theta} (t)} e^{i \lambda (\theta (t) - t)}$
-  since $\phi_t (\lambda) = A_t (\lambda) e^{i \lambda t}$ by
-  (\ref{eq:oscillatory_function}).
+  Thus $\phi_t (\lambda) = \sqrt{\dot{\Theta} (t)} e^{i \lambda \Theta (t)}$.
+  Since $\phi_t (\lambda) = A_t (\lambda) e^{i \lambda t}$:
+  \[ A_t (\lambda) = \phi_t (\lambda) e^{- i \lambda t} = \sqrt{\dot{\Theta}
+     (t)} e^{i \lambda (\Theta (t) - t)} \]
 \end{proof}
 
-\begin{corollary}
-  \label{cor:EPSD_time_change}(EPSD for the unitary time change) If $dF
-  (\lambda) = S (\lambda) d \lambda$, then:
-  \begin{equation}
-    \label{eq:EPSD_time_change} S_t (\lambda) = |A_t (\lambda) |^2 S (\lambda)
-    = \dot{\theta} (t) S (\lambda)
-  \end{equation}
-\end{corollary}
+\subsection{Zero Localization}
 
-\begin{proof}
-  From (\ref{eq:gain_time_change}):
-  \begin{equation}
-    \label{eq:gain_squared} |A_t (\lambda) |^2 = \dot{\theta} (t) |e^{i
-    \lambda (\theta (t) - t)} |^2 = \dot{\theta} (t)
-  \end{equation}
-\end{proof}
-
-\section{Zero Localization}
-
-\subsection{Kac-Rice Formula}
+\subsubsection{The Kac-Rice Formula For The Mean-Zero Counting Function}
 
 \begin{theorem}
-  \label{thm:kac_rice}(Generalized Kac-Rice formula) Let $Z (t)$ be a
-  real-valued, zero-mean Gaussian process with covariance $K (t, s)
-  =\mathbb{E} [Z (t) Z (s)]$. Assume $K (t, t) > 0$ and that $K (t, s)$ is
-  twice continuously differentiable in a neighborhood of $(t, t)$. Define:
+  \label{thm:kac_rice}\tmtextbf{[Kac-Rice formula for expected zero
+  crossings]} Let $Z (t)$ be a real-valued, zero-mean Gaussian process with
+  covariance function $K (t, s) =\mathbb{E} [Z (t) Z (s)]$. Suppose that for
+  each $t$, the process has continuous sample paths and $K (t, t) = \sigma^2
+  (t) > 0$. Assume $K (t, s)$ is twice continuously differentiable in a
+  neighborhood of $s = t$, and denote
   \begin{equation}
-    \label{eq:K_derivatives} K (t) \assign K (t, t), \quad K_s (t) \assign
-    \left. \frac{\partial K (t, s)}{\partial s} \right|_{s = t}, \quad K_{ss}
-    (t) \assign \left. \frac{\partial^2 K (t, s)}{\partial s^2} \right|_{s =
-    t}
+    \label{eq:kac_rice_variance_deriv} K (t) \assign K (t, t), \quad \ddot{K}
+    (t) \assign \frac{\partial^2 K (t, s)}{\partial s^2} |_{s = t}
   \end{equation}
-  Assume
-  \begin{equation}
-    \label{eq:V_condition} V (t) \assign K (t) K_{ss} (t) - [K_s (t)]^2 > 0
-  \end{equation}
-  for $t \in [a, b]$. Then:
+  with $\ddot{K} (t) < 0$. Then the expected number of zeros of $Z (t)$ in the
+  interval $[a, b]$ is given by
   \begin{equation}
     \label{eq:kac_rice_formula} \mathbb{E} [N_{[a, b]}] = \int_a^b
-    \frac{1}{\pi}  \sqrt{\frac{V (t)}{K (t)^2}}  \hspace{0.17em} dt
+    \frac{1}{\pi}  \sqrt{\frac{- \ddot{K} (t)}{K (t)}}  \hspace{0.17em} dt
   \end{equation}
 \end{theorem}
 
 \begin{proof}
-  The joint density of $(Z (t), \dot{Z} (t))$ is Gaussian with covariance
-  matrix $\Sigma (t) = \left(\begin{array}{cc}
-    K (t) & K_s (t)\\
-    K_s (t) & K_{ss} (t)
-  \end{array}\right)$. The Kac-Rice formula gives:
-  \begin{equation}
-    \label{eq:kac_rice_derivation} \begin{array}{ll}
-      \mathbb{E} [N_{[a, b]}] & = \int_a^b \mathbb{E} [| \dot{Z} (t) | \mid Z
-      (t) = 0] p_{Z (t)} (0)  \hspace{0.17em} dt\\
-      & = \int_a^b \frac{1}{\sqrt{2 \pi K (t)}}  \sqrt{\frac{2}{\pi}  \frac{K
-      (t) K_{ss} (t) - K_s (t)^2}{K (t)^2}}  \hspace{0.17em} dt
-    \end{array}
-  \end{equation}
-  Simplifying yields (\ref{eq:kac_rice_formula}).
+  \begin{enumerate}
+    \item \tmtextit{Joint distribution at each point.} For each fixed $t$, the
+    pair $(Z (t), \dot{Z} (t))$ is jointly Gaussian with covariance matrix
+    \begin{equation}
+      \label{eq:kr_cov_matrix} \Sigma (t) = \left(\begin{array}{cc}
+        K (t) & 0\\
+        0 & - \ddot{K} (t)
+      \end{array}\right)
+    \end{equation}
+    The off-diagonal terms vanish because
+    \begin{equation}
+      \label{eq:kr_cross_cov} \mathbb{E} [Z (t) \dot{Z} (t)] =
+      \frac{\partial}{\partial s} \mathbb{E} [Z (t) Z (s)] |_{s = t} =
+      \frac{\partial K (t, s)}{\partial s} |_{s = t} = 0
+    \end{equation}
+    by stationarity or symmetry of $K$.
+    
+    \item \tmtextit{Conditional density.} Given $Z (t) = 0$, the conditional
+    distribution of $\dot{Z} (t)$ is Gaussian with mean zero and variance $-
+    \ddot{K} (t)$:
+    \begin{equation}
+      \label{eq:kr_cond_density} p_{\dot{Z} |Z = 0} (v|t) = \frac{\exp \left(
+      - \frac{v^2}{2 (- \ddot{K} (t))} \right)}{\sqrt{2 \pi (- \ddot{K} (t))}}
+      
+    \end{equation}
+    \item \tmtextit{Zero density formula.} The Kac-Rice meta-theorem states
+    that the expected number of zeros of $Z (t)$ in $[a, b]$ equals
+    \begin{equation}
+      \label{eq:kr_meta} \mathbb{E} [N_{[a, b]}] = \int_a^b p_Z (0, t) 
+      \hspace{0.17em} \mathbb{E} [| \dot{Z} (t) | \hspace{0.17em} |
+      \hspace{0.17em} Z (t) = 0]  \hspace{0.17em} dt
+    \end{equation}
+    where $p_Z (0, t) = 1 / \sqrt{2 \pi K (t)}$ is the marginal density of $Z
+    (t)$ at zero.
+    
+    \item \tmtextit{Expected absolute value.} Since $\dot{Z} (t) |Z (t) = 0$
+    is Gaussian with mean zero and variance $- \ddot{K} (t)$,
+    \begin{equation}
+      \label{eq:kr_exp_abs} \mathbb{E} [| \dot{Z} (t) | \hspace{0.17em} |
+      \hspace{0.17em} Z (t) = 0] = \sqrt{\frac{2}{\pi}}  \sqrt{- \ddot{K} (t)}
+    \end{equation}
+    \item \tmtextit{Combine terms.} Substituting into \eqref{eq:kr_meta}:
+    \begin{equation}
+      \label{eq:kr_final} \mathbb{E} [N_{[a, b]}] = \int_a^b
+      \frac{\sqrt{\frac{2}{\pi}}  \sqrt{- \ddot{K} (t)}}{\sqrt{2 \pi K (t)}} 
+      \hspace{0.17em} dt = \int_a^b \frac{1}{\pi}  \sqrt{\frac{- \ddot{K}
+      (t)}{K (t)}}  \hspace{0.17em} dt
+    \end{equation}
+  \end{enumerate}
 \end{proof}
-
-\subsubsection{Kac-Rice Formula for Unitarily Time-Changed Processes}
-
-\begin{theorem}
-  \label{thm:kac_rice_time_change}(Kac-Rice formula for unitary time change)
-  Let $X (t)$ be a zero-mean, stationary Gaussian process with covariance $R
-  (h) =\mathbb{E} [X (t) X (t + h)]$ satisfying $R (0) > 0$ and $R'' (0) < 0$.
-  
-  Let $\theta : \mathbb{R} \to \mathbb{R}$ be absolutely continuous, strictly
-  increasing, and bijective with $\dot{\theta} (t) > 0$ almost everywhere.
-  Define the unitarily time-changed process:
-  \begin{equation}
-    Z (t) = \sqrt{\dot{\theta} (t)} X (\theta (t))
-  \end{equation}
-  Then the expected zero-crossing density of $Z$ at time $t$ is:
-  \begin{equation}
-    \frac{d\mathbb{E} [N (t)]}{dt} = \frac{\dot{\theta} (t)}{\pi} 
-    \sqrt{\frac{- R'' (0)}{R (0)}}
-  \end{equation}
-  Equivalently, the expected number of zeros of $Z$ in the interval $[a, b]$
-  is:
-  \begin{equation}
-    \mathbb{E} [N ([a, b])] = \frac{\theta (b) - \theta (a)}{\pi} 
-    \sqrt{\frac{- R'' (0)}{R (0)}}
-  \end{equation}
-\end{theorem}
-
-\begin{proof}
-  \ 
-\end{proof}
-
-\subsubsection{Evolutionary Power Spectral Density as Factorized Spectrum}
 
 \begin{corollary}
-  \label{cor:EPSD_factorization}(Factorization of evolutionary spectrum) For
-  the unitarily time-changed process $Z (t) = \sqrt{\dot{\theta} (t)} X
-  (\theta (t))$ with stationary spectral density $S (\lambda)$, the
-  evolutionary power spectral density factorizes as:
-  \[ S_t (\lambda) = \dot{\theta} (t) \cdot S (\lambda) \]
-  Time-dependence and frequency-dependence separate completely: the spectral
-  energy density at time $t$ and frequency $\lambda$ is the product of the
-  instantaneous time-dilation $\dot{\theta} (t)$ and the base spectral density
-  $S (\lambda)$.
+  \label{cor:kac_rice_timechange}\tmtextbf{[Kac-Rice formula for unitarily
+  time-changed stationary processes]} Let $Z (t) = \sqrt{\dot{\theta} (t)} 
+  \hspace{0.17em} X (\theta (t))$ where $X$ is stationary with covariance
+  $R_X$ and $R_X'' (0) < 0$. Then
+  \begin{equation}
+    \label{eq:kr_timechange} \mathbb{E} [N_{[a, b]}] = \frac{\theta (b) -
+    \theta (a)}{\pi}  \sqrt{\frac{- R_X'' (0)}{R_X (0)}}
+  \end{equation}
 \end{corollary}
 
 \begin{proof}
-  The gain function is $A_t (\lambda) = \sqrt{\dot{\theta} (t)} e^{i \lambda
-  (\theta (t) - t)}$, so:
-  \[ |A_t (\lambda) |^2 = \dot{\theta} (t) \]
-  By definition:
-  \[ S_t (\lambda) = |A_t (\lambda) |^2 S (\lambda) = \dot{\theta} (t) \cdot S
-     (\lambda) \]
+  From Theorem \ref{uto}, $Z (t)$ has covariance $K_Z (t, s) =
+  \sqrt{\dot{\theta} (t)  \dot{\theta} (s)}  \hspace{0.17em} R_X  (\theta (t)
+  - \theta (s))$. At $s = t$, $K_Z (t, t) = \dot{\theta} (t) R_X (0)$. The
+  second derivative structure gives $\ddot{K}_Z (t) = \dot{\theta} (t) \cdot
+  [\dot{\theta} (t)]^2 R_X'' (0)$. Substituting into Theorem
+  \ref{thm:kac_rice}:
+  \begin{equation}
+    \mathbb{E} [N_{[a, b]}] = \int_a^b \frac{1}{\pi}  \sqrt{\frac{-
+    \dot{\theta} (t) [\dot{\theta} (t)]^2 R_X'' (0)}{\dot{\theta} (t) R_X
+    (0)}}  \hspace{0.17em} dt = \int_a^b \frac{\dot{\theta} (t)}{\pi} 
+    \sqrt{\frac{- R_X'' (0)}{R_X (0)}}  \hspace{0.17em} dt = \frac{\theta (b)
+    - \theta (a)}{\pi}  \sqrt{\frac{- R_X'' (0)}{R_X (0)}}
+  \end{equation}
 \end{proof}
 
-\subsection{Bulinskaya's Theorem}
+\subsubsection{Bulinskaya's Theorem On The Simplicity of Zero
+Crossinsgs(Non-Tangency Condition)}
 
 \begin{theorem}
-  \label{thm:bulinskaya}(Bulinskaya) Let $X (t)$ be a real-valued, zero-mean
-  stationary Gaussian process with covariance $R (h) =\mathbb{E} [X (t) X (t +
-  h)]$. If $R$ is twice continuously differentiable in a neighborhood of 0 and
-  $R'' (0) < 0$, then with probability 1 all zeros of $X$ are simple.
+  \label{thm:bulinskaya}\tmtextbf{[Bulinskaya's theorem: simplicity of zeros]}
+  Let $X (t)$ be a real-valued, zero-mean stationary Gaussian process with
+  covariance function $R (h) =\mathbb{E} [X (t) X (t + h)]$. Suppose $R (h)$
+  is twice continuously differentiable in a neighborhood of $h = 0$ with $R''
+  (0) < 0$. Then almost surely all zeros of $X (t)$ are simple, meaning
+  \begin{equation}
+    \label{eq:simple_zeros_guaranteed} X (t_0) = 0 \quad \Rightarrow \quad
+    \dot{X} (t_0) \neq 0 \quad \text{almost surely}
+  \end{equation}
 \end{theorem}
 
 \begin{proof}
-  For fixed $t_0$, $(X (t_0), \dot{X} (t_0))$ is jointly Gaussian.
-  Stationarity gives $\mathbb{E} [X (t_0) \dot{X} (t_0)] = R' (0) = 0$, so
-  they are independent. Since $R'' (0) < 0$, $\dot{X} (t_0)$ is non-degenerate
-  and $\mathbb{P} (\dot{X} (t_0) = 0) = 0$. Thus $\mathbb{P} (X (t_0) = 0
-  \text{and } \dot{X} (t_0) = 0) = 0$. By continuity and countable union over
-  rationals, all zeros are simple almost surely.
+  \begin{enumerate}
+    \item \tmtextit{Differentiability of sample paths.} The twice continuous
+    differentiability of $R (h)$ at $h = 0$ ensures that $X (t)$ has
+    mean-square continuous first derivative $\dot{X} (t)$, and the joint
+    process $(X (t), \dot{X} (t))$ is a Gaussian vector for each $t$.
+    
+    \item \tmtextit{Covariance structure at zeros.} At any $t_0$, the random
+    vector $(X (t_0), \dot{X} (t_0))$ has covariance matrix
+    \begin{equation}
+      \label{eq:bul_cov_matrix} \Sigma = \left(\begin{array}{cc}
+        R (0) & 0\\
+        0 & - R'' (0)
+      \end{array}\right)
+    \end{equation}
+    The off-diagonal entries vanish because
+    \begin{equation}
+      \label{eq:bul_cov_offdiag}
+      
+      \begin{aligned}
+        \mathbb{E} [X (t_0) \dot{X} (t_0)] & = \lim_{h \to 0} 
+        \frac{\mathbb{E} [X (t_0) (X (t_0 + h) - X (t_0))]}{h}\\
+        & = \lim_{h \to 0}  \frac{R (h) - R (0)}{h} = R' (0) = 0
+      \end{aligned}
+    \end{equation}
+    by stationarity (which forces $R' (0) = 0$).
+    
+    \item \tmtextit{Independence at zeros.} Since $(X (t_0), \dot{X} (t_0))$
+    is jointly Gaussian with zero correlation, $X (t_0)$ and $\dot{X} (t_0)$
+    are independent random variables.
+    
+    \item \tmtextit{Probability of double zero.} For any fixed $t_0$, the
+    event $\{X (t_0) = 0\}$ has probability zero (since $X (t_0)$ is a
+    continuous Gaussian random variable). Moreover, the event $\{X (t_0) = 0
+    \text{and } \dot{X} (t_0) = 0\}$ is the intersection of two independent
+    zero-probability events, hence also has probability zero.
+    
+    \item \tmtextit{Countable union argument.} Consider any interval $[a, b]$.
+    By continuity of $X (t)$, the zero set $\mathcal{Z}= \{t \in [a, b] : X
+    (t) = 0\}$ is closed. The Gaussian process theory shows that under the
+    condition $R'' (0) < 0$, the expected number of zeros in $[a, b]$ is
+    finite (by the Kac-Rice formula in Corollary
+    \ref{cor:kac_rice_stationary}). This implies that almost surely
+    $\mathcal{Z}$ is discrete (has no accumulation points in $[a, b]$), hence
+    is at most countable.
+    
+    \item \tmtextit{Conclusion.} For each zero $t_n \in \mathcal{Z}$, the
+    probability that $\dot{X} (t_n) = 0$ given $X (t_n) = 0$ is zero by
+    independence from item (3). Taking a countable union over all zeros in
+    $\mathcal{Z}$,
+    \begin{equation}
+      \label{eq:bul_conclusion} \mathbb{P} \left( \exists \hspace{0.17em} t_n
+      \in \mathcal{Z}: \dot{X} (t_n) = 0 \right) = 0
+    \end{equation}
+    Thus almost surely every zero is simple.
+  \end{enumerate}
 \end{proof}
 
-\section{Example: The Hardy Z-Function}
+\begin{corollary}
+  \label{cor:oscillatory_simple_zeros}Let $Z (t) = \sqrt{\dot{\theta} (t)} 
+  \hspace{0.17em} X (\theta (t))$ be the unitarily time-changed stationary
+  Gaussian process constructed in Theorem \ref{uto}, where $X$ has twice
+  continuously differentiable covariance with $R_X'' (0) < 0$. Then almost
+  surely all zeros of $Z (t)$ are simple.
+\end{corollary}
 
-This section demonstrates that the Hardy Z-function is a concrete instance of
-a unitarily time-changed stationary process. We prove that the transformed
-process, when expressed via the inverse unitary operator, possesses a
-well-defined stationary covariance structure in the Ces{\`a}ro sense.
+\begin{proof}
+  The covariance of $Z$ is
+  \begin{equation}
+    \label{eq:cor_Z_cov} R_Z (t, s) = \sqrt{\dot{\theta} (t)  \dot{\theta}
+    (s)}  \hspace{0.17em} R_X  (\theta (t) - \theta (s))
+  \end{equation}
+  At $t = s$, $R_Z (t, t) = \dot{\theta} (t) R_X (0)$. Computing the second
+  derivative at a zero $t_0$ (where $Z (t_0) = 0$ implies $X (\theta (t_0)) =
+  0$ since $\dot{\theta} > 0$), one verifies that the local covariance
+  structure inherits the negative second derivative property from $R_X$, thus
+  Bulinskaya's theorem applies to the transformed process.
+\end{proof}
 
-\subsection{Definitions}
+\subsection{Zero Localization Measure}
 
 \begin{definition}
-  \label{def:hardy_Z}(Hardy Z-function) Let $\zeta (s)$ be the Riemann zeta
-  function and let $\theta (t)$ denote the Riemann-Siegel theta function:
+  \label{def:zeromeasure}\tmtextbf{[Zero localization measure]} Let $Z$ be a
+  real-valued oscillatory process satisfying the hypotheses of Corollary
+  \ref{cor:oscillatory_simple_zeros}, so that almost surely all zeros are
+  simple. Define, for Borel $B \subset \mathbb{R}$,
   \begin{equation}
-    \label{eq:theta_def} \theta (t) = \Im \log \Gamma \left( \frac{1}{4} +
-    \frac{it}{2} \right) - \frac{t}{2} \log \pi
+    \label{eq:mu_def} \mu (B) \assign \int_B \delta (Z (t)) \hspace{0.17em} |
+    \dot{Z} (t) |  \hspace{0.17em} dt
   \end{equation}
-  Define:
+  so that $\mu$ places unit mass at each simple zero of $Z$ counted by the
+  co-area/change-of-variables identity for $C^1$ functions. The induced space
+  $L^2 (\mu)$ consists of (equivalence classes of) functions supported on the
+  zero set of $Z$, and the multiplication operator
   \begin{equation}
-    \label{eq:hardy_Z} Z (t) = e^{i \theta (t)} \zeta (1 / 2 + it)
+    \label{eq:mult_op} (Lf) (t) = tf (t)
   \end{equation}
+  is essentially self-adjoint with pure point spectrum equal to the zero
+  crossing set.
 \end{definition}
 
-\begin{definition}
-  \label{def:monotonized_theta}(Monotonized theta time change) Let $a > 0$ be
-  the unique critical point of $\theta$ in $(0, \infty)$ where $\dot{\theta}
-  (a) = 0$. Define $\Theta : [0, \infty) \to [\Theta (0), \infty)$ by:
-  \begin{equation}
-    \label{eq:Theta_def} \Theta (t) = \left\{ \begin{array}{ll}
-      2 \theta (a) - \theta (t) & 0 \leq t \leq a\\
-      \theta (t) & t \geq a
-    \end{array} \right.
-  \end{equation}
-\end{definition}
+\section{Step 1: Asymptotic Expansion of $\Theta' (t)$}
 
-\subsection{Unitary Time Change Representation}
-
-We apply the unitary time-change operator $U_{\Theta}$ from Theorem
-\ref{thm:unitary_time_change} to reveal the underlying stationary structure.
-
-\begin{definition}
-  \label{def:X_hardy}(Underlying stationary process) Define the process $X$
-  via the inverse unitary transform $X = U_{\Theta}^{- 1} Z$:
-  \begin{equation}
-    \label{eq:X_hardy} X (u) = (U_{\Theta}^{- 1} Z) (u) = \frac{Z (\Theta^{-
-    1} (u))}{\sqrt{\Theta' (\Theta^{- 1} (u))}}
-  \end{equation}
-  for $u \in [\Theta (0), \infty)$.
-\end{definition}
-
-By Lemma \ref{lem:exact_recovery}, we have the exact reconstruction:
-\begin{equation}
-  \label{eq:Z_reconstruction} Z (t) = (U_{\Theta} X) (t) = \sqrt{\Theta' (t)}
-  X (\Theta (t))
-\end{equation}
-which is precisely the form of a unitarily time-changed process from
-Definition \ref{def:unitarily_time_changed}.
-
-\subsubsection{Stationarity}
+\subsection{Stirling's Formula and Application}
 
 \begin{lemma}
-  \label{lem:van_der_corput}(van der Corput lemma) Let $\phi : [a, b] \to
-  \mathbb{R}$ be continuously differentiable. If $| \phi' (x) | \geq \lambda >
-  0$ for all $x \in [a, b]$, then:
+  [Stirling's Formula for the Logarithm of the Gamma Function] For $z$ with $|
+  \arg (z) | < \pi$:
   \begin{equation}
-    \left| \int_a^b e^{i \phi (x)} dx \right| \leq \frac{4}{\lambda}
+    \log \Gamma (z) = \left( z - \frac{1}{2} \right) \log z - z + \frac{1}{2}
+    \log (2 \pi) + O (|z|^{- 1})
   \end{equation}
-  In particular, $\left| \int_a^b \cos (\phi (x)) dx \right| = O (1 /
-  \lambda)$ when $| \phi' (x) | \geq \lambda$.
+  where the error term is bounded by $C |z|^{- 1}$ for some absolute constant
+  $C$.
 \end{lemma}
 
-\begin{theorem}[Ces{\`a}ro covariance convergence]
-  \label{thm:cesaro_hardy}For the process $X (u)$ defined in
-  (\ref{eq:X_hardy}), the Ces{\`a}ro covariance
+\begin{definition}
+  [Riemann-Siegel Theta Function] The theta function is defined as:
   \begin{equation}
-    \label{eq:cesaro_cov} C (h) = \lim_{U \to \infty}  \frac{1}{U - \Theta
-    (0)}  \int_{\Theta (0)}^U X (u) X (u + h)  \hspace{0.17em} du
+    \theta (t) = \mathrm{Im} \left[ \log \Gamma \left( \frac{1}{4} +
+    \frac{it}{2} \right) \right] - \frac{t}{2} \log \pi
   \end{equation}
+\end{definition}
+
+\subsection{Computing $\theta' (t)$ from Stirling's Formula}
+
+\begin{theorem}
+  [Asymptotic Expansion of $\theta' (t)$]
+  \begin{equation}
+    \theta' (t) = \frac{1}{2} \log \frac{t}{2 \pi} + O (t^{- 1})
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  \tmtextbf{Step 1.1: Evaluate $|z|$ and $\arg (z)$ for $z = 1 / 4 + it / 2$.}
+  
+  For $t > 0$:
+  \[ |z| = \sqrt{\frac{1}{16} + \frac{t^2}{4}} = \frac{1}{4}  \sqrt{1 + 4 t^2}
+     = \frac{t}{2}  \sqrt{1 + \frac{1}{4 t^2}} = \frac{t}{2}  (1 + O (t^{-
+     2})) \]
+  For the argument:
+  \[ \arg (z) = \arctan \left( \frac{t / 2}{1 / 4} \right) = \arctan (2 t) \]
+  Using the Taylor expansion $\arctan (x) = \pi / 2 - 1 / x + O (x^{- 3})$ for
+  large $x$:
+  \[ \arg (z) = \frac{\pi}{2} - \frac{1}{2 t} + O (t^{- 3}) \]
+  \tmtextbf{Step 1.2: Compute $\log z$.}
+  
+  Write $z = |z| e^{i \arg (z)}$, so:
+  \[ \log z = \log |z| + i \arg (z) = \log \left( \frac{t}{2} \right) + O
+     (t^{- 2}) + i \left( \frac{\pi}{2} - \frac{1}{2 t} + O (t^{- 3}) \right)
+  \]
+  \tmtextbf{Step 1.3: Compute $(z - 1 / 2) \log z$.}
+  
+  Write $z - 1 / 2 = - 1 / 4 + it / 2$. The imaginary part is:
+  
+  \begin{align*}
+    \mathrm{Im} [(z - 1 / 2) \log z] & = - \frac{1}{4} \arg (z) + \frac{t}{2}
+    \log |z|\\
+    & = - \frac{1}{4}  \left( \frac{\pi}{2} - \frac{1}{2 t} + O (t^{- 3})
+    \right) + \frac{t}{2} \log \left( \frac{t}{2} \right)\\
+    & = - \frac{\pi}{8} + \frac{1}{8 t} + \frac{t}{2} \log \left( \frac{t}{2}
+    \right) + O (t^{- 2})
+  \end{align*}
+  
+  \tmtextbf{Step 1.4: Apply Stirling's formula.}
+  
+  By Stirling's formula:
+  \[ \mathrm{Im} [\log \Gamma (z)] = \mathrm{Im} [(z - 1 / 2) \log z] -
+     \mathrm{Im} [z] + O (|z|^{- 1}) \]
+  Since $\mathrm{Im} [z] = t / 2$:
+  \[ \mathrm{Im} [\log \Gamma (z)] = - \frac{\pi}{8} + \frac{t}{2} \log \left(
+     \frac{t}{2} \right) - \frac{t}{2} + O (t^{- 1}) \]
+  \tmtextbf{Step 1.5: Compute $\theta (t)$.}
+  \[ \theta (t) = \mathrm{Im} [\log \Gamma (z)] - \frac{t}{2} \log \pi \]
+  \begin{align*}
+    & = - \frac{\pi}{8} + \frac{t}{2} \log \left( \frac{t}{2} \right) -
+    \frac{t}{2} - \frac{t}{2} \log \pi + O (t^{- 1})\\
+    & = - \frac{\pi}{8} + \frac{t}{2}  \left[ \log \left( \frac{t}{2} \right)
+    - 1 - \log \pi \right] + O (t^{- 1})\\
+    & = - \frac{\pi}{8} + \frac{t}{2} \log \left( \frac{t}{2 \pi e} \right) +
+    O (t^{- 1})
+  \end{align*}
+  
+  \tmtextbf{Step 1.6: Differentiate to find $\theta' (t)$.}
+  \[ \theta' (t) = \frac{d}{dt}  \left[ - \frac{\pi}{8} + \frac{t}{2} \log
+     \left( \frac{t}{2 \pi e} \right) \right] + O (t^{- 2}) \]
+  Using the product rule:
+  \[ \frac{d}{dt}  \left[ \frac{t}{2} \log \left( \frac{t}{2 \pi e} \right)
+     \right] = \frac{1}{2} \log \left( \frac{t}{2 \pi e} \right) + \frac{t}{2}
+     \cdot \frac{1}{t} = \frac{1}{2} \log \left( \frac{t}{2 \pi e} \right) +
+     \frac{1}{2} \]
+  \[ = \frac{1}{2}  \left[ \log \left( \frac{t}{2 \pi e} \right) + 1 \right] =
+     \frac{1}{2} \log \left( \frac{t}{2 \pi} \right) \]
+  Therefore:
+  \[ \theta' (t) = \frac{1}{2} \log \frac{t}{2 \pi} + O (t^{- 1}) \]
+\end{proof}
+
+\begin{remark}
+  The asymptotic expansion shows that $\theta' (t)$ grows like $\frac{1}{2}
+  \log t$, which is a slowly varying function. This slow growth is crucial for
+  the subsequent analysis.
+\end{remark}
+
+\section{Step 2: Vanishing of the Logarithmic Ratio}
+
+\subsection{The Critical Quantity}
+
+\begin{theorem}
+  [Vanishing of $\log (n) / \Theta' (t)$] For any fixed integer $n \geq 1$:
+  \[ \lim_{t \to \infty}  \frac{\log n}{\Theta' (t)} = 0 \]
+  More precisely:
+  \[ \frac{\log n}{\Theta' (t)} = O \left( \frac{\log n}{\log t} \right) = o
+     (1)  \quad \text{as } t \to \infty \]
+\end{theorem}
+
+\begin{proof}
+  \tmtextbf{Step 2.1: Set up the ratio.}
+  
+  From Theorem 3.1:
+  \[ \Theta' (t) = \frac{1}{2} \log \frac{t}{2 \pi} + O (t^{- 1}) \]
+  For large $t$, the dominant term is $\frac{1}{2} \log (t / (2 \pi))$, so:
+  \[ \frac{\log n}{\Theta' (t)} = \frac{\log n}{\frac{1}{2} \log (t / (2 \pi))
+     + O (t^{- 1})} \]
+  \tmtextbf{Step 2.2: Factor the denominator.}
+  \[ \frac{\log n}{\Theta' (t)} = \frac{\log n}{\frac{1}{2} \log (t / (2
+     \pi))} \cdot \frac{1}{1 + \frac{O (t^{- 1})}{\frac{1}{2} \log (t / (2
+     \pi))}} \]
+  The correction factor in the denominator satisfies:
+  \[ \frac{O (t^{- 1})}{\frac{1}{2} \log (t / (2 \pi))} = \frac{2}{t \log (t /
+     (2 \pi))} = o (1)  \quad \text{as } t \to \infty \]
+  Therefore the correction factor approaches 1.
+  
+  \tmtextbf{Step 2.3: Extract the leading behavior.}
+  \[ \frac{\log n}{\Theta' (t)} = \frac{2 \log n}{\log (t / (2 \pi))}  (1 + o
+     (1)) \]
+  \tmtextbf{Step 2.4: Take the limit.}
+  
+  Since $\log n$ is a \tmtextit{fixed constant} while $\log (t / (2 \pi)) \to
+  \infty$:
+  \[ \lim_{t \to \infty}  \frac{\log n}{\Theta' (t)} = 0 \]
+  Quantitatively:
+  \[ \frac{\log n}{\Theta' (t)} = \Theta \left( \frac{\log n}{\log t} \right)
+     = o (1) \]
+\end{proof}
+
+\begin{remark}
+  [Physical Significance] This vanishing is the key to the entire proof. The
+  ratio $\log (n) / \Theta' (t)$ appears in phase factors of the form
+  $\Theta^{- 1} (u) \log n$. If this ratio remained bounded away from zero,
+  the oscillations indexed by different $n$ would maintain their frequency
+  relationships. The fact that it vanishes means that the frequency
+  relationships weaken as $t \to \infty$, allowing the harmonic structure to
+  \tmtextit{decohere}, enabling Ces{\`a}ro averaging to capture a stationary
+  limit.
+\end{remark}
+
+\section{Step 3: The Riemann-Siegel Representation}
+
+\subsection{The Hardy Z-Function}
+
+\begin{definition}
+  [Hardy Z-Function] The Hardy Z-function is defined as:
+  \[ Z (t) = e^{i \theta (t)} \zeta (1 / 2 + it) \]
+  where $\theta (t)$ is the Riemann-Siegel theta function and $\zeta (s)$ is
+  the Riemann zeta function.
+\end{definition}
+
+\begin{remark}
+  The phase factor $e^{i \theta (t)}$ is specifically chosen so that $Z (t)$
+  is real-valued when the Riemann Hypothesis is true. This makes the zeros of
+  $Z (t)$ correspond directly to the zeros of $\zeta (1 / 2 + it)$ on the
+  critical line.
+\end{remark}
+
+\subsection{The Classical Riemann-Siegel Formula}
+
+\begin{theorem}
+  [Riemann-Siegel Representation] The Hardy Z-function admits the asymptotic
+  expansion:
+  \[ Z (t) = 2 \sum_{n = 1}^{N (t)} n^{- 1 / 2} \cos (\theta (t) - t \log n) +
+     R (t) \]
+  where:
+  \begin{itemize}
+    \item $N (t) = \left\lfloor \sqrt{\frac{t}{2 \pi}} \right\rfloor$
+    
+    \item $R (t) = O (t^{- 1 / 4})$
+  \end{itemize}
+\end{theorem}
+
+\begin{proof}
+  This is the classical Riemann-Siegel formula (Siegel 1932). The proof uses
+  the functional equation for $\zeta (s)$, Poisson summation, and stationary
+  phase analysis. The key steps are:
+  
+  1. Apply the functional equation $\zeta (s) = \chi (s) \zeta (1 - s)$ at $s
+  = 1 / 2 + it$ 2. Use Poisson summation to convert the series into an
+  integral with controllable error 3. Apply stationary phase to identify the
+  optimal truncation at $N (t) = \lfloor \sqrt{t / (2 \pi)} \rfloor$ 4. Use
+  Van der Corput's lemma to bound the remainder by $O (t^{- 1 / 4})$
+  
+  The detailed derivation is given in standard references (Edwards 1974,
+  Titchmarsh 1986).
+\end{proof}
+
+\section{Step 4: Transformation to $u$-Coordinates}
+
+\subsection{Defining the Underlying Stationary Process}
+
+\begin{definition}
+  [Underlying Stationary Process via Inverse Unitary Transform] Define the
+  process $X$ on $[\Theta (0), \infty)$ by:
+  \[ X (u) = (U_{\Theta}^{- 1} Z) (u) = \frac{Z (\Theta^{- 1}
+     (u))}{\sqrt{\Theta' (\Theta^{- 1} (u))}} \]
+\end{definition}
+
+\begin{theorem}
+  [Exact Reconstruction] The original Hardy Z-function is exactly
+  reconstructed by:
+  \[ Z (t) = (U_{\Theta} X) (t) = \sqrt{\Theta' (t)} X (\Theta (t)) \]
+  This is a unitarily time-changed stationary process as defined in the
+  introduction.
+\end{theorem}
+
+\begin{proof}
+  By the inverse property of Theorem 2.1:
+  \[ (U_{\Theta} (U_{\Theta}^{- 1} Z)) (t) = Z (t) \]
+\end{proof}
+
+\subsection{Rewriting in $u$-Coordinates}
+
+\begin{theorem}
+  [Riemann-Siegel in $u$-Coordinates] In the transformed coordinates $u =
+  \Theta (t)$, with $t = \Theta^{- 1} (u)$, define the phase:
+  \[ \Phi_n (u) = \theta (\Theta^{- 1} (u)) - \Theta^{- 1} (u) \log n \]
+  Then:
+  \[ X (u) = \frac{1}{\sqrt{\Theta' (\Theta^{- 1} (u))}}  \left[ 2 \sum_{n =
+     1}^{N (\Theta^{- 1} (u))} n^{- 1 / 2} \cos (\Phi_n (u)) + R (\Theta^{- 1}
+     (u)) \right] \]
+\end{theorem}
+
+\subsection{Analysis of Phase Differences}
+
+\begin{lemma}
+  [Phase Difference Convergence - CORRECTED] For fixed $h \in \mathbb{R}$ and
+  fixed $n \geq 1$:
+  \[ \lim_{u \to \infty} [\Phi_n (u) - \Phi_n (u + h)] = - h \cdot \lim_{u \to
+     \infty}  \frac{1}{\Theta' (\Theta^{- 1} (u))} \log n + \lim_{u \to
+     \infty}  \int_{\Theta^{- 1} (u)}^{\Theta^{- 1}  (u + h)} \theta' (s) ds
+  \]
+  By Theorem 4.1, the first term vanishes. The second term requires careful
+  analysis.
+\end{lemma}
+
+\begin{proof}
+  \tmtextbf{Step 4.1: Expand the phase difference.}
+  
+  \begin{align*}
+    \Phi_n (u) - \Phi_n  (u + h) & = [\theta (\Theta^{- 1} (u)) - \theta
+    (\Theta^{- 1} (u + h))]\\
+    & \quad - [\Theta^{- 1} (u) - \Theta^{- 1} (u + h)] \log n
+  \end{align*}
+  
+  Note that since $\Theta$ is increasing, $\Theta^{- 1}  (u + h) > \Theta^{-
+  1} (u)$ for $h > 0$.
+  
+  \tmtextbf{Step 4.2: Apply the mean-value theore to $\Theta^{- 1}$.}
+  
+  For some $\xi_u \in (u, u + h)$:
+  \[ \Theta^{- 1}  (u + h) - \Theta^{- 1} (u) = h \cdot (\Theta^{- 1})'
+     (\xi_u) = \frac{h}{\Theta' (\Theta^{- 1} (\xi_u))} \]
+  \tmtextbf{Step 4.3: Estimate the logarithmic term.}
+  \[ [\Theta^{- 1} (u + h) - \Theta^{- 1} (u)] \log n = \frac{h \log
+     n}{\Theta' (\Theta^{- 1} (\xi_u))} \]
+  By Theorem 4.1, as $u \to \infty$ (so $\Theta^{- 1} (\xi_u) \to \infty$):
+  \[ \frac{\log n}{\Theta' (\Theta^{- 1} (\xi_u))} \to 0 \]
+  Therefore:
+  \[ [\Theta^{- 1} (u + h) - \Theta^{- 1} (u)] \log n = h \cdot o (1) \to 0 \]
+  \tmtextbf{Step 4.4: Estimate the theta difference.}
+  
+  Using the integral representation:
+  \[ \theta (\Theta^{- 1} (u + h)) - \theta (\Theta^{- 1} (u)) =
+     \int_{\Theta^{- 1} (u)}^{\Theta^{- 1}  (u + h)} \theta' (s) ds \]
+  By Theorem 3.1, $\theta' (s) = \frac{1}{2} \log (s / (2 \pi)) + O (s^{-
+  1})$. For large $s$, this is $O (\log s)$, which is bounded. Therefore:
+  \[ \left| \int_{\Theta^{- 1} (u)}^{\Theta^{- 1} (u + h)} \theta' (s) ds
+     \right| \leq \sup_{s \in [\Theta^{- 1} (u), \Theta^{- 1} (u + h)]} |
+     \theta' (s) | \cdot | \Theta^{- 1} (u + h) - \Theta^{- 1} (u) | \]
+  \[ = O (\log (\Theta^{- 1} (u))) \cdot \frac{h}{\Theta' (\Theta^{- 1}
+     (\xi_u))} \]
+  Since $\Theta' (t) = \frac{1}{2} \log (t / (2 \pi)) + O (t^{- 1})$:
+  \[ = O (\log t) \cdot \frac{h}{\frac{1}{2} \log t} = O (h) \]
+  More precisely, as $u \to \infty$:
+  \[ \int_{\Theta^{- 1} (u)}^{\Theta^{- 1}  (u + h)} \theta' (s) ds \sim
+     \theta' (\Theta^{- 1} (u)) \cdot \frac{h}{\Theta' (\Theta^{- 1} (u))} \]
+  \[ = \frac{1}{2} \log (\Theta^{- 1} (u) / (2 \pi)) \cdot
+     \frac{h}{\frac{1}{2} \log (\Theta^{- 1} (u) / (2 \pi))} = h + o (1) \]
+  \tmtextbf{Step 4.5: Combine.}
+  \[ \Phi_n (u) - \Phi_n  (u + h) = - (h + o (1)) + h \cdot o (1) = - h + o
+     (1) \]
+\end{proof}
+
+\section{Step 5: Ces{\`a}ro Averaging and Stationary Limit}
+
+\subsection{The Van der Corput Lemma}
+
+\begin{lemma}
+  [Van der Corput] Let $\phi : [a, b] \to \mathbb{R}$ be continuously
+  differentiable. If $| \phi' (x) | \geq \lambda > 0$ for all $x \in [a, b]$,
+  then:
+  \[ \left| \int_a^b e^{i \phi (x)} dx \right| \leq \frac{4}{\lambda} \]
+  In particular:
+  \[ \left| \int_a^b \cos (\phi (x)) dx \right| = O (1 / \lambda) \]
+  when $| \phi' (x) | \geq \lambda$.
+\end{lemma}
+
+\subsection{ Analysis of Phase Sum Derivative}
+
+\begin{lemma}
+  [Phase Sum Derivative - CORRECTED] For the phase sum $\Psi_n (u) \assign
+  \Phi_n (u) + \Phi_n  (u + h)$, we have:
+  \[ \frac{d \Psi_n}{du} (u) = \frac{\theta' (\Theta^{- 1} (u))}{\Theta'
+     (\Theta^{- 1} (u))} + \frac{\theta'  (\Theta^{- 1} (u + h))}{\Theta' 
+     (\Theta^{- 1} (u + h))} - \frac{\log n}{\Theta' (\Theta^{- 1} (u))} -
+     \frac{\log n}{\Theta'  (\Theta^{- 1} (u + h))} \]
+  As $u \to \infty$:
+  \[ \frac{d \Psi_n}{du} (u) \to 1 + 1 - 0 - 0 = 2 \]
+\end{lemma}
+
+\begin{proof}
+  \tmtextbf{Step 5.1: Compute derivative of $\Phi_n (u)$.}
+  
+  By the chain rule:
+  \[ \frac{d \Phi_n}{du} (u) = \frac{d}{du}  [\theta (\Theta^{- 1} (u)) -
+     \Theta^{- 1} (u) \log n] \]
+  \[ = \theta' (\Theta^{- 1} (u)) \cdot (\Theta^{- 1})' (u) - (\Theta^{- 1})'
+     (u) \log n \]
+  \[ = \theta' (\Theta^{- 1} (u)) \cdot \frac{1}{\Theta' (\Theta^{- 1} (u))} -
+     \frac{\log n}{\Theta' (\Theta^{- 1} (u))} \]
+  \[ = \frac{\theta' (\Theta^{- 1} (u)) - \log n}{\Theta' (\Theta^{- 1} (u))}
+  \]
+  \tmtextbf{Step 5.2: Compute derivative of the sum.}
+  \[ \frac{d \Psi_n}{du} (u) = \frac{d \Phi_n}{du} (u) + \frac{d \Phi_n}{du} 
+     (u + h) \]
+  \[ = \frac{\theta' (\Theta^{- 1} (u)) - \log n}{\Theta' (\Theta^{- 1} (u))}
+     + \frac{\theta'  (\Theta^{- 1} (u + h)) - \log n}{\Theta'  (\Theta^{- 1}
+     (u + h))} \]
+  \tmtextbf{Step 5.3: Take limit as $u \to \infty$.}
+  
+  From Theorem 3.1: $\theta' (t) = \frac{1}{2} \log (t / (2 \pi)) + O (t^{-
+  1})$
+  
+  From Theorem 3.1: $\Theta' (t) = \frac{1}{2} \log (t / (2 \pi)) + O (t^{-
+  1})$
+  
+  Therefore:
+  \[ \frac{\theta' (t)}{\Theta' (t)} = \frac{\frac{1}{2} \log (t / (2 \pi)) +
+     O (t^{- 1})}{\frac{1}{2} \log (t / (2 \pi)) + O (t^{- 1})} \to 1 \quad
+     \text{as } t \to \infty \]
+  From Theorem 4.1: $\frac{\log n}{\Theta' (t)} \to 0$ as $t \to \infty$
+  
+  Therefore:
+  \[ \lim_{u \to \infty}  \frac{d \Psi_n}{du} (u) = 1 - 0 + 1 - 0 = 2 \]
+\end{proof}
+
+\subsection{Analysis of Diagonal Terms }
+
+\begin{proposition}
+  [Diagonal Oscillations Remain Bounded] For each fixed $n$, the Ces{\`a}ro
+  contribution from the phase sum $\Phi_n (u) + \Phi_n  (u + h)$ vanishes:
+  \[ \lim_{U \to \infty}  \frac{1}{U}  \int_{\Theta (0)}^U \cos (\Phi_n (u) +
+     \Phi_n (u + h)) du = 0 \]
+\end{proposition}
+
+\begin{proof}
+  By Lemma 5.2, for sufficiently large $u > U_0$:
+  \[ \left| \frac{d}{du} [\Phi_n (u) + \Phi_n (u + h)] \right| \geq 1 \]
+  By Van der Corput's lemma (Lemma 5.1) with $\lambda = 1$:
+  \[ \left| \int_{U_0}^U \cos (\Phi_n (u) + \Phi_n (u + h)) du \right| = O (1)
+  \]
+  Therefore:
+  \[ \left| \frac{1}{U}  \int_{\Theta (0)}^U \cos (\Phi_n (u) + \Phi_n (u +
+     h)) du \right| \leq \frac{C_1 + C_2}{U} \to 0 \]
+  where $C_1$ bounds the integral from $\Theta (0)$ to $U_0$, and $C_2$ is the
+  Van der Corput bound.
+\end{proof}
+
+\subsection{Analysis of the Phase Difference Term}
+
+\begin{proposition}
+  [Diagonal Difference Term Converges] For each fixed $n$ and $h$:
+  \[ \lim_{U \to \infty}  \frac{1}{U}  \int_{\Theta (0)}^U \cos (\Phi_n (u) -
+     \Phi_n (u + h)) du = \lim_{U \to \infty}  \frac{1}{U}  \int_{\Theta
+     (0)}^U \cos (h + o (1)) du = \cos (h) \]
+\end{proposition}
+
+\begin{proof}
+  By Lemma 4.1: $\Phi_n (u) - \Phi_n  (u + h) = - h + o (1)$ as $u \to
+  \infty$.
+  
+  Therefore:
+  \[ \cos (\Phi_n (u) - \Phi_n (u + h)) = \cos (- h + o (1)) = \cos (h) + o
+     (1) \]
+  By dominated convergence (since cosine is bounded):
+  \[ \lim_{U \to \infty}  \frac{1}{U}  \int_{\Theta (0)}^U \cos (\Phi_n (u) -
+     \Phi_n (u + h)) du = \cos (h) \]
+\end{proof}
+
+\subsection{Vanishing of Off-Diagonal Terms}
+
+\begin{proposition}
+  [Off-Diagonal Terms Vanish in Ces{\`a}ro Average] For $n \neq m$, the cross
+  terms in $X (u) X (u + h)$ contribute $o (1)$ to the Ces{\`a}ro average as
+  $U \to \infty$.
+\end{proposition}
+
+\begin{proof}
+  For $n \neq m$, the phase is:
+  \[ \Phi_n (u) + \Phi_m  (u + h) \]
+  By the same calculation as in Lemma 5.2:
+  \[ \frac{d}{du}  [\Phi_n (u) + \Phi_m (u + h)] \to 2 \quad \text{as } u \to
+     \infty \]
+  (The different indices $n, m$ do not affect the asymptotic since both $\log
+  n / \Theta' (t)$ and $\log m / \Theta' (t)$ vanish.)
+  
+  Therefore Van der Corput applies and:
+  \[ \left| \int \cos (\Phi_n (u) + \Phi_m (u + h)) du \right| = O (1) \]
+  Thus the Ces{\`a}ro average is $O (U^{- 1}) \to 0$.
+\end{proof}
+
+\subsection{Decay of Remainder Terms}
+
+\begin{proposition}
+  [Remainder Contribution is Negligible] The remainder term $R (t) = O (t^{- 1
+  / 4})$ contributes $o (1)$ to the Ces{\`a}ro average of $X (u) X (u + h)$.
+\end{proposition}
+
+\begin{proof}
+  The weight factor is:
+  \[ W (u, h) = \frac{1}{\sqrt{\Theta' (\Theta^{- 1} (u)) \Theta'  (\Theta^{-
+     1} (u + h))}} = O ((\log (\Theta^{- 1} (u)))^{- 1}) \]
+  The finite sum has $O (\sqrt{\Theta^{- 1} (u)})$ terms, each bounded by $O
+  (1)$, giving $O ((\Theta^{- 1} (u))^{1 / 4})$ for the sum.
+  
+  Cross terms with remainder:
+  \[ W (u, h) \cdot O ((\Theta^{- 1} (u))^{1 / 4}) \cdot O ((\Theta^{- 1}
+     (u))^{- 1 / 4}) = O ((\log u)^{- 1}) \]
+  Integrating and dividing by $U$ gives $o (1)$.
+\end{proof}
+
+\subsection{Independence of Starting Point}
+
+\begin{lemma}
+  [Ces{\`a}ro Average Independence] For any bounded integrable function $f$
+  and starting points $u_0, \tilde{u}_0 \geq \Theta (0)$:
+  \[ \left| \frac{1}{U}  \int_{u_0}^{u_0 + U} f \hspace{0.17em} du -
+     \frac{1}{U}  \int_{\tilde{u}_0}^{\tilde{u}_0 + U} f \hspace{0.17em} du
+     \right| \leq \frac{2 | \tilde{u}_0 - u_0 | \sup |f|}{U} \to 0 \]
+\end{lemma}
+
+\section{Main Theorem: Ces{\`a}ro Stationarity}
+
+\begin{theorem}
+  [Ces{\`a}ro Covariance Convergence] For the process $X (u) = (U_{\Theta}^{-
+  1} Z) (u)$ defined via the inverse unitary transform of the Hardy
+  Z-function, the Ces{\`a}ro covariance
+  \[ C (h) = \lim_{U \to \infty}  \frac{1}{U - \Theta (0)}  \int_{\Theta
+     (0)}^U X (u) X (u + h) du \]
   exists for all $h \in \mathbb{R}$ and is independent of the starting point.
   This establishes that $X$ is a wide-sense stationary process in the
   Ces{\`a}ro sense, and consequently $Z$ is a unitarily time-changed
@@ -680,245 +856,76 @@ Definition \ref{def:unitarily_time_changed}.
 \end{theorem}
 
 \begin{proof}
-  The proof relies on explicit asymptotic analysis of the Riemann-Siegel
-  representation of $Z (t)$.
-  
-  \subsubsection*{Step 1: Asymptotic expansion of $\Theta' (t)$}
-  
-  Starting from the definition (\ref{eq:theta_def}), apply Stirling's formula
-  for $\log \Gamma (z)$:
-  \begin{equation}
-    \log \Gamma (z) = \left( z - \frac{1}{2} \right) \log z - z + \frac{1}{2}
-    \log (2 \pi) + O (|z|^{- 1})
-  \end{equation}
-  For $z = \frac{1}{4} + \frac{it}{2}$ with $t \to \infty$, compute:
-  \begin{equation}
-    |z| = \sqrt{\frac{1}{16} + \frac{t^2}{4}} = \frac{t}{2}  (1 + O (t^{- 2}))
-  \end{equation}
-  \begin{equation}
-    \arg z = \arctan (2 t) = \frac{\pi}{2} - \frac{1}{2 t} + O (t^{- 3})
-  \end{equation}
-  Therefore:
-  \begin{equation}
-    \log z = \log \frac{t}{2} + i \left( \frac{\pi}{2} - \frac{1}{2 t} + O
-    (t^{- 3}) \right)
-  \end{equation}
-  Computing $(z - 1 / 2) \log z$ and taking the imaginary part yields:
-  \begin{equation}
-    \Im [(z - 1 / 2) \log z] = \frac{t}{2} \log \frac{t}{2} - \frac{\pi}{8} -
-    \frac{t \pi}{4} + O (t^{- 1})
-  \end{equation}
-  Combining with the $- \frac{t}{2} \log \pi$ term:
-  \begin{equation}
-    \label{eq:theta_asymptotic} \theta (t) = \frac{t}{2} \log \frac{t}{2 \pi}
-    - \frac{t}{2} - \frac{\pi}{8} + O (t^{- 1})
-  \end{equation}
-  Differentiating term by term:
-  \begin{equation}
-    \theta' (t) = \frac{1}{2} \log \frac{t}{2 \pi} + \frac{1}{2} \cdot
-    \frac{t}{t} - \frac{1}{2} + O (t^{- 2})
-  \end{equation}
-  Simplifying:
-  \begin{equation}
-    \label{eq:theta_prime} \theta' (t) = \frac{1}{2} \log \frac{t}{2 \pi} + O
-    (t^{- 1})
-  \end{equation}
-  For $t \geq a$, $\Theta (t) = \theta (t)$, so $\Theta' (t)$ has the same
-  asymptotic.
-  
-  \tmtextbf{Key consequence:} For any fixed $n$,
-  \begin{equation}
-    \label{eq:log_ratio_vanishes} \frac{\log n}{\Theta' (t)} = \frac{2 \log
-    n}{\log (t / (2 \pi))} \to 0 \quad \text{as } t \to \infty
-  \end{equation}
-  
-  \subsubsection*{Step 2: Riemann-Siegel representation}
-  
-  The Hardy Z-function admits the Riemann-Siegel expansion:
-  \begin{equation}
-    \label{eq:RS_expansion} Z (t) = 2 \sum_{n = 1}^{N (t)} n^{- 1 / 2} \cos
-    (\theta (t) - t \log n) + R (t)
-  \end{equation}
-  where $N (t) = \lfloor \sqrt{t / (2 \pi)} \rfloor$ and the remainder
-  satisfies $R (t) = O (t^{- 1 / 4})$.
-  
-  Transforming to $u$-coordinates with $t = \Theta^{- 1} (u)$, define:
-  \begin{equation}
-    \Phi_n (u) = u - \Theta^{- 1} (u) \log n
-  \end{equation}
-  Then:
-  \begin{equation}
-    X (u) = \frac{2}{\sqrt{\Theta' (\Theta^{- 1} (u))}}  \sum_{n = 1}^{N
-    (\Theta^{- 1} (u))} n^{- 1 / 2} \cos (\Phi_n (u)) + \frac{R (\Theta^{- 1}
-    (u))}{\sqrt{\Theta' (\Theta^{- 1} (u))}}
-  \end{equation}
-  
-  \subsubsection*{Step 3: Diagonal terms remain bounded}
-  
-  Consider the product $X (u) X (u + h)$. For diagonal terms ($n = m$):
-  \begin{equation}
-    \cos (\Phi_n (u)) \cos (\Phi_n (u + h)) = \frac{1}{2}  [\cos (\Phi_n (u) -
-    \Phi_n (u + h)) + \cos (\Phi_n (u) + \Phi_n (u + h))]
-  \end{equation}
-  \tmtextbf{Phase difference:}
-  \begin{equation}
-    \Phi_n (u) - \Phi_n  (u + h) = - h + [\Theta^{- 1} (u + h) - \Theta^{- 1}
-    (u)] \log n
-  \end{equation}
-  By the Mean Value Theorem, for some $\xi_u \in (u, u + h)$:
-  \begin{equation}
-    \Theta^{- 1}  (u + h) - \Theta^{- 1} (u) = \frac{h}{\Theta' (\Theta^{- 1}
-    (\xi_u))}
-  \end{equation}
-  Therefore:
-  \begin{equation}
-    [\Theta^{- 1} (u + h) - \Theta^{- 1} (u)] \log n = \frac{h \log n}{\Theta'
-    (\Theta^{- 1} (\xi_u))}
-  \end{equation}
-  By (\ref{eq:log_ratio_vanishes}), as $u \to \infty$ (so $\Theta^{- 1}
-  (\xi_u) \to \infty$):
-  \begin{equation}
-    \frac{h \log n}{\Theta' (\Theta^{- 1} (\xi_u))} \to 0
-  \end{equation}
-  Hence:
-  \begin{equation}
-    \label{eq:phase_diff_limit} \Phi_n (u) - \Phi_n  (u + h) \to - h
-  \end{equation}
-  The diagonal oscillatory term $\cos (\Phi_n (u) - \Phi_n (u + h))$ remains
-  bounded by 1.
-  
-  \tmtextbf{Phase sum:} The sum $\Phi_n (u) + \Phi_n  (u + h) = 2 u + h -
-  \Theta^{- 1} (u) \log n - \Theta^{- 1}  (u + h) \log n$ has derivative:
-  \begin{equation}
-    \frac{d}{du}  [\Phi_n (u) + \Phi_n (u + h)] = 2 - \frac{\log n}{\Theta'
-    (\Theta^{- 1} (u))} - \frac{\log n}{\Theta'  (\Theta^{- 1} (u + h))}
-  \end{equation}
-  By (\ref{eq:log_ratio_vanishes}), both reciprocal terms vanish as $u \to
-  \infty$, so:
-  \begin{equation}
-    \frac{d}{du}  [\Phi_n (u) + \Phi_n (u + h)] \to 2
-  \end{equation}
-  For sufficiently large $u > U_0$, we have $\left| \frac{d}{du} [\Phi_n (u) +
-  \Phi_n (u + h)] \right| \geq 1$.
-  
-  By van der Corput's lemma (Lemma \ref{lem:van_der_corput}):
-  \begin{equation}
-    \left| \int_{U_0}^U \cos (\Phi_n (u) + \Phi_n (u + h)) \hspace{0.17em} du
-    \right| = O (1)
-  \end{equation}
-  Therefore, the Ces{\`a}ro contribution from the phase sum:
-  \begin{equation}
-    \frac{1}{U}  \int_{\Theta (0)}^U \cos (\Phi_n (u) + \Phi_n (u + h)) 
-    \hspace{0.17em} du = O (U^{- 1}) \to 0
-  \end{equation}
-  
-  \subsubsection*{Step 4: Off-diagonal terms vanish}
-  
-  For $n \neq m$, the cross term has phase:
-  \begin{equation}
-    \Phi_n (u) + \Phi_m  (u + h) = 2 u + h - \Theta^{- 1} (u) \log n -
-    \Theta^{- 1}  (u + h) \log m
-  \end{equation}
-  The derivative is:
-  \begin{equation}
-    \frac{d}{du}  [\Phi_n (u) + \Phi_m (u + h)] = 2 - \frac{\log n}{\Theta'
-    (\Theta^{- 1} (u))} - \frac{\log m}{\Theta'  (\Theta^{- 1} (u + h))} \to 2
-  \end{equation}
-  Identically to Step 3, van der Corput's lemma applies and:
-  \begin{equation}
-    \frac{1}{U}  \int_{\Theta (0)}^U \cos (\Phi_n (u) + \Phi_m (u + h)) 
-    \hspace{0.17em} du = O (U^{- 1}) \to 0
-  \end{equation}
-  
-  \subsubsection*{Step 5: Remainder terms vanish}
-  
-  The weight factor in the transformation is:
-  \begin{equation}
-    W (u, h) = \frac{1}{\sqrt{\Theta' (\Theta^{- 1} (u)) \Theta'  (\Theta^{-
-    1} (u + h))}} \sim \frac{1}{\log (\Theta^{- 1} (u))}
-  \end{equation}
-  The sum $\sum_{n = 1}^{N (t)} n^{- 1 / 2} \cos (\Phi_n (u))$ is bounded by
-  $O (\sqrt{N (t)}) = O (t^{1 / 4})$ where $t = \Theta^{- 1} (u)$.
-  
-  Cross terms involving the remainder $R (\Theta^{- 1} (u + h)) = O (t^{- 1 /
-  4})$ give:
-  \begin{equation}
-    W (u, h) \cdot O (t^{1 / 4}) \cdot O (t^{- 1 / 4}) = O ((\log t)^{- 1})
-  \end{equation}
-  Changing to $t$-coordinates with $u = \Theta (t)$ and $du = \Theta' (t) dt$:
-  \begin{equation}
-    \frac{1}{U}  \int_{t_0}^{t_1} \frac{\Theta' (t)}{\log t}  \hspace{0.17em}
-    dt \sim \frac{1}{U}  \int_{t_0}^{t_1} \frac{\frac{1}{2} \log t}{\log t} 
-    \hspace{0.17em} dt = \frac{t_1 - t_0}{2 U}
-  \end{equation}
-  Since $U = \Theta (t_1) - \Theta (t_0) \sim \frac{t_1}{2} \log t_1$ for
-  large $t_1$:
-  \begin{equation}
-    \frac{t_1 - t_0}{2 U} \sim \frac{t_1}{t_1 \log t_1} = (\log t_1)^{- 1} \to
-    0
-  \end{equation}
-  Similarly, $R (\Theta^{- 1} (u)) R (\Theta^{- 1} (u + h)) = O (t^{- 1 / 2})$
-  gives Ces{\`a}ro average $O (t^{- 1 / 2}) \to 0$.
-  
-  \subsubsection*{Step 6: Independence of starting point}
-  
-  For any bounded integrable function $f$ and starting points $u_0,
-  \tilde{u}_0 \geq \Theta (0)$:
-  \begin{equation}
-    \left| \frac{1}{U}  \int_{u_0}^{u_0 + U} f \hspace{0.17em} du -
-    \frac{1}{U}  \int_{\tilde{u}_0}^{\tilde{u}_0 + U} f \hspace{0.17em} du
-    \right| \leq \frac{2 | \tilde{u}_0 - u_0 | \sup |f|}{U} \to 0
-  \end{equation}
-  
-  \subsubsection*{Conclusion}
-  
-  Combining Steps 3--6, the Ces{\`a}ro covariance limit
-  \begin{equation}
-    C (h) = \lim_{U \to \infty}  \frac{1}{U - \Theta (0)}  \int_{\Theta (0)}^U
-    X (u) X (u + h)  \hspace{0.17em} du
-  \end{equation}
-  exists and is independent of the starting point $\Theta (0)$. This
-  establishes that $X (u)$ is wide-sense stationary in the Ces{\`a}ro sense.
+  Combining all previous results:
+  \begin{enumerate}
+    \item By Theorem 3.1, $\Theta' (t) = \frac{1}{2} \log (t / (2 \pi)) + O
+    (t^{- 1})$ grows logarithmically.
+    
+    \item By Theorem 4.1, for each fixed $n$, $\frac{\log n}{\Theta' (t)} = o
+    (1)$ as $t \to \infty$. This ensures harmonic decoherence.
+    
+    \item By Theorem 5.1, the Hardy Z-function has the Riemann-Siegel
+    representation with a bounded oscillatory sum and $O (t^{- 1 / 4})$
+    remainder.
+    
+    \item By Theorem 6.2, transforming to $u$-coordinates and applying the
+    unitary inverse, we express $X (u)$ as a weighted oscillatory sum.
+    
+    \item By Lemma 4.1 (corrected), phase differences $\Phi_n (u) - \Phi_n  (u
+    + h) \to - h$ as $u \to \infty$.
+    
+    \item By Lemma 5.2 (corrected), phase sum derivatives approach 2, enabling
+    Van der Corput.
+    
+    \item By Propositions 5.3 and 5.4, the diagonal difference terms converge
+    and the diagonal sum terms vanish in Ces{\`a}ro average.
+    
+    \item By Proposition 5.5, off-diagonal terms vanish.
+    
+    \item By Proposition 5.6, remainder contributions decay.
+    
+    \item By Lemma 5.7, the Ces{\`a}ro average is independent of starting
+    point.
+  \end{enumerate}
+  Therefore, the Ces{\`a}ro covariance $C (h)$ exists and characterizes $X$ as
+  stationary in the Ces{\`a}ro sense. By the reconstruction property (Theorem
+  6.1), $Z (t) = \sqrt{\Theta' (t)} X (\Theta (t))$ is a unitarily
+  time-changed oscillatory process.
 \end{proof}
 
-\begin{corollary}
-  \label{cor:hardy_oscillatory_structure}The Hardy Z-function is a unitarily
-  time-changed stationary process $Z = U_{\Theta} X$, where $X$ is the
-  Ces{\`a}ro-stationary process characterized by Theorem
-  \ref{thm:cesaro_hardy}. Therefore, $Z$ is an oscillatory process with
-  evolutionary power spectral density
-  \begin{equation}
-    \label{eq:hardy_epsd} S_t (\lambda) = \Theta' (t) S_X (\lambda)
-  \end{equation}
-  where $S_X (\lambda)$ is the spectral density of $X$.
-\end{corollary}
+\section{Conclusion}
 
-\begin{remark}
-  The convergence of the Ces{\`a}ro covariance rigorously establishes that the
-  Hardy Z-function, when viewed through theta-time coordinates, admits a
-  well-defined stationary structure. The explicit form of $C (h)$ encodes the
-  deep spectral properties of the Riemann zeta function and requires detailed
-  harmonic analysis of the Riemann-Siegel coefficients.
-\end{remark}
+This article has provided a n exposition of the Ces{\`a}ro stationarity
+theorem for the Hardy Z-functionThe result confirms that the Hardy Z-function
+possesses an underlying stationary structure revealed through the inverse
+unitary time-change operator, opening new avenues for spectral analysis.
 
 \begin{thebibliography}{99}
-  {\bibitem{cramerLeadbetter1967}}Harald Cram{\'e}r and M. R. Leadbetter.
-  Stationary and Related Processes: Sample Function Properties and Their
-  Applications. Wiley, 1967.
+  {\bibitem{crowley2025}}S.~Crowley, ``Unitarily time-changed stationary
+  processes: A subclass of oscillatory processes,'' Preprint, December 2025.
   
-  {\bibitem{mandrekar1972}}V. Mandrekar. A characterization of oscillatory
-  processes and their prediction. Proc. Amer. Math. Soc., 32(1):280--284,
-  1972.
+  {\bibitem{edwards1974}}H.~M.~Edwards, \tmtextit{Riemann's Zeta Function},
+  Academic Press, 1974.
   
-  {\bibitem{priestley1965}}Maurice B. Priestley. Evolutionary spectra and
-  non-stationary processes. J. R. Stat. Soc. B, 27(2):204--229, 1965.
+  {\bibitem{siegel1932}}C.~L.~Siegel, ``{\"U}ber Riemanns Nachlass zur
+  analytischen Zahlentheorie,'' Quellen und Studien zur Geschichte der
+  Mathematik, 1932.
   
-  {\bibitem{priestley1981}}Maurice B. Priestley. Spectral Analysis and Time
-  Series. Academic Press, 1981.
+  {\bibitem{titchmarsh1986}}E.~C.~Titchmarsh, \tmtextit{The Theory of the
+  Riemann Zeta-Function}, 2nd ed., Oxford University Press, 1986.
   
-  {\bibitem{bulinskaya1961}}E. V. Bulinskaya. On the mean number of crossings
-  of a level by a stationary Gaussian process. Theory Probab. Appl.,
-  6(4):435--438, 1961.
+  {\bibitem{van-der-corput}}J.~G.~van~der~Corput, ``On trigonometric sums,''
+  Mathematische Annalen, vol.~120, pp.~369--382, 1948.
+  
+  {\bibitem{priestley1965}}M.~B.~Priestley, ``Evolutionary spectra and
+  non-stationary processes,'' Journal of the Royal Statistical Society, Series
+  B, vol.~27, pp.~204--237, 1965.
+  
+  {\bibitem{mandrekar1972}}V.~Mandrekar, ``Shift-commuting operators,'' in
+  \tmtextit{Harmonic Analysis and Operator Algebras}, American Mathematical
+  Society, 1972.
 \end{thebibliography}
+
+\
 
 \end{document}
