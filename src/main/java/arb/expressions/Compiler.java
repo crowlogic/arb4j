@@ -109,6 +109,8 @@ public class Compiler
     typePrefixes.put(ComplexFraction.class, "fℂ");
     typePrefixes.put(SphericalBesselFunction.class, "sph");
     typePrefixes.put(IntegerPolynomial.class, "Xℤ");
+    typePrefixes.put(RealSequence.class, "Sℝ");
+    typePrefixes.put(RealSequenceSequence.class, "S²ℝ");
 
   }
 
