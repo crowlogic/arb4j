@@ -1,4 +1,5 @@
-var Z = RealFunction.express("Z(t)");
-var z = Z.quantize(100,10000,500000,true);
-var y = z.structure(500);
-plot(y)
+var Z = RealFunction.express("Z((t+pi/8)/W(0,(t+pi/8)/pi*exp(1)))");
+plot(0,100,1000,Z);
+#var z = Z.quantize(100,5000,100000,true);
+#var y = z.structure(500);
+#plot(y)
