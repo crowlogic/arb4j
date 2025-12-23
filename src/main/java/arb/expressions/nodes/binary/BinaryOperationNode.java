@@ -106,7 +106,6 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     mapTypes(Integer.class, RealSequence.class, RealSequenceSequence.class);
     mapTypes(RealSequenceSequence.class, Real.class, RealSequenceSequence.class);
     mapTypes(RealSequenceSequence.class, Integer.class, RealSequenceSequence.class);
-    mapTypes(RealSequenceSequence.class, RealMatrix.class, RealMatrix.class);
     mapTypes(RealSequence.class, Real.class, RealSequence.class);
 
   }

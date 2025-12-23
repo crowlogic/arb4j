@@ -183,7 +183,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     if (operandFunctionFieldName == null && operandValueFieldName == null)
     {
       operandFunctionFieldName = expression.getNextIntermediateVariableFieldName("operand",
-                                                                                 resultType);
+                                                                                 Function.class);
       operandValueFieldName    = expression.newIntermediateVariable("value", resultType);
       if (Expression.trace)
       {
@@ -192,6 +192,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       }
     }
   }
+
 
   protected void logFieldNameAssignment(Class<?> resultType, int indentation)
   {

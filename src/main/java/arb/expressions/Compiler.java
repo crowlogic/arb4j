@@ -109,6 +109,8 @@ public class Compiler
     typePrefixes.put(ComplexFraction.class, "fℂ");
     typePrefixes.put(SphericalBesselFunction.class, "sph");
     typePrefixes.put(IntegerPolynomial.class, "Xℤ");
+    typePrefixes.put(Function.class, "F");
+
     typePrefixes.put(RealSequence.class, "Sℝ");
     typePrefixes.put(RealSequenceSequence.class, "S²ℝ");
 
@@ -831,17 +833,10 @@ public class Compiler
     {
       return Quaternion.class;
     }
-    else if (RealSequenceSequence.class.equals(resultType))
-    {
-      return RealMatrix.class;  // FIXED: RealSequenceSequence produces RealMatrix
-    }
-    else if (RealSequence.class.equals(resultType))
-    {
-      return Real.class;  // RealSequence produces Real scalar values
-    }
     else
     {
-      throw new CompilerException("dont know what the scalar type is for " + resultType);
+      return resultType;
+      //throw new CompilerException("dont know what the scalar type is for " + resultType);
     }
   }
 

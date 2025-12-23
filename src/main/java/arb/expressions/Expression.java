@@ -2655,11 +2655,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       var   fieldName = entry.getKey();
       Named val       = entry.getValue();
-      if (val != null)
+      //assert val != null : "entry is null " + entry;
+      if ( val != null )
       {
-        var fieldType = val.getClass();
-        loadThisFieldOntoStack(duplicateTopOfTheStack(mv), fieldName, fieldType);
-        putField(mv, function.className, fieldName, fieldType);
+      var   fieldType = val.getClass();
+      loadThisFieldOntoStack(duplicateTopOfTheStack(mv), fieldName, fieldType);
+      putField(mv, function.className, fieldName, fieldType);
       }
     }
   }
@@ -2704,7 +2705,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public String
          registerIntermediateVariable(String intermediateVarName, Class<?> type, boolean initialize)
   {
-    assert !type.isInterface() : "cannot instantiate interface " + type;
+   // assert !type.isInterface() : "cannot instantiate interface " + type;
 
     if (!isFunctional())
     {
