@@ -1,12 +1,13 @@
 package arb.functions.polynomials.orthogonal.real;
 
-import arb.*;
+import arb.Real;
+import arb.RealConstants;
+import arb.RealMatrix;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.functions.integer.RealSequence;
 import arb.functions.integer.RealSequenceSequence;
-import arb.functions.real.RealFunction;
 
 /**
  * Builder for Jacobi polynomial fractional derivative operational matrices.
@@ -30,7 +31,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
 
   public RealSequenceSequence      ω;
 
-  public RealFunction              normSq;
+  public RealSequence              normSq;
 
   public Context                   context;
 
@@ -43,21 +44,21 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
     context   = basis.getContext();
     context.registerVariable("γ", γ);
     context.registerVariable(Real.named("t"));
-    normSq = RealFunction.express("normSq",
+    normSq = RealSequence.express("normSq",
                                   "i➔2^(α+β+1)*Γ(i+α+1)*Γ(i+β+1)/((2*i+α+β+1)*Γ(i+1)*Γ(i+α+β+1))",
                                   context);
 
     ω      =
       RealSequenceSequence.express("ω",
-                                   "j➔(-1)^(j-k)*Γ(j+β+1)*Γ(j+k+α+β+1)/(Γ(k+β+1)*Γ(j+α+β+1)*(j-k)!*k!)",
+                                   "j➔k➔(-1)^(j-k)*Γ(j+β+1)*Γ(j+k+α+β+1)/(Γ(k+β+1)*Γ(j+α+β+1)*(j-k)!*k!)",
                                    context);
 
     χ      =
-      RealSequenceSequence.express("χ", "i➔int(t->t^p*w(t)*P(i)(t), t=-1..1)/normSq(i)", context);
+      RealSequenceSequence.express("χ", "i➔p➔int(t->t^p*w(t)*P(i)(t), t=-1..1)/normSq(i)", context);
 
-    μ = RealSequenceSequence.express("μ",
-                                     "i➔Σk➔(ω(j)(k)*Γ(k+1)/Γ(k+1-γ)*χ(i)(k-γ)){k=⌈γ⌉..j}",
-                                     context);
+    μ      = RealSequenceSequence.express("μ",
+                                          "i➔j➔Σk➔(ω(j)(k)*Γ(k+1)/Γ(k+1-γ)*χ(i)(k-γ)){k=⌈γ⌉..j}",
+                                          context);
 
   }
 

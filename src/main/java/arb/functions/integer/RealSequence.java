@@ -21,17 +21,7 @@ public interface RealSequence extends
                               Sequence<Real>
 {
 
-  public static Expression<Integer, Real, RealSequence> parse(String expression)
-  {
-    return Function.parse(Parser.hashString(expression),
-                          expression,
-                          null,
-                          Integer.class,
-                          Real.class,
-                          RealSequence.class,
-                          null,
-                          null);
-  }
+  
 
   /**
    * Enumerate elements of a {@link RealSequence}
@@ -81,6 +71,18 @@ public interface RealSequence extends
   public static Expression<?, ?, ?> compile(String string)
   {
     return Function.compile(Integer.class, Real.class, RealSequence.class, string, new Context());
+  }
+  
+  public static Expression<Integer, Real, RealSequence> parse(String expression)
+  {
+    return Function.parse(Parser.hashString(expression),
+                          expression,
+                          null,
+                          Integer.class,
+                          Real.class,
+                          RealSequence.class,
+                          null,
+                          null);
   }
 
 }

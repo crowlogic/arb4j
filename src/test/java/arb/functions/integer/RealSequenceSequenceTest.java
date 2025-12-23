@@ -37,7 +37,7 @@ public class RealSequenceSequenceTest extends
 
   }
 
-  public void testExpressString4()
+  public void testExpressStringIntegral()
   {
     Context              context = new Context(Real.named("x"));
     RealSequenceSequence express = RealSequenceSequence.express("i->j->int(x^(i+j),x=-1..1)",
@@ -47,4 +47,15 @@ public class RealSequenceSequenceTest extends
     assertEquals(2.0 / 9.0, val.doubleValue());
   }
 
+  public void testExpressStringSum()
+  {
+    Context              context = new Context(Real.named("x"));
+    RealSequenceSequence express = RealSequenceSequence.express("i->j->sum(k{k=i..j})",
+                                                                context);
+    RealSequence         row     = express.apply(3);
+    Real                 val     = row.apply(5);
+    assertEquals(2.0 / 9.0, val.doubleValue());
+  }
+
+  
 }
