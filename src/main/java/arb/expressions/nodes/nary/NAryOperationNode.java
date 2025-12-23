@@ -746,7 +746,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                          indexVariableFieldName,
                          lowerLimit.typeset(),
                          upperLimit.typeset(),
-                         operand.typeset());
+                         operand == null ? "null"  : operand.typeset());
   }
 
   @Override

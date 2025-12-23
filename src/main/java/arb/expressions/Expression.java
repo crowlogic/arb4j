@@ -453,22 +453,22 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public String allocateIntermediateVariable(MethodVisitor methodVisitor, Class<?> type)
   {
-    Class<?> actualType = type.isInterface() ? scalarType(type) : type;
-    String intermediateVariableName = newIntermediateVariable(actualType);
+    Class<?> actualType               = type.isInterface() ? scalarType(type) : type;
+    String   intermediateVariableName = newIntermediateVariable(actualType);
     loadThisFieldOntoStack(methodVisitor, intermediateVariableName, actualType);
     return intermediateVariableName;
   }
 
-  public String allocateIntermediateVariable(MethodVisitor methodVisitor, String prefix, Class<?> type)
+  public String
+         allocateIntermediateVariable(MethodVisitor methodVisitor, String prefix, Class<?> type)
   {
-    Class<?> actualType = type.isInterface() ? scalarType(type) : type;
-    String intermediateVariableName = newIntermediateVariable(prefix, actualType);
+    Class<?> actualType               = type.isInterface() ? scalarType(type) : type;
+    String   intermediateVariableName = newIntermediateVariable(prefix, actualType);
     loadFieldOntoStack(loadThisOntoStack(methodVisitor),
                        intermediateVariableName,
                        actualType.descriptorString());
     return intermediateVariableName;
   }
-
 
   public boolean anyAscendentIndependentVariableIsNamed(String name)
   {
@@ -2653,10 +2653,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     for (var entry : context.variableEntries())
     {
-      var fieldName = entry.getKey();
-      var fieldType = entry.getValue().getClass();
-      loadThisFieldOntoStack(duplicateTopOfTheStack(mv), fieldName, fieldType);
-      putField(mv, function.className, fieldName, fieldType);
+      var   fieldName = entry.getKey();
+      Named val       = entry.getValue();
+      if (val != null)
+      {
+        var fieldType = val.getClass();
+        loadThisFieldOntoStack(duplicateTopOfTheStack(mv), fieldName, fieldType);
+        putField(mv, function.className, fieldName, fieldType);
+      }
     }
   }
 
@@ -3169,9 +3173,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public void throwUnexpectedCharacterException(String msg, char... which)
   {
     StringBuilder sb = new StringBuilder();
-    for ( char ch : which )
+    for (char ch : which)
     {
-     sb.append( String.format("'%s'(%d)", ch,(int)ch) );
+      sb.append(String.format("'%s'(%d)", ch, (int) ch));
     }
     String result = sb.toString() + " of len " + which.length;
     throw new CompilerException(format("Expecting %s %s at position %d but got char '%c' instead in expr='%s', remaining=%s%s\n",
