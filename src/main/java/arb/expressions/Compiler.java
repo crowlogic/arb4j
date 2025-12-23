@@ -833,17 +833,18 @@ public class Compiler
     }
     else if (RealSequenceSequence.class.equals(resultType))
     {
-      return Real.class;
+      return RealMatrix.class;  // FIXED: RealSequenceSequence produces RealMatrix
     }
     else if (RealSequence.class.equals(resultType))
     {
-      return Real.class;
+      return Real.class;  // RealSequence produces Real scalar values
     }
     else
     {
       throw new CompilerException("dont know what the scalar type is for " + resultType);
     }
   }
+
 
   public static MethodVisitor swap(MethodVisitor mv)
   {

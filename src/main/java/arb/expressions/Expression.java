@@ -453,21 +453,22 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public String allocateIntermediateVariable(MethodVisitor methodVisitor, Class<?> type)
   {
-   // assert !type.isInterface() : "cannot instantiate interface " + type;
-    String intermediateVariableName = newIntermediateVariable(type);
-    loadThisFieldOntoStack(methodVisitor, intermediateVariableName, type);
+    Class<?> actualType = type.isInterface() ? scalarType(type) : type;
+    String intermediateVariableName = newIntermediateVariable(actualType);
+    loadThisFieldOntoStack(methodVisitor, intermediateVariableName, actualType);
     return intermediateVariableName;
   }
 
-  public String
-         allocateIntermediateVariable(MethodVisitor methodVisitor, String prefix, Class<?> type)
+  public String allocateIntermediateVariable(MethodVisitor methodVisitor, String prefix, Class<?> type)
   {
-    String intermediateVariableName = newIntermediateVariable(prefix, type);
+    Class<?> actualType = type.isInterface() ? scalarType(type) : type;
+    String intermediateVariableName = newIntermediateVariable(prefix, actualType);
     loadFieldOntoStack(loadThisOntoStack(methodVisitor),
                        intermediateVariableName,
-                       type.descriptorString());
+                       actualType.descriptorString());
     return intermediateVariableName;
   }
+
 
   public boolean anyAscendentIndependentVariableIsNamed(String name)
   {
