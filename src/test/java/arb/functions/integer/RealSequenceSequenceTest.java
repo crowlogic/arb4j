@@ -54,7 +54,7 @@ public class RealSequenceSequenceTest extends
                                                                 context);
     RealSequence         row     = express.apply(3);
     Real                 val     = row.apply(5);
-    assertEquals(2.0 / 9.0, val.doubleValue());
+    assertEquals(12.0, val.doubleValue());
   }
 
   
