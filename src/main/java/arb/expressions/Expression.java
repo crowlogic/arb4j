@@ -2732,8 +2732,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                 fieldType);
 
     }
-    loadThisFieldOntoStack(duplicateTopOfTheStack(mv), fieldName, fieldType);
-    putField(mv, function.className, fieldName, fieldType);
+    if (referencedFunctions.containsKey(entry.getKey()))
+    {
+      loadThisFieldOntoStack(duplicateTopOfTheStack(mv), fieldName, fieldType);
+      putField(mv, function.className, fieldName, fieldType);
+    }
   }
 
   public void propagateContextualFunctions(MethodVisitor mv,
@@ -2744,11 +2747,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       log.debug("propagateContextualFunctions(function={})", function);
 
     }
-    if ( functionName == null)
+    if (functionName == null)
     {
       functionName = Parser.transformToJavaAcceptableCharacters(expression);
     }
-   // assert functionName != null : "functionName of " + this + " is null";
+    // assert functionName != null : "functionName of " + this + " is null";
     // context.functionEntryStream()
     Predicate<? super Entry<String, FunctionMapping<?, ?, ?>>> predicate = entry ->
     {
