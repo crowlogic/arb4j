@@ -1,4 +1,0 @@
-write theorems with extensive detailed proofs and put it in latex document format in a code block (leaving no stone unturned).
- use 3rd person impersonal perspective language only. dont use the word rigorous , only a cheesy idiot would write that word 
- rather than actually BE rigorous. do not claim to be complete because you cannot prove that it is complete  
- and anyone who doesnt know that is a fucking ignoramus
