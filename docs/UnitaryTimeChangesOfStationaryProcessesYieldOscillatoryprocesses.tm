@@ -924,8 +924,8 @@
   <subsection|Analysis of Phase Differences>
 
   <\lemma>
-    [Phase Difference Convergence - CORRECTED] For fixed
-    <math|h\<in\>\<bbb-R\>> and fixed <math|n\<geq\>1>:
+    [Phase Difference Convergence] For fixed <math|h\<in\>\<bbb-R\>> and
+    fixed <math|n\<geq\>1>:
 
     <\equation*>
       lim<rsub|u\<to\>\<infty\>><around|[|\<Phi\><rsub|n><around|(|u|)>-\<Phi\><rsub|n>*<around|(|u+h|)>|]>=-h\<cdot\>lim<rsub|u\<to\>\<infty\>>
@@ -1051,7 +1051,7 @@
   <subsection| Analysis of Phase Sum Derivative>
 
   <\lemma>
-    [Phase Sum Derivative - CORRECTED] For the phase sum
+    [Phase Sum Derivative ] For the phase sum
     <math|\<Psi\><rsub|n><around|(|u|)>\<assign\>\<Phi\><rsub|n><around|(|u|)>+\<Phi\><rsub|n>*<around|(|u+h|)>>,
     we have:
 

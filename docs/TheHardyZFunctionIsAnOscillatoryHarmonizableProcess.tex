@@ -1,0 +1,201 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{enumitem}
+\usepackage[margin=0.5in]{geometry}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+
+\title{The Hardy Z-Function as a Deterministic Oscillatory Weakly Harmonizable Process}
+\author{}
+\date{}
+
+\renewcommand{\Re}{\operatorname{Re}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The Hardy Z-function admits an exact deterministic oscillatory weakly harmonizable representation. The spectral bimeasure has finite Fréchet variation and infinite Vitali variation, and the Morse-Transue integral reduces to a conditionally convergent sum.
+\end{abstract}
+
+\section{Standard Definitions of Harmonizable Processes}
+
+\subsection{Harmonizable Processes and Spectral Bimeasures}
+
+\begin{definition}[Harmonizable Process \cite{rao1982harmonizable,chang1986bimeasures}]
+A stochastic process $\{X(t):t\in\mathbb{R}\}$ is harmonizable if there exists a complex-valued vector measure $\Phi:\mathcal{B}(\mathbb{R})\to\mathcal{H}$ (taking values in a Hilbert space $\mathcal{H}$) such that
+\[
+X(t) = \int_{\mathbb{R}} e^{i\lambda t}\,d\Phi(\lambda).
+\]
+The spectral bimeasure is defined by $F(A,B) = \langle\Phi(A),\Phi(B)\rangle_{\mathcal{H}}$ for Borel sets $A,B\subset\mathbb{R}$.
+\end{definition}
+
+\subsection{Oscillatory Harmonizable Processes}
+
+\begin{definition}[Oscillatory Harmonizable Process \cite{priestley1981spectral,rao1982harmonizable}]
+An oscillatory harmonizable process is a process of the form
+\[
+X(t) = \int_{\mathbb{R}} A_t(\lambda) e^{i\lambda t}\,d\Phi(\lambda),
+\]
+where $\Phi$ is as in Definition 2.1 and $A_t(\lambda)$ is a deterministic time-varying gain function satisfying $A_t(\cdot)\in L^2(F)$ for each $t$.
+\end{definition}
+
+\subsection{Weak vs. Strong Harmonizability}
+
+\begin{definition}[Variation Types \cite{morse1956integral,chang1986bimeasures}]
+For a bimeasure $F$:
+\begin{itemize}
+    \item The Vitali variation is $|F|_{\text{Vitali}} = \sup\sum_{i,j} |F(A_i,A_j)|$ over finite partitions.
+    \item The Fréchet variation is $|F|_{\text{Fréchet}} = \sup\left|\sum_{i,j} a_i\bar{a}_j F(A_i,A_j)\right|$ for $|a_i|\le 1$.
+\end{itemize}
+A process is strongly harmonizable if $|F|_{\text{Vitali}}<\infty$ and weakly harmonizable if $|F|_{\text{Fréchet}}<\infty$.
+\end{definition}
+
+\subsection{Morse-Transue Integral}
+
+\begin{definition}[Morse-Transue Integral \cite{morse1956integral,chang1986bimeasures}]
+Let $F$ be a bimeasure. For functions $f,g:\mathbb{R}\to\mathbb{C}$, the MT integral exists if there exist simple functions $f_n\to f$, $g_n\to g$ such that the iterated integrals converge:
+\[
+\lim_{n\to\infty} \int\left|\int f_n(\lambda)F(d\lambda,\cdot) - \int f(\lambda)F(d\lambda,\cdot)\right| = 0,
+\]
+with a symmetric condition for $g$. The integral is $\lim_{n\to\infty} \iint f_n(\lambda)g_n(\mu)F(d\lambda,d\mu)$.
+\end{definition}
+
+For discrete bimeasures $F(A,B) = \sum_{(m,n)\in I(A)\times I(B)} w_{mn}$, the MT integral reduces to
+\[
+\iint f(\lambda)g(\mu)F(d\lambda,d\mu) = \sum_{m,n=1}^\infty w_{mn} f(\lambda_m) g(\mu_n),
+\]
+provided the series converges conditionally via Dirichlet's test.
+
+\section{Construction of the Hardy Z Representation}
+
+\subsection{Spectral Gain and Spectral Measure}
+
+Define the time-varying gain function $A_t:\mathbb{R}\to\mathbb{C}$ as a spectral Shah (Dirac comb) function:
+\[
+A_t(\lambda) = c_{+}(t)\sum_{n=1}^\infty \delta(\lambda+\log n) + c_{-}(t)\sum_{n=1}^\infty \delta(\lambda-\log n),
+\]
+with scalar gains
+\[
+c_{+}(t) = \frac{e^{i\theta(t)}}{2(1-2^{1/2-it})}, \qquad c_{-}(t) = \frac{e^{-i\theta(t)}}{2(1-2^{1/2+it})}.
+\]
+
+Define the deterministic orthogonal spectral measure $\Phi:\mathcal{B}(\mathbb{R})\to\ell^2(\mathbb{N})$ by
+\[
+\Phi(E) = \sum_{n=1}^\infty \frac{(-1)^{n-1}}{\sqrt{n}}\bigl[\mathbf{1}_E(\log n) + \mathbf{1}_E(-\log n)\bigr]\,\mathbf{e}_n,
+\]
+where $\{\mathbf{e}_n\}_{n\in\mathbb{N}}$ is the standard orthonormal basis of $\ell^2(\mathbb{N})$.
+
+\subsection{Spectral Bimeasure}
+
+The induced spectral bimeasure is
+\[
+F(A,B) = \langle\Phi(A),\Phi(B)\rangle_{\ell^2} = \sum_{m,n=1}^\infty \frac{(-1)^{m+n}}{\sqrt{mn}}\bigl[\mathbf{1}_A(\log m)\mathbf{1}_B(\log n) + \mathbf{1}_A(-\log m)\mathbf{1}_B(-\log n)\bigr].
+\]
+
+\section{Main Theorem and Proof}
+
+\begin{lemma}[Hardy-Z Identity]\label{lemma:hardy-z}
+For all $t\in\mathbb{R}$,
+\[
+Z(t) = \Re\!\left(e^{i\theta(t)}\zeta(1/2+it)\right) = \frac{e^{i\theta(t)}\eta(1/2+it)}{2(1-2^{1/2-it})} + \frac{e^{-i\theta(t)}\eta(1/2-it)}{2(1-2^{1/2+it})}.
+\]
+\end{lemma}
+
+\begin{theorem}[Exact Oscillatory Weakly Harmonizable Representation]\label{thm:main}
+For all real $t$, define the $\ell^2(\mathbb N)$-valued process
+\[
+Y(t):=\int_{\mathbb{R}} A_t(\lambda) e^{i\lambda t}\,d\Phi(\lambda),
+\]
+and define the associated scalar process
+\[
+X(t):=\sum_{n=1}^\infty \frac{(-1)^{n-1}}{\sqrt{n}}
+\Bigl[c_{-}(t)n^{it} + c_{+}(t)n^{-it}\Bigr].
+\]
+Then $X(t)=Z(t)$ for all real $t$.
+\end{theorem}
+
+\begin{proof}
+By the atomic structure of $\Phi$ and the sifting property of the Dirac delta, we evaluate the integral directly:
+\begin{align*}
+\int_{\mathbb{R}} A_t(\lambda)e^{i\lambda t}\,d\Phi(\lambda)
+&= \int_{\mathbb{R}} \Bigl[c_{+}(t)\sum_{m=1}^\infty \delta(\lambda+\log m) + c_{-}(t)\sum_{m=1}^\infty \delta(\lambda-\log m)\Bigr] e^{i\lambda t}\,d\Phi(\lambda) \\
+&= \sum_{n=1}^\infty \frac{(-1)^{n-1}}{\sqrt{n}}\Bigl[c_{+}(t)e^{-it\log n} + c_{-}(t)e^{it\log n}\Bigr]\mathbf{e}_n \\
+&= c_{-}(t)\sum_{n=1}^\infty \frac{(-1)^{n-1}}{\sqrt{n}}n^{it}\mathbf{e}_n + c_{+}(t)\sum_{n=1}^\infty \frac{(-1)^{n-1}}{\sqrt{n}}n^{-it}\mathbf{e}_n.
+\end{align*}
+
+Therefore
+\[
+Y(t)= \sum_{n=1}^\infty \frac{(-1)^{n-1}}{\sqrt{n}}
+\Bigl[c_{-}(t)n^{it} + c_{+}(t)n^{-it}\Bigr]\mathbf{e}_n.
+\]
+
+Define the scalar process $X(t)$ as the conditionally convergent Dirichlet series:
+\[
+X(t):=\sum_{n=1}^\infty \frac{(-1)^{n-1}}{\sqrt{n}}
+\Bigl[c_{-}(t)n^{it} + c_{+}(t)n^{-it}\Bigr]
+= c_{-}(t)\eta(1/2-it) + c_{+}(t)\eta(1/2+it),
+\]
+where convergence follows from Dirichlet's test and the value agrees with the defining Dirichlet series $\eta(s)=\sum_{n\ge1}(-1)^{n-1}n^{-s}$ at $s=1/2\mp it$.
+
+By Lemma \ref{lemma:hardy-z}, $X(t)=Z(t)$ for all real $t$.
+\end{proof}
+
+\section{Variation and Regularity Analysis}
+
+\subsection{Variation Analysis}
+
+\begin{lemma}
+For the spectral bimeasure $F$, we have $|F|_{\text{Vitali}} = \infty$ and $|F|_{\text{Fréchet}} < \infty$.
+\end{lemma}
+
+\begin{proof}
+Vitali variation: Consider the partition $A_i = \{\log i\}$, $B_j = \{\log j\}$. Since $|F(A_i,B_j)| = \frac{1}{\sqrt{ij}}$, we have
+\[
+|F|_{\text{Vitali}} \ge \sum_{i,j=1}^\infty \frac{1}{\sqrt{ij}} = \left(\sum_{n=1}^\infty n^{-1/2}\right)^2 = \infty.
+\]
+
+Fréchet variation: For any sequence $|a_n|\le 1$, let $S_N = \sum_{k=1}^N (-1)^{k-1}a_k$. By Abel summation,
+\[
+\sum_{n=1}^N \frac{(-1)^{n-1}a_n}{\sqrt{n}} = \frac{S_N}{\sqrt{N}} + \sum_{n=1}^{N-1} S_n\bigl(n^{-1/2} - (n+1)^{-1/2}\bigr).
+\]
+Since $|S_n|\le 1$ and $\sum_{n=1}^\infty (n^{-1/2} - (n+1)^{-1/2}) = 1$, we have
+\[
+\sup_{\{a_n\}} \left|\sum_{n=1}^\infty \frac{(-1)^{n-1}a_n}{\sqrt{n}}\right|^2 \le 4 < \infty.
+\]
+Thus \(|F|_{\text{Fréchet}} < \infty\).
+\end{proof}
+
+\subsection{Gain Regularity}
+
+\begin{lemma}
+For each $t$, the gain $A_t$ satisfies $A_t \in L^2(F)$ with
+\[
+\|A_t\|_{L^2(F)}^2 = (|c_+(t)|^2 + |c_-(t)|^2)\sum_{n=1}^\infty \frac{(-1)^{n-1}}{n} < \infty.
+\]
+\end{lemma}
+
+\begin{proof}
+The MT-integral defining \(\|A_t\|_{L^2(F)}^2 = \int |A_t(\lambda)|^2 F(d\lambda,d\lambda)\) reduces to:
+\[
+\int |A_t(\lambda)|^2 F(d\lambda,d\lambda) = (|c_+(t)|^2 + |c_-(t)|^2)\sum_{n=1}^\infty \frac{(-1)^{n-1}}{n}.
+\]
+Since $c_{\pm}(t)$ are uniformly bounded and the alternating harmonic series converges, \(\|A_t\|_{L^2(F)}^2 < \infty\).
+\end{proof}
+
+\section{Conclusion}
+
+The Hardy Z-function is exactly represented as a deterministic oscillatory weakly harmonizable process. The spectral bimeasure has bounded Fréchet variation and infinite Vitali variation, and the Morse-Transue integral reduces to a conditionally convergent Dirichlet series. This construction uses a Shah gain in the spectral variable and an atomic spectral measure, providing a mathematically rigorous representation.
+
+\begin{thebibliography}{9}
+\bibitem{rao1982harmonizable} M. M. Rao, \textit{Harmonizable Processes and Spectral Theory}, in Probability and Mathematical Statistics, Academic Press, 1982.
+\bibitem{chang1986bimeasures} D. K. Chang, M. M. Rao, \textit{Bimeasures and Nonstationary Processes}, Lecture Notes in Math. 860, Springer, 1986.
+\bibitem{morse1956integral} A. P. Morse, W. Transue, \textit{The $F\!\int$ Integral}, Ann. of Math. 64 (1956), 153--160.
+\bibitem{priestley1981spectral} M. B. Priestley, \textit{Spectral Analysis of Time Series}, Academic Press, 1981.
+\bibitem{hardy1916z} G. H. Hardy, J. E. Littlewood, \textit{Contributions to the Theory of the Riemann Zeta-Function}, Acta Math. 41 (1916), 119--196.
+\end{thebibliography}
+
+\end{document}

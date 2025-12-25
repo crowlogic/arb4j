@@ -1,20 +1,42 @@
 package arb.expressions.nodes.nary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.cast;
+import static arb.expressions.Compiler.designateLabel;
+import static arb.expressions.Compiler.getFieldFromThis;
+import static arb.expressions.Compiler.getMethodDescriptor;
+import static arb.expressions.Compiler.invokeMethod;
+import static arb.expressions.Compiler.invokeSetMethod;
+import static arb.expressions.Compiler.invokeVirtualMethod;
+import static arb.expressions.Compiler.jumpTo;
+import static arb.expressions.Compiler.jumpToIfGreaterThan;
+import static arb.expressions.Compiler.loadBitsParameterOntoStack;
+import static arb.expressions.Compiler.loadInputParameter;
+import static arb.expressions.Compiler.loadThisOntoStack;
+import static arb.expressions.Compiler.pop;
+import static arb.expressions.Compiler.putField;
 import static arb.utensils.Utensils.indent;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Type;
 
-import arb.*;
+import arb.ComplexPolynomial;
 import arb.Integer;
+import arb.Polynomial;
+import arb.Real;
+import arb.RealPolynomial;
 import arb.exceptions.CompilerException;
-import arb.expressions.*;
+import arb.expressions.Compiler;
 import arb.expressions.Context;
-import arb.expressions.nodes.*;
+import arb.expressions.Expression;
+import arb.expressions.FunctionMapping;
+import arb.expressions.IntermediateVariable;
+import arb.expressions.nodes.Node;
+import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 import arb.functions.integer.Sequence;
 
@@ -192,7 +214,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       }
     }
   }
-
 
   protected void logFieldNameAssignment(Class<?> resultType, int indentation)
   {
@@ -421,7 +442,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   MethodVisitor loadIndexVariable(MethodVisitor methodVisitor)
   {
     assert fieldName != null : String.format("field is null %s\n", this);
-    assert indexVariableFieldName != null : String.format("indexVariableFieldName is null %s\n", this);
+    assert indexVariableFieldName != null : String.format("indexVariableFieldName is null %s\n",
+                                                          this);
     getField(methodVisitor, getIndexVariableFieldName(), Integer.class.descriptorString());
 
     return methodVisitor;
@@ -445,6 +467,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     upperLimit = expression.resolve();
     expression.require('}');
   }
+
   protected String extractOperandExpression()
   {
     if (Expression.trace)
@@ -453,8 +476,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
     parsed = true;
     String stringExpression = expression.expression;
-    int startPos = expression.position;
-    int arrowIndex = stringExpression.indexOf('➔', expression.position);
+    int    startPos         = expression.position;
+    int    arrowIndex       = stringExpression.indexOf('➔', expression.position);
 
     if (arrowIndex != -1)
     {
@@ -462,62 +485,74 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       if (Expression.trace)
       {
         logger.debug(String.format("extractOperandExpression: found arrow at index %d, extracted indexVariableFieldName='%s' from substring [%d:%d]='%s'\n",
-                                   arrowIndex, 
-                                   indexVariableFieldName, 
-                                   startPos, 
+                                   arrowIndex,
+                                   indexVariableFieldName,
+                                   startPos,
                                    arrowIndex,
                                    stringExpression.substring(startPos, arrowIndex)));
       }
-      assert indexVariableFieldName != null && !indexVariableFieldName.isEmpty() : 
-        String.format("indexVariableFieldName extracted from expression substring is null or empty: expression='%s', substring='%s'",
-                      stringExpression,
-                      stringExpression.substring(startPos, arrowIndex));
+      assert indexVariableFieldName != null
+                    && !indexVariableFieldName.isEmpty() : String.format("indexVariableFieldName extracted from expression substring is null or empty: expression='%s', substring='%s'",
+                                                                         stringExpression,
+                                                                         stringExpression.substring(startPos,
+                                                                                                    arrowIndex));
     }
     else if (Expression.trace)
     {
       logger.debug(String.format("extractOperandExpression: no arrow found, indexVariableFieldName remains null\n"));
     }
-    
-    String lookingFor = indexVariableFieldName != null ? String.format("{%s=", indexVariableFieldName)
-                                                       : "{";
+
+    String lookingFor             =
+                      indexVariableFieldName != null ? String.format("{%s=", indexVariableFieldName)
+                                                     : "{";
+    String functionFormLookingFor = String.format(",%s=", indexVariableFieldName);
+
     if (Expression.trace)
     {
-      logger.debug(String.format("extractOperandExpression: looking for '%s' in remaining expression\n", lookingFor));
+      logger.debug(String.format("extractOperandExpression: looking for '%s' in remaining expression\n",
+                                 lookingFor));
     }
-    
-    int rangeSpecificationPosition = stringExpression.indexOf(lookingFor, expression.position);
-    if (rangeSpecificationPosition == -1)
+
+    int     rangeSpecificationPosition             =
+                                       stringExpression.indexOf(lookingFor, expression.position);
+    int     functionFormRangeSpecificationPosition =
+                                                   stringExpression.indexOf(functionFormLookingFor,
+                                                                            expression.position);
+    boolean functionForm                           = functionFormRangeSpecificationPosition != -1;
+    if (rangeSpecificationPosition == -1 && functionFormRangeSpecificationPosition == -1)
     {
       expression.throwUnexpectedCharacterException("didn't find '"
                                                    + lookingFor
                                                    + "' remaining="
                                                    + expression.remaining());
     }
-    String operandExpression = stringExpression.substring(startPos, rangeSpecificationPosition).trim();
-    expression.position = rangeSpecificationPosition;
+    String operandExpression =
+                             stringExpression.substring(startPos,
+                                                        functionForm ? functionFormRangeSpecificationPosition : rangeSpecificationPosition )
+                                             .trim();
+    expression.position  = rangeSpecificationPosition;
     expression.character = stringExpression.charAt(rangeSpecificationPosition);
-    
+
     if (Expression.trace)
     {
       logger.debug(String.format("extractOperandExpression: extracted operandExpression='%s', position now at %d\n",
                                  operandExpression,
                                  expression.position));
     }
-    
+
     return operandExpression;
   }
-
 
   public Node<D, R, F> parseOperatorLimitSpecifications()
   {
     expression.require('{');
-    
+
     String specifiedName = expression.parseName();
     if (specifiedName == null || specifiedName.isEmpty())
     {
       expression.throwUnexpectedCharacterException("index variable name cannot be null or empty");
     }
-    
+
     if (indexVariableFieldName != null)
     {
       if (!indexVariableFieldName.equals(specifiedName))
@@ -531,14 +566,13 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     {
       indexVariableFieldName = specifiedName;
     }
-    
+
     expression.context.variables.put(indexVariableFieldName, null);
     expression.require('=');
     parseLowerLimit();
     parseUpperLimit();
     return this;
   }
-
 
   @SuppressWarnings("unchecked")
   protected void compileOperandExpression(Class<?> resultType)
@@ -669,13 +703,13 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
          spliceInto(Expression<E, S, G> newExpression)
   {
     NAryOperationNode<E, S, G> nAryOperationNode = new NAryOperationNode<E, S, G>(newExpression,
-                                          identity,
-                                          prefix,
-                                          operation,
-                                          symbol,
-                                          operandExpressionString,
-                                          lowerLimit.spliceInto(newExpression),
-                                          upperLimit.spliceInto(newExpression));
+                                                                                  identity,
+                                                                                  prefix,
+                                                                                  operation,
+                                                                                  symbol,
+                                                                                  operandExpressionString,
+                                                                                  lowerLimit.spliceInto(newExpression),
+                                                                                  upperLimit.spliceInto(newExpression));
     nAryOperationNode.indexVariableFieldName = indexVariableFieldName;
     return nAryOperationNode;
   }
@@ -717,13 +751,14 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                  lowerLimit,
                                  upperLimit));
     }
-    
-    assert indexVariableFieldName != null : 
-      String.format("indexVariableFieldName is null in toString() for %s%s{null=%s…%s}",
-                    symbol,
-                    operand != null ? operand.toString() : operandExpressionString,
-                    lowerLimit,
-                    upperLimit);
+
+    assert indexVariableFieldName
+                  != null : String.format("indexVariableFieldName is null in toString() for %s%s{null=%s…%s}",
+                                          symbol,
+                                          operand != null ? operand.toString()
+                                                          : operandExpressionString,
+                                          lowerLimit,
+                                          upperLimit);
 
     return String.format("%s%s{%s=%s…%s}",
                          symbol,
@@ -747,7 +782,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                          indexVariableFieldName,
                          lowerLimit.typeset(),
                          upperLimit.typeset(),
-                         operand == null ? "null"  : operand.typeset());
+                         operand == null ? "null" : operand.typeset());
   }
 
   @Override
@@ -772,8 +807,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   @Override
   public boolean dependsOn(VariableNode<D, R, F> variable)
   {
-    return lowerLimit.dependsOn(variable) || upperLimit.dependsOn(variable)
-                  || ( operand != null && operand.rootNode.dependsOn(variable.spliceInto(operand).asVariable()) );
+    return lowerLimit.dependsOn(variable) || upperLimit.dependsOn(variable) || (operand != null
+                  && operand.rootNode.dependsOn(variable.spliceInto(operand).asVariable()));
   }
 
 }
