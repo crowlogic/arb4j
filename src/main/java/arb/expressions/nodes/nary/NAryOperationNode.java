@@ -521,14 +521,16 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     boolean functionForm                           = functionFormRangeSpecificationPosition != -1;
     if (rangeSpecificationPosition == -1 && functionFormRangeSpecificationPosition == -1)
     {
-      expression.throwUnexpectedCharacterException("didn't find '"
-                                                   + lookingFor
-                                                   + "' remaining="
-                                                   + expression.remaining());
+      throw new CompilerException(String.format("didn't find '%s' remaining='%s'' at position %d in '%s' where the syntax is sum(f(k){k=i..j})",
+                                                lookingFor,
+                                                expression.remaining(),
+                                                position,
+                                                expression));
     }
     String operandExpression =
                              stringExpression.substring(startPos,
-                                                        functionForm ? functionFormRangeSpecificationPosition : rangeSpecificationPosition )
+                                                        functionForm ? functionFormRangeSpecificationPosition
+                                                                     : rangeSpecificationPosition)
                                              .trim();
     expression.position  = rangeSpecificationPosition;
     expression.character = stringExpression.charAt(rangeSpecificationPosition);
