@@ -162,9 +162,10 @@ public class Context implements
     assert f != null : "f is null";
     if (Expression.trace)
     {
-      log.debug(String.format("Context(#%s).injectVariableReferences(f=%s)",
+      log.debug(String.format("Context(#%s).injectVariableReferences(f=%s) variables={}",
                               System.identityHashCode(this),
-                              f.getClass().getName()));
+                              f.getClass().getName(),
+                              variables));
     }
     var fields = getFields(f);
 
@@ -321,7 +322,7 @@ public class Context implements
     }
     if (Expression.trace)
     {
-      log.debug(String.format("\n\nid=%s: registerFunctionMapping( functionName = %s, function = %s, domainType=%s, coDomainType=%s, functionClass=%s, expression=%s, expressionString=%s )\nmapping={}\n",
+      log.debug(String.format("id=%s: registerFunctionMapping( functionName = %s, function = %s, domainType=%s, coDomainType=%s, functionClass=%s, expression=%s, expressionString=%s )\nmapping={}\n",
                               System.identityHashCode(this),
                               functionName,
                               function,
@@ -401,15 +402,6 @@ public class Context implements
                                                                functionClass,
                                                                compiledClass);
 
-    if (Expression.trace)
-    {
-      log.debug(String.format("#%s.setFieldValue(compiledClass=%s,\n this=#%s\n variableName=%s,\n value=%s)\n",
-                              System.identityHashCode(this),
-                              compiledClass,
-                              System.identityHashCode(f),
-                              variableName,
-                              value));
-    }
     java.lang.reflect.Field field;
     try
     {

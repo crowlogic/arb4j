@@ -744,15 +744,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   @Override
   public String toString()
   {
-    if (Expression.trace)
-    {
-      logger.debug(String.format("NAryOperationNode.toString(): indexVariableFieldName=%s, operand=%s, operandExpressionString=%s, lowerLimit=%s, upperLimit=%s\n",
-                                 indexVariableFieldName,
-                                 operand,
-                                 operandExpressionString,
-                                 lowerLimit,
-                                 upperLimit));
-    }
+
 
     assert indexVariableFieldName
                   != null : String.format("indexVariableFieldName is null in toString() for %s%s{null=%s…%s}",

@@ -15,37 +15,37 @@ import arb.expressions.nodes.unary.FunctionalEvaluationNode;
 import arb.functions.Function;
 
 /**
- * Specialized node for integrating polynomial function applications. This prevents
- * infinite recursion in the integration process.
+ * Specialized node for integrating polynomial function applications. This
+ * prevents infinite recursion in the integration process.
  */
-public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? extends C>>
-                                   extends
+public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? extends C>> extends
                                    Node<D, C, F>
 {
   @Override
   public String toString()
   {
-    return String.format("PolynomialIntegralNode[polynomialNode=%s(%s of type %s), argumentNode=%s(%s of type %s)]",
-                         polynomialNode,
-                         polynomialNode.getClass(),
-                         polynomialNode.type(),
-                         argumentNode,
-                         argumentNode.getClass(),
-                         argumentNode.type());
+    return String.format("∫%sd%s", polynomialNode.toString(), argumentNode);
   }
 
   Node<D, C, F> polynomialNode;
 
   Node<D, C, F> argumentNode;
 
-  public PolynomialIntegralNode(Expression<D, C, F> expression, Node<D, C, F> polynomialNode, Node<D, C, F> argumentNode)
+  public PolynomialIntegralNode(Expression<D, C, F> expression,
+                                Node<D, C, F> polynomialNode,
+                                Node<D, C, F> argumentNode)
   {
     super(expression);
     this.polynomialNode = polynomialNode;
     this.argumentNode   = argumentNode;
     if (!Polynomial.class.isAssignableFrom(polynomialNode.type()))
     {
-      throw new CompilerException(polynomialNode + "(" + polynomialNode.getClass() + ") of type " + polynomialNode.type() + " is not assignable to a Polynomial");
+      throw new CompilerException(polynomialNode
+                                  + "("
+                                  + polynomialNode.getClass()
+                                  + ") of type "
+                                  + polynomialNode.type()
+                                  + " is not assignable to a Polynomial");
     }
   }
 
@@ -58,8 +58,7 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
     {
       polynomialNode.isResult = true;
     }
-    polynomialNode.generate(mv,
-                            polynomialType);
+    polynomialNode.generate(mv, polynomialType);
 
     // Call integrate() on the polynomial
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
@@ -80,22 +79,19 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
     {
       // Now evaluate the integrated polynomial at the argument
       var argType = argumentNode.type();
-      argumentNode.generate(mv,
-                            argType);
+      argumentNode.generate(mv, argType);
 
       // **FIX: Cast to the polynomial's domain type**
       var requiredArgType = resultType;
       if (!argType.equals(requiredArgType))
       {
-        argumentNode.generateCastTo(mv,
-                                    requiredArgType);
+        argumentNode.generateCastTo(mv, requiredArgType);
       }
 
       Compiler.loadOrderParameter(mv);
       Compiler.loadBitsParameterOntoStack(mv);
 
-      loadOutputVariableOntoStack(mv,
-                                  resultType);
+      loadOutputVariableOntoStack(mv, resultType);
 
       // Call evaluate on the integrated polynomial
       mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
@@ -106,8 +102,7 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
 
       if (!resultType.equals(Object.class))
       {
-        cast(mv,
-             resultType);
+        cast(mv, resultType);
       }
 
     }
@@ -122,8 +117,7 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
   @Override
   public List<Node<D, C, F>> getBranches()
   {
-    return List.of(polynomialNode,
-                   argumentNode);
+    return List.of(polynomialNode, argumentNode);
   }
 
   @Override
@@ -153,11 +147,18 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
   @Override
   public String typeset()
   {
-    return "\\int " + polynomialNode.typeset() + "(" + argumentNode.typeset() + ") d" + argumentNode.typeset();
+    return "\\int "
+           + polynomialNode.typeset()
+           + "("
+           + argumentNode.typeset()
+           + ") d"
+           + argumentNode.typeset();
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<E, S, G>
+         spliceInto(Expression<E, S, G> newExpression)
   {
     return new PolynomialIntegralNode<>(newExpression,
                                         polynomialNode.spliceInto(newExpression),
@@ -165,13 +166,13 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, C, F> substitute(String var, Node<E, S, G> replacement)
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<D, C, F>
+         substitute(String var, Node<E, S, G> replacement)
   {
     return new PolynomialIntegralNode<>(expression,
-                                        polynomialNode.substitute(var,
-                                                                  replacement),
-                                        argumentNode.substitute(var,
-                                                                replacement));
+                                        polynomialNode.substitute(var, replacement),
+                                        argumentNode.substitute(var, replacement));
   }
 
   @Override

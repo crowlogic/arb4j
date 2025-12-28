@@ -43,8 +43,10 @@ import arb.functions.Function;
  * implemented via the {@link Cloneable} interface.
  * </pre>
  * 
- * @param <D> the domain type of the node, defining the types of inputs this node accepts
- * @param <R> the range type of the node, defining the types of results this node produces
+ * @param <D> the domain type of the node, defining the types of inputs this
+ *            node accepts
+ * @param <R> the range type of the node, defining the types of results this
+ *            node produces
  * @param <F> the type of function encapsulated by this node, conforming to the
  *            {@link Function} interface
  *
@@ -53,11 +55,11 @@ import arb.functions.Function;
  * @see MethodVisitor
  * @see LaTeXAtom
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the {@link TheArb4jLibrary}
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 @SuppressWarnings("unchecked")
-public abstract class Node<D, R, F extends Function<? extends D, ? extends R>>
-                          implements
+public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> implements
                           Typesettable,
                           Consumer<Consumer<Node<D, R, F>>>
 {
@@ -95,7 +97,8 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>>
 
   public boolean independentOfInput()
   {
-    return expression.isNullaryFunction() ? true : !isIndependentOf(expression.getIndependentVariable());
+    return expression.isNullaryFunction() ? true
+                                          : !isIndependentOf(expression.getIndependentVariable());
   }
 
   public int                 bits     = 128;
@@ -108,7 +111,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>>
 
   public boolean             isResult = false;
 
-  protected final Logger     logger   = LoggerFactory.getLogger(getClass());
+  public final Logger        logger   = LoggerFactory.getLogger(getClass());
 
   public final int           position;
 
@@ -163,7 +166,9 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>>
 
   public LiteralConstantNode<D, R, F> asLiteralConstant()
   {
-    assert this instanceof LiteralConstantNode : this + " isn't a Literal constant, it is a " + this.getClass().getName();
+    assert this instanceof LiteralConstantNode : this
+                                                 + " isn't a Literal constant, it is a "
+                                                 + this.getClass().getName();
     return (LiteralConstantNode<D, R, F>) this;
   }
 
@@ -215,7 +220,8 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>>
    */
   public Node<D, R, F> differentiate()
   {
-    var variable = expression.indeterminateVariable != null ? expression.indeterminateVariable : expression.independentVariable;
+    var variable = expression.indeterminateVariable != null ? expression.indeterminateVariable
+                                                            : expression.independentVariable;
     return differentiate(variable);
   }
 
@@ -253,8 +259,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>>
     if (getClass() != obj.getClass())
       return false;
     Node<?, ?, ?> other = (Node<?, ?, ?>) obj;
-    return Objects.equals(generatedType,
-                          other.generatedType) && isResult == other.isResult;
+    return Objects.equals(generatedType, other.generatedType) && isResult == other.isResult;
   }
 
   public FunctionNode<D, R, F> exp()
@@ -266,14 +271,12 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>>
   {
     if (isResult)
     {
-      cast(loadResultParameter(methodVisitor),
-           resultType);
+      cast(loadResultParameter(methodVisitor), resultType);
       fieldName = "result";
     }
     else
     {
-      fieldName = expression.allocateIntermediateVariable(methodVisitor,
-                                                          resultType);
+      fieldName = expression.allocateIntermediateVariable(methodVisitor, resultType);
     }
   }
 
@@ -287,14 +290,10 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>>
                                  type,
                                  generatedType));
     }
-    cast(methodVisitor,
-         generatedType);
-    expression.allocateIntermediateVariable(methodVisitor,
-                                            type);
+    cast(methodVisitor, generatedType);
+    expression.allocateIntermediateVariable(methodVisitor, type);
     swap(methodVisitor);
-    invokeSetMethod(methodVisitor,
-                    generatedType,
-                    type);
+    invokeSetMethod(methodVisitor, generatedType, type);
     return generatedType = type;
   }
 
@@ -318,8 +317,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>>
   @Override
   public int hashCode()
   {
-    return Objects.hash(generatedType,
-                        isResult);
+    return Objects.hash(generatedType, isResult);
   }
 
   /**
@@ -355,7 +353,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>>
     return "-1".equals(toString());
 
   }
-  
+
   public boolean isOne()
   {
     return "1".equals(toString());
@@ -407,10 +405,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>>
 
   public MethodVisitor loadFieldFromThis(MethodVisitor mv, String fieldName, Class<?> type)
   {
-    return getFieldFromThis(mv,
-                            expression.className,
-                            fieldName,
-                            type);
+    return getFieldFromThis(mv, expression.className, fieldName, type);
   }
 
   public Node<D, R, F> log()
@@ -489,7 +484,9 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>>
     return apply("sinh");
   }
 
-  public abstract <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression);
+  public abstract <E, S, G extends Function<? extends E, ? extends S>>
+         Node<E, S, G>
+         spliceInto(Expression<E, S, G> newExpression);
 
   public Node<D, R, F> sqrt()
   {
@@ -508,7 +505,9 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>>
                                      subtrahend);
   }
 
-  public abstract <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable, Node<E, S, G> arg);
+  public abstract <E, S, G extends Function<? extends E, ? extends S>>
+         Node<D, R, F>
+         substitute(String variable, Node<E, S, G> arg);
 
   public abstract char symbol();
 
@@ -538,18 +537,17 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>>
     {
       if (isResult)
       {
-        // When isResult=true, the result parameter is already on the stack as the target
+        // When isResult=true, the result parameter is already on the stack as the
+        // target
         // Just cast it to the correct type - don't call generateSetResultInvocation
-        Compiler.cast(loadResultParameter(mv),
-                      resultType);
+        Compiler.cast(loadResultParameter(mv), resultType);
         fieldName = "result";
       }
       else
       {
         if (fieldName == null)
         {
-          fieldName = expression.allocateIntermediateVariable(mv,
-                                                              resultType);
+          fieldName = expression.allocateIntermediateVariable(mv, resultType);
         }
         return true;
       }
@@ -557,8 +555,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>>
     }
     finally
     {
-      expression.generatedNodes.put(this,
-                                    fieldName);
+      expression.generatedNodes.put(this, fieldName);
     }
   }
 
@@ -619,7 +616,5 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>>
     });
     return does[0];
   }
-
-  
 
 }

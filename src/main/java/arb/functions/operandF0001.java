@@ -37,6 +37,7 @@ public class operandF0001 implements
   public Real           α;
   public Real           β;
   public Real           γ;
+  public Integer        i;
 
   @Override
   public Class<Integer> domainType()
@@ -108,12 +109,12 @@ public class operandF0001 implements
                      .mul((Real) ((RealFunction) this.χ.evaluate(this.i,
                                                                  order,
                                                                  bits,
-                                                                 this.vℝ0110)).evaluate(k.sub(this.γ,
-                                                                                              bits,
-                                                                                              this.vℝ0111),
-                                                                                        order,
-                                                                                        bits,
-                                                                                        this.vℝ0112),
+                                                                 null)).evaluate(k.sub(this.γ,
+                                                                                       bits,
+                                                                                       this.vℝ0111),
+                                                                                 order,
+                                                                                 bits,
+                                                                                 this.vℝ0112),
                           bits,
                           result);
     }

@@ -84,7 +84,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> simplify()
   {
-  
+
     if (arg != null)
     {
       arg = arg.simplify();
@@ -103,7 +103,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
 
     node = simplifyExponential(node);
-  
 
     return node;
   }
@@ -555,7 +554,10 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (Expression.trace)
     {
-      logger.debug(String.format("generate(this=%s, resultType=%s)\n", this, resultType));
+      logger.debug(String.format("generate(this=%s, arg=%s, resultType=%s)",
+                                 this,
+                                 arg,
+                                 resultType));
     }
 
     if (contextual)
@@ -824,8 +826,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (Expression.trace)
     {
-      logger.debug("loadFunctionReferenceOntoStack(mapping={} functionFieldDescripton={})",
-                   mapping,
+      logger.debug("loadFunctionReferenceOntoStack(functionName={} functionFieldDescripton={})",
+                   mapping.functionName,
                    functionFieldDescriptor);
 
     }

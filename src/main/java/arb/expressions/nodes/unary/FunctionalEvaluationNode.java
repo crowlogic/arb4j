@@ -1,22 +1,15 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.cast;
-import static arb.expressions.Compiler.loadBitsParameterOntoStack;
-import static arb.expressions.Compiler.loadOrderParameter;
+import static arb.expressions.Compiler.*;
 
 import java.util.List;
 import java.util.function.Consumer;
 
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.*;
 
 import arb.RealPolynomial;
 import arb.expressions.Expression;
-import arb.expressions.nodes.IntegralNode;
-import arb.expressions.nodes.Node;
-import arb.expressions.nodes.PolynomialIntegralNode;
-import arb.expressions.nodes.VariableNode;
+import arb.expressions.nodes.*;
 import arb.functions.Function;
 
 /**
@@ -60,6 +53,15 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     Class<?> functionType = functionNode.type();
+
+    if (Expression.trace)
+    {
+      logger.debug("generate(resultType={}) functionNode={} arg={} functionType={}",
+                   resultType,
+                   functionNode,
+                   arg,
+                   functionType);
+    }
     functionNode.generate(mv, functionType);
     arg.generate(mv, resultType);
 
@@ -74,7 +76,6 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
                        Expression.evaluationMethodDescriptor,
                        functionType.isInterface());
 
-    
     if (!resultType.equals(Object.class))
     {
       cast(mv, resultType);
@@ -135,17 +136,19 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
     if (functionNode.type().equals(arb.RealPolynomial.class) && arg.equals(variable))
     {
       // Create a concrete PolynomialIntegralNode to handle the integration
-      PolynomialIntegralNode<D, C, F> polynomialIntegralNode = new PolynomialIntegralNode<>(expression,
-                                          functionNode,
-                                          arg);
+      PolynomialIntegralNode<D,
+                    C,
+                    F> polynomialIntegralNode = new PolynomialIntegralNode<>(expression,
+                                                                             functionNode,
+                                                                             arg);
       polynomialIntegralNode.isResult = isResult;
       return polynomialIntegralNode;
     }
 
     // For other cases, use regular IntegralNode
     IntegralNode<D, C, F> integralNode = new IntegralNode<>(expression,
-                              this,
-                              variable);
+                                                            this,
+                                                            variable);
     integralNode.isResult = isResult;
     return integralNode;
   }
