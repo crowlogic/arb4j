@@ -1,26 +1,65 @@
 package arb.expressions;
 
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ACC_SUPER;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.GOTO;
+import static org.objectweb.asm.Opcodes.IFGT;
+import static org.objectweb.asm.Opcodes.IFLE;
+import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
+import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
+import static org.objectweb.asm.Opcodes.INVOKESTATIC;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.POP;
+import static org.objectweb.asm.Opcodes.RETURN;
+import static org.objectweb.asm.Opcodes.V25;
+import static org.objectweb.asm.Opcodes.V_PREVIEW;
 
 import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.signature.SignatureWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import arb.*;
+import arb.AlgebraicNumber;
+import arb.Complex;
+import arb.ComplexConstants;
+import arb.ComplexFraction;
+import arb.ComplexMatrix;
+import arb.ComplexPolynomial;
+import arb.ComplexRationalFunction;
+import arb.Fraction;
+import arb.GaussianInteger;
 import arb.Integer;
+import arb.IntegerPolynomial;
+import arb.Quaternion;
+import arb.RationalFunction;
+import arb.Real;
+import arb.RealConstants;
+import arb.RealMatrix;
+import arb.RealPolynomial;
 import arb.exceptions.CompilerException;
 import arb.expressions.nodes.LiteralConstantNode;
 import arb.functions.Function;
 import arb.functions.RealToComplexFunction;
 import arb.functions.complex.ComplexFunction;
-import arb.functions.integer.*;
+import arb.functions.integer.RealSequence;
+import arb.functions.integer.RealSequenceSequence;
 import arb.functions.polynomials.ComplexHypergeometricPolynomialFunction;
 import arb.functions.polynomials.RealHypergeometricPolynomialFunction;
-import arb.functions.rational.*;
+import arb.functions.rational.ComplexRationalHypergeometricFunction;
+import arb.functions.rational.LommelPolynomial;
+import arb.functions.rational.RationalHypergeometricFunction;
 import arb.functions.real.RealFunction;
 import arb.functions.real.SphericalBesselFunction;
 import arb.utensils.Utensils;
@@ -833,12 +872,19 @@ public class Compiler
     {
       return Quaternion.class;
     }
+    else if (RealSequenceSequence.class.equals(resultType))
+    {
+      return RealSequence.class;
+    }
+    else if (RealSequence.class.equals(resultType))
+    {
+      return Real.class;
+    }
     else
     {
       throw new CompilerException("dont know what the scalar type is for " + resultType);
     }
   }
-
 
   public static MethodVisitor swap(MethodVisitor mv)
   {
