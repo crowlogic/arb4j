@@ -177,8 +177,8 @@ public class T implements RealPolynomialSequence, Typesettable, AutoCloseable, I
 - differentiation and integration  progress can be tracked at: [GitHub Issue #253](https://github.com/crowlogic/arb4j/issues/253).
 
 ## A Note Regarding Fonts
-It is recommended to use the "Noto Sans Mono" truetype font since it is one
-of the very few monospace fonts that correctly renders combining 
+It is recommended to use the "Noto Sans Mono" or "PT Mono" truetype
+fonts since it is one of the very few monospace fonts that correctly renders combining 
 diacritics on Linux—including dot above (◌̇) and diaeresis (◌̈)—directly above Greek 
 (and other) characters. Unlike most monospace fonts, Noto Sans Mono is 
 built by Google with a specific goal of full Unicode coverage and accurate 
