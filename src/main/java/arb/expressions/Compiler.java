@@ -878,7 +878,7 @@ public class Compiler
     }
     else if (RealSequence.class.equals(resultType))
     {
-      return Real.class;
+      return RealSequence.class;
     }
     else
     {
@@ -891,19 +891,18 @@ public class Compiler
     mv.visitInsn(Opcodes.SWAP);
     return mv;
   }
-
   public static boolean isScalar(Class<?> t)
   {
-    return scalarTypes.contains(t);
+    return realTypes.contains(t);
   }
 
   public static final HashSet<
-                Class<?>> scalarTypes = new HashSet<>(Arrays.asList(Real.class,
-                                                                    Complex.class,
-                                                                    Integer.class,
-                                                                    Fraction.class,
-                                                                    ComplexFraction.class,
-                                                                    AlgebraicNumber.class,
-                                                                    GaussianInteger.class));
+                Class<?>> realTypes = new HashSet<>(Arrays.asList(Real.class,
+                                                                  Complex.class,
+                                                                  Integer.class,
+                                                                  Fraction.class,
+                                                                  ComplexFraction.class,
+                                                                  AlgebraicNumber.class,
+                                                                  GaussianInteger.class));
 
 }

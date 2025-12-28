@@ -1,12 +1,7 @@
 package arb.functions;
 
-import arb.Initializable;
+import arb.*;
 import arb.Integer;
-import arb.Named;
-import arb.Real;
-import arb.RealPolynomial;
-import arb.Typesettable;
-import arb.arblib;
 import arb.expressions.Context;
 import arb.functions.integer.RealSequence;
 import arb.functions.real.RealFunction;
@@ -23,6 +18,7 @@ public class operandF0001 implements
   public final Integer  cℤ0000     = new Integer("1");
   public RealPolynomial arg        = new RealPolynomial();
   public RealPolynomial resultPoly = new RealPolynomial();
+  public RealSequence   vSℝ0001;
   public Real           vℝ0103     = new Real();
   public Real           vℝ0104     = new Real();
   public Real           vℝ0105     = new Real();
@@ -33,7 +29,6 @@ public class operandF0001 implements
   public Real           vℝ0110     = new Real();
   public Real           vℝ0111     = new Real();
   public Real           vℝ0112     = new Real();
-  public Real           vℝ0113     = new Real();
   public Integer        vℤ0010     = new Integer();
   public ω              ω;
   public χ              χ;
@@ -73,52 +68,52 @@ public class operandF0001 implements
                               (Real) ((RealSequence) this.ω.evaluate(this.j,
                                                                      order,
                                                                      bits,
-                                                                     this.vℝ0103)).evaluate(k,
-                                                                                            order,
-                                                                                            bits,
-                                                                                            this.vℝ0104);
-      Real           var420   = this.vℝ0105;
-      RealPolynomial var421   = new RealPolynomial();
-      arblib.arb_poly_init(var421);
-      RealPolynomial var422 = new RealPolynomial();
-      arblib.arb_poly_init(var422);
-      arblib.arb_poly_fit_length(var422, 1);
-      arblib.arb_poly_set_coeff_arb(var422, 0, k.add(this.cℤ0000, bits, this.vℝ0106));
-      Real var423;
-      arblib.arb_one(var423 = new Real());
-      arblib.arb_poly_set_coeff_arb(var422, 1, var423);
-      arblib.arb_poly_gamma_series(var421, var422, 1, bits);
-      arblib.arb_poly_get_coeff_arb(var420, var421, 0);
-      arblib.arb_poly_clear(var421);
-      arblib.arb_poly_clear(var422);
-      var10000 = var10000.mul(var420, bits, this.vℝ0107);
-      Real           var424 = this.vℝ0108;
-      RealPolynomial var425 = new RealPolynomial();
-      arblib.arb_poly_init(var425);
-      RealPolynomial var426 = new RealPolynomial();
-      arblib.arb_poly_init(var426);
-      arblib.arb_poly_fit_length(var426, 1);
-      arblib.arb_poly_set_coeff_arb(var426,
+                                                                     this.vSℝ0001)).evaluate(k,
+                                                                                             order,
+                                                                                             bits,
+                                                                                             this.vℝ0103);
+      Real           var36    = this.vℝ0104;
+      RealPolynomial var37    = new RealPolynomial();
+      arblib.arb_poly_init(var37);
+      RealPolynomial var38 = new RealPolynomial();
+      arblib.arb_poly_init(var38);
+      arblib.arb_poly_fit_length(var38, 1);
+      arblib.arb_poly_set_coeff_arb(var38, 0, k.add(this.cℤ0000, bits, this.vℝ0105));
+      Real var39;
+      arblib.arb_one(var39 = new Real());
+      arblib.arb_poly_set_coeff_arb(var38, 1, var39);
+      arblib.arb_poly_gamma_series(var37, var38, 1, bits);
+      arblib.arb_poly_get_coeff_arb(var36, var37, 0);
+      arblib.arb_poly_clear(var37);
+      arblib.arb_poly_clear(var38);
+      var10000 = var10000.mul(var36, bits, this.vℝ0106);
+      Real           var40 = this.vℝ0107;
+      RealPolynomial var41 = new RealPolynomial();
+      arblib.arb_poly_init(var41);
+      RealPolynomial var42 = new RealPolynomial();
+      arblib.arb_poly_init(var42);
+      arblib.arb_poly_fit_length(var42, 1);
+      arblib.arb_poly_set_coeff_arb(var42,
                                     0,
                                     k.add(this.cℤ0000, bits, this.vℤ0010)
-                                     .sub(this.γ, bits, this.vℝ0109));
-      Real var427;
-      arblib.arb_one(var427 = new Real());
-      arblib.arb_poly_set_coeff_arb(var426, 1, var427);
-      arblib.arb_poly_gamma_series(var425, var426, 1, bits);
-      arblib.arb_poly_get_coeff_arb(var424, var425, 0);
-      arblib.arb_poly_clear(var425);
-      arblib.arb_poly_clear(var426);
-      return var10000.div(var424, bits, this.vℝ0110)
+                                     .sub(this.γ, bits, this.vℝ0108));
+      Real var43;
+      arblib.arb_one(var43 = new Real());
+      arblib.arb_poly_set_coeff_arb(var42, 1, var43);
+      arblib.arb_poly_gamma_series(var41, var42, 1, bits);
+      arblib.arb_poly_get_coeff_arb(var40, var41, 0);
+      arblib.arb_poly_clear(var41);
+      arblib.arb_poly_clear(var42);
+      return var10000.div(var40, bits, this.vℝ0109)
                      .mul((Real) ((RealFunction) this.χ.evaluate(this.i,
                                                                  order,
                                                                  bits,
-                                                                 this.vℝ0111)).evaluate(k.sub(this.γ,
+                                                                 this.vℝ0110)).evaluate(k.sub(this.γ,
                                                                                               bits,
-                                                                                              this.vℝ0112),
+                                                                                              this.vℝ0111),
                                                                                         order,
                                                                                         bits,
-                                                                                        this.vℝ0113),
+                                                                                        this.vℝ0112),
                           bits,
                           result);
     }
@@ -259,6 +254,7 @@ public class operandF0001 implements
     this.cℤ0000.close();
     this.arg.close();
     this.resultPoly.close();
+    this.vSℝ0001.close();
     this.vℝ0103.close();
     this.vℝ0104.close();
     this.vℝ0105.close();
@@ -269,7 +265,6 @@ public class operandF0001 implements
     this.vℝ0110.close();
     this.vℝ0111.close();
     this.vℝ0112.close();
-    this.vℝ0113.close();
     this.vℤ0010.close();
     this.χ.close();
     this.ω.close();
