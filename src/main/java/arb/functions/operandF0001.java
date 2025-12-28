@@ -105,6 +105,7 @@ public class operandF0001 implements
       arblib.arb_poly_get_coeff_arb(var40, var41, 0);
       arblib.arb_poly_clear(var41);
       arblib.arb_poly_clear(var42);
+
       // input needs to be propagated: i is ascendent input
       return var10000.div(var40, bits, vℝ0109)
                      .mul((Real) ((RealFunction) χ.evaluate(i,

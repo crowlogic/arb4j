@@ -1,6 +1,5 @@
 package arb.functions;
 
-
 import arb.Initializable;
 import arb.Integer;
 import arb.Named;
@@ -67,26 +66,26 @@ public class P implements
     }
     else
     {
-      if (!this.isInitialized)
+      if (!isInitialized)
       {
-        this.initialize();
+        initialize();
       }
       return switch (n.getSignedValue())
       {
-      case 0 -> result.set(this.cℤ0001);
+      case 0 -> result.set(cℤ0001);
       case 1 ->
-           ((Real) this.C.evaluate(this.vℝ0026.set(this.cℤ0001),
-                                   order,
-                                   bits,
-                                   this.vℝ0027)).mul(this.vXℝ0005.identity(), bits, this.vXℝ0006)
-                                                .sub(this.β, bits, this.vXℝ0007)
-                                                .add(this.α, bits, this.vXℝ0008)
-                                                .div(this.cℤ0002, bits, result);
+           ((Real) C.evaluate(vℝ0026.set(cℤ0001), order, bits, vℝ0027))
+                                                                       .mul(vXℝ0005.identity(),
+                                                                            bits,
+                                                                            vXℝ0006)
+                                                                       .sub(β, bits, vXℝ0007)
+                                                                       .add(α, bits, vXℝ0008)
+                                                                       .div(cℤ0002, bits, result);
       default ->
-              ((RealPolynomial) this.A.evaluate(n,
-                                                order,
-                                                bits,
-                                                this.vXℝ0009)).mul((RealPolynomial) this.P.evaluate(n.sub(this.cℤ0001, bits, this.vℤ0001), order, bits, this.vXℝ0010), bits, this.vXℝ0011).sub(((Real) this.B.evaluate(n, order, bits, this.vℝ0028)).mul((RealPolynomial) this.P.evaluate(n.sub(this.cℤ0002, bits, this.vℤ0002), order, bits, this.vXℝ0012), bits, this.vXℝ0013), bits, this.vXℝ0014).div((Real) this.E.evaluate(n, order, bits, this.vℝ0029), bits, result);
+              ((RealPolynomial) A.evaluate(n,
+                                           order,
+                                           bits,
+                                           vXℝ0009)).mul((RealPolynomial) P.evaluate(n.sub(cℤ0001, bits, vℤ0001), order, bits, vXℝ0010), bits, vXℝ0011).sub(((Real) B.evaluate(n, order, bits, vℝ0028)).mul((RealPolynomial) P.evaluate(n.sub(cℤ0002, bits, vℤ0002), order, bits, vXℝ0012), bits, vXℝ0013), bits, vXℝ0014).div((Real) E.evaluate(n, order, bits, vℝ0029), bits, result);
       };
     }
   }
@@ -99,7 +98,7 @@ public class P implements
                             RealPolynomialSequence.class,
                             "_diffP",
                             "diff(when(n=0,1,n=1,(((C(1)*x)-β)+α)/2,else,((A(n)*P(n-1))-(B(n)*P(n-2)))/E(n)),n)",
-                            this.context);
+                            context);
   }
 
   @Override
@@ -110,181 +109,181 @@ public class P implements
                             RealPolynomialSequence.class,
                             "_intP",
                             "int(when(n=0,1,n=1,(((C(1)*x)-β)+α)/2,else,((A(n)*P(n-1))-(B(n)*P(n-2)))/E(n)),n)",
-                            this.context);
+                            context);
   }
 
   @Override
   public void initialize()
   {
-    if (this.isInitialized)
+    if (isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
-    else if (this.α == null)
+    else if (α == null)
     {
       throw new AssertionError("α is null");
     }
-    else if (this.β == null)
+    else if (β == null)
     {
       throw new AssertionError("β is null");
     }
     else
     {
-      if (this.E == null)
+      if (E == null)
       {
-        this.E = new E();
+        E = new E();
       }
 
-      if (this.E.α == null)
+      if (E.α == null)
       {
-        this.E.α = new Real();
-        this.E.α.set(this.α);
+        E.α = new Real();
+        E.α.set(α);
       }
       else
       {
-        this.E.α = this.α;
+        E.α = α;
       }
 
-      if (this.E.β == null)
+      if (E.β == null)
       {
-        this.E.β = new Real();
-        this.E.β.set(this.β);
+        E.β = new Real();
+        E.β.set(β);
       }
       else
       {
-        this.E.β = this.β;
+        E.β = β;
       }
 
-      if (this.B == null)
+      if (B == null)
       {
-        this.B = new B();
+        B = new B();
       }
 
-      if (this.B.α == null)
+      if (B.α == null)
       {
-        this.B.α = new Real();
-        this.B.α.set(this.α);
+        B.α = new Real();
+        B.α.set(α);
       }
       else
       {
-        this.B.α = this.α;
+        B.α = α;
       }
 
-      if (this.B.β == null)
+      if (B.β == null)
       {
-        this.B.β = new Real();
-        this.B.β.set(this.β);
+        B.β = new Real();
+        B.β.set(β);
       }
       else
       {
-        this.B.β = this.β;
+        B.β = β;
       }
 
-      if (this.A == null)
+      if (A == null)
       {
-        this.A = new A();
+        A = new A();
       }
 
-      if (this.A.α == null)
+      if (A.α == null)
       {
-        this.A.α = new Real();
-        this.A.α.set(this.α);
+        A.α = new Real();
+        A.α.set(α);
       }
       else
       {
-        this.A.α = this.α;
+        A.α = α;
       }
 
-      if (this.A.β == null)
+      if (A.β == null)
       {
-        this.A.β = new Real();
-        this.A.β.set(this.β);
+        A.β = new Real();
+        A.β.set(β);
       }
       else
       {
-        this.A.β = this.β;
+        A.β = β;
       }
 
-      if (this.C == null)
+      if (C == null)
       {
-        this.C = new C();
+        C = new C();
       }
 
-      if (this.C.α == null)
+      if (C.α == null)
       {
-        this.C.α = new Real();
-        this.C.α.set(this.α);
+        C.α = new Real();
+        C.α.set(α);
       }
       else
       {
-        this.C.α = this.α;
+        C.α = α;
       }
 
-      if (this.C.β == null)
+      if (C.β == null)
       {
-        this.C.β = new Real();
-        this.C.β.set(this.β);
+        C.β = new Real();
+        C.β.set(β);
       }
       else
       {
-        this.C.β = this.β;
+        C.β = β;
       }
 
-      this.A.C = this.C;
-      this.B.C = this.C;
-      this.E.C = this.C;
-      this.P   = new P();
-      if (this.P.α == null)
+      A.C = C;
+      B.C = C;
+      E.C = C;
+      P   = new P();
+      if (P.α == null)
       {
-        this.P.α = new Real();
-        this.P.α.set(this.α);
+        P.α = new Real();
+        P.α.set(α);
       }
       else
       {
-        this.P.α = this.α;
+        P.α = α;
       }
 
-      if (this.P.β == null)
+      if (P.β == null)
       {
-        this.P.β = new Real();
-        this.P.β.set(this.β);
+        P.β = new Real();
+        P.β.set(β);
       }
       else
       {
-        this.P.β = this.β;
+        P.β = β;
       }
 
-      this.isInitialized = true;
+      isInitialized = true;
     }
   }
 
   @Override
   public void close()
   {
-    this.cℤ0000.close();
-    this.cℤ0001.close();
-    this.cℤ0002.close();
-    this.vXℝ0005.close();
-    this.vXℝ0006.close();
-    this.vXℝ0007.close();
-    this.vXℝ0008.close();
-    this.vXℝ0009.close();
-    this.vXℝ0010.close();
-    this.vXℝ0011.close();
-    this.vXℝ0012.close();
-    this.vXℝ0013.close();
-    this.vXℝ0014.close();
-    this.vℝ0026.close();
-    this.vℝ0027.close();
-    this.vℝ0028.close();
-    this.vℝ0029.close();
-    this.vℤ0001.close();
-    this.vℤ0002.close();
-    this.P.close();
-    this.A.close();
-    this.B.close();
-    this.C.close();
-    this.E.close();
+    cℤ0000.close();
+    cℤ0001.close();
+    cℤ0002.close();
+    vXℝ0005.close();
+    vXℝ0006.close();
+    vXℝ0007.close();
+    vXℝ0008.close();
+    vXℝ0009.close();
+    vXℝ0010.close();
+    vXℝ0011.close();
+    vXℝ0012.close();
+    vXℝ0013.close();
+    vXℝ0014.close();
+    vℝ0026.close();
+    vℝ0027.close();
+    vℝ0028.close();
+    vℝ0029.close();
+    vℤ0001.close();
+    vℤ0002.close();
+    P.close();
+    A.close();
+    B.close();
+    C.close();
+    E.close();
   }
 
   @Override
@@ -296,7 +295,7 @@ public class P implements
   @Override
   public Context getContext()
   {
-    return this.context;
+    return context;
   }
 
   @Override
