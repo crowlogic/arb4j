@@ -1,2 +1,3 @@
 TODO: expr compiler: Implement common subexpression elimination #518
 add traceNodes which operates indepently from the main trace
+check if context variable exists in target class before generating injection code since the code could have been generated when some variable doesnt exist yet or whose expression nor any subexpressions depend upon
