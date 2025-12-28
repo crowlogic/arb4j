@@ -214,26 +214,6 @@ public class χ implements
         this.w.β = this.β;
       }
 
-      if (this.w.γ == null)
-      {
-        this.w.γ = new Real();
-        this.w.γ.set(this.γ);
-      }
-      else
-      {
-        this.w.γ = this.γ;
-      }
-
-      if (this.w.t == null)
-      {
-        this.w.t = new Real();
-        this.w.t.set(this.t);
-      }
-      else
-      {
-        this.w.t = this.t;
-      }
-
       if (this.P == null)
       {
         this.P = new P();
@@ -257,26 +237,6 @@ public class χ implements
       else
       {
         this.P.β = this.β;
-      }
-
-      if (this.P.γ == null)
-      {
-        this.P.γ = new Real();
-        this.P.γ.set(this.γ);
-      }
-      else
-      {
-        this.P.γ = this.γ;
-      }
-
-      if (this.P.t == null)
-      {
-        this.P.t = new Real();
-        this.P.t.set(this.t);
-      }
-      else
-      {
-        this.P.t = this.t;
       }
 
       this.isInitialized = true;

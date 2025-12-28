@@ -1,11 +1,7 @@
 package arb.functions;
 
-import arb.Initializable;
+import arb.*;
 import arb.Integer;
-import arb.Named;
-import arb.Real;
-import arb.RealPolynomial;
-import arb.Typesettable;
 import arb.expressions.Context;
 import arb.functions.real.RealFunction;
 
@@ -266,26 +262,6 @@ public class χfunc implements
       else
       {
         this.P.β = this.β;
-      }
-
-      if (this.P.γ == null)
-      {
-        this.P.γ = new Real();
-        this.P.γ.set(this.γ);
-      }
-      else
-      {
-        this.P.γ = this.γ;
-      }
-
-      if (this.P.t == null)
-      {
-        this.P.t = new Real();
-        this.P.t.set(this.t);
-      }
-      else
-      {
-        this.P.t = this.t;
       }
 
       this.isInitialized = true;
