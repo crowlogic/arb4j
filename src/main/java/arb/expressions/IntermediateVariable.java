@@ -61,10 +61,6 @@ public class IntermediateVariable<D, R, F extends Function<? extends D, ? extend
 
   public ClassVisitor declareField(ClassVisitor classVisitor)
   {
-    if (Expression.trace)
-    {
-      logger.debug("declareField(): this={} in {}", this, expression);
-    }
     classVisitor.visitField(ACC_PUBLIC, name, type.descriptorString(), null, null);
     return classVisitor;
   }

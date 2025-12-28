@@ -28,10 +28,12 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
     try ( JacobiFractionalDerivativeOperationalMatrixBuilder builder =
                                                                      new JacobiFractionalDerivativeOperationalMatrixBuilder())
     {
-      try ( Real order = new Real(128).set(0.3))
+      try ( Real order = Real.valueOf(0.3))
       {
         builder.setFractionalOrder(order);
-        assertEquals("fractionalOrder should be set", 0, builder.getFractionalOrder().compareTo(order));
+        assertEquals("fractionalOrder should be set",
+                     0,
+                     builder.getFractionalOrder().compareTo(order));
       }
     }
   }
@@ -51,7 +53,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
     try ( JacobiFractionalDerivativeOperationalMatrixBuilder builder =
                                                                      new JacobiFractionalDerivativeOperationalMatrixBuilder())
     {
-      try ( Real a = new Real(128).set(0.4); Real b = new Real(128).set(0.6))
+      try ( Real a = Real.valueOf(0.4); Real b = Real.valueOf(0.6))
       {
         JacobiPolynomialSequence customBasis = new JacobiPolynomialSequence(a,
                                                                             b);
@@ -66,7 +68,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
     try ( JacobiFractionalDerivativeOperationalMatrixBuilder builder =
                                                                      new JacobiFractionalDerivativeOperationalMatrixBuilder())
     {
-      try ( Real order = new Real(256).set(0.5))
+      try ( Real order = Real.valueOf(0.5))
       {
         JacobiFractionalDerivativeOperationalMatrixBuilder result =
                                                                   builder.setFractionalOrder(order)
@@ -81,7 +83,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
     try ( JacobiFractionalDerivativeOperationalMatrixBuilder builder =
                                                                      new JacobiFractionalDerivativeOperationalMatrixBuilder())
     {
-      try ( Real gamma = new Real(128).set(0.5))
+      try ( Real gamma = Real.valueOf(0.5))
       {
         RealMatrix M = builder.setFractionalOrder(gamma).build(5);
         assertNotNull("matrix should not be null", M);
@@ -96,7 +98,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
     try ( JacobiFractionalDerivativeOperationalMatrixBuilder builder =
                                                                      new JacobiFractionalDerivativeOperationalMatrixBuilder())
     {
-      try ( Real gamma = new Real(128).set(0.5))
+      try ( Real gamma = Real.valueOf(0.5))
       {
         builder.setFractionalOrder(gamma);
         RealMatrix M3  = builder.build(3);
@@ -106,8 +108,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
         assertEquals("3x3 matrix size", 4, M3.getNumRows());
         assertEquals("5x5 matrix size", 6, M5.getNumRows());
         assertEquals("10x10 matrix size", 11, M10.getNumRows());
-        
-        
+
       }
     }
   }
@@ -117,8 +118,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
     try ( JacobiFractionalDerivativeOperationalMatrixBuilder builder =
                                                                      new JacobiFractionalDerivativeOperationalMatrixBuilder())
     {
-      try ( Real g1 = new Real(128).set(0.25); Real g2 = new Real(128).set(0.5);
-            Real g3 = new Real(128).set(0.75))
+      try ( Real g1 = Real.valueOf(0.25); Real g2 = Real.valueOf(0.5); Real g3 = Real.valueOf(0.75))
       {
         RealMatrix M1 = builder.setFractionalOrder(g1).build(5);
         RealMatrix M2 = builder.setFractionalOrder(g2).build(5);
@@ -139,7 +139,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
     try ( JacobiFractionalDerivativeOperationalMatrixBuilder builder =
                                                                      new JacobiFractionalDerivativeOperationalMatrixBuilder())
     {
-      try ( Real gamma = new Real(128).set(0.5))
+      try ( Real gamma = Real.valueOf(0.5))
       {
         RealMatrix M = builder.setFractionalOrder(gamma).build(3);
 
@@ -181,7 +181,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
     try ( JacobiFractionalDerivativeOperationalMatrixBuilder builder =
                                                                      new JacobiFractionalDerivativeOperationalMatrixBuilder())
     {
-      try ( Real gamma = new Real(128).set(0.5))
+      try ( Real gamma = Real.valueOf(0.5))
       {
         RealMatrix M = builder.setFractionalOrder(gamma).build(5);
         assertEquals("should build successfully in try-with-resources", 6, M.getNumRows());
