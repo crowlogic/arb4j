@@ -835,8 +835,7 @@ public class Compiler
     }
     else
     {
-      return resultType;
-      //throw new CompilerException("dont know what the scalar type is for " + resultType);
+      throw new CompilerException("dont know what the scalar type is for " + resultType);
     }
   }
 

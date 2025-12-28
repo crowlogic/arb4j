@@ -109,16 +109,9 @@ public class operandF0001 implements
       arblib.arb_poly_get_coeff_arb(var40, var41, 0);
       arblib.arb_poly_clear(var41);
       arblib.arb_poly_clear(var42);
+      RealSequence x = ((RealSequence) this.χ.evaluate(this.i, order, bits, this.vSℝ0002));
       return var10000.div(var40, bits, this.vℝ0104)
-                     .mul((Real) ((RealSequence) this.χ.evaluate(this.i,
-                                                                 order,
-                                                                 bits,
-                                                                 this.vSℝ0002)).evaluate(k.sub(this.γ,
-                                                                                               bits,
-                                                                                               this.vℝ0105),
-                                                                                         order,
-                                                                                         bits,
-                                                                                         this.vℝ0106),
+                     .mul(x.evaluate(k.sub(this.γ, bits, this.vℝ0105), order, bits, this.vℝ0106),
                           bits,
                           result);
     }
