@@ -6,6 +6,7 @@ import arb.RealMatrix;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
+import arb.functions.integer.RealFunctionSequence;
 import arb.functions.integer.RealSequence;
 import arb.functions.integer.RealSequenceSequence;
 
@@ -27,7 +28,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
 
   public RealSequenceSequence      μ;
 
-  public RealSequenceSequence      χ;
+  public RealFunctionSequence      χ;
 
   public RealSequenceSequence      ω;
 
@@ -53,8 +54,9 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
                                    "j➔k➔(-1)^(j-k)*Γ(j+β+1)*Γ(j+k+α+β+1)/(Γ(k+β+1)*Γ(j+α+β+1)*(j-k)!*k!)",
                                    context);
 
+
     χ      =
-      RealSequenceSequence.express("χ", "i➔p➔int(t->t^p*w(t)*P(i)(t), t=-1..1)/normSq(i)", context);
+      RealFunctionSequence.express("χ", "i➔p➔int(t➔t^p*w(t)*P(i)(t), t=-1..1)/normSq(i)", context);
 
     μ      = RealSequenceSequence.express("μ",
                                           "i➔j➔Σk➔(ω(j)(k)*Γ(k+1)/Γ(k+1-γ)*χ(i)(k-γ)){k=⌈γ⌉..j}",

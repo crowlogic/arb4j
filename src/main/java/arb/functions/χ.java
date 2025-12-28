@@ -6,10 +6,10 @@ import arb.Real;
 import arb.Typesettable;
 import arb.expressions.Context;
 import arb.functions.Function;
-import arb.functions.integer.RealSequence;
-import arb.functions.integer.RealSequenceSequence;
+import arb.functions.integer.RealFunctionSequence;
+import arb.functions.real.RealFunction;
 
-public class χ implements RealSequenceSequence, Typesettable, AutoCloseable, Initializable, Named {
+public class χ implements RealFunctionSequence, Typesettable, AutoCloseable, Initializable, Named {
    public boolean isInitialized;
    public Context context = new Context();
    public normSq normSq;
@@ -27,12 +27,12 @@ public class χ implements RealSequenceSequence, Typesettable, AutoCloseable, In
    }
 
    @Override
-   public Class<RealSequence> coDomainType() {
-      return RealSequence.class;
+   public Class<RealFunction> coDomainType() {
+      return RealFunction.class;
    }
 
    @Override
-   public RealSequence evaluate(Integer i, int order, int bits, RealSequence result) {
+   public RealFunction evaluate(Integer i, int order, int bits, RealFunction result) {
       if (order > 1) {
          throw new AssertionError("TODO: implement order=" + order + ">1");
       } else {
@@ -55,11 +55,11 @@ public class χ implements RealSequenceSequence, Typesettable, AutoCloseable, In
    }
 
    @Override
-   public RealSequenceSequence derivative() {
+   public RealFunctionSequence derivative() {
       return Function.express(
          Integer.class,
-         RealSequence.class,
-         RealSequenceSequence.class,
+         RealFunction.class,
+         RealFunctionSequence.class,
          "_diffχ",
          "diff((((((1^(p+1))/(p+1))*_intw(1))*(PolynomialIntegralNode[polynomialNode=P(i)(class arb.expressions.nodes.unary.FunctionNode of type class arb.RealPolynomial), argumentNode=1(class arb.expressions.nodes.LiteralConstantNode of type class arb.Integer)]))-((((-1^(p+1))/(p+1))*_intw(-1))*(PolynomialIntegralNode[polynomialNode=P(i)(class arb.expressions.nodes.unary.FunctionNode of type class arb.RealPolynomial), argumentNode=-1(class arb.expressions.nodes.unary.NegationNode of type class arb.Integer)])))/normSq(i),i)",
          this.context
@@ -67,11 +67,11 @@ public class χ implements RealSequenceSequence, Typesettable, AutoCloseable, In
    }
 
    @Override
-   public RealSequenceSequence integral() {
+   public RealFunctionSequence integral() {
       return Function.express(
          Integer.class,
-         RealSequence.class,
-         RealSequenceSequence.class,
+         RealFunction.class,
+         RealFunctionSequence.class,
          "_intχ",
          "int((((((1^(p+1))/(p+1))*_intw(1))*(PolynomialIntegralNode[polynomialNode=P(i)(class arb.expressions.nodes.unary.FunctionNode of type class arb.RealPolynomial), argumentNode=1(class arb.expressions.nodes.LiteralConstantNode of type class arb.Integer)]))-((((-1^(p+1))/(p+1))*_intw(-1))*(PolynomialIntegralNode[polynomialNode=P(i)(class arb.expressions.nodes.unary.FunctionNode of type class arb.RealPolynomial), argumentNode=-1(class arb.expressions.nodes.unary.NegationNode of type class arb.Integer)])))/normSq(i),i)",
          this.context
@@ -241,3 +241,4 @@ public class χ implements RealSequenceSequence, Typesettable, AutoCloseable, In
       return "\\frac{\\left(\\left(\\left(\\frac{{1}^{(\\left(p + 1\\right))}}{\\left(p + 1\\right)} \\cdot \\_intw(1)\\right) \\cdot \\int \\P(i)(1) d1\\right)-\\left(\\left(\\frac{{-1}^{(\\left(p + 1\\right))}}{\\left(p + 1\\right)} \\cdot \\_intw(-1)\\right) \\cdot \\int \\P(i)(-1) d-1\\right)\\right)}{\\normSq(i)}";
    }
 }
+

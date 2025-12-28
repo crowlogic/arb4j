@@ -9,7 +9,7 @@ import arb.expressions.Context;
 import arb.functions.integer.RealSequence;
 import arb.functions.integer.RealSequenceSequence;
 
-public class ω implements
+public class μ implements
                RealSequenceSequence,
                Typesettable,
                AutoCloseable,
@@ -36,7 +36,7 @@ public class ω implements
   }
 
   @Override
-  public RealSequence evaluate(Integer j, int order, int bits, RealSequence result)
+  public RealSequence evaluate(Integer i, int order, int bits, RealSequence result)
   {
     if (order > 1)
     {
@@ -49,8 +49,7 @@ public class ω implements
         this.initialize();
       }
 
-      ωfunc var10000 = new ωfunc();
-      var10000.j = j;
+      μfunc var10000 = new μfunc();
       var10000.α = this.α;
       var10000.β = this.β;
       var10000.γ = this.γ;
@@ -66,8 +65,8 @@ public class ω implements
     return Function.express(Integer.class,
                             RealSequence.class,
                             RealSequenceSequence.class,
-                            "_diffω",
-                            "diff((((-1^(j-k))*Γ((j+β)+1))*Γ((((j+k)+α)+β)+1))/(((Γ((k+β)+1)*Γ(((j+α)+β)+1))*(j-k)!)*k!),j)",
+                            "_diffμ",
+                            "diff(Σk➔(ω(j)(k)*Γ(k+1)/Γ(k+1-γ)*χ(i)(k-γ)){k=⌈γ⌉…j},i)",
                             this.context);
   }
 
@@ -77,8 +76,8 @@ public class ω implements
     return Function.express(Integer.class,
                             RealSequence.class,
                             RealSequenceSequence.class,
-                            "_intω",
-                            "int((((-1^(j-k))*Γ((j+β)+1))*Γ((((j+k)+α)+β)+1))/(((Γ((k+β)+1)*Γ(((j+α)+β)+1))*(j-k)!)*k!),j)",
+                            "_intμ",
+                            "int(Σk➔(ω(j)(k)*Γ(k+1)/Γ(k+1-γ)*χ(i)(k-γ)){k=⌈γ⌉…j},i)",
                             this.context);
   }
 
@@ -89,13 +88,9 @@ public class ω implements
     {
       throw new AssertionError("Already initialized");
     }
-    else if (this.α == null)
+    else if (this.γ == null)
     {
-      throw new AssertionError("α is null");
-    }
-    else if (this.β == null)
-    {
-      throw new AssertionError("β is null");
+      throw new AssertionError("γ is null");
     }
     else
     {
@@ -104,14 +99,9 @@ public class ω implements
   }
 
   @Override
-  public void close()
-  {
-  }
-
-  @Override
   public String getName()
   {
-    return "ω";
+    return "μ";
   }
 
   @Override
@@ -123,12 +113,12 @@ public class ω implements
   @Override
   public String toString()
   {
-    return "ω:j➔(((-1^(j-k))*Γ((j+β)+1))*Γ((((j+k)+α)+β)+1))/(((Γ((k+β)+1)*Γ(((j+α)+β)+1))*(j-k)!)*k!)";
+    return "μ:i➔Σk➔(ω(j)(k)*Γ(k+1)/Γ(k+1-γ)*χ(i)(k-γ)){k=⌈γ⌉…j}";
   }
 
   @Override
   public String typeset()
   {
-    return "\\frac{\\left(\\left({-1}^{(\\left(j-k\\right))} \\cdot \\Gamma(\\left(\\left(j + β\\right) + 1\\right))\\right) \\cdot \\Gamma(\\left(\\left(\\left(\\left(j + k\\right) + α\\right) + β\\right) + 1\\right))\\right)}{\\left(\\left(\\left(\\Gamma(\\left(\\left(k + β\\right) + 1\\right)) \\cdot \\Gamma(\\left(\\left(\\left(j + α\\right) + β\\right) + 1\\right))\\right) \\cdot (\\left(j-k\\right))!\\right) \\cdot k!\\right)}";
+    return "\\sum_{k = \\lceil{γ}\\rceil}^{j}{null}";
   }
 }
