@@ -50,24 +50,24 @@ public class μfunc implements
     }
     else
     {
-      if (!this.isInitialized)
+      if (!isInitialized)
       {
-        this.initialize();
+        initialize();
       }
 
-      this.operandF0001.j = j;
-      this.sumℝ0001.additiveIdentity();
-      this.k.set(this.γ.ceil(bits, this.vℤ0009));
-      Integer var10000 = this.k;
-      this.upperLimitℤ0001.set(j);
+      operandF0001.j = j;
+      sumℝ0001.additiveIdentity();
+      k.set(γ.ceil(bits, vℤ0009));
+      Integer var10000 = k;
+      upperLimitℤ0001.set(j);
 
-      while (var10000.compareTo(this.upperLimitℤ0001) <= 0)
+      while (var10000.compareTo(upperLimitℤ0001) <= 0)
       {
-        this.sumℝ0001.add((Real) this.operandF0001.evaluate(this.k, bits, this.valueℝ0001), bits);
-        var10000 = this.k.increment();
+        sumℝ0001.add( operandF0001.evaluate(k, bits, valueℝ0001), bits);
+        var10000 = k.increment();
       }
 
-      return result.set(this.sumℝ0001);
+      return result.set(sumℝ0001);
     }
   }
 
@@ -79,7 +79,7 @@ public class μfunc implements
                             RealSequence.class,
                             "_diffμfunc",
                             "diff(Σk➔(((ω(j)(k))*Γ(k+1))/Γ((k+1)-γ))*(χ(i)(k-γ)){k=ceil(γ)…j},j)",
-                            this.context);
+                            context);
   }
 
   @Override
@@ -90,40 +90,40 @@ public class μfunc implements
                             RealSequence.class,
                             "_intμfunc",
                             "int(Σk➔(((ω(j)(k))*Γ(k+1))/Γ((k+1)-γ))*(χ(i)(k-γ)){k=ceil(γ)…j},j)",
-                            this.context);
+                            context);
   }
 
   @Override
   public void initialize()
   {
-    if (this.isInitialized)
+    if (isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
-    else if (this.γ == null)
+    else if (γ == null)
     {
       throw new AssertionError("γ is null");
     }
     else
     {
-      if (this.operandF0001 == null)
+      if (operandF0001 == null)
       {
-        this.operandF0001 = new operandF0001();
+        operandF0001 = new operandF0001();
       }
 
-      this.isInitialized = true;
+      isInitialized = true;
     }
   }
 
   @Override
   public void close()
   {
-    this.k.close();
-    this.sumℝ0001.close();
-    this.upperLimitℤ0001.close();
-    this.valueℝ0001.close();
-    this.vℤ0009.close();
-    this.operandF0001.close();
+    k.close();
+    sumℝ0001.close();
+    upperLimitℤ0001.close();
+    valueℝ0001.close();
+    vℤ0009.close();
+    operandF0001.close();
   }
 
   @Override
@@ -135,7 +135,7 @@ public class μfunc implements
   @Override
   public Context getContext()
   {
-    return this.context;
+    return context;
   }
 
   @Override

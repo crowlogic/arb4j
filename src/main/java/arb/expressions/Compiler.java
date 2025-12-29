@@ -149,10 +149,7 @@ public class Compiler
     typePrefixes.put(SphericalBesselFunction.class, "sph");
     typePrefixes.put(IntegerPolynomial.class, "Xℤ");
     typePrefixes.put(Function.class, "F");
-
     typePrefixes.put(RealSequence.class, "Sℝ");
-    typePrefixes.put(RealSequenceSequence.class, "S²ℝ");
-
   }
 
   public static void addNullCheckForField(MethodVisitor mv,
@@ -891,6 +888,7 @@ public class Compiler
     mv.visitInsn(Opcodes.SWAP);
     return mv;
   }
+
   public static boolean isScalar(Class<?> t)
   {
     return realTypes.contains(t);
