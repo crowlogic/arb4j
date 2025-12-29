@@ -181,7 +181,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                          Boolean.valueOf(System.getProperty("arb4j.saveGraphs",
                                                                             "false"));
 
-  public static final boolean trace                             =
+  public static boolean trace                             =
                                     Boolean.valueOf(System.getProperty("arb4j.trace", "false"));
 
   public static String        VOID_METHOD_DESCRIPTOR            =
@@ -1092,7 +1092,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public Expression<D, C, F> generate() throws CompilerException
   {
     assert instructions == null;
-    if (log.isDebugEnabled())
+    if (trace)
     {
       log.debug("id={}: generate(className={}, functionName={}, expression='{}')\n",
                 System.identityHashCode(this),
@@ -2530,7 +2530,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                             + rootNode;
     evaluateOptionalIndependentVariableSpecification();
     nextCharacter();
-    if (log.isDebugEnabled())
+    if (trace)
     {
       log.debug("#:{} parseRoot expression='{}'\n", System.identityHashCode(this), expression);
     }

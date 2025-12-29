@@ -21,6 +21,11 @@ import arb.functions.integer.RealSequenceSequence;
 public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
                                                                 AutoCloseable
 {
+  static
+  {
+    Expression.trace = false;
+  }
+  
   private JacobiPolynomialSequence basis = new JacobiPolynomialSequence(RealConstants.negHalf,
                                                                         RealConstants.negHalf);
 
@@ -43,6 +48,8 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
 
     this.γ    = Real.named("γ").set(RealConstants.half);
 
+    Expression.trace = true;
+    
     context   = basis.getContext();
     context.registerVariable("γ", γ);
     //context.registerVariable(Real.named("t"));
