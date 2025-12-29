@@ -1,34 +1,142 @@
 package arb.expressions;
 
-import static arb.expressions.Compiler.*;
-import static arb.expressions.Parser.*;
+import static arb.expressions.Compiler.addNullCheckForField;
+import static arb.expressions.Compiler.cast;
+import static arb.expressions.Compiler.constructNewObject;
+import static arb.expressions.Compiler.defineMethod;
+import static arb.expressions.Compiler.designateLabel;
+import static arb.expressions.Compiler.duplicateTopOfTheStack;
+import static arb.expressions.Compiler.generateFunctionInterface;
+import static arb.expressions.Compiler.generateNewObjectInstruction;
+import static arb.expressions.Compiler.generateReturnFromVoidMethod;
+import static arb.expressions.Compiler.getField;
+import static arb.expressions.Compiler.getFieldFromThis;
+import static arb.expressions.Compiler.getVariablePrefix;
+import static arb.expressions.Compiler.invokeCloseMethod;
+import static arb.expressions.Compiler.invokeDefaultConstructor;
+import static arb.expressions.Compiler.invokeSetMethod;
+import static arb.expressions.Compiler.invokeVirtualMethod;
+import static arb.expressions.Compiler.jumpToIfNotEqual;
+import static arb.expressions.Compiler.loadFunctionClass;
+import static arb.expressions.Compiler.loadResultParameter;
+import static arb.expressions.Compiler.loadThisOntoStack;
+import static arb.expressions.Compiler.putField;
+import static arb.expressions.Compiler.scalarType;
+import static arb.expressions.Compiler.swap;
+import static arb.expressions.Parser.isIdentifyingCharacter;
+import static arb.expressions.Parser.isNumeric;
+import static arb.expressions.Parser.isSubscript;
+import static arb.expressions.Parser.isSuperscriptLetter;
+import static arb.expressions.Parser.transformToJavaAcceptableCharacters;
 import static java.lang.String.format;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.ARETURN;
+import static org.objectweb.asm.Opcodes.ATHROW;
+import static org.objectweb.asm.Opcodes.CHECKCAST;
+import static org.objectweb.asm.Opcodes.DUP;
+import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.GOTO;
+import static org.objectweb.asm.Opcodes.ICONST_1;
+import static org.objectweb.asm.Opcodes.IFEQ;
+import static org.objectweb.asm.Opcodes.IFNONNULL;
+import static org.objectweb.asm.Opcodes.IF_ICMPLE;
+import static org.objectweb.asm.Opcodes.ILOAD;
+import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.NEW;
+import static org.objectweb.asm.Opcodes.PUTFIELD;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.*;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Handle;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.util.TraceClassVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import arb.*;
+import arb.Becomable;
+import arb.Complex;
+import arb.ComplexFraction;
+import arb.ComplexPolynomial;
+import arb.ComplexRationalFunction;
+import arb.Fraction;
+import arb.GaussianInteger;
+import arb.Initializable;
 import arb.Integer;
+import arb.IntegerPolynomial;
+import arb.Named;
+import arb.OrderedPair;
+import arb.Polynomial;
+import arb.RationalFunction;
+import arb.Real;
+import arb.RealPolynomial;
+import arb.Typesettable;
 import arb.exceptions.CompilerException;
 import arb.expressions.context.Dependency;
 import arb.expressions.context.TopologicalSorter;
-import arb.expressions.nodes.*;
-import arb.expressions.nodes.binary.*;
-import arb.expressions.nodes.nary.*;
-import arb.expressions.nodes.unary.*;
+import arb.expressions.nodes.CaputoFractionalDerivativeNode;
+import arb.expressions.nodes.DerivativeNode;
+import arb.expressions.nodes.ElseNode;
+import arb.expressions.nodes.IntegralNode;
+import arb.expressions.nodes.LimitNode;
+import arb.expressions.nodes.LiteralConstantNode;
+import arb.expressions.nodes.Node;
+import arb.expressions.nodes.VariableNode;
+import arb.expressions.nodes.VectorNode;
+import arb.expressions.nodes.binary.AdditionNode;
+import arb.expressions.nodes.binary.AscendingFactorializationNode;
+import arb.expressions.nodes.binary.BinaryOperationNode;
+import arb.expressions.nodes.binary.DivisionNode;
+import arb.expressions.nodes.binary.MultiplicationNode;
+import arb.expressions.nodes.binary.SubtractionNode;
+import arb.expressions.nodes.nary.NAryOperationNode;
+import arb.expressions.nodes.nary.ProductNode;
+import arb.expressions.nodes.nary.SumNode;
+import arb.expressions.nodes.unary.BesselFunctionNodeOfTheFirstKind;
+import arb.expressions.nodes.unary.BetaFunctionNode;
+import arb.expressions.nodes.unary.BinomialCoefficientNode;
+import arb.expressions.nodes.unary.CeilingNode;
+import arb.expressions.nodes.unary.FactorialNode;
+import arb.expressions.nodes.unary.FloorNode;
+import arb.expressions.nodes.unary.FunctionNode;
+import arb.expressions.nodes.unary.FunctionalEvaluationNode;
+import arb.expressions.nodes.unary.GammaFunctionNode;
+import arb.expressions.nodes.unary.HardyZFunctionNode;
+import arb.expressions.nodes.unary.HypergeometricFunctionNode;
+import arb.expressions.nodes.unary.LambertWFunctionNode;
+import arb.expressions.nodes.unary.LogGammaFunctionNode;
+import arb.expressions.nodes.unary.LommelPolynomialNode;
+import arb.expressions.nodes.unary.RiemannSiegelThetaFunctionNode;
+import arb.expressions.nodes.unary.SineIntegralNode;
+import arb.expressions.nodes.unary.SphericalBesselFunctionNodeOfTheFirstKind;
+import arb.expressions.nodes.unary.UnaryOperationNode;
+import arb.expressions.nodes.unary.WhenNode;
+import arb.expressions.nodes.unary.ZetaFunctionNode;
 import arb.expressions.viz.ExpressionTree;
 import arb.functions.Function;
 import arb.functions.RealToComplexFunction;
@@ -143,49 +251,49 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                        Supplier<F>
 {
 
-  private static String       ASSERTION_ERROR_METHOD_DESCRIPTOR =
-                                                                Compiler.getMethodDescriptor(Void.class,
-                                                                                             Object.class);
+  private static String     ASSERTION_ERROR_METHOD_DESCRIPTOR =
+                                                              Compiler.getMethodDescriptor(Void.class,
+                                                                                           Object.class);
 
-  private static final char   COMBINING_DOT_ABOVE               = '\u0307';
+  private static final char COMBINING_DOT_ABOVE               = '\u0307';
 
-  private static final char   COMBINING_TWO_DOTS_ABOVE          = '\u0308';
+  private static final char COMBINING_TWO_DOTS_ABOVE          = '\u0308';
 
-  static File                 compiledClassDir                  = new File("compiled");
+  static File               compiledClassDir                  = new File("compiled");
 
-  public static String        evaluationMethodDescriptor        =
-                                                         Compiler.getMethodDescriptor(Object.class,
-                                                                                      Object.class,
-                                                                                      int.class,
-                                                                                      int.class,
-                                                                                      Object.class);
+  public static String      evaluationMethodDescriptor        =
+                                                       Compiler.getMethodDescriptor(Object.class,
+                                                                                    Object.class,
+                                                                                    int.class,
+                                                                                    int.class,
+                                                                                    Object.class);
 
-  public static Class<?>[]    implementedInterfaces             = new Class[]
+  public static Class<?>[]  implementedInterfaces             = new Class[]
   { Typesettable.class, AutoCloseable.class, Initializable.class, Named.class };
 
-  static HashSet<Class<?>>    indeterminantTypes                = new HashSet<>();
+  static HashSet<Class<?>>  indeterminantTypes                = new HashSet<>();
 
-  public static String        IS_INITIALIZED                    = "isInitialized";
+  public static String      IS_INITIALIZED                    = "isInitialized";
 
-  private static String       JAVA_LANG_ASSERTION_ERROR         = "java/lang/AssertionError";
+  private static String     JAVA_LANG_ASSERTION_ERROR         = "java/lang/AssertionError";
 
-  private static final char   MIDDLE_DOT                        = '\u00B7';
+  private static final char MIDDLE_DOT                        = '\u00B7';
 
-  public static String        nameOfInitializerFunction         = "initialize";
+  public static String      nameOfInitializerFunction         = "initialize";
 
-  private static boolean      saveClasses                       =
-                                          Boolean.valueOf(System.getProperty("arb4j.saveClasses",
-                                                                             "false"));
+  private static boolean    saveClasses                       =
+                                        Boolean.valueOf(System.getProperty("arb4j.saveClasses",
+                                                                           "false"));
 
-  public static boolean       saveGraphs                        =
-                                         Boolean.valueOf(System.getProperty("arb4j.saveGraphs",
-                                                                            "false"));
+  public static boolean     saveGraphs                        =
+                                       Boolean.valueOf(System.getProperty("arb4j.saveGraphs",
+                                                                          "false"));
 
-  public static boolean trace                             =
-                                    Boolean.valueOf(System.getProperty("arb4j.trace", "false"));
+  public static boolean     trace                             =
+                                  Boolean.valueOf(System.getProperty("arb4j.trace", "false"));
 
-  public static String        VOID_METHOD_DESCRIPTOR            =
-                                                     Compiler.getMethodDescriptor(Void.class);
+  public static String      VOID_METHOD_DESCRIPTOR            =
+                                                   Compiler.getMethodDescriptor(Void.class);
 
   static
   {
@@ -485,16 +593,36 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return false;
   }
 
-  protected void assignIndependentVariable(VariableNode<D, C, F> variable)
+  protected Expression<D, C, F> assignIndependentVariable(VariableNode<D, C, F> variable)
   {
+    if (independentVariable != null)
+    {
+      if (!independentVariable.equals(variable))
+      {
+       
+          throw new CompilerException(String.format("undefined variable reference '%s' at position=%s in expression '%s' "
+                                                    + "since the inderminate variable has already been declared to be '%s' in expr#%s",
+                                                    variable,
+                                                    position,
+                                                    this,
+                                                    independentVariable,
+                                                    System.identityHashCode(expression)));
+       
+      }
+      else
+      {
+        return this;
+      }
+      
+    }
     independentVariable               = variable;
     independentVariable.isIndependent = true;
+    return this;
   }
 
-  protected void assignIndeterminantVariable(VariableNode<D, C, F> variable)
+  protected VariableNode<D, C, F> assignIndeterminantVariable(VariableNode<D, C, F> variable)
   {
-    indeterminateVariable                 = variable;
-    indeterminateVariable.isIndeterminate = true;
+    return variable.declareThisToBeTheIndeterminantVariable();
   }
 
   /**
@@ -949,30 +1077,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     else if (isIdentifierCharacter())
     {
       // PEEK AHEAD: check if identifier is followed by arrow (nested lambda)
-      int    savedPos       = position;
-      char   savedChar      = character;
+      int    savedPos                      = position;
+      char   savedChar                     = character;
 
-      String potentialParam = parseName();
+      String possibleVariableSpecification = parseName();
       skipSpaces();
 
       if ((character == '➔') && coDomainType.isInterface())
       {
-        // This is a nested lambda - the parameter is the indeterminate variable
-        // of the function being returned, not an independent variable
-        position  = savedPos;
-        character = savedChar;
-
-        String paramName = parseName();
-        require('➔');
-
-        // Parse the body which contains the actual expression
-        node = resolve();
-
-        // Create parameter variable and assign as INDETERMINATE variable
-        // (since the codomain is a function, this parameter becomes the
-        // independent variable of that returned function)
-        VariableNode<D, C, F> paramVar = createNewVariableReference(paramName);
-        assignIndeterminantVariable(paramVar);
+        node = parseLambda(possibleVariableSpecification);
       }
       else
       {
@@ -986,6 +1099,45 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return resolvePostfixOperators(node);
   }
 
+  /**
+   * Used for functionals to specify a variable as the indeterminant variable
+   * which becomes the independent variable of the returned function
+   * 
+   * @param paramName
+   * @return
+   */
+  private Node<D, C, F> parseLambda(String paramName)
+  {
+    if (trace)
+    {
+      log.debug("parseLambda( expr={},  paramName = {} at position {} where remaining={} )",
+                expression,
+                paramName,
+                position,
+                remaining());
+    }
+
+    require('➔');
+
+    assureInputNameHasNotAlreadyBeenAssociatedWithAContextVariable(paramName);
+
+    // Parse the body which contains the actual expression
+    var node     = resolve();
+
+    // Create parameter variable and assign as INDETERMINATE variable
+    // (since the codomain is a function, this parameter becomes the
+    // independent variable of that returned function)
+    var paramVar = createNewVariableReference(paramName);
+    assignIndeterminantVariable(paramVar);
+    return node;
+  }
+
+  /**
+   * Similiar to this{@link #parseLambda(String)} but only for the root of the
+   * expression
+   * 
+   * @return
+   */
   protected Expression<D, C, F> evaluateOptionalIndependentVariableSpecification()
   {
     expression = transformToJavaAcceptableCharacters(expression);

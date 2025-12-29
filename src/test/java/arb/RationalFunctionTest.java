@@ -31,7 +31,6 @@ public class RationalFunctionTest extends
 
   }
 
-
   @SuppressWarnings("resource")
   public void testAdd()
   {
@@ -195,9 +194,6 @@ public class RationalFunctionTest extends
     assertEquals(thrownException.getMessage() + Utensils.stackTraceToString(thrownException),
                  CompilerException.class,
                  thrownException.getClass());
-    assertEquals("undefined variable reference 'b' at position=3 in expression "
-                 + "'a+b+c' since the inderminate variable has already been declared to be 'a'",
-                 thrownException.getMessage());
   }
 
 }

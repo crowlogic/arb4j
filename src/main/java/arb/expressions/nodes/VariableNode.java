@@ -555,7 +555,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                  expression.remaining()));
   }
 
-  protected void declareThisToBeTheIndeterminantVariable()
+  public VariableNode<D, R, F> declareThisToBeTheIndeterminantVariable()
   {
 
     if (expression.indeterminateVariable != null)
@@ -566,8 +566,9 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       }
       else
       {
-        return;
+        return this;
       }
+      
     }
 
     if (!VariableNode.this.equals(expression.indeterminateVariable) && Expression.trace)
@@ -580,16 +581,19 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     expression.referencedVariables.put(reference.name, this);
     expression.indeterminateVariable = this;
+    
+    return this;
   }
 
   protected void throwNewIndeterminantVariableAlreadyDeclared()
   {
-    throw new CompilerException(String.format("undefined variable reference '%s' at position=%s in expression '%s' "
-                                              + "since the inderminate variable has already been declared to be '%s'",
-                                              reference,
+    throw new CompilerException(String.format("the indeterminant variable '%s' at position=%s in expression '%s' "
+                                              + " cannot be assigned since the inderminate variable has already been declared to be '%s' in expr#%s",
+                                              this,
                                               expression.position,
                                               expression,
-                                              expression.indeterminateVariable));
+                                              expression.indeterminateVariable,
+                                              System.identityHashCode(expression)));
   }
 
   public <E, S, G extends Function<? extends E, ? extends S>>
