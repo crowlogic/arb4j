@@ -1,10 +1,14 @@
 package arb.functions;
 
-import arb.*;
+import arb.Initializable;
 import arb.Integer;
+import arb.Named;
+import arb.Real;
+import arb.RealPolynomial;
+import arb.Typesettable;
+import arb.arblib;
 import arb.expressions.Context;
 import arb.functions.integer.RealSequence;
-import arb.functions.real.RealFunction;
 
 public class operandF0001 implements
                           Function<Integer, Real>,
@@ -60,26 +64,20 @@ public class operandF0001 implements
     }
     else
     {
-      if (!this.isInitialized)
+      if (!isInitialized)
       {
-        this.initialize();
+        initialize();
       }
 
       Real           var10000 =
-                              (Real) ((RealSequence) this.ω.evaluate(this.j,
-                                                                     order,
-                                                                     bits,
-                                                                     this.vSℝ0001)).evaluate(k,
-                                                                                             order,
-                                                                                             bits,
-                                                                                             this.vℝ0103);
-      Real           var36    = this.vℝ0104;
+                              ω.evaluate(j, order, bits, vSℝ0001).evaluate(k, order, bits, vℝ0103);
+      Real           var36    = vℝ0104;
       RealPolynomial var37    = new RealPolynomial();
       arblib.arb_poly_init(var37);
       RealPolynomial var38 = new RealPolynomial();
       arblib.arb_poly_init(var38);
       arblib.arb_poly_fit_length(var38, 1);
-      arblib.arb_poly_set_coeff_arb(var38, 0, k.add(this.cℤ0000, bits, this.vℝ0105));
+      arblib.arb_poly_set_coeff_arb(var38, 0, k.add(cℤ0000, bits, vℝ0105));
       Real var39;
       arblib.arb_one(var39 = new Real());
       arblib.arb_poly_set_coeff_arb(var38, 1, var39);
@@ -87,34 +85,24 @@ public class operandF0001 implements
       arblib.arb_poly_get_coeff_arb(var36, var37, 0);
       arblib.arb_poly_clear(var37);
       arblib.arb_poly_clear(var38);
-      var10000 = var10000.mul(var36, bits, this.vℝ0106);
-      Real           var40 = this.vℝ0107;
+      var10000 = var10000.mul(var36, bits, vℝ0106);
+      Real           var40 = vℝ0107;
       RealPolynomial var41 = new RealPolynomial();
       arblib.arb_poly_init(var41);
       RealPolynomial var42 = new RealPolynomial();
       arblib.arb_poly_init(var42);
       arblib.arb_poly_fit_length(var42, 1);
-      arblib.arb_poly_set_coeff_arb(var42,
-                                    0,
-                                    k.add(this.cℤ0000, bits, this.vℤ0010)
-                                     .sub(this.γ, bits, this.vℝ0108));
-      Real var43;
-      arblib.arb_one(var43 = new Real());
+      arblib.arb_poly_set_coeff_arb(var42, 0, k.add(cℤ0000, bits, vℤ0010).sub(γ, bits, vℝ0108));
+      Real var43 = new Real();
+      arblib.arb_one(var43);
       arblib.arb_poly_set_coeff_arb(var42, 1, var43);
       arblib.arb_poly_gamma_series(var41, var42, 1, bits);
       arblib.arb_poly_get_coeff_arb(var40, var41, 0);
       arblib.arb_poly_clear(var41);
       arblib.arb_poly_clear(var42);
-      return var10000.div(var40, bits, this.vℝ0109)
-                     .mul((Real) ((RealFunction) this.χ.evaluate(this.i,
-                                                                 order,
-                                                                 bits,
-                                                                 null)).evaluate(k.sub(this.γ,
-                                                                                       bits,
-                                                                                       this.vℝ0111),
-                                                                                 order,
-                                                                                 bits,
-                                                                                 this.vℝ0112),
+      return var10000.div(var40, bits, vℝ0109)
+                     .mul(χ.evaluate(i, order, bits, null)
+                           .evaluate(k.sub(γ, bits, vℝ0111), order, bits, vℝ0112),
                           bits,
                           result);
     }
@@ -128,7 +116,7 @@ public class operandF0001 implements
                             Function.class,
                             "_diffoperandF0001",
                             "diff((((ω(j)(k))*Γ(k+1))/Γ((k+1)-γ))*(χ(i)(k-γ)),k)",
-                            this.context);
+                            context);
   }
 
   @Override
@@ -139,136 +127,136 @@ public class operandF0001 implements
                             Function.class,
                             "_intoperandF0001",
                             "int((((ω(j)(k))*Γ(k+1))/Γ((k+1)-γ))*(χ(i)(k-γ)),k)",
-                            this.context);
+                            context);
   }
 
   @Override
   public void initialize()
   {
-    if (this.isInitialized)
+    if (isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
-    else if (this.γ == null)
+    else if (γ == null)
     {
       throw new AssertionError("γ is null");
     }
     else
     {
-      if (this.ω == null)
+      if (ω == null)
       {
-        this.ω = new ω();
+        ω = new ω();
       }
 
-      if (this.ω.α == null)
+      if (ω.α == null)
       {
-        this.ω.α = new Real();
-        this.ω.α.set(this.α);
+        ω.α = new Real();
+        ω.α.set(α);
       }
       else
       {
-        this.ω.α = this.α;
+        ω.α = α;
       }
 
-      if (this.ω.β == null)
+      if (ω.β == null)
       {
-        this.ω.β = new Real();
-        this.ω.β.set(this.β);
+        ω.β = new Real();
+        ω.β.set(β);
       }
       else
       {
-        this.ω.β = this.β;
+        ω.β = β;
       }
 
-      if (this.ω.γ == null)
+      if (ω.γ == null)
       {
-        this.ω.γ = new Real();
-        this.ω.γ.set(this.γ);
+        ω.γ = new Real();
+        ω.γ.set(γ);
       }
       else
       {
-        this.ω.γ = this.γ;
+        ω.γ = γ;
       }
 
-      if (this.ω.t == null)
+      if (ω.t == null)
       {
-        this.ω.t = new Real();
-        this.ω.t.set(this.t);
+        ω.t = new Real();
+        ω.t.set(t);
       }
       else
       {
-        this.ω.t = this.t;
+        ω.t = t;
       }
 
-      if (this.χ == null)
+      if (χ == null)
       {
-        this.χ = new χ();
+        χ = new χ();
       }
 
-      if (this.χ.α == null)
+      if (χ.α == null)
       {
-        this.χ.α = new Real();
-        this.χ.α.set(this.α);
+        χ.α = new Real();
+        χ.α.set(α);
       }
       else
       {
-        this.χ.α = this.α;
+        χ.α = α;
       }
 
-      if (this.χ.β == null)
+      if (χ.β == null)
       {
-        this.χ.β = new Real();
-        this.χ.β.set(this.β);
+        χ.β = new Real();
+        χ.β.set(β);
       }
       else
       {
-        this.χ.β = this.β;
+        χ.β = β;
       }
 
-      if (this.χ.γ == null)
+      if (χ.γ == null)
       {
-        this.χ.γ = new Real();
-        this.χ.γ.set(this.γ);
+        χ.γ = new Real();
+        χ.γ.set(γ);
       }
       else
       {
-        this.χ.γ = this.γ;
+        χ.γ = γ;
       }
 
-      if (this.χ.t == null)
+      if (χ.t == null)
       {
-        this.χ.t = new Real();
-        this.χ.t.set(this.t);
+        χ.t = new Real();
+        χ.t.set(t);
       }
       else
       {
-        this.χ.t = this.t;
+        χ.t = t;
       }
 
-      this.isInitialized = true;
+      isInitialized = true;
     }
   }
 
   @Override
   public void close()
   {
-    this.cℤ0000.close();
-    this.arg.close();
-    this.resultPoly.close();
-    this.vSℝ0001.close();
-    this.vℝ0103.close();
-    this.vℝ0104.close();
-    this.vℝ0105.close();
-    this.vℝ0106.close();
-    this.vℝ0107.close();
-    this.vℝ0108.close();
-    this.vℝ0109.close();
-    this.vℝ0110.close();
-    this.vℝ0111.close();
-    this.vℝ0112.close();
-    this.vℤ0010.close();
-    this.χ.close();
-    this.ω.close();
+    cℤ0000.close();
+    arg.close();
+    resultPoly.close();
+    vSℝ0001.close();
+    vℝ0103.close();
+    vℝ0104.close();
+    vℝ0105.close();
+    vℝ0106.close();
+    vℝ0107.close();
+    vℝ0108.close();
+    vℝ0109.close();
+    vℝ0110.close();
+    vℝ0111.close();
+    vℝ0112.close();
+    vℤ0010.close();
+    χ.close();
+    ω.close();
   }
 
   @Override
@@ -280,7 +268,7 @@ public class operandF0001 implements
   @Override
   public Context getContext()
   {
-    return this.context;
+    return context;
   }
 
   @Override

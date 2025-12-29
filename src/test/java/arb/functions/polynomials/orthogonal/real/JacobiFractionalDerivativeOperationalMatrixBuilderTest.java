@@ -7,11 +7,7 @@ import junit.framework.TestCase;
 public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
                                                                     TestCase
 {
-  @Override
-  protected void tearDown()
-  {
-    System.gc();
-  }
+
 
   public void testDefaultConstructor()
   {

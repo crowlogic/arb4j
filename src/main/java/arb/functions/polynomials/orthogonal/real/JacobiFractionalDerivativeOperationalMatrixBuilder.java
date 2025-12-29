@@ -6,6 +6,7 @@ import arb.RealMatrix;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
+import arb.expressions.Expression;
 import arb.functions.integer.RealFunctionSequence;
 import arb.functions.integer.RealSequence;
 import arb.functions.integer.RealSequenceSequence;
@@ -44,7 +45,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
 
     context   = basis.getContext();
     context.registerVariable("γ", γ);
-    context.registerVariable(Real.named("t"));
+    //context.registerVariable(Real.named("t"));
     normSq = RealSequence.express("normSq",
                                   "i➔2^(α+β+1)*Γ(i+α+1)*Γ(i+β+1)/((2*i+α+β+1)*Γ(i+1)*Γ(i+α+β+1))",
                                   context);
@@ -87,9 +88,11 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
 
     RealMatrix result = RealMatrix.newMatrix(maxDegree + 1, maxDegree + 1);
 
+    
     for (int i = 0; i <= maxDegree; i++)
     {
       RealSequence row = μ.evaluate(i, bits);
+
       for (int j = 0; j <= maxDegree; j++)
       {
         row.evaluate(j, bits, result.get(i, j));

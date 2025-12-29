@@ -203,41 +203,26 @@ public class Compiler
 
     if (from.equals(Real.class))
     {
-      if (to.equals(Complex.class) || to.equals(RealPolynomial.class)
-                    || to.equals(RationalFunction.class) || to.equals(Fraction.class))
-      {
-        return true;
-      }
+      return (to.equals(Complex.class) || to.equals(RealPolynomial.class)
+                    || to.equals(RationalFunction.class) || to.equals(Fraction.class));
     }
     else if (from.equals(Complex.class))
     {
-      if (to.equals(ComplexFraction.class) || to.equals(ComplexRationalFunction.class))
-      {
-        return true;
-      }
+      return (to.equals(ComplexFraction.class) || to.equals(ComplexRationalFunction.class));
     }
     else if (from.equals(Fraction.class))
     {
-      if (to.equals(Real.class) || to.equals(ComplexFraction.class) || to.equals(Complex.class)
+      return (to.equals(Real.class) || to.equals(ComplexFraction.class) || to.equals(Complex.class)
                     || to.equals(RationalFunction.class) || to.equals(ComplexRationalFunction.class)
-                    || to.equals(AlgebraicNumber.class))
-      {
-        return true;
-      }
+                    || to.equals(AlgebraicNumber.class));
     }
     else if (from.equals(Integer.class))
     {
-      if (to.equals(Real.class) || to.equals(Complex.class) || to.equals(Fraction.class))
-      {
-        return true;
-      }
+      return (to.equals(Real.class) || to.equals(Complex.class) || to.equals(Fraction.class));
     }
     else if (from.equals(AlgebraicNumber.class))
     {
-      if (to.equals(Real.class) || to.equals(Complex.class) || to.equals(RationalFunction.class))
-      {
-        return true;
-      }
+      return to.equals(Real.class) || to.equals(Complex.class) || to.equals(RationalFunction.class);
     }
 
     return false;
@@ -293,12 +278,7 @@ public class Compiler
   public static MethodVisitor
          defineMethod(ClassVisitor classVisitor, String methodName, String methodSignature)
   {
-    MethodVisitor methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                                           methodName,
-                                                           methodSignature,
-                                                           null,
-                                                           null);
-    return methodVisitor;
+    return classVisitor.visitMethod(Opcodes.ACC_PUBLIC, methodName, methodSignature, null, null);
   }
 
   public static MethodVisitor designateLabel(org.objectweb.asm.MethodVisitor mv,
