@@ -1,142 +1,34 @@
 package arb.expressions;
 
-import static arb.expressions.Compiler.addNullCheckForField;
-import static arb.expressions.Compiler.cast;
-import static arb.expressions.Compiler.constructNewObject;
-import static arb.expressions.Compiler.defineMethod;
-import static arb.expressions.Compiler.designateLabel;
-import static arb.expressions.Compiler.duplicateTopOfTheStack;
-import static arb.expressions.Compiler.generateFunctionInterface;
-import static arb.expressions.Compiler.generateNewObjectInstruction;
-import static arb.expressions.Compiler.generateReturnFromVoidMethod;
-import static arb.expressions.Compiler.getField;
-import static arb.expressions.Compiler.getFieldFromThis;
-import static arb.expressions.Compiler.getVariablePrefix;
-import static arb.expressions.Compiler.invokeCloseMethod;
-import static arb.expressions.Compiler.invokeDefaultConstructor;
-import static arb.expressions.Compiler.invokeSetMethod;
-import static arb.expressions.Compiler.invokeVirtualMethod;
-import static arb.expressions.Compiler.jumpToIfNotEqual;
-import static arb.expressions.Compiler.loadFunctionClass;
-import static arb.expressions.Compiler.loadResultParameter;
-import static arb.expressions.Compiler.loadThisOntoStack;
-import static arb.expressions.Compiler.putField;
-import static arb.expressions.Compiler.scalarType;
-import static arb.expressions.Compiler.swap;
-import static arb.expressions.Parser.isIdentifyingCharacter;
-import static arb.expressions.Parser.isNumeric;
-import static arb.expressions.Parser.isSubscript;
-import static arb.expressions.Parser.isSuperscriptLetter;
-import static arb.expressions.Parser.transformToJavaAcceptableCharacters;
+import static arb.expressions.Compiler.*;
+import static arb.expressions.Parser.*;
 import static java.lang.String.format;
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.ARETURN;
-import static org.objectweb.asm.Opcodes.ATHROW;
-import static org.objectweb.asm.Opcodes.CHECKCAST;
-import static org.objectweb.asm.Opcodes.DUP;
-import static org.objectweb.asm.Opcodes.GETFIELD;
-import static org.objectweb.asm.Opcodes.GOTO;
-import static org.objectweb.asm.Opcodes.ICONST_1;
-import static org.objectweb.asm.Opcodes.IFEQ;
-import static org.objectweb.asm.Opcodes.IFNONNULL;
-import static org.objectweb.asm.Opcodes.IF_ICMPLE;
-import static org.objectweb.asm.Opcodes.ILOAD;
-import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.Opcodes.NEW;
-import static org.objectweb.asm.Opcodes.PUTFIELD;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
+import java.util.function.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Handle;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.*;
 import org.objectweb.asm.util.TraceClassVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import arb.Becomable;
-import arb.Complex;
-import arb.ComplexFraction;
-import arb.ComplexPolynomial;
-import arb.ComplexRationalFunction;
-import arb.Fraction;
-import arb.GaussianInteger;
-import arb.Initializable;
+import arb.*;
 import arb.Integer;
-import arb.IntegerPolynomial;
-import arb.Named;
-import arb.OrderedPair;
-import arb.Polynomial;
-import arb.RationalFunction;
-import arb.Real;
-import arb.RealPolynomial;
-import arb.Typesettable;
 import arb.exceptions.CompilerException;
 import arb.expressions.context.Dependency;
 import arb.expressions.context.TopologicalSorter;
-import arb.expressions.nodes.CaputoFractionalDerivativeNode;
-import arb.expressions.nodes.DerivativeNode;
-import arb.expressions.nodes.ElseNode;
-import arb.expressions.nodes.IntegralNode;
-import arb.expressions.nodes.LimitNode;
-import arb.expressions.nodes.LiteralConstantNode;
-import arb.expressions.nodes.Node;
-import arb.expressions.nodes.VariableNode;
-import arb.expressions.nodes.VectorNode;
-import arb.expressions.nodes.binary.AdditionNode;
-import arb.expressions.nodes.binary.AscendingFactorializationNode;
-import arb.expressions.nodes.binary.BinaryOperationNode;
-import arb.expressions.nodes.binary.DivisionNode;
-import arb.expressions.nodes.binary.MultiplicationNode;
-import arb.expressions.nodes.binary.SubtractionNode;
-import arb.expressions.nodes.nary.NAryOperationNode;
-import arb.expressions.nodes.nary.ProductNode;
-import arb.expressions.nodes.nary.SumNode;
-import arb.expressions.nodes.unary.BesselFunctionNodeOfTheFirstKind;
-import arb.expressions.nodes.unary.BetaFunctionNode;
-import arb.expressions.nodes.unary.BinomialCoefficientNode;
-import arb.expressions.nodes.unary.CeilingNode;
-import arb.expressions.nodes.unary.FactorialNode;
-import arb.expressions.nodes.unary.FloorNode;
-import arb.expressions.nodes.unary.FunctionNode;
-import arb.expressions.nodes.unary.FunctionalEvaluationNode;
-import arb.expressions.nodes.unary.GammaFunctionNode;
-import arb.expressions.nodes.unary.HardyZFunctionNode;
-import arb.expressions.nodes.unary.HypergeometricFunctionNode;
-import arb.expressions.nodes.unary.LambertWFunctionNode;
-import arb.expressions.nodes.unary.LogGammaFunctionNode;
-import arb.expressions.nodes.unary.LommelPolynomialNode;
-import arb.expressions.nodes.unary.RiemannSiegelThetaFunctionNode;
-import arb.expressions.nodes.unary.SineIntegralNode;
-import arb.expressions.nodes.unary.SphericalBesselFunctionNodeOfTheFirstKind;
-import arb.expressions.nodes.unary.UnaryOperationNode;
-import arb.expressions.nodes.unary.WhenNode;
-import arb.expressions.nodes.unary.ZetaFunctionNode;
+import arb.expressions.nodes.*;
+import arb.expressions.nodes.binary.*;
+import arb.expressions.nodes.nary.*;
+import arb.expressions.nodes.unary.*;
 import arb.expressions.viz.ExpressionTree;
 import arb.functions.Function;
 import arb.functions.RealToComplexFunction;
@@ -599,21 +491,21 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       if (!independentVariable.equals(variable))
       {
-       
-          throw new CompilerException(String.format("undefined variable reference '%s' at position=%s in expression '%s' "
-                                                    + "since the inderminate variable has already been declared to be '%s' in expr#%s",
-                                                    variable,
-                                                    position,
-                                                    this,
-                                                    independentVariable,
-                                                    System.identityHashCode(expression)));
-       
+
+        throw new CompilerException(String.format("undefined variable reference '%s' at position=%s in expression '%s' "
+                                                  + "since the inderminate variable has already been declared to be '%s' in expr#%s",
+                                                  variable,
+                                                  position,
+                                                  this,
+                                                  independentVariable,
+                                                  System.identityHashCode(expression)));
+
       }
       else
       {
         return this;
       }
-      
+
     }
     independentVariable               = variable;
     independentVariable.isIndependent = true;
@@ -637,6 +529,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    */
   private void assignVariable(VariableNode<D, C, F> variable, boolean indeterminant)
   {
+    if (Expression.trace)
+    {
+      log.debug("assignVariable( variable={}, indeterminant={})", variable, indeterminant);
+    }
     if (indeterminant)
     {
       assignIndeterminantVariable(variable);
@@ -690,8 +586,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                        context,
                                        functionName,
                                        ascendentExpression);
-//    expr.independentVariable   = independentVariable;
-//    expr.indeterminateVariable = indeterminateVariable;
+    expr.independentVariable   = independentVariable;
+    expr.indeterminateVariable = indeterminateVariable;
     expr.functionNameSpecified = functionNameSpecified;
     expr.position              = position;
     expr.character             = character;
@@ -1117,35 +1013,63 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                 remaining());
     }
 
-    require('➔');
-
     assureInputNameHasNotAlreadyBeenAssociatedWithAContextVariable(paramName);
-
-    // Parse the body which contains the actual expression
-    var node     = resolve();
 
     // Create parameter variable and assign as INDETERMINATE variable
     // (since the codomain is a function, this parameter becomes the
     // independent variable of that returned function)
     var paramVar = createNewVariableReference(paramName);
-    assignIndeterminantVariable(paramVar);
+    assignVariable(paramVar);
+
+    require('➔');
+
+    // Parse the body which contains the actual expression
+    var node = resolve();
+
     return node;
   }
 
+  private void assignVariable(VariableNode<D, C, F> paramVar)
+  {
+    if (independentVariable == null)
+    {
+      assignIndependentVariable(paramVar);
+    }
+    else if (indeterminateVariable == null)
+    {
+      assignIndeterminantVariable(paramVar);
+    }
+    else
+    {
+      throw new CompilerException(String.format("the independent variable has already been declared to be '%s' and the indeterminant variable has already been declared to be '%s' in expr#%s	so it cannot be changed to '%s' at position=%s in expr='%s': TODO implement depth for arbitrary number of indeterminant variables",
+                                                independentVariable,
+                                                indeterminateVariable,
+                                                System.identityHashCode(this),
+                                                paramVar,
+                                                position,
+                                                this));
+    }
+
+  }
+
   /**
-   * Similiar to this{@link #parseLambda(String)} but only for the root of the
+   * Similiar to this{@link #parseLambda(String")} but only for the root of the
    * expression
    * 
    * @return
    */
   protected Expression<D, C, F> evaluateOptionalIndependentVariableSpecification()
   {
+    if (trace)
+    {
+      log.debug("evaluateOptionalIndependentVariableSpecification: remaining {} ", remaining());
+
+    }
     expression = transformToJavaAcceptableCharacters(expression);
 
     int searchPos = 0;
     int rightArrowIndex;
 
-    // Keep finding arrows until none left
     if ((rightArrowIndex = expression.indexOf('➔', searchPos)) != -1)
     {
       String  inputVariableName        = expression.substring(searchPos, rightArrowIndex).trim();
@@ -1157,7 +1081,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       if (isInputVariableSpecified)
       {
         assureInputNameHasNotAlreadyBeenAssociatedWithAContextVariable(inputVariableName);
-        assignVariable(createNewVariableReference(inputVariableName), hasIndeterminateVariable());
+        assignVariable(createNewVariableReference(inputVariableName), independentVariable != null);
         searchPos = rightArrowIndex + 1; // Move past this arrow, search for next
       }
 
@@ -2048,7 +1972,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return null;
   }
 
-  VariableNode<D, C, F> getInputVariable()
+  public VariableNode<D, C, F> getInputVariable()
   {
     return indeterminateVariable != null ? indeterminateVariable : independentVariable;
   }

@@ -859,6 +859,7 @@ public class Compiler
     }
     else
     {
+      
       throw new CompilerException("dont know what the scalar type is for " + resultType);
     }
   }
