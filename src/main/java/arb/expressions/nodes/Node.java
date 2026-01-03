@@ -93,8 +93,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return false;
   }
 
-  public boolean hoisted;
-
   public boolean independentOfInput()
   {
     return expression.isNullaryFunction() ? true

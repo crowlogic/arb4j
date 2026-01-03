@@ -1041,6 +1041,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     else
     {
+      saveToFile();
+      
       throw new CompilerException(String.format("the independent variable has already been declared to be '%s' and the indeterminant variable has already been declared to be '%s' in expr#%s	so it cannot be changed to '%s' at position=%s in expr='%s': TODO implement depth for arbitrary number of indeterminant variables",
                                                 independentVariable,
                                                 indeterminateVariable,
@@ -1050,6 +1052,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                 this));
     }
 
+  }
+
+  public File saveToFile()
+  {
+    var file = new File(className + ".yaml");
+    if (trace)
+    {
+      log.debug("saveToFile(): file={}", file);
+    }
+    Utensils.saveToYamlFormat(file, this);
+    return file;
   }
 
   /**
