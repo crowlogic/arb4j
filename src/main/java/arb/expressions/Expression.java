@@ -262,7 +262,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public VariableNode<D, C, F>                          independentVariable;
 
-  public VariableNode<D, C, F>                          indeterminateVariable;
+  public VariableNode<D, C, F>                          indeterminantVariable;
 
   public LinkedList<Consumer<MethodVisitor>>            initializers                  =
                                                                      new LinkedList<>();
@@ -518,7 +518,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Assigns a variable to either this{@link #indeterminateVariable} or
+   * Assigns a variable to either this{@link #indeterminantVariable} or
    * this{@link #independentVariable}
    * 
    * @param variable
@@ -587,7 +587,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                        functionName,
                                        ascendentExpression);
     expr.independentVariable   = independentVariable;
-    expr.indeterminateVariable = indeterminateVariable;
+    expr.indeterminantVariable = indeterminantVariable;
     expr.functionNameSpecified = functionNameSpecified;
     expr.position              = position;
     expr.character             = character;
@@ -890,7 +890,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean anyAscendentIndeterminateVariableIsNamed(String name)
   {
-    if (indeterminateVariable != null && indeterminateVariable.getName().equals(name))
+    if (indeterminantVariable != null && indeterminantVariable.getName().equals(name))
     {
       return true;
     }
@@ -1035,7 +1035,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       assignIndependentVariable(paramVar);
     }
-    else if (indeterminateVariable == null)
+    else if (indeterminantVariable == null)
     {
       assignIndeterminantVariable(paramVar);
     }
@@ -1045,7 +1045,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       
       throw new CompilerException(String.format("the independent variable has already been declared to be '%s' and the indeterminant variable has already been declared to be '%s' in expr#%s	so it cannot be changed to '%s' at position=%s in expr='%s': TODO implement depth for arbitrary number of indeterminant variables",
                                                 independentVariable,
-                                                indeterminateVariable,
+                                                indeterminantVariable,
                                                 System.identityHashCode(this),
                                                 paramVar,
                                                 position,
@@ -1553,10 +1553,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       functionalDependsOnIndependentVariable =
                                              function.rootNode.dependsOn(functionalIndependentVariable);
     }
-    if (indeterminateVariable != null)
+    if (indeterminantVariable != null)
     {
       functionalIndeterminantVariable          =
-                                      indeterminateVariable.spliceInto(function).asVariable();
+                                      indeterminantVariable.spliceInto(function).asVariable();
       functionalDependsOnIndeterminantVariable =
                                                function.rootNode.dependsOn(functionalIndeterminantVariable);
     }
@@ -1974,9 +1974,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected String getInputName()
   {
-    if (indeterminateVariable != null)
+    if (indeterminantVariable != null)
     {
-      return indeterminateVariable.getName();
+      return indeterminantVariable.getName();
     }
     else if (independentVariable != null)
     {
@@ -1987,7 +1987,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public VariableNode<D, C, F> getInputVariable()
   {
-    return indeterminateVariable != null ? indeterminateVariable : independentVariable;
+    return indeterminantVariable != null ? indeterminantVariable : independentVariable;
   }
 
   public String getNextConstantFieldName(Class<?> type)
@@ -2464,10 +2464,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                               funcClass);
     functionalExpression.ascendentExpression = this;
     functionalExpression.context             = context;
-    if (indeterminateVariable != null)
+    if (indeterminantVariable != null)
     {
       functionalExpression.independentVariable =
-                                               indeterminateVariable.spliceInto(functionalExpression)
+                                               indeterminantVariable.spliceInto(functionalExpression)
                                                                     .asVariable();
     }
 
@@ -2855,9 +2855,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       independentVariable.renameIfNamed(from, to);
     }
-    if (indeterminateVariable != null)
+    if (indeterminantVariable != null)
     {
-      indeterminateVariable.renameIfNamed(from, to);
+      indeterminantVariable.renameIfNamed(from, to);
     }
   }
 

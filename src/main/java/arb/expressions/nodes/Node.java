@@ -219,7 +219,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   public Node<D, R, F> differentiate()
   {
     var variable = expression.independentVariable != null ? expression.independentVariable
-                                                            : expression.indeterminateVariable;
+                                                            : expression.indeterminantVariable;
     return differentiate(variable);
   }
 

@@ -212,8 +212,8 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                                                               hypergeometricFunctionClass,
                                                               true);
 
-    dependsOnInput       = α.dependsOn(expression.independentVariable) || α.dependsOn(expression.indeterminateVariable) || β.dependsOn(expression.independentVariable) || β.dependsOn(
-                                                                                                                                                                                      expression.indeterminateVariable);
+    dependsOnInput       = α.dependsOn(expression.independentVariable) || α.dependsOn(expression.indeterminantVariable) || β.dependsOn(expression.independentVariable) || β.dependsOn(
+                                                                                                                                                                                      expression.indeterminantVariable);
 
     if (isNullaryFunctionOrHasScalarCodomain)
     {
