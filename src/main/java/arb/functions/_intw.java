@@ -21,7 +21,7 @@ public class _intw implements
   public Real          vℝ0076  = new Real();
   public Real          vℝ0077  = new Real();
   public Real          vℝ0078  = new Real();
-  public Real          vℝ0079  = new Real();  
+  public Real          vℝ0079  = new Real();
   public Real          vℝ0080  = new Real();
   public Real          vℝ0081  = new Real();
   public Real          vℝ0082  = new Real();
@@ -52,21 +52,19 @@ public class _intw implements
     }
     else
     {
-      if (!this.isInitialized)
+      if (!isInitialized)
       {
-        this.initialize();
+        initialize();
       }
 
-      return this.cℤ0000.sub(x, bits, this.vℝ0076)
-                        .pow(this.α.add(this.cℤ0000, bits, this.vℝ0077), bits, this.vℝ0078)
-                        .div(this.vℝ0077, bits, this.vℝ0079)
-                        .mul(this.cℤ0000.add(x, bits, this.vℝ0080)
-                                        .pow(this.β.add(this.cℤ0000, bits, this.vℝ0081),
-                                             bits,
-                                             this.vℝ0082)
-                                        .div(this.vℝ0081, bits, this.vℝ0083),
-                             bits,
-                             result);
+      return cℤ0000.sub(x, bits, vℝ0076)
+                   .pow(α.add(cℤ0000, bits, vℝ0077), bits, vℝ0078)
+                   .div(vℝ0077, bits, vℝ0079)
+                   .mul(cℤ0000.add(x, bits, vℝ0080)
+                              .pow(β.add(cℤ0000, bits, vℝ0081), bits, vℝ0082)
+                              .div(vℝ0081, bits, vℝ0083),
+                        bits,
+                        result);
     }
   }
 
@@ -78,7 +76,7 @@ public class _intw implements
                             RealFunction.class,
                             "_diff_intw",
                             "diff((((1-x)^(α+1))/(α+1))*(((1+x)^(β+1))/(β+1)),x)",
-                            this.context);
+                            context);
   }
 
   @Override
@@ -89,42 +87,42 @@ public class _intw implements
                             RealFunction.class,
                             "_int_intw",
                             "int((((1-x)^(α+1))/(α+1))*(((1+x)^(β+1))/(β+1)),x)",
-                            this.context);
+                            context);
   }
 
   @Override
   public void initialize()
   {
-    if (this.isInitialized)
+    if (isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
-    else if (this.α == null)
+    else if (α == null)
     {
       throw new AssertionError("α is null");
     }
-    else if (this.β == null)
+    else if (β == null)
     {
       throw new AssertionError("β is null");
     }
     else
     {
-      this.isInitialized = true;
+      isInitialized = true;
     }
   }
 
   @Override
   public void close()
   {
-    this.cℤ0000.close();
-    this.vℝ0076.close();
-    this.vℝ0077.close();
-    this.vℝ0078.close();
-    this.vℝ0079.close();
-    this.vℝ0080.close();
-    this.vℝ0081.close();
-    this.vℝ0082.close();
-    this.vℝ0083.close();
+    cℤ0000.close();
+    vℝ0076.close();
+    vℝ0077.close();
+    vℝ0078.close();
+    vℝ0079.close();
+    vℝ0080.close();
+    vℝ0081.close();
+    vℝ0082.close();
+    vℝ0083.close();
   }
 
   @Override
@@ -136,7 +134,7 @@ public class _intw implements
   @Override
   public Context getContext()
   {
-    return this.context;
+    return context;
   }
 
   @Override

@@ -309,6 +309,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public Node<D, R, F> getSquareRootArg()
   {
+    assert false : "TODO: " +getClass() + " should implement this";
     return null;
   }
 
