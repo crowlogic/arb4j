@@ -169,8 +169,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   private static String     JAVA_LANG_ASSERTION_ERROR         = "java/lang/AssertionError";
 
-  private static final char MIDDLE_DOT                        = '\u00B7';
-
   public static String      nameOfInitializerFunction         = "initialize";
 
   private static boolean    saveClasses                       =
@@ -595,6 +593,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return expr;
   }
 
+  @SuppressWarnings("unchecked")
   public <G extends Function<?, ?>, E extends Expression<?, ?, ? extends G>> E cloneExpression()
   {
     return (E) clone();
@@ -726,7 +725,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   private ClassVisitor declareContext(ClassVisitor cw)
   {
     Class<?> type           = Context.class;
-    String   typeDescriptor = Context.class.descriptorString();
+    String   typeDescriptor =type.descriptorString();
     cw.visitField(ACC_PUBLIC, "context", typeDescriptor, null, null);
     return cw;
   }
@@ -787,7 +786,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (saveGraphs)
     {
-      var graphFile = context.saveDependencyGraph(dependencies);
+      context.saveDependencyGraph(dependencies);
     }
     // Declare functions in dependency order
     for (Dependency dependency : dependencies)
@@ -2056,6 +2055,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return literalConstantNodes;
   }
 
+  @SuppressWarnings("unchecked")
   public <Q extends Named> Q getVariable(VariableReference<D, C, F> reference)
   {
     return context == null ? null : (Q) context.variables.get(reference.name);
@@ -2396,6 +2396,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                   || hasReferencedFunctions;
   }
 
+  @SuppressWarnings("unchecked")
   public <N extends Named> N newCoDomainInstance()
   {
     try
@@ -2409,6 +2410,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
+  @SuppressWarnings("unchecked")
   public <N extends Named> N newDomainInstance()
   {
     try
@@ -2612,6 +2614,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * @return this
    * @throws CompilerException
    */
+  @SuppressWarnings("unchecked")
   public <E extends Expression<? extends D, ? extends C, F>> E parseRoot()
   {
     assert rootNode
@@ -2883,6 +2886,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * @return the result of passing this{@link #exponentiateMultiplyAndDivide()} to
    *         this{@link #addAndSubtract(Node)}
    */
+  @SuppressWarnings("unchecked")
   public <N extends Node<D, C, F>> N resolve()
   {
     var node = exponentiateMultiplyAndDivide();
