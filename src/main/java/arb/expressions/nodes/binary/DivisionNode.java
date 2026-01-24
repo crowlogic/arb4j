@@ -69,53 +69,41 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     java.util.List<Node<D, R, F>> terms  = flattenAdditiveTerms(node);
 
-    for (Node<D, R, F> term : terms)
+    for (var term : terms)
     {
-      // CHECK 1: Is it a quadratic term (x² or c*x²)?
       if (isQuadraticIn(term, variable))
       {
-        Node<D, R, F> coeff = extractQuadraticCoefficient(term, variable);
-        if (coeffA == null)
-          coeffA = coeff;
-        else
-          coeffA = coeffA.add(coeff);
+        var coeff = extractQuadraticCoefficient(term, variable);
+        coeffA = coeffA == null ? coeff : coeffA.add(coeff);
       }
-      // CHECK 2: Is it a linear term (x or c*x)?
       else if (isLinearIn(term, variable))
       {
-        Node<D, R, F> coeff = extractLinearCoefficient(term, variable);
-        if (coeffB == null)
-          coeffB = coeff;
-        else
-          coeffB = coeffB.add(coeff);
+        var coeff = extractLinearCoefficient(term, variable);
+        coeffB = coeffB == null ? coeff : coeffB.add(coeff);
       }
-      // CHECK 3: Is it a constant?
       else if (term.isIndependentOf(variable))
       {
-        if (coeffC == null)
-          coeffC = term;
-        else
-          coeffC = coeffC.add(term);
+        coeffC = coeffC == null ? term : coeffC;
       }
-      // FAILURE: Found a term that is neither quadratic, linear, nor constant (e.g.
-      // x³)
       else
       {
         return null;
       }
     }
 
-    // Default nulls to zero
     if (coeffA == null)
+    {
       coeffA = zero();
+    }
     if (coeffB == null)
+    {
       coeffB = zero();
+    }
     if (coeffC == null)
+    {
       coeffC = zero();
+    }
 
-    // If there's no x² and no x, it's just a constant (or 0), not a quadratic
-    // structure we
-    // want to complete square on
     if (coeffA.isZero() && coeffB.isZero())
     {
       return null;
@@ -146,13 +134,17 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       boolean rightIsConst = mul.right.isIndependentOf(variable);
 
       if (leftIsSquare && rightIsConst)
+      {
         return true;
+      }
 
       boolean rightIsSquare = mul.right.isVariableSquared(variable);
       boolean leftIsConst   = mul.left.isIndependentOf(variable);
 
       if (rightIsSquare && leftIsConst)
+      {
         return true;
+      }
     }
 
     return false;
@@ -269,11 +261,11 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
    * The indefinite integral ∫ 1⁄(1−x²)^(1⁄k)dx has a closed form involving the
    * **Gauss hypergeometric function** ₂F₁, and for some k (e.g. k = 2), yields
    * elementary functions like arcsin. <br>
-   * The general result is: ∫ 1⁄(1−x²)^(1⁄k)dx = x · ₂F₁(½, 1⁄k; 3⁄2; x²) + C For k
-   * = 2 you recover the standard arcsin: ∫ 1⁄√(1−x²)dx = arcsin(x) + C For other
-   * values of k, this hypergeometric form is generally the best you can do in
-   * terms of closed form. There is no universal elementary antiderivative except
-   * in special rational cases.[1]
+   * The general result is: ∫ 1⁄(1−x²)^(1⁄k)dx = x · ₂F₁(½, 1⁄k; 3⁄2; x²) + C For
+   * k = 2 you recover the standard arcsin: ∫ 1⁄√(1−x²)dx = arcsin(x) + C For
+   * other values of k, this hypergeometric form is generally the best you can do
+   * in terms of closed form. There is no universal elementary antiderivative
+   * except in special rational cases.[1]
    *
    * So: – For arbitrary k, output the result as above using the ₂F₁ function. –
    * For k = 2, the result reduces to `arcsin(x)`; for k = 1, to −ln|1−x²|.

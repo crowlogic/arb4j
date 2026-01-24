@@ -21,14 +21,6 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
                                BinaryOperationNode<D, R, F>
 {
 
-  @Override
-  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
-  {
-    assert !"0".equals(left.toString()) : this + " should have been simplified to 0 or 1";
-                  
-    return super.generate(mv, resultType);
-  }
-
   public ExponentiationNode(Expression<D, R, F> expression,
                             Node<D, R, F> base,
                             Node<D, R, F> exponent)
@@ -67,6 +59,14 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   }
 
   @Override
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
+  {
+    assert !"0".equals(left.toString()) : this + " should have been simplified to 0 or 1";
+
+    return super.generate(mv, resultType);
+  }
+
+  @Override
   public Node<D, R, F> getSquareRootArg()
   {
     assert isSquareRoot() : this + " is not a square root";
@@ -90,7 +90,8 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
                                               + variable);
     }
 
-    return left.pow(right.add(one())).div(right.add(one()));
+    Node<D, R, F> exponent = right.add(one());
+    return left.pow(exponent).div(exponent);
   }
 
   @Override
@@ -114,7 +115,7 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public Node<D, R, F> simplify()
   {
-  
+
     if (right.isOne())
     {
       return left;
@@ -139,16 +140,8 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
           return expression.newLiteralConstant(power.toString());
         }
       }
-//      assert false : "todo: combine constants of type "
-//                     + lconst.type()
-//                     + " and "
-//                     + rconst.type()
-//                     + " with values "
-//                     + lconst
-//                     + " and "
-//                     + rconst;
     }
-    return   super.simplify();
+    return super.simplify();
   }
 
   @Override

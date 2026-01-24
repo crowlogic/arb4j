@@ -12,12 +12,12 @@ import arb.functions.Function;
  */
 public class VariableReference<D, R, F extends Function<? extends D, ? extends R>>
 {
+  int level;
 
   @Override
   public String toString()
   {
     return index != null ? String.format("%s[%s]", name, index) : name;
-
   }
 
   public Class<?> type;
