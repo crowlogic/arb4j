@@ -262,6 +262,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public VariableNode<D, C, F>                          indeterminantVariable;
 
+  public Stack<VariableNode<D, C, F>>                   indeterminantVariables;
+
+  int                                                   currentLevel                  = 0;
+
   public LinkedList<Consumer<MethodVisitor>>            initializers                  =
                                                                      new LinkedList<>();
 
@@ -725,7 +729,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   private ClassVisitor declareContext(ClassVisitor cw)
   {
     Class<?> type           = Context.class;
-    String   typeDescriptor =type.descriptorString();
+    String   typeDescriptor = type.descriptorString();
     cw.visitField(ACC_PUBLIC, "context", typeDescriptor, null, null);
     return cw;
   }
@@ -1041,7 +1045,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     else
     {
       saveToFile();
-      
+
       throw new CompilerException(String.format("the independent variable has already been declared to be '%s' and the indeterminant variable has already been declared to be '%s' in expr#%s	so it cannot be changed to '%s' at position=%s in expr='%s': TODO implement depth for arbitrary number of indeterminant variables",
                                                 independentVariable,
                                                 indeterminantVariable,
