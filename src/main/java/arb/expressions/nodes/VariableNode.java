@@ -544,23 +544,24 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   protected void throwNewUndefinedReferenceException()
   {
     throw new UndefinedReferenceException(format("Undefined reference '%s' at position=%d in Expression(=%s)=%s, "
-                                                 + "independent variable is %s, indeterminant variable is %s, and parentExpression is %s, remaining='%s'",
+                                                 + "independent variable is %s, indeterminant variables is %s, and parentExpression is %s, remaining='%s'",
                                                  reference.name,
                                                  reference.position,
                                                  System.identityHashCode(expression),
                                                  expression.expression,
                                                  expression.independentVariable,
-                                                 expression.indeterminantVariable,
+                                                 expression.indeterminantVariables,
                                                  expression.ascendentExpression,
                                                  expression.remaining()));
   }
 
   public VariableNode<D, R, F> declareThisToBeTheIndeterminantVariable()
   {
-
-    if (expression.indeterminantVariable != null)
+    var indeterminantVariable = expression.getIndeterminantVariable();
+    assert false : "TODO: implement this";
+    if (indeterminantVariable != null)
     {
-      if (!expression.indeterminantVariable.equals(this))
+      if (!indeterminantVariable.equals(this))
       {
         throwNewIndeterminantVariableAlreadyDeclared();
       }
@@ -571,7 +572,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     }
 
-    if (!VariableNode.this.equals(expression.indeterminantVariable) && Expression.trace)
+    if (!VariableNode.this.equals(indeterminantVariable) && Expression.trace)
     {
       log.debug(String.format("Expression(#%s) declaring %s to be the indeterminant in %s",
                               System.identityHashCode(expression),
@@ -580,7 +581,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     }
     expression.referencedVariables.put(reference.name, this);
-    expression.indeterminantVariable = this;
+    expression.indeterminantVariables.push(this);
 
     return this;
   }
@@ -588,7 +589,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   protected void throwNewIndeterminantVariableAlreadyDeclared()
   {
     throw new CompilerException(String.format("the inderminate variable has already been declared to be '%s' in expr#%s the so it cannot be changed to '%s' at position=%s in expr='%s'",
-                                              expression.indeterminantVariable,
+                                              expression.indeterminantVariables,
                                               System.identityHashCode(expression),
                                               this,
                                               expression.position,

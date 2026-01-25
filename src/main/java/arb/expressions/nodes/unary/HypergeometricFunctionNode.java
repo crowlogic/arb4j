@@ -43,10 +43,8 @@ import arb.functions.rational.*;
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
-public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? extends R>>
-                                       extends
-                                       FunctionNode<D, R, F>
-                                       implements
+public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? extends R>> extends
+                                       FunctionNode<D, R, F> implements
                                        Initializable
 {
 
@@ -59,9 +57,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
   @Override
   public List<Node<D, R, F>> getBranches()
   {
-    return List.of(α,
-                   β,
-                   arg);
+    return List.of(α, β, arg);
   }
 
   public String debugString()
@@ -92,7 +88,9 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<E, S, G>
+         spliceInto(Expression<E, S, G> newExpression)
   {
     var newNode = new HypergeometricFunctionNode<E, S, G>(newExpression,
                                                           false);
@@ -109,10 +107,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
   @Override
   public String toString()
   {
-    return String.format("pFq(%s,%s;%s)",
-                         α,
-                         β,
-                         arg);
+    return String.format("pFq(%s,%s;%s)", α, β, arg);
   }
 
   @Override
@@ -181,39 +176,47 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
   {
     α   = expression.resolve();
     β   = expression.require(',').resolve();
-    arg = expression.require(',',
-                             ';').resolve();
+    arg = expression.require(',', ';').resolve();
     expression.require(')');
   }
 
   public void initialize()
   {
     scalarType                           = Compiler.scalarType(expression.coDomainType);
-    isFunctional                         = Function.class.isAssignableFrom(expression.coDomainType) && expression.coDomainType.isInterface();
-    isRational                           = RationalFunction.class.isAssignableFrom(expression.coDomainType) || ComplexRationalFunction.class.isAssignableFrom(expression.coDomainType);
+    isFunctional                         = Function.class.isAssignableFrom(expression.coDomainType)
+                  && expression.coDomainType.isInterface();
+    isRational                           =
+               RationalFunction.class.isAssignableFrom(expression.coDomainType)
+                             || ComplexRationalFunction.class.isAssignableFrom(expression.coDomainType);
 
-    isReal                               = Real.class.equals(scalarType) || Fraction.class.equals(scalarType) || Integer.class.equals(scalarType);
+    isReal                               = Real.class.equals(scalarType)
+                  || Fraction.class.equals(scalarType) || Integer.class.equals(scalarType);
 
-    isComplex                            = Complex.class.equals(scalarType) || ComplexFraction.class.equals(scalarType);
+    isComplex                            =
+              Complex.class.equals(scalarType) || ComplexFraction.class.equals(scalarType);
 
-    hasScalarCodomain                    = expression.hasScalarCodomain() || (expression.isFunctional());
+    hasScalarCodomain                    =
+                      expression.hasScalarCodomain() || (expression.isFunctional());
 
     isNullaryFunctionOrHasScalarCodomain = expression.isNullaryFunction() || hasScalarCodomain;
 
-    var rationalClass = isReal ? RationalHypergeometricFunction.class : isComplex ? ComplexRationalHypergeometricFunction.class : null;
+    var rationalClass = isReal ? RationalHypergeometricFunction.class
+                               : isComplex ? ComplexRationalHypergeometricFunction.class : null;
 
     hypergeometricFunctionClass = rationalClass;
 
-    var rationalNullaryClass = isReal ? RationalNullaryFunction.class : isComplex ? ComplexRationalNullaryFunction.class : null;
+    var rationalNullaryClass = isReal ? RationalNullaryFunction.class
+                                      : isComplex ? ComplexRationalNullaryFunction.class : null;
 
     nullaryFunctionClass = rationalNullaryClass;
 
-    fieldName            = expression.newIntermediateVariable("hyp",
-                                                              hypergeometricFunctionClass,
-                                                              true);
+    fieldName            =
+              expression.newIntermediateVariable("hyp", hypergeometricFunctionClass, true);
 
-    dependsOnInput       = α.dependsOn(expression.independentVariable) || α.dependsOn(expression.indeterminantVariable) || β.dependsOn(expression.independentVariable) || β.dependsOn(
-                                                                                                                                                                                      expression.indeterminantVariable);
+    dependsOnInput       = α.dependsOn(expression.independentVariable)
+                  || α.dependsOn(expression.getIndeterminantVariable())
+                  || β.dependsOn(expression.independentVariable)
+                  || β.dependsOn(expression.getIndeterminantVariable());
 
     if (isNullaryFunctionOrHasScalarCodomain)
     {
@@ -227,8 +230,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
         elementType = ComplexRationalFunction.class;
       }
 
-      elementFieldName = expression.newIntermediateVariable("element",
-                                                            elementType);
+      elementFieldName = expression.newIntermediateVariable("element", elementType);
       if (Expression.trace)
       {
         logger.debug(String.format("elementFieldName=%s of type %s",
@@ -260,9 +262,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       mv.visitInsn(ACONST_NULL);
       mv.visitLdcInsn(1);
       loadBitsOntoStack(mv);
-      expression.loadThisFieldOntoStack(mv,
-                                        elementFieldName,
-                                        elementType);
+      expression.loadThisFieldOntoStack(mv, elementFieldName, elementType);
 
       invokeVirtualMethod(mv,
                           hypergeometricFunctionClass,
@@ -277,8 +277,8 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
   }
 
   /**
-   * FIXME: use a function reference instead of variable substitution and compile the
-   * expression in the static intializer
+   * FIXME: use a function reference instead of variable substitution and compile
+   * the expression in the static intializer
    * 
    * 
    * HOW: See {@link LommelPolynomialNode} for an example
@@ -314,8 +314,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       mv.visitInsn(ACONST_NULL);
       mv.visitLdcInsn(1);
       loadBitsOntoStack(mv);
-      loadOutputOntoStack(mv,
-                          resultType);
+      loadOutputOntoStack(mv, resultType);
       invokeVirtualMethod(mv,
                           hypergeometricFunctionClass,
                           "evaluate",
@@ -324,43 +323,31 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                           int.class,
                           int.class,
                           Object.class);
-      cast(mv,
-           resultType);
+      cast(mv, resultType);
 
     }
     else
     {
       if (resultType.equals(elementType))
       {
-        loadOutputOntoStack(mv,
-                            resultType);
-        expression.loadThisFieldOntoStack(mv,
-                                          elementFieldName,
-                                          elementType);
+        loadOutputOntoStack(mv, resultType);
+        expression.loadThisFieldOntoStack(mv, elementFieldName, elementType);
 
-        Compiler.invokeSetMethod(mv,
-                                 resultType,
-                                 resultType);
+        Compiler.invokeSetMethod(mv, resultType, resultType);
       }
       else
       {
         assert resultType.equals(expression.coDomainType) : String.format("TODO: handle resultType = %s != expression.coDomainType = %s",
                                                                           resultType,
                                                                           expression.coDomainType);
-        loadOutputOntoStack(mv,
-                            resultType);
-        expression.loadThisFieldOntoStack(mv,
-                                          elementFieldName,
-                                          elementType);
-        cast(mv,
-             elementType);
+        loadOutputOntoStack(mv, resultType);
+        expression.loadThisFieldOntoStack(mv, elementFieldName, elementType);
+        cast(mv, elementType);
         loadInputParameter(mv);
-        cast(mv,
-             expression.domainType);
+        cast(mv, expression.domainType);
         loadOrderParameter(mv);
         loadBitsOntoStack(mv);
-        loadOutputOntoStack(mv,
-                            resultType);
+        loadOutputOntoStack(mv, resultType);
         invokeVirtualMethod(mv,
                             elementType,
                             "evaluate",
@@ -369,8 +356,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                             int.class,
                             int.class,
                             expression.coDomainType);
-        cast(mv,
-             resultType);
+        cast(mv, resultType);
 
       }
 
@@ -387,10 +373,8 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                                  β,
                                  arg));
     }
-    α.generate(mv,
-               scalarType);
-    β.generate(mv,
-               scalarType);
+    α.generate(mv, scalarType);
+    β.generate(mv, scalarType);
     mv.visitLdcInsn(arg.toString());
     invokeArgumentParsingMethod(mv);
     invokeHypergeometricFunctionInitializationMethod(mv);
@@ -399,11 +383,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
   protected void invokeArgumentParsingMethod(MethodVisitor mv)
   {
-    invokeStaticMethod(mv,
-                       nullaryFunctionClass,
-                       "parse",
-                       Expression.class,
-                       String.class);
+    invokeStaticMethod(mv, nullaryFunctionClass, "parse", Expression.class, String.class);
   }
 
   protected void invokeHypergeometricFunctionInitializationMethod(MethodVisitor mv)
@@ -419,9 +399,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
   protected void loadHypergeometricFunctionOntoStack(MethodVisitor mv)
   {
-    expression.loadThisFieldOntoStack(mv,
-                                      fieldName,
-                                      hypergeometricFunctionClass);
+    expression.loadThisFieldOntoStack(mv, fieldName, hypergeometricFunctionClass);
   }
 
   protected void loadOutputOntoStack(MethodVisitor mv, Class<?> resultType)
@@ -430,15 +408,13 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     if (isResult)
     {
 
-      cast(loadResultParameter(mv),
-           resultType);
+      cast(loadResultParameter(mv), resultType);
 
     }
     else
     {
 
-      expression.allocateIntermediateVariable(mv,
-                                              resultType);
+      expression.allocateIntermediateVariable(mv, resultType);
     }
   }
 

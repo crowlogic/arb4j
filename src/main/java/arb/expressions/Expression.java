@@ -260,9 +260,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public VariableNode<D, C, F>                          independentVariable;
 
-  public VariableNode<D, C, F>                          indeterminantVariable;
-
-  public Stack<VariableNode<D, C, F>>                   indeterminantVariables;
+  public Stack<VariableNode<D, C, F>>                   indeterminantVariables = new Stack<VariableNode<D,C,F>>();
 
   int                                                   currentLevel                  = 0;
 
@@ -516,6 +514,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected VariableNode<D, C, F> assignIndeterminantVariable(VariableNode<D, C, F> variable)
   {
+    
     return variable.declareThisToBeTheIndeterminantVariable();
   }
 
@@ -589,7 +588,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                        functionName,
                                        ascendentExpression);
     expr.independentVariable   = independentVariable;
-    expr.indeterminantVariable = indeterminantVariable;
+    expr.indeterminantVariables = indeterminantVariables;
     expr.functionNameSpecified = functionNameSpecified;
     expr.position              = position;
     expr.character             = character;
@@ -893,9 +892,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean anyAscendentIndeterminateVariableIsNamed(String name)
   {
-    if (indeterminantVariable != null && indeterminantVariable.getName().equals(name))
+    for (var indeterminantVariable : indeterminantVariables)
     {
-      return true;
+      if (indeterminantVariable != null && indeterminantVariable.getName().equals(name))
+      {
+        return true;
+      }
     }
     if (ascendentExpression != null)
     {
@@ -1038,22 +1040,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       assignIndependentVariable(paramVar);
     }
-    else if (indeterminantVariable == null)
+    else 
     {
       assignIndeterminantVariable(paramVar);
     }
-    else
-    {
-      saveToFile();
-
-      throw new CompilerException(String.format("the independent variable has already been declared to be '%s' and the indeterminant variable has already been declared to be '%s' in expr#%s	so it cannot be changed to '%s' at position=%s in expr='%s': TODO implement depth for arbitrary number of indeterminant variables",
-                                                independentVariable,
-                                                indeterminantVariable,
-                                                System.identityHashCode(this),
-                                                paramVar,
-                                                position,
-                                                this));
-    }
+   
 
   }
 
@@ -1556,6 +1547,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       functionalDependsOnIndependentVariable =
                                              function.rootNode.dependsOn(functionalIndependentVariable);
     }
+    var indeterminantVariable = getIndeterminantVariable();
+    
     if (indeterminantVariable != null)
     {
       functionalIndeterminantVariable          =
@@ -1583,6 +1576,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     invokeInitializationMethod(mv, function);
 
     return function.compile();
+  }
+
+  public VariableNode<D, C, F> getIndeterminantVariable()
+  {
+    return indeterminantVariables.isEmpty() ? null : indeterminantVariables.peek();
   }
 
   protected MethodVisitor generateFunctionInitializer(MethodVisitor mv,
@@ -1977,6 +1975,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected String getInputName()
   {
+    var indeterminantVariable = getIndeterminantVariable();
     if (indeterminantVariable != null)
     {
       return indeterminantVariable.getName();
@@ -1990,6 +1989,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public VariableNode<D, C, F> getInputVariable()
   {
+    var indeterminantVariable = getIndeterminantVariable();
     return indeterminantVariable != null ? indeterminantVariable : independentVariable;
   }
 
@@ -2470,6 +2470,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                               funcClass);
     functionalExpression.ascendentExpression = this;
     functionalExpression.context             = context;
+    var indeterminantVariable = getIndeterminantVariable();
+
     if (indeterminantVariable != null)
     {
       functionalExpression.independentVariable =
@@ -2862,6 +2864,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       independentVariable.renameIfNamed(from, to);
     }
+    var indeterminantVariable = getIndeterminantVariable();
+
     if (indeterminantVariable != null)
     {
       indeterminantVariable.renameIfNamed(from, to);
