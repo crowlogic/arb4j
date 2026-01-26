@@ -97,7 +97,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public boolean                    isIndependent   = false;
 
-  public boolean                    isIndeterminate = false;
+  public boolean                    isIndeterminant = false;
 
   public VariableReference<D, R, F> reference;
 
@@ -121,7 +121,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       this.reference.type = existingVariable.reference.type;
       isIndependent       = existingVariable.isIndependent;
-      isIndeterminate     = existingVariable.isIndeterminate;
+      isIndeterminant     = existingVariable.isIndeterminant;
     }
     else
     {
@@ -139,13 +139,13 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
       if (!isIndependent)
       {
-        if (isIndeterminate)
+        if (isIndeterminant)
         {
           reference.type = expression.coDomainType;
         }
         else
         {
-          if (!reference.isElse() && !isIndeterminate)
+          if (!reference.isElse() && !isIndeterminant)
           {
             expression.referencedVariables.put(reference.name, this);
           }
@@ -221,7 +221,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                               resultType));
     }
 
-    if (refuseToGenerateIndeterminateVariables && isIndeterminate && isScalar())
+    if (refuseToGenerateIndeterminateVariables && isIndeterminant && isScalar())
     {
       throw new CompilerException(this
                                   + " is an indeterminate variable, not independent, it should not be generated since its a placeholder, expression="
@@ -273,7 +273,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       Compiler.cast(loadInputParameter(mv), expression.domainType);
     }
-    else if (isIndeterminate)
+    else if (isIndeterminant)
     {
 
       generateReferenceToIndeterminantVariable(mv);
@@ -298,7 +298,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public void generateReferenceToIndeterminantVariable(MethodVisitor mv)
   {
-    assert isIndeterminate : this + " is not an indeterminant variable";
+    assert isIndeterminant : this + " is not an indeterminant variable";
     if (reference.type == null)
     {
       resolveReference();
@@ -524,7 +524,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                       expression.anyAscendentIndependentVariableIsNamed(getName());
       boolean isAscendentIndeterminant =
                                        expression.anyAscendentIndeterminateVariableIsNamed(getName());
-      if (isIndeterminate = (!isAscendenttIndependent && !isAscendentIndeterminant))
+      if (isIndeterminant = (!isAscendenttIndependent && !isAscendentIndeterminant))
       {
         declareThisToBeTheIndeterminantVariable();
       }
@@ -533,7 +533,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
         resolveInheritedVariableReference(inputVariable);
       }
     }
-    if (expression.independentVariable != null && !isIndeterminate && !isIndependent
+    if (expression.independentVariable != null && !isIndeterminant && !isIndependent
                   && !ascendentInput)
     {
       throwNewUndefinedReferenceException();
@@ -557,27 +557,15 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public VariableNode<D, R, F> declareThisToBeTheIndeterminantVariable()
   {
-    var indeterminantVariable = expression.getIndeterminantVariable();
-    assert false : "TODO: implement this";
-    if (indeterminantVariable != null)
-    {
-      if (!indeterminantVariable.equals(this))
-      {
-        throwNewIndeterminantVariableAlreadyDeclared();
-      }
-      else
-      {
-        return this;
-      }
 
-    }
 
-    if (!VariableNode.this.equals(indeterminantVariable) && Expression.trace)
+    if (Expression.trace)
     {
-      log.debug(String.format("Expression(#%s) declaring %s to be the indeterminant in %s",
+      log.debug(String.format("Expression(#%s) declaring %s to be the indeterminant in %s by pushing it to the top of the stack %s",
                               System.identityHashCode(expression),
                               this,
-                              expression));
+                              expression,
+                              expression.indeterminantVariables));
 
     }
     expression.referencedVariables.put(reference.name, this);
@@ -633,7 +621,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       returnType = expression.domainType;
     }
-    else if (isIndeterminate)
+    else if (isIndeterminant)
     {
       returnType = expression.coDomainType;
     }
@@ -653,6 +641,14 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   public String typeset()
   {
     return reference.typeset();
+  }
+
+  public VariableNode<D, R, F> pushThisOntoTheIndeterminantVariableStack()
+  {
+    assert false : "push " + this + " onto " + expression.indeterminantVariables;
+    assert !expression.indeterminantVariables.contains(this) : this + " is already in " + expression.indeterminantVariables;
+    expression.indeterminantVariables.push(this);
+    return this;
   }
 
 }

@@ -515,7 +515,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected VariableNode<D, C, F> assignIndeterminantVariable(VariableNode<D, C, F> variable)
   {
     
-    return variable.declareThisToBeTheIndeterminantVariable();
+    return variable.pushThisOntoTheIndeterminantVariableStack();
   }
 
   /**

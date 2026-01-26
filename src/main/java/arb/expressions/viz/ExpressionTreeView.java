@@ -706,7 +706,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
       if (node instanceof VariableNode)
       {
         VariableNode<D, C, F> variableNode = (VariableNode<D, C, F>) node;
-        if (variableNode.isIndeterminate)
+        if (variableNode.isIndeterminant)
         {
           return variableNode.getName();
         }
