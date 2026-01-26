@@ -1,6 +1,8 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.cast;
+import static arb.expressions.Compiler.loadInputParameter;
+import static arb.expressions.Compiler.loadResultParameter;
 import static java.lang.String.format;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 
@@ -17,7 +19,10 @@ import arb.Integer;
 import arb.Real;
 import arb.exceptions.CompilerException;
 import arb.exceptions.UndefinedReferenceException;
-import arb.expressions.*;
+import arb.expressions.Compiler;
+import arb.expressions.Context;
+import arb.expressions.Expression;
+import arb.expressions.VariableReference;
 import arb.expressions.nodes.nary.ProductNode;
 import arb.functions.Function;
 
@@ -433,6 +438,15 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return resolve(reference, ascendentExpression.ascendentExpression);
     }
 
+    for (var variable : ascendentExpression.indeterminantVariables)
+
+    {
+      if (variable.reference.equals(reference))
+      {
+        return variable;
+      }
+    }
+
     return ascendentInputNode;
   }
 
@@ -471,11 +485,12 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       if (Expression.trace)
       {
 
-        log.debug(String.format("#%s: resolveIndependentVariable: declaring %s as the input node to '%s' which currently has input variable %s\n",
+        log.debug(String.format("#%s: resolveIndependentVariable: declaring %s as the input node to '%s' which currently has input variable %s and indeterminant varaibles %s\n",
                                 System.identityHashCode(this),
                                 reference,
                                 expression,
-                                expression.independentVariable));
+                                expression.independentVariable,
+                                expression.indeterminantVariables));
       }
 
       expression.independentVariable = this;
@@ -483,29 +498,14 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
   }
 
-  public void resolveInheritedVariableReference(VariableNode<D, R, F> variable)
+  public VariableNode<?, ?, ?> resolveInheritedVariableReference(VariableNode<D, R, F> variable)
   {
 
     var parentExpression = expression.ascendentExpression;
-    if (parentExpression != null)
-    {
-      resolve(reference, parentExpression);
-    }
-    else
-    {
-      throw new UndefinedReferenceException(format("Undefined reference to variable "
-                                                   + " '%s' at position=%d in expression=%s, independent "
-                                                   + "variable is %s and ascendentExpression is %s,  remaining='%s'",
-                                                   reference.name,
-                                                   reference.position,
-                                                   expression.expression,
-                                                   variable,
-                                                   expression.ascendentExpression,
-                                                   expression.remaining()));
-    }
+      return resolve(reference, parentExpression);
   }
 
-  public VariableNode<D, R, F> resolveReference()
+  public VariableNode<?, ?, ?> resolveReference()
   {
     var inputVariable = expression.independentVariable;
 
@@ -530,7 +530,9 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       }
       else
       {
-        resolveInheritedVariableReference(inputVariable);
+        var resolved = resolveInheritedVariableReference(inputVariable);
+        System.err.println( "resolved=" + resolved );
+        return resolved;
       }
     }
     if (expression.independentVariable != null && !isIndeterminant && !isIndependent
