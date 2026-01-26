@@ -544,7 +544,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   protected void throwNewUndefinedReferenceException()
   {
     throw new UndefinedReferenceException(format("Undefined reference '%s' at position=%d in Expression(=%s)=%s, "
-                                                 + "independent variable is %s, indeterminant variables is %s, and parentExpression is %s, remaining='%s'",
+                                                 + "independent variable is %s, indeterminant variables is %s, and ascendentExpression is %s, remaining='%s' and ascendentExpression.indeterminantVariables='%s'",
                                                  reference.name,
                                                  reference.position,
                                                  System.identityHashCode(expression),
@@ -552,12 +552,12 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                  expression.independentVariable,
                                                  expression.indeterminantVariables,
                                                  expression.ascendentExpression,
-                                                 expression.remaining()));
+                                                 expression.remaining(),
+                                                 expression.ascendentExpression.indeterminantVariables));
   }
 
   public VariableNode<D, R, F> declareThisToBeTheIndeterminantVariable()
   {
-
 
     if (Expression.trace)
     {
@@ -645,8 +645,9 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public VariableNode<D, R, F> pushThisOntoTheIndeterminantVariableStack()
   {
-    assert false : "push " + this + " onto " + expression.indeterminantVariables;
-    assert !expression.indeterminantVariables.contains(this) : this + " is already in " + expression.indeterminantVariables;
+    assert !expression.indeterminantVariables.contains(this) : this
+                                                               + " is already in "
+                                                               + expression.indeterminantVariables;
     expression.indeterminantVariables.push(this);
     return this;
   }
