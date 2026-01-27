@@ -416,6 +416,12 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                        Expression<?, ?, ?> ascendentExpression)
   {
     var ascendentInputNode = ascendentExpression.independentVariable;
+    if (Expression.trace)
+    {
+      log.debug(String.format("resolve(reference=%s ascendentExpression=%s)",
+                              reference,
+                              ascendentExpression));
+    }
 
     if (ascendentInputNode != null && ascendentInputNode.reference.equals(reference))
     {
@@ -427,13 +433,14 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       }
       ascendentInput = true;
       reference.type = ascendentExpression.domainType;
+      return ascendentInputNode;
     }
     else if (ascendentExpression.ascendentExpression != null)
     {
       return resolve(reference, ascendentExpression.ascendentExpression);
     }
-
-    return ascendentInputNode;
+    throwNewUndefinedReferenceException();
+    return null;
   }
 
   public boolean resolveContextualVariable()
@@ -483,13 +490,22 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
   }
 
-  public void resolveInheritedVariableReference(VariableNode<D, R, F> variable)
+  public VariableNode<?, ?, ?> resolveInheritedVariableReference(VariableNode<D, R, F> variable)
   {
-
+    if (Expression.trace)
+    {
+      log.info("resolveInheritedVariableReference: variable={}", variable);
+    }
     var parentExpression = expression.ascendentExpression;
     if (parentExpression != null)
     {
-      resolve(reference, parentExpression);
+      if (Expression.trace)
+      {
+        log.info("resolveInheritedVariableReference: variable={} ascendingIndeterminants={}",
+                 variable,
+                 parentExpression.indeterminantVariables);
+      }
+      return resolve(reference, parentExpression);
     }
     else
     {
@@ -530,7 +546,13 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       }
       else
       {
-        resolveInheritedVariableReference(inputVariable);
+        var resolved = resolveInheritedVariableReference(inputVariable);
+        if (Expression.trace)
+        {
+          log.debug("resolveReference(): resolveInheritedVariableReference('{}') returned {}",
+                    inputVariable,
+                    resolved);
+        }
       }
     }
     if (expression.independentVariable != null && !isIndeterminant && !isIndependent
