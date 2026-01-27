@@ -1514,7 +1514,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       assert expression != null;
 
-      rootNode.generate(mv, coDomainType);
+      rootNode.generate(mv, coDomainType );
     }
 
     mv.visitInsn(Opcodes.ARETURN);
