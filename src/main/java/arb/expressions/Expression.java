@@ -1,34 +1,143 @@
 package arb.expressions;
 
-import static arb.expressions.Compiler.*;
-import static arb.expressions.Parser.*;
+import static arb.expressions.Compiler.addNullCheckForField;
+import static arb.expressions.Compiler.cast;
+import static arb.expressions.Compiler.constructNewObject;
+import static arb.expressions.Compiler.defineMethod;
+import static arb.expressions.Compiler.designateLabel;
+import static arb.expressions.Compiler.duplicateTopOfTheStack;
+import static arb.expressions.Compiler.generateFunctionInterface;
+import static arb.expressions.Compiler.generateNewObjectInstruction;
+import static arb.expressions.Compiler.generateReturnFromVoidMethod;
+import static arb.expressions.Compiler.getField;
+import static arb.expressions.Compiler.getFieldFromThis;
+import static arb.expressions.Compiler.getVariablePrefix;
+import static arb.expressions.Compiler.invokeCloseMethod;
+import static arb.expressions.Compiler.invokeDefaultConstructor;
+import static arb.expressions.Compiler.invokeSetMethod;
+import static arb.expressions.Compiler.invokeVirtualMethod;
+import static arb.expressions.Compiler.jumpToIfNotEqual;
+import static arb.expressions.Compiler.loadFunctionClass;
+import static arb.expressions.Compiler.loadResultParameter;
+import static arb.expressions.Compiler.loadThisOntoStack;
+import static arb.expressions.Compiler.putField;
+import static arb.expressions.Compiler.scalarType;
+import static arb.expressions.Compiler.swap;
+import static arb.expressions.Parser.isIdentifyingCharacter;
+import static arb.expressions.Parser.isNumeric;
+import static arb.expressions.Parser.isSubscript;
+import static arb.expressions.Parser.isSuperscriptLetter;
+import static arb.expressions.Parser.transformToJavaAcceptableCharacters;
 import static java.lang.String.format;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.ARETURN;
+import static org.objectweb.asm.Opcodes.ATHROW;
+import static org.objectweb.asm.Opcodes.CHECKCAST;
+import static org.objectweb.asm.Opcodes.DUP;
+import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.GOTO;
+import static org.objectweb.asm.Opcodes.ICONST_1;
+import static org.objectweb.asm.Opcodes.IFEQ;
+import static org.objectweb.asm.Opcodes.IFNONNULL;
+import static org.objectweb.asm.Opcodes.IF_ICMPLE;
+import static org.objectweb.asm.Opcodes.ILOAD;
+import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.NEW;
+import static org.objectweb.asm.Opcodes.PUTFIELD;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Stack;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.*;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Handle;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.util.TraceClassVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import arb.*;
+import arb.Becomable;
+import arb.Complex;
+import arb.ComplexFraction;
+import arb.ComplexPolynomial;
+import arb.ComplexRationalFunction;
+import arb.Fraction;
+import arb.GaussianInteger;
+import arb.Initializable;
 import arb.Integer;
+import arb.IntegerPolynomial;
+import arb.Named;
+import arb.OrderedPair;
+import arb.Polynomial;
+import arb.RationalFunction;
+import arb.Real;
+import arb.RealPolynomial;
+import arb.Typesettable;
 import arb.exceptions.CompilerException;
 import arb.expressions.context.Dependency;
 import arb.expressions.context.TopologicalSorter;
-import arb.expressions.nodes.*;
-import arb.expressions.nodes.binary.*;
-import arb.expressions.nodes.nary.*;
-import arb.expressions.nodes.unary.*;
+import arb.expressions.nodes.CaputoFractionalDerivativeNode;
+import arb.expressions.nodes.DerivativeNode;
+import arb.expressions.nodes.ElseNode;
+import arb.expressions.nodes.IntegralNode;
+import arb.expressions.nodes.LimitNode;
+import arb.expressions.nodes.LiteralConstantNode;
+import arb.expressions.nodes.Node;
+import arb.expressions.nodes.VariableNode;
+import arb.expressions.nodes.VectorNode;
+import arb.expressions.nodes.binary.AdditionNode;
+import arb.expressions.nodes.binary.AscendingFactorializationNode;
+import arb.expressions.nodes.binary.BinaryOperationNode;
+import arb.expressions.nodes.binary.DivisionNode;
+import arb.expressions.nodes.binary.MultiplicationNode;
+import arb.expressions.nodes.binary.SubtractionNode;
+import arb.expressions.nodes.nary.NAryOperationNode;
+import arb.expressions.nodes.nary.ProductNode;
+import arb.expressions.nodes.nary.SumNode;
+import arb.expressions.nodes.unary.BesselFunctionNodeOfTheFirstKind;
+import arb.expressions.nodes.unary.BetaFunctionNode;
+import arb.expressions.nodes.unary.BinomialCoefficientNode;
+import arb.expressions.nodes.unary.CeilingNode;
+import arb.expressions.nodes.unary.FactorialNode;
+import arb.expressions.nodes.unary.FloorNode;
+import arb.expressions.nodes.unary.FunctionNode;
+import arb.expressions.nodes.unary.FunctionalEvaluationNode;
+import arb.expressions.nodes.unary.GammaFunctionNode;
+import arb.expressions.nodes.unary.HardyZFunctionNode;
+import arb.expressions.nodes.unary.HypergeometricFunctionNode;
+import arb.expressions.nodes.unary.LambertWFunctionNode;
+import arb.expressions.nodes.unary.LogGammaFunctionNode;
+import arb.expressions.nodes.unary.LommelPolynomialNode;
+import arb.expressions.nodes.unary.RiemannSiegelThetaFunctionNode;
+import arb.expressions.nodes.unary.SineIntegralNode;
+import arb.expressions.nodes.unary.SphericalBesselFunctionNodeOfTheFirstKind;
+import arb.expressions.nodes.unary.UnaryOperationNode;
+import arb.expressions.nodes.unary.WhenNode;
+import arb.expressions.nodes.unary.ZetaFunctionNode;
 import arb.expressions.viz.ExpressionTree;
 import arb.functions.Function;
 import arb.functions.RealToComplexFunction;
@@ -260,7 +369,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public VariableNode<D, C, F>                          independentVariable;
 
-  public Stack<VariableNode<D, C, F>>                   indeterminantVariables = new Stack<VariableNode<D,C,F>>();
+  public Stack<VariableNode<D, C, F>>                   indeterminantVariables        = new Stack<
+                VariableNode<D, C, F>>();
 
   int                                                   currentLevel                  = 0;
 
@@ -514,7 +624,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected VariableNode<D, C, F> assignIndeterminantVariable(VariableNode<D, C, F> variable)
   {
-    
+
     return variable.pushThisOntoTheIndeterminantVariableStack();
   }
 
@@ -587,12 +697,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                        context,
                                        functionName,
                                        ascendentExpression);
-    expr.independentVariable   = independentVariable;
+    expr.independentVariable    = independentVariable;
     expr.indeterminantVariables = indeterminantVariables;
-    expr.functionNameSpecified = functionNameSpecified;
-    expr.position              = position;
-    expr.character             = character;
-    expr.previousCharacter     = previousCharacter;
+    expr.functionNameSpecified  = functionNameSpecified;
+    expr.position               = position;
+    expr.character              = character;
+    expr.previousCharacter      = previousCharacter;
     return expr;
   }
 
@@ -1040,11 +1150,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       assignIndependentVariable(paramVar);
     }
-    else 
+    else
     {
       assignIndeterminantVariable(paramVar);
     }
-   
 
   }
 
@@ -1514,7 +1623,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       assert expression != null;
 
-      rootNode.generate(mv, coDomainType );
+      rootNode.generate(mv, coDomainType);
     }
 
     mv.visitInsn(Opcodes.ARETURN);
@@ -1547,14 +1656,24 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       functionalDependsOnIndependentVariable =
                                              function.rootNode.dependsOn(functionalIndependentVariable);
     }
-    var indeterminantVariable = getIndeterminantVariable();
-    
-    if (indeterminantVariable != null)
+
+    if (!indeterminantVariables.isEmpty())
     {
+      var indeterminantVariable = indeterminantVariables.peek();
       functionalIndeterminantVariable          =
                                       indeterminantVariable.spliceInto(function).asVariable();
       functionalDependsOnIndeterminantVariable =
                                                function.rootNode.dependsOn(functionalIndeterminantVariable);
+    }
+
+    Class<?> actualRootNodeType = function.rootNode.type();
+    if (!actualRootNodeType.equals(function.coDomainType) && actualRootNodeType.isInterface()
+                  && Function.class.isAssignableFrom(actualRootNodeType))
+    {
+      function.coDomainType                     = actualRootNodeType;
+      function.functionClass                    = (Class) actualRootNodeType;
+      function.genericFunctionClassInternalName = Type.getInternalName(actualRootNodeType);
+      function.functionClassDescriptor          = actualRootNodeType.descriptorString();
     }
 
     function.generate();

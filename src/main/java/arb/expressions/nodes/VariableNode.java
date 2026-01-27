@@ -506,16 +506,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
   }
 
-  public VariableNode<?, ?, ?> resolveInheritedVariableReference(VariableNode<D, R, F> variable)
-  {
-    if (Expression.trace)
-    {
-      log.info("resolveInheritedVariableReference: variable={}", variable);
-    }
-    var parentExpression = expression.ascendentExpression;
-
-    return resolve(variable.reference, parentExpression);
-  }
+ 
 
   public VariableNode<?, ?, ?> resolveReference()
   {
@@ -542,15 +533,10 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       }
       else
       {
-        var resolved = resolveInheritedVariableReference(inputVariable);
-        if (Expression.trace)
-        {
-          log.debug("resolveReference(): resolveInheritedVariableReference('{}') returned {}",
-                    inputVariable,
-                    resolved);
-        }
-        System.err.println( "resolved=" + resolved );
-        return resolved;
+       
+        var parentExpression = expression.ascendentExpression;
+
+        return resolve(reference, parentExpression);
       }
     }
     if (expression.independentVariable != null && !isIndeterminant && !isIndependent
