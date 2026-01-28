@@ -218,7 +218,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    if (Expression.trace)
+    if (Expression.traceNodes)
     {
       log.debug(String.format("#%s: generate( this=%s, resultType=%s)\n",
                               System.identityHashCode(this),
@@ -421,7 +421,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                        Expression<?, ?, ?> ascendentExpression)
   {
     var ascendentInputNode = ascendentExpression.independentVariable;
-    if (Expression.trace)
+    if (Expression.traceNodes)
     {
       log.debug(String.format("resolve(reference=%s ascendentExpression=%s)",
                               reference,
@@ -430,7 +430,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (ascendentInputNode != null && ascendentInputNode.reference.equals(reference))
     {
-      if (Expression.trace)
+      if (Expression.traceNodes)
       {
         log.debug(String.format("Assigning this %s as ascendent input node=%s",
                                 this,
@@ -466,7 +466,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       if (instanceVariable != null)
       {
         reference.type = instanceVariable.getClass();
-        if (Expression.trace)
+        if (Expression.traceNodes)
         {
           log.debug("Declaring {} as a contextual variable of type {}",
                     reference,
@@ -490,7 +490,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                                              + this;
     if (!equals(inputVariable))
     {
-      if (Expression.trace)
+      if (Expression.traceNodes)
       {
 
         log.debug(String.format("#%s: resolveIndependentVariable: declaring %s as the input node to '%s' which currently has input variable %s and indeterminant varaibles %s\n",
@@ -565,7 +565,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   public VariableNode<D, R, F> declareThisToBeTheIndeterminantVariable()
   {
 
-    if (Expression.trace)
+    if (Expression.traceNodes)
     {
       log.debug(String.format("Expression(#%s) declaring %s to be the indeterminant in %s by pushing it to the top of the stack %s",
                               System.identityHashCode(expression),

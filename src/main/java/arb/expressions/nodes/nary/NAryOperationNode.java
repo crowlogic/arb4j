@@ -207,7 +207,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       operandFunctionFieldName = expression.getNextIntermediateVariableFieldName("operand",
                                                                                  Function.class);
       operandValueFieldName    = expression.newIntermediateVariable("value", resultType);
-      if (Expression.trace)
+      if (Expression.traceNodes)
       {
         int indentation = 18 + getClass().getSimpleName().length();
         logFieldNameAssignment(resultType, indentation);
@@ -217,7 +217,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   protected void logFieldNameAssignment(Class<?> resultType, int indentation)
   {
-    if (Expression.trace)
+    if (Expression.traceNodes)
     {
       logger.debug(String.format("%s.assignFieldNames(this=%s,resultType=%s,\n%soperandFunctionFieldName=%s,\n%soperandValueFieldName=%s)\n\n",
                                  getClass().getSimpleName(),
@@ -363,7 +363,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   void getField(MethodVisitor methodVisitor, String fieldName, String fieldTypeSignature)
   {
     assert fieldName != null : String.format("field is null %s\n", this);
-    if (Expression.trace)
+    if (Expression.traceNodes)
     {
       logger.debug(String.format("NAryOperation.getField(functionClass=%s,\n%sfieldName=%s,\n%sfieldTypeSignature=%s\n\n",
                                  functionClass,
@@ -428,7 +428,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   protected void loadOperandValue(MethodVisitor mv)
   {
-    if (Expression.trace)
+    if (Expression.traceNodes)
     {
       logger.debug(String.format("%s.loadOperandValue(operandValueFieldName=%s, generatedType=%s) expression=%s\n",
                                  getClass().getSimpleName(),
@@ -451,7 +451,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   public void loadResultVariable(MethodVisitor methodVisitor)
   {
-    if (Expression.trace)
+    if (Expression.traceNodes)
     {
       logger.debug(String.format("%s.loadResultvariable( resultVariable= %s, generatedType=%s )\n",
                                  getClass().getSimpleName(),
@@ -470,7 +470,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   protected String extractOperandExpression()
   {
-    if (Expression.trace)
+    if (Expression.traceNodes)
     {
       logger.debug(String.format("extractOperandExpression(%s)\n", expression));
     }
@@ -482,7 +482,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     if (arrowIndex != -1)
     {
       indexVariableFieldName = stringExpression.substring(startPos, arrowIndex).trim();
-      if (Expression.trace)
+      if (Expression.traceNodes)
       {
         logger.debug(String.format("extractOperandExpression: found arrow at index %d, extracted indexVariableFieldName='%s' from substring [%d:%d]='%s'\n",
                                    arrowIndex,
@@ -497,7 +497,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                                                          stringExpression.substring(startPos,
                                                                                                     arrowIndex));
     }
-    else if (Expression.trace)
+    else if (Expression.traceNodes)
     {
       logger.debug(String.format("extractOperandExpression: no arrow found, indexVariableFieldName remains null\n"));
     }
@@ -507,7 +507,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                                      : "{";
     String functionFormLookingFor = String.format(",%s=", indexVariableFieldName);
 
-    if (Expression.trace)
+    if (Expression.traceNodes)
     {
       logger.debug(String.format("extractOperandExpression: looking for '%s' in remaining expression\n",
                                  lookingFor));
@@ -535,7 +535,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     expression.position  = rangeSpecificationPosition;
     expression.character = stringExpression.charAt(rangeSpecificationPosition);
 
-    if (Expression.trace)
+    if (Expression.traceNodes)
     {
       logger.debug(String.format("extractOperandExpression: extracted operandExpression='%s', position now at %d\n",
                                  operandExpression,
@@ -627,7 +627,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                     String.format("L%s;", operandFunctionFieldName));
 
       cast(loadInputParameter(mv), independentVariableNode.type());
-      if (Expression.trace)
+      if (Expression.traceNodes)
       {
         logInputPropagationToOperand(independentVariableNode);
       }
@@ -641,7 +641,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   protected void logInputPropagationToOperand(VariableNode<D, R, F> independentVariableNode)
   {
-    if (Expression.trace)
+    if (Expression.traceNodes)
     {
       logger.debug(String.format("%s.logInputPropagationToOperand( operandFunctionFieldName=%s,\n"
                                  + "%sindependentVariableNode=%s,\n"
@@ -659,7 +659,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
 
     operandMapping = registerOperandFunctionMapping(operandExpression, expr);
-    if (Expression.trace)
+    if (Expression.traceNodes)
     {
       logger.debug(String.format("\nregisterOperand(operandExpression=%s,\noperandMapping=%s\n)\n\n",
                                  operandExpression,
@@ -671,7 +671,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   public FunctionMapping<Integer, R, Sequence<R>>
          registerOperandFunctionMapping(Expression<Integer, R, Sequence<R>> operand, String expr)
   {
-    if (Expression.trace)
+    if (Expression.traceNodes)
     {
       logger.debug(String.format("registerOperandFunctionMapping(operand=%s)\n", operand));
     }
@@ -744,7 +744,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   @Override
   public String toString()
   {
-
 
     assert indexVariableFieldName
                   != null : String.format("indexVariableFieldName is null in toString() for %s%s{null=%s…%s}",

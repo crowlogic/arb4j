@@ -284,7 +284,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     if (existingVar != null)
     {
       fieldName = existingVar;
-      if (log.isDebugEnabled())
+      if (log.isDebugEnabled() && Expression.traceNodes )
       {
         log.debug("\n\n{}: reused {} for {}\n", expression, fieldName, this);
       }
@@ -305,7 +305,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
       }
       loadOutput(mv, resultType);
 
-      if (Expression.trace)
+      if (Expression.traceNodes)
       {
         log.debug(formatGenerationParameters(resultType));
       }

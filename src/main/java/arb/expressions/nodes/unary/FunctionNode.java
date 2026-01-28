@@ -485,7 +485,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   private Node<D, R, F> integrateContextualFunction()
   {
-    if (Expression.trace)
+    if (Expression.traceNodes)
     {
       logger.debug("integrateContextualFunction(): functionName={}", functionName);
     }
@@ -567,7 +567,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
 
-    if (Expression.trace)
+    if (Expression.traceNodes)
     {
       logger.debug(String.format("generate(this=%s, arg=%s, resultType=%s)",
                                  this,
@@ -839,7 +839,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     String functionFieldDescriptor = mapping.functionFieldDescriptor();
 
-    if (Expression.trace)
+    if (Expression.traceNodes)
     {
       logger.debug("loadFunctionReferenceOntoStack(functionName={} functionFieldDescripton={})",
                    mapping.functionName,

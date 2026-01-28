@@ -100,6 +100,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
     {
       RealSequence row = μ.evaluate(i, bits);
 
+      System.out.println( "Evaluating " + row );
       for (int j = 0; j <= maxDegree; j++)
       {
         row.evaluate(j, bits, result.get(i, j));

@@ -282,7 +282,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public Class<?> generateCastTo(MethodVisitor methodVisitor, Class<?> type)
   {
-    if (Expression.trace)
+    if (Expression.traceNodes)
     {
       logger.debug(String.format("generateCastTo(type=%s) from generatedType=%s\n",
                                  type,
