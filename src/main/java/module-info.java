@@ -28,6 +28,7 @@ module arb4j
   requires transitive org.yaml.snakeyaml;
   requires transitive guru.nidi.graphviz;
   requires transitive org.slf4j;
+  requires transitive vineflower;
 
   exports arb.stochastic;
   exports arb;
