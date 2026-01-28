@@ -18,7 +18,6 @@ public class μ implements
 {
   public boolean isInitialized;
   public Context context = new Context();
-  public Real    t;
   public Real    α;
   public Real    β;
   public Real    γ;
@@ -53,7 +52,6 @@ public class μ implements
       var10000.α = this.α;
       var10000.β = this.β;
       var10000.γ = this.γ;
-      var10000.t = this.t;
       var10000.initialize();
       return var10000;
     }

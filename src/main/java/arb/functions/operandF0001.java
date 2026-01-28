@@ -9,6 +9,7 @@ import arb.Typesettable;
 import arb.arblib;
 import arb.expressions.Context;
 import arb.functions.integer.RealSequence;
+import arb.functions.real.RealFunction;
 
 public class operandF0001 implements
                           Function<Integer, Real>,
@@ -33,15 +34,13 @@ public class operandF0001 implements
   public Real           vℝ0110     = new Real();
   public Real           vℝ0111     = new Real();
   public Real           vℝ0112     = new Real();
-  public Integer        vℤ0010     = new Integer();
+  public Integer        vℤ0011     = new Integer();
   public ω              ω;
   public χ              χ;
   public Integer        j;
-  public Real           t;
   public Real           α;
   public Real           β;
   public Real           γ;
-  public Integer        i;
 
   @Override
   public Class<Integer> domainType()
@@ -92,16 +91,16 @@ public class operandF0001 implements
       RealPolynomial var42 = new RealPolynomial();
       arblib.arb_poly_init(var42);
       arblib.arb_poly_fit_length(var42, 1);
-      arblib.arb_poly_set_coeff_arb(var42, 0, k.add(cℤ0000, bits, vℤ0010).sub(γ, bits, vℝ0108));
-      Real var43 = new Real();
-      arblib.arb_one(var43);
+      arblib.arb_poly_set_coeff_arb(var42, 0, k.add(cℤ0000, bits, vℤ0011).sub(γ, bits, vℝ0108));
+      Real var43;
+      arblib.arb_one(var43 = new Real());
       arblib.arb_poly_set_coeff_arb(var42, 1, var43);
       arblib.arb_poly_gamma_series(var41, var42, 1, bits);
       arblib.arb_poly_get_coeff_arb(var40, var41, 0);
       arblib.arb_poly_clear(var41);
       arblib.arb_poly_clear(var42);
       return var10000.div(var40, bits, vℝ0109)
-                     .mul(χ.evaluate(i, order, bits, null)
+                     .mul(χ.evaluate(i, order, bits, vℝ0110)
                            .evaluate(k.sub(γ, bits, vℝ0111), order, bits, vℝ0112),
                           bits,
                           result);
@@ -178,16 +177,6 @@ public class operandF0001 implements
         ω.γ = γ;
       }
 
-      if (ω.t == null)
-      {
-        ω.t = new Real();
-        ω.t.set(t);
-      }
-      else
-      {
-        ω.t = t;
-      }
-
       if (χ == null)
       {
         χ = new χ();
@@ -223,16 +212,6 @@ public class operandF0001 implements
         χ.γ = γ;
       }
 
-      if (χ.t == null)
-      {
-        χ.t = new Real();
-        χ.t.set(t);
-      }
-      else
-      {
-        χ.t = t;
-      }
-
       isInitialized = true;
     }
   }
@@ -254,7 +233,7 @@ public class operandF0001 implements
     vℝ0110.close();
     vℝ0111.close();
     vℝ0112.close();
-    vℤ0010.close();
+    vℤ0011.close();
     χ.close();
     ω.close();
   }

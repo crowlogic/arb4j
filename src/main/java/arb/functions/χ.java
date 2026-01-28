@@ -1,7 +1,10 @@
 package arb.functions;
 
-import arb.*;
+import arb.Initializable;
 import arb.Integer;
+import arb.Named;
+import arb.Real;
+import arb.Typesettable;
 import arb.expressions.Context;
 import arb.functions.integer.RealFunctionSequence;
 import arb.functions.real.RealFunction;
@@ -19,7 +22,6 @@ public class χ implements
   public _intw   _intw;
   public w       w;
   public P       P;
-  public Real    t;
   public Real    α;
   public Real    β;
   public Real    γ;
@@ -55,7 +57,6 @@ public class χ implements
       var10000.α      = this.α;
       var10000.β      = this.β;
       var10000.γ      = this.γ;
-      var10000.t      = this.t;
       var10000.P      = this.P;
       var10000._intw  = this._intw;
       var10000.normSq = this.normSq;
@@ -71,7 +72,7 @@ public class χ implements
                             RealFunction.class,
                             RealFunctionSequence.class,
                             "_diffχ",
-                            "diff((((((1^(p+1))/(p+1))*_intw(1))*(PolynomialIntegralNode[polynomialNode=P(i)(class arb.expressions.nodes.unary.FunctionNode of type class arb.RealPolynomial), argumentNode=1(class arb.expressions.nodes.LiteralConstantNode of type class arb.Integer)]))-((((-1^(p+1))/(p+1))*_intw(-1))*(PolynomialIntegralNode[polynomialNode=P(i)(class arb.expressions.nodes.unary.FunctionNode of type class arb.RealPolynomial), argumentNode=-1(class arb.expressions.nodes.unary.NegationNode of type class arb.Integer)])))/normSq(i),i)",
+                            "diff((((((1^(p+1))/(p+1))*_intw(1))*(∫P(i)d1))-((((-1^(p+1))/(p+1))*_intw(-1))*(∫P(i)d-1)))/normSq(i),i)",
                             this.context);
   }
 
@@ -82,7 +83,7 @@ public class χ implements
                             RealFunction.class,
                             RealFunctionSequence.class,
                             "_intχ",
-                            "int((((((1^(p+1))/(p+1))*_intw(1))*(PolynomialIntegralNode[polynomialNode=P(i)(class arb.expressions.nodes.unary.FunctionNode of type class arb.RealPolynomial), argumentNode=1(class arb.expressions.nodes.LiteralConstantNode of type class arb.Integer)]))-((((-1^(p+1))/(p+1))*_intw(-1))*(PolynomialIntegralNode[polynomialNode=P(i)(class arb.expressions.nodes.unary.FunctionNode of type class arb.RealPolynomial), argumentNode=-1(class arb.expressions.nodes.unary.NegationNode of type class arb.Integer)])))/normSq(i),i)",
+                            "int((((((1^(p+1))/(p+1))*_intw(1))*(∫P(i)d1))-((((-1^(p+1))/(p+1))*_intw(-1))*(∫P(i)d-1)))/normSq(i),i)",
                             this.context);
   }
 
@@ -92,10 +93,6 @@ public class χ implements
     if (this.isInitialized)
     {
       throw new AssertionError("Already initialized");
-    }
-    else if (this.t == null)
-    {
-      throw new AssertionError("t is null");
     }
     else
     {
@@ -134,16 +131,6 @@ public class χ implements
         this.normSq.γ = this.γ;
       }
 
-      if (this.normSq.t == null)
-      {
-        this.normSq.t = new Real();
-        this.normSq.t.set(this.t);
-      }
-      else
-      {
-        this.normSq.t = this.t;
-      }
-
       if (this._intw == null)
       {
         this._intw = new _intw();
@@ -179,16 +166,6 @@ public class χ implements
         this._intw.γ = this.γ;
       }
 
-      if (this._intw.t == null)
-      {
-        this._intw.t = new Real();
-        this._intw.t.set(this.t);
-      }
-      else
-      {
-        this._intw.t = this.t;
-      }
-
       if (this.w == null)
       {
         this.w = new w();
@@ -212,6 +189,16 @@ public class χ implements
       else
       {
         this.w.β = this.β;
+      }
+
+      if (this.w.γ == null)
+      {
+        this.w.γ = new Real();
+        this.w.γ.set(this.γ);
+      }
+      else
+      {
+        this.w.γ = this.γ;
       }
 
       if (this.P == null)
@@ -239,6 +226,16 @@ public class χ implements
         this.P.β = this.β;
       }
 
+      if (this.P.γ == null)
+      {
+        this.P.γ = new Real();
+        this.P.γ.set(this.γ);
+      }
+      else
+      {
+        this.P.γ = this.γ;
+      }
+
       this.isInitialized = true;
     }
   }
@@ -263,7 +260,7 @@ public class χ implements
   @Override
   public String toString()
   {
-    return "χ:i➔(((((1^(p+1))/(p+1))*_intw(1))*(PolynomialIntegralNode[polynomialNode=P(i)(class arb.expressions.nodes.unary.FunctionNode of type class arb.RealPolynomial), argumentNode=1(class arb.expressions.nodes.LiteralConstantNode of type class arb.Integer)]))-((((-1^(p+1))/(p+1))*_intw(-1))*(PolynomialIntegralNode[polynomialNode=P(i)(class arb.expressions.nodes.unary.FunctionNode of type class arb.RealPolynomial), argumentNode=-1(class arb.expressions.nodes.unary.NegationNode of type class arb.Integer)])))/normSq(i)";
+    return "χ:i➔(((((1^(p+1))/(p+1))*_intw(1))*(∫P(i)d1))-((((-1^(p+1))/(p+1))*_intw(-1))*(∫P(i)d-1)))/normSq(i)";
   }
 
   @Override

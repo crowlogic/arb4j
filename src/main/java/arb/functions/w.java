@@ -46,16 +46,14 @@ public class w implements
     }
     else
     {
-      if (!this.isInitialized)
+      if (!isInitialized)
       {
-        this.initialize();
+        initialize();
       }
 
-      return this.cℤ0000.sub(x, bits, this.vℝ0030)
-                        .pow(this.α, bits, this.vℝ0031)
-                        .mul(this.cℤ0000.add(x, bits, this.vℝ0032).pow(this.β, bits, this.vℝ0033),
-                             bits,
-                             result);
+      return cℤ0000.sub(x, bits, vℝ0030)
+                   .pow(α, bits, vℝ0031)
+                   .mul(cℤ0000.add(x, bits, vℝ0032).pow(β, bits, vℝ0033), bits, result);
     }
   }
 
@@ -67,7 +65,7 @@ public class w implements
                             RealFunction.class,
                             "_diffw",
                             "diff(((1-x)^α)*((1+x)^β),x)",
-                            this.context);
+                            context);
   }
 
   @Override
@@ -78,38 +76,38 @@ public class w implements
                             RealFunction.class,
                             "_intw",
                             "int(((1-x)^α)*((1+x)^β),x)",
-                            this.context);
+                            context);
   }
 
   @Override
   public void initialize()
   {
-    if (this.isInitialized)
+    if (isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
-    else if (this.α == null)
+    else if (α == null)
     {
       throw new AssertionError("α is null");
     }
-    else if (this.β == null)
+    else if (β == null)
     {
       throw new AssertionError("β is null");
     }
     else
     {
-      this.isInitialized = true;
+      isInitialized = true;
     }
   }
 
   @Override
   public void close()
   {
-    this.cℤ0000.close();
-    this.vℝ0030.close();
-    this.vℝ0031.close();
-    this.vℝ0032.close();
-    this.vℝ0033.close();
+    cℤ0000.close();
+    vℝ0030.close();
+    vℝ0031.close();
+    vℝ0032.close();
+    vℝ0033.close();
   }
 
   @Override
@@ -121,7 +119,7 @@ public class w implements
   @Override
   public Context getContext()
   {
-    return this.context;
+    return context;
   }
 
   @Override

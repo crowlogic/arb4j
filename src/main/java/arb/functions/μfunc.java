@@ -21,10 +21,9 @@ public class μfunc implements
   public Real         sumℝ0001        = new Real();
   public Integer      upperLimitℤ0001 = new Integer();
   public Real         valueℝ0001      = new Real();
-  public Integer      vℤ0009          = new Integer();
+  public Integer      vℤ0010          = new Integer();
   public operandF0001 operandF0001;
   public Integer      i;
-  public Real         t;
   public Real         α;
   public Real         β;
   public Real         γ;
@@ -57,13 +56,13 @@ public class μfunc implements
 
       operandF0001.j = j;
       sumℝ0001.additiveIdentity();
-      k.set(γ.ceil(bits, vℤ0009));
+      k.set(γ.ceil(bits, vℤ0010));
       Integer var10000 = k;
       upperLimitℤ0001.set(j);
 
       while (var10000.compareTo(upperLimitℤ0001) <= 0)
       {
-        sumℝ0001.add( operandF0001.evaluate(k, bits, valueℝ0001), bits);
+        sumℝ0001.add((Real) operandF0001.evaluate(k, bits, valueℝ0001), bits);
         var10000 = k.increment();
       }
 
@@ -122,7 +121,7 @@ public class μfunc implements
     sumℝ0001.close();
     upperLimitℤ0001.close();
     valueℝ0001.close();
-    vℤ0009.close();
+    vℤ0010.close();
     operandF0001.close();
   }
 
