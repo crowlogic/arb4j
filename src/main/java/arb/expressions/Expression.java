@@ -1670,16 +1670,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                function.rootNode.dependsOn(functionalIndeterminantVariable);
     }
 
-    Class<?> actualRootNodeType = function.rootNode.type();
-    if (!actualRootNodeType.equals(function.coDomainType) && actualRootNodeType.isInterface()
-                  && Function.class.isAssignableFrom(actualRootNodeType))
-    {
-      function.coDomainType                     = actualRootNodeType;
-      function.functionClass                    = (Class) actualRootNodeType;
-      function.genericFunctionClassInternalName = Type.getInternalName(actualRootNodeType);
-      function.functionClassDescriptor          = actualRootNodeType.descriptorString();
-      assert false : "TODO: " + function + " #813";
-    }
+//    Class<?> actualRootNodeType = function.rootNode.type();
+//    if (!actualRootNodeType.equals(function.coDomainType) && actualRootNodeType.isInterface()
+//                  && Function.class.isAssignableFrom(actualRootNodeType))
+//    {
+//      function.coDomainType                     = actualRootNodeType;
+//      function.functionClass                    = (Class) actualRootNodeType;
+//      function.genericFunctionClassInternalName = Type.getInternalName(actualRootNodeType);
+//      function.functionClassDescriptor          = actualRootNodeType.descriptorString();
+//      assert false : "TODO: " + function.className + " #813";
+//    }
 
     function.generate();
 
