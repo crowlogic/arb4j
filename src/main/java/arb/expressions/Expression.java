@@ -1678,6 +1678,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       function.functionClass                    = (Class) actualRootNodeType;
       function.genericFunctionClassInternalName = Type.getInternalName(actualRootNodeType);
       function.functionClassDescriptor          = actualRootNodeType.descriptorString();
+      assert false : "TODO: " + function + " #813";
     }
 
     function.generate();
