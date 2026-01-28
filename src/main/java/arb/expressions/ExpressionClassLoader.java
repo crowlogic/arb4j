@@ -32,14 +32,14 @@ public class ExpressionClassLoader extends
   @Override
   protected Class<?> findClass(String name) throws ClassNotFoundException
   {
-    if (Expression.trace)
-    {
-      log.debug("\n\nfindClass('{}') in classes {{}} of Context#{} which has functions={}\n",
-                name,
-                compiledClasses.keySet(),
-                System.identityHashCode(context),
-                context.functions);
-    }
+//    if (Expression.trace)
+//    {
+//      log.debug("\n\nfindClass('{}') in classes {{}} of Context#{} which has functions={}\n",
+//                name,
+//                compiledClasses.keySet(),
+//                System.identityHashCode(context),
+//                context.functions);
+//    }
 
     // First check compiledClasses map for direct class name match
 //    Class<?> directMatch = compiledClasses.get(name);
