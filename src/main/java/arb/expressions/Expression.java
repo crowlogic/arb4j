@@ -1619,14 +1619,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
 
     rootNode.isResult = true;
-    if (coDomainType.isInterface())
+    if (coDomainType.isInterface() || (Function.class.isAssignableFrom(rootNode.type())
+                  && !coDomainType.equals(rootNode.type())))
     {
       generateFunctionalElement(mv);
     }
     else
     {
-      assert expression != null;
-
       rootNode.generate(mv, coDomainType);
     }
 
@@ -1670,15 +1669,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                function.rootNode.dependsOn(functionalIndeterminantVariable);
     }
 
-    Class<?> actualRootNodeType = function.rootNode.type();
-    if (!actualRootNodeType.equals(function.coDomainType) && actualRootNodeType.isInterface()
-                  && Function.class.isAssignableFrom(actualRootNodeType))
-    {
-      function.coDomainType                     = actualRootNodeType;
-      function.functionClass                    = (Class) actualRootNodeType;
-      function.genericFunctionClassInternalName = Type.getInternalName(actualRootNodeType);
-      function.functionClassDescriptor          = actualRootNodeType.descriptorString();
-    }
+//    Class<?> actualRootNodeType = function.rootNode.type();
+//    if (!actualRootNodeType.equals(function.coDomainType) && actualRootNodeType.isInterface()
+//                  && Function.class.isAssignableFrom(actualRootNodeType))
+//    {
+//      function.coDomainType                     = actualRootNodeType;
+//      function.functionClass                    = (Class) actualRootNodeType;
+//      function.genericFunctionClassInternalName = Type.getInternalName(actualRootNodeType);
+//      function.functionClassDescriptor          = actualRootNodeType.descriptorString();
+//      assert false : "TODO: " + function.className + " #813";
+//    }
 
     function.generate();
 

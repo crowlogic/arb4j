@@ -4,6 +4,7 @@ import static arb.expressions.Compiler.invokeBinaryOperationMethod;
 import static arb.expressions.Compiler.loadBitsParameterOntoStack;
 import static arb.utensils.Utensils.indent;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -273,18 +274,20 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
 
     if (!Compiler.canBeAssignedTo(type(), resultType))
     {
-      throw new CompilerException(String.format("%s of type %s whose expression is '%s' cannot be represented as a %s",
+      File file = expression.saveToFile();
+      throw new CompilerException(String.format("%s of type %s whose expression is '%s' cannot be represented as a %s. The expression was saved to %s",
                                                 getClass(),
                                                 type(),
                                                 this,
-                                                resultType));
+                                                resultType,
+                                                file));
     }
 
     String existingVar = expression.generatedNodes.get(this);
     if (existingVar != null)
     {
       fieldName = existingVar;
-      if (log.isDebugEnabled() && Expression.traceNodes )
+      if (log.isDebugEnabled() && Expression.traceNodes)
       {
         log.debug("\n\n{}: reused {} for {}\n", expression, fieldName, this);
       }
