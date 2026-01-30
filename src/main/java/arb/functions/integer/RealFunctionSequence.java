@@ -66,4 +66,9 @@ public interface RealFunctionSequence extends
   {
     return parse(null, string, context);
   }
+
+  public static RealFunctionSequence express(String expression, String string)
+  {
+    return express(expression,string,null);
+  }
 }
