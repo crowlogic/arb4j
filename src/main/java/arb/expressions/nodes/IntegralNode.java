@@ -459,10 +459,18 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   }
 
   @Override
-  public Class<? extends C> type()
+  public Class<? > type()
   {
+    // Definite integral evaluates to scalar: ∫_{a}^{b} f(x)dx → scalar value
+    if (isDefiniteIntegral())
+    {
+      return Compiler.scalarType(expression.coDomainType);
+    }
+    
+    // Indefinite integral returns function: ∫ f(x)dx → function
     return expression.coDomainType;
   }
+
 
   @Override
   public String typeset()

@@ -78,13 +78,6 @@ public class ExpressionClassLoader extends
     });
 
     Class<?> mappedClass = mappedClassReference.get();
-    if (mappedClass == null)
-    {
-      if (Expression.trace)
-      {
-        log.warn("\n\nNo mapping for {}", name);
-      }
-    }
 
     return mappedClass;
   }

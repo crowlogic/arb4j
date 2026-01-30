@@ -1626,7 +1626,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     else
     {
       assert expression != null;
-
+      System.err.format("codomainType=" + coDomainType + " domaintype=" + domainType + " funcType=" + className + "fclass=" + functionClass + "\n");
       rootNode.generate(mv, coDomainType);
     }
 
