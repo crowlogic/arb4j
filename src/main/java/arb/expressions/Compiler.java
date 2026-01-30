@@ -1,53 +1,17 @@
 package arb.expressions;
 
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.ACC_SUPER;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.GETFIELD;
-import static org.objectweb.asm.Opcodes.GOTO;
-import static org.objectweb.asm.Opcodes.IFGT;
-import static org.objectweb.asm.Opcodes.IFLE;
-import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
-import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
-import static org.objectweb.asm.Opcodes.INVOKESTATIC;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.Opcodes.POP;
-import static org.objectweb.asm.Opcodes.RETURN;
-import static org.objectweb.asm.Opcodes.V25;
-import static org.objectweb.asm.Opcodes.V_PREVIEW;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.lang.annotation.Annotation;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.*;
 import org.objectweb.asm.signature.SignatureWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import arb.AlgebraicNumber;
-import arb.Complex;
-import arb.ComplexConstants;
-import arb.ComplexFraction;
-import arb.ComplexMatrix;
-import arb.ComplexPolynomial;
-import arb.ComplexRationalFunction;
-import arb.Fraction;
-import arb.GaussianInteger;
+import arb.*;
 import arb.Integer;
-import arb.IntegerPolynomial;
-import arb.Quaternion;
-import arb.RationalFunction;
-import arb.Real;
-import arb.RealConstants;
-import arb.RealMatrix;
-import arb.RealPolynomial;
 import arb.exceptions.CompilerException;
 import arb.expressions.nodes.LiteralConstantNode;
 import arb.functions.Function;
@@ -57,9 +21,7 @@ import arb.functions.integer.RealSequence;
 import arb.functions.integer.RealSequenceSequence;
 import arb.functions.polynomials.ComplexHypergeometricPolynomialFunction;
 import arb.functions.polynomials.RealHypergeometricPolynomialFunction;
-import arb.functions.rational.ComplexRationalHypergeometricFunction;
-import arb.functions.rational.LommelPolynomial;
-import arb.functions.rational.RationalHypergeometricFunction;
+import arb.functions.rational.*;
 import arb.functions.real.RealFunction;
 import arb.functions.real.SphericalBesselFunction;
 import arb.utensils.Utensils;
@@ -204,7 +166,8 @@ public class Compiler
     if (from.equals(Real.class))
     {
       return (to.equals(Complex.class) || to.equals(RealPolynomial.class)
-                    || to.equals(RationalFunction.class) || to.equals(Fraction.class));
+                    || to.equals(RationalFunction.class) || to.equals(Fraction.class))
+                    || to.equals(AlgebraicNumber.class) || to.equals(RealFunction.class);
     }
     else if (from.equals(Complex.class))
     {
@@ -223,6 +186,14 @@ public class Compiler
     else if (from.equals(AlgebraicNumber.class))
     {
       return to.equals(Real.class) || to.equals(Complex.class) || to.equals(RationalFunction.class);
+    }
+    else if (from.equals(ComplexRationalFunction.class))
+    {
+      return to.equals(Integer.class) || to.equals(Complex.class);
+    }
+    else if (from.equals(RationalFunction.class))
+    {
+      return to.equals(Real.class);
     }
 
     return false;
@@ -859,7 +830,7 @@ public class Compiler
     }
     else
     {
-      
+
       throw new CompilerException("dont know what the scalar type is for " + resultType);
     }
   }

@@ -13,10 +13,11 @@ import junit.framework.TestCase;
 public class RealFunctionSequenceTest extends
                                       TestCase
 {
-  public static void testVariableResolution()
+  public static void testSeq1()
   {
     // Expression.trace
-    RealFunctionSequence.express("χ", "i➔p➔int(t➔t^(i+p), t=-1..1)");
+    RealFunctionSequence func = RealFunctionSequence.express("χ", "i➔p➔int(t➔t^(i+p), t=-1..1)");
+    
     
   }
   public static void testRealFunctionSequence()
