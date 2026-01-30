@@ -1619,14 +1619,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
 
     rootNode.isResult = true;
-    if (coDomainType.isInterface())
+    if (coDomainType.isInterface() || (Function.class.isAssignableFrom(rootNode.type())
+                  && !coDomainType.equals(rootNode.type())))
     {
       generateFunctionalElement(mv);
     }
     else
     {
-      assert expression != null;
-      System.err.format("codomainType=" + coDomainType + " domaintype=" + domainType + " funcType=" + className + "fclass=" + functionClass + "\n");
       rootNode.generate(mv, coDomainType);
     }
 
