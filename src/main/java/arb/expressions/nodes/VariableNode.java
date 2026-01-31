@@ -25,6 +25,7 @@ import arb.expressions.Expression;
 import arb.expressions.VariableReference;
 import arb.expressions.nodes.nary.ProductNode;
 import arb.functions.Function;
+import arb.utensils.Utensils;
 
 /**
  * This class represents a {@link VariableNode} node within an
@@ -599,11 +600,11 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (Expression.traceNodes)
     {
-      log.debug(String.format("Expression(#%s) declaring %s to be the indeterminant in %s by pushing it to the top of the stack %s",
+      log.debug(String.format("Expression(#%s) declaring %s to be the indeterminant in %s by pushing it to the top of the stack %s\ncalled from %s\n",
                               System.identityHashCode(expression),
                               this,
                               expression,
-                              expression.indeterminateVariables));
+                              expression.indeterminateVariables, Utensils.stackTraceToString(new Throwable())));
 
     }
     expression.referencedVariables.put(reference.name, this);
