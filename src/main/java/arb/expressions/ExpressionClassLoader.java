@@ -83,15 +83,12 @@ public class ExpressionClassLoader extends
   }
 
   HashMap<String, Class<?>> compiledClasses = new HashMap<>();
-  public Context            context;
-
-  public ExpressionClassLoader()
-  {
-  }
+  public final Context            context;
 
   public ExpressionClassLoader(Context context)
   {
     this.context = context;
+    assert context != null : "context shan't be null";
   }
 
   public Class<?> defineClass(String className, byte[] bytecodes)

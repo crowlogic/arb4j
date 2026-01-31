@@ -3,7 +3,11 @@ package arb.expressions;
 import static arb.utensils.Utensils.wrapOrThrow;
 import static java.lang.String.format;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -16,7 +20,9 @@ import arb.Integer;
 import arb.Named;
 import arb.OrderedPair;
 import arb.exceptions.CompilerException;
-import arb.expressions.context.*;
+import arb.expressions.context.Dependency;
+import arb.expressions.context.FunctionMappings;
+import arb.expressions.context.TopologicalSorter;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
@@ -78,6 +84,16 @@ public class Context implements
   public boolean                              saveClasses                  = false;
 
   public final ObservableMap<String, Named>   variables;
+
+  public ExpressionClassLoader getClassLoader()
+  {
+    if (classLoader == null)
+    {
+      classLoader = new ExpressionClassLoader(this);
+    }
+
+    return classLoader;
+  }
 
   public Context()
   {

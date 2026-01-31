@@ -697,11 +697,7 @@ public class Compiler
     }
     try
     {
-      var loader = context != null ? context.classLoader : new ExpressionClassLoader();
-      if (context != null && context.classLoader == null)
-      {
-        context.classLoader = loader;
-      }
+      var loader = context.getClassLoader();
       return (Class<F>) loader.defineClass(className, bytecodes);
     }
     catch (Exception e)
@@ -710,6 +706,8 @@ public class Compiler
                                  e);
     }
   }
+
+ 
 
   /**
    * Loads the 1st argument (this) onto the stack
