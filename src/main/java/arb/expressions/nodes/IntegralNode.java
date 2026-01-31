@@ -378,16 +378,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
           {
             shiftValue = zero();
           }
-          else if (deltaArg instanceof SubtractionNode<D, C, F> subNode)
-          {
-            var left2  = subNode.left;
-            var right2 = subNode.right;
-
-            if (right2.isVariableNamed(integrationVariableNode.getName()))
-            {
-              shiftValue = left2;
-            }
-          }
+         
         }
       }
     }

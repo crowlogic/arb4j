@@ -242,11 +242,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean                                        functionalDependsOnIndependentVariable;
 
-  public boolean                                        functionalDependsOnIndeterminantVariable;
+  public boolean                                        functionalDependsOnIndeterminateVariable;
 
   private VariableNode<Object, Object, Function<?, ?>>  functionalIndependentVariable;
 
-  public VariableNode<Object, Object, Function<?, ?>>   functionalIndeterminantVariable;
+  public VariableNode<Object, Object, Function<?, ?>>   functionalIndeterminateVariable;
 
   public Class<? extends F>                             functionClass;
 
@@ -265,8 +265,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public VariableNode<D, C, F>                          independentVariable;
 
-  public Stack<VariableNode<D, C, F>>                   indeterminantVariables        = new Stack<
-                VariableNode<D, C, F>>();
+  public Stack<VariableNode<D, C, F>>                   indeterminantVariables        =
+                                                                               new Stack<>();
 
   int                                                   currentLevel                  = 0;
 
@@ -359,10 +359,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                     String expression,
                     Context context,
                     String functionName,
-                    Expression<?, ?, ?> parentExpression)
+                    Expression<?, ?, ?> ascenentExpression)
   {
     assert className != null : "className needs to be specified";
-    this.ascendentExpression              = parentExpression;
+    this.ascendentExpression              = ascenentExpression;
     this.className                        = className;
     this.domainType                       = domain;
     this.coDomainType                     = codomain;
@@ -380,7 +380,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     if (Expression.trace)
     {
-      log.debug("#{}: new Expression(className={}, domain={}, coDomain={}, function={}, expression={}, context={}, functionName={}, parentExpression={}#{})",
+      log.debug("#{}: new Expression(className={}, domain={}, coDomain={}, function={}, expression={}, context={}, functionName={}, ascendentExpression={}#{})",
                 System.identityHashCode(this),
                 className,
                 domain,
@@ -389,8 +389,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                 expression,
                 context,
                 functionName,
-                parentExpression,
-                System.identityHashCode(parentExpression));
+                ascenentExpression,
+                System.identityHashCode(ascenentExpression));
     }
 
   }
@@ -542,7 +542,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected VariableNode<D, C, F> assignIndeterminantVariable(VariableNode<D, C, F> variable)
   {
-
+    assert !variable.equals(independentVariable) : "cannot add " + variable + " to indeterminate stack since it is the inependent variable";
     return variable.pushThisOntoTheIndeterminantVariableStack();
   }
 
@@ -1592,10 +1592,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (!indeterminantVariables.isEmpty())
     {
       var indeterminantVariable = indeterminantVariables.peek();
-      functionalIndeterminantVariable          =
+      functionalIndeterminateVariable          =
                                       indeterminantVariable.spliceInto(function).asVariable();
-      functionalDependsOnIndeterminantVariable =
-                                               function.rootNode.dependsOn(functionalIndeterminantVariable);
+      functionalDependsOnIndeterminateVariable =
+                                               function.rootNode.dependsOn(functionalIndeterminateVariable);
     }
 
 //    Class<?> actualRootNodeType = function.rootNode.type();
@@ -2480,66 +2480,55 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-  protected Expression<Object, Object, Function<?, ?>> newFunctionalExpression()
-  {
-    Class<?>                        funcDomain   = null;
-    Class<?>                        funcCoDomain = null;
-    Class<? extends Function<?, ?>> funcClass    = null;
+  protected Expression<Object, Object, Function<?, ?>> newFunctionalExpression() {
+    Class<?> funcDomain = null;
+    Class<?> funcCoDomain = null;
+    Class<? extends Function<?, ?>> funcClass = null;
 
-    if (RealFunction.class.equals(coDomainType))
-    {
-      funcDomain   = Real.class;
+    if (RealFunction.class.equals(coDomainType)) {
+      funcDomain = Real.class;
       funcCoDomain = Real.class;
-      funcClass    = RealFunction.class;
-    }
-    else if (ComplexFunction.class.equals(coDomainType))
-    {
-      funcDomain   = Complex.class;
+      funcClass = RealFunction.class;
+    } else if (ComplexFunction.class.equals(coDomainType)) {
+      funcDomain = Complex.class;
       funcCoDomain = Complex.class;
-      funcClass    = ComplexFunction.class;
-    }
-    else if (RealToComplexFunction.class.equals(coDomainType))
-    {
-      funcDomain   = Real.class;
+      funcClass = ComplexFunction.class;
+    } else if (RealToComplexFunction.class.equals(coDomainType)) {
+      funcDomain = Real.class;
       funcCoDomain = Complex.class;
-      funcClass    = RealToComplexFunction.class;
-    }
-    else if (RealSequence.class.equals(coDomainType))
-    {
-      funcDomain   = Integer.class;
+      funcClass = RealToComplexFunction.class;
+    } else if (RealSequence.class.equals(coDomainType)) {
+      funcDomain = Integer.class;
       funcCoDomain = Real.class;
-      funcClass    = RealSequence.class;
-    }
-    else
-    {
-      throw new UnsupportedOperationException("TODO: implement "
-                                              + coDomainType
-                                              + " codomain functional");
+      funcClass = RealSequence.class;
+    } else {
+      throw new UnsupportedOperationException("TODO: implement " + coDomainType + " codomain functional");
     }
 
     var functionalExpression = new Expression<Object, Object, Function<?, ?>>(funcDomain,
                                                                               funcCoDomain,
                                                                               funcClass);
     functionalExpression.ascendentExpression = this;
-    functionalExpression.context             = context;
-    var indeterminantVariable = getIndeterminantVariable();
+    functionalExpression.context = context;
 
-    if (indeterminantVariable != null)
-    {
-      functionalExpression.independentVariable =
-                                               indeterminantVariable.spliceInto(functionalExpression)
-                                                                    .asVariable();
+    // Isolate stack to prevent dummy vars (t) leaking
+    functionalExpression.indeterminantVariables = new Stack<>();
+    var indeterminantVariable = getIndeterminantVariable();  // p (functional lambda)
+    if (indeterminantVariable != null) {
+      functionalExpression.independentVariable = indeterminantVariable.spliceInto(functionalExpression).asVariable();
+      functionalExpression.indeterminantVariables.push(functionalExpression.independentVariable);
     }
 
-    rootNode.isResult                      = true;
+    rootNode.isResult = true;
 
-    functionalExpression.className         = className + "func";
-    functionalExpression.functionName      = functionName + "func";
-    functionalExpression.expression        = expression;
-    functionalExpression.rootNode          = rootNode.spliceInto(functionalExpression);
+    functionalExpression.className = className + "func";
+    functionalExpression.functionName = functionName + "func";
+    functionalExpression.expression = expression;  // Tree override prevents re-parse
+    functionalExpression.rootNode = rootNode.spliceInto(functionalExpression);
     functionalExpression.rootNode.isResult = true;
     return functionalExpression;
   }
+   
 
   private F newInstance()
   {

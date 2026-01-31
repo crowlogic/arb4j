@@ -275,12 +275,18 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     if (!Compiler.canBeAssignedTo(type(), resultType))
     {
       File file = expression.saveToFile();
-      throw new CompilerException(String.format("%s of type %s whose expression is '%s' cannot be represented as a %s. The expression was saved to %s",
+      throw new CompilerException(String.format("%s of type %s whose expression is '%s' cannot be represented as a %s. The expression was saved to %s\ndomain=%s\ncoDomain=%s\nfunctionClass=%s\nfunctionName=%s\nindterminateVars=%s\nindepenentVariable=%s\nexpression=%s\n",
                                                 getClass(),
                                                 type(),
                                                 this,
                                                 resultType,
-                                                file));
+                                                file,
+                                                expression.domainType,
+                                                expression.coDomainType,
+                                                expression.functionClass,
+                                                expression.functionName,
+                                                expression.indeterminantVariables,
+                                                expression.independentVariable,expression));
     }
 
     String existingVar = expression.generatedNodes.get(this);
