@@ -1514,7 +1514,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public void logVariables()
   {
-    accept(containingExpression -> log.debug("#{}: '{}': independentVariable={} indeterminateVariables={} from {}",
+    accept(containingExpression -> log.debug("#{}: '{}': independentVariable={} indeterminateVariables={}",
                                              System.identityHashCode(containingExpression),
                                              containingExpression,
                                              containingExpression.independentVariable,
@@ -3425,11 +3425,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public void accept(Consumer<Expression<?, ?, ?>> t)
   {
     assert ascendentExpression != this;
+    t.accept(this);
+
     if (ascendentExpression != null)
     {
       ascendentExpression.accept(t);
     }
-    t.accept(this);
 
   }
 

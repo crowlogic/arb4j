@@ -3,6 +3,7 @@ package arb.functions.integer;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
 /**
@@ -15,11 +16,14 @@ public class RealFunctionSequenceTest extends
 {
   public static void testSeq1()
   {
-    // Expression.trace
-    RealFunctionSequence func = RealFunctionSequence.express("χ", "i➔p➔int(t➔t^(i+p), t=-1..1)");
-    
-    
+    RealFunctionSequence seq      =
+                             RealFunctionSequence.express("χ", "i➔p➔int(t➔t^(i+p), t=-1..1)");
+    RealFunction         function = seq.apply(3);
+    double               y        = function.eval(2.3);
+    assertEquals(4.12, y);
   }
+  
+
   public static void testRealFunctionSequence()
   {
 
