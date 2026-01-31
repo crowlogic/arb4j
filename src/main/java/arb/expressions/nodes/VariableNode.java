@@ -493,10 +493,11 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       if (Expression.traceNodes)
       {
 
-        log.debug(String.format("#%s: resolveIndependentVariable: declaring %s as the input node to '%s' which currently has input variable %s and indeterminant varaibles %s\n",
-                                System.identityHashCode(this),
+        log.debug(String.format("resolveIndependentVariable: declaring %s as the input node to '%s'#%s which currently has input variable %s and indeterminant varaibles %s\n",
+                                
                                 reference,
                                 expression,
+                                System.identityHashCode(this),
                                 expression.independentVariable,
                                 expression.indeterminantVariables));
       }
