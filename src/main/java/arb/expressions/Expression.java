@@ -1633,6 +1633,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       propagateIndependentVariable(mv, function, functionalIndependentVariable);
     }
 
+ 
+    
     if (context != null && context.variables != null)
     {
       propagateContext(mv, function);
