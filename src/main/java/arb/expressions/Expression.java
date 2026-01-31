@@ -753,7 +753,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                       null,
                                                       coDomainType),
                               position,
-                              false);
+                              true);
   }
 
   private ClassVisitor declareContext(ClassVisitor cw)

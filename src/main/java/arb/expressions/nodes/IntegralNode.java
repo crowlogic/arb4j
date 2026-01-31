@@ -1,5 +1,6 @@
 package arb.expressions.nodes;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -110,47 +111,47 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     else
     {
       /*
-       * IMPORTANT: When int() appears inside a functional expression (codomain is an
-       * interface), parsing the integrand "t➔..." would normally push t onto the
-       * containing Expression's indeterminantVariables stack via
-       * parseLambda/VariableNode resolution. That "t" is a bound integration dummy
-       * and must NOT leak out as the functional parameter used to build the returned
-       * function.
+       * IMPORTANT:
        *
-       * Fix: snapshot the indeterminantVariables stack size before parsing the
-       * integrand and restore it afterward (same for the redundant variable name
-       * after the comma).
+       * When int() appears inside a functional expression (codomain is an interface),
+       * parsing the integrand "t➔..." can push the dummy integration variable 't'
+       * onto the containing Expression's indeterminantVariables stack (often via
+       * parseLambda + cloneExpression behavior).
+       *
+       * The older "snapshot size then pop" approach is not sufficient if the stack
+       * reference is shared across clones and additional pushes happen later in the
+       * same parse. Instead: snapshot the full stack contents before parsing int(),
+       * then restore the exact contents after parsing completes.
        */
-      final int indetBeforeIntegrand = expression.indeterminantVariables.size();
-      integrandNode = expression.resolve();
-      restoreIndeterminantStackSize(indetBeforeIntegrand);
-
-      var reference = expression.require(',').parseVariableReference();
-      dvar = reference.name;
-
-      final int indetBeforeVar = expression.indeterminantVariables.size();
-      integrationVariableNode = new VariableNode<>(expression,
-                                                   reference,
-                                                   expression.position,
-                                                   true);
-      restoreIndeterminantStackSize(indetBeforeVar);
-
-      if (expression.nextCharacterIs('='))
+      final var savedIndeterminants = new ArrayList<>(expression.indeterminantVariables);
+      try
       {
-        lowerLimitNode = expression.resolve();
-        upperLimitNode = expression.require('…').resolve();
+        integrandNode = expression.resolve();
+
+        var reference = expression.require(',').parseVariableReference();
+        dvar                    = reference.name;
+
+        integrationVariableNode = new VariableNode<>(expression,
+                                                     reference,
+                                                     expression.position,
+                                                     true);
+
+        if (expression.nextCharacterIs('='))
+        {
+          lowerLimitNode = expression.resolve();
+          upperLimitNode = expression.require('…').resolve();
+        }
+        expression.require(')');
       }
-      expression.require(')');
+      finally
+      {
+        // Hard restore: only the outer expression's indeterminants survive (e.g. p),
+        // never the bound integration dummy (e.g. t).
+        expression.indeterminantVariables.clear();
+        expression.indeterminantVariables.addAll(savedIndeterminants);
+      }
     }
 
-  }
-
-  private void restoreIndeterminantStackSize(final int desiredSize)
-  {
-    while (expression.indeterminantVariables.size() > desiredSize)
-    {
-      expression.indeterminantVariables.pop();
-    }
   }
 
   public IntegralNode(Expression<D, C, F> expression,
