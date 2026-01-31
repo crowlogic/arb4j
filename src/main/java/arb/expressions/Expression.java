@@ -140,7 +140,8 @@ import arb.utensils.text.trees.TreeModel;
 public class Expression<D, C, F extends Function<? extends D, ? extends C>> implements
                        Typesettable,
                        Cloneable,
-                       Supplier<F>
+                       Supplier<F>,
+                       Consumer<Consumer<Expression<?, ?, ?>>>
 {
 
   private static String     ASSERTION_ERROR_METHOD_DESCRIPTOR =
@@ -1509,6 +1510,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                               "domainType",
                               Type.getType(domainType),
                               getDomainTypeMethodSignature());
+  }
+
+  public void logVariables()
+  {
+    accept(evt -> log.debug("#{}: independentVariable={} indeterminateVariables={} from {}",
+                            System.identityHashCode(this),
+                            evt.independentVariable,
+                            evt.indeterminantVariables));
+
   }
 
   protected ClassVisitor
@@ -3408,6 +3418,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       Utensils.throwOrWrap(e);
     }
     return this;
+  }
+
+  @Override
+  public void accept(Consumer<Expression<?, ?, ?>> t)
+  {
+    assert ascendentExpression != this;
+    if (ascendentExpression != null)
+    {
+      ascendentExpression.accept(t);
+    }
+    t.accept(this);
+
   }
 
 }

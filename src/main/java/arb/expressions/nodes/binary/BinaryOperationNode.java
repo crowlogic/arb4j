@@ -5,27 +5,15 @@ import static arb.expressions.Compiler.loadBitsParameterOntoStack;
 import static arb.utensils.Utensils.indent;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import arb.AlgebraicNumber;
-import arb.Complex;
-import arb.ComplexPolynomial;
-import arb.ComplexRationalFunction;
-import arb.Fraction;
+import arb.*;
 import arb.Integer;
-import arb.IntegerPolynomial;
-import arb.RationalFunction;
-import arb.Real;
-import arb.RealPolynomial;
 import arb.exceptions.CompilerException;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
@@ -269,6 +257,18 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     assert right != null : "rhs is null";
 
     generatedType = resultType;
+
+    if (log.isDebugEnabled() && Expression.traceNodes)
+    {
+      log.debug("#{}: generate( this={}, left={}. right={} ) this.type={} resultType={}",
+                System.identityHashCode(expression),
+                this,
+                left,
+                right,
+                this.type(),
+                resultType);
+      expression.logVariables();
+    }
 
     var scalarType = Compiler.scalarType(type());
 
