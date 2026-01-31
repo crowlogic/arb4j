@@ -1514,10 +1514,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public void logVariables()
   {
-    accept(evt -> log.debug("#{}: independentVariable={} indeterminateVariables={} from {}",
-                            System.identityHashCode(this),
-                            evt.independentVariable,
-                            evt.indeterminantVariables));
+    accept(containingExpression -> log.debug("#{}: '{}': independentVariable={} indeterminateVariables={} from {}",
+                                             System.identityHashCode(containingExpression),
+                                             containingExpression,
+                                             containingExpression.independentVariable,
+                                             containingExpression.indeterminantVariables));
 
   }
 
