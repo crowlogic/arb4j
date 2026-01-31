@@ -379,7 +379,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     if (Expression.trace)
     {
-      log.debug("#{}: new Expression(className={}, domain={}, coDomain={}, function={}, expression={}, context={}, functionName={}, parentExpression={})",
+      log.debug("#{}: new Expression(className={}, domain={}, coDomain={}, function={}, expression={}, context={}, functionName={}, parentExpression={}#{})",
                 System.identityHashCode(this),
                 className,
                 domain,
@@ -388,7 +388,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                 expression,
                 context,
                 functionName,
-                parentExpression);
+                parentExpression,
+                System.identityHashCode(parentExpression));
     }
 
   }
