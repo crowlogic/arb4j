@@ -285,7 +285,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
                                                 expression.coDomainType,
                                                 expression.functionClass,
                                                 expression.functionName,
-                                                expression.indeterminantVariables,
+                                                expression.indeterminateVariables,
                                                 expression.independentVariable,expression));
     }
 

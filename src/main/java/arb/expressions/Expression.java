@@ -265,7 +265,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public VariableNode<D, C, F>                          independentVariable;
 
-  public Stack<VariableNode<D, C, F>>                   indeterminantVariables        =
+  public Stack<VariableNode<D, C, F>>                   indeterminateVariables        =
                                                                                new Stack<>();
 
   int                                                   currentLevel                  = 0;
@@ -540,9 +540,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return this;
   }
 
-  protected VariableNode<D, C, F> assignIndeterminantVariable(VariableNode<D, C, F> variable)
+  protected VariableNode<D, C, F> assignIndeterminateVariable(VariableNode<D, C, F> variable)
   {
-    assert !variable.equals(independentVariable) : "cannot add " + variable + " to indeterminate stack since it is the inependent variable";
+    assert !variable.equals(independentVariable) : "cannot add "
+                                                   + variable
+                                                   + " to indeterminate stack since it is the inependent variable";
     return variable.pushThisOntoTheIndeterminantVariableStack();
   }
 
@@ -565,9 +567,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                 variable,
                 indeterminant);
     }
+
     if (indeterminant)
     {
-      assignIndeterminantVariable(variable);
+      assignIndeterminateVariable(variable);
     }
     else
     {
@@ -619,7 +622,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                        functionName,
                                        ascendentExpression);
     expr.independentVariable    = independentVariable;
-    expr.indeterminantVariables = indeterminantVariables;
+    expr.indeterminateVariables = indeterminateVariables;
     expr.functionNameSpecified  = functionNameSpecified;
     expr.position               = position;
     expr.character              = character;
@@ -746,7 +749,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   }
 
-  protected VariableNode<D, C, F> createNewVariableReference(String inputVariableName)
+  protected VariableNode<D, C, F> createNewVariableNode(String inputVariableName)
   {
     return new VariableNode<>(this,
                               new VariableReference<>(inputVariableName,
@@ -923,9 +926,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean anyAscendentIndeterminateVariableIsNamed(String name)
   {
-    for (var indeterminantVariable : indeterminantVariables)
+    for (var indeterminateVariable : indeterminateVariables)
     {
-      if (indeterminantVariable != null && indeterminantVariable.getName().equals(name))
+      if (indeterminateVariable != null && indeterminateVariable.getName().equals(name))
       {
         return true;
       }
@@ -1055,7 +1058,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // Create parameter variable and assign as INDETERMINATE variable
     // (since the codomain is a function, this parameter becomes the
     // independent variable of that returned function)
-    var paramVar = createNewVariableReference(paramName);
+    var paramVar = createNewVariableNode(paramName);
     assignVariable(paramVar);
 
     require('➔');
@@ -1074,7 +1077,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     else
     {
-      assignIndeterminantVariable(paramVar);
+      if (indeterminateVariables.contains(paramVar))
+      {
+        paramVar.isIndeterminate = true;
+      }
+      else
+      {
+        assignIndeterminateVariable(paramVar);
+      }
     }
 
   }
@@ -1121,7 +1131,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       if (isInputVariableSpecified)
       {
         assureInputNameHasNotAlreadyBeenAssociatedWithAContextVariable(inputVariableName);
-        assignVariable(createNewVariableReference(inputVariableName), independentVariable != null);
+        VariableNode<D, C, F> newRef = createNewVariableNode(inputVariableName);
+        assignVariable(newRef, independentVariable != null && !independentVariable.equals(newRef));
         searchPos = rightArrowIndex + 1; // Move past this arrow, search for next
       }
 
@@ -1518,7 +1529,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                              System.identityHashCode(containingExpression),
                                              containingExpression,
                                              containingExpression.independentVariable,
-                                             containingExpression.indeterminantVariables));
+                                             containingExpression.indeterminateVariables));
 
   }
 
@@ -1589,9 +1600,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                              function.rootNode.dependsOn(functionalIndependentVariable);
     }
 
-    if (!indeterminantVariables.isEmpty())
+    if (!indeterminateVariables.isEmpty())
     {
-      var indeterminantVariable = indeterminantVariables.peek();
+      var indeterminantVariable = indeterminateVariables.peek();
       functionalIndeterminateVariable          =
                                       indeterminantVariable.spliceInto(function).asVariable();
       functionalDependsOnIndeterminateVariable =
@@ -1630,9 +1641,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return function.compile();
   }
 
-  public VariableNode<D, C, F> getIndeterminantVariable()
+  public VariableNode<D, C, F> getIndeterminateVariable()
   {
-    return indeterminantVariables.isEmpty() ? null : indeterminantVariables.peek();
+    return indeterminateVariables.isEmpty() ? null : indeterminateVariables.peek();
   }
 
   protected MethodVisitor generateFunctionInitializer(MethodVisitor mv,
@@ -2027,7 +2038,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected String getInputName()
   {
-    var indeterminantVariable = getIndeterminantVariable();
+    var indeterminantVariable = getIndeterminateVariable();
     if (indeterminantVariable != null)
     {
       return indeterminantVariable.getName();
@@ -2041,7 +2052,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public VariableNode<D, C, F> getInputVariable()
   {
-    var indeterminantVariable = getIndeterminantVariable();
+    var indeterminantVariable = getIndeterminateVariable();
     return indeterminantVariable != null ? indeterminantVariable : independentVariable;
   }
 
@@ -2480,55 +2491,72 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-  protected Expression<Object, Object, Function<?, ?>> newFunctionalExpression() {
-    Class<?> funcDomain = null;
-    Class<?> funcCoDomain = null;
-    Class<? extends Function<?, ?>> funcClass = null;
+  protected Expression<Object, Object, Function<?, ?>> newFunctionalExpression()
+  {
+    Class<?>                        funcDomain   = null;
+    Class<?>                        funcCoDomain = null;
+    Class<? extends Function<?, ?>> funcClass    = null;
 
-    if (RealFunction.class.equals(coDomainType)) {
-      funcDomain = Real.class;
+    if (RealFunction.class.equals(coDomainType))
+    {
+      funcDomain   = Real.class;
       funcCoDomain = Real.class;
-      funcClass = RealFunction.class;
-    } else if (ComplexFunction.class.equals(coDomainType)) {
-      funcDomain = Complex.class;
+      funcClass    = RealFunction.class;
+    }
+    else if (ComplexFunction.class.equals(coDomainType))
+    {
+      funcDomain   = Complex.class;
       funcCoDomain = Complex.class;
-      funcClass = ComplexFunction.class;
-    } else if (RealToComplexFunction.class.equals(coDomainType)) {
-      funcDomain = Real.class;
+      funcClass    = ComplexFunction.class;
+    }
+    else if (RealToComplexFunction.class.equals(coDomainType))
+    {
+      funcDomain   = Real.class;
       funcCoDomain = Complex.class;
-      funcClass = RealToComplexFunction.class;
-    } else if (RealSequence.class.equals(coDomainType)) {
-      funcDomain = Integer.class;
+      funcClass    = RealToComplexFunction.class;
+    }
+    else if (RealSequence.class.equals(coDomainType))
+    {
+      funcDomain   = Integer.class;
       funcCoDomain = Real.class;
-      funcClass = RealSequence.class;
-    } else {
-      throw new UnsupportedOperationException("TODO: implement " + coDomainType + " codomain functional");
+      funcClass    = RealSequence.class;
+    }
+    else
+    {
+      throw new UnsupportedOperationException("TODO: implement "
+                                              + coDomainType
+                                              + " codomain functional");
     }
 
     var functionalExpression = new Expression<Object, Object, Function<?, ?>>(funcDomain,
                                                                               funcCoDomain,
                                                                               funcClass);
-    functionalExpression.ascendentExpression = this;
-    functionalExpression.context = context;
+    functionalExpression.ascendentExpression    = this;
+    functionalExpression.context                = context;
 
     // Isolate stack to prevent dummy vars (t) leaking
-    functionalExpression.indeterminantVariables = new Stack<>();
-    var indeterminantVariable = getIndeterminantVariable();  // p (functional lambda)
-    if (indeterminantVariable != null) {
-      functionalExpression.independentVariable = indeterminantVariable.spliceInto(functionalExpression).asVariable();
-      functionalExpression.indeterminantVariables.push(functionalExpression.independentVariable);
+    functionalExpression.indeterminateVariables = new Stack<>();
+    var indeterminantVariable = getIndeterminateVariable(); // p (functional lambda)
+    if (indeterminantVariable != null)
+    {
+      functionalExpression.independentVariable =
+                                               indeterminantVariable.spliceInto(functionalExpression)
+                                                                    .asVariable();
+      functionalExpression.indeterminateVariables.push(functionalExpression.independentVariable);
     }
 
-    rootNode.isResult = true;
+    rootNode.isResult                      = true;
 
-    functionalExpression.className = className + "func";
-    functionalExpression.functionName = functionName + "func";
-    functionalExpression.expression = expression;  // Tree override prevents re-parse
-    functionalExpression.rootNode = rootNode.spliceInto(functionalExpression);
+    functionalExpression.className         = className + "func";
+    functionalExpression.functionName      = functionName + "func";
+    functionalExpression.expression        = expression;                               // Tree
+                                                                                       // override
+                                                                                       // prevents
+                                                                                       // re-parse
+    functionalExpression.rootNode          = rootNode.spliceInto(functionalExpression);
     functionalExpression.rootNode.isResult = true;
     return functionalExpression;
   }
-   
 
   private F newInstance()
   {
@@ -2905,7 +2933,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       independentVariable.renameIfNamed(from, to);
     }
-    var indeterminantVariable = getIndeterminantVariable();
+    var indeterminantVariable = getIndeterminateVariable();
 
     if (indeterminantVariable != null)
     {

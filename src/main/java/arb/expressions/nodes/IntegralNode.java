@@ -123,7 +123,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
        * same parse. Instead: snapshot the full stack contents before parsing int(),
        * then restore the exact contents after parsing completes.
        */
-      final var savedIndeterminants = new ArrayList<>(expression.indeterminantVariables);
+      final var savedIndeterminants = new ArrayList<>(expression.indeterminateVariables);
       try
       {
         integrandNode = expression.resolve();
@@ -147,8 +147,8 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       {
         // Hard restore: only the outer expression's indeterminants survive (e.g. p),
         // never the bound integration dummy (e.g. t).
-        expression.indeterminantVariables.clear();
-        expression.indeterminantVariables.addAll(savedIndeterminants);
+        expression.indeterminateVariables.clear();
+        expression.indeterminateVariables.addAll(savedIndeterminants);
       }
     }
 
