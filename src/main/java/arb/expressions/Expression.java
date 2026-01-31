@@ -610,6 +610,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return position + 1 < expression.length() && expression.charAt(position + 1) == ch;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   protected Object clone()
   {
@@ -621,8 +622,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                        context,
                                        functionName,
                                        ascendentExpression);
+    expr.context = context;
     expr.independentVariable    = independentVariable;
-    expr.indeterminateVariables = indeterminateVariables;
+    expr.indeterminateVariables = (Stack<VariableNode<D, C, F>>) indeterminateVariables.clone();
     expr.functionNameSpecified  = functionNameSpecified;
     expr.position               = position;
     expr.character              = character;
