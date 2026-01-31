@@ -598,7 +598,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public Node<D, R, F> cloneNode()
   {
-    return spliceInto(expression);
+    return spliceInto(expression.cloneExpression());
   }
 
   protected boolean containsDeltaFunction()

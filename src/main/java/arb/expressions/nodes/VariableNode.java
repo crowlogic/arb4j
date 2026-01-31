@@ -420,46 +420,49 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   public VariableNode<?, ?, ?> resolve(VariableReference<D, R, F> reference,
                                        Expression<?, ?, ?> ascendentExpression)
   {
-    var ascendentInputNode = ascendentExpression.independentVariable;
-    if (Expression.traceNodes)
+    if (ascendentExpression != null)
     {
-      log.debug(String.format("resolve(reference=%s ascendentExpression=%s)",
-                              reference,
-                              ascendentExpression));
-    }
-
-    if (ascendentInputNode != null && ascendentInputNode.reference.equals(reference))
-    {
+      var ascendentInputNode = ascendentExpression.independentVariable;
       if (Expression.traceNodes)
       {
-        log.debug(String.format("Assigning this %s as ascendent input node=%s",
-                                this,
-                                ascendentInputNode));
+        log.debug(String.format("resolve(reference=%s ascendentExpression=%s)",
+                                reference,
+                                ascendentExpression));
       }
-      ascendentInput = true;
-      reference.type = ascendentExpression.domainType;
-      return ascendentInputNode;
-    }
-    else if (ascendentExpression.ascendentExpression != null)
-    {
-      return resolve(reference, ascendentExpression.ascendentExpression);
-    }
 
-    for (var variable : ascendentExpression.indeterminantVariables)
-
-    {
-      if (variable.reference.equals(reference))
+      if (ascendentInputNode != null && ascendentInputNode.reference.equals(reference))
       {
-         if (Expression.traceNodes)
+        if (Expression.traceNodes)
         {
-          log.debug(String.format("Resolving this VariableNode %s as as indeterminate variable=%s",
+          log.debug(String.format("Assigning this %s as ascendent input node=%s",
                                   this,
-                                  variable));
+                                  ascendentInputNode));
         }
-        return variable;
+        ascendentInput = true;
+        reference.type = ascendentExpression.domainType;
+        return ascendentInputNode;
+      }
+      else if (ascendentExpression.ascendentExpression != null)
+      {
+        return resolve(reference, ascendentExpression.ascendentExpression);
+      }
+
+      for (var variable : ascendentExpression.indeterminantVariables)
+
+      {
+        if (variable.reference.equals(reference))
+        {
+          if (Expression.traceNodes)
+          {
+            log.debug(String.format("Resolving this VariableNode %s as as indeterminate variable=%s",
+                                    this,
+                                    variable));
+          }
+          return variable;
+        }
       }
     }
-
+    assert false : "TODO: check " + expression.indeterminantVariables + " for " +  this;
     throwNewUndefinedReferenceException();
     return null;
   }
@@ -563,7 +566,9 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                  expression.indeterminantVariables,
                                                  expression.ascendentExpression,
                                                  expression.remaining(),
-                                                 expression.ascendentExpression.indeterminantVariables));
+                                                 expression.ascendentExpression
+                                                               != null ? expression.ascendentExpression.indeterminantVariables
+                                                                       : null));
   }
 
   public VariableNode<D, R, F> declareThisToBeTheIndeterminantVariable()
@@ -658,7 +663,9 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     assert !expression.indeterminantVariables.contains(this) : this
                                                                + " is already in "
                                                                + expression.indeterminantVariables;
-    assert !equals(expression.independentVariable) : "cannot add " + this + " to indeterminate stack since it is the inependent variable";
+    assert !equals(expression.independentVariable) : "cannot add "
+                                                     + this
+                                                     + " to indeterminate stack since it is the inependent variable";
 
     expression.indeterminantVariables.push(this);
     return this;
