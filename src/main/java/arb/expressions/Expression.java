@@ -310,12 +310,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public boolean                                        verboseTrace                  = false;
 
   public Expression(Class<? extends D> domain,
-                    Class<? extends C> codomain,
+                    Class<? extends C> coDomain,
                     Class<? extends F> function)
   {
     this.ascendentExpression              = null;
     this.domainType                       = domain;
-    this.coDomainType                     = codomain;
+    this.coDomainType                     = coDomain;
     this.functionClass                    = function;
     this.genericFunctionClassInternalName = Type.getInternalName(function);
     this.functionClassDescriptor          = function.descriptorString();
@@ -323,6 +323,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (context != null && context.saveClasses)
     {
       saveClasses = true;
+    }
+    if (Expression.trace)
+    {
+      log.debug("#{}: new Expression(domain={}, coDomain={}, function={})",
+                System.identityHashCode(this),
+                domain,
+                coDomain,
+                function);
     }
   }
 
@@ -368,6 +376,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (context != null && context.saveClasses)
     {
       saveClasses = true;
+    }
+    if (Expression.trace)
+    {
+      log.debug("#{}: new Expression(className={}, domain={}, coDomain={}, function={}, expression={}, context={}, functionName={}, parentExpression={}#{})",
+                System.identityHashCode(this),
+                className,
+                domain,
+                codomain,
+                function,
+                expression,
+                context,
+                functionName,
+                parentExpression,
+                System.identityHashCode(parentExpression));
     }
 
   }
@@ -537,7 +559,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (Expression.trace)
     {
-      log.debug("assignVariable( variable={}, indeterminant={})", variable, indeterminant);
+      log.debug("#{}: assignVariable( variable={}, indeterminant={})",
+                System.identityHashCode(this),
+                variable,
+                indeterminant);
     }
     if (indeterminant)
     {
@@ -1006,7 +1031,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Used for functionals to specify a variable as the indeterminant variable
+   * Used for functionals to specify a variable as the indeterminate variable
    * which becomes the independent variable of the returned function
    * 
    * @param paramName
@@ -1016,7 +1041,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (trace)
     {
-      log.debug("parseLambda( expr={},  paramName = {} at position {} where remaining={} )",
+      log.debug("#{}: parseLambda( expr={},  paramName = {} at position {} where remaining={} )",
+                System.identityHashCode(this),
                 expression,
                 paramName,
                 position,
@@ -1057,7 +1083,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     var file = new File(className + ".yaml");
     if (trace)
     {
-      log.debug("saveToFile(): file={}", file);
+      log.debug("#{}: saveToFile(): file={}", System.identityHashCode(this), file);
     }
     Utensils.saveToYamlFormat(file, this);
     return file;
@@ -1073,7 +1099,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (trace)
     {
-      log.debug("evaluateOptionalIndependentVariableSpecification: remaining {} ", remaining());
+      log.debug("#{}: evaluateOptionalIndependentVariableSpecification: remaining {} ",
+                System.identityHashCode(this),
+                remaining());
 
     }
     expression = transformToJavaAcceptableCharacters(expression);
@@ -1181,7 +1209,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     assert instructions == null;
     if (trace)
     {
-      log.debug("id={}: generate(className={}, functionName={}, expression='{}')\n",
+      log.debug("#{}: generate(className={}, functionName={}, expression='{}')\n",
                 System.identityHashCode(this),
                 className,
                 functionName,
@@ -2643,7 +2671,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     nextCharacter();
     if (trace)
     {
-      log.debug("#:{} parseRoot expression='{}'\n", System.identityHashCode(this), expression);
+      log.debug("#{}: parseRoot expression='{}'\n", System.identityHashCode(this), expression);
     }
 
     rootNode = resolve().simplify();
