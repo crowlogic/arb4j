@@ -6,9 +6,14 @@ import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
 
-import arb.*;
+import arb.Complex;
+import arb.Quaternion;
+import arb.Real;
 import arb.exceptions.CompilerException;
-import arb.expressions.*;
+import arb.expressions.Compiler;
+import arb.expressions.Expression;
+import arb.expressions.FunctionMapping;
+import arb.expressions.VariableReference;
 import arb.expressions.nodes.binary.MultiplicationNode;
 import arb.expressions.nodes.binary.SubtractionNode;
 import arb.functions.Function;
@@ -16,23 +21,23 @@ import arb.functions.Function;
 /**
  * The syntax to express a definite integral is<br>
  * <br>
- * 
+ *
  * <pre>
- * 
+ *
  * g(x)=∫x➔f(x)dx∈(a,b)
- * 
+ *
  * </pre>
- * 
+ *
  * and the syntax to express an indefinite integral is<br>
  * <br>
- * 
+ *
  * <pre>
- * 
+ *
  * g(x)=∫x➔f(x)dx
  *
  * which is just as the definite case but with the limits of the integration interval specification ∈(a,b) is omitted
  * </pre>
- * 
+ *
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
  */
 public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> extends
@@ -104,13 +109,31 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     }
     else
     {
+      /*
+       * IMPORTANT: When int() appears inside a functional expression (codomain is an
+       * interface), parsing the integrand "t➔..." would normally push t onto the
+       * containing Expression's indeterminantVariables stack via
+       * parseLambda/VariableNode resolution. That "t" is a bound integration dummy
+       * and must NOT leak out as the functional parameter used to build the returned
+       * function.
+       *
+       * Fix: snapshot the indeterminantVariables stack size before parsing the
+       * integrand and restore it afterward (same for the redundant variable name
+       * after the comma).
+       */
+      final int indetBeforeIntegrand = expression.indeterminantVariables.size();
       integrandNode = expression.resolve();
+      restoreIndeterminantStackSize(indetBeforeIntegrand);
+
       var reference = expression.require(',').parseVariableReference();
-      dvar                    = reference.name;
+      dvar = reference.name;
+
+      final int indetBeforeVar = expression.indeterminantVariables.size();
       integrationVariableNode = new VariableNode<>(expression,
                                                    reference,
                                                    expression.position,
                                                    true);
+      restoreIndeterminantStackSize(indetBeforeVar);
 
       if (expression.nextCharacterIs('='))
       {
@@ -120,6 +143,14 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       expression.require(')');
     }
 
+  }
+
+  private void restoreIndeterminantStackSize(final int desiredSize)
+  {
+    while (expression.indeterminantVariables.size() > desiredSize)
+    {
+      expression.indeterminantVariables.pop();
+    }
   }
 
   public IntegralNode(Expression<D, C, F> expression,
@@ -328,10 +359,10 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   /**
    * Apply the sifting property of the Dirac delta function: ∫f(x)*δ(x-a)dx over
    * (-∞,∞) = f(a)
-   * 
+   *
    * This method handles integrals of the form ∫f(x)*δ(x-a)dx or ∫δ(x-a)*f(x)dx
    * over the entire real line, evaluating to f(a).
-   * 
+   *
    * @return the result of applying the sifting property, which is f(a)
    */
   private Node<D, C, F> applyDeltaFunctionSifting()
@@ -378,7 +409,16 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
           {
             shiftValue = zero();
           }
-         
+          else if (deltaArg instanceof SubtractionNode<D, C, F> subNode)
+          {
+            var left2  = subNode.left;
+            var right2 = subNode.right;
+
+            if (right2.isVariableNamed(integrationVariableNode.getName()))
+            {
+              shiftValue = left2;
+            }
+          }
         }
       }
     }
@@ -450,18 +490,17 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   }
 
   @Override
-  public Class<? > type()
+  public Class<?> type()
   {
     // Definite integral evaluates to scalar: ∫_{a}^{b} f(x)dx → scalar value
     if (isDefiniteIntegral())
     {
       return Compiler.scalarType(expression.coDomainType);
     }
-    
+
     // Indefinite integral returns function: ∫ f(x)dx → function
     return expression.coDomainType;
   }
-
 
   @Override
   public String typeset()

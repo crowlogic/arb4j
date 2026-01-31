@@ -462,7 +462,23 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
         }
       }
     }
-    assert false : "TODO: check " + expression.indeterminantVariables + " for " +  this;
+    for (var variable : expression.indeterminantVariables)
+
+    {
+      if (variable.reference.equals(reference))
+      {
+        if (Expression.traceNodes)
+        {
+          log.debug(String.format("Resolving this VariableNode %s as as indeterminate variable=%s in #%s",
+                                  this,
+                                  variable,
+                                  expression));
+        }
+        return variable;
+      }
+
+    }
+
     throwNewUndefinedReferenceException();
     return null;
   }
