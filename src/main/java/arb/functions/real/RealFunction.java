@@ -154,7 +154,10 @@ public interface RealFunction extends
   {
     try ( Real x = Real.newVector(2))
     {
-      return evaluate(x.get(0).set(t), 1, Double.PRECISION + 5, x.get(1)).doubleValue();
+      Real in = x.get(0).set(t);
+      Real out = x.get(1);
+      Real result = evaluate(in, 1, Double.PRECISION + 5, out);
+      return result.doubleValue();
     }
   }
 

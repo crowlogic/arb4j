@@ -24,6 +24,15 @@ public class IntegerTest extends
     }
   }
 
+  public static void testNegativeIntegerToPositiveRealPower()
+  {
+    try ( Integer base = new Integer(-1); var exponent = Real.valueOf(6.2); var result = new Complex() )
+    {
+      var t = base.pow(exponent, 128, result );
+      assertEquals("0.809016994374947096083467006787011011 +/- 5.33e-37 + i*0.587785252292473580647888200079889130 +/- 5.40e-37", t.toString());
+    }
+  }
+
   public static void testNegativePower()
   {
     try ( Integer p = new Integer(3))
@@ -95,7 +104,8 @@ public class IntegerTest extends
   public void testAddRealToComplex()
   {
 
-    try ( Integer three = new Integer(3); Real four = Real.valueOf(4); Complex seven = Complex.valueOf(7);)
+    try ( Integer three = new Integer(3); Real four = Real.valueOf(4);
+          Complex seven = Complex.valueOf(7);)
     {
       three.add(four, 128, seven);
       assertEquals("7", seven.toString());
@@ -105,7 +115,8 @@ public class IntegerTest extends
   public void testAdd()
   {
 
-    try ( Integer three = new Integer(3); Integer four = new Integer(4); Integer seven = new Integer(7);)
+    try ( Integer three = new Integer(3); Integer four = new Integer(4);
+          Integer seven = new Integer(7);)
     {
       three.add(four, seven);
       assertEquals("7", seven.toString());
@@ -115,7 +126,8 @@ public class IntegerTest extends
   public void testSub()
   {
 
-    try ( Integer three = new Integer(3); Integer four = new Integer(4); Integer result = new Integer(7);)
+    try ( Integer three = new Integer(3); Integer four = new Integer(4);
+          Integer result = new Integer(7);)
     {
       three.sub(four, result);
       assertEquals("-1", result.toString());
@@ -125,7 +137,8 @@ public class IntegerTest extends
   public void testMul()
   {
 
-    try ( Integer three = new Integer(3); Integer four = new Integer(4); Integer result = new Integer(7);)
+    try ( Integer three = new Integer(3); Integer four = new Integer(4);
+          Integer result = new Integer(7);)
     {
       three.mul(four, result);
       assertEquals("12", result.toString());
@@ -134,7 +147,8 @@ public class IntegerTest extends
 
   public void testTwoIntsInOneFractionOut()
   {
-    try ( Integer three = new Integer(3); Integer four = new Integer(4); Fraction result = new Fraction();)
+    try ( Integer three = new Integer(3); Integer four = new Integer(4);
+          Fraction result = new Fraction();)
     {
       three.div(four, 0, result);
       assertEquals("3⁄4", result.toString());
@@ -145,7 +159,8 @@ public class IntegerTest extends
   public void testDiv()
   {
 
-    try ( Integer three = new Integer(3); Integer four = new Integer(4); Integer result = new Integer(7);)
+    try ( Integer three = new Integer(3); Integer four = new Integer(4);
+          Integer result = new Integer(7);)
     {
       three.div(four, result);
       assertEquals("0", result.toString());
@@ -155,7 +170,8 @@ public class IntegerTest extends
   public void testDivRemainder()
   {
 
-    try ( Integer three = new Integer(3); Integer four = new Integer(4); Integer result = new Integer(7);)
+    try ( Integer three = new Integer(3); Integer four = new Integer(4);
+          Integer result = new Integer(7);)
     {
       result.remainder = new Integer();
       three.div(four, result);

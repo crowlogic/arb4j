@@ -1948,4 +1948,9 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
     this(arblibJNI.new_Complex(), true);
   }
 
+  public Complex pow(Integer operand, int prec)
+  {
+    return pow(operand,prec,this);
+  }
+
 }

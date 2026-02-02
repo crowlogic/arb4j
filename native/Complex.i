@@ -45,6 +45,11 @@ import arb.functions.complex.ComplexNullaryFunction;
 %typemap(javacode) acb_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+  public Complex pow(Integer operand, int prec)
+  {
+    return pow(operand,prec,this);
+  }
+
   public Complex arcsin(int bits, Complex value)
   {
     this.bits = bits;
