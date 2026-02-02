@@ -420,7 +420,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return this;
   }
 
-  public VariableNode<?, ?, ?> resolve(VariableReference<D, R, F> reference,
+  private VariableNode<?, ?, ?> resolve(VariableReference<D, R, F> reference,
                                        Expression<?, ?, ?> ascendentExpression)
   {
     if (ascendentExpression != null)

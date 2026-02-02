@@ -14,7 +14,7 @@ import junit.framework.TestCase;
 public class RealFunctionSequenceTest extends
                                       TestCase
 {
-  public static void testSeq1()
+  public static void testRealFunctionSeq1()
   {
 
     RealFunctionSequence seq      =
