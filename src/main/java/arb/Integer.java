@@ -1006,6 +1006,11 @@ public class Integer implements
     }
   }
 
+  public Complex pow(Integer operand, int prec, Complex result)
+  {
+    return result.set(this).pow(operand, prec);
+  }
+  
   public Real pow(Integer operand, int prec, Real result)
   {
     return result.set(this).pow(operand, prec);
