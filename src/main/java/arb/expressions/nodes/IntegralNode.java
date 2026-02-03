@@ -168,7 +168,27 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     }
     else
     {
-      // functionForm: int(f, x=a..b)
+      // functionForm: int(f(x), x=a..b) OR int(t➔f(t), t=a..b)
+      String lambdaVar = null;
+      int    savedPos  = expression.position;
+      char   savedChar = expression.character;
+
+      if (expression.isIdentifierCharacter())
+      {
+        String maybeName = expression.parseName();
+        expression.skipSpaces();
+        if (expression.nextCharacterIs('➔'))
+        {
+          lambdaVar = maybeName;
+          // nextCharacterIs already consumed '➔'
+        }
+        else
+        {
+          expression.position  = savedPos;
+          expression.character = savedChar;
+        }
+      }
+
       integrandNode = expression.resolve();
       var reference = expression.require(',').parseVariableReference();
       dvar                    = reference.name;
@@ -183,6 +203,12 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
         upperLimitNode = expression.require('…').resolve();
       }
       expression.require(')');
+
+      // Validate arrow var matches d-var
+      if (lambdaVar != null && !lambdaVar.equals(dvar))
+      {
+        throw new CompilerException(String.format(SYNTAXMSG, lambdaVar, dvar));
+      }
     }
   }
 
