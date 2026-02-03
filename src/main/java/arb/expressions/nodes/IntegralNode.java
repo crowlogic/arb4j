@@ -81,12 +81,13 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
          false);
   }
 
+// IntegralNode.java
+// Replace the entire constructor
   public IntegralNode(Expression<D, C, F> expression, boolean functionForm)
   {
     super(expression);
     if (!functionForm)
     {
-
       String name = expression.parseName();
       assert name != null : "name is null in " + expression;
       integrationVariableNode = new VariableNode<>(expression,
@@ -110,48 +111,23 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     }
     else
     {
-      /*
-       * IMPORTANT:
-       *
-       * When int() appears inside a functional expression (codomain is an interface),
-       * parsing the integrand "t➔..." can push the dummy integration variable 't'
-       * onto the containing Expression's indeterminantVariables stack (often via
-       * parseLambda + cloneExpression behavior).
-       *
-       * The older "snapshot size then pop" approach is not sufficient if the stack
-       * reference is shared across clones and additional pushes happen later in the
-       * same parse. Instead: snapshot the full stack contents before parsing int(),
-       * then restore the exact contents after parsing completes.
-       */
-      final var savedIndeterminants = new ArrayList<>(expression.indeterminateVariables);
-      try
+      integrandNode = expression.resolve();
+
+      var reference = expression.require(',').parseVariableReference();
+      dvar                    = reference.name;
+
+      integrationVariableNode = new VariableNode<>(expression,
+                                                   reference,
+                                                   expression.position,
+                                                   true);
+
+      if (expression.nextCharacterIs('='))
       {
-        integrandNode = expression.resolve();
-
-        var reference = expression.require(',').parseVariableReference();
-        dvar                    = reference.name;
-
-        integrationVariableNode = new VariableNode<>(expression,
-                                                     reference,
-                                                     expression.position,
-                                                     true);
-
-        if (expression.nextCharacterIs('='))
-        {
-          lowerLimitNode = expression.resolve();
-          upperLimitNode = expression.require('…').resolve();
-        }
-        expression.require(')');
+        lowerLimitNode = expression.resolve();
+        upperLimitNode = expression.require('…').resolve();
       }
-      finally
-      {
-        // Hard restore: only the outer expression's indeterminants survive (e.g. p),
-        // never the bound integration dummy (e.g. t).
-        expression.indeterminateVariables.clear();
-        expression.indeterminateVariables.addAll(savedIndeterminants);
-      }
+      expression.require(')');
     }
-
   }
 
   public IntegralNode(Expression<D, C, F> expression,

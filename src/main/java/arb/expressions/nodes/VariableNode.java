@@ -420,75 +420,42 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return this;
   }
 
-  private VariableNode<?, ?, ?> resolve(VariableReference<D, R, F> reference,
-                                       Expression<?, ?, ?> ascendentExpression)
+// VariableNode.java
+// Replace the entire method
+  private VariableNode<?, ?, ?> resolve(VariableReference<D, R, F> ref, Expression<?, ?, ?> asc)
   {
-    if (ascendentExpression != null)
+    final VariableNode<?, ?, ?>[] bound =
+    { null };
+
+    if (asc != null)
     {
-      var ascendentInputNode = ascendentExpression.independentVariable;
-      if (Expression.traceNodes)
+      asc.acceptUntil(e ->
       {
-        log.debug(String.format("resolve(reference=%s ascendentExpression=%s)",
-                                reference,
-                                ascendentExpression));
-      }
-
-      if (ascendentInputNode != null && ascendentInputNode.reference.equals(reference))
-      {
-        if (Expression.traceNodes)
+        var iv = e.independentVariable;
+        if (iv != null && ref.equals(iv.reference))
         {
-          log.debug(String.format("Assigning this %s as ascendent input node=%s",
-                                  this,
-                                  ascendentInputNode));
+          ascendentInput = true;
+          reference.type = e.domainType;
+          bound[0]       = iv;
+          return true;
         }
-        ascendentInput = true;
-        reference.type = ascendentExpression.domainType;
-        return ascendentInputNode;
-      }
-      else if (ascendentExpression.ascendentExpression != null)
-      {
-        return resolve(reference, ascendentExpression.ascendentExpression);
-      }
 
-      if (ascendentExpression.indeterminateVariables.contains(this))
-      {
-        ascendentIndeterminate = true;
-        if (Expression.traceNodes)
+        int idx = e.indeterminateVariables.indexOf(this);
+        if (idx >= 0)
         {
-          log.debug(String.format("Resolving this VariableNode %s as as ascendent indeterminate",
-                                  this));
+          var v = e.indeterminateVariables.get(idx);
+          ascendentIndeterminate = true;
+          isIndeterminate        = true;
+          reference.type         = v.reference.type();
+          bound[0]               = v;
+          return true;
         }
-        return this;
-      }
-      for (var variable : ascendentExpression.indeterminateVariables)
 
-      {
-        if (variable.reference.equals(reference))
-        {
-
-          return variable;
-        }
-      }
-    }
-    for (var variable : expression.indeterminateVariables)
-
-    {
-      if (variable.reference.equals(reference))
-      {
-        if (Expression.traceNodes)
-        {
-          log.debug(String.format("Resolving this VariableNode %s as as indeterminate variable=%s in #%s",
-                                  this,
-                                  variable,
-                                  expression));
-        }
-        return variable;
-      }
-
+        return false;
+      });
     }
 
-    throwNewUndefinedReferenceException();
-    return null;
+    return bound[0];
   }
 
   public boolean resolveContextualVariable()
@@ -539,6 +506,8 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
   }
 
+// VariableNode.java
+// Replace the entire method
   public VariableNode<?, ?, ?> resolveReference()
   {
     var inputVariable = expression.independentVariable;
@@ -551,30 +520,28 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     if (isIndependent = isIndependent(inputVariable))
     {
       resolveIndependentVariable(inputVariable);
+      reference.type = expression.domainType;
+      return this;
     }
-    else
-    {
-      boolean isAscendenttIndependent  =
-                                      expression.anyAscendentIndependentVariableIsNamed(getName());
-      boolean isAscendentIndeterminant =
-                                       expression.anyAscendentIndeterminateVariableIsNamed(getName());
-      if (isIndeterminate = (!isAscendenttIndependent && !isAscendentIndeterminant))
-      {
-        declareThisToBeTheIndeterminantVariable();
-      }
-      else
-      {
 
-        var parentExpression = expression.ascendentExpression;
-
-        return resolve(reference, parentExpression);
-      }
-    }
-    if (expression.independentVariable != null && !isIndeterminate && !isIndependent
-                  && !ascendentInput)
+    int localIdx = expression.indeterminateVariables.indexOf(this);
+    if (localIdx >= 0)
     {
-      throwNewUndefinedReferenceException();
+      var v = expression.indeterminateVariables.get(localIdx);
+      isIndeterminate = true;
+      reference.type  = v.reference.type();
+      return this;
     }
+
+    var bound = resolve(reference, expression.ascendentExpression);
+    if (bound != null)
+    {
+      return this;
+    }
+
+    isIndeterminate = true;
+    reference.type  = expression.coDomainType;
+    declareThisToBeTheIndeterminantVariable();
     return this;
   }
 
@@ -604,7 +571,8 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                               System.identityHashCode(expression),
                               this,
                               expression,
-                              expression.indeterminateVariables, Utensils.stackTraceToString(new Throwable())));
+                              expression.indeterminateVariables,
+                              Utensils.stackTraceToString(new Throwable())));
 
     }
     expression.referencedVariables.put(reference.name, this);
@@ -649,8 +617,8 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public String toString()
   {
-    return reference.toString(); 
-    }
+    return reference.toString();
+  }
 
   public String toStringVerbose()
   {
