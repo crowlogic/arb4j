@@ -80,7 +80,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     super(expression);
     if (!functionForm)
     {
-      // Parse optional lambda: int(t➔... or int(...
+      // Parse optional lambda: λ➔ or just start with integrand
       String lambdaVar = null;
       int    savedPos  = expression.position;
       char   savedChar = expression.character;
@@ -91,30 +91,61 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
         expression.skipSpaces();
         if (expression.character == '➔')
         {
-          lambdaVar = maybeName; // Arrow present: t➔
+          lambdaVar = maybeName;
           expression.require('➔');
         }
         else
         {
-          // No arrow: rewind, parse integrand directly
           expression.position  = savedPos;
           expression.character = savedChar;
         }
       }
 
-      integrandNode = expression.resolve(); // Body: t^(5.3) or plain expr
+      integrandNode = expression.resolve();
 
-      // Parse variable after comma: dt or t=a..b
-      expression.require(',');
-
-      if (expression.nextCharacterIs('d'))
+      // After integrand, either ',' (new syntax) or 'd' (old syntax)
+      if (expression.character == ',')
       {
-        // Old syntax: dt∈(a,b)
+        // New syntax: int(t➔..., t=-1..1)
+        expression.require(',');
+
+        if (expression.nextCharacterIs('d'))
+        {
+          dvar                    = expression.parseName();
+          integrationVariableNode = new VariableNode<>(expression,
+                                                       new VariableReference<>(dvar),
+                                                       expression.position,
+                                                       false);
+          if (expression.nextCharacterIs('∈'))
+          {
+            lowerLimitNode = expression.require('(', '{').resolve();
+            upperLimitNode = expression.require(',', '…').resolve();
+            expression.require(')', '}');
+          }
+        }
+        else
+        {
+          dvar                    = expression.parseName();
+          integrationVariableNode = new VariableNode<>(expression,
+                                                       new VariableReference<>(dvar),
+                                                       expression.position,
+                                                       false);
+          if (expression.nextCharacterIs('='))
+          {
+            lowerLimitNode = expression.resolve();
+            upperLimitNode = expression.require('…').resolve();
+          }
+        }
+      }
+      else if (expression.character == 'd')
+      {
+        // Old syntax: ∫λ➔...dλ or ∫λ➔...dλ∈(a,b)
         dvar                    = expression.parseName();
         integrationVariableNode = new VariableNode<>(expression,
                                                      new VariableReference<>(dvar),
                                                      expression.position,
                                                      false);
+
         if (expression.nextCharacterIs('∈'))
         {
           lowerLimitNode = expression.require('(', '{').resolve();
@@ -124,29 +155,18 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       }
       else
       {
-        // New syntax: t=a..b
-        dvar                    = expression.parseName();
-        integrationVariableNode = new VariableNode<>(expression,
-                                                     new VariableReference<>(dvar),
-                                                     expression.position,
-                                                     false);
-        if (expression.nextCharacterIs('='))
-        {
-          lowerLimitNode = expression.resolve();
-          upperLimitNode = expression.require('…').resolve();
-        }
+        throw new CompilerException("Expected ',' or 'd' after integrand in " + expression);
       }
 
-      // Validate: if lambda present, names must match
+      // Validate arrow var matches d-var
       if (lambdaVar != null && !lambdaVar.equals(dvar))
       {
         throw new CompilerException(String.format(SYNTAXMSG, lambdaVar, dvar));
       }
-
     }
     else
     {
-      // functionForm: int(f, x=a..b) - unchanged
+      // functionForm: int(f, x=a..b)
       integrandNode = expression.resolve();
       var reference = expression.require(',').parseVariableReference();
       dvar                    = reference.name;
