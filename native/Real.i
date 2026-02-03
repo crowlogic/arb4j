@@ -311,9 +311,9 @@ import arb.utensils.Utensils;
     return result;
   }
   
-  public Real sub(Real that, int prec, Complex res)
+  public Complex sub(Real that, int prec, Complex res)
   {
-    return sub(that, prec, res.zero().re());
+    return res.set(this).sub(that,prec,res);
   }
     
   public Real digamma(int bits)
