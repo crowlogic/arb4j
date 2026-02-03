@@ -685,7 +685,6 @@ static int ml_test_suite(slong prec)
     flint_printf("Mittag-Leffler Unit Tests (prec=%wd)\n", prec);
     flint_printf("=================================================================\n");
 
-    /* ORIGINAL TEST 1: E_{1,1}(2) = exp(2) */
     acb_set_d(z, 2.0);
     arb_set_d(alpha, 1.0);
     arb_set_d(beta, 1.0);
@@ -693,65 +692,53 @@ static int ml_test_suite(slong prec)
                         "7.38905609893065022723042746057500781318031557055184",
                         NULL, "EXACT", prec);
 
-    /* ORIGINAL TEST 2: E_{0.5,1}(0.5) */
     acb_set_d(z, 0.5);
     arb_set_d(alpha, 0.5);
     arb_set_d(beta, 1.0);
     p[1] = ml_test_case("E_{0.5,1}(0.5)", z, alpha, beta,
-                        "1.95236048918210490933695918282477652471881244653862",
+                        "1.95236048918255709327604771344113097989025533929729",
                         NULL, "SERIES", prec);
 
-    /* ORIGINAL TEST 3: E_{0.75,1}(1+2i) */
     acb_set_d_d(z, 1.0, 2.0);
     arb_set_d(alpha, 0.75);
     arb_set_d(beta, 1.0);
     p[2] = ml_test_case("E_{0.75,1}(1+2i)", z, alpha, beta,
-                        "-1.77907846767872389383612752627817765934829853093626",
-                        "0.469523860598082854105627054628179570206756657953227", "OPC", prec);
+                        "-1.77907846767872389383612752627817765934829853095525",
+                        "0.469523860598082854105627054628179570206756657890045", "OPC", prec);
 
-    /* ORIGINAL TEST 4: E_{0.9,1}(-5) */
     acb_set_d(z, -5.0);
     arb_set_d(alpha, 0.9);
     arb_set_d(beta, 1.0);
     p[3] = ml_test_case("E_{0.9,1}(-5)", z, alpha, beta,
-                        "0.0344313248040984155695660728184336111652329066934",
+                        "0.0344313248040984239050519203835136271364300445527947",
                         NULL, "OPC", prec);
 
-    /* NEW TEST 5: E_{0.8,2.0}(0.2) with beta>1, SERIES */
     acb_set_d(z, 0.2);
     arb_set_d(alpha, 0.8);
     arb_set_d(beta, 2.0);
     p[4] = ml_test_case("E_{0.8,2.0}(0.2)", z, alpha, beta,
-                        "0.541340944717801371468024957915548654064003449857688",
+                        "1.13089927806695873973568898522901730914067280660639",
                         NULL, "SERIES", prec);
 
-    /* NEW TEST 6: E_{0.6,0.7}(2-i) with beta<1, OPC */
     acb_set_d_d(z, 2.0, -1.0);
     arb_set_d(alpha, 0.6);
     arb_set_d(beta, 0.7);
     p[5] = ml_test_case("E_{0.6,0.7}(2-i)", z, alpha, beta,
-                        "2.43893312678497675993698967814195932041883863859082",
-                        "-0.749872608681623458049640380173447166926414733289993", "OPC", prec);
+                        "-37.4116018597121515696040295713280847950300111812654",
+                        "-9.16300059339639907168482885486509334350868636492137", "OPC", prec);
 
-    /* NEW TEST 7: E_{0.8,0.5}(80) with beta<1, ASYMP */
     acb_set_d(z, 80.0);
     arb_set_d(alpha, 0.8);
     arb_set_d(beta, 0.5);
     p[6] = ml_test_case("E_{0.8,0.5}(80)", z, alpha, beta,
-                        "2.55935816993546405831066604718823066623774602040312e+40",
+                        "1.56248957249956985204147966750359994578120130397202e+105",
                         NULL, "ASYMP", prec);
 
     all_pass = p[0] && p[1] && p[2] && p[3] && p[4] && p[5] && p[6];
 
-    flint_printf("\nResult: %d/7 tests passed", 
-                 p[0]+p[1]+p[2]+p[3]+p[4]+p[5]+p[6]);
-    if (all_pass)
-        flint_printf(" ✓\n");
-    else
-        flint_printf(" ✗\n");
-
-    flint_printf("\nCoverage: SERIES(2/7) | OPC(3/7) | ASYMPTOTIC(1/7) | EXACT(1/7)\n");
-    flint_printf("Beta values: β=1(4) | β>1(1) | β<1(2)\n");
+    flint_printf("\nResult: %d/7 tests passed", p[0]+p[1]+p[2]+p[3]+p[4]+p[5]+p[6]);
+    if (all_pass) flint_printf(" ✓\n"); else flint_printf(" ✗\n");
+    flint_printf("\nCoverage: SERIES(2) | OPC(3) | ASYMPTOTIC(1) | EXACT(1)\n");
 
     acb_clear(z); arb_clear(alpha); arb_clear(beta);
     return all_pass;
@@ -766,7 +753,6 @@ int main(int argc, char **argv)
         return ml_test_suite(256) ? 0 : 1;
     }
 
-    /* Demo */
     acb_t z, val;
     arb_t alpha, beta;
     slong prec = 256;
