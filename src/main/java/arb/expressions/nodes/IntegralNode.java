@@ -1,20 +1,14 @@
 package arb.expressions.nodes;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
 
-import arb.Complex;
-import arb.Quaternion;
-import arb.Real;
+import arb.*;
 import arb.exceptions.CompilerException;
-import arb.expressions.Compiler;
-import arb.expressions.Expression;
-import arb.expressions.FunctionMapping;
-import arb.expressions.VariableReference;
+import arb.expressions.*;
 import arb.expressions.nodes.binary.MultiplicationNode;
 import arb.expressions.nodes.binary.SubtractionNode;
 import arb.functions.Function;
@@ -107,6 +101,9 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
         lowerLimitNode = expression.require('(', '{').resolve();
         upperLimitNode = expression.require(',', '…').resolve();
         expression.require(')', '}');
+
+        // Definite integral: remove dummy from stack after parse completes
+        expression.indeterminateVariables.remove(integrationVariableNode);
       }
     }
     else
@@ -125,6 +122,9 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       {
         lowerLimitNode = expression.resolve();
         upperLimitNode = expression.require('…').resolve();
+
+        // Definite integral: remove dummy from stack after parse completes
+        expression.indeterminateVariables.remove(integrationVariableNode);
       }
       expression.require(')');
     }
@@ -244,15 +244,22 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     return List.of(integrandNode, indefiniteIntegralNode, integrationVariableNode);
   }
 
+// IntegralNode.java  
+// Replace ENTIRE getDefiniteIntegralEvaluationNode()
   public Node<D, C, F> getDefiniteIntegralEvaluationNode()
   {
     if (definiteIntegralNode != null)
     {
       return definiteIntegralNode;
     }
+
+    // Temp clone isolates intermediates/clones from outer expression
+    Expression<D, C, F> evalExpr = expression.cloneExpression();
+    evalExpr.rootNode = indefiniteIntegralNode.spliceInto(evalExpr);
+    evalExpr.updateStringRepresentation();
+
     var    upperEval           = indefiniteIntegralNode.cloneNode();
     var    lowerEval           = indefiniteIntegralNode.cloneNode();
-
     String integrationVariable = integrationVariableNode.getName();
 
     var    upperResult         =
@@ -260,7 +267,11 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     var    lowerResult         =
                        lowerEval.substitute(integrationVariable, lowerLimitNode).simplify();
 
-    return definiteIntegralNode = upperResult.sub(lowerResult).simplify();
+    var    tempResult          = upperResult.sub(lowerResult).simplify();
+
+    // Splice ONLY final AST (no intermediates) back to outer
+    definiteIntegralNode = tempResult.spliceInto(expression);
+    return definiteIntegralNode;
   }
 
   @Override

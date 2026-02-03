@@ -21,9 +21,8 @@ public class RealFunctionSequenceTest extends
                              RealFunctionSequence.express("χ", "i➔p➔int(t➔t^(i+p), t=-1..1)");
     RealFunction         function = seq.apply(3);
     double               y        = function.eval(2.3);
-    assertTrue(Double.isNaN(y));
+    assertEquals(Double.NaN, y);
   }
-
 
   public static void testRealFunctionSequence()
   {
