@@ -2,8 +2,7 @@ package arb.expressions.nodes.binary;
 
 import org.objectweb.asm.MethodVisitor;
 
-import arb.AlgebraicNumber;
-import arb.Fraction;
+import arb.*;
 import arb.Integer;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
@@ -158,6 +157,14 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     if (type != null)
     {
       return type;
+    }
+
+    // If the expression is Complex-valued, exponentiation must stay Complex
+    // internally
+    // (do not fall back to AlgebraicNumber/Fraction/etc).
+    if (expression != null && Complex.class.equals(expression.coDomainType))
+    {
+      return type = Complex.class;
     }
 
     // Check if base is integer and exponent is a (fraction or integer to handle
