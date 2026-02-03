@@ -1068,7 +1068,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * @param paramName
    * @return
    */
-  private Node<D, C, F> parseLambda(String paramName)
+  public Node<D, C, F> parseLambda(String paramName)
   {
     if (trace)
     {
@@ -2259,7 +2259,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return coDomainType.isInterface();
   }
 
-  protected boolean isIdentifierCharacter()
+  public boolean isIdentifierCharacter()
   {
     return isIdentifyingCharacter(character, false) || isSubscript(character)
                   || isSuperscriptLetter(character);

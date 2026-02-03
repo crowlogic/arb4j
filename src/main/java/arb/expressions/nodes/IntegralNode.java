@@ -75,44 +75,81 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
          false);
   }
 
-// IntegralNode.java
-// Replace the entire constructor
   public IntegralNode(Expression<D, C, F> expression, boolean functionForm)
   {
     super(expression);
     if (!functionForm)
     {
-      String name = expression.parseName();
-      assert name != null : "name is null in " + expression;
-      integrationVariableNode = new VariableNode<>(expression,
-                                                   new VariableReference<>(name),
-                                                   expression.position,
-                                                   true);
+      // Parse optional lambda: int(t➔... or int(...
+      String lambdaVar = null;
+      int    savedPos  = expression.position;
+      char   savedChar = expression.character;
 
-      integrandNode           = expression.require('➔').resolve();
-      dvar                    = expression.require('d').parseName();
-      if (!dvar.equals(integrationVariableNode.getName()))
+      if (expression.isIdentifierCharacter())
       {
-        throw new CompilerException(String.format(SYNTAXMSG, integrationVariableNode, dvar));
+        String maybeName = expression.parseName();
+        expression.skipSpaces();
+        if (expression.character == '➔')
+        {
+          lambdaVar = maybeName; // Arrow present: t➔
+          expression.require('➔');
+        }
+        else
+        {
+          // No arrow: rewind, parse integrand directly
+          expression.position  = savedPos;
+          expression.character = savedChar;
+        }
       }
 
-      if (expression.nextCharacterIs('∈'))
-      {
-        lowerLimitNode = expression.require('(', '{').resolve();
-        upperLimitNode = expression.require(',', '…').resolve();
-        expression.require(')', '}');
+      integrandNode = expression.resolve(); // Body: t^(5.3) or plain expr
 
-        // Definite integral: remove dummy from stack after parse completes
-        expression.indeterminateVariables.remove(integrationVariableNode);
+      // Parse variable after comma: dt or t=a..b
+      expression.require(',');
+
+      if (expression.nextCharacterIs('d'))
+      {
+        // Old syntax: dt∈(a,b)
+        dvar                    = expression.parseName();
+        integrationVariableNode = new VariableNode<>(expression,
+                                                     new VariableReference<>(dvar),
+                                                     expression.position,
+                                                     false);
+        if (expression.nextCharacterIs('∈'))
+        {
+          lowerLimitNode = expression.require('(', '{').resolve();
+          upperLimitNode = expression.require(',', '…').resolve();
+          expression.require(')', '}');
+        }
       }
+      else
+      {
+        // New syntax: t=a..b
+        dvar                    = expression.parseName();
+        integrationVariableNode = new VariableNode<>(expression,
+                                                     new VariableReference<>(dvar),
+                                                     expression.position,
+                                                     false);
+        if (expression.nextCharacterIs('='))
+        {
+          lowerLimitNode = expression.resolve();
+          upperLimitNode = expression.require('…').resolve();
+        }
+      }
+
+      // Validate: if lambda present, names must match
+      if (lambdaVar != null && !lambdaVar.equals(dvar))
+      {
+        throw new CompilerException(String.format(SYNTAXMSG, lambdaVar, dvar));
+      }
+
     }
     else
     {
+      // functionForm: int(f, x=a..b) - unchanged
       integrandNode = expression.resolve();
-
       var reference = expression.require(',').parseVariableReference();
       dvar                    = reference.name;
-
       integrationVariableNode = new VariableNode<>(expression,
                                                    reference,
                                                    expression.position,
@@ -122,9 +159,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       {
         lowerLimitNode = expression.resolve();
         upperLimitNode = expression.require('…').resolve();
-
-        // Definite integral: remove dummy from stack after parse completes
-        expression.indeterminateVariables.remove(integrationVariableNode);
       }
       expression.require(')');
     }
