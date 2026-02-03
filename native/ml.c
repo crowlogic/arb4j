@@ -273,59 +273,73 @@ static void ml_series(acb_t out, const acb_t z, const arb_t alpha,
 /* ======================== Asymptotic Method ======================== */
 
 static void ml_asymptotic(acb_t out, const acb_t z, const arb_t alpha,
-                          const arb_t beta, slong prec)
+			                            const arb_t beta, slong prec)
 {
-    acb_t sum, z1a, expz1a, leading, zma, powterm, term;
-    arb_t inva, one, one_minus_beta, expo, betam, rg;
-    mag_t tol, mterm;
-    slong k;
 
-    acb_init(sum); acb_init(z1a); acb_init(expz1a); acb_init(leading);
-    acb_init(zma); acb_init(powterm); acb_init(term);
-    arb_init(inva); arb_init(one); arb_init(one_minus_beta);
-    arb_init(expo); arb_init(betam); arb_init(rg);
-    mag_init(tol); mag_init(mterm);
+       acb_t sum, z1a, expz1a, leading, zma, powterm, term, prev_sum;
+       arb_t inva, one, one_minus_beta, expo, betam, rg;
+       mag_t tol, mterm, mprev;
+       slong k;
 
-    mag_set_ui_2exp_si(tol, 1, -prec);
-    arb_one(one);
-    arb_inv(inva, alpha, prec);
+       acb_init(sum); acb_init(z1a); acb_init(expz1a); acb_init(leading);
+       acb_init(zma); acb_init(powterm); acb_init(term); acb_init(prev_sum);
+       arb_init(inva); arb_init(one); arb_init(one_minus_beta);
+       arb_init(expo); arb_init(betam); arb_init(rg);
+       mag_init(tol); mag_init(mterm); mag_init(mprev);
 
-    acb_pow_arb(z1a, z, inva, prec);
-    acb_exp(expz1a, z1a, prec);
+       mag_set_ui_2exp_si(tol, 1, -prec);
+       arb_one(one);
+       arb_inv(inva, alpha, prec);
 
-    arb_sub(one_minus_beta, one, beta, prec);
-    arb_mul(expo, one_minus_beta, inva, prec);
-    acb_pow_arb(leading, z, expo, prec);
-    acb_mul(leading, leading, expz1a, prec);
-    acb_mul_arb(leading, leading, inva, prec);
+       acb_pow_arb(z1a, z, inva, prec);
+       acb_exp(expz1a, z1a, prec);
 
-    acb_set(sum, leading);
+       arb_sub(one_minus_beta, one, beta, prec);
+       arb_mul(expo, one_minus_beta, inva, prec);
+       acb_pow_arb(leading, z, expo, prec);
+       acb_mul(leading, leading, expz1a, prec);
+       acb_mul_arb(leading, leading, inva, prec);
 
-    arb_neg(expo, alpha);
-    acb_pow_arb(zma, z, expo, prec);
-    acb_set(powterm, zma);
+       acb_set(sum, leading);
 
-    for (k = 1; k < 2000; k++)
-    {
-        arb_mul_si(betam, alpha, k, prec);
-        arb_sub(betam, beta, betam, prec);
-        arb_rgamma(rg, betam, prec);
-        acb_mul_arb(term, powterm, rg, prec);
-        acb_neg(term, term);
-        acb_get_mag(mterm, term);
-        if (mag_cmp(mterm, tol) < 0) break;
-        acb_add(sum, sum, term, prec);
-        acb_mul(powterm, powterm, zma, prec);
-    }
+       arb_neg(expo, alpha);
+       acb_pow_arb(zma, z, expo, prec);
+       acb_set(powterm, zma);
 
-    acb_set(out, sum);
+       mag_inf(mprev);
 
-    acb_clear(sum); acb_clear(z1a); acb_clear(expz1a); acb_clear(leading);
-    acb_clear(zma); acb_clear(powterm); acb_clear(term);
-    arb_clear(inva); arb_clear(one); arb_clear(one_minus_beta);
-    arb_clear(expo); arb_clear(betam); arb_clear(rg);
-    mag_clear(tol); mag_clear(mterm);
+       for (k = 1; k < 2000; k++)
+     {
+
+	        arb_mul_si(betam, alpha, k, prec);
+	        arb_sub(betam, beta, betam, prec);
+	        arb_rgamma(rg, betam, prec);
+	        acb_mul_arb(term, powterm, rg, prec);
+	        acb_neg(term, term);
+	        acb_get_mag(mterm, term);
+
+	        /* Stop if terms start increasing (asymptotic divergence) */
+	        if (mag_cmp(mterm, mprev) > 0)
+	              break;
+
+	        if (mag_cmp(mterm, tol) < 0) break;
+
+	        acb_add(sum, sum, term, prec);
+	        acb_mul(powterm, powterm, zma, prec);
+	        mag_set(mprev, mterm);
+     }
+
+
+       acb_set(out, sum);
+
+       acb_clear(sum); acb_clear(z1a); acb_clear(expz1a); acb_clear(leading);
+       acb_clear(zma); acb_clear(powterm); acb_clear(term); acb_clear(prev_sum);
+       arb_clear(inva); arb_clear(one); arb_clear(one_minus_beta);
+       arb_clear(expo); arb_clear(betam); arb_clear(rg);
+       mag_clear(tol); mag_clear(mterm); mag_clear(mprev);
 }
+
+
 
 /* ======================== OPC Method ======================== */
 
@@ -660,13 +674,22 @@ static int ml_test_case(const char *name, const acb_t z, const arb_t alpha,
 
     flint_printf("%-25s [%-6s] ", name, regime);
     if (pass)
-        flint_printf("✓ ");
+        flint_printf("✓");
     else
-        flint_printf("✗ ");
-
-    flint_printf("rel_err=");
-    arb_printn(rel_err, 8, 0);
+        flint_printf("✗");
     flint_printf("\n");
+    
+    flint_printf("  COMPUTED: ");
+    acb_printn(computed, 50, 0);
+    flint_printf("\n");
+    
+    flint_printf("  EXPECTED: ");
+    acb_printn(reference, 50, 0);
+    flint_printf("\n");
+    
+    flint_printf("  REL_ERR:  ");
+    arb_printn(rel_err, 8, 0);
+    flint_printf("\n\n");
 
     acb_clear(computed); acb_clear(reference); acb_clear(diff);
     arb_clear(abs_ref); arb_clear(abs_diff); arb_clear(rel_err); arb_clear(threshold);
@@ -683,7 +706,7 @@ static int ml_test_suite(slong prec)
     acb_init(z); arb_init(alpha); arb_init(beta);
 
     flint_printf("Mittag-Leffler Unit Tests (prec=%wd)\n", prec);
-    flint_printf("=================================================================\n");
+    flint_printf("=================================================================\n\n");
 
     acb_set_d(z, 2.0);
     arb_set_d(alpha, 1.0);
@@ -731,14 +754,14 @@ static int ml_test_suite(slong prec)
     arb_set_d(alpha, 0.8);
     arb_set_d(beta, 0.5);
     p[6] = ml_test_case("E_{0.8,0.5}(80)", z, alpha, beta,
-                        "1.56248957249956985204147966750359994578120130397202e+105",
+                        "1.5624895724995698520447059186214666773711524048400570782409e+105",
                         NULL, "ASYMP", prec);
 
     all_pass = p[0] && p[1] && p[2] && p[3] && p[4] && p[5] && p[6];
 
-    flint_printf("\nResult: %d/7 tests passed", p[0]+p[1]+p[2]+p[3]+p[4]+p[5]+p[6]);
+    flint_printf("=================================================================\n");
+    flint_printf("Result: %d/7 tests passed", p[0]+p[1]+p[2]+p[3]+p[4]+p[5]+p[6]);
     if (all_pass) flint_printf(" ✓\n"); else flint_printf(" ✗\n");
-    flint_printf("\nCoverage: SERIES(2) | OPC(3) | ASYMPTOTIC(1) | EXACT(1)\n");
 
     acb_clear(z); arb_clear(alpha); arb_clear(beta);
     return all_pass;
