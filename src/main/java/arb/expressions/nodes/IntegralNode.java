@@ -104,13 +104,14 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       integrandNode = expression.resolve();
 
       // After integrand, either ',' (new syntax) or 'd' (old syntax)
-      if (expression.character == ',')
+      if (expression.nextCharacterIs(','))
       {
         // New syntax: int(t➔..., t=-1..1)
         expression.require(',');
 
         if (expression.nextCharacterIs('d'))
         {
+          expression.require('d');
           dvar                    = expression.parseName();
           integrationVariableNode = new VariableNode<>(expression,
                                                        new VariableReference<>(dvar),
@@ -137,9 +138,10 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
           }
         }
       }
-      else if (expression.character == 'd')
+      else if (expression.nextCharacterIs('d'))
       {
         // Old syntax: ∫λ➔...dλ or ∫λ➔...dλ∈(a,b)
+        expression.require('d');
         dvar                    = expression.parseName();
         integrationVariableNode = new VariableNode<>(expression,
                                                      new VariableReference<>(dvar),
