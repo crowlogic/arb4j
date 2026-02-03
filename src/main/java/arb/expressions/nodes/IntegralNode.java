@@ -89,10 +89,10 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       {
         String maybeName = expression.parseName();
         expression.skipSpaces();
-        if (expression.character == '➔')
+        if (expression.nextCharacterIs('➔'))
         {
           lambdaVar = maybeName;
-          expression.require('➔');
+          // nextCharacterIs already consumed '➔'
         }
         else
         {
@@ -107,11 +107,11 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       if (expression.nextCharacterIs(','))
       {
         // New syntax: int(t➔..., t=-1..1)
-        expression.require(',');
+        // nextCharacterIs already consumed ','
 
         if (expression.nextCharacterIs('d'))
         {
-          expression.require('d');
+          // nextCharacterIs already consumed 'd'
           dvar                    = expression.parseName();
           integrationVariableNode = new VariableNode<>(expression,
                                                        new VariableReference<>(dvar),
@@ -141,7 +141,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       else if (expression.nextCharacterIs('d'))
       {
         // Old syntax: ∫λ➔...dλ or ∫λ➔...dλ∈(a,b)
-        expression.require('d');
+        // nextCharacterIs already consumed 'd'
         dvar                    = expression.parseName();
         integrationVariableNode = new VariableNode<>(expression,
                                                      new VariableReference<>(dvar),
