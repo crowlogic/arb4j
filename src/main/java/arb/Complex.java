@@ -70,6 +70,11 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
 
   static { System.loadLibrary( "arblib" ); }
 
+  public Complex pow(Integer operand, int prec)
+  {
+    return pow(operand,prec,this);
+  }
+
   public Complex arcsin(int bits, Complex value)
   {
     this.bits = bits;
@@ -1946,11 +1951,6 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
 
   public Complex() {
     this(arblibJNI.new_Complex(), true);
-  }
-
-  public Complex pow(Integer operand, int prec)
-  {
-    return pow(operand,prec,this);
   }
 
 }
