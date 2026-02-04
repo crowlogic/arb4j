@@ -3419,6 +3419,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   @Override
   public String toString()
   {
+
     String str = null;
     if (Object.class.equals(domainType))
     {

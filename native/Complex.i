@@ -862,11 +862,12 @@ import arb.functions.complex.ComplexNullaryFunction;
     return muli(this);
   }
   
-  public Complex tan(int prec, Complex s)
+  public Complex tan(int prec, Complex result)
   {
-    arblib.acb_tan(s, this, prec);
-    return this;
+    arblib.acb_tan(result, this, prec);
+    return result;
   }
+
 
   public Complex neg()
   {

@@ -568,12 +568,11 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (Expression.traceNodes)
     {
-      log.debug(String.format("Expression(#%s) declaring %s to be the indeterminant in %s by pushing it to the top of the stack %s\ncalled from %s\n",
+      log.debug(String.format("Expression(#%s) declaring %s to be the indeterminant in %s by pushing it to the top of the stack %s\n",
                               System.identityHashCode(expression),
                               this,
                               expression,
-                              expression.indeterminateVariables,
-                              Utensils.stackTraceToString(new Throwable())));
+                              expression.indeterminateVariables));
 
     }
     expression.referencedVariables.put(reference.name, this);
