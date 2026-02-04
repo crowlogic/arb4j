@@ -1,9 +1,12 @@
 package arb.functions.integer;
 
+import java.io.File;
+
 import arb.Complex;
 import arb.Real;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ComplexNullaryFunction;
+import arb.utensils.Utensils;
 import junit.framework.TestCase;
 
 public class ComplexFunctionSequenceTest extends
@@ -18,6 +21,8 @@ public class ComplexFunctionSequenceTest extends
                                 ComplexFunctionSequence.express("χ", "i➔p➔int(t➔t^(i+p), t=-1..1)");
     ComplexFunction         function = seq.apply(3);
     Complex                 y        = function.eval(2.3, new Complex());
+    System.out.println( "Wrote " + Utensils.saveToYamlFormat(new File( "chi3.yaml"), function ) );
+
     assertEquals(correct.toString(),
                  y.toString());
   }

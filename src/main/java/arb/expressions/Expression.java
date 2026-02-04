@@ -24,7 +24,6 @@ import arb.*;
 import arb.Integer;
 import arb.exceptions.CompilerException;
 import arb.expressions.context.Dependency;
-import arb.expressions.context.TopologicalSorter;
 import arb.expressions.nodes.*;
 import arb.expressions.nodes.binary.*;
 import arb.expressions.nodes.nary.*;
@@ -638,20 +637,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                        ascendentExpression);
     expr.context                = context;
     expr.independentVariable    = independentVariable;
-    
+
     // Deep copy the stack: clone each VariableNode
     expr.indeterminateVariables = new Stack<>();
-    for (VariableNode<D, C, F> var : indeterminateVariables) {
+    for (VariableNode<D, C, F> var : indeterminateVariables)
+    {
       expr.indeterminateVariables.push((VariableNode<D, C, F>) var.spliceInto(expr));
     }
-    
-    expr.functionNameSpecified  = functionNameSpecified;
-    expr.position               = position;
-    expr.character              = character;
-    expr.previousCharacter      = previousCharacter;
+
+    expr.functionNameSpecified = functionNameSpecified;
+    expr.position              = position;
+    expr.character             = character;
+    expr.previousCharacter     = previousCharacter;
     return expr;
   }
-
 
   @SuppressWarnings("unchecked")
   public <G extends Function<?, ?>, E extends Expression<?, ?, ? extends G>> E cloneExpression()
@@ -852,7 +851,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     context.populateFunctionReferenceGraph();
     dependencies =
-                 TopologicalSorter.determineDependencyOrderUsingDepthFirstSearch(context.functionReferenceGraph,
+                 Utensils.determineDependencyOrderUsingDepthFirstSearch(context.functionReferenceGraph,
                                                                                  referencedFunctions);
 
     if (saveGraphs)
@@ -862,9 +861,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // Declare functions in dependency order
     for (Dependency dependency : dependencies)
     {
-      String                   dependencyVariableName = dependency.variableName;
-      FunctionMapping<?, ?, ?> functionMapping        =
-                                               referencedFunctions.get(dependencyVariableName);
+      String dependencyVariableName = dependency.variableName;
+      var    functionMapping        = referencedFunctions.get(dependencyVariableName);
 
       if (functionMapping != null)
       {

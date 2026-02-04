@@ -32,7 +32,6 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.SerializedExpression;
 import arb.expressions.context.SerializedContextVariable;
-import arb.expressions.context.TopologicalSorter;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.*;
@@ -356,7 +355,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
   {
     // this needs to create the graph of the AST, not the functions within a Context
     BufferedImage graphImage =
-                             TopologicalSorter.createDependencyGraphImage(expr.context.functionReferenceGraph);
+                             Utensils.createDependencyGraphImage(expr.context.functionReferenceGraph);
     ImageViewer   view       = new ImageViewer(expr.className,
                                                graphImage);
     view.setVisible(true);

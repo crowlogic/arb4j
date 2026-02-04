@@ -1,5 +1,7 @@
 package arb.utensils;
 
+import static guru.nidi.graphviz.model.Factory.*;
+
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -9,9 +11,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -32,8 +33,14 @@ import org.yaml.snakeyaml.constructor.Constructor;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.FunctionMapping;
 import arb.expressions.SerializedExpression;
+import arb.expressions.context.Dependency;
 import arb.viz.WindowManager;
+import guru.nidi.graphviz.engine.Format;
+import guru.nidi.graphviz.engine.Graphviz;
+import guru.nidi.graphviz.model.MutableGraph;
+import guru.nidi.graphviz.model.MutableNode;
 import javafx.application.Platform;
 
 /**
@@ -262,7 +269,7 @@ public class Utensils
 
   }
 
-  public static void saveToYamlFormat(File yamlFile, Object... information)
+  public static File saveToYamlFormat(File yamlFile, Object... information)
   {
     try
     {
@@ -282,6 +289,7 @@ public class Utensils
       });
       throwOrWrap(e);
     }
+    return yamlFile;
   }
 
   public static Yaml newYaml()
@@ -318,6 +326,104 @@ public class Utensils
       }
     }
     return null;
+  }
+
+  public static BufferedImage createDependencyGraphImage(Map<String, Dependency> dependencies)
+  {
+    MutableGraph g = mutGraph("DependencyGraph").setDirected(true);
+  
+    dependencies.forEach((name, dep) ->
+    {
+      MutableNode node = mutNode(name);
+      dep.dependencies.forEach(d -> node.addLink(to(mutNode(d))));
+      g.add(node);
+    });
+    BufferedImage image;
+    try
+    {
+      image = Graphviz.fromGraph(g).render(Format.PNG).toImage();
+    }
+    catch (Exception e)
+    {
+      throwOrWrap(e);
+      return null;
+    }
+    return image;
+  }
+
+  public static List<Dependency> determineDependencyOrderUsingDepthFirstSearch(Map<String,
+                Dependency> dependencies, HashMap<String, FunctionMapping<?, ?, ?>> mappings)
+  {
+    List<Dependency> initializationOrder = new ArrayList<>();
+    Set<String>      processedVariables  = new HashSet<>();
+  
+    // Build reverse dependency graph
+    dependencies.forEach((name,
+                          info) -> info.dependencies.forEach(dep -> dependencies.get(dep).provisions.add(name)));
+  
+    // Do Depth-First-Search traversal using dependencies
+    dependencies.keySet()
+                .stream()
+                .filter(variable -> !processedVariables.contains(variable))
+                .forEach(variable -> depthFirstDependencySearch(variable,
+                                                                dependencies,
+                                                                processedVariables,
+                                                                initializationOrder));
+  
+    Collections.reverse(initializationOrder);
+  
+    return initializationOrder;
+  }
+
+  private static void depthFirstDependencySearch(String variable,
+                                                 Map<String, Dependency> dependencies,
+                                                 Set<String> processedVariables,
+                                                 List<Dependency> initializationOrder)
+  {
+  
+    if (processedVariables.contains(variable))
+      return;
+  
+    processedVariables.add(variable);
+    Dependency info = dependencies.get(variable);
+    for (String dep : info.dependencies)
+    {
+      depthFirstDependencySearch(dep, dependencies, processedVariables, initializationOrder);
+    }
+  
+    initializationOrder.add(info);
+  }
+
+  public static String toDotFormatReversed(Map<String, Dependency> graph)
+  {
+    StringBuilder dot = new StringBuilder();
+    dot.append("digraph DependencyGraph {\n");
+    dot.append(" rankdir=LR;\n");
+    dot.append(" node [shape=box];\n\n");
+  
+    for (Map.Entry<String, Dependency> entry : graph.entrySet())
+    {
+      String node = entry.getKey();
+      for (String dependency : entry.getValue().dependencies)
+      {
+        dot.append(String.format(" \"%s\" -> \"%s\";\n", dependency, node));
+      }
+    }
+  
+    dot.append("}\n");
+    return dot.toString();
+  }
+
+  public static void saveToDotFile(String dotContent, String filePath)
+  {
+    try ( PrintWriter out = new PrintWriter(filePath))
+    {
+      out.println(dotContent);
+    }
+    catch (FileNotFoundException e)
+    {
+      e.printStackTrace();
+    }
   }
 
 }

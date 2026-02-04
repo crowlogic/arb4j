@@ -22,7 +22,6 @@ import arb.OrderedPair;
 import arb.exceptions.CompilerException;
 import arb.expressions.context.Dependency;
 import arb.expressions.context.FunctionMappings;
-import arb.expressions.context.TopologicalSorter;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
@@ -404,7 +403,7 @@ public class Context implements
     if (sortedMap.values().stream().mapToInt(f -> f.dependencies.size()).sum() > 0)
     {
       filename = sortedMap.keySet().stream().collect(Collectors.joining()) + ".dot";
-      TopologicalSorter.saveToDotFile(TopologicalSorter.toDotFormatReversed(sortedMap), filename);
+      Utensils.saveToDotFile(Utensils.toDotFormatReversed(sortedMap), filename);
     }
     return filename;
   }
