@@ -47,7 +47,7 @@ public interface RealPolynomialNullaryFunction extends
     return express(null, expression, context);
   }
 
-  public static NullaryFunction<RealPolynomial> express(String expression)
+  public static RealPolynomialNullaryFunction express(String expression)
   {
     return express(null, expression, null);
   }

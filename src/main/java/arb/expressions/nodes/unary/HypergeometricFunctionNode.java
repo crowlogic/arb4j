@@ -373,28 +373,34 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                                  β,
                                  arg));
     }
+
+    // Generate α
     α.generate(mv, scalarType);
+
+    // Generate β
     β.generate(mv, scalarType);
-    mv.visitLdcInsn(arg.toString());
-    invokeArgumentParsingMethod(mv);
-    invokeHypergeometricFunctionInitializationMethod(mv);
-    return mv;
-  }
 
-  protected void invokeArgumentParsingMethod(MethodVisitor mv)
-  {
-    invokeStaticMethod(mv, nullaryFunctionClass, "parse", Expression.class, String.class);
-  }
+    // CRITICAL CHANGE: Compile arg to element or nullaryFunction and load field
+    if (dependsOnInput)
+    {
+      // Input-dependent: compile as Function<C,C>
+      expression.loadThisFieldOntoStack(mv, elementFieldName, elementType);
+    }
+    else
+    {
+      // Constant: compile as N (NullaryFunction)
+      expression.loadThisFieldOntoStack(mv, elementFieldName, nullaryFunctionClass);
+    }
 
-  protected void invokeHypergeometricFunctionInitializationMethod(MethodVisitor mv)
-  {
+    // Call init(scalarType, scalarType, Function<C,C> or N)
     invokeVirtualMethod(mv,
                         hypergeometricFunctionClass,
                         "init",
                         hypergeometricFunctionClass,
                         scalarType,
                         scalarType,
-                        Expression.class);
+                        dependsOnInput ? Function.class : nullaryFunctionClass);
+    return mv;
   }
 
   protected void loadHypergeometricFunctionOntoStack(MethodVisitor mv)

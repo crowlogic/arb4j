@@ -1,14 +1,5 @@
 package arb.functions.polynomials;
 
-import arb.Integer;
-import arb.Polynomial;
-import arb.Real;
-import arb.RealPolynomial;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
-import arb.expressions.Expression;
-import arb.functions.HypergeometricFunction;
-
 /**
  * Represents a hypergeometric {@link Real}-valued {@link Polynomial}, that is,
  * a {@link RealPolynomial}, defined by a finite hypergeometric series as <br>
@@ -46,24 +37,49 @@ import arb.functions.HypergeometricFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
+import arb.*;
+import arb.functions.Function;
+import arb.functions.HypergeometricFunction;
+
 public class RealHypergeometricPolynomialFunction extends
                                                   HypergeometricFunction<Real, RealPolynomial,
-                                                  RealPolynomialNullaryFunction>
+                                                                RealPolynomialNullaryFunction>
 {
 
+  // CHANGE: init for constant arg
   public RealHypergeometricPolynomialFunction
-         init(Real alpha,
-              Real beta,
-              Expression<Object, RealPolynomial, RealPolynomialNullaryFunction> arg)
+         init(Fraction α, Fraction β, RealPolynomialNullaryFunction constantArg)
   {
-    init(Real.class,
-         RealPolynomial.class,
-         RealPolynomialNullaryFunction.class,
-         alpha,
-         beta,
-         arg);
+    super.init(Real.class, RealPolynomial.class, RealPolynomialNullaryFunction.class, α, β, constantArg);
     return this;
   }
 
+  // CHANGE: init for input-dependent arg
+  public RealHypergeometricPolynomialFunction
+         init(Fraction α, Fraction β, Function<RealPolynomial, RealPolynomial> inputDependentArg)
+  {
+    super.init(Real.class, RealPolynomial.class, RealPolynomialNullaryFunction.class, α, β, inputDependentArg);
+    return this;
+  }
+
+  public RealHypergeometricPolynomialFunction
+         init(Real numerator, Real denominator, RealPolynomialNullaryFunction constantArg)
+  {
+    var n = new Fraction();
+    var d = new Fraction();
+    n.set(numerator);
+    d.set(denominator);
+    return init(n, d, constantArg);
+  }
+
+  public RealHypergeometricPolynomialFunction
+         init(Real numerator, Real denominator, Function<RealPolynomial, RealPolynomial> inputDependentArg)
+  {
+    var n = new Fraction();
+    var d = new Fraction();
+    n.set(numerator);
+    d.set(denominator);
+    return init(n, d, inputDependentArg);
+  }
 
 }

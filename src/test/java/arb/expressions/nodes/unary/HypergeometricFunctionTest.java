@@ -37,7 +37,7 @@ public class HypergeometricFunctionTest extends
                 RealPolynomialNullaryFunction.class,
                 Real.newVector(-2, 3.5, 1),
                 Real.newVector(2, 4),
-                RealPolynomialNullaryFunction.parse("1/2-x/2"));
+                RealPolynomialNullaryFunction.express("1/2-x/2"));
 
       RealPolynomial expressed = poly.evaluate(bits, new RealPolynomial());
       assertEquals("0.065625*x² + 0.30625*x + 0.628125", expressed.toString());
@@ -155,7 +155,7 @@ public class HypergeometricFunctionTest extends
    */
   public static void testSum()
   {
-    var arg = RealPolynomialNullaryFunction.parse("x");
+    RealPolynomialNullaryFunction arg = RealPolynomialNullaryFunction.express("x");
 
     try ( RealHypergeometricPolynomialFunction F = new RealHypergeometricPolynomialFunction();
           RealPolynomial y = new RealPolynomial();)
