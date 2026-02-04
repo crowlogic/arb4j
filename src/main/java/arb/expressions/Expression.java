@@ -15,6 +15,10 @@ import java.util.function.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.jetbrains.java.decompiler.api.Decompiler;
+import org.jetbrains.java.decompiler.main.decompiler.DirectoryResultSaver;
+import org.jetbrains.java.decompiler.main.decompiler.PrintStreamLogger;
+import org.jetbrains.java.decompiler.main.extern.IFernflowerPreferences;
 import org.objectweb.asm.*;
 import org.objectweb.asm.util.TraceClassVisitor;
 import org.slf4j.Logger;
@@ -644,11 +648,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       // Create new VariableNode directly without calling resolveReference again
       VariableNode<D, C, F> cloned = new VariableNode<>(expr,
-                                                         var.reference.spliceInto(expr),
-                                                         var.position,
-                                                         false);  // ← resolve=false!
+                                                        var.reference.spliceInto(expr),
+                                                        var.position,
+                                                        false); // ← resolve=false!
       cloned.isIndeterminate = var.isIndeterminate;
-      cloned.isIndependent = var.isIndependent;
+      cloned.isIndependent   = var.isIndependent;
       expr.indeterminateVariables.push(cloned);
     }
 
@@ -3276,6 +3280,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       File file = new File(compiledClassDir,
                            className + ".class");
       writeBytecodes(file);
+
+      Decompiler decompiler =
+                            new Decompiler.Builder().inputs(file)
+                                                    .output(new DirectoryResultSaver(compiledClassDir))
+                                                    .option(IFernflowerPreferences.INCLUDE_ENTIRE_CLASSPATH,
+                                                            true)
+                                                    .logger(new PrintStreamLogger(System.err))
+                                                    .build();
+
+      decompiler.decompile();
+
     }
     return this;
   }
@@ -3446,7 +3461,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (rootNode == null)
     {
-      
+
       return this;
     }
     if (independentVariable != null)
