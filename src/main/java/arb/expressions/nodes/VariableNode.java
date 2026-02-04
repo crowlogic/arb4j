@@ -1,8 +1,6 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.cast;
-import static arb.expressions.Compiler.loadInputParameter;
-import static arb.expressions.Compiler.loadResultParameter;
+import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 
@@ -19,10 +17,7 @@ import arb.Integer;
 import arb.Real;
 import arb.exceptions.CompilerException;
 import arb.exceptions.UndefinedReferenceException;
-import arb.expressions.Compiler;
-import arb.expressions.Context;
-import arb.expressions.Expression;
-import arb.expressions.VariableReference;
+import arb.expressions.*;
 import arb.expressions.nodes.nary.ProductNode;
 import arb.functions.Function;
 import arb.utensils.Utensils;
@@ -421,34 +416,44 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
 // VariableNode.java
-// Replace the entire method
-  private VariableNode<?, ?, ?> resolve(VariableReference<D, R, F> ref, Expression<?, ?, ?> asc)
+
+// Replace this helper - now checks current expression first, then ancestors
+  private VariableNode<?, ?, ?> resolve(VariableReference<D, R, F> ref, Expression<?, ?, ?> expr)
   {
     final VariableNode<?, ?, ?>[] bound =
     { null };
 
-    if (asc != null)
+    if (expr != null)
     {
-      asc.acceptUntil(e ->
+      expr.acceptUntil(e ->
       {
+        // 1) Check independent variable in this scope
         var iv = e.independentVariable;
         if (iv != null && ref.equals(iv.reference))
         {
-          ascendentInput = true;
+          if (e != expression)
+          {
+            ascendentInput = true;
+          }
           reference.type = e.domainType;
           bound[0]       = iv;
           return true;
         }
 
-        int idx = e.indeterminateVariables.indexOf(this);
-        if (idx >= 0)
+        // 2) Check indeterminates in this scope
+        for (var v : e.indeterminateVariables)
         {
-          var v = e.indeterminateVariables.get(idx);
-          ascendentIndeterminate = true;
-          isIndeterminate        = true;
-          reference.type         = v.reference.type();
-          bound[0]               = v;
-          return true;
+          if (ref.equals(v.reference))
+          {
+            if (e != expression)
+            {
+              ascendentIndeterminate = true;
+            }
+            isIndeterminate = true;
+            reference.type  = v.reference.type();
+            bound[0]        = v;
+            return true;
+          }
         }
 
         return false;
@@ -506,17 +511,20 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
   }
 
-// VariableNode.java
-// Replace the entire method
+//VariableNode.java
+
+//Replace this method - now step 3 is gone
   public VariableNode<?, ?, ?> resolveReference()
   {
     var inputVariable = expression.independentVariable;
 
+    // 1) Context variable
     if (resolveContextualVariable())
     {
       return this;
     }
 
+    // 2) Independent variable
     if (isIndependent = isIndependent(inputVariable))
     {
       resolveIndependentVariable(inputVariable);
@@ -524,21 +532,14 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return this;
     }
 
-    int localIdx = expression.indeterminateVariables.indexOf(this);
-    if (localIdx >= 0)
-    {
-      var v = expression.indeterminateVariables.get(localIdx);
-      isIndeterminate = true;
-      reference.type  = v.reference.type();
-      return this;
-    }
-
-    var bound = resolve(reference, expression.ascendentExpression);
+    // 3) Bind in current or ancestor scope (combined)
+    var bound = resolve(reference, expression);
     if (bound != null)
     {
       return this;
     }
 
+    // 4) New indeterminate here
     isIndeterminate = true;
     reference.type  = expression.coDomainType;
     declareThisToBeTheIndeterminantVariable();
