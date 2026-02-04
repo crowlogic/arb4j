@@ -329,20 +329,25 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       α.generate(mv, scalarType);
       β.generate(mv, scalarType);
 
-      // MUST use the mapping's actual type - NOT argFunctionClass (interface)
+      // Load the field with its actual declared type
       Class<?> actualFieldType = argFunctionMapping.type();
       expression.loadThisFieldOntoStack(mv, argFunctionFieldName, actualFieldType);
 
-      // But for invokeVirtualMethod, use the interface that init() expects
+      // For the init() method signature - must match what the method actually declares:
+      // - Constant: uses nullaryFunctionClass (e.g., ComplexRationalNullaryFunction)
+      // - Input-dependent: uses Function.class (the raw interface, since method uses Function<X,X>)
+      Class<?> initMethodArgType = argDependsOnInput ? Function.class : nullaryFunctionClass;
+
       invokeVirtualMethod(mv,
                           hypergeometricFunctionClass,
                           "init",
                           hypergeometricFunctionClass,
                           scalarType,
                           scalarType,
-                          argFunctionClass);  // interface is OK for method signature
+                          initMethodArgType);
       return mv;
   }
+
 
 
   protected void loadHypergeometricFunctionOntoStack(MethodVisitor mv)
