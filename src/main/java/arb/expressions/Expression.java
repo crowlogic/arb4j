@@ -851,7 +851,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     context.populateFunctionReferenceGraph();
     dependencies =
-                 Utensils.determineDependencyOrderUsingDepthFirstSearch(context.functionReferenceGraph,
+                 Utensils.sortDependencies(context.functionReferenceGraph,
                                                                                  referencedFunctions);
 
     if (saveGraphs)

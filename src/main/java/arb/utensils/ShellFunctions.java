@@ -256,7 +256,7 @@ public class ShellFunctions
   private static ImageViewer showFormula(String typeset, int size)
   {
     var imageViewer = new ImageViewer(typeset,
-                                      Utensils.renderFormula(typeset, size));
+                                      Utensils.renderLatexFormulaAsBufferedImage(typeset, size));
     imageViewer.setVisible(true);
     return imageViewer;
   }

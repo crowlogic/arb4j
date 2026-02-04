@@ -403,7 +403,7 @@ public class Context implements
     if (sortedMap.values().stream().mapToInt(f -> f.dependencies.size()).sum() > 0)
     {
       filename = sortedMap.keySet().stream().collect(Collectors.joining()) + ".dot";
-      Utensils.saveToDotFile(Utensils.toDotFormatReversed(sortedMap), filename);
+      Utensils.saveStringToFile(Utensils.toDotFormatReversed(sortedMap), filename);
     }
     return filename;
   }

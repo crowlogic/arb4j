@@ -48,7 +48,7 @@ public final class TypeSettingCellFactory<D, C, F extends Function<? extends D, 
           Image image = cache.get(item);
           if (image == null)
           {
-            BufferedImage bufferedImage = Utensils.renderFormula(item, 16);
+            BufferedImage bufferedImage = Utensils.renderLatexFormulaAsBufferedImage(item, 16);
             cache.put(item, image = SwingFXUtils.toFXImage(bufferedImage, null));
           }
 

@@ -4,15 +4,8 @@ import static guru.nidi.graphviz.model.Factory.*;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.*;
-import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -21,14 +14,9 @@ import javax.swing.Icon;
 import javax.swing.JLabel;
 
 import org.objectweb.asm.Type;
-import org.scilab.forge.jlatexmath.NewCommandMacro;
-import org.scilab.forge.jlatexmath.TeXConstants;
-import org.scilab.forge.jlatexmath.TeXFormula;
-import org.scilab.forge.jlatexmath.TeXIcon;
-import org.yaml.snakeyaml.DumperOptions;
+import org.scilab.forge.jlatexmath.*;
+import org.yaml.snakeyaml.*;
 import org.yaml.snakeyaml.DumperOptions.NonPrintableStyle;
-import org.yaml.snakeyaml.LoaderOptions;
-import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -116,13 +104,10 @@ public class Utensils
     return input.substring(0, lastIndex + 1);
   }
 
-  public static File save(BufferedImage image, String file)
+  public static File saveBufferedImageToPNGFile(BufferedImage image, String file)
   {
-
-    // Create the output file
     var outputFile = new File(file);
 
-    // Write the image to the output file
     try
     {
       ImageIO.write(image, "png", outputFile);
@@ -135,7 +120,7 @@ public class Utensils
     return outputFile;
   }
 
-  public static BufferedImage image(Icon icon)
+  public static BufferedImage convertIconToBufferedImage(Icon icon)
   {
     var image = new BufferedImage(icon.getIconWidth(),
                                   icon.getIconHeight(),
@@ -146,14 +131,14 @@ public class Utensils
     return image;
   }
 
-  public static void saveFormula(String formula, String path, int size) throws IOException
+  public static void saveLatexFormulaToPNGFile(String formula, String path, int size) throws IOException
   {
-    var bimg = renderFormula(formula, size);
+    var bimg = renderLatexFormulaAsBufferedImage(formula, size);
     var out  = new File(path);
     ImageIO.write(bimg, "png", out);
   }
 
-  public static BufferedImage renderFormula(String formula, int size)
+  public static BufferedImage renderLatexFormulaAsBufferedImage(String formula, int size)
   {
     var tf   = new TeXFormula(formula);
     var ti   = tf.createTeXIcon(TeXConstants.STYLE_DISPLAY, size);
@@ -250,7 +235,6 @@ public class Utensils
 
     T    loaded = yaml.load(new FileReader(file));
 
-    System.out.println("Loaded " + loaded);
     return loaded;
   }
 
@@ -328,10 +312,10 @@ public class Utensils
     return null;
   }
 
-  public static BufferedImage createDependencyGraphImage(Map<String, Dependency> dependencies)
+  public static BufferedImage createDependencyGraphBufferedImage(Map<String, Dependency> dependencies)
   {
     MutableGraph g = mutGraph("DependencyGraph").setDirected(true);
-  
+
     dependencies.forEach((name, dep) ->
     {
       MutableNode node = mutNode(name);
@@ -351,17 +335,16 @@ public class Utensils
     return image;
   }
 
-  public static List<Dependency> determineDependencyOrderUsingDepthFirstSearch(Map<String,
-                Dependency> dependencies, HashMap<String, FunctionMapping<?, ?, ?>> mappings)
+  public static List<Dependency>
+         sortDependencies(Map<String, Dependency> dependencies,
+                          HashMap<String, FunctionMapping<?, ?, ?>> mappings)
   {
-    List<Dependency> initializationOrder = new ArrayList<>();
-    Set<String>      processedVariables  = new HashSet<>();
-  
-    // Build reverse dependency graph
+    var initializationOrder = new ArrayList<Dependency>();
+    var processedVariables  = new HashSet<String>();
+
     dependencies.forEach((name,
                           info) -> info.dependencies.forEach(dep -> dependencies.get(dep).provisions.add(name)));
-  
-    // Do Depth-First-Search traversal using dependencies
+
     dependencies.keySet()
                 .stream()
                 .filter(variable -> !processedVariables.contains(variable))
@@ -369,9 +352,9 @@ public class Utensils
                                                                 dependencies,
                                                                 processedVariables,
                                                                 initializationOrder));
-  
+
     Collections.reverse(initializationOrder);
-  
+
     return initializationOrder;
   }
 
@@ -380,17 +363,17 @@ public class Utensils
                                                  Set<String> processedVariables,
                                                  List<Dependency> initializationOrder)
   {
-  
+
     if (processedVariables.contains(variable))
       return;
-  
+
     processedVariables.add(variable);
-    Dependency info = dependencies.get(variable);
-    for (String dep : info.dependencies)
+    var info = dependencies.get(variable);
+    for (var dep : info.dependencies)
     {
       depthFirstDependencySearch(dep, dependencies, processedVariables, initializationOrder);
     }
-  
+
     initializationOrder.add(info);
   }
 
@@ -400,21 +383,21 @@ public class Utensils
     dot.append("digraph DependencyGraph {\n");
     dot.append(" rankdir=LR;\n");
     dot.append(" node [shape=box];\n\n");
-  
-    for (Map.Entry<String, Dependency> entry : graph.entrySet())
+
+    for (var entry : graph.entrySet())
     {
       String node = entry.getKey();
-      for (String dependency : entry.getValue().dependencies)
+      for (var dependency : entry.getValue().dependencies)
       {
         dot.append(String.format(" \"%s\" -> \"%s\";\n", dependency, node));
       }
     }
-  
+
     dot.append("}\n");
     return dot.toString();
   }
 
-  public static void saveToDotFile(String dotContent, String filePath)
+  public static void saveStringToFile(String dotContent, String filePath)
   {
     try ( PrintWriter out = new PrintWriter(filePath))
     {

@@ -355,7 +355,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
   {
     // this needs to create the graph of the AST, not the functions within a Context
     BufferedImage graphImage =
-                             Utensils.createDependencyGraphImage(expr.context.functionReferenceGraph);
+                             Utensils.createDependencyGraphBufferedImage(expr.context.functionReferenceGraph);
     ImageViewer   view       = new ImageViewer(expr.className,
                                                graphImage);
     view.setVisible(true);
