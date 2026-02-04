@@ -189,10 +189,30 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
   protected void compileArgFunction()
   {
     Class<?> argDomainType   = Object.class;
-    Class<?> argCoDomainType = isReal ? RationalFunction.class
-                                      : isComplex ? ComplexRationalFunction.class : null;
+    Class<?> argCoDomainType;
 
-    argFunctionClass = nullaryFunctionClass;
+    if (nullaryFunctionClass != null)
+    {
+      // Determine codomain from what the nullary function class returns
+      if (nullaryFunctionClass.equals(RationalNullaryFunction.class))
+      {
+        argCoDomainType = RationalFunction.class;
+      }
+      else if (nullaryFunctionClass.equals(ComplexRationalNullaryFunction.class))
+      {
+        argCoDomainType = ComplexRationalFunction.class;
+      }
+      else
+      {
+        argCoDomainType = arg.type();
+      }
+      argFunctionClass = nullaryFunctionClass;
+    }
+    else
+    {
+      argCoDomainType  = arg.type();
+      argFunctionClass = expression.functionClass;
+    }
 
     var argExpression = new Expression<>(argDomainType,
                                          argCoDomainType,
@@ -203,13 +223,12 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     argExpression.context             = expression.context;
     argExpression.ascendentExpression = expression;
 
-    // FIX: Push the INDETERMINATE variable, not the independent variable
-    var indeterminate = expression.getIndeterminateVariable();
-    if (indeterminate != null)
+    var independentVar = expression.independentVariable;
+    if (independentVar != null)
     {
-      var splicedVar = indeterminate.spliceInto(argExpression).asVariable();
+      var splicedVar = independentVar.spliceInto(argExpression).asVariable();
       splicedVar.isIndeterminate = true;
-      splicedVar.reference.type  = argCoDomainType; // Ensure correct type
+      splicedVar.reference.type  = argCoDomainType;
       argExpression.indeterminateVariables.push(splicedVar);
     }
 
