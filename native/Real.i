@@ -1740,8 +1740,7 @@ import arb.utensils.Utensils;
   public Complex sub(Complex subtrahend, int prec, Complex res)
   {
     assert subtrahend != null : "subtrahend is null";
-    arblib.acb_sub_arb(res, subtrahend, this, prec);
-    return res;
+    return res.set(this).sub(subtrahend, prec);
   }
   
   public Complex add(Complex addend, int prec, Complex res)
