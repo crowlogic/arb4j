@@ -203,10 +203,13 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     argExpression.context             = expression.context;
     argExpression.ascendentExpression = expression;
 
-    if (expression.independentVariable != null)
+    // FIX: Push the INDETERMINATE variable, not the independent variable
+    var indeterminate = expression.getIndeterminateVariable();
+    if (indeterminate != null)
     {
-      var splicedVar = expression.independentVariable.spliceInto(argExpression).asVariable();
+      var splicedVar = indeterminate.spliceInto(argExpression).asVariable();
       splicedVar.isIndeterminate = true;
+      splicedVar.reference.type  = argCoDomainType; // Ensure correct type
       argExpression.indeterminateVariables.push(splicedVar);
     }
 
