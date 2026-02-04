@@ -638,11 +638,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     expr.context                = context;
     expr.independentVariable    = independentVariable;
 
-    // Deep copy the stack: clone each VariableNode
+    // Deep copy the stack: clone each VariableNode WITHOUT resolving
     expr.indeterminateVariables = new Stack<>();
     for (VariableNode<D, C, F> var : indeterminateVariables)
     {
-      expr.indeterminateVariables.push((VariableNode<D, C, F>) var.spliceInto(expr));
+      // Create new VariableNode directly without calling resolveReference again
+      VariableNode<D, C, F> cloned = new VariableNode<>(expr,
+                                                         var.reference.spliceInto(expr),
+                                                         var.position,
+                                                         false);  // ← resolve=false!
+      cloned.isIndeterminate = var.isIndeterminate;
+      cloned.isIndependent = var.isIndependent;
+      expr.indeterminateVariables.push(cloned);
     }
 
     expr.functionNameSpecified = functionNameSpecified;

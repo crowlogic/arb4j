@@ -363,7 +363,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
     // Share context for outer variable access (i, p, etc.)
     evalExpr.context                = expression.context;
-    evalExpr.ascendentExpression    = expression;
+    // REMOVE THIS LINE: evalExpr.ascendentExpression = expression;
 
     // Deep copy indeterminate stack by splicing each variable
     evalExpr.indeterminateVariables = new java.util.Stack<>();

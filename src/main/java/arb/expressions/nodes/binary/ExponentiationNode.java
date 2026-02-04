@@ -114,7 +114,10 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public Node<D, R, F> simplify()
   {
-
+    if (left.isOne())
+    {
+      return one();
+    }
     if (right.isOne())
     {
       return left;
