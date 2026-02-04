@@ -1061,13 +1061,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return resolvePostfixOperators(node);
   }
 
-  /**
-   * Used for functionals to specify a variable as the indeterminate variable
-   * which becomes the independent variable of the returned function
-   * 
-   * @param paramName
-   * @return
-   */
   public Node<D, C, F> parseLambda(String paramName)
   {
     if (trace)
@@ -1081,39 +1074,47 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
 
     assureInputNameHasNotAlreadyBeenAssociatedWithAContextVariable(paramName);
+    checkLambdaParameterConflicts(paramName);
 
-    // Create parameter variable and assign as INDETERMINATE variable
-    // (since the codomain is a function, this parameter becomes the
-    // independent variable of that returned function)
-    var paramVar = createNewVariableNode(paramName);
-    assignVariable(paramVar);
+    // Create parameter variable and save it BEFORE parsing body
+    var paramVar   = createNewVariableNode(paramName);
+    var savedParam = paramVar;                        // Save reference before other variables get
+                                                      // pushed
 
     require('➔');
 
-    // Parse the body which contains the actual expression
+    // Parse the body (may push more indeterminates like integration variables)
     var node = resolve();
+
+    // Restore the parameter as the top of stack for newFunctionalExpression to
+    // retrieve
+    if (!indeterminateVariables.isEmpty() && indeterminateVariables.peek() != savedParam)
+    {
+      indeterminateVariables.remove(savedParam); // Remove from wherever it is
+      indeterminateVariables.push(savedParam); // Put it on top
+    }
 
     return node;
   }
 
-  private void assignVariable(VariableNode<D, C, F> paramVar)
+  private void checkLambdaParameterConflicts(String paramName)
   {
-    if (independentVariable == null)
+    if (independentVariable != null && Objects.equals(independentVariable.getName(), paramName))
     {
-      assignIndependentVariable(paramVar);
-    }
-    else
-    {
-      if (indeterminateVariables.contains(paramVar))
-      {
-        paramVar.isIndeterminate = true;
-      }
-      else
-      {
-        assignIndeterminateVariable(paramVar);
-      }
+      throw new CompilerException("lambda parameter '"
+                                  + paramName
+                                  + "' conflicts with the independent variable of the containing expression");
     }
 
+    for (var v : indeterminateVariables)
+    {
+      if (v != null && Objects.equals(v.getName(), paramName))
+      {
+        throw new CompilerException("lambda parameter '"
+                                    + paramName
+                                    + "' conflicts with an existing indeterminate variable");
+      }
+    }
   }
 
   public File saveToFile()
