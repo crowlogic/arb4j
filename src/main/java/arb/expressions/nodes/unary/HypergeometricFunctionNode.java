@@ -326,21 +326,24 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
   protected MethodVisitor initializeHypergeometricFunction(MethodVisitor mv)
   {
-    α.generate(mv, scalarType);
-    β.generate(mv, scalarType);
+      α.generate(mv, scalarType);
+      β.generate(mv, scalarType);
 
-    // Load the COMPILED arg function field - NOT the arg node directly
-    expression.loadThisFieldOntoStack(mv, argFunctionFieldName, argFunctionClass);
+      // MUST use the mapping's actual type - NOT argFunctionClass (interface)
+      Class<?> actualFieldType = argFunctionMapping.type();
+      expression.loadThisFieldOntoStack(mv, argFunctionFieldName, actualFieldType);
 
-    invokeVirtualMethod(mv,
-                        hypergeometricFunctionClass,
-                        "init",
-                        hypergeometricFunctionClass,
-                        scalarType,
-                        scalarType,
-                        argFunctionClass);
-    return mv;
+      // But for invokeVirtualMethod, use the interface that init() expects
+      invokeVirtualMethod(mv,
+                          hypergeometricFunctionClass,
+                          "init",
+                          hypergeometricFunctionClass,
+                          scalarType,
+                          scalarType,
+                          argFunctionClass);  // interface is OK for method signature
+      return mv;
   }
+
 
   protected void loadHypergeometricFunctionOntoStack(MethodVisitor mv)
   {
