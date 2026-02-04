@@ -638,13 +638,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                        ascendentExpression);
     expr.context                = context;
     expr.independentVariable    = independentVariable;
-    expr.indeterminateVariables = (Stack<VariableNode<D, C, F>>) indeterminateVariables.clone();
+    
+    // Deep copy the stack: clone each VariableNode
+    expr.indeterminateVariables = new Stack<>();
+    for (VariableNode<D, C, F> var : indeterminateVariables) {
+      expr.indeterminateVariables.push((VariableNode<D, C, F>) var.spliceInto(expr));
+    }
+    
     expr.functionNameSpecified  = functionNameSpecified;
     expr.position               = position;
     expr.character              = character;
     expr.previousCharacter      = previousCharacter;
     return expr;
   }
+
 
   @SuppressWarnings("unchecked")
   public <G extends Function<?, ?>, E extends Expression<?, ?, ? extends G>> E cloneExpression()

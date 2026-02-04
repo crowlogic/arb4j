@@ -340,8 +340,8 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     evalExpr.rootNode = indefiniteIntegralNode.spliceInto(evalExpr);
     evalExpr.updateStringRepresentation();
 
-    var    upperEval           = indefiniteIntegralNode.cloneNode();
-    var    lowerEval           = indefiniteIntegralNode.cloneNode();
+    var    upperEval           = indefiniteIntegralNode.spliceInto(evalExpr);
+    var    lowerEval           = indefiniteIntegralNode.spliceInto(evalExpr);
     String integrationVariable = integrationVariableNode.getName();
 
     var    upperResult         =
@@ -495,7 +495,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
     if (otherFactor != null && shiftValue != null)
     {
-      var result = otherFactor.cloneNode();
+      var result = otherFactor.spliceInto(expression);
       result = result.substitute(integrationVariableNode.getName(), shiftValue);
       return result.simplify();
     }

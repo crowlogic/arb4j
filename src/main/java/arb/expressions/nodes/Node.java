@@ -64,6 +64,8 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                           Consumer<Consumer<Node<D, R, F>>>
 {
 
+ 
+
   public String toStringWithoutIndependentVariableSpecified()
   {
     String str        = toString();
@@ -177,9 +179,25 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   }
 
   @Override
+  public boolean equals(Object obj)
+  {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    Node other = (Node) obj;
+    return bits == other.bits && Objects.equals(expression, other.expression)
+                  && Objects.equals(fieldName, other.fieldName)
+                  && Objects.equals(generatedType, other.generatedType)
+                  && isResult == other.isResult && position == other.position;
+  }
+  
+  @Override
   public Object clone()
   {
-    assert false : "TODO";
+    assert false : "dont use this, use spliceInto instead";
     return null;
   }
 
@@ -247,18 +265,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                               divisor);
   }
 
-  @Override
-  public boolean equals(Object obj)
-  {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    Node<?, ?, ?> other = (Node<?, ?, ?>) obj;
-    return Objects.equals(generatedType, other.generatedType) && isResult == other.isResult;
-  }
+
 
   public FunctionNode<D, R, F> exp()
   {
@@ -316,7 +323,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   @Override
   public int hashCode()
   {
-    return Objects.hash(generatedType, isResult);
+    return Objects.hash(bits, expression, fieldName, generatedType, isResult, position);
   }
 
   /**
@@ -594,11 +601,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   public boolean isPositiveInfinity()
   {
     return "∞".equals(toString());
-  }
-
-  public Node<D, R, F> cloneNode()
-  {
-    return spliceInto(expression.cloneExpression());
   }
 
   protected boolean containsDeltaFunction()
