@@ -326,8 +326,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     return List.of(integrandNode, indefiniteIntegralNode, integrationVariableNode);
   }
 
-// IntegralNode.java  
-// Replace ENTIRE getDefiniteIntegralEvaluationNode()
+//IntegralNode.java - replace getDefiniteIntegralEvaluationNode()
   public Node<D, C, F> getDefiniteIntegralEvaluationNode()
   {
     if (definiteIntegralNode != null)
@@ -335,25 +334,46 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       return definiteIntegralNode;
     }
 
-    // Temp clone isolates intermediates/clones from outer expression
-    Expression<D, C, F> evalExpr = expression.cloneExpression();
-    evalExpr.rootNode = indefiniteIntegralNode.spliceInto(evalExpr);
-    evalExpr.updateStringRepresentation();
+    // Create TWO independent contexts with deep-copied variable stacks
+    Expression<D, C, F> upperExpr           = createEvalExpression();
+    Expression<D, C, F> lowerExpr           = createEvalExpression();
 
-    var    upperEval           = indefiniteIntegralNode.spliceInto(evalExpr);
-    var    lowerEval           = indefiniteIntegralNode.spliceInto(evalExpr);
-    String integrationVariable = integrationVariableNode.getName();
+    var                 upperEval           = indefiniteIntegralNode.spliceInto(upperExpr);
+    var                 lowerEval           = indefiniteIntegralNode.spliceInto(lowerExpr);
 
-    var    upperResult         =
-                       upperEval.substitute(integrationVariable, upperLimitNode).simplify();
-    var    lowerResult         =
-                       lowerEval.substitute(integrationVariable, lowerLimitNode).simplify();
+    String              integrationVariable = integrationVariableNode.getName();
 
-    var    tempResult          = upperResult.sub(lowerResult).simplify();
+    var                 upperResult         =
+                                    upperEval.substitute(integrationVariable, upperLimitNode)
+                                             .simplify();
+    var                 lowerResult         =
+                                    lowerEval.substitute(integrationVariable, lowerLimitNode)
+                                             .simplify();
 
-    // Splice ONLY final AST (no intermediates) back to outer
+    var                 tempResult          = upperResult.sub(lowerResult).simplify();
+
+    // Splice final result back to original expression
     definiteIntegralNode = tempResult.spliceInto(expression);
     return definiteIntegralNode;
+  }
+
+  private Expression<D, C, F> createEvalExpression()
+  {
+    var evalExpr = new Expression<D, C, F>(expression.domainType,
+                                           expression.coDomainType,
+                                           expression.functionClass);
+
+    // Share context for outer variable access (i, p, etc.)
+    evalExpr.context                = expression.context;
+
+    // Deep copy indeterminate stack by splicing each variable
+    evalExpr.indeterminateVariables = new java.util.Stack<>();
+    for (var v : expression.indeterminateVariables)
+    {
+      evalExpr.indeterminateVariables.push(v.spliceInto(evalExpr).asVariable());
+    }
+
+    return evalExpr;
   }
 
   @Override
