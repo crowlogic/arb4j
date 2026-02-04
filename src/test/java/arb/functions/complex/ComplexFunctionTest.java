@@ -50,7 +50,7 @@ public class ComplexFunctionTest extends
       var x       = F.evaluate(3, 128);
 
       var hmm     = x.eval(2.3, new Complex());
-      assertTrue(hmm.toString().startsWith("-0.260039398565575"));
+      assertEquals("-0.260039398565575",hmm.toString());
 
     }
     catch (CompilerException ce)

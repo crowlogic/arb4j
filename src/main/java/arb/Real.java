@@ -396,8 +396,11 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
   
   public Real sub(AlgebraicNumber a, int prec, Real res)
   {
-    return res.set(a,bits).sub(this, bits, res);
-  }  
+    try ( var blip = res.borrowVariable())
+    {
+      return sub(blip.set(a), prec, res);
+    }
+  }
   
   public RationalFunction add( Integer z, int bits, RationalFunction result )
   {
