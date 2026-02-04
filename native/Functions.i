@@ -16,6 +16,10 @@
 #include <unistd.h>
 #include <wchar.h>
 
+void acb_add_fmpz(acb_t z, const acb_t x, const fmpz_t y, slong prec);
+
+void acb_add_si(acb_t z, const acb_t x, slong c, slong prec);
+
 void acb_asin(acb_t r, const acb_t z, slong prec);
 void acb_acos(acb_t r, const acb_t z, slong prec);
 void acb_atan(acb_t r, const acb_t z, slong prec);

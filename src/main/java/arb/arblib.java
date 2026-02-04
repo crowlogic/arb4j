@@ -9,6 +9,14 @@
 package arb;
 
 public class arblib {
+  public static void acb_add_fmpz(Complex z, Complex x, long y, int prec) {
+    arblibJNI.acb_add_fmpz(Complex.getCPtr(z), z, Complex.getCPtr(x), x, y, prec);
+  }
+
+  public static void acb_add_si(Complex z, Complex x, int numCols, int prec) {
+    arblibJNI.acb_add_si(Complex.getCPtr(z), z, Complex.getCPtr(x), x, numCols, prec);
+  }
+
   public static void acb_asin(Complex numRows, Complex z, int prec) {
     arblibJNI.acb_asin(Complex.getCPtr(numRows), numRows, Complex.getCPtr(z), z, prec);
   }

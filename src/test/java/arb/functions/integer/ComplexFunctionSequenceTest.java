@@ -2,8 +2,7 @@ package arb.functions.integer;
 
 import java.io.File;
 
-import arb.Complex;
-import arb.Real;
+import arb.*;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ComplexNullaryFunction;
 import arb.utensils.Utensils;
@@ -15,6 +14,7 @@ public class ComplexFunctionSequenceTest extends
   public static void testComplexFunctionSeq1()
   {
     Complex correct = ComplexNullaryFunction.express( "int(t➔t^(5.3), t=-1..1)").evaluate();
+    assertTrue( ComplexConstants.zero.isZero() );
     assertEquals("0.0654309123345280747351260389461789256 +/- 3.37e-38 + i*-0.1284153959325313371590941932036220728 +/- 4.42e-38",
                  correct.toString());
     ComplexFunctionSequence seq      =

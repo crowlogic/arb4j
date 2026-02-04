@@ -218,7 +218,7 @@ public class Integer implements
 
   public ComplexRationalFunction add(Fraction operand, int prec, ComplexRationalFunction result)
   {
-    return result.set(this).add(operand, prec, result);
+    return result.set(this).add(operand, prec);
   }
 
   public Fraction add(Fraction frac, int bits, Fraction result)

@@ -9,6 +9,8 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void acb_add_fmpz(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, int jarg4);
+  public final static native void acb_add_si(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3, int jarg4);
   public final static native void acb_asin(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
   public final static native void acb_acos(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
   public final static native void acb_atan(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);

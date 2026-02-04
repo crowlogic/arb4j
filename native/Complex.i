@@ -1,11 +1,7 @@
 
 %typemap(javaimports) acb_struct %{
 import static arb.IntegerConstants.PAGESIZE;
-import static arb.arblib.acb_clear;
-import static arb.arblib.acb_indeterminate;
-import static arb.arblib.acb_mul_2exp_si;
-import static arb.arblib.acb_sinh;
-import static arb.arblib.acb_swap;
+import static arb.arblib.*;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -436,11 +432,12 @@ import arb.functions.complex.ComplexNullaryFunction;
     return add( addend, prec, this );
   }
 
-  public Complex add(Integer operand, int prec, Complex s)
+  public Complex add(Integer operand, int prec, Complex result)
   {
-    this.bits = prec;
-    arblib.acb_add_ui(s, this, operand.getUnsignedValue(), prec);
-    return this;
+    assert operand != null && operand.swigCPtr != 0 : "operand is null";
+    arblib.acb_add_fmpz(result, this, operand.swigCPtr, prec);
+    result.bits = prec;
+    return result;
   }
   
   /**
