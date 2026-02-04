@@ -359,12 +359,11 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
   private Expression<D, C, F> createEvalExpression()
   {
-    var evalExpr = new Expression<D, C, F>(expression.domainType,
-                                           expression.coDomainType,
-                                           expression.functionClass);
+    Expression<D, C, F> evalExpr = expression.cloneExpression();
 
     // Share context for outer variable access (i, p, etc.)
     evalExpr.context                = expression.context;
+    evalExpr.ascendentExpression    = expression;
 
     // Deep copy indeterminate stack by splicing each variable
     evalExpr.indeterminateVariables = new java.util.Stack<>();

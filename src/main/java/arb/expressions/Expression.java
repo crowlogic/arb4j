@@ -850,9 +850,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return classVisitor;
     }
     context.populateFunctionReferenceGraph();
-    dependencies =
-                 Utensils.sortDependencies(context.functionReferenceGraph,
-                                                                                 referencedFunctions);
+    dependencies = Utensils.sortDependencies(context.functionReferenceGraph, referencedFunctions);
 
     if (saveGraphs)
     {
@@ -3424,6 +3422,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       str = String.format("%s:%s", functionName, expression);
     }
+    if (str == null || "null".equals(str))
+    {
+      updateStringRepresentation();
+    }
     return str;
   }
 
@@ -3437,6 +3439,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (rootNode == null)
     {
+      
       return this;
     }
     if (independentVariable != null)
