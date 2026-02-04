@@ -13,9 +13,7 @@ import arb.expressions.*;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
-import arb.functions.complex.ComplexFunction;
 import arb.functions.rational.*;
-import arb.functions.real.RealFunction;
 
 public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                        FunctionNode<D, R, F> implements
@@ -189,30 +187,10 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
   protected void compileArgFunction()
   {
     Class<?> argDomainType   = Object.class;
-    Class<?> argCoDomainType;
+    Class<?> argCoDomainType = isReal ? RationalFunction.class
+                                      : isComplex ? ComplexRationalFunction.class : null;
 
-    if (nullaryFunctionClass != null)
-    {
-      // Determine codomain from what the nullary function class returns
-      if (nullaryFunctionClass.equals(RationalNullaryFunction.class))
-      {
-        argCoDomainType = RationalFunction.class;
-      }
-      else if (nullaryFunctionClass.equals(ComplexRationalNullaryFunction.class))
-      {
-        argCoDomainType = ComplexRationalFunction.class;
-      }
-      else
-      {
-        argCoDomainType = arg.type();
-      }
-      argFunctionClass = nullaryFunctionClass;
-    }
-    else
-    {
-      argCoDomainType  = arg.type();
-      argFunctionClass = expression.functionClass;
-    }
+    argFunctionClass = nullaryFunctionClass;
 
     var argExpression = new Expression<>(argDomainType,
                                          argCoDomainType,
@@ -228,7 +206,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     {
       var splicedVar = independentVar.spliceInto(argExpression).asVariable();
       splicedVar.isIndeterminate = true;
-      splicedVar.reference.type  = argCoDomainType;
+      splicedVar.reference.type  = argCoDomainType; // ComplexRationalFunction, NOT scalarType
       argExpression.indeterminateVariables.push(splicedVar);
     }
 
