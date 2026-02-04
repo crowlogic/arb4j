@@ -1,5 +1,7 @@
 package arb.functions.complex;
 
+import java.io.File;
+
 import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -7,6 +9,7 @@ import arb.exceptions.CompilerException;
 import arb.expressions.Context;
 import arb.functions.integer.ComplexFunctionSequence;
 import arb.functions.real.RealNullaryFunction;
+import arb.utensils.Utensils;
 import junit.framework.TestCase;
 
 /**
@@ -45,11 +48,12 @@ public class ComplexFunctionTest extends
       var context = new Context();
 
       var F       =
-            ComplexFunctionSequence.express("m->-I*(pFq([1,m,-m],[1/2],-((1/2)*I)/y)*exp(I*(π*m+y))-pFq([1,m,-m],[1/2],((1/2)*I)/y)*exp(I*(2*π*m-y)))*(4*m^2-1)*(-1)^(-m)/((4*m^2-2)*y*π)",
+            ComplexFunctionSequence.express("F:m->-I*(pFq([1,m,-m],[1/2],-((1/2)*I)/y)*exp(I*(π*m+y))-pFq([1,m,-m],[1/2],((1/2)*I)/y)*exp(I*(2*π*m-y)))*(4*m^2-1)*(-1)^(-m)/((4*m^2-2)*y*π)",
                                             context);
       var x       = F.evaluate(3, 128);
 
       var hmm     = x.eval(2.3, new Complex());
+      System.out.println( "Wrote " + Utensils.saveToYamlFormat(new File("x.yaml"), x) );
       assertEquals("-0.260039398565575",hmm.toString());
 
     }
