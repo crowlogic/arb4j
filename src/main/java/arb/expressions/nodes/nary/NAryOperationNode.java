@@ -20,6 +20,41 @@ import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 import arb.functions.integer.Sequence;
 
+/**
+ * Represents a generic n-ary operation on {@link Node}s within
+ * {@link Expression}s. This abstract base class provides the common structure
+ * and behavior for operations that involve multiple operands, such as
+ * {@link SumNode}, {@link ProductNode}, or other customized functions that
+ * combine elements of a class over a coDomain of values.
+ * <p>
+ * It handles the initialization and execution of these operations, including
+ * setting up the operation's parameters, executing the operation over the
+ * specified coDomain, and managing intermediate results. The class leverages
+ * ASM for bytecode manipulation, enabling dynamic generation and compilation of
+ * expressions.
+ * </p>
+ * <p>
+ * Generics <code>D</code>, <code>R</code>, and <code>F</code> represent the
+ * domain, coDomain, and the function type of the operation, respectively. This
+ * allows for operations over different types of expressions and results,
+ * facilitating flexibility and reuse in various mathematical and computational
+ * contexts.
+ * </p>
+ * <p>
+ * The class integrates closely with the {@link arb.expressions.Compiler} and
+ * {@link arb.utensils.Utensils} for expression parsing, bytecode generation,
+ * and utility methods, ensuring a seamless operation within the arb framework.
+ * </p>
+ * 
+ * @param <D> the domain type of the operands and the operation
+ * @param <R> the coDomain type of the operation's result
+ * @param <F> the function interface this operation implements, extending the
+ *            {@link Function} interface with specific domain and coDomain types
+ *
+ * 
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
+ */
 public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R>> extends
                               Node<D, R, F>
 {
@@ -232,7 +267,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       compileOperandExpression(resultType);
     }
     propagateInputToOperand(mv);
-    propagateAscendentInputsToOperand(mv);
     initializeResultVariable(mv, resultType);
     setIndexToTheLowerLimit(mv);
     loadIndexVariable(mv);
@@ -245,79 +279,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     designateLabel(mv, endLoop);
     assignResult(mv, resultType);
     return mv;
-  }
-
-  protected void propagateAscendentInputsToOperand(MethodVisitor mv)
-  {
-    if (operand == null || operand.referencedVariables == null)
-    {
-      return;
-    }
-
-    String independentVarName = expression.independentVariable
-                  != null ? expression.independentVariable.getName() : null;
-
-    for (var entry : operand.referencedVariables.entrySet())
-    {
-      String                varName = entry.getKey();
-      VariableNode<?, ?, ?> varNode = entry.getValue();
-
-      if (!varNode.ascendentInput)
-      {
-        continue;
-      }
-
-      if (varName.equals(independentVarName))
-      {
-        continue;
-      }
-
-      Class<?> varType = varNode.type();
-      if (varType == null || varType.equals(Object.class))
-      {
-        continue;
-      }
-
-      if (Expression.trace)
-      {
-        logger.debug("propagateAscendentInputsToOperand: setting {}.{} from this.{}",
-                     operandFunctionFieldName,
-                     varName,
-                     varName);
-      }
-
-      String varDescriptor = varType.descriptorString();
-      String operandDesc   = String.format("L%s;", operandFunctionFieldName);
-
-      Label  notNull       = new Label();
-      Label  end           = new Label();
-
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, expression.className, operandFunctionFieldName, operandDesc);
-      mv.visitFieldInsn(GETFIELD, operandFunctionFieldName, varName, varDescriptor);
-      mv.visitJumpInsn(IFNONNULL, notNull);
-
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, expression.className, operandFunctionFieldName, operandDesc);
-      Compiler.generateNewObjectInstruction(mv, varType);
-      Compiler.duplicateTopOfTheStack(mv);
-      Compiler.invokeDefaultConstructor(mv, varType);
-      mv.visitFieldInsn(PUTFIELD, operandFunctionFieldName, varName, varDescriptor);
-
-      mv.visitLabel(notNull);
-
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, expression.className, operandFunctionFieldName, operandDesc);
-      mv.visitFieldInsn(GETFIELD, operandFunctionFieldName, varName, varDescriptor);
-
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, expression.className, varName, varDescriptor);
-
-      Compiler.invokeVirtualMethod(mv, varType, "set", varType, varType);
-      mv.visitInsn(Opcodes.POP);
-
-      mv.visitLabel(end);
-    }
   }
 
   public Class<?> assignTypes(Class<?> resultType)
@@ -595,6 +556,14 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     return this;
   }
 
+  /**
+   * Propagates context variables to the operand function.
+   * 
+   * IMPORTANT: Only propagate variables that the operand function actually
+   * references. The operand expression's referencedVariables tells us which
+   * fields exist in the generated operand class. We must NOT try to set fields
+   * that don't exist.
+   */
   protected void propagateContextVariablesToOperand()
   {
     if (expression.context != null && expression.context.variables != null && operand != null)
@@ -607,6 +576,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
           Named  val       = entry.getValue();
           if (val != null)
           {
+            // CRITICAL: Only propagate if the operand expression actually references this
+            // variable
+            // This means the operand class has this field declared
             if (!operand.referencedVariables.containsKey(fieldName) && (operand.context == null
                           || operand.context.getVariable(fieldName) == null))
             {
@@ -627,6 +599,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
             Label    notNull                  = new Label();
             Label    end                      = new Label();
 
+            // Load operand.field to check if null
             loadThisOntoStack(mv);
             mv.visitFieldInsn(GETFIELD,
                               expression.className,
@@ -635,6 +608,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
             mv.visitFieldInsn(GETFIELD, operandClassInternalName, fieldName, fieldTypeDescriptor);
             mv.visitJumpInsn(IFNONNULL, notNull);
 
+            // If null: create new instance and set value
             loadThisOntoStack(mv);
             mv.visitFieldInsn(GETFIELD,
                               expression.className,
@@ -647,6 +621,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
             mv.visitLabel(notNull);
 
+            // Always call set() to copy the value
             loadThisOntoStack(mv);
             mv.visitFieldInsn(GETFIELD,
                               expression.className,
@@ -708,6 +683,14 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
   }
 
+  /**
+   * Propagates the independent variable (input parameter) to the operand
+   * function.
+   * 
+   * IMPORTANT: This copies BY VALUE using .set() because the input parameter is
+   * owned by the caller, who may destroy/reuse it after the method returns. The
+   * operand function needs its own copy of the value.
+   */
   protected void propagateInputToOperand(MethodVisitor mv)
   {
     var independentVariableNode = expression.independentVariable;
@@ -723,14 +706,20 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
         logInputPropagationToOperand(independentVariableNode);
       }
 
+      // Generate: this.operandFunction.varName.set(inputParameter);
+      // This copies by VALUE because the caller owns the input parameter
+
+      // First, ensure the operand's field is not null (create if needed)
       Label notNull = new Label();
       Label end     = new Label();
 
+      // Check if operand.varName is null
       loadThisOntoStack(mv);
       mv.visitFieldInsn(GETFIELD, expression.className, operandFunctionFieldName, operandDesc);
       mv.visitFieldInsn(GETFIELD, operandFunctionFieldName, varName, varDescriptor);
       mv.visitJumpInsn(IFNONNULL, notNull);
 
+      // If null: create new instance
       loadThisOntoStack(mv);
       mv.visitFieldInsn(GETFIELD, expression.className, operandFunctionFieldName, operandDesc);
       Compiler.generateNewObjectInstruction(mv, varType);
@@ -740,12 +729,15 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
       mv.visitLabel(notNull);
 
+      // Now call set() to copy the value: this.operandFunction.varName.set(input)
       loadThisOntoStack(mv);
       mv.visitFieldInsn(GETFIELD, expression.className, operandFunctionFieldName, operandDesc);
       mv.visitFieldInsn(GETFIELD, operandFunctionFieldName, varName, varDescriptor);
 
+      // Load and cast the input parameter
       cast(loadInputParameter(mv), varType);
 
+      // Call set() method to copy by value
       Compiler.invokeVirtualMethod(mv, varType, "set", varType, varType);
       mv.visitInsn(Opcodes.POP);
 
@@ -839,6 +831,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     {
       return this;
     }
+    // expression.reset();
     expression.context.functions.remove(this.operandFunctionFieldName);
     expression.context.variables.remove(this.operandValueFieldName);
     operandFunctionFieldName = null;
