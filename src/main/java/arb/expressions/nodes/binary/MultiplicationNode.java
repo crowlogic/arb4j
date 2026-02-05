@@ -301,9 +301,9 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
    */
   private boolean isLogarithmic(Node<D, R, F> node)
   {
-    if (node instanceof FunctionNode<?, ?, ?>)
+    if (node.isFunction())
     {
-      var func = (FunctionNode<D, R, F>) node;
+      var func = node.asFunction();
       return "log".equals(func.functionName) || "ln".equals(func.functionName);
     }
     return false;
