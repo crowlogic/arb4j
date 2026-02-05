@@ -930,6 +930,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * Declares variables as fields in the generated class. This includes: 1. The
    * ascendent expression's independent variable (if any) 2. Variables referenced
    * from ancestor expressions (ascendentInput variables) 3. Context variables
+   * ONLY if they are actually referenced by this expression
+   *
+   * CRITICAL FIX for Issue #826: Only declares context variables that appear in
+   * referencedVariables to prevent "cannot be resolved or is not a field" errors
+   * AND to prevent NoSuchFieldError at runtime when propagating to nested
+   * functions.
    */
   protected void declareVariables(ClassVisitor classVisitor)
   {
@@ -949,15 +955,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
 
     // Declare fields for all referenced variables from ancestor expressions
-    // These are variables where ascendentInput=true that were added to
-    // referencedVariables
     for (var entry : referencedVariables.entrySet())
     {
       String                varName = entry.getKey();
       VariableNode<D, C, F> varNode = entry.getValue();
 
-      // Skip if this is the independent variable (already handled) or an
-      // indeterminate
+      // Skip independent or indeterminate variables
       if (varNode.isIndependent || varNode.isIndeterminate)
       {
         continue;
@@ -970,7 +973,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         continue;
       }
 
-      // Skip context variables (they will be declared below)
+      // Skip context variables (they will be declared below if referenced)
       if (context != null && context.getVariable(varName) != null)
       {
         continue;
@@ -991,7 +994,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
     }
 
-    // Declare context variables
+    // Declare context variables ONLY if they are actually referenced
     if (context != null)
     {
       var varList = context.variableEntryStream()
@@ -999,12 +1002,24 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                            .toList();
       if (trace)
       {
-        String vars = varList.stream().map(f -> f.getKey()).collect(Collectors.joining(","));
-        log.debug("declareVariables for {}: context variables {}", className, vars);
+        String vars           =
+                    varList.stream().map(f -> f.getKey()).collect(Collectors.joining(","));
+        String referencedVars = referencedVariables.keySet()
+                                                   .stream()
+                                                   .collect(Collectors.joining(","));
+        log.debug("declareVariables for {}: context variables={}, referencedVariables={}",
+                  className,
+                  vars,
+                  referencedVars);
       }
       for (var variable : varList)
       {
-        declareVariableEntry(classVisitor, variable);
+        // CRITICAL FIX (Issue #826): Only declare variables this expression actually
+        // references
+        if (referencedVariables.containsKey(variable.getKey()))
+        {
+          declareVariableEntry(classVisitor, variable);
+        }
       }
     }
 
@@ -1980,14 +1995,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * Checks if this class has a field with the given name and compatible type.
    * This is used to verify we can propagate a variable before attempting to do
    * so.
+   * 
+   * UPDATED for Issue #826: Only returns true for context variables if they are
+   * actually in referencedVariables (since that's the only way they get
+   * declared).
    */
   protected boolean hasFieldInClass(String fieldName, Class<?> expectedType)
   {
-    // Check context variables
+    // Check context variables - but ONLY if we reference them (Issue #826 fix)
     if (context != null)
     {
       Object contextVar = context.getVariable(fieldName);
-      if (contextVar != null)
+      if (contextVar != null && referencedVariables.containsKey(fieldName))
       {
         return true;
       }
@@ -2418,27 +2437,22 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Propagates {@link VariableReference}s from this function to a nested function
-   * specified
+   * Propagates {@link VariableReference}s from this function to a nested
+   * function. ONLY propagates variables that the nested function actually has
+   * declared as fields (i.e., variables that the nested function actually
+   * references).
    * 
-   * @param mv
-   * @param generatedFunctionClassInternalName
-   * @param fieldType
-   * @param functionFieldName                  name of the field to have its
-   *                                           variables injected from this one
-   * @param variables
-   */
-  /**
-   * Propagates {@link VariableReference}s from this function to a nested function
-   * specified. ONLY propagates variables that the nested function actually
-   * references.
+   * CRITICAL FIX for Issue #826: Before propagating a variable to a nested
+   * function, verify that the nested function actually declared that field.
+   * Otherwise we get NoSuchFieldError when trying to access fields that don't
+   * exist.
    * 
-   * @param mv
-   * @param generatedFunctionClassInternalName
-   * @param fieldType
-   * @param functionFieldName                  name of the field to have its
-   *                                           variables injected from this one
-   * @param variables
+   * @param mv                                 the method visitor
+   * @param generatedFunctionClassInternalName the internal name of this class
+   * @param fieldType                          the field type internal name
+   * @param functionFieldName                  name of the nested function field
+   * @param variables                          stream of context variables to
+   *                                           potentially propagate
    */
   protected void
             initializeReferencedFunctionVariableReferences(MethodVisitor mv,
@@ -2448,16 +2462,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                            Stream<OrderedPair<String,
                                                                          Class<?>>> variables)
   {
-    var                 functionMapping = context.functions.get(functionFieldName);
-    String              typeDesc        = functionMapping.functionFieldDescriptor(false);
-    Expression<?, ?, ?> nestedExpr      = functionMapping.expression;
+    var    functionMapping = context.functions.get(functionFieldName);
+    String typeDesc        = functionMapping.functionFieldDescriptor(false);
 
     variables.forEach(variable ->
     {
       String  varName        = variable.getLeft();
 
-// Check if nested function needs this variable DIRECTLY or TRANSITIVELY
-// using the already-computed functionReferenceGraph
+      // CRITICAL FIX (Issue #826): Check if nested function actually needs this
+      // variable
+      // using the already-computed functionReferenceGraph for transitive dependencies
       boolean nestedNeedsVar = nestedFunctionRequiresVariable(functionFieldName, varName);
 
       if (!nestedNeedsVar)
@@ -2484,8 +2498,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Checks if a function requires a variable, either directly or transitively
-   * through its dependencies using the pre-computed functionReferenceGraph.
+   * Checks if a nested function requires a variable, either directly or
+   * transitively through its dependencies using the pre-computed
+   * functionReferenceGraph.
+   * 
+   * A function "requires" a variable if it references it AND has it declared as a
+   * field.
+   * 
+   * @param functionName the name of the nested function to check
+   * @param varName      the variable name to check
+   * @return true if the nested function has this variable as a declared field
    */
   protected boolean nestedFunctionRequiresVariable(String functionName, String varName)
   {
@@ -2497,13 +2519,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     Expression<?, ?, ?> expr = mapping.expression;
 
-// Direct reference
+    // Direct reference: the nested function only has the field if it's in its
+    // referencedVariables
     if (expr.referencedVariables != null && expr.referencedVariables.containsKey(varName))
     {
       return true;
     }
 
-// Transitive: check dependencies via the graph
+    // Transitive: check dependencies via the graph
     Dependency dep = context.functionReferenceGraph.get(functionName);
     if (dep != null)
     {
