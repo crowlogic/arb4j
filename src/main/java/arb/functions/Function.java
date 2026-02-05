@@ -294,11 +294,11 @@ public interface Function<D, C> extends
     Expression<D,
                   C,
                   F> compiledExpression = Parser.parse(expression,
-                                                           context,
-                                                           domainClass,
-                                                           coDomainClass,
-                                                           functionClass,
-                                                           functionName);
+                                                       context,
+                                                       domainClass,
+                                                       coDomainClass,
+                                                       functionClass,
+                                                       functionName);
 
     compiledExpression.mapping = mapping;
     if (mapping != null)
@@ -370,36 +370,14 @@ public interface Function<D, C> extends
                String functionName,
                Expression<PD, PC, PF> containingExpression)
   {
-    assert !(functionName != null
-                  && functionName.contains(":")) : "functionName shan't return colons "
-                                                   + functionName;
-
-    int punctuationMarkIndex = expression.indexOf(":");
-    if (punctuationMarkIndex != -1)
-    {
-      String inlineFunctionName = expression.substring(0, punctuationMarkIndex);
-      if (functionName != null && !functionName.equals(inlineFunctionName))
-      {
-        throw new CompilerException(String.format("functionName='%s' specified via function argument != inlineFunctionName='%s'",
-                                                  functionName,
-                                                  inlineFunctionName));
-      }
-      functionName = inlineFunctionName;
-
-      expression   = expression.substring(punctuationMarkIndex + 1, expression.length());
-    }
-
-    var expr = new Expression<D, C, F>(className,
-                                       domainClass,
-                                       coDomainClass,
-                                       functionClass,
-                                       expression,
-                                       context,
-                                       functionName,
-                                       containingExpression);
-    expr.functionNameSpecified = expr.functionName != null;
-
-    return expr.parseRoot();
+    return Parser.parseExpression(className,
+                        expression,
+                        context,
+                        domainClass,
+                        coDomainClass,
+                        functionClass,
+                        functionName,
+                        containingExpression);
   }
 
   public default void close()

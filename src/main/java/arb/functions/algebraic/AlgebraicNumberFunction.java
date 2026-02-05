@@ -99,7 +99,7 @@ public interface AlgebraicNumberFunction extends
   public static Expression<AlgebraicNumber, AlgebraicNumber, AlgebraicNumberFunction>
          parse(String expression)
   {
-    return Function.parse(Parser.hashString(expression),
+    return Parser.parseExpression(Parser.hashString(expression),
                           expression,
                           null,
                           AlgebraicNumber.class,
@@ -112,7 +112,7 @@ public interface AlgebraicNumberFunction extends
   public static Expression<AlgebraicNumber, AlgebraicNumber, AlgebraicNumberFunction>
          parse(String expression, Context context)
   {
-    return Function.parse(Parser.hashString(expression),
+    return Parser.parseExpression(Parser.hashString(expression),
                           expression,
                           context,
                           AlgebraicNumber.class,

@@ -1,11 +1,14 @@
 package arb.expressions;
 
 import java.text.Normalizer;
+import arb.Integer;
+
 import java.util.*;
 
-import arb.Fraction;
-import arb.FractionConstants;
+import arb.*;
+import arb.exceptions.CompilerException;
 import arb.functions.Function;
+import arb.functions.complex.ComplexFunction;
 
 /**
  * @author Stephen Crowley ©2024-2025
@@ -462,7 +465,7 @@ public class Parser
   public static String toSuperscript(int number)
   {
     StringBuilder result    = new StringBuilder();
-    String        numberStr = Integer.toString(number);
+    String        numberStr = java.lang.Integer.toString(number);
 
     for (int i = 0; i < numberStr.length(); i++)
     {
@@ -511,41 +514,63 @@ public class Parser
                Class<? extends F> functionClass,
                String functionName)
   {
-    return Parser.parse(className,
-                        expressionString,
-                        context,
-                        domainClass,
-                        coDomainClass,
-                        functionClass,
-                        functionName,
-                        null);
+    return parseExpression(className,
+                           expressionString,
+                           context,
+                           domainClass,
+                           coDomainClass,
+                           functionClass,
+                           functionName,
+                           null);
   }
 
   public static <D,
-                R,
-                F extends Function<? extends D, ? extends R>,
+                C,
+                F extends Function<? extends D, ? extends C>,
                 PD,
-                PR,
-                PF extends Function<? extends PD, ? extends PR>>
-         Expression<D, R, F>
-         parse(String className,
-               String expressionString,
-               Context context,
-               Class<? extends D> domainClass,
-               Class<? extends R> coDomainClass,
-               Class<? extends F> functionClass,
-               String functionName,
-               Expression<PD, PR, PF> containingExpression)
+                PC,
+                PF extends Function<? extends PD, ? extends PC>,
+                E extends Expression<D, C, F>>
+         E
+         parseExpression(String className,
+                         String expression,
+                         Context context,
+                         Class<? extends D> domainClass,
+                         Class<? extends C> coDomainClass,
+                         Class<? extends F> functionClass,
+                         String functionName,
+                         Expression<PD, PC, PF> containingExpression)
   {
-    return Function.parse(className,
-                          expressionString,
-                          context,
-                          domainClass,
-                          coDomainClass,
-                          functionClass,
-                          functionName,
-                          containingExpression);
+    assert !(functionName != null
+                  && functionName.contains(":")) : "functionName shan't return colons "
+                                                   + functionName;
 
+    int punctuationMarkIndex = expression.indexOf(":");
+    if (punctuationMarkIndex != -1)
+    {
+      String inlineFunctionName = expression.substring(0, punctuationMarkIndex);
+      if (functionName != null && !functionName.equals(inlineFunctionName))
+      {
+        throw new CompilerException(String.format("functionName='%s' specified via function argument != inlineFunctionName='%s'",
+                                                  functionName,
+                                                  inlineFunctionName));
+      }
+      functionName = inlineFunctionName;
+
+      expression   = expression.substring(punctuationMarkIndex + 1, expression.length());
+    }
+
+    var expr = new Expression<D, C, F>(className,
+                                       domainClass,
+                                       coDomainClass,
+                                       functionClass,
+                                       expression,
+                                       context,
+                                       functionName,
+                                       containingExpression);
+    expr.functionNameSpecified = expr.functionName != null;
+
+    return expr.parseRoot();
   }
 
   public static <D, R, F extends Function<? extends D, ? extends R>>
@@ -570,20 +595,33 @@ public class Parser
   public static <D, R, F extends Function<? extends D, ? extends R>>
          Expression<D, R, F>
          parse(String className,
-                 String expression,
-                 Context context,
-                 Class<D> domainClass,
-                 Class<R> coDomainClass,
-                 Class<F> functionClass,
-                 boolean verbose)
+               String expression,
+               Context context,
+               Class<D> domainClass,
+               Class<R> coDomainClass,
+               Class<F> functionClass,
+               boolean verbose)
   {
     return parse(className,
-                        expression,
-                        context,
-                        domainClass,
-                        coDomainClass,
-                        functionClass,
-                        className);
+                 expression,
+                 context,
+                 domainClass,
+                 coDomainClass,
+                 functionClass,
+                 className);
+  }
+
+  public static Expression<Complex, Complex, ComplexFunction>
+         parse(String name, String expression, Context context)
+  {
+    return parseExpression(name,
+                           expression,
+                           context,
+                           Complex.class,
+                           Complex.class,
+                           ComplexFunction.class,
+                           name,
+                           null);
   }
 
 }

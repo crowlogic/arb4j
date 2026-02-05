@@ -52,7 +52,7 @@ public interface NullaryFunction<R> extends
                                     functionName);
   }
 
-  public static <R, F extends Function<Object, R>> F express(Class<? extends R> coDomainClass,
+  public static <R, F extends NullaryFunction<R>> F express(Class<? extends R> coDomainClass,
                                                              Class<? extends F> functionClass,
                                                              String expression)
   {
