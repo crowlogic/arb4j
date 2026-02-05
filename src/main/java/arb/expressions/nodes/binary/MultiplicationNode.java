@@ -12,8 +12,8 @@ import arb.expressions.nodes.unary.*;
 import arb.functions.Function;
 
 /**
- * Represents a multiplication operation node in the expression tree.
- * Implements integration by parts for polynomial × exp/trig products.
+ * Represents a multiplication operation node in the expression tree. Implements
+ * integration by parts for polynomial × exp/trig products.
  * 
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
@@ -54,13 +54,13 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   /**
    * Integrates a product using integration by parts when applicable.
    * 
-   * For products of the form p(x)·f(x) where p(x) is a polynomial and
-   * f(x) is exp, sin, cos, or log, uses the tabular method:
+   * For products of the form p(x)·f(x) where p(x) is a polynomial and f(x) is
+   * exp, sin, cos, or log, uses the tabular method:
    * 
    * ∫ u dv = uv - ∫ v du
    * 
-   * The tabular method repeatedly differentiates the polynomial (which
-   * eventually becomes zero) while integrating the transcendental function.
+   * The tabular method repeatedly differentiates the polynomial (which eventually
+   * becomes zero) while integrating the transcendental function.
    * 
    * @param variable The variable of integration
    * @return The integrated expression
@@ -69,11 +69,11 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
   {
     // Try integration by parts if one factor is polynomial-like
-    var ibpResult = tryIntegrationByParts(variable);
-    if (ibpResult != null)
-    {
-      return ibpResult.simplify();
-    }
+//    var ibpResult = tryIntegrationByParts(variable);
+//    if (ibpResult != null)
+//    {
+//      return ibpResult.simplify();
+//    }
 
     // Handle constant × function: ∫ c·f(x) dx = c · ∫ f(x) dx
     if (left.isScalar() && !left.dependsOn(variable))
@@ -93,9 +93,9 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   /**
    * Attempts integration by parts using the tabular method.
    * 
-   * Identifies which factor should be u (differentiated) and which should be
-   * dv (integrated). Polynomials are preferred for u since they differentiate
-   * to zero after finitely many steps.
+   * Identifies which factor should be u (differentiated) and which should be dv
+   * (integrated). Polynomials are preferred for u since they differentiate to
+   * zero after finitely many steps.
    * 
    * @param variable The variable of integration
    * @return The result of integration by parts, or null if not applicable
@@ -139,27 +139,27 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   /**
    * Applies the tabular method for integration by parts.
    * 
-   * Creates alternating sum: u·v - u'·v₁ + u''·v₂ - u'''·v₃ + ...
-   * where v, v₁, v₂, ... are successive integrals of dv.
+   * Creates alternating sum: u·v - u'·v₁ + u''·v₂ - u'''·v₃ + ... where v, v₁,
+   * v₂, ... are successive integrals of dv.
    * 
-   * Continues until u differentiates to zero (for polynomials) or
-   * until a maximum iteration count is reached.
+   * Continues until u differentiates to zero (for polynomials) or until a maximum
+   * iteration count is reached.
    * 
    * @param u        The factor to differentiate
    * @param dv       The factor to integrate
    * @param variable The variable of integration
    * @return The integrated result
    */
-  private Node<D, R, F> applyTabularMethod(Node<D, R, F> u,
-                                           Node<D, R, F> dv,
-                                           VariableNode<D, R, F> variable)
+  private Node<D, R, F>
+          applyTabularMethod(Node<D, R, F> u, Node<D, R, F> dv, VariableNode<D, R, F> variable)
   {
-    Node<D, R, F> result = zero();
-    Node<D, R, F> currentU = u;
-    Node<D, R, F> currentV = dv.integrate(variable);
-    int sign = 1;
-    int maxIterations = 20; // Prevent infinite loops for non-polynomial u
-    int iteration = 0;
+    Node<D, R, F> result        = zero();
+    Node<D, R, F> currentU      = u;
+    Node<D, R, F> currentV      = dv.integrate(variable);
+    int           sign          = 1;
+    int           maxIterations = 20;                    // Prevent infinite loops for
+                                                         // non-polynomial u
+    int           iteration     = 0;
 
     while (!currentU.isZero() && iteration < maxIterations)
     {
@@ -188,13 +188,11 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   }
 
   /**
-   * Checks if a node represents a polynomial-like expression in the given variable.
+   * Checks if a node represents a polynomial-like expression in the given
+   * variable.
    * 
-   * Polynomial-like includes:
-   * - Constants
-   * - The variable itself (x)
-   * - Powers of the variable (x^n for constant n)
-   * - Sums and products of the above
+   * Polynomial-like includes: - Constants - The variable itself (x) - Powers of
+   * the variable (x^n for constant n) - Sums and products of the above
    * 
    * @param node     The node to check
    * @param variable The variable
@@ -282,24 +280,24 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   }
 
   /**
-   * Checks if a node is easily integrable (exp, sin, cos).
-   * These functions have straightforward antiderivatives.
+   * Checks if a node is easily integrable (exp, sin, cos). These functions have
+   * straightforward antiderivatives.
    */
   private boolean isEasilyIntegrable(Node<D, R, F> node)
   {
     if (node instanceof FunctionNode<?, ?, ?>)
     {
-      var func = (FunctionNode<D, R, F>) node;
+      var    func = (FunctionNode<D, R, F>) node;
       String name = func.functionName;
-      return "exp".equals(name) || "sin".equals(name) || "cos".equals(name)
-                    || "sinh".equals(name) || "cosh".equals(name);
+      return "exp".equals(name) || "sin".equals(name) || "cos".equals(name) || "sinh".equals(name)
+                    || "cosh".equals(name);
     }
     return false;
   }
 
   /**
-   * Checks if a node is a logarithmic function.
-   * Log requires special handling in integration by parts (LIATE rule).
+   * Checks if a node is a logarithmic function. Log requires special handling in
+   * integration by parts (LIATE rule).
    */
   private boolean isLogarithmic(Node<D, R, F> node)
   {
@@ -320,9 +318,16 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     return !expression.coDomainType.equals(Quaternion.class);
   }
 
+  private boolean simplified = false;
+
   @Override
   public Node<D, R, F> simplify()
   {
+    if (simplified)
+    {
+      return this;
+    }
+
     simplifyDepth++;
     if (traceSimplify)
     {
@@ -334,7 +339,6 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
                         right);
     }
 
-    // Simplify children first
     if (left != null)
     {
       var oldLeft = left;
@@ -362,7 +366,6 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       }
     }
 
-    // Check for zero multiplication
     if (left.isZero() || right.isZero())
     {
       if (traceSimplify)
@@ -370,60 +373,76 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
         System.err.printf("%s[%d]   -> returning zero()%n", depthIndent(), simplifyDepth);
       }
       simplifyDepth--;
+      simplified = true;
       return zero();
     }
 
-    // Check for identity multiplication
     if (left.isOne())
     {
       if (traceSimplify)
       {
-        System.err.printf("%s[%d]   left.isOne() -> returning right=%s%n", depthIndent(), simplifyDepth, right);
+        System.err.printf("%s[%d]   left.isOne() -> returning right=%s%n",
+                          depthIndent(),
+                          simplifyDepth,
+                          right);
       }
       simplifyDepth--;
+      simplified = true;
       return right;
     }
     if (right.isOne())
     {
       if (traceSimplify)
       {
-        System.err.printf("%s[%d]   right.isOne() -> returning left=%s%n", depthIndent(), simplifyDepth, left);
+        System.err.printf("%s[%d]   right.isOne() -> returning left=%s%n",
+                          depthIndent(),
+                          simplifyDepth,
+                          left);
       }
       simplifyDepth--;
+      simplified = true;
       return left;
     }
     if (left.isNegOne())
     {
       if (traceSimplify)
       {
-        System.err.printf("%s[%d]   left.isNegOne() -> returning right.neg()%n", depthIndent(), simplifyDepth);
+        System.err.printf("%s[%d]   left.isNegOne() -> returning right.neg()%n",
+                          depthIndent(),
+                          simplifyDepth);
       }
       simplifyDepth--;
+      simplified = true;
       return right.neg();
     }
     if (right.isNegOne())
     {
       if (traceSimplify)
       {
-        System.err.printf("%s[%d]   right.isNegOne() -> returning left.neg()%n", depthIndent(), simplifyDepth);
+        System.err.printf("%s[%d]   right.isNegOne() -> returning left.neg()%n",
+                          depthIndent(),
+                          simplifyDepth);
       }
       simplifyDepth--;
+      simplified = true;
       return left.neg();
     }
 
-    // Try delta function simplification
     var deltaSimplification = simplifyDeltaMultiplication();
     if (deltaSimplification != null)
     {
       if (traceSimplify)
       {
-        System.err.printf("%s[%d]   delta simplification -> %s%n", depthIndent(), simplifyDepth, deltaSimplification);
+        System.err.printf("%s[%d]   delta simplification -> %s%n",
+                          depthIndent(),
+                          simplifyDepth,
+                          deltaSimplification);
       }
       simplifyDepth--;
+      simplified = true;
       return deltaSimplification;
     }
 
-    // Constant folding for integer literals
     if (left instanceof LiteralConstantNode<D, R, F> leftConstant
                   && right instanceof LiteralConstantNode<D, R, F> rightConstant)
     {
@@ -435,15 +454,20 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
           var product = lint.mul(rint, 0, rint);
           if (traceSimplify)
           {
-            System.err.printf("%s[%d]   integer folding: %s * %s = %s%n", depthIndent(), simplifyDepth, leftConstant.value, rightConstant.value, product);
+            System.err.printf("%s[%d]   integer folding: %s * %s = %s%n",
+                              depthIndent(),
+                              simplifyDepth,
+                              leftConstant.value,
+                              rightConstant.value,
+                              product);
           }
           simplifyDepth--;
+          simplified = true;
           return expression.newLiteralConstant(product.toString());
         }
       }
     }
 
-    // Exponent addition: x^a * x^b = x^(a+b)
     if (left instanceof ExponentiationNode<D, R, F> leftExp
                   && right instanceof ExponentiationNode<D, R, F> rightExp)
     {
@@ -456,14 +480,18 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
         var power      = leftPower.add(rightPower).simplify();
         if (traceSimplify)
         {
-          System.err.printf("%s[%d]   exponent addition: base^(%s+%s)%n", depthIndent(), simplifyDepth, leftPower, rightPower);
+          System.err.printf("%s[%d]   exponent addition: base^(%s+%s)%n",
+                            depthIndent(),
+                            simplifyDepth,
+                            leftPower,
+                            rightPower);
         }
         simplifyDepth--;
+        simplified = true;
         return leftBase.pow(power).simplify();
       }
     }
 
-    // Exponential function multiplication: exp(a) * exp(b) = exp(a+b)
     if (left instanceof FunctionNode<D, R, F> leftFunction
                   && right instanceof FunctionNode<D, R, F> rightFunction)
     {
@@ -475,19 +503,23 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
         var exponentSum = leftFunction.arg.add(rightFunction.arg).simplify();
         if (traceSimplify)
         {
-          System.err.printf("%s[%d]   exp multiplication: exp(%s+%s)%n", depthIndent(), simplifyDepth, leftFunction.arg, rightFunction.arg);
+          System.err.printf("%s[%d]   exp multiplication: exp(%s+%s)%n",
+                            depthIndent(),
+                            simplifyDepth,
+                            leftFunction.arg,
+                            rightFunction.arg);
         }
         simplifyDepth--;
+        simplified = true;
         return exponentSum.exp().simplify();
       }
     }
 
-    // Square root multiplication: sqrt(x) * sqrt(x) = x
-    if (left instanceof FunctionNode<D, R, F> leftFunction
-                  && right instanceof FunctionNode<D, R, F> rightFunction)
+    if (left instanceof FunctionNode<D, R, F> leftFunction2
+                  && right instanceof FunctionNode<D, R, F> rightFunction2)
     {
-      var leftIsSquareRootFunction = leftFunction.is("sqrt");
-      var functionsAreEqual        = leftFunction.equals(rightFunction);
+      var leftIsSquareRootFunction = leftFunction2.is("sqrt");
+      var functionsAreEqual        = leftFunction2.equals(rightFunction2);
 
       if (leftIsSquareRootFunction && functionsAreEqual)
       {
@@ -496,15 +528,20 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
           System.err.printf("%s[%d]   sqrt*sqrt -> arg%n", depthIndent(), simplifyDepth);
         }
         simplifyDepth--;
-        return leftFunction.arg;
+        simplified = true;
+        return leftFunction2.arg;
       }
     }
 
     if (traceSimplify)
     {
-      System.err.printf("%s[%d] EXIT MultiplicationNode.simplify() calling super%n", depthIndent(), simplifyDepth);
+      System.err.printf("%s[%d] EXIT MultiplicationNode.simplify() returning this=%s%n",
+                        depthIndent(),
+                        simplifyDepth,
+                        this);
     }
     simplifyDepth--;
+    simplified = true;
     return this;
   }
 
