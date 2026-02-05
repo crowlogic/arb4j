@@ -39,6 +39,13 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
   protected Function<C, C>        inputDependentArgFunc;
   protected boolean               argIsConstant;
   protected C                     z;
+  
+  /**
+   * Identity element (polynomial representing 'x') used when evaluate() is
+   * called with null input but the arg function depends on input.
+   * Cached to avoid repeated allocations.
+   */
+  protected C                     identity;
 
   public HypergeometricFunction()
   {
@@ -213,6 +220,31 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
       z = elementType.getDeclaredConstructor().newInstance();
       z.setName("z");
       context.registerVariable("z", (Named) z);
+      
+      // Create identity element for input-dependent arg case
+      // This represents the polynomial 'x' (identity function)
+      if (!argIsConstant)
+      {
+        identity = elementType.getDeclaredConstructor().newInstance();
+        identity.setName("identity");
+        // Set identity to represent the indeterminate 'x'
+        if (identity instanceof RationalFunction rf)
+        {
+          rf.identity();
+        }
+        else if (identity instanceof ComplexRationalFunction crf)
+        {
+          crf.identity();
+        }
+        else if (identity instanceof RealPolynomial rp)
+        {
+          rp.identity();
+        }
+        else if (identity instanceof ComplexPolynomial cp)
+        {
+          cp.identity();
+        }
+      }
     }
     catch (Exception e)
     {
@@ -232,6 +264,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
     α = Utensils.close(α);
     β = Utensils.close(β);
     z = Utensils.close(z);
+    identity = Utensils.close(identity);
   }
 
   public Integer determineDegree()
@@ -278,7 +311,11 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
     // Evaluate arg into z (mutates z directly)
     if (!argIsConstant)
     {
-      inputDependentArgFunc.evaluate((C) input, order, bits, z);
+      // If input is null, use identity element (the polynomial 'x')
+      // This allows computing symbolic rational function representation
+      @SuppressWarnings("unchecked")
+      C actualInput = (input != null) ? (C) input : identity;
+      inputDependentArgFunc.evaluate(actualInput, order, bits, z);
     }
     // If constant, z was already set in initialize()
 
