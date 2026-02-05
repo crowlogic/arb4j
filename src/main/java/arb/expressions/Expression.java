@@ -2390,6 +2390,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    *                                           variables injected from this one
    * @param variables
    */
+  /**
+   * Propagates {@link VariableReference}s from this function to a nested function
+   * specified. ONLY propagates variables that the nested function actually
+   * references.
+   * 
+   * @param mv
+   * @param generatedFunctionClassInternalName
+   * @param fieldType
+   * @param functionFieldName                  name of the field to have its
+   *                                           variables injected from this one
+   * @param variables
+   */
   protected void
             initializeReferencedFunctionVariableReferences(MethodVisitor mv,
                                                            String generatedFunctionClassInternalName,
@@ -2398,17 +2410,56 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                            Stream<OrderedPair<String,
                                                                          Class<?>>> variables)
   {
-    var    functionMapping = context.functions.get(functionFieldName);
-    String typeDesc        = functionMapping.functionFieldDescriptor(false);
+    var                 functionMapping = context.functions.get(functionFieldName);
+    String              typeDesc        = functionMapping.functionFieldDescriptor(false);
 
-    variables.forEach(variable -> linkSharedVariableToReferencedFunction(mv,
-                                                                         functionMapping,
-                                                                         generatedFunctionClassInternalName,
-                                                                         fieldType,
-                                                                         functionFieldName,
-                                                                         typeDesc,
-                                                                         variable));
+    // Get the nested expression to check what variables it actually has
+    Expression<?, ?, ?> nestedExpr      = functionMapping.expression;
 
+    variables.forEach(variable ->
+    {
+      String  varName        = variable.getLeft();
+
+      // CRITICAL: Only propagate if the nested expression actually references this
+      // variable
+      // Check if the nested function has this field declared
+      boolean nestedHasField = false;
+
+      if (nestedExpr != null)
+      {
+        // Check if it's in the nested expression's referencedVariables
+        if (nestedExpr.referencedVariables.containsKey(varName))
+        {
+          nestedHasField = true;
+        }
+        // Check if it's a context variable in the nested expression
+        else if (nestedExpr.context != null && nestedExpr.context.getVariable(varName) != null)
+        {
+          nestedHasField = true;
+        }
+      }
+
+      if (!nestedHasField)
+      {
+        if (trace)
+        {
+          log.debug("initializeReferencedFunctionVariableReferences: skipping {} "
+                    + "(not referenced by nested function {}) in {}",
+                    varName,
+                    functionFieldName,
+                    className);
+        }
+        return; // Skip this variable - nested function doesn't have it
+      }
+
+      linkSharedVariableToReferencedFunction(mv,
+                                             functionMapping,
+                                             generatedFunctionClassInternalName,
+                                             fieldType,
+                                             functionFieldName,
+                                             typeDesc,
+                                             variable);
+    });
   }
 
   protected void injectReferences(F f)
