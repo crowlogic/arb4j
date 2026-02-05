@@ -537,7 +537,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
 
     // 4) New indeterminate - only allowed if no indeterminate exists yet
-    if (expression.indeterminateVariables.isEmpty() && expression.independentVariable == null)
+    if (expression.indeterminateVariables.isEmpty())
     {
       isIndeterminate = true;
       reference.type  = expression.coDomainType;
