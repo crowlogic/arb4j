@@ -1784,9 +1784,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       {
         // Load the independent variable from method parameter slot 1
         mv.visitVarInsn(ALOAD, 1);
-        // CRITICAL: Cast from Object to the actual type since evaluate() uses
-        // Object in its erased signature due to generics
-        mv.visitTypeInsn(CHECKCAST, Type.getInternalName(varType));
       }
       else
       {
