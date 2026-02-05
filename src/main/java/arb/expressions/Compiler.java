@@ -14,7 +14,8 @@ import arb.*;
 import arb.Integer;
 import arb.exceptions.CompilerException;
 import arb.expressions.nodes.LiteralConstantNode;
-import arb.functions.*;
+import arb.functions.Function;
+import arb.functions.RealToComplexFunction;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.integer.RealSequence;
 import arb.functions.integer.RealSequenceSequence;
@@ -358,17 +359,23 @@ public class Compiler
     return mv;
   }
 
-  public static void generateReturnFromMethod(MethodVisitor methodVisitor)
+  public static MethodVisitor generateReturnFromMethod(MethodVisitor methodVisitor)
   {
-    methodVisitor.visitInsn(Opcodes.ARETURN);
-    methodVisitor.visitMaxs(10, 10);
-    methodVisitor.visitEnd();
+    return generateReturnFromMethod(methodVisitor, false);
   }
 
-  public static MethodVisitor generateReturnFromVoidMethod(MethodVisitor mv)
+  public static MethodVisitor generateReturnFromVoidMethod(MethodVisitor methodVisitor)
   {
-    mv.visitInsn(RETURN);
-    return mv;
+    return generateReturnFromMethod(methodVisitor, true);
+  }
+
+  public static MethodVisitor generateReturnFromMethod(MethodVisitor methodVisitor,
+                                                       boolean voidReturn)
+  {
+    methodVisitor.visitInsn(voidReturn ? Opcodes.RETURN : Opcodes.ARETURN);
+    methodVisitor.visitMaxs(10, 10);
+    methodVisitor.visitEnd();
+    return methodVisitor;
   }
 
   public static ClassVisitor generateTypesetMethod(ClassVisitor classVisitor, String typeset)
@@ -705,8 +712,6 @@ public class Compiler
                                  e);
     }
   }
-
- 
 
   /**
    * Loads the 1st argument (this) onto the stack

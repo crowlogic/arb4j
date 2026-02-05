@@ -1422,9 +1422,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                       mapping.type()));
     }
 
-    methodVisitor.visitInsn(Opcodes.RETURN);
-    methodVisitor.visitMaxs(10, 10);
-    methodVisitor.visitEnd();
+    Compiler.generateReturnFromVoidMethod(methodVisitor);
 
     return classVisitor;
   }
@@ -1494,10 +1492,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     generateIntermediateVariableInitializers(mv);
 
-    generateReturnFromVoidMethod(mv);
-
-    mv.visitMaxs(10, 10);
-    mv.visitEnd();
+    Compiler.generateReturnFromVoidMethod(mv);
     return classVisitor;
   }
 
@@ -1602,9 +1597,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                 String.class,
                                 String.class,
                                 Context.class);
-    mv.visitInsn(Opcodes.ARETURN);
-    mv.visitMaxs(0, 0);
-    mv.visitEnd();
+    Compiler.generateReturnFromMethod(mv);
     return classVisitor;
   }
 
@@ -1663,11 +1656,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       rootNode.generate(mv, coDomainType);
     }
 
-    mv.visitInsn(Opcodes.ARETURN);
     designateLabel(mv, endLabel);
     declareEvaluateMethodsLocalVariableArguments(mv, startLabel, endLabel);
-    mv.visitMaxs(10, 10);
-    mv.visitEnd();
+    Compiler.generateReturnFromMethod(mv);
     return classVisitor;
   }
 
@@ -1939,12 +1930,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       methodVisitor.visitCode();
       generateInitializationCode(methodVisitor);
-      methodVisitor.visitInsn(Opcodes.RETURN);
-      methodVisitor.visitMaxs(10, 10);
+
     }
     finally
     {
-      methodVisitor.visitEnd();
+      Compiler.generateReturnFromVoidMethod(methodVisitor);
     }
 
     return classVisitor;
@@ -1998,9 +1988,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                   String.class);
 
     }
-    mv.visitInsn(Opcodes.ARETURN);
-    mv.visitMaxs(0, 0);
-    mv.visitEnd();
+
+    Compiler.generateReturnFromMethod(mv);
+
     return classVisitor;
   }
 
@@ -2062,9 +2052,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                   operation,
                                   Compiler.getMethodDescriptor(coDomainType),
                                   false);
-    methodVisitor.visitInsn(ARETURN);
-    methodVisitor.visitMaxs(0, 0);
-    methodVisitor.visitEnd();
+    Compiler.generateReturnFromMethod(methodVisitor);
     return classVisitor;
   }
 
