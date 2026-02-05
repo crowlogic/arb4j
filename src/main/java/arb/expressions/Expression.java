@@ -1824,15 +1824,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // Initialize in proper dependency order
     if (dependencies != null)
     {
-      for (Dependency dependency : dependencies)
-      {
-        generateDependencyAssignments(mv, dependency);
-      }
+      dependencies.forEach(dependency -> generateDependencyAssignments(mv, dependency));
     }
 
-    insideInitializer = true;
-    initializers.forEach(initializer -> initializer.accept(mv));
-    insideInitializer = false;
+    try
+    {
+      insideInitializer = true;
+      initializers.forEach(initializer -> initializer.accept(mv));
+    }
+    finally
+    {
+      insideInitializer = false;
+    }
 
     // Propagate ascendent input variables to nested operand functions
     propagateAscendentInputVariablesToNestedFunctions(mv);
