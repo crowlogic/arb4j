@@ -230,6 +230,14 @@ public class Parser
    * independent variable or declare a multivariate function "(n,x)➔n*x" for instance
    * becomes "(n,x)➔n*x" and replaces ... with … Also replaces superscript alphabetical
    * characters with '^' followed by their normal ASCII counterparts.
+   * 
+   * Supported arrow notations (all normalized to ➔ U+2794):
+   * <ul>
+   *   <li>{@code ->} - ASCII arrow</li>
+   *   <li>{@code ⇒} - Double arrow (U+21D2)</li>
+   *   <li>{@code →} - Rightwards arrow (U+2192)</li>
+   *   <li>{@code ➔} - Heavy wide-headed rightwards arrow (U+2794) - canonical form</li>
+   * </ul>
    *
    * @param expression The expression to transform.
    *
@@ -240,6 +248,8 @@ public class Parser
     expression = stripInvisibleUnicodeFormattingCharacters(expression.replace("->",
                                                                               "➔")
                                                                      .replace("⇒",
+                                                                              "➔")
+                                                                     .replace("→",
                                                                               "➔")
                                                                      .replace("...",
                                                                               "…")
@@ -549,5 +559,4 @@ public class Parser
                  functionClass,
                  functionName);
   }
-
 }
