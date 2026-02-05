@@ -50,76 +50,58 @@ public class Parser
   {
     for (int i = 0; i < commonFractions.length; i++)
     {
-      fractionFieldNames.put(commonFractions[i],
-                             fractionConstantFieldNames[i]);
+      fractionFieldNames.put(commonFractions[i], fractionConstantFieldNames[i]);
     }
 
-    fractions.put('½',
-                  FractionConstants.oneHalf);
-    fractions.put('¼',
-                  FractionConstants.oneQuarter);
-    fractions.put('¾',
-                  FractionConstants.threeQuarters);
-    fractions.put('⅐',
-                  FractionConstants.oneSeventh);
-    fractions.put('⅑',
-                  FractionConstants.oneNineth);
-    fractions.put('⅒',
-                  FractionConstants.oneTenth);
-    fractions.put('⅓',
-                  FractionConstants.oneThird);
-    fractions.put('⅔',
-                  FractionConstants.twoThirds);
-    fractions.put('⅕',
-                  FractionConstants.oneFifth);
-    fractions.put('⅖',
-                  FractionConstants.twoFifths);
-    fractions.put('⅗',
-                  FractionConstants.threeFifths);
-    fractions.put('⅘',
-                  FractionConstants.fourFifths);
-    fractions.put('⅙',
-                  FractionConstants.oneSixth);
-    fractions.put('⅚',
-                  FractionConstants.fiveSixths);
-    fractions.put('⅛',
-                  FractionConstants.oneEight);
-    fractions.put('⅜',
-                  FractionConstants.threeEights);
-    fractions.put('⅝',
-                  FractionConstants.fiveEights);
-    fractions.put('⅞',
-                  FractionConstants.sevenEights);
+    fractions.put('½', FractionConstants.oneHalf);
+    fractions.put('¼', FractionConstants.oneQuarter);
+    fractions.put('¾', FractionConstants.threeQuarters);
+    fractions.put('⅐', FractionConstants.oneSeventh);
+    fractions.put('⅑', FractionConstants.oneNineth);
+    fractions.put('⅒', FractionConstants.oneTenth);
+    fractions.put('⅓', FractionConstants.oneThird);
+    fractions.put('⅔', FractionConstants.twoThirds);
+    fractions.put('⅕', FractionConstants.oneFifth);
+    fractions.put('⅖', FractionConstants.twoFifths);
+    fractions.put('⅗', FractionConstants.threeFifths);
+    fractions.put('⅘', FractionConstants.fourFifths);
+    fractions.put('⅙', FractionConstants.oneSixth);
+    fractions.put('⅚', FractionConstants.fiveSixths);
+    fractions.put('⅛', FractionConstants.oneEight);
+    fractions.put('⅜', FractionConstants.threeEights);
+    fractions.put('⅝', FractionConstants.fiveEights);
+    fractions.put('⅞', FractionConstants.sevenEights);
   }
 
-  public static HashSet<Character> greekAndBlackLetterChars = new HashSet<Character>(Arrays.asList('ℭ',
-                                                                                                   'Γ',
-                                                                                                   'Δ',
-                                                                                                   'Θ',
-                                                                                                   'Λ',
-                                                                                                   'Ξ',
-                                                                                                   'Π',
-                                                                                                   'Σ',
-                                                                                                   'Φ',
-                                                                                                   'Ψ',
-                                                                                                   'Ω',
-                                                                                                   'γ',
-                                                                                                   'δ',
-                                                                                                   'θ',
-                                                                                                   'λ',
-                                                                                                   'ξ',
-                                                                                                   'π',
-                                                                                                   'ς',
-                                                                                                   'φ',
-                                                                                                   'ψ',
-                                                                                                   'ω',
-                                                                                                   'ϑ',
-                                                                                                   'ϒ',
-                                                                                                   'ϖ',
-                                                                                                   'ϕ',
-                                                                                                   'ϱ',
-                                                                                                   'ϰ',
-                                                                                                   'ζ'));
+  public static HashSet<
+                Character> greekAndBlackLetterChars = new HashSet<Character>(Arrays.asList('ℭ',
+                                                                                           'Γ',
+                                                                                           'Δ',
+                                                                                           'Θ',
+                                                                                           'Λ',
+                                                                                           'Ξ',
+                                                                                           'Π',
+                                                                                           'Σ',
+                                                                                           'Φ',
+                                                                                           'Ψ',
+                                                                                           'Ω',
+                                                                                           'γ',
+                                                                                           'δ',
+                                                                                           'θ',
+                                                                                           'λ',
+                                                                                           'ξ',
+                                                                                           'π',
+                                                                                           'ς',
+                                                                                           'φ',
+                                                                                           'ψ',
+                                                                                           'ω',
+                                                                                           'ϑ',
+                                                                                           'ϒ',
+                                                                                           'ϖ',
+                                                                                           'ϕ',
+                                                                                           'ϱ',
+                                                                                           'ϰ',
+                                                                                           'ζ'));
 
   public static char subscriptedDigitToRegular(char c)
   {
@@ -157,9 +139,8 @@ public class Parser
    */
   public static String stripInvisibleUnicodeFormattingCharacters(String input)
   {
-    return input.replaceAll("\\p{Cf}",
-                            ""); // Cf is the Unicode category for invisible formatting
-                                 // characters
+    return input.replaceAll("\\p{Cf}", ""); // Cf is the Unicode category for invisible formatting
+                                            // characters
   }
 
   /**
@@ -180,7 +161,8 @@ public class Parser
    * Checks whether a given character is a Latin or Greek alphabet character.
    * 
    * @param ch The character to check
-   * @return true if the character is a Latin or Greek alphabet character; false otherwise
+   * @return true if the character is a Latin or Greek alphabet character; false
+   *         otherwise
    */
   static public boolean isDigit(int ch)
   {
@@ -191,11 +173,14 @@ public class Parser
    * Checks whether a given character is a Latin or Greek alphabet character.
    * 
    * @param ch The character to check
-   * @return true if the character is a Latin or Greek alphabet character; false otherwise
+   * @return true if the character is a Latin or Greek alphabet character; false
+   *         otherwise
    */
   static public boolean isIdentifyingCharacter(char ch, boolean digit)
   {
-    boolean positiveCheck = isAlphabeticalLetter(ch) || isGreekOrBlackLetter(ch) || ch == 'ⅈ' || ch == '√' || ch == '₀' || isSuperscriptLetter(ch) || (digit && isDigit(ch) || '_' == ch);
+    boolean positiveCheck = isAlphabeticalLetter(ch) || isGreekOrBlackLetter(ch) || ch == 'ⅈ'
+                  || ch == '√' || ch == '₀' || isSuperscriptLetter(ch)
+                  || (digit && isDigit(ch) || '_' == ch);
     boolean negativeCheck = ch != 'Σ';
     return positiveCheck && negativeCheck;
   }
@@ -222,14 +207,16 @@ public class Parser
    */
   public static boolean isGreekOrBlackLetter(int ch)
   {
-    return (ch >= 0x0391 && ch <= 0x03A9) || (ch >= 0x03B1 && ch <= 0x03C9) || greekAndBlackLetterChars.contains(Character.valueOf((char) ch));
+    return (ch >= 0x0391 && ch <= 0x03A9) || (ch >= 0x03B1 && ch <= 0x03C9)
+                  || greekAndBlackLetterChars.contains(Character.valueOf((char) ch));
   }
 
   /**
    * Replaces the two character ASCII arrow version -> with ➔ used to declare the
-   * independent variable or declare a multivariate function "(n,x)➔n*x" for instance
-   * becomes "(n,x)➔n*x" and replaces ... with … Also replaces superscript alphabetical
-   * characters with '^' followed by their normal ASCII counterparts.
+   * independent variable or declare a multivariate function "(n,x)➔n*x" for
+   * instance becomes "(n,x)➔n*x" and replaces ... with … Also replaces
+   * superscript alphabetical characters with '^' followed by their normal ASCII
+   * counterparts.
    *
    * @param expression The expression to transform.
    *
@@ -237,70 +224,47 @@ public class Parser
    */
   public static String transformToJavaAcceptableCharacters(String expression)
   {
-    expression = stripInvisibleUnicodeFormattingCharacters(expression.replace("->",
-                                                                              "➔")
-                                                                     .replace("⇒",
-                                                                              "➔")
-                                                                     .replace("...",
-                                                                              "…")
-                                                                     .replace("..",
-                                                                              "…")
-                                                                     .replaceAll("𝑖",
-                                                                                 "ⅈ")
-                                                                     .replaceAll("I",
-                                                                                 "ⅈ"));
+    expression = stripInvisibleUnicodeFormattingCharacters(expression.replace("->", "➔")
+                                                                     .replace("⇒", "➔")
+                                                                     .replace("⇒", "➔")
+                                                                     .replace("→", "➔")
+                                                                     .replace("...", "…")
+                                                                     .replace("..", "…")
+                                                                     .replaceAll("𝑖", "ⅈ")
+                                                                     .replaceAll("I", "ⅈ"));
 
     for (int i = 0; i < superscripts.length; i++)
     {
       expression = expression.replace(String.valueOf(superscripts[i]),
-                                      String.format("^(%s)",
-                                                    normals[i]));
+                                      String.format("^(%s)", normals[i]));
     }
 
-    return Normalizer.normalize(expression,
-                                Normalizer.Form.NFD);
+    return Normalizer.normalize(expression, Normalizer.Form.NFD);
   }
 
   public static String hashString(String str)
   {
-     str = str.replaceAll("\\.{2,}",
-                                       "…")
-                           .replace(';',
-                                    ',')
-                           .replace(" ",
-                                    "")
-                           // .replace("+", "Plus")
-                           // .replace("-", "Minus")
-                           // .replace("*", "Times")
-                           .replace("/",
-                                    "⁄")
-                           // .replace("^", "ToThePowerOf")
-                           .replace(".",
-                                    "_")
-                           .replace("{",
-                                    "Where")
-                           .replace("}",
-                                    "")
-                           .replace("₍",
-                                    "")
-                           .replace("₎",
-                                    "")
-                           .replace(">",
-                                    "")
-                           .replace("=",
-                                    "Eq")
-                           .replace("ₙ",
-                                    "N")
-                           .replace("…",
-                                    "To")
-                           .replace("!",
-                                    "Bang")
-                           .replace("[",
-                                    "［")
-                           .replace("]",
-                                    "］")
-                           .replace("➔",
-                                    "To");
+    str = str.replaceAll("\\.{2,}", "…")
+             .replace(';', ',')
+             .replace(" ", "")
+             // .replace("+", "Plus")
+             // .replace("-", "Minus")
+             // .replace("*", "Times")
+             .replace("/", "⁄")
+             // .replace("^", "ToThePowerOf")
+             .replace(".", "_")
+             .replace("{", "Where")
+             .replace("}", "")
+             .replace("₍", "")
+             .replace("₎", "")
+             .replace(">", "")
+             .replace("=", "Eq")
+             .replace("ₙ", "N")
+             .replace("…", "To")
+             .replace("!", "Bang")
+             .replace("[", "［")
+             .replace("]", "］")
+             .replace("➔", "To");
 // .replace("½", "Half"
 
     if (!str.isEmpty())
@@ -323,29 +287,9 @@ public class Parser
     }
   }
 
-  public static final HashSet<Character> SUBSCRIPT_CHARACTERS         = new HashSet<Character>(Arrays.asList('₀',
-                                                                                                             '₁',
-                                                                                                             '₂',
-                                                                                                             '₃',
-                                                                                                             '₄',
-                                                                                                             '₅',
-                                                                                                             '₆',
-                                                                                                             '₇',
-                                                                                                             '₈',
-                                                                                                             '₉',
-                                                                                                             'ₐ',
-                                                                                                             'ₑ',
-                                                                                                             'ₒ',
-                                                                                                             'ₓ',
-                                                                                                             'ₔ',
-                                                                                                             'ₕ',
-                                                                                                             'ₖ',
-                                                                                                             'ₗ',
-                                                                                                             'ₘ',
-                                                                                                             'ₙ',
-                                                                                                             'ₚ',
-                                                                                                             'ₛ',
-                                                                                                             'ₜ'));
+  public static final HashSet<
+                Character>               SUBSCRIPT_CHARACTERS         = new HashSet<
+                              Character>(Arrays.asList('₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉', 'ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ', 'ₜ'));
 
   public static final char[]             SUPERSCRIPT_DIGITS_ARRAY     = new char[]
   { '⁰', '¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹' };
@@ -357,21 +301,46 @@ public class Parser
   { 'ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ', 'ₜ' };
 
   public static Character[]              lowercaseSuperscriptAlphabet =
-  { 'ᵃ', 'ᵇ', 'ᶜ', 'ᵈ', 'ᵉ', 'ᶠ', 'ᵍ', 'ʰ', 'ⁱ', 'ʲ', 'ᵏ', 'ˡ', 'ᵐ', 'ⁿ', 'ᵒ', 'ᵖ', 'ʳ', 'ˢ', 'ᵗ', 'ᵘ', 'ᵛ', 'ʷ', 'ˣ', 'ʸ', 'ᶻ' };
+  { 'ᵃ',
+    'ᵇ',
+    'ᶜ',
+    'ᵈ',
+    'ᵉ',
+    'ᶠ',
+    'ᵍ',
+    'ʰ',
+    'ⁱ',
+    'ʲ',
+    'ᵏ',
+    'ˡ',
+    'ᵐ',
+    'ⁿ',
+    'ᵒ',
+    'ᵖ',
+    'ʳ',
+    'ˢ',
+    'ᵗ',
+    'ᵘ',
+    'ᵛ',
+    'ʷ',
+    'ˣ',
+    'ʸ',
+    'ᶻ' };
 
-  public static final HashSet<Character> lowercaseSubscriptAlphabet   = new HashSet<>(Arrays.asList('ₐ',
-                                                                                                    'ₑ',
-                                                                                                    'ₒ',
-                                                                                                    'ₓ',
-                                                                                                    'ₔ',
-                                                                                                    'ₕ',
-                                                                                                    'ₖ',
-                                                                                                    'ₗ',
-                                                                                                    'ₘ',
-                                                                                                    'ₙ',
-                                                                                                    'ₚ',
-                                                                                                    'ₛ',
-                                                                                                    'ₜ'));
+  public static final HashSet<Character> lowercaseSubscriptAlphabet   =
+                                                                    new HashSet<>(Arrays.asList('ₐ',
+                                                                                                'ₑ',
+                                                                                                'ₒ',
+                                                                                                'ₓ',
+                                                                                                'ₔ',
+                                                                                                'ₕ',
+                                                                                                'ₖ',
+                                                                                                'ₗ',
+                                                                                                'ₘ',
+                                                                                                'ₙ',
+                                                                                                'ₚ',
+                                                                                                'ₛ',
+                                                                                                'ₜ'));
   /**
    * Not all uppercase letters have UTF superscript representations
    */
@@ -379,12 +348,78 @@ public class Parser
   { 'ᴬ', 'ᴮ', 'ᴰ', 'ᴱ', 'ᴳ', 'ᴴ', 'ᴵ', 'ᴶ', 'ᴷ', 'ᴸ', 'ᴹ', 'ᴺ', 'ᴼ', 'ᴾ', 'ᴿ', 'ᵀ', 'ᵁ', 'ⱽ', 'ᵂ' };
 
   public static final Character[]        superscripts                 =
-  { 'ᵃ', 'ᵇ', 'ᶜ', 'ᵈ', 'ᵉ', 'ᶠ', 'ᵍ', 'ʰ', 'ⁱ', 'ʲ', 'ᵏ', 'ˡ', 'ᵐ', 'ⁿ', 'ᵒ', 'ᵖ', 'ʳ', 'ˢ', 'ᵗ', 'ᵘ', 'ᵛ', 'ʷ', 'ˣ', 'ʸ', 'ᶻ', 'ᵅ', 'ᵝ', 'ᵞ', 'ᵟ', 'ᵋ', 'ᶿ', 'ᵠ', 'ᵡ' };
+  { 'ᵃ',
+    'ᵇ',
+    'ᶜ',
+    'ᵈ',
+    'ᵉ',
+    'ᶠ',
+    'ᵍ',
+    'ʰ',
+    'ⁱ',
+    'ʲ',
+    'ᵏ',
+    'ˡ',
+    'ᵐ',
+    'ⁿ',
+    'ᵒ',
+    'ᵖ',
+    'ʳ',
+    'ˢ',
+    'ᵗ',
+    'ᵘ',
+    'ᵛ',
+    'ʷ',
+    'ˣ',
+    'ʸ',
+    'ᶻ',
+    'ᵅ',
+    'ᵝ',
+    'ᵞ',
+    'ᵟ',
+    'ᵋ',
+    'ᶿ',
+    'ᵠ',
+    'ᵡ' };
 
   public static final String[]           normals                      =
-  { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "α", "β", "γ", "δ", "ε", "θ", "φ", "χ" };
+  { "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "f",
+    "g",
+    "h",
+    "i",
+    "j",
+    "k",
+    "l",
+    "m",
+    "n",
+    "o",
+    "p",
+    "q",
+    "r",
+    "s",
+    "t",
+    "u",
+    "v",
+    "w",
+    "x",
+    "y",
+    "z",
+    "α",
+    "β",
+    "γ",
+    "δ",
+    "ε",
+    "θ",
+    "φ",
+    "χ" };
 
-  public static final HashSet<Character> superscriptChars             = new HashSet<>(Arrays.asList(superscripts));
+  public static final HashSet<Character> superscriptChars             =
+                                                          new HashSet<>(Arrays.asList(superscripts));
 
   public static boolean isSuperscriptLetter(char character)
   {
@@ -393,64 +428,35 @@ public class Parser
 
   public static String subscriptAndSuperscriptsToRegular(String input)
   {
-    return input.replace("₀",
-                         "0")
-                .replace("₁",
-                         "1")
-                .replace("₂",
-                         "2")
-                .replace("₃",
-                         "3")
-                .replace("₄",
-                         "4")
-                .replace("₅",
-                         "5")
-                .replace("₆",
-                         "6")
-                .replace("₇",
-                         "7")
-                .replace("₈",
-                         "8")
-                .replace("₉",
-                         "9")
-                .replace("ₐ",
-                         "a")
-                .replace("ₑ",
-                         "e")
-                .replace("ₕ",
-                         "h")
-                .replace("ᵢ",
-                         "i")
-                .replace("ⱼ",
-                         "j")
-                .replace("ₖ",
-                         "k")
-                .replace("ₗ",
-                         "l")
-                .replace("ₘ",
-                         "m")
-                .replace("ₙ",
-                         "n")
-                .replace("ₒ",
-                         "o")
-                .replace("ₚ",
-                         "p")
-                .replace("ᵣ",
-                         "r")
-                .replace("ₛ",
-                         "s")
-                .replace("ₜ",
-                         "t")
-                .replace("ᵤ",
-                         "u")
-                .replace("ᵥ",
-                         "v")
-                .replace("ₓ",
-                         "x")
-                .replace("⁽",
-                         "(")
-                .replace("⁾",
-                         ")");
+    return input.replace("₀", "0")
+                .replace("₁", "1")
+                .replace("₂", "2")
+                .replace("₃", "3")
+                .replace("₄", "4")
+                .replace("₅", "5")
+                .replace("₆", "6")
+                .replace("₇", "7")
+                .replace("₈", "8")
+                .replace("₉", "9")
+                .replace("ₐ", "a")
+                .replace("ₑ", "e")
+                .replace("ₕ", "h")
+                .replace("ᵢ", "i")
+                .replace("ⱼ", "j")
+                .replace("ₖ", "k")
+                .replace("ₗ", "l")
+                .replace("ₘ", "m")
+                .replace("ₙ", "n")
+                .replace("ₒ", "o")
+                .replace("ₚ", "p")
+                .replace("ᵣ", "r")
+                .replace("ₛ", "s")
+                .replace("ₜ", "t")
+                .replace("ᵤ", "u")
+                .replace("ᵥ", "v")
+                .replace("ₓ", "x")
+                .replace("⁽", "(")
+                .replace("⁾", ")");
   }
 
   public static String toSuperscript(int number)
@@ -495,13 +501,15 @@ public class Parser
     }
   }
 
-  public static <D, R, F extends Function<? extends D, ? extends R>> Expression<D, R, F> parse(String className,
-                                                                                               String expressionString,
-                                                                                               Context context,
-                                                                                               Class<? extends D> domainClass,
-                                                                                               Class<? extends R> coDomainClass,
-                                                                                               Class<? extends F> functionClass,
-                                                                                               String functionName)
+  public static <D, R, F extends Function<? extends D, ? extends R>>
+         Expression<D, R, F>
+         parse(String className,
+               String expressionString,
+               Context context,
+               Class<? extends D> domainClass,
+               Class<? extends R> coDomainClass,
+               Class<? extends F> functionClass,
+               String functionName)
   {
     return Parser.parse(className,
                         expressionString,
@@ -513,14 +521,21 @@ public class Parser
                         null);
   }
 
-  public static <D, R, F extends Function<? extends D, ? extends R>, PD, PR, PF extends Function<? extends PD, ? extends PR>> Expression<D, R, F> parse(String className,
-                                                                                                                                                        String expressionString,
-                                                                                                                                                        Context context,
-                                                                                                                                                        Class<? extends D> domainClass,
-                                                                                                                                                        Class<? extends R> coDomainClass,
-                                                                                                                                                        Class<? extends F> functionClass,
-                                                                                                                                                        String functionName,
-                                                                                                                                                        Expression<PD, PR, PF> containingExpression)
+  public static <D,
+                R,
+                F extends Function<? extends D, ? extends R>,
+                PD,
+                PR,
+                PF extends Function<? extends PD, ? extends PR>>
+         Expression<D, R, F>
+         parse(String className,
+               String expressionString,
+               Context context,
+               Class<? extends D> domainClass,
+               Class<? extends R> coDomainClass,
+               Class<? extends F> functionClass,
+               String functionName,
+               Expression<PD, PR, PF> containingExpression)
   {
     return Function.parse(className,
                           expressionString,
@@ -533,12 +548,14 @@ public class Parser
 
   }
 
-  public static <D, R, F extends Function<? extends D, ? extends R>> Expression<D, R, F> parse(String expression,
-                                                                                               Context context,
-                                                                                               Class<? extends D> domainClass,
-                                                                                               Class<? extends R> coDomainClass,
-                                                                                               Class<? extends F> functionClass,
-                                                                                               String functionName)
+  public static <D, R, F extends Function<? extends D, ? extends R>>
+         Expression<D, R, F>
+         parse(String expression,
+               Context context,
+               Class<? extends D> domainClass,
+               Class<? extends R> coDomainClass,
+               Class<? extends F> functionClass,
+               String functionName)
   {
     String className = functionName != null ? functionName : hashString(expression);
     return parse(className,
