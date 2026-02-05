@@ -3226,11 +3226,25 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
            .forEach(entry -> propagateContextFunction(mv, function, entry));
   }
 
+  /**
+   * Propagates context variables from this expression to a nested functional
+   * expression.
+   * 
+   * CRITICAL FIX for Issue #826: Only propagates variables that BOTH: 1. THIS
+   * class has as a field (we reference it via referencedVariables) 2. The NESTED
+   * function class has as a field (it references it via its referencedVariables)
+   * 
+   * This prevents NoSuchFieldError when a nested functional doesn't use all the
+   * same context variables as its parent expression.
+   * 
+   * @param mv       the method visitor for generating bytecode
+   * @param function the nested functional expression being created
+   */
   public void propagateContextVariables(MethodVisitor mv, Expression<?, ?, Function<?, ?>> function)
   {
     if (trace)
     {
-      log.debug(String.format("Expression(#%s).propagateContexVariables(function=%s)\n",
+      log.debug(String.format("Expression(#%s).propagateContextVariables(function=%s)\n",
                               System.identityHashCode(this),
                               function));
     }
@@ -3238,13 +3252,58 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       var   fieldName = entry.getKey();
       Named val       = entry.getValue();
-      // assert val != null : "entry is null " + entry;
-      if (val != null)
+
+      if (val == null)
       {
-        var fieldType = val.getClass();
-        loadThisFieldOntoStack(duplicateTopOfTheStack(mv), fieldName, fieldType);
-        putField(mv, function.className, fieldName, fieldType);
+        continue;
       }
+
+      // CRITICAL FIX (Issue #826): Check if THIS class has the variable as a field.
+      // Only variables in referencedVariables get declared as fields in
+      // declareVariables().
+      // If we don't reference it, we don't have the field to propagate FROM.
+      if (!referencedVariables.containsKey(fieldName))
+      {
+        if (trace)
+        {
+          log.debug("propagateContextVariables: skipping {} (not a field in {}) for nested function {}",
+                    fieldName,
+                    className,
+                    function.className);
+        }
+        continue;
+      }
+
+      // CRITICAL FIX (Issue #826): Check if the nested function has the variable as a
+      // field.
+      // If the nested function doesn't reference this variable, it won't have the
+      // field,
+      // and trying to PUTFIELD will cause NoSuchFieldError at runtime.
+      if (!function.referencedVariables.containsKey(fieldName))
+      {
+        if (trace)
+        {
+          log.debug("propagateContextVariables: skipping {} (not a field in nested function {}) from {}",
+                    fieldName,
+                    function.className,
+                    className);
+        }
+        continue;
+      }
+
+      var fieldType = val.getClass();
+
+      if (trace)
+      {
+        log.debug("propagateContextVariables: propagating {} of type {} from {} to {}",
+                  fieldName,
+                  fieldType.getSimpleName(),
+                  className,
+                  function.className);
+      }
+
+      loadThisFieldOntoStack(duplicateTopOfTheStack(mv), fieldName, fieldType);
+      putField(mv, function.className, fieldName, fieldType);
     }
   }
 
