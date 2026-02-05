@@ -452,9 +452,16 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     return "0".equals(value) || (fractionValue != null && fractionValue.isZero());
   }
 
+  @Override
   public boolean isOne()
   {
     return "1".equals(value) || (fractionValue != null && fractionValue.isOne());
+  }
+
+  @Override
+  public boolean isNegOne()
+  {
+    return "-1".equals(value);
   }
 
   public Integer asInteger()
