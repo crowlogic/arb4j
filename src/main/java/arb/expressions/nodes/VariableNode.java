@@ -511,9 +511,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
   }
 
-//VariableNode.java
-
-//Replace this method - now step 3 is gone
   public VariableNode<?, ?, ?> resolveReference()
   {
     var inputVariable = expression.independentVariable;
@@ -539,11 +536,23 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return this;
     }
 
-    // 4) New indeterminate here
-    isIndeterminate = true;
-    reference.type  = expression.coDomainType;
-    declareThisToBeTheIndeterminantVariable();
-    return this;
+    // 4) New indeterminate - only allowed if no indeterminate exists yet
+    if (expression.indeterminateVariables.isEmpty() && expression.independentVariable == null)
+    {
+      isIndeterminate = true;
+      reference.type  = expression.coDomainType;
+      declareThisToBeTheIndeterminantVariable();
+      return this;
+    }
+    else
+    {
+      throw new CompilerException(String.format(
+          "undefined variable reference '%s' in expression '%s'; existing indeterminates: %s, independent variable: %s",
+          reference.name,
+          expression.expression,
+          expression.indeterminateVariables,
+          expression.independentVariable));
+    }
   }
 
   protected void throwNewUndefinedReferenceException()
