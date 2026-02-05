@@ -1,373 +1,389 @@
 package arb.expressions.nodes;
 
-import static java.lang.String.format;
+import static arb.expressions.Compiler.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
+import org.scilab.forge.jlatexmath.LaTeXAtom;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import arb.Integer;
+import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.binary.*;
-import arb.expressions.nodes.nary.ProductNode;
-import arb.expressions.nodes.nary.SumNode;
 import arb.expressions.nodes.unary.*;
+import arb.expressions.viz.ExpressionTree;
 import arb.functions.Function;
 
 /**
- * Abstract base class for all nodes in the expression abstract syntax tree.
- * 
- * <p>
- * Each node represents an operation, literal, variable, or function in a
- * mathematical expression. Nodes form a tree structure that can be:
- * </p>
- * <ul>
- * <li>Evaluated to produce a numeric result</li>
- * <li>Differentiated symbolically</li>
- * <li>Integrated symbolically</li>
- * <li>Simplified algebraically</li>
- * <li>Compiled to JVM bytecode</li>
- * </ul>
+ * <pre>
+ * Represents the abstract base class for elements of the abstract {@link ExpressionTree} 
+ * constituting an {@link Expression}. This class is a fundamental part of the framework, 
+ * facilitating the construction, manipulation, and evaluation of symbolic express
+ * ions. Nodes in the tree can perform a variety of operations such as differentiation, 
+ * integration, and algebraic simplifications, employing generics to accommodate 
+ * different data and function types.
  *
- * @param <D> Domain type of the expression
- * @param <C> Codomain type of the expression
- * @param <F> Function interface type
+ * Each node can be a composite, containing other nodes, or a leaf, representing
+ * terminal operations or values. The class supports dynamic type
+ * transformations, code generation via the ASM framework, and optimization
+ * techniques like subtree reuse to enhance performance and memory efficiency.
+ * It also integrates typesetting capabilities, using JLaTeXMath for rendering
+ * expressions in LaTeX format.
+ *
+ * Subclasses must implement functionality specific to the symbolic operations
+ * they represent, including handling their computational branches, and must
+ * provide methods for performing substitutions and cloning, even if not
+ * implemented via the {@link Cloneable} interface.
+ * </pre>
+ * 
+ * @param <D> the domain type of the node, defining the types of inputs this
+ *            node accepts
+ * @param <R> the range type of the node, defining the types of results this
+ *            node produces
+ * @param <F> the type of function encapsulated by this node, conforming to the
+ *            {@link Function} interface
+ *
+ * @see Function
+ * @see Expression
+ * @see MethodVisitor
+ * @see LaTeXAtom
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public abstract class Node<D, C, F extends Function<? extends D, ? extends C>>
+@SuppressWarnings("unchecked")
+public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> implements
+                          Typesettable,
+                          Consumer<Consumer<Node<D, R, F>>>
 {
-  /**
-   * Thread-local set tracking which nodes have been simplified in the current
-   * simplification pass. This prevents exponential blowup when the same
-   * subexpression is reachable via multiple paths in the AST.
-   */
-  private static final ThreadLocal<Set<java.lang.Integer>> simplifiedInCurrentPass =
-                                                                                    ThreadLocal.withInitial(HashSet::new);
 
-  /**
-   * Counter for tracking simplification pass depth. When this reaches 0,
-   * the memoization set is cleared for the next top-level simplify() call.
-   */
-  private static final ThreadLocal<java.lang.Integer>      simplifyPassDepth       =
-                                                                              ThreadLocal.withInitial(() -> 0);
+ 
 
-  /**
-   * Enable/disable simplification memoization. Set to false for debugging.
-   */
-  public static boolean                                    memoizeSimplify         = true;
-
-  public int                                               position;
-
-  public Expression<D, C, F>                               expression;
-
-  public String                                            fieldName;
-
-  public Class<?>                                          generatedType;
-
-  public boolean                                           intermediate;
-
-  public String                                            typeName;
-
-  public Node(Expression<D, C, F> expression)
+  public String toStringWithoutIndependentVariableSpecified()
   {
+    String str        = toString();
+    int    arrowIndex = str.indexOf('➔');
+    return arrowIndex == -1 ? str : str.substring(arrowIndex + 1);
+  }
+
+  /**
+   * @return true if this node's evaluation is independent of all input parameters
+   */
+  public boolean isConstantExpression()
+  {
+    if (independentOfInput())
+    {
+      // Check that all branches are also constant using functional traversal
+      final boolean[] allConstant =
+      { true };
+      accept(node ->
+      {
+        if (node != this && !node.independentOfInput())
+        {
+          allConstant[0] = false;
+        }
+      });
+      return allConstant[0];
+    }
+    return false;
+  }
+
+  public boolean independentOfInput()
+  {
+    return expression.isNullaryFunction() ? true
+                                          : !isIndependentOf(expression.getIndependentVariable());
+  }
+
+  public int                 bits     = 128;
+
+  public Expression<D, R, F> expression;
+
+  public String              fieldName;
+
+  public Class<?>            generatedType;
+
+  public boolean             isResult = false;
+
+  public final Logger        logger   = LoggerFactory.getLogger(getClass());
+
+  public final int           position;
+
+  public Node(Expression<D, R, F> expression)
+  {
+    assert expression != null : "expression shan't be null";
     this.expression = expression;
+    this.position   = expression.position;
   }
 
-  /**
-   * Begins a simplification pass. Call this at the start of a top-level
-   * simplify() operation.
-   */
-  protected static void beginSimplifyPass()
+  public <N extends Node<D, R, F>> N abs()
   {
-    simplifyPassDepth.set(simplifyPassDepth.get() + 1);
-  }
-
-  /**
-   * Ends a simplification pass. When depth reaches 0, clears the memoization
-   * set.
-   */
-  protected static void endSimplifyPass()
-  {
-    int depth = simplifyPassDepth.get() - 1;
-    simplifyPassDepth.set(depth);
-    if (depth == 0)
-    {
-      simplifiedInCurrentPass.get().clear();
-    }
-  }
-
-  /**
-   * Checks if this node has already been simplified in the current pass.
-   * 
-   * @return true if already simplified
-   */
-  protected boolean alreadySimplifiedInThisPass()
-  {
-    if (!memoizeSimplify)
-    {
-      return false;
-    }
-    return simplifiedInCurrentPass.get().contains(System.identityHashCode(this));
-  }
-
-  /**
-   * Marks this node as simplified in the current pass.
-   */
-  protected void markSimplified()
-  {
-    if (memoizeSimplify)
-    {
-      simplifiedInCurrentPass.get().add(System.identityHashCode(this));
-    }
-  }
-
-  public void accept(Consumer<Node<D, C, F>> visitor)
-  {
-    visitor.accept(this);
-  }
-
-  public Node<D, C, F> add(Node<D, C, F> addend)
-  {
-    return new AdditionNode<>(expression,
-                              this,
-                              addend);
-  }
-
-  public Node<D, C, F> arccos()
-  {
-    return new ArcCosineNode<>(expression,
-                               this);
-  }
-
-  public Node<D, C, F> arccosh()
-  {
-    return new HyperbolicArcCosineNode<>(expression,
-                                         this);
-  }
-
-  public Node<D, C, F> arcsin()
-  {
-    return new ArcSineNode<>(expression,
-                             this);
-  }
-
-  public Node<D, C, F> arcsinh()
-  {
-    return new HyperbolicArcSineNode<>(expression,
+    return (N) new AbsoluteValueNode<>(expression,
                                        this);
   }
 
-  public Node<D, C, F> arctan()
+  public <N extends Node<D, R, F>> N add(Node<D, R, F> addend)
   {
-    return new ArcTangentNode<>(expression,
-                                this);
+    return (N) new AdditionNode<>(expression,
+                                  this,
+                                  addend);
   }
 
-  public Node<D, C, F> arctanh()
+  public FunctionNode<D, R, F> apply(String functionName)
   {
-    return new HyperbolicArcTangentNode<>(expression,
-                                          this);
+    return new FunctionNode<>(functionName,
+                              this,
+                              expression);
   }
 
-  public FunctionNode<D, C, F> asFunction()
+  public Node<D, R, F> arcsin()
   {
-    return (FunctionNode<D, C, F>) this;
+    return apply("arcsin");
   }
 
-  public LiteralConstantNode<D, C, F> asLiteralConstant()
+  public Node<D, R, F> arctan()
   {
-    return (LiteralConstantNode<D, C, F>) this;
+    return apply("arctan");
   }
 
-  public VariableNode<D, C, F> asVariable()
+  public BinaryOperationNode<D, R, F> asBinaryOperation()
   {
-    return (VariableNode<D, C, F>) this;
+    assert this instanceof BinaryOperationNode : this + " isn't a BinaryOperationNode";
+    return (BinaryOperationNode<D, R, F>) this;
   }
 
-  public Node<D, C, F> cos()
+  public FunctionNode<D, R, F> asFunction()
   {
-    return new CosineNode<>(expression,
-                            this);
+    assert isFunction() : this + " isn't a FunctionNode";
+    return (FunctionNode<D, R, F>) this;
   }
 
-  public Node<D, C, F> cosh()
+  public LiteralConstantNode<D, R, F> asLiteralConstant()
   {
-    return new HyperbolicCosineNode<>(expression,
-                                      this);
+    assert this instanceof LiteralConstantNode : this
+                                                 + " isn't a Literal constant, it is a "
+                                                 + this.getClass().getName();
+    return (LiteralConstantNode<D, R, F>) this;
   }
 
-  public Node<D, C, F> cot()
+  public VariableNode<D, R, F> asVariable()
   {
-    return new CotangentNode<>(expression,
-                               this);
+    assert isVariable() : this + " isn't a Variable";
+    return (VariableNode<D, R, F>) this;
   }
 
-  public Node<D, C, F> coth()
+  @Override
+  public boolean equals(Object obj)
   {
-    return new HyperbolicCotangentNode<>(expression,
-                                         this);
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    Node other = (Node) obj;
+    return bits == other.bits && Objects.equals(expression, other.expression)
+                  && Objects.equals(fieldName, other.fieldName)
+                  && Objects.equals(generatedType, other.generatedType)
+                  && isResult == other.isResult && position == other.position;
+  }
+  
+  @Override
+  public Object clone()
+  {
+    assert false : "dont use this, use spliceInto instead";
+    return null;
   }
 
-  public Node<D, C, F> csc()
+  public Node<D, R, F> δ()
   {
-    return new CosecantNode<>(expression,
-                              this);
+    return apply("δ");
   }
 
-  public Node<D, C, F> csch()
+  public Node<D, R, F> θ()
   {
-    return new HyperbolicCosecantNode<>(expression,
-                                        this);
+    return apply("θ");
   }
 
-  public abstract boolean dependsOn(VariableNode<D, C, F> variable);
+  public Node<D, R, F> cos()
+  {
+    return apply("cos");
+  }
+
+  public Node<D, R, F> cosh()
+  {
+    return apply("cosh");
+  }
+
+  public Node<D, R, F> cot()
+  {
+    return apply("cot");
+  }
+
+  public abstract boolean dependsOn(VariableNode<D, R, F> variable);
 
   /**
-   * Computes the symbolic derivative of this node with respect to the given
-   * variable.
-   *
-   * @param variable The variable to differentiate with respect to
-   * @return A new node representing the derivative
+   * 
+   * @return this{@link #differentiate(VariableNode)} with
+   *         {@link Expression#independentVariable} passed as the variable to be
+   *         differentiated with respect to
    */
-  public abstract Node<D, C, F> differentiate(VariableNode<D, C, F> variable);
+  public Node<D, R, F> differentiate()
+  {
+    var variable = expression.independentVariable != null ? expression.independentVariable
+                                                            : expression.getIndeterminateVariable();
+    return differentiate(variable);
+  }
 
-  public Node<D, C, F> div(Node<D, C, F> divisor)
+  public abstract Node<D, R, F> differentiate(VariableNode<D, R, F> variable);
+
+  public Node<D, R, F> digamma()
+  {
+    return apply("digamma");
+  }
+
+  public int dim()
+  {
+    return 1;
+  }
+
+  public Node<D, R, F> div(int i)
+  {
+    return div(expression.newLiteralConstant(i));
+  }
+
+  public Node<D, R, F> div(Node<D, R, F> divisor)
   {
     return new DivisionNode<>(expression,
                               this,
                               divisor);
   }
 
-  @Override
-  public abstract boolean equals(Object obj);
 
-  public Node<D, C, F> exp()
+
+  public FunctionNode<D, R, F> exp()
   {
-    return new ExponentialNode<>(expression,
-                                 this);
+    return apply("exp");
   }
 
-  public Node<D, C, F> factorial()
+  public void loadOutputVariableOntoStack(MethodVisitor methodVisitor, Class<?> resultType)
   {
-    return new FactorialNode<>(expression,
-                               this);
+    if (isResult)
+    {
+      cast(loadResultParameter(methodVisitor), resultType);
+      fieldName = "result";
+    }
+    else
+    {
+      fieldName = expression.allocateIntermediateVariable(methodVisitor, resultType);
+    }
   }
 
-  public abstract MethodVisitor generate(MethodVisitor methodVisitor, Class<?> resultType);
+  public abstract MethodVisitor generate(MethodVisitor mv, Class<?> resultType);
 
-  public abstract List<Node<D, C, F>> getBranches();
+  public Class<?> generateCastTo(MethodVisitor methodVisitor, Class<?> type)
+  {
+    if (Expression.traceNodes)
+    {
+      logger.debug(String.format("generateCastTo(type=%s) from generatedType=%s\n",
+                                 type,
+                                 generatedType));
+    }
+    cast(methodVisitor, generatedType);
+    expression.allocateIntermediateVariable(methodVisitor, type);
+    swap(methodVisitor);
+    invokeSetMethod(methodVisitor, generatedType, type);
+    return generatedType = type;
+  }
+
+  public abstract List<? extends Node<D, R, F>> getBranches();
+
+  public String getFieldName()
+  {
+    return isResult ? "result" : fieldName;
+  }
 
   public Class<?> getGeneratedType()
   {
     return generatedType;
   }
 
-  public Node<D, C, F> getSquareRootArg()
+  public Node<D, R, F> getSquareRootArg()
   {
-    if (isSquareRoot())
-    {
-      return ((SquareRootNode<D, C, F>) this).arg;
-    }
+    assert false : "TODO: " +getClass() + " should implement this";
     return null;
   }
 
   @Override
-  public abstract int hashCode();
+  public int hashCode()
+  {
+    return Objects.hash(bits, expression, fieldName, generatedType, isResult, position);
+  }
 
   /**
-   * Computes the symbolic integral of this node with respect to the given
-   * variable.
-   *
-   * @param variable The variable to integrate with respect to
-   * @return A new node representing the antiderivative
+   * Compute the indefinite integral of this node
+   * 
+   * @param variable
+   * @return
    */
-  public abstract Node<D, C, F> integrate(VariableNode<D, C, F> variable);
-
-  public boolean isBitless()
-  {
-    return false;
-  }
-
-  public boolean isConstant()
-  {
-    return false;
-  }
-
-  public boolean isFunction()
-  {
-    return false;
-  }
+  public abstract Node<D, R, F> integrate(VariableNode<D, R, F> variable);
 
   public boolean isHalf()
   {
     return false;
   }
 
-  public boolean isIndependentOf(VariableNode<D, C, F> variable)
+  public boolean isIndependentOf(VariableNode<D, R, F> variable)
   {
     return !dependsOn(variable);
   }
 
+  /**
+   * @return true if this node does not have any subnodes
+   */
   public abstract boolean isLeaf();
 
-  public boolean isLiteralConstant()
+  public final boolean isLiteralConstant()
   {
-    return false;
+    return this instanceof LiteralConstantNode;
   }
 
-  public boolean isNegativeInfinity()
-  {
-    return false;
-  }
-
+  /**
+   * Checks if this node represents the literal constant -1.
+   * Only LiteralConstantNode can return true; all other nodes return false.
+   * 
+   * @return true if this is a literal -1, false otherwise
+   */
   public boolean isNegOne()
   {
     return false;
   }
 
+  /**
+   * Checks if this node represents the literal constant 1.
+   * Only LiteralConstantNode can return true; all other nodes return false.
+   * 
+   * @return true if this is a literal 1, false otherwise
+   */
   public boolean isOne()
   {
     return false;
   }
 
-  public boolean isPositiveInfinity()
+  public boolean isPossiblyNegative()
   {
     return false;
   }
 
-  /**
-   * can the expression represented by this node possibly assume a value less
-   * than zero?
-   * 
-   * @return true if it can
-   */
-  public boolean isPossiblyNegative()
-  {
-    return true;
-  }
-
-  /**
-   * Is this {@link Node} a representation of a multiplication of other scalars
-   * not involving any addition/subtraction or other elementary operations/
-   * 
-   * @return
-   */
-  public boolean isScalar()
-  {
-    return isLeaf();
-  }
+  public abstract boolean isScalar();
 
   public boolean isSquareRoot()
-  {
-    return this instanceof SquareRootNode;
-  }
-
-  public boolean isTwo()
   {
     return false;
   }
@@ -377,182 +393,246 @@ public abstract class Node<D, C, F extends Function<? extends D, ? extends C>>
     return false;
   }
 
-  public boolean isVariableSquared(VariableNode<D, C, F> variable)
+  public boolean isVariableNamed(String variable)
   {
-    if (this instanceof ExponentiationNode<D, C, F> exp)
-    {
-      return exp.left.equals(variable) && exp.right.isTwo();
-    }
+    return isVariable() && asVariable().isNamed(variable);
+  }
+
+  public boolean isVariableSquared(VariableNode<D, R, F> variable)
+  {
     return false;
   }
 
+  /**
+   * Checks if this node represents the literal constant 0.
+   * Only LiteralConstantNode can return true; all other nodes return false.
+   * 
+   * @return true if this is a literal 0, false otherwise
+   */
   public boolean isZero()
   {
     return false;
   }
 
-  public Node<D, C, F> log()
+  protected void loadBitsOntoStack(MethodVisitor mv)
   {
-    return new NaturalLogarithmNode<>(expression,
-                                      this);
+    if (expression.insideInitializer)
+    {
+      mv.visitLdcInsn(128);
+    }
+    else
+    {
+      loadBitsParameterOntoStack(mv);
+    }
   }
 
-  public Node<D, C, F> mul(Node<D, C, F> multiplicand)
+  public MethodVisitor loadFieldFromThis(MethodVisitor mv, String fieldName, Class<?> type)
   {
-    return new MultiplicationNode<>(expression,
-                                    this,
-                                    multiplicand);
+    return getFieldFromThis(mv, expression.className, fieldName, type);
   }
 
-  public Node<D, C, F> neg()
+  public Node<D, R, F> log()
   {
-    return new NegationNode<>(expression,
-                              this);
+    return apply("log");
   }
 
-  public Node<D, C, F> negativeOne()
+  public Node<D, R, F> mul(int i)
+  {
+    return mul(expression.newLiteralConstant(i));
+  }
+
+  public <N extends Node<D, R, F>> N mul(Node<D, R, F> multiplicand)
+  {
+    return (N) new MultiplicationNode<>(expression,
+                                        this,
+                                        multiplicand);
+  }
+
+  public <N extends Node<D, R, F>> N neg()
+  {
+    return (N) new NegationNode<>(expression,
+                                  this);
+  }
+
+  public LiteralConstantNode<D, R, F> negativeOne()
+  {
+    return expression.newLiteralConstant(-1);
+  }
+
+  public LiteralConstantNode<D, R, F> one()
+  {
+    return expression.newLiteralConstant(1);
+  }
+
+  public Node<D, R, F> pow(int i)
+  {
+    return pow(expression.newLiteralConstant(i));
+  }
+
+  public <N extends Node<D, R, F>> N pow(Node<D, R, F> exponent)
+  {
+    return (N) new ExponentiationNode<>(expression,
+                                        this,
+                                        exponent);
+  }
+
+  public Node<D, R, F> pow(String exponent)
   {
     return new LiteralConstantNode<>(expression,
-                                     "-1");
+                                     exponent);
   }
 
-  public Node<D, C, F> one()
+  public Node<D, R, F> sec()
   {
-    return new LiteralConstantNode<>(expression,
-                                     "1");
+    return apply("sec");
   }
 
-  public Node<D, C, F> pow(int n)
-  {
-    return pow(new LiteralConstantNode<>(expression,
-                                         String.valueOf(n)));
-  }
-
-  public Node<D, C, F> pow(Node<D, C, F> exponent)
-  {
-    return new ExponentiationNode<>(expression,
-                                    this,
-                                    exponent);
-  }
-
-  public Node<D, C, F> product(String indexVariableName, Node<D, C, F> from, Node<D, C, F> to)
-  {
-    return new ProductNode<D, C, F>(expression,
-                                    indexVariableName,
-                                    from,
-                                    to,
-                                    this);
-  }
-
-  public Node<D, C, F> sec()
-  {
-    return new SecantNode<>(expression,
-                            this);
-  }
-
-  public Node<D, C, F> sech()
-  {
-    return new HyperbolicSecantNode<>(expression,
-                                      this);
-  }
-
-  /**
-   * Simplifies this node algebraically.
-   * 
-   * <p>
-   * This method uses memoization to avoid re-simplifying the same node multiple
-   * times within a single simplification pass. This is critical for preventing
-   * exponential blowup when the AST has shared subexpressions.
-   * </p>
-   *
-   * @return A simplified version of this node, or this node if no
-   *         simplification is possible
-   */
-  public Node<D, C, F> simplify()
+  public Node<D, R, F> simplify()
   {
     return this;
   }
 
-  public Node<D, C, F> sin()
+  public Node<D, R, F> arcsinh()
   {
-    return new SineNode<>(expression,
-                          this);
+    return apply("arcsinh");
   }
 
-  public Node<D, C, F> sinh()
+  public Node<D, R, F> sin()
   {
-    return new HyperbolicSineNode<>(expression,
-                                    this);
+    return apply("sin");
+  }
+
+  public Node<D, R, F> sinh()
+  {
+    return apply("sinh");
   }
 
   public abstract <E, S, G extends Function<? extends E, ? extends S>>
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression);
 
-  public Node<D, C, F> sqrt()
+  public Node<D, R, F> sqrt()
   {
-    return new SquareRootNode<>(expression,
-                                this);
+    return apply("sqrt");
   }
 
-  public Node<D, C, F> sub(Node<D, C, F> subtrahend)
+  public Node<D, R, F> sub(int i)
   {
-    return new SubtractionNode<>(expression,
-                                 this,
-                                 subtrahend);
+    return sub(expression.newLiteralConstant(i));
   }
 
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, C, F>
-         substitute(String name, Node<E, S, G> replacement)
+  public <N extends Node<D, R, F>> N sub(Node<D, R, F> subtrahend)
   {
-    return this;
+    return (N) new SubtractionNode<>(expression,
+                                     this,
+                                     subtrahend);
   }
 
-  public Node<D, C, F> sum(String indexVariableName, Node<D, C, F> from, Node<D, C, F> to)
-  {
-    return new SumNode<D, C, F>(expression,
-                                indexVariableName,
-                                from,
-                                to,
-                                this);
-  }
+  public abstract <E, S, G extends Function<? extends E, ? extends S>>
+         Node<D, R, F>
+         substitute(String variable, Node<E, S, G> arg);
 
   public abstract char symbol();
 
-  public Node<D, C, F> tan()
+  public Node<D, R, F> tan()
   {
-    return new TangentNode<>(expression,
-                             this);
+    return apply("tan");
   }
 
-  public Node<D, C, F> tanh()
+  public Node<D, R, F> tanh()
   {
-    return new HyperbolicTangentNode<>(expression,
-                                       this);
+    return apply("tanh");
   }
 
-  public Node<D, C, F> two()
+  public LiteralConstantNode<D, R, F> three()
   {
-    return new LiteralConstantNode<>(expression,
-                                     "2");
+    return expression.newLiteralConstant(3);
   }
 
-  public abstract Class<?> type();
-
-  public String typeset()
+  public LiteralConstantNode<D, R, F> two()
   {
-    return toString();
+    return expression.newLiteralConstant(2);
   }
 
-  public Node<D, C, F> zero()
+  public boolean loadOutput(MethodVisitor mv, Class<?> resultType)
   {
-    return new LiteralConstantNode<>(expression,
-                                     "0");
+    try
+    {
+      if (isResult)
+      {
+        // When isResult=true, the result parameter is already on the stack as the
+        // target
+        // Just cast it to the correct type - don't call generateSetResultInvocation
+        Compiler.cast(loadResultParameter(mv), resultType);
+        fieldName = "result";
+      }
+      else
+      {
+        if (fieldName == null)
+        {
+          fieldName = expression.allocateIntermediateVariable(mv, resultType);
+        }
+        return true;
+      }
+      return false;
+    }
+    finally
+    {
+      expression.generatedNodes.put(this, fieldName);
+    }
   }
 
-  public String toStringWithType()
+  /**
+   * 
+   * @return the type that this node leaves on the stack when
+   *         this{@link #generate(MethodVisitor, Class)} is called
+   */
+  public abstract <C> Class<? extends C> type();
+
+  /**
+   * 
+   * @return the string that represents this node in {@link Latex} format
+   */
+  public abstract String typeset();
+
+  public LiteralConstantNode<D, R, F> π()
   {
-    return format("%s<%s>", this, type().getSimpleName());
+    return expression.newLiteralConstant("π");
   }
+
+  public LiteralConstantNode<D, R, F> zero()
+  {
+    return expression.newLiteralConstant(0);
+  }
+
+  public boolean isFunction()
+  {
+    return this instanceof FunctionNode;
+  }
+
+  public boolean isNegativeInfinity()
+  {
+    return "-∞".equals(toString());
+  }
+
+  public boolean isPositiveInfinity()
+  {
+    return "∞".equals(toString());
+  }
+
+  protected boolean containsDeltaFunction()
+  {
+    boolean does[] = new boolean[]
+    { false };
+
+    accept(node ->
+    {
+      if (node.isFunction() && node.asFunction().is("δ"))
+      {
+        does[0] = true;
+      }
+    });
+    return does[0];
+  }
+
 }
