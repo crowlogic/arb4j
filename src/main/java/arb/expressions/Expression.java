@@ -927,9 +927,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
+  /**
+   * Declares variables as fields in the generated class. This includes: 1. The
+   * ascendent expression's independent variable (if any) 2. Variables referenced
+   * from ancestor expressions (ascendentInput variables) 3. Context variables
+   */
   protected void declareVariables(ClassVisitor classVisitor)
   {
-    // assert !variablesDeclared : "variables have already been declared";
+    // Declare the immediate ascendent expression's independent variable
     if (ascendentExpression != null)
     {
       var ascendentIndependentVariableNode = ascendentExpression.independentVariable;
@@ -944,6 +949,50 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
     }
 
+    // Declare fields for all referenced variables from ancestor expressions
+    // These are variables where ascendentInput=true that were added to
+    // referencedVariables
+    for (var entry : referencedVariables.entrySet())
+    {
+      String                varName = entry.getKey();
+      VariableNode<D, C, F> varNode = entry.getValue();
+
+      // Skip if this is the independent variable (already handled) or an
+      // indeterminate
+      if (varNode.isIndependent || varNode.isIndeterminate)
+      {
+        continue;
+      }
+
+      // Skip if already declared as ascendent independent variable
+      if (ascendentExpression != null && ascendentExpression.independentVariable != null
+                    && varName.equals(ascendentExpression.independentVariable.getName()))
+      {
+        continue;
+      }
+
+      // Skip context variables (they will be declared below)
+      if (context != null && context.getVariable(varName) != null)
+      {
+        continue;
+      }
+
+      // This is an ascendentInput variable - declare it as a field
+      Class<?> varType = varNode.type();
+      if (varType != null && !varType.equals(Object.class))
+      {
+        if (trace)
+        {
+          log.debug("declareVariables for {}: declaring ascendentInput variable {} of type {}",
+                    className,
+                    varName,
+                    varType);
+        }
+        classVisitor.visitField(ACC_PUBLIC, varName, varType.descriptorString(), null, null);
+      }
+    }
+
+    // Declare context variables
     if (context != null)
     {
       var varList = context.variableEntryStream()
@@ -952,7 +1001,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       if (trace)
       {
         String vars = varList.stream().map(f -> f.getKey()).collect(Collectors.joining(","));
-        log.debug("declareVariables for {}: {}", className, vars);
+        log.debug("declareVariables for {}: context variables {}", className, vars);
       }
       for (var variable : varList)
       {
@@ -1771,7 +1820,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                 referencedFunctions.keySet());
     }
     addChecksForNullVariableReferences(mv);
-    // addChecksForNullFunctionReferences(mv);
 
     // Initialize in proper dependency order
     if (dependencies != null)
@@ -1781,9 +1829,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         generateDependencyAssignments(mv, dependency);
       }
     }
+
     insideInitializer = true;
     initializers.forEach(initializer -> initializer.accept(mv));
     insideInitializer = false;
+
+    // Propagate ascendent input variables to nested operand functions
+    propagateAscendentInputVariablesToNestedFunctions(mv);
 
     if (recursive)
     {
@@ -1791,6 +1843,84 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     generateCodeToSetIsInitializedToTrue(mv);
     return mv;
+  }
+
+  /**
+   * Propagates ascendent input variables (variables from ancestor expressions) to
+   * nested operand functions that reference them.
+   * 
+   * This is necessary because when a nested function (like operandF0001)
+   * references a variable from an ancestor expression (like 'i' from μfunc), the
+   * nested function needs to have its field set to point to the same value.
+   */
+  protected void propagateAscendentInputVariablesToNestedFunctions(MethodVisitor mv)
+  {
+    // For each referenced function (nested operand functions)
+    for (var funcEntry : referencedFunctions.entrySet())
+    {
+      String                   funcFieldName = funcEntry.getKey();
+      FunctionMapping<?, ?, ?> funcMapping   = funcEntry.getValue();
+
+      // Skip if this is a self-reference or not a generated expression
+      if (funcFieldName.equals(functionName) || funcMapping.expression == null)
+      {
+        continue;
+      }
+
+      Expression<?, ?, ?> nestedExpr = funcMapping.expression;
+      if (nestedExpr == null)
+      {
+        continue;
+      }
+
+      // Check each variable referenced by the nested expression
+      for (var varEntry : nestedExpr.referencedVariables.entrySet())
+      {
+        String                varName = varEntry.getKey();
+        VariableNode<?, ?, ?> varNode = varEntry.getValue();
+
+        // Skip independent variables and indeterminates of the nested expression
+        if (varNode.isIndependent || varNode.isIndeterminate)
+        {
+          continue;
+        }
+
+        // Skip context variables (they are propagated separately)
+        if (context != null && context.getVariable(varName) != null)
+        {
+          continue;
+        }
+
+        // This is an ascendent input variable - propagate it
+        Class<?> varType = varNode.type();
+        if (varType != null && !varType.equals(Object.class))
+        {
+          if (trace)
+          {
+            log.debug("propagateAscendentInputVariables: propagating {} to {} in {}",
+                      varName,
+                      funcFieldName,
+                      className);
+          }
+
+          // Generate: this.nestedFunc.varName = this.varName
+          String funcTypeDesc    = funcMapping.functionFieldDescriptor();
+          String varTypeDesc     = varType.descriptorString();
+          String nestedClassName = funcMapping.functionName;
+
+          // Load this.nestedFunc onto stack
+          loadThisOntoStack(mv);
+          mv.visitFieldInsn(GETFIELD, className, funcFieldName, funcTypeDesc);
+
+          // Load this.varName onto stack
+          loadThisOntoStack(mv);
+          mv.visitFieldInsn(GETFIELD, className, varName, varTypeDesc);
+
+          // Store into nestedFunc.varName
+          mv.visitFieldInsn(PUTFIELD, nestedClassName, varName, varTypeDesc);
+        }
+      }
+    }
   }
 
   protected ClassVisitor generateInitializationMethod(ClassVisitor classVisitor)
