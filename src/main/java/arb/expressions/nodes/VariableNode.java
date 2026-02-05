@@ -20,7 +20,6 @@ import arb.exceptions.UndefinedReferenceException;
 import arb.expressions.*;
 import arb.expressions.nodes.nary.ProductNode;
 import arb.functions.Function;
-import arb.utensils.Utensils;
 
 /**
  * This class represents a {@link VariableNode} node within an
@@ -515,9 +514,24 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     var inputVariable = expression.independentVariable;
 
+    if (Expression.traceNodes)
+    {
+      log.debug("=== resolveReference START: var={}, expr={}, ascendentExpr={}",
+                reference.name,
+                expression.functionName,
+                expression.ascendentExpression != null ? expression.ascendentExpression.functionName
+                                                       : "null");
+    }
+
     // 1) Context variable
     if (resolveContextualVariable())
     {
+      if (Expression.traceNodes)
+      {
+        log.debug("=== resolveReference: {} resolved as CONTEXT variable in {}",
+                  reference.name,
+                  expression.functionName);
+      }
       return this;
     }
 
@@ -526,6 +540,12 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       resolveIndependentVariable(inputVariable);
       reference.type = expression.domainType;
+      if (Expression.traceNodes)
+      {
+        log.debug("=== resolveReference: {} resolved as INDEPENDENT variable in {}",
+                  reference.name,
+                  expression.functionName);
+      }
       return this;
     }
 
@@ -533,27 +553,56 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     var bound = resolve(reference, expression);
     if (bound != null)
     {
+      if (Expression.traceNodes)
+      {
+        log.debug("=== resolveReference: {} FOUND in ancestor, ascendentInput={}, ascendentIndeterminate={}, referencedVariables.containsKey={}",
+                  reference.name,
+                  ascendentInput,
+                  ascendentIndeterminate,
+                  expression.referencedVariables.containsKey(reference.name));
+      }
+
       if (ascendentInput || ascendentIndeterminate)
       {
+        if (Expression.traceNodes)
+        {
+          log.debug("=== resolveReference: ADDING {} to referencedVariables in {}",
+                    reference.name,
+                    expression.functionName);
+        }
         expression.referencedVariables.put(reference.name, this);
+      }
+
+      if (Expression.traceNodes)
+      {
+        log.debug("=== resolveReference: {} resolved from ancestor, isIndependent={}, isIndeterminate={}, type={}",
+                  reference.name,
+                  isIndependent,
+                  isIndeterminate,
+                  reference.type);
       }
       return this;
     }
 
-    // 4) New indeterminate:
-    // - Implicit promotion is allowed only if no indeterminate exists yet.
-    // - Explicitly-declared variables (e.g. lambda parameters) are created with a
-    // non-null reference.type,
-    // and are allowed even when other indeterminates already exist.
+    // 4) New indeterminate
     if (expression.indeterminateVariables.isEmpty() || reference.type != null)
     {
       isIndeterminate = true;
       reference.type  = expression.coDomainType;
       declareThisToBeTheIndeterminantVariable();
+      if (Expression.traceNodes)
+      {
+        log.debug("=== resolveReference: {} declared as NEW INDETERMINATE in {}",
+                  reference.name,
+                  expression.functionName);
+      }
       return this;
     }
     else
     {
+      log.error("=== resolveReference FAILED for {} in {}",
+                reference.name,
+                expression.functionName);
       throw new CompilerException(String.format("undefined variable reference '%s' in expression '%s'; existing indeterminates: %s, independent variable: %s",
                                                 reference.name,
                                                 expression.expression,
