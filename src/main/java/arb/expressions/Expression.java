@@ -2438,9 +2438,21 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   /**
    * Propagates {@link VariableReference}s from this function to a nested
-   * function. ONLY propagates variables that BOTH: 1. THIS class has as a field
-   * (we directly reference it) 2. The NESTED class has as a field (it directly
-   * references it)
+   * function. ONLY propagates variables that the nested function actually has
+   * declared as fields (i.e., variables that the nested function actually
+   * references).
+   * 
+   * CRITICAL FIX for Issue #826: Before propagating a variable to a nested
+   * function, verify that the nested function actually declared that field.
+   * Otherwise we get NoSuchFieldError when trying to access fields that don't
+   * exist.
+   * 
+   * @param mv                                 the method visitor
+   * @param generatedFunctionClassInternalName the internal name of this class
+   * @param fieldType                          the field type internal name
+   * @param functionFieldName                  name of the nested function field
+   * @param variables                          stream of context variables to
+   *                                           potentially propagate
    */
   protected void
             initializeReferencedFunctionVariableReferences(MethodVisitor mv,
@@ -2455,32 +2467,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     variables.forEach(variable ->
     {
-      String varName = variable.getLeft();
+      String  varName        = variable.getLeft();
 
-      // CRITICAL FIX #1: Check if THIS class has the variable as a field
-      // If we don't reference it, we don't have the field to propagate FROM
-      if (!referencedVariables.containsKey(varName))
+      // CRITICAL FIX (Issue #826): Check if nested function actually needs this
+      // variable
+      // using the already-computed functionReferenceGraph for transitive dependencies
+      boolean nestedNeedsVar = nestedFunctionRequiresVariable(functionFieldName, varName);
+
+      if (!nestedNeedsVar)
       {
         if (trace)
         {
           log.debug("initializeReferencedFunctionVariableReferences: skipping {} "
-                    + "(not a field in {}) for nested function {}",
-                    varName,
-                    className,
-                    functionFieldName);
-        }
-        return;
-      }
-
-      // CRITICAL FIX #2: Check if nested function DIRECTLY has the variable as a
-      // field
-      // Do NOT check transitive - nested function handles its own nested functions
-      if (!nestedFunctionRequiresVariable(functionFieldName, varName))
-      {
-        if (trace)
-        {
-          log.debug("initializeReferencedFunctionVariableReferences: skipping {} "
-                    + "(not directly referenced by nested function {}) in {}",
+                    + "(not required by nested function {}) in {}",
                     varName,
                     functionFieldName,
                     className);
@@ -2499,16 +2498,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Checks if a nested function DIRECTLY requires a variable (has it as a
-   * declared field).
+   * Checks if a nested function requires a variable, either directly or
+   * transitively through its dependencies using the pre-computed
+   * functionReferenceGraph.
    * 
-   * CRITICAL: Do NOT check transitive dependencies here. Each function is
-   * responsible for propagating variables to its own nested functions during its
-   * own initialization.
+   * A function "requires" a variable if it references it AND has it declared as a
+   * field.
    * 
    * @param functionName the name of the nested function to check
    * @param varName      the variable name to check
-   * @return true if the nested function DIRECTLY references this variable
+   * @return true if the nested function has this variable as a declared field
    */
   protected boolean nestedFunctionRequiresVariable(String functionName, String varName)
   {
@@ -2520,10 +2519,27 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     Expression<?, ?, ?> expr = mapping.expression;
 
-    // ONLY check DIRECT reference - do NOT check transitive dependencies!
-    // E.g., if E references C and C references α, E still doesn't have α field.
-    // C gets α from whoever creates C directly, not through E.
-    return expr.referencedVariables != null && expr.referencedVariables.containsKey(varName);
+    // Direct reference: the nested function only has the field if it's in its
+    // referencedVariables
+    if (expr.referencedVariables != null && expr.referencedVariables.containsKey(varName))
+    {
+      return true;
+    }
+
+    // Transitive: check dependencies via the graph
+    Dependency dep = context.functionReferenceGraph.get(functionName);
+    if (dep != null)
+    {
+      for (String depFuncName : dep.dependencies)
+      {
+        if (nestedFunctionRequiresVariable(depFuncName, varName))
+        {
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 
   protected void injectReferences(F f)
