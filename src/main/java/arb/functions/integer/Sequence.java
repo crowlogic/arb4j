@@ -1,6 +1,7 @@
 package arb.functions.integer;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.IntFunction;
 
@@ -23,14 +24,12 @@ public interface Sequence<C> extends
                          Function<Integer, C>,
                          IntFunction<C>
 {
-  /**
-   * Cache for sequence values. Keys are (sequenceId, index) pairs.
-   */
-  static final ConcurrentHashMap<Long, Object> cache = new ConcurrentHashMap<>();
+  static final Map<Sequence<?>, Map<java.lang.Integer, ?>> caches = new ConcurrentHashMap<>();
 
-  static long cacheKey(int sequenceId, int index)
+  @SuppressWarnings("unchecked")
+  default Map<java.lang.Integer, C> getCache()
   {
-    return ((long) sequenceId << 32) | (index & 0xFFFFFFFFL);
+    return (Map<java.lang.Integer, C>) caches.computeIfAbsent(this, k -> new ConcurrentHashMap<>());
   }
 
   public default int bits()
@@ -55,15 +54,14 @@ public interface Sequence<C> extends
     return Integer.class;
   }
 
-  @SuppressWarnings("unchecked")
   public default C evaluate(int t, int bits)
   {
-    long key = cacheKey(System.identityHashCode(this), t);
+    Map<java.lang.Integer, C> cache = getCache();
     
-    Object cached = cache.get(key);
+    C cached = cache.get(t);
     if (cached != null)
     {
-      return (C) cached;
+      return cached;
     }
 
     C result;
@@ -74,7 +72,7 @@ public interface Sequence<C> extends
 
     if (result != null)
     {
-      cache.put(key, result);
+      cache.put(t, result);
     }
 
     return result;
