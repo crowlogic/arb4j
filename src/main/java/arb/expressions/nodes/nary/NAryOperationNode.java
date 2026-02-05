@@ -659,25 +659,65 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
   }
 
+  /**
+   * Propagates the independent variable (input parameter) to the operand
+   * function.
+   * 
+   * IMPORTANT: This copies BY VALUE using .set() because the input parameter is
+   * owned by the caller, who may destroy/reuse it after the method returns. The
+   * operand function needs its own copy of the value.
+   */
   protected void propagateInputToOperand(MethodVisitor mv)
   {
     var independentVariableNode = expression.independentVariable;
     if (independentVariableNode != null && !independentVariableNode.type().equals(Object.class))
     {
-      expression.loadFieldOntoStack(loadThisOntoStack(mv),
-                                    operandFunctionFieldName,
-                                    String.format("L%s;", operandFunctionFieldName));
+      Class<?> varType       = independentVariableNode.type();
+      String   varName       = independentVariableNode.reference.name;
+      String   varDescriptor = varType.descriptorString();
+      String   operandDesc   = String.format("L%s;", operandFunctionFieldName);
 
-      cast(loadInputParameter(mv), independentVariableNode.type());
       if (Expression.traceNodes)
       {
         logInputPropagationToOperand(independentVariableNode);
       }
 
-      putField(mv,
-               operandFunctionFieldName,
-               independentVariableNode.reference.name,
-               independentVariableNode.type());
+      // Generate: this.operandFunction.varName.set(inputParameter);
+      // This copies by VALUE because the caller owns the input parameter
+
+      // First, ensure the operand's field is not null (create if needed)
+      Label notNull = new Label();
+      Label end     = new Label();
+
+      // Check if operand.varName is null
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(GETFIELD, expression.className, operandFunctionFieldName, operandDesc);
+      mv.visitFieldInsn(GETFIELD, operandFunctionFieldName, varName, varDescriptor);
+      mv.visitJumpInsn(IFNONNULL, notNull);
+
+      // If null: create new instance
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(GETFIELD, expression.className, operandFunctionFieldName, operandDesc);
+      Compiler.generateNewObjectInstruction(mv, varType);
+      Compiler.duplicateTopOfTheStack(mv);
+      Compiler.invokeDefaultConstructor(mv, varType);
+      mv.visitFieldInsn(PUTFIELD, operandFunctionFieldName, varName, varDescriptor);
+
+      mv.visitLabel(notNull);
+
+      // Now call set() to copy the value: this.operandFunction.varName.set(input)
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(GETFIELD, expression.className, operandFunctionFieldName, operandDesc);
+      mv.visitFieldInsn(GETFIELD, operandFunctionFieldName, varName, varDescriptor);
+
+      // Load and cast the input parameter
+      cast(loadInputParameter(mv), varType);
+
+      // Call set() method to copy by value
+      Compiler.invokeVirtualMethod(mv, varType, "set", varType, varType);
+      mv.visitInsn(Opcodes.POP);
+
+      mv.visitLabel(end);
     }
   }
 
