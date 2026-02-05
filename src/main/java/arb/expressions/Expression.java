@@ -2402,11 +2402,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    *                                           variables injected from this one
    * @param variables
    */
-  /**
-   * Propagates {@link VariableReference}s from this function to a nested function
-   * specified. ONLY propagates variables that the nested function actually
-   * references.
-   */
   protected void
             initializeReferencedFunctionVariableReferences(MethodVisitor mv,
                                                            String generatedFunctionClassInternalName,
@@ -2426,22 +2421,21 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       String  varName        = variable.getLeft();
 
       // CRITICAL: Only propagate if the nested expression actually references this
-      // variable. Check ONLY the nestedExpr.referencedVariables map, NOT the shared
-      // context, because the context may have variables added AFTER the nested
-      // expression was compiled.
+      // variable
+      // Check if the nested function has this field declared
       boolean nestedHasField = false;
 
       if (nestedExpr != null)
       {
         // Check if it's in the nested expression's referencedVariables
-        nestedHasField = nestedExpr.referencedVariables.containsKey(varName);
-
-        if (trace && !nestedHasField)
+        if (nestedExpr.referencedVariables.containsKey(varName))
         {
-          log.debug("initializeReferencedFunctionVariableReferences: {} not in {}.referencedVariables={}",
-                    varName,
-                    functionFieldName,
-                    nestedExpr.referencedVariables.keySet());
+          nestedHasField = true;
+        }
+        // Check if it's a context variable in the nested expression
+        else if (nestedExpr.context != null && nestedExpr.context.getVariable(varName) != null)
+        {
+          nestedHasField = true;
         }
       }
 
@@ -2638,23 +2632,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     var    variableType                    = variable.getRight();
 
     String nestedFunctionClassInternalName = functionMapping.functionName;
-
-    // CRITICAL: Check if this.variableField is null FIRST
-    // If null, skip propagation entirely - value hasn't been injected yet
-    // and will be propagated later via injectReferences()
-    var    labelSkip                       = new Label();
     var    labelCopyByReference            = new Label();
     var    labelEnd                        = new Label();
 
-    // if (this.variableField == null) skip;
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(GETFIELD,
-                      generatedFunctionClassInternalName,
-                      variableFieldName,
-                      variableFieldTypeDescriptor);
-    mv.visitJumpInsn(IFNULL, labelSkip);
-
-    // this.variableField is NOT null, proceed with propagation
     jumpIfNestedFunctionFieldIsNull(mv,
                                     generatedFunctionClassInternalName,
                                     functionFieldName,
@@ -2684,8 +2664,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                    nestedFunctionClassInternalName,
                                                    labelCopyByReference,
                                                    labelEnd);
-
-    mv.visitLabel(labelSkip);
   }
 
   public Node<D, C, F> literal(int i)
