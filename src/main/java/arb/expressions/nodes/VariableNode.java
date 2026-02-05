@@ -536,8 +536,11 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return this;
     }
 
-    // 4) New indeterminate - only allowed if no indeterminate exists yet
-    if (expression.indeterminateVariables.isEmpty())
+    // 4) New indeterminate:
+    // - Implicit promotion is allowed only if no indeterminate exists yet.
+    // - Explicitly-declared variables (e.g. lambda parameters) are created with a non-null reference.type,
+    //   and are allowed even when other indeterminates already exist.
+    if (expression.indeterminateVariables.isEmpty() || reference.type != null)
     {
       isIndeterminate = true;
       reference.type  = expression.coDomainType;
