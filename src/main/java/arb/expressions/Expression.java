@@ -1737,14 +1737,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * returns a Function, to ensure the returned function has access to variables
    * it references from outer scopes.
    * 
-   * CRITICAL FIX for Issue #825: The parent expression's independent variable
-   * must also be propagated if the nested function references it as an
-   * ascendentInput field. The previous code incorrectly skipped this case,
-   * assuming propagateIndependentVariable() would handle it - but that method
-   * only handles the nested function's OWN independent variable, not ascendent
-   * inputs that happen to share the same name as the parent's independent
-   * variable.
-   * 
    * @param mv       the method visitor for generating bytecode
    * @param function the nested functional expression being created
    */
@@ -1757,6 +1749,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       VariableNode<?, ?, ?> varNode = entry.getValue();
 
       if (!varNode.ascendentInput)
+      {
+        continue;
+      }
+
+      if (independentVariable != null && varName.equals(independentVariable.getName()))
       {
         continue;
       }
@@ -1776,21 +1773,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
 
       duplicateTopOfTheStack(mv);
-
-      // CRITICAL FIX for Issue #825: Check if this variable is the parent's
-      // independent variable. If so, load it from the method parameter (slot 1),
-      // not from a field (which doesn't exist for independent variables).
-      if (independentVariable != null && varName.equals(independentVariable.getName()))
-      {
-        // Load the independent variable from method parameter slot 1
-        mv.visitVarInsn(ALOAD, 1);
-      }
-      else
-      {
-        // Load from field as before
-        loadThisFieldOntoStack(mv, varName, varType);
-      }
-
+      loadThisFieldOntoStack(mv, varName, varType);
       putField(mv, function.className, varName, varType);
     }
   }
