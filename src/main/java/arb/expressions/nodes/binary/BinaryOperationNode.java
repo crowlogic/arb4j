@@ -41,7 +41,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
                                          Node<D, C, F>
 {
 
-  public static boolean                                          traceSimplify   = true;
+  public static boolean                                          traceSimplify   = false;
 
   public static int                                              simplifyDepth   = 0;
 
@@ -414,55 +414,72 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   @Override
   public Node<D, C, F> simplify()
   {
-    simplifyDepth++;
-    if (traceSimplify)
+    // Check memoization first
+    if (alreadySimplifiedInThisPass())
     {
-      System.err.printf("%s[%d] ENTER %s.simplify() this=%s left=%s right=%s%n",
-                        depthIndent(),
-                        simplifyDepth,
-                        getClass().getSimpleName(),
-                        System.identityHashCode(this),
-                        left,
-                        right);
+      return this;
     }
 
-    if (left != null)
+    beginSimplifyPass();
+    simplifyDepth++;
+
+    try
     {
-      var oldLeft = left;
-      left = left.simplify();
-      if (traceSimplify && left != oldLeft)
+      if (traceSimplify)
       {
-        System.err.printf("%s[%d]   left changed: %s -> %s%n",
+        System.err.printf("%s[%d] ENTER %s.simplify() this=%s left=%s right=%s%n",
                           depthIndent(),
                           simplifyDepth,
-                          oldLeft,
-                          left);
-      }
-    }
-    if (right != null)
-    {
-      var oldRight = right;
-      right = right.simplify();
-      if (traceSimplify && right != oldRight)
-      {
-        System.err.printf("%s[%d]   right changed: %s -> %s%n",
-                          depthIndent(),
-                          simplifyDepth,
-                          oldRight,
+                          getClass().getSimpleName(),
+                          System.identityHashCode(this),
+                          left,
                           right);
       }
-    }
 
-    if (traceSimplify)
-    {
-      System.err.printf("%s[%d] EXIT %s.simplify() returning this=%s%n",
-                        depthIndent(),
-                        simplifyDepth,
-                        getClass().getSimpleName(),
-                        this);
+      if (left != null)
+      {
+        var oldLeft = left;
+        left = left.simplify();
+        if (traceSimplify && left != oldLeft)
+        {
+          System.err.printf("%s[%d]   left changed: %s -> %s%n",
+                            depthIndent(),
+                            simplifyDepth,
+                            oldLeft,
+                            left);
+        }
+      }
+      if (right != null)
+      {
+        var oldRight = right;
+        right = right.simplify();
+        if (traceSimplify && right != oldRight)
+        {
+          System.err.printf("%s[%d]   right changed: %s -> %s%n",
+                            depthIndent(),
+                            simplifyDepth,
+                            oldRight,
+                            right);
+        }
+      }
+
+      if (traceSimplify)
+      {
+        System.err.printf("%s[%d] EXIT %s.simplify() returning this=%s%n",
+                          depthIndent(),
+                          simplifyDepth,
+                          getClass().getSimpleName(),
+                          this);
+      }
+
+      markSimplified();
+      return this;
     }
-    simplifyDepth--;
-    return this;
+    finally
+    {
+      simplifyDepth--;
+      endSimplifyPass();
+    }
   }
 
   public String stringFormat(Node<?, ?, ?> side)
