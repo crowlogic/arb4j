@@ -1,6 +1,8 @@
 package arb.functions.integer;
 
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.IntFunction;
 
 import arb.Integer;
@@ -18,16 +20,23 @@ import arb.utensils.ShellFunctions;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-
 public interface Sequence<C> extends
                          Function<Integer, C>,
                          IntFunction<C>
 {
+  static final Map<Sequence<?>, Map<java.lang.Integer, ?>> caches = new ConcurrentHashMap<>();
+
+  @SuppressWarnings("unchecked")
+  default Map<java.lang.Integer, C> getCache()
+  {
+    return (Map<java.lang.Integer, C>) caches.computeIfAbsent(this, k -> new ConcurrentHashMap<>());
+  }
+
   public default int bits()
   {
     return 128;
   }
-  
+
   public default List<C> enumerate(int i, int j)
   {
     return ShellFunctions.seq(i, j, m -> evaluate(m, bits()));
@@ -47,15 +56,31 @@ public interface Sequence<C> extends
 
   public default C evaluate(int t, int bits)
   {
-    try ( Integer integer = new Integer(t))
+    Map<java.lang.Integer, C> cache = getCache();
+    
+    C cached = cache.get(t);
+    if (cached != null)
     {
-      return evaluate(integer, bits);
+      return cached;
     }
+
+    C result;
+    try (Integer integer = new Integer(t))
+    {
+      result = evaluate(integer, bits);
+    }
+
+    if (result != null)
+    {
+      cache.put(t, result);
+    }
+
+    return result;
   }
 
   public default C evaluate(int t, int bits, C res)
   {
-    try ( Integer integer = new Integer(t))
+    try (Integer integer = new Integer(t))
     {
       return evaluate(integer, bits, res);
     }
