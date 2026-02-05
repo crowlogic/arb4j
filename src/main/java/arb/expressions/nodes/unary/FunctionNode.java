@@ -803,6 +803,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return arg.mul(arg.arcsin()).sub(one().sub(arg.pow(2)).sqrt());
     case "arctan":
       return arg.mul(arg.arctan()).sub(one().div(2).mul(one().add(arg.pow(2)).log()));
+    case "log":
+      // ∫ ln(x) dx = x*ln(x) - x
+      return arg.mul(this).sub(arg);
     default:
       throw new UnsupportedOperationException("Integration not implemented for: " + functionName);
     }
