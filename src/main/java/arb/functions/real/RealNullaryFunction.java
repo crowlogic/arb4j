@@ -2,10 +2,7 @@ package arb.functions.real;
 
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.expressions.Compiler;
-import arb.expressions.Context;
-import arb.expressions.Expression;
-import arb.expressions.Parser;
+import arb.expressions.*;
 import arb.functions.Function;
 import arb.functions.NullaryFunction;
 
@@ -42,7 +39,7 @@ public interface RealNullaryFunction extends
   public static Expression<Object, Real, RealNullaryFunction>
          compile(String functionName, String expression, Context context)
   {
-    return Compiler.compile(functionName,
+    return Parser.parse(functionName,
                             expression,
                             context,
                             Object.class,

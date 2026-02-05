@@ -4,10 +4,7 @@ import arb.Integer;
 import arb.RationalFunction;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.Compiler;
-import arb.expressions.Context;
-import arb.expressions.Expression;
-import arb.expressions.Parser;
+import arb.expressions.*;
 import arb.functions.Function;
 import arb.functions.integer.Sequence;
 
@@ -26,7 +23,7 @@ public interface RationalFunctionSequence extends Sequence<RationalFunction>
   public static Expression<Integer, RationalFunction, RationalFunctionSequence> compile(String expression,
                                                                                         Context context)
   {
-    return Compiler.compile(expression,
+    return Parser.parse(expression,
                             context,
                             Integer.class,
                             RationalFunction.class,

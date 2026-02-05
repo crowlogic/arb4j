@@ -3,10 +3,7 @@ package arb.functions.complex;
 import arb.ComplexPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.Compiler;
-import arb.expressions.Context;
-import arb.expressions.Expression;
-import arb.expressions.Parser;
+import arb.expressions.*;
 import arb.functions.Function;
 import arb.functions.NullaryFunction;
 
@@ -55,18 +52,6 @@ public interface ComplexPolynomialNullaryFunction extends
                         ComplexPolynomialNullaryFunction.class,
                         functionName,
                         null);
-  }
-
-  public static Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction>
-         compile(String functionName, String expression, Context context)
-  {
-    return Compiler.compile(functionName,
-                            expression,
-                            context,
-                            Object.class,
-                            ComplexPolynomial.class,
-                            ComplexPolynomialNullaryFunction.class,
-                            false);
   }
 
 }

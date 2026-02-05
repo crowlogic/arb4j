@@ -5,10 +5,7 @@ import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.NotIntegrableException;
-import arb.expressions.Compiler;
-import arb.expressions.Context;
-import arb.expressions.Expression;
-import arb.expressions.Parser;
+import arb.expressions.*;
 import arb.functions.Function;
 import arb.functions.RealToComplexFunction;
 import arb.space.topological.VectorSpace;
@@ -103,7 +100,7 @@ public interface ComplexFunction extends
   public static Expression<Complex, Complex, ComplexFunction> compile(String expression,
                                                                       Context context)
   {
-    return Compiler.compile(expression,
+    return Parser.parse(expression,
                             context,
                             Complex.class,
                             Complex.class,

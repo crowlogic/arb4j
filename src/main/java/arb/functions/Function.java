@@ -293,7 +293,7 @@ public interface Function<D, C> extends
 
     Expression<D,
                   C,
-                  F> compiledExpression = Compiler.compile(expression,
+                  F> compiledExpression = Parser.parse(expression,
                                                            context,
                                                            domainClass,
                                                            coDomainClass,

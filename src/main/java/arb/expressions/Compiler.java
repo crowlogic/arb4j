@@ -205,42 +205,6 @@ public class Compiler
     return methodVisitor;
   }
 
-  public static <D, R, F extends Function<? extends D, ? extends R>>
-         Expression<D, R, F>
-         compile(String expression,
-                 Context context,
-                 Class<? extends D> domainClass,
-                 Class<? extends R> coDomainClass,
-                 Class<? extends F> functionClass,
-                 String functionName)
-  {
-    return Parser.parse(expression,
-                        context,
-                        domainClass,
-                        coDomainClass,
-                        functionClass,
-                        functionName);
-  }
-
-  public static <D, R, F extends Function<? extends D, ? extends R>>
-         Expression<D, R, F>
-         compile(String className,
-                 String expression,
-                 Context context,
-                 Class<D> domainClass,
-                 Class<R> coDomainClass,
-                 Class<F> functionClass,
-                 boolean verbose)
-  {
-    return express(className,
-                   expression,
-                   context,
-                   domainClass,
-                   coDomainClass,
-                   functionClass,
-                   verbose);
-  }
-
   public static ClassVisitor constructClassVisitor()
   {
     return new ClassWriter(ClassWriter.COMPUTE_FRAMES);
@@ -263,25 +227,6 @@ public class Compiler
   {
     mv.visitInsn(Opcodes.DUP);
     return mv;
-  }
-
-  public static <D, R, F extends Function<? extends D, ? extends R>>
-         Expression<D, R, F>
-         express(String className,
-                 String expressionString,
-                 Context context,
-                 Class<? extends D> domainClass,
-                 Class<? extends R> coDomainClass,
-                 Class<? extends F> functionClass,
-                 boolean verbose)
-  {
-    return Parser.parse(className,
-                        expressionString,
-                        context,
-                        domainClass,
-                        coDomainClass,
-                        functionClass,
-                        className);
   }
 
   public static MethodVisitor generateCallToGetUnsignedIntValue(MethodVisitor mv)

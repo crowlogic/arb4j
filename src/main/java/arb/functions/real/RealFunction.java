@@ -59,7 +59,7 @@ public interface RealFunction extends
 
   public static Expression<Real, Real, RealFunction> compile(String expression, Context context)
   {
-    return Compiler.compile(expression, context, Real.class, Real.class, RealFunction.class, null);
+    return Parser.parse(expression, context, Real.class, Real.class, RealFunction.class, null);
   }
 
   public static RealFunction express(String expression)

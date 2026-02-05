@@ -3,10 +3,7 @@ package arb.functions.rational;
 import arb.RationalFunction;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.Compiler;
-import arb.expressions.Context;
-import arb.expressions.Expression;
-import arb.expressions.Parser;
+import arb.expressions.*;
 import arb.functions.Function;
 import arb.functions.NullaryFunction;
 
@@ -62,7 +59,7 @@ public interface RationalNullaryFunction extends
   public static Expression<Object, RationalFunction, RationalNullaryFunction>
          compile(String functionName, String expression, Context context)
   {
-    return Compiler.compile(functionName,
+    return Parser.parse(functionName,
                             expression,
                             context,
                             Object.class,

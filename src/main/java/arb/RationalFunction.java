@@ -9,9 +9,7 @@
 package arb;
 
 import arb.exceptions.ArbException;
-import arb.expressions.Compiler;
-import arb.expressions.Expression;
-import arb.expressions.Context;
+import arb.expressions.*;
 import arb.functions.Function;
 import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
@@ -313,7 +311,7 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
 
   public static Expression<Fraction, Fraction, RationalFunction> compile(String expression, Context context)
   {
-    return Compiler.compile(expression, context, Fraction.class, Fraction.class, RationalFunction.class, null);
+    return Parser.parse(expression, context, Fraction.class, Fraction.class, RationalFunction.class, null);
   }
     
   @SuppressWarnings("resource")

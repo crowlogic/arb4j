@@ -3,10 +3,7 @@ package arb.functions.integer;
 import arb.IntegerPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.Compiler;
-import arb.expressions.Context;
-import arb.expressions.Expression;
-import arb.expressions.Parser;
+import arb.expressions.*;
 import arb.functions.Function;
 import arb.functions.NullaryFunction;
 
@@ -42,7 +39,7 @@ public interface IntegerPolynomialNullaryFunction extends
   public static Expression<Object, IntegerPolynomial, IntegerPolynomialNullaryFunction>
          compile(String functionName, String expression, Context context)
   {
-    return Compiler.compile(functionName,
+    return Parser.parse(functionName,
                             expression,
                             context,
                             Object.class,

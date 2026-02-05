@@ -1,10 +1,7 @@
 package arb.functions.algebraic;
 
 import arb.AlgebraicNumber;
-import arb.expressions.Compiler;
-import arb.expressions.Context;
-import arb.expressions.Expression;
-import arb.expressions.Parser;
+import arb.expressions.*;
 import arb.functions.Function;
 
 /**
@@ -44,7 +41,7 @@ public interface AlgebraicNumberFunction extends
   public static Expression<AlgebraicNumber, AlgebraicNumber, AlgebraicNumberFunction>
          compile(String expression, Context context)
   {
-    return Compiler.compile(expression,
+    return Parser.parse(expression,
                             context,
                             AlgebraicNumber.class,
                             AlgebraicNumber.class,

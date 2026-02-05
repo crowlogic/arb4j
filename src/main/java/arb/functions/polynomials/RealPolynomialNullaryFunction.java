@@ -3,10 +3,7 @@ package arb.functions.polynomials;
 import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.Compiler;
-import arb.expressions.Context;
-import arb.expressions.Expression;
-import arb.expressions.Parser;
+import arb.expressions.*;
 import arb.functions.Function;
 import arb.functions.NullaryFunction;
 
@@ -83,7 +80,7 @@ public interface RealPolynomialNullaryFunction extends
   public static Expression<Object, RealPolynomial, RealPolynomialNullaryFunction>
          compile(String functionName, String expression, Context context)
   {
-    return Compiler.compile(functionName,
+    return Parser.parse(functionName,
                             expression,
                             context,
                             Object.class,

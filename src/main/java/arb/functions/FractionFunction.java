@@ -1,10 +1,7 @@
 package arb.functions;
 
 import arb.Fraction;
-import arb.expressions.Compiler;
-import arb.expressions.Context;
-import arb.expressions.Expression;
-import arb.expressions.Parser;
+import arb.expressions.*;
 
 /*
  * 
@@ -26,7 +23,7 @@ public interface FractionFunction extends
 
   public static Expression<Fraction, Fraction, FractionFunction> compile(String expression, Context context)
   {
-    return Compiler.compile(expression, context, Fraction.class, Fraction.class, FractionFunction.class, null);
+    return Parser.parse(expression, context, Fraction.class, Fraction.class, FractionFunction.class, null);
   }
 
   public static FractionFunction express(String expression)

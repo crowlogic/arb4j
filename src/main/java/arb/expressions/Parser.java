@@ -567,4 +567,23 @@ public class Parser
                  functionName);
   }
 
+  public static <D, R, F extends Function<? extends D, ? extends R>>
+         Expression<D, R, F>
+         parse(String className,
+                 String expression,
+                 Context context,
+                 Class<D> domainClass,
+                 Class<R> coDomainClass,
+                 Class<F> functionClass,
+                 boolean verbose)
+  {
+    return parse(className,
+                        expression,
+                        context,
+                        domainClass,
+                        coDomainClass,
+                        functionClass,
+                        className);
+  }
+
 }

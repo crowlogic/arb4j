@@ -630,7 +630,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return position + 1 < expression.length() && expression.charAt(position + 1) == ch;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   protected Object clone()
   {
@@ -1547,7 +1546,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       constructReferencedFunctionInstanceIfItIsNull(mv, mapping);
       generateFunctionInitializer(mv, mapping, assignments);
 
-      for (String assignment : assignments)
+      for(String assignment : assignments)
       {
         generateDependencyAssignment(mv, functionName, functionDescriptor, assignment);
       }

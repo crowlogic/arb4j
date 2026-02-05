@@ -39,7 +39,7 @@ public class ComplexRationalFunction implements
   public static Expression<Fraction, ComplexFraction, ComplexRationalFunction>
          compile(String expression, Context context)
   {
-    return Compiler.compile(expression,
+    return Parser.parse(expression,
                             context,
                             Fraction.class,
                             ComplexFraction.class,
