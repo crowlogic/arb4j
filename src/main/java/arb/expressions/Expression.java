@@ -1693,17 +1693,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                function.rootNode.dependsOn(functionalIndeterminateVariable);
     }
 
-//    Class<?> actualRootNodeType = function.rootNode.type();
-//    if (!actualRootNodeType.equals(function.coDomainType) && actualRootNodeType.isInterface()
-//                  && Function.class.isAssignableFrom(actualRootNodeType))
-//    {
-//      function.coDomainType                     = actualRootNodeType;
-//      function.functionClass                    = (Class) actualRootNodeType;
-//      function.genericFunctionClassInternalName = Type.getInternalName(actualRootNodeType);
-//      function.functionClassDescriptor          = actualRootNodeType.descriptorString();
-//      assert false : "TODO: " + function.className + " #813";
-//    }
-
     function.generate();
 
     constructNewObject(mv, function.className);
@@ -1720,9 +1709,58 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       propagateContext(mv, function);
     }
 
+    propagateAscendentInputVariablesToFunctional(mv, function);
+
     invokeInitializationMethod(mv, function);
 
     return function.compile();
+  }
+
+  /**
+   * Propagates ascendent input variables (variables from ancestor expressions) to
+   * a newly created nested functional. This is called when generating code that
+   * returns a Function, to ensure the returned function has access to variables
+   * it references from outer scopes.
+   * 
+   * @param mv       the method visitor for generating bytecode
+   * @param function the nested functional expression being created
+   */
+  protected void propagateAscendentInputVariablesToFunctional(MethodVisitor mv,
+                                                              Expression<?, ?, ?> function)
+  {
+    for (var entry : function.referencedVariables.entrySet())
+    {
+      String                varName = entry.getKey();
+      VariableNode<?, ?, ?> varNode = entry.getValue();
+
+      if (!varNode.ascendentInput)
+      {
+        continue;
+      }
+
+      if (independentVariable != null && varName.equals(independentVariable.getName()))
+      {
+        continue;
+      }
+
+      Class<?> varType = varNode.type();
+      if (varType == null || varType.equals(Object.class))
+      {
+        continue;
+      }
+
+      if (trace)
+      {
+        log.debug("propagateAscendentInputVariablesToFunctional: propagating {} to {} from {}",
+                  varName,
+                  function.className,
+                  className);
+      }
+
+      duplicateTopOfTheStack(mv);
+      loadThisFieldOntoStack(mv, varName, varType);
+      putField(mv, function.className, varName, varType);
+    }
   }
 
   public VariableNode<D, C, F> getIndeterminateVariable()
