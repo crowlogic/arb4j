@@ -607,7 +607,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
           Named  val       = entry.getValue();
           if (val != null)
           {
-            // Check operand refs (existing)
             if (!operand.referencedVariables.containsKey(fieldName) && (operand.context == null
                           || operand.context.getVariable(fieldName) == null))
             {
@@ -616,20 +615,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                 logger.debug("propagateContextVariablesToOperand: skipping {} "
                              + "(not referenced by operand {})",
                              fieldName,
-                             operandFunctionFieldName);
-              }
-              continue;
-            }
-
-            // CRITICAL FIX: Check parent has field (matches declareVariables)
-            if (!expression.referencedVariables.containsKey(fieldName))
-            {
-              if (Expression.trace)
-              {
-                logger.debug("propagateContextVariablesToOperand: skipping {} "
-                             + "(not a field in parent {}) for operand {}",
-                             fieldName,
-                             expression.className,
                              operandFunctionFieldName);
               }
               continue;
