@@ -18,6 +18,7 @@ import java.util.stream.Stream;
 import org.jetbrains.java.decompiler.api.Decompiler;
 import org.jetbrains.java.decompiler.main.decompiler.DirectoryResultSaver;
 import org.jetbrains.java.decompiler.main.decompiler.PrintStreamLogger;
+import org.jetbrains.java.decompiler.main.extern.IFernflowerLogger.Severity;
 import org.jetbrains.java.decompiler.main.extern.IFernflowerPreferences;
 import org.objectweb.asm.*;
 import org.objectweb.asm.util.TraceClassVisitor;
@@ -178,6 +179,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   private static boolean    saveClasses                       =
                                         Boolean.valueOf(System.getProperty("arb4j.saveClasses",
                                                                            "false"));
+
+  private static boolean    decompileClasses                  =
+                                             Boolean.valueOf(System.getProperty("arb4j.saveClasses",
+                                                                                "false"));
 
   public static boolean     saveGraphs                        =
                                        Boolean.valueOf(System.getProperty("arb4j.saveGraphs",
@@ -3281,15 +3286,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                            className + ".class");
       writeBytecodes(file);
 
-      Decompiler decompiler =
-                            new Decompiler.Builder().inputs(file)
-                                                    .output(new DirectoryResultSaver(compiledClassDir))
-                                                    .option(IFernflowerPreferences.INCLUDE_ENTIRE_CLASSPATH,
-                                                            true)
-                                                    .logger(new PrintStreamLogger(System.err))
-                                                    .build();
+      if (decompileClasses)
+      {
+        PrintStreamLogger logger = new PrintStreamLogger(System.err);
+        logger.setSeverity(Severity.WARN);
+        Decompiler decompiler =
+                              new Decompiler.Builder().inputs(file)
+                                                      .output(new DirectoryResultSaver(compiledClassDir))
+                                                      .option(IFernflowerPreferences.INCLUDE_ENTIRE_CLASSPATH,
+                                                              true)
+                                                      .logger(logger)
+                                                      .build();
 
-      decompiler.decompile();
+        decompiler.decompile();
+      }
 
     }
     return this;

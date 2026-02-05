@@ -94,21 +94,18 @@ public class HypergeometricFunctionTest extends
 
   public void testHypergeometricFunctionExpressionRealPolynomial()
   {
-    boolean caughtExpectedException = false;
+    boolean caughtException = false;
     try
     {
       var poly = RealPolynomialNullaryFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
-      try ( @SuppressWarnings("unused")
-      RealPolynomial expressed = poly.evaluate(bits, new RealPolynomial()))
-      {
-
-      }
+      RealPolynomial expressed = poly.evaluate(bits, new RealPolynomial());
+      assertEquals( "0.065625*x² + 0.30625*x + 0.628125", expressed.toString() );
     }
     catch (UnsupportedOperationException e)
     {
-      caughtExpectedException = e.getMessage().contains("functionals");
+      caughtException = true;
     }
-    assertTrue(caughtExpectedException);
+    assertFalse(caughtException);
   }
 
   public static void testSum2()

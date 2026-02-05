@@ -1,10 +1,8 @@
 package arb;
 
-import arb.exceptions.CompilerException;
 import arb.expressions.Context;
 import arb.functions.rational.ComplexRationalFunctionSequence;
 import arb.functions.rational.ComplexRationalNullaryFunction;
-import arb.utensils.Utensils;
 import junit.framework.TestCase;
 
 /**
@@ -213,26 +211,15 @@ public class ComplexRationalFunctionTest extends
   public static void
          testComplexRationalHypergeometricFunctionExpressionRationalWithFunctionsMissingParenthesis()
   {
-    Exception thrownException = null;
-    try
-    {
-      var context   = new Context();
-      var expressed = ComplexRationalFunction.express("pFq([-2,3+1/2,1],[2,4],½-x/2)");
-      ComplexRationalFunction.express("a:1", context);
-      ComplexRationalFunction.express("b:-⅞*(½ - x/2)", context);
-      ComplexRationalFunction.express("c:21/80*(½ - x/2)²", context);
-      ComplexRationalFunction expectedSum = ComplexRationalFunction.express("a+b+c", context);
-      assertEquals("(21*x^2+98*x+201)/320", expressed.toString());
-      assertEquals(expressed, expectedSum);
-    }
-    catch (Exception e)
-    {
-      thrownException = e;
-    }
-    assertNotNull(thrownException);
-    assertEquals(thrownException.getMessage() + Utensils.stackTraceToString(thrownException),
-                 CompilerException.class,
-                 thrownException.getClass());
+
+    var context   = new Context();
+    var expressed = ComplexRationalFunction.express("pFq([-2,3+1/2,1],[2,4],½-x/2)");
+    ComplexRationalFunction.express("a:1", context);
+    ComplexRationalFunction.express("b:-⅞*(½ - x/2)", context);
+    ComplexRationalFunction.express("c:21/80*(½ - x/2)²", context);
+    ComplexRationalFunction expectedSum = ComplexRationalFunction.express("a()+b()+c()", context);
+    assertEquals("(21*x^2+98*x+201)/320 + 0i", expressed.toString());
+    assertEquals(expressed.toString(), expectedSum.toString());
 
   }
 
