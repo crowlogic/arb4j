@@ -80,8 +80,18 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
   public Node<D, R, F>            α;
   public Node<D, R, F>            β;
   public Class<?>                 hypergeometricFunctionClass;
-  public boolean                  dependsOnInput;
-  public boolean                  argDependsOnInput;
+  /**
+   * Whether the Pochhammer parameters α or β depend on the independent variable.
+   * When true but argumentDependsOnInput is false, we can still use evaluate(null,...)
+   * because the arg function is a NullaryFunction that ignores its input.
+   */
+  public boolean                  αβDependsOnInput;
+  /**
+   * Whether the argument expression (e.g., -x² in pFq([...],[...];-x²)) depends
+   * on the independent variable. When true, the arg function is Function<T,T>
+   * and REQUIRES actual input - passing null will cause NullPointerException.
+   */
+  public boolean                  argumentDependsOnInput;
   public String                   elementFieldName;
   public String                   argFunctionFieldName;
   public Class<?>                 argFunctionClass;
@@ -188,10 +198,10 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     fieldName         =
               expression.newIntermediateVariable("hyp", hypergeometricFunctionClass, true);
 
-    dependsOnInput    = α.dependsOn(expression.independentVariable)
+    αβDependsOnInput    = α.dependsOn(expression.independentVariable)
                   || β.dependsOn(expression.independentVariable);
 
-    argDependsOnInput = arg.dependsOn(expression.independentVariable);
+    argumentDependsOnInput = arg.dependsOn(expression.independentVariable);
 
     if (isNullaryFunctionOrHasScalarCodomain)
     {
@@ -218,7 +228,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
     compileArgFunction();
 
-    if (!dependsOnInput && !argDependsOnInput)
+    if (!αβDependsOnInput && !argumentDependsOnInput)
     {
       expression.registerInitializer(this::generateHypergeometricFunctionInitializer);
     }
@@ -230,7 +240,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     Class<?> argDomainType;
     Class<?> argCoDomainType;
 
-    if (argDependsOnInput)
+    if (argumentDependsOnInput)
     {
       // Arg depends on input: compile as Function<FunctionalType, FunctionalType>
       argDomainType    = functionalType;
@@ -258,7 +268,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     if (independentVar != null)
     {
       var splicedVar = independentVar.spliceInto(argExpression).asVariable();
-      if (argDependsOnInput)
+      if (argumentDependsOnInput)
       {
         argExpression.independentVariable = splicedVar;
       }
@@ -311,22 +321,33 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
     boolean loadedHypergeometricFunction = false;
 
-    if (dependsOnInput || argDependsOnInput)
+    if (αβDependsOnInput || argumentDependsOnInput)
     {
       loadedHypergeometricFunction = true;
       loadHypergeometricFunctionOntoStack(mv);
       generateInitCall(mv);
 
-      // When isNullaryFunctionOrHasScalarCodomain, we need to populate elementFieldName
-      // by calling evaluate() on the hypergeometric function. We POP the init() return
-      // and reload the function for evaluate().
-      // When !isNullaryFunctionOrHasScalarCodomain, we leave the init() return on the
-      // stack because the subsequent vector codomain branch will use it directly.
       if (isNullaryFunctionOrHasScalarCodomain)
       {
+        // Need to populate elementFieldName by calling evaluate() on the
+        // hypergeometric function. The key distinction:
+        // - If argumentDependsOnInput: arg function needs actual input, not null
+        // - If !argumentDependsOnInput: arg function is NullaryFunction, null is fine
         mv.visitInsn(POP); // Discard init return value
         loadHypergeometricFunctionOntoStack(mv);
-        mv.visitInsn(ACONST_NULL);
+
+        if (argumentDependsOnInput)
+        {
+          // Arg function is Function<T,T> and requires actual input
+          loadInputParameter(mv);
+          cast(mv, expression.domainType);
+        }
+        else
+        {
+          // Arg function is NullaryFunction, ignores input, null is fine
+          mv.visitInsn(ACONST_NULL);
+        }
+
         mv.visitLdcInsn(1);
         loadBitsOntoStack(mv);
         expression.loadThisFieldOntoStack(mv, elementFieldName, elementType);
@@ -340,6 +361,8 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                             Object.class);
         mv.visitInsn(POP); // evaluate writes to elementFieldName, discard return
       }
+      // If !isNullaryFunctionOrHasScalarCodomain, leave init return on stack
+      // for the vector codomain branch below
     }
 
     if (!isNullaryFunctionOrHasScalarCodomain)
@@ -403,7 +426,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     expression.loadThisFieldOntoStack(mv, argFunctionFieldName, actualFieldType);
 
     // Call the appropriate init overload based on arg dependency
-    Class<?> argParamType = argDependsOnInput ? Function.class : nullaryFunctionClass;
+    Class<?> argParamType = argumentDependsOnInput ? Function.class : nullaryFunctionClass;
 
     invokeVirtualMethod(mv,
                         hypergeometricFunctionClass,
