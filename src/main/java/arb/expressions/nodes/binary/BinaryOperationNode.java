@@ -41,6 +41,10 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
                                          Node<D, C, F>
 {
 
+  public static boolean                                          traceSimplify   = true;
+
+  public static int                                              simplifyDepth   = 0;
+
   public static final int                                        initializerBits = 128;
 
   public static final HashMap<Class<?>, Map<Class<?>, Class<?>>> typeMap         = new HashMap<>();
@@ -286,8 +290,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
                                                 expression.functionClass,
                                                 expression.functionName,
                                                 expression.indeterminateVariables,
-                                                expression.independentVariable,
-                                                expression));
+                                                expression.independentVariable,expression));
     }
 
     String existingVar = expression.generatedNodes.get(this);
@@ -403,26 +406,62 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
                       getClass().getSimpleName());
   }
 
+  protected String depthIndent()
+  {
+    return "  ".repeat(simplifyDepth);
+  }
+
   @Override
   public Node<D, C, F> simplify()
   {
-    if (Expression.traceNodes)
+    simplifyDepth++;
+    if (traceSimplify)
     {
-      log.debug("#{}: simplify(this={}):left={} right={}",
-                System.identityHashCode(expression),
-                this,
-                left,
-                right);
+      System.err.printf("%s[%d] ENTER %s.simplify() this=%s left=%s right=%s%n",
+                        depthIndent(),
+                        simplifyDepth,
+                        getClass().getSimpleName(),
+                        System.identityHashCode(this),
+                        left,
+                        right);
     }
+
     if (left != null)
     {
+      var oldLeft = left;
       left = left.simplify();
+      if (traceSimplify && left != oldLeft)
+      {
+        System.err.printf("%s[%d]   left changed: %s -> %s%n",
+                          depthIndent(),
+                          simplifyDepth,
+                          oldLeft,
+                          left);
+      }
     }
     if (right != null)
     {
+      var oldRight = right;
       right = right.simplify();
+      if (traceSimplify && right != oldRight)
+      {
+        System.err.printf("%s[%d]   right changed: %s -> %s%n",
+                          depthIndent(),
+                          simplifyDepth,
+                          oldRight,
+                          right);
+      }
     }
 
+    if (traceSimplify)
+    {
+      System.err.printf("%s[%d] EXIT %s.simplify() returning this=%s%n",
+                        depthIndent(),
+                        simplifyDepth,
+                        getClass().getSimpleName(),
+                        this);
+    }
+    simplifyDepth--;
     return this;
   }
 

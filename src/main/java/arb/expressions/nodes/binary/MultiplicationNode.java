@@ -323,37 +323,91 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public Node<D, R, F> simplify()
   {
+    simplifyDepth++;
+    if (traceSimplify)
+    {
+      System.err.printf("%s[%d] ENTER MultiplicationNode.simplify() this=%s left=%s right=%s%n",
+                        depthIndent(),
+                        simplifyDepth,
+                        System.identityHashCode(this),
+                        left,
+                        right);
+    }
+
     // Simplify children first
     if (left != null)
     {
+      var oldLeft = left;
       left = left.simplify();
+      if (traceSimplify && left != oldLeft)
+      {
+        System.err.printf("%s[%d]   left changed: %s -> %s%n",
+                          depthIndent(),
+                          simplifyDepth,
+                          oldLeft,
+                          left);
+      }
     }
     if (right != null)
     {
+      var oldRight = right;
       right = right.simplify();
+      if (traceSimplify && right != oldRight)
+      {
+        System.err.printf("%s[%d]   right changed: %s -> %s%n",
+                          depthIndent(),
+                          simplifyDepth,
+                          oldRight,
+                          right);
+      }
     }
 
     // Check for zero multiplication
     if (left.isZero() || right.isZero())
     {
+      if (traceSimplify)
+      {
+        System.err.printf("%s[%d]   -> returning zero()%n", depthIndent(), simplifyDepth);
+      }
+      simplifyDepth--;
       return zero();
     }
 
     // Check for identity multiplication
     if (left.isOne())
     {
+      if (traceSimplify)
+      {
+        System.err.printf("%s[%d]   left.isOne() -> returning right=%s%n", depthIndent(), simplifyDepth, right);
+      }
+      simplifyDepth--;
       return right;
     }
     if (right.isOne())
     {
+      if (traceSimplify)
+      {
+        System.err.printf("%s[%d]   right.isOne() -> returning left=%s%n", depthIndent(), simplifyDepth, left);
+      }
+      simplifyDepth--;
       return left;
     }
     if (left.isNegOne())
     {
+      if (traceSimplify)
+      {
+        System.err.printf("%s[%d]   left.isNegOne() -> returning right.neg()%n", depthIndent(), simplifyDepth);
+      }
+      simplifyDepth--;
       return right.neg();
     }
     if (right.isNegOne())
     {
+      if (traceSimplify)
+      {
+        System.err.printf("%s[%d]   right.isNegOne() -> returning left.neg()%n", depthIndent(), simplifyDepth);
+      }
+      simplifyDepth--;
       return left.neg();
     }
 
@@ -361,6 +415,11 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     var deltaSimplification = simplifyDeltaMultiplication();
     if (deltaSimplification != null)
     {
+      if (traceSimplify)
+      {
+        System.err.printf("%s[%d]   delta simplification -> %s%n", depthIndent(), simplifyDepth, deltaSimplification);
+      }
+      simplifyDepth--;
       return deltaSimplification;
     }
 
@@ -374,6 +433,11 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
               var rint = new Integer(rightConstant.value))
         {
           var product = lint.mul(rint, 0, rint);
+          if (traceSimplify)
+          {
+            System.err.printf("%s[%d]   integer folding: %s * %s = %s%n", depthIndent(), simplifyDepth, leftConstant.value, rightConstant.value, product);
+          }
+          simplifyDepth--;
           return expression.newLiteralConstant(product.toString());
         }
       }
@@ -390,6 +454,11 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
         var rightPower = rightExp.right;
         var leftPower  = leftExp.right;
         var power      = leftPower.add(rightPower).simplify();
+        if (traceSimplify)
+        {
+          System.err.printf("%s[%d]   exponent addition: base^(%s+%s)%n", depthIndent(), simplifyDepth, leftPower, rightPower);
+        }
+        simplifyDepth--;
         return leftBase.pow(power).simplify();
       }
     }
@@ -404,6 +473,11 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       if (leftIsExponentialFunction && rightIsExponentialFunction)
       {
         var exponentSum = leftFunction.arg.add(rightFunction.arg).simplify();
+        if (traceSimplify)
+        {
+          System.err.printf("%s[%d]   exp multiplication: exp(%s+%s)%n", depthIndent(), simplifyDepth, leftFunction.arg, rightFunction.arg);
+        }
+        simplifyDepth--;
         return exponentSum.exp().simplify();
       }
     }
@@ -417,10 +491,20 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
 
       if (leftIsSquareRootFunction && functionsAreEqual)
       {
+        if (traceSimplify)
+        {
+          System.err.printf("%s[%d]   sqrt*sqrt -> arg%n", depthIndent(), simplifyDepth);
+        }
+        simplifyDepth--;
         return leftFunction.arg;
       }
     }
 
+    if (traceSimplify)
+    {
+      System.err.printf("%s[%d] EXIT MultiplicationNode.simplify() calling super%n", depthIndent(), simplifyDepth);
+    }
+    simplifyDepth--;
     return super.simplify();
   }
 
