@@ -400,7 +400,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     if (Expression.trace)
     {
-      log.debug("#{}: new Expression(className={}, domain={}, coDomain={}, function={}, expression={}, context={}, functionName={}, ascendentExpression={}#{})",
+      log.debug("#{}: new Expression(className={}, domain={}, coDomain={}, function={}, expression={}, context={}, functionName={}, ascendentExpression=#{})",
                 System.identityHashCode(this),
                 className,
                 domain,
@@ -1645,8 +1645,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       generateConditionalInitializater(mv);
     }
 
-    // Propagate the independent variable to nested functions that need it
-    // This must happen at evaluation time because the value is passed as an argument
+    // Propagate the independent variable to nested functions at evaluation time
     propagateIndependentVariableToNestedFunctionsAtEvaluation(mv);
 
     rootNode.isResult = true;
@@ -1663,6 +1662,111 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     declareEvaluateMethodsLocalVariableArguments(mv, startLabel, endLabel);
     Compiler.generateReturnFromMethod(mv);
     return classVisitor;
+  }
+
+  /**
+   * Propagates the independent variable (passed as argument to evaluate()) to
+   * nested operand functions that reference it.
+   * 
+   * This must be called during evaluate() because the independent variable is
+   * only available as a method argument at evaluation time, not during
+   * initialize().
+   */
+  protected void propagateIndependentVariableToNestedFunctionsAtEvaluation(MethodVisitor mv)
+  {
+    // Skip if no independent variable
+    if (independentVariable == null)
+    {
+      return;
+    }
+
+    String independentVarName = independentVariable.getName();
+    Class<?> independentVarType = independentVariable.type();
+    
+    if (independentVarType == null || independentVarType.equals(Object.class))
+    {
+      return;
+    }
+
+    // For each referenced function (nested operand functions)
+    for (var funcEntry : referencedFunctions.entrySet())
+    {
+      String                   funcFieldName = funcEntry.getKey();
+      FunctionMapping<?, ?, ?> funcMapping   = funcEntry.getValue();
+
+      // Skip if this is a self-reference or not a generated expression
+      if (funcFieldName.equals(functionName) || funcMapping.expression == null)
+      {
+        continue;
+      }
+
+      Expression<?, ?, ?> nestedExpr = funcMapping.expression;
+      if (nestedExpr == null)
+      {
+        continue;
+      }
+
+      // Check if the nested expression references this expression's independent variable
+      var nestedVarNode = nestedExpr.referencedVariables.get(independentVarName);
+      if (nestedVarNode == null)
+      {
+        continue;
+      }
+
+      // Skip if the nested expression's own independent/indeterminate variable has the same name
+      if (nestedExpr.independentVariable != null 
+          && independentVarName.equals(nestedExpr.independentVariable.getName()))
+      {
+        continue;
+      }
+      
+      boolean isNestedIndeterminate = false;
+      for (var indetVar : nestedExpr.indeterminateVariables)
+      {
+        if (indetVar != null && independentVarName.equals(indetVar.getName()))
+        {
+          isNestedIndeterminate = true;
+          break;
+        }
+      }
+      if (isNestedIndeterminate)
+      {
+        continue;
+      }
+
+      // Skip context variables
+      if (context != null && context.getVariable(independentVarName) != null)
+      {
+        continue;
+      }
+
+      // Generate: this.nestedFunc.varName = argument (ALOAD 1)
+      String funcTypeDesc = funcMapping.functionFieldDescriptor();
+      String varTypeDesc  = independentVarType.descriptorString();
+      String nestedClassName = funcMapping.functionName;
+
+      if (trace)
+      {
+        log.debug("propagateIndependentVariableToNestedFunctionsAtEvaluation: {} -> {}.{}",
+                  independentVarName, funcFieldName, independentVarName);
+      }
+
+      // Load this.nestedFunc onto stack
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(GETFIELD, className, funcFieldName, funcTypeDesc);
+
+      // Load the evaluation argument (slot 1 = first parameter after 'this')
+      mv.visitVarInsn(ALOAD, 1);
+      
+      // Cast if needed
+      if (!domainType.equals(independentVarType))
+      {
+        mv.visitTypeInsn(CHECKCAST, Type.getInternalName(independentVarType));
+      }
+
+      // Store into nestedFunc.varName
+      mv.visitFieldInsn(PUTFIELD, nestedClassName, independentVarName, varTypeDesc);
+    }
   }
 
   /**
@@ -1850,10 +1954,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * references a variable from an ancestor expression (like 'i' from μfunc), the
    * nested function needs to have its field set to point to the same value.
    * 
-   * IMPORTANT: This method must NOT try to propagate this expression's own
-   * independent variable, because it is passed as an argument to evaluate(),
-   * not stored as a field. Use propagateIndependentVariableToNestedFunctionsAtEvaluation()
-   * for that purpose instead.
+   * CRITICAL: This method must NOT try to propagate this expression's own
+   * independent variable, because that variable is passed as an argument to
+   * evaluate() and is not stored as a field. Trying to GETFIELD it would cause
+   * NoSuchFieldError.
    */
   protected void propagateAscendentInputVariablesToNestedFunctions(MethodVisitor mv)
   {
@@ -1887,16 +1991,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
           continue;
         }
 
-        // CRITICAL: Skip this expression's own independent variable!
-        // It's passed as an argument to evaluate(), not stored as a field.
-        // Trying to GETFIELD it would cause NoSuchFieldError.
-        if (independentVariable != null && varName.equals(independentVariable.getName()))
+        // Skip context variables (they are propagated separately)
+        if (context != null && context.getVariable(varName) != null)
         {
           continue;
         }
 
-        // Skip context variables (they are propagated separately)
-        if (context != null && context.getVariable(varName) != null)
+        // CRITICAL: Skip this expression's own independent variable!
+        // It's passed as an argument to evaluate(), not stored as a field.
+        // Trying to GETFIELD it would cause NoSuchFieldError.
+        if (independentVariable != null && varName.equals(independentVariable.getName()))
         {
           continue;
         }
@@ -1930,94 +2034,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
           mv.visitFieldInsn(PUTFIELD, nestedClassName, varName, varTypeDesc);
         }
       }
-    }
-  }
-
-  /**
-   * Propagates the independent variable (the evaluate() argument) to nested operand
-   * functions that reference it.
-   * 
-   * This must be called during evaluate(), not during initialize(), because the
-   * independent variable value is only available as the method argument during
-   * evaluation. Nested functions that reference this expression's independent
-   * variable need to receive the current value on each evaluation call.
-   * 
-   * For example, if μfunc.evaluate(Integer j, ...) is called and operandF0001
-   * has a field 'j' that references μfunc's independent variable, this method
-   * generates: this.operandF0001.j = j (where j is the evaluate argument).
-   */
-  protected void propagateIndependentVariableToNestedFunctionsAtEvaluation(MethodVisitor mv)
-  {
-    if (independentVariable == null)
-    {
-      return;
-    }
-
-    final String indepName = independentVariable.getName();
-
-    for (var funcEntry : referencedFunctions.entrySet())
-    {
-      String                   funcFieldName = funcEntry.getKey();
-      FunctionMapping<?, ?, ?> funcMapping   = funcEntry.getValue();
-
-      // Skip self-references and non-generated expressions
-      if (funcFieldName.equals(functionName) || funcMapping.expression == null)
-      {
-        continue;
-      }
-
-      Expression<?, ?, ?> nestedExpr = funcMapping.expression;
-      if (nestedExpr == null)
-      {
-        continue;
-      }
-
-      // Check if the nested expression references our independent variable
-      var nestedVarNode = nestedExpr.referencedVariables.get(indepName);
-      if (nestedVarNode == null)
-      {
-        continue;
-      }
-
-      // If nested expression treats it as its own independent/indeterminate, skip
-      if (nestedVarNode.isIndependent || nestedVarNode.isIndeterminate)
-      {
-        continue;
-      }
-
-      // If it's a context variable, that's handled elsewhere
-      if (context != null && context.getVariable(indepName) != null)
-      {
-        continue;
-      }
-
-      Class<?> varType = nestedVarNode.type();
-      if (varType == null || varType.equals(Object.class))
-      {
-        continue;
-      }
-
-      if (trace)
-      {
-        log.debug("propagateIndependentVariableToNestedFunctionsAtEvaluation: propagating {} to {} in {}",
-                  indepName,
-                  funcFieldName,
-                  className);
-      }
-
-      String funcTypeDesc    = funcMapping.functionFieldDescriptor();
-      String varTypeDesc     = varType.descriptorString();
-      String nestedClassName = funcMapping.functionName;
-
-      // Load this.nestedFunc onto stack
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, className, funcFieldName, funcTypeDesc);
-
-      // Load the independent variable from the evaluate() argument (slot 1)
-      mv.visitVarInsn(ALOAD, 1);
-
-      // Store into nestedFunc.<indepName>
-      mv.visitFieldInsn(PUTFIELD, nestedClassName, indepName, varTypeDesc);
     }
   }
 
@@ -2220,4 +2236,26 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (Expression.trace)
     {
-      log.debug("generateToStringMethod(): functionNameSpecified='{}' functionName='{}' independentVariable='{}' name='{}' arrow
+      log.debug("generateToStringMethod(): functionNameSpecified='{}' functionName='{}' independentVariable='{}' name='{}' arrow='{}' string='{}'",
+                functionNameSpecified,
+                functionName,
+                independentVariable,
+                name,
+                arrow,
+                string);
+    }
+
+    Compiler.generateReturnFromMethod(methodVisitor);
+    return classVisitor;
+  }
+
+  private ClassVisitor generateTypeMethod(ClassVisitor classVisitor,
+                                          String which,
+                                          Type type,
+                                          String methodSignature)
+  {
+    var mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
+                                      which,
+                                      Compiler.getMethodDescriptor(Class.class),
+                                      methodSignature,
+                                      null
