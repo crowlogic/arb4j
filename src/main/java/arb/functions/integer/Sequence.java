@@ -8,6 +8,7 @@ import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
+import arb.expressions.Expression;
 import arb.functions.Function;
 import arb.utensils.ShellFunctions;
 
@@ -18,67 +19,25 @@ import arb.utensils.ShellFunctions;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-
 public interface Sequence<C> extends
                          Function<Integer, C>,
                          IntFunction<C>
 {
   /**
-   * Cache for memoized sequence values. Keys are integer index values.
+   * Cache for sequence values. Keys are (sequenceId, index) pairs.
    */
-  static final ConcurrentHashMap<SequenceCacheKey, Object> cache = new ConcurrentHashMap<>();
+  static final ConcurrentHashMap<Long, Object> cache = new ConcurrentHashMap<>();
 
-  /**
-   * Key class for the memoization cache, combining sequence identity and index.
-   */
-  record SequenceCacheKey(int sequenceId, int index) {}
-
-  /**
-   * Returns whether this sequence should cache computed values.
-   * Override to return true to enable memoization.
-   * 
-   * @return true if memoization is enabled
-   */
-  default boolean isMemoized()
+  static long cacheKey(int sequenceId, int index)
   {
-    return false;
-  }
-
-  /**
-   * Enables or disables memoization for this sequence.
-   * Default implementation does nothing - override in implementing classes.
-   * 
-   * @param memoize true to enable caching
-   * @return this sequence for chaining
-   */
-  default Sequence<C> setMemoized(boolean memoize)
-  {
-    return this;
-  }
-
-  /**
-   * Clears the memoization cache for this sequence.
-   */
-  default void clearCache()
-  {
-    int id = System.identityHashCode(this);
-    cache.keySet().removeIf(key -> key.sequenceId() == id);
-  }
-
-  /**
-   * Returns the number of cached values for this sequence.
-   */
-  default int cacheSize()
-  {
-    int id = System.identityHashCode(this);
-    return (int) cache.keySet().stream().filter(key -> key.sequenceId() == id).count();
+    return ((long) sequenceId << 32) | (index & 0xFFFFFFFFL);
   }
 
   public default int bits()
   {
     return 128;
   }
-  
+
   public default List<C> enumerate(int i, int j)
   {
     return ShellFunctions.seq(i, j, m -> evaluate(m, bits()));
@@ -99,28 +58,22 @@ public interface Sequence<C> extends
   @SuppressWarnings("unchecked")
   public default C evaluate(int t, int bits)
   {
-    // Check cache first if memoization is enabled
-    if (isMemoized())
+    long key = cacheKey(System.identityHashCode(this), t);
+    
+    Object cached = cache.get(key);
+    if (cached != null)
     {
-      SequenceCacheKey key = new SequenceCacheKey(System.identityHashCode(this), t);
-      Object cached = cache.get(key);
-      if (cached != null)
-      {
-        return (C) cached;
-      }
+      return (C) cached;
     }
 
-    // Compute the value
     C result;
     try (Integer integer = new Integer(t))
     {
       result = evaluate(integer, bits);
     }
 
-    // Cache if memoization is enabled
-    if (isMemoized() && result != null)
+    if (result != null)
     {
-      SequenceCacheKey key = new SequenceCacheKey(System.identityHashCode(this), t);
       cache.put(key, result);
     }
 
@@ -129,7 +82,7 @@ public interface Sequence<C> extends
 
   public default C evaluate(int t, int bits, C res)
   {
-    try ( Integer integer = new Integer(t))
+    try (Integer integer = new Integer(t))
     {
       return evaluate(integer, bits, res);
     }
@@ -200,6 +153,5 @@ public interface Sequence<C> extends
   {
     return Function.parse(className, expr, context, Integer.class, coDomainType, seq, null, null);
   }
-
 
 }
