@@ -556,17 +556,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     return this;
   }
 
-  /**
-   * Propagates context variables to the operand function.
-   * 
-   * IMPORTANT: Only propagate variables that the operand function actually
-   * references. The operand expression's referencedVariables tells us which
-   * fields exist in the generated operand class. We must NOT try to set fields
-   * that don't exist.
-   */
   protected void propagateContextVariablesToOperand()
   {
-    if (expression.context != null && expression.context.variables != null && operand != null)
+    if (expression.context != null && expression.context.variables != null)
     {
       expression.registerInitializer(mv ->
       {
@@ -576,22 +568,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
           Named  val       = entry.getValue();
           if (val != null)
           {
-            // CRITICAL: Only propagate if the operand expression actually references this
-            // variable
-            // This means the operand class has this field declared
-            if (!operand.referencedVariables.containsKey(fieldName) && (operand.context == null
-                          || operand.context.getVariable(fieldName) == null))
-            {
-              if (Expression.trace)
-              {
-                logger.debug("propagateContextVariablesToOperand: skipping {} "
-                             + "(not referenced by operand {})",
-                             fieldName,
-                             operandFunctionFieldName);
-              }
-              continue;
-            }
-
             Class<?> fieldType                = val.getClass();
             String   fieldTypeDescriptor      = fieldType.descriptorString();
             String   operandClassInternalName = operandFunctionFieldName;
