@@ -92,7 +92,16 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
         if (expression.nextCharacterIs('➔'))
         {
           lambdaVar = maybeName;
-          // nextCharacterIs already consumed '➔'
+          // Create the integration variable BEFORE parsing the body
+          // This mirrors Expression.parseLambda() behavior - the variable must be
+          // registered so that references in the body can find it
+          integrationVariableNode = new VariableNode<>(expression,
+                                                       new VariableReference<>(lambdaVar,
+                                                                               null,
+                                                                               expression.coDomainType),
+                                                       expression.position,
+                                                       true);
+          dvar = lambdaVar;
         }
         else
         {
@@ -112,11 +121,24 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
         if (expression.nextCharacterIs('d'))
         {
           // nextCharacterIs already consumed 'd'
-          dvar                    = expression.parseName();
-          integrationVariableNode = new VariableNode<>(expression,
-                                                       new VariableReference<>(dvar),
-                                                       expression.position,
-                                                       false);
+          String parsedVar = expression.parseName();
+          // Only create integrationVariableNode if not already created from lambda
+          if (integrationVariableNode == null)
+          {
+            dvar                    = parsedVar;
+            integrationVariableNode = new VariableNode<>(expression,
+                                                         new VariableReference<>(dvar),
+                                                         expression.position,
+                                                         false);
+          }
+          else
+          {
+            // Validate lambda var matches d-var
+            if (!dvar.equals(parsedVar))
+            {
+              throw new CompilerException(String.format(SYNTAXMSG, dvar, parsedVar));
+            }
+          }
           if (expression.nextCharacterIs('∈'))
           {
             lowerLimitNode = expression.require('(', '{').resolve();
@@ -126,11 +148,24 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
         }
         else
         {
-          dvar                    = expression.parseName();
-          integrationVariableNode = new VariableNode<>(expression,
-                                                       new VariableReference<>(dvar),
-                                                       expression.position,
-                                                       false);
+          String parsedVar = expression.parseName();
+          // Only create integrationVariableNode if not already created from lambda
+          if (integrationVariableNode == null)
+          {
+            dvar                    = parsedVar;
+            integrationVariableNode = new VariableNode<>(expression,
+                                                         new VariableReference<>(dvar),
+                                                         expression.position,
+                                                         false);
+          }
+          else
+          {
+            // Validate lambda var matches the variable after comma
+            if (!dvar.equals(parsedVar))
+            {
+              throw new CompilerException(String.format(SYNTAXMSG, dvar, parsedVar));
+            }
+          }
           if (expression.nextCharacterIs('='))
           {
             lowerLimitNode = expression.resolve();
@@ -142,11 +177,24 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       {
         // Old syntax: ∫λ➔...dλ or ∫λ➔...dλ∈(a,b)
         // nextCharacterIs already consumed 'd'
-        dvar                    = expression.parseName();
-        integrationVariableNode = new VariableNode<>(expression,
-                                                     new VariableReference<>(dvar),
-                                                     expression.position,
-                                                     false);
+        String parsedVar = expression.parseName();
+        // Only create integrationVariableNode if not already created from lambda
+        if (integrationVariableNode == null)
+        {
+          dvar                    = parsedVar;
+          integrationVariableNode = new VariableNode<>(expression,
+                                                       new VariableReference<>(dvar),
+                                                       expression.position,
+                                                       false);
+        }
+        else
+        {
+          // Validate lambda var matches d-var
+          if (!dvar.equals(parsedVar))
+          {
+            throw new CompilerException(String.format(SYNTAXMSG, dvar, parsedVar));
+          }
+        }
 
         if (expression.nextCharacterIs('∈'))
         {
@@ -160,7 +208,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
         throw new CompilerException("Expected ',' or 'd' after integrand in " + expression);
       }
 
-      // Validate arrow var matches d-var
+      // Final validation: if lambdaVar was set, it must match dvar
       if (lambdaVar != null && !lambdaVar.equals(dvar))
       {
         throw new CompilerException(String.format(SYNTAXMSG, lambdaVar, dvar));
@@ -180,7 +228,16 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
         if (expression.nextCharacterIs('➔'))
         {
           lambdaVar = maybeName;
-          // nextCharacterIs already consumed '➔'
+          // Create the integration variable BEFORE parsing the body
+          // This mirrors Expression.parseLambda() behavior - the variable must be
+          // registered so that references in the body can find it
+          integrationVariableNode = new VariableNode<>(expression,
+                                                       new VariableReference<>(lambdaVar,
+                                                                               null,
+                                                                               expression.coDomainType),
+                                                       expression.position,
+                                                       true);
+          dvar = lambdaVar;
         }
         else
         {
@@ -191,11 +248,24 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
       integrandNode = expression.resolve();
       var reference = expression.require(',').parseVariableReference();
-      dvar                    = reference.name;
-      integrationVariableNode = new VariableNode<>(expression,
-                                                   reference,
-                                                   expression.position,
-                                                   true);
+      
+      // Only create integrationVariableNode if not already created from lambda
+      if (integrationVariableNode == null)
+      {
+        dvar                    = reference.name;
+        integrationVariableNode = new VariableNode<>(expression,
+                                                     reference,
+                                                     expression.position,
+                                                     true);
+      }
+      else
+      {
+        // Validate lambda var matches the variable after comma
+        if (!dvar.equals(reference.name))
+        {
+          throw new CompilerException(String.format(SYNTAXMSG, dvar, reference.name));
+        }
+      }
 
       if (expression.nextCharacterIs('='))
       {
@@ -204,7 +274,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       }
       expression.require(')');
 
-      // Validate arrow var matches d-var
+      // Final validation: if lambdaVar was set, it must match dvar
       if (lambdaVar != null && !lambdaVar.equals(dvar))
       {
         throw new CompilerException(String.format(SYNTAXMSG, lambdaVar, dvar));
