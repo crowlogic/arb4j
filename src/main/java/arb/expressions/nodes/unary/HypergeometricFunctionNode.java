@@ -2,6 +2,7 @@ package arb.expressions.nodes.unary;
 
 import static arb.expressions.Compiler.*;
 import static org.objectweb.asm.Opcodes.ACONST_NULL;
+import static org.objectweb.asm.Opcodes.POP;
 
 import java.util.List;
 
@@ -315,6 +316,26 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       loadedHypergeometricFunction = true;
       loadHypergeometricFunctionOntoStack(mv);
       generateInitCall(mv);
+      mv.visitInsn(POP); // Discard init return value
+
+      // Populate elementFieldName when input-dependent AND has scalar codomain
+      if (isNullaryFunctionOrHasScalarCodomain)
+      {
+        loadHypergeometricFunctionOntoStack(mv);
+        mv.visitInsn(ACONST_NULL);
+        mv.visitLdcInsn(1);
+        loadBitsOntoStack(mv);
+        expression.loadThisFieldOntoStack(mv, elementFieldName, elementType);
+        invokeVirtualMethod(mv,
+                            hypergeometricFunctionClass,
+                            "evaluate",
+                            Object.class,
+                            Object.class,
+                            int.class,
+                            int.class,
+                            Object.class);
+        mv.visitInsn(POP); // evaluate writes to elementFieldName, discard return
+      }
     }
 
     if (!isNullaryFunctionOrHasScalarCodomain)
