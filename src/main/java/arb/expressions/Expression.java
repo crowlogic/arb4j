@@ -704,34 +704,46 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return this;
   }
 
-  protected void constructReferencedFunctionInstanceIfItIsNull(MethodVisitor mv,
-                                                               FunctionMapping<?, ?, ?> mapping)
+protected void constructReferencedFunctionInstanceIfItIsNull(MethodVisitor mv,
+                                                             FunctionMapping<?, ?, ?> mapping)
+{
+  if ((mapping.functionName == null || functionName == null
+                || !functionName.equals(mapping.functionName)) && mapping.expression != null)
   {
-    if ((mapping.functionName == null || functionName == null
-                  || !functionName.equals(mapping.functionName)) && mapping.expression != null)
+    Class<?> type = mapping.type();
+    if (type == null)
     {
-
-      Class<?> type = mapping.type();
-      if (type == null)
-      {
-        mapping.instantiate();
-        type = mapping.type();
-      }
-      assert type != null : "type is  null for mapping=" + mapping;
-      var alreadyInitialized = new Label();
-      loadThisOntoStack(mv).visitFieldInsn(GETFIELD,
-                                           className,
-                                           mapping.functionName,
-                                           mapping.functionFieldDescriptor());
-      mv.visitJumpInsn(Opcodes.IFNONNULL, alreadyInitialized);
-      loadThisOntoStack(mv);
-      generateNewObjectInstruction(mv, type);
-      duplicateTopOfTheStack(mv);
-      invokeDefaultConstructor(mv, type);
-      putField(mv, className, mapping.functionName, type);
-      mv.visitLabel(alreadyInitialized);
+      mapping.instantiate();
+      type = mapping.type();
     }
+    assert type != null : "type is null for mapping=" + mapping;
+
+    var alreadyInitialized = new Label();
+
+    loadThisOntoStack(mv).visitFieldInsn(GETFIELD,
+                                         className,
+                                         mapping.functionName,
+                                         mapping.functionFieldDescriptor());
+    mv.visitJumpInsn(Opcodes.IFNONNULL, alreadyInitialized);
+
+    loadThisOntoStack(mv);
+    generateNewObjectInstruction(mv, type);
+    duplicateTopOfTheStack(mv);
+    invokeDefaultConstructor(mv, type);
+    putField(mv, className, mapping.functionName, type);
+
+    mv.visitLabel(alreadyInitialized);
+
+    // FIX: this.context.injectReferences(this.<functionName>);
+    loadThisFieldOntoStack(mv, "context", Context.class);
+    loadThisOntoStack(mv).visitFieldInsn(GETFIELD,
+                                         className,
+                                         mapping.functionName,
+                                         mapping.functionFieldDescriptor());
+    invokeVirtualMethod(mv, Context.class, "injectReferences", void.class, Function.class);
   }
+}
+
 
   protected void
             copyNestedFunctionFieldByValueIfNestedFunctionFieldIsNotNull(MethodVisitor mv,
