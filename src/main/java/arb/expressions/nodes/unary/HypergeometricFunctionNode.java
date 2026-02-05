@@ -89,7 +89,12 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
   /**
    * Whether the argument expression (e.g., -x² in pFq([...],[...];-x²)) depends
    * on the independent variable. When true, the arg function is Function<T,T>
-   * and REQUIRES actual input - passing null will cause NullPointerException.
+   * and REQUIRES a polynomial/rational input - passing null will cause NPE,
+   * and passing the scalar input will cause ClassCastException.
+   * 
+   * NOTE: The argumentDependsOnInput case with scalar codomain requires
+   * HypergeometricFunction.evaluate() to create an identity polynomial when
+   * input is null. This is not yet implemented.
    */
   public boolean                  argumentDependsOnInput;
   public String                   elementFieldName;
@@ -327,27 +332,18 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       loadHypergeometricFunctionOntoStack(mv);
       generateInitCall(mv);
 
-      if (isNullaryFunctionOrHasScalarCodomain)
+      // Only populate elementFieldName when arg is NullaryFunction (doesn't need input).
+      // When argumentDependsOnInput, the arg function is Function<T,T> which requires
+      // a polynomial/rational input. We cannot pass:
+      // - null: causes NPE in arg function
+      // - scalar input: causes ClassCastException (wrong type)
+      // The argumentDependsOnInput case requires HypergeometricFunction.evaluate()
+      // to create an identity polynomial when input is null (not yet implemented).
+      if (isNullaryFunctionOrHasScalarCodomain && !argumentDependsOnInput)
       {
-        // Need to populate elementFieldName by calling evaluate() on the
-        // hypergeometric function. The key distinction:
-        // - If argumentDependsOnInput: arg function needs actual input, not null
-        // - If !argumentDependsOnInput: arg function is NullaryFunction, null is fine
         mv.visitInsn(POP); // Discard init return value
         loadHypergeometricFunctionOntoStack(mv);
-
-        if (argumentDependsOnInput)
-        {
-          // Arg function is Function<T,T> and requires actual input
-          loadInputParameter(mv);
-          cast(mv, expression.domainType);
-        }
-        else
-        {
-          // Arg function is NullaryFunction, ignores input, null is fine
-          mv.visitInsn(ACONST_NULL);
-        }
-
+        mv.visitInsn(ACONST_NULL); // NullaryFunction ignores input, null is safe
         mv.visitLdcInsn(1);
         loadBitsOntoStack(mv);
         expression.loadThisFieldOntoStack(mv, elementFieldName, elementType);
@@ -361,8 +357,8 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                             Object.class);
         mv.visitInsn(POP); // evaluate writes to elementFieldName, discard return
       }
-      // If !isNullaryFunctionOrHasScalarCodomain, leave init return on stack
-      // for the vector codomain branch below
+      // When argumentDependsOnInput or !isNullaryFunctionOrHasScalarCodomain,
+      // leave init return on stack for subsequent processing
     }
 
     if (!isNullaryFunctionOrHasScalarCodomain)
@@ -387,6 +383,12 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     }
     else
     {
+      // For argumentDependsOnInput case, we need to POP the init return if we haven't
+      if (argumentDependsOnInput && loadedHypergeometricFunction)
+      {
+        mv.visitInsn(POP); // Discard init return value that was left on stack
+      }
+      
       if (resultType.equals(elementType))
       {
         loadOutputOntoStack(mv, resultType);
