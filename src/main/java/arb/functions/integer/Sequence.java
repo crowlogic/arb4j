@@ -1,13 +1,13 @@
 package arb.functions.integer;
 
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.IntFunction;
 
 import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
+import arb.expressions.Expression;
 import arb.functions.Function;
 import arb.utensils.ShellFunctions;
 
@@ -23,57 +23,6 @@ public interface Sequence<C> extends
                          Function<Integer, C>,
                          IntFunction<C>
 {
-  /**
-   * Cache for memoized sequence values. Keys are integer index values.
-   */
-  static final ConcurrentHashMap<SequenceCacheKey, Object> cache = new ConcurrentHashMap<>();
-
-  /**
-   * Key class for the memoization cache, combining sequence identity and index.
-   */
-  record SequenceCacheKey(int sequenceId, int index) {}
-
-  /**
-   * Returns whether this sequence should cache computed values.
-   * Override to return true to enable memoization.
-   * 
-   * @return true if memoization is enabled
-   */
-  default boolean isMemoized()
-  {
-    return false;
-  }
-
-  /**
-   * Enables or disables memoization for this sequence.
-   * Default implementation does nothing - override in implementing classes.
-   * 
-   * @param memoize true to enable caching
-   * @return this sequence for chaining
-   */
-  default Sequence<C> setMemoized(boolean memoize)
-  {
-    return this;
-  }
-
-  /**
-   * Clears the memoization cache for this sequence.
-   */
-  default void clearCache()
-  {
-    int id = System.identityHashCode(this);
-    cache.keySet().removeIf(key -> key.sequenceId() == id);
-  }
-
-  /**
-   * Returns the number of cached values for this sequence.
-   */
-  default int cacheSize()
-  {
-    int id = System.identityHashCode(this);
-    return (int) cache.keySet().stream().filter(key -> key.sequenceId() == id).count();
-  }
-
   public default int bits()
   {
     return 128;
@@ -96,35 +45,12 @@ public interface Sequence<C> extends
     return Integer.class;
   }
 
-  @SuppressWarnings("unchecked")
   public default C evaluate(int t, int bits)
   {
-    // Check cache first if memoization is enabled
-    if (isMemoized())
+    try ( Integer integer = new Integer(t))
     {
-      SequenceCacheKey key = new SequenceCacheKey(System.identityHashCode(this), t);
-      Object cached = cache.get(key);
-      if (cached != null)
-      {
-        return (C) cached;
-      }
+      return evaluate(integer, bits);
     }
-
-    // Compute the value
-    C result;
-    try (Integer integer = new Integer(t))
-    {
-      result = evaluate(integer, bits);
-    }
-
-    // Cache if memoization is enabled
-    if (isMemoized() && result != null)
-    {
-      SequenceCacheKey key = new SequenceCacheKey(System.identityHashCode(this), t);
-      cache.put(key, result);
-    }
-
-    return result;
   }
 
   public default C evaluate(int t, int bits, C res)
