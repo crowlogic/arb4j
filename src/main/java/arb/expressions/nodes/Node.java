@@ -354,15 +354,26 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return this instanceof LiteralConstantNode;
   }
 
+  /**
+   * Checks if this node represents the literal constant -1.
+   * Only LiteralConstantNode can return true; all other nodes return false.
+   * 
+   * @return true if this is a literal -1, false otherwise
+   */
   public boolean isNegOne()
   {
-    return "-1".equals(toString());
-
+    return false;
   }
 
+  /**
+   * Checks if this node represents the literal constant 1.
+   * Only LiteralConstantNode can return true; all other nodes return false.
+   * 
+   * @return true if this is a literal 1, false otherwise
+   */
   public boolean isOne()
   {
-    return "1".equals(toString());
+    return false;
   }
 
   public boolean isPossiblyNegative()
@@ -392,9 +403,15 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return false;
   }
 
+  /**
+   * Checks if this node represents the literal constant 0.
+   * Only LiteralConstantNode can return true; all other nodes return false.
+   * 
+   * @return true if this is a literal 0, false otherwise
+   */
   public boolean isZero()
   {
-    return "0".equals(toString());
+    return false;
   }
 
   protected void loadBitsOntoStack(MethodVisitor mv)
