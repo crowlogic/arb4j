@@ -316,11 +316,15 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       loadedHypergeometricFunction = true;
       loadHypergeometricFunctionOntoStack(mv);
       generateInitCall(mv);
-      mv.visitInsn(POP); // Discard init return value
 
-      // Populate elementFieldName when input-dependent AND has scalar codomain
+      // When isNullaryFunctionOrHasScalarCodomain, we need to populate elementFieldName
+      // by calling evaluate() on the hypergeometric function. We POP the init() return
+      // and reload the function for evaluate().
+      // When !isNullaryFunctionOrHasScalarCodomain, we leave the init() return on the
+      // stack because the subsequent vector codomain branch will use it directly.
       if (isNullaryFunctionOrHasScalarCodomain)
       {
+        mv.visitInsn(POP); // Discard init return value
         loadHypergeometricFunctionOntoStack(mv);
         mv.visitInsn(ACONST_NULL);
         mv.visitLdcInsn(1);
