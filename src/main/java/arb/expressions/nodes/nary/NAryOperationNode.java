@@ -1,40 +1,20 @@
 package arb.expressions.nodes.nary;
 
-import static arb.expressions.Compiler.cast;
-import static arb.expressions.Compiler.designateLabel;
-import static arb.expressions.Compiler.getFieldFromThis;
-import static arb.expressions.Compiler.getMethodDescriptor;
-import static arb.expressions.Compiler.invokeMethod;
-import static arb.expressions.Compiler.invokeSetMethod;
-import static arb.expressions.Compiler.invokeVirtualMethod;
-import static arb.expressions.Compiler.jumpTo;
-import static arb.expressions.Compiler.jumpToIfGreaterThan;
-import static arb.expressions.Compiler.loadBitsParameterOntoStack;
-import static arb.expressions.Compiler.loadInputParameter;
-import static arb.expressions.Compiler.loadThisOntoStack;
-import static arb.expressions.Compiler.pop;
-import static arb.expressions.Compiler.putField;
+import static arb.expressions.Compiler.*;
 import static arb.utensils.Utensils.indent;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.*;
 
-import arb.ComplexPolynomial;
+import arb.*;
 import arb.Integer;
-import arb.Polynomial;
-import arb.Real;
-import arb.RealPolynomial;
 import arb.exceptions.CompilerException;
-import arb.expressions.Compiler;
+import arb.expressions.*;
 import arb.expressions.Context;
-import arb.expressions.Expression;
-import arb.expressions.FunctionMapping;
-import arb.expressions.IntermediateVariable;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
@@ -576,6 +556,66 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     return this;
   }
 
+  protected void propagateContextVariablesToOperand()
+  {
+    if (expression.context != null && expression.context.variables != null)
+    {
+      expression.registerInitializer(mv ->
+      {
+        for (var entry : expression.context.variableEntries())
+        {
+          String fieldName = entry.getKey();
+          Named  val       = entry.getValue();
+          if (val != null)
+          {
+            Class<?> fieldType                = val.getClass();
+            String   fieldTypeDescriptor      = fieldType.descriptorString();
+            String   operandClassInternalName = operandFunctionFieldName;
+
+            Label    notNull                  = new Label();
+            Label    end                      = new Label();
+
+            // Load operand.field to check if null
+            loadThisOntoStack(mv);
+            mv.visitFieldInsn(GETFIELD,
+                              expression.className,
+                              operandFunctionFieldName,
+                              String.format("L%s;", operandFunctionFieldName));
+            mv.visitFieldInsn(GETFIELD, operandClassInternalName, fieldName, fieldTypeDescriptor);
+            mv.visitJumpInsn(IFNONNULL, notNull);
+
+            // If null: create new instance and set value
+            loadThisOntoStack(mv);
+            mv.visitFieldInsn(GETFIELD,
+                              expression.className,
+                              operandFunctionFieldName,
+                              String.format("L%s;", operandFunctionFieldName));
+            Compiler.generateNewObjectInstruction(mv, fieldType);
+            Compiler.duplicateTopOfTheStack(mv);
+            Compiler.invokeDefaultConstructor(mv, fieldType);
+            mv.visitFieldInsn(PUTFIELD, operandClassInternalName, fieldName, fieldTypeDescriptor);
+
+            mv.visitLabel(notNull);
+
+            // Always call set() to copy the value
+            loadThisOntoStack(mv);
+            mv.visitFieldInsn(GETFIELD,
+                              expression.className,
+                              operandFunctionFieldName,
+                              String.format("L%s;", operandFunctionFieldName));
+            mv.visitFieldInsn(GETFIELD, operandClassInternalName, fieldName, fieldTypeDescriptor);
+            loadThisOntoStack(mv);
+            mv.visitFieldInsn(GETFIELD, expression.className, fieldName, fieldTypeDescriptor);
+            Compiler.invokeVirtualMethod(mv, fieldType, "set", fieldType, fieldType);
+            mv.visitInsn(Opcodes.POP);
+
+            mv.visitLabel(end);
+          }
+        }
+      });
+    }
+  }
+
   @SuppressWarnings("unchecked")
   protected void compileOperandExpression(Class<?> resultType)
   {
@@ -591,6 +631,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                              Function.class,
                                              operandFunctionFieldName,
                                              expression));
+
+    propagateContextVariablesToOperand();
   }
 
   private void parseLowerLimit()

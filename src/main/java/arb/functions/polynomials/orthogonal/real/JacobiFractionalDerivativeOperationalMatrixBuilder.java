@@ -25,7 +25,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
   {
     Expression.trace = false;
   }
-  
+
   private JacobiPolynomialSequence basis = new JacobiPolynomialSequence(RealConstants.negHalf,
                                                                         RealConstants.negHalf);
 
@@ -44,15 +44,15 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
 
   public JacobiFractionalDerivativeOperationalMatrixBuilder()
   {
-    this.bits = 128;
+    this.bits        = 128;
 
-    this.γ    = Real.named("γ").set(RealConstants.half);
+    this.γ           = Real.named("γ").set(RealConstants.half);
 
     Expression.trace = true;
-    
-    context   = basis.getContext();
+
+    context          = basis.getContext();
     context.registerVariable("γ", γ);
-    //context.registerVariable(Real.named("t"));
+    // context.registerVariable(Real.named("t"));
     normSq = RealSequence.express("normSq",
                                   "i➔2^(α+β+1)*Γ(i+α+1)*Γ(i+β+1)/((2*i+α+β+1)*Γ(i+1)*Γ(i+α+β+1))",
                                   context);
@@ -61,7 +61,6 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
       RealSequenceSequence.express("ω",
                                    "j➔k➔(-1)^(j-k)*Γ(j+β+1)*Γ(j+k+α+β+1)/(Γ(k+β+1)*Γ(j+α+β+1)*(j-k)!*k!)",
                                    context);
-
 
     χ      =
       RealFunctionSequence.express("χ", "i➔p➔int(t➔t^p*w(t)*P(i)(t), t=-1..1)/normSq(i)", context);
@@ -95,12 +94,11 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
 
     RealMatrix result = RealMatrix.newMatrix(maxDegree + 1, maxDegree + 1);
 
-    
     for (int i = 0; i <= maxDegree; i++)
     {
       RealSequence row = μ.evaluate(i, bits);
 
-      System.out.println( "Evaluating " + row );
+      System.out.println("Evaluating " + row);
       for (int j = 0; j <= maxDegree; j++)
       {
         row.evaluate(j, bits, result.get(i, j));

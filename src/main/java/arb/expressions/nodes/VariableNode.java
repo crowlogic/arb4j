@@ -533,13 +533,18 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     var bound = resolve(reference, expression);
     if (bound != null)
     {
+      if (ascendentInput || ascendentIndeterminate)
+      {
+        expression.referencedVariables.put(reference.name, this);
+      }
       return this;
     }
 
     // 4) New indeterminate:
     // - Implicit promotion is allowed only if no indeterminate exists yet.
-    // - Explicitly-declared variables (e.g. lambda parameters) are created with a non-null reference.type,
-    //   and are allowed even when other indeterminates already exist.
+    // - Explicitly-declared variables (e.g. lambda parameters) are created with a
+    // non-null reference.type,
+    // and are allowed even when other indeterminates already exist.
     if (expression.indeterminateVariables.isEmpty() || reference.type != null)
     {
       isIndeterminate = true;
@@ -549,12 +554,11 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     else
     {
-      throw new CompilerException(String.format(
-          "undefined variable reference '%s' in expression '%s'; existing indeterminates: %s, independent variable: %s",
-          reference.name,
-          expression.expression,
-          expression.indeterminateVariables,
-          expression.independentVariable));
+      throw new CompilerException(String.format("undefined variable reference '%s' in expression '%s'; existing indeterminates: %s, independent variable: %s",
+                                                reference.name,
+                                                expression.expression,
+                                                expression.indeterminateVariables,
+                                                expression.independentVariable));
     }
   }
 

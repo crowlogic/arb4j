@@ -2350,6 +2350,41 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitLabel(labelEnd);
   }
 
+  void linkNestedFunctionFieldByReferenceWhenItIsNull(MethodVisitor mv,
+                                                      String generatedFunctionClassInternalName,
+                                                      String functionFieldName,
+                                                      String functionTypeDesc,
+                                                      String variableFieldName,
+                                                      String variableFieldTypeDescriptor,
+                                                      Class<?> variableType,
+                                                      String nestedFunctionClassInternalName,
+                                                      Label labelCopyByReference,
+                                                      Label labelEnd)
+  {
+    mv.visitLabel(labelCopyByReference);
+
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(GETFIELD,
+                      generatedFunctionClassInternalName,
+                      functionFieldName,
+                      functionTypeDesc);
+    mv.visitFieldInsn(GETFIELD,
+                      nestedFunctionClassInternalName,
+                      variableFieldName,
+                      variableFieldTypeDescriptor);
+
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(GETFIELD,
+                      generatedFunctionClassInternalName,
+                      variableFieldName,
+                      variableFieldTypeDescriptor);
+
+    invokeVirtualMethod(mv, variableType, "set", variableType, variableType);
+    mv.visitInsn(Opcodes.POP);
+
+    mv.visitLabel(labelEnd);
+  }
+
   protected void
             linkSharedVariableToReferencedFunction(MethodVisitor mv,
                                                    FunctionMapping<Object,
@@ -2394,11 +2429,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                    functionTypeDesc,
                                                    variableFieldName,
                                                    variableFieldTypeDescriptor,
+                                                   variableType,
                                                    nestedFunctionClassInternalName,
                                                    labelCopyByReference,
                                                    labelEnd);
-
-    // Stack: [] (both paths end with empty stack)
   }
 
   public Node<D, C, F> literal(int i)

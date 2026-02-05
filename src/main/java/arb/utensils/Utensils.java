@@ -131,7 +131,8 @@ public class Utensils
     return image;
   }
 
-  public static void saveLatexFormulaToPNGFile(String formula, String path, int size) throws IOException
+  public static void
+         saveLatexFormulaToPNGFile(String formula, String path, int size) throws IOException
   {
     var bimg = renderLatexFormulaAsBufferedImage(formula, size);
     var out  = new File(path);
@@ -261,7 +262,14 @@ public class Utensils
       FileWriter fileWriter = new FileWriter(yamlFile);
       for (Object obj : information)
       {
-        yaml.dump(obj, fileWriter);
+        try
+        {
+          yaml.dump(obj, fileWriter);
+        }
+        catch (Exception e)
+        {
+          e.printStackTrace(System.err);
+        }
       }
       fileWriter.close();
     }
@@ -312,7 +320,8 @@ public class Utensils
     return null;
   }
 
-  public static BufferedImage createDependencyGraphBufferedImage(Map<String, Dependency> dependencies)
+  public static BufferedImage
+         createDependencyGraphBufferedImage(Map<String, Dependency> dependencies)
   {
     MutableGraph g = mutGraph("DependencyGraph").setDirected(true);
 
