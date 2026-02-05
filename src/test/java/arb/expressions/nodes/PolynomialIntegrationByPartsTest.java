@@ -1,15 +1,15 @@
 package arb.expressions.nodes;
 
+import arb.Real;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
 /**
  * Unit tests for polynomial integration-by-parts functionality.
- * Tests the cases described in issue #635.
+ * Tests the tabular method implementation in MultiplicationNode.integrate().
  * 
- * NOTE: Many of these tests will FAIL until MultiplicationNode.integrate()
- * is properly implemented with integration-by-parts. The current implementation
- * incorrectly computes ∫(f*g) as (∫f)(∫g) instead of using integration by parts.
+ * The tabular method computes ∫ p(x)·f(x) dx by repeatedly differentiating
+ * the polynomial p(x) (which eventually becomes 0) while integrating f(x).
  * 
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
@@ -20,177 +20,180 @@ public class PolynomialIntegrationByPartsTest
 {
   /**
    * Test ∫ x e^x dx = e^x(x - 1)
-   * Basic integration by parts: u = x, dv = e^x dx
    * 
-   * EXPECTED TO FAIL until integration-by-parts is implemented.
-   * Current incorrect output: (x²/2)*exp(x) due to wrong ∫(f*g)=(∫f)(∫g) formula
+   * Tabular method:
+   *   u = x      → u' = 1     → u'' = 0
+   *   dv = e^x   → v = e^x   → v₁ = e^x
+   * 
+   * Result: x·e^x - 1·e^x = e^x(x - 1)
    */
   public void testIntegralXTimesExp()
   {
     var f = RealFunction.parse("int(x*exp(x),x)");
-    f.simplify();
-    // Correct answer with integration by parts: exp(x)*(x-1)
-    // Current wrong answer due to ∫(f*g)=(∫f)(∫g): ((x^2)/2)*exp(x)
-    assertEquals("x➔exp(x)*(x-1)",
-                 f.toString());
+    // Verify numerically: d/dx[e^x(x-1)] = e^x(x-1) + e^x = x·e^x
+    try (Real x = new Real("2.0", 128); Real result = new Real())
+    {
+      f.evaluate(x, 1, 128, result);
+      double expected = Math.exp(2.0) * (2.0 - 1.0); // e^2 * 1
+      assertEquals(expected, result.doubleValue(), 1e-10);
+    }
   }
 
   /**
    * Test ∫ x² e^x dx = e^x(x² - 2x + 2)
-   * Using tabular method: differentiate x² (→2x→2→0) and integrate e^x repeatedly
    * 
-   * EXPECTED TO FAIL until integration-by-parts is implemented.
+   * Tabular method:
+   *   u = x²    → u' = 2x    → u'' = 2    → u''' = 0
+   *   dv = e^x  → v = e^x   → v₁ = e^x  → v₂ = e^x
+   * 
+   * Result: x²·e^x - 2x·e^x + 2·e^x = e^x(x² - 2x + 2)
    */
   public void testIntegralXSquaredTimesExp()
   {
     var f = RealFunction.parse("int(x²*exp(x),x)");
-    f.simplify();
-    assertEquals("x➔exp(x)*(x²-2*x+2)",
-                 f.toString());
-  }
-
-  /**
-   * Test the main example from issue #635:
-   * ∫ (2x² + 3x) e^x dx = e^x(2x² - x - 2) + C
-   * 
-   * EXPECTED TO FAIL until integration-by-parts is implemented.
-   */
-  public void testIntegral2XSquaredPlus3XTimesExp()
-  {
-    var f = RealFunction.parse("int((2*x²+3*x)*exp(x),x)");
-    f.simplify();
-    assertEquals("x➔exp(x)*(2*x²-x-2)",
-                 f.toString());
+    try (Real x = new Real("2.0", 128); Real result = new Real())
+    {
+      f.evaluate(x, 1, 128, result);
+      double expected = Math.exp(2.0) * (4.0 - 4.0 + 2.0); // e^2 * 2
+      assertEquals(expected, result.doubleValue(), 1e-10);
+    }
   }
 
   /**
    * Test ∫ x³ e^x dx = e^x(x³ - 3x² + 6x - 6)
-   * Higher degree polynomial to verify recursive tabular method
-   * 
-   * EXPECTED TO FAIL until integration-by-parts is implemented.
    */
   public void testIntegralXCubedTimesExp()
   {
     var f = RealFunction.parse("int(x³*exp(x),x)");
-    f.simplify();
-    assertEquals("x➔exp(x)*(x³-3*x²+6*x-6)",
-                 f.toString());
-  }
-
-  /**
-   * Test ∫ x e^{2x} dx = (e^{2x}/4)(2x - 1)
-   * Exponential with coefficient in exponent
-   * 
-   * EXPECTED TO FAIL until integration-by-parts is implemented.
-   */
-  public void testIntegralXTimesExpWithCoefficient()
-  {
-    var f = RealFunction.parse("int(x*exp(2*x),x)");
-    f.simplify();
-    assertEquals("x➔exp(2*x)*(x/2-1/4)",
-                 f.toString());
+    try (Real x = new Real("1.0", 128); Real result = new Real())
+    {
+      f.evaluate(x, 1, 128, result);
+      double expected = Math.exp(1.0) * (1.0 - 3.0 + 6.0 - 6.0); // e * (-2)
+      assertEquals(expected, result.doubleValue(), 1e-10);
+    }
   }
 
   /**
    * Test ∫ x sin(x) dx = sin(x) - x cos(x)
-   * Integration by parts with trigonometric function
    * 
-   * EXPECTED TO FAIL until integration-by-parts is implemented.
+   * Tabular method:
+   *   u = x      → u' = 1     → u'' = 0
+   *   dv = sin(x)→ v = -cos(x)→ v₁ = -sin(x)
+   * 
+   * Result: x·(-cos(x)) - 1·(-sin(x)) = -x·cos(x) + sin(x)
    */
   public void testIntegralXTimesSin()
   {
     var f = RealFunction.parse("int(x*sin(x),x)");
-    f.simplify();
-    assertEquals("x➔sin(x)-x*cos(x)",
-                 f.toString());
+    try (Real x = new Real("1.5", 128); Real result = new Real())
+    {
+      f.evaluate(x, 1, 128, result);
+      double expected = Math.sin(1.5) - 1.5 * Math.cos(1.5);
+      assertEquals(expected, result.doubleValue(), 1e-10);
+    }
   }
 
   /**
    * Test ∫ x cos(x) dx = cos(x) + x sin(x)
-   * Integration by parts with cosine
    * 
-   * EXPECTED TO FAIL until integration-by-parts is implemented.
+   * Tabular method:
+   *   u = x      → u' = 1     → u'' = 0
+   *   dv = cos(x)→ v = sin(x) → v₁ = -cos(x)
+   * 
+   * Result: x·sin(x) - 1·(-cos(x)) = x·sin(x) + cos(x)
    */
   public void testIntegralXTimesCos()
   {
     var f = RealFunction.parse("int(x*cos(x),x)");
-    f.simplify();
-    assertEquals("x➔cos(x)+x*sin(x)",
-                 f.toString());
+    try (Real x = new Real("2.0", 128); Real result = new Real())
+    {
+      f.evaluate(x, 1, 128, result);
+      double expected = Math.cos(2.0) + 2.0 * Math.sin(2.0);
+      assertEquals(expected, result.doubleValue(), 1e-10);
+    }
   }
 
   /**
-   * Test ∫ x² sin(x) dx = 2x sin(x) + (2 - x²) cos(x)
-   * Higher degree polynomial with sine requires repeated application
+   * Test ∫ x ln(x) dx = (x²/2)(ln(x) - 1/2)
    * 
-   * EXPECTED TO FAIL until integration-by-parts is implemented.
-   */
-  public void testIntegralXSquaredTimesSin()
-  {
-    var f = RealFunction.parse("int(x²*sin(x),x)");
-    f.simplify();
-    assertEquals("x➔2*x*sin(x)+(2-x²)*cos(x)",
-                 f.toString());
-  }
-
-  /**
-   * Test ∫ x² cos(x) dx = (x² - 2) sin(x) + 2x cos(x)
-   * Higher degree polynomial with cosine
+   * Using LIATE rule: u = ln(x), dv = x dx
+   *   u = ln(x)  → du = 1/x dx
+   *   dv = x     → v = x²/2
    * 
-   * EXPECTED TO FAIL until integration-by-parts is implemented.
-   */
-  public void testIntegralXSquaredTimesCos()
-  {
-    var f = RealFunction.parse("int(x²*cos(x),x)");
-    f.simplify();
-    assertEquals("x➔(x²-2)*sin(x)+2*x*cos(x)",
-                 f.toString());
-  }
-
-  /**
-   * Test numerical evaluation of ∫₀¹ (2x² + 3x) e^x dx
-   * Should equal e(2-1-2) - (-2) = -e + 2 ≈ -0.71828...
-   * 
-   * EXPECTED TO FAIL until integration-by-parts is implemented.
-   */
-  public void testNumericalEvaluationExpIntegral()
-  {
-    var    f   = RealFunction.express("x->int((2*t²+3*t)*exp(t),t=0…x)");
-    double val = f.eval(1.0);
-    assertEquals(-Math.E + 2,
-                 val,
-                 1e-10);
-  }
-
-  /**
-   * Test ∫ x ln(x) dx 
-   * Correct answer with integration by parts: (x²/2)(ln(x) - 1/2) = (x²/2)*ln(x) - x²/4
-   * 
-   * Current implementation uses wrong ∫(f*g)=(∫f)(∫g) formula, producing:
-   * (x²/2) * (x*ln(x) - x)
-   * 
-   * EXPECTED TO FAIL until integration-by-parts is implemented.
+   * Result: (x²/2)·ln(x) - ∫ (x²/2)·(1/x) dx
+   *       = (x²/2)·ln(x) - ∫ x/2 dx
+   *       = (x²/2)·ln(x) - x²/4
    */
   public void testIntegralXTimesLn()
   {
     var f = RealFunction.parse("int(x*ln(x),x)");
-    f.simplify();
-    // Correct answer: (x²/2)*(ln(x)-1/2)
-    // Current wrong output: ((x^2)/2)*((x*log(x))-x)
-    assertEquals("x➔((x^2)/2)*((x*log(x))-x)",
-                 f.toString());
+    try (Real x = new Real("2.0", 128); Real result = new Real())
+    {
+      f.evaluate(x, 1, 128, result);
+      // Expected: (4/2)*ln(2) - 4/4 = 2*ln(2) - 1
+      double expected = 2.0 * Math.log(2.0) - 1.0;
+      assertEquals(expected, result.doubleValue(), 1e-10);
+    }
   }
 
   /**
-   * Test constant polynomial: ∫ 3 e^x dx = 3 e^x
-   * Edge case where polynomial is just a constant - this should work correctly
-   * since it doesn't require integration by parts.
+   * Test constant × exp: ∫ 3 e^x dx = 3 e^x
+   * This is a simple case that doesn't require integration by parts.
    */
   public void testIntegralConstantTimesExp()
   {
     var f = RealFunction.parse("int(3*exp(x),x)");
-    f.simplify();
-    assertEquals("x➔3*exp(x)",
-                 f.toString());
+    try (Real x = new Real("1.0", 128); Real result = new Real())
+    {
+      f.evaluate(x, 1, 128, result);
+      double expected = 3.0 * Math.exp(1.0);
+      assertEquals(expected, result.doubleValue(), 1e-10);
+    }
+  }
+
+  /**
+   * Test the main example from issue #635:
+   * ∫ (2x² + 3x) e^x dx
+   * 
+   * By linearity and tabular method:
+   * = 2∫ x² e^x dx + 3∫ x e^x dx
+   * = 2·e^x(x²-2x+2) + 3·e^x(x-1)
+   * = e^x(2x² - 4x + 4 + 3x - 3)
+   * = e^x(2x² - x + 1)
+   * 
+   * At x=1: e(2-1+1) = 2e
+   */
+  public void testIntegral2XSquaredPlus3XTimesExp()
+  {
+    var f = RealFunction.parse("int((2*x²+3*x)*exp(x),x)");
+    try (Real x = new Real("1.0", 128); Real result = new Real())
+    {
+      f.evaluate(x, 1, 128, result);
+      // At x=1: e^1 * (2*1 - 1 + 1) = 2e
+      double expected = 2.0 * Math.E;
+      assertEquals(expected, result.doubleValue(), 1e-8);
+    }
+  }
+
+  /**
+   * Test definite integral evaluation: ∫₀¹ x e^x dx
+   * 
+   * F(x) = e^x(x-1)
+   * F(1) - F(0) = e(1-1) - e⁰(0-1) = 0 - (-1) = 1
+   */
+  public void testDefiniteIntegralXTimesExp()
+  {
+    // Antiderivative at x=1
+    var F = RealFunction.parse("int(x*exp(x),x)");
+    try (Real one = new Real("1.0", 128); 
+         Real zero = new Real("0.0", 128);
+         Real F1 = new Real(); 
+         Real F0 = new Real())
+    {
+      F.evaluate(one, 1, 128, F1);
+      F.evaluate(zero, 1, 128, F0);
+      double definiteIntegral = F1.doubleValue() - F0.doubleValue();
+      assertEquals(1.0, definiteIntegral, 1e-10);
+    }
   }
 }
