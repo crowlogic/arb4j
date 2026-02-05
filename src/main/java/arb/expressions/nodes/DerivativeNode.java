@@ -107,7 +107,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   }
 
   @Override
-  public List<Node<D, R, F>> getBranches()
+  public List<? extends Node<D, R, F>> getBranches()
   {
     return derivative.getBranches();
   }
@@ -133,7 +133,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   }
 
   @Override
-  public Class<?> type()
+  public <C> Class<? extends C> type()
   {
     return derivative.type();
   }
