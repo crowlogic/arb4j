@@ -70,7 +70,8 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> simplify()
   {
-    super.simplify();
+    left = left.simplify();
+    right = right.simplify();
 
     if (left.isZero())
     {
@@ -116,9 +117,10 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       }
     }
 
+    // Rewrite a + (-b) as a - b, but do NOT re-simplify to avoid ping-pong
     if (right instanceof NegationNode<D, R, F> rightNegation)
     {
-      return left.sub(rightNegation.arg.simplify()).simplify();
+      return left.sub(rightNegation.arg);
     }
 
     return this;

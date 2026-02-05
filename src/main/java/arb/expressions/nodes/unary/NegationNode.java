@@ -27,8 +27,15 @@ public class NegationNode<D, R, F extends Function<? extends D, ? extends R>>
   }
 
   @Override
+  public boolean isNegOne()
+  {
+    return arg.isOne();
+  }
+
+  @Override
   public Node<D, R, F> simplify()
   {
+    arg = arg.simplify();
     if (arg instanceof NegationNode negNode)
     {
       return negNode.arg;
@@ -38,7 +45,7 @@ public class NegationNode<D, R, F extends Function<? extends D, ? extends R>>
       return zero();
     }
    
-    return super.simplify();
+    return this;
   }
 
   @Override

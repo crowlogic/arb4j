@@ -196,7 +196,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       terms.addAll(flattenAdditiveTerms(sub.left));
       // Right side of subtraction is negated
-      Node<D, R, F> negatedRight = sub.right.mul(minusOne());
+      Node<D, R, F> negatedRight = sub.right.mul(negativeOne());
       terms.addAll(flattenAdditiveTerms(negatedRight));
     }
     else
@@ -205,11 +205,6 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
 
     return terms;
-  }
-
-  public Node<D, R, F> minusOne()
-  {
-    return one().neg();
   }
 
   /**
