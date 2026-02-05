@@ -29,7 +29,7 @@ public class PolynomialIntegrationByPartsTest
    */
   public void testIntegralXTimesExp()
   {
-    var f = RealFunction.parse("int(x*exp(x),x)");
+    var f = RealFunction.express("x→int(x*exp(x),x)");
     // Verify numerically: d/dx[e^x(x-1)] = e^x(x-1) + e^x = x·e^x
     try (Real x = new Real("2.0", 128); Real result = new Real())
     {
@@ -50,7 +50,7 @@ public class PolynomialIntegrationByPartsTest
    */
   public void testIntegralXSquaredTimesExp()
   {
-    var f = RealFunction.parse("int(x²*exp(x),x)");
+    var f = RealFunction.express("x→int(x²*exp(x),x)");
     try (Real x = new Real("2.0", 128); Real result = new Real())
     {
       f.evaluate(x, 1, 128, result);
@@ -64,7 +64,7 @@ public class PolynomialIntegrationByPartsTest
    */
   public void testIntegralXCubedTimesExp()
   {
-    var f = RealFunction.parse("int(x³*exp(x),x)");
+    var f = RealFunction.express("x→int(x³*exp(x),x)");
     try (Real x = new Real("1.0", 128); Real result = new Real())
     {
       f.evaluate(x, 1, 128, result);
@@ -84,7 +84,7 @@ public class PolynomialIntegrationByPartsTest
    */
   public void testIntegralXTimesSin()
   {
-    var f = RealFunction.parse("int(x*sin(x),x)");
+    var f = RealFunction.express("x→int(x*sin(x),x)");
     try (Real x = new Real("1.5", 128); Real result = new Real())
     {
       f.evaluate(x, 1, 128, result);
@@ -104,7 +104,7 @@ public class PolynomialIntegrationByPartsTest
    */
   public void testIntegralXTimesCos()
   {
-    var f = RealFunction.parse("int(x*cos(x),x)");
+    var f = RealFunction.express("x→int(x*cos(x),x)");
     try (Real x = new Real("2.0", 128); Real result = new Real())
     {
       f.evaluate(x, 1, 128, result);
@@ -126,7 +126,7 @@ public class PolynomialIntegrationByPartsTest
    */
   public void testIntegralXTimesLn()
   {
-    var f = RealFunction.parse("int(x*ln(x),x)");
+    var f = RealFunction.express("x→int(x*ln(x),x)");
     try (Real x = new Real("2.0", 128); Real result = new Real())
     {
       f.evaluate(x, 1, 128, result);
@@ -142,7 +142,7 @@ public class PolynomialIntegrationByPartsTest
    */
   public void testIntegralConstantTimesExp()
   {
-    var f = RealFunction.parse("int(3*exp(x),x)");
+    var f = RealFunction.express("x→int(3*exp(x),x)");
     try (Real x = new Real("1.0", 128); Real result = new Real())
     {
       f.evaluate(x, 1, 128, result);
@@ -165,7 +165,7 @@ public class PolynomialIntegrationByPartsTest
    */
   public void testIntegral2XSquaredPlus3XTimesExp()
   {
-    var f = RealFunction.parse("int((2*x²+3*x)*exp(x),x)");
+    var f = RealFunction.express("x→int((2*x²+3*x)*exp(x),x)");
     try (Real x = new Real("1.0", 128); Real result = new Real())
     {
       f.evaluate(x, 1, 128, result);
@@ -184,7 +184,7 @@ public class PolynomialIntegrationByPartsTest
   public void testDefiniteIntegralXTimesExp()
   {
     // Antiderivative at x=1
-    var F = RealFunction.parse("int(x*exp(x),x)");
+    var F = RealFunction.express("x→int(x*exp(x),x)");
     try (Real one = new Real("1.0", 128); 
          Real zero = new Real("0.0", 128);
          Real F1 = new Real(); 
