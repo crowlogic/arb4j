@@ -1546,7 +1546,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       constructReferencedFunctionInstanceIfItIsNull(mv, mapping);
       generateFunctionInitializer(mv, mapping, assignments);
 
-      for (String assignment : assignments)
+      for(String assignment : assignments)
       {
         generateDependencyAssignment(mv, functionName, functionDescriptor, assignment);
       }
@@ -1814,19 +1814,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // Initialize in proper dependency order
     if (dependencies != null)
     {
-      for (Dependency dependency : dependencies)
-      {
-        generateDependencyAssignments(mv, dependency);
-      }
+      dependencies.forEach(dependency -> generateDependencyAssignments(mv, dependency));
     }
 
-    insideInitializer = true;
-    initializers.forEach(initializer -> initializer.accept(mv));
-    insideInitializer = false;
+    try
+    {
+      insideInitializer = true;
+      initializers.forEach(initializer -> initializer.accept(mv));
+    }
+    finally
+    {
+      insideInitializer = false;
+    }
 
     // Propagate ascendent input variables to nested operand functions
-    // NOTE: This only propagates variables that are FIELDS of this class,
-    // NOT the independent variable (which is a method parameter)
     propagateAscendentInputVariablesToNestedFunctions(mv);
 
     if (recursive)
@@ -1841,139 +1842,78 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * Propagates ascendent input variables (variables from ancestor expressions) to
    * nested operand functions that reference them.
    * 
-   * This method should NOT propagate variables that are: 1. The independent
-   * variable of this expression (it's a parameter, not a field) 2. Variables that
-   * don't exist as fields in nested operand functions
-   * 
-   * This is called during initialization to set up context variables that are
-   * fields (not input parameters) of both this expression and nested functions.
+   * This is necessary because when a nested function (like operandF0001)
+   * references a variable from an ancestor expression (like 'i' from μfunc), the
+   * nested function needs to have its field set to point to the same value.
    */
   protected void propagateAscendentInputVariablesToNestedFunctions(MethodVisitor mv)
   {
     // For each referenced function (nested operand functions)
-    for (var entry : referencedFunctions.entrySet())
+    for (var funcEntry : referencedFunctions.entrySet())
     {
-      String              nestedFunctionName = entry.getKey();
-      FunctionMapping     mapping            = entry.getValue();
+      String                   funcFieldName = funcEntry.getKey();
+      FunctionMapping<?, ?, ?> funcMapping   = funcEntry.getValue();
 
-      // Get the nested expression to check what variables it actually references
-      Expression<D, C, F> nestedExpr         = mapping.expression;
+      // Skip if this is a self-reference or not a generated expression
+      if (funcFieldName.equals(functionName) || funcMapping.expression == null)
+      {
+        continue;
+      }
+
+      Expression<?, ?, ?> nestedExpr = funcMapping.expression;
       if (nestedExpr == null)
       {
         continue;
       }
 
-      // For each ascendent input variable in the nested expression
+      // Check each variable referenced by the nested expression
       for (var varEntry : nestedExpr.referencedVariables.entrySet())
       {
         String                varName = varEntry.getKey();
-        VariableNode<D, C, F> varNode = varEntry.getValue();
+        VariableNode<?, ?, ?> varNode = varEntry.getValue();
 
-        // Skip if this variable is NOT an ascendent input (it's local to the nested
-        // expr)
-        if (!varNode.ascendentInput)
+        // Skip independent variables and indeterminates of the nested expression
+        if (varNode.isIndependent || varNode.isIndeterminate)
         {
           continue;
         }
 
-        // CRITICAL: Skip if this variable is the independent variable of THIS
-        // expression
-        // because it's a parameter, not a field, so this.varName doesn't exist
-        if (independentVariable != null && varName.equals(independentVariable.getName()))
+        // Skip context variables (they are propagated separately)
+        if (context != null && context.getVariable(varName) != null)
         {
-          if (trace)
-          {
-            log.debug("propagateAscendentInputVariables: skipping {} (is independent variable of {}) for {}",
-                      varName,
-                      className,
-                      nestedFunctionName);
-          }
           continue;
         }
 
-        // Check if this class actually has this field
+        // This is an ascendent input variable - propagate it
         Class<?> varType = varNode.type();
-        if (varType == null || varType.equals(Object.class))
-        {
-          continue;
-        }
-
-        // Check that WE have this field before trying to propagate
-        boolean thisClassHasField = hasFieldInClass(varName, varType);
-        if (!thisClassHasField)
+        if (varType != null && !varType.equals(Object.class))
         {
           if (trace)
           {
-            log.debug("propagateAscendentInputVariables: skipping {} (not a field in {}) for {}",
+            log.debug("propagateAscendentInputVariables: propagating {} to {} in {}",
                       varName,
-                      className,
-                      nestedFunctionName);
+                      funcFieldName,
+                      className);
           }
-          continue;
+
+          // Generate: this.nestedFunc.varName = this.varName
+          String funcTypeDesc    = funcMapping.functionFieldDescriptor();
+          String varTypeDesc     = varType.descriptorString();
+          String nestedClassName = funcMapping.functionName;
+
+          // Load this.nestedFunc onto stack
+          loadThisOntoStack(mv);
+          mv.visitFieldInsn(GETFIELD, className, funcFieldName, funcTypeDesc);
+
+          // Load this.varName onto stack
+          loadThisOntoStack(mv);
+          mv.visitFieldInsn(GETFIELD, className, varName, varTypeDesc);
+
+          // Store into nestedFunc.varName
+          mv.visitFieldInsn(PUTFIELD, nestedClassName, varName, varTypeDesc);
         }
-
-        if (trace)
-        {
-          log.debug("propagateAscendentInputVariables: propagating {} to {} in {}",
-                    varName,
-                    nestedFunctionName,
-                    className);
-        }
-
-        // Generate: this.nestedFunction.varName = this.varName;
-        String nestedFunctionDescriptor = "L" + nestedFunctionName + ";";
-        String varDescriptor            = varType.descriptorString();
-
-        // Load this
-        mv.visitVarInsn(ALOAD, 0);
-        // Get the nested function field
-        mv.visitFieldInsn(GETFIELD, className, nestedFunctionName, nestedFunctionDescriptor);
-        // Load this again for the source field
-        mv.visitVarInsn(ALOAD, 0);
-        // Get the source field value
-        mv.visitFieldInsn(GETFIELD, className, varName, varDescriptor);
-        // Store into nested function's field
-        mv.visitFieldInsn(PUTFIELD, nestedFunctionName, varName, varDescriptor);
       }
     }
-  }
-
-  /**
-   * Checks if this class has a field with the given name and compatible type.
-   * This is used to verify we can propagate a variable before attempting to do
-   * so.
-   */
-  protected boolean hasFieldInClass(String fieldName, Class<?> expectedType)
-  {
-    // Check context variables
-    if (context != null)
-    {
-      Object contextVar = context.getVariable(fieldName);
-      if (contextVar != null)
-      {
-        return true;
-      }
-    }
-
-    // Check if it's the ascendent expression's independent variable
-    if (ascendentExpression != null && ascendentExpression.independentVariable != null)
-    {
-      if (fieldName.equals(ascendentExpression.independentVariable.getName()))
-      {
-        return true;
-      }
-    }
-
-    // Check referenced variables that are fields (non-independent,
-    // non-indeterminate)
-    if (referencedVariables.containsKey(fieldName))
-    {
-      VariableNode<D, C, F> varNode = referencedVariables.get(fieldName);
-      // Only return true if this variable is actually a field (not a parameter)
-      return !varNode.isIndependent;
-    }
-
-    return false;
   }
 
   protected ClassVisitor generateInitializationMethod(ClassVisitor classVisitor)
