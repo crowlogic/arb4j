@@ -347,8 +347,8 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> simplify()
   {
-    right = right.simplify();
-    left  = left.simplify();
+    super.simplify();
+    
     if (right.isOne())
     {
       return left;
@@ -390,7 +390,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       }
     }
 
-    return super.simplify();
+    return this;
   }
 
   @Override
