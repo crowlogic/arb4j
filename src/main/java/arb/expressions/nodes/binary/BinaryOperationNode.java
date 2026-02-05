@@ -290,7 +290,8 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
                                                 expression.functionClass,
                                                 expression.functionName,
                                                 expression.indeterminateVariables,
-                                                expression.independentVariable,expression));
+                                                expression.independentVariable,
+                                                expression));
     }
 
     String existingVar = expression.generatedNodes.get(this);
@@ -411,9 +412,18 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     return "  ".repeat(simplifyDepth);
   }
 
+//Add this field with the other fields:
+  private boolean simplified = false;
+
+//Replace the simplify() method with:
   @Override
   public Node<D, C, F> simplify()
   {
+    if (simplified)
+    {
+      return this;
+    }
+
     simplifyDepth++;
     if (traceSimplify)
     {
@@ -462,6 +472,8 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
                         this);
     }
     simplifyDepth--;
+
+    simplified = true;
     return this;
   }
 

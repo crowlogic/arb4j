@@ -505,7 +505,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       System.err.printf("%s[%d] EXIT MultiplicationNode.simplify() calling super%n", depthIndent(), simplifyDepth);
     }
     simplifyDepth--;
-    return super.simplify();
+    return this;
   }
 
   /**
