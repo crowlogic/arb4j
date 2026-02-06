@@ -2375,7 +2375,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                          variable));
   }
 
-
   protected void injectReferences(F f)
   {
     if (trace)
@@ -2463,83 +2462,49 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected void
             linkSharedVariableToReferencedFunction(MethodVisitor mv,
                                                    FunctionMapping<Object,
-                                                                   Object,
-                                                                   Function<?, ?>> functionMapping,
+                                                                 Object,
+                                                                 Function<?, ?>> functionMapping,
                                                    String generatedFunctionClassInternalName,
                                                    String fieldType,
                                                    String functionFieldName,
                                                    String typeDesc,
                                                    OrderedPair<String, Class<?>> variable)
   {
-    String variableName     = variable.getLeft();
-    Class<?> variableType   = variable.getRight();
-    String variableTypeDesc = variableType.descriptorString();
-    String nestedClassName  = functionMapping.functionName;
+    String   variableName     = variable.getLeft();
+    Class<?> variableType     = variable.getRight();
+    String   variableTypeDesc = variableType.descriptorString();
+    String   nestedClassName  = functionMapping.functionName;
 
-    Label labelElse = new Label();
-    Label labelEnd  = new Label();
+    Label    labelElse        = new Label();
+    Label    labelEnd         = new Label();
 
     // ── if (this.func.var == null) ──────────────────────────────
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(GETFIELD,
-                      generatedFunctionClassInternalName,
-                      functionFieldName,
-                      typeDesc);
-    mv.visitFieldInsn(GETFIELD,
-                      nestedClassName,
-                      variableName,
-                      variableTypeDesc);
+    Compiler.getFieldFromThis(mv, generatedFunctionClassInternalName, functionFieldName, typeDesc);
+    Compiler.getField(mv, nestedClassName, variableName, variableTypeDesc);
     mv.visitJumpInsn(IFNONNULL, labelElse);
 
     // ── null branch: this.func.var = this.var ───────────────────
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(GETFIELD,
-                      generatedFunctionClassInternalName,
-                      functionFieldName,
-                      typeDesc);
-
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(GETFIELD,
-                      generatedFunctionClassInternalName,
-                      variableName,
-                      variableTypeDesc);
-
-    mv.visitFieldInsn(PUTFIELD,
-                      nestedClassName,
-                      variableName,
-                      variableTypeDesc);
-
-    mv.visitJumpInsn(GOTO, labelEnd);
+    Compiler.getFieldFromThis(mv, generatedFunctionClassInternalName, functionFieldName, typeDesc);
+    Compiler.getFieldFromThis(mv,
+                              generatedFunctionClassInternalName,
+                              variableName,
+                              variableTypeDesc);
+    Compiler.putField(mv, nestedClassName, variableName, variableTypeDesc);
+    Compiler.jumpTo(mv, labelEnd);
 
     // ── else branch: this.func.var.set(this.var) ────────────────
     mv.visitLabel(labelElse);
-
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(GETFIELD,
-                      generatedFunctionClassInternalName,
-                      functionFieldName,
-                      typeDesc);
-    mv.visitFieldInsn(GETFIELD,
-                      nestedClassName,
-                      variableName,
-                      variableTypeDesc);
-
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(GETFIELD,
-                      generatedFunctionClassInternalName,
-                      variableName,
-                      variableTypeDesc);
-
-    Compiler.invokeMethod(mv,
-                          variableType,
-                          "set",
-                          variableType,
-                          variableType);
-    mv.visitInsn(POP);
+    Compiler.getFieldFromThis(mv, generatedFunctionClassInternalName, functionFieldName, typeDesc);
+    Compiler.getField(mv, nestedClassName, variableName, variableTypeDesc);
+    Compiler.getFieldFromThis(mv,
+                              generatedFunctionClassInternalName,
+                              variableName,
+                              variableTypeDesc);
+    Compiler.invokeSetMethod(mv, variableType, variableType);
+    Compiler.pop(mv);
 
     mv.visitLabel(labelEnd);
   }
-
 
   protected void
             allocateNestedFunctionFieldViaNamedConstructor(MethodVisitor mv,
@@ -2636,7 +2601,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                    String nestedFunctionClassInternalName)
   {
     assert false : "this is never called";
-    
+
     Label labelAfterAllocation = new Label();
 
     // if (this.funcField.varField != null) skip allocation
@@ -2705,7 +2670,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // Stack: []
   }
 
-  
   public Node<D, C, F> literal(int i)
   {
     return newLiteralConstant(i);
