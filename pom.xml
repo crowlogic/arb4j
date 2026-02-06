@@ -15,8 +15,8 @@
 		<maven.compiler.target>25</maven.compiler.target>
 		<maven.compiler.release>25</maven.compiler.release>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<javafx.version>24.0.1</javafx.version>
-		<asm.version>9.8</asm.version>
+		<javafx.version>25.0.2</javafx.version>
+		<asm.version>9.9</asm.version>
 		<mdep.outputFile>class.path</mdep.outputFile>
 	</properties>
 
