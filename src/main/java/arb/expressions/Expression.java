@@ -3446,6 +3446,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                       .output(new DirectoryResultSaver(compiledClassDir))
                                                       .option(IFernflowerPreferences.INCLUDE_ENTIRE_CLASSPATH,
                                                               true)
+                                                      .option(IFernflowerPreferences.BYTECODE_SOURCE_MAPPING,
+                                                              true)
                                                       .build();
 
         decompiler.decompile();

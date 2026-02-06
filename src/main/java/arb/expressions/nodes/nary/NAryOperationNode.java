@@ -5,6 +5,7 @@ import static arb.utensils.Utensils.indent;
 import static org.objectweb.asm.Opcodes.*;
 
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -217,12 +218,12 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       Compiler.loadResultParameter(mv);
       var type = type();
       Compiler.cast(mv, type);
-      loadResultVariable(mv);
+      loadIntermediateResultVariable(mv);
       invokeSetMethod(mv, type, type);
     }
     else
     {
-      loadResultVariable(mv);
+      loadIntermediateResultVariable(mv);
     }
   }
 
@@ -294,19 +295,16 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     return resultType;
   }
 
-  @SuppressWarnings("unchecked")
   protected void generateUpperLimit(MethodVisitor mv)
   {
     upperLimitFieldName = expression.newIntermediateVariable("upperLimit", Integer.class);
-    loadFieldFromThis(mv, upperLimitFieldName, Integer.class);
-    upperLimit.generate(mv, Integer.class);
-    invokeSetMethod(mv, Integer.class, Integer.class);
-    pop(mv);
+    upperLimit.generate(loadFieldFromThis(mv, upperLimitFieldName, Integer.class), Integer.class);
+    pop(invokeSetMethod(mv, Integer.class, Integer.class));
   }
 
   protected void generateInnerLoop(MethodVisitor mv)
   {
-    loadResultVariable(mv);
+    loadIntermediateResultVariable(mv);
     loadOperand(mv);
     loadIndexVariable(mv);
     loadBitsParameterOntoStack(mv);
@@ -429,7 +427,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     return methodVisitor;
   }
 
-  public void loadResultVariable(MethodVisitor methodVisitor)
+  public void loadIntermediateResultVariable(MethodVisitor methodVisitor)
   {
     if (Expression.traceNodes)
     {
@@ -562,57 +560,60 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     {
       expression.registerInitializer(mv ->
       {
-        for (var entry : expression.context.variableEntries())
-        {
-          String fieldName = entry.getKey();
-          Named  val       = entry.getValue();
-          if (val != null)
-          {
-            Class<?> fieldType                = val.getClass();
-            String   fieldTypeDescriptor      = fieldType.descriptorString();
-            String   operandClassInternalName = operandFunctionFieldName;
-
-            Label    notNull                  = new Label();
-            Label    end                      = new Label();
-
-            // Load operand.field to check if null
-            loadThisOntoStack(mv);
-            mv.visitFieldInsn(GETFIELD,
-                              expression.className,
-                              operandFunctionFieldName,
-                              String.format("L%s;", operandFunctionFieldName));
-            mv.visitFieldInsn(GETFIELD, operandClassInternalName, fieldName, fieldTypeDescriptor);
-            mv.visitJumpInsn(IFNONNULL, notNull);
-
-            // If null: create new instance and set value
-            loadThisOntoStack(mv);
-            mv.visitFieldInsn(GETFIELD,
-                              expression.className,
-                              operandFunctionFieldName,
-                              String.format("L%s;", operandFunctionFieldName));
-            Compiler.generateNewObjectInstruction(mv, fieldType);
-            Compiler.duplicateTopOfTheStack(mv);
-            Compiler.invokeDefaultConstructor(mv, fieldType);
-            mv.visitFieldInsn(PUTFIELD, operandClassInternalName, fieldName, fieldTypeDescriptor);
-
-            mv.visitLabel(notNull);
-
-            // Always call set() to copy the value
-            loadThisOntoStack(mv);
-            mv.visitFieldInsn(GETFIELD,
-                              expression.className,
-                              operandFunctionFieldName,
-                              String.format("L%s;", operandFunctionFieldName));
-            mv.visitFieldInsn(GETFIELD, operandClassInternalName, fieldName, fieldTypeDescriptor);
-            loadThisOntoStack(mv);
-            mv.visitFieldInsn(GETFIELD, expression.className, fieldName, fieldTypeDescriptor);
-            Compiler.invokeVirtualMethod(mv, fieldType, "set", fieldType, fieldType);
-            mv.visitInsn(Opcodes.POP);
-
-            mv.visitLabel(end);
-          }
-        }
+        expression.context.variableEntries()
+                          .forEach(entry -> propagateContextVariableToOperand(mv, entry));
       });
+    }
+  }
+
+  protected void propagateContextVariableToOperand(MethodVisitor mv, Entry<String, Named> entry)
+  {
+    String fieldName = entry.getKey();
+    Named  val       = entry.getValue();
+    if (val != null)
+    {
+      Class<?> fieldType                = val.getClass();
+      String   fieldTypeDescriptor      = fieldType.descriptorString();
+      String   operandClassInternalName = operandFunctionFieldName;
+
+      Label    notNull                  = new Label();
+      Label    end                      = new Label();
+
+      // Load operand.field to check if null
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(GETFIELD,
+                        expression.className,
+                        operandFunctionFieldName,
+                        String.format("L%s;", operandFunctionFieldName));
+      mv.visitFieldInsn(GETFIELD, operandClassInternalName, fieldName, fieldTypeDescriptor);
+      mv.visitJumpInsn(IFNONNULL, notNull);
+
+      // If null: create new instance and set value
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(GETFIELD,
+                        expression.className,
+                        operandFunctionFieldName,
+                        String.format("L%s;", operandFunctionFieldName));
+      Compiler.generateNewObjectInstruction(mv, fieldType);
+      Compiler.duplicateTopOfTheStack(mv);
+      Compiler.invokeDefaultConstructor(mv, fieldType);
+      mv.visitFieldInsn(PUTFIELD, operandClassInternalName, fieldName, fieldTypeDescriptor);
+
+      mv.visitLabel(notNull);
+
+      // Always call set() to copy the value
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(GETFIELD,
+                        expression.className,
+                        operandFunctionFieldName,
+                        String.format("L%s;", operandFunctionFieldName));
+      mv.visitFieldInsn(GETFIELD, operandClassInternalName, fieldName, fieldTypeDescriptor);
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(GETFIELD, expression.className, fieldName, fieldTypeDescriptor);
+      Compiler.invokeVirtualMethod(mv, fieldType, "set", fieldType, fieldType);
+      mv.visitInsn(Opcodes.POP);
+
+      mv.visitLabel(end);
     }
   }
 
@@ -661,6 +662,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   protected void propagateInputToOperand(MethodVisitor mv)
   {
+    // 1. Propagate this expression's independent variable (existing behavior)
     var independentVariableNode = expression.independentVariable;
     if (independentVariableNode != null && !independentVariableNode.type().equals(Object.class))
     {
@@ -678,6 +680,40 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                operandFunctionFieldName,
                independentVariableNode.reference.name,
                independentVariableNode.type());
+    }
+
+    // 2. Propagate captured ancestor independent variables to operand
+    if (operand != null)
+    {
+      for (var entry : operand.referencedVariables.entrySet())
+      {
+        VariableNode<?, ?, ?> varNode = entry.getValue();
+        if (varNode.ascendentInput)
+        {
+          String   varName = entry.getKey();
+          Class<?> varType = varNode.type();
+
+          // Load operand reference
+          expression.loadFieldOntoStack(loadThisOntoStack(mv),
+                                        operandFunctionFieldName,
+                                        String.format("L%s;", operandFunctionFieldName));
+
+          // Load the value from this expression's field (where it was captured)
+          loadFieldFromThis(mv, varName, varType);
+
+          // Store into operand's field
+          putField(mv, operandFunctionFieldName, varName, varType);
+
+          if (Expression.traceNodes)
+          {
+            logger.debug(String.format("%s.propagateInputToOperand: propagating captured ancestor variable %s (type=%s) to operand %s\n",
+                                       getClass().getSimpleName(),
+                                       varName,
+                                       varType,
+                                       operandFunctionFieldName));
+          }
+        }
+      }
     }
   }
 
@@ -746,14 +782,14 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    NAryOperationNode<E, S, G> nAryOperationNode = new NAryOperationNode<E, S, G>(newExpression,
-                                                                                  identity,
-                                                                                  prefix,
-                                                                                  operation,
-                                                                                  symbol,
-                                                                                  operandExpressionString,
-                                                                                  lowerLimit.spliceInto(newExpression),
-                                                                                  upperLimit.spliceInto(newExpression));
+    var nAryOperationNode = new NAryOperationNode<E, S, G>(newExpression,
+                                                           identity,
+                                                           prefix,
+                                                           operation,
+                                                           symbol,
+                                                           operandExpressionString,
+                                                           lowerLimit.spliceInto(newExpression),
+                                                           upperLimit.spliceInto(newExpression));
     nAryOperationNode.indexVariableFieldName = indexVariableFieldName;
     return nAryOperationNode;
   }
