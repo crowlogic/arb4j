@@ -304,16 +304,16 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
     return RationalNullaryFunction.express(expression, context).evaluate(128);
   }
   
-  public static Expression<Fraction, Fraction, RationalFunction> compile(String expression)
+  public static Expression<Fraction, Fraction, RationalFunction> parse(String expression)
   {
-    return compile(expression, null);
+    return parse(expression, null);
   }
 
-  public static Expression<Fraction, Fraction, RationalFunction> compile(String expression, Context context)
+  public static Expression<Fraction, Fraction, RationalFunction> parse(String expression, Context context)
   {
     return Parser.parse(expression, context, Fraction.class, Fraction.class, RationalFunction.class, null);
   }
-    
+      
   @SuppressWarnings("resource")
   public Real evaluate(Real t, int order, int bits, Real res)
   {

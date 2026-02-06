@@ -2,9 +2,7 @@
 %typemap(javafinalize) fmpz_poly_q_struct ""
 %typemap(javaimports) fmpz_poly_q_struct %{
 import arb.exceptions.ArbException;
-import arb.expressions.Compiler;
-import arb.expressions.Expression;
-import arb.expressions.Context;
+import arb.expressions.*;
 import arb.functions.Function;
 import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
@@ -287,16 +285,16 @@ import arb.utensils.Utensils;
     return RationalNullaryFunction.express(expression, context).evaluate(128);
   }
   
-  public static Expression<Fraction, Fraction, RationalFunction> compile(String expression)
+  public static Expression<Fraction, Fraction, RationalFunction> parse(String expression)
   {
-    return compile(expression, null);
+    return parse(expression, null);
   }
 
-  public static Expression<Fraction, Fraction, RationalFunction> compile(String expression, Context context)
+  public static Expression<Fraction, Fraction, RationalFunction> parse(String expression, Context context)
   {
-    return Compiler.compile(expression, context, Fraction.class, Fraction.class, RationalFunction.class, null);
+    return Parser.parse(expression, context, Fraction.class, Fraction.class, RationalFunction.class, null);
   }
-    
+      
   @SuppressWarnings("resource")
   public Real evaluate(Real t, int order, int bits, Real res)
   {
