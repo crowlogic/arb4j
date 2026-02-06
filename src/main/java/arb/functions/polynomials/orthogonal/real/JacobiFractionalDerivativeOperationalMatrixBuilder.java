@@ -1,15 +1,14 @@
 package arb.functions.polynomials.orthogonal.real;
 
-import arb.Real;
-import arb.RealConstants;
-import arb.RealMatrix;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
-import arb.functions.integer.RealFunctionSequence;
-import arb.functions.integer.RealSequence;
-import arb.functions.integer.RealSequenceSequence;
+import arb.functions.integer.*;
 
 /**
  * Builder for Jacobi polynomial fractional derivative operational matrices.
@@ -21,6 +20,9 @@ import arb.functions.integer.RealSequenceSequence;
 public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
                                                                 AutoCloseable
 {
+  public static final Logger logger =
+                                    LoggerFactory.getLogger(JacobiFractionalDerivativeOperationalMatrixBuilder.class);
+
   static
   {
     Expression.trace = false;
@@ -98,7 +100,10 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
     {
       RealSequence row = μ.evaluate(i, bits);
 
-      System.out.println("Evaluating " + row);
+      if (Expression.trace && logger.isDebugEnabled())
+      {
+        logger.debug("Evaluating {}", row);
+      }
       for (int j = 0; j <= maxDegree; j++)
       {
         row.evaluate(j, bits, result.get(i, j));

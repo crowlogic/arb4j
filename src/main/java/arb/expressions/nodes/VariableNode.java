@@ -599,10 +599,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return this;
     }
     else
-    {
-      log.error("=== resolveReference FAILED for {} in {}",
-                reference.name,
-                expression.functionName);
+    {    
       throw new CompilerException(String.format("undefined variable reference '%s' in expression '%s'; existing indeterminates: %s, independent variable: %s",
                                                 reference.name,
                                                 expression.expression,
