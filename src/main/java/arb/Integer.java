@@ -1052,7 +1052,7 @@ public class Integer implements
    */
   public Integer set(Integer value)
   {
-    assert value != null : "value is null";
+    assert value != null : "value is null for " + name;
     arblib.fmpz_set(swigCPtr, value.swigCPtr);
     return this;
   }
