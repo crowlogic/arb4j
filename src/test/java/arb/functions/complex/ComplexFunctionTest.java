@@ -53,8 +53,9 @@ public class ComplexFunctionTest extends
       var x       = F.evaluate(3, 128);
 
       var hmm     = x.eval(2.3, new Complex());
-      assertEquals("-0.260039398565575",hmm.toString());
-
+      assertEquals("-1.2653528144498223e-16 - i*0.2591427090909935",hmm.toString());
+      assertEquals("0", hmm.re().toString()); 
+      assertEquals("-0.2591427090909935", hmm.im().toString());      
     }
     catch (CompilerException ce)
     {
