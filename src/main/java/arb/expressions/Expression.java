@@ -928,12 +928,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   /**
    * Declares variables as fields in the generated class. This includes: 1. The
-   * ascendent expression's independent variable (if any) 2. Variables referenced
-   * from ancestor expressions (ascendentInput variables) 3. Context variables
+   * ascendent (parent) expression's independent variable (if any) - so this
+   * expression can receive it 2. Variables referenced from ancestor expressions
+   * (ascendentInput variables) 3. Context variables
+   * 
+   * NEVER declares this expression's own independent variable as a field in its
+   * own class.
    */
   protected void declareVariables(ClassVisitor classVisitor)
   {
-    // Declare the immediate ascendent expression's independent variable
+    // Declare the parent's independent variable as a field so we can receive it
     if (ascendentExpression != null)
     {
       var ascendentIndependentVariableNode = ascendentExpression.independentVariable;
@@ -956,8 +960,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       String                varName = entry.getKey();
       VariableNode<D, C, F> varNode = entry.getValue();
 
-      // Skip if this is the independent variable (already handled) or an
-      // indeterminate
+      // Skip if this is the independent variable or an indeterminate
       if (varNode.isIndependent || varNode.isIndeterminate)
       {
         continue;
@@ -1546,7 +1549,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       constructReferencedFunctionInstanceIfItIsNull(mv, mapping);
       generateFunctionInitializer(mv, mapping, assignments);
 
-      for(String assignment : assignments)
+      for (String assignment : assignments)
       {
         generateDependencyAssignment(mv, functionName, functionDescriptor, assignment);
       }
@@ -1843,8 +1846,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * nested operand functions that reference them.
    * 
    * This is necessary because when a nested function (like operandF0001)
-   * references a variable from an ancestor expression (like 'i' from μfunc), the
+   * references a variable from an ancestor expression (like 'i' from 'func'), the
    * nested function needs to have its field set to point to the same value.
+   * 
+   * IMPORTANT: This method runs inside the initialize() method, which has NO
+   * input parameter (only 'this' in slot 0). Therefore, it must NOT attempt to
+   * propagate the current expression's independent variable, because that
+   * variable is NOT a field on the generated class — it exists only as the
+   * evaluate() method's input parameter (slot 1). The independent variable is
+   * propagated at evaluate-time by NAryOperationNode.propagateInputToOperand and
+   * similar mechanisms.
    */
   protected void propagateAscendentInputVariablesToNestedFunctions(MethodVisitor mv)
   {
@@ -1880,6 +1891,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
         // Skip context variables (they are propagated separately)
         if (context != null && context.getVariable(varName) != null)
+        {
+          continue;
+        }
+
+        // CRITICAL: Skip the current expression's independent variable.
+        // It is NOT a field on this generated class — it only exists as the
+        // evaluate() input parameter. Attempting to GETFIELD it here (inside
+        // initialize(), which has no input parameter) causes VerifyError.
+        // The independent variable is propagated at evaluate-time instead.
+        if (independentVariable != null && varName.equals(independentVariable.getName()))
         {
           continue;
         }
