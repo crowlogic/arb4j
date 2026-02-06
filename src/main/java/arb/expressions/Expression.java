@@ -2366,14 +2366,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     var    functionMapping = context.functions.get(functionFieldName);
     String typeDesc        = functionMapping.functionFieldDescriptor(false);
 
-    variables.forEach(variable -> linkSharedVariableToReferencedFunction(mv,
-                                                                         functionMapping,
-                                                                         generatedFunctionClassInternalName,
-                                                                         fieldType,
-                                                                         functionFieldName,
-                                                                         typeDesc,
-                                                                         variable));
+    variables.forEach(variable ->
+    {
+      boolean isIndeterminate = independentVariable != null && variable.getLeft().equals(independentVariable.getName());
 
+      linkSharedVariableToReferencedFunction(mv,
+                                             functionMapping,
+                                             generatedFunctionClassInternalName,
+                                             fieldType,
+                                             functionFieldName,
+                                             typeDesc,
+                                             variable,
+                                             isIndeterminate);
+    });
   }
 
   protected void injectReferences(F f)
