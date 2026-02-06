@@ -662,24 +662,44 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   protected void propagateInputToOperand(MethodVisitor mv)
   {
-    // 1. Propagate this expression's independent variable (existing behavior)
     var independentVariableNode = expression.independentVariable;
+
+    // 1. Propagate this expression's independent variable (from the evaluate()
+    // method parameter)
     if (independentVariableNode != null && !independentVariableNode.type().equals(Object.class))
     {
-      expression.loadFieldOntoStack(loadThisOntoStack(mv),
-                                    operandFunctionFieldName,
-                                    String.format("L%s;", operandFunctionFieldName));
+      String   varName      = independentVariableNode.reference.name;
+      Class<?> varType      = independentVariableNode.type();
+      String   varDesc      = varType.descriptorString();
+      String   operandDesc  = String.format("L%s;", operandFunctionFieldName);
 
-      cast(loadInputParameter(mv), independentVariableNode.type());
+      Label    fieldNotNull = new Label();
+
+      // Check if operand.varName is null
+      expression.loadFieldOntoStack(loadThisOntoStack(mv), operandFunctionFieldName, operandDesc);
+      mv.visitFieldInsn(GETFIELD, operandFunctionFieldName, varName, varDesc);
+      mv.visitJumpInsn(IFNONNULL, fieldNotNull);
+
+      // Null: allocate a new instance and assign it to the operand's field
+      expression.loadFieldOntoStack(loadThisOntoStack(mv), operandFunctionFieldName, operandDesc);
+      generateNewObjectInstruction(mv, varType);
+      duplicateTopOfTheStack(mv);
+      invokeDefaultConstructor(mv, varType);
+      putField(mv, operandFunctionFieldName, varName, varType);
+
+      mv.visitLabel(fieldNotNull);
+
+      // Copy by value: operand.varName.set(inputParameter)
+      expression.loadFieldOntoStack(loadThisOntoStack(mv), operandFunctionFieldName, operandDesc);
+      mv.visitFieldInsn(GETFIELD, operandFunctionFieldName, varName, varDesc);
+      cast(loadInputParameter(mv), varType);
+      invokeVirtualMethod(mv, varType, "set", varType, varType);
+      mv.visitInsn(Opcodes.POP);
+
       if (Expression.traceNodes)
       {
         logInputPropagationToOperand(independentVariableNode);
       }
-
-      putField(mv,
-               operandFunctionFieldName,
-               independentVariableNode.reference.name,
-               independentVariableNode.type());
     }
 
     // 2. Propagate captured ancestor independent variables to operand
@@ -693,16 +713,47 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
           String   varName = entry.getKey();
           Class<?> varType = varNode.type();
 
-          // Load operand reference
+          // CRITICAL: Skip the current expression's independent variable.
+          // It is NOT a field on the generated class — it only exists as
+          // the evaluate() method's input parameter (slot 1). It was already
+          // propagated via loadInputParameter in part 1 above. Attempting
+          // GETFIELD here causes NoSuchFieldError.
+          if (independentVariableNode != null && varName.equals(independentVariableNode.getName()))
+          {
+            continue;
+          }
+
+          String varDesc      = varType.descriptorString();
+          String operandDesc  = String.format("L%s;", operandFunctionFieldName);
+
+          Label  fieldNotNull = new Label();
+
+          // Check if operand.varName is null
           expression.loadFieldOntoStack(loadThisOntoStack(mv),
                                         operandFunctionFieldName,
-                                        String.format("L%s;", operandFunctionFieldName));
+                                        operandDesc);
+          mv.visitFieldInsn(GETFIELD, operandFunctionFieldName, varName, varDesc);
+          mv.visitJumpInsn(IFNONNULL, fieldNotNull);
 
-          // Load the value from this expression's field (where it was captured)
-          loadFieldFromThis(mv, varName, varType);
-
-          // Store into operand's field
+          // Null: allocate a new instance and assign it to the operand's field
+          expression.loadFieldOntoStack(loadThisOntoStack(mv),
+                                        operandFunctionFieldName,
+                                        operandDesc);
+          generateNewObjectInstruction(mv, varType);
+          duplicateTopOfTheStack(mv);
+          invokeDefaultConstructor(mv, varType);
           putField(mv, operandFunctionFieldName, varName, varType);
+
+          mv.visitLabel(fieldNotNull);
+
+          // Copy by value: operand.varName.set(this.varName)
+          expression.loadFieldOntoStack(loadThisOntoStack(mv),
+                                        operandFunctionFieldName,
+                                        operandDesc);
+          mv.visitFieldInsn(GETFIELD, operandFunctionFieldName, varName, varDesc);
+          loadFieldFromThis(mv, varName, varType);
+          invokeVirtualMethod(mv, varType, "set", varType, varType);
+          mv.visitInsn(Opcodes.POP);
 
           if (Expression.traceNodes)
           {
