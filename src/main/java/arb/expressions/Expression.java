@@ -224,7 +224,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Expression<?, ?, ?>                                 ascendentExpression;
 
-  public char                                                character                     = 0;
+  public char                                                character                        = 0;
 
   public String                                              className;
 
@@ -232,12 +232,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Class<F>                                            compiledClass;
 
-  HashMap<Class<?>, AtomicInteger>                           constantCounts                =
+  HashMap<Class<?>, AtomicInteger>                           constantCounts                   =
                                                                             new HashMap<>();
 
   public Context                                             context;
 
-  HashSet<String>                                            declaredIntermediateVariables =
+  HashSet<String>                                            declaredIntermediateVariables    =
                                                                                            new HashSet<>();
 
   public List<Dependency>                                    dependencies;
@@ -252,7 +252,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   private VariableNode<Object, Object, Function<?, ?>>       functionalIndependentVariable;
 
-  public Stack<VariableNode<Object, Object, Function<?, ?>>> functionalIndeterminateVariables = new Stack<>();
+  public Stack<VariableNode<Object, Object, Function<?, ?>>> functionalIndeterminateVariables =
+                                                                                              new Stack<>();
 
   public Class<? extends F>                                  functionClass;
 
@@ -260,61 +261,67 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public String                                              functionName;
 
-  public boolean                                             functionNameSpecified         = false;
+  public boolean                                             functionNameSpecified            =
+                                                                                   false;
 
-  public HashMap<Node<D, C, F>, String>                      generatedNodes                =
+  public HashMap<Node<D, C, F>, String>                      generatedNodes                   =
                                                                             new HashMap<>();
 
   public String                                              genericFunctionClassInternalName;
 
-  public boolean                                             inAbsoluteValue               = false;
+  public boolean                                             inAbsoluteValue                  =
+                                                                             false;
 
   public VariableNode<D, C, F>                               independentVariable;
 
-  public Stack<VariableNode<D, C, F>>                        indeterminateVariables        =
+  public Stack<VariableNode<D, C, F>>                        indeterminateVariables           =
                                                                                     new Stack<>();
 
-  int                                                        currentLevel                  = 0;
+  int                                                        currentLevel                     = 0;
 
-  public LinkedList<Consumer<MethodVisitor>>                 initializers                  =
+  public LinkedList<Consumer<MethodVisitor>>                 initializers                     =
                                                                           new LinkedList<>();
 
-  public boolean                                             insideInitializer             = false;
+  public boolean                                             insideInitializer                =
+                                                                               false;
 
   protected F                                                instance;
 
   public byte[]                                              instructions;
 
-  public HashMap<String, IntermediateVariable<D, C, F>>      intermediateVariables         =
+  public HashMap<String, IntermediateVariable<D, C, F>>      intermediateVariables            =
                                                                                    new HashMap<>();
 
   private ArrayList<LiteralConstantNode<D, C, F>>            literalConstantNodes;
 
-  public HashMap<String, LiteralConstantNode<D, C, F>>       literalConstants              =
+  public HashMap<String, LiteralConstantNode<D, C, F>>       literalConstants                 =
                                                                               new HashMap<>();
 
-  private final Logger                                       log                           =
+  private final Logger                                       log                              =
                                                                  LoggerFactory.getLogger(Expression.class);
 
   public FunctionMapping<D, C, F>                            mapping;
 
-  public int                                                 position                      = -1;
+  public int                                                 position                         = -1;
 
   public char                                                previousCharacter;
 
-  public boolean                                             recursive                     = false;
+  public boolean                                             recursive                        =
+                                                                       false;
 
-  public HashMap<String, FunctionMapping<?, ?, ?>>           referencedFunctions           =
+  public HashMap<String, FunctionMapping<?, ?, ?>>           referencedFunctions              =
                                                                                  new HashMap<>();
 
-  public HashMap<String, VariableNode<D, C, F>>              referencedVariables           =
+  public HashMap<String, VariableNode<D, C, F>>              referencedVariables              =
                                                                                  new HashMap<>();
 
   public Node<D, C, F>                                       rootNode;
 
-  public boolean                                             variablesDeclared             = false;
+  public boolean                                             variablesDeclared                =
+                                                                               false;
 
-  public boolean                                             verboseTrace                  = false;
+  public boolean                                             verboseTrace                     =
+                                                                          false;
 
   public boolean acceptUntil(java.util.function.Predicate<Expression<?, ?, ?>> visitor)
   {
@@ -3062,10 +3069,46 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                               function,
                               independentVariableMappedToFunctional));
     }
-    var fieldName = independentVariableMappedToFunctional.getName();
+    var    fieldName       = independentVariableMappedToFunctional.getName();
+    String fieldDescriptor = domainType.descriptorString();
+
+// Check if the destination field (function.fieldName) is null;
+// if so, create a new instance before copying by value
+    Label  fieldNotNull    = new Label();
+
     duplicateTopOfTheStack(mv);
-    independentVariable.generate(mv, domainType);
+// Stack: [funcInst, funcInst]
+    mv.visitFieldInsn(GETFIELD, function.className, fieldName, fieldDescriptor);
+// Stack: [funcInst, funcInst.field]
+    mv.visitJumpInsn(IFNONNULL, fieldNotNull);
+// Stack: [funcInst]
+
+// Field is null: create a new instance and assign it to the field
+    duplicateTopOfTheStack(mv);
+// Stack: [funcInst, funcInst]
+    generateNewObjectInstruction(mv, domainType);
+// Stack: [funcInst, funcInst, newInstance]
+    duplicateTopOfTheStack(mv);
+// Stack: [funcInst, funcInst, newInstance, newInstance]
+    invokeDefaultConstructor(mv, domainType);
+// Stack: [funcInst, funcInst, newInstance]
     putField(mv, function.className, fieldName, domainType);
+// Stack: [funcInst]
+
+    mv.visitLabel(fieldNotNull);
+// Stack: [funcInst] (both paths converge here)
+
+// Copy by value: funcInst.fieldName.set(independentVariableValue)
+    duplicateTopOfTheStack(mv);
+// Stack: [funcInst, funcInst]
+    mv.visitFieldInsn(GETFIELD, function.className, fieldName, fieldDescriptor);
+// Stack: [funcInst, funcInst.field] (guaranteed non-null)
+    independentVariable.generate(mv, domainType);
+// Stack: [funcInst, funcInst.field, indepVarValue]
+    invokeVirtualMethod(mv, domainType, "set", domainType, domainType);
+// Stack: [funcInst, returnValue]
+    mv.visitInsn(Opcodes.POP);
+// Stack: [funcInst]
   }
 
   /**
