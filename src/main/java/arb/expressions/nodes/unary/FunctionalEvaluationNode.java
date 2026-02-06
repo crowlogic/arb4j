@@ -25,6 +25,12 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
 {
 
   @Override
+  public boolean dependsOn(VariableNode<D, C, F> variable)
+  {
+    return functionNode.dependsOn(variable) || arg.dependsOn(variable);
+  }
+
+  @Override
   public String toString()
   {
     return String.format("%s(%s)", functionNode, arg);
