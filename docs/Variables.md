@@ -1,4 +1,3 @@
-<img src="https://r2cdn.perplexity.ai/pplx-full-logo-primary-dark%402x.png" style="height:64px;margin-right:32px"/>
 
 # Variable Resolution in arb4j Expression Compiler
 
@@ -265,31 +264,3 @@ if (independentVariable != null
 | Use `referencedVariables` for both context and ascendent tracking | Semantic overload: one map serving two unrelated purposes |
 
 **Correct Approach**: Independent variable field allocation is a **uniform, unconditional** property of any expression with a non-`Object` independent variable. No introspection of nested expressions required.
-<span style="display:none">[^1][^10][^11][^12][^2][^3][^4][^5][^6][^7][^8][^9]</span>
-
-<div align="center">⁂</div>
-
-[^1]: HypergeometricFunctions.md
-
-[^2]: UsersManual.pdf
-
-[^3]: Compiler.java
-
-[^4]: Expression.java
-
-[^5]: Context.java
-
-[^6]: ExpressionClassLoader.java
-
-[^7]: IntermediateVariable.java
-
-[^8]: FunctionMapping.java
-
-[^9]: package-info.java
-
-[^10]: Parser.java
-
-[^11]: SerializedExpression.java
-
-[^12]: VariableReference.java
-
