@@ -2355,6 +2355,7 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
         
   public Real set(Real real)
   {
+    assert real != null : "attempt to assign null reference to " + name;
     assert dim == real.dim : String.format("this.dim = %d != real.dim = %d", this.dim, real.dim);
     if (dim == 1)
     {

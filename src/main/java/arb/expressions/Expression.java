@@ -918,11 +918,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     if (variable.getValue() != null)
     {
+      String varName = variable.getKey();
       classVisitor.visitField(ACC_PUBLIC,
-                              variable.getKey(),
+                              varName,
                               variable.getValue().getClass().descriptorString(),
                               null,
                               null);
+      declaredVariables.add(varName);
     }
     else
     {
@@ -1751,7 +1753,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                      className,
                                                      Type.getInternalName(nestedFunction.type()),
                                                      nestedFunction.functionName,
-                                                     context.variableClassStream());
+                                                     context.variableClassStream()
+                                                            .filter(variable -> nestedFunction.expression
+                                                                          != null
+                                                                          && nestedFunction.expression.declaredVariables.contains(variable.getLeft())));
     }
     else
     {
@@ -2489,6 +2494,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     mv.visitLabel(labelEnd);
   }
+
+  public HashSet<String> declaredVariables = new HashSet<>();
 
   void linkNestedFunctionFieldByReferenceWhenItIsNull(MethodVisitor mv,
                                                       String generatedFunctionClassInternalName,
