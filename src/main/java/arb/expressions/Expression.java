@@ -222,99 +222,99 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                             IntegerPolynomial.class));
   }
 
-  public Expression<?, ?, ?>                            ascendentExpression;
+  public Expression<?, ?, ?>                                 ascendentExpression;
 
-  public char                                           character                     = 0;
+  public char                                                character                     = 0;
 
-  public String                                         className;
+  public String                                              className;
 
-  public Class<? extends C>                             coDomainType;
+  public Class<? extends C>                                  coDomainType;
 
-  public Class<F>                                       compiledClass;
+  public Class<F>                                            compiledClass;
 
-  HashMap<Class<?>, AtomicInteger>                      constantCounts                =
-                                                                       new HashMap<>();
+  HashMap<Class<?>, AtomicInteger>                           constantCounts                =
+                                                                            new HashMap<>();
 
-  public Context                                        context;
+  public Context                                             context;
 
-  HashSet<String>                                       declaredIntermediateVariables =
-                                                                                      new HashSet<>();
+  HashSet<String>                                            declaredIntermediateVariables =
+                                                                                           new HashSet<>();
 
-  public List<Dependency>                               dependencies;
+  public List<Dependency>                                    dependencies;
 
-  public Class<? extends D>                             domainType;
+  public Class<? extends D>                                  domainType;
 
-  public String                                         expression;
+  public String                                              expression;
 
-  public boolean                                        functionalDependsOnIndependentVariable;
+  public boolean                                             functionalDependsOnIndependentVariable;
 
-  public boolean                                        functionalDependsOnIndeterminateVariable;
+  public boolean                                             functionalDependsOnIndeterminateVariable;
 
-  private VariableNode<Object, Object, Function<?, ?>>  functionalIndependentVariable;
+  private VariableNode<Object, Object, Function<?, ?>>       functionalIndependentVariable;
 
-  public VariableNode<Object, Object, Function<?, ?>>   functionalIndeterminateVariable;
+  public Stack<VariableNode<Object, Object, Function<?, ?>>> functionalIndeterminateVariables = new Stack<>();
 
-  public Class<? extends F>                             functionClass;
+  public Class<? extends F>                                  functionClass;
 
-  public String                                         functionClassDescriptor;
+  public String                                              functionClassDescriptor;
 
-  public String                                         functionName;
+  public String                                              functionName;
 
-  public boolean                                        functionNameSpecified         = false;
+  public boolean                                             functionNameSpecified         = false;
 
-  public HashMap<Node<D, C, F>, String>                 generatedNodes                =
-                                                                       new HashMap<>();
+  public HashMap<Node<D, C, F>, String>                      generatedNodes                =
+                                                                            new HashMap<>();
 
-  public String                                         genericFunctionClassInternalName;
+  public String                                              genericFunctionClassInternalName;
 
-  public boolean                                        inAbsoluteValue               = false;
+  public boolean                                             inAbsoluteValue               = false;
 
-  public VariableNode<D, C, F>                          independentVariable;
+  public VariableNode<D, C, F>                               independentVariable;
 
-  public Stack<VariableNode<D, C, F>>                   indeterminateVariables        =
-                                                                               new Stack<>();
+  public Stack<VariableNode<D, C, F>>                        indeterminateVariables        =
+                                                                                    new Stack<>();
 
-  int                                                   currentLevel                  = 0;
+  int                                                        currentLevel                  = 0;
 
-  public LinkedList<Consumer<MethodVisitor>>            initializers                  =
-                                                                     new LinkedList<>();
+  public LinkedList<Consumer<MethodVisitor>>                 initializers                  =
+                                                                          new LinkedList<>();
 
-  public boolean                                        insideInitializer             = false;
+  public boolean                                             insideInitializer             = false;
 
-  protected F                                           instance;
+  protected F                                                instance;
 
-  public byte[]                                         instructions;
+  public byte[]                                              instructions;
 
-  public HashMap<String, IntermediateVariable<D, C, F>> intermediateVariables         =
+  public HashMap<String, IntermediateVariable<D, C, F>>      intermediateVariables         =
+                                                                                   new HashMap<>();
+
+  private ArrayList<LiteralConstantNode<D, C, F>>            literalConstantNodes;
+
+  public HashMap<String, LiteralConstantNode<D, C, F>>       literalConstants              =
                                                                               new HashMap<>();
 
-  private ArrayList<LiteralConstantNode<D, C, F>>       literalConstantNodes;
+  private final Logger                                       log                           =
+                                                                 LoggerFactory.getLogger(Expression.class);
 
-  public HashMap<String, LiteralConstantNode<D, C, F>>  literalConstants              =
-                                                                         new HashMap<>();
+  public FunctionMapping<D, C, F>                            mapping;
 
-  private final Logger                                  log                           =
-                                                            LoggerFactory.getLogger(Expression.class);
+  public int                                                 position                      = -1;
 
-  public FunctionMapping<D, C, F>                       mapping;
+  public char                                                previousCharacter;
 
-  public int                                            position                      = -1;
+  public boolean                                             recursive                     = false;
 
-  public char                                           previousCharacter;
+  public HashMap<String, FunctionMapping<?, ?, ?>>           referencedFunctions           =
+                                                                                 new HashMap<>();
 
-  public boolean                                        recursive                     = false;
+  public HashMap<String, VariableNode<D, C, F>>              referencedVariables           =
+                                                                                 new HashMap<>();
 
-  public HashMap<String, FunctionMapping<?, ?, ?>>      referencedFunctions           =
-                                                                            new HashMap<>();
+  public Node<D, C, F>                                       rootNode;
 
-  public HashMap<String, VariableNode<D, C, F>>         referencedVariables           =
-                                                                            new HashMap<>();
+  public boolean                                             variablesDeclared             = false;
 
-  public Node<D, C, F>                                  rootNode;
-
-  public boolean                                        variablesDeclared             = false;
-
-  public boolean                                        verboseTrace                  = false;
+  public boolean                                             verboseTrace                  = false;
 
   public boolean acceptUntil(java.util.function.Predicate<Expression<?, ?, ?>> visitor)
   {
@@ -1689,23 +1689,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (!indeterminateVariables.isEmpty())
     {
-      var indeterminantVariable = indeterminateVariables.peek();
-      functionalIndeterminateVariable          =
-                                      indeterminantVariable.spliceInto(function).asVariable();
-      functionalDependsOnIndeterminateVariable =
-                                               function.rootNode.dependsOn(functionalIndeterminateVariable);
+      for (var indeterminantVariable : indeterminateVariables)
+      {
+        var functionalIndeterminateVariable =
+                                            indeterminantVariable.spliceInto(function).asVariable();
+        functionalIndeterminateVariables.push(functionalIndependentVariable);
+        functionalDependsOnIndeterminateVariable = functionalDependsOnIndeterminateVariable
+                      || function.rootNode.dependsOn(functionalIndeterminateVariable);
+      }
     }
-
-//    Class<?> actualRootNodeType = function.rootNode.type();
-//    if (!actualRootNodeType.equals(function.coDomainType) && actualRootNodeType.isInterface()
-//                  && Function.class.isAssignableFrom(actualRootNodeType))
-//    {
-//      function.coDomainType                     = actualRootNodeType;
-//      function.functionClass                    = (Class) actualRootNodeType;
-//      function.genericFunctionClassInternalName = Type.getInternalName(actualRootNodeType);
-//      function.functionClassDescriptor          = actualRootNodeType.descriptorString();
-//      assert false : "TODO: " + function.className + " #813";
-//    }
 
     function.generate();
 
