@@ -1690,10 +1690,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     functionalIndependentVariable          = null;
     if (independentVariable != null)
     {
-      functionalIndependentVariable          =
-                                    independentVariable.spliceInto(function).asVariable();
-      functionalDependsOnIndependentVariable =
-                                             function.rootNode.dependsOn(functionalIndependentVariable);
+      functionalIndependentVariable = independentVariable.spliceInto(function).asVariable();
     }
 
     if (!indeterminateVariables.isEmpty())
@@ -1709,6 +1706,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
 
     function.generate();
+
+    if (functionalIndependentVariable != null)
+    {
+      functionalDependsOnIndependentVariable =
+                                             function.rootNode.dependsOn(functionalIndependentVariable);
+    }
 
     constructNewObject(mv, function.className);
     duplicateTopOfTheStack(mv);
