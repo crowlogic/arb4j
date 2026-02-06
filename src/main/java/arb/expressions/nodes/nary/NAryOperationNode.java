@@ -668,12 +668,58 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     // method parameter)
     if (independentVariableNode != null && !independentVariableNode.type().equals(Object.class))
     {
-      String   varName      = independentVariableNode.reference.name;
-      Class<?> varType      = independentVariableNode.type();
-      String   varDesc      = varType.descriptorString();
-      String   operandDesc  = String.format("L%s;", operandFunctionFieldName);
+      propagateIndependentVariableToOperand(mv, independentVariableNode);
+    }
 
-      Label    fieldNotNull = new Label();
+    // 2. Propagate captured ancestor independent variables to operand
+    if (operand != null)
+    {
+      propagateAscendentIndependentVariablesToOperand(mv, independentVariableNode);
+    }
+  }
+
+  protected void
+            propagateAscendentIndependentVariablesToOperand(MethodVisitor mv,
+                                                            VariableNode<D,
+                                                                          R,
+                                                                          F> independentVariableNode)
+  {
+    for (var entry : operand.referencedVariables.entrySet())
+    {
+      propagateAscendentIndependentVariablesToOperand(mv, independentVariableNode, entry);
+    }
+  }
+
+  protected void
+            propagateAscendentIndependentVariablesToOperand(MethodVisitor mv,
+                                                            VariableNode<D,
+                                                                          R,
+                                                                          F> independentVariableNode,
+                                                            Entry<String,
+                                                                          VariableNode<Integer,
+                                                                                        R,
+                                                                                        Sequence<R>>> entry)
+  {
+    VariableNode<?, ?, ?> varNode = entry.getValue();
+    if (varNode.ascendentInput)
+    {
+      String   varName = entry.getKey();
+      Class<?> varType = varNode.type();
+
+      // CRITICAL: Skip the current expression's independent variable.
+      // It is NOT a field on the generated class — it only exists as
+      // the evaluate() method's input parameter (slot 1). It was already
+      // propagated via loadInputParameter in part 1 above. Attempting
+      // GETFIELD here causes NoSuchFieldError.
+      if (independentVariableNode != null && varName.equals(independentVariableNode.getName()))
+      {
+        return;
+      }
+
+      String varDesc      = varType.descriptorString();
+      String operandDesc  = String.format("L%s;", operandFunctionFieldName);
+
+      Label  fieldNotNull = new Label();
 
       // Check if operand.varName is null
       expression.loadFieldOntoStack(loadThisOntoStack(mv), operandFunctionFieldName, operandDesc);
@@ -689,82 +735,59 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
       mv.visitLabel(fieldNotNull);
 
-      // Copy by value: operand.varName.set(inputParameter)
+      // Copy by value: operand.varName.set(this.varName)
       expression.loadFieldOntoStack(loadThisOntoStack(mv), operandFunctionFieldName, operandDesc);
       mv.visitFieldInsn(GETFIELD, operandFunctionFieldName, varName, varDesc);
-      cast(loadInputParameter(mv), varType);
+      loadFieldFromThis(mv, varName, varType);
       invokeVirtualMethod(mv, varType, "set", varType, varType);
       mv.visitInsn(Opcodes.POP);
 
       if (Expression.traceNodes)
       {
-        logInputPropagationToOperand(independentVariableNode);
+        logger.debug(String.format("%s.propagateInputToOperand: propagating captured ancestor variable %s (type=%s) to operand %s\n",
+                                   getClass().getSimpleName(),
+                                   varName,
+                                   varType,
+                                   operandFunctionFieldName));
       }
     }
+  }
 
-    // 2. Propagate captured ancestor independent variables to operand
-    if (operand != null)
+  protected void
+            propagateIndependentVariableToOperand(MethodVisitor mv,
+                                                  VariableNode<D, R, F> independentVariableNode)
+  {
+    String   varName      = independentVariableNode.reference.name;
+    Class<?> varType      = independentVariableNode.type();
+    String   varDesc      = varType.descriptorString();
+    String   operandDesc  = String.format("L%s;", operandFunctionFieldName);
+
+    Label    fieldNotNull = new Label();
+
+    // Check if operand.varName is null
+    expression.loadFieldOntoStack(loadThisOntoStack(mv), operandFunctionFieldName, operandDesc);
+    mv.visitFieldInsn(GETFIELD, operandFunctionFieldName, varName, varDesc);
+    mv.visitJumpInsn(IFNONNULL, fieldNotNull);
+
+    // Null: allocate a new instance and assign it to the operand's field
+    expression.loadFieldOntoStack(loadThisOntoStack(mv), operandFunctionFieldName, operandDesc);
+    generateNewObjectInstruction(mv, varType);
+    duplicateTopOfTheStack(mv);
+    invokeDefaultConstructor(mv, varType);
+    putField(mv, operandFunctionFieldName, varName, varType);
+
+    mv.visitLabel(fieldNotNull);
+
+    // Copy by value: operand.varName.set(inputParameter)
+    expression.loadFieldOntoStack(loadThisOntoStack(mv), operandFunctionFieldName, operandDesc);
+    mv.visitFieldInsn(GETFIELD, operandFunctionFieldName, varName, varDesc);
+    cast(loadInputParameter(mv), varType);
+    invokeVirtualMethod(mv, varType, "set", varType, varType);
+    mv.visitInsn(Opcodes.POP);
+
+    if (Expression.traceNodes)
     {
-      for (var entry : operand.referencedVariables.entrySet())
-      {
-        VariableNode<?, ?, ?> varNode = entry.getValue();
-        if (varNode.ascendentInput)
-        {
-          String   varName = entry.getKey();
-          Class<?> varType = varNode.type();
-
-          // CRITICAL: Skip the current expression's independent variable.
-          // It is NOT a field on the generated class — it only exists as
-          // the evaluate() method's input parameter (slot 1). It was already
-          // propagated via loadInputParameter in part 1 above. Attempting
-          // GETFIELD here causes NoSuchFieldError.
-          if (independentVariableNode != null && varName.equals(independentVariableNode.getName()))
-          {
-            continue;
-          }
-
-          String varDesc      = varType.descriptorString();
-          String operandDesc  = String.format("L%s;", operandFunctionFieldName);
-
-          Label  fieldNotNull = new Label();
-
-          // Check if operand.varName is null
-          expression.loadFieldOntoStack(loadThisOntoStack(mv),
-                                        operandFunctionFieldName,
-                                        operandDesc);
-          mv.visitFieldInsn(GETFIELD, operandFunctionFieldName, varName, varDesc);
-          mv.visitJumpInsn(IFNONNULL, fieldNotNull);
-
-          // Null: allocate a new instance and assign it to the operand's field
-          expression.loadFieldOntoStack(loadThisOntoStack(mv),
-                                        operandFunctionFieldName,
-                                        operandDesc);
-          generateNewObjectInstruction(mv, varType);
-          duplicateTopOfTheStack(mv);
-          invokeDefaultConstructor(mv, varType);
-          putField(mv, operandFunctionFieldName, varName, varType);
-
-          mv.visitLabel(fieldNotNull);
-
-          // Copy by value: operand.varName.set(this.varName)
-          expression.loadFieldOntoStack(loadThisOntoStack(mv),
-                                        operandFunctionFieldName,
-                                        operandDesc);
-          mv.visitFieldInsn(GETFIELD, operandFunctionFieldName, varName, varDesc);
-          loadFieldFromThis(mv, varName, varType);
-          invokeVirtualMethod(mv, varType, "set", varType, varType);
-          mv.visitInsn(Opcodes.POP);
-
-          if (Expression.traceNodes)
-          {
-            logger.debug(String.format("%s.propagateInputToOperand: propagating captured ancestor variable %s (type=%s) to operand %s\n",
-                                       getClass().getSimpleName(),
-                                       varName,
-                                       varType,
-                                       operandFunctionFieldName));
-          }
-        }
-      }
+      logInputPropagationToOperand(independentVariableNode);
     }
   }
 
