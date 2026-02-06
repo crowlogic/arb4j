@@ -2366,21 +2366,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     var    functionMapping = context.functions.get(functionFieldName);
     String typeDesc        = functionMapping.functionFieldDescriptor(false);
 
-    variables.forEach(variable ->
-    {
-      boolean isIndeterminate = independentVariable != null
-                    && variable.getLeft().equals(independentVariable.getName());
-
-      linkSharedVariableToReferencedFunction(mv,
-                                             functionMapping,
-                                             generatedFunctionClassInternalName,
-                                             fieldType,
-                                             functionFieldName,
-                                             typeDesc,
-                                             variable,
-                                             isIndeterminate);
-    });
+    variables.forEach(variable -> linkSharedVariableToReferencedFunction(mv,
+                                                                         functionMapping,
+                                                                         generatedFunctionClassInternalName,
+                                                                         fieldType,
+                                                                         functionFieldName,
+                                                                         typeDesc,
+                                                                         variable));
   }
+
 
   protected void injectReferences(F f)
   {
@@ -2469,43 +2463,83 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected void
             linkSharedVariableToReferencedFunction(MethodVisitor mv,
                                                    FunctionMapping<Object,
-                                                                 Object,
-                                                                 Function<?, ?>> functionMapping,
+                                                                   Object,
+                                                                   Function<?, ?>> functionMapping,
                                                    String generatedFunctionClassInternalName,
                                                    String fieldType,
                                                    String functionFieldName,
-                                                   String functionTypeDesc,
-                                                   OrderedPair<String, Class<?>> variable,
-                                                   boolean isIndeterminate)
+                                                   String typeDesc,
+                                                   OrderedPair<String, Class<?>> variable)
   {
-    var    variableFieldName               = variable.getLeft();
-    var    variableFieldTypeDescriptor     = variable.getRight().descriptorString();
-    var    variableType                    = variable.getRight();
-    String nestedFunctionClassInternalName = functionMapping.functionName;
+    String variableName     = variable.getLeft();
+    Class<?> variableType   = variable.getRight();
+    String variableTypeDesc = variableType.descriptorString();
+    String nestedClassName  = functionMapping.functionName;
 
-    if (isIndeterminate)
-    {
-      linkByValueAlways(mv,
-                        generatedFunctionClassInternalName,
-                        functionFieldName,
-                        functionTypeDesc,
-                        variableFieldName,
-                        variableFieldTypeDescriptor,
-                        variableType,
-                        nestedFunctionClassInternalName);
-    }
-    else
-    {
-      linkContextVariable(mv,
-                          generatedFunctionClassInternalName,
-                          functionFieldName,
-                          functionTypeDesc,
-                          variableFieldName,
-                          variableFieldTypeDescriptor,
+    Label labelElse = new Label();
+    Label labelEnd  = new Label();
+
+    // ── if (this.func.var == null) ──────────────────────────────
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(GETFIELD,
+                      generatedFunctionClassInternalName,
+                      functionFieldName,
+                      typeDesc);
+    mv.visitFieldInsn(GETFIELD,
+                      nestedClassName,
+                      variableName,
+                      variableTypeDesc);
+    mv.visitJumpInsn(IFNONNULL, labelElse);
+
+    // ── null branch: this.func.var = this.var ───────────────────
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(GETFIELD,
+                      generatedFunctionClassInternalName,
+                      functionFieldName,
+                      typeDesc);
+
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(GETFIELD,
+                      generatedFunctionClassInternalName,
+                      variableName,
+                      variableTypeDesc);
+
+    mv.visitFieldInsn(PUTFIELD,
+                      nestedClassName,
+                      variableName,
+                      variableTypeDesc);
+
+    mv.visitJumpInsn(GOTO, labelEnd);
+
+    // ── else branch: this.func.var.set(this.var) ────────────────
+    mv.visitLabel(labelElse);
+
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(GETFIELD,
+                      generatedFunctionClassInternalName,
+                      functionFieldName,
+                      typeDesc);
+    mv.visitFieldInsn(GETFIELD,
+                      nestedClassName,
+                      variableName,
+                      variableTypeDesc);
+
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(GETFIELD,
+                      generatedFunctionClassInternalName,
+                      variableName,
+                      variableTypeDesc);
+
+    Compiler.invokeMethod(mv,
                           variableType,
-                          nestedFunctionClassInternalName);
-    }
+                          "set",
+                          variableType,
+                          variableType);
+    mv.visitInsn(POP);
+
+    mv.visitLabel(labelEnd);
   }
+
 
   protected void
             allocateNestedFunctionFieldViaNamedConstructor(MethodVisitor mv,
