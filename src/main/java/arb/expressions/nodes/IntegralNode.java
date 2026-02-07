@@ -290,7 +290,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     indefiniteIntegralExpression.className = "∫" + indefiniteIntegralExpression.className;
     indefiniteIntegralExpression.rootNode  =
                                           indefiniteIntegralNode.spliceInto(indefiniteIntegralExpression);
-    indefiniteIntegralExpression.updateStringRepresentation();
+    //indefiniteIntegralExpression.updateStringRepresentation();
     indefiniteIntegralExpression.compile();
     expression.registerSubexpression(indefiniteIntegralExpression);
   }
