@@ -182,6 +182,7 @@ public interface Field<X extends Field<X>> extends
     return null;
   }
 
+  @SuppressWarnings("unchecked")
   public default X pow(int i, int bits)
   {
     return pow(i, bits, (X) this);
