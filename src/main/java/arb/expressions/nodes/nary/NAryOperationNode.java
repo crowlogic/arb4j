@@ -113,7 +113,9 @@ public NAryOperationNode(Expression<D, R, F> expression,
       indexVariableFieldName = maybeName;
       // Register the index variable — always Integer (discrete loop counter),
       // and resolve=false because resolveReference() would misclassify it
-      // as an indeterminate and overwrite the type with coDomainType
+      // as an indeterminate and overwrite the type with coDomainType.
+      // This temporarily adds it to referencedVariables so the operand
+      // body can find it via getReference() during parsing.
       indexVariableNode = new VariableNode<>(expression,
                                              new VariableReference<>(indexVariableFieldName,
                                                                      null,
@@ -132,6 +134,17 @@ public NAryOperationNode(Expression<D, R, F> expression,
   // 2. Parse the operand body as an AST node
   operandNode = expression.resolve();
 
+  // Remove the index variable from referencedVariables now that the operand
+  // body has been parsed. It was needed there temporarily so that references
+  // to it within the operand (e.g. αₖ₍ₙ₎) could resolve its type as Integer.
+  // Its field declaration is handled by prepareIndexVariable() which registers
+  // it as an intermediate variable; leaving it in referencedVariables causes
+  // declareVariables() to emit a duplicate field.
+  if (indexVariableFieldName != null)
+  {
+    expression.referencedVariables.remove(indexVariableFieldName);
+  }
+
   // 3. Parse limit specification
   if (functionForm)
   {
@@ -145,6 +158,7 @@ public NAryOperationNode(Expression<D, R, F> expression,
     parseLimitSpecification();
   }
 }
+
 
 
   /**
