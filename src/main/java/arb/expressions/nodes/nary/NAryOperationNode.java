@@ -78,71 +78,78 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
    *
    * @param functionForm true if syntax is sum(...) / prod(...) with parens
    */
-  public NAryOperationNode(Expression<D, R, F> expression,
-                           String identity,
-                           String prefix,
-                           String operation,
-                           String symbol,
-                           boolean functionForm)
+/**
+ * PARSING constructor — called when the parser hits Σ, Π, sum(, etc.
+ * Parses the operand body inline via expression.resolve().
+ *
+ * @param functionForm true if syntax is sum(...) / prod(...) with parens
+ */
+public NAryOperationNode(Expression<D, R, F> expression,
+                         String identity,
+                         String prefix,
+                         String operation,
+                         String symbol,
+                         boolean functionForm)
+{
+  super(expression);
+  this.identity  = identity;
+  this.prefix    = prefix;
+  this.operation = operation;
+  this.symbol    = symbol;
+  if (expression.context == null)
   {
-    super(expression);
-    this.identity  = identity;
-    this.prefix    = prefix;
-    this.operation = operation;
-    this.symbol    = symbol;
-    if (expression.context == null)
+    expression.context = new Context();
+  }
+  functionClass = expression.className;
+  assert functionClass != null : "functionClass=expression.className shan't be null";
+  generatedType = expression.coDomainType;
+
+  // --- Inline parsing (IntegralNode style) ---
+
+  // 1. Try to parse "k➔" lambda prefix
+  int  savedPos  = expression.position;
+  char savedChar = expression.character;
+
+  if (expression.isIdentifierCharacter())
+  {
+    String maybeName = expression.parseName();
+    expression.skipSpaces();
+    if (expression.nextCharacterIs('➔'))
     {
-      expression.context = new Context();
-    }
-    functionClass = expression.className;
-    assert functionClass != null : "functionClass=expression.className shan't be null";
-    generatedType = expression.coDomainType;
-
-    // --- Inline parsing (IntegralNode style) ---
-
-    // 1. Try to parse "k➔" lambda prefix
-    int  savedPos  = expression.position;
-    char savedChar = expression.character;
-
-    if (expression.isIdentifierCharacter())
-    {
-      String maybeName = expression.parseName();
-      expression.skipSpaces();
-      if (expression.nextCharacterIs('➔'))
-      {
-        indexVariableFieldName = maybeName;
-        // Register the index variable so operand body references resolve
-        indexVariableNode = new VariableNode<>(expression,
-                                               new VariableReference<>(indexVariableFieldName,
-                                                                       null,
-                                                                       expression.coDomainType),
-                                               expression.position,
-                                               true);
-      }
-      else
-      {
-        // No arrow — backtrack, let resolve() handle it
-        expression.position  = savedPos;
-        expression.character = savedChar;
-      }
-    }
-
-    // 2. Parse the operand body as an AST node
-    operandNode = expression.resolve();
-
-    // 3. Parse limit specification
-    if (functionForm)
-    {
-      // sum(k➔f(k), k=a…b)  — comma then var=lower…upper then )
-      expression.require(',');
-      parseLimitSpecification();
+      indexVariableFieldName = maybeName;
+      // Register the index variable — always Integer, it's a discrete loop counter
+      indexVariableNode = new VariableNode<>(expression,
+                                             new VariableReference<>(indexVariableFieldName,
+                                                                     null,
+                                                                     Integer.class),
+                                             expression.position,
+                                             true);
     }
     else
     {
-      // Σk➔f(k){k=a…b}  — braces
-      parseLimitSpecification();
+      // No arrow — backtrack, let resolve() handle it
+      expression.position  = savedPos;
+      expression.character = savedChar;
     }
   }
+
+  // 2. Parse the operand body as an AST node
+  operandNode = expression.resolve();
+
+  // 3. Parse limit specification
+  if (functionForm)
+  {
+    // sum(k➔f(k), k=a…b)  — comma then var=lower…upper then )
+    expression.require(',');
+    parseLimitSpecification();
+  }
+  else
+  {
+    // Σk➔f(k){k=a…b}  — braces
+    parseLimitSpecification();
+  }
+}
+
 
   /**
    * SPLICE constructor — called by spliceInto() with pre-built nodes.
