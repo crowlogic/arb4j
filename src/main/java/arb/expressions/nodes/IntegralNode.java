@@ -323,24 +323,18 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       return definiteIntegralNode;
     }
 
-    // Create TWO independent contexts with deep-copied variable stacks
-    var    upperExpr           = createEvaluationExpression();
-    var    lowerExpr           = createEvaluationExpression();
-
-    var    upperEval           = indefiniteIntegralNode.spliceInto(upperExpr);
-    var    lowerEval           = indefiniteIntegralNode.spliceInto(lowerExpr);
+    var    upperEval           = indefiniteIntegralNode.spliceInto(createEvaluationExpression());
+    var    lowerEval           = indefiniteIntegralNode.spliceInto(createEvaluationExpression());
 
     String integrationVariable = integrationVariableNode.getName();
 
-    var    upperResult         =
-                       upperEval.substitute(integrationVariable, upperLimitNode).simplify();
-    var    lowerResult         =
-                       lowerEval.substitute(integrationVariable, lowerLimitNode).simplify();
+    var    upperResult         = upperEval.substitute(integrationVariable, upperLimitNode);
+    var    lowerResult         = lowerEval.substitute(integrationVariable, lowerLimitNode);
 
-    var    tempResult          = upperResult.sub(lowerResult).simplify();
+    var    difference          = upperResult.sub(lowerResult).simplify();
 
     // Splice final result back to original expression
-    definiteIntegralNode = tempResult.spliceInto(expression);
+    definiteIntegralNode = difference.spliceInto(expression);
     return definiteIntegralNode.simplify();
   }
 

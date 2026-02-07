@@ -27,8 +27,8 @@ import arb.functions.Function;
  * <p>
  * The operand body is parsed by cloning the parent expression via
  * {@link Expression#cloneExpression()} and calling resolve() on the clone. The
- * clone shares the parent's {@link Context} (including its intermediate variable
- * name counters), className, expression character buffer, and
+ * clone shares the parent's {@link Context} (including its intermediate
+ * variable name counters), className, expression character buffer, and
  * ascendentExpression reference. The clone does NOT share the parent's
  * intermediateVariables, referencedVariables, referencedFunctions, or
  * literalConstants maps — those are fresh empty collections on the clone. The
@@ -38,13 +38,13 @@ import arb.functions.Function;
  * </p>
  * <p>
  * This is sufficient because the operand's AST nodes reference the clone as
- * their expression, and field allocation during code generation
- * (e.g. index variables, result accumulators, upper limit fields) is performed
- * explicitly on the parent expression by this class's generate() method. The
- * shared {@link Context#intermediateVariableCounters} ensure unique field names
- * across parent and clone without requiring shared maps. If a caller needs the
- * clone to share additional registries with the parent, they can alias those
- * maps after calling cloneExpression().
+ * their expression, and field allocation during code generation (e.g. index
+ * variables, result accumulators, upper limit fields) is performed explicitly
+ * on the parent expression by this class's generate() method. The shared
+ * {@link Context#intermediateVariableCounters} ensure unique field names across
+ * parent and clone without requiring shared maps. If a caller needs the clone
+ * to share additional registries with the parent, they can alias those maps
+ * after calling cloneExpression().
  * </p>
  *
  * @param <D> the domain type of the operands and the operation
@@ -91,8 +91,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   /**
    * PARSING constructor — called when the parser hits Σ, Π, sum(, etc. Parses the
-   * operand body on a cloned expression with a fresh indeterminate scope, then
-   * syncs the parser position back to the parent for limit specification parsing.
+   * operand body on a cloned expression with a fresh independent-variable scope,
+   * then syncs the parser position back to the parent for limit specification
+   * parsing.
    *
    * @param functionForm true if syntax is sum(...) / prod(...) with parens
    */
@@ -118,10 +119,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     assert functionClass != null : "functionClass=expression.className shan't be null";
     generatedType = expression.coDomainType;
 
-    // ── Step 1: Arrow detection (optional) ──────────────────────────────
-    // Save position. Try to parse "k➔". If found, record the index variable
-    // name. If not, backtrack. Identical to old behavior.
-
+    // ── Step 1: Optional arrow "k➔" on the PARENT expression ─────────────
     int  savedPos  = expression.position;
     char savedChar = expression.character;
 
@@ -140,65 +138,51 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       }
     }
 
-    // ── Step 2: Clone the parent expression ─────────────────────────────
-    // The operand is conceptually a separate function with its own independent
-    // variable (the loop index). Cloning produces a new Expression that shares
-    // the same character buffer, parser position, className, and context — but
-    // has fresh empty collection fields (intermediateVariables,
-    // referencedVariables, etc.) and its OWN indeterminate stack (cleared) and
-    // independent variable (null). The shared Context ensures unique field
-    // name counters across parent and clone.
-
+    // ── Step 2: Clone expression and CLEAR independent variable ──────────
+    // Normal variable-resolution rules must apply inside the operand:
+    // - if no arrow, the first variable encountered becomes the independent
+    // variable of the operand expression;
+    // - if arrow was used, that variable is the independent one.
+    //
+    // We achieve this by cloning and explicitly clearing independentVariable
+    // and the indeterminate stack on the clone.
     operandExpression = expression.cloneExpression();
     operandExpression.indeterminateVariables.clear();
+    if (operandExpression.independentVariable != null)
+    {
+      operandExpression.independentVariable.isIndependent = false;
+    }
     operandExpression.independentVariable = null;
 
-    // ── Step 3: Set index as independent variable on clone (arrow case) ─
-    // If the arrow syntax was used (e.g. Σk➔expr), register k as the clone's
-    // independent variable with Integer type so the operand body resolves
-    // references to k as the input parameter.
-
+    // ── Step 3: Arrow case: explicitly register index var as independent ─
     if (indexVariableFieldName != null)
     {
-      indexVariableNode = new VariableNode<>(operandExpression,
-                                             new VariableReference(indexVariableFieldName,
-                                                                   null,
-                                                                   Integer.class),
-                                             operandExpression.position,
-                                             false);
+      indexVariableNode                     = new VariableNode<>(operandExpression,
+                                                                 new VariableReference(indexVariableFieldName,
+                                                                                       null,
+                                                                                       Integer.class),
+                                                                 operandExpression.position,
+                                                                 false);
       operandExpression.independentVariable = indexVariableNode;
+      indexVariableNode.isIndependent       = true;
     }
 
-    // ── Step 4: Parse operand body on the clone ─────────────────────────
-    // resolve() on the clone uses the fresh indeterminate stack. For arrow
-    // syntax, k is already the independent variable. For non-arrow syntax
-    // (e.g. Σk{k=1…n}), the resolver encounters k as an unknown name,
-    // classifies it as the indeterminate following normal resolution rules,
-    // and pushes it onto the clone's stack. Either way, k is correctly
-    // scoped to the operand — no collision with the parent's indeterminates.
+    // ── Step 4: Parse operand body on the CLONE ──────────────────────────
+    operandNode          = operandExpression.resolve();
 
-    operandNode = operandExpression.resolve();
+    // If there was NO arrow, the first variable resolved in the operandExpression
+    // has been classified as the independent variable by normal rules already.
 
-    // ── Step 5: Sync parser position back to parent ─────────────────────
-    // The clone consumed characters from the shared buffer. Copy position
-    // back so the parent can continue parsing the limit specification.
-
+    // ── Step 5: Sync parser position back to parent ──────────────────────
     expression.position  = operandExpression.position;
     expression.character = operandExpression.character;
 
-    // Remove index variable from shared referencedVariables — it was
-    // registered there during resolve() but its field is managed exclusively
-    // by prepareIndexVariable(). Leaving it would cause declareVariables()
-    // to emit a duplicate field declaration.
-    if (indexVariableFieldName != null)
-    {
-      expression.referencedVariables.remove(indexVariableFieldName);
-    }
+    // The index variable (if any) was registered against the clone's
+    // referencedVariables; we ONLY want an intermediate field for it on the
+    // parent, managed by prepareIndexVariable(), so nothing to clean up in
+    // the parent maps here.
 
-    // ── Step 6: Parse limit specification on parent expression ──────────
-    // {k=a…b} or ,k=a…b) is parsed on the parent, whose variables (j, i, γ
-    // etc.) are in scope for the lower and upper limit expressions.
-
+    // ── Step 6: Parse limit specification on PARENT ──────────────────────
     if (functionForm)
     {
       expression.require(',');
