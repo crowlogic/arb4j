@@ -230,6 +230,7 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
   }
   
 
+  @SuppressWarnings("unchecked")
   public Named set(String value)
   {
     NullaryFunction<AlgebraicNumber> f = Function.express(Object.class,

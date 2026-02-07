@@ -28,6 +28,7 @@ import arb.documentation.TheArb4jLibrary;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
+@SuppressWarnings("unchecked")
 public class ComplexRiemannSiegelThetaFunction implements
                                     ComplexFunction
 {

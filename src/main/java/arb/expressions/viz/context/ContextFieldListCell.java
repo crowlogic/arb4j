@@ -108,6 +108,7 @@ public final class ContextFieldListCell<D, C extends Closeable, F extends Functi
     }
   }
 
+  @SuppressWarnings("unused")
   public void constructSpinner(Named item, Integer integerItem)
   {
     spinner = new Spinner<>(new SpinnerValueFactory.IntegerSpinnerValueFactory(java.lang.Integer.MIN_VALUE,

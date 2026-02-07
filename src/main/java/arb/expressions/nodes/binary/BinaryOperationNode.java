@@ -135,6 +135,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
    * @param rightType
    * @param resultantType
    */
+  @SuppressWarnings("unused")
   public static void mapTypes(Class<?> leftType, Class<?> rightType, Class<?> resultantType)
   {
     typeMap.computeIfAbsent(leftType, type -> new HashMap<>()).put(rightType, resultantType);
@@ -274,7 +275,6 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
       expression.logVariables();
     }
 
-    var scalarType = Compiler.scalarType(type());
 
     if (!Compiler.canBeAssignedTo(type(), resultType))
     {
