@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -74,8 +73,6 @@ public class Context implements
                 Dependency>();
 
   public final FunctionMappings               functions;
-
-  public final HashMap<String, AtomicInteger> intermediateVariableCounters = new HashMap<>();
 
   private final Logger                        log                          =
                                                   LoggerFactory.getLogger(Context.class);
