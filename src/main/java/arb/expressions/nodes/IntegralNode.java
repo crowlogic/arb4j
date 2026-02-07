@@ -78,206 +78,182 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   public IntegralNode(Expression<D, C, F> expression, boolean functionForm)
   {
     super(expression);
-    if (!functionForm)
+    if (functionForm)
     {
-      // Parse optional lambda: λ➔ or just start with integrand
-      String lambdaVar = null;
-      int    savedPos  = expression.position;
-      char   savedChar = expression.character;
-
-      if (expression.isIdentifierCharacter())
-      {
-        String maybeName = expression.parseName();
-        expression.skipSpaces();
-        if (expression.nextCharacterIs('➔'))
-        {
-          lambdaVar = maybeName;
-          // Create the integration variable BEFORE parsing the body
-          // This mirrors Expression.parseLambda() behavior - the variable must be
-          // registered so that references in the body can find it
-          integrationVariableNode = new VariableNode<>(expression,
-                                                       new VariableReference<>(lambdaVar,
-                                                                               null,
-                                                                               expression.coDomainType),
-                                                       expression.position,
-                                                       true);
-          dvar = lambdaVar;
-        }
-        else
-        {
-          expression.position  = savedPos;
-          expression.character = savedChar;
-        }
-      }
-
-      integrandNode = expression.resolve();
-
-      // After integrand, either ',' (new syntax) or 'd' (old syntax)
-      if (expression.nextCharacterIs(','))
-      {
-        // New syntax: int(t➔..., t=-1..1)
-        // nextCharacterIs already consumed ','
-
-        if (expression.nextCharacterIs('d'))
-        {
-          // nextCharacterIs already consumed 'd'
-          String parsedVar = expression.parseName();
-          // Only create integrationVariableNode if not already created from lambda
-          if (integrationVariableNode == null)
-          {
-            dvar                    = parsedVar;
-            integrationVariableNode = new VariableNode<>(expression,
-                                                         new VariableReference<>(dvar),
-                                                         expression.position,
-                                                         false);
-          }
-          else
-          {
-            // Validate lambda var matches d-var
-            if (!dvar.equals(parsedVar))
-            {
-              throw new CompilerException(String.format(SYNTAXMSG, dvar, parsedVar));
-            }
-          }
-          if (expression.nextCharacterIs('∈'))
-          {
-            lowerLimitNode = expression.require('(', '{').resolve();
-            upperLimitNode = expression.require(',', '…').resolve();
-            expression.require(')', '}');
-          }
-        }
-        else
-        {
-          String parsedVar = expression.parseName();
-          // Only create integrationVariableNode if not already created from lambda
-          if (integrationVariableNode == null)
-          {
-            dvar                    = parsedVar;
-            integrationVariableNode = new VariableNode<>(expression,
-                                                         new VariableReference<>(dvar),
-                                                         expression.position,
-                                                         false);
-          }
-          else
-          {
-            // Validate lambda var matches the variable after comma
-            if (!dvar.equals(parsedVar))
-            {
-              throw new CompilerException(String.format(SYNTAXMSG, dvar, parsedVar));
-            }
-          }
-          if (expression.nextCharacterIs('='))
-          {
-            lowerLimitNode = expression.resolve();
-            upperLimitNode = expression.require('…').resolve();
-          }
-        }
-      }
-      else if (expression.nextCharacterIs('d'))
-      {
-        // Old syntax: ∫λ➔...dλ or ∫λ➔...dλ∈(a,b)
-        // nextCharacterIs already consumed 'd'
-        String parsedVar = expression.parseName();
-        // Only create integrationVariableNode if not already created from lambda
-        if (integrationVariableNode == null)
-        {
-          dvar                    = parsedVar;
-          integrationVariableNode = new VariableNode<>(expression,
-                                                       new VariableReference<>(dvar),
-                                                       expression.position,
-                                                       false);
-        }
-        else
-        {
-          // Validate lambda var matches d-var
-          if (!dvar.equals(parsedVar))
-          {
-            throw new CompilerException(String.format(SYNTAXMSG, dvar, parsedVar));
-          }
-        }
-
-        if (expression.nextCharacterIs('∈'))
-        {
-          lowerLimitNode = expression.require('(', '{').resolve();
-          upperLimitNode = expression.require(',', '…').resolve();
-          expression.require(')', '}');
-        }
-      }
-      else
-      {
-        throw new CompilerException("Expected ',' or 'd' after integrand in " + expression);
-      }
-
-      // Final validation: if lambdaVar was set, it must match dvar
-      if (lambdaVar != null && !lambdaVar.equals(dvar))
-      {
-        throw new CompilerException(String.format(SYNTAXMSG, lambdaVar, dvar));
-      }
+      parseFunctionForm(expression);
     }
     else
     {
-      // functionForm: int(f(x), x=a..b) OR int(t➔f(t), t=a..b)
-      String lambdaVar = null;
-      int    savedPos  = expression.position;
-      char   savedChar = expression.character;
+      parseIntegralForm(expression);
+    }
+  }
 
-      if (expression.isIdentifierCharacter())
-      {
-        String maybeName = expression.parseName();
-        expression.skipSpaces();
-        if (expression.nextCharacterIs('➔'))
-        {
-          lambdaVar = maybeName;
-          // Create the integration variable BEFORE parsing the body
-          // This mirrors Expression.parseLambda() behavior - the variable must be
-          // registered so that references in the body can find it
-          integrationVariableNode = new VariableNode<>(expression,
-                                                       new VariableReference<>(lambdaVar,
-                                                                               null,
-                                                                               expression.coDomainType),
-                                                       expression.position,
-                                                       true);
-          dvar = lambdaVar;
-        }
-        else
-        {
-          expression.position  = savedPos;
-          expression.character = savedChar;
-        }
-      }
+  protected void parseFunctionForm(Expression<D, C, F> expression)
+  {
+    // functionForm: int(f(x), x=a..b) OR int(t➔f(t), t=a..b)
+    String lambdaVar = null;
+    int    savedPos  = expression.position;
+    char   savedChar = expression.character;
 
-      integrandNode = expression.resolve();
-      var reference = expression.require(',').parseVariableReference();
-      
-      // Only create integrationVariableNode if not already created from lambda
-      if (integrationVariableNode == null)
+    if (expression.isIdentifierCharacter())
+    {
+      String maybeName = expression.parseName();
+      expression.skipSpaces();
+      if (expression.nextCharacterIs('➔'))
       {
-        dvar                    = reference.name;
+        lambdaVar               = maybeName;
+        // Create the integration variable BEFORE parsing the body
+        // This mirrors Expression.parseLambda() behavior - the variable must be
+        // registered so that references in the body can find it
         integrationVariableNode = new VariableNode<>(expression,
-                                                     reference,
+                                                     new VariableReference<>(lambdaVar,
+                                                                             null,
+                                                                             expression.coDomainType),
                                                      expression.position,
                                                      true);
+        dvar                    = lambdaVar;
       }
       else
       {
-        // Validate lambda var matches the variable after comma
-        if (!dvar.equals(reference.name))
+        expression.position  = savedPos;
+        expression.character = savedChar;
+      }
+    }
+
+    integrandNode = expression.resolve();
+    var reference = expression.require(',').parseVariableReference();
+
+    // Only create integrationVariableNode if not already created from lambda
+    if (integrationVariableNode == null)
+    {
+      dvar                    = reference.name;
+      integrationVariableNode = new VariableNode<>(expression,
+                                                   reference,
+                                                   expression.position,
+                                                   true);
+    }
+    else
+    {
+      // Validate lambda var matches the variable after comma
+      if (!dvar.equals(reference.name))
+      {
+        throw new CompilerException(String.format(SYNTAXMSG, dvar, reference.name));
+      }
+    }
+
+    if (expression.nextCharacterIs('='))
+    {
+      lowerLimitNode = expression.resolve();
+      upperLimitNode = expression.require('…').resolve();
+    }
+    expression.require(')');
+
+    // Final validation: if lambdaVar was set, it must match dvar
+    if (lambdaVar != null && !lambdaVar.equals(dvar))
+    {
+      throw new CompilerException(String.format(SYNTAXMSG, lambdaVar, dvar));
+    }
+  }
+
+  protected void parseIntegralForm(Expression<D, C, F> expression)
+  {
+    // Parse optional lambda: λ➔ or just start with integrand
+    String lambdaVar = null;
+    int    savedPos  = expression.position;
+    char   savedChar = expression.character;
+
+    if (expression.isIdentifierCharacter())
+    {
+      String maybeName = expression.parseName();
+      expression.skipSpaces();
+      if (expression.nextCharacterIs('➔'))
+      {
+        lambdaVar               = maybeName;
+        // Create the integration variable BEFORE parsing the body
+        // This mirrors Expression.parseLambda() behavior - the variable must be
+        // registered so that references in the body can find it
+        integrationVariableNode = new VariableNode<>(expression,
+                                                     new VariableReference<>(lambdaVar,
+                                                                             null,
+                                                                             expression.coDomainType),
+                                                     expression.position,
+                                                     true);
+        dvar                    = lambdaVar;
+      }
+      else
+      {
+        expression.position  = savedPos;
+        expression.character = savedChar;
+      }
+    }
+
+    integrandNode = expression.resolve();
+
+    // After integrand, either ',' (new syntax) or 'd' (old syntax)
+    if (expression.nextCharacterIs(','))
+    {
+      // New syntax: int(t➔..., t=-1..1)
+      // nextCharacterIs already consumed ','
+
+      if (expression.nextCharacterIs('d'))
+      {
+        parseLimitsOfIntegration(expression);
+      }
+      else
+      {
+        parseIntegrationVariable(expression);
+        if (expression.nextCharacterIs('='))
         {
-          throw new CompilerException(String.format(SYNTAXMSG, dvar, reference.name));
+          lowerLimitNode = expression.resolve();
+          upperLimitNode = expression.require('…').resolve();
         }
       }
+    }
+    else if (expression.nextCharacterIs('d'))
+    {
+      parseLimitsOfIntegration(expression);
+    }
+    else
+    {
+      throw new CompilerException("Expected ',' or 'd' after integrand in " + expression);
+    }
 
-      if (expression.nextCharacterIs('='))
-      {
-        lowerLimitNode = expression.resolve();
-        upperLimitNode = expression.require('…').resolve();
-      }
-      expression.require(')');
+    // Final validation: if lambdaVar was set, it must match dvar
+    if (lambdaVar != null && !lambdaVar.equals(dvar))
+    {
+      throw new CompilerException(String.format(SYNTAXMSG, lambdaVar, dvar));
+    }
+  }
 
-      // Final validation: if lambdaVar was set, it must match dvar
-      if (lambdaVar != null && !lambdaVar.equals(dvar))
+  protected void parseLimitsOfIntegration(Expression<D, C, F> expression)
+  {
+    parseIntegrationVariable(expression);
+    if (expression.nextCharacterIs('∈'))
+    {
+      lowerLimitNode = expression.require('(', '{').resolve();
+      upperLimitNode = expression.require(',', '…').resolve();
+      expression.require(')', '}');
+    }
+  }
+
+  protected void parseIntegrationVariable(Expression<D, C, F> expression)
+  {
+    String parsedVar = expression.parseName();
+    // Only create integrationVariableNode if not already created from lambda
+    if (integrationVariableNode == null)
+    {
+      dvar                    = parsedVar;
+      integrationVariableNode = new VariableNode<>(expression,
+                                                   new VariableReference<>(dvar),
+                                                   expression.position,
+                                                   false);
+    }
+    else
+    {
+      // Validate lambda var matches the variable after comma
+      if (!dvar.equals(parsedVar))
       {
-        throw new CompilerException(String.format(SYNTAXMSG, lambdaVar, dvar));
+        throw new CompilerException(String.format(SYNTAXMSG, dvar, parsedVar));
       }
     }
   }
@@ -298,16 +274,20 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     integrationVariableNode.accept(t);
     integrandNode.accept(t);
     if (lowerLimitNode != null)
+    {
       lowerLimitNode.accept(t);
+    }
     if (upperLimitNode != null)
+    {
       upperLimitNode.accept(t);
+    }
     t.accept(this);
   }
 
   protected void compileIndefiniteIntegral()
   {
     indefiniteIntegralExpression           = expression.cloneExpression();
-    indefiniteIntegralExpression.className = "integrated_" + indefiniteIntegralExpression.className;
+    indefiniteIntegralExpression.className = "∫" + indefiniteIntegralExpression.className;
     indefiniteIntegralExpression.rootNode  =
                                           indefiniteIntegralNode.spliceInto(indefiniteIntegralExpression);
     indefiniteIntegralExpression.updateStringRepresentation();
@@ -318,7 +298,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   private void computeIndefiniteIntegral(boolean compileIfNecessary)
   {
     assert integralFunction == null;
-    indefiniteIntegralNode = integrandNode.integrate(integrationVariableNode.asVariable());
+    indefiniteIntegralNode = integrandNode.integrate(integrationVariableNode.asVariable()).simplify();
 
     // Only compile indefinite integral for indefinite integrals
     // Definite integrals use symbolic substitution only
@@ -405,26 +385,24 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     }
 
     // Create TWO independent contexts with deep-copied variable stacks
-    Expression<D, C, F> upperExpr           = createEvalExpression();
-    Expression<D, C, F> lowerExpr           = createEvalExpression();
+    var    upperExpr           = createEvalExpression();
+    var    lowerExpr           = createEvalExpression();
 
-    var                 upperEval           = indefiniteIntegralNode.spliceInto(upperExpr);
-    var                 lowerEval           = indefiniteIntegralNode.spliceInto(lowerExpr);
+    var    upperEval           = indefiniteIntegralNode.spliceInto(upperExpr);
+    var    lowerEval           = indefiniteIntegralNode.spliceInto(lowerExpr);
 
-    String              integrationVariable = integrationVariableNode.getName();
+    String integrationVariable = integrationVariableNode.getName();
 
-    var                 upperResult         =
-                                    upperEval.substitute(integrationVariable, upperLimitNode)
-                                             .simplify();
-    var                 lowerResult         =
-                                    lowerEval.substitute(integrationVariable, lowerLimitNode)
-                                             .simplify();
+    var    upperResult         =
+                       upperEval.substitute(integrationVariable, upperLimitNode).simplify();
+    var    lowerResult         =
+                       lowerEval.substitute(integrationVariable, lowerLimitNode).simplify();
 
-    var                 tempResult          = upperResult.sub(lowerResult).simplify();
+    var    tempResult          = upperResult.sub(lowerResult).simplify();
 
     // Splice final result back to original expression
     definiteIntegralNode = tempResult.spliceInto(expression);
-    return definiteIntegralNode;
+    return definiteIntegralNode.simplify();
   }
 
   private Expression<D, C, F> createEvalExpression()
@@ -471,13 +449,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   }
 
   @Override
-  public boolean isScalar()
-  {
-    return type().equals(Real.class) || type().equals(Complex.class)
-                  || type().equals(Quaternion.class);
-  }
-
-  @Override
   public Node<D, C, F> simplify()
   {
     if (lowerLimitNode != null && upperLimitNode != null)
@@ -502,7 +473,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     {
       computeIndefiniteIntegral(false);
     }
-    indefiniteIntegralNode = indefiniteIntegralNode.simplify();
 
     if (isDefiniteIntegral())
     {
@@ -598,10 +568,11 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    var integral = new IntegralNode<E, S, G>(newExpression,
-                                             integrandNode.spliceInto(newExpression),
-                                             integrationVariableNode.spliceInto(newExpression)
-                                                                    .asVariable());
+    var newIntegralNode            = integrandNode.spliceInto(newExpression);
+    var newIntegrationVariableNode = integrationVariableNode.spliceInto(newExpression).asVariable();
+    var integral                   = new IntegralNode<E, S, G>(newExpression,
+                                                               newIntegralNode,
+                                                               newIntegrationVariableNode);
     integral.integrandNode  = integrandNode.spliceInto(newExpression);
     integral.upperLimitNode = upperLimitNode != null ? upperLimitNode.spliceInto(newExpression)
                                                      : null;
@@ -664,20 +635,28 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   @Override
   public String typeset()
   {
-    return lowerLimitNode == null
-                  && upperLimitNode == null
-                                            ? String.format("%sint %s %smathd %s",
-                                                            "\\",
-                                                            integrandNode.typeset(),
-                                                            "\\",
-                                                            integrationVariableNode.typeset())
-                                            : String.format("%sint_%s^%s %s %smathd %s",
-                                                            "\\",
-                                                            lowerLimitNode.typeset(),
-                                                            upperLimitNode.typeset(),
-                                                            integrandNode.typeset(),
-                                                            "\\",
-                                                            integrationVariableNode.typeset());
+    return lowerLimitNode == null && upperLimitNode == null ? typesetIndefiniteIntegral()
+                                                            : typesetDefiniteIntegral();
+  }
+
+  protected String typesetDefiniteIntegral()
+  {
+    return String.format("%sint_%s^%s %s %smathd %s",
+                         "\\",
+                         lowerLimitNode.typeset(),
+                         upperLimitNode.typeset(),
+                         integrandNode.typeset(),
+                         "\\",
+                         integrationVariableNode.typeset());
+  }
+
+  protected String typesetIndefiniteIntegral()
+  {
+    return String.format("%sint %s %smathd %s",
+                         "\\",
+                         integrandNode.typeset(),
+                         "\\",
+                         integrationVariableNode.typeset());
   }
 
 }

@@ -381,7 +381,10 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return false;
   }
 
-  public abstract boolean isScalar();
+  public boolean isScalar()
+  {
+    return Compiler.isScalar(type());
+  }
 
   public boolean isSquareRoot()
   {
