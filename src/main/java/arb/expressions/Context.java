@@ -66,20 +66,19 @@ public class Context implements
     System.loadLibrary("arblib");
   }
 
-  public ExpressionClassLoader                classLoader                  =
-                                                          new ExpressionClassLoader(this);
+  public ExpressionClassLoader              classLoader            =
+                                                        new ExpressionClassLoader(this);
 
-  public Map<String, Dependency>              functionReferenceGraph       = new HashMap<String,
-                Dependency>();
+  public Map<String, Dependency>            functionReferenceGraph = new HashMap<>();
 
-  public final FunctionMappings               functions;
+  public final FunctionMappings             functions;
 
-  private final Logger                        log                          =
-                                                  LoggerFactory.getLogger(Context.class);
+  private final Logger                      log                    =
+                                                LoggerFactory.getLogger(Context.class);
 
-  public boolean                              saveClasses                  = false;
+  public boolean                            saveClasses            = false;
 
-  public final ObservableMap<String, Named>   variables;
+  public final ObservableMap<String, Named> variables;
 
   public ExpressionClassLoader getClassLoader()
   {
