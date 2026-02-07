@@ -229,7 +229,6 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
     return pow(exp,this);
   }
   
-
   @SuppressWarnings("unchecked")
   public Named set(String value)
   {
