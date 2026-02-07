@@ -388,11 +388,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     // Only create integrationVariableNode if not already created from lambda
     if (integrationVariableNode == null)
     {
-      dvar                    = reference.name;
-      integrationVariableNode = new VariableNode<>(expression,
-                                                   reference,
-                                                   expression.position,
-                                                   true);
+      assignIntegrationVariableNodeAndDvar(expression, reference, true);
     }
     else
     {
@@ -415,6 +411,18 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     {
       throw new CompilerException(String.format(SYNTAXMSG, lambdaVar, dvar));
     }
+  }
+
+  protected void
+            assignIntegrationVariableNodeAndDvar(Expression<D, C, F> expression,
+                                              VariableReference<D, C, F> reference,
+                                              boolean resolve)
+  {
+    dvar                    = reference.name;
+    integrationVariableNode = new VariableNode<>(expression,
+                                                 reference,
+                                                 expression.position,
+                                                 resolve);
   }
 
   protected void parseIntegralForm(Expression<D, C, F> expression)
@@ -481,14 +489,11 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   protected void parseIntegrationVariable(Expression<D, C, F> expression)
   {
     String parsedVar = expression.parseName();
+    var    ref       = new VariableReference<D, C, F>(parsedVar);
     // Only create integrationVariableNode if not already created from lambda
     if (integrationVariableNode == null)
     {
-      dvar                    = parsedVar;
-      integrationVariableNode = new VariableNode<>(expression,
-                                                   new VariableReference<>(dvar),
-                                                   expression.position,
-                                                   false);
+      assignIntegrationVariableNodeAndDvar(expression, ref, false);
     }
     else
     {
