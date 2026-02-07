@@ -6,7 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
@@ -18,7 +17,6 @@ import io.fair_acc.dataset.spi.DefaultDataSet;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -51,7 +49,7 @@ public final class FrameExporter extends
     Path outDir = Path.of("target", "frames");
     Files.createDirectories(outDir);
 
-    List<BufferedImage> frames = new ArrayList<>();
+    var frames = new ArrayList<BufferedImage>();
 
     // Build & snapshot each chart
     for (int i = 0; i <= STEPS; i++)
@@ -61,9 +59,7 @@ public final class FrameExporter extends
 
       // Force layout once so snapshot size is valid
       StackPane root  = new StackPane(chart);
-      Scene     scene = new Scene(root,
-                                  WIDTH,
-                                  HEIGHT);
+
       chart.setAnimated(false);
       root.applyCss();
       root.layout();
@@ -79,11 +75,11 @@ public final class FrameExporter extends
     }
 
     // Assemble the GIF once all frames exist
-    try ( FileImageOutputStream out = new FileImageOutputStream(new File("target/sequence.gif"));
-          GifSequenceWriter gif = new GifSequenceWriter(out,
-                                                        BufferedImage.TYPE_INT_ARGB,
-                                                        DELAY,
-                                                        true))
+    try ( var out = new FileImageOutputStream(new File("target/sequence.gif"));
+          var gif = new GifSequenceWriter(out,
+                                          BufferedImage.TYPE_INT_ARGB,
+                                          DELAY,
+                                          true))
     {
       for (BufferedImage f : frames)
         gif.write(f);
@@ -107,8 +103,8 @@ public final class FrameExporter extends
                                                   + new DecimalFormat("+#0.000;-#0.000").format(λ));
     for (double t = 0.05; t <= 4.0; t += 0.02)
     {
-      assert false : "...";        
-      //ds.add(t, Math.sin(λ * t) / (t * t));
+      assert false : "...";
+      // ds.add(t, Math.sin(λ * t) / (t * t));
     }
     chart.getDatasets().add(ds);
     return chart;
