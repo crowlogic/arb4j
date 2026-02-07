@@ -42,7 +42,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
   private Node<D, C, F>                      definiteIntegralNode;
 
-  String                                     dvar;
+  String                                     integrationVariableName;
 
   boolean                                    fullyEvaluated = false;
 
@@ -191,6 +191,20 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
                                             + this);
   }
 
+  protected void
+            assignIntegrationVariableNodeAndVariableOfIntegration(Expression<D, C, F> expression,
+                                                                  VariableReference<D,
+                                                                                C,
+                                                                                F> reference,
+                                                                  boolean resolve)
+  {
+    integrationVariableName = reference.name;
+    integrationVariableNode = new VariableNode<>(expression,
+                                                 reference,
+                                                 expression.position,
+                                                 resolve);
+  }
+
   protected void compileIndefiniteIntegral()
   {
     indefiniteIntegralExpression           = expression.cloneExpression();
@@ -216,22 +230,21 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     }
   }
 
-  private Expression<D, C, F> createEvalExpression()
+  private Expression<D, C, F> createEvaluationExpression()
   {
-    Expression<D, C, F> evalExpr = expression.cloneExpression();
+    Expression<D, C, F> evaluationExpression = expression.cloneExpression();
 
-    // Share context for outer variable access (i, p, etc.)
-    evalExpr.context                = expression.context;
-    // REMOVE THIS LINE: evalExpr.ascendentExpression = expression;
+    evaluationExpression.context                = expression.context;
 
     // Deep copy indeterminate stack by splicing each variable
-    evalExpr.indeterminateVariables = new java.util.Stack<>();
+    evaluationExpression.indeterminateVariables = new java.util.Stack<>();
     for (var v : expression.indeterminateVariables)
     {
-      evalExpr.indeterminateVariables.push(v.spliceInto(evalExpr).asVariable());
+      evaluationExpression.indeterminateVariables.push(v.spliceInto(evaluationExpression)
+                                                        .asVariable());
     }
 
-    return evalExpr;
+    return evaluationExpression;
   }
 
   @Override
@@ -311,8 +324,8 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     }
 
     // Create TWO independent contexts with deep-copied variable stacks
-    var    upperExpr           = createEvalExpression();
-    var    lowerExpr           = createEvalExpression();
+    var    upperExpr           = createEvaluationExpression();
+    var    lowerExpr           = createEvaluationExpression();
 
     var    upperEval           = indefiniteIntegralNode.spliceInto(upperExpr);
     var    lowerEval           = indefiniteIntegralNode.spliceInto(lowerExpr);
@@ -388,14 +401,16 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     // Only create integrationVariableNode if not already created from lambda
     if (integrationVariableNode == null)
     {
-      assignIntegrationVariableNodeAndDvar(expression, reference, true);
+      assignIntegrationVariableNodeAndVariableOfIntegration(expression, reference, true);
     }
     else
     {
       // Validate lambda var matches the variable after comma
-      if (!dvar.equals(reference.name))
+      if (!integrationVariableName.equals(reference.name))
       {
-        throw new CompilerException(String.format(SYNTAXMSG, dvar, reference.name));
+        throw new CompilerException(String.format(SYNTAXMSG,
+                                                  integrationVariableName,
+                                                  reference.name));
       }
     }
 
@@ -407,22 +422,10 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     expression.require(')');
 
     // Final validation: if lambdaVar was set, it must match dvar
-    if (lambdaVar != null && !lambdaVar.equals(dvar))
+    if (lambdaVar != null && !lambdaVar.equals(integrationVariableName))
     {
-      throw new CompilerException(String.format(SYNTAXMSG, lambdaVar, dvar));
+      throw new CompilerException(String.format(SYNTAXMSG, lambdaVar, integrationVariableName));
     }
-  }
-
-  protected void
-            assignIntegrationVariableNodeAndDvar(Expression<D, C, F> expression,
-                                              VariableReference<D, C, F> reference,
-                                              boolean resolve)
-  {
-    dvar                    = reference.name;
-    integrationVariableNode = new VariableNode<>(expression,
-                                                 reference,
-                                                 expression.position,
-                                                 resolve);
   }
 
   protected void parseIntegralForm(Expression<D, C, F> expression)
@@ -480,9 +483,9 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     }
 
     // Final validation: if lambdaVar was set, it must match dvar
-    if (lambdaVar != null && !lambdaVar.equals(dvar))
+    if (lambdaVar != null && !lambdaVar.equals(integrationVariableName))
     {
-      throw new CompilerException(String.format(SYNTAXMSG, lambdaVar, dvar));
+      throw new CompilerException(String.format(SYNTAXMSG, lambdaVar, integrationVariableName));
     }
   }
 
@@ -493,14 +496,14 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     // Only create integrationVariableNode if not already created from lambda
     if (integrationVariableNode == null)
     {
-      assignIntegrationVariableNodeAndDvar(expression, ref, false);
+      assignIntegrationVariableNodeAndVariableOfIntegration(expression, ref, false);
     }
     else
     {
       // Validate lambda var matches the variable after comma
-      if (!dvar.equals(parsedVar))
+      if (!integrationVariableName.equals(parsedVar))
       {
-        throw new CompilerException(String.format(SYNTAXMSG, dvar, parsedVar));
+        throw new CompilerException(String.format(SYNTAXMSG, integrationVariableName, parsedVar));
       }
     }
   }
@@ -513,7 +516,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
                                                                          expression.coDomainType),
                                                  expression.position,
                                                  true);
-    dvar                    = lambdaVar;
+    integrationVariableName = lambdaVar;
   }
 
   protected void parseLimitsOfIntegration(Expression<D, C, F> expression)
