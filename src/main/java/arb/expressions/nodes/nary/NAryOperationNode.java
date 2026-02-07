@@ -25,10 +25,14 @@ import arb.functions.Function;
  * {@link SumNode}, {@link ProductNode}, or other customized functions that
  * combine elements of a class over a coDomain of values.
  * <p>
- * The operand body is parsed inline by the parent expression's parser (via
- * expression.resolve()), not extracted as a string and compiled separately.
- * This eliminates the need for variable propagation between parent and child
- * expressions.
+ * The operand body is parsed by cloning the parent expression and calling
+ * resolve() on the clone. The clone has an independent variable scope (cleared
+ * indeterminate stack) while sharing the parent's field registry, context, and
+ * className. This eliminates string extraction and separate compilation while
+ * preserving the architectural property that the operand is a separate function
+ * with its own independent variable scope. The operand's AST nodes reference
+ * fields on the same generated class because the clone shares the parent's
+ * intermediate and referenced variable maps.
  * </p>
  *
  * @param <D> the domain type of the operands and the operation
@@ -53,6 +57,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   public Node<D, R, F>         operandNode;
 
+  public Expression<D, R, F>   operandExpression;
+
   public VariableNode<D, R, F> indexVariableNode;
 
   public String                functionClass;
@@ -73,11 +79,13 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   /**
    * PARSING constructor — called when the parser hits Σ, Π, sum(, etc. Parses the
-   * operand body inline via expression.resolve().
+   * operand body on a cloned expression with a fresh indeterminate scope, then
+   * syncs the parser position back to the parent for limit specification parsing.
    *
    * @param functionForm true if syntax is sum(...) / prod(...) with parens
    */
-  @SuppressWarnings("rawtypes")
+  @SuppressWarnings(
+  { "rawtypes", "unchecked" })
   public NAryOperationNode(Expression<D, R, F> expression,
                            String identity,
                            String prefix,
@@ -98,9 +106,10 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     assert functionClass != null : "functionClass=expression.className shan't be null";
     generatedType = expression.coDomainType;
 
-    // --- Inline parsing ---
+    // ── Step 1: Arrow detection (optional) ──────────────────────────────
+    // Save position. Try to parse "k➔". If found, record the index variable
+    // name. If not, backtrack. Identical to old behavior.
 
-    // 1. Try to parse "k➔" lambda prefix
     int  savedPos  = expression.position;
     char savedChar = expression.character;
 
@@ -111,37 +120,76 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       if (expression.nextCharacterIs('➔'))
       {
         indexVariableFieldName = maybeName;
-        // Register the index variable — always Integer (discrete loop counter),
-        // and resolve=false because resolveReference() would misclassify it
-        // as an indeterminate and overwrite the type with coDomainType.
-        indexVariableNode      = new VariableNode<>(expression,
-                                                    new VariableReference<>(indexVariableFieldName,
-                                                                            null,
-                                                                            Integer.class),
-                                                    expression.position,
-                                                    false);
       }
       else
       {
-        // No arrow — backtrack, let resolve() handle it
         expression.position  = savedPos;
         expression.character = savedChar;
       }
     }
 
-    // 2. Parse the operand body as an AST node
-    operandNode = expression.resolve();
+    // ── Step 2: Clone the parent expression ─────────────────────────────
+    // The operand is conceptually a separate function with its own independent
+    // variable (the loop index). Cloning produces a new Expression that shares
+    // the same character buffer, parser position, className, context,
+    // intermediateVariables, and referencedVariables — but has its OWN
+    // indeterminate stack (cleared) and independent variable (null).
+    //
+    // This means variables encountered during operand parsing resolve against
+    // a clean indeterminate scope. The loop index becomes the operand's
+    // indeterminate (non-arrow) or independent variable (arrow) naturally,
+    // without any post-parse fixup walk.
 
-    // Remove arrow-case index variable from referencedVariables after operand
-    // parsing. It was needed there temporarily so the operand body could resolve
-    // references to it. Its field is managed by prepareIndexVariable(); leaving
-    // it in referencedVariables causes declareVariables() to emit a duplicate.
+    operandExpression = expression.cloneExpression();
+    operandExpression.indeterminateVariables.clear();
+    operandExpression.independentVariable = null;
+
+    // ── Step 3: Set index as independent variable on clone (arrow case) ─
+    // If the arrow syntax was used (e.g. Σk➔expr), register k as the clone's
+    // independent variable with Integer type so the operand body resolves
+    // references to k as the input parameter.
+
+    if (indexVariableFieldName != null)
+    {
+      indexVariableNode = new VariableNode<>(operandExpression,
+                                             new VariableReference(indexVariableFieldName,
+                                                                   null,
+                                                                   Integer.class),
+                                             operandExpression.position,
+                                             false);
+      operandExpression.independentVariable = indexVariableNode;
+    }
+
+    // ── Step 4: Parse operand body on the clone ─────────────────────────
+    // resolve() on the clone uses the fresh indeterminate stack. For arrow
+    // syntax, k is already the independent variable. For non-arrow syntax
+    // (e.g. Σk{k=1…n}), the resolver encounters k as an unknown name,
+    // classifies it as the indeterminate following normal resolution rules,
+    // and pushes it onto the clone's stack. Either way, k is correctly
+    // scoped to the operand — no collision with the parent's indeterminates.
+
+    operandNode = operandExpression.resolve();
+
+    // ── Step 5: Sync parser position back to parent ─────────────────────
+    // The clone consumed characters from the shared buffer. Copy position
+    // back so the parent can continue parsing the limit specification.
+
+    expression.position  = operandExpression.position;
+    expression.character = operandExpression.character;
+
+    // Remove index variable from shared referencedVariables — it was
+    // registered there during resolve() but its field is managed exclusively
+    // by prepareIndexVariable(). Leaving it would cause declareVariables()
+    // to emit a duplicate field declaration.
     if (indexVariableFieldName != null)
     {
       expression.referencedVariables.remove(indexVariableFieldName);
     }
 
-    // 3. Parse limit specification
+    // ── Step 6: Parse limit specification on parent expression ──────────
+    // {k=a…b} or ,k=a…b) is parsed on the parent, whose variables (j, i, γ
+    // etc.) are in scope for the lower and upper limit expressions.
+
     if (functionForm)
     {
       expression.require(',');
@@ -150,26 +198,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     else
     {
       parseLimitSpecification();
-    }
-
-    // 4. For non-arrow syntax (e.g. ∏k{k=1…3}), the operand was parsed before
-    // we knew the index variable name. resolveReference() misclassified it
-    // as an indeterminate with type=coDomainType, which generates .identity()
-    // instead of loading the loop counter. Walk the operand tree and rebind
-    // any VariableNode matching the index variable to be a contextual Integer
-    // reference — prepareIndexVariable() declares the actual field.
-    if (indexVariableNode == null && indexVariableFieldName != null)
-    {
-      operandNode.accept(node ->
-      {
-        if (node instanceof VariableNode vn && vn.getName().equals(indexVariableFieldName))
-        {
-          vn.isIndeterminate = false;
-          vn.reference.type  = Integer.class;
-          expression.referencedVariables.remove(indexVariableFieldName);
-          expression.indeterminateVariables.remove(vn);
-        }
-      });
     }
   }
 
@@ -448,7 +476,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   }
 
   /**
-   * Unified limit parsing — handles both {k=a…b} and k=a…b forms.
+   * Unified limit parsing — handles both {k=a…b} and k=a…b forms. Does NOT add
+   * the index variable to context.variables; the index variable field is declared
+   * exclusively by {@link #prepareIndexVariable()}.
    */
   private void parseLimitSpecification()
   {
@@ -474,7 +504,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       indexVariableFieldName = specifiedName;
     }
 
-    expression.context.variables.put(indexVariableFieldName, null);
     expression.require('=');
     lowerLimit = expression.resolve();
     expression.require('…');
