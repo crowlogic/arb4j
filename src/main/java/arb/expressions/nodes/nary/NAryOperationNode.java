@@ -14,7 +14,8 @@ import arb.*;
 import arb.Integer;
 import arb.exceptions.CompilerException;
 import arb.expressions.*;
-import arb.expressions.nodes.*;
+import arb.expressions.nodes.Node;
+import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 
 /**
@@ -25,10 +26,10 @@ import arb.functions.Function;
  * combine elements of a class over a coDomain of values.
  * <p>
  * The operand body is parsed DIRECTLY on the parent expression (like
- * {@link IntegralNode}) rather than on a clone. The index variable is
- * registered as an indeterminate variable BEFORE parsing the operand, ensuring
- * proper variable resolution and that all intermediate variables are allocated
- * on the parent expression's field maps.
+ * {@link IntegralNode}) rather than on a clone. If an arrow is specified
+ * (e.g., k➔k), the index variable is created and pushed onto the indeterminate
+ * stack BEFORE parsing. If no arrow, the operand is parsed and the first
+ * variable encountered becomes the independent variable via normal resolution.
  * </p>
  *
  * @param <D> the domain type of the operands and the operation
@@ -73,8 +74,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   /**
    * PARSING constructor — called when the parser hits Σ, Π, sum(, etc. Parses the
-   * operand body DIRECTLY on the parent expression (no cloning). The index
-   * variable is set up as an indeterminate variable BEFORE parsing the operand.
+   * operand body DIRECTLY on the parent expression (no cloning).
    *
    * @param functionForm true if syntax is sum(...) / prod(...) with parens
    */
@@ -101,6 +101,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     generatedType = expression.coDomainType;
 
     // ── Step 1: Optional arrow "k➔" for explicit index variable ──────────
+    // Save state in case we need to backtrack
     int  savedPos  = expression.position;
     char savedChar = expression.character;
 
@@ -110,42 +111,43 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       expression.skipSpaces();
       if (expression.nextCharacterIs('➔'))
       {
+        // Arrow syntax: k➔k means k is the explicit index variable
         indexVariableFieldName = maybeName;
+        
+        // Create the index variable node and push it onto indeterminate stack
+        // This makes it the active independent variable during operand parsing
+        indexVariableNode = new VariableNode<>(expression,
+                                               new VariableReference(indexVariableFieldName,
+                                                                     null,
+                                                                     Integer.class),
+                                               expression.position,
+                                               true);
+        expression.indeterminateVariables.push(indexVariableNode);
       }
       else
       {
+        // Not an arrow, restore position
         expression.position  = savedPos;
         expression.character = savedChar;
       }
     }
 
-    // ── Step 2: Create and register index variable BEFORE parsing operand ─
-    // This mirrors IntegralNode's parseLambda() pattern: the index variable
-    // must exist as an indeterminate variable so that when the operand body
-    // is parsed and references the index variable, it resolves correctly.
-    //
-    // The index variable is pushed onto indeterminateVariables stack so it
-    // is the current scope's independent variable during operand parsing.
-    if (indexVariableFieldName != null)
-    {
-      indexVariableNode = new VariableNode<>(expression,
-                                             new VariableReference(indexVariableFieldName,
-                                                                   null,
-                                                                   Integer.class),
-                                             expression.position,
-                                             true);
-      // Push index variable onto indeterminate stack to make it the active
-      // independent variable during operand parsing
-      expression.indeterminateVariables.push(indexVariableNode);
-    }
+    // ── Step 2: Save and clear independent variable for operand scope ────
+    // The operand must have its own independent variable scope.
+    // If arrow was used, the index var is already on indeterminate stack.
+    // If no arrow, the first variable in the operand becomes independent.
+    VariableNode<D, R, F> savedIndependentVariable = expression.independentVariable;
+    expression.independentVariable = null;
 
     // ── Step 3: Parse operand body directly on parent expression ─────────
     operandNode = expression.resolve();
 
-    // ── Step 4: Pop index variable from indeterminate stack ──────────────
-    // Restore expression state after parsing the operand
+    // ── Step 4: Restore expression state after operand parsing ───────────
+    expression.independentVariable = savedIndependentVariable;
+    
     if (indexVariableFieldName != null)
     {
+      // Pop index variable from indeterminate stack
       var popped = expression.indeterminateVariables.pop();
       assert popped == indexVariableNode : "indeterminate stack corruption";
     }
@@ -452,6 +454,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
     if (indexVariableFieldName != null)
     {
+      // Arrow was used, validate it matches
       if (!indexVariableFieldName.equals(specifiedName))
       {
         throw new CompilerException(String.format("index variable in range spec '%s' != lambda variable '%s'",
@@ -461,7 +464,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
     else
     {
-      // No arrow was specified, so use the first variable in the limit spec
+      // No arrow was specified, get index variable name from limit spec
       indexVariableFieldName = specifiedName;
     }
 
