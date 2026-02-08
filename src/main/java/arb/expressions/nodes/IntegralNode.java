@@ -569,7 +569,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
     if (indefiniteIntegralNode == null)
     {
-      computeIndefiniteIntegral(false);
+      computeIndefiniteIntegralNode(false);
     }
 
     if (indefiniteIntegralNode instanceof IntegralNode)
