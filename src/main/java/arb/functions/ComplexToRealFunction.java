@@ -26,7 +26,6 @@ public interface ComplexToRealFunction extends
 
     final Real   realPartOft = t.re();
 
-    @SuppressWarnings("unchecked")
     RealFunction func        = new RealFunction()
                              {
 

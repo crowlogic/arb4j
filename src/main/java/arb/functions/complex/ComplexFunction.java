@@ -41,7 +41,6 @@ public interface ComplexFunction extends
 
 {
 
-  @SuppressWarnings("unchecked")
   public default ComplexFunction mul(ComplexFunction that)
   {
     return new ComplexFunction()
@@ -187,7 +186,6 @@ public interface ComplexFunction extends
    *         this{@link #integral()}{@link #differential()} == this ==
    *         this{@link #differential()}{@link #integral()}
    */
-  @SuppressWarnings("unchecked")
   public default ComplexFunction integral() throws NotIntegrableException
   {
     throw new UnsupportedOperationException(this + " of class " + getClass() + " needs to implement this method");

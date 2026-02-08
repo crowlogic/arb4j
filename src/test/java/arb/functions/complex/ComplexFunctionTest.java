@@ -1,5 +1,7 @@
 package arb.functions.complex;
 
+import java.io.File;
+
 import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -7,6 +9,7 @@ import arb.exceptions.CompilerException;
 import arb.expressions.Context;
 import arb.functions.integer.ComplexFunctionSequence;
 import arb.functions.real.RealNullaryFunction;
+import arb.utensils.Utensils;
 import junit.framework.TestCase;
 
 /**
@@ -50,9 +53,9 @@ public class ComplexFunctionTest extends
       var x       = F.evaluate(3, 128);
 
       var hmm     = x.eval(2.3, new Complex());
-      assertEquals("-1.2653528144498223e-16 - i*0.2591427090909935", hmm.toString());
-      assertEquals("0", hmm.re().toString());
-      assertEquals("-0.2591427090909935", hmm.im().toString());
+      assertEquals("-1.2653528144498223e-16 - i*0.2591427090909935",hmm.toString());
+      assertEquals("0", hmm.re().toString()); 
+      assertEquals("-0.2591427090909935", hmm.im().toString());      
     }
     catch (CompilerException ce)
     {

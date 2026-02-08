@@ -421,7 +421,6 @@ public class ComplexFraction implements
     return this;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public ComplexFraction setName(String name)
   {
