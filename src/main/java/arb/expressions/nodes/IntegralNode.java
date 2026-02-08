@@ -45,8 +45,9 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   @Override
   public Logger getLogger()
   {
-   return logger;
+    return logger;
   }
+
   public int                                 bits           = 128;
 
   private Node<D, C, F>                      definiteIntegralNode;
@@ -103,7 +104,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     super(expression);
     integrandNode           = functionEvaluationNode;
     integrationVariableNode = variable;
-    computeIndefiniteIntegral(true);
   }
 
   @Override
@@ -225,12 +225,15 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     expression.registerSubexpression(indefiniteIntegralExpression);
   }
 
-  private void computeIndefiniteIntegral(boolean compileIfNecessary)
+  private void computeIndefiniteIntegralNode(boolean compileIfNecessary)
   {
     assert integralFunction == null;
     indefiniteIntegralNode =
                            integrandNode.integrate(integrationVariableNode.asVariable()).simplify();
-
+    assert indefiniteIntegralNode != null : "indefiniteIntegralNode is null as returned from "
+                                            + integrandNode
+                                            + " of "
+                                            + integrandNode.getClass();
     // Only compile indefinite integral for indefinite integrals
     // Definite integrals use symbolic substitution only
     if (!isDefiniteIntegral() && compileIfNecessary)
@@ -333,9 +336,13 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     }
 
     // Create TWO independent contexts with deep-copied variable stacks
-    var    upperExpr           = createEvaluationExpression();
-    var    lowerExpr           = createEvaluationExpression();
-
+    var upperExpr = createEvaluationExpression();
+    var lowerExpr = createEvaluationExpression();
+    if (indefiniteIntegralNode == null)
+    {
+      computeIndefiniteIntegralNode(false);
+      compileIndefiniteIntegral();
+    }
     var    upperEval           = indefiniteIntegralNode.spliceInto(upperExpr);
     var    lowerEval           = indefiniteIntegralNode.spliceInto(lowerExpr);
 
@@ -560,13 +567,13 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
                                                 + this);
       }
     }
-    if (indefiniteIntegralNode == null)
-    {
-      computeIndefiniteIntegral(false);
-    }
 
     if (isDefiniteIntegral())
     {
+      if (indefiniteIntegralNode == null)
+      {
+        computeIndefiniteIntegralNode(false);
+      }
       return getDefiniteIntegralEvaluationNode();
     }
     else

@@ -84,7 +84,8 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     var factors = new java.util.ArrayList<Node<D, R, F>>();
     collectFactors(this, factors);
 
-    // Separate constant factors (don't depend on integration variable) from the rest
+    // Separate constant factors (don't depend on integration variable) from the
+    // rest
     var constantFactors = new java.util.ArrayList<Node<D, R, F>>();
     var variableFactors = new java.util.ArrayList<Node<D, R, F>>();
     for (var factor : factors)
@@ -102,8 +103,8 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     // If we have constant factors, pull them out: ∫ c·f(t) dt = c · ∫ f(t) dt
     if (!constantFactors.isEmpty() && !variableFactors.isEmpty())
     {
-      var constantProduct  = buildProduct(constantFactors);
-      var variableProduct  = buildProduct(variableFactors);
+      var constantProduct = buildProduct(constantFactors);
+      var variableProduct = buildProduct(variableFactors);
       return constantProduct.mul(variableProduct.integrate(variable)).simplify();
     }
 
@@ -111,14 +112,14 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     var ibpResult = tryIntegrationByPartsOnFactors(variableFactors, variable);
     if (ibpResult != null)
     {
-      return ibpResult.simplify();
+      Node<D, R, F> simplifiedIbpResult = ibpResult.simplify();
+      assert simplifiedIbpResult != null : "simplifiedIbpResult is null for " + this;
+      return simplifiedIbpResult;
     }
 
-    throw new arb.exceptions.CompilerException(
-      String.format("Cannot symbolically integrate product %s with respect to %s. "
-                    + "Factors: %s. No 2-partition yields a polynomial-like × "
-                    + "easily-integrable decomposition for integration by parts.",
-                    this, variable, variableFactors));
+    return new IntegralNode<D, R, F>(expression,
+                                     this,
+                                     variable);
   }
 
   /**
@@ -155,15 +156,14 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     return result;
   }
 
-
   /**
    * Tries all 2-partitions of the factor list for integration by parts.
    *
    * For each partition (S, S̄) of factors into two non-empty subsets, checks
    * whether one subset's product is polynomial-like and the other's is easily
    * integrable (or vice versa per LIATE), then applies the appropriate method:
-   * tabular for polynomial u (which differentiates to zero), single-step IBP
-   * for logarithmic u (which does not).
+   * tabular for polynomial u (which differentiates to zero), single-step IBP for
+   * logarithmic u (which does not).
    *
    * Uses bitmask enumeration over 2^n - 2 non-trivial partitions.
    *
@@ -171,9 +171,8 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
    * @param variable The integration variable
    * @return The integrated result, or null if no partition works
    */
-  private Node<D, R, F>
-          tryIntegrationByPartsOnFactors(java.util.List<Node<D, R, F>> factors,
-                                         VariableNode<D, R, F> variable)
+  private Node<D, R, F> tryIntegrationByPartsOnFactors(java.util.List<Node<D, R, F>> factors,
+                                                       VariableNode<D, R, F> variable)
   {
     int n = factors.size();
     if (n < 2)
@@ -230,14 +229,11 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
    * Applies a single step of integration by parts: ∫ u dv = u·v - ∫ v·u' dx
    *
    * Used for the LIATE logarithmic case where u does not differentiate to zero
-   * (so the tabular method is inapplicable), but a single IBP step reduces
-   * the problem to a simpler integral that other rules can handle.
+   * (so the tabular method is inapplicable), but a single IBP step reduces the
+   * problem to a simpler integral that other rules can handle.
    *
-   * For ∫ ln(x)·x dx:
-   *   u = ln(x), dv = x dx → v = x²/2, u' = 1/x
-   *   = ln(x)·(x²/2) - ∫ (x²/2)·(1/x) dx
-   *   = (x²/2)·ln(x) - ∫ x/2 dx
-   *   = (x²/2)·ln(x) - x²/4
+   * For ∫ ln(x)·x dx: u = ln(x), dv = x dx → v = x²/2, u' = 1/x = ln(x)·(x²/2) -
+   * ∫ (x²/2)·(1/x) dx = (x²/2)·ln(x) - ∫ x/2 dx = (x²/2)·ln(x) - x²/4
    *
    * @param u        The factor to differentiate (e.g., ln(x))
    * @param dv       The factor to integrate (e.g., x)
@@ -245,9 +241,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
    * @return The integrated result
    */
   private Node<D, R, F>
-          applySingleStepIBP(Node<D, R, F> u,
-                             Node<D, R, F> dv,
-                             VariableNode<D, R, F> variable)
+          applySingleStepIBP(Node<D, R, F> u, Node<D, R, F> dv, VariableNode<D, R, F> variable)
   {
     if (Expression.traceNodes)
     {
@@ -269,7 +263,9 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
 
     if (Expression.traceNodes)
     {
-      logger.debug("applySingleStepIBP: uvTerm={}, remainingIntegral={}", uvTerm, remainingIntegral);
+      logger.debug("applySingleStepIBP: uvTerm={}, remainingIntegral={}",
+                   uvTerm,
+                   remainingIntegral);
     }
 
     return uvTerm.sub(remainingIntegral).simplify();
@@ -299,7 +295,8 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       u  = left;
       dv = right;
     }
-    else if ((isRightPolynomialLike = right.isPolynomialLike(variable)) && left.isEasilyIntegrable())
+    else if ((isRightPolynomialLike = right.isPolynomialLike(variable))
+                  && left.isEasilyIntegrable())
     {
       u  = right;
       dv = left;
@@ -321,8 +318,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       return null;
     }
 
-    return useTabular ? applyTabularMethod(u, dv, variable)
-                      : applySingleStepIBP(u, dv, variable);
+    return useTabular ? applyTabularMethod(u, dv, variable) : applySingleStepIBP(u, dv, variable);
   }
 
   /**
@@ -662,9 +658,12 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
         System.err.printf("%s[%d]   fraction combine: (%s/%s)*(%s/%s) → %s/%s%n",
                           depthIndent(),
                           simplifyDepth,
-                          leftDiv.left, leftDiv.right,
-                          rightDiv.left, rightDiv.right,
-                          numerator, denominator);
+                          leftDiv.left,
+                          leftDiv.right,
+                          rightDiv.left,
+                          rightDiv.right,
+                          numerator,
+                          denominator);
       }
       simplifyDepth--;
       return numerator.div(denominator).simplify();
@@ -679,8 +678,11 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
         System.err.printf("%s[%d]   pull fraction right: %s*(%s/%s) → %s/%s%n",
                           depthIndent(),
                           simplifyDepth,
-                          left, rightDiv.left, rightDiv.right,
-                          numerator, rightDiv.right);
+                          left,
+                          rightDiv.left,
+                          rightDiv.right,
+                          numerator,
+                          rightDiv.right);
       }
       simplifyDepth--;
       return numerator.div(rightDiv.right).simplify();
@@ -695,8 +697,11 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
         System.err.printf("%s[%d]   pull fraction left: (%s/%s)*%s → %s/%s%n",
                           depthIndent(),
                           simplifyDepth,
-                          leftDiv.left, leftDiv.right, right,
-                          numerator, leftDiv.right);
+                          leftDiv.left,
+                          leftDiv.right,
+                          right,
+                          numerator,
+                          leftDiv.right);
       }
       simplifyDepth--;
       return numerator.div(leftDiv.right).simplify();
@@ -712,7 +717,6 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     simplifyDepth--;
     return this;
   }
-
 
   /**
    * Simplifies expressions of the form (x-a)^n * δ(x-a) = 0
