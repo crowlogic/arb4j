@@ -187,7 +187,7 @@ public Logger getLogger()
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    return expression.newLiteralConstant(equals(variable) ? 1 : 0);
+    return equals(variable) ? one() : zero();
   }
 
   @Override

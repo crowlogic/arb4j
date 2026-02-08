@@ -42,7 +42,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
 {
 
   public static boolean                                          traceSimplify   =
-                                                                               Boolean.valueOf(System.getProperty("arb4j.traceSimplify",
+                                                                               Boolean.valueOf(System.getProperty("arb4j.traceBinaryOperationSimplification",
                                                                                                                   "false"));
 
   public static int                                              simplifyDepth   = 0;

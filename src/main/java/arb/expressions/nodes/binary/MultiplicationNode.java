@@ -80,28 +80,149 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
   {
-    // Try integration by parts if one factor is polynomial-like
-    var ibpResult = tryIntegrationByParts(variable);
+    // Flatten the product tree into individual factors
+    var factors = new java.util.ArrayList<Node<D, R, F>>();
+    collectFactors(this, factors);
+
+    // Separate constant factors (don't depend on integration variable) from the rest
+    var constantFactors = new java.util.ArrayList<Node<D, R, F>>();
+    var variableFactors = new java.util.ArrayList<Node<D, R, F>>();
+    for (var factor : factors)
+    {
+      if (factor.isScalar() && !factor.dependsOn(variable))
+      {
+        constantFactors.add(factor);
+      }
+      else
+      {
+        variableFactors.add(factor);
+      }
+    }
+
+    // If we have constant factors, pull them out: ∫ c·f(t) dt = c · ∫ f(t) dt
+    if (!constantFactors.isEmpty() && !variableFactors.isEmpty())
+    {
+      var constantProduct  = buildProduct(constantFactors);
+      var variableProduct  = buildProduct(variableFactors);
+      return constantProduct.mul(variableProduct.integrate(variable)).simplify();
+    }
+
+    // All factors depend on the variable — try IBP on all 2-partitions
+    var ibpResult = tryIntegrationByPartsOnFactors(variableFactors, variable);
     if (ibpResult != null)
     {
       return ibpResult.simplify();
     }
 
-    // Handle constant × function: ∫ c·f(x) dx = c · ∫ f(x) dx
-    if (left.isScalar() && !left.dependsOn(variable))
+    throw new arb.exceptions.CompilerException(
+      String.format("Cannot symbolically integrate product %s with respect to %s. "
+                    + "Factors: %s. No 2-partition yields a polynomial-like × "
+                    + "easily-integrable decomposition for integration by parts.",
+                    this, variable, variableFactors));
+  }
+
+  /**
+   * Recursively flattens a multiplication tree into a list of non-multiplication
+   * leaf factors.
+   */
+  private static <D, R, F extends Function<? extends D, ? extends R>>
+          void
+          collectFactors(Node<D, R, F> node, java.util.List<Node<D, R, F>> factors)
+  {
+    if (node instanceof MultiplicationNode<D, R, F> mul)
     {
-      return left.mul(right.integrate(variable)).simplify();
+      collectFactors(mul.left, factors);
+      collectFactors(mul.right, factors);
     }
-    if (right.isScalar() && !right.dependsOn(variable))
+    else
     {
-      return right.mul(left.integrate(variable)).simplify();
+      factors.add(node);
+    }
+  }
+
+  /**
+   * Builds a single product node from a list of factors via left-association.
+   * Returns the single factor if the list has one element.
+   */
+  private Node<D, R, F> buildProduct(java.util.List<Node<D, R, F>> factors)
+  {
+    assert !factors.isEmpty();
+    var result = factors.get(0);
+    for (int i = 1; i < factors.size(); i++)
+    {
+      result = result.mul(factors.get(i));
+    }
+    return result;
+  }
+
+  /**
+   * Tries all 2-partitions of the factor list for integration by parts.
+   *
+   * For each partition (S, S̄) of factors into two non-empty subsets, checks
+   * whether one subset's product is polynomial-like and the other's is easily
+   * integrable (or vice versa per LIATE), then applies the tabular method.
+   *
+   * Uses bitmask enumeration over 2^n - 2 non-trivial partitions.
+   *
+   * @param factors  The flattened list of factors (all depend on the variable)
+   * @param variable The integration variable
+   * @return The integrated result, or null if no partition works
+   */
+  private Node<D, R, F>
+          tryIntegrationByPartsOnFactors(java.util.List<Node<D, R, F>> factors,
+                                         VariableNode<D, R, F> variable)
+  {
+    int n = factors.size();
+    if (n < 2)
+    {
+      return null;
     }
 
-    assert false : "this is wrong? " + this;
-    // Fallback: This is mathematically incorrect but preserves old behavior
-    // TODO: Implement more general integration strategies
-    return left.integrate(variable).mul(right.integrate(variable)).simplify();
+    // Enumerate all non-trivial 2-partitions via bitmask
+    int limit = (1 << n) - 1;
+    for (int mask = 1; mask < limit; mask++)
+    {
+      var groupA = new java.util.ArrayList<Node<D, R, F>>();
+      var groupB = new java.util.ArrayList<Node<D, R, F>>();
+      for (int i = 0; i < n; i++)
+      {
+        if ((mask & (1 << i)) != 0)
+        {
+          groupA.add(factors.get(i));
+        }
+        else
+        {
+          groupB.add(factors.get(i));
+        }
+      }
+
+      var productA = buildProduct(groupA);
+      var productB = buildProduct(groupB);
+
+      // Strategy 1: A is polynomial-like, B is easily integrable
+      if (productA.isPolynomialLike(variable) && productB.isEasilyIntegrable())
+      {
+        return applyTabularMethod(productA, productB, variable);
+      }
+      // Strategy 2: B is polynomial-like, A is easily integrable
+      if (productB.isPolynomialLike(variable) && productA.isEasilyIntegrable())
+      {
+        return applyTabularMethod(productB, productA, variable);
+      }
+      // Strategy 3: LIATE — A is logarithmic, B is polynomial-like
+      if (productA.isLogarithmic() && productB.isPolynomialLike(variable))
+      {
+        return applyTabularMethod(productA, productB, variable);
+      }
+      if (productB.isLogarithmic() && productA.isPolynomialLike(variable))
+      {
+        return applyTabularMethod(productB, productA, variable);
+      }
+    }
+
+    return null;
   }
+
 
   /**
    * Attempts integration by parts using the tabular method.
