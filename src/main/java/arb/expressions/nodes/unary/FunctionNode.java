@@ -230,6 +230,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return null;
   }
 
+  @SuppressWarnings("unchecked")
   public FunctionNode(String functionName, Node<D, R, F> argument, Expression<D, R, F> expression)
   {
     super(expression,

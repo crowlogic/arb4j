@@ -86,7 +86,6 @@ import javafx.stage.FileChooser.ExtensionFilter;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-@SuppressWarnings("unused")
 public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>> extends
                                VBox
 {
@@ -278,6 +277,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     return rootItem;
   }
 
+  @SuppressWarnings("unchecked")
   private void updateContextView()
   {
     expressor.updateContextTableView();

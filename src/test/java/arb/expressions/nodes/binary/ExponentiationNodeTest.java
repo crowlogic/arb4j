@@ -11,7 +11,6 @@ import junit.framework.TestCase;
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
  */
-@SuppressWarnings("unused")
 public class ExponentiationNodeTest extends
                                     TestCase
 {
