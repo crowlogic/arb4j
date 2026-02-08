@@ -219,9 +219,22 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     indefiniteIntegralExpression.className = "∫" + indefiniteIntegralExpression.className;
     indefiniteIntegralExpression.rootNode  =
                                           indefiniteIntegralNode.spliceInto(indefiniteIntegralExpression);
-    // indefiniteIntegralExpression.updateStringRepresentation();
     indefiniteIntegralExpression.compile();
     expression.registerSubexpression(indefiniteIntegralExpression);
+  }
+
+  private void ensureIndefiniteIntegralNode()
+  {
+    if (indefiniteIntegralNode == null)
+    {
+      computeIndefiniteIntegralNode(false);
+    }
+  }
+
+  private boolean isIrreducible()
+  {
+    ensureIndefiniteIntegralNode();
+    return indefiniteIntegralNode instanceof IntegralNode;
   }
 
   private void computeIndefiniteIntegralNode(boolean compileIfNecessary)
@@ -246,7 +259,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
     evaluationExpression.context                = expression.context;
 
-    // Deep copy indeterminate stack by splicing each variable
     evaluationExpression.indeterminateVariables = new java.util.Stack<>();
     for (var v : expression.indeterminateVariables)
     {
@@ -268,7 +280,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
            || (lowerLimitNode != null && lowerLimitNode.dependsOn(variable))
            || (upperLimitNode != null && upperLimitNode.dependsOn(variable));
   }
-
 
   @Override
   public Node<D, C, F> differentiate(VariableNode<D, C, F> variable)
@@ -300,14 +311,24 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     assert resultType != null : "resultType cannot be null";
     generatedType = resultType;
 
+    if (isIrreducible())
+    {
+      throw new CompilerException("cannot generate code for irreducible integral ∫"
+                                  + integrandNode
+                                  + "d"
+                                  + integrationVariableName
+                                  + (isDefiniteIntegral()
+                                       ? " over [" + lowerLimitNode + ", " + upperLimitNode + "]"
+                                       : "")
+                                  + ": no closed-form antiderivative exists");
+    }
+
     return isDefiniteIntegral() ? generateDefiniteIntegral(mv, resultType)
                                 : generateIndefiniteIntegral(mv, resultType);
-
   }
 
   protected MethodVisitor generateDefiniteIntegral(MethodVisitor mv, Class<?> resultType)
   {
-    // Use symbolic AST node for definite integral
     Node<D, C, F> evaluationNode = getDefiniteIntegralEvaluationNode();
     evaluationNode.isResult = isResult;
     evaluationNode.generate(mv, resultType);
@@ -320,6 +341,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
   protected MethodVisitor generateIndefiniteIntegral(MethodVisitor mv, Class<?> resultType)
   {
+    ensureIndefiniteIntegralNode();
     indefiniteIntegralNode.isResult = isResult;
     indefiniteIntegralNode.generate(mv, resultType);
     return mv;
@@ -331,7 +353,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     return List.of(integrandNode, indefiniteIntegralNode, integrationVariableNode);
   }
 
-  // IntegralNode.java - replace getDefiniteIntegralEvaluationNode()
   public Node<D, C, F> getDefiniteIntegralEvaluationNode()
   {
     if (definiteIntegralNode != null)
@@ -339,14 +360,26 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       return definiteIntegralNode;
     }
 
-    // Create TWO independent contexts with deep-copied variable stacks
+    ensureIndefiniteIntegralNode();
+
+    if (isIrreducible())
+    {
+      throw new CompilerException("cannot symbolically evaluate ∫"
+                                  + integrandNode
+                                  + "d"
+                                  + integrationVariableName
+                                  + " over ["
+                                  + lowerLimitNode
+                                  + ", "
+                                  + upperLimitNode
+                                  + "]: no closed-form antiderivative");
+    }
+
     var upperExpr = createEvaluationExpression();
     var lowerExpr = createEvaluationExpression();
-    if (indefiniteIntegralNode == null)
-    {
-      computeIndefiniteIntegralNode(false);
-      compileIndefiniteIntegral();
-    }
+
+    compileIndefiniteIntegral();
+
     var    upperEval           = indefiniteIntegralNode.spliceInto(upperExpr);
     var    lowerEval           = indefiniteIntegralNode.spliceInto(lowerExpr);
 
@@ -359,7 +392,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
     var    tempResult          = upperResult.sub(lowerResult).simplify();
 
-    // Splice final result back to original expression
     definiteIntegralNode = tempResult.spliceInto(expression);
     return definiteIntegralNode.simplify();
   }
@@ -391,7 +423,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
   protected void parseFunctionForm(Expression<D, C, F> expression)
   {
-    // functionForm: int(f(x), x=a..b) OR int(t➔f(t), t=a..b)
     String lambdaVar = null;
     int    savedPos  = expression.position;
     char   savedChar = expression.character;
@@ -403,9 +434,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       if (expression.nextCharacterIs('➔'))
       {
         lambdaVar = maybeName;
-        // Create the integration variable BEFORE parsing the body
-        // This mirrors Expression.parseLambda() behavior - the variable must be
-        // registered so that references in the body can find it
         parseLambda(expression, lambdaVar);
       }
       else
@@ -418,14 +446,12 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     integrandNode = expression.resolve();
     var reference = expression.require(',').parseVariableReference();
 
-    // Only create integrationVariableNode if not already created from lambda
     if (integrationVariableNode == null)
     {
       assignIntegrationVariableNodeAndVariableOfIntegration(expression, reference, true);
     }
     else
     {
-      // Validate lambda var matches the variable after comma
       if (!integrationVariableName.equals(reference.name))
       {
         throw new CompilerException(String.format(SYNTAXMSG,
@@ -441,7 +467,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     }
     expression.require(')');
 
-    // Final validation: if lambdaVar was set, it must match dvar
     if (lambdaVar != null && !lambdaVar.equals(integrationVariableName))
     {
       throw new CompilerException(String.format(SYNTAXMSG, lambdaVar, integrationVariableName));
@@ -450,7 +475,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
   protected void parseIntegralForm(Expression<D, C, F> expression)
   {
-    // Parse optional lambda: λ➔ or just start with integrand
     String lambdaVar = null;
     int    savedPos  = expression.position;
     char   savedChar = expression.character;
@@ -473,12 +497,8 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
     integrandNode = expression.resolve();
 
-    // After integrand, either ',' (new syntax) or 'd' (old syntax)
     if (expression.nextCharacterIs(','))
     {
-      // New syntax: int(t➔..., t=-1..1)
-      // nextCharacterIs already consumed ','
-
       if (expression.nextCharacterIs('d'))
       {
         parseLimitsOfIntegration(expression);
@@ -502,7 +522,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       throw new CompilerException("Expected ',' or 'd' after integrand in " + expression);
     }
 
-    // Final validation: if lambdaVar was set, it must match dvar
     if (lambdaVar != null && !lambdaVar.equals(integrationVariableName))
     {
       throw new CompilerException(String.format(SYNTAXMSG, lambdaVar, integrationVariableName));
@@ -513,14 +532,12 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   {
     String parsedVar = expression.parseName();
     var    ref       = new VariableReference<D, C, F>(parsedVar);
-    // Only create integrationVariableNode if not already created from lambda
     if (integrationVariableNode == null)
     {
       assignIntegrationVariableNodeAndVariableOfIntegration(expression, ref, false);
     }
     else
     {
-      // Validate lambda var matches the variable after comma
       if (!integrationVariableName.equals(parsedVar))
       {
         throw new CompilerException(String.format(SYNTAXMSG, integrationVariableName, parsedVar));
@@ -572,12 +589,9 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       }
     }
 
-    if (indefiniteIntegralNode == null)
-    {
-      computeIndefiniteIntegralNode(false);
-    }
+    ensureIndefiniteIntegralNode();
 
-    if (indefiniteIntegralNode instanceof IntegralNode)
+    if (isIrreducible())
     {
       return this;
     }
@@ -602,11 +616,12 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     var integral                   = new IntegralNode<E, S, G>(newExpression,
                                                                newIntegralNode,
                                                                newIntegrationVariableNode);
-    integral.integrandNode  = integrandNode.spliceInto(newExpression);
-    integral.upperLimitNode = upperLimitNode != null ? upperLimitNode.spliceInto(newExpression)
-                                                     : null;
-    integral.lowerLimitNode = lowerLimitNode != null ? lowerLimitNode.spliceInto(newExpression)
-                                                     : null;
+    integral.integrandNode           = integrandNode.spliceInto(newExpression);
+    integral.integrationVariableName = integrationVariableName;
+    integral.upperLimitNode          = upperLimitNode != null ? upperLimitNode.spliceInto(newExpression)
+                                                              : null;
+    integral.lowerLimitNode          = lowerLimitNode != null ? lowerLimitNode.spliceInto(newExpression)
+                                                              : null;
     return integral;
   }
 
@@ -656,13 +671,11 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   @Override
   public Class<?> type()
   {
-    // Definite integral evaluates to scalar: ∫_{a}^{b} f(x)dx → scalar value
     if (isDefiniteIntegral())
     {
       return Compiler.scalarType(expression.coDomainType);
     }
 
-    // Indefinite integral returns function: ∫ f(x)dx → function
     return expression.coDomainType;
   }
 

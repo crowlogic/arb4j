@@ -70,7 +70,7 @@ public class RealFunctionTest
     var einstance = e.instantiate();
     assertEquals("e:t➔θ(t)-t",
                  einstance.toString());
-    assertEquals("θ:t➔im(lnΓ(¼+((ⅈ*t)/2)))-((log(π)/2)*t)",
+    assertEquals("θ:t➔im(lnΓ(¼+((ⅈ*t)/2)))-((log(π)*t)/2)",
                  f.toString());
   }
 

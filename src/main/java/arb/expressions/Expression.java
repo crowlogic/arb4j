@@ -2882,7 +2882,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   }
 
-  protected String newIntermediateVariable(Class<?> type)
+  public String newIntermediateVariable(Class<?> type)
   {
     return newIntermediateVariable("v", type);
   }
