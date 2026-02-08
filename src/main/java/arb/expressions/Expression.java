@@ -3252,7 +3252,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                            expr.instantiate(),
                                            expr.domainType,
                                            expr.coDomainType,
-                                           expr.functionClass,
+                                           Function.class,
                                            true,
                                            expr,
                                            null);
