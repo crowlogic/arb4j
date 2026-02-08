@@ -2,7 +2,11 @@ package arb.expressions.nodes.binary;
 
 import static java.lang.String.format;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 import org.objectweb.asm.MethodVisitor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import arb.Integer;
 import arb.Quaternion;
@@ -21,6 +25,14 @@ import arb.functions.Function;
 public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                BinaryOperationNode<D, R, F>
 {
+  public static final Logger logger = LoggerFactory.getLogger(MultiplicationNode.class);
+
+  @Override
+  public Logger getLogger()
+  {
+    return logger;
+  }
+
   @Override
   public boolean isZero()
   {
@@ -45,9 +57,9 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    var a   = left.differentiate(variable).mul(right).simplify();
-    var b   = right.differentiate(variable).mul(left).simplify();
-    var sum = a.add(b).simplify();
+    var a   = left.differentiate(variable).mul(right);
+    var b   = right.differentiate(variable).mul(left);
+    var sum = a.add(b);
     return sum;
   }
 
@@ -69,11 +81,11 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
   {
     // Try integration by parts if one factor is polynomial-like
-//    var ibpResult = tryIntegrationByParts(variable);
-//    if (ibpResult != null)
-//    {
-//      return ibpResult.simplify();
-//    }
+    var ibpResult = tryIntegrationByParts(variable);
+    if (ibpResult != null)
+    {
+      return ibpResult.simplify();
+    }
 
     // Handle constant × function: ∫ c·f(x) dx = c · ∫ f(x) dx
     if (left.isScalar() && !left.dependsOn(variable))
@@ -85,6 +97,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       return right.mul(left.integrate(variable)).simplify();
     }
 
+    assert false : "this is wrong? " + this;
     // Fallback: This is mathematically incorrect but preserves old behavior
     // TODO: Implement more general integration strategies
     return left.integrate(variable).mul(right.integrate(variable)).simplify();
@@ -102,27 +115,30 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
    */
   private Node<D, R, F> tryIntegrationByParts(VariableNode<D, R, F> variable)
   {
-    Node<D, R, F> u  = null; // Will be differentiated
-    Node<D, R, F> dv = null; // Will be integrated
+    Node<D, R, F> u                    = null;                           // Will be differentiated
+    Node<D, R, F> dv                   = null;                           // Will be integrated
 
     // Strategy: polynomial × transcendental → u = polynomial, dv = transcendental
-    if (isPolynomialLike(left, variable) && isEasilyIntegrable(right))
+    boolean       isLeftPolynomialLike = left.isPolynomialLike(variable);
+    boolean       isRightPolynomialLike;
+
+    if (isLeftPolynomialLike && right.isEasilyIntegrable())
     {
       u  = left;
       dv = right;
     }
-    else if (isPolynomialLike(right, variable) && isEasilyIntegrable(left))
+    else if (isRightPolynomialLike = right.isPolynomialLike(variable) && left.isEasilyIntegrable())
     {
       u  = right;
       dv = left;
     }
     // Strategy: polynomial × log → u = log, dv = polynomial (LIATE rule)
-    else if (isLogarithmic(left) && isPolynomialLike(right, variable))
+    else if (left.isLogarithmic() && isRightPolynomialLike)
     {
       u  = left;
       dv = right;
     }
-    else if (isLogarithmic(right) && isPolynomialLike(left, variable))
+    else if (right.isLogarithmic() && isLeftPolynomialLike)
     {
       u  = right;
       dv = left;
@@ -153,26 +169,23 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   private Node<D, R, F>
           applyTabularMethod(Node<D, R, F> u, Node<D, R, F> dv, VariableNode<D, R, F> variable)
   {
-    Node<D, R, F> result        = zero();
+    final AtomicReference<Node<D, R, F>> result        = new AtomicReference<>(zero());
+    
     Node<D, R, F> currentU      = u;
     Node<D, R, F> currentV      = dv.integrate(variable);
-    int           sign          = 1;
+    int           sign[]        =
+    { 1 };
     int           maxIterations = 20;                    // Prevent infinite loops for
                                                          // non-polynomial u
-    int           iteration     = 0;
+    int           iteration[]   =
+    { 0 };
 
-    while (!currentU.isZero() && iteration < maxIterations)
+    while (!currentU.isZero() && iteration[0] < maxIterations)
     {
       // Add term: ±u·v
-      Node<D, R, F> term = currentU.mul(currentV).simplify();
-      if (sign > 0)
-      {
-        result = result.add(term);
-      }
-      else
-      {
-        result = result.sub(term);
-      }
+      var term = currentU.mul(currentV).simplify();
+
+      result.set( (sign[0] > 0) ? result.get().add(term) : result.get().sub(term) );
 
       // Prepare for next iteration
       currentU = currentU.differentiate(variable).simplify();
@@ -180,133 +193,14 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       {
         currentV = currentV.integrate(variable).simplify();
       }
-      sign = -sign;
-      iteration++;
+      sign[0] = -sign[0];
+      iteration[0]++;
     }
 
-    return result;
-  }
-
-  /**
-   * Checks if a node represents a polynomial-like expression in the given
-   * variable.
-   * 
-   * Polynomial-like includes: - Constants - The variable itself (x) - Powers of
-   * the variable (x^n for constant n) - Sums and products of the above
-   * 
-   * @param node     The node to check
-   * @param variable The variable
-   * @return true if the node is polynomial-like
-   */
-  private boolean isPolynomialLike(Node<D, R, F> node, VariableNode<D, R, F> variable)
-  {
-    // Constants are polynomial (degree 0)
-    if (node.isScalar() && !node.dependsOn(variable))
-    {
-      return true;
-    }
-
-    // The variable itself is polynomial (degree 1)
-    if (node.equals(variable))
-    {
-      return true;
-    }
-
-    // x^n where n is a non-negative integer constant
-    if (node instanceof ExponentiationNode<?, ?, ?>)
-    {
-      var exp = (ExponentiationNode<D, R, F>) node;
-      if (exp.left.equals(variable) && isNonNegativeIntegerConstant(exp.right))
-      {
-        return true;
-      }
-      // Also handle (polynomial)^n
-      if (isPolynomialLike(exp.left, variable) && isNonNegativeIntegerConstant(exp.right))
-      {
-        return true;
-      }
-    }
-
-    // Sum of polynomials is polynomial
-    if (node instanceof AdditionNode<?, ?, ?> || node instanceof SubtractionNode<?, ?, ?>)
-    {
-      var binary = (BinaryOperationNode<D, R, F>) node;
-      return isPolynomialLike(binary.left, variable) && isPolynomialLike(binary.right, variable);
-    }
-
-    // Product of polynomials is polynomial
-    if (node instanceof MultiplicationNode<?, ?, ?>)
-    {
-      var mult = (MultiplicationNode<D, R, F>) node;
-      return isPolynomialLike(mult.left, variable) && isPolynomialLike(mult.right, variable);
-    }
-
-    // Constant times polynomial
-    if (node instanceof MultiplicationNode<?, ?, ?>)
-    {
-      var mult = (MultiplicationNode<D, R, F>) node;
-      if ((mult.left.isScalar() && !mult.left.dependsOn(variable))
-                    || (mult.right.isScalar() && !mult.right.dependsOn(variable)))
-      {
-        return isPolynomialLike(mult.left, variable) || isPolynomialLike(mult.right, variable);
-      }
-    }
-
-    return false;
-  }
-
-  /**
-   * Checks if a node represents a non-negative integer constant.
-   */
-  private boolean isNonNegativeIntegerConstant(Node<D, R, F> node)
-  {
-    if (node instanceof LiteralConstantNode<?, ?, ?>)
-    {
-      var lit = (LiteralConstantNode<D, R, F>) node;
-      if (lit.isInt)
-      {
-        try
-        {
-          int val = java.lang.Integer.parseInt(lit.value);
-          return val >= 0;
-        }
-        catch (NumberFormatException e)
-        {
-          return false;
-        }
-      }
-    }
-    return false;
-  }
-
-  /**
-   * Checks if a node is easily integrable (exp, sin, cos). These functions have
-   * straightforward antiderivatives.
-   */
-  private boolean isEasilyIntegrable(Node<D, R, F> node)
-  {
-    if (node instanceof FunctionNode<?, ?, ?>)
-    {
-      var    func = (FunctionNode<D, R, F>) node;
-      String name = func.functionName;
-      return "exp".equals(name) || "sin".equals(name) || "cos".equals(name) || "sinh".equals(name)
-                    || "cosh".equals(name);
-    }
-    return false;
-  }
-
-  /**
-   * Checks if a node is a logarithmic function. Log requires special handling in
-   * integration by parts (LIATE rule).
-   */
-  private boolean isLogarithmic(Node<D, R, F> node)
-  {
-    if (node.isFunction())
-    {
-      var func = node.asFunction();
-      return "log".equals(func.functionName) || "ln".equals(func.functionName);
-    }
-    return false;
+    assert iteration[0] < maxIterations : String.format(" iterations = %d < maxIterations = %d",
+                                                        iteration[0],
+                                                        maxIterations);
+    return result.get();
   }
 
   /**

@@ -5,11 +5,14 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import arb.exceptions.CompilerException;
 import arb.expressions.*;
 import arb.expressions.nodes.binary.MultiplicationNode;
 import arb.expressions.nodes.binary.SubtractionNode;
+import arb.expressions.nodes.unary.FunctionalEvaluationNode;
 import arb.functions.Function;
 
 /**
@@ -37,7 +40,13 @@ import arb.functions.Function;
 public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> extends
                          Node<D, C, F>
 {
+  public static final Logger logger = LoggerFactory.getLogger(IntegralNode.class);
 
+  @Override
+  public Logger getLogger()
+  {
+   return logger;
+  }
   public int                                 bits           = 128;
 
   private Node<D, C, F>                      definiteIntegralNode;

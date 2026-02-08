@@ -64,7 +64,7 @@ public class PolynomialIntegrationByPartsTest
    */
   public void testIntegralXCubedTimesExp()
   {
-    var f = RealFunction.express("x→int(x³*exp(x),x)");
+    var f = RealFunction.express("x→int(x→x³*exp(x),x)");
     try (Real x = new Real("1.0", 128); Real result = new Real())
     {
       f.evaluate(x, 1, 128, result);

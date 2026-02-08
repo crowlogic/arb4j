@@ -6,11 +6,14 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import arb.Polynomial;
 import arb.exceptions.CompilerException;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
+import arb.expressions.nodes.binary.MultiplicationNode;
 import arb.expressions.nodes.unary.FunctionalEvaluationNode;
 import arb.functions.Function;
 
@@ -21,6 +24,13 @@ import arb.functions.Function;
 public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? extends C>> extends
                                    Node<D, C, F>
 {
+  public static final Logger logger = LoggerFactory.getLogger(PolynomialIntegralNode.class);
+
+  @Override
+  public Logger getLogger()
+  {
+   return logger;
+  }
   @Override
   public String toString()
   {

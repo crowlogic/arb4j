@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
+import arb.expressions.nodes.binary.AdditionNode;
 import arb.functions.Function;
 
 /**
@@ -20,6 +23,13 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
                                            extends
                                            Node<D, R, F>
 {
+  public static final Logger logger = LoggerFactory.getLogger(CaputoFractionalDerivativeNode.class);
+  
+  @Override
+  public Logger getLogger()
+  {
+    return logger;
+  }
 
   Node<D, R, F> power;
 

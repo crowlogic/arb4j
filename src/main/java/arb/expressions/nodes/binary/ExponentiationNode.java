@@ -1,12 +1,13 @@
 package arb.expressions.nodes.binary;
 
 import org.objectweb.asm.MethodVisitor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import arb.*;
 import arb.Integer;
 import arb.expressions.Expression;
-import arb.expressions.nodes.Node;
-import arb.expressions.nodes.VariableNode;
+import arb.expressions.nodes.*;
 import arb.functions.Function;
 
 /**
@@ -19,6 +20,27 @@ import arb.functions.Function;
 public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                BinaryOperationNode<D, R, F>
 {
+  public static final Logger logger = LoggerFactory.getLogger(ExponentiationNode.class);
+  
+  @Override
+  public Logger getLogger()
+  {
+    return logger;
+  }
+  @Override
+  public boolean isPolynomialLike(VariableNode<D, R, F> variable)
+  {
+    if (left.equals(variable) && right.isNonNegativeIntegerConstant())
+    {
+      return true;
+    }
+    // Also handle (polynomial)^n
+    if (left.isPolynomialLike(variable) && right.isNonNegativeIntegerConstant())
+    {
+      return true;
+    }
+    return false;
+  }
 
   public ExponentiationNode(Expression<D, R, F> expression,
                             Node<D, R, F> base,

@@ -64,7 +64,59 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                           Consumer<Consumer<Node<D, R, F>>>
 {
 
- 
+  /**
+   * Checks if a node is easily integrable (exp, sin, cos). These functions have
+   * straightforward antiderivatives.
+   */
+  public boolean isEasilyIntegrable()
+  {          
+    return false;
+  }
+  
+  /**
+   * Checks if a node represents a polynomial-like expression in the given
+   * variable.
+   * 
+   * Polynomial-like includes: - Constants - The variable itself (x) - Powers of
+   * the variable (x^n for constant n) - Sums and products of the above
+   * 
+   * @param node     The node to check
+   * @param variable The variable
+   * @return true if the node is polynomial-like
+   */
+  public boolean isPolynomialLike(VariableNode<D, R, F> variable)
+  {
+    // Constants are polynomial (degree 0)
+    if (isScalar() && !dependsOn(variable))
+    {
+      return true;
+    }
+
+    // The variable itself is polynomial (degree 1)
+    if (equals(variable))
+    {
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Checks if a node is a logarithmic function. Log requires special handling in
+   * integration by parts (LIATE rule).
+   */
+  public boolean isLogarithmic()
+  {
+    return false;
+  }
+  
+  /**
+   * Checks if a node represents a non-negative integer constant.
+   */
+  public boolean isNonNegativeIntegerConstant()
+  {
+    return false;
+  }
 
   public String toStringWithoutIndependentVariableSpecified()
   {
@@ -111,7 +163,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public boolean             isResult = false;
 
-  public final Logger        logger   = LoggerFactory.getLogger(getClass());
 
   public final int           position;
 
@@ -193,7 +244,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                   && Objects.equals(generatedType, other.generatedType)
                   && isResult == other.isResult && position == other.position;
   }
-  
+
   @Override
   public Object clone()
   {
@@ -237,7 +288,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   public Node<D, R, F> differentiate()
   {
     var variable = expression.independentVariable != null ? expression.independentVariable
-                                                            : expression.getIndeterminateVariable();
+                                                          : expression.getIndeterminateVariable();
     return differentiate(variable);
   }
 
@@ -265,8 +316,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                               divisor);
   }
 
-
-
   public FunctionNode<D, R, F> exp()
   {
     return apply("exp");
@@ -287,11 +336,13 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public abstract MethodVisitor generate(MethodVisitor mv, Class<?> resultType);
 
+  public abstract Logger getLogger();
+  
   public Class<?> generateCastTo(MethodVisitor methodVisitor, Class<?> type)
   {
     if (Expression.traceNodes)
     {
-      logger.debug(String.format("generateCastTo(type=%s) from generatedType=%s\n",
+      getLogger().debug(String.format("generateCastTo(type=%s) from generatedType=%s\n",
                                  type,
                                  generatedType));
     }
@@ -316,7 +367,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public Node<D, R, F> getSquareRootArg()
   {
-    assert false : "TODO: " +getClass() + " should implement this";
+    assert false : "TODO: " + getClass() + " should implement this";
     return null;
   }
 
@@ -355,8 +406,8 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   }
 
   /**
-   * Checks if this node represents the literal constant -1.
-   * Only LiteralConstantNode can return true; all other nodes return false.
+   * Checks if this node represents the literal constant -1. Only
+   * LiteralConstantNode can return true; all other nodes return false.
    * 
    * @return true if this is a literal -1, false otherwise
    */
@@ -366,8 +417,8 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   }
 
   /**
-   * Checks if this node represents the literal constant 1.
-   * Only LiteralConstantNode can return true; all other nodes return false.
+   * Checks if this node represents the literal constant 1. Only
+   * LiteralConstantNode can return true; all other nodes return false.
    * 
    * @return true if this is a literal 1, false otherwise
    */
@@ -407,8 +458,8 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   }
 
   /**
-   * Checks if this node represents the literal constant 0.
-   * Only LiteralConstantNode can return true; all other nodes return false.
+   * Checks if this node represents the literal constant 0. Only
+   * LiteralConstantNode can return true; all other nodes return false.
    * 
    * @return true if this is a literal 0, false otherwise
    */

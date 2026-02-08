@@ -10,6 +10,8 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import arb.*;
 import arb.Integer;
@@ -59,6 +61,8 @@ import arb.functions.integer.Sequence;
 public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R>> extends
                               Node<D, R, F>
 {
+  public static final Logger                      logger                         =
+                                                         LoggerFactory.getLogger(NAryOperationNode.class);
 
   public static String                            operandEvaluateMethodSignature =
                                                                                  Compiler.getMethodDescriptor(Object.class,
@@ -954,6 +958,12 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     return lowerLimit.dependsOn(variable) || upperLimit.dependsOn(variable) || (operand != null
                   && operand.rootNode.dependsOn(variable.spliceInto(operand).asVariable()));
+  }
+
+  @Override
+  public Logger getLogger()
+  {
+    return logger;
   }
 
 }

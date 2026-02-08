@@ -4,8 +4,11 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import arb.expressions.Expression;
+import arb.expressions.nodes.binary.AdditionNode;
 import arb.functions.Function;
 
 /**
@@ -18,6 +21,13 @@ import arb.functions.Function;
 public class CachedNode<D, C, F extends Function<? extends D, ? extends C>> extends
                        Node<D, C, F>
 {
+  public static final Logger logger = LoggerFactory.getLogger(CachedNode.class);
+  
+  @Override
+  public Logger getLogger()
+  {
+    return logger;
+  }
 
   private final Node<D, C, F> originalNode;
   private final String        cacheFieldName;

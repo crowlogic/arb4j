@@ -3,13 +3,13 @@ package arb.expressions.nodes.binary;
 import static java.lang.String.format;
 
 import org.objectweb.asm.MethodVisitor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import arb.Fraction;
 import arb.Integer;
 import arb.expressions.Expression;
-import arb.expressions.nodes.LiteralConstantNode;
-import arb.expressions.nodes.Node;
-import arb.expressions.nodes.VariableNode;
+import arb.expressions.nodes.*;
 import arb.expressions.nodes.unary.NegationNode;
 import arb.functions.Function;
 
@@ -21,7 +21,13 @@ import arb.functions.Function;
 public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>> extends
                             BinaryOperationNode<D, R, F>
 {
+  public static final Logger logger = LoggerFactory.getLogger(SubtractionNode.class);
 
+  @Override
+  public Logger getLogger()
+  {
+   return logger;
+  }
   public SubtractionNode(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)
   {
     super(expression,

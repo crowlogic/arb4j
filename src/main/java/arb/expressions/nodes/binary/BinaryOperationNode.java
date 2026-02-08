@@ -29,16 +29,16 @@ import arb.functions.real.RealFunction;
 /**
  * 
  * @param <D> domain
- * @param <C> codomain
+ * @param <R> codomain
  * @param <F> {@link Function}
  * 
  * 
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
-public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, ? extends C>>
+public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, ? extends R>>
                                          extends
-                                         Node<D, C, F>
+                                         Node<D, R, F>
 {
 
   public static boolean                                          traceSimplify   = Boolean.valueOf(System.getProperty("arb4j.traceSimplify","false"));
@@ -146,22 +146,22 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     return String.format("%-11s= ", label);
   }
 
-  public Node<D, C, F> left;
+  public Node<D, R, F> left;
 
   public Logger        log = LoggerFactory.getLogger(getClass());
 
   public String        operation;
 
-  public Node<D, C, F> right;
+  public Node<D, R, F> right;
 
   private String       symbol;
 
   Class<?>             type;
 
-  public BinaryOperationNode(Expression<D, C, F> expression,
-                             Node<D, C, F> left,
+  public BinaryOperationNode(Expression<D, R, F> expression,
+                             Node<D, R, F> left,
                              String operation,
-                             Node<D, C, F> right,
+                             Node<D, R, F> right,
                              String symbol)
   {
     super(expression);
@@ -173,7 +173,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   }
 
   @Override
-  public void accept(Consumer<Node<D, C, F>> t)
+  public void accept(Consumer<Node<D, R, F>> t)
   {
     if (left != null)
     {
@@ -187,7 +187,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   }
 
   @Override
-  public boolean dependsOn(VariableNode<D, C, F> variable)
+  public boolean dependsOn(VariableNode<D, R, F> variable)
   {
     return (left != null && left.dependsOn(variable))
                   || (right != null && right.dependsOn(variable));
@@ -274,8 +274,6 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
       expression.logVariables();
     }
 
-    var scalarType = Compiler.scalarType(type());
-
     if (!Compiler.canBeAssignedTo(type(), resultType))
     {
       File file = expression.saveToFile();
@@ -340,10 +338,10 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   }
 
   @Override
-  public List<Node<D, C, F>> getBranches()
+  public List<Node<D, R, F>> getBranches()
   {
 
-    var b = new ArrayList<Node<D, C, F>>();
+    var b = new ArrayList<Node<D, R, F>>();
     if (left != null)
     {
       b.add(left);
@@ -417,7 +415,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
 
 //Replace the simplify() method with:
   @Override
-  public Node<D, C, F> simplify()
+  public Node<D, R, F> simplify()
   {
     if (simplified)
     {
@@ -483,7 +481,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   }
 
   public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, C, F>
+         Node<D, R, F>
          substitute(String name, Node<E, S, G> transformation)
   {
     left  = left.substitute(name, transformation);
@@ -586,5 +584,11 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
 
     return (leftType.equals(a) && rightType.equals(b))
                   || (leftType.equals(b) && rightType.equals(a));
+  }
+  
+  @Override
+  public boolean isPolynomialLike(VariableNode<D, R, F> variable)
+  {
+    return left.isPolynomialLike(variable) && right.isPolynomialLike(variable);
   }
 }

@@ -1,37 +1,24 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.loadBitsParameterOntoStack;
-import static arb.expressions.Compiler.loadOrderParameter;
-import static arb.expressions.Compiler.loadThisOntoStack;
+import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import arb.Complex;
-import arb.Fraction;
+import arb.*;
 import arb.Integer;
-import arb.Polynomial;
-import arb.Real;
 import arb.exceptions.CompilerException;
-import arb.expressions.Compiler;
+import arb.expressions.*;
 import arb.expressions.Context;
-import arb.expressions.Expression;
-import arb.expressions.FunctionMapping;
-import arb.expressions.nodes.Node;
-import arb.expressions.nodes.PolynomialIntegralNode;
-import arb.expressions.nodes.VariableNode;
+import arb.expressions.nodes.*;
+import arb.expressions.nodes.binary.ExponentiationNode;
+import arb.expressions.nodes.nary.NAryOperationNode;
 import arb.functions.Function;
 import arb.utensils.Utensils;
 
@@ -66,6 +53,18 @@ import arb.utensils.Utensils;
 public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> extends
                          UnaryOperationNode<D, R, F>
 {
+  
+  @Override
+  public Logger getLogger()
+  {
+    return logger;
+  }
+  @Override
+  public boolean isLogarithmic()
+  {
+    return "log".equals(functionName) || "ln".equals(functionName);
+  }
+
   /**
    * The derivative order for this function node. 0 means the function itself, 1
    * means first derivative, 2 means second derivative, etc.
@@ -230,7 +229,22 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return null;
   }
 
-  @SuppressWarnings("unchecked")
+  @Override
+  public boolean isEasilyIntegrable()
+  {
+    switch(functionName)
+    {
+    case "exp":
+    case "sin":
+    case "cos":
+    case "sinh":
+    case "cosh":
+      return true;
+      default: 
+        return false;
+    }   
+  }
+
   public FunctionNode(String functionName, Node<D, R, F> argument, Expression<D, R, F> expression)
   {
     super(expression,
@@ -481,7 +495,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
   }
 
-  protected final Logger logger = LoggerFactory.getLogger(getClass());
+  protected static final Logger logger = LoggerFactory.getLogger(FunctionNode.class);
 
   private Node<D, R, F> integrateContextualFunction()
   {

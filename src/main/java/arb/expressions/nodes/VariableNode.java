@@ -18,6 +18,7 @@ import arb.Real;
 import arb.exceptions.CompilerException;
 import arb.exceptions.UndefinedReferenceException;
 import arb.expressions.*;
+import arb.expressions.nodes.binary.SubtractionNode;
 import arb.expressions.nodes.nary.ProductNode;
 import arb.functions.Function;
 
@@ -84,7 +85,13 @@ import arb.functions.Function;
  */
 public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> extends
                          Node<D, R, F>
+{  public static final Logger logger = LoggerFactory.getLogger(VariableNode.class);
+
+@Override
+public Logger getLogger()
 {
+ return logger;
+}
   Logger log = LoggerFactory.getLogger(getClass());
 
   @Override

@@ -2,12 +2,16 @@ package arb.expressions.nodes.binary;
 
 import static java.lang.String.format;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import arb.Fraction;
 import arb.Integer;
 import arb.expressions.Expression;
 import arb.expressions.nodes.LiteralConstantNode;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
+import arb.expressions.nodes.nary.NAryOperationNode;
 import arb.expressions.nodes.unary.NegationNode;
 import arb.functions.Function;
 
@@ -19,6 +23,7 @@ import arb.functions.Function;
 public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> extends
                          BinaryOperationNode<D, R, F>
 {
+
 
   public AdditionNode(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)
   {
@@ -70,7 +75,7 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> simplify()
   {
-    left = left.simplify();
+    left  = left.simplify();
     right = right.simplify();
 
     if (left.isZero())
@@ -139,6 +144,14 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   public String typeset()
   {
     return format("\\left(%s + %s\\right)", left.typeset(), right.typeset());
+  }
+
+  public static final Logger logger = LoggerFactory.getLogger(AdditionNode.class);
+  
+  @Override
+  public Logger getLogger()
+  {
+    return logger;
   }
 
 }

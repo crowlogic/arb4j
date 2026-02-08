@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import arb.expressions.Expression;
 import arb.expressions.VariableReference;
@@ -16,7 +18,13 @@ public class LimitNode<D, C, F extends Function<? extends D, ? extends C>>
                       extends
                       Node<D, C, F>
 {
+  public static final Logger logger = LoggerFactory.getLogger(LimitNode.class);
 
+  @Override
+  public Logger getLogger()
+  {
+   return logger;
+  }
   private Node<D, C, F>              operand;
   private VariableReference<D, C, F> limitingVariableReference;
   private VariableNode<D, C, F>      limitingVariableNode;

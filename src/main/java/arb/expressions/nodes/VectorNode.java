@@ -32,8 +32,13 @@ import arb.functions.Function;
 public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> extends
                        Node<D, R, F>
 {
+  public static final Logger logger = LoggerFactory.getLogger(VectorNode.class);
 
-  private final static Logger logger = LoggerFactory.getLogger(VectorNode.class);
+  @Override
+  public Logger getLogger()
+  {
+   return logger;
+  }
 
   @Override
   public int dim()

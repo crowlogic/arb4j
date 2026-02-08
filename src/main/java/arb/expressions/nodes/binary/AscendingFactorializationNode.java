@@ -1,5 +1,8 @@
 package arb.expressions.nodes.binary;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import arb.Field;
 import arb.Fraction;
 import arb.Real;
@@ -23,6 +26,13 @@ import arb.functions.Function;
 public class AscendingFactorializationNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                           BinaryOperationNode<D, R, F>
 {
+  public static final Logger logger = LoggerFactory.getLogger(AscendingFactorializationNode.class);
+  
+  @Override
+  public Logger getLogger()
+  {
+    return logger;
+  }
 
   /**
    * <pre>
