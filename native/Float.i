@@ -37,6 +37,12 @@ import arb.utensils.Utensils;
 
 %typemap(javacode) arf_struct %{
 
+  @SuppressWarnings("resource")
+  public static Float named(String name)
+  {
+    return new Float().setName(name);
+  }
+	
   static
   {
     System.loadLibrary("arblib");

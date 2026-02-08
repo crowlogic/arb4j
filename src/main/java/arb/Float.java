@@ -40,6 +40,13 @@ public class Float implements AutoCloseable,Comparable<Float>,NamedField<Float> 
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
+  @SuppressWarnings("resource")
+  public static Float named(String name)
+  {
+    return new Float().setName(name);
+  }
+
+  
   public Float(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;
