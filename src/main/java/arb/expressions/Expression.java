@@ -1342,15 +1342,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       generateDomainTypeMethod(classVisitor);
       generateCoDomainTypeMethod(classVisitor);
       generateEvaluationMethod(classVisitor);
-      if (!isNullaryFunction())
-      {
-        generateDerivativeMethod(classVisitor);
-        generateIntegralMethod(classVisitor);
-      }
-      else if (Polynomial.class.isAssignableFrom(coDomainType))
+      if (Polynomial.class.isAssignableFrom(coDomainType))
       {
         generatePolynomialMethod(classVisitor, "integral");
         generatePolynomialMethod(classVisitor, "derivative");
+      }
+      else if (!isNullaryFunction())
+      {
+        generateDerivativeMethod(classVisitor);
+        generateIntegralMethod(classVisitor);
       }
       declareFields(classVisitor);
       generateInitializationMethod(classVisitor);
@@ -1375,6 +1375,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     storeInstructions(classVisitor);
   }
+
 
   protected void generateAssertionThatOrderIsLessThanOrEqualTo1(MethodVisitor mv)
   {
