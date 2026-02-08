@@ -651,6 +651,57 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       }
     }
 
+    // Combine fractions: (a/b) * (c/d) → (a*c)/(b*d)
+    if (left instanceof DivisionNode<D, R, F> leftDiv
+                  && right instanceof DivisionNode<D, R, F> rightDiv)
+    {
+      var numerator   = leftDiv.left.mul(rightDiv.left).simplify();
+      var denominator = leftDiv.right.mul(rightDiv.right).simplify();
+      if (traceSimplify)
+      {
+        System.err.printf("%s[%d]   fraction combine: (%s/%s)*(%s/%s) → %s/%s%n",
+                          depthIndent(),
+                          simplifyDepth,
+                          leftDiv.left, leftDiv.right,
+                          rightDiv.left, rightDiv.right,
+                          numerator, denominator);
+      }
+      simplifyDepth--;
+      return numerator.div(denominator).simplify();
+    }
+
+    // Pull fraction right: expr * (a/b) → (expr*a)/b
+    if (right instanceof DivisionNode<D, R, F> rightDiv)
+    {
+      var numerator = left.mul(rightDiv.left).simplify();
+      if (traceSimplify)
+      {
+        System.err.printf("%s[%d]   pull fraction right: %s*(%s/%s) → %s/%s%n",
+                          depthIndent(),
+                          simplifyDepth,
+                          left, rightDiv.left, rightDiv.right,
+                          numerator, rightDiv.right);
+      }
+      simplifyDepth--;
+      return numerator.div(rightDiv.right).simplify();
+    }
+
+    // Pull fraction left: (a/b) * expr → (a*expr)/b
+    if (left instanceof DivisionNode<D, R, F> leftDiv)
+    {
+      var numerator = leftDiv.left.mul(right).simplify();
+      if (traceSimplify)
+      {
+        System.err.printf("%s[%d]   pull fraction left: (%s/%s)*%s → %s/%s%n",
+                          depthIndent(),
+                          simplifyDepth,
+                          leftDiv.left, leftDiv.right, right,
+                          numerator, leftDiv.right);
+      }
+      simplifyDepth--;
+      return numerator.div(leftDiv.right).simplify();
+    }
+
     if (traceSimplify)
     {
       System.err.printf("%s[%d] EXIT MultiplicationNode.simplify() returning this=%s%n",
@@ -661,6 +712,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     simplifyDepth--;
     return this;
   }
+
 
   /**
    * Simplifies expressions of the form (x-a)^n * δ(x-a) = 0
