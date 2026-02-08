@@ -320,7 +320,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
         expression.allocateIntermediateVariable(mv, reference.type);
       }
     }
-    assert !isScalar() : "should not be calling identity() on scalar type " + type();
     Compiler.invokeVirtualMethod(mv, reference.type, "identity", reference.type);
   }
 

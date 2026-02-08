@@ -9,7 +9,6 @@ import java.util.function.Consumer;
 
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
 
 import arb.*;
 import arb.Integer;
@@ -20,21 +19,23 @@ import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 
 /**
- * N-ary fold node (Σ sum / Π product). The operand is parsed inline on the
- * parent expression's character stream, then compiled as a separate
- * subexpression via clone/spliceInto/compile/registerSubexpression — the same
- * pattern as {@link arb.expressions.nodes.IntegralNode#compileIndefiniteIntegral()}.
- * The compiled operand is a {@code Function<Integer, R>} whose independent
- * variable is the index variable (e.g. k). At each loop iteration the parent
- * calls {@code operand.evaluate(k, order, bits, tmp)}.
+ * Represents a generic n-ary operation on {@link Node}s within
+ * {@link Expression}s. This abstract base class provides the common structure
+ * and behavior for operations that involve multiple operands, such as
+ * {@link SumNode}, {@link ProductNode}, or other customized functions that
+ * combine elements of a class over a coDomain of values.
  * <p>
- * Arrow syntax ({@code k➔expr}) is optional. If omitted, the first variable
- * encountered becomes the independent variable via normal resolution.
+ * The operand body is parsed DIRECTLY on the parent expression (like
+ * {@link IntegralNode}) rather than on a clone. If an arrow is specified
+ * (e.g., k➔k), the index variable is created and pushed onto the indeterminate
+ * stack BEFORE parsing. If no arrow, the operand is parsed and the first
+ * variable encountered becomes the independent variable via normal resolution.
  * </p>
  *
- * @param <D> domain type of the parent expression
- * @param <R> codomain type
- * @param <F> function type
+ * @param <D> the domain type of the operands and the operation
+ * @param <R> the coDomain type of the operation's result
+ * @param <F> the function interface this operation implements, extending the
+ *            {@link Function} interface with specific domain and coDomain types
  *
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
@@ -43,33 +44,42 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                               Node<D, R, F>
 {
 
-  public Label                                           beginLoop = new Label();
-  public Label                                           endLoop   = new Label();
+  public Label                 beginLoop = new Label();
 
-  public Node<D, R, F>                                   upperLimit;
-  public String                                          upperLimitFieldName;
+  public Label                 endLoop   = new Label();
 
-  public Node<D, R, F>                                   operandNode;
+  public Node<D, R, F>         upperLimit;
 
-  public Expression<Object, Object, Function<?, ?>>      operandExpression;
-  public FunctionMapping<Object, Object, Function<?, ?>> operandMapping;
+  public String                upperLimitFieldName;
 
-  public VariableNode<D, R, F>                           indexVariableNode;
-  public String                                          functionClass;
-  public final String                                    identity;
-  public String                                          indexVariableFieldName;
-  public final String                                    operation;
-  public final String                                    prefix;
-  public Node<D, R, F>                                   lowerLimit;
-  public final String                                    symbol;
-  public String                                          operandValueFieldName;
+  public Node<D, R, F>         operandNode;
+
+  public VariableNode<D, R, F> indexVariableNode;
+
+  public String                functionClass;
+
+  public final String          identity;
+
+  public String                indexVariableFieldName;
+
+  public final String          operation;
+
+  public final String          prefix;
+
+  public Node<D, R, F>         lowerLimit;
+
+  public final String          symbol;
+
+  public String                operandValueFieldName;
 
   /**
-   * PARSING constructor. Parses the operand inline on the parent's character
-   * stream. After parsing and limit resolution, compiles the operand as a
-   * separate subexpression via clone/spliceInto/compile/registerSubexpression.
+   * PARSING constructor — called when the parser hits Σ, Π, sum(, etc. Parses the
+   * operand body DIRECTLY on the parent expression (no cloning).
+   *
+   * @param functionForm true if syntax is sum(...) / prod(...) with parens
    */
-  @SuppressWarnings({ "rawtypes", "unchecked" })
+  @SuppressWarnings(
+  { "rawtypes", "unchecked" })
   public NAryOperationNode(Expression<D, R, F> expression,
                            String identity,
                            String prefix,
@@ -90,7 +100,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     assert functionClass != null : "functionClass=expression.className shan't be null";
     generatedType = expression.coDomainType;
 
-    // ── Step 1: Optional arrow "k➔" ──────────────────────────────────────
+    // ── Step 1: Optional arrow "k➔" for explicit index variable ──────────
+    // Save state in case we need to backtrack
     int  savedPos  = expression.position;
     char savedChar = expression.character;
 
@@ -100,63 +111,62 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       expression.skipSpaces();
       if (expression.nextCharacterIs('➔'))
       {
+        // Arrow syntax: k➔k means k is the explicit index variable
         indexVariableFieldName = maybeName;
+        
+        // Create the index variable node and push it onto indeterminate stack
+        // This makes it the active independent variable during operand parsing
+        indexVariableNode = new VariableNode<>(expression,
+                                               new VariableReference(indexVariableFieldName,
+                                                                     null,
+                                                                     Integer.class),
+                                               expression.position,
+                                               true);
+        expression.indeterminateVariables.push(indexVariableNode);
       }
       else
       {
+        // Not an arrow, restore position
         expression.position  = savedPos;
         expression.character = savedChar;
       }
     }
 
-    // ── Step 2: Clear independent variable so k resolves as independent ──
+    // ── Step 2: Save and clear independent variable for operand scope ────
+    // The operand must have its own independent variable scope.
+    // If arrow was used, the index var is already on indeterminate stack.
+    // If no arrow, the first variable in the operand becomes independent.
     VariableNode<D, R, F> savedIndependentVariable = expression.independentVariable;
     expression.independentVariable = null;
 
-    // ── Step 3: Parse operand body on parent's character stream ───────────
+    // ── Step 3: Parse operand body directly on parent expression ─────────
     operandNode = expression.resolve();
 
-    // ── Step 4: Restore parent's independent variable ────────────────────
+    // ── Step 4: Restore expression state after operand parsing ───────────
     expression.independentVariable = savedIndependentVariable;
+    
+    if (indexVariableFieldName != null)
+    {
+      // Pop index variable from indeterminate stack
+      var popped = expression.indeterminateVariables.pop();
+      assert popped == indexVariableNode : "indeterminate stack corruption";
+    }
 
-    // ── Step 5: Parse limit specification ─────────────────────────────────
+    // ── Step 5: Parse limit specification on parent ──────────────────────
     if (functionForm)
     {
       expression.require(',');
+      parseLimitSpecification();
     }
-    parseLimitSpecification();
-
-    // ── Step 6: Compile operand as a separate subexpression ──────────────
-    compileOperandSubexpression();
+    else
+    {
+      parseLimitSpecification();
+    }
   }
 
   /**
-   * Clone the parent expression, set domain to Integer, splice the operand
-   * AST into the clone, compile it, and register it as a subexpression on
-   * the parent. Exactly the same pattern as
-   * {@link arb.expressions.nodes.IntegralNode#compileIndefiniteIntegral()}.
-   */
-  @SuppressWarnings({ "rawtypes", "unchecked" })
-  private void compileOperandSubexpression()
-  {
-    String operandClassName = expression.className + "Σoperand"
-                              + System.identityHashCode(this);
-
-    operandExpression            = expression.cloneExpression();
-    operandExpression.className  = operandClassName;
-    operandExpression.domainType = Integer.class;
-    operandExpression.rootNode   = (Node) operandNode.spliceInto((Expression) operandExpression);
-
-    operandExpression.compile();
-
-    operandMapping = (FunctionMapping<Object, Object, Function<?, ?>>) (Object)
-        expression.registerSubexpression(operandExpression);
-
-    expression.referencedFunctions.put(operandClassName, operandMapping);
-  }
-
-  /**
-   * SPLICE constructor — pre-built nodes, no parsing.
+   * SPLICE constructor — called by spliceInto() with pre-built nodes. No parsing
+   * happens here at all.
    */
   public NAryOperationNode(Expression<D, R, F> expression,
                            String identity,
@@ -186,117 +196,35 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     generatedType = expression.coDomainType;
   }
 
-  // ═══════════════════════════════════════════════════════════════════════════
-  // PARSING
-  // ═══════════════════════════════════════════════════════════════════════════
-
-  private void parseLimitSpecification()
+  @Override
+  public int hashCode()
   {
-    boolean hasBrace      = expression.nextCharacterIs('{');
-    String  specifiedName = expression.parseName();
-
-    if (specifiedName == null || specifiedName.isEmpty())
-    {
-      expression.throwUnexpectedCharacterException("index variable name cannot be null or empty");
-    }
-
-    if (indexVariableFieldName != null)
-    {
-      if (!indexVariableFieldName.equals(specifiedName))
-      {
-        throw new CompilerException(
-            String.format("index variable in range spec '%s' != bound variable '%s'",
-                          specifiedName, indexVariableFieldName));
-      }
-    }
-    else
-    {
-      indexVariableFieldName = specifiedName;
-    }
-
-    expression.require('=');
-    lowerLimit = expression.resolve();
-    expression.require('…');
-    upperLimit = expression.resolve();
-
-    if (hasBrace)
-    {
-      expression.require('}');
-    }
+    return Objects.hash(upperLimit, operandNode, operation, lowerLimit);
   }
-
-  // ═══════════════════════════════════════════════════════════════════════════
-  // CODE GENERATION
-  // ═══════════════════════════════════════════════════════════════════════════
 
   @Override
-  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
+  public boolean equals(Object obj)
   {
-    resultType = assignTypes(resultType);
-    assignFieldNamesIfNecessary(resultType);
-    prepareIndexVariable();
-
-    initializeResultVariable(mv, resultType);
-    setIndexToTheLowerLimit(mv);
-    loadIndexVariable(mv);
-    generateUpperLimit(mv);
-
-    designateLabel(mv, beginLoop);
-    compareIndexToUpperLimit(mv);
-    jumpToIfGreaterThan(mv, endLoop);
-
-    generateInnerLoop(mv);
-
-    jumpTo(mv, beginLoop);
-    designateLabel(mv, endLoop);
-    assignResult(mv, resultType);
-    return mv;
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    NAryOperationNode<?, ?, ?> other = (NAryOperationNode<?, ?, ?>) obj;
+    return Objects.equals(upperLimit, other.upperLimit)
+                  && Objects.equals(operandNode, other.operandNode)
+                  && Objects.equals(operation, other.operation)
+                  && Objects.equals(lowerLimit, other.lowerLimit);
   }
 
-  /**
-   * <pre>
-   *   result.op(this.operandFunc.evaluate(this.k, order, bits, this.tmp), bits)
-   *   this.k.increment()
-   * </pre>
-   */
-  protected void generateInnerLoop(MethodVisitor mv)
+  @Override
+  public void accept(Consumer<Node<D, R, F>> t)
   {
-    loadIntermediateResultVariable(mv);
-
-    // this.operandFunc
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD,
-                      functionClass,
-                      operandExpression.className,
-                      operandMapping.functionFieldDescriptor());
-
-    // .evaluate(this.k, order, bits, this.operandValue)
-    loadIndexVariable(mv);
-    loadOrderParameter(mv);
-    loadBitsParameterOntoStack(mv);
-    getFieldFromThis(mv, functionClass, operandValueFieldName, generatedType);
-
-    operandMapping.call(mv, generatedType);
-    cast(mv, generatedType);
-
-    loadBitsParameterOntoStack(mv);
-    combine(mv, generatedType);
-    pop(mv);
-
-    incrementIndex(mv);
-  }
-
-  public Class<?> assignTypes(Class<?> resultType)
-  {
-    if (!expression.thisOrAnyAscendentExpressionHasIndeterminantVariable())
-    {
-      resultType = scalarType(resultType);
-    }
-    else if (RealPolynomial.class.equals(resultType) || ComplexPolynomial.class.equals(resultType))
-    {
-      generatedType = resultType;
-    }
-    return resultType;
+    operandNode.accept(t);
+    lowerLimit.accept(t);
+    upperLimit.accept(t);
+    t.accept(this);
   }
 
   protected void assignFieldNamesIfNecessary(Class<?> resultType)
@@ -325,73 +253,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
   }
 
-  protected void prepareIndexVariable()
-  {
-    var existing = expression.intermediateVariables.get(indexVariableFieldName);
-    if (existing != null)
-    {
-      if (!existing.type.equals(Integer.class))
-      {
-        throw new CompilerException(
-            String.format("index variable %s already declared as %s, not Integer",
-                          existing, existing.type));
-      }
-    }
-    else
-    {
-      expression.registerIntermediateVariable(indexVariableFieldName, Integer.class, true);
-    }
-  }
-
-  protected void generateUpperLimit(MethodVisitor mv)
-  {
-    upperLimitFieldName = expression.newIntermediateVariable("upperLimit", Integer.class);
-    upperLimit.generate(loadFieldFromThis(mv, upperLimitFieldName, Integer.class), Integer.class);
-    pop(invokeSetMethod(mv, Integer.class, Integer.class));
-  }
-
-  protected void setIndexToTheLowerLimit(MethodVisitor mv)
-  {
-    loadIndexVariable(mv);
-    lowerLimit.generate(mv, Integer.class);
-    invokeSetMethod(mv, Integer.class, Integer.class);
-    Compiler.pop(mv);
-  }
-
-  MethodVisitor loadIndexVariable(MethodVisitor mv)
-  {
-    assert fieldName != null : String.format("field is null %s\n", this);
-    assert indexVariableFieldName != null;
-    getFieldFromThis(mv, functionClass, indexVariableFieldName, Integer.class);
-    return mv;
-  }
-
-  protected void compareIndexToUpperLimit(MethodVisitor mv)
-  {
-    loadFieldFromThis(mv, upperLimitFieldName, Integer.class);
-    invokeMethod(mv, Integer.class, "compareTo",
-                 Compiler.getMethodDescriptor(int.class, Integer.class), false);
-  }
-
-  protected void incrementIndex(MethodVisitor mv)
-  {
-    invokeVirtualMethod(loadIndexVariable(mv), Integer.class, "increment", Integer.class);
-  }
-
-  public void initializeResult(MethodVisitor mv,
-                                Class<?> resultType,
-                                String identityFunction,
-                                String prefix)
-  {
-    fieldName = expression.allocateIntermediateVariable(mv, prefix, resultType);
-    pop(invokeVirtualMethod(mv, resultType, identityFunction, resultType));
-  }
-
-  public void initializeResultVariable(MethodVisitor mv, Class<?> resultType)
-  {
-    initializeResult(mv, resultType, identity, prefix);
-  }
-
   protected void assignResult(MethodVisitor mv, Class<?> resultType)
   {
     if (isResult)
@@ -408,28 +269,92 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
   }
 
-  public void loadIntermediateResultVariable(MethodVisitor mv)
+  protected void compareIndexToUpperLimit(MethodVisitor mv)
   {
-    if (Expression.traceNodes)
+    loadFieldFromThis(mv, upperLimitFieldName, Integer.class);
+    invokeMethod(mv,
+                 Integer.class,
+                 "compareTo",
+                 Compiler.getMethodDescriptor(int.class, Integer.class),
+                 false);
+  }
+
+  @Override
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
+  {
+    resultType = assignTypes(resultType);
+
+    assignFieldNamesIfNecessary(resultType);
+    prepareIndexVariable();
+
+    initializeResultVariable(mv, resultType);
+    setIndexToTheLowerLimit(mv);
+    loadIndexVariable(mv);
+    generateUpperLimit(mv);
+    designateLabel(mv, beginLoop);
+    compareIndexToUpperLimit(mv);
+    jumpToIfGreaterThan(mv, endLoop);
+    generateInnerLoop(mv);
+    jumpTo(mv, beginLoop);
+    designateLabel(mv, endLoop);
+    assignResult(mv, resultType);
+    return mv;
+  }
+
+  public Class<?> assignTypes(Class<?> resultType)
+  {
+    if (!expression.thisOrAnyAscendentExpressionHasIndeterminantVariable())
     {
-      logger.debug(String.format("%s.loadResultvariable( resultVariable= %s, generatedType=%s )\n",
-                                 getClass().getSimpleName(),
-                                 fieldName,
-                                 generatedType));
+      resultType = scalarType(resultType);
     }
-    getFieldFromThis(mv, expression.className, fieldName, generatedType);
+    else if (RealPolynomial.class.equals(resultType) || ComplexPolynomial.class.equals(resultType))
+    {
+      generatedType = resultType;
+    }
+    return resultType;
+  }
+
+  protected void generateUpperLimit(MethodVisitor mv)
+  {
+    upperLimitFieldName = expression.newIntermediateVariable("upperLimit", Integer.class);
+    upperLimit.generate(loadFieldFromThis(mv, upperLimitFieldName, Integer.class), Integer.class);
+    pop(invokeSetMethod(mv, Integer.class, Integer.class));
+  }
+
+  protected void generateInnerLoop(MethodVisitor mv)
+  {
+    loadIntermediateResultVariable(mv);
+    operandNode.generate(mv, generatedType);
+    Class<?> operandType = operandNode.getGeneratedType();
+    if (operandType == null)
+    {
+      operandType = generatedType;
+    }
+    cast(mv, operandType);
+    loadBitsParameterOntoStack(mv);
+    combine(mv, operandType);
+    pop(mv);
+    incrementIndex(mv);
   }
 
   public MethodVisitor combine(MethodVisitor mv, Class<?> operandType)
   {
-    return invokeMethod(mv, generatedType, operation,
-                        getMethodDescriptor(generatedType, operandType, int.class), false);
+    return invokeMethod(mv,
+                        generatedType,
+                        operation,
+                        getMethodDescriptor(generatedType, operandType, int.class),
+                        false);
   }
 
-  public Class<?> scalarType(Class<?> resultType)
+  @Override
+  public List<Node<D, R, F>> getBranches()
   {
-    return resultType = generatedType = (RealPolynomial.class.equals(resultType) ? Real.class
-                                                                                 : resultType);
+    return List.of(operandNode, lowerLimit, upperLimit);
+  }
+
+  IntermediateVariable<D, R, F> getExistingIndexVariable()
+  {
+    return expression.intermediateVariables.get(getIndexVariableFieldName());
   }
 
   void getField(MethodVisitor methodVisitor, String fieldName, String fieldTypeSignature)
@@ -447,28 +372,10 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     getFieldFromThis(methodVisitor, functionClass, fieldName, fieldTypeSignature);
   }
 
-  // ═══════════════════════════════════════════════════════════════════════════
-  // AST OPERATIONS
-  // ═══════════════════════════════════════════════════════════════════════════
-
   @Override
-  public void accept(Consumer<Node<D, R, F>> t)
+  public Class<?> getGeneratedType()
   {
-    operandNode.accept(t);
-    lowerLimit.accept(t);
-    upperLimit.accept(t);
-    t.accept(this);
-  }
-
-  @Override
-  public List<Node<D, R, F>> getBranches()
-  {
-    return List.of(operandNode, lowerLimit, upperLimit);
-  }
-
-  IntermediateVariable<D, R, F> getExistingIndexVariable()
-  {
-    return expression.intermediateVariables.get(indexVariableFieldName);
+    return generatedType;
   }
 
   public String getIndexVariableFieldName()
@@ -476,34 +383,23 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     return indexVariableFieldName;
   }
 
-  @Override
-  public Class<?> getGeneratedType()
+  protected void incrementIndex(MethodVisitor mv)
   {
-    return generatedType;
+    invokeVirtualMethod(loadIndexVariable(mv), Integer.class, "increment", Integer.class);
   }
 
-  @Override
-  public int hashCode()
+  public void initializeResult(MethodVisitor mv,
+                               Class<?> resultType,
+                               String identityFunction,
+                               String prefix)
   {
-    return Objects.hash(upperLimit, operandNode, operation, lowerLimit);
+    fieldName = expression.allocateIntermediateVariable(mv, prefix, resultType);
+    pop(invokeVirtualMethod(mv, resultType, identityFunction, resultType));
   }
 
-  @Override
-  public boolean equals(Object obj)
+  public void initializeResultVariable(MethodVisitor mv, Class<?> resultType)
   {
-    if (this == obj) return true;
-    if (obj == null || getClass() != obj.getClass()) return false;
-    NAryOperationNode<?, ?, ?> other = (NAryOperationNode<?, ?, ?>) obj;
-    return Objects.equals(upperLimit, other.upperLimit)
-        && Objects.equals(operandNode, other.operandNode)
-        && Objects.equals(operation, other.operation)
-        && Objects.equals(lowerLimit, other.lowerLimit);
-  }
-
-  @Override
-  public boolean isLeaf()
-  {
-    return false;
+    initializeResult(mv, resultType, identity, prefix);
   }
 
   @Override
@@ -514,19 +410,128 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
+  public boolean isLeaf()
   {
-    return new NAryOperationNode<>(newExpression, identity, prefix, operation, symbol,
-                                   operandNode.spliceInto(newExpression),
-                                   lowerLimit.spliceInto(newExpression),
-                                   upperLimit.spliceInto(newExpression),
-                                   indexVariableFieldName);
+    return false;
+  }
+
+  MethodVisitor loadIndexVariable(MethodVisitor methodVisitor)
+  {
+    assert fieldName != null : String.format("field is null %s\n", this);
+    assert indexVariableFieldName != null : String.format("indexVariableFieldName is null %s\n",
+                                                          this);
+    getField(methodVisitor, getIndexVariableFieldName(), Integer.class.descriptorString());
+
+    return methodVisitor;
+  }
+
+  public void loadIntermediateResultVariable(MethodVisitor methodVisitor)
+  {
+    if (Expression.traceNodes)
+    {
+      logger.debug(String.format("%s.loadResultvariable( resultVariable= %s, generatedType=%s )\n",
+                                 getClass().getSimpleName(),
+                                 fieldName,
+                                 generatedType));
+
+    }
+    getFieldFromThis(methodVisitor, expression.className, fieldName, generatedType);
+  }
+
+  /**
+   * Unified limit parsing — handles both {k=a…b} and k=a…b forms. The index
+   * variable field is declared by {@link #prepareIndexVariable()}.
+   */
+  private void parseLimitSpecification()
+  {
+    boolean hasBrace      = expression.nextCharacterIs('{');
+
+    String  specifiedName = expression.parseName();
+    if (specifiedName == null || specifiedName.isEmpty())
+    {
+      expression.throwUnexpectedCharacterException("index variable name cannot be null or empty");
+    }
+
+    if (indexVariableFieldName != null)
+    {
+      // Arrow was used, validate it matches
+      if (!indexVariableFieldName.equals(specifiedName))
+      {
+        throw new CompilerException(String.format("index variable in range spec '%s' != lambda variable '%s'",
+                                                  specifiedName,
+                                                  indexVariableFieldName));
+      }
+    }
+    else
+    {
+      // No arrow was specified, get index variable name from limit spec
+      indexVariableFieldName = specifiedName;
+    }
+
+    expression.require('=');
+    lowerLimit = expression.resolve();
+    expression.require('…');
+    upperLimit = expression.resolve();
+
+    if (hasBrace)
+    {
+      expression.require('}');
+    }
+  }
+
+  protected void prepareIndexVariable()
+  {
+    var existingIndexVariable = getExistingIndexVariable();
+
+    if (existingIndexVariable != null)
+    {
+      if (!existingIndexVariable.type.equals(Integer.class))
+      {
+        throw new CompilerException(String.format("index variable %s already declared and not of Integer type so it cant be used as the index",
+                                                  existingIndexVariable));
+      }
+    }
+    else
+    {
+      expression.registerIntermediateVariable(getIndexVariableFieldName(), Integer.class, true);
+    }
+  }
+
+  public Class<?> scalarType(Class<?> resultType)
+  {
+    return resultType = generatedType = (RealPolynomial.class.equals(resultType) ? Real.class
+                                                                                 : resultType);
+  }
+
+  protected void setIndexToTheLowerLimit(MethodVisitor methodVisitor)
+  {
+    loadIndexVariable(methodVisitor);
+    lowerLimit.generate(methodVisitor, Integer.class);
+    invokeSetMethod(methodVisitor, Integer.class, Integer.class);
+    Compiler.pop(methodVisitor);
   }
 
   @Override
   public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, R, F> substitute(String variable, Node<E, S, G> substitution)
+         Node<E, S, G>
+         spliceInto(Expression<E, S, G> newExpression)
+  {
+    var nAryOperationNode = new NAryOperationNode<E, S, G>(newExpression,
+                                                           identity,
+                                                           prefix,
+                                                           operation,
+                                                           symbol,
+                                                           operandNode.spliceInto(newExpression),
+                                                           lowerLimit.spliceInto(newExpression),
+                                                           upperLimit.spliceInto(newExpression),
+                                                           indexVariableFieldName);
+    return nAryOperationNode;
+  }
+
+  @Override
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<D, R, F>
+         substitute(String variable, Node<E, S, G> substitution)
   {
     operandNode = operandNode.substitute(variable, substitution);
     lowerLimit  = lowerLimit.substitute(variable, substitution);
@@ -537,12 +542,19 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   @Override
   public String toString()
   {
-    assert indexVariableFieldName != null
-        : String.format("indexVariableFieldName is null in toString() for %s%s{null=%s…%s}",
-                        symbol, operandNode, lowerLimit, upperLimit);
+    assert indexVariableFieldName
+                  != null : String.format("indexVariableFieldName is null in toString() for %s%s{null=%s…%s}",
+                                          symbol,
+                                          operandNode,
+                                          lowerLimit,
+                                          upperLimit);
 
-    return String.format("%s%s{%s=%s…%s}", symbol, operandNode,
-                         indexVariableFieldName, lowerLimit, upperLimit);
+    return String.format("%s%s{%s=%s…%s}",
+                         symbol,
+                         operandNode,
+                         indexVariableFieldName,
+                         lowerLimit,
+                         upperLimit);
   }
 
   @Override
@@ -556,8 +568,10 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     return String.format("\\%s_{%s = %s}^{%s}{%s}",
                          operation.replace("mul", "prod").replace("add", "sum"),
-                         indexVariableFieldName, lowerLimit.typeset(),
-                         upperLimit.typeset(), operandNode.typeset());
+                         indexVariableFieldName,
+                         lowerLimit.typeset(),
+                         upperLimit.typeset(),
+                         operandNode.typeset());
   }
 
   @Override
@@ -583,6 +597,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   public boolean dependsOn(VariableNode<D, R, F> variable)
   {
     return lowerLimit.dependsOn(variable) || upperLimit.dependsOn(variable)
-        || operandNode.dependsOn(variable);
+                  || operandNode.dependsOn(variable);
   }
 }
