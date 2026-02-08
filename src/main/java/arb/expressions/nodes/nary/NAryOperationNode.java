@@ -152,48 +152,28 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     String operandClassName = expression.className + "Σoperand"
                               + System.identityHashCode(this);
 
-    // ── Step 1: Clone and splice BEFORE mutating types ───────────────────
-    // The splice must run against the clone's inherited type context (same
-    // domain/codomain as the parent) so that variable resolution in
-    // VariableNode.spliceInto() sees compatible types and resolves correctly.
     operandExpression           = expression.cloneExpression();
     operandExpression.className = operandClassName;
 
-    // Deep-copy the indeterminate variable stack so spliced VariableNodes
-    // in the clone don't alias parent-owned nodes (mirrors
-    // IntegralNode.createEvaluationExpression())
-    operandExpression.indeterminateVariables = new java.util.Stack<>();
-    for (var v : expression.indeterminateVariables)
-    {
-      operandExpression.indeterminateVariables.push(v.spliceInto(operandExpression)
-                                                      .asVariable());
-    }
-
-    // Clear independent variable so the index variable (k) resolves as
-    // independent when spliceInto reconstructs VariableNodes with resolve=true
-    operandExpression.independentVariable = null;
-
-    // Splice the operand AST into the clone — this is where variable
-    // resolution happens, and it needs the clone's type context to still
-    // match the parent's
-    operandExpression.rootNode = operandNode.spliceInto(operandExpression);
-
-    // ── Step 2: NOW mutate types for Sequence<R> compilation ─────────────
-    // These changes affect how compile() generates the class bytecode, not
-    // how the AST nodes resolve their variables
     operandExpression.domainType                       = Integer.class;
     operandExpression.functionClass                    = (Class) Sequence.class;
-    operandExpression.genericFunctionClassInternalName =
-                                          org.objectweb.asm.Type.getInternalName(Sequence.class);
+    operandExpression.genericFunctionClassInternalName = Type.getInternalName(Sequence.class);
     operandExpression.functionClassDescriptor          = Sequence.class.descriptorString();
 
-    // ── Step 3: Compile and register ─────────────────────────────────────
+    // Clear the inherited independent variable so that when spliceInto
+    // reconstructs VariableNodes with resolve=true, the index variable (k)
+    // resolves as the independent variable of this operand expression
+    // (domain = Integer) rather than falling through to indeterminate.
+    operandExpression.independentVariable = null;
+
+    operandExpression.rootNode = operandNode.spliceInto(operandExpression);
+
     operandExpression.compile();
 
     operandMapping = expression.registerSubexpression(operandExpression);
+
     expression.referencedFunctions.put(operandClassName, operandMapping);
   }
-
 
 
   /**
