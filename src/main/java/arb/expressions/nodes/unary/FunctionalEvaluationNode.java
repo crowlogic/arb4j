@@ -59,8 +59,9 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
   }
 
   /**
-   * A polynomial function evaluated at the integration variable is polynomial-like
-   * in that variable, since P(t) = Σ aₖtᵏ is a polynomial in t by definition.
+   * A polynomial function evaluated at the integration variable is
+   * polynomial-like in that variable, since P(t) = Σ aₖtᵏ is a polynomial in t by
+   * definition.
    */
   @Override
   public boolean isPolynomialLike(VariableNode<D, C, F> variable)
@@ -158,7 +159,7 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
   @Override
   public Node<D, C, F> differentiate(VariableNode<D, C, F> variable)
   {
-    throw new UnsupportedOperationException("TODO");
+    return functionNode.differentiate(variable);
   }
 
   @Override
@@ -216,6 +217,6 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
   @Override
   public Logger getLogger()
   {
-   return logger;
+    return logger;
   }
 }
