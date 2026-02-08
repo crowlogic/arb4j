@@ -23,9 +23,13 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public boolean isZero()
   {
-    assert false : "ExponentiationNode.isZero has yet to be implemented as of Feb 7, 2026 7:35:28 PM";
-    return super.isZero();
+    // base^exponent is zero when base is zero and exponent is not zero
+    // 0^0 is undefined/indeterminate, not zero
+    // 0^n = 0 for n ≠ 0
+    // a^n ≠ 0 for a ≠ 0 (any non-zero base to any power is non-zero)
+    return left.isZero() && !right.isZero();
   }
+
 
   public static final Logger logger = LoggerFactory.getLogger(ExponentiationNode.class);
 
