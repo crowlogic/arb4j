@@ -293,19 +293,14 @@ public class Context implements
   {
     // assert function != null : "function cannot be null";
 
-    FunctionMapping<D, R, F> alreadyMappedFunctionMapping = functions.get(functionName);
-    FunctionMapping<D, R, F> mapping;
-    if (alreadyMappedFunctionMapping != null)
+    FunctionMapping<D, R, F> mapping = functions.get(functionName);
+    if (mapping != null)
     {
       if (!replace)
       {
         throw new IllegalArgumentException(format("a function named %s of class %s is already registered",
                                                   functionName,
                                                   function));
-      }
-      else
-      {
-        mapping = alreadyMappedFunctionMapping;
       }
     }
     else
@@ -390,12 +385,12 @@ public class Context implements
   {
     String                      filename  = null;
     HashMap<String, Dependency> sortedMap = new HashMap<>();
-    for (var dependency : sortedFunctions)
-    {
-      sortedMap.put(dependency.variableName,
-                    functionReferenceGraph.getOrDefault(dependency.variableName,
-                                                        new Dependency(dependency)));
-    }
+    sortedFunctions.forEach(dependency ->
+
+    sortedMap.put(dependency.variableName,
+                  functionReferenceGraph.getOrDefault(dependency.variableName,
+                                                      new Dependency(dependency))));
+
     if (sortedMap.values().stream().mapToInt(f -> f.dependencies.size()).sum() > 0)
     {
       filename = sortedMap.keySet().stream().collect(Collectors.joining()) + ".dot";
@@ -521,11 +516,11 @@ public class Context implements
     });
     variables.values().forEach(v ->
     {
-      if (v instanceof AutoCloseable)
+      if (v instanceof AutoCloseable autoClosable)
       {
         try
         {
-          ((AutoCloseable) v).close();
+          autoClosable.close();
         }
         catch (Exception e)
         {
