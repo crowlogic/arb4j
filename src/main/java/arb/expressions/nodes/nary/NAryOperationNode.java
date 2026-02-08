@@ -84,12 +84,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
  *
  * @param functionForm true if syntax is sum(...) / prod(...) with parens
  */
-/**
- * PARSING constructor — called when the parser hits Σ, Π, sum(, etc.
- * Parses the operand body inline via expression.resolve().
- *
- * @param functionForm true if syntax is sum(...) / prod(...) with parens
- */
 public NAryOperationNode(Expression<D, R, F> expression,
                          String identity,
                          String prefix,
@@ -123,15 +117,13 @@ public NAryOperationNode(Expression<D, R, F> expression,
     if (expression.nextCharacterIs('➔'))
     {
       indexVariableFieldName = maybeName;
-      // Register the index variable — always Integer (discrete loop counter),
-      // and resolve=false because resolveReference() would misclassify it
-      // as an indeterminate and overwrite the type with coDomainType
+      // Register the index variable — always Integer, it's a discrete loop counter
       indexVariableNode = new VariableNode<>(expression,
                                              new VariableReference<>(indexVariableFieldName,
                                                                      null,
                                                                      Integer.class),
                                              expression.position,
-                                             false);
+                                             true);
     }
     else
     {
