@@ -47,4 +47,10 @@ public class ProductNode<D, C, F extends Function<? extends D, ? extends C>> ext
     return null;
   }
 
+  @Override
+  public boolean isZero()
+  {
+    return operand != null && operand.rootNode.isZero();
+  }
+
 }
