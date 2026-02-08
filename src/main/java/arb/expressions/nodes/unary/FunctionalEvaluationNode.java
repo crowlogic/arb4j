@@ -72,6 +72,16 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
     return super.isPolynomialLike(variable);
   }
 
+  /**
+   * A function application f(x) cannot be determined to be zero at compile time;
+   * this is a runtime value.
+   */
+  @Override
+  public boolean isZero()
+  {
+    return false;
+  }
+
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
