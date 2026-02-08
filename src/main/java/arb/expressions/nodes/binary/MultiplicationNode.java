@@ -170,37 +170,105 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
           applyTabularMethod(Node<D, R, F> u, Node<D, R, F> dv, VariableNode<D, R, F> variable)
   {
     final AtomicReference<Node<D, R, F>> result        = new AtomicReference<>(zero());
-    
-    Node<D, R, F> currentU      = u;
-    Node<D, R, F> currentV      = dv.integrate(variable);
-    int           sign[]        =
-    { 1 };
-    int           maxIterations = 20;                    // Prevent infinite loops for
-                                                         // non-polynomial u
-    int           iteration[]   =
-    { 0 };
+    final AtomicReference<Node<D, R, F>> currentU      = new AtomicReference<>(u);
+    final AtomicReference<Node<D, R, F>> currentV      =
+                                                  new AtomicReference<>(dv.integrate(variable));
 
-    while (!currentU.isZero() && iteration[0] < maxIterations)
+    int                                  sign          = 1;
+    int                                  maxIterations = 20;
+    int                                  iteration     = 0;
+
+    if (Expression.traceNodes)
     {
-      // Add term: ±u·v
-      var term = currentU.mul(currentV).simplify();
-
-      result.set( (sign[0] > 0) ? result.get().add(term) : result.get().sub(term) );
-
-      // Prepare for next iteration
-      currentU = currentU.differentiate(variable).simplify();
-      if (!currentU.isZero())
-      {
-        currentV = currentV.integrate(variable).simplify();
-      }
-      sign[0] = -sign[0];
-      iteration[0]++;
+      logger.debug("applyTabularMethod: start u={}, dv={}, variable={}, maxIterations={}",
+                   u,
+                   dv,
+                   variable,
+                   maxIterations);
     }
 
-    assert iteration[0] < maxIterations : String.format(" iterations = %d < maxIterations = %d",
-                                                        iteration[0],
-                                                        maxIterations);
+    while (!currentU.get().isZero() && iteration < maxIterations)
+    {
+      sign = applyTabularIteration(result, currentU, currentV, variable, sign, iteration);
+      iteration++;
+    }
+
+    if (Expression.traceNodes)
+    {
+      logger.debug("applyTabularMethod: end iterations={}, currentU={}, currentV={}, result={}",
+                   iteration,
+                   currentU.get(),
+                   currentV.get(),
+                   result.get());
+    }
+
+    assert iteration < maxIterations : String.format(" iterations = %d < maxIterations = %d",
+                                                     iteration,
+                                                     maxIterations);
     return result.get();
+  }
+
+  /**
+   * Executes a single iteration of the tabular method for integration by parts.
+   * 
+   * Accumulates ±u·v into result, then advances u by differentiation and v by
+   * integration for the next iteration.
+   * 
+   * @param result    Accumulated result across iterations
+   * @param currentU  The current factor being differentiated
+   * @param currentV  The current factor being integrated
+   * @param variable  The variable of integration
+   * @param sign      +1 or -1 for alternating signs
+   * @param iteration Current iteration index (for logging)
+   * @return The negated sign for the next iteration
+   */
+  private int applyTabularIteration(AtomicReference<Node<D, R, F>> result,
+                                    AtomicReference<Node<D, R, F>> currentU,
+                                    AtomicReference<Node<D, R, F>> currentV,
+                                    VariableNode<D, R, F> variable,
+                                    int sign,
+                                    int iteration)
+  {
+    Node<D, R, F> u = currentU.get();
+    Node<D, R, F> v = currentV.get();
+
+    if (Expression.traceNodes)
+    {
+      logger.debug("  tabular[{}] enter sign={} u={} v={}", iteration, sign, u, v);
+    }
+
+    // Add term: ±u·v
+    var term = u.mul(v).simplify();
+    if (Expression.traceNodes)
+    {
+      logger.debug("  tabular[{}] term={}", iteration, term);
+    }
+
+    result.set((sign > 0) ? result.get().add(term) : result.get().sub(term));
+    if (Expression.traceNodes)
+    {
+      logger.debug("  tabular[{}] result={}", iteration, result.get());
+    }
+
+    // Prepare for next iteration
+    var nextU = u.differentiate(variable).simplify();
+    currentU.set(nextU);
+    if (Expression.traceNodes)
+    {
+      logger.debug("  tabular[{}] nextU={}", iteration, nextU);
+    }
+
+    if (!nextU.isZero())
+    {
+      var nextV = v.integrate(variable).simplify();
+      currentV.set(nextV);
+      if (Expression.traceNodes)
+      {
+        logger.debug("  tabular[{}] nextV={}", iteration, nextV);
+      }
+    }
+
+    return -sign;
   }
 
   /**
@@ -212,16 +280,9 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     return !expression.coDomainType.equals(Quaternion.class);
   }
 
-  private boolean simplified = false;
-
   @Override
   public Node<D, R, F> simplify()
   {
-    if (simplified)
-    {
-      return this;
-    }
-
     simplifyDepth++;
     if (traceSimplify)
     {
@@ -267,7 +328,6 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
         System.err.printf("%s[%d]   -> returning zero()%n", depthIndent(), simplifyDepth);
       }
       simplifyDepth--;
-      simplified = true;
       return zero();
     }
 
@@ -281,7 +341,6 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
                           right);
       }
       simplifyDepth--;
-      simplified = true;
       return right;
     }
     if (right.isOne())
@@ -294,7 +353,6 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
                           left);
       }
       simplifyDepth--;
-      simplified = true;
       return left;
     }
     if (left.isNegOne())
@@ -306,7 +364,6 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
                           simplifyDepth);
       }
       simplifyDepth--;
-      simplified = true;
       return right.neg();
     }
     if (right.isNegOne())
@@ -318,7 +375,6 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
                           simplifyDepth);
       }
       simplifyDepth--;
-      simplified = true;
       return left.neg();
     }
 
@@ -333,7 +389,6 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
                           deltaSimplification);
       }
       simplifyDepth--;
-      simplified = true;
       return deltaSimplification;
     }
 
@@ -356,7 +411,6 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
                               product);
           }
           simplifyDepth--;
-          simplified = true;
           return expression.newLiteralConstant(product.toString());
         }
       }
@@ -381,7 +435,6 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
                             rightPower);
         }
         simplifyDepth--;
-        simplified = true;
         return leftBase.pow(power).simplify();
       }
     }
@@ -404,7 +457,6 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
                             rightFunction.arg);
         }
         simplifyDepth--;
-        simplified = true;
         return exponentSum.exp().simplify();
       }
     }
@@ -422,7 +474,6 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
           System.err.printf("%s[%d]   sqrt*sqrt -> arg%n", depthIndent(), simplifyDepth);
         }
         simplifyDepth--;
-        simplified = true;
         return leftFunction2.arg;
       }
     }
@@ -435,7 +486,6 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
                         this);
     }
     simplifyDepth--;
-    simplified = true;
     return this;
   }
 

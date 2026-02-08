@@ -41,7 +41,9 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
                                          Node<D, R, F>
 {
 
-  public static boolean                                          traceSimplify   = Boolean.valueOf(System.getProperty("arb4j.traceSimplify","false"));
+  public static boolean                                          traceSimplify   =
+                                                                               Boolean.valueOf(System.getProperty("arb4j.traceSimplify",
+                                                                                                                  "false"));
 
   public static int                                              simplifyDepth   = 0;
 
@@ -410,18 +412,9 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     return "  ".repeat(simplifyDepth);
   }
 
-//Add this field with the other fields:
-  private boolean simplified = false;
-
-//Replace the simplify() method with:
   @Override
   public Node<D, R, F> simplify()
   {
-    if (simplified)
-    {
-      return this;
-    }
-
     simplifyDepth++;
     if (traceSimplify)
     {
@@ -471,7 +464,6 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     }
     simplifyDepth--;
 
-    simplified = true;
     return this;
   }
 
@@ -585,7 +577,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     return (leftType.equals(a) && rightType.equals(b))
                   || (leftType.equals(b) && rightType.equals(a));
   }
-  
+
   @Override
   public boolean isPolynomialLike(VariableNode<D, R, F> variable)
   {
