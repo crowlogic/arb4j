@@ -25,26 +25,14 @@ import arb.functions.Function;
  * {@link SumNode}, {@link ProductNode}, or other customized functions that
  * combine elements of a class over a coDomain of values.
  * <p>
- * The operand body is parsed by cloning the parent expression via
- * {@link Expression#cloneExpression()} and calling resolve() on the clone. The
- * clone shares the parent's {@link Context} (including its intermediate variable
- * name counters), className, expression character buffer, and
- * ascendentExpression reference. The clone does NOT share the parent's
- * intermediateVariables, referencedVariables, referencedFunctions, or
- * literalConstants maps — those are fresh empty collections on the clone. The
- * clone does get a deep-copied indeterminateVariables stack (which is then
- * cleared) and a nulled-out independentVariable, giving the operand its own
- * independent variable scope.
- * </p>
- * <p>
- * This is sufficient because the operand's AST nodes reference the clone as
- * their expression, and field allocation during code generation
- * (e.g. index variables, result accumulators, upper limit fields) is performed
- * explicitly on the parent expression by this class's generate() method. The
- * shared {@link Context#intermediateVariableCounters} ensure unique field names
- * across parent and clone without requiring shared maps. If a caller needs the
- * clone to share additional registries with the parent, they can alias those
- * maps after calling cloneExpression().
+ * The operand body is parsed by cloning the parent expression and calling
+ * resolve() on the clone. The clone has an independent variable scope (cleared
+ * indeterminate stack) while sharing the parent's field registry, context, and
+ * className. This eliminates string extraction and separate compilation while
+ * preserving the architectural property that the operand is a separate function
+ * with its own independent variable scope. The operand's AST nodes reference
+ * fields on the same generated class because the clone shares the parent's
+ * intermediate and referenced variable maps.
  * </p>
  *
  * @param <D> the domain type of the operands and the operation
@@ -143,11 +131,14 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     // ── Step 2: Clone the parent expression ─────────────────────────────
     // The operand is conceptually a separate function with its own independent
     // variable (the loop index). Cloning produces a new Expression that shares
-    // the same character buffer, parser position, className, and context — but
-    // has fresh empty collection fields (intermediateVariables,
-    // referencedVariables, etc.) and its OWN indeterminate stack (cleared) and
-    // independent variable (null). The shared Context ensures unique field
-    // name counters across parent and clone.
+    // the same character buffer, parser position, className, context,
+    // intermediateVariables, and referencedVariables — but has its OWN
+    // indeterminate stack (cleared) and independent variable (null).
+    //
+    // This means variables encountered during operand parsing resolve against
+    // a clean indeterminate scope. The loop index becomes the operand's
+    // indeterminate (non-arrow) or independent variable (arrow) naturally,
+    // without any post-parse fixup walk.
 
     operandExpression = expression.cloneExpression();
     operandExpression.indeterminateVariables.clear();
