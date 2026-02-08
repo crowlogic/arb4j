@@ -167,7 +167,8 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     }
     if (right.isOne())
     {
-      return left;
+      return left.simplify();
+                    
     }
     if (right.isZero())
     {
