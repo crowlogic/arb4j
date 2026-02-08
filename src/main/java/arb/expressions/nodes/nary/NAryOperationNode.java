@@ -10,6 +10,7 @@ import java.util.function.Consumer;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 import arb.*;
 import arb.Integer;
@@ -18,15 +19,16 @@ import arb.expressions.*;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
+import arb.functions.integer.Sequence;
 
 /**
  * N-ary fold node (Σ sum / Π product). The operand is parsed inline on the
  * parent expression's character stream, then compiled as a separate
  * subexpression via clone/spliceInto/compile/registerSubexpression — the same
  * pattern as {@link arb.expressions.nodes.IntegralNode#compileIndefiniteIntegral()}.
- * The compiled operand is a {@code Function<Integer, R>} whose independent
- * variable is the index variable (e.g. k). At each loop iteration the parent
- * calls {@code operand.evaluate(k, order, bits, tmp)}.
+ * The compiled operand is a {@code Sequence<R>} (i.e. {@code Function<Integer, R>})
+ * whose independent variable is the index variable (e.g. k). At each loop
+ * iteration the parent calls {@code operand.evaluate(k, order, bits, tmp)}.
  * <p>
  * Arrow syntax ({@code k➔expr}) is optional. If omitted, the first variable
  * encountered becomes the independent variable via normal resolution.
@@ -43,33 +45,33 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                               Node<D, R, F>
 {
 
-  public Label                                           beginLoop = new Label();
-  public Label                                           endLoop   = new Label();
+  public Label                                                         beginLoop = new Label();
+  public Label                                                         endLoop   = new Label();
 
-  public Node<D, R, F>                                   upperLimit;
-  public String                                          upperLimitFieldName;
+  public Node<D, R, F>                                                 upperLimit;
+  public String                                                        upperLimitFieldName;
 
-  public Node<D, R, F>                                   operandNode;
+  public Node<D, R, F>                                                 operandNode;
 
-  public Expression<Object, Object, Function<?, ?>>      operandExpression;
-  public FunctionMapping<Object, Object, Function<?, ?>> operandMapping;
+  public Expression<Integer, R, Sequence<? extends R>>                 operandExpression;
+  public FunctionMapping<Integer, R, Sequence<? extends R>>            operandMapping;
 
-  public VariableNode<D, R, F>                           indexVariableNode;
-  public String                                          functionClass;
-  public final String                                    identity;
-  public String                                          indexVariableFieldName;
-  public final String                                    operation;
-  public final String                                    prefix;
-  public Node<D, R, F>                                   lowerLimit;
-  public final String                                    symbol;
-  public String                                          operandValueFieldName;
+  public VariableNode<D, R, F>                                         indexVariableNode;
+  public String                                                        functionClass;
+  public final String                                                  identity;
+  public String                                                        indexVariableFieldName;
+  public final String                                                  operation;
+  public final String                                                  prefix;
+  public Node<D, R, F>                                                 lowerLimit;
+  public final String                                                  symbol;
+  public String                                                        operandValueFieldName;
 
   /**
    * PARSING constructor. Parses the operand inline on the parent's character
    * stream. After parsing and limit resolution, compiles the operand as a
    * separate subexpression via clone/spliceInto/compile/registerSubexpression.
    */
-  @SuppressWarnings({ "rawtypes", "unchecked" })
+  @SuppressWarnings("unchecked")
   public NAryOperationNode(Expression<D, R, F> expression,
                            String identity,
                            String prefix,
@@ -131,26 +133,40 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   }
 
   /**
-   * Clone the parent expression, set domain to Integer, splice the operand
-   * AST into the clone, compile it, and register it as a subexpression on
-   * the parent. Exactly the same pattern as
-   * {@link arb.expressions.nodes.IntegralNode#compileIndefiniteIntegral()}.
+   * Clone the parent expression, configure it as a {@link Sequence}
+   * ({@code Function<Integer, R>} where {@code R} is the parent's codomain),
+   * splice the operand AST into the clone, compile it, and register it as a
+   * subexpression on the parent.
+   * <p>
+   * The clone inherits the parent's {@code functionClass} and its derived
+   * fields ({@code genericFunctionClassInternalName},
+   * {@code functionClassDescriptor}). When the parent is a nullary function
+   * (e.g. {@code RealNullaryFunction} with domain {@code Object.class}),
+   * those fields are wrong for an operand whose domain is
+   * {@code Integer.class}. All four fields must be set consistently so that
+   * the generated bytecode implements the correct {@link Sequence} interface.
    */
-  @SuppressWarnings({ "rawtypes", "unchecked" })
+  @SuppressWarnings("unchecked")
   private void compileOperandSubexpression()
   {
     String operandClassName = expression.className + "Σoperand"
                               + System.identityHashCode(this);
 
-    operandExpression            = expression.cloneExpression();
-    operandExpression.className  = operandClassName;
-    operandExpression.domainType = Integer.class;
-    operandExpression.rootNode   = (Node) operandNode.spliceInto((Expression) operandExpression);
+    operandExpression           = expression.cloneExpression();
+    operandExpression.className = operandClassName;
+
+    // The operand is a Sequence<R>: Integer -> R (where R is the parent's codomain).
+    // Set domain, functionClass, and both derived ASM descriptor fields consistently.
+    operandExpression.domainType                       = Integer.class;
+    operandExpression.functionClass                    = Sequence.class;
+    operandExpression.genericFunctionClassInternalName = Type.getInternalName(Sequence.class);
+    operandExpression.functionClassDescriptor          = Sequence.class.descriptorString();
+
+    operandExpression.rootNode = (Node) operandNode.spliceInto(operandExpression);
 
     operandExpression.compile();
 
-    operandMapping = (FunctionMapping<Object, Object, Function<?, ?>>) (Object)
-        expression.registerSubexpression(operandExpression);
+    operandMapping = expression.registerSubexpression(operandExpression);
 
     expression.referencedFunctions.put(operandClassName, operandMapping);
   }
