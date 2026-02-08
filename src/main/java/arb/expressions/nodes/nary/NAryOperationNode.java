@@ -14,7 +14,8 @@ import arb.*;
 import arb.Integer;
 import arb.exceptions.CompilerException;
 import arb.expressions.*;
-import arb.expressions.nodes.*;
+import arb.expressions.nodes.Node;
+import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 
 /**
@@ -24,11 +25,26 @@ import arb.functions.Function;
  * {@link SumNode}, {@link ProductNode}, or other customized functions that
  * combine elements of a class over a coDomain of values.
  * <p>
- * The operand body is parsed DIRECTLY on the parent expression (like
- * {@link IntegralNode}) rather than on a clone. The index variable is
- * registered as an indeterminate variable BEFORE parsing the operand, ensuring
- * proper variable resolution and that all intermediate variables are allocated
- * on the parent expression's field maps.
+ * The operand body is parsed by cloning the parent expression via
+ * {@link Expression#cloneExpression()} and calling resolve() on the clone. The
+ * clone shares the parent's {@link Context} (including its intermediate
+ * variable name counters), className, expression character buffer, and
+ * ascendentExpression reference. The clone does NOT share the parent's
+ * intermediateVariables, referencedVariables, referencedFunctions, or
+ * literalConstants maps — those are fresh empty collections on the clone. The
+ * clone does get a deep-copied indeterminateVariables stack (which is then
+ * cleared) and a nulled-out independentVariable, giving the operand its own
+ * independent variable scope.
+ * </p>
+ * <p>
+ * This is sufficient because the operand's AST nodes reference the clone as
+ * their expression, and field allocation during code generation (e.g. index
+ * variables, result accumulators, upper limit fields) is performed explicitly
+ * on the parent expression by this class's generate() method. The shared
+ * {@link Context#intermediateVariableCounters} ensure unique field names across
+ * parent and clone without requiring shared maps. If a caller needs the clone
+ * to share additional registries with the parent, they can alias those maps
+ * after calling cloneExpression().
  * </p>
  *
  * @param <D> the domain type of the operands and the operation
@@ -53,6 +69,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   public Node<D, R, F>         operandNode;
 
+  public Expression<D, R, F>   operandExpression;
+
   public VariableNode<D, R, F> indexVariableNode;
 
   public String                functionClass;
@@ -73,8 +91,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   /**
    * PARSING constructor — called when the parser hits Σ, Π, sum(, etc. Parses the
-   * operand body DIRECTLY on the parent expression (no cloning). The index
-   * variable is set up as an indeterminate variable BEFORE parsing the operand.
+   * operand body on a cloned expression with a fresh independent-variable scope,
+   * then syncs the parser position back to the parent for limit specification
+   * parsing.
    *
    * @param functionForm true if syntax is sum(...) / prod(...) with parens
    */
@@ -100,7 +119,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     assert functionClass != null : "functionClass=expression.className shan't be null";
     generatedType = expression.coDomainType;
 
-    // ── Step 1: Optional arrow "k➔" for explicit index variable ──────────
+    // ── Step 1: Optional arrow "k➔" on the PARENT expression ─────────────
     int  savedPos  = expression.position;
     char savedChar = expression.character;
 
@@ -119,38 +138,51 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       }
     }
 
-    // ── Step 2: Create and register index variable BEFORE parsing operand ─
-    // This mirrors IntegralNode's parseLambda() pattern: the index variable
-    // must exist as an indeterminate variable so that when the operand body
-    // is parsed and references the index variable, it resolves correctly.
+    // ── Step 2: Clone expression and CLEAR independent variable ──────────
+    // Normal variable-resolution rules must apply inside the operand:
+    // - if no arrow, the first variable encountered becomes the independent
+    // variable of the operand expression;
+    // - if arrow was used, that variable is the independent one.
     //
-    // The index variable is pushed onto indeterminateVariables stack so it
-    // is the current scope's independent variable during operand parsing.
+    // We achieve this by cloning and explicitly clearing independentVariable
+    // and the indeterminate stack on the clone.
+    operandExpression = expression.cloneExpression();
+    operandExpression.indeterminateVariables.clear();
+    if (operandExpression.independentVariable != null)
+    {
+      operandExpression.independentVariable.isIndependent = false;
+    }
+    operandExpression.independentVariable = null;
+
+    // ── Step 3: Arrow case: explicitly register index var as independent ─
     if (indexVariableFieldName != null)
     {
-      indexVariableNode = new VariableNode<>(expression,
-                                             new VariableReference(indexVariableFieldName,
-                                                                   null,
-                                                                   Integer.class),
-                                             expression.position,
-                                             true);
-      // Push index variable onto indeterminate stack to make it the active
-      // independent variable during operand parsing
-      expression.indeterminateVariables.push(indexVariableNode);
+      indexVariableNode                     = new VariableNode<>(operandExpression,
+                                                                 new VariableReference(indexVariableFieldName,
+                                                                                       null,
+                                                                                       Integer.class),
+                                                                 operandExpression.position,
+                                                                 false);
+      operandExpression.independentVariable = indexVariableNode;
+      indexVariableNode.isIndependent       = true;
     }
 
-    // ── Step 3: Parse operand body directly on parent expression ─────────
-    operandNode = expression.resolve();
+    // ── Step 4: Parse operand body on the CLONE ──────────────────────────
+    operandNode          = operandExpression.resolve();
 
-    // ── Step 4: Pop index variable from indeterminate stack ──────────────
-    // Restore expression state after parsing the operand
-    if (indexVariableFieldName != null)
-    {
-      var popped = expression.indeterminateVariables.pop();
-      assert popped == indexVariableNode : "indeterminate stack corruption";
-    }
+    // If there was NO arrow, the first variable resolved in the operandExpression
+    // has been classified as the independent variable by normal rules already.
 
-    // ── Step 5: Parse limit specification on parent ──────────────────────
+    // ── Step 5: Sync parser position back to parent ──────────────────────
+    expression.position  = operandExpression.position;
+    expression.character = operandExpression.character;
+
+    // The index variable (if any) was registered against the clone's
+    // referencedVariables; we ONLY want an intermediate field for it on the
+    // parent, managed by prepareIndexVariable(), so nothing to clean up in
+    // the parent maps here.
+
+    // ── Step 6: Parse limit specification on PARENT ──────────────────────
     if (functionForm)
     {
       expression.require(',');
@@ -437,8 +469,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   }
 
   /**
-   * Unified limit parsing — handles both {k=a…b} and k=a…b forms. The index
-   * variable field is declared by {@link #prepareIndexVariable()}.
+   * Unified limit parsing — handles both {k=a…b} and k=a…b forms. Does NOT add
+   * the index variable to context.variables; the index variable field is declared
+   * exclusively by {@link #prepareIndexVariable()}.
    */
   private void parseLimitSpecification()
   {
@@ -461,7 +494,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
     else
     {
-      // No arrow was specified, so use the first variable in the limit spec
       indexVariableFieldName = specifiedName;
     }
 
