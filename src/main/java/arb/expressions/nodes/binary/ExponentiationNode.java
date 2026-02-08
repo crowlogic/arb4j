@@ -39,6 +39,18 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     return logger;
   }
 
+  /**
+   * Returns true when this exponentiation node has a closed-form antiderivative
+   * via the power rule: ∫x^p dx = x^(p+1)/(p+1). This holds whenever the
+   * exponent is independent of the integration variable, which is enforced by
+   * {@link #integrate(VariableNode)}.
+   */
+  @Override
+  public boolean isEasilyIntegrable()
+  {
+    return true;
+  }
+
   @Override
   public boolean isPolynomialLike(VariableNode<D, R, F> variable)
   {

@@ -58,6 +58,20 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
     this.functionNode = functionNode;
   }
 
+  /**
+   * A polynomial function evaluated at the integration variable is polynomial-like
+   * in that variable, since P(t) = Σ aₖtᵏ is a polynomial in t by definition.
+   */
+  @Override
+  public boolean isPolynomialLike(VariableNode<D, C, F> variable)
+  {
+    if (Polynomial.class.isAssignableFrom(functionNode.type()) && arg.equals(variable))
+    {
+      return true;
+    }
+    return super.isPolynomialLike(variable);
+  }
+
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
