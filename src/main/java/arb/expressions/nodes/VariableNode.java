@@ -709,6 +709,7 @@ public Logger getLogger()
            + "]";
   }
 
+  
   @Override
   public Class<?> type()
   {
@@ -729,9 +730,14 @@ public Logger getLogger()
     {
       returnType = reference.type();
     }
+    if (returnType == null || returnType.equals(Object.class))
+    {
+      returnType = expression.coDomainType;
+    }
     assert returnType != null : "returnType is null for " + this;
     return returnType;
   }
+
 
   @Override
   public String typeset()

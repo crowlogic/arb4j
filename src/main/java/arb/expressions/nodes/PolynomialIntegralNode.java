@@ -24,6 +24,7 @@ import arb.functions.Function;
 public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? extends C>> extends
                                    Node<D, C, F>
 {
+
   public static final Logger logger = LoggerFactory.getLogger(PolynomialIntegralNode.class);
 
   @Override
@@ -202,6 +203,12 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
                                                    argumentNode);
     }
     throw new UnsupportedOperationException("Differentiation not implemented for this case");
+  }
+
+  @Override
+  public boolean isZero()
+  {
+    return false;
   }
 
   @Override
