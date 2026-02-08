@@ -26,6 +26,12 @@ public class SumNode<D, C, F extends Function<? extends D, ? extends C>>
                     NAryOperationNode<D, C, F>
 {
 
+  @Override
+  public boolean isZero()
+  {
+    return operand != null && operand.rootNode.isZero();
+  }
+
   public SumNode(Expression<D, C, F> expression, boolean functionForm)
   {
     super(expression,

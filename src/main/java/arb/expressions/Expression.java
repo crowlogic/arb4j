@@ -3023,7 +3023,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (simplify)
     {
-      rootNode = rootNode.simplify();
+      var simplifiedRootNode = rootNode.simplify();
+      assert simplifiedRootNode != null : rootNode
+                                          + "'s simplifiy method returned  null, its an instance of "
+                                          + rootNode.getClass();
+      rootNode = simplifiedRootNode;
     }
 
     return (E) this;

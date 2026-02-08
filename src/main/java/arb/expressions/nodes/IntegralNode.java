@@ -568,12 +568,14 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       }
     }
 
+    if (indefiniteIntegralNode == null)
+    {
+      computeIndefiniteIntegralNode(false);
+    }
+    
     if (isDefiniteIntegral())
     {
-      if (indefiniteIntegralNode == null)
-      {
-        computeIndefiniteIntegralNode(false);
-      }
+     
       return getDefiniteIntegralEvaluationNode();
     }
     else
