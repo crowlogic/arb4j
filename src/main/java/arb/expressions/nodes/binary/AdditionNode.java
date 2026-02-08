@@ -8,10 +8,7 @@ import org.slf4j.LoggerFactory;
 import arb.Fraction;
 import arb.Integer;
 import arb.expressions.Expression;
-import arb.expressions.nodes.LiteralConstantNode;
-import arb.expressions.nodes.Node;
-import arb.expressions.nodes.VariableNode;
-import arb.expressions.nodes.nary.NAryOperationNode;
+import arb.expressions.nodes.*;
 import arb.expressions.nodes.unary.NegationNode;
 import arb.functions.Function;
 
@@ -23,7 +20,6 @@ import arb.functions.Function;
 public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> extends
                          BinaryOperationNode<D, R, F>
 {
-
 
   public AdditionNode(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)
   {
@@ -147,11 +143,30 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   public static final Logger logger = LoggerFactory.getLogger(AdditionNode.class);
-  
+
   @Override
   public Logger getLogger()
   {
     return logger;
   }
+
+  @Override
+  public boolean isZero()
+  {
+    if (left.isZero() && right.isZero())
+    {
+      return true;
+    }
+    if (left instanceof NegationNode<D, R, F> neg && neg.arg.equals(right))
+    {
+      return true;
+    }
+    if (right instanceof NegationNode<D, R, F> neg && neg.arg.equals(left))
+    {
+      return true;
+    }
+    return false;
+  }
+
 
 }

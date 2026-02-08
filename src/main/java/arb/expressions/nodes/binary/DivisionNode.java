@@ -54,7 +54,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     var lhs     = left.differentiate(variable).mul(right);
     var rhs     = right.differentiate(variable).mul(left);
     var divisor = right.pow(2);
-    return lhs.sub(rhs).div(divisor).simplify();
+    return lhs.sub(rhs).div(divisor);
   }
 
   @Override

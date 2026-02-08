@@ -26,8 +26,9 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
   @Override
   public Logger getLogger()
   {
-   return logger;
+    return logger;
   }
+
   public SubtractionNode(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)
   {
     super(expression,
@@ -40,7 +41,7 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    return left.differentiate(variable).sub(right.differentiate(variable)).simplify();
+    return left.differentiate(variable).sub(right.differentiate(variable));
   }
 
   private void fillInNullLeftHandSide()
@@ -74,9 +75,9 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
   @Override
   public Node<D, R, F> simplify()
   {
-    left = left.simplify();
+    left  = left.simplify();
     right = right.simplify();
-    
+
     if (left.isZero())
     {
       return right.neg();
@@ -127,6 +128,12 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
          spliceInto(Expression<E, S, G> newExpression)
   {
     return left.spliceInto(newExpression).sub(right.spliceInto(newExpression));
+  }
+
+  @Override
+  public boolean isZero()
+  {
+    return (left.isZero() && right.isZero()) || left.equals(right);
   }
 
   @Override

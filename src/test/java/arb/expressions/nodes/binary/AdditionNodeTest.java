@@ -10,17 +10,29 @@ import junit.framework.TestCase;
 public class AdditionNodeTest extends
                               TestCase
 {
+  public static void testIsZeroWhenBothOperandsZero()
+  {
+    var f = RealFunction.express("0+0");
+    assertEquals("0", f.toString());
+  }
+
+  public static void testIsZeroWhenOneOperandNonZero()
+  {
+    var f = RealFunction.express("0+t");
+    assertEquals("t➔t", f.toString());
+  }
+
   public static void testAddFractions()
   {
     var f = RealFunction.express("(1/2)+(1/2)");
-    assertEquals( "1", f.toString() );
-    
+    assertEquals("1", f.toString());
+
   }
-  
+
   public static void testNegationNodeAdditionIsSubstraction()
   {
     var f = RealFunction.express("t+(-1)");
-    assertEquals( "t➔t-1", f.toString() );
-    
+    assertEquals("t➔t-1", f.toString());
+
   }
 }
