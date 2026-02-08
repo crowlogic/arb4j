@@ -155,12 +155,15 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     return result;
   }
 
+
   /**
    * Tries all 2-partitions of the factor list for integration by parts.
    *
    * For each partition (S, S̄) of factors into two non-empty subsets, checks
    * whether one subset's product is polynomial-like and the other's is easily
-   * integrable (or vice versa per LIATE), then applies the tabular method.
+   * integrable (or vice versa per LIATE), then applies the appropriate method:
+   * tabular for polynomial u (which differentiates to zero), single-step IBP
+   * for logarithmic u (which does not).
    *
    * Uses bitmask enumeration over 2^n - 2 non-trivial partitions.
    *
@@ -178,7 +181,6 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       return null;
     }
 
-    // Enumerate all non-trivial 2-partitions via bitmask
     int limit = (1 << n) - 1;
     for (int mask = 1; mask < limit; mask++)
     {
@@ -199,30 +201,79 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       var productA = buildProduct(groupA);
       var productB = buildProduct(groupB);
 
-      // Strategy 1: A is polynomial-like, B is easily integrable
+      // Strategy 1: A is polynomial-like, B is easily integrable → tabular
       if (productA.isPolynomialLike(variable) && productB.isEasilyIntegrable())
       {
         return applyTabularMethod(productA, productB, variable);
       }
-      // Strategy 2: B is polynomial-like, A is easily integrable
+      // Strategy 2: B is polynomial-like, A is easily integrable → tabular
       if (productB.isPolynomialLike(variable) && productA.isEasilyIntegrable())
       {
         return applyTabularMethod(productB, productA, variable);
       }
-      // Strategy 3: LIATE — A is logarithmic, B is polynomial-like
+      // Strategy 3: LIATE — A is logarithmic, B is polynomial-like → single-step
       if (productA.isLogarithmic() && productB.isPolynomialLike(variable))
       {
-        return applyTabularMethod(productA, productB, variable);
+        return applySingleStepIBP(productA, productB, variable);
       }
+      // Strategy 4: LIATE — B is logarithmic, A is polynomial-like → single-step
       if (productB.isLogarithmic() && productA.isPolynomialLike(variable))
       {
-        return applyTabularMethod(productB, productA, variable);
+        return applySingleStepIBP(productB, productA, variable);
       }
     }
 
     return null;
   }
 
+  /**
+   * Applies a single step of integration by parts: ∫ u dv = u·v - ∫ v·u' dx
+   *
+   * Used for the LIATE logarithmic case where u does not differentiate to zero
+   * (so the tabular method is inapplicable), but a single IBP step reduces
+   * the problem to a simpler integral that other rules can handle.
+   *
+   * For ∫ ln(x)·x dx:
+   *   u = ln(x), dv = x dx → v = x²/2, u' = 1/x
+   *   = ln(x)·(x²/2) - ∫ (x²/2)·(1/x) dx
+   *   = (x²/2)·ln(x) - ∫ x/2 dx
+   *   = (x²/2)·ln(x) - x²/4
+   *
+   * @param u        The factor to differentiate (e.g., ln(x))
+   * @param dv       The factor to integrate (e.g., x)
+   * @param variable The variable of integration
+   * @return The integrated result
+   */
+  private Node<D, R, F>
+          applySingleStepIBP(Node<D, R, F> u,
+                             Node<D, R, F> dv,
+                             VariableNode<D, R, F> variable)
+  {
+    if (Expression.traceNodes)
+    {
+      logger.debug("applySingleStepIBP: u={}, dv={}, variable={}", u, dv, variable);
+    }
+
+    var v  = dv.integrate(variable).simplify();
+    var du = u.differentiate(variable).simplify();
+
+    if (Expression.traceNodes)
+    {
+      logger.debug("applySingleStepIBP: v={}, du={}", v, du);
+    }
+
+    // ∫ u dv = u·v - ∫ v·du dx
+    var uvTerm             = u.mul(v).simplify();
+    var remainingIntegrand = v.mul(du).simplify();
+    var remainingIntegral  = remainingIntegrand.integrate(variable).simplify();
+
+    if (Expression.traceNodes)
+    {
+      logger.debug("applySingleStepIBP: uvTerm={}, remainingIntegral={}", uvTerm, remainingIntegral);
+    }
+
+    return uvTerm.sub(remainingIntegral).simplify();
+  }
 
   /**
    * Attempts integration by parts using the tabular method.
@@ -236,10 +287,10 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
    */
   private Node<D, R, F> tryIntegrationByParts(VariableNode<D, R, F> variable)
   {
-    Node<D, R, F> u                    = null;                           // Will be differentiated
-    Node<D, R, F> dv                   = null;                           // Will be integrated
+    Node<D, R, F> u                    = null;
+    Node<D, R, F> dv                   = null;
+    boolean       useTabular           = true;
 
-    // Strategy: polynomial × transcendental → u = polynomial, dv = transcendental
     boolean       isLeftPolynomialLike = left.isPolynomialLike(variable);
     boolean       isRightPolynomialLike;
 
@@ -248,29 +299,30 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       u  = left;
       dv = right;
     }
-    else if (isRightPolynomialLike = right.isPolynomialLike(variable) && left.isEasilyIntegrable())
+    else if ((isRightPolynomialLike = right.isPolynomialLike(variable)) && left.isEasilyIntegrable())
     {
       u  = right;
       dv = left;
     }
-    // Strategy: polynomial × log → u = log, dv = polynomial (LIATE rule)
-    else if (left.isLogarithmic() && isRightPolynomialLike)
+    else if (left.isLogarithmic() && (isRightPolynomialLike = right.isPolynomialLike(variable)))
     {
-      u  = left;
-      dv = right;
+      u          = left;
+      dv         = right;
+      useTabular = false;
     }
     else if (right.isLogarithmic() && isLeftPolynomialLike)
     {
-      u  = right;
-      dv = left;
+      u          = right;
+      dv         = left;
+      useTabular = false;
     }
     else
     {
-      return null; // Integration by parts not applicable
+      return null;
     }
 
-    // Apply tabular method: ∫ u dv = uv - ∫ v du
-    return applyTabularMethod(u, dv, variable);
+    return useTabular ? applyTabularMethod(u, dv, variable)
+                      : applySingleStepIBP(u, dv, variable);
   }
 
   /**
