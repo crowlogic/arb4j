@@ -18,15 +18,15 @@ import arb.expressions.*;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
+import arb.functions.integer.Sequence;
 
 /**
  * N-ary fold node (Σ sum / Π product). The operand is parsed inline on the
  * parent expression's character stream, then compiled as a separate
  * subexpression via spliceInto/compile/registerSubexpression — the same shape
- * as IntegralNode, but the index variable (e.g. k) is an intermediate variable
- * on the parent that is shared with the operand as an ascendent-input field,
- * while the parent's independent variable is passed through as the operand's
- * own independent variable via evaluate(arg0).
+ * as IntegralNode, but the operand is always a {@code Sequence<R>}
+ * (i.e. {@code Function<Integer,R>}), and the index variable (e.g. k) is the
+ * independent variable of that operand expression.
  * <p>
  * Arrow syntax ({@code k➔expr}) is optional. If omitted, the first variable
  * encountered becomes the independent variable of the operand expression via
@@ -52,8 +52,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   public Node<D, R, F>                                                 operandNode;
 
-  public Expression<D, R, F>                                           operandExpression;
-  public FunctionMapping<D, R, F>                                      operandMapping;
+  public Expression<Integer, R, Sequence<? extends R>>      operandExpression;
+  public FunctionMapping<Integer, R, Sequence<? extends R>> operandMapping;
 
   public VariableNode<D, R, F>                                         indexVariableNode;
   public String                                                        functionClass;
@@ -127,19 +127,29 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
     parseLimitSpecification();
 
-    // Ensure the index variable exists as an intermediate on the parent before splicing.
-    prepareIndexVariable();
-
     // ── Step 6: Compile operand as a separate subexpression ──────────────
     compileOperandSubexpression();
   }
 
   /**
-   * Build a fresh operand expression that shares the parent's domain/codomain/
-   * functionClass types.  The parent's independent variable (e.g. n) becomes the
-   * operand's independent variable (passed via evaluate(arg0)).  The fold index
-   * variable (e.g. k) is an intermediate variable on the parent expression and
-   * is resolved during splice as an ascendent-input field on the operand class.
+   * Build a fresh operand expression of type {@code Sequence<R>}
+   * ({@code Function<Integer,R>}):
+   *
+   * <ul>
+   *   <li>domainType = {@link Integer}</li>
+   *   <li>coDomainType = parent's {@code coDomainType} (R)</li>
+   *   <li>functionClass = {@link Sequence}</li>
+   * </ul>
+   *
+   * Then splice the operand AST into this clean expression. Because the operand
+   * expression is never nullary and starts with an empty indeterminate stack,
+   * the index variable k resolves as the independent variable of the operand
+   * expression (with {@code reference.type = Integer.class}) instead of as an
+   * indeterminate {@link arb.Real}. This prevents
+   * {@link VariableNode#generateReferenceToIndeterminantVariable} from ever
+   * being called on a scalar {@link arb.Real}, eliminating the
+   * "should not be calling identity() on scalar type class arb.Real"
+   * assertion.[cite:118][cite:121][cite:133]
    */
   @SuppressWarnings("unchecked")
   private void compileOperandSubexpression()
@@ -147,13 +157,15 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     String operandClassName = expression.className + "Σoperand"
                               + System.identityHashCode(this);
 
-    // Operand must be a function of the parent's independent variable (so that
-    // the parent input is passed via evaluate(arg0)), and must see the fold
-    // index as an ascendent intermediate variable (k field shared from parent).
+    // ── Step 1: New, correctly-typed operand Expression<Integer,R,Sequence<R>> ──
+    //
+    // DO NOT CLONE the nullary parent; that carries over "k is an indeterminate
+    // Real" from a domainType=Object expression, which is exactly what we do
+    // not want inside the operand.[cite:133][cite:118]
     operandExpression =
-        new Expression<>((Class) expression.domainType,
+        new Expression<>(Integer.class,
                          expression.coDomainType,
-                         (Class) expression.functionClass);
+                         (Class) Sequence.class);
 
     operandExpression.className           = operandClassName;
     operandExpression.functionName        = operandClassName;
@@ -167,30 +179,30 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
     operandExpression.context = expression.context;
 
-    // Clean variable state
+    // ── Step 2: Clean variable state so k can resolve correctly ────────────
+    //
+    // No existing independent or indeterminate variables; no stale
+    // referencedVariables from some cloned nullary expression.
     operandExpression.independentVariable    = null;
     operandExpression.indeterminateVariables = new java.util.Stack<>();
     operandExpression.referencedVariables.clear();
 
-    // Pre-set operand independent variable to match parent independent variable name,
-    // so 'n' in the operand stays the independent variable (passed via evaluate(arg0)),
-    // not a propagated field.
-    if (!expression.isNullaryFunction() && expression.independentVariable != null)
-    {
-      var ref = new VariableReference<D, R, F>(expression.independentVariable.getName());
-      ref.type = operandExpression.domainType;
-      var indep = new VariableNode<>(operandExpression, ref, 0, false);
-      indep.isIndependent = true;
-      operandExpression.independentVariable = indep;
-    }
+    // If the user wrote an explicit arrow "k➔", enforce that name as the
+    // independent variable *after* splice by renaming, but do not pre-bind it
+    // here. Resolution during splice must see a clean operandExpression so
+    // VariableNode.resolveReference can decide independence based purely on
+    // the operand expression's own domainType and stacks.[cite:118][cite:133]
 
     // ── Step 3: Splice operand AST into the fresh operandExpression ───────
     //
-    // During splice, VariableNode constructors with resolve=true run.
-    // Because operandExpression already has its independent variable pre-set
-    // to the parent's independent variable name, 'n' resolves as independent
-    // (passed via evaluate(arg0)).  'k' resolves as an ascendent intermediate
-    // variable (a field shared from the parent class).
+    // This is where all the VariableNode(...) constructors with resolve=true
+    // run. Because:
+    //   - operandExpression.domainType == Integer.class
+    //   - operandExpression.isNullaryFunction() == false
+    //   - operandExpression.independentVariable == null
+    //   - operandExpression.indeterminateVariables is empty
+    // the first occurrence of k will be classified as the independent
+    // variable of the operand expression.[cite:118][cite:133]
     operandExpression.rootNode = operandNode.spliceInto(operandExpression);
 
     // ── Step 4: Compile and register operand as subexpression ──────────────
@@ -300,7 +312,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   /**
    * <pre>
-   *   result.op(this.operandFunc.evaluate(parentInput, order, bits, this.tmp), bits)
+   *   result.op(this.operandFunc.evaluate(this.k, order, bits, this.tmp), bits)
    *   this.k.increment()
    * </pre>
    */
@@ -315,8 +327,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                       operandExpression.className,
                       operandMapping.functionFieldDescriptor());
 
-    // .evaluate(parentInput, order, bits, this.operandValue)
-    loadInputParameter(mv);
+    // .evaluate(this.k, order, bits, this.operandValue)
+    loadIndexVariable(mv);
     loadOrderParameter(mv);
     loadBitsParameterOntoStack(mv);
     getFieldFromThis(mv, functionClass, operandValueFieldName, generatedType);

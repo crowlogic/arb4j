@@ -463,32 +463,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return bound[0];
   }
 
-  // Extend ancestor binding to include intermediate variables declared on any
-  // ancestor Expression (e.g. NAryOperation index variable k). These are real
-  // mutable fields on the generated class, not context variables and not
-  // indeterminates.
-  private VariableNode<?, ?, ?> resolveIntermediate(VariableReference<D, R, F> ref,
-                                                    Expression<?, ?, ?> expr)
-  {
-    final VariableNode<?, ?, ?>[] bound = { null };
-    if (expr != null)
-    {
-      expr.acceptUntil(e ->
-      {
-        var iv = e.intermediateVariables != null ? e.intermediateVariables.get(ref.name) : null;
-        if (iv != null)
-        {
-          if (e != expression) ascendentInput = true;
-          reference.type = iv.type;
-          bound[0] = this;
-          return true;
-        }
-        return false;
-      });
-    }
-    return bound[0];
-  }
-
   public boolean resolveContextualVariable()
   {
     if (expression.context != null && expression.context.variables != null)
@@ -607,24 +581,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                   isIndependent,
                   isIndeterminate,
                   reference.type);
-      }
-      return this;
-    }
-
-    // 3b) Bind to intermediate variables in ancestor scopes (e.g. k in Σ)
-    bound = resolveIntermediate(reference, expression);
-    if (bound != null)
-    {
-      if (Expression.traceNodes)
-      {
-        log.debug("=== resolveReference: {} FOUND as INTERMEDIATE in ancestor, ascendentInput={}, type={}",
-                  reference.name,
-                  ascendentInput,
-                  reference.type);
-      }
-      if (ascendentInput)
-      {
-        expression.referencedVariables.put(reference.name, this);
       }
       return this;
     }
@@ -756,7 +712,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     else if (ascendentInput)
     {
-      returnType = reference.type();
+      returnType = expression.ascendentExpression.domainType;
     }
     else
     {
