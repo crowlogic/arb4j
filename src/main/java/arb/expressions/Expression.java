@@ -1342,15 +1342,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       generateDomainTypeMethod(classVisitor);
       generateCoDomainTypeMethod(classVisitor);
       generateEvaluationMethod(classVisitor);
-      if (!isNullaryFunction())
+      if (!isNullaryFunction() && !Polynomial.class.isAssignableFrom(coDomainType))
       {
         generateDerivativeMethod(classVisitor);
         generateIntegralMethod(classVisitor);
       }
       else if (Polynomial.class.isAssignableFrom(coDomainType))
       {
+        if ( isNullaryFunction() )
+        {
         generatePolynomialMethod(classVisitor, "integral");
         generatePolynomialMethod(classVisitor, "derivative");
+        }
       }
       declareFields(classVisitor);
       generateInitializationMethod(classVisitor);
@@ -1375,7 +1378,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     storeInstructions(classVisitor);
   }
-
 
   protected void generateAssertionThatOrderIsLessThanOrEqualTo1(MethodVisitor mv)
   {
@@ -3025,9 +3027,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (simplify)
     {
       var simplifiedRootNode = rootNode.simplify();
-      assert simplifiedRootNode != null : rootNode
-                                          + "'s simplifiy method returned  null, its an instance of "
-                                          + rootNode.getClass();
+      assert simplifiedRootNode
+                    != null : rootNode
+                              + "'s simplifiy method returned  null, its an instance of "
+                              + rootNode.getClass();
       rootNode = simplifiedRootNode;
     }
 

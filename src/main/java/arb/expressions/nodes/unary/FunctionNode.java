@@ -150,13 +150,13 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   public FunctionNode(Expression<D, R, F> expression,
-                      FunctionMapping<?, ?, ?> newIntegralFunctionMapping,
+                      FunctionMapping<?, ?, ?> mapping,
                       Node<D, R, F> arg)
   {
-    this(newIntegralFunctionMapping.functionName,
+    this(mapping.functionName,
          arg,
          expression);
-    this.mapping = newIntegralFunctionMapping;
+    this.mapping = mapping;
   }
 
   /**
@@ -469,11 +469,16 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     setFunctionContext(instance);
 
     var    derivative                   = instance.derivative();
-
+    
     String derivativeFunctionName       = derivative.getName();
-
+    assert derivativeFunctionName != null : "derivativeFunctionName is null for " + derivative;
+    
     var    newDerivativeFunctionMapping = expression.context.functions.get(derivativeFunctionName);
 
+    assert newDerivativeFunctionMapping != null : "no function mapping with name "
+                                                  + derivativeFunctionName
+                                                  + " for derivative";
+    
     return new FunctionNode<D, R, F>(expression,
                                      newDerivativeFunctionMapping,
                                      arg);
