@@ -2263,10 +2263,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       context = new Context();
     }
     var prefix  = name + getVariablePrefix(type);
-    var counter = intermediateVariableCounters.get(prefix);
+    var counter = context.intermediateVariableCounters.get(prefix);
     if (counter == null)
     {
-      intermediateVariableCounters.put(prefix, counter = new AtomicInteger(1));
+      context.intermediateVariableCounters.put(prefix, counter = new AtomicInteger(1));
     }
     return prefix + String.format("%04d", counter.getAndIncrement());
   }
@@ -2461,8 +2461,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   public HashSet<String> declaredVariables = new HashSet<>();
-
-  public final HashMap<String, AtomicInteger> intermediateVariableCounters = new HashMap<>();
 
   protected void
             linkSharedVariableToReferencedFunction(MethodVisitor mv,
