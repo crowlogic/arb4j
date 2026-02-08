@@ -35,8 +35,7 @@ import arb.expressions.viz.ExpressionTree;
 import arb.functions.Function;
 import arb.functions.RealToComplexFunction;
 import arb.functions.complex.ComplexFunction;
-import arb.functions.integer.RealSequence;
-import arb.functions.integer.Sequence;
+import arb.functions.integer.*;
 import arb.functions.real.RealFunction;
 import arb.utensils.Utensils;
 import arb.utensils.text.trees.TextTree;
@@ -1342,19 +1341,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       generateDomainTypeMethod(classVisitor);
       generateCoDomainTypeMethod(classVisitor);
       generateEvaluationMethod(classVisitor);
-      if (!isNullaryFunction() && !Polynomial.class.isAssignableFrom(coDomainType))
-      {
-        generateDerivativeMethod(classVisitor);
-        generateIntegralMethod(classVisitor);
-      }
-      else if (Polynomial.class.isAssignableFrom(coDomainType))
-      {
-        if ( isNullaryFunction() )
-        {
-        generatePolynomialMethod(classVisitor, "integral");
-        generatePolynomialMethod(classVisitor, "derivative");
-        }
-      }
+      generateDiffererentiationAndIntegrationMethods(classVisitor);
       declareFields(classVisitor);
       generateInitializationMethod(classVisitor);
       generateConstructor(classVisitor);
@@ -1377,6 +1364,41 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return
 
     storeInstructions(classVisitor);
+  }
+
+  /**
+   * @see {@link RealPolynomialSequence#derivative()}
+   *      {@link RealPolynomialSequence#integral()} and
+   *      {@link ComplexPolynomialSequence#derivative()} and
+   *      {@link ComplexPolynomialSequence#integral()} for the default
+   *      implementation which is used in the non-nullary polynomial sequence case
+   * 
+   */
+  protected void generateDiffererentiationAndIntegrationMethods(ClassVisitor classVisitor)
+  {
+    if (!isNullaryFunction() && !Polynomial.class.isAssignableFrom(coDomainType))
+    {
+      // Non-polynomial, non-nullary: generate symbolic derivative/integral methods
+      generateDerivativeMethod(classVisitor);
+      generateIntegralMethod(classVisitor);
+    }
+    else if (Polynomial.class.isAssignableFrom(coDomainType))
+    {
+      if (isNullaryFunction())
+      {
+        // Nullary polynomial (domain=Object): no interface default methods exist,
+        // so we must generate the polynomial method bytecode here
+        generatePolynomialMethod(classVisitor, "integral");
+        generatePolynomialMethod(classVisitor, "derivative");
+      }
+      // NON-NULLARY polynomial sequences (e.g. RealPolynomialSequence,
+      // ComplexPolynomialSequence): DO NOTHING HERE.
+      // The interface declares default integral()/derivative() methods that
+      // delegate to the polynomial's own integral()/derivative() via lambda.
+      // Generating bytecode here would OVERRIDE those default methods and break
+      // differentiation by using the sequence index instead of the polynomial's
+      // indeterminate variable.
+    }
   }
 
   protected void generateAssertionThatOrderIsLessThanOrEqualTo1(MethodVisitor mv)

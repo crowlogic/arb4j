@@ -22,14 +22,14 @@ public interface RealPolynomialSequence extends
 
   @SuppressWarnings("unchecked")
   @Override
-  default RealPolynomialSequence integral()
+  public default RealPolynomialSequence integral()
   {
     return (n, order, bits, res) -> evaluate(n, order, bits, res).integral();
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  default RealPolynomialSequence derivative()
+  public default RealPolynomialSequence derivative()
   {
     return (n, order, bits, res) -> evaluate(n, order, bits, res).derivative();
   }
