@@ -53,8 +53,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   public Node<D, R, F>                                                 operandNode;
 
-  public Expression<Integer, R, Sequence<? extends R>>                 operandExpression;
-  public FunctionMapping<Integer, R, Sequence<? extends R>>            operandMapping;
+  public Expression<Integer, R, Sequence<? extends R>>      operandExpression;
+  public FunctionMapping<Integer, R, Sequence<? extends R>> operandMapping;
 
   public VariableNode<D, R, F>                                         indexVariableNode;
   public String                                                        functionClass;
@@ -158,11 +158,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     // The operand is a Sequence<R>: Integer -> R (where R is the parent's codomain).
     // Set domain, functionClass, and both derived ASM descriptor fields consistently.
     operandExpression.domainType                       = Integer.class;
-    operandExpression.functionClass                    = Sequence.class;
+    operandExpression.functionClass                    = (Class<? extends Sequence<? extends R>>) Sequence.class;
     operandExpression.genericFunctionClassInternalName = Type.getInternalName(Sequence.class);
     operandExpression.functionClassDescriptor          = Sequence.class.descriptorString();
 
-    operandExpression.rootNode = (Node) operandNode.spliceInto(operandExpression);
+    operandExpression.rootNode =  operandNode.spliceInto(operandExpression);
 
     operandExpression.compile();
 
