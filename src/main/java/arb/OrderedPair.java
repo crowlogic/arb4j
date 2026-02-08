@@ -1,5 +1,7 @@
 package arb;
 
+import java.util.Objects;
+
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.space.topological.CartesianProduct;
@@ -31,8 +33,22 @@ import arb.space.topological.VectorSpace;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class OrderedPair<A, B> implements Pair<A, B>
+public class OrderedPair<A, B>
 {
+  @Override
+  public int hashCode()
+  {
+    return Objects.hash(a, b);
+  }
+
+  @Override
+  public boolean equals(Object obj)
+  {
+    return this == obj ? true : obj instanceof OrderedPair other
+                                    ? Objects.equals(a, other.a) && Objects.equals(b, other.b)
+                : false;
+  }
+
   @Override
   public String toString()
   {
@@ -49,13 +65,11 @@ public class OrderedPair<A, B> implements Pair<A, B>
   public A a;
   public B b;
 
-  @Override
   public A getLeft()
   {
     return a;
   }
 
-  @Override
   public B getRight()
   {
     return b;
