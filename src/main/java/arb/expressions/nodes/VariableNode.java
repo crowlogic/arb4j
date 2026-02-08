@@ -87,6 +87,11 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                          Node<D, R, F>
 {  public static final Logger logger = LoggerFactory.getLogger(VariableNode.class);
 
+public boolean isZero()
+{
+  return false;
+}
+
 @Override
 public Logger getLogger()
 {

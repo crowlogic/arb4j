@@ -457,14 +457,10 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return false;
   }
 
-  /**
-   * Checks if this node represents the literal constant 0. Only
-   * LiteralConstantNode can return true; all other nodes return false.
-   * 
-   * @return true if this is a literal 0, false otherwise
-   */
+  
   public boolean isZero()
   {
+    assert false : "TODO: " + getClass() + " needs to implement this";
     return false;
   }
 

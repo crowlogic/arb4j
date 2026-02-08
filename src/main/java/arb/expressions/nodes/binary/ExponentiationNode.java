@@ -20,6 +20,13 @@ import arb.functions.Function;
 public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                BinaryOperationNode<D, R, F>
 {
+  @Override
+  public boolean isZero()
+  {
+    assert false : "ExponentiationNode.isZero has yet to be implemented as of Feb 7, 2026 7:35:28 PM";
+    return super.isZero();
+  }
+
   public static final Logger logger = LoggerFactory.getLogger(ExponentiationNode.class);
 
   @Override

@@ -53,12 +53,19 @@ import arb.utensils.Utensils;
 public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> extends
                          UnaryOperationNode<D, R, F>
 {
-  
+
+  @Override
+  public boolean isZero()
+  {
+    return false;
+  }
+
   @Override
   public Logger getLogger()
   {
     return logger;
   }
+
   @Override
   public boolean isLogarithmic()
   {
@@ -232,7 +239,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public boolean isEasilyIntegrable()
   {
-    switch(functionName)
+    switch (functionName)
     {
     case "exp":
     case "sin":
@@ -240,9 +247,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     case "sinh":
     case "cosh":
       return true;
-      default: 
-        return false;
-    }   
+    default:
+      return false;
+    }
   }
 
   public FunctionNode(String functionName, Node<D, R, F> argument, Expression<D, R, F> expression)

@@ -15,6 +15,12 @@ public class NegationNode<D, R, F extends Function<? extends D, ? extends R>>
 {
 
   @Override
+  public boolean isZero()
+  {
+    return arg.isZero();
+  }
+
+  @Override
   public boolean isNegativeInfinity()
   {
     return arg.isPositiveInfinity();
