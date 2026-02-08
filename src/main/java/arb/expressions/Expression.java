@@ -2460,7 +2460,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // Stack: [] (IFNULL pops the value being tested)
   }
 
-  public HashSet<String>                      declaredVariables            = new HashSet<>();
+  public HashSet<String> declaredVariables = new HashSet<>();
 
   public final HashMap<String, AtomicInteger> intermediateVariableCounters = new HashMap<>();
 
@@ -3240,9 +3240,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return intermediateVarName;
   }
 
-  public <ED, EC, EF extends Function<? extends ED,? extends EC>>
-         FunctionMapping<ED, EC, EF>
-         registerSubexpression(Expression<ED, EC, EF> expr)
+  public FunctionMapping<Object, Object, Function<?, ?>>
+         registerSubexpression(Expression<Object, Object, Function<?, ?>> expr)
   {
     if (context == null)
     {
