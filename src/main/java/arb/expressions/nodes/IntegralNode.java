@@ -227,19 +227,19 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   private void computeIndefiniteIntegralNode(boolean compileIfNecessary)
   {
     assert integralFunction == null;
-    indefiniteIntegralNode =
-                           integrandNode.integrate(integrationVariableNode.asVariable()).simplify();
+    var rawIntegral = integrandNode.integrate(integrationVariableNode.asVariable());
+    indefiniteIntegralNode = (rawIntegral instanceof IntegralNode) ? rawIntegral
+                                                                   : rawIntegral.simplify();
     assert indefiniteIntegralNode != null : "indefiniteIntegralNode is null as returned from "
                                             + integrandNode
                                             + " of "
                                             + integrandNode.getClass();
-    // Only compile indefinite integral for indefinite integrals
-    // Definite integrals use symbolic substitution only
     if (!isDefiniteIntegral() && compileIfNecessary)
     {
       compileIndefiniteIntegral();
     }
   }
+
 
   private Expression<D, C, F> createEvaluationExpression()
   {
