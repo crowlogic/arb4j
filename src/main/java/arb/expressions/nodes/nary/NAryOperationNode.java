@@ -155,18 +155,14 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     operandExpression           = expression.cloneExpression();
     operandExpression.className = operandClassName;
 
+    // The operand is a Sequence<R>: Integer -> R (where R is the parent's codomain).
+    // Set domain, functionClass, and both derived ASM descriptor fields consistently.
     operandExpression.domainType                       = Integer.class;
-    operandExpression.functionClass                    = (Class) Sequence.class;
+    operandExpression.functionClass                    = (Class<? extends Sequence<? extends R>>) Sequence.class;
     operandExpression.genericFunctionClassInternalName = Type.getInternalName(Sequence.class);
     operandExpression.functionClassDescriptor          = Sequence.class.descriptorString();
 
-    // Clear the inherited independent variable so that when spliceInto
-    // reconstructs VariableNodes with resolve=true, the index variable (k)
-    // resolves as the independent variable of this operand expression
-    // (domain = Integer) rather than falling through to indeterminate.
-    operandExpression.independentVariable = null;
-
-    operandExpression.rootNode = operandNode.spliceInto(operandExpression);
+    operandExpression.rootNode =  operandNode.spliceInto(operandExpression);
 
     operandExpression.compile();
 
@@ -174,7 +170,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
     expression.referencedFunctions.put(operandClassName, operandMapping);
   }
-
 
   /**
    * SPLICE constructor — pre-built nodes, no parsing.
