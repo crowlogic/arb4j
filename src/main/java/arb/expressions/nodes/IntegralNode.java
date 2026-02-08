@@ -240,7 +240,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     }
   }
 
-
   private Expression<D, C, F> createEvaluationExpression()
   {
     Expression<D, C, F> evaluationExpression = expression.cloneExpression();
@@ -261,9 +260,15 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   @Override
   public boolean dependsOn(VariableNode<D, C, F> variable)
   {
-    assert false : "TODO";
-    return false;
+    if (variable.getName().equals(integrationVariableName))
+    {
+      return false;
+    }
+    return integrandNode.dependsOn(variable)
+           || (lowerLimitNode != null && lowerLimitNode.dependsOn(variable))
+           || (upperLimitNode != null && upperLimitNode.dependsOn(variable));
   }
+
 
   @Override
   public Node<D, C, F> differentiate(VariableNode<D, C, F> variable)
@@ -610,9 +615,15 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
          Node<D, C, F>
          substitute(String variable, Node<E, S, G> arg)
   {
-    integrandNode           = integrandNode.substitute(variable, arg);
-    lowerLimitNode          = lowerLimitNode.substitute(variable, arg);
-    upperLimitNode          = upperLimitNode.substitute(variable, arg);
+    integrandNode = integrandNode.substitute(variable, arg);
+    if (lowerLimitNode != null)
+    {
+      lowerLimitNode = lowerLimitNode.substitute(variable, arg);
+    }
+    if (upperLimitNode != null)
+    {
+      upperLimitNode = upperLimitNode.substitute(variable, arg);
+    }
     integrationVariableNode = integrationVariableNode.substitute(variable, arg).asVariable();
     return this;
   }
@@ -626,8 +637,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   @Override
   public String toString()
   {
-
-    if (indefiniteIntegralNode == null)
+    if (indefiniteIntegralNode == null || indefiniteIntegralNode instanceof IntegralNode)
     {
       return isDefiniteIntegral() ? String.format("∫%sd%s over %s..%s",
                                                   integrandNode.toString(),
