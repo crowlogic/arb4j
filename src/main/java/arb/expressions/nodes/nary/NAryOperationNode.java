@@ -2,18 +2,19 @@ package arb.expressions.nodes.nary;
 
 import static arb.expressions.Compiler.*;
 import static arb.utensils.Utensils.indent;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.*;
 
 import arb.*;
 import arb.Integer;
 import arb.exceptions.CompilerException;
 import arb.expressions.*;
+import arb.expressions.Context;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
@@ -25,10 +26,10 @@ import arb.functions.Function;
  * {@link SumNode}, {@link ProductNode}, or other customized functions that
  * combine elements of a class over a coDomain of values.
  * <p>
- * The operand body is parsed inline by the parent expression's parser (via
- * expression.resolve()), not extracted as a string and compiled separately.
- * This eliminates the need for variable propagation between parent and child
- * expressions.
+ * The operand body is parsed inline by the parent expression's parser
+ * (via expression.resolve()), not extracted as a string and compiled
+ * separately. This eliminates the need for variable propagation between
+ * parent and child expressions.
  * </p>
  *
  * @param <D> the domain type of the operands and the operation
@@ -43,139 +44,143 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                               Node<D, R, F>
 {
 
-  public Label                 beginLoop = new Label();
+  public Label                beginLoop = new Label();
 
-  public Label                 endLoop   = new Label();
+  public Label                endLoop   = new Label();
 
-  public Node<D, R, F>         upperLimit;
+  public Node<D, R, F>       upperLimit;
 
-  public String                upperLimitFieldName;
+  public String               upperLimitFieldName;
 
-  public Node<D, R, F>         operandNode;
+  public Node<D, R, F>       operandNode;
 
   public VariableNode<D, R, F> indexVariableNode;
 
-  public String                functionClass;
+  public String               functionClass;
 
-  public final String          identity;
+  public final String         identity;
 
-  public String                indexVariableFieldName;
+  public String               indexVariableFieldName;
 
-  public final String          operation;
+  public final String         operation;
 
-  public final String          prefix;
+  public final String         prefix;
 
-  public Node<D, R, F>         lowerLimit;
+  public Node<D, R, F>       lowerLimit;
 
-  public final String          symbol;
+  public final String         symbol;
 
-  public String                operandValueFieldName;
+  public String               operandValueFieldName;
 
-  /**
-   * PARSING constructor — called when the parser hits Σ, Π, sum(, etc. Parses the
-   * operand body inline via expression.resolve().
-   *
-   * @param functionForm true if syntax is sum(...) / prod(...) with parens
-   */
-  @SuppressWarnings("rawtypes")
-  public NAryOperationNode(Expression<D, R, F> expression,
-                           String identity,
-                           String prefix,
-                           String operation,
-                           String symbol,
-                           boolean functionForm)
+
+/**
+ * PARSING constructor — called when the parser hits Σ, Π, sum(, etc.
+ * Parses the operand body inline via expression.resolve().
+ *
+ * @param functionForm true if syntax is sum(...) / prod(...) with parens
+ */
+@SuppressWarnings("rawtypes")
+public NAryOperationNode(Expression<D, R, F> expression,
+                         String identity,
+                         String prefix,
+                         String operation,
+                         String symbol,
+                         boolean functionForm)
+{
+  super(expression);
+  this.identity  = identity;
+  this.prefix    = prefix;
+  this.operation = operation;
+  this.symbol    = symbol;
+  if (expression.context == null)
   {
-    super(expression);
-    this.identity  = identity;
-    this.prefix    = prefix;
-    this.operation = operation;
-    this.symbol    = symbol;
-    if (expression.context == null)
+    expression.context = new Context();
+  }
+  functionClass = expression.className;
+  assert functionClass != null : "functionClass=expression.className shan't be null";
+  generatedType = expression.coDomainType;
+
+  // --- Inline parsing ---
+
+  // 1. Try to parse "k➔" lambda prefix
+  int  savedPos  = expression.position;
+  char savedChar = expression.character;
+
+  if (expression.isIdentifierCharacter())
+  {
+    String maybeName = expression.parseName();
+    expression.skipSpaces();
+    if (expression.nextCharacterIs('➔'))
     {
-      expression.context = new Context();
-    }
-    functionClass = expression.className;
-    assert functionClass != null : "functionClass=expression.className shan't be null";
-    generatedType = expression.coDomainType;
-
-    // --- Inline parsing ---
-
-    // 1. Try to parse "k➔" lambda prefix
-    int  savedPos  = expression.position;
-    char savedChar = expression.character;
-
-    if (expression.isIdentifierCharacter())
-    {
-      String maybeName = expression.parseName();
-      expression.skipSpaces();
-      if (expression.nextCharacterIs('➔'))
-      {
-        indexVariableFieldName = maybeName;
-        // Register the index variable — always Integer (discrete loop counter),
-        // and resolve=false because resolveReference() would misclassify it
-        // as an indeterminate and overwrite the type with coDomainType.
-        indexVariableNode      = new VariableNode<>(expression,
-                                                    new VariableReference<>(indexVariableFieldName,
-                                                                            null,
-                                                                            Integer.class),
-                                                    expression.position,
-                                                    false);
-      }
-      else
-      {
-        // No arrow — backtrack, let resolve() handle it
-        expression.position  = savedPos;
-        expression.character = savedChar;
-      }
-    }
-
-    // 2. Parse the operand body as an AST node
-    operandNode = expression.resolve();
-
-    // Remove arrow-case index variable from referencedVariables after operand
-    // parsing. It was needed there temporarily so the operand body could resolve
-    // references to it. Its field is managed by prepareIndexVariable(); leaving
-    // it in referencedVariables causes declareVariables() to emit a duplicate.
-    if (indexVariableFieldName != null)
-    {
-      expression.referencedVariables.remove(indexVariableFieldName);
-    }
-
-    // 3. Parse limit specification
-    if (functionForm)
-    {
-      expression.require(',');
-      parseLimitSpecification();
+      indexVariableFieldName = maybeName;
+      // Register the index variable — always Integer (discrete loop counter),
+      // and resolve=false because resolveReference() would misclassify it
+      // as an indeterminate and overwrite the type with coDomainType.
+      indexVariableNode = new VariableNode<>(expression,
+                                             new VariableReference<>(indexVariableFieldName,
+                                                                     null,
+                                                                     Integer.class),
+                                             expression.position,
+                                             false);
     }
     else
     {
-      parseLimitSpecification();
-    }
-
-    // 4. For non-arrow syntax (e.g. ∏k{k=1…3}), the operand was parsed before
-    // we knew the index variable name. resolveReference() misclassified it
-    // as an indeterminate with type=coDomainType, which generates .identity()
-    // instead of loading the loop counter. Walk the operand tree and rebind
-    // any VariableNode matching the index variable to be a contextual Integer
-    // reference — prepareIndexVariable() declares the actual field.
-    if (indexVariableNode == null && indexVariableFieldName != null)
-    {
-      operandNode.accept(node ->
-      {
-        if (node instanceof VariableNode vn && vn.getName().equals(indexVariableFieldName))
-        {
-          vn.isIndeterminate = false;
-          vn.reference.type  = Integer.class;
-          expression.referencedVariables.remove(indexVariableFieldName);
-          expression.indeterminateVariables.remove(vn);
-        }
-      });
+      // No arrow — backtrack, let resolve() handle it
+      expression.position  = savedPos;
+      expression.character = savedChar;
     }
   }
 
+  // 2. Parse the operand body as an AST node
+  operandNode = expression.resolve();
+
+  // Remove arrow-case index variable from referencedVariables after operand
+  // parsing. It was needed there temporarily so the operand body could resolve
+  // references to it. Its field is managed by prepareIndexVariable(); leaving
+  // it in referencedVariables causes declareVariables() to emit a duplicate.
+  if (indexVariableFieldName != null)
+  {
+    expression.referencedVariables.remove(indexVariableFieldName);
+  }
+
+  // 3. Parse limit specification
+  if (functionForm)
+  {
+    expression.require(',');
+    parseLimitSpecification();
+  }
+  else
+  {
+    parseLimitSpecification();
+  }
+
+  // 4. For non-arrow syntax (e.g. ∏k{k=1…3}), the operand was parsed before
+  //    we knew the index variable name. resolveReference() misclassified it
+  //    as an indeterminate with type=coDomainType, which generates .identity()
+  //    instead of loading the loop counter. Walk the operand tree and rebind
+  //    any VariableNode matching the index variable to be a contextual Integer
+  //    reference — prepareIndexVariable() declares the actual field.
+  if (indexVariableNode == null && indexVariableFieldName != null)
+  {
+    operandNode.accept(node ->
+    {
+      if (node instanceof VariableNode vn
+                    && vn.getName().equals(indexVariableFieldName))
+      {
+        vn.isIndeterminate = false;
+        vn.reference.type  = Integer.class;
+        expression.referencedVariables.remove(indexVariableFieldName);
+        expression.indeterminateVariables.remove(vn);
+      }
+    });
+  }
+}
+
+
+
   /**
-   * SPLICE constructor — called by spliceInto() with pre-built nodes. No parsing
-   * happens here at all.
+   * SPLICE constructor — called by spliceInto() with pre-built nodes.
+   * No parsing happens here at all.
    */
   public NAryOperationNode(Expression<D, R, F> expression,
                            String identity,
@@ -278,6 +283,15 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
   }
 
+  public MethodVisitor combine(MethodVisitor mv)
+  {
+    return invokeMethod(mv,
+                        generatedType,
+                        operation,
+                        getMethodDescriptor(generatedType, generatedType, int.class),
+                        false);
+  }
+
   protected void compareIndexToUpperLimit(MethodVisitor mv)
   {
     loadFieldFromThis(mv, upperLimitFieldName, Integer.class);
@@ -334,25 +348,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     loadIntermediateResultVariable(mv);
     operandNode.generate(mv, generatedType);
-    Class<?> operandType = operandNode.getGeneratedType();
-    if (operandType == null)
-    {
-      operandType = generatedType;
-    }
-    cast(mv, operandType);
+    cast(mv, generatedType);
     loadBitsParameterOntoStack(mv);
-    combine(mv, operandType);
+    combine(mv);
     pop(mv);
     incrementIndex(mv);
-  }
-
-  public MethodVisitor combine(MethodVisitor mv, Class<?> operandType)
-  {
-    return invokeMethod(mv,
-                        generatedType,
-                        operation,
-                        getMethodDescriptor(generatedType, operandType, int.class),
-                        false);
   }
 
   @Override
@@ -452,9 +452,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
    */
   private void parseLimitSpecification()
   {
-    boolean hasBrace      = expression.nextCharacterIs('{');
+    boolean hasBrace = expression.nextCharacterIs('{');
 
-    String  specifiedName = expression.parseName();
+    String specifiedName = expression.parseName();
     if (specifiedName == null || specifiedName.isEmpty())
     {
       expression.throwUnexpectedCharacterException("index variable name cannot be null or empty");
