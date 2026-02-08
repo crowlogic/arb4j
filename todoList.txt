@@ -1,1 +1,4 @@
 TODO: expr compiler: Implement common subexpression elimination #518
+Implement WhenNode.differentiate() — piecewise differentiation #839
+Expand PolynomialIntegralNode to accept an arbitrary cofactor multiplied into the polynomial before integration #835
+implement ∫(t^p)*(P(i)(t))dt over [-1, 1] where P(i): Integer->RealPolynomial

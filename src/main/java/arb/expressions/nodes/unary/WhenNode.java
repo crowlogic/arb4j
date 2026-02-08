@@ -126,7 +126,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    assert false : "TODO";
+    assert false : "TODO: differentiate " + this + " with respect to " + variable;
     return null;
   }
 
