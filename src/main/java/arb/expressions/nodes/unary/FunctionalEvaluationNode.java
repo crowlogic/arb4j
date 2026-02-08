@@ -9,6 +9,7 @@ import org.objectweb.asm.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import arb.Polynomial;
 import arb.RealPolynomial;
 import arb.expressions.Expression;
 import arb.expressions.nodes.*;
@@ -141,7 +142,7 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
   {
     // If we have a polynomial function application being integrated
     // with respect to its argument
-    if (functionNode.type().equals(arb.RealPolynomial.class) && arg.equals(variable))
+    if (Polynomial.class.isAssignableFrom(functionNode.type()) && arg.equals(variable))
     {
       // Create a concrete PolynomialIntegralNode to handle the integration
       PolynomialIntegralNode<D,
