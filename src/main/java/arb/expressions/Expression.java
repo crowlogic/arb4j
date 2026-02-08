@@ -1342,15 +1342,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       generateDomainTypeMethod(classVisitor);
       generateCoDomainTypeMethod(classVisitor);
       generateEvaluationMethod(classVisitor);
-      if (Polynomial.class.isAssignableFrom(coDomainType))
-      {
-        generatePolynomialMethod(classVisitor, "integral");
-        generatePolynomialMethod(classVisitor, "derivative");
-      }
-      else if (!isNullaryFunction())
+      if (!isNullaryFunction())
       {
         generateDerivativeMethod(classVisitor);
         generateIntegralMethod(classVisitor);
+      }
+      else if (Polynomial.class.isAssignableFrom(coDomainType))
+      {
+        generatePolynomialMethod(classVisitor, "integral");
+        generatePolynomialMethod(classVisitor, "derivative");
       }
       declareFields(classVisitor);
       generateInitializationMethod(classVisitor);
