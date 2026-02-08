@@ -158,7 +158,7 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
   @Override
   public Node<D, C, F> differentiate(VariableNode<D, C, F> variable)
   {
-    throw new UnsupportedOperationException("Differentiation not implemented for AnonymousFunctionNode");
+    throw new UnsupportedOperationException("TODO");
   }
 
   @Override
