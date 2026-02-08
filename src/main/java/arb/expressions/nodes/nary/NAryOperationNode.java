@@ -72,6 +72,18 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   public String               operandValueFieldName;
 
+  /**
+   * PARSING constructor — called when the parser hits Σ, Π, sum(, etc.
+   * Parses the operand body inline via expression.resolve().
+   *
+   * @param functionForm true if syntax is sum(...) / prod(...) with parens
+   */
+/**
+ * PARSING constructor — called when the parser hits Σ, Π, sum(, etc.
+ * Parses the operand body inline via expression.resolve().
+ *
+ * @param functionForm true if syntax is sum(...) / prod(...) with parens
+ */
 /**
  * PARSING constructor — called when the parser hits Σ, Π, sum(, etc.
  * Parses the operand body inline via expression.resolve().
