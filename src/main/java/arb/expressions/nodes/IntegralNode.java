@@ -12,7 +12,6 @@ import arb.exceptions.CompilerException;
 import arb.expressions.*;
 import arb.expressions.nodes.binary.MultiplicationNode;
 import arb.expressions.nodes.binary.SubtractionNode;
-import arb.expressions.nodes.unary.FunctionalEvaluationNode;
 import arb.functions.Function;
 
 /**
@@ -570,19 +569,22 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
     if (indefiniteIntegralNode == null)
     {
-      computeIndefiniteIntegralNode(false);
+      computeIndefiniteIntegral(false);
     }
-    
+
+    if (indefiniteIntegralNode instanceof IntegralNode)
+    {
+      return this;
+    }
+
     if (isDefiniteIntegral())
     {
-     
       return getDefiniteIntegralEvaluationNode();
     }
     else
     {
       return indefiniteIntegralNode;
     }
-
   }
 
   @Override
