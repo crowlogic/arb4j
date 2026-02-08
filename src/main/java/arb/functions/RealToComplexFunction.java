@@ -27,7 +27,7 @@ public interface RealToComplexFunction extends
                           Complex.class,
                           RealToComplexFunction.class,
                           null,
-                          null);
+                          null, true);
   }
 
   public static Expression<Real, Complex, RealToComplexFunction>
@@ -40,7 +40,7 @@ public interface RealToComplexFunction extends
                           Complex.class,
                           RealToComplexFunction.class,
                           name,
-                          null);
+                          null, true);
   }
 
   @Override

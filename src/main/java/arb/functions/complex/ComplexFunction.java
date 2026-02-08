@@ -164,7 +164,7 @@ public interface ComplexFunction extends
                           Complex.class,
                           ComplexFunction.class,
                           null,
-                          null);
+                          null, true);
   }
 
   /**

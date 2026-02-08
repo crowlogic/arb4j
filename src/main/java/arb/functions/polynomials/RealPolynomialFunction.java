@@ -26,7 +26,7 @@ public interface RealPolynomialFunction extends
                         RealPolynomial.class,
                         RealPolynomialFunction.class,
                         null,
-                        null);
+                        null, true);
   }
 
   public static RealPolynomialFunction express(String expression, boolean verbose2)

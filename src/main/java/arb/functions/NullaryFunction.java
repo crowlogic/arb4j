@@ -36,7 +36,7 @@ public interface NullaryFunction<R> extends
                           elementType,
                           nullaryFunctionType,
                           functionName,
-                          null);
+                          null, true);
   }
 
   @SuppressWarnings("unchecked")

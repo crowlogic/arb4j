@@ -23,7 +23,7 @@ public class RealFunctionTest
   {
     var context = new Context();
     var H       = RealFunction.parse("H:a->int(sin(x)*δ(x-a),x=-inf..inf)",                                     
-                                     context);
+                                     context, true);
     assertEquals("H:a➔sin(a)", H.toString());
     
   }
@@ -32,17 +32,17 @@ public class RealFunctionTest
   {
     var context = new Context();
     var δ       = RealFunction.parse("δ(x)",
-                                     context);
+                                     context, true);
     var H       = RealFunction.parse("H:int(δ(x),x)",                                     
-                                     context);
+                                     context, true);
     assertEquals("H:x➔θ(x)", H.toString());
     
     var H2      = RealFunction.parse("H2:int(H(x),x)",
-                                     context);
+                                     context, true);
     assertEquals("H2:x➔x*θ(x)", H2.toString());
 
     var H3      = RealFunction.parse("H3:int(H2(x),x)",
-                                     context);
+                                     context, true);
     assertEquals("H3:x➔((x^2)/2)*(x*θ(x))", H3.toString());
   }
 
@@ -66,7 +66,7 @@ public class RealFunctionTest
     var f         = RealFunction.express("θ:im(lnΓ(¼+I*t/2))-(log(π)/2)*t",
                                          context);
     var e         = RealFunction.parse("e:θ(t)-t",
-                                       context);
+                                       context, true);
     var einstance = e.instantiate();
     assertEquals("e:t➔θ(t)-t",
                  einstance.toString());

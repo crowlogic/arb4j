@@ -77,6 +77,6 @@ public interface ComplexRationalFunctionSequence extends
                           ComplexRationalFunction.class,
                           ComplexRationalFunctionSequence.class,
                           null,
-                          null);
+                          null, true);
   }
 }

@@ -121,7 +121,7 @@ public class Equation<D, C, F extends Function<? extends D, ? extends C>>
                          coDomainType,
                          functionType,
                          "lhs",
-                         null);
+                         null, true);
     lhs.require('=');
     string = string.substring(lhs.position - 1, string.length());
     rhs    = Function.parse("rhs" + Parser.hashString(string),
@@ -131,7 +131,7 @@ public class Equation<D, C, F extends Function<? extends D, ? extends C>>
                             coDomainType,
                             functionType,
                             "rhs",
-                            null);
+                            null, true);
 
   }
 

@@ -44,7 +44,7 @@ public interface ComplexPolynomialSequence extends PolynomialSequence<Complex, C
                           ComplexPolynomial.class,
                           ComplexPolynomialSequence.class,
                           null,
-                          null);
+                          null, true);
   }
 
   public static ComplexPolynomialSequence express(String name, String expression, Context context)

@@ -113,7 +113,7 @@ public class FunctionNodeTest extends
   public static void testDeltaFunctionDerivativeIntegration()
   {
     var context = new Context();
-    var f       = RealFunction.parse("diff(x*δ(x),x)", context);
+    var f       = RealFunction.parse("diff(x*δ(x),x)", context, true);
     assertEquals("x➔δ(x)", f.toString());
   }
 
@@ -121,7 +121,7 @@ public class FunctionNodeTest extends
   public static void testDeltaFunctionInIntegral()
   {
     var context = new Context();
-    var f       = RealFunction.parse("int((x-1)*δ(x-1),x)", context);
+    var f       = RealFunction.parse("int((x-1)*δ(x-1),x)", context, true);
     // Indefinite integral - assert actual output
     assertEquals("x➔(((x^2)/2)-x)*θ(x-1)", f.toString());
   }
@@ -155,16 +155,16 @@ public class FunctionNodeTest extends
   public static void testintegralOfDeltaFunction()
   {
     var context = new Context();
-    var f       = RealFunction.parse("int(δ(x),x)", context);
-    var g       = RealFunction.parse("θ(x)", context);
+    var f       = RealFunction.parse("int(δ(x),x)", context, true);
+    var g       = RealFunction.parse("θ(x)", context, true);
     assertEquals(f.toString(), g.toString());
   }
 
   public static void testDerivativeOfStepFunction()
   {
     var context = new Context();
-    var f       = RealFunction.parse("diff(θ(x),x)", context);
-    var g       = RealFunction.parse("δ(x)", context);
+    var f       = RealFunction.parse("diff(θ(x),x)", context, true);
+    var g       = RealFunction.parse("δ(x)", context, true);
     assertEquals(f.toString(), g.toString());
   }
 

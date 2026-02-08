@@ -74,7 +74,7 @@ public interface RealPolynomialNullaryFunction extends
                               RealPolynomial.class,
                               RealPolynomialNullaryFunction.class,
                               functionName,
-                              null);
+                              null, true);
   }
 
   public static Expression<Object, RealPolynomial, RealPolynomialNullaryFunction>

@@ -70,7 +70,7 @@ public interface FractionFunction extends
                           Fraction.class,
                           FractionFunction.class,
                           null,
-                          null);
+                          null, true);
   }
 
   public static Expression<Fraction, Fraction, FractionFunction> parse(String expression, Context context)
@@ -82,6 +82,6 @@ public interface FractionFunction extends
                           Fraction.class,
                           FractionFunction.class,
                           null,
-                          null);
+                          null, true);
   }
 }

@@ -521,7 +521,8 @@ public class Parser
                            coDomainClass,
                            functionClass,
                            functionName,
-                           null);
+                           null,
+                           true);
   }
 
   public static <D,
@@ -539,7 +540,8 @@ public class Parser
                          Class<? extends C> coDomainClass,
                          Class<? extends F> functionClass,
                          String functionName,
-                         Expression<PD, PC, PF> containingExpression)
+                         Expression<PD, PC, PF> containingExpression,
+                         boolean simplify)
   {
     assert !(functionName != null
                   && functionName.contains(":")) : "functionName shan't return colons "
@@ -570,7 +572,7 @@ public class Parser
                                        containingExpression);
     expr.functionNameSpecified = expr.functionName != null;
 
-    return expr.parseRoot();
+    return expr.parseRoot(simplify);
   }
 
   public static <D, R, F extends Function<? extends D, ? extends R>>
@@ -621,7 +623,8 @@ public class Parser
                            Complex.class,
                            ComplexFunction.class,
                            name,
-                           null);
+                           null,
+                           true);
   }
 
 }

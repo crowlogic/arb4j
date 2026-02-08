@@ -152,7 +152,7 @@ public class DerivativeNodeTest extends
     var context    = new Context(Real.named("a").set(2),
                                  Real.named("b").set(4),
                                  Real.named("c").set(6));
-    var f          = RealFunction.parse("x->a*x+b*x²+c*x³", context);
+    var f          = RealFunction.parse("x->a*x+b*x²+c*x³", context, true);
     var derivative = f.rootNode.differentiate().simplify();
     f.rootNode   = derivative;
     f.expression = derivative.toString();

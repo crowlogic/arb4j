@@ -42,6 +42,10 @@ public class NegationNode<D, R, F extends Function<? extends D, ? extends R>>
   public Node<D, R, F> simplify()
   {
 
+    if ( arg instanceof NegationNode<D,R,F> negArg )
+    {
+      return negArg.arg.simplify();
+    } 
     if (arg.isZero())
     {
       return arg = zero();

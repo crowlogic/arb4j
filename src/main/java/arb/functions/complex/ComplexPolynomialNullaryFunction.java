@@ -51,7 +51,7 @@ public interface ComplexPolynomialNullaryFunction extends
                         ComplexPolynomial.class,
                         ComplexPolynomialNullaryFunction.class,
                         functionName,
-                        null);
+                        null, true);
   }
 
 }

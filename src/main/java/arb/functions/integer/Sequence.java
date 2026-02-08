@@ -78,7 +78,7 @@ public interface Sequence<C> extends
                           coDomainClass,
                           functionClass,
                           functionName,
-                          containingExpression);
+                          containingExpression, true);
   }
 
   public static <Q> Sequence<? extends Q> express(String name,
@@ -117,14 +117,14 @@ public interface Sequence<C> extends
          Expression<Integer, C, S>
          parse(String className, Class<S> seq, Class<C> coDomainType, String expr)
   {
-    return Function.parse(className, expr, null, Integer.class, coDomainType, seq, expr, null);
+    return Function.parse(className, expr, null, Integer.class, coDomainType, seq, expr, null, true);
   }
 
   public static <C, S extends Sequence<? extends C>>
          Expression<Integer, C, S>
          parse(String className, Class<S> seq, Class<C> coDomainType, String expr, Context context)
   {
-    return Function.parse(className, expr, context, Integer.class, coDomainType, seq, null, null);
+    return Function.parse(className, expr, context, Integer.class, coDomainType, seq, null, null, true);
   }
 
 

@@ -66,7 +66,8 @@ public interface Function<D, C> extends
                                                        coDomainClass,
                                                        functionClass,
                                                        null,
-                                                       null);
+                                                       null,
+                                                       true);
     parsedExpression.compile();
 
     return parsedExpression;
@@ -332,7 +333,8 @@ public interface Function<D, C> extends
                  coDomainClass,
                  functionClass,
                  null,
-                 null);
+                 null,
+                 true);
   }
 
   public static <D, C, F extends Function<? extends D, ? extends C>>
@@ -350,7 +352,8 @@ public interface Function<D, C> extends
                  coDomainClass,
                  functionClass,
                  null,
-                 null);
+                 null,
+                 true);
   }
 
   public static <D,
@@ -368,16 +371,18 @@ public interface Function<D, C> extends
                Class<? extends C> coDomainClass,
                Class<? extends F> functionClass,
                String functionName,
-               Expression<PD, PC, PF> containingExpression)
+               Expression<PD, PC, PF> containingExpression,
+               boolean simplify)
   {
     return Parser.parseExpression(className,
-                        expression,
-                        context,
-                        domainClass,
-                        coDomainClass,
-                        functionClass,
-                        functionName,
-                        containingExpression);
+                                  expression,
+                                  context,
+                                  domainClass,
+                                  coDomainClass,
+                                  functionClass,
+                                  functionName,
+                                  containingExpression,
+                                  simplify);
   }
 
   public default void close()

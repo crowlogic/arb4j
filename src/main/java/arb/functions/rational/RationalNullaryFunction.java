@@ -53,7 +53,7 @@ public interface RationalNullaryFunction extends
                                                                    context,
                                                                    functionName,
                                                                    null);
-    return expr.parseRoot();
+    return expr.parseRoot(true);
   }
 
   public static Expression<Object, RationalFunction, RationalNullaryFunction>

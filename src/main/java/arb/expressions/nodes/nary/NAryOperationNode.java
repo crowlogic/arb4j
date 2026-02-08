@@ -635,7 +635,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                              resultType,
                                              Function.class,
                                              operandFunctionFieldName,
-                                             expression));
+                                             expression, true));
 
     propagateContextVariablesToOperand();
   }

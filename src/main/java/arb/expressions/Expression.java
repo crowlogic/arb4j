@@ -433,6 +433,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       else if (nextCharacterIs('-', '₋', '−'))
       {
         var rhs = exponentiateMultiplyAndDivide();
+        assert rhs != null : "rhs is null for node=" + node + " in " + this;
         node = node == null ? rhs.neg() : node.sub(rhs);
       }
       else
@@ -1315,8 +1316,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Generate the implementation of the function after this{@link #parseRoot()}
-   * has been invoked
+   * Generate the implementation of the function after
+   * this{@link #parseRoot(boolean)} has been invoked
    * 
    * @return this
    * @throws CompilerException
@@ -1636,7 +1637,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (rootNode == null)
     {
-      parseRoot();
+      parseRoot(true);
     }
 
     Label startLabel = new Label();
@@ -2991,11 +2992,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * calling this{@link #resolve()} and assigning the result to
    * this{@link #rootNode}
    * 
+   * @param simplify TODO
+   * 
    * @return this
    * @throws CompilerException
    */
   @SuppressWarnings("unchecked")
-  public <E extends Expression<? extends D, ? extends C, F>> E parseRoot()
+  public <E extends Expression<? extends D, ? extends C, F>> E parseRoot(boolean simplify)
   {
     assert rootNode
                   == null : "parse must only be called before anything else has been parsed but rootNode="
@@ -3007,7 +3010,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       log.debug("#{}: parseRoot expression='{}'\n", System.identityHashCode(this), expression);
     }
 
-    rootNode = resolve().simplify();
+    rootNode = resolve();
     assert rootNode != null : "evaluateRootNode: determine() returned null, expression='"
                               + expression
                               + "'";
@@ -3016,6 +3019,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (position < expression.length() && character != '=')
     {
       throwUnexpectedCharacterException();
+    }
+
+    if (simplify)
+    {
+      rootNode = rootNode.simplify();
     }
 
     return (E) this;

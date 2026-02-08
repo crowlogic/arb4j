@@ -79,6 +79,6 @@ public interface RationalFunctionSequence extends Sequence<RationalFunction>
                           RationalFunction.class,
                           RationalFunctionSequence.class,
                           null,
-                          null);
+                          null, true);
   }
 }

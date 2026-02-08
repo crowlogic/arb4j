@@ -55,7 +55,7 @@ public interface ComplexRationalNullaryFunction extends
                           ComplexRationalFunction.class,
                           ComplexRationalNullaryFunction.class,
                           functionName,
-                          null);
+                          null, true);
   }
 
   public static Expression<Object, ComplexRationalFunction, ComplexRationalNullaryFunction>

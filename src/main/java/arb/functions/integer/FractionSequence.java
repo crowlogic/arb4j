@@ -32,7 +32,7 @@ public interface FractionSequence extends
                           Real.class,
                           RealSequence.class,
                           null,
-                          null);
+                          null, true);
   }
 
   /**

@@ -97,10 +97,16 @@ public interface RealFunction extends
          Expression<Real, Real, RealFunction>
          parse(String expression)
   {
-    return parse(expression, null);
+    return parse(expression, null, true);
   }
 
   public static Expression<Real, Real, RealFunction> parse(String expression, Context context)
+  {
+    return parse(expression, context, true);
+  }
+
+  public static Expression<Real, Real, RealFunction>
+         parse(String expression, Context context, boolean simplify)
   {
     String className    = Parser.hashString(expression);
 
@@ -111,7 +117,8 @@ public interface RealFunction extends
                                          Real.class,
                                          RealFunction.class,
                                          null,
-                                         null);
+                                         null,
+                                         simplify);
 
     var    functionName = parsed.functionName;
     parsed.updateStringRepresentation();
@@ -154,8 +161,8 @@ public interface RealFunction extends
   {
     try ( Real x = Real.newVector(2))
     {
-      Real in = x.get(0).set(t);
-      Real out = x.get(1);
+      Real in     = x.get(0).set(t);
+      Real out    = x.get(1);
       Real result = evaluate(in, 1, Double.PRECISION + 5, out);
       return result.doubleValue();
     }

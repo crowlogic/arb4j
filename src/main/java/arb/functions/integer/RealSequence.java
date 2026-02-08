@@ -82,7 +82,7 @@ public interface RealSequence extends
                           Real.class,
                           RealSequence.class,
                           null,
-                          null);
+                          null, true);
   }
 
 }

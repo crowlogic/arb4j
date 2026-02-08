@@ -23,11 +23,19 @@ import arb.functions.Function;
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
-public class AscendingFactorializationNode<D, R, F extends Function<? extends D, ? extends R>> extends
+public class AscendingFactorializationNode<D, R, F extends Function<? extends D, ? extends R>>
+                                          extends
                                           BinaryOperationNode<D, R, F>
 {
   public static final Logger logger = LoggerFactory.getLogger(AscendingFactorializationNode.class);
-  
+
+  @Override
+  public boolean isZero()
+  {
+    // x₍₀₎ = 1 by definition, never zero
+    return right.isZero() ? false : left.isZero();
+  }
+
   @Override
   public Logger getLogger()
   {
@@ -70,7 +78,9 @@ public class AscendingFactorializationNode<D, R, F extends Function<? extends D,
    * @param right
    * @param expression
    */
-  public AscendingFactorializationNode(Node<D, R, F> left, Node<D, R, F> right, Expression<D, R, F> expression)
+  public AscendingFactorializationNode(Node<D, R, F> left,
+                                       Node<D, R, F> right,
+                                       Expression<D, R, F> expression)
   {
     super(expression,
           left,

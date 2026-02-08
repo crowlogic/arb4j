@@ -106,7 +106,7 @@ public interface AlgebraicNumberFunction extends
                           AlgebraicNumber.class,
                           AlgebraicNumberFunction.class,
                           null,
-                          null);
+                          null, true);
   }
 
   public static Expression<AlgebraicNumber, AlgebraicNumber, AlgebraicNumberFunction>
@@ -119,7 +119,7 @@ public interface AlgebraicNumberFunction extends
                           AlgebraicNumber.class,
                           AlgebraicNumberFunction.class,
                           null,
-                          null);
+                          null, true);
   }
 
 }
