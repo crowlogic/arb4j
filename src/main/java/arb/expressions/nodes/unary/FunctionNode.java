@@ -468,17 +468,23 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     setFunctionContext(instance);
 
-    var    derivative                   = instance.derivative();
-    
-    String derivativeFunctionName       = derivative.getName();
+    var    derivative             = instance.derivative();
+
+    String derivativeFunctionName = derivative.getName();
+    if (derivativeFunctionName == null)
+    {
+      derivativeFunctionName = "deriv"
+                               + instance.getClass().getSimpleName()
+                               + String.valueOf(System.identityHashCode(instance));
+    }
     assert derivativeFunctionName != null : "derivativeFunctionName is null for " + derivative;
-    
-    var    newDerivativeFunctionMapping = expression.context.functions.get(derivativeFunctionName);
+
+    var newDerivativeFunctionMapping = expression.context.functions.get(derivativeFunctionName);
 
     assert newDerivativeFunctionMapping != null : "no function mapping with name "
                                                   + derivativeFunctionName
-                                                  + " for derivative";
-    
+                                                  + " for derivative " + derivative + " of " + instance;
+
     return new FunctionNode<D, R, F>(expression,
                                      newDerivativeFunctionMapping,
                                      arg);
