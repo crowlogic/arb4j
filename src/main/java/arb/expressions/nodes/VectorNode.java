@@ -248,4 +248,10 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
     return '→';
   }
 
+  @Override
+  public boolean isZero()
+  {
+    return elements.stream().allMatch(Node::isZero);
+  }
+
 }
