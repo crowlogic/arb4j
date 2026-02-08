@@ -21,12 +21,13 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
                                BinaryOperationNode<D, R, F>
 {
   public static final Logger logger = LoggerFactory.getLogger(ExponentiationNode.class);
-  
+
   @Override
   public Logger getLogger()
   {
     return logger;
   }
+
   @Override
   public boolean isPolynomialLike(VariableNode<D, R, F> variable)
   {
@@ -56,9 +57,22 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
+    if (!right.dependsOn(variable))
+    {
+      // Power rule: d/dx[f(x)^n] = n * f(x)^(n-1) * f'(x)
+      var newExponent = right.sub(one());
+      return right.mul(left.pow(newExponent)).mul(left.differentiate(variable));
+    }
+
+    if (!left.dependsOn(variable))
+    {
+      // Exponential rule: d/dx[a^g(x)] = a^g(x) * g'(x) * ln(a)
+      return mul(right.differentiate(variable).mul(left.log()));
+    }
+
+    // General case: d/dx[f(x)^g(x)] = f^g * (g*f'/f + g'*ln(f))
     var term1 = right.mul(left.differentiate(variable)).div(left);
     var term2 = right.differentiate(variable).mul(left.log());
-
     return mul(term1.add(term2));
   }
 
