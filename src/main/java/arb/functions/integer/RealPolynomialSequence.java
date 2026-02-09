@@ -20,14 +20,12 @@ public interface RealPolynomialSequence extends
                                         PolynomialSequence<Real, RealPolynomial>
 {
 
-  @SuppressWarnings("unchecked")
   @Override
   public default RealPolynomialSequence integral()
   {
     return (n, order, bits, res) -> evaluate(n, order, bits, res).integral();
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public default RealPolynomialSequence derivative()
   {

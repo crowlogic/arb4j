@@ -3023,7 +3023,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * @throws CompilerException
    */
   @SuppressWarnings("unchecked")
-  public <E extends Expression<? extends D, ? extends C, F>> E parseRoot(boolean simplify)
+  public <E extends Expression<? extends D, ? extends C, ? extends F>> E parseRoot(boolean simplify)
   {
     assert rootNode
                   == null : "parse must only be called before anything else has been parsed but rootNode="

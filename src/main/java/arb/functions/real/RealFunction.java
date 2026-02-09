@@ -307,7 +307,7 @@ public interface RealFunction extends
   public default RealFunction derivative()
   {
     assert false : "TODO: " + getClass() + " should implement this";
-    return Function.super.derivative();
+    return null;
   }
 
   @Override
@@ -315,7 +315,7 @@ public interface RealFunction extends
   {
 
     assert false : "TODO: " + getClass() + " should implement this";
-    return Function.super.integral();
+    return null;
   }
 
 }

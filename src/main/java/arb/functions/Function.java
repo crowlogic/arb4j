@@ -37,13 +37,13 @@ public interface Function<D, C> extends
     return null;
   }
 
-  public default <F extends Function<? extends D, ? extends C>> F derivative()
+  public default Function<D,C> derivative()
   {
     assert false : "TODO: " + getClass() + " should implement this";
     return null;
   }
 
-  public default <F extends Function<? extends D, ? extends C>> F integral()
+  public default Function<D,C> integral()
   {
     assert false : "TODO: " + getClass() + " should implement this";
     return null;
@@ -57,17 +57,15 @@ public interface Function<D, C> extends
                  String expression,
                  Context context)
   {
-    Expression<D,
-                  C,
-                  F> parsedExpression = Function.parse(Parser.hashString(expression),
-                                                       expression,
-                                                       context,
-                                                       domainClass,
-                                                       coDomainClass,
-                                                       functionClass,
-                                                       null,
-                                                       null,
-                                                       true);
+    Expression<D, C, F> parsedExpression = Function.parse(Parser.hashString(expression),
+                                                          expression,
+                                                          context,
+                                                          domainClass,
+                                                          coDomainClass,
+                                                          functionClass,
+                                                          null,
+                                                          null,
+                                                          true);
     parsedExpression.compile();
 
     return parsedExpression;
@@ -189,11 +187,13 @@ public interface Function<D, C> extends
                                     expressionName);
   }
 
-  public static <D, C, F extends Function<D, C>> F express(String functionName,
-                                                           Class<? extends D> domainClass,
-                                                           Class<? extends C> coDomainClass,
-                                                           Class<? extends F> functionClass,
-                                                           String expression)
+  public static <D, C, F extends Function<? extends D, ? extends C>>
+         F
+         express(String functionName,
+                 Class<? extends D> domainClass,
+                 Class<? extends C> coDomainClass,
+                 Class<? extends F> functionClass,
+                 String expression)
   {
     return Function.instantiate(expression,
                                 new Context(),
@@ -321,10 +321,12 @@ public interface Function<D, C> extends
     return func;
   }
 
-  public static <D, C, F extends Function<D, C>> Expression<D, C, F> parse(Class<D> domainClass,
-                                                                           Class<C> coDomainClass,
-                                                                           Class<F> functionClass,
-                                                                           String expression)
+  public static <D, C, F extends Function<? extends D, ? extends C>>
+         Expression<D,C,F>
+         parse(Class<D> domainClass,
+               Class<? extends C> coDomainClass,
+               Class<? extends F> functionClass,
+               String expression)
   {
     return parse(Parser.transformToJavaAcceptableCharacters(expression),
                  expression,
@@ -361,9 +363,8 @@ public interface Function<D, C> extends
                 F extends Function<? extends D, ? extends C>,
                 PD,
                 PC,
-                PF extends Function<? extends PD, ? extends PC>,
-                E extends Expression<D, C, F>>
-         E
+                PF extends Function<? extends PD, ? extends PC>>
+         Expression<D, C, F>
          parse(String className,
                String expression,
                Context context,
@@ -371,7 +372,7 @@ public interface Function<D, C> extends
                Class<? extends C> coDomainClass,
                Class<? extends F> functionClass,
                String functionName,
-               Expression<PD, PC, PF> containingExpression,
+               Expression<? extends PD, ? extends PC, ? extends PF> containingExpression,
                boolean simplify)
   {
     return Parser.parseExpression(className,

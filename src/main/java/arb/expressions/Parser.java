@@ -505,7 +505,7 @@ public class Parser
   }
 
   public static <D, R, F extends Function<? extends D, ? extends R>>
-         Expression<D, R, F>
+         Expression<D,R,F>
          parse(String className,
                String expressionString,
                Context context,
@@ -530,9 +530,8 @@ public class Parser
                 F extends Function<? extends D, ? extends C>,
                 PD,
                 PC,
-                PF extends Function<? extends PD, ? extends PC>,
-                E extends Expression<D, C, F>>
-         E
+                PF extends Function<? extends PD, ? extends PC>>
+         Expression<D,C,F>
          parseExpression(String className,
                          String expression,
                          Context context,
@@ -540,7 +539,7 @@ public class Parser
                          Class<? extends C> coDomainClass,
                          Class<? extends F> functionClass,
                          String functionName,
-                         Expression<PD, PC, PF> containingExpression,
+                         Expression<? extends PD, ? extends PC, ? extends PF> containingExpression,
                          boolean simplify)
   {
     assert !(functionName != null
@@ -576,7 +575,7 @@ public class Parser
   }
 
   public static <D, R, F extends Function<? extends D, ? extends R>>
-         Expression<D, R, F>
+         Expression<D,R,F>
          parse(String expression,
                Context context,
                Class<? extends D> domainClass,
@@ -595,13 +594,13 @@ public class Parser
   }
 
   public static <D, R, F extends Function<? extends D, ? extends R>>
-         Expression<D, R, F>
+         Expression<D,R,F>
          parse(String className,
                String expression,
                Context context,
-               Class<D> domainClass,
-               Class<R> coDomainClass,
-               Class<F> functionClass,
+               Class<? extends D> domainClass,
+               Class<? extends R> coDomainClass,
+               Class<? extends F> functionClass,
                boolean verbose)
   {
     return parse(className,
@@ -616,15 +615,18 @@ public class Parser
   public static Expression<Complex, Complex, ComplexFunction>
          parse(String name, String expression, Context context)
   {
-    return parseExpression(name,
-                           expression,
-                           context,
-                           Complex.class,
-                           Complex.class,
-                           ComplexFunction.class,
-                           name,
-                           null,
-                           true);
+    Expression<Complex,
+                  Complex,
+                  ComplexFunction> expr = parseExpression(name,
+                                                          expression,
+                                                          context,
+                                                          Complex.class,
+                                                          Complex.class,
+                                                          ComplexFunction.class,
+                                                          name,
+                                                          null,
+                                                          true);
+    return expr;
   }
 
 }

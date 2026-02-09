@@ -21,8 +21,6 @@ public interface RealSequence extends
                               Sequence<Real>
 {
 
-  
-
   /**
    * Enumerate elements of a {@link RealSequence}
    * 
@@ -46,33 +44,29 @@ public interface RealSequence extends
 
   public static RealSequence express(String expression)
   {
-    return (RealSequence) Sequence.express(Real.class, expression, RealSequence.class);
+    return Sequence.express(Real.class, expression, RealSequence.class);
   }
 
   public static RealSequence express(String expression, Context context)
   {
-    return (RealSequence) Sequence.express(Real.class, expression, RealSequence.class, context);
+    return Sequence.express(Real.class, expression, RealSequence.class, context);
   }
 
   public static RealSequence express(String name, String expression)
   {
-    return (RealSequence) Sequence.express(name, Real.class, expression, RealSequence.class);
+    return Sequence.express(name, Real.class, expression, RealSequence.class);
   }
 
   public static RealSequence express(String name, String expression, Context context)
   {
-    return (RealSequence) Sequence.express(name,
-                                           Real.class,
-                                           expression,
-                                           RealSequence.class,
-                                           context);
+    return Sequence.express(name, Real.class, expression, RealSequence.class, context);
   }
 
   public static Expression<?, ?, ?> compile(String string)
   {
     return Function.compile(Integer.class, Real.class, RealSequence.class, string, new Context());
   }
-  
+
   public static Expression<Integer, Real, RealSequence> parse(String expression)
   {
     return Function.parse(Parser.hashString(expression),
@@ -82,7 +76,8 @@ public interface RealSequence extends
                           Real.class,
                           RealSequence.class,
                           null,
-                          null, true);
+                          null,
+                          true);
   }
 
 }

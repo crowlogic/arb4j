@@ -1,7 +1,5 @@
 package arb.functions.complex;
 
-import java.io.File;
-
 import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -9,7 +7,6 @@ import arb.exceptions.CompilerException;
 import arb.expressions.Context;
 import arb.functions.integer.ComplexFunctionSequence;
 import arb.functions.real.RealNullaryFunction;
-import arb.utensils.Utensils;
 import junit.framework.TestCase;
 
 /**
