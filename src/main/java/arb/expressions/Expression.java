@@ -1849,6 +1849,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     addChecksForNullVariableReferences(mv);
 
+    // Wire context and ascendent variables to nested functions BEFORE
+    // dependency initialization, because dependency init may call methods
+    // (like hypergeometric init/evaluate) that use the nested arg functions
+    // which need their context already set (#842)
+    propagateAscendentInputVariablesToNestedFunctions(mv);
+
     // Initialize in proper dependency order
     if (dependencies != null)
     {
@@ -1864,9 +1870,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       insideInitializer = false;
     }
-
-    // Propagate ascendent input variables to nested operand functions
-    propagateAscendentInputVariablesToNestedFunctions(mv);
 
     if (recursive)
     {
@@ -1986,6 +1989,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
     }
   }
+
   protected ClassVisitor generateInitializationMethod(ClassVisitor classVisitor)
   {
     var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
