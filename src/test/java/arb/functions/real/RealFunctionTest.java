@@ -24,7 +24,7 @@ public class RealFunctionTest
     var context = new Context();
     var H       = RealFunction.parse("H:a->int(sin(x)*δ(x-a),x=-inf..inf)",                                     
                                      context, true);
-    assertEquals("H:a➔sin(a)", H.toString());
+    assertEquals("H:a➞sin(a)", H.toString());
     
   }
   
@@ -35,15 +35,15 @@ public class RealFunctionTest
                                      context, true);
     var H       = RealFunction.parse("H:int(δ(x),x)",                                     
                                      context, true);
-    assertEquals("H:x➔θ(x)", H.toString());
+    assertEquals("H:x➞θ(x)", H.toString());
     
     var H2      = RealFunction.parse("H2:int(H(x),x)",
                                      context, true);
-    assertEquals("H2:x➔x*θ(x)", H2.toString());
+    assertEquals("H2:x➞x*θ(x)", H2.toString());
 
     var H3      = RealFunction.parse("H3:int(H2(x),x)",
                                      context, true);
-    assertEquals("H3:x➔((x^2)/2)*(x*θ(x))", H3.toString());
+    assertEquals("H3:x➞(θ(x)*(x^2))/2", H3.toString());
   }
 
   public void testEvaluateMixedExpression()
@@ -68,9 +68,9 @@ public class RealFunctionTest
     var e         = RealFunction.parse("e:θ(t)-t",
                                        context, true);
     var einstance = e.instantiate();
-    assertEquals("e:t➔θ(t)-t",
+    assertEquals("e:t➞θ(t)-t",
                  einstance.toString());
-    assertEquals("θ:t➔im(lnΓ(¼+((ⅈ*t)/2)))-((log(π)*t)/2)",
+    assertEquals("θ:t➞im(lnΓ(¼+(ⅈ*t)/2))-((log(π)*t)/2)",
                  f.toString());
   }
 
