@@ -1070,7 +1070,14 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
       return result;
     }
   }
-
+    
+  public ComplexPolynomial ascendingFactorial(Integer n, int bits, ComplexPolynomial result)
+  {
+    result.set(1);   
+    ascendingFactorial(n, bits, result.get(0));
+    result.bits = bits;
+    return result;
+  }
     
   /**
    * @see arb#acb_addmul(Complex, Complex, Complex, int)
