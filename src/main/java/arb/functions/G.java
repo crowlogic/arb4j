@@ -21,15 +21,47 @@ public class G implements
 
   public static void main(String args[])
   {
-    G               g     = new G();
-    int             k     = 3;
-    Gfunc x     = (Gfunc) g.evaluate(k, 128);
-    double          point = 2.3;
-    Complex         y     = x.eval(point, new Complex());
-    System.out.format("G(%s)(%s)=%s\n", k, point, y);
-    System.out.println(Utensils.yamlString(g));
-    System.out.println(Utensils.yamlString(x));
+    try ( G g = new G())
+    {
+      int     k     = 3;
+      Gfunc   x     = (Gfunc) g.evaluate(k, 128);
+      double  point = 2.3;
+      Complex y     = x.eval(point, new Complex());
 
+      System.out.format("G(%s)(%s)=%s\n\n", k, point, y);
+
+      System.out.println("=== G (sequence) ===");
+      System.out.println(Utensils.yamlString(g));
+
+      System.out.println("=== Gfunc (element for m=" + k + ") ===");
+      System.out.println(Utensils.yamlString(x));
+
+      System.out.println("=== G.GArg224591451 ===");
+      System.out.println(Utensils.yamlString(g.GArg224591451));
+
+      System.out.println("=== G.GArg1715248762 ===");
+      System.out.println(Utensils.yamlString(g.GArg1715248762));
+
+      System.out.println("=== Gfunc.GfuncArg1408695561 ===");
+      System.out.println(Utensils.yamlString(x.GfuncArg1408695561));
+
+      System.out.println("=== Gfunc.GfuncArg1543043602 ===");
+      System.out.println(Utensils.yamlString(x.GfuncArg1543043602));
+
+      System.out.println("=== Gfunc.elementℚℂ0003 ===");
+      System.out.println(Utensils.yamlString(x.elementℚℂ0003));
+
+      System.out.println("=== Gfunc.elementℚℂ0004 ===");
+      System.out.println(Utensils.yamlString(x.elementℚℂ0004));
+
+      System.out.println("=== Gfunc.hypℚℂF0003 ===");
+      System.out.println(Utensils.yamlString(x.hypℚℂF0003));
+
+      System.out.println("=== Gfunc.hypℚℂF0004 ===");
+      System.out.println(Utensils.yamlString(x.hypℚℂF0004));
+
+      x.close();
+    }
   }
 
   @Override
