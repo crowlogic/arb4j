@@ -8,6 +8,7 @@ import arb.Named;
 import arb.Typesettable;
 import arb.expressions.Context;
 import arb.functions.Function;
+import arb.functions.rational.ComplexRationalFunctionSequence;
 
 public class operandF0001 implements Function<Integer, ComplexRationalFunction>, Typesettable, AutoCloseable, Initializable, Named {
    public boolean isInitialized;
@@ -90,11 +91,11 @@ public class operandF0001 implements Function<Integer, ComplexRationalFunction>,
    }
 
    @Override
-   public Function derivative() {
+   public ComplexRationalFunctionSequence derivative() {
       return Function.express(
          Integer.class,
          ComplexRationalFunction.class,
-         Function.class,
+         ComplexRationalFunctionSequence.class,
          "_diffoperandF0001",
          "diff(((z^n)*Πk➔α[k]⋰n{k=1…p})/(n!*Πk➔β[k]⋰n{k=1…q}),n)",
          this.context

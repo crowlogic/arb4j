@@ -1517,7 +1517,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     generateInvocationOfDefaultNoArgConstructor(mv, true);
 
-    if (context != null)
+    // Only root expressions create their own Context.
+    // Child arg classes receive the parent's context via initialize() (#842)
+    if (context != null && ascendentExpression == null)
     {
       generateContextInitializer(mv);
     }
@@ -1875,13 +1877,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Propagates ascendent input variables (variables from ancestor expressions) to
-   * nested operand functions that reference them.
-   * 
-   * This is necessary because when a nested function (like operandF0001)
-   * references a variable from an ancestor expression (like 'i' from 'func'), the
-   * nested function needs to have its field set to point to the same value.
-   * 
+   * Propagates the parent's context and ascendent input variables (variables from
+   * ancestor expressions) to nested operand functions that reference them.
+   *
+   * For child arg classes whose constructors no longer create their own Context
+   * (see #842), this method assigns this.context to each arg's context field
+   * before any variable propagation occurs.
+   *
    * IMPORTANT: This method runs inside the initialize() method, which has NO
    * input parameter (only 'this' in slot 0). Therefore, it must NOT attempt to
    * propagate the current expression's independent variable, because that
@@ -1910,6 +1912,21 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         continue;
       }
 
+      String funcTypeDesc    = funcMapping.functionFieldDescriptor();
+      String nestedClassName = funcMapping.functionName;
+
+      // Share parent's context with child arg class (#842)
+      if (nestedExpr.ascendentExpression != null)
+      {
+        String contextTypeDesc = Context.class.descriptorString();
+        // Generate: this.<funcFieldName>.context = this.context
+        loadThisOntoStack(mv);
+        mv.visitFieldInsn(GETFIELD, className, funcFieldName, funcTypeDesc);
+        loadThisOntoStack(mv);
+        mv.visitFieldInsn(GETFIELD, className, "context", contextTypeDesc);
+        mv.visitFieldInsn(PUTFIELD, nestedClassName, "context", contextTypeDesc);
+      }
+
       // Check each variable referenced by the nested expression
       for (var varEntry : nestedExpr.referencedVariables.entrySet())
       {
@@ -1918,6 +1935,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
         // Skip independent variables and indeterminates of the nested expression
         if (varNode.isIndependent || varNode.isIndeterminate)
+        {
+          continue;
+        }
+
+        // Skip if already declared as ascendent independent variable
+        if (ascendentExpression != null && ascendentExpression.independentVariable != null
+                      && varName.equals(ascendentExpression.independentVariable.getName()))
         {
           continue;
         }
@@ -1950,26 +1974,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                       className);
           }
 
-          // Generate: this.nestedFunc.varName = this.varName
-          String funcTypeDesc    = funcMapping.functionFieldDescriptor();
-          String varTypeDesc     = varType.descriptorString();
-          String nestedClassName = funcMapping.functionName;
+          String varTypeDesc = varType.descriptorString();
 
-          // Load this.nestedFunc onto stack
+          // Generate: this.<funcFieldName>.<varName> = this.<varName>
           loadThisOntoStack(mv);
           mv.visitFieldInsn(GETFIELD, className, funcFieldName, funcTypeDesc);
-
-          // Load this.varName onto stack
           loadThisOntoStack(mv);
           mv.visitFieldInsn(GETFIELD, className, varName, varTypeDesc);
-
-          // Store into nestedFunc.varName
           mv.visitFieldInsn(PUTFIELD, nestedClassName, varName, varTypeDesc);
         }
       }
     }
   }
-
   protected ClassVisitor generateInitializationMethod(ClassVisitor classVisitor)
   {
     var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
