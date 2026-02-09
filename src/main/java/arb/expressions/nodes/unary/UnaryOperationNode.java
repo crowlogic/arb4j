@@ -62,7 +62,6 @@ public abstract class UnaryOperationNode<D, R, F extends Function<? extends D, ?
     return arg.generate(mv, resultType);
   }
 
-
   @Override
   public boolean dependsOn(VariableNode<D, R, F> variable)
   {

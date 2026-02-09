@@ -24,23 +24,25 @@ import arb.functions.Function;
  * 
  * .
  * 
- * The Lambert W function has infinitely many complex branches , two of which are real on
- * a part of the real line. The principal branch is selected by setting flags to 0, and
- * the branch is selected by setting flags to 1. The principal branch is real-valued for
- * (taking values in ) and the branch is real-valued for and takes values in
+ * The Lambert W function has infinitely many complex branches , two of which
+ * are real on a part of the real line. The principal branch is selected by
+ * setting flags to 0, and the branch is selected by setting flags to 1. The
+ * principal branch is real-valued for (taking values in ) and the branch is
+ * real-valued for and takes values in
  * 
- * . Elsewhere, the Lambert W function is complex and acb_lambertw() should be used.
+ * . Elsewhere, the Lambert W function is complex and acb_lambertw() should be
+ * used.
  * 
- * The implementation first computes a floating-point approximation heuristically and then
- * computes a rigorously certified enclosure around this approximation. Some asymptotic
- * cases are handled specially. The algorithm used to compute the Lambert W function is
- * described in [Joh2017b], which follows the main ideas in [CGHJK1996].
+ * The implementation first computes a floating-point approximation
+ * heuristically and then computes a rigorously certified enclosure around this
+ * approximation. Some asymptotic cases are handled specially. The algorithm
+ * used to compute the Lambert W function is described in [Joh2017b], which
+ * follows the main ideas in [CGHJK1996].
  * 
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
  */
-public class LambertWFunctionNode<D, R, F extends Function<? extends D, ? extends R>>
-                                 extends
+public class LambertWFunctionNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                  FunctionNode<D, R, F>
 {
 
@@ -63,8 +65,7 @@ public class LambertWFunctionNode<D, R, F extends Function<? extends D, ? extend
     if (getClass() != obj.getClass())
       return false;
     LambertWFunctionNode<?, ?, ?> other = (LambertWFunctionNode<?, ?, ?>) obj;
-    return Objects.equals(order,
-                          other.order);
+    return Objects.equals(order, other.order);
   }
 
   @Override
@@ -74,7 +75,9 @@ public class LambertWFunctionNode<D, R, F extends Function<? extends D, ? extend
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<E, S, G>
+         spliceInto(Expression<E, S, G> newExpression)
   {
     return new LambertWFunctionNode<>(newExpression,
                                       order.spliceInto(newExpression),
@@ -84,24 +87,23 @@ public class LambertWFunctionNode<D, R, F extends Function<? extends D, ? extend
   @Override
   public List<Node<D, R, F>> getBranches()
   {
-    return List.of(order,
-                   arg);
+    return List.of(order, arg);
 
   }
 
   @Override
   public String toString()
   {
-    return String.format("W(%s,%s)",
-                         order,
-                         arg);
+    return String.format("W(%s,%s)", order, arg);
   }
 
   Node<D, R, F>  order;
 
   public boolean scalar;
 
-  public LambertWFunctionNode(Expression<D, R, F> expression, Node<D, R, F> flags, Node<D, R, F> arg)
+  public LambertWFunctionNode(Expression<D, R, F> expression,
+                              Node<D, R, F> flags,
+                              Node<D, R, F> arg)
   {
     super("W",
           null,
@@ -124,31 +126,24 @@ public class LambertWFunctionNode<D, R, F extends Function<? extends D, ? extend
   {
     if (Expression.trace)
     {
-      logger.debug(String.format("W.generate(order=%s, resultType=%s\n)\n",
-                                 order,
-                                 resultType));
+      logger.debug(String.format("W.generate(order=%s, resultType=%s\n)\n", order, resultType));
     }
 
     var scalarType = scalarType(resultType);
-    loadOutputVariableOntoStack(mv,
-                                scalarType);
+    loadOutputVariableOntoStack(mv, scalarType);
     duplicateTopOfTheStack(mv);
-    arg.generate(mv,
-                 scalarType);
+    arg.generate(mv, scalarType);
 
-    order.generate(mv,
-                   Integer.class);
+    order.generate(mv, Integer.class);
 
     Compiler.generateCallToGetUnsignedIntValue(mv);
 
     loadBitsParameterOntoStack(mv);
-    invokeStaticEvaluationMethod(mv,
-                                 scalarType);
+    invokeStaticEvaluationMethod(mv, scalarType);
     generatedType = scalarType;
     if (generatedType != resultType)
     {
-      generateCastTo(mv,
-                     resultType);
+      generateCastTo(mv, resultType);
     }
     return mv;
   }
@@ -168,9 +163,7 @@ public class LambertWFunctionNode<D, R, F extends Function<? extends D, ? extend
   @Override
   public String typeset()
   {
-    return format("\\W_%s (%s)",
-                  order.typeset(),
-                  arg == null ? "" : arg.typeset());
+    return format("\\W_%s (%s)", order.typeset(), arg == null ? "" : arg.typeset());
   }
 
 }

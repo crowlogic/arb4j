@@ -28,7 +28,6 @@ public class GammaFunctionNode<D, C, F extends Function<? extends D, ? extends C
           order);
   }
 
-
   @Override
   protected void pushSeriesCallParamsAndInvoke(MethodVisitor mv,
                                                Class<?> sType,

@@ -170,11 +170,9 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
     if (Polynomial.class.isAssignableFrom(functionNode.type()) && arg.equals(variable))
     {
       // Create a concrete PolynomialIntegralNode to handle the integration
-      PolynomialIntegralNode<D,
-                    C,
-                    F> polynomialIntegralNode = new PolynomialIntegralNode<>(expression,
-                                                                             functionNode,
-                                                                             arg);
+      var polynomialIntegralNode = new PolynomialIntegralNode<>(expression,
+                                                                functionNode,
+                                                                arg);
       polynomialIntegralNode.isResult = isResult;
       return polynomialIntegralNode;
     }

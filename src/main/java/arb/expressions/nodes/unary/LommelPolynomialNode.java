@@ -278,10 +278,8 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
       // Clear the indeterminate variable constraint in the clone
       clonedExpression.indeterminateVariables = null;
 
-      List<? extends Node<Object,
-                    RationalFunction,
-                    RationalNullaryFunction>> expressionBranches =
-                                                                 LommelPolynomial.expression.rootNode.getBranches();
+      List<? extends Node<Object, RationalFunction, RationalNullaryFunction>> expressionBranches =
+                                                                                                 LommelPolynomial.expression.rootNode.getBranches();
 
       for (Node<Object, RationalFunction, RationalNullaryFunction> branch : expressionBranches)
       {

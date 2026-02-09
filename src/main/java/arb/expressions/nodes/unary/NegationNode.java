@@ -9,8 +9,7 @@ import arb.functions.Function;
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
  */
-public class NegationNode<D, R, F extends Function<? extends D, ? extends R>>
-                         extends
+public class NegationNode<D, R, F extends Function<? extends D, ? extends R>> extends
                          FunctionNode<D, R, F>
 {
 
@@ -42,20 +41,22 @@ public class NegationNode<D, R, F extends Function<? extends D, ? extends R>>
   public Node<D, R, F> simplify()
   {
 
-    if ( arg instanceof NegationNode<D,R,F> negArg )
+    if (arg instanceof NegationNode<D, R, F> negArg)
     {
       return negArg.arg.simplify();
-    } 
+    }
     if (arg.isZero())
     {
       return arg = zero();
-    } 
-   
+    }
+
     return this;
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<E, S, G>
+         spliceInto(Expression<E, S, G> newExpression)
   {
     return new NegationNode<E, S, G>(newExpression,
                                      arg.spliceInto(newExpression));
@@ -76,15 +77,13 @@ public class NegationNode<D, R, F extends Function<? extends D, ? extends R>>
   @Override
   public String toString()
   {
-    return String.format("-%s",
-                         arg);
+    return String.format("-%s", arg);
   }
 
   @Override
   public String typeset()
   {
-    return String.format("-%s",
-                         arg.typeset());
+    return String.format("-%s", arg.typeset());
   }
 
   @Override

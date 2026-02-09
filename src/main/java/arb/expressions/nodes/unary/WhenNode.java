@@ -97,11 +97,9 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     }
   }
 
-  public <E,
-                S,
-                G extends Function<? extends E,
-                              ? extends S>> WhenNode(Expression<D, R, F> expression,
-                                                     TreeMap<Integer, Node<E, S, G>> cases)
+  public <E, S, G extends Function<? extends E, ? extends S>> WhenNode(
+                                                                       Expression<D, R, F> expression,
+                                                                       TreeMap<Integer, Node<E, S, G>> cases)
   {
     super(expression,
           null);
@@ -150,7 +148,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   public void evaluateCase()
   {
     Node<D, R, F> node = expression.resolve();
-    if ((node instanceof ElseNode))
+    if (node instanceof ElseNode)
     {
       arg = evaluateDefaultCase(expression);
     }
@@ -211,8 +209,8 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
       for (int i = 0; i < labels.length; i++)
       {
         mv.visitLabel(labels[i]);
-        var                     ithBranch     = branches.get(i);
-        Class<? extends Object> ithBranchType = ithBranch.type();
+        var ithBranch     = branches.get(i);
+        var ithBranchType = ithBranch.type();
 
         ithBranch.generate(mv, ithBranchType);
         mv.visitJumpInsn(GOTO, endSwitch);
@@ -319,26 +317,27 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     return expression.coDomainType;
   }
 
-  /**
-   * TODO: make it generate this
-   * 
-   * <pre>
-     $\left\{\begin{array}{ll}
-      \text{val1} & \text{case1}\\
-      \text{val2} & \text{case2}\\
-      \text{val3} & \text{otherwise}\\}
-      \end{array}\right$
-   * </pre>
-   */
   @Override
   public String typeset()
   {
-    return cases.entrySet()
-                .stream()
-                .map(entry -> entry.getValue().typeset())
-                .collect(Collectors.joining(", "))
-           + " \text{otherwise} "
-           + arg.typeset();
+    StringBuilder sb = new StringBuilder();
+    sb.append("\\left\\{\\begin{array}{ll}\n");
+
+    for (var entry : cases.entrySet())
+    {
+      sb.append(entry.getValue().typeset());
+      sb.append(" & \\text{if } ");
+      sb.append(expression.independentVariable.typeset());
+      sb.append(" = ");
+      sb.append(entry.getKey());
+      sb.append("\\\\\n");
+    }
+
+    sb.append(arg.typeset());
+    sb.append(" & \\text{otherwise}");
+    sb.append("\n\\end{array}\\right.");
+
+    return sb.toString();
   }
 
 }

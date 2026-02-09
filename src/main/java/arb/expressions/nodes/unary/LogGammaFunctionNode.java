@@ -28,7 +28,6 @@ public class LogGammaFunctionNode<D, C, F extends Function<? extends D, ? extend
           order);
   }
 
-
   @Override
   protected void pushSeriesCallParamsAndInvoke(MethodVisitor mv,
                                                Class<?> sType,
