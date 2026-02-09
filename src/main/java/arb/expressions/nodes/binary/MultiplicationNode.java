@@ -2,6 +2,7 @@ package arb.expressions.nodes.binary;
 
 import static java.lang.String.format;
 
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.objectweb.asm.MethodVisitor;
@@ -80,14 +81,25 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
   {
+    // Simplify first -- catches e.g. (x-a)*δ(x-a) = 0
+    Node<D, R, F> simplified = this.simplify();
+    if (simplified.isZero())
+    {
+      return simplified;
+    }
+    if (!simplified.equals(this))
+    {
+      return simplified.integrate(variable);
+    }
+
     // Flatten the product tree into individual factors
-    var factors = new java.util.ArrayList<Node<D, R, F>>();
+    var factors = new ArrayList<Node<D, R, F>>();
     collectFactors(this, factors);
 
     // Separate constant factors (don't depend on integration variable) from the
     // rest
-    var constantFactors = new java.util.ArrayList<Node<D, R, F>>();
-    var variableFactors = new java.util.ArrayList<Node<D, R, F>>();
+    var constantFactors = new ArrayList<Node<D, R, F>>();
+    var variableFactors = new ArrayList<Node<D, R, F>>();
     for (var factor : factors)
     {
       if (factor.isScalar() && !factor.dependsOn(variable))
@@ -108,7 +120,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       return constantProduct.mul(variableProduct.integrate(variable)).simplify();
     }
 
-    // All factors depend on the variable — try IBP on all 2-partitions
+    // All factors depend on the variable -- try IBP on all 2-partitions
     var ibpResult = tryIntegrationByPartsOnFactors(variableFactors, variable);
     if (ibpResult != null)
     {

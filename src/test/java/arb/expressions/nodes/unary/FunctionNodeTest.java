@@ -120,11 +120,11 @@ public class FunctionNodeTest extends
 
   public static void testDeltaFunctionInIntegral()
   {
-    var context = new Context();
-    var f       = RealFunction.parse("int((x-1)*δ(x-1),x)", context, true);
-    // Indefinite integral - assert actual output
-    assertEquals("x➔(((x^2)/2)-x)*θ(x-1)", f.toString());
+      var context = new Context();
+      var f       = RealFunction.parse("int((x-1)*δ(x-1),x)", context, true);
+      assertEquals("x➔0", f.toString());
   }
+
 
 
   public static void testDeltaFunctionMultipleVariableOccurrences()
