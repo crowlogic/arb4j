@@ -44,10 +44,10 @@ public class ComplexFunctionTest extends
     {
       var context = new Context();
 
-      var F       =
-            ComplexFunctionSequence.express("F:m->-I*(pFq([1,m,-m],[1/2],-((1/2)*I)/y)*exp(I*(π*m+y))-pFq([1,m,-m],[1/2],((1/2)*I)/y)*exp(I*(2*π*m-y)))*(4*m^2-1)*(-1)^(-m)/((4*m^2-2)*y*π)",
+      ComplexFunctionSequence G       =
+            ComplexFunctionSequence.express("G:m->-I*(pFq([1,m,-m],[1/2],-((1/2)*I)/y)*exp(I*(π*m+y))-pFq([1,m,-m],[1/2],((1/2)*I)/y)*exp(I*(2*π*m-y)))*(4*m^2-1)*(-1)^(-m)/((4*m^2-2)*y*π)",
                                             context);
-      var x       = F.evaluate(3, 128);
+      ComplexFunction         x       = G.evaluate(3, 128);
 
       var hmm     = x.eval(2.3, new Complex());
       assertEquals("-1.2653528144498223e-16 - i*0.2591427090909935",hmm.toString());

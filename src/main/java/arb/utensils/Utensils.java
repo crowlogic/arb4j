@@ -47,7 +47,7 @@ public class Utensils
     yamlConfig.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
     yamlConfig.setPrettyFlow(true);
     yamlConfig.setSplitLines(false);
-    yamlConfig.setNonPrintableStyle(NonPrintableStyle.ESCAPE);
+    yamlConfig.setNonPrintableStyle(NonPrintableStyle.BINARY);
     NewCommandMacro.addNewCommand("Z", "\\operatorname{Z} {#1}", 1);
     NewCommandMacro.addNewCommand("W", "\\operatorname{W}_{#1}", 1);
     NewCommandMacro.addNewCommand("re", "\\operatorname{Re} {#1}", 1);
@@ -243,6 +243,7 @@ public class Utensils
   {
 
     Yaml                  yaml       = newYaml();
+
     ByteArrayOutputStream baos       = new ByteArrayOutputStream();
     PrintWriter           fileWriter = new PrintWriter(baos);
     for (Object obj : information)
@@ -289,11 +290,12 @@ public class Utensils
     LoaderOptions loadingConfig = new LoaderOptions();
     loadingConfig.setTagInspector(tag -> true);
     loadingConfig.setAllowRecursiveKeys(true);
-    Yaml yaml = new Yaml(new Constructor(SerializedExpression.class,
-                                         loadingConfig),
+    Constructor constructor = new Constructor(SerializedExpression.class,
+                                              loadingConfig);
+    constructor.getPropertyUtils().setSkipMissingProperties(true);
+    Yaml yaml = new Yaml(constructor,
                          new TypeRepresenter(yamlConfig),
                          yamlConfig);
-
     return yaml;
   }
 
