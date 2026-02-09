@@ -120,6 +120,13 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       return constantProduct.mul(variableProduct.integrate(variable)).simplify();
     }
 
+    // Try step function integration: ∫ f(x)·θ(x) dx = θ(x) · ∫ f(x) dx  (#841)
+    var stepResult = tryStepFunctionIntegration(variableFactors, variable);
+    if (stepResult != null)
+    {
+      return stepResult.simplify();
+    }
+
     // All factors depend on the variable -- try IBP on all 2-partitions
     var ibpResult = tryIntegrationByPartsOnFactors(variableFactors, variable);
     if (ibpResult != null)
@@ -166,6 +173,52 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       result = result.mul(factors.get(i));
     }
     return result;
+  }
+
+  /**
+   * Integrates a product containing a Heaviside step function θ(x).
+   *
+   * Uses the identity: ∫ f(x)·θ(x) dx = θ(x) · ∫ f(x) dx
+   *
+   * This works because θ(x) is piecewise constant (0 for x&lt;0, 1 for x&gt;0),
+   * so on each piece the integral reduces to either 0 or ∫ f(x) dx.
+   *
+   * @param factors  The flattened list of variable-dependent factors
+   * @param variable The integration variable
+   * @return The integrated result, or null if no θ factor is present
+   * @see <a href="https://github.com/crowlogic/arb4j/issues/841">#841</a>
+   */
+  private Node<D, R, F> tryStepFunctionIntegration(java.util.List<Node<D, R, F>> factors,
+                                                    VariableNode<D, R, F> variable)
+  {
+    FunctionNode<D, R, F> thetaNode = null;
+    var                   remaining = new java.util.ArrayList<Node<D, R, F>>();
+
+    for (var factor : factors)
+    {
+      if (thetaNode == null && factor instanceof FunctionNode<D, R, F> fn && fn.is("θ"))
+      {
+        thetaNode = fn;
+      }
+      else
+      {
+        remaining.add(factor);
+      }
+    }
+
+    if (thetaNode == null || remaining.isEmpty())
+    {
+      return null;
+    }
+
+    if (Expression.traceNodes)
+    {
+      logger.debug("tryStepFunctionIntegration: θ found, integrating remaining {} factors (#841)",
+                   remaining.size());
+    }
+
+    var product = buildProduct(remaining);
+    return thetaNode.mul(product.integrate(variable));
   }
 
   /**
