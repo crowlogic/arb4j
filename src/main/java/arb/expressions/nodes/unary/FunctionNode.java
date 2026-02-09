@@ -471,13 +471,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     var    derivative             = instance.derivative();
 
     String derivativeFunctionName = derivative.getName();
-    if (derivativeFunctionName == null)
-    {
-      derivativeFunctionName = "deriv"
-                               + instance.getClass().getSimpleName()
-                               + String.valueOf(System.identityHashCode(instance));
-    }
-    assert derivativeFunctionName != null : "derivativeFunctionName is null for " + derivative;
+    assert derivativeFunctionName != null : "derivativeFunctionName is null for instance " + instance + ": TODO: use the " + derivative + " directly";
 
     var newDerivativeFunctionMapping = expression.context.functions.get(derivativeFunctionName);
 
