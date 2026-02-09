@@ -1849,13 +1849,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     addChecksForNullVariableReferences(mv);
 
-    // Wire context and ascendent variables to nested functions BEFORE
-    // dependency initialization, because dependency init may call methods
-    // (like hypergeometric init/evaluate) that use the nested arg functions
-    // which need their context already set (#842)
+    // Phase 1: Ensure all referenced function instances are constructed
+    // (null-check + new). This must happen before context wiring.
+    generateReferencedFunctionInstances(mv);
+
+    // Phase 2: Wire context and ascendent variables to the now-existing
+    // nested function instances, BEFORE dependency initialization which
+    // may call methods (hypergeometric init/evaluate) that use them.
     propagateAscendentInputVariablesToNestedFunctions(mv);
 
-    // Initialize in proper dependency order
+    // Phase 3: Initialize in proper dependency order.
+    // constructReferencedFunctionInstanceIfItIsNull inside
+    // generateDependencyAssignments will be a no-op since Phase 1
+    // already guaranteed non-null.
     if (dependencies != null)
     {
       dependencies.forEach(dependency -> generateDependencyAssignments(mv, dependency));
@@ -1878,6 +1884,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     generateCodeToSetIsInitializedToTrue(mv);
     return mv;
   }
+
 
   /**
    * Propagates the parent's context and ascendent input variables (variables from
