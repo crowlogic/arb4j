@@ -76,35 +76,35 @@ public class Parser
     fractions.put('⅞', FractionConstants.sevenEights);
   }
 
-  public static HashSet<
-                Character> greekAndBlackLetterChars = new HashSet<Character>(Arrays.asList('ℭ',
-                                                                                           'Γ',
-                                                                                           'Δ',
-                                                                                           'Θ',
-                                                                                           'Λ',
-                                                                                           'Ξ',
-                                                                                           'Π',
-                                                                                           'Σ',
-                                                                                           'Φ',
-                                                                                           'Ψ',
-                                                                                           'Ω',
-                                                                                           'γ',
-                                                                                           'δ',
-                                                                                           'θ',
-                                                                                           'λ',
-                                                                                           'ξ',
-                                                                                           'π',
-                                                                                           'ς',
-                                                                                           'φ',
-                                                                                           'ψ',
-                                                                                           'ω',
-                                                                                           'ϑ',
-                                                                                           'ϒ',
-                                                                                           'ϖ',
-                                                                                           'ϕ',
-                                                                                           'ϱ',
-                                                                                           'ϰ',
-                                                                                           'ζ'));
+  public static HashSet<Character> greekAndBlackLetterChars =
+                                                            new HashSet<Character>(Arrays.asList('ℭ',
+                                                                                                 'Γ',
+                                                                                                 'Δ',
+                                                                                                 'Θ',
+                                                                                                 'Λ',
+                                                                                                 'Ξ',
+                                                                                                 'Π',
+                                                                                                 'Σ',
+                                                                                                 'Φ',
+                                                                                                 'Ψ',
+                                                                                                 'Ω',
+                                                                                                 'γ',
+                                                                                                 'δ',
+                                                                                                 'θ',
+                                                                                                 'λ',
+                                                                                                 'ξ',
+                                                                                                 'π',
+                                                                                                 'ς',
+                                                                                                 'φ',
+                                                                                                 'ψ',
+                                                                                                 'ω',
+                                                                                                 'ϑ',
+                                                                                                 'ϒ',
+                                                                                                 'ϖ',
+                                                                                                 'ϕ',
+                                                                                                 'ϱ',
+                                                                                                 'ϰ',
+                                                                                                 'ζ'));
 
   public static char subscriptedDigitToRegular(char c)
   {
@@ -290,9 +290,30 @@ public class Parser
     }
   }
 
-  public static final HashSet<
-                Character>               SUBSCRIPT_CHARACTERS         = new HashSet<
-                              Character>(Arrays.asList('₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉', 'ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ', 'ₜ'));
+  public static final HashSet<Character> SUBSCRIPT_CHARACTERS         =
+                                                              new HashSet<Character>(Arrays.asList('₀',
+                                                                                                   '₁',
+                                                                                                   '₂',
+                                                                                                   '₃',
+                                                                                                   '₄',
+                                                                                                   '₅',
+                                                                                                   '₆',
+                                                                                                   '₇',
+                                                                                                   '₈',
+                                                                                                   '₉',
+                                                                                                   'ₐ',
+                                                                                                   'ₑ',
+                                                                                                   'ₒ',
+                                                                                                   'ₓ',
+                                                                                                   'ₔ',
+                                                                                                   'ₕ',
+                                                                                                   'ₖ',
+                                                                                                   'ₗ',
+                                                                                                   'ₘ',
+                                                                                                   'ₙ',
+                                                                                                   'ₚ',
+                                                                                                   'ₛ',
+                                                                                                   'ₜ'));
 
   public static final char[]             SUPERSCRIPT_DIGITS_ARRAY     = new char[]
   { '⁰', '¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹' };
@@ -505,7 +526,7 @@ public class Parser
   }
 
   public static <D, R, F extends Function<? extends D, ? extends R>>
-         Expression<D,R,F>
+         Expression<D, R, F>
          parse(String className,
                String expressionString,
                Context context,
@@ -531,7 +552,7 @@ public class Parser
                 PD,
                 PC,
                 PF extends Function<? extends PD, ? extends PC>>
-         Expression<D,C,F>
+         Expression<D, C, F>
          parseExpression(String className,
                          String expression,
                          Context context,
@@ -575,7 +596,7 @@ public class Parser
   }
 
   public static <D, R, F extends Function<? extends D, ? extends R>>
-         Expression<D,R,F>
+         Expression<D, R, F>
          parse(String expression,
                Context context,
                Class<? extends D> domainClass,
@@ -594,7 +615,7 @@ public class Parser
   }
 
   public static <D, R, F extends Function<? extends D, ? extends R>>
-         Expression<D,R,F>
+         Expression<D, R, F>
          parse(String className,
                String expression,
                Context context,
@@ -615,17 +636,15 @@ public class Parser
   public static Expression<Complex, Complex, ComplexFunction>
          parse(String name, String expression, Context context)
   {
-    Expression<Complex,
-                  Complex,
-                  ComplexFunction> expr = parseExpression(name,
-                                                          expression,
-                                                          context,
-                                                          Complex.class,
-                                                          Complex.class,
-                                                          ComplexFunction.class,
-                                                          name,
-                                                          null,
-                                                          true);
+    Expression<Complex, Complex, ComplexFunction> expr = parseExpression(name,
+                                                                         expression,
+                                                                         context,
+                                                                         Complex.class,
+                                                                         Complex.class,
+                                                                         ComplexFunction.class,
+                                                                         name,
+                                                                         null,
+                                                                         true);
     return expr;
   }
 

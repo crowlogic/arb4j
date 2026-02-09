@@ -14,7 +14,7 @@ import arb.expressions.Expression;
 import arb.utensils.Utensils;
 
 public abstract class HypergeometricFunction<P extends NamedRing<P>,
-              C extends NamedRing<C>,
+              C extends NamedRing<? extends C>,
               N extends NullaryFunction<C>> implements
                                             NullaryFunction<C>,
                                             Verifiable
@@ -47,7 +47,6 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
   static final Logger logger = LoggerFactory.getLogger(HypergeometricFunction.class);
 
 //NEW: init for Real alpha/beta, constant arg
-  @SuppressWarnings("unchecked")
   public HypergeometricFunction<P, C, N> init(Class<P> paramType,
                                               Class<C> elementType,
                                               Class<N> nullaryFunctionType,
@@ -63,7 +62,6 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
   }
 
 //NEW: init for Real alpha/beta, input-dependent arg
-  @SuppressWarnings("unchecked")
   public HypergeometricFunction<P, C, N> init(Class<P> paramType,
                                               Class<C> elementType,
                                               Class<N> nullaryFunctionType,
@@ -196,7 +194,6 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
     f = F.instantiate();
   }
 
-  @SuppressWarnings("unchecked")
   public void initializeContext(Class<C> elementType)
   {
     context = new Context(p = new Integer(α.dim(),

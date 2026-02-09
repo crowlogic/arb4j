@@ -312,22 +312,20 @@ public class ExpressionTest extends
   public void testRealFunctionDerivative()
   {
 
-    var                          context = new Context(Real.named("a").set(2),
-                                                       Real.named("b").set(4),
-                                                       Real.named("c").set(6));
-    Function<Real,
-                  RealFunction>  x       = Function.express(Real.class,
-                                                            RealFunction.class,
-                                                            "x->∂a*x+b*x²+c*x³/∂x",
-                                                            context);
+    var          context = new Context(Real.named("a").set(2),
+                                       Real.named("b").set(4),
+                                       Real.named("c").set(6));
+    RealFunction x       = Function.express(Real.class,
+                                            Real.class,
+                                            RealFunction.class,
+                                            "x->∂a*x+b*x²+c*x³/∂x",
+                                            context);
 
-    RealFunction                 poly    = x.evaluate(null, 128);
-
-    var                          y       = poly.evaluate(new Real("2.3",
-                                                                  128),
-                                                         1,
-                                                         128,
-                                                         new Real());
+    var          y       = x.evaluate(new Real("2.3",
+                                               128),
+                                      1,
+                                      128,
+                                      new Real());
     y.printPrecision = false;
     assertEquals(115.62, y.doubleValue());
   }

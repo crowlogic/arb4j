@@ -1,15 +1,15 @@
 <configuration>
-    <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
- 
-    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>[%thread] %logger{36} - %msg%n</pattern>
-        </encoder>
-    </appender>
+	<statusListener class="ch.qos.logback.core.status.NopStatusListener" />
 
-    <root level="INFO">
-        <appender-ref ref="console" />
-    </root>
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>[%thread] %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
 
-    <logger name="arb.expressions.Expression" level="INFO" />
+	<root level="INFO">
+		<appender-ref ref="console" />
+	</root>
+
+	<logger name="arb.expressions.Expression" level="INFO" />
 </configuration>

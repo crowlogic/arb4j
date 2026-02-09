@@ -793,13 +793,13 @@ public class Compiler
     return realTypes.contains(t);
   }
 
-  public static final HashSet<
-                Class<?>> realTypes = new HashSet<>(Arrays.asList(Real.class,
-                                                                  Complex.class,
-                                                                  Integer.class,
-                                                                  Fraction.class,
-                                                                  ComplexFraction.class,
-                                                                  AlgebraicNumber.class,
-                                                                  GaussianInteger.class));
+  public static final HashSet<Class<?>> realTypes =
+                                                  new HashSet<>(Arrays.asList(Real.class,
+                                                                              Complex.class,
+                                                                              Integer.class,
+                                                                              Fraction.class,
+                                                                              ComplexFraction.class,
+                                                                              AlgebraicNumber.class,
+                                                                              GaussianInteger.class));
 
 }

@@ -2389,8 +2389,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                            String generatedFunctionClassInternalName,
                                                            String fieldType,
                                                            String functionFieldName,
-                                                           Stream<OrderedPair<String,
-                                                                         Class<?>>> variables)
+                                                           Stream<OrderedPair<String, Class<?>>> variables)
   {
     var    functionMapping = context.functions.get(functionFieldName);
     String typeDesc        = functionMapping.functionFieldDescriptor(false);
@@ -2490,9 +2489,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected void
             linkSharedVariableToReferencedFunction(MethodVisitor mv,
-                                                   FunctionMapping<Object,
-                                                                 Object,
-                                                                 Function<?, ?>> functionMapping,
+                                                   FunctionMapping<Object, Object, Function<?, ?>> functionMapping,
                                                    String generatedFunctionClassInternalName,
                                                    String fieldType,
                                                    String functionFieldName,
@@ -3176,10 +3173,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected void
             propagateIndependentVariable(MethodVisitor mv,
                                          Expression<?, ?, Function<?, ?>> function,
-                                         VariableNode<?,
-                                                       ?,
-                                                       Function<?,
-                                                                     ?>> independentVariableMappedToFunctional)
+                                         VariableNode<?, ?, Function<?, ?>> independentVariableMappedToFunctional)
   {
     if (trace)
     {

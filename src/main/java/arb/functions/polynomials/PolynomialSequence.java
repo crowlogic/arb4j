@@ -3,6 +3,7 @@ package arb.functions.polynomials;
 import java.util.Iterator;
 
 import arb.Integer;
+import arb.Polynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;

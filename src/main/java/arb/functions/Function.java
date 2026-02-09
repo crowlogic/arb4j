@@ -37,13 +37,13 @@ public interface Function<D, C> extends
     return null;
   }
 
-  public default Function<D,C> derivative()
+  public default Function<D, C> derivative()
   {
     assert false : "TODO: " + getClass() + " should implement this";
     return null;
   }
 
-  public default Function<D,C> integral()
+  public default Function<D, C> integral()
   {
     assert false : "TODO: " + getClass() + " should implement this";
     return null;
@@ -105,28 +105,12 @@ public interface Function<D, C> extends
                  Class<? extends F> functionClass,
                  String expression)
   {
-    return (F) Function.instantiate(expression,
-                                    new Context(),
-                                    domainClass,
-                                    coDomainClass,
-                                    functionClass,
-                                    null);
-  }
-
-  @SuppressWarnings("unchecked")
-  public static <D, C, F extends Function<? extends D, ? extends C>>
-         F
-         express(Class<? extends D> domainClass,
-                 Class<? extends C> coDomainClass,
-                 String expression,
-                 Context context)
-  {
-    return (F) Function.instantiate(expression,
-                                    context,
-                                    domainClass,
-                                    coDomainClass,
-                                    Function.class,
-                                    null);
+    return Function.instantiate(expression,
+                                new Context(),
+                                domainClass,
+                                coDomainClass,
+                                functionClass,
+                                null);
   }
 
   @SuppressWarnings("unchecked")
@@ -169,11 +153,8 @@ public interface Function<D, C> extends
   {
     if (context != null)
     {
-      FunctionMapping<Object,
-                    Object,
-                    Function<? extends Object,
-                                  ? extends Object>> functionMapping =
-                                                                     context.getFunctionMapping(expressionName);
+      FunctionMapping<Object, Object, Function<? extends Object, ? extends Object>> functionMapping =
+                                                                                                    context.getFunctionMapping(expressionName);
       if (functionMapping != null && functionMapping.instance != null)
       {
         return (F) functionMapping.instance;
@@ -292,14 +273,12 @@ public interface Function<D, C> extends
 
     }
 
-    Expression<D,
-                  C,
-                  F> compiledExpression = Parser.parse(expression,
-                                                       context,
-                                                       domainClass,
-                                                       coDomainClass,
-                                                       functionClass,
-                                                       functionName);
+    Expression<D, C, F> compiledExpression = Parser.parse(expression,
+                                                          context,
+                                                          domainClass,
+                                                          coDomainClass,
+                                                          functionClass,
+                                                          functionName);
 
     compiledExpression.mapping = mapping;
     if (mapping != null)
@@ -322,7 +301,7 @@ public interface Function<D, C> extends
   }
 
   public static <D, C, F extends Function<? extends D, ? extends C>>
-         Expression<D,C,F>
+         Expression<D, C, F>
          parse(Class<D> domainClass,
                Class<? extends C> coDomainClass,
                Class<? extends F> functionClass,
