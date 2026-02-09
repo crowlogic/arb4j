@@ -23,11 +23,13 @@ public class G implements
   {
     G               g     = new G();
     int             k     = 3;
-    ComplexFunction x     = g.evaluate(k, 128);
+    Gfunc x     = (Gfunc) g.evaluate(k, 128);
     double          point = 2.3;
     Complex         y     = x.eval(point, new Complex());
     System.out.format("G(%s)(%s)=%s\n", k, point, y);
     System.out.println(Utensils.yamlString(g));
+    System.out.println(Utensils.yamlString(x));
+
   }
 
   @Override
