@@ -231,18 +231,11 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     }
   }
 
-  private boolean isIrreducible()
-  {
-    ensureIndefiniteIntegralNode();
-    return indefiniteIntegralNode instanceof IntegralNode;
-  }
-
   private void computeIndefiniteIntegralNode(boolean compileIfNecessary)
   {
     assert integralFunction == null;
     var rawIntegral = integrandNode.integrate(integrationVariableNode.asVariable());
-    indefiniteIntegralNode = (rawIntegral instanceof IntegralNode) ? rawIntegral
-                                                                   : rawIntegral.simplify();
+    indefiniteIntegralNode = rawIntegral.simplify();
     assert indefiniteIntegralNode != null : "indefiniteIntegralNode is null as returned from "
                                             + integrandNode
                                             + " of "
@@ -311,18 +304,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     assert resultType != null : "resultType cannot be null";
     generatedType = resultType;
 
-    if (isIrreducible())
-    {
-      throw new CompilerException("cannot generate code for irreducible integral ∫"
-                                  + integrandNode
-                                  + "d"
-                                  + integrationVariableName
-                                  + (isDefiniteIntegral()
-                                       ? " over [" + lowerLimitNode + ", " + upperLimitNode + "]"
-                                       : "")
-                                  + ": no closed-form antiderivative exists");
-    }
-
     return isDefiniteIntegral() ? generateDefiniteIntegral(mv, resultType)
                                 : generateIndefiniteIntegral(mv, resultType);
   }
@@ -361,19 +342,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     }
 
     ensureIndefiniteIntegralNode();
-
-    if (isIrreducible())
-    {
-      throw new CompilerException("cannot symbolically evaluate ∫"
-                                  + integrandNode
-                                  + "d"
-                                  + integrationVariableName
-                                  + " over ["
-                                  + lowerLimitNode
-                                  + ", "
-                                  + upperLimitNode
-                                  + "]: no closed-form antiderivative");
-    }
 
     var upperExpr = createEvaluationExpression();
     var lowerExpr = createEvaluationExpression();
@@ -591,11 +559,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
     ensureIndefiniteIntegralNode();
 
-    if (isIrreducible())
-    {
-      return this;
-    }
-
     if (isDefiniteIntegral())
     {
       return getDefiniteIntegralEvaluationNode();
@@ -652,7 +615,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   @Override
   public String toString()
   {
-    if (indefiniteIntegralNode == null || indefiniteIntegralNode instanceof IntegralNode)
+    if (indefiniteIntegralNode == null)
     {
       return isDefiniteIntegral() ? String.format("∫%sd%s over %s..%s",
                                                   integrandNode.toString(),
@@ -689,20 +652,20 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   protected String typesetDefiniteIntegral()
   {
     return String.format("%sint_%s^%s %s %smathd %s",
-                         "\\",
+                         "\\\\",
                          lowerLimitNode.typeset(),
                          upperLimitNode.typeset(),
                          integrandNode.typeset(),
-                         "\\",
+                         "\\\\",
                          integrationVariableNode.typeset());
   }
 
   protected String typesetIndefiniteIntegral()
   {
     return String.format("%sint %s %smathd %s",
-                         "\\",
+                         "\\\\",
                          integrandNode.typeset(),
-                         "\\",
+                         "\\\\",
                          integrationVariableNode.typeset());
   }
 
