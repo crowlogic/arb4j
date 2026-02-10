@@ -20,7 +20,7 @@ import arb.functions.Function;
  * {@link Function}. Used for cases like P(3)(0.75) where P(3) returns a type
  * that implements the {@link Function} interface such as {@link RealPolynomial}
  * 
- * @author Stephen Crowley ©2024-2025
+ * @author Stephen Crowley ©2024-2026
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
  */
 public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? extends C>> extends
@@ -40,6 +40,11 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
   }
 
   private Node<D, C, F> functionNode;
+
+  public Node<D, C, F> getFunctionNode()
+  {
+    return functionNode;
+  }
 
   public FunctionalEvaluationNode(Expression<D, C, F> expression, Node<D, C, F> functionNode)
   {

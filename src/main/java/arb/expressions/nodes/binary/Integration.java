@@ -5,12 +5,14 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import arb.Polynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.expressions.nodes.unary.FunctionNode;
+import arb.expressions.nodes.unary.FunctionalEvaluationNode;
 import arb.expressions.nodes.unary.NegationNode;
 import arb.functions.Function;
 
@@ -476,6 +478,35 @@ public abstract class Integration
       }
     }
 
+    return null;
+  }
+
+  /**
+   * Scans a list of factor nodes for a {@link FunctionalEvaluationNode} whose
+   * function type implements {@link Polynomial} (i.e. {@code RealPolynomial} or
+   * {@code ComplexPolynomial}) and whose argument equals the integration variable.
+   *
+   * @param factors  The flattened list of factors
+   * @param variable The integration variable
+   * @return The matching {@link FunctionalEvaluationNode}, or null if none found
+   * @see <a href="https://github.com/crowlogic/arb4j/issues/835">#835</a>
+   */
+  public static <D, R, F extends Function<? extends D, ? extends R>>
+         Node<D, R, F>
+         identifyPolynomialFunctionEvaluation(java.util.List<Node<D, R, F>> factors,
+                                              VariableNode<D, R, F> variable)
+  {
+    for (var factor : factors)
+    {
+      if (factor instanceof FunctionalEvaluationNode<D, R, F> funcEval)
+      {
+        var funcNode = funcEval.getFunctionNode();
+        if (Polynomial.class.isAssignableFrom(funcNode.type()) && funcEval.arg.equals(variable))
+        {
+          return factor;
+        }
+      }
+    }
     return null;
   }
 
