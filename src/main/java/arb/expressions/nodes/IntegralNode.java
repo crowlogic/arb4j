@@ -231,11 +231,28 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     }
   }
 
+  /**
+   * Returns true when the integration rule for this integrand has not yet been
+   * implemented, i.e. integrate() returned an IntegralNode fallback rather than a
+   * concrete antiderivative.
+   */
+  private boolean integrationNotYetImplemented()
+  {
+    ensureIndefiniteIntegralNode();
+    return indefiniteIntegralNode instanceof IntegralNode;
+  }
+
   private void computeIndefiniteIntegralNode(boolean compileIfNecessary)
   {
     assert integralFunction == null;
     var rawIntegral = integrandNode.integrate(integrationVariableNode.asVariable());
-    indefiniteIntegralNode = rawIntegral.simplify();
+
+    // When integrate() cannot find a closed form it returns a new IntegralNode as
+    // a fallback. Calling .simplify() on that would re-enter this same path and
+    // recurse infinitely (the integration rule just isn't implemented yet).
+    indefiniteIntegralNode = (rawIntegral instanceof IntegralNode) ? rawIntegral
+                                                                   : rawIntegral.simplify();
+
     assert indefiniteIntegralNode != null : "indefiniteIntegralNode is null as returned from "
                                             + integrandNode
                                             + " of "
@@ -304,6 +321,18 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     assert resultType != null : "resultType cannot be null";
     generatedType = resultType;
 
+    if (integrationNotYetImplemented())
+    {
+      throw new CompilerException("integration of "
+                                  + integrandNode
+                                  + " with respect to "
+                                  + integrationVariableName
+                                  + " is not yet implemented"
+                                  + (isDefiniteIntegral()
+                                       ? " over [" + lowerLimitNode + ", " + upperLimitNode + "]"
+                                       : ""));
+    }
+
     return isDefiniteIntegral() ? generateDefiniteIntegral(mv, resultType)
                                 : generateIndefiniteIntegral(mv, resultType);
   }
@@ -342,6 +371,19 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     }
 
     ensureIndefiniteIntegralNode();
+
+    if (integrationNotYetImplemented())
+    {
+      throw new CompilerException("cannot symbolically evaluate ∫"
+                                  + integrandNode
+                                  + "d"
+                                  + integrationVariableName
+                                  + " over ["
+                                  + lowerLimitNode
+                                  + ", "
+                                  + upperLimitNode
+                                  + "]: integration not yet implemented");
+    }
 
     var upperExpr = createEvaluationExpression();
     var lowerExpr = createEvaluationExpression();
@@ -559,6 +601,13 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
     ensureIndefiniteIntegralNode();
 
+    if (integrationNotYetImplemented())
+    {
+      // The integration rule for this integrand hasn't been implemented yet.
+      // Return this node as-is rather than recursing into it.
+      return this;
+    }
+
     if (isDefiniteIntegral())
     {
       return getDefiniteIntegralEvaluationNode();
@@ -615,7 +664,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   @Override
   public String toString()
   {
-    if (indefiniteIntegralNode == null)
+    if (indefiniteIntegralNode == null || indefiniteIntegralNode instanceof IntegralNode)
     {
       return isDefiniteIntegral() ? String.format("∫%sd%s over %s..%s",
                                                   integrandNode.toString(),
