@@ -9,6 +9,7 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.integer.*;
+import arb.utensils.Utensils;
 
 /**
  * Builder for Jacobi polynomial fractional derivative operational matrices.
@@ -96,17 +97,21 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
 
     RealMatrix result = RealMatrix.newMatrix(maxDegree + 1, maxDegree + 1);
 
+    if (Expression.trace && logger.isDebugEnabled())
+    {
+      logger.debug("build(maxDegree={}) μrow={}", maxDegree, Utensils.yamlString(μ));
+    }
     for (int i = 0; i <= maxDegree; i++)
     {
-      RealSequence row = μ.evaluate(i, bits);
-
+      RealSequence μrow = μ.evaluate(i, bits);
+      Real         row  = result.getRow(i);
       if (Expression.trace && logger.isDebugEnabled())
       {
-        logger.debug("Evaluating {}", row);
+        logger.debug("Evaluating μrow({})={}", i, Utensils.yamlString(μrow));
       }
       for (int j = 0; j <= maxDegree; j++)
       {
-        row.evaluate(j, bits, result.get(i, j));
+        μrow.evaluate(j, bits, row.get(j));
       }
     }
 
