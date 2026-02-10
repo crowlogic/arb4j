@@ -39,7 +39,10 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
                                    Node<D, C, F>
 {
 
-  public static final Logger logger = LoggerFactory.getLogger(PolynomialIntegralNode.class);
+  private static final String POLY_PRODUCT  = "polyProduct";
+  private static final String POLY_COFACTOR = "polyCofactor";
+
+  public static final Logger  logger        = LoggerFactory.getLogger(PolynomialIntegralNode.class);
 
   @Override
   public Logger getLogger()
@@ -117,15 +120,18 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
     }
     if (cofactorNode != null)
     {
-      var polynomialType             = polynomialNode.type();
-      productIntermediateFieldName   =
-                                     expression.registerIntermediateVariable("polyProduct",
-                                                                             polynomialType,
-                                                                             true);
-      cofactorIntermediateFieldName  =
-                                     expression.registerIntermediateVariable("polyCofactor",
-                                                                             polynomialType,
-                                                                             true);
+      var polynomialType = polynomialNode.type();
+      if (!expression.hasIntermediateVariable(POLY_PRODUCT))
+      {
+        expression.registerIntermediateVariable(POLY_PRODUCT, polynomialType, true);
+      }
+      productIntermediateFieldName = POLY_PRODUCT;
+
+      if (!expression.hasIntermediateVariable(POLY_COFACTOR))
+      {
+        expression.registerIntermediateVariable(POLY_COFACTOR, polynomialType, true);
+      }
+      cofactorIntermediateFieldName = POLY_COFACTOR;
     }
   }
 
