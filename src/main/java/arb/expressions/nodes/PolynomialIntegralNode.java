@@ -120,10 +120,12 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
       var polynomialType             = polynomialNode.type();
       productIntermediateFieldName   =
                                      expression.registerIntermediateVariable("polyProduct",
-                                                                             polynomialType);
+                                                                             polynomialType,
+                                                                             true);
       cofactorIntermediateFieldName  =
                                      expression.registerIntermediateVariable("polyCofactor",
-                                                                             polynomialType);
+                                                                             polynomialType,
+                                                                             true);
     }
   }
 
@@ -156,7 +158,7 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
       // Load the intermediate variable for the product result
       expression.loadFieldOntoStack(Compiler.loadThisOntoStack(mv),
                                     productIntermediateFieldName,
-                                    Compiler.getFieldDescriptor(polynomialType));
+                                    Type.getDescriptor(polynomialType));
 
       // Stack: [polynomial, cofactor, bits, productIntermediate]
 
