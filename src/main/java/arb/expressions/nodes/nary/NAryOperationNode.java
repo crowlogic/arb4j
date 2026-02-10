@@ -484,21 +484,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       logger.debug(String.format("extractOperandExpression: no arrow found, indexVariableFieldName remains null\n"));
     }
 
-    if (indexVariableFieldName == null)
-    {
-      // Function-form: sum(expr, k=i…j) — extract index variable from ",<name>=" pattern
-      String remaining = stringExpression.substring(startPos);
-      int    commaIdx  = remaining.lastIndexOf(',');
-      if (commaIdx != -1)
-      {
-        int eqIdx = remaining.indexOf('=', commaIdx);
-        if (eqIdx != -1)
-        {
-          indexVariableFieldName = remaining.substring(commaIdx + 1, eqIdx).trim();
-        }
-      }
-    }
-
     String lookingFor             =
                       indexVariableFieldName != null ? String.format("{%s=", indexVariableFieldName)
                                                      : "{";
