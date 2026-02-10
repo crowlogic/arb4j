@@ -163,6 +163,11 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
 
   private static final long serialVersionUID = 1L;
 
+  public RealPolynomial mul(Real that, int prec, RealPolynomial res)
+  {
+    return res.set(this).mul(that, prec, res);
+  }
+  
   static { System.loadLibrary( "arblib" ); }
 
   public Real θ( int bits, Real result )

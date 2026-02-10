@@ -136,6 +136,11 @@ import arb.utensils.Utensils;
 %typemap(javacode) arb_struct %{
   private static final long serialVersionUID = 1L;
 
+  public RealPolynomial mul(Real that, int prec, RealPolynomial res)
+  {
+    return res.set(this).mul(that, prec, res);
+  }
+  
   static { System.loadLibrary( "arblib" ); }
 
   public Real θ( int bits, Real result )
