@@ -1,4 +1,3 @@
-// src/main/java/arb/expressions/nodes/binary/ExponentiationNode.java
 package arb.expressions.nodes.binary;
 
 import org.objectweb.asm.MethodVisitor;
@@ -13,8 +12,8 @@ import arb.functions.Function;
 
 /**
  * Represents the binary exponentiation operation: left^right<br>
- *
- *
+ * 
+ * 
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
@@ -30,6 +29,7 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     // a^n ≠ 0 for a ≠ 0 (any non-zero base to any power is non-zero)
     return left.isZero() && !right.isZero();
   }
+
 
   public static final Logger logger = LoggerFactory.getLogger(ExponentiationNode.class);
 
@@ -75,12 +75,6 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
           "pow",
           exponent,
           "^");
-  }
-
-  @Override
-  protected BinaryOperationNode<D, R, F> reconstructWith(Node<D, R, F> newLeft, Node<D, R, F> newRight)
-  {
-    return new ExponentiationNode<>(expression, newLeft, newRight);
   }
 
   @Override
@@ -186,6 +180,7 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     if (right.isOne())
     {
       return left.simplify();
+                    
     }
     if (right.isZero())
     {

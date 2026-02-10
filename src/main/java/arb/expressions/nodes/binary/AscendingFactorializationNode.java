@@ -1,10 +1,11 @@
-// src/main/java/arb/expressions/nodes/binary/AscendingFactorializationNode.java
 package arb.expressions.nodes.binary;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import arb.*;
+import arb.Field;
+import arb.Fraction;
+import arb.Real;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
@@ -13,12 +14,12 @@ import arb.functions.Function;
 /**
  * The rising factorial, ironically, denoted as x₍ₙ₎, for a {@link Field} x and
  * a non-negative integer n is defined by the product:
- *
+ * 
  * x₍ₙ₎ = x⋰n = ∏x+k{k=0..n-1}
- *
+ * 
  * x₍₀₎ = 1
- *
- *
+ * 
+ * 
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
@@ -41,6 +42,42 @@ public class AscendingFactorializationNode<D, R, F extends Function<? extends D,
     return logger;
   }
 
+  /**
+   * <pre>
+   * 1. Binary Operator Version: You've adapted the ascending factorial to be used
+   * as an infix binary operator, which is an interesting and useful approach for
+   * text representations.
+   * 
+   * 2. Standard Postfix Notation: As you mentioned, the ascending factorial is
+   * typically written in postfix notation, like n₍ₖ₎ or n^(k) where n is the base
+   * and k is the number of factors.
+   * 
+   * 3. Your Infix Notation: Your use of ⋰ as an infix operator (n ⋰ k) is a
+   * clever way to represent this operation in a linear text format, making it
+   * easier to parse in expressions.
+   * 
+   * 4. Expression Interpretation: In your expression (k+1)⋰(-½), you're using
+   * this infix notation with a non-integer exponent, which suggests a generalized
+   * form of the ascending factorial.
+   * 
+   * 5. Advantages: This infix notation integrates well with other mathematical
+   * operations in complex expressions, as demonstrated in your text tree. It
+   * allows for a more natural reading of the expression from left to right.
+   * 
+   * 6. Text Tree Benefits: Your text tree representation clearly shows the
+   * hierarchical structure of the expression, with the ⋰ operator at the same
+   * level as other binary operators like + and *.
+   * 
+   * This approach to notation is particularly useful for representing complex
+   * mathematical expressions in plain text environments, programming languages,
+   * or other contexts where standard mathematical notation might be difficult to
+   * implement.
+   * </pre>
+   * 
+   * @param left
+   * @param right
+   * @param expression
+   */
   public AscendingFactorializationNode(Node<D, R, F> left,
                                        Node<D, R, F> right,
                                        Expression<D, R, F> expression)
@@ -50,15 +87,6 @@ public class AscendingFactorializationNode<D, R, F extends Function<? extends D,
           "ascendingFactorial",
           right,
           "⋰");
-  }
-
-  @Override
-  protected BinaryOperationNode<D, R, F> reconstructWith(Node<D, R, F> newLeft,
-                                                         Node<D, R, F> newRight)
-  {
-    return new AscendingFactorializationNode<>(newLeft,
-                                               newRight,
-                                               expression);
   }
 
   @Override
