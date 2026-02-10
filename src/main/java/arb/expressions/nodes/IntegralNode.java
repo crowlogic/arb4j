@@ -63,8 +63,10 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
     ensureIndefiniteIntegralNode();
 
-    if (indefiniteIntegralNode instanceof IntegralNode)
+    if (integrationNotYetImplemented())
     {
+      // The integration rule for this integrand hasn't been implemented yet.
+      // Return this node as-is rather than recursing into it.
       return this;
     }
 
@@ -77,7 +79,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       return indefiniteIntegralNode;
     }
   }
-
 
   @Override
   public <E, S, G extends Function<? extends E, ? extends S>>
@@ -387,16 +388,19 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   private void computeIndefiniteIntegralNode(boolean compileIfNecessary)
   {
     assert integralFunction == null;
-    indefiniteIntegralNode = integrandNode.integrate(integrationVariableNode.asVariable());
+    var rawIntegral = integrandNode.integrate(integrationVariableNode.asVariable());
     if (Expression.trace && logger.isDebugEnabled())
     {
       logger.debug("computeIndefiniteIntegralNode(compileIfNecessary={}) rawIntegralClass={} id={}",
                    compileIfNecessary,
-                   indefiniteIntegralNode.getClass().getSimpleName(),
-                   System.identityHashCode(indefiniteIntegralNode));
+                   rawIntegral.getClass().getSimpleName(),
+                   System.identityHashCode(rawIntegral));
     }
-  
-                                                                   
+    // When integrate() cannot find a closed form it returns a new IntegralNode as
+    // a fallback. Calling .simplify() on that would re-enter this same path and
+    // recurse infinitely (the integration rule just isn't implemented yet).
+    indefiniteIntegralNode = (rawIntegral instanceof IntegralNode) ? rawIntegral
+                                                                   : rawIntegral.simplify();
 
     assert indefiniteIntegralNode != null : "indefiniteIntegralNode is null as returned from "
                                             + integrandNode
@@ -485,15 +489,17 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   protected MethodVisitor generateIndefiniteIntegral(MethodVisitor mv, Class<?> resultType)
   {
     ensureIndefiniteIntegralNode();
-    if (indefiniteIntegralNode instanceof IntegralNode)
-    {
-      return mv;
-    }
+//    if (indefiniteIntegralNode instanceof IntegralNode)
+//    {
+//      throw new UnsupportedOperationException("no integration rule exists for ∫"
+//                                              + integrandNode
+//                                              + "d"
+//                                              + integrationVariableName);
+//    }
     indefiniteIntegralNode.isResult = isResult;
     indefiniteIntegralNode.generate(mv, resultType);
     return mv;
   }
-
 
   @Override
   public List<Node<D, C, F>> getBranches()
@@ -510,10 +516,18 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
     ensureIndefiniteIntegralNode();
 
-    if (indefiniteIntegralNode instanceof IntegralNode)
-    {
-      return this;
-    }
+//    if (indefiniteIntegralNode instanceof IntegralNode)
+//    {
+//      throw new UnsupportedOperationException("no integration rule exists for ∫"
+//                                              + integrandNode
+//                                              + "d"
+//                                              + integrationVariableName
+//                                              + " over ["
+//                                              + lowerLimitNode
+//                                              + ", "
+//                                              + upperLimitNode
+//                                              + "]");
+//    }
 
     var upperExpr = createEvaluationExpression();
     var lowerExpr = createEvaluationExpression();
@@ -535,7 +549,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     definiteIntegralNode = tempResult.spliceInto(expression);
     return definiteIntegralNode.simplify();
   }
-
 
   @Override
   public int hashCode()
