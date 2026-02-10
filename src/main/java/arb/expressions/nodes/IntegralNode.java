@@ -128,6 +128,8 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
    * This method handles integrals of the form ∫f(x)*δ(x-a)dx or ∫δ(x-a)*f(x)dx
    * over the entire real line, evaluating to f(a).
    *
+   * TODO: what about symmetry? ∫f(x)*δ(x+a)dx
+   * 
    * @return the result of applying the sifting property, which is f(a)
    */
   private Node<D, C, F> applyDeltaFunctionSifting()
@@ -136,10 +138,10 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     Node<D, C, F> otherFactor   = null;
     Node<D, C, F> shiftValue    = null;
 
-    if (integrandNode instanceof MultiplicationNode<D, C, F> multiplicand)
+    if (integrandNode instanceof MultiplicationNode<D, C, F> multiplication)
     {
-      var left  = multiplicand.left;
-      var right = multiplicand.right;
+      var left  = multiplication.left;
+      var right = multiplication.right;
 
       if (left.containsDeltaFunction())
       {
@@ -156,14 +158,14 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       {
 
         var deltaFunc = deltaFunction.asFunction();
-        if (deltaFunc.is("δ"))
+        if (deltaFunc.isDeltaFunction())
         {
           var deltaArg = deltaFunc.arg;
 
-          if (deltaArg instanceof SubtractionNode<D, C, F> subtrahend)
+          if (deltaArg instanceof SubtractionNode<D, C, F> subtraction)
           {
-            var left2  = subtrahend.left;
-            var right2 = subtrahend.right;
+            var left2  = subtraction.left;
+            var right2 = subtraction.right;
 
             if (left2.isVariableNamed(integrationVariableNode.getName()))
             {
@@ -174,10 +176,10 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
           {
             shiftValue = zero();
           }
-          else if (deltaArg instanceof SubtractionNode<D, C, F> subNode)
+          else if (deltaArg instanceof SubtractionNode<D, C, F> subtraction)
           {
-            var left2  = subNode.left;
-            var right2 = subNode.right;
+            var left2  = subtraction.left;
+            var right2 = subtraction.right;
 
             if (right2.isVariableNamed(integrationVariableNode.getName()))
             {
@@ -201,9 +203,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
   protected void
             assignIntegrationVariableNodeAndVariableOfIntegration(Expression<D, C, F> expression,
-                                                                  VariableReference<D,
-                                                                                C,
-                                                                                F> reference,
+                                                                  VariableReference<D, C, F> reference,
                                                                   boolean resolve)
   {
     integrationVariableName = reference.name;
@@ -246,7 +246,12 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   {
     assert integralFunction == null;
     var rawIntegral = integrandNode.integrate(integrationVariableNode.asVariable());
-
+    if (Expression.trace && logger.isDebugEnabled())
+    {
+      logger.debug("computeIndefiniteIntegralNode(compileIfNecessary={}) rawIntegral={}",
+                   compileIfNecessary,
+                   rawIntegral);
+    }
     // When integrate() cannot find a closed form it returns a new IntegralNode as
     // a fallback. Calling .simplify() on that would re-enter this same path and
     // recurse infinitely (the integration rule just isn't implemented yet).
@@ -287,8 +292,8 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       return false;
     }
     return integrandNode.dependsOn(variable)
-           || (lowerLimitNode != null && lowerLimitNode.dependsOn(variable))
-           || (upperLimitNode != null && upperLimitNode.dependsOn(variable));
+                  || (lowerLimitNode != null && lowerLimitNode.dependsOn(variable))
+                  || (upperLimitNode != null && upperLimitNode.dependsOn(variable));
   }
 
   @Override
@@ -328,9 +333,12 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
                                   + " with respect to "
                                   + integrationVariableName
                                   + " is not yet implemented"
-                                  + (isDefiniteIntegral()
-                                       ? " over [" + lowerLimitNode + ", " + upperLimitNode + "]"
-                                       : ""));
+                                  + (isDefiniteIntegral() ? " over ["
+                                                            + lowerLimitNode
+                                                            + ", "
+                                                            + upperLimitNode
+                                                            + "]"
+                                                          : ""));
     }
 
     return isDefiniteIntegral() ? generateDefiniteIntegral(mv, resultType)
@@ -630,10 +638,12 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
                                                                newIntegrationVariableNode);
     integral.integrandNode           = integrandNode.spliceInto(newExpression);
     integral.integrationVariableName = integrationVariableName;
-    integral.upperLimitNode          = upperLimitNode != null ? upperLimitNode.spliceInto(newExpression)
-                                                              : null;
-    integral.lowerLimitNode          = lowerLimitNode != null ? lowerLimitNode.spliceInto(newExpression)
-                                                              : null;
+    integral.upperLimitNode          =
+                            upperLimitNode != null ? upperLimitNode.spliceInto(newExpression)
+                                                   : null;
+    integral.lowerLimitNode          =
+                            lowerLimitNode != null ? lowerLimitNode.spliceInto(newExpression)
+                                                   : null;
     return integral;
   }
 

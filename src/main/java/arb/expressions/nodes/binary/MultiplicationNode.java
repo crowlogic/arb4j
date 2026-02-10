@@ -20,7 +20,7 @@ import arb.functions.Function;
  * Represents a multiplication operation node in the expression tree. Implements
  * integration by parts for polynomial × exp/trig products.
  * 
- * @author Stephen Crowley ©2024-2025
+ * @author Stephen Crowley ©2024-2026
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends R>> extends
@@ -120,7 +120,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       return constantProduct.mul(variableProduct.integrate(variable)).simplify();
     }
 
-    // Try step function integration: ∫ f(x)·θ(x) dx = θ(x) · ∫ f(x) dx  (#841)
+    // Try step function integration: ∫ f(x)·θ(x) dx = θ(x) · ∫ f(x) dx (#841)
     var stepResult = tryStepFunctionIntegration(variableFactors, variable);
     if (stepResult != null)
     {
@@ -189,7 +189,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
    * @see <a href="https://github.com/crowlogic/arb4j/issues/841">#841</a>
    */
   private Node<D, R, F> tryStepFunctionIntegration(java.util.List<Node<D, R, F>> factors,
-                                                    VariableNode<D, R, F> variable)
+                                                   VariableNode<D, R, F> variable)
   {
     FunctionNode<D, R, F> thetaNode = null;
     var                   remaining = new java.util.ArrayList<Node<D, R, F>>();
@@ -852,13 +852,13 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
    * @param deltaArg The delta function's argument
    * @return The shift node, or null if pattern doesn't match
    */
-  private Node<D, R, F> extractShiftFromDeltaArg(VariableNode<D, R, F> variable,
+  private static <D, R, F extends Function<? extends D, ? extends R>> Node<D, R, F> extractShiftFromDeltaArg(VariableNode<D, R, F> variable,
                                                  Node<D, R, F> deltaArg)
   {
     // Case 1: δ(x) - direct variable, shift = 0
     if (deltaArg.equals(variable))
     {
-      return zero();
+      return variable.zero();
     }
 
     // Case 2: δ(x-a) or δ(x+a) - binary subtraction/addition
@@ -898,9 +898,11 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
    * @param shift    The shift value
    * @return true if node is a polynomial in (variable - shift)
    */
-  private boolean isPolynomialInShiftedVariable(Node<D, R, F> node,
-                                                VariableNode<D, R, F> variable,
-                                                Node<D, R, F> shift)
+  private static <D, R, F extends Function<? extends D, ? extends R>>
+          boolean
+          isPolynomialInShiftedVariable(Node<D, R, F> node,
+                                        VariableNode<D, R, F> variable,
+                                        Node<D, R, F> shift)
   {
     // Direct match: (x-a) where shift=a
     if (isShiftedVariable(node, variable, shift))
@@ -909,22 +911,20 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     }
 
     // Power: (x-a)^n
-    if (node instanceof ExponentiationNode<?, ?, ?>)
+    if (node instanceof ExponentiationNode<D, R, F> exp)
     {
-      var exp = (ExponentiationNode<D, R, F>) node;
       return isShiftedVariable(exp.left, variable, shift) && exp.right.isScalar();
     }
 
     // Product: terms containing (x-a)
-    if (node instanceof MultiplicationNode<?, ?, ?>)
+    if (node instanceof MultiplicationNode<D, R, F> mult)
     {
-      var mult = (MultiplicationNode<D, R, F>) node;
       return isPolynomialInShiftedVariable(mult.left, variable, shift)
                     || isPolynomialInShiftedVariable(mult.right, variable, shift);
     }
 
     // Sum: any term containing (x-a)
-    if (node instanceof AdditionNode<?, ?, ?> || node instanceof SubtractionNode<?, ?, ?>)
+    if (node instanceof AdditionNode || node instanceof SubtractionNode)
     {
       var binary = (BinaryOperationNode<D, R, F>) node;
       return isPolynomialInShiftedVariable(binary.left, variable, shift)
@@ -948,7 +948,8 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
    * @param shift    The expected shift
    * @return true if node equals (variable - shift)
    */
-  private boolean
+  private static <D, R, F extends Function<? extends D, ? extends R>>
+          boolean
           isShiftedVariable(Node<D, R, F> node, VariableNode<D, R, F> variable, Node<D, R, F> shift)
   {
     // Direct variable match when shift is zero
@@ -958,21 +959,16 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     }
 
     // Check for (x-a) structure
-    if (node instanceof SubtractionNode<?, ?, ?>)
+    if (node instanceof SubtractionNode<?, ?, ?> sub)
     {
-      var sub = (SubtractionNode<D, R, F>) node;
       return sub.left.equals(variable) && sub.right.equals(shift);
     }
 
     // Check for (x+a) when shift is -a
-    if (node instanceof AdditionNode<?, ?, ?>)
+    if (node instanceof AdditionNode<?, ?, ?> add && add.left.equals(variable)
+                  && shift instanceof NegationNode<?, ?, ?> negShift)
     {
-      var add = (AdditionNode<D, R, F>) node;
-      if (add.left.equals(variable) && shift instanceof NegationNode<?, ?, ?>)
-      {
-        var negShift = (NegationNode<D, R, F>) shift;
-        return add.right.equals(negShift.arg);
-      }
+      return add.right.equals(negShift.arg);
     }
 
     return false;
@@ -984,7 +980,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
    * @param node The node to search
    * @return The first VariableNode found, or null
    */
-  private VariableNode<D, R, F> extractVariable(Node<D, R, F> node)
+  private static <D, R, F extends Function<? extends D, ? extends R>> VariableNode<D, R, F> extractVariable(Node<D, R, F> node)
   {
     if (node.isVariable())
     {
