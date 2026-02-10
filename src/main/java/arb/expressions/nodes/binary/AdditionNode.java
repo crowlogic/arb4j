@@ -1,3 +1,4 @@
+// src/main/java/arb/expressions/nodes/binary/AdditionNode.java
 package arb.expressions.nodes.binary;
 
 import static java.lang.String.format;
@@ -13,7 +14,7 @@ import arb.expressions.nodes.unary.NegationNode;
 import arb.functions.Function;
 
 /**
- * 
+ *
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
@@ -28,6 +29,12 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
           "add",
           right,
           "+");
+  }
+
+  @Override
+  protected BinaryOperationNode<D, R, F> reconstructWith(Node<D, R, F> newLeft, Node<D, R, F> newRight)
+  {
+    return new AdditionNode<>(expression, newLeft, newRight);
   }
 
   boolean areIntegerDivisions(DivisionNode<D, R, F> leftDiv, DivisionNode<D, R, F> rightDiv)
@@ -71,20 +78,23 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> simplify()
   {
-    left  = left.simplify();
-    right = right.simplify();
+    var sLeft  = left.simplify();
+    var sRight = right.simplify();
 
-    if (left.isZero())
+    AdditionNode<D, R, F> w = (sLeft != left || sRight != right) ? new AdditionNode<>(expression, sLeft, sRight)
+                  : this;
+
+    if (w.left.isZero())
     {
-      return right;
+      return w.right;
     }
 
-    if (right.isZero())
+    if (w.right.isZero())
     {
-      return left;
+      return w.left;
     }
-    if (left instanceof LiteralConstantNode<D, R, F> lconst
-                  && right instanceof LiteralConstantNode<D, R, F> rconst)
+    if (w.left instanceof LiteralConstantNode<D, R, F> lconst
+                  && w.right instanceof LiteralConstantNode<D, R, F> rconst)
     {
       if (lconst.isInt && rconst.isInt)
       {
@@ -107,10 +117,10 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
         }
       }
 
-      return this;
+      return w;
     }
-    else if (left instanceof DivisionNode<D, R, F> leftDiv
-                  && right instanceof DivisionNode<D, R, F> rightDiv)
+    else if (w.left instanceof DivisionNode<D, R, F> leftDiv
+                  && w.right instanceof DivisionNode<D, R, F> rightDiv)
     {
       if (areIntegerDivisions(leftDiv, rightDiv))
       {
@@ -119,12 +129,12 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
 
     // Rewrite a + (-b) as a - b, but do NOT re-simplify to avoid ping-pong
-    if (right instanceof NegationNode<D, R, F> rightNegation)
+    if (w.right instanceof NegationNode<D, R, F> rightNegation)
     {
-      return left.sub(rightNegation.arg);
+      return w.left.sub(rightNegation.arg);
     }
 
-    return this;
+    return w;
 
   }
 
@@ -167,6 +177,5 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     return false;
   }
-
 
 }

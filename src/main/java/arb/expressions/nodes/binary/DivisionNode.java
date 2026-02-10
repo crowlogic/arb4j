@@ -1,3 +1,4 @@
+// src/main/java/arb/expressions/nodes/binary/DivisionNode.java
 package arb.expressions.nodes.binary;
 
 import static java.lang.String.format;
@@ -22,12 +23,13 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                          BinaryOperationNode<D, R, F>
 {
   public static final Logger logger = LoggerFactory.getLogger(DivisionNode.class);
-  
+
   @Override
   public Logger getLogger()
   {
     return logger;
   }
+
   @Override
   public boolean isZero()
   {
@@ -46,6 +48,12 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
           "div",
           right,
           "/");
+  }
+
+  @Override
+  protected BinaryOperationNode<D, R, F> reconstructWith(Node<D, R, F> newLeft, Node<D, R, F> newRight)
+  {
+    return new DivisionNode<>(expression, newLeft, newRight);
   }
 
   @Override
@@ -258,20 +266,6 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return zero();
   }
 
-  /**
-   * TODO: generalize this to include more simplifcaiton<br>
-   * The indefinite integral ∫ 1⁄(1−x²)^(1⁄k)dx has a closed form involving the
-   * **Gauss hypergeometric function** ₂F₁, and for some k (e.g. k = 2), yields
-   * elementary functions like arcsin. <br>
-   * The general result is: ∫ 1⁄(1−x²)^(1⁄k)dx = x · ₂F₁(½, 1⁄k; 3⁄2; x²) + C For
-   * k = 2 you recover the standard arcsin: ∫ 1⁄√(1−x²)dx = arcsin(x) + C For
-   * other values of k, this hypergeometric form is generally the best you can do
-   * in terms of closed form. There is no universal elementary antiderivative
-   * except in special rational cases.[1]
-   *
-   * So: – For arbitrary k, output the result as above using the ₂F₁ function. –
-   * For k = 2, the result reduces to `arcsin(x)`; for k = 1, to −ln|1−x²|.
-   */
   private Node<D, R, F> integrateOneOverSqrtQuadratic(VariableNode<D, R, F> variable)
   {
     if (!left.isOne() || !right.isSquareRoot())
@@ -354,29 +348,33 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> simplify()
   {
-    super.simplify();
+    var sLeft  = (left != null) ? left.simplify() : null;
+    var sRight = (right != null) ? right.simplify() : null;
 
-    if (right.isOne())
+    DivisionNode<D, R, F> w = (sLeft != left || sRight != right) ? new DivisionNode<>(expression, sLeft, sRight)
+                  : this;
+
+    if (w.right.isOne())
     {
-      return left;
+      return w.left;
     }
-    if (left.equals(right))
+    if (w.left.equals(w.right))
     {
       return one();
     }
 
-    if (left instanceof NegationNode leftNeg && right instanceof NegationNode rightNeg)
+    if (w.left instanceof NegationNode leftNeg && w.right instanceof NegationNode rightNeg)
     {
       return leftNeg.arg.simplify().div(rightNeg.arg.simplify()).simplify();
     }
 
-    if (right instanceof NegationNode rightNeg)
+    if (w.right instanceof NegationNode rightNeg)
     {
-      return left.div(rightNeg.arg).neg();
+      return w.left.div(rightNeg.arg).neg();
     }
 
-    if (left instanceof ExponentiationNode<D, R, F> leftExp
-                  && right instanceof ExponentiationNode<D, R, F> rightExp)
+    if (w.left instanceof ExponentiationNode<D, R, F> leftExp
+                  && w.right instanceof ExponentiationNode<D, R, F> rightExp)
     {
       var leftBase  = leftExp.left;
       var rightBase = rightExp.left;
@@ -387,8 +385,8 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       }
     }
 
-    if (left instanceof FunctionNode<D, R, F> leftFunction
-                  && right instanceof FunctionNode<D, R, F> rightFunction)
+    if (w.left instanceof FunctionNode<D, R, F> leftFunction
+                  && w.right instanceof FunctionNode<D, R, F> rightFunction)
     {
       if (leftFunction.isExponential() && rightFunction.functionName.equals("exp"))
       {
@@ -398,28 +396,28 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
 
     // Cancel x^a / x → x^(a-1)
-    if (left instanceof ExponentiationNode<D, R, F> leftExp2
-                  && leftExp2.left.equals(right))
+    if (w.left instanceof ExponentiationNode<D, R, F> leftExp2
+                  && leftExp2.left.equals(w.right))
     {
       return leftExp2.left.pow(leftExp2.right.sub(one()).simplify()).simplify();
     }
 
     // Cancel x / x^a → x^(1-a)
-    if (right instanceof ExponentiationNode<D, R, F> rightExp2
-                  && rightExp2.left.equals(left))
+    if (w.right instanceof ExponentiationNode<D, R, F> rightExp2
+                  && rightExp2.left.equals(w.left))
     {
-      return left.pow(one().sub(rightExp2.right).simplify()).simplify();
+      return w.left.pow(one().sub(rightExp2.right).simplify()).simplify();
     }
 
     // Cancel through product denominator: expr / (a * b)
-    if (right instanceof MultiplicationNode<D, R, F> rightMul)
+    if (w.right instanceof MultiplicationNode<D, R, F> rightMul)
     {
-      var cancelledWithRight = tryCancelCommonBase(left, rightMul.right);
+      var cancelledWithRight = tryCancelCommonBase(w.left, rightMul.right);
       if (cancelledWithRight != null)
       {
         return cancelledWithRight.div(rightMul.left).simplify();
       }
-      var cancelledWithLeft = tryCancelCommonBase(left, rightMul.left);
+      var cancelledWithLeft = tryCancelCommonBase(w.left, rightMul.left);
       if (cancelledWithLeft != null)
       {
         return cancelledWithLeft.div(rightMul.right).simplify();
@@ -427,21 +425,21 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
 
     // Cancel through product numerator: (a * b) / expr
-    if (left instanceof MultiplicationNode<D, R, F> leftMul)
+    if (w.left instanceof MultiplicationNode<D, R, F> leftMul)
     {
-      var cancelledWithRight = tryCancelCommonBase(leftMul.right, right);
+      var cancelledWithRight = tryCancelCommonBase(leftMul.right, w.right);
       if (cancelledWithRight != null)
       {
         return leftMul.left.mul(cancelledWithRight).simplify();
       }
-      var cancelledWithLeft = tryCancelCommonBase(leftMul.left, right);
+      var cancelledWithLeft = tryCancelCommonBase(leftMul.left, w.right);
       if (cancelledWithLeft != null)
       {
         return cancelledWithLeft.mul(leftMul.right).simplify();
       }
     }
 
-    return this;
+    return w;
   }
 
   /**
@@ -479,7 +477,6 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return null;
   }
 
-
   @Override
   public <E, S, G extends Function<? extends E, ? extends S>>
          Node<E, S, G>
@@ -491,7 +488,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   /**
    * Make an API that will definitively evaluate what types can be transformed to
    * what without information loss
-   * 
+   *
    * @param resultType
    */
   private void throwExceptionIfRequestedTypeDoesNotContainTheCoDomain(Class<?> resultType)
