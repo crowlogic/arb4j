@@ -65,14 +65,51 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 {
 
   /**
+   * Extracts a variable node from a tree by traversing its structure.
+   * 
+   * @param node The node to search
+   * @return The first VariableNode found, or null
+   */
+  public VariableNode<D, R, F> extractVariable()
+  {
+    if (isVariable())
+    {
+      return asVariable();
+    }
+
+    if (this instanceof BinaryOperationNode<D, R, F> binary)
+    {
+      var leftVar = binary.left.extractVariable();
+      if (leftVar != null)
+      {
+        return leftVar;
+      }
+      return binary.right.extractVariable();
+    }
+
+    if (isFunction())
+    {
+      var func = asFunction();
+      return func.arg.extractVariable();
+    }
+
+    if (this instanceof UnaryOperationNode<D, R, F> unary)
+    {
+      return unary.arg.extractVariable();
+    }
+
+    return null;
+  }
+
+  /**
    * Checks if a node is easily integrable (exp, sin, cos). These functions have
    * straightforward antiderivatives.
    */
   public boolean isEasilyIntegrable()
-  {          
+  {
     return false;
   }
-  
+
   /**
    * Checks if a node represents a polynomial-like expression in the given
    * variable.
@@ -109,7 +146,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   {
     return false;
   }
-  
+
   /**
    * Checks if a node represents a non-negative integer constant.
    */
@@ -162,7 +199,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   public Class<?>            generatedType;
 
   public boolean             isResult = false;
-
 
   public final int           position;
 
@@ -337,14 +373,14 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   public abstract MethodVisitor generate(MethodVisitor mv, Class<?> resultType);
 
   public abstract Logger getLogger();
-  
+
   public Class<?> generateCastTo(MethodVisitor methodVisitor, Class<?> type)
   {
     if (Expression.traceNodes)
     {
       getLogger().debug(String.format("generateCastTo(type=%s) from generatedType=%s\n",
-                                 type,
-                                 generatedType));
+                                      type,
+                                      generatedType));
     }
     cast(methodVisitor, generatedType);
     expression.allocateIntermediateVariable(methodVisitor, type);
@@ -457,7 +493,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return false;
   }
 
-  
   public boolean isZero()
   {
     assert false : "TODO: " + getClass() + " needs to implement this";

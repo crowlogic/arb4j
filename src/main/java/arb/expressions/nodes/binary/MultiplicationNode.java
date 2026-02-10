@@ -798,12 +798,12 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     FunctionNode<D, R, F> delta      = null;
     Node<D, R, F>         multiplier = null;
 
-    if (left.isFunction() && left.asFunction().is("δ"))
+    if (left.isFunction() && left.asFunction().isDeltaFunction())
     {
       delta      = left.asFunction();
       multiplier = right;
     }
-    else if (right.isFunction() && right.asFunction().is("δ"))
+    else if (right.isFunction() && right.asFunction().isDeltaFunction())
     {
       delta      = right.asFunction();
       multiplier = left;
@@ -817,10 +817,10 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     var                   deltaArg = delta.arg;
 
     // Find the variable involved
-    VariableNode<D, R, F> variable = extractVariable(multiplier);
+    VariableNode<D, R, F> variable = multiplier.extractVariable();
     if (variable == null)
     {
-      variable = extractVariable(deltaArg);
+      variable = deltaArg.extractVariable();
     }
     if (variable == null)
     {
@@ -852,8 +852,9 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
    * @param deltaArg The delta function's argument
    * @return The shift node, or null if pattern doesn't match
    */
-  private static <D, R, F extends Function<? extends D, ? extends R>> Node<D, R, F> extractShiftFromDeltaArg(VariableNode<D, R, F> variable,
-                                                 Node<D, R, F> deltaArg)
+  private static <D, R, F extends Function<? extends D, ? extends R>>
+          Node<D, R, F>
+          extractShiftFromDeltaArg(VariableNode<D, R, F> variable, Node<D, R, F> deltaArg)
   {
     // Case 1: δ(x) - direct variable, shift = 0
     if (deltaArg.equals(variable))
@@ -972,45 +973,6 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     }
 
     return false;
-  }
-
-  /**
-   * Extracts a variable node from a tree by traversing its structure.
-   * 
-   * @param node The node to search
-   * @return The first VariableNode found, or null
-   */
-  private static <D, R, F extends Function<? extends D, ? extends R>> VariableNode<D, R, F> extractVariable(Node<D, R, F> node)
-  {
-    if (node.isVariable())
-    {
-      return node.asVariable();
-    }
-
-    if (node instanceof BinaryOperationNode<?, ?, ?>)
-    {
-      var binary  = (BinaryOperationNode<D, R, F>) node;
-      var leftVar = extractVariable(binary.left);
-      if (leftVar != null)
-      {
-        return leftVar;
-      }
-      return extractVariable(binary.right);
-    }
-
-    if (node instanceof FunctionNode<?, ?, ?>)
-    {
-      var func = (FunctionNode<D, R, F>) node;
-      return extractVariable(func.arg);
-    }
-
-    if (node instanceof UnaryOperationNode<?, ?, ?>)
-    {
-      var unary = (UnaryOperationNode<D, R, F>) node;
-      return extractVariable(unary.arg);
-    }
-
-    return null;
   }
 
   @Override
