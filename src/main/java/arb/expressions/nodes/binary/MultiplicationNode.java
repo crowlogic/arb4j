@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import arb.Integer;
 import arb.Quaternion;
+import arb.exceptions.CompilerException;
 import arb.expressions.Expression;
 import arb.expressions.nodes.*;
 import arb.expressions.nodes.unary.FunctionNode;
@@ -136,9 +137,8 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       return simplifiedIbpResult;
     }
 
-    return new IntegralNode<D, R, F>(expression,
-                                     this,
-                                     variable);
+    throw new CompilerException("TODO: quit being an idiot and implement support to integrate "
+                                + this);
   }
 
   /**

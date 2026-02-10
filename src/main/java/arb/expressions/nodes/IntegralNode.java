@@ -326,20 +326,20 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     assert resultType != null : "resultType cannot be null";
     generatedType = resultType;
 
-    if (integrationNotYetImplemented())
-    {
-      throw new CompilerException("integration of "
-                                  + integrandNode
-                                  + " with respect to "
-                                  + integrationVariableName
-                                  + " is not yet implemented"
-                                  + (isDefiniteIntegral() ? " over ["
-                                                            + lowerLimitNode
-                                                            + ", "
-                                                            + upperLimitNode
-                                                            + "]"
-                                                          : ""));
-    }
+//    if (integrationNotYetImplemented())
+//    {
+//      throw new CompilerException("integration of "
+//                                  + integrandNode
+//                                  + " with respect to "
+//                                  + integrationVariableName
+//                                  + " is not yet implemented"
+//                                  + (isDefiniteIntegral() ? " over ["
+//                                                            + lowerLimitNode
+//                                                            + ", "
+//                                                            + upperLimitNode
+//                                                            + "]"
+//                                                          : ""));
+//    }
 
     return isDefiniteIntegral() ? generateDefiniteIntegral(mv, resultType)
                                 : generateIndefiniteIntegral(mv, resultType);
