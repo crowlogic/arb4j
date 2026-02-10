@@ -9,7 +9,6 @@ import java.util.function.Consumer;
 import org.objectweb.asm.MethodVisitor;
 import org.scilab.forge.jlatexmath.LaTeXAtom;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
