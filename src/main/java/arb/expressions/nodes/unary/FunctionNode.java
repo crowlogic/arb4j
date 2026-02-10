@@ -469,43 +469,27 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     setFunctionContext(instance);
 
     var    derivative             = instance.derivative();
+
     String derivativeFunctionName = derivative.getName();
+    assert derivativeFunctionName != null : "derivativeFunctionName is null for instance "
+                                            + instance
+                                            + ": TODO: use the "
+                                            + derivative
+                                            + " directly";
 
-    FunctionMapping<?, ?, ?> derivativeMapping;
+    var newDerivativeFunctionMapping = expression.context.functions.get(derivativeFunctionName);
 
-    if (derivativeFunctionName == null)
-    {
-      // The derivative is an anonymous instance (e.g. a lambda from
-      // RealPolynomialSequence). Assign it a synthetic name, register it
-      // in the context so codegen can reference it, and wire up the mapping.
-      derivativeFunctionName = functionName + "′";
-
-      derivativeMapping = expression.context.registerFunctionMapping(
-              derivativeFunctionName,
-              derivative,
-              functionMapping.domain,
-              functionMapping.coDomain,
-              functionMapping.functionClass,
-              false,
-              null,
-              null);
-
-      expression.referencedFunctions.put(derivativeFunctionName, derivativeMapping);
-    }
-    else
-    {
-      derivativeMapping = expression.context.functions.get(derivativeFunctionName);
-
-      assert derivativeMapping != null : "no function mapping with name "
-                                         + derivativeFunctionName
-                                         + " for derivative " + derivative + " of " + instance;
-    }
+    assert newDerivativeFunctionMapping != null : "no function mapping with name "
+                                                  + derivativeFunctionName
+                                                  + " for derivative "
+                                                  + derivative
+                                                  + " of "
+                                                  + instance;
 
     return new FunctionNode<D, R, F>(expression,
-                                      derivativeMapping,
-                                      arg);
+                                     newDerivativeFunctionMapping,
+                                     arg);
   }
-
 
   protected void setFunctionContext(Function<?, ?> instance)
   {
