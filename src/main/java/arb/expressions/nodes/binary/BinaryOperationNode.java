@@ -1,3 +1,4 @@
+// src/main/java/arb/expressions/nodes/binary/BinaryOperationNode.java
 package arb.expressions.nodes.binary;
 
 import static arb.expressions.Compiler.invokeBinaryOperationMethod;
@@ -27,12 +28,12 @@ import arb.functions.integer.RealSequenceSequence;
 import arb.functions.real.RealFunction;
 
 /**
- * 
+ *
  * @param <D> domain
  * @param <R> codomain
  * @param <F> {@link Function}
- * 
- * 
+ *
+ *
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
@@ -132,7 +133,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
   /**
    * This is implemented as a symmetric equality which means that leftType and
    * rightType can be exchanged and the result is the same
-   * 
+   *
    * @param leftType
    * @param rightType
    * @param resultantType
@@ -174,6 +175,13 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     this.symbol    = symbol;
   }
 
+  /**
+   * Rebuild a node of the same concrete type without mutating this instance.
+   * (Needed to prevent shared-subtree corruption during simplify.)
+   */
+  protected abstract BinaryOperationNode<D, R, F> reconstructWith(Node<D, R, F> newLeft,
+                                                                  Node<D, R, F> newRight);
+
   @Override
   public void accept(Consumer<Node<D, R, F>> t)
   {
@@ -208,7 +216,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     BinaryOperationNode<?, ?, ?> other = (BinaryOperationNode<?, ?, ?>) obj;
 
     if (!Objects.equals(operation, other.operation) || !Objects.equals(symbol, other.symbol)
-                  || !Objects.equals(type(), other.generatedType))
+                  || !Objects.equals(type(), other.type()))
     {
       return false;
     }
@@ -219,7 +227,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
                     && Objects.equals(right, other.right))
                     || (Objects.equals(left, other.right) && Objects.equals(right, other.left)));
     }
-    return type().equals(other.generatedType) && Objects.equals(left, other.left)
+    return type().equals(other.type()) && Objects.equals(left, other.left)
                   && Objects.equals(right, other.right);
   }
 
@@ -366,15 +374,13 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     int hash = 0;
     if (isCommutative())
     {
-      // For commutative operations, order doesn't matter and since the sum is
-      // order-independent thats what is used as the hash
-      int operationHash = Objects.hash(operation, symbol, generatedType);
+      int operationHash = Objects.hash(operation, symbol, type());
       int operandsHash  = left.hashCode() + right.hashCode();
       hash = operationHash + operandsHash;
     }
     else
     {
-      hash = Objects.hash(left, operation, right, symbol, generatedType);
+      hash = Objects.hash(left, operation, right, symbol, type());
     }
 
     return hash;
@@ -427,44 +433,47 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
                         right);
     }
 
-    if (left != null)
+    var newLeft  = (left != null) ? left.simplify() : null;
+    var newRight = (right != null) ? right.simplify() : null;
+
+    if (traceSimplify)
     {
-      var oldLeft = left;
-      left = left.simplify();
-      if (traceSimplify && left != oldLeft)
+      if (newLeft != left)
       {
         System.err.printf("%s[%d]   left changed: %s -> %s%n",
                           depthIndent(),
                           simplifyDepth,
-                          oldLeft,
-                          left);
+                          left,
+                          newLeft);
       }
-    }
-    if (right != null)
-    {
-      var oldRight = right;
-      right = right.simplify();
-      if (traceSimplify && right != oldRight)
+      if (newRight != right)
       {
         System.err.printf("%s[%d]   right changed: %s -> %s%n",
                           depthIndent(),
                           simplifyDepth,
-                          oldRight,
-                          right);
+                          right,
+                          newRight);
       }
+    }
+
+    Node<D, R, F> result = this;
+    if (newLeft != left || newRight != right)
+    {
+      result = reconstructWith(newLeft, newRight);
     }
 
     if (traceSimplify)
     {
-      System.err.printf("%s[%d] EXIT %s.simplify() returning this=%s%n",
+      System.err.printf("%s[%d] EXIT %s.simplify() returning %s=%s%n",
                         depthIndent(),
                         simplifyDepth,
                         getClass().getSimpleName(),
-                        this);
+                        (result == this ? "this" : "new"),
+                        result);
     }
     simplifyDepth--;
 
-    return this;
+    return result;
   }
 
   public String stringFormat(Node<?, ?, ?> side)
@@ -476,8 +485,12 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
          Node<D, R, F>
          substitute(String name, Node<E, S, G> transformation)
   {
-    left  = left.substitute(name, transformation);
-    right = right.substitute(name, transformation);
+    var newLeft  = left.substitute(name, transformation);
+    var newRight = right.substitute(name, transformation);
+    if (newLeft != left || newRight != right)
+    {
+      return reconstructWith(newLeft, newRight);
+    }
     return this;
   }
 
@@ -514,8 +527,8 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     assert right != null : "rhs is null: " + this + " for expr=" + expression;
     var leftType  = left.type();
     var rightType = right.type();
-    assert leftType != null : String.format("leftType is null where this=%s\\n", this);
-    assert rightType != null : String.format("rightType is null where this=%s\\n", this);
+    assert leftType != null : String.format("leftType is null where this=%s\n", this);
+    assert rightType != null : String.format("rightType is null where this=%s\n", this);
 
     if (leftType.equals(rightType))
     {
@@ -558,7 +571,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
 
   /**
    * symmetric type equality
-   * 
+   *
    * @param a
    * @param b
    * @return true if ({@link #left},{@link #right}) in { (a,b) , (b,a) }

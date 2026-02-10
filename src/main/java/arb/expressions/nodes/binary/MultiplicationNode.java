@@ -1,3 +1,4 @@
+// src/main/java/arb/expressions/nodes/binary/MultiplicationNode.java
 package arb.expressions.nodes.binary;
 
 import static arb.expressions.nodes.binary.Integration.*;
@@ -19,7 +20,7 @@ import arb.functions.Function;
 /**
  * Represents a multiplication operation node in the expression tree. Implements
  * integration by parts for polynomial × exp/trig products.
- * 
+ *
  * @author Stephen Crowley ©2024-2026
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
@@ -56,6 +57,12 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   }
 
   @Override
+  protected BinaryOperationNode<D, R, F> reconstructWith(Node<D, R, F> newLeft, Node<D, R, F> newRight)
+  {
+    return new MultiplicationNode<>(expression, newLeft, newRight);
+  }
+
+  @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
     var a   = left.differentiate(variable).mul(right);
@@ -66,15 +73,15 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
 
   /**
    * Integrates a product using integration by parts when applicable.
-   * 
+   *
    * For products of the form p(x)·f(x) where p(x) is a polynomial and f(x) is
    * exp, sin, cos, or log, uses the tabular method:
-   * 
+   *
    * ∫ u dv = uv - ∫ v du
-   * 
+   *
    * The tabular method repeatedly differentiates the polynomial (which eventually
    * becomes zero) while integrating the transcendental function.
-   * 
+   *
    * @param variable The variable of integration
    * @return The integrated expression
    */
@@ -164,34 +171,33 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
                         right);
     }
 
-    if (left != null)
+    var sLeft  = (left != null) ? left.simplify() : null;
+    var sRight = (right != null) ? right.simplify() : null;
+
+    if (traceSimplify)
     {
-      var oldLeft = left;
-      left = left.simplify();
-      if (traceSimplify && left != oldLeft)
+      if (sLeft != left)
       {
         System.err.printf("%s[%d]   left changed: %s -> %s%n",
                           depthIndent(),
                           simplifyDepth,
-                          oldLeft,
-                          left);
+                          left,
+                          sLeft);
       }
-    }
-    if (right != null)
-    {
-      var oldRight = right;
-      right = right.simplify();
-      if (traceSimplify && right != oldRight)
+      if (sRight != right)
       {
         System.err.printf("%s[%d]   right changed: %s -> %s%n",
                           depthIndent(),
                           simplifyDepth,
-                          oldRight,
-                          right);
+                          right,
+                          sRight);
       }
     }
 
-    if (left.isZero() || right.isZero())
+    MultiplicationNode<D, R, F> w = (sLeft != left || sRight != right) ? new MultiplicationNode<>(expression, sLeft, sRight)
+                  : this;
+
+    if (w.left.isZero() || w.right.isZero())
     {
       if (traceSimplify)
       {
@@ -201,31 +207,31 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       return zero();
     }
 
-    if (left.isOne())
+    if (w.left.isOne())
     {
       if (traceSimplify)
       {
         System.err.printf("%s[%d]   left.isOne() -> returning right=%s%n",
                           depthIndent(),
                           simplifyDepth,
-                          right);
+                          w.right);
       }
       simplifyDepth--;
-      return right;
+      return w.right;
     }
-    if (right.isOne())
+    if (w.right.isOne())
     {
       if (traceSimplify)
       {
         System.err.printf("%s[%d]   right.isOne() -> returning left=%s%n",
                           depthIndent(),
                           simplifyDepth,
-                          left);
+                          w.left);
       }
       simplifyDepth--;
-      return left;
+      return w.left;
     }
-    if (left.isNegOne())
+    if (w.left.isNegOne())
     {
       if (traceSimplify)
       {
@@ -234,9 +240,9 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
                           simplifyDepth);
       }
       simplifyDepth--;
-      return right.neg();
+      return w.right.neg();
     }
-    if (right.isNegOne())
+    if (w.right.isNegOne())
     {
       if (traceSimplify)
       {
@@ -245,10 +251,10 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
                           simplifyDepth);
       }
       simplifyDepth--;
-      return left.neg();
+      return w.left.neg();
     }
 
-    var deltaSimplification = simplifyDeltaMultiplication();
+    var deltaSimplification = w.simplifyDeltaMultiplication();
     if (deltaSimplification != null)
     {
       if (traceSimplify)
@@ -262,8 +268,8 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       return deltaSimplification;
     }
 
-    if (left instanceof LiteralConstantNode<D, R, F> leftConstant
-                  && right instanceof LiteralConstantNode<D, R, F> rightConstant)
+    if (w.left instanceof LiteralConstantNode<D, R, F> leftConstant
+                  && w.right instanceof LiteralConstantNode<D, R, F> rightConstant)
     {
       if (leftConstant.isInt && rightConstant.isInt)
       {
@@ -286,8 +292,8 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       }
     }
 
-    if (left instanceof ExponentiationNode<D, R, F> leftExp
-                  && right instanceof ExponentiationNode<D, R, F> rightExp)
+    if (w.left instanceof ExponentiationNode<D, R, F> leftExp
+                  && w.right instanceof ExponentiationNode<D, R, F> rightExp)
     {
       var leftBase  = leftExp.left;
       var rightBase = rightExp.left;
@@ -309,8 +315,8 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       }
     }
 
-    if (left instanceof FunctionNode<D, R, F> leftFunction
-                  && right instanceof FunctionNode<D, R, F> rightFunction)
+    if (w.left instanceof FunctionNode<D, R, F> leftFunction
+                  && w.right instanceof FunctionNode<D, R, F> rightFunction)
     {
       var leftIsExponentialFunction  = leftFunction.is("exp");
       var rightIsExponentialFunction = rightFunction.is("exp");
@@ -331,8 +337,8 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       }
     }
 
-    if (left instanceof FunctionNode<D, R, F> leftFunction2
-                  && right instanceof FunctionNode<D, R, F> rightFunction2)
+    if (w.left instanceof FunctionNode<D, R, F> leftFunction2
+                  && w.right instanceof FunctionNode<D, R, F> rightFunction2)
     {
       var leftIsSquareRootFunction = leftFunction2.is("sqrt");
       var functionsAreEqual        = leftFunction2.equals(rightFunction2);
@@ -349,8 +355,8 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     }
 
     // Combine fractions: (a/b) * (c/d) → (a*c)/(b*d)
-    if (left instanceof DivisionNode<D, R, F> leftDiv
-                  && right instanceof DivisionNode<D, R, F> rightDiv)
+    if (w.left instanceof DivisionNode<D, R, F> leftDiv
+                  && w.right instanceof DivisionNode<D, R, F> rightDiv)
     {
       var numerator   = leftDiv.left.mul(rightDiv.left).simplify();
       var denominator = leftDiv.right.mul(rightDiv.right).simplify();
@@ -371,15 +377,15 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     }
 
     // Pull fraction right: expr * (a/b) → (expr*a)/b
-    if (right instanceof DivisionNode<D, R, F> rightDiv)
+    if (w.right instanceof DivisionNode<D, R, F> rightDiv)
     {
-      var numerator = left.mul(rightDiv.left).simplify();
+      var numerator = w.left.mul(rightDiv.left).simplify();
       if (traceSimplify)
       {
         System.err.printf("%s[%d]   pull fraction right: %s*(%s/%s) → %s/%s%n",
                           depthIndent(),
                           simplifyDepth,
-                          left,
+                          w.left,
                           rightDiv.left,
                           rightDiv.right,
                           numerator,
@@ -390,9 +396,9 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     }
 
     // Pull fraction left: (a/b) * expr → (a*expr)/b
-    if (left instanceof DivisionNode<D, R, F> leftDiv)
+    if (w.left instanceof DivisionNode<D, R, F> leftDiv)
     {
-      var numerator = leftDiv.left.mul(right).simplify();
+      var numerator = leftDiv.left.mul(w.right).simplify();
       if (traceSimplify)
       {
         System.err.printf("%s[%d]   pull fraction left: (%s/%s)*%s → %s/%s%n",
@@ -400,7 +406,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
                           simplifyDepth,
                           leftDiv.left,
                           leftDiv.right,
-                          right,
+                          w.right,
                           numerator,
                           leftDiv.right);
       }
@@ -410,22 +416,23 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
 
     if (traceSimplify)
     {
-      System.err.printf("%s[%d] EXIT MultiplicationNode.simplify() returning this=%s%n",
+      System.err.printf("%s[%d] EXIT MultiplicationNode.simplify() returning %s=%s%n",
                         depthIndent(),
                         simplifyDepth,
-                        this);
+                        (w == this ? "this" : "new"),
+                        w);
     }
     simplifyDepth--;
-    return this;
+    return w;
   }
 
   /**
    * Simplifies expressions of the form (x-a)^n * δ(x-a) = 0
-   * 
+   *
    * Implements the mathematical rule that any polynomial in (x-a) multiplied by
    * δ(x-a) equals zero, since the polynomial vanishes at the delta function's
    * singularity point x=a.
-   * 
+   *
    * @return zero() if the pattern matches, null otherwise
    */
   private Node<D, R, F> simplifyDeltaMultiplication()

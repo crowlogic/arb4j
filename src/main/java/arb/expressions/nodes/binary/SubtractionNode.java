@@ -1,3 +1,4 @@
+// src/main/java/arb/expressions/nodes/binary/SubtractionNode.java
 package arb.expressions.nodes.binary;
 
 import static java.lang.String.format;
@@ -14,7 +15,7 @@ import arb.expressions.nodes.unary.NegationNode;
 import arb.functions.Function;
 
 /**
- * 
+ *
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
@@ -36,6 +37,12 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
           "sub",
           right,
           "-");
+  }
+
+  @Override
+  protected BinaryOperationNode<D, R, F> reconstructWith(Node<D, R, F> newLeft, Node<D, R, F> newRight)
+  {
+    return new SubtractionNode<>(expression, newLeft, newRight);
   }
 
   @Override
@@ -75,19 +82,22 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
   @Override
   public Node<D, R, F> simplify()
   {
-    left  = left.simplify();
-    right = right.simplify();
+    var sLeft  = left.simplify();
+    var sRight = right.simplify();
 
-    if (left.isZero())
+    SubtractionNode<D, R, F> w = (sLeft != left || sRight != right) ? new SubtractionNode<>(expression, sLeft, sRight)
+                  : this;
+
+    if (w.left.isZero())
     {
-      return right.neg();
+      return w.right.neg();
     }
 
-    if (right.isZero())
+    if (w.right.isZero())
     {
-      return left;
+      return w.left;
     }
-    if (left instanceof LiteralConstantNode lconst && right instanceof LiteralConstantNode rconst)
+    if (w.left instanceof LiteralConstantNode lconst && w.right instanceof LiteralConstantNode rconst)
     {
       if (lconst.isInt && rconst.isInt)
       {
@@ -109,16 +119,16 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
           return numerator.div(denominator);
         }
       }
-      return this;
+      return w;
     }
 
     // Rewrite a - (-b) as a + b, but do NOT re-simplify to avoid ping-pong
-    if (right instanceof NegationNode<D, R, F> rightNegation)
+    if (w.right instanceof NegationNode<D, R, F> rightNegation)
     {
-      return left.add(rightNegation.arg);
+      return w.left.add(rightNegation.arg);
     }
 
-    return this;
+    return w;
 
   }
 
