@@ -1,12 +1,13 @@
 %typemap(javainterfaces) fmpz_poly_q_struct "RealFunction,NamedField<RationalFunction>,Verifiable,AutoCloseableAssignable<RationalFunction>"
 %typemap(javafinalize) fmpz_poly_q_struct ""
 %typemap(javaimports) fmpz_poly_q_struct %{
+import java.util.stream.Stream;
 import arb.exceptions.ArbException;
-import arb.expressions.*;
+import arb.expressions.Context;
 import arb.functions.Function;
+import arb.functions.complex.ComplexFunction;
 import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
-import java.util.stream.Stream;
 import arb.utensils.Utensils;
 %}
 
@@ -21,6 +22,79 @@ import arb.utensils.Utensils;
 
 %typemap(javacode) fmpz_poly_q_struct %{
 
+	ComplexRationalFunction complexVersion;
+
+	public ComplexFunction asComplexFunction()
+	{
+	  return (complexVersion == null ? (complexVersion = new ComplexRationalFunction())
+	                                 : complexVersion);
+	}
+
+	public final class ComplexRationalFunction implements
+	                                           ComplexFunction,
+	                                           AutoCloseable
+	{
+	  @Override
+	  public String toString()
+	  {
+	    return RationalFunction.this.toString();
+	  }
+
+	  @Override
+	  public String typeset()
+	  {
+	    return RationalFunction.this.typeset();
+	  }
+
+	  @Override
+	  public void close()
+	  {
+	  }
+
+	  @Override
+	  public Complex evaluate(Complex t, int order, int bits, Complex res)
+	  {
+	    return RationalFunction.this.evaluate(t, order, bits, res);
+	  }
+	}
+
+	ComplexFractionRationalFunction complexFractionVersion;
+
+	public Function<ComplexFraction, ComplexFraction> asComplexFractionFunction()
+	{
+	  return (complexFractionVersion
+	                == null ? (complexFractionVersion = new ComplexFractionRationalFunction())
+	                        : complexFractionVersion);
+	}
+
+	public final class ComplexFractionRationalFunction implements
+	                                                   Function<ComplexFraction, ComplexFraction>,
+	                                                   AutoCloseable
+	{
+	  @Override
+	  public String toString()
+	  {
+	    return RationalFunction.this.toString();
+	  }
+
+	  @Override
+	  public String typeset()
+	  {
+	    return RationalFunction.this.typeset();
+	  }
+
+	  @Override
+	  public void close()
+	  {
+	  }
+
+	  @Override
+	  public ComplexFraction evaluate(ComplexFraction t, int order, int bits, ComplexFraction res)
+	  {
+	    return RationalFunction.this.evaluate(t, order, bits, res);
+	  }
+	}
+	
   @Override
   public String typeset()
   {
@@ -248,7 +322,9 @@ import arb.utensils.Utensils;
     return asRealFunction();
   }
     
-  public final class RealRationalFunction implements RealFunction, AutoCloseable
+  public final class RealRationalFunction implements
+                                          RealFunction,
+                                          AutoCloseable
   {
     @Override
     public String toString()
@@ -261,7 +337,7 @@ import arb.utensils.Utensils;
     {
       return RationalFunction.this.typeset();
     }
-    
+
     @Override
     public void close()
     {
@@ -275,10 +351,7 @@ import arb.utensils.Utensils;
     @Override
     public Real evaluate(Real t, int order, int bits, Real res)
     {
-      x.set(t);
-      RationalFunction.this.evaluate(x, order, bits, y);
-      res.set(y);
-      return res;
+      return res.set(RationalFunction.this.evaluate(x.set(t), order, bits, y));
     }
   }
 
