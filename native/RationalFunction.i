@@ -21,6 +21,19 @@ import arb.utensils.Utensils;
 
 %typemap(javacode) fmpz_poly_q_struct %{
 
+  @Override
+  public String typeset()
+  {
+	assertPointerConsistency();
+	IntegerPolynomial num = getNumerator();
+	IntegerPolynomial den = getDenominator();
+	if (den.isOne())
+	{
+	  return num.typeset();
+    }
+    return "\\frac{" + num.typeset() + "}{" + den.typeset() + "}";
+  }
+	
   public Fraction evaluate(Fraction value, int bits, Fraction res)
   {
     // bits has no effect

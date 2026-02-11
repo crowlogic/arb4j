@@ -16,6 +16,8 @@
 #include <unistd.h>
 #include <wchar.h>
 
+int fmpz_poly_is_one(const fmpz_poly_t op);
+
 void acb_add_fmpz(acb_t z, const acb_t x, const fmpz_t y, slong prec);
 
 void acb_add_si(acb_t z, const acb_t x, slong c, slong prec);

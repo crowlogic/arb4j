@@ -40,6 +40,19 @@ public class RationalFunction implements RealFunction,NamedField<RationalFunctio
   }
 
 
+  @Override
+  public String typeset()
+  {
+	assertPointerConsistency();
+	IntegerPolynomial num = getNumerator();
+	IntegerPolynomial den = getDenominator();
+	if (den.isOne())
+	{
+	  return num.typeset();
+    }
+    return "\\frac{" + num.typeset() + "}{" + den.typeset() + "}";
+  }
+	
   public Fraction evaluate(Fraction value, int bits, Fraction res)
   {
     // bits has no effect

@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static int fmpz_poly_is_one(IntegerPolynomial op) {
+    return arblibJNI.fmpz_poly_is_one(IntegerPolynomial.getCPtr(op), op);
+  }
+
   public static void acb_add_fmpz(Complex z, Complex x, long y, int prec) {
     arblibJNI.acb_add_fmpz(Complex.getCPtr(z), z, Complex.getCPtr(x), x, y, prec);
   }

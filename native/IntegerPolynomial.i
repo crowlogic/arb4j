@@ -19,6 +19,11 @@ import arb.expressions.Context;
 %typemap(javacode) fmpz_poly_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+  public boolean isOne()
+  {
+    return arblib.fmpz_poly_is_one(this) != 0;
+  }
+    
   public int degree()
   {
     return arblib.fmpz_poly_degree(this);

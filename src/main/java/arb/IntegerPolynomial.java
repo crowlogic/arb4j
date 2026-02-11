@@ -45,6 +45,11 @@ public class IntegerPolynomial implements Named,AutoCloseable,Ring<IntegerPolyno
 
   static { System.loadLibrary( "arblib" ); }
 
+  public boolean isOne()
+  {
+    return arblib.fmpz_poly_is_one(this) != 0;
+  }
+    
   public int degree()
   {
     return arblib.fmpz_poly_degree(this);
