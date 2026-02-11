@@ -1575,15 +1575,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     var functionName       = dependency.variableName;
     var mapping            = referencedFunctions.get(functionName);
-    var functionDescriptor = functionClass.descriptorString();                         // .format("L%s;",
-                                                                                       // functionName);
+    var functionDescriptor = functionClass.descriptorString();
 
     if (mapping != null)
     {
 
       functionDescriptor = mapping.functionFieldDescriptor();
 
-      constructReferencedFunctionInstanceIfItIsNull(mv, mapping);
+      // Phase 1 (generateReferencedFunctionInstances) already guarantees non-null (#848)
       generateFunctionInitializer(mv, mapping, assignments);
 
       for (String assignment : assignments)
@@ -1593,6 +1592,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     }
   }
+
 
   private ClassVisitor generateDerivativeMethod(ClassVisitor classVisitor)
   {
@@ -1859,9 +1859,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     propagateAscendentInputVariablesToNestedFunctions(mv);
 
     // Phase 3: Initialize in proper dependency order.
-    // constructReferencedFunctionInstanceIfItIsNull inside
-    // generateDependencyAssignments will be a no-op since Phase 1
-    // already guaranteed non-null.
+    // The duplicate constructReferencedFunctionInstanceIfItIsNull call
+    // was removed from generateDependencyAssignments since Phase 1
+    // already guarantees non-null (#848).
     if (dependencies != null)
     {
       dependencies.forEach(dependency -> generateDependencyAssignments(mv, dependency));
@@ -1884,6 +1884,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     generateCodeToSetIsInitializedToTrue(mv);
     return mv;
   }
+
 
 
   /**
