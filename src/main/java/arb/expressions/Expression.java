@@ -442,27 +442,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-  private void addCheckForNullField(MethodVisitor mv,
-                                    FunctionMapping<?, ?, ?> functionMapping,
-                                    boolean variable)
-  {
-    String fieldClassDescriptor;
-    var    varName = functionMapping.functionName;
-
-    if (variable)
-    {
-      Object field = context.getVariable(varName);
-      fieldClassDescriptor = field != null ? field.getClass().descriptorString() : null;
-    }
-    else
-    {
-      fieldClassDescriptor = functionMapping.functionFieldDescriptor();
-    }
-
-    addNullCheckForField(mv, className, varName, fieldClassDescriptor);
-
-  }
-
   protected void addCheckForNullField(MethodVisitor mv, String varName, boolean variable)
   {
     Class<?> fieldClass;
@@ -2253,17 +2232,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return referencedVariables.get(reference);
   }
 
-  public void getReferencedFunctionFromThis(MethodVisitor mv,
-                                            String generatedFunctionClassInternalName,
-                                            String functionFieldName,
-                                            String functionTypeDesc)
-  {
-    getField(loadThisOntoStack(mv),
-             generatedFunctionClassInternalName,
-             functionFieldName,
-             functionTypeDesc);
-  }
-
   protected ArrayList<LiteralConstantNode<D, C, F>> getSortedLiteralConstantNodes()
   {
     if (literalConstantNodes == null)
@@ -2394,31 +2362,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return domainType.equals(Object.class);
   }
 
-  protected void jumpIfNestedFunctionFieldIsNull(MethodVisitor mv,
-                                                 String generatedFunctionClassInternalName,
-                                                 String functionFieldName,
-                                                 String functionTypeDesc,
-                                                 String variableFieldName,
-                                                 String variableFieldTypeDescriptor,
-                                                 String nestedFunctionClassInternalName,
-                                                 Label labelCopyByReference)
-  {
-    loadThisOntoStack(mv); // Stack: [this]
-    mv.visitFieldInsn(GETFIELD,
-                      generatedFunctionClassInternalName,
-                      functionFieldName,
-                      functionTypeDesc);
-    // Stack: [this.nestFunctionField]
-    mv.visitFieldInsn(GETFIELD,
-                      nestedFunctionClassInternalName,
-                      variableFieldName,
-                      variableFieldTypeDescriptor);
-    // Stack: [nestedFunctionField.variableField]
-
-    mv.visitJumpInsn(IFNONNULL, labelCopyByReference);
-    // Stack: [] (IFNULL pops the value being tested)
-  }
-
   public HashSet<String> declaredVariables = new HashSet<>();
 
   protected void
@@ -2464,67 +2407,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Compiler.pop(mv);
 
     mv.visitLabel(labelEnd);
-  }
-
-  protected void
-            allocateNestedFunctionFieldViaNamedConstructor(MethodVisitor mv,
-                                                           String generatedFunctionClassInternalName,
-                                                           String functionFieldName,
-                                                           String functionTypeDesc,
-                                                           String variableFieldName,
-                                                           String variableFieldTypeDescriptor,
-                                                           Class<?> variableType,
-                                                           String nestedFunctionClassInternalName)
-  {
-    // this.funcField
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(GETFIELD,
-                      generatedFunctionClassInternalName,
-                      functionFieldName,
-                      functionTypeDesc);
-
-    // push variable name string, invoke Type.named(String) → Type
-    mv.visitLdcInsn(variableFieldName);
-    Compiler.invokeStaticMethod(mv, variableType, "named", variableType, String.class);
-
-    // this.funcField.varField = Type.named("varName")
-    mv.visitFieldInsn(PUTFIELD,
-                      nestedFunctionClassInternalName,
-                      variableFieldName,
-                      variableFieldTypeDescriptor);
-  }
-
-  protected void setNestedFunctionVariable(MethodVisitor mv,
-                                           String generatedFunctionClassInternalName,
-                                           String functionFieldName,
-                                           String functionTypeDesc,
-                                           String variableFieldName,
-                                           String variableFieldTypeDescriptor,
-                                           Class<?> variableType,
-                                           String nestedFunctionClassInternalName)
-  {
-    // Stack: []
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(GETFIELD,
-                      generatedFunctionClassInternalName,
-                      functionFieldName,
-                      functionTypeDesc);
-    mv.visitFieldInsn(GETFIELD,
-                      nestedFunctionClassInternalName,
-                      variableFieldName,
-                      variableFieldTypeDescriptor);
-    // Stack: [nestedFunc.varField]
-
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(GETFIELD,
-                      generatedFunctionClassInternalName,
-                      variableFieldName,
-                      variableFieldTypeDescriptor);
-    // Stack: [nestedFunc.varField, this.varField]
-
-    invokeVirtualMethod(mv, variableType, "set", variableType, variableType);
-    mv.visitInsn(Opcodes.POP);
-    // Stack: []
   }
 
   public Node<D, C, F> literal(int i)
