@@ -124,8 +124,18 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    assert false : "TODO: differentiate " + this + " with respect to " + variable;
-    return null;
+    TreeMap<Integer, Node<D, R, F>> differentiatedCases = new TreeMap<>();
+    for (var entry : cases.entrySet())
+    {
+      differentiatedCases.put(entry.getKey(), entry.getValue().differentiate(variable));
+    }
+
+    Node<D, R, F>     differentiatedDefault = arg.differentiate(variable);
+
+    WhenNode<D, R, F> result                = new WhenNode<>(expression,
+                                                             differentiatedCases);
+    result.arg = differentiatedDefault;
+    return result;
   }
 
   void evaluateCase(TreeMap<Integer, Node<D, R, F>> cases, VariableNode<D, R, F> variable)
@@ -249,8 +259,18 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   @Override
   public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    TreeMap<Integer, Node<D, R, F>> integratedCases = new TreeMap<>();
+    for (var entry : cases.entrySet())
+    {
+      integratedCases.put(entry.getKey(), entry.getValue().integrate(variable));
+    }
+
+    Node<D, R, F>     integratedDefault = arg.integrate(variable);
+
+    WhenNode<D, R, F> result            = new WhenNode<>(expression,
+                                                         integratedCases);
+    result.arg = integratedDefault;
+    return result;
   }
 
   @Override
