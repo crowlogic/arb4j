@@ -21,6 +21,14 @@ import arb.utensils.Utensils;
 
 %typemap(javacode) fmpz_poly_q_struct %{
 
+  public Fraction evaluate(Fraction value, int bits, Fraction res)
+  {
+    // bits has no effect
+    arblib.fmpz_poly_q_evaluate_fmpq(res, this, value);
+    return res;
+  }
+
+	
   public int totalDegree()
   {
     return Math.max(getNumerator().degree(), getDenominator().degree());
