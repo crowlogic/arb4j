@@ -16,7 +16,7 @@ import arb.functions.real.RealFunction;
 import java.util.stream.Stream;
 import arb.utensils.Utensils;
 
-public class RationalFunction implements NamedField<RationalFunction>,Verifiable,AutoCloseableAssignable<RationalFunction> {
+public class RationalFunction implements RealFunction,NamedField<RationalFunction>,Verifiable,AutoCloseableAssignable<RationalFunction> {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
