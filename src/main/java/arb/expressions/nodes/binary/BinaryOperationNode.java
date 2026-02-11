@@ -288,46 +288,33 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
                                                 expression));
     }
 
-    String existingVar = expression.generatedNodes.get(this);
-    if (existingVar != null)
+    left.generate(mv, left.type());
+    right.generate(mv, right.type());
+
+    if (expression.insideInitializer)
     {
-      fieldName = existingVar;
-      if (log.isDebugEnabled() && Expression.traceNodes)
-      {
-        log.debug("\n\n{}: reused {} for {}\n", expression, fieldName, this);
-      }
-      expression.loadThisFieldOntoStack(mv, existingVar, resultType);
+      mv.visitLdcInsn(initializerBits);
     }
     else
     {
-      left.generate(mv, left.type());
-      right.generate(mv, right.type());
-
-      if (expression.insideInitializer)
-      {
-        mv.visitLdcInsn(initializerBits);
-      }
-      else
-      {
-        loadBitsParameterOntoStack(mv);
-      }
-      loadOutput(mv, resultType);
-
-      if (Expression.traceNodes)
-      {
-        log.debug(formatGenerationParameters(resultType));
-      }
-
-      var leftType = left.getGeneratedType();
-      leftType = leftType != null ? leftType : left.type();
-      var rightType = right.type();
-      if (Object.class.equals(leftType))
-      {
-        leftType = expression.coDomainType;
-      }
-
-      invokeBinaryOperationMethod(mv, operation, leftType, rightType, resultType);
+      loadBitsParameterOntoStack(mv);
     }
+    loadOutput(mv, resultType);
+
+    if (Expression.traceNodes)
+    {
+      log.debug(formatGenerationParameters(resultType));
+    }
+
+    var leftType = left.getGeneratedType();
+    leftType = leftType != null ? leftType : left.type();
+    var rightType = right.type();
+    if (Object.class.equals(leftType))
+    {
+      leftType = expression.coDomainType;
+    }
+
+    invokeBinaryOperationMethod(mv, operation, leftType, rightType, resultType);
 
     return mv;
 
