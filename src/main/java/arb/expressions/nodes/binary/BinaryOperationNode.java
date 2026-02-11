@@ -22,8 +22,8 @@ import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 import arb.functions.RealToComplexFunction;
 import arb.functions.complex.ComplexFunction;
+import arb.functions.integer.ComplexSequence;
 import arb.functions.integer.RealSequence;
-import arb.functions.integer.RealSequenceSequence;
 import arb.functions.real.RealFunction;
 
 /**
@@ -33,7 +33,7 @@ import arb.functions.real.RealFunction;
  * @param <F> {@link Function}
  * 
  * 
- * @author Stephen Crowley ©2024-2025
+ * @author Stephen Crowley ©2024-2026
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, ? extends R>>
@@ -111,11 +111,8 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     mapTypes(RealToComplexFunction.class, RealFunction.class, RealToComplexFunction.class);
     mapTypes(RealToComplexFunction.class, AlgebraicNumber.class, RealToComplexFunction.class);
     mapTypes(RealSequence.class, Integer.class, RealSequence.class);
-    mapTypes(RealSequenceSequence.class, Real.class, RealSequenceSequence.class);
-    mapTypes(RealSequenceSequence.class, RealSequence.class, RealSequenceSequence.class);
-    mapTypes(RealSequenceSequence.class, Integer.class, RealSequenceSequence.class);
     mapTypes(RealSequence.class, Real.class, RealSequence.class);
-
+    mapTypes(RealSequence.class, Complex.class, ComplexSequence.class);
   }
 
   public static void mapPolynomialType(Class<?> scalarType, Class<?> polynomialType)
