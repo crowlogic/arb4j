@@ -195,7 +195,6 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
   @Override
   public boolean equals(Object obj)
   {
-
     if (this == obj)
       return true;
     if (obj == null)
@@ -205,19 +204,17 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     BinaryOperationNode<?, ?, ?> other = (BinaryOperationNode<?, ?, ?>) obj;
 
     if (!Objects.equals(operation, other.operation) || !Objects.equals(symbol, other.symbol)
-                  || !Objects.equals(type(), other.generatedType))
+                  || !Objects.equals(type(), other.type()))
     {
       return false;
     }
 
     if (isCommutative())
     {
-      return type().equals(other.type()) && ((Objects.equals(left, other.left)
-                    && Objects.equals(right, other.right))
-                    || (Objects.equals(left, other.right) && Objects.equals(right, other.left)));
+      return (Objects.equals(left, other.left) && Objects.equals(right, other.right))
+                    || (Objects.equals(left, other.right) && Objects.equals(right, other.left));
     }
-    return type().equals(other.generatedType) && Objects.equals(left, other.left)
-                  && Objects.equals(right, other.right);
+    return Objects.equals(left, other.left) && Objects.equals(right, other.right);
   }
 
   public String formatGenerationParameters(Class<?> resultType)
@@ -365,13 +362,13 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     {
       // For commutative operations, order doesn't matter and since the sum is
       // order-independent thats what is used as the hash
-      int operationHash = Objects.hash(operation, symbol, generatedType);
+      int operationHash = Objects.hash(operation, symbol, type());
       int operandsHash  = left.hashCode() + right.hashCode();
       hash = operationHash + operandsHash;
     }
     else
     {
-      hash = Objects.hash(left, operation, right, symbol, generatedType);
+      hash = Objects.hash(left, operation, right, symbol, type());
     }
 
     return hash;

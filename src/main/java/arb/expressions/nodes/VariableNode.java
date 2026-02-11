@@ -285,7 +285,7 @@ public Logger getLogger()
   {
     if (isIndependent)
     {
-      Compiler.cast(loadInputParameter(mv), expression.domainType);
+      Compiler.cast(loadInputParameter(mv), type());
     }
     else if (isIndeterminate)
     {
