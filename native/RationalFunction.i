@@ -1,4 +1,4 @@
-%typemap(javainterfaces) fmpz_poly_q_struct "NamedField<RationalFunction>,Function<Fraction,Fraction>,Verifiable,AutoCloseableAssignable<RationalFunction>"
+%typemap(javainterfaces) fmpz_poly_q_struct "NamedField<RationalFunction>,Verifiable,AutoCloseableAssignable<RationalFunction>"
 %typemap(javafinalize) fmpz_poly_q_struct ""
 %typemap(javaimports) fmpz_poly_q_struct %{
 import arb.exceptions.ArbException;
@@ -260,13 +260,49 @@ import arb.utensils.Utensils;
       return res;
     }
   }
-    
+
+  FractionRationalFunction fractionVersion;
+
+  /**
+   * Returns this rational function as a typed {@link Function} from
+   * {@link Fraction} to {@link Fraction}. Analogous to {@link #asRealFunction()}.
+   */
+  public Function<Fraction, Fraction> asFractionFunction()
+  {
+    return (fractionVersion == null ? (fractionVersion = new FractionRationalFunction()) : fractionVersion);
+  }
+
+  public final class FractionRationalFunction implements Function<Fraction, Fraction>, AutoCloseable
+  {
+    @Override
+    public String toString()
+    {
+      return RationalFunction.this.toString();
+    }
+
+    @Override
+    public String typeset()
+    {
+      return RationalFunction.this.typeset();
+    }
+
+    @Override
+    public void close()
+    {
+    }
+
+    @Override
+    public Fraction evaluate(Fraction t, int order, int bits, Fraction res)
+    {
+      return RationalFunction.this.evaluate(t, order, bits, res);
+    }
+  }
+
   public RationalFunction set(String string)
   {
     return RationalNullaryFunction.express(string).evaluate( bits(), this);
   }  
 
- @Override
   public Stream<RationalFunction>
          stream()
   {
@@ -285,16 +321,6 @@ import arb.utensils.Utensils;
     return RationalNullaryFunction.express(expression, context).evaluate(128);
   }
   
-  public static Expression<Fraction, Fraction, RationalFunction> parse(String expression)
-  {
-    return parse(expression, null);
-  }
-
-  public static Expression<Fraction, Fraction, RationalFunction> parse(String expression, Context context)
-  {
-    return Parser.parse(expression, context, Fraction.class, Fraction.class, RationalFunction.class, null);
-  }
-      
   @SuppressWarnings("resource")
   public Real evaluate(Real t, int order, int bits, Real res)
   {
@@ -335,7 +361,6 @@ import arb.utensils.Utensils;
     return res;
   }
   
-  @Override
   public Fraction evaluate(Fraction t, int order, int bits, Fraction res)
   {
       assertPointerConsistency();  
