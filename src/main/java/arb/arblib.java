@@ -9,8 +9,16 @@
 package arb;
 
 public class arblib {
+  public static void arb_fmpz_poly_evaluate_arb(Real res, IntegerPolynomial f, Real a, int prec) {
+    arblibJNI.arb_fmpz_poly_evaluate_arb(Real.getCPtr(res), res, IntegerPolynomial.getCPtr(f), f, Real.getCPtr(a), a, prec);
+  }
+
   public static int fmpz_poly_is_one(IntegerPolynomial op) {
     return arblibJNI.fmpz_poly_is_one(IntegerPolynomial.getCPtr(op), op);
+  }
+
+  public static int fmpz_poly_is_zero(IntegerPolynomial op) {
+    return arblibJNI.fmpz_poly_is_zero(IntegerPolynomial.getCPtr(op), op);
   }
 
   public static void acb_add_fmpz(Complex z, Complex x, long y, int prec) {

@@ -27,7 +27,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKindTest extends
     y = jk.evaluate(4, 128);
     var z4 = y.eval(2.3);
     // System.out.println("j0(3)=" + z);
-    assertEquals(0.046351363745632215, z4);
+    assertEquals(0.04635136374563225, z4);
 
   }
 

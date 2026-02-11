@@ -11,12 +11,17 @@
 #include <flint/fmpz_poly_q.h>
 #include <flint/fexpr.h>
 #include <flint/qqbar.h>
+#include <flint/arb_fmpz_poly.h>
 #include <X11/Xlib.h>
 #include <X11/X.h>
 #include <unistd.h>
 #include <wchar.h>
 
+void arb_fmpz_poly_evaluate_arb(arb_t res, const fmpz_poly_t f, const arb_t a, slong prec);
+
 int fmpz_poly_is_one(const fmpz_poly_t op);
+
+int fmpz_poly_is_zero(const fmpz_poly_t op);
 
 void acb_add_fmpz(acb_t z, const acb_t x, const fmpz_t y, slong prec);
 
