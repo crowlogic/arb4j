@@ -97,20 +97,20 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     }
   }
 
+  @SuppressWarnings("unchecked")
   public <E, S, G extends Function<? extends E, ? extends S>> WhenNode(
                                                                        Expression<D, R, F> expression,
-                                                                       TreeMap<Integer, Node<E, S, G>> cases)
+                                                                       TreeMap<Integer, Node<E, S, G>> sourceCases)
   {
     super(expression,
           null);
-    cases = new TreeMap<>();
+    this.cases = new TreeMap<>();
 
-    for (var entry : cases.entrySet())
+    for (var entry : sourceCases.entrySet())
     {
-      var value = entry.getValue().spliceInto(expression);
+      Node<D, R, F> value = (Node<D, R, F>) entry.getValue().spliceInto(expression);
       this.cases.put(entry.getKey(), value);
     }
-
   }
 
   @Override
