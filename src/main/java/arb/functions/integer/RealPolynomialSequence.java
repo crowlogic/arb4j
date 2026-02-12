@@ -20,16 +20,49 @@ public interface RealPolynomialSequence extends
                                         PolynomialSequence<Real, RealPolynomial>
 {
 
+  RealPolynomialSequence integralSequence = new RealPolynomialSequence()
+  {
+
+    @Override
+    public String getName()
+    {
+      return "∫" + RealPolynomialSequence.super.getName();
+    }
+
+    @Override
+    public RealPolynomial evaluate(Integer n, int order, int bits, RealPolynomial res)
+    {
+      return evaluate(n, order, bits, res).integral();
+    }
+  };
+  
+  RealPolynomialSequence derivativeSequence = new RealPolynomialSequence()
+  {
+
+    @Override
+    public String getName()
+    {
+      return "∂" + RealPolynomialSequence.super.getName();
+    }
+
+    @Override
+    public RealPolynomial evaluate(Integer n, int order, int bits, RealPolynomial res)
+    {
+      return evaluate(n, order, bits, res).derivative();
+    }
+  };
+  
   @Override
   public default RealPolynomialSequence integral()
   {
-    return (n, order, bits, res) -> evaluate(n, order, bits, res).integral();
+   
+    return integralSequence;
   }
 
   @Override
   public default RealPolynomialSequence derivative()
   {
-    return (n, order, bits, res) -> evaluate(n, order, bits, res).derivative();
+    return derivativeSequence;
   }
 
   public static RealPolynomialSequence express(String expression, Context context)

@@ -1328,8 +1328,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       if (isNullaryFunction())
       {
-        // Nullary polynomial (domain=Object): no interface default methods exist,
-        // so we must generate the polynomial method bytecode here
+  
         generatePolynomialMethod(classVisitor, "integral");
         generatePolynomialMethod(classVisitor, "derivative");
       }
