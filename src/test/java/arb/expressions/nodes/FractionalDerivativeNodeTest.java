@@ -15,7 +15,7 @@ public class FractionalDerivativeNodeTest extends
 {
   public static void testFractionalDerivative()
   {
-    var expr = RealFunction.express("Đᵅsin(t)", new Context(Real.named("α").set(RealConstants.half)));
+    var expr = RealFunction.express("t➔Đᵅsin(t)", new Context(Real.named("α").set(RealConstants.half)));
     System.out.println(expr);
   }
 }
