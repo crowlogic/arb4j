@@ -311,7 +311,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public HashMap<String, FunctionMapping<?, ?, ?>>           referencedFunctions              =
                                                                                  new HashMap<>();
 
-  public HashMap<String, VariableNode<D, C, F>>              referencedVariables              =
+  private HashMap<String, VariableNode<D, C, F>>             referencedVariables              =
                                                                                  new HashMap<>();
 
   public Node<D, C, F>                                       rootNode;
