@@ -70,8 +70,8 @@ public class Context implements
   public ExpressionClassLoader                classLoader                  =
                                                           new ExpressionClassLoader(this);
 
-  public Map<String, Dependency>              functionReferenceGraph       = new HashMap<String,
-                Dependency>();
+  public Map<String, Dependency>              functionReferenceGraph       =
+                                                                     new HashMap<String, Dependency>();
 
   public final FunctionMappings               functions;
 
@@ -140,6 +140,7 @@ public class Context implements
     return functionMapping;
   }
 
+  @SuppressWarnings("unchecked")
   public <R extends Named> R getVariable(String name)
   {
     return (R) variables.get(name);
@@ -218,6 +219,27 @@ public class Context implements
     {
       return;
     }
+    for (String variable : context.variables.keySet())
+    {
+      if (variables.containsKey(variable))
+      {
+        throw new CompilerException("TODO: handle merging of contexts with conflicting variable names by renaming inserted variables because "
+                                    + variable
+                                    + " already exists in "
+                                    + this);
+      }
+    }
+    for (String variable : context.functions.keySet())
+    {
+      if (functions.containsKey(variable))
+      {
+        throw new CompilerException("TODO: handle merging of contexts with conflicting function names by renaming inserted functions because "
+                                    + variable
+                                    + " already exists in "
+                                    + this);
+      }
+    }
+    
     variables.putAll(context.variables);
     functions.putAll(context.functions);
   }
@@ -367,18 +389,13 @@ public class Context implements
     assert name != null : "name cannot be null";
     assert variable != null : "variable cannot be null";
 
-    Named existing = null;
-    if ((existing = variables.get(name)) != null)
+    if (variables.get(name) != null)
     {
-      boolean same = existing.getClass().equals(variable.getClass());
-      if (!same)
-      {
-        throw new CompilerException(format("A variable named %s of type %s having value %s is already registered and it %s equal to the same object passed to registerVariable\n",
-                                           name,
-                                           variable.getClass(),
-                                           variable,
-                                           same ? "IS" : "IS NOT"));
-      }
+      throw new CompilerException(format("A variable named %s of type %s having value %s is already registered\n",
+                                         name,
+                                         variable.getClass(),
+                                         variable));
+
     }
     variableMap().put(name, variable);
     return variable;

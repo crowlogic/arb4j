@@ -68,7 +68,11 @@ public class BetaFunctionNode<D, C, F extends Function<? extends D, ? extends C>
     y = expression.resolve();
     expression.require(')');
 
-    Context context = new Context();
+    Context context = expression.context;
+    if (context == null)
+    {
+      context = new Context();
+    }
 
     context.registerVariable("x", expression.newCoDomainInstance());
     context.registerVariable("y", expression.newCoDomainInstance());
