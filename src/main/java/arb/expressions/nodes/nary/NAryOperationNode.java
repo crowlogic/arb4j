@@ -635,7 +635,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                              resultType,
                                              Function.class,
                                              operandFunctionFieldName,
-                                             expression, true));
+                                             expression,
+                                             true));
 
     propagateContextVariablesToOperand();
   }
@@ -684,27 +685,22 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   protected void
             propagateAscendentIndependentVariablesToOperand(MethodVisitor mv,
-                                                            VariableNode<D,
-                                                                          R,
-                                                                          F> independentVariableNode)
+                                                            VariableNode<D, R, F> independentVariableNode)
   {
-    for (var entry : operand.referencedVariables.entrySet())
-    {
-      propagateAscendentIndependentVariablesToOperand(mv, independentVariableNode, entry);
-    }
+    operand.getReferencedVariables()
+           .entrySet()
+           .forEach(entry -> propagateAscendentIndependentVariablesToOperand(mv,
+                                                                             independentVariableNode,
+                                                                             entry));
   }
 
-  protected void
+  protected <N extends Node<D, R, F>>
+            void
             propagateAscendentIndependentVariablesToOperand(MethodVisitor mv,
-                                                            VariableNode<D,
-                                                                          R,
-                                                                          F> independentVariableNode,
-                                                            Entry<String,
-                                                                          VariableNode<Integer,
-                                                                                        R,
-                                                                                        Sequence<R>>> entry)
+                                                            VariableNode<D, R, F> independentVariableNode,
+                                                            Entry<String, VariableNode<Integer, R, Sequence<R>>> entry)
   {
-    VariableNode<?, ?, ?> varNode = entry.getValue();
+    VariableNode<Integer, R, Sequence<R>> varNode = entry.getValue().asVariable();
     if (varNode.ascendentInput)
     {
       String   varName = entry.getKey();
@@ -748,11 +744,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
       if (Expression.traceNodes)
       {
-        logger.debug(String.format("%s.propagateInputToOperand: propagating captured ancestor variable %s (type=%s) to operand %s\n",
-                                   getClass().getSimpleName(),
-                                   varName,
-                                   varType,
-                                   operandFunctionFieldName));
+        logger.debug("{}.propagateInputToOperand: propagating ascendent independent variable {} (type={}) to operand {}",
+                     getClass().getSimpleName(),
+                     varName,
+                     varType,
+                     operandFunctionFieldName);
       }
     }
   }

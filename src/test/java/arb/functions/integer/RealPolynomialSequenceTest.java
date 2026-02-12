@@ -2,9 +2,7 @@ package arb.functions.integer;
 
 import arb.RealConstants;
 import arb.RealPolynomial;
-import arb.functions.polynomials.orthogonal.real.JacobiPolynomialSequence;
-import arb.functions.polynomials.orthogonal.real.JacobiPolynomialSequence.DerivativeSequence;
-import arb.functions.polynomials.orthogonal.real.JacobiPolynomialSequence.IntegralSequence;
+import arb.functions.polynomials.orthogonal.real.*;
 import junit.framework.TestCase;
 
 public class RealPolynomialSequenceTest extends

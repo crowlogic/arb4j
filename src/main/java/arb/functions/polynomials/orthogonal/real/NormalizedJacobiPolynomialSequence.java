@@ -12,16 +12,17 @@ import arb.functions.integer.RealSequence;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class NormalizedJacobiPolynomials extends
-                                         JacobiPolynomialSequence
+public class NormalizedJacobiPolynomialSequence extends
+                                                JacobiPolynomialSequence
 {
-  public static final String NORM = "when(n=0,1,else,2^(α+β+1)*Γ(n+α+1)*Γ(n+β+1)/(2*n+α+β+1)/Γ(n+α+β+1)/n!)";
+  public static final String NORM =
+                                  "when(n=0,1,else,2^(α+β+1)*Γ(n+α+1)*Γ(n+β+1)/(2*n+α+β+1)/Γ(n+α+β+1)/n!)";
 
   Real                       blip = new Real();
 
   public final RealSequence  norm;
 
-  public NormalizedJacobiPolynomials(Real a, Real b)
+  public NormalizedJacobiPolynomialSequence(Real a, Real b)
   {
     super(a,
           b);

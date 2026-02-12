@@ -1328,7 +1328,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       if (isNullaryFunction())
       {
-  
+
         generatePolynomialMethod(classVisitor, "integral");
         generatePolynomialMethod(classVisitor, "derivative");
       }
@@ -2775,7 +2775,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * @return this
    * @throws CompilerException
    */
-  public Expression<D,C,F> parseRoot(boolean simplify)
+  public Expression<D, C, F> parseRoot(boolean simplify)
   {
     assert rootNode
                   == null : "parse must only be called before anything else has been parsed but rootNode="
@@ -2808,7 +2808,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       rootNode = simplifiedRootNode;
     }
 
-    return  this;
+    return this;
   }
 
   protected <N extends Node<D, C, F>> N parseSuperscript(N node, char superscript, String digit)
@@ -3120,7 +3120,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return node;
   }
 
-  protected Node<D, C, F> resolveFactorials(Node<D,C,F> node)
+  protected Node<D, C, F> resolveFactorials(Node<D, C, F> node)
   {
     if (nextCharacterIs('!'))
     {
@@ -3151,7 +3151,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                              resolve());
       require('⌋');
     }
-    return  node;
+    return node;
   }
 
   protected Node<D, C, F> resolveFunction(int startPos, VariableReference<D, C, F> reference)
@@ -3595,6 +3595,21 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       ascendentExpression.accept(t);
     }
 
+  }
+
+  public Map<String, VariableNode<D, C, F>> getReferencedVariables()
+  {
+    return Collections.unmodifiableMap(referencedVariables);
+  }
+
+  public VariableNode<D, C, F> registerReferencedVariable(VariableNode<D, C, F> variableNode)
+  {
+    return referencedVariables.put(variableNode.reference.name, variableNode);
+  }
+
+  public boolean isVariableReferenced(VariableNode<D, C, F> variableNode)
+  {
+    return referencedVariables.containsKey(variableNode.reference.name);
   }
 
 }

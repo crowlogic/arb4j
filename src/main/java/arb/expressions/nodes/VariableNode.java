@@ -85,18 +85,20 @@ import arb.functions.Function;
  */
 public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> extends
                          Node<D, R, F>
-{  public static final Logger logger = LoggerFactory.getLogger(VariableNode.class);
-
-public boolean isZero()
 {
-  return false;
-}
+  public static final Logger logger = LoggerFactory.getLogger(VariableNode.class);
 
-@Override
-public Logger getLogger()
-{
- return logger;
-}
+  public boolean isZero()
+  {
+    return false;
+  }
+
+  @Override
+  public Logger getLogger()
+  {
+    return logger;
+  }
+
   Logger log = LoggerFactory.getLogger(getClass());
 
   @Override
@@ -159,7 +161,7 @@ public Logger getLogger()
         {
           if (!reference.isElse() && !isIndeterminate)
           {
-            expression.referencedVariables.put(reference.name, this);
+            expression.registerReferencedVariable(this);
           }
         }
       }
@@ -571,7 +573,7 @@ public Logger getLogger()
                   reference.name,
                   ascendentInput,
                   ascendentIndeterminate,
-                  expression.referencedVariables.containsKey(reference.name));
+                  expression.isVariableReferenced(this));
       }
 
       if (ascendentInput || ascendentIndeterminate)
@@ -582,7 +584,7 @@ public Logger getLogger()
                     reference.name,
                     expression.functionName);
         }
-        expression.referencedVariables.put(reference.name, this);
+        expression.registerReferencedVariable(this);
       }
 
       if (Expression.traceNodes)
@@ -611,7 +613,7 @@ public Logger getLogger()
       return this;
     }
     else
-    {    
+    {
       throw new CompilerException(String.format("undefined variable reference '%s' in expression '%s'; existing indeterminates: %s, independent variable: %s",
                                                 reference.name,
                                                 expression.expression,
@@ -649,7 +651,17 @@ public Logger getLogger()
                               expression.indeterminateVariables));
 
     }
-    expression.referencedVariables.put(reference.name, this);
+    if (expression.anyAscendentIndependentVariableIsNamed(getName()))
+    {
+      throw new CompilerException("cannot set the independent variable of "
+                                  + this
+                                  + " to "
+                                  + getName()
+                                  + " because it is the independent variable of "
+                                  + this
+                                  + " or one of its ascendent(ancestor) expressions");
+    }
+    expression.registerReferencedVariable(this);
     expression.indeterminateVariables.push(this);
 
     return this;
@@ -709,7 +721,6 @@ public Logger getLogger()
            + "]";
   }
 
-  
   @Override
   public Class<?> type()
   {
@@ -737,7 +748,6 @@ public Logger getLogger()
     assert returnType != null : "returnType is null for " + this;
     return returnType;
   }
-
 
   @Override
   public String typeset()

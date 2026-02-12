@@ -21,7 +21,7 @@ public class NormalizedShiftedJacobiPolynomials extends
     return String.format("NormalizedShiftedJacobiPolynomials[α=%s, β=%s]", α, β);
   }
 
-  public final RealSequence norm =  RealSequence.express(NormalizedJacobiPolynomials.NORM, context);
+  public final RealSequence norm =  RealSequence.express(NormalizedJacobiPolynomialSequence.NORM, context);
 
   Real                      blip = new Real();
 
