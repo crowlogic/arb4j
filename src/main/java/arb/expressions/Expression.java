@@ -1738,7 +1738,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                      className,
                                                      Type.getInternalName(nestedFunction.type()),
                                                      nestedFunction.functionName,
-                                                     context.variableClassStream());
+                                                     context.variableClassStream()
+                                                            .filter(declarationPredicate));
     }
     else
     {
@@ -3631,7 +3632,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     return referencedVariables.containsKey(variableName);
   }
-  
+
   public boolean isVariableReferenced(VariableNode<D, C, F> variableNode)
   {
     return referencedVariables.containsKey(variableNode.reference.name);

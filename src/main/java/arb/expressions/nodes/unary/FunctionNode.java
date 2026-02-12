@@ -616,11 +616,15 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       generateBuiltinFunctionCall(mv, resultType, isBitless());
     }
 
-    assert getGeneratedType().equals(resultType) : String.format("%s: generatedType=%s != resultType = %s, this=%s\n",
-                                                                 getClass(),
-                                                                 getGeneratedType(),
-                                                                 resultType,
-                                                                 this);
+    if (!getGeneratedType().equals(resultType))
+    {
+      generateCastTo(mv, resultType);
+    }
+//    assert getGeneratedType().equals(resultType) : String.format("%s: generatedType=%s != resultType = %s, this=%s\n",
+//                                                                 getClass(),
+//                                                                 getGeneratedType(),
+//                                                                 resultType,
+//                                                                 this);
     return mv;
   }
 

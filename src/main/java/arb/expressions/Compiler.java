@@ -171,7 +171,8 @@ public class Compiler
     }
     else if (from.equals(Complex.class))
     {
-      return (to.equals(ComplexFraction.class) || to.equals(ComplexRationalFunction.class));
+      return (to.equals(ComplexFraction.class) || to.equals(ComplexRationalFunction.class)
+                    || to.equals(ComplexPolynomial.class));
     }
     else if (from.equals(Fraction.class))
     {

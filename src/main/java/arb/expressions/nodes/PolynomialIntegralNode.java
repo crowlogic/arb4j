@@ -9,7 +9,7 @@ import org.objectweb.asm.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import arb.Polynomial;
+import arb.*;
 import arb.exceptions.CompilerException;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
@@ -27,8 +27,8 @@ import arb.functions.Function;
  * <ol>
  * <li>Evaluates the polynomial (e.g. P(i)) onto the stack</li>
  * <li>Generates the cofactor as a polynomial of the same concrete type</li>
- * <li>Calls {@code mul(cofactor, bits, intermediateProduct)} to get the
- * product polynomial</li>
+ * <li>Calls {@code mul(cofactor, bits, intermediateProduct)} to get the product
+ * polynomial</li>
  * <li>Calls {@code integral()} on the product</li>
  * <li>Evaluates at the argument if scalar</li>
  * </ol>
@@ -70,13 +70,13 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
    * The name of the intermediate variable field used to hold the product
    * polynomial (cofactor × main polynomial) in the generated class.
    */
-  String productIntermediateFieldName;
+  String        productIntermediateFieldName;
 
   /**
    * The name of the intermediate variable field used to hold the cofactor
    * polynomial after it is generated as a polynomial type.
    */
-  String cofactorIntermediateFieldName;
+  String        cofactorIntermediateFieldName;
 
   /**
    * Original constructor — no cofactor, behaves exactly as before.
@@ -97,7 +97,8 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
    *
    * @param expression     the owning expression
    * @param polynomialNode the node producing the polynomial (e.g. P(i))
-   * @param cofactorNode   nullable — the cofactor to multiply in (e.g. t^p * w(t))
+   * @param cofactorNode   nullable — the cofactor to multiply in (e.g. t^p *
+   *                       w(t))
    * @param argumentNode   the integration variable node
    */
   public PolynomialIntegralNode(Expression<D, C, F> expression,
@@ -120,16 +121,26 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
     }
     if (cofactorNode != null)
     {
-      var polynomialType = polynomialNode.type();
+      var      polynomialType          = polynomialNode.type();
+
+      // Promote to ComplexPolynomial when the expression operates in the complex
+      // domain
+      Class<?> effectivePolynomialType = polynomialType;
+      if (Complex.class.isAssignableFrom(expression.coDomainType)
+                    && RealPolynomial.class.isAssignableFrom(polynomialType))
+      {
+        effectivePolynomialType = ComplexPolynomial.class;
+      }
+
       if (!expression.hasIntermediateVariable(POLY_PRODUCT))
       {
-        expression.registerIntermediateVariable(POLY_PRODUCT, polynomialType, true);
+        expression.registerIntermediateVariable(POLY_PRODUCT, effectivePolynomialType, true);
       }
       productIntermediateFieldName = POLY_PRODUCT;
 
       if (!expression.hasIntermediateVariable(POLY_COFACTOR))
       {
-        expression.registerIntermediateVariable(POLY_COFACTOR, polynomialType, true);
+        expression.registerIntermediateVariable(POLY_COFACTOR, effectivePolynomialType, true);
       }
       cofactorIntermediateFieldName = POLY_COFACTOR;
     }
@@ -139,19 +150,19 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     var polynomialType = polynomialNode.type();
-    if (!isScalar() && isResult)
+
+    // Promote to ComplexPolynomial when operating in complex domain
+    if (Complex.class.isAssignableFrom(expression.coDomainType)
+                  && RealPolynomial.class.isAssignableFrom(polynomialType))
     {
-      polynomialNode.isResult = true;
+      polynomialType = ComplexPolynomial.class;
     }
 
-    // Generate the polynomial onto the stack
+    // Generate the polynomial, casting to effective type if needed
     polynomialNode.generate(mv, polynomialType);
 
     if (cofactorNode != null)
     {
-      // Stack: [polynomial]
-
-      // Generate the cofactor as the same polynomial type
       cofactorNode.generate(mv, polynomialType);
 
       // Stack: [polynomial, cofactor]
@@ -173,9 +184,9 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
                          Type.getInternalName(polynomialType),
                          "mul",
                          Compiler.getMethodDescriptor(polynomialType,
-                                                     polynomialType,
-                                                     int.class,
-                                                     polynomialType),
+                                                      polynomialType,
+                                                      int.class,
+                                                      polynomialType),
                          false);
 
       // Stack: [productPolynomial]
