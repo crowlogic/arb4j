@@ -41,10 +41,10 @@ public interface RationalNullaryFunction extends
     return express(null, expression, null);
   }
 
-  public static RationalNullaryExpression
+  public static Expression<Object,RationalFunction,RationalNullaryFunction> 
          parse(String functionName, String expression, Context context)
   {
-    RationalNullaryExpression expr = new RationalNullaryExpression(functionName
+    Expression<Object,RationalFunction,RationalNullaryFunction> expr = new Expression<Object, RationalFunction, RationalNullaryFunction>(functionName
                   != null ? functionName : Parser.hashString(expression),
                                                                    Object.class,
                                                                    RationalFunction.class,

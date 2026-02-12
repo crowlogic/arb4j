@@ -8,7 +8,7 @@ public interface RationalFunctional extends
                                     Function<RationalFunction, RationalFunction>
 {
 
-  public static RationalFunctional parse(String string)
+  public static Expression<RationalFunction, RationalFunction, RationalFunctional> parse(String string)
   {
     return parse(null, string, null);
   }
@@ -33,7 +33,7 @@ public interface RationalFunctional extends
     return express(null, expression, null);
   }
 
-  public static RationalFunctional parse(String functionName, String expression, Context context)
+  public static Expression<RationalFunction, RationalFunction, RationalFunctional> parse(String functionName, String expression, Context context)
   {
     if (functionName == null)
     {

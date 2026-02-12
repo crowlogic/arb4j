@@ -80,11 +80,11 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
     operand = expression.resolve();
     if (!functionalForm)
     {
-      variable = expression.require('/').require('∂').resolve();
+      variable = expression.require('/').require('∂').resolve().asVariable();
     }
     else
     {
-      variable = expression.require(',').resolve();
+      variable = expression.require(',').resolve().asVariable();
       expression.require(')');
     }
     derivative = operand.differentiate(variable).simplify();

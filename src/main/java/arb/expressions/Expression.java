@@ -506,40 +506,38 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return false;
   }
 
-protected Expression<D, C, F> assignIndependentVariable(VariableNode<D, C, F> variable)
-{
-  if (isNullaryFunction())
+  protected Expression<D, C, F> assignIndependentVariable(VariableNode<D, C, F> variable)
   {
-    throw new CompilerException(String.format(
-      "Cannot assign independent variable '%s' to nullary function "
-      + "(domain=Object.class) in expression '%s'; "
-      + "use an indeterminate variable instead",
-      variable,
-      expression));
-  }
+    if (isNullaryFunction())
+    {
+      throw new CompilerException(String.format("Cannot assign independent variable '%s' to nullary function "
+                                                + "(domain=Object.class) in expression '%s'; "
+                                                + "use an indeterminate variable instead",
+                                                variable,
+                                                expression));
+    }
 
-  if (independentVariable != null)
-  {
-    if (!independentVariable.equals(variable))
+    if (independentVariable != null)
     {
-      throw new CompilerException(String.format(
-        "undefined variable reference '%s' at position=%s in expression '%s' "
-        + "since the indeterminate variable has already been declared to be '%s' in expr#%s",
-        variable,
-        position,
-        this,
-        independentVariable,
-        System.identityHashCode(expression)));
+      if (!independentVariable.equals(variable))
+      {
+        throw new CompilerException(String.format("undefined variable reference '%s' at position=%s in expression '%s' "
+                                                  + "since the indeterminate variable has already been declared to be '%s' in expr#%s",
+                                                  variable,
+                                                  position,
+                                                  this,
+                                                  independentVariable,
+                                                  System.identityHashCode(expression)));
+      }
+      else
+      {
+        return this;
+      }
     }
-    else
-    {
-      return this;
-    }
+    independentVariable               = variable;
+    independentVariable.isIndependent = true;
+    return this;
   }
-  independentVariable               = variable;
-  independentVariable.isIndependent = true;
-  return this;
-}
 
   protected VariableNode<D, C, F> assignIndeterminateVariable(VariableNode<D, C, F> variable)
   {
@@ -1123,72 +1121,73 @@ protected Expression<D, C, F> assignIndependentVariable(VariableNode<D, C, F> va
    * 
    * @return
    */
-/**
- * Similar to this{@link #parseLambda(String)} but only for the root of the
- * expression.
- *
- * For nullary functions (domain = Object.class), the arrow variable is
- * declared as an indeterminate rather than an independent variable, because
- * nullary functions have no input parameter — the variable is a symbolic
- * placeholder for the algebraic codomain (e.g. the polynomial indeterminate
- * in a RationalFunction).
- *
- * @return this
- */
-protected Expression<D, C, F> evaluateOptionalIndependentVariableSpecification()
-{
-  if (trace)
+  /**
+   * Similar to this{@link #parseLambda(String)} but only for the root of the
+   * expression.
+   *
+   * For nullary functions (domain = Object.class), the arrow variable is declared
+   * as an indeterminate rather than an independent variable, because nullary
+   * functions have no input parameter — the variable is a symbolic placeholder
+   * for the algebraic codomain (e.g. the polynomial indeterminate in a
+   * RationalFunction).
+   *
+   * @return this
+   */
+  protected Expression<D, C, F> evaluateOptionalIndependentVariableSpecification()
   {
-    log.debug("#{}: evaluateOptionalIndependentVariableSpecification: remaining {} ",
-              System.identityHashCode(this),
-              remaining());
-  }
-  expression = transformToJavaAcceptableCharacters(expression);
-
-  int searchPos = 0;
-  int rightArrowIndex;
-
-  if ((rightArrowIndex = expression.indexOf('➔', searchPos)) != -1)
-  {
-    String  inputVariableName        = expression.substring(searchPos, rightArrowIndex).trim();
-    boolean isInputVariableSpecified = true;
-
-    isInputVariableSpecified = assureNoNumbersInTheInputVariable(inputVariableName,
-                                                                 isInputVariableSpecified);
-
-    if (isInputVariableSpecified)
+    if (trace)
     {
-      assureInputNameHasNotAlreadyBeenAssociatedWithAContextVariable(inputVariableName);
-
-      if (isNullaryFunction())
-      {
-        // Nullary function: the arrow variable is the indeterminate of the
-        // algebraic codomain (e.g. x in a RationalFunction), not an input
-        // parameter. Create it as an indeterminate variable so that codegen
-        // allocates an intermediate variable + identity() rather than
-        // loading the null input parameter.
-        VariableNode<D, C, F> indeterminate =
-          new VariableNode<>(this,
-                             new VariableReference<>(inputVariableName, null, coDomainType),
-                             position,
-                             false);
-        indeterminate.isIndeterminate = true;
-        indeterminate.reference.type  = coDomainType;
-        assignIndeterminateVariable(indeterminate);
-      }
-      else
-      {
-        VariableNode<D, C, F> newRef = createNewVariableNode(inputVariableName);
-        assignVariable(newRef,
-                       independentVariable != null && !independentVariable.equals(newRef));
-      }
-      searchPos = rightArrowIndex + 1;
+      log.debug("#{}: evaluateOptionalIndependentVariableSpecification: remaining {} ",
+                System.identityHashCode(this),
+                remaining());
     }
-  }
+    expression = transformToJavaAcceptableCharacters(expression);
 
-  position = searchPos - 1;
-  return this;
-}
+    int searchPos = 0;
+    int rightArrowIndex;
+
+    if ((rightArrowIndex = expression.indexOf('➔', searchPos)) != -1)
+    {
+      String  inputVariableName        = expression.substring(searchPos, rightArrowIndex).trim();
+      boolean isInputVariableSpecified = true;
+
+      isInputVariableSpecified = assureNoNumbersInTheInputVariable(inputVariableName,
+                                                                   isInputVariableSpecified);
+
+      if (isInputVariableSpecified)
+      {
+        assureInputNameHasNotAlreadyBeenAssociatedWithAContextVariable(inputVariableName);
+
+        if (isNullaryFunction())
+        {
+          // Nullary function: the arrow variable is the indeterminate of the
+          // algebraic codomain (e.g. x in a RationalFunction), not an input
+          // parameter. Create it as an indeterminate variable so that codegen
+          // allocates an intermediate variable + identity() rather than
+          // loading the null input parameter.
+          VariableNode<D, C, F> indeterminate = new VariableNode<>(this,
+                                                                   new VariableReference<>(inputVariableName,
+                                                                                           null,
+                                                                                           coDomainType),
+                                                                   position,
+                                                                   false);
+          indeterminate.isIndeterminate = true;
+          indeterminate.reference.type  = coDomainType;
+          assignIndeterminateVariable(indeterminate);
+        }
+        else
+        {
+          VariableNode<D, C, F> newRef = createNewVariableNode(inputVariableName);
+          assignVariable(newRef,
+                         independentVariable != null && !independentVariable.equals(newRef));
+        }
+        searchPos = rightArrowIndex + 1;
+      }
+    }
+
+    position = searchPos - 1;
+    return this;
+  }
 
   protected Node<D, C, F> evaluateSquareBracketedIndex()
   {
@@ -2771,8 +2770,7 @@ protected Expression<D, C, F> evaluateOptionalIndependentVariableSpecification()
    * @return this
    * @throws CompilerException
    */
-  @SuppressWarnings("unchecked")
-  public <E extends Expression<? extends D, ? extends C, ? extends F>> E parseRoot(boolean simplify)
+  public Expression<D,C,F> parseRoot(boolean simplify)
   {
     assert rootNode
                   == null : "parse must only be called before anything else has been parsed but rootNode="
@@ -2805,7 +2803,7 @@ protected Expression<D, C, F> evaluateOptionalIndependentVariableSpecification()
       rootNode = simplifiedRootNode;
     }
 
-    return (E) this;
+    return  this;
   }
 
   protected <N extends Node<D, C, F>> N parseSuperscript(N node, char superscript, String digit)
@@ -3045,7 +3043,7 @@ protected Expression<D, C, F> evaluateOptionalIndependentVariableSpecification()
                               : expression.substring(Math.max(0, position), expression.length());
   }
 
-  protected void rename(String from, String to)
+  protected void renameVariable(String from, String to)
   {
     if (trace)
     {
@@ -3088,11 +3086,10 @@ protected Expression<D, C, F> evaluateOptionalIndependentVariableSpecification()
    * @return the result of passing this{@link #exponentiateMultiplyAndDivide()} to
    *         this{@link #addAndSubtract(Node)}
    */
-  @SuppressWarnings("unchecked")
-  public <N extends Node<D, C, F>> N resolve()
+  public Node<D, C, F> resolve()
   {
     var node = exponentiateMultiplyAndDivide();
-    return (N) addAndSubtract(node);
+    return addAndSubtract(node);
   }
 
   protected <N extends Node<D, C, F>> N resolveAbsoluteValue(N node)
@@ -3107,8 +3104,7 @@ protected Expression<D, C, F> evaluateOptionalIndependentVariableSpecification()
     return node;
   }
 
-  @SuppressWarnings("unchecked")
-  protected <N extends Node<D, C, F>> N resolveCeiling(Node<D, C, F> node)
+  protected Node<D, C, F> resolveCeiling(Node<D, C, F> node)
   {
     if (nextCharacterIs('⌈'))
     {
@@ -3116,35 +3112,33 @@ protected Expression<D, C, F> evaluateOptionalIndependentVariableSpecification()
                                resolve());
       require('⌉');
     }
-    return (N) node;
+    return node;
   }
 
-  @SuppressWarnings("unchecked")
-  protected <N extends Node<D, C, F>> N resolveFactorials(N node)
+  protected Node<D, C, F> resolveFactorials(Node<D,C,F> node)
   {
     if (nextCharacterIs('!'))
     {
-      return (N) new FactorialNode<>(this,
-                                     node);
+      return new FactorialNode<>(this,
+                                 node);
     }
     if (nextCharacterIs('₍'))
     {
-      return (N) new AscendingFactorializationNode<>(node,
-                                                     resolve(),
-                                                     require('₎'));
+      return new AscendingFactorializationNode<>(node,
+                                                 resolve(),
+                                                 require('₎'));
     }
     if (nextCharacterIs('⋰'))
     {
-      return (N) new AscendingFactorializationNode<>(node,
-                                                     resolve(),
-                                                     this);
+      return new AscendingFactorializationNode<>(node,
+                                                 resolve(),
+                                                 this);
     }
 
     return node;
   }
 
-  @SuppressWarnings("unchecked")
-  protected <N extends Node<D, C, F>> N resolveFloor(Node<D, C, F> node)
+  protected Node<D, C, F> resolveFloor(Node<D, C, F> node)
   {
     if (nextCharacterIs('⌊'))
     {
@@ -3152,7 +3146,7 @@ protected Expression<D, C, F> evaluateOptionalIndependentVariableSpecification()
                              resolve());
       require('⌋');
     }
-    return (N) node;
+    return  node;
   }
 
   protected Node<D, C, F> resolveFunction(int startPos, VariableReference<D, C, F> reference)
@@ -3405,7 +3399,7 @@ protected Expression<D, C, F> evaluateOptionalIndependentVariableSpecification()
     var substituteInputVariableName = substituteInputVariable.getName();
     if (!variableToChange.equals(substituteInputVariableName))
     {
-      substitution.rename(substituteInputVariableName, variableToChange);
+      substitution.renameVariable(substituteInputVariableName, variableToChange);
     }
 
     rootNode = rootNode.substitute(variableToChange, substitution.rootNode);
