@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static void acb_poly_set_arb_poly(ComplexPolynomial poly, RealPolynomial re) {
+    arblibJNI.acb_poly_set_arb_poly(ComplexPolynomial.getCPtr(poly), poly, RealPolynomial.getCPtr(re), re);
+  }
+
   public static void fmpz_fac_ui(long f, long n) {
     arblibJNI.fmpz_fac_ui(f, n);
   }
@@ -1228,10 +1232,6 @@ public class arblib {
 
   public static void acb_poly_set_acb(ComplexPolynomial poly, Complex numCols) {
     arblibJNI.acb_poly_set_acb(ComplexPolynomial.getCPtr(poly), poly, Complex.getCPtr(numCols), numCols);
-  }
-
-  public static void acb_poly_set_arb_poly(ComplexPolynomial poly, RealPolynomial re) {
-    arblibJNI.acb_poly_set_arb_poly(ComplexPolynomial.getCPtr(poly), poly, RealPolynomial.getCPtr(re), re);
   }
 
   public static void acb_sub_fmpz(Complex z, Complex x, long y, int prec) {

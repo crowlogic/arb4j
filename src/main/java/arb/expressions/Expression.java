@@ -1715,31 +1715,24 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                               nestedFunction.functionName,
                               assignments));
     }
-    Expression<?, ?, ?>                      nestedExpression     = nestedFunction.expression;
-    Predicate<OrderedPair<String, Class<?>>> declarationPredicate = variable ->
-                                                                  {
-                                                                    boolean b =
-                                                                              nestedExpression.hasDeclaredVariable(variable.getLeft());
-                                                                    if (!b)
-                                                                    {
-                                                                      System.err.println("Filtering "
-                                                                                         + variable);
-                                                                    }
-                                                                    return b;
-                                                                  };
+
+    ;
+
     if (nestedFunction.instance != null && nestedFunction.isGenerated())
     {
-
       // filter using the declarationPredicate if its trying to write to variables
-      // that werent in the context at the time of the functions compliation and/or
-      // the function doesnt reference the specific variables
-      // so their values must not be attempted to be injected
+      // that weren't in the context at the time of the functions compilation and/or
+      // the function doesnt reference the specific variables so their values must not
+      // be attempted to be injected
+      var variableStream         = context.variableClassStream();
+      var nestedExpression       = nestedFunction.expression;
+      var declaredVariableStream =
+                                 variableStream.filter(variable -> nestedExpression.hasDeclaredVariable(variable.getLeft()));
       initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv),
                                                      className,
                                                      Type.getInternalName(nestedFunction.type()),
                                                      nestedFunction.functionName,
-                                                     context.variableClassStream()
-                                                            .filter(declarationPredicate));
+                                                     declaredVariableStream);
     }
     else
     {

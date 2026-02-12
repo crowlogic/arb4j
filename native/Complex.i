@@ -41,6 +41,16 @@ import arb.functions.complex.ComplexNullaryFunction;
 %typemap(javacode) acb_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+  public ComplexPolynomial mul( Real s, int prec, ComplexPolynomial r )
+  {
+    return r.set(this).mul(s,prec);
+  }
+  
+  public Complex sub(Real subtrahend, int bits)
+  {
+    return sub(subtrahend,bits,this);
+  }
+  
   public ComplexRationalFunction neg(ComplexRationalFunction result)
   {
     try ( var tmp = new Complex())

@@ -17,6 +17,9 @@
 #include <unistd.h>
 #include <wchar.h>
 
+void acb_poly_set_arb_poly(acb_poly_t poly, const arb_poly_t re);
+
+
 void fmpz_fac_ui(fmpz_t f, ulong n);
 void fmpz_bin_uiui(fmpz_t res, ulong n, ulong k);
 

@@ -1207,6 +1207,11 @@ public class Integer implements
     return res.set(this).sub(subtrahend, prec);
   }
 
+  public Complex sub(Real subtrahend, int bits, Complex result)
+  {
+    return result.set(this).sub(subtrahend, bits);
+  }
+  
   public Real sub(Real subtrahend, int bits, Real result)
   {
     return result.set(this).sub(subtrahend, bits);

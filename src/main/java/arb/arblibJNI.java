@@ -9,6 +9,7 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void acb_poly_set_arb_poly(long jarg1, ComplexPolynomial jarg1_, long jarg2, RealPolynomial jarg2_);
   public final static native void fmpz_fac_ui(long jarg1, long jarg2);
   public final static native void fmpz_bin_uiui(long jarg1, long jarg2, long jarg3);
   public final static native void arb_fmpz_poly_evaluate_arb(long jarg1, Real jarg1_, long jarg2, IntegerPolynomial jarg2_, long jarg3, Real jarg3_, int jarg4);
@@ -346,7 +347,6 @@ public class arblibJNI {
   public final static native void acb_poly_one(long jarg1, ComplexPolynomial jarg1_);
   public final static native void acb_poly_set_coeff_si(long jarg1, ComplexPolynomial jarg1_, int jarg2, int jarg3);
   public final static native void acb_poly_set_acb(long jarg1, ComplexPolynomial jarg1_, long jarg2, Complex jarg2_);
-  public final static native void acb_poly_set_arb_poly(long jarg1, ComplexPolynomial jarg1_, long jarg2, RealPolynomial jarg2_);
   public final static native void acb_sub_fmpz(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, int jarg4);
   public final static native int arb_contains_zero(long jarg1, Real jarg1_);
   public final static native int arb_is_nonzero(long jarg1, Real jarg1_);

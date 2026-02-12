@@ -197,8 +197,9 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
   private void assertSpotValue(String label, double expected, ComplexMatrix M, int i, int j)
   {
     double actual = M.get(i, j).re().doubleValue();
-    assertTrue("imag part is nonzero " + M.get(i, j).im(), M.get(i, j).im().doubleValue() == 0);
     assertEquals(label + " expected=" + expected + " actual=" + actual, expected, actual, TOL);
+    assertTrue("imag part is nonzero " + M.get(i, j).im(), M.get(i, j).im().doubleValue() == 0);
+
   }
 
   public void testToString()

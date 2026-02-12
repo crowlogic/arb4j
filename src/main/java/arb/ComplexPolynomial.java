@@ -44,6 +44,25 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
   }
 
 
+  public ComplexPolynomial mul(Real s, int prec)
+  {
+    return mul(s, prec, this);
+  }
+
+  public ComplexPolynomial mul(Real s, int prec, ComplexPolynomial res) 
+  {
+	try ( var blip = new Complex())
+	{
+	  return res.set(coeffs).mul(blip.set(s), prec, res);
+    }
+  }	
+   
+  public ComplexPolynomial set(RealPolynomial p)
+  {
+    arblib.acb_poly_set_arb_poly(this, p); 
+    return this;
+  }
+		
   public ComplexPolynomial differentiate(int bits, ComplexPolynomial derivative)
   {
     derivative.fitLength(getLength() + 1);
