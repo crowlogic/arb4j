@@ -17,6 +17,9 @@
 #include <unistd.h>
 #include <wchar.h>
 
+void fmpz_fac_ui(fmpz_t f, ulong n);
+void fmpz_bin_uiui(fmpz_t res, ulong n, ulong k);
+
 void arb_fmpz_poly_evaluate_arb(arb_t res, const fmpz_poly_t f, const arb_t a, slong prec);
 
 int fmpz_poly_is_one(const fmpz_poly_t op);

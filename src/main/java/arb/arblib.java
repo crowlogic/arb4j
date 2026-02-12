@@ -9,6 +9,14 @@
 package arb;
 
 public class arblib {
+  public static void fmpz_fac_ui(long f, long n) {
+    arblibJNI.fmpz_fac_ui(f, n);
+  }
+
+  public static void fmpz_bin_uiui(long res, long n, long k) {
+    arblibJNI.fmpz_bin_uiui(res, n, k);
+  }
+
   public static void arb_fmpz_poly_evaluate_arb(Real res, IntegerPolynomial f, Real a, int prec) {
     arblibJNI.arb_fmpz_poly_evaluate_arb(Real.getCPtr(res), res, IntegerPolynomial.getCPtr(f), f, Real.getCPtr(a), a, prec);
   }
@@ -1128,14 +1136,6 @@ public class arblib {
 
   public static int acb_poly_divrem(ComplexPolynomial Q, ComplexPolynomial R, ComplexPolynomial A, ComplexPolynomial B, int prec) {
     return arblibJNI.acb_poly_divrem(ComplexPolynomial.getCPtr(Q), Q, ComplexPolynomial.getCPtr(R), R, ComplexPolynomial.getCPtr(A), A, ComplexPolynomial.getCPtr(B), B, prec);
-  }
-
-  public static void fmpz_fac_ui(long f, long n) {
-    arblibJNI.fmpz_fac_ui(f, n);
-  }
-
-  public static void fmpz_bin_uiui(long res, long n, long k) {
-    arblibJNI.fmpz_bin_uiui(res, n, k);
   }
 
   public static String fmpq_get_str(String str, int b, Fraction x) {

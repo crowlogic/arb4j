@@ -627,6 +627,13 @@ public class Integer implements
     arblib.arb_fac_ui(result, getUnsignedValue(), bits);
     return result;
   }
+  
+  public Complex factorial(int bits, Complex result)
+  {
+    arblib.arb_fac_ui(result.re(), getUnsignedValue(), bits);
+    result.im().zero();
+    return result;
+  }
 
   public Integer get(int index)
   {

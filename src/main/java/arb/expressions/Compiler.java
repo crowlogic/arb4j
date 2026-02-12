@@ -17,8 +17,7 @@ import arb.expressions.nodes.LiteralConstantNode;
 import arb.functions.Function;
 import arb.functions.RealToComplexFunction;
 import arb.functions.complex.ComplexFunction;
-import arb.functions.integer.RealSequence;
-import arb.functions.integer.RealSequenceSequence;
+import arb.functions.integer.*;
 import arb.functions.polynomials.ComplexHypergeometricPolynomialFunction;
 import arb.functions.polynomials.RealHypergeometricPolynomialFunction;
 import arb.functions.rational.*;
@@ -70,6 +69,7 @@ public class Compiler
                                                                                          ComplexPolynomial.class,
                                                                                          ComplexMatrix.class,
                                                                                          Complex.class,
+                                                                                         ComplexSequence.class,
                                                                                          ComplexRationalFunction.class,
                                                                                          ComplexFunction.class,
                                                                                          ComplexFraction.class,

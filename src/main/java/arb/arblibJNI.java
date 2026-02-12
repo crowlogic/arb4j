@@ -9,6 +9,8 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void fmpz_fac_ui(long jarg1, long jarg2);
+  public final static native void fmpz_bin_uiui(long jarg1, long jarg2, long jarg3);
   public final static native void arb_fmpz_poly_evaluate_arb(long jarg1, Real jarg1_, long jarg2, IntegerPolynomial jarg2_, long jarg3, Real jarg3_, int jarg4);
   public final static native int fmpz_poly_is_one(long jarg1, IntegerPolynomial jarg1_);
   public final static native int fmpz_poly_is_zero(long jarg1, IntegerPolynomial jarg1_);
@@ -321,8 +323,6 @@ public class arblibJNI {
   public final static native void acb_poly_scalar_div(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, long jarg3, Complex jarg3_, int jarg4);
   public final static native void acb_poly_set_si(long jarg1, ComplexPolynomial jarg1_, int jarg2);
   public final static native int acb_poly_divrem(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, long jarg3, ComplexPolynomial jarg3_, long jarg4, ComplexPolynomial jarg4_, int jarg5);
-  public final static native void fmpz_fac_ui(long jarg1, long jarg2);
-  public final static native void fmpz_bin_uiui(long jarg1, long jarg2, long jarg3);
   public final static native String fmpq_get_str(String jarg1, int jarg2, long jarg3, Fraction jarg3_);
   public final static native int fmpq_set_str(long jarg1, Fraction jarg1_, String jarg2, int jarg3);
   public final static native void fmpq_set_fmpz_frac(long jarg1, Fraction jarg1_, long jarg2, long jarg3);

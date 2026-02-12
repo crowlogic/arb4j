@@ -2594,6 +2594,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       funcCoDomain = Real.class;
       funcClass    = RealSequence.class;
     }
+    else if (ComplexSequence.class.equals(coDomainType))
+    {
+      funcDomain   = Integer.class;
+      funcCoDomain = Complex.class;
+      funcClass    = ComplexSequence.class;
+    }
     else
     {
       throw new UnsupportedOperationException("TODO: implement "
