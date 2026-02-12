@@ -41,6 +41,15 @@ import arb.functions.complex.ComplexNullaryFunction;
 %typemap(javacode) acb_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+  public ComplexRationalFunction neg(ComplexRationalFunction result)
+  {
+    try ( var tmp = new Complex())
+    {
+      arblib.acb_neg(tmp, this);
+      return result.set(tmp);
+    }
+  }
+    
   public Complex pow(Integer operand, int prec)
   {
     return pow(operand,prec,this);
