@@ -136,7 +136,7 @@ public class ExpressionTest extends
   public void testComplexHypergeometricFunctionSequence()
   {
     ComplexFunctionSequence express =
-                                    ComplexFunctionSequence.express("Vpluscomplex:m->pFq([1,m,-m],[1/2],-1/2*I/y)");
+                                    ComplexFunctionSequence.express("Vpluscomplex:m➔pFq([1,m,-m],[½],-½*I/y)");
     ComplexFunction         p3      = express.evaluate(3, 128);
     Complex                 eval    = p3.eval(2.3, new Complex());
     assertEquals("-3.5368620037807190 +/- 8.02e-17 + i*1.9404947809649049 +/- 5.27e-17",
