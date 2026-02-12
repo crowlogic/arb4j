@@ -393,10 +393,13 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
                                   + "]: integration not yet implemented");
     }
 
-    var upperExpr = createEvaluationExpression();
-    var lowerExpr = createEvaluationExpression();
+    var    upperExpr           = createEvaluationExpression();
+    var    lowerExpr           = createEvaluationExpression();
 
-    compileIndefiniteIntegral();
+    // REMOVED: compileIndefiniteIntegral() — the indefinite integral is only
+    // used as an AST node via spliceInto/substitute below, never executed as
+    // a compiled class. Compiling it produced an invalid ∫-prefixed class
+    // that was written to disk but never referenced.
 
     var    upperEval           = indefiniteIntegralNode.spliceInto(upperExpr);
     var    lowerEval           = indefiniteIntegralNode.spliceInto(lowerExpr);
