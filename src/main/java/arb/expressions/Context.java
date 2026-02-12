@@ -3,11 +3,7 @@ package arb.expressions;
 import static arb.utensils.Utensils.wrapOrThrow;
 import static java.lang.String.format;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -239,7 +235,7 @@ public class Context implements
                                     + this);
       }
     }
-    
+
     variables.putAll(context.variables);
     functions.putAll(context.functions);
   }
@@ -472,7 +468,7 @@ public class Context implements
 
   public Collection<Entry<String, Named>> variableEntries()
   {
-    return variableMap().entrySet();
+    return Collections.unmodifiableCollection(variables.entrySet());
   }
 
   public Map<String, Named> variableMap()

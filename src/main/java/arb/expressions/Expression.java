@@ -1116,12 +1116,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Similiar to this{@link #parseLambda(String")} but only for the root of the
-   * expression
-   * 
-   * @return
-   */
-  /**
    * Similar to this{@link #parseLambda(String)} but only for the root of the
    * expression.
    *
@@ -1648,6 +1642,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * is ignored since there is no way to use the {@link Function} reference as a
    * changeable object, since it is not {@link Becomable}
    * 
+   * TODO: fix the generic types on this
+   * 
    * @param mv
    * @return initialized this{@link #newFunctionalExpression()}
    */
@@ -1710,6 +1706,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                       FunctionMapping<?, ?, ?> nestedFunction,
                                                       List<String> assignments)
   {
+    assert nestedFunction != null : "nestedFunction shan't be null";
     if (trace)
     {
       log.debug(String.format("generateFunctionInitializer for className=%s functionName=%s: nestedFunction=%s, assignments=%s )",
@@ -1718,17 +1715,30 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                               nestedFunction.functionName,
                               assignments));
     }
-
+    Expression<?, ?, ?>                      nestedExpression     = nestedFunction.expression;
+    Predicate<OrderedPair<String, Class<?>>> declarationPredicate = variable ->
+                                                                  {
+                                                                    boolean b =
+                                                                              nestedExpression.hasDeclaredVariable(variable.getLeft());
+                                                                    if (!b)
+                                                                    {
+                                                                      System.err.println("Filtering "
+                                                                                         + variable);
+                                                                    }
+                                                                    return b;
+                                                                  };
     if (nestedFunction.instance != null && nestedFunction.isGenerated())
     {
+
+      // filter using the declarationPredicate if its trying to write to variables
+      // that werent in the context at the time of the functions compliation and/or
+      // the function doesnt reference the specific variables
+      // so their values must not be attempted to be injected
       initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv),
                                                      className,
                                                      Type.getInternalName(nestedFunction.type()),
                                                      nestedFunction.functionName,
-                                                     context.variableClassStream()
-                                                            .filter(variable -> nestedFunction.expression
-                                                                          != null
-                                                                          && nestedFunction.expression.declaredVariables.contains(variable.getLeft())));
+                                                     context.variableClassStream());
     }
     else
     {
@@ -1736,6 +1746,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
 
     return mv;
+  }
+
+  /**
+   * 
+   * @param varName
+   * @return true if {@link #declaredVariables} contains varName
+   */
+  public boolean hasDeclaredVariable(String name)
+  {
+    return declaredVariables.contains(name);
   }
 
   protected ClassVisitor generateGetContextMethod(ClassVisitor classVisitor)
