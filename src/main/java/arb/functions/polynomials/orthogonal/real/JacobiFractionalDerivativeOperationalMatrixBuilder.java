@@ -35,13 +35,13 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
   private final Real               γ;
   private int                      bits;
 
-  public RealSequenceSequence      μ;
+  public ComplexSequenceSequence   μ;
 
-  public RealFunctionSequence      χ;
+  public ComplexFunctionSequence   χ;
 
-  public RealSequenceSequence      ω;
+  public ComplexSequenceSequence   ω;
 
-  public RealSequence              normSq;
+  public ComplexSequence           normSq;
 
   public Context                   context;
 
@@ -56,21 +56,23 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
     context          = basis.getContext();
     context.registerVariable("γ", γ);
     // context.registerVariable(Real.named("t"));
-    normSq = RealSequence.express("normSq",
-                                  "i➔2^(α+β+1)*Γ(i+α+1)*Γ(i+β+1)/((2*i+α+β+1)*Γ(i+1)*Γ(i+α+β+1))",
-                                  context);
-
-    ω      =
-      RealSequenceSequence.express("ω",
-                                   "j➔k➔(-1)^(j-k)*Γ(j+β+1)*Γ(j+k+α+β+1)/(Γ(k+β+1)*Γ(j+α+β+1)*(j-k)!*k!)",
+    normSq =
+           ComplexSequence.express("normSq",
+                                   "i➔2^(α+β+1)*Γ(i+α+1)*Γ(i+β+1)/((2*i+α+β+1)*Γ(i+1)*Γ(i+α+β+1))",
                                    context);
 
-    χ      =
-      RealFunctionSequence.express("χ", "i➔p➔int(t➔t^p*w(t)*P(i)(t), t=-1..1)/normSq(i)", context);
+    ω      =
+      ComplexSequenceSequence.express("ω",
+                                      "j➔k➔(-1)^(j-k)*Γ(j+β+1)*Γ(j+k+α+β+1)/(Γ(k+β+1)*Γ(j+α+β+1)*(j-k)!*k!)",
+                                      context);
 
-    μ      = RealSequenceSequence.express("μ",
-                                          "i➔j➔Σk➔(ω(j)(k)*Γ(k+1)/Γ(k+1-γ)*χ(i)(k-γ)){k=⌈γ⌉..j}",
-                                          context);
+    χ      = ComplexFunctionSequence.express("χ",
+                                             "i➔p➔int(t➔t^p*w(t)*P(i)(t), t=-1..1)/normSq(i)",
+                                             context);
+
+    μ      = ComplexSequenceSequence.express("μ",
+                                             "i➔j➔Σk➔(ω(j)(k)*Γ(k+1)/Γ(k+1-γ)*χ(i)(k-γ)){k=⌈γ⌉..j}",
+                                             context);
 
   }
 
@@ -92,10 +94,10 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
     return this;
   }
 
-  public RealMatrix build(int maxDegree)
+  public ComplexMatrix build(int maxDegree)
   {
 
-    RealMatrix result = RealMatrix.newMatrix(maxDegree + 1, maxDegree + 1);
+    ComplexMatrix result = ComplexMatrix.newMatrix(maxDegree + 1, maxDegree + 1);
 
     if (Expression.trace && logger.isDebugEnabled())
     {
@@ -103,8 +105,8 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
     }
     for (int i = 0; i <= maxDegree; i++)
     {
-      RealSequence μrow = μ.evaluate(i, bits);
-      Real         row  = result.getRow(i);
+      ComplexSequence μrow = μ.evaluate(i, bits);
+      Complex         row  = result.getRow(i);
       if (Expression.trace && logger.isDebugEnabled())
       {
         logger.debug("Evaluating μrow({})={}", i, Utensils.yamlString(μrow));

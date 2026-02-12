@@ -1,7 +1,6 @@
 package arb.functions.polynomials.orthogonal.real;
 
-import arb.Real;
-import arb.RealMatrix;
+import arb.*;
 import junit.framework.TestCase;
 
 public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
@@ -83,7 +82,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
     {
       try ( Real gamma = Real.valueOf(0.5))
       {
-        RealMatrix M = builder.setFractionalOrder(gamma).build(5);
+        ComplexMatrix M = builder.setFractionalOrder(gamma).build(5);
         assertNotNull("matrix should not be null", M);
         assertEquals("matrix should be square", M.getNumRows(), M.getNumCols());
         assertEquals("matrix size should be 6x6", 6, M.getNumRows());
@@ -99,9 +98,9 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
       try ( Real gamma = Real.valueOf(0.5))
       {
         builder.setFractionalOrder(gamma);
-        RealMatrix M3  = builder.build(3);
-        RealMatrix M5  = builder.build(5);
-        RealMatrix M10 = builder.build(10);
+        ComplexMatrix M3  = builder.build(3);
+        ComplexMatrix M5  = builder.build(5);
+        ComplexMatrix M10 = builder.build(10);
 
         assertEquals("3x3 matrix size", 4, M3.getNumRows());
         assertEquals("5x5 matrix size", 6, M5.getNumRows());
@@ -118,9 +117,9 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
     {
       try ( Real g1 = Real.valueOf(0.25); Real g2 = Real.valueOf(0.5); Real g3 = Real.valueOf(0.75))
       {
-        RealMatrix M1 = builder.setFractionalOrder(g1).build(5);
-        RealMatrix M2 = builder.setFractionalOrder(g2).build(5);
-        RealMatrix M3 = builder.setFractionalOrder(g3).build(5);
+        ComplexMatrix M1 = builder.setFractionalOrder(g1).build(5);
+        ComplexMatrix M2 = builder.setFractionalOrder(g2).build(5);
+        ComplexMatrix M3 = builder.setFractionalOrder(g3).build(5);
 
         assertNotNull("all matrices should be created", M1);
         assertNotNull("all matrices should be created", M2);
@@ -139,13 +138,13 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
     {
       try ( Real gamma = Real.valueOf(0.5))
       {
-        RealMatrix M = builder.setFractionalOrder(gamma).build(3);
+        ComplexMatrix M = builder.setFractionalOrder(gamma).build(3);
 
         for (int i = 0; i < M.getNumRows(); i++)
         {
           for (int j = 0; j < M.getNumCols(); j++)
           {
-            Real elem = M.get(i, j);
+            Complex elem = M.get(i, j);
             assertNotNull("matrix element [" + i + "][" + j + "] should exist", elem);
           }
         }
@@ -157,10 +156,10 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
    * Spot-check specific matrix entries of D^(1/2) for Chebyshev (α=β=-1/2)
    * against 40-digit mpmath reference values.
    *
-   * Reference values computed via:
-   *   ω(j,k) = (-1)^(j-k)*Γ(j+β+1)*Γ(j+k+α+β+1)/(Γ(k+β+1)*Γ(j+α+β+1)*(j-k)!*k!)
-   *   χ(i,p) = ∫₀^π |cosθ|^p cos(iθ) dθ / normSq(i)
-   *   μ(i,j) = Σ_{k=⌈γ⌉}^{j} ω(j,k)*Γ(k+1)/Γ(k+1-γ)*χ(i,k-γ)
+   * Reference values computed via: ω(j,k) =
+   * (-1)^(j-k)*Γ(j+β+1)*Γ(j+k+α+β+1)/(Γ(k+β+1)*Γ(j+α+β+1)*(j-k)!*k!) χ(i,p) =
+   * ∫₀^π |cosθ|^p cos(iθ) dθ / normSq(i) μ(i,j) = Σ_{k=⌈γ⌉}^{j}
+   * ω(j,k)*Γ(k+1)/Γ(k+1-γ)*χ(i,k-γ)
    */
   public void testMatrixValuesSpotCheck()
   {
@@ -169,7 +168,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
     {
       try ( Real gamma = Real.valueOf(0.5))
       {
-        RealMatrix M = builder.setFractionalOrder(gamma).build(5);
+        ComplexMatrix M = builder.setFractionalOrder(gamma).build(5);
 
         // Column 0 is zero: D^γ of a constant is zero for γ > 0
         assertSpotValue("M[0][0]", 0.0, M, 0, 0);
@@ -195,9 +194,10 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
     }
   }
 
-  private void assertSpotValue(String label, double expected, RealMatrix M, int i, int j)
+  private void assertSpotValue(String label, double expected, ComplexMatrix M, int i, int j)
   {
-    double actual = M.get(i, j).doubleValue();
+    double actual = M.get(i, j).re().doubleValue();
+    assertTrue("imag part is nonzero " + M.get(i, j).im(), M.get(i, j).im().doubleValue() == 0);
     assertEquals(label + " expected=" + expected + " actual=" + actual, expected, actual, TOL);
   }
 
@@ -229,7 +229,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
     {
       try ( Real gamma = Real.valueOf(0.5))
       {
-        RealMatrix M = builder.setFractionalOrder(gamma).build(5);
+        ComplexMatrix M = builder.setFractionalOrder(gamma).build(5);
         assertEquals("should build successfully in try-with-resources", 6, M.getNumRows());
       }
     }
