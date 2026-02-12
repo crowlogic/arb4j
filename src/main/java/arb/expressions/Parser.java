@@ -423,7 +423,8 @@ public class Parser
     "n",
     "o",
     "p",
-    "q",
+    // "q" REMOVED — no Unicode superscript q exists, so this was causing
+    // every subsequent mapping to be off by one. ᵅ was mapping to z instead of α.
     "r",
     "s",
     "t",
