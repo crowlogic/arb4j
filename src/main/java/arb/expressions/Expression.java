@@ -3627,6 +3627,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return referencedVariables.put(variableNode.reference.name, variableNode);
   }
 
+  public boolean isVariableReferenced(String variableName)
+  {
+    return referencedVariables.containsKey(variableName);
+  }
+  
   public boolean isVariableReferenced(VariableNode<D, C, F> variableNode)
   {
     return referencedVariables.containsKey(variableNode.reference.name);

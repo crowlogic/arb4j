@@ -719,4 +719,9 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return does[0];
   }
 
+  public Node<D, R, F> Γ()
+  {
+    return apply("Γ");
+  }
+
 }
