@@ -7,7 +7,7 @@ import arb.documentation.TheArb4jLibrary;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface BivariateFunction<D, R, G extends Function<D, R>> extends
+public interface BivariateFunction<D, R, G extends Function<? extends D, ? extends R>> extends
                                   Function<D, G>
 {
 

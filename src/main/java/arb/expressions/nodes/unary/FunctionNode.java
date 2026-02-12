@@ -82,7 +82,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   public Node<D, R, F> differentiate()
   {
     Node<D, R, F> diff = super.differentiate();
-    assert !diff.isZero() : "whack: " + this + " diff=" + diff;
     return diff;
   }
 

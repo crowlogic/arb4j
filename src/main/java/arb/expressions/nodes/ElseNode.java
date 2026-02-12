@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
-import arb.expressions.nodes.binary.DivisionNode;
 import arb.expressions.nodes.unary.WhenNode;
 import arb.functions.Function;
 

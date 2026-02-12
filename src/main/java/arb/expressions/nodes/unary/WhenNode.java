@@ -31,7 +31,7 @@ import arb.functions.Function;
  * when(condition1,value1,condition2,value2,..,else,valueOtherwise)
  * </pre>
  * 
- * @author Stephen Crowley ©2024-2025
+ * @author Stephen Crowley ©2024-2026
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
  */
 public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extends
@@ -97,18 +97,18 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     }
   }
 
-  @SuppressWarnings("unchecked")
   public <E, S, G extends Function<? extends E, ? extends S>> WhenNode(
                                                                        Expression<D, R, F> expression,
+                                                                       Node<D, R, F> defaultNode,
                                                                        TreeMap<Integer, Node<E, S, G>> sourceCases)
   {
     super(expression,
-          null);
+          defaultNode);
     this.cases = new TreeMap<>();
 
     for (var entry : sourceCases.entrySet())
     {
-      Node<D, R, F> value = (Node<D, R, F>) entry.getValue().spliceInto(expression);
+      var value = entry.getValue().spliceInto(expression);
       this.cases.put(entry.getKey(), value);
     }
   }
@@ -133,8 +133,8 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     Node<D, R, F>     differentiatedDefault = arg.differentiate(variable);
 
     WhenNode<D, R, F> result                = new WhenNode<>(expression,
+                                                             differentiatedDefault,
                                                              differentiatedCases);
-    result.arg = differentiatedDefault;
     return result;
   }
 
@@ -268,8 +268,8 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     Node<D, R, F>     integratedDefault = arg.integrate(variable);
 
     WhenNode<D, R, F> result            = new WhenNode<>(expression,
+                                                         integratedDefault,
                                                          integratedCases);
-    result.arg = integratedDefault;
     return result;
   }
 
@@ -291,6 +291,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
          spliceInto(Expression<E, S, G> newExpression)
   {
     return new WhenNode<E, S, G>(newExpression,
+                                 arg.spliceInto(newExpression),
                                  cases);
   }
 

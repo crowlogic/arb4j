@@ -14,7 +14,7 @@ public class LineCounter
   public static void main(String[] args) throws IOException
   {
     String sourceDir = args.length
-                  > 0 ? args[0] : String.format("%s/git/arb4j", System.getProperty("user.home"));
+                  > 0 ? args[0] : String.format("%s/git/arb4j/src", System.getProperty("user.home"));
     long   count     = countLines(sourceDir);
     System.out.format("Total Java lines (excluding SWIG files) in %s: %s\n", sourceDir, count);
   }

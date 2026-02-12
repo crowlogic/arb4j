@@ -33,17 +33,17 @@ public class ExponentiationNodeTest extends
   {
     try ( var tmp = new Complex())
     {
-      var                   context = new Context();
+      var context = new Context();
 
-      final RealFunction    θ       =
-                              RealFunction.express("θ:im(lnΓ(¼+ⅈ*t/2))-(log(π)/2)*t", context);
-      var                   gain    =
+      RealFunction.express("θ:im(lnΓ(¼+ⅈ*t/2))-(log(π)/2)*t", context);
+      var                   gain =
                                  RealBivariateToComplexFunction.express("A:exp(ⅈ*λ*(θ(t)-t))*√(θ̇(t))",
                                                                         context);
-      RealToComplexFunction func    = gain.evaluate(RealConstants.half, 128);
-      Complex               y       = func.eval(2.3, tmp);
+      RealToComplexFunction func = gain.evaluate(RealConstants.half, 128);
+      Complex               y    = func.eval(2.3, tmp);
       assertEquals(0.4296015350333563, y.re().doubleValue());
       assertEquals(-0.5684675488546744, y.im().doubleValue());
+
     }
 
   }
@@ -53,10 +53,9 @@ public class ExponentiationNodeTest extends
 
     var context = new Context();
 
-
-    var gain = RealBivariateToComplexFunction.express("A:exp(ⅈ*λ*ϑ(t)-t)*√(ϑ̇(t))", context);
-    var f =  gain.evaluate(RealConstants.zero, 128);
-    assertNotNull( "cool", f.toString() );
+    var gain    = RealBivariateToComplexFunction.express("A:exp(ⅈ*λ*ϑ(t)-t)*√(ϑ̇(t))", context);
+    var f       = gain.evaluate(RealConstants.zero, 128);
+    assertNotNull("cool", f.toString());
 
   }
 
