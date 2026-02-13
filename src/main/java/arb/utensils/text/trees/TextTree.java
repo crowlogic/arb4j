@@ -143,7 +143,7 @@ public class TextTree<N>
       }
       else
       {
-        sb.append(node + " wtf type " + node.getClass() );
+        sb.append(node);
       }
       sb.append("\n");
     }

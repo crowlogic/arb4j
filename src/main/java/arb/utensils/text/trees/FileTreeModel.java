@@ -1,6 +1,8 @@
 package arb.utensils.text.trees;
 
 import java.io.File;
+import java.io.FilenameFilter;
+import java.util.Arrays;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -28,31 +30,31 @@ public class FileTreeModel implements
   {
     return root;
   }
+  FilenameFilter filter = (dir, name) -> !name.startsWith(".");
 
   @Override
-  public FileNode getNode(FileNode parent, int index)
+  public FileNode getNode(FileNode fileNode, int index)
   {
-    FileNode fsObject = (FileNode) parent;
-    File[]   files    = fsObject.f.listFiles();
+    File[]   files    = fileNode.f.listFiles(filter);
+    Arrays.sort(files, (a, b) -> a.getAbsolutePath().compareTo(b.getAbsolutePath()));
+
     return new FileNode(files[index]);
   }
 
   @Override
-  public int getNodeCount(FileNode parent)
+  public int getNodeCount(FileNode fileNode)
   {
-    FileNode fsObject = (FileNode) parent;
-    if (!fsObject.f.isDirectory())
+    if (!fileNode.f.isDirectory())
     {
       return 0;
     }
-    return fsObject.f.list().length;
+    return fileNode.f.listFiles(filter).length;
   }
 
   @Override
   public boolean isLeaf(FileNode node)
   {
-    FileNode fsObject = (FileNode) node;
-    return !fsObject.f.isDirectory();
+    return !node.f.isDirectory();
   }
 
   @Override

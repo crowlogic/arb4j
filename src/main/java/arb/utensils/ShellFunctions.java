@@ -11,8 +11,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.IntFunction;
 import java.util.stream.IntStream;
 
-import arb.Integer;
 import arb.*;
+import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
@@ -31,13 +31,77 @@ import javafx.scene.image.WritableImage;
 public class ShellFunctions
 {
 
-  public static void ls(String path)
+  public static File currentDirectory = new File(System.getProperty("user.home"));
+
+  public static void ls()
+  {
+    tree();
+  }
+
+  public static void ls(String str)
+  {
+    tree(str);
+  }
+
+  public static void tree()
+  {
+    tree(currentDirectory);
+  }
+
+  public static void tree(String path)
   {
     if (path.contains("~"))
     {
       path = path.replaceAll("~", System.getProperty("user.home"));
     }
-    var fs = new FileTreeModel(new File(path));
+    File file = new File(path);
+    tree(file);
+  }
+
+  public static File cd(String dir)
+  {
+    File newDir = null;
+    if (dir.startsWith("/"))
+    {
+      newDir = new File(dir);
+    }
+    else
+    {
+      newDir = new File(currentDirectory,
+                        dir);
+    }
+    if (newDir.exists() && newDir.canRead() && newDir.isDirectory())
+    {
+      try
+      {
+        currentDirectory = newDir.getCanonicalFile();
+      }
+      catch (IOException e)
+      {
+        Utensils.throwOrWrap(e);
+      }
+      System.out.println("Changed current directory to " + currentDirectory);
+    }
+    else
+    {
+      System.err.println("No such file or directory " + newDir);
+    }
+    return currentDirectory;
+  }
+
+  public static File pwd()
+  {
+    return dir();
+  }
+
+  public static File dir()
+  {
+    return currentDirectory;
+  }
+
+  public static void tree(File file)
+  {
+    var fs = new FileTreeModel(file);
     var tt = new TextTree<FileNode>(fs);
     System.out.println(tt);
   }
