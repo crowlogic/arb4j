@@ -2,7 +2,6 @@
 
 %include typemaps.i
  
-
 %include "init.i"
 
 %typemap(javabody) SWIGTYPE (CLASS::Real) %{
@@ -34,7 +33,6 @@ typedef mag_struct * mag_ptr;
 typedef unsigned long* unsigned_long_ptr;
 typedef unsigned long int mp_limb_t;
 
-
 %ignore modmap;
 %ignore keymap; 
 %ignore symbol;
@@ -58,8 +56,6 @@ typedef unsigned long int mp_limb_t;
 %ignore _mp_alg;
 %ignore _mp_lc;
 %ignore __gmp_state;
-
-%immutable fmpq_poly_struct::den;
 
 %rename (numRows) r;
 %rename (numCols) c;
