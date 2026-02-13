@@ -130,6 +130,15 @@ public class DerivativeNodeTest extends
     assertEquals(x, y);
   }
   
+  public void testComplexCotangentDerivativeFuncSyntax()
+  {
+    var f = ComplexFunction.express("diff(cot(x),x)");
+    var g = ComplexFunction.express("(-1)-cot(x)^2");
+    var x = f.eval(2.3,new Complex());
+    var y = g.eval(2.3,new Complex());
+    assertEquals(x, y);
+  }
+  
 
   public void testCosecantDerivative()
   {
