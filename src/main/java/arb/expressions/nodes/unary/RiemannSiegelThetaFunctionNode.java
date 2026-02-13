@@ -1,13 +1,10 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.*;
-
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
 
-import arb.arblib;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
+import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 
 /**
@@ -16,7 +13,7 @@ import arb.functions.Function;
  */
 public class RiemannSiegelThetaFunctionNode<D, C, F extends Function<? extends D, ? extends C>>
                                            extends
-                                           PolySeriesFunctionNode<D, C, F>
+                                           PolySeriesFunctionDerivativeNode<D, C, F>
 {
   public RiemannSiegelThetaFunctionNode(Expression<D, C, F> expression)
   {
@@ -35,36 +32,17 @@ public class RiemannSiegelThetaFunctionNode<D, C, F extends Function<? extends D
   }
 
   @Override
-  protected void invokeSeriesEvaluationFunction(MethodVisitor mv,
-                                                Class<?> scalarType,
-                                                boolean isComplex,
-                                                int hSlot,
-                                                int outSlot,
-                                                Class<?> polyClass)
+  protected void pushSeriesCallParamsAndInvoke(MethodVisitor mv,
+                                               Class<?> S,
+                                               boolean cx,
+                                               int n,
+                                               int oneSlot)
   {
-    mv.visitVarInsn(Opcodes.ALOAD, outSlot);
-    mv.visitVarInsn(Opcodes.ALOAD, hSlot);
-    loadOrderParameter(mv);
-    if (derivativeOrder > 0)
-    {
-      mv.visitLdcInsn(derivativeOrder);
-      mv.visitInsn(Opcodes.IADD);
-    }
-    loadBitsParameterOntoStack(mv);
-
-    invokeStaticMethod(mv,
-                       arblib.class,
-                       isComplex ? "acb_poly_riemann_siegel_theta_series"
-                                 : "arb_poly_riemann_siegel_theta_series",
-                       Void.class,
-                       polyClass,
-                       polyClass,
-                       int.class,
-                       int.class);
+    call(mv, cx, n, "arb_poly_riemann_siegel_theta_series", "acb_poly_riemann_siegel_theta_series");
   }
 
   @Override
-  public Node<D, C, F> differentiate(arb.expressions.nodes.VariableNode<D, C, F> variable)
+  public Node<D, C, F> differentiate(VariableNode<D, C, F> variable)
   {
     return new RiemannSiegelThetaFunctionNode<>(expression,
                                                 arg,
@@ -72,7 +50,7 @@ public class RiemannSiegelThetaFunctionNode<D, C, F extends Function<? extends D
   }
 
   @Override
-  public Node<D, C, F> integrate(arb.expressions.nodes.VariableNode<D, C, F> variable)
+  public Node<D, C, F> integrate(VariableNode<D, C, F> variable)
   {
     return new RiemannSiegelThetaFunctionNode<>(expression,
                                                 arg,
