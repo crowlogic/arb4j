@@ -7,10 +7,10 @@ import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
 
 /**
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the {@link TheArb4jLibrary}
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
-public class HardyThetaInversion
-                                 implements
+public class HardyThetaInversion implements
                                  RealFunction
 {
   public Real            centerPoint;
@@ -18,7 +18,7 @@ public class HardyThetaInversion
   private RealPolynomial reversedSeries;
   private Real           thetaAtCenter;
   private boolean        initialized = false;
-  RealFunction θ;
+  RealFunction           θ;
 
   public HardyThetaInversion()
   {
@@ -28,7 +28,7 @@ public class HardyThetaInversion
   {
     this.centerPoint = centerPoint;
     this.seriesOrder = seriesOrder;
-    this.θ = theta;
+    this.θ           = theta;
     initialize(precision);
   }
 
@@ -46,25 +46,15 @@ public class HardyThetaInversion
 
     try ( RealPolynomial series = new RealPolynomial())
     {
-      buildTaylorSeries(centerPoint,
-                        seriesOrder,
-                        precision,
-                        series);
+      buildTaylorSeries(centerPoint, seriesOrder, precision, series);
 
-      reversedSeries = series.invert(seriesOrder,
-                                     precision,
-                                     new RealPolynomial());
+      reversedSeries = series.invert(seriesOrder, precision, new RealPolynomial());
 
-      thetaAtCenter  = Real.newVector(2);
-      θ.evaluate(centerPoint,
-                 2,
-                 precision,
-                 thetaAtCenter);
+      thetaAtCenter  = θ.evaluate(centerPoint, 2, precision, Real.newVector(2));      
 
       initialized = true;
     }
   }
-
 
   @Override
   public Real evaluate(Real thetaValue, int order, int bits, Real result)
@@ -74,14 +64,11 @@ public class HardyThetaInversion
       throw new IllegalStateException("Must call initialize(precision) before evaluate");
     }
 
-    return reversedSeries.evaluate(thetaValue.sub(thetaAtCenter.get(0),
-                                                  bits,
-                                                  result),
+    return reversedSeries.evaluate(thetaValue.sub(thetaAtCenter.get(0), bits, result),
                                    1,
                                    bits,
                                    result)
-                         .add(centerPoint,
-                              bits);
+                         .add(centerPoint, bits);
 
   }
 
@@ -90,10 +77,7 @@ public class HardyThetaInversion
     result.setLength(order);
     result.fitLength(order);
 
-    θ.evaluate(t,
-               order,
-               precision,
-               result.getCoeffs());
+    θ.evaluate(t, order, precision, result.getCoeffs());
     result.get(0).zero();
 
     return result;
