@@ -10,8 +10,7 @@ all: libarblib.so
 
 jar: build/libs/arb4j-$(VERSION).jar libarblib.so
 
-build/libs/arb4j-$(VERSION).jar: libarblib.so $(shell find src) $(shell find native)
-	mvn install -Dmaven.test.skip=true
+build/libs/arb4j-$(VERSION).jar: install
 
 native/arb_wrap.c: $(shell find native -name "*.i") 
 	swig $(SWIGFLAGS) native/arb.i
