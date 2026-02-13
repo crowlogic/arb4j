@@ -30,7 +30,7 @@ public class BetaFunctionNode<D, C, F extends Function<? extends D, ? extends C>
   @Override
   public Class<?> type()
   {
-    return splicedNode.type();
+    return equivalentNode.type();
   }
 
   @Override
@@ -54,8 +54,7 @@ public class BetaFunctionNode<D, C, F extends Function<? extends D, ? extends C>
 
   private final Node<D, C, F>       x;
   private final Node<D, C, F>       y;
-  private final Expression<D, C, F> definition;
-  private Node<D, C, F>             splicedNode;
+  private Node<D, C, F>             equivalentNode;
 
   public BetaFunctionNode(Expression<D, C, F> expression)
   {
@@ -74,26 +73,18 @@ public class BetaFunctionNode<D, C, F extends Function<? extends D, ? extends C>
       context = new Context();
     }
 
-    context.registerVariable("x", expression.newCoDomainInstance());
-    context.registerVariable("y", expression.newCoDomainInstance());
+//    context.registerVariable("x", expression.newCoDomainInstance());
+//    context.registerVariable("y", expression.newCoDomainInstance());
 
-    definition = Function.parse(expression.domainType,
-                                expression.coDomainType,
-                                expression.functionClass,
-                                "Γ(x)*Γ(y)/Γ(x+y)",
-                                context);
-
-    definition.substitute("x", x);
-    definition.substitute("y", y);
-    splicedNode          = definition.simplify().rootNode.spliceInto(expression);
-    splicedNode.isResult = isResult;
+    equivalentNode = x.Γ().mul(y.Γ()).div(x.add(y).Γ());
+    equivalentNode.isResult = isResult;
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     generatedType = resultType;
-    splicedNode.generate(mv, resultType);
+    equivalentNode.generate(mv, resultType);
     return mv;
   }
 

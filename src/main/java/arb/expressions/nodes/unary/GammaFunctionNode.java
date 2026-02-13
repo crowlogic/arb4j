@@ -1,41 +1,33 @@
 package arb.expressions.nodes.unary;
 
-import org.objectweb.asm.MethodVisitor;
-
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
 /**
+ * Also see {@link GammaFunctionSeriesNode} for a version that computes
+ * derivatives with the accelerated flint/arb methods
+ * 
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class GammaFunctionNode<D, C, F extends Function<? extends D, ? extends C>> extends
-                              PolySeriesFunctionDerivativeNode<D, C, F>
+                              FunctionNode<D, C, F>
 {
 
   public GammaFunctionNode(Expression<D, C, F> expression)
   {
     super("Γ",
-          expression);
+          expression.resolve(),
+          expression.require(')'));
   }
 
   public GammaFunctionNode(Expression<D, C, F> expression, Node<D, C, F> arg, int order)
   {
     super("Γ",
-          expression,
           arg,
+          expression,
           order);
-  }
-
-  @Override
-  protected void pushSeriesCallParamsAndInvoke(MethodVisitor mv,
-                                               Class<?> sType,
-                                               boolean complex,
-                                               int n,
-                                               int oneSlot)
-  {
-    call(mv, complex, n, "arb_poly_gamma_series", "acb_poly_gamma_series");
   }
 
   @Override

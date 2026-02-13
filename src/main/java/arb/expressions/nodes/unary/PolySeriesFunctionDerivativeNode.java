@@ -203,12 +203,12 @@ abstract class PolySeriesFunctionDerivativeNode<D, C, F extends Function<? exten
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    final Class<?> S               = scalarType(resultType);
-    final boolean  isComplex       = Complex.class.equals(S);
+    final Class<?> scalarClass               = scalarType(resultType);
+    final boolean  isComplex       = Complex.class.equals(scalarClass);
     final int      n               = Math.max(1, derivativeOrder + 1);
     final int      order           = derivativeOrder;
 
-    int            outSlot         = loadOutputVariableOntoElementOfOutputPolynomial(mv, S);
+    int            outSlot         = loadOutputVariableOntoElementOfOutputPolynomial(mv, scalarClass);
 
     Class<?>       polynomialClass = registerIntermediateVariablesIfNotAlreadyRegistered(isComplex);
 
@@ -220,20 +220,20 @@ abstract class PolySeriesFunctionDerivativeNode<D, C, F extends Function<? exten
 
     setPolynomialLength(mv, isComplex, n, polynomialClass, argSlot);
 
-    assignArgumentToElementOfPolynomial(mv, S, isComplex, polynomialClass, argSlot);
+    assignArgumentToElementOfPolynomial(mv, scalarClass, isComplex, polynomialClass, argSlot);
 
-    int oneSlot = assignOneToElementOfPolynomial(mv, S, isComplex, polynomialClass, argSlot);
+    int oneSlot = assignOneToElementOfPolynomial(mv, scalarClass, isComplex, polynomialClass, argSlot);
 
     mv.visitVarInsn(Opcodes.ALOAD, resSlot);
     mv.visitVarInsn(Opcodes.ALOAD, argSlot);
-    pushSeriesCallParamsAndInvoke(mv, S, isComplex, n, oneSlot);
+    pushSeriesCallParamsAndInvoke(mv, scalarClass, isComplex, n, oneSlot);
 
-    getScalarResult(mv, S, isComplex, order, outSlot, polynomialClass, resSlot);
+    getScalarResult(mv, scalarClass, isComplex, order, outSlot, polynomialClass, resSlot);
 
     clearPolynomials(mv, isComplex, polynomialClass, resSlot, argSlot);
 
     mv.visitVarInsn(Opcodes.ALOAD, outSlot);
-    generatedType = S;
+    generatedType = scalarClass;
 
     return mv;
   }
