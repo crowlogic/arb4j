@@ -66,6 +66,8 @@ typedef unsigned long int mp_limb_t;
 %rename (AlgebraicNumber) qqbar_struct;
 %rename (RationalFunction) fmpz_poly_q_struct;
 %rename (IntegerPolynomial) fmpz_poly_struct;
+%rename (RationalPolynomial) fmpq_poly_struct;
+%rename (RationalMatrix) fmpq_mat_struct;
 %rename (denominatorAddress) den;
 %rename (numeratorAddress) num;
 %rename (Fraction) fmpq;

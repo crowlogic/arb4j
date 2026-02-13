@@ -9,6 +9,7 @@
 #include <flint/flint.h>
 #include <flint/fmpq.h>
 #include <flint/fmpq_poly.h>
+#include <flint/fmpq_mat.h>
 #include <flint/qqbar.h>
 #include <arf.h>
 #include <arb.h>
