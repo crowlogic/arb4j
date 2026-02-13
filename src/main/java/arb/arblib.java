@@ -13,6 +13,14 @@ public class arblib {
     arblibJNI.acb_poly_set_arb_poly(ComplexPolynomial.getCPtr(poly), poly, RealPolynomial.getCPtr(re), re);
   }
 
+  public static void acb_cot(Complex numRows, Complex z, int prec) {
+    arblibJNI.acb_cot(Complex.getCPtr(numRows), numRows, Complex.getCPtr(z), z, prec);
+  }
+
+  public static void arb_cot(Real y, Real x, int prec) {
+    arblibJNI.arb_cot(Real.getCPtr(y), y, Real.getCPtr(x), x, prec);
+  }
+
   public static void fmpz_fac_ui(long f, long n) {
     arblibJNI.fmpz_fac_ui(f, n);
   }

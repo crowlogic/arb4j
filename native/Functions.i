@@ -19,6 +19,9 @@
 
 void acb_poly_set_arb_poly(acb_poly_t poly, const arb_poly_t re);
 
+void acb_cot(acb_t r, const acb_t z, slong prec);
+
+void arb_cot(arb_t y, const arb_t x, slong prec);
 
 void fmpz_fac_ui(fmpz_t f, ulong n);
 void fmpz_bin_uiui(fmpz_t res, ulong n, ulong k);

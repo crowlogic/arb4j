@@ -136,6 +136,19 @@ import arb.utensils.Utensils;
 %typemap(javacode) arb_struct %{
   private static final long serialVersionUID = 1L;
 
+  public Complex cot(int prec, Complex result)
+  {
+    cot(prec, result.re());   
+    result.im().zero();
+    return result;
+  }
+
+  public Real cot(int prec, Real result )
+  {
+    arblib.arb_cot(result, this, prec );
+    return result;
+  }
+    
   public RealPolynomial mul(Real that, int prec, RealPolynomial res)
   {
     return res.set(this).mul(that, prec, res);

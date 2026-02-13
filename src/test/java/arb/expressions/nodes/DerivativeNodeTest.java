@@ -1,9 +1,9 @@
 package arb.expressions.nodes;
 
-import arb.Real;
-import arb.RealConstants;
+import arb.*;
 import arb.exceptions.CompilerException;
 import arb.expressions.Context;
+import arb.functions.complex.ComplexFunction;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
@@ -44,7 +44,7 @@ public class DerivativeNodeTest extends
 
   public void testEvaluateDerivativeOfTheRealRiemannSiegelThetaFunction()
   {
-    try (  RealFunction θ = RealFunction.express("ϑ(t)"))
+    try ( RealFunction θ = RealFunction.express("ϑ(t)"))
     {
       var  θ̇      = θ.derivative();
       Real θ̇AtOne = θ̇.evaluate(RealConstants.one, 128, new Real());
@@ -112,12 +112,24 @@ public class DerivativeNodeTest extends
     assertEquals(df.rootNode.toString(), f.rootNode.toString());
   }
 
-  public void testCotangentDerivative()
+  public void testRealCotangentDerivative()
   {
-    var f  = RealFunction.parse("∂cot(x)/∂x");
-    var df = RealFunction.parse("(-1)-cot(x)^2");
-    assertEquals("x➔(-1)-(cot(x)^2)", f.toString());
+    var f = RealFunction.express("∂cot(x)/∂x");
+    var g = RealFunction.express("(-1)-cot(x)^2");
+    var x = f.eval(2.3);
+    var y = g.eval(2.3);
+    assertEquals(x, y);
   }
+  
+  public void testComplexCotangentDerivative()
+  {
+    var f = ComplexFunction.express("∂cot(x)/∂x");
+    var g = ComplexFunction.express("(-1)-cot(x)^2");
+    var x = f.eval(2.3,new Complex());
+    var y = g.eval(2.3,new Complex());
+    assertEquals(x, y);
+  }
+  
 
   public void testCosecantDerivative()
   {

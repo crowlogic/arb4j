@@ -41,6 +41,12 @@ import arb.functions.complex.ComplexNullaryFunction;
 %typemap(javacode) acb_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+  public Complex cot(int prec, Complex result)
+  {
+	arblib.acb_cot(result, this, prec );
+    return result;
+  }
+
   public Complex abs(int prec, Complex w)
   {
     arblib.acb_abs(w.re(), this, prec);

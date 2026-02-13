@@ -66,6 +66,12 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
 
   static { System.loadLibrary( "arblib" ); }
 
+  public Complex cot(int prec, Complex result)
+  {
+	arblib.acb_cot(result, this, prec );
+    return result;
+  }
+
   public Complex abs(int prec, Complex w)
   {
     arblib.acb_abs(w.re(), this, prec);
