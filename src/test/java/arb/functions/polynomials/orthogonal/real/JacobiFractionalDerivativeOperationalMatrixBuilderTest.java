@@ -168,7 +168,8 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
     {
       try ( Real gamma = Real.valueOf(0.5))
       {
-        ComplexMatrix M = builder.setFractionalOrder(gamma).build(5);
+        builder.setFractionalOrder(gamma);
+        ComplexMatrix M = builder.build(5);
 
         // Column 0 is zero: D^γ of a constant is zero for γ > 0
         assertSpotValue("M[0][0]", 0.0, M, 0, 0);

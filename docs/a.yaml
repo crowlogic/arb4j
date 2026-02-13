@@ -1,0 +1,1107 @@
+val=nan + i*nan
+μ=--- !!arb.functions.%CE%BC
+context: {
+  }
+isInitialized: true
+α:
+- arb.Real
+- '-0.5'
+β:
+- arb.Real
+- '-0.5'
+γ:
+- arb.Real
+- '0.5'
+...
+
+seq3=--- !!arb.functions.%CE%BCfunc
+context: null
+i:
+- arb.Integer
+- '3'
+isInitialized: true
+k:
+- arb.Integer
+- '5'
+operandF0001:
+  context: null
+  cℤ0000:
+  - arb.Integer
+  - '1'
+  i:
+  - arb.Integer
+  - '3'
+  isInitialized: true
+  j:
+  - arb.Integer
+  - '4'
+  vℂ0019:
+    bits: 0
+    dim: 1
+    elements: null
+    imagObj:
+    - arb.Real
+    - '0'
+    name: null
+    printPrecision: true
+    realObj:
+    - arb.Real
+    - '0'
+  vℂ0020:
+    bits: 128
+    dim: 1
+    elements: null
+    imagObj:
+    - arb.Real
+    - '0'
+    name: null
+    printPrecision: true
+    realObj:
+    - arb.Real
+    - 35.00000000000000000000000000000000000 +/- 9.15e-37
+  vℂ0021:
+    bits: 128
+    dim: 1
+    elements: null
+    imagObj:
+    - arb.Real
+    - '0'
+    name: null
+    printPrecision: true
+    realObj:
+    - arb.Real
+    - 840.0000000000000000000000000000000000 +/- 2.20e-35
+  vℂ0022:
+    bits: 0
+    dim: 1
+    elements: null
+    imagObj:
+    - arb.Real
+    - '0'
+    name: null
+    printPrecision: true
+    realObj:
+    - arb.Real
+    - '0'
+  vℂ0023:
+    bits: 0
+    dim: 1
+    elements: null
+    imagObj:
+    - arb.Real
+    - '0'
+    name: null
+    printPrecision: true
+    realObj:
+    - arb.Real
+    - '3.5'
+  vℂ0024:
+    bits: 0
+    dim: 1
+    elements: null
+    imagObj:
+    - arb.Real
+    - nan
+    name: null
+    printPrecision: true
+    realObj:
+    - arb.Real
+    - nan
+  vℂ0025:
+    bits: 0
+    dim: 1
+    elements: null
+    imagObj:
+    - arb.Real
+    - nan
+    name: null
+    printPrecision: true
+    realObj:
+    - arb.Real
+    - nan
+  vℝ0071:
+  - arb.Real
+  - '24'
+  vℝ0072:
+  - arb.Real
+  - '4.5'
+  vℝ0073:
+  - arb.Real
+  - 11.631728396567448929144224109426265262 +/- 1.49e-37
+  vℤ0012:
+  - arb.Integer
+  - '5'
+  vℤ0013:
+  - arb.Integer
+  - '5'
+  α:
+  - arb.Real
+  - '-0.5'
+  β:
+  - arb.Real
+  - '-0.5'
+  γ:
+  - arb.Real
+  - '0.5'
+  χ:
+    P:
+      A:
+        C: &id001
+          context: {
+            }
+          cℤ0000:
+          - arb.Integer
+          - '2'
+          isInitialized: true
+          vℝ0001:
+          - arb.Real
+          - '4'
+          vℝ0002:
+          - arb.Real
+          - '3.5'
+          α:
+          - arb.Real
+          - '-0.5'
+          β:
+          - arb.Real
+          - '-0.5'
+        F:
+          C: *id001
+          context: {
+            }
+          cℤ0000:
+          - arb.Integer
+          - '1'
+          isInitialized: true
+          vℝ0003:
+          - arb.Real
+          - '2'
+          vℝ0004:
+          - arb.Real
+          - '3'
+          vℝ0005:
+          - arb.Real
+          - '3'
+          vℝ0006:
+          - arb.Real
+          - '5'
+          α:
+          - arb.Real
+          - '-0.5'
+          β:
+          - arb.Real
+          - '-0.5'
+        G:
+          context: {
+            }
+          cℤ0000:
+          - arb.Integer
+          - '2'
+          isInitialized: true
+          vℝ0007:
+          - arb.Real
+          - '0.25'
+          vℝ0008:
+          - arb.Real
+          - '0.25'
+          α:
+          - arb.Real
+          - '-0.5'
+          β:
+          - arb.Real
+          - '-0.5'
+        context: {
+          }
+        cℤ0000:
+        - arb.Integer
+        - '1'
+        cℤ0001:
+        - arb.Integer
+        - '2'
+        isInitialized: true
+        vXℝ0001:
+        - arb.RealPolynomial
+        - x
+        vXℝ0002:
+        - arb.RealPolynomial
+        - 15*x
+        vXℝ0003:
+        - arb.RealPolynomial
+        - 15*x
+        vXℝ0004:
+        - arb.RealPolynomial
+        - 60*x
+        vℝ0009:
+        - arb.Real
+        - '15'
+        vℝ0010:
+        - arb.Real
+        - '0'
+        vℝ0011:
+        - arb.Real
+        - '3'
+        vℝ0012:
+        - arb.Real
+        - '5'
+        vℝ0013:
+        - arb.Real
+        - '4'
+        α:
+        - arb.Real
+        - '-0.5'
+        β:
+        - arb.Real
+        - '-0.5'
+      B:
+        C: *id001
+        context: {
+          }
+        cℤ0000:
+        - arb.Integer
+        - '1'
+        isInitialized: true
+        vℝ0019:
+        - arb.Real
+        - '2.5'
+        vℝ0020:
+        - arb.Real
+        - '1.5'
+        vℝ0021:
+        - arb.Real
+        - '2.5'
+        vℝ0022:
+        - arb.Real
+        - '1.5'
+        vℝ0023:
+        - arb.Real
+        - '2.25'
+        vℝ0024:
+        - arb.Real
+        - '3'
+        vℝ0025:
+        - arb.Real
+        - '5'
+        α:
+        - arb.Real
+        - '-0.5'
+        β:
+        - arb.Real
+        - '-0.5'
+      C: *id001
+      E:
+        C: *id001
+        context: {
+          }
+        cℤ0000:
+        - arb.Integer
+        - '2'
+        cℤ0001:
+        - arb.Integer
+        - '1'
+        isInitialized: true
+        vℝ0014:
+        - arb.Real
+        - '1.5'
+        vℝ0015:
+        - arb.Real
+        - '2'
+        vℝ0016:
+        - arb.Real
+        - '6'
+        vℝ0017:
+        - arb.Real
+        - '2'
+        vℝ0018:
+        - arb.Real
+        - '3'
+        α:
+        - arb.Real
+        - '-0.5'
+        β:
+        - arb.Real
+        - '-0.5'
+      P:
+        A:
+          C: &id002
+            context: {
+              }
+            cℤ0000:
+            - arb.Integer
+            - '2'
+            isInitialized: true
+            vℝ0001:
+            - arb.Real
+            - '2'
+            vℝ0002:
+            - arb.Real
+            - '1.5'
+            α:
+            - arb.Real
+            - '-0.5'
+            β:
+            - arb.Real
+            - '-0.5'
+          F:
+            C: *id002
+            context: {
+              }
+            cℤ0000:
+            - arb.Integer
+            - '1'
+            isInitialized: true
+            vℝ0003:
+            - arb.Real
+            - '1'
+            vℝ0004:
+            - arb.Real
+            - '1'
+            vℝ0005:
+            - arb.Real
+            - '2'
+            vℝ0006:
+            - arb.Real
+            - '3'
+            α:
+            - arb.Real
+            - '-0.5'
+            β:
+            - arb.Real
+            - '-0.5'
+          G:
+            context: {
+              }
+            cℤ0000:
+            - arb.Integer
+            - '2'
+            isInitialized: true
+            vℝ0007:
+            - arb.Real
+            - '0.25'
+            vℝ0008:
+            - arb.Real
+            - '0.25'
+            α:
+            - arb.Real
+            - '-0.5'
+            β:
+            - arb.Real
+            - '-0.5'
+          context: {
+            }
+          cℤ0000:
+          - arb.Integer
+          - '1'
+          cℤ0001:
+          - arb.Integer
+          - '2'
+          isInitialized: true
+          vXℝ0001:
+          - arb.RealPolynomial
+          - x
+          vXℝ0002:
+          - arb.RealPolynomial
+          - 3*x
+          vXℝ0003:
+          - arb.RealPolynomial
+          - 3*x
+          vXℝ0004:
+          - arb.RealPolynomial
+          - 6*x
+          vℝ0009:
+          - arb.Real
+          - '3'
+          vℝ0010:
+          - arb.Real
+          - '0'
+          vℝ0011:
+          - arb.Real
+          - '2'
+          vℝ0012:
+          - arb.Real
+          - '3'
+          vℝ0013:
+          - arb.Real
+          - '2'
+          α:
+          - arb.Real
+          - '-0.5'
+          β:
+          - arb.Real
+          - '-0.5'
+        B:
+          C: *id002
+          context: {
+            }
+          cℤ0000:
+          - arb.Integer
+          - '1'
+          isInitialized: true
+          vℝ0019:
+          - arb.Real
+          - '1.5'
+          vℝ0020:
+          - arb.Real
+          - '0.5'
+          vℝ0021:
+          - arb.Real
+          - '1.5'
+          vℝ0022:
+          - arb.Real
+          - '0.5'
+          vℝ0023:
+          - arb.Real
+          - '0.25'
+          vℝ0024:
+          - arb.Real
+          - '2'
+          vℝ0025:
+          - arb.Real
+          - '3'
+          α:
+          - arb.Real
+          - '-0.5'
+          β:
+          - arb.Real
+          - '-0.5'
+        C: *id002
+        E:
+          C: *id002
+          context: {
+            }
+          cℤ0000:
+          - arb.Integer
+          - '2'
+          cℤ0001:
+          - arb.Integer
+          - '1'
+          isInitialized: true
+          vℝ0014:
+          - arb.Real
+          - '1'
+          vℝ0015:
+          - arb.Real
+          - '1'
+          vℝ0016:
+          - arb.Real
+          - '2'
+          vℝ0017:
+          - arb.Real
+          - '1'
+          vℝ0018:
+          - arb.Real
+          - '1'
+          α:
+          - arb.Real
+          - '-0.5'
+          β:
+          - arb.Real
+          - '-0.5'
+        P:
+          A:
+            C: &id003
+              context: {
+                }
+              cℤ0000:
+              - arb.Integer
+              - '2'
+              isInitialized: true
+              vℝ0001:
+              - arb.Real
+              - '2'
+              vℝ0002:
+              - arb.Real
+              - '1.5'
+              α:
+              - arb.Real
+              - '-0.5'
+              β:
+              - arb.Real
+              - '-0.5'
+            F: null
+            G: null
+            context: {
+              }
+            cℤ0000:
+            - arb.Integer
+            - '1'
+            cℤ0001:
+            - arb.Integer
+            - '2'
+            isInitialized: false
+            vXℝ0001:
+            - arb.RealPolynomial
+            - ∅
+            vXℝ0002:
+            - arb.RealPolynomial
+            - ∅
+            vXℝ0003:
+            - arb.RealPolynomial
+            - ∅
+            vXℝ0004:
+            - arb.RealPolynomial
+            - ∅
+            vℝ0009:
+            - arb.Real
+            - '0'
+            vℝ0010:
+            - arb.Real
+            - '0'
+            vℝ0011:
+            - arb.Real
+            - '0'
+            vℝ0012:
+            - arb.Real
+            - '0'
+            vℝ0013:
+            - arb.Real
+            - '0'
+            α:
+            - arb.Real
+            - '-0.5'
+            β:
+            - arb.Real
+            - '-0.5'
+          B:
+            C: *id003
+            context: {
+              }
+            cℤ0000:
+            - arb.Integer
+            - '1'
+            isInitialized: false
+            vℝ0019:
+            - arb.Real
+            - '0'
+            vℝ0020:
+            - arb.Real
+            - '0'
+            vℝ0021:
+            - arb.Real
+            - '0'
+            vℝ0022:
+            - arb.Real
+            - '0'
+            vℝ0023:
+            - arb.Real
+            - '0'
+            vℝ0024:
+            - arb.Real
+            - '0'
+            vℝ0025:
+            - arb.Real
+            - '0'
+            α:
+            - arb.Real
+            - '-0.5'
+            β:
+            - arb.Real
+            - '-0.5'
+          C: *id003
+          E:
+            C: *id003
+            context: {
+              }
+            cℤ0000:
+            - arb.Integer
+            - '2'
+            cℤ0001:
+            - arb.Integer
+            - '1'
+            isInitialized: false
+            vℝ0014:
+            - arb.Real
+            - '0'
+            vℝ0015:
+            - arb.Real
+            - '0'
+            vℝ0016:
+            - arb.Real
+            - '0'
+            vℝ0017:
+            - arb.Real
+            - '0'
+            vℝ0018:
+            - arb.Real
+            - '0'
+            α:
+            - arb.Real
+            - '-0.5'
+            β:
+            - arb.Real
+            - '-0.5'
+          P:
+            A: null
+            B: null
+            C: null
+            E: null
+            P: null
+            context: {
+              }
+            cℤ0000:
+            - arb.Integer
+            - '0'
+            cℤ0001:
+            - arb.Integer
+            - '1'
+            cℤ0002:
+            - arb.Integer
+            - '2'
+            isInitialized: false
+            vXℝ0005:
+            - arb.RealPolynomial
+            - ∅
+            vXℝ0006:
+            - arb.RealPolynomial
+            - ∅
+            vXℝ0007:
+            - arb.RealPolynomial
+            - ∅
+            vXℝ0008:
+            - arb.RealPolynomial
+            - ∅
+            vXℝ0009:
+            - arb.RealPolynomial
+            - ∅
+            vXℝ0010:
+            - arb.RealPolynomial
+            - ∅
+            vXℝ0011:
+            - arb.RealPolynomial
+            - ∅
+            vXℝ0012:
+            - arb.RealPolynomial
+            - ∅
+            vXℝ0013:
+            - arb.RealPolynomial
+            - ∅
+            vXℝ0014:
+            - arb.RealPolynomial
+            - ∅
+            vℝ0026:
+            - arb.Real
+            - '0'
+            vℝ0027:
+            - arb.Real
+            - '0'
+            vℝ0028:
+            - arb.Real
+            - '0'
+            vℝ0029:
+            - arb.Real
+            - '0'
+            vℤ0001:
+            - arb.Integer
+            - '0'
+            vℤ0002:
+            - arb.Integer
+            - '0'
+            α:
+            - arb.Real
+            - '-0.5'
+            β:
+            - arb.Real
+            - '-0.5'
+          context: {
+            }
+          cℤ0000:
+          - arb.Integer
+          - '0'
+          cℤ0001:
+          - arb.Integer
+          - '1'
+          cℤ0002:
+          - arb.Integer
+          - '2'
+          isInitialized: true
+          vXℝ0005:
+          - arb.RealPolynomial
+          - x
+          vXℝ0006:
+          - arb.RealPolynomial
+          - x
+          vXℝ0007:
+          - arb.RealPolynomial
+          - x + 0.5
+          vXℝ0008:
+          - arb.RealPolynomial
+          - x
+          vXℝ0009:
+          - arb.RealPolynomial
+          - ∅
+          vXℝ0010:
+          - arb.RealPolynomial
+          - ∅
+          vXℝ0011:
+          - arb.RealPolynomial
+          - ∅
+          vXℝ0012:
+          - arb.RealPolynomial
+          - ∅
+          vXℝ0013:
+          - arb.RealPolynomial
+          - ∅
+          vXℝ0014:
+          - arb.RealPolynomial
+          - ∅
+          vℝ0026:
+          - arb.Real
+          - '1'
+          vℝ0027:
+          - arb.Real
+          - '1'
+          vℝ0028:
+          - arb.Real
+          - '0'
+          vℝ0029:
+          - arb.Real
+          - '0'
+          vℤ0001:
+          - arb.Integer
+          - '0'
+          vℤ0002:
+          - arb.Integer
+          - '0'
+          α:
+          - arb.Real
+          - '-0.5'
+          β:
+          - arb.Real
+          - '-0.5'
+        context: {
+          }
+        cℤ0000:
+        - arb.Integer
+        - '0'
+        cℤ0001:
+        - arb.Integer
+        - '1'
+        cℤ0002:
+        - arb.Integer
+        - '2'
+        isInitialized: true
+        vXℝ0005:
+        - arb.RealPolynomial
+        - x
+        vXℝ0006:
+        - arb.RealPolynomial
+        - x
+        vXℝ0007:
+        - arb.RealPolynomial
+        - x + 0.5
+        vXℝ0008:
+        - arb.RealPolynomial
+        - x
+        vXℝ0009:
+        - arb.RealPolynomial
+        - 3*x
+        vXℝ0010:
+        - arb.RealPolynomial
+        - 0.5*x
+        vXℝ0011:
+        - arb.RealPolynomial
+        - 1.5*x²
+        vXℝ0012:
+        - arb.RealPolynomial
+        - '1'
+        vXℝ0013:
+        - arb.RealPolynomial
+        - '0.75'
+        vXℝ0014:
+        - arb.RealPolynomial
+        - 1.5*x² - 0.75
+        vℝ0026:
+        - arb.Real
+        - '1'
+        vℝ0027:
+        - arb.Real
+        - '1'
+        vℝ0028:
+        - arb.Real
+        - '0.75'
+        vℝ0029:
+        - arb.Real
+        - '2'
+        vℤ0001:
+        - arb.Integer
+        - '1'
+        vℤ0002:
+        - arb.Integer
+        - '0'
+        α:
+        - arb.Real
+        - '-0.5'
+        β:
+        - arb.Real
+        - '-0.5'
+      context: {
+        }
+      cℤ0000:
+      - arb.Integer
+      - '0'
+      cℤ0001:
+      - arb.Integer
+      - '1'
+      cℤ0002:
+      - arb.Integer
+      - '2'
+      isInitialized: true
+      vXℝ0005:
+      - arb.RealPolynomial
+      - ∅
+      vXℝ0006:
+      - arb.RealPolynomial
+      - ∅
+      vXℝ0007:
+      - arb.RealPolynomial
+      - ∅
+      vXℝ0008:
+      - arb.RealPolynomial
+      - ∅
+      vXℝ0009:
+      - arb.RealPolynomial
+      - 30*x
+      vXℝ0010:
+      - arb.RealPolynomial
+      - 0.75*x² - 0.375
+      vXℝ0011:
+      - arb.RealPolynomial
+      - 22.5*x³ - 11.25*x
+      vXℝ0012:
+      - arb.RealPolynomial
+      - 0.5*x
+      vXℝ0013:
+      - arb.RealPolynomial
+      - 5.625*x
+      vXℝ0014:
+      - arb.RealPolynomial
+      - 22.5*x³ - 16.875*x
+      vℝ0026:
+      - arb.Real
+      - '0'
+      vℝ0027:
+      - arb.Real
+      - '0'
+      vℝ0028:
+      - arb.Real
+      - '11.25'
+      vℝ0029:
+      - arb.Real
+      - '18'
+      vℤ0001:
+      - arb.Integer
+      - '2'
+      vℤ0002:
+      - arb.Integer
+      - '1'
+      α:
+      - arb.Real
+      - '-0.5'
+      β:
+      - arb.Real
+      - '-0.5'
+    context: {
+      }
+    isInitialized: true
+    normSq:
+      context: {
+        }
+      cℤ0000:
+      - arb.Integer
+      - '2'
+      cℤ0001:
+      - arb.Integer
+      - '1'
+      isInitialized: true
+      vℂ0001:
+        bits: 128
+        dim: 1
+        elements: null
+        imagObj:
+        - arb.Real
+        - '0'
+        name: null
+        printPrecision: true
+        realObj:
+        - arb.Real
+        - '1'
+      vℂ0002:
+        bits: 128
+        dim: 1
+        elements: null
+        imagObj:
+        - arb.Real
+        - '0'
+        name: null
+        printPrecision: true
+        realObj:
+        - arb.Real
+        - 3.3233509704478425511840640312646472177 +/- 4.68e-38
+      vℂ0003:
+        bits: 0
+        dim: 1
+        elements: null
+        imagObj:
+        - arb.Real
+        - '0'
+        name: null
+        printPrecision: true
+        realObj:
+        - arb.Real
+        - 11.044661672776616853970230644342002327 +/- 3.00e-37
+      vℝ0034:
+      - arb.Real
+      - '-1'
+      vℝ0035:
+      - arb.Real
+      - '0'
+      vℝ0036:
+      - arb.Real
+      - '2.5'
+      vℝ0037:
+      - arb.Real
+      - '3.5'
+      vℝ0038:
+      - arb.Real
+      - 3.3233509704478425511840640312646472177 +/- 4.68e-38
+      vℝ0039:
+      - arb.Real
+      - '2.5'
+      vℝ0040:
+      - arb.Real
+      - '3.5'
+      vℝ0041:
+      - arb.Real
+      - 3.3233509704478425511840640312646472177 +/- 4.68e-38
+      vℝ0042:
+      - arb.Real
+      - '5.5'
+      vℝ0043:
+      - arb.Real
+      - '5'
+      vℝ0044:
+      - arb.Real
+      - '6'
+      vℝ0045:
+      - arb.Real
+      - '6'
+      vℝ0046:
+      - arb.Real
+      - '36'
+      vℝ0047:
+      - arb.Real
+      - '2.5'
+      vℝ0048:
+      - arb.Real
+      - '2'
+      vℝ0049:
+      - arb.Real
+      - '3'
+      vℝ0050:
+      - arb.Real
+      - '2'
+      vℝ0051:
+      - arb.Real
+      - '72'
+      vℤ0003:
+      - arb.Integer
+      - '6'
+      vℤ0004:
+      - arb.Integer
+      - '4'
+      α:
+      - arb.Real
+      - '-0.5'
+      β:
+      - arb.Real
+      - '-0.5'
+      γ:
+      - arb.Real
+      - '0.5'
+    w:
+      context: {
+        }
+      cℤ0000:
+      - arb.Integer
+      - '1'
+      isInitialized: true
+      vℝ0030:
+      - arb.Real
+      - '2'
+      vℝ0031:
+      - arb.Real
+      - 0.70710678118654752440084436210484903928 +/- 5.97e-39
+      vℝ0032:
+      - arb.Real
+      - '0'
+      vℝ0033:
+      - arb.Real
+      - nan
+      α:
+      - arb.Real
+      - '-0.5'
+      β:
+      - arb.Real
+      - '-0.5'
+    α:
+    - arb.Real
+    - '-0.5'
+    β:
+    - arb.Real
+    - '-0.5'
+    γ:
+    - arb.Real
+    - '0.5'
+  ω:
+    context: {
+      }
+    isInitialized: true
+    α:
+    - arb.Real
+    - '-0.5'
+    β:
+    - arb.Real
+    - '-0.5'
+    γ:
+    - arb.Real
+    - '0.5'
+sumℂ0001:
+  bits: 0
+  dim: 1
+  elements: null
+  imagObj:
+  - arb.Real
+  - nan
+  name: null
+  printPrecision: true
+  realObj:
+  - arb.Real
+  - nan
+upperLimitℤ0001:
+- arb.Integer
+- '4'
+valueℂ0001:
+  bits: 0
+  dim: 1
+  elements: null
+  imagObj:
+  - arb.Real
+  - nan
+  name: null
+  printPrecision: true
+  realObj:
+  - arb.Real
+  - nan
+vℤ0011:
+- arb.Integer
+- '1'
+α:
+- arb.Real
+- '-0.5'
+β:
+- arb.Real
+- '-0.5'
+γ:
+- arb.Real
+- '0.5'
+...
+

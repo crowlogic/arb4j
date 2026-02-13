@@ -106,14 +106,15 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
     for (int i = 0; i <= maxDegree; i++)
     {
       ComplexSequence μrow = μ.evaluate(i, bits);
-      Complex         row  = result.getRow(i);
+      
+      Complex         resultRow  = result.getRow(i);
       if (Expression.trace && logger.isDebugEnabled())
       {
         logger.debug("Evaluating μrow({})={}", i, Utensils.yamlString(μrow));
       }
       for (int j = 0; j <= maxDegree; j++)
       {
-        μrow.evaluate(j, bits, row.get(j));
+        μrow.evaluate(j, bits, resultRow.get(j));
       }
     }
 
