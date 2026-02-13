@@ -158,25 +158,12 @@ typedef fmpz_poly_struct fmpz_poly_t[1];
 
 typedef struct
 {
-    fmpz_t num;
-    fmpz_t den;
+    jlong num;
+    jlong den;
 }
 fmpq;
 
 typedef fmpq fmpq_t[1];
-typedef fmpq_struct *fmpq_ptr;
-
-typedef struct
-{
-    fmpz * coeffs;
-    slong alloc;
-    slong length;
-    fmpz den;          /* fmpz, NOT fmpz_t */
-}
-fmpq_poly_struct;
-
-typedef fmpq_poly_struct fmpq_poly_t[1];
-
 
 typedef struct
 {

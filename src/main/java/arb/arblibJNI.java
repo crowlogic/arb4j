@@ -868,14 +868,6 @@ public class arblibJNI {
   public final static native long Fraction_denominatorAddress_get(long jarg1, Fraction jarg1_);
   public final static native long new_Fraction();
   public final static native void delete_Fraction(long jarg1);
-  public final static native void RationalPolynomial_coeffsNative_set(long jarg1, RationalPolynomial jarg1_, long jarg2);
-  public final static native long RationalPolynomial_coeffsNative_get(long jarg1, RationalPolynomial jarg1_);
-  public final static native void RationalPolynomial_length_set(long jarg1, RationalPolynomial jarg1_, int jarg2);
-  public final static native int RationalPolynomial_length_get(long jarg1, RationalPolynomial jarg1_);
-  public final static native void RationalPolynomial_denominatorAddress_set(long jarg1, RationalPolynomial jarg1_, long jarg2);
-  public final static native long RationalPolynomial_denominatorAddress_get(long jarg1, RationalPolynomial jarg1_);
-  public final static native long new_RationalPolynomial();
-  public final static native void delete_RationalPolynomial(long jarg1);
   public final static native void RandomState___randval_set(long jarg1, RandomState jarg1_, long jarg2);
   public final static native long RandomState___randval_get(long jarg1, RandomState jarg1_);
   public final static native void RandomState___randval2_set(long jarg1, RandomState jarg1_, long jarg2);
