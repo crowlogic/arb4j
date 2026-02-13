@@ -72,111 +72,17 @@ public class ExpressionTest extends
 
   }
 
-  public static void testIntegralOfComplexExponential()
-  {
-    var f = ComplexFunction.express("T->int(exp(I*t),t=-T…T)");
-    ;
-    assertEquals("T➔(exp(ⅈ*T)/ⅈ)-(exp(ⅈ*-T)/ⅈ)", f.toString());
-
-  }
-
-  public static void testIntegralOf1OverInfinityIsDeltaZeroComplex()
-  {
-    var f = ComplexFunction.parse("int(1,t=-∞…∞)");
-    f.simplify();
-    assertEquals("t➔δ(0)*(2*π)", f.toString());
-  }
-
-  public static void testIntegralOf1OverInfinityIsDeltaZeroReal()
-  {
-    var f = ComplexFunction.parse("int(1,t=-∞…∞)");
-    f.simplify();
-    assertEquals("t➔δ(0)*(2*π)", f.toString());
-    var g = f.instantiate();
-    assertEquals(ComplexConstants.posInf, g.evaluate(ComplexConstants.zero, 128, new Complex()));
-  }
-
-  public static void testSequenceOfRealValuedHypergeometricFunctionAsComplexValuedFunctions()
-  {
-    var             f      =
-                      ComplexFunctionSequence.express("Vplus:m->pFq([1,m,-m],[1/2],(1/2)/y)");
-    ComplexFunction Vplus3 = f.evaluate(3, 128);
-    Complex         y      = Vplus3.evaluate(new Real("2.3",
-                                                      128),
-                                             1,
-                                             128,
-                                             new Complex());
-    assertEquals(-0.3487301717761157, y.re().doubleValue());
-    assertEquals(0.0, y.im().doubleValue());
-  }
-
-  public void testFourierTransformOfType1ChebyshevPolynomialsComplexFunction()
+  public static void testFourierTransformOfType1ChebyshevPolynomialsComplexFunction()
   {
     var context = new Context(Integer.named("m").set(4));
 
-    var A       =
-          ComplexFunction.express("A:pFq([1, m, -m], [1/2], I/2/y)*exp(2*I*π*m - y*I)", context);
-    var B       =
-          ComplexFunction.express("B:pFq([1, m, -m], [1/2], -I/2/y)*exp(m*π*I + y*I)", context);
-    var f       = ComplexFunction.express("F", "y->I*(A(y)-B(y))/y", context);
-
-    var y       = f.eval(2.3, new Complex());
+    ComplexFunction.express("A:pFq([1,m,-m],[½],I/2/y)*exp(2*I*π*m-y*I)", context);
+    ComplexFunction.express("B:pFq([1,m,-m],[½],-I/2/y)*exp(m*π*I+y*I)", context);
+    var f = ComplexFunction.express("F:y➔I*(A(y)-B(y))/y", context);
+    var y = f.eval(2.3, new Complex());
 
     assertTrue(y.re().toString().startsWith("0.40342938701065"));
     assertTrue(y.im().doubleValue() < 10e-15);
-  }
-
-  public void testIndefiniteIntegralzs()
-  {
-    var f = RealFunction.parse("int(sin(x),x)");
-    f.simplify();
-    assertEquals("x➔-cos(x)", f.toString());
-  }
-
-  public void testComplexHypergeometricFunctionSequence()
-  {
-    ComplexFunctionSequence express =
-                                    ComplexFunctionSequence.express("Vpluscomplex:m➔pFq([1,m,-m],[½],-½*I/y)");
-    ComplexFunction         p3      = express.evaluate(3, 128);
-    Complex                 eval    = p3.eval(2.3, new Complex());
-    assertEquals("-3.5368620037807190372740058454181982612 +/- 4.70e-38 + i*1.9404947809649049162726572840572966165 +/- 1.48e-38",
-                 eval.toString());
-  }
-
-  public void testIntegralOfSecant()
-  {
-    var x = RealFunction.parse("int(sec(x),x)");
-    x.simplify();
-    assertEquals("log(sec(x)+tan(x))", x.rootNode.toString());
-  }
-
-  public void testIntegralOfTangent()
-  {
-    var x = RealFunction.parse("int(tan(x),x)");
-    x.simplify();
-    assertEquals("-log(cos(x))", x.rootNode.toString());
-  }
-
-  public void testIntegralOfCosine()
-  {
-    var x = RealFunction.parse("int(cos(x),x)");
-    x.simplify();
-    assertEquals("sin(x)", x.rootNode.toString());
-  }
-
-  public void testIntegralOfSine()
-  {
-    var x = RealFunction.parse("int(sin(x),x)");
-    x.simplify();
-    assertEquals("-cos(x)", x.rootNode.toString());
-  }
-
-  public static void testRealSequenceOfHypergeometricFunctions()
-  {
-    var          f      = RealFunctionSequence.express("Vplus:m->pFq([1,m,-m],[1/2],(1/2)/y)");
-    RealFunction Vplus3 = f.evaluate(3, 128);
-    double       y      = Vplus3.eval(2.3);
-    assertEquals(-0.3487301717761157622856908029915, y);
   }
 
   public static void testSimplificationAConstantIntegerRaisedToAConstantInteger()
@@ -186,13 +92,13 @@ public class ExpressionTest extends
     assertEquals("125", f.toString());
   }
 
-  public void testDerivativeOfLogarithm()
+  public static void testDerivativeOfLogarithm()
   {
     var x = RealFunction.parse("∂ln(x)/∂x");
     assertEquals("1/x", x.rootNode.toString());
   }
 
-  public void testDerivativeOfExponentialFunction()
+  public static void testDerivativeOfExponentialFunction()
   {
     var x = RealFunction.parse("∂exp(x)/∂x");
     assertEquals("exp(x)", x.rootNode.toString());
@@ -347,34 +253,51 @@ public class ExpressionTest extends
     assertEquals("115.62", y.toString());
   }
 
-  public void testSumTypeset()
+  /**
+   * Regression test for <a href="https://github.com/crowlogic/arb4j/issues/698">#698</a>:
+   * ensures that every node in the expression AST has a non-null generatedType
+   * after instantiation, particularly the integer literal children of
+   * Fraction-typed DivisionNodes (e.g. 1/4 used as an exponent).
+   */
+  public static void testNoNullGeneratedTypesInExpressionAST()
+  {
+    var F = RealFunction.parse("√(π)*Γ(3/4)*J(1/4,|s|)*2^(1/4)/|s|^(1/4)");
+    var f = F.instantiate();
+    f.evaluate(new Real("3", 128), 1, 128, new Real());
+    String inspection = F.inspect(f).toString();
+    assertFalse("Expression AST contains node(s) with null generatedType: " + inspection,
+                inspection.contains("(null)"));
+  }
+
+  
+  public static void testSumTypeset()
   {
     var x = RealNullaryFunction.express("∑k{k=2...4}");
     assertEquals("\\sum_{k = 2}^{4}{k}", x.typeset());
   }
 
-  public void testWholeFractionDifference()
+  public static void testWholeFractionDifference()
   {
     var x = RealNullaryFunction.express("[½-3/2]");
     var d = x.evaluate(128, new Real());
     assertTrue(d.neg().isOne());
   }
 
-  public void testRealSquareRootOfOneHalf()
+  public static void testRealSquareRootOfOneHalf()
   {
     RealNullaryFunction expression          = RealNullaryFunction.express("⌊100/√(1⁄2)⌋");
     Real                squareRootOfOneHalf = expression.evaluate(128);
     assertEquals(141.0, squareRootOfOneHalf.doubleValue());
   }
 
-  public void testIntegerPartOfSquareRootOfOneHalf()
+  public static void testIntegerPartOfSquareRootOfOneHalf()
   {
     IntegerNullaryFunction expression          = IntegerNullaryFunction.compile("⌊100/√(1⁄2)⌋");
     Integer                squareRootOfOneHalf = expression.evaluate(128);
     assertEquals(141, squareRootOfOneHalf.getUnsignedValue());
   }
 
-  public void testIntegerPartOfSquareRootOfOneHalfToo()
+  public static void testIntegerPartOfSquareRootOfOneHalfToo()
   {
     Integer squareRootOfOneHalf = Integer.express("⌊100/√(1⁄2)⌋");
     assertEquals(141, squareRootOfOneHalf.getUnsignedValue());
@@ -385,34 +308,6 @@ public class ExpressionTest extends
     IntegerFunction f            = IntegerFunction.express("binom(5,n)");
     Integer         permutations = f.eval(3);
     assertEquals(10, permutations.getSignedValue());
-  }
-
-  public void testLogOfLommelPolynomialRealExpression()
-  {
-    var    f   = RealFunction.express("log(1+R(3,½;z)²)");
-    double hmm = f.eval(-2.68);
-    assertEquals(1.141113163192019433725615596826852379455, hmm);
-  }
-
-  public void testLommelPolynomialRealExpression()
-  {
-    var    f   = RealFunction.express("R(3,1/2;z)");
-    // System.out.println("f=" + f);
-    double hmm = f.eval(2.3);
-    /// System.out.println("f(2.3)="+hmm);
-    assertEquals(-1.3758527163639351505, hmm);
-  }
-
-  public void testLommelPolynomialRationalExpression()
-  {
-    var F = RationalNullaryFunction.express("R(3,½;z)");
-    // System.out.println("F=" + F);
-    var f = F.evaluate(128);
-    assertEquals("(-6*x^2+15)/(x^3)", f.toString());
-    // System.out.println("f=" + f);
-    double hmm = f.asRealFunction().eval(2.3);
-    // System.out.println("f(2.3)="+hmm);
-    assertEquals(-1.3758527163639351505, hmm);
   }
 
   public void testLogGamma()

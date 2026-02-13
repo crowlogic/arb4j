@@ -11,6 +11,7 @@ import arb.expressions.Context;
 import arb.functions.rational.LommelPolynomial;
 import arb.functions.rational.RationalFunctionSequence;
 import arb.functions.rational.RationalNullaryFunction;
+import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
 /**
@@ -72,5 +73,33 @@ public class LommelPolynomialTest extends
                                             new Fraction());
       assertEquals(-1.3758527163639351505, l3x.doubleValue());
     }
+  }
+
+  public static  void testLommelPolynomialRealExpression()
+  {
+    var    f   = RealFunction.express("R(3,1/2;z)");
+    // System.out.println("f=" + f);
+    double hmm = f.eval(2.3);
+    /// System.out.println("f(2.3)="+hmm);
+    assertEquals(-1.3758527163639351505, hmm);
+  }
+
+  public static void testLommelPolynomialRationalExpression()
+  {
+    var F = RationalNullaryFunction.express("R(3,½;z)");
+    // System.out.println("F=" + F);
+    var f = F.evaluate(128);
+    assertEquals("(-6*x^2+15)/(x^3)", f.toString());
+    // System.out.println("f=" + f);
+    double hmm = f.asRealFunction().eval(2.3);
+    // System.out.println("f(2.3)="+hmm);
+    assertEquals(-1.3758527163639351505, hmm);
+  }
+
+  public static void testLogOfLommelPolynomialRealExpression()
+  {
+    var    f   = RealFunction.express("log(1+R(3,½;z)²)");
+    double hmm = f.eval(-2.68);
+    assertEquals(1.141113163192019433725615596826852379455, hmm);
   }
 }

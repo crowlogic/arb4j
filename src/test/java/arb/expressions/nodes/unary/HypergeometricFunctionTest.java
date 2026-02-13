@@ -11,6 +11,9 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
+import arb.functions.complex.ComplexFunction;
+import arb.functions.integer.ComplexFunctionSequence;
+import arb.functions.integer.RealFunctionSequence;
 import arb.functions.polynomials.RealHypergeometricPolynomialFunction;
 import arb.functions.polynomials.RealPolynomialNullaryFunction;
 import arb.functions.rational.ComplexRationalNullaryFunction;
@@ -229,5 +232,37 @@ public class HypergeometricFunctionTest extends
       assertEquals(0.0, res.im().doubleValue());
 
     }
+  }
+
+  public static void testSequenceOfRealValuedHypergeometricFunctionAsComplexValuedFunctions()
+  {
+    var             f      =
+                      ComplexFunctionSequence.express("Vplus:m->pFq([1,m,-m],[1/2],(1/2)/y)");
+    ComplexFunction Vplus3 = f.evaluate(3, 128);
+    arb.Complex         y      = Vplus3.evaluate(new arb.Real("2.3",
+                                                      128),
+                                             1,
+                                             128,
+                                             new arb.Complex());
+    assertEquals(-0.3487301717761157, y.re().doubleValue());
+    assertEquals(0.0, y.im().doubleValue());
+  }
+
+  public static void testComplexHypergeometricFunctionSequence()
+  {
+    ComplexFunctionSequence express =
+                                    ComplexFunctionSequence.express("Vpluscomplex:m➔pFq([1,m,-m],[½],-½*I/y)");
+    ComplexFunction         p3      = express.evaluate(3, 128);
+    arb.Complex                 eval    = p3.eval(2.3, new arb.Complex());
+    assertEquals("-3.5368620037807190372740058454181982612 +/- 4.70e-38 + i*1.9404947809649049162726572840572966165 +/- 1.48e-38",
+                 eval.toString());
+  }
+
+  public static void testRealSequenceOfHypergeometricFunctions()
+  {
+    var          f      = RealFunctionSequence.express("Vplus:m->pFq([1,m,-m],[1/2],(1/2)/y)");
+    RealFunction Vplus3 = f.evaluate(3, 128);
+    double       y      = Vplus3.eval(2.3);
+    assertEquals(-0.3487301717761157622856908029915, y);
   }
 }

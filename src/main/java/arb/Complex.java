@@ -1401,7 +1401,13 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
     return real;
   }
   
-  
+  public Complex abs(int prec, Complex w)
+  {
+    arblib.acb_abs(w.re(), this, prec);
+    w.im().zero();
+    return w;
+  }
+    
   public Complex set(Complex complex)
   {
     assert dim == complex.dim : String.format("dim = %d != this.dim = %d\n", dim, complex.dim);

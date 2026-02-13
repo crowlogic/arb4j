@@ -4,6 +4,7 @@ import static org.junit.Assert.assertNotEquals;
 
 import arb.*;
 import arb.expressions.Context;
+import arb.expressions.Expression;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.polynomials.RealPolynomialNullaryFunction;
 import arb.functions.polynomials.orthogonal.real.JacobiPolynomialSequence;
@@ -281,5 +282,64 @@ public class IntegralNodeTest
                        128);
     assertEquals("6",
                  x.toString());
+  }
+
+  public static void testIntegralOfComplexExponential()
+  {
+    var f = ComplexFunction.express("T->int(exp(I*t),t=-T…T)");
+    ;
+    assertEquals("T➔(exp(ⅈ*T)/ⅈ)-(exp(ⅈ*-T)/ⅈ)", f.toString());
+  
+  }
+
+  public static void testIntegralOf1OverInfinityIsDeltaZeroComplex()
+  {
+    var f = ComplexFunction.parse("int(1,t=-∞…∞)");
+    f.simplify();
+    assertEquals("t➔δ(0)*(2*π)", f.toString());
+  }
+
+  public static void testIntegralOf1OverInfinityIsDeltaZeroReal()
+  {
+    var f = ComplexFunction.parse("int(1,t=-∞…∞)");
+    f.simplify();
+    assertEquals("t➔δ(0)*(2*π)", f.toString());
+    var g = f.instantiate();
+    assertEquals(ComplexConstants.posInf, g.evaluate(ComplexConstants.zero, 128, new Complex()));
+  }
+
+  public static void testIndefiniteIntegralOfSineFunction()
+  {
+    var f = RealFunction.parse("int(sin(x),x)");
+    f.simplify();
+    assertEquals("x➔-cos(x)", f.toString());
+  }
+
+  public static void testIntegralOfSecant()
+  {
+    var x = RealFunction.parse("int(sec(x),x)");
+    x.simplify();
+    assertEquals("log(sec(x)+tan(x))", x.rootNode.toString());
+  }
+
+  public static void testIntegralOfTangent()
+  {
+    var x = RealFunction.parse("int(tan(x),x)");
+    x.simplify();
+    assertEquals("-log(cos(x))", x.rootNode.toString());
+  }
+
+  public static void testIntegralOfCosine()
+  {
+    var x = RealFunction.parse("int(cos(x),x)");
+    x.simplify();
+    assertEquals("sin(x)", x.rootNode.toString());
+  }
+
+  public static void testIntegralOfSine()
+  {
+    var x = RealFunction.parse("int(sin(x),x)");
+    x.simplify();
+    assertEquals("-cos(x)", x.rootNode.toString());
   }
 }
