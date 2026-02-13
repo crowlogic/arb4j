@@ -37,6 +37,7 @@ import javafx.stage.WindowEvent;
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the {@link TheArb4jLibrary}
  */
+@SuppressWarnings("unused")
 public class SymbolPalette
                            extends
                            Application
@@ -619,6 +620,7 @@ public class SymbolPalette
 
   private static void associateAliases(Character character, String... aliasesToBeAssociated)
   {
+    @SuppressWarnings("unused")
     Set<String> associatedAliases = CHARACTER_ALIASES.computeIfAbsent(character,
                                                                       k -> new HashSet<String>());
     for (String alias : aliasesToBeAssociated)

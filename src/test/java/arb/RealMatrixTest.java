@@ -22,7 +22,7 @@ public class RealMatrixTest extends
 
     int n = 4;
 
-    try ( RealMatrix A = RealMatrix.newMatrix(n, n).setName("A"); Real C = Real.newVector(n);
+    try ( RealMatrix A = RealMatrix.newMatrix(n, n).setName("A");
           RealMatrix B = RealMatrix.newMatrix(n, n).setName("B"))
     {
 
@@ -44,8 +44,7 @@ public class RealMatrixTest extends
   public void testGetRowAndGet()
   {
     int n = 4;
-    try ( RealMatrix A = RealMatrix.newMatrix(n, n); RealMatrix B = RealMatrix.newMatrix(n, n);
-          RealMatrix C = RealMatrix.newMatrix(n, n);)
+    try ( RealMatrix A = RealMatrix.newMatrix(n, n);)
     {
 
       A.getRow(0).set(1, 2, 3, 4);

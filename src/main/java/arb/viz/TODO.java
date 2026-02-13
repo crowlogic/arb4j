@@ -42,6 +42,7 @@ import javafx.stage.WindowEvent;
  * @author ©2024 Stephen Crowley
  * @see BusinessSourceLicenseVersionOnePointOne for © terms
  */
+@SuppressWarnings("unused")
 public class TODO extends
                   Application
 {

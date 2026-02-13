@@ -36,6 +36,7 @@ import arb.functions.real.RealFunction;
  * @author Stephen Crowley ©2024-2026
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
+@SuppressWarnings("unused")
 public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, ? extends R>>
                                          extends
                                          Node<D, R, F>

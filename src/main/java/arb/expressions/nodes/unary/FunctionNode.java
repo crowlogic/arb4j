@@ -48,6 +48,8 @@ import arb.utensils.Utensils;
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
+@SuppressWarnings(
+{ "unchecked" })
 public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> extends
                          UnaryOperationNode<D, R, F>
 {
@@ -622,7 +624,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return mv;
   }
 
-  @SuppressWarnings("unchecked")
   public void generateArgument(MethodVisitor mv, FunctionMapping<D, R, F> functionMapping)
   {
     boolean isNullaryFunction = Object.class.equals(functionMapping.domain);

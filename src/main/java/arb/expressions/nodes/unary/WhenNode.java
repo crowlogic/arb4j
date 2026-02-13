@@ -34,6 +34,8 @@ import arb.functions.Function;
  * @author Stephen Crowley ©2024-2026
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
  */
+@SuppressWarnings(
+{ "unused" })
 public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extends
                      UnaryOperationNode<D, R, F>
 {

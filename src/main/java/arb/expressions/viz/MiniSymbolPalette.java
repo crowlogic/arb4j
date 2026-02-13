@@ -11,6 +11,7 @@ import javafx.scene.layout.HBox;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
+@SuppressWarnings("unused")
 public class MiniSymbolPalette extends
                                HBox
 {

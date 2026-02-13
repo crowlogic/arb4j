@@ -44,6 +44,7 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
+@SuppressWarnings("unused")
 public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                 UnaryOperationNode<D, R, F>
 {
