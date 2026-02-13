@@ -1,14 +1,8 @@
 package arb.functions;
 
-import arb.Complex;
-import arb.Initializable;
+import arb.*;
 import arb.Integer;
-import arb.Named;
-import arb.Real;
-import arb.Typesettable;
 import arb.expressions.Context;
-import arb.functions.Function;
-import arb.functions.complex.ComplexFunction;
 import arb.functions.integer.ComplexSequence;
 
 public class operandF0001 implements
@@ -79,22 +73,22 @@ public class operandF0001 implements
   }
 
   @Override
-  public Function derivative()
+  public ComplexSequence derivative()
   {
     return Function.express(Integer.class,
                             Complex.class,
-                            Function.class,
+                            ComplexSequence.class,
                             "_diffoperandF0001",
                             "diff((((ω(j)(k))*Γ(k+1))*(χ(i)(k-γ)))/Γ((k+1)-γ),k)",
                             context);
   }
 
   @Override
-  public Function integral()
+  public ComplexSequence integral()
   {
     return Function.express(Integer.class,
                             Complex.class,
-                            Function.class,
+                            ComplexSequence.class,
                             "_intoperandF0001",
                             "int((((ω(j)(k))*Γ(k+1))*(χ(i)(k-γ)))/Γ((k+1)-γ),k)",
                             context);

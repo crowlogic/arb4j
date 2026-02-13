@@ -282,7 +282,7 @@ public class ShellFunctions
   {
     try
     {
-      sem.tryAcquire(10, TimeUnit.SECONDS);
+      sem.tryAcquire(60, TimeUnit.SECONDS);
     }
     catch (InterruptedException e)
     {

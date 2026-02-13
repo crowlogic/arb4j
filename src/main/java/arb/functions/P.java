@@ -1,220 +1,277 @@
 package arb.functions;
 
-import arb.Initializable;
+import arb.*;
 import arb.Integer;
-import arb.Named;
-import arb.Real;
-import arb.RealPolynomial;
-import arb.Typesettable;
 import arb.expressions.Context;
 import arb.functions.integer.RealPolynomialSequence;
 
-public class P implements RealPolynomialSequence, Typesettable, AutoCloseable, Initializable, Named {
-   public boolean isInitialized;
-   public Context context = new Context();
-   public final Integer cℤ0000 = new Integer("0");
-   public final Integer cℤ0001 = new Integer("1");
-   public final Integer cℤ0002 = new Integer("2");
-   public RealPolynomial vXℝ0005 = new RealPolynomial();
-   public RealPolynomial vXℝ0006 = new RealPolynomial();
-   public RealPolynomial vXℝ0007 = new RealPolynomial();
-   public RealPolynomial vXℝ0008 = new RealPolynomial();
-   public RealPolynomial vXℝ0009 = new RealPolynomial();
-   public RealPolynomial vXℝ0010 = new RealPolynomial();
-   public RealPolynomial vXℝ0011 = new RealPolynomial();
-   public RealPolynomial vXℝ0012 = new RealPolynomial();
-   public RealPolynomial vXℝ0013 = new RealPolynomial();
-   public RealPolynomial vXℝ0014 = new RealPolynomial();
-   public Real vℝ0026 = new Real();
-   public Real vℝ0027 = new Real();
-   public Real vℝ0028 = new Real();
-   public Real vℝ0029 = new Real();
-   public Integer vℤ0001 = new Integer();
-   public Integer vℤ0002 = new Integer();
-   public P P;
-   public E E;
-   public B B;
-   public A A;
-   public C C;
-   public Real α;
-   public Real β;
+public class P implements
+               RealPolynomialSequence,
+               Typesettable,
+               AutoCloseable,
+               Initializable,
+               Named
+{
+  public boolean        isInitialized;
+  public Context        context = new Context();
+  public final Integer  cℤ0000  = new Integer("0");
+  public final Integer  cℤ0001  = new Integer("1");
+  public final Integer  cℤ0002  = new Integer("2");
+  public RealPolynomial vXℝ0005 = new RealPolynomial();
+  public RealPolynomial vXℝ0006 = new RealPolynomial();
+  public RealPolynomial vXℝ0007 = new RealPolynomial();
+  public RealPolynomial vXℝ0008 = new RealPolynomial();
+  public RealPolynomial vXℝ0009 = new RealPolynomial();
+  public RealPolynomial vXℝ0010 = new RealPolynomial();
+  public RealPolynomial vXℝ0011 = new RealPolynomial();
+  public RealPolynomial vXℝ0012 = new RealPolynomial();
+  public RealPolynomial vXℝ0013 = new RealPolynomial();
+  public RealPolynomial vXℝ0014 = new RealPolynomial();
+  public Real           vℝ0026  = new Real();
+  public Real           vℝ0027  = new Real();
+  public Real           vℝ0028  = new Real();
+  public Real           vℝ0029  = new Real();
+  public Integer        vℤ0001  = new Integer();
+  public Integer        vℤ0002  = new Integer();
+  public P              P;
+  public E              E;
+  public B              B;
+  public A              A;
+  public C              C;
+  public Real           α;
+  public Real           β;
 
-   @Override
-   public Class<Integer> domainType() {
-      return Integer.class;
-   }
+  @Override
+  public Class<Integer> domainType()
+  {
+    return Integer.class;
+  }
 
-   @Override
-   public Class<RealPolynomial> coDomainType() {
-      return RealPolynomial.class;
-   }
+  @Override
+  public Class<RealPolynomial> coDomainType()
+  {
+    return RealPolynomial.class;
+  }
 
-   @Override
-   public RealPolynomial evaluate(Integer n, int order, int bits, RealPolynomial result) {
-      if (order > 1) {
-         throw new AssertionError("TODO: implement order=" + order + ">1");
-      } else {
-         if (!this.isInitialized) {
-            this.initialize();
-         }
-         return switch (n.getSignedValue()) {
-            case 0 -> result.set(this.cℤ0001);
-            case 1 -> ((Real)this.C.evaluate(this.vℝ0026.set(this.cℤ0001), order, bits, this.vℝ0027))
-               .mul(this.vXℝ0005.identity(), bits, this.vXℝ0006)
-               .sub(this.β, bits, this.vXℝ0007)
-               .add(this.α, bits, this.vXℝ0008)
-               .div(this.cℤ0002, bits, result);
-            default -> ((RealPolynomial)this.A.evaluate(n, order, bits, this.vXℝ0009))
-               .mul((RealPolynomial)this.P.evaluate(n.sub(this.cℤ0001, bits, this.vℤ0001), order, bits, this.vXℝ0010), bits, this.vXℝ0011)
-               .sub(
-                  ((Real)this.B.evaluate(n, order, bits, this.vℝ0028))
-                     .mul((RealPolynomial)this.P.evaluate(n.sub(this.cℤ0002, bits, this.vℤ0002), order, bits, this.vXℝ0012), bits, this.vXℝ0013),
-                  bits,
-                  this.vXℝ0014
-               )
-               .div((Real)this.E.evaluate(n, order, bits, this.vℝ0029), bits, result);
-         };
+  @Override
+  public RealPolynomial evaluate(Integer n, int order, int bits, RealPolynomial result)
+  {
+    if (order > 1)
+    {
+      throw new AssertionError("TODO: implement order=" + order + ">1");
+    }
+    else
+    {
+      if (!isInitialized)
+      {
+        initialize();
       }
-   }
+      return switch (n.getSignedValue())
+      {
+      case 0 -> result.set(cℤ0001);
+      case 1 -> C.evaluate(vℝ0026.set(cℤ0001), order, bits, vℝ0027)
+                 .mul(vXℝ0005.identity(), bits, vXℝ0006)
+                 .sub(β, bits, vXℝ0007)
+                 .add(α, bits, vXℝ0008)
+                 .div(cℤ0002, bits, result);
+      default -> A.evaluate(n, order, bits, vXℝ0009)
+                  .mul(P.evaluate(n.sub(cℤ0001, bits, vℤ0001), order, bits, vXℝ0010), bits, vXℝ0011)
+                  .sub(B.evaluate(n, order, bits, vℝ0028)
+                        .mul(P.evaluate(n.sub(cℤ0002, bits, vℤ0002), order, bits, vXℝ0012),
+                             bits,
+                             vXℝ0013),
+                       bits,
+                       vXℝ0014)
+                  .div(E.evaluate(n, order, bits, vℝ0029), bits, result);
+      };
+    }
+  }
 
-   @Override
-   public void initialize() {
-      if (this.isInitialized) {
-         throw new AssertionError("Already initialized");
-      } else if (this.α == null) {
-         throw new AssertionError("α is null");
-      } else if (this.β == null) {
-         throw new AssertionError("β is null");
-      } else {
-         if (this.A == null) {
-            this.A = new A();
-         }
-
-         if (this.B == null) {
-            this.B = new B();
-         }
-
-         if (this.C == null) {
-            this.C = new C();
-         }
-
-         if (this.E == null) {
-            this.E = new E();
-         }
-
-         if (this.E.α == null) {
-            this.E.α = this.α;
-         } else {
-            this.E.α.set(this.α);
-         }
-
-         if (this.E.β == null) {
-            this.E.β = this.β;
-         } else {
-            this.E.β.set(this.β);
-         }
-
-         if (this.B.α == null) {
-            this.B.α = this.α;
-         } else {
-            this.B.α.set(this.α);
-         }
-
-         if (this.B.β == null) {
-            this.B.β = this.β;
-         } else {
-            this.B.β.set(this.β);
-         }
-
-         if (this.A.α == null) {
-            this.A.α = this.α;
-         } else {
-            this.A.α.set(this.α);
-         }
-
-         if (this.A.β == null) {
-            this.A.β = this.β;
-         } else {
-            this.A.β.set(this.β);
-         }
-
-         if (this.C.α == null) {
-            this.C.α = this.α;
-         } else {
-            this.C.α.set(this.α);
-         }
-
-         if (this.C.β == null) {
-            this.C.β = this.β;
-         } else {
-            this.C.β.set(this.β);
-         }
-
-         this.A.C = this.C;
-         this.B.C = this.C;
-         this.E.C = this.C;
-         this.P = new P();
-         if (this.P.α == null) {
-            this.P.α = this.α;
-         } else {
-            this.P.α.set(this.α);
-         }
-
-         if (this.P.β == null) {
-            this.P.β = this.β;
-         } else {
-            this.P.β.set(this.β);
-         }
-
-         this.isInitialized = true;
+  @Override
+  public void initialize()
+  {
+    if (isInitialized)
+    {
+      throw new AssertionError("Already initialized");
+    }
+    else if (α == null)
+    {
+      throw new AssertionError("α is null");
+    }
+    else if (β == null)
+    {
+      throw new AssertionError("β is null");
+    }
+    else
+    {
+      if (A == null)
+      {
+        A = new A();
       }
-   }
 
-   @Override
-   public void close() {
-      this.cℤ0000.close();
-      this.cℤ0001.close();
-      this.cℤ0002.close();
-      this.vXℝ0005.close();
-      this.vXℝ0006.close();
-      this.vXℝ0007.close();
-      this.vXℝ0008.close();
-      this.vXℝ0009.close();
-      this.vXℝ0010.close();
-      this.vXℝ0011.close();
-      this.vXℝ0012.close();
-      this.vXℝ0013.close();
-      this.vXℝ0014.close();
-      this.vℝ0026.close();
-      this.vℝ0027.close();
-      this.vℝ0028.close();
-      this.vℝ0029.close();
-      this.vℤ0001.close();
-      this.vℤ0002.close();
-      this.P.close();
-      this.A.close();
-      this.B.close();
-      this.C.close();
-      this.E.close();
-   }
+      if (B == null)
+      {
+        B = new B();
+      }
 
-   @Override
-   public String getName() {
-      return "P";
-   }
+      if (C == null)
+      {
+        C = new C();
+      }
 
-   @Override
-   public Context getContext() {
-      return this.context;
-   }
+      if (E == null)
+      {
+        E = new E();
+      }
 
-   @Override
-   public String toString() {
-      return "P:n➔when(n=0,1,n=1,(((C(1)*x)-β)+α)/2,else,((A(n)*P(n-1))-(B(n)*P(n-2)))/E(n))";
-   }
+      if (E.α == null)
+      {
+        E.α = α;
+      }
+      else
+      {
+        E.α.set(α);
+      }
 
-   @Override
-   public String typeset() {
-      return "\\left\\{\\begin{array}{ll}\n1 & \\text{if } n = 0\\\\\n\\frac{\\left(\\left(\\left(\\C(1) \\cdot x\\right)-β\\right) + α\\right)}{2} & \\text{if } n = 1\\\\\n\\frac{\\left(\\left(\\A(n) \\cdot \\P(\\left(n-1\\right))\\right)-\\left(\\B(n) \\cdot \\P(\\left(n-2\\right))\\right)\\right)}{\\E(n)} & \\text{otherwise}\n\\end{array}\\right.";
-   }
+      if (E.β == null)
+      {
+        E.β = β;
+      }
+      else
+      {
+        E.β.set(β);
+      }
+
+      if (B.α == null)
+      {
+        B.α = α;
+      }
+      else
+      {
+        B.α.set(α);
+      }
+
+      if (B.β == null)
+      {
+        B.β = β;
+      }
+      else
+      {
+        B.β.set(β);
+      }
+
+      if (A.α == null)
+      {
+        A.α = α;
+      }
+      else
+      {
+        A.α.set(α);
+      }
+
+      if (A.β == null)
+      {
+        A.β = β;
+      }
+      else
+      {
+        A.β.set(β);
+      }
+
+      if (C.α == null)
+      {
+        C.α = α;
+      }
+      else
+      {
+        C.α.set(α);
+      }
+
+      if (C.β == null)
+      {
+        C.β = β;
+      }
+      else
+      {
+        C.β.set(β);
+      }
+
+      A.C = C;
+      B.C = C;
+      E.C = C;
+      P   = new P();
+      if (P.α == null)
+      {
+        P.α = α;
+      }
+      else
+      {
+        P.α.set(α);
+      }
+
+      if (P.β == null)
+      {
+        P.β = β;
+      }
+      else
+      {
+        P.β.set(β);
+      }
+
+      isInitialized = true;
+    }
+  }
+
+  @Override
+  public void close()
+  {
+    cℤ0000.close();
+    cℤ0001.close();
+    cℤ0002.close();
+    vXℝ0005.close();
+    vXℝ0006.close();
+    vXℝ0007.close();
+    vXℝ0008.close();
+    vXℝ0009.close();
+    vXℝ0010.close();
+    vXℝ0011.close();
+    vXℝ0012.close();
+    vXℝ0013.close();
+    vXℝ0014.close();
+    vℝ0026.close();
+    vℝ0027.close();
+    vℝ0028.close();
+    vℝ0029.close();
+    vℤ0001.close();
+    vℤ0002.close();
+    P.close();
+    A.close();
+    B.close();
+    C.close();
+    E.close();
+  }
+
+  @Override
+  public String getName()
+  {
+    return "P";
+  }
+
+  @Override
+  public Context getContext()
+  {
+    return context;
+  }
+
+  @Override
+  public String toString()
+  {
+    return "P:n➔when(n=0,1,n=1,(((C(1)*x)-β)+α)/2,else,((A(n)*P(n-1))-(B(n)*P(n-2)))/E(n))";
+  }
+
+  @Override
+  public String typeset()
+  {
+    return "\\left\\{\\begin{array}{ll}\n1 & \\text{if } n = 0\\\\\n\\frac{\\left(\\left(\\left(\\C(1) \\cdot x\\right)-β\\right) + α\\right)}{2} & \\text{if } n = 1\\\\\n\\frac{\\left(\\left(\\A(n) \\cdot \\P(\\left(n-1\\right))\\right)-\\left(\\B(n) \\cdot \\P(\\left(n-2\\right))\\right)\\right)}{\\E(n)} & \\text{otherwise}\n\\end{array}\\right.";
+  }
 }
