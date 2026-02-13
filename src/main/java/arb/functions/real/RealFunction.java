@@ -135,7 +135,7 @@ public interface RealFunction extends
                                                                             true,
                                                                             null,
                                                                             expression);
-      parsed.mapping           = mapping;
+      parsed.functionMapping           = mapping;
       mapping.expressionString = parsed.expression;
     }
 

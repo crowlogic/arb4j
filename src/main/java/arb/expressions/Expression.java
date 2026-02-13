@@ -299,7 +299,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   private final Logger                                       log                              =
                                                                  LoggerFactory.getLogger(Expression.class);
 
-  public FunctionMapping<D, C, F>                            mapping;
+  public FunctionMapping<D, C, F>                            functionMapping;
 
   public int                                                 position                         = -1;
 
@@ -2471,6 +2471,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                                                                                                                                                                 }
                                                                                                                                                                                                                 return true;
                                                                                                                                                                                                               };
+
+  public final HashMap<String, AtomicInteger> intermediateVariableCounters = new HashMap<>();
 
   protected void
             linkSharedVariableToReferencedFunction(MethodVisitor mv,

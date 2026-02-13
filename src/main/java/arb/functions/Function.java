@@ -278,7 +278,7 @@ public interface Function<D, CO> extends
                                                           functionClass,
                                                           functionName);
 
-    compiledExpression.mapping = mapping;
+    compiledExpression.functionMapping = mapping;
     if (mapping != null)
     {
       mapping.expression = compiledExpression;
@@ -286,9 +286,9 @@ public interface Function<D, CO> extends
 
     Q func = compiledExpression.instantiate();
 
-    if (compiledExpression.mapping != null)
+    if (compiledExpression.functionMapping != null)
     {
-      compiledExpression.mapping.instance = func;
+      compiledExpression.functionMapping.instance = func;
     }
 
     if (context != null)
