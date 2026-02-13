@@ -6,12 +6,7 @@ C_INCLUDES=-I$(JAVA_HOME)include -I$(JAVA_HOME)include/linux -I/usr/include/flin
 CFLAGS=-g -O3 -fPIC -shared -Wno-int-conversion 
 SWIGFLAGS=-v -java -package arb -outdir src/main/java/arb
 
-all: libarblib.so 
-
-jar: build/libs/arb4j-$(VERSION).jar libarblib.so
-
-build/libs/arb4j-$(VERSION).jar: libarblib.so $(shell find src) $(shell find native)
-	mvn install -Dmaven.test.skip=true
+all: install
 
 native/arb_wrap.c: $(shell find native -name "*.i") 
 	swig $(SWIGFLAGS) native/arb.i
@@ -32,5 +27,5 @@ docs: documentation
 
 doc: docs
 
-install: libarblib.so
+install: libarblib.so 
 	mvn install -Dmaven.test.skip=true
