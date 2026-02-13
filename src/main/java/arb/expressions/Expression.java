@@ -2834,14 +2834,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return node;
   }
 
+
   /**
-   * TODO: test/support multi-digit literal constants as superscripts
-   * 
-   * @param node
-   * @return
+   * Parse superscript digit characters as exponents. The ⁻¹ (U+207B U+00B9)
+   * sequence is NOT consumed here when it appears immediately before '(' because
+   * that denotes a compositional inverse and is handled by resolveIdentifier().
    */
   protected <N extends Node<D, C, F>> N parseSuperscripts(N node)
   {
+    if (nextCharacterIs('⁻') && nextCharacterIs('¹'))
+    {
+      return node.pow(newLiteralConstant("-1"));
+    }
+
     node = parseSuperscript(node, '⁰', "0");
     node = parseSuperscript(node, '¹', "1");
     node = parseSuperscript(node, '²', "2");
@@ -2854,6 +2859,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     node = parseSuperscript(node, '⁹', "9");
     return node;
   }
+
+
 
   public VariableReference<D, C, F> parseVariableReference()
   {
@@ -3266,6 +3273,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     int startPos  = position;
     var reference = evaluateVariableReference(startPos);
 
+    if (nextCharacterIs('⁻'))
+    {
+      if (nextCharacterIs('¹'))
+      {
+        if (nextCharacterIs('('))
+        {
+          var argument = resolve();
+          require(')');
+          return new InverseFunctionNode<>(reference.name, argument, this);
+        }
+        else
+        {
+          return newVariable(startPos, reference).pow(newLiteralConstant("-1"));
+        }
+      }
+    }
+
     if (nextCharacterIs('('))
     {
       return resolveFunction(startPos, reference);
@@ -3283,6 +3307,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     return resolveSymbolicLiteralConstantKeywordOrVariable(startPos, reference);
   }
+
+
 
   protected Node<D, C, F> resolvePostfixOperators(Node<D, C, F> node)
   {
