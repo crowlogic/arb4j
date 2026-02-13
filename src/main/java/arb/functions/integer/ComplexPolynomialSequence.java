@@ -18,14 +18,12 @@ import arb.functions.polynomials.PolynomialSequence;
 public interface ComplexPolynomialSequence extends PolynomialSequence<Complex, ComplexPolynomial>
 {
 
-  @SuppressWarnings("unchecked")
   @Override
   default ComplexPolynomialSequence integral()
   {
     return (n, order, bits, res) -> evaluate(n, order, bits, res).integral();
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   default ComplexPolynomialSequence derivative()
   {

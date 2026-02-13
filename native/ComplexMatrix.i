@@ -79,7 +79,6 @@ import arb.utensils.text.tables.TextTable;
     return null;
   }
   
-  @SuppressWarnings("unchecked")
   public ComplexMatrix setName(String string) {
     this.name = string;
     return this;

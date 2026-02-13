@@ -105,7 +105,6 @@ public class ComplexMatrix implements AutoCloseable, Iterable<Complex>, Ring<Com
     return null;
   }
   
-  @SuppressWarnings("unchecked")
   public ComplexMatrix setName(String string) {
     this.name = string;
     return this;
