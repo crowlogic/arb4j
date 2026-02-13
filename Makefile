@@ -32,5 +32,5 @@ docs: documentation
 
 doc: docs
 
-install:
+install: libarblib.so
 	mvn install -Dmaven.test.skip=true
