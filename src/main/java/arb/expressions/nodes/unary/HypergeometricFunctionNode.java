@@ -14,7 +14,6 @@ import arb.expressions.*;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
-import arb.functions.HypergeometricFunction;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
 import arb.functions.polynomials.*;
 import arb.functions.rational.*;

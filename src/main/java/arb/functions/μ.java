@@ -1,7 +1,5 @@
 package arb.functions;
 
-import static org.junit.Assert.assertEquals;
-
 import arb.*;
 import arb.Integer;
 import arb.expressions.Context;

@@ -17,8 +17,6 @@ import arb.exceptions.CompilerException;
 import arb.expressions.*;
 import arb.expressions.Context;
 import arb.expressions.nodes.*;
-import arb.expressions.nodes.binary.ExponentiationNode;
-import arb.expressions.nodes.nary.NAryOperationNode;
 import arb.functions.Function;
 import arb.utensils.Utensils;
 
@@ -1022,23 +1020,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       return baseName.replace("(", "^(" + derivativeOrder + ")(");
     }
-  }
-
-  /**
-   * Get the derivative notation suffix for this function (e.g., '' for second
-   * derivative)
-   */
-  private String getDerivativeSuffix()
-  {
-    if (derivativeOrder == 0)
-      return "";
-    if (derivativeOrder == 1)
-      return "'";
-    if (derivativeOrder == 2)
-      return "''";
-    if (derivativeOrder == 3)
-      return "'''";
-    return "^(" + derivativeOrder + ")";
   }
 
   @Override

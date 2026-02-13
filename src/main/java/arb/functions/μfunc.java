@@ -1,13 +1,8 @@
 package arb.functions;
 
-import arb.Complex;
-import arb.Initializable;
+import arb.*;
 import arb.Integer;
-import arb.Named;
-import arb.Real;
-import arb.Typesettable;
 import arb.expressions.Context;
-import arb.functions.Function;
 import arb.functions.integer.ComplexSequence;
 
 public class μfunc implements

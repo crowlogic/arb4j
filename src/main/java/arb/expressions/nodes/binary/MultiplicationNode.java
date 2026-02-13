@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import arb.Integer;
-import arb.Polynomial;
 import arb.Quaternion;
 import arb.exceptions.CompilerException;
 import arb.expressions.Expression;

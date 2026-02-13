@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import arb.expressions.Expression;
-import arb.expressions.nodes.binary.AdditionNode;
 import arb.functions.Function;
 
 /**

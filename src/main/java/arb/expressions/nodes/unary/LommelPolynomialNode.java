@@ -1,16 +1,8 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.cast;
-import static arb.expressions.Compiler.invokeMethod;
-import static arb.expressions.Compiler.invokeSetMethod;
-import static arb.expressions.Compiler.invokeVirtualMethod;
-import static arb.expressions.Compiler.loadBitsParameterOntoStack;
-import static arb.expressions.Compiler.loadInputParameter;
-import static arb.expressions.Compiler.loadOrderParameter;
+import static arb.expressions.Compiler.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;

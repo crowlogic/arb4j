@@ -18,7 +18,6 @@ import arb.Real;
 import arb.exceptions.CompilerException;
 import arb.exceptions.UndefinedReferenceException;
 import arb.expressions.*;
-import arb.expressions.nodes.binary.SubtractionNode;
 import arb.expressions.nodes.nary.ProductNode;
 import arb.functions.Function;
 

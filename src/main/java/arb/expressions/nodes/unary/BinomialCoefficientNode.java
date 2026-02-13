@@ -1,9 +1,6 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.cast;
-import static arb.expressions.Compiler.duplicateTopOfTheStack;
-import static arb.expressions.Compiler.invokeStaticMethod;
-import static arb.expressions.Compiler.loadResultParameter;
+import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
 
 import org.objectweb.asm.MethodVisitor;
