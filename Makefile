@@ -8,7 +8,7 @@ SWIGFLAGS=-v -java -package arb -outdir src/main/java/arb
 
 all: libarblib.so 
 
-jar: build/libs/arb4j-$(VERSION).jar libarblib.so
+jar: build/libs/arb4j-$(VERSION).jar 
 
 build/libs/arb4j-$(VERSION).jar: install
 
