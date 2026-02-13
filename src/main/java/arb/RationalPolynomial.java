@@ -58,7 +58,8 @@ public class RationalPolynomial {
   }
 
   public SWIGTYPE_p_fmpz getDenominatorAddress() {
-    return new SWIGTYPE_p_fmpz(arblibJNI.RationalPolynomial_denominatorAddress_get(swigCPtr, this), true);
+    long cPtr = arblibJNI.RationalPolynomial_denominatorAddress_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new SWIGTYPE_p_fmpz(cPtr, false);
   }
 
   public RationalPolynomial() {
