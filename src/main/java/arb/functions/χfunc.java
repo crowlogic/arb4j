@@ -1,15 +1,8 @@
 package arb.functions;
 
-import arb.Complex;
-import arb.ComplexPolynomial;
-import arb.Initializable;
+import arb.*;
 import arb.Integer;
-import arb.Named;
-import arb.Real;
-import arb.RealPolynomial;
-import arb.Typesettable;
 import arb.expressions.Context;
-import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
 
 public class χfunc implements
