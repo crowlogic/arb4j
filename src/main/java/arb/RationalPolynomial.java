@@ -36,12 +36,13 @@ public class RationalPolynomial {
     }
   }
 
-  public void setNumeratorAddress(long value) {
-    arblibJNI.RationalPolynomial_numeratorAddress_set(swigCPtr, this, value);
+  public void setCoeffsNative(SWIGTYPE_p_fmpz value) {
+    arblibJNI.RationalPolynomial_coeffsNative_set(swigCPtr, this, SWIGTYPE_p_fmpz.getCPtr(value));
   }
 
-  public long getNumeratorAddress() {
-    return arblibJNI.RationalPolynomial_numeratorAddress_get(swigCPtr, this);
+  public SWIGTYPE_p_fmpz getCoeffsNative() {
+    long cPtr = arblibJNI.RationalPolynomial_coeffsNative_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new SWIGTYPE_p_fmpz(cPtr, false);
   }
 
   public void setLength(int value) {
@@ -52,12 +53,13 @@ public class RationalPolynomial {
     return arblibJNI.RationalPolynomial_length_get(swigCPtr, this);
   }
 
-  public void setDenominatorAddress(long value) {
-    arblibJNI.RationalPolynomial_denominatorAddress_set(swigCPtr, this, value);
+  public void setDenominatorAddress(SWIGTYPE_p_fmpz value) {
+    arblibJNI.RationalPolynomial_denominatorAddress_set(swigCPtr, this, SWIGTYPE_p_fmpz.getCPtr(value));
   }
 
-  public long getDenominatorAddress() {
-    return arblibJNI.RationalPolynomial_denominatorAddress_get(swigCPtr, this);
+  public SWIGTYPE_p_fmpz getDenominatorAddress() {
+    long cPtr = arblibJNI.RationalPolynomial_denominatorAddress_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new SWIGTYPE_p_fmpz(cPtr, false);
   }
 
   public RationalPolynomial() {
