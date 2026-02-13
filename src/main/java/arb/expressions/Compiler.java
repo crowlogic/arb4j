@@ -803,4 +803,10 @@ public class Compiler
                                                                               AlgebraicNumber.class,
                                                                               GaussianInteger.class));
 
+  public static ClassVisitor declareField(ClassVisitor classVisitor, String varName, Class<?> varType)
+  {
+    classVisitor.visitField(ACC_PUBLIC, varName, varType.descriptorString(), null, null);
+    return classVisitor;
+  }
+
 }

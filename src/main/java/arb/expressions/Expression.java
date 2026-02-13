@@ -874,44 +874,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // Declare fields for all referenced variables from ancestor expressions
     // These are variables where ascendentInput=true that were added to
     // referencedVariables
-    for (var entry : referencedVariables.entrySet())
-    {
-      String                varName = entry.getKey();
-      VariableNode<D, C, F> varNode = entry.getValue();
-
-      // Skip if this is the independent variable or an indeterminate
-      if (varNode.isIndependent || varNode.isIndeterminate)
-      {
-        continue;
-      }
-
-      // Skip if already declared as ascendent independent variable
-      if (ascendentExpression != null && ascendentExpression.independentVariable != null
-                    && varName.equals(ascendentExpression.independentVariable.getName()))
-      {
-        continue;
-      }
-
-      // Skip context variables (they will be declared below)
-      if (context != null && context.getVariable(varName) != null)
-      {
-        continue;
-      }
-
-      // This is an ascendentInput variable - declare it as a field
-      Class<?> varType = varNode.type();
-      if (varType != null && !varType.equals(Object.class))
-      {
-        if (trace)
-        {
-          log.debug("declareVariables for {}: declaring ascendentInput variable {} of type {}",
-                    className,
-                    varName,
-                    varType);
-        }
-        classVisitor.visitField(ACC_PUBLIC, varName, varType.descriptorString(), null, null);
-      }
-    }
+    declareFieldsForAscendentInputPropagation(classVisitor);
 
     // Declare context variables
     if (context != null)
@@ -931,6 +894,37 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
 
     variablesDeclared = true;
+  }
+
+  protected void declareFieldsForAscendentInputPropagation(ClassVisitor classVisitor)
+  {
+    ascendentInputVariableEntryStream().forEach(entry ->
+    {
+      String                varName = entry.getKey();
+      VariableNode<D, C, F> varNode = entry.getValue();
+      Class<?>              varType = varNode.type();
+      assert varType != null && !varType.equals(Object.class) : "type of "
+                                                                + varNode
+                                                                + " should not be Object or null";
+      if (trace)
+      {
+        log.debug("declareVariables for {}: declaring ascendentInput variable {} of type {}",
+                  className,
+                  varName,
+                  varType);
+      }
+      Compiler.declareField(classVisitor, varName, varType);
+    });
+  }
+
+  protected Stream<Entry<String, VariableNode<D, C, F>>> ascendentInputVariableEntryStream()
+  {
+    return referencedVariableEntryStream().filter(ascendentInputVariablePredicate);
+  }
+
+  protected Stream<Entry<String, VariableNode<D, C, F>>> referencedVariableEntryStream()
+  {
+    return referencedVariables.entrySet().stream();
   }
 
   public boolean defaultToIntegerConstantsWhenPossible()
@@ -1621,7 +1615,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
 
     rootNode.isResult = true;
-    if (coDomainType.isInterface())
+    if (isFunctional())
     {
       generateFunctionalElement(mv);
     }
@@ -1649,52 +1643,52 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    */
   protected Expression<Object, Object, Function<?, ?>> generateFunctionalElement(MethodVisitor mv)
   {
-    var function = newFunctionalExpression();
+    var functional = newFunctionalExpression();
 
     functionalDependsOnIndependentVariable = false;
     functionalIndependentVariable          = null;
     if (independentVariable != null)
     {
-      functionalIndependentVariable = independentVariable.spliceInto(function).asVariable();
+      functionalIndependentVariable = independentVariable.spliceInto(functional).asVariable();
     }
 
     if (!indeterminateVariables.isEmpty())
     {
       for (var indeterminantVariable : indeterminateVariables)
       {
-        var functionalIndeterminateVariable =
-                                            indeterminantVariable.spliceInto(function).asVariable();
+        var functionalIndeterminateVariable = indeterminantVariable.spliceInto(functional)
+                                                                   .asVariable();
         functionalIndeterminateVariables.push(functionalIndependentVariable);
         functionalDependsOnIndeterminateVariable = functionalDependsOnIndeterminateVariable
-                      || function.rootNode.dependsOn(functionalIndeterminateVariable);
+                      || functional.rootNode.dependsOn(functionalIndeterminateVariable);
       }
     }
 
-    function.generate();
+    functional.generate();
 
     if (functionalIndependentVariable != null)
     {
       functionalDependsOnIndependentVariable =
-                                             function.rootNode.dependsOn(functionalIndependentVariable);
+                                             functional.rootNode.dependsOn(functionalIndependentVariable);
     }
 
-    constructNewObject(mv, function.className);
+    constructNewObject(mv, functional.className);
     duplicateTopOfTheStack(mv);
-    invokeDefaultConstructor(mv, function.className);
+    invokeDefaultConstructor(mv, functional.className);
 
     if (functionalDependsOnIndependentVariable)
     {
-      propagateIndependentVariable(mv, function, functionalIndependentVariable);
+      propagateIndependentVariableToFunctional(mv, functional, functionalIndependentVariable);
     }
 
-    if (context != null && context.variables != null)
+    if (context != null)
     {
-      propagateContext(mv, function);
+      propagateContext(mv, functional);
     }
 
-    invokeInitializationMethod(mv, function);
+    invokeInitializationMethod(mv, functional);
 
-    return function.compile();
+    return functional.compile();
   }
 
   public VariableNode<D, C, F> getIndeterminateVariable()
@@ -2413,7 +2407,70 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return domainType.equals(Object.class);
   }
 
-  public HashSet<String> declaredVariables = new HashSet<>();
+  public HashSet<String>                                                declaredVariables               =
+                                                                                          new HashSet<>();
+
+  private final Predicate<? super Entry<String, VariableNode<D, C, F>>> ascendentInputVariablePredicate =
+                                                                                                        entry ->
+                                                                                                                                                                                                              {
+                                                                                                                                                                                                                String varName = entry
+                                                                                                                                               .getKey();
+                                                                                                                                                                                                                VariableNode<D, C, F> varNode = entry
+                                                                                                                                               .getValue();
+
+                                                                                                                                                                                                                // Skip
+                                                                                                                                                                                                                // if
+                                                                                                                                                                                                                // this
+                                                                                                                                                                                                                // is
+                                                                                                                                                                                                                // the
+                                                                                                                                                                                                                // independent
+                                                                                                                                                                                                                // variable
+                                                                                                                                                                                                                // or
+                                                                                                                                                                                                                // an
+                                                                                                                                                                                                                // indeterminate
+                                                                                                                                                                                                                if (varNode.isIndependent
+                                                                                                                                                                                                                              || varNode.isIndeterminate)
+                                                                                                                                                                                                                {
+                                                                                                                                                                                                                  return false;
+                                                                                                                                                                                                                }
+
+                                                                                                                                                                                                                // Skip
+                                                                                                                                                                                                                // if
+                                                                                                                                                                                                                // already
+                                                                                                                                                                                                                // declared
+                                                                                                                                                                                                                // as
+                                                                                                                                                                                                                // ascendent
+                                                                                                                                                                                                                // independent
+                                                                                                                                                                                                                // variable
+                                                                                                                                                                                                                if (ascendentExpression
+                                                                                                                                                                                                                              != null)
+                                                                                                                                                                                                                {
+                                                                                                                                                                                                                  VariableNode<?, ?, ?> ascendentIndependentVariable =
+                                                                                                                                                                                                                                                                     ascendentExpression.independentVariable;
+                                                                                                                                                                                                                  if (ascendentIndependentVariable
+                                                                                                                                                                                                                                != null
+                                                                                                                                                                                                                                && varName.equals(ascendentIndependentVariable.getName()))
+                                                                                                                                                                                                                  {
+                                                                                                                                                                                                                    return false;
+                                                                                                                                                                                                                  }
+                                                                                                                                                                                                                }
+
+                                                                                                                                                                                                                // Skip
+                                                                                                                                                                                                                // context
+                                                                                                                                                                                                                // variables
+                                                                                                                                                                                                                // (they
+                                                                                                                                                                                                                // will
+                                                                                                                                                                                                                // be
+                                                                                                                                                                                                                // declared
+                                                                                                                                                                                                                // below)
+                                                                                                                                                                                                                if (context != null
+                                                                                                                                                                                                                              && context.getVariable(varName)
+                                                                                                                                                                                                                                            != null)
+                                                                                                                                                                                                                {
+                                                                                                                                                                                                                  return false;
+                                                                                                                                                                                                                }
+                                                                                                                                                                                                                return true;
+                                                                                                                                                                                                              };
 
   protected void
             linkSharedVariableToReferencedFunction(MethodVisitor mv,
@@ -2834,7 +2891,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return node;
   }
 
-
   /**
    * Parse superscript digit characters as exponents. The ⁻¹ (U+207B U+00B9)
    * sequence is NOT consumed here when it appears immediately before '(' because
@@ -2859,8 +2915,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     node = parseSuperscript(node, '⁹', "9");
     return node;
   }
-
-
 
   public VariableReference<D, C, F> parseVariableReference()
   {
@@ -2947,9 +3001,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   protected void
-            propagateIndependentVariable(MethodVisitor mv,
-                                         Expression<?, ?, Function<?, ?>> function,
-                                         VariableNode<?, ?, Function<?, ?>> independentVariableMappedToFunctional)
+            propagateIndependentVariableToFunctional(MethodVisitor mv,
+                                                     Expression<?, ?, Function<?, ?>> function,
+                                                     VariableNode<?, ?, Function<?, ?>> independentVariableMappedToFunctional)
   {
     if (trace)
     {
@@ -3281,7 +3335,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         {
           var argument = resolve();
           require(')');
-          return new InverseFunctionNode<>(reference.name, argument, this);
+          return new InverseFunctionNode<>(reference.name,
+                                           argument,
+                                           this);
         }
         else
         {
@@ -3307,8 +3363,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     return resolveSymbolicLiteralConstantKeywordOrVariable(startPos, reference);
   }
-
-
 
   protected Node<D, C, F> resolvePostfixOperators(Node<D, C, F> node)
   {
