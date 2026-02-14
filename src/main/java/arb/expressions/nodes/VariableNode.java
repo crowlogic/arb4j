@@ -180,9 +180,10 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public ClassVisitor declareField(ClassVisitor classVisitor)
   {
-    classVisitor.visitField(ACC_PUBLIC, reference.name, type().descriptorString(), null, null);
-    return classVisitor;
-  }
+    Class<?> thisFieldType = type();
+    assert !thisFieldType.equals(Object.class) : this + " should not be declared as an Object";
+    return Compiler.declareField(classVisitor, reference.name, thisFieldType);
+ }
 
   @Override
   public boolean dependsOn(VariableNode<D, R, F> variable)
@@ -532,7 +533,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       log.debug("=== resolveReference START: var={}, expr={}, ascendentExpr={}",
                 reference.name,
                 expression.functionName,
-                expression.ascendentExpression != null ? expression.ascendentExpression.functionName
+                expression.upstreamExpression != null ? expression.upstreamExpression.functionName
                                                        : "null");
     }
 
@@ -631,10 +632,10 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                  expression.expression,
                                                  expression.independentVariable,
                                                  expression.indeterminateVariables,
-                                                 expression.ascendentExpression,
+                                                 expression.upstreamExpression,
                                                  expression.remaining(),
-                                                 expression.ascendentExpression
-                                                               != null ? expression.ascendentExpression.indeterminateVariables
+                                                 expression.upstreamExpression
+                                                               != null ? expression.upstreamExpression.indeterminateVariables
                                                                        : null));
   }
 
@@ -734,7 +735,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     else if (ascendentInput)
     {
-      returnType = expression.ascendentExpression.domainType;
+      returnType = expression.upstreamExpression.domainType;
     }
     else
     {
