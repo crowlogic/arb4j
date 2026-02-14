@@ -243,7 +243,7 @@ public class IntegralNodeTest extends
   public static void testIntegralOfComplexExponential()
   {
     var f = ComplexFunction.express("T->int(exp(I*t),t=-T…T)");
-    ;
+    
     assertEquals("T➔(exp(ⅈ*T)/ⅈ)-(exp(ⅈ*(-T))/ⅈ)", f.toString());
 
   }
@@ -251,14 +251,12 @@ public class IntegralNodeTest extends
   public static void testIntegralOf1OverInfinityIsDeltaZeroComplex()
   {
     var f = ComplexFunction.parse("int(1,t=-∞…∞)");
-    f.simplify();
     assertEquals("t➔δ(0)*(2*π)", f.toString());
   }
 
   public static void testIntegralOf1OverInfinityIsDeltaZeroReal()
   {
     var f = ComplexFunction.parse("int(1,t=-∞…∞)");
-    f.simplify();
     assertEquals("t➔δ(0)*(2*π)", f.toString());
     var g = f.instantiate();
     assertEquals(ComplexConstants.posInf, g.evaluate(ComplexConstants.zero, 128, new Complex()));
