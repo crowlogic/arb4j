@@ -16,7 +16,7 @@ import arb.Integer;
 import arb.Named;
 import arb.OrderedPair;
 import arb.exceptions.CompilerException;
-import arb.expressions.context.FunctionReference;
+import arb.expressions.context.Dependency;
 import arb.expressions.context.FunctionMappings;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
@@ -66,8 +66,8 @@ public class Context implements
   public ExpressionClassLoader                classLoader                  =
                                                           new ExpressionClassLoader(this);
 
-  public Map<String, FunctionReference>              functionReferenceGraph       =
-                                                                     new HashMap<String, FunctionReference>();
+  public Map<String, Dependency>              functionReferenceGraph       =
+                                                                     new HashMap<String, Dependency>();
 
   public final FunctionMappings               functions;
 
@@ -247,9 +247,9 @@ public class Context implements
       var          functionName    = entry.getKey();
       var          functionMapping = entry.getValue();
 
-      FunctionReference   dependency      = new FunctionReference(functionMapping);
+      Dependency   dependency      = new Dependency(functionMapping);
 
-      List<String> dependencies    = dependency.needs;
+      List<String> dependencies    = dependency.dependencies;
       if (functionMapping.expression != null
                     && functionMapping.expression.referencedFunctions != null)
       {
@@ -407,17 +407,17 @@ public class Context implements
     return this;
   }
 
-  public String saveFunctionReferenceGraph(List<FunctionReference> sortedFunctions)
+  public String saveDependencyGraph(List<Dependency> sortedFunctions)
   {
     String                      filename  = null;
-    HashMap<String, FunctionReference> sortedMap = new HashMap<>();
+    HashMap<String, Dependency> sortedMap = new HashMap<>();
     for (var dependency : sortedFunctions)
     {
       sortedMap.put(dependency.variableName,
                     functionReferenceGraph.getOrDefault(dependency.variableName,
-                                                        new FunctionReference(dependency)));
+                                                        new Dependency(dependency)));
     }
-    if (sortedMap.values().stream().mapToInt(f -> f.needs.size()).sum() > 0)
+    if (sortedMap.values().stream().mapToInt(f -> f.dependencies.size()).sum() > 0)
     {
       filename = sortedMap.keySet().stream().collect(Collectors.joining()) + ".dot";
       Utensils.saveStringToFile(Utensils.toDotFormatReversed(sortedMap), filename);

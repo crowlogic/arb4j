@@ -802,18 +802,9 @@ public class Compiler
                                                                               ComplexFraction.class,
                                                                               AlgebraicNumber.class,
                                                                               GaussianInteger.class));
-  public static final Logger            logger    = LoggerFactory.getLogger(Compiler.class);
 
-  public static ClassVisitor
-         declareField(ClassVisitor classVisitor, String varName, Class<?> varType)
+  public static ClassVisitor declareField(ClassVisitor classVisitor, String varName, Class<?> varType)
   {
-    if (Expression.trace)
-    {
-      logger.debug("ClassVisitor#{}: declareField(varName={}, varType={})",
-                   System.identityHashCode(classVisitor),
-                   varName,
-                   varType);
-    }
     classVisitor.visitField(ACC_PUBLIC, varName, varType.descriptorString(), null, null);
     return classVisitor;
   }

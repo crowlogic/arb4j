@@ -23,7 +23,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.FunctionMapping;
 import arb.expressions.SerializedExpression;
-import arb.expressions.context.FunctionReference;
+import arb.expressions.context.Dependency;
 import arb.viz.WindowManager;
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
@@ -323,14 +323,14 @@ public class Utensils
   }
 
   public static BufferedImage
-         createDependencyGraphBufferedImage(Map<String, FunctionReference> dependencies)
+         createDependencyGraphBufferedImage(Map<String, Dependency> dependencies)
   {
     MutableGraph g = mutGraph("DependencyGraph").setDirected(true);
 
     dependencies.forEach((name, dep) ->
     {
       MutableNode node = mutNode(name);
-      dep.needs.forEach(d -> node.addLink(to(mutNode(d))));
+      dep.dependencies.forEach(d -> node.addLink(to(mutNode(d))));
       g.add(node);
     });
     BufferedImage image;
@@ -346,15 +346,15 @@ public class Utensils
     return image;
   }
 
-  public static List<FunctionReference>
-         sortFunctionReferences(Map<String, FunctionReference> dependencies,
+  public static List<Dependency>
+         sortDependencies(Map<String, Dependency> dependencies,
                           HashMap<String, FunctionMapping<?, ?, ?>> mappings)
   {
-    var initializationOrder = new ArrayList<FunctionReference>();
+    var initializationOrder = new ArrayList<Dependency>();
     var processedVariables  = new HashSet<String>();
 
     dependencies.forEach((name,
-                          info) -> info.needs.forEach(dep -> dependencies.get(dep).provides.add(name)));
+                          info) -> info.dependencies.forEach(dep -> dependencies.get(dep).provisions.add(name)));
 
     dependencies.keySet()
                 .stream()
@@ -370,9 +370,9 @@ public class Utensils
   }
 
   private static void depthFirstDependencySearch(String variable,
-                                                 Map<String, FunctionReference> dependencies,
+                                                 Map<String, Dependency> dependencies,
                                                  Set<String> processedVariables,
-                                                 List<FunctionReference> initializationOrder)
+                                                 List<Dependency> initializationOrder)
   {
 
     if (processedVariables.contains(variable))
@@ -380,7 +380,7 @@ public class Utensils
 
     processedVariables.add(variable);
     var info = dependencies.get(variable);
-    for (var dep : info.needs)
+    for (var dep : info.dependencies)
     {
       depthFirstDependencySearch(dep, dependencies, processedVariables, initializationOrder);
     }
@@ -388,7 +388,7 @@ public class Utensils
     initializationOrder.add(info);
   }
 
-  public static String toDotFormatReversed(Map<String, FunctionReference> graph)
+  public static String toDotFormatReversed(Map<String, Dependency> graph)
   {
     StringBuilder dot = new StringBuilder();
     dot.append("digraph DependencyGraph {\n");
@@ -398,7 +398,7 @@ public class Utensils
     for (var entry : graph.entrySet())
     {
       String node = entry.getKey();
-      for (var dependency : entry.getValue().needs)
+      for (var dependency : entry.getValue().dependencies)
       {
         dot.append(String.format(" \"%s\" -> \"%s\";\n", dependency, node));
       }
