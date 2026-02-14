@@ -322,36 +322,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public boolean                                             verboseTrace                     =
                                                                           false;
 
-  protected void addChecksForNullAscendentInputFields(MethodVisitor mv)
-  {
-    // Check the ascendent expression's independent variable field
-    if (ascendentExpression != null)
-    {
-      var ascendentIndependentVariableNode = ascendentExpression.independentVariable;
-      if (ascendentIndependentVariableNode != null
-                    && !ascendentIndependentVariableNode.type().equals(Object.class))
-      {
-        String   varName    = ascendentIndependentVariableNode.reference.name;
-        Class<?> fieldClass = ascendentIndependentVariableNode.type();
-        addNullCheckForField(loadThisOntoStack(mv),
-                             className,
-                             varName,
-                             fieldClass.descriptorString());
-      }
-    }
-
-    // Check all ascendent input propagation fields
-    ascendentInputVariableEntryStream().forEach(entry ->
-    {
-      String   varName = entry.getKey();
-      Class<?> varType = entry.getValue().type();
-      if (varType != null && !varType.equals(Object.class))
-      {
-        addNullCheckForField(loadThisOntoStack(mv), className, varName, varType.descriptorString());
-      }
-    });
-  }
-
   public boolean acceptUntil(java.util.function.Predicate<Expression<?, ?, ?>> visitor)
   {
     Expression<?, ?, ?> e = this;
@@ -1826,7 +1796,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                 functionName,
                 referencedFunctions.keySet());
     }
-    addChecksForNullAscendentInputFields(mv);   
     addChecksForNullVariableReferences(mv);
 
     // Phase 1: Ensure all referenced function instances are constructed
@@ -2503,8 +2472,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                                                                                                                                                                 return true;
                                                                                                                                                                                                               };
 
-  public final HashMap<String, AtomicInteger>                           intermediateVariableCounters    =
-                                                                                                     new HashMap<>();
+  public final HashMap<String, AtomicInteger> intermediateVariableCounters = new HashMap<>();
 
   protected void
             linkSharedVariableToReferencedFunction(MethodVisitor mv,
