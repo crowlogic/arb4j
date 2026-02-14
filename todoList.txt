@@ -1,3 +1,4 @@
-dont let let the independent variable become a variable which is already registered as contextual or indeterminant and likewise dont let an indeterminant be registered when it is alreayd the independent variable (of any ascendent expression)
 move intermediateVariableCounters from Context to Expression
 debug ComplexFunctionTest.testSequence2
+#844: assert consistency between independent, indeterminate, and context variable namespaces
+#859: Add null checks in initialize() for ascendent input variable fields propagated to subfunctions

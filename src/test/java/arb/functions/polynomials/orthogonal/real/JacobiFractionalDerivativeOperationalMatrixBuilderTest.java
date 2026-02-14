@@ -194,7 +194,20 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
       }
     }
   }
+  public static void testOmega()
+  {
+    try ( JacobiFractionalDerivativeOperationalMatrixBuilder builder =
+                                                                     new JacobiFractionalDerivativeOperationalMatrixBuilder())
+    {
+      int j = 3;
+      int k = 4;
+      Complex ωval = builder.ω.apply(j).apply(k);
+      System.out.format("ω(%s,%s)=%s\n",j,k,ωval );
+      builder.context.printValues();
+    }
+  }
 
+  
   private void assertSpotValue(String label, double expected, ComplexMatrix M, int i, int j)
   {
     double actual = M.get(i, j).re().doubleValue();

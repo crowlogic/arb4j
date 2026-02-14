@@ -137,6 +137,10 @@ public class ωfunc implements
     {
       throw new AssertionError("β is null");
     }
+    else if (j == null)
+    {
+      throw new AssertionError("j is null");
+    }
     else
     {
       isInitialized = true;

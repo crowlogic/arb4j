@@ -45,18 +45,18 @@ public class ω implements
         initialize();
       }
 
-      ωfunc var10000 = new ωfunc();
-      if (var10000.j == null)
+      ωfunc ωfunc = new ωfunc();
+      if (ωfunc.j == null)
       {
-        var10000.j = new Integer();
+        ωfunc.j = new Integer();
       }
 
-      var10000.j.set(j);
-      var10000.α = α;
-      var10000.β = β;
-      var10000.γ = γ;
-      var10000.initialize();
-      return var10000;
+      ωfunc.j.set(j);
+      ωfunc.α = α;
+      ωfunc.β = β;
+      ωfunc.γ = γ;
+      ωfunc.initialize();
+      return ωfunc;
     }
   }
 

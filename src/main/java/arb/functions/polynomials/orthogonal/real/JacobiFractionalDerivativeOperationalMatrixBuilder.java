@@ -21,6 +21,11 @@ import arb.utensils.Utensils;
 public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
                                                                 AutoCloseable
 {
+  public static void main( String args[] )
+  {
+    JacobiFractionalDerivativeOperationalMatrixBuilder builder = new JacobiFractionalDerivativeOperationalMatrixBuilder();
+   // builder.context.printValues();
+  }
   public static final Logger logger =
                                     LoggerFactory.getLogger(JacobiFractionalDerivativeOperationalMatrixBuilder.class);
 
@@ -54,6 +59,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
     Expression.trace = true;
 
     context          = basis.getContext();
+    context.printValues();
     context.registerVariable("γ", γ);
     // context.registerVariable(Real.named("t"));
     normSq =

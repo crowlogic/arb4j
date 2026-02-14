@@ -377,6 +377,10 @@ public class Context implements
 
   public <R extends Named> R registerVariable(R var)
   {
+    if (Expression.trace)
+    {
+      log.debug("#{}: registerVariable(var={})", System.identityHashCode(this), var);
+    }
     return registerVariable(var.getName(), var);
   }
 
@@ -549,6 +553,14 @@ public class Context implements
           Utensils.throwOrWrap(e);
         }
       }
+    });
+  }
+
+  public void printValues()
+  {
+    variables.entrySet().forEach(entry ->
+    {
+      System.out.format("%s=%s\n", entry.getKey(), entry.getValue());
     });
   }
 
