@@ -1291,9 +1291,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       classVisitor.visitEnd();
     }
 
-    return
+    logVariables();
 
-    storeInstructions(classVisitor);
+    return storeInstructions(classVisitor);
   }
 
   /**
@@ -1580,11 +1580,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public void logVariables()
   {
-    accept(containingExpression -> log.debug("#{}: '{}': independentVariable={} indeterminateVariables={}",
-                                             System.identityHashCode(containingExpression),
-                                             containingExpression,
+    accept(containingExpression -> log.debug("#{}: logVariables: independentVariable={} indeterminateVariables={} ascendentExpression={}",
+                                             System.identityHashCode(containingExpression),                                             
                                              containingExpression.independentVariable,
-                                             containingExpression.indeterminateVariables));
+                                             containingExpression.indeterminateVariables,
+                                             containingExpression.ascendentExpression));
 
   }
 
@@ -2472,7 +2472,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                                                                                                                                                                 return true;
                                                                                                                                                                                                               };
 
-  public final HashMap<String, AtomicInteger> intermediateVariableCounters = new HashMap<>();
+  public final HashMap<String, AtomicInteger>                           intermediateVariableCounters    =
+                                                                                                     new HashMap<>();
 
   protected void
             linkSharedVariableToReferencedFunction(MethodVisitor mv,

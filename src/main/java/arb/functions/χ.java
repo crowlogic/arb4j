@@ -5,6 +5,8 @@ import arb.Integer;
 import arb.expressions.Context;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.integer.ComplexFunctionSequence;
+import arb.functions.integer.ComplexSequence;
+import arb.utensils.Utensils;
 
 public class χ implements
                ComplexFunctionSequence,
@@ -13,6 +15,21 @@ public class χ implements
                Initializable,
                Named
 {
+  public static void main(String args[])
+  {
+    χ χ = new χ();
+    χ.γ = RealConstants.half;
+    χ.α = RealConstants.negHalf;
+    χ.β = RealConstants.negHalf;
+
+    ComplexFunction func3 = χ.evaluate(3, 128);
+    Complex         val   = func3.evaluate(RealConstants.half, 1, 128, new Complex());
+    System.out.println("val=" + val);
+    System.out.println("χ=" + Utensils.yamlString(χ));
+
+    System.out.println("func3=" + Utensils.yamlString(func3));
+  }
+
   public boolean isInitialized;
   public Context context = new Context();
   public normSq  normSq;

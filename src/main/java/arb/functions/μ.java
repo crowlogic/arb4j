@@ -27,7 +27,7 @@ public class μ implements
     μ.α = RealConstants.negHalf;
     μ.β = RealConstants.negHalf;
 
-    ComplexSequence seq3 = μ.evaluate(3, 128);
+    ComplexSequence seq3 = μ.evaluate(0, 128);
     Complex         val  = seq3.evaluate(4, 128, new Complex());
     System.out.println("val=" + val);
     System.out.println("μ=" + Utensils.yamlString(μ));

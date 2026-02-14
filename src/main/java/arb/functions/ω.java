@@ -5,6 +5,7 @@ import arb.Integer;
 import arb.expressions.Context;
 import arb.functions.integer.ComplexSequence;
 import arb.functions.integer.ComplexSequenceSequence;
+import arb.utensils.Utensils;
 
 public class ω implements
                ComplexSequenceSequence,
@@ -19,6 +20,22 @@ public class ω implements
   public Real    β;
   public Real    γ;
 
+  public static void main(String args[])
+  {
+    ω ω = new ω();
+    ω.γ = RealConstants.half;
+    ω.α = RealConstants.negHalf;
+    ω.β = RealConstants.negHalf;
+
+    ComplexSequence seq3 = ω.evaluate(3, 128);
+    Complex         val  = seq3.evaluate(4, 128, new Complex());
+    System.out.println("val=" + val);
+    System.out.println("μ=" + Utensils.yamlString(ω));
+
+    System.out.println("seq3=" + Utensils.yamlString(seq3));
+  }
+
+  
   @Override
   public Class<Integer> domainType()
   {

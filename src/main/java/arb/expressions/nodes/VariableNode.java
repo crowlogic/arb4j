@@ -517,7 +517,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                 expression.independentVariable,
                                 expression.indeterminateVariables));
       }
-
+      isIndependent = true;
       expression.independentVariable = this;
       reference.type                 = expression.domainType;
     }
