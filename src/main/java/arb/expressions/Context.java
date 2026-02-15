@@ -271,9 +271,9 @@ public class Context implements
   public <D, R, F extends Function<? extends D, ? extends R>>
          FunctionMapping<D, R, F>
          registerFunctionMapping(String functionName,
-                                 Class<? extends F> functionClass,
                                  Class<? extends D> domainType,
-                                 Class<? extends R> coDomainType)
+                                 Class<? extends R> coDomainType,
+                                 Class<? extends F> functionClass)
   {
     return registerFunctionMapping(functionName,
                                    null,

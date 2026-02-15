@@ -1,5 +1,6 @@
 package arb.expressions.nodes;
 
+import arb.Integer;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -8,9 +9,12 @@ import org.objectweb.asm.MethodVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Context;
 import arb.expressions.Expression;
+import arb.expressions.nodes.binary.ExponentiationNode;
 import arb.functions.Function;
 
 /**
@@ -24,12 +28,13 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
                            Node<D, R, F>
 {
   public static final Logger logger = LoggerFactory.getLogger(DerivativeNode.class);
-  
+
   @Override
   public Logger getLogger()
   {
     return logger;
   }
+
   @Override
   public int hashCode()
   {
@@ -68,6 +73,10 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
 
   private Node<D, R, F>        derivative;
 
+  private Node<D, R, F>        order;
+
+  private Context context;
+
   public DerivativeNode(Expression<D, R, F> expression)
   {
     this(expression,
@@ -78,14 +87,33 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   {
     super(expression);
     operand = expression.resolve();
+    this.context  = new Context(Integer.named("n"));
     if (!functionalForm)
     {
       variable = expression.require('/').require('∂').resolve().asVariable();
     }
     else
     {
-      variable = expression.require(',').resolve().asVariable();
-      expression.require(')');
+      Node<D, R, F> baseVariableNode = expression.require(',').resolve();
+      if (baseVariableNode.isVariable())
+      {
+        variable = baseVariableNode.asVariable();
+        expression.require(')');
+      }
+      else if (baseVariableNode instanceof ExponentiationNode<D, R, F> expNode)
+      {
+        assert expNode.left.isVariable() : "the format for the nth derivative is diff(f(t),t^n) where n is an integer that is the order of differentiation and t is the variable being differentiated with respect to but instead of t^n this is "
+                                           + this;
+        variable = expNode.left.asVariable();
+        order    = expNode.right;
+        assert order.type()
+                      == arb.Integer.class : "the order of differentiation must be an Integer but got order="
+                                             + order
+                                             + " of type "
+                                             + order.type();
+        throw new UnsupportedOperationException("TODO: implement n-th derivative of " + operand + " where order="
+                                                + order);
+      }
     }
     derivative = operand.differentiate(variable).simplify();
   }
@@ -147,8 +175,9 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
-                                                                                       Node<E, S, G> arg)
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<D, R, F>
+         substitute(String variable, Node<E, S, G> arg)
   {
     derivative = derivative.substitute(variable, arg);
     return this;
@@ -174,6 +203,5 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
     assert false : "TODO";
     return false;
   }
-
 
 }

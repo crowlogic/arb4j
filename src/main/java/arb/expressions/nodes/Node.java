@@ -273,7 +273,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
       return false;
     if (getClass() != obj.getClass())
       return false;
-    Node<?,?,?> other = (Node<?,?,?>) obj;
+    Node<?, ?, ?> other = (Node<?, ?, ?>) obj;
     return bits == other.bits && Objects.equals(expression, other.expression)
                   && Objects.equals(fieldName, other.fieldName)
                   && Objects.equals(generatedType, other.generatedType)
@@ -463,7 +463,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public boolean isPossiblyNegative()
   {
-    return false;
+    return true;
   }
 
   public boolean isScalar()
@@ -514,27 +514,27 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return getFieldFromThis(mv, expression.className, fieldName, type);
   }
 
-  public Node<D, R, F> log()
+  public FunctionNode<D, R, F> log()
   {
     return apply("log");
   }
 
-  public Node<D, R, F> mul(int i)
+  public MultiplicationNode<D, R, F> mul(int i)
   {
     return mul(expression.newLiteralConstant(i));
   }
 
-  public <N extends Node<D, R, F>> N mul(Node<D, R, F> multiplicand)
+  public MultiplicationNode<D, R, F> mul(Node<D, R, F> multiplicand)
   {
-    return (N) new MultiplicationNode<>(expression,
-                                        this,
-                                        multiplicand);
+    return new MultiplicationNode<>(expression,
+                                    this,
+                                    multiplicand);
   }
 
-  public <N extends Node<D, R, F>> N neg()
+  public NegationNode<D, R, F> neg()
   {
-    return (N) new NegationNode<>(expression,
-                                  this);
+    return new NegationNode<>(expression,
+                              this);
   }
 
   public LiteralConstantNode<D, R, F> negativeOne()
@@ -547,25 +547,19 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return expression.newLiteralConstant(1);
   }
 
-  public Node<D, R, F> pow(int i)
+  public ExponentiationNode<D, R, F> pow(int i)
   {
     return pow(expression.newLiteralConstant(i));
   }
 
-  public <N extends Node<D, R, F>> N pow(Node<D, R, F> exponent)
+  public ExponentiationNode<D, R, F> pow(Node<D, R, F> exponent)
   {
-    return (N) new ExponentiationNode<>(expression,
-                                        this,
-                                        exponent);
+    return new ExponentiationNode<>(expression,
+                                    this,
+                                    exponent);
   }
 
-  public Node<D, R, F> pow(String exponent)
-  {
-    return new LiteralConstantNode<>(expression,
-                                     exponent);
-  }
-
-  public Node<D, R, F> sec()
+  public FunctionNode<D, R, F> sec()
   {
     return apply("sec");
   }
@@ -575,17 +569,17 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return this;
   }
 
-  public Node<D, R, F> arcsinh()
+  public FunctionNode<D, R, F> arcsinh()
   {
     return apply("arcsinh");
   }
 
-  public Node<D, R, F> sin()
+  public FunctionNode<D, R, F> sin()
   {
     return apply("sin");
   }
 
-  public Node<D, R, F> sinh()
+  public FunctionNode<D, R, F> sinh()
   {
     return apply("sinh");
   }
@@ -721,6 +715,11 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   public Node<D, R, F> Γ()
   {
     return apply("Γ");
+  }
+
+  protected FunctionNode<D, R, F> ceil()
+  {
+    return apply("ceil");
   }
 
 }

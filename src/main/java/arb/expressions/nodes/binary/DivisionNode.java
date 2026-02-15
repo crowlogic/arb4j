@@ -2,6 +2,9 @@ package arb.expressions.nodes.binary;
 
 import static java.lang.String.format;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.objectweb.asm.MethodVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +12,8 @@ import org.slf4j.LoggerFactory;
 import arb.*;
 import arb.Integer;
 import arb.expressions.Expression;
-import arb.expressions.nodes.*;
+import arb.expressions.nodes.Node;
+import arb.expressions.nodes.VariableNode;
 import arb.expressions.nodes.unary.*;
 import arb.functions.Function;
 
@@ -190,9 +194,9 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
    * Flatten ax + by + ... - cz into a list of terms with signs. Handles
    * AdditionNode and SubtractionNode recursively.
    */
-  private java.util.List<Node<D, R, F>> flattenAdditiveTerms(Node<D, R, F> node)
+  private List<Node<D, R, F>> flattenAdditiveTerms(Node<D, R, F> node)
   {
-    java.util.List<Node<D, R, F>> terms = new java.util.ArrayList<>();
+    List<Node<D, R, F>> terms = new ArrayList<>();
 
     if (node instanceof AdditionNode<D, R, F> add)
     {
@@ -203,7 +207,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       terms.addAll(flattenAdditiveTerms(sub.left));
       // Right side of subtraction is negated
-      Node<D, R, F> negatedRight = sub.right.mul(negativeOne());
+      var negatedRight = sub.right.mul(negativeOne());
       terms.addAll(flattenAdditiveTerms(negatedRight));
     }
     else

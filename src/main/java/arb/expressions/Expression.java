@@ -1217,7 +1217,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return exponentiate(evaluateOperand());
   }
 
-  protected <N extends Node<D, C, F>> N exponentiate(N node) throws CompilerException
+  protected Node<D, C, F> exponentiate(Node<D,C,F> node) throws CompilerException
   {
     if (nextCharacterIs('^'))
     {
@@ -2885,7 +2885,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return this;
   }
 
-  protected <N extends Node<D, C, F>> N parseSuperscript(N node, char superscript, String digit)
+  protected Node<D, C, F> parseSuperscript(Node<D, C, F> node, char superscript, String digit)
   {
     if (nextCharacterIs(superscript))
     {
@@ -2899,10 +2899,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * sequence is NOT consumed here when it appears immediately before '(' because
    * that denotes a compositional inverse and is handled by resolveIdentifier().
    */
-  protected <N extends Node<D, C, F>> N parseSuperscripts(N node)
+  protected Node<D, C, F> parseSuperscripts(Node<D, C, F> node)
   {
     if (nextCharacterIs('⁻') && nextCharacterIs('¹'))
     {
+      assert false : "implement superscripts properly?";
       return node.pow(newLiteralConstant("-1"));
     }
 

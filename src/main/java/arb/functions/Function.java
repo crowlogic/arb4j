@@ -293,14 +293,14 @@ public interface Function<D, CO> extends
 
     if (context != null)
     {
-      context.registerFunctionMapping(functionName, functionClass, domainClass, coDomainClass);
+      context.registerFunctionMapping(functionName, domainClass, coDomainClass, functionClass);
     }
     return func;
   }
 
   public static <D, H, Q extends Function<? extends D, ? extends H>>
          Expression<D, H, Q>
-         parse(Class<D> domainClass,
+         parse(Class<? extends D> domainClass,
                Class<? extends H> coDomainClass,
                Class<? extends Q> functionClass,
                String expression)
