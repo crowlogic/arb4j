@@ -82,26 +82,26 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
          false);
   }
 
-  public DerivativeNode(Expression<D, R, F> expression, boolean functionalForm)
+  public DerivativeNode(Expression<D, R, F> expression, boolean functionForm)
   {
     super(expression);
     operand      = expression.resolve();
     this.context = new Context(Integer.named("n"));
-    if (!functionalForm)
+
+    if (functionForm)
     {
-      Node<D, R, F> baseVariableNode = expression.require('/').require('∂').resolve();
-      parseVariableAndOrderOfDifferentation(expression, baseVariableNode, false);
+      expression.require(',');
     }
     else
     {
-      Node<D, R, F> baseVariableNode = expression.require(',').resolve();
-      parseVariableAndOrderOfDifferentation(expression, baseVariableNode, true);
+      expression.require('/').require('∂');
     }
+    parseVariableAndOrderOfDifferentation(expression.resolve(), functionForm);
+
     derivative = operand.differentiate(variable).simplify();
   }
 
-  protected void parseVariableAndOrderOfDifferentation(Expression<D, R, F> expression,
-                                                       Node<D, R, F> baseVariableNode,
+  protected void parseVariableAndOrderOfDifferentation(Node<D, R, F> baseVariableNode,
                                                        boolean functionForm)
   {
     if (baseVariableNode.isVariable())
