@@ -13,9 +13,13 @@ import junit.framework.TestCase;
 public class FractionalDerivativeNodeTest extends
                                           TestCase
 {
-  public static void testFractionalDerivative()
+  public static void testParseFractionalDerivative()
   {
-    var expr = RealFunction.express("t➔Đᵅsin(t)", new Context(Real.named("α").set(RealConstants.half)));
-    System.out.println(expr);
+    var expr = RealFunction.parse("t➔Đ^(1/2)sin(t)");
+    System.out.println( expr.inspect(null));
+    
+    var f = expr.instantiate();
+    System.out.println( expr + " = " + f );
   }
+  
 }

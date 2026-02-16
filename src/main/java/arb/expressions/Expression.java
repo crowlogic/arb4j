@@ -3740,4 +3740,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return referencedVariables.containsKey(variableNode.reference.name);
   }
 
+  public Context getContext()
+  {
+    if ( context == null)
+    {
+      context = new Context();
+    }
+    return context;
+  }
+
 }

@@ -26,7 +26,16 @@ import arb.functions.Function;
 public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> extends
                            Node<D, R, F>
 {
+  @Override
+  public boolean isZero()
+  {
+    return operand.isConstantExpression()
+                  || operand.isIndependentOf(expression.getIndependentVariable());
+  }
+
   public static final Logger logger = LoggerFactory.getLogger(DerivativeNode.class);
+
+  final boolean              evaluated;
 
   @Override
   public Logger getLogger()
@@ -56,8 +65,11 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public Node<D, R, F> simplify()
   {
-    derivative.isResult = isResult;
-    return derivative;
+    if (derivative != null)
+    {
+      return derivative.simplify();
+    }
+    return this;
   }
 
   @Override
@@ -82,6 +94,19 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
          false);
   }
 
+  public DerivativeNode(Expression<D, R, F> expression, Node<D, R, F> operand, boolean evaluate)
+  {
+    super(expression);
+    this.operand = operand;
+    this.context = expression.context;
+
+    if (evaluate)
+    {
+      derivative = operand.differentiate(variable).simplify();
+    }
+    evaluated = evaluate;
+  }
+
   public DerivativeNode(Expression<D, R, F> expression, boolean functionForm)
   {
     super(expression);
@@ -100,6 +125,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
     parseVariableAndOrderOfDifferentation(expression.resolve(), functionForm);
 
     derivative = operand.differentiate(variable).simplify();
+    evaluated  = true;
   }
 
   protected void parseVariableAndOrderOfDifferentation(Node<D, R, F> baseVariableNode,

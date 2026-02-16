@@ -434,11 +434,14 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                     arg,
                                     1);
     default:
-      throw new UnsupportedOperationException("Derivative not implemented for function: "
-                                              + functionName
-                                              + " in expression '"
-                                              + expression
-                                              + "'");
+      return new DerivativeNode<>(expression,
+                                  this,
+                                  false);
+//      throw new UnsupportedOperationException("Derivative not implemented for function: "
+//                                              + functionName
+//                                              + " in expression '"
+//                                              + expression
+//                                              + "'");
     }
   }
 
@@ -460,9 +463,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     var instance = functionMapping.instance;
     if (instance == null)
     {
-      throw new CompilerException(String.format("Instance for function %s was not present in %s",
-                                                functionName,
-                                                functionMapping));
+      return new DerivativeNode<>(expression,
+                                  this,
+                                  false);
     }
 
     setFunctionContext(instance);
@@ -970,9 +973,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
          Node<D, R, F>
          substitute(String variable, Node<E, S, G> transformation)
   {
-    if ( variable.equals(functionName))
+    if (variable.equals(functionName))
     {
-      throw new UnsupportedOperationException( "TODO: support function substitution");
+      throw new UnsupportedOperationException("TODO: support function substitution");
     }
     arg = arg.substitute(variable, transformation);
     return this;

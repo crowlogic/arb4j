@@ -1,6 +1,7 @@
 package arb.expressions.nodes;
 
-import arb.Integer;
+import static arb.expressions.Compiler.scalarType;
+
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -8,12 +9,15 @@ import org.objectweb.asm.MethodVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import arb.Integer;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
+import arb.functions.RealFunctional;
+import arb.functions.real.RealFunction;
 
 /**
  * Caputo fractional derivative: Đ^(α)f(x)
@@ -49,18 +53,20 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     return logger;
   }
 
-  Node<D, R, F>       exponent;
+  Node<D, R, F>               exponent;
 
-  Node<D, R, F>       operand;
+  Node<D, R, F>               operand;
 
   /**
    * (1/Γ(n-α)) * ∫₀ˣ (x-t)^(n-α-1) * f^(n)(t) dt
    */
-  Node<D, R, F>       integralNode;
+  Node<D, R, F>               integralNode;
 
-  Expression<D, R, F> integralExpression;
+  Expression<D, R, F>         integralExpression;
 
-  private Context     context;
+  private Context             context;
+
+  private Expression<?, ?, ?> integrandExpression;
 
   public CaputoFractionalDerivativeNode(Expression<D, R, F> expression)
   {
@@ -79,12 +85,30 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     super(expression);
     this.exponent = power;
     this.operand  = operand;
-    this.context  = new Context(Real.named("α"),
-                                Integer.named("n"));
+    
+    this.context  = expression.getContext();
+    context.registerVariable(Real.named("α"));
+    context.registerVariable(Integer.named("n"));
+    
+    Class<?> scalarType = scalarType(expression.domainType);
+    if (scalarType == Real.class)
+    {
+
+      this.integrandExpression = Function.parse(Real.class,
+                                                RealFunction.class,
+                                                RealFunctional.class,
+                                                "t➔x➔(x-t)^(n-α-1)*∂f(t)/∂tⁿ",
+                                                context);
+    }
+    else
+    {
+      throw new UnsupportedOperationException("todo: support  " + scalarType);
+    }
     context.registerFunctionMapping("f",
                                     expression.domainType,
                                     expression.coDomainType,
                                     expression.functionClass);
+
     this.integralExpression = Function.parse(expression.domainType,
                                              expression.coDomainType,
                                              expression.functionClass,

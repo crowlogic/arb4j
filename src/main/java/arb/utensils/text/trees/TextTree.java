@@ -111,7 +111,7 @@ public class TextTree<N>
 
         }
 
-        sb.append(fieldName);
+        sb.append(fieldName + "(" + arbNode.getClass().getSimpleName() + ")");
 
         try
         {
@@ -131,6 +131,7 @@ public class TextTree<N>
             }
             catch (NoSuchFieldException e)
             {
+              e.printStackTrace();
             }
           }
         }

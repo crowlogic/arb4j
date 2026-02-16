@@ -391,10 +391,11 @@ public class Context implements
 
     if (variables.get(name) != null)
     {
-      throw new CompilerException(format("A variable named %s of type %s having value %s is already registered\n",
+      throw new CompilerException(format("A variable named %s of type %s having value %s is already registered in %s\n",
                                          name,
                                          variable.getClass(),
-                                         variable));
+                                         variable,
+                                         this));
 
     }
     variableMap().put(name, variable);
