@@ -1217,7 +1217,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return exponentiate(evaluateOperand());
   }
 
-  protected Node<D, C, F> exponentiate(Node<D,C,F> node) throws CompilerException
+  protected Node<D, C, F> exponentiate(Node<D, C, F> node) throws CompilerException
   {
     if (nextCharacterIs('^'))
     {
@@ -1581,7 +1581,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public void logVariables()
   {
     accept(containingExpression -> log.debug("#{}: logVariables: independentVariable={} indeterminateVariables={} ascendentExpression={}",
-                                             System.identityHashCode(containingExpression),                                             
+                                             System.identityHashCode(containingExpression),
                                              containingExpression.independentVariable,
                                              containingExpression.indeterminateVariables,
                                              containingExpression.ascendentExpression));
@@ -3151,6 +3151,21 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public Expression<D, C, F> require(char... which)
   {
     return require(null, which);
+  }
+
+  /**
+   * Requires each character of a string sequentially
+   * 
+   * @param msg
+   * @return
+   */
+  public Expression<D, C, F> require(String msg)
+  {
+    for (char ch : msg.toCharArray())
+    {
+      require(ch);
+    }
+    return this;
   }
 
   public Expression<D, C, F> require(String msg, char... which)
