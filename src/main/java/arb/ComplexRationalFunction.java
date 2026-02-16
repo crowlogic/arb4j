@@ -14,7 +14,7 @@ import arb.functions.rational.ComplexRationalNullaryFunction;
 public class ComplexRationalFunction implements
                                      AutoCloseable,
                                      NamedField<ComplexRationalFunction>,
-                                     Function<Fraction, ComplexFraction>,
+                                     Function<ComplexFraction, ComplexFraction>,
                                      Verifiable
 {
   public static final int               DEFAULT_BITS  = 128;
@@ -30,21 +30,21 @@ public class ComplexRationalFunction implements
     imaginaryUnit.imaginaryPart.set(1, 1);
   }
 
-  public static Expression<Fraction, ComplexFraction, ComplexRationalFunction>
+  public static Expression<ComplexFraction, ComplexFraction, ComplexRationalFunction>
          compile(String expression)
   {
     return compile(expression, null);
   }
 
-  public static Expression<Fraction, ComplexFraction, ComplexRationalFunction>
+  public static Expression<ComplexFraction, ComplexFraction, ComplexRationalFunction>
          compile(String expression, Context context)
   {
     return Parser.parse(expression,
-                            context,
-                            Fraction.class,
-                            ComplexFraction.class,
-                            ComplexRationalFunction.class,
-                            null);
+                        context,
+                        ComplexFraction.class,
+                        ComplexFraction.class,
+                        ComplexRationalFunction.class,
+                        null);
   }
 
   public static ComplexRationalFunction express(String expression)
@@ -297,17 +297,24 @@ public class ComplexRationalFunction implements
     }
   }
 
-  public ComplexFraction evaluate(Fraction x, ComplexFraction result)
+  public ComplexFraction evaluate(ComplexFraction x, ComplexFraction result)
   {
     return evaluate(x, 0, result);
   }
 
   @Override
-  public ComplexFraction evaluate(Fraction input, int order, int bits, ComplexFraction result)
+  public ComplexFraction
+         evaluate(ComplexFraction input, int order, int bits, ComplexFraction result)
   {
-    realPart.evaluate(input, bits, result.realPart);
-    imaginaryPart.evaluate(input, bits, result.imaginaryPart);
-    return result;
+    realPart.evaluate(input.realPart, bits, result.realPart);
+    realPart.evaluate(input.imaginaryPart, bits, result.imaginaryPart);
+
+    try ( var imResult = new ComplexFraction())
+    {
+      imaginaryPart.evaluate(input.realPart, bits, imResult.realPart);
+      imaginaryPart.evaluate(input.imaginaryPart, bits, imResult.imaginaryPart);
+      return result.add(imResult);
+    }
   }
 
   public Complex evaluate(Real valueOf, int order, int bits, Complex complex)
