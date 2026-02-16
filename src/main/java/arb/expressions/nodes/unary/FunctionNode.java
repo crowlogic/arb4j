@@ -724,7 +724,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     generatedType = type();
     var functionMapping = getFunctionMapping();
     checkForUndefinedReferenced(functionMapping);
-
     loadFunctionReferenceOntoStack(mv, functionMapping);
     generateArgument(mv, functionMapping);
     loadOrderParameter(mv);
