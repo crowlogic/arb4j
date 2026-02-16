@@ -235,14 +235,17 @@ public class RationalFunction implements RealFunction,NamedField<RationalFunctio
     return getNumerator().getLength() == 1 && getDenominator().getLength() == 1;
   }
     
-  public ComplexFraction evaluate(ComplexFraction input, int bits, ComplexFraction result)
+  public ComplexFraction evaluate(ComplexFraction t, int order, int bits, ComplexFraction result)
   {
     assertPointerConsistency();
-  
-    evaluate(input.realPart, bits, result.realPart);
-    evaluate(input.imaginaryPart, bits, result.imaginaryPart);
-    return result;
-  }  
+    try ( ComplexFraction numVal = new ComplexFraction();
+          ComplexFraction denVal = new ComplexFraction())
+    {
+      getNumerator().evaluate(t, order, bits, numVal);
+      getDenominator().evaluate(t, order, bits, denVal);
+      return numVal.div(denVal, bits, result);
+    }
+  }
 
   public RationalFunction pow(Real power, int bits, RationalFunction result)
   {
@@ -285,15 +288,6 @@ public class RationalFunction implements RealFunction,NamedField<RationalFunctio
     arblib.fmpz_poly_q_pow(res, thiz, power );
     res.refreshPointers();
     return res;
-  }
-  
-  public ComplexFraction evaluate(ComplexFraction t, int order, int bits, ComplexFraction result)
-  {
-      assertPointerConsistency();
-  
-    evaluate(t.realPart,order,bits,result.realPart);
-    evaluate(t.imaginaryPart,order,bits,result.imaginaryPart );
-    return result;
   }
 
   public RationalFunction sub(Fraction element, int prec, RationalFunction result)

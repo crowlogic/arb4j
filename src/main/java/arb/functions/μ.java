@@ -1,5 +1,7 @@
 package arb.functions;
 
+import static org.junit.Assert.assertEquals;
+
 import arb.*;
 import arb.Integer;
 import arb.expressions.Context;
@@ -27,12 +29,13 @@ public class μ implements
     μ.α = RealConstants.negHalf;
     μ.β = RealConstants.negHalf;
 
-    ComplexSequence seq3 = μ.evaluate(0, 128);
+    ComplexSequence seq3 = μ.evaluate(2, 128);
     Complex         val  = seq3.evaluate(4, 128, new Complex());
     System.out.println("val=" + val);
     System.out.println("μ=" + Utensils.yamlString(μ));
 
     System.out.println("seq3=" + Utensils.yamlString(seq3));
+    
   }
 
   @Override
