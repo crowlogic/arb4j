@@ -147,6 +147,8 @@ public class MittagLefflerFunctionNode<D, R, F extends Function<? extends D, ? e
     expression.require(')');
   }
 
+
+
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
@@ -163,6 +165,12 @@ public class MittagLefflerFunctionNode<D, R, F extends Function<? extends D, ? e
     loadOutputVariableOntoStack(mv, scalarType);
     duplicateTopOfTheStack(mv);
 
+    arg.generate(mv, scalarType);
+    if (!arg.generatedType.equals(scalarType))
+    {
+      arg.generateCastTo(mv, scalarType);
+    }
+
     alpha.generate(mv, scalarType);
     if (!alpha.generatedType.equals(scalarType))
     {
@@ -175,11 +183,7 @@ public class MittagLefflerFunctionNode<D, R, F extends Function<? extends D, ? e
       beta.generateCastTo(mv, scalarType);
     }
 
-    arg.generate(mv, scalarType);
-    if (!arg.generatedType.equals(scalarType))
-    {
-      arg.generateCastTo(mv, scalarType);
-    }
+    mv.visitLdcInsn(1e-30);
 
     loadBitsParameterOntoStack(mv);
     invokeStaticEvaluationMethod(mv, scalarType);
@@ -191,15 +195,17 @@ public class MittagLefflerFunctionNode<D, R, F extends Function<? extends D, ? e
   {
     return invokeStaticMethod(mv,
                               arblib.class,
-                              Complex.class.equals(scalarType) ? "acb_hypgeom_mittag_leffler"
-                                                               : "arb_hypgeom_mittag_leffler",
+                              Complex.class.equals(scalarType) ? "acb_mittag_leffler_E"
+                                                               : "arb_mittag_leffler_E",
                               Void.class,
                               scalarType,
                               scalarType,
                               scalarType,
                               scalarType,
+                              double.class,
                               int.class);
   }
+
 
   @Override
   public String typeset()

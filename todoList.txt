@@ -2,3 +2,4 @@ move intermediateVariableCounters from Context to Expression
 debug ComplexFunctionTest.testSequence2
 #844: assert consistency between independent, indeterminate, and context variable namespaces
 #859: Add null checks in initialize() for ascendent input variable fields propagated to subfunctions
+implement some sort of system of namespaces beyond Context

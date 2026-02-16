@@ -3248,14 +3248,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return node;
   }
 
+  //boolean enableMittagLefflerFunction = false;
+  
   protected Node<D, C, F> resolveFunction(int startPos, VariableReference<D, C, F> reference)
   {
     switch (reference.name)
     {
-    case "E":
-    case "MittagLeffler":
-    case "mittagleffler":
-      return new MittagLefflerFunctionNode<>(this);
+   
+//    case "MittagLeffler":
+//    case "mittagleffler":
+//      if ( !enableMittagLefflerFunction )
+//      {
+//        continue;
+//      }
+//      return new MittagLefflerFunctionNode<>(this);
     case "Z":
       return new HardyZFunctionNode<>(this);
     case "ϑ":
