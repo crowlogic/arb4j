@@ -971,6 +971,10 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
          Node<D, R, F>
          substitute(String variable, Node<E, S, G> transformation)
   {
+    if ( variable.equals(functionName))
+    {
+      throw new UnsupportedOperationException( "TODO: support function substitution");
+    }
     arg = arg.substitute(variable, transformation);
     return this;
   }

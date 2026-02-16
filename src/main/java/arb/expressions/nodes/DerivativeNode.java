@@ -96,6 +96,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
     {
       expression.require('/').require('∂');
     }
+
     parseVariableAndOrderOfDifferentation(expression.resolve(), functionForm);
 
     derivative = operand.differentiate(variable).simplify();
@@ -119,14 +120,11 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
       variable = expNode.left.asVariable();
       order    = expNode.right;
       assert order.type()
-                    == arb.Integer.class : "the order of differentiation must be an Integer but got order="
+                    == arb.Integer.class : "the order of differentiation node must generate an Integer but got order="
                                            + order
                                            + " of type "
                                            + order.type();
-      throw new UnsupportedOperationException("TODO: implement n-th derivative of "
-                                              + operand
-                                              + " where order="
-                                              + order);
+
     }
   }
 

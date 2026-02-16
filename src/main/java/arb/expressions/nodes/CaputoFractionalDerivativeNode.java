@@ -88,9 +88,11 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     this.integralExpression = Function.parse(expression.domainType,
                                              expression.coDomainType,
                                              expression.functionClass,
-                                             "t➔1/Γ(n-α)*∫x➔(x-t)^(n-α-1)*∂f(t)/∂tⁿ",
+                                             "t➔1/Γ(n-α)*∫x➔(x-t)^(n-α-1)*∂f(t)/∂tⁿdx",
                                              context);
-    this.integralNode       = integralExpression.rootNode;
+    this.integralExpression.substitute("f", integralExpression.rootNode);
+
+    this.integralNode = integralExpression.rootNode;
   }
 
   @Override
