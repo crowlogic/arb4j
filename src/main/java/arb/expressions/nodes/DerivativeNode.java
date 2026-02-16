@@ -1,6 +1,5 @@
 package arb.expressions.nodes;
 
-import arb.Integer;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -9,7 +8,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import arb.Real;
+import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
@@ -75,7 +74,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
 
   private Node<D, R, F>        order;
 
-  private Context context;
+  private Context              context;
 
   public DerivativeNode(Expression<D, R, F> expression)
   {
@@ -86,36 +85,49 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   public DerivativeNode(Expression<D, R, F> expression, boolean functionalForm)
   {
     super(expression);
-    operand = expression.resolve();
-    this.context  = new Context(Integer.named("n"));
+    operand      = expression.resolve();
+    this.context = new Context(Integer.named("n"));
     if (!functionalForm)
     {
-      variable = expression.require('/').require('∂').resolve().asVariable();
+      Node<D, R, F> baseVariableNode = expression.require('/').require('∂').resolve();
+      parseVariableAndOrderOfDifferentation(expression, baseVariableNode, false);
     }
     else
     {
       Node<D, R, F> baseVariableNode = expression.require(',').resolve();
-      if (baseVariableNode.isVariable())
-      {
-        variable = baseVariableNode.asVariable();
-        expression.require(')');
-      }
-      else if (baseVariableNode instanceof ExponentiationNode<D, R, F> expNode)
-      {
-        assert expNode.left.isVariable() : "the format for the nth derivative is diff(f(t),t^n) where n is an integer that is the order of differentiation and t is the variable being differentiated with respect to but instead of t^n this is "
-                                           + this;
-        variable = expNode.left.asVariable();
-        order    = expNode.right;
-        assert order.type()
-                      == arb.Integer.class : "the order of differentiation must be an Integer but got order="
-                                             + order
-                                             + " of type "
-                                             + order.type();
-        throw new UnsupportedOperationException("TODO: implement n-th derivative of " + operand + " where order="
-                                                + order);
-      }
+      parseVariableAndOrderOfDifferentation(expression, baseVariableNode, true);
     }
     derivative = operand.differentiate(variable).simplify();
+  }
+
+  protected void parseVariableAndOrderOfDifferentation(Expression<D, R, F> expression,
+                                                       Node<D, R, F> baseVariableNode,
+                                                       boolean functionForm)
+  {
+    if (baseVariableNode.isVariable())
+    {
+      variable = baseVariableNode.asVariable();
+      if (functionForm)
+      {
+        expression.require(')');
+      }
+    }
+    else if (baseVariableNode instanceof ExponentiationNode<D, R, F> expNode)
+    {
+      assert expNode.left.isVariable() : "the format for the nth derivative is diff(f(t),t^n) where n is an integer that is the order of differentiation and t is the variable being differentiated with respect to but instead of t^n this is "
+                                         + this;
+      variable = expNode.left.asVariable();
+      order    = expNode.right;
+      assert order.type()
+                    == arb.Integer.class : "the order of differentiation must be an Integer but got order="
+                                           + order
+                                           + " of type "
+                                           + order.type();
+      throw new UnsupportedOperationException("TODO: implement n-th derivative of "
+                                              + operand
+                                              + " where order="
+                                              + order);
+    }
   }
 
   @Override
