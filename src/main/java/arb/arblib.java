@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static void fmpz_poly_evaluate_complex_fmpq(Fraction res_re, Fraction res_im, IntegerPolynomial poly, Fraction z_re, Fraction z_im) {
+    arblibJNI.fmpz_poly_evaluate_complex_fmpq(Fraction.getCPtr(res_re), res_re, Fraction.getCPtr(res_im), res_im, IntegerPolynomial.getCPtr(poly), poly, Fraction.getCPtr(z_re), z_re, Fraction.getCPtr(z_im), z_im);
+  }
+
   public static void acb_poly_set_arb_poly(ComplexPolynomial poly, RealPolynomial re) {
     arblibJNI.acb_poly_set_arb_poly(ComplexPolynomial.getCPtr(poly), poly, RealPolynomial.getCPtr(re), re);
   }

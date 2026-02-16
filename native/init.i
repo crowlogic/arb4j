@@ -11,6 +11,12 @@ extern int errorNumber();
 
 JNIEnv* env;
 
+void fmpz_poly_evaluate_complex_fmpq(fmpq_t res_re,
+                                     fmpq_t res_im,
+                                     const fmpz_poly_struct *poly,
+                                     const fmpq_t z_re,
+									 const fmpq_t z_im);
+									 
 int mittag_leffler(acb_t res, const arb_t alpha, const arb_t beta, const acb_t z,
                  const slong prec);
                  

@@ -306,16 +306,36 @@ public class ComplexRationalFunction implements
   public ComplexFraction
          evaluate(ComplexFraction input, int order, int bits, ComplexFraction result)
   {
-    realPart.evaluate(input.realPart, bits, result.realPart);
-    realPart.evaluate(input.imaginaryPart, bits, result.imaginaryPart);
-
-    try ( var imResult = new ComplexFraction())
+    if (result == null)
     {
-      imaginaryPart.evaluate(input.realPart, bits, imResult.realPart);
-      imaginaryPart.evaluate(input.imaginaryPart, bits, imResult.imaginaryPart);
-      return result.add(imResult);
+      result = new ComplexFraction();
+    }
+
+    // RationalFunction.evaluate(ComplexFraction) applies the polynomial
+    // independently to real and imaginary channels:
+    //   p.evaluate(z) = p(z.re) + i*p(z.im)
+    //
+    // For f(x) = realPart(x) + i*imaginaryPart(x), evaluated at z = a+bi:
+    //   realPart.evaluate(z)      = P(a) + i*P(b)
+    //   imaginaryPart.evaluate(z) = Q(a) + i*Q(b)
+    //
+    // f(z) = [P(a) + i*P(b)] + i*[Q(a) + i*Q(b)]
+    //       = [P(a) - Q(b)] + i*[P(b) + Q(a)]
+
+    try ( var reEval = new ComplexFraction(); var imEval = new ComplexFraction())
+    {
+      realPart.evaluate(input, order, bits, reEval);         // reEval = P(a) + i*P(b)
+      imaginaryPart.evaluate(input, order, bits, imEval);    // imEval = Q(a) + i*Q(b)
+
+      // result.re = P(a) - Q(b)
+      reEval.realPart.sub(imEval.imaginaryPart, bits, result.realPart);
+      // result.im = P(b) + Q(a)
+      reEval.imaginaryPart.add(imEval.realPart, bits, result.imaginaryPart);
+
+      return result;
     }
   }
+
 
   public Complex evaluate(Real valueOf, int order, int bits, Complex complex)
   {

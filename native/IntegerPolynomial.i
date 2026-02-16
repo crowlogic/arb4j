@@ -19,6 +19,39 @@ import arb.expressions.Context;
 %typemap(javacode) fmpz_poly_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+  /**
+   * Evaluate this polynomial at a {@link ComplexFraction} point via Horner's
+   * method.
+   *
+   * @param z      the complex rational evaluation point
+   * @param order  unused (interface compatibility)
+   * @param bits   precision for {@link ComplexFraction} arithmetic
+   * @param result where the result is stored
+   * @return result = this(z)
+   */
+  public ComplexFraction evaluate(ComplexFraction z, int order, int bits, ComplexFraction result)
+  {
+    int n = getLength();
+    if (n == 0)
+    {
+      result.zero();
+      return result;
+    }
+
+    result.set(get(n - 1));
+
+    try ( ComplexFraction temp = new ComplexFraction(); ComplexFraction coeff = new ComplexFraction())
+    {
+      for (int i = n - 2; i >= 0; i--)
+      {
+        result.mul(z, bits, temp);
+        coeff.set(get(i));
+        temp.add(coeff, bits, result);
+      }
+    }
+    return result;
+  }
+    
   public boolean isOne()
   {
     return arblib.fmpz_poly_is_one(this) != 0;

@@ -38,7 +38,8 @@
 
 typedef unsigned long Window;
 
-typedef struct charcodemap {
+typedef struct charcodemap
+{
   wchar_t key; /** the letter for this key, like 'a' */
   KeyCode code; /** the keycode that this key is on */
   KeySym symbol; /** the symbol representing this key */
@@ -48,8 +49,10 @@ typedef struct charcodemap {
     * exist in the current keymap, this will be set to 1. */
   int needs_binding;
 } charcodemap_t;
+
 // Define the xdo_t structure
-typedef struct {
+typedef struct
+{
     Display *xdpy;
     char *display_name;
     charcodemap_t *charcodes;
@@ -79,8 +82,67 @@ extern JNIEnv *env;
 #include <flint/arb.h>
 #include <flint/acb.h>
 
+void fmpz_poly_evaluate_complex_fmpq(fmpq_t res_re,
+                                     fmpq_t res_im,
+                                     const fmpz_poly_struct *poly,
+                                     const fmpq_t z_re,
+									 const fmpq_t z_im)
+{
+    slong n = fmpz_poly_length(poly);
+    if (n == 0)
+    {
+        fmpq_zero(res_re);
+        fmpq_zero(res_im);
+        return;
+    }
 
-int xdo_activate_window(const xdo_struct *xdo, Window wid) {
+    fmpq_t tmp_re, tmp_im, t;
+    fmpq_init(tmp_re);
+    fmpq_init(tmp_im);
+    fmpq_init(t);
+
+    /* result = leading coefficient (real) */
+    fmpz_set(fmpq_numref(res_re), fmpz_poly_get_coeff_ptr(poly, n - 1)
+              ? fmpz_poly_get_coeff_ptr(poly, n - 1)
+              : fmpq_numref(res_re));
+    if (fmpz_poly_get_coeff_ptr(poly, n - 1))
+        fmpz_set(fmpq_numref(res_re), fmpz_poly_get_coeff_ptr(poly, n - 1));
+    else
+        fmpq_zero(res_re);
+    fmpz_one(fmpq_denref(res_re));
+    fmpq_zero(res_im);
+
+    for (slong i = n - 2; i >= 0; i--)
+    {
+        /* (tmp_re, tmp_im) = (res_re, res_im) * (z_re, z_im) */
+        fmpq_mul(tmp_re, res_re, z_re);
+        fmpq_mul(t, res_im, z_im);
+        fmpq_sub(tmp_re, tmp_re, t);
+
+        fmpq_mul(tmp_im, res_re, z_im);
+        fmpq_mul(t, res_im, z_re);
+        fmpq_add(tmp_im, tmp_im, t);
+
+        /* add coefficient i */
+        const fmpz *c = fmpz_poly_get_coeff_ptr(poly, i);
+        if (c)
+        {
+            fmpz_set(fmpq_numref(t), c);
+            fmpz_one(fmpq_denref(t));
+            fmpq_add(tmp_re, tmp_re, t);
+        }
+
+        fmpq_set(res_re, tmp_re);
+        fmpq_set(res_im, tmp_im);
+    }
+
+    fmpq_clear(tmp_re);
+    fmpq_clear(tmp_im);
+    fmpq_clear(t);
+}
+
+int xdo_activate_window(const xdo_struct *xdo, Window wid)
+{
   int ret = 0;
   long desktop = 0;
   XEvent xev;
@@ -112,8 +174,7 @@ int errorNumber()
 }
 
 
-void
-arb_pow_si(arb_t res, const arb_t x, slong y, slong prec)
+void arb_pow_si(arb_t res, const arb_t x, slong y, slong prec)
 {
    arb_t a;
    arb_init(a);

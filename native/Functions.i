@@ -17,6 +17,12 @@
 #include <unistd.h>
 #include <wchar.h>
 
+void fmpz_poly_evaluate_complex_fmpq(fmpq_t res_re,
+                                     fmpq_t res_im,
+                                     const fmpz_poly_struct *poly,
+                                     const fmpq_t z_re,
+									 const fmpq_t z_im);
+									 
 void acb_poly_set_arb_poly(acb_poly_t poly, const arb_poly_t re);
 
 void acb_cot(acb_t r, const acb_t z, slong prec);
