@@ -1,5 +1,5 @@
 #define __off_t long int
-#define off_t long int
+#define off_t long intm
 #define wchar_t int
 #define ulong unsigned long
 
@@ -17,6 +17,9 @@
 #include <unistd.h>
 #include <wchar.h>
 
+void acb_mittag_leffler_E(acb_t out, const acb_t z, const arb_t alpha,
+                          const arb_t beta, double eps_d, slong prec);
+						  
 void fmpz_poly_evaluate_complex_fmpq(fmpq_t res_re,
                                      fmpq_t res_im,
                                      const fmpz_poly_struct *poly,
@@ -169,9 +172,6 @@ int fmpq_is_one(const fmpq_t x);
 void arb_hypgeom_gamma_lower(arb_t res, const arb_t s, const arb_t z, int regularized, slong prec);
 void acb_hypgeom_gamma_lower(acb_t res, const acb_t s, const acb_t z, int modified, slong prec);
 
-int mittag_leffler(acb_t res, const arb_t alpha, const arb_t beta, const acb_t z,
-                 const slong prec);
-          
 void acb_poly_integral(acb_poly_t res, const acb_poly_t poly, slong prec);
 void acb_poly_derivative(acb_poly_t res, const acb_poly_t poly, slong prec);
 
@@ -1026,8 +1026,6 @@ void arb_mat_det_lu(arb_t det, const arb_mat_t A, slong prec);
 void arb_mat_det_precond(arb_t det, const arb_mat_t A, slong prec);
 void arb_mat_det(arb_t det, const arb_mat_t A, slong prec);
 
-
-int ftruncate (int fd, off_t length);
 
 void acb_hypgeom_bessel_j_0f1(acb_t res, const acb_t nu, const acb_t z, slong prec);
 void acb_hypgeom_bessel_j_asymp(acb_t res, const acb_t nu, const acb_t z, slong prec);

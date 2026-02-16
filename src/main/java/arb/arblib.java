@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static void acb_mittag_leffler_E(Complex out, Complex z, Real alpha, Real beta, double eps_d, int prec) {
+    arblibJNI.acb_mittag_leffler_E(Complex.getCPtr(out), out, Complex.getCPtr(z), z, Real.getCPtr(alpha), alpha, Real.getCPtr(beta), beta, eps_d, prec);
+  }
+
   public static void fmpz_poly_evaluate_complex_fmpq(Fraction res_re, Fraction res_im, IntegerPolynomial poly, Fraction z_re, Fraction z_im) {
     arblibJNI.fmpz_poly_evaluate_complex_fmpq(Fraction.getCPtr(res_re), res_re, Fraction.getCPtr(res_im), res_im, IntegerPolynomial.getCPtr(poly), poly, Fraction.getCPtr(z_re), z_re, Fraction.getCPtr(z_im), z_im);
   }
@@ -311,10 +315,6 @@ public class arblib {
 
   public static void acb_hypgeom_gamma_lower(Complex res, Complex s, Complex z, int modified, int prec) {
     arblibJNI.acb_hypgeom_gamma_lower(Complex.getCPtr(res), res, Complex.getCPtr(s), s, Complex.getCPtr(z), z, modified, prec);
-  }
-
-  public static int mittag_leffler(Complex res, Real alpha, Real beta, Complex z, int prec) {
-    return arblibJNI.mittag_leffler(Complex.getCPtr(res), res, Real.getCPtr(alpha), alpha, Real.getCPtr(beta), beta, Complex.getCPtr(z), z, prec);
   }
 
   public static void acb_poly_integral(ComplexPolynomial res, ComplexPolynomial poly, int prec) {
@@ -1944,10 +1944,6 @@ public class arblib {
 
   public static void arb_mat_det(Real det, RealMatrix A, int prec) {
     arblibJNI.arb_mat_det(Real.getCPtr(det), det, RealMatrix.getCPtr(A), A, prec);
-  }
-
-  public static int ftruncate(int fd, int length) {
-    return arblibJNI.ftruncate(fd, length);
   }
 
   public static void acb_hypgeom_bessel_j_0f1(Complex res, Complex nu, Complex z, int prec) {
