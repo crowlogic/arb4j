@@ -11,14 +11,19 @@ extern int errorNumber();
 
 JNIEnv* env;
 
+void arb_mittag_leffler_E(arb_t out, const arb_t z, const arb_t alpha,
+                          const arb_t beta, double eps_d, slong prec);
+
+void acb_mittag_leffler_E(acb_t out, const acb_t z, const arb_t alpha,
+                           const arb_t beta, double eps_d, slong prec);
+
 void fmpz_poly_evaluate_complex_fmpq(fmpq_t res_re,
                                      fmpq_t res_im,
                                      const fmpz_poly_struct *poly,
                                      const fmpq_t z_re,
 									 const fmpq_t z_im);
 
- void acb_mittag_leffler_E(acb_t out, const acb_t z, const arb_t alpha,
-                            const arb_t beta, double eps_d, slong prec);
+
           
 jlong bufferAddress (jobject buffer);
 

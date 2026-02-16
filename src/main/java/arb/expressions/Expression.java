@@ -3252,6 +3252,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     switch (reference.name)
     {
+    case "E":
+    case "MittagLeffler":
+    case "mittagleffler":
+      return new MittagLefflerFunctionNode<>(this);
     case "Z":
       return new HardyZFunctionNode<>(this);
     case "ϑ":

@@ -17,6 +17,9 @@
 #include <unistd.h>
 #include <wchar.h>
 
+void arb_mittag_leffler_E(arb_t out, const arb_t z, const arb_t alpha,
+                          const arb_t beta, double eps_d, slong prec);
+						  
 void acb_mittag_leffler_E(acb_t out, const acb_t z, const arb_t alpha,
                           const arb_t beta, double eps_d, slong prec);
 						  

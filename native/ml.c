@@ -591,6 +591,7 @@ static int ml_opc_mid(acb_t out, const acb_t lambda, const arb_t alpha,
 
 /* ======================== Public API ======================== */
 
+
 void acb_mittag_leffler_E(acb_t out, const acb_t z, const arb_t alpha,
                           const arb_t beta, double eps_d, slong prec)
 {
@@ -635,6 +636,41 @@ void acb_mittag_leffler_E(acb_t out, const acb_t z, const arb_t alpha,
 done:
     arb_clear(eps); arb_clear(absz); arb_clear(series_thr);
     arb_clear(asymp_thr); arb_clear(gam);
+}
+
+/**
+ * arb_mittag_leffler_E - Real-valued Mittag-Leffler E_{alpha,beta}(z)
+ *
+ * Computes E_{alpha,beta}(z) for real z, alpha, beta by lifting to acb,
+ * calling acb_mittag_leffler_E, and extracting the real part.
+ *
+ * The imaginary part of the result is discarded (it is zero for real inputs
+ * with alpha > 0).
+ *
+ * Parameters:
+ *   out   - result (arb_t)
+ *   z     - argument (arb_t, real)
+ *   alpha - first parameter (arb_t, must be > 0)
+ *   beta  - second parameter (arb_t)
+ *   eps_d - tolerance for OPC method (e.g. 1e-30)
+ *   prec  - working precision in bits
+ */
+void arb_mittag_leffler_E(arb_t out, const arb_t z, const arb_t alpha,
+                          const arb_t beta, double eps_d, slong prec)
+{
+    acb_t zc, val;
+
+    acb_init(zc);
+    acb_init(val);
+
+    acb_set_arb(zc, z);
+
+    acb_mittag_leffler_E(val, zc, alpha, beta, eps_d, prec);
+
+    arb_set(out, acb_realref(val));
+
+    acb_clear(zc);
+    acb_clear(val);
 }
 
 /* ======================== Unit Tests ======================== */

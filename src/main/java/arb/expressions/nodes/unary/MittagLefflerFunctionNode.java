@@ -15,19 +15,36 @@ import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 
 /**
- * Implements the Mittag-Leffler function E_{α,β}(z) by generating calls to
- * {@link arblib#acb_mittag_leffler_E(Complex, Complex, Real, Real, double, int)}
- * 
- * Syntax: E(α,β,z)
- * 
- * @author Stephen Crowley ©2024-2026
+ * Implements the Mittag-Leffler function E_{α,β}(z) via
+ * {@link arblib#arb_hypgeom_pfq(Real, Real, Real, Real, int)} or an appropriate
+ * series evaluation.
+ *
+ * <p>
+ * The two-parameter Mittag-Leffler function is defined as: E_{α,β}(z) =
+ * Σ_{k=0}^{∞} z^k / Γ(αk + β) When β=1 this reduces to the one-parameter form
+ * E_{α}(z) = E_{α,1}(z).
+ * </p>
+ *
+ * <p>
+ * Supported input formats (all parsed from inside parentheses):
+ * </p>
+ * <ul>
+ * <li>E(α, β, z) — three arguments</li>
+ * <li>E(α, z) — two arguments, β defaults to 1</li>
+ * <li>MittagLeffler(α, β, z) — verbose alias, three arguments</li>
+ * <li>MittagLeffler(α, z) — verbose alias, two arguments</li>
+ * </ul>
+ *
+ * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class MittagLefflerFunctionNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                       FunctionNode<D, R, F>
 {
 
-  private static final double DEFAULT_EPSILON = 1e-30;
+  Node<D, R, F>  alpha;
+  Node<D, R, F>  beta;
+  public boolean scalar;
 
   @Override
   public int hashCode()
@@ -77,13 +94,12 @@ public class MittagLefflerFunctionNode<D, R, F extends Function<? extends D, ? e
   @Override
   public String toString()
   {
-    return String.format("E(%s,%s,%s)", alpha, beta, arg);
+    return format("E(%s,%s,%s)", alpha, beta, arg);
   }
 
-  Node<D, R, F>  alpha;
-  Node<D, R, F>  beta;
-  public boolean scalar;
-
+  /**
+   * Direct construction when all three parameter nodes are already resolved.
+   */
   public MittagLefflerFunctionNode(Expression<D, R, F> expression,
                                    Node<D, R, F> alpha,
                                    Node<D, R, F> beta,
@@ -98,12 +114,36 @@ public class MittagLefflerFunctionNode<D, R, F extends Function<? extends D, ? e
     this.scalar = expression.hasScalarCodomain();
   }
 
+  /**
+   * Parser constructor. The opening '(' has already been consumed by
+   * Expression.resolveFunction. Parses either: E(α, β, z) — three comma-separated
+   * arguments E(α, z) — two comma-separated arguments, β defaults to 1
+   */
   public MittagLefflerFunctionNode(Expression<D, R, F> expression)
   {
-    this(expression,
-         expression.resolve(),
-         expression.require(',').resolve(),
-         expression.require(',').resolve());
+    super("E",
+          null,
+          expression);
+    this.scalar = expression.hasScalarCodomain();
+
+    Node<D, R, F> first = expression.resolve();
+    expression.require(',');
+    Node<D, R, F> second = expression.resolve();
+
+    if (expression.nextCharacterIs(','))
+    {
+      // Three-argument form: E(α, β, z)
+      this.alpha = first;
+      this.beta  = second;
+      this.arg   = expression.resolve();
+    }
+    else
+    {
+      // Two-argument form: E(α, z) with β=1
+      this.alpha = first;
+      this.beta  = expression.newLiteralConstant("1");
+      this.arg   = second;
+    }
     expression.require(')');
   }
 
@@ -112,43 +152,36 @@ public class MittagLefflerFunctionNode<D, R, F extends Function<? extends D, ? e
   {
     if (Expression.trace)
     {
-      logger.debug(String.format("E.generate(α=%s, β=%s, resultType=%s)\n",
-                                 alpha,
-                                 beta,
-                                 resultType));
+      logger.debug(format("E.generate(α=%s, β=%s, z=%s, resultType=%s)\n",
+                          alpha,
+                          beta,
+                          arg,
+                          resultType));
     }
 
     var scalarType = scalarType(resultType);
     loadOutputVariableOntoStack(mv, scalarType);
     duplicateTopOfTheStack(mv);
 
-    // Generate z (the argument)
+    alpha.generate(mv, scalarType);
+    if (!alpha.generatedType.equals(scalarType))
+    {
+      alpha.generateCastTo(mv, scalarType);
+    }
+
+    beta.generate(mv, scalarType);
+    if (!beta.generatedType.equals(scalarType))
+    {
+      beta.generateCastTo(mv, scalarType);
+    }
+
     arg.generate(mv, scalarType);
     if (!arg.generatedType.equals(scalarType))
     {
       arg.generateCastTo(mv, scalarType);
     }
 
-    // Generate alpha
-    alpha.generate(mv, Real.class);
-    if (!alpha.generatedType.equals(Real.class))
-    {
-      alpha.generateCastTo(mv, Real.class);
-    }
-
-    // Generate beta
-    beta.generate(mv, Real.class);
-    if (!beta.generatedType.equals(Real.class))
-    {
-      beta.generateCastTo(mv, Real.class);
-    }
-
-    // Push epsilon constant (double)
-    mv.visitLdcInsn(DEFAULT_EPSILON);
-
-    // Push bits parameter
     loadBitsParameterOntoStack(mv);
-
     invokeStaticEvaluationMethod(mv, scalarType);
     generatedType = scalarType;
     return mv;
@@ -158,13 +191,13 @@ public class MittagLefflerFunctionNode<D, R, F extends Function<? extends D, ? e
   {
     return invokeStaticMethod(mv,
                               arblib.class,
-                              "acb_mittag_leffler_E",
+                              Complex.class.equals(scalarType) ? "acb_hypgeom_mittag_leffler"
+                                                               : "arb_hypgeom_mittag_leffler",
                               Void.class,
                               scalarType,
                               scalarType,
-                              Real.class,
-                              Real.class,
-                              double.class,
+                              scalarType,
+                              scalarType,
                               int.class);
   }
 

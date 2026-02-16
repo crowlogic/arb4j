@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static void arb_mittag_leffler_E(Real out, Real z, Real alpha, Real beta, double eps_d, int prec) {
+    arblibJNI.arb_mittag_leffler_E(Real.getCPtr(out), out, Real.getCPtr(z), z, Real.getCPtr(alpha), alpha, Real.getCPtr(beta), beta, eps_d, prec);
+  }
+
   public static void acb_mittag_leffler_E(Complex out, Complex z, Real alpha, Real beta, double eps_d, int prec) {
     arblibJNI.acb_mittag_leffler_E(Complex.getCPtr(out), out, Complex.getCPtr(z), z, Real.getCPtr(alpha), alpha, Real.getCPtr(beta), beta, eps_d, prec);
   }
