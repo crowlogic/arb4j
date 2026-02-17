@@ -42,6 +42,72 @@ public class Integer implements
                      Ring<Integer>,
                      NamedField<Integer>
 {
+  private Integer lowerBound_;
+  private Integer upperBound_;
+  private boolean lowerBoundInclusive_;
+  private boolean upperBoundInclusive_;
+
+  /**
+   * Set bounds on this Integer variable.
+   *
+   * @param lower          lower bound
+   * @param lowerInclusive true if the lower bound is closed (inclusive)
+   * @param upper          upper bound
+   * @param upperInclusive true if the upper bound is closed (inclusive)
+   * @return this
+   */
+  public Integer setBounds(int lower, boolean lowerInclusive, int upper, boolean upperInclusive)
+  {
+    this.lowerBound_          = new Integer(lower);
+    this.lowerBoundInclusive_ = lowerInclusive;
+    this.upperBound_          = new Integer(upper);
+    this.upperBoundInclusive_ = upperInclusive;
+    return this;
+  }
+
+  /**
+   * Set bounds on this Integer variable using Integer values.
+   *
+   * @param lower          lower bound as an {@link Integer}
+   * @param lowerInclusive true if the lower bound is closed (inclusive)
+   * @param upper          upper bound as an {@link Integer}
+   * @param upperInclusive true if the upper bound is closed (inclusive)
+   * @return this
+   */
+  public Integer
+         setBounds(Integer lower, boolean lowerInclusive, Integer upper, boolean upperInclusive)
+  {
+    this.lowerBound_          = lower;
+    this.lowerBoundInclusive_ = lowerInclusive;
+    this.upperBound_          = upper;
+    this.upperBoundInclusive_ = upperInclusive;
+    return this;
+  }
+
+  @Override
+  public Integer lowerBound()
+  {
+    return lowerBound_;
+  }
+
+  @Override
+  public Integer upperBound()
+  {
+    return upperBound_;
+  }
+
+  @Override
+  public boolean lowerBoundInclusive()
+  {
+    return lowerBoundInclusive_;
+  }
+
+  @Override
+  public boolean upperBoundInclusive()
+  {
+    return upperBoundInclusive_;
+  }
+
   public static int BYTES = Long.BYTES;
 
   static
@@ -627,7 +693,7 @@ public class Integer implements
     arblib.arb_fac_ui(result, getUnsignedValue(), bits);
     return result;
   }
-  
+
   public Complex factorial(int bits, Complex result)
   {
     arblib.arb_fac_ui(result.re(), getUnsignedValue(), bits);
@@ -1017,7 +1083,7 @@ public class Integer implements
   {
     return result.set(this).pow(operand, prec);
   }
-  
+
   public Real pow(Integer operand, int prec, Real result)
   {
     return result.set(this).pow(operand, prec);
@@ -1028,12 +1094,11 @@ public class Integer implements
     assert res != operand : "aliasing not implemented";
     return res.set(this).pow(operand, bits, res);
   }
-  
+
   public Complex pow(Real operand, int bits, Complex res)
   {
     return res.set(this).pow(operand, bits, res);
   }
-  
 
   public Integer set(Fraction f)
   {
@@ -1211,7 +1276,7 @@ public class Integer implements
   {
     return result.set(this).sub(subtrahend, bits);
   }
-  
+
   public Real sub(Real subtrahend, int bits, Real result)
   {
     return result.set(this).sub(subtrahend, bits);
