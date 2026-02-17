@@ -260,9 +260,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public String                                              functionName;
 
-  public boolean                                             functionNameSpecified            =
-                                                                                   false;
-
   public String                                              genericFunctionClassInternalName;
 
   public boolean                                             inAbsoluteValue                  =
@@ -270,7 +267,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public VariableNode<D, C, F>                               independentVariable;
 
-  public Stack<VariableNode<D, C, F>>                        indeterminateVariables           =
+  private Stack<VariableNode<D, C, F>>                       indeterminateVariables           =
                                                                                     new Stack<>();
 
   int                                                        currentLevel                     = 0;
@@ -395,7 +392,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     this.functionClassDescriptor          = function.descriptorString();
     this.expression                       = Parser.transformToJavaAcceptableCharacters(expression);
     this.context                          = context;
-    functionNameSpecified                 = (this.functionName = functionName) != null;
+    this.functionName                     = functionName;
 
     if (context != null && context.saveClasses)
     {
@@ -625,19 +622,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     for (VariableNode<D, C, F> var : indeterminateVariables)
     {
       // Create new VariableNode directly without calling resolveReference again
-      VariableNode<D, C, F> cloned = new VariableNode<>(expr,
-                                                        var.reference.spliceInto(expr),
-                                                        var.position,
-                                                        false); // ← resolve=false!
-      cloned.isIndeterminate = var.isIndeterminate;
-      cloned.isIndependent   = var.isIndependent;
+      VariableNode<D, C, F> cloned = var.spliceInto(this).asVariable();// VariableNode<>(expr,
+//                                                        var.reference.spliceInto(expr),
+//                                                        var.position,
+//                                                        false); // ← resolve=false!
+//      cloned.isIndeterminate = var.isIndeterminate;
+//      cloned.isIndependent   = var.isIndependent;
       expr.indeterminateVariables.push(cloned);
     }
 
-    expr.functionNameSpecified = functionNameSpecified;
-    expr.position              = position;
-    expr.character             = character;
-    expr.previousCharacter     = previousCharacter;
+    expr.position          = position;
+    expr.character         = character;
+    expr.previousCharacter = previousCharacter;
     return expr;
   }
 
@@ -2131,7 +2127,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     methodVisitor.visitCode();
 
-    String name = (functionNameSpecified && functionName != null) ? (functionName + ":") : "";
+    String name = functionName + ":";
     updateStringRepresentation();
     String arrow  = expression.contains("➔")
                   || independentVariable == null ? "" : (independentVariable.getName() + "➔");
@@ -2141,8 +2137,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (Expression.trace)
     {
-      log.debug("generateToStringMethod(): functionNameSpecified='{}' functionName='{}' independentVariable='{}' name='{}' arrow='{}' string='{}'",
-                functionNameSpecified,
+      log.debug("generateToStringMethod(): functionName='{}' independentVariable='{}' name='{}' arrow='{}' string='{}'",
                 functionName,
                 independentVariable,
                 name,
@@ -3245,13 +3240,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return node;
   }
 
-  //boolean enableMittagLefflerFunction = false;
-  
+  // boolean enableMittagLefflerFunction = false;
+
   protected Node<D, C, F> resolveFunction(int startPos, VariableReference<D, C, F> reference)
   {
     switch (reference.name)
     {
-   
+
 //    case "MittagLeffler":
 //    case "mittagleffler":
 //      if ( !enableMittagLefflerFunction )
@@ -3642,8 +3637,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       str = expression;
     }
-    if (functionName != null && !functionName.startsWith("_") && !functionName.startsWith("operand")
-                  && functionNameSpecified)
+    if (functionName != null && !functionName.startsWith("_")
+                  && !functionName.startsWith("operand"))
     {
       str = String.format("%s:%s", functionName, expression);
     }
@@ -3739,11 +3734,21 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Context getContext()
   {
-    if ( context == null)
+    if (context == null)
     {
       context = new Context();
     }
     return context;
+  }
+
+  public Collection<VariableNode<D, C, F>> getIndeterminateVariables()
+  {
+    return Collections.unmodifiableCollection(indeterminateVariables);
+  }
+
+  public void pushIndeterminateVariable(VariableNode<D, C, F> variableNode)
+  {
+    indeterminateVariables.push(variableNode);
   }
 
 }

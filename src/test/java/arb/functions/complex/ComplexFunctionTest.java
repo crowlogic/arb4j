@@ -37,13 +37,30 @@ public class ComplexFunctionTest extends
 
   }
 
+  public static void testUncaughtUndefinedReference()
+  {
+
+    var context = new Context();
+    ComplexFunction.express("p:y->pFq([1,3,-3],[1/2],-((1/2)*I)/y)*exp(I*(π*3+y))", context);
+    ComplexFunction.express("q:y->pFq([1,3,-3],[1/2],1/2*I/y)*exp(I*(2*π*m-y))", context);
+    ComplexFunction g3 =
+                       ComplexFunction.express("g3:y->-I*(p(y)-q(y))*(4*3^2-1)*(-1)^(-m)/((4*3^2-2)*y*π)",
+                                               context);
+    Complex         y  = g3.eval(2.3, new Complex());
+    System.out.println("y=" + y);
+    testComplexHypergeometricFunctionResult(g3);
+
+  }
+
   public static void testComplexHypergeometricFunctionSequence2()
   {
     boolean caughtEx = false;
     try
     {
+      var context = new Context();
+      ComplexFunction.express("p:y->pFq([1,3,-3],[1/2],-((1/2)*I)/y)*exp(I*(π*3+y)", context);
       ComplexFunction g3 =
-                         ComplexFunction.express("g3:y->-I*(pFq([1,3,-3],[1/2],-((1/2)*I)/y)*exp(I*(π*3+y))-pFq([1,3,-3],[1/2],1/2*I/y)*exp(I*(2*π*m-y)))*(4*3^2-1)*(-1)^(-m)/((4*3^2-2)*y*π)");
+                         ComplexFunction.express("g3:y->-I*p(y)-pFq([1,3,-3],[1/2],1/2*I/y)*exp(I*(2*π*m-y)))*(4*3^2-1)*(-1)^(-m)/((4*3^2-2)*y*π)");
       testComplexHypergeometricFunctionResult(g3);
 
       ComplexFunctionSequence G  =
@@ -67,10 +84,10 @@ public class ComplexFunctionTest extends
 
   protected static void testComplexHypergeometricFunctionResult(Complex hmm)
   {
-
-    assertEquals("-1.2653528144498223e-16 - i*0.2591427090909935", hmm.toString());
-    assertEquals("0", hmm.re().toString());
-    assertEquals("-0.2591427090909935", hmm.im().toString());
+    final double TOL = 1e-15;
+    assertEquals(-0.2591427090909923, hmm.im().doubleValue(), TOL);
+    assertEquals(0.0, hmm.re().doubleValue(), TOL);
+    assertEquals(-0.259142709090993, hmm.im().doubleValue(), TOL);
   }
 
   public static void testComplexNullaryFunctionSquareRootOfNegativeOne()

@@ -468,7 +468,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
         }
 
         // 2) Check indeterminates in this scope
-        for (var v : e.indeterminateVariables)
+        for (var v : e.getIndeterminateVariables())
         {
           if (ref.equals(v.reference))
           {
@@ -530,7 +530,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                 reference,
                                 expression,
                                 expression.independentVariable,
-                                expression.indeterminateVariables));
+                                expression.getIndeterminateVariables()));
       }
       isIndependent                  = true;
       expression.independentVariable = this;
@@ -613,7 +613,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
 
     // 4) New indeterminate
-    if (expression.indeterminateVariables.isEmpty() || reference.type != null)
+    if (expression.getIndeterminateVariables().isEmpty() || reference.type != null)
     {
       isIndeterminate = true;
       reference.type  = expression.coDomainType;
@@ -631,7 +631,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       throw new CompilerException(String.format("undefined variable reference '%s' in expression '%s'; existing indeterminates: %s, independent variable: %s",
                                                 reference.name,
                                                 expression.expression,
-                                                expression.indeterminateVariables,
+                                                expression.getIndeterminateVariables(),
                                                 expression.independentVariable));
     }
   }
@@ -645,11 +645,11 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                  System.identityHashCode(expression),
                                                  expression.expression,
                                                  expression.independentVariable,
-                                                 expression.indeterminateVariables,
+                                                 expression.getIndeterminateVariable(),
                                                  expression.ascendentExpression,
                                                  expression.remaining(),
                                                  expression.ascendentExpression
-                                                               != null ? expression.ascendentExpression.indeterminateVariables
+                                                               != null ? expression.ascendentExpression.getIndeterminateVariables()
                                                                        : null));
   }
 
@@ -662,7 +662,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                               System.identityHashCode(expression),
                               this,
                               expression,
-                              expression.indeterminateVariables));
+                              expression.getIndeterminateVariables()));
 
     }
     if (expression.anyAscendentIndependentVariableIsNamed(getName()))
@@ -676,15 +676,14 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                   + " or one of its ascendent(ancestor) expressions");
     }
     expression.registerReferencedVariable(this);
-    expression.indeterminateVariables.push(this);
-
+    expression.pushIndeterminateVariable(this);
     return this;
   }
 
   protected void throwNewIndeterminantVariableAlreadyDeclared()
   {
     throw new CompilerException(String.format("the inderminate variable has already been declared to be '%s' in expr#%s the so it cannot be changed to '%s' at position=%s in expr='%s'",
-                                              expression.indeterminateVariables,
+                                              expression.getIndeterminateVariables(),
                                               System.identityHashCode(expression),
                                               this,
                                               expression.position,
@@ -771,14 +770,15 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public VariableNode<D, R, F> pushThisOntoTheIndeterminantVariableStack()
   {
-    assert !expression.indeterminateVariables.contains(this) : this
-                                                               + " is already in "
-                                                               + expression.indeterminateVariables;
+    assert !expression.getIndeterminateVariables()
+                      .contains(this) : this
+                                        + " is already in "
+                                        + expression.getIndeterminateVariables();
     assert !equals(expression.independentVariable) : "cannot add "
                                                      + this
                                                      + " to indeterminate stack since it is the inependent variable";
 
-    expression.indeterminateVariables.push(this);
+    expression.pushIndeterminateVariable(this);
     return this;
   }
 

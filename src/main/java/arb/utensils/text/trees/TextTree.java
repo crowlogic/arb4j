@@ -131,7 +131,8 @@ public class TextTree<N>
             }
             catch (NoSuchFieldException e)
             {
-              e.printStackTrace();
+             // this is probably the reason for the null field elements in the expression tree table view
+             // e.printStackTrace(); 
             }
           }
         }

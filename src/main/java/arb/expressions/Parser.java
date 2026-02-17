@@ -588,8 +588,7 @@ public class Parser
                                        expression,
                                        context,
                                        functionName,
-                                       containingExpression);
-    expr.functionNameSpecified = expr.functionName != null;
+                                       containingExpression);    
 
     return expr.parseRoot(simplify);
   }
