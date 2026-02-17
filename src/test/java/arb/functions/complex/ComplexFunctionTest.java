@@ -37,22 +37,20 @@ public class ComplexFunctionTest extends
 
   }
 
-  public static void testSequence2()
+  public static void testComplexHypergeometricFunctionSequence2()
   {
     boolean caughtEx = false;
     try
     {
-      var context = new Context();
+      ComplexFunction g3 =
+                         ComplexFunction.express("g3:y->-I*(pFq([1,3,-3],[1/2],-((1/2)*I)/y)*exp(I*(π*3+y))-pFq([1,3,-3],[1/2],1/2*I/y)*exp(I*(2*π*m-y)))*(4*3^2-1)*(-1)^(-m)/((4*3^2-2)*y*π)");
+      testComplexHypergeometricFunctionResult(g3);
 
-      ComplexFunctionSequence G       =
-            ComplexFunctionSequence.express("G:m->-I*(pFq([1,m,-m],[1/2],-((1/2)*I)/y)*exp(I*(π*m+y))-pFq([1,m,-m],[1/2],((1/2)*I)/y)*exp(I*(2*π*m-y)))*(4*m^2-1)*(-1)^(-m)/((4*m^2-2)*y*π)",
-                                            context);
-      ComplexFunction         x       = G.evaluate(3, 128);
+      ComplexFunctionSequence G  =
+                                ComplexFunctionSequence.express("G:m->-I*(pFq([1,m,-m],[1/2],-((1/2)*I)/y)*exp(I*(π*m+y))-pFq([1,m,-m],[1/2],((1/2)*I)/y)*exp(I*(2*π*m-y)))*(4*m^2-1)*(-1)^(-m)/((4*m^2-2)*y*π)");
+      ComplexFunction         G3 = G.evaluate(3, 128);
 
-      var hmm     = x.eval(2.3, new Complex());
-      assertEquals("-1.2653528144498223e-16 - i*0.2591427090909935",hmm.toString());
-      assertEquals("0", hmm.re().toString()); 
-      assertEquals("-0.2591427090909935", hmm.im().toString());      
+      testComplexHypergeometricFunctionResult(G3);
     }
     catch (CompilerException ce)
     {
@@ -60,6 +58,19 @@ public class ComplexFunctionTest extends
       ce.printStackTrace();
     }
     assertFalse(caughtEx);
+  }
+
+  protected static void testComplexHypergeometricFunctionResult(ComplexFunction g3)
+  {
+    testComplexHypergeometricFunctionResult(g3.eval(2.3, new Complex()));
+  }
+
+  protected static void testComplexHypergeometricFunctionResult(Complex hmm)
+  {
+
+    assertEquals("-1.2653528144498223e-16 - i*0.2591427090909935", hmm.toString());
+    assertEquals("0", hmm.re().toString());
+    assertEquals("-0.2591427090909935", hmm.im().toString());
   }
 
   public static void testComplexNullaryFunctionSquareRootOfNegativeOne()

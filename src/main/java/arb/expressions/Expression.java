@@ -263,9 +263,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public boolean                                             functionNameSpecified            =
                                                                                    false;
 
-  public HashMap<Node<D, C, F>, String>                      generatedNodes                   =
-                                                                            new HashMap<>();
-
   public String                                              genericFunctionClassInternalName;
 
   public boolean                                             inAbsoluteValue                  =

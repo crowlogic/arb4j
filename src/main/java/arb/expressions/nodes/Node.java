@@ -647,32 +647,37 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return expression.newLiteralConstant(2);
   }
 
+  /**
+   * When {@link #isResult} the result parameter is already on the stack as the
+   * target Just cast it to the correct type - don't call
+   * generateSetResultInvocation
+   * 
+   * @param mv
+   * @param resultType
+   * @return
+   */
   public boolean loadOutput(MethodVisitor mv, Class<?> resultType)
   {
-    try
+    if (isResult)
     {
-      if (isResult)
-      {
-        // When isResult=true, the result parameter is already on the stack as the
-        // target
-        // Just cast it to the correct type - don't call generateSetResultInvocation
-        Compiler.cast(loadResultParameter(mv), resultType);
-        fieldName = "result";
-      }
-      else
-      {
-        if (fieldName == null)
-        {
-          fieldName = expression.allocateIntermediateVariable(mv, resultType);
-        }
-        return true;
-      }
-      return false;
+      // When isResult=true, the result parameter is already on the stack as the
+      // target. Just cast it to the correct type - don't call
+      // generateSetResultInvocation
+      Compiler.cast(loadResultParameter(mv), resultType);
+      fieldName = "result";
     }
-    finally
+    else
     {
-      expression.generatedNodes.put(this, fieldName);
+      // otherwise theres nothing there to hold it so allocate some space for it and
+      // set the field name that references the allocated space
+      if (fieldName == null)
+      {
+        fieldName = expression.allocateIntermediateVariable(mv, resultType);
+      }
+      return true;
     }
+    return false;
+
   }
 
   /**
