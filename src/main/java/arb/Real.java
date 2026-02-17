@@ -161,6 +161,69 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
     }
   }
 
+
+	private Real      lowerBound;
+	private Real      upperBound;
+	private boolean   lowerBoundInclusive;
+	private boolean   upperBoundInclusive;
+
+	/**
+	 * Set arbitrary-precision bounds on this variable.
+	 * 
+	 * @param lower          lower bound as a {@link Real}
+	 * @param lowerInclusive true if the lower bound is closed (inclusive)
+	 * @param upper          upper bound as a {@link Real}
+	 * @param upperInclusive true if the upper bound is closed (inclusive)
+	 * @return this
+	 */
+	public Real setBounds(Real lower, boolean lowerInclusive, Real upper, boolean upperInclusive)
+	{
+	  this.lowerBound          = lower;
+	  this.lowerBoundInclusive = lowerInclusive;
+	  this.upperBound          = upper;
+	  this.upperBoundInclusive = upperInclusive;
+	  return this;
+	}
+
+	/**
+	 * Convenience overload accepting int bounds which are converted to
+	 * {@link Real}.
+	 * 
+	 * @param lower          lower bound as an int
+	 * @param lowerInclusive true if the lower bound is closed (inclusive)
+	 * @param upper          upper bound as an int
+	 * @param upperInclusive true if the upper bound is closed (inclusive)
+	 * @return this
+	 */
+	public Real setBounds(int lower, boolean lowerInclusive, int upper, boolean upperInclusive)
+	{
+	  return setBounds(Real.valueOf(lower), lowerInclusive, Real.valueOf(upper), upperInclusive);
+	}
+
+	@Override
+	public Real lowerBound()
+	{
+	  return lowerBound;
+	}
+
+	@Override
+	public Real upperBound()
+	{
+	  return upperBound;
+	}
+
+	@Override
+	public boolean lowerBoundInclusive()
+	{
+	  return lowerBoundInclusive;
+	}
+
+	@Override
+	public boolean upperBoundInclusive()
+	{
+	  return upperBoundInclusive;
+	}
+		
   private static final long serialVersionUID = 1L;
 
   public Complex cot(int prec, Complex result)

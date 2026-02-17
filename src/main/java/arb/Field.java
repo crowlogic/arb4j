@@ -26,6 +26,46 @@ public interface Field<X extends Field<X>> extends
                       Iterable<X>,
                       Ring<X>
 {
+  /**
+   * Lower bound of this variable's constraint, or null if unconstrained below.
+   */
+  public default X lowerBound()
+  {
+    return null;
+  }
+
+  /**
+   * Upper bound of this variable's constraint, or null if unconstrained above.
+   */
+  public default X upperBound()
+  {
+    return null;
+  }
+
+  /**
+   * Whether the lower bound is inclusive (closed).
+   */
+  public default boolean lowerBoundInclusive()
+  {
+    return false;
+  }
+
+  /**
+   * Whether the upper bound is inclusive (closed).
+   */
+  public default boolean upperBoundInclusive()
+  {
+    return false;
+  }
+
+  /**
+   * Whether this variable has an explicit constraint set.
+   */
+  public default boolean isBounded()
+  {
+    return lowerBound() != null || upperBound() != null;
+  }
+
   public X additiveIdentity();
 
   public X multiplicativeIdentity();
