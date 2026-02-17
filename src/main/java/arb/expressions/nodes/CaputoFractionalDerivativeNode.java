@@ -248,11 +248,10 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
          Node<D, R, F>
          substitute(String variable, Node<E, S, G> arg)
   {
-    Node<D, R, F> newPower   = exponent.substitute(variable, arg);
-    Node<D, R, F> newOperand = operand.substitute(variable, arg);
-    return new CaputoFractionalDerivativeNode<>(expression,
-                                                newPower,
-                                                newOperand);
+    exponent   = exponent.substitute(variable, arg);
+    operand    = operand.substitute(variable, arg);
+    resultNode = operand.fractionalDerivative(exponent);
+    return this;
   }
 
   @Override
