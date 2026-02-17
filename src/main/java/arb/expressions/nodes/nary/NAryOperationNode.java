@@ -907,7 +907,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
     return String.format("%s%s{%s=%s…%s}",
                          symbol,
-                         operand != null ? operand.toString() : operandExpressionString,
+                         operandExpressionString,
                          indexVariableFieldName,
                          lowerLimit,
                          upperLimit);

@@ -344,22 +344,16 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
      */
     if (!fullyEvaluated)
     {
-      throw new CompilerException("Cannot generate code for unevaluated integral: ∫"
-                                  + integrandNode
-                                  + " d"
-                                  + integrationVariableName
-                                  + (isDefiniteIntegral() ? " over ["
-                                                            + lowerLimitNode
-                                                            + ", "
-                                                            + upperLimitNode
-                                                            + "]"
-                                                          : "")
-                                  + " with "
-                                  + expression.context
-                                  + " where this="
+      StringBuilder exprString = new StringBuilder();
+      expression.accept(asc -> exprString.append(asc.toString() + " => "));
+      throw new CompilerException("Cannot generate code for unevaluated integral: this="
                                   + this
                                   + " in "
-                                  + expression);
+                                  + expression
+                                  + " with context "
+                                  + expression.context
+                                  + " where "
+                                  + exprString);
     }
 
     return isDefiniteIntegral() ? generateDefiniteIntegral(mv, resultType)
