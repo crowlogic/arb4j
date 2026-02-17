@@ -352,7 +352,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
                                                             + ", "
                                                             + upperLimitNode
                                                             + "]"
-                                                          : ""));
+                                                          : "") + " with " + expression.context);
     }
 
     return isDefiniteIntegral() ? generateDefiniteIntegral(mv, resultType)
