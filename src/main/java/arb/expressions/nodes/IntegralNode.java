@@ -56,8 +56,9 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   /**
    * This flag is the semantic state of the node.
    *
-   * fullyEvaluated == true  => indefiniteIntegralNode is a concrete antiderivative (NOT an IntegralNode)
-   * fullyEvaluated == false => this node is an unevaluated integral; it must not recurse during codegen
+   * fullyEvaluated == true => indefiniteIntegralNode is a concrete antiderivative
+   * (NOT an IntegralNode) fullyEvaluated == false => this node is an unevaluated
+   * integral; it must not recurse during codegen
    */
   boolean                                    fullyEvaluated = false;
 
@@ -249,10 +250,10 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     }
 
     /*
-     * Semantic rule:
-     * - If integrate() produces an IntegralNode, that is not an evaluated antiderivative.
-     *   Mark this integral unevaluated and DO NOT recurse into codegen via that node.
-     * - Otherwise, we have a concrete antiderivative; simplify and mark evaluated.
+     * Semantic rule: - If integrate() produces an IntegralNode, that is not an
+     * evaluated antiderivative. Mark this integral unevaluated and DO NOT recurse
+     * into codegen via that node. - Otherwise, we have a concrete antiderivative;
+     * simplify and mark evaluated.
      */
     if (rawIntegral instanceof IntegralNode)
     {
@@ -336,10 +337,10 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     ensureIndefiniteIntegralNode();
 
     /*
-     * Root-level recursion fix:
-     * IntegralNode is not allowed to recurse into generating another IntegralNode that
-     * exists only because symbolic integration returned an unevaluated integral.
-     * If not fully evaluated, fail here deterministically instead of infinite recursion.
+     * Root-level recursion fix: IntegralNode is not allowed to recurse into
+     * generating another IntegralNode that exists only because symbolic integration
+     * returned an unevaluated integral. If not fully evaluated, fail here
+     * deterministically instead of infinite recursion.
      */
     if (!fullyEvaluated)
     {
@@ -352,7 +353,13 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
                                                             + ", "
                                                             + upperLimitNode
                                                             + "]"
-                                                          : "") + " with " + expression.context);
+                                                          : "")
+                                  + " with "
+                                  + expression.context
+                                  + " where this="
+                                  + this
+                                  + " in "
+                                  + expression);
     }
 
     return isDefiniteIntegral() ? generateDefiniteIntegral(mv, resultType)
@@ -402,8 +409,8 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     ensureIndefiniteIntegralNode();
 
     /*
-     * A definite integral is evaluated via FTC here, which requires an antiderivative.
-     * If not fullyEvaluated, there is no symbolic evaluation path.
+     * A definite integral is evaluated via FTC here, which requires an
+     * antiderivative. If not fullyEvaluated, there is no symbolic evaluation path.
      */
     if (!fullyEvaluated)
     {
@@ -686,8 +693,9 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
     // Bound variable (binder) rules:
     // - Never substitute into the binding site itself (integrationVariableNode).
-    // - If substitution targets the bound variable name, do not substitute in the integrand
-    //   because the bound variable shadows it.
+    // - If substitution targets the bound variable name, do not substitute in the
+    // integrand
+    // because the bound variable shadows it.
     if (!variable.equals(integrationVariableName))
     {
       integrandNode = integrandNode.substitute(variable, arg);
@@ -707,11 +715,11 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   {
     if (!fullyEvaluated)
     {
-      return isDefiniteIntegral() ? String.format("∫%sd%s over %s..%s",
+      return isDefiniteIntegral() ? String.format("∫%sd%s∈(%s,%s)",
                                                   integrandNode.toString(),
                                                   integrationVariableNode.getName(),
-                                                  upperLimitNode,
-                                                  lowerLimitNode)
+                                                  lowerLimitNode,
+                                                  upperLimitNode)
                                   : String.format("∫%sd%s",
                                                   integrandNode.toString(),
                                                   integrationVariableNode.getName());
