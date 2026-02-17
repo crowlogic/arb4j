@@ -9,6 +9,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import arb.Field;
 import arb.Integer;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -30,13 +31,15 @@ import arb.functions.real.RealFunction;
  * 
  * where n = ⌈α⌉.
  * 
+ * At construction time, if the exponent variable (α) has bounds set via
+ * {@link Field#upperBound()}, n is resolved at compile time by computing
+ * ⌈upperBound⌉. For α ∈ (0, 1], n = 1 and only first derivatives are emitted.
+ * Higher orders (n > 1) throw {@link UnsupportedOperationException}.
+ * 
  * Rather than emitting custom bytecode, this node rewrites itself into an AST
  * composed of existing node types ({@link IntegralNode}, multiplication,
  * division, Γ, power, etc.) and delegates {@link #generate} entirely to the
- * rewritten tree. The rewriting happens in {@link #rewrite()}.
- *
- * Parsing expects: Đ^(alpha)operand — the 'Đ' has already been consumed by
- * {@link Expression#evaluateOperand()}, which constructs this node.
+ * rewritten tree.
  *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
@@ -68,6 +71,11 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
 
   private Expression<?, ?, ?> integrandExpression;
 
+  /**
+   * The integer derivative order n = ⌈α⌉ resolved at compile time from bounds.
+   */
+  private int                 derivativeOrder;
+
   public CaputoFractionalDerivativeNode(Expression<D, R, F> expression)
   {
     this(expression,
@@ -85,10 +93,18 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     super(expression);
     this.exponent = power;
     this.operand  = operand;
-
     this.context  = expression.getContext();
-    //context.registerVariable(Real.named("α"));
-    context.registerVariable(Integer.named("n"));
+
+    this.derivativeOrder = resolveDerivativeOrder(power, context);
+
+    if (derivativeOrder > 1)
+    {
+      throw new UnsupportedOperationException(String.format("Caputo fractional derivative with n = ⌈α⌉ = %d > 1 "
+                    + "is not yet supported. Only α ∈ (0, 1] (n = 1) is currently implemented.",
+                                                             derivativeOrder));
+    }
+
+    context.registerVariable(Integer.named("n").set(derivativeOrder));
     context.registerFunctionMapping("f",
                                     expression.domainType,
                                     expression.coDomainType,
@@ -96,11 +112,14 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     Class<?> scalarType = scalarType(expression.domainType);
     if (scalarType == Real.class)
     {
+      assert derivativeOrder == 1 : "only n=1 is implemented";
 
+      // n=1: integrand is (x-t)^(-α) * f'(t) 
+      // since n-α-1 = 1-α-1 = -α and f^(1)(t) = ∂f(t)/∂t
       this.integrandExpression = Function.parse(Real.class,
                                                 RealFunction.class,
                                                 RealFunctional.class,
-                                                "g:x➔t➔(x-t)^(n-α-1)*∂f(t)/∂tⁿ",
+                                                "g:x➔t➔(x-t)^(-α)*∂f(t)/∂t",
                                                 context,
                                                 expression,
                                                 false);
@@ -110,14 +129,90 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
       throw new UnsupportedOperationException("todo: support  " + scalarType);
     }
 
+    // x➔∫t➔g(x)(t)dt∈(0,x)/Γ(1-α)
     this.integralExpression = Function.parse(expression.domainType,
                                              expression.coDomainType,
                                              expression.functionClass,
-                                             "x➔∫t➔g(x)(t)dt∈(0,x)/Γ(n-α)",
+                                             "x➔∫t➔g(x)(t)dt∈(0,x)/Γ(1-α)",
                                              context);
     this.integralExpression.substitute("f", integralExpression.rootNode);
 
     this.integralNode = integralExpression.rootNode;
+  }
+
+  /**
+   * Resolve n = ⌈α⌉ at compile time from the bounds on the exponent variable.
+   * 
+   * If the exponent is a variable reference whose value in the context has bounds
+   * set, compute ⌈upperBound⌉. Otherwise, if the exponent is a literal constant,
+   * compute ⌈literal⌉ directly.
+   * 
+   * @param power   the exponent node
+   * @param context the expression context
+   * @return the integer n = ⌈α⌉
+   * @throws IllegalStateException if the derivative order cannot be determined
+   */
+  private static <D, R, F extends Function<? extends D, ? extends R>> int
+          resolveDerivativeOrder(Node<D, R, F> power, Context context)
+  {
+    // Case 1: exponent is a variable reference — check its bounds
+    if (power instanceof VariableNode)
+    {
+      String varName = power.toString();
+      Object varObj  = context.variables.get(varName);
+      if (varObj instanceof Real αReal)
+      {
+        if (αReal.isBounded())
+        {
+          Real ub = αReal.upperBound();
+          assert ub != null : "α is bounded but has null upperBound";
+          try (Integer ceil = new Integer())
+          {
+            ub.ceil(128, ceil);
+            int n = ceil.getSignedValue();
+            if (logger.isDebugEnabled())
+            {
+              logger.debug("resolved n = ⌈upperBound(α)⌉ = ⌈{}⌉ = {} from bounds on variable '{}'",
+                           ub,
+                           n,
+                           varName);
+            }
+            return n;
+          }
+        }
+        else
+        {
+          throw new IllegalStateException(String.format("Caputo derivative exponent variable '%s' has no bounds set. "
+                        + "Set bounds via setBounds() so that n = ⌈α⌉ can be resolved at compile time. "
+                        + "Example: Real.named(\"α\").set(\"0.5\", 128).setBounds(0, false, 1, true)",
+                                                         varName));
+        }
+      }
+    }
+
+    // Case 2: exponent is a literal constant — compute ceil directly
+    if (power instanceof LiteralConstantNode)
+    {
+      String literalStr = power.toString();
+      try (Real literalVal = new Real(literalStr,
+                                      128);
+           Integer ceil = new Integer())
+      {
+        literalVal.ceil(128, ceil);
+        int n = ceil.getSignedValue();
+        if (logger.isDebugEnabled())
+        {
+          logger.debug("resolved n = ⌈{}⌉ = {} from literal exponent", literalStr, n);
+        }
+        return n;
+      }
+    }
+
+    throw new IllegalStateException("Cannot resolve Caputo derivative order n = ⌈α⌉ at compile time. "
+                  + "The exponent must be either a bounded variable or a literal constant. Got: "
+                  + power.getClass().getSimpleName()
+                  + " = "
+                  + power);
   }
 
   @Override

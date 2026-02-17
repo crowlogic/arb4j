@@ -40,7 +40,7 @@ public class Integer implements
                      Closeable,
                      Comparable<Integer>,
                      Ring<Integer>,
-                     Named
+                     NamedField<Integer>
 {
   public static int BYTES = Long.BYTES;
 
@@ -1297,6 +1297,34 @@ public class Integer implements
   public Real Γ(int bits, Real result)
   {
     return result.set(this).Γ(bits);
+  }
+
+  @Override
+  public int bits()
+  {
+    assert false : "Field<Integer>.bits has yet to be implemented as of Feb 16, 2026 4:05:30 PM";
+    return 0;
+  }
+
+  @Override
+  public Integer div(int j, int prec, Integer result)
+  {
+    assert false : "Field<Integer>.div has yet to be implemented as of Feb 16, 2026 4:05:30 PM";
+    return null;
+  }
+
+  @Override
+  public Integer mul(int x, int prec, Integer result)
+  {
+    assert false : "Field<Integer>.mul has yet to be implemented as of Feb 16, 2026 4:05:30 PM";
+    return null;
+  }
+
+  @Override
+  public Integer zero()
+  {
+    assert false : "Field<Integer>.zero has yet to be implemented as of Feb 16, 2026 4:05:30 PM";
+    return null;
   }
 
 }
