@@ -187,11 +187,6 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
     }
   }
     
-  public RealPolynomial set(String string)
-  {
-    RealPolynomialNullaryFunction.express(string).evaluate(bits, this);
-    return this;
-  }  
       
   public RealPolynomial become(RealPolynomial that)
   {
@@ -429,10 +424,14 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
     }
   }
 
+  public RealPolynomial set(String string)
+  {
+    return RealPolynomialNullaryFunction.express(string).evaluate(bits, this);
+  }  
+
   public RealPolynomial set(String string, Context context)
   {
-    RealPolynomialNullaryFunction.express(string,context).evaluate(bits, this);
-    return this;
+    return RealPolynomialNullaryFunction.express(string,context).evaluate(bits, this);
   }
   
   public RealPolynomial add(Real addend, int bits)
