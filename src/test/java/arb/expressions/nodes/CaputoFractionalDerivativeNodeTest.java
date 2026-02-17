@@ -2,6 +2,7 @@ package arb.expressions.nodes;
 
 import arb.Real;
 import arb.expressions.Context;
+import arb.expressions.Expression;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
@@ -21,6 +22,82 @@ public class CaputoFractionalDerivativeNodeTest extends
 {
   private static final double TOL = 1e-10;
 
+  /**
+   * substitute() must return this (the same object reference), not a newly
+   * allocated node. Every other Node subclass follows this contract. A violation
+   * means any parent node holding a reference to this node becomes stale after
+   * substitution.
+   */
+  public void testSubstituteReturnsSameInstance()
+  {
+    var context = new Context(Real.named("α").set("0.5", 128).setBounds(0, false, 1, true));
+
+    @SuppressWarnings("unchecked")
+    Expression<Real, Real, RealFunction> expr =
+      (Expression<Real, Real, RealFunction>) RealFunction.parse("Đ^(α)(t²)", context);
+
+    var root = expr.rootNode;
+    assertTrue("root should be a CaputoFractionalDerivativeNode",
+               root instanceof CaputoFractionalDerivativeNode);
+
+    var before = root;
+    var after  = root.substitute("nonexistent_variable", expr.newLiteralConstant(42));
+
+    assertSame("substitute() must return this for fluent API contract; "
+               + "got a different object which means parent references are now stale",
+               before,
+               after);
+  }
+
+  /**
+   * After spliceInto a new Expression, the spliced node's fieldName must be null
+   * so the target expression's generate() pass allocates its own intermediate
+   * variables. A non-null fieldName from the source expression refers to a field
+   * that does not exist in the target class.
+   */
+  public void testSpliceIntoClearsFieldName()
+  {
+    var context = new Context(Real.named("α").set("0.5", 128).setBounds(0, false, 1, true));
+
+    @SuppressWarnings("unchecked")
+    Expression<Real, Real, RealFunction> sourceExpr =
+      (Expression<Real, Real, RealFunction>) RealFunction.parse("Đ^(α)(t)", context);
+
+    // Simulate a fieldName having been set during a prior generate() pass
+    sourceExpr.rootNode.fieldName = "staleField1";
+
+    @SuppressWarnings("unchecked")
+    Expression<Real, Real, RealFunction> targetExpr =
+      (Expression<Real, Real, RealFunction>) RealFunction.parse("t", context);
+
+    var spliced = sourceExpr.rootNode.spliceInto(targetExpr);
+
+    assertNull("spliceInto must not carry fieldName from source expression; "
+               + "the target expression will allocate its own during generate()",
+               spliced.fieldName);
+  }
+
+  /**
+   * End-to-end: a CaputoFractionalDerivativeNode embedded in a sum should survive
+   * substitution with the parent's references remaining valid.
+   */
+  public void testSubstituteInSumPreservesTreeIntegrity()
+  {
+    var    context  = new Context(Real.named("α").set("0.5", 128).setBounds(0, false, 1, true));
+    var    f        = RealFunction.express("Đ^(α)(t)+t", context);
+    var    result   = f.evaluate(new Real("1.0",
+                                          128),
+                                 1,
+                                 128,
+                                 new Real());
+    double dHalfT   = 2.0 / Math.sqrt(Math.PI);
+    double expected = dHalfT + 1.0;
+    assertEquals("Đ^(½)(t)+t at t=1 must work after tree construction",
+                 expected,
+                 result.doubleValue(),
+                 1e-10);
+  }
+  
   public void testCaputoDerivativeOfConstantIsZero()
   {
     var context = new Context(Real.named("α").set("0.5", 128).setBounds(0, false, 1, true));
