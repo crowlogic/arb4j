@@ -11,10 +11,18 @@ import junit.framework.TestCase;
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
  */
-@SuppressWarnings({"unused"})
+@SuppressWarnings(
+{ "unused" })
 public class DerivativeNodeTest extends
                                 TestCase
 {
+  public void test2ndDerivative()
+  {
+    var f = RealFunction.express("diff(sin(t),t²)");
+    var g = RealFunction.express("-sin(t)");
+    assertEquals(g.toString(), f.toString());
+  }
+
   public void testFirstDerivativeViaCombiningDotAboveCharacter()
   {
     final Context      context = new Context();
@@ -121,25 +129,24 @@ public class DerivativeNodeTest extends
     var y = g.eval(2.3);
     assertEquals(x, y);
   }
-  
+
   public void testComplexCotangentDerivative()
   {
     var f = ComplexFunction.express("∂cot(x)/∂x");
     var g = ComplexFunction.express("(-1)-cot(x)^2");
-    var x = f.eval(2.3,new Complex());
-    var y = g.eval(2.3,new Complex());
+    var x = f.eval(2.3, new Complex());
+    var y = g.eval(2.3, new Complex());
     assertEquals(x, y);
   }
-  
+
   public void testComplexCotangentDerivativeFuncSyntax()
   {
     var f = ComplexFunction.express("diff(cot(x),x)");
     var g = ComplexFunction.express("(-1)-cot(x)^2");
-    var x = f.eval(2.3,new Complex());
-    var y = g.eval(2.3,new Complex());
+    var x = f.eval(2.3, new Complex());
+    var y = g.eval(2.3, new Complex());
     assertEquals(x, y);
   }
-  
 
   public void testCosecantDerivative()
   {

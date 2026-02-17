@@ -335,6 +335,49 @@ public interface Function<D, CO> extends
                  true);
   }
 
+  public static <D, H, Q extends Function<? extends D, ? extends H>>
+         Expression<D, H, Q>
+         parse(Class<? extends D> domainClass,
+               Class<? extends H> coDomainClass,
+               Class<? extends Q> functionClass,
+               String expression,
+               Context context,
+               Expression<?, ?, ?> containingExpression)
+  {
+    String hashString = Parser.hashString(expression);
+    return parse(hashString,
+                 expression,
+                 context,
+                 domainClass,
+                 coDomainClass,
+                 functionClass,
+                 null,
+                 containingExpression,
+                 true);
+  }
+
+  public static <D, H, Q extends Function<? extends D, ? extends H>>
+         Expression<D, H, Q>
+         parse(Class<? extends D> domainClass,
+               Class<? extends H> coDomainClass,
+               Class<? extends Q> functionClass,
+               String expression,
+               Context context,
+               Expression<?, ?, ?> containingExpression,
+               boolean simplify)
+  {
+    String hashString = Parser.hashString(expression);
+    return parse(hashString,
+                 expression,
+                 context,
+                 domainClass,
+                 coDomainClass,
+                 functionClass,
+                 null,
+                 containingExpression,
+                 simplify);
+  }
+
   public static <D,
                 H,
                 Q extends Function<? extends D, ? extends H>,

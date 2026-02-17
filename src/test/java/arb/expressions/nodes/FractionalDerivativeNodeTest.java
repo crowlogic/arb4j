@@ -16,7 +16,7 @@ public class FractionalDerivativeNodeTest extends
   public static void testParseFractionalDerivative()
   {
     var expr = RealFunction.parse("t➔Đ^(1/2)sin(t)");
-    System.out.println( expr.inspect(null));
+    System.out.println( "expr=\n" + expr.inspect(null));
     
     var f = expr.instantiate();
     System.out.println( expr + " = " + f );

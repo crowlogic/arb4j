@@ -75,7 +75,22 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public String toString()
   {
-    return derivative.toString();
+    if (evaluated)
+    {
+
+      return derivative.toString();
+    }
+    else
+    {
+      if (order != null)
+      {
+        return String.format("diff(%s,%s^(%s))", operand, variable, order);
+      }
+      else
+      {
+        return String.format("diff(%s,%s)", operand, variable);
+      }
+    }
   }
 
   public Node<D, R, F>         operand;
@@ -124,8 +139,15 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
 
     parseVariableAndOrderOfDifferentation(expression.resolve(), functionForm);
 
-    derivative = operand.differentiate(variable).simplify();
-    evaluated  = true;
+    if (order == null)
+    {
+      derivative = operand.differentiate(variable).simplify();
+      evaluated  = true;
+    }
+    else
+    {
+      throw new UnsupportedOperationException("TODO: implement derivative of order " + order);
+    }
   }
 
   protected void parseVariableAndOrderOfDifferentation(Node<D, R, F> baseVariableNode,
@@ -134,10 +156,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
     if (baseVariableNode.isVariable())
     {
       variable = baseVariableNode.asVariable();
-      if (functionForm)
-      {
-        expression.require(')');
-      }
+
     }
     else if (baseVariableNode instanceof ExponentiationNode<D, R, F> expNode)
     {
@@ -151,6 +170,10 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
                                            + " of type "
                                            + order.type();
 
+    }
+    if (functionForm)
+    {
+      expression.require(')');
     }
   }
 

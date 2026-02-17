@@ -261,7 +261,7 @@ public class ExpressionTest extends
    */
   public static void testNoNullGeneratedTypesInExpressionAST()
   {
-    var F = RealFunction.parse("√(π)*Γ(3/4)*J(1/4,|s|)*2^(1/4)/|s|^(1/4)");
+    var F = RealFunction.parse("s->√(π)*Γ(¾)*J(¼,|s|)*2^¼/|s|^¼");
     var f = F.instantiate();
     f.evaluate(new Real("3", 128), 1, 128, new Real());
     String inspection = F.inspect(f).toString();

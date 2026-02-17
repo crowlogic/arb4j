@@ -85,11 +85,14 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     super(expression);
     this.exponent = power;
     this.operand  = operand;
-    
+
     this.context  = expression.getContext();
     context.registerVariable(Real.named("α"));
     context.registerVariable(Integer.named("n"));
-    
+    context.registerFunctionMapping("f",
+                                    expression.domainType,
+                                    expression.coDomainType,
+                                    expression.functionClass);
     Class<?> scalarType = scalarType(expression.domainType);
     if (scalarType == Real.class)
     {
@@ -97,22 +100,20 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
       this.integrandExpression = Function.parse(Real.class,
                                                 RealFunction.class,
                                                 RealFunctional.class,
-                                                "t➔x➔(x-t)^(n-α-1)*∂f(t)/∂tⁿ",
-                                                context);
+                                                "g:x➔t➔(x-t)^(n-α-1)*∂f(t)/∂tⁿ",
+                                                context,
+                                                expression,
+                                                false);
     }
     else
     {
       throw new UnsupportedOperationException("todo: support  " + scalarType);
     }
-    context.registerFunctionMapping("f",
-                                    expression.domainType,
-                                    expression.coDomainType,
-                                    expression.functionClass);
 
     this.integralExpression = Function.parse(expression.domainType,
                                              expression.coDomainType,
                                              expression.functionClass,
-                                             "t➔1/Γ(n-α)*∫x➔(x-t)^(n-α-1)*∂f(t)/∂tⁿdx",
+                                             "x➔∫t➔g(x)(t)dt∈(0,x)/Γ(n-α)",
                                              context);
     this.integralExpression.substitute("f", integralExpression.rootNode);
 
