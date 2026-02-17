@@ -1,0 +1,53 @@
+𝐓𝐡𝐞 𝐂𝐨𝐝𝐞𝐱 𝐨𝐟 𝐃𝐢𝐠𝐢𝐭𝐚𝐥 𝐀𝐥𝐜𝐡𝐞𝐦𝐲
+The Acolytes of the Compiler
+
+
+𝟏  𝐓𝐡𝐞 𝐒𝐚𝐜𝐫𝐞𝐝 𝐑𝐞𝐯𝐞𝐥𝐚𝐭𝐢𝐨𝐧
+
+In the primordial void of code, where symbols slumber in strings, the Great
+Compiler descended as Architect of Reality. Behold the transmutation: Abstract
+Syntax Tree into executable Java flesh, forged by ASM's unerring hand. No mere
+interpreter plods through nodes; the Compiler births bespoke classes, vessels of
+pure computation.
+
+
+𝟐  𝐓𝐡𝐞 𝐇𝐨𝐥𝐲 𝐓𝐫𝐢𝐧𝐢𝐭𝐲
+
+  • 𝐏𝐚𝐫𝐬𝐞𝐫, 𝐭𝐡𝐞 𝐒𝐡𝐚𝐦𝐚𝐧: Interprets sacred texts of runes—Unicode glyphs,
+    operators, precedence laws—into the living AST organism.
+
+  • 𝐂𝐨𝐦𝐩𝐢𝐥𝐞𝐫, 𝐭𝐡𝐞 𝐀𝐫𝐜𝐡𝐢𝐭𝐞𝐜𝐭: Wields ASM chisel on JVM fabric, emitting
+    bytecode symphonies: fields declared, constructors invoked, 𝚎𝚟𝚊𝚕𝚞𝚊𝚝𝚎()
+    hearts pulsing with node-generated opcodes.
+
+  • 𝐄𝐱𝐩𝐫𝐞𝐬𝐬𝐢𝐨𝐧, 𝐭𝐡𝐞 𝐔𝐧𝐢𝐯𝐞𝐫𝐬𝐞: Central orb, generics 𝙴𝚡𝚙𝚛𝚎𝚜𝚜𝚒𝚘𝚗<𝙳,𝙲,𝙵>,
+    supplier of instantiated divinities via 𝚌𝚘𝚖𝚙𝚒𝚕𝚎()'s final incantation.
+
+
+𝟑  𝐓𝐡𝐞 𝐑𝐢𝐭𝐮𝐚𝐥 𝐨𝐟 𝐂𝐫𝐞𝐚𝐭𝐢𝐨𝐧
+
+Invoke thus:
+
+    𝙴𝚡𝚙𝚛𝚎𝚜𝚜𝚒𝚘𝚗<𝚁𝚎𝚊𝚕, 𝚁𝚎𝚊𝚕𝙿𝚘𝚕𝚢𝚗𝚘𝚖𝚒𝚊𝚕, 𝚁𝚎𝚊𝚕𝙿𝚘𝚕𝚢𝚗𝚘𝚖𝚒𝚊𝚕𝚂𝚎𝚚𝚞𝚎𝚗𝚌𝚎> 𝚃 =
+        𝙴𝚡𝚙𝚛𝚎𝚜𝚜𝚒𝚘𝚗.𝚌𝚘𝚖𝚙𝚒𝚕𝚎("𝚃(𝚗)↦𝚠𝚑𝚎𝚗(𝚗=𝟶,𝟷,𝚗=𝟷,𝚡,𝚎𝚕𝚜𝚎,𝟸*𝚡*𝚃(𝚗-𝟷)-𝚃(𝚗-𝟸))");
+    𝚁𝚎𝚊𝚕𝙿𝚘𝚕𝚢𝚗𝚘𝚖𝚒𝚊𝚕𝚂𝚎𝚚𝚞𝚎𝚗𝚌𝚎 𝚜𝚎𝚚 = 𝚃.𝚐𝚎𝚝().𝚒𝚗𝚒𝚝𝚒𝚊𝚕𝚒𝚣𝚎(𝟼𝟺);
+
+The AST awakens: 𝙰𝚍𝚍𝚒𝚝𝚒𝚘𝚗𝙽𝚘𝚍𝚎 summons 𝙸𝙽𝚅𝙾𝙺𝙴𝚅𝙸𝚁𝚃𝚄𝙰𝙻 𝚊𝚍𝚍,
+𝙳𝚎𝚛𝚒𝚟𝚊𝚝𝚒𝚟𝚎𝙽𝚘𝚍𝚎 rewrites subtrees via symbolic genesis. Bytecode emerges
+pristine—no source cruft, stack frames auto-oracled.
+
+
+𝟒  𝐂𝐫𝐞𝐞𝐝 𝐨𝐟 𝐄𝐟𝐟𝐢𝐜𝐢𝐞𝐧𝐜𝐲
+
+Heretics cling to interpreters, overhead their curse. Faithful compile once:
+bytecode tailored, recursion fluent, resources AutoCloseable. Constants fold,
+commons subexpressed, transcendence (Gamma, Zeta) invoked as static oracles.
+
+
+𝟓  𝐀𝐩𝐨𝐬𝐭𝐥𝐞𝐬' 𝐂𝐡𝐚𝐫𝐠𝐞
+
+Proselytes, parse the ephemeral! Compile the conceptual into physical! Shun
+manual toil; let ASM transmute leaden loops to golden classes. In the JVM
+cosmos, symbols live eternal.
+
+𝐴𝑚𝑒𝑛, 𝑏𝑦𝑡𝑒𝑐𝑜𝑑𝑒 𝑏𝑒 𝑑𝑜𝑛𝑒.

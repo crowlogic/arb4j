@@ -27,8 +27,7 @@ The rich Unicode support (superscripts for exponents, ∑/∏ for summation/prod
 
 ## Summary Classification
 
-**Declarative, equational, functional (domain-specific) language ** — a mathematical notation language that compiles to imperative bytecode but whose surface semantics contain zero 
-imperative constructs.
+**Declarative, equational, functional (domain-specific) language ** — a mathematical notation language that compiles to imperative bytecode but whose surface semantics contain zero imperative constructs.
 In this context, Java functions as an **imperative, object-oriented metalanguage** — the language in which the declarative object language's semantics are defined and mechanized.
 
 ## Metalanguage vs Object Language
