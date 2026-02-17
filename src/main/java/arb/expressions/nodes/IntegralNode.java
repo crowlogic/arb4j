@@ -282,10 +282,10 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
     evaluationExpression.context                = expression.context;
 
-    evaluationExpression.indeterminateVariables = new java.util.Stack<>();
-    for (var v : expression.indeterminateVariables)
+    evaluationExpression.clearIndeterminateVariables();
+    for (var v : expression.getIndeterminateVariables())
     {
-      evaluationExpression.indeterminateVariables.push(v.spliceInto(evaluationExpression)
+      evaluationExpression.pushIndeterminateVariable(v.spliceInto(evaluationExpression)
                                                         .asVariable());
     }
 

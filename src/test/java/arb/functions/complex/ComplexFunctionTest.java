@@ -58,9 +58,10 @@ public class ComplexFunctionTest extends
     try
     {
       var context = new Context();
-      ComplexFunction.express("p:y->pFq([1,3,-3],[1/2],-((1/2)*I)/y)*exp(I*(π*3+y)", context);
+      ComplexFunction.express("p:y->pFq([1,3,-3],[1/2],-1/2*I/y)*exp(I*(π*3+y))", context);
+      ComplexFunction.express("q:y->pFq([1,3,-3],[1/2],1/2*I/y)*exp(I*(2*π*m-y))", context);
       ComplexFunction g3 =
-                         ComplexFunction.express("g3:y->-I*p(y)-pFq([1,3,-3],[1/2],1/2*I/y)*exp(I*(2*π*m-y)))*(4*3^2-1)*(-1)^(-m)/((4*3^2-2)*y*π)");
+                         ComplexFunction.express("g3:y->-I*(p(y)-q(y))*(4*3^2-1)*(-1)^(-m)/((4*3^2-2)*y*π)",context);
       testComplexHypergeometricFunctionResult(g3);
 
       ComplexFunctionSequence G  =

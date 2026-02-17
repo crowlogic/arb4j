@@ -2127,7 +2127,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     methodVisitor.visitCode();
 
-    String name = functionName + ":";
+    String name = "";
+    if (functionName != null && !functionName.isEmpty())
+    {
+      name = functionName + ":";
+    }
     updateStringRepresentation();
     String arrow  = expression.contains("➔")
                   || independentVariable == null ? "" : (independentVariable.getName() + "➔");
@@ -2385,7 +2389,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    */
   public boolean isFunctional()
   {
+    // return Function.class.isAssignableFrom(coDomainType);
     return coDomainType.isInterface();
+  }
+
+  public boolean isInterfaceFunctional()
+  {
+    return Function.class.isAssignableFrom(coDomainType);
+    // return coDomainType.isInterface();
   }
 
   public boolean isIdentifierCharacter()
@@ -3637,15 +3648,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       str = expression;
     }
-    if (functionName != null && !functionName.startsWith("_")
-                  && !functionName.startsWith("operand"))
-    {
-      str = String.format("%s:%s", functionName, expression);
-    }
-    if (str == null || "null".equals(str))
-    {
-      updateStringRepresentation();
-    }
+//    if (str == null || "null".equals(str))
+//    {
+//      updateStringRepresentation();
+//    }
     return str;
   }
 
@@ -3748,7 +3754,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public void pushIndeterminateVariable(VariableNode<D, C, F> variableNode)
   {
+    //assert isFunctional() || isInterfaceFunctional() : this + " is not a functional";
     indeterminateVariables.push(variableNode);
+  }
+
+  public Expression<D, C, F> clearIndeterminateVariables()
+  {
+    // assert false : "TODO: is this necessary? #844";
+    indeterminateVariables = new java.util.Stack<>();
+    return this;
   }
 
 }

@@ -310,7 +310,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       {
         splicedVar.isIndeterminate = true;
         splicedVar.reference.type  = argCoDomainType;
-        argExpression.indeterminateVariables.push(splicedVar);
+        argExpression.pushIndeterminateVariable(splicedVar);
       }
     }
 
