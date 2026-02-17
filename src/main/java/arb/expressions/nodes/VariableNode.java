@@ -87,6 +87,21 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 {
   public static final Logger logger = LoggerFactory.getLogger(VariableNode.class);
 
+  /**
+   * Đ^(α)(t) = Γ(2)/Γ(2-α)*t^(1-α)
+   * 
+   * This is the monomial case with k=1.
+   */
+  @Override
+  public Node<D, R, F> fractionalDerivative(Node<D, R, F> α)
+  {
+    var two      = two();
+    var numer    = two.Γ();
+    var denom    = two.sub(α).Γ();
+    var newPower = one().sub(α);
+    return numer.div(denom).mul(pow(newPower));
+  }
+
   public boolean isZero()
   {
     return false;
@@ -517,7 +532,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                 expression.independentVariable,
                                 expression.indeterminateVariables));
       }
-      isIndependent = true;
+      isIndependent                  = true;
       expression.independentVariable = this;
       reference.type                 = expression.domainType;
     }

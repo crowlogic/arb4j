@@ -78,16 +78,16 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   /**
    * Private constructor for spliceInto — does not parse.
    */
-  private CaputoFractionalDerivativeNode(Expression<D, R, F> expression,
-                                         Node<D, R, F> power,
-                                         Node<D, R, F> operand)
+  public CaputoFractionalDerivativeNode(Expression<D, R, F> expression,
+                                        Node<D, R, F> power,
+                                        Node<D, R, F> operand)
   {
     super(expression);
     this.exponent = power;
     this.operand  = operand;
 
     this.context  = expression.getContext();
-    context.registerVariable(Real.named("α"));
+    //context.registerVariable(Real.named("α"));
     context.registerVariable(Integer.named("n"));
     context.registerFunctionMapping("f",
                                     expression.domainType,

@@ -30,7 +30,9 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
           "+");
   }
 
-  boolean areIntegerDivisions(DivisionNode<D, R, F> leftDiv, DivisionNode<D, R, F> rightDiv)
+  static <D, R, F extends Function<? extends D, ? extends R>>
+         boolean
+         areIntegerDivisions(DivisionNode<D, R, F> leftDiv, DivisionNode<D, R, F> rightDiv)
   {
     return leftDiv.left.type().equals(Integer.class) && leftDiv.right.type().equals(Integer.class)
                   && rightDiv.left.type().equals(Integer.class)
@@ -48,6 +50,15 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     var numerator   = ad.add(bc);
     var denominator = b.mul(d);
     return numerator.div(denominator);
+  }
+
+  /**
+   * Đ^(α)(f + g) = Đ^(α)(f) + Đ^(α)(g)
+   */
+  @Override
+  public Node<D, R, F> fractionalDerivative(Node<D, R, F> α)
+  {
+    return left.fractionalDerivative(α).add(right.fractionalDerivative(α));
   }
 
   @Override
@@ -167,6 +178,5 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     return false;
   }
-
 
 }

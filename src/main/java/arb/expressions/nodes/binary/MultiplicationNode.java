@@ -30,6 +30,36 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
 {
   public static final Logger logger = LoggerFactory.getLogger(MultiplicationNode.class);
 
+  /**
+   * Đ^(α)(c*f) = c * Đ^(α)(f) when c is constant w.r.t. the differentiation
+   * variable. Đ^(α)(f*c) = c * Đ^(α)(f) when c is constant w.r.t. the
+   * differentiation variable.
+   * 
+   * Otherwise falls back to the default integral form.
+   */
+  @Override
+  public Node<D, R, F> fractionalDerivative(Node<D, R, F> α)
+  {
+    VariableNode<D, R, F> diffVar = left.extractVariable();
+    if (diffVar == null)
+    {
+      diffVar = right.extractVariable();
+    }
+
+    if (diffVar != null)
+    {
+      if (!left.dependsOn(diffVar))
+      {
+        return left.mul(right.fractionalDerivative(α));
+      }
+      if (!right.dependsOn(diffVar))
+      {
+        return right.mul(left.fractionalDerivative(α));
+      }
+    }
+    return super.fractionalDerivative(α);
+  }
+
   @Override
   public Logger getLogger()
   {
@@ -477,11 +507,10 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     VariableNode<D, R, F> variable = multiplier.extractVariable();
     if (variable == null)
     {
-      variable = deltaArg.extractVariable();
-    }
-    if (variable == null)
-    {
-      return null; // No variable found
+      if ((variable = deltaArg.extractVariable()) == null)
+      {
+        return null;
+      }
     }
 
     // Extract shift from delta argument: δ(x) has shift=0, δ(x-a) has shift=a

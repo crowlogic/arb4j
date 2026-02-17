@@ -21,11 +21,13 @@ import arb.utensils.Utensils;
 public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
                                                                 AutoCloseable
 {
-  public static void main( String args[] )
+  public static void main(String args[])
   {
-    JacobiFractionalDerivativeOperationalMatrixBuilder builder = new JacobiFractionalDerivativeOperationalMatrixBuilder();
-   // builder.context.printValues();
+    JacobiFractionalDerivativeOperationalMatrixBuilder builder =
+                                                               new JacobiFractionalDerivativeOperationalMatrixBuilder();
+    // builder.context.printValues();
   }
+
   public static final Logger logger =
                                     LoggerFactory.getLogger(JacobiFractionalDerivativeOperationalMatrixBuilder.class);
 
@@ -73,12 +75,13 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
                                       context);
 
     χ      = ComplexFunctionSequence.express("χ",
-                                             "i➔p➔int(t➔t^p*w(t)*P(i)(t), t=-1..1)/normSq(i)",
+                                             "i➔p➔int(t➔t^p*w(t)*P(i)(t),t=-1..1)/normSq(i)",
                                              context);
 
     μ      = ComplexSequenceSequence.express("μ",
-                                             "i➔j➔Σk➔(ω(j)(k)*Γ(k+1)/Γ(k+1-γ)*χ(i)(k-γ)){k=⌈γ⌉..j}",
+                                             "i➔j➔Σk➔(ω(j)(k)*Đᵞ(tᵏ)*χ(i)(k-γ)){k=0..j}",
                                              context);
+
 
   }
 
@@ -111,9 +114,9 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
     }
     for (int i = 0; i <= maxDegree; i++)
     {
-      ComplexSequence μrow = μ.evaluate(i, bits);
-      
-      Complex         resultRow  = result.getRow(i);
+      ComplexSequence μrow      = μ.evaluate(i, bits);
+
+      Complex         resultRow = result.getRow(i);
       if (Expression.trace && logger.isDebugEnabled())
       {
         logger.debug("Evaluating μrow({})={}", i, Utensils.yamlString(μrow));

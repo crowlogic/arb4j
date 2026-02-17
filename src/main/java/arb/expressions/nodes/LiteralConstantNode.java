@@ -56,6 +56,16 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
 {
   public static final Logger logger = LoggerFactory.getLogger(LiteralConstantNode.class);
 
+  /**
+   * Đ^(α)(c) = 0 for any constant c
+   */
+  @Override
+  public Node<D, R, F> fractionalDerivative(Node<D, R, F> α)
+  {
+    return zero();
+  }
+
+  
   @Override
   public Logger getLogger()
   {

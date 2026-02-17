@@ -64,6 +64,22 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 {
 
   /**
+   * Compute the Caputo fractional derivative of order α of this node.
+   * 
+   * Default: wraps in a CaputoFractionalDerivativeNode (the integral form).
+   * Subclasses that have closed-form fractional derivatives override this.
+   *
+   * @param α the fractional order node
+   * @return the node representing Đ^(α)(this)
+   */
+  public Node<D, R, F> fractionalDerivative(Node<D, R, F> α)
+  {
+    return new CaputoFractionalDerivativeNode<D, R, F>(expression,
+                                                       α,
+                                                       this);
+  }
+
+  /**
    * Extracts a variable node from a tree by traversing its structure.
    * 
    * @param node The node to search

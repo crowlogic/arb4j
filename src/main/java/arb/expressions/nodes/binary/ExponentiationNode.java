@@ -20,6 +20,30 @@ import arb.functions.Function;
 public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                BinaryOperationNode<D, R, F>
 {
+  /**
+   * Đ^(α)(t^k) = Γ(k+1)/Γ(k+1-α) * t^(k-α)
+   *
+   * Only applies when the base is the differentiation variable and the exponent
+   * does not depend on it. Otherwise falls back to the default integral form.
+   */
+  @Override
+  public Node<D, R, F> fractionalDerivative(Node<D, R, F> α)
+  {
+    if (left instanceof VariableNode && !right.dependsOn(left.extractVariable()))
+    {
+      var k        = right;
+      var kPlusOne = k.add(one());
+      var numer    = kPlusOne.Γ();
+      var denom    = kPlusOne.sub(α).Γ();
+      var newPower = k.sub(α);
+      return numer.div(denom).mul(left.pow(newPower));
+    }
+    else
+    {
+      return super.fractionalDerivative(α);
+    }
+  }
+
   @Override
   public boolean isZero()
   {
@@ -29,7 +53,6 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     // a^n ≠ 0 for a ≠ 0 (any non-zero base to any power is non-zero)
     return left.isZero() && !right.isZero();
   }
-
 
   public static final Logger logger = LoggerFactory.getLogger(ExponentiationNode.class);
 
@@ -41,8 +64,8 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
 
   /**
    * Returns true when this exponentiation node has a closed-form antiderivative
-   * via the power rule: ∫x^p dx = x^(p+1)/(p+1). This holds whenever the
-   * exponent is independent of the integration variable, which is enforced by
+   * via the power rule: ∫x^p dx = x^(p+1)/(p+1). This holds whenever the exponent
+   * is independent of the integration variable, which is enforced by
    * {@link #integrate(VariableNode)}.
    */
   @Override
@@ -180,7 +203,7 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     if (right.isOne())
     {
       return left.simplify();
-                    
+
     }
     if (right.isZero())
     {

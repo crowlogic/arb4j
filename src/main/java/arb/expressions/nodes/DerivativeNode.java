@@ -146,7 +146,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
     }
     else
     {
-      throw new UnsupportedOperationException("TODO: implement derivative of order " + order);
+      throw new UnsupportedOperationException("TODO: implement derivative of order " + order + " for " + this + " in " + expression );
     }
   }
 
