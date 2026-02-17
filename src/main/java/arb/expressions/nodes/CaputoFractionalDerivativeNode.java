@@ -48,6 +48,12 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
                                            extends
                                            Node<D, R, F>
 {
+  @Override
+  public boolean isZero()
+  {
+    return operand.isZero();
+  }
+
   public static final Logger logger = LoggerFactory.getLogger(CaputoFractionalDerivativeNode.class);
 
   @Override

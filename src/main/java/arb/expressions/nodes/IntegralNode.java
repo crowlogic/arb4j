@@ -380,18 +380,18 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
     ensureIndefiniteIntegralNode();
 
-    if (integrationNotYetImplemented())
-    {
-      throw new CompilerException("cannot symbolically evaluate ∫"
-                                  + integrandNode
-                                  + "d"
-                                  + integrationVariableName
-                                  + " over ["
-                                  + lowerLimitNode
-                                  + ", "
-                                  + upperLimitNode
-                                  + "]: integration not yet implemented");
-    }
+//    if (integrationNotYetImplemented())
+//    {
+//      throw new CompilerException("cannot symbolically evaluate ∫"
+//                                  + integrandNode
+//                                  + "d"
+//                                  + integrationVariableName
+//                                  + " over ["
+//                                  + lowerLimitNode
+//                                  + ", "
+//                                  + upperLimitNode
+//                                  + "]: integration not yet implemented");
+//    }
 
     var    upperExpr           = createEvaluationExpression();
     var    lowerExpr           = createEvaluationExpression();

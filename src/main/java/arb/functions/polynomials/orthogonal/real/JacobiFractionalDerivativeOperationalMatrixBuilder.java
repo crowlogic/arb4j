@@ -56,14 +56,13 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
   {
     this.bits        = 128;
 
-    this.γ           = Real.named("γ").set(RealConstants.half);
+    this.γ           = Real.named("γ").set(RealConstants.half).setBounds(0, false, 1, true);
 
     Expression.trace = true;
 
     context          = basis.getContext();
     context.printValues();
     context.registerVariable("γ", γ);
-    // context.registerVariable(Real.named("t"));
     normSq =
            ComplexSequence.express("normSq",
                                    "i➔2^(α+β+1)*Γ(i+α+1)*Γ(i+β+1)/((2*i+α+β+1)*Γ(i+1)*Γ(i+α+β+1))",
@@ -78,11 +77,8 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
                                              "i➔p➔int(t➔t^p*w(t)*P(i)(t),t=-1..1)/normSq(i)",
                                              context);
 
-    μ      = ComplexSequenceSequence.express("μ",
-                                             "i➔j➔Σk➔(ω(j)(k)*Đᵞ(tᵏ)*χ(i)(k-γ)){k=0..j}",
-                                             context);
-
-
+    μ      =
+      ComplexSequenceSequence.express("μ", "i➔j➔Σk➔(ω(j)(k)*Đᵞ(tᵏ)*χ(i)(k-γ)){k=0..j}", context);
   }
 
   public JacobiFractionalDerivativeOperationalMatrixBuilder setBasis(JacobiPolynomialSequence basis)
