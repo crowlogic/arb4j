@@ -32,7 +32,6 @@ public class CaputoFractionalDerivativeNodeTest extends
   {
     var context = new Context(Real.named("α").set("0.5", 128).setBounds(0, false, 1, true));
 
-    @SuppressWarnings("unchecked")
     Expression<Real, Real, RealFunction> expr =
       (Expression<Real, Real, RealFunction>) RealFunction.parse("Đ^(α)(t²)", context);
 

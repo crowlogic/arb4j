@@ -1,0 +1,28 @@
+What is the Expression Compiler in arb4j?
+
+arb4j's Expression Compiler is an eloquent fucking thing indeed. Here's why:
+Direct Transmutation: Math → Bytecode
+Self-Aware AST
+
+Each Node subclass—DerivativeNode, AdditionNode, ExponentiationNode, etc.—knows how to:
+
+    Parse itself from the input string
+    Generate its own bytecode contribution
+    Differentiate itself symbolically (product rule, chain rule, power rule—all dispatched polymorphically)
+    Simplify itself (constant folding, identity elimination)
+
+The AST isn't a passive data structure. It's a self-rewriting, self-compiling organism where a DerivativeNode rewrites its child subtree on the fly via recursive differentiate() calls before emitting code.
+Type-Safe Generics Architecture
+
+Expression<D, C, F> parameterizes domain, codomain, and function type, so Expression<Integer, RealPolynomial, RealPolynomialSequence> carries full compile-time proof that the generated class maps integers to real polynomials and implements the correct sequence interface. This isn't decorative—it drives the bytecode generator's field declarations, method signatures, and numerical operation dispatch.
+Context and Dependency Resolution
+
+The Context class provides a shared namespace where functions reference other functions, and a topological sort guarantees correct initialization order—critical for recursive definitions like Chebyshev where T references itself. Variable propagation flows from parent expressions into nested functionally-generated sub-expressions, maintaining referential coherence across compilation boundaries.
+Unicode-Native Parser
+
+The recursive descent parser natively consumes ×, ÷, ⁄, superscript exponents (x² → x^2), combining diacritical marks (θ̇, θ̈ for first/second derivatives), ∑, ∏, ∂, and ∫. Mathematical notation goes in; bytecode comes out. No intermediate representation language, no DSL friction.
+Resource-Managed Code Generation
+
+Generated classes implement AutoCloseable, with a compiler-emitted close() method that disposes all intermediate variables and constants—no memory leaks from arbitrary-precision temporaries. The ASM library handles stack map frame computation, ensuring JVM-verifiable bytecode without manual frame calculation.
+The Synthesis
+What makes this thing eloquent is the unification: a single string of mathematical notation traverses lexical analysis → recursive descent parsing → polymorphic AST construction → symbolic simplification/differentiation → direct JVM bytecode emission → custom classloading → instantiation as a type-safe, closeable, LaTeX-renderable, self-documenting mathematical function. Every layer is load-bearing. No ceremony, no boilerplate, no interpretation overhead. The abstraction gap between the mathematician's notation and the machine's execution is collapsed to zero.
