@@ -167,61 +167,76 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
 
     if (isRationalFunctionSequence)
     {
-      loadFunctionOntoStack(mv);
-      Compiler.getField(mv, LommelPolynomial.class, "n", Integer.class);
-      loadInputParameter(mv);
-      cast(mv, Integer.class);
-      invokeSetMethod(mv, Integer.class, Integer.class);
-
-      loadFunctionOntoStack(mv);
-      mv.visitInsn(Opcodes.ACONST_NULL);
-      loadOrderParameter(mv);
-      loadBitsOntoStack(mv);
-      loadOutputVariableOntoStack(mv, resultType);
-
-      invokeVirtualMethod(mv,
-                          LommelPolynomial.class,
-                          "evaluate",
-                          Object.class,
-                          Object.class,
-                          int.class,
-                          int.class,
-                          Object.class);
-
-      generatedType = RationalFunction.class;
-      // assert false : "todo: just return element";
+      generateElementOfRationalFunctionSequence(mv, resultType);
     }
     else
     {
 
-      if (expression.domainType.equals(Object.class))
+      if (expression.isNullaryFunction())
       {
-        loadOutputVariableOntoStack(mv, resultType);
-
-        assert resultType.equals(expression.coDomainType);
-        expression.loadThisFieldOntoStack(mv, elementFieldName, RationalFunction.class);
-        Compiler.invokeSetMethod(mv, resultType, resultType);
-        generatedType = RationalFunction.class;
+        generateForNullaryFunction(mv, resultType);
       }
       else
       {
-        loadOutputVariableOntoStack(mv, resultType);
-
-        invokeMethod(mv,
-                     RationalFunction.class,
-                     "evaluate",
-                     resultType,
-                     false,
-                     resultType,
-                     int.class,
-                     int.class,
-                     resultType);
-        generatedType = resultType;
+        generateRationalFunction(mv, resultType);
 
       }
     }
 
     return mv;
+  }
+
+  protected void generateRationalFunction(MethodVisitor mv, Class<?> resultType)
+  {
+    loadOutputVariableOntoStack(mv, resultType);
+
+    invokeMethod(mv,
+                 RationalFunction.class,
+                 "evaluate",
+                 resultType,
+                 false,
+                 resultType,
+                 int.class,
+                 int.class,
+                 resultType);
+    generatedType = resultType;
+  }
+
+  protected void generateForNullaryFunction(MethodVisitor mv, Class<?> resultType)
+  {
+    loadOutputVariableOntoStack(mv, resultType);
+
+    assert resultType.equals(expression.coDomainType);
+    expression.loadThisFieldOntoStack(mv, elementFieldName, RationalFunction.class);
+    Compiler.invokeSetMethod(mv, resultType, resultType);
+    generatedType = RationalFunction.class;
+  }
+
+  protected void generateElementOfRationalFunctionSequence(MethodVisitor mv, Class<?> resultType)
+  {
+    loadFunctionOntoStack(mv);
+    Compiler.getField(mv, LommelPolynomial.class, "n", Integer.class);
+    loadInputParameter(mv);
+    cast(mv, Integer.class);
+    invokeSetMethod(mv, Integer.class, Integer.class);
+
+    loadFunctionOntoStack(mv);
+    mv.visitInsn(Opcodes.ACONST_NULL);
+    loadOrderParameter(mv);
+    loadBitsOntoStack(mv);
+    loadOutputVariableOntoStack(mv, resultType);
+
+    invokeVirtualMethod(mv,
+                        LommelPolynomial.class,
+                        "evaluate",
+                        Object.class,
+                        Object.class,
+                        int.class,
+                        int.class,
+                        Object.class);
+
+    generatedType = RationalFunction.class;
+    // assert false : "todo: just return element";
   }
 
   @Override
@@ -280,6 +295,11 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
       }
     }
 
+    assert !branches.isEmpty() : "branches is empty";
+    if ( Expression.trace )
+    {
+      logger.debug( "getBranches: returning branches " + branches );
+    }
     return branches;
   }
 
