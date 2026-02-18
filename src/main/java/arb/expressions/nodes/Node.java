@@ -752,19 +752,17 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return pow(2);
   }
 
-  public Object evaluate()
+  public <T> T evaluate(Class<T> resultType)
   {
     assert isConstant() : "cannot evaluate the non-constant node "
                           + this
                           + " of class "
                           + getClass().getSimpleName()
                           + " at compile-time";
-    throw new UnsupportedOperationException(" #862: implement something to evaluate constant node "
-                                            + this
-                                            + " of class "
+    throw new UnsupportedOperationException("#862: evaluate(Class<T>) not implemented for "
                                             + getClass().getSimpleName()
-                                            + " at compile-time whose String representation is '"
-                                            + toString()
+                                            + " node '"
+                                            + this
                                             + "'");
   }
 

@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.exceptions.UnderConstructionException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.nodes.binary.ExponentiationNode;
@@ -147,40 +148,32 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
     {
       if (order.isConstant())
       {
-        Object orderValue = order.evaluate();
-        int    n;
-        if (orderValue instanceof java.lang.Integer intVal)
-        {
-          n = intVal;
-        }
-        else
-        {
-          throw new IllegalArgumentException(String.format("derivative order must evaluate to a non-negative integer, got: %s of type %s",
-                                                           orderValue,
-                                                           orderValue.getClass().getSimpleName()));
-        }
+        Integer orderValue = order.evaluate(Integer.class);
+        int     n          = orderValue.getSignedValue();
         if (n < 0)
         {
           throw new IllegalArgumentException("derivative order must be non-negative, got: " + n);
         }
 
-        derivative = operand;
-        for (int i = 0; i < n; i++)
-        {
-          derivative = derivative.differentiate(variable).simplify();
-        }
-        evaluated = true;
+        throw new UnderConstructionException("TODO: implement derivative with constant order "
+                                             + n
+                                             + " of type "
+                                             + order.getClass().getSimpleName()
+                                             + " for "
+                                             + this
+                                             + " in "
+                                             + expression);
       }
       else
       {
-        throw new UnsupportedOperationException("derivative with non-constant order "
-                                                + order
-                                                + " of type "
-                                                + order.getClass().getSimpleName()
-                                                + " is not yet supported for "
-                                                + this
-                                                + " in "
-                                                + expression);
+        throw new UnderConstructionException("derivative with non-constant order "
+                                             + order
+                                             + " of type "
+                                             + order.getClass().getSimpleName()
+                                             + " is not yet supported for "
+                                             + this
+                                             + " in "
+                                             + expression);
       }
     }
   }

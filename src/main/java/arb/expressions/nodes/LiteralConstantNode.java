@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import arb.*;
 import arb.Integer;
 import arb.domains.Domain;
+import arb.exceptions.UnsupportedTypeConversionException;
 import arb.expressions.*;
 import arb.functions.Function;
 
@@ -55,8 +56,8 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
                                 Node<D, R, F>
 {
   /**
-   * Evaluates this literal constant at compile-time, returning a Java object
-   * representing its value.
+   * Evaluates this literal constant at compile-timis not yet supportede,
+   * returning a Java object representing its value.
    *
    * @return {@link java.lang.Integer} for integer literals, {@link Double} for
    *         decimal literals, {@link Fraction} for fraction literals (e.g. ½),
@@ -66,35 +67,74 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
    *                                       compile-time (e.g. ⅈ)
    */
   @Override
-  public Object evaluate()
+  @SuppressWarnings({ "unchecked", "resource" })
+  public <T> T evaluate(Class<T> resultType)
   {
-    if (isInt)
+    if (resultType.equals(Integer.class))
     {
-      return java.lang.Integer.parseInt(value);
+      if (!isInt)
+      {
+        throw new UnsupportedTypeConversionException("literal '" + value + "' is not an Integer");
+      }
+      return (T) new Integer(value);
     }
-    if (isFraction)
+
+    if (resultType.equals(Fraction.class))
     {
-      return fractionValue;
+      if (fractionValue != null)
+      {
+        return (T) fractionValue;
+      }
+      if (isInt)
+      {
+        Fraction frac = new Fraction().set(value);
+        return (T) frac;
+      }
+      throw new UnsupportedTypeConversionException("cannot convert literal '"
+                                                   + value
+                                                   + "' to Fraction");
     }
-    if (isDecimal)
+
+    if (resultType.equals(Real.class))
     {
-      return Double.parseDouble(value);
+      Real r = new Real();
+
+      if (isDecimal)
+      {
+        r.set(value, bits);
+        return (T) r;
+      }
+
+      if (fractionValue != null)
+      {
+        r.set(fractionValue);
+        return (T) r;
+      }
+
+      if (isInt)
+      {
+        Integer intVal = new Integer(value);
+        r.set(intVal);
+        return (T) r;
+      }
+
+      throw new UnsupportedTypeConversionException("compile-time Real evaluation not implemented for literal '"
+                                                   + value
+                                                   + "'");
     }
-    switch (value)
+
+    if (resultType.equals(Complex.class))
     {
-    case "π":
-    case "pi":
-      return Math.PI;
-    case "∞":
-    case "inf":
-    case "infty":
-    case "infinity":
-      return Double.POSITIVE_INFINITY;
-    default:
-      throw new UnsupportedOperationException("cannot evaluate literal constant '"
-                                              + value
-                                              + "' at compile-time");
+      throw new UnsupportedTypeConversionException("compile-time Complex evaluation not implemented for literal '"
+                                                   + value
+                                                   + "'");
     }
+
+    throw new UnsupportedTypeConversionException("unsupported requested type "
+                                                 + resultType.getName()
+                                                 + " for literal '"
+                                                 + value
+                                                 + "'");
   }
 
   @Override
