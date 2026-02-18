@@ -34,7 +34,6 @@ module arb4j
   exports arb.stochastic;
   exports arb;
   exports arb.expressions.context;
-  exports arb.expressions.viz;
 
   exports arb.documentation;
 

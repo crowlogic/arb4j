@@ -435,8 +435,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                     1);
     default:
       return new DerivativeNode<>(expression,
-                                  this,
-                                  false);
+                                  this);
 //      throw new UnsupportedOperationException("Derivative not implemented for function: "
 //                                              + functionName
 //                                              + " in expression '"
@@ -464,8 +463,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     if (instance == null)
     {
       return new DerivativeNode<>(expression,
-                                  this,
-                                  false);
+                                  this);
     }
 
     setFunctionContext(instance);

@@ -39,7 +39,7 @@ public class ComplexFunctionTest extends
 
   public static void testUncaughtUndefinedReference()
   {
-    boolean caughtEx = false;
+    boolean caughtException = false;
     try
     {
       
@@ -56,10 +56,10 @@ public class ComplexFunctionTest extends
     }
     catch (CompilerException ce)
     {
-      caughtEx = true;
+      caughtException = true;
       ce.printStackTrace();
     }
-    assertTrue(caughtEx);
+    assertTrue("the undefined m reference was not caught when it should have been", caughtException);
 
   }
 

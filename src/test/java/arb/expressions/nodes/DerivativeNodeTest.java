@@ -18,8 +18,14 @@ public class DerivativeNodeTest extends
 {
   public void test2ndDerivative()
   {
+    var c = RealFunction.express("diff(sin(t),t)" );
+    var d = RealFunction.express("cos(t)");
+    assertEquals(d.toString(), c.toString());
+    var e = RealFunction.express("diff(diff(sin(t),t),t)");
     var f = RealFunction.express("diff(sin(t),t²)");
     var g = RealFunction.express("-sin(t)");
+    var h = RealFunction.express("-cos(t)");
+    assertEquals(g.toString(), e.toString());
     assertEquals(g.toString(), f.toString());
   }
 

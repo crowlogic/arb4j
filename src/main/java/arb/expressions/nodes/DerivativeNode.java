@@ -35,8 +35,6 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
 
   public static final Logger logger = LoggerFactory.getLogger(DerivativeNode.class);
 
-  final boolean              evaluated;
-
   @Override
   public Logger getLogger()
   {
@@ -65,9 +63,9 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public Node<D, R, F> simplify()
   {
-    if (derivative != null)
+    if (nthDerivativeNode != null)
     {
-      return derivative.simplify();
+      return nthDerivativeNode.simplify();
     }
     return this;
   }
@@ -75,10 +73,10 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public String toString()
   {
-    if (evaluated)
+    if (nthDerivativeNode != null)
     {
 
-      return derivative.toString();
+      return nthDerivativeNode.toString();
     }
     else
     {
@@ -97,7 +95,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
 
   public VariableNode<D, R, F> variable;
 
-  private Node<D, R, F>        derivative;
+  private Node<D, R, F>        nthDerivativeNode;
 
   private Node<D, R, F>        order;
 
@@ -109,17 +107,12 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
          false);
   }
 
-  public DerivativeNode(Expression<D, R, F> expression, Node<D, R, F> operand, boolean evaluate)
+  public DerivativeNode(Expression<D, R, F> expression, Node<D, R, F> operand)
   {
     super(expression);
     this.operand = operand;
     this.context = expression.context;
 
-    if (evaluate)
-    {
-      derivative = operand.differentiate(variable).simplify();
-    }
-    evaluated = evaluate;
   }
 
   public DerivativeNode(Expression<D, R, F> expression, boolean functionForm)
@@ -141,8 +134,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
 
     if (order == null)
     {
-      derivative = operand.differentiate(variable).simplify();
-      evaluated  = true;
+      nthDerivativeNode = operand.differentiate(variable).simplify();
     }
     else
     {
@@ -155,14 +147,11 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
           throw new IllegalArgumentException("derivative order must be non-negative, got: " + n);
         }
 
-        throw new UnderConstructionException("TODO: implement derivative with constant order "
-                                             + n
-                                             + " of type "
-                                             + order.getClass().getSimpleName()
-                                             + " for "
-                                             + this
-                                             + " in "
-                                             + expression);
+        nthDerivativeNode = operand;
+        for (int i = 0; i < n; i++)
+        {
+          nthDerivativeNode = nthDerivativeNode.differentiate(variable).simplify();
+        }
       }
       else
       {
@@ -208,57 +197,57 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public void accept(Consumer<Node<D, R, F>> t)
   {
-    derivative.accept(t);
+    nthDerivativeNode.accept(t);
   }
 
   @Override
   public boolean isScalar()
   {
-    return derivative.isScalar();
+    return nthDerivativeNode.isScalar();
   }
 
   @Override
   public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
   {
-    return derivative.integrate(variable);
+    return nthDerivativeNode.integrate(variable);
   }
 
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    return derivative.differentiate(variable);
+    return nthDerivativeNode.differentiate(variable);
   }
 
   @Override
   public List<? extends Node<D, R, F>> getBranches()
   {
-    return derivative.getBranches();
+    return nthDerivativeNode.getBranches();
   }
 
   @Override
   public boolean isLeaf()
   {
-    return derivative.isLeaf();
+    return nthDerivativeNode.isLeaf();
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     assert !resultType.equals(Object.class) : "Objects shan't be generated";
-    derivative.isResult = isResult;
-    return derivative.generate(mv, resultType);
+    nthDerivativeNode.isResult = isResult;
+    return nthDerivativeNode.generate(mv, resultType);
   }
 
   @Override
   public String typeset()
   {
-    return derivative.typeset();
+    return nthDerivativeNode.typeset();
   }
 
   @Override
   public <C> Class<? extends C> type()
   {
-    return derivative.type();
+    return nthDerivativeNode.type();
   }
 
   @Override
@@ -266,7 +255,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
          Node<D, R, F>
          substitute(String variable, Node<E, S, G> arg)
   {
-    derivative = derivative.substitute(variable, arg);
+    nthDerivativeNode = nthDerivativeNode.substitute(variable, arg);
     return this;
   }
 
@@ -275,7 +264,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    return derivative.spliceInto(newExpression);
+    return nthDerivativeNode.spliceInto(newExpression);
   }
 
   @Override

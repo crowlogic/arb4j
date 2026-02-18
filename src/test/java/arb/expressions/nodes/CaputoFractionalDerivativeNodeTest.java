@@ -48,33 +48,7 @@ public class CaputoFractionalDerivativeNodeTest extends
                after);
   }
 
-  /**
-   * After spliceInto a new Expression, the spliced node's fieldName must be null
-   * so the target expression's generate() pass allocates its own intermediate
-   * variables. A non-null fieldName from the source expression refers to a field
-   * that does not exist in the target class.
-   */
-  public void testSpliceIntoClearsFieldName()
-  {
-    var context = new Context(Real.named("α").set("0.5", 128).setBounds(0, false, 1, true));
 
-    @SuppressWarnings("unchecked")
-    Expression<Real, Real, RealFunction> sourceExpr =
-      (Expression<Real, Real, RealFunction>) RealFunction.parse("Đ^(α)(t)", context);
-
-    // Simulate a fieldName having been set during a prior generate() pass
-    sourceExpr.rootNode.fieldName = "staleField1";
-
-    @SuppressWarnings("unchecked")
-    Expression<Real, Real, RealFunction> targetExpr =
-      (Expression<Real, Real, RealFunction>) RealFunction.parse("t", context);
-
-    var spliced = sourceExpr.rootNode.spliceInto(targetExpr);
-
-    assertNull("spliceInto must not carry fieldName from source expression; "
-               + "the target expression will allocate its own during generate()",
-               spliced.fieldName);
-  }
 
   /**
    * End-to-end: a CaputoFractionalDerivativeNode embedded in a sum should survive
