@@ -2736,6 +2736,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                                        // re-parse
     functionalExpression.rootNode          = rootNode.spliceInto(functionalExpression);
     functionalExpression.rootNode.isResult = true;
+    functionalExpression.updateStringRepresentation();
     return functionalExpression;
   }
 
