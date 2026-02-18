@@ -21,6 +21,11 @@ public class ExpressionTest extends
                             TestCase
 {
 
+  public static void testToString()
+  {
+    var expr = RealFunction.express("f:x➔sin(x)");
+    assertEquals( "f:x➔sin(x)", expr.toString() );
+  }
   /**
    * Expresses a {@link RealFunctionSequence} H:i→i*x, evaluates it at i=1 to
    * obtain f1, then mutates the same {@link Integer} to 3 and evaluates again to
@@ -254,22 +259,26 @@ public class ExpressionTest extends
   }
 
   /**
-   * Regression test for <a href="https://github.com/crowlogic/arb4j/issues/698">#698</a>:
-   * ensures that every node in the expression AST has a non-null generatedType
-   * after instantiation, particularly the integer literal children of
-   * Fraction-typed DivisionNodes (e.g. 1/4 used as an exponent).
+   * Regression test for
+   * <a href="https://github.com/crowlogic/arb4j/issues/698">#698</a>: ensures
+   * that every node in the expression AST has a non-null generatedType after
+   * instantiation, particularly the integer literal children of Fraction-typed
+   * DivisionNodes (e.g. 1/4 used as an exponent).
    */
   public static void testNoNullGeneratedTypesInExpressionAST()
   {
     var F = RealFunction.parse("s->√(π)*Γ(¾)*J(¼,|s|)*2^¼/|s|^¼");
     var f = F.instantiate();
-    f.evaluate(new Real("3", 128), 1, 128, new Real());
+    f.evaluate(new Real("3",
+                        128),
+               1,
+               128,
+               new Real());
     String inspection = F.inspect(f).toString();
     assertFalse("Expression AST contains node(s) with null generatedType: " + inspection,
                 inspection.contains("(null)"));
   }
 
-  
   public static void testSumTypeset()
   {
     var x = RealNullaryFunction.express("∑k{k=2...4}");
@@ -348,12 +357,14 @@ public class ExpressionTest extends
     Context context = new Context();
     context.registerVariable("p", new Integer(3));
     context.registerVariable("q", new Integer(2));
-    var    F                     =
+    var    F   =
              RealPolynomialNullaryFunction.parse("F",
                                                  "Σn➔zⁿ/n!*∏k➔αₖ₍ₙ₎{k=1…p}*∏k➔βₖ₍ₙ₎{k=1…q}{n=0…N}",
                                                  context);
-    var    transformedExpression = F.substitute("z", RealFunction.parse("2*z"));
-    String str                   = transformedExpression.toString();
+    String str = F.toString();
+    assertEquals("F:Σn➔z^(n)/n!*∏k➔αₖ₍ₙ₎{k=1…p}*∏k➔βₖ₍ₙ₎{k=1…q}{n=0…N}", str);
+    var transformedExpression = F.substitute("z", RealFunction.parse("2*z"));
+    str = transformedExpression.toString();
     assertEquals("F:Σn➔((((2*z)^n)*Πk➔α[k]⋰n{k=1…p})*Πk➔β[k]⋰n{k=1…q})/n!{n=0…N}", str);
   }
 

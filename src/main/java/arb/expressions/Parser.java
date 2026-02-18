@@ -590,7 +590,7 @@ public class Parser
                                        functionName,
                                        containingExpression);    
 
-    return expr.parseRoot(simplify);
+    return expr.parse(simplify);
   }
 
   public static <D, R, F extends Function<? extends D, ? extends R>>

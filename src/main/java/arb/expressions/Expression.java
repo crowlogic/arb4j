@@ -267,7 +267,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public VariableNode<D, C, F>                               independentVariable;
 
-  private Stack<VariableNode<D, C, F>>                       indeterminateVariables           =
+  private final Stack<VariableNode<D, C, F>>                 indeterminateVariables           =
                                                                                     new Stack<>();
 
   int                                                        currentLevel                     = 0;
@@ -614,11 +614,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                        context,
                                        functionName,
                                        ascendentExpression);
-    expr.context                = context;
-    expr.independentVariable    = independentVariable;
+    expr.context             = context;
+    expr.independentVariable = independentVariable;
 
     // Deep copy the stack: clone each VariableNode WITHOUT resolving
-    expr.indeterminateVariables = new Stack<>();
+    expr.indeterminateVariables.clear();
     for (VariableNode<D, C, F> var : indeterminateVariables)
     {
       // Create new VariableNode directly without calling resolveReference again
@@ -1238,8 +1238,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Generate the implementation of the function after
-   * this{@link #parseRoot(boolean)} has been invoked
+   * Generate the implementation of the function after this{@link #parse(boolean)}
+   * has been invoked
    * 
    * @return this
    * @throws CompilerException
@@ -1586,7 +1586,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (rootNode == null)
     {
-      parseRoot(true);
+      parse(true);
     }
 
     Label startLabel = new Label();
@@ -2153,6 +2153,26 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return classVisitor;
   }
 
+  protected String getStringRepresentation()
+  {
+    String name = (functionName != null) ? (functionName + ":") : "";
+    updateStringRepresentation();
+    String arrow  = expression.contains("➔")
+                  || independentVariable == null ? "" : (independentVariable.getName() + "➔");
+    String string = String.format("%s%s%s", name, arrow, expression);
+
+    if (Expression.trace)
+    {
+      log.debug("generateToStringMethod(): functionName='{}' independentVariable='{}' name='{}' arrow='{}' string='{}'",
+                functionName,
+                independentVariable,
+                name,
+                arrow,
+                string);
+    }
+    return string;
+  }
+
   private ClassVisitor generateTypeMethod(ClassVisitor classVisitor,
                                           String which,
                                           Type type,
@@ -2693,17 +2713,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       context = new Context();
     }
 
-    functionalExpression.context                = context;
+    functionalExpression.context = context;
 
     // Isolate stack to prevent dummy vars (t) leaking
-    functionalExpression.indeterminateVariables = new Stack<>();
+    functionalExpression.clearIndeterminateVariables();
     var indeterminantVariable = getIndeterminateVariable(); // p (functional lambda)
     if (indeterminantVariable != null)
     {
       functionalExpression.independentVariable =
                                                indeterminantVariable.spliceInto(functionalExpression)
                                                                     .asVariable();
-      functionalExpression.indeterminateVariables.push(functionalExpression.independentVariable);
+      // functionalExpression.indeterminateVariables.push(functionalExpression.independentVariable);
     }
 
     rootNode.isResult                      = true;
@@ -2852,7 +2872,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * @return this
    * @throws CompilerException
    */
-  public Expression<D, C, F> parseRoot(boolean simplify)
+  public Expression<D, C, F> parse(boolean simplify)
   {
     assert rootNode
                   == null : "parse must only be called before anything else has been parsed but rootNode="
@@ -3648,10 +3668,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       str = expression;
     }
-//    if (str == null || "null".equals(str))
-//    {
-//      updateStringRepresentation();
-//    }
+    if (functionName != null && !functionName.startsWith("_")
+                  && !functionName.startsWith("operand"))
+    {
+      str = String.format("%s:%s", functionName, expression);
+    }
+    if (str == null || "null".equals(str))
+    {
+      updateStringRepresentation();
+    }
     return str;
   }
 
@@ -3754,14 +3779,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public void pushIndeterminateVariable(VariableNode<D, C, F> variableNode)
   {
-    //assert isFunctional() || isInterfaceFunctional() : this + " is not a functional";
+    // assert isFunctional() || isInterfaceFunctional() : this + " is not a
+    // functional";
     indeterminateVariables.push(variableNode);
   }
 
   public Expression<D, C, F> clearIndeterminateVariables()
   {
     // assert false : "TODO: is this necessary? #844";
-    indeterminateVariables = new java.util.Stack<>();
+    indeterminateVariables.clear();
     return this;
   }
 

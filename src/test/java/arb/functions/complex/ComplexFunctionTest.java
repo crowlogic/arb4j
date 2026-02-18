@@ -39,16 +39,27 @@ public class ComplexFunctionTest extends
 
   public static void testUncaughtUndefinedReference()
   {
-
-    var context = new Context();
-    ComplexFunction.express("p:y->pFq([1,3,-3],[1/2],-((1/2)*I)/y)*exp(I*(π*3+y))", context);
-    ComplexFunction.express("q:y->pFq([1,3,-3],[1/2],1/2*I/y)*exp(I*(2*π*m-y))", context);
-    ComplexFunction g3 =
-                       ComplexFunction.express("g3:y->-I*(p(y)-q(y))*(4*3^2-1)*(-1)^(-m)/((4*3^2-2)*y*π)",
-                                               context);
-    Complex         y  = g3.eval(2.3, new Complex());
-    System.out.println("y=" + y);
-    testComplexHypergeometricFunctionResult(g3);
+    boolean caughtEx = false;
+    try
+    {
+      
+      // should generated undefined reference because m isnt defined in the context nor is it an input variable
+      var context = new Context();
+      ComplexFunction.express("p:y->pFq([1,3,-3],[1/2],-((1/2)*I)/y)*exp(I*(π*3+y))", context);
+      ComplexFunction.express("q:y->pFq([1,3,-3],[1/2],1/2*I/y)*exp(I*(2*π*m-y))", context);
+      ComplexFunction g3 =
+                         ComplexFunction.express("g3:y->-I*(p(y)-q(y))*(4*3^2-1)*(-1)^(-m)/((4*3^2-2)*y*π)",
+                                                 context);
+      Complex         y  = g3.eval(2.3, new Complex());
+      // System.out.println("y=" + y);
+      testComplexHypergeometricFunctionResult(g3);
+    }
+    catch (CompilerException ce)
+    {
+      caughtEx = true;
+      ce.printStackTrace();
+    }
+    assertTrue(caughtEx);
 
   }
 
@@ -59,9 +70,10 @@ public class ComplexFunctionTest extends
     {
       var context = new Context();
       ComplexFunction.express("p:y->pFq([1,3,-3],[1/2],-1/2*I/y)*exp(I*(π*3+y))", context);
-      ComplexFunction.express("q:y->pFq([1,3,-3],[1/2],1/2*I/y)*exp(I*(2*π*m-y))", context);
+      ComplexFunction.express("q:y->pFq([1,3,-3],[1/2],1/2*I/y)*exp(I*(2*π*3-y))", context);
       ComplexFunction g3 =
-                         ComplexFunction.express("g3:y->-I*(p(y)-q(y))*(4*3^2-1)*(-1)^(-m)/((4*3^2-2)*y*π)",context);
+                         ComplexFunction.express("g3:y->-I*(p(y)-q(y))*(4*3^2-1)*(-1)^(-3)/((4*3^2-2)*y*π)",
+                                                 context);
       testComplexHypergeometricFunctionResult(g3);
 
       ComplexFunctionSequence G  =

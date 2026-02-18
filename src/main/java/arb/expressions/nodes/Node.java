@@ -182,14 +182,14 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    */
   public boolean isConstantExpression()
   {
-    if (independentOfInput())
+    if (isIndependentOfInput())
     {
       // Check that all branches are also constant using functional traversal
       final boolean[] allConstant =
       { true };
       accept(node ->
       {
-        if (node != this && !node.independentOfInput())
+        if (node != this && !node.isIndependentOfInput())
         {
           allConstant[0] = false;
         }
@@ -199,10 +199,10 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return false;
   }
 
-  public boolean independentOfInput()
+  public boolean isIndependentOfInput()
   {
     return expression.isNullaryFunction() ? true
-                                          : !isIndependentOf(expression.getIndependentVariable());
+                                          : isIndependentOf(expression.getIndependentVariable());
   }
 
   public int                 bits     = 128;

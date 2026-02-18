@@ -14,6 +14,7 @@ import arb.Integer;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.exceptions.CompilerException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
@@ -62,24 +63,23 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     return logger;
   }
 
-  Node<D, R, F>               exponent;
+  Node<D, R, F>                                          exponent;
 
-  Node<D, R, F>               operand;
+  Node<D, R, F>                                          operand;
 
   /**
    * (1/Γ(n-α)) * ∫₀ˣ (x-t)^(n-α-1) * f^(n)(t) dt
    */
-  Node<D, R, F>               integralNode;
+  Node<D, R, F>                                          integralNode;
 
-  Expression<D, R, F>         integralExpression;
+  Expression<D, R, F>                                    integralExpression;
 
-  private Context             context;
-
+  private Context                                        context;
 
   /**
    * The integer derivative order n = ⌈α⌉ resolved at compile time from bounds.
    */
-  private int                 derivativeOrder;
+  private int                                            derivativeOrder;
 
   private Expression<Real, RealFunction, RealFunctional> integrandExpression;
 
@@ -198,10 +198,9 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
         }
       }
     }
-
-    // Case 2: exponent is a literal constant — compute ceil directly
-    if (power instanceof LiteralConstantNode)
+    else if (power instanceof LiteralConstantNode)
     {
+      // Case 2: exponent is a literal constant — compute ceil directly
       String literalStr = power.toString();
       try ( Real literalVal = new Real(literalStr,
                                        128);
@@ -216,12 +215,24 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
         return n;
       }
     }
-
-    throw new IllegalStateException("Cannot resolve Caputo derivative order n = ⌈α⌉ at compile time. "
-                                    + "The exponent must be either a bounded variable or a literal constant. Got: "
-                                    + power.getClass().getSimpleName()
-                                    + " = "
-                                    + power);
+    else if (power.isIndependentOfInput())
+    {
+      throw new CompilerException("TODO: handle power being "
+                                  + power
+                                  + " of node class "
+                                  + power.getClass().getSimpleName()
+                                  + " producing type "
+                                  + power.type());
+    }
+    else
+    {
+      throw new IllegalStateException("Cannot resolve Caputo derivative order n = ⌈α⌉ at compile time. "
+                                      + "The exponent must be either a bounded variable or a literal constant. Got: "
+                                      + power.getClass().getSimpleName()
+                                      + " = "
+                                      + power);
+    }
+    return java.lang.Integer.MIN_VALUE;
   }
 
   @Override
@@ -248,12 +259,9 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
          Node<D, R, F>
          substitute(String variable, Node<E, S, G> arg)
   {
-    Node<D, R, F> newPower   = exponent.substitute(variable, arg);
-    Node<D, R, F> newOperand = operand.substitute(variable, arg);
-
-    return new CaputoFractionalDerivativeNode<>(expression,
-                                                newPower,
-                                                newOperand);
+    exponent = exponent.substitute(variable, arg);
+    operand  = operand.substitute(variable, arg);
+    return this;
   }
 
   @Override

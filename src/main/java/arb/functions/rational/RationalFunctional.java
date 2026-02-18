@@ -47,7 +47,7 @@ public interface RationalFunctional extends
                                                                                       context,
                                                                                       functionName,
                                                                                       null);
-    return expr.parseRoot(true);
+    return expr.parse(true);
   }
 
   public static Expression<RationalFunction, RationalFunction, RationalFunctional>
