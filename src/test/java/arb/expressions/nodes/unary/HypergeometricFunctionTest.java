@@ -223,7 +223,7 @@ public class HypergeometricFunctionTest extends
                                                                                           "n➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q})",
                                                                                           context);
       var                                                      summand   = prototype.instantiate();
-
+      https://github.com/crowlogic/arb4j/issues/758
       Complex                                                  res       = summand.evaluate(new Integer(3),
                                                                                             1,
                                                                                             128,
