@@ -24,9 +24,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.*;
 
 /**
- * TODO: make it so u can right-click to edit the selected line as well instead
- * of just using the button
- * 
  * @author ©2024 Stephen Crowley
  * @see BusinessSourceLicenseVersionOnePointOne for © terms
  */
@@ -62,7 +59,6 @@ public class TODO extends
       else
       {
         System.err.println("Could not find resource: TODO.png");
-        // Print classpath and module path for debugging
         System.out.println("Classpath: " + System.getProperty("java.class.path"));
         System.out.println("Module path: " + System.getProperty("jdk.module.path"));
       }
@@ -70,7 +66,6 @@ public class TODO extends
     catch (Throwable e)
     {
       System.err.println("Could not find resource: TODO.png");
-      // Print classpath and module path for debugging
       System.out.println("Classpath: " + System.getProperty("java.class.path"));
       System.out.println("Module path: " + System.getProperty("jdk.module.path"));
       e.printStackTrace(System.err);
@@ -113,11 +108,37 @@ public class TODO extends
 
   private Stage  stage;
 
+  private void moveSelectedItemUp()
+  {
+    int selectedIndex = listView.getSelectionModel().getSelectedIndex();
+    if (selectedIndex > 0)
+    {
+      String item = items.remove(selectedIndex);
+      items.add(selectedIndex - 1, item);
+      listView.getSelectionModel().select(selectedIndex - 1);
+      listView.scrollTo(selectedIndex - 1);
+      changed = true;
+    }
+  }
+
+  private void moveSelectedItemDown()
+  {
+    int selectedIndex = listView.getSelectionModel().getSelectedIndex();
+    if (selectedIndex >= 0 && selectedIndex < items.size() - 1)
+    {
+      String item = items.remove(selectedIndex);
+      items.add(selectedIndex + 1, item);
+      listView.getSelectionModel().select(selectedIndex + 1);
+      listView.scrollTo(selectedIndex + 1);
+      changed = true;
+    }
+  }
+
   @Override
   public void start(Stage primaryStage)
   {
     this.stage = primaryStage;
-    // Create context menu for right-click
+
     ContextMenu contextMenu  = new ContextMenu();
     MenuItem    loadMenuItem = new MenuItem("Load");
     loadMenuItem.setOnAction(e -> loadItemsWithDialog(primaryStage));
@@ -127,8 +148,18 @@ public class TODO extends
     saveAsMenuItem.setOnAction(e -> saveItemsWithDialog(primaryStage));
     MenuItem clearMenuItem = new MenuItem("Clear TODO List");
     clearMenuItem.setOnAction(e -> clearAllItems());
+    MenuItem moveUpMenuItem = new MenuItem("Move Up");
+    moveUpMenuItem.setOnAction(e -> moveSelectedItemUp());
+    MenuItem moveDownMenuItem = new MenuItem("Move Down");
+    moveDownMenuItem.setOnAction(e -> moveSelectedItemDown());
 
-    contextMenu.getItems().addAll(loadMenuItem, saveMenuItem, saveAsMenuItem, clearMenuItem);
+    contextMenu.getItems()
+               .addAll(loadMenuItem,
+                       saveMenuItem,
+                       saveAsMenuItem,
+                       clearMenuItem,
+                       moveUpMenuItem,
+                       moveDownMenuItem);
 
     listView.setContextMenu(contextMenu);
 
@@ -141,6 +172,12 @@ public class TODO extends
     Button deleteButton = new Button("Delete");
     deleteButton.setOnAction(e -> deleteItem());
 
+    Button upButton = new Button("↑ Up");
+    upButton.setOnAction(e -> moveSelectedItemUp());
+
+    Button downButton = new Button("↓ Down");
+    downButton.setOnAction(e -> moveSelectedItemDown());
+
     Button saveButton = new Button("Save");
     saveButton.setOnAction(e -> saveItems());
 
@@ -152,6 +189,7 @@ public class TODO extends
 
     Button clearButton = new Button("Clear Input");
     clearButton.setOnAction(e -> clearInput());
+
     WindowManager.addEmacsKeybindings(inputField);
     inputField.addEventFilter(KeyEvent.KEY_PRESSED, key ->
     {
@@ -162,10 +200,26 @@ public class TODO extends
       }
     });
 
+    listView.addEventFilter(KeyEvent.KEY_PRESSED, key ->
+    {
+      if (key.isControlDown() && key.getCode() == KeyCode.UP)
+      {
+        moveSelectedItemUp();
+        key.consume();
+      }
+      else if (key.isControlDown() && key.getCode() == KeyCode.DOWN)
+      {
+        moveSelectedItemDown();
+        key.consume();
+      }
+    });
+
     HBox buttons = new HBox(10,
                             addButton,
                             editButton,
                             deleteButton,
+                            upButton,
+                            downButton,
                             saveButton,
                             saveAsButton,
                             loadButton,
@@ -237,7 +291,6 @@ public class TODO extends
   private void editItem()
   {
     inputField.setText(listView.getSelectionModel().getSelectedItem());
-
   }
 
   private void deleteItem()
@@ -272,7 +325,6 @@ public class TODO extends
     }
     else
     {
-      // No file loaded yet, open save dialog
       saveItemsWithDialog((Stage) listView.getScene().getWindow());
     }
   }

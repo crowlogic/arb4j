@@ -5,4 +5,3 @@ debug ComplexFunctionTest.testSequence2
 implement some sort of system of namespaces beyond Context
 the generated toString() of the Expression.generateFunctionalElement() method should show the value instead of the variable name if it is declared in an upstream expression (in which case the value is known)
 #758: implement Caputo fractional derivative for exponent in the unit interval
-add up and down buttons to TODO that moves the currently selected line up or down so as to indicate priority
