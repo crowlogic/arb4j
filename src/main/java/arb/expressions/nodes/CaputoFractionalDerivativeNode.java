@@ -101,6 +101,13 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     this.operand         = operand;
     this.context         = expression.getContext();
 
+ // Special case: Đ^(α)(c) = 0 for any constant c
+    if (operand.isConstant())
+    {
+      this.integralNode = zero();
+      derivativeOrder = 0;
+      return;
+    }
     this.derivativeOrder = resolveDerivativeOrder(power, context);
 
     if (derivativeOrder > 1)
