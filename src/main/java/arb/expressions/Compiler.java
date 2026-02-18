@@ -809,4 +809,11 @@ public class Compiler
     return classVisitor;
   }
 
+  public static String      evaluationMethodDescriptor        =
+   getMethodDescriptor(Object.class,
+                                Object.class,
+                                int.class,
+                                int.class,
+                                Object.class);
+
 }

@@ -45,7 +45,7 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
     mv.visitMethodInsn(isInterface ? Opcodes.INVOKEINTERFACE : Opcodes.INVOKEVIRTUAL,
                        Type.getInternalName(isInterface ? functionClass : instance.getClass()),
                        "evaluate",
-                       Expression.evaluationMethodDescriptor,
+                       Compiler.evaluationMethodDescriptor,
                        isInterface);
     return cast(mv, type);
   }

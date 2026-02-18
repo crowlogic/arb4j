@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import arb.Polynomial;
 import arb.RealPolynomial;
+import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.*;
 import arb.functions.Function;
@@ -112,7 +113,7 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
     mv.visitMethodInsn(functionType.isInterface() ? Opcodes.INVOKEINTERFACE : Opcodes.INVOKEVIRTUAL,
                        Type.getInternalName(functionType),
                        "evaluate",
-                       Expression.evaluationMethodDescriptor,
+                       Compiler.evaluationMethodDescriptor,
                        functionType.isInterface());
 
     if (!resultType.equals(Object.class))

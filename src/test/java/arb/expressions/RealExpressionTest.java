@@ -21,7 +21,7 @@ public class RealExpressionTest extends
                                 TestCase
 {
 
-  public void testOptimizedExpressionRepresentation()
+  public void testCommonSubExpressionReuse()
   {
     var parsed = RealFunction.parse("tanh(log(1+x²))/(1+x²)");
     var F      = parsed.generate();

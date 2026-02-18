@@ -39,6 +39,12 @@ import arb.functions.Function;
 public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> extends
                          Node<D, C, F>
 {
+  @Override
+  public boolean isZero()
+  {
+    return integrandNode == null || integrandNode.isZero();
+  }
+
   public static final Logger logger = LoggerFactory.getLogger(IntegralNode.class);
 
   @Override

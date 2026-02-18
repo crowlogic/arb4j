@@ -94,7 +94,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   {
     this(expression,
          expression.require('^').require('(').resolve(),
-         expression.require(')').resolve());
+         expression.require(')').resolveOperand());
   }
 
   /**

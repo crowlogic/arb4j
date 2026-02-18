@@ -155,13 +155,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   static File               compiledClassDir                  = new File("compiled");
 
-  public static String      evaluationMethodDescriptor        =
-                                                       Compiler.getMethodDescriptor(Object.class,
-                                                                                    Object.class,
-                                                                                    int.class,
-                                                                                    int.class,
-                                                                                    Object.class);
-
   public static Class<?>[]  implementedInterfaces             = new Class[]
   { Typesettable.class, AutoCloseable.class, Initializable.class, Named.class };
 
@@ -952,16 +945,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   /**
    * 
-   * @return the results of this{@link #evaluateSquareBracketedIndex()} and
-   *         this{@link #evaluateSubscriptedIndex()} being applied in succession
+   * @return the results of this{@link #resolveSquareBracketedIndex()} and
+   *         this{@link #resolveSubscriptedIndex()} being applied in succession
    */
-  protected Node<D, C, F> evaluateIndex()
+  protected Node<D, C, F> resolveIndex()
   {
-    var index = evaluateSquareBracketedIndex();
-    return index == null ? index = evaluateSubscriptedIndex() : index;
+    var index = resolveSquareBracketedIndex();
+    return index == null ? index = resolveSubscriptedIndex() : index;
   }
 
-  protected Node<D, C, F> evaluateNumericLiteralConstant()
+  protected Node<D, C, F> resolveNumericLiteralConstant()
   {
     int startingPosition = position;
     while (isNumeric(character))
@@ -973,7 +966,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return newLiteralConstant(expression.substring(startingPosition, position));
   }
 
-  private Node<D, C, F> evaluateOperand() throws CompilerException
+  public Node<D, C, F> resolveOperand() throws CompilerException
   {
     Node<D, C, F> node = null;
 
@@ -1008,7 +1001,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     else if (isNumeric(character))
     {
-      node = evaluateNumericLiteralConstant();
+      node = resolveNumericLiteralConstant();
     }
     else if (isIdentifierCharacter())
     {
@@ -1170,7 +1163,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return this;
   }
 
-  protected Node<D, C, F> evaluateSquareBracketedIndex()
+  protected Node<D, C, F> resolveSquareBracketedIndex()
   {
     Node<D, C, F> index = null;
     if (nextCharacterIs('['))
@@ -1181,7 +1174,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return index;
   }
 
-  protected Node<D, C, F> evaluateSubscriptedIndex()
+  protected Node<D, C, F> resolveSubscriptedIndex()
   {
     int startPos = position;
 
@@ -1197,17 +1190,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return null;
   }
 
-  protected VariableReference<D, C, F> evaluateVariableReference(int startPos)
+  protected VariableReference<D, C, F> resolveVariableReference(int startPos)
   {
     String identifier = parseName(startPos);
-    var    index      = evaluateIndex();
+    var    index      = resolveIndex();
     return new VariableReference<D, C, F>(identifier,
                                           index);
   }
 
   protected Node<D, C, F> exponentiate() throws CompilerException
   {
-    return exponentiate(evaluateOperand());
+    return exponentiate(resolveOperand());
   }
 
   protected Node<D, C, F> exponentiate(Node<D, C, F> node) throws CompilerException
@@ -1215,7 +1208,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (nextCharacterIs('^'))
     {
       boolean parenthetical = nextCharacterIs('(', '⁽');
-      node = node.pow(parenthetical ? resolve() : evaluateOperand());
+      node = node.pow(parenthetical ? resolve() : resolveOperand());
       if (parenthetical)
       {
         require(')', '⁾');
@@ -3382,7 +3375,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected Node<D, C, F> resolveIdentifier() throws CompilerException
   {
     int startPos  = position;
-    var reference = evaluateVariableReference(startPos);
+    var reference = resolveVariableReference(startPos);
 
     if (nextCharacterIs('⁻'))
     {
@@ -3713,7 +3706,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     return classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
                                     "evaluate",
-                                    evaluationMethodDescriptor,
+                                    Compiler.evaluationMethodDescriptor,
                                     getEvaluationMethodSignature(),
                                     null);
   }

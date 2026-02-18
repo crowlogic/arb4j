@@ -220,7 +220,7 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
       mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                          Type.getInternalName(polynomialType),
                          "evaluate",
-                         Expression.evaluationMethodDescriptor,
+                         Compiler.evaluationMethodDescriptor,
                          false);
 
       if (!resultType.equals(Object.class))
