@@ -147,9 +147,10 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
     {
       if (order.isConstant())
       {
-        Object alpha = order.evaluate();
-        throw new UnsupportedOperationException(String.format("TODO: implement derivative with respect to constant %s for %s in %s\n",
+        Object orderValue = order.evaluate();
+        throw new UnsupportedOperationException(String.format("TODO: implement derivative with respect to constant order %s which evaluates to %s for %s in %s\n",
                                                               order,
+                                                              orderValue,
                                                               this,
                                                               expression));
       }
@@ -157,7 +158,11 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
       {
         throw new UnsupportedOperationException("TODO: implement derivative with non-constant "
                                                 + order
-                                                + " of type " + order.getClass().getSimpleName() + " which generates " + order.type() + " instances for "
+                                                + " of type "
+                                                + order.getClass().getSimpleName()
+                                                + " which generates "
+                                                + order.type()
+                                                + " instances for "
                                                 + this
                                                 + " in "
                                                 + expression);
