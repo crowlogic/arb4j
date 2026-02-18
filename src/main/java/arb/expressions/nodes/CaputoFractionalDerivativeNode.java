@@ -78,7 +78,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   /**
    * The integer derivative order n = ⌈α⌉ resolved at compile time from bounds.
    */
-  private final int                                            derivativeOrder;
+  private final int                                      derivativeOrder;
 
   private Expression<Real, RealFunction, RealFunctional> integrandExpression;
 
@@ -97,17 +97,18 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
                                         Node<D, R, F> operand)
   {
     super(expression);
-    this.exponent        = power;
-    this.operand         = operand;
-    this.context         = expression.getContext();
+    this.exponent = power;
+    this.operand  = operand;
+    this.context  = expression.getContext();
 
- // Special case: Đ^(α)(c) = 0 for any constant c
+    // Special case: Đ^(α)(c) = 0 for any constant c
     if (operand.isConstant())
     {
       this.integralNode = zero();
       derivativeOrder = 0;
       return;
     }
+
     this.derivativeOrder = resolveDerivativeOrder(power, context);
 
     if (derivativeOrder > 1)
@@ -125,7 +126,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     Class<?> scalarType = scalarType(expression.domainType);
     if (scalarType == Real.class)
     {
-      assert derivativeOrder == 1 : "only derivativeOrder=1 is implemented but derivativeOrder=" + derivativeOrder;
+      assert derivativeOrder == 1 : "only n=1 is implemented";
 
       // n=1: integrand is (x-t)^(-α) * f'(t)
       // since n-α-1 = 1-α-1 = -α and f^(1)(t) = ∂f(t)/∂t
