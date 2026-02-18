@@ -148,21 +148,36 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
       if (order.isConstant())
       {
         Object orderValue = order.evaluate();
-        throw new UnsupportedOperationException(String.format("TODO: implement derivative with respect to constant order %s which evaluates to %s for %s in %s\n",
-                                                              order,
-                                                              orderValue,
-                                                              this,
-                                                              expression));
+        int    n;
+        if (orderValue instanceof java.lang.Integer intVal)
+        {
+          n = intVal;
+        }
+        else
+        {
+          throw new IllegalArgumentException(String.format("derivative order must evaluate to a non-negative integer, got: %s of type %s",
+                                                           orderValue,
+                                                           orderValue.getClass().getSimpleName()));
+        }
+        if (n < 0)
+        {
+          throw new IllegalArgumentException("derivative order must be non-negative, got: " + n);
+        }
+
+        derivative = operand;
+        for (int i = 0; i < n; i++)
+        {
+          derivative = derivative.differentiate(variable).simplify();
+        }
+        evaluated = true;
       }
       else
       {
-        throw new UnsupportedOperationException("TODO: implement derivative with non-constant "
+        throw new UnsupportedOperationException("derivative with non-constant order "
                                                 + order
                                                 + " of type "
                                                 + order.getClass().getSimpleName()
-                                                + " which generates "
-                                                + order.type()
-                                                + " instances for "
+                                                + " is not yet supported for "
                                                 + this
                                                 + " in "
                                                 + expression);

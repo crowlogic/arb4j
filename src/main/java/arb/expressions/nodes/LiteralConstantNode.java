@@ -54,6 +54,49 @@ import arb.functions.Function;
 public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                 Node<D, R, F>
 {
+  /**
+   * Evaluates this literal constant at compile-time, returning a Java object
+   * representing its value.
+   *
+   * @return {@link java.lang.Integer} for integer literals, {@link Double} for
+   *         decimal literals, {@link Fraction} for fraction literals (e.g. ½),
+   *         {@link Double#POSITIVE_INFINITY} for infinity symbols,
+   *         {@link Math#PI} for π
+   * @throws UnsupportedOperationException if the constant cannot be evaluated at
+   *                                       compile-time (e.g. ⅈ)
+   */
+  @Override
+  public Object evaluate()
+  {
+    if (isInt)
+    {
+      return java.lang.Integer.parseInt(value);
+    }
+    if (isFraction)
+    {
+      return fractionValue;
+    }
+    if (isDecimal)
+    {
+      return Double.parseDouble(value);
+    }
+    switch (value)
+    {
+    case "π":
+    case "pi":
+      return Math.PI;
+    case "∞":
+    case "inf":
+    case "infty":
+    case "infinity":
+      return Double.POSITIVE_INFINITY;
+    default:
+      throw new UnsupportedOperationException("cannot evaluate literal constant '"
+                                              + value
+                                              + "' at compile-time");
+    }
+  }
+
   @Override
   public boolean isConstant()
   {
@@ -71,12 +114,12 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     return zero();
   }
 
-  
   @Override
   public Logger getLogger()
   {
-   return logger;
+    return logger;
   }
+
   @Override
   public boolean isNonNegativeIntegerConstant()
   {
