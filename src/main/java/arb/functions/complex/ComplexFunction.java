@@ -101,11 +101,11 @@ public interface ComplexFunction extends
                                                                       Context context)
   {
     return Parser.parse(expression,
-                            context,
-                            Complex.class,
-                            Complex.class,
-                            ComplexFunction.class,
-                            null);
+                        context,
+                        Complex.class,
+                        Complex.class,
+                        ComplexFunction.class,
+                        null);
 
   }
 
@@ -158,13 +158,26 @@ public interface ComplexFunction extends
   public static Expression<Complex, Complex, ComplexFunction> parse(String expression)
   {
     return Parser.parseExpression(Parser.hashString(expression),
-                          expression,
-                          null,
-                          Complex.class,
-                          Complex.class,
-                          ComplexFunction.class,
-                          null,
-                          null, true);
+                                  expression,
+                                  null,
+                                  Complex.class,
+                                  Complex.class,
+                                  ComplexFunction.class,
+                                  null,
+                                  null,
+                                  true);
+  }
+
+  public static Expression<Complex, Complex, ComplexFunction> parse(String expression,
+                                                                    Context context)
+  {
+    return Function.parseAndRegister(expression,
+                                     context,
+                                     Complex.class,
+                                     Complex.class,
+                                     ComplexFunction.class,
+                                     null,
+                                     false);
   }
 
   /**
@@ -188,7 +201,10 @@ public interface ComplexFunction extends
    */
   public default ComplexFunction integral() throws NotIntegrableException
   {
-    throw new UnsupportedOperationException(this + " of class " + getClass() + " needs to implement this method");
+    throw new UnsupportedOperationException(this
+                                            + " of class "
+                                            + getClass()
+                                            + " needs to implement this method");
   }
 
   public default Complex eval(double t, Complex result)

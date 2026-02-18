@@ -227,64 +227,15 @@ public interface Function<D, CO> extends
                      String functionName,
                      boolean replace)
   {
-    int colonIndex = expression.indexOf(':');
+    Expression<D, H, Q> compiledExpression = parseAndRegister(expression,
+                                                              context,
+                                                              domainClass,
+                                                              coDomainClass,
+                                                              functionClass,
+                                                              functionName,
+                                                              replace);
 
-    if (colonIndex != -1)
-    {
-      var thisFunctionName = expression.substring(0, colonIndex);
-      if (functionName != null && !functionName.equals(thisFunctionName))
-      {
-        throw new CompilerException(String.format("name='%s' specified with : syntax does not match name specified another way '%s'",
-                                                  thisFunctionName,
-                                                  functionName));
-      }
-      expression   = expression.substring(colonIndex + 1);
-      functionName = thisFunctionName;
-    }
-
-    int punctuationMarkIndex = expression.indexOf(":");
-    if (punctuationMarkIndex != -1)
-    {
-      String inlineFunctionName = expression.substring(0, punctuationMarkIndex);
-      if (functionName != null && !functionName.equals(inlineFunctionName))
-      {
-        throw new CompilerException(String.format("functionName='%s' specified via function argument != inlineFunctionName='%s'",
-                                                  functionName,
-                                                  inlineFunctionName));
-      }
-      functionName = inlineFunctionName;
-      expression   = expression.substring(punctuationMarkIndex + 1, expression.length());
-    }
-    expression = expression.replaceAll(" ", "");
-
-    FunctionMapping<D, H, Q> mapping = null;
-    if (functionName != null && context != null)
-    {
-      mapping = context.registerFunctionMapping(functionName,
-                                                null,
-                                                domainClass,
-                                                coDomainClass,
-                                                functionClass,
-                                                replace,
-                                                null,
-                                                expression);
-
-    }
-
-    Expression<D, H, Q> compiledExpression = Parser.parse(expression,
-                                                          context,
-                                                          domainClass,
-                                                          coDomainClass,
-                                                          functionClass,
-                                                          functionName);
-
-    compiledExpression.functionMapping = mapping;
-    if (mapping != null)
-    {
-      mapping.expression = compiledExpression;
-    }
-
-    Q func = compiledExpression.instantiate();
+    Q                   func               = compiledExpression.instantiate();
 
     if (compiledExpression.functionMapping != null)
     {
@@ -293,7 +244,11 @@ public interface Function<D, CO> extends
 
     if (context != null)
     {
-      context.registerFunctionMapping(functionName, domainClass, coDomainClass, functionClass);
+      context.registerFunctionMapping(compiledExpression.functionMapping
+                    != null ? compiledExpression.functionMapping.functionName : functionName,
+                                      domainClass,
+                                      coDomainClass,
+                                      functionClass);
     }
     return func;
   }
@@ -404,6 +359,78 @@ public interface Function<D, CO> extends
                                   functionName,
                                   containingExpression,
                                   simplify);
+  }
+
+  /**
+   * Extracts function name from expression, registers in context, and parses.
+   * Returns the parsed Expression with functionMapping wired up.
+   */
+  static <D, H, Q extends Function<? extends D, ? extends H>>
+         Expression<D, H, Q>
+         parseAndRegister(String expression,
+                          Context context,
+                          Class<? extends D> domainClass,
+                          Class<? extends H> coDomainClass,
+                          Class<? extends Q> functionClass,
+                          String functionName,
+                          boolean replace)
+  {
+    int colonIndex = expression.indexOf(':');
+    if (colonIndex != -1)
+    {
+      var thisFunctionName = expression.substring(0, colonIndex);
+      if (functionName != null && !functionName.equals(thisFunctionName))
+      {
+        throw new CompilerException(String.format("name='%s' specified with : syntax does not match name specified another way '%s'",
+                                                  thisFunctionName,
+                                                  functionName));
+      }
+      expression   = expression.substring(colonIndex + 1);
+      functionName = thisFunctionName;
+    }
+
+    int punctuationMarkIndex = expression.indexOf(":");
+    if (punctuationMarkIndex != -1)
+    {
+      String inlineFunctionName = expression.substring(0, punctuationMarkIndex);
+      if (functionName != null && !functionName.equals(inlineFunctionName))
+      {
+        throw new CompilerException(String.format("functionName='%s' specified via function argument != inlineFunctionName='%s'",
+                                                  functionName,
+                                                  inlineFunctionName));
+      }
+      functionName = inlineFunctionName;
+      expression   = expression.substring(punctuationMarkIndex + 1);
+    }
+    expression = expression.replaceAll(" ", "");
+
+    FunctionMapping<D, H, Q> mapping = null;
+    if (functionName != null && context != null)
+    {
+      mapping = context.registerFunctionMapping(functionName,
+                                                null,
+                                                domainClass,
+                                                coDomainClass,
+                                                functionClass,
+                                                replace,
+                                                null,
+                                                expression);
+    }
+
+    Expression<D, H, Q> compiledExpression = Parser.parse(expression,
+                                                          context,
+                                                          domainClass,
+                                                          coDomainClass,
+                                                          functionClass,
+                                                          functionName);
+
+    compiledExpression.functionMapping = mapping;
+    if (mapping != null)
+    {
+      mapping.expression = compiledExpression;
+    }
+
+    return compiledExpression;
   }
 
   public default void close()

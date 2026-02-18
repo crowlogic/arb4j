@@ -69,7 +69,7 @@ public class ComplexFunctionTest extends
     try
     {
       var context = new Context();
-      ComplexFunction.express("p:y->pFq([1,3,-3],[1/2],-1/2*I/y)*exp(I*(π*3+y))", context);
+      ComplexFunction.parse("p:y->pFq([1,3,-3],[1/2],-1/2*I/y)*exp(I*(π*3+y))", context);
       ComplexFunction.express("q:y->pFq([1,3,-3],[1/2],1/2*I/y)*exp(I*(2*π*3-y))", context);
       ComplexFunction g3 =
                          ComplexFunction.express("g3:y->-I*(p(y)-q(y))*(4*3^2-1)*(-1)^(-3)/((4*3^2-2)*y*π)",
