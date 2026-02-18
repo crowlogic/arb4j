@@ -42,6 +42,49 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
                                          Node<D, R, F>
 {
 
+  @Override
+  public boolean isConstant()
+  {
+    return (left == null || left.isConstant()) && (right == null || right.isConstant());
+  }
+
+  @Override
+  public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
+  {
+    assert false : "BinaryOperationNode.differentiate has yet to be implemented as of Feb 17, 2026 8:28:49 PM";
+    return null;
+  }
+
+  @Override
+  public Logger getLogger()
+  {
+    assert false : "BinaryOperationNode.getLogger has yet to be implemented as of Feb 17, 2026 8:28:49 PM";
+    return null;
+  }
+
+  @Override
+  public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
+  {
+    assert false : "BinaryOperationNode.integrate has yet to be implemented as of Feb 17, 2026 8:28:49 PM";
+    return null;
+  }
+
+  @Override
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<E, S, G>
+         spliceInto(Expression<E, S, G> newExpression)
+  {
+    assert false : "BinaryOperationNode.spliceInto has yet to be implemented as of Feb 17, 2026 8:28:49 PM";
+    return null;
+  }
+
+  @Override
+  public String typeset()
+  {
+    assert false : "BinaryOperationNode.typeset has yet to be implemented as of Feb 17, 2026 8:28:49 PM";
+    return null;
+  }
+
   public static boolean                                          traceSimplify   =
                                                                                Boolean.valueOf(System.getProperty("arb4j.traceBinaryOperationSimplification",
                                                                                                                   "false"));

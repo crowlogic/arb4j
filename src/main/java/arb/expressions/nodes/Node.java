@@ -180,7 +180,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   /**
    * @return true if this node's evaluation is independent of all input parameters
    */
-  public boolean isConstantExpression()
+  public boolean isConstant()
   {
     if (isIndependentOfInput())
     {
@@ -189,7 +189,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
       { true };
       accept(node ->
       {
-        if (node != this && !node.isIndependentOfInput())
+        if ((node != this && !node.isIndependentOfInput()) || node.isVariable())
         {
           allConstant[0] = false;
         }
@@ -747,9 +747,25 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return apply("ceil");
   }
 
-  public  ExponentiationNode<D, R, F> square()
+  public ExponentiationNode<D, R, F> square()
   {
     return pow(2);
+  }
+
+  public Object evaluate()
+  {
+    assert isConstant() : "cannot evaluate the non-constant node "
+                          + this
+                          + " of class "
+                          + getClass().getSimpleName()
+                          + " at compile-time";
+    throw new UnsupportedOperationException(" #862: implement something to evaluate constant node "
+                                            + this
+                                            + " of class "
+                                            + getClass().getSimpleName()
+                                            + " at compile-time whose String representation is '"
+                                            + toString()
+                                            + "'");
   }
 
 }

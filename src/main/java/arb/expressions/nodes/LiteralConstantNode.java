@@ -54,6 +54,12 @@ import arb.functions.Function;
 public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                 Node<D, R, F>
 {
+  @Override
+  public boolean isConstant()
+  {
+    return true;
+  }
+
   public static final Logger logger = LoggerFactory.getLogger(LiteralConstantNode.class);
 
   /**

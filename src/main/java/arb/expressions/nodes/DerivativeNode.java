@@ -29,8 +29,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public boolean isZero()
   {
-    return operand.isConstantExpression()
-                  || operand.isIndependentOf(expression.getIndependentVariable());
+    return operand.isConstant() || operand.isIndependentOf(expression.getIndependentVariable());
   }
 
   public static final Logger logger = LoggerFactory.getLogger(DerivativeNode.class);
@@ -146,7 +145,23 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
     }
     else
     {
-      throw new UnsupportedOperationException("TODO: implement derivative of order " + order + " for " + this + " in " + expression );
+      if (order.isConstant())
+      {
+        Object alpha = order.evaluate();
+        throw new UnsupportedOperationException(String.format("TODO: implement derivative with respect to constant %s for %s in %s\n",
+                                                              order,
+                                                              this,
+                                                              expression));
+      }
+      else
+      {
+        throw new UnsupportedOperationException("TODO: implement derivative with non-constant "
+                                                + order
+                                                + " of type " + order.getClass().getSimpleName() + " which generates " + order.type() + " instances for "
+                                                + this
+                                                + " in "
+                                                + expression);
+      }
     }
   }
 

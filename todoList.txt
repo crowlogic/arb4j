@@ -1,7 +1,8 @@
+#862: implement something to evaluate constant node 2 of class LiteralConstantNode at compile-time whose String representation is '2'
+#758: implement Caputo fractional derivative for exponent in the unit interval
 move intermediateVariableCounters from Context to Expression
 debug ComplexFunctionTest.testSequence2
 #844: assert consistency between independent, indeterminate, and context variable namespaces
 #859: Add null checks in initialize() for ascendent input variable fields propagated to subfunctions
 implement some sort of system of namespaces beyond Context
 the generated toString() of the Expression.generateFunctionalElement() method should show the value instead of the variable name if it is declared in an upstream expression (in which case the value is known)
-#758: implement Caputo fractional derivative for exponent in the unit interval
