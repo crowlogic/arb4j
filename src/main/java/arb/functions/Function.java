@@ -227,15 +227,83 @@ public interface Function<D, CO> extends
                      String functionName,
                      boolean replace)
   {
-    Expression<D, H, Q> compiledExpression = parseAndRegister(expression,
-                                                              context,
-                                                              domainClass,
-                                                              coDomainClass,
-                                                              functionClass,
-                                                              functionName,
-                                                              replace);
+    Expression<D, H, Q> compiled = compileAndRegister(expression,
+                                                      context,
+                                                      domainClass,
+                                                      coDomainClass,
+                                                      functionClass,
+                                                      functionName,
+                                                      replace);
+    return compiled.functionMapping != null ? compiled.functionMapping.instance
+                                            : compiled.instantiate();
+  }
 
-    Q                   func               = compiledExpression.instantiate();
+  static <D, H, Q extends Function<? extends D, ? extends H>>
+         Expression<D, H, Q>
+         compileAndRegister(String expression,
+                            Context context,
+                            Class<? extends D> domainClass,
+                            Class<? extends H> coDomainClass,
+                            Class<? extends Q> functionClass,
+                            String functionName,
+                            boolean replace)
+  {
+    int colonIndex = expression.indexOf(':');
+    if (colonIndex != -1)
+    {
+      var thisFunctionName = expression.substring(0, colonIndex);
+      if (functionName != null && !functionName.equals(thisFunctionName))
+      {
+        throw new CompilerException(String.format("name='%s' specified with : syntax does not match name specified another way '%s'",
+                                                  thisFunctionName,
+                                                  functionName));
+      }
+      expression   = expression.substring(colonIndex + 1);
+      functionName = thisFunctionName;
+    }
+
+    int punctuationMarkIndex = expression.indexOf(":");
+    if (punctuationMarkIndex != -1)
+    {
+      String inlineFunctionName = expression.substring(0, punctuationMarkIndex);
+      if (functionName != null && !functionName.equals(inlineFunctionName))
+      {
+        throw new CompilerException(String.format("functionName='%s' specified via function argument != inlineFunctionName='%s'",
+                                                  functionName,
+                                                  inlineFunctionName));
+      }
+      functionName = inlineFunctionName;
+      expression   = expression.substring(punctuationMarkIndex + 1, expression.length());
+    }
+    expression = expression.replaceAll(" ", "");
+
+    FunctionMapping<D, H, Q> mapping = null;
+    if (functionName != null && context != null)
+    {
+      mapping = context.registerFunctionMapping(functionName,
+                                                null,
+                                                domainClass,
+                                                coDomainClass,
+                                                functionClass,
+                                                replace,
+                                                null,
+                                                expression);
+    }
+
+    Expression<D, H, Q> compiledExpression = Parser.parse(expression,
+                                                          context,
+                                                          domainClass,
+                                                          coDomainClass,
+                                                          functionClass,
+                                                          functionName);
+
+    compiledExpression.functionMapping = mapping;
+    if (mapping != null)
+    {
+      mapping.expression = compiledExpression;
+    }
+
+    Q func = compiledExpression.instantiate();
 
     if (compiledExpression.functionMapping != null)
     {
@@ -244,13 +312,10 @@ public interface Function<D, CO> extends
 
     if (context != null)
     {
-      context.registerFunctionMapping(compiledExpression.functionMapping
-                    != null ? compiledExpression.functionMapping.functionName : functionName,
-                                      domainClass,
-                                      coDomainClass,
-                                      functionClass);
+      context.registerFunctionMapping(functionName, domainClass, coDomainClass, functionClass);
     }
-    return func;
+
+    return compiledExpression;
   }
 
   public static <D, H, Q extends Function<? extends D, ? extends H>>

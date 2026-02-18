@@ -171,13 +171,13 @@ public interface ComplexFunction extends
   public static Expression<Complex, Complex, ComplexFunction> parse(String expression,
                                                                     Context context)
   {
-    return Function.parseAndRegister(expression,
-                                     context,
-                                     Complex.class,
-                                     Complex.class,
-                                     ComplexFunction.class,
-                                     null,
-                                     false);
+    return Function.compileAndRegister(expression,
+                                       context,
+                                       Complex.class,
+                                       Complex.class,
+                                       ComplexFunction.class,
+                                       null,
+                                       false);
   }
 
   /**
