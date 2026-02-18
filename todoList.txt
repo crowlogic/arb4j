@@ -3,3 +3,4 @@ debug ComplexFunctionTest.testSequence2
 #844: assert consistency between independent, indeterminate, and context variable namespaces
 #859: Add null checks in initialize() for ascendent input variable fields propagated to subfunctions
 implement some sort of system of namespaces beyond Context
+the generated toString() of the Expression.generateFunctionalElement() method should show the value instead of the variable name if it is declared in an upstream expression (in which case the value is known)
