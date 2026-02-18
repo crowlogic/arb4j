@@ -53,6 +53,123 @@ import arb.utensils.Utensils;
 public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> extends
                          UnaryOperationNode<D, R, F>
 {
+  /**
+   * TODO: this needs to be made fluent style
+   */
+  @Override
+  public <T> T evaluate(Class<T> resultType)
+  {
+    Real argVal = arg.evaluate(Real.class);
+    int bits = 128;
+    try ( Real result = new Real())
+    {
+      switch (functionName)
+      {
+      case "ceil":
+        try ( Integer ceil = new Integer())
+        {
+          argVal.ceil(bits, ceil);
+          if (resultType.equals(Integer.class))
+          {
+            return (T) ceil;
+          }
+          if (resultType.equals(Real.class))
+          {
+            result.set(ceil);
+            return (T) result;
+          }
+          if (resultType.equals(Fraction.class))
+          {
+            Fraction frac = new Fraction();
+            frac.set(ceil);
+            return (T) frac;
+          }
+        }
+        break;
+      case "floor":
+        try ( Integer floor = new Integer())
+        {
+          argVal.floor(bits, floor);
+          if (resultType.equals(Integer.class))
+          {
+            return (T) floor;
+          }
+          if (resultType.equals(Real.class))
+          {
+            result.set(floor);
+            return (T) result;
+          }
+          if (resultType.equals(Fraction.class))
+          {
+            Fraction frac = new Fraction();
+            frac.set(floor);
+            return (T) frac;
+          }
+        }
+        break;
+      case "sqrt":
+        argVal.sqrt(bits, result);
+        if (resultType.equals(Real.class))
+        {
+          return (T) result;
+        }
+        break;
+      case "abs":
+        argVal.abs(result);
+        if (resultType.equals(Real.class))
+        {
+          return (T) result;
+        }
+        break;
+      case "exp":
+        argVal.exp(bits, result);
+        if (resultType.equals(Real.class))
+        {
+          return (T) result;
+        }
+        break;
+      case "log":
+        argVal.log(bits, result);
+        if (resultType.equals(Real.class))
+        {
+          return (T) result;
+        }
+        break;
+      case "sin":
+        argVal.sin(bits, result);
+        if (resultType.equals(Real.class))
+        {
+          return (T) result;
+        }
+        break;
+      case "cos":
+        argVal.cos(bits, result);
+        if (resultType.equals(Real.class))
+        {
+          return (T) result;
+        }
+        break;
+      case "Γ":
+      case "gamma":
+        argVal.Γ(bits, result);
+        if (resultType.equals(Real.class))
+        {
+          return (T) result;
+        }
+        break;
+      case "neg":
+        argVal.neg(result);
+        if (resultType.equals(Real.class))
+        {
+          return (T) result;
+        }
+        break;
+      default:
+        break;
+      }
+    }
+    return super.evaluate(resultType);
+  }
 
   @Override
   public boolean isZero()
