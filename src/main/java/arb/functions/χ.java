@@ -5,7 +5,6 @@ import arb.Integer;
 import arb.expressions.Context;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.integer.ComplexFunctionSequence;
-import arb.functions.integer.ComplexSequence;
 import arb.utensils.Utensils;
 
 public class χ implements

@@ -1,7 +1,5 @@
 package arb.functions;
 
-import static org.junit.Assert.assertEquals;
-
 import arb.*;
 import arb.Integer;
 import arb.expressions.Context;
@@ -35,7 +33,7 @@ public class μ implements
     System.out.println("μ=" + Utensils.yamlString(μ));
 
     System.out.println("seq3=" + Utensils.yamlString(seq3));
-    
+
   }
 
   @Override
