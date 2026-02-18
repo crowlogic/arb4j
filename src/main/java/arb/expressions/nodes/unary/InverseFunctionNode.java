@@ -204,9 +204,9 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
   {
     // f⁻¹(arg) applied: this node itself gives f⁻¹(arg)
     // f′ evaluated at f⁻¹(arg)
-    FunctionNode<D, R, F> fPrimeAtInverse   = new FunctionNode<>(forwardFunctionName,
+    FunctionNode<D, R, F> fPrimeAtInverse   = new FunctionNode<>(expression,
+                                                                 forwardFunctionName,
                                                                  this.spliceInto(expression),
-                                                                 expression,
                                                                  1);
 
     // 1 / f′(f⁻¹(arg))

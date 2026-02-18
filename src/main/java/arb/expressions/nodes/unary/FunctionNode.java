@@ -161,9 +161,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   /**
    * Constructor with derivative order support for special functions.
    */
-  public FunctionNode(String functionName,
+  public FunctionNode(Expression<D, R, F> expression,
+                      String functionName,
                       Node<D, R, F> argument,
-                      Expression<D, R, F> expression,
                       int derivativeOrder)
   {
     this(functionName,
@@ -382,9 +382,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       }
       else
       {
-        return new FunctionNode<>(functionName,
+        return new FunctionNode<>(expression,
+                                  functionName,
                                   arg,
-                                  expression,
                                   derivativeOrder + 1);
       }
     case "θ": // Heaviside step function
@@ -809,15 +809,15 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     case "δ":
       if (derivativeOrder > 0)
       {
-        // Integration of δ'(x) gives δ(x)
-        return new FunctionNode<>(functionName,
+        // Integration of δ(x) gives δ(x)
+        return new FunctionNode<>(expression,
+                                  functionName,
                                   arg,
-                                  expression,
                                   derivativeOrder - 1);
       }
       else
       {
-        // Integration of δ(x) gives θ(x)
+        // Integration of δ(x) give the Heaviside step function θ(x)
         return arg.θ();
       }
     case "sqrt":
@@ -833,12 +833,11 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     case "sec":
       return arg.sec().add(arg.tan()).log();
     case "arcsin":
-      return arg.mul(arg.arcsin()).sub(one().sub(arg.pow(2)).sqrt());
+      return arg.mul(arg.arcsin()).sub(one().sub(arg.square()).sqrt());
     case "arctan":
-      return arg.mul(arg.arctan()).sub(one().div(2).mul(one().add(arg.pow(2)).log()));
+      return arg.mul(arg.arctan()).sub(one().div(2).mul(one().add(arg.square()).log()));
     case "log":
-      // ∫ ln(x) dx = x*ln(x) - x
-      return arg.mul(this).sub(arg);
+      return mul(arg).sub(arg);
     default:
       throw new UnsupportedOperationException("Integration not implemented for: " + functionName);
     }
@@ -895,7 +894,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                              false,
                                                              expression,
                                                              expression.expression);
-    expression.referencedFunctions.put(functionName, mapping);
+    expression.registerReferencedFunction(functionName, mapping);
     return mapping;
   }
 
@@ -962,9 +961,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    return new FunctionNode<E, S, G>(functionName,
+    return new FunctionNode<E, S, G>(newExpression,
+                                     functionName,
                                      arg.spliceInto(newExpression),
-                                     newExpression,
                                      derivativeOrder);
   }
 

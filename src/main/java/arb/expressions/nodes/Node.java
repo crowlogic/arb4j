@@ -308,6 +308,10 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return apply("δ");
   }
 
+  /**
+   * 
+   * @return
+   */
   public Node<D, R, F> θ()
   {
     return apply("θ");
@@ -738,9 +742,14 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return apply("Γ");
   }
 
-  protected FunctionNode<D, R, F> ceil()
+  public FunctionNode<D, R, F> ceil()
   {
     return apply("ceil");
+  }
+
+  public  ExponentiationNode<D, R, F> square()
+  {
+    return pow(2);
   }
 
 }

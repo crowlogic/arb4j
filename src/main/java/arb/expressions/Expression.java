@@ -1626,10 +1626,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   /**
    * Generate the code when the {@link #coDomainType} is an interface so that the
    * return value is itself a {@link Function}, in this case the result argument
-   * is ignored since there is no way to use the {@link Function} reference as a
-   * changeable object, since it is not {@link Becomable}
+   * is ignored since there {@link Function} is immutable
    * 
-   * TODO: fix the generic types on this
+   * TODO: fix the generic types on this and revisit this.
+   * 
+   * TODO: the generated toString() of this method should show the value instead
+   * of the variable name if it is declared in an upstream expression (in which
+   * case the value is known)
+   * 
    * 
    * @param mv
    * @return initialized this{@link #newFunctionalExpression()}
@@ -3789,6 +3793,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     // assert false : "TODO: is this necessary? #844";
     indeterminateVariables.clear();
+    return this;
+  }
+
+  public Expression<D, C, F> registerReferencedFunction(String functionName2,
+                                                        FunctionMapping<D, C, F> mapping)
+  {
+    referencedFunctions.put(functionName, mapping);
     return this;
   }
 
