@@ -10,12 +10,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import arb.Field;
+import arb.Fraction;
 import arb.Integer;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.exceptions.CompilerException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
+import arb.expressions.nodes.binary.AdditionNode;
+import arb.expressions.nodes.binary.DivisionNode;
+import arb.expressions.nodes.binary.ExponentiationNode;
+import arb.expressions.nodes.binary.MultiplicationNode;
+import arb.expressions.nodes.binary.SubtractionNode;
+import arb.expressions.nodes.unary.GammaFunctionNode;
 import arb.functions.Function;
 import arb.functions.RealFunctional;
 import arb.functions.real.RealFunction;
@@ -51,7 +59,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   @Override
   public boolean isZero()
   {
-    return operand.isZero();
+    return integralNode != null ? integralNode.isZero() : operand.isZero();
   }
 
   public static final Logger logger = LoggerFactory.getLogger(CaputoFractionalDerivativeNode.class);
@@ -78,7 +86,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   /**
    * The integer derivative order n = ⌈α⌉ resolved at compile time from bounds.
    */
-  private final int                                      derivativeOrder;
+  private int                                            derivativeOrder;
 
   private Expression<Real, RealFunction, RealFunctional> integrandExpression;
 
@@ -101,11 +109,12 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     this.operand  = operand;
     this.context  = expression.getContext();
 
-    // Special case: Đ^(α)(c) = 0 for any constant c
-    if (operand.isConstant())
+    // Try to compute a closed-form solution (polynomials, etc.)
+    // D^α (C t^p) = C * (Γ(p+1)/Γ(p-α+1)) * t^(p-α)
+    Node<D, R, F> closedForm = tryComputeClosedForm(operand, expression.getIndependentVariable());
+    if (closedForm != null)
     {
-      this.integralNode = zero();
-      derivativeOrder = 0;
+      this.integralNode = closedForm;
       return;
     }
 
@@ -156,11 +165,111 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   }
 
   /**
+   * Attempt to find a closed-form fractional derivative for
+   * polynomials/monomials. Returns null if no simple closed form is implemented.
+   */
+  private Node<D, R, F> tryComputeClosedForm(Node<D, R, F> node, VariableNode<D, R, F> variable)
+  {
+    // Case 0: Constant -> 0
+    if (node.isConstant())
+    {
+      return zero();
+    }
+
+    // Case 1: Variable t -> t^(1-α) / Γ(2-α)
+    if (node.equals(variable))
+    {
+      // p = 1
+      // Γ(1+1) / Γ(1-α+1) * t^(1-α)
+      // = 1 / Γ(2-α) * t^(1-α)
+      Node<D, R, F> p         = one();
+      Node<D, R, F> numerator = p.add(one()).Γ();
+      Node<D, R, F> denomArg  = p.sub(exponent).add(one());
+      Node<D, R, F> term      = variable.pow(p.sub(exponent));
+      return numerator.div(denomArg.Γ()).mul(term);
+    }
+
+    // Case 2: Power t^p -> (Γ(p+1)/Γ(p-α+1)) * t^(p-α)
+    if (node instanceof ExponentiationNode<D, R, F> pow)
+    {
+      if (pow.left.equals(variable) && pow.right.isConstant())
+      {
+        Node<D, R, F> p         = pow.right;
+        // Formula: Γ(p+1) / Γ(p-α+1) * t^(p-α)
+        Node<D, R, F> numerator = p.add(one()).Γ();
+        Node<D, R, F> denomArg  = p.sub(exponent).add(one());
+        Node<D, R, F> term      = variable.pow(p.sub(exponent));
+        return numerator.div(denomArg.Γ()).mul(term);
+      }
+    }
+
+    // Case 3: Multiplication by constant C * f(t) -> C * D^α f(t)
+    if (node instanceof MultiplicationNode<D, R, F> mul)
+    {
+      if (mul.left.isConstant())
+      {
+        Node<D, R, F> subResult = tryComputeClosedForm(mul.right, variable);
+        if (subResult != null)
+        {
+          return mul.left.mul(subResult);
+        }
+      }
+      else if (mul.right.isConstant())
+      {
+        Node<D, R, F> subResult = tryComputeClosedForm(mul.left, variable);
+        if (subResult != null)
+        {
+          return mul.right.mul(subResult);
+        }
+      }
+    }
+
+    // Case 4: Division by constant f(t) / C -> (1/C) * D^α f(t)
+    if (node instanceof DivisionNode<D, R, F> div)
+    {
+      if (div.right.isConstant())
+      {
+        Node<D, R, F> subResult = tryComputeClosedForm(div.left, variable);
+        if (subResult != null)
+        {
+          return subResult.div(div.right);
+        }
+      }
+    }
+
+    // Case 5: Addition f(t) + g(t) -> D^α f(t) + D^α g(t)
+    if (node instanceof AdditionNode<D, R, F> add)
+    {
+      Node<D, R, F> leftRes  = tryComputeClosedForm(add.left, variable);
+      Node<D, R, F> rightRes = tryComputeClosedForm(add.right, variable);
+      if (leftRes != null && rightRes != null)
+      {
+        return leftRes.add(rightRes);
+      }
+    }
+
+    // Case 6: Subtraction f(t) - g(t) -> D^α f(t) - D^α g(t)
+    if (node instanceof SubtractionNode<D, R, F> sub)
+    {
+      Node<D, R, F> leftRes  = tryComputeClosedForm(sub.left, variable);
+      Node<D, R, F> rightRes = tryComputeClosedForm(sub.right, variable);
+      if (leftRes != null && rightRes != null)
+      {
+        return leftRes.sub(rightRes);
+      }
+    }
+
+    return null;
+  }
+
+  /**
    * Resolve n = ⌈α⌉ at compile time from the bounds on the exponent variable.
    * 
    * If the exponent is a variable reference whose value in the context has bounds
    * set, compute ⌈upperBound⌉. Otherwise, if the exponent is a literal constant,
-   * compute ⌈literal⌉ directly.
+   * compute ⌈literal⌉ directly. Otherwise, if the exponent is any constant
+   * expression (e.g. a DivisionNode like 1/2), evaluate it as a Fraction, convert
+   * to Real, and compute the ceiling.
    * 
    * @param power   the exponent node
    * @param context the expression context
@@ -205,19 +314,75 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
         }
       }
     }
+    else if (power instanceof LiteralConstantNode)
+    {
+      // Case 2: exponent is a literal constant — compute ceil directly
+      String literalStr = power.toString();
+      try ( Real literalVal = new Real(literalStr,
+                                       128);
+            Integer ceil = new Integer())
+      {
+        literalVal.ceil(128, ceil);
+        int n = ceil.getSignedValue();
+        if (logger.isDebugEnabled())
+        {
+          logger.debug("resolved n = ⌈{}⌉ = {} from literal exponent", literalStr, n);
+        }
+        return n;
+      }
+    }
     else if (power.isConstant())
     {
-      return power.ceil().evaluate(Integer.class).getSignedValue();
+      // Case 3: exponent is a constant expression (e.g. DivisionNode 1/2 producing
+      // Fraction)
+      // Evaluate to a Fraction, convert to Real, then ceil.
+      Class<?> powerType = power.type();
+      try ( Real realVal = new Real(); Integer ceil = new Integer())
+      {
+        if (powerType.equals(Fraction.class))
+        {
+          Fraction frac = power.evaluate(Fraction.class);
+          realVal.set(frac);
+        }
+        else if (powerType.equals(Real.class))
+        {
+          Real r = power.evaluate(Real.class);
+          realVal.set(r);
+        }
+        else if (powerType.equals(Integer.class))
+        {
+          Integer intVal = power.evaluate(Integer.class);
+          realVal.set(intVal);
+        }
+        else
+        {
+          throw new CompilerException("constant exponent of type "
+                                      + powerType.getName()
+                                      + " is not supported for Caputo derivative order resolution; got: "
+                                      + power);
+        }
+        realVal.ceil(128, ceil);
+        int n = ceil.getSignedValue();
+        if (logger.isDebugEnabled())
+        {
+          logger.debug("resolved n = ⌈{}⌉ = {} from constant expression {} of type {}",
+                       power,
+                       n,
+                       power.getClass().getSimpleName(),
+                       powerType.getSimpleName());
+        }
+        return n;
+      }
     }
-
-    throw new IllegalStateException("only resolution of the Caputo derivative order n = ⌈α⌉ at compile time with "
-                                    + "the exponent either bounded or constant is currently supported. TODO: support unbounded which isn't that hard considering we just "
-                                    + "pass along the symbolic information to the generated class and then implement the appropriate conditional recursion so it would "
-                                    + "work as intended given enough cpu time and memory"
-                                    + power.getClass().getSimpleName()
-                                    + " = "
-                                    + power);
-
+    else
+    {
+      throw new IllegalStateException("Cannot resolve Caputo derivative order n = ⌈α⌉ at compile time. "
+                                      + "The exponent must be either a bounded variable or a constant expression. Got: "
+                                      + power.getClass().getSimpleName()
+                                      + " = "
+                                      + power);
+    }
+    return java.lang.Integer.MIN_VALUE;
   }
 
   @Override
@@ -317,7 +482,9 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   @Override
   public String typeset()
   {
-    return String.format("{}^{C}D^{%s}\\left[%s\\right]", exponent.typeset(), operand.typeset());
+    return String.format("{}^{C}D^{%s}\\\\left[%s\\\\right]",
+                         exponent.typeset(),
+                         operand.typeset());
   }
 
   @Override
