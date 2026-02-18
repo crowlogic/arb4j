@@ -25,13 +25,13 @@ import org.slf4j.LoggerFactory;
 
 import arb.*;
 import arb.Integer;
+import arb.applications.ExpressionTree;
 import arb.exceptions.CompilerException;
 import arb.expressions.context.Dependency;
 import arb.expressions.nodes.*;
 import arb.expressions.nodes.binary.*;
 import arb.expressions.nodes.nary.*;
 import arb.expressions.nodes.unary.*;
-import arb.expressions.viz.ExpressionTree;
 import arb.functions.Function;
 import arb.functions.RealToComplexFunction;
 import arb.functions.complex.ComplexFunction;

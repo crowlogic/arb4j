@@ -2,10 +2,10 @@ package arb.viz;
 
 import java.util.*;
 
+import arb.applications.Stylesheet;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.*;
-import arb.expressions.viz.Stylesheet;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.ObjectBinding;

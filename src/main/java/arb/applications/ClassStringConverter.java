@@ -1,4 +1,4 @@
-package arb.expressions.viz;
+package arb.applications;
 
 import arb.functions.Function;
 import javafx.util.StringConverter;

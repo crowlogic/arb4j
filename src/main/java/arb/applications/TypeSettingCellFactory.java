@@ -1,4 +1,4 @@
-package arb.expressions.viz;
+package arb.applications;
 
 import java.awt.image.BufferedImage;
 import java.util.concurrent.ConcurrentHashMap;

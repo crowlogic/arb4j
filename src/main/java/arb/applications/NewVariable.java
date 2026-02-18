@@ -1,4 +1,4 @@
-package arb.expressions.viz;
+package arb.applications;
 
 public record NewVariable(String name, Class<?> type)
 {

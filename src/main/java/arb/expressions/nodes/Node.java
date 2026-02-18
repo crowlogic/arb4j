@@ -11,13 +11,13 @@ import org.scilab.forge.jlatexmath.LaTeXAtom;
 import org.slf4j.Logger;
 
 import arb.Typesettable;
+import arb.applications.ExpressionTree;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.binary.*;
 import arb.expressions.nodes.unary.*;
-import arb.expressions.viz.ExpressionTree;
 import arb.functions.Function;
 
 /**

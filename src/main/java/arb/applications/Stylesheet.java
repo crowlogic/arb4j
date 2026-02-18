@@ -1,4 +1,4 @@
-package arb.expressions.viz;
+package arb.applications;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
