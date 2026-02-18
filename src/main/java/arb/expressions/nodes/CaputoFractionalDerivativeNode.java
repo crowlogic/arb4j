@@ -14,7 +14,6 @@ import arb.Integer;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.exceptions.CompilerException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
@@ -79,7 +78,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   /**
    * The integer derivative order n = ⌈α⌉ resolved at compile time from bounds.
    */
-  private int                                            derivativeOrder;
+  private final int                                            derivativeOrder;
 
   private Expression<Real, RealFunction, RealFunctional> integrandExpression;
 
@@ -119,7 +118,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     Class<?> scalarType = scalarType(expression.domainType);
     if (scalarType == Real.class)
     {
-      assert derivativeOrder == 1 : "only n=1 is implemented";
+      assert derivativeOrder == 1 : "only derivativeOrder=1 is implemented but derivativeOrder=" + derivativeOrder;
 
       // n=1: integrand is (x-t)^(-α) * f'(t)
       // since n-α-1 = 1-α-1 = -α and f^(1)(t) = ∂f(t)/∂t
@@ -198,41 +197,19 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
         }
       }
     }
-    else if (power instanceof LiteralConstantNode)
+    else if (power.isConstant())
     {
-      // Case 2: exponent is a literal constant — compute ceil directly
-      String literalStr = power.toString();
-      try ( Real literalVal = new Real(literalStr,
-                                       128);
-            Integer ceil = new Integer())
-      {
-        literalVal.ceil(128, ceil);
-        int n = ceil.getSignedValue();
-        if (logger.isDebugEnabled())
-        {
-          logger.debug("resolved n = ⌈{}⌉ = {} from literal exponent", literalStr, n);
-        }
-        return n;
-      }
+      return power.ceil().evaluate(Integer.class).getSignedValue();
     }
-    else if (power.isIndependentOfInput())
-    {
-      throw new CompilerException("TODO: handle power being "
-                                  + power
-                                  + " of node class "
-                                  + power.getClass().getSimpleName()
-                                  + " producing type "
-                                  + power.type());
-    }
-    else
-    {
-      throw new IllegalStateException("Cannot resolve Caputo derivative order n = ⌈α⌉ at compile time. "
-                                      + "The exponent must be either a bounded variable or a literal constant. Got: "
-                                      + power.getClass().getSimpleName()
-                                      + " = "
-                                      + power);
-    }
-    return java.lang.Integer.MIN_VALUE;
+
+    throw new IllegalStateException("only resolution of the Caputo derivative order n = ⌈α⌉ at compile time with "
+                                    + "the exponent either bounded or constant is currently supported. TODO: support unbounded which isn't that hard considering we just "
+                                    + "pass along the symbolic information to the generated class and then implement the appropriate conditional recursion so it would "
+                                    + "work as intended given enough cpu time and memory"
+                                    + power.getClass().getSimpleName()
+                                    + " = "
+                                    + power);
+
   }
 
   @Override

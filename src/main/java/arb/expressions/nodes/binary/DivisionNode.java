@@ -25,13 +25,45 @@ import arb.functions.Function;
 public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> extends
                          BinaryOperationNode<D, R, F>
 {
+  @Override
+  public <T> T evaluate(Class<T> resultType)
+  {
+    if (resultType.equals(Integer.class))
+    {
+      Integer num = left.evaluate(Integer.class);
+      Integer den = right.evaluate(Integer.class);
+      try ( Integer result = new Integer())
+      {
+        return (T) num.div(den, result);
+      }
+    }
+    if (resultType.equals(Fraction.class))
+    {
+      Integer  num  = left.evaluate(Integer.class);
+      Integer  den  = right.evaluate(Integer.class);
+      Fraction frac = new Fraction();
+      frac.getNumerator().set(num);
+      frac.getDenominator().set(den);
+      return (T) frac;
+    }
+    if (resultType.equals(Real.class))
+    {
+      Fraction frac = evaluate(Fraction.class);
+      Real     r    = new Real();
+      r.set(frac);
+      return (T) r;
+    }
+    return super.evaluate(resultType);
+  }
+
   public static final Logger logger = LoggerFactory.getLogger(DivisionNode.class);
-  
+
   @Override
   public Logger getLogger()
   {
     return logger;
   }
+
   @Override
   public boolean isZero()
   {
@@ -402,15 +434,13 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
 
     // Cancel x^a / x → x^(a-1)
-    if (left instanceof ExponentiationNode<D, R, F> leftExp2
-                  && leftExp2.left.equals(right))
+    if (left instanceof ExponentiationNode<D, R, F> leftExp2 && leftExp2.left.equals(right))
     {
       return leftExp2.left.pow(leftExp2.right.sub(one()).simplify()).simplify();
     }
 
     // Cancel x / x^a → x^(1-a)
-    if (right instanceof ExponentiationNode<D, R, F> rightExp2
-                  && rightExp2.left.equals(left))
+    if (right instanceof ExponentiationNode<D, R, F> rightExp2 && rightExp2.left.equals(left))
     {
       return left.pow(one().sub(rightExp2.right).simplify()).simplify();
     }
@@ -464,13 +494,11 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       return one();
     }
-    if (numerator instanceof ExponentiationNode<D, R, F> numExp
-                  && numExp.left.equals(denominator))
+    if (numerator instanceof ExponentiationNode<D, R, F> numExp && numExp.left.equals(denominator))
     {
       return numExp.left.pow(numExp.right.sub(one()).simplify()).simplify();
     }
-    if (denominator instanceof ExponentiationNode<D, R, F> denExp
-                  && denExp.left.equals(numerator))
+    if (denominator instanceof ExponentiationNode<D, R, F> denExp && denExp.left.equals(numerator))
     {
       return numerator.pow(one().sub(denExp.right).simplify()).simplify();
     }
@@ -482,7 +510,6 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     return null;
   }
-
 
   @Override
   public <E, S, G extends Function<? extends E, ? extends S>>
