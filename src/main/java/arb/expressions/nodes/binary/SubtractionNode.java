@@ -14,6 +14,7 @@ import arb.expressions.nodes.unary.NegationNode;
 import arb.functions.Function;
 
 /**
+ * 
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
@@ -35,15 +36,6 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
           "sub",
           right,
           "-");
-  }
-
-  /**
-   * Đ^(α)(f - g) = Đ^(α)(f) - Đ^(α)(g)
-   */
-  @Override
-  public Node<D, R, F> fractionalDerivative(Node<D, R, F> α)
-  {
-    return left.fractionalDerivative(α).sub(right.fractionalDerivative(α));
   }
 
   @Override
@@ -120,12 +112,14 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
       return this;
     }
 
+    // Rewrite a - (-b) as a + b, but do NOT re-simplify to avoid ping-pong
     if (right instanceof NegationNode<D, R, F> rightNegation)
     {
       return left.add(rightNegation.arg);
     }
 
     return this;
+
   }
 
   @Override

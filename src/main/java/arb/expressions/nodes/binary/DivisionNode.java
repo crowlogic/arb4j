@@ -84,25 +84,6 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
           "/");
   }
 
-  /**
-   * Đ^(α)(f/c) = Đ^(α)(f) / c when c is independent of the differentiation
-   * variable. Falls back to the default integral form otherwise.
-   */
-  @Override
-  public Node<D, R, F> fractionalDerivative(Node<D, R, F> α)
-  {
-    VariableNode<D, R, F> diffVar = left.extractVariable();
-    if (diffVar == null)
-    {
-      diffVar = right.extractVariable();
-    }
-    if (diffVar != null && right.isIndependentOf(diffVar))
-    {
-      return left.fractionalDerivative(α).div(right);
-    }
-    return super.fractionalDerivative(α);
-  }
-
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
@@ -177,37 +158,54 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                        variable);
   }
 
+  /**
+   * Robust check for quadratic terms. Returns true for: x², -x², 5*x², x²*5
+   */
   private boolean isQuadraticIn(Node<D, R, F> term, VariableNode<D, R, F> variable)
   {
+    // Case A: strictly x²
     if (term.isVariableSquared(variable))
     {
       return true;
     }
+
+    // Case B: c * x² or x² * c
     if (term instanceof MultiplicationNode<D, R, F> mul)
     {
-      boolean leftIsSquare  = mul.left.isVariableSquared(variable);
-      boolean rightIsConst  = mul.right.isIndependentOf(variable);
+      // Check if one side is x² and the other is constant
+      boolean leftIsSquare = mul.left.isVariableSquared(variable);
+      boolean rightIsConst = mul.right.isIndependentOf(variable);
+
       if (leftIsSquare && rightIsConst)
       {
         return true;
       }
+
       boolean rightIsSquare = mul.right.isVariableSquared(variable);
       boolean leftIsConst   = mul.left.isIndependentOf(variable);
+
       if (rightIsSquare && leftIsConst)
       {
         return true;
       }
     }
+
     return false;
   }
 
+  /**
+   * Extracts the 'a' from 'ax²'.
+   */
   private Node<D, R, F> extractQuadraticCoefficient(Node<D, R, F> term,
                                                     VariableNode<D, R, F> variable)
   {
+    // If it's just x², coefficient is 1
     if (term.isVariableSquared(variable))
     {
       return one();
     }
+
+    // If it's c*x², coefficient is c
     if (term instanceof MultiplicationNode<D, R, F> mul)
     {
       if (mul.left.isVariableSquared(variable))
@@ -219,12 +217,19 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
         return mul.left;
       }
     }
+
+    // Should not happen if isQuadraticIn checked out, but default to 0
     return zero();
   }
 
+  /**
+   * Flatten ax + by + ... - cz into a list of terms with signs. Handles
+   * AdditionNode and SubtractionNode recursively.
+   */
   private List<Node<D, R, F>> flattenAdditiveTerms(Node<D, R, F> node)
   {
     List<Node<D, R, F>> terms = new ArrayList<>();
+
     if (node instanceof AdditionNode<D, R, F> add)
     {
       terms.addAll(flattenAdditiveTerms(add.left));
@@ -233,6 +238,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     else if (node instanceof SubtractionNode<D, R, F> sub)
     {
       terms.addAll(flattenAdditiveTerms(sub.left));
+      // Right side of subtraction is negated
       var negatedRight = sub.right.mul(negativeOne());
       terms.addAll(flattenAdditiveTerms(negatedRight));
     }
@@ -240,29 +246,39 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       terms.add(node);
     }
+
     return terms;
   }
 
+  /**
+   * Check if term is exactly x or a constant multiple of x.
+   */
   private boolean isLinearIn(Node<D, R, F> term, VariableNode<D, R, F> variable)
   {
     if (term.equals(variable))
     {
       return true;
     }
+
     if (term instanceof MultiplicationNode<D, R, F> mul)
     {
       return (mul.left.isIndependentOf(variable) && mul.right.equals(variable))
                     || (mul.right.isIndependentOf(variable) && mul.left.equals(variable));
     }
+
     return false;
   }
 
+  /**
+   * Extract coefficient c from cx (or c·x).
+   */
   private Node<D, R, F> extractLinearCoefficient(Node<D, R, F> term, VariableNode<D, R, F> variable)
   {
     if (term.equals(variable))
     {
       return one();
     }
+
     if (term instanceof MultiplicationNode<D, R, F> mul)
     {
       if (mul.left.equals(variable) && mul.right.isIndependentOf(variable))
@@ -274,6 +290,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
         return mul.left;
       }
     }
+
     return zero();
   }
 
@@ -287,37 +304,51 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     if (coeffs == null)
       return null;
 
-    var a        = coeffs.a;
-    var b        = coeffs.b;
-    var c        = coeffs.c;
-    var x        = variable;
-    var four     = expression.literal(4);
-    var shift    = b.div(two().mul(a)).simplify();
-    var u        = x.add(shift).simplify();
+    var a         = coeffs.a;
+    var b         = coeffs.b;
+    var c         = coeffs.c;
+    var x         = variable;
+    var four      = expression.literal(4);
+    // Complete the square, for a x^2 + b x + c:
+    // Let shift = b / (2 * a)
+    var shift     = b.div(two().mul(a)).simplify();
+    var u         = x.add(shift).simplify();
+
+    // Constant under root
     var constTerm = c.sub(b.pow(2).div(four.mul(a))).simplify();
-    var k        = constTerm.sqrt().simplify();
-    var argument = u.div(k).simplify();
+    var k         = constTerm.sqrt().simplify();
+
+    // Affine normalization, argument: u / k
+    var argument  = u.div(k).simplify();
+
+    // Antiderivative: arcsin(u / k)
     return argument.arcsin().simplify();
+
   }
 
   @Override
   public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
   {
+    // NEW: General ∫ 1/√(quadratic) via completing the square
     Node<D, R, F> sqrtQuadResult = integrateOneOverSqrtQuadratic(variable);
     if (sqrtQuadResult != null)
     {
       return sqrtQuadResult;
     }
+
+    // If denominator is constant: ∫f(x)/c dx = (1/c)∫f(x)dx
     if (right.isIndependentOf(variable))
     {
       return left.integrate(variable).div(right).simplify();
     }
+
     if (isSincFunction(variable))
     {
       return new SineIntegralNode<D, R, F>(expression,
                                            variable,
                                            0);
     }
+
     throw new UnsupportedOperationException("Integration of "
                                             + this
                                             + " with respect to "
@@ -355,14 +386,17 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       return one();
     }
+
     if (left instanceof NegationNode leftNeg && right instanceof NegationNode rightNeg)
     {
       return leftNeg.arg.simplify().div(rightNeg.arg.simplify()).simplify();
     }
+
     if (right instanceof NegationNode rightNeg)
     {
       return left.div(rightNeg.arg).neg();
     }
+
     if (left instanceof ExponentiationNode<D, R, F> leftExp
                   && right instanceof ExponentiationNode<D, R, F> rightExp)
     {
@@ -374,6 +408,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
         return leftBase.pow(exponentDifference).simplify();
       }
     }
+
     if (left instanceof FunctionNode<D, R, F> leftFunction
                   && right instanceof FunctionNode<D, R, F> rightFunction)
     {
@@ -383,14 +418,20 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
         return exponentSum.exp();
       }
     }
+
+    // Cancel x^a / x → x^(a-1)
     if (left instanceof ExponentiationNode<D, R, F> leftExp2 && leftExp2.left.equals(right))
     {
       return leftExp2.left.pow(leftExp2.right.sub(one()).simplify()).simplify();
     }
+
+    // Cancel x / x^a → x^(1-a)
     if (right instanceof ExponentiationNode<D, R, F> rightExp2 && rightExp2.left.equals(left))
     {
       return left.pow(one().sub(rightExp2.right).simplify()).simplify();
     }
+
+    // Cancel through product denominator: expr / (a * b)
     if (right instanceof MultiplicationNode<D, R, F> rightMul)
     {
       var cancelledWithRight = tryCancelCommonBase(left, rightMul.right);
@@ -404,6 +445,8 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
         return cancelledWithLeft.div(rightMul.right).simplify();
       }
     }
+
+    // Cancel through product numerator: (a * b) / expr
     if (left instanceof MultiplicationNode<D, R, F> leftMul)
     {
       var cancelledWithRight = tryCancelCommonBase(leftMul.right, right);
@@ -417,6 +460,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
         return cancelledWithLeft.mul(leftMul.right).simplify();
       }
     }
+
     return this;
   }
 
@@ -487,4 +531,5 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     return format("\\frac{%s}{%s}", left.typeset(), right.typeset());
   }
+
 }
