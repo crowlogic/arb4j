@@ -16,11 +16,11 @@ import arb.Named;
 import arb.RationalFunction;
 import arb.Real;
 import arb.RealPolynomial;
+import arb.applications.ExpressionTreeView;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.context.SerializedContextVariable;
-import arb.expressions.viz.ExpressionTreeView;
 
 /**
  * A custom {@link Representer} implementation for serializing various Arb4j

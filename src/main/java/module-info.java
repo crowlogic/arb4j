@@ -30,6 +30,7 @@ module arb4j
   requires transitive org.slf4j;
   requires transitive vineflower;
 
+  exports arb.applications;
   exports arb.stochastic;
   exports arb;
   exports arb.expressions.context;

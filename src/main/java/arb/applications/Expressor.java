@@ -1,4 +1,4 @@
-package arb.expressions.viz;
+package arb.applications;
 
 import java.io.Closeable;
 import java.io.File;
@@ -13,6 +13,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.nodes.Node;
+import arb.expressions.viz.*;
 import arb.functions.Function;
 import arb.functions.polynomials.orthogonal.real.JacobiPolynomialSequence;
 import arb.utensils.Utensils;
@@ -97,7 +98,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
 
   private TabPane         tabPane;
 
-  ExpressionTreeView<D, C, F> addNewExpressionTab()
+  public ExpressionTreeView<D, C, F> addNewExpressionTab()
   {
     Tab tab            = new Tab("Expression " + (tabPane.getTabs().size() + 1));
     var expressionTree = new ExpressionTreeView<D, C, F>(this,
@@ -448,7 +449,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     {
       var content       = currentTab.getContent();
       var expressionTab = (ExpressionTreeView<D, C, F>) content;
-      return expressionTab.context;
+      return expressionTab.getContext();
     }
     return null;
   }

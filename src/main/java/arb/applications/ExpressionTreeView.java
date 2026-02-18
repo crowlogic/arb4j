@@ -1,4 +1,4 @@
-package arb.expressions.viz;
+package arb.applications;
 
 import static arb.utensils.Utensils.wrapOrThrow;
 
@@ -34,6 +34,7 @@ import arb.expressions.SerializedExpression;
 import arb.expressions.context.SerializedContextVariable;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
+import arb.expressions.viz.*;
 import arb.functions.*;
 import arb.functions.algebraic.AlgebraicNumberFunction;
 import arb.functions.complex.ComplexFunction;

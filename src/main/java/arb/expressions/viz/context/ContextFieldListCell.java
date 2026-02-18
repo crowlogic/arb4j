@@ -5,10 +5,10 @@ import java.lang.reflect.Field;
 
 import arb.Integer;
 import arb.Named;
+import arb.applications.Expressor;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
-import arb.expressions.viz.Expressor;
 import arb.functions.Function;
 import arb.utensils.Utensils;
 import arb.viz.WindowManager;
