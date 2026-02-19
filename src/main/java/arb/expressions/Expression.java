@@ -351,7 +351,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public boolean                                             verboseTrace                     =
                                                                           false;
 
-  public boolean acceptUntil(java.util.function.Predicate<Expression<?, ?, ?>> visitor)
+  public boolean acceptUntil(Predicate<Expression<?, ?, ?>> visitor)
   {
     Expression<?, ?, ?> e = this;
     while (e != null)
@@ -2638,16 +2638,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     while (true)
     {
-      if (nextCharacterIs('*', '×', 'ₓ', '⋅', '·'))
+      if (nextCharacterRepresentsMultiplication())
       {
         Node<D, C, F> exponentiated = exponentiate();
-        assert exponentiated != null : "exponentiate() returned null to be multiplied at position=" + position;
+        assert exponentiated != null : "exponentiate() returned null to be multiplied at position="
+                                       + position;
         node = node.mul(exponentiated);
       }
-      else if (!characterAfterNextIs('∂') && nextCharacterIs('⁄', '/', '÷'))
+      else if (nextCharacterRepresentsDivision())
       {
         Node<D, C, F> exponentiated = exponentiate();
-        assert exponentiated != null : "exponentiate() returned null to be divided at position=" + position;
+        assert exponentiated != null : "exponentiate() returned null to be divided at position="
+                                       + position;
         node = node.div(exponentiated);
       }
       else
@@ -2655,6 +2657,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         return node;
       }
     }
+  }
+
+  protected boolean nextCharacterRepresentsDivision()
+  {
+    return !characterAfterNextIs('∂') && nextCharacterIs('⁄', '/', '÷');
+  }
+
+  protected boolean nextCharacterRepresentsMultiplication()
+  {
+    return nextCharacterIs('*', '×', 'ₓ', '⋅', '·');
   }
 
   protected boolean needsCloseMethod()
