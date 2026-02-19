@@ -1,3 +1,4 @@
 #!/bin/sh
 
-run arb.viz.SymbolPalette
+run arb.applications.SymbolPalette $@
+

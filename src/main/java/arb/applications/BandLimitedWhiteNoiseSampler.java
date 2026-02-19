@@ -1,4 +1,4 @@
-package arb.stochastic;
+package arb.applications;
 
 import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;

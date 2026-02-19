@@ -1,6 +1,6 @@
 package arb.measure;
 
-import arb.documentation.Bibliography;
+import arb.applications.Bibliography;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 

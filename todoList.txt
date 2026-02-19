@@ -1,8 +1,7 @@
+debug ComplexFunctionTest.testSequence2
 constant subexpression extraction
-#862: implement something to evaluate constant node 2 of class LiteralConstantNode at compile-time whose String representation is '2'
 #758: implement Caputo fractional derivative for exponent in the unit interval
 move intermediateVariableCounters from Context to Expression
-debug ComplexFunctionTest.testSequence2
 #844: assert consistency between independent, indeterminate, and context variable namespaces
 #859: Add null checks in initialize() for ascendent input variable fields propagated to subfunctions
 implement some sort of system of namespaces beyond Context

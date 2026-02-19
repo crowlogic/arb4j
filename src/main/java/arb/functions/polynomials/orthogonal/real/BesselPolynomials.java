@@ -1,7 +1,7 @@
 package arb.functions.polynomials.orthogonal.real;
 
 import arb.Real;
-import arb.documentation.Bibliography;
+import arb.applications.Bibliography;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;

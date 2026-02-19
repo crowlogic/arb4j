@@ -4,7 +4,7 @@ import arb.Fraction;
 import arb.Initializable;
 import arb.Real;
 import arb.RealConstants;
-import arb.documentation.Bibliography;
+import arb.applications.Bibliography;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;

@@ -4,7 +4,7 @@ import static arb.arblib.acb_dirichlet_zeta_jet;
 
 import arb.Complex;
 import arb.Real;
-import arb.documentation.Bibliography;
+import arb.applications.Bibliography;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 

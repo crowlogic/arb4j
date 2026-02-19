@@ -1,8 +1,9 @@
-package arb.documentation;
+package arb.applications;
 
 import java.io.IOException;
 import java.nio.file.*;
 
+import arb.documentation.*;
 import arb.documentation.references.*;
 
 /**

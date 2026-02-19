@@ -1,4 +1,4 @@
-package arb.stochastic;
+package arb.applications;
 
 import static java.lang.Math.PI;
 import static java.lang.Math.pow;

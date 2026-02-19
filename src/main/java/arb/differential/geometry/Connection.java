@@ -5,7 +5,7 @@ import arb.ComplexMatrix;
 import arb.Field;
 import arb.Real;
 import arb.RealMatrix;
-import arb.documentation.Bibliography;
+import arb.applications.Bibliography;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.Function;

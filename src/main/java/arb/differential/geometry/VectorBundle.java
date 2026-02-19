@@ -1,7 +1,7 @@
 package arb.differential.geometry;
 
 import arb.Field;
-import arb.documentation.Bibliography;
+import arb.applications.Bibliography;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.SurjectiveFunction;

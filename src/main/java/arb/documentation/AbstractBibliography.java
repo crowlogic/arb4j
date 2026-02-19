@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import arb.applications.Bibliography;
 import arb.documentation.references.Reference;
 
 /**

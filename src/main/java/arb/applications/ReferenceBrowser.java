@@ -1,7 +1,9 @@
-package arb.documentation;
+package arb.applications;
 
 import java.lang.reflect.Field;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.documentation.references.Reference;
 import arb.viz.WindowManager;
 import javafx.application.Application;
