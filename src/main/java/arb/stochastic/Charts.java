@@ -70,16 +70,16 @@ public class Charts
    * {@link DataSetStyleBuilder#setMarkerColor(String)} as well as
    * {@link DataSetStyleBuilder#setLineColor(String)}
    */
-  static final String empiricialFrequencyDatasetStyle  =
+  public static final String empiricialFrequencyDatasetStyle  =
                                                       DataSetStyleBuilder.instance()
                                                                          .setMarkerColor("darkgoldenrod")
                                                                          .setLineColor("darkgoldenrod")
                                                                          .build();
-  static final String randomMeasureDatasetStyle        = DataSetStyleBuilder.instance()
+  public  static final String randomMeasureDatasetStyle        = DataSetStyleBuilder.instance()
                                                                             .setMarkerType("circle")
                                                                             .setMarkerSize(2)
                                                                             .build();
-  static final String theoreticalFrequencyDatasetStyle = DataSetStyleBuilder.instance()
+  public static final String theoreticalFrequencyDatasetStyle = DataSetStyleBuilder.instance()
                                                                             .setLineWidth(2)
                                                                             .build();
 
