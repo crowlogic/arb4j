@@ -127,7 +127,8 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
   @Override
   public Class<?> type()
   {
-    return expression.coDomainType;
+    return functionNode.type();
+//    return expression.coDomainType;
   }
 
   @Override
@@ -185,7 +186,7 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
 
     return new FunctionalEvaluationNode<>(expression,
                                           functionNode.integrate(variable),
-                                          variable);
+                                          arg);
   }
 
   @Override

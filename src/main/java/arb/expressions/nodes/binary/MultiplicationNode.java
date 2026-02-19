@@ -168,6 +168,9 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       return simplifiedIbpResult;
     }
 
+    // need to extract function reference nodes from this.. substitute with the
+    // parsed w(t) expression from the context and apply the existing closed-form
+    // for that then simplify
     throw new CompilerException(String.format("TODO: support for integration of %s where %s is a %s which generates %s instances and %s is a %s which generates %s instances in %s",
                                               this,
                                               left,
