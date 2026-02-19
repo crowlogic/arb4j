@@ -183,12 +183,7 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
       return polynomialIntegralNode;
     }
 
-    // For other cases, use regular IntegralNode
-    IntegralNode<D, C, F> integralNode = new IntegralNode<>(expression,
-                                                            this,
-                                                            variable);
-    integralNode.isResult = isResult;
-    return integralNode;
+    return functionNode.integrate(variable);
   }
 
   @Override

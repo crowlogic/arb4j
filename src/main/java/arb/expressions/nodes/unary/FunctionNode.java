@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import arb.*;
 import arb.Integer;
 import arb.exceptions.CompilerException;
+import arb.exceptions.UndefinedReferenceException;
 import arb.expressions.*;
 import arb.expressions.Context;
 import arb.expressions.nodes.*;
@@ -60,7 +61,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   public <T> T evaluate(Class<T> resultType)
   {
     Real argVal = arg.evaluate(Real.class);
-    int bits = 128;
+    int  bits   = 128;
     try ( Real result = new Real())
     {
       switch (functionName)
@@ -899,7 +900,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
   {
-    return integrateFunction().div(arg.differentiate(variable));
+    return integrateFunction().div(arg.differentiate(variable)).simplify();
   }
 
   public Node<D, R, F> integrateFunction()
@@ -954,7 +955,21 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     case "log":
       return mul(arg).sub(arg);
     default:
-      throw new UnsupportedOperationException("Integration not implemented for: " + functionName);
+      Class<?> domainType = getDomainType();
+      Class<?> coDomainType = type();
+      if (doesBuiltinFunctionExist(functionName, isBitless(), domainType, coDomainType))
+      {
+        throw new UnsupportedOperationException("Integration not implemented for: " + functionName);
+      }
+      else
+      {
+        throw new UndefinedReferenceException(String.format("no such function named %s from %s to %s in %s",
+                                                            functionName,
+                                                            domainType,
+                                                            coDomainType,
+                                                            expression));
+      }
+
     }
   }
 
