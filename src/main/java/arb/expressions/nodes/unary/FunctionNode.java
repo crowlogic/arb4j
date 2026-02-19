@@ -1100,13 +1100,30 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public <E, S, G extends Function<? extends E, ? extends S>>
          Node<D, R, F>
-         substitute(String variable, Node<E, S, G> transformation)
+         substitute(String variable, Node<E, S, G> replacement)
   {
+    if (arg != null)
+    {
+      arg = arg.substitute(variable, replacement);
+    }
+
     if (variable.equals(functionName))
     {
-      throw new UnsupportedOperationException("TODO: support function substitution");
+      Node<D, R, F>         body               = (Node<D, R, F>) replacement;
+
+      Expression<?, ?, ?>   definingExpression = mapping != null ? mapping.expression : null;
+      VariableNode<?, ?, ?> formalParam        = definingExpression
+                    != null ? definingExpression.independentVariable : null;
+
+      if (formalParam != null && arg != null)
+      {
+        body = body.substitute(formalParam.reference.name, arg);
+      }
+
+      body.isResult = this.isResult;
+      return body;
     }
-    arg = arg.substitute(variable, transformation);
+
     return this;
   }
 
