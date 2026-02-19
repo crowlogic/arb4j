@@ -63,13 +63,6 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   private int                                            derivativeOrder;
   private Expression<Real, RealFunction, RealFunctional> integrandExpression;
 
-  public CaputoFractionalDerivativeNode(Expression<D, R, F> expression)
-  {
-    this(expression,
-         expression.require('^').require('(').resolve(),
-         expression.require(')').resolveOperand());
-  }
-
   /**
    * Constructs the integral form. Only called from
    * {@link Node#fractionalDerivative(Node)} when no closed form exists.

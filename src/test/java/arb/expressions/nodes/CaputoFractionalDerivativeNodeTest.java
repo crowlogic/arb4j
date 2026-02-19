@@ -2,7 +2,6 @@ package arb.expressions.nodes;
 
 import arb.Real;
 import arb.expressions.Context;
-import arb.expressions.Expression;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
@@ -30,26 +29,6 @@ public class CaputoFractionalDerivativeNodeTest extends
    * means any parent node holding a reference to this node becomes stale after
    * substitution.
    */
-  public void testSubstituteReturnsSameInstance()
-  {
-    var                                  context = new Context(Real.named("α")
-                                                                   .set("0.5", 128)
-                                                                   .setBounds(0, false, 1, true));
-
-    Expression<Real, Real, RealFunction> expr    = RealFunction.parse("Đ^(α)(t²)", context);
-
-    var                                  root    = expr.rootNode;
-    assertTrue("root should be a CaputoFractionalDerivativeNode",
-               root instanceof CaputoFractionalDerivativeNode);
-
-    var before = root;
-    var after  = root.substitute("nonexistent_variable", expr.newLiteralConstant(42));
-
-    assertSame("substitute() must return this for fluent API contract; "
-               + "got a different object which means parent references are now stale",
-               before,
-               after);
-  }
 
   /**
    * End-to-end: a CaputoFractionalDerivativeNode embedded in a sum should survive
@@ -181,7 +160,7 @@ public class CaputoFractionalDerivativeNodeTest extends
     // Đ^(1)(t³) = Γ(4)/Γ(3) * t^2 = 6/2 * t^2 = 3t²; at t=2: 12
     assertEquals("Đ^(1)(t³) = 3t² at t=2", 12.0, result.doubleValue(), TOL);
   }
-  
+
   public void testCaputoDerivativeOrderOneMatchesOrdinaryDerivative()
   {
     var context = new Context(Real.named("α").set("1.0", 128).setBounds(0, false, 1, true));

@@ -454,11 +454,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     while (true)
     {
-      if (nextCharacterIs('+', '₊'))
+      if (nextCharacterRepresentsAddition())
       {
         node = node.add(exponentiateMultiplyAndDivide());
       }
-      else if (nextCharacterIs('-', '₋', '−'))
+      else if (nextCharacterRepresentsSubtraction())
       {
         var rhs = exponentiateMultiplyAndDivide();
         assert rhs != null : "rhs is null for node=" + node + " in " + this;
@@ -1027,9 +1027,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     else if (nextCharacterIs('Đ'))
     {
-      node = new CaputoFractionalDerivativeNode<D,C,F>(this);
+      Node<D, C, F> α = require('^').require('(').resolve();
+      Node<D, C, F> f = require(')').resolveOperand();
+      node = f.fractionalDerivative(α);
     }
-
     else if (nextCharacterIs('∫'))
     {
       node = new IntegralNode<>(this);
@@ -1071,10 +1072,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       int  savedPos  = position;
       char savedChar = character;
-
       if (nextCharacterIs('D'))
       {
-        node = new CaputoFractionalDerivativeNode<>(this);
+        Node<D, C, F> α = require('^').require('(').resolve();
+        Node<D, C, F> f = require(')').resolveOperand();
+        node = f.fractionalDerivative(α);
       }
       else
       {
@@ -2673,6 +2675,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         return node;
       }
     }
+  }
+
+  protected boolean nextCharacterRepresentsSubtraction()
+  {
+    return nextCharacterIs('-', '₋', '−');
+  }
+
+  protected boolean nextCharacterRepresentsAddition()
+  {
+    return nextCharacterIs('+', '₊');
   }
 
   protected boolean nextCharacterRepresentsDivision()

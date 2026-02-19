@@ -95,12 +95,18 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> fractionalDerivative(Node<D, R, F> α)
   {
-    var two      = two();
-    var numer    = two.Γ();
-    var denom    = two.sub(α).Γ();
-    var newPower = one().sub(α);
-    return numer.div(denom).mul(pow(newPower));
+    VariableNode<D, R, F> indepVar = expression.getIndependentVariable();
+    if (this.equals(indepVar))
+    {
+      Node<D, R, F> p         = one();
+      Node<D, R, F> numerator = p.add(one()).Γ();
+      Node<D, R, F> denomArg  = p.sub(α).add(one());
+      Node<D, R, F> term      = this.pow(p.sub(α));
+      return numerator.div(denomArg.Γ()).mul(term);
+    }
+    return zero();
   }
+
 
   public boolean isZero()
   {
