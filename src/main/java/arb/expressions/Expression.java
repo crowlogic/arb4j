@@ -144,9 +144,25 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                        Supplier<F>,
                        Consumer<Consumer<Expression<?, ?, ?>>>
 {
+  /**
+   * Inlines all references to the named contextual function, replacing each
+   * {@link FunctionNode} bearing that name with the defining expression's AST
+   * (arguments bound to formal parameters via {@link Node#substitute}).
+   * 
+   * @param functionName the name of the function to inline
+   * @return this expression, with all occurrences of the named function inlined
+   * @throws IllegalArgumentException if no inlineable function with that name
+   *                                  exists in the context
+   */
+  @SuppressWarnings("unchecked")
   public Expression<D, C, F> inlineFunction(String functionName)
   {
-    var mapping = context.getFunctionMapping(functionName);
+    if (context == null)
+    {
+      throw new IllegalArgumentException("expression has no context");
+    }
+
+    FunctionMapping<D, C, F> mapping = context.getFunctionMapping(functionName);
 
     if (mapping == null || (mapping.expression == null && mapping.expressionString == null))
     {
@@ -154,20 +170,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                        functionName));
     }
 
-    var definingExpression = mapping.expression;
+    Expression<D, C, F> definingExpression = mapping.expression;
 
     if (definingExpression == null)
     {
-       definingExpression = Function.parse(mapping.domain,
-                                           mapping.coDomain,
-                                           mapping.functionClass,
-                                           mapping.expressionString);
+      definingExpression = Function.parse((Class<D>) mapping.domain,
+                                          (Class<C>) mapping.coDomain,
+                                          (Class<F>) mapping.functionClass,
+                                          mapping.expressionString);
     }
 
-    var body = definingExpression.rootNode.spliceInto(this);
+    Node<D, C, F> body = definingExpression.rootNode.spliceInto(this);
 
     rootNode   = rootNode.substitute(functionName, body);
-    setExpression(rootNode.toString());
+    expression = rootNode.toString();
     return this;
   }
 
@@ -262,7 +278,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Class<? extends D>                                  domainType;
 
-  private String                                              expression;
+  private String                                             expression;
 
   public boolean                                             functionalDependsOnIndependentVariable;
 
@@ -410,8 +426,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     this.genericFunctionClassInternalName = Type.getInternalName(function);
     this.functionClassDescriptor          = function.descriptorString();
     this.setExpression(Parser.transformToJavaAcceptableCharacters(expression));
-    this.context                          = context;
-    this.functionName                     = functionName;
+    this.context      = context;
+    this.functionName = functionName;
 
     if (context != null && context.saveClasses)
     {
@@ -1148,7 +1164,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if ((rightArrowIndex = getExpression().indexOf('➔', searchPos)) != -1)
     {
-      String  inputVariableName        = getExpression().substring(searchPos, rightArrowIndex).trim();
+      String  inputVariableName        =
+                                getExpression().substring(searchPos, rightArrowIndex).trim();
       boolean isInputVariableSpecified = true;
 
       isInputVariableSpecified = assureNoNumbersInTheInputVariable(inputVariableName,
@@ -2749,14 +2766,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       // functionalExpression.indeterminateVariables.push(functionalExpression.independentVariable);
     }
 
-    rootNode.isResult                      = true;
+    rootNode.isResult                 = true;
 
-    functionalExpression.className         = className + "func";
-    functionalExpression.functionName      = functionName + "func";
-    functionalExpression.setExpression(expression);                               // Tree
-                                                                                       // override
-                                                                                       // prevents
-                                                                                       // re-parse
+    functionalExpression.className    = className + "func";
+    functionalExpression.functionName = functionName + "func";
+    functionalExpression.setExpression(expression); // Tree
+                                                    // override
+                                                    // prevents
+                                                    // re-parse
     functionalExpression.rootNode          = rootNode.spliceInto(functionalExpression);
     functionalExpression.rootNode.isResult = true;
     functionalExpression.updateStringRepresentation();
@@ -2821,7 +2838,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected char nextCharacter()
   {
     character = (++position < getExpression().length()) ? getExpression().charAt(position)
-                                                   : Character.MIN_VALUE;
+                                                        : Character.MIN_VALUE;
 
     return character;
   }
@@ -3171,7 +3188,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public String remaining()
   {
     return getExpression() == null ? null
-                              : getExpression().substring(Math.max(0, position), getExpression().length());
+                                   : getExpression().substring(Math.max(0, position),
+                                                               getExpression().length());
   }
 
   protected void renameVariable(String from, String to)
@@ -3480,7 +3498,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    */
   public Expression<D, C, F> simplify()
   {
-    rootNode   = rootNode.simplify();
+    rootNode = rootNode.simplify();
     setExpression(rootNode.toString());
     return this;
   }

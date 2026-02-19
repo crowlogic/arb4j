@@ -28,6 +28,7 @@ public class ExpressionTest extends
    * {@link Node#toString()} no longer references f(x) and instead contains the
    * inlined body x².
    */
+  @SuppressWarnings("unused")
   public void testInlineContextualFunction()
   {
     try ( Context context = new Context())
@@ -35,10 +36,8 @@ public class ExpressionTest extends
       var F = RealFunction.parse("f:x➔x²", context);
       var G = RealFunction.parse("g:x➔f(x)+1", context);
       assertEquals("g:x➔f(x)+1", G.toString());
-
       G.inlineFunction("f");
-
-      assertEquals("(x^2)+1", G.toString());
+      assertEquals("g:(x^2)+1", G.toString());
     }
   }
 
