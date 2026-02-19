@@ -172,21 +172,17 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
   @Override
   public Node<D, C, F> integrate(VariableNode<D, C, F> variable)
   {
-    // If we have a polynomial function application being integrated
-    // with respect to its argument
+
     if (Polynomial.class.isAssignableFrom(functionNode.type()) && arg.equals(variable))
     {
-      // Create a concrete PolynomialIntegralNode to handle the integration
-      var polynomialIntegralNode = new PolynomialIntegralNode<>(expression,
-                                                                functionNode,
-                                                                arg);
-      polynomialIntegralNode.isResult = isResult;
-      return polynomialIntegralNode;
+      return new PolynomialIntegralNode<>(expression,
+                                          functionNode,
+                                          arg).setIsResult(isResult);
     }
 
     return new FunctionalEvaluationNode<>(expression,
                                           functionNode.integrate(variable),
-                                          arg);
+                                          arg).setIsResult(isResult);
   }
 
   @Override

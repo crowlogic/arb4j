@@ -63,6 +63,12 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                           Consumer<Consumer<Node<D, R, F>>>
 {
 
+  public Node<D, R, F> setIsResult(boolean isResult)
+  {
+    this.isResult = isResult;
+    return this;
+  }
+
   /**
    * Compute the Caputo fractional derivative of order α of this node.
    * 
