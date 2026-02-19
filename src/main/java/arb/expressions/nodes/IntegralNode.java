@@ -15,13 +15,13 @@ import arb.expressions.nodes.binary.SubtractionNode;
 import arb.functions.Function;
 
 /**
- * The syntax to express a definite integral is<br>
+ * The syntax(es) to express a definite integral is<br>
  * <br>
  *
  * <pre>
  *
  * g(x)=∫x➔f(x)dx∈(a,b)
- *
+ * g(x)=∫x➔f(x)dx{a,b}
  * </pre>
  *
  * and the syntax to express an indefinite integral is<br>

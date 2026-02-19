@@ -1,5 +1,7 @@
 package arb.functions.polynomials.orthogonal.real;
 
+import static org.junit.Assert.assertEquals;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,7 +66,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
     context.printValues();
     context.registerVariable("γ", γ);
     normSq =
-           ComplexSequence.express("normSq",
+           ComplexSequence.express("σ",
                                    "i➔2^(α+β+1)*Γ(i+α+1)*Γ(i+β+1)/((2*i+α+β+1)*Γ(i+1)*Γ(i+α+β+1))",
                                    context);
 
@@ -73,12 +75,10 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
                                       "j➔k➔(-1)^(j-k)*Γ(j+β+1)*Γ(j+k+α+β+1)/(Γ(k+β+1)*Γ(j+α+β+1)*(j-k)!*k!)",
                                       context);
 
-    χ      = ComplexFunctionSequence.express("χ",
-                                             "i➔p➔int(t➔t^p*w(t)*P(i)(t),t=-1..1)/normSq(i)",
-                                             context);
-
-    μ      =
-      ComplexSequenceSequence.express("μ", "i➔j➔Σk➔(ω(j)(k)*Đᵞ(tᵏ)*χ(i)(k-γ)){k=0..j}", context);
+    χ      = ComplexFunctionSequence.express("χ:i➔p➔∫t➔tᵖ*w(t)*P(i)(t)dt∈(-1,1)/σ(i)", context);
+    var cool = ComplexFunctionSequence.express("χ:i➔p➔∫t➔tᵖ*w(t)*P(i)(t)dt{-1,1}/σ(i)", context);
+    assertEquals( χ.toString(), cool.toString() );
+    μ = ComplexSequenceSequence.express("μ", "i➔j➔Σk➔(ω(j)(k)*Đᵞ(tᵏ)*χ(i)(k-γ)){k=0..j}", context);
   }
 
   public JacobiFractionalDerivativeOperationalMatrixBuilder setBasis(JacobiPolynomialSequence basis)
