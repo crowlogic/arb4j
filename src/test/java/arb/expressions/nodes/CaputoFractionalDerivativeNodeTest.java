@@ -10,12 +10,9 @@ import junit.framework.TestCase;
  * Tests for the Caputo fractional derivative operator Đ^(α) applied via
  * Node.fractionalDerivative().
  *
- * Reference formulas:
- *   Đ^(α)(c)    = 0
- *   Đ^(α)(t)    = Γ(2)/Γ(2-α) * t^(1-α)
- *   Đ^(α)(t^k)  = Γ(k+1)/Γ(k+1-α) * t^(k-α)
- *   Đ^(α)(f+g)  = Đ^(α)(f) + Đ^(α)(g)
- *   Đ^(α)(c*f)  = c * Đ^(α)(f)
+ * Reference formulas: Đ^(α)(c) = 0 Đ^(α)(t) = Γ(2)/Γ(2-α) * t^(1-α) Đ^(α)(t^k)
+ * = Γ(k+1)/Γ(k+1-α) * t^(k-α) Đ^(α)(f+g) = Đ^(α)(f) + Đ^(α)(g) Đ^(α)(c*f) = c *
+ * Đ^(α)(f)
  *
  * All expected values computed via mpmath at 50 decimal digits of precision.
  *
@@ -35,12 +32,13 @@ public class CaputoFractionalDerivativeNodeTest extends
    */
   public void testSubstituteReturnsSameInstance()
   {
-    var context = new Context(Real.named("α").set("0.5", 128).setBounds(0, false, 1, true));
+    var                                  context = new Context(Real.named("α")
+                                                                   .set("0.5", 128)
+                                                                   .setBounds(0, false, 1, true));
 
-    Expression<Real, Real, RealFunction> expr =
-      (Expression<Real, Real, RealFunction>) RealFunction.parse("Đ^(α)(t²)", context);
+    Expression<Real, Real, RealFunction> expr    = RealFunction.parse("Đ^(α)(t²)", context);
 
-    var root = expr.rootNode;
+    var                                  root    = expr.rootNode;
     assertTrue("root should be a CaputoFractionalDerivativeNode",
                root instanceof CaputoFractionalDerivativeNode);
 
@@ -162,7 +160,7 @@ public class CaputoFractionalDerivativeNodeTest extends
                                  1,
                                  128,
                                  new Real());
-    // Đ^(½)(t) at t=1  = 2/√π
+    // Đ^(½)(t) at t=1 = 2/√π
     // Đ^(½)(t²) at t=1 = Γ(3)/Γ(5/2) = 2/Γ(5/2) = 2/((3√π)/4) = 8/(3√π)
     // mpmath: 1.1283791670955125... + 1.5045158670318416... = 2.6328950341273542...
     double dHalfT   = 2.0 / Math.sqrt(Math.PI);
@@ -171,6 +169,19 @@ public class CaputoFractionalDerivativeNodeTest extends
     assertEquals("Đ^(½)(t+t²) at t=1", expected, result.doubleValue(), TOL);
   }
 
+  public void testCaputoDerivativeOrderOneMatchesOrdinaryDerivativeAltSyntax()
+  {
+    var context = new Context(Real.named("α").set("1.0", 128).setBounds(0, false, 1, true));
+    var f       = RealFunction.express("ꟲD^(α)(t³)", context);
+    var result  = f.evaluate(new Real("2.0",
+                                      128),
+                             1,
+                             128,
+                             new Real());
+    // Đ^(1)(t³) = Γ(4)/Γ(3) * t^2 = 6/2 * t^2 = 3t²; at t=2: 12
+    assertEquals("Đ^(1)(t³) = 3t² at t=2", 12.0, result.doubleValue(), TOL);
+  }
+  
   public void testCaputoDerivativeOrderOneMatchesOrdinaryDerivative()
   {
     var context = new Context(Real.named("α").set("1.0", 128).setBounds(0, false, 1, true));

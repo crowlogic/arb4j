@@ -1029,6 +1029,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       node = new CaputoFractionalDerivativeNode<>(this);
     }
+
     else if (nextCharacterIs('∫'))
     {
       node = new IntegralNode<>(this);
@@ -1064,6 +1065,21 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         position  = savedPos;
         character = savedChar;
         node      = resolveIdentifier();
+      }
+    }
+    else if (nextCharacterIs('ꟲ'))
+    {
+      int  savedPos  = position;
+      char savedChar = character;
+
+      if (nextCharacterIs('D'))
+      {
+        node = new CaputoFractionalDerivativeNode<>(this);
+      }
+      else
+      {
+        position  = savedPos;
+        character = savedChar;
       }
     }
 

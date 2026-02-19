@@ -367,7 +367,7 @@ public class Parser
    * Not all uppercase letters have UTF superscript representations
    */
   public static Character[]              uppercaseSuperscriptAlphabet =
-  { 'ᴬ', 'ᴮ', 'ᴰ', 'ᴱ', 'ᴳ', 'ᴴ', 'ᴵ', 'ᴶ', 'ᴷ', 'ᴸ', 'ᴹ', 'ᴺ', 'ᴼ', 'ᴾ', 'ᴿ', 'ᵀ', 'ᵁ', 'ⱽ', 'ᵂ' };
+  { 'ᴬ', 'ᴮ', 'ꟲ','ᴰ', 'ᴱ', 'ᴳ', 'ᴴ', 'ᴵ', 'ᴶ', 'ᴷ', 'ᴸ', 'ᴹ', 'ᴺ', 'ᴼ', 'ᴾ', 'ᴿ', 'ᵀ', 'ᵁ', 'ⱽ', 'ᵂ' };
 
   public static final Character[]        superscripts                 =
   { 'ᵃ',
@@ -629,21 +629,6 @@ public class Parser
                  coDomainClass,
                  functionClass,
                  className);
-  }
-
-  public static Expression<Complex, Complex, ComplexFunction>
-         parse(String name, String expression, Context context)
-  {
-    Expression<Complex, Complex, ComplexFunction> expr = parseExpression(name,
-                                                                         expression,
-                                                                         context,
-                                                                         Complex.class,
-                                                                         Complex.class,
-                                                                         ComplexFunction.class,
-                                                                         name,
-                                                                         null,
-                                                                         true);
-    return expr;
   }
 
 }
