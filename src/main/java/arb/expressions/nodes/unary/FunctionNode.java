@@ -1023,7 +1023,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                              expression.functionClass,
                                                              false,
                                                              expression,
-                                                             expression.expression);
+                                                             expression.getExpression());
     expression.registerReferencedFunction(functionName, mapping);
     return mapping;
   }
@@ -1136,43 +1136,18 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public String toString()
   {
-    if (mapping != null && mapping.expressionString != null)
-    {
-      return mapping.expressionString;
-    }
-
+//    if (mapping != null && mapping.expressionString != null)
+//    {
+//      return mapping.expressionString;
+//    }
     if ("factorial".equals(functionName))
     {
       return String.format("(%s)!", arg.toStringWithoutIndependentVariableSpecified());
     }
-    String baseName = String
-                            .format("%s(%s)",
-                                    functionName,
-                                    arg == null ? ""
-                                                : arg.toStringWithoutIndependentVariableSpecified())
-                            .replaceAll("sqrt", "√")
-                            .replaceAll("J0", "J₀");
-
-    if (derivativeOrder == 0)
-    {
-      return baseName;
-    }
-    else if (derivativeOrder == 1)
-    {
-      return baseName.replace("(", "′(");
-    }
-    else if (derivativeOrder == 2)
-    {
-      return baseName.replace("(", "″(");
-    }
-    else if (derivativeOrder == 3)
-    {
-      return baseName.replace("(", "‴(");
-    }
-    else
-    {
-      return baseName.replace("(", "^(" + derivativeOrder + ")(");
-    }
+    String str = String.format("%s(%s)", functionName, arg)
+                 .replaceAll("sqrt", "√")
+                 .replaceAll("J0", "J₀");
+    return str;
   }
 
   @Override

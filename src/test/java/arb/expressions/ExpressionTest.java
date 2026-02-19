@@ -2,10 +2,13 @@ package arb.expressions;
 
 import arb.*;
 import arb.Integer;
+import arb.expressions.nodes.Node;
+import arb.expressions.nodes.unary.FunctionNode;
 import arb.functions.*;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ComplexNullaryFunction;
-import arb.functions.integer.*;
+import arb.functions.integer.RealFunctionSequence;
+import arb.functions.integer.RealSequence;
 import arb.functions.polynomials.RealPolynomialNullaryFunction;
 import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
@@ -13,19 +16,38 @@ import arb.functions.real.RealNullaryFunction;
 import junit.framework.TestCase;
 
 /**
- * 
- * @author Stephen Crowley ©2024-2025
- * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
+ * @see FunctionNode#substitute(String, Node)
+ * @see Expression#inlineFunction(String)
  */
 public class ExpressionTest extends
                             TestCase
 {
+  /**
+   * Register f(x)=x² in a shared {@link Context}, define g(x)=f(x)+1 in the same
+   * {@link Context}, inline f into g, and verify that the resulting expression's
+   * {@link Node#toString()} no longer references f(x) and instead contains the
+   * inlined body x².
+   */
+  public void testInlineContextualFunction()
+  {
+    try ( Context context = new Context())
+    {
+      var F = RealFunction.parse("f:x➔x²", context);
+      var G = RealFunction.parse("g:x➔f(x)+1", context);
+      assertEquals("g:x➔f(x)+1", G.toString());
+
+      G.inlineFunction("f");
+
+      assertEquals("(x^2)+1", G.toString());
+    }
+  }
 
   public static void testToString()
   {
     var expr = RealFunction.express("f:x➔sin(x)");
-    assertEquals( "f:x➔sin(x)", expr.toString() );
+    assertEquals("f:x➔sin(x)", expr.toString());
   }
+
   /**
    * Expresses a {@link RealFunctionSequence} H:i→i*x, evaluates it at i=1 to
    * obtain f1, then mutates the same {@link Integer} to 3 and evaluates again to

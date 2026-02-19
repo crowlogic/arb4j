@@ -144,6 +144,32 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                        Supplier<F>,
                        Consumer<Consumer<Expression<?, ?, ?>>>
 {
+  public Expression<D, C, F> inlineFunction(String functionName)
+  {
+    var mapping = context.getFunctionMapping(functionName);
+
+    if (mapping == null || (mapping.expression == null && mapping.expressionString == null))
+    {
+      throw new IllegalArgumentException(String.format("function '%s' is not inlineable",
+                                                       functionName));
+    }
+
+    var definingExpression = mapping.expression;
+
+    if (definingExpression == null)
+    {
+       definingExpression = Function.parse(mapping.domain,
+                                           mapping.coDomain,
+                                           mapping.functionClass,
+                                           mapping.expressionString);
+    }
+
+    var body = definingExpression.rootNode.spliceInto(this);
+
+    rootNode   = rootNode.substitute(functionName, body);
+    setExpression(rootNode.toString());
+    return this;
+  }
 
   private static String     ASSERTION_ERROR_METHOD_DESCRIPTOR =
                                                               Compiler.getMethodDescriptor(Void.class,
@@ -236,7 +262,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Class<? extends D>                                  domainType;
 
-  public String                                              expression;
+  private String                                              expression;
 
   public boolean                                             functionalDependsOnIndependentVariable;
 
@@ -383,7 +409,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     this.genericFunctionClassInternalName = Type.getInternalName(function);
     this.functionClassDescriptor          = function.descriptorString();
-    this.expression                       = Parser.transformToJavaAcceptableCharacters(expression);
+    this.setExpression(Parser.transformToJavaAcceptableCharacters(expression));
     this.context                          = context;
     this.functionName                     = functionName;
 
@@ -501,7 +527,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                 + "(domain=Object.class) in expression '%s'; "
                                                 + "use an indeterminate variable instead",
                                                 variable,
-                                                expression));
+                                                getExpression()));
     }
 
     if (independentVariable != null)
@@ -514,7 +540,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                   position,
                                                   this,
                                                   independentVariable,
-                                                  System.identityHashCode(expression)));
+                                                  System.identityHashCode(getExpression())));
       }
       else
       {
@@ -593,7 +619,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected boolean characterAfterNextIs(char ch)
   {
-    return position + 1 < expression.length() && expression.charAt(position + 1) == ch;
+    return position + 1 < getExpression().length() && getExpression().charAt(position + 1) == ch;
   }
 
   @Override
@@ -603,7 +629,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                        domainType,
                                        coDomainType,
                                        functionClass,
-                                       expression,
+                                       getExpression(),
                                        context,
                                        functionName,
                                        ascendentExpression);
@@ -651,7 +677,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       log.debug(String.format("#%s: compile(expression=%s, className=%s, context=%s)\n",
                               System.identityHashCode(this),
-                              expression,
+                              getExpression(),
                               className,
                               context));
     }
@@ -963,7 +989,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     assert position > startingPosition : "didn't read any digits";
 
-    return newLiteralConstant(expression.substring(startingPosition, position));
+    return newLiteralConstant(getExpression().substring(startingPosition, position));
   }
 
   public Node<D, C, F> resolveOperand() throws CompilerException
@@ -1034,7 +1060,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       log.debug("#{}: parseLambda( expr={},  paramName = {} at position {} where remaining={} )",
                 System.identityHashCode(this),
-                expression,
+                getExpression(),
                 paramName,
                 position,
                 remaining());
@@ -1115,14 +1141,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                 System.identityHashCode(this),
                 remaining());
     }
-    expression = transformToJavaAcceptableCharacters(expression);
+    setExpression(transformToJavaAcceptableCharacters(getExpression()));
 
     int searchPos = 0;
     int rightArrowIndex;
 
-    if ((rightArrowIndex = expression.indexOf('➔', searchPos)) != -1)
+    if ((rightArrowIndex = getExpression().indexOf('➔', searchPos)) != -1)
     {
-      String  inputVariableName        = expression.substring(searchPos, rightArrowIndex).trim();
+      String  inputVariableName        = getExpression().substring(searchPos, rightArrowIndex).trim();
       boolean isInputVariableSpecified = true;
 
       isInputVariableSpecified = assureNoNumbersInTheInputVariable(inputVariableName,
@@ -1181,7 +1207,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (nextCharacterIs(Parser.SUBSCRIPT_DIGITS_ARRAY))
     {
       while (nextCharacterIs(Parser.SUBSCRIPT_DIGITS_ARRAY));
-      return newLiteralConstant(expression.substring(startPos, position));
+      return newLiteralConstant(getExpression().substring(startPos, position));
     }
     else if (isIdentifierCharacter())
     {
@@ -1246,7 +1272,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                 System.identityHashCode(this),
                 className,
                 functionName,
-                expression);
+                getExpression());
     }
 
     ClassVisitor classVisitor = Compiler.constructClassVisitor();
@@ -1535,7 +1561,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     catch (Throwable e)
     {
-      mv.visitLdcInsn("TODO: implement differentiation of " + expression);
+      mv.visitLdcInsn("TODO: implement differentiation of " + getExpression());
 
     }
 
@@ -2130,10 +2156,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       name = functionName + ":";
     }
     updateStringRepresentation();
-    String arrow  = expression.contains("➔")
+    String arrow  = getExpression().contains("➔")
                   || independentVariable == null ? "" : (independentVariable.getName() + "➔");
 
-    String string = String.format("%s%s%s", name, arrow, expression);
+    String string = String.format("%s%s%s", name, arrow, getExpression());
     methodVisitor.visitLdcInsn(string);
 
     if (Expression.trace)
@@ -2154,9 +2180,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     String name = (functionName != null) ? (functionName + ":") : "";
     updateStringRepresentation();
-    String arrow  = expression.contains("➔")
+    String arrow  = getExpression().contains("➔")
                   || independentVariable == null ? "" : (independentVariable.getName() + "➔");
-    String string = String.format("%s%s%s", name, arrow, expression);
+    String string = String.format("%s%s%s", name, arrow, getExpression());
 
     if (Expression.trace)
     {
@@ -2727,7 +2753,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     functionalExpression.className         = className + "func";
     functionalExpression.functionName      = functionName + "func";
-    functionalExpression.expression        = expression;                               // Tree
+    functionalExpression.setExpression(expression);                               // Tree
                                                                                        // override
                                                                                        // prevents
                                                                                        // re-parse
@@ -2794,7 +2820,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected char nextCharacter()
   {
-    character = (++position < expression.length()) ? expression.charAt(position)
+    character = (++position < getExpression().length()) ? getExpression().charAt(position)
                                                    : Character.MIN_VALUE;
 
     return character;
@@ -2856,7 +2882,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         entirelySubscripted = false;
       }
     }
-    var substring = expression.substring(startPos, position).trim();
+    var substring = getExpression().substring(startPos, position).trim();
     return Parser.subscriptAndSuperscriptsToRegular(substring);
   }
 
@@ -2879,16 +2905,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     nextCharacter();
     if (trace)
     {
-      log.debug("#{}: parseRoot expression='{}'\n", System.identityHashCode(this), expression);
+      log.debug("#{}: parseRoot expression='{}'\n", System.identityHashCode(this), getExpression());
     }
 
     rootNode = resolve();
     assert rootNode != null : "evaluateRootNode: determine() returned null, expression='"
-                              + expression
+                              + getExpression()
                               + "'";
     rootNode.isResult = true;
 
-    if (position < expression.length() && character != '=')
+    if (position < getExpression().length() && character != '=')
     {
       throwUnexpectedCharacterException();
     }
@@ -2988,7 +3014,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     if (functionName == null)
     {
-      functionName = Parser.transformToJavaAcceptableCharacters(expression);
+      functionName = Parser.transformToJavaAcceptableCharacters(getExpression());
     }
     // assert functionName != null : "functionName of " + this + " is null";
     // context.functionEntryStream()
@@ -3144,8 +3170,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public String remaining()
   {
-    return expression == null ? null
-                              : expression.substring(Math.max(0, position), expression.length());
+    return getExpression() == null ? null
+                              : getExpression().substring(Math.max(0, position), getExpression().length());
   }
 
   protected void renameVariable(String from, String to)
@@ -3455,13 +3481,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public Expression<D, C, F> simplify()
   {
     rootNode   = rootNode.simplify();
-    expression = rootNode.toString();
+    setExpression(rootNode.toString());
     return this;
   }
 
   protected void skip(int n)
   {
-    character = expression.charAt(position += n);
+    character = getExpression().charAt(position += n);
   }
 
   public void skipSpaces()
@@ -3609,8 +3635,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                               character,
                                               (int) character,
                                               position,
-                                              expression,
-                                              expression.length(),
+                                              getExpression(),
+                                              getExpression().length(),
                                               remaining(),
                                               this,
                                               domainType,
@@ -3636,7 +3662,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                        result,
                                        position,
                                        character == 0 ? '0' : character,
-                                       expression,
+                                       getExpression(),
                                        remaining(),
                                        msg != null ? " syntax=\"" + msg : "",
                                        implementedInterfaces));
@@ -3649,7 +3675,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     String str = null;
     if (Object.class.equals(domainType))
     {
-      str = rootNode != null ? rootNode.toString() : expression;
+      str = rootNode != null ? rootNode.toString() : getExpression();
     }
     if (rootNode != null)
     {
@@ -3664,12 +3690,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     else
     {
-      str = expression;
+      str = getExpression();
     }
     if (functionName != null && !functionName.startsWith("_")
                   && !functionName.startsWith("operand"))
     {
-      str = String.format("%s:%s", functionName, expression);
+      str = String.format("%s:%s", functionName, getExpression());
     }
     if (str == null || "null".equals(str))
     {
@@ -3693,11 +3719,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     if (independentVariable != null)
     {
-      expression = String.format("%s➔%s", independentVariable.getName(), rootNode.toString());
+      setExpression(String.format("%s➔%s", independentVariable.getName(), rootNode.toString()));
     }
     else
     {
-      expression = rootNode.toString();
+      setExpression(rootNode.toString());
     }
     return this;
   }
@@ -3794,6 +3820,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     referencedFunctions.put(functionName, mapping);
     return this;
+  }
+
+  public String getExpression()
+  {
+    return expression;
+  }
+
+  public void setExpression(String expression)
+  {
+    this.expression = expression;
   }
 
 }

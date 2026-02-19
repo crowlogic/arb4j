@@ -173,7 +173,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
       throw new CompilerException("the cases of the when statement must be either an else statement or a VariableNode but it was a "
                                   + node.getClass()
                                   + " expr="
-                                  + expression.expression
+                                  + expression
                                   + "' with remaining='"
                                   + expression.remaining()
                                   + "'");

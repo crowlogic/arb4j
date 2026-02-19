@@ -726,7 +726,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
   {
 
     nodeExpansionStates = enumerateNodeExpansionStates();
-    if (expr != null && !expr.expression.equals(expressionInput.getText()) || expr == null)
+    if (expr != null && !expr.getExpression().equals(expressionInput.getText()) || expr == null)
     {
       compileExpression();
     }

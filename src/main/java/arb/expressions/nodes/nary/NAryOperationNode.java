@@ -457,7 +457,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       logger.debug(String.format("extractOperandExpression(%s)\n", expression));
     }
     parsed = true;
-    String stringExpression = expression.expression;
+    String stringExpression = expression.getExpression();
     int    startPos         = expression.position;
     int    arrowIndex       = stringExpression.indexOf('➔', expression.position);
 

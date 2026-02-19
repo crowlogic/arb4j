@@ -630,7 +630,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       throw new CompilerException(String.format("undefined variable reference '%s' in expression '%s'; existing indeterminates: %s, independent variable: %s",
                                                 reference.name,
-                                                expression.expression,
+                                                expression,
                                                 expression.getIndeterminateVariables(),
                                                 expression.independentVariable));
     }
@@ -643,7 +643,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                  reference.name,
                                                  reference.position,
                                                  System.identityHashCode(expression),
-                                                 expression.expression,
+                                                 expression,
                                                  expression.independentVariable,
                                                  expression.getIndeterminateVariable(),
                                                  expression.ascendentExpression,
