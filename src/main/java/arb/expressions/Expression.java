@@ -2640,11 +2640,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       if (nextCharacterIs('*', '×', 'ₓ', '⋅', '·'))
       {
-        node = node.mul(exponentiate());
+        Node<D, C, F> exponentiated = exponentiate();
+        assert exponentiated != null : "exponentiate() returned null to be multiplied at position=" + position;
+        node = node.mul(exponentiated);
       }
       else if (!characterAfterNextIs('∂') && nextCharacterIs('⁄', '/', '÷'))
       {
-        node = node.div(exponentiate());
+        Node<D, C, F> exponentiated = exponentiate();
+        assert exponentiated != null : "exponentiate() returned null to be divided at position=" + position;
+        node = node.div(exponentiated);
       }
       else
       {
