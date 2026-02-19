@@ -183,7 +183,9 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
       return polynomialIntegralNode;
     }
 
-    return functionNode.integrate(variable);
+    return new FunctionalEvaluationNode<>(expression,
+                                          functionNode.integrate(variable),
+                                          variable);
   }
 
   @Override

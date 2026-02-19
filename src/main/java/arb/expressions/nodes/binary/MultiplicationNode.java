@@ -168,28 +168,15 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       return simplifiedIbpResult;
     }
 
-    // Check if one factor is a FunctionalEvaluationNode whose function type
-    // implements Polynomial (RealPolynomial or ComplexPolynomial), evaluated at
-    // the integration variable. If so, all remaining factors become the cofactor
-    // and we delegate to PolynomialIntegralNode which handles the multiplication
-    // and integration at runtime via Polynomial.mul + Polynomial.integral (#835)
-    var polyFactor = identifyPolynomialFunctionEvaluation(variableFactors, variable);
-    if (polyFactor != null)
-    {
-      @SuppressWarnings("unchecked")
-      var funcEval     = (FunctionalEvaluationNode<D, R, F>) polyFactor;
-      var otherFactors = new ArrayList<>(variableFactors);
-      otherFactors.remove(polyFactor);
-      var cofactor = otherFactors.isEmpty() ? null : buildProduct(otherFactors);
-
-      return new PolynomialIntegralNode<>(expression,
-                                          funcEval.getFunctionNode(),
-                                          cofactor,
-                                          variable);
-    }
-
-    throw new CompilerException("TODO: quit being an idiot and implement support to integrate "
-                                + this);
+    throw new CompilerException(String.format("TODO: support for integration of %s where %s is a %s which generates %s instances and %s is a %s which generates %s instances in %s",
+                                              this,
+                                              left,
+                                              left.getClass().getSimpleName(),
+                                              left.type(),
+                                              right,
+                                              right.getClass().getSimpleName(),
+                                              right.type(),
+                                              expression));
   }
 
   /**
