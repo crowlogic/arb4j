@@ -50,7 +50,7 @@ public class ProductNode<D, C, F extends Function<? extends D, ? extends C>> ext
   @Override
   public boolean isZero()
   {
-    return operand != null && operand.rootNode.isZero();
+    return operandExpression != null && operandExpression.rootNode.isZero();
   }
 
 }

@@ -29,7 +29,7 @@ public class SumNode<D, C, F extends Function<? extends D, ? extends C>>
   @Override
   public boolean isZero()
   {
-    return operand != null && operand.rootNode.isZero();
+    return operandExpression != null && operandExpression.rootNode.isZero();
   }
 
   public SumNode(Expression<D, C, F> expression, boolean functionForm)

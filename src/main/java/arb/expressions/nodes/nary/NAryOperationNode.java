@@ -78,7 +78,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   public String                                   upperLimitFieldName;
 
-  public Expression<Integer, R, Sequence<R>>      operand;
+  public Expression<Integer, R, Sequence<R>>      operandExpression;
 
   public String                                   operandExpressionString;
 
@@ -267,7 +267,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     assignFieldNamesIfNecessary(resultType);
     prepareIndexVariable();
 
-    if (operand == null)
+    if (operandExpression == null)
     {
       compileOperandExpression(resultType);
     }
@@ -324,13 +324,13 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   @Override
   public List<Node<D, R, F>> getBranches()
   {
-    if (operand == null)
+    if (operandExpression == null)
     {
       return List.of();
     }
     if (cachedOperandBranches == null)
     {
-      var ast  = operand.syntaxTree();
+      var ast  = operandExpression.syntaxTree();
       var list = ast.indexedBranches.get(ast.getRoot());
       cachedOperandBranches = list.stream().map(element -> element.spliceInto(expression)).toList();
     }
@@ -624,11 +624,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   @SuppressWarnings("unchecked")
   protected void compileOperandExpression(Class<?> resultType)
   {
-    assert operand == null : "operand is already set and operandExpressionString is "
+    assert operandExpression == null : "operand is already set and operandExpressionString is "
                              + operandExpressionString;
 
     registerOperand(operandExpressionString,
-                    operand = Function.parse(operandFunctionFieldName,
+                    operandExpression = Function.parse(operandFunctionFieldName,
                                              operandExpressionString,
                                              expression.context,
                                              Integer.class,
@@ -677,7 +677,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
 
     // 2. Propagate captured ancestor independent variables to operand
-    if (operand != null)
+    if (operandExpression != null)
     {
       propagateAscendentIndependentVariablesToOperand(mv, independentVariableNode);
     }
@@ -687,7 +687,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
             propagateAscendentIndependentVariablesToOperand(MethodVisitor mv,
                                                             VariableNode<D, R, F> independentVariableNode)
   {
-    operand.getReferencedVariables()
+    operandExpression.getReferencedVariables()
            .entrySet()
            .forEach(entry -> propagateAscendentIndependentVariablesToOperand(mv,
                                                                              independentVariableNode,
@@ -882,14 +882,14 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     expression.context.variables.remove(this.operandValueFieldName);
     operandFunctionFieldName = null;
     operandValueFieldName    = null;
-    operand                  = null;
+    operandExpression                  = null;
     assignFieldNamesIfNecessary(expression.coDomainType);
     compileOperandExpression(expression.coDomainType);
 
-    operand                 = operand.substitute(variable, substitution.expression);
+    operandExpression                 = operandExpression.substitute(variable, substitution.expression);
     lowerLimit              = lowerLimit.substitute(variable, substitution);
     upperLimit              = upperLimit.substitute(variable, substitution);
-    operandExpressionString = operand.toString();
+    operandExpressionString = operandExpression.toString();
     return this;
   }
 
@@ -900,7 +900,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     assert indexVariableFieldName
                   != null : String.format("indexVariableFieldName is null in toString() for %s%s{null=%s…%s}",
                                           symbol,
-                                          operand != null ? operand.toString()
+                                          operandExpression != null ? operandExpression.toString()
                                                           : operandExpressionString,
                                           lowerLimit,
                                           upperLimit);
@@ -927,7 +927,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                          indexVariableFieldName,
                          lowerLimit.typeset(),
                          upperLimit.typeset(),
-                         operand == null ? "null" : operand.typeset());
+                         operandExpression == null ? "null" : operandExpression.typeset());
   }
 
   @Override
@@ -952,8 +952,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   @Override
   public boolean dependsOn(VariableNode<D, R, F> variable)
   {
-    return lowerLimit.dependsOn(variable) || upperLimit.dependsOn(variable) || (operand != null
-                  && operand.rootNode.dependsOn(variable.spliceInto(operand).asVariable()));
+    return lowerLimit.dependsOn(variable) || upperLimit.dependsOn(variable) || (operandExpression != null
+                  && operandExpression.rootNode.dependsOn(variable.spliceInto(operandExpression).asVariable()));
   }
 
   @Override
