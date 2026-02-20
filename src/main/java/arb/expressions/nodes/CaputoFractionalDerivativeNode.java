@@ -15,6 +15,7 @@ import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
+import arb.exceptions.UnderConstructionException;
 import arb.expressions.*;
 import arb.expressions.nodes.binary.ExponentiationNode;
 import arb.functions.Function;
@@ -191,7 +192,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
    * Resolve n = ⌈α⌉ at compile time from bounds on the exponent variable, a
    * literal constant, or a constant expression.
    */
-  private static <D, R, F extends Function<? extends D, ? extends R>>
+  private <D, R, F extends Function<? extends D, ? extends R>>
           int
           resolveDerivativeOrder(Node<D, R, F> power, Context context)
   {
@@ -199,6 +200,20 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     {
       String varName = variableOrderNode.getName();
       Object varObj  = context.variables.get(varName);
+      if (varObj == null)
+      {
+        if (expression.anyAscendentIndependentVariableIsNamed(varName))
+        {
+          throw new UnderConstructionException("TODO: handle bounds on input (or ascendent/upstream input) variable "
+                                               + varName + " of " + expression);
+        }
+      }
+      assert varObj != null : varName
+                              + " not found in "
+                              + context
+                              + " associated with "
+                              + expression
+                              + " thus unable to retrieve the bounds";
       if (varObj instanceof Real αReal && αReal.isBounded())
       {
         Real ub = αReal.upperBound();
