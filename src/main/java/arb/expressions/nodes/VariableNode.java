@@ -753,11 +753,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     else if (isIndeterminate)
     {
       returnType = expression.coDomainType;
-    }
-    else if (ascendentInput)
-    {
-      returnType = expression.upstreamExpression.domainType;
-    }
+    }    
     else
     {
       returnType = reference.type();
