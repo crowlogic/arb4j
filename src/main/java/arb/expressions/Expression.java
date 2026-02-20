@@ -518,6 +518,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return intermediateVariableName;
   }
 
+  public VariableNode<?,?,?> getIndependentVariableNamed(String name)
+  {
+    if (independentVariable != null && independentVariable.getName().equals(name))
+    {
+      return independentVariable;
+    }
+    if (upstreamExpression != null)
+    {
+      var immediatelyUpstreamIndependentVariable = upstreamExpression.getIndependentVariable();
+      if (immediatelyUpstreamIndependentVariable != null)
+      {
+        return immediatelyUpstreamIndependentVariable;
+      }
+    }
+    return null;
+  }
+  
   public boolean anyUpstreamIndependentVariableIsNamed(String name)
   {
     if (independentVariable != null && independentVariable.getName().equals(name))
@@ -2826,12 +2843,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     functionalExpression.className    = className + "func";
     functionalExpression.functionName = functionName + "func";
-    functionalExpression.setExpression(expression); // Tree
-                                                    // override
-                                                    // prevents
-                                                    // re-parse
+  
     functionalExpression.rootNode          = rootNode.spliceInto(functionalExpression);
-    functionalExpression.rootNode.isResult = true;
+    functionalExpression.rootNode.isResult = rootNode.isResult;
     functionalExpression.updateStringRepresentation();
     return functionalExpression;
   }

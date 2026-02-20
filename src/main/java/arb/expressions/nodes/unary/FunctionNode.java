@@ -652,7 +652,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       if (functionMapping.expressionString == null)
       {
-              throw new CompilerException(String.format("Instance for function %s was not present in %s",
+        throw new CompilerException(String.format("Instance for function %s was not present in %s",
                                                   functionName,
                                                   functionMapping));
       }
@@ -905,15 +905,16 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public Node<D, R, F> integrateFunction(VariableNode<D, R, F> variable)
   {
-    if (isBuiltin())
-    {
-      return integrateBuiltinFunction();
-    }
-    else if (contextual)
+    if (contextual)
     {
       return integrateContextualFunction(variable);
     }
-    throw new UnsupportedOperationException("Cannot integrate function: " + functionName);
+    else if (isBuiltin())
+    {
+      return integrateBuiltinFunction();
+    }
+    else
+      throw new UnsupportedOperationException("Cannot integrate function: " + functionName + " because its not a builtin function and its not registered in " + expression.context );
   }
 
   private Node<D, R, F> integrateBuiltinFunction()
@@ -1146,8 +1147,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return String.format("(%s)!", arg.toStringWithoutIndependentVariableSpecified());
     }
     String str = String.format("%s(%s)", functionName, arg)
-                 .replaceAll("sqrt", "√")
-                 .replaceAll("J0", "J₀");
+                       .replaceAll("sqrt", "√")
+                       .replaceAll("J0", "J₀");
     return str;
   }
 

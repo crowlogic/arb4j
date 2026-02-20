@@ -9,16 +9,13 @@ import org.objectweb.asm.MethodVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import arb.Fraction;
 import arb.Integer;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.exceptions.UnderConstructionException;
-import arb.expressions.Expression;
-import arb.expressions.Context;
-import arb.expressions.FunctionMapping;
+import arb.expressions.*;
 import arb.expressions.nodes.binary.ExponentiationNode;
 import arb.functions.Function;
 import arb.functions.RealFunctional;
@@ -70,13 +67,6 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
 
   private FunctionMapping<D, R, ? extends F>             operandExpression;
 
-  /**
-   * Constructs the integral form. Only called from
-   * {@link Node#fractionalDerivative(VariableNode, Node)} when no closed form
-   * exists.
-   * 
-   * @param variable TODO
-   */
   public CaputoFractionalDerivativeNode(Expression<D, R, F> expression,
                                         Node<D, R, F> operand,
                                         VariableNode<D, R, F> variable,
@@ -93,7 +83,6 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     this.context         = expression.getContext();
 
     this.derivativeOrder = resolveDerivativeOrder(order, context);
-
     if (derivativeOrder > 1)
     {
       throw new UnsupportedOperationException(String.format("Caputo fractional derivative with n = ⌈α⌉ = %d > 1 "
@@ -141,6 +130,85 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
 //                                             expression);
 //    this.integralExpression.substitute("f", integralExpression.rootNode);
 //    this.integralNode = integralExpression.rootNode;
+  }
+
+  /**
+   * Constructs the integral form. Only called from
+   * {@link Node#fractionalDerivative(VariableNode, Node)} when no closed form
+   * exists.
+   * 
+   * @param variable        TODO
+   * @param derivativeOrder
+   */
+  public CaputoFractionalDerivativeNode(Expression<D, R, F> expression,
+                                        Node<D, R, F> operand,
+                                        VariableNode<D, R, F> variable,
+                                        Node<D, R, F> order,
+                                        int derivativeOrder)
+  {
+    super(expression);
+    this.variable = variable;
+    if (order == null)
+    {
+      order = variable.one();
+    }
+    this.order           = order;
+    this.operand         = operand;
+    this.context         = expression.getContext();
+
+    this.derivativeOrder = derivativeOrder;
+
+    if (derivativeOrder > 1)
+    {
+      throw new UnsupportedOperationException(String.format("Caputo fractional derivative with n = ⌈α⌉ = %d > 1 "
+                                                            + "is not yet supported. Only α ∈ (0, 1] (n = 1) is currently implemented.",
+                                                            derivativeOrder));
+    }
+
+    operandExpression = context.registerFunctionMapping("f",
+                                                        expression.domainType,
+                                                        expression.coDomainType,
+                                                        expression.functionClass);
+
+    context.registerVariable(Real.named("α")).setBounds(0, false, 1, true);
+
+    Class<?> scalarType = scalarType(expression.domainType);
+    if (scalarType == Real.class)
+    {
+      assert derivativeOrder == 0 : "only derivativeOrder=1 is implemented but got n="
+                                    + derivativeOrder;
+      this.integrandExpression = Function.parse(Real.class,
+                                                RealFunction.class,
+                                                RealFunctional.class,
+                                                "g:x➔t➔(x-t)^(-α)*∂f(t)/∂t",
+                                                context,
+                                                null,
+                                                false);
+    }
+    else
+    {
+      throw new UnsupportedOperationException("todo: support  " + scalarType);
+    }
+
+    System.err.println("integrandExpression before "
+                       + integrandExpression
+                       + " substituting "
+                       + operand
+                       + " for f");
+    integrandExpression.substitute("f", operand);
+    System.err.println("integrandExpression after " + integrandExpression);
+
+    this.integralExpression                = Function.parse(expression.domainType,
+                                                            expression.coDomainType,
+                                                            expression.functionClass,
+                                                            "gint:x➔∫t➔g(x)(t)dt∈(0,x)/Γ(1-α)",
+                                                            context,
+                                                            expression);
+
+    integrandExpression.upstreamExpression = integralExpression;
+    // this.integralExpression.inlineFunction(fieldName);
+    // this.integralExpression.substitute("f", integralExpression.rootNode);
+    this.integralNode                      = integralExpression.rootNode;
   }
 
   public CaputoFractionalDerivativeNode(Expression<D, R, F> expression)
@@ -202,38 +270,21 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
       Object varObj  = context.variables.get(varName);
       if (varObj == null)
       {
-        if (expression.anyUpstreamIndependentVariableIsNamed(varName))
+        VariableNode<?, ?, ?> indepenentVariableNode =
+                                                     expression.getIndependentVariableNamed(varName);
+        if (indepenentVariableNode != null)
         {
           // add an extended-info Expression.toString()
-          throw new UnderConstructionException("TODO: handle bounds on input (or ascendent/upstream input) variable "
-                                               + varName
+          throw new UnderConstructionException("TODO: handle bounds on input (or ascendent/upstream input) variable by attaching variables to the VariableNode or VariableReference or Expression"
+                                               + indepenentVariableNode
                                                + " of "
-                                               + expression);
+                                               + indepenentVariableNode.expression.updateStringRepresentation());
         }
       }
-      assert varObj != null : varName
-                              + " not found in "
-                              + context
-                              + " associated with "
-                              + expression
-                              + " thus unable to retrieve the bounds";
-      if (varObj instanceof Real αReal && αReal.isBounded())
+
+      if (varObj instanceof Real realExp && realExp.isBounded())
       {
-        Real ub = αReal.upperBound();
-        assert ub != null : "α is bounded but has null upperBound";
-        try ( Integer ceil = new Integer())
-        {
-          ub.ceil(128, ceil);
-          int n = ceil.getSignedValue();
-          if (logger.isDebugEnabled())
-          {
-            logger.debug("resolved n = ⌈upperBound(α)⌉ = ⌈{}⌉ = {} from bounds on variable '{}'",
-                         ub,
-                         n,
-                         varName);
-          }
-          return n;
-        }
+        return realExp.upperBound().ceil(128, new Integer()).getSignedValue();
       }
       else
       {
@@ -243,59 +294,9 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
                                                       varName));
       }
     }
-    else if (power instanceof LiteralConstantNode)
-    {
-      String literalStr = power.toString();
-      try ( Real literalVal = new Real(literalStr,
-                                       128);
-            Integer ceil = new Integer())
-      {
-        literalVal.ceil(128, ceil);
-        int n = ceil.getSignedValue();
-        if (logger.isDebugEnabled())
-        {
-          logger.debug("resolved n = ⌈{}⌉ = {} from literal exponent", literalStr, n);
-        }
-        return n;
-      }
-    }
     else if (power.isConstant())
     {
-
-      Class<?> powerType = power.type();
-      try ( Real realVal = new Real(); Integer ceil = new Integer())
-      {
-        if (powerType.equals(Fraction.class))
-        {
-          realVal.set(power.evaluate(Fraction.class));
-        }
-        else if (powerType.equals(Real.class))
-        {
-          realVal.set(power.evaluate(Real.class));
-        }
-        else if (powerType.equals(Integer.class))
-        {
-          realVal.set(power.evaluate(Integer.class));
-        }
-        else
-        {
-          throw new CompilerException("constant exponent of type "
-                                      + powerType.getName()
-                                      + " is not supported for Caputo derivative order resolution; got: "
-                                      + power);
-        }
-        realVal.ceil(128, ceil);
-        int n = ceil.getSignedValue();
-        if (logger.isDebugEnabled())
-        {
-          logger.debug("resolved n = ⌈{}⌉ = {} from constant expression {} of type {}",
-                       power,
-                       n,
-                       power.getClass().getSimpleName(),
-                       powerType.getSimpleName());
-        }
-        return n;
-      }
+      return power.ceil().evaluate(Integer.class).getSignedValue();
     }
     else
     {
@@ -388,10 +389,10 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
                                                         new CaputoFractionalDerivativeNode<E, S, G>(newExpression,
                                                                                                     operand.spliceInto(newExpression),
                                                                                                     variable.spliceInto(newExpression),
-                                                                                                    order.spliceInto(newExpression));
-    splicedNode.derivativeOrder = derivativeOrder;
-    splicedNode.context         = newExpression.context;
-    splicedNode.isResult        = isResult;
+                                                                                                    order.spliceInto(newExpression),
+                                                                                                    derivativeOrder);
+    splicedNode.context  = newExpression.context;
+    splicedNode.isResult = isResult;
     return splicedNode;
   }
 
