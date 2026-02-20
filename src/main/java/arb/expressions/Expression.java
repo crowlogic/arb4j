@@ -1113,6 +1113,28 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return node;
   }
 
+  /**
+   * Parses a lambda body by creating a properly-scoped sub-expression.
+   * <p>
+   * Instead of calling {@link #resolve()} on {@code this} (which leaves all
+   * lambda parameters as indeterminates in a single flat scope), this method
+   * clones the current expression, clears its independent variable and
+   * indeterminate stack, and parses the body in that child scope. The lambda
+   * parameter becomes the sub-expression's <em>independent</em> variable,
+   * establishing a proper lexical scope boundary. Upstream variables (the
+   * parent's independent variable, context variables, etc.) are resolved
+   * through the {@link #upstreamExpression} chain, which
+   * {@link arb.expressions.nodes.VariableNode#resolveReference} already
+   * supports.
+   * <p>
+   * The lambda parameter is still pushed as an indeterminate on {@code this}
+   * so that {@link #newFunctionalExpression()} can find it during code
+   * generation.
+   *
+   * @param paramName the name of the lambda parameter (e.g. "t" in t➔expr)
+   * @return the parsed body node, scoped to the child sub-expression
+   * @see <a href="https://github.com/crowlogic/arb4j/issues/876">#876</a>
+   */
   public Node<D, C, F> parseLambda(String paramName)
   {
     if (trace)
@@ -1127,26 +1149,64 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     checkLambdaParameterConflicts(paramName);
 
-    // Create parameter variable and save it BEFORE parsing body
+    // Register the lambda parameter as an indeterminate on THIS expression.
+    // newFunctionalExpression() expects to find it on the indeterminate stack
+    // during code generation (it peeks the top to promote to independent var
+    // of the generated functional class).
     var paramVar   = newVariableNode(paramName);
-    var savedParam = paramVar;                  // Save reference before other variables get
-                                                // pushed
+    var savedParam = paramVar;
 
     require('➔');
 
-    // function substitution bug - Expression.parseLambda needs to create new expressions instead of calling resolve to generate the body of the codomain #876 - 
-    //https://github.com/crowlogic/arb4j/issues/876
-    var node = resolve();
-    // Restore the parameter as the top of stack for newFunctionalExpression to
-    // retrieve
-    if (!indeterminateVariables.isEmpty() && indeterminateVariables.peek() != savedParam)
+    // --- Create a sub-expression for proper lexical scoping (#876) ---
+    Expression<D,C,F> subExpr = cloneExpression();
+
+    // Establish the parent→child relationship so that VariableNode
+    // resolveReference can walk up the chain to find upstream variables.
+    subExpr.upstreamExpression = this;
+
+    // Clear the sub-expression's independent variable. When
+    // newVariableNode(paramName) is called below, resolveReference will
+    // find no existing independent variable and assign paramName to that
+    // role — giving the lambda parameter the correct semantics of being
+    // the independent variable of this scope rather than a flat
+    // indeterminate on the parent's stack.
+    subExpr.independentVariable = null;
+
+    // Clear indeterminate variables. The parent's indeterminates are
+    // reachable through the upstreamExpression chain; keeping stale
+    // copies here would cause duplicate resolution and incorrect scoping.
+    subExpr.clearIndeterminateVariables();
+
+    // Clear rootNode so the sub-expression is a fresh parse target
+    subExpr.rootNode = null;
+
+    // Resolve paramName as the sub-expression's independent variable.
+    subExpr.newVariableNode(paramName);
+
+    // Parse the lambda body in the properly scoped sub-expression.
+    // All variable lookups go through subExpr first, then walk
+    // upstreamExpression to find x, n, α, etc.
+    var node = subExpr.resolve();
+
+    // Sync the parser position back to the parent expression so that
+    // parsing can continue after the lambda body.
+    this.position          = subExpr.position;
+    this.character         = subExpr.character;
+    this.previousCharacter = subExpr.previousCharacter;
+
+    // Ensure the lambda parameter is on top of THIS expression's
+    // indeterminate stack for newFunctionalExpression() to retrieve.
+    if (!indeterminateVariables.isEmpty()
+                  && indeterminateVariables.peek() != savedParam)
     {
-      indeterminateVariables.remove(savedParam); // Remove from wherever it is
-      indeterminateVariables.push(savedParam); // Put it on top
+      indeterminateVariables.remove(savedParam);
+      indeterminateVariables.push(savedParam);
     }
 
     return node;
   }
+
 
   private void checkLambdaParameterConflicts(String paramName)
   {

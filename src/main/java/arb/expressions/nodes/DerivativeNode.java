@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.exceptions.CompilerException;
 import arb.exceptions.UnderConstructionException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
@@ -63,9 +64,9 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public Node<D, R, F> simplify()
   {
-    if (nthDerivativeNode != null)
+    if (differentiatedNode != null)
     {
-      return nthDerivativeNode.simplify();
+      return differentiatedNode.simplify();
     }
     return this;
   }
@@ -73,13 +74,14 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public String toString()
   {
-    if (nthDerivativeNode != null)
+    if (differentiatedNode != null)
     {
 
-      return nthDerivativeNode.toString();
+      return differentiatedNode.toString();
     }
     else
     {
+      assert variable != null : "variable is null";
       if (order != null)
       {
         return String.format("diff(%s,%s^(%s))", operand, variable, order);
@@ -91,15 +93,15 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
     }
   }
 
-  public Node<D, R, F>         operand;
+  public Node<D, R, F>               operand;
 
-  public VariableNode<D, R, F> variable;
+  public final VariableNode<D, R, F> variable;
 
-  private Node<D, R, F>        nthDerivativeNode;
+  private Node<D, R, F>              differentiatedNode;
 
-  private Node<D, R, F>        order;
+  private Node<D, R, F>              order;
 
-  private Context              context;
+  private Context                    context;
 
   public DerivativeNode(Expression<D, R, F> expression)
   {
@@ -110,8 +112,10 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   public DerivativeNode(Expression<D, R, F> expression, Node<D, R, F> operand)
   {
     super(expression);
+    assert operand != null : "variable is null";
     this.operand = operand;
     this.context = expression.context;
+    variable     = expression.getIndependentVariable();
 
   }
 
@@ -130,11 +134,41 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
       expression.require("/∂");
     }
 
-    parseVariableAndOrderOfDifferentation(expression.resolve(), functionForm);
+    var baseVariableNode = expression.resolve();
+    if (baseVariableNode.isVariable())
+    {
+      variable = baseVariableNode.asVariable();
 
+    }
+    else if (baseVariableNode instanceof ExponentiationNode<D, R, F> expNode)
+    {
+      if (!expNode.left.isVariable())
+      {
+        throwSyntaxError("the base of " + this + " must be a variable");
+      }
+      variable = expNode.left.asVariable();
+      order    = expNode.right;
+      if (order.type() != arb.Integer.class)
+      {
+        throwSyntaxError("the order of differentiation node must generate an Integer but got order="
+                         + order
+                         + " of type "
+                         + order.type());
+      }
+
+    }
+    else
+    {
+      throwSyntaxError("the variable must be specified like variable^power");
+      variable = null;
+    }
+    if (functionForm)
+    {
+      expression.require(')');
+    }
     if (order == null)
     {
-      nthDerivativeNode = operand.differentiate(variable).simplify();
+      differentiatedNode = operand.differentiate(variable).simplify();
     }
     else
     {
@@ -147,10 +181,10 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
           throw new IllegalArgumentException("derivative order must be non-negative, got: " + n);
         }
 
-        nthDerivativeNode = operand;
+        differentiatedNode = operand;
         for (int i = 0; i < n; i++)
         {
-          nthDerivativeNode = nthDerivativeNode.differentiate(variable).simplify();
+          differentiatedNode = differentiatedNode.differentiate(variable).simplify();
         }
       }
       else
@@ -167,87 +201,69 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
     }
   }
 
-  protected void parseVariableAndOrderOfDifferentation(Node<D, R, F> baseVariableNode,
-                                                       boolean functionForm)
+  protected void throwSyntaxError(String string)
   {
-    if (baseVariableNode.isVariable())
-    {
-      variable = baseVariableNode.asVariable();
+    throw new CompilerException("the format for the nth derivative is diff(f(t),t^n) where n is an integer that is the order of differentiation and t is the variable being differentiated with respect to but instead of t^n this is "
+                                + this
+                                + ":"
+                                + string);
 
-    }
-    else if (baseVariableNode instanceof ExponentiationNode<D, R, F> expNode)
-    {
-      assert expNode.left.isVariable() : "the format for the nth derivative is diff(f(t),t^n) where n is an integer that is the order of differentiation and t is the variable being differentiated with respect to but instead of t^n this is "
-                                         + this;
-      variable = expNode.left.asVariable();
-      order    = expNode.right;
-      assert order.type()
-                    == arb.Integer.class : "the order of differentiation node must generate an Integer but got order="
-                                           + order
-                                           + " of type "
-                                           + order.type();
-
-    }
-    if (functionForm)
-    {
-      expression.require(')');
-    }
   }
 
   @Override
   public void accept(Consumer<Node<D, R, F>> t)
   {
-    nthDerivativeNode.accept(t);
+    differentiatedNode.accept(t);
   }
 
   @Override
   public boolean isScalar()
   {
-    return nthDerivativeNode.isScalar();
+    return differentiatedNode.isScalar();
   }
 
   @Override
   public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
-    return nthDerivativeNode.integral(variable);
+    return differentiatedNode.integral(variable);
   }
 
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    return nthDerivativeNode.differentiate(variable);
+    return differentiatedNode.differentiate(variable);
   }
 
   @Override
   public List<? extends Node<D, R, F>> getBranches()
   {
-    return nthDerivativeNode.getBranches();
+    return differentiatedNode.getBranches();
   }
 
   @Override
   public boolean isLeaf()
   {
-    return nthDerivativeNode.isLeaf();
+    return differentiatedNode == null || differentiatedNode.isLeaf();
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     assert !resultType.equals(Object.class) : "Objects shan't be generated";
-    nthDerivativeNode.isResult = isResult;
-    return nthDerivativeNode.generate(mv, resultType);
+    differentiatedNode.isResult = isResult;
+    return differentiatedNode.generate(mv, resultType);
   }
 
   @Override
   public String typeset()
   {
-    return nthDerivativeNode.typeset();
+    return differentiatedNode.typeset();
   }
 
   @Override
   public <C> Class<? extends C> type()
   {
-    return nthDerivativeNode.type();
+    return differentiatedNode.type();
   }
 
   @Override
@@ -255,7 +271,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
          Node<D, R, F>
          substitute(String variable, Node<E, S, G> arg)
   {
-    nthDerivativeNode = nthDerivativeNode.substitute(variable, arg);
+    differentiatedNode = differentiatedNode.substitute(variable, arg);
     return this;
   }
 
@@ -264,7 +280,8 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    return nthDerivativeNode.spliceInto(newExpression);
+    assert false : "nthDerivativeNode is null for " + this + " context=" + expression.context + "functions=" + expression.context.functions;
+    return differentiatedNode.spliceInto(newExpression);
   }
 
   @Override
