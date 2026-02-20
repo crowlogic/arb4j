@@ -149,7 +149,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
    * Đ^(α)(c) = 0 for any constant c
    */
   @Override
-  public Node<D, R, F> fractionalDerivative(Node<D, R, F> α)
+  public Node<D, R, F> fractionalDerivative(VariableNode<D, R, F> variable, Node<D, R, F> α)
   {
     return zero();
   }
@@ -514,7 +514,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   }
 
   @Override
-  public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
+  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
     return mul(variable);
   }

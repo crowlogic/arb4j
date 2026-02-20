@@ -209,7 +209,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
   }
 
   @Override
-  public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
+  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
     assert false : "TODO: return 1/2*2^(1/2)*(J(n+1/2,z)*(-1+n)*LommelS1(-3/2,n-1/2,z)-LommelS1(-1/2,n+1/2,z)*J(n-1/2,z))*Pi^(1/2)*z where "
                    + "[LommelS1(a, b, z) = z^(a + 1)*hypergeom([1], [3/2 + b/2 + a/2, 3/2 - b/2 + a/2], -z^2/4)/((a - b + 1)*(a + b + 1)), "

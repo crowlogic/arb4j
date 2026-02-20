@@ -106,9 +106,9 @@ public class NegationNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
-  public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
+  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
-    return arg.integrate(variable).neg();
+    return arg.integral(variable).neg();
   }
 
   @Override

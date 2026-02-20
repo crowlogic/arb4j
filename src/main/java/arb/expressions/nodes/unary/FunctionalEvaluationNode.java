@@ -170,7 +170,7 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
   }
 
   @Override
-  public Node<D, C, F> integrate(VariableNode<D, C, F> variable)
+  public Node<D, C, F> integral(VariableNode<D, C, F> variable)
   {
 
     if (Polynomial.class.isAssignableFrom(functionNode.type()) && arg.equals(variable))
@@ -181,7 +181,7 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
     }
 
     return new FunctionalEvaluationNode<>(expression,
-                                          functionNode.integrate(variable),
+                                          functionNode.integral(variable),
                                           arg).setIsResult(isResult);
   }
 

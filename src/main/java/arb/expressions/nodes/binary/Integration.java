@@ -50,7 +50,7 @@ public abstract class Integration
       logger.debug("applySingleStepIBP: u={}, dv={}, variable={}", u, dv, variable);
     }
 
-    var v  = dv.integrate(variable).simplify();
+    var v  = dv.integral(variable).simplify();
     var du = u.differentiate(variable).simplify();
 
     if (Expression.traceNodes)
@@ -61,7 +61,7 @@ public abstract class Integration
     // ∫ u dv = u·v - ∫ v·du dx
     var uvTerm             = u.mul(v).simplify();
     var remainingIntegrand = v.mul(du).simplify();
-    var remainingIntegral  = remainingIntegrand.integrate(variable).simplify();
+    var remainingIntegral  = remainingIntegrand.integral(variable).simplify();
 
     if (Expression.traceNodes)
     {
@@ -128,7 +128,7 @@ public abstract class Integration
     final AtomicReference<Node<D, R, F>> result        = new AtomicReference<>(u.zero());
     final AtomicReference<Node<D, R, F>> currentU      = new AtomicReference<>(u);
     final AtomicReference<Node<D, R, F>> currentV      =
-                                                  new AtomicReference<>(dv.integrate(variable));
+                                                  new AtomicReference<>(dv.integral(variable));
 
     int                                  sign          = 1;
     int                                  maxIterations = 20;
@@ -245,7 +245,7 @@ public abstract class Integration
     }
 
     var product = buildProduct(remaining);
-    return thetaNode.mul(product.integrate(variable));
+    return thetaNode.mul(product.integral(variable));
   }
 
   /**
@@ -373,7 +373,7 @@ public abstract class Integration
 
     if (!nextU.isZero())
     {
-      var nextV = v.integrate(variable).simplify();
+      var nextV = v.integral(variable).simplify();
       currentV.set(nextV);
       if (Expression.traceNodes)
       {

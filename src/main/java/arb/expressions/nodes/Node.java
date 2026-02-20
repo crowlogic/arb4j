@@ -76,15 +76,16 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    * Subclasses that have closed-form fractional derivatives override this.
    *
    * FIXME: the variable of differentiation needs to be made an argument for this
-   * 
+   * @param variable TODO
    * @param α the fractional order node
+   * 
    * @return the node representing Đ^(α)(this)
    */
-  public Node<D, R, F> fractionalDerivative(Node<D, R, F> α)
+  public Node<D, R, F> fractionalDerivative(VariableNode<D, R, F> variable, Node<D, R, F> α)
   {
     return new CaputoFractionalDerivativeNode<D, R, F>(expression,
                                                        this,
-                                                       α);
+                                                       variable, α);
   }
 
   /**
@@ -348,7 +349,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    *         {@link Expression#independentVariable} passed as the variable to be
    *         differentiated with respect to
    */
-  public Node<D, R, F> differentiate()
+  public Node<D, R, F> derivative()
   {
     var variable = expression.getInputVariable();
     return differentiate(variable);
@@ -445,7 +446,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    * @param variable
    * @return
    */
-  public abstract Node<D, R, F> integrate(VariableNode<D, R, F> variable);
+  public abstract Node<D, R, F> integral(VariableNode<D, R, F> variable);
 
   public boolean isHalf()
   {

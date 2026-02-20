@@ -188,7 +188,7 @@ public class DerivativeNodeTest extends
                                  Real.named("b").set(4),
                                  Real.named("c").set(6));
     var f          = RealFunction.parse("x->a*x+b*x²+c*x³", context, true);
-    var derivative = f.rootNode.differentiate().simplify();
+    var derivative = f.rootNode.derivative().simplify();
     f.rootNode   = derivative;
    // f.setExpression(derivative.toString());
     var    func = f.instantiate();

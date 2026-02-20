@@ -62,9 +62,9 @@ public class CachedNode<D, C, F extends Function<? extends D, ? extends C>> exte
   }
 
   @Override
-  public Node<D, C, F> integrate(VariableNode<D, C, F> variable)
+  public Node<D, C, F> integral(VariableNode<D, C, F> variable)
   {
-    return originalNode.integrate(variable);
+    return originalNode.integral(variable);
   }
 
   @Override

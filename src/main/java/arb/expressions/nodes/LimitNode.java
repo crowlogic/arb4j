@@ -80,7 +80,7 @@ public class LimitNode<D, C, F extends Function<? extends D, ? extends C>>
   }
 
   @Override
-  public Node<D, C, F> integrate(VariableNode<D, C, F> variable)
+  public Node<D, C, F> integral(VariableNode<D, C, F> variable)
   {
     assert false : "Node<D,C,F>.integrate has yet to be implemented as of Nov 25, 2025 12:10:17 PM";
     return null;

@@ -16,7 +16,7 @@ public final class HardyZFunctionNode<D, C, F extends Function<? extends D, ? ex
 {
 
   @Override
-  public Node<D, C, F> integrate(VariableNode<D, C, F> variable)
+  public Node<D, C, F> integral(VariableNode<D, C, F> variable)
   {
     return new HardyZFunctionNode<>(expression,
                                     arg,

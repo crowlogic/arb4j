@@ -30,9 +30,9 @@ abstract class PolySeriesFunctionDerivativeNode<D, C, F extends Function<? exten
   }
 
   @Override
-  public Node<D, C, F> integrate(VariableNode<D, C, F> variable)
+  public Node<D, C, F> integral(VariableNode<D, C, F> variable)
   {
-    return super.integrate(variable);
+    return super.integral(variable);
   }
 
   private static final String ACB_ONE                = "acb_one";

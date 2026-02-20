@@ -93,7 +93,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
    * This is the monomial case with k=1.
    */
   @Override
-  public Node<D, R, F> fractionalDerivative(Node<D, R, F> α)
+  public Node<D, R, F> fractionalDerivative(VariableNode<D, R, F> variable, Node<D, R, F> α)
   {
     VariableNode<D, R, F> indepVar = expression.getIndependentVariable();
     if (this.equals(indepVar))
@@ -106,7 +106,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     return zero();
   }
-
 
   public boolean isZero()
   {
@@ -375,7 +374,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
-  public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
+  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
     if (variable.reference.equals(reference))
     {
@@ -697,7 +696,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
+         VariableNode<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
     return new VariableNode<E, S, G>(newExpression,

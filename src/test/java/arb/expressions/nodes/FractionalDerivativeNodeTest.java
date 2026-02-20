@@ -1,8 +1,6 @@
 package arb.expressions.nodes;
 
 import arb.Real;
-import arb.RealConstants;
-import arb.expressions.Context;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
@@ -13,13 +11,19 @@ import junit.framework.TestCase;
 public class FractionalDerivativeNodeTest extends
                                           TestCase
 {
-  public static void testParseFractionalDerivative()
+  public static void testFractionalDerivativeParsing()
   {
     var expr = RealFunction.parse("t➔Đ^(1/2)sin(t)");
-    System.out.println( "expr=\n" + expr.inspect(null));
-    
-    var f = expr.instantiate();
-    System.out.println( expr + " = " + f );
+    assertTrue("expr.rootNode="
+               + expr.rootNode.getClass()
+               + " should be a CaputoFractionalDerivativeNode",
+               expr.rootNode instanceof CaputoFractionalDerivativeNode);
+    CaputoFractionalDerivativeNode<Real, Real, RealFunction> fracDiffNode =
+                                                                          (CaputoFractionalDerivativeNode<Real, Real, RealFunction>) expr.rootNode;
+
+    assertEquals("1/2", fracDiffNode.exponent.toString());
+    assertEquals("sin(t)", fracDiffNode.operand.toString());
+
   }
-  
+
 }

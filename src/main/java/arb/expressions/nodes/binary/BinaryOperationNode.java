@@ -63,7 +63,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
   }
 
   @Override
-  public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
+  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
     assert false : "BinaryOperationNode.integrate has yet to be implemented as of Feb 17, 2026 8:28:49 PM";
     return null;

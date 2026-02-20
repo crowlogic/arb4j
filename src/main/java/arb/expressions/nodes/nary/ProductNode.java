@@ -34,7 +34,7 @@ public class ProductNode<D, C, F extends Function<? extends D, ? extends C>> ext
   }
 
   @Override
-  public Node<D, C, F> integrate(VariableNode<D, C, F> variable)
+  public Node<D, C, F> integral(VariableNode<D, C, F> variable)
   {
     assert false : "TODO: implement ∫∏ᵢ₌₁ⁿfᵢ(x)dx = ∑ₖ₌₁ⁿ[(-1)ᵏ⁺¹∑ᵢ₁₊...₊ᵢₙ₌ₖ(f₁⁽ⁱ¹⁾...fₙ⁽ⁱⁿ⁾)/(i₁!...iₙ!)∫xᵏdx]";
     return null;

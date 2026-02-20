@@ -52,7 +52,7 @@ public class SumNode<D, C, F extends Function<? extends D, ? extends C>>
   }
 
   @Override
-  public Node<D, C, F> integrate(VariableNode<D, C, F> variable)
+  public Node<D, C, F> integral(VariableNode<D, C, F> variable)
   {
     assert false : "TODO: implement ∫[∑ᵢ₌₁ⁿfᵢ(x)]dx = ∑ᵢ₌₁ⁿ[∫fᵢ(x)dx]";
     return null;

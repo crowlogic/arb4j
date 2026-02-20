@@ -1088,7 +1088,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     var α    = require('^').require('(').resolve();
     var f    = require(')').resolveOperand();
-    var node = f.fractionalDerivative(α);
+    var node = f.fractionalDerivative(null, α);
     return node;
   }
 
@@ -3389,7 +3389,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       Node<D, C, F> operand = resolve();
       Node<D, C, F> variable = require(",").resolveOperand();
       Node<D, C, F> fractionalOrder = resolve();
-      return operand.fractionalDerivative(fractionalOrder);
+      return operand.fractionalDerivative(null, fractionalOrder);
     case "diff":
       return new DerivativeNode<>(this,
                                   true);
@@ -3460,13 +3460,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // to the derivative of the function, rather than differentiating with respect
     // to the independent or indeterminant
     // variable of the expression it is contained within
-    return node.differentiate();
+    return node.derivative();
   }
 
   Node<D, C, F> resolveFunctionSecondDerivative(int startPos, VariableReference<D, C, F> reference)
   {
     var firstDerivative = resolveFunctionDerivative(startPos, reference);
-    return firstDerivative.differentiate();
+    return firstDerivative.derivative();
   }
 
   protected Node<D, C, F> resolveIdentifier() throws CompilerException

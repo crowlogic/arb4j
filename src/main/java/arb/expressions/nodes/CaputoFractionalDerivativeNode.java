@@ -15,14 +15,13 @@ import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
-import arb.expressions.Context;
-import arb.expressions.Expression;
+import arb.expressions.*;
 import arb.functions.Function;
 import arb.functions.RealFunctional;
 import arb.functions.real.RealFunction;
 
 /**
- * Caputo fractional derivative integral form: ꟲD^(α)f(x)
+ * Caputo fractional derivative integral form: ꟲD^(α)f(x)=ꟲDₓᵅf(x)
  * 
  * Implements:
  * 
@@ -34,8 +33,8 @@ import arb.functions.real.RealFunction;
  * 
  * This node is ONLY created when no closed-form fractional derivative exists.
  * Closed-form cases (monomials, polynomials, linear combinations) are handled
- * by {@link Node#fractionalDerivative(Node)} overrides in the respective
- * subclasses ({@link VariableNode},
+ * by {@link Node#fractionalDerivative(VariableNode, Node)} overrides in the
+ * respective subclasses ({@link VariableNode},
  * {@link arb.expressions.nodes.binary.ExponentiationNode},
  * {@link arb.expressions.nodes.binary.AdditionNode}, etc.).
  * 
@@ -43,7 +42,7 @@ import arb.functions.real.RealFunction;
  * parser for both Đ and ꟲD syntax. It dispatches to
  * {@code operand.fractionalDerivative(exponent)} which returns either a
  * closed-form node or falls back to creating this integral-form node via
- * {@link Node#fractionalDerivative(Node)}.
+ * {@link Node#fractionalDerivative(VariableNode, Node)}.
  *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
@@ -63,24 +62,30 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   private int                                            derivativeOrder;
   private Expression<Real, RealFunction, RealFunctional> integrandExpression;
 
+  private VariableNode<D, R, F>                          variable;
+
+  private FunctionMapping<D, R, ? extends F> operandExpression;
+
   /**
    * Constructs the integral form. Only called from
-   * {@link Node#fractionalDerivative(Node)} when no closed form exists.
+   * {@link Node#fractionalDerivative(VariableNode, Node)} when no closed form
+   * exists.
+   * 
+   * @param variable TODO
    */
   public CaputoFractionalDerivativeNode(Expression<D, R, F> expression,
                                         Node<D, R, F> operand,
-                                        Node<D, R, F> power)
+                                        VariableNode<D, R, F> variable,
+                                        Node<D, R, F> order)
   {
     super(expression);
-    if (power == null)
-    {
-      power = one();
-    }
-    this.exponent        = power;
+    this.variable = variable;
+    assert order != null : "power shan't be null";
+    this.exponent        = order;
     this.operand         = operand;
     this.context         = expression.getContext();
 
-    this.derivativeOrder = resolveDerivativeOrder(power, context);
+    this.derivativeOrder = resolveDerivativeOrder(order, context);
 
     if (derivativeOrder > 1)
     {
@@ -90,10 +95,11 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     }
 
     context.registerVariable(Integer.named("n").set(derivativeOrder));
-    context.registerFunctionMapping("f",
-                                    expression.domainType,
-                                    expression.coDomainType,
-                                    expression.functionClass);
+    operandExpression = context.registerFunctionMapping("g",
+                                     expression.domainType,
+                                     expression.coDomainType,
+                                     expression.functionClass);
+    
     Class<?> scalarType = scalarType(expression.domainType);
     if (scalarType == Real.class)
     {
@@ -111,14 +117,14 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
       throw new UnsupportedOperationException("todo: support  " + scalarType);
     }
 
-    this.integralExpression = Function.parse(expression.domainType,
-                                             expression.coDomainType,
-                                             expression.functionClass,
-                                             "x➔∫t➔g(x)(t)dt∈(0,x)/Γ(1-α)",
-                                             context,
-                                             expression);
-    this.integralExpression.substitute("f", integralExpression.rootNode);
-    this.integralNode = integralExpression.rootNode;
+//    this.integralExpression = Function.parse(expression.domainType,
+//                                             expression.coDomainType,
+//                                             expression.functionClass,
+//                                             "x➔∫t➔g(x)(t)dt∈(0,x)/Γ(1-α)",
+//                                             context,
+//                                             expression);
+//    this.integralExpression.substitute("f", integralExpression.rootNode);
+ //   this.integralNode = integralExpression.rootNode;
   }
 
   @Override
@@ -296,7 +302,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    return operand.fractionalDerivative(exponent.add(expression.newLiteralConstant("1")));
+    return operand.fractionalDerivative(null, exponent.add(expression.newLiteralConstant("1")));
   }
 
   @Override
@@ -306,9 +312,9 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   }
 
   @Override
-  public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
+  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
-    return operand.fractionalDerivative(exponent.sub(expression.newLiteralConstant("1")));
+    return operand.fractionalDerivative(null, exponent.sub(expression.newLiteralConstant("1")));
   }
 
   @Override
@@ -316,9 +322,10 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    return new CaputoFractionalDerivativeNode<>(newExpression,
-                                                operand.spliceInto(newExpression),
-                                                exponent.spliceInto(newExpression));
+    return new CaputoFractionalDerivativeNode<E, S, G>(newExpression,
+                                                       operand.spliceInto(newExpression),
+                                                       variable.spliceInto(newExpression),
+                                                       exponent.spliceInto(newExpression));
   }
 
   @Override

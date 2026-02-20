@@ -38,7 +38,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
    * Otherwise falls back to the default integral form.
    */
   @Override
-  public Node<D, R, F> fractionalDerivative(Node<D, R, F> α)
+  public Node<D, R, F> fractionalDerivative(VariableNode<D, R, F> variable, Node<D, R, F> α)
   {
     VariableNode<D, R, F> diffVar = left.extractVariable();
     if (diffVar == null)
@@ -50,14 +50,14 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     {
       if (!left.dependsOn(diffVar))
       {
-        return left.mul(right.fractionalDerivative(α));
+        return left.mul(right.fractionalDerivative(null, α));
       }
       if (!right.dependsOn(diffVar))
       {
-        return right.mul(left.fractionalDerivative(α));
+        return right.mul(left.fractionalDerivative(null, α));
       }
     }
-    return super.fractionalDerivative(α);
+    return super.fractionalDerivative(variable, α);
   }
 
   @Override
@@ -111,7 +111,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
    * @return The integrated expression
    */
   @Override
-  public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
+  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
     // Simplify first -- catches e.g. (x-a)*δ(x-a) = 0
     Node<D, R, F> simplified = this.simplify();
@@ -121,7 +121,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     }
     if (!simplified.equals(this))
     {
-      return simplified.integrate(variable);
+      return simplified.integral(variable);
     }
 
     // Flatten the product tree into individual factors
@@ -149,7 +149,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     {
       var constantProduct = buildProduct(constantFactors);
       var variableProduct = buildProduct(variableFactors);
-      return constantProduct.mul(variableProduct.integrate(variable)).simplify();
+      return constantProduct.mul(variableProduct.integral(variable)).simplify();
     }
 
     // Try step function integration: ∫ f(x)·θ(x) dx = θ(x) · ∫ f(x) dx (#841)

@@ -259,15 +259,15 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   }
 
   @Override
-  public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
+  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
     TreeMap<Integer, Node<D, R, F>> integratedCases = new TreeMap<>();
     for (var entry : cases.entrySet())
     {
-      integratedCases.put(entry.getKey(), entry.getValue().integrate(variable));
+      integratedCases.put(entry.getKey(), entry.getValue().integral(variable));
     }
 
-    Node<D, R, F>     integratedDefault = arg.integrate(variable);
+    Node<D, R, F>     integratedDefault = arg.integral(variable);
 
     WhenNode<D, R, F> result            = new WhenNode<>(expression,
                                                          integratedDefault,

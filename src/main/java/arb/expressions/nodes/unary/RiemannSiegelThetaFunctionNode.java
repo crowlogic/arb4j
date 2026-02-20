@@ -93,7 +93,7 @@ public class RiemannSiegelThetaFunctionNode<D, C, F extends Function<? extends D
   }
 
   @Override
-  public Node<D, C, F> integrate(arb.expressions.nodes.VariableNode<D, C, F> variable)
+  public Node<D, C, F> integral(arb.expressions.nodes.VariableNode<D, C, F> variable)
   {
     return new RiemannSiegelThetaFunctionNode<>(expression,
                                                 arg,

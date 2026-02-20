@@ -98,7 +98,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     {
       parseIntegralForm(expression);
     }
-    ensureIndefiniteIntegralNode();
 
   }
 
@@ -242,7 +241,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   private void computeIndefiniteIntegralNode(boolean compileIfNecessary)
   {
     assert integralFunction == null;
-    var rawIntegral = integrandNode.integrate(integrationVariableNode.asVariable());
+    var rawIntegral = integrandNode.integral(integrationVariableNode.asVariable());
     if (Expression.trace && logger.isDebugEnabled())
     {
       logger.debug("computeIndefiniteIntegralNode(compileIfNecessary={}) rawIntegral={}",
@@ -320,6 +319,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     assert resultType != null : "resultType cannot be null";
     generatedType = resultType;
 
+    ensureIndefiniteIntegralNode();
 
     return isDefiniteIntegral() ? generateDefiniteIntegral(mv, resultType)
                                 : generateIndefiniteIntegral(mv, resultType);
@@ -387,7 +387,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   }
 
   @Override
-  public Node<D, C, F> integrate(VariableNode<D, C, F> variable)
+  public Node<D, C, F> integral(VariableNode<D, C, F> variable)
   {
 
     assert false : "TODO: implement integration of " + this + " integrandNode=" + integrandNode;
@@ -583,6 +583,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     {
       return indefiniteIntegralNode;
     }
+
   }
 
   @Override

@@ -197,9 +197,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   protected int derivativeOrder = 0;
 
   @Override
-  public Node<D, R, F> differentiate()
+  public Node<D, R, F> derivative()
   {
-    Node<D, R, F> diff = super.differentiate();
+    Node<D, R, F> diff = super.derivative();
     return diff;
   }
 
@@ -634,7 +634,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   protected static final Logger logger = LoggerFactory.getLogger(FunctionNode.class);
 
-  private Node<D, R, F> integrateContextualFunction()
+  private Node<D, R, F> integrateContextualFunction(VariableNode<D, R, F> variable)
   {
     if (Expression.traceNodes)
     {
@@ -652,7 +652,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       if (functionMapping.expressionString == null)
       {
-        throw new CompilerException(String.format("Instance for function %s was not present in %s",
+              throw new CompilerException(String.format("Instance for function %s was not present in %s",
                                                   functionName,
                                                   functionMapping));
       }
@@ -663,7 +663,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                        mapping.functionClass,
                                        mapping.expressionString);
         integrand.ascendentExpression = expression;
-        return integrand.rootNode.integrate(integrand.independentVariable).simplify();
+        return integrand.rootNode.integral(integrand.independentVariable).simplify();
 //
 //        throw new CompilerException(String.format("TODO: integrate parsed but yet-to-be-compiled expression string in expression '%s' where integrand='%s' and integral='%s' ",
 //                                                  functionMapping,
@@ -898,12 +898,12 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
-  public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
+  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
-    return integrateFunction().div(arg.differentiate(variable)).simplify();
+    return integrateFunction(variable).div(arg.differentiate(variable)).simplify();
   }
 
-  public Node<D, R, F> integrateFunction()
+  public Node<D, R, F> integrateFunction(VariableNode<D, R, F> variable)
   {
     if (isBuiltin())
     {
@@ -911,7 +911,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     else if (contextual)
     {
-      return integrateContextualFunction();
+      return integrateContextualFunction(variable);
     }
     throw new UnsupportedOperationException("Cannot integrate function: " + functionName);
   }

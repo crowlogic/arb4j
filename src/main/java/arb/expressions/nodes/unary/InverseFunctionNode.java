@@ -233,7 +233,7 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
    * the forward function composed with the inverse.
    */
   @Override
-  public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
+  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
     // y·f⁻¹(y) − F(f⁻¹(y)) where F is the antiderivative of f
     // For initial support, delegate to numerical integration or throw

@@ -314,7 +314,7 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
   }
 
   @Override
-  public Node<D, C, F> integrate(VariableNode<D, C, F> var)
+  public Node<D, C, F> integral(VariableNode<D, C, F> var)
   {
     throw new UnsupportedOperationException("Double integration not implemented");
   }

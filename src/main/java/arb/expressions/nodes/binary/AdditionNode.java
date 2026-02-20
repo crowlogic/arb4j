@@ -56,9 +56,9 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
    * Đ^(α)(f + g) = Đ^(α)(f) + Đ^(α)(g)
    */
   @Override
-  public Node<D, R, F> fractionalDerivative(Node<D, R, F> α)
+  public Node<D, R, F> fractionalDerivative(VariableNode<D, R, F> variable, Node<D, R, F> α)
   {
-    return left.fractionalDerivative(α).add(right.fractionalDerivative(α));
+    return left.fractionalDerivative(null, α).add(right.fractionalDerivative(null, α));
   }
 
   @Override
@@ -68,9 +68,9 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
-  public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
+  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
-    return left.integrate(variable).add(right.integrate(variable));
+    return left.integral(variable).add(right.integral(variable));
   }
 
   @Override
