@@ -1027,9 +1027,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     else if (nextCharacterIs('Đ'))
     {
-      Node<D, C, F> α = require('^').require('(').resolve();
-      Node<D, C, F> f = require(')').resolveOperand();
-      node = f.fractionalDerivative(α);
+      node = resolveCaputoFractionalDerivative();
     }
     else if (nextCharacterIs('∫'))
     {
@@ -1074,9 +1072,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       char savedChar = character;
       if (nextCharacterIs('D'))
       {
-        Node<D, C, F> α = require('^').require('(').resolve();
-        Node<D, C, F> f = require(')').resolveOperand();
-        node = f.fractionalDerivative(α);
+        node = resolveCaputoFractionalDerivative();
       }
       else
       {
@@ -1086,6 +1082,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
 
     return resolvePostfixOperators(node);
+  }
+
+  protected Node<D, C, F> resolveCaputoFractionalDerivative()
+  {
+    var α    = require('^').require('(').resolve();
+    var f    = require(')').resolveOperand();
+    var node = f.fractionalDerivative(α);
+    return node;
   }
 
   public Node<D, C, F> parseLambda(String paramName)
