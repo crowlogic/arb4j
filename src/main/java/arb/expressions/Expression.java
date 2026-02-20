@@ -636,19 +636,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-  protected boolean assureNoNumbersInTheInputVariable(String inputVariableName,
-                                                      boolean isInputVariableSpecified)
-  {
-    for (int i = 0; i < inputVariableName.length(); i++)
-    {
-      if (!Parser.isIdentifyingCharacter(inputVariableName.charAt(i), false))
-      {
-        isInputVariableSpecified = false;
-      }
-    }
-    return isInputVariableSpecified;
-  }
-
   protected boolean characterAfterNextIs(char ch)
   {
     return position + 1 < getExpression().length() && getExpression().charAt(position + 1) == ch;
@@ -2643,10 +2630,137 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // return coDomainType.isInterface();
   }
 
+  /**
+   * Returns the current code point at the parser's position. For BMP characters
+   * this is identical to {@code character}; for supplementary characters it
+   * reads the full surrogate pair.
+   */
+  public int currentCodePoint()
+  {
+    if (position < 0 || position >= getExpression().length())
+    {
+      return Character.MIN_VALUE;
+    }
+    return getExpression().codePointAt(position);
+  }
+
+  /**
+   * Checks whether the current code point at the parser position is an
+   * identifier character. Uses code-point-aware lookup to support supplementary
+   * Unicode characters such as U+107A5 (𐞥).
+   */
   public boolean isIdentifierCharacter()
   {
-    return isIdentifyingCharacter(character, false) || isSubscript(character)
-                  || isSuperscriptLetter(character);
+    int cp = currentCodePoint();
+    return isIdentifyingCharacter(cp, false) || isSubscript(character)
+                  || isSuperscriptLetter(cp);
+  }
+
+  /**
+   * Advances the parser position by one Unicode code point. For supplementary
+   * characters (surrogate pairs), advances by two {@code char} positions.
+   */
+  protected char nextCharacter()
+  {
+    ++position;
+    if (position < getExpression().length())
+    {
+      int cp = getExpression().codePointAt(position);
+      // For supplementary characters, 'character' holds the high surrogate.
+      // All comparisons in the tokenizer that matter for supplementary chars
+      // go through currentCodePoint() / isIdentifierCharacter() instead.
+      character = getExpression().charAt(position);
+    }
+    else
+    {
+      character = Character.MIN_VALUE;
+    }
+    return character;
+  }
+
+  /**
+   * Skips forward by the char-count of the current code point. Used after
+   * identifying a supplementary character to advance past both surrogates.
+   */
+  protected void advancePastCurrentCodePoint()
+  {
+    int cp = currentCodePoint();
+    int charCount = Character.charCount(cp);
+    // Advance (charCount - 1) extra positions since nextCharacter() already
+    // moved forward by 1.
+    for (int i = 1; i < charCount; i++)
+    {
+      ++position;
+    }
+    if (position < getExpression().length())
+    {
+      character = getExpression().charAt(position);
+    }
+    else
+    {
+      character = Character.MIN_VALUE;
+    }
+  }
+
+  /**
+   * Parses an identifier name starting from {@code startPos}. Uses code-point
+   * iteration to correctly handle supplementary Unicode characters.
+   */
+  protected String parseName(int startPos)
+  {
+    boolean entirelySubscripted   = true;
+    boolean entirelySuperscripted = true;
+    while (position < getExpression().length())
+    {
+      int     cp       = getExpression().codePointAt(position);
+      boolean isLetter = isIdentifyingCharacter(cp, true);
+
+      if (isLetter
+            || (entirelySubscripted && !isLetter && isSubscript(character))
+            || (entirelySuperscripted && !isLetter && isSuperscriptLetter(cp)))
+      {
+        // Advance past the full code point (1 char for BMP, 2 for supplementary)
+        int charCount = Character.charCount(cp);
+        position += charCount;
+        if (position < getExpression().length())
+        {
+          character = getExpression().charAt(position);
+        }
+        else
+        {
+          character = Character.MIN_VALUE;
+        }
+        if (isLetter)
+        {
+          entirelySubscripted = false;
+        }
+      }
+      else
+      {
+        break;
+      }
+    }
+    var substring = getExpression().substring(startPos, position).trim();
+    return Parser.subscriptAndSuperscriptsToRegular(substring);
+  }
+
+  /**
+   * Checks that no numeric digits appear in the input variable name.
+   * Uses code-point iteration for supplementary character safety.
+   */
+  protected boolean assureNoNumbersInTheInputVariable(String inputVariableName,
+                                                      boolean isInputVariableSpecified)
+  {
+    for (int i = 0; i < inputVariableName.length(); )
+    {
+      int cp = inputVariableName.codePointAt(i);
+      if (!Parser.isIdentifyingCharacter(cp, false))
+      {
+        isInputVariableSpecified = false;
+      }
+      i += Character.charCount(cp);
+    }
+    return isInputVariableSpecified;
   }
 
   public boolean isNullaryFunction()
@@ -3048,13 +3162,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                      true);
   }
 
-  protected char nextCharacter()
-  {
-    character = (++position < getExpression().length()) ? getExpression().charAt(position)
-                                                        : Character.MIN_VALUE;
-
-    return character;
-  }
 
   public boolean nextCharacterIs(char... expectedCharacters)
   {
@@ -3095,25 +3202,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public String parseName()
   {
     return parseName(position);
-  }
-
-  protected String parseName(int startPos)
-  {
-    boolean entirelySubscripted   = true;
-    boolean entirelySuperscripted = true;
-    boolean isLetter;
-    while ((isLetter = isIdentifyingCharacter(character, true))
-                  || (entirelySubscripted && !isLetter && isSubscript(character))
-                  || (entirelySuperscripted && !isLetter && isSuperscriptLetter(character)))
-    {
-      nextCharacter();
-      if (isLetter)
-      {
-        entirelySubscripted = false;
-      }
-    }
-    var substring = getExpression().substring(startPos, position).trim();
-    return Parser.subscriptAndSuperscriptsToRegular(substring);
   }
 
   /**

@@ -10,7 +10,7 @@ public class RealFunctionalSequenceTest extends
 {
   public static void testRealFunctionalSequence()
   {
-    var seq = RealFunctionalSequence.express("n->t->q->t^(n+q)");
+    var seq = RealFunctionalSequence.express("n➔t➔q➔t^(n+q)");
     RealFunctional s3 = seq.apply(3);
     RealFunction f = s3.evaluate(RealConstants.two, 128);
     var y = f.eval(1.0);

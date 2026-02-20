@@ -124,7 +124,7 @@ public class Parser
 
   /**
    * <pre>
-   * "1\u204416" (without spaces) to display 1/16 as a fraction glyph. The rendering  declares the 
+   * "1⁄16" (without spaces) to display 1/16 as a fraction glyph. The rendering  declares the 
    * fraction has ended when it encounters a character that cannot be part of a fraction, i.e. 
    * something that is not an ASCII digit. 
    * 
@@ -159,11 +159,10 @@ public class Parser
   }
 
   /**
-   * Checks whether a given character is a Latin or Greek alphabet character.
+   * Checks whether a given character is a digit.
    * 
    * @param ch The character to check
-   * @return true if the character is a Latin or Greek alphabet character; false
-   *         otherwise
+   * @return true if the character is a digit; false otherwise
    */
   static public boolean isDigit(int ch)
   {
@@ -171,18 +170,21 @@ public class Parser
   }
 
   /**
-   * Checks whether a given character is a Latin or Greek alphabet character.
+   * Checks whether a given code point is an identifying character for the
+   * expression parser. Accepts {@code int} code points to support supplementary
+   * Unicode characters such as U+107A5 (𐞥 MODIFIER LETTER SMALL Q).
    * 
-   * @param ch The character to check
-   * @return true if the character is a Latin or Greek alphabet character; false
-   *         otherwise
+   * @param codePoint the Unicode code point to check
+   * @param digit     whether digits should be accepted as identifying characters
+   * @return true if the code point is an identifying character; false otherwise
    */
-  static public boolean isIdentifyingCharacter(char ch, boolean digit)
+  static public boolean isIdentifyingCharacter(int codePoint, boolean digit)
   {
-    boolean positiveCheck = isAlphabeticalLetter(ch) || isGreekOrBlackLetter(ch) || ch == 'ⅈ'
-                  || ch == '√' || ch == '₀' || isSuperscriptLetter(ch)
-                  || (digit && isDigit(ch) || '_' == ch);
-    boolean negativeCheck = ch != 'Σ';
+    boolean positiveCheck = isAlphabetical(codePoint) || isGreekOrBlackLetter(codePoint)
+                  || codePoint == 'ⅈ' || codePoint == '√' || codePoint == '₀'
+                  || isSuperscriptLetter(codePoint) || (digit && isDigit(codePoint))
+                  || '_' == codePoint;
+    boolean negativeCheck = codePoint != 'Σ';
     return positiveCheck && negativeCheck;
   }
 
@@ -204,12 +206,13 @@ public class Parser
   /**
    * 
    * @param ch
-   * @return true if ch represents an upper or lowercase GreekRegistration
+   * @return true if ch represents an upper or lowercase Greek or blackletter
+   *         character
    */
   public static boolean isGreekOrBlackLetter(int ch)
   {
-    return (ch >= 0x0391 && ch <= 0x03A9) || (ch >= 0x03B1 && ch <= 0x03C9)
-                  || greekAndBlackLetterChars.contains(Character.valueOf((char) ch));
+    return (ch >= 0x0391 && ch <= 0x03A9) || (ch >= 0x03B1 && ch <= 0x03C9) || (ch <= 0xFFFF
+                  && greekAndBlackLetterChars.contains(Character.valueOf((char) ch)));
   }
 
   /**
@@ -236,8 +239,7 @@ public class Parser
 
     for (int i = 0; i < superscripts.length; i++)
     {
-      expression = expression.replace(String.valueOf(superscripts[i]),
-                                      String.format("^(%s)", normals[i]));
+      expression = expression.replace(superscripts[i], String.format("^(%s)", normals[i]));
     }
 
     return Normalizer.normalize(expression, Normalizer.Form.NFD);
@@ -248,11 +250,7 @@ public class Parser
     str = str.replaceAll("\\.{2,}", "…")
              .replace(';', ',')
              .replace(" ", "")
-             // .replace("+", "Plus")
-             // .replace("-", "Minus")
-             // .replace("*", "Times")
              .replace("/", "⁄")
-             // .replace("^", "ToThePowerOf")
              .replace(".", "_")
              .replace("{", "Where")
              .replace("}", "")
@@ -266,23 +264,11 @@ public class Parser
              .replace("[", "［")
              .replace("]", "］")
              .replace("➔", "To");
-// .replace("½", "Half"
 
     if (!str.isEmpty())
     {
       str = (isDigit(str.charAt(0)) ? "_" : "") + str;
     }
-//    if (false && str.length() >= 250)
-//    {
-//      {
-//        UUID uuid = UUID.nameUUIDFromBytes(str.getBytes());
-//        str = uuid.toString()
-//                  .replace("-",
-//                           "_");
-//      }
-//      return "_" + str;
-//    }
-//    else
     {
       return str;
     }
@@ -322,32 +308,43 @@ public class Parser
   public static final char[]             SUBSCRIPT_CHARACTERS_ARRAY   =
   { 'ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ', 'ₜ' };
 
-  public static Character[]              lowercaseSuperscriptAlphabet =
-  { 'ᵃ',
-    'ᵇ',
-    'ᶜ',
-    'ᵈ',
-    'ᵉ',
-    'ᶠ',
-    'ᵍ',
-    'ʰ',
-    'ⁱ',
-    'ʲ',
-    'ᵏ',
-    'ˡ',
-    'ᵐ',
-    'ⁿ',
-    'ᵒ',
-    'ᵖ',
-    'ʳ',
-    'ˢ',
-    'ᵗ',
-    'ᵘ',
-    'ᵛ',
-    'ʷ',
-    'ˣ',
-    'ʸ',
-    'ᶻ' };
+  /**
+   * Lowercase superscript alphabet as {@code String[]} to support supplementary
+   * Unicode characters such as U+107A5 (𐞥 MODIFIER LETTER SMALL Q) which cannot
+   * be stored in a {@code char}.
+   */
+  public static String[]                 lowercaseSuperscriptAlphabet =
+  { "ᵃ",
+    "ᵇ",
+    "ᶜ",
+    "ᵈ",
+    "ᵉ",
+    "ᶠ",
+    "ᵍ",
+    "ʰ",
+    "ⁱ",
+    "ʲ",
+    "ᵏ",
+    "ˡ",
+    "ᵐ",
+    "ⁿ",
+    "ᵒ",
+    "ᵖ",
+    "\uD801\uDFA5",                                                                                      // 𐞥
+                                                                                                         // U+107A5
+                                                                                                         // MODIFIER
+                                                                                                         // LETTER
+                                                                                                         // SMALL
+                                                                                                         // Q
+    "ʳ",
+    "ˢ",
+    "ᵗ",
+    "ᵘ",
+    "ᵛ",
+    "ʷ",
+    "ˣ",
+    "ʸ",
+    "ᶻ" };
 
   public static final HashSet<Character> lowercaseSubscriptAlphabet   =
                                                                     new HashSet<>(Arrays.asList('ₐ',
@@ -364,46 +361,82 @@ public class Parser
                                                                                                 'ₛ',
                                                                                                 'ₜ'));
   /**
-   * Not all uppercase letters have UTF superscript representations
+   * Not all uppercase letters have UTF superscript representations. Widened to
+   * {@code String[]} for consistency with the supplementary character support in
+   * the rest of the parser.
    */
-  public static Character[]              uppercaseSuperscriptAlphabet =
-  { 'ᴬ', 'ᴮ', 'ꟲ','ᴰ', 'ᴱ', 'ᴳ', 'ᴴ', 'ᴵ', 'ᴶ', 'ᴷ', 'ᴸ', 'ᴹ', 'ᴺ', 'ᴼ', 'ᴾ', 'ᴿ', 'ᵀ', 'ᵁ', 'ⱽ', 'ᵂ' };
+  public static String[]                 uppercaseSuperscriptAlphabet =
+  { "ᴬ",
+    "ᴮ",
+    "ꟲ",
+    "ᴰ",
+    "ᴱ",
+    "ᴳ",
+    "ᴴ",
+    "ᴵ",
+    "ᴶ",
+    "ᴷ",
+    "ᴸ",
+    "ᴹ",
+    "ᴺ",
+    "ᴼ",
+    "ᴾ",
+    "ᴿ",
+    "ᵀ",
+    "ᵁ",
+    "ⱽ",
+    "ᵂ" };
 
-  public static final Character[]        superscripts                 =
-  { 'ᵃ',
-    'ᵇ',
-    'ᶜ',
-    'ᵈ',
-    'ᵉ',
-    'ᶠ',
-    'ᵍ',
-    'ʰ',
-    'ⁱ',
-    'ʲ',
-    'ᵏ',
-    'ˡ',
-    'ᵐ',
-    'ⁿ',
-    'ᵒ',
-    'ᵖ',
-    'ʳ',
-    'ˢ',
-    'ᵗ',
-    'ᵘ',
-    'ᵛ',
-    'ʷ',
-    'ˣ',
-    'ʸ',
-    'ᶻ',
-    'ᵅ',
-    'ᵝ',
-    'ᵞ',
-    'ᵟ',
-    'ᵋ',
-    'ᶿ',
-    'ᵠ',
-    'ᵡ' };
+  /**
+   * Superscript letters as {@code String[]} to support supplementary Unicode
+   * characters. U+107A5 (𐞥 MODIFIER LETTER SMALL Q) is inserted between ᵖ and ʳ
+   * at the position corresponding to 'q' in the Latin alphabet.
+   */
+  public static final String[]           superscripts                 =
+  { "ᵃ",
+    "ᵇ",
+    "ᶜ",
+    "ᵈ",
+    "ᵉ",
+    "ᶠ",
+    "ᵍ",
+    "ʰ",
+    "ⁱ",
+    "ʲ",
+    "ᵏ",
+    "ˡ",
+    "ᵐ",
+    "ⁿ",
+    "ᵒ",
+    "ᵖ",
+    "\uD801\uDFA5",                                                                                      // 𐞥
+                                                                                                         // U+107A5
+                                                                                                         // MODIFIER
+                                                                                                         // LETTER
+                                                                                                         // SMALL
+                                                                                                         // Q
+    "ʳ",
+    "ˢ",
+    "ᵗ",
+    "ᵘ",
+    "ᵛ",
+    "ʷ",
+    "ˣ",
+    "ʸ",
+    "ᶻ",
+    "ᵅ",
+    "ᵝ",
+    "ᵞ",
+    "ᵟ",
+    "ᵋ",
+    "ᶿ",
+    "ᵠ",
+    "ᵡ" };
 
+  /**
+   * Normal (base) letter equivalents corresponding 1:1 to {@link #superscripts}.
+   * "q" is re-inserted between "p" and "r" to match the 𐞥 superscript entry.
+   */
   public static final String[]           normals                      =
   { "a",
     "b",
@@ -421,8 +454,7 @@ public class Parser
     "n",
     "o",
     "p",
-    // "q" REMOVED — no Unicode superscript q exists, so this was causing
-    // every subsequent mapping to be off by one. ᵅ was mapping to z instead of α.
+    "q",
     "r",
     "s",
     "t",
@@ -441,12 +473,23 @@ public class Parser
     "φ",
     "χ" };
 
-  public static final HashSet<Character> superscriptChars             =
+  /**
+   * Set of all superscript letter strings for fast lookup. Uses {@code String}
+   * rather than {@code Character} to support supplementary Unicode characters.
+   */
+  public static final HashSet<String>    superscriptChars             =
                                                           new HashSet<>(Arrays.asList(superscripts));
 
-  public static boolean isSuperscriptLetter(char character)
+  /**
+   * Tests whether the given Unicode code point is a superscript letter. Accepts
+   * {@code int} to support supplementary characters like U+107A5 (𐞥).
+   *
+   * @param codePoint the Unicode code point to test
+   * @return true if the code point represents a superscript letter
+   */
+  public static boolean isSuperscriptLetter(int codePoint)
   {
-    return superscriptChars.contains(character);
+    return superscriptChars.contains(new String(Character.toChars(codePoint)));
   }
 
   public static String subscriptAndSuperscriptsToRegular(String input)
@@ -588,7 +631,7 @@ public class Parser
                                        expression,
                                        context,
                                        functionName,
-                                       containingExpression);    
+                                       containingExpression);
 
     return expr.parse(simplify);
   }
@@ -630,5 +673,4 @@ public class Parser
                  functionClass,
                  className);
   }
-
 }
