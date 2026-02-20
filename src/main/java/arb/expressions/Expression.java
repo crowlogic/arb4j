@@ -1763,12 +1763,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * @param mv
    * @return initialized this{@link #newFunctionalExpression()}
    */
-  protected Expression<Object, Object, Function<?, ?>> generateFunctionalElement(MethodVisitor mv)
+  protected Expression<Object, Object, Function<?, ?>>
+            generateFunctionalElement(MethodVisitor mv)
   {
-    var functional = newFunctionalExpression();
+    var functional                          = newFunctionalExpression();
+    functionalDependsOnIndependentVariable  = false;
+    functionalIndependentVariable           = null;
 
-    functionalDependsOnIndependentVariable = false;
-    functionalIndependentVariable          = null;
     if (independentVariable != null)
     {
       functionalIndependentVariable = independentVariable.spliceInto(functional).asVariable();
@@ -1781,8 +1782,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         var functionalIndeterminateVariable = indeterminantVariable.spliceInto(functional)
                                                                    .asVariable();
         functionalIndeterminateVariables.push(functionalIndependentVariable);
-        functionalDependsOnIndeterminateVariable = functionalDependsOnIndeterminateVariable
-                      || functional.rootNode.dependsOn(functionalIndeterminateVariable);
+        functionalDependsOnIndeterminateVariable =
+          functionalDependsOnIndeterminateVariable
+                        || functional.rootNode.dependsOn(functionalIndeterminateVariable);
       }
     }
 
@@ -1791,7 +1793,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (functionalIndependentVariable != null)
     {
       functionalDependsOnIndependentVariable =
-                                             functional.rootNode.dependsOn(functionalIndependentVariable);
+        functional.rootNode.dependsOn(functionalIndependentVariable);
     }
 
     constructNewObject(mv, functional.className);
@@ -1803,6 +1805,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       propagateIndependentVariableToFunctional(mv, functional, functionalIndependentVariable);
     }
 
+    // Propagate ascendent input variables (e.g. 'n' from grandparent scope)
+    // that the functional references but that are NOT the current expression's
+    // independent variable (already handled above).
+    propagateAscendentInputVariablesToFunctional(mv, functional);
+
     if (context != null)
     {
       propagateContext(mv, functional);
@@ -1812,6 +1819,94 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     return functional.compile();
   }
+
+  /**
+   * Propagates ascendent input variables from this expression's fields to a
+   * newly constructed functional instance via copy-by-value (.set()), with
+   * null-check and allocation if the destination field is null.
+   *
+   * This runs inside the evaluate() method where the functional instance is
+   * on top of the operand stack. For each variable that the functional
+   * references from an ancestor scope (and that is a field on this class),
+   * we generate:
+   *
+   *   if (funcInst.varName == null) funcInst.varName = new VarType();
+   *   funcInst.varName.set(this.varName);
+   *
+   * @param mv         the MethodVisitor for the evaluate method being generated
+   * @param functional the functional expression whose instance needs the variables
+   */
+  protected void
+            propagateAscendentInputVariablesToFunctional(MethodVisitor mv,
+                                                        Expression<?, ?, ?> functional)
+  {
+    for (var entry : functional.referencedVariables.entrySet())
+    {
+      String                varName = entry.getKey();
+      VariableNode<?, ?, ?> varNode = entry.getValue();
+
+      // Only propagate upstream input variables
+      if (varNode.isIndependent || varNode.isIndeterminate)
+      {
+        continue;
+      }
+
+      // Skip the current expression's independent variable — it lives in the
+      // evaluate parameter slot, not as a field on this class. Already handled
+      // by propagateIndependentVariableToFunctional.
+      if (independentVariable != null && varName.equals(independentVariable.getName()))
+      {
+        continue;
+      }
+
+      // Skip context variables — propagated separately by propagateContext
+      if (context != null && context.getVariable(varName) != null)
+      {
+        continue;
+      }
+
+      Class<?> varType = varNode.type();
+      if (varType == null || varType.equals(Object.class))
+      {
+        continue;
+      }
+
+      if (trace)
+      {
+        log.debug("propagateAscendentInputVariablesToFunctional: {} of type {} to {}",
+                  varName,
+                  varType,
+                  functional.className);
+      }
+
+      String fieldDescriptor = varType.descriptorString();
+
+      // ── Stack: ..., funcInst ──
+
+      // Null-check: if funcInst.varName == null, allocate a new instance
+      Label fieldNotNull = new Label();
+      duplicateTopOfTheStack(mv);                                        // funcInst, funcInst
+      getField(mv, functional.className, varName, fieldDescriptor);      // funcInst, field|null
+      mv.visitJumpInsn(IFNONNULL, fieldNotNull);                         // funcInst
+
+      // Null branch: funcInst.varName = new VarType()
+      duplicateTopOfTheStack(mv);                                        // funcInst, funcInst
+      generateNewObjectInstruction(mv, varType);                         // funcInst, funcInst, new
+      duplicateTopOfTheStack(mv);                                        // funcInst, funcInst, new, new
+      invokeDefaultConstructor(mv, varType);                             // funcInst, funcInst, new
+      putField(mv, functional.className, varName, varType);              // funcInst
+
+      designateLabel(mv, fieldNotNull);                                  // funcInst
+
+      // Copy by value: funcInst.varName.set(this.varName)
+      duplicateTopOfTheStack(mv);                                        // funcInst, funcInst
+      getField(mv, functional.className, varName, fieldDescriptor);      // funcInst, field (non-null)
+      loadThisFieldOntoStack(mv, varName, varType);                      // funcInst, field, this.var
+      invokeVirtualMethod(mv, varType, "set", varType, varType);         // funcInst, retVal
+      pop(mv);                                                           // funcInst
+    }
+  }
+
 
   public VariableNode<D, C, F> getIndeterminateVariable()
   {
