@@ -5,6 +5,7 @@ import static guru.nidi.graphviz.model.Factory.*;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -24,6 +25,7 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.FunctionMapping;
 import arb.expressions.SerializedExpression;
 import arb.expressions.context.Dependency;
+import arb.functions.Function;
 import arb.viz.WindowManager;
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
@@ -419,6 +421,25 @@ public class Utensils
     {
       e.printStackTrace();
     }
+  }
+
+  public static <D, C, F extends Function<? extends D, ? extends C>>
+         File
+         storeBytesInFile(File file, byte[] bytes)
+  {
+    try
+    {
+      if (!file.getParentFile().exists())
+      {
+        file.getParentFile().mkdir();
+      }
+      Files.write(file.toPath(), bytes);
+    }
+    catch (IOException e)
+    {
+      throwOrWrap(e);
+    }
+    return file;
   }
 
 }

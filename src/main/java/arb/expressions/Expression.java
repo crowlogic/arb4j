@@ -6,8 +6,6 @@ import static java.lang.String.format;
 import static org.objectweb.asm.Opcodes.*;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -3389,7 +3387,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     case "when":
       return new WhenNode<>(this);
     case "fracdiff":
-      return new CaputoFractionalDerivativeNode<>( this );
+      return new CaputoFractionalDerivativeNode<>(this);
     case "diff":
       return new DerivativeNode<>(this,
                                   true);
@@ -3808,20 +3806,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                     null);
   }
 
+  /**
+   * @param file
+   * @return
+   */
   protected Expression<D, C, F> writeBytecodes(File file)
   {
-    try
-    {
-      if (!file.getParentFile().exists())
-      {
-        file.getParentFile().mkdir();
-      }
-      Files.write(file.toPath(), instructions);
-    }
-    catch (IOException e)
-    {
-      Utensils.throwOrWrap(e);
-    }
+    Utensils.storeBytesInFile(file, instructions);
     return this;
   }
 
