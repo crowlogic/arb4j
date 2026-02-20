@@ -12,6 +12,46 @@ import arb.functions.Function;
  */
 public class VariableReference<D, R, F extends Function<? extends D, ? extends R>>
 {
+
+  /**
+   * Compile-time bounds on a variable, used to resolve quantities like n = ⌈α⌉ in
+   * the Caputo fractional derivative without requiring a backing {@link arb.Real}
+   * object in the {@link Context}.
+   */
+  public static class Bounds
+  {
+    public final double  lower;
+    public final boolean lowerInclusive;
+    public final double  upper;
+    public final boolean upperInclusive;
+
+    public Bounds(double lower, boolean lowerInclusive, double upper, boolean upperInclusive)
+    {
+      this.lower          = lower;
+      this.lowerInclusive = lowerInclusive;
+      this.upper          = upper;
+      this.upperInclusive = upperInclusive;
+    }
+
+    /**
+     * @return ⌈upper⌉
+     */
+    public int ceilOfUpperBound()
+    {
+      return (int) Math.ceil(upper);
+    }
+
+    @Override
+    public String toString()
+    {
+      return String.format("%s%s, %s%s",
+                           lowerInclusive ? "[" : "(",
+                           lower,
+                           upper,
+                           upperInclusive ? "]" : ")");
+    }
+  }
+
   int level;
 
   @Override
@@ -21,6 +61,8 @@ public class VariableReference<D, R, F extends Function<? extends D, ? extends R
   }
 
   public Class<?> type;
+
+  public Bounds   bounds;
 
   @Override
   public int hashCode()
@@ -59,8 +101,6 @@ public class VariableReference<D, R, F extends Function<? extends D, ? extends R
     this(name,
          index);
     this.type = type;
-    // assert !type.equals(Object.class) : "type shan't be Object for variable named
-    // " + name;
   }
 
   public String        name;
@@ -68,6 +108,33 @@ public class VariableReference<D, R, F extends Function<? extends D, ? extends R
   public Node<D, R, F> index;
 
   public int           position;
+
+  /**
+   * Sets compile-time bounds on this variable reference.
+   *
+   * @param lower          lower bound value
+   * @param lowerInclusive true if lower bound is inclusive
+   * @param upper          upper bound value
+   * @param upperInclusive true if upper bound is inclusive
+   * @return this
+   */
+  public VariableReference<D, R, F>
+         setBounds(double lower, boolean lowerInclusive, double upper, boolean upperInclusive)
+  {
+    this.bounds = new Bounds(lower,
+                             lowerInclusive,
+                             upper,
+                             upperInclusive);
+    return this;
+  }
+
+  /**
+   * @return true if compile-time bounds have been set on this reference
+   */
+  public boolean isBounded()
+  {
+    return bounds != null;
+  }
 
   public String typeset()
   {
@@ -96,17 +163,19 @@ public class VariableReference<D, R, F extends Function<? extends D, ? extends R
          VariableReference<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-
-    return new VariableReference<E, S, G>(name,
-                                          index == null ? null : index.spliceInto(newExpression),
-                                          type);
+    var ref = new VariableReference<E, S, G>(name,
+                                             index == null ? null : index.spliceInto(newExpression),
+                                             type);
+    ref.bounds = this.bounds;
+    return ref;
   }
 
   public void set(VariableReference<D, R, F> ref)
   {
-    this.index = ref.index;
-    this.name  = ref.name;
-    this.type  = ref.type;
+    this.index  = ref.index;
+    this.name   = ref.name;
+    this.type   = ref.type;
+    this.bounds = ref.bounds;
   }
 
   public boolean isLiteralConstant()

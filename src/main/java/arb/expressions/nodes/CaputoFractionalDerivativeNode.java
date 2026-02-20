@@ -232,48 +232,85 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   }
 
   /**
-   * Resolve n = ⌈α⌉ at compile time from bounds on the exponent variable, a
-   * literal constant, or a constant expression.
+   * Resolve n = ⌈α⌉ at compile time.
+   * <p>
+   * Checks three sources in order:
+   * <ol>
+   *   <li>Context variable with bounds (e.g., Real.named("α").setBounds(...))</li>
+   *   <li>The order node's own {@link VariableReference} bounds</li>
+   *   <li>An independent/upstream independent variable's
+   *       {@link VariableReference} bounds</li>
+   * </ol>
+   * If an independent variable exists but has no bounds, and the only
+   * supported integral form is n=1, the bounds (0, 1] are applied as
+   * the mathematical constraint of the Caputo formula
+   * D^α f(x) = (1/Γ(1−α)) ∫₀ˣ (x−t)^(−α) f′(t) dt which is valid
+   * exclusively for α ∈ (0, 1].
+   *
+   * @see <a href="https://github.com/crowlogic/arb4j/issues/864">#864</a>
    */
+  @SuppressWarnings("rawtypes")
   private int getDerivativeOrder(Node<D, R, F> power, Context context)
   {
     if (power instanceof VariableNode variableOrderNode)
     {
       String varName = variableOrderNode.getName();
-      Object varObj  = context == null ? null : context.variables.get(varName);
-      if (varObj == null)
-      {
-        VariableNode<?, ?, ?> indepenentVariableNode =
-                                                     expression.getIndependentVariableNamed(varName);
-        if (indepenentVariableNode != null)
-        {
-          // add an extended-info Expression.toString()
-          throw new UnderConstructionException("TODO: handle bounds on input (or ascendent/upstream input) variable by attaching variables to the VariableNode or VariableReference or Expression"
-                                               + indepenentVariableNode
-                                               + " of "
-                                               + indepenentVariableNode.expression.updateStringRepresentation());
-        }
-        else
-        {
-          throw new UndefinedReferenceException(variableOrderNode.getName()
-                                                + " not found in "
-                                                + context
-                                                + " or "
-                                                + expression.context + " of " + expression + " rootNode=" + expression.rootNode );
 
-        }
-      }
-
+      // 1. Context variable with bounds (existing behavior)
+      Object varObj = context == null ? null : context.variables.get(varName);
       if (varObj instanceof Real realExp && realExp.isBounded())
       {
         return realExp.upperBound().ceil(128, new Integer()).getSignedValue();
       }
-      else
+
+      // 2. Bounds on the order node's own VariableReference
+      var orderRef = variableOrderNode.reference;
+      if (orderRef != null && orderRef.isBounded())
+      {
+        return orderRef.bounds.ceilOfUpperBound();
+      }
+
+      // 3. Independent or upstream independent variable
+      VariableNode<?, ?, ?> independentVarNode =
+                                               expression.getIndependentVariableNamed(varName);
+      if (independentVarNode != null)
+      {
+        if (independentVarNode.reference != null && independentVarNode.reference.isBounded())
+        {
+          return independentVarNode.reference.bounds.ceilOfUpperBound();
+        }
+
+        // No explicit bounds — apply the mathematical constraint of the
+        // only supported integral form (n=1 ⟹ α ∈ (0,1]).
+        // This is not a default assumption; it is the domain of validity
+        // of the formula that this node constructs. If/when n>1 forms are
+        // implemented, this block must be extended to ask for explicit bounds.
+        logger.info("No bounds on '{}'; constraining to (0,1] per n=1 Caputo form",
+                    varName);
+        independentVarNode.reference.setBounds(0, false, 1, true);
+        if (orderRef != null)
+        {
+          orderRef.setBounds(0, false, 1, true);
+        }
+        return 1;
+      }
+
+      // Variable exists but has no bounds and is not independent
+      if (varObj != null)
       {
         throw new IllegalStateException(String.format("Caputo derivative exponent variable '%s' in '%s' has no bounds set. "
                                                       + "Set bounds via setBounds() so that n = ⌈α⌉ can be resolved at compile time. "
                                                       + "Example: Real.named(\"α\").set(\"0.5\", 128).setBounds(0, false, 1, true)",
-                                                      varName, this, expression));
+                                                      varName,
+                                                      expression));
+      }
+      else
+      {
+        throw new UndefinedReferenceException(varName
+                                              + " not found in "
+                                              + context
+                                              + " or as independent variable in "
+                                              + expression);
       }
     }
     else if (power.isConstant())
@@ -289,6 +326,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
                                       + power);
     }
   }
+
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
