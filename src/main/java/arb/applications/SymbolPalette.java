@@ -42,7 +42,7 @@ public class SymbolPalette
                            extends
                            Application
 {
-  public static final Character[]                      SYMBOLS           =
+  public static final Character[]                    SYMBOLS           =
   { 'ϑ',
     '⊂',
     '⊃',
@@ -108,7 +108,7 @@ public class SymbolPalette
     'ₓ',
     '⋅' };
 
-  private static final String                          STYLESHEET        = """
+  private static final String                        STYLESHEET        = """
                  .highlighted-button
                  {
                      -fx-background-color: rgba(255, 255, 0, 0.5);
@@ -133,7 +133,7 @@ public class SymbolPalette
                 }
                   """;
 
-  private static final HashMap<Character, Set<String>> CHARACTER_ALIASES = new HashMap<>();
+  private static final HashMap<String, Set<String>> CHARACTER_ALIASES = new HashMap<>();
 
   static
   {
@@ -575,6 +575,10 @@ public class SymbolPalette
     associateAliases('ᶿ',
                      "suptheta");
 
+    // Supplementary superscript q
+    associateAliases("\uD801\uDFA5",
+                     "supq");
+
     // Subscript operators and letters
     associateAliases('₊',
                      "subplus");
@@ -618,9 +622,12 @@ public class SymbolPalette
                      "mathcalc");
   }
 
-  private static void associateAliases(Character character, String... aliasesToBeAssociated)
+  /**
+   * Primary overload keyed on {@code String} to support supplementary Unicode
+   * characters such as U+107A5 (𐞥).
+   */
+  private static void associateAliases(String character, String... aliasesToBeAssociated)
   {
-    @SuppressWarnings("unused")
     Set<String> associatedAliases = CHARACTER_ALIASES.computeIfAbsent(character,
                                                                       k -> new HashSet<String>());
     for (String alias : aliasesToBeAssociated)
@@ -629,54 +636,69 @@ public class SymbolPalette
     }
   }
 
+  /**
+   * Convenience overload so all existing {@code char}-literal call sites compile
+   * without modification.
+   */
+  private static void associateAliases(char character, String... aliasesToBeAssociated)
+  {
+    associateAliases(String.valueOf(character), aliasesToBeAssociated);
+  }
+
   private TextField                textField;
   private TextField                searchField;
   private FlowPane                 buttonPane;
-  private Map<Button, Character>   buttonMap = new HashMap<>();
+  private Map<Button, String>      buttonMap = new HashMap<>();
 
-  public static TreeSet<Character> chars     = new TreeSet<>();
+  public static TreeSet<String>    chars     = new TreeSet<>();
 
   static
   {
-    chars.addAll(Parser.SUBSCRIPT_CHARACTERS);
+    for (Character s : Parser.SUBSCRIPT_CHARACTERS)
+    {
+      chars.add(String.valueOf(s));
+    }
 
     for (Character s : SYMBOLS)
     {
-      chars.add(s);
+      chars.add(String.valueOf(s));
     }
 
     for (Character s : Parser.greekAndBlackLetterChars)
     {
-      chars.add(s);
+      chars.add(String.valueOf(s));
     }
-    chars.addAll(Parser.fractions.keySet());
+    for (Character c : Parser.fractions.keySet())
+    {
+      chars.add(String.valueOf(c));
+    }
 
-    for (Character c : Parser.lowercaseSuperscriptAlphabet)
+    for (String c : Parser.lowercaseSuperscriptAlphabet)
     {
       chars.add(c);
     }
-    for (Character c : Parser.uppercaseSuperscriptAlphabet)
+    for (String c : Parser.uppercaseSuperscriptAlphabet)
     {
       chars.add(c);
     }
-    for (Character c : Parser.SUBSCRIPT_DIGITS_ARRAY)
+    for (char c : Parser.SUBSCRIPT_DIGITS_ARRAY)
     {
-      chars.add(c);
+      chars.add(String.valueOf(c));
     }
-    for (Character c : Parser.SUPERSCRIPT_DIGITS_ARRAY)
+    for (char c : Parser.SUPERSCRIPT_DIGITS_ARRAY)
     {
-      chars.add(c);
+      chars.add(String.valueOf(c));
     }
-    for (Character s : Parser.superscripts)
+    for (String s : Parser.superscripts)
     {
       chars.add(s);
     }
 
     System.out.println("chars=" + chars);
-    characters = chars.toArray(new Character[chars.size()]);
+    characters = chars.toArray(new String[chars.size()]);
   }
 
-  public static Character[] characters;
+  public static String[] characters;
 
   @Override
   public void start(Stage primaryStage)
@@ -697,17 +719,14 @@ public class SymbolPalette
 
     buttonPane = new FlowPane();
 
-    // Arrays.sort(characters, (a, b) -> a.compareTo(b));
-
-    for (Character ch : characters)
+    for (String ch : characters)
     {
-      Button button = new Button(String.valueOf(ch));
+      Button button = new Button(ch);
       button.setOnAction(e -> appendCharacter(ch));
       button.setMaxWidth(Double.MAX_VALUE);
       button.setMaxHeight(Double.MAX_VALUE);
       buttonPane.getChildren().add(button);
-      buttonMap.put(button,
-                    ch);
+      buttonMap.put(button, ch);
     }
 
     BorderPane root = new BorderPane();
@@ -806,13 +825,10 @@ public class SymbolPalette
 
     buttonPane.getChildren().forEach(node ->
     {
-      /**
-       * TODO: this sucks, a better way to do it would be to have a hashmap from alias to button
-       */
       if (node instanceof Button button)
       {
-        Character character = buttonMap.get(button);
-        boolean   matches   = false;
+        String  character = buttonMap.get(button);
+        boolean matches   = false;
 
         for (String term : searchTerms)
         {
@@ -836,7 +852,7 @@ public class SymbolPalette
     });
   }
 
-  private void appendCharacter(Character character)
+  private void appendCharacter(String character)
   {
     textField.setText(textField.getText() + character);
   }
