@@ -69,15 +69,15 @@ public class ComplexFunctionTest extends
     try
     {
       var context = new Context();
-      ComplexFunction.parse("p:y->pFq([1,3,-3],[1/2],-1/2*I/y)*exp(I*(π*3+y))", context);
-      ComplexFunction.express("q:y->pFq([1,3,-3],[1/2],1/2*I/y)*exp(I*(2*π*3-y))", context);
+      ComplexFunction.parse("p:y➔pFq([1,3,-3],[1/2],-1/2*I/y)*exp(I*(π*3+y))", context);
+      ComplexFunction.express("q:y➔pFq([1,3,-3],[1/2],1/2*I/y)*exp(I*(2*π*3-y))", context);
       ComplexFunction g3 =
-                         ComplexFunction.express("g3:y->-I*(p(y)-q(y))*(4*3^2-1)*(-1)^(-3)/((4*3^2-2)*y*π)",
+                         ComplexFunction.express("g3:y➔-I*(p(y)-q(y))*(4*3^2-1)*(-1)^(-3)/((4*3^2-2)*y*π)",
                                                  context);
       testComplexHypergeometricFunctionResult(g3);
 
       ComplexFunctionSequence G  =
-                                ComplexFunctionSequence.express("G:m->-I*(pFq([1,m,-m],[1/2],-((1/2)*I)/y)*exp(I*(π*m+y))-pFq([1,m,-m],[1/2],((1/2)*I)/y)*exp(I*(2*π*m-y)))*(4*m^2-1)*(-1)^(-m)/((4*m^2-2)*y*π)");
+                                ComplexFunctionSequence.express("G:m➔-I*(pFq([1,m,-m],[1/2],-1/2*I/y)*exp(I*(π*m+y))-pFq([1,m,-m],[1/2],1/2*I/y)*exp(I*(2*π*m-y)))*(4*m^2-1)*(-1)^(-m)/((4*m^2-2)*y*π)");
       ComplexFunction         G3 = G.evaluate(3, 128);
 
       testComplexHypergeometricFunctionResult(G3);
