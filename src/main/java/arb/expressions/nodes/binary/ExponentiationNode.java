@@ -29,7 +29,7 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public Node<D, R, F> fractionalDerivative(Node<D, R, F> α)
   {
-    if (left instanceof VariableNode && !right.dependsOn(left.extractVariable()))
+    if (left instanceof VariableNode<D, R, F> varNode && !right.dependsOn(varNode))
     {
       var k        = right;
       var kPlusOne = k.add(one());

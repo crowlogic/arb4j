@@ -75,6 +75,8 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    * Default: wraps in a CaputoFractionalDerivativeNode (the integral form).
    * Subclasses that have closed-form fractional derivatives override this.
    *
+   * FIXME: the variable of differentiation needs to be made an argument for this
+   * 
    * @param α the fractional order node
    * @return the node representing Đ^(α)(this)
    */
