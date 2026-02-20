@@ -16,6 +16,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.expressions.*;
+import arb.expressions.nodes.binary.ExponentiationNode;
 import arb.functions.Function;
 import arb.functions.RealFunctional;
 import arb.functions.real.RealFunction;
@@ -54,7 +55,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   public static final Logger                             logger =
                                                                 LoggerFactory.getLogger(CaputoFractionalDerivativeNode.class);
 
-  Node<D, R, F>                                          exponent;
+  Node<D, R, F>                                          order;
   Node<D, R, F>                                          operand;
   Node<D, R, F>                                          integralNode;
   Expression<D, R, F>                                    integralExpression;
@@ -64,7 +65,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
 
   private VariableNode<D, R, F>                          variable;
 
-  private FunctionMapping<D, R, ? extends F> operandExpression;
+  private FunctionMapping<D, R, ? extends F>             operandExpression;
 
   /**
    * Constructs the integral form. Only called from
@@ -80,8 +81,11 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   {
     super(expression);
     this.variable = variable;
-    assert order != null : "power shan't be null";
-    this.exponent        = order;
+    if (order == null)
+    {
+      order = variable.one();
+    }
+    this.order           = order;
     this.operand         = operand;
     this.context         = expression.getContext();
 
@@ -95,11 +99,11 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     }
 
     context.registerVariable(Integer.named("n").set(derivativeOrder));
-    operandExpression = context.registerFunctionMapping("g",
-                                     expression.domainType,
-                                     expression.coDomainType,
-                                     expression.functionClass);
-    
+    operandExpression = context.registerFunctionMapping("f",
+                                                        expression.domainType,
+                                                        expression.coDomainType,
+                                                        expression.functionClass);
+
     Class<?> scalarType = scalarType(expression.domainType);
     if (scalarType == Real.class)
     {
@@ -117,14 +121,57 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
       throw new UnsupportedOperationException("todo: support  " + scalarType);
     }
 
+    System.err.println("integrandExpression before "
+                       + integrandExpression
+                       + " substituting "
+                       + operand
+                       + " for f");
+    integrandExpression.substitute("f", operand);
+    System.err.println("integrandExpression after " + integrandExpression);
+
 //    this.integralExpression = Function.parse(expression.domainType,
 //                                             expression.coDomainType,
 //                                             expression.functionClass,
-//                                             "x➔∫t➔g(x)(t)dt∈(0,x)/Γ(1-α)",
+//                                             "gint:x➔∫t➔g(x)(t)dt∈(0,x)/Γ(1-α)",
 //                                             context,
 //                                             expression);
 //    this.integralExpression.substitute("f", integralExpression.rootNode);
- //   this.integralNode = integralExpression.rootNode;
+//    this.integralNode = integralExpression.rootNode;
+  }
+
+  public CaputoFractionalDerivativeNode(Expression<D, R, F> expression)
+  {
+    super(expression);
+    operand = expression.resolve();
+    var variableNode = expression.require(",").resolve();
+    if (variableNode instanceof VariableNode)
+    {
+      variable = variableNode.asVariable();
+      order    = variableNode.one();
+    }
+    else if (variableNode instanceof ExponentiationNode<D, R, F> expNode)
+    {
+      if (!expNode.left.isVariable())
+      {
+        throwFunctionSyntaxError();
+      }
+      else
+      {
+        variable = expNode.left.asVariable();
+        order    = expNode.right;
+      }
+    }
+    else
+    {
+      throwFunctionSyntaxError();
+    }
+
+    expression.require(")");
+  }
+
+  protected void throwFunctionSyntaxError()
+  {
+    throw new CompilerException("the function syntax for Caputo fractional derivatives is fracdiff(f(t),t^a) where a is the order of differentiation");
   }
 
   @Override
@@ -269,8 +316,8 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
          Node<D, R, F>
          substitute(String variable, Node<E, S, G> arg)
   {
-    exponent = exponent.substitute(variable, arg);
-    operand  = operand.substitute(variable, arg);
+    order   = order.substitute(variable, arg);
+    operand = operand.substitute(variable, arg);
     return this;
   }
 
@@ -283,7 +330,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   @Override
   public void accept(Consumer<Node<D, R, F>> t)
   {
-    exponent.accept(t);
+    order.accept(t);
     operand.accept(t);
     if (integralNode != null)
     {
@@ -296,25 +343,25 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   public boolean dependsOn(VariableNode<D, R, F> variable)
   {
     return integralNode != null ? integralNode.dependsOn(variable)
-                                : exponent.dependsOn(variable) || operand.dependsOn(variable);
+                                : order.dependsOn(variable) || operand.dependsOn(variable);
   }
 
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    return operand.fractionalDerivative(null, exponent.add(expression.newLiteralConstant("1")));
+    return operand.fractionalDerivative(null, order.add(expression.newLiteralConstant("1")));
   }
 
   @Override
   public List<Node<D, R, F>> getBranches()
   {
-    return List.of(exponent, operand);
+    return List.of(order, operand);
   }
 
   @Override
   public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
-    return operand.fractionalDerivative(null, exponent.sub(expression.newLiteralConstant("1")));
+    return operand.fractionalDerivative(null, order.sub(expression.newLiteralConstant("1")));
   }
 
   @Override
@@ -325,7 +372,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     return new CaputoFractionalDerivativeNode<E, S, G>(newExpression,
                                                        operand.spliceInto(newExpression),
                                                        variable.spliceInto(newExpression),
-                                                       exponent.spliceInto(newExpression));
+                                                       order.spliceInto(newExpression));
   }
 
   @Override
@@ -337,14 +384,12 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   @Override
   public String typeset()
   {
-    return String.format("{}^{C}D^{%s}\\\\left[%s\\\\right]",
-                         exponent.typeset(),
-                         operand.typeset());
+    return String.format("{}^{C}D^{%s}\\\\left[%s\\\\right]", order.typeset(), operand.typeset());
   }
 
   @Override
   public String toString()
   {
-    return String.format("Đ^(%s)%s", exponent, operand);
+    return String.format("Đ^(%s)%s", order, operand);
   }
 }

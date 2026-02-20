@@ -709,7 +709,9 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
          Node<D, R, F>
          substitute(String variable, Node<E, S, G> arg)
   {
-    return variable.equals(getName()) ? arg.spliceInto(expression) : this;
+    Node<D, R, F> retVal = variable.equals(getName()) ? arg.spliceInto(expression) : this;
+    assert retVal != null : "refusing to return null for " + this;
+    return retVal;
   }
 
   @Override

@@ -1091,6 +1091,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
+    assert arg != null : "arg is null";
     return new FunctionNode<E, S, G>(newExpression,
                                      functionName,
                                      arg.spliceInto(newExpression),

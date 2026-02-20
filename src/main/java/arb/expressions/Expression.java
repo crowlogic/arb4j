@@ -182,8 +182,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     Node<D, C, F> body = definingExpression.rootNode.spliceInto(this);
 
-    rootNode   = rootNode.substitute(functionName, body);
-    expression = rootNode.toString();
+    rootNode = rootNode.substitute(functionName, body);
+    updateStringRepresentation();
     return this;
   }
 
@@ -740,14 +740,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-  protected VariableNode<D, C, F> createNewVariableNode(String inputVariableName)
+  public VariableNode<D, C, F> newVariableNode(String inputVariableName)
   {
     return new VariableNode<>(this,
-                              new VariableReference<>(inputVariableName,
-                                                      null,
-                                                      coDomainType),
+                              newVariableReference(inputVariableName),
                               position,
                               true);
+  }
+
+  public VariableReference<D, C, F> newVariableReference(String inputVariableName)
+  {
+    return new VariableReference<>(inputVariableName,
+                                   null,
+                                   coDomainType);
   }
 
   private ClassVisitor declareContext(ClassVisitor cw)
@@ -1108,9 +1113,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     checkLambdaParameterConflicts(paramName);
 
     // Create parameter variable and save it BEFORE parsing body
-    var paramVar   = createNewVariableNode(paramName);
-    var savedParam = paramVar;                        // Save reference before other variables get
-                                                      // pushed
+    var paramVar   = newVariableNode(paramName);
+    var savedParam = paramVar;                  // Save reference before other variables get
+                                                // pushed
 
     require('➔');
 
@@ -1205,9 +1210,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
           // allocates an intermediate variable + identity() rather than
           // loading the null input parameter.
           VariableNode<D, C, F> indeterminate = new VariableNode<>(this,
-                                                                   new VariableReference<>(inputVariableName,
-                                                                                           null,
-                                                                                           coDomainType),
+                                                                   newVariableReference(inputVariableName),
                                                                    position,
                                                                    false);
           indeterminate.isIndeterminate = true;
@@ -1216,7 +1219,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         }
         else
         {
-          VariableNode<D, C, F> newRef = createNewVariableNode(inputVariableName);
+          VariableNode<D, C, F> newRef = newVariableNode(inputVariableName);
           assignVariable(newRef,
                          independentVariable != null && !independentVariable.equals(newRef));
         }
@@ -3386,10 +3389,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     case "when":
       return new WhenNode<>(this);
     case "fracdiff":
-      Node<D, C, F> operand = resolve();
-      Node<D, C, F> variable = require(",").resolveOperand();
-      Node<D, C, F> fractionalOrder = resolve();
-      return operand.fractionalDerivative(null, fractionalOrder);
+      return new CaputoFractionalDerivativeNode<>( this );
     case "diff":
       return new DerivativeNode<>(this,
                                   true);

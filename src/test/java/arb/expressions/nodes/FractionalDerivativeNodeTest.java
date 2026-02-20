@@ -21,7 +21,7 @@ public class FractionalDerivativeNodeTest extends
     CaputoFractionalDerivativeNode<Real, Real, RealFunction> fracDiffNode =
                                                                           (CaputoFractionalDerivativeNode<Real, Real, RealFunction>) expr.rootNode;
 
-    assertEquals("1/2", fracDiffNode.exponent.toString());
+    assertEquals("1/2", fracDiffNode.order.toString());
     assertEquals("sin(t)", fracDiffNode.operand.toString());
 
   }

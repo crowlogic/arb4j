@@ -37,7 +37,7 @@ public class ExpressionTest extends
       var G = RealFunction.parse("g:x➔f(x)+1", context);
       assertEquals("g:x➔f(x)+1", G.toString());
       G.inlineFunction("f");
-      assertEquals("g:(x^2)+1", G.toString());
+      assertEquals("g:x➔(x^2)+1", G.toString());
     }
   }
 
