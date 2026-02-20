@@ -228,7 +228,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public Node(Expression<D, R, F> expression)
   {
-    assert expression != null : "expression shan't be null";
+    assert expression != null : "expression shan't be null";    
     this.expression = expression;
     this.position   = expression.position;
   }

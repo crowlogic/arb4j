@@ -1125,7 +1125,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                 remaining());
     }
 
-    assureInputNameHasNotAlreadyBeenAssociatedWithAContextVariable(paramName);
     checkLambdaParameterConflicts(paramName);
 
     // Create parameter variable and save it BEFORE parsing body
@@ -3870,7 +3869,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return referencedVariables.containsKey(variableNode.reference.name);
   }
 
-  public Context getContext()
+  public synchronized Context getContext()
   {
     if (context == null)
     {

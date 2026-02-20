@@ -13,8 +13,7 @@ import arb.Integer;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.exceptions.CompilerException;
-import arb.exceptions.UnderConstructionException;
+import arb.exceptions.*;
 import arb.expressions.*;
 import arb.expressions.nodes.binary.ExponentiationNode;
 import arb.functions.Function;
@@ -59,8 +58,8 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   Node<D, R, F>                                          operand;
   Node<D, R, F>                                          integralNode;
   Expression<D, R, F>                                    integralExpression;
-  private Context                                        context;
-  private int                                            derivativeOrder;
+  private final Context                                  context;
+  private final int                                      derivativeOrder;
   private Expression<Real, RealFunction, RealFunctional> integrandExpression;
 
   private VariableNode<D, R, F>                          variable;
@@ -82,7 +81,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     this.operand         = operand;
     this.context         = expression.getContext();
 
-    this.derivativeOrder = resolveDerivativeOrder(order, context);
+    this.derivativeOrder = getDerivativeOrder(order, context);
     if (derivativeOrder > 1)
     {
       throw new UnsupportedOperationException(String.format("Caputo fractional derivative with n = ⌈α⌉ = %d > 1 "
@@ -90,46 +89,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
                                                             derivativeOrder));
     }
 
-    context.registerVariable(Integer.named("n").set(derivativeOrder));
-    operandExpression = context.registerFunctionMapping("f",
-                                                        expression.domainType,
-                                                        expression.coDomainType,
-                                                        expression.functionClass);
-
-    Class<?> scalarType = scalarType(expression.domainType);
-    if (scalarType == Real.class)
-    {
-      assert derivativeOrder == 1 : "only derivativeOrder=1 is implemented but got n="
-                                    + derivativeOrder;
-      this.integrandExpression = Function.parse(Real.class,
-                                                RealFunction.class,
-                                                RealFunctional.class,
-                                                "g:x➔t➔(x-t)^(-α)*∂f(t)/∂t",
-                                                context,
-                                                expression,
-                                                false);
-    }
-    else
-    {
-      throw new UnsupportedOperationException("todo: support  " + scalarType);
-    }
-
-    System.err.println("integrandExpression before "
-                       + integrandExpression
-                       + " substituting "
-                       + operand
-                       + " for f");
-    integrandExpression.substitute("f", operand);
-    System.err.println("integrandExpression after " + integrandExpression);
-
-//    this.integralExpression = Function.parse(expression.domainType,
-//                                             expression.coDomainType,
-//                                             expression.functionClass,
-//                                             "gint:x➔∫t➔g(x)(t)dt∈(0,x)/Γ(1-α)",
-//                                             context,
-//                                             expression);
-//    this.integralExpression.substitute("f", integralExpression.rootNode);
-//    this.integralNode = integralExpression.rootNode;
+    init(expression, operand, derivativeOrder);
   }
 
   /**
@@ -165,46 +125,54 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
                                                             derivativeOrder));
     }
 
+    init(expression, operand, derivativeOrder);
+  }
+
+  protected void init(Expression<D, R, F> expression, Node<D, R, F> operand, int derivativeOrder)
+  {
     operandExpression = context.registerFunctionMapping("f",
                                                         expression.domainType,
                                                         expression.coDomainType,
                                                         expression.functionClass);
 
-    context.registerVariable(Real.named("α")).setBounds(0, false, 1, true);
-
     Class<?> scalarType = scalarType(expression.domainType);
     if (scalarType == Real.class)
     {
-      assert derivativeOrder == 0 : "only derivativeOrder=1 is implemented but got n="
+      assert derivativeOrder == 1 : "only derivativeOrder=1 is implemented but got n="
                                     + derivativeOrder;
-      this.integrandExpression = Function.parse(Real.class,
-                                                RealFunction.class,
-                                                RealFunctional.class,
-                                                "g:x➔t➔(x-t)^(-α)*∂f(t)/∂t",
-                                                context,
-                                                null,
-                                                false);
+      this.integrandExpression                    =
+                               Function.parseAndRegister("g:x➔t➔(x-t)^(-α)*∂f(t)/∂t",
+                                                         context,
+                                                         Real.class,
+                                                         RealFunction.class,
+                                                         RealFunctional.class,
+                                                         "g",
+                                                         false);
+      this.integrandExpression.upstreamExpression = expression;
     }
     else
     {
       throw new UnsupportedOperationException("todo: support  " + scalarType);
     }
 
-    System.err.println("integrandExpression before "
-                       + integrandExpression
-                       + " substituting "
-                       + operand
-                       + " for f");
-    integrandExpression.substitute("f", operand);
-    System.err.println("integrandExpression after " + integrandExpression);
+//    System.err.println("integrandExpression before "
+//                       + integrandExpression
+//                       + " substituting "
+//                       + operand
+//                       + " for f");
+//    integrandExpression.substitute("f", operand);
+//    System.err.println("integrandExpression after " + integrandExpression);
 
-    this.integralExpression                = Function.parse(expression.domainType,
-                                                            expression.coDomainType,
-                                                            expression.functionClass,
-                                                            "gint:x➔∫t➔g(x)(t)dt∈(0,x)/Γ(1-α)",
-                                                            context,
-                                                            expression);
+    this.integralExpression                =
+                            Function.parseAndRegister("gint:x➔∫t➔g(x)(t)dt∈(0,x)/Γ(1-α)",
+                                                      context,
+                                                      expression.domainType,
+                                                      expression.coDomainType,
+                                                      expression.functionClass,
+                                                      "gint",
+                                                      false);
 
+    integralExpression.upstreamExpression = expression;
     integrandExpression.upstreamExpression = integralExpression;
     // this.integralExpression.inlineFunction(fieldName);
     // this.integralExpression.substitute("f", integralExpression.rootNode);
@@ -214,7 +182,8 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   public CaputoFractionalDerivativeNode(Expression<D, R, F> expression)
   {
     super(expression);
-    operand = expression.resolve();
+    this.context = expression.context;
+    operand      = expression.resolve();
     var variableNode = expression.require(",").resolve();
     if (variableNode instanceof VariableNode)
     {
@@ -239,6 +208,8 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     }
 
     expression.require(")");
+
+    derivativeOrder = getDerivativeOrder(order, context);
   }
 
   protected void throwFunctionSyntaxError()
@@ -262,12 +233,12 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
    * Resolve n = ⌈α⌉ at compile time from bounds on the exponent variable, a
    * literal constant, or a constant expression.
    */
-  private int resolveDerivativeOrder(Node<D, R, F> power, Context context)
+  private int getDerivativeOrder(Node<D, R, F> power, Context context)
   {
     if (power instanceof VariableNode variableOrderNode)
     {
       String varName = variableOrderNode.getName();
-      Object varObj  = context.variables.get(varName);
+      Object varObj  = context == null ? null : context.variables.get(varName);
       if (varObj == null)
       {
         VariableNode<?, ?, ?> indepenentVariableNode =
@@ -280,6 +251,15 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
                                                + " of "
                                                + indepenentVariableNode.expression.updateStringRepresentation());
         }
+        else
+        {
+          throw new UndefinedReferenceException(variableOrderNode.getName()
+                                                + " not found in "
+                                                + context
+                                                + " or "
+                                                + expression.context);
+
+        }
       }
 
       if (varObj instanceof Real realExp && realExp.isBounded())
@@ -288,10 +268,11 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
       }
       else
       {
-        throw new IllegalStateException(String.format("Caputo derivative exponent variable '%s' has no bounds set. "
-                                                      + "Set bounds via setBounds() so that n = ⌈α⌉ can be resolved at compile time. "
-                                                      + "Example: Real.named(\"α\").set(\"0.5\", 128).setBounds(0, false, 1, true)",
-                                                      varName));
+        throw new IllegalStateException(String.format("Caputo derivative exponent variable %s in node %s of expression %s has no bounds set. "
+                                                      + "Set bounds via setBounds() so that n = ⌈α⌉ can be resolved at compile time. ",
+                                                      varName,
+                                                      this,
+                                                      expression));
       }
     }
     else if (power.isConstant())
@@ -391,7 +372,6 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
                                                                                                     variable.spliceInto(newExpression),
                                                                                                     order.spliceInto(newExpression),
                                                                                                     derivativeOrder);
-    splicedNode.context  = newExpression.context;
     splicedNode.isResult = isResult;
     return splicedNode;
   }

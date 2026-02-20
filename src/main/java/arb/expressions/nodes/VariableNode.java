@@ -553,7 +553,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                 reference.name,
                 expression.functionName,
                 expression.upstreamExpression != null ? expression.upstreamExpression.functionName
-                                                       : "null");
+                                                      : "null");
     }
 
     // 1) Context variable
@@ -633,11 +633,12 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     else
     {
-      throw new CompilerException(String.format("undefined variable reference '%s' in expression '%s'; existing indeterminates: %s, independent variable: %s",
+      throw new CompilerException(String.format("undefined variable reference '%s' in expression '%s'; existing indeterminates: %s, independent variable: %s context=%s",
                                                 reference.name,
                                                 expression,
                                                 expression.getIndeterminateVariables(),
-                                                expression.independentVariable));
+                                                expression.independentVariable,
+                                                expression.context));
     }
   }
 

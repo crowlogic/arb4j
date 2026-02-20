@@ -656,6 +656,10 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                   functionName,
                                                   functionMapping));
       }
+      else if ( mapping.expression != null )
+      {
+        return mapping.expression.rootNode.spliceInto(expression).integral(variable);
+      }
       else
       {
         var integrand = Function.parse(mapping.domain,
@@ -664,11 +668,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                        mapping.expressionString);
         integrand.upstreamExpression = expression;
         return integrand.rootNode.integral(integrand.independentVariable).simplify();
-//
-//        throw new CompilerException(String.format("TODO: integrate parsed but yet-to-be-compiled expression string in expression '%s' where integrand='%s' and integral='%s' ",
-//                                                  functionMapping,
-//                                                  integrand,
-//                                                  integral));
+
+//        throw new CompilerException(String.format("TODO: integrate parsed but yet-to-be-compiled expression string in expression '%s' where functionMapping='%s'",
+//                                                  expression,functionMapping));
 
       }
     }

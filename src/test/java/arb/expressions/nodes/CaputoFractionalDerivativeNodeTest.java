@@ -27,18 +27,19 @@ public class CaputoFractionalDerivativeNodeTest extends
   public void testFractionalDerivativeFunctionForm()
   {
     var f = RealFunction.parse("fracdiff(sin(t),t^2)");
-    assertEquals( "t➔Đ^(2)sin(t)", f.toString() );
+    assertEquals("t➔Đ^(2)sin(t)", f.toString());
   }
 
   public void testFractionalDerivativeFunctionForm2()
   {
-    var F = RealBivariateFunction.parse("t➔α➔fracdiff(sin(t),t^α)");
-    assertEquals( "t➔Đ^(α)sin(t)", F.toString() );
+    Context context = new Context();
+    context.registerVariable(Real.named("α").setBounds(0, false, 1, true));
+    var F = RealBivariateFunction.parse("t➔α➔fracdiff(sin(t),t^α)", context);
+    assertEquals("t➔Đ^(α)sin(t)", F.toString());
     var f = F.instantiate();
-    
+
   }
 
-  
   /**
    * substitute() must return this (the same object reference), not a newly
    * allocated node. Every other Node subclass follows this contract. A violation

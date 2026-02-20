@@ -38,4 +38,14 @@ public interface RealBivariateFunction extends
     return Function.parse(Real.class, RealFunction.class, RealBivariateFunction.class, expression);
   }
 
+  public static Expression<Real, RealFunction, RealBivariateFunction> parse(String expression,
+                                                                            Context context)
+  {
+    return Function.parse(Real.class,
+                          RealFunction.class,
+                          RealBivariateFunction.class,
+                          expression,
+                          context);
+  }
+
 }
