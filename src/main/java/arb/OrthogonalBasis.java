@@ -10,6 +10,7 @@ import arb.measure.Measure;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
+@SuppressWarnings("unused")
 public interface OrthogonalBasis<X, E> extends
                                 Iterable<E>,
                                 Basis<X, E>

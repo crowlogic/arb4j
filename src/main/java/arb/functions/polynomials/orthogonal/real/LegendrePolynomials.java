@@ -13,6 +13,7 @@ import arb.functions.real.RealFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
+@SuppressWarnings("unused")
 public class LegendrePolynomials extends
                                  RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence
 {

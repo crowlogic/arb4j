@@ -285,6 +285,7 @@ public class Utensils
     return yamlFile;
   }
 
+  @SuppressWarnings("unused")
   public static Yaml newYaml()
   {
     LoaderOptions loadingConfig = new LoaderOptions();

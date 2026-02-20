@@ -3,10 +3,10 @@ package arb.expressions;
 import java.text.Normalizer;
 import java.util.*;
 
-import arb.*;
+import arb.Fraction;
+import arb.FractionConstants;
 import arb.exceptions.CompilerException;
 import arb.functions.Function;
-import arb.functions.complex.ComplexFunction;
 
 /**
  * @author Stephen Crowley ©2024-2025

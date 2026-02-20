@@ -4,6 +4,7 @@ import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
+import arb.expressions.Expression;
 import arb.functions.real.RealFunction;
 
 /**
@@ -30,6 +31,11 @@ public interface RealBivariateFunction extends
                             null,
                             expression,
                             context);
+  }
+
+  public static Expression<Real, RealFunction, RealBivariateFunction> parse(String expression)
+  {
+    return Function.parse(Real.class, RealFunction.class, RealBivariateFunction.class, expression);
   }
 
 }

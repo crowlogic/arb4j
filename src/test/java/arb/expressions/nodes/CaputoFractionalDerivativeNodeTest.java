@@ -2,6 +2,7 @@ package arb.expressions.nodes;
 
 import arb.Real;
 import arb.expressions.Context;
+import arb.functions.RealBivariateFunction;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
@@ -29,6 +30,15 @@ public class CaputoFractionalDerivativeNodeTest extends
     assertEquals( "t➔Đ^(2)sin(t)", f.toString() );
   }
 
+  public void testFractionalDerivativeFunctionForm2()
+  {
+    var F = RealBivariateFunction.parse("t➔α➔fracdiff(sin(t),t^α)");
+    assertEquals( "t➔Đ^(α)sin(t)", F.toString() );
+    var f = F.instantiate();
+    
+  }
+
+  
   /**
    * substitute() must return this (the same object reference), not a newly
    * allocated node. Every other Node subclass follows this contract. A violation

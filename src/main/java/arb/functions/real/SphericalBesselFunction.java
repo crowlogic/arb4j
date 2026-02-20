@@ -7,7 +7,6 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
-import arb.utensils.Utensils;
 
 /**
  *
@@ -55,14 +54,6 @@ public class SphericalBesselFunction implements
 
     element       = prototype.instantiate();
     context.injectReferences(element);
-    try
-    {
-      var nval = element.getClass().getField("n").get(element);
-    }
-    catch (Exception e)
-    {
-      Utensils.throwOrWrap(e);
-    }
   }
 
   @Override

@@ -5,14 +5,12 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import arb.Polynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.expressions.nodes.unary.FunctionNode;
-import arb.expressions.nodes.unary.FunctionalEvaluationNode;
 import arb.expressions.nodes.unary.NegationNode;
 import arb.functions.Function;
 
@@ -480,7 +478,5 @@ public abstract class Integration
 
     return null;
   }
-
-  
 
 }

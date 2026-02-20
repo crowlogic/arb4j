@@ -360,6 +360,7 @@ public class WindowManager
     }
   }
 
+  @SuppressWarnings("unused")
   public static void makeTableViewPannable(Control tableView)
   {
     tableView.skinProperty().addListener(listener ->

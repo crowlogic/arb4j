@@ -62,6 +62,7 @@ public class ReferenceBrowser extends
 
   }
 
+  @SuppressWarnings("unchecked")
   private void createTableView()
   {
     tableView = new TableView<>();

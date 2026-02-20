@@ -15,7 +15,6 @@ import arb.exceptions.CompilerException;
 import arb.expressions.Expression;
 import arb.expressions.nodes.*;
 import arb.expressions.nodes.unary.FunctionNode;
-import arb.expressions.nodes.unary.FunctionalEvaluationNode;
 import arb.functions.Function;
 
 /**
@@ -168,8 +167,9 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       return simplifiedIbpResult;
     }
 
-    // need to extract function inline the inlineable functions then apply usual integration procedure
-    
+    // need to extract function inline the inlineable functions then apply usual
+    // integration procedure
+
     throw new CompilerException(String.format("TODO: support for integration of %s where %s is a %s-valued %s and %s is a %s-valued %s in %s",
                                               this,
                                               left,

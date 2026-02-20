@@ -1,7 +1,5 @@
 package arb.functions.polynomials.orthogonal.real;
 
-import static org.junit.Assert.assertEquals;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,12 +21,7 @@ import arb.utensils.Utensils;
 public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
                                                                 AutoCloseable
 {
-  public static void main(String args[])
-  {
-    JacobiFractionalDerivativeOperationalMatrixBuilder builder =
-                                                               new JacobiFractionalDerivativeOperationalMatrixBuilder();
-    // builder.context.printValues();
-  }
+
 
   public static final Logger logger =
                                     LoggerFactory.getLogger(JacobiFractionalDerivativeOperationalMatrixBuilder.class);
@@ -76,8 +69,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
                                       context);
 
     χ      = ComplexFunctionSequence.express("χ:i➔p➔∫t➔tᵖ*w(t)*P(i)(t)dt∈(-1,1)/σ(i)", context);
-    var cool = ComplexFunctionSequence.express("χ:i➔p➔∫t➔tᵖ*w(t)*P(i)(t)dt{-1,1}/σ(i)", context);
-    assertEquals( χ.toString(), cool.toString() );
+
     μ = ComplexSequenceSequence.express("μ", "i➔j➔Σk➔(ω(j)(k)*Đᵞ(tᵏ)*χ(i)(k-γ)){k=0..j}", context);
   }
 
