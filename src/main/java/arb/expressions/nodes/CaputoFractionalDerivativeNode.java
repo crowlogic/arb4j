@@ -16,6 +16,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.exceptions.UnderConstructionException;
+import arb.expressions.Expression;
 import arb.expressions.Context;
 import arb.expressions.FunctionMapping;
 import arb.expressions.nodes.binary.ExponentiationNode;

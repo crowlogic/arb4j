@@ -31,6 +31,7 @@ import arb.expressions.nodes.binary.*;
 import arb.expressions.nodes.nary.*;
 import arb.expressions.nodes.unary.*;
 import arb.functions.Function;
+import arb.functions.RealFunctional;
 import arb.functions.RealToComplexFunction;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.integer.*;
@@ -367,7 +368,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                     Class<? extends C> coDomain,
                     Class<? extends F> function)
   {
-    this.upstreamExpression              = null;
+    this.upstreamExpression               = null;
     this.domainType                       = domain;
     this.coDomainType                     = coDomain;
     this.functionClass                    = function;
@@ -415,7 +416,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                     Expression<?, ?, ?> ascenentExpression)
   {
     assert className != null : "className needs to be specified";
-    this.upstreamExpression              = ascenentExpression;
+    this.upstreamExpression               = ascenentExpression;
     this.className                        = className;
     this.domainType                       = domain;
     this.coDomainType                     = codomain;
@@ -2493,72 +2494,72 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return domainType.equals(Object.class);
   }
 
-  public HashSet<String>                                                declaredVariables               =
+  public HashSet<String>                                                declaredVariables              =
                                                                                           new HashSet<>();
 
   private final Predicate<? super Entry<String, VariableNode<D, C, F>>> upstreamInputVariablePredicate =
-                                                                                                        entry ->
+                                                                                                       entry ->
+                                                                                                                                                                                                            {
+                                                                                                                                                                                                              String varName = entry
+                                                                                                                                              .getKey();
+                                                                                                                                                                                                              VariableNode<D, C, F> varNode = entry
+                                                                                                                                              .getValue();
+
+                                                                                                                                                                                                              // Skip
+                                                                                                                                                                                                              // if
+                                                                                                                                                                                                              // this
+                                                                                                                                                                                                              // is
+                                                                                                                                                                                                              // the
+                                                                                                                                                                                                              // independent
+                                                                                                                                                                                                              // variable
+                                                                                                                                                                                                              // or
+                                                                                                                                                                                                              // an
+                                                                                                                                                                                                              // indeterminate
+                                                                                                                                                                                                              if (varNode.isIndependent
+                                                                                                                                                                                                                            || varNode.isIndeterminate)
                                                                                                                                                                                                               {
-                                                                                                                                                                                                                String varName = entry
-                                                                                                                                               .getKey();
-                                                                                                                                                                                                                VariableNode<D, C, F> varNode = entry
-                                                                                                                                               .getValue();
+                                                                                                                                                                                                                return false;
+                                                                                                                                                                                                              }
 
-                                                                                                                                                                                                                // Skip
-                                                                                                                                                                                                                // if
-                                                                                                                                                                                                                // this
-                                                                                                                                                                                                                // is
-                                                                                                                                                                                                                // the
-                                                                                                                                                                                                                // independent
-                                                                                                                                                                                                                // variable
-                                                                                                                                                                                                                // or
-                                                                                                                                                                                                                // an
-                                                                                                                                                                                                                // indeterminate
-                                                                                                                                                                                                                if (varNode.isIndependent
-                                                                                                                                                                                                                              || varNode.isIndeterminate)
+                                                                                                                                                                                                              // Skip
+                                                                                                                                                                                                              // if
+                                                                                                                                                                                                              // already
+                                                                                                                                                                                                              // declared
+                                                                                                                                                                                                              // as
+                                                                                                                                                                                                              // upstream
+                                                                                                                                                                                                              // independent
+                                                                                                                                                                                                              // variable
+                                                                                                                                                                                                              if (upstreamExpression
+                                                                                                                                                                                                                            != null)
+                                                                                                                                                                                                              {
+                                                                                                                                                                                                                VariableNode<?, ?, ?> upstreamIndependentVariable =
+                                                                                                                                                                                                                                                                  upstreamExpression.independentVariable;
+                                                                                                                                                                                                                if (upstreamIndependentVariable
+                                                                                                                                                                                                                              != null
+                                                                                                                                                                                                                              && varName.equals(upstreamIndependentVariable.getName()))
                                                                                                                                                                                                                 {
                                                                                                                                                                                                                   return false;
                                                                                                                                                                                                                 }
+                                                                                                                                                                                                              }
 
-                                                                                                                                                                                                                // Skip
-                                                                                                                                                                                                                // if
-                                                                                                                                                                                                                // already
-                                                                                                                                                                                                                // declared
-                                                                                                                                                                                                                // as
-                                                                                                                                                                                                                // upstream
-                                                                                                                                                                                                                // independent
-                                                                                                                                                                                                                // variable
-                                                                                                                                                                                                                if (upstreamExpression
-                                                                                                                                                                                                                              != null)
-                                                                                                                                                                                                                {
-                                                                                                                                                                                                                  VariableNode<?, ?, ?> upstreamIndependentVariable =
-                                                                                                                                                                                                                                                                     upstreamExpression.independentVariable;
-                                                                                                                                                                                                                  if (upstreamIndependentVariable
-                                                                                                                                                                                                                                != null
-                                                                                                                                                                                                                                && varName.equals(upstreamIndependentVariable.getName()))
-                                                                                                                                                                                                                  {
-                                                                                                                                                                                                                    return false;
-                                                                                                                                                                                                                  }
-                                                                                                                                                                                                                }
+                                                                                                                                                                                                              // Skip
+                                                                                                                                                                                                              // context
+                                                                                                                                                                                                              // variables
+                                                                                                                                                                                                              // (they
+                                                                                                                                                                                                              // will
+                                                                                                                                                                                                              // be
+                                                                                                                                                                                                              // declared
+                                                                                                                                                                                                              // below)
+                                                                                                                                                                                                              if (context != null
+                                                                                                                                                                                                                            && context.getVariable(varName)
+                                                                                                                                                                                                                                          != null)
+                                                                                                                                                                                                              {
+                                                                                                                                                                                                                return false;
+                                                                                                                                                                                                              }
+                                                                                                                                                                                                              return true;
+                                                                                                                                                                                                            };
 
-                                                                                                                                                                                                                // Skip
-                                                                                                                                                                                                                // context
-                                                                                                                                                                                                                // variables
-                                                                                                                                                                                                                // (they
-                                                                                                                                                                                                                // will
-                                                                                                                                                                                                                // be
-                                                                                                                                                                                                                // declared
-                                                                                                                                                                                                                // below)
-                                                                                                                                                                                                                if (context != null
-                                                                                                                                                                                                                              && context.getVariable(varName)
-                                                                                                                                                                                                                                            != null)
-                                                                                                                                                                                                                {
-                                                                                                                                                                                                                  return false;
-                                                                                                                                                                                                                }
-                                                                                                                                                                                                                return true;
-                                                                                                                                                                                                              };
-
-  public final HashMap<String, AtomicInteger>                           intermediateVariableCounters    =
+  public final HashMap<String, AtomicInteger>                           intermediateVariableCounters   =
                                                                                                      new HashMap<>();
 
   protected void
@@ -2761,6 +2762,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       funcDomain   = Real.class;
       funcCoDomain = Real.class;
       funcClass    = RealFunction.class;
+    }
+    else if (RealFunctional.class.equals(coDomainType))
+    {
+      funcDomain   = Real.class;
+      funcCoDomain = RealFunction.class;
+      funcClass    = RealFunctional.class;
     }
     else if (ComplexFunction.class.equals(coDomainType))
     {
