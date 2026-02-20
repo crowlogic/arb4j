@@ -1,4 +1,4 @@
-java.lang.IllegalStateException: Caputo derivative exponent variable 'α' has no bounds set. Set bounds via setBounds() so that n = ⌈α⌉ can be resolved at compile time. Example: Real.named("α").set("0.5", 128).setBounds(0, false, 1, true)
+[ERROR]   CaputoFractionalDerivativeNodeTest.testFractionalDerivativeFunctionForm2:37 » UnderConstruction TODO: handle bounds on input (or ascendent/upstream input) variable α of nullfunc:t➔α➔fracdiff(sin(t),t^α)
 implement Context merge-rename
 debug ComplexFunctionTest.testSequence2
 constant subexpression extraction
