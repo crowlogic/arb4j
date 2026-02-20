@@ -81,8 +81,8 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   public Node<D, R, F> fractionalDerivative(Node<D, R, F> α)
   {
     return new CaputoFractionalDerivativeNode<D, R, F>(expression,
-                                                       α,
-                                                       this);
+                                                       this,
+                                                       α);
   }
 
   /**

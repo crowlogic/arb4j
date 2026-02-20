@@ -3385,6 +3385,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return new ZetaFunctionNode<>(this);
     case "when":
       return new WhenNode<>(this);
+    case "fracdiff":
+      Node<D, C, F> operand = resolve();
+      Node<D, C, F> variable = require(",").resolveOperand();
+      Node<D, C, F> fractionalOrder = resolve();
+      return operand.fractionalDerivative(fractionalOrder);
     case "diff":
       return new DerivativeNode<>(this,
                                   true);

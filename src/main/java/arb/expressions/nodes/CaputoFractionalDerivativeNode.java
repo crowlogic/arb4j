@@ -68,10 +68,14 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
    * {@link Node#fractionalDerivative(Node)} when no closed form exists.
    */
   public CaputoFractionalDerivativeNode(Expression<D, R, F> expression,
-                                        Node<D, R, F> power,
-                                        Node<D, R, F> operand)
+                                        Node<D, R, F> operand,
+                                        Node<D, R, F> power)
   {
     super(expression);
+    if (power == null)
+    {
+      power = one();
+    }
     this.exponent        = power;
     this.operand         = operand;
     this.context         = expression.getContext();
@@ -188,6 +192,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     }
     else if (power.isConstant())
     {
+
       Class<?> powerType = power.type();
       try ( Real realVal = new Real(); Integer ceil = new Integer())
       {
@@ -312,8 +317,8 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
          spliceInto(Expression<E, S, G> newExpression)
   {
     return new CaputoFractionalDerivativeNode<>(newExpression,
-                                                exponent.spliceInto(newExpression),
-                                                operand.spliceInto(newExpression));
+                                                operand.spliceInto(newExpression),
+                                                exponent.spliceInto(newExpression));
   }
 
   @Override

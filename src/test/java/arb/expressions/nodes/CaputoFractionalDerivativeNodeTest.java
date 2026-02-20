@@ -23,6 +23,11 @@ public class CaputoFractionalDerivativeNodeTest extends
 {
   private static final double TOL = 1e-10;
 
+  public void testFuncForm()
+  {
+    var f = RealFunction.express("fracdiff(sin(t),t)");
+  }
+
   /**
    * substitute() must return this (the same object reference), not a newly
    * allocated node. Every other Node subclass follows this contract. A violation
