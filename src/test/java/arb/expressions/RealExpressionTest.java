@@ -21,6 +21,11 @@ public class RealExpressionTest extends
                                 TestCase
 {
 
+  public void testConstantSubexpressionExtraction()
+  {
+    assert false : "TODO: extract constant 'static' subexpressions of the expression: https://github.com/crowlogic/arb4j/issues/874";
+  }
+
   public void testCommonSubExpressionReuse()
   {
     var parsed = RealFunction.parse("tanh(log(1+x²))/(1+x²)");
