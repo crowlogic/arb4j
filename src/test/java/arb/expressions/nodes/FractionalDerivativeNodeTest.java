@@ -23,6 +23,16 @@ public class FractionalDerivativeNodeTest extends
     double         y      = f3half.eval(2.3);
     assertEquals(5.6, y);
   }
+  
+  public static void testRealFunctionalSequenceOfFractionalMonomialDerivatives2()
+  {
+    var            f      = RealFunctionalSequence.express("f:n->t->q->fracdiff(t^n,t^q)");
+    RealFunctional f3     = f.apply(3);
+    RealFunction   f3half = f3.evaluate(RealConstants.half, 128);
+    double         y      = f3half.eval(2.3);
+    assertEquals(5.6, y);
+  }
+  
 
   public static void testFractionalDerivativeParsing()
   {

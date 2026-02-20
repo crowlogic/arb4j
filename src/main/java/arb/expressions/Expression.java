@@ -1134,9 +1134,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     require('➔');
 
-    // Parse the body (may push more indeterminates like integration variables)
+    // function substitution bug - Expression.parseLambda needs to create new expressions instead of calling resolve to generate the body of the codomain #876 - 
+    //https://github.com/crowlogic/arb4j/issues/876
     var node = resolve();
-
     // Restore the parameter as the top of stack for newFunctionalExpression to
     // retrieve
     if (!indeterminateVariables.isEmpty() && indeterminateVariables.peek() != savedParam)
@@ -1179,18 +1179,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return file;
   }
 
-  /**
-   * Similar to this{@link #parseLambda(String)} but only for the root of the
-   * expression.
-   *
-   * For nullary functions (domain = Object.class), the arrow variable is declared
-   * as an indeterminate rather than an independent variable, because nullary
-   * functions have no input parameter — the variable is a symbolic placeholder
-   * for the algebraic codomain (e.g. the polynomial indeterminate in a
-   * RationalFunction).
-   *
-   * @return this
-   */
+
   protected Expression<D, C, F> evaluateOptionalIndependentVariableSpecification()
   {
     if (trace)

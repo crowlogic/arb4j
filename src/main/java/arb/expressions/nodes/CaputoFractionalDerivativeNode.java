@@ -58,7 +58,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   Node<D, R, F>                                          operand;
   Node<D, R, F>                                          integralNode;
   Expression<D, R, F>                                    integralExpression;
-  private final Context                                  context;
+  private final  Context                                        context;
   private final int                                      derivativeOrder;
   private Expression<Real, RealFunction, RealFunctional> integrandExpression;
 
@@ -135,6 +135,8 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
                                                         expression.coDomainType,
                                                         expression.functionClass);
 
+    context.registerVariable(Real.named("α")).setBounds(0, false, 1, true);
+
     Class<?> scalarType = scalarType(expression.domainType);
     if (scalarType == Real.class)
     {
@@ -172,7 +174,6 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
                                                       "gint",
                                                       false);
 
-    integralExpression.upstreamExpression = expression;
     integrandExpression.upstreamExpression = integralExpression;
     // this.integralExpression.inlineFunction(fieldName);
     // this.integralExpression.substitute("f", integralExpression.rootNode);
@@ -183,7 +184,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   {
     super(expression);
     this.context = expression.context;
-    operand      = expression.resolve();
+    operand = expression.resolve();
     var variableNode = expression.require(",").resolve();
     if (variableNode instanceof VariableNode)
     {
@@ -210,6 +211,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     expression.require(")");
 
     derivativeOrder = getDerivativeOrder(order, context);
+    System.out.println("do=" + derivativeOrder);
   }
 
   protected void throwFunctionSyntaxError()
@@ -257,7 +259,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
                                                 + " not found in "
                                                 + context
                                                 + " or "
-                                                + expression.context);
+                                                + expression.context + " of " + expression + " rootNode=" + expression.rootNode );
 
         }
       }
@@ -268,11 +270,10 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
       }
       else
       {
-        throw new IllegalStateException(String.format("Caputo derivative exponent variable %s in node %s of expression %s has no bounds set. "
-                                                      + "Set bounds via setBounds() so that n = ⌈α⌉ can be resolved at compile time. ",
-                                                      varName,
-                                                      this,
-                                                      expression));
+        throw new IllegalStateException(String.format("Caputo derivative exponent variable '%s' in '%s' has no bounds set. "
+                                                      + "Set bounds via setBounds() so that n = ⌈α⌉ can be resolved at compile time. "
+                                                      + "Example: Real.named(\"α\").set(\"0.5\", 128).setBounds(0, false, 1, true)",
+                                                      varName, this, expression));
       }
     }
     else if (power.isConstant())

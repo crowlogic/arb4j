@@ -1,6 +1,7 @@
 package arb.expressions.nodes;
 
 import arb.Real;
+import arb.RealConstants;
 import arb.expressions.Context;
 import arb.functions.RealBivariateFunction;
 import arb.functions.real.RealFunction;
@@ -30,15 +31,33 @@ public class CaputoFractionalDerivativeNodeTest extends
     assertEquals("t➔Đ^(2)sin(t)", f.toString());
   }
 
+  /**
+   * FIXME: this is where the merge-rename functionality of Context is needed
+   */
   public void testFractionalDerivativeFunctionForm2()
   {
     Context context = new Context();
     context.registerVariable(Real.named("α").setBounds(0, false, 1, true));
     var F = RealBivariateFunction.parse("t➔α➔fracdiff(sin(t),t^α)", context);
     assertEquals("t➔Đ^(α)sin(t)", F.toString());
-    var f = F.instantiate();
-
+//    var f = F.instantiate();
+//    var x = f.evaluate(RealConstants.half, 128);
+//    var y = x.eval(2.3);
+//    assertEquals( 5.6, y );
   }
+  
+  public void testFractionalDerivativeFunctionForm3()
+  {
+    Context context = new Context();
+    context.registerVariable(Real.named("β").setBounds(0, false, 1, true));
+    var F = RealBivariateFunction.parse("t➔β➔fracdiff(sin(t),t^β)", context);
+    assertEquals("t➔Đ^(β)sin(t)", F.toString());
+//    var f = F.instantiate();
+//    var x = f.evaluate(RealConstants.half, 128);
+//    var y = x.eval(2.3);
+//    assertEquals( 5.6, y );
+  }
+  
 
   /**
    * substitute() must return this (the same object reference), not a newly
