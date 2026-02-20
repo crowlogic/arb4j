@@ -1,5 +1,4 @@
-[ERROR]   CaputoFractionalDerivativeNodeTest.testFractionalDerivativeFunctionForm2:37 » UnderConstruction TODO: handle bounds on input (or ascendent/upstream input) variable α of nullfunc:t➔α➔fracdiff(sin(t),t^α)
-implement Context merge-rename
+implement Context merge-rename=https://github.com/crowlogic/arb4j/issues/876=function substitution bug - Expression.parseLambda needs to create new expressions instead of calling resolve to generate the body of the codomain #876
 debug ComplexFunctionTest.testSequence2
 constant subexpression extraction
 move intermediateVariableCounters from Context to Expression
