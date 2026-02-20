@@ -202,7 +202,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
       Object varObj  = context.variables.get(varName);
       if (varObj == null)
       {
-        if (expression.anyAscendentIndependentVariableIsNamed(varName))
+        if (expression.anyUpstreamIndependentVariableIsNamed(varName))
         {
           // add an extended-info Expression.toString()
           throw new UnderConstructionException("TODO: handle bounds on input (or ascendent/upstream input) variable "

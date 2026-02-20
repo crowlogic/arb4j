@@ -254,7 +254,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                             IntegerPolynomial.class));
   }
 
-  public Expression<?, ?, ?>                                 ascendentExpression;
+  public Expression<?, ?, ?>                                 upstreamExpression;
 
   public char                                                character                        = 0;
 
@@ -358,7 +358,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       {
         return true;
       }
-      e = e.ascendentExpression;
+      e = e.upstreamExpression;
     }
     return false;
   }
@@ -367,7 +367,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                     Class<? extends C> coDomain,
                     Class<? extends F> function)
   {
-    this.ascendentExpression              = null;
+    this.upstreamExpression              = null;
     this.domainType                       = domain;
     this.coDomainType                     = coDomain;
     this.functionClass                    = function;
@@ -415,7 +415,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                     Expression<?, ?, ?> ascenentExpression)
   {
     assert className != null : "className needs to be specified";
-    this.ascendentExpression              = ascenentExpression;
+    this.upstreamExpression              = ascenentExpression;
     this.className                        = className;
     this.domainType                       = domain;
     this.coDomainType                     = codomain;
@@ -433,7 +433,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     if (Expression.trace)
     {
-      log.debug("#{}: new Expression(className={}, domain={}, coDomain={}, function={}, expression={}, context={}, functionName={}, ascendentExpression={}#{})",
+      log.debug("#{}: new Expression(className={}, domain={}, coDomain={}, function={}, expression={}, context={}, functionName={}, upstreamExpression={}#{})",
                 System.identityHashCode(this),
                 className,
                 domain,
@@ -517,15 +517,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return intermediateVariableName;
   }
 
-  public boolean anyAscendentIndependentVariableIsNamed(String name)
+  public boolean anyUpstreamIndependentVariableIsNamed(String name)
   {
     if (independentVariable != null && independentVariable.getName().equals(name))
     {
       return true;
     }
-    if (ascendentExpression != null)
+    if (upstreamExpression != null)
     {
-      if (ascendentExpression.anyAscendentIndependentVariableIsNamed(name))
+      if (upstreamExpression.anyUpstreamIndependentVariableIsNamed(name))
       {
         return true;
       }
@@ -646,7 +646,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                        getExpression(),
                                        context,
                                        functionName,
-                                       ascendentExpression);
+                                       upstreamExpression);
     expr.context             = context;
     expr.independentVariable = independentVariable;
 
@@ -701,10 +701,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     assert context != null : "context is null for "
                              + this
-                             + " and ascendentExpression="
-                             + ascendentExpression
-                             + " ascendentExpression.context="
-                             + ascendentExpression.context;
+                             + " and upstreamExpression="
+                             + upstreamExpression
+                             + " upstreamExpression.context="
+                             + upstreamExpression.context;
     compiledClass = loadFunctionClass(className, instructions, context);
     return this;
   }
@@ -878,9 +878,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   /**
    * Declares variables as fields in the generated class. This includes: 1. The
-   * ascendent (parent) expression's independent variable (if any) - so this
+   * upstream (parent) expression's independent variable (if any) - so this
    * expression can receive it 2. Variables referenced from ancestor expressions
-   * (ascendentInput variables) 3. Context variables
+   * (upstreamInput variables) 3. Context variables
    * 
    * NEVER declares this expression's own independent variable as a field in its
    * own class.
@@ -888,22 +888,22 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected void declareVariables(ClassVisitor classVisitor)
   {
     // Declare the parent's independent variable as a field so we can receive it
-    if (ascendentExpression != null)
+    if (upstreamExpression != null)
     {
-      var ascendentIndependentVariableNode = ascendentExpression.independentVariable;
-      if (ascendentIndependentVariableNode != null
-                    && !ascendentIndependentVariableNode.type().equals(Object.class))
+      var upstreamIndependentVariableNode = upstreamExpression.independentVariable;
+      if (upstreamIndependentVariableNode != null
+                    && !upstreamIndependentVariableNode.type().equals(Object.class))
       {
         classVisitor.visitField(ACC_PUBLIC,
-                                ascendentIndependentVariableNode.reference.name,
-                                ascendentIndependentVariableNode.type().descriptorString(),
+                                upstreamIndependentVariableNode.reference.name,
+                                upstreamIndependentVariableNode.type().descriptorString(),
                                 null,
                                 null);
       }
     }
 
     // Declare fields for all referenced variables from ancestor expressions
-    // These are variables where ascendentInput=true that were added to
+    // These are variables where upstreamInput=true that were added to
     // referencedVariables
     declareFieldsForAscendentInputPropagation(classVisitor);
 
@@ -929,7 +929,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected void declareFieldsForAscendentInputPropagation(ClassVisitor classVisitor)
   {
-    ascendentInputVariableEntryStream().forEach(entry ->
+    upstreamInputVariableEntryStream().forEach(entry ->
     {
       String                varName = entry.getKey();
       VariableNode<D, C, F> varNode = entry.getValue();
@@ -939,7 +939,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                 + " should not be Object or null";
       if (trace)
       {
-        log.debug("declareVariables for {}: declaring ascendentInput variable {} of type {}",
+        log.debug("declareVariables for {}: declaring upstreamInput variable {} of type {}",
                   className,
                   varName,
                   varType);
@@ -948,9 +948,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     });
   }
 
-  protected Stream<Entry<String, VariableNode<D, C, F>>> ascendentInputVariableEntryStream()
+  protected Stream<Entry<String, VariableNode<D, C, F>>> upstreamInputVariableEntryStream()
   {
-    return referencedVariableEntryStream().filter(ascendentInputVariablePredicate);
+    return referencedVariableEntryStream().filter(upstreamInputVariablePredicate);
   }
 
   protected Stream<Entry<String, VariableNode<D, C, F>>> referencedVariableEntryStream()
@@ -972,9 +972,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         return true;
       }
     }
-    if (ascendentExpression != null)
+    if (upstreamExpression != null)
     {
-      if (ascendentExpression.anyAscendentIndeterminateVariableIsNamed(name))
+      if (upstreamExpression.anyAscendentIndeterminateVariableIsNamed(name))
       {
         return true;
       }
@@ -1500,7 +1500,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     // Only root expressions create their own Context.
     // Child arg classes receive the parent's context via initialize() (#842)
-    if (context != null && ascendentExpression == null)
+    if (context != null && upstreamExpression == null)
     {
       generateContextInitializer(mv);
     }
@@ -1632,11 +1632,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public void logVariables()
   {
-    accept(containingExpression -> log.debug("#{}: logVariables: independentVariable={} indeterminateVariables={} ascendentExpression={}",
+    accept(containingExpression -> log.debug("#{}: logVariables: independentVariable={} indeterminateVariables={} upstreamExpression={}",
                                              System.identityHashCode(containingExpression),
                                              containingExpression.independentVariable,
                                              containingExpression.indeterminateVariables,
-                                             containingExpression.ascendentExpression));
+                                             containingExpression.upstreamExpression));
 
   }
 
@@ -1858,7 +1858,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // (null-check + new). This must happen before context wiring.
     generateReferencedFunctionInstances(mv);
 
-    // Phase 2: Wire context and ascendent variables to the now-existing
+    // Phase 2: Wire context and upstream variables to the now-existing
     // nested function instances, BEFORE dependency initialization which
     // may call methods (hypergeometric init/evaluate) that use them.
     propagateAscendentInputVariablesToNestedFunctions(mv);
@@ -1891,7 +1891,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Propagates the parent's context and ascendent input variables (variables from
+   * Propagates the parent's context and upstream input variables (variables from
    * ancestor expressions) to nested operand functions that reference them.
    *
    * For child arg classes whose constructors no longer create their own Context
@@ -1930,7 +1930,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       String nestedClassName = funcMapping.functionName;
 
       // Share parent's context with child arg class (#842)
-      if (nestedExpr.ascendentExpression != null)
+      if (nestedExpr.upstreamExpression != null)
       {
         String contextTypeDesc = Context.class.descriptorString();
         // Generate: this.<funcFieldName>.context = this.context
@@ -1953,9 +1953,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
           continue;
         }
 
-        // Skip if already declared as ascendent independent variable
-        if (ascendentExpression != null && ascendentExpression.independentVariable != null
-                      && varName.equals(ascendentExpression.independentVariable.getName()))
+        // Skip if already declared as upstream independent variable
+        if (upstreamExpression != null && upstreamExpression.independentVariable != null
+                      && varName.equals(upstreamExpression.independentVariable.getName()))
         {
           continue;
         }
@@ -1976,7 +1976,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
           continue;
         }
 
-        // This is an ascendent input variable - propagate it
+        // This is an upstream input variable - propagate it
         Class<?> varType = varNode.type();
         if (varType != null && !varType.equals(Object.class))
         {
@@ -2496,7 +2496,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public HashSet<String>                                                declaredVariables               =
                                                                                           new HashSet<>();
 
-  private final Predicate<? super Entry<String, VariableNode<D, C, F>>> ascendentInputVariablePredicate =
+  private final Predicate<? super Entry<String, VariableNode<D, C, F>>> upstreamInputVariablePredicate =
                                                                                                         entry ->
                                                                                                                                                                                                               {
                                                                                                                                                                                                                 String varName = entry
@@ -2525,17 +2525,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                                                                                                                                                                 // already
                                                                                                                                                                                                                 // declared
                                                                                                                                                                                                                 // as
-                                                                                                                                                                                                                // ascendent
+                                                                                                                                                                                                                // upstream
                                                                                                                                                                                                                 // independent
                                                                                                                                                                                                                 // variable
-                                                                                                                                                                                                                if (ascendentExpression
+                                                                                                                                                                                                                if (upstreamExpression
                                                                                                                                                                                                                               != null)
                                                                                                                                                                                                                 {
-                                                                                                                                                                                                                  VariableNode<?, ?, ?> ascendentIndependentVariable =
-                                                                                                                                                                                                                                                                     ascendentExpression.independentVariable;
-                                                                                                                                                                                                                  if (ascendentIndependentVariable
+                                                                                                                                                                                                                  VariableNode<?, ?, ?> upstreamIndependentVariable =
+                                                                                                                                                                                                                                                                     upstreamExpression.independentVariable;
+                                                                                                                                                                                                                  if (upstreamIndependentVariable
                                                                                                                                                                                                                                 != null
-                                                                                                                                                                                                                                && varName.equals(ascendentIndependentVariable.getName()))
+                                                                                                                                                                                                                                && varName.equals(upstreamIndependentVariable.getName()))
                                                                                                                                                                                                                   {
                                                                                                                                                                                                                     return false;
                                                                                                                                                                                                                   }
@@ -2796,7 +2796,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     var functionalExpression = new Expression<Object, Object, Function<?, ?>>(funcDomain,
                                                                               funcCoDomain,
                                                                               funcClass);
-    functionalExpression.ascendentExpression = this;
+    functionalExpression.upstreamExpression = this;
     if (context == null)
     {
       context = new Context();
@@ -3694,8 +3694,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       return true;
     }
-    return ascendentExpression != null
-                  && ascendentExpression.thisOrAnyAscendentExpressionHasIndeterminantVariable();
+    return upstreamExpression != null
+                  && upstreamExpression.thisOrAnyAscendentExpressionHasIndeterminantVariable();
   }
 
   protected void throwUnexpectedCharacterException()
@@ -3819,12 +3819,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   @Override
   public void accept(Consumer<Expression<?, ?, ?>> t)
   {
-    assert ascendentExpression != this;
+    assert upstreamExpression != this;
     t.accept(this);
 
-    if (ascendentExpression != null)
+    if (upstreamExpression != null)
     {
-      ascendentExpression.accept(t);
+      upstreamExpression.accept(t);
     }
 
   }

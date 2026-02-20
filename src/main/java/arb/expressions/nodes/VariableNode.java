@@ -552,7 +552,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       log.debug("=== resolveReference START: var={}, expr={}, ascendentExpr={}",
                 reference.name,
                 expression.functionName,
-                expression.ascendentExpression != null ? expression.ascendentExpression.functionName
+                expression.upstreamExpression != null ? expression.upstreamExpression.functionName
                                                        : "null");
     }
 
@@ -651,10 +651,10 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                  expression,
                                                  expression.independentVariable,
                                                  expression.getIndeterminateVariable(),
-                                                 expression.ascendentExpression,
+                                                 expression.upstreamExpression,
                                                  expression.remaining(),
-                                                 expression.ascendentExpression
-                                                               != null ? expression.ascendentExpression.getIndeterminateVariables()
+                                                 expression.upstreamExpression
+                                                               != null ? expression.upstreamExpression.getIndeterminateVariables()
                                                                        : null));
   }
 
@@ -670,7 +670,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                               expression.getIndeterminateVariables()));
 
     }
-    if (expression.anyAscendentIndependentVariableIsNamed(getName()))
+    if (expression.anyUpstreamIndependentVariableIsNamed(getName()))
     {
       throw new CompilerException("cannot set the independent variable of "
                                   + this
@@ -755,7 +755,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     else if (ascendentInput)
     {
-      returnType = expression.ascendentExpression.domainType;
+      returnType = expression.upstreamExpression.domainType;
     }
     else
     {
