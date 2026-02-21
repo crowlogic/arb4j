@@ -484,16 +484,18 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   }
 
   /**
-   * Simplifies expressions of the form (x-a)^n * δ(x-a) = 0
-   * 
-   * Implements the mathematical rule that any polynomial in (x-a) multiplied by
-   * δ(x-a) equals zero, since the polynomial vanishes at the delta function's
-   * singularity point x=a.
-   * 
-   * @return zero() if the pattern matches, null otherwise
+   * Applies the sifting property of the Dirac delta function: f(x) * δ(x-a) =
+   * f(a) * δ(x-a)
+   *
+   * Substitutes the delta function's root into the multiplier to obtain the
+   * constant f(a). Returns f(a)*δ(x-a), or zero when f(a)=0.
+   *
+   * @return the simplified node, or null if no delta function is present or the
+   *         argument pattern is unrecognized
    */
   private Node<D, R, F> simplifyDeltaMultiplication()
   {
+    // Check if either operand is a delta function
     FunctionNode<D, R, F> delta      = null;
     Node<D, R, F>         multiplier = null;
 
@@ -509,28 +511,40 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     }
     else
     {
-      return null; 
+      return null;
     }
 
     var                   deltaArg = delta.arg;
 
-    VariableNode<D, R, F> variable = multiplier.expression.getIndependentVariable();
+    // Find the variable involved
+    VariableNode<D, R, F> variable = multiplier.extractVariable();
+    if (variable == null)
+    {
+      variable = deltaArg.extractVariable();
+      if (variable == null)
+      {
+        return null;
+      }
+    }
 
-
-    // Extract shift from delta argument: δ(x) has shift=0, δ(x-a) has shift=a
+    // Extract shift from delta argument: δ(x) → shift=0, δ(x-a) → shift=a
     Node<D, R, F> deltaShift = Integration.extractShiftFromDeltaArg(deltaArg, variable);
     if (deltaShift == null)
     {
-      return null; // Delta argument doesn't match expected pattern
+      return null;
     }
 
-    // Check if multiplier is a polynomial in (x - deltaShift)
-    if (isPolynomialInShiftedVariable(multiplier, variable, deltaShift))
+    // Apply the sifting property: f(x) * δ(x-a) = f(a) * δ(x-a)
+    // Substitute x = deltaShift into the multiplier to evaluate f(a)
+    var evaluated = multiplier.substitute(variable.getName(), deltaShift).simplify();
+
+    if (evaluated.isZero())
     {
       return zero();
     }
 
-    return null;
+    // Return f(a) * δ(x-a)
+    return evaluated.mul(delta);
   }
 
   @Override
