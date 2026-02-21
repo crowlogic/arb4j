@@ -335,14 +335,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
         loadBitsOntoStack(mv);
         expression.loadThisFieldOntoStack(mv, elementFieldName, elementType);
 
-        invokeVirtualMethod(mv,
-                            hypergeometricFunctionClass(),
-                            "evaluate",
-                            Object.class,
-                            Object.class,
-                            int.class,
-                            int.class,
-                            Object.class);
+        generateEvaluateMethodInvocation(mv);
         mv.visitInsn(POP); // Discard evaluate() return (element populated via parameter)
       }
     }
@@ -377,14 +370,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
         mv.visitLdcInsn(1);
         loadBitsOntoStack(mv);
         expression.loadThisFieldOntoStack(mv, elementFieldName, elementType);
-        invokeVirtualMethod(mv,
-                            hypergeometricFunctionClass(),
-                            "evaluate",
-                            Object.class,
-                            Object.class,
-                            int.class,
-                            int.class,
-                            Object.class);
+        generateEvaluateMethodInvocation(mv);
         mv.visitInsn(POP); // Discard evaluate() return
       }
       else
@@ -406,14 +392,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
         mv.visitLdcInsn(1);
         loadBitsOntoStack(mv);
         loadOutputOntoStack(mv, resultType);
-        invokeVirtualMethod(mv,
-                            hypergeometricFunctionClass(),
-                            "evaluate",
-                            Object.class,
-                            Object.class,
-                            int.class,
-                            int.class,
-                            Object.class);
+        generateEvaluateMethodInvocation(mv);
         cast(mv, resultType);
         return mv;
       }
@@ -425,14 +404,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       mv.visitLdcInsn(1);
       loadBitsOntoStack(mv);
       loadOutputOntoStack(mv, resultType);
-      invokeVirtualMethod(mv,
-                          hypergeometricFunctionClass(),
-                          "evaluate",
-                          Object.class,
-                          Object.class,
-                          int.class,
-                          int.class,
-                          Object.class);
+      generateEvaluateMethodInvocation(mv);
       cast(mv, resultType);
       return mv;
     }
@@ -457,14 +429,10 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
         loadOrderParameter(mv);
         loadBitsOntoStack(mv);
         loadOutputOntoStack(mv, resultType);
-        invokeVirtualMethod(mv,
-                            elementType,
-                            "evaluate",
-                            resultType,
-                            expression.domainType,
-                            int.class,
-                            int.class,
-                            expression.coDomainType);
+        generateEvaluateMethodInvocation(mv,
+                                         resultType,
+                                         expression.domainType,
+                                         expression.coDomainType);
         cast(mv, resultType);
       }
     }
@@ -477,18 +445,43 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       mv.visitLdcInsn(1);
       loadBitsOntoStack(mv);
       loadOutputOntoStack(mv, resultType);
-      invokeVirtualMethod(mv,
-                          hypergeometricFunctionClass(),
-                          "evaluate",
-                          Object.class,
-                          Object.class,
-                          int.class,
-                          int.class,
-                          Object.class);
+      generateEvaluateMethodInvocation(mv);
       cast(mv, resultType);
     }
 
     return mv;
+  }
+
+  public void generateEvaluateMethodInvocation(MethodVisitor mv,
+                                               Class<?> resultType,
+                                               Class<? extends D> domain,
+                                               Class<? extends R> coDomainType)
+  {
+    invokeVirtualMethod(mv,
+                        elementType,
+                        "evaluate",
+                        resultType,
+                        domain,
+                        int.class,
+                        int.class,
+                        coDomainType);
+  }
+
+  public MethodVisitor generateEvaluateMethodInvocation(MethodVisitor mv)
+  {
+    return generateEvaluateMethodInvocation(mv, hypergeometricFunctionClass());
+  }
+
+  public MethodVisitor generateEvaluateMethodInvocation(MethodVisitor mv, Class<?> type)
+  {
+    return invokeVirtualMethod(mv,
+                               type,
+                               "evaluate",
+                               Object.class,
+                               Object.class,
+                               int.class,
+                               int.class,
+                               Object.class);
   }
 
   protected void generateInitCall(MethodVisitor mv)
