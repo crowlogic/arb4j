@@ -124,11 +124,13 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
     return mv;
   }
 
+  /**
+   * https://github.com/crowlogic/arb4j/issues/871#issuecomment-3938119721
+   */
   @Override
   public Class<?> type()
   {
-    return functionNode.type();
-//    return expression.coDomainType;
+    return Compiler.scalarType(functionNode.type());
   }
 
   @Override
