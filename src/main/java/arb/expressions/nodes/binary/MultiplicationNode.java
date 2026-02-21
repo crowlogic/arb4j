@@ -494,7 +494,6 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
    */
   private Node<D, R, F> simplifyDeltaMultiplication()
   {
-    // Check if either operand is a delta function
     FunctionNode<D, R, F> delta      = null;
     Node<D, R, F>         multiplier = null;
 
@@ -510,21 +509,13 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     }
     else
     {
-      return null; // No delta function present
+      return null; 
     }
 
-    // Extract the delta function's argument
     var                   deltaArg = delta.arg;
 
-    // Find the variable involved
-    VariableNode<D, R, F> variable = multiplier.extractVariable();
-    if (variable == null)
-    {
-      if ((variable = deltaArg.extractVariable()) == null)
-      {
-        return null;
-      }
-    }
+    VariableNode<D, R, F> variable = multiplier.expression.getIndependentVariable();
+
 
     // Extract shift from delta argument: δ(x) has shift=0, δ(x-a) has shift=a
     Node<D, R, F> deltaShift = Integration.extractShiftFromDeltaArg(deltaArg, variable);
