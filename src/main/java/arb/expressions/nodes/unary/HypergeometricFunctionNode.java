@@ -105,7 +105,11 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                   || ComplexRationalFunction.class.isAssignableFrom(expression.coDomainType);
   }
 
-  public boolean                  isPolynomial;
+  public boolean isPolynomial()
+  {
+    return RealPolynomial.class.isAssignableFrom(expression.coDomainType)
+                  || ComplexPolynomial.class.isAssignableFrom(expression.coDomainType);
+  }
 
   public boolean                  isReal;
 
@@ -157,10 +161,6 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
   {
     scalarType                           = Compiler.scalarType(expression.coDomainType);
 
-    isPolynomial                         =
-                 RealPolynomial.class.isAssignableFrom(expression.coDomainType)
-                               || ComplexPolynomial.class.isAssignableFrom(expression.coDomainType);
-
     isReal                               = Real.class.equals(scalarType)
                   || Fraction.class.equals(scalarType) || Integer.class.equals(scalarType);
 
@@ -171,31 +171,11 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                       expression.hasScalarCodomain() || expression.isFunctional();
     isNullaryFunctionOrHasScalarCodomain = expression.isNullaryFunction() || hasScalarCodomain;
 
-    // Determine functional type (what the arg produces)
-    if (isPolynomial)
+    if (isPolynomial())
     {
-      functionalType       = isReal ? RealPolynomial.class : ComplexPolynomial.class;
-      nullaryFunctionClass = isReal ? RealPolynomialNullaryFunction.class
-                                    : ComplexPolynomialNullaryFunction.class;
-    }
-    else if (isRational())
-    {
-      functionalType       = isReal ? RationalFunction.class : ComplexRationalFunction.class;
-      nullaryFunctionClass = isReal ? RationalNullaryFunction.class
-                                    : ComplexRationalNullaryFunction.class;
-    }
-    else
-    {
-      // Scalar output still uses rational function internally
-      functionalType       = isReal ? RationalFunction.class : ComplexRationalFunction.class;
-      nullaryFunctionClass = isReal ? RationalNullaryFunction.class
-                                    : ComplexRationalNullaryFunction.class;
-    }
-
-    // Select hypergeometric class based on output type (polynomial/rational) and
-    // scalar type (real/complex)
-    if (isPolynomial)
-    {
+      functionalType              = isReal ? RealPolynomial.class : ComplexPolynomial.class;
+      nullaryFunctionClass        = isReal ? RealPolynomialNullaryFunction.class
+                                           : ComplexPolynomialNullaryFunction.class;
       hypergeometricFunctionClass =
                                   isReal ? RealHypergeometricPolynomialFunction.class
                                          : isComplex ? ComplexHypergeometricPolynomialFunction.class
@@ -203,11 +183,23 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     }
     else
     {
-      // Both rational output AND scalar output use rational hypergeometric
-      // For scalar: compute rational function, then evaluate at input point
       hypergeometricFunctionClass = isReal ? RationalHypergeometricFunction.class
                                            : isComplex ? ComplexRationalHypergeometricFunction.class
                                            : null;
+      if (isRational())
+
+      {
+        functionalType       = isReal ? RationalFunction.class : ComplexRationalFunction.class;
+        nullaryFunctionClass = isReal ? RationalNullaryFunction.class
+                                      : ComplexRationalNullaryFunction.class;
+      }
+      else
+      {
+        functionalType       = isReal ? RationalFunction.class : ComplexRationalFunction.class;
+        nullaryFunctionClass = isReal ? RationalNullaryFunction.class
+                                      : ComplexRationalNullaryFunction.class;
+      }
+
     }
 
     fieldName              =
@@ -223,7 +215,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
         elementType = isReal ? RationalFunction.class : isComplex ? ComplexRationalFunction.class
                              : null;
       }
-      else if (isPolynomial)
+      else if (isPolynomial())
       {
         elementType = isReal ? RealPolynomial.class : isComplex ? ComplexPolynomial.class : null;
       }
