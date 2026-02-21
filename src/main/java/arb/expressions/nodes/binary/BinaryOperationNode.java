@@ -583,12 +583,14 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
 
   public void throwTypePromotionError(Class<?> leftType, Class<?> rightType, String msg)
   {
-    throw new CompilerException(String.format("Could not determine resultant type for this=%s where left=%s with left.type=%s and right=%s with right.type=%s in %s at position=%s where this.operation=%s in %s: %s",
+    throw new CompilerException(String.format("Could not determine resultant type for this=%s where left=%s is a %s-valued %s and right=%s with is a %s-valued %s in %s at position=%s where this.operation=%s in %s: %s",
                                               this,
                                               left,
                                               leftType,
+                                              left.getClass().getSimpleName(),
                                               right,
                                               rightType,
+                                              right.getClass().getSimpleName(),
                                               toString(),
                                               position,
                                               operation,
