@@ -10,11 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import arb.Integer;
+import arb.Polynomial;
 import arb.Quaternion;
 import arb.exceptions.CompilerException;
 import arb.expressions.Expression;
 import arb.expressions.nodes.*;
 import arb.expressions.nodes.unary.FunctionNode;
+import arb.expressions.nodes.unary.FunctionalEvaluationNode;
 import arb.functions.Function;
 
 /**
@@ -96,16 +98,19 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   }
 
   /**
-   * Integrates a product using integration by parts when applicable.
-   * 
-   * For products of the form p(x)·f(x) where p(x) is a polynomial and f(x) is
-   * exp, sin, cos, or log, uses the tabular method:
-   * 
-   * ∫ u dv = uv - ∫ v du
-   * 
-   * The tabular method repeatedly differentiates the polynomial (which eventually
-   * becomes zero) while integrating the transcendental function.
-   * 
+   * Integrates a product. Handles the following cases in order:
+   * <ol>
+   * <li>Product simplifies to zero — return zero.</li>
+   * <li>Constant factors — pull out: ∫ c·f(t) dt = c · ∫ f(t) dt</li>
+   * <li>One factor is a {@link Polynomial}-typed function application f(t) — wrap
+   * the remaining factors as the cofactor in a {@link PolynomialIntegralNode},
+   * which multiplies f(t) by the cofactor at the polynomial level and integrates
+   * the resulting polynomial analytically.</li>
+   * <li>Step function θ(x) — ∫ f(x)·θ(x) dx = θ(x)·∫ f(x) dx</li>
+   * <li>Integration by parts (tabular for polynomial×transcendental, single-step
+   * for LIATE log cases).</li>
+   * </ol>
+   *
    * @param variable The variable of integration
    * @return The integrated expression
    */
@@ -143,12 +148,38 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       }
     }
 
-    // If we have constant factors, pull them out: ∫ c·f(t) dt = c · ∫ f(t) dt
+    // Pull out constant factors: ∫ c·f(t) dt = c · ∫ f(t) dt
     if (!constantFactors.isEmpty() && !variableFactors.isEmpty())
     {
       var constantProduct = buildProduct(constantFactors);
       var variableProduct = buildProduct(variableFactors);
       return constantProduct.mul(variableProduct.integral(variable)).simplify();
+    }
+
+    // If any factor is a Polynomial-typed function application at the integration
+    // variable, multiply the polynomial by the remaining cofactor at the polynomial
+    // level and integrate the product analytically via PolynomialIntegralNode.
+    FunctionalEvaluationNode<D, R, F> polyFactor   = null;
+    var                               cofactorList = new ArrayList<Node<D, R, F>>();
+    for (var f : variableFactors)
+    {
+      if (polyFactor == null && f instanceof FunctionalEvaluationNode<D, R, F> fe
+                    && Polynomial.class.isAssignableFrom(fe.type()) && fe.arg.equals(variable))
+      {
+        polyFactor = fe;
+      }
+      else
+      {
+        cofactorList.add(f);
+      }
+    }
+    if (polyFactor != null)
+    {
+      var cofactor = cofactorList.isEmpty() ? null : buildProduct(cofactorList);
+      return new PolynomialIntegralNode<>(expression,
+                                          polyFactor.getFunctionNode(),
+                                          cofactor,
+                                          variable);
     }
 
     // Try step function integration: ∫ f(x)·θ(x) dx = θ(x) · ∫ f(x) dx (#841)
@@ -166,9 +197,6 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       assert simplifiedIbpResult != null : "simplifiedIbpResult is null for " + this;
       return simplifiedIbpResult;
     }
-
-    // need to extract function inline the inlineable functions then apply usual
-    // integration procedure
 
     throw new CompilerException(String.format("TODO: support for integration of %s where %s is a %s-valued %s and %s is a %s-valued %s in %s",
                                               this,

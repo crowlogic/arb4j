@@ -124,17 +124,17 @@ public class Parser
 
   /**
    * <pre>
-   * "1⁄16" (without spaces) to display 1/16 as a fraction glyph. The rendering  declares the 
-   * fraction has ended when it encounters a character that cannot be part of a fraction, i.e. 
-   * something that is not an ASCII digit. 
-   * 
-   * Extending on that, in order to display one and fifteen sixteenths, rather than one hundred 
-   * fifteen sixteenths, Any zero-width, invisible character can be used to separate the "1" from 
-   * the "15" in an expression such as "15⁄16"  because the rendering engine will declare the fraction 
-   * ended when it encounters a symbol such as U+2064 INVISIBLE PLUS, U+200C ZERO WIDTH NON-JOINER, 
-   * U+2060 WORD JOINER or other invisible character which produces the same result
+   * "1⁄16" to display 1/16 as a fraction glyph. The rendering declares the
+   * fraction has ended when it encounters a character that cannot be part of a
+   * fraction, i.e. something that is not an ASCII digit.
+   *
+   * Any zero-width, invisible character can be used to separate the "1" from the
+   * "15" in an expression such as "15⁄16" because the rendering engine will
+   * declare the fraction ended when it encounters a symbol such as U+2064
+   * INVISIBLE PLUS, U+200C ZERO WIDTH NON-JOINER, U+2060 WORD JOINER or other
+   * invisible character which produces the same result.
    * </pre>
-   * 
+   *
    * @param input
    * @return
    */
@@ -145,8 +145,9 @@ public class Parser
   }
 
   /**
-   * Checks whether a given character is a digit, a decimal point, or '½'
-   * 
+   * Checks whether a given character is a digit, a decimal point, or a fraction
+   * glyph.
+   *
    * @param ch The character to check
    * @return true if the character is a digit or a decimal point; false otherwise
    */
@@ -160,7 +161,7 @@ public class Parser
 
   /**
    * Checks whether a given character is a digit.
-   * 
+   *
    * @param ch The character to check
    * @return true if the character is a digit; false otherwise
    */
@@ -173,7 +174,7 @@ public class Parser
    * Checks whether a given code point is an identifying character for the
    * expression parser. Accepts {@code int} code points to support supplementary
    * Unicode characters such as U+107A5 (𐞥 MODIFIER LETTER SMALL Q).
-   * 
+   *
    * @param codePoint the Unicode code point to check
    * @param digit     whether digits should be accepted as identifying characters
    * @return true if the code point is an identifying character; false otherwise
@@ -204,7 +205,7 @@ public class Parser
   }
 
   /**
-   * 
+   *
    * @param ch
    * @return true if ch represents an upper or lowercase Greek or blackletter
    *         character
@@ -215,15 +216,140 @@ public class Parser
                   && greekAndBlackLetterChars.contains(Character.valueOf((char) ch)));
   }
 
+  // -----------------------------------------------------------------------
+  // Superscript run collapsing
+  // -----------------------------------------------------------------------
+
+  /**
+   * Maps every superscript character that may appear <em>within</em> a run to its
+   * normal equivalent. Covers:
+   * <ul>
+   * <li>Superscript letters (from {@link #superscripts} / {@link #normals})</li>
+   * <li>Superscript digits ⁰–⁹ (may continue a letter-started run, e.g.
+   * {@code tⁿ⁻¹} → {@code t^(n-1)})</li>
+   * <li>Superscript operators ⁺ (U+207A) and ⁻ (U+207B)</li>
+   * </ul>
+   * Digits and operators are intentionally absent from
+   * {@link #SUPERSCRIPT_RUN_STARTERS}: they can only continue a run, not start
+   * one. This preserves the parser's existing direct handling of bare {@code ⁻¹}
+   * sequences as multiplicative / compositional inverse notation.
+   */
+  public static final HashMap<String, String> SUPERSCRIPT_TO_NORMAL    = new HashMap<>();
+
+  /**
+   * Subset of {@link #SUPERSCRIPT_TO_NORMAL} keys that are allowed to
+   * <em>start</em> a superscript run: superscript letters only.
+   * <p>
+   * Superscript digits and operators ({@code ⁺ ⁻}) may <em>continue</em> a run
+   * but must not start one. This ensures that a bare {@code ⁻¹} after a regular
+   * character (e.g. {@code a⁻¹} or {@code f⁻¹(x)}) is left untouched for the
+   * parser's dedicated inverse-notation logic.
+   */
+  public static final HashSet<String>         SUPERSCRIPT_RUN_STARTERS = new HashSet<>();
+
+  static
+  {
+
+    // Superscript digits — continue a run but cannot start one.
+    // Left absent from SUPERSCRIPT_RUN_STARTERS so that bare ⁻¹ sequences
+    // (e.g. a⁻¹, f⁻¹(x)) pass through to the parser unchanged.
+    SUPERSCRIPT_TO_NORMAL.put("⁰", "0");
+    SUPERSCRIPT_TO_NORMAL.put("¹", "1");
+    SUPERSCRIPT_TO_NORMAL.put("²", "2");
+    SUPERSCRIPT_TO_NORMAL.put("³", "3");
+    SUPERSCRIPT_TO_NORMAL.put("⁴", "4");
+    SUPERSCRIPT_TO_NORMAL.put("⁵", "5");
+    SUPERSCRIPT_TO_NORMAL.put("⁶", "6");
+    SUPERSCRIPT_TO_NORMAL.put("⁷", "7");
+    SUPERSCRIPT_TO_NORMAL.put("⁸", "8");
+    SUPERSCRIPT_TO_NORMAL.put("⁹", "9");
+
+    // Superscript operators — continue a run but cannot start one
+    SUPERSCRIPT_TO_NORMAL.put("\u207A", "+"); // ⁺ U+207A SUPERSCRIPT PLUS SIGN
+    SUPERSCRIPT_TO_NORMAL.put("\u207B", "-"); // ⁻ U+207B SUPERSCRIPT MINUS
+  }
+
+  /**
+   * Scans {@code expression} for contiguous superscript runs and collapses each
+   * into a single {@code ^(...)} exponent group with normalized characters.
+   * <p>
+   * A run starts only on a superscript <em>letter</em> (present in
+   * {@link #SUPERSCRIPT_RUN_STARTERS}). Once started, the run extends through any
+   * adjacent superscript letter, digit, or operator present in
+   * {@link #SUPERSCRIPT_TO_NORMAL}.
+   * <p>
+   * Superscript digits and the operators {@code ⁺} / {@code ⁻} cannot start a
+   * run. Consequently, bare sequences such as {@code a⁻¹} or {@code f⁻¹(x)} pass
+   * through this method unchanged and are handled by the parser's dedicated
+   * inverse-notation logic.
+   *
+   * <pre>
+   * tᵖ⁺𐞥   →  t^(p+q)
+   * tⁿ⁻¹   →  t^(n-1)
+   * tⁿ     →  t^(n)
+   * a⁻¹    →  a⁻¹      (unchanged — parser handles as multiplicative inverse)
+   * f⁻¹(x) →  f⁻¹(x)   (unchanged — parser handles as compositional inverse)
+   * t²     →  t²        (unchanged — parseSuperscripts handles at parse time)
+   * </pre>
+   *
+   * @param expression raw expression string after arrow/ellipsis substitution
+   * @return expression with all letter-started superscript runs replaced by
+   *         {@code ^(...)}
+   */
+  public static String collapseSuperscriptRuns(String expression)
+  {
+    StringBuilder result = new StringBuilder();
+    int           len    = expression.length();
+    int           i      = 0;
+
+    while (i < len)
+    {
+      int    cp    = expression.codePointAt(i);
+      String cpStr = new String(Character.toChars(cp));
+
+      if (SUPERSCRIPT_RUN_STARTERS.contains(cpStr))
+      {
+        // A superscript letter starts the run. Accumulate letters, digits,
+        // and operators until we hit a character not in SUPERSCRIPT_TO_NORMAL.
+        StringBuilder run = new StringBuilder();
+        while (i < len)
+        {
+          cp    = expression.codePointAt(i);
+          cpStr = new String(Character.toChars(cp));
+          String normal = SUPERSCRIPT_TO_NORMAL.get(cpStr);
+          if (normal != null)
+          {
+            run.append(normal);
+            i += Character.charCount(cp);
+          }
+          else
+          {
+            break;
+          }
+        }
+        result.append("^(").append(run).append(")");
+      }
+      else
+      {
+        result.appendCodePoint(cp);
+        i += Character.charCount(cp);
+      }
+    }
+    return result.toString();
+  }
+
   /**
    * Replaces the two character ASCII arrow version -> with ➔ used to declare the
-   * independent variable or declare a multivariate function "(n,x)➔n*x" for
-   * instance becomes "(n,x)➔n*x" and replaces ... with … Also replaces
-   * superscript alphabetical characters with '^' followed by their normal ASCII
-   * counterparts.
+   * independent variable or declare a multivariate function "(n,x)➔n*x". Also
+   * replaces ... with …
+   * <p>
+   * Superscript letter-started runs (optionally containing superscript digits and
+   * operators ⁺ ⁻) are collapsed into a single {@code ^(...)} group via
+   * {@link #collapseSuperscriptRuns(String)}. Bare {@code ⁻¹} sequences not
+   * preceded by a superscript letter are left untouched for the parser's
+   * dedicated inverse-notation handling.
    *
    * @param expression The expression to transform.
-   *
    * @return The expression with the described substitutions made.
    */
   public static String transformToJavaAcceptableCharacters(String expression)
@@ -237,10 +363,7 @@ public class Parser
                                                                      .replaceAll("𝑖", "ⅈ")
                                                                      .replaceAll("I", "ⅈ"));
 
-    for (int i = 0; i < superscripts.length; i++)
-    {
-      expression = expression.replace(superscripts[i], String.format("^(%s)", normals[i]));
-    }
+    expression = collapseSuperscriptRuns(expression);
 
     return Normalizer.normalize(expression, Normalizer.Form.NFD);
   }
@@ -360,6 +483,7 @@ public class Parser
                                                                                                 'ₚ',
                                                                                                 'ₛ',
                                                                                                 'ₜ'));
+
   /**
    * Not all uppercase letters have UTF superscript representations. Widened to
    * {@code String[]} for consistency with the supplementary character support in
@@ -435,7 +559,7 @@ public class Parser
 
   /**
    * Normal (base) letter equivalents corresponding 1:1 to {@link #superscripts}.
-   * "q" is re-inserted between "p" and "r" to match the 𐞥 superscript entry.
+   * "q" is inserted between "p" and "r" to match the 𐞥 superscript entry.
    */
   public static final String[]           normals                      =
   { "a",
@@ -473,12 +597,22 @@ public class Parser
     "φ",
     "χ" };
 
+  static
+  {
+    // Superscript letters — may start AND continue a run
+    for (int i = 0; i < superscripts.length; i++)
+    {
+      SUPERSCRIPT_TO_NORMAL.put(superscripts[i], normals[i]);
+      SUPERSCRIPT_RUN_STARTERS.add(superscripts[i]); // letters only
+    }
+  }
+
   /**
-   * Set of all superscript letter strings for fast lookup. Uses {@code String}
-   * rather than {@code Character} to support supplementary Unicode characters.
+   * Set of all superscript letter strings for fast membership lookup. Uses
+   * {@code String} rather than {@code Character} to support supplementary Unicode
+   * characters.
    */
-  public static final HashSet<String>    superscriptChars             =
-                                                          new HashSet<>(Arrays.asList(superscripts));
+  public static final HashSet<String> superscriptChars = new HashSet<>(Arrays.asList(superscripts));
 
   /**
    * Tests whether the given Unicode code point is a superscript letter. Accepts
