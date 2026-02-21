@@ -81,7 +81,15 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
   public Node<D, R, F> β;
 
-  public Class<?>      hypergeometricFunctionClass;
+  public Class<?> hypergeometricFunctionClass()
+  {
+    return isPolynomial() ? (isReal() ? RealHypergeometricPolynomialFunction.class
+                                   : isComplex() ? ComplexHypergeometricPolynomialFunction.class
+                                   : null)
+                          : (isReal() ? RationalHypergeometricFunction.class
+                                   : isComplex() ? ComplexRationalHypergeometricFunction.class
+                                   : null);
+  }
 
   public boolean αβDependsOnInput()
   {
@@ -189,24 +197,8 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     var isReal    = isReal();
     var isComplex = isComplex();
 
-    if (isPolynomial())
-    {
-
-      hypergeometricFunctionClass =
-                                  isReal ? RealHypergeometricPolynomialFunction.class
-                                         : isComplex ? ComplexHypergeometricPolynomialFunction.class
-                                         : null;
-    }
-    else
-    {
-      hypergeometricFunctionClass = isReal ? RationalHypergeometricFunction.class
-                                           : isComplex ? ComplexRationalHypergeometricFunction.class
-                                           : null;
-
-    }
-
     fieldName              =
-              expression.newIntermediateVariable("hyp", hypergeometricFunctionClass, true);
+              expression.newIntermediateVariable("hyp", hypergeometricFunctionClass(), true);
 
     argumentDependsOnInput = arg.dependsOn(expression.independentVariable);
 
@@ -353,7 +345,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
         expression.loadThisFieldOntoStack(mv, elementFieldName, elementType);
 
         invokeVirtualMethod(mv,
-                            hypergeometricFunctionClass,
+                            hypergeometricFunctionClass(),
                             "evaluate",
                             Object.class,
                             Object.class,
@@ -395,7 +387,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
         loadBitsOntoStack(mv);
         expression.loadThisFieldOntoStack(mv, elementFieldName, elementType);
         invokeVirtualMethod(mv,
-                            hypergeometricFunctionClass,
+                            hypergeometricFunctionClass(),
                             "evaluate",
                             Object.class,
                             Object.class,
@@ -424,7 +416,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
         loadBitsOntoStack(mv);
         loadOutputOntoStack(mv, resultType);
         invokeVirtualMethod(mv,
-                            hypergeometricFunctionClass,
+                            hypergeometricFunctionClass(),
                             "evaluate",
                             Object.class,
                             Object.class,
@@ -445,7 +437,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       loadBitsOntoStack(mv);
       loadOutputOntoStack(mv, resultType);
       invokeVirtualMethod(mv,
-                          hypergeometricFunctionClass,
+                          hypergeometricFunctionClass(),
                           "evaluate",
                           Object.class,
                           Object.class,
@@ -500,7 +492,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       loadBitsOntoStack(mv);
       loadOutputOntoStack(mv, resultType);
       invokeVirtualMethod(mv,
-                          hypergeometricFunctionClass,
+                          hypergeometricFunctionClass(),
                           "evaluate",
                           Object.class,
                           Object.class,
@@ -526,9 +518,9 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     Class<?> argParamType = argumentDependsOnInput ? Function.class : nullaryFunctionClass();
 
     invokeVirtualMethod(mv,
-                        hypergeometricFunctionClass,
+                        hypergeometricFunctionClass(),
                         "init",
-                        hypergeometricFunctionClass,
+                        hypergeometricFunctionClass(),
                         scalarType,
                         scalarType,
                         argParamType);
@@ -536,7 +528,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
   protected void loadHypergeometricFunctionOntoStack(MethodVisitor mv)
   {
-    expression.loadThisFieldOntoStack(mv, fieldName, hypergeometricFunctionClass);
+    expression.loadThisFieldOntoStack(mv, fieldName, hypergeometricFunctionClass());
   }
 
   protected void loadOutputOntoStack(MethodVisitor mv, Class<?> resultType)
