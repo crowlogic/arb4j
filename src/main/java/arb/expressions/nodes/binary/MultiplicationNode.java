@@ -41,11 +41,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public Node<D, R, F> fractionalDerivative(VariableNode<D, R, F> variable, Node<D, R, F> α)
   {
-    VariableNode<D, R, F> diffVar = left.extractVariable();
-    if (diffVar == null)
-    {
-      diffVar = right.extractVariable();
-    }
+    VariableNode<D, R, F> diffVar = variable;
 
     if (diffVar != null)
     {
@@ -183,14 +179,14 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     }
 
     // Try step function integration: ∫ f(x)·θ(x) dx = θ(x) · ∫ f(x) dx (#841)
-    var stepResult = tryStepFunctionIntegration(variableFactors, variable);
+    var stepResult = integrateStepFunction(variableFactors, variable);
     if (stepResult != null)
     {
       return stepResult.simplify();
     }
 
     // All factors depend on the variable -- try IBP on all 2-partitions
-    var ibpResult = tryIntegrationByPartsOnFactors(variableFactors, variable);
+    var ibpResult = integrateByParts(variableFactors, variable);
     if (ibpResult != null)
     {
       Node<D, R, F> simplifiedIbpResult = ibpResult.simplify();

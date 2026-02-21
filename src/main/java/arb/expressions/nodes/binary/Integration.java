@@ -1,5 +1,7 @@
 package arb.expressions.nodes.binary;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.slf4j.Logger;
@@ -41,7 +43,7 @@ public abstract class Integration
    */
   public static <D, R, F extends Function<? extends D, ? extends R>>
          Node<D, R, F>
-         applySingleStepIBP(Node<D, R, F> u, Node<D, R, F> dv, VariableNode<D, R, F> variable)
+         integrateByParts(Node<D, R, F> u, Node<D, R, F> dv, VariableNode<D, R, F> variable)
   {
     if (Expression.traceNodes)
     {
@@ -73,6 +75,8 @@ public abstract class Integration
 
   /**
    * Checks if a node represents (variable - shift).
+   * 
+   * FIXME: polymorphize this
    * 
    * @param node     The node to check
    * @param variable The variable
@@ -168,7 +172,7 @@ public abstract class Integration
    */
   public static <D, R, F extends Function<? extends D, ? extends R>>
          Node<D, R, F>
-         buildProduct(java.util.List<Node<D, R, F>> factors)
+         buildProduct(List<Node<D, R, F>> factors)
   {
     assert !factors.isEmpty();
     var result = factors.get(0);
@@ -185,7 +189,7 @@ public abstract class Integration
    */
   public static <D, R, F extends Function<? extends D, ? extends R>>
          void
-         collectFactors(Node<D, R, F> node, java.util.List<Node<D, R, F>> factors)
+         collectFactors(Node<D, R, F> node, List<Node<D, R, F>> factors)
   {
     if (node instanceof MultiplicationNode<D, R, F> mul)
     {
@@ -213,11 +217,10 @@ public abstract class Integration
    */
   public static <D, R, F extends Function<? extends D, ? extends R>>
          Node<D, R, F>
-         tryStepFunctionIntegration(java.util.List<Node<D, R, F>> factors,
-                                    VariableNode<D, R, F> variable)
+         integrateStepFunction(List<Node<D, R, F>> factors, VariableNode<D, R, F> variable)
   {
     FunctionNode<D, R, F> thetaNode = null;
-    var                   remaining = new java.util.ArrayList<Node<D, R, F>>();
+    var                   remaining = new ArrayList<Node<D, R, F>>();
 
     for (var factor : factors)
     {
@@ -263,8 +266,7 @@ public abstract class Integration
    */
   public static <D, R, F extends Function<? extends D, ? extends R>>
          Node<D, R, F>
-         tryIntegrationByPartsOnFactors(java.util.List<Node<D, R, F>> factors,
-                                        VariableNode<D, R, F> variable)
+         integrateByParts(List<Node<D, R, F>> factors, VariableNode<D, R, F> variable)
   {
     int n = factors.size();
     if (n < 2)
@@ -275,8 +277,8 @@ public abstract class Integration
     int limit = (1 << n) - 1;
     for (int mask = 1; mask < limit; mask++)
     {
-      var groupA = new java.util.ArrayList<Node<D, R, F>>();
-      var groupB = new java.util.ArrayList<Node<D, R, F>>();
+      var groupA = new ArrayList<Node<D, R, F>>();
+      var groupB = new ArrayList<Node<D, R, F>>();
       for (int i = 0; i < n; i++)
       {
         if ((mask & (1 << i)) != 0)
@@ -292,25 +294,21 @@ public abstract class Integration
       var productA = buildProduct(groupA);
       var productB = buildProduct(groupB);
 
-      // Strategy 1: A is polynomial-like, B is easily integrable → tabular
       if (productA.isPolynomialLike(variable) && productB.isEasilyIntegrable())
       {
         return applyTabularMethod(productA, productB, variable);
       }
-      // Strategy 2: B is polynomial-like, A is easily integrable → tabular
-      if (productB.isPolynomialLike(variable) && productA.isEasilyIntegrable())
+      else if (productB.isPolynomialLike(variable) && productA.isEasilyIntegrable())
       {
         return applyTabularMethod(productB, productA, variable);
       }
-      // Strategy 3: LIATE — A is logarithmic, B is polynomial-like → single-step
-      if (productA.isLogarithmic() && productB.isPolynomialLike(variable))
+      else if (productA.isLogarithmic() && productB.isPolynomialLike(variable))
       {
-        return applySingleStepIBP(productA, productB, variable);
+        return integrateByParts(productA, productB, variable);
       }
-      // Strategy 4: LIATE — B is logarithmic, A is polynomial-like → single-step
-      if (productB.isLogarithmic() && productA.isPolynomialLike(variable))
+      else if (productB.isLogarithmic() && productA.isPolynomialLike(variable))
       {
-        return applySingleStepIBP(productB, productA, variable);
+        return integrateByParts(productB, productA, variable);
       }
     }
 
