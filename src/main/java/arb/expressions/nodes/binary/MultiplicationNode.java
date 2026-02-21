@@ -517,15 +517,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     var                   deltaArg = delta.arg;
 
     // Find the variable involved
-    VariableNode<D, R, F> variable = multiplier.extractVariable();
-    if (variable == null)
-    {
-      variable = deltaArg.extractVariable();
-      if (variable == null)
-      {
-        return null;
-      }
-    }
+    VariableNode<D, R, F> variable = multiplier.expression.getIndependentVariable();
 
     // Extract shift from delta argument: δ(x) → shift=0, δ(x-a) → shift=a
     Node<D, R, F> deltaShift = Integration.extractShiftFromDeltaArg(deltaArg, variable);
