@@ -126,7 +126,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return true;
   }
 
-  public boolean                    ascendentInput;
+  public boolean                    upstreamInput;
 
   public boolean                    isIndependent   = false;
 
@@ -243,7 +243,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   boolean         refuseToGenerateIndeterminateVariables = false;
 
-  private boolean ascendentIndeterminate;
+  private boolean upstreamIndeterminate;
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
@@ -447,17 +447,14 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return this;
   }
 
-// VariableNode.java
 
-// Replace this helper - now checks current expression first, then ancestors
-  private VariableNode<?, ?, ?> resolve(VariableReference<D, R, F> ref, Expression<?, ?, ?> expr)
+  private VariableNode<?, ?, ?> resolve(VariableReference<D, R, F> ref)
   {
-    final VariableNode<?, ?, ?>[] bound =
-    { null };
+    final VariableNode<?,?,?>[] bound = new VariableNode[1];   
 
-    if (expr != null)
+    if (expression != null)
     {
-      expr.acceptUntil(e ->
+      expression.acceptUntil(e ->
       {
         // 1) Check independent variable in this scope
         var iv = e.independentVariable;
@@ -465,7 +462,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
         {
           if (e != expression)
           {
-            ascendentInput = true;
+            upstreamInput = true;
           }
           reference.type = e.domainType;
           bound[0]       = iv;
@@ -479,7 +476,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
           {
             if (e != expression)
             {
-              ascendentIndeterminate = true;
+              upstreamIndeterminate = true;
             }
             isIndeterminate = true;
             reference.type  = v.reference.type();
@@ -549,7 +546,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (Expression.traceNodes)
     {
-      log.debug("=== resolveReference START: var={}, expr={}, ascendentExpr={}",
+      log.debug("=== resolveReference START: var={}, expr={}, upstreamExpr={}",
                 reference.name,
                 expression.functionName,
                 expression.upstreamExpression != null ? expression.upstreamExpression.functionName
@@ -583,19 +580,19 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
 
     // 3) Bind in current or ancestor scope (combined)
-    var bound = resolve(reference, expression);
+    var bound = resolve(reference);
     if (bound != null)
     {
       if (Expression.traceNodes)
       {
-        log.debug("=== resolveReference: {} FOUND in ancestor, ascendentInput={}, ascendentIndeterminate={}, referencedVariables.containsKey={}",
+        log.debug("=== resolveReference: {} FOUND in ancestor, upstreamInput={}, upstreamIndeterminate={}, referencedVariables.containsKey={}",
                   reference.name,
-                  ascendentInput,
-                  ascendentIndeterminate,
+                  upstreamInput,
+                  upstreamIndeterminate,
                   expression.isVariableReferenced(this));
       }
 
-      if (ascendentInput || ascendentIndeterminate)
+      if (upstreamInput || upstreamIndeterminate)
       {
         if (Expression.traceNodes)
         {
@@ -645,7 +642,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   protected void throwNewUndefinedReferenceException()
   {
     throw new UndefinedReferenceException(format("Undefined reference '%s' at position=%d in Expression(=%s)=%s, "
-                                                 + "independent variable is %s, indeterminant variables is %s, and ascendentExpression is %s, remaining='%s' and ascendentExpression.indeterminantVariables='%s'",
+                                                 + "independent variable is %s, indeterminant variables is %s, and upstreamExpression is %s, remaining='%s' and upstreamExpression.indeterminantVariables='%s'",
                                                  reference.name,
                                                  reference.position,
                                                  System.identityHashCode(expression),
@@ -679,7 +676,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                   + getName()
                                   + " because it is the independent variable of "
                                   + this
-                                  + " or one of its ascendent(ancestor) expressions");
+                                  + " or one of its upstream(ancestor) expressions");
     }
     expression.registerReferencedVariable(this);
     expression.pushIndeterminateVariable(this);
@@ -729,16 +726,16 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public String toStringVerbose()
   {
-    return "VariableNode[ascendentInput="
-           + ascendentInput
+    return "VariableNode[upstreamInput="
+           + upstreamInput
            + ", isIndependent="
            + isIndependent
            + ", isIndeterminant="
            + isIndeterminate
            + ", reference="
            + reference
-           + ", ascendentIndeterminate="
-           + ascendentIndeterminate
+           + ", upstreamIndeterminate="
+           + upstreamIndeterminate
            + "]";
   }
 

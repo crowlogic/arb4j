@@ -701,7 +701,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                                             Entry<String, VariableNode<Integer, R, Sequence<R>>> entry)
   {
     VariableNode<Integer, R, Sequence<R>> varNode = entry.getValue().asVariable();
-    if (varNode.ascendentInput)
+    if (varNode.upstreamInput)
     {
       String   varName = entry.getKey();
       Class<?> varType = varNode.type();
