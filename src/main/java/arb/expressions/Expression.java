@@ -10,8 +10,7 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.stream.*;
 
 import org.jetbrains.java.decompiler.api.Decompiler;
 import org.jetbrains.java.decompiler.main.decompiler.DirectoryResultSaver;
@@ -27,6 +26,7 @@ import arb.applications.ExpressionTree;
 import arb.exceptions.CompilerException;
 import arb.expressions.context.Dependency;
 import arb.expressions.nodes.*;
+import arb.expressions.nodes.Node;
 import arb.expressions.nodes.binary.*;
 import arb.expressions.nodes.nary.*;
 import arb.expressions.nodes.unary.*;
@@ -518,7 +518,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return intermediateVariableName;
   }
 
-  public VariableNode<?,?,?> getIndependentVariableNamed(String name)
+  public VariableNode<?, ?, ?> getIndependentVariableNamed(String name)
   {
     if (independentVariable != null && independentVariable.getName().equals(name))
     {
@@ -534,7 +534,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     return null;
   }
-  
+
   public boolean anyUpstreamIndependentVariableIsNamed(String name)
   {
     if (independentVariable != null && independentVariable.getName().equals(name))
@@ -1109,14 +1109,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * indeterminate stack, and parses the body in that child scope. The lambda
    * parameter becomes the sub-expression's <em>independent</em> variable,
    * establishing a proper lexical scope boundary. Upstream variables (the
-   * parent's independent variable, context variables, etc.) are resolved
-   * through the {@link #upstreamExpression} chain, which
-   * {@link arb.expressions.nodes.VariableNode#resolveReference} already
-   * supports.
+   * parent's independent variable, context variables, etc.) are resolved through
+   * the {@link #upstreamExpression} chain, which
+   * {@link arb.expressions.nodes.VariableNode#resolveReference} already supports.
    * <p>
-   * The lambda parameter is still pushed as an indeterminate on {@code this}
-   * so that {@link #newFunctionalExpression()} can find it during code
-   * generation.
+   * The lambda parameter is still pushed as an indeterminate on {@code this} so
+   * that {@link #newFunctionalExpression()} can find it during code generation.
    *
    * @param paramName the name of the lambda parameter (e.g. "t" in t➔expr)
    * @return the parsed body node, scoped to the child sub-expression
@@ -1146,11 +1144,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     require('➔');
 
     // --- Create a sub-expression for proper lexical scoping (#876) ---
-    Expression<D,C,F> subExpr = cloneExpression();
+    Expression<D, C, F> subExpr = cloneExpression();
 
     // Establish the parent→child relationship so that VariableNode
     // resolveReference can walk up the chain to find upstream variables.
-    subExpr.upstreamExpression = this;
+    subExpr.upstreamExpression  = this;
 
     // Clear the sub-expression's independent variable. When
     // newVariableNode(paramName) is called below, resolveReference will
@@ -1184,8 +1182,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     // Ensure the lambda parameter is on top of THIS expression's
     // indeterminate stack for newFunctionalExpression() to retrieve.
-    if (!indeterminateVariables.isEmpty()
-                  && indeterminateVariables.peek() != savedParam)
+    if (!indeterminateVariables.isEmpty() && indeterminateVariables.peek() != savedParam)
     {
       indeterminateVariables.remove(savedParam);
       indeterminateVariables.push(savedParam);
@@ -1193,7 +1190,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     return node;
   }
-
 
   private void checkLambdaParameterConflicts(String paramName)
   {
@@ -1225,7 +1221,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Utensils.saveToYamlFormat(file, this);
     return file;
   }
-
 
   protected Expression<D, C, F> evaluateOptionalIndependentVariableSpecification()
   {
@@ -1750,12 +1745,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * @param mv
    * @return initialized this{@link #newFunctionalExpression()}
    */
-  protected Expression<Object, Object, Function<?, ?>>
-            generateFunctionalElement(MethodVisitor mv)
+  protected Expression<Object, Object, Function<?, ?>> generateFunctionalElement(MethodVisitor mv)
   {
-    var functional                          = newFunctionalExpression();
-    functionalDependsOnIndependentVariable  = false;
-    functionalIndependentVariable           = null;
+    var functional = newFunctionalExpression();
+    functionalDependsOnIndependentVariable = false;
+    functionalIndependentVariable          = null;
 
     if (independentVariable != null)
     {
@@ -1769,9 +1763,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         var functionalIndeterminateVariable = indeterminantVariable.spliceInto(functional)
                                                                    .asVariable();
         functionalIndeterminateVariables.push(functionalIndependentVariable);
-        functionalDependsOnIndeterminateVariable =
-          functionalDependsOnIndeterminateVariable
-                        || functional.rootNode.dependsOn(functionalIndeterminateVariable);
+        functionalDependsOnIndeterminateVariable = functionalDependsOnIndeterminateVariable
+                      || functional.rootNode.dependsOn(functionalIndeterminateVariable);
       }
     }
 
@@ -1780,7 +1773,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (functionalIndependentVariable != null)
     {
       functionalDependsOnIndependentVariable =
-        functional.rootNode.dependsOn(functionalIndependentVariable);
+                                             functional.rootNode.dependsOn(functionalIndependentVariable);
     }
 
     constructNewObject(mv, functional.className);
@@ -1808,24 +1801,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Propagates ascendent input variables from this expression's fields to a
-   * newly constructed functional instance via copy-by-value (.set()), with
-   * null-check and allocation if the destination field is null.
+   * Propagates ascendent input variables from this expression's fields to a newly
+   * constructed functional instance via copy-by-value (.set()), with null-check
+   * and allocation if the destination field is null.
    *
-   * This runs inside the evaluate() method where the functional instance is
-   * on top of the operand stack. For each variable that the functional
-   * references from an ancestor scope (and that is a field on this class),
-   * we generate:
+   * This runs inside the evaluate() method where the functional instance is on
+   * top of the operand stack. For each variable that the functional references
+   * from an ancestor scope (and that is a field on this class), we generate:
    *
-   *   if (funcInst.varName == null) funcInst.varName = new VarType();
-   *   funcInst.varName.set(this.varName);
+   * if (funcInst.varName == null) funcInst.varName = new VarType();
+   * funcInst.varName.set(this.varName);
    *
    * @param mv         the MethodVisitor for the evaluate method being generated
-   * @param functional the functional expression whose instance needs the variables
+   * @param functional the functional expression whose instance needs the
+   *                   variables
    */
-  protected void
-            propagateAscendentInputVariablesToFunctional(MethodVisitor mv,
-                                                        Expression<?, ?, ?> functional)
+  protected void propagateAscendentInputVariablesToFunctional(MethodVisitor mv,
+                                                              Expression<?, ?, ?> functional)
   {
     for (var entry : functional.referencedVariables.entrySet())
     {
@@ -1871,29 +1863,28 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       // ── Stack: ..., funcInst ──
 
       // Null-check: if funcInst.varName == null, allocate a new instance
-      Label fieldNotNull = new Label();
-      duplicateTopOfTheStack(mv);                                        // funcInst, funcInst
-      getField(mv, functional.className, varName, fieldDescriptor);      // funcInst, field|null
-      mv.visitJumpInsn(IFNONNULL, fieldNotNull);                         // funcInst
+      Label  fieldNotNull    = new Label();
+      duplicateTopOfTheStack(mv); // funcInst, funcInst
+      getField(mv, functional.className, varName, fieldDescriptor); // funcInst, field|null
+      mv.visitJumpInsn(IFNONNULL, fieldNotNull); // funcInst
 
       // Null branch: funcInst.varName = new VarType()
-      duplicateTopOfTheStack(mv);                                        // funcInst, funcInst
-      generateNewObjectInstruction(mv, varType);                         // funcInst, funcInst, new
-      duplicateTopOfTheStack(mv);                                        // funcInst, funcInst, new, new
-      invokeDefaultConstructor(mv, varType);                             // funcInst, funcInst, new
-      putField(mv, functional.className, varName, varType);              // funcInst
+      duplicateTopOfTheStack(mv); // funcInst, funcInst
+      generateNewObjectInstruction(mv, varType); // funcInst, funcInst, new
+      duplicateTopOfTheStack(mv); // funcInst, funcInst, new, new
+      invokeDefaultConstructor(mv, varType); // funcInst, funcInst, new
+      putField(mv, functional.className, varName, varType); // funcInst
 
-      designateLabel(mv, fieldNotNull);                                  // funcInst
+      designateLabel(mv, fieldNotNull); // funcInst
 
       // Copy by value: funcInst.varName.set(this.varName)
-      duplicateTopOfTheStack(mv);                                        // funcInst, funcInst
-      getField(mv, functional.className, varName, fieldDescriptor);      // funcInst, field (non-null)
-      loadThisFieldOntoStack(mv, varName, varType);                      // funcInst, field, this.var
-      invokeVirtualMethod(mv, varType, "set", varType, varType);         // funcInst, retVal
-      pop(mv);                                                           // funcInst
+      duplicateTopOfTheStack(mv); // funcInst, funcInst
+      getField(mv, functional.className, varName, fieldDescriptor); // funcInst, field (non-null)
+      loadThisFieldOntoStack(mv, varName, varType); // funcInst, field, this.var
+      invokeVirtualMethod(mv, varType, "set", varType, varType); // funcInst, retVal
+      pop(mv); // funcInst
     }
   }
-
 
   public VariableNode<D, C, F> getIndeterminateVariable()
   {
@@ -2632,8 +2623,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   /**
    * Returns the current code point at the parser's position. For BMP characters
-   * this is identical to {@code character}; for supplementary characters it
-   * reads the full surrogate pair.
+   * this is identical to {@code character}; for supplementary characters it reads
+   * the full surrogate pair.
    */
   public int currentCodePoint()
   {
@@ -2645,15 +2636,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Checks whether the current code point at the parser position is an
-   * identifier character. Uses code-point-aware lookup to support supplementary
-   * Unicode characters such as U+107A5 (𐞥).
+   * Checks whether the current code point at the parser position is an identifier
+   * character. Uses code-point-aware lookup to support supplementary Unicode
+   * characters such as U+107A5 (𐞥).
    */
   public boolean isIdentifierCharacter()
   {
     int cp = currentCodePoint();
-    return isIdentifyingCharacter(cp, false) || isSubscript(character)
-                  || isSuperscriptLetter(cp);
+    return isIdentifyingCharacter(cp, false) || isSubscript(character) || isSuperscriptLetter(cp);
   }
 
   /**
@@ -2684,7 +2674,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    */
   protected void advancePastCurrentCodePoint()
   {
-    int cp = currentCodePoint();
+    int cp        = currentCodePoint();
     int charCount = Character.charCount(cp);
     // Advance (charCount - 1) extra positions since nextCharacter() already
     // moved forward by 1.
@@ -2715,9 +2705,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       int     cp       = getExpression().codePointAt(position);
       boolean isLetter = isIdentifyingCharacter(cp, true);
 
-      if (isLetter
-            || (entirelySubscripted && !isLetter && isSubscript(character))
-            || (entirelySuperscripted && !isLetter && isSuperscriptLetter(cp)))
+      if (isLetter || (entirelySubscripted && !isLetter && isSubscript(character))
+                    || (entirelySuperscripted && !isLetter && isSuperscriptLetter(cp)))
       {
         // Advance past the full code point (1 char for BMP, 2 for supplementary)
         int charCount = Character.charCount(cp);
@@ -2745,13 +2734,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Checks that no numeric digits appear in the input variable name.
-   * Uses code-point iteration for supplementary character safety.
+   * Checks that no numeric digits appear in the input variable name. Uses
+   * code-point iteration for supplementary character safety.
    */
   protected boolean assureNoNumbersInTheInputVariable(String inputVariableName,
                                                       boolean isInputVariableSpecified)
   {
-    for (int i = 0; i < inputVariableName.length(); )
+    for (int i = 0; i < inputVariableName.length();)
     {
       int cp = inputVariableName.codePointAt(i);
       if (!Parser.isIdentifyingCharacter(cp, false))
@@ -3096,11 +3085,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       // functionalExpression.indeterminateVariables.push(functionalExpression.independentVariable);
     }
 
-    rootNode.isResult                 = true;
+    rootNode.isResult                      = true;
 
-    functionalExpression.className    = className + "func";
-    functionalExpression.functionName = functionName + "func";
-  
+    functionalExpression.className         = className + "func";
+    functionalExpression.functionName      = functionName + "func";
+
     functionalExpression.rootNode          = rootNode.spliceInto(functionalExpression);
     functionalExpression.rootNode.isResult = rootNode.isResult;
     functionalExpression.updateStringRepresentation();
@@ -3161,7 +3150,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                      startPos,
                                      true);
   }
-
 
   public boolean nextCharacterIs(char... expectedCharacters)
   {
@@ -4144,6 +4132,33 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public void setExpression(String expression)
   {
     this.expression = expression;
+  }
+
+  public LinkedList<Expression<?, ?, ?>> getUpstreamExpressions()
+  {
+    var                 upstreamExpressions = new LinkedList<Expression<?, ?, ?>>();
+    Expression<?, ?, ?> e                   = this;
+    do
+    {
+      upstreamExpressions.add(e);
+    }
+    while ((e = e.upstreamExpression) != null);
+    return upstreamExpressions;
+  }
+
+  public Stream<Expression<?, ?, ?>> stream()
+  {
+    return StreamSupport.stream(upstreamExpressionSpliterator(), false);
+  }
+
+  public Spliterator<Expression<?, ?, ?>> upstreamExpressionSpliterator()
+  {
+    return getUpstreamExpressions().spliterator();
+  }
+
+  public String toStringExtended()
+  {
+    return stream().map(Expression::toString).collect(Collectors.joining(" => "));
   }
 
 }

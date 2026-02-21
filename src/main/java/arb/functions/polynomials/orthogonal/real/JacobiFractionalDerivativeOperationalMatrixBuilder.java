@@ -70,7 +70,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilder implements
 
     χ      = ComplexFunctionSequence.express("χ:i➔p➔∫t➔tᵖ*w(t)*P(i)(t)dt∈(-1,1)/σ(i)", context);
 
-    μ = ComplexSequenceSequence.express("μ", "i➔j➔Σk➔(ω(j)(k)*Đᵞ(tᵏ)*χ(i)(k-γ)){k=0..j}", context);
+    μ = ComplexSequenceSequence.express("μ:i➔j➔Σk➔(ω(j)(k)*Đᵞ(tᵏ)*χ(i)(k-γ)){k=0..j}", context);
   }
 
   public JacobiFractionalDerivativeOperationalMatrixBuilder setBasis(JacobiPolynomialSequence basis)

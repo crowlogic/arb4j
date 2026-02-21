@@ -7,6 +7,7 @@ import static arb.utensils.Utensils.indent;
 import java.io.File;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import org.objectweb.asm.MethodVisitor;
 import org.slf4j.Logger;
@@ -160,6 +161,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     mapTypes(RealSequence.class, Integer.class, RealSequence.class);
     mapTypes(RealSequence.class, Real.class, RealSequence.class);
     mapTypes(RealSequence.class, Complex.class, ComplexSequence.class);
+
   }
 
   public static void mapPolynomialType(Class<?> scalarType, Class<?> polynomialType)
@@ -529,6 +531,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     return toString();
   }
 
+
   @Override
   public Class<?> type()
   {
@@ -569,7 +572,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
 
     if (type == null)
     {
-      throw new CompilerException(String.format("Could not determine resultant type for this=%s where left=%s with left.type=%s and right=%s with right.type=%s in %s at position=%s where this.operation=%s",
+      throw new CompilerException(String.format("Could not determine resultant type for this=%s where left=%s with left.type=%s and right=%s with right.type=%s in %s at position=%s where this.operation=%s in %s",
                                                 this,
                                                 left,
                                                 leftType,
@@ -577,7 +580,8 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
                                                 rightType,
                                                 toString(),
                                                 position,
-                                                operation));
+                                                operation,
+                                                expression.toStringExtended()));
 
     }
 
