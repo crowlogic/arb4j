@@ -23,8 +23,7 @@ import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 import arb.functions.RealToComplexFunction;
 import arb.functions.complex.ComplexFunction;
-import arb.functions.integer.ComplexSequence;
-import arb.functions.integer.RealSequence;
+import arb.functions.integer.*;
 import arb.functions.real.RealFunction;
 
 /**
@@ -161,7 +160,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     mapTypes(RealSequence.class, Integer.class, RealSequence.class);
     mapTypes(RealSequence.class, Real.class, RealSequence.class);
     mapTypes(RealSequence.class, Complex.class, ComplexSequence.class);
-
+    mapTypes(ComplexSequence.class, ComplexFunction.class, ComplexFunctionSequence.class);
   }
 
   public static void mapPolynomialType(Class<?> scalarType, Class<?> polynomialType)
@@ -530,7 +529,6 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
   {
     return toString();
   }
-
 
   @Override
   public Class<?> type()
