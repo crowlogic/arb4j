@@ -328,19 +328,5 @@ public class RealTest extends
     }
   }
 
-  public static void testVecScalarSub()
-  {
-    Real r = Real.newVector(3);
-    r.get(0).set("1.3", prec);
-    r.get(1).set("2.3", prec);
-    r.get(2).set("3.3", prec);
-    Real rMinusOne = r.subScalar(one, 128, Real.newVector(3));
-    assertEquals(3.9, rMinusOne.Σ(128, new Real()).doubleValue());
-  }
-
-  public void testLinearRegression()
-  {
-
-  }
 
 }

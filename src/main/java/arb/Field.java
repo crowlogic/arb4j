@@ -20,7 +20,7 @@ import arb.expressions.nodes.binary.MultiplicationNode;
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
-public interface Field<X extends Field<X>> extends
+public interface Field<X extends Field<? extends X>> extends
                       AutoCloseable,
                       Closeable,
                       Iterable<X>,
@@ -187,19 +187,7 @@ public interface Field<X extends Field<X>> extends
 
   }
 
-  /**
-   * Calculates the arithmetic mean of the elements of this field regarded as an
-   * array of size this{@link #dim()}
-   *
-   * @param prec   precision
-   * @param result
-   * 
-   * @return this{@link #Σ(int, Field)} / this{@link #dim()}
-   */
-  public default X mean(int prec, X result)
-  {
-    return Σ(prec, result).div(dim(), prec);
-  }
+
 
   /**
    * Performs multiplication with a (signed) integer
@@ -224,7 +212,7 @@ public interface Field<X extends Field<X>> extends
 
   public default X pow(int i, int bits)
   {
-    return pow(i, bits, (X) this);
+    return pow(i, bits,  (X)this);
   }
 
   /**
@@ -346,16 +334,7 @@ public interface Field<X extends Field<X>> extends
 
   public X zero();
 
-  /**
-   * 
-   * @param prec
-   * @param result
-   * @return this{@link #Σ(int, Field)}
-   */
-  public default X sum(int prec, X result)
-  {
-    return Σ(prec, result);
-  }
+
 
   /**
    * Summation is the addition of a sequence of any kind of numbers, called
@@ -371,12 +350,13 @@ public interface Field<X extends Field<X>> extends
    *         {@link #add(Field, int, Field)} ) of this array of field elements
    *         regarded as an array of length this{@link #dim()}
    */
-  public default X Σ(int prec, X result)
-  {
-    result.zero();
-    forEach(element -> result.add(element, prec, result));
-    return result;
-  }
+ // public X Σ(int prec,X result);
+//  {
+//    assert false : "bah";
+////    result.zero();
+////    forEach(element -> result.add(element, prec, result));
+//    return result;
+//  }
 
   public Stream<X> stream();
 

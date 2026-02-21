@@ -21,10 +21,7 @@ public interface EuclideanSpace<F extends Field<F>> extends
   @Override
   default F distance(int bits, F x, F y, F res)
   {
-    try ( F diff = res.dim() >= intrinsicDimension() ? res : res.newFieldElementVector(intrinsicDimension()))
-    {
-      x.sub(y, bits, res).pow(2, bits).sum(bits, res);
-    }
+    assert false : "TODO";
     return res;
   }
 }

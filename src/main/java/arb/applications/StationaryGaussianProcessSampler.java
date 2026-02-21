@@ -219,7 +219,6 @@ public abstract class StationaryGaussianProcessSampler extends
 
       samplePath.applyDiscreteFourierTransform(bits, W2);
       W.sub(W2, bits, Wdiff);
-      System.out.format("Wdiff=%s\n", Wdiff.sum(bits, new Complex()));
 
       calculateEnvelopeSamplingTimesAndValues();
 

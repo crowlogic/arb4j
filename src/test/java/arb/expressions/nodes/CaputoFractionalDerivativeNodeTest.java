@@ -1,7 +1,6 @@
 package arb.expressions.nodes;
 
 import arb.Real;
-import arb.RealConstants;
 import arb.expressions.Context;
 import arb.functions.RealBivariateFunction;
 import arb.functions.real.RealFunction;

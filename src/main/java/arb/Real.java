@@ -1621,43 +1621,8 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
   {
     return sub(i,prec,this);
   }
-  
-  public Real variance(int prec, Real result)
-  {
-    try ( Real mean = borrowVariable())
-    {
-      return variance(prec, mean(prec, mean), result);
-    }
-  }
-
-  public Real variance(int prec, Real mean, Real result)
-  {
-    result.zero();
-    try ( Real x = borrowVariable(); )
-    {
-      // TODO: use the vectorized arb fuctions if the elements are contiguous in memory
-      for (Real element : this)
-      {	    
-        result.add( element.sub(mean, prec, x).pow(2, prec), prec );
-      }
-    }
-    return result.div(dim, prec);
-  }
-  
-  public Real standardDeviation(int prec, Real result)
-  {
-    try ( Real mean = borrowVariable())
-    {
-      return standardDeviation(prec, mean(prec, mean), result);
-    }  
-  }
-  
-  public Real standardDeviation(int prec, Real mean, Real result)
-  {
-    return variance(prec, mean, result).sqrt(prec);
-  }
-  
  
+  
   @Override
   public int dim()
   {
