@@ -227,7 +227,6 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       elementFieldName = null;
     }
 
-    // Cases 4 & 8: argumentDependsOnInput with scalar codomain needs indeterminate
     if (argumentDependsOnInput && hasScalarCodomain())
     {
       indeterminateFieldName = expression.newIntermediateVariable("indeterminate",
@@ -238,20 +237,12 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
     compileArgFunction();
 
-    // Register class initializer for Cases 1-4 (αβ constant)
-    // Cases 1,2: init() + evaluate(null)
-    // Case 3: init() only (evaluate in generate with domain input)
-    // Case 4: init() + evaluate(indeterminate)
     if (!αβDependsOnInput())
     {
       expression.registerInitializer(this::generateHypergeometricFunctionInitializer);
     }
   }
 
-  /**
-   * Generate code to initialize the indeterminate field to identity polynomial.
-   * Called in class initializer for Cases 4 & 8.
-   */
   public void generateIndeterminateInitializer(MethodVisitor mv)
   {
     expression.loadThisFieldOntoStack(mv, indeterminateFieldName, functionalType());
@@ -429,8 +420,6 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     }
     else if (argumentDependsOnInput && !hasScalarCodomain())
     {
-      // Case 3: αβ constant (init in initializer), but need evaluate() here with
-      // domain input
       loadHypergeometricFunctionOntoStack(mv);
       loadInputParameter(mv);
       mv.visitLdcInsn(1);
@@ -448,9 +437,6 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       return mv;
     }
 
-    // Cases 1,2,4,6,8 with scalar codomain: element already populated, evaluate at
-    // scalar input
-    // Cases 1,5 without scalar codomain: already handled above
     if (isNullaryFunctionOrHasScalarCodomain())
     {
       if (resultType.equals(elementType))
