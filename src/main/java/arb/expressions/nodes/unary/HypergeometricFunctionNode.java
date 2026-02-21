@@ -111,11 +111,21 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                   || ComplexPolynomial.class.isAssignableFrom(expression.coDomainType);
   }
 
-  public boolean                  isReal;
+  public boolean isReal()
+  {
+    return Real.class.equals(scalarType()) || Fraction.class.equals(scalarType())
+                  || Integer.class.equals(scalarType());
+  }
 
-  public boolean                  isComplex;
+  public boolean isComplex()
+  {
+    return Complex.class.equals(scalarType()) || ComplexFraction.class.equals(scalarType());
+  }
 
-  public Class<?>                 scalarType;
+  public Class<?> scalarType()
+  {
+    return Compiler.scalarType(expression.coDomainType);
+  }
 
   public Class<?>                 nullaryFunctionClass;
 
@@ -159,18 +169,16 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
   public void initialize()
   {
-    scalarType                           = Compiler.scalarType(expression.coDomainType);
 
-    isReal                               = Real.class.equals(scalarType)
-                  || Fraction.class.equals(scalarType) || Integer.class.equals(scalarType);
-
-    isComplex                            =
-              Complex.class.equals(scalarType) || ComplexFraction.class.equals(scalarType);
+    
 
     hasScalarCodomain                    =
                       expression.hasScalarCodomain() || expression.isFunctional();
     isNullaryFunctionOrHasScalarCodomain = expression.isNullaryFunction() || hasScalarCodomain;
 
+    var isReal = isReal();
+    var isComplex = isComplex();
+    
     if (isPolynomial())
     {
       functionalType              = isReal ? RealPolynomial.class : ComplexPolynomial.class;
@@ -535,6 +543,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
   protected void generateInitCall(MethodVisitor mv)
   {
+    var scalarType = scalarType();
     α.generate(mv, scalarType);
     β.generate(mv, scalarType);
 
