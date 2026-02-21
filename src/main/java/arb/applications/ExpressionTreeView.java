@@ -266,8 +266,8 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
 
   protected TreeTableColumn<Node<D, C, F>, String> newNodeTypeResultCol()
   {
-    TreeTableColumn<Node<D, C, F>,
-                  String> nodeTypeResultColumn = new TreeTableColumn<>("Result Type");
+    TreeTableColumn<Node<D, C, F>, String> nodeTypeResultColumn =
+                                                                new TreeTableColumn<>("Result Type");
     nodeTypeResultColumn.setCellValueFactory(param ->
     {
 
@@ -500,7 +500,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     else if (functionType.equals(NullaryFunction.class))
     {
       domainTypeBox.getSelectionModel().select(Object.class);
-    }   
+    }
     else if (functionType.equals(IntegerFunction.class))
     {
       selectTypes(Integer.class, Integer.class);
@@ -775,7 +775,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
         {
           result = instance.evaluate(input, 128);
         }
-        if (result instanceof Named namedResult)
+        if (result instanceof Named namedResult && namedResult.isRenameable())
         {
           namedResult.setName("result");
         }
