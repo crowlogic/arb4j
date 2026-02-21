@@ -127,7 +127,13 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     return Compiler.scalarType(expression.coDomainType);
   }
 
-  public Class<?> nullaryFunctionClass;
+  public Class<?> nullaryFunctionClass()
+  {
+    return isPolynomial() ? isReal() ? RealPolynomialNullaryFunction.class
+                                     : ComplexPolynomialNullaryFunction.class
+                       : isReal() ? RationalNullaryFunction.class
+                       : ComplexRationalNullaryFunction.class;
+  }
 
   public Class<?> inputDependentArgFunctionClass;
 
@@ -145,7 +151,11 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
   public FunctionMapping<?, ?, ?> argFunctionMapping;
 
-  public Class<?>                 functionalType;
+  public Class<?> functionalType()
+  {
+    return isPolynomial() ? isReal() ? RealPolynomial.class : ComplexPolynomial.class
+                       : isReal() ? RationalFunction.class : ComplexRationalFunction.class;
+  }
 
   public HypergeometricFunctionNode(Expression<D, R, F> expression)
   {
@@ -181,9 +191,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
     if (isPolynomial())
     {
-      functionalType              = isReal ? RealPolynomial.class : ComplexPolynomial.class;
-      nullaryFunctionClass        = isReal ? RealPolynomialNullaryFunction.class
-                                           : ComplexPolynomialNullaryFunction.class;
+
       hypergeometricFunctionClass =
                                   isReal ? RealHypergeometricPolynomialFunction.class
                                          : isComplex ? ComplexHypergeometricPolynomialFunction.class
@@ -194,19 +202,6 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       hypergeometricFunctionClass = isReal ? RationalHypergeometricFunction.class
                                            : isComplex ? ComplexRationalHypergeometricFunction.class
                                            : null;
-      if (isRational())
-
-      {
-        functionalType       = isReal ? RationalFunction.class : ComplexRationalFunction.class;
-        nullaryFunctionClass = isReal ? RationalNullaryFunction.class
-                                      : ComplexRationalNullaryFunction.class;
-      }
-      else
-      {
-        functionalType       = isReal ? RationalFunction.class : ComplexRationalFunction.class;
-        nullaryFunctionClass = isReal ? RationalNullaryFunction.class
-                                      : ComplexRationalNullaryFunction.class;
-      }
 
     }
 
@@ -244,7 +239,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     if (argumentDependsOnInput && hasScalarCodomain())
     {
       indeterminateFieldName = expression.newIntermediateVariable("indeterminate",
-                                                                  functionalType,
+                                                                  functionalType(),
                                                                   true);
       expression.registerInitializer(this::generateIndeterminateInitializer);
     }
@@ -267,8 +262,8 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
    */
   public void generateIndeterminateInitializer(MethodVisitor mv)
   {
-    expression.loadThisFieldOntoStack(mv, indeterminateFieldName, functionalType);
-    invokeVirtualMethod(mv, functionalType, "identity", functionalType);
+    expression.loadThisFieldOntoStack(mv, indeterminateFieldName, functionalType());
+    invokeVirtualMethod(mv, functionalType(), "identity", functionalType());
     mv.visitInsn(POP); // identity() returns this, discard
   }
 
@@ -281,16 +276,16 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     if (argumentDependsOnInput)
     {
       // Arg depends on input: compile as Function<FunctionalType, FunctionalType>
-      argDomainType    = functionalType;
-      argCoDomainType  = functionalType;
+      argDomainType    = functionalType();
+      argCoDomainType  = functionalType();
       argFunctionClass = Function.class;
     }
     else
     {
       // Arg is constant: compile as NullaryFunction returning functional type
       argDomainType    = Object.class;
-      argCoDomainType  = functionalType;
-      argFunctionClass = nullaryFunctionClass;
+      argCoDomainType  = functionalType();
+      argFunctionClass = nullaryFunctionClass();
     }
 
     var argExpression = new Expression<>(argDomainType,
@@ -327,28 +322,14 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     expression.referencedFunctions.put(argFunctionFieldName, argFunctionMapping);
   }
 
-  /**
-   * Generate class initializer code for Cases 1-4 (αβ constant).
-   * 
-   * Case 1: init() + evaluate(null) → direct return Case 2: init() +
-   * evaluate(null) → element populated Case 3: init() only (evaluate needs domain
-   * input from caller) Case 4: init() + evaluate(indeterminate) → element
-   * populated symbolically
-   */
   public void generateHypergeometricFunctionInitializer(MethodVisitor mv)
   {
     expression.insideInitializer = true;
 
-    // Always call init() for Cases 1-4
     loadHypergeometricFunctionOntoStack(mv);
     generateInitCall(mv);
-    mv.visitInsn(POP); // Discard init() return
+    mv.visitInsn(POP);
 
-    // Call evaluate() to populate element when appropriate
-    // Cases 1,2: !argumentDependsOnInput → pass null
-    // Case 4: argumentDependsOnInput && hasScalarCodomain → pass indeterminate
-    // Case 3: argumentDependsOnInput && !hasScalarCodomain → skip (needs domain
-    // input)
     if (isNullaryFunctionOrHasScalarCodomain())
     {
       boolean canEvaluateInInitializer = !argumentDependsOnInput
@@ -360,12 +341,10 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
         if (argumentDependsOnInput)
         {
-          // Case 4: pass indeterminate for symbolic computation
-          expression.loadThisFieldOntoStack(mv, indeterminateFieldName, functionalType);
+          expression.loadThisFieldOntoStack(mv, indeterminateFieldName, functionalType());
         }
         else
         {
-          // Cases 1,2: pass null (NullaryFunction ignores input)
           mv.visitInsn(ACONST_NULL);
         }
 
@@ -393,29 +372,22 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
   {
     expression.insideInitializer = false;
 
-    // Cases 5-8: αβDependsOnInput, must call init() here
-    // Case 3: argumentDependsOnInput && !hasScalarCodomain, must call evaluate()
-    // here
     if (αβDependsOnInput())
     {
-      // Cases 5-8: call init() in generate()
       loadHypergeometricFunctionOntoStack(mv);
       generateInitCall(mv);
       mv.visitInsn(POP); // Discard init() return
 
       if (isNullaryFunctionOrHasScalarCodomain())
       {
-        // Cases 6 & 8: need to populate element
         loadHypergeometricFunctionOntoStack(mv);
 
         if (argumentDependsOnInput)
         {
-          // Case 8: pass indeterminate for symbolic computation
-          expression.loadThisFieldOntoStack(mv, indeterminateFieldName, functionalType);
+          expression.loadThisFieldOntoStack(mv, indeterminateFieldName, functionalType());
         }
         else
         {
-          // Case 6: pass null (NullaryFunction ignores input)
           mv.visitInsn(ACONST_NULL);
         }
 
@@ -551,7 +523,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     expression.loadThisFieldOntoStack(mv, argFunctionFieldName, actualFieldType);
 
     // Call the appropriate init overload based on arg dependency
-    Class<?> argParamType = argumentDependsOnInput ? Function.class : nullaryFunctionClass;
+    Class<?> argParamType = argumentDependsOnInput ? Function.class : nullaryFunctionClass();
 
     invokeVirtualMethod(mv,
                         hypergeometricFunctionClass,
