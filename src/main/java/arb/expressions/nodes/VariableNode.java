@@ -447,10 +447,9 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return this;
   }
 
-
-  private VariableNode<?, ?, ?> resolve(VariableReference<D, R, F> ref)
+  private VariableNode<?, ?, ?> resolveBoundVariable()
   {
-    final VariableNode<?,?,?>[] bound = new VariableNode[1];   
+    final VariableNode<?, ?, ?>[] bound = new VariableNode[1];
 
     if (expression != null)
     {
@@ -458,7 +457,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       {
         // 1) Check independent variable in this scope
         var iv = e.independentVariable;
-        if (iv != null && ref.equals(iv.reference))
+        if (iv != null && reference.equals(iv.reference))
         {
           if (e != expression)
           {
@@ -472,7 +471,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
         // 2) Check indeterminates in this scope
         for (var v : e.getIndeterminateVariables())
         {
-          if (ref.equals(v.reference))
+          if (reference.equals(v.reference))
           {
             if (e != expression)
             {
@@ -579,13 +578,13 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return this;
     }
 
-    // 3) Bind in current or ancestor scope (combined)
-    var bound = resolve(reference);
+    // 3) Bind in current or upstream scope (combined)
+    var bound = resolveBoundVariable();
     if (bound != null)
     {
       if (Expression.traceNodes)
       {
-        log.debug("=== resolveReference: {} FOUND in ancestor, upstreamInput={}, upstreamIndeterminate={}, referencedVariables.containsKey={}",
+        log.debug("=== resolveReference: {} FOUND in upstream, upstreamInput={}, upstreamIndeterminate={}, referencedVariables.containsKey={}",
                   reference.name,
                   upstreamInput,
                   upstreamIndeterminate,
@@ -605,7 +604,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
       if (Expression.traceNodes)
       {
-        log.debug("=== resolveReference: {} resolved from ancestor, isIndependent={}, isIndeterminate={}, type={}",
+        log.debug("=== resolveReference: {} resolved from upstream, isIndependent={}, isIndeterminate={}, type={}",
                   reference.name,
                   isIndependent,
                   isIndeterminate,
@@ -676,7 +675,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                   + getName()
                                   + " because it is the independent variable of "
                                   + this
-                                  + " or one of its upstream(ancestor) expressions");
+                                  + " or one of its upstream(upstream) expressions");
     }
     expression.registerReferencedVariable(this);
     expression.pushIndeterminateVariable(this);
@@ -750,7 +749,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     else if (isIndeterminate)
     {
       returnType = expression.coDomainType;
-    }    
+    }
     else
     {
       returnType = reference.type();
