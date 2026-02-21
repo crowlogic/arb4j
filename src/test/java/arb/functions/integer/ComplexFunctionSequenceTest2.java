@@ -27,8 +27,8 @@ public class ComplexFunctionSequenceTest2 extends
   public void testComplexFunctionSequenceDividedByRealNumber()
   {
     var context = new Context(Real.named("r").set("1",128));    
-    var seq = ComplexFunctionSequence.express("seq:n->t->sin(t^n)",context);
-    var a = ComplexFunctionSequence.express("divseq:n->t->seq(n)(t)/r",context);
+    var seq = ComplexFunctionSequence.express("seq:n➔t➔sin(tⁿ)",context);
+    var a = ComplexFunctionSequence.express("divseq:n➔t➔seq(n)(t)/r",context);
     ComplexFunction a3 = a.apply(3);
     ComplexFunction a4 = a.apply(4);
     var y = a3.eval(2.3, new Complex());
