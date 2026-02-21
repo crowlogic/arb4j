@@ -89,17 +89,21 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                   || β.dependsOn(expression.independentVariable);
   }
 
-  public boolean                  argumentDependsOnInput;
+  public boolean  argumentDependsOnInput;
 
-  public String                   elementFieldName;
+  public String   elementFieldName;
 
-  public String                   argFunctionFieldName;
+  public String   argFunctionFieldName;
 
-  String                          indeterminateFieldName;
+  String          indeterminateFieldName;
 
-  public Class<?>                 argFunctionClass;
+  public Class<?> argFunctionClass;
 
-  public boolean                  isRational;
+  public boolean isRational()
+  {
+    return RationalFunction.class.isAssignableFrom(expression.coDomainType)
+                  || ComplexRationalFunction.class.isAssignableFrom(expression.coDomainType);
+  }
 
   public boolean                  isPolynomial;
 
@@ -118,8 +122,6 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
   public boolean                  hasScalarCodomain;
 
   private Class<?>                elementType;
-
-  private boolean                 isFunctional;
 
   public FunctionMapping<?, ?, ?> argFunctionMapping;
 
@@ -154,12 +156,6 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
   public void initialize()
   {
     scalarType                           = Compiler.scalarType(expression.coDomainType);
-    isFunctional                         = Function.class.isAssignableFrom(expression.coDomainType)
-                  && expression.isFunctional();
-
-    isRational                           =
-               RationalFunction.class.isAssignableFrom(expression.coDomainType)
-                             || ComplexRationalFunction.class.isAssignableFrom(expression.coDomainType);
 
     isPolynomial                         =
                  RealPolynomial.class.isAssignableFrom(expression.coDomainType)
@@ -182,7 +178,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       nullaryFunctionClass = isReal ? RealPolynomialNullaryFunction.class
                                     : ComplexPolynomialNullaryFunction.class;
     }
-    else if (isRational)
+    else if (isRational())
     {
       functionalType       = isReal ? RationalFunction.class : ComplexRationalFunction.class;
       nullaryFunctionClass = isReal ? RationalNullaryFunction.class
@@ -222,7 +218,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     if (isNullaryFunctionOrHasScalarCodomain)
     {
       elementType = expression.coDomainType;
-      if (isRational)
+      if (isRational())
       {
         elementType = isReal ? RationalFunction.class : isComplex ? ComplexRationalFunction.class
                              : null;
