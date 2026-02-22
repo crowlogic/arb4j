@@ -7,6 +7,7 @@ import java.util.*;
 
 import org.objectweb.asm.*;
 import org.objectweb.asm.signature.SignatureWriter;
+import org.objectweb.asm.util.CheckClassAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,6 +65,10 @@ public class Compiler
   private final static Logger             log                =
                                               LoggerFactory.getLogger(Compiler.class);
 
+  public static boolean                   verifyBytecode     =
+                                                         Boolean.valueOf(System.getProperty("arb4j.verifyBytecode",
+                                                                                            "false"));
+
   public static HashSet<Class<?>>         complexScalarTypes =
                                                              new HashSet<>(Arrays.asList(Complex.class,
                                                                                          ComplexPolynomial.class,
@@ -91,27 +96,27 @@ public class Compiler
 
   static
   {
-    typePrefixes.put(AlgebraicNumber.class, "𝔸");
-    typePrefixes.put(Real.class, "ℝ");
-    typePrefixes.put(Complex.class, "ℂ");
-    typePrefixes.put(Integer.class, "ℤ");
-    typePrefixes.put(RealPolynomial.class, "Xℝ");
-    typePrefixes.put(ComplexPolynomial.class, "Xℂ");
-    typePrefixes.put(RealMatrix.class, "ℝᵐˣⁿ");
-    typePrefixes.put(ComplexMatrix.class, "ℂᵐˣⁿ");
-    typePrefixes.put(RationalFunction.class, "ℚ");
-    typePrefixes.put(ComplexRationalFunction.class, "ℚℂ");
+    typePrefixes.put(AlgebraicNumber.class, "\uD835\uDD38");
+    typePrefixes.put(Real.class, "\u211D");
+    typePrefixes.put(Complex.class, "\u2102");
+    typePrefixes.put(Integer.class, "\u2124");
+    typePrefixes.put(RealPolynomial.class, "X\u211D");
+    typePrefixes.put(ComplexPolynomial.class, "X\u2102");
+    typePrefixes.put(RealMatrix.class, "\u211D\u1D50\u02E3\u207F");
+    typePrefixes.put(ComplexMatrix.class, "\u2102\u1D50\u02E3\u207F");
+    typePrefixes.put(RationalFunction.class, "\u211A");
+    typePrefixes.put(ComplexRationalFunction.class, "\u211A\u2102");
     typePrefixes.put(Fraction.class, "q");
     typePrefixes.put(LommelPolynomial.class, "XR");
-    typePrefixes.put(RationalHypergeometricFunction.class, "ℚF");
-    typePrefixes.put(RealHypergeometricPolynomialFunction.class, "XℝF");
-    typePrefixes.put(ComplexHypergeometricPolynomialFunction.class, "XℂF");
-    typePrefixes.put(ComplexRationalHypergeometricFunction.class, "ℚℂF");
-    typePrefixes.put(ComplexFraction.class, "fℂ");
+    typePrefixes.put(RationalHypergeometricFunction.class, "\u211AF");
+    typePrefixes.put(RealHypergeometricPolynomialFunction.class, "X\u211DF");
+    typePrefixes.put(ComplexHypergeometricPolynomialFunction.class, "X\u2102F");
+    typePrefixes.put(ComplexRationalHypergeometricFunction.class, "\u211A\u2102F");
+    typePrefixes.put(ComplexFraction.class, "f\u2102");
     typePrefixes.put(SphericalBesselFunction.class, "sph");
-    typePrefixes.put(IntegerPolynomial.class, "Xℤ");
+    typePrefixes.put(IntegerPolynomial.class, "X\u2124");
     typePrefixes.put(Function.class, "F");
-    typePrefixes.put(RealSequence.class, "Sℝ");
+    typePrefixes.put(RealSequence.class, "S\u211D");
   }
 
   public static void addNullCheckForField(MethodVisitor mv,
@@ -208,7 +213,12 @@ public class Compiler
 
   public static ClassVisitor constructClassVisitor()
   {
-    return new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+    ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+    if (verifyBytecode)
+    {
+      return new CheckClassAdapter(cw);
+    }
+    return cw;
   }
 
   public static MethodVisitor
