@@ -80,7 +80,7 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
       mv.visitLdcInsn(derivativeOrder);
       mv.visitInsn(Opcodes.IADD);
     }
-    invokeVirtualMethod(mv, polyClass, "fitLength", polyClass, int.class);
+    generateVirtualMethodInvocation(mv, polyClass, "fitLength", polyClass, int.class);
     pop(mv);
 
     // h.setLength(order + derivativeOrder)
@@ -91,22 +91,22 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
       mv.visitLdcInsn(derivativeOrder);
       mv.visitInsn(Opcodes.IADD);
     }
-    invokeVirtualMethod(mv, polyClass, "setLength", void.class, int.class);
+    generateVirtualMethodInvocation(mv, polyClass, "setLength", void.class, int.class);
 
     // h.get(0).set(t)
     mv.visitVarInsn(Opcodes.ALOAD, hSlot);
     mv.visitInsn(Opcodes.ICONST_0);
-    invokeVirtualMethod(mv, polyClass, "get", scalarType, int.class);
+    generateVirtualMethodInvocation(mv, polyClass, "get", scalarType, int.class);
     loadInputParameter(mv);
     cast(mv, scalarType);
-    invokeVirtualMethod(mv, scalarType, "set", scalarType, scalarType);
+    generateVirtualMethodInvocation(mv, scalarType, "set", scalarType, scalarType);
     pop(mv);
 
     // h.get(1).one()
     mv.visitVarInsn(Opcodes.ALOAD, hSlot);
     mv.visitInsn(Opcodes.ICONST_1);
-    invokeVirtualMethod(mv, polyClass, "get", scalarType, int.class);
-    invokeVirtualMethod(mv, scalarType, "one", scalarType);
+    generateVirtualMethodInvocation(mv, polyClass, "get", scalarType, int.class);
+    generateVirtualMethodInvocation(mv, scalarType, "one", scalarType);
     pop(mv);
 
     // out.fitLength(order + derivativeOrder)
@@ -117,7 +117,7 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
       mv.visitLdcInsn(derivativeOrder);
       mv.visitInsn(Opcodes.IADD);
     }
-    invokeVirtualMethod(mv, polyClass, "fitLength", polyClass, int.class);
+    generateVirtualMethodInvocation(mv, polyClass, "fitLength", polyClass, int.class);
     pop(mv);
 
     // out.setLength(order + derivativeOrder)
@@ -128,7 +128,7 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
       mv.visitLdcInsn(derivativeOrder);
       mv.visitInsn(Opcodes.IADD);
     }
-    invokeVirtualMethod(mv, polyClass, "setLength", void.class, int.class);
+    generateVirtualMethodInvocation(mv, polyClass, "setLength", void.class, int.class);
 
     // arblib.arb_poly_riemann_siegel_theta_series(out, h, order + derivativeOrder,
     // bits)
@@ -155,15 +155,15 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
     loadResultParameter(mv);
     cast(mv, scalarType);
     mv.visitVarInsn(Opcodes.ILOAD, iSlot);
-    invokeVirtualMethod(mv, scalarType, "get", scalarType, int.class);
+    generateVirtualMethodInvocation(mv, scalarType, "get", scalarType, int.class);
 
     mv.visitVarInsn(Opcodes.ALOAD, outSlot);
     mv.visitLdcInsn(derivativeOrder);
     mv.visitVarInsn(Opcodes.ILOAD, iSlot);
     mv.visitInsn(Opcodes.IADD);
-    invokeVirtualMethod(mv, polyClass, "get", scalarType, int.class);
+    generateVirtualMethodInvocation(mv, polyClass, "get", scalarType, int.class);
 
-    invokeVirtualMethod(mv, scalarType, "set", scalarType, scalarType);
+    generateVirtualMethodInvocation(mv, scalarType, "set", scalarType, scalarType);
     pop(mv);
 
     // i++
@@ -174,11 +174,11 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
 
     // h.close()
     mv.visitVarInsn(Opcodes.ALOAD, hSlot);
-    invokeVirtualMethod(mv, polyClass, "close", void.class);
+    generateVirtualMethodInvocation(mv, polyClass, "close", void.class);
 
     // out.close()
     mv.visitVarInsn(Opcodes.ALOAD, outSlot);
-    invokeVirtualMethod(mv, polyClass, "close", void.class);
+    generateVirtualMethodInvocation(mv, polyClass, "close", void.class);
 
     // return result
     loadResultParameter(mv);

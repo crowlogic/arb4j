@@ -291,7 +291,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (Integer.class.equals(indexType))
     {
-      Compiler.invokeVirtualMethod(mv, reference.type(), "get", reference.type(), indexType);
+      Compiler.generateVirtualMethodInvocation(mv, reference.type(), "get", reference.type(), indexType);
     }
     else
     {
@@ -353,7 +353,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
         expression.allocateIntermediateVariable(mv, reference.type);
       }
     }
-    Compiler.invokeVirtualMethod(mv, reference.type, "identity", reference.type);
+    Compiler.generateVirtualMethodInvocation(mv, reference.type, "identity", reference.type);
   }
 
   @Override

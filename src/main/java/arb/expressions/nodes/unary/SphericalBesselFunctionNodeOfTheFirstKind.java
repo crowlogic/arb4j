@@ -142,7 +142,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
 
   public MethodVisitor invokeEvaluationMethod(MethodVisitor mv, Class<?> outType)
   {
-    return Compiler.invokeVirtualMethod(mv,
+    return Compiler.generateVirtualMethodInvocation(mv,
                                         SphericalBesselFunction.class,
                                         "evaluate",
                                         expression.coDomainType,
@@ -162,7 +162,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
   {
     loadFunctionFieldOntoStack(mv);
     generateOrder(mv);
-    Compiler.invokeVirtualMethod(mv,
+    Compiler.generateVirtualMethodInvocation(mv,
                                  SphericalBesselFunction.class,
                                  "setOrder",
                                  SphericalBesselFunction.class,

@@ -2,7 +2,6 @@ package arb.expressions.nodes.unary;
 
 import static arb.expressions.Compiler.cast;
 import static arb.expressions.Compiler.loadInputParameter;
-import static org.objectweb.asm.Opcodes.GOTO;
 
 import java.util.List;
 import java.util.Map.Entry;
@@ -217,18 +216,19 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
 
     for (int i = 0; i < labels.length; i++)
     {
+      Compiler.designateLabel(mv, labels[i]);
+
       mv.visitLabel(labels[i]);
       var ithBranch     = branches.get(i);
       var ithBranchType = ithBranch.type();
 
       ithBranch.generate(mv, ithBranchType);
-      mv.visitJumpInsn(GOTO, endSwitch);
+      Compiler.jumpTo(mv, endSwitch);
     }
-
-    mv.visitLabel(defaultLabel);
+    Compiler.designateLabel(mv, defaultLabel);
 
     super.generate(mv, resultType);
-    mv.visitLabel(endSwitch);
+    Compiler.designateLabel(mv, endSwitch);
 
     return mv;
   }

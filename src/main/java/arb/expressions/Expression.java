@@ -1879,7 +1879,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       duplicateTopOfTheStack(mv); // funcInst, funcInst
       getField(mv, functional.className, varName, fieldDescriptor); // funcInst, field (non-null)
       loadThisFieldOntoStack(mv, varName, varType); // funcInst, field, this.var
-      invokeVirtualMethod(mv, varType, "set", varType, varType); // funcInst, retVal
+      generateVirtualMethodInvocation(mv, varType, "set", varType, varType); // funcInst, retVal
       pop(mv); // funcInst
     }
   }
@@ -3409,7 +3409,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 // Stack: [funcInst, funcInst.field] (guaranteed non-null)
     independentVariable.generate(mv, domainType);
 // Stack: [funcInst, funcInst.field, indepVarValue]
-    invokeVirtualMethod(mv, domainType, "set", domainType, domainType);
+    generateVirtualMethodInvocation(mv, domainType, "set", domainType, domainType);
 // Stack: [funcInst, returnValue]
     mv.visitInsn(Opcodes.POP);
 // Stack: [funcInst]

@@ -370,7 +370,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   protected void incrementIndex(MethodVisitor mv)
   {
-    invokeVirtualMethod(loadIndexVariable(mv), Integer.class, "increment", Integer.class);
+    generateVirtualMethodInvocation(loadIndexVariable(mv), Integer.class, "increment", Integer.class);
   }
 
   public void initializeResult(MethodVisitor mv,
@@ -379,7 +379,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                String prefix)
   {
     fieldName = expression.allocateIntermediateVariable(mv, prefix, resultType);
-    pop(invokeVirtualMethod(mv, resultType, identityFunction, resultType));
+    pop(generateVirtualMethodInvocation(mv, resultType, identityFunction, resultType));
   }
 
   public void initializeResultVariable(MethodVisitor mv, Class<?> resultType)
@@ -614,7 +614,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       mv.visitFieldInsn(GETFIELD, operandClassInternalName, fieldName, fieldTypeDescriptor);
       loadThisOntoStack(mv);
       mv.visitFieldInsn(GETFIELD, expression.className, fieldName, fieldTypeDescriptor);
-      Compiler.invokeVirtualMethod(mv, fieldType, "set", fieldType, fieldType);
+      Compiler.generateVirtualMethodInvocation(mv, fieldType, "set", fieldType, fieldType);
       mv.visitInsn(Opcodes.POP);
 
       mv.visitLabel(end);
@@ -739,7 +739,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       expression.loadFieldOntoStack(loadThisOntoStack(mv), operandFunctionFieldName, operandDesc);
       mv.visitFieldInsn(GETFIELD, operandFunctionFieldName, varName, varDesc);
       loadFieldFromThis(mv, varName, varType);
-      invokeVirtualMethod(mv, varType, "set", varType, varType);
+      generateVirtualMethodInvocation(mv, varType, "set", varType, varType);
       mv.visitInsn(Opcodes.POP);
 
       if (Expression.traceNodes)
@@ -782,7 +782,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     expression.loadFieldOntoStack(loadThisOntoStack(mv), operandFunctionFieldName, operandDesc);
     mv.visitFieldInsn(GETFIELD, operandFunctionFieldName, varName, varDesc);
     cast(loadInputParameter(mv), varType);
-    invokeVirtualMethod(mv, varType, "set", varType, varType);
+    generateVirtualMethodInvocation(mv, varType, "set", varType, varType);
     mv.visitInsn(Opcodes.POP);
 
     if (Expression.traceNodes)

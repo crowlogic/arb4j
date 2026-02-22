@@ -247,13 +247,13 @@ public class Compiler
 
   public static MethodVisitor generateCallToGetUnsignedIntValue(MethodVisitor mv)
   {
-    invokeVirtualMethod(mv, Integer.class, "getUnsignedIntValue", int.class);
+    generateVirtualMethodInvocation(mv, Integer.class, "getUnsignedIntValue", int.class);
     return mv;
   }
 
   public static MethodVisitor generateCallToLoadUnsignedLong(MethodVisitor mv)
   {
-    invokeVirtualMethod(mv, Integer.class, "getUnsignedValue", long.class);
+    generateVirtualMethodInvocation(mv, Integer.class, "getUnsignedValue", long.class);
     return mv;
   }
 
@@ -584,7 +584,7 @@ public class Compiler
     return invokeMethod(mv, INVOKESTATIC, whichClass, methodName, returnType, argTypes);
   }
 
-  public static MethodVisitor invokeVirtualMethod(MethodVisitor methodVisitor,
+  public static MethodVisitor generateVirtualMethodInvocation(MethodVisitor methodVisitor,
                                                   Class<?> thisClass,
                                                   String methodName,
                                                   Class<?> retType,
@@ -593,10 +593,11 @@ public class Compiler
     return invokeMethod(methodVisitor, thisClass, methodName, retType, false, argTypes);
   }
 
-  public static void jumpTo(org.objectweb.asm.MethodVisitor methodVisitor,
+  public static MethodVisitor jumpTo(org.objectweb.asm.MethodVisitor methodVisitor,
                             org.objectweb.asm.Label label)
   {
     methodVisitor.visitJumpInsn(GOTO, label);
+    return methodVisitor;
   }
 
   public static void jumpToIfGreaterThan(org.objectweb.asm.MethodVisitor methodVisitor,

@@ -112,7 +112,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
       loadBitsOntoStack(mv);
       expression.loadThisFieldOntoStack(mv, elementFieldName, RationalFunction.class);
 
-      invokeVirtualMethod(mv,
+      generateVirtualMethodInvocation(mv,
                           LommelPolynomial.class,
                           "evaluate",
                           Object.class,
@@ -226,7 +226,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     loadBitsOntoStack(mv);
     loadOutputVariableOntoStack(mv, resultType);
 
-    invokeVirtualMethod(mv,
+    generateVirtualMethodInvocation(mv,
                         LommelPolynomial.class,
                         "evaluate",
                         Object.class,

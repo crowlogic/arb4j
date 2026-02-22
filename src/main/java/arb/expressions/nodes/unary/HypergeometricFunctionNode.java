@@ -246,7 +246,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
   public void generateIndeterminateInitializer(MethodVisitor mv)
   {
     expression.loadThisFieldOntoStack(mv, indeterminateFieldName, functionalType());
-    invokeVirtualMethod(mv, functionalType(), "identity", functionalType());
+    generateVirtualMethodInvocation(mv, functionalType(), "identity", functionalType());
     mv.visitInsn(POP); // identity() returns this, discard
   }
 
@@ -457,7 +457,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                                                Class<? extends D> domain,
                                                Class<? extends R> coDomainType)
   {
-    invokeVirtualMethod(mv,
+    generateVirtualMethodInvocation(mv,
                         elementType,
                         "evaluate",
                         resultType,
@@ -474,7 +474,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
   public MethodVisitor generateEvaluateMethodInvocation(MethodVisitor mv, Class<?> type)
   {
-    return invokeVirtualMethod(mv,
+    return generateVirtualMethodInvocation(mv,
                                type,
                                "evaluate",
                                Object.class,
@@ -496,7 +496,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     // Call the appropriate init overload based on arg dependency
     Class<?> argParamType = argumentDependsOnInput ? Function.class : nullaryFunctionClass();
 
-    invokeVirtualMethod(mv,
+    generateVirtualMethodInvocation(mv,
                         hypergeometricFunctionClass(),
                         "init",
                         hypergeometricFunctionClass(),
