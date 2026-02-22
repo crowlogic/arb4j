@@ -2,6 +2,7 @@ package arb.expressions.nodes;
 
 import static arb.expressions.Compiler.*;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -19,6 +20,7 @@ import arb.expressions.Expression;
 import arb.expressions.nodes.binary.*;
 import arb.expressions.nodes.unary.*;
 import arb.functions.Function;
+import arb.utensils.Utensils;
 
 /**
  * <pre>
@@ -105,19 +107,16 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    * Polynomial-like includes: - Constants - The variable itself (x) - Powers of
    * the variable (x^n for constant n) - Sums and products of the above
    * 
-   * @param node     The node to check
    * @param variable The variable
    * @return true if the node is polynomial-like
    */
   public boolean isPolynomialLike(VariableNode<D, R, F> variable)
   {
-    // Constants are polynomial (degree 0)
     if (isScalar() && !dependsOn(variable))
     {
       return true;
     }
 
-    // The variable itself is polynomial (degree 1)
     if (equals(variable))
     {
       return true;
@@ -157,7 +156,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   {
     if (isIndependentOfInput())
     {
-      // Check that all branches are also constant using functional traversal
       final boolean[] allConstant =
       { true };
       accept(node ->
@@ -281,10 +279,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return apply("δ");
   }
 
-  /**
-   * 
-   * @return
-   */
   public Node<D, R, F> θ()
   {
     return apply("θ");
@@ -308,7 +302,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   public abstract boolean dependsOn(VariableNode<D, R, F> variable);
 
   /**
-   * 
    * @return this{@link #differentiate(VariableNode)} with
    *         {@link Expression#independentVariable} passed as the variable to be
    *         differentiated with respect to
@@ -637,16 +630,11 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   {
     if (isResult)
     {
-      // When isResult=true, the result parameter is already on the stack as the
-      // target. Just cast it to the correct type - don't call
-      // generateSetResultInvocation
       Compiler.cast(loadResultParameter(mv), resultType);
       fieldName = "result";
     }
     else
     {
-      // otherwise theres nothing there to hold it so allocate some space for it and
-      // set the field name that references the allocated space
       if (fieldName == null)
       {
         fieldName = expression.allocateIntermediateVariable(mv, resultType);
@@ -654,19 +642,16 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
       return true;
     }
     return false;
-
   }
 
   /**
-   * 
    * @return the type that this node leaves on the stack when
    *         this{@link #generate(MethodVisitor, Class)} is called
    */
   public abstract <C> Class<? extends C> type();
 
   /**
-   * 
-   * @return the string that represents this node in {@link Latex} format
+   * @return the string that represents this node in LaTeX format
    */
   public abstract String typeset();
 
@@ -725,18 +710,49 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return pow(2);
   }
 
-  public <T> T evaluate(Class<T> resultType)
+  /**
+   * Evaluates this node at compile-time, storing the result into the
+   * pre-allocated {@code result} object and returning it (fluent style).
+   * 
+   * Subclasses that support compile-time evaluation override this method. The
+   * caller is responsible for providing a valid, allocated result object.
+   *
+   * @param <T>        the result type
+   * @param resultType the Class of the result
+   * @param result     pre-allocated object to store and return the result in
+   * @return result, with the evaluated value stored in it
+   */
+  public <T> T evaluate(Class<T> resultType, T result)
   {
     assert isConstant() : "cannot evaluate the non-constant node "
                           + this
                           + " of class "
                           + getClass().getSimpleName()
                           + " at compile-time";
-    throw new UnsupportedOperationException("#862: evaluate(Class<T>) not implemented for "
+    throw new UnsupportedOperationException("#862: evaluate(Class<T>, T) not implemented for "
                                             + getClass().getSimpleName()
                                             + " node '"
                                             + this
                                             + "'");
+  }
+
+  /**
+   * Allocating convenience overload. Allocates a new object via its no-arg
+   * constructor and delegates to {@link #evaluate(Class, Object)}.
+   */
+  public <T> T evaluate(Class<T> resultType)
+  {
+    T result = null;
+    try
+    {
+      result = resultType.getDeclaredConstructor().newInstance();
+    }
+    catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+           | InvocationTargetException | NoSuchMethodException e)
+    {
+      Utensils.throwOrWrap(e);
+    }
+    return evaluate(resultType, result);
   }
 
 }

@@ -55,40 +55,44 @@ import arb.functions.Function;
 public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                 Node<D, R, F>
 {
-  /**
-   * Evaluates this literal constant at compile-timis not yet supportede,
-   * returning a Java object representing its value.
-   *
-   * @return {@link java.lang.Integer} for integer literals, {@link Double} for
-   *         decimal literals, {@link Fraction} for fraction literals (e.g. ½),
-   *         {@link Double#POSITIVE_INFINITY} for infinity symbols,
-   *         {@link Math#PI} for π
-   * @throws UnsupportedOperationException if the constant cannot be evaluated at
-   *                                       compile-time (e.g. ⅈ)
-   */
   @Override
-  @SuppressWarnings({ "unchecked", "resource" })
-  public <T> T evaluate(Class<T> resultType)
+  @SuppressWarnings(
+  { "unchecked", "resource" })
+  public <T> T evaluate(Class<T> resultType, T result)
   {
     if (resultType.equals(Integer.class))
     {
+      Integer res = (Integer) result;
+      if (integerValue != null)
+      {
+        res.set(integerValue);
+        return (T) res;
+      }
       if (!isInt)
       {
         throw new UnsupportedTypeConversionException("literal '" + value + "' is not an Integer");
       }
-      return (T) new Integer(value);
+      res.set(value);
+      return (T) res;
     }
 
     if (resultType.equals(Fraction.class))
     {
+      Fraction res = (Fraction) result;
       if (fractionValue != null)
       {
-        return (T) fractionValue;
+        res.set(fractionValue);
+        return (T) res;
+      }
+      if (integerValue != null)
+      {
+        res.set(integerValue);
+        return (T) res;
       }
       if (isInt)
       {
-        Fraction frac = new Fraction().set(value);
-        return (T) frac;
+        res.set(value);
+        return (T) res;
       }
       throw new UnsupportedTypeConversionException("cannot convert literal '"
                                                    + value
@@ -97,25 +101,33 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
 
     if (resultType.equals(Real.class))
     {
-      Real r = new Real();
+      Real res = (Real) result;
 
       if (isDecimal)
       {
-        r.set(value, bits);
-        return (T) r;
+        res.set(value, bits);
+        return (T) res;
       }
 
       if (fractionValue != null)
       {
-        r.set(fractionValue);
-        return (T) r;
+        res.set(fractionValue);
+        return (T) res;
+      }
+
+      if (integerValue != null)
+      {
+        res.set(integerValue);
+        return (T) res;
       }
 
       if (isInt)
       {
-        Integer intVal = new Integer(value);
-        r.set(intVal);
-        return (T) r;
+        try ( Integer intVal = new Integer(value))
+        {
+          res.set(intVal);
+        }
+        return (T) res;
       }
 
       throw new UnsupportedTypeConversionException("compile-time Real evaluation not implemented for literal '"
@@ -163,7 +175,10 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   @Override
   public boolean isNonNegativeIntegerConstant()
   {
-    // TODO: improve this
+    if (integerValue != null)
+    {
+      return integerValue.sign() >= 0;
+    }
     if (isInt)
     {
       try
@@ -200,6 +215,11 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   @Override
   public boolean isHalf()
   {
+    if (fractionValue != null)
+    {
+      return fractionValue.getNumerator().getSignedValue() == 1
+                    && fractionValue.getDenominator().getSignedValue() == 2;
+    }
     String str = toString();
     return str.equals("½") || str.equals("0.5");
   }
@@ -226,6 +246,14 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   @Override
   public boolean isPossiblyNegative()
   {
+    if (integerValue != null)
+    {
+      return integerValue.sign() < 0;
+    }
+    if (fractionValue != null)
+    {
+      return fractionValue.sign() < 0;
+    }
     return value.contains("-");
   }
 
@@ -268,6 +296,8 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
 
   public final Fraction fractionValue;
 
+  public final Integer  integerValue;
+
   public final boolean  isDecimal;
 
   public final boolean  isFraction;
@@ -277,7 +307,6 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     this(expression,
          constantValueString,
          null);
-
   }
 
   public LiteralConstantNode(Expression<D, R, F> expression,
@@ -292,6 +321,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     isImaginary = "ⅈ".equals(value);
     char firstCharOfValue = value.charAt(0);
     fractionValue = Parser.fractions.get(firstCharOfValue);
+    integerValue  = null;
     if (fractionValue != null)
     {
       fieldName  = Parser.fractionFieldNames.get(firstCharOfValue);
@@ -315,9 +345,6 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
       return;
     }
 
-    /**
-     * Maintain a reverse-hashmap of values to LiteralConstantNodes
-     */
     for (var existingConstant : expression.literalConstants.values())
     {
       if (existingConstant.value.equals(value))
@@ -342,9 +369,86 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     expression.literalConstants.put(fieldName, this);
   }
 
+  /**
+   * Constructs a LiteralConstantNode directly from an arb.Integer value,
+   * bypassing string parsing.
+   */
+  public LiteralConstantNode(Expression<D, R, F> expression, Integer intValue)
+  {
+    super(expression);
+    this.integerValue  = intValue;
+    this.value         = intValue.toString();
+    this.isInt         = true;
+    this.isDecimal     = false;
+    this.isImaginary   = false;
+    this.isFraction    = false;
+    this.fractionValue = null;
+
+    for (var existingConstant : expression.literalConstants.values())
+    {
+      if (existingConstant.value.equals(value))
+      {
+        fieldName = existingConstant.fieldName;
+        return;
+      }
+    }
+    fieldName = expression.getNextConstantFieldName(type());
+    expression.literalConstants.put(fieldName, this);
+  }
+
+  /**
+   * Constructs a LiteralConstantNode directly from a Fraction value. If the
+   * denominator is 1, this is stored as an integer literal. Otherwise stored as a
+   * fraction literal with the Fraction object carried directly, no string parsing
+   * involved.
+   */
+  public LiteralConstantNode(Expression<D, R, F> expression, Fraction fraction)
+  {
+    super(expression);
+    long num = fraction.getNumerator().getSignedValue();
+    long den = fraction.getDenominator().getSignedValue();
+    if (den == 1)
+    {
+      this.value         = Long.toString(num);
+      this.isInt         = true;
+      this.isFraction    = false;
+      this.fractionValue = null;
+      this.integerValue  = new Integer(num);
+    }
+    else if (den == -1)
+    {
+      this.value         = Long.toString(-num);
+      this.isInt         = true;
+      this.isFraction    = false;
+      this.fractionValue = null;
+      this.integerValue  = new Integer(-num);
+    }
+    else
+    {
+      this.value         = num + "/" + den;
+      this.isInt         = false;
+      this.isFraction    = true;
+      this.fractionValue = new Fraction();
+      this.fractionValue.set(fraction);
+      this.integerValue = null;
+    }
+    this.isDecimal   = false;
+    this.isImaginary = false;
+
+    for (var existingConstant : expression.literalConstants.values())
+    {
+      if (existingConstant.value.equals(value))
+      {
+        fieldName = existingConstant.fieldName;
+        return;
+      }
+    }
+    fieldName = expression.getNextConstantFieldName(type());
+    expression.literalConstants.put(fieldName, this);
+  }
+
   public ClassVisitor declareField(ClassVisitor classVisitor)
   {
-
     Class<?> type           = type();
     String   typeDescriptor = type.descriptorString();
     if (Expression.trace)
@@ -450,8 +554,8 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
 
   protected MethodVisitor generateFractionConstructor(MethodVisitor methodVisitor)
   {
-    methodVisitor.visitLdcInsn(fractionValue.getNumerator());
-    methodVisitor.visitLdcInsn(fractionValue.getDenominator());
+    methodVisitor.visitLdcInsn(fractionValue.getNumerator().getSignedValue());
+    methodVisitor.visitLdcInsn(fractionValue.getDenominator().getSignedValue());
     methodVisitor.visitMethodInsn(INVOKESPECIAL,
                                   Type.getInternalName(Fraction.class),
                                   "<init>",
@@ -563,23 +667,39 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   @Override
   public boolean isZero()
   {
+    if (integerValue != null)
+    {
+      return integerValue.isZero();
+    }
     return "0".equals(value) || (fractionValue != null && fractionValue.isZero());
   }
 
   @Override
   public boolean isOne()
   {
+    if (integerValue != null)
+    {
+      return integerValue.isOne();
+    }
     return "1".equals(value) || (fractionValue != null && fractionValue.isOne());
   }
 
   @Override
   public boolean isNegOne()
   {
+    if (integerValue != null)
+    {
+      return integerValue.getSignedValue() == -1;
+    }
     return "-1".equals(value);
   }
 
   public Integer asInteger()
   {
+    if (integerValue != null)
+    {
+      return integerValue;
+    }
     assert isInt : this + " is not an integer";
     return new Integer(value);
   }

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import arb.*;
 import arb.Integer;
 import arb.expressions.Expression;
+import arb.expressions.nodes.LiteralConstantNode;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
@@ -15,7 +16,7 @@ import arb.functions.Function;
  * Represents the binary exponentiation operation: left^right<br>
  * 
  * 
- * @author Stephen Crowley ©2024-2025
+ * @author Stephen Crowley ©2024-2026
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends R>> extends
@@ -23,9 +24,6 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
 {
   /**
    * Đ^(α)(t^k) = Γ(k+1)/Γ(k+1-α) * t^(k-α)
-   *
-   * Only applies when the base is the differentiation variable and the exponent
-   * does not depend on it. Otherwise falls back to the default integral form.
    */
   @Override
   public Node<D, R, F> fractionalDerivative(VariableNode<D, R, F> variable, Node<D, R, F> α)
@@ -50,10 +48,6 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public boolean isZero()
   {
-    // base^exponent is zero when base is zero and exponent is not zero
-    // 0^0 is undefined/indeterminate, not zero
-    // 0^n = 0 for n ≠ 0
-    // a^n ≠ 0 for a ≠ 0 (any non-zero base to any power is non-zero)
     return left.isZero() && !right.isZero();
   }
 
@@ -65,12 +59,6 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     return logger;
   }
 
-  /**
-   * Returns true when this exponentiation node has a closed-form antiderivative
-   * via the power rule: ∫x^p dx = x^(p+1)/(p+1). This holds whenever the exponent
-   * is independent of the integration variable, which is enforced by
-   * {@link #integral(VariableNode)}.
-   */
   @Override
   public boolean isEasilyIntegrable()
   {
@@ -84,7 +72,6 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     {
       return true;
     }
-    // Also handle (polynomial)^n
     if (left.isPolynomialLike(variable) && right.isNonNegativeIntegerConstant())
     {
       return true;
@@ -108,18 +95,15 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   {
     if (!right.dependsOn(variable))
     {
-      // Power rule: d/dx[f(x)^n] = n * f(x)^(n-1) * f'(x)
       var newExponent = right.sub(one());
       return right.mul(left.pow(newExponent)).mul(left.differentiate(variable));
     }
 
     if (!left.dependsOn(variable))
     {
-      // Exponential rule: d/dx[a^g(x)] = a^g(x) * g'(x) * ln(a)
       return mul(right.differentiate(variable).mul(left.log()));
     }
 
-    // General case: d/dx[f(x)^g(x)] = f^g * (g*f'/f + g'*ln(f))
     var term1 = right.mul(left.differentiate(variable)).div(left);
     var term2 = right.differentiate(variable).mul(left.log());
     return mul(term1.add(term2));
@@ -137,45 +121,72 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     return true;
   }
 
-  public String format(Node<D, R, F> side)
+  /**
+   * Override evaluate for pow because Fraction.pow takes (Integer, int, Fraction)
+   * not (Fraction, Fraction), and non-integer exponents cannot be folded into
+   * Fraction.
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public <T> T evaluate(Class<T> resultType, T result)
   {
-    return side.isLeaf() ? "%s" : "(%s)";
+    if (resultType.equals(Fraction.class))
+    {
+      if (!(right instanceof LiteralConstantNode<D, R, F> rightConst) || !rightConst.isInt)
+      {
+        throw new UnsupportedOperationException("cannot fold non-integer exponent "
+                                                + right
+                                                + " into Fraction");
+      }
+
+      Fraction res = (Fraction) result;
+      try (Fraction base = new Fraction();
+           Integer exp = new Integer())
+      {
+        left.evaluate(Fraction.class, base);
+        right.evaluate(Integer.class, exp);
+        base.pow(exp, 0, res);
+        return (T) res;
+      }
+    }
+
+    throw new UnsupportedOperationException("ExponentiationNode.evaluate not implemented for "
+                                            + resultType.getName()
+                                            + " on "
+                                            + this);
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    assert !"0".equals(left.toString()) : this + " should have been simplified to 0 or 1";
-
     return super.generate(mv, resultType);
-  }
-
-  @Override
-  public Node<D, R, F> getSquareRootArg()
-  {
-    assert isSquareRoot() : this + " is not a square root";
-    return left;
-  }
-
-  @Override
-  public int hashCode()
-  {
-    return super.hashCode();
   }
 
   @Override
   public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
-    if (right.dependsOn(variable))
+    if (left.equals(variable) && !right.dependsOn(variable))
     {
-      throw new UnsupportedOperationException("TODO: support the special cases where the exponent in "
-                                              + this
-                                              + " depends on "
-                                              + variable);
+      if (right.isNegOne())
+      {
+        return left.log();
+      }
+      var newExponent = right.add(one());
+      return left.pow(newExponent).div(newExponent);
     }
 
-    Node<D, R, F> exponent = right.add(one());
-    return left.pow(exponent).div(exponent);
+    if (!left.dependsOn(variable) && right.equals(variable))
+    {
+      return div(left.log());
+    }
+
+    if (left.equals(variable) && right.isNonNegativeIntegerConstant())
+    {
+      var newExponent = right.add(one());
+      return left.pow(newExponent).div(newExponent);
+    }
+
+    throw new UnsupportedOperationException("Cannot integrate " + this);
   }
 
   @Override
@@ -185,51 +196,30 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   }
 
   @Override
-  public boolean isSquareRoot()
-  {
-    return right.isHalf();
-  }
-
-  @Override
-  public boolean isVariableSquared(VariableNode<D, R, F> variable)
-  {
-    return left.equals(variable) && right.isLiteralConstant() && "2".equals(right.toString());
-  }
-
-  @Override
   public Node<D, R, F> simplify()
   {
-    if (left.isOne())
+    var result = super.simplify();
+    if (result != this)
     {
-      return one();
+      return result;
     }
-    if (right.isOne())
-    {
-      return left.simplify();
 
-    }
     if (right.isZero())
     {
       return one();
     }
-    if (left.isZero())
+
+    if (right.isOne())
     {
-      return right.isZero() ? one() : zero();
+      return left;
     }
-    if (left.isLiteralConstant() && right.isLiteralConstant())
+
+    if (left.isOne())
     {
-      var lconst = left.asLiteralConstant();
-      var rconst = right.asLiteralConstant();
-      if (lconst.isInt && rconst.isInt)
-      {
-        try ( var lint = new Integer(lconst.value); var rint = new Integer(rconst.value);)
-        {
-          var power = lint.pow(rint, 0, rint);
-          return expression.newLiteralConstant(power.toString());
-        }
-      }
+      return one();
     }
-    return super.simplify();
+
+    return this;
   }
 
   @Override
@@ -241,41 +231,14 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   }
 
   @Override
-  public Class<?> type()
-  {
-    if (type != null)
-    {
-      return type;
-    }
-
-    // If the expression is Complex-valued, exponentiation must stay Complex
-    // internally
-    // (do not fall back to AlgebraicNumber/Fraction/etc).
-    if (expression != null && Complex.class.equals(expression.coDomainType))
-    {
-      return type = Complex.class;
-    }
-
-    // Check if base is integer and exponent is a (fraction or integer to handle
-    // possibility of negative values)
-    if ((Integer.class.equals(left.type())
-                  && (Fraction.class.equals(right.type()) || Integer.class.equals(right.type())))
-                  || (left.type().equals(Fraction.class) && right.type().equals(Fraction.class)))
-    {
-      return type = AlgebraicNumber.class;
-    }
-
-    var     superType                    = super.type();
-    boolean rhsIsPossiblyNegativeInteger = right.isPossiblyNegative()
-                  && Integer.class.equals(superType);
-    return type = rhsIsPossiblyNegativeInteger ? Fraction.class : superType;
-  }
-
-  @Override
   public String typeset()
   {
-    return String.format(String.format("{%s}^{%s}", format(left), format(right)),
-                         left.typeset(),
-                         right.typeset());
+    String baseStr = left.typeset();
+    String expStr  = right.typeset();
+    if (right.isHalf())
+    {
+      return String.format("\\sqrt{%s}", baseStr);
+    }
+    return String.format("{%s}^{%s}", baseStr, expStr);
   }
 }

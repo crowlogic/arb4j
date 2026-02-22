@@ -5,6 +5,7 @@ import static arb.expressions.Compiler.loadBitsParameterOntoStack;
 import static arb.utensils.Utensils.indent;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -17,6 +18,7 @@ import arb.Integer;
 import arb.exceptions.CompilerException;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
+import arb.expressions.nodes.LiteralConstantNode;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
@@ -48,41 +50,21 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
   }
 
   @Override
-  public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
-  {
-    assert false : "BinaryOperationNode.differentiate has yet to be implemented as of Feb 17, 2026 8:28:49 PM";
-    return null;
-  }
+  public abstract Node<D, R, F> differentiate(VariableNode<D, R, F> variable);
 
   @Override
-  public Logger getLogger()
-  {
-    assert false : "BinaryOperationNode.getLogger has yet to be implemented as of Feb 17, 2026 8:28:49 PM";
-    return null;
-  }
+  public abstract Logger getLogger();
 
   @Override
-  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
-  {
-    assert false : "BinaryOperationNode.integrate has yet to be implemented as of Feb 17, 2026 8:28:49 PM";
-    return null;
-  }
+  public abstract Node<D, R, F> integral(VariableNode<D, R, F> variable);
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
+  public abstract <E, S, G extends Function<? extends E, ? extends S>>
          Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
-  {
-    assert false : "BinaryOperationNode.spliceInto has yet to be implemented as of Feb 17, 2026 8:28:49 PM";
-    return null;
-  }
+         spliceInto(Expression<E, S, G> newExpression);
 
   @Override
-  public String typeset()
-  {
-    assert false : "BinaryOperationNode.typeset has yet to be implemented as of Feb 17, 2026 8:28:49 PM";
-    return null;
-  }
+  public abstract String typeset();
 
   public static boolean                                          traceSimplify   =
                                                                                Boolean.valueOf(System.getProperty("arb4j.traceBinaryOperationSimplification",
@@ -161,7 +143,6 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     mapTypes(RealSequence.class, Complex.class, ComplexSequence.class);
     mapTypes(ComplexSequence.class, ComplexFunction.class, ComplexFunctionSequence.class);
     mapTypes(ComplexFunctionSequence.class, Real.class, ComplexFunctionSequence.class);
-
   }
 
   public static void mapPolynomialType(Class<?> scalarType, Class<?> polynomialType)
@@ -175,14 +156,6 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     mapTypes(Fraction.class, polynomialType, polynomialType);
   }
 
-  /**
-   * This is implemented as a symmetric equality which means that leftType and
-   * rightType can be exchanged and the result is the same
-   * 
-   * @param leftType
-   * @param rightType
-   * @param resultantType
-   */
   public static void mapTypes(Class<?> leftType, Class<?> rightType, Class<?> resultantType)
   {
     typeMap.computeIfAbsent(leftType, type -> new HashMap<>()).put(rightType, resultantType);
@@ -264,6 +237,138 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
                     || (Objects.equals(left, other.right) && Objects.equals(right, other.left));
     }
     return Objects.equals(left, other.left) && Objects.equals(right, other.right);
+  }
+
+  /**
+   * Compile-time evaluation of this binary operation node. Evaluates both
+   * operands as Fraction, then reflectively invokes the method named by
+   * {@link #operation} on Fraction, passing the right operand and the
+   * pre-allocated result. No switch statement — the operation string is the
+   * method name.
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public <T> T evaluate(Class<T> resultType, T result)
+  {
+    if (resultType.equals(Fraction.class))
+    {
+      Fraction res = (Fraction) result;
+      try (Fraction l = new Fraction();
+           Fraction r = new Fraction())
+      {
+        left.evaluate(Fraction.class, l);
+        right.evaluate(Fraction.class, r);
+        Method method = resolveFractionMethod(operation, l, r, res);
+        method.invoke(l, buildArgs(method, r, res));
+        return (T) res;
+      }
+      catch (Exception e)
+      {
+        throw new CompilerException(String.format("constant folding failed for %s: %s",
+                                                  this,
+                                                  e.getMessage()),
+                                    e);
+      }
+    }
+
+    throw new UnsupportedOperationException("BinaryOperationNode.evaluate not implemented for "
+                                            + resultType.getName()
+                                            + " on "
+                                            + this);
+  }
+
+  /**
+   * Resolves the appropriate Fraction method for the given operation. Tries
+   * (Fraction, Fraction) first, then (Fraction, int, Fraction) for methods that
+   * require a precision parameter.
+   */
+  private static Method resolveFractionMethod(String operation,
+                                              Fraction l,
+                                              Fraction r,
+                                              Fraction res)
+                                              throws NoSuchMethodException
+  {
+    try
+    {
+      return Fraction.class.getMethod(operation, Fraction.class, Fraction.class);
+    }
+    catch (NoSuchMethodException e)
+    {
+      try
+      {
+        return Fraction.class.getMethod(operation, Fraction.class, int.class, Fraction.class);
+      }
+      catch (NoSuchMethodException e2)
+      {
+        try
+        {
+          return Fraction.class.getMethod(operation,
+                                          Integer.class,
+                                          int.class,
+                                          Fraction.class);
+        }
+        catch (NoSuchMethodException e3)
+        {
+          throw new NoSuchMethodException("no Fraction."
+                                          + operation
+                                          + " method found with compatible signature");
+        }
+      }
+    }
+  }
+
+  /**
+   * Builds the argument array for the reflective method invocation based on the
+   * resolved method's parameter types.
+   */
+  private static Object[] buildArgs(Method method, Fraction r, Fraction res)
+  {
+    Class<?>[] paramTypes = method.getParameterTypes();
+    if (paramTypes.length == 2 && paramTypes[0] == Fraction.class
+                  && paramTypes[1] == Fraction.class)
+    {
+      return new Object[]
+      { r, res };
+    }
+    if (paramTypes.length == 3 && paramTypes[0] == Fraction.class && paramTypes[1] == int.class
+                  && paramTypes[2] == Fraction.class)
+    {
+      return new Object[]
+      { r, 0, res };
+    }
+    if (paramTypes.length == 3 && paramTypes[0] == Integer.class && paramTypes[1] == int.class
+                  && paramTypes[2] == Fraction.class)
+    {
+      return new Object[]
+      { r.getNumerator(), 0, res };
+    }
+    throw new IllegalArgumentException("unexpected parameter signature for Fraction."
+                                       + method.getName());
+  }
+
+  /**
+   * Attempts to fold this node into a single LiteralConstantNode if both
+   * operands are literal constants. Uses {@link #evaluate(Class, Object)} to
+   * perform the arithmetic polymorphically — no per-subclass overrides needed.
+   * 
+   * @return a folded LiteralConstantNode, or null if folding is not possible
+   */
+  protected Node<D, R, F> foldConstants()
+  {
+    if (!(left instanceof LiteralConstantNode) || !(right instanceof LiteralConstantNode))
+    {
+      return null;
+    }
+
+    try (Fraction result = new Fraction())
+    {
+      evaluate(Fraction.class, result);
+      return new LiteralConstantNode<>(expression, result);
+    }
+    catch (Exception e)
+    {
+      return null;
+    }
   }
 
   public String formatGenerationParameters(Class<?> resultType)
@@ -375,7 +480,6 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
   @Override
   public List<Node<D, R, F>> getBranches()
   {
-
     var b = new ArrayList<Node<D, R, F>>();
     if (left != null)
     {
@@ -399,8 +503,6 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     int hash = 0;
     if (isCommutative())
     {
-      // For commutative operations, order doesn't matter and since the sum is
-      // order-independent thats what is used as the hash
       int operationHash = Objects.hash(operation, symbol, type());
       int operandsHash  = left.hashCode() + right.hashCode();
       hash = operationHash + operandsHash;
@@ -485,6 +587,20 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
                           oldRight,
                           right);
       }
+    }
+
+    var folded = foldConstants();
+    if (folded != null)
+    {
+      if (traceSimplify)
+      {
+        System.err.printf("%s[%d]   constant fold -> %s%n",
+                          depthIndent(),
+                          simplifyDepth,
+                          folded);
+      }
+      simplifyDepth--;
+      return folded;
     }
 
     if (traceSimplify)
@@ -598,13 +714,6 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
                                               msg));
   }
 
-  /**
-   * symmetric type equality
-   * 
-   * @param a
-   * @param b
-   * @return true if ({@link #left},{@link #right}) in { (a,b) , (b,a) }
-   */
   public boolean typesSymmetricallyEqual(Class<?> a, Class<?> b)
   {
     assert a != null : "a is null";

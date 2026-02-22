@@ -5,7 +5,6 @@ import static java.lang.String.format;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import arb.Fraction;
 import arb.Integer;
 import arb.expressions.Expression;
 import arb.expressions.nodes.*;
@@ -14,7 +13,7 @@ import arb.functions.Function;
 
 /**
  * 
- * @author Stephen Crowley ©2024-2025
+ * @author Stephen Crowley ©2024-2026
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> extends
@@ -82,8 +81,11 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> simplify()
   {
-    left  = left.simplify();
-    right = right.simplify();
+    var result = super.simplify();
+    if (result != this)
+    {
+      return result;
+    }
 
     if (left.isZero())
     {
@@ -94,33 +96,8 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       return left;
     }
-    if (left instanceof LiteralConstantNode<D, R, F> lconst
-                  && right instanceof LiteralConstantNode<D, R, F> rconst)
-    {
-      if (lconst.isInt && rconst.isInt)
-      {
-        try ( var lint = lconst.asInteger(); var rint = rconst.asInteger())
-        {
-          var sum = lint.add(rint, 0, rint);
-          return expression.newLiteralConstant(sum.toString());
-        }
-      }
-      else if (lconst.isFraction && rconst.isFraction)
-      {
-        var lint = lconst.fractionValue;
-        var rint = rconst.fractionValue;
 
-        try ( Fraction sum = lint.add(rint, 0, new Fraction()))
-        {
-          var numerator   = expression.newLiteralConstant(sum.getNumerator().toString());
-          var denominator = expression.newLiteralConstant(sum.getDenominator().toString());
-          return numerator.div(denominator);
-        }
-      }
-
-      return this;
-    }
-    else if (left instanceof DivisionNode<D, R, F> leftDiv
+    if (left instanceof DivisionNode<D, R, F> leftDiv
                   && right instanceof DivisionNode<D, R, F> rightDiv)
     {
       if (areIntegerDivisions(leftDiv, rightDiv))
@@ -129,14 +106,12 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       }
     }
 
-    // Rewrite a + (-b) as a - b, but do NOT re-simplify to avoid ping-pong
     if (right instanceof NegationNode<D, R, F> rightNegation)
     {
       return left.sub(rightNegation.arg);
     }
 
     return this;
-
   }
 
   @Override
