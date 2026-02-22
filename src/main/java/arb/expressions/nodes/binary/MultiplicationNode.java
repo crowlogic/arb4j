@@ -9,6 +9,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import arb.Integer;
 import arb.Polynomial;
 import arb.Quaternion;
 import arb.exceptions.CompilerException;
@@ -112,6 +113,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
+    // Simplify first -- catches e.g. (x-a)*δ(x-a) = 0
     Node<D, R, F> simplified = this.simplify();
     if (simplified.isZero())
     {
@@ -122,9 +124,13 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       return simplified.integral(variable);
     }
 
+    // Flatten the product tree into individual factors
     var factors = new ArrayList<Node<D, R, F>>();
     collectFactors(this, factors);
 
+    // constant factors are ones that don't depend on integration variable and
+    // can thus be pulled out of the integrand , resulting in a more efficient
+    // equivalent computation
     var constantFactors = new ArrayList<Node<D, R, F>>();
     var variableFactors = new ArrayList<Node<D, R, F>>();
     for (var factor : factors)
@@ -139,6 +145,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       }
     }
 
+    // Pull out constant factors: ∫ c·f(t) dt = c · ∫ f(t) dt
     if (!constantFactors.isEmpty() && !variableFactors.isEmpty())
     {
       var constantProduct = buildProduct(constantFactors);
@@ -146,10 +153,16 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       return constantProduct.mul(variableProduct.integral(variable)).simplify();
     }
 
+    // If any factor is a Polynomial-typed function application at the integration
+    // variable, multiply the polynomial by the remaining cofactor at the polynomial
+    // level and integrate the product analytically via PolynomialIntegralNode.
     FunctionalEvaluationNode<D, R, F> polyFactor   = null;
     var                               cofactorList = new ArrayList<Node<D, R, F>>();
     for (var f : variableFactors)
     {
+      // FIXME: handle the case when the argument to the FunctionalEvaluationNode is
+      // some function of the variable rather than strictly equal to the variable
+      // itself
       if (polyFactor == null && f instanceof FunctionalEvaluationNode<D, R, F> fe
                     && Polynomial.class.isAssignableFrom(fe.getFunctionNode().type())
                     && fe.arg.equals(variable))
@@ -170,12 +183,14 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
                                           variable);
     }
 
+    // Try step function integration: ∫ f(x)·θ(x) dx = θ(x) · ∫ f(x) dx (#841)
     var stepResult = integrateStepFunction(variableFactors, variable);
     if (stepResult != null)
     {
       return stepResult.simplify();
     }
 
+    // All factors depend on the variable -- try IBP on all 2-partitions
     var ibpResult = integrateByParts(variableFactors, variable);
     if (ibpResult != null)
     {
@@ -243,20 +258,6 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
                           oldRight,
                           right);
       }
-    }
-
-    var folded = foldConstants();
-    if (folded != null)
-    {
-      if (traceSimplify)
-      {
-        System.err.printf("%s[%d]   constant fold -> %s%n",
-                          depthIndent(),
-                          simplifyDepth,
-                          folded);
-      }
-      simplifyDepth--;
-      return folded;
     }
 
     if (left.isZero() || right.isZero())
@@ -330,6 +331,30 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       return deltaSimplification;
     }
 
+    if (left instanceof LiteralConstantNode<D, R, F> leftConstant
+                  && right instanceof LiteralConstantNode<D, R, F> rightConstant)
+    {
+      if (leftConstant.isInt && rightConstant.isInt)
+      {
+        try ( var lint = new Integer(leftConstant.value);
+              var rint = new Integer(rightConstant.value))
+        {
+          var product = lint.mul(rint, 0, rint);
+          if (traceSimplify)
+          {
+            System.err.printf("%s[%d]   integer folding: %s * %s = %s%n",
+                              depthIndent(),
+                              simplifyDepth,
+                              leftConstant.value,
+                              rightConstant.value,
+                              product);
+          }
+          simplifyDepth--;
+          return expression.newLiteralConstant(product.toString());
+        }
+      }
+    }
+
     if (left instanceof ExponentiationNode<D, R, F> leftExp
                   && right instanceof ExponentiationNode<D, R, F> rightExp)
     {
@@ -392,6 +417,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       }
     }
 
+    // Combine fractions: (a/b) * (c/d) → (a*c)/(b*d)
     if (left instanceof DivisionNode<D, R, F> leftDiv
                   && right instanceof DivisionNode<D, R, F> rightDiv)
     {
@@ -413,6 +439,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       return numerator.div(denominator).simplify();
     }
 
+    // Pull fraction right: expr * (a/b) → (expr*a)/b
     if (right instanceof DivisionNode<D, R, F> rightDiv)
     {
       var numerator = left.mul(rightDiv.left).simplify();
@@ -431,6 +458,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       return numerator.div(rightDiv.right).simplify();
     }
 
+    // Pull fraction left: (a/b) * expr → (a*expr)/b
     if (left instanceof DivisionNode<D, R, F> leftDiv)
     {
       var numerator = leftDiv.left.mul(right).simplify();
@@ -463,9 +491,16 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   /**
    * Applies the sifting property of the Dirac delta function: f(x) * δ(x-a) =
    * f(a) * δ(x-a)
+   *
+   * Substitutes the delta function's root into the multiplier to obtain the
+   * constant f(a). Returns f(a)*δ(x-a), or zero when f(a)=0.
+   *
+   * @return the simplified node, or null if no delta function is present or the
+   *         argument pattern is unrecognized
    */
   private Node<D, R, F> simplifyDeltaMultiplication()
   {
+    // Check if either operand is a delta function
     FunctionNode<D, R, F> delta      = null;
     Node<D, R, F>         multiplier = null;
 
@@ -486,14 +521,18 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
 
     var                   deltaArg   = delta.arg;
 
+    // Find the variable involved
     VariableNode<D, R, F> variable   = multiplier.expression.getIndependentVariable();
 
+    // Extract shift from delta argument: δ(x) → shift=0, δ(x-a) → shift=a
     Node<D, R, F>         deltaShift = Integration.extractShiftFromDeltaArg(deltaArg, variable);
     if (deltaShift == null)
     {
       return null;
     }
 
+    // Apply the sifting property: f(x) * δ(x-a) = f(a) * δ(x-a)
+    // Substitute x = deltaShift into the multiplier to evaluate f(a)
     var evaluated = multiplier.substitute(variable.getName(), deltaShift).simplify();
 
     if (evaluated.isZero())
@@ -501,6 +540,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       return zero();
     }
 
+    // Return f(a) * δ(x-a)
     return evaluated.mul(delta);
   }
 

@@ -6,6 +6,8 @@ import org.objectweb.asm.MethodVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import arb.Fraction;
+import arb.Integer;
 import arb.expressions.Expression;
 import arb.expressions.nodes.*;
 import arb.expressions.nodes.unary.NegationNode;
@@ -13,7 +15,7 @@ import arb.functions.Function;
 
 /**
  * 
- * @author Stephen Crowley ©2024-2026
+ * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>> extends
@@ -73,13 +75,8 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
   @Override
   public Node<D, R, F> simplify()
   {
-    fillInNullLeftHandSide();
-
-    var result = super.simplify();
-    if (result != this)
-    {
-      return result;
-    }
+    left  = left.simplify();
+    right = right.simplify();
 
     if (left.isZero())
     {
@@ -90,13 +87,39 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
     {
       return left;
     }
+    if (left instanceof LiteralConstantNode lconst && right instanceof LiteralConstantNode rconst)
+    {
+      if (lconst.isInt && rconst.isInt)
+      {
+        try ( var lint = new Integer(lconst.value); var rint = new Integer(rconst.value);)
+        {
+          var difference = lint.sub(rint, 0, rint);
+          return expression.newLiteralConstant(difference.toString());
+        }
+      }
+      else if (lconst.isFraction && rconst.isFraction)
+      {
+        var lint = lconst.fractionValue;
+        var rint = rconst.fractionValue;
 
+        try ( Fraction sum = lint.sub(rint, 0, new Fraction()))
+        {
+          var numerator   = expression.newLiteralConstant(sum.getNumerator().toString());
+          var denominator = expression.newLiteralConstant(sum.getDenominator().toString());
+          return numerator.div(denominator);
+        }
+      }
+      return this;
+    }
+
+    // Rewrite a - (-b) as a + b, but do NOT re-simplify to avoid ping-pong
     if (right instanceof NegationNode<D, R, F> rightNegation)
     {
       return left.add(rightNegation.arg);
     }
 
     return this;
+
   }
 
   @Override

@@ -838,11 +838,6 @@ public class Integer implements
     return sign() > 0;
   }
 
-  public boolean isOne()
-  {
-    return arblib.fmpz_is_one(swigCPtr) != 0;
-  }
-
   public boolean isZero()
   {
     return arblib.fmpz_is_zero(swigCPtr) != 0;
@@ -1396,6 +1391,5 @@ public class Integer implements
     assert false : "Field<Integer>.zero has yet to be implemented as of Feb 16, 2026 4:05:30 PM";
     return null;
   }
-
 
 }
