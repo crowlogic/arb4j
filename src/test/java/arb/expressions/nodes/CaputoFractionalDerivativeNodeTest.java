@@ -165,6 +165,21 @@ public class CaputoFractionalDerivativeNodeTest extends
     assertEquals("Đ^(½)(3*t²) at t=2", expected, result.doubleValue(), TOL);
   }
 
+  public void testCaputoDerivativeOfConstantTimesMonomialToo()
+  {
+    var    context  = new Context(Real.named("β").set("0.5", 128).setBounds(0, false, 1, true));
+    var    f        = RealFunction.express("Đ^(β)(3*t²)", context);
+    var    result   = f.evaluate(new Real("2.0",
+                                          128),
+                                 1,
+                                 128,
+                                 new Real());
+    // 3 * Đ^(½)(t²) at t=2 = 3 * (8/(3√π)) * 2^(3/2) = (8/√π) * 2^(3/2)
+    // mpmath: 12.766152972845845694077773917890219791...
+    double expected = 3.0 * (8.0 / (3.0 * Math.sqrt(Math.PI))) * Math.pow(2.0, 1.5);
+    assertEquals("Đ^(½)(3*t²) at t=2", expected, result.doubleValue(), TOL);
+  }
+  
   public void testCaputoDerivativeOfSum()
   {
     var    context  = new Context(Real.named("α").set("0.5", 128).setBounds(0, false, 1, true));

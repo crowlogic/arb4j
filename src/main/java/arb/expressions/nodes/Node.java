@@ -75,20 +75,19 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    * Default: wraps in a CaputoFractionalDerivativeNode (the integral form).
    * Subclasses that have closed-form fractional derivatives override this.
    *
-   * FIXME: the variable of differentiation needs to be made an argument for this
-   * @param variable TODO
-   * @param α the fractional order node
+   * @param variable the variable to be fractionally differentiated with respect
+   *                 to
+   * @param order    the fractional order of differentiation
    * 
    * @return the node representing Đ^(α)(this)
    */
-  public Node<D, R, F> fractionalDerivative(VariableNode<D, R, F> variable, Node<D, R, F> α)
+  public Node<D, R, F> fractionalDerivative(VariableNode<D, R, F> variable, Node<D, R, F> order)
   {
     return new CaputoFractionalDerivativeNode<D, R, F>(expression,
                                                        this,
-                                                       variable, α);
+                                                       variable,
+                                                       order);
   }
-
-  
 
   /**
    * Checks if a node is easily integrable (exp, sin, cos). These functions have
@@ -193,7 +192,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public Node(Expression<D, R, F> expression)
   {
-    assert expression != null : "expression shan't be null";    
+    assert expression != null : "expression shan't be null";
     this.expression = expression;
     this.position   = expression.position;
   }

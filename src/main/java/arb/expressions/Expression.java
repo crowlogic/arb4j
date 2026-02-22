@@ -1091,6 +1091,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return resolvePostfixOperators(node);
   }
 
+  /**
+   * FIXME: add support for specifying the variable of differentiation
+   * 
+   * @return
+   */
   protected Node<D, C, F> resolveCaputoFractionalDerivative()
   {
     var α    = require('^').require('(').resolve();

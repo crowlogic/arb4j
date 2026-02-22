@@ -128,8 +128,9 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     var factors = new ArrayList<Node<D, R, F>>();
     collectFactors(this, factors);
 
-    // Separate constant factors (don't depend on integration variable) from the
-    // rest
+    // constant factors are ones that don't depend on integration variable and
+    // can thus be pulled out of the integrand , resulting in a more efficient
+    // equivalent computation
     var constantFactors = new ArrayList<Node<D, R, F>>();
     var variableFactors = new ArrayList<Node<D, R, F>>();
     for (var factor : factors)
@@ -159,8 +160,12 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     var                               cofactorList = new ArrayList<Node<D, R, F>>();
     for (var f : variableFactors)
     {
+      // FIXME: handle the case when the argument to the FunctionalEvaluationNode is
+      // some function of the variable rather than strictly equal to the variable
+      // itself
       if (polyFactor == null && f instanceof FunctionalEvaluationNode<D, R, F> fe
-                    && Polynomial.class.isAssignableFrom(fe.type()) && fe.arg.equals(variable))
+                    && Polynomial.class.isAssignableFrom(fe.getFunctionNode().type())
+                    && fe.arg.equals(variable))
       {
         polyFactor = fe;
       }
@@ -514,13 +519,13 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       return null;
     }
 
-    var                   deltaArg = delta.arg;
+    var                   deltaArg   = delta.arg;
 
     // Find the variable involved
-    VariableNode<D, R, F> variable = multiplier.expression.getIndependentVariable();
+    VariableNode<D, R, F> variable   = multiplier.expression.getIndependentVariable();
 
     // Extract shift from delta argument: δ(x) → shift=0, δ(x-a) → shift=a
-    Node<D, R, F> deltaShift = Integration.extractShiftFromDeltaArg(deltaArg, variable);
+    Node<D, R, F>         deltaShift = Integration.extractShiftFromDeltaArg(deltaArg, variable);
     if (deltaShift == null)
     {
       return null;

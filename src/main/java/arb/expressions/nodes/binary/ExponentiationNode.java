@@ -7,7 +7,8 @@ import org.slf4j.LoggerFactory;
 import arb.*;
 import arb.Integer;
 import arb.expressions.Expression;
-import arb.expressions.nodes.*;
+import arb.expressions.nodes.Node;
+import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 
 /**
@@ -32,11 +33,13 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     if (left instanceof VariableNode<D, R, F> varNode && !right.dependsOn(varNode))
     {
       var k        = right;
-      var kPlusOne = k.add(one());
+      var kPlusOne = k.add(one()).simplify();
       var numer    = kPlusOne.Γ();
       var denom    = kPlusOne.sub(α).Γ();
       var newPower = k.sub(α);
-      return numer.div(denom).mul(left.pow(newPower));
+      var lhs      = numer.div(denom);
+      var rhs      = left.pow(newPower);
+      return lhs.mul(rhs);
     }
     else
     {
