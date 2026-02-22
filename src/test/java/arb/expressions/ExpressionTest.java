@@ -386,7 +386,7 @@ public class ExpressionTest extends
     assertEquals("F:Σn➔z^(n)/n!*∏k➔αₖ₍ₙ₎{k=1…p}*∏k➔βₖ₍ₙ₎{k=1…q}{n=0…N}", str);
     var transformedExpression = F.substitute("z", RealFunction.parse("2*z"));
     str = transformedExpression.toString();
-    assertEquals("F:Σn➔((((2*z)^n)*Πk➔α[k]⋰n{k=1…p})*Πk➔β[k]⋰n{k=1…q})/n!{n=0…N}", str);
+    assertEquals("F:Σn➔((((2*z)^n)*Πk➔α[k]⋰n{k=1…p})*Πk➔β[k]⋰n{k=1…q})/Γ(n+1){n=0…N}", str);
   }
 
   public void testSubstitutionToo2()
@@ -400,10 +400,10 @@ public class ExpressionTest extends
                                                  "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
                                                  context);
     var    transformedExpression = F.substitute("z", RealFunction.parse("2*z"));
-    String ideal                 = "F:Σn➔(((2*z)^n)*Πk➔α[k]⋰n{k=1…p})/(n!*Πk➔β[k]⋰n{k=1…q}){n=0…N}";
+    String correct                 = "F:Σn➔(((2*z)^n)*Πk➔α[k]⋰n{k=1…p})/(Γ(n+1)*Πk➔β[k]⋰n{k=1…q}){n=0…N}";
     String str                   = transformedExpression.toString();
     // System.out.format("ideal=%s\n str=%s\n", ideal, str );
-    assertEquals(ideal, str);
+    assertEquals(correct, str);
   }
 
   public void testSubstitution()

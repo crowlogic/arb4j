@@ -1,5 +1,7 @@
 package arb.expressions.nodes.unary;
 
+import arb.Fraction;
+import arb.Integer;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
@@ -10,6 +12,10 @@ import arb.functions.Function;
  * <pre>
  *   n! = n*(n - 1)!
  * </pre>
+ * 
+ * When the expression's codomain supports the Γ function (Real, Complex, etc.),
+ * simplify() rewrites this node as Γ(arg+1), which is the analytic continuation
+ * of the factorial and correctly handles non-positive integer arguments.
  * 
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
@@ -33,7 +39,7 @@ public class FactorialNode<D, R, F extends Function<? extends D, ? extends R>> e
   @Override
   public Class<?> type()
   {
-    return arb.Integer.class;
+    return Integer.class;
   }
 
   public FactorialNode(Expression<D, R, F> parser, Node<D, R, F> argument)
@@ -41,6 +47,18 @@ public class FactorialNode<D, R, F extends Function<? extends D, ? extends R>> e
     super("factorial",
           argument,
           parser);
+  }
+
+  @Override
+  public Node<D, R, F> simplify()
+  {
+    arg = arg.simplify();
+    Class<?> coDomain = expression.coDomainType;
+    if (!coDomain.equals(Integer.class) && !coDomain.equals(Fraction.class))
+    {
+      return arg.add(one()).Γ();
+    }
+    return this;
   }
 
   @Override

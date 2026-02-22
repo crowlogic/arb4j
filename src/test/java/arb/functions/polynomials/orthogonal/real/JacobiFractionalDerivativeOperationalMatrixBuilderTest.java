@@ -12,8 +12,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
 
   public void testDefaultConstructor()
   {
-    try ( JacobiFractionalDerivativeOperationalMatrixBuilder builder =
-                                                                     new JacobiFractionalDerivativeOperationalMatrixBuilder())
+    try ( var builder = new JacobiFractionalDerivativeOperationalMatrixBuilder())
     {
       assertNotNull("fractionalOrder should not be null", builder.getFractionalOrder());
       assertEquals("default bits should be 128", 128, builder.getBits());
@@ -22,8 +21,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
 
   public void testSetFractionalOrder()
   {
-    try ( JacobiFractionalDerivativeOperationalMatrixBuilder builder =
-                                                                     new JacobiFractionalDerivativeOperationalMatrixBuilder())
+    try ( var builder = new JacobiFractionalDerivativeOperationalMatrixBuilder())
     {
       try ( Real order = Real.valueOf(0.3))
       {
@@ -37,8 +35,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
 
   public void testSetBits()
   {
-    try ( JacobiFractionalDerivativeOperationalMatrixBuilder builder =
-                                                                     new JacobiFractionalDerivativeOperationalMatrixBuilder())
+    try ( var builder = new JacobiFractionalDerivativeOperationalMatrixBuilder())
     {
       builder.setBits(256);
       assertEquals("bits should be 256", 256, builder.getBits());
@@ -47,8 +44,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
 
   public void testSetBasis()
   {
-    try ( JacobiFractionalDerivativeOperationalMatrixBuilder builder =
-                                                                     new JacobiFractionalDerivativeOperationalMatrixBuilder())
+    try ( var builder = new JacobiFractionalDerivativeOperationalMatrixBuilder())
     {
       try ( Real a = Real.valueOf(0.4); Real b = Real.valueOf(0.6))
       {
@@ -62,8 +58,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
 
   public void testChaining()
   {
-    try ( JacobiFractionalDerivativeOperationalMatrixBuilder builder =
-                                                                     new JacobiFractionalDerivativeOperationalMatrixBuilder())
+    try ( var builder = new JacobiFractionalDerivativeOperationalMatrixBuilder())
     {
       try ( Real order = Real.valueOf(0.5))
       {
@@ -77,8 +72,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
 
   public void testBuildMatrix()
   {
-    try ( JacobiFractionalDerivativeOperationalMatrixBuilder builder =
-                                                                     new JacobiFractionalDerivativeOperationalMatrixBuilder())
+    try ( var builder = new JacobiFractionalDerivativeOperationalMatrixBuilder())
     {
       try ( Real gamma = Real.valueOf(0.5))
       {
@@ -92,8 +86,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
 
   public void testBuildWithDifferentDegrees()
   {
-    try ( JacobiFractionalDerivativeOperationalMatrixBuilder builder =
-                                                                     new JacobiFractionalDerivativeOperationalMatrixBuilder())
+    try ( var builder = new JacobiFractionalDerivativeOperationalMatrixBuilder())
     {
       try ( Real gamma = Real.valueOf(0.5))
       {
@@ -112,8 +105,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
 
   public void testBuildWithDifferentGammas()
   {
-    try ( JacobiFractionalDerivativeOperationalMatrixBuilder builder =
-                                                                     new JacobiFractionalDerivativeOperationalMatrixBuilder())
+    try ( var builder = new JacobiFractionalDerivativeOperationalMatrixBuilder())
     {
       try ( Real g1 = Real.valueOf(0.25); Real g2 = Real.valueOf(0.5); Real g3 = Real.valueOf(0.75))
       {
@@ -133,8 +125,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
 
   public void testMatrixElementsExist()
   {
-    try ( JacobiFractionalDerivativeOperationalMatrixBuilder builder =
-                                                                     new JacobiFractionalDerivativeOperationalMatrixBuilder())
+    try ( var builder = new JacobiFractionalDerivativeOperationalMatrixBuilder())
     {
       try ( Real gamma = Real.valueOf(0.5))
       {
@@ -163,8 +154,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
    */
   public void testMatrixValuesSpotCheck()
   {
-    try ( JacobiFractionalDerivativeOperationalMatrixBuilder builder =
-                                                                     new JacobiFractionalDerivativeOperationalMatrixBuilder())
+    try ( var builder = new JacobiFractionalDerivativeOperationalMatrixBuilder())
     {
       try ( Real gamma = Real.valueOf(0.5))
       {
@@ -194,19 +184,19 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
       }
     }
   }
+
   public static void testOmega()
   {
-    try ( JacobiFractionalDerivativeOperationalMatrixBuilder builder =
-                                                                     new JacobiFractionalDerivativeOperationalMatrixBuilder())
+    try ( var builder = new JacobiFractionalDerivativeOperationalMatrixBuilder())
     {
-      int j = 3;
-      int k = 4;
+      int     j    = 4;
+      int     k    = 3;
       Complex ωval = builder.ω.apply(j).apply(k);
-      assertTrue( ωval.isZero() );
+      assertEquals(-70.0, ωval.re().doubleValue());
+      assertTrue(ωval.im().isZero());
     }
   }
 
-  
   private void assertSpotValue(String label, double expected, ComplexMatrix M, int i, int j)
   {
     double actual = M.get(i, j).re().doubleValue();
@@ -217,8 +207,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
 
   public void testToString()
   {
-    try ( JacobiFractionalDerivativeOperationalMatrixBuilder builder =
-                                                                     new JacobiFractionalDerivativeOperationalMatrixBuilder())
+    try ( var builder = new JacobiFractionalDerivativeOperationalMatrixBuilder())
     {
       String str = builder.toString();
       assertNotNull("toString should not be null", str);
