@@ -33,9 +33,8 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     if (left instanceof VariableNode<D, R, F> varNode && !right.dependsOn(varNode))
     {
       var k        = right;
-      var kPlusOne = k.add(one()).simplify();
-      var numer    = kPlusOne.Γ();
-      var denom    = kPlusOne.sub(α).Γ();
+      var numer    = k.add(one()).Γ();
+      var denom    = k.add(one()).sub(α).Γ();
       var newPower = k.sub(α);
       var lhs      = numer.div(denom);
       var rhs      = left.pow(newPower);
