@@ -14,6 +14,10 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 
+import org.jetbrains.java.decompiler.api.Decompiler;
+import org.jetbrains.java.decompiler.api.Decompiler.Builder;
+import org.jetbrains.java.decompiler.main.decompiler.DirectoryResultSaver;
+import org.jetbrains.java.decompiler.main.extern.IFernflowerPreferences;
 import org.objectweb.asm.Type;
 import org.scilab.forge.jlatexmath.*;
 import org.yaml.snakeyaml.*;
@@ -440,6 +444,20 @@ public class Utensils
       throwOrWrap(e);
     }
     return file;
+  }
+
+  public static void decompileClassFile(File file)
+  {
+    Decompiler decompiler =
+                          new Decompiler.Builder().inputs(file)
+                                                  .output(new DirectoryResultSaver(compiledClassDir))
+                                                  .option(IFernflowerPreferences.INCLUDE_ENTIRE_CLASSPATH,
+                                                          true)
+                                                  .option(IFernflowerPreferences.BYTECODE_SOURCE_MAPPING,
+                                                          true)
+                                                  .build();
+  
+    decompiler.decompile();
   }
 
 }

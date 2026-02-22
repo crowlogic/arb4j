@@ -12,11 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.*;
 import java.util.stream.*;
 
-import org.jetbrains.java.decompiler.api.Decompiler;
-import org.jetbrains.java.decompiler.main.decompiler.DirectoryResultSaver;
-import org.jetbrains.java.decompiler.main.extern.IFernflowerPreferences;
 import org.objectweb.asm.*;
-import org.objectweb.asm.util.TraceClassVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -193,7 +189,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   private static final char COMBINING_TWO_DOTS_ABOVE          = '\u0308';
 
-  static File               compiledClassDir                  = new File("compiled");
+  public static File        compiledClassDir                  = new File("compiled");
 
   public static Class<?>[]  implementedInterfaces             = new Class[]
   { Typesettable.class, AutoCloseable.class, Initializable.class, Named.class };
@@ -3833,13 +3829,27 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected Expression<D, C, F> storeInstructions(ClassVisitor classVisitor)
   {
-    if (classVisitor instanceof TraceClassVisitor)
+    assert classVisitor != null : "classVisitor shan't be null";
+    ClassVisitor lastClassVisitor = null;
+
+    while (!(classVisitor instanceof ClassWriter classWriter))
     {
-      classVisitor = ((TraceClassVisitor) classVisitor).getDelegate();
+      assert classVisitor
+                    != null : "ClassWriter not found because the last link in the delegate chain "
+                              + lastClassVisitor
+                              + " of type "
+                              + lastClassVisitor.getClass()
+                              + " had no delegate";
+      classVisitor = (lastClassVisitor = classVisitor).getDelegate();
     }
 
-    instructions = ((ClassWriter) classVisitor).toByteArray();
+    instructions = classWriter.toByteArray();
 
+    return saveAndOptionallyDecompileClassFile();
+  }
+
+  protected Expression<D, C, F> saveAndOptionallyDecompileClassFile()
+  {
     if (saveClasses)
     {
 
@@ -3849,20 +3859,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
       if (decompileClasses)
       {
-
-        Decompiler decompiler =
-                              new Decompiler.Builder().inputs(file)
-                                                      .output(new DirectoryResultSaver(compiledClassDir))
-                                                      .option(IFernflowerPreferences.INCLUDE_ENTIRE_CLASSPATH,
-                                                              true)
-                                                      .option(IFernflowerPreferences.BYTECODE_SOURCE_MAPPING,
-                                                              true)
-                                                      .build();
-
-        decompiler.decompile();
+        Utensils.decompileClassFile(file);
       }
 
     }
+
     return this;
   }
 
