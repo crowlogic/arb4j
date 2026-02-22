@@ -13,7 +13,8 @@ import arb.Integer;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.exceptions.*;
+import arb.exceptions.CompilerException;
+import arb.exceptions.UndefinedReferenceException;
 import arb.expressions.*;
 import arb.expressions.nodes.binary.ExponentiationNode;
 import arb.functions.Function;
@@ -58,7 +59,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   Node<D, R, F>                                          operand;
   Node<D, R, F>                                          integralNode;
   Expression<D, R, F>                                    integralExpression;
-  private final  Context                                        context;
+  private final Context                                  context;
   private final int                                      derivativeOrder;
   private Expression<Real, RealFunction, RealFunctional> integrandExpression;
 
@@ -184,7 +185,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   {
     super(expression);
     this.context = expression.context;
-    operand = expression.resolve();
+    operand      = expression.resolve();
     var variableNode = expression.require(",").resolve();
     if (variableNode instanceof VariableNode)
     {
@@ -211,7 +212,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     expression.require(")");
 
     derivativeOrder = getDerivativeOrder(order, context);
-    System.out.println("do=" + derivativeOrder);
+    // System.out.println("do=" + derivativeOrder);
   }
 
   protected void throwFunctionSyntaxError()
@@ -236,16 +237,15 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
    * <p>
    * Checks three sources in order:
    * <ol>
-   *   <li>Context variable with bounds (e.g., Real.named("α").setBounds(...))</li>
-   *   <li>The order node's own {@link VariableReference} bounds</li>
-   *   <li>An independent/upstream independent variable's
-   *       {@link VariableReference} bounds</li>
+   * <li>Context variable with bounds (e.g., Real.named("α").setBounds(...))</li>
+   * <li>The order node's own {@link VariableReference} bounds</li>
+   * <li>An independent/upstream independent variable's {@link VariableReference}
+   * bounds</li>
    * </ol>
-   * If an independent variable exists but has no bounds, and the only
-   * supported integral form is n=1, the bounds (0, 1] are applied as
-   * the mathematical constraint of the Caputo formula
-   * D^α f(x) = (1/Γ(1−α)) ∫₀ˣ (x−t)^(−α) f′(t) dt which is valid
-   * exclusively for α ∈ (0, 1].
+   * If an independent variable exists but has no bounds, and the only supported
+   * integral form is n=1, the bounds (0, 1] are applied as the mathematical
+   * constraint of the Caputo formula D^α f(x) = (1/Γ(1−α)) ∫₀ˣ (x−t)^(−α) f′(t)
+   * dt which is valid exclusively for α ∈ (0, 1].
    *
    * @see <a href="https://github.com/crowlogic/arb4j/issues/864">#864</a>
    */
@@ -257,7 +257,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
       String varName = variableOrderNode.getName();
 
       // 1. Context variable with bounds (existing behavior)
-      Object varObj = context == null ? null : context.variables.get(varName);
+      Object varObj  = context == null ? null : context.variables.get(varName);
       if (varObj instanceof Real realExp && realExp.isBounded())
       {
         return realExp.upperBound().ceil(128, new Integer()).getSignedValue();
@@ -271,8 +271,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
       }
 
       // 3. Independent or upstream independent variable
-      VariableNode<?, ?, ?> independentVarNode =
-                                               expression.getIndependentVariableNamed(varName);
+      VariableNode<?, ?, ?> independentVarNode = expression.getIndependentVariableNamed(varName);
       if (independentVarNode != null)
       {
         if (independentVarNode.reference != null && independentVarNode.reference.isBounded())
@@ -285,24 +284,14 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
         // This is not a default assumption; it is the domain of validity
         // of the formula that this node constructs. If/when n>1 forms are
         // implemented, this block must be extended to ask for explicit bounds.
-        logger.info("No bounds on '{}'; constraining to (0,1] per n=1 Caputo form",
-                    varName);
-        independentVarNode.reference.setBounds(0, false, 1, true);
-        if (orderRef != null)
-        {
-          orderRef.setBounds(0, false, 1, true);
-        }
-        return 1;
+        throwUnboundedVariableException(varName);
       }
 
       // Variable exists but has no bounds and is not independent
       if (varObj != null)
       {
-        throw new IllegalStateException(String.format("Caputo derivative exponent variable '%s' in '%s' has no bounds set. "
-                                                      + "Set bounds via setBounds() so that n = ⌈α⌉ can be resolved at compile time. "
-                                                      + "Example: Real.named(\"α\").set(\"0.5\", 128).setBounds(0, false, 1, true)",
-                                                      varName,
-                                                      expression));
+        throwUnboundedVariableException(varName);
+        return -1;
       }
       else
       {
@@ -327,6 +316,14 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     }
   }
 
+  public void throwUnboundedVariableException(String varName)
+  {
+    throw new IllegalStateException(String.format("Caputo derivative exponent variable '%s' in '%s' has no bounds set. "
+                                                  + "Set bounds via setBounds() so that n = ⌈α⌉ can be resolved at compile time. "
+                                                  + "Example: Real.named(\"α\").set(\"0.5\", 128).setBounds(0, false, 1, true)",
+                                                  varName,
+                                                  expression));
+  }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)

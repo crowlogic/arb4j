@@ -617,12 +617,5 @@ public class Context implements
     });
   }
 
-  public void printValues()
-  {
-    variables.entrySet().forEach(entry ->
-    {
-      System.out.format("%s=%s\n", entry.getKey(), entry.getValue());
-    });
-  }
 
 }

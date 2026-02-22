@@ -1,1 +1,0 @@
-var f = RealFunction.express("diff(lnΓ(x),x)");

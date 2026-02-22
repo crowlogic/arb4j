@@ -1,3 +1,0 @@
-var fs = new FileTreeModel(new File("scripts"));
-var tt = new TextTree<FileNode>(fs);
-out.println(tt);

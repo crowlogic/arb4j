@@ -1,4 +1,0 @@
-var Z = RealFunction.express("Z(t)");
-var z = Z.quantize(0,10000,500000,true);
-var y = z.structure(500);
-plot(y)

@@ -42,8 +42,8 @@ public class MittagLefflerFunctionNode<D, R, F extends Function<? extends D, ? e
                                       FunctionNode<D, R, F>
 {
 
-  Node<D, R, F>  alpha;
-  Node<D, R, F>  beta;
+  Node<D, R, F>  α;
+  Node<D, R, F>  β;
   public boolean scalar;
 
   @Override
@@ -51,7 +51,7 @@ public class MittagLefflerFunctionNode<D, R, F extends Function<? extends D, ? e
   {
     final int prime  = 31337;
     int       result = super.hashCode();
-    result = prime * result + Objects.hash(alpha, beta);
+    result = prime * result + Objects.hash(α, β);
     return result;
   }
 
@@ -65,13 +65,13 @@ public class MittagLefflerFunctionNode<D, R, F extends Function<? extends D, ? e
     if (getClass() != obj.getClass())
       return false;
     MittagLefflerFunctionNode<?, ?, ?> other = (MittagLefflerFunctionNode<?, ?, ?>) obj;
-    return Objects.equals(alpha, other.alpha) && Objects.equals(beta, other.beta);
+    return Objects.equals(α, other.α) && Objects.equals(β, other.β);
   }
 
   @Override
   public boolean dependsOn(VariableNode<D, R, F> variable)
   {
-    return alpha.dependsOn(variable) || beta.dependsOn(variable) || arg.dependsOn(variable);
+    return α.dependsOn(variable) || β.dependsOn(variable) || arg.dependsOn(variable);
   }
 
   @Override
@@ -80,21 +80,21 @@ public class MittagLefflerFunctionNode<D, R, F extends Function<? extends D, ? e
          spliceInto(Expression<E, S, G> newExpression)
   {
     return new MittagLefflerFunctionNode<>(newExpression,
-                                           alpha.spliceInto(newExpression),
-                                           beta.spliceInto(newExpression),
+                                           α.spliceInto(newExpression),
+                                           β.spliceInto(newExpression),
                                            arg.spliceInto(newExpression));
   }
 
   @Override
   public List<Node<D, R, F>> getBranches()
   {
-    return List.of(alpha, beta, arg);
+    return List.of(α, β, arg);
   }
 
   @Override
   public String toString()
   {
-    return format("E(%s,%s,%s)", alpha, beta, arg);
+    return format("E(%s,%s,%s)", α, β, arg);
   }
 
   /**
@@ -108,8 +108,8 @@ public class MittagLefflerFunctionNode<D, R, F extends Function<? extends D, ? e
     super("E",
           null,
           expression);
-    this.alpha  = alpha;
-    this.beta   = beta;
+    this.α      = alpha;
+    this.β      = beta;
     this.arg    = arg;
     this.scalar = expression.hasScalarCodomain();
   }
@@ -133,32 +133,26 @@ public class MittagLefflerFunctionNode<D, R, F extends Function<? extends D, ? e
     if (expression.nextCharacterIs(','))
     {
       // Three-argument form: E(α, β, z)
-      this.alpha = first;
-      this.beta  = second;
-      this.arg   = expression.resolve();
+      this.α   = first;
+      this.β   = second;
+      this.arg = expression.resolve();
     }
     else
     {
       // Two-argument form: E(α, z) with β=1
-      this.alpha = first;
-      this.beta  = expression.newLiteralConstant("1");
-      this.arg   = second;
+      this.α   = first;
+      this.β   = one();
+      this.arg = second;
     }
     expression.require(')');
   }
-
-
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     if (Expression.trace)
     {
-      logger.debug(format("E.generate(α=%s, β=%s, z=%s, resultType=%s)\n",
-                          alpha,
-                          beta,
-                          arg,
-                          resultType));
+      logger.debug(format("E.generate(α=%s, β=%s, z=%s, resultType=%s)\n", α, β, arg, resultType));
     }
 
     var scalarType = scalarType(resultType);
@@ -171,16 +165,16 @@ public class MittagLefflerFunctionNode<D, R, F extends Function<? extends D, ? e
       arg.generateCastTo(mv, scalarType);
     }
 
-    alpha.generate(mv, scalarType);
-    if (!alpha.generatedType.equals(scalarType))
+    α.generate(mv, scalarType);
+    if (!α.generatedType.equals(scalarType))
     {
-      alpha.generateCastTo(mv, scalarType);
+      α.generateCastTo(mv, scalarType);
     }
 
-    beta.generate(mv, scalarType);
-    if (!beta.generatedType.equals(scalarType))
+    β.generate(mv, scalarType);
+    if (!β.generatedType.equals(scalarType))
     {
-      beta.generateCastTo(mv, scalarType);
+      β.generateCastTo(mv, scalarType);
     }
 
     mv.visitLdcInsn(1e-30);
@@ -206,13 +200,9 @@ public class MittagLefflerFunctionNode<D, R, F extends Function<? extends D, ? e
                               int.class);
   }
 
-
   @Override
   public String typeset()
   {
-    return format("E_{%s,%s}(%s)",
-                  alpha.typeset(),
-                  beta.typeset(),
-                  arg == null ? "" : arg.typeset());
+    return format("E_{%s,%s}(%s)", α.typeset(), β.typeset(), arg == null ? "" : arg.typeset());
   }
 }

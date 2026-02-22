@@ -203,7 +203,6 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
       int k = 4;
       Complex ωval = builder.ω.apply(j).apply(k);
       System.out.format("ω(%s,%s)=%s\n",j,k,ωval );
-      builder.context.printValues();
     }
   }
 

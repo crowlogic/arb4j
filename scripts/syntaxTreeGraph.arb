@@ -1,3 +1,0 @@
-var ex = RealFunction.parse("tanh(log(1+x^2))").compile()
-var ast = ex.syntaxTree();
-ast.saveToDotFile("S.dot");
