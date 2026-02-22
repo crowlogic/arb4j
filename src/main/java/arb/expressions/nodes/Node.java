@@ -331,12 +331,12 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return 1;
   }
 
-  public Node<D, R, F> div(int i)
+  public DivisionNode<D, R, F> div(int i)
   {
     return div(expression.newLiteralConstant(i));
   }
 
-  public Node<D, R, F> div(Node<D, R, F> divisor)
+  public DivisionNode<D, R, F> div(Node<D, R, F> divisor)
   {
     return new DivisionNode<>(expression,
                               this,

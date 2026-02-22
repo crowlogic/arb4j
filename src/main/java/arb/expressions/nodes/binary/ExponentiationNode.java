@@ -23,20 +23,19 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
 {
   /**
    * Đ^(α)(t^k) = Γ(k+1)/Γ(k+1-α)*t^(k-α)
-   *
-   * Only applies when the base is the differentiation variable and the exponent
-   * does not depend on it. Otherwise falls back to the default integral form.
    */
   @Override
   public Node<D, R, F> fractionalDerivative(VariableNode<D, R, F> variable, Node<D, R, F> α)
   {
     if (left instanceof VariableNode<D, R, F> varNode && !right.dependsOn(varNode))
     {
-      var numer = right.add(one()).Γ();
-      var denom = right.add(one()).sub(α).Γ();
-      var lhs   = numer.div(denom);
-      var rhs   = left.pow(right.sub(α));
-      return lhs.mul(rhs);
+      var t               = left;
+      var k               = right;
+      var numer           = k.add(one()).Γ();
+      var denom           = k.add(one()).sub(α).Γ();
+      var Γratio          = numer.div(denom);
+      var fractionalPower = t.pow(right.sub(α));
+      return Γratio.mul(fractionalPower);
     }
     else
     {
