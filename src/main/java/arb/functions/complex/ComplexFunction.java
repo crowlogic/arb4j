@@ -229,4 +229,8 @@ public interface ComplexFunction extends
     }
   }
 
+  public default Complex eval(double d)  
+  {
+    return eval(d,new Complex());
+  }
 }

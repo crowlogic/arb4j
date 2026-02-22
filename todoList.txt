@@ -1,4 +1,4 @@
-Deeper architectural fix (for issue #871 long-term): Investigate whether FunctionalEvaluationNode.type() should return the function's codomain type (Complex) rather than the function interface type (ComplexFunction) when the node represents a fully-applied function call (i.e., all arguments supplied). This would eliminate the need for many Function ÷ scalar type mappings entirely, as the existing scalar type mappings would apply. However, this change requires careful testing against all existing expression compilation paths, particularly those involving partial application and functional composition, to ensure no regressions.
+support changed FunctionalEvaluationNodes such as a RealFunctionalSequence f then referred to by f(3)(2)(1)
 debug ComplexFunctionTest.testSequence2
 constant subexpression extraction
 move intermediateVariableCounters from Context to Expression

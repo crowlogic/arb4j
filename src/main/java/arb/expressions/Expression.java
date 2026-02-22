@@ -30,9 +30,8 @@ import arb.expressions.nodes.Node;
 import arb.expressions.nodes.binary.*;
 import arb.expressions.nodes.nary.*;
 import arb.expressions.nodes.unary.*;
+import arb.functions.*;
 import arb.functions.Function;
-import arb.functions.RealFunctional;
-import arb.functions.RealToComplexFunction;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.integer.*;
 import arb.functions.real.RealFunction;
@@ -3031,6 +3030,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       funcDomain   = Real.class;
       funcCoDomain = RealFunction.class;
       funcClass    = RealFunctional.class;
+    }
+    else if (ComplexFunctional.class.equals(coDomainType))
+    {
+      funcDomain   = Complex.class;
+      funcCoDomain = ComplexFunction.class;
+      funcClass    = ComplexFunctional.class;
     }
     else if (ComplexFunction.class.equals(coDomainType))
     {
