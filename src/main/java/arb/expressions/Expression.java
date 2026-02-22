@@ -189,8 +189,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   private static final char COMBINING_TWO_DOTS_ABOVE          = '\u0308';
 
-  public static File        compiledClassDir                  = new File("compiled");
-
   public static Class<?>[]  implementedInterfaces             = new Class[]
   { Typesettable.class, AutoCloseable.class, Initializable.class, Named.class };
 
@@ -231,9 +229,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   static
   {
-    if (saveClasses && !compiledClassDir.canWrite())
+    if (saveClasses && !Compiler.compiledClassDir.canWrite())
     {
-      compiledClassDir.mkdir();
+      Compiler.compiledClassDir.mkdir();
     }
   }
 
@@ -3853,13 +3851,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (saveClasses)
     {
 
-      File file = new File(compiledClassDir,
+      File file = new File(Compiler.compiledClassDir,
                            className + ".class");
       writeBytecodes(file);
 
       if (decompileClasses)
       {
-        Utensils.decompileClassFile(file);
+        Compiler.decompileClassFile(file);
       }
 
     }

@@ -199,44 +199,36 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   {
     assert expression.coDomainType.equals(resultType) : String.format("expression.domain = %s != Integer, the only type supported presently\n",
                                                                       expression.domainType);
-    try
+
+    labels = new Label[cases.size()];
+
+    cases.forEach((id, val) -> val.isResult = isResult);
+    arg.isResult = isResult;
+
+    generateIndex(mv);
+
+    for (int i = 0; i < labels.length; i++)
     {
-      mv.visitCode();
-
-      labels = new Label[cases.size()];
-
-      cases.forEach((id, val) -> val.isResult = isResult);
-      arg.isResult = isResult;
-
-      generateIndex(mv);
-
-      for (int i = 0; i < labels.length; i++)
-      {
-        labels[i] = new Label();
-      }
-
-      mv.visitTableSwitchInsn(0, cases.size() - 1, defaultLabel, labels);
-      var branches = cases.values().stream().toList();
-
-      for (int i = 0; i < labels.length; i++)
-      {
-        mv.visitLabel(labels[i]);
-        var ithBranch     = branches.get(i);
-        var ithBranchType = ithBranch.type();
-
-        ithBranch.generate(mv, ithBranchType);
-        mv.visitJumpInsn(GOTO, endSwitch);
-      }
-
-      mv.visitLabel(defaultLabel);
-
-      super.generate(mv, resultType);
-      mv.visitLabel(endSwitch);
+      labels[i] = new Label();
     }
-    finally
+
+    mv.visitTableSwitchInsn(0, cases.size() - 1, defaultLabel, labels);
+    var branches = cases.values().stream().toList();
+
+    for (int i = 0; i < labels.length; i++)
     {
-      mv.visitEnd();
+      mv.visitLabel(labels[i]);
+      var ithBranch     = branches.get(i);
+      var ithBranchType = ithBranch.type();
+
+      ithBranch.generate(mv, ithBranchType);
+      mv.visitJumpInsn(GOTO, endSwitch);
     }
+
+    mv.visitLabel(defaultLabel);
+
+    super.generate(mv, resultType);
+    mv.visitLabel(endSwitch);
 
     return mv;
   }

@@ -2,9 +2,14 @@ package arb.expressions;
 
 import static org.objectweb.asm.Opcodes.*;
 
+import java.io.File;
 import java.lang.annotation.Annotation;
 import java.util.*;
 
+import org.jetbrains.java.decompiler.api.Decompiler;
+import org.jetbrains.java.decompiler.api.Decompiler.Builder;
+import org.jetbrains.java.decompiler.main.decompiler.DirectoryResultSaver;
+import org.jetbrains.java.decompiler.main.extern.IFernflowerPreferences;
 import org.objectweb.asm.*;
 import org.objectweb.asm.signature.SignatureWriter;
 import org.objectweb.asm.util.CheckClassAdapter;
@@ -825,5 +830,21 @@ public class Compiler
                                 int.class,
                                 int.class,
                                 Object.class);
+
+  public static void decompileClassFile(File file)
+  {
+    Decompiler decompiler =
+                          new Decompiler.Builder().inputs(file)
+                                                  .output(new DirectoryResultSaver(compiledClassDir))
+                                                  .option(IFernflowerPreferences.INCLUDE_ENTIRE_CLASSPATH,
+                                                          true)
+                                                  .option(IFernflowerPreferences.BYTECODE_SOURCE_MAPPING,
+                                                          true)
+                                                  .build();
+  
+    decompiler.decompile();
+  }
+
+  public static File        compiledClassDir                  = new File("compiled");
 
 }
