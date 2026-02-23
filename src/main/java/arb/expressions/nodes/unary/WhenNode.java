@@ -218,7 +218,6 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     {
       Compiler.designateLabel(mv, labels[i]);
 
-      mv.visitLabel(labels[i]);
       var ithBranch     = branches.get(i);
       var ithBranchType = ithBranch.type();
 
