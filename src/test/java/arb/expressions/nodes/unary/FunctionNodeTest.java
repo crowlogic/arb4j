@@ -137,7 +137,7 @@ public class FunctionNodeTest extends
   {
     var f = RealFunction.express("(x^2 - 2*x + 1)*δ(x-1)");
     // x^2 - 2x + 1 = (x-1)^2, so this should simplify to 0
-    assertEquals("x➔(((x^2)-(2*x))+1)*δ(x-1)", f.toString());
+    assertEquals("x➔0", f.toString());
   }
 
 
