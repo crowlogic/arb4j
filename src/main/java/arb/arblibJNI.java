@@ -9,6 +9,13 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void acb_rgamma(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
+  public final static native void acb_lgamma(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
+  public final static native void arb_lgamma(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
+  public final static native void arb_rgamma(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
+  public final static native void arb_gamma(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
+  public final static native void arb_gamma_fmpq(long jarg1, Real jarg1_, long jarg2, Fraction jarg2_, int jarg3);
+  public final static native void arb_gamma_fmpz(long jarg1, Real jarg1_, long jarg2, int jarg3);
   public final static native void arb_mittag_leffler_E(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, Real jarg3_, long jarg4, Real jarg4_, double jarg5, int jarg6);
   public final static native void acb_mittag_leffler_E(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Real jarg3_, long jarg4, Real jarg4_, double jarg5, int jarg6);
   public final static native void fmpz_poly_evaluate_complex_fmpq(long jarg1, Fraction jarg1_, long jarg2, Fraction jarg2_, long jarg3, IntegerPolynomial jarg3_, long jarg4, Fraction jarg4_, long jarg5, Fraction jarg5_);
@@ -312,8 +319,6 @@ public class arblibJNI {
   public final static native int fmpq_equal(long jarg1, Fraction jarg1_, long jarg2, Fraction jarg2_);
   public final static native void acb_poly_neg(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_);
   public final static native void acb_gamma(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
-  public final static native void acb_rgamma(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
-  public final static native void acb_lgamma(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
   public final static native void acb_log_sin_pi(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
   public final static native void acb_digamma(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
   public final static native void acb_zeta(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
@@ -832,8 +837,6 @@ public class arblibJNI {
   public final static native void arb_asinh(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_acosh(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_lambertw(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3, int jarg4);
-  public final static native void arb_gamma(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
-  public final static native void arb_lgamma(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_sqr(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void acb_sqrt(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
   public final static native void arb_atan(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);

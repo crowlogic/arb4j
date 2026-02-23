@@ -135,6 +135,17 @@ import arb.utensils.Utensils;
 %}
 %typemap(javacode) arb_struct %{
 
+	public Real rgamma(int bits, Real result)
+	{
+	    arblib.arb_rgamma(result, this, bits);
+	    return result;
+	}
+
+	public Real rgamma(int bits)
+	{
+	  return rgamma(bits,this);
+	}
+	
 	private Real      lowerBound;
 	private Real      upperBound;
 	private boolean   lowerBoundInclusive;

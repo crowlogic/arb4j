@@ -162,6 +162,17 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
   }
 
 
+	public Real rgamma(int bits, Real result)
+	{
+	    arblib.arb_rgamma(result, this, bits);
+	    return result;
+	}
+
+	public Real rgamma(int bits)
+	{
+	  return rgamma(bits,this);
+	}
+	
 	private Real      lowerBound;
 	private Real      upperBound;
 	private boolean   lowerBoundInclusive;

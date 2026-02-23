@@ -41,6 +41,17 @@ import arb.functions.complex.ComplexNullaryFunction;
 %typemap(javacode) acb_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+  public Complex rgamma(int bits)
+  {
+    return rgamma(bits,this);
+  }
+
+  public Complex rgamma(int bits, Complex result)
+  {
+    arblib.acb_rgamma(result, this, bits);
+    return result;
+  }
+
   public Complex cot(int prec, Complex result)
   {
 	arblib.acb_cot(result, this, prec );

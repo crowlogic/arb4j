@@ -9,6 +9,34 @@
 package arb;
 
 public class arblib {
+  public static void acb_rgamma(Complex y, Complex x, int prec) {
+    arblibJNI.acb_rgamma(Complex.getCPtr(y), y, Complex.getCPtr(x), x, prec);
+  }
+
+  public static void acb_lgamma(Complex y, Complex x, int prec) {
+    arblibJNI.acb_lgamma(Complex.getCPtr(y), y, Complex.getCPtr(x), x, prec);
+  }
+
+  public static void arb_lgamma(Real z, Real x, int prec) {
+    arblibJNI.arb_lgamma(Real.getCPtr(z), z, Real.getCPtr(x), x, prec);
+  }
+
+  public static void arb_rgamma(Real z, Real x, int prec) {
+    arblibJNI.arb_rgamma(Real.getCPtr(z), z, Real.getCPtr(x), x, prec);
+  }
+
+  public static void arb_gamma(Real z, Real x, int prec) {
+    arblibJNI.arb_gamma(Real.getCPtr(z), z, Real.getCPtr(x), x, prec);
+  }
+
+  public static void arb_gamma_fmpq(Real z, Fraction x, int prec) {
+    arblibJNI.arb_gamma_fmpq(Real.getCPtr(z), z, Fraction.getCPtr(x), x, prec);
+  }
+
+  public static void arb_gamma_fmpz(Real z, long x, int prec) {
+    arblibJNI.arb_gamma_fmpz(Real.getCPtr(z), z, x, prec);
+  }
+
   public static void arb_mittag_leffler_E(Real out, Real z, Real alpha, Real beta, double eps_d, int prec) {
     arblibJNI.arb_mittag_leffler_E(Real.getCPtr(out), out, Real.getCPtr(z), z, Real.getCPtr(alpha), alpha, Real.getCPtr(beta), beta, eps_d, prec);
   }
@@ -1092,14 +1120,6 @@ public class arblib {
 
   public static void acb_gamma(Complex y, Complex x, int prec) {
     arblibJNI.acb_gamma(Complex.getCPtr(y), y, Complex.getCPtr(x), x, prec);
-  }
-
-  public static void acb_rgamma(Complex y, Complex x, int prec) {
-    arblibJNI.acb_rgamma(Complex.getCPtr(y), y, Complex.getCPtr(x), x, prec);
-  }
-
-  public static void acb_lgamma(Complex y, Complex x, int prec) {
-    arblibJNI.acb_lgamma(Complex.getCPtr(y), y, Complex.getCPtr(x), x, prec);
   }
 
   public static void acb_log_sin_pi(Complex res, Complex z, int prec) {
@@ -3182,14 +3202,6 @@ public class arblib {
 
   public static void arb_lambertw(Real res, Real x, int flags, int prec) {
     arblibJNI.arb_lambertw(Real.getCPtr(res), res, Real.getCPtr(x), x, flags, prec);
-  }
-
-  public static void arb_gamma(Real z, Real x, int prec) {
-    arblibJNI.arb_gamma(Real.getCPtr(z), z, Real.getCPtr(x), x, prec);
-  }
-
-  public static void arb_lgamma(Real z, Real x, int prec) {
-    arblibJNI.arb_lgamma(Real.getCPtr(z), z, Real.getCPtr(x), x, prec);
   }
 
   public static void arb_sqr(Real y, Real x, int prec) {

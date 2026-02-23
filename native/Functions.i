@@ -17,6 +17,15 @@
 #include <unistd.h>
 #include <wchar.h>
 
+void acb_rgamma(acb_t y, const acb_t x, slong prec);
+void acb_lgamma(acb_t y, const acb_t x, slong prec);
+
+void arb_lgamma(arb_t z, const arb_t x, slong prec);
+void arb_rgamma(arb_t z, const arb_t x, slong prec);
+void arb_gamma(arb_t z, const arb_t x, slong prec);
+void arb_gamma_fmpq(arb_t z, const fmpq_t x, slong prec);
+void arb_gamma_fmpz(arb_t z, const fmpz_t x, slong prec);
+
 void arb_mittag_leffler_E(arb_t out, const arb_t z, const arb_t alpha,
                           const arb_t beta, double eps_d, slong prec);
 						  
