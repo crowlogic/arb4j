@@ -1,0 +1,1 @@
+Reformat your last response replacing LaTeX math with UTF-8 symbols, inside a code block, keeping the text verbatim otherwise

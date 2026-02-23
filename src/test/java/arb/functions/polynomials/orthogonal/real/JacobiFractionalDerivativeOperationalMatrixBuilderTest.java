@@ -185,6 +185,23 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
     }
   }
 
+  /**
+   * <p>
+   * Yes, that's correct. ω(4,3) = -70 exactly.
+   * 
+   * The arithmetic:
+   * 
+   * ω(4,3) = ((-1)¹ · Γ(⁹⁄₂) · Γ(7)) / (Γ(⁷⁄₂) · Γ(4) · 1! · 3!) = (-1 · ⁷⁄₂ ·
+   * 720) / (6 · 1 · 6) = -2520/36 = -70
+   * 
+   * (using Γ(9/2)/Γ(7/2) = 7/2, so the ratio collapses cleanly).
+   * 
+   * The test is structurally sound — j=4 > k=3 so (j-k)! = 1! = 1 is
+   * well-defined, and comparing against the real part with im().isZero() is the
+   * right check since all Gamma arguments are real here.
+   * </p>
+   * 
+   */
   public static void testOmega()
   {
     try ( var builder = new JacobiFractionalDerivativeOperationalMatrixBuilder())
