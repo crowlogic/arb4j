@@ -57,6 +57,7 @@ public class χfunc implements
     return Complex.class;
   }
 
+  
   @Override
   public Complex evaluate(Complex p, int order, int bits, Complex result)
   {

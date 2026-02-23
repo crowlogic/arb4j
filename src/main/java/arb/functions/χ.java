@@ -1,14 +1,12 @@
 package arb.functions;
 
-import arb.Initializable;
+import arb.*;
 import arb.Integer;
-import arb.Named;
-import arb.Real;
-import arb.Typesettable;
 import arb.expressions.Context;
 import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.integer.ComplexFunctionSequence;
+import arb.utensils.Utensils;
 
 public class χ implements ComplexFunctionSequence, Typesettable, AutoCloseable, Initializable, Named {
    public boolean isInitialized;
@@ -17,6 +15,20 @@ public class χ implements ComplexFunctionSequence, Typesettable, AutoCloseable,
    public Real β;
    public Real γ;
 
+   public static void main(String args[])
+   {
+     try ( χ χ = new χ())
+     {
+       χ.α = χ.β = RealConstants.negHalf;
+
+       ComplexFunction apply = χ.apply(4);
+       Complex eval = apply.eval(4.3);
+       System.out.format("χ(4,2.3)=%s\n%s\n", eval, Utensils.yamlString(apply));
+       
+     }
+
+   }
+   
    @Override
    public Class<Integer> domainType() {
       return Integer.class;
