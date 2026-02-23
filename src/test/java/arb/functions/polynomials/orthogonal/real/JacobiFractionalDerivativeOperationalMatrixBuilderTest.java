@@ -206,9 +206,7 @@ public class JacobiFractionalDerivativeOperationalMatrixBuilderTest extends
   {
     try ( var builder = new JacobiFractionalDerivativeOperationalMatrixBuilder())
     {
-      int     j    = 4;
-      int     k    = 3;
-      Complex ωval = builder.ω.apply(j).apply(k);
+      Complex ωval = builder.ω.apply(4).apply(3);
       assertEquals(-70.0, ωval.re().doubleValue());
       assertTrue(ωval.im().isZero());
     }

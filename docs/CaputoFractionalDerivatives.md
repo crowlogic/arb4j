@@ -4,15 +4,11 @@ The Caputo fractional derivative of order $\alpha$ generalizes ordinary differen
 
 ## Definition
 
-$$
-{}^{C}\!D^{\alpha} f(x) = \frac{1}{\Gamma(n - \alpha)} \int_0^x (x - t)^{n - \alpha - 1} f^{(n)}(t) \, dt
-$$
+$${}^{C}\!D^{\alpha} f(x) = \frac{1}{\Gamma(n - \alpha)} \int_0^x (x - t)^{n - \alpha - 1} f^{(n)}(t) dt$$
 
 where $n = \lceil \alpha \rceil$. Currently $\alpha \in (0, 1]$ is supported, so $n = 1$ and the formula reduces to :
 
-$$
-{}^{C}\!D^{\alpha} f(x) = \frac{1}{\Gamma(1 - \alpha)} \int_0^x (x - t)^{-\alpha} f'(t) \, dt
-$$
+$${}^{C}\!D^{\alpha} f(x) = \frac{1}{\Gamma(1 - \alpha)} \int_0^x (x - t)^{-\alpha} f'(t) dt$$
 
 ## Syntax
 
@@ -65,9 +61,7 @@ The integer ceiling $n = \lceil \alpha \rceil$ is resolved at compile time from 
 
 The node exploits the semigroup structure of fractional calculus for symbolic differentiation and integration :
 
-$$
-\frac{d}{dx}\!\left[{}^{C}\!D^{\alpha} f\right] = {}^{C}\!D^{\alpha+1} f, \qquad \int {}^{C}\!D^{\alpha} f \, dx = {}^{C}\!D^{\alpha-1} f
-$$
+$$\frac{d}{dx}\!\left[{}^{C}\!D^{\alpha} f\right] = {}^{C}\!D^{\alpha+1} f \qquad \int {}^{C}\!D^{\alpha} f dx = {}^{C}\!D^{\alpha-1} f$$
 
 Both operations re-enter the polymorphic `fractionalDerivative` dispatch, so a closed form is used whenever the new order permits one.
 
