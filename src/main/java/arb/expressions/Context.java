@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import arb.*;
 import arb.Integer;
 import arb.exceptions.CompilerException;
+import arb.exceptions.UndefinedReferenceException;
 import arb.expressions.context.Dependency;
 import arb.expressions.context.FunctionMappings;
 import arb.expressions.nodes.Node;
@@ -57,19 +58,38 @@ import javafx.collections.ObservableMap;
 public class Context implements
                      AutoCloseable
 {
+  @SuppressWarnings("unchecked")
+  protected <D, C, F extends Function<? extends D, ? extends C>>
+            Expression<D, C, F>
+            getFunctionExpression(String functionName)
+  {
+    FunctionMapping<D, C, F> mapping = getFunctionMapping(functionName);
+
+    if (mapping == null)
+    {
+      throw new UndefinedReferenceException(functionName + " not found in " + this);
+    }
+
+    return mapping.getExpression();
+  }
+
   /**
    * Set bounds on a named variable. Dispatches to the appropriate type's
    * setBounds method. Returns this for chaining.
    *
-   * @param varName        the name of the variable already registered in this context
+   * @param varName        the name of the variable already registered in this
+   *                       context
    * @param lower          lower bound (int, converted to the variable's type)
    * @param lowerInclusive whether the lower bound is closed
    * @param upper          upper bound (int, converted to the variable's type)
    * @param upperInclusive whether the upper bound is closed
    * @return this
    */
-  public Context setBounds(String varName, int lower, boolean lowerInclusive,
-                           int upper, boolean upperInclusive)
+  public Context setBounds(String varName,
+                           int lower,
+                           boolean lowerInclusive,
+                           int upper,
+                           boolean upperInclusive)
   {
     Named var = variables.get(varName);
     assert var != null : "no variable named '" + varName + "' in context";
@@ -84,7 +104,7 @@ public class Context implements
     else
     {
       throw new UnsupportedOperationException("setBounds not supported for "
-                    + var.getClass().getSimpleName());
+                                              + var.getClass().getSimpleName());
     }
     return this;
   }
@@ -93,31 +113,37 @@ public class Context implements
    * Set arbitrary-precision bounds on a named Real variable. Returns this for
    * chaining.
    *
-   * @param varName        the name of the variable already registered in this context
+   * @param varName        the name of the variable already registered in this
+   *                       context
    * @param lower          lower bound as a {@link Real}
    * @param lowerInclusive whether the lower bound is closed
    * @param upper          upper bound as a {@link Real}
    * @param upperInclusive whether the upper bound is closed
    * @return this
    */
-  public Context setBounds(String varName, Real lower, boolean lowerInclusive,
-                           Real upper, boolean upperInclusive)
+  public Context setBounds(String varName,
+                           Real lower,
+                           boolean lowerInclusive,
+                           Real upper,
+                           boolean upperInclusive)
   {
     Named variable = variables.get(varName);
     assert variable != null : "no variable named '" + varName + "' in context";
-    if ( variable instanceof Real realVariable )
+    if (variable instanceof Real realVariable)
     {
-    realVariable.setBounds(lower, lowerInclusive, upper, upperInclusive);
+      realVariable.setBounds(lower, lowerInclusive, upper, upperInclusive);
     }
     else
     {
-      throw new UnsupportedOperationException( varName + " is " + variable.getClass().getSimpleName() + ", not Real");
-      
+      throw new UnsupportedOperationException(varName
+                                              + " is "
+                                              + variable.getClass().getSimpleName()
+                                              + ", not Real");
+
     }
     return this;
   }
 
-  
   static
   {
     System.loadLibrary("arblib");
@@ -616,6 +642,5 @@ public class Context implements
       }
     });
   }
-
 
 }

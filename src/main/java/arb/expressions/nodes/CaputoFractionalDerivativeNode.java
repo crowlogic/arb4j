@@ -18,8 +18,6 @@ import arb.exceptions.UndefinedReferenceException;
 import arb.expressions.*;
 import arb.expressions.nodes.binary.ExponentiationNode;
 import arb.functions.Function;
-import arb.functions.RealFunctional;
-import arb.functions.real.RealFunction;
 
 /**
  * Caputo fractional derivative integral form: ꟲD^(α)f(x)=ꟲDₓᵅf(x)
@@ -52,20 +50,19 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
                                            extends
                                            Node<D, R, F>
 {
-  public static final Logger                             logger =
-                                                                LoggerFactory.getLogger(CaputoFractionalDerivativeNode.class);
+  public static final Logger                 logger =
+                                                    LoggerFactory.getLogger(CaputoFractionalDerivativeNode.class);
 
-  Node<D, R, F>                                          order;
-  Node<D, R, F>                                          operand;
-  Node<D, R, F>                                          integralNode;
-  Expression<D, R, F>                                    integralExpression;
-  private final Context                                  context;
-  private final int                                      derivativeOrder;
-  private Expression<Real, RealFunction, RealFunctional> integrandExpression;
+  Node<D, R, F>                              order;
+  Node<D, R, F>                              operand;
+  Node<D, R, F>                              integralNode;
+  Expression<D, R, F>                        integralExpression;
+  private final Context                      context;
+  private final int                          derivativeOrder;
 
-  private VariableNode<D, R, F>                          variable;
+  private VariableNode<D, R, F>              variable;
 
-  private FunctionMapping<D, R, ? extends F>             operandExpression;
+  private FunctionMapping<D, R, ? extends F> operandExpression;
 
   public CaputoFractionalDerivativeNode(Expression<D, R, F> expression,
                                         Node<D, R, F> operand,
@@ -139,35 +136,9 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     context.registerVariable(Real.named("α")).setBounds(0, false, 1, true);
 
     Class<?> scalarType = scalarType(expression.domainType);
-    if (scalarType == Real.class)
-    {
-      assert derivativeOrder == 1 : "only derivativeOrder=1 is implemented but got n="
-                                    + derivativeOrder;
-      this.integrandExpression                    =
-                               Function.parseAndRegister("g:x➔t➔(x-t)^(-α)*∂f(t)/∂t",
-                                                         context,
-                                                         Real.class,
-                                                         RealFunction.class,
-                                                         RealFunctional.class,
-                                                         "g",
-                                                         false);
-      this.integrandExpression.upstreamExpression = expression;
-    }
-    else
-    {
-      throw new UnsupportedOperationException("todo: support  " + scalarType);
-    }
 
-//    System.err.println("integrandExpression before "
-//                       + integrandExpression
-//                       + " substituting "
-//                       + operand
-//                       + " for f");
-//    integrandExpression.substitute("f", operand);
-//    System.err.println("integrandExpression after " + integrandExpression);
-
-    this.integralExpression                =
-                            Function.parseAndRegister("gint:x➔∫t➔g(x)(t)dt∈(0,x)/Γ(1-α)",
+    this.integralExpression =
+                            Function.parseAndRegister("gint:x➔∫t➔((x-t)^(-α)*∂f(t)/∂t)dt∈(0,x)/Γ(1-α)",
                                                       context,
                                                       expression.domainType,
                                                       expression.coDomainType,
@@ -175,10 +146,10 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
                                                       "gint",
                                                       false);
 
-    integrandExpression.upstreamExpression = integralExpression;
-    // this.integralExpression.inlineFunction(fieldName);
+    this.integralExpression.inlineFunction("f");
+
     // this.integralExpression.substitute("f", integralExpression.rootNode);
-    this.integralNode                      = integralExpression.rootNode;
+    this.integralNode = integralExpression.rootNode;
   }
 
   public CaputoFractionalDerivativeNode(Expression<D, R, F> expression)

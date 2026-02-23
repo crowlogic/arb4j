@@ -141,4 +141,33 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
     return functionClass != null && functionClass.isInterface();
   }
 
+  /**
+   * Compiles the expression if its not already
+   * 
+   * @return
+   */
+  public Expression<D, R, F> getExpression()
+  {
+    if (expression != null)
+    {
+      return expression;
+    }
+    if (expressionString != null)
+    {
+      expression = Function.parse((Class<D>) domain,
+                                  (Class<R>) coDomain,
+                                  (Class<F>) functionClass,
+                                  expressionString);
+    }
+    else
+    {
+      throw new IllegalArgumentException("Unable to inline the function named "
+                                         + functionName
+                                         + " because its parsed Expression is not available and it cannot be constructed since expressingString is null in its "
+                                         + this);
+    }
+
+    return expression;
+  }
+
 }

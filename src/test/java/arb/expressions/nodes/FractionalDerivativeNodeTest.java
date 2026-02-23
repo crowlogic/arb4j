@@ -3,6 +3,7 @@ package arb.expressions.nodes;
 import arb.Real;
 import arb.RealConstants;
 import arb.functions.RealFunctional;
+import arb.functions.integer.RealFunctionSequence;
 import arb.functions.integer.RealFunctionalSequence;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
@@ -14,6 +15,13 @@ import junit.framework.TestCase;
 public class FractionalDerivativeNodeTest extends
                                           TestCase
 {
+  public void testRealFunctionSequenceOfFixedFractionalMonomialDerivative()
+  {
+    var          seq      = RealFunctionSequence.express("n->t->fracdiff(t^n,t^½)");
+    RealFunction function = seq.apply(3);
+    double       value    = function.eval(2.3);
+    assertEquals(6.9, value);
+  }
 
   public static void testRealFunctionalSequenceOfFractionalMonomialDerivatives()
   {
@@ -23,7 +31,7 @@ public class FractionalDerivativeNodeTest extends
     double         y      = f3half.eval(2.3);
     assertEquals(5.6, y);
   }
-  
+
   public static void testRealFunctionalSequenceOfFractionalMonomialDerivatives2()
   {
     var            f      = RealFunctionalSequence.express("f:n->t->q->fracdiff(t^n,t^q)");
@@ -32,7 +40,6 @@ public class FractionalDerivativeNodeTest extends
     double         y      = f3half.eval(2.3);
     assertEquals(5.6, y);
   }
-  
 
   public static void testFractionalDerivativeParsing()
   {

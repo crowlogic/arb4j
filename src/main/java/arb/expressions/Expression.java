@@ -20,6 +20,7 @@ import arb.*;
 import arb.Integer;
 import arb.applications.ExpressionTree;
 import arb.exceptions.CompilerException;
+import arb.exceptions.UndefinedReferenceException;
 import arb.expressions.context.Dependency;
 import arb.expressions.nodes.*;
 import arb.expressions.nodes.Node;
@@ -156,23 +157,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       throw new IllegalArgumentException("expression has no context");
     }
 
-    FunctionMapping<D, C, F> mapping = context.getFunctionMapping(functionName);
-
-    if (mapping == null || (mapping.expression == null && mapping.expressionString == null))
-    {
-      throw new IllegalArgumentException(String.format("function '%s' is not inlineable",
-                                                       functionName));
-    }
-
-    Expression<D, C, F> definingExpression = mapping.expression;
-
-    if (definingExpression == null)
-    {
-      definingExpression = Function.parse((Class<D>) mapping.domain,
-                                          (Class<C>) mapping.coDomain,
-                                          (Class<F>) mapping.functionClass,
-                                          mapping.expressionString);
-    }
+    Expression<D, C, F> definingExpression = context.getFunctionExpression(functionName);
 
     Node<D, C, F> body = definingExpression.rootNode.spliceInto(this);
 
@@ -181,6 +166,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return this;
   }
 
+  
   private static String     ASSERTION_ERROR_METHOD_DESCRIPTOR =
                                                               Compiler.getMethodDescriptor(Void.class,
                                                                                            Object.class);
