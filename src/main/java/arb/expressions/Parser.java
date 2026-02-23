@@ -354,6 +354,10 @@ public class Parser
    */
   public static String transformToJavaAcceptableCharacters(String expression)
   {
+    if ( expression == null )
+    {
+      return null;
+    }
     expression = stripInvisibleUnicodeFormattingCharacters(expression.replace("->", "➔")
                                                                      .replace("⇒", "➔")
                                                                      .replace("⇒", "➔")

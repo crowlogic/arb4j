@@ -20,7 +20,6 @@ import arb.*;
 import arb.Integer;
 import arb.applications.ExpressionTree;
 import arb.exceptions.CompilerException;
-import arb.exceptions.UndefinedReferenceException;
 import arb.expressions.context.Dependency;
 import arb.expressions.nodes.*;
 import arb.expressions.nodes.Node;
@@ -133,6 +132,7 @@ import arb.utensils.text.trees.TreeModel;
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
+@SuppressWarnings("hiding")
 public class Expression<D, C, F extends Function<? extends D, ? extends C>> implements
                        Typesettable,
                        Cloneable,
@@ -159,14 +159,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     Expression<D, C, F> definingExpression = context.getFunctionExpression(functionName);
 
-    Node<D, C, F> body = definingExpression.rootNode.spliceInto(this);
+    Node<D, C, F>       body               = definingExpression.rootNode.spliceInto(this);
 
     rootNode = rootNode.substitute(functionName, body);
     updateStringRepresentation();
     return this;
   }
 
-  
   private static String     ASSERTION_ERROR_METHOD_DESCRIPTOR =
                                                               Compiler.getMethodDescriptor(Void.class,
                                                                                            Object.class);
@@ -655,9 +654,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   @SuppressWarnings("unchecked")
-  public <G extends Function<?, ?>, E extends Expression<?, ?, ? extends G>> E cloneExpression()
+  public Expression<D, C, F> cloneExpression()
   {
-    return (E) clone();
+    return (Expression<D, C, F>) clone();
   }
 
   public Expression<D, C, F> compile()
@@ -3447,8 +3446,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return intermediateVarName;
   }
 
-  public FunctionMapping<Object, Object, Function<?, ?>>
-         registerSubexpression(Expression<Object, Object, Function<?, ?>> expr)
+  @SuppressWarnings("hiding")
+  public <A, B, Q extends Function<? extends A, ? extends B>>
+         FunctionMapping<A, B, Q>
+         registerSubexpression(Expression<A, B, Q> expr)
   {
     if (context == null)
     {
@@ -3851,6 +3852,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return this;
   }
 
+  @SuppressWarnings("hiding")
   public <E, S, G extends Function<? extends E, ? extends S>>
          Expression<D, C, F>
          substitute(String variableToChange, Expression<E, S, G> substitution)
@@ -3888,6 +3890,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return this;
   }
 
+  @SuppressWarnings("hiding")
   public <E, S, G extends Function<? extends E, ? extends S>>
          Expression<D, C, F>
          substitute(String variableToChange, Node<E, S, G> substitution)

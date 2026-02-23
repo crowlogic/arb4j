@@ -59,7 +59,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
   String                                     integrationVariableName;
 
-  Expression<Object, Object, Function<?, ?>> indefiniteIntegralExpression;
+  Expression<D,C,F> indefiniteIntegralExpression;
 
   Node<D, C, F>                              indefiniteIntegralNode;
 

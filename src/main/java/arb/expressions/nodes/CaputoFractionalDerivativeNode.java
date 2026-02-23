@@ -62,7 +62,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
 
   private VariableNode<D, R, F>              variable;
 
-  private FunctionMapping<D, R, ? extends F> operandExpression;
+  private FunctionMapping<D, R,F> operandFunctionMapping;
 
   public CaputoFractionalDerivativeNode(Expression<D, R, F> expression,
                                         Node<D, R, F> operand,
@@ -70,6 +70,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
                                         Node<D, R, F> order)
   {
     super(expression);
+    assert operand != null : "operand is null";
     this.variable = variable;
     if (order == null)
     {
@@ -87,7 +88,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
                                                             derivativeOrder));
     }
 
-    init(expression, operand, derivativeOrder);
+    init(operand, derivativeOrder);
   }
 
   /**
@@ -123,15 +124,15 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
                                                             derivativeOrder));
     }
 
-    init(expression, operand, derivativeOrder);
+    init(operand, derivativeOrder);
   }
 
-  protected void init(Expression<D, R, F> expression, Node<D, R, F> operand, int derivativeOrder)
+  protected void init(Node<D, R, F> operand, int derivativeOrder)
   {
-    operandExpression = context.registerFunctionMapping("f",
-                                                        expression.domainType,
-                                                        expression.coDomainType,
-                                                        expression.functionClass);
+    operandFunctionMapping = context.registerFunctionMapping("f",
+                                                             expression.domainType,
+                                                             expression.coDomainType,
+                                                             expression.functionClass);
 
     context.registerVariable(Real.named("α")).setBounds(0, false, 1, true);
 
@@ -146,7 +147,24 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
                                                       "gint",
                                                       false);
 
-    this.integralExpression.inlineFunction("f");
+    Expression<D, R, F> operandExpression = expression.cloneExpression();
+    operandExpression.className    = null;
+    operandExpression.functionName = null;
+    operandExpression.rootNode     = operand.spliceInto(operandExpression);
+    operandExpression.updateStringRepresentation();
+    
+    operandFunctionMapping.expression = operandExpression;
+    
+    try
+    {
+      this.integralExpression.inlineFunction("f");
+    }
+    catch (Exception e)
+    {
+      throw new CompilerException("TODO: set f.expression by substituing the operand into the root of a new expression: operand="
+                                  + operand,
+                                  e);
+    }
 
     // this.integralExpression.substitute("f", integralExpression.rootNode);
     this.integralNode = integralExpression.rootNode;
