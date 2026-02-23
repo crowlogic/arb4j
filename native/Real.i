@@ -135,6 +135,11 @@ import arb.utensils.Utensils;
 %}
 %typemap(javacode) arb_struct %{
 
+	public Complex rgamma(int bits, Complex result)
+	{
+	  return result.set(this).rgamma(bits);
+	}
+	
 	public Real rgamma(int bits, Real result)
 	{
 	    arblib.arb_rgamma(result, this, bits);

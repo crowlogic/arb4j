@@ -42,6 +42,25 @@ public class Integer implements
                      Ring<Integer>,
                      NamedField<Integer>
 {
+
+  public Real rgamma(int bits, Real result)
+  {
+    return result.set(this).rgamma(bits);
+  }
+
+  public RealPolynomial rgamma(int bits, RealPolynomial result)
+  {
+    try ( var blip = new Real(); var realResult = new Real() )
+    {
+      return result.set(blip.set(this).rgamma(bits,realResult));
+    }
+  }
+
+  public Complex rgamma(int bits, Complex result)
+  {
+    return result.set(this).rgamma(bits);
+  }
+
   private Integer lowerBound_;
   private Integer upperBound_;
   private boolean lowerBoundInclusive_;

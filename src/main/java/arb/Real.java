@@ -162,6 +162,11 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
   }
 
 
+	public Complex rgamma(int bits, Complex result)
+	{
+	  return result.set(this).rgamma(bits);
+	}
+	
 	public Real rgamma(int bits, Real result)
 	{
 	    arblib.arb_rgamma(result, this, bits);

@@ -1,3 +1,4 @@
 #!/bin/sh
 
-killall chromium
+killall chromium 2>/dev/null
+
