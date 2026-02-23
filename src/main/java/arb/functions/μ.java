@@ -1,14 +1,13 @@
 package arb.functions;
 
-import arb.Initializable;
+import arb.*;
 import arb.Integer;
-import arb.Named;
-import arb.Real;
-import arb.Typesettable;
 import arb.expressions.Context;
 import arb.functions.Function;
+import arb.functions.complex.ComplexFunction;
 import arb.functions.integer.ComplexSequence;
 import arb.functions.integer.ComplexSequenceSequence;
+import arb.utensils.Utensils;
 
 public class μ implements ComplexSequenceSequence, Typesettable, AutoCloseable, Initializable, Named {
    public boolean isInitialized;
@@ -17,6 +16,22 @@ public class μ implements ComplexSequenceSequence, Typesettable, AutoCloseable,
    public Real β;
    public Real γ;
 
+   public static void main(String args[])
+   {
+     try ( μ μ = new μ())
+     {
+       μ.α = μ.β = RealConstants.negHalf;
+       μ.γ = RealConstants.half;
+       ComplexSequence apply = μ.apply(3);
+       Complex apply2 = apply.apply(4);
+       
+       System.out.format("μ(4,3)=%s\n%s\n", apply2, Utensils.yamlString(apply2));
+       
+     }
+
+   }
+
+   
    @Override
    public Class<Integer> domainType() {
       return Integer.class;

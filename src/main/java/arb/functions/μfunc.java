@@ -24,6 +24,7 @@ public class μfunc implements ComplexSequence, Typesettable, AutoCloseable, Ini
    public Real β;
    public Real γ;
 
+   
    @Override
    public Class<Integer> domainType() {
       return Integer.class;
