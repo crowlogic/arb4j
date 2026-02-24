@@ -13,7 +13,6 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.exceptions.UnderConstructionException;
-import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.nodes.binary.ExponentiationNode;
 import arb.functions.Function;
@@ -101,8 +100,6 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
 
   private Node<D, R, F>              order;
 
-  private Context                    context;
-
   public DerivativeNode(Expression<D, R, F> expression)
   {
     this(expression,
@@ -114,7 +111,6 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
     super(expression);
     assert operand != null : "variable is null";
     this.operand = operand;
-    this.context = expression.context;
     variable     = expression.getIndependentVariable();
 
   }
@@ -122,8 +118,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   public DerivativeNode(Expression<D, R, F> expression, boolean functionForm)
   {
     super(expression);
-    operand      = expression.resolve();
-    this.context = new Context(Integer.named("n"));
+    operand = expression.resolve();
 
     if (functionForm)
     {
@@ -280,7 +275,12 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    assert false : "nthDerivativeNode is null for " + this + " context=" + expression.context + "functions=" + expression.context.functions;
+    assert false : "nthDerivativeNode is null for "
+                   + this
+                   + " context="
+                   + expression.context
+                   + "functions="
+                   + expression.context.functions;
     return differentiatedNode.spliceInto(newExpression);
   }
 

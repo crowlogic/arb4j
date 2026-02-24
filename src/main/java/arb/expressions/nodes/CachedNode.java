@@ -58,7 +58,7 @@ public class CachedNode<D, C, F extends Function<? extends D, ? extends C>> exte
   @Override
   public Node<D, C, F> differentiate(VariableNode<D, C, F> variable)
   {
-    return expression.newLiteralConstant(0);
+    return expression.newConstant(0);
   }
 
   @Override

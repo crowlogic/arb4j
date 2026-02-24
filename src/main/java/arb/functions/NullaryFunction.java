@@ -11,6 +11,7 @@ import arb.expressions.*;
  * 
  * @param <R>
  */
+@SuppressWarnings("hiding")
 public interface NullaryFunction<R> extends
                                 Function<Object, R>
 {

@@ -6,6 +6,7 @@ public interface Functional<DOMAIN,
                            Function<DOMAIN, FUNC>
 {
 
+  @SuppressWarnings("hiding")
   public static <D,
                 C,
                 F extends Function<? extends D, ? extends C>,

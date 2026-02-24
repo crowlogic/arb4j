@@ -13,6 +13,7 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.utensils.Utensils;
 
+@SuppressWarnings("hiding")
 public abstract class HypergeometricFunction<P extends NamedRing<P>,
               C extends NamedRing<? extends C>,
               N extends NullaryFunction<C>> implements

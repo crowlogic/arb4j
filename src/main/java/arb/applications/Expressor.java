@@ -98,7 +98,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     return expressionTree;
   }
 
-  @SuppressWarnings("resource")
+  @SuppressWarnings({ "resource", "unchecked" })
   public void constructContextTableView()
   {
     contextTableView = new TableView<Named>();

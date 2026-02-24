@@ -1764,7 +1764,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (functionalDependsOnIndependentVariable)
     {
-      propagateIndependentVariableToFunctional(mv, functional, functionalIndependentVariable);
+      copyIndependentVariableToFunctionalByValue(mv, functional, functionalIndependentVariable);
     }
 
     // Propagate ascendent input variables (e.g. 'n' from grandparent scope)
@@ -2854,7 +2854,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Node<D, C, F> literal(int i)
   {
-    return newLiteralConstant(i);
+    return newConstant(i);
   }
 
   public Node<D, C, F> literal(String i)
@@ -3119,7 +3119,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return registerIntermediateVariable(intermediateVarName, type, initialize);
   }
 
-  public LiteralConstantNode<D, C, F> newLiteralConstant(int i)
+  public LiteralConstantNode<D, C, F> newConstant(int i)
   {
     return new LiteralConstantNode<>(this,
                                      java.lang.Integer.toString(i));
@@ -3203,7 +3203,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
 
     rootNode = resolve();
-    assert rootNode != null : "evaluateRootNode: determine() returned null, expression='"
+    assert rootNode != null : "parse(): resolve() returned null for expression='"
                               + getExpression()
                               + "'";
 
@@ -3246,7 +3246,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (nextCharacterIs('⁻') && nextCharacterIs('¹'))
     {
       assert false : "implement superscripts properly?";
-      return node.pow(newLiteralConstant("-1"));
+      return node.pow(negativeOne());
     }
 
     node = parseSuperscript(node, '⁰', "0");
@@ -3275,13 +3275,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                               System.identityHashCode(this),
                               function));
     }
-    propagateContextVariables(mv, function);
-    propagateContextFunctions(mv, function);
+    propagateContextVariablesByReference(mv, function);
+    propagateContextFunctionReferences(mv, function);
   }
 
-  protected void propagateContextFunction(MethodVisitor mv,
-                                          Expression<?, ?, Function<?, ?>> function,
-                                          Map.Entry<String, FunctionMapping<?, ?, ?>> entry)
+  protected void
+            propagateContextFunctionReference(MethodVisitor mv,
+                                              Expression<?, ?, Function<?, ?>> function,
+                                              Map.Entry<String, FunctionMapping<?, ?, ?>> entry)
   {
 
     var    fieldName = entry.getKey();
@@ -3294,14 +3295,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-  public void propagateContextFunctions(MethodVisitor mv, Expression<?, ?, Function<?, ?>> function)
+  public void propagateContextFunctionReferences(MethodVisitor mv,
+                                                 Expression<?, ?, Function<?, ?>> function)
   {
     Predicate<String> keyPredicate = key -> function.referencedFunctions.containsKey(key)
                   && !key.equals(functionName);
 
     if (Expression.trace)
     {
-      log.debug("propagateContextualFunctions(function={}) functions={} functionsPropagated={}",
+      log.debug("propagateContextFunctionReferences(function={}) functions={} functionsPropagated={}",
                 function,
                 context.functions.keySet(),
                 context.functions.keySet().stream().filter(keyPredicate).toList());
@@ -3311,24 +3313,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       functionName = Parser.transformToJavaAcceptableCharacters(getExpression());
     }
-    // assert functionName != null : "functionName of " + this + " is null";
-    // context.functionEntryStream()
 
-    Predicate<? super Entry<String, FunctionMapping<?, ?, ?>>> predicate = entry ->
-    {
-      return function.referencedFunctions.containsKey(entry.getKey())
-                    && !entry.getKey().equals(functionName);
-    };
     context.functionEntryStream()
-           .filter(predicate)
-           .forEach(entry -> propagateContextFunction(mv, function, entry));
+           .filter(entry -> function.referencedFunctions.containsKey(entry.getKey())
+                         && !entry.getKey().equals(functionName))
+           .forEach(entry -> propagateContextFunctionReference(mv, function, entry));
   }
 
-  public void propagateContextVariables(MethodVisitor mv, Expression<?, ?, Function<?, ?>> function)
+  public void propagateContextVariablesByReference(MethodVisitor mv,
+                                                   Expression<?, ?, Function<?, ?>> function)
   {
     if (trace)
     {
-      log.debug(String.format("Expression(#%s).propagateContexVariables(function=%s)\n",
+      log.debug(String.format("Expression(#%s).propagateContextVariablesByReference(function=%s)\n",
                               System.identityHashCode(this),
                               function));
     }
@@ -3347,13 +3344,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   protected void
-            propagateIndependentVariableToFunctional(MethodVisitor mv,
-                                                     Expression<?, ?, Function<?, ?>> function,
-                                                     VariableNode<?, ?, Function<?, ?>> independentVariableMappedToFunctional)
+            copyIndependentVariableToFunctionalByValue(MethodVisitor mv,
+                                                       Expression<?, ?, Function<?, ?>> function,
+                                                       VariableNode<?, ?, Function<?, ?>> independentVariableMappedToFunctional)
   {
     if (trace)
     {
-      log.debug(String.format("Expression(#%s).propagateIndependentVariable(function=%s, independentVariableMappedToFunctional=%s)\n",
+      log.debug(String.format("Expression(#%s).copyIndependentVariableToFunctionalByValue(function=%s, independentVariableMappedToFunctional=%s)\n",
                               System.identityHashCode(this),
                               function,
                               independentVariableMappedToFunctional));
@@ -3438,8 +3435,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     else
     {
       // if the coDomain is a functon, then it will be an interface and thus
-      // no intermediate variables will be declared in this class, rather they are
-      // instead declared in the class that will be returned
+      // no intermediate variables will be declared in this class, instead they are
+      // declared in the class that will be returned
       return null;
     }
 
@@ -4157,6 +4154,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public String toStringExtended()
   {
     return stream().map(Expression::toString).collect(Collectors.joining(" => "));
+  }
+
+  public LiteralConstantNode<D, C, F> one()
+  {
+    return newConstant(1);
+  }
+
+  public LiteralConstantNode<D, C, F> negativeOne()
+  {
+    return newConstant(-1);
   }
 
 }

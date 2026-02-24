@@ -331,7 +331,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public DivisionNode<D, R, F> div(int i)
   {
-    return div(expression.newLiteralConstant(i));
+    return div(expression.newConstant(i));
   }
 
   public DivisionNode<D, R, F> div(Node<D, R, F> divisor)
@@ -512,7 +512,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public MultiplicationNode<D, R, F> mul(int i)
   {
-    return mul(expression.newLiteralConstant(i));
+    return mul(expression.newConstant(i));
   }
 
   public MultiplicationNode<D, R, F> mul(Node<D, R, F> multiplicand)
@@ -530,17 +530,17 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public LiteralConstantNode<D, R, F> negativeOne()
   {
-    return expression.newLiteralConstant(-1);
+    return expression.negativeOne();
   }
 
   public LiteralConstantNode<D, R, F> one()
   {
-    return expression.newLiteralConstant(1);
+    return expression.one();
   }
 
   public ExponentiationNode<D, R, F> pow(int i)
   {
-    return pow(expression.newLiteralConstant(i));
+    return pow(expression.newConstant(i));
   }
 
   public ExponentiationNode<D, R, F> pow(Node<D, R, F> exponent)
@@ -586,7 +586,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public Node<D, R, F> sub(int i)
   {
-    return sub(expression.newLiteralConstant(i));
+    return sub(expression.newConstant(i));
   }
 
   public <N extends Node<D, R, F>> N sub(Node<D, R, F> subtrahend)
@@ -614,12 +614,12 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public LiteralConstantNode<D, R, F> three()
   {
-    return expression.newLiteralConstant(3);
+    return expression.newConstant(3);
   }
 
   public LiteralConstantNode<D, R, F> two()
   {
-    return expression.newLiteralConstant(2);
+    return expression.newConstant(2);
   }
 
   /**
@@ -675,7 +675,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public LiteralConstantNode<D, R, F> zero()
   {
-    return expression.newLiteralConstant(0);
+    return expression.newConstant(0);
   }
 
   public boolean isFunction()

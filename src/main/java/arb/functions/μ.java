@@ -3,8 +3,6 @@ package arb.functions;
 import arb.*;
 import arb.Integer;
 import arb.expressions.Context;
-import arb.functions.Function;
-import arb.functions.complex.ComplexFunction;
 import arb.functions.integer.ComplexSequence;
 import arb.functions.integer.ComplexSequenceSequence;
 import arb.utensils.Utensils;

@@ -43,7 +43,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({ "unused", "hiding" })
 public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>> extends
                                VBox
 {

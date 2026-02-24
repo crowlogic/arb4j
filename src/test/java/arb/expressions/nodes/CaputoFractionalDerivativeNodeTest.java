@@ -4,8 +4,6 @@ import arb.Real;
 import arb.RealConstants;
 import arb.expressions.Context;
 import arb.functions.RealBivariateFunction;
-import arb.functions.RealFunctional;
-import arb.functions.integer.RealFunctionalSequence;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 

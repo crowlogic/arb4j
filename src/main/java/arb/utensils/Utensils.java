@@ -14,7 +14,6 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 
-import org.jetbrains.java.decompiler.api.Decompiler.Builder;
 import org.objectweb.asm.Type;
 import org.scilab.forge.jlatexmath.*;
 import org.yaml.snakeyaml.*;
