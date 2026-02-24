@@ -1,4 +1,4 @@
-package arb.applications;
+package arb.applications.expressor;
 
 public record NewVariable(String name, Class<?> type)
 {

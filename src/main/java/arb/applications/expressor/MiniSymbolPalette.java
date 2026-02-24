@@ -1,4 +1,4 @@
-package arb.applications;
+package arb.applications.expressor;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;

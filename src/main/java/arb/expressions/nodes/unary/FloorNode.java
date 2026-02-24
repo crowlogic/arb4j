@@ -22,7 +22,7 @@ public class FloorNode<D, R, F extends Function<? extends D, ? extends R>> exten
   @Override
   public String toString()
   {
-    return String.format("⌊%s⌋", arg.typeset());
+    return String.format("⌊%s⌋", arg);
   }
 
   @Override

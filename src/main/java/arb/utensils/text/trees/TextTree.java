@@ -5,9 +5,9 @@ import static arb.utensils.Utensils.throwOrWrap;
 import java.io.PrintStream;
 import java.lang.reflect.Field;
 
-import arb.applications.ExpressionTree;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.ExpressionTree;
 import arb.expressions.nodes.Node;
 import arb.utensils.Utensils;
 

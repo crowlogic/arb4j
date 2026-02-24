@@ -16,7 +16,7 @@ import arb.Named;
 import arb.RationalFunction;
 import arb.Real;
 import arb.RealPolynomial;
-import arb.applications.ExpressionTreeView;
+import arb.applications.expressor.ExpressionTreeView;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;

@@ -31,6 +31,7 @@ module arb4j
   requires transitive vineflower;
 
   exports arb.applications;
+  exports arb.applications.expressor;
   exports arb.stochastic;
   exports arb;
   exports arb.expressions.context;

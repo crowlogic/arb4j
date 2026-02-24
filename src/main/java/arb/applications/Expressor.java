@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 
 import arb.Named;
 import arb.Real;
+import arb.applications.expressor.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
@@ -105,7 +106,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     // ==================== Name Column ====================
     TableColumn<Named, String> nameColumn = new TableColumn<>("Name");
     nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()
-                                                                                .getName()));
+                  == null ? "" : cellData.getValue().getName()));
     nameColumn.setPrefWidth(150);
     nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
     nameColumn.setOnEditCommit(event ->
@@ -713,15 +714,14 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     contextViewVisible = !contextViewVisible;
   }
 
-  void updateContextTableView()
+  public void updateContextTableView()
   {
     Context currentContext = getCurrentContext();
     if (currentContext != null && contextTableView != null)
     {
       // Create ObservableList from map values
-      ObservableList<
-                    Named> list =
-                                FXCollections.observableArrayList(currentContext.variables.values());
+      ObservableList<Named> list =
+                                 FXCollections.observableArrayList(currentContext.variables.values());
 
       // Add listener to keep synchronized with map changes
       currentContext.variables.addListener((MapChangeListener<String, Named>) change ->

@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 
 import arb.*;
 import arb.Integer;
-import arb.applications.ExpressionTree;
 import arb.exceptions.CompilerException;
 import arb.expressions.context.Dependency;
 import arb.expressions.nodes.*;

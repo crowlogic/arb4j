@@ -10,7 +10,7 @@ import java.util.Base64;
 
 import arb.XDO;
 import arb.arblib;
-import arb.applications.EmacsKeybindingsEventHandler;
+import arb.applications.expressor.EmacsKeybindingsEventHandler;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.utensils.ShellFunctions;

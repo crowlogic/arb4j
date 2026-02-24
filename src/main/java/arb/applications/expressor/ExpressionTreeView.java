@@ -1,4 +1,4 @@
-package arb.applications;
+package arb.applications.expressor;
 
 import static arb.utensils.Utensils.wrapOrThrow;
 
@@ -10,6 +10,7 @@ import java.util.*;
 
 import arb.*;
 import arb.Integer;
+import arb.applications.Expressor;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.*;

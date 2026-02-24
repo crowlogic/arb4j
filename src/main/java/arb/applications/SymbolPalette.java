@@ -2,6 +2,7 @@ package arb.applications;
 
 import java.util.*;
 
+import arb.applications.expressor.Stylesheet;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.*;
