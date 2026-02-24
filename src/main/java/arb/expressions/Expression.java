@@ -3206,12 +3206,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     assert rootNode != null : "evaluateRootNode: determine() returned null, expression='"
                               + getExpression()
                               + "'";
-    rootNode.isResult = true;
 
     if (position < getExpression().length() && character != '=')
     {
       throwUnexpectedCharacterException();
     }
+
+    rootNode.isResult = true;
 
     if (simplify)
     {

@@ -2,7 +2,7 @@
 
 
 BASEDIR=$(dirname $(readlink -f $0))/..
-$BASEDIR/bin/arbshell $@ -R-Darb4j.trace=true -R-Darb4j.saveClasses=true -R-Dlogback.configurationFile=logback-debug.xml
+$BASEDIR/bin/arbshell $@ -R-Darb4j.trace=true -R-Darb4j.decompileClasses=true -Darb4j.traceNodes=true -R-Darb4j.saveClasses=true -R-Dlogback.configurationFile=logback-debug.xml
 
 
 
