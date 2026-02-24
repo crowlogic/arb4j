@@ -11,7 +11,7 @@ Each Node subclass—DerivativeNode, AdditionNode, ExponentiationNode, etc.—kn
     Differentiate itself symbolically (product rule, chain rule, power rule—all dispatched polymorphically)
     Simplify itself (constant folding, identity elimination)
 
-The AST isn't a passive data structure. It's a self-rewriting, self-compiling organism where a DerivativeNode rewrites its child subtree on the fly via recursive differentiate() calls before emitting code.
+The AST isn't a passive data structure. It's a self-rewriting, self-compiling construct whereby a DerivativeNode rewrites its child subtree on the fly via recursive differentiate() calls before emitting code.
 Type-Safe Generics Architecture
 
 Expression<D, C, F> parameterizes domain, codomain, and function type, so Expression<Integer, RealPolynomial, RealPolynomialSequence> carries full compile-time proof that the generated class maps integers to real polynomials and implements the correct sequence interface. This isn't decorative—it drives the bytecode generator's field declarations, method signatures, and numerical operation dispatch.

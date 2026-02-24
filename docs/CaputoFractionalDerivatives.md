@@ -4,11 +4,8 @@ The Caputo fractional derivative of order $\alpha$ generalizes ordinary differen
 
 ## Definition
 
-$${}^{C}\!D^{\alpha} f(x) = \frac{1}{\Gamma(n - \alpha)} \int_0^x (x - t)^{n - \alpha - 1} f^{(n)}(t) dt$$
-
-where $n = \lceil \alpha \rceil$. Currently $\alpha \in (0, 1]$ is supported, so $n = 1$ and the formula reduces to :
-
-$${}^{C}\!D^{\alpha} f(x) = \frac{1}{\Gamma(1 - \alpha)} \int_0^x (x - t)^{-\alpha} f'(t) dt$$
+Let $n = \lceil \alpha \rceil$ then 
+$${}^{C}D^{\alpha} f(x) = {}^{C}D_x^{\alpha} f(x) = \frac{1}{\Gamma(n - \alpha)} \int_0^x (x - t)^{n - \alpha - 1} f^{(n)}(t) dt$$
 
 ## Syntax
 
@@ -30,14 +27,14 @@ The parser calls `operand.fractionalDerivative(α)`, which dispatches polymorphi
 | Operand | Closed Form |
 | :-- | :-- |
 | Constant $c$ | $0$ |
-| Independent variable $t$ | $\frac{\Gamma(2)}{\Gamma(2 - \alpha)} \, t^{1-\alpha}$ |
-| Monomial $t^k$ | $\frac{\Gamma(k+1)}{\Gamma(k - \alpha + 1)} \, t^{k-\alpha}$ |
-| Sum $f + g$ | ${}^{C}\!D^{\alpha} f + {}^{C}\!D^{\alpha} g$ (linearity) |
-| Difference $f - g$ | ${}^{C}\!D^{\alpha} f - {}^{C}\!D^{\alpha} g$ (linearity) |
-| Constant multiple $c \cdot f$ | $c \cdot {}^{C}\!D^{\alpha} f$ |
-| Constant divisor $f / c$ | ${}^{C}\!D^{\alpha} f \, / \, c$ |
+| Independent variable $t$ | $\frac{\Gamma(2)}{\Gamma(2 - \alpha)} t^{1-\alpha}$ |
+| Monomial $t^k$ | $\frac{\Gamma(k+1)}{\Gamma(k - \alpha + 1)} t^{k-\alpha}$ |
+| Sum $f(x) + g(x)$ | ${}^{C}D^{\alpha} f(x) + {}^{C}D^{\alpha} g(x)$ (linearity) |
+| Difference $f(x) - g(x)$ | ${}^{C}D^{\alpha} f(x) - {}^{C}D^{\alpha} g(x)$ (linearity) |
+| Constant multiple $c \cdot f(x)$ | $c \cdot {}^{C}D^{\alpha} f(x)$ |
+| Constant divisor $f(x) / c$ | ${}^{C}D^{\alpha} f(x) c$ |
 
-If no closed form applies, the base `Node.fractionalDerivative` creates a `CaputoFractionalDerivativeNode` that compiles the integral definition .
+If no closed form applies, the base `Node.fractionalDerivative` creates a `CaputoFractionalDerivativeNode` that evaluates the integral definition .
 
 ## Integral Form
 
