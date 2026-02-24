@@ -1,0 +1,10 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.functions.RealFunctional
+context:
+  input:
+  - arb.Integer
+  - '2'
+domain: arb.Integer
+expression: n➔x➔y➔(x-y)^n
+function: arb.functions.integer.RealFunctionalSequence
+...

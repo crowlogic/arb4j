@@ -1,0 +1,10 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.functions.real.RealFunction
+context:
+  input:
+  - arb.Real
+  - '2.5'
+domain: arb.Real
+expression: x->y->(x-y)^2
+function: arb.functions.RealFunctional
+...

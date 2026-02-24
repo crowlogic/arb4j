@@ -461,7 +461,9 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     RealFunctionSequence.class,
     ComplexFunctionSequence.class,
     RealBivariateFunction.class,
-    FractionFunction.class };
+    FractionFunction.class,
+    RealFunctional.class,
+    RealFunctionalSequence.class };
 
   private HBox setupTypeBoxes()
   {
@@ -609,6 +611,14 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     else if (functionType.equals(AlgebraicNumberFunction.class))
     {
       selectTypes(AlgebraicNumber.class, AlgebraicNumber.class);
+    }
+    else if (functionType.equals(RealFunctional.class))
+    {
+      selectTypes(Real.class, RealFunction.class);
+    }
+    else if (functionType.equals(RealFunctionalSequence.class))
+    {
+      selectTypes(Integer.class, RealFunctional.class);
     }
     else if (functionType.equals(Sequence.class))
     {
