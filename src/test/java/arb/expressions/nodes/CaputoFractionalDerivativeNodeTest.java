@@ -27,8 +27,6 @@ public class CaputoFractionalDerivativeNodeTest extends
 {
   private static final double TOL = 1e-10;
 
-
-  
   public void testFractionalDerivativeFunctionForm()
   {
     var f = RealFunction.parse("fracdiff(sin(t),t^2)");
@@ -49,7 +47,7 @@ public class CaputoFractionalDerivativeNodeTest extends
 //    var y = x.eval(2.3);
 //    assertEquals( 5.6, y );
   }
-  
+
   public void testFractionalDerivativeFunctionForm3()
   {
     Context context = new Context();
@@ -61,7 +59,6 @@ public class CaputoFractionalDerivativeNodeTest extends
 //    var y = x.eval(2.3);
 //    assertEquals( 5.6, y );
   }
-  
 
   /**
    * substitute() must return this (the same object reference), not a newly
@@ -159,14 +156,10 @@ public class CaputoFractionalDerivativeNodeTest extends
   {
     var    context  = new Context(Real.named("α").set("0.5", 128).setBounds(0, false, 1, true));
     var    f        = RealFunction.express("Đ^(α)(3*t²)", context);
-    var    result   = f.evaluate(new Real("2.0",
-                                          128),
-                                 1,
-                                 128,
-                                 new Real());
+    var    result   = f.evaluate(RealConstants.two, 1, 128, new Real());
     // 3 * Đ^(½)(t²) at t=2 = 3 * (8/(3√π)) * 2^(3/2) = (8/√π) * 2^(3/2)
     // mpmath: 12.766152972845845694077773917890219791...
-    double expected = 3.0 * (8.0 / (3.0 * Math.sqrt(Math.PI))) * Math.pow(2.0, 1.5);
+    double expected = 3 * (8 / (3 * Math.sqrt(Math.PI))) * Math.pow(2, 1.5);
     assertEquals("Đ^(½)(3*t²) at t=2", expected, result.doubleValue(), TOL);
   }
 
@@ -174,17 +167,13 @@ public class CaputoFractionalDerivativeNodeTest extends
   {
     var    context  = new Context(Real.named("β").set("0.5", 128).setBounds(0, false, 1, true));
     var    f        = RealFunction.express("Đ^(β)(3*t²)", context);
-    var    result   = f.evaluate(new Real("2.0",
-                                          128),
-                                 1,
-                                 128,
-                                 new Real());
+    var    result   = f.evaluate(RealConstants.two, 1, 128, new Real());
     // 3 * Đ^(½)(t²) at t=2 = 3 * (8/(3√π)) * 2^(3/2) = (8/√π) * 2^(3/2)
     // mpmath: 12.766152972845845694077773917890219791...
-    double expected = 3.0 * (8.0 / (3.0 * Math.sqrt(Math.PI))) * Math.pow(2.0, 1.5);
+    double expected = 3 * (8 / (3 * Math.sqrt(Math.PI))) * Math.pow(2, 1.5);
     assertEquals("Đ^(½)(3*t²) at t=2", expected, result.doubleValue(), TOL);
   }
-  
+
   public void testCaputoDerivativeOfSum()
   {
     var    context  = new Context(Real.named("α").set("0.5", 128).setBounds(0, false, 1, true));
