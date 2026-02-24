@@ -1,10 +1,10 @@
 --- !!arb.expressions.SerializedExpression
-coDomain: arb.functions.RealFunctional
+coDomain: arb.functions.ComplexFunctional
 context:
   input:
   - arb.Integer
-  - '2'
+  - '0'
 domain: arb.Integer
 expression: n➔x➔y➔(x-y)ⁿ
-function: arb.functions.integer.RealFunctionalSequence
+function: arb.functions.integer.ComplexFunctionalSequence
 ...

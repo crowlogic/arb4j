@@ -430,7 +430,9 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     RealMatrix.class,
     ComplexMatrix.class,
     RealFunction.class,
+    RealFunctional.class,
     ComplexFunction.class,
+    ComplexFunctional.class,
     Quaternion.class };
 
   public static Class<?>[]              INTERFACES           = new Class<?>[]
@@ -463,7 +465,9 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     RealBivariateFunction.class,
     FractionFunction.class,
     RealFunctional.class,
-    RealFunctionalSequence.class };
+    RealFunctionalSequence.class,
+    ComplexFunctional.class,
+    ComplexFunctionalSequence.class};
 
   private HBox setupTypeBoxes()
   {
@@ -620,6 +624,14 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     {
       selectTypes(Integer.class, RealFunctional.class);
     }
+    else if (functionType.equals(ComplexFunctional.class))
+    {
+      selectTypes(Complex.class, ComplexFunction.class);
+    }
+    else if (functionType.equals(ComplexFunctionalSequence.class))
+    {
+      selectTypes(Integer.class, ComplexFunctional.class);
+    }
     else if (functionType.equals(Sequence.class))
     {
       domainTypeBox.getSelectionModel().select(Integer.class);
@@ -627,7 +639,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     else if (functionType.equals(RealBivariateFunction.class))
     {
       selectTypes(Real.class, RealFunction.class);
-    }
+    }    
     else
     {
       System.err.println("functionTypeSelected: TODO: handle " + functionType);
