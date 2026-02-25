@@ -1,0 +1,6 @@
+var F = RealNullaryFunction.parse("1/((2*3)^(-2))");
+var f = F.instantiate();
+var ρ  = F.rootNode;
+var ρceil = ρ.ceil().evaluate(Real.class,128,new Real());
+var yreal = ρ.evaluate(Real.class, 128,new Real());
+
