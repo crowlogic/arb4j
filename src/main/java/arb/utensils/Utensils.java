@@ -206,7 +206,7 @@ public class Utensils
 
   public static void wrapOrThrow(String msg, Throwable e)
   {
-    if (e instanceof RuntimeException q)
+    if (e instanceof RuntimeException q && ( msg == null || msg.isEmpty() ) )
     {
       throw q;
     }

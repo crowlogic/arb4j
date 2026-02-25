@@ -72,7 +72,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     catch (IllegalAccessException | InvocationTargetException e)
     {
-      Utensils.throwOrWrap(e);
+      Utensils.wrapOrThrow(toString() + " in " + expression, e);
     }
 
     throw new UnderConstructionException("TODO: dispatch via reflection to evaluate "
