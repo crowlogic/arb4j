@@ -288,7 +288,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   public Class<?> assignTypes(Class<?> resultType)
   {
-    if (!expression.thisOrAnyAscendentExpressionHasIndeterminantVariable())
+    if (!expression.thisOrAnyUpstreamExpressionHasIndeterminantVariable())
     {
       resultType = scalarType(resultType);
     }

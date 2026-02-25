@@ -4,7 +4,6 @@ import static org.objectweb.asm.Opcodes.*;
 
 import java.io.File;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -102,27 +101,26 @@ public class Compiler
 
   static
   {
-    typePrefixes.put(AlgebraicNumber.class, "\uD835\uDD38");
-    typePrefixes.put(Real.class, "\u211D");
-    typePrefixes.put(Complex.class, "\u2102");
-    typePrefixes.put(Integer.class, "\u2124");
-    typePrefixes.put(RealPolynomial.class, "X\u211D");
-    typePrefixes.put(ComplexPolynomial.class, "X\u2102");
-    typePrefixes.put(RealMatrix.class, "\u211D\u1D50\u02E3\u207F");
-    typePrefixes.put(ComplexMatrix.class, "\u2102\u1D50\u02E3\u207F");
-    typePrefixes.put(RationalFunction.class, "\u211A");
-    typePrefixes.put(ComplexRationalFunction.class, "\u211A\u2102");
+    typePrefixes.put(AlgebraicNumber.class, "𝔸");
+    typePrefixes.put(Real.class, "ℝ");
+    typePrefixes.put(Complex.class, "ℂ");
+    typePrefixes.put(Integer.class, "ℤ");
+    typePrefixes.put(RealPolynomial.class, "Xℝ");
+    typePrefixes.put(ComplexPolynomial.class, "Xℂ");
+    typePrefixes.put(RealMatrix.class, "ℝᵐˣⁿ");
+    typePrefixes.put(ComplexMatrix.class, "ℂᵐˣⁿ");
+    typePrefixes.put(RationalFunction.class, "ℚ");
+    typePrefixes.put(ComplexRationalFunction.class, "ℚℂ");
     typePrefixes.put(Fraction.class, "q");
     typePrefixes.put(LommelPolynomial.class, "XR");
-    typePrefixes.put(RationalHypergeometricFunction.class, "\u211AF");
-    typePrefixes.put(RealHypergeometricPolynomialFunction.class, "X\u211DF");
-    typePrefixes.put(ComplexHypergeometricPolynomialFunction.class, "X\u2102F");
-    typePrefixes.put(ComplexRationalHypergeometricFunction.class, "\u211A\u2102F");
-    typePrefixes.put(ComplexFraction.class, "f\u2102");
+    typePrefixes.put(RationalHypergeometricFunction.class, "ℚF");
+    typePrefixes.put(RealHypergeometricPolynomialFunction.class, "XℝF");
+    typePrefixes.put(ComplexHypergeometricPolynomialFunction.class, "XℂF");
+    typePrefixes.put(ComplexRationalHypergeometricFunction.class, "ℚℂF");
+    typePrefixes.put(ComplexFraction.class, "fℂ");
     typePrefixes.put(SphericalBesselFunction.class, "sph");
-    typePrefixes.put(IntegerPolynomial.class, "X\u2124");
+    typePrefixes.put(IntegerPolynomial.class, "Xℤ");
     typePrefixes.put(Function.class, "F");
-    typePrefixes.put(RealSequence.class, "S\u211D");
   }
 
   public static void addNullCheckForField(MethodVisitor mv,
@@ -169,7 +167,7 @@ public class Compiler
    */
   public static boolean canBeAssignedTo(Class<?> from, Class<?> to)
   {
-    if (from.equals(to))
+    if (from == to || from.equals(to))
     {
       return true;
     }
@@ -199,14 +197,6 @@ public class Compiler
     {
       return to.equals(Real.class) || to.equals(Complex.class) || to.equals(RationalFunction.class);
     }
-    else if (from.equals(ComplexRationalFunction.class))
-    {
-      return to.equals(Integer.class) || to.equals(Complex.class);
-    }
-    else if (from.equals(RationalFunction.class))
-    {
-      return to.equals(Real.class);
-    }
 
     return false;
   }
@@ -233,8 +223,7 @@ public class Compiler
     return classVisitor.visitMethod(Opcodes.ACC_PUBLIC, methodName, methodSignature, null, null);
   }
 
-  public static MethodVisitor designateLabel(org.objectweb.asm.MethodVisitor mv,
-                                             org.objectweb.asm.Label label)
+  public static MethodVisitor designateLabel(MethodVisitor mv, Label label)
   {
     mv.visitLabel(label);
     return mv;
@@ -594,22 +583,18 @@ public class Compiler
     return invokeMethod(methodVisitor, thisClass, methodName, retType, false, argTypes);
   }
 
-  public static MethodVisitor jumpTo(org.objectweb.asm.MethodVisitor methodVisitor,
-                                     org.objectweb.asm.Label label)
+  public static MethodVisitor jumpTo(MethodVisitor methodVisitor, Label label)
   {
     methodVisitor.visitJumpInsn(GOTO, label);
     return methodVisitor;
   }
 
-  public static void jumpToIfGreaterThan(org.objectweb.asm.MethodVisitor methodVisitor,
-                                         org.objectweb.asm.Label label)
+  public static void jumpToIfGreaterThan(MethodVisitor methodVisitor, Label label)
   {
     methodVisitor.visitJumpInsn(IFGT, label);
   }
 
-  public static org.objectweb.asm.MethodVisitor
-         jumpToIfLessThanOrEquals(org.objectweb.asm.MethodVisitor methodVisitor,
-                                  org.objectweb.asm.Label label)
+  public static MethodVisitor jumpToIfLessThanOrEquals(MethodVisitor methodVisitor, Label label)
   {
     methodVisitor.visitJumpInsn(IFLE, label);
     return methodVisitor;
@@ -742,7 +727,7 @@ public class Compiler
     return methodVisitor;
   }
 
-  public static void pop(org.objectweb.asm.MethodVisitor methodVisitor)
+  public static void pop(MethodVisitor methodVisitor)
   {
     methodVisitor.visitInsn(POP);
   }
@@ -808,17 +793,18 @@ public class Compiler
 
   public static boolean isScalar(Class<?> t)
   {
-    return realTypes.contains(t);
+    return scalarTypes.contains(t);
   }
 
-  public static final HashSet<Class<?>> realTypes =
-                                                  new HashSet<>(Arrays.asList(Real.class,
-                                                                              Complex.class,
-                                                                              Integer.class,
-                                                                              Fraction.class,
-                                                                              ComplexFraction.class,
-                                                                              AlgebraicNumber.class,
-                                                                              GaussianInteger.class));
+  public static final HashSet<Class<?>> scalarTypes =
+                                                    new HashSet<>(Arrays.asList(Real.class,
+                                                                                Complex.class,
+                                                                                Integer.class,
+                                                                                Fraction.class,
+                                                                                ComplexFraction.class,
+                                                                                AlgebraicNumber.class,
+                                                                                GaussianInteger.class,
+                                                                                Quaternion.class));
 
   public static ClassVisitor
          declareField(ClassVisitor classVisitor, String varName, Class<?> varType)

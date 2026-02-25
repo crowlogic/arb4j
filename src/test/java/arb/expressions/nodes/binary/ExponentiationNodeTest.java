@@ -1,7 +1,6 @@
 package arb.expressions.nodes.binary;
 
 import arb.*;
-import arb.Integer;
 import arb.expressions.Context;
 import arb.functions.RealBivariateToComplexFunction;
 import arb.functions.RealToComplexFunction;
