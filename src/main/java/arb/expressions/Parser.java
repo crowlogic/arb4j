@@ -743,10 +743,6 @@ public class Parser
                          Expression<? extends PD, ? extends PC, ? extends PF> containingExpression,
                          boolean simplify)
   {
-    assert !(functionName != null
-                  && functionName.contains(":")) : "functionName shan't return colons "
-                                                   + functionName;
-
     int punctuationMarkIndex = expression.indexOf(":");
     if (punctuationMarkIndex != -1)
     {

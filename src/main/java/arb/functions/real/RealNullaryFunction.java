@@ -17,7 +17,7 @@ public interface RealNullaryFunction extends
   {
     return NullaryFunction.parse(Real.class,
                                  RealNullaryFunction.class,
-                                 Parser.hashString(expression),
+                                 null,
                                  expression,
                                  null);
   }

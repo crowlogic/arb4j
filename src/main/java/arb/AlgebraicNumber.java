@@ -173,6 +173,12 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
     return getReal(prec, result).sub(x,prec);
   }  
 
+  public Real sub(Integer x, int prec, Real result)
+  {
+    return getReal(prec, result).sub(x,prec);
+  }  
+
+  
   public Real pow(Real x, int prec, Real result)
   {
     return getReal(prec, result).pow(x,prec);
