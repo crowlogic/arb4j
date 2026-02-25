@@ -6,12 +6,14 @@ import org.objectweb.asm.MethodVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import arb.Field;
 import arb.Fraction;
 import arb.Integer;
 import arb.expressions.Expression;
 import arb.expressions.nodes.*;
 import arb.expressions.nodes.unary.NegationNode;
 import arb.functions.Function;
+import arb.utensils.Utensils;
 
 /**
  * 
@@ -21,6 +23,18 @@ import arb.functions.Function;
 public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>> extends
                             BinaryOperationNode<D, R, F>
 {
+  @Override
+  public <T extends Field<T>> T evaluate(Class<T> resultType, int bits, T result)
+  {
+    if (result == null)
+    {
+      result = Utensils.newInstance(resultType);
+    }
+    T leftValue  = left.evaluate(resultType, bits, Utensils.newInstance(resultType));
+    T rightValue = right.evaluate(resultType, bits, Utensils.newInstance(resultType));
+    return (T) leftValue.sub(rightValue, bits, Utensils.newInstance(resultType));
+  }
+
   public static final Logger logger = LoggerFactory.getLogger(SubtractionNode.class);
 
   @Override
