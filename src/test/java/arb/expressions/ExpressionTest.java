@@ -27,11 +27,11 @@ public class ExpressionTest extends
     var F = RealNullaryFunction.parse("f:((((-1)^3)-(2*((-1)^2)))-1)");
     RealNullaryFunction f = F.instantiate();
     Real x = f.evaluate();
+    System.out.println( "testConstantFolding: " + F.inspect(f));
     assertEquals( "-4", x.toString() );
-    System.out.println("f=" + F.inspect(f) );
     assertEquals( "-4" , F.toString());
-
   }
+  
   /**
    * Register f(x)=x² in a shared {@link Context}, define g(x)=f(x)+1 in the same
    * {@link Context}, inline f into g, and verify that the resulting expression's

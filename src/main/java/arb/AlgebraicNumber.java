@@ -56,6 +56,27 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
   }
 
 
+  public Real add(Integer x, int prec, Real result)
+  {
+    return getReal(prec, result).add(x,prec);
+  }  
+
+  public Real sub(Integer x, int prec, Real result)
+  {
+    return getReal(prec, result).sub(x,prec);
+  }  
+  
+  public Real mul(Integer x, int prec, Real result)
+  {
+    return getReal(prec, result).mul(x,prec);
+  }  
+
+  public Real div(Integer x, int prec, Real result)
+  {
+    return getReal(prec, result).div(x,prec);
+  }  
+  
+
   public AlgebraicNumber identity()
   {
     return one();
@@ -173,12 +194,6 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
     return getReal(prec, result).sub(x,prec);
   }  
 
-  public Real sub(Integer x, int prec, Real result)
-  {
-    return getReal(prec, result).sub(x,prec);
-  }  
-
-  
   public Real pow(Real x, int prec, Real result)
   {
     return getReal(prec, result).pow(x,prec);

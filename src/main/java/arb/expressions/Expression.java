@@ -815,7 +815,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected ClassVisitor declareLiteralConstants(ClassVisitor classVisitor)
   {
-    for (var constant : getSortedLiteralConstantNodes())
+    for (var constant : getSortedConstantNodes())
     {
       constant.declareField(classVisitor);
     }
@@ -1417,7 +1417,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (!coDomainType.isInterface())
     {
-      getSortedLiteralConstantNodes().forEach(constant -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
+      getSortedConstantNodes().forEach(constant -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
                                                                                  constant.fieldName,
                                                                                  constant.type()));
 
@@ -2135,7 +2135,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected MethodVisitor generateLiteralConstantInitializers(MethodVisitor methodVisitor)
   {
-    for (var literal : getSortedLiteralConstantNodes())
+    for (var literal : getSortedConstantNodes())
     {
       literal.generateLiteralConstantInitializer(methodVisitor);
     }
@@ -2390,7 +2390,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return referencedVariables.get(reference);
   }
 
-  protected ArrayList<LiteralConstantNode<D, C, F>> getSortedLiteralConstantNodes()
+  protected ArrayList<LiteralConstantNode<D, C, F>> getSortedConstantNodes()
   {
     if (literalConstantNodes == null)
     {

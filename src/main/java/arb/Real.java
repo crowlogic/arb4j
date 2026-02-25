@@ -29,110 +29,6 @@ import arb.domains.Domain;
 import arb.utensils.Utensils; 
 
 /**
- * <pre>
- * This class wraps the arb_t type from the arblib module of the FLINT library
- * which represents a ball over the real numbers, that is, an interval m±r 
- * equivalently [m-r, m+r] where the midpoint m and the radius r are (extended) real
- * numbers and r is nonnegative (possibly infinite). The result of an
- * (approximate) operation done on arb_t variables is a ball which contains the
- * result of the (mathematically exact) operation applied to any choice of
- * points in the input balls. In general, the output ball is not the smallest
- * possible.
- * 
- * The precision parameter passed to each function roughly indicates the
- * precision to which calculations on the midpoint are carried out (operations
- * on the radius are always done using a fixed, small precision.)
- * 
- * For arithmetic operations, the precision parameter currently simply specifies
- * the precision of the corresponding arf_t operation. In the future, the
- * arithmetic might be made faster by incorporating sloppy rounding (typically
- * equivalent to a loss of 1 or 2 bits of effective working precision) when the
- * result is known to be inexact (while still propagating errors rigorously, of
- * course). Arithmetic operations done on exact input with exactly representable
- * output are always guaranteed to produce exact output.
- * 
- * For more complex operations, the precision parameter indicates a minimum
- * working precision (algorithms might allocate extra internal precision to
- * attempt to produce an output accurate to the requested number of bits,
- * especially when the required precision can be estimated easily, but this is
- * not generally required).
- * 
- * If the precision is increased and the inputs either are exact or are computed
- * with increased accuracy as well, the output should converge proportionally,
- * absent any bugs. The general intended strategy for using ball arithmetic is
- * to add a few guard bits, and then repeat the calculation as necessary with an
- * exponentially increasing number of guard bits (Ziv's strategy) until the
- * result is exact enough for one's purposes (typically the first attempt will
- * be successful).
- * 
- * The following balls with an infinite or NaN component are permitted, and may
- * be returned as output from functions.
- *
- * The ball ∞±c, where c is finite, represents the point at positive
- * infinity. Such a ball can always be replaced by ∞±0 while preserving
- * mathematical correctness (this is currently not done automatically by the
- * library). 
- * 
- * The ball -∞±c, where c is finite, represents the point at
- * negative infinity. Such a ball can always be replaced by -∞±0 while
- * preserving mathematical correctness (this is currently not done automatically
- * by the library). 
- * 
- * The ball c±∞, where c is finite or infinite, represents
- * the whole extended real line [-∞,+∞]. Such a ball can always be replaced by
- * 0±∞ while preserving mathematical correctness (this is currently not
- * done automatically by the library). 
- * 
- * Note that there is no way to represent a half-infinite interval such as [0,∞]. 
- * On the whole line ℝ, symmetry around 0 allows for a midpoint at 0 between -∞ 
- * and +∞. This concept doesn't apply to the half-line [0, ∞), where no finite 
- * midpoint exists between 0 and ∞ due to the absence of symmetry and the nature 
- * of ∞ as unbounded.
- * 
- * The ball NaN±c, where c is finite or infinite, represents an indeterminate 
- * value (the value could be any extended real number, or it could represent 
- * a function being evaluated outside its domain of definition, for example 
- * where the result would be complex). Such an indeterminate ball can always 
- * be replaced by NaN±∞ while preserving mathematical correctness (this is
- * currently not done automatically by the library).
- * </pre>
- * 
- * <pre>
- * Besides inheriting this tremendous functionality from arb, this class 
- * also implements multiple interfaces that give it capabilities like being 
- * part of a vector space, being lockable, and having a serializable representation.
- *
- * Instances of this class can be locked and unlocked; this means that by calling the 
- * this{@link #lock()} method, the region of memory pointed to this{@link #swigCPtr} will be marked
- * read-only at the kernel level by using the POSIX {@link arblib#mprotect(SWIGTYPE_p_void, long, int)}
- * function which will cause an access violation to occur if any process whatsoever
- * attempts to modify the variables value at that the memory level, completely bypassing any of Java's
- * notions of virtual machine yet interoperating with it perfectly. For this to work the 
- * {@link Real} must have been allocated with {@link Real#newAlignedVector(int)} and the bits of 
- * precision allocated must be no more than 128 but this is not asserted presently so as to avoid a 
- * this{@link #bits()} function call. The limit of 128 bits exists because this is the maximum number 
- * of bits that can be stored in arblib's inline number format. Any greater than 128 and arblib stores a 
- * pointer to the numerical contents rather than the numerical contents itself. In principle it would be 
- * possible to use {@link arblib#mprotect(SWIGTYPE_p_void, long, int)} to prevent this secondary data from 
- * being modified, but it too would have to be allocated in such a way that it is aligned on a page boundary. 
- * The this{@link #unlock()} call restores the read/writeability by calling 
- * {@link arblib#mprotect(SWIGTYPE_p_void, long, int)} with the appropriate flags and this{@link #locked} can 
- * be called to test for locking without triggering an access violation.
- *
- * It also provides a way to interact with complex numbers with a subset of
- * operations. The class also includes facilities to manage an array of real
- * numbers, including methods for obtaining an iterator over the elements.
- *
- * The conversion of the instances to string for displaying purposes is handled
- * in a flexible way with the option to adjust the precision of the output. It
- * also includes functions to handle the overlap and containment scenarios.
- *
- * The class has fields to control its behavior like the dimension of the space,
- * the elements themselves, and the precision for printing, among others.
- * 
- * Finally, it includes methods to get the size of the memory allocated for the
- * object and clean up the resources used by the instance.
- * </pre>
  *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
@@ -183,15 +79,6 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
 	private boolean   lowerBoundInclusive;
 	private boolean   upperBoundInclusive;
 
-	/**
-	 * Set arbitrary-precision bounds on this variable.
-	 * 
-	 * @param lower          lower bound as a {@link Real}
-	 * @param lowerInclusive true if the lower bound is closed (inclusive)
-	 * @param upper          upper bound as a {@link Real}
-	 * @param upperInclusive true if the upper bound is closed (inclusive)
-	 * @return this
-	 */
 	public Real setBounds(Real lower, boolean lowerInclusive, Real upper, boolean upperInclusive)
 	{
 	  this.lowerBound          = lower;
@@ -201,16 +88,6 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
 	  return this;
 	}
 
-	/**
-	 * Convenience overload accepting int bounds which are converted to
-	 * {@link Real}.
-	 * 
-	 * @param lower          lower bound as an int
-	 * @param lowerInclusive true if the lower bound is closed (inclusive)
-	 * @param upper          upper bound as an int
-	 * @param upperInclusive true if the upper bound is closed (inclusive)
-	 * @return this
-	 */
 	public Real setBounds(int lower, boolean lowerInclusive, int upper, boolean upperInclusive)
 	{
 	  return setBounds(Real.valueOf(lower), lowerInclusive, Real.valueOf(upper), upperInclusive);
@@ -296,14 +173,14 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
       if (object != null)
       {
         object.home = this;
-        reserved.add(object); // Track as allocated
+        reserved.add(object); // Track as reserved
         return object;
       }
       else
       {
         Real newObj = new Real();
         newObj.home = this;
-        reserved.add(newObj); // Track as allocated
+        reserved.add(newObj); // Track as reserved
         return newObj;
       }
     }
@@ -317,7 +194,7 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
                                                       object,
                                                       object.home,
                                                       this);
-      reserved.remove(object); // Remove from allocated
+      reserved.remove(object); // Remove from reserved
       available.add(object); // Add to available
     }
   }
@@ -326,7 +203,7 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
   {
     synchronized (this)
     {
-      // Clear allocated objects first
+      // Clear reserved objects first
       for (Real obj : reserved)
       {
         obj.home = null;
@@ -1716,7 +1593,7 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
   /**
    * Sets the dimension of this as an array (a contiguous array of pointers to
    * {@link Real}s, copying the contents as well since almost always the newly
-   * allocated location will be in a different portion of the heap
+   * reserved location will be in a different portion of the heap
    * 
    * @param alloc
    * @return this
@@ -1928,25 +1805,12 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
   }
   
   /**
-   * @return {@link arb#arb_allocated_bytes(Real)}
-   */
-  public int getAllocatedBytes()
-  {
-    return arblib.arb_allocated_bytes(this);
-  }
-
-  /**
    *  
    * @return -this
    */  
   public Real neg()
   {
     return neg(this);
-  }
-
-  public Real neg(int bits, Real value)
-  {
-    return neg(value);
   }
 
   /**

@@ -120,19 +120,16 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    * Polynomial-like includes: - Constants - The variable itself (x) - Powers of
    * the variable (x^n for constant n) - Sums and products of the above
    * 
-   * @param node     The node to check
    * @param variable The variable
    * @return true if the node is polynomial-like
    */
   public boolean isPolynomialLike(VariableNode<D, R, F> variable)
   {
-    // Constants are polynomial (degree 0)
     if (isScalar() && !dependsOn(variable))
     {
       return true;
     }
 
-    // The variable itself is polynomial (degree 1)
     if (equals(variable))
     {
       return true;
@@ -172,7 +169,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   {
     if (isIndependentOfInput())
     {
-      // Check that all branches are also constant using functional traversal
       final boolean[] allConstant =
       { true };
       accept(node ->
@@ -301,10 +297,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return apply("δ");
   }
 
-  /**
-   * 
-   * @return
-   */
   public Node<D, R, F> θ()
   {
     return apply("θ");
@@ -327,12 +319,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public abstract boolean dependsOn(VariableNode<D, R, F> variable);
 
-  /**
-   * 
-   * @return this{@link #differentiate(VariableNode)} with
-   *         {@link Expression#independentVariable} passed as the variable to be
-   *         differentiated with respect to
-   */
   public Node<D, R, F> derivative()
   {
     var variable = expression.getInputVariable();
@@ -424,12 +410,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return Objects.hash(bits, expression, fieldName, generatedType, isResult, position);
   }
 
-  /**
-   * Compute the indefinite integral of this node
-   * 
-   * @param variable
-   * @return
-   */
   public abstract Node<D, R, F> integral(VariableNode<D, R, F> variable);
 
   public boolean isHalf()
@@ -442,9 +422,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return !dependsOn(variable);
   }
 
-  /**
-   * @return true if this node does not have any subnodes
-   */
   public abstract boolean isLeaf();
 
   public final boolean isLiteralConstant()
@@ -452,23 +429,11 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return this instanceof LiteralConstantNode;
   }
 
-  /**
-   * Checks if this node represents the literal constant -1. Only
-   * LiteralConstantNode can return true; all other nodes return false.
-   * 
-   * @return true if this is a literal -1, false otherwise
-   */
   public boolean isNegOne()
   {
     return false;
   }
 
-  /**
-   * Checks if this node represents the literal constant 1. Only
-   * LiteralConstantNode can return true; all other nodes return false.
-   * 
-   * @return true if this is a literal 1, false otherwise
-   */
   public boolean isOne()
   {
     return false;
@@ -577,9 +542,32 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return apply("sec");
   }
 
+  /**
+   * Simplifies this node. If the node is constant and not already a
+   * {@link ConstantNode} or {@link LiteralConstantNode}, it is folded into a
+   * {@link ConstantNode}.
+   */
   public Node<D, R, F> simplify()
   {
+    if (isConstant() && !(this instanceof ConstantNode))
+    {
+      return foldConstant();
+    }
     return this;
+  }
+
+  /**
+   * Replaces this constant subtree with a {@link ConstantNode} that computes the
+   * value once in {@code initialize()} and loads the precomputed field during
+   * evaluation. Subclasses may override to provide more specific folding (e.g.
+   * reducing integer arithmetic to a {@link LiteralConstantNode}).
+   *
+   * @return a {@link ConstantNode} wrapping this subtree
+   */
+  public Node<D, R, F> foldConstant()
+  {
+    assert isConstant() : this + " is not constant, cannot fold";
+    return new ConstantNode<>(expression, this);
   }
 
   public FunctionNode<D, R, F> arcsinh()
@@ -644,29 +632,15 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return expression.newConstant(2);
   }
 
-  /**
-   * When {@link #isResult} the result parameter is already on the stack as the
-   * target Just cast it to the correct type - don't call
-   * generateSetResultInvocation
-   * 
-   * @param mv
-   * @param resultType
-   * @return
-   */
   public boolean loadOutput(MethodVisitor mv, Class<?> resultType)
   {
     if (isResult)
     {
-      // When isResult=true, the result parameter is already on the stack as the
-      // target. Just cast it to the correct type - don't call
-      // generateSetResultInvocation
       Compiler.cast(loadResultParameter(mv), resultType);
       fieldName = "result";
     }
     else
     {
-      // otherwise theres nothing there to hold it so allocate some space for it and
-      // set the field name that references the allocated space
       if (fieldName == null)
       {
         fieldName = expression.allocateIntermediateVariable(mv, resultType);
@@ -674,20 +648,10 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
       return true;
     }
     return false;
-
   }
 
-  /**
-   * 
-   * @return the type that this node leaves on the stack when
-   *         this{@link #generate(MethodVisitor, Class)} is called
-   */
   public abstract <C> Class<? extends C> type();
 
-  /**
-   * 
-   * @return the string that represents this node in {@link Latex} format
-   */
   public abstract String typeset();
 
   public LiteralConstantNode<D, R, F> π()
@@ -758,5 +722,4 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                                             + this
                                             + "'");
   }
-
 }
