@@ -4,10 +4,11 @@ import static org.objectweb.asm.Opcodes.*;
 
 import java.io.File;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.*;
+import java.util.stream.Stream;
 
 import org.jetbrains.java.decompiler.api.Decompiler;
-import org.jetbrains.java.decompiler.api.Decompiler.Builder;
 import org.jetbrains.java.decompiler.main.decompiler.DirectoryResultSaver;
 import org.jetbrains.java.decompiler.main.extern.IFernflowerPreferences;
 import org.objectweb.asm.*;
@@ -585,16 +586,16 @@ public class Compiler
   }
 
   public static MethodVisitor generateVirtualMethodInvocation(MethodVisitor methodVisitor,
-                                                  Class<?> thisClass,
-                                                  String methodName,
-                                                  Class<?> retType,
-                                                  Class<?>... argTypes)
+                                                              Class<?> thisClass,
+                                                              String methodName,
+                                                              Class<?> retType,
+                                                              Class<?>... argTypes)
   {
     return invokeMethod(methodVisitor, thisClass, methodName, retType, false, argTypes);
   }
 
   public static MethodVisitor jumpTo(org.objectweb.asm.MethodVisitor methodVisitor,
-                            org.objectweb.asm.Label label)
+                                     org.objectweb.asm.Label label)
   {
     methodVisitor.visitJumpInsn(GOTO, label);
     return methodVisitor;
@@ -819,18 +820,18 @@ public class Compiler
                                                                               AlgebraicNumber.class,
                                                                               GaussianInteger.class));
 
-  public static ClassVisitor declareField(ClassVisitor classVisitor, String varName, Class<?> varType)
+  public static ClassVisitor
+         declareField(ClassVisitor classVisitor, String varName, Class<?> varType)
   {
     classVisitor.visitField(ACC_PUBLIC, varName, varType.descriptorString(), null, null);
     return classVisitor;
   }
 
-  public static String      evaluationMethodDescriptor        =
-   getMethodDescriptor(Object.class,
-                                Object.class,
-                                int.class,
-                                int.class,
-                                Object.class);
+  public static String evaluationMethodDescriptor = getMethodDescriptor(Object.class,
+                                                                        Object.class,
+                                                                        int.class,
+                                                                        int.class,
+                                                                        Object.class);
 
   public static void decompileClassFile(File file)
   {
@@ -842,10 +843,40 @@ public class Compiler
                                                   .option(IFernflowerPreferences.BYTECODE_SOURCE_MAPPING,
                                                           true)
                                                   .build();
-  
+
     decompiler.decompile();
   }
 
-  public static File        compiledClassDir                  = new File("compiled");
+  public static File compiledClassDir = new File("compiled");
+
+  public static boolean doesBuiltinFunctionExist(String functionName,
+                                                 boolean bitless,
+                                                 Class<?> domainType,
+                                                 Class<?> coDomainType)
+  {
+    if (bitless)
+    {
+      return methodExists(domainType, functionName, coDomainType);
+    }
+    else
+    {
+      return methodExists(domainType, functionName, int.class, coDomainType);
+    }
+  }
+
+  public static boolean methodExists(Class<?> clazz, String methodName, Class<?>... parameterTypes)
+  {
+    return Stream.of(clazz.getMethods())
+                 .anyMatch(method -> method.getName().equals(methodName)
+                               && Arrays.equals(method.getParameterTypes(), parameterTypes));
+  }
+
+  public static String getFunctionDescriptor(boolean bitless, Class<?> coDomainType)
+  {
+    String functionDescriptor =
+                              bitless ? getMethodDescriptor(coDomainType, coDomainType)
+                                      : getMethodDescriptor(coDomainType, int.class, coDomainType);
+    return functionDescriptor;
+  }
 
 }

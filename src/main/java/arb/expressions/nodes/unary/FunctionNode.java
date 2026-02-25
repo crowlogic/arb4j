@@ -3,9 +3,9 @@ package arb.expressions.nodes.unary;
 import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
 
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 import org.objectweb.asm.*;
 import org.slf4j.Logger;
@@ -65,10 +65,29 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       result = Utensils.newInstance(resultType);
     }
+    Method method = getFunctionMethod(isBitless(), resultType);
+
+    //.invoke(argVal, null)
     throw new UnderConstructionException("TODO: dispatch via reflection to evaluate "
                                          + this
                                          + " in "
-                                         + expression.toStringExtended());
+                                         + expression.toStringExtended()
+                                         + " by invoking "
+                                         + method);
+  }
+
+  public Method getFunctionMethod(boolean bitless, Class<?> coDomainType)
+  {
+    try
+    {
+      return bitless ? coDomainType.getMethod(functionName, coDomainType)
+                     : coDomainType.getMethod(functionName, int.class, coDomainType);
+    }
+    catch (NoSuchMethodException e)
+    {
+      Utensils.throwOrWrap(e);
+      return null;
+    }
   }
 
   @Override
@@ -644,6 +663,13 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return mv;
   }
 
+  /**
+   * Uses {@link Node#generateCastTo(MethodVisitor, Class)} if necessary after
+   * calling this{@link #generateParameter(MethodVisitor, Class, boolean)}
+   * 
+   * @param mv
+   * @param functionMapping
+   */
   public void generateArgument(MethodVisitor mv, FunctionMapping<D, R, F> functionMapping)
   {
     boolean isNullaryFunction = Object.class.equals(functionMapping.domain);
@@ -654,13 +680,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       arg.generateCastTo(mv, functionMapping.domain);
     }
-  }
-
-  public static boolean methodExists(Class<?> clazz, String methodName, Class<?>... parameterTypes)
-  {
-    return Stream.of(clazz.getMethods())
-                 .anyMatch(method -> method.getName().equals(methodName)
-                               && Arrays.equals(method.getParameterTypes(), parameterTypes));
   }
 
   public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor,
@@ -678,12 +697,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     var    domainType         = getDomainType();
     var    coDomainType       = requisiteResultType;
 
-    String functionDescriptor = bitless ? Compiler.getMethodDescriptor(coDomainType, coDomainType)
-                                        : Compiler.getMethodDescriptor(coDomainType,
-                                                                       int.class,
-                                                                       coDomainType);
+    String functionDescriptor = Compiler.getFunctionDescriptor(bitless, coDomainType);
 
-    if (doesBuiltinFunctionExist(functionName, bitless, domainType, coDomainType))
+    if (Compiler.doesBuiltinFunctionExist(functionName, bitless, domainType, coDomainType))
     {
 
       methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
@@ -701,7 +717,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                                   int.class,
                                                                   coDomainType);
 
-      if (doesBuiltinFunctionExist(functionName, bitless, domainType, coDomainType))
+      if (Compiler.doesBuiltinFunctionExist(functionName, bitless, domainType, coDomainType))
       {
 
         methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
@@ -722,21 +738,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       }
     }
     return methodVisitor;
-  }
-
-  public static boolean doesBuiltinFunctionExist(String functionName,
-                                                 boolean bitless,
-                                                 Class<?> domainType,
-                                                 Class<?> coDomainType)
-  {
-    if (bitless)
-    {
-      return methodExists(domainType, functionName, coDomainType);
-    }
-    else
-    {
-      return methodExists(domainType, functionName, int.class, coDomainType);
-    }
   }
 
   public MethodVisitor generateContextualFunctionCall(MethodVisitor mv, Class<?> resultType)
@@ -862,7 +863,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     default:
       Class<?> domainType = getDomainType();
       Class<?> coDomainType = type();
-      if (doesBuiltinFunctionExist(functionName, isBitless(), domainType, coDomainType))
+      if (Compiler.doesBuiltinFunctionExist(functionName, isBitless(), domainType, coDomainType))
       {
         throw new UnsupportedOperationException("Integration not implemented for: " + functionName);
       }
