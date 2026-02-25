@@ -169,7 +169,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
     {
       if (order.isConstant())
       {
-        Integer orderValue = order.evaluate(Integer.class, bits, w00h00);
+        Integer orderValue = order.evaluate(Integer.class, bits, new Integer());
         int     n          = orderValue.getSignedValue();
         if (n < 0)
         {

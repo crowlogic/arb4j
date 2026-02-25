@@ -12,16 +12,16 @@ public class NegationNodeTest extends
   {
     var F = RealNullaryFunction.parse("-2.3");
     var f = F.instantiate();
-    var x  = F.rootNode.asBinaryOperation();
-    var y = x.ceil().evaluate(Integer.class,128, w00h00);
-    assertEquals( "3", y.toString());
+    var x = F.rootNode;
+    var y = x.ceil().evaluate(Integer.class, 128, new Integer());
+    assertEquals("3", y.toString());
   }
-  
+
   public void testDoubleNegative()
   {
     var expr1 = RealFunction.parse("-(-(1))");
     var expr2 = RealFunction.parse("1");
-    
+
     assertEquals(expr1.toString(), expr2.toString());
   }
 }

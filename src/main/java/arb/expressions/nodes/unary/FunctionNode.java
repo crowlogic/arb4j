@@ -60,6 +60,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public <T extends Field<T>> T evaluate(Class<T> resultType, int bits, T result)
   {
+    // this needs to be arg.type
     T argVal = arg.evaluate(resultType, bits, Utensils.newInstance(resultType));
     if (result == null)
     {

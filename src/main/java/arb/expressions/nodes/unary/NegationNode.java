@@ -1,11 +1,11 @@
 package arb.expressions.nodes.unary;
 
-import arb.*;
-import arb.Integer;
+import arb.Field;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
+import arb.utensils.Utensils;
 
 /**
  * @author Stephen Crowley ©2024-2025
@@ -19,7 +19,7 @@ public class NegationNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public <T extends Field<T>> T evaluate(Class<T> resultType, int bits, T result)
   {
-    return arg.evaluate(resultType, bits, w00h00).neg();
+    return arg.evaluate(resultType, bits, Utensils.newInstance(resultType)).neg();
   }
 
   @Override

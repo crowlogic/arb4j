@@ -75,7 +75,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     {
       if (!isInt)
       {
-        throw new UnsupportedTypeConversionException("literal '" + value + "' is not an Integer");
+        throw new UnsupportedTypeConversionException("literal '" + value + "' cannot be represented as an Integer");
       }
       return (T) new Integer(value);
     }

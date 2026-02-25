@@ -31,9 +31,7 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     }
     T l = left.evaluate(resultType, bits, Utensils.newInstance(resultType));
     T r = right.evaluate(resultType, bits, Utensils.newInstance(resultType));
-    int precision = Math.min(l.bits(), r.bits());
-    assert precision > 0 : String.format("precision=%s < %s\n", precision);
-    return l.pow(r, precision, Utensils.newInstance(resultType));
+    return l.pow(r, bits, Utensils.newInstance(resultType));
   }
 
   /**

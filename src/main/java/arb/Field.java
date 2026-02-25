@@ -380,7 +380,7 @@ public interface Field<X extends Field<X>> extends
     throw new UnsupportedOperationException("TODO: " + getClass() + " should implement this");
   }
 
-  public default void ceil(int bits, Integer ceil)
+  public default Integer ceil(int bits, Integer ceil)
   {
     throw new UnsupportedOperationException("TODO: " + getClass() + " should implement this");
   }

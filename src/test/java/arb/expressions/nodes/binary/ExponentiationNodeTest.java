@@ -21,7 +21,7 @@ public class ExponentiationNodeTest extends
     var F = RealNullaryFunction.parse("(2/3)^(-2)");
     var f = F.instantiate();
     var x  = F.rootNode.asBinaryOperation();
-    var y = x.ceil().evaluate(Integer.class,128, w00h00);
+    var y = x.ceil().evaluate(Integer.class,128, new Integer());
     assertEquals( "3", y.toString());
   }
   
