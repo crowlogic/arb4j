@@ -1,10 +1,12 @@
 package arb.expressions.nodes.binary;
 
 import arb.*;
+import arb.Integer;
 import arb.expressions.Context;
 import arb.functions.RealBivariateToComplexFunction;
 import arb.functions.RealToComplexFunction;
 import arb.functions.real.RealFunction;
+import arb.functions.real.RealNullaryFunction;
 import junit.framework.TestCase;
 
 /**
@@ -14,6 +16,15 @@ import junit.framework.TestCase;
 public class ExponentiationNodeTest extends
                                     TestCase
 {
+  public static void testExpNodeEvaluate()
+  {
+    var F = RealNullaryFunction.parse("(2/3)^(-2)");
+    var f = F.instantiate();
+    var x  = F.rootNode.asBinaryOperation();
+    var y = x.ceil().evaluate(Integer.class,128);
+    assertEquals( "3", y.toString());
+  }
+  
   public static void testDerivativesAndExponentialsInvolvingRealToComplexFunction()
   {
     try ( Real x = Real.named("x").set("24.75", 128))
