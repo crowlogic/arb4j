@@ -924,7 +924,16 @@ public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fr
       return blip.set(this).pow(n, bits, result);
     }
   }
-    
+
+  public Real pow(Integer n, int bits, Real result)
+  {
+    try ( Real blip = new Real() )
+    {
+      return result.set(this).pow(n, bits);
+    }
+  }
+
+  
   /**
    * Reduces this {@link Fraction} into its simplest form, dividing the
    * {@link #numerator} and the this#denominator by the highest common factor.

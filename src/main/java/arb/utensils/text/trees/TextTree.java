@@ -1,15 +1,11 @@
 package arb.utensils.text.trees;
 
-import static arb.utensils.Utensils.throwOrWrap;
-
 import java.io.PrintStream;
-import java.lang.reflect.Field;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.ExpressionTree;
 import arb.expressions.nodes.Node;
-import arb.utensils.Utensils;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -99,49 +95,12 @@ public class TextTree<N>
       sb.append("━━ ");
       if (node instanceof Node arbNode)
       {
-        sb.append(node.toString() + "=");
-        String fieldName = arbNode.getFieldName();
-        if (fieldName == null)
-        {
-          if (tree instanceof ExpressionTree syntax)
-          {
-            System.err.println("fieldName is null for " + node + " " + syntax);
+        sb.append(String.format("%s=%s (%s)(%s)",
+                                arbNode.getFieldName(),
+                                node,
+                                node.getClass().getSimpleName(),
+                                arbNode.generatedType.getSimpleName()));
 
-          }
-
-        }
-
-        sb.append(fieldName + "(" + arbNode.getClass().getSimpleName() + ")");
-
-        try
-        {
-          String intermediateValueFieldName = arbNode.getFieldName();
-          if (intermediateValueFieldName != null)
-          {
-            Field field;
-            try
-            {
-              if (instance != null)
-              {
-                field = instance.getClass().getField(intermediateValueFieldName);
-                field.setAccessible(true);
-                sb.append("=" + field.get(instance) + "(" + arbNode.generatedType + ")");
-           
-              }
-            }
-            catch (NoSuchFieldException e)
-            {
-             // this is probably the reason for the null field elements in the expression tree table view
-             // e.printStackTrace(); 
-            }
-          }
-        }
-        catch (SecurityException | IllegalArgumentException | IllegalAccessException e)
-        {
-          System.err.println(Utensils.stackTraceToString(e));
-          System.err.flush();
-          throwOrWrap(e);
-        }
       }
       else
       {

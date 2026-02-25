@@ -26,7 +26,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                          BinaryOperationNode<D, R, F>
 {
   @Override
-  public <T> T evaluate(Class<T> resultType)
+  public <T extends Field<T>> T evaluate(Class<T> resultType)
   {
     if (resultType.equals(Integer.class))
     {

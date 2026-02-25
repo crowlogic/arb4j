@@ -10,6 +10,7 @@ import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
+import arb.utensils.Utensils;
 
 /**
  * Represents the binary exponentiation operation: left^right<br>
@@ -21,6 +22,16 @@ import arb.functions.Function;
 public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                BinaryOperationNode<D, R, F>
 {
+  @Override
+  public <T extends Field<T>> T evaluate(Class<T> resultType)
+  {
+    T l = left.evaluate(resultType);
+    T r = right.evaluate(resultType);
+    int precision = Math.min(l.bits(), r.bits());
+    assert precision > 0 : String.format("precision=%s < %s\n", precision);
+    return l.pow(r, precision, Utensils.newInstance(resultType));
+  }
+
   /**
    * Đ^(α)(t^k) = Γ(k+1)/Γ(k+1-α)*t^(k-α)
    */

@@ -41,6 +41,8 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
                                          Node<D, R, F>
 {
 
+
+
   @Override
   public boolean isConstant()
   {

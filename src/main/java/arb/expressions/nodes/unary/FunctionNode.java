@@ -58,7 +58,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
    * TODO: this needs to be made fluent style
    */
   @Override
-  public <T> T evaluate(Class<T> resultType)
+  public <T extends Field<T>> T evaluate(Class<T> resultType)
   {
     Real argVal = arg.evaluate(Real.class);
     int  bits   = 128;
@@ -656,7 +656,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                   functionName,
                                                   functionMapping));
       }
-      else if ( mapping.expression != null )
+      else if (mapping.expression != null)
       {
         return mapping.expression.rootNode.spliceInto(expression).integral(variable);
       }
@@ -916,7 +916,10 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return integrateBuiltinFunction();
     }
     else
-      throw new UnsupportedOperationException("Cannot integrate function: " + functionName + " because its not a builtin function and its not registered in " + expression.context );
+      throw new UnsupportedOperationException("Cannot integrate function: "
+                                              + functionName
+                                              + " because its not a builtin function and its not registered in "
+                                              + expression.context);
   }
 
   private Node<D, R, F> integrateBuiltinFunction()

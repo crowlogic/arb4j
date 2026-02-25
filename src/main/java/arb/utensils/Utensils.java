@@ -20,6 +20,7 @@ import org.yaml.snakeyaml.*;
 import org.yaml.snakeyaml.DumperOptions.NonPrintableStyle;
 import org.yaml.snakeyaml.constructor.Constructor;
 
+import arb.Field;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.FunctionMapping;
@@ -440,6 +441,20 @@ public class Utensils
       throwOrWrap(e);
     }
     return file;
+  }
+
+  @SuppressWarnings("deprecation")
+  public static <T extends Field<T>> T newInstance(Class<T> resultType)
+  {
+    try
+    {
+      return resultType.newInstance();
+    }
+    catch (InstantiationException | IllegalAccessException e)
+    {
+      Utensils.throwOrWrap(e);
+      return null;
+    }
   }
 
 }

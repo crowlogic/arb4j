@@ -10,6 +10,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.scilab.forge.jlatexmath.LaTeXAtom;
 import org.slf4j.Logger;
 
+import arb.Field;
 import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -723,7 +724,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return pow(2);
   }
 
-  public <T> T evaluate(Class<T> resultType)
+  public <T extends Field<T>> T evaluate(Class<T> resultType)
   {
     assert isConstant() : "cannot evaluate the non-constant node "
                           + this

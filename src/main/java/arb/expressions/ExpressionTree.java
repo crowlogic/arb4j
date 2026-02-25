@@ -93,7 +93,7 @@ public class ExpressionTree<D, R, F extends Function<? extends D, ? extends R>> 
     }
     catch (FileNotFoundException e)
     {
-      throw new RuntimeException("Failed to write DOT file: " + e.getMessage(),
+      throw new RuntimeException("Failed to write DOT file: " + filePath,
                                  e);
     }
   }

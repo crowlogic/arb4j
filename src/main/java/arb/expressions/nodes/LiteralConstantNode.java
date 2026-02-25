@@ -67,8 +67,9 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
    *                                       compile-time (e.g. ⅈ)
    */
   @Override
-  @SuppressWarnings({ "unchecked", "resource" })
-  public <T> T evaluate(Class<T> resultType)
+  @SuppressWarnings(
+  { "unchecked", "resource" })
+  public <T extends Field<T>> T evaluate(Class<T> resultType)
   {
     if (resultType.equals(Integer.class))
     {
