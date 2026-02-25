@@ -98,7 +98,7 @@ public class FunctionNodeTest extends
     assertEquals("x➔0", f.toString());
   }
 
-  public static void testDeltaFunctionSimplificationComplexPolynomialToo()
+  public static void testConstantFoldingAndDeltaFunctionSimplificationComplexPolynomialToo()
   {
     var f = RealFunction.express("((x-1)³ - 2*(x-1)² + (x-1))*δ(x)");
     assertEquals("x➔-4*δ(x)", f.toString());

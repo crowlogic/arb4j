@@ -22,6 +22,11 @@ import junit.framework.TestCase;
 public class ExpressionTest extends
                             TestCase
 {
+  public void testConstantFolding()
+  {
+    RealNullaryFunction f = RealNullaryFunction.express("((((-1)^3)-(2*((-1)^2)))-1)");
+    System.out.println( f + "=" + f.evaluate() );
+  }
   /**
    * Register f(x)=x² in a shared {@link Context}, define g(x)=f(x)+1 in the same
    * {@link Context}, inline f into g, and verify that the resulting expression's

@@ -25,7 +25,7 @@ public class CaputoFractionalDerivativeNodeTest extends
 {
   private static final double TOL = 1e-10;
 
-  public void testFractionalDerivativeFunctionForm()
+  public void testParseFractionalDerivativeFunctionForm()
   {
     var f = RealFunction.parse("fracdiff(sin(t),t^2)");
     assertEquals("t➔Đ^(2)sin(t)", f.toString());

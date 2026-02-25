@@ -43,6 +43,12 @@ public class Integer implements
                      NamedField<Integer>
 {
 
+  @Override
+  public Integer ceil(int bits, Integer ceil)
+  {
+    return this;
+  }
+
   public Real rgamma(int bits, Real result)
   {
     return result.set(this).rgamma(bits);
