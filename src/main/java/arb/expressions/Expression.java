@@ -631,12 +631,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     for (VariableNode<D, C, F> var : indeterminateVariables)
     {
       // Create new VariableNode directly without calling resolveReference again
-      VariableNode<D, C, F> cloned = var.spliceInto(this).asVariable();// VariableNode<>(expr,
-//                                                        var.reference.spliceInto(expr),
-//                                                        var.position,
-//                                                        false); // ← resolve=false!
-//      cloned.isIndeterminate = var.isIndeterminate;
-//      cloned.isIndependent   = var.isIndependent;
+      VariableNode<D, C, F> cloned = var.spliceInto(this).asVariable();
       expr.indeterminateVariables.push(cloned);
     }
 
@@ -737,9 +732,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return cw;
   }
 
-  protected MethodVisitor declareEvaluateMethodsLocalVariableArguments(MethodVisitor methodVisitor,
-                                                                       Label startLabel,
-                                                                       Label endLabel)
+  protected MethodVisitor declareEvaluateMethodArguments(MethodVisitor methodVisitor,
+                                                         Label startLabel,
+                                                         Label endLabel)
   {
     methodVisitor.visitLocalVariable("this",
                                      String.format("L%s;", className),
@@ -1390,49 +1385,21 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     else if (Polynomial.class.isAssignableFrom(coDomainType))
     {
-      if (isNullaryFunction())
-      {
-
-        generatePolynomialMethod(classVisitor, "integral");
-        generatePolynomialMethod(classVisitor, "derivative");
-      }
-      // NON-NULLARY polynomial sequences (e.g. RealPolynomialSequence,
-      // ComplexPolynomialSequence): DO NOTHING HERE.
+      // NON-NULLARY polynomial sequences DO NOTHING HERE.
       // The interface declares default integral()/derivative() methods that
       // delegate to the polynomial's own integral()/derivative() via lambda.
       // Generating bytecode here would OVERRIDE those default methods and break
       // differentiation by using the sequence index instead of the polynomial's
       // indeterminate variable.
+      if (isNullaryFunction())
+      {
+        generatePolynomialMethod(classVisitor, "integral");
+        generatePolynomialMethod(classVisitor, "derivative");
+      }
+      // FIXME: also do this for rational function codomains
     }
   }
 
-  protected void generateAssertionThatOrderIsLessThanOrEqualTo1(MethodVisitor mv)
-  {
-
-    Label label1 = new Label();
-    mv.visitVarInsn(ILOAD, 2);
-    mv.visitInsn(ICONST_1);
-    mv.visitJumpInsn(IF_ICMPLE, label1);
-    mv.visitTypeInsn(NEW, "java/lang/AssertionError");
-    mv.visitInsn(DUP);
-    mv.visitVarInsn(ILOAD, 2);
-    mv.visitInvokeDynamicInsn("makeConcatWithConstants",
-                              "(I)Ljava/lang/String;",
-                              new Handle(Opcodes.H_INVOKESTATIC,
-                                         "java/lang/invoke/StringConcatFactory",
-                                         "makeConcatWithConstants",
-                                         "(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/invoke/CallSite;",
-                                         false),
-                              new Object[]
-                              { "TODO: implement order=\u0001>1" });
-    mv.visitMethodInsn(INVOKESPECIAL,
-                       "java/lang/AssertionError",
-                       "<init>",
-                       "(Ljava/lang/Object;)V",
-                       false);
-    mv.visitInsn(ATHROW);
-    mv.visitLabel(label1);
-  }
 
   protected MethodVisitor generateCloseFieldCall(MethodVisitor methodVisitor,
                                                  String fieldName,
@@ -1608,7 +1575,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     assert functionClass.isInterface() : functionClass + " is not an interface";
     assert rootNode != null : "rootNode is null";
-    
+
     var mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
                                       func,
                                       Compiler.getMethodDescriptor(functionClass),
@@ -1690,11 +1657,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     var   mv         = visitEvaluationMethod(classVisitor);
     mv.visitCode();
 
-    if (orderLimited())
-    {
-      generateAssertionThatOrderIsLessThanOrEqualTo1(mv);
-    }
-
     designateLabel(mv, startLabel);
     Compiler.annotateWithOverride(mv);
     if (needsInitializer())
@@ -1713,7 +1675,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
 
     designateLabel(mv, endLabel);
-    declareEvaluateMethodsLocalVariableArguments(mv, startLabel, endLabel);
+    declareEvaluateMethodArguments(mv, startLabel, endLabel);
     Compiler.generateReturnFromMethod(mv);
     return classVisitor;
   }
@@ -1771,7 +1733,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       copyIndependentVariableToFunctionalByValue(mv, functional, functionalIndependentVariable);
     }
 
-    // Propagate upstream input variables (e.g. 'n' from upstream Expression's scope)
+    // Propagate upstream input variables (e.g. 'n' from upstream Expression's
+    // scope)
     // that the functional references but that are NOT the current expression's
     // independent variable (already handled above).
     propagateUpstreamInputVariablesToFunctional(mv, functional);
@@ -1791,9 +1754,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * constructed functional instance via copy-by-value (.set()), with null-check
    * and allocation if the destination field is null.
    *
-   * This generates code that executes inside the evaluate() method where the functional instance is on
-   * top of the operand stack. For each variable that the functional references
-   * from an ancestor scope (and that is a field on this class),  generate:
+   * This generates code that executes inside the evaluate() method where the
+   * functional instance is on top of the operand stack. For each variable that
+   * the functional references from an ancestor scope (and that is a field on this
+   * class), generate:
    *
    * if (funcInst.varName == null) funcInst.varName = new VarType();
    * funcInst.varName.set(this.varName);
@@ -1803,7 +1767,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    *                   variables
    */
   protected void propagateUpstreamInputVariablesToFunctional(MethodVisitor mv,
-                                                              Expression<?, ?, ?> functional)
+                                                             Expression<?, ?, ?> functional)
   {
     for (var entry : functional.referencedVariables.entrySet())
     {
@@ -3109,11 +3073,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     assert false : "TODO: expr compiler: Implement common subexpression elimination #518 https://github.com/crowlogic/arb4j/issues/518";
 
     return this;
-  }
-
-  protected boolean orderLimited()
-  {
-    return !(rootNode instanceof RiemannSiegelThetaFunctionNode);
   }
 
   public ElseNode<D, C, F> otherwise()
