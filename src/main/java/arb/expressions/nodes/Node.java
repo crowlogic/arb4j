@@ -724,7 +724,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return pow(2);
   }
 
-  public <T extends Field<T>> T evaluate(Class<T> resultType, int bits)
+  public <T extends Field<T>> T evaluate(Class<T> resultType, int bits, T result)
   {
     assert isConstant() : "cannot evaluate the non-constant node "
                           + this

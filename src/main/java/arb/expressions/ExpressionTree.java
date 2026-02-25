@@ -73,7 +73,7 @@ public class ExpressionTree<D, R, F extends Function<? extends D, ? extends R>> 
           }
           else
           {
-            assert false : "wtf isnt a node" + branch;
+            assert false : "wtf isnt a node" + branch + " is a " + branch.getClass();
           }
           // Add edge with field name as label, with reversed direction
           dot.append(String.format("  \"%s\" -> \"%s\" [label=\"%s\"];\n",

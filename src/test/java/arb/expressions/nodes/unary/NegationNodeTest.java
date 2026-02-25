@@ -13,7 +13,7 @@ public class NegationNodeTest extends
     var F = RealNullaryFunction.parse("-2.3");
     var f = F.instantiate();
     var x  = F.rootNode.asBinaryOperation();
-    var y = x.ceil().evaluate(Integer.class,128);
+    var y = x.ceil().evaluate(Integer.class,128, w00h00);
     assertEquals( "3", y.toString());
   }
   

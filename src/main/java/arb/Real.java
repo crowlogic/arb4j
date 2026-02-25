@@ -274,10 +274,9 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
   
   // Two-list pooling implementation
   private final Queue<Real> available = new ArrayDeque<>();
-  private final Set<Real>   allocated = new HashSet<>();
+  private final Set<Real>   reserved = new HashSet<>();
 
-  // Reference to the pool owner for temp instances
-  Real                      poolOwner = null;
+  Real                      home = null;
 
   public Integer ceil(int prec, Integer res)
   {
@@ -296,15 +295,15 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
       Real object = available.poll();
       if (object != null)
       {
-        object.poolOwner = this;
-        allocated.add(object); // Track as allocated
+        object.home = this;
+        reserved.add(object); // Track as allocated
         return object;
       }
       else
       {
         Real newObj = new Real();
-        newObj.poolOwner = this;
-        allocated.add(newObj); // Track as allocated
+        newObj.home = this;
+        reserved.add(newObj); // Track as allocated
         return newObj;
       }
     }
@@ -314,11 +313,11 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
   {
     synchronized (this)
     {
-      assert object.poolOwner == this : String.format("%s is owned by %s not %s",
+      assert object.home == this : String.format("%s is owned by %s not %s",
                                                       object,
-                                                      object.poolOwner,
+                                                      object.home,
                                                       this);
-      allocated.remove(object); // Remove from allocated
+      reserved.remove(object); // Remove from allocated
       available.add(object); // Add to available
     }
   }
@@ -328,18 +327,18 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
     synchronized (this)
     {
       // Clear allocated objects first
-      for (Real obj : allocated)
+      for (Real obj : reserved)
       {
-        obj.poolOwner = null;
+        obj.home = null;
         obj.close();
       }
-      allocated.clear();
+      reserved.clear();
 
       // Clear available objects
       while (!available.isEmpty())
       {
         Real obj = available.poll();
-        obj.poolOwner = null;
+        obj.home = null;
         obj.close();
       }
     }
@@ -350,9 +349,9 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
   {
     emptyVariablePool();
 
-    if (poolOwner != null)
+    if (home != null)
     {
-      poolOwner.returnVariable(this);
+      home.returnVariable(this);
     }
     else
     {

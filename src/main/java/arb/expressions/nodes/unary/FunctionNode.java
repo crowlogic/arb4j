@@ -58,117 +58,118 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
    * TODO: this needs to be made fluent style
    */
   @Override
-  public <T extends Field<T>> T evaluate(Class<T> resultType, int bits)
+  public <T extends Field<T>> T evaluate(Class<T> resultType, int bits, T result)
   {
-    Real argVal = arg.evaluate(Real.class, bits);
-    try ( Real result = new Real())
+    T argVal = arg.evaluate(resultType, bits, Utensils.newInstance(resultType));
+    if (result == null)
     {
-      switch (functionName)
-      {
-      case "ceil":
-        try ( Integer ceil = new Integer())
-        {
-          argVal.ceil(bits, ceil);
-          if (resultType.equals(Integer.class))
-          {
-            return (T) ceil;
-          }
-          if (resultType.equals(Real.class))
-          {
-            result.set(ceil);
-            return (T) result;
-          }
-          if (resultType.equals(Fraction.class))
-          {
-            Fraction frac = new Fraction();
-            frac.set(ceil);
-            return (T) frac;
-          }
-        }
-        break;
-      case "floor":
-        try ( Integer floor = new Integer())
-        {
-          argVal.floor(bits, floor);
-          if (resultType.equals(Integer.class))
-          {
-            return (T) floor;
-          }
-          if (resultType.equals(Real.class))
-          {
-            result.set(floor);
-            return (T) result;
-          }
-          if (resultType.equals(Fraction.class))
-          {
-            Fraction frac = new Fraction();
-            frac.set(floor);
-            return (T) frac;
-          }
-        }
-        break;
-      case "sqrt":
-        argVal.sqrt(bits, result);
-        if (resultType.equals(Real.class))
-        {
-          return (T) result;
-        }
-        break;
-      case "abs":
-        argVal.abs(result);
-        if (resultType.equals(Real.class))
-        {
-          return (T) result;
-        }
-        break;
-      case "exp":
-        argVal.exp(bits, result);
-        if (resultType.equals(Real.class))
-        {
-          return (T) result;
-        }
-        break;
-      case "log":
-        argVal.log(bits, result);
-        if (resultType.equals(Real.class))
-        {
-          return (T) result;
-        }
-        break;
-      case "sin":
-        argVal.sin(bits, result);
-        if (resultType.equals(Real.class))
-        {
-          return (T) result;
-        }
-        break;
-      case "cos":
-        argVal.cos(bits, result);
-        if (resultType.equals(Real.class))
-        {
-          return (T) result;
-        }
-        break;
-      case "Γ":
-      case "gamma":
-        argVal.Γ(bits, result);
-        if (resultType.equals(Real.class))
-        {
-          return (T) result;
-        }
-        break;
-      case "neg":
-        argVal.neg(result);
-        if (resultType.equals(Real.class))
-        {
-          return (T) result;
-        }
-        break;
-      default:
-        break;
-      }
+      result = Utensils.newInstance(resultType);
     }
-    return super.evaluate(resultType, bits);
+    switch (functionName)
+    {
+    case "ceil":
+      try ( Integer ceil = new Integer())
+      {
+        argVal.ceil(bits, ceil);
+        if (resultType.equals(Integer.class))
+        {
+          return (T) ceil;
+        }
+        if (resultType.equals(Real.class))
+        {
+          result.set(ceil);
+          return (T) result;
+        }
+        if (resultType.equals(Fraction.class))
+        {
+          Fraction frac = new Fraction();
+          frac.set(ceil);
+          return (T) frac;
+        }
+      }
+      break;
+    case "floor":
+      try ( Integer floor = new Integer())
+      {
+        argVal.floor(bits, floor);
+        if (resultType.equals(Integer.class))
+        {
+          return (T) floor;
+        }
+        if (resultType.equals(Real.class))
+        {
+          result.set(floor);
+          return (T) result;
+        }
+        if (resultType.equals(Fraction.class))
+        {
+          Fraction frac = new Fraction();
+          frac.set(floor);
+          return (T) frac;
+        }
+      }
+      break;
+    case "sqrt":
+      argVal.sqrt(bits, result);
+      if (resultType.equals(Real.class))
+      {
+        return (T) result;
+      }
+      break;
+    case "abs":
+      argVal.abs(result);
+      if (resultType.equals(Real.class))
+      {
+        return (T) result;
+      }
+      break;
+    case "exp":
+      argVal.exp(bits, result);
+      if (resultType.equals(Real.class))
+      {
+        return (T) result;
+      }
+      break;
+    case "log":
+      argVal.log(bits, result);
+      if (resultType.equals(Real.class))
+      {
+        return (T) result;
+      }
+      break;
+    case "sin":
+      argVal.sin(bits, result);
+      if (resultType.equals(Real.class))
+      {
+        return (T) result;
+      }
+      break;
+    case "cos":
+      argVal.cos(bits, result);
+      if (resultType.equals(Real.class))
+      {
+        return (T) result;
+      }
+      break;
+    case "Γ":
+    case "gamma":
+      argVal.Γ(bits, result);
+      if (resultType.equals(Real.class))
+      {
+        return (T) result;
+      }
+      break;
+    case "neg":
+      argVal.neg(result);
+      if (resultType.equals(Real.class))
+      {
+        return (T) result;
+      }
+      break;
+    default:
+      break;
+    }
+    return super.evaluate(resultType, bits, result);
   }
 
   @Override

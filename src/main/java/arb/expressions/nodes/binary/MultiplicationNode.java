@@ -9,15 +9,15 @@ import org.objectweb.asm.MethodVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import arb.*;
 import arb.Integer;
-import arb.Polynomial;
-import arb.Quaternion;
 import arb.exceptions.CompilerException;
 import arb.expressions.Expression;
 import arb.expressions.nodes.*;
 import arb.expressions.nodes.unary.FunctionNode;
 import arb.expressions.nodes.unary.FunctionalEvaluationNode;
 import arb.functions.Function;
+import arb.utensils.Utensils;
 
 /**
  * Represents a multiplication operation node in the expression tree. Implements
@@ -29,6 +29,19 @@ import arb.functions.Function;
 public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                BinaryOperationNode<D, R, F>
 {
+  @Override
+  public <T extends Field<T>> T evaluate(Class<T> resultType, int bits, T result)
+  {
+    if (result == null)
+    {
+      result = Utensils.newInstance(resultType);
+    }
+    T leftValue = left.evaluate(resultType, bits, Utensils.newInstance(resultType));
+    T rightValue = right.evaluate(resultType, bits, Utensils.newInstance(resultType));
+    return (T) leftValue.mul(rightValue, bits, Utensils.newInstance(resultType));
+  }
+
+  
   public static final Logger logger = LoggerFactory.getLogger(MultiplicationNode.class);
 
   /**

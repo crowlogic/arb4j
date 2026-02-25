@@ -12,7 +12,7 @@ public class RealPoolingTest extends
     Real tempReal1 = poolOwner.borrowVariable();
 
     assert tempReal1 != null : "Borrowed object should not be null";
-    assert poolOwner == tempReal1.poolOwner : "poolOwner should be set correctly";
+    assert poolOwner == tempReal1.home : "poolOwner should be set correctly";
 
     tempReal1.close(); // Should return to pool
 
@@ -29,7 +29,7 @@ public class RealPoolingTest extends
     Real tempReal2 = poolOwner.borrowVariable();
 
     assert tempReal1 != tempReal2 : "Multiple borrows should create different objects";
-    assert tempReal1.poolOwner == tempReal2.poolOwner : "Both should have same pool owner";
+    assert tempReal1.home == tempReal2.home : "Both should have same pool owner";
 
     poolOwner.close();
   }
@@ -62,7 +62,7 @@ public class RealPoolingTest extends
     Real nestedTemp = tempReal1.borrowVariable();
 
     assert nestedTemp != null : "Nested borrow should work";
-    assert tempReal1 == nestedTemp.poolOwner : "Nested temp should have tempReal1 as pool owner";
+    assert tempReal1 == nestedTemp.home : "Nested temp should have tempReal1 as pool owner";
 
     nestedTemp.close();
 
@@ -99,19 +99,19 @@ public class RealPoolingTest extends
     Real level2    = tempReal1.borrowVariable();
     Real level3    = level2.borrowVariable();
 
-    assertEquals( poolOwner, tempReal1.poolOwner );
+    assertEquals( poolOwner, tempReal1.home );
     poolOwner.close();
 
-    assert tempReal1.poolOwner == null : "tempReal1 should be freed";
-    assert level2.poolOwner == null : "level2 should be freed";
-    assert level3.poolOwner == null : "level3 should be freed";
+    assert tempReal1.home == null : "tempReal1 should be freed";
+    assert level2.home == null : "level2 should be freed";
+    assert level3.home == null : "level3 should be freed";
 
   }
 
   public static void testPoolOwnerIsNullForRootObjects()
   {
     Real poolOwner = new Real();
-    assert poolOwner.poolOwner == null : "Root pool owner should have null poolOwner";
+    assert poolOwner.home == null : "Root pool owner should have null poolOwner";
     poolOwner.close();
   }
 
@@ -142,7 +142,7 @@ public class RealPoolingTest extends
     Real poolOwner = new Real();
     Real tempReal1 = poolOwner.borrowVariable();
     assert tempReal1 != null : "Should create new object when pool empty";
-    assert poolOwner == tempReal1.poolOwner : "New object should have correct pool owner";
+    assert poolOwner == tempReal1.home : "New object should have correct pool owner";
     tempReal1.close();
     poolOwner.close();
   }

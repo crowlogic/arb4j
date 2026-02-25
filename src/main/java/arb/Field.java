@@ -20,7 +20,8 @@ import arb.expressions.nodes.binary.MultiplicationNode;
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
-public interface Field<X extends Field<? extends X>> extends
+@SuppressWarnings("unchecked")
+public interface Field<X extends Field<X>> extends
                       AutoCloseable,
                       Closeable,
                       Iterable<X>,
@@ -74,8 +75,6 @@ public interface Field<X extends Field<? extends X>> extends
   {
     return add(x, bits(this, x));
   }
-
-
 
   public default X add(X x, X result)
   {
@@ -378,7 +377,62 @@ public interface Field<X extends Field<? extends X>> extends
 
   public default X neg()
   {
-    throw new UnsupportedOperationException( "TODO: " + getClass() + " should implement this");
+    throw new UnsupportedOperationException("TODO: " + getClass() + " should implement this");
+  }
+
+  public default void ceil(int bits, Integer ceil)
+  {
+    throw new UnsupportedOperationException("TODO: " + getClass() + " should implement this");
+  }
+
+  public default X set(Integer ceil)
+  {
+    throw new UnsupportedOperationException("TODO: " + getClass() + " should implement this");
+  }
+
+  public default Integer floor(int bits, Integer floor)
+  {
+    throw new UnsupportedOperationException("TODO: " + getClass() + " should implement this");
+  }
+
+  public default <T extends Field<T>> void sqrt(int bits, T result)
+  {
+    throw new UnsupportedOperationException("TODO: " + getClass() + " should implement this");
+  }
+
+  public default <T extends Field<T>> void abs(T result)
+  {
+    throw new UnsupportedOperationException("TODO: " + getClass() + " should implement this");
+  }
+
+  public default <T extends Field<T>> void exp(int bits, T result)
+  {
+    throw new UnsupportedOperationException("TODO: " + getClass() + " should implement this");
+  }
+
+  public default <T extends Field<T>> void log(int bits, T result)
+  {
+    throw new UnsupportedOperationException("TODO: " + getClass() + " should implement this");
+  }
+
+  public default <T extends Field<T>> void sin(int bits, T result)
+  {
+    throw new UnsupportedOperationException("TODO: " + getClass() + " should implement this");
+  }
+
+  public default <T extends Field<T>> void cos(int bits, T result)
+  {
+    throw new UnsupportedOperationException("TODO: " + getClass() + " should implement this");
+  }
+
+  public default <T extends Field<T>> void Γ(int bits, T result)
+  {
+    throw new UnsupportedOperationException("TODO: " + getClass() + " should implement this");
+  }
+
+  public default <T extends Field<T>> void neg(T result)
+  {
+    throw new UnsupportedOperationException("TODO: " + getClass() + " should implement this");
   }
 
 }

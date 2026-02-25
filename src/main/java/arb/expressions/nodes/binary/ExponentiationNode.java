@@ -23,10 +23,14 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
                                BinaryOperationNode<D, R, F>
 {
   @Override
-  public <T extends Field<T>> T evaluate(Class<T> resultType, int bits)
+  public <T extends Field<T>> T evaluate(Class<T> resultType, int bits, T result)
   {
-    T l = left.evaluate(resultType, bits);
-    T r = right.evaluate(resultType, bits);
+    if (result == null)
+    {
+      result = Utensils.newInstance(resultType);
+    }
+    T l = left.evaluate(resultType, bits, Utensils.newInstance(resultType));
+    T r = right.evaluate(resultType, bits, Utensils.newInstance(resultType));
     int precision = Math.min(l.bits(), r.bits());
     assert precision > 0 : String.format("precision=%s < %s\n", precision);
     return l.pow(r, precision, Utensils.newInstance(resultType));

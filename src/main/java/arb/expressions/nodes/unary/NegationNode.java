@@ -17,9 +17,9 @@ public class NegationNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T extends Field<T>> T evaluate(Class<T> resultType, int bits)
+  public <T extends Field<T>> T evaluate(Class<T> resultType, int bits, T result)
   {
-    return arg.evaluate(resultType, bits).neg();
+    return arg.evaluate(resultType, bits, w00h00).neg();
   }
 
   @Override
