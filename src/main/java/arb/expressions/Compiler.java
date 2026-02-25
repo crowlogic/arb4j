@@ -833,7 +833,7 @@ public class Compiler
                                                                         int.class,
                                                                         Object.class);
 
-  public static void decompileClassFile(File file)
+  public static void decompileClassFile(File compiledClassDir, File file)
   {
     Decompiler decompiler =
                           new Decompiler.Builder().inputs(file)
@@ -846,8 +846,6 @@ public class Compiler
 
     decompiler.decompile();
   }
-
-  public static File compiledClassDir = new File("compiled");
 
   public static boolean doesBuiltinFunctionExist(String functionName,
                                                  boolean bitless,

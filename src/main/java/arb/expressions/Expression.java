@@ -211,13 +211,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     assert arb.functions.integer.Sequence.class.equals(Sequence.class) : "you forgot to import arb.functions.sequences.Sequence or imported a class named sequence in another package";
   }
 
-  static
-  {
-    if (saveClasses && !Compiler.compiledClassDir.canWrite())
-    {
-      Compiler.compiledClassDir.mkdir();
-    }
-  }
+  public File compiledClassDir = new File("compiled");
 
   static
   {
@@ -2969,7 +2963,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   @SuppressWarnings("unchecked")
-  public <N extends Named> N newCoDomainInstance()
+  public <N extends NamedField<N>> N newCoDomainInstance()
   {
     try
     {
@@ -3835,13 +3829,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (saveClasses)
     {
 
-      File file = new File(Compiler.compiledClassDir,
+      File file = new File(compiledClassDir,
                            className + ".class");
       writeBytecodes(file);
 
       if (decompileClasses)
       {
-        Compiler.decompileClassFile(file);
+        Compiler.decompileClassFile(compiledClassDir, file);
       }
 
     }

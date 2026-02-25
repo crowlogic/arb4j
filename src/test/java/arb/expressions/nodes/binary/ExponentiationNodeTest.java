@@ -19,12 +19,11 @@ public class ExponentiationNodeTest extends
   public static void testExpNodeEvaluate()
   {
     var F = RealNullaryFunction.parse("(2/3)^(-2)");
-    var f = F.instantiate();
-    var x  = F.rootNode.asBinaryOperation();
-    var y = x.ceil().evaluate(Integer.class,128, new Integer());
-    assertEquals( "3", y.toString());
+    var f = F.rootNode;
+    Real y = f.ceil().evaluate();
+    assertEquals("3", y.toString());
   }
-  
+
   public static void testDerivativesAndExponentialsInvolvingRealToComplexFunction()
   {
     try ( Real x = Real.named("x").set("24.75", 128))

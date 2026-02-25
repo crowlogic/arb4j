@@ -61,6 +61,22 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                           Typesettable,
                           Consumer<Consumer<Node<D, R, F>>>
 {
+  public final <T extends Field<T>> T evaluate()
+  {
+    T result = (T) expression.newCoDomainInstance();
+    Class<T> coDomainType = (Class<T>) expression.coDomainType;
+    return evaluate(coDomainType, bits(), result);
+  }
+
+  public final <T extends Field<T>> T evaluate(T result)
+  {
+    return evaluate((Class<T>) result.getClass(), result.bits(), result);
+  }
+
+  public final <T extends Field<T>> T evaluate(int bits, T result)
+  {
+    return evaluate((Class<T>) result.getClass(), bits, result);
+  }
 
   public Node<D, R, F> setIsResult(boolean isResult)
   {
@@ -175,6 +191,11 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   {
     return expression.isNullaryFunction() ? true
                                           : isIndependentOf(expression.getIndependentVariable());
+  }
+
+  public int bits()
+  {
+    return bits;
   }
 
   public int                 bits     = 128;
