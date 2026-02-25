@@ -13,8 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import arb.*;
 import arb.Integer;
-import arb.exceptions.CompilerException;
-import arb.exceptions.UndefinedReferenceException;
+import arb.exceptions.*;
 import arb.expressions.*;
 import arb.expressions.Context;
 import arb.expressions.nodes.*;
@@ -66,8 +65,10 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       result = Utensils.newInstance(resultType);
     }
-    assert false : "dispatch dont switch to evaluate " + this + " in " + expression.toStringExtended();
-    return null;
+    throw new UnderConstructionException("TODO: dispatch via reflection to evaluate "
+                                         + this
+                                         + " in "
+                                         + expression.toStringExtended());
   }
 
   @Override
