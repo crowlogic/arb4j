@@ -1945,6 +1945,11 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
     return neg(this);
   }
 
+  public Real neg(int bits, Real value)
+  {
+    return neg(value);
+  }
+
   /**
    * 
    * @param value variable to be assigned the resulting value

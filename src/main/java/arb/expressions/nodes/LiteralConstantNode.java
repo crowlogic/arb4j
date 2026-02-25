@@ -69,7 +69,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   @Override
   @SuppressWarnings(
   { "unchecked", "resource" })
-  public <T extends Field<T>> T evaluate(Class<T> resultType)
+  public <T extends Field<T>> T evaluate(Class<T> resultType, int bits)
   {
     if (resultType.equals(Integer.class))
     {

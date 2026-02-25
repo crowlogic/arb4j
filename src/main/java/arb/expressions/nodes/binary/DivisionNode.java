@@ -26,12 +26,12 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                          BinaryOperationNode<D, R, F>
 {
   @Override
-  public <T extends Field<T>> T evaluate(Class<T> resultType)
+  public <T extends Field<T>> T evaluate(Class<T> resultType, int bits)
   {
     if (resultType.equals(Integer.class))
     {
-      Integer num = left.evaluate(Integer.class);
-      Integer den = right.evaluate(Integer.class);
+      Integer num = left.evaluate(Integer.class, bits);
+      Integer den = right.evaluate(Integer.class, bits);
       try ( Integer result = new Integer())
       {
         return (T) num.div(den, result);
@@ -39,8 +39,8 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     if (resultType.equals(Fraction.class))
     {
-      Integer  num  = left.evaluate(Integer.class);
-      Integer  den  = right.evaluate(Integer.class);
+      Integer  num  = left.evaluate(Integer.class, bits);
+      Integer  den  = right.evaluate(Integer.class, bits);
       Fraction frac = new Fraction();
       frac.getNumerator().set(num);
       frac.getDenominator().set(den);
@@ -48,12 +48,12 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     if (resultType.equals(Real.class))
     {
-      Fraction frac = evaluate(Fraction.class);
+      Fraction frac = evaluate(Fraction.class, bits);
       Real     r    = new Real();
       r.set(frac);
       return (T) r;
     }
-    return super.evaluate(resultType);
+    return super.evaluate(resultType, bits);
   }
 
   public static final Logger logger = LoggerFactory.getLogger(DivisionNode.class);

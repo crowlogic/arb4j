@@ -293,7 +293,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     }
     else if (power.isConstant())
     {
-      return power.ceil().evaluate(Integer.class).getSignedValue();
+      return power.ceil().evaluate(Integer.class, bits).getSignedValue();
     }
     else
     {

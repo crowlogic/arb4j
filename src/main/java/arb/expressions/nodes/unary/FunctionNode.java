@@ -58,10 +58,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
    * TODO: this needs to be made fluent style
    */
   @Override
-  public <T extends Field<T>> T evaluate(Class<T> resultType)
+  public <T extends Field<T>> T evaluate(Class<T> resultType, int bits)
   {
-    Real argVal = arg.evaluate(Real.class);
-    int  bits   = 128;
+    Real argVal = arg.evaluate(Real.class, bits);
     try ( Real result = new Real())
     {
       switch (functionName)
@@ -169,7 +168,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
         break;
       }
     }
-    return super.evaluate(resultType);
+    return super.evaluate(resultType, bits);
   }
 
   @Override

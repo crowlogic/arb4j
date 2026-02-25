@@ -1,5 +1,7 @@
 package arb.expressions.nodes.unary;
 
+import arb.*;
+import arb.Integer;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
@@ -12,6 +14,13 @@ import arb.functions.Function;
 public class NegationNode<D, R, F extends Function<? extends D, ? extends R>> extends
                          FunctionNode<D, R, F>
 {
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T extends Field<T>> T evaluate(Class<T> resultType, int bits)
+  {
+    return arg.evaluate(resultType, bits).neg();
+  }
 
   @Override
   public boolean isZero()

@@ -75,6 +75,8 @@ public interface Field<X extends Field<? extends X>> extends
     return add(x, bits(this, x));
   }
 
+
+
   public default X add(X x, X result)
   {
     return add(x, bits(this, x), result);
@@ -187,8 +189,6 @@ public interface Field<X extends Field<? extends X>> extends
 
   }
 
-
-
   /**
    * Performs multiplication with a (signed) integer
    * 
@@ -212,7 +212,7 @@ public interface Field<X extends Field<? extends X>> extends
 
   public default X pow(int i, int bits)
   {
-    return pow(i, bits,  (X)this);
+    return pow(i, bits, (X) this);
   }
 
   /**
@@ -334,8 +334,6 @@ public interface Field<X extends Field<? extends X>> extends
 
   public X zero();
 
-
-
   /**
    * Summation is the addition of a sequence of any kind of numbers, called
    * addends or summands; the result is their sum or total. Beside numbers, other
@@ -350,11 +348,10 @@ public interface Field<X extends Field<? extends X>> extends
    *         {@link #add(Field, int, Field)} ) of this array of field elements
    *         regarded as an array of length this{@link #dim()}
    */
- // public X Σ(int prec,X result);
+  // public X Σ(int prec,X result);
 //  {
 //    assert false : "bah";
-////    result.zero();
-////    forEach(element -> result.add(element, prec, result));
+  //// result.zero(); forEach(element -> result.add(element, prec, result));
 //    return result;
 //  }
 
@@ -377,6 +374,11 @@ public interface Field<X extends Field<? extends X>> extends
   public default boolean isPositive()
   {
     return true;
+  }
+
+  public default X neg()
+  {
+    throw new UnsupportedOperationException( "TODO: " + getClass() + " should implement this");
   }
 
 }
