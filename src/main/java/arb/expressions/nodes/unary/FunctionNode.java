@@ -3,6 +3,7 @@ package arb.expressions.nodes.unary;
 import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.function.Consumer;
@@ -67,6 +68,14 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     Method method = getFunctionMethod(isBitless(), resultType);
 
+    try
+    {
+      return ((T)method.invoke(argVal, bits, result));
+    }
+    catch (IllegalAccessException | InvocationTargetException e)
+    {
+      Utensils.throwOrWrap(e);
+    }
     //.invoke(argVal, null)
     throw new UnderConstructionException("TODO: dispatch via reflection to evaluate "
                                          + this
