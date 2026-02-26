@@ -116,11 +116,13 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
         var lint = lconst.fractionValue;
         var rint = rconst.fractionValue;
 
-        try ( Fraction sum = lint.sub(rint, 0, new Fraction()))
+        try ( Fraction diff = lint.sub(rint, 0, new Fraction()))
         {
-          var numerator   = expression.newLiteralConstant(sum.getNumerator().toString());
-          var denominator = expression.newLiteralConstant(sum.getDenominator().toString());
-          return numerator.div(denominator);
+          if (diff.getDenominator().isOne())
+          {
+            return expression.newConstant(diff.getNumerator());
+          }
+          return expression.newFractionLiteralConstant(diff);
         }
       }
       return this;
@@ -130,31 +132,6 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
     if (right instanceof NegationNode<D, R, F> rightNegation)
     {
       return left.add(rightNegation.arg);
-    }
-
-    if (left.isLiteralConstant() && right.isLiteralConstant())
-    {
-      var lconst = left.asLiteralConstant();
-      var rconst = right.asLiteralConstant();
-      if (lconst.isInt && rconst.isInt)
-      {
-        try (var lint = lconst.asInteger(); var rint = rconst.asInteger())
-        {
-          var difference = lint.sub(rint, 0, rint);
-          return expression.newConstant(difference);
-        }
-      }
-      else if (lconst.isFraction && rconst.isFraction)
-      {
-        try (Fraction diff = lconst.fractionValue.sub(rconst.fractionValue, 0, new Fraction()))
-        {
-          if (diff.getDenominator().isOne())
-          {
-            return expression.newConstant(diff.getNumerator());
-          }
-          return expression.newFractionLiteralConstant(diff);
-        }
-      }
     }
 
     return this;
