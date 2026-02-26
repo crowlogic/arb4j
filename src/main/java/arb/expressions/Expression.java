@@ -295,41 +295,35 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public HashMap<String, LiteralConstantNode<D, C, F>>       literalConstants                 =
                                                                               new HashMap<>();
 
-  private ArrayList<ConstantNode<D, C, F>>                    foldedConstants                  =
+  private ArrayList<ConstantNode<D, C, F>>                   foldedConstants                  =
                                                                              new ArrayList<>();
 
-  public Expression<D, C, F> registerFoldedConstant( ConstantNode<D,C,F> constantNode )
+  public Expression<D, C, F> registerFoldedConstant(ConstantNode<D, C, F> constantNode)
   {
     foldedConstants.add(constantNode);
     return this;
   }
-  
-  private final Logger                                       log                              =
-                                                                 LoggerFactory.getLogger(Expression.class);
 
-  
-  public FunctionMapping<D, C, F>                            functionMapping;
+  private final Logger                             log                 =
+                                                       LoggerFactory.getLogger(Expression.class);
 
-  public int                                                 position                         = -1;
+  public FunctionMapping<D, C, F>                  functionMapping;
 
-  public char                                                previousCharacter;
+  public int                                       position            = -1;
 
-  public boolean                                             recursive                        =
-                                                                       false;
+  public char                                      previousCharacter;
 
-  public HashMap<String, FunctionMapping<?, ?, ?>>           referencedFunctions              =
-                                                                                 new HashMap<>();
+  public boolean                                   recursive           = false;
 
-  private HashMap<String, VariableNode<D, C, F>>             referencedVariables              =
-                                                                                 new HashMap<>();
+  public HashMap<String, FunctionMapping<?, ?, ?>> referencedFunctions = new HashMap<>();
 
-  public Node<D, C, F>                                       rootNode;
+  private HashMap<String, VariableNode<D, C, F>>   referencedVariables = new HashMap<>();
 
-  public boolean                                             variablesDeclared                =
-                                                                               false;
+  public Node<D, C, F>                             rootNode;
 
-  public boolean                                             verboseTrace                     =
-                                                                          false;
+  public boolean                                   variablesDeclared   = false;
+
+  public boolean                                   verboseTrace        = false;
 
   public boolean acceptUntil(Predicate<Expression<?, ?, ?>> visitor)
   {
@@ -1500,16 +1494,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return mv;
   }
 
-  protected MethodVisitor generateFoldedConstantInitializers(MethodVisitor methodVisitor)
-  {
-    for (var constant : foldedConstants)
-    {
-      constant.generateInitializer(methodVisitor);
-    }
-    return methodVisitor;
-  }
-
-  
   protected ClassVisitor generateConstructor(ClassVisitor classVisitor)
   {
     MethodVisitor mv = classVisitor.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
@@ -1529,7 +1513,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       generateLiteralConstantInitializers(mv);
     }
 
-    generateFoldedConstantInitializers(mv);
     generateIntermediateVariableInitializers(mv);
 
     Compiler.generateReturnFromVoidMethod(mv);
