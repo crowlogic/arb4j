@@ -56,7 +56,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
                                 Node<D, R, F>
 {
   @Override
-  @SuppressWarnings({ "unchecked", "resource" })
+  @SuppressWarnings("unchecked")
   public <T extends Field<T>> T evaluate(Class<T> resultType, int bits, T result)
   {
     if (result == null)
@@ -67,17 +67,12 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     {
       result.set(fractionValue);
     }
-    else if (isDecimal)
-    {
-      ((Real) result).set(value, bits);
-    }
     else
     {
-      result.set(new Integer(value));
+      result.set(value);
     }
     return result;
   }
-
 
   @Override
   public boolean isConstant()

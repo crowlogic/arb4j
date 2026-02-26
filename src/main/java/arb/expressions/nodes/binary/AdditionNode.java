@@ -29,11 +29,11 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       result = Utensils.newInstance(resultType);
     }
-    T leftValue  = left.evaluate(resultType, bits, Utensils.newInstance(resultType));
+    T leftValue = left.evaluate(resultType, bits, Utensils.newInstance(resultType));
     T rightValue = right.evaluate(resultType, bits, Utensils.newInstance(resultType));
-    return leftValue.add(rightValue, bits, result);
+    return (T) leftValue.add(rightValue, bits, Utensils.newInstance(resultType));
   }
-
+  
   public AdditionNode(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)
   {
     super(expression,
@@ -41,6 +41,28 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
           "add",
           right,
           "+");
+  }
+
+  static <D, R, F extends Function<? extends D, ? extends R>>
+         boolean
+         areIntegerDivisions(DivisionNode<D, R, F> leftDiv, DivisionNode<D, R, F> rightDiv)
+  {
+    return leftDiv.left.type().equals(Integer.class) && leftDiv.right.type().equals(Integer.class)
+                  && rightDiv.left.type().equals(Integer.class)
+                  && rightDiv.right.type().equals(Integer.class);
+  }
+
+  Node<D, R, F> combineFractions(DivisionNode<D, R, F> leftDiv, DivisionNode<D, R, F> rightDiv)
+  {
+    var a           = leftDiv.left;
+    var b           = leftDiv.right;
+    var c           = rightDiv.left;
+    var d           = rightDiv.right;
+    var ad          = a.mul(d);
+    var bc          = b.mul(c);
+    var numerator   = ad.add(bc);
+    var denominator = b.mul(d);
+    return numerator.div(denominator);
   }
 
   /**
@@ -73,7 +95,8 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> simplify()
   {
-    super.simplify();
+    left  = left.simplify();
+    right = right.simplify();
 
     if (left.isZero())
     {
@@ -84,7 +107,6 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       return left;
     }
-
     if (left instanceof LiteralConstantNode<D, R, F> lconst
                   && right instanceof LiteralConstantNode<D, R, F> rconst)
     {
@@ -93,23 +115,19 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
         try ( var lint = lconst.asInteger(); var rint = rconst.asInteger())
         {
           var sum = lint.add(rint, 0, rint);
-          return expression.newConstant(sum);
+          return expression.newLiteralConstant(sum.toString());
         }
       }
       else if (lconst.isFraction && rconst.isFraction)
       {
-        try ( Fraction sum = lconst.fractionValue.add(rconst.fractionValue, 0, new Fraction()))
+        var lint = lconst.fractionValue;
+        var rint = rconst.fractionValue;
+
+        try ( Fraction sum = lint.add(rint, 0, new Fraction()))
         {
-          Integer num = sum.getNumerator();
-          Integer den = sum.getDenominator();
-          if (den.equals(1))
-          {
-            return expression.newConstant(num);
-          }
-          else
-          {
-            return expression.newConstant(num).div(expression.newConstant(den));
-          }
+          var numerator   = expression.newLiteralConstant(sum.getNumerator().toString());
+          var denominator = expression.newLiteralConstant(sum.getDenominator().toString());
+          return numerator.div(denominator);
         }
       }
 
@@ -124,35 +142,14 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       }
     }
 
+    // Rewrite a + (-b) as a - b, but do NOT re-simplify to avoid ping-pong
     if (right instanceof NegationNode<D, R, F> rightNegation)
     {
       return left.sub(rightNegation.arg);
     }
 
     return this;
-  }
 
-  private static <D, R, F extends Function<? extends D, ? extends R>>
-          boolean
-          areIntegerDivisions(DivisionNode<D, R, F> leftDiv, DivisionNode<D, R, F> rightDiv)
-  {
-    return leftDiv.left.type().equals(Integer.class) && leftDiv.right.type().equals(Integer.class)
-                  && rightDiv.left.type().equals(Integer.class)
-                  && rightDiv.right.type().equals(Integer.class);
-  }
-
-  private Node<D, R, F> combineFractions(DivisionNode<D, R, F> leftDiv,
-                                         DivisionNode<D, R, F> rightDiv)
-  {
-    var a           = leftDiv.left;
-    var b           = leftDiv.right;
-    var c           = rightDiv.left;
-    var d           = rightDiv.right;
-    var ad          = a.mul(d);
-    var bc          = b.mul(c);
-    var numerator   = ad.add(bc);
-    var denominator = b.mul(d);
-    return numerator.div(denominator);
   }
 
   @Override

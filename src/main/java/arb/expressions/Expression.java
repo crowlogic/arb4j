@@ -138,12 +138,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                        Supplier<F>,
                        Consumer<Consumer<Expression<?, ?, ?>>>
 {
-  public LiteralConstantNode<D, C, F> newConstant(Integer i)
-  {
-    return new LiteralConstantNode<>(this, i);
-  }
-
-  
   /**
    * Inlines all references to the named contextual function, replacing each
    * {@link FunctionNode} bearing that name with the defining expression's AST
