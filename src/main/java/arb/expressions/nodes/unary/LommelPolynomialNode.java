@@ -89,7 +89,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
 
   public void generateFunctionInitializer(MethodVisitor mv)
   {
-    expression.insideInitializerOrConstructor = true;
+    expression.insideInitializer = true;
     loadFunctionOntoStack(mv);
     Compiler.getField(mv, LommelPolynomial.class, "v", Real.class);
     generateOrder(mv);
@@ -153,7 +153,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
   {
     boolean isRationalFunctionSequence = RationalFunction.class.equals(expression.coDomainType)
                   && Integer.class.equals(expression.domainType);
-    expression.insideInitializerOrConstructor = false;
+    expression.insideInitializer = false;
 
     expression.loadThisFieldOntoStack(mv, elementFieldName, RationalFunction.class);
 

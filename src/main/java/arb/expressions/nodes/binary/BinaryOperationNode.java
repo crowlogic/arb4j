@@ -343,7 +343,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     left.generate(mv, left.type());
     right.generate(mv, right.type());
 
-    if (expression.insideInitializerOrConstructor)
+    if (expression.insideInitializer)
     {
       mv.visitLdcInsn(initializerBits);
     }

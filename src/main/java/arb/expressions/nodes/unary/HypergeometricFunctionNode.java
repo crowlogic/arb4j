@@ -307,7 +307,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
   public void generateHypergeometricFunctionInitializer(MethodVisitor mv)
   {
-    expression.insideInitializerOrConstructor = true;
+    expression.insideInitializer = true;
 
     loadHypergeometricFunctionOntoStack(mv);
     generateInitCall(mv);
@@ -340,13 +340,13 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       }
     }
 
-    expression.insideInitializerOrConstructor = false;
+    expression.insideInitializer = false;
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    expression.insideInitializerOrConstructor = false;
+    expression.insideInitializer = false;
 
     if (αβDependsOnInput())
     {

@@ -85,7 +85,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
   {
     boolean isNullaryFunction = expression.domainType.equals(Object.class);
 
-    expression.insideInitializerOrConstructor = false;
+    expression.insideInitializer = false;
     if (Expression.trace)
     {
       logger.debug(String.format("j.generate(ν=%s, resultType=%s\n)\n", order, resultType));
