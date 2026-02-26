@@ -208,38 +208,30 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public Node<D, R, F> simplify()
   {
-    if (left.isOne())
+    var folded = super.simplify();
+    if (folded != this)
     {
-      return one();
+      return folded;
     }
-    if (right.isOne())
-    {
-      return left.simplify();
 
-    }
     if (right.isZero())
     {
       return one();
     }
-    if (left.isZero())
+
+    if (right.isOne())
     {
-      return right.isZero() ? one() : zero();
+      return left;
     }
-    if (left.isLiteralConstant() && right.isLiteralConstant())
+
+    if (left.isOne())
     {
-      var lconst = left.asLiteralConstant();
-      var rconst = right.asLiteralConstant();
-      if (lconst.isInt && rconst.isInt)
-      {
-        try ( var lint = new Integer(lconst.value); var rint = new Integer(rconst.value);)
-        {
-          var power = lint.pow(rint, 0, rint);
-          return expression.newLiteralConstant(power.toString());
-        }
-      }
+      return one();
     }
-    return super.simplify();
+
+    return this;
   }
+
 
   @Override
   public <E, S, G extends Function<? extends E, ? extends S>>

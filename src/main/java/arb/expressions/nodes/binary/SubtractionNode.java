@@ -86,11 +86,14 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
     return false;
   }
 
-  @Override
+   @Override
   public Node<D, R, F> simplify()
   {
-    left  = left.simplify();
-    right = right.simplify();
+    var folded = super.simplify();
+    if (folded != this)
+    {
+      return folded;
+    }
 
     if (left.isZero())
     {
@@ -101,40 +104,15 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
     {
       return left;
     }
-    if (left instanceof LiteralConstantNode lconst && right instanceof LiteralConstantNode rconst)
-    {
-      if (lconst.isInt && rconst.isInt)
-      {
-        try ( var lint = new Integer(lconst.value); var rint = new Integer(rconst.value);)
-        {
-          var difference = lint.sub(rint, 0, rint);
-          return expression.newLiteralConstant(difference.toString());
-        }
-      }
-      else if (lconst.isFraction && rconst.isFraction)
-      {
-        var lint = lconst.fractionValue;
-        var rint = rconst.fractionValue;
 
-        try ( Fraction sum = lint.sub(rint, 0, new Fraction()))
-        {
-          var numerator   = expression.newLiteralConstant(sum.getNumerator().toString());
-          var denominator = expression.newLiteralConstant(sum.getDenominator().toString());
-          return numerator.div(denominator);
-        }
-      }
-      return this;
-    }
-
-    // Rewrite a - (-b) as a + b, but do NOT re-simplify to avoid ping-pong
-    if (right instanceof NegationNode<D, R, F> rightNegation)
+    if (left.equals(right))
     {
-      return left.add(rightNegation.arg);
+      return zero();
     }
 
     return this;
-
   }
+
 
   @Override
   public <E, S, G extends Function<? extends E, ? extends S>>

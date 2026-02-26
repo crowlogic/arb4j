@@ -372,126 +372,31 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> simplify()
   {
-    super.simplify();
+    var folded = super.simplify();
+    if (folded != this)
+    {
+      return folded;
+    }
 
     if (right.isOne())
     {
       return left;
     }
+
     if (left.equals(right))
     {
       return one();
     }
 
-    if (left instanceof NegationNode leftNeg && right instanceof NegationNode rightNeg)
+    if (left.isZero())
     {
-      return leftNeg.arg.simplify().div(rightNeg.arg.simplify()).simplify();
-    }
-
-    if (right instanceof NegationNode rightNeg)
-    {
-      return left.div(rightNeg.arg).neg();
-    }
-
-    if (left instanceof ExponentiationNode<D, R, F> leftExp
-                  && right instanceof ExponentiationNode<D, R, F> rightExp)
-    {
-      var leftBase  = leftExp.left;
-      var rightBase = rightExp.left;
-      if (leftBase.equals(rightBase))
-      {
-        var exponentDifference = leftExp.right.sub(rightExp.right).simplify();
-        return leftBase.pow(exponentDifference).simplify();
-      }
-    }
-
-    if (left instanceof FunctionNode<D, R, F> leftFunction
-                  && right instanceof FunctionNode<D, R, F> rightFunction)
-    {
-      if (leftFunction.isExponential() && rightFunction.functionName.equals("exp"))
-      {
-        var exponentSum = leftFunction.arg.sub(rightFunction.arg).simplify();
-        return exponentSum.exp();
-      }
-    }
-
-    // Cancel x^a / x → x^(a-1)
-    if (left instanceof ExponentiationNode<D, R, F> leftExp2 && leftExp2.left.equals(right))
-    {
-      return leftExp2.left.pow(leftExp2.right.sub(one()).simplify()).simplify();
-    }
-
-    // Cancel x / x^a → x^(1-a)
-    if (right instanceof ExponentiationNode<D, R, F> rightExp2 && rightExp2.left.equals(left))
-    {
-      return left.pow(one().sub(rightExp2.right).simplify()).simplify();
-    }
-
-    // Cancel through product denominator: expr / (a * b)
-    if (right instanceof MultiplicationNode<D, R, F> rightMul)
-    {
-      var cancelledWithRight = tryCancelCommonBase(left, rightMul.right);
-      if (cancelledWithRight != null)
-      {
-        return cancelledWithRight.div(rightMul.left).simplify();
-      }
-      var cancelledWithLeft = tryCancelCommonBase(left, rightMul.left);
-      if (cancelledWithLeft != null)
-      {
-        return cancelledWithLeft.div(rightMul.right).simplify();
-      }
-    }
-
-    // Cancel through product numerator: (a * b) / expr
-    if (left instanceof MultiplicationNode<D, R, F> leftMul)
-    {
-      var cancelledWithRight = tryCancelCommonBase(leftMul.right, right);
-      if (cancelledWithRight != null)
-      {
-        return leftMul.left.mul(cancelledWithRight).simplify();
-      }
-      var cancelledWithLeft = tryCancelCommonBase(leftMul.left, right);
-      if (cancelledWithLeft != null)
-      {
-        return cancelledWithLeft.mul(leftMul.right).simplify();
-      }
+      return zero();
     }
 
     return this;
   }
 
-  /**
-   * Attempts to cancel a common variable base between numerator and denominator
-   * by subtracting exponents.
-   *
-   * Handles: a/a → 1, x^a/x → x^(a-1), x/x^a → x^(1-a), x^a/x^b → x^(a-b)
-   *
-   * @param numerator   The numerator expression
-   * @param denominator The denominator expression
-   * @return The cancelled result, or null if no cancellation applies
-   */
-  private Node<D, R, F> tryCancelCommonBase(Node<D, R, F> numerator, Node<D, R, F> denominator)
-  {
-    if (numerator.equals(denominator))
-    {
-      return one();
-    }
-    if (numerator instanceof ExponentiationNode<D, R, F> numExp && numExp.left.equals(denominator))
-    {
-      return numExp.left.pow(numExp.right.sub(one()).simplify()).simplify();
-    }
-    if (denominator instanceof ExponentiationNode<D, R, F> denExp && denExp.left.equals(numerator))
-    {
-      return numerator.pow(one().sub(denExp.right).simplify()).simplify();
-    }
-    if (numerator instanceof ExponentiationNode<D, R, F> nExp
-                  && denominator instanceof ExponentiationNode<D, R, F> dExp
-                  && nExp.left.equals(dExp.left))
-    {
-      return nExp.left.pow(nExp.right.sub(dExp.right).simplify()).simplify();
-    }
-    return null;
-  }
+  
 
   @Override
   public <E, S, G extends Function<? extends E, ? extends S>>

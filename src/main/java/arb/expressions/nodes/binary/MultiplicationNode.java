@@ -232,274 +232,49 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     return !expression.coDomainType.equals(Quaternion.class);
   }
 
-  @Override
+    @Override
   public Node<D, R, F> simplify()
   {
-    simplifyDepth++;
-    if (traceSimplify)
+    var folded = super.simplify();
+    if (folded != this)
     {
-      System.err.printf("%s[%d] ENTER MultiplicationNode.simplify() this=%s left=%s right=%s%n",
-                        depthIndent(),
-                        simplifyDepth,
-                        System.identityHashCode(this),
-                        left,
-                        right);
-    }
-
-    if (left != null)
-    {
-      var oldLeft = left;
-      left = left.simplify();
-      if (traceSimplify && left != oldLeft)
-      {
-        System.err.printf("%s[%d]   left changed: %s -> %s%n",
-                          depthIndent(),
-                          simplifyDepth,
-                          oldLeft,
-                          left);
-      }
-    }
-    if (right != null)
-    {
-      var oldRight = right;
-      right = right.simplify();
-      if (traceSimplify && right != oldRight)
-      {
-        System.err.printf("%s[%d]   right changed: %s -> %s%n",
-                          depthIndent(),
-                          simplifyDepth,
-                          oldRight,
-                          right);
-      }
+      return folded;
     }
 
     if (left.isZero() || right.isZero())
     {
-      if (traceSimplify)
-      {
-        System.err.printf("%s[%d]   -> returning zero()%n", depthIndent(), simplifyDepth);
-      }
-      simplifyDepth--;
       return zero();
     }
 
     if (left.isOne())
     {
-      if (traceSimplify)
-      {
-        System.err.printf("%s[%d]   left.isOne() -> returning right=%s%n",
-                          depthIndent(),
-                          simplifyDepth,
-                          right);
-      }
-      simplifyDepth--;
       return right;
     }
+
     if (right.isOne())
     {
-      if (traceSimplify)
-      {
-        System.err.printf("%s[%d]   right.isOne() -> returning left=%s%n",
-                          depthIndent(),
-                          simplifyDepth,
-                          left);
-      }
-      simplifyDepth--;
       return left;
     }
+
     if (left.isNegOne())
     {
-      if (traceSimplify)
-      {
-        System.err.printf("%s[%d]   left.isNegOne() -> returning right.neg()%n",
-                          depthIndent(),
-                          simplifyDepth);
-      }
-      simplifyDepth--;
       return right.neg();
     }
+
     if (right.isNegOne())
     {
-      if (traceSimplify)
-      {
-        System.err.printf("%s[%d]   right.isNegOne() -> returning left.neg()%n",
-                          depthIndent(),
-                          simplifyDepth);
-      }
-      simplifyDepth--;
       return left.neg();
     }
 
     var deltaSimplification = simplifyDeltaMultiplication();
     if (deltaSimplification != null)
     {
-      if (traceSimplify)
-      {
-        System.err.printf("%s[%d]   delta simplification -> %s%n",
-                          depthIndent(),
-                          simplifyDepth,
-                          deltaSimplification);
-      }
-      simplifyDepth--;
       return deltaSimplification;
     }
 
-    if (left instanceof LiteralConstantNode<D, R, F> leftConstant
-                  && right instanceof LiteralConstantNode<D, R, F> rightConstant)
-    {
-      if (leftConstant.isInt && rightConstant.isInt)
-      {
-        try ( var lint = new Integer(leftConstant.value);
-              var rint = new Integer(rightConstant.value))
-        {
-          var product = lint.mul(rint, 0, rint);
-          if (traceSimplify)
-          {
-            System.err.printf("%s[%d]   integer folding: %s * %s = %s%n",
-                              depthIndent(),
-                              simplifyDepth,
-                              leftConstant.value,
-                              rightConstant.value,
-                              product);
-          }
-          simplifyDepth--;
-          return expression.newLiteralConstant(product.toString());
-        }
-      }
-    }
-
-    if (left instanceof ExponentiationNode<D, R, F> leftExp
-                  && right instanceof ExponentiationNode<D, R, F> rightExp)
-    {
-      var leftBase  = leftExp.left;
-      var rightBase = rightExp.left;
-      if (leftBase.equals(rightBase))
-      {
-        var rightPower = rightExp.right;
-        var leftPower  = leftExp.right;
-        var power      = leftPower.add(rightPower).simplify();
-        if (traceSimplify)
-        {
-          System.err.printf("%s[%d]   exponent addition: base^(%s+%s)%n",
-                            depthIndent(),
-                            simplifyDepth,
-                            leftPower,
-                            rightPower);
-        }
-        simplifyDepth--;
-        return leftBase.pow(power).simplify();
-      }
-    }
-
-    if (left instanceof FunctionNode<D, R, F> leftFunction
-                  && right instanceof FunctionNode<D, R, F> rightFunction)
-    {
-      var leftIsExponentialFunction  = leftFunction.is("exp");
-      var rightIsExponentialFunction = rightFunction.is("exp");
-
-      if (leftIsExponentialFunction && rightIsExponentialFunction)
-      {
-        var exponentSum = leftFunction.arg.add(rightFunction.arg).simplify();
-        if (traceSimplify)
-        {
-          System.err.printf("%s[%d]   exp multiplication: exp(%s+%s)%n",
-                            depthIndent(),
-                            simplifyDepth,
-                            leftFunction.arg,
-                            rightFunction.arg);
-        }
-        simplifyDepth--;
-        return exponentSum.exp().simplify();
-      }
-    }
-
-    if (left instanceof FunctionNode<D, R, F> leftFunction2
-                  && right instanceof FunctionNode<D, R, F> rightFunction2)
-    {
-      var leftIsSquareRootFunction = leftFunction2.is("sqrt");
-      var functionsAreEqual        = leftFunction2.equals(rightFunction2);
-
-      if (leftIsSquareRootFunction && functionsAreEqual)
-      {
-        if (traceSimplify)
-        {
-          System.err.printf("%s[%d]   sqrt*sqrt -> arg%n", depthIndent(), simplifyDepth);
-        }
-        simplifyDepth--;
-        return leftFunction2.arg;
-      }
-    }
-
-    // Combine fractions: (a/b) * (c/d) → (a*c)/(b*d)
-    if (left instanceof DivisionNode<D, R, F> leftDiv
-                  && right instanceof DivisionNode<D, R, F> rightDiv)
-    {
-      var numerator   = leftDiv.left.mul(rightDiv.left).simplify();
-      var denominator = leftDiv.right.mul(rightDiv.right).simplify();
-      if (traceSimplify)
-      {
-        System.err.printf("%s[%d]   fraction combine: (%s/%s)*(%s/%s) → %s/%s%n",
-                          depthIndent(),
-                          simplifyDepth,
-                          leftDiv.left,
-                          leftDiv.right,
-                          rightDiv.left,
-                          rightDiv.right,
-                          numerator,
-                          denominator);
-      }
-      simplifyDepth--;
-      return numerator.div(denominator).simplify();
-    }
-
-    // Pull fraction right: expr * (a/b) → (expr*a)/b
-    if (right instanceof DivisionNode<D, R, F> rightDiv)
-    {
-      var numerator = left.mul(rightDiv.left).simplify();
-      if (traceSimplify)
-      {
-        System.err.printf("%s[%d]   pull fraction right: %s*(%s/%s) → %s/%s%n",
-                          depthIndent(),
-                          simplifyDepth,
-                          left,
-                          rightDiv.left,
-                          rightDiv.right,
-                          numerator,
-                          rightDiv.right);
-      }
-      simplifyDepth--;
-      return numerator.div(rightDiv.right).simplify();
-    }
-
-    // Pull fraction left: (a/b) * expr → (a*expr)/b
-    if (left instanceof DivisionNode<D, R, F> leftDiv)
-    {
-      var numerator = leftDiv.left.mul(right).simplify();
-      if (traceSimplify)
-      {
-        System.err.printf("%s[%d]   pull fraction left: (%s/%s)*%s → %s/%s%n",
-                          depthIndent(),
-                          simplifyDepth,
-                          leftDiv.left,
-                          leftDiv.right,
-                          right,
-                          numerator,
-                          leftDiv.right);
-      }
-      simplifyDepth--;
-      return numerator.div(leftDiv.right).simplify();
-    }
-
-    if (traceSimplify)
-    {
-      System.err.printf("%s[%d] EXIT MultiplicationNode.simplify() returning this=%s%n",
-                        depthIndent(),
-                        simplifyDepth,
-                        this);
-    }
-    simplifyDepth--;
     return this;
   }
+
 
   /**
    * Applies the sifting property of the Dirac delta function: f(x) * δ(x-a) =

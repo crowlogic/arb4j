@@ -490,8 +490,14 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     }
     simplifyDepth--;
 
+    if (isConstant() )
+    {
+      return foldConstant();
+    }
+
     return this;
   }
+
 
   public String stringFormat(Node<?, ?, ?> side)
   {
