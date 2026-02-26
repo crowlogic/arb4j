@@ -101,12 +101,24 @@ public class ConstantNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                           + " is not constant at initializer generation time";
 
     var type = type();
+
+    // this.fieldName = new Type()
+    loadThisOntoStack(mv);
+    generateNewObjectInstruction(mv, type);
+    duplicateTopOfTheStack(mv);
+    invokeDefaultConstructor(mv, type);
+    putField(mv, expression.className, fieldName, type);
+
+    // this.fieldName.set(<subtree value>)
     expression.loadThisFieldOntoStack(mv, fieldName, type);
     constantSubtree.generate(mv, type);
     generateVirtualMethodInvocation(mv, type, "set", type, type);
     pop(mv);
+
     return mv;
   }
+
+
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
