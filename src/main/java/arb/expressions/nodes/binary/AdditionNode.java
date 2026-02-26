@@ -94,6 +94,21 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return left.mul(two());
     }
 
+    if (left.isLiteralConstant() && left.asLiteralConstant().isFraction
+                  && right.isLiteralConstant() && right.asLiteralConstant().isFraction)
+    {
+      Fraction lf = left.asLiteralConstant().fractionValue;
+      Fraction rf = right.asLiteralConstant().fractionValue;
+      try (Fraction sum = lf.add(rf, 0, new Fraction()))
+      {
+        if (sum.getDenominator().isOne())
+        {
+          return expression.newConstant(sum.getNumerator());
+        }
+        return expression.newFractionLiteralConstant(sum);
+      }
+    }
+
     return this;
   }
 
