@@ -1522,23 +1522,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     }
 
-    generateFoldedConstantConstructorCode(mv);
     generateIntermediateVariableConstructorCode(mv);
 
     Compiler.generateReturnFromVoidMethod(mv);
     return classVisitor;
   }
 
-  protected MethodVisitor generateFoldedConstantConstructorCode(MethodVisitor mv)
-  {
-    for (var constant : foldedConstants)
-    {
-      loadThisOntoStack(mv);
-      mv.visitInsn(ACONST_NULL);
-      putField(mv, className, constant.fieldName, constant.type());
-    }
-    return mv;
-  }
 
 
   public MethodVisitor generateContextInitializer(MethodVisitor methodVisitor)
