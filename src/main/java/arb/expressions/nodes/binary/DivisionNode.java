@@ -463,7 +463,8 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       try (var num = left.asLiteralConstant().asInteger();
            var den = right.asLiteralConstant().asInteger())
       {
-        Fraction frac = new Fraction(num.getSignedValue(), den.getSignedValue());
+        Fraction frac = new Fraction(num,den);
+
         return expression.newFractionLiteralConstant(frac);
       }
     }

@@ -56,6 +56,11 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
   }
 
 
+	public Real sub(Integer x, int prec, Real result)
+	{
+	  return getReal(prec, result).sub(x,prec);
+	}  
+	
   public AlgebraicNumber identity()
   {
     return one();

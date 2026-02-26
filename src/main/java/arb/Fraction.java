@@ -72,7 +72,19 @@ public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fr
   }
 
 
+	public Fraction(Integer num, Integer den)
+	{
+		this();
+		set(num,den);
+	}
 
+    public Fraction set(Integer num, Integer den )
+	{
+      getNumerator().set(num);
+	  getDenominator().set(den);
+	  return this;		
+	}	
+	
 	public Real sub(AlgebraicNumber element, int prec, Real result)
 	{
 	  return result.set(this)
@@ -379,16 +391,9 @@ public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fr
       
   public Fraction set(int numerator, int denominator)
   {
-    setNumeratorAddress(numerator);
-    setDenominatorAddress(denominator);
-    if (this.numerator != null)
-    {
-      this.numerator.swigCPtr = numerator;
-    }
-    if (this.denominator != null)
-    {
-      this.denominator.swigCPtr = denominator;
-    }
+	getNumerator().set(numerator);
+	getDenominator().set(denominator);
+	
     return this;
   }
   

@@ -144,7 +144,7 @@ public class ExpressionTest extends
   {
     var f = RationalNullaryFunction.parse("½-¼");
     f.simplify();
-    assertEquals("1/4", f.toString());
+    assertEquals("1⁄4", f.toString());
     RationalNullaryFunction instance = f.instantiate();
     RationalFunction        val      = instance.evaluate();
     Fraction                hmm      = val.evaluate(new Fraction());
@@ -155,7 +155,7 @@ public class ExpressionTest extends
   {
     var f = RationalNullaryFunction.parse("½+¼");
     f.simplify();
-    assertEquals("3/4", f.toString());
+    assertEquals("3⁄4", f.toString());
     RationalNullaryFunction instance = f.instantiate();
     RationalFunction        val      = instance.evaluate();
     Fraction                hmm      = val.evaluate(new Fraction());

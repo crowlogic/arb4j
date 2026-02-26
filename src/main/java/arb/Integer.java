@@ -1331,7 +1331,10 @@ public class Integer implements
   @Override
   public String toString()
   {
-
+    if ( swigCPtr == 0 )
+    {
+      return "nullptr";
+    }
     if (dim > 1)
     {
       StringBuffer buf = new StringBuffer("[");
@@ -1341,7 +1344,8 @@ public class Integer implements
         {
           buf.append(" ");
         }
-        buf.append(arblib.fmpz_get_str(null, 10, elements[i].swigCPtr));
+        long vecPtr = elements[i].swigCPtr;
+        buf.append(vecPtr == 0 ? "nullptr" : arblib.fmpz_get_str(null, 10, vecPtr));
       }
       buf.append("]");
       return buf.toString();

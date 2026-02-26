@@ -70,7 +70,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       return ((T) method.invoke(argVal, bits, result));
     }
-    catch (IllegalAccessException | InvocationTargetException e)
+    catch (Throwable e)
     {
       Utensils.wrapOrThrow(toString() + " in " + expression, e);
     }

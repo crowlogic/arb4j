@@ -263,21 +263,21 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     return constantSymbols.contains(var);
   }
 
-  public final boolean  isInt;
+  public final boolean isInt;
 
-  public final String   stringValue;
+  public final String  stringValue;
 
-  public final boolean  isImaginary;
+  public final boolean isImaginary;
 
-  public final Fraction fractionValue;
+  public Fraction      fractionValue;
 
-  public final boolean  isDecimal;
+  public final boolean isDecimal;
 
-  public final boolean  isFraction;
+  public final boolean isFraction;
 
-  private Integer       intValue;
+  private Integer      intValue;
 
-  private boolean constructedWithFraction;
+  private boolean      constructedWithFraction;
 
   public LiteralConstantNode(Expression<D, R, F> expression, String constantValueString)
   {
@@ -293,7 +293,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   {
     super(expression);
     assert Integer.class.equals(arb.Integer.class) : "an import statement for arb.Integer is probably missing";
-    stringValue       = Parser.subscriptAndSuperscriptsToRegular(constantValueString.trim());
+    stringValue = Parser.subscriptAndSuperscriptsToRegular(constantValueString.trim());
 
     isDecimal   = stringValue.contains(".");
     isImaginary = "ⅈ".equals(stringValue);
@@ -371,9 +371,9 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     this.isDecimal          = false;
     this.isImaginary        = false;
     this.isInt              = false;
-    this.fractionValue      = value;
-    this.stringValue        = value.toString();
-    fieldName               = expression.getNextConstantFieldName(type());
+    (this.fractionValue = new Fraction()).set(value);
+    this.stringValue = value.toString();
+    fieldName        = expression.getNextConstantFieldName(type());
     expression.literalConstants.put(fieldName, this);
   }
 
@@ -409,7 +409,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
       loadComplexConstantOntoStack(mv, "ⅈ");
       break;
     default:
-      if (fractionValue != null && !constructedWithFraction )
+      if (fractionValue != null && !constructedWithFraction)
       {
         loadLiteralFractionConstantOntoStack(mv);
       }
@@ -494,10 +494,9 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
    * from the preceding {@code NEW}/{@code DUP} in
    * {@link #generateLiteralConstantInitializer}. After
    * {@code INVOKESPECIAL <init>()V}, the stack is
-   * {@code [this, initializedFraction]}. We then {@code DUP} that reference,
-   * load the string, call {@code set}, and {@code POP} the returned reference,
-   * leaving {@code [this, initializedFraction]} for the subsequent
-   * {@code PUTFIELD}.
+   * {@code [this, initializedFraction]}. We then {@code DUP} that reference, load
+   * the string, call {@code set}, and {@code POP} the returned reference, leaving
+   * {@code [this, initializedFraction]} for the subsequent {@code PUTFIELD}.
    */
   protected MethodVisitor generateFractionConstructor(MethodVisitor methodVisitor)
   {
@@ -546,7 +545,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     {
       return "\\pi";
     }
-    else if (fractionValue != null)
+    else if (isFraction && fractionValue != null)
     {
       return String.format("\\frac{%s}{%s}",
                            fractionValue.getNumerator(),

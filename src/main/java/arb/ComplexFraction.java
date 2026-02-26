@@ -414,7 +414,7 @@ public class ComplexFraction implements
   }
 
   @Override
-  public NamedRing<ComplexFraction> set(Fraction val)
+  public ComplexFraction set(Fraction val)
   {
     realPart.set(val);
     imaginaryPart.zero();
