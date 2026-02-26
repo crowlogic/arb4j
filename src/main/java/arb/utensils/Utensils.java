@@ -444,13 +444,13 @@ public class Utensils
   }
 
   @SuppressWarnings("deprecation")
-  public static <T> T newInstance(Class<T> resultType)
+  public static <T extends Field<T>> T newInstance(Class<T> resultType)
   {
     try
     {
       return resultType.newInstance();
     }
-    catch (Throwable e)
+    catch (InstantiationException | IllegalAccessException e)
     {
       Utensils.throwOrWrap(e);
       return null;

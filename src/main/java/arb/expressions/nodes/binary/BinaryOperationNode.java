@@ -41,6 +41,8 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
                                          Node<D, R, F>
 {
 
+
+
   @Override
   public boolean isConstant()
   {
@@ -460,26 +462,31 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
                         right);
     }
 
-    var oldLeft = left;
-    left = left.simplify();
-    if (traceSimplify && left != oldLeft)
+    if (left != null)
     {
-      System.err.printf("%s[%d]   left changed: %s -> %s%n",
-                        depthIndent(),
-                        simplifyDepth,
-                        oldLeft,
-                        left);
+      var oldLeft = left;
+      left = left.simplify();
+      if (traceSimplify && left != oldLeft)
+      {
+        System.err.printf("%s[%d]   left changed: %s -> %s%n",
+                          depthIndent(),
+                          simplifyDepth,
+                          oldLeft,
+                          left);
+      }
     }
-
-    var oldRight = right;
-    right = right.simplify();
-    if (traceSimplify && right != oldRight)
+    if (right != null)
     {
-      System.err.printf("%s[%d]   right changed: %s -> %s%n",
-                        depthIndent(),
-                        simplifyDepth,
-                        oldRight,
-                        right);
+      var oldRight = right;
+      right = right.simplify();
+      if (traceSimplify && right != oldRight)
+      {
+        System.err.printf("%s[%d]   right changed: %s -> %s%n",
+                          depthIndent(),
+                          simplifyDepth,
+                          oldRight,
+                          right);
+      }
     }
 
     if (traceSimplify)

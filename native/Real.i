@@ -1778,6 +1778,14 @@ import arb.utensils.Utensils;
   }
   
   /**
+   * @return {@link arb#arb_reserved_bytes(Real)}
+   */
+  public int getAllocatedBytes()
+  {
+    return arblib.arb_reserved_bytes(this);
+  }
+
+  /**
    *  
    * @return -this
    */  

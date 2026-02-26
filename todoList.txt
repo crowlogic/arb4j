@@ -7,4 +7,3 @@ the generated toString() of the Expression.generateFunctionalElement() method sh
 standardize the Expression parser exception output message string
 move intermediateVariableCounters from Context to Expression
 expressor: make it such that selecting a subset of the string and then clickign a character on the minisymbolpalette replaces the highlighted string
-I'll see if I can get around to finding it soon I thought it was linked. This fixes the bug where if you import or "update maven project"with a project that uses modules it ignores the flag and sets modules=false in the created project config.. you have to go in and manually fix it each time asit is and the patch I referred to fixes that issue

@@ -1062,6 +1062,11 @@ import arb.functions.complex.ComplexNullaryFunction;
     return stream(imaginaryIterator());
   }
 
+  public int getAllocatedBytes()
+  {
+    return getReal().getAllocatedBytes() + getImag().getAllocatedBytes();
+  }
+
   public Complex ascendingFactorial(Integer power, int bits, Complex result)
   {
     assert power.getSignedValue() >= 0 : "power must be nonnegative";
