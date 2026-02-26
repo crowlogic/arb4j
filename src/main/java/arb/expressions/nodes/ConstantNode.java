@@ -41,7 +41,6 @@ public class ConstantNode<D, R, F extends Function<? extends D, ? extends R>> ex
     this.constantSubtree = constantSubtree;
     this.valueType       = constantSubtree.type();
     this.fieldName       = expression.getNextConstantFieldName(valueType);
-    expression.registerFoldedConstant(this);
   }
 
   protected ConstantNode(Expression<D, R, F> expression)

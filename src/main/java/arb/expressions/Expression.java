@@ -295,35 +295,31 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public HashMap<String, LiteralConstantNode<D, C, F>>       literalConstants                 =
                                                                               new HashMap<>();
 
-  private ArrayList<ConstantNode<D, C, F>>                   foldedConstants                  =
-                                                                             new ArrayList<>();
+  private final Logger                                       log                              =
+                                                                 LoggerFactory.getLogger(Expression.class);
 
-  public Expression<D, C, F> registerFoldedConstant(ConstantNode<D, C, F> constantNode)
-  {
-    foldedConstants.add(constantNode);
-    return this;
-  }
+  public FunctionMapping<D, C, F>                            functionMapping;
 
-  private final Logger                             log                 =
-                                                       LoggerFactory.getLogger(Expression.class);
+  public int                                                 position                         = -1;
 
-  public FunctionMapping<D, C, F>                  functionMapping;
+  public char                                                previousCharacter;
 
-  public int                                       position            = -1;
+  public boolean                                             recursive                        =
+                                                                       false;
 
-  public char                                      previousCharacter;
+  public HashMap<String, FunctionMapping<?, ?, ?>>           referencedFunctions              =
+                                                                                 new HashMap<>();
 
-  public boolean                                   recursive           = false;
+  private HashMap<String, VariableNode<D, C, F>>             referencedVariables              =
+                                                                                 new HashMap<>();
 
-  public HashMap<String, FunctionMapping<?, ?, ?>> referencedFunctions = new HashMap<>();
+  public Node<D, C, F>                                       rootNode;
 
-  private HashMap<String, VariableNode<D, C, F>>   referencedVariables = new HashMap<>();
+  public boolean                                             variablesDeclared                =
+                                                                               false;
 
-  public Node<D, C, F>                             rootNode;
-
-  public boolean                                   variablesDeclared   = false;
-
-  public boolean                                   verboseTrace        = false;
+  public boolean                                             verboseTrace                     =
+                                                                          false;
 
   public boolean acceptUntil(Predicate<Expression<?, ?, ?>> visitor)
   {
@@ -766,16 +762,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected void declareFields(ClassVisitor cw)
   {
-    Compiler.declareField(cw, IS_INITIALIZED, boolean.class);
+    cw.visitField(Opcodes.ACC_PUBLIC, IS_INITIALIZED, "Z", null, null);
+
     declareContext(cw);
+
     if (!coDomainType.isInterface())
     {
-      declareVariables(cw);
       declareLiteralConstants(cw);
-      declareFoldedConstantNodes(cw);
       declareIntermediateVariables(cw);
-      declareFunctionReferences(cw);
     }
+    declareFunctionReferences(cw);
+    declareVariables(cw);
   }
 
   protected ClassVisitor declareFunctionReferences(ClassVisitor classVisitor)
@@ -818,16 +815,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected ClassVisitor declareLiteralConstants(ClassVisitor classVisitor)
   {
-    for (var constant : getSortedLiteralConstantNodes())
-    {
-      constant.declareField(classVisitor);
-    }
-    return classVisitor;
-  }
-
-  protected ClassVisitor declareFoldedConstantNodes(ClassVisitor classVisitor)
-  {
-    for (var constant : foldedConstants)
+    for (var constant : getSortedConstantNodes())
     {
       constant.declareField(classVisitor);
     }
@@ -1412,6 +1400,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
+
   protected MethodVisitor generateCloseFieldCall(MethodVisitor methodVisitor,
                                                  String fieldName,
                                                  Class<?> fieldType)
@@ -1423,17 +1412,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected ClassVisitor generateCloseMethod(ClassVisitor classVisitor)
   {
     var methodVisitor = defineMethod(classVisitor, "close", VOID_METHOD_DESCRIPTOR);
+
     methodVisitor.visitCode();
 
     if (!coDomainType.isInterface())
     {
-      getSortedLiteralConstantNodes().forEach(constant -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
+      getSortedConstantNodes().forEach(constant -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
                                                                                  constant.fieldName,
                                                                                  constant.type()));
-
-      foldedConstants.forEach(constant -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
-                                                                 constant.fieldName,
-                                                                 constant.type()));
 
       sortedIntermediateVariables().forEach(intermediateVariable -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
                                                                                            intermediateVariable.name,
@@ -1444,7 +1430,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                       name,
                                                                       mapping.type()));
     }
+
     Compiler.generateReturnFromVoidMethod(methodVisitor);
+
     return classVisitor;
   }
 
@@ -2147,7 +2135,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected MethodVisitor generateLiteralConstantInitializers(MethodVisitor methodVisitor)
   {
-    for (var literal : getSortedLiteralConstantNodes())
+    for (var literal : getSortedConstantNodes())
     {
       literal.generateLiteralConstantInitializer(methodVisitor);
     }
@@ -2402,7 +2390,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return referencedVariables.get(reference);
   }
 
-  protected ArrayList<LiteralConstantNode<D, C, F>> getSortedLiteralConstantNodes()
+  protected ArrayList<LiteralConstantNode<D, C, F>> getSortedConstantNodes()
   {
     if (literalConstantNodes == null)
     {
