@@ -1,6 +1,5 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.loadBitsParameterOntoStack;
 import static arb.expressions.Compiler.loadThisOntoStack;
 
 import java.util.*;
@@ -292,7 +291,7 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
     // Phase 1 implementation generates a call to this helper.
 
     arg.generate(mv, resultType);
-    loadBitsParameterOntoStack(mv);
+    expression.loadBitsParameterOntoStack(mv);
     loadOutputVariableOntoStack(mv, resultType);
 
     // Load the forward function reference onto the stack

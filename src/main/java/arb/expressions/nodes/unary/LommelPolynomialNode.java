@@ -162,8 +162,8 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
       arg.generate(mv, resultType);
     }
 
-    Compiler.loadOrderParameter(mv);
-    loadBitsParameterOntoStack(mv);
+    expression.loadOrderParameter(mv);
+    expression.loadBitsParameterOntoStack(mv);
 
     if (isRationalFunctionSequence)
     {
@@ -216,13 +216,13 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
   {
     loadFunctionOntoStack(mv);
     Compiler.getField(mv, LommelPolynomial.class, "n", Integer.class);
-    loadInputParameter(mv);
+    expression.loadInputParameter(mv);
     cast(mv, Integer.class);
     invokeSetMethod(mv, Integer.class, Integer.class);
 
     loadFunctionOntoStack(mv);
     mv.visitInsn(Opcodes.ACONST_NULL);
-    loadOrderParameter(mv);
+    expression.loadOrderParameter(mv);
     loadBitsOntoStack(mv);
     loadOutputVariableOntoStack(mv, resultType);
 

@@ -65,13 +65,13 @@ public class RiemannSiegelThetaFunctionNode<D, C, F extends Function<? extends D
   {
     mv.visitVarInsn(Opcodes.ALOAD, outSlot);
     mv.visitVarInsn(Opcodes.ALOAD, hSlot);
-    loadOrderParameter(mv);
+    expression.loadOrderParameter(mv);
     if (derivativeOrder > 0)
     {
       mv.visitLdcInsn(derivativeOrder);
       mv.visitInsn(Opcodes.IADD);
     }
-    loadBitsParameterOntoStack(mv);
+    expression.loadBitsParameterOntoStack(mv);
 
     invokeStaticMethod(mv,
                        arblib.class,

@@ -1,7 +1,6 @@
 package arb.expressions.nodes.unary;
 
 import static arb.expressions.Compiler.cast;
-import static arb.expressions.Compiler.loadInputParameter;
 
 import java.util.List;
 import java.util.Map.Entry;
@@ -234,7 +233,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
 
   public void generateIndex(MethodVisitor mv)
   {
-    cast(loadInputParameter(mv), expression.domainType);
+    cast(expression.loadInputParameter(mv), expression.domainType);
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                        INTEGER_CLASS_INTERNAL_NAME,
                        "getSignedValue",

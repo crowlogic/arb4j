@@ -697,7 +697,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     arg.generate(methodVisitor, argType);
     if (!bitless)
     {
-      loadBitsParameterOntoStack(methodVisitor);
+      expression.loadBitsParameterOntoStack(methodVisitor);
     }
 
     loadOutputVariableOntoStack(methodVisitor, requisiteResultType);
@@ -754,8 +754,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     checkForUndefinedReferenced(functionMapping);
     loadFunctionReferenceOntoStack(mv, functionMapping);
     generateArgument(mv, functionMapping);
-    loadOrderParameter(mv);
-    loadBitsParameterOntoStack(mv);
+    expression.loadOrderParameter(mv);
+    expression.loadBitsParameterOntoStack(mv);
     loadOutputVariableOntoStack(mv, generatedType);
     return functionMapping.call(mv, generatedType);
   }

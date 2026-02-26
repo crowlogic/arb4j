@@ -381,7 +381,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
         if (argumentDependsOnInput)
         {
           // Case 7: domain is C, pass actual input
-          loadInputParameter(mv);
+          expression.loadInputParameter(mv);
         }
         else
         {
@@ -400,7 +400,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     else if (argumentDependsOnInput && !hasScalarCodomain())
     {
       loadHypergeometricFunctionOntoStack(mv);
-      loadInputParameter(mv);
+      expression.loadInputParameter(mv);
       mv.visitLdcInsn(1);
       loadBitsOntoStack(mv);
       loadOutputOntoStack(mv, resultType);
@@ -424,9 +424,9 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
         loadOutputOntoStack(mv, resultType);
         expression.loadThisFieldOntoStack(mv, elementFieldName, elementType);
         cast(mv, elementType);
-        loadInputParameter(mv);
+        expression.loadInputParameter(mv);
         cast(mv, expression.domainType);
-        loadOrderParameter(mv);
+        expression.loadOrderParameter(mv);
         loadBitsOntoStack(mv);
         loadOutputOntoStack(mv, resultType);
         generateEvaluateMethodInvocation(mv,
@@ -515,7 +515,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     generatedType = resultType;
     if (isResult)
     {
-      cast(loadResultParameter(mv), resultType);
+      cast(expression.loadResultParameter(mv), resultType);
     }
     else
     {

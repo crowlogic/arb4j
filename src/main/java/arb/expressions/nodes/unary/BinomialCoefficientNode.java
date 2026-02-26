@@ -30,7 +30,7 @@ public class BinomialCoefficientNode<D, R, F extends Function<? extends D, ? ext
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    Compiler.loadPointer(cast(duplicateTopOfTheStack(loadResultParameter(mv)), Integer.class));
+    Compiler.loadPointer(cast(duplicateTopOfTheStack(expression.loadResultParameter(mv)), Integer.class));
 
     Compiler.generateCallToLoadUnsignedLong(combinations.generate(mv, Integer.class));
 

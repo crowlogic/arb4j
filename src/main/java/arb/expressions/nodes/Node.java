@@ -358,7 +358,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   {
     if (isResult)
     {
-      cast(loadResultParameter(methodVisitor), resultType);
+      cast(expression.loadResultParameter(methodVisitor), resultType);
       fieldName = "result";
     }
     else
@@ -483,7 +483,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     }
     else
     {
-      loadBitsParameterOntoStack(mv);
+      expression.loadBitsParameterOntoStack(mv);
     }
   }
 
@@ -636,7 +636,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   {
     if (isResult)
     {
-      Compiler.cast(loadResultParameter(mv), resultType);
+      Compiler.cast(expression.loadResultParameter(mv), resultType);
       fieldName = "result";
     }
     else
