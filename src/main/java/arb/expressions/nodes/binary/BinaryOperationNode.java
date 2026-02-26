@@ -52,21 +52,21 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    assert false : "BinaryOperationNode.differentiate has yet to be implemented as of Feb 17, 2026 8:28:49 PM";
+    assert false : "BinaryOperationNode.differentiate has yet to be implemented as of Feb 17, 2026 8:28:49 PM";
     return null;
   }
 
   @Override
   public Logger getLogger()
   {
-    assert false : "BinaryOperationNode.getLogger has yet to be implemented as of Feb 17, 2026 8:28:49 PM";
+    assert false : "BinaryOperationNode.getLogger has yet to be implemented as of Feb 17, 2026 8:28:49 PM";
     return null;
   }
 
   @Override
   public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
-    assert false : "BinaryOperationNode.integrate has yet to be implemented as of Feb 17, 2026 8:28:49 PM";
+    assert false : "BinaryOperationNode.integrate has yet to be implemented as of Feb 17, 2026 8:28:49 PM";
     return null;
   }
 
@@ -75,14 +75,14 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    assert false : "BinaryOperationNode.spliceInto has yet to be implemented as of Feb 17, 2026 8:28:49 PM";
+    assert false : "BinaryOperationNode.spliceInto has yet to be implemented as of Feb 17, 2026 8:28:49 PM";
     return null;
   }
 
   @Override
   public String typeset()
   {
-    assert false : "BinaryOperationNode.typeset has yet to be implemented as of Feb 17, 2026 8:28:49 PM";
+    assert false : "BinaryOperationNode.typeset has yet to be implemented as of Feb 17, 2026 8:28:49 PM";
     return null;
   }
 
