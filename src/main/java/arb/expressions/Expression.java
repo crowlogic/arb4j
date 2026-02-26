@@ -1519,9 +1519,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (!isFunctional())
     {
       generateLiteralConstantConstructorCode(mv);
-    }
-    generateFoldedConstantConstructorCode(mv);
 
+    }
+
+    generateFoldedConstantConstructorCode(mv);
     generateIntermediateVariableConstructorCode(mv);
 
     Compiler.generateReturnFromVoidMethod(mv);
