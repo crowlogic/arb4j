@@ -2,6 +2,7 @@ package arb.expressions.nodes.unary;
 
 import arb.Field;
 import arb.expressions.Expression;
+import arb.expressions.nodes.LiteralConstantNode;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
@@ -49,7 +50,6 @@ public class NegationNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> simplify()
   {
-
     if (arg instanceof NegationNode<D, R, F> negArg)
     {
       return negArg.arg.simplify();
@@ -57,6 +57,17 @@ public class NegationNode<D, R, F extends Function<? extends D, ? extends R>> ex
     if (arg.isZero())
     {
       return arg = zero();
+    }
+    if (arg.isLiteralConstant())
+    {
+      LiteralConstantNode<D, R, F> lconst = arg.asLiteralConstant();
+      if (lconst.isInt)
+      {
+        String negatedValue = lconst.stringValue.startsWith("-")
+                                                                ? lconst.stringValue.substring(1)
+                                                                : "-" + lconst.stringValue;
+        return expression.newLiteralConstant(negatedValue);
+      }
     }
 
     return this;
