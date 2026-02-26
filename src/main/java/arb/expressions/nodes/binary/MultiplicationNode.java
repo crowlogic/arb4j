@@ -272,6 +272,20 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       return deltaSimplification;
     }
 
+    if (left.isLiteralConstant() && right.isLiteralConstant())
+    {
+      var lconst = left.asLiteralConstant();
+      var rconst = right.asLiteralConstant();
+      if (lconst.isInt && rconst.isInt)
+      {
+        try (var lint = lconst.asInteger(); var rint = rconst.asInteger())
+        {
+          var product = lint.mul(rint, 0, rint);
+          return expression.newConstant(product);
+        }
+      }
+    }
+
     return this;
   }
 
