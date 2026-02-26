@@ -89,6 +89,14 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
   @Override
   public Node<D, R, F> simplify()
   {
+    // Rewrite a - (-b) as a + b BEFORE simplifying children,
+    // because NegationNode.simplify() folds NegationNode(literal) into
+    // a negative LiteralConstant, destroying the NegationNode structure.
+    if (right instanceof NegationNode<D, R, F> rightNegation)
+    {
+      return left.add(rightNegation.arg).simplify();
+    }
+
     left  = left.simplify();
     right = right.simplify();
 
@@ -126,12 +134,6 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
         }
       }
       return this;
-    }
-
-    // Rewrite a - (-b) as a + b, but do NOT re-simplify to avoid ping-pong
-    if (right instanceof NegationNode<D, R, F> rightNegation)
-    {
-      return left.add(rightNegation.arg);
     }
 
     return this;
