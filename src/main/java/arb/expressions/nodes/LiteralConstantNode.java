@@ -332,6 +332,30 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     expression.literalConstants.put(fieldName, this);
   }
 
+  public LiteralConstantNode(Expression<D, R, F> expression, Fraction fraction)
+  {
+    super(expression);
+    this.fractionValue = new Fraction(fraction.getNumerator().getSignedValue(),
+                                      fraction.getDenominator().getSignedValue());
+    this.value         = fraction.getNumerator() + "/" + fraction.getDenominator();
+    this.isFraction    = true;
+    this.isInt         = false;
+    this.isDecimal     = false;
+    this.isImaginary   = false;
+
+    for (var existingConstant : expression.literalConstants.values())
+    {
+      if (existingConstant.value.equals(value))
+      {
+        fieldName = existingConstant.fieldName;
+        return;
+      }
+    }
+
+    this.fieldName = expression.getNextLiteralConstantFieldName(Fraction.class);
+    expression.literalConstants.put(fieldName, this);
+  }
+
   public ClassVisitor declareField(ClassVisitor classVisitor)
   {
 
