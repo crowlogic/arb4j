@@ -51,7 +51,7 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
     // RealPolynomial h = new RealPolynomial(order + derivativeOrder)
     generateNewObjectInstruction(mv, polyClass);
     duplicateTopOfTheStack(mv);
-    expression.loadOrderParameter(mv);
+    loadOrderParameter(mv);
     if (derivativeOrder > 0)
     {
       mv.visitLdcInsn(derivativeOrder);
@@ -63,7 +63,7 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
     // RealPolynomial out = new RealPolynomial(order + derivativeOrder)
     generateNewObjectInstruction(mv, polyClass);
     duplicateTopOfTheStack(mv);
-    expression.loadOrderParameter(mv);
+    loadOrderParameter(mv);
     if (derivativeOrder > 0)
     {
       mv.visitLdcInsn(derivativeOrder);
@@ -74,7 +74,7 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
 
     // h.fitLength(order + derivativeOrder)
     mv.visitVarInsn(Opcodes.ALOAD, hSlot);
-    expression.loadOrderParameter(mv);
+    loadOrderParameter(mv);
     if (derivativeOrder > 0)
     {
       mv.visitLdcInsn(derivativeOrder);
@@ -85,7 +85,7 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
 
     // h.setLength(order + derivativeOrder)
     mv.visitVarInsn(Opcodes.ALOAD, hSlot);
-    expression.loadOrderParameter(mv);
+    loadOrderParameter(mv);
     if (derivativeOrder > 0)
     {
       mv.visitLdcInsn(derivativeOrder);
@@ -97,7 +97,7 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
     mv.visitVarInsn(Opcodes.ALOAD, hSlot);
     mv.visitInsn(Opcodes.ICONST_0);
     generateVirtualMethodInvocation(mv, polyClass, "get", scalarType, int.class);
-    expression.loadInputParameter(mv);
+    loadInputParameter(mv);
     cast(mv, scalarType);
     generateVirtualMethodInvocation(mv, scalarType, "set", scalarType, scalarType);
     pop(mv);
@@ -111,7 +111,7 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
 
     // out.fitLength(order + derivativeOrder)
     mv.visitVarInsn(Opcodes.ALOAD, outSlot);
-    expression.loadOrderParameter(mv);
+    loadOrderParameter(mv);
     if (derivativeOrder > 0)
     {
       mv.visitLdcInsn(derivativeOrder);
@@ -122,7 +122,7 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
 
     // out.setLength(order + derivativeOrder)
     mv.visitVarInsn(Opcodes.ALOAD, outSlot);
-    expression.loadOrderParameter(mv);
+    loadOrderParameter(mv);
     if (derivativeOrder > 0)
     {
       mv.visitLdcInsn(derivativeOrder);
@@ -148,11 +148,11 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
     // loop condition: i < order
     mv.visitLabel(loopStart);
     mv.visitVarInsn(Opcodes.ILOAD, iSlot);
-    expression.loadOrderParameter(mv);
+    loadOrderParameter(mv);
     mv.visitJumpInsn(Opcodes.IF_ICMPGE, loopEnd);
 
     // result[i].set(out.get(derivativeOrder + i))
-    expression.loadResultParameter(mv);
+    loadResultParameter(mv);
     cast(mv, scalarType);
     mv.visitVarInsn(Opcodes.ILOAD, iSlot);
     generateVirtualMethodInvocation(mv, scalarType, "get", scalarType, int.class);
@@ -181,7 +181,7 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
     generateVirtualMethodInvocation(mv, polyClass, "close", void.class);
 
     // return result
-    expression.loadResultParameter(mv);
+    loadResultParameter(mv);
     cast(mv, scalarType);
     generatedType = scalarType;
 

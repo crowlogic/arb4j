@@ -606,6 +606,20 @@ public class Compiler
     return mv;
   }
 
+  /**
+   * Loads the 3rd argument (bits) onto the stack
+   * 
+   * The argument pattern for {@link Function#evaluate(Object, int, int, Object)}
+   * methods is (this,order,bits,result)
+   * 
+   * @param methodVisitor the {@link MethodVisitor} to receive the instructions
+   * @return methodVisitor the {@link MethodVisitor} parameter
+   */
+  public static MethodVisitor loadBitsParameterOntoStack(MethodVisitor methodVisitor)
+  {
+    methodVisitor.visitVarInsn(Opcodes.ILOAD, 3);
+    return methodVisitor;
+  }
 
   public static void loadComplexConstantOntoStack(MethodVisitor mv, String fn)
   {
@@ -660,6 +674,22 @@ public class Compiler
   public static MethodVisitor loadInputParameter(MethodVisitor methodVisitor)
   {
     methodVisitor.visitVarInsn(Opcodes.ALOAD, 1);
+    return methodVisitor;
+  }
+
+  /**
+   * Loads the 2nd argument (order) onto the stack
+   * 
+   * The argument pattern for {@link Function#evaluate(Object, int, int, Object)}
+   * methods is (this,order,bits,result)
+   * 
+   * @param methodVisitor the {@link MethodVisitor} to receive the instructions
+   * 
+   * @return methodVisitor the {@link MethodVisitor} parameter
+   */
+  public static MethodVisitor loadOrderParameter(MethodVisitor methodVisitor)
+  {
+    methodVisitor.visitVarInsn(Opcodes.ILOAD, 2);
     return methodVisitor;
   }
 

@@ -105,8 +105,8 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
     functionNode.generate(mv, functionType);
     arg.generate(mv, resultType);
 
-    expression.loadOrderParameter(mv);
-    expression.loadBitsParameterOntoStack(mv);
+    loadOrderParameter(mv);
+    loadBitsParameterOntoStack(mv);
 
     loadOutputVariableOntoStack(mv, resultType);
 

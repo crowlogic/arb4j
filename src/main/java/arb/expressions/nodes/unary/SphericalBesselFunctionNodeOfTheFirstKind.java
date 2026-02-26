@@ -107,8 +107,8 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
   protected MethodVisitor generateEvaluateFunctionInvocation(MethodVisitor mv)
   {
     loadSphericalBesselFunctionOntoStack(mv);
-    cast(expression.loadInputParameter(mv), expression.domainType);
-    expression.loadOrderParameter(mv);
+    cast(loadInputParameter(mv), expression.domainType);
+    loadOrderParameter(mv);
     loadBitsOntoStack(mv);
     loadOutputVariableOntoStack(mv, expression.coDomainType);
     return cast(invokeEvaluationMethod(mv, expression.domainType), expression.coDomainType);
@@ -118,7 +118,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
   {
     loadSphericalBesselFunctionOntoStack(mv);
     generateArgument(mv, resultType);
-    expression.loadOrderParameter(mv);
+    loadOrderParameter(mv);
     loadBitsOntoStack(mv);
     loadOutputVariableOntoStack(mv, expression.coDomainType);
     return cast(invokeEvaluationMethod(mv, resultType), expression.coDomainType);

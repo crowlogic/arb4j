@@ -1528,72 +1528,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return classVisitor;
   }
 
-  /**
-   * Loads the input (1st argument) onto the stack. In evaluate(), this is local
-   * slot 1. In initialize(), constants don't depend on input, so this throws.
-   */
-  public MethodVisitor loadInputParameter(MethodVisitor mv)
-  {
-    if (insideInitializerOrConstructor)
-    {
-      throw new CompilerException("Cannot load input parameter inside initializer: folded constant subtree "
-                                  + "must not reference the independent variable");
-    }
-    mv.visitVarInsn(ALOAD, 1);
-    return mv;
-  }
-
-  /**
-   * Loads the order (2nd argument) onto the stack. In evaluate(), this is local
-   * slot 2 (ILOAD 2). In initialize(), push a default of 0.
-   */
-  public MethodVisitor loadOrderParameter(MethodVisitor mv)
-  {
-    if (insideInitializerOrConstructor)
-    {
-      mv.visitInsn(ICONST_0);
-      return mv;
-    }
-    mv.visitVarInsn(ILOAD, 2);
-    return mv;
-  }
-
-  /**
-   * Loads the bits (3rd argument) onto the stack. In evaluate(), this is local
-   * slot 3 (ILOAD 3). In initialize(), push a default of 128.
-   */
-  public MethodVisitor loadBitsParameterOntoStack(MethodVisitor mv)
-  {
-    if (insideInitializerOrConstructor)
-    {
-      mv.visitIntInsn(SIPUSH, 128);
-      return mv;
-    }
-    mv.visitVarInsn(ILOAD, 3);
-    return mv;
-  }
-
-  public String   currentInitializerFieldName;
-  public Class<?> currentInitializerFieldType;
-
-  /**
-   * Loads the result (4th argument) onto the stack. In evaluate(), this is local
-   * slot 4 (ALOAD 4). In initialize(), the folded constant's own field serves as
-   * the result, so load it from this.
-   */
-  public MethodVisitor loadResultParameter(MethodVisitor mv)
-  {
-    if (insideInitializerOrConstructor)
-    {
-      assert currentInitializerFieldName != null : "currentInitializerFieldName not set";
-      assert currentInitializerFieldType != null : "currentInitializerFieldType not set";
-      loadThisFieldOntoStack(mv, currentInitializerFieldName, currentInitializerFieldType);
-      return mv;
-    }
-    mv.visitVarInsn(ALOAD, 4);
-    return mv;
-  }
-
   protected MethodVisitor generateFoldedConstantConstructorCode(MethodVisitor mv)
   {
     for (var constant : foldedConstants)
@@ -1604,6 +1538,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     return mv;
   }
+
 
   public MethodVisitor generateContextInitializer(MethodVisitor methodVisitor)
   {
@@ -2184,25 +2119,24 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected ClassVisitor generateInitializationMethod(ClassVisitor classVisitor)
   {
-    var methodVisitor = classVisitor.visitMethod(ACC_PUBLIC,
+    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
                                                  nameOfInitializerFunction,
-                                                 VOID_METHOD_DESCRIPTOR,
+                                                 "()V",
                                                  null,
                                                  null);
     Compiler.annotateWithOverride(methodVisitor);
+
     try
     {
       methodVisitor.visitCode();
-      insideInitializerOrConstructor = true;
       generateInitializationCode(methodVisitor);
+
     }
     finally
     {
-      insideInitializerOrConstructor = false;
-      currentInitializerFieldName    = null;
-      currentInitializerFieldType    = null;
       Compiler.generateReturnFromVoidMethod(methodVisitor);
     }
+
     return classVisitor;
   }
 
@@ -2302,7 +2236,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     swap(mv);
     return invokeSetMethod(mv, inputType, coDomainType);
   }
-
 
   /**
    * TODO: need to generate instructions so that the toString() uses String.format

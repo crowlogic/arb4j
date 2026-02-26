@@ -306,7 +306,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     if (isIndependent)
     {
-      Compiler.cast(expression.loadInputParameter(mv), type());
+      Compiler.cast(loadInputParameter(mv), type());
     }
     else if (isIndeterminate)
     {
@@ -340,13 +340,13 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     if (isResult)
     {
-      cast(expression.loadResultParameter(mv), reference.type);
+      cast(loadResultParameter(mv), reference.type);
     }
     else
     {
       if (reference.type.equals(Object.class))
       {
-        expression.loadInputParameter(mv);
+        Compiler.loadInputParameter(mv);
       }
       else
       {

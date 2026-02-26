@@ -179,7 +179,7 @@ public class MittagLefflerFunctionNode<D, R, F extends Function<? extends D, ? e
 
     mv.visitLdcInsn(1e-30);
 
-    expression.loadBitsParameterOntoStack(mv);
+    loadBitsParameterOntoStack(mv);
     invokeStaticEvaluationMethod(mv, scalarType);
     generatedType = scalarType;
     return mv;

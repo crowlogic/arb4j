@@ -124,7 +124,7 @@ public class BesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends
     }
 
     arg.generate(mv, resultType);
-    expression.loadBitsParameterOntoStack(mv);
+    loadBitsParameterOntoStack(mv);
     invokeStaticEvaluationMethod(mv, scalarType);
     generatedType = scalarType;
     return mv;

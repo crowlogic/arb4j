@@ -138,7 +138,7 @@ public class LambertWFunctionNode<D, R, F extends Function<? extends D, ? extend
 
     Compiler.generateCallToGetUnsignedIntValue(mv);
 
-    expression.loadBitsParameterOntoStack(mv);
+    loadBitsParameterOntoStack(mv);
     invokeStaticEvaluationMethod(mv, scalarType);
     generatedType = scalarType;
     if (generatedType != resultType)

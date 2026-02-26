@@ -168,7 +168,7 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
       // Stack: [polynomial, cofactor]
 
       // Load bits parameter for mul
-      expression.loadBitsParameterOntoStack(mv);
+      Compiler.loadBitsParameterOntoStack(mv);
 
       // Stack: [polynomial, cofactor, bits]
 
@@ -211,8 +211,8 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
         argumentNode.generateCastTo(mv, requiredArgType);
       }
 
-      expression.loadOrderParameter(mv);
-      expression.loadBitsParameterOntoStack(mv);
+      Compiler.loadOrderParameter(mv);
+      Compiler.loadBitsParameterOntoStack(mv);
 
       loadOutputVariableOntoStack(mv, resultType);
 

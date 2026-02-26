@@ -135,7 +135,7 @@ abstract class PolySeriesFunctionDerivativeNode<D, C, F extends Function<? exten
   {
     Class<?> polyClass = isComplex ? ComplexPolynomial.class : RealPolynomial.class;
     pushInt(mv, n);
-    expression.loadBitsParameterOntoStack(mv);
+    loadBitsParameterOntoStack(mv);
 
     invokeStaticMethod(mv,
                        arblib.class,
@@ -159,7 +159,7 @@ abstract class PolySeriesFunctionDerivativeNode<D, C, F extends Function<? exten
     mv.visitVarInsn(Opcodes.ALOAD, oneSlot);
     pushInt(mv, 0);
     pushInt(mv, n);
-    expression.loadBitsParameterOntoStack(mv);
+    loadBitsParameterOntoStack(mv);
     invokeStaticMethod(mv,
                        arblib.class,
                        complex ? complexFunctionName : realFunctionName,

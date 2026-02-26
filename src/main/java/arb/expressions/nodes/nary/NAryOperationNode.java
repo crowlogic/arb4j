@@ -219,7 +219,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     if (isResult)
     {
-      expression.loadResultParameter(mv);
+      Compiler.loadResultParameter(mv);
       var type = type();
       Compiler.cast(mv, type);
       loadIntermediateResultVariable(mv);
@@ -311,11 +311,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     loadIntermediateResultVariable(mv);
     loadOperand(mv);
     loadIndexVariable(mv);
-    expression.loadBitsParameterOntoStack(mv);
+    loadBitsParameterOntoStack(mv);
     loadOperandValue(mv);
     evaluateOperand(mv);
     cast(mv, generatedType);
-    expression.loadBitsParameterOntoStack(mv);
+    loadBitsParameterOntoStack(mv);
     combine(mv);
     pop(mv);
     incrementIndex(mv);
@@ -781,7 +781,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     // Copy by value: operand.varName.set(inputParameter)
     expression.loadFieldOntoStack(loadThisOntoStack(mv), operandFunctionFieldName, operandDesc);
     mv.visitFieldInsn(GETFIELD, operandFunctionFieldName, varName, varDesc);
-    cast(expression.loadInputParameter(mv), varType);
+    cast(loadInputParameter(mv), varType);
     generateVirtualMethodInvocation(mv, varType, "set", varType, varType);
     mv.visitInsn(Opcodes.POP);
 

@@ -1,5 +1,7 @@
 package arb.expressions.nodes.binary;
 
+import static arb.expressions.Compiler.invokeBinaryOperationMethod;
+import static arb.expressions.Compiler.loadBitsParameterOntoStack;
 import static arb.utensils.Utensils.indent;
 
 import java.io.File;
@@ -347,7 +349,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     }
     else
     {
-      expression.loadBitsParameterOntoStack(mv);
+      loadBitsParameterOntoStack(mv);
     }
     loadOutput(mv, resultType);
 
@@ -364,7 +366,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
       leftType = expression.coDomainType;
     }
 
-    Compiler.invokeBinaryOperationMethod(mv, operation, leftType, rightType, resultType);
+    invokeBinaryOperationMethod(mv, operation, leftType, rightType, resultType);
 
     return mv;
 

@@ -102,27 +102,23 @@ public class ConstantNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     var type = type();
 
-    // Allocate: this.fieldName = new Type()
+    // this.fieldName = new Type()
     loadThisOntoStack(mv);
     generateNewObjectInstruction(mv, type);
     duplicateTopOfTheStack(mv);
     invokeDefaultConstructor(mv, type);
     putField(mv, expression.className, fieldName, type);
 
-    // Set the current initializer target so that loadResultParameter
-    // knows to load this field instead of ALOAD 4
-    expression.currentInitializerFieldName = fieldName;
-    expression.currentInitializerFieldType = type;
-
-    // Generate the subtree — it will call expression.loadResultParameter(mv)
-    // which now loads this.fieldName instead of ALOAD 4
+    // this.fieldName.set(<subtree value>)
+    expression.loadThisFieldOntoStack(mv, fieldName, type);
     constantSubtree.generate(mv, type);
-
-    // Pop the return value from set() since initialize() is void
+    generateVirtualMethodInvocation(mv, type, "set", type, type);
     pop(mv);
 
     return mv;
   }
+
+
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
