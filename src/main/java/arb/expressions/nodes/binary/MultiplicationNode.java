@@ -349,8 +349,8 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     {
       if (leftConstant.isInt && rightConstant.isInt)
       {
-        try ( var lint = new Integer(leftConstant.value);
-              var rint = new Integer(rightConstant.value))
+        try ( var lint = new Integer(leftConstant.stringValue);
+              var rint = new Integer(rightConstant.stringValue))
         {
           var product = lint.mul(rint, 0, rint);
           if (traceSimplify)
@@ -358,8 +358,8 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
             System.err.printf("%s[%d]   integer folding: %s * %s = %s%n",
                               depthIndent(),
                               simplifyDepth,
-                              leftConstant.value,
-                              rightConstant.value,
+                              leftConstant.stringValue,
+                              rightConstant.stringValue,
                               product);
           }
           simplifyDepth--;

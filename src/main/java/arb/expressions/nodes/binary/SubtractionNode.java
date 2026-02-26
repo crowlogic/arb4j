@@ -105,7 +105,7 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
     {
       if (lconst.isInt && rconst.isInt)
       {
-        try ( var lint = new Integer(lconst.value); var rint = new Integer(rconst.value);)
+        try ( var lint = new Integer(lconst.stringValue); var rint = new Integer(rconst.stringValue);)
         {
           var difference = lint.sub(rint, 0, rint);
           return expression.newLiteralConstant(difference.toString());

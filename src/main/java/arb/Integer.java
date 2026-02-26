@@ -1417,4 +1417,9 @@ public class Integer implements
     return null;
   }
 
+  public boolean isOne()
+  {
+    return arblib.fmpz_is_one(swigCPtr) != 0;
+  }
+
 }

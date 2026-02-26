@@ -231,7 +231,7 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
       var rconst = right.asLiteralConstant();
       if (lconst.isInt && rconst.isInt)
       {
-        try ( var lint = new Integer(lconst.value); var rint = new Integer(rconst.value);)
+        try ( var lint = new Integer(lconst.stringValue); var rint = new Integer(rconst.stringValue);)
         {
           var power = lint.pow(rint, 0, rint);
           return expression.newLiteralConstant(power.toString());

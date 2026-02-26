@@ -153,7 +153,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
 
     var constant = evaluateCondition();
     var value    = expression.resolve();
-    cases.put(new Integer(constant.value), value);
+    cases.put(new Integer(constant.stringValue), value);
   }
 
   public void evaluateCase()

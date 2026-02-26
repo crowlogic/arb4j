@@ -1400,7 +1400,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-
   protected MethodVisitor generateCloseFieldCall(MethodVisitor methodVisitor,
                                                  String fieldName,
                                                  Class<?> fieldType)
@@ -4072,6 +4071,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public LiteralConstantNode<D, C, F> negativeOne()
   {
     return newConstant(-1);
+  }
+
+  public Node<D, C, F> newConstant(Integer numerator)
+  {
+    return new LiteralConstantNode<D, C, F>(this,
+                                            numerator);
+  }
+
+  public Node<D, C, F> newFractionLiteralConstant(Fraction value)
+  {
+    return new LiteralConstantNode<D, C, F>(this,
+                                            value);
   }
 
 }

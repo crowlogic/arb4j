@@ -1803,14 +1803,6 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
     arblib.arb_get_interval_arf(interval.getA(), interval.getB(), this, prec);
     return interval;
   }
-  
-  /**
-   * @return {@link arb#arb_reserved_bytes(Real)}
-   */
-  public int getAllocatedBytes()
-  {
-    return arblib.arb_reserved_bytes(this);
-  }
 
   /**
    *  
