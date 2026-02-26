@@ -13,9 +13,9 @@ import org.slf4j.LoggerFactory;
 import arb.*;
 import arb.Integer;
 import arb.domains.Domain;
-import arb.exceptions.UnsupportedTypeConversionException;
 import arb.expressions.*;
 import arb.functions.Function;
+import arb.utensils.Utensils;
 
 /**
  * Represents a literal constant within an arithmetic expression. This class is
@@ -55,87 +55,23 @@ import arb.functions.Function;
 public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                 Node<D, R, F>
 {
-  /**
-   * Evaluates this literal constant at compile-timis not yet supportede,
-   * returning a Java object representing its value.
-   *
-   * @return {@link java.lang.Integer} for integer literals, {@link Double} for
-   *         decimal literals, {@link Fraction} for fraction literals (e.g. ½),
-   *         {@link Double#POSITIVE_INFINITY} for infinity symbols,
-   *         {@link Math#PI} for π
-   * @throws UnsupportedOperationException if the constant cannot be evaluated at
-   *                                       compile-time (e.g. ⅈ)
-   */
   @Override
-  @SuppressWarnings(
-  { "unchecked", "resource" })
+  @SuppressWarnings("unchecked")
   public <T extends Field<T>> T evaluate(Class<T> resultType, int bits, T result)
   {
-    if (resultType.equals(Integer.class))
+    if (result == null)
     {
-      if (!isInt)
-      {
-        throw new UnsupportedTypeConversionException("literal '" + value + "' cannot be represented as an Integer");
-      }
-      return (T) new Integer(value);
+      result = Utensils.newInstance(resultType);
     }
-
-    if (resultType.equals(Fraction.class))
+    if (fractionValue != null)
     {
-      if (fractionValue != null)
-      {
-        return (T) fractionValue;
-      }
-      if (isInt)
-      {
-        Fraction frac = new Fraction().set(value);
-        return (T) frac;
-      }
-      throw new UnsupportedTypeConversionException("cannot convert literal '"
-                                                   + value
-                                                   + "' to Fraction");
+      result.set(fractionValue);
     }
-
-    if (resultType.equals(Real.class))
+    else
     {
-      Real r = new Real();
-
-      if (isDecimal)
-      {
-        r.set(value, bits);
-        return (T) r;
-      }
-
-      if (fractionValue != null)
-      {
-        r.set(fractionValue);
-        return (T) r;
-      }
-
-      if (isInt)
-      {
-        Integer intVal = new Integer(value);
-        r.set(intVal);
-        return (T) r;
-      }
-
-      throw new UnsupportedTypeConversionException("compile-time Real evaluation not implemented for literal '"
-                                                   + value
-                                                   + "'");
+      result.set(value);
     }
-
-    if (resultType.equals(Complex.class))
-    {
-      throw new UnsupportedTypeConversionException("compile-time Complex evaluation not implemented for literal '"
-                                                   + value
-                                                   + "'");
-    }
-
-    throw new UnsupportedTypeConversionException("unsupported requested type "
-                                                 + resultType.getName()
-                                                 + " for literal '"
-                                                 + value
-                                                 + "'");
+    return result;
   }
 
   @Override
@@ -278,7 +214,48 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     this(expression,
          constantValueString,
          null);
+  }
 
+  public LiteralConstantNode(Expression<D, R, F> expression, Integer integerValue)
+  {
+    this(expression,
+         integerValue,
+         null);
+  }
+
+  public LiteralConstantNode(Expression<D, R, F> expression, Integer integerValue, String name)
+  {
+    super(expression);
+    assert Integer.class.equals(arb.Integer.class) : "an import statement for arb.Integer is probably missing";
+    value         = integerValue.toString();
+    isDecimal     = false;
+    isImaginary   = false;
+    fractionValue = null;
+    isFraction    = false;
+    isInt         = true;
+
+    for (var existingConstant : expression.literalConstants.values())
+    {
+      if (existingConstant.value.equals(value))
+      {
+        fieldName = existingConstant.fieldName;
+        return;
+      }
+    }
+
+    if (name != null)
+    {
+      fieldName = name;
+    }
+
+    boolean fieldNameConflicts = expression.literalConstants.get(fieldName) != null;
+    boolean needsNewFieldName  = fieldName == null || fieldNameConflicts;
+    if (needsNewFieldName)
+    {
+      fieldName = expression.getNextLiteralConstantFieldName(type());
+    }
+
+    expression.literalConstants.put(fieldName, this);
   }
 
   public LiteralConstantNode(Expression<D, R, F> expression,
