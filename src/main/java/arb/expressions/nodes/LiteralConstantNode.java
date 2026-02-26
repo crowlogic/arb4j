@@ -483,17 +483,37 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     return methodVisitor;
   }
 
+  /**
+   * Generates bytecode to construct a {@link Fraction} from its string
+   * representation. Emits: default constructor {@code <init>()V}, then
+   * {@code DUP}, {@code LDC stringValue}, {@code INVOKEVIRTUAL set(String)},
+   * {@code POP} to discard the return value of {@code set} (which returns
+   * {@code this}).
+   * <p>
+   * The stack before entry has {@code [this, uninitFraction, uninitFraction]}
+   * from the preceding {@code NEW}/{@code DUP} in
+   * {@link #generateLiteralConstantInitializer}. After
+   * {@code INVOKESPECIAL <init>()V}, the stack is
+   * {@code [this, initializedFraction]}. We then {@code DUP} that reference,
+   * load the string, call {@code set}, and {@code POP} the returned reference,
+   * leaving {@code [this, initializedFraction]} for the subsequent
+   * {@code PUTFIELD}.
+   */
   protected MethodVisitor generateFractionConstructor(MethodVisitor methodVisitor)
   {
-    long numerator   = fractionValue.getNumerator().getSignedValue();
-    long denominator = fractionValue.getDenominator().getSignedValue();
-    methodVisitor.visitLdcInsn(numerator);
-    methodVisitor.visitLdcInsn(denominator);
     methodVisitor.visitMethodInsn(INVOKESPECIAL,
                                   Type.getInternalName(Fraction.class),
                                   "<init>",
-                                  "(JJ)V",
+                                  "()V",
                                   false);
+    methodVisitor.visitInsn(DUP);
+    methodVisitor.visitLdcInsn(stringValue);
+    methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
+                                  Type.getInternalName(Fraction.class),
+                                  "set",
+                                  "(Ljava/lang/String;)Larb/Fraction;",
+                                  false);
+    methodVisitor.visitInsn(POP);
     return methodVisitor;
   }
 
