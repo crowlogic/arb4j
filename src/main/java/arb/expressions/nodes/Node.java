@@ -477,7 +477,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   protected void loadBitsOntoStack(MethodVisitor mv)
   {
-    if (expression.insideInitializer)
+    if (expression.insideInitializerOrConstructor)
     {
       mv.visitLdcInsn(128);
     }

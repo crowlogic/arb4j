@@ -1,8 +1,7 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.loadThisOntoStack;
-import static org.objectweb.asm.Opcodes.ACC_FINAL;
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static arb.expressions.Compiler.*;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -13,13 +12,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import arb.Field;
+import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.functions.Function;
 
 /**
  * Wraps a fully-constant subtree whose type is exact. The subtree's bytecode is
- * emitted into the generated class's {@code initialize()} method and the
- * evaluate path loads the precomputed field.
+ * emitted into the generated class's constructor and the evaluate path loads the
+ * precomputed field.
  *
  * {@link LiteralConstantNode} is a subclass handling parsed literal values.
  *
@@ -40,15 +40,9 @@ public class ConstantNode<D, R, F extends Function<? extends D, ? extends R>> ex
     assert constantSubtree.isConstant() : constantSubtree + " is not constant";
     this.constantSubtree = constantSubtree;
     this.valueType       = constantSubtree.type();
-    this.fieldName       = expression.getNextConstantFieldName(valueType);
+    this.fieldName       = expression.getNextFoldedConstantFieldName(valueType);
     expression.registerFoldedConstant(this);
-  }
-
-  protected ConstantNode(Expression<D, R, F> expression)
-  {
-    super(expression);
-    this.constantSubtree = null;
-    this.valueType       = null;
+    expression.registerInitializer(this::generateInitializationCode);
   }
 
   @Override
@@ -95,15 +89,20 @@ public class ConstantNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return classVisitor;
   }
 
-  public MethodVisitor generateInitializer(MethodVisitor mv)
+  protected MethodVisitor generateInitializationCode(MethodVisitor mv)
   {
+    if ( Expression.trace && logger.isDebugEnabled() )
+    {
+      logger.debug("generateInitializer(mv={}): this={} fieldName={} subtree={}", mv, this, fieldName, constantSubtree );
+    }
     assert constantSubtree.isConstant() : constantSubtree
                                           + " is not constant at initializer generation time";
-    expression.insideInitializer = true;
-    constantSubtree.generate(mv, valueType);
-    expression.setThisField(mv, fieldName, valueType);
-    expression.insideInitializer = false;
-    return mv;
+
+    var type = type();    
+    expression.loadThisFieldOntoStack(mv, fieldName, type);
+
+    constantSubtree.generate(mv, type);
+    return expression.setThisField(mv, fieldName, type);
   }
 
   @Override

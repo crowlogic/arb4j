@@ -337,7 +337,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     boolean needsNewFieldName  = fieldName == null || fieldNameConflicts;
     if (needsNewFieldName)
     {
-      fieldName = expression.getNextConstantFieldName(type());
+      fieldName = expression.getNextLiteralConstantFieldName(type());
     }
 
     expression.literalConstants.put(fieldName, this);
@@ -413,7 +413,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     return mv;
   }
 
-  public MethodVisitor generateLiteralConstantInitializer(MethodVisitor methodVisitor)
+  public MethodVisitor generateLiteralConstructorCode(MethodVisitor methodVisitor)
   {
     Class<?> type = type();
 

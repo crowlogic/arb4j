@@ -41,7 +41,7 @@ public class IntermediateVariable<D, R, F extends Function<? extends D, ? extend
   public Class<?>      type;
   public final boolean initialize;
 
-  public MethodVisitor generateInitializer(MethodVisitor methodVisitor)
+  public MethodVisitor generateConstructorCode(MethodVisitor methodVisitor)
   {
     if (initialize && !type.isInterface())
     {
@@ -61,7 +61,7 @@ public class IntermediateVariable<D, R, F extends Function<? extends D, ? extend
 
   public ClassVisitor declareField(ClassVisitor classVisitor)
   {
-    classVisitor.visitField(ACC_PUBLIC, name, type.descriptorString(), null, null);
+    Compiler.declareField(classVisitor, name, type);
     return classVisitor;
   }
 }

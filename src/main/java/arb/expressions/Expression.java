@@ -239,6 +239,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   HashMap<Class<?>, AtomicInteger>                           constantCounts                   =
                                                                             new HashMap<>();
 
+  HashMap<Class<?>, AtomicInteger>                           foldedConstantCounts             =
+                                                                                  new HashMap<>();
+
   public Context                                             context;
 
   HashSet<String>                                            declaredIntermediateVariables    =
@@ -280,8 +283,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public LinkedList<Consumer<MethodVisitor>>                 initializers                     =
                                                                           new LinkedList<>();
 
-  public boolean                                             insideInitializer                =
-                                                                               false;
+  public boolean                                             insideInitializerOrConstructor   =
+                                                                                            false;
 
   protected F                                                instance;
 
@@ -295,41 +298,41 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public HashMap<String, LiteralConstantNode<D, C, F>>       literalConstants                 =
                                                                               new HashMap<>();
 
-  private ArrayList<ConstantNode<D, C, F>>                    foldedConstants                  =
+  private ArrayList<ConstantNode<D, C, F>>                   foldedConstants                  =
                                                                              new ArrayList<>();
 
-  public Expression<D, C, F> registerFoldedConstant( ConstantNode<D,C,F> constantNode )
+  public Expression<D, C, F> registerFoldedConstant(ConstantNode<D, C, F> constantNode)
   {
+    if (trace && log.isDebugEnabled())
+    {
+      log.debug("#{}: registerFoldedConstant(constantNode={})\n",
+                System.identityHashCode(this),
+                constantNode);
+    }
     foldedConstants.add(constantNode);
     return this;
   }
-  
-  private final Logger                                       log                              =
-                                                                 LoggerFactory.getLogger(Expression.class);
 
-  
-  public FunctionMapping<D, C, F>                            functionMapping;
+  private final Logger                             log                 =
+                                                       LoggerFactory.getLogger(Expression.class);
 
-  public int                                                 position                         = -1;
+  public FunctionMapping<D, C, F>                  functionMapping;
 
-  public char                                                previousCharacter;
+  public int                                       position            = -1;
 
-  public boolean                                             recursive                        =
-                                                                       false;
+  public char                                      previousCharacter;
 
-  public HashMap<String, FunctionMapping<?, ?, ?>>           referencedFunctions              =
-                                                                                 new HashMap<>();
+  public boolean                                   recursive           = false;
 
-  private HashMap<String, VariableNode<D, C, F>>             referencedVariables              =
-                                                                                 new HashMap<>();
+  public HashMap<String, FunctionMapping<?, ?, ?>> referencedFunctions = new HashMap<>();
 
-  public Node<D, C, F>                                       rootNode;
+  private HashMap<String, VariableNode<D, C, F>>   referencedVariables = new HashMap<>();
 
-  public boolean                                             variablesDeclared                =
-                                                                               false;
+  public Node<D, C, F>                             rootNode;
 
-  public boolean                                             verboseTrace                     =
-                                                                          false;
+  public boolean                                   variablesDeclared   = false;
+
+  public boolean                                   verboseTrace        = false;
 
   public boolean acceptUntil(Predicate<Expression<?, ?, ?>> visitor)
   {
@@ -1500,40 +1503,43 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return mv;
   }
 
-  protected MethodVisitor generateFoldedConstantInitializers(MethodVisitor methodVisitor)
-  {
-    for (var constant : foldedConstants)
-    {
-      constant.generateInitializer(methodVisitor);
-    }
-    return methodVisitor;
-  }
-
-  
   protected ClassVisitor generateConstructor(ClassVisitor classVisitor)
   {
     MethodVisitor mv = classVisitor.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
     mv.visitCode();
-
     generateInvocationOfDefaultNoArgConstructor(mv, true);
 
     // Only root expressions create their own Context.
-    // Child arg classes receive the parent's context via initialize() (#842)
+    // Child arg classes receive the parent's context via initialize() §842
     if (context != null && upstreamExpression == null)
     {
       generateContextInitializer(mv);
     }
 
-    if (!coDomainType.isInterface())
+    if (!isFunctional())
     {
-      generateLiteralConstantInitializers(mv);
+      generateLiteralConstantConstructorCode(mv);
+
     }
 
-    generateFoldedConstantInitializers(mv);
-    generateIntermediateVariableInitializers(mv);
+    generateFoldedConstantConstructorCode(mv);
+    generateIntermediateVariableConstructorCode(mv);
 
     Compiler.generateReturnFromVoidMethod(mv);
     return classVisitor;
+  }
+
+  protected MethodVisitor generateFoldedConstantConstructorCode(MethodVisitor mv)
+  {
+    for (var constant : foldedConstants)
+    {
+      loadThisOntoStack(mv);
+      generateNewObjectInstruction(mv, constant.type());
+      duplicateTopOfTheStack(mv);
+      invokeDefaultConstructor(mv, constant.type());
+      putField(mv, className, constant.fieldName, constant.type());
+    }
+    return mv;
   }
 
   public MethodVisitor generateContextInitializer(MethodVisitor methodVisitor)
@@ -1986,12 +1992,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     try
     {
-      insideInitializer = true;
+      insideInitializerOrConstructor = true;
       initializers.forEach(initializer -> initializer.accept(mv));
     }
     finally
     {
-      insideInitializer = false;
+      insideInitializerOrConstructor = false;
     }
 
     if (recursive)
@@ -2141,11 +2147,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return generateDerivedMethod(classVisitor, "integral", "int");
   }
 
-  protected MethodVisitor generateIntermediateVariableInitializers(MethodVisitor methodVisitor)
+  protected MethodVisitor generateIntermediateVariableConstructorCode(MethodVisitor methodVisitor)
   {
     for (var intermediateVariable : sortedIntermediateVariables())
     {
-      intermediateVariable.generateInitializer(methodVisitor);
+      intermediateVariable.generateConstructorCode(methodVisitor);
     }
     return methodVisitor;
   }
@@ -2162,11 +2168,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                   false);
   }
 
-  protected MethodVisitor generateLiteralConstantInitializers(MethodVisitor methodVisitor)
+  protected MethodVisitor generateLiteralConstantConstructorCode(MethodVisitor methodVisitor)
   {
     for (var literal : getSortedLiteralConstantNodes())
     {
-      literal.generateLiteralConstantInitializer(methodVisitor);
+      literal.generateLiteralConstructorCode(methodVisitor);
     }
     return methodVisitor;
   }
@@ -2334,7 +2340,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return Compiler.getTypeMethodSignature(coDomainType);
   }
 
-  public AtomicInteger getConstantCounter(Class<?> type)
+  public AtomicInteger getFoldedConstantCounter(Class<?> type)
+  {
+    AtomicInteger counter = foldedConstantCounts.get(type);
+    if (counter == null)
+    {
+      counter = new AtomicInteger();
+      foldedConstantCounts.put(type, counter);
+    }
+    return counter;
+  }
+
+  public AtomicInteger getLiteralConstantCounter(Class<?> type)
   {
     AtomicInteger counter = constantCounts.get(type);
     if (counter == null)
@@ -2392,11 +2409,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return indeterminantVariable != null ? indeterminantVariable : independentVariable;
   }
 
-  public String getNextConstantFieldName(Class<?> type)
+  public String getNextLiteralConstantFieldName(Class<?> type)
   {
     return "c"
            + getVariablePrefix(type)
-           + String.format("%04d", getConstantCounter(type).getAndIncrement());
+           + String.format("%04d", getLiteralConstantCounter(type).getAndIncrement());
+  }
+
+  public String getNextFoldedConstantFieldName(Class<?> type)
+  {
+    return "fc"
+           + getVariablePrefix(type)
+           + String.format("%04d", getFoldedConstantCounter(type).getAndIncrement());
   }
 
   public String getNextIntermediateVariableFieldName(String name, Class<?> type)
