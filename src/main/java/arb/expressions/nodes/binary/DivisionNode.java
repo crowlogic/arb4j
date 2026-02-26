@@ -281,7 +281,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
    * The indefinite integral ∫ 1⁄(1−x²)^(1⁄k)dx has a closed form involving the
    * **Gauss hypergeometric function** ₂F₁, and for some k (e.g. k = 2), yields
    * elementary functions like arcsin. <br>
-   * The general result is: ∫ 1⁄(1−x²)^(1⁄k)dx = x · ₂F₁(½, 1⁄k; 3⁄2; x²) + C For
+   * The general result is: ∫ 1⁄(1−x²)^(1⁄k)dx = x · ₂F₁(½, 1⁄k; 3⁄₂; x²) + C For
    * k = 2 you recover the standard arcsin: ∫ 1⁄√(1−x²)dx = arcsin(x) + C For
    * other values of k, this hypergeometric form is generally the best you can do
    * in terms of closed form. There is no universal elementary antiderivative
@@ -391,6 +391,17 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     if (left.isZero())
     {
       return zero();
+    }
+
+    if (left.isLiteralConstant() && left.asLiteralConstant().isInt
+                  && right.isLiteralConstant() && right.asLiteralConstant().isInt)
+    {
+      try (var num = left.asLiteralConstant().asInteger();
+           var den = right.asLiteralConstant().asInteger())
+      {
+        Fraction frac = new Fraction(num.getSignedValue(), den.getSignedValue());
+        return expression.newFractionLiteralConstant(frac);
+      }
     }
 
     return this;
