@@ -21,6 +21,9 @@ public class RealExpressionTest extends
                                 TestCase
 {
 
+  /**
+   * 'static' constant subexpressions
+   */
   public void testConstantSubexpressionFactorization()
   {
     assert false : "TODO: factor out constant 'static' subexpressions of the expression: https://github.com/crowlogic/arb4j/issues/874";

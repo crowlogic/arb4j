@@ -1788,6 +1788,15 @@ import arb.utensils.Utensils;
 
   /**
    * 
+   * @return !this{@link #isFinite()}
+   */
+  public boolean isInfinite()
+  {
+    return !isFinite();
+  }
+  
+  /**
+   * 
    * @param value variable to be assigned the resulting value
    * @return value=-this
    */

@@ -16,7 +16,7 @@ import arb.utensils.Utensils;
 
 /**
  * 
- * @author Stephen Crowley ©2024-2025
+ * @author Stephen Crowley ©2024-2026
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> extends
@@ -29,11 +29,11 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       result = Utensils.newInstance(resultType);
     }
-    T leftValue = left.evaluate(resultType, bits, Utensils.newInstance(resultType));
+    T leftValue  = left.evaluate(resultType, bits, Utensils.newInstance(resultType));
     T rightValue = right.evaluate(resultType, bits, Utensils.newInstance(resultType));
     return (T) leftValue.add(rightValue, bits, Utensils.newInstance(resultType));
   }
-  
+
   public AdditionNode(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)
   {
     super(expression,
@@ -120,9 +120,10 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       if (lconst.isInt && rconst.isInt)
       {
-        try ( var lint = lconst.asInteger(); var rint = rconst.asInteger())
+        try ( var lint = lconst.asInteger(); var rint = rconst.asInteger();
+              var result = new Integer())
         {
-          var sum = lint.add(rint, 0, rint);
+          var sum = lint.add(rint, 0, result);
           return expression.newLiteralConstant(sum.toString());
         }
       }
@@ -135,7 +136,7 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
         {
           if (sum.getDenominator().isOne())
           {
-            return expression.newConstant(sum.getNumerator());
+            return expression.newLiteralConstant(sum.getNumerator());
           }
           return expression.newFractionLiteralConstant(sum);
         }

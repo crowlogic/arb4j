@@ -100,7 +100,11 @@ public class FunctionNodeTest extends
 
   public static void testConstantFoldingAndDeltaFunctionSimplificationComplexPolynomialToo()
   {
-    var f = RealFunction.express("((x-1)³ - 2*(x-1)² + (x-1))*δ(x)");
+    var F = RealFunction.parse("((x-1)³ - 2*(x-1)² + (x-1))*δ(x)");
+    var f = F.instantiate();
+    var x = f.evaluate(RealConstants.one, 128);
+    
+    assertTrue( F.inspect(f).toString(), x.isInfinite());
     assertEquals("x➔-4*δ(x)", f.toString());
   }
 

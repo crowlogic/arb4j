@@ -24,11 +24,10 @@ public class ExpressionTest extends
 {
   public void testConstantFolding()
   {
-    var F = RealNullaryFunction.parse("f:((((-1)^3)-(2*((-1)^2)))-1)");
+    var F = RealNullaryFunction.parse("((((-1)^3)-(2*((-1)^2)))-1)");
     RealNullaryFunction f = F.instantiate();
     Real x = f.evaluate();
     assertEquals( "-4", x.toString() );
-    System.out.println("f=" + F.inspect(f) );
     assertEquals( "-4" , F.toString());
 
   }

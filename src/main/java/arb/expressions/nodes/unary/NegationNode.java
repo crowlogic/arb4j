@@ -97,7 +97,7 @@ public class NegationNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public String toString()
   {
-    return String.format("(-%s)", arg);
+    return String.format("-%s", arg);
   }
 
   @Override

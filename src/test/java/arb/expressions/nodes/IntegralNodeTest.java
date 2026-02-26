@@ -244,7 +244,7 @@ public class IntegralNodeTest extends
   {
     var f = ComplexFunction.express("T->int(exp(I*t),t=-T…T)");
     ;
-    assertEquals("T➔(exp(ⅈ*T)/ⅈ)-(exp(ⅈ*(-T))/ⅈ)", f.toString());
+    assertEquals("T➔(exp(ⅈ*T)/ⅈ)-(exp(ⅈ*-T)/ⅈ)", f.toString());
 
   }
 
@@ -268,7 +268,7 @@ public class IntegralNodeTest extends
   {
     var f = RealFunction.parse("int(sin(x),x)");
     f.simplify();
-    assertEquals("x➔(-cos(x))", f.toString());
+    assertEquals("x➔-cos(x)", f.toString());
   }
 
   public static void testIntegralOfSecant()
@@ -282,7 +282,7 @@ public class IntegralNodeTest extends
   {
     var x = RealFunction.parse("int(tan(x),x)");
     x.simplify();
-    assertEquals("(-log(cos(x)))", x.rootNode.toString());
+    assertEquals("-log(cos(x))", x.rootNode.toString());
   }
 
   public static void testIntegralOfCosine()
@@ -294,6 +294,6 @@ public class IntegralNodeTest extends
   public static void testIntegralOfSine()
   {
     var x = RealFunction.parse("int(sin(x),x)");
-    assertEquals("(-cos(x))", x.rootNode.toString());
+    assertEquals("-cos(x)", x.rootNode.toString());
   }
 }

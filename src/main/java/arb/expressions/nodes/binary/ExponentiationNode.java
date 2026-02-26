@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import arb.*;
 import arb.Integer;
 import arb.expressions.Expression;
+import arb.expressions.nodes.LiteralConstantNode;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
@@ -14,9 +15,9 @@ import arb.utensils.Utensils;
 
 /**
  * Represents the binary exponentiation operation: left^right<br>
- * 
- * 
- * @author Stephen Crowley ©2024-2025
+ *
+ *
+ * @author Stephen Crowley ©2024-2026
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends R>> extends
@@ -59,10 +60,6 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public boolean isZero()
   {
-    // base^exponent is zero when base is zero and exponent is not zero
-    // 0^0 is undefined/indeterminate, not zero
-    // 0^n = 0 for n ≠ 0
-    // a^n ≠ 0 for a ≠ 0 (any non-zero base to any power is non-zero)
     return left.isZero() && !right.isZero();
   }
 
@@ -93,7 +90,6 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     {
       return true;
     }
-    // Also handle (polynomial)^n
     if (left.isPolynomialLike(variable) && right.isNonNegativeIntegerConstant())
     {
       return true;
@@ -117,18 +113,15 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   {
     if (!right.dependsOn(variable))
     {
-      // Power rule: d/dx[f(x)^n] = n * f(x)^(n-1) * f'(x)
       var newExponent = right.sub(one());
       return right.mul(left.pow(newExponent)).mul(left.differentiate(variable));
     }
 
     if (!left.dependsOn(variable))
     {
-      // Exponential rule: d/dx[a^g(x)] = a^g(x) * g'(x) * ln(a)
       return mul(right.differentiate(variable).mul(left.log()));
     }
 
-    // General case: d/dx[f(x)^g(x)] = f^g * (g*f'/f + g'*ln(f))
     var term1 = right.mul(left.differentiate(variable)).div(left);
     var term2 = right.differentiate(variable).mul(left.log());
     return mul(term1.add(term2));
@@ -233,10 +226,29 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
       var rconst = right.asLiteralConstant();
       if (lconst.isInt && rconst.isInt)
       {
-        try ( var lint = new Integer(lconst.stringValue); var rint = new Integer(rconst.stringValue);)
+        try ( var lint = new Integer(lconst.stringValue);
+              var rint = new Integer(rconst.stringValue))
         {
-          var power = lint.pow(rint, 0, rint);
-          return expression.newLiteralConstant(power.toString());
+          if (rint.sign() < 0)
+          {
+            try ( var posExp      = new Integer();
+                  var denominator = new Integer();
+                  var result      = new Fraction())
+            {
+              rint.neg(posExp);
+              lint.pow(posExp, 0, denominator);
+              result.set(new Integer(1), denominator);
+              return new LiteralConstantNode<>(expression, result);
+            }
+          }
+          else
+          {
+            try ( var result = new Integer())
+            {
+              lint.pow(rint, 0, result);
+              return expression.newLiteralConstant(result.toString());
+            }
+          }
         }
       }
     }
@@ -259,16 +271,11 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
       return type;
     }
 
-    // If the expression is Complex-valued, exponentiation must stay Complex
-    // internally
-    // (do not fall back to AlgebraicNumber/Fraction/etc).
     if (expression != null && Complex.class.equals(expression.coDomainType))
     {
       return type = Complex.class;
     }
 
-    // Check if base is integer and exponent is a (fraction or integer to handle
-    // possibility of negative values)
     if ((Integer.class.equals(left.type())
                   && (Fraction.class.equals(right.type()) || Integer.class.equals(right.type())))
                   || (left.type().equals(Fraction.class) && right.type().equals(Fraction.class)))

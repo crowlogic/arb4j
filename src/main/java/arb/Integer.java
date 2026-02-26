@@ -1331,10 +1331,7 @@ public class Integer implements
   @Override
   public String toString()
   {
-    if ( swigCPtr == 0 )
-    {
-      return "nullptr";
-    }
+ 
     if (dim > 1)
     {
       StringBuffer buf = new StringBuffer("[");

@@ -4073,7 +4073,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return newConstant(-1);
   }
 
-  public Node<D, C, F> newConstant(Integer numerator)
+  public Node<D, C, F> newLiteralConstant(Integer numerator)
   {
     return new LiteralConstantNode<D, C, F>(this,
                                             numerator);

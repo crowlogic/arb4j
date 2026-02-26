@@ -128,7 +128,7 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
         {
           if (diff.getDenominator().isOne())
           {
-            return expression.newConstant(diff.getNumerator());
+            return expression.newLiteralConstant(diff.getNumerator());
           }
           return expression.newFractionLiteralConstant(diff);
         }

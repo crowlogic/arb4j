@@ -41,34 +41,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     return (T) leftValue.mul(rightValue, bits, Utensils.newInstance(resultType));
   }
 
-  
   public static final Logger logger = LoggerFactory.getLogger(MultiplicationNode.class);
-
-  /**
-   * Đ^(α)(c*f) = c * Đ^(α)(f) when c is constant w.r.t. the differentiation
-   * variable. Đ^(α)(f*c) = c * Đ^(α)(f) when c is constant w.r.t. the
-   * differentiation variable.
-   * 
-   * Otherwise falls back to the default integral form.
-   */
-  @Override
-  public Node<D, R, F> fractionalDerivative(VariableNode<D, R, F> variable, Node<D, R, F> α)
-  {
-    VariableNode<D, R, F> diffVar = variable;
-
-    if (diffVar != null)
-    {
-      if (!left.dependsOn(diffVar))
-      {
-        return left.mul(right.fractionalDerivative(null, α));
-      }
-      if (!right.dependsOn(diffVar))
-      {
-        return right.mul(left.fractionalDerivative(null, α));
-      }
-    }
-    return super.fractionalDerivative(variable, α);
-  }
 
   @Override
   public Logger getLogger()
@@ -106,23 +79,6 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     return sum;
   }
 
-  /**
-   * Integrates a product. Handles the following cases in order:
-   * <ol>
-   * <li>Product simplifies to zero — return zero.</li>
-   * <li>Constant factors — pull out: ∫ c·f(t) dt = c · ∫ f(t) dt</li>
-   * <li>One factor is a {@link Polynomial}-typed function application f(t) — wrap
-   * the remaining factors as the cofactor in a {@link PolynomialIntegralNode},
-   * which multiplies f(t) by the cofactor at the polynomial level and integrates
-   * the resulting polynomial analytically.</li>
-   * <li>Step function θ(x) — ∫ f(x)·θ(x) dx = θ(x)·∫ f(x) dx</li>
-   * <li>Integration by parts (tabular for polynomial×transcendental, single-step
-   * for LIATE log cases).</li>
-   * </ol>
-   *
-   * @param variable The variable of integration
-   * @return The integrated expression
-   */
   @Override
   public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
@@ -232,6 +188,41 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     return !expression.coDomainType.equals(Quaternion.class);
   }
 
+  private String debugNode(Node<D, R, F> n)
+  {
+    if (n == null)
+    {
+      return "null";
+    }
+
+    String cls = n.getClass().getSimpleName();
+    int    id  = System.identityHashCode(n);
+    String s   = String.valueOf(n);
+
+    String extra = "";
+    if (n instanceof LiteralConstantNode<?, ?, ?> lc)
+    {
+      extra = ", stringValue=" + lc.stringValue
+                    + ", isInt=" + lc.isInt
+                    + ", isFraction=" + lc.isFraction
+                    + ", isDecimal=" + lc.isDecimal;
+    }
+
+    Class<?> t = null;
+    try
+    {
+      t = n.type();
+    }
+    catch (Throwable ignored)
+    {
+      // debug only; never let tracing change semantics
+      t = null;
+    }
+
+    return t == null ? (cls + "@" + id + "(" + s + extra + ")")
+                     : (cls + "@" + id + "<" + t.getSimpleName() + ">(" + s + extra + ")");
+  }
+
   @Override
   public Node<D, R, F> simplify()
   {
@@ -242,8 +233,8 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
                         depthIndent(),
                         simplifyDepth,
                         System.identityHashCode(this),
-                        left,
-                        right);
+                        debugNode(left),
+                        debugNode(right));
     }
 
     if (left != null)
@@ -255,8 +246,8 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
         System.err.printf("%s[%d]   left changed: %s -> %s%n",
                           depthIndent(),
                           simplifyDepth,
-                          oldLeft,
-                          left);
+                          debugNode(oldLeft),
+                          debugNode(left));
       }
     }
     if (right != null)
@@ -268,8 +259,8 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
         System.err.printf("%s[%d]   right changed: %s -> %s%n",
                           depthIndent(),
                           simplifyDepth,
-                          oldRight,
-                          right);
+                          debugNode(oldRight),
+                          debugNode(right));
       }
     }
 
@@ -290,7 +281,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
         System.err.printf("%s[%d]   left.isOne() -> returning right=%s%n",
                           depthIndent(),
                           simplifyDepth,
-                          right);
+                          debugNode(right));
       }
       simplifyDepth--;
       return right;
@@ -302,7 +293,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
         System.err.printf("%s[%d]   right.isOne() -> returning left=%s%n",
                           depthIndent(),
                           simplifyDepth,
-                          left);
+                          debugNode(left));
       }
       simplifyDepth--;
       return left;
@@ -338,7 +329,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
         System.err.printf("%s[%d]   delta simplification -> %s%n",
                           depthIndent(),
                           simplifyDepth,
-                          deltaSimplification);
+                          debugNode(deltaSimplification));
       }
       simplifyDepth--;
       return deltaSimplification;
@@ -495,7 +486,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       System.err.printf("%s[%d] EXIT MultiplicationNode.simplify() returning this=%s%n",
                         depthIndent(),
                         simplifyDepth,
-                        this);
+                        debugNode(this));
     }
     simplifyDepth--;
     return this;

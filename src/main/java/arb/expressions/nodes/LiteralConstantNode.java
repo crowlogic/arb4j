@@ -349,6 +349,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     expression.literalConstants.put(fieldName, this);
   }
 
+  @SuppressWarnings("resource")
   public LiteralConstantNode(Expression<D, R, F> expression, Integer value)
   {
     super(expression);
@@ -356,7 +357,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     this.isDecimal     = false;
     this.isImaginary   = false;
     this.isInt         = true;
-    this.intValue      = value;
+    this.intValue      = new Integer().set(value).setName(value.getName());
     this.fractionValue = null;
     this.stringValue   = value.toString();
     fieldName          = expression.getNextConstantFieldName(type());
@@ -519,7 +520,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   @Override
   public String toString()
   {
-    return stringValue.startsWith("-") ? "(" + stringValue + ")" : stringValue;
+    return stringValue;
   }
 
   public String toString(int depth)

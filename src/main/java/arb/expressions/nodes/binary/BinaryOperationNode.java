@@ -17,8 +17,7 @@ import arb.Integer;
 import arb.exceptions.CompilerException;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
-import arb.expressions.nodes.Node;
-import arb.expressions.nodes.VariableNode;
+import arb.expressions.nodes.*;
 import arb.functions.Function;
 import arb.functions.RealToComplexFunction;
 import arb.functions.complex.ComplexFunction;
@@ -40,8 +39,6 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
                                          extends
                                          Node<D, R, F>
 {
-
-
 
   @Override
   public boolean isConstant()
@@ -450,56 +447,65 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
   @Override
   public Node<D, R, F> simplify()
   {
-    simplifyDepth++;
-    if (traceSimplify)
-    {
-      System.err.printf("%s[%d] ENTER %s.simplify() this=%s left=%s right=%s%n",
-                        depthIndent(),
-                        simplifyDepth,
-                        getClass().getSimpleName(),
-                        System.identityHashCode(this),
-                        left,
-                        right);
-    }
+    left  = left.simplify();
+    right = right.simplify();
 
-    if (left != null)
+    if (left.isOne())
     {
-      var oldLeft = left;
-      left = left.simplify();
-      if (traceSimplify && left != oldLeft)
+      return one();
+    }
+    if (right.isOne())
+    {
+      return left;
+    }
+    if (right.isZero())
+    {
+      return one();
+    }
+    if (left.isZero())
+    {
+      return right.isZero() ? one() : zero();
+    }
+    if (left.isLiteralConstant() && right.isLiteralConstant())
+    {
+      var lconst = left.asLiteralConstant();
+      var rconst = right.asLiteralConstant();
+      if (lconst.isInt && rconst.isInt)
       {
-        System.err.printf("%s[%d]   left changed: %s -> %s%n",
-                          depthIndent(),
-                          simplifyDepth,
-                          oldLeft,
-                          left);
+        try ( var lint = new Integer(lconst.stringValue);
+              var rint = new Integer(rconst.stringValue))
+        {
+          if (rint.sign() < 0)
+          {
+            // Negative exponent: a^(-n) = 1 / a^n, result is a Fraction
+            try ( var posExp = new Integer(); var base = new Integer(); var powVal = new Integer())
+            {
+              posExp.set(rint).neg();
+              base.set(lint);
+              base.pow(posExp, 0, powVal);
+              try ( var numerator = new Integer(1); var denominator = new Integer();
+                    var fractionResult = new Fraction())
+              {
+                denominator.set(powVal);
+                fractionResult.set(numerator, denominator);
+                return new LiteralConstantNode<>(expression,
+                                                 fractionResult);
+              }
+            }
+          }
+          else
+          {
+            // Non-negative exponent: result is an Integer
+            try ( var result = new Integer())
+            {
+              lint.pow(rint, 0, result);
+              return expression.newLiteralConstant(result.toString());
+            }
+          }
+        }
       }
     }
-    if (right != null)
-    {
-      var oldRight = right;
-      right = right.simplify();
-      if (traceSimplify && right != oldRight)
-      {
-        System.err.printf("%s[%d]   right changed: %s -> %s%n",
-                          depthIndent(),
-                          simplifyDepth,
-                          oldRight,
-                          right);
-      }
-    }
-
-    if (traceSimplify)
-    {
-      System.err.printf("%s[%d] EXIT %s.simplify() returning this=%s%n",
-                        depthIndent(),
-                        simplifyDepth,
-                        getClass().getSimpleName(),
-                        this);
-    }
-    simplifyDepth--;
-
-    return this;
+    return super.simplify();
   }
 
   public String stringFormat(Node<?, ?, ?> side)
