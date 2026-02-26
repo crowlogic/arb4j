@@ -100,8 +100,7 @@ public class ConstantNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     var type = type();    
     expression.loadThisFieldOntoStack(mv, fieldName, type);
-
-    constantSubtree.generate(mv, type);
+    constantSubtree.generate(loadThisOntoStack(mv), type);
     return expression.setThisField(mv, fieldName, type);
   }
 
