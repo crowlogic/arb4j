@@ -358,21 +358,23 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     this.isInt         = true;
     this.intValue      = value;
     this.fractionValue = null;
-    this.stringValue         = value.toString();
-    fieldName = expression.getNextConstantFieldName(type());
+    this.stringValue   = value.toString();
+    fieldName          = expression.getNextConstantFieldName(type());
+    expression.literalConstants.put(fieldName, this);
   }
 
   public LiteralConstantNode(Expression<D, R, F> expression, Fraction value)
   {
     super(expression);
     constructedWithFraction = true;
-    isFraction         = false;
-    this.isDecimal     = false;
-    this.isImaginary   = false;
-    this.isInt         = true;
-    this.fractionValue = value;
-    this.stringValue         = value.toString();
-    fieldName = expression.getNextConstantFieldName(type());
+    isFraction              = true;
+    this.isDecimal          = false;
+    this.isImaginary        = false;
+    this.isInt              = false;
+    this.fractionValue      = value;
+    this.stringValue        = value.toString();
+    fieldName               = expression.getNextConstantFieldName(type());
+    expression.literalConstants.put(fieldName, this);
   }
 
   public ClassVisitor declareField(ClassVisitor classVisitor)
