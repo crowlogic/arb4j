@@ -56,6 +56,13 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
                                 Node<D, R, F>
 {
   @Override
+  public Node<D, R, F> simplify()
+  {
+    return this;
+  }
+
+
+  @Override
   @SuppressWarnings({ "unchecked", "resource" })
   public <T extends Field<T>> T evaluate(Class<T> resultType, int bits, T result)
   {
