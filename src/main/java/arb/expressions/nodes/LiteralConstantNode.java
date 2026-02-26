@@ -485,8 +485,10 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
 
   protected MethodVisitor generateFractionConstructor(MethodVisitor methodVisitor)
   {
-    methodVisitor.visitLdcInsn(fractionValue.getNumerator());
-    methodVisitor.visitLdcInsn(fractionValue.getDenominator());
+    long numerator   = fractionValue.getNumerator().getSignedValue();
+    long denominator = fractionValue.getDenominator().getSignedValue();
+    methodVisitor.visitLdcInsn(numerator);
+    methodVisitor.visitLdcInsn(denominator);
     methodVisitor.visitMethodInsn(INVOKESPECIAL,
                                   Type.getInternalName(Fraction.class),
                                   "<init>",
