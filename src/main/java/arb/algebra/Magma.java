@@ -28,7 +28,7 @@ public interface Magma<X extends Magma<? extends X>>
 {
   
   
-  public <Y extends X,Z extends X> X pow(X x, int prec, X result);
+  public <Y extends X,Z extends X> X pow(Y x, int prec, Z result);
   
   /**
    * Performs multiplication

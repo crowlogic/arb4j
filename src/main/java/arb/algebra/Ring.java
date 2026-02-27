@@ -93,7 +93,7 @@ public interface Ring<X extends Ring<? extends X>> extends
   }
 
   @Override
-  public default <Y extends X, Z extends X> X pow(X x, int prec, X result)
+  public default <Y extends X, Z extends X> Z pow(Y x, int prec, Z result)
   {
     assert false : String.format("TODO: %s needs to implement this=%s(%s) to the power of x=%s(%s) producing a result of type %s",
                                  getClass(),
