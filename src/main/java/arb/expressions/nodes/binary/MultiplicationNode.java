@@ -502,9 +502,8 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
    * @return the simplified node, or null if no delta function is present or the
    *         argument pattern is unrecognized
    */
-  private Node<D, R, F> simplifyDeltaMultiplication()
+   private Node<D, R, F> simplifyDeltaMultiplication()
   {
-    // Check if either operand is a delta function
     FunctionNode<D, R, F> delta      = null;
     Node<D, R, F>         multiplier = null;
 
@@ -525,18 +524,14 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
 
     var                   deltaArg   = delta.arg;
 
-    // Find the variable involved
     VariableNode<D, R, F> variable   = multiplier.expression.getIndependentVariable();
 
-    // Extract shift from delta argument: δ(x) → shift=0, δ(x-a) → shift=a
     Node<D, R, F>         deltaShift = Integration.extractShiftFromDeltaArg(deltaArg, variable);
     if (deltaShift == null)
     {
       return null;
     }
 
-    // Apply the sifting property: f(x) * δ(x-a) = f(a) * δ(x-a)
-    // Substitute x = deltaShift into the multiplier to evaluate f(a)
     var evaluated = multiplier.substitute(variable.getName(), deltaShift).simplify();
 
     if (evaluated.isZero())
@@ -544,9 +539,9 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       return zero();
     }
 
-    // Return f(a) * δ(x-a)
-    return evaluated.mul(delta);
+    return evaluated.simplify().mul(delta);
   }
+
 
   @Override
   public <E, S, G extends Function<? extends E, ? extends S>>
