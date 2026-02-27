@@ -44,6 +44,20 @@ import arb.utensils.Utensils;
 
 %typemap(javacode) fmpq %{
 
+	@Override
+	public Integer ceil(int bits, Integer ceil)
+	{
+	  try ( Real blip = new Real())
+	  {
+	    return blip.set(this).ceil(bits, ceil);
+	  }
+	}
+	
+	public Real ceil( int prec, Real res )
+	{
+	  return res.set(this).ceil(prec, res);
+	}
+	
 	public Fraction(Integer num, Integer den)
 	{
 		this();

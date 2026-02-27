@@ -20,7 +20,6 @@ public class ExponentiationNodeTest extends
     var F = RealNullaryFunction.parse("(2/3)^(-2)");
     var root = F.rootNode;
     var f= F.instantiate();
-    System.out.println( F.inspect(null));
     Real y = root.ceil().evaluate();
     assertEquals("3", y.toString());
   }

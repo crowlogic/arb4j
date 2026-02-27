@@ -7,9 +7,7 @@ import org.slf4j.LoggerFactory;
 import arb.*;
 import arb.Integer;
 import arb.expressions.Expression;
-import arb.expressions.nodes.LiteralConstantNode;
-import arb.expressions.nodes.Node;
-import arb.expressions.nodes.VariableNode;
+import arb.expressions.nodes.*;
 import arb.functions.Function;
 import arb.utensils.Utensils;
 
@@ -23,6 +21,7 @@ import arb.utensils.Utensils;
 public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                BinaryOperationNode<D, R, F>
 {
+  @SuppressWarnings("unchecked")
   @Override
   public <T extends Field<T>> T evaluate(Class<T> resultType, int bits, T result)
   {
@@ -30,12 +29,17 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     {
       result = Utensils.newInstance(resultType);
     }
-    Class<T> leftType = (Class<T>) left.type();
-    Class<T> rightType = (Class<T>) right.type();
-    
-    T l = left.evaluate(leftType, bits, Utensils.newInstance(leftType));
-    T r = right.evaluate(rightType, bits, Utensils.newInstance(rightType));
-    return l.pow(r, bits, Utensils.newInstance(resultType));
+
+    Object l = left.evaluate((Class) left.type(), bits, Utensils.newInstance((Class) left.type()));
+    Object r =
+             right.evaluate((Class) right.type(), bits, Utensils.newInstance((Class) right.type()));
+
+    if (l instanceof Fraction base && r instanceof Integer exp)
+    {
+      return (T) base.pow(exp, bits, (Fraction) Utensils.newInstance(resultType));
+    }
+
+    return ((T) l).pow((T) r, bits, Utensils.newInstance(resultType));
   }
 
   /**
@@ -234,14 +238,14 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
         {
           if (rint.sign() < 0)
           {
-            try ( var posExp      = new Integer();
-                  var denominator = new Integer();
-                  var result      = new Fraction())
+            try ( var posExp = new Integer(); var denominator = new Integer();
+                  var result = new Fraction())
             {
               rint.neg(posExp);
               lint.pow(posExp, 0, denominator);
               result.set(new Integer(1), denominator);
-              return new LiteralConstantNode<>(expression, result);
+              return new LiteralConstantNode<>(expression,
+                                               result);
             }
           }
           else
