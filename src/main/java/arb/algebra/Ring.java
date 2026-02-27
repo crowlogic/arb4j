@@ -2,7 +2,6 @@ package arb.algebra;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.groups.CommutativeGroup;
 
 /**
  * <pre>
@@ -31,39 +30,35 @@ import arb.groups.CommutativeGroup;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface Ring<X> extends Magma<X>, CommutativeGroup<X>
+public interface Ring<X extends Ring<? extends X>> extends
+                     Magma<X>
 {
 
   int dim();
 
-  @Override
   default boolean contains(X element)
   {
     assert false : "this should be overridden";
     return false;
   }
 
-  @Override
   default X identity()
   {
     assert false : "this should be overridden";
     return null;
   }
 
-  @Override
   default X apply(X x, X y)
   {
     assert false : "this should be overridden";
     return null;
   }
 
-  @Override
   default X inverse(X x)
   {
     assert false : "this should be overridden";
     return null;
   }
-
 
   @SuppressWarnings("unchecked")
   public default X add(X addend, int bits)
@@ -87,21 +82,21 @@ public interface Ring<X> extends Magma<X>, CommutativeGroup<X>
   {
     return div(x, prec, (X) this);
   }
-  
+
   @Override
   public X div(X x, int prec, X result);
-  
+
   @SuppressWarnings("unchecked")
   public default X pow(X x, int prec)
   {
     return pow(x, prec, (X) this);
   }
-  
+
   @Override
-  public default X pow(X x, int prec, X result)
+  public default <Y extends X, Z extends X> X pow(X x, int prec, X result)
   {
-    assert false : String.format( "TODO: %s needs to implement this", getClass() );
+    assert false : String.format("TODO: %s needs to implement this", getClass());
     return null;
   }
-  
+
 }

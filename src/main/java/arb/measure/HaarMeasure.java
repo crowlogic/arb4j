@@ -6,7 +6,6 @@ import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.Function;
-import arb.groups.Group;
 import arb.space.topological.LocallyCompactHausdorffSpace;
 
 /**

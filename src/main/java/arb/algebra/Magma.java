@@ -24,11 +24,11 @@ import arb.expressions.nodes.binary.BinaryOperationNode;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface Magma<X> 
+public interface Magma<X extends Magma<? extends X>> 
 {
   
   
-  public X pow(X x, int prec, X result);
+  public <Y extends X,Z extends X> X pow(X x, int prec, X result);
   
   /**
    * Performs multiplication

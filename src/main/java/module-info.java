@@ -62,8 +62,7 @@ module arb4j
   exports arb.functions.rational;
   exports arb.functions.real;
   exports arb.functions.complex;
-  exports arb.functions.integer;
-  exports arb.groups;
+  exports arb.functions.integer;  
   exports arb.space.bornological;
   exports arb.space.topological;
   exports arb.measure;
