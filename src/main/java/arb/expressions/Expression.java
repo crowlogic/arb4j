@@ -2889,7 +2889,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     catch (Throwable e)
     {
-      Utensils.throwOrWrap(e);
+      Utensils.wrapOrThrow(e);
       return null;
     }
   }
@@ -2903,7 +2903,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     catch (Throwable e)
     {
-      Utensils.throwOrWrap(e);
+      Utensils.wrapOrThrow(e);
       return null;
     }
   }
@@ -3008,7 +3008,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     catch (Exception e)
     {
-      Utensils.throwOrWrap(e);
+      Utensils.wrapOrThrow(e);
       return null;
     }
 

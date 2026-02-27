@@ -1,6 +1,6 @@
 package arb.documentation;
 
-import static arb.utensils.Utensils.throwOrWrap;
+import static arb.utensils.Utensils.wrapOrThrow;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -56,7 +56,7 @@ public abstract class AbstractBibliography
     }
     catch (IllegalArgumentException | IllegalAccessException e)
     {
-      throwOrWrap(e);
+      wrapOrThrow(e);
     }
     return reference;
   }

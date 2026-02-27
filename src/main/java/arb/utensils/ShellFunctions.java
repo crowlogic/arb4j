@@ -78,7 +78,7 @@ public class ShellFunctions
       }
       catch (IOException e)
       {
-        Utensils.throwOrWrap(e);
+        Utensils.wrapOrThrow(e);
       }
       System.out.println("Changed current directory to " + currentDirectory);
     }

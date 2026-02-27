@@ -242,7 +242,7 @@ public class WindowManager
     }
     catch (IllegalArgumentException | IllegalAccessException e)
     {
-      Utensils.throwOrWrap(e);
+      Utensils.wrapOrThrow(e);
       return null;
     }
   }

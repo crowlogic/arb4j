@@ -117,7 +117,7 @@ public class Utensils
     }
     catch (IOException e)
     {
-      throwOrWrap(e);
+      wrapOrThrow(e);
     }
 
     return outputFile;
@@ -182,19 +182,11 @@ public class Utensils
     return Stream.of(args).map(Type::getType).collect(Collectors.toList());
   }
 
-  public static void throwOrWrap(Throwable e)
-  {
-    wrapOrThrow(e);
-  }
+  
 
   public static void wrapOrThrow(Throwable e)
   {
-
     if (e instanceof RuntimeException q)
-    {
-      throw q;
-    }
-    else if (e instanceof VerifyError q)
     {
       throw q;
     }
@@ -206,7 +198,7 @@ public class Utensils
 
   public static void wrapOrThrow(String msg, Throwable e)
   {
-    if (e instanceof RuntimeException q && ( msg == null || msg.isEmpty() ) )
+    if (e instanceof RuntimeException q && (msg == null || msg.isEmpty()))
     {
       throw q;
     }
@@ -283,7 +275,7 @@ public class Utensils
       {
         WindowManager.showAlert("Exception throw", yamlFile.toString(), e);
       });
-      throwOrWrap(e);
+      wrapOrThrow(e);
     }
     return yamlFile;
   }
@@ -320,7 +312,7 @@ public class Utensils
       }
       catch (Exception e)
       {
-        throwOrWrap(e);
+        wrapOrThrow(e);
       }
     }
     return null;
@@ -344,7 +336,7 @@ public class Utensils
     }
     catch (Exception e)
     {
-      throwOrWrap(e);
+      wrapOrThrow(e);
       return null;
     }
     return image;
@@ -438,7 +430,7 @@ public class Utensils
     }
     catch (IOException e)
     {
-      throwOrWrap(e);
+      wrapOrThrow(e);
     }
     return file;
   }
@@ -452,7 +444,7 @@ public class Utensils
     }
     catch (InstantiationException | IllegalAccessException e)
     {
-      Utensils.throwOrWrap(e);
+      Utensils.wrapOrThrow(e);
       return null;
     }
   }

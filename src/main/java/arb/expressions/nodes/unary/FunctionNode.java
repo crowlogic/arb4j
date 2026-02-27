@@ -3,7 +3,6 @@ package arb.expressions.nodes.unary;
 import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.function.Consumer;
@@ -55,7 +54,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                          UnaryOperationNode<D, R, F>
 {
 
-
   @Override
   public <T extends Field<T>> T evaluate(Class<T> resultType, int bits, T result)
   {
@@ -63,36 +61,39 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       result = Utensils.newInstance(resultType);
     }
-    T      argVal = arg.evaluate(resultType, bits, Utensils.newInstance(resultType));
-    Method method = getFunctionMethod(isBitless(), resultType);
+    Class<T> argType = (Class<T>) arg.type();
+    T        argVal  = arg.evaluate(argType, bits, Utensils.newInstance(argType));
+    Method   method  = getFunctionMethod(isBitless(), argType, resultType);
 
     try
     {
-      return ((T) method.invoke(argVal, bits, result));
+      T evaluatedResult = (T) method.invoke(argVal, bits, result);
+
+      return evaluatedResult;
     }
     catch (Throwable e)
     {
-      Utensils.wrapOrThrow(toString() + " in " + expression, e);
+      throw new RuntimeException(toString() + " in " + expression,
+                                 e);
     }
 
-    throw new UnderConstructionException("TODO: dispatch via reflection to evaluate "
-                                         + this
-                                         + " in "
-                                         + expression.toStringExtended()
-                                         + " by invoking "
-                                         + method);
   }
 
-  public Method getFunctionMethod(boolean bitless, Class<?> coDomainType)
+  public Method getFunctionMethod(boolean bitless, Class<?> domain)
+  {
+    return getFunctionMethod(bitless, domain, domain);
+  }
+
+  public Method getFunctionMethod(boolean bitless, Class<?> domain, Class<?> coDomain)
   {
     try
     {
-      return bitless ? coDomainType.getMethod(functionName, coDomainType)
-                     : coDomainType.getMethod(functionName, int.class, coDomainType);
+      return bitless ? domain.getMethod(functionName, coDomain)
+                     : domain.getMethod(functionName, int.class, coDomain);
     }
     catch (NoSuchMethodException e)
     {
-      Utensils.throwOrWrap(e);
+      Utensils.wrapOrThrow(e);
       return null;
     }
   }
@@ -553,7 +554,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     catch (Exception e)
     {
-      Utensils.throwOrWrap(e);
+      Utensils.wrapOrThrow(e);
     }
   }
 

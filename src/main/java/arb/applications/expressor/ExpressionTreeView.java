@@ -404,7 +404,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
       }
       catch (Throwable e)
       {
-        Utensils.throwOrWrap(e);
+        Utensils.wrapOrThrow(e);
       }
     }
 
@@ -819,7 +819,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     }
     catch (Throwable e)
     {
-      Utensils.throwOrWrap(e);
+      Utensils.wrapOrThrow(e);
     }
   }
 

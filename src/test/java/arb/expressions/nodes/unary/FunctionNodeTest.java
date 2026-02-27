@@ -1,10 +1,12 @@
 package arb.expressions.nodes.unary;
 
 import arb.*;
+import arb.Integer;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.RealToComplexFunction;
 import arb.functions.real.RealFunction;
+import arb.functions.real.RealNullaryFunction;
 import junit.framework.TestCase;
 
 /**
@@ -16,6 +18,14 @@ public class FunctionNodeTest extends
                               TestCase
 {
 
+  public static void testCeil()
+  {
+    var F = RealNullaryFunction.parse("2.3");
+    var f = F.instantiate();
+    var x = F.rootNode;
+    var y = x.ceil().evaluate(Integer.class, 128, new Integer());
+    assertEquals("3", y.toString());
+  }
 
   public static void testDeltaFunctionSimplificationDirectCase()
   {
@@ -103,8 +113,8 @@ public class FunctionNodeTest extends
     var F = RealFunction.parse("((x-1)³ - 2*(x-1)² + (x-1))*δ(x)");
     var f = F.instantiate();
     var x = f.evaluate(RealConstants.zero, 128);
-    
-    assertTrue( F.inspect(f).toString(), x.isInfinite());
+
+    assertTrue(F.inspect(f).toString(), x.isInfinite());
     assertEquals("x➔-4*δ(x)", f.toString());
   }
 
@@ -127,15 +137,12 @@ public class FunctionNodeTest extends
     assertEquals("x➔δ(x)", f.toString());
   }
 
-
   public static void testDeltaFunctionInIntegral()
   {
-      var context = new Context();
-      var f       = RealFunction.parse("int((x-1)*δ(x-1),x)", context, true);
-      assertEquals("x➔0", f.toString());
+    var context = new Context();
+    var f       = RealFunction.parse("int((x-1)*δ(x-1),x)", context, true);
+    assertEquals("x➔0", f.toString());
   }
-
-
 
   public static void testDeltaFunctionMultipleVariableOccurrences()
   {
@@ -143,7 +150,6 @@ public class FunctionNodeTest extends
     // x^2 - 2x + 1 = (x-1)^2, so this should simplify to 0
     assertEquals("x➔0", f.toString());
   }
-
 
   public static void testDeltaFunctionWithAdditionInArgument()
   {
@@ -190,10 +196,8 @@ public class FunctionNodeTest extends
   public static void testDerivativeOfImaginaryPartIsRealZero()
   {
     // Expression.trace=true;
-    Expression<Real,
-                  Complex,
-                  RealToComplexFunction> fexpr =
-                                               RealToComplexFunction.parse("diff(im(cos(I*t)),t)");
+    Expression<Real, Complex, RealToComplexFunction> fexpr =
+                                                           RealToComplexFunction.parse("diff(im(cos(I*t)),t)");
     assertEquals(Real.class, fexpr.rootNode.type());
     RealToComplexFunction f = fexpr.instantiate();
 

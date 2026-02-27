@@ -59,7 +59,7 @@ public final class ContextFieldListCell<D, C extends Closeable, F extends Functi
     }
     catch (IllegalArgumentException | IllegalAccessException e)
     {
-      Utensils.throwOrWrap(e);
+      Utensils.wrapOrThrow(e);
       return null;
     }
   }

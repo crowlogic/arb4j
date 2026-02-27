@@ -637,7 +637,7 @@ public class Context implements
         }
         catch (Exception e)
         {
-          Utensils.throwOrWrap(e);
+          Utensils.wrapOrThrow(e);
         }
       }
     });

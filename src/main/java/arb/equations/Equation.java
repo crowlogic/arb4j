@@ -1,6 +1,6 @@
 package arb.equations;
 
-import static arb.utensils.Utensils.throwOrWrap;
+import static arb.utensils.Utensils.wrapOrThrow;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -144,7 +144,7 @@ public class Equation<D, C, F extends Function<? extends D, ? extends C>>
     }
     catch (Exception e)
     {
-      throwOrWrap(e);
+      wrapOrThrow(e);
     }
   }
 

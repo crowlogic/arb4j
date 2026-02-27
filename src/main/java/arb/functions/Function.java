@@ -1,6 +1,6 @@
 package arb.functions;
 
-import static arb.utensils.Utensils.throwOrWrap;
+import static arb.utensils.Utensils.wrapOrThrow;
 
 import java.io.Closeable;
 
@@ -599,7 +599,7 @@ public interface Function<D, CO> extends
     }
     catch (Throwable e)
     {
-      throwOrWrap(e);
+      wrapOrThrow(e);
       return null;
     }
   }
@@ -614,7 +614,7 @@ public interface Function<D, CO> extends
     }
     catch (Throwable e)
     {
-      throwOrWrap(e);
+      wrapOrThrow(e);
       return null;
     }
   }

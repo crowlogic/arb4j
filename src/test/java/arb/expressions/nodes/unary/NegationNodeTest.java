@@ -14,7 +14,7 @@ public class NegationNodeTest extends
     var f = F.instantiate();
     var x = F.rootNode;
     var y = x.ceil().evaluate(Integer.class, 128, new Integer());
-    assertEquals("3", y.toString());
+    assertEquals("-2", y.toString());
   }
 
   public void testDoubleNegative()

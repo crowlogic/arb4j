@@ -42,7 +42,7 @@ public class LineCounter
     }
     catch (IOException e)
     {
-      Utensils.throwOrWrap(e);
+      Utensils.wrapOrThrow(e);
       return -1;
     }
   }
@@ -55,7 +55,7 @@ public class LineCounter
     }
     catch (IOException e)
     {
-      Utensils.throwOrWrap(e);
+      Utensils.wrapOrThrow(e);
       return false;
     }
   }
