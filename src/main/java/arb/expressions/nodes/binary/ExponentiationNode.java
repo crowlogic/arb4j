@@ -30,8 +30,11 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     {
       result = Utensils.newInstance(resultType);
     }
-    T l = left.evaluate(resultType, bits, Utensils.newInstance(resultType));
-    T r = right.evaluate(resultType, bits, Utensils.newInstance(resultType));
+    Class<T> leftType = (Class<T>) left.type();
+    Class<T> rightType = (Class<T>) right.type();
+    
+    T l = left.evaluate(leftType, bits, Utensils.newInstance(leftType));
+    T r = right.evaluate(rightType, bits, Utensils.newInstance(rightType));
     return l.pow(r, bits, Utensils.newInstance(resultType));
   }
 
