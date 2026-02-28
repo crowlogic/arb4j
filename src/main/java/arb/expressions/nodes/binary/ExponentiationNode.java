@@ -34,10 +34,10 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     Object r =
              right.evaluate((Class) right.type(), bits, Utensils.newInstance((Class) right.type()));
 
-    if (l instanceof Fraction base && r instanceof Integer exp)
-    {
-      return (T) base.pow(exp, bits, (Fraction) Utensils.newInstance(resultType));
-    }
+//    if (l instanceof Fraction base && r instanceof Integer exp)
+//    {
+//      return (T) base.pow(exp, bits, (Fraction) Utensils.newInstance(resultType));
+//    }
 
     return ((T) l).pow((T) r, bits, Utensils.newInstance(resultType));
   }
@@ -283,9 +283,9 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
       return type = Complex.class;
     }
 
-    if ((Integer.class.equals(left.type())
-                  && (Fraction.class.equals(right.type()) || Integer.class.equals(right.type())))
-                  || (left.type().equals(Fraction.class) && right.type().equals(Fraction.class)))
+    if ((Integer.class.equals(left.type()) && Fraction.class.equals(right.type()))
+                  || (Fraction.class.equals(left.type()) && Integer.class.equals(right.type())))
+
     {
       return type = AlgebraicNumber.class;
     }

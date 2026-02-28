@@ -846,7 +846,7 @@ public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fr
   @Override
   public Fraction div(int j, int prec, Fraction result)
   {
-    arblib.fmpq_div_fmpz(result, this, j);
+    arblib.fmpq_div_fmpz(result, this, j);    
     return result;
   }
   
@@ -856,6 +856,13 @@ public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fr
     return div(j,result);
   }
 
+  public Fraction div(Integer j, int prec, Fraction result)
+  {
+    arblib.fmpq_div_fmpz(result, this, j.swigCPtr);
+    return result;
+  }
+ 
+  
   @Override
   public Fraction get(int index)
   {

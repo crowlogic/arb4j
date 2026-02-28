@@ -1085,6 +1085,7 @@ public class Integer implements
     return neg ? res.inverse(res) : res;
   }
 
+  @Override
   public Integer pow(Integer operand, int bits, Integer result)
   {
     if (!operand.isPositive())
