@@ -3119,7 +3119,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       throwUnexpectedCharacterException();
     }
 
-    rootNode.isRootNode = true;
 
     if (simplify)
     {
@@ -3130,6 +3129,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                               + rootNode.getClass();
       rootNode = simplifiedRootNode;
     }
+    
+    rootNode.isRootNode = true;
+
 
     return this;
   }

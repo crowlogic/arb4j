@@ -70,7 +70,7 @@ public class NegationNode<D, R, F extends Function<? extends D, ? extends R>> ex
       }
     }
 
-    return this;
+    return arg.simplify().neg();
   }
 
   @Override
