@@ -131,7 +131,7 @@ public interface Sequence<C> extends
                           Integer.class,
                           coDomainType,
                           seq,
-                          expr,
+                          null,
                           null,
                           true);
   }

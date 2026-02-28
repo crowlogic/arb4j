@@ -36,9 +36,14 @@ public interface ComplexFunctionSequence extends
   }
 
   public static Expression<Integer, ComplexFunction, ComplexFunctionSequence>
-         parse(String className, String string)
+         parse(String className, String expr)
   {
-    return Sequence.parse(className, ComplexFunctionSequence.class, ComplexFunction.class, string);
+    return Sequence.parse(className, ComplexFunctionSequence.class, ComplexFunction.class, expr);
+  }
+
+  public static Expression<Integer, ComplexFunction, ComplexFunctionSequence> parse(String expr)
+  {
+    return Sequence.parse(null, ComplexFunctionSequence.class, ComplexFunction.class, expr);
   }
 
   public static ComplexFunctionSequence express(String name, String expr)

@@ -95,11 +95,12 @@ public class TextTree<N>
       sb.append("━━ ");
       if (node instanceof Node arbNode)
       {
+        Class<?> type = arbNode.type();
         sb.append(String.format("%s=%s (%s)(%s)",
                                 arbNode.getFieldName(),
                                 node,
                                 node.getClass().getSimpleName(),
-                                arbNode.generatedType.getSimpleName()));
+                                type == null ? "null" : type.getSimpleName()));
 
       }
       else

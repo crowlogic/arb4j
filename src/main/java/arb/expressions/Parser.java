@@ -757,7 +757,8 @@ public class Parser
 
       expression   = expression.substring(punctuationMarkIndex + 1, expression.length());
     }
-
+    className = functionName != null ? functionName : hashString(expression);
+    
     var expr = new Expression<D, C, F>(className,
                                        domainClass,
                                        coDomainClass,

@@ -7,6 +7,7 @@ import arb.expressions.nodes.unary.FunctionNode;
 import arb.functions.*;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ComplexNullaryFunction;
+import arb.functions.integer.ComplexFunctionSequence;
 import arb.functions.integer.RealFunctionSequence;
 import arb.functions.integer.RealSequence;
 import arb.functions.polynomials.RealPolynomialNullaryFunction;
@@ -22,6 +23,19 @@ import junit.framework.TestCase;
 public class ExpressionTest extends
                             TestCase
 {
+  public void testConstantFoldingToo()
+  {
+    Expression<Integer, ComplexFunction, ComplexFunctionSequence> F =
+                  ComplexFunctionSequence.parse("f:m->y->-I*(4*3^2-1)*(-1)^(-m)/((4*3^2-2)*y*π)");
+    var f = F.instantiate();
+    System.out.println( "f=" + f );
+    ComplexFunction f3 = f.apply(3);
+    System.out.println( F.inspect(f));
+    var y = f3.eval(2.3);
+    System.out.println( "f3=" + f3 );
+    assertEquals( 4.5, y );
+                                          
+  }
   public void testConstantFolding()
   {
     var F = RealNullaryFunction.parse("((((-1)^3)-(2*((-1)^2)))-1)");
