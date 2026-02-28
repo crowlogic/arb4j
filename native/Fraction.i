@@ -44,6 +44,18 @@ import arb.utensils.Utensils;
 
 %typemap(javacode) fmpq %{
 
+	public AlgebraicNumber pow(Integer exponent, int bits, AlgebraicNumber result)
+	{
+	  return result.set(this).pow(exponent );
+	}
+
+	 public Fraction div(Integer j, int prec, Fraction result)
+	 {
+	   arblib.fmpq_div_fmpz(result, this, j.swigCPtr);
+	   return result;
+	 }
+
+	 	
 	@Override
 	public Integer ceil(int bits, Integer ceil)
 	{

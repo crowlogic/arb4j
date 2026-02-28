@@ -73,7 +73,12 @@ import arb.functions.NullaryFunction;
     return result.set(this).neg();
   }
   
-  
+  public Real ceil(int bits, Real result)
+  {
+    return result.set(this).ceil(bits, result);
+  }
+
+    
   public boolean isInteger()
   {
     return arblib.qqbar_is_integer(this) != 0;

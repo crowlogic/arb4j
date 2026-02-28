@@ -72,6 +72,18 @@ public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fr
   }
 
 
+	public AlgebraicNumber pow(Integer exponent, int bits, AlgebraicNumber result)
+	{
+	  return result.set(this).pow(exponent );
+	}
+
+	 public Fraction div(Integer j, int prec, Fraction result)
+	 {
+	   arblib.fmpq_div_fmpz(result, this, j.swigCPtr);
+	   return result;
+	 }
+
+	 	
 	@Override
 	public Integer ceil(int bits, Integer ceil)
 	{
@@ -846,7 +858,7 @@ public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fr
   @Override
   public Fraction div(int j, int prec, Fraction result)
   {
-    arblib.fmpq_div_fmpz(result, this, j);    
+    arblib.fmpq_div_fmpz(result, this, j);
     return result;
   }
   
@@ -856,13 +868,6 @@ public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fr
     return div(j,result);
   }
 
-  public Fraction div(Integer j, int prec, Fraction result)
-  {
-    arblib.fmpq_div_fmpz(result, this, j.swigCPtr);
-    return result;
-  }
- 
-  
   @Override
   public Fraction get(int index)
   {

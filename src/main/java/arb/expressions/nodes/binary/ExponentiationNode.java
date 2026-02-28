@@ -34,10 +34,10 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     Object r =
              right.evaluate((Class) right.type(), bits, Utensils.newInstance((Class) right.type()));
 
-//    if (l instanceof Fraction base && r instanceof Integer exp)
-//    {
-//      return (T) base.pow(exp, bits, (Fraction) Utensils.newInstance(resultType));
-//    }
+    if (l instanceof Fraction base && r instanceof Integer exp)
+    {
+      return (T) base.pow(exp, bits, (AlgebraicNumber)Utensils.newInstance(resultType));
+    }
 
     return ((T) l).pow((T) r, bits, Utensils.newInstance(resultType));
   }
