@@ -80,7 +80,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public Node<D, R, F> setIsResult(boolean isResult)
   {
-    this.isResult = isResult;
+    this.isRootNode = isResult;
     return this;
   }
 
@@ -206,7 +206,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public Class<?>            generatedType;
 
-  public boolean             isResult = false;
+  public boolean             isRootNode = false;
 
   public final int           position;
 
@@ -286,7 +286,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return bits == other.bits && Objects.equals(expression, other.expression)
                   && Objects.equals(fieldName, other.fieldName)
                   && Objects.equals(generatedType, other.generatedType)
-                  && isResult == other.isResult && position == other.position;
+                  && isRootNode == other.isRootNode && position == other.position;
   }
 
   @Override
@@ -370,7 +370,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public void loadOutputVariableOntoStack(MethodVisitor methodVisitor, Class<?> resultType)
   {
-    if (isResult)
+    if (isRootNode)
     {
       cast(loadResultParameter(methodVisitor), resultType);
       fieldName = "result";
@@ -404,7 +404,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public String getFieldName()
   {
-    return isResult ? "result" : fieldName;
+    return isRootNode ? "result" : fieldName;
   }
 
   public Class<?> getGeneratedType()
@@ -421,7 +421,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   @Override
   public int hashCode()
   {
-    return Objects.hash(bits, expression, fieldName, generatedType, isResult, position);
+    return Objects.hash(bits, expression, fieldName, generatedType, isRootNode, position);
   }
 
   /**
@@ -645,7 +645,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   }
 
   /**
-   * When {@link #isResult} the result parameter is already on the stack as the
+   * When {@link #isRootNode} the result parameter is already on the stack as the
    * target Just cast it to the correct type - don't call
    * generateSetResultInvocation
    * 
@@ -655,7 +655,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    */
   public boolean loadOutput(MethodVisitor mv, Class<?> resultType)
   {
-    if (isResult)
+    if (isRootNode)
     {
       // When isResult=true, the result parameter is already on the stack as the
       // target. Just cast it to the correct type - don't call

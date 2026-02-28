@@ -296,7 +296,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     }
 
     argExpression.rootNode          = arg.spliceInto(argExpression);
-    argExpression.rootNode.isResult = true;
+    argExpression.rootNode.isRootNode = true;
     argExpression.updateStringRepresentation();
     argExpression.generate();
 
@@ -513,7 +513,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
   protected void loadOutputOntoStack(MethodVisitor mv, Class<?> resultType)
   {
     generatedType = resultType;
-    if (isResult)
+    if (isRootNode)
     {
       cast(loadResultParameter(mv), resultType);
     }

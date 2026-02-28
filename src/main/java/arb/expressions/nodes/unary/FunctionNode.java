@@ -1035,7 +1035,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
         body = body.substitute(formalParam.reference.name, arg);
       }
 
-      body.isResult = this.isResult;
+      body.isRootNode = this.isRootNode;
       return body;
     }
 

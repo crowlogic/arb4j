@@ -77,7 +77,7 @@ public class BetaFunctionNode<D, C, F extends Function<? extends D, ? extends C>
 //    context.registerVariable("y", expression.newCoDomainInstance());
 
     equivalentNode = x.Γ().mul(y.Γ()).div(x.add(y).Γ());
-    equivalentNode.isResult = isResult;
+    equivalentNode.isRootNode = isRootNode;
   }
 
   @Override

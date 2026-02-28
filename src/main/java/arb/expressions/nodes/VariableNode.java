@@ -271,7 +271,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       generatedType = type();
     }
 
-    if (isResult)
+    if (isRootNode)
     {
       expression.generateSetResultInvocation(mv, generatedType);
     }
@@ -338,7 +338,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       resolveReference();
     }
-    if (isResult)
+    if (isRootNode)
     {
       cast(loadResultParameter(mv), reference.type);
     }

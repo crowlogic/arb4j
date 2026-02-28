@@ -201,8 +201,8 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
 
     labels = new Label[cases.size()];
 
-    cases.forEach((id, val) -> val.isResult = isResult);
-    arg.isResult = isResult;
+    cases.forEach((id, val) -> val.isRootNode = isRootNode);
+    arg.isRootNode = isRootNode;
 
     generateIndex(mv);
 

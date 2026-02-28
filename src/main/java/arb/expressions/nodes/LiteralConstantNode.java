@@ -441,7 +441,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
       }
     }
 
-    if (isResult)
+    if (isRootNode)
     {
       expression.generateSetResultInvocation(mv, generatedType);
     }

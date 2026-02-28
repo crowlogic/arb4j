@@ -328,9 +328,9 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   protected MethodVisitor generateDefiniteIntegral(MethodVisitor mv, Class<?> resultType)
   {
     Node<D, C, F> evaluationNode = getDefiniteIntegralEvaluationNode();
-    evaluationNode.isResult = isResult;
+    evaluationNode.isRootNode = isRootNode;
     evaluationNode.generate(mv, resultType);
-    if (!isResult)
+    if (!isRootNode)
     {
       fieldName = evaluationNode.fieldName;
     }
@@ -341,7 +341,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   {
     ensureIndefiniteIntegralNode();
 
-    indefiniteIntegralNode.isResult = isResult;
+    indefiniteIntegralNode.isRootNode = isRootNode;
     indefiniteIntegralNode.generate(mv, resultType);
     return mv;
   }

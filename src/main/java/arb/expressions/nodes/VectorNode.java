@@ -125,7 +125,7 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
 
     var arrayType = scalarType.arrayType();
 
-    if (isResult)
+    if (isRootNode)
     {
       expression.generateSetResultInvocation(mv, arrayType);
     }

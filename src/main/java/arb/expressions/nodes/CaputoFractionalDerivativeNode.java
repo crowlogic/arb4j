@@ -317,7 +317,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    integralNode.isResult = isResult;
+    integralNode.isRootNode = isRootNode;
     return integralNode.generate(mv, resultType);
   }
 
@@ -397,7 +397,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
                                                                                                     variable.spliceInto(newExpression),
                                                                                                     order.spliceInto(newExpression),
                                                                                                     derivativeOrder);
-    splicedNode.isResult = isResult;
+    splicedNode.isRootNode = isRootNode;
     return splicedNode;
   }
 

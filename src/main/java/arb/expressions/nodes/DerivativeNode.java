@@ -245,7 +245,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     assert !resultType.equals(Object.class) : "Objects shan't be generated";
-    differentiatedNode.isResult = isResult;
+    differentiatedNode.isRootNode = isRootNode;
     return differentiatedNode.generate(mv, resultType);
   }
 

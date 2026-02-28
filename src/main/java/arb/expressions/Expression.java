@@ -1663,7 +1663,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       generateConditionalInitializater(mv);
     }
 
-    rootNode.isResult = true;
+    rootNode.isRootNode = true;
     if (isFunctional())
     {
       generateFunctionalElement(mv);
@@ -2985,13 +2985,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       // functionalExpression.indeterminateVariables.push(functionalExpression.independentVariable);
     }
 
-    rootNode.isResult                      = true;
+    rootNode.isRootNode                      = true;
 
     functionalExpression.className         = className + "func";
     functionalExpression.functionName      = functionName + "func";
 
     functionalExpression.rootNode          = rootNode.spliceInto(functionalExpression);
-    functionalExpression.rootNode.isResult = rootNode.isResult;
+    functionalExpression.rootNode.isRootNode = rootNode.isRootNode;
     functionalExpression.updateStringRepresentation();
     return functionalExpression;
   }
@@ -3119,7 +3119,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       throwUnexpectedCharacterException();
     }
 
-    rootNode.isResult = true;
+    rootNode.isRootNode = true;
 
     if (simplify)
     {

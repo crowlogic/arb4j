@@ -179,12 +179,12 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
     {
       return new PolynomialIntegralNode<>(expression,
                                           functionNode,
-                                          arg).setIsResult(isResult);
+                                          arg).setIsResult(isRootNode);
     }
 
     return new FunctionalEvaluationNode<>(expression,
                                           functionNode.integral(variable),
-                                          arg).setIsResult(isResult);
+                                          arg).setIsResult(isRootNode);
   }
 
   @Override

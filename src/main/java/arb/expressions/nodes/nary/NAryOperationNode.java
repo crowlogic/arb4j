@@ -217,7 +217,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   protected void assignResult(MethodVisitor mv, Class<?> resultType)
   {
-    if (isResult)
+    if (isRootNode)
     {
       Compiler.loadResultParameter(mv);
       var type = type();
