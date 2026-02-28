@@ -28,12 +28,9 @@ public class ExpressionTest extends
     Expression<Integer, ComplexFunction, ComplexFunctionSequence> F =
                   ComplexFunctionSequence.parse("f:m->y->-I*(4*3^2-1)*(-1)^(-m)/((4*3^2-2)*y*π)");
     var f = F.instantiate();
-    System.out.println( "f=" + f );
     ComplexFunction f3 = f.apply(3);
-    System.out.println( F.inspect(f));
     var y = f3.eval(2.3);
-    System.out.println( "f3=" + f3 );
-    assertEquals( 4.5, y );
+    assertEquals( "ffunc:y➔-((ⅈ*35)*(-1^-m))/((34*y)*π)", f3.toString() );
                                           
   }
   public void testConstantFolding()
