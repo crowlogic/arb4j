@@ -1,20 +1,41 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.*;
-import static org.objectweb.asm.Opcodes.*;
+import static arb.expressions.Compiler.duplicateTopOfTheStack;
+import static arb.expressions.Compiler.generateNewObjectInstruction;
+import static arb.expressions.Compiler.loadComplexConstantOntoStack;
+import static arb.expressions.Compiler.loadConstantOntoStack;
+import static arb.expressions.Compiler.loadRealConstantOntoStack;
+import static arb.expressions.Compiler.loadThisOntoStack;
+import static org.objectweb.asm.Opcodes.ACC_FINAL;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.DUP;
+import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.POP;
+import static org.objectweb.asm.Opcodes.SIPUSH;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import arb.*;
+import arb.Complex;
+import arb.Field;
+import arb.Fraction;
+import arb.FractionConstants;
 import arb.Integer;
+import arb.Real;
 import arb.domains.Domain;
 import arb.exceptions.UnsupportedTypeConversionException;
-import arb.expressions.*;
+import arb.expressions.Compiler;
+import arb.expressions.Expression;
+import arb.expressions.Parser;
 import arb.functions.Function;
 
 /**
@@ -420,15 +441,13 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
       }
     }
 
-    var typeBefore = generatedType;
-    if (!resultType.equals(generatedType))
-    {
-      generateCastTo(mv, resultType);
-    }
-
     if (isResult)
     {
       expression.generateSetResultInvocation(mv, generatedType);
+    }
+    else if (!resultType.equals(generatedType))
+    {
+      generateCastTo(mv, resultType);
     }
 
     return mv;

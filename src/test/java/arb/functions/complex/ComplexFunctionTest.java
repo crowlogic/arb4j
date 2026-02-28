@@ -100,7 +100,6 @@ public class ComplexFunctionTest extends
     final double TOL = 1e-15;
     assertEquals(0.0, hmm.re().doubleValue(), TOL);
     assertEquals(-0.2591427090909923, hmm.im().doubleValue(), TOL);
-    assertEquals(-0.259142709090993, hmm.im().doubleValue(), TOL);
   }
 
   public static void testComplexNullaryFunctionSquareRootOfNegativeOne()

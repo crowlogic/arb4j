@@ -1,3 +1,4 @@
+whatever test produces g3 that uses p and q isnt simplifying constants properly
 debug ComplexFunctionTest.testSequence2
 constant subexpression extraction
 #844: assert consistency between independent, indeterminate, and context variable namespaces
