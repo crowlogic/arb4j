@@ -247,11 +247,6 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     return Objects.equals(stringValue, other.stringValue);
   }
 
-  @Override
-  public boolean isPossiblyNegative()
-  {
-    return stringValue.contains("-");
-  }
 
   static final String BITLESS_METHOD_DESCRIPTOR = Compiler.getMethodDescriptor(Void.class,
                                                                                String.class);

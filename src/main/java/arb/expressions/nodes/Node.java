@@ -474,10 +474,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return false;
   }
 
-  public boolean isPossiblyNegative()
-  {
-    return true;
-  }
 
   public boolean isScalar()
   {

@@ -83,12 +83,6 @@ public class NegationNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
-  public boolean isPossiblyNegative()
-  {
-    return !arg.isPossiblyNegative();
-  }
-
-  @Override
   public Class<?> type()
   {
     return arg.type();

@@ -120,12 +120,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   Logger log = LoggerFactory.getLogger(getClass());
 
-  @Override
-  public boolean isPossiblyNegative()
-  {
-    return true;
-  }
-
   public boolean                    upstreamInput;
 
   public boolean                    isIndependent   = false;
