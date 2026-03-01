@@ -548,7 +548,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       log.debug("=== resolveReference START: var={}, expr={}, upstreamExpr={}",
                 reference.name,
                 expression.functionName,
-                expression.upstreamExpression != null ? expression.upstreamExpression.functionName
+                expression.upstream != null ? expression.upstream.functionName
                                                       : "null");
     }
 
@@ -648,10 +648,10 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                  expression,
                                                  expression.independentVariable,
                                                  expression.getIndeterminateVariable(),
-                                                 expression.upstreamExpression,
+                                                 expression.upstream,
                                                  expression.remaining(),
-                                                 expression.upstreamExpression
-                                                               != null ? expression.upstreamExpression.getIndeterminateVariables()
+                                                 expression.upstream
+                                                               != null ? expression.upstream.getIndeterminateVariables()
                                                                        : null));
   }
 

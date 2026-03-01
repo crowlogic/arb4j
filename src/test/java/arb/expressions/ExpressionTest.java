@@ -111,7 +111,7 @@ public class ExpressionTest extends
 
   public static void testAnotherTrigIntegral()
   {
-    var f = ComplexFunction.parse("T->int(exp(I*t),t=0…T)");
+    var f = ComplexFunction.parse("T->int(t->exp(I*t),t=0…T)");
 
     f.rootNode = f.rootNode.simplify();
     assertEquals("T➔(exp(ⅈ*T)/ⅈ)-(1/ⅈ)", f.toString());

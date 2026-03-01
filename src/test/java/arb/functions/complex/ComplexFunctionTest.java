@@ -5,6 +5,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.expressions.Context;
+import arb.expressions.Expression;
 import arb.functions.integer.ComplexFunctionSequence;
 import arb.functions.real.RealNullaryFunction;
 import junit.framework.TestCase;
@@ -37,29 +38,42 @@ public class ComplexFunctionTest extends
 
   }
 
-  public static void testUncaughtUndefinedReference()
+  public static void testCaughtUndefinedReference()
   {
     boolean caughtException = false;
     try
     {
-      
-      // should generated undefined reference because m isnt defined in the context nor is it an input variable
-      var context = new Context();
-      ComplexFunction.express("p:y->pFq([1,3,-3],[1/2],-((1/2)*I)/y)*exp(I*(π*3+y))", context);
-      ComplexFunction.express("q:y->pFq([1,3,-3],[1/2],1/2*I/y)*exp(I*(2*π*m-y))", context);
-      ComplexFunction g3 =
-                         ComplexFunction.express("g3:y->-I*(p(y)-q(y))*(4*3^2-1)*(-1)^(-m)/((4*3^2-2)*y*π)",
-                                                 context);
-      Complex         y  = g3.eval(2.3, new Complex());
+
+      // should generated undefined reference because m isnt defined in the context
+      // nor is it an input variable
+      var                                           context = new Context();
+      Expression<Complex, Complex, ComplexFunction> P       =
+                                                      ComplexFunction.parse("p:y->pFq([1,3,-3],[1/2],-((1/2)*I)/y)*exp(I*(π*3+y))",
+                                                                            context);
+      Expression<Complex, Complex, ComplexFunction> Q       =
+                                                      ComplexFunction.parse("q:y->pFq([1,3,-3],[1/2],1/2*I/y)*exp(I*(2*π*m-y))",
+                                                                            context);
+      Expression<Complex, Complex, ComplexFunction> G3      =
+                                                       ComplexFunction.parse("g3:y->-I*(p(y)-q(y))*(4*3^2-1)*(-1)^(-m)/((4*3^2-2)*y*π)",
+                                                                             context);
+      ComplexFunction                               g3      = G3.instantiate();
+
+      Complex                                       y       = g3.eval(2.3, new Complex());
       // System.out.println("y=" + y);
-      testComplexHypergeometricFunctionResult(g3);
+      //testComplexHypergeometricFunctionResult(g3);
+      double TOL = 1e-15;
+      var hmm = g3.eval(2.3, new Complex());
+      assertEquals(0.0, hmm.re().doubleValue(), TOL);
+      assertEquals(-0.2591427090909923, hmm.im().doubleValue(), TOL);
+      System.out.println( "g3=" + G3.inspect(g3) );
     }
     catch (CompilerException ce)
     {
       caughtException = true;
       ce.printStackTrace();
     }
-    assertTrue("the undefined m reference was not caught when it should have been", caughtException);
+    assertTrue("the undefined m reference was not caught when it should have been",
+               caughtException);
 
   }
 

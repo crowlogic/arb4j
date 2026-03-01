@@ -592,7 +592,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                        mapping.coDomain,
                                        mapping.functionClass,
                                        mapping.expressionString);
-        integrand.upstreamExpression = expression;
+        integrand.upstream = expression;
         return integrand.rootNode.integral(integrand.independentVariable).simplify();
 
 //        throw new CompilerException(String.format("TODO: integrate parsed but yet-to-be-compiled expression string in expression '%s' where functionMapping='%s'",

@@ -277,7 +277,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
     argExpression.className          = expression.className + "Arg" + System.identityHashCode(this);
     argExpression.context            = expression.context;
-    argExpression.upstreamExpression = expression;
+    argExpression.upstream = expression;
 
     var independentVar = expression.independentVariable;
     if (independentVar != null)

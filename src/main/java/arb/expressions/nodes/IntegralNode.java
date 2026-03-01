@@ -53,33 +53,33 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     return logger;
   }
 
-  public int                                 bits      = 128;
+  public int                         bits      = 128;
 
-  private Node<D, C, F>                      definiteIntegralNode;
+  private Node<D, C, F>              definiteIntegralNode;
 
-  String                                     integrationVariableName;
+  String                             integrationVariableName;
 
-  Expression<D,C,F> indefiniteIntegralExpression;
+  Expression<D, C, F>                indefiniteIntegralExpression;
 
-  Node<D, C, F>                              indefiniteIntegralNode;
+  Node<D, C, F>                      indefiniteIntegralNode;
 
-  Function<? extends D, ? extends C>         integralFunction;
+  Function<? extends D, ? extends C> integralFunction;
 
-  public FunctionMapping<?, ?, ?>            integralMapping;
+  public FunctionMapping<?, ?, ?>    integralMapping;
 
-  Node<D, C, F>                              integrandNode;
+  Node<D, C, F>                      integrandNode;
 
-  VariableNode<D, C, F>                      integrationVariableNode;
+  VariableNode<D, C, F>              integrationVariableNode;
 
-  Node<D, C, F>                              lowerLimitNode;
+  Node<D, C, F>                      lowerLimitNode;
 
-  String                                     SYNTAXMSG =
-                                                       "the format is  g(a,b)=∫x➔f(x)dx∈{a,b} for definite integrals and "
-                                                         + "g(x)=∫x➔f(x)dx for indefinate integrals, the variable on the left "
-                                                         + "side of the arrow must match the variable on the right side of the d and "
-                                                         + "before the ( but the first var was %s and the 2nd was %s\n";
+  String                             SYNTAXMSG =
+                                               "the format is  g(a,b)=∫x➔f(x)dx∈{a,b} for definite integrals and "
+                                                 + "g(x)=∫x➔f(x)dx for indefinate integrals, the variable on the left "
+                                                 + "side of the arrow must match the variable on the right side of the d and "
+                                                 + "before the ( but the first var was %s and the 2nd was %s\n";
 
-  Node<D, C, F>                              upperLimitNode;
+  Node<D, C, F>                      upperLimitNode;
 
   public IntegralNode(Expression<D, C, F> expression)
   {
@@ -417,8 +417,15 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       expression.skipSpaces();
       if (expression.nextCharacterIs('➔'))
       {
-        lambdaVar = maybeName;
-        parseLambda(expression, lambdaVar);
+        lambdaVar               = maybeName;
+        integrationVariableNode = new VariableNode<>(expression,
+                                                     new VariableReference<>(lambdaVar,
+                                                                             null,
+                                                                             expression.coDomainType),
+                                                     expression.position,
+                                                     true);
+        integrationVariableName = lambdaVar;
+
       }
       else
       {
@@ -428,6 +435,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     }
 
     integrandNode = expression.resolve();
+    
     var reference = expression.require(',').parseVariableReference();
 
     if (integrationVariableNode == null)
@@ -469,8 +477,16 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       expression.skipSpaces();
       if (expression.nextCharacterIs('➔'))
       {
-        lambdaVar = maybeName;
-        parseLambda(expression, lambdaVar);
+        lambdaVar               = maybeName;
+
+        integrationVariableNode = new VariableNode<>(expression,
+                                                     new VariableReference<>(lambdaVar,
+                                                                             null,
+                                                                             expression.coDomainType),
+                                                     expression.position,
+                                                     true);
+        integrationVariableName = lambdaVar;
+
       }
       else
       {
@@ -529,15 +545,57 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     }
   }
 
-  protected void parseLambda(Expression<D, C, F> expression, String lambdaVar)
+  protected void parseLambda()
   {
-    integrationVariableNode = new VariableNode<>(expression,
-                                                 new VariableReference<>(lambdaVar,
-                                                                         null,
-                                                                         expression.coDomainType),
-                                                 expression.position,
-                                                 true);
-    integrationVariableName = lambdaVar;
+
+    String variableName     = expression.parseName();
+    var    variableNode     = expression.newVariableNode(variableName);
+    var    saveVariableNode = variableNode;
+
+    expression.require('➔');
+
+    Expression<D, C, F> integrandExpression = expression.cloneExpression();
+
+    // Establish the parent→child relationship so that VariableNode
+    // resolveReference can walk up the chain to find upstream variables.
+    integrandExpression.upstream            = expression;
+
+    // Clear the sub-expression's independent variable. When
+    // newVariableNode(paramName) is called below, resolveReference will
+    // find no existing independent variable and assign paramName to that
+    // role — giving the lambda parameter the correct semantics of being
+    // the independent variable of this Expression rather than a flat
+    // indeterminate on the parent's stack.
+    integrandExpression.independentVariable = null;
+
+    // Clear indeterminate variables. The parent's indeterminates are
+    // reachable through the upstreamExpression chain; keeping stale
+    // copies here would cause duplicate resolution and incorrect scoping.
+    integrandExpression.clearIndeterminateVariables();
+
+    // Clear rootNode so the sub-expression is a fresh parse target
+    integrandExpression.rootNode = null;
+
+    // Resolve paramName as the sub-expression's independent variable.
+    integrandExpression.newVariableNode(variableName);
+
+    // Parse the lambda body in the properly scoped sub-expression.
+    // All variable lookups go through subExpr first, then walk
+    // upstreamExpression to find x, n, α, etc.
+    integrandNode                = integrandExpression.resolve();
+
+    // Sync the parser position back to the parent expression so that
+    // parsing can continue after the lambda body.
+    expression.position          = integrandExpression.position;
+    expression.character         = integrandExpression.character;
+    expression.previousCharacter = integrandExpression.previousCharacter;
+
+//    integrationVariableNode = new VariableNode<>(expression,
+//                                                 new VariableReference<>(lambdaVar,
+//                                                                         null,
+//                                                                         expression.coDomainType),
+//                                                 expression.position,
+//                                                 true);
   }
 
   protected void parseLimitsOfIntegration(Expression<D, C, F> expression)
