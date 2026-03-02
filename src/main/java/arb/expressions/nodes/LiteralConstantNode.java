@@ -247,7 +247,6 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     return Objects.equals(stringValue, other.stringValue);
   }
 
-
   static final String BITLESS_METHOD_DESCRIPTOR = Compiler.getMethodDescriptor(Void.class,
                                                                                String.class);
 
@@ -602,9 +601,22 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    return new LiteralConstantNode<E, S, G>(newExpression,
-                                            stringValue,
-                                            fieldName);
+    if (fractionValue != null)
+    {
+      return new LiteralConstantNode<E, S, G>(newExpression,
+                                              fractionValue);
+    }
+    else if (intValue != null)
+    {
+      return new LiteralConstantNode<E, S, G>(newExpression,
+                                              intValue);
+    }
+    else
+    {
+      return new LiteralConstantNode<E, S, G>(newExpression,
+                                              stringValue,
+                                              fieldName);
+    }
   }
 
   @Override

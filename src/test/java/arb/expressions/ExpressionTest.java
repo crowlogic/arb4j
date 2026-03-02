@@ -1,10 +1,18 @@
 package arb.expressions;
 
-import arb.*;
+import arb.Complex;
+import arb.ComplexRationalFunction;
+import arb.Fraction;
 import arb.Integer;
+import arb.RationalFunction;
+import arb.Real;
+import arb.RealConstants;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.unary.FunctionNode;
-import arb.functions.*;
+import arb.functions.Function;
+import arb.functions.IntegerFunction;
+import arb.functions.IntegerNullaryFunction;
+import arb.functions.RealToComplexFunction;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ComplexNullaryFunction;
 import arb.functions.integer.ComplexFunctionSequence;
@@ -23,25 +31,37 @@ import junit.framework.TestCase;
 public class ExpressionTest extends
                             TestCase
 {
-  public void testConstantFoldingToo()
+  public void testOrderOfOperations()
   {
-    Expression<Integer, ComplexFunction, ComplexFunctionSequence> F =
-                  ComplexFunctionSequence.parse("f:m->y->-I*(4*3^2-1)*(-1)^(-m)/((4*3^2-2)*y*π)");
-    var f = F.instantiate();
-    ComplexFunction f3 = f.apply(3);
-    var y = f3.eval(2.3);
-    assertEquals( "ffunc:y➔-((ⅈ*35)*(-1^-m))/((34*y)*π)", f3.toString() );
-                                          
-  }
-  public void testConstantFolding()
-  {
-    var F = RealNullaryFunction.parse("((((-1)^3)-(2*((-1)^2)))-1)");
-    RealNullaryFunction f = F.instantiate();
-    Real x = f.evaluate();
-    assertEquals( "-4", x.toString() );
-    assertEquals( "-4" , F.toString());
+    var x = ComplexRationalFunction.express("(1/2)/y");
+    var y = ComplexRationalFunction.express("1/(2*y)");
+    
+    
+    assertEquals(x.eval(2.3, new Complex() ), y.eval(2.3, new Complex() ));
 
   }
+
+  public void testConstantFoldingToo()
+  {
+    Expression<Integer, ComplexFunction, ComplexFunctionSequence> F  =
+                                                                    ComplexFunctionSequence.parse("f:m->y->-I*(4*3^2-1)*(-1)^(-m)/((4*3^2-2)*y*π)");
+    var                                                           f  = F.instantiate();
+    ComplexFunction                                               f3 = f.apply(3);
+    var                                                           y  = f3.eval(2.3);
+    assertEquals("ffunc:y➔-((ⅈ*35)*(-1^-m))/((34*y)*π)", f3.toString());
+
+  }
+
+  public void testConstantFolding()
+  {
+    var                 F = RealNullaryFunction.parse("((((-1)^3)-(2*((-1)^2)))-1)");
+    RealNullaryFunction f = F.instantiate();
+    Real                x = f.evaluate();
+    assertEquals("-4", x.toString());
+    assertEquals("-4", F.toString());
+
+  }
+
   /**
    * Register f(x)=x² in a shared {@link Context}, define g(x)=f(x)+1 in the same
    * {@link Context}, inline f into g, and verify that the resulting expression's
@@ -420,7 +440,8 @@ public class ExpressionTest extends
                                                  "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
                                                  context);
     var    transformedExpression = F.substitute("z", RealFunction.parse("2*z"));
-    String correct                 = "F:Σn➔(((2*z)^n)*Πk➔α[k]⋰n{k=1…p})/(Γ(n+1)*Πk➔β[k]⋰n{k=1…q}){n=0…N}";
+    String correct               =
+                   "F:Σn➔(((2*z)^n)*Πk➔α[k]⋰n{k=1…p})/(Γ(n+1)*Πk➔β[k]⋰n{k=1…q}){n=0…N}";
     String str                   = transformedExpression.toString();
     // System.out.format("ideal=%s\n str=%s\n", ideal, str );
     assertEquals(correct, str);
