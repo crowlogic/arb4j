@@ -48,7 +48,7 @@ public interface ComplexRationalNullaryFunction extends
          parse(String functionName, String expression, Context context)
   {
     return Function.parse(functionName != null ? functionName
-                                               : Parser.hashString(expression),
+                                               : Parser.transformToAcceptableJavaIdentifier(expression),
                           expression,
                           context,
                           Object.class,

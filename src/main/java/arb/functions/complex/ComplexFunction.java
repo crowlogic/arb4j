@@ -157,7 +157,7 @@ public interface ComplexFunction extends
 
   public static Expression<Complex, Complex, ComplexFunction> parse(String expression)
   {
-    return Parser.parseExpression(Parser.hashString(expression),
+    return Parser.parseExpression(Parser.transformToAcceptableJavaIdentifier(expression),
                                   expression,
                                   null,
                                   Complex.class,

@@ -22,7 +22,7 @@ public interface ComplexNullaryFunction extends
   {
     return NullaryFunction.parse(Complex.class,
                                  ComplexNullaryFunction.class,
-                                 Parser.hashString(expression),
+                                 Parser.transformToAcceptableJavaIdentifier(expression),
                                  expression,
                                  null);
   }

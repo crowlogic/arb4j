@@ -69,7 +69,7 @@ public interface RealSequence extends
 
   public static Expression<Integer, Real, RealSequence> parse(String expression)
   {
-    return Function.parse(Parser.hashString(expression),
+    return Function.parse(Parser.transformToAcceptableJavaIdentifier(expression),
                           expression,
                           null,
                           Integer.class,

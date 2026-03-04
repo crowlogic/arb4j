@@ -5,23 +5,40 @@ import static arb.expressions.Compiler.loadBitsParameterOntoStack;
 import static arb.utensils.Utensils.indent;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import arb.*;
+import arb.AlgebraicNumber;
+import arb.Complex;
+import arb.ComplexPolynomial;
+import arb.ComplexRationalFunction;
+import arb.Fraction;
 import arb.Integer;
+import arb.IntegerPolynomial;
+import arb.RationalFunction;
+import arb.Real;
+import arb.RealPolynomial;
 import arb.exceptions.CompilerException;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
-import arb.expressions.nodes.*;
+import arb.expressions.nodes.LiteralConstantNode;
+import arb.expressions.nodes.Node;
+import arb.expressions.nodes.VariableNode;
+import arb.expressions.nodes.unary.NegationNode;
 import arb.functions.Function;
 import arb.functions.RealToComplexFunction;
 import arb.functions.complex.ComplexFunction;
-import arb.functions.integer.*;
+import arb.functions.integer.ComplexFunctionSequence;
+import arb.functions.integer.ComplexSequence;
+import arb.functions.integer.RealSequence;
 import arb.functions.real.RealFunction;
 
 /**
@@ -488,9 +505,9 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     return super.simplify();
   }
 
-  public String stringFormat(Node<?, ?, ?> side)
+  public String stringFormat(Node<?, ?, ?> operand)
   {
-    return side != null && side.isLeaf() ? "%s" : "(%s)";
+    return operand != null && (operand.isLeaf() || operand instanceof NegationNode) ? "%s" : "(%s)";
   }
 
   public <E, S, G extends Function<? extends E, ? extends S>>

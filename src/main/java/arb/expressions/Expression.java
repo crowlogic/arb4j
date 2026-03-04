@@ -3242,7 +3242,26 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     rootNode.isRootNode = true;
 
+    updateStringRepresentation();
+   // constructAndRegisterThisFunction();
     return this;
+  }
+
+  private void constructAndRegisterThisFunction()
+  {
+    if (functionName != null && context != null)
+    {
+      functionMapping                  = context.registerFunctionMapping(functionName,
+                                                                         null,
+                                                                         domainType,
+                                                                         coDomainType,
+                                                                         functionClass,
+                                                                         true,
+                                                                         null,
+                                                                         expression);
+      functionMapping.expression = this;
+      functionMapping.expressionString = expression;
+    }
   }
 
   protected Node<D, C, F> parseSuperscript(Node<D, C, F> node, char superscript, String digit)

@@ -2,9 +2,16 @@ package arb.functions.real;
 
 import java.util.stream.IntStream;
 
-import arb.*;
 import arb.Float;
-import arb.expressions.*;
+import arb.FloatInterval;
+import arb.Real;
+import arb.RealDataSet;
+import arb.RealPartition;
+import arb.RoundingMode;
+import arb.expressions.Context;
+import arb.expressions.Expression;
+import arb.expressions.FunctionMapping;
+import arb.expressions.Parser;
 import arb.functions.Function;
 
 /**
@@ -108,9 +115,8 @@ public interface RealFunction extends
   public static Expression<Real, Real, RealFunction>
          parse(String expression, Context context, boolean simplify)
   {
-    String className    = Parser.hashString(expression);
 
-    var    parsed       = Function.parse(className,
+    var    parsed       = Function.parse(null,
                                          expression,
                                          context,
                                          Real.class,

@@ -1,7 +1,9 @@
 package arb.expressions;
 
 import java.text.Normalizer;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 
 import arb.Fraction;
 import arb.FractionConstants;
@@ -354,7 +356,7 @@ public class Parser
    */
   public static String transformToJavaAcceptableCharacters(String expression)
   {
-    if ( expression == null )
+    if (expression == null)
     {
       return null;
     }
@@ -372,24 +374,24 @@ public class Parser
     return Normalizer.normalize(expression, Normalizer.Form.NFD);
   }
 
-  public static String hashString(String str)
+  public static String transformToAcceptableJavaIdentifier(String str)
   {
     str = str.replaceAll("\\.{2,}", "…")
              .replace(';', ',')
              .replace(" ", "")
-             .replace("/", "⁄")
-             .replace(".", "_")
-             .replace("{", "Where")
+             .replace("/", "Slash")
+             .replace(".", "Point")
+             .replace("{", "")
              .replace("}", "")
              .replace("₍", "")
              .replace("₎", "")
-             .replace(">", "")
+             .replace(">", "Gt")
              .replace("=", "Eq")
              .replace("ₙ", "N")
              .replace("…", "To")
-             .replace("!", "Bang")
-             .replace("[", "［")
-             .replace("]", "］")
+             .replace("!", "Factorial")
+             .replace("[", "")
+             .replace("]", "")
              .replace("➔", "To");
 
     if (!str.isEmpty())
@@ -457,12 +459,7 @@ public class Parser
     "ⁿ",
     "ᵒ",
     "ᵖ",
-    "\uD801\uDFA5",                                                                                      // 𐞥
-                                                                                                         // U+107A5
-                                                                                                         // MODIFIER
-                                                                                                         // LETTER
-                                                                                                         // SMALL
-                                                                                                         // Q
+    "𐞥",
     "ʳ",
     "ˢ",
     "ᵗ",
@@ -537,12 +534,12 @@ public class Parser
     "ⁿ",
     "ᵒ",
     "ᵖ",
-    "\uD801\uDFA5",                                                                                      // 𐞥
-                                                                                                         // U+107A5
-                                                                                                         // MODIFIER
-                                                                                                         // LETTER
-                                                                                                         // SMALL
-                                                                                                         // Q
+    "\uD801\uDFA5",                                                                                                  // 𐞥
+                                                                                                                     // U+107A5
+                                                                                                                     // MODIFIER
+                                                                                                                     // LETTER
+                                                                                                                     // SMALL
+                                                                                                                     // Q
     "ʳ",
     "ˢ",
     "ᵗ",
@@ -754,11 +751,15 @@ public class Parser
                                                   inlineFunctionName));
       }
       functionName = inlineFunctionName;
+      className    = functionName;
 
       expression   = expression.substring(punctuationMarkIndex + 1, expression.length());
     }
-    className = functionName != null ? functionName : hashString(expression);
-    
+
+    if (className == null)
+    {
+      className = transformToAcceptableJavaIdentifier(expression);
+    }
     var expr = new Expression<D, C, F>(className,
                                        domainClass,
                                        coDomainClass,
@@ -780,7 +781,8 @@ public class Parser
                Class<? extends F> functionClass,
                String functionName)
   {
-    String className = functionName != null ? functionName : hashString(expression);
+    String className = functionName != null ? functionName
+                                            : transformToAcceptableJavaIdentifier(expression);
     return parse(className,
                  expression,
                  context,

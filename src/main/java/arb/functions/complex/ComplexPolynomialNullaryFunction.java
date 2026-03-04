@@ -44,7 +44,7 @@ public interface ComplexPolynomialNullaryFunction extends
   public static Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction>
          parse(String functionName, String expression, Context context)
   {
-    return Function.parse(functionName != null ? functionName : Parser.hashString(expression),
+    return Function.parse(functionName != null ? functionName : Parser.transformToAcceptableJavaIdentifier(expression),
                         expression,
                         context,
                         Object.class,

@@ -45,7 +45,7 @@ public interface RationalNullaryFunction extends
          parse(String functionName, String expression, Context context)
   {
     Expression<Object,RationalFunction,RationalNullaryFunction> expr = new Expression<Object, RationalFunction, RationalNullaryFunction>(functionName
-                  != null ? functionName : Parser.hashString(expression),
+                  != null ? functionName : Parser.transformToAcceptableJavaIdentifier(expression),
                                                                    Object.class,
                                                                    RationalFunction.class,
                                                                    RationalNullaryFunction.class,
@@ -71,7 +71,7 @@ public interface RationalNullaryFunction extends
   public static Expression<Object, RationalFunction, RationalNullaryFunction>
          compile(String string, Context prototype)
   {
-    return compile(Parser.hashString(string), string, prototype);
+    return compile(Parser.transformToAcceptableJavaIdentifier(string), string, prototype);
   }
 
   public default int bits()

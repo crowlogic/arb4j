@@ -37,7 +37,7 @@ public interface RationalFunctional extends
   {
     if (functionName == null)
     {
-      functionName = Parser.hashString(expression);
+      functionName = Parser.transformToAcceptableJavaIdentifier(expression);
     }
     var expr = new Expression<RationalFunction, RationalFunction, RationalFunctional>(functionName,
                                                                                       RationalFunction.class,
@@ -65,7 +65,7 @@ public interface RationalFunctional extends
   public static Expression<RationalFunction, RationalFunction, RationalFunctional>
          compile(String string, Context prototype)
   {
-    return compile(Parser.hashString(string), string, prototype);
+    return compile(Parser.transformToAcceptableJavaIdentifier(string), string, prototype);
   }
 
   public default int bits()

@@ -67,7 +67,7 @@ public interface RealPolynomialNullaryFunction extends
          E
          parse(String functionName, String expression, Context context)
   {
-    return (E) Function.parse(functionName != null ? functionName : Parser.hashString(expression),
+    return (E) Function.parse(functionName != null ? functionName : Parser.transformToAcceptableJavaIdentifier(expression),
                               expression,
                               context,
                               Object.class,

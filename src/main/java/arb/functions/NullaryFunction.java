@@ -30,7 +30,7 @@ public interface NullaryFunction<R> extends
                String expression,
                Context context)
   {
-    return Function.parse(functionName != null ? functionName : Parser.hashString(expression),
+    return Function.parse(functionName != null ? functionName : Parser.transformToAcceptableJavaIdentifier(expression),
                           expression,
                           context,
                           Object.class,

@@ -51,7 +51,7 @@ public interface IntegerPolynomialNullaryFunction extends
   public static Expression<Object, IntegerPolynomial, IntegerPolynomialNullaryFunction>
          compile(String string, Context prototype)
   {
-    return compile(Parser.hashString(string), string, prototype);
+    return compile(Parser.transformToAcceptableJavaIdentifier(string), string, prototype);
   }
 
   @Override

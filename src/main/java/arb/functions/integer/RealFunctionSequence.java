@@ -47,7 +47,7 @@ public interface RealFunctionSequence extends
   {
     if (className == null)
     {
-      className = Parser.hashString(expression);
+      className = Parser.transformToAcceptableJavaIdentifier(expression);
     }
     return Sequence.parse(className,
                           RealFunctionSequence.class,

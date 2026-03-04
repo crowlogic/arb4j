@@ -252,14 +252,14 @@ public class IntegralNodeTest extends
   {
     var f = ComplexFunction.parse("int(1,t=-∞…∞)");
     f.simplify();
-    assertEquals("t➔δ(0)*(2*π)", f.toString());
+    assertEquals("δ(0)*(2*π)", f.toString());
   }
 
   public static void testIntegralOf1OverInfinityIsDeltaZeroReal()
   {
     var f = ComplexFunction.parse("int(1,t=-∞…∞)");
     f.simplify();
-    assertEquals("t➔δ(0)*(2*π)", f.toString());
+    assertEquals("δ(0)*(2*π)", f.toString());
     var g = f.instantiate();
     assertEquals(ComplexConstants.posInf, g.evaluate(ComplexConstants.zero, 128, new Complex()));
   }

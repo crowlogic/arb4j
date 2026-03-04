@@ -19,7 +19,7 @@ public interface RealPolynomialFunction extends
 
   public static Expression<RealPolynomial, RealPolynomial, RealPolynomialFunction> parse(String expression)
   {
-    return Function.parse(Parser.hashString(expression),
+    return Function.parse(Parser.transformToAcceptableJavaIdentifier(expression),
                         expression,
                         null,
                         RealPolynomial.class,

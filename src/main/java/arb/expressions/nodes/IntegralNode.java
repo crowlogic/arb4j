@@ -455,7 +455,8 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
                                                          + parsedVar
                                                          + "' does not match the integrand's independent variable '"
                                                          + integrationVariableName
-                                                         + "'";
+                                                         + "' in "
+                                                         + expression.toStringExtended();
     }
     else
     {
@@ -607,20 +608,20 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    var newIntegralNode            = integrandNode.spliceInto(newExpression);
+    var newIntegrandNode           = integrandNode.spliceInto(newExpression);
     var newIntegrationVariableNode = integrationVariableNode.spliceInto(newExpression).asVariable();
-    var integral                   = new IntegralNode<E, S, G>(newExpression,
-                                                               newIntegralNode,
+    var newIntegralNode            = new IntegralNode<E, S, G>(newExpression,
+                                                               newIntegrandNode,
                                                                newIntegrationVariableNode);
-    integral.integrandNode           = integrandNode.spliceInto(newExpression);
-    integral.integrationVariableName = integrationVariableName;
-    integral.upperLimitNode          =
-                            upperLimitNode != null ? upperLimitNode.spliceInto(newExpression)
-                                                   : null;
-    integral.lowerLimitNode          =
-                            lowerLimitNode != null ? lowerLimitNode.spliceInto(newExpression)
-                                                   : null;
-    return integral;
+    newIntegralNode.integrandNode           = newIntegrandNode;
+    newIntegralNode.integrationVariableName = integrationVariableName;
+    newIntegralNode.upperLimitNode          =
+                                   upperLimitNode != null ? upperLimitNode.spliceInto(newExpression)
+                                                          : null;
+    newIntegralNode.lowerLimitNode          =
+                                   lowerLimitNode != null ? lowerLimitNode.spliceInto(newExpression)
+                                                          : null;
+    return newIntegralNode;
   }
 
   @Override

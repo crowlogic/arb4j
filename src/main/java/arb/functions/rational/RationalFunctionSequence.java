@@ -66,7 +66,7 @@ public interface RationalFunctionSequence extends Sequence<RationalFunction>
   public static Expression<Integer, RationalFunction, RationalFunctionSequence> parse(String expression,
                                                                                       Context context)
   {
-    return parse(Parser.hashString(expression), expression, context);
+    return parse(Parser.transformToAcceptableJavaIdentifier(expression), expression, context);
   }
 
   public static Expression<Integer, RationalFunction, RationalFunctionSequence>

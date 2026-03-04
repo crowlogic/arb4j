@@ -57,7 +57,7 @@ public interface Function<D, CO> extends
                  String expression,
                  Context context)
   {
-    Expression<D, H, Q> parsedExpression = Function.parse(Parser.hashString(expression),
+    Expression<D, H, Q> parsedExpression = Function.parse(Parser.transformToAcceptableJavaIdentifier(expression),
                                                           expression,
                                                           context,
                                                           domainClass,
@@ -344,7 +344,7 @@ public interface Function<D, CO> extends
                String expression,
                Context context)
   {
-    return parse(Parser.hashString(expression),
+    return parse(Parser.transformToAcceptableJavaIdentifier(expression),
                  expression,
                  context,
                  domainClass,
@@ -364,7 +364,7 @@ public interface Function<D, CO> extends
                Context context,
                Expression<?, ?, ?> containingExpression)
   {
-    String hashString = Parser.hashString(expression);
+    String hashString = Parser.transformToAcceptableJavaIdentifier(expression);
     return parse(hashString,
                  expression,
                  context,
@@ -386,7 +386,7 @@ public interface Function<D, CO> extends
                Expression<?, ?, ?> containingExpression,
                boolean simplify)
   {
-    String hashString = Parser.hashString(expression);
+    String hashString = Parser.transformToAcceptableJavaIdentifier(expression);
     return parse(hashString,
                  expression,
                  context,

@@ -80,7 +80,7 @@ public interface FractionFunction extends
 
   public static Expression<Fraction, Fraction, FractionFunction> parse(String expression)
   {
-    return Function.parse(Parser.hashString(expression),
+    return Function.parse(Parser.transformToAcceptableJavaIdentifier(expression),
                           expression,
                           null,
                           Fraction.class,
@@ -94,7 +94,7 @@ public interface FractionFunction extends
   public static Expression<Fraction, Fraction, FractionFunction> parse(String expression,
                                                                        Context context)
   {
-    return Function.parse(Parser.hashString(expression),
+    return Function.parse(Parser.transformToAcceptableJavaIdentifier(expression),
                           expression,
                           context,
                           Fraction.class,

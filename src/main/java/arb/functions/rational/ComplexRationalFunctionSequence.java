@@ -64,7 +64,7 @@ public interface ComplexRationalFunctionSequence extends
   public static Expression<Integer, ComplexRationalFunction, ComplexRationalFunctionSequence>
          parse(String expression, Context context)
   {
-    return parse(Parser.hashString(expression), expression, context);
+    return parse(Parser.transformToAcceptableJavaIdentifier(expression), expression, context);
   }
 
   public static Expression<Integer, ComplexRationalFunction, ComplexRationalFunctionSequence>
