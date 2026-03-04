@@ -36,7 +36,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     {
       result = Utensils.newInstance(resultType);
     }
-    T leftValue = left.evaluate(resultType, bits, Utensils.newInstance(resultType));
+    T leftValue  = left.evaluate(resultType, bits, Utensils.newInstance(resultType));
     T rightValue = right.evaluate(resultType, bits, Utensils.newInstance(resultType));
     return (T) leftValue.mul(rightValue, bits, Utensils.newInstance(resultType));
   }
@@ -168,7 +168,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       return simplifiedIbpResult;
     }
 
-    throw new CompilerException(String.format("TODO: support for integration of %s where %s is a %s-valued %s and %s is a %s-valued %s in %s",
+    throw new CompilerException(String.format("TODO: support for integration of %s where %s is a %s-valued %s and %s is a %s-valued %s in %s where context=%s",
                                               this,
                                               left,
                                               left.type().getSimpleName(),
@@ -176,7 +176,8 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
                                               right,
                                               right.type().getSimpleName(),
                                               right.getClass().getSimpleName(),
-                                              expression.toStringExtended()));
+                                              expression.toStringExtended(),
+                                              expression.context));
   }
 
   /**
@@ -195,17 +196,21 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       return "null";
     }
 
-    String cls = n.getClass().getSimpleName();
-    int    id  = System.identityHashCode(n);
-    String s   = String.valueOf(n);
+    String cls   = n.getClass().getSimpleName();
+    int    id    = System.identityHashCode(n);
+    String s     = String.valueOf(n);
 
     String extra = "";
     if (n instanceof LiteralConstantNode<?, ?, ?> lc)
     {
-      extra = ", stringValue=" + lc.stringValue
-                    + ", isInt=" + lc.isInt
-                    + ", isFraction=" + lc.isFraction
-                    + ", isDecimal=" + lc.isDecimal;
+      extra = ", stringValue="
+              + lc.stringValue
+              + ", isInt="
+              + lc.isInt
+              + ", isFraction="
+              + lc.isFraction
+              + ", isDecimal="
+              + lc.isDecimal;
     }
 
     Class<?> t = null;
@@ -502,7 +507,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
    * @return the simplified node, or null if no delta function is present or the
    *         argument pattern is unrecognized
    */
-   private Node<D, R, F> simplifyDeltaMultiplication()
+  private Node<D, R, F> simplifyDeltaMultiplication()
   {
     FunctionNode<D, R, F> delta      = null;
     Node<D, R, F>         multiplier = null;
@@ -541,7 +546,6 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
 
     return evaluated.simplify().mul(delta);
   }
-
 
   @Override
   public <E, S, G extends Function<? extends E, ? extends S>>

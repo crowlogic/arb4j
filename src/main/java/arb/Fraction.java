@@ -49,6 +49,7 @@ import arb.utensils.Utensils;
  */
 
 public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fraction>,Verifiable,Comparable<Fraction> {
+
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
