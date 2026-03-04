@@ -84,7 +84,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
   Node<D, C, F>                      upperLimitNode;
 
-  Expression<D, C, F>                integrandSubExpression;
+  Expression<D, C, F>                integrandExpression;
 
   public IntegralNode(Expression<D, C, F> expression)
   {
@@ -407,33 +407,33 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
    */
   protected void parseIntegrandViaSubExpression(String arrowVar)
   {
-    integrandSubExpression                     = expression.cloneExpression();
+    integrandExpression                     = expression.cloneExpression();
 
-    integrandSubExpression.upstream            = expression;
+    integrandExpression.upstream            = expression;
 
-    integrandSubExpression.independentVariable = null;
+    integrandExpression.independentVariable = null;
 
-    integrandSubExpression.clearIndeterminateVariables();
+    integrandExpression.clearIndeterminateVariables();
 
-    integrandSubExpression.rootNode = null;
+    integrandExpression.rootNode = null;
 
     if (arrowVar != null)
     {
-      integrationVariableNode = integrandSubExpression.newVariableNode(arrowVar);
+      integrationVariableNode = integrandExpression.newVariableNode(arrowVar);
       integrationVariableName = arrowVar;
     }
 
-    integrandNode = integrandSubExpression.resolve();
+    integrandNode = integrandExpression.resolve();
 
-    if (integrandSubExpression.independentVariable != null)
+    if (integrandExpression.independentVariable != null)
     {
-      integrationVariableNode = integrandSubExpression.independentVariable;
+      integrationVariableNode = integrandExpression.independentVariable;
       integrationVariableName = integrationVariableNode.getName();
     }
 
-    expression.position          = integrandSubExpression.position;
-    expression.character         = integrandSubExpression.character;
-    expression.previousCharacter = integrandSubExpression.previousCharacter;
+    expression.position          = integrandExpression.position;
+    expression.character         = integrandExpression.character;
+    expression.previousCharacter = integrandExpression.previousCharacter;
   }
 
   /**
@@ -454,7 +454,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
                                                          + "' does not match the integrand's independent variable '"
                                                          + integrationVariableName
                                                          + "' in "
-                                                         + expression.toStringExtended();
+                                                         + integrandNode.expression.toStringExtended();
     }
     else
     {

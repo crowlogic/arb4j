@@ -618,15 +618,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return null;
   }
 
-  public boolean anyUpstreamIndependentVariableIsNamed(String name)
+  public boolean thisOrAnyUpstreamIndependentVariableIsNamed(String name)
   {
     if (independentVariable != null && independentVariable.getName().equals(name))
     {
       return true;
     }
+    return anyUpstreamIndependentVariableIsNamed(name);
+  }
+
+  public boolean anyUpstreamIndependentVariableIsNamed(String name)
+  {
     if (upstream != null)
     {
-      if (upstream.anyUpstreamIndependentVariableIsNamed(name))
+      if (upstream.thisOrAnyUpstreamIndependentVariableIsNamed(name))
       {
         return true;
       }
@@ -3243,7 +3248,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     rootNode.isRootNode = true;
 
     updateStringRepresentation();
-   // constructAndRegisterThisFunction();
+    // constructAndRegisterThisFunction();
     return this;
   }
 
@@ -3259,7 +3264,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                          true,
                                                                          null,
                                                                          expression);
-      functionMapping.expression = this;
+      functionMapping.expression       = this;
       functionMapping.expressionString = expression;
     }
   }
@@ -4107,6 +4112,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public VariableNode<D, C, F> registerReferencedVariable(VariableNode<D, C, F> variableNode)
   {
+    assert !variableNode.equals(independentVariable) : "independent variables of this or any upstream expression are always assumed to be referenced. this is for context variables only: not adding "
+                                                       + variableNode
+                                                       + " to the referencedVariables of "
+                                                       + this.toStringExtended();
     return referencedVariables.put(variableNode.reference.name, variableNode);
   }
 

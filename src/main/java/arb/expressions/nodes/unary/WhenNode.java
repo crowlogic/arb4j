@@ -320,7 +320,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   protected String formatCase(Entry<Integer, Node<D, R, F>> node)
   {
     return String.format("%s=%s,%s",
-                         expression.independentVariable,
+                         expression.getIndependentVariable(),
                          node.getKey(),
                          node.getValue());
   }
@@ -341,7 +341,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     {
       sb.append(entry.getValue().typeset());
       sb.append(" & \\text{if } ");
-      sb.append(expression.independentVariable.typeset());
+      sb.append(expression.getIndependentVariable().typeset());
       sb.append(" = ");
       sb.append(entry.getKey());
       sb.append("\\\\\n");
