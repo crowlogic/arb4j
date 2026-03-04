@@ -503,7 +503,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                 functionName));
     }
 
-    var instance = functionMapping.instance;
+    var instance = functionMapping.instantiate();
+    
     if (instance == null)
     {
       return new DerivativeNode<>(expression,

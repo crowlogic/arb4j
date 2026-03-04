@@ -15,7 +15,10 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.exceptions.UndefinedReferenceException;
-import arb.expressions.*;
+import arb.expressions.Context;
+import arb.expressions.Expression;
+import arb.expressions.FunctionMapping;
+import arb.expressions.VariableReference;
 import arb.expressions.nodes.binary.ExponentiationNode;
 import arb.functions.Function;
 
@@ -50,19 +53,19 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
                                            extends
                                            Node<D, R, F>
 {
-  public static final Logger                 logger =
-                                                    LoggerFactory.getLogger(CaputoFractionalDerivativeNode.class);
+  public static final Logger       logger =
+                                          LoggerFactory.getLogger(CaputoFractionalDerivativeNode.class);
 
-  Node<D, R, F>                              order;
-  Node<D, R, F>                              operand;
-  Node<D, R, F>                              integralNode;
-  Expression<D, R, F>                        integralExpression;
-  private final Context                      context;
-  private final int                          derivativeOrder;
+  Node<D, R, F>                    order;
+  Node<D, R, F>                    operand;
+  Node<D, R, F>                    integralNode;
+  Expression<D, R, F>              integralExpression;
+  private final Context            context;
+  private final int                derivativeOrder;
 
-  private VariableNode<D, R, F>              variable;
+  private VariableNode<D, R, F>    variable;
 
-  private FunctionMapping<D, R,F> operandFunctionMapping;
+  private FunctionMapping<D, R, F> operandFunctionMapping;
 
   public CaputoFractionalDerivativeNode(Expression<D, R, F> expression,
                                         Node<D, R, F> operand,
@@ -129,32 +132,25 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
 
   protected void init(Node<D, R, F> operand, int derivativeOrder)
   {
-    operandFunctionMapping = context.registerFunctionMapping("f",
-                                                             expression.domainType,
-                                                             expression.coDomainType,
-                                                             expression.functionClass);
+    operandFunctionMapping            = context.registerFunctionMapping("f",
+                                                                        expression.domainType,
+                                                                        expression.coDomainType,
+                                                                        expression.functionClass);
+
+    operandFunctionMapping.expression = operand.asExpression();
 
     context.registerVariable(Real.named("α")).setBounds(0, false, 1, true);
 
     Class<?> scalarType = scalarType(expression.domainType);
 
-    this.integralExpression =
-                            Function.parseAndRegister("gint:x➔∫t➔((x-t)^(-α)*∂f(t)/∂t)dt∈(0,x)/Γ(1-α)",
-                                                      context,
-                                                      expression.domainType,
-                                                      expression.coDomainType,
-                                                      expression.functionClass,
-                                                      "gint",
-                                                      false);
+    integralExpression = Function.parseAndRegister("gint:x➔∫t➔((x-t)^(-α)*∂f(t)/∂t)dt∈(0,x)/Γ(1-α)",
+                                                   context,
+                                                   expression.domainType,
+                                                   expression.coDomainType,
+                                                   expression.functionClass,
+                                                   "gint",
+                                                   false);
 
-    Expression<D, R, F> operandExpression = expression.cloneExpression();
-    operandExpression.className    = null;
-    operandExpression.functionName = null;
-    operandExpression.rootNode     = operand.spliceInto(operandExpression);
-    operandExpression.updateStringRepresentation();
-    
-    operandFunctionMapping.expression = operandExpression;
-    
     try
     {
       this.integralExpression.inlineFunction("f");

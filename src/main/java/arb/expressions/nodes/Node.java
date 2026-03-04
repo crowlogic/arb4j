@@ -1,6 +1,11 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.cast;
+import static arb.expressions.Compiler.getFieldFromThis;
+import static arb.expressions.Compiler.invokeSetMethod;
+import static arb.expressions.Compiler.loadBitsParameterOntoStack;
+import static arb.expressions.Compiler.loadResultParameter;
+import static arb.expressions.Compiler.swap;
 
 import java.util.List;
 import java.util.Objects;
@@ -14,9 +19,19 @@ import arb.Field;
 import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.*;
-import arb.expressions.nodes.binary.*;
-import arb.expressions.nodes.unary.*;
+import arb.expressions.Compiler;
+import arb.expressions.Expression;
+import arb.expressions.ExpressionTree;
+import arb.expressions.Parser;
+import arb.expressions.nodes.binary.AdditionNode;
+import arb.expressions.nodes.binary.BinaryOperationNode;
+import arb.expressions.nodes.binary.DivisionNode;
+import arb.expressions.nodes.binary.ExponentiationNode;
+import arb.expressions.nodes.binary.MultiplicationNode;
+import arb.expressions.nodes.binary.SubtractionNode;
+import arb.expressions.nodes.unary.AbsoluteValueNode;
+import arb.expressions.nodes.unary.FunctionNode;
+import arb.expressions.nodes.unary.NegationNode;
 import arb.functions.Function;
 
 /**
@@ -61,9 +76,20 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                           Typesettable,
                           Consumer<Consumer<Node<D, R, F>>>
 {
+  public Expression<D, R, F> asExpression()
+  {
+    Node<D, R, F> newNode = spliceInto(expression.cloneExpression());
+    expression.rootNode = newNode;
+    expression.updateStringRepresentation();
+    expression.className    =
+                         Parser.transformToJavaAcceptableCharacters(expression.getExpression());
+    expression.functionName = null;
+    return expression;
+  }
+
   public final <T extends Field<T>> T evaluate()
   {
-    T result = (T) expression.newCoDomainInstance();
+    T        result       = (T) expression.newCoDomainInstance();
     Class<T> coDomainType = (Class<T>) expression.coDomainType;
     return evaluate(coDomainType, bits(), result);
   }
@@ -198,7 +224,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return bits;
   }
 
-  public int                 bits     = 128;
+  public int                 bits       = 128;
 
   public Expression<D, R, F> expression;
 
@@ -473,7 +499,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   {
     return false;
   }
-
 
   public boolean isScalar()
   {

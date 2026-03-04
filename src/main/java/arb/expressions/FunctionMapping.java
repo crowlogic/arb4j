@@ -91,6 +91,11 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
 
   public F instantiate()
   {
+    if ( instance != null )
+    {
+      return instance;
+    }
+    
     if (Function.class.equals(expression.functionClass))
     {
       expression.compile();

@@ -8,11 +8,9 @@ import org.objectweb.asm.MethodVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
-import arb.exceptions.UnderConstructionException;
 import arb.expressions.Expression;
 import arb.expressions.nodes.binary.ExponentiationNode;
 import arb.functions.Function;
@@ -161,39 +159,19 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
     {
       expression.require(')');
     }
-    if (order == null)
-    {
-      differentiatedNode = operand.differentiate(variable).simplify();
-    }
-    else
-    {
-      if (order.isConstant())
-      {
-        Integer orderValue = order.evaluate(Integer.class, bits, new Integer());
-        int     n          = orderValue.getSignedValue();
-        if (n < 0)
-        {
-          throw new IllegalArgumentException("derivative order must be non-negative, got: " + n);
-        }
 
-        differentiatedNode = operand;
-        for (int i = 0; i < n; i++)
-        {
-          differentiatedNode = differentiatedNode.differentiate(variable).simplify();
-        }
-      }
-      else
-      {
-        throw new UnderConstructionException("derivative with non-constant order "
-                                             + order
-                                             + " of type "
-                                             + order.getClass().getSimpleName()
-                                             + " is not yet supported for "
-                                             + this
-                                             + " in "
-                                             + expression);
-      }
+
+  }
+
+  private Node<D, R, F> getDifferentiatedNode()
+  {
+    if (differentiatedNode == null)
+    {
+      differentiatedNode = operand.differentiate(variable);
+      differentiatedNode = differentiatedNode.simplify();
     }
+    return differentiatedNode;
+
   }
 
   protected void throwSyntaxError(String string)
@@ -208,25 +186,25 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public void accept(Consumer<Node<D, R, F>> t)
   {
-    differentiatedNode.accept(t);
+    getDifferentiatedNode().accept(t);
   }
 
   @Override
   public boolean isScalar()
   {
-    return differentiatedNode.isScalar();
+    return getDifferentiatedNode().isScalar();
   }
 
   @Override
   public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
-    return differentiatedNode.integral(variable);
+    return getDifferentiatedNode().integral(variable);
   }
 
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    return differentiatedNode.differentiate(variable);
+    return getDifferentiatedNode().differentiate(variable);
   }
 
   @Override
@@ -238,27 +216,27 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public boolean isLeaf()
   {
-    return differentiatedNode == null || differentiatedNode.isLeaf();
+    return getDifferentiatedNode().isLeaf();
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     assert !resultType.equals(Object.class) : "Objects shan't be generated";
-    differentiatedNode.isRootNode = isRootNode;
-    return differentiatedNode.generate(mv, resultType);
+    getDifferentiatedNode().isRootNode = isRootNode;
+    return getDifferentiatedNode().generate(mv, resultType);
   }
 
   @Override
   public String typeset()
   {
-    return differentiatedNode.typeset();
+    return getDifferentiatedNode().typeset();
   }
 
   @Override
   public <C> Class<? extends C> type()
   {
-    return differentiatedNode.type();
+    return getDifferentiatedNode().type();
   }
 
   @Override
@@ -266,8 +244,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
          Node<D, R, F>
          substitute(String variable, Node<E, S, G> arg)
   {
-    differentiatedNode = differentiatedNode.substitute(variable, arg);
-    return this;
+    return differentiatedNode = getDifferentiatedNode().substitute(variable, arg);
   }
 
   @Override
@@ -281,7 +258,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
                    + expression.context
                    + "functions="
                    + expression.context.functions;
-    return differentiatedNode.spliceInto(newExpression);
+    return getDifferentiatedNode().spliceInto(newExpression);
   }
 
   @Override
