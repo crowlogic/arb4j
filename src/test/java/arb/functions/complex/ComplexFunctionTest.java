@@ -65,7 +65,7 @@ public class ComplexFunctionTest extends
       var hmm = g3.eval(2.3, new Complex());
       assertEquals(0.0, hmm.re().doubleValue(), TOL);
       assertEquals(-0.2591427090909923, hmm.im().doubleValue(), TOL);
-      System.out.println( "g3=" + G3.inspect(g3) );
+      //System.out.println( "g3=" + G3.inspect(g3) );
     }
     catch (CompilerException ce)
     {

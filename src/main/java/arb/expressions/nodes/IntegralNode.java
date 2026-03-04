@@ -402,13 +402,10 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
    * integration variable is determined later from the {@code dx}/{@code ,x}
    * specification.
    * </p>
-   *
-   * @param expression the parent expression whose parser state drives
-   *                   tokenization
    * @param arrowVar   the integration variable name from arrow syntax, or
    *                   {@code null} if the variable was not explicitly specified
    */
-  protected void parseIntegrandViaSubExpression(Expression<D, C, F> expression, String arrowVar)
+  protected void parseIntegrandViaSubExpression(String arrowVar)
   {
     integrandSubExpression                     = expression.cloneExpression();
 
@@ -422,7 +419,8 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
     if (arrowVar != null)
     {
-      integrandSubExpression.newVariableNode(arrowVar);
+      integrationVariableNode = integrandSubExpression.newVariableNode(arrowVar);
+      integrationVariableName = arrowVar;
     }
 
     integrandNode = integrandSubExpression.resolve();
@@ -490,7 +488,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       }
     }
 
-    parseIntegrandViaSubExpression(expression, arrowVar);
+    parseIntegrandViaSubExpression(arrowVar);
 
     var reference = expression.require(',').parseVariableReference();
     resolveOrAssertIntegrationVariable(reference.name);
@@ -524,7 +522,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       }
     }
 
-    parseIntegrandViaSubExpression(expression, arrowVar);
+    parseIntegrandViaSubExpression(arrowVar);
 
     if (expression.nextCharacterIs(','))
     {
