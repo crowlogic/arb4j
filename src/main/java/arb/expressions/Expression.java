@@ -451,7 +451,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                     Class<? extends C> coDomain,
                     Class<? extends F> function)
   {
-    this.upstream               = null;
+    this.upstream                         = null;
     this.domainType                       = domain;
     this.coDomainType                     = coDomain;
     this.functionClass                    = function;
@@ -499,7 +499,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                     Expression<?, ?, ?> ascenentExpression)
   {
     assert className != null : "className needs to be specified";
-    this.upstream               = ascenentExpression;
+    this.upstream                         = ascenentExpression;
     this.className                        = className;
     this.domainType                       = domain;
     this.coDomainType                     = codomain;
@@ -1231,7 +1231,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     // Establish the parent→child relationship so that VariableNode
     // resolveReference can walk up the chain to find upstream variables.
-    subExpr.upstream  = this;
+    subExpr.upstream            = this;
 
     // Clear the sub-expression's independent variable. When
     // newVariableNode(paramName) is called below, resolveReference will
@@ -1679,10 +1679,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   private ClassVisitor generateDerivativeMethod(ClassVisitor classVisitor)
   {
-    return generateDerivedMethod(classVisitor, "derivative", "diff");
+    return generateDelegateMethod(classVisitor, "derivative", "diff");
   }
 
-  protected ClassVisitor generateDerivedMethod(ClassVisitor classVisitor, String func, String op)
+  protected ClassVisitor generateDelegateMethod(ClassVisitor classVisitor, String func, String op)
   {
     assert functionClass.isInterface() : functionClass + " is not an interface";
     assert rootNode != null : "rootNode is null";
@@ -2220,7 +2220,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   private ClassVisitor generateIntegralMethod(ClassVisitor classVisitor)
   {
-    return generateDerivedMethod(classVisitor, "integral", "int");
+    return generateDelegateMethod(classVisitor, "integral", "int");
   }
 
   protected MethodVisitor generateIntermediateVariableInitializers(MethodVisitor methodVisitor)
@@ -2798,8 +2798,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                                                                                                                                                               // upstream
                                                                                                                                                                                                               // independent
                                                                                                                                                                                                               // variable
-                                                                                                                                                                                                              if (upstream
-                                                                                                                                                                                                                            != null)
+                                                                                                                                                                                                              if (upstream != null)
                                                                                                                                                                                                               {
                                                                                                                                                                                                                 VariableNode<?, ?, ?> upstreamIndependentVariable =
                                                                                                                                                                                                                                                                   upstream.independentVariable;
@@ -3948,8 +3947,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       return true;
     }
-    return upstream != null
-                  && upstream.thisOrAnyUpstreamExpressionHasIndeterminantVariable();
+    return upstream != null && upstream.thisOrAnyUpstreamExpressionHasIndeterminantVariable();
   }
 
   protected void throwUnexpectedCharacterException()

@@ -61,7 +61,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public Node<D, R, F> simplify()
   {
-    if (differentiatedNode != null)
+    if (getDifferentiatedNode() != null)
     {
       return differentiatedNode.simplify();
     }
@@ -71,6 +71,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public String toString()
   {
+    getDifferentiatedNode();
     if (differentiatedNode != null)
     {
 
@@ -159,7 +160,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
     {
       expression.require(')');
     }
-
+    getDifferentiatedNode();
 
   }
 
@@ -270,8 +271,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public boolean dependsOn(VariableNode<D, R, F> variable)
   {
-    assert false : "TODO";
-    return false;
+    return getDifferentiatedNode().dependsOn(variable);
   }
 
 }
