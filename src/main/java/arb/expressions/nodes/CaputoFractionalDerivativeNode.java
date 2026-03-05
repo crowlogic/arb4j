@@ -318,7 +318,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   }
 
   @Override
-  public boolean isLeaf()
+  public boolean isAtomic()
   {
     return false;
   }

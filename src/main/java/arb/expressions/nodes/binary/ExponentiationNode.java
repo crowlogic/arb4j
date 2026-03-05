@@ -150,7 +150,7 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
 
   public String format(Node<D, R, F> side)
   {
-    return side.isLeaf() ? "%s" : "(%s)";
+    return side.isAtomic() ? "%s" : "(%s)";
   }
 
   @Override

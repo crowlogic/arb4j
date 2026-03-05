@@ -28,7 +28,7 @@ public class NodeTreeItem<D, C, F extends Function<? extends D, ? extends C>> ex
   @Override
   public boolean isLeaf()
   {
-    return getValue().isLeaf();
+    return getValue().isAtomic();
   }
 
   @Override

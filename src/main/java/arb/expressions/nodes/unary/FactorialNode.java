@@ -27,13 +27,13 @@ public class FactorialNode<D, R, F extends Function<? extends D, ? extends R>> e
   @Override
   public String toString()
   {
-    return String.format(arg.isLeaf() ? "%s!" : "(%s)!", arg);
+    return String.format(arg.isAtomic() ? "%s!" : "(%s)!", arg);
   }
 
   @Override
   public String typeset()
   {
-    return String.format(arg.isLeaf() ? "%s!" : "(%s)!", arg.typeset());
+    return String.format(arg.isAtomic() ? "%s!" : "(%s)!", arg.typeset());
   }
 
   @Override

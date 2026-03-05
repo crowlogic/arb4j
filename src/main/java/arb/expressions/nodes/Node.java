@@ -1,11 +1,6 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.cast;
-import static arb.expressions.Compiler.getFieldFromThis;
-import static arb.expressions.Compiler.invokeSetMethod;
-import static arb.expressions.Compiler.loadBitsParameterOntoStack;
-import static arb.expressions.Compiler.loadResultParameter;
-import static arb.expressions.Compiler.swap;
+import static arb.expressions.Compiler.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -19,19 +14,9 @@ import arb.Field;
 import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.Compiler;
-import arb.expressions.Expression;
-import arb.expressions.ExpressionTree;
-import arb.expressions.Parser;
-import arb.expressions.nodes.binary.AdditionNode;
-import arb.expressions.nodes.binary.BinaryOperationNode;
-import arb.expressions.nodes.binary.DivisionNode;
-import arb.expressions.nodes.binary.ExponentiationNode;
-import arb.expressions.nodes.binary.MultiplicationNode;
-import arb.expressions.nodes.binary.SubtractionNode;
-import arb.expressions.nodes.unary.AbsoluteValueNode;
-import arb.expressions.nodes.unary.FunctionNode;
-import arb.expressions.nodes.unary.NegationNode;
+import arb.expressions.*;
+import arb.expressions.nodes.binary.*;
+import arb.expressions.nodes.unary.*;
 import arb.functions.Function;
 
 /**
@@ -469,9 +454,32 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   }
 
   /**
-   * @return true if this node does not have any subnodes
+   * Indicates whether this node is atomic.
+   * 
+   * <p>
+   * In the context of a {@link Node} of a syntax-tree of an {@link Expression}, a
+   * {@link Node} with no downstream nodes is called an atomic node or a primitive
+   * node. These represent irreducible nodes — {@link LiteralConstantNode},
+   * {@link VariableNode}, constants — that carry a value directly rather than
+   * generate it by combining sub-expressions values with operators.
+   * </p>
+   * 
+   * <p>
+   * The word "atom" comes from the Greek <i>atomos</i>, meaning "indivisible,"
+   * which captures the concept precisely: the node cannot be factored further
+   * into sub-expressions. <br>
+   * In compiler and language theory, "atomic expression" refers to an expression
+   * that contains no operators or sub-structure — it simply <i>is</i> a value.
+   * </p>
+   * 
+   * <p>
+   * This contrasts with composite or compound nodes, which contains downstream
+   * nodes which are combined and operated upon by various operations.
+   * </p>
+   *
+   * @return {@code true} if this node has no downstream nodes (its depth would be 0)
    */
-  public abstract boolean isLeaf();
+  public abstract boolean isAtomic();
 
   public final boolean isLiteralConstant()
   {

@@ -243,7 +243,7 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
   }
 
   @Override
-  public boolean isLeaf()
+  public boolean isAtomic()
   {
     return false;
   }

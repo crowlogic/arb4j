@@ -215,9 +215,9 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   }
 
   @Override
-  public boolean isLeaf()
+  public boolean isAtomic()
   {
-    return getDifferentiatedNode().isLeaf();
+    return getDifferentiatedNode().isAtomic();
   }
 
   @Override

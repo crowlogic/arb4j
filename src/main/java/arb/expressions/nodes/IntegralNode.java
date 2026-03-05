@@ -380,7 +380,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   }
 
   @Override
-  public boolean isLeaf()
+  public boolean isAtomic()
   {
     return false;
   }

@@ -412,7 +412,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
   public abstract boolean isCommutative();
 
   @Override
-  public boolean isLeaf()
+  public boolean isAtomic()
   {
     return false;
   }
@@ -507,7 +507,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
 
   public String stringFormat(Node<?, ?, ?> operand)
   {
-    return operand != null && (operand.isLeaf() || operand instanceof NegationNode) ? "%s" : "(%s)";
+    return operand != null && (operand.isAtomic() || operand instanceof NegationNode) ? "%s" : "(%s)";
   }
 
   public <E, S, G extends Function<? extends E, ? extends S>>

@@ -150,7 +150,7 @@ public class ExpressionTree<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public boolean isLeaf(Node<D, R, F> node)
   {
-    return node.isLeaf();
+    return node.isAtomic();
   }
 
   @Override

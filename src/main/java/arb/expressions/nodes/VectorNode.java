@@ -98,7 +98,7 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
   }
 
   @Override
-  public boolean isLeaf()
+  public boolean isAtomic()
   {
     return false;
   }

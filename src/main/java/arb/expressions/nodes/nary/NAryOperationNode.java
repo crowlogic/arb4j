@@ -398,7 +398,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   }
 
   @Override
-  public boolean isLeaf()
+  public boolean isAtomic()
   {
     return true;
   }

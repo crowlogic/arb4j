@@ -180,7 +180,7 @@ public class LimitNode<D, C, F extends Function<? extends D, ? extends C>> exten
   }
 
   @Override
-  public boolean isLeaf()
+  public boolean isAtomic()
   {
     return false;
   }

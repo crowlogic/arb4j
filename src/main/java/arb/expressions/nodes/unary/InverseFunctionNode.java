@@ -165,7 +165,7 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
   }
 
   @Override
-  public boolean isLeaf()
+  public boolean isAtomic()
   {
     return false;
   }

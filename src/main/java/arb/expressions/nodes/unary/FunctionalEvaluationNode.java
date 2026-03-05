@@ -188,7 +188,7 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
   }
 
   @Override
-  public boolean isLeaf()
+  public boolean isAtomic()
   {
     return false;
   }

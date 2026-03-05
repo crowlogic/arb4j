@@ -267,7 +267,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   }
 
   @Override
-  public boolean isLeaf()
+  public boolean isAtomic()
   {
     return false;
   }
