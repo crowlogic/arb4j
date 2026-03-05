@@ -7,6 +7,7 @@ import static org.objectweb.asm.Opcodes.GETFIELD;
 import static org.objectweb.asm.Opcodes.GOTO;
 import static org.objectweb.asm.Opcodes.IFGT;
 import static org.objectweb.asm.Opcodes.IFLE;
+import static org.objectweb.asm.Opcodes.IFNONNULL;
 import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
 import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
 import static org.objectweb.asm.Opcodes.INVOKESTATIC;
@@ -918,6 +919,13 @@ public class Compiler
                               bitless ? getMethodDescriptor(coDomainType, coDomainType)
                                       : getMethodDescriptor(coDomainType, int.class, coDomainType);
     return functionDescriptor;
+  }
+
+  public static MethodVisitor jumpToIfNotNull(MethodVisitor mv, Label fieldNotNull)
+  {
+    mv.visitJumpInsn(IFNONNULL, fieldNotNull);
+    return mv;
+    
   }
 
 }

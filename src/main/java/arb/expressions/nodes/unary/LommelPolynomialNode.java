@@ -110,7 +110,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
       mv.visitInsn(Opcodes.ACONST_NULL);
       mv.visitLdcInsn(1);
       loadBitsOntoStack(mv);
-      expression.loadThisFieldOntoStack(mv, elementFieldName, RationalFunction.class);
+      expression.loadThisAndFieldOntoStack(mv, elementFieldName, RationalFunction.class);
 
       generateVirtualMethodInvocation(mv,
                           LommelPolynomial.class,
@@ -144,7 +144,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
 
   private LommelPolynomialNode<D, C, F> loadFunctionOntoStack(MethodVisitor mv)
   {
-    expression.loadThisFieldOntoStack(mv, functionFieldName, LommelPolynomial.class);
+    expression.loadThisAndFieldOntoStack(mv, functionFieldName, LommelPolynomial.class);
     return this;
   }
 
@@ -155,7 +155,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
                   && Integer.class.equals(expression.domainType);
     expression.insideInitializer = false;
 
-    expression.loadThisFieldOntoStack(mv, elementFieldName, RationalFunction.class);
+    expression.loadThisAndFieldOntoStack(mv, elementFieldName, RationalFunction.class);
 
     if (!isRationalFunctionSequence)
     {
@@ -207,7 +207,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     loadOutputVariableOntoStack(mv, resultType);
 
     assert resultType.equals(expression.coDomainType);
-    expression.loadThisFieldOntoStack(mv, elementFieldName, RationalFunction.class);
+    expression.loadThisAndFieldOntoStack(mv, elementFieldName, RationalFunction.class);
     Compiler.invokeSetMethod(mv, resultType, resultType);
     generatedType = RationalFunction.class;
   }

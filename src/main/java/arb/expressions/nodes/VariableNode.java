@@ -321,7 +321,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       resolveReference();
     }
     Class<?> referenceType = reference.type();
-    expression.loadThisFieldOntoStack(mv, reference.name, referenceType);
+    expression.loadThisAndFieldOntoStack(mv, reference.name, referenceType);
 
   }
 

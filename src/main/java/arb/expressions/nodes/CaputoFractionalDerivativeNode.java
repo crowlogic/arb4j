@@ -148,7 +148,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
                                                    expression.domainType,
                                                    expression.coDomainType,
                                                    expression.functionClass,
-                                                   "gint",
+                                                   null,
                                                    false);
 
     try

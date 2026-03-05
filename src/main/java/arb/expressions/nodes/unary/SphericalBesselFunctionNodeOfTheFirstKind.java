@@ -155,7 +155,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
   public void loadFunctionFieldOntoStack(MethodVisitor mv)
   {
     assert functionFieldName != null : "functionFieldName is null for " + this;
-    expression.loadThisFieldOntoStack(mv, functionFieldName, SphericalBesselFunction.class);
+    expression.loadThisAndFieldOntoStack(mv, functionFieldName, SphericalBesselFunction.class);
   }
 
   public void loadSphericalBesselFunctionOntoStack(MethodVisitor mv)

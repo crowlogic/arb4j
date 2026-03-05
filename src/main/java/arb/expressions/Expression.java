@@ -586,7 +586,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     Class<?> actualType               = type.isInterface() ? scalarType(type) : type;
     String   intermediateVariableName = newIntermediateVariable(actualType);
-    loadThisFieldOntoStack(methodVisitor, intermediateVariableName, actualType);
+    loadThisAndFieldOntoStack(methodVisitor, intermediateVariableName, actualType);
     return intermediateVariableName;
   }
 
@@ -1709,7 +1709,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (context != null)
     {
-      loadThisFieldOntoStack(mv, "context", Context.class);
+      loadThisAndFieldOntoStack(mv, "context", Context.class);
 
       Compiler.invokeStaticMethod(mv,
                                   Function.class,
@@ -1946,7 +1946,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       // Copy by value: funcInst.varName.set(this.varName)
       duplicateTopOfTheStack(mv); // funcInst, funcInst
       getField(mv, functional.className, varName, fieldDescriptor); // funcInst, field (non-null)
-      loadThisFieldOntoStack(mv, varName, varType); // funcInst, field, this.var
+      loadThisAndFieldOntoStack(mv, varName, varType); // funcInst, field, this.var
       generateVirtualMethodInvocation(mv, varType, "set", varType, varType); // funcInst, retVal
       pop(mv); // funcInst
     }
@@ -2921,12 +2921,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return methodVisitor;
   }
 
-  public MethodVisitor loadThisFieldOntoStack(MethodVisitor mv, String name, Class<?> referenceType)
+  public MethodVisitor loadThisAndFieldOntoStack(MethodVisitor mv, String name, Class<?> referenceType)
   {
     return loadFieldOntoStack(loadThisOntoStack(mv), name, referenceType);
   }
 
-  public MethodVisitor loadThisFieldOntoStack(MethodVisitor mv, String name, String referenceType)
+  public MethodVisitor loadThisAndFieldOntoStack(MethodVisitor mv, String name, String referenceType)
   {
     return loadFieldOntoStack(loadThisOntoStack(mv), name, referenceType);
   }
@@ -3332,7 +3332,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (referencedFunctions.containsKey(entry.getKey()))
     {
-      loadThisFieldOntoStack(duplicateTopOfTheStack(mv), fieldName, fieldType);
+      loadThisAndFieldOntoStack(duplicateTopOfTheStack(mv), fieldName, fieldType);
       putField(mv, function.className, fieldName, fieldType);
     }
   }
@@ -3379,7 +3379,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       if (val != null)
       {
         var fieldType = val.getClass();
-        loadThisFieldOntoStack(duplicateTopOfTheStack(mv), fieldName, fieldType);
+        loadThisAndFieldOntoStack(duplicateTopOfTheStack(mv), fieldName, fieldType);
         putField(mv, function.className, fieldName, fieldType);
       }
     }
