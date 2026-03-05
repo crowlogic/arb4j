@@ -186,9 +186,10 @@ public abstract class Integration
   /**
    * Recursively flattens a multiplication tree into a list of non-multiplication
    * leaf factors.
+   * @return 
    */
   public static <D, R, F extends Function<? extends D, ? extends R>>
-         void
+         List<Node<D, R, F>>
          collectFactors(Node<D, R, F> node, List<Node<D, R, F>> factors)
   {
     if (node instanceof MultiplicationNode<D, R, F> mul)
@@ -200,6 +201,7 @@ public abstract class Integration
     {
       factors.add(node);
     }
+    return factors;
   }
 
   /**

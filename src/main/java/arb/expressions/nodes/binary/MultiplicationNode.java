@@ -94,8 +94,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     }
 
     // Flatten the product tree into individual factors
-    var factors = new ArrayList<Node<D, R, F>>();
-    collectFactors(this, factors);
+    var factors         = collectFactors(this, new ArrayList<Node<D, R, F>>());
 
     // constant factors are ones that don't depend on integration variable and
     // can thus be pulled out of the integrand , resulting in a more efficient
@@ -104,22 +103,20 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     var variableFactors = new ArrayList<Node<D, R, F>>();
     for (var factor : factors)
     {
-      if (factor.isScalar() && !factor.dependsOn(variable))
-      {
-        constantFactors.add(factor);
-      }
-      else
-      {
-        variableFactors.add(factor);
-      }
+      boolean isIndependentOfVariableOfIntegration =
+                                                   factor.isScalar() && !factor.dependsOn(variable);
+
+      (isIndependentOfVariableOfIntegration ? constantFactors : variableFactors).add(factor);
     }
 
     // Pull out constant factors: ∫ c·f(t) dt = c · ∫ f(t) dt
     if (!constantFactors.isEmpty() && !variableFactors.isEmpty())
     {
-      var constantProduct = buildProduct(constantFactors);
-      var variableProduct = buildProduct(variableFactors);
-      return constantProduct.mul(variableProduct.integral(variable)).simplify();
+      var constantProduct   = buildProduct(constantFactors);
+      var variableProduct   = buildProduct(variableFactors);
+      var product           = constantProduct.mul(variableProduct.integral(variable));
+      var simplifiedProduct = product.simplify();
+      return simplifiedProduct;
     }
 
     // If any factor is a Polynomial-typed function application at the integration
@@ -168,16 +165,17 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       return simplifiedIbpResult;
     }
 
-    throw new CompilerException(String.format("TODO: support for integration of %s where %s is a %s-valued %s and %s is a %s-valued %s in %s where context=%s",
+    String msg = String.format("TODO: support for integration of %s where left=%s[%s]∈%s and right=%s[%s]∈%s in %s where context=%s",
                                               this,
+                                              left.getClass().getSimpleName(),
                                               left,
                                               left.type().getSimpleName(),
-                                              left.getClass().getSimpleName(),
+                                              right.getClass().getSimpleName(),
                                               right,
                                               right.type().getSimpleName(),
-                                              right.getClass().getSimpleName(),
                                               expression.toStringExtended(),
-                                              expression.context));
+                                              expression.context);
+    throw new CompilerException(msg);
   }
 
   /**
