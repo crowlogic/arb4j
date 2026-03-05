@@ -1,51 +1,23 @@
 package arb.expressions.nodes.nary;
 
-import static arb.expressions.Compiler.cast;
-import static arb.expressions.Compiler.designateLabel;
-import static arb.expressions.Compiler.duplicateTopOfTheStack;
-import static arb.expressions.Compiler.generateNewObjectInstruction;
-import static arb.expressions.Compiler.generateVirtualMethodInvocation;
-import static arb.expressions.Compiler.getFieldFromThis;
-import static arb.expressions.Compiler.getMethodDescriptor;
-import static arb.expressions.Compiler.invokeDefaultConstructor;
-import static arb.expressions.Compiler.invokeMethod;
-import static arb.expressions.Compiler.invokeSetMethod;
-import static arb.expressions.Compiler.jumpTo;
-import static arb.expressions.Compiler.jumpToIfGreaterThan;
-import static arb.expressions.Compiler.loadBitsParameterOntoStack;
-import static arb.expressions.Compiler.loadInputParameter;
-import static arb.expressions.Compiler.loadThisOntoStack;
-import static arb.expressions.Compiler.pop;
-import static arb.expressions.Compiler.putField;
+import static arb.expressions.Compiler.*;
 import static arb.utensils.Utensils.indent;
-import static org.objectweb.asm.Opcodes.GETFIELD;
-import static org.objectweb.asm.Opcodes.IFNONNULL;
-import static org.objectweb.asm.Opcodes.PUTFIELD;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import arb.ComplexPolynomial;
+import arb.*;
 import arb.Integer;
-import arb.Named;
-import arb.Polynomial;
-import arb.Real;
-import arb.RealPolynomial;
 import arb.exceptions.CompilerException;
-import arb.expressions.Compiler;
+import arb.expressions.*;
 import arb.expressions.Context;
-import arb.expressions.Expression;
-import arb.expressions.FunctionMapping;
-import arb.expressions.IntermediateVariable;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
@@ -716,7 +688,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   protected void
             generateCodeToPropagateIndependentUpstreamVariablesToOperand(MethodVisitor mv,
-                                                                         VariableNode<D, R, F> independentVariableNode)
+                                                                         VariableNode<D,
+                                                                                       R,
+                                                                                       F> independentVariableNode)
   {
     operandExpression.getReferencedVariables()
                      .entrySet()
@@ -728,8 +702,13 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   protected <N extends Node<D, R, F>>
             void
             generateCodeToPropagateIndependentUpstreamVariablesToOperand(MethodVisitor mv,
-                                                                         VariableNode<D, R, F> independentVariableNode,
-                                                                         Entry<String, VariableNode<Integer, R, Sequence<R>>> entry)
+                                                                         VariableNode<D,
+                                                                                       R,
+                                                                                       F> independentVariableNode,
+                                                                         Entry<String,
+                                                                                       VariableNode<Integer,
+                                                                                                     R,
+                                                                                                     Sequence<R>>> entry)
   {
     VariableNode<Integer, R, Sequence<R>> varNode = entry.getValue().asVariable();
     if (varNode.upstreamInput)
@@ -786,7 +765,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   protected void
             generateCodeToPropagateIndependentVariableToOperand(MethodVisitor mv,
-                                                                VariableNode<D, R, F> independentVariableNode)
+                                                                VariableNode<D,
+                                                                              R,
+                                                                              F> independentVariableNode)
   {
     String   varName      = independentVariableNode.reference.name;
     Class<?> varType      = independentVariableNode.type();
@@ -798,7 +779,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     // Check if operand.varName is null
     expression.loadFieldOntoStack(loadThisOntoStack(mv), operandFunctionFieldName, operandDesc);
     mv.visitFieldInsn(GETFIELD, operandFunctionFieldName, varName, varDesc);
-    Compiler.jumpToIfNotNull( mv, fieldNotNull );
+    Compiler.jumpToIfNotNull(mv, fieldNotNull);
 
     // Null: allocate a new instance and assign it to the operand's field
     expression.loadFieldOntoStack(loadThisOntoStack(mv), operandFunctionFieldName, operandDesc);

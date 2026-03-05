@@ -9,10 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import arb.exceptions.CompilerException;
-import arb.expressions.Compiler;
-import arb.expressions.Expression;
-import arb.expressions.FunctionMapping;
-import arb.expressions.VariableReference;
+import arb.expressions.*;
 import arb.expressions.nodes.binary.MultiplicationNode;
 import arb.expressions.nodes.binary.SubtractionNode;
 import arb.functions.Function;
