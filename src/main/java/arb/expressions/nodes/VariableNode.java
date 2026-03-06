@@ -130,14 +130,13 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public VariableNode(Expression<D, R, F> expression,
                       VariableReference<D, R, F> reference,
-                      int startPos,
                       boolean resolve)
   {
     super(expression);
     var variables = expression.context != null ? expression.context.variables : null;
     this.expression         = expression;
     this.reference          = reference;
-    this.reference.position = startPos;
+    this.reference.position = expression.position;
     assert reference != null;
     assert !(expression.recursive
                   && reference.name.equals(expression.functionName)) : "variable name clashes with "
@@ -692,7 +691,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     return new VariableNode<E, S, G>(newExpression,
                                      reference.spliceInto(newExpression),
-                                     position,
                                      true);
   }
 

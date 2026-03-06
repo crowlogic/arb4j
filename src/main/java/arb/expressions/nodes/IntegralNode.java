@@ -461,7 +461,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       var reference = new VariableReference<D, C, F>(parsedVar);
       integrationVariableNode = new VariableNode<>(expression,
                                                    reference,
-                                                   expression.position,
                                                    false);
     }
   }
