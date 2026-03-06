@@ -2,9 +2,9 @@ package arb.expressions.nodes;
 
 import static arb.expressions.Compiler.*;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import org.objectweb.asm.MethodVisitor;
 import org.scilab.forge.jlatexmath.LaTeXAtom;
@@ -61,14 +61,26 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                           Typesettable,
                           Consumer<Consumer<Node<D, R, F>>>
 {
+  public Stream<Node<D, R, F>> nodeStream()
+  {
+    List<Node<D, R, F>> nodes = new ArrayList<>();
+    accept(nodes::add);
+    return nodes.stream();
+  }
+
+  public Stream<VariableNode<D, R, F>> variableNodeStream()
+  {
+    return nodeStream().filter(Node::isVariable).map(Node::asVariable);
+  }
+
   public Expression<D, R, F> asExpression()
   {
     Node<D, R, F> newNode = spliceInto(expression.cloneExpression());
-    expression.rootNode = newNode;
-    expression.updateStringRepresentation();
-    expression.className    =
-                         Parser.transformToJavaAcceptableCharacters(expression.getExpression());
     expression.functionName = null;
+
+    expression.rootNode     = newNode;
+    expression.updateStringRepresentation();
+    expression.className = Parser.transformToJavaAcceptableCharacters(expression.getExpression());
     return expression;
   }
 
@@ -477,7 +489,8 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    * nodes which are combined and operated upon by various operations.
    * </p>
    *
-   * @return {@code true} if this node has no downstream nodes (its depth would be 0)
+   * @return {@code true} if this node has no downstream nodes (its depth would be
+   *         0)
    */
   public abstract boolean isAtomic();
 
@@ -786,6 +799,11 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                                             + " node '"
                                             + this
                                             + "'");
+  }
+
+  protected Stream<VariableNode<?, ?, ?>> resolveVariables()
+  {
+    return variableNodeStream().map(VariableNode::resolveReference);
   }
 
 }

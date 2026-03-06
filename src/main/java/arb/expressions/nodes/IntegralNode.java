@@ -53,7 +53,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     return logger;
   }
 
-  public int                         bits      = 128;
+  public int                         bits = 128;
 
   private Node<D, C, F>              definiteIntegralNode;
 
@@ -69,15 +69,9 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
   Node<D, C, F>                      integrandNode;
 
-  VariableNode<D, C, F>              integrationVariableNode;
+  final VariableNode<D, C, F>        integrationVariableNode;
 
   Node<D, C, F>                      lowerLimitNode;
-
-  String                             SYNTAXMSG =
-                                               "the format is  g(a,b)=∫x➔f(x)dx∈{a,b} for definite integrals and "
-                                                 + "g(x)=∫x➔f(x)dx for indefinate integrals, the variable on the left "
-                                                 + "side of the arrow must match the variable on the right side of the d and "
-                                                 + "before the ( but the first var was %s and the 2nd was %s\n";
 
   Node<D, C, F>                      upperLimitNode;
 
@@ -94,11 +88,13 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     super(expression);
     if (functionForm)
     {
-      parseFunctionForm(expression);
+      integrationVariableNode = parseFunctionForm(expression);
+      assert integrationVariableNode != null : "integrationVariableNode shan't be null";
     }
     else
     {
-      parseIntegralForm(expression);
+      integrationVariableNode = parseIntegralForm(expression);
+      assert integrationVariableNode != null : "integrationVariableNode shan't be null";
     }
   }
 
@@ -107,6 +103,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
                       VariableNode<D, C, F> variable)
   {
     super(expression);
+    assert variable != null : "variable shan't be null";
     integrandNode           = functionEvaluationNode;
     integrationVariableNode = variable;
     ensureIndefiniteIntegralNode();
@@ -399,73 +396,35 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
    * integration variable is determined later from the {@code dx}/{@code ,x}
    * specification.
    * </p>
-   * @param arrowVar   the integration variable name from arrow syntax, or
-   *                   {@code null} if the variable was not explicitly specified
+   * 
+   * @param arrowVar the integration variable name from arrow syntax, or
+   *                 {@code null} if the variable was not explicitly specified
    */
   protected void parseIntegrandViaSubExpression(String arrowVar)
   {
     integrandExpression                     = expression.cloneExpression();
-
     integrandExpression.upstream            = expression;
-
+    integrandExpression.functionName = null;
     integrandExpression.independentVariable = null;
-
     integrandExpression.clearIndeterminateVariables();
-
-    integrandExpression.rootNode = null;
+    integrandExpression.rootNode                = null;
+    integrandExpression.deferVariableResolution = true;
 
     if (arrowVar != null)
     {
-      integrationVariableNode = integrandExpression.newVariableNode(arrowVar);
       integrationVariableName = arrowVar;
+      integrandExpression.assignInputVariable(integrandExpression.newVariableNode(arrowVar));
     }
 
-    integrandNode = integrandExpression.resolve();
-
-    if (integrandExpression.independentVariable != null)
-    {
-      integrationVariableNode = integrandExpression.independentVariable;
-      integrationVariableName = integrationVariableNode.getName();
-    }
+    integrandExpression.rootNode = integrandNode = integrandExpression.resolve();
 
     expression.position          = integrandExpression.position;
     expression.character         = integrandExpression.character;
     expression.previousCharacter = integrandExpression.previousCharacter;
-    
     integrandExpression.updateStringRepresentation();
   }
 
-  /**
-   * Resolves the integration variable from the {@code d<var>} or {@code ,<var>}
-   * specification. If the integration variable was already determined during
-   * integrand parsing (because the integrand contained it as a free variable),
-   * this asserts consistency. If the integrand was a constant (no independent
-   * variable in the sub-expression), this assigns the integration variable.
-   *
-   * @param parsedVar the variable name parsed from {@code dx}, {@code ,x}, etc.
-   */
-  protected void resolveOrAssertIntegrationVariable(String parsedVar)
-  {
-    if (integrationVariableNode != null)
-    {
-      assert integrationVariableName.equals(parsedVar) : "integration variable from d/comma specification '"
-                                                         + parsedVar
-                                                         + "' does not match the integrand's independent variable '"
-                                                         + integrationVariableName
-                                                         + "' in "
-                                                         + integrandNode.expression.toStringExtended();
-    }
-    else
-    {
-      integrationVariableName = parsedVar;
-      var reference = new VariableReference<D, C, F>(parsedVar);
-      integrationVariableNode = new VariableNode<>(expression,
-                                                   reference,
-                                                   false);
-    }
-  }
-
-  protected void parseFunctionForm(Expression<D, C, F> expression)
+  protected VariableNode<D, C, F> parseFunctionForm(Expression<D, C, F> expression)
   {
     String arrowVar  = null;
     int    savedPos  = expression.position;
@@ -489,7 +448,11 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     parseIntegrandViaSubExpression(arrowVar);
 
     var reference = expression.require(',').parseVariableReference();
-    resolveOrAssertIntegrationVariable(reference.name);
+    integrationVariableName = reference.name;
+
+    var ivar =
+             integrandExpression.assignInputVariable(integrandExpression.newVariableNode(integrationVariableName));
+    integrandNode.resolveVariables();
 
     if (expression.nextCharacterIs('='))
     {
@@ -497,9 +460,11 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       upperLimitNode = expression.require('…').resolve();
     }
     expression.require(')');
+
+    return ivar;
   }
 
-  protected void parseIntegralForm(Expression<D, C, F> expression)
+  protected VariableNode<D, C, F> parseIntegralForm(Expression<D, C, F> expression)
   {
     String arrowVar  = null;
     int    savedPos  = expression.position;
@@ -522,15 +487,21 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
     parseIntegrandViaSubExpression(arrowVar);
 
+    VariableNode<D, C, F> varNode;
     if (expression.nextCharacterIs(','))
     {
       if (expression.nextCharacterIs('d'))
       {
-        parseLimitsOfIntegration(expression);
+        varNode = parseLimitsOfIntegration(expression);
       }
       else
       {
-        parseAndResolveIntegrationVariable(expression);
+        integrationVariableName = expression.parseName();
+
+        integrandExpression.assignInputVariable(varNode =
+                                                        integrandExpression.newVariableNode(integrationVariableName));
+        integrandNode.resolveVariables();
+
         if (expression.nextCharacterIs('='))
         {
           lowerLimitNode = expression.resolve();
@@ -540,29 +511,32 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     }
     else if (expression.nextCharacterIs('d'))
     {
-      parseLimitsOfIntegration(expression);
+      varNode = parseLimitsOfIntegration(expression);
     }
     else
     {
       throw new CompilerException("Expected ',' or 'd' after integrand in " + expression);
     }
+
+    return varNode;
   }
 
-  protected void parseAndResolveIntegrationVariable(Expression<D, C, F> expression)
+  protected VariableNode<D, C, F> parseLimitsOfIntegration(Expression<D, C, F> expression)
   {
-    String parsedVar = expression.parseName();
-    resolveOrAssertIntegrationVariable(parsedVar);
-  }
+    integrationVariableName = expression.parseName();
 
-  protected void parseLimitsOfIntegration(Expression<D, C, F> expression)
-  {
-    parseAndResolveIntegrationVariable(expression);
+    var node =
+             integrandExpression.assignInputVariable(integrandExpression.newVariableNode(integrationVariableName));
+    integrandNode.resolveVariables();
+
     if (expression.nextCharacterIs('∈'))
     {
       lowerLimitNode = expression.require('(', '{').resolve();
       upperLimitNode = expression.require(',', '…').resolve();
       expression.require(')', '}');
     }
+
+    return node;
   }
 
   @Override
@@ -585,6 +559,11 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
         throw new UnsupportedOperationException("todo: handle other cases for integral over real line: "
                                                 + this);
       }
+    }
+
+    if (integrationVariableNode == null)
+    {
+      return this;
     }
 
     ensureIndefiniteIntegralNode();

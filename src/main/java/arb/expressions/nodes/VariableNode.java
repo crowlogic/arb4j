@@ -1,7 +1,6 @@
 package arb.expressions.nodes;
 
 import static arb.expressions.Compiler.*;
-import static java.lang.String.format;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 
 import java.util.List;
@@ -118,7 +117,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return logger;
   }
 
-  Logger log = LoggerFactory.getLogger(getClass());
+  Logger                            log             = LoggerFactory.getLogger(getClass());
 
   public boolean                    upstreamInput;
 
@@ -128,6 +127,144 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public VariableReference<D, R, F> reference;
 
+  public String resolutionStateString()
+  {
+    return String.format("variable='%s', type=%s, isIndependent=%s, isIndeterminate=%s, upstreamInput=%s, expression=%s, independentVariable=%s, indeterminateVariables=%s, context=%s",
+                         reference.name,
+                         reference.type,
+                         isIndependent,
+                         isIndeterminate,
+                         upstreamInput,
+                         expression,
+                         expression.independentVariable,
+                         expression.getIndeterminateVariables(),
+                         expression.context);
+  }
+
+  private VariableNode<?, ?, ?> resolveUpstreamVariables()
+  {
+    final VariableNode<?, ?, ?>[] found = new VariableNode[1];
+
+    if (expression != null)
+    {
+      expression.acceptUntil(e ->
+      {
+        var iv = e.independentVariable;
+        if (iv != null && reference.equals(iv.reference))
+        {
+          if (e != expression)
+          {
+            upstreamInput = true;
+          }
+          reference.type = e.domainType;
+          found[0]       = iv;
+          return true;
+        }
+
+        for (var v : e.getIndeterminateVariables())
+        {
+          if (reference.equals(v.reference))
+          {
+            if (e != expression)
+            {
+              upstreamIndeterminate = true;
+            }
+            isIndeterminate = true;
+            reference.type  = v.reference.type();
+            found[0]        = v;
+            return true;
+          }
+        }
+
+        return false;
+      });
+    }
+
+    return found[0];
+  }
+
+  public VariableNode<?, ?, ?> resolveReference()
+  {
+//    if (reference.type != null)
+//    {
+//      return this;
+//      throw new CompilerException(String.format("variable already resolved and cannot be resolved again: %s",
+//                                                resolutionStateString()));
+//    }
+
+    var inputVariable = expression.independentVariable;
+
+    if (Expression.traceNodes)
+    {
+      log.debug("resolveReference START: {}", resolutionStateString());
+    }
+
+    if (resolveContextualVariable())
+    {
+      expression.registerReferencedVariable(this);
+      if (Expression.traceNodes)
+      {
+        log.debug("resolveReference CONTEXT: {}", resolutionStateString());
+      }
+      return this;
+    }
+
+    if (isIndependent = isIndependent(inputVariable))
+    {
+      resolveIndependentVariable(inputVariable);
+      reference.type = expression.domainType;
+      if (Expression.traceNodes)
+      {
+        log.debug("resolveReference INDEPENDENT: {}", resolutionStateString());
+      }
+      return this;
+    }
+
+    var upstream = resolveUpstreamVariables();
+    if (upstream != null)
+    {
+      if (upstreamInput || upstreamIndeterminate)
+      {
+        expression.registerReferencedVariable(this);
+      }
+
+      if (Expression.traceNodes)
+      {
+        log.debug("resolveReference UPSTREAM: {}", resolutionStateString());
+      }
+      return this;
+    }
+
+    if (expression.getIndeterminateVariables().isEmpty() || reference.type != null)
+    {
+      isIndeterminate = true;
+      reference.type  = expression.coDomainType;
+      declareThisToBeTheIndeterminantVariable();
+      if (Expression.traceNodes)
+      {
+        log.debug("resolveReference NEW INDETERMINATE: {}", resolutionStateString());
+      }
+      return this;
+    }
+    else
+    {
+      throw new CompilerException(String.format("undefined variable reference: %s",
+                                                resolutionStateString()));
+    }
+  }
+
+  protected void throwNewUndefinedReferenceException()
+  {
+    throw new UndefinedReferenceException(String.format("undefined reference: %s",
+                                                        resolutionStateString()));
+  }
+
+  protected void throwNewIndeterminantVariableAlreadyDeclared()
+  {
+    throw new CompilerException(String.format("indeterminate variable already declared: %s",
+                                              resolutionStateString()));
+  }
+
   public VariableNode(Expression<D, R, F> expression,
                       VariableReference<D, R, F> reference,
                       boolean resolve)
@@ -136,7 +273,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     var variables = expression.context != null ? expression.context.variables : null;
     this.expression         = expression;
     this.reference          = reference;
-    this.reference.position = expression.position;
+    this.reference.position = position;
     assert reference != null;
     assert !(expression.recursive
                   && reference.name.equals(expression.functionName)) : "variable name clashes with "
@@ -151,10 +288,12 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     else
     {
+      boolean resolved = false;
       if ((variables == null || !variables.containsKey(reference.name) || reference.type == null)
                     && resolve)
       {
         resolveReference();
+        resolved = true;
       }
 
       if (expression.independentVariable != null
@@ -163,23 +302,26 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
         isIndependent = true;
       }
 
-      if (!isIndependent)
+      if (!resolved)
       {
-        if (isIndeterminate)
+        if (!isIndependent)
         {
-          reference.type = expression.coDomainType;
+          if (isIndeterminate)
+          {
+            reference.type = expression.coDomainType;
+          }
+          else
+          {
+            if (!reference.isElse() && !isIndeterminate && resolve)
+            {
+              expression.registerReferencedVariable(this);
+            }
+          }
         }
         else
         {
-          if (!reference.isElse() && !isIndeterminate)
-          {
-            expression.registerReferencedVariable(this);
-          }
+          reference.type = expression.domainType;
         }
-      }
-      else
-      {
-        reference.type = expression.domainType;
       }
     }
     fieldName = reference.name;
@@ -284,7 +426,11 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (Integer.class.equals(indexType))
     {
-      Compiler.generateVirtualMethodInvocation(mv, reference.type(), "get", reference.type(), indexType);
+      Compiler.generateVirtualMethodInvocation(mv,
+                                               reference.type(),
+                                               "get",
+                                               reference.type(),
+                                               indexType);
     }
     else
     {
@@ -532,122 +678,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
   }
 
-  public VariableNode<?, ?, ?> resolveReference()
-  {
-    var inputVariable = expression.independentVariable;
-
-    if (Expression.traceNodes)
-    {
-      log.debug("=== resolveReference START: var={}, expr={}, upstreamExpr={}",
-                reference.name,
-                expression.functionName,
-                expression.upstream != null ? expression.upstream.functionName
-                                                      : "null");
-    }
-
-    // 1) Context variable
-    if (resolveContextualVariable())
-    {
-      if (Expression.traceNodes)
-      {
-        log.debug("=== resolveReference: {} resolved as CONTEXT variable in {}",
-                  reference.name,
-                  expression.functionName);
-      }
-      return this;
-    }
-
-    // 2) Independent variable
-    if (isIndependent = isIndependent(inputVariable))
-    {
-      resolveIndependentVariable(inputVariable);
-      reference.type = expression.domainType;
-      if (Expression.traceNodes)
-      {
-        log.debug("=== resolveReference: {} resolved as INDEPENDENT variable in {}",
-                  reference.name,
-                  expression.functionName);
-      }
-      return this;
-    }
-
-    // 3) Bind in current or upstream scope (combined)
-    var bound = resolveBoundVariable();
-    if (bound != null)
-    {
-      if (Expression.traceNodes)
-      {
-        log.debug("=== resolveReference: {} FOUND in upstream, upstreamInput={}, upstreamIndeterminate={}, referencedVariables.containsKey={}",
-                  reference.name,
-                  upstreamInput,
-                  upstreamIndeterminate,
-                  expression.isVariableReferenced(this));
-      }
-
-      if (upstreamInput || upstreamIndeterminate)
-      {
-        if (Expression.traceNodes)
-        {
-          log.debug("=== resolveReference: ADDING {} to referencedVariables in {}",
-                    reference.name,
-                    expression.functionName);
-        }
-        expression.registerReferencedVariable(this);
-      }
-
-      if (Expression.traceNodes)
-      {
-        log.debug("=== resolveReference: {} resolved from upstream, isIndependent={}, isIndeterminate={}, type={}",
-                  reference.name,
-                  isIndependent,
-                  isIndeterminate,
-                  reference.type);
-      }
-      return this;
-    }
-
-    // 4) New indeterminate
-    if (expression.getIndeterminateVariables().isEmpty() || reference.type != null)
-    {
-      isIndeterminate = true;
-      reference.type  = expression.coDomainType;
-      declareThisToBeTheIndeterminantVariable();
-      if (Expression.traceNodes)
-      {
-        log.debug("=== resolveReference: {} declared as NEW INDETERMINATE in {}",
-                  reference.name,
-                  expression.functionName);
-      }
-      return this;
-    }
-    else
-    {
-      throw new CompilerException(String.format("undefined variable reference '%s' in expression '%s'; existing indeterminates: %s, independent variable: %s context=%s",
-                                                reference.name,
-                                                expression,
-                                                expression.getIndeterminateVariables(),
-                                                expression.independentVariable,
-                                                expression.context));
-    }
-  }
-
-  protected void throwNewUndefinedReferenceException()
-  {
-    throw new UndefinedReferenceException(format("Undefined reference '%s' at position=%d in Expression(=%s)=%s, "
-                                                 + "independent variable is %s, indeterminant variables is %s, and upstreamExpression is %s, remaining='%s' and upstreamExpression.indeterminantVariables='%s'",
-                                                 reference.name,
-                                                 reference.position,
-                                                 System.identityHashCode(expression),
-                                                 expression,
-                                                 expression.independentVariable,
-                                                 expression.getIndeterminateVariable(),
-                                                 expression.upstream,
-                                                 expression.remaining(),
-                                                 expression.upstream
-                                                               != null ? expression.upstream.getIndeterminateVariables()
-                                                                       : null));
-  }
-
   public VariableNode<D, R, F> declareThisToBeTheIndeterminantVariable()
   {
 
@@ -673,16 +703,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     expression.registerReferencedVariable(this);
     expression.pushIndeterminateVariable(this);
     return this;
-  }
-
-  protected void throwNewIndeterminantVariableAlreadyDeclared()
-  {
-    throw new CompilerException(String.format("the inderminate variable has already been declared to be '%s' in expr#%s the so it cannot be changed to '%s' at position=%s in expr='%s'",
-                                              expression.getIndeterminateVariables(),
-                                              System.identityHashCode(expression),
-                                              this,
-                                              expression.position,
-                                              expression));
   }
 
   public <E, S, G extends Function<? extends E, ? extends S>>
@@ -762,10 +782,11 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public VariableNode<D, R, F> pushThisOntoTheIndeterminantVariableStack()
   {
-    assert !expression.getIndeterminateVariables()
-                      .contains(this) : this
-                                        + " is already in "
-                                        + expression.getIndeterminateVariables();
+    if (expression.getIndeterminateVariables().contains(this))
+    {
+      return this;
+    }
+
     assert !equals(expression.independentVariable) : "cannot add "
                                                      + this
                                                      + " to indeterminate stack since it is the inependent variable";

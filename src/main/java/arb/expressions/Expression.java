@@ -138,6 +138,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                        Supplier<F>,
                        Consumer<Consumer<Expression<?, ?, ?>>>
 {
+  public boolean deferVariableResolution = false;
+
+  public Stream<VariableNode<D, C, F>> variableNodeStream()
+  {
+    return rootNode.variableNodeStream();
+  }
+
+  protected VariableNode<D, C, F> newVariable(int startPos, VariableReference<D, C, F> reference)
+  {
+    return new VariableNode<D, C, F>(this,
+                                     reference,
+                                     !deferVariableResolution);
+  }
+
   /**
    * Inlines all references to the named contextual function, replacing each
    * {@link FunctionNode} bearing that name with the defining expression's AST
@@ -527,15 +541,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return false;
   }
 
-  protected Expression<D, C, F> assignIndependentVariable(VariableNode<D, C, F> variable)
+  public VariableNode<D, C, F> assignInputVariable(VariableNode<D, C, F> variable)
   {
+    assert variable != null : "variable shan't be null";
     if (isNullaryFunction())
     {
-      throw new CompilerException(String.format("Cannot assign independent variable '%s' to nullary function "
-                                                + "(domain=Object.class) in expression '%s'; "
-                                                + "use an indeterminate variable instead",
-                                                variable,
-                                                getExpression()));
+      assignVariable(variable,true);
+      return variable;
     }
 
     if (independentVariable != null)
@@ -543,21 +555,22 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       if (!independentVariable.equals(variable))
       {
         throw new CompilerException(String.format("undefined variable reference '%s' at position=%s in expression '%s' "
-                                                  + "since the indeterminate variable has already been declared to be '%s' in expr#%s",
+                                                  + "since the independent variable has already been declared to be '%s' in expr#%s",
                                                   variable,
                                                   position,
-                                                  this,
+                                                  toStringExtended(),
                                                   independentVariable,
                                                   System.identityHashCode(getExpression())));
       }
       else
       {
-        return this;
+        return variable;
       }
     }
-    independentVariable               = variable;
-    independentVariable.isIndependent = true;
-    return this;
+    independentVariable                = variable;
+    independentVariable.isIndependent  = true;
+    independentVariable.reference.type = domainType;
+    return variable;
   }
 
   protected VariableNode<D, C, F> assignIndeterminateVariable(VariableNode<D, C, F> variable)
@@ -594,7 +607,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     else
     {
-      assignIndependentVariable(variable);
+      assignInputVariable(variable);
     }
   }
 
