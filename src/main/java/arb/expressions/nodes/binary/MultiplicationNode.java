@@ -149,10 +149,10 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     }
 
     // All factors depend on the variable -- try IBP on all 2-partitions
-    var ibpResult = integrateByParts(variableFactors, variable);
-    if (ibpResult != null)
+    var integratedByParts = integrateByParts(variableFactors, variable);
+    if (integratedByParts != null)
     {
-      Node<D, R, F> simplifiedIbpResult = ibpResult.simplify();
+      Node<D, R, F> simplifiedIbpResult = integratedByParts.simplify();
       assert simplifiedIbpResult != null : "simplifiedIbpResult is null for " + this;
       return simplifiedIbpResult;
     }

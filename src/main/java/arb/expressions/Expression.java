@@ -555,12 +555,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       if (!independentVariable.equals(variable))
       {
         throw new CompilerException(String.format("undefined variable reference '%s' at position=%s in expression '%s' "
-                                                  + "since the independent variable has already been declared to be '%s' in expr#%s",
+                                                  + "since the independent variable has already been declared to be '%s' in %s",
                                                   variable,
                                                   position,
                                                   toStringExtended(),
                                                   independentVariable,
-                                                  System.identityHashCode(getExpression())));
+                                                  toStringExtended()));
       }
       else
       {

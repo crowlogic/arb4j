@@ -382,58 +382,6 @@ public abstract class Integration
     return -sign;
   }
 
-  /**
-   * Checks if a node is a polynomial in (variable - shift).
-   * 
-   * This handles: - (x-a) itself - (x-a)^n for any constant n - Products and sums
-   * involving (x-a)
-   * 
-   * @param node     The node to check
-   * @param variable The variable
-   * @param shift    The shift value
-   * @return true if node is a polynomial in (variable - shift)
-   */
-  public static <D, R, F extends Function<? extends D, ? extends R>>
-         boolean
-         isPolynomialInShiftedVariable(Node<D, R, F> node,
-                                       VariableNode<D, R, F> variable,
-                                       Node<D, R, F> shift)
-  {
-    // Direct match: (x-a) where shift=a
-    if (isShiftedVariable(node, variable, shift))
-    {
-      return true;
-    }
-
-    // Power: (x-a)^n
-    if (node instanceof ExponentiationNode<D, R, F> exp)
-    {
-      return isShiftedVariable(exp.left, variable, shift) && exp.right.isScalar();
-    }
-
-    // Product: terms containing (x-a)
-    if (node instanceof MultiplicationNode<D, R, F> mult)
-    {
-      return isPolynomialInShiftedVariable(mult.left, variable, shift)
-                    || isPolynomialInShiftedVariable(mult.right, variable, shift);
-    }
-
-    // Sum: any term containing (x-a)
-    if (node instanceof AdditionNode || node instanceof SubtractionNode)
-    {
-      var binaryOperationNode = node.asBinaryOperation();
-      return isPolynomialInShiftedVariable(binaryOperationNode.left, variable, shift)
-                    || isPolynomialInShiftedVariable(binaryOperationNode.right, variable, shift);
-    }
-
-    // Variable itself: x with shift=0
-    if (node.equals(variable) && shift.isZero())
-    {
-      return true;
-    }
-
-    return false;
-  }
 
   /**
    * Extracts the shift value 'a' from a delta function argument.
