@@ -38,7 +38,7 @@ public class LimitNode<D, C, F extends Function<? extends D, ? extends C>> exten
                                                        "limitingVariableReference");
     limitingVariableNode      = new VariableNode<>(expression,
                                                    limitingVariableReference,
-                                                   true);
+                                                   !expression.deferVariableResolution);
     expression.require('=');
     point = Objects.requireNonNull(expression.resolve(), "point");
     expression.require(')');
@@ -200,7 +200,7 @@ public class LimitNode<D, C, F extends Function<? extends D, ? extends C>> exten
     VariableReference<E, S, G> newRef     = new VariableReference<>(newVarName);
     VariableNode<E, S, G>      newVarNode = new VariableNode<>(newExpression,
                                                                newRef,
-                                                               true);
+                                                               !newExpression.deferVariableResolution);
 
     return new LimitNode<>(newExpression,
                            newOperand,

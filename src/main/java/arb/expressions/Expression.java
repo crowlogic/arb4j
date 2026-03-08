@@ -731,7 +731,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     return new VariableNode<>(this,
                               newVariableReference(inputVariableName),
-                              true);
+                              !deferVariableResolution);
   }
 
   public VariableReference<D, C, F> newVariableReference(String inputVariableName)
@@ -3027,11 +3027,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                      i);
   }
 
-  protected VariableNode<D, C, F> newVariable(VariableReference<D, C, F> reference)
+  public VariableNode<D, C, F> newVariableNode(VariableReference<D, C, F> reference)
   {
     return new VariableNode<D, C, F>(this,
                                      reference,
-                                     true);
+                                     !deferVariableResolution);
   }
 
   public boolean nextCharacterIs(char... expectedCharacters)
@@ -3608,7 +3608,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         }
         else
         {
-          return newVariable(reference).pow(newLiteralConstant("-1"));
+          return newVariableNode(reference).pow(newLiteralConstant("-1"));
         }
       }
     }
@@ -3654,7 +3654,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     else
     {
-      return reference.isElse() ? otherwise() : newVariable(reference);
+      return reference.isElse() ? otherwise() : newVariableNode(reference);
     }
   }
 

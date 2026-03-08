@@ -45,10 +45,9 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     return integrandNode == null || integrandNode.isZero();
   }
 
-  public static final Logger logger = LoggerFactory.getLogger(IntegralNode.class);
+  public static final Logger         logger = LoggerFactory.getLogger(IntegralNode.class);
 
-
-  public int                         bits = 128;
+  public int                         bits   = 128;
 
   private Node<D, C, F>              definiteIntegralNode;
 
@@ -399,7 +398,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   {
     integrandExpression                     = expression.cloneExpression();
     integrandExpression.upstream            = expression;
-    integrandExpression.functionName = null;
+    integrandExpression.functionName        = null;
     integrandExpression.independentVariable = null;
     integrandExpression.clearIndeterminateVariables();
     integrandExpression.rootNode                = null;
@@ -445,8 +444,10 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     var reference = expression.require(',').parseVariableReference();
     integrationVariableName = reference.name;
 
-    var ivar =
-             integrandExpression.assignInputVariable(integrandExpression.newVariableNode(integrationVariableName));
+    VariableNode<D, C, F> inputVariableNode =
+                                            integrandExpression.newVariableNode(reference);
+    var                   ivar              =
+                               integrandExpression.assignInputVariable(inputVariableNode);
     integrandNode.resolveVariables();
 
     if (expression.nextCharacterIs('='))
