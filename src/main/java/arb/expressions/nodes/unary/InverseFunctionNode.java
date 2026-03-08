@@ -152,11 +152,6 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
     this.contextual     = true;
   }
 
-  @Override
-  public Logger getLogger()
-  {
-    return logger;
-  }
 
   @Override
   public boolean isZero()

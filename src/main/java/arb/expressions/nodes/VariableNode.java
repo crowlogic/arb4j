@@ -9,8 +9,6 @@ import java.util.function.Consumer;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import arb.Integer;
 import arb.Real;
@@ -84,7 +82,6 @@ import arb.functions.Function;
 public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> extends
                          Node<D, R, F>
 {
-  public static final Logger logger = LoggerFactory.getLogger(VariableNode.class);
 
   /**
    * Đ^(α)(t) = Γ(2)/Γ(2-α)*t^(1-α)
@@ -110,14 +107,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     return false;
   }
-
-  @Override
-  public Logger getLogger()
-  {
-    return logger;
-  }
-
-  Logger                            log             = LoggerFactory.getLogger(getClass());
 
   public boolean                    upstreamInput;
 
@@ -196,7 +185,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (Expression.traceNodes)
     {
-      log.debug("resolveReference START: {}", resolutionStateString());
+      logger.debug("resolveReference START: {}", resolutionStateString());
     }
 
     if (resolveContextualVariable())
@@ -204,7 +193,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       expression.registerReferencedVariable(this);
       if (Expression.traceNodes)
       {
-        log.debug("resolveReference CONTEXT: {}", resolutionStateString());
+        logger.debug("resolveReference CONTEXT: {}", resolutionStateString());
       }
       return this;
     }
@@ -215,7 +204,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       reference.type = expression.domainType;
       if (Expression.traceNodes)
       {
-        log.debug("resolveReference INDEPENDENT: {}", resolutionStateString());
+        logger.debug("resolveReference INDEPENDENT: {}", resolutionStateString());
       }
       return this;
     }
@@ -230,7 +219,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
       if (Expression.traceNodes)
       {
-        log.debug("resolveReference UPSTREAM: {}", resolutionStateString());
+        logger.debug("resolveReference UPSTREAM: {}", resolutionStateString());
       }
       return this;
     }
@@ -242,7 +231,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       declareThisToBeTheIndeterminantVariable();
       if (Expression.traceNodes)
       {
-        log.debug("resolveReference NEW INDETERMINATE: {}", resolutionStateString());
+        logger.debug("resolveReference NEW INDETERMINATE: {}", resolutionStateString());
       }
       return this;
     }
@@ -385,10 +374,10 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     if (Expression.traceNodes)
     {
-      log.debug(String.format("#%s: generate( this=%s, resultType=%s)\n",
-                              System.identityHashCode(this),
-                              this,
-                              resultType));
+      logger.debug(String.format("#%s: generate( this=%s, resultType=%s)\n",
+                                 System.identityHashCode(this),
+                                 this,
+                                 resultType));
     }
 
     if (refuseToGenerateIndeterminateVariables && isIndeterminate && isScalar())
@@ -640,9 +629,9 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
         reference.type = instanceVariable.getClass();
         if (Expression.traceNodes)
         {
-          log.debug("Declaring {} as a contextual variable of type {}",
-                    reference,
-                    reference.type());
+          logger.debug("Declaring {} as a contextual variable of type {}",
+                       reference,
+                       reference.type());
 
         }
 
@@ -665,12 +654,12 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       if (Expression.traceNodes)
       {
 
-        log.debug(String.format("#%s: resolveIndependentVariable: declaring %s as the input node to '%s' which currently has input variable %s and indeterminant varaibles %s\n",
-                                System.identityHashCode(this),
-                                reference,
-                                expression,
-                                expression.independentVariable,
-                                expression.getIndeterminateVariables()));
+        logger.debug(String.format("#%s: resolveIndependentVariable: declaring %s as the input node to '%s' which currently has input variable %s and indeterminant varaibles %s\n",
+                                   System.identityHashCode(this),
+                                   reference,
+                                   expression,
+                                   expression.independentVariable,
+                                   expression.getIndeterminateVariables()));
       }
       isIndependent                  = true;
       expression.independentVariable = this;
@@ -683,11 +672,11 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (Expression.traceNodes)
     {
-      log.debug(String.format("Expression(#%s) declaring %s to be the indeterminant in %s by pushing it to the top of the stack %s\n",
-                              System.identityHashCode(expression),
-                              this,
-                              expression,
-                              expression.getIndeterminateVariables()));
+      logger.debug(String.format("Expression(#%s) declaring %s to be the indeterminant in %s by pushing it to the top of the stack %s\n",
+                                 System.identityHashCode(expression),
+                                 this,
+                                 expression,
+                                 expression.getIndeterminateVariables()));
 
     }
     if (expression.anyUpstreamIndependentVariableIsNamed(getName()))

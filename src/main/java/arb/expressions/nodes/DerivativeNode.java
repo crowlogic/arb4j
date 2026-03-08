@@ -5,8 +5,6 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -31,13 +29,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
     return operand.isConstant() || operand.isIndependentOf(expression.getIndependentVariable());
   }
 
-  public static final Logger logger = LoggerFactory.getLogger(DerivativeNode.class);
 
-  @Override
-  public Logger getLogger()
-  {
-    return logger;
-  }
 
   @Override
   public int hashCode()

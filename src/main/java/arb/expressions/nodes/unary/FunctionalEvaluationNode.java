@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import arb.Polynomial;
 import arb.RealPolynomial;
@@ -212,11 +210,6 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
     arg.accept(t);
   }
 
-  public static final Logger logger = LoggerFactory.getLogger(FunctionalEvaluationNode.class);
 
-  @Override
-  public Logger getLogger()
-  {
-    return logger;
-  }
+ 
 }

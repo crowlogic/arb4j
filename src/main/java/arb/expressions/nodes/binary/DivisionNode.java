@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.objectweb.asm.MethodVisitor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import arb.*;
 import arb.Integer;
@@ -36,14 +34,6 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     T num = left.evaluate(resultType, bits, Utensils.newInstance(resultType));
     T den = right.evaluate(resultType, bits, Utensils.newInstance(resultType));
     return (T) num.div(den, bits, Utensils.newInstance(resultType));
-  }
-
-  public static final Logger logger = LoggerFactory.getLogger(DivisionNode.class);
-
-  @Override
-  public Logger getLogger()
-  {
-    return logger;
   }
 
   @Override
@@ -457,13 +447,14 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       }
     }
 
-    if (left.isLiteralConstant() && left.asLiteralConstant().isInt
-                  && right.isLiteralConstant() && right.asLiteralConstant().isInt)
+    if (left.isLiteralConstant() && left.asLiteralConstant().isInt && right.isLiteralConstant()
+                  && right.asLiteralConstant().isInt)
     {
-      try (var num = left.asLiteralConstant().asInteger();
-           var den = right.asLiteralConstant().asInteger())
+      try ( var num = left.asLiteralConstant().asInteger();
+            var den = right.asLiteralConstant().asInteger())
       {
-        Fraction frac = new Fraction(num,den);
+        Fraction frac = new Fraction(num,
+                                     den);
 
         return expression.newFractionLiteralConstant(frac);
       }

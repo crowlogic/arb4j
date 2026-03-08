@@ -15,10 +15,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.exceptions.UndefinedReferenceException;
-import arb.expressions.Context;
-import arb.expressions.Expression;
-import arb.expressions.FunctionMapping;
-import arb.expressions.VariableReference;
+import arb.expressions.*;
 import arb.expressions.nodes.binary.ExponentiationNode;
 import arb.functions.Function;
 
@@ -211,11 +208,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     return integralNode != null ? integralNode.isZero() : operand.isZero();
   }
 
-  @Override
-  public Logger getLogger()
-  {
-    return logger;
-  }
+
 
   /**
    * Resolve n = ⌈α⌉ at compile time.

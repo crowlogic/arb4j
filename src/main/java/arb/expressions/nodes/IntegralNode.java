@@ -47,11 +47,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
   public static final Logger logger = LoggerFactory.getLogger(IntegralNode.class);
 
-  @Override
-  public Logger getLogger()
-  {
-    return logger;
-  }
 
   public int                         bits = 128;
 

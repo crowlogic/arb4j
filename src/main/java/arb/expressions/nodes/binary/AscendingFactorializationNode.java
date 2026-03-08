@@ -3,9 +3,7 @@ package arb.expressions.nodes.binary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import arb.Field;
-import arb.Fraction;
-import arb.Real;
+import arb.*;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
@@ -34,12 +32,6 @@ public class AscendingFactorializationNode<D, R, F extends Function<? extends D,
   {
     // x₍₀₎ = 1 by definition, never zero
     return right.isZero() ? false : left.isZero();
-  }
-
-  @Override
-  public Logger getLogger()
-  {
-    return logger;
   }
 
   /**

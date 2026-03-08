@@ -970,10 +970,5 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                                                   .asVariable()));
   }
 
-  @Override
-  public Logger getLogger()
-  {
-    return logger;
-  }
 
 }

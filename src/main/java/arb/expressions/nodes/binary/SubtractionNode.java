@@ -37,11 +37,6 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
 
   public static final Logger logger = LoggerFactory.getLogger(SubtractionNode.class);
 
-  @Override
-  public Logger getLogger()
-  {
-    return logger;
-  }
 
   public SubtractionNode(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)
   {

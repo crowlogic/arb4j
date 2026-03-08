@@ -4,7 +4,6 @@ import java.io.PrintStream;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.ExpressionTree;
 import arb.expressions.nodes.Node;
 
 /**

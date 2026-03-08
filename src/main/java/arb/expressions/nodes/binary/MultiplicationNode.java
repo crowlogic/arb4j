@@ -6,8 +6,6 @@ import static java.lang.String.format;
 import java.util.ArrayList;
 
 import org.objectweb.asm.MethodVisitor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import arb.*;
 import arb.Integer;
@@ -41,13 +39,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     return (T) leftValue.mul(rightValue, bits, Utensils.newInstance(resultType));
   }
 
-  public static final Logger logger = LoggerFactory.getLogger(MultiplicationNode.class);
 
-  @Override
-  public Logger getLogger()
-  {
-    return logger;
-  }
 
   @Override
   public boolean isZero()
@@ -165,16 +157,17 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       return simplifiedIbpResult;
     }
 
-    String msg = String.format("TODO: support for integration of %s where left=%s[%s]∈%s and right=%s[%s]∈%s in %s where context=%s",
-                                              this,
-                                              left.getClass().getSimpleName(),
-                                              left,
-                                              left.type().getSimpleName(),
-                                              right.getClass().getSimpleName(),
-                                              right,
-                                              right.type().getSimpleName(),
-                                              expression.toStringExtended(),
-                                              expression.context);
+    String msg =
+               String.format("TODO: support for integration of %s where left=%s[%s]∈%s and right=%s[%s]∈%s in %s where context=%s",
+                             this,
+                             left.getClass().getSimpleName(),
+                             left,
+                             left.type().getSimpleName(),
+                             right.getClass().getSimpleName(),
+                             right,
+                             right.type().getSimpleName(),
+                             expression.toStringExtended(),
+                             expression.context);
     throw new CompilerException(msg);
   }
 
@@ -187,7 +180,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     return !expression.coDomainType.equals(Quaternion.class);
   }
 
-  private String debugNode(Node<D, R, F> n)
+  public static String debugNode(Node<?, ?, ?> n)
   {
     if (n == null)
     {
@@ -232,12 +225,12 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     simplifyDepth++;
     if (traceSimplify)
     {
-      System.err.printf("%s[%d] ENTER MultiplicationNode.simplify() this=%s left=%s right=%s%n",
-                        depthIndent(),
-                        simplifyDepth,
-                        System.identityHashCode(this),
-                        debugNode(left),
-                        debugNode(right));
+      logger.debug(String.format("%s[%d] ENTER simplify() this=%s left=%s right=%s%n",
+                                 depthIndent(),
+                                 simplifyDepth,
+                                 System.identityHashCode(this),
+                                 debugNode(left),
+                                 debugNode(right)));
     }
 
     if (left != null)
@@ -246,11 +239,11 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       left = left.simplify();
       if (traceSimplify && left != oldLeft)
       {
-        System.err.printf("%s[%d]   left changed: %s -> %s%n",
-                          depthIndent(),
-                          simplifyDepth,
-                          debugNode(oldLeft),
-                          debugNode(left));
+        logger.debug(String.format("%s[%d]   left changed: %s -> %s%n",
+                                   depthIndent(),
+                                   simplifyDepth,
+                                   debugNode(oldLeft),
+                                   debugNode(left)));
       }
     }
     if (right != null)
@@ -259,11 +252,11 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       right = right.simplify();
       if (traceSimplify && right != oldRight)
       {
-        System.err.printf("%s[%d]   right changed: %s -> %s%n",
-                          depthIndent(),
-                          simplifyDepth,
-                          debugNode(oldRight),
-                          debugNode(right));
+        logger.debug(String.format("%s[%d]   right changed: %s -> %s%n",
+                                   depthIndent(),
+                                   simplifyDepth,
+                                   debugNode(oldRight),
+                                   debugNode(right)));
       }
     }
 
@@ -271,7 +264,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     {
       if (traceSimplify)
       {
-        System.err.printf("%s[%d]   -> returning zero()%n", depthIndent(), simplifyDepth);
+        logger.debug(String.format("%s[%d]   -> returning zero()%n", depthIndent(), simplifyDepth));
       }
       simplifyDepth--;
       return zero();
@@ -281,10 +274,10 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     {
       if (traceSimplify)
       {
-        System.err.printf("%s[%d]   left.isOne() -> returning right=%s%n",
-                          depthIndent(),
-                          simplifyDepth,
-                          debugNode(right));
+        logger.debug(String.format("%s[%d]   left.isOne() -> returning right=%s%n",
+                                   depthIndent(),
+                                   simplifyDepth,
+                                   debugNode(right)));
       }
       simplifyDepth--;
       return right;
@@ -293,10 +286,10 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     {
       if (traceSimplify)
       {
-        System.err.printf("%s[%d]   right.isOne() -> returning left=%s%n",
-                          depthIndent(),
-                          simplifyDepth,
-                          debugNode(left));
+        logger.debug(String.format("%s[%d]   right.isOne() -> returning left=%s%n",
+                                   depthIndent(),
+                                   simplifyDepth,
+                                   debugNode(left)));
       }
       simplifyDepth--;
       return left;
@@ -305,9 +298,9 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     {
       if (traceSimplify)
       {
-        System.err.printf("%s[%d]   left.isNegOne() -> returning right.neg()%n",
-                          depthIndent(),
-                          simplifyDepth);
+        logger.debug(String.format("%s[%d]   left.isNegOne() -> returning right.neg()%n",
+                                   depthIndent(),
+                                   simplifyDepth));
       }
       simplifyDepth--;
       return right.neg();
@@ -316,9 +309,9 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     {
       if (traceSimplify)
       {
-        System.err.printf("%s[%d]   right.isNegOne() -> returning left.neg()%n",
-                          depthIndent(),
-                          simplifyDepth);
+        logger.debug(String.format("%s[%d]   right.isNegOne() -> returning left.neg()%n",
+                                   depthIndent(),
+                                   simplifyDepth));
       }
       simplifyDepth--;
       return left.neg();
@@ -329,10 +322,10 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     {
       if (traceSimplify)
       {
-        System.err.printf("%s[%d]   delta simplification -> %s%n",
-                          depthIndent(),
-                          simplifyDepth,
-                          debugNode(deltaSimplification));
+        logger.debug(String.format("%s[%d]   delta simplification -> %s%n",
+                                   depthIndent(),
+                                   simplifyDepth,
+                                   debugNode(deltaSimplification)));
       }
       simplifyDepth--;
       return deltaSimplification;
@@ -349,12 +342,12 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
           var product = lint.mul(rint, 0, rint);
           if (traceSimplify)
           {
-            System.err.printf("%s[%d]   integer folding: %s * %s = %s%n",
-                              depthIndent(),
-                              simplifyDepth,
-                              leftConstant.stringValue,
-                              rightConstant.stringValue,
-                              product);
+            logger.debug(String.format("%s[%d]   integer folding: %s * %s = %s%n",
+                                       depthIndent(),
+                                       simplifyDepth,
+                                       leftConstant.stringValue,
+                                       rightConstant.stringValue,
+                                       product));
           }
           simplifyDepth--;
           return expression.newLiteralConstant(product.toString());
@@ -374,11 +367,11 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
         var power      = leftPower.add(rightPower).simplify();
         if (traceSimplify)
         {
-          System.err.printf("%s[%d]   exponent addition: base^(%s+%s)%n",
-                            depthIndent(),
-                            simplifyDepth,
-                            leftPower,
-                            rightPower);
+          logger.debug(String.format("%s[%d]   exponent addition: base^(%s+%s)%n",
+                                     depthIndent(),
+                                     simplifyDepth,
+                                     leftPower,
+                                     rightPower));
         }
         simplifyDepth--;
         return leftBase.pow(power).simplify();
@@ -396,11 +389,11 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
         var exponentSum = leftFunction.arg.add(rightFunction.arg).simplify();
         if (traceSimplify)
         {
-          System.err.printf("%s[%d]   exp multiplication: exp(%s+%s)%n",
-                            depthIndent(),
-                            simplifyDepth,
-                            leftFunction.arg,
-                            rightFunction.arg);
+          logger.debug(String.format("%s[%d]   exp multiplication: exp(%s+%s)%n",
+                                     depthIndent(),
+                                     simplifyDepth,
+                                     leftFunction.arg,
+                                     rightFunction.arg));
         }
         simplifyDepth--;
         return exponentSum.exp().simplify();
@@ -417,7 +410,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       {
         if (traceSimplify)
         {
-          System.err.printf("%s[%d]   sqrt*sqrt -> arg%n", depthIndent(), simplifyDepth);
+          logger.debug(String.format("%s[%d]   sqrt*sqrt -> arg%n", depthIndent(), simplifyDepth));
         }
         simplifyDepth--;
         return leftFunction2.arg;
@@ -432,15 +425,15 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       var denominator = leftDiv.right.mul(rightDiv.right).simplify();
       if (traceSimplify)
       {
-        System.err.printf("%s[%d]   fraction combine: (%s/%s)*(%s/%s) → %s/%s%n",
-                          depthIndent(),
-                          simplifyDepth,
-                          leftDiv.left,
-                          leftDiv.right,
-                          rightDiv.left,
-                          rightDiv.right,
-                          numerator,
-                          denominator);
+        logger.debug(String.format("%s[%d]   fraction combine: (%s/%s)*(%s/%s) → %s/%s%n",
+                                   depthIndent(),
+                                   simplifyDepth,
+                                   leftDiv.left,
+                                   leftDiv.right,
+                                   rightDiv.left,
+                                   rightDiv.right,
+                                   numerator,
+                                   denominator));
       }
       simplifyDepth--;
       return numerator.div(denominator).simplify();
@@ -452,14 +445,14 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       var numerator = left.mul(rightDiv.left).simplify();
       if (traceSimplify)
       {
-        System.err.printf("%s[%d]   pull fraction right: %s*(%s/%s) → %s/%s%n",
-                          depthIndent(),
-                          simplifyDepth,
-                          left,
-                          rightDiv.left,
-                          rightDiv.right,
-                          numerator,
-                          rightDiv.right);
+        logger.debug(String.format("%s[%d]   pull fraction right: %s*(%s/%s) → %s/%s%n",
+                                   depthIndent(),
+                                   simplifyDepth,
+                                   left,
+                                   rightDiv.left,
+                                   rightDiv.right,
+                                   numerator,
+                                   rightDiv.right));
       }
       simplifyDepth--;
       return numerator.div(rightDiv.right).simplify();
@@ -471,14 +464,14 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       var numerator = leftDiv.left.mul(right).simplify();
       if (traceSimplify)
       {
-        System.err.printf("%s[%d]   pull fraction left: (%s/%s)*%s → %s/%s%n",
-                          depthIndent(),
-                          simplifyDepth,
-                          leftDiv.left,
-                          leftDiv.right,
-                          right,
-                          numerator,
-                          leftDiv.right);
+        logger.debug(String.format("%s[%d]   pull fraction left: (%s/%s)*%s → %s/%s%n",
+                                   depthIndent(),
+                                   simplifyDepth,
+                                   leftDiv.left,
+                                   leftDiv.right,
+                                   right,
+                                   numerator,
+                                   leftDiv.right));
       }
       simplifyDepth--;
       return numerator.div(leftDiv.right).simplify();
@@ -486,10 +479,10 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
 
     if (traceSimplify)
     {
-      System.err.printf("%s[%d] EXIT MultiplicationNode.simplify() returning this=%s%n",
-                        depthIndent(),
-                        simplifyDepth,
-                        debugNode(this));
+      logger.debug(String.format("%s[%d] EXIT MultiplicationNode.simplify() returning this=%s%n",
+                                 depthIndent(),
+                                 simplifyDepth,
+                                 debugNode(this)));
     }
     simplifyDepth--;
     return this;

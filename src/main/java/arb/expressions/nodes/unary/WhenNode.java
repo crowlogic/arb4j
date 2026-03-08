@@ -38,13 +38,7 @@ import arb.functions.Function;
 public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extends
                      UnaryOperationNode<D, R, F>
 {
-  public static final Logger logger = LoggerFactory.getLogger(WhenNode.class);
 
-  @Override
-  public Logger getLogger()
-  {
-    return logger;
-  }
 
   private static final String INT_METHOD_DESCRIPTOR       = Compiler.getMethodDescriptor(int.class);
   private static final String INTEGER_CLASS_INTERNAL_NAME = Type.getInternalName(Integer.class);

@@ -44,11 +44,7 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
 
   public static final Logger  logger        = LoggerFactory.getLogger(PolynomialIntegralNode.class);
 
-  @Override
-  public Logger getLogger()
-  {
-    return logger;
-  }
+
 
   @Override
   public String toString()

@@ -20,11 +20,6 @@ public class LimitNode<D, C, F extends Function<? extends D, ? extends C>> exten
 {
   public static final Logger logger = LoggerFactory.getLogger(LimitNode.class);
 
-  @Override
-  public Logger getLogger()
-  {
-    return logger;
-  }
 
   private Node<D, C, F>              operand;
   private VariableReference<D, C, F> limitingVariableReference;

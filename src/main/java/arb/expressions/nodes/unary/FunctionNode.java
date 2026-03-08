@@ -105,12 +105,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
-  public Logger getLogger()
-  {
-    return logger;
-  }
-
-  @Override
   public boolean isLogarithmic()
   {
     return "log".equals(functionName) || "ln".equals(functionName);

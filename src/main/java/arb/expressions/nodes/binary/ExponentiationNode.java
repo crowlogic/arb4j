@@ -1,8 +1,6 @@
 package arb.expressions.nodes.binary;
 
 import org.objectweb.asm.MethodVisitor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import arb.*;
 import arb.Integer;
@@ -72,13 +70,7 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     return left.isZero() && !right.isZero();
   }
 
-  public static final Logger logger = LoggerFactory.getLogger(ExponentiationNode.class);
 
-  @Override
-  public Logger getLogger()
-  {
-    return logger;
-  }
 
   /**
    * Returns true when this exponentiation node has a closed-form antiderivative

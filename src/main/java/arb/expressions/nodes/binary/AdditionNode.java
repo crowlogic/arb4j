@@ -2,9 +2,6 @@ package arb.expressions.nodes.binary;
 
 import static java.lang.String.format;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import arb.Field;
 import arb.Fraction;
 import arb.Integer;
@@ -171,13 +168,7 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return format("\\left(%s + %s\\right)", left.typeset(), right.typeset());
   }
 
-  public static final Logger logger = LoggerFactory.getLogger(AdditionNode.class);
 
-  @Override
-  public Logger getLogger()
-  {
-    return logger;
-  }
 
   @Override
   public boolean isZero()

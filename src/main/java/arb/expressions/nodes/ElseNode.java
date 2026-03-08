@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -25,13 +23,7 @@ import arb.functions.Function;
 public class ElseNode<D, R, F extends Function<? extends D, ? extends R>> extends
                      Node<D, R, F>
 {
-  public static final Logger logger = LoggerFactory.getLogger(ElseNode.class);
-  
-  @Override
-  public Logger getLogger()
-  {
-    return logger;
-  }
+
   public ElseNode(Expression<D, R, F> expression)
   {
     super(expression);

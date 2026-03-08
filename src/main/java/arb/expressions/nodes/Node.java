@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 import org.objectweb.asm.MethodVisitor;
 import org.scilab.forge.jlatexmath.LaTeXAtom;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import arb.Field;
 import arb.Typesettable;
@@ -406,7 +407,12 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public abstract MethodVisitor generate(MethodVisitor mv, Class<?> resultType);
 
-  public abstract Logger getLogger();
+  public final Logger logger = LoggerFactory.getLogger(getClass());
+
+  public final Logger getLogger()
+  {
+    return logger;
+  }
 
   public Class<?> generateCastTo(MethodVisitor methodVisitor, Class<?> type)
   {

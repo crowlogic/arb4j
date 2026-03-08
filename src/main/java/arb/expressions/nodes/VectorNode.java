@@ -34,11 +34,7 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
 {
   public static final Logger logger = LoggerFactory.getLogger(VectorNode.class);
 
-  @Override
-  public Logger getLogger()
-  {
-   return logger;
-  }
+
 
   @Override
   public int dim()
