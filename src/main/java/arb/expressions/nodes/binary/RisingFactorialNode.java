@@ -1,8 +1,5 @@
 package arb.expressions.nodes.binary;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import arb.*;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
@@ -21,11 +18,9 @@ import arb.functions.Function;
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
-public class AscendingFactorializationNode<D, R, F extends Function<? extends D, ? extends R>>
-                                          extends
-                                          BinaryOperationNode<D, R, F>
+public class RisingFactorialNode<D, R, F extends Function<? extends D, ? extends R>> extends
+                                BinaryOperationNode<D, R, F>
 {
-  public static final Logger logger = LoggerFactory.getLogger(AscendingFactorializationNode.class);
 
   @Override
   public boolean isZero()
@@ -70,9 +65,9 @@ public class AscendingFactorializationNode<D, R, F extends Function<? extends D,
    * @param right
    * @param expression
    */
-  public AscendingFactorializationNode(Node<D, R, F> left,
-                                       Node<D, R, F> right,
-                                       Expression<D, R, F> expression)
+  public RisingFactorialNode(Node<D, R, F> left,
+                             Node<D, R, F> right,
+                             Expression<D, R, F> expression)
   {
     super(expression,
           left,
@@ -128,9 +123,9 @@ public class AscendingFactorializationNode<D, R, F extends Function<? extends D,
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    return new AscendingFactorializationNode<E, S, G>(left.spliceInto(newExpression),
-                                                      right.spliceInto(newExpression),
-                                                      newExpression);
+    return new RisingFactorialNode<E, S, G>(left.spliceInto(newExpression),
+                                            right.spliceInto(newExpression),
+                                            newExpression);
   }
 
   @Override

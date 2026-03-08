@@ -3460,13 +3460,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     if (nextCharacterIs('₍'))
     {
-      return new AscendingFactorializationNode<>(node,
+      return new RisingFactorialNode<>(node,
                                                  resolve(),
                                                  require('₎'));
     }
     if (nextCharacterIs('⋰'))
     {
-      return new AscendingFactorializationNode<>(node,
+      return new RisingFactorialNode<>(node,
                                                  resolve(),
                                                  this);
     }
