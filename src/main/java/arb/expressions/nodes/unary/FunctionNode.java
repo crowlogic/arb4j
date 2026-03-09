@@ -13,7 +13,8 @@ import org.slf4j.LoggerFactory;
 
 import arb.*;
 import arb.Integer;
-import arb.exceptions.*;
+import arb.exceptions.CompilerException;
+import arb.exceptions.UndefinedReferenceException;
 import arb.expressions.*;
 import arb.expressions.Context;
 import arb.expressions.nodes.*;
@@ -57,7 +58,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> fractionalDerivative(VariableNode<D, R, F> variable, Node<D, R, F> order)
   {
-    //assert false : "bah";
+    // assert false : "bah";
     // TODO: insert hook for closed-form of Jacobi polyonmial Caputo derivative
     return super.fractionalDerivative(variable, order);
   }
@@ -422,18 +423,12 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     case "δ": // Dirac delta function
       // The derivative of δ(x) is 0 for base delta
       // The derivative of δ'(x) is δ''(x), etc.
-      if (derivativeOrder == 0)
-      {
-        return zero();
-      }
-      else
-      {
-        return new FunctionNode<>(expression,
-                                  functionName,
-                                  arg,
-                                  derivativeOrder + 1);
-      }
-//      return δ().derivative();
+      return derivativeOrder == 0 ? zero()
+                                  : new FunctionNode<>(expression,
+                                                       functionName,
+                                                       arg,
+                                                       derivativeOrder + 1);
+
     case "θ": // Heaviside step function
       return arg.δ();
     case "sqrt":
@@ -507,10 +502,10 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
 
     var instance = functionMapping.instance;
-    
+
     if (instance == null)
     {
-      if (  functionMapping.expression != null )
+      if (functionMapping.expression != null)
       {
         return functionMapping.expression.rootNode.spliceInto(expression).derivative().simplify();
       }
