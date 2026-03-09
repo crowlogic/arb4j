@@ -55,6 +55,14 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 {
 
   @Override
+  public Node<D, R, F> fractionalDerivative(VariableNode<D, R, F> variable, Node<D, R, F> order)
+  {
+    //assert false : "bah";
+    // TODO: insert hook for closed-form of Jacobi polyonmial Caputo derivative
+    return super.fractionalDerivative(variable, order);
+  }
+
+  @Override
   public <T extends Field<T>> T evaluate(Class<T> resultType, int bits, T result)
   {
     if (result == null)
@@ -425,6 +433,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                   arg,
                                   derivativeOrder + 1);
       }
+//      return δ().derivative();
     case "θ": // Heaviside step function
       return arg.δ();
     case "sqrt":
