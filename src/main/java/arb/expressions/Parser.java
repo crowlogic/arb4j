@@ -354,7 +354,7 @@ public class Parser
    * @param expression The expression to transform.
    * @return The expression with the described substitutions made.
    */
-  public static String transformToJavaAcceptableCharacters(String expression)
+  public static String normalize(String expression)
   {
     if (expression == null)
     {

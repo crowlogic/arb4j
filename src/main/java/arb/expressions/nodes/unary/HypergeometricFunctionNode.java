@@ -258,14 +258,12 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
     if (argumentDependsOnInput)
     {
-      // Arg depends on input: compile as Function<FunctionalType, FunctionalType>
       argDomainType    = functionalType();
       argCoDomainType  = functionalType();
       argFunctionClass = Function.class;
     }
     else
     {
-      // Arg is constant: compile as NullaryFunction returning functional type
       argDomainType    = Object.class;
       argCoDomainType  = functionalType();
       argFunctionClass = nullaryFunctionClass();
@@ -275,7 +273,6 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                                          argCoDomainType,
                                          (Class<Function<?, ?>>) argFunctionClass);
 
-    argExpression.className          = expression.className + "Arg" + System.identityHashCode(this);
     argExpression.context            = expression.context;
     argExpression.upstream = expression;
 
@@ -295,15 +292,27 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       }
     }
 
+    // Propagate outer indeterminate variables with the correct arg coDomain type
+    for (var outerIndeterminate : expression.getIndeterminateVariables())
+    {
+      var splicedIndeterminate = outerIndeterminate.spliceInto(argExpression).asVariable();
+      splicedIndeterminate.isIndeterminate = true;
+      splicedIndeterminate.reference.type  = argCoDomainType;
+      argExpression.pushIndeterminateVariable(splicedIndeterminate);
+    }
+
     argExpression.rootNode          = arg.spliceInto(argExpression);
     argExpression.rootNode.isRootNode = true;
     argExpression.updateStringRepresentation();
+    argExpression.className          = expression.className + "Arg" + Parser.transformToAcceptableJavaIdentifier(argExpression.toString());
+
     argExpression.generate();
 
     argFunctionMapping   = expression.registerSubexpression(argExpression);
     argFunctionFieldName = argFunctionMapping.functionName;
     expression.referencedFunctions.put(argFunctionFieldName, argFunctionMapping);
   }
+
 
   public void generateHypergeometricFunctionInitializer(MethodVisitor mv)
   {
