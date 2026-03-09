@@ -409,7 +409,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     this.genericFunctionClassInternalName = Type.getInternalName(function);
     this.functionClassDescriptor          = function.descriptorString();
-    this.setExpression(Parser.transformToJavaAcceptableCharacters(expression));
+    this.setExpression(Parser.normalize(expression));
     this.context      = context;
     this.functionName = functionName;
 
@@ -1245,7 +1245,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                 System.identityHashCode(this),
                 remaining());
     }
-    setExpression(transformToJavaAcceptableCharacters(getExpression()));
+    setExpression(normalize(getExpression()));
 
     int searchPos = 0;
     int rightArrowIndex;
@@ -3203,7 +3203,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     if (functionName == null)
     {
-      functionName = Parser.transformToJavaAcceptableCharacters(getExpression());
+      functionName = Parser.normalize(getExpression());
     }
 
     context.functionEntryStream()

@@ -325,7 +325,7 @@ public interface Function<D, CO> extends
                Class<? extends Q> functionClass,
                String expression)
   {
-    return parse(Parser.transformToJavaAcceptableCharacters(expression),
+    return parse(Parser.normalize(expression),
                  expression,
                  null,
                  domainClass,

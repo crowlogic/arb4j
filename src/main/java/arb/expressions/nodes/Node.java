@@ -81,7 +81,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
     expression.rootNode     = newNode;
     expression.updateStringRepresentation();
-    expression.className = Parser.transformToJavaAcceptableCharacters(expression.getExpression());
+    expression.className = Parser.normalize(expression.getExpression());
     return expression;
   }
 
