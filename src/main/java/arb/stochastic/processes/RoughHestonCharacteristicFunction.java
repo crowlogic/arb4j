@@ -1,6 +1,7 @@
 package arb.stochastic.processes;
 
 import arb.Complex;
+import arb.Integer;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -20,6 +21,7 @@ import arb.utensils.Utensils;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
+@SuppressWarnings("unused")
 public class RoughHestonCharacteristicFunction implements
                                                ComplexFunction,
                                                AutoCloseable
@@ -57,24 +59,25 @@ public class RoughHestonCharacteristicFunction implements
     this.ρ    = ρ.setName("ρ");
     this.μ    = μ.setName("μ");
 
-    arb.Integer NInt    = new arb.Integer(N,
-                                          "N");
+    Integer NInt    = new Integer(N,
+                                  "N");
 
-    Context     context = new Context(this.λ,
-                                      this.θ,
-                                      this.ν,
-                                      this.V0,
-                                      this.ρ,
-                                      this.μ,
-                                      NInt);
+    Context context = new Context(this.λ,
+                                  this.θ,
+                                  this.ν,
+                                  this.V0,
+                                  this.ρ,
+                                  this.μ,
+                                  NInt);
 
     c0 = ComplexFunction.express("c0:u➔½⋅(-u²-ⅈ⋅u)", context);
     c1 = ComplexFunction.express("c1:u➔λ⋅(ⅈ⋅u⋅ρ⋅ν-1)", context);
     c2 = ComplexFunction.express("c2:u➔½⋅ν²", context);
-    
-    // declare a prototype since recursion is busted for multivar functions presently (but not for long)
+
+    // declare a prototype since recursion is busted for multivar functions
+    // presently (but not for long)
     ComplexFunctionSequence.express("a:k->u->0", context);
-    
+
     a =
       ComplexFunctionSequence.express("a:k➔u➔when(k=1,c0(u)/Γ(μ+1),else,Γ((k-1)⋅μ+1)/Γ(k⋅μ+1)⋅(c1(u)⋅a(k-1)(u)+c2(u)⋅Σa(j)(u)⋅a(k-1-j)(u){j=1…k-2}))", context);
     Φ = ComplexFunctionSequence.express("Φ:k➔u➔a(k)(u)⋅(θ⋅λ⋅u^(k⋅μ+1)/(k⋅μ+1)+V0⋅Γ(k⋅μ+1)/Γ((k-1)⋅μ+2)⋅u^((k-1)⋅μ+1))", context);
