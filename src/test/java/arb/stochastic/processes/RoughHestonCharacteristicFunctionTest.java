@@ -183,7 +183,7 @@ public class RoughHestonCharacteristicFunctionTest extends
       u.im().zero();
       φ.t.set("0.0001", prec);
       φ.evaluate(u, 1, prec, res);
-      System.out.println( "1.0 = " + res);
+     // System.out.println( "1.0 = " + res);
        
       assertEquals("Re(φ(u,0⁺)) should approach 1", 1.0, res.re().doubleValue(), 1e-3);
       assertEquals("Im(φ(u,0⁺)) should approach 0", 0.0, res.im().doubleValue(), 1e-3);
