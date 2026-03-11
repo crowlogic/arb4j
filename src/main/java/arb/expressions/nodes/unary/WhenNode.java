@@ -11,8 +11,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.objectweb.asm.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import arb.Integer;
 import arb.exceptions.CompilerException;
@@ -39,9 +37,8 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
                      UnaryOperationNode<D, R, F>
 {
 
-
-  private static final String INT_METHOD_DESCRIPTOR       = Compiler.getMethodDescriptor(int.class);
   private static final String INTEGER_CLASS_INTERNAL_NAME = Type.getInternalName(Integer.class);
+  private static final String INT_METHOD_DESCRIPTOR       = Compiler.getMethodDescriptor(int.class);
 
   public static <D, R, F extends Function<? extends D, ? extends R>>
          Node<D, R, F>
@@ -60,21 +57,16 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
 
   public TreeMap<Integer, Node<D, R, F>> cases;
 
-  private Label                          defaultLabel = new Label();
-
-  private Label                          endSwitch    = new Label();
-  private Label[]                        labels       = null;
+  private Label                          defaultLabel    = new Label();
+  private Label                          endSwitch       = new Label();
+  private Label[]                        labels          = null;
+  private VariableNode<D, R, F>          switchVariable;
 
   public WhenNode(Expression<D, R, F> expression)
   {
     super(expression,
           null);
 
-    if (!expression.domainType.equals(Integer.class))
-    {
-      throw new CompilerException("TODO: support when statements for types other than Integer such as "
-                                  + expression.domainType);
-    }
     cases = new TreeMap<>();
 
     do
@@ -108,6 +100,24 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     }
   }
 
+  public <E, S, G extends Function<? extends E, ? extends S>> WhenNode(
+                                                                       Expression<D, R, F> expression,
+                                                                       Node<D, R, F> defaultNode,
+                                                                       TreeMap<Integer, Node<E, S, G>> sourceCases,
+                                                                       VariableNode<D, R, F> switchVariable)
+  {
+    super(expression,
+          defaultNode);
+    this.switchVariable = switchVariable;
+    this.cases          = new TreeMap<>();
+
+    for (var entry : sourceCases.entrySet())
+    {
+      var value = entry.getValue().spliceInto(expression);
+      this.cases.put(entry.getKey(), value);
+    }
+  }
+
   @Override
   public void accept(Consumer<Node<D, R, F>> t)
   {
@@ -129,18 +139,48 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
 
     WhenNode<D, R, F> result                = new WhenNode<>(expression,
                                                              differentiatedDefault,
-                                                             differentiatedCases);
+                                                             differentiatedCases,
+                                                             switchVariable);
     return result;
+  }
+
+  private boolean isIndependentVariableOfThisOrAncestorExpression(VariableNode<D, R, F> variable)
+  {
+    Expression<?, ?, ?> expr = expression;
+    while (expr != null)
+    {
+      if (expr.independentVariable != null
+          && variable.reference.equals(expr.independentVariable.reference))
+      {
+        return true;
+      }
+      expr = expr.upstreamExpression;
+    }
+    return false;
   }
 
   void evaluateCase(TreeMap<Integer, Node<D, R, F>> cases, VariableNode<D, R, F> variable)
   {
-    if (!variable.reference.equals(expression.independentVariable.reference))
+    if (!isIndependentVariableOfThisOrAncestorExpression(variable))
     {
-      throw new CompilerException("condition of when statement must be the equality of the input variable which is "
-                                  + expression.independentVariable
-                                  + " not "
-                                  + variable);
+      throw new CompilerException("condition of when statement must be the equality of an independent variable "
+                                  + "of this or an enclosing expression, but got "
+                                  + variable
+                                  + " which is not an independent variable of "
+                                  + expression
+                                  + " or any of its ancestors");
+    }
+
+    if (switchVariable == null)
+    {
+      switchVariable = variable;
+    }
+    else if (!switchVariable.reference.equals(variable.reference))
+    {
+      throw new CompilerException("all cases in a when statement must switch on the same variable, got "
+                                  + variable
+                                  + " but expected "
+                                  + switchVariable);
     }
 
     expression.require('=');
@@ -190,8 +230,9 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    assert expression.coDomainType.equals(resultType) : String.format("expression.domain = %s != Integer, the only type supported presently\n",
-                                                                      expression.domainType);
+    assert expression.coDomainType.equals(resultType) : String.format("expression.coDomainType = %s != resultType = %s",
+                                                                      expression.coDomainType,
+                                                                      resultType);
 
     labels = new Label[cases.size()];
 
@@ -228,7 +269,15 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
 
   public void generateIndex(MethodVisitor mv)
   {
-    cast(loadInputParameter(mv), expression.domainType);
+    if (switchVariable != null
+        && !switchVariable.reference.equals(expression.independentVariable.reference))
+    {
+      switchVariable.generate(mv, Integer.class);
+    }
+    else
+    {
+      cast(loadInputParameter(mv), expression.domainType);
+    }
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                        INTEGER_CLASS_INTERNAL_NAME,
                        "getSignedValue",
@@ -239,7 +288,6 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   @Override
   public List<Node<D, R, F>> getBranches()
   {
-    // the default branch is stored in arg
     return Stream.concat(cases.values().stream(), Stream.of(arg)).toList();
   }
 
@@ -256,7 +304,8 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
 
     WhenNode<D, R, F> result            = new WhenNode<>(expression,
                                                          integratedDefault,
-                                                         integratedCases);
+                                                         integratedCases,
+                                                         switchVariable);
     return result;
   }
 
@@ -279,7 +328,8 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   {
     return new WhenNode<E, S, G>(newExpression,
                                  arg.spliceInto(newExpression),
-                                 cases);
+                                 cases,
+                                 switchVariable != null ? switchVariable.spliceInto(newExpression) : null);
   }
 
   public <E, S, G extends Function<? extends E, ? extends S>>
@@ -297,26 +347,31 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     return '≡';
   }
 
-  /**
-   * @return something that looks like
-   *         'when(n=0,1,n=1,(C(1)*x-β+α)/2,else,(A(n)*P(n-1)-B(n)*P(n-2))/E(n))'
-   */
   @Override
   public String toString()
   {
-    String caseString = cases.entrySet()
-                             .stream()
-                             .map(node -> formatCase(node))
-                             .collect(Collectors.joining(","));
+    String switchVar   = switchVariable != null ? switchVariable.toString()
+                                               : expression.getIndependentVariable().toString();
+    String caseString  = cases.entrySet()
+                              .stream()
+                              .map(node -> formatCase(node, switchVar))
+                              .collect(Collectors.joining(","));
     return String.format("when(%s,else,%s)", caseString, arg);
+  }
+
+  protected String formatCase(Entry<Integer, Node<D, R, F>> node, String switchVar)
+  {
+    return String.format("%s=%s,%s",
+                         switchVar,
+                         node.getKey(),
+                         node.getValue());
   }
 
   protected String formatCase(Entry<Integer, Node<D, R, F>> node)
   {
-    return String.format("%s=%s,%s",
-                         expression.getIndependentVariable(),
-                         node.getKey(),
-                         node.getValue());
+    return formatCase(node,
+                      switchVariable != null ? switchVariable.toString()
+                                            : expression.getIndependentVariable().toString());
   }
 
   @Override
@@ -328,24 +383,25 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   @Override
   public String typeset()
   {
+    String switchVar = switchVariable != null ? switchVariable.typeset()
+                                             : expression.getIndependentVariable().typeset();
     StringBuilder sb = new StringBuilder();
-    sb.append("\\left\\{\\begin{array}{ll}\n");
+    sb.append("\\\\left\\\\{\\\\begin{array}{ll}\\n");
 
     for (var entry : cases.entrySet())
     {
       sb.append(entry.getValue().typeset());
-      sb.append(" & \\text{if } ");
-      sb.append(expression.getIndependentVariable().typeset());
+      sb.append(" & \\\\text{if } ");
+      sb.append(switchVar);
       sb.append(" = ");
       sb.append(entry.getKey());
-      sb.append("\\\\\n");
+      sb.append("\\\\\\\\\\n");
     }
 
     sb.append(arg.typeset());
-    sb.append(" & \\text{otherwise}");
-    sb.append("\n\\end{array}\\right.");
+    sb.append(" & \\\\text{otherwise}");
+    sb.append("\\n\\\\end{array}\\\\right.");
 
     return sb.toString();
   }
-
 }

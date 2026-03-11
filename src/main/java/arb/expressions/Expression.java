@@ -240,7 +240,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                             IntegerPolynomial.class));
   }
 
-  public Expression<?, ?, ?>                                 upstream;
+  public Expression<?, ?, ?>                                 upstreamExpression;
 
   public char                                                character                        = 0;
 
@@ -344,7 +344,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       {
         return true;
       }
-      e = e.upstream;
+      e = e.upstreamExpression;
     }
     return false;
   }
@@ -353,7 +353,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                     Class<? extends C> coDomain,
                     Class<? extends F> function)
   {
-    this.upstream                         = null;
+    this.upstreamExpression                         = null;
     this.domainType                       = domain;
     this.coDomainType                     = coDomain;
     this.functionClass                    = function;
@@ -401,7 +401,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                     Expression<?, ?, ?> ascenentExpression)
   {
     assert className != null : "className needs to be specified";
-    this.upstream                         = ascenentExpression;
+    this.upstreamExpression                         = ascenentExpression;
     this.className                        = className;
     this.domainType                       = domain;
     this.coDomainType                     = codomain;
@@ -509,9 +509,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       return independentVariable;
     }
-    if (upstream != null)
+    if (upstreamExpression != null)
     {
-      var immediatelyUpstreamIndependentVariable = upstream.getIndependentVariable();
+      var immediatelyUpstreamIndependentVariable = upstreamExpression.getIndependentVariable();
       if (immediatelyUpstreamIndependentVariable != null)
       {
         return immediatelyUpstreamIndependentVariable;
@@ -531,9 +531,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean anyUpstreamIndependentVariableIsNamed(String name)
   {
-    if (upstream != null)
+    if (upstreamExpression != null)
     {
-      if (upstream.thisOrAnyUpstreamIndependentVariableIsNamed(name))
+      if (upstreamExpression.thisOrAnyUpstreamIndependentVariableIsNamed(name))
       {
         return true;
       }
@@ -640,7 +640,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                        getExpression(),
                                        context,
                                        functionName,
-                                       upstream);
+                                       upstreamExpression);
     expr.context             = context;
     expr.independentVariable = independentVariable;
 
@@ -691,9 +691,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     assert context != null : "context is null for "
                              + this
                              + " and upstreamExpression="
-                             + upstream
+                             + upstreamExpression
                              + " upstreamExpression.context="
-                             + upstream.context;
+                             + upstreamExpression.context;
     compiledClass = loadFunctionClass(className, instructions, context);
     return this;
   }
@@ -876,9 +876,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected void declareVariables(ClassVisitor classVisitor)
   {
     // Declare the parent's independent variable as a field so we can receive it
-    if (upstream != null)
+    if (upstreamExpression != null)
     {
-      var upstreamIndependentVariableNode = upstream.independentVariable;
+      var upstreamIndependentVariableNode = upstreamExpression.independentVariable;
       if (upstreamIndependentVariableNode != null
                     && !upstreamIndependentVariableNode.type().equals(Object.class))
       {
@@ -946,9 +946,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return false;
     }
 
-    if (upstream != null)
+    if (upstreamExpression != null)
     {
-      VariableNode<?, ?, ?> upstreamIndependentVariable = upstream.independentVariable;
+      VariableNode<?, ?, ?> upstreamIndependentVariable = upstreamExpression.independentVariable;
       if (upstreamIndependentVariable != null
                     && varName.equals(upstreamIndependentVariable.getName()))
       {
@@ -987,9 +987,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         return true;
       }
     }
-    if (upstream != null)
+    if (upstreamExpression != null)
     {
-      if (upstream.anyUpstreamIndeterminateVariableIsNamed(name))
+      if (upstreamExpression.anyUpstreamIndeterminateVariableIsNamed(name))
       {
         return true;
       }
@@ -1125,7 +1125,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * parameter becomes the sub-expression's <em>independent</em> variable,
    * establishing a proper lexical scope boundary. Upstream variables (the
    * parent's independent variable, context variables, etc.) are resolved through
-   * the {@link #upstream} chain, which
+   * the {@link #upstreamExpression} chain, which
    * {@link arb.expressions.nodes.VariableNode#resolveReference} already supports.
    * <p>
    * The lambda parameter is still pushed as an indeterminate on {@code this} so
@@ -1139,72 +1139,46 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (trace)
     {
-      log.debug("#{}: parseLambda( expr={},  paramName = {} at position {} where remaining={} )",
+      log.debug("→ parseLambda(#{}) expr={}, paramName={} at position={} where remaining={}",
                 System.identityHashCode(this),
                 getExpression(),
                 paramName,
                 position,
                 remaining());
     }
-
     checkLambdaParameterConflicts(paramName);
 
-    // Register the lambda parameter as an indeterminate on THIS expression.
-    // newFunctionalExpression() expects to find it on the indeterminate stack
-    // during code generation (it peeks the top to promote to independent var
-    // of the generated functional class).
     var paramVar   = newVariableNode(paramName);
     var savedParam = paramVar;
-
     require('➔');
 
     // --- Create a sub-expression for proper lexical scoping (#876) ---
     Expression<D, C, F> subExpr = cloneExpression();
-
-    // Establish the parent→child relationship so that VariableNode
-    // resolveReference can walk up the chain to find upstream variables.
-    subExpr.upstream            = this;
-
-    // Clear the sub-expression's independent variable. When
-    // newVariableNode(paramName) is called below, resolveReference will
-    // find no existing independent variable and assign paramName to that
-    // role — giving the lambda parameter the correct semantics of being
-    // the independent variable of this scope rather than a flat
-    // indeterminate on the parent's stack.
-    subExpr.independentVariable = null;
-
-    // Clear indeterminate variables. The parent's indeterminates are
-    // reachable through the upstreamExpression chain; keeping stale
-    // copies here would cause duplicate resolution and incorrect scoping.
+    subExpr.upstreamExpression   = this;
+    subExpr.independentVariable  = null;
     subExpr.clearIndeterminateVariables();
-
-    // Clear rootNode so the sub-expression is a fresh parse target
     subExpr.rootNode = null;
-
-    // Resolve paramName as the sub-expression's independent variable.
     subExpr.newVariableNode(paramName);
 
-    // Parse the lambda body in the properly scoped sub-expression.
-    // All variable lookups go through subExpr first, then walk
-    // upstreamExpression to find x, n, α, etc.
     var node = subExpr.resolve();
 
-    // Sync the parser position back to the parent expression so that
-    // parsing can continue after the lambda body.
+
+    // Sync the parser position back to the parent expression
     this.position          = subExpr.position;
     this.character         = subExpr.character;
     this.previousCharacter = subExpr.previousCharacter;
 
     // Ensure the lambda parameter is on top of THIS expression's
-    // indeterminate stack for newFunctionalExpression() to retrieve.
+    // indeterminate stack for newFunctionalExpression to retrieve.
     if (!indeterminateVariables.isEmpty() && indeterminateVariables.peek() != savedParam)
     {
       indeterminateVariables.remove(savedParam);
-      indeterminateVariables.push(savedParam);
     }
+    indeterminateVariables.push(savedParam);
 
     return node;
   }
+
 
   private void checkLambdaParameterConflicts(String paramName)
   {
@@ -1533,7 +1507,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     // Only root expressions create their own Context.
     // Child arg classes receive the parent's context via initialize() (#842)
-    if (context != null && upstream == null)
+    if (context != null && upstreamExpression == null)
     {
       generateContextInitializer(mv);
     }
@@ -1681,7 +1655,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                              System.identityHashCode(containingExpression),
                                              containingExpression.independentVariable,
                                              containingExpression.indeterminateVariables,
-                                             containingExpression.upstream));
+                                             containingExpression.upstreamExpression));
 
   }
 
@@ -2055,7 +2029,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       String nestedClassName = funcMapping.functionName;
 
       // Share parent's context with child arg class (#842)
-      if (nestedExpr.upstream != null)
+      if (nestedExpr.upstreamExpression != null)
       {
         String contextTypeDesc = Context.class.descriptorString();
         // Generate: this.<funcFieldName>.context = this.context
@@ -2079,8 +2053,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         }
 
         // Skip if already declared as upstream independent variable
-        if (upstream != null && upstream.independentVariable != null
-                      && varName.equals(upstream.independentVariable.getName()))
+        if (upstreamExpression != null && upstreamExpression.independentVariable != null
+                      && varName.equals(upstreamExpression.independentVariable.getName()))
         {
           continue;
         }
@@ -2228,7 +2202,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     constructNewObject(loadThisOntoStack(mv), functionName);
     invokeDefaultConstructor(duplicateTopOfTheStack(mv), functionName);
     FunctionMapping<?, ?, ?> mapping = referencedFunctions.get(functionName);
-    assert mapping != null : "no function mapping for " + functionName;
+    if ( mapping == null )
+    {
+      if ( context != null)
+      {
+        mapping = context.getFunctionMapping(functionName);
+      }
+    }
+    assert mapping != null : "no function mapping for " + functionName + " in " + context.toStringExtended();
     putField(mv, className, functionName, mapping.functionFieldDescriptor());
     initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv),
                                                    className,
@@ -2950,7 +2931,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     var functionalExpression = new Expression<Object, Object, Function<?, ?>>(funcDomain,
                                                                               funcCoDomain,
                                                                               funcClass);
-    functionalExpression.upstream = this;
+    functionalExpression.upstreamExpression = this;
     if (context == null)
     {
       context = new Context();
@@ -3822,7 +3803,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       return true;
     }
-    return upstream != null && upstream.thisOrAnyUpstreamExpressionHasIndeterminantVariable();
+    return upstreamExpression != null && upstreamExpression.thisOrAnyUpstreamExpressionHasIndeterminantVariable();
   }
 
   protected void throwUnexpectedCharacterException()
@@ -3946,12 +3927,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   @Override
   public void accept(Consumer<Expression<?, ?, ?>> t)
   {
-    assert upstream != this;
+    assert upstreamExpression != this;
     t.accept(this);
 
-    if (upstream != null)
+    if (upstreamExpression != null)
     {
-      upstream.accept(t);
+      upstreamExpression.accept(t);
     }
 
   }
@@ -4045,7 +4026,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       upstreamExpressions.add(e);
     }
-    while ((e = e.upstream) != null);
+    while ((e = e.upstreamExpression) != null);
     return upstreamExpressions;
   }
 
