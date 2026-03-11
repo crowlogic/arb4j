@@ -86,28 +86,26 @@ public class RoughHestonCharacteristicFunction implements
    * @param prec bit-precision ≥ 32
    */
   @SuppressWarnings("resource")
-  public RoughHestonCharacteristicFunction(Real λ,
-                                           Real θ,
-                                           Real ν,
-                                           Real V0,
-                                           Real ρ,
-                                           Real μ,
-                                           int  N,
-                                           int  prec)
+  public RoughHestonCharacteristicFunction(Real λ, Real θ, Real ν, Real V0, Real ρ, Real μ, int N, int prec)
   {
-    if (N    <  1)  throw new IllegalArgumentException("N must be ≥ 1");
-    if (prec < 32)  throw new IllegalArgumentException("prec must be ≥ 32");
+    if (N < 1)
+      throw new IllegalArgumentException("N must be ≥ 1");
+    if (prec < 32)
+      throw new IllegalArgumentException("prec must be ≥ 32");
 
-    this.prec = prec;
-    this.λ    = λ.setName("λ");
-    this.θ    = θ.setName("θ");
-    this.ν    = ν.setName("ν");
-    this.V0   = V0.setName("V0");
-    this.ρ    = ρ.setName("ρ");
-    this.μ    = μ.setName("μ");
-    this.N    = new Integer(N, "N");
-    this.k    = new Integer(1, "k");
-    this.j    = new Integer(1, "j");
+    this.prec     = prec;
+    this.λ        = λ.setName("λ");
+    this.θ        = θ.setName("θ");
+    this.ν        = ν.setName("ν");
+    this.V0       = V0.setName("V0");
+    this.ρ        = ρ.setName("ρ");
+    this.μ        = μ.setName("μ");
+    this.N        = new Integer(N,
+                                "N");
+    this.k        = new Integer(1,
+                                "k");
+    this.j        = new Integer(1,
+                                "j");
 
     u             = new Complex().setName("u");
     t             = new Real().setName("t");
@@ -125,22 +123,39 @@ public class RoughHestonCharacteristicFunction implements
     phiTerm       = new Complex().setName("phiTerm");
     PhiN          = new Complex().setName("PhiN");
 
-    Context ctx = new Context(this.λ, this.θ, this.ν, this.V0, this.ρ, this.μ,
-                              this.N, this.k, this.j,
-                              u, t, a,
-                              c0, c1, c2, ak, aj, akj,
-                              convAcc, convTerm,
-                              gammaRatio, phiGammaRatio,
-                              phiTerm, PhiN);
+    Context ctx = new Context(this.λ,
+                              this.θ,
+                              this.ν,
+                              this.V0,
+                              this.ρ,
+                              this.μ,
+                              this.N,
+                              this.k,
+                              this.j,
+                              u,
+                              t,
+                              a,
+                              c0,
+                              c1,
+                              c2,
+                              ak,
+                              aj,
+                              akj,
+                              convAcc,
+                              convTerm,
+                              gammaRatio,
+                              phiGammaRatio,
+                              phiTerm,
+                              PhiN);
 
-    c0Func            = ComplexNullaryFunction.express("c0Func",            "½⋅(-u²-ⅈ⋅u)",                                                ctx);
-    c1Func            = ComplexNullaryFunction.express("c1Func",            "λ⋅(ⅈ⋅u⋅ρ⋅ν-1)",                                              ctx);
-    c2Func            = ComplexNullaryFunction.express("c2Func",            "½⋅ν²",                                                        ctx);
-    gammaRatioFunc    = ComplexNullaryFunction.express("gammaRatioFunc",    "Γ(k⋅μ+1)/Γ((k+1)⋅μ+1)",                                     ctx);
-    phiGammaRatioFunc = ComplexNullaryFunction.express("phiGammaRatioFunc", "Γ(k⋅μ+1)/Γ((k-1)⋅μ+2)",                                     ctx);
-    convTermFunc      = ComplexNullaryFunction.express("convTermFunc",      "c2⋅aj⋅akj",                                                   ctx);
-    phiTermFunc       = ComplexNullaryFunction.express("phiTermFunc",       "ak⋅(θ⋅λ⋅t^(k⋅μ+1)/(k⋅μ+1)+V0⋅phiGammaRatio⋅t^((k-1)⋅μ+1))", ctx);
-    expPhiNFunc       = ComplexNullaryFunction.express("expPhiNFunc",       "exp(PhiN)",                                                   ctx);
+    c0Func            = ComplexNullaryFunction.express("c0Func:½⋅(-u²-ⅈ⋅u)", ctx);
+    c1Func            = ComplexNullaryFunction.express("c1Func:λ⋅(ⅈ⋅u⋅ρ⋅ν-1)", ctx);
+    c2Func            = ComplexNullaryFunction.express("c2Func:½⋅ν²", ctx);
+    gammaRatioFunc    = ComplexNullaryFunction.express("gammaRatioFunc:Γ(k⋅μ+1)/Γ((k+1)⋅μ+1)", ctx);
+    phiGammaRatioFunc = ComplexNullaryFunction.express("phiGammaRatioFunc:Γ(k⋅μ+1)/Γ((k-1)⋅μ+2)", ctx);
+    convTermFunc      = ComplexNullaryFunction.express("convTermFunc:c2⋅aj⋅akj", ctx);
+    phiTermFunc       = ComplexNullaryFunction.express("phiTermFunc:ak⋅(θ⋅λ⋅t^(k⋅μ+1)/(k⋅μ+1)+V0⋅phiGammaRatio⋅t^((k-1)⋅μ+1))", ctx);
+    expPhiNFunc       = ComplexNullaryFunction.express("expPhiNFunc:exp(PhiN)", ctx);
   }
 
   @Override
@@ -155,7 +170,7 @@ public class RoughHestonCharacteristicFunction implements
     int Nval = N.getSignedValue();
 
     k.set(1);
-    try (Complex gmu1 = new Complex())
+    try ( Complex gmu1 = new Complex())
     {
       μ.add(1, bits, gmu1.re());
       gmu1.im().zero();
