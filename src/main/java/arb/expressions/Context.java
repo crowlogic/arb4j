@@ -152,8 +152,8 @@ public class Context implements
   public ExpressionClassLoader                classLoader                  =
                                                           new ExpressionClassLoader(this);
 
-  public Map<String, Dependency>              functionReferenceGraph       =
-                                                                     new HashMap<String, Dependency>();
+  public Map<String, Dependency>              functionReferenceGraph       = new HashMap<String,
+                Dependency>();
 
   public final FunctionMappings               functions;
 
@@ -629,11 +629,11 @@ public class Context implements
     });
     variables.values().forEach(v ->
     {
-      if (v instanceof AutoCloseable)
+      if (v instanceof AutoCloseable autoCloseable)
       {
         try
         {
-          ((AutoCloseable) v).close();
+          autoCloseable.close();
         }
         catch (Exception e)
         {
@@ -641,6 +641,12 @@ public class Context implements
         }
       }
     });
+  }
+
+  public String toStringExtended()
+  {
+    return toString() + functionEntryStream().map(entry -> "\n" + entry.getKey() + "=" + entry.getValue().getExpressionString())
+                                             .collect(Collectors.joining(","));
   }
 
 }

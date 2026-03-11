@@ -167,7 +167,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
                              right,
                              right.type().getSimpleName(),
                              expression.toStringExtended(),
-                             expression.context);
+                             expression.context.toStringExtended());
     throw new CompilerException(msg);
   }
 
