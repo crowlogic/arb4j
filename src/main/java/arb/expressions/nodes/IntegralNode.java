@@ -397,7 +397,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   protected void parseIntegrandViaSubExpression(String arrowVar)
   {
     integrandExpression                     = expression.cloneExpression();
-    integrandExpression.upstream            = expression;
+    integrandExpression.upstreamExpression            = expression;
     integrandExpression.functionName        = null;
     integrandExpression.independentVariable = null;
     integrandExpression.clearIndeterminateVariables();

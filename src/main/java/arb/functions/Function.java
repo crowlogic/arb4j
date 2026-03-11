@@ -214,7 +214,7 @@ public interface Function<D, CO> extends
                        coDomainClass,
                        functionClass,
                        functionName,
-                       false);
+                       true);
   }
 
   static <D, H, Q extends Function<? extends D, ? extends H>>

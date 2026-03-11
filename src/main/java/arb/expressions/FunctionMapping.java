@@ -175,4 +175,24 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
     return expression;
   }
 
+  public String getExpressionString()
+  {
+    if ( expressionString != null )
+    {
+      return expressionString;
+    }
+    else
+    {
+      if ( expression != null )
+      {
+        return expressionString = expression.toString();
+      }
+    }
+    if ( instance != null)
+    {
+      return instance.toString();
+    }
+    return null;
+ }
+
 }

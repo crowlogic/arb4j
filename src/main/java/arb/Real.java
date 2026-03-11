@@ -69,6 +69,18 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
 	    return result;
 	}
 
+	public Complex div(Real that, int prec, Complex res)
+	{
+	  div(that,prec,res.re());
+	  res.im().zero();
+	  return res;
+	}
+	
+	public Complex pow(Real div, int bits, Complex res)
+	{
+	  return res.set(this).pow(div,bits,res);
+	}	
+	
 	public Real rgamma(int bits)
 	{
 	  return rgamma(bits,this);
