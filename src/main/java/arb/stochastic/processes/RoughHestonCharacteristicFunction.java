@@ -32,7 +32,7 @@ public class RoughHestonCharacteristicFunction implements
   public final Real                     V0;
   public final Real                     ρ;
   public final Real                     μ;
-  public final int                      N;
+  public final Integer                  N;
   public final int                      prec;
 
   private final ComplexFunction         c0;
@@ -51,7 +51,7 @@ public class RoughHestonCharacteristicFunction implements
       throw new IllegalArgumentException("prec must be ≥ 32");
 
     this.prec = prec;
-    this.N    = N;
+    this.N    = Integer.named("N").set(N);
     this.λ    = λ.setName("λ");
     this.θ    = θ.setName("θ");
     this.ν    = ν.setName("ν");
@@ -59,16 +59,13 @@ public class RoughHestonCharacteristicFunction implements
     this.ρ    = ρ.setName("ρ");
     this.μ    = μ.setName("μ");
 
-    Integer NInt    = new Integer(N,
-                                  "N");
-
-    Context context = new Context(this.λ,
-                                  this.θ,
-                                  this.ν,
-                                  this.V0,
-                                  this.ρ,
-                                  this.μ,
-                                  NInt);
+    Context context = new Context(λ,
+                                  θ,
+                                  ν,
+                                  V0,
+                                  ρ,
+                                  μ,
+                                  this.N);
 
     c0 = ComplexFunction.express("c0:u➔½⋅(-u²-ⅈ⋅u)", context);
     c1 = ComplexFunction.express("c1:u➔λ⋅(ⅈ⋅u⋅ρ⋅ν-1)", context);

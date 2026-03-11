@@ -22,7 +22,7 @@ public class RoughHestonCharacteristicFunctionTest extends
           Real V0 = new Real("0.02", prec);
           Real ρ = new Real("-0.7", prec);
           Real μ = new Real("0.6", prec);
-          RoughHestonCharacteristicFunction φ = new RoughHestonCharacteristicFunction(λ, θ, ν, V0, ρ, μ, 5, prec);
+          var φ = new RoughHestonCharacteristicFunction(λ, θ, ν, V0, ρ, μ, 5, prec);
           Complex u = new Complex();
           Complex res = new Complex())
     {
@@ -41,7 +41,7 @@ public class RoughHestonCharacteristicFunctionTest extends
           Real V0 = new Real("0.02", prec);
           Real ρ = new Real("-0.7", prec);
           Real μ = new Real("0.6", prec);
-          RoughHestonCharacteristicFunction φ = new RoughHestonCharacteristicFunction(λ, θ, ν, V0, ρ, μ, 5, prec);
+          var φ = new RoughHestonCharacteristicFunction(λ, θ, ν, V0, ρ, μ, 5, prec);
           Complex u = new Complex();
           Complex res = new Complex();
           Real mod = new Real())
