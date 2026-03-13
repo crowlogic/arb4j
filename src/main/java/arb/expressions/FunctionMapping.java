@@ -105,6 +105,7 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
 
   public void declare(ClassVisitor classVisitor, String name)
   {
+    assert name != null : "name shan't be null in " + this;
     functionFieldDescriptor = functionFieldDescriptor();
     if (Expression.trace)
     {
