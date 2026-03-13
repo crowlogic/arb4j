@@ -226,8 +226,8 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (expression.getIndeterminateVariables().isEmpty() || reference.type != null)
     {
-      isIndeterminate = true;
-      reference.type  = expression.coDomainType;
+
+      reference.type = expression.coDomainType;
       declareThisToBeTheIndeterminantVariable();
       if (Expression.traceNodes)
       {
@@ -237,26 +237,21 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     else
     {
-      throw new CompilerException(String.format("undefined variable reference: %s",
-                                                resolutionStateString()));
+      throw new CompilerException(String.format("undefined variable reference: %s", resolutionStateString()));
     }
   }
 
   protected void throwNewUndefinedReferenceException()
   {
-    throw new UndefinedReferenceException(String.format("undefined reference: %s",
-                                                        resolutionStateString()));
+    throw new UndefinedReferenceException(String.format("undefined reference: %s", resolutionStateString()));
   }
 
   protected void throwNewIndeterminantVariableAlreadyDeclared()
   {
-    throw new CompilerException(String.format("indeterminate variable already declared: %s",
-                                              resolutionStateString()));
+    throw new CompilerException(String.format("indeterminate variable already declared: %s", resolutionStateString()));
   }
 
-  public VariableNode(Expression<D, R, F> expression,
-                      VariableReference<D, R, F> reference,
-                      boolean resolve)
+  public VariableNode(Expression<D, R, F> expression, VariableReference<D, R, F> reference, boolean resolve)
   {
     super(expression);
     var variables = expression.context != null ? expression.context.variables : null;
@@ -264,9 +259,8 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     this.reference          = reference;
     this.reference.position = position;
     assert reference != null;
-    assert !(expression.recursive
-                  && reference.name.equals(expression.functionName)) : "variable name clashes with "
-                                                                       + "the function name since it's a recursve function";
+    assert !(expression.recursive && reference.name.equals(expression.functionName)) : "variable name clashes with "
+                                                                                       + "the function name since it's a recursve function";
 
     var existingVariable = expression.getReference(reference.name);
     if (existingVariable != null)
@@ -278,15 +272,13 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     else
     {
       boolean resolved = false;
-      if ((variables == null || !variables.containsKey(reference.name) || reference.type == null)
-                    && resolve)
+      if ((variables == null || !variables.containsKey(reference.name) || reference.type == null) && resolve)
       {
         resolveReference();
         resolved = true;
       }
 
-      if (expression.independentVariable != null
-                    && reference.equals(expression.independentVariable.reference))
+      if (expression.independentVariable != null && reference.equals(expression.independentVariable.reference))
       {
         isIndependent = true;
       }
@@ -374,10 +366,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     if (Expression.traceNodes)
     {
-      logger.debug(String.format("#%s: generate( this=%s, resultType=%s)\n",
-                                 System.identityHashCode(this),
-                                 this,
-                                 resultType));
+      logger.debug(String.format("#%s: generate( this=%s, resultType=%s)\n", System.identityHashCode(this), this, resultType));
     }
 
     if (refuseToGenerateIndeterminateVariables && isIndeterminate && isScalar())
@@ -415,11 +404,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (Integer.class.equals(indexType))
     {
-      Compiler.generateVirtualMethodInvocation(mv,
-                                               reference.type(),
-                                               "get",
-                                               reference.type(),
-                                               indexType);
+      Compiler.generateVirtualMethodInvocation(mv, reference.type(), "get", reference.type(), indexType);
     }
     else
     {
@@ -520,8 +505,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       return false;
     }
-    return equals(inputVariable) || (inputVariable == null && !expression.references(reference)
-                  && !expression.hasIndeterminateVariable());
+    return equals(inputVariable) || (inputVariable == null && !expression.references(reference) && !expression.hasIndeterminateVariable());
   }
 
   @Override
@@ -575,50 +559,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return this;
   }
 
-  private VariableNode<?, ?, ?> resolveBoundVariable()
-  {
-    final VariableNode<?, ?, ?>[] bound = new VariableNode[1];
-
-    if (expression != null)
-    {
-      expression.acceptUntil(e ->
-      {
-        // 1) Check independent variable in this scope
-        var iv = e.independentVariable;
-        if (iv != null && reference.equals(iv.reference))
-        {
-          if (e != expression)
-          {
-            upstreamInput = true;
-          }
-          reference.type = e.domainType;
-          bound[0]       = iv;
-          return true;
-        }
-
-        // 2) Check indeterminates in this scope
-        for (var v : e.getIndeterminateVariables())
-        {
-          if (reference.equals(v.reference))
-          {
-            if (e != expression)
-            {
-              upstreamIndeterminate = true;
-            }
-            isIndeterminate = true;
-            reference.type  = v.reference.type();
-            bound[0]        = v;
-            return true;
-          }
-        }
-
-        return false;
-      });
-    }
-
-    return bound[0];
-  }
-
   public boolean resolveContextualVariable()
   {
     if (expression.context != null && expression.context.variables != null)
@@ -629,9 +569,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
         reference.type = instanceVariable.getClass();
         if (Expression.traceNodes)
         {
-          logger.debug("Declaring {} as a contextual variable of type {}",
-                       reference,
-                       reference.type());
+          logger.debug("Declaring {} as a contextual variable of type {}", reference, reference.type());
 
         }
 
@@ -644,11 +582,10 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public void resolveIndependentVariable(VariableNode<D, R, F> inputVariable)
   {
-    assert (inputVariable == null
-                  || inputVariable.equals(expression.independentVariable)) : "inputVariable is already "
-                                                                             + inputVariable
-                                                                             + " it doesnt make sense to change it to "
-                                                                             + this;
+    assert (inputVariable == null || inputVariable.equals(expression.independentVariable)) : "inputVariable is already "
+                                                                                             + inputVariable
+                                                                                             + " it doesnt make sense to change it to "
+                                                                                             + this;
     if (!equals(inputVariable))
     {
       if (Expression.traceNodes)
@@ -669,6 +606,12 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public VariableNode<D, R, F> declareThisToBeTheIndeterminantVariable()
   {
+    if (!expression.canHaveIndeterminateVariables())
+    {
+      throw new CompilerException("cannot set " + getName() + " to be an indeterminant variable since " + expression.toStringExtended()+ " cannot have indeterminant variables");
+
+    }
+    isIndeterminate = true;
 
     if (Expression.traceNodes)
     {
@@ -681,31 +624,26 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     if (expression.anyUpstreamIndependentVariableIsNamed(getName()))
     {
-      throw new CompilerException("cannot set the independent variable of "
+      throw new CompilerException("cannot set the indeterminate variable of "
                                   + this
                                   + " to "
                                   + getName()
-                                  + " because it is the independent variable of "
-                                  + this
-                                  + " or one of its upstream(upstream) expressions");
+                                  + " because it is the independent variable of one the expressions in the chain "
+                                  + expression.toStringExtended());
     }
     expression.registerReferencedVariable(this);
     expression.pushIndeterminateVariable(this);
     return this;
   }
 
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         VariableNode<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>> VariableNode<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
     return new VariableNode<E, S, G>(newExpression,
                                      reference.spliceInto(newExpression),
                                      !newExpression.deferVariableResolution);
   }
 
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, R, F>
-         substitute(String variable, Node<E, S, G> arg)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable, Node<E, S, G> arg)
   {
     Node<D, R, F> retVal = variable.equals(getName()) ? arg.spliceInto(expression) : this;
     assert retVal != null : "refusing to return null for " + this;
@@ -776,9 +714,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return this;
     }
 
-    assert !equals(expression.independentVariable) : "cannot add "
-                                                     + this
-                                                     + " to indeterminate stack since it is the inependent variable";
+    assert !equals(expression.independentVariable) : "cannot add " + this + " to indeterminate stack since it is the inependent variable";
 
     expression.pushIndeterminateVariable(this);
     return this;

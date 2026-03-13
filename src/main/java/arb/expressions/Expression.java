@@ -4067,4 +4067,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                             value);
   }
 
+  public boolean canHaveIndeterminateVariables()
+  {
+    return isFunctional() || isInterfaceFunctional();
+  }
+
 }

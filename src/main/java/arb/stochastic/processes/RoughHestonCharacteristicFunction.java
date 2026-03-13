@@ -35,9 +35,9 @@ public class RoughHestonCharacteristicFunction implements
   public final Integer                  N;
   public final int                      prec;
 
-  private final ComplexFunction         c0;
-  private final ComplexFunction         c1;
-  private final ComplexFunction         c2;
+  private final ComplexFunction         p;
+  private final ComplexFunction         q;
+  private final ComplexFunction         r;
   private final ComplexFunctionSequence a;
   private final ComplexFunctionSequence Φ;
   private final ComplexFunction         φ;
@@ -67,16 +67,16 @@ public class RoughHestonCharacteristicFunction implements
                                   μ,
                                   this.N);
 
-    c0 = ComplexFunction.express("c0:u➔½⋅(-u²-ⅈ⋅u)", context);
-    c1 = ComplexFunction.express("c1:u➔λ⋅(ⅈ⋅u⋅ρ⋅ν-1)", context);
-    c2 = ComplexFunction.express("c2:u➔½⋅ν²", context);
+    p = ComplexFunction.express("p:u➔½⋅(-u²-ⅈ⋅u)", context);
+    q = ComplexFunction.express("q:u➔λ⋅(ⅈ⋅u⋅ρ⋅ν-1)", context);
+    r = ComplexFunction.express("r:u➔½⋅ν²", context);
 
     // declare a prototype since recursion is busted for multivar functions
     // presently (but not for long)
-    ComplexFunctionSequence.express("a:k->u->0", context);
+    ComplexFunctionSequence.express("a:k➔u➔0", context);
 
     a =
-      ComplexFunctionSequence.express("a:k➔u➔when(k=1,c0(u)/Γ(μ+1),else,Γ((k-1)⋅μ+1)/Γ(k⋅μ+1)⋅(c1(u)⋅a(k-1)(u)+c2(u)⋅Σa(j)(u)⋅a(k-1-j)(u){j=1…k-2}))", context);
+      ComplexFunctionSequence.express("a:k➔u➔when(k=1,p(u)/Γ(μ+1),else,Γ((k-1)⋅μ+1)/Γ(k⋅μ+1)⋅(q(u)⋅a(k-1)(u)+r(u)⋅Σa(j)(u)⋅a(k-1-j)(u){j=1…k-2}))", context);
     Φ = ComplexFunctionSequence.express("Φ:k➔u➔a(k)(u)⋅(θ⋅λ⋅u^(k⋅μ+1)/(k⋅μ+1)+V0⋅Γ(k⋅μ+1)/Γ((k-1)⋅μ+2)⋅u^((k-1)⋅μ+1))", context);
     φ = ComplexFunction.express("φ:u➔exp(ΣΦ(k)(u){k=1…N})", context);
   }
