@@ -253,6 +253,7 @@ public class Compiler
                                    String className,
                                    ClassVisitor classVisitor)
   {
+    assert className != null : "className shan't be null";
     String classSignature = null;
 
     classSignature = expression.getFunctionClassTypeSignature(expression.functionClass);

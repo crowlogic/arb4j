@@ -113,7 +113,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     {
       expression.context = new Context();
     }
-    this.operandExpression = parseOperand();
+    this.operandExpression = parseOperand().compile();
     registerOperand(operandFunctionFieldName, operandExpression);
 
     propagateContextVariablesToOperand();
@@ -167,6 +167,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     generatedType   = expression.coDomainType;
     this.lowerLimit = lowerLimit;
     this.upperLimit = upperLimit;
+    assert false : "wtf";
   }
 
   @Override
@@ -180,7 +181,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   protected void assignFieldNamesIfNecessary(Class<?> resultType)
   {
     if (operandFunctionFieldName == null)
-
     {
       operandFunctionFieldName = expression.getNextIntermediateVariableFieldName("operand", Function.class);
     }
@@ -435,26 +435,24 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
 
     // --- Create a sub-expression for proper lexical scoping (#876) ---
-    Expression<Integer, R, Sequence<R>> subExpr = new Expression<>(Integer.class,
-                                                                   expression.coDomainType,
-                                                                   Sequence.class);
-    subExpr.syncWith(expression);
-    subExpr.upstreamExpression  = expression;
-    subExpr.context             = expression.context;
-    subExpr.independentVariable = null;
-    subExpr.clearIndeterminateVariables();
+    operandExpression = new Expression<>(Integer.class,
+                                         expression.coDomainType,
+                                         Sequence.class);
+    operandExpression.syncWith(expression);
+    operandExpression.upstreamExpression  = expression;
+    operandExpression.context             = expression.context;
+    operandExpression.independentVariable = null;
+    operandExpression.clearIndeterminateVariables();
 
-    subExpr.newVariableNode(paramName);
+    operandExpression.newVariableNode(paramName);
 
-    subExpr.rootNode             = subExpr.resolve();
+    operandExpression.rootNode = operandExpression.resolve();
 
     // Sync the parser position back to the parent expression
-    expression.position          = subExpr.position;
-    expression.character         = subExpr.character;
-    expression.previousCharacter = subExpr.previousCharacter;
-    expression.updateStringRepresentation();
-    expression.className = Parser.transformToAcceptableJavaIdentifier(expression.toString());
-    return subExpr;
+    expression.syncWith(operandExpression);
+    operandExpression.updateStringRepresentation();
+    operandExpression.className = Parser.transformToAcceptableJavaIdentifier(expression.toString());
+    return operandExpression;
   }
 
   protected String extractOperandExpression()
