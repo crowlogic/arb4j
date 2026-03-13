@@ -652,6 +652,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected void constructReferencedFunctionInstanceIfItIsNull(MethodVisitor mv, FunctionMapping<?, ?, ?> mapping)
   {
+    assert mapping != null : "mapping shan't be null";
     if ((mapping.functionName == null || functionName == null || !functionName.equals(mapping.functionName)) && mapping.expression != null)
     {
 

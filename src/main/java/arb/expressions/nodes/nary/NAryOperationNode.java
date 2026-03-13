@@ -179,15 +179,19 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   protected void assignFieldNamesIfNecessary(Class<?> resultType)
   {
-    if (operandFunctionFieldName == null && operandValueFieldName == null)
+    if (operandFunctionFieldName == null)
+
     {
       operandFunctionFieldName = expression.getNextIntermediateVariableFieldName("operand", Function.class);
-      operandValueFieldName    = expression.newIntermediateVariable("value", resultType);
-      if (Expression.traceNodes)
-      {
-        int indentation = 18 + getClass().getSimpleName().length();
-        logFieldNameAssignment(resultType, indentation);
-      }
+    }
+    if (operandValueFieldName == null)
+    {
+      operandValueFieldName = expression.newIntermediateVariable("value", resultType);
+    }
+    if (Expression.traceNodes)
+    {
+      int indentation = 18 + getClass().getSimpleName().length();
+      logFieldNameAssignment(resultType, indentation);
     }
   }
 
@@ -418,6 +422,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   private Expression<Integer, R, Sequence<R>> parseOperand()
   {
 
+    assignFieldNamesIfNecessary(expression.coDomainType);
+
     String paramName = expression.parseName();
     expression.skipSpaces();
 
@@ -433,7 +439,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                                                    expression.coDomainType,
                                                                    Sequence.class);
     subExpr.syncWith(expression);
-
+    subExpr.upstreamExpression  = expression;
+    subExpr.context             = expression.context;
     subExpr.independentVariable = null;
     subExpr.clearIndeterminateVariables();
 
@@ -445,7 +452,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     expression.position          = subExpr.position;
     expression.character         = subExpr.character;
     expression.previousCharacter = subExpr.previousCharacter;
-
+    expression.updateStringRepresentation();
+    expression.className = Parser.transformToAcceptableJavaIdentifier(expression.toString());
     return subExpr;
   }
 
@@ -760,14 +768,16 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   void registerOperand(String expr, Expression<Integer, R, Sequence<R>> operandExpression)
   {
 
-    expression.context.registerFunctionMapping(operandFunctionFieldName,
-                                               null,
-                                               Integer.class,
-                                               operandExpression.coDomainType,
-                                               Sequence.class,
-                                               true,
-                                               operandExpression,
-                                               expr);
+    assert operandFunctionFieldName != null : "operandFunctionFieldName shan't be null";
+
+    operandMapping = expression.context.registerFunctionMapping(operandFunctionFieldName,
+                                                                null,
+                                                                Integer.class,
+                                                                operandExpression.coDomainType,
+                                                                Sequence.class,
+                                                                true,
+                                                                operandExpression,
+                                                                expr);
     if (Expression.traceNodes)
     {
       logger.debug(String.format("\nregisterOperand(operandExpression=%s,\noperandMapping=%s\n)\n\n", operandExpression, operandMapping));
