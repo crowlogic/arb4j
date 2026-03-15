@@ -66,7 +66,7 @@ public class ExpressionClassLoader extends
    * Called by {@link ClassLoader#loadClass} only after parent delegation has
    * already failed to locate the class. Defines the class from
    * {@link #pendingBytecodes} if present, then falls back to searching the
-   * {@link Context} function mappings.
+   * {@link Context} function mappings, compiling on demand if necessary.
    *
    * @throws ClassNotFoundException if the class cannot be found by any means
    */
@@ -84,6 +84,10 @@ public class ExpressionClassLoader extends
     {
       Class<?> defined = defineClass(name, bytecodes, 0, bytecodes.length);
       compiledClasses.put(name, defined);
+      if (Expression.trace)
+      {
+        log.debug("findClass('{}') defined from pendingBytecodes, compiledClasses={}", name, compiledClasses);
+      }
       return defined;
     }
 
@@ -94,7 +98,27 @@ public class ExpressionClassLoader extends
                                                                 context.getFunctionMapping(name);
     if (functionMapping != null)
     {
-      return functionMapping.type();
+      if (Expression.trace)
+      {
+        log.debug("findClass('{}') found mapping instance={} expression={}",
+                  name,
+                  functionMapping.instance,
+                  functionMapping.expression);
+      }
+      if (functionMapping.instance == null && functionMapping.expression != null)
+      {
+        if (Expression.trace)
+        {
+          log.debug("findClass('{}') calling instantiate() to compile operand expression", name);
+        }
+        functionMapping.instantiate();
+      }
+      Class<?> t = functionMapping.type();
+      if (Expression.trace)
+      {
+        log.debug("findClass('{}') returning type={}", name, t);
+      }
+      return t;
     }
 
     AtomicReference<Class<?>> mappedClassReference = new AtomicReference<Class<?>>();
