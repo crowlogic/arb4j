@@ -3015,7 +3015,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                      !deferVariableResolution);
   }
 
-  public boolean nextCharacterIs(char... expectedCharacters)
+  public boolean nextCharacterIs(Character... expectedCharacters)
   {
     skipSpaces();
     for (char expectedCharacter : expectedCharacters)
@@ -3366,7 +3366,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-  public Expression<D, C, F> require(char... which)
+  public Expression<D, C, F> require(Character... which)
   {
     return require(null, which);
   }
@@ -3386,7 +3386,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return this;
   }
 
-  public Expression<D, C, F> require(String msg, char... which)
+  public Expression<D, C, F> require(String msg, Character... which)
   {
     if (!nextCharacterIs(which))
     {
@@ -3821,12 +3821,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   }
 
-  protected void throwUnexpectedCharacterException(char... which)
+  protected void throwUnexpectedCharacterException(Character... which)
   {
     throwUnexpectedCharacterException(null, which);
   }
 
-  public void throwUnexpectedCharacterException(String msg, char... which)
+  public void throwUnexpectedCharacterException(String msg, Character... which)
   {
     StringBuilder sb = new StringBuilder();
     for (char ch : which)
