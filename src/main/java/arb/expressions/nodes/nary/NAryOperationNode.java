@@ -432,6 +432,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     operandExpression.context             = expression.context;
     operandExpression.independentVariable = null;
     operandExpression.clearIndeterminateVariables();
+    // The className must be the field name so the class loader can find it by that name
+    operandExpression.className           = operandFunctionFieldName;
 
     operandExpression.newVariableNode(paramName);
     indexVariableFieldName = paramName;
@@ -441,7 +443,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     expression.continueParsingFrom(operandExpression);
 
     operandExpression.updateStringRepresentation();
-    operandExpression.className = Parser.transformToAcceptableJavaIdentifier(operandExpression.toString());
 
     registerOperand(operandFunctionFieldName, operandExpression);
     propagateContextVariablesToOperand();
