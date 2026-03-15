@@ -459,6 +459,25 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       expression.restoreCursor(savedCursor);
     }
 
+    if (hasArrow)
+    {
+      indexVariableFieldName = paramName;
+    }
+    else
+    {
+      peekIndexVariableFromLimitSpec();
+    }
+
+    // Temporarily remove the index variable from the context so that resolve()
+    // assigns it as the operand's independent variable (Integer domain) rather
+    // than a context variable.  A prior NAryOperationNode sharing this context
+    // may have already inserted it via parseOperatorLimitSpecifications().
+    Named previousIndexValue = null;
+    if (indexVariableFieldName != null && expression.context.variables.containsKey(indexVariableFieldName))
+    {
+      previousIndexValue = expression.context.variables.remove(indexVariableFieldName);
+    }
+
     operandExpression                     = new Expression<>(Integer.class, expression.coDomainType, Sequence.class);
     operandExpression.continueParsingFrom(expression);
     operandExpression.upstreamExpression  = expression;
@@ -466,13 +485,39 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     operandExpression.independentVariable = null;
     operandExpression.clearIndeterminateVariables();
     operandExpression.className           = operandFunctionFieldName;
-    indexVariableFieldName                = paramName;
     operandExpression.rootNode            = operandExpression.resolve();
+
+    // Restore the index variable to the context (will be overwritten again by
+    // parseOperatorLimitSpecifications with a fresh arb.Integer instance).
+    if (previousIndexValue != null)
+    {
+      expression.context.variables.put(indexVariableFieldName, previousIndexValue);
+    }
 
     expression.continueParsingFrom(operandExpression);
     operandExpression.updateStringRepresentation();
     registerOperand(operandFunctionFieldName, operandExpression);
     propagateContextVariablesToOperand();
+  }
+
+  private void peekIndexVariableFromLimitSpec()
+  {
+    String expr = expression.expression;
+    int    pos  = expression.position;
+    int    bracePos = expr.indexOf('{', pos);
+    if (bracePos >= 0 && bracePos + 1 < expr.length())
+    {
+      int nameStart = bracePos + 1;
+      int nameEnd   = nameStart;
+      while (nameEnd < expr.length() && Parser.isIdentifyingCharacter(expr.charAt(nameEnd), false))
+      {
+        nameEnd++;
+      }
+      if (nameEnd > nameStart && nameEnd < expr.length() && expr.charAt(nameEnd) == '=')
+      {
+        indexVariableFieldName = expr.substring(nameStart, nameEnd);
+      }
+    }
   }
 
   /**
