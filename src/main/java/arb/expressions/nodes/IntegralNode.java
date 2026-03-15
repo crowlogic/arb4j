@@ -182,9 +182,10 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
     if (otherFactor != null && shiftValue != null)
     {
-      var result = otherFactor.spliceInto(expression);
+      var evalExpr = createEvaluationExpression();
+      var result   = otherFactor.spliceInto(evalExpr);
       result = result.substitute(integrationVariableNode.getName(), shiftValue);
-      return result.simplify();
+      return result.spliceInto(expression).simplify();
     }
 
     throw new UnsupportedOperationException("Unable to apply delta function sifting property to: "
@@ -236,8 +237,8 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   {
     Expression<D, C, F> evaluationExpression = expression.cloneExpression();
 
-    evaluationExpression.context = expression.context;
-
+    evaluationExpression.context                  = expression.context;
+    evaluationExpression.deferVariableResolution   = true;
 
     return evaluationExpression;
   }
