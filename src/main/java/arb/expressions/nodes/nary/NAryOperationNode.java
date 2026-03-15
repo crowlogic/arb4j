@@ -48,13 +48,12 @@ import arb.functions.integer.Sequence;
  * {@link arb.utensils.Utensils} for expression parsing, bytecode generation,
  * and utility methods, ensuring a seamless operation within the arb framework.
  * </p>
- * 
+ *
  * @param <D> the domain type of the operands and the operation
  * @param <R> the coDomain type of the operation's result
  * @param <F> the function interface this operation implements, extending the
  *            {@link Function} interface with specific domain and coDomain types
  *
- * 
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
@@ -113,36 +112,18 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     {
       expression.context = new Context();
     }
-    this.operandExpression = parseOperand();
-    registerOperand(operandFunctionFieldName, operandExpression);
-
-    propagateContextVariablesToOperand();
+    assignFieldNamesIfNecessary(expression.coDomainType);
+    parseOperand();
     functionClass = expression.className;
     assert functionClass != null : "functionClass=expression.className shan't be null for operandExpression=" + operandExpression;
     generatedType = expression.coDomainType;
-
     parseOperatorLimitSpecifications();
   }
 
-  @Override
-  public int hashCode()
-  {
-    return Objects.hash(upperLimit, operation, lowerLimit);
-  }
-
-  @Override
-  public boolean equals(Object obj)
-  {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    NAryOperationNode<?, ?, ?> other = (NAryOperationNode<?, ?, ?>) obj;
-    return Objects.equals(upperLimit, other.upperLimit) && Objects.equals(operation, other.operation) && Objects.equals(lowerLimit, other.lowerLimit);
-  }
-
+  /**
+   * Constructor used by {@link #spliceInto(Expression)} and
+   * {@link #substitute(String, Node)} — operand expression supplied directly.
+   */
   public NAryOperationNode(Expression<D, R, F> expression,
                            String identity,
                            String prefix,
@@ -153,10 +134,10 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                            Node<D, R, F> upperLimit)
   {
     super(expression);
-    this.identity  = identity;
-    this.prefix    = prefix;
-    this.operation = operation;
-    this.symbol    = symbol;
+    this.identity          = identity;
+    this.prefix            = prefix;
+    this.operation         = operation;
+    this.symbol            = symbol;
     if (expression.context == null)
     {
       expression.context = new Context();
@@ -167,7 +148,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     generatedType   = expression.coDomainType;
     this.lowerLimit = lowerLimit;
     this.upperLimit = upperLimit;
-    assert false : "wtf";
   }
 
   @Override
@@ -366,8 +346,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   @Override
   public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    throw new UnsupportedOperationException("integral of NAryOperationNode not implemented");
   }
 
   @Override
@@ -399,7 +378,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     assert fieldName != null : String.format("field is null %s\n", this);
     assert indexVariableFieldName != null : String.format("indexVariableFieldName is null %s\n", this);
     getField(methodVisitor, getIndexVariableFieldName(), Integer.class.descriptorString());
-
     return methodVisitor;
   }
 
@@ -407,8 +385,10 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     if (Expression.traceNodes)
     {
-      logger.debug(String.format("%s.loadResultvariable( resultVariable= %s, generatedType=%s )\n", getClass().getSimpleName(), fieldName, generatedType));
-
+      logger.debug(String.format("%s.loadResultvariable( resultVariable= %s, generatedType=%s )\n",
+                                 getClass().getSimpleName(),
+                                 fieldName,
+                                 generatedType));
     }
     getFieldFromThis(methodVisitor, expression.className, fieldName, generatedType);
   }
@@ -419,104 +399,54 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     expression.require('}');
   }
 
-  private Expression<Integer, R, Sequence<R>> parseOperand()
+  /**
+   * Parses the operand of the n-ary operation inline, constructing a properly
+   * scoped sub-expression analogous to {@link Expression#parseLambda(String)},
+   * but where the index variable name and arrow are optional.
+   * <p>
+   * Syntax handled:
+   * <ul>
+   *   <li>{@code Σk{k=1…3}}   — implicit identity operand, index variable is {@code k}</li>
+   *   <li>{@code Σk➔f(k){k=1…3}} — explicit arrow form</li>
+   *   <li>{@code Σf(k){k=1…3}}  — operand expression without arrow</li>
+   * </ul>
+   */
+  private void parseOperand()
   {
-
-    assignFieldNamesIfNecessary(expression.coDomainType);
+    assert operandFunctionFieldName != null : "assignFieldNamesIfNecessary must be called before parseOperand";
 
     String paramName = expression.parseName();
     expression.skipSpaces();
 
-    if ((expression.character == '➔'))
+    if (expression.character == '➔')
     {
-      var paramVar   = expression.newVariableNode(paramName);
-      var savedParam = paramVar;
       expression.require('➔');
     }
 
-    // --- Create a sub-expression for proper lexical scoping (#876) ---
-    operandExpression = new Expression<>(Integer.class,
-                                         expression.coDomainType,
-                                         Sequence.class);
-    operandExpression.continueParsingFrom(expression);
-    operandExpression.upstreamExpression  = expression;
-    operandExpression.context             = expression.context;
-    operandExpression.independentVariable = null;
+    operandExpression                       = new Expression<>(Integer.class,
+                                                               expression.coDomainType,
+                                                               Sequence.class);
+    operandExpression.upstreamExpression    = expression;
+    operandExpression.context               = expression.context;
+    operandExpression.independentVariable   = null;
     operandExpression.clearIndeterminateVariables();
 
+    // Establish paramName as the independent variable of the operand sub-expression
     operandExpression.newVariableNode(paramName);
+    // Track the index variable field name (used later in parseOperatorLimitSpecifications)
+    indexVariableFieldName = paramName;
 
     operandExpression.rootNode = operandExpression.resolve();
 
-    // Sync the parser position back to the parent expression
+    // Sync parse cursor back to parent — expression string + position only,
+    // never upstreamExpression (that would create a cycle)
     expression.continueParsingFrom(operandExpression);
+
     operandExpression.updateStringRepresentation();
-    operandExpression.className = Parser.transformToAcceptableJavaIdentifier(expression.toString());
-    return operandExpression;
-  }
+    operandExpression.className = Parser.transformToAcceptableJavaIdentifier(operandExpression.toString());
 
-  protected String extractOperandExpression()
-  {
-    if (Expression.traceNodes)
-    {
-      logger.debug(String.format("extractOperandExpression(%s)\n", expression));
-    }
-    parsed = true;
-    String stringExpression = expression.getExpression();
-    int    startPos         = expression.position;
-    int    arrowIndex       = stringExpression.indexOf('➔', expression.position);
-
-    if (arrowIndex != -1)
-    {
-      indexVariableFieldName = stringExpression.substring(startPos, arrowIndex).trim();
-      if (Expression.traceNodes)
-      {
-        logger.debug(String.format("extractOperandExpression: found arrow at index %d, extracted indexVariableFieldName='%s' from substring [%d:%d]='%s'\n",
-                                   arrowIndex,
-                                   indexVariableFieldName,
-                                   startPos,
-                                   arrowIndex,
-                                   stringExpression.substring(startPos, arrowIndex)));
-      }
-      assert indexVariableFieldName != null
-                    && !indexVariableFieldName.isEmpty() : String.format("indexVariableFieldName extracted from expression substring is null or empty: expression='%s', substring='%s'",
-                                                                         stringExpression,
-                                                                         stringExpression.substring(startPos, arrowIndex));
-    }
-    else if (Expression.traceNodes)
-    {
-      logger.debug(String.format("extractOperandExpression: no arrow found, indexVariableFieldName remains null\n"));
-    }
-
-    String lookingFor             = indexVariableFieldName != null ? String.format("{%s=", indexVariableFieldName) : "{";
-    String functionFormLookingFor = String.format(",%s=", indexVariableFieldName);
-
-    if (Expression.traceNodes)
-    {
-      logger.debug(String.format("extractOperandExpression: looking for '%s' in remaining expression\n", lookingFor));
-    }
-
-    int     rangeSpecificationPosition             = stringExpression.indexOf(lookingFor, expression.position);
-    int     functionFormRangeSpecificationPosition = stringExpression.indexOf(functionFormLookingFor, expression.position);
-    boolean functionForm                           = functionFormRangeSpecificationPosition != -1;
-    if (rangeSpecificationPosition == -1 && functionFormRangeSpecificationPosition == -1)
-    {
-      throw new CompilerException(String.format("didn't find '%s' remaining='%s'' at position %d in '%s' where the syntax is sum(f(k){k=i..j})",
-                                                lookingFor,
-                                                expression.remaining(),
-                                                position,
-                                                expression));
-    }
-    String operandExpression = stringExpression.substring(startPos, functionForm ? functionFormRangeSpecificationPosition : rangeSpecificationPosition).trim();
-    expression.position  = rangeSpecificationPosition;
-    expression.character = stringExpression.charAt(rangeSpecificationPosition);
-
-    if (Expression.traceNodes)
-    {
-      logger.debug(String.format("extractOperandExpression: extracted operandExpression='%s', position now at %d\n", operandExpression, expression.position));
-    }
-
-    return operandExpression;
+    registerOperand(operandFunctionFieldName, operandExpression);
+    propagateContextVariablesToOperand();
   }
 
   public Node<D, R, F> parseOperatorLimitSpecifications()
@@ -574,13 +504,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       Label    notNull                  = new Label();
       Label    end                      = new Label();
 
-      // Load operand.field to check if null
       loadThisOntoStack(mv);
       mv.visitFieldInsn(GETFIELD, expression.className, operandFunctionFieldName, String.format("L%s;", operandFunctionFieldName));
       mv.visitFieldInsn(GETFIELD, operandClassInternalName, fieldName, fieldTypeDescriptor);
       mv.visitJumpInsn(IFNONNULL, notNull);
 
-      // If null: create new instance and set value
       loadThisOntoStack(mv);
       mv.visitFieldInsn(GETFIELD, expression.className, operandFunctionFieldName, String.format("L%s;", operandFunctionFieldName));
       Compiler.generateNewObjectInstruction(mv, fieldType);
@@ -590,7 +518,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
       mv.visitLabel(notNull);
 
-      // Always call set() to copy the value
       loadThisOntoStack(mv);
       mv.visitFieldInsn(GETFIELD, expression.className, operandFunctionFieldName, String.format("L%s;", operandFunctionFieldName));
       mv.visitFieldInsn(GETFIELD, operandClassInternalName, fieldName, fieldTypeDescriptor);
@@ -617,7 +544,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     {
       if (!existingIndexVariable.type.equals(Integer.class))
       {
-        throw new CompilerException(String.format("index variable %s already declared  and not of Intger type so it cant be used as the index",
+        throw new CompilerException(String.format("index variable %s already declared and not of Integer type so it cannot be used as the index",
                                                   existingIndexVariable));
       }
     }
@@ -631,14 +558,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     var independentVariableNode = expression.independentVariable;
 
-    // 1. Propagate this expression's independent variable (from the evaluate()
-    // method parameter)
     if (independentVariableNode != null && !independentVariableNode.type().equals(Object.class))
     {
       generateCodeToPropagateIndependentVariableToOperand(mv, independentVariableNode);
     }
 
-    // 2. Propagate independent upstream variables to operand
     if (operandExpression != null)
     {
       generateCodeToPropagateIndependentUpstreamVariablesToOperand(mv, independentVariableNode);
@@ -664,11 +588,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       String   varName = entry.getKey();
       Class<?> varType = varNode.type();
 
-      // CRITICAL: Skip the current expression's independent variable.
-      // It is NOT a field on the generated class — it only exists as
-      // the evaluate() method's input parameter (slot 1). It was already
-      // propagated via loadInputParameter in part 1 above. Attempting
-      // GETFIELD here causes NoSuchFieldError.
       if (independentVariableNode != null && varName.equals(independentVariableNode.getName()))
       {
         return;
@@ -679,12 +598,10 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
       Label  fieldNotNull = new Label();
 
-      // Check if operand.varName is null
       expression.loadFieldOntoStack(loadThisOntoStack(mv), operandFunctionFieldName, operandDesc);
       mv.visitFieldInsn(GETFIELD, operandFunctionFieldName, varName, varDesc);
       mv.visitJumpInsn(IFNONNULL, fieldNotNull);
 
-      // Null: allocate a new instance and assign it to the operand's field
       expression.loadFieldOntoStack(loadThisOntoStack(mv), operandFunctionFieldName, operandDesc);
       generateNewObjectInstruction(mv, varType);
       duplicateTopOfTheStack(mv);
@@ -693,7 +610,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
       mv.visitLabel(fieldNotNull);
 
-      // Copy by value: operand.varName.set(this.varName)
       expression.loadFieldOntoStack(loadThisOntoStack(mv), operandFunctionFieldName, operandDesc);
       mv.visitFieldInsn(GETFIELD, operandFunctionFieldName, varName, varDesc);
       loadFieldFromThis(mv, varName, varType);
@@ -720,12 +636,10 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
     Label    fieldNotNull = new Label();
 
-    // Check if operand.varName is null
     expression.loadFieldOntoStack(loadThisOntoStack(mv), operandFunctionFieldName, operandDesc);
     mv.visitFieldInsn(GETFIELD, operandFunctionFieldName, varName, varDesc);
     Compiler.jumpToIfNotNull(mv, fieldNotNull);
 
-    // Null: allocate a new instance and assign it to the operand's field
     expression.loadFieldOntoStack(loadThisOntoStack(mv), operandFunctionFieldName, operandDesc);
     generateNewObjectInstruction(mv, varType);
     duplicateTopOfTheStack(mv);
@@ -734,7 +648,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
     Compiler.designateLabel(mv, fieldNotNull);
 
-    // Copy by value: operand.varName.set(inputParameter)
     expression.loadThisAndFieldOntoStack(mv, operandFunctionFieldName, operandDesc);
     mv.visitFieldInsn(GETFIELD, operandFunctionFieldName, varName, varDesc);
     cast(loadInputParameter(mv), varType);
@@ -765,7 +678,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   void registerOperand(String expr, Expression<Integer, R, Sequence<R>> operandExpression)
   {
-
     assert operandFunctionFieldName != null : "operandFunctionFieldName shan't be null";
 
     operandMapping = expression.context.registerFunctionMapping(operandFunctionFieldName,
@@ -780,7 +692,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     {
       logger.debug(String.format("\nregisterOperand(operandExpression=%s,\noperandMapping=%s\n)\n\n", operandExpression, operandMapping));
     }
-    expression.registerReferencedFunction(operandFunctionFieldName, operandMapping);
+    expression.referencedFunctions.put(operandFunctionFieldName, operandMapping);
   }
 
   public Class<?> scalarType(Class<?> resultType)
@@ -807,11 +719,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                                            null,
                                                            lowerLimit.spliceInto(newExpression),
                                                            upperLimit.spliceInto(newExpression));
-    assert false : "TODO: do this";
-    // nAryOperationNode.operandExpression =
-    // operandExpression.morphInto(newExpression);
-    nAryOperationNode.indexVariableFieldName = indexVariableFieldName;
-    return nAryOperationNode;
+    throw new UnsupportedOperationException("TODO: wire operandExpression into spliceInto");
   }
 
   @Override
@@ -831,13 +739,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   @Override
   public String toString()
   {
-
     assert indexVariableFieldName != null : String.format("indexVariableFieldName is null in toString() for %s%s{null=%s…%s}",
                                                           symbol,
                                                           operandExpression,
                                                           lowerLimit,
                                                           upperLimit);
-
     return String.format("%s%s{%s=%s…%s}", symbol, operandExpression, indexVariableFieldName, lowerLimit, upperLimit);
   }
 
@@ -861,8 +767,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    assert false : "TODO";
-    return null;
+    throw new UnsupportedOperationException("differentiate of NAryOperationNode not implemented");
   }
 
   @Override
@@ -874,7 +779,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   @Override
   public char symbol()
   {
-    return '∨';
+    return '\u2228';
   }
 
   @Override
@@ -883,5 +788,4 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     return lowerLimit.dependsOn(variable) || upperLimit.dependsOn(variable)
                   || (operandExpression != null && operandExpression.rootNode.dependsOn(variable.spliceInto(operandExpression).asVariable()));
   }
-
 }
