@@ -128,7 +128,7 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
       contextual     = forwardMapping != null;
       if (contextual)
       {
-        expression.getReferencedFunctions().put(forwardFunctionName, forwardMapping);
+        expression.registerReferencedFunction(forwardFunctionName, forwardMapping);
       }
     }
     generatedType = expression.coDomainType;
