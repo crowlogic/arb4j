@@ -3793,7 +3793,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * @param anotherExpression
    * @return
    */
-  public Expression<D, C, F> alignCursorTo(Expression<?, ?, ?> anotherExpression)
+  public Expression<D, C, F> setCursorFrom(Expression<?, ?, ?> anotherExpression)
   {
     position          = anotherExpression.position;
     character         = anotherExpression.character;
@@ -3803,7 +3803,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Sets this{@link #expression} and calls {@link #alignCursorTo(Expression)} so
+   * Sets this{@link #expression} and calls {@link #setCursorFrom(Expression)} so
    * that the effective parsing state of this expression becomes that of another
    * expression
    * 
@@ -3813,7 +3813,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public Expression<D, C, F> continueParsingFrom(Expression<?, ?, ?> anotherExpression)
   {
     expression = anotherExpression.expression;
-    return alignCursorTo(anotherExpression);
+    return setCursorFrom(anotherExpression);
   }
 
   public Map<String, FunctionMapping<?, ?, ?>> getReferencedFunctions()

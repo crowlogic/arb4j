@@ -427,7 +427,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                                              expression.coDomainType,
                                                              Sequence.class);
     operandExpression.setExpression(expression.getExpression());
-    operandExpression.setCursor(expression);
+    operandExpression.setCursorFrom(expression);
     operandExpression.upstreamExpression  = expression;
     operandExpression.context             = expression.context;
     operandExpression.independentVariable = null;
@@ -690,7 +690,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     {
       logger.debug(String.format("\nregisterOperand(operandExpression=%s,\noperandMapping=%s\n)\n\n", operandExpression, operandMapping));
     }
-    expression.referencedFunctions.put(operandFunctionFieldName, operandMapping);
+    expression.registerReferencedFunction(operandFunctionFieldName, operandMapping);
   }
 
   public Class<?> scalarType(Class<?> resultType)
