@@ -22,10 +22,13 @@ import arb.expressions.Context;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
+import arb.functions.RealToComplexFunction;
+import arb.functions.complex.ComplexFunction;
 import arb.functions.integer.ComplexSequence;
 import arb.functions.integer.IntegerSequence;
 import arb.functions.integer.RealSequence;
 import arb.functions.integer.Sequence;
+import arb.functions.real.RealFunction;
 
 /**
  * A node in the expression AST that compiles bounded n-ary operations — sums,
@@ -833,6 +836,18 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     if (RealPolynomial.class.equals(type))
     {
       return Real.class;
+    }
+    if (ComplexFunction.class.equals(type) || ComplexPolynomial.class.equals(type))
+    {
+      return Complex.class;
+    }
+    if (RealFunction.class.equals(type))
+    {
+      return Real.class;
+    }
+    if (RealToComplexFunction.class.equals(type))
+    {
+      return Complex.class;
     }
     return type;
   }
