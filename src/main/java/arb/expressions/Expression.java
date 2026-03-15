@@ -3802,7 +3802,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     expression = otherExpression.expression;
     setCursor(otherExpression);
-    upstreamExpression = otherExpression;
     return this;
   }
 
