@@ -491,7 +491,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       peekIndexVariableFromLimitSpec();
     }
 
-    Class<?> operandCoDomain              = scalarCoDomain(expression.coDomainType);
+    @SuppressWarnings("unchecked")
+    Class<R> operandCoDomain              = (Class<R>) scalarCoDomain(expression.coDomainType);
     operandExpression                     = new Expression<>(Integer.class, operandCoDomain, Sequence.class);
     operandExpression.continueParsingFrom(expression);
     operandExpression.upstreamExpression  = expression;
