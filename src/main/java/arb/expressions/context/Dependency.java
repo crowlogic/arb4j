@@ -6,14 +6,14 @@ import arb.expressions.Expression;
 import arb.expressions.FunctionMapping;
 
 /**
- * @author Stephen Crowley ©2024-2025
+ * @author Stephen Crowley ©2024-2026
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class Dependency
 {
   public String                   variableName;
-  public List<String>             dependencies = new ArrayList<>();
-  public List<String>             provisions   = new ArrayList<>();
+  public List<String>             dependsOn   = new ArrayList<>();
+  public List<String>             providesFor = new ArrayList<>();
   public FunctionMapping<?, ?, ?> functionMapping;
 
   public Expression<?, ?, ?> getExpression()
@@ -30,26 +30,20 @@ public class Dependency
   public Dependency(Dependency dep)
   {
     this.variableName    = dep.variableName;
-    this.dependencies    = dep.dependencies;
-    this.provisions      = dep.provisions;
+    this.dependsOn       = dep.dependsOn;
+    this.providesFor     = dep.providesFor;
     this.functionMapping = dep.functionMapping;
   }
 
   @Override
   public String toString()
   {
-    return String.format("DependencyInfo[variableName=%s, dependencies=%s, provisions=%s]",
-                         variableName,
-                         dependencies,
-                         provisions);
+    return String.format("DependencyInfo[variableName=%s, dependencies=%s, provisions=%s]", variableName, dependsOn, providesFor);
   }
 
-  public List<String> getAssignments(String className,
-                                     HashMap<String, FunctionMapping<?, ?, ?>> referencedFunctions)
+  public List<String> getAssignments(String className, Map<String, FunctionMapping<?, ?, ?>> referencedFunctions)
   {
-    return provisions.stream()
-                     .filter(key -> referencedFunctions.containsKey(key) && !key.equals(className))
-                     .toList();
+    return providesFor.stream().filter(key -> referencedFunctions.containsKey(key) && !key.equals(className)).toList();
   }
 
 }

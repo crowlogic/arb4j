@@ -59,9 +59,7 @@ public class Context implements
                      AutoCloseable
 {
   @SuppressWarnings("unchecked")
-  protected <D, C, F extends Function<? extends D, ? extends C>>
-            Expression<D, C, F>
-            getFunctionExpression(String functionName)
+  protected <D, C, F extends Function<? extends D, ? extends C>> Expression<D, C, F> getFunctionExpression(String functionName)
   {
     FunctionMapping<D, C, F> mapping = getFunctionMapping(functionName);
 
@@ -85,11 +83,7 @@ public class Context implements
    * @param upperInclusive whether the upper bound is closed
    * @return this
    */
-  public Context setBounds(String varName,
-                           int lower,
-                           boolean lowerInclusive,
-                           int upper,
-                           boolean upperInclusive)
+  public Context setBounds(String varName, int lower, boolean lowerInclusive, int upper, boolean upperInclusive)
   {
     Named var = variables.get(varName);
     assert var != null : "no variable named '" + varName + "' in context";
@@ -103,8 +97,7 @@ public class Context implements
     }
     else
     {
-      throw new UnsupportedOperationException("setBounds not supported for "
-                                              + var.getClass().getSimpleName());
+      throw new UnsupportedOperationException("setBounds not supported for " + var.getClass().getSimpleName());
     }
     return this;
   }
@@ -121,11 +114,7 @@ public class Context implements
    * @param upperInclusive whether the upper bound is closed
    * @return this
    */
-  public Context setBounds(String varName,
-                           Real lower,
-                           boolean lowerInclusive,
-                           Real upper,
-                           boolean upperInclusive)
+  public Context setBounds(String varName, Real lower, boolean lowerInclusive, Real upper, boolean upperInclusive)
   {
     Named variable = variables.get(varName);
     assert variable != null : "no variable named '" + varName + "' in context";
@@ -135,10 +124,7 @@ public class Context implements
     }
     else
     {
-      throw new UnsupportedOperationException(varName
-                                              + " is "
-                                              + variable.getClass().getSimpleName()
-                                              + ", not Real");
+      throw new UnsupportedOperationException(varName + " is " + variable.getClass().getSimpleName() + ", not Real");
 
     }
     return this;
@@ -149,18 +135,15 @@ public class Context implements
     System.loadLibrary("arblib");
   }
 
-  public ExpressionClassLoader                classLoader                  =
-                                                          new ExpressionClassLoader(this);
+  public ExpressionClassLoader                classLoader                  = new ExpressionClassLoader(this);
 
-  public Map<String, Dependency>              functionReferenceGraph       = new HashMap<String,
-                Dependency>();
+  public Map<String, Dependency>              functionReferenceGraph       = new HashMap<String, Dependency>();
 
   public final FunctionMappings               functions;
 
   public final HashMap<String, AtomicInteger> intermediateVariableCounters = new HashMap<>();
 
-  private final Logger                        log                          =
-                                                  LoggerFactory.getLogger(Context.class);
+  private final Logger                        log                          = LoggerFactory.getLogger(Context.class);
 
   public boolean                              saveClasses                  = false;
 
@@ -214,9 +197,7 @@ public class Context implements
     return functions.entrySet().stream();
   }
 
-  public <D, R, F extends Function<? extends D, ? extends R>>
-         FunctionMapping<D, R, F>
-         getFunctionMapping(String functionName)
+  public <D, R, F extends Function<? extends D, ? extends R>> FunctionMapping<D, R, F> getFunctionMapping(String functionName)
   {
     FunctionMapping<D, R, F> functionMapping = functions.get(functionName);
     return functionMapping;
@@ -260,10 +241,7 @@ public class Context implements
     assert f != null : "f is null";
     if (Expression.trace)
     {
-      log.debug(String.format("Context(#%s).injectVariableReferences(f=%s) variables={}",
-                              System.identityHashCode(this),
-                              f.getClass().getName(),
-                              variables));
+      log.debug(String.format("Context(#%s).injectVariableReferences(f=%s) variables={}", System.identityHashCode(this), f.getClass().getName(), variables));
     }
     var fields = getFields(f);
 
@@ -282,9 +260,7 @@ public class Context implements
   {
     try
     {
-      var fields = new HashSet<>(Stream.of(f.getClass().getFields())
-                                       .map(field -> field.getName())
-                                       .toList());
+      var fields = new HashSet<>(Stream.of(f.getClass().getFields()).map(field -> field.getName()).toList());
       return fields;
     }
     catch (NoClassDefFoundError noClassDefinitionFoundError)
@@ -335,14 +311,10 @@ public class Context implements
 
       Dependency   dependency      = new Dependency(functionMapping);
 
-      List<String> dependencies    = dependency.dependencies;
-      if (functionMapping.expression != null
-                    && functionMapping.expression.referencedFunctions != null)
+      List<String> dependencies    = dependency.dependsOn;
+      if (functionMapping.expression != null && functionMapping.expression.getReferencedFunctions() != null)
       {
-        dependencies.addAll(functionMapping.expression.referencedFunctions.keySet()
-                                                                          .stream()
-                                                                          .filter(name -> !name.equals(functionName))
-                                                                          .toList());
+        dependencies.addAll(functionMapping.expression.getReferencedFunctions().keySet().stream().filter(name -> !name.equals(functionName)).toList());
       }
 
       functionReferenceGraph.put(functionName, dependency);
@@ -356,48 +328,26 @@ public class Context implements
 
   public <D, R, F extends Function<? extends D, ? extends R>>
          FunctionMapping<D, R, F>
-         registerFunctionMapping(String functionName,
-                                 Class<? extends D> domainType,
-                                 Class<? extends R> coDomainType,
-                                 Class<? extends F> functionClass)
+         registerFunctionMapping(String functionName, Class<? extends D> domainType, Class<? extends R> coDomainType, Class<? extends F> functionClass)
   {
-    return registerFunctionMapping(functionName,
-                                   null,
-                                   domainType,
-                                   coDomainType,
-                                   functionClass,
-                                   true,
-                                   null,
-                                   null);
+    return registerFunctionMapping(functionName, null, domainType, coDomainType, functionClass, true, null, null);
   }
 
   public <D, R, F extends Function<? extends D, ? extends R>>
          FunctionMapping<D, R, F>
-         registerFunctionMapping(String functionName,
-                                 F function,
-                                 Class<?> domainType,
-                                 Class<?> coDomainType)
+         registerFunctionMapping(String functionName, F function, Class<?> domainType, Class<?> coDomainType)
   {
-    return registerFunctionMapping(functionName,
-                                   function,
-                                   domainType,
-                                   coDomainType,
-                                   function.getClass(),
-                                   true,
-                                   null,
-                                   null);
+    return registerFunctionMapping(functionName, function, domainType, coDomainType, function.getClass(), true, null, null);
   }
 
-  public <D, R, F extends Function<? extends D, ? extends R>>
-         FunctionMapping<D, R, F>
-         registerFunctionMapping(String functionName,
-                                 F function,
-                                 Class<?> domainType,
-                                 Class<?> coDomainType,
-                                 Class<?> functionClass,
-                                 boolean replace,
-                                 Expression<D, R, F> expression,
-                                 String expressionString)
+  public <D, R, F extends Function<? extends D, ? extends R>> FunctionMapping<D, R, F> registerFunctionMapping(String functionName,
+                                                                                                               F function,
+                                                                                                               Class<?> domainType,
+                                                                                                               Class<?> coDomainType,
+                                                                                                               Class<?> functionClass,
+                                                                                                               boolean replace,
+                                                                                                               Expression<D, R, F> expression,
+                                                                                                               String expressionString)
   {
     // assert function != null : "function cannot be null";
 
@@ -407,9 +357,7 @@ public class Context implements
     {
       if (!replace)
       {
-        throw new IllegalArgumentException(format("a function named %s of class %s is already registered",
-                                                  functionName,
-                                                  function));
+        throw new IllegalArgumentException(format("a function named %s of class %s is already registered", functionName, function));
       }
       else
       {
@@ -500,11 +448,9 @@ public class Context implements
     HashMap<String, Dependency> sortedMap = new HashMap<>();
     for (var dependency : sortedFunctions)
     {
-      sortedMap.put(dependency.variableName,
-                    functionReferenceGraph.getOrDefault(dependency.variableName,
-                                                        new Dependency(dependency)));
+      sortedMap.put(dependency.variableName, functionReferenceGraph.getOrDefault(dependency.variableName, new Dependency(dependency)));
     }
-    if (sortedMap.values().stream().mapToInt(f -> f.dependencies.size()).sum() > 0)
+    if (sortedMap.values().stream().mapToInt(f -> f.dependsOn.size()).sum() > 0)
     {
       filename = sortedMap.keySet().stream().collect(Collectors.joining()) + ".dot";
       Utensils.saveStringToFile(Utensils.toDotFormatReversed(sortedMap), filename);
@@ -512,14 +458,10 @@ public class Context implements
     return filename;
   }
 
-  public <D, R, F extends Function<? extends D, ? extends R>>
-         void
-         setFieldValue(Class<?> compiledClass, F f, String variableName, Object value)
+  public <D, R, F extends Function<? extends D, ? extends R>> void setFieldValue(Class<?> compiledClass, F f, String variableName, Object value)
   {
     Class<?> functionClass = f.getClass();
-    assert functionClass.equals(compiledClass) : String.format("functionClass = %s != compiledClass = %s\n",
-                                                               functionClass,
-                                                               compiledClass);
+    assert functionClass.equals(compiledClass) : String.format("functionClass = %s != compiledClass = %s\n", functionClass, compiledClass);
 
     java.lang.reflect.Field field;
     try
@@ -544,10 +486,7 @@ public class Context implements
   @Override
   public String toString()
   {
-    return String.format("Context(#%s)[functions=%s,variables=%s]",
-                         System.identityHashCode(this),
-                         functions.keySet(),
-                         variableMap().keySet());
+    return String.format("Context(#%s)[functions=%s,variables=%s]", System.identityHashCode(this), functions.keySet(), variableMap().keySet());
   }
 
   public Stream<OrderedPair<String, Class<?>>> variableClassStream()
@@ -588,16 +527,13 @@ public class Context implements
     Named variable = variables.get(oldName);
     if (variable == null)
     {
-      throw new IllegalArgumentException(format("Variable '%s' does not exist in context",
-                                                oldName));
+      throw new IllegalArgumentException(format("Variable '%s' does not exist in context", oldName));
     }
 
     // Check if new name conflicts with existing variable
     if (variables.containsKey(newName))
     {
-      throw new IllegalArgumentException(format("Cannot rename '%s' to '%s': a variable with that name already exists",
-                                                oldName,
-                                                newName));
+      throw new IllegalArgumentException(format("Cannot rename '%s' to '%s': a variable with that name already exists", oldName, newName));
     }
 
     // Remove old entry
@@ -610,10 +546,7 @@ public class Context implements
 
     if (Expression.trace)
     {
-      log.debug(String.format("Context(#%s).rename(oldName=%s, newName=%s) completed successfully",
-                              System.identityHashCode(this),
-                              oldName,
-                              newName));
+      log.debug(String.format("Context(#%s).rename(oldName=%s, newName=%s) completed successfully", System.identityHashCode(this), oldName, newName));
     }
   }
 
@@ -645,8 +578,8 @@ public class Context implements
 
   public String toStringExtended()
   {
-    return toString() + functionEntryStream().map(entry -> "\n" + entry.getKey() + "=" + entry.getValue().getExpressionString())
-                                             .collect(Collectors.joining(","));
+    return toString()
+                  + functionEntryStream().map(entry -> "\n" + entry.getKey() + "=" + entry.getValue().getExpressionString()).collect(Collectors.joining(","));
   }
 
 }

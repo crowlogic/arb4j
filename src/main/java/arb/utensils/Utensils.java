@@ -134,8 +134,7 @@ public class Utensils
     return image;
   }
 
-  public static void
-         saveLatexFormulaToPNGFile(String formula, String path, int size) throws IOException
+  public static void saveLatexFormulaToPNGFile(String formula, String path, int size) throws IOException
   {
     var bimg = renderLatexFormulaAsBufferedImage(formula, size);
     var out  = new File(path);
@@ -181,8 +180,6 @@ public class Utensils
   {
     return Stream.of(args).map(Type::getType).collect(Collectors.toList());
   }
-
-  
 
   public static void wrapOrThrow(Throwable e)
   {
@@ -318,15 +315,14 @@ public class Utensils
     return null;
   }
 
-  public static BufferedImage
-         createDependencyGraphBufferedImage(Map<String, Dependency> dependencies)
+  public static BufferedImage createDependencyGraphBufferedImage(Map<String, Dependency> dependencies)
   {
     MutableGraph g = mutGraph("DependencyGraph").setDirected(true);
 
     dependencies.forEach((name, dep) ->
     {
       MutableNode node = mutNode(name);
-      dep.dependencies.forEach(d -> node.addLink(to(mutNode(d))));
+      dep.dependsOn.forEach(d -> node.addLink(to(mutNode(d))));
       g.add(node);
     });
     BufferedImage image;
@@ -342,23 +338,17 @@ public class Utensils
     return image;
   }
 
-  public static List<Dependency>
-         sortDependencies(Map<String, Dependency> dependencies,
-                          HashMap<String, FunctionMapping<?, ?, ?>> mappings)
+  public static List<Dependency> sortDependencies(Map<String, Dependency> dependencies, Map<String, FunctionMapping<?, ?, ?>> mappings)
   {
     var initializationOrder = new ArrayList<Dependency>();
     var processedVariables  = new HashSet<String>();
 
-    dependencies.forEach((name,
-                          info) -> info.dependencies.forEach(dep -> dependencies.get(dep).provisions.add(name)));
+    dependencies.forEach((name, info) -> info.dependsOn.forEach(dep -> dependencies.get(dep).providesFor.add(name)));
 
     dependencies.keySet()
                 .stream()
                 .filter(variable -> !processedVariables.contains(variable))
-                .forEach(variable -> depthFirstDependencySearch(variable,
-                                                                dependencies,
-                                                                processedVariables,
-                                                                initializationOrder));
+                .forEach(variable -> depthFirstDependencySearch(variable, dependencies, processedVariables, initializationOrder));
 
     Collections.reverse(initializationOrder);
 
@@ -376,7 +366,7 @@ public class Utensils
 
     processedVariables.add(variable);
     var info = dependencies.get(variable);
-    for (var dep : info.dependencies)
+    for (var dep : info.dependsOn)
     {
       depthFirstDependencySearch(dep, dependencies, processedVariables, initializationOrder);
     }
@@ -394,7 +384,7 @@ public class Utensils
     for (var entry : graph.entrySet())
     {
       String node = entry.getKey();
-      for (var dependency : entry.getValue().dependencies)
+      for (var dependency : entry.getValue().dependsOn)
       {
         dot.append(String.format(" \"%s\" -> \"%s\";\n", dependency, node));
       }
@@ -416,9 +406,7 @@ public class Utensils
     }
   }
 
-  public static <D, C, F extends Function<? extends D, ? extends C>>
-         File
-         storeBytesInFile(File file, byte[] bytes)
+  public static <D, C, F extends Function<? extends D, ? extends C>> File storeBytesInFile(File file, byte[] bytes)
   {
     try
     {

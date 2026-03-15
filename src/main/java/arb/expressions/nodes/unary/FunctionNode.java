@@ -326,7 +326,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     contextual = mapping != null;
     if (contextual)
     {
-      expression.referencedFunctions.put(functionName, mapping);
+      expression.registerReferencedFunction(functionName, mapping);
       generatedType = mapping.coDomain;
     }
   }
