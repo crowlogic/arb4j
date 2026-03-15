@@ -17,6 +17,7 @@ import arb.*;
 import arb.Integer;
 import arb.exceptions.CompilerException;
 import arb.expressions.*;
+import arb.expressions.Expression.CursorState;
 import arb.expressions.Context;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
@@ -442,8 +443,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     assert operandFunctionFieldName != null : "assignFieldNamesIfNecessary must be called before parseOperand";
 
-    String  paramName = expression.parseName();
-    boolean hasArrow  = false;
+    CursorState savedCursor = expression.saveCursor();
+    String      paramName   = expression.parseName();
+    boolean     hasArrow    = false;
     expression.skipSpaces();
 
     if (expression.character == '\u2794')
@@ -452,29 +454,23 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       hasArrow = true;
     }
 
-    operandExpression = new Expression<>(Integer.class, expression.coDomainType, Sequence.class);
-
     if (!hasArrow)
     {
-      expression.position -= paramName.length();
+      expression.restoreCursor(savedCursor);
     }
 
+    operandExpression                     = new Expression<>(Integer.class, expression.coDomainType, Sequence.class);
     operandExpression.continueParsingFrom(expression);
-
     operandExpression.upstreamExpression  = expression;
     operandExpression.context             = expression.context;
     operandExpression.independentVariable = null;
     operandExpression.clearIndeterminateVariables();
     operandExpression.className           = operandFunctionFieldName;
-
-    operandExpression.newVariableNode(paramName);
-    indexVariableFieldName = paramName;
-
-    operandExpression.rootNode = operandExpression.resolve();
+    indexVariableFieldName                = paramName;
+    operandExpression.rootNode            = operandExpression.resolve();
 
     expression.continueParsingFrom(operandExpression);
     operandExpression.updateStringRepresentation();
-
     registerOperand(operandFunctionFieldName, operandExpression);
     propagateContextVariablesToOperand();
   }
