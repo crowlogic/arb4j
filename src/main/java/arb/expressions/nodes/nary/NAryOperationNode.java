@@ -24,35 +24,37 @@ import arb.functions.Function;
 import arb.functions.integer.Sequence;
 
 /**
- * Represents a generic n-ary operation on {@link Node}s within
- * {@link Expression}s. This abstract base class provides the common structure
- * and behavior for operations that involve multiple operands, such as
- * {@link SumNode}, {@link ProductNode}, or other customized functions that
- * combine elements of a class over a coDomain of values.
- * <p>
- * It handles the initialization and execution of these operations, including
- * setting up the operation's parameters, executing the operation over the
- * specified coDomain, and managing intermediate results. The class leverages
- * ASM for bytecode manipulation, enabling dynamic generation and compilation of
- * expressions.
- * </p>
- * <p>
- * Generics <code>D</code>, <code>R</code>, and <code>F</code> represent the
- * domain, coDomain, and the function type of the operation, respectively. This
- * allows for operations over different types of expressions and results,
- * facilitating flexibility and reuse in various mathematical and computational
- * contexts.
- * </p>
- * <p>
- * The class integrates closely with the {@link arb.expressions.Compiler} and
- * {@link arb.utensils.Utensils} for expression parsing, bytecode generation,
- * and utility methods, ensuring a seamless operation within the arb framework.
- * </p>
+ * Represents a generic n-ary operation node ({@link SumNode}, {@link ProductNode}, etc.)
+ * within an {@link Expression} tree. Each such node owns a child
+ * {@link #operandExpression} — an independently compiled {@link Sequence} over
+ * {@link arb.Integer} — and drives a loop at the bytecode level that
+ * accumulates the result by applying {@link #operation} (e.g. {@code add} or
+ * {@code mul}) to successive evaluations of that operand over
+ * [{@link #lowerLimit}, {@link #upperLimit}].
  *
- * @param <D> the domain type of the operands and the operation
- * @param <R> the coDomain type of the operation's result
- * @param <F> the function interface this operation implements, extending the
- *            {@link Function} interface with specific domain and coDomain types
+ * <h2>Operand expression lifetime</h2>
+ * The child expression is constructed inline by {@link #parseOperand()} and
+ * compiled as a sibling class inside the parent's
+ * {@link arb.expressions.ExpressionClassLoader}. Its string representation is
+ * derived <em>after</em> parsing (via {@link Expression#updateStringRepresentation()}),
+ * not seeded from the parent string — see the contract documented on
+ * {@link #parseOperand()} for the reason.
+ *
+ * <h2>Code generation</h2>
+ * {@link #generate(MethodVisitor, Class)} emits the loop:
+ * <pre>
+ *   result.identity();
+ *   index.set(lowerLimit);
+ *   upperLimit.set(...);
+ *   while (index.compareTo(upperLimit) <= 0) {
+ *       result = result.operation(operand.evaluate(index, bits, value), bits);
+ *       index.increment();
+ *   }
+ * </pre>
+ *
+ * @param <D> parent expression domain type
+ * @param <R> result/coDomain type
+ * @param <F> parent function interface
  *
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
@@ -400,39 +402,56 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   }
 
   /**
-   * Parses the operand of the n-ary operation inline, constructing a properly
-   * scoped sub-expression analogous to {@link Expression#parseLambda(String)},
-   * but where the index variable name and arrow are optional.
+   * Parses the operand body of this n-ary operation, constructing and partially
+   * initializing the child {@link #operandExpression} inline — analogous to
+   * {@link Expression#parseLambda(String)} but with an optional index variable
+   * name and arrow.
    *
-   * <p>
-   * Syntax handled:
+   * <h3>Syntax forms handled</h3>
    * <ul>
-   *   <li>{@code Σk{k=1…3}}       — bare index variable, operand is the variable itself</li>
-   *   <li>{@code Σk➔f(k){k=1…3}}  — explicit arrow form</li>
-   *   <li>{@code Σf(k){k=1…3}}    — operand expression parsed directly (no arrow)</li>
+   *   <li>{@code Σk{k=1…3}}      — bare index variable; the operand <em>is</em> the variable</li>
+   *   <li>{@code Σk➔f(k){k=1…3}} — explicit arrow separating variable from body</li>
+   *   <li>{@code Σf(k){k=1…3}}   — body parsed directly, variable name inferred from context</li>
    * </ul>
    *
-   * <p>
-   * <b>INVARIANT — do not break:</b> The child {@code operandExpression} must
-   * <em>never</em> be seeded with the parent expression's full string via
-   * {@code operandExpression.setExpression(expression.getExpression())}.
-   * Doing so causes {@link #updateStringRepresentation()} (and any
-   * {@code toString()} walk up the {@code upstreamExpression} chain) to see the
-   * leading {@code Σ} sigil in the child's own string, which triggers the
-   * construction of another {@link NAryOperationNode} inside the child,
-   * which in turn seeds its child the same way, producing unbounded recursive
-   * operand construction and a stack overflow.  The correct approach is to
-   * call {@link Expression#updateStringRepresentation()} <em>after</em>
-   * {@link Expression#continueParsingFrom(Expression)}, at which point the
-   * child's string is derived solely from the tokens actually consumed for
-   * the operand body.
+   * <h3>String initialisation contract — do not violate</h3>
+   * The child expression is seeded with the parent's expression string via
+   * {@link Expression#continueParsingFrom(Expression)}, which copies <em>both</em>
+   * the string and the current cursor position. This is the correct initialisation
+   * sequence:
+   * <ol>
+   *   <li>Allocate the child {@code Expression} with the 3-arg constructor — this
+   *       leaves {@code expression} null inside it.</li>
+   *   <li>Call {@code operandExpression.continueParsingFrom(expression)} to copy
+   *       the parent's string and cursor into the child <em>before</em> calling
+   *       {@code resolve()}. Without this, {@code resolve()} calls
+   *       {@code currentCodePoint()} which calls {@code getExpression().length()}
+   *       and NPEs immediately.</li>
+   *   <li>Call {@code operandExpression.resolve()} to build the operand AST.</li>
+   *   <li>Call {@code expression.continueParsingFrom(operandExpression)} to sync
+   *       the parent cursor past the tokens that were consumed.</li>
+   *   <li>Call {@code operandExpression.updateStringRepresentation()} to trim the
+   *       child's string to just the operand body.</li>
+   * </ol>
+   *
+   * <p>Do <strong>not</strong> call
+   * {@code operandExpression.setExpression(expression.getExpression())} directly
+   * and then invoke {@code updateStringRepresentation()} without first having
+   * called {@code resolve()}: at the moment {@code resolve()} constructs
+   * an inner {@link NAryOperationNode}, that inner node walks
+   * {@code upstreamExpression.getExpression()} looking for its own sigil and,
+   * finding the parent sigil at position 0, recurses without bound.
+   * {@code continueParsingFrom} avoids this because by the time
+   * {@code updateStringRepresentation()} is called, {@code rootNode} is already
+   * set to the concrete operand AST (not another n-ary node), so the string is
+   * derived from the AST rather than re-parsed.
    */
   private void parseOperand()
   {
     assert operandFunctionFieldName != null : "assignFieldNamesIfNecessary must be called before parseOperand";
 
-    String paramName    = expression.parseName();
-    boolean hasArrow    = false;
+    String  paramName = expression.parseName();
+    boolean hasArrow  = false;
     expression.skipSpaces();
 
     if (expression.character == '\u2794')
@@ -441,24 +460,25 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       hasArrow = true;
     }
 
-    operandExpression                     = new Expression<>(Integer.class,
-                                                             expression.coDomainType,
-                                                             Sequence.class);
-    // NOTE: do NOT call operandExpression.setExpression(expression.getExpression())
-    // here — see Javadoc above for the full explanation of why this causes
-    // infinite recursive operand construction.
+    operandExpression = new Expression<>(Integer.class, expression.coDomainType, Sequence.class);
+
     if (!hasArrow)
     {
       // paramName was consumed by parseName() but belongs to the operand body,
-      // not to a variable binding. Rewind so that resolve() re-reads it.
+      // not to a variable binding — rewind so that resolve() re-reads it.
       expression.position -= paramName.length();
     }
-    operandExpression.setCursorFrom(expression);
+
+    // Copy the parent's expression string AND cursor into the child so that
+    // resolve() -> currentCodePoint() -> getExpression().length() does not NPE.
+    // (The 3-arg constructor leaves operandExpression.expression == null.)
+    operandExpression.continueParsingFrom(expression);
+
     operandExpression.upstreamExpression  = expression;
     operandExpression.context             = expression.context;
     operandExpression.independentVariable = null;
     operandExpression.clearIndeterminateVariables();
-    // className must match the field name so ExpressionClassLoader can find it
+    // className must match the field name so ExpressionClassLoader can find it.
     operandExpression.className           = operandFunctionFieldName;
 
     operandExpression.newVariableNode(paramName);
@@ -466,8 +486,10 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
     operandExpression.rootNode = operandExpression.resolve();
 
+    // Sync the parent cursor past the tokens the child consumed.
     expression.continueParsingFrom(operandExpression);
 
+    // Now that rootNode is set, derive the child's string from the AST.
     operandExpression.updateStringRepresentation();
 
     registerOperand(operandFunctionFieldName, operandExpression);
