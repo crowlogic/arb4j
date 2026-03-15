@@ -42,19 +42,14 @@ import arb.functions.integer.Sequence;
  * enclosing expression. That compiled {@code Sequence} is held as a field on
  * the outer generated class and called once per loop iteration.
  *
- * <h2>Index variable field ownership</h2>
- * The index variable — {@code k} in the example above — must be declared as a
- * {@code public arb.Integer} field on the <em>outer</em> generated class, not
- * on the operand class. The outer class owns the loop counter; the operand
- * class receives it by reference each iteration via
- * {@link #propagateInputToOperand}. Ownership is established in
- * {@link #parseOperatorLimitSpecifications()} by inserting a live
- * {@code new arb.Integer()} into {@link Context#variables} under the index
- * name. {@link arb.expressions.Expression#declareVariableEntry} then emits the
- * field when it iterates the context. A null value in the context map causes
- * that method to skip the entry silently, which is the root cause of
- * {@code NoSuchFieldError: Class ΣkkEq1To3 does not have member field
- * 'arb.Integer k'} — do not revert the non-null put.
+ * <h2>Index variable — method-local, not a field</h2>
+ * The index variable ({@code k} above) is allocated as a method-local
+ * {@code arb.Integer} in the {@code evaluate()} bytecode (local slot
+ * {@value #INDEX_VARIABLE_LOCAL_SLOT}). It is never registered in the
+ * {@link Context} and never declared as a class field. This avoids polluting
+ * the shared context and eliminates the need to temporarily mutate context
+ * state during operand parsing. The operand receives the index value as the
+ * first argument to its {@code evaluate()} call each iteration.
  *
  * <h2>Operand expression initialisation sequence</h2>
  * {@link #parseOperand()} constructs the child {@link Expression} with the
@@ -74,6 +69,7 @@ import arb.functions.integer.Sequence;
  * <h2>Generated loop structure</h2>
  * {@link #generate(MethodVisitor, Class)} emits:
  * <pre>
+ *   arb.Integer index = new arb.Integer();   // local slot 5
  *   accumulator.identity();
  *   index.set(lowerLimit);
  *   cachedUpper.set(upperLimit);
@@ -97,6 +93,14 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                               Node<D, R, F>
 {
   public static final Logger                      logger                         = LoggerFactory.getLogger(NAryOperationNode.class);
+
+  /**
+   * Local variable slot in the generated {@code evaluate()} method for the
+   * {@code arb.Integer} index variable.  Slots 0–4 are: {@code this}, input,
+   * order, bits, result.  This slot is allocated by {@link #allocateLocalIndexVariable(MethodVisitor)}
+   * at the top of {@link #generate(MethodVisitor, Class)} via {@code NEW / DUP / INVOKESPECIAL / ASTORE}.
+   */
+  public static final int                         INDEX_VARIABLE_LOCAL_SLOT       = 5;
 
   public static String                            operandEvaluateMethodSignature = Compiler.getMethodDescriptor(Object.class,
                                                                                                                 Object.class,
@@ -264,7 +268,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     resultType = assignTypes(resultType);
 
     assignFieldNamesIfNecessary(resultType);
-    prepareIndexVariable();
+    allocateLocalIndexVariable(mv);
 
     propagateInputToOperand(mv);
     initializeResultVariable(mv, resultType);
@@ -279,6 +283,24 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     designateLabel(mv, endLoop);
     assignResult(mv, resultType);
     return mv;
+  }
+
+  /**
+   * Emits bytecode to allocate a fresh {@code arb.Integer} in local slot
+   * {@value #INDEX_VARIABLE_LOCAL_SLOT}:
+   * <pre>
+   *   NEW arb/Integer
+   *   DUP
+   *   INVOKESPECIAL arb/Integer.&lt;init&gt;()V
+   *   ASTORE 5
+   * </pre>
+   */
+  protected void allocateLocalIndexVariable(MethodVisitor mv)
+  {
+    Compiler.generateNewObjectInstruction(mv, Integer.class);
+    Compiler.duplicateTopOfTheStack(mv);
+    Compiler.invokeDefaultConstructor(mv, Integer.class);
+    mv.visitVarInsn(ASTORE, INDEX_VARIABLE_LOCAL_SLOT);
   }
 
   public Class<?> assignTypes(Class<?> resultType)
@@ -330,11 +352,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       cachedOperandBranches = list.stream().map(element -> element.spliceInto(expression)).toList();
     }
     return cachedOperandBranches;
-  }
-
-  IntermediateVariable<D, R, F> getExistingIndexVariable()
-  {
-    return expression.intermediateVariables.get(getIndexVariableFieldName());
   }
 
   void getField(MethodVisitor methodVisitor, String fieldName, String fieldTypeSignature)
@@ -409,11 +426,14 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     loadFieldFromThis(mv, operandValueFieldName, generatedType);
   }
 
+  /**
+   * Loads the method-local {@code arb.Integer} index variable from local slot
+   * {@value #INDEX_VARIABLE_LOCAL_SLOT} onto the operand stack.
+   */
   MethodVisitor loadIndexVariable(MethodVisitor methodVisitor)
   {
-    assert fieldName != null : String.format("field is null %s\n", this);
     assert indexVariableFieldName != null : String.format("indexVariableFieldName is null %s\n", this);
-    getField(methodVisitor, getIndexVariableFieldName(), Integer.class.descriptorString());
+    methodVisitor.visitVarInsn(ALOAD, INDEX_VARIABLE_LOCAL_SLOT);
     return methodVisitor;
   }
 
@@ -471,16 +491,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       peekIndexVariableFromLimitSpec();
     }
 
-    // Temporarily remove the index variable from the context so that resolve()
-    // assigns it as the operand's independent variable (Integer domain) rather
-    // than a context variable.  A prior NAryOperationNode sharing this context
-    // may have already inserted it via parseOperatorLimitSpecifications().
-    Named previousIndexValue = null;
-    if (indexVariableFieldName != null && expression.context.variables.containsKey(indexVariableFieldName))
-    {
-      previousIndexValue = expression.context.variables.remove(indexVariableFieldName);
-    }
-
     Class<?> operandCoDomain              = scalarCoDomain(expression.coDomainType);
     operandExpression                     = new Expression<>(Integer.class, operandCoDomain, Sequence.class);
     operandExpression.continueParsingFrom(expression);
@@ -490,13 +500,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     operandExpression.clearIndeterminateVariables();
     operandExpression.className           = operandFunctionFieldName;
     operandExpression.rootNode            = operandExpression.resolve();
-
-    // Restore the index variable to the context (will be overwritten again by
-    // parseOperatorLimitSpecifications with a fresh arb.Integer instance).
-    if (previousIndexValue != null)
-    {
-      expression.context.variables.put(indexVariableFieldName, previousIndexValue);
-    }
 
     expression.continueParsingFrom(operandExpression);
     operandExpression.updateStringRepresentation();
@@ -526,16 +529,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   /**
    * Parses {@code {k=a…b}}, validates that the index variable name is consistent
-   * with what {@link #parseOperand()} already recorded, and inserts a live
-   * {@code new arb.Integer()} into the enclosing expression's context under the
-   * index variable name.
-   *
-   * <p>The live instance is required — not null — because
-   * {@link arb.expressions.Expression#declareVariableEntry} silently skips any
-   * context entry whose value is null, which would prevent the {@code arb.Integer k}
-   * field from being emitted in the outer generated class and cause
-   * {@link NoSuchFieldError} at runtime when the generated {@code evaluate()}
-   * method tries to read it.
+   * with what {@link #parseOperand()} already recorded, and records the lower
+   * and upper limits.  The index variable is <em>not</em> registered in the
+   * {@link Context} — it lives as a method-local {@code arb.Integer} in slot
+   * {@value #INDEX_VARIABLE_LOCAL_SLOT}, allocated by
+   * {@link #allocateLocalIndexVariable(MethodVisitor)}.
    */
   public Node<D, R, F> parseOperatorLimitSpecifications()
   {
@@ -561,7 +559,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       indexVariableFieldName = specifiedName;
     }
 
-    expression.context.variables.put(indexVariableFieldName, new arb.Integer());
     expression.require('=');
     parseLowerLimit();
     parseUpperLimit();
@@ -622,31 +619,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     lowerLimit = expression.resolve();
     expression.require('\u2026');
-  }
-
-  /**
-   * Ensures the index variable has an allocated {@code arb.Integer} field on the
-   * outer generated class before code generation begins. If it was already
-   * registered as an intermediate variable (e.g. by a nested or reused node),
-   * that registration is reused. Otherwise the field declaration was handled by
-   * {@link #parseOperatorLimitSpecifications()} inserting a live instance into
-   * {@link Context#variables}, which causes
-   * {@link arb.expressions.Expression#declareVariableEntry} to emit it — nothing
-   * further is required here.
-   */
-  protected void prepareIndexVariable()
-  {
-    var existingIndexVariable = getExistingIndexVariable();
-
-    if (existingIndexVariable != null)
-    {
-      if (!existingIndexVariable.type.equals(Integer.class))
-      {
-        throw new CompilerException(String.format("index variable %s already declared with type %s, not arb.Integer",
-                                                  existingIndexVariable,
-                                                  existingIndexVariable.type));
-      }
-    }
   }
 
   protected void propagateInputToOperand(MethodVisitor mv)
