@@ -113,7 +113,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     {
       expression.context = new Context();
     }
-    this.operandExpression = parseOperand().compile();
+    this.operandExpression = parseOperand();
     registerOperand(operandFunctionFieldName, operandExpression);
 
     propagateContextVariablesToOperand();

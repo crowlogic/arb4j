@@ -3503,10 +3503,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean thisOrAnyUpstreamExpressionHasIndeterminantVariable()
   {
+    log.debug("#{}: thisOrAnyUpstreamExpressionHasIndeterminantVariable()", System.identityHashCode(this));
     if (indeterminantTypes.contains(coDomainType))
     {
       return true;
     }
+    assert upstreamExpression != this;
     return upstreamExpression != null && upstreamExpression.thisOrAnyUpstreamExpressionHasIndeterminantVariable();
   }
 
@@ -3781,11 +3783,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   }
 
-  public Expression<D, C, F> syncWith(Expression<?,?,?> otherExpression)
+  public Expression<D, C, F> syncWith(Expression<?, ?, ?> otherExpression)
   {
     expression = otherExpression.expression;
-    setCursor(otherExpression);    
-    upstreamExpression  = otherExpression;
+    setCursor(otherExpression);
+    upstreamExpression = otherExpression;
     return this;
   }
 
