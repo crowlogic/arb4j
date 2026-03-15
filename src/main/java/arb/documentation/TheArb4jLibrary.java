@@ -32,7 +32,7 @@ import arb.Polynomial;
  * <li>Multi-stage parsing and compilation via {@link arb.expressions.Compiler} for
  * high-performance evaluation
  * <li>Three-tier variable system through {@link arb.expressions.nodes.VariableNode}:
- * independent variables, indeterminate variables, and context variables
+ * independent variables and context variables
  * <li>Support for {@link Polynomial} expressions, rational functions, and functional
  * compositions
  * <li>Automatic symbolic differentiation and integration via

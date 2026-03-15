@@ -300,7 +300,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     {
       File   file = expression.saveToFile();
       String msg  =
-                 String.format("%s of type %s whose expression is '%s' cannot be represented as a %s. The expression was saved to %s\ndomain=%s\ncoDomain=%s\nfunctionClass=%s\nfunctionName=%s\nindterminateVars=%s\nindepenentVariable=%s\nexpression=%s\n",
+                 String.format("%s of type %s whose expression is '%s' cannot be represented as a %s. The expression was saved to %s\ndomain=%s\ncoDomain=%s\nfunctionClass=%s\nfunctionName=%s\nindependentVariable=%s\nexpression=%s\n",
                                getClass(),
                                type(),
                                this,
@@ -310,7 +310,6 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
                                expression.coDomainType,
                                expression.functionClass,
                                expression.functionName,
-                               expression.getIndeterminateVariables(),
                                expression.independentVariable,
                                expression);
       throwTypePromotionError(left.type(), right.type(), msg);

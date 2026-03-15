@@ -50,7 +50,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     newNode.fieldName              = fieldName;
     newNode.functionName           = functionName;
     newNode.argFunctionFieldName   = argFunctionFieldName;
-    newNode.indeterminateFieldName = indeterminateFieldName;
+    newNode.identityFieldName = identityFieldName;
     newNode.arg                    = arg.spliceInto(newExpression);
     newNode.α                      = α.spliceInto(newExpression);
     newNode.β                      = β.spliceInto(newExpression);
@@ -91,7 +91,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
   public String   argFunctionFieldName;
 
-  String          indeterminateFieldName;
+  String          identityFieldName;
 
   public Class<?> argFunctionClass;
 
@@ -208,8 +208,8 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
     if (argumentDependsOnInput && hasScalarCodomain())
     {
-      indeterminateFieldName = expression.newIntermediateVariable("indeterminate", functionalType(), true);
-      expression.registerInitializer(this::generateIndeterminateInitializer);
+      identityFieldName = expression.newIntermediateVariable("identity", functionalType(), true);
+      expression.registerInitializer(this::generateIdentityInitializer);
     }
 
     compileArgFunction();
@@ -220,9 +220,9 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     }
   }
 
-  public void generateIndeterminateInitializer(MethodVisitor mv)
+  public void generateIdentityInitializer(MethodVisitor mv)
   {
-    expression.loadThisAndFieldOntoStack(mv, indeterminateFieldName, functionalType());
+    expression.loadThisAndFieldOntoStack(mv, identityFieldName, functionalType());
     generateVirtualMethodInvocation(mv, functionalType(), "identity", functionalType());
     mv.visitInsn(POP); // identity() returns this, discard
   }
@@ -254,28 +254,10 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     argExpression.upstreamExpression = expression;
 
     var independentVar = expression.independentVariable;
-    if (independentVar != null)
+    if (independentVar != null && argumentDependsOnInput)
     {
       var splicedVar = independentVar.spliceInto(argExpression).asVariable();
-      if (argumentDependsOnInput)
-      {
-        argExpression.independentVariable = splicedVar;
-      }
-      else
-      {
-        splicedVar.isIndeterminate = true;
-        splicedVar.reference.type  = argCoDomainType;
-        argExpression.pushIndeterminateVariable(splicedVar);
-      }
-    }
-
-    // Propagate outer indeterminate variables with the correct arg coDomain type
-    for (var outerIndeterminate : expression.getIndeterminateVariables())
-    {
-      var splicedIndeterminate = outerIndeterminate.spliceInto(argExpression).asVariable();
-      splicedIndeterminate.isIndeterminate = true;
-      splicedIndeterminate.reference.type  = argCoDomainType;
-      argExpression.pushIndeterminateVariable(splicedIndeterminate);
+      argExpression.independentVariable = splicedVar;
     }
 
     argExpression.rootNode            = arg.spliceInto(argExpression);
@@ -308,7 +290,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
         if (argumentDependsOnInput)
         {
-          expression.loadThisAndFieldOntoStack(mv, indeterminateFieldName, functionalType());
+          expression.loadThisAndFieldOntoStack(mv, identityFieldName, functionalType());
         }
         else
         {
@@ -344,7 +326,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
         if (argumentDependsOnInput)
         {
-          expression.loadThisAndFieldOntoStack(mv, indeterminateFieldName, functionalType());
+          expression.loadThisAndFieldOntoStack(mv, identityFieldName, functionalType());
         }
         else
         {
