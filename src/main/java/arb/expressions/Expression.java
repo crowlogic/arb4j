@@ -296,6 +296,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public char                                                previousCharacter;
 
+  public record CursorState(int position, char character, char previousCharacter) {}
+
+  public CursorState saveCursor()
+  {
+    return new CursorState(position, character, previousCharacter);
+  }
+
+  public void restoreCursor(CursorState state)
+  {
+    position          = state.position();
+    character         = state.character();
+    previousCharacter = state.previousCharacter();
+  }
+
   public boolean                                             recursive                        = false;
 
   private final HashMap<String, FunctionMapping<?, ?, ?>>    referencedFunctions              = new HashMap<>();
