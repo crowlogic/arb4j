@@ -797,8 +797,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (variable.getValue() != null)
     {
       String varName = variable.getKey();
-      classVisitor.visitField(ACC_PUBLIC, varName, variable.getValue().getClass().descriptorString(), null, null);
-      declaredVariables.add(varName);
+      if (!declaredVariables.contains(varName))
+      {
+        classVisitor.visitField(ACC_PUBLIC, varName, variable.getValue().getClass().descriptorString(), null, null);
+        declaredVariables.add(varName);
+      }
     }
     else
     {
@@ -826,11 +829,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       var upstreamIndependentVariableNode = upstreamExpression.independentVariable;
       if (upstreamIndependentVariableNode != null && !upstreamIndependentVariableNode.type().equals(Object.class))
       {
+        String upstreamIndVarName = upstreamIndependentVariableNode.reference.name;
         classVisitor.visitField(ACC_PUBLIC,
-                                upstreamIndependentVariableNode.reference.name,
+                                upstreamIndVarName,
                                 upstreamIndependentVariableNode.type().descriptorString(),
                                 null,
                                 null);
+        declaredVariables.add(upstreamIndVarName);
       }
     }
 
@@ -865,11 +870,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       VariableNode<D, C, F> varNode = entry.getValue();
       Class<?>              varType = varNode.type();
       assert varType != null && !varType.equals(Object.class) : "type of " + varNode + " should not be Object or null";
+      if (declaredVariables.contains(varName))
+      {
+        return;
+      }
       if (trace)
       {
         log.debug("declareVariables for {}: declaring upstreamInput variable {} of type {}", className, varName, varType);
       }
       Compiler.declareField(classVisitor, varName, varType);
+      declaredVariables.add(varName);
     });
   }
 
