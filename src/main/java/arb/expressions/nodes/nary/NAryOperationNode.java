@@ -406,9 +406,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
    * <p>
    * Syntax handled:
    * <ul>
-   *   <li>{@code Σk{k=1…3}}   — implicit identity operand, index variable is {@code k}</li>
+   *   <li>{@code Σk{k=1…3}}     — bare index variable, operand is the variable itself</li>
    *   <li>{@code Σk➔f(k){k=1…3}} — explicit arrow form</li>
-   *   <li>{@code Σf(k){k=1…3}}  — operand expression without arrow</li>
+   *   <li>{@code Σf(k){k=1…3}}  — operand expression parsed directly (no arrow)</li>
    * </ul>
    */
   private void parseOperand()
@@ -423,23 +423,21 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       expression.require('➔');
     }
 
-    operandExpression                       = new Expression<>(Integer.class,
-                                                               expression.coDomainType,
-                                                               Sequence.class);
-    operandExpression.upstreamExpression    = expression;
-    operandExpression.context               = expression.context;
-    operandExpression.independentVariable   = null;
+    operandExpression                     = new Expression<>(Integer.class,
+                                                             expression.coDomainType,
+                                                             Sequence.class);
+    operandExpression.setExpression(expression.getExpression());
+    operandExpression.setCursor(expression);
+    operandExpression.upstreamExpression  = expression;
+    operandExpression.context             = expression.context;
+    operandExpression.independentVariable = null;
     operandExpression.clearIndeterminateVariables();
 
-    // Establish paramName as the independent variable of the operand sub-expression
     operandExpression.newVariableNode(paramName);
-    // Track the index variable field name (used later in parseOperatorLimitSpecifications)
     indexVariableFieldName = paramName;
 
     operandExpression.rootNode = operandExpression.resolve();
 
-    // Sync parse cursor back to parent — expression string + position only,
-    // never upstreamExpression (that would create a cycle)
     expression.continueParsingFrom(operandExpression);
 
     operandExpression.updateStringRepresentation();
