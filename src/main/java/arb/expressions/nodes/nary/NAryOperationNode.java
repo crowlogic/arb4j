@@ -403,30 +403,56 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
    * Parses the operand of the n-ary operation inline, constructing a properly
    * scoped sub-expression analogous to {@link Expression#parseLambda(String)},
    * but where the index variable name and arrow are optional.
+   *
    * <p>
    * Syntax handled:
    * <ul>
-   *   <li>{@code Σk{k=1…3}}     — bare index variable, operand is the variable itself</li>
-   *   <li>{@code Σk➔f(k){k=1…3}} — explicit arrow form</li>
-   *   <li>{@code Σf(k){k=1…3}}  — operand expression parsed directly (no arrow)</li>
+   *   <li>{@code Σk{k=1…3}}       — bare index variable, operand is the variable itself</li>
+   *   <li>{@code Σk➔f(k){k=1…3}}  — explicit arrow form</li>
+   *   <li>{@code Σf(k){k=1…3}}    — operand expression parsed directly (no arrow)</li>
    * </ul>
+   *
+   * <p>
+   * <b>INVARIANT — do not break:</b> The child {@code operandExpression} must
+   * <em>never</em> be seeded with the parent expression's full string via
+   * {@code operandExpression.setExpression(expression.getExpression())}.
+   * Doing so causes {@link #updateStringRepresentation()} (and any
+   * {@code toString()} walk up the {@code upstreamExpression} chain) to see the
+   * leading {@code Σ} sigil in the child's own string, which triggers the
+   * construction of another {@link NAryOperationNode} inside the child,
+   * which in turn seeds its child the same way, producing unbounded recursive
+   * operand construction and a stack overflow.  The correct approach is to
+   * call {@link Expression#updateStringRepresentation()} <em>after</em>
+   * {@link Expression#continueParsingFrom(Expression)}, at which point the
+   * child's string is derived solely from the tokens actually consumed for
+   * the operand body.
    */
   private void parseOperand()
   {
     assert operandFunctionFieldName != null : "assignFieldNamesIfNecessary must be called before parseOperand";
 
-    String paramName = expression.parseName();
+    String paramName    = expression.parseName();
+    boolean hasArrow    = false;
     expression.skipSpaces();
 
-    if (expression.character == '➔')
+    if (expression.character == '\u2794')
     {
-      expression.require('➔');
+      expression.require('\u2794');
+      hasArrow = true;
     }
 
     operandExpression                     = new Expression<>(Integer.class,
                                                              expression.coDomainType,
                                                              Sequence.class);
-    operandExpression.setExpression(expression.getExpression());
+    // NOTE: do NOT call operandExpression.setExpression(expression.getExpression())
+    // here — see Javadoc above for the full explanation of why this causes
+    // infinite recursive operand construction.
+    if (!hasArrow)
+    {
+      // paramName was consumed by parseName() but belongs to the operand body,
+      // not to a variable binding. Rewind so that resolve() re-reads it.
+      expression.position -= paramName.length();
+    }
     operandExpression.setCursorFrom(expression);
     operandExpression.upstreamExpression  = expression;
     operandExpression.context             = expression.context;
@@ -532,7 +558,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   private void parseLowerLimit()
   {
     lowerLimit = expression.resolve();
-    expression.require('…');
+    expression.require('\u2026');
   }
 
   protected void prepareIndexVariable()
