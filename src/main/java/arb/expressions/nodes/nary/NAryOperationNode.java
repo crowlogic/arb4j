@@ -24,37 +24,67 @@ import arb.functions.Function;
 import arb.functions.integer.Sequence;
 
 /**
- * Represents a generic n-ary operation node ({@link SumNode}, {@link ProductNode}, etc.)
- * within an {@link Expression} tree. Each such node owns a child
- * {@link #operandExpression} — an independently compiled {@link Sequence} over
- * {@link arb.Integer} — and drives a loop at the bytecode level that
- * accumulates the result by applying {@link #operation} (e.g. {@code add} or
- * {@code mul}) to successive evaluations of that operand over
- * [{@link #lowerLimit}, {@link #upperLimit}].
+ * A node in the expression AST that compiles bounded n-ary operations — sums,
+ * products, and analogous accumulations — into a tight JVM bytecode loop over
+ * an {@link arb.Integer} index variable running from a lower limit to an upper
+ * limit inclusive.
  *
- * <h2>Operand expression lifetime</h2>
- * The child expression is constructed inline by {@link #parseOperand()} and
- * compiled as a sibling class inside the parent's
- * {@link arb.expressions.ExpressionClassLoader}. Its string representation is
- * derived <em>after</em> parsing (via {@link Expression#updateStringRepresentation()}),
- * not seeded from the parent string — see the contract documented on
- * {@link #parseOperand()} for the reason.
+ * <p>The syntax parsed by this node is {@code ⊕f(k){k=a…b}}, where {@code ⊕}
+ * is the operator sigil (Σ for sum, Π/∏ for product), {@code f(k)} is the
+ * operand body (any expression in the index variable), and {@code {k=a…b}}
+ * binds the index variable name and its limits. The operand body is compiled
+ * as a separate {@link Sequence} class that shares the same
+ * {@link arb.expressions.ExpressionClassLoader} and {@link Context} as the
+ * enclosing expression. That compiled {@code Sequence} is held as a field on
+ * the outer generated class and called once per loop iteration.
  *
- * <h2>Code generation</h2>
- * {@link #generate(MethodVisitor, Class)} emits the loop:
+ * <h2>Index variable field ownership</h2>
+ * The index variable — {@code k} in the example above — must be declared as a
+ * {@code public arb.Integer} field on the <em>outer</em> generated class, not
+ * on the operand class. The outer class owns the loop counter; the operand
+ * class receives it by reference each iteration via
+ * {@link #propagateInputToOperand}. Ownership is established in
+ * {@link #parseOperatorLimitSpecifications()} by inserting a live
+ * {@code new arb.Integer()} into {@link Context#variables} under the index
+ * name. {@link arb.expressions.Expression#declareVariableEntry} then emits the
+ * field when it iterates the context. A null value in the context map causes
+ * that method to skip the entry silently, which is the root cause of
+ * {@code NoSuchFieldError: Class ΣkkEq1To3 does not have member field
+ * 'arb.Integer k'} — do not revert the non-null put.
+ *
+ * <h2>Operand expression initialisation sequence</h2>
+ * {@link #parseOperand()} constructs the child {@link Expression} with the
+ * three-argument constructor, which leaves its internal expression string null.
+ * Before calling {@code resolve()} on the child, the parent's string and cursor
+ * are copied into it via
+ * {@link arb.expressions.Expression#continueParsingFrom(Expression)}. Without
+ * this step, {@code resolve()} immediately NPEs inside
+ * {@code currentCodePoint() → getExpression().length()}. After {@code resolve()}
+ * returns, the parent cursor is synced forward past the tokens the child
+ * consumed, and then {@code updateStringRepresentation()} trims the child's
+ * expression string to just the operand body. This ordering is mandatory:
+ * setting the string before {@code resolve()} runs causes nested
+ * {@link NAryOperationNode} constructors to find the parent sigil at position
+ * zero and recurse without bound.
+ *
+ * <h2>Generated loop structure</h2>
+ * {@link #generate(MethodVisitor, Class)} emits:
  * <pre>
- *   result.identity();
+ *   accumulator.identity();
  *   index.set(lowerLimit);
- *   upperLimit.set(...);
- *   while (index.compareTo(upperLimit) <= 0) {
- *       result = result.operation(operand.evaluate(index, bits, value), bits);
+ *   cachedUpper.set(upperLimit);
+ *   while (index.compareTo(cachedUpper) &lt;= 0) {
+ *       accumulator = accumulator.operation(operand.evaluate(index, bits, scratch), bits);
  *       index.increment();
  *   }
+ *   result.set(accumulator);
  * </pre>
+ * All of {@code accumulator}, {@code cachedUpper}, and {@code scratch} are
+ * intermediate variables allocated on the outer generated class.
  *
- * @param <D> parent expression domain type
- * @param <R> result/coDomain type
- * @param <F> parent function interface
+ * @param <D> domain type of the enclosing expression
+ * @param <R> codomain / result type
+ * @param <F> function interface of the enclosing expression
  *
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
@@ -402,49 +432,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   }
 
   /**
-   * Parses the operand body of this n-ary operation, constructing and partially
-   * initializing the child {@link #operandExpression} inline — analogous to
-   * {@link Expression#parseLambda(String)} but with an optional index variable
-   * name and arrow.
-   *
-   * <h3>Syntax forms handled</h3>
-   * <ul>
-   *   <li>{@code Σk{k=1…3}}      — bare index variable; the operand <em>is</em> the variable</li>
-   *   <li>{@code Σk➔f(k){k=1…3}} — explicit arrow separating variable from body</li>
-   *   <li>{@code Σf(k){k=1…3}}   — body parsed directly, variable name inferred from context</li>
-   * </ul>
-   *
-   * <h3>String initialisation contract — do not violate</h3>
-   * The child expression is seeded with the parent's expression string via
-   * {@link Expression#continueParsingFrom(Expression)}, which copies <em>both</em>
-   * the string and the current cursor position. This is the correct initialisation
-   * sequence:
-   * <ol>
-   *   <li>Allocate the child {@code Expression} with the 3-arg constructor — this
-   *       leaves {@code expression} null inside it.</li>
-   *   <li>Call {@code operandExpression.continueParsingFrom(expression)} to copy
-   *       the parent's string and cursor into the child <em>before</em> calling
-   *       {@code resolve()}. Without this, {@code resolve()} calls
-   *       {@code currentCodePoint()} which calls {@code getExpression().length()}
-   *       and NPEs immediately.</li>
-   *   <li>Call {@code operandExpression.resolve()} to build the operand AST.</li>
-   *   <li>Call {@code expression.continueParsingFrom(operandExpression)} to sync
-   *       the parent cursor past the tokens that were consumed.</li>
-   *   <li>Call {@code operandExpression.updateStringRepresentation()} to trim the
-   *       child's string to just the operand body.</li>
-   * </ol>
-   *
-   * <p>Do <strong>not</strong> call
-   * {@code operandExpression.setExpression(expression.getExpression())} directly
-   * and then invoke {@code updateStringRepresentation()} without first having
-   * called {@code resolve()}: at the moment {@code resolve()} constructs
-   * an inner {@link NAryOperationNode}, that inner node walks
-   * {@code upstreamExpression.getExpression()} looking for its own sigil and,
-   * finding the parent sigil at position 0, recurses without bound.
-   * {@code continueParsingFrom} avoids this because by the time
-   * {@code updateStringRepresentation()} is called, {@code rootNode} is already
-   * set to the concrete operand AST (not another n-ary node), so the string is
-   * derived from the AST rather than re-parsed.
+   * Parses the operand body of this n-ary operation and wires it into a freshly
+   * allocated child {@link Expression} that will be compiled as a sibling class.
+   * See the class-level Javadoc for the mandatory initialisation sequence and the
+   * reason {@link Expression#continueParsingFrom(Expression)} must be called
+   * before {@code resolve()}.
    */
   private void parseOperand()
   {
@@ -464,21 +456,15 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
     if (!hasArrow)
     {
-      // paramName was consumed by parseName() but belongs to the operand body,
-      // not to a variable binding — rewind so that resolve() re-reads it.
       expression.position -= paramName.length();
     }
 
-    // Copy the parent's expression string AND cursor into the child so that
-    // resolve() -> currentCodePoint() -> getExpression().length() does not NPE.
-    // (The 3-arg constructor leaves operandExpression.expression == null.)
     operandExpression.continueParsingFrom(expression);
 
     operandExpression.upstreamExpression  = expression;
     operandExpression.context             = expression.context;
     operandExpression.independentVariable = null;
     operandExpression.clearIndeterminateVariables();
-    // className must match the field name so ExpressionClassLoader can find it.
     operandExpression.className           = operandFunctionFieldName;
 
     operandExpression.newVariableNode(paramName);
@@ -486,16 +472,26 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
     operandExpression.rootNode = operandExpression.resolve();
 
-    // Sync the parent cursor past the tokens the child consumed.
     expression.continueParsingFrom(operandExpression);
-
-    // Now that rootNode is set, derive the child's string from the AST.
     operandExpression.updateStringRepresentation();
 
     registerOperand(operandFunctionFieldName, operandExpression);
     propagateContextVariablesToOperand();
   }
 
+  /**
+   * Parses {@code {k=a…b}}, validates that the index variable name is consistent
+   * with what {@link #parseOperand()} already recorded, and inserts a live
+   * {@code new arb.Integer()} into the enclosing expression's context under the
+   * index variable name.
+   *
+   * <p>The live instance is required — not null — because
+   * {@link arb.expressions.Expression#declareVariableEntry} silently skips any
+   * context entry whose value is null, which would prevent the {@code arb.Integer k}
+   * field from being emitted in the outer generated class and cause
+   * {@link NoSuchFieldError} at runtime when the generated {@code evaluate()}
+   * method tries to read it.
+   */
   public Node<D, R, F> parseOperatorLimitSpecifications()
   {
     expression.require('{');
@@ -510,7 +506,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     {
       if (!indexVariableFieldName.equals(specifiedName))
       {
-        throw new CompilerException(String.format("index variable specified in the codomain specification '%s' != the index variable specified between the operator symbol and the right arrow '%s'",
+        throw new CompilerException(String.format("index variable specified in the limit specification '%s' does not match the index variable '%s' parsed from the operand",
                                                   specifiedName,
                                                   indexVariableFieldName));
       }
@@ -520,7 +516,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       indexVariableFieldName = specifiedName;
     }
 
-    expression.context.variables.put(indexVariableFieldName, null);
+    expression.context.variables.put(indexVariableFieldName, new arb.Integer());
     expression.require('=');
     parseLowerLimit();
     parseUpperLimit();
@@ -583,6 +579,16 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     expression.require('\u2026');
   }
 
+  /**
+   * Ensures the index variable has an allocated {@code arb.Integer} field on the
+   * outer generated class before code generation begins. If it was already
+   * registered as an intermediate variable (e.g. by a nested or reused node),
+   * that registration is reused. Otherwise the field declaration was handled by
+   * {@link #parseOperatorLimitSpecifications()} inserting a live instance into
+   * {@link Context#variables}, which causes
+   * {@link arb.expressions.Expression#declareVariableEntry} to emit it — nothing
+   * further is required here.
+   */
   protected void prepareIndexVariable()
   {
     var existingIndexVariable = getExistingIndexVariable();
@@ -591,21 +597,10 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     {
       if (!existingIndexVariable.type.equals(Integer.class))
       {
-        throw new CompilerException(String.format("index variable %s already declared and not of Integer type so it cannot be used as the index",
-                                                  existingIndexVariable));
+        throw new CompilerException(String.format("index variable %s already declared with type %s, not arb.Integer",
+                                                  existingIndexVariable,
+                                                  existingIndexVariable.type));
       }
-      // already registered as intermediate variable, nothing to do
-    }
-    else if (expression.context != null && expression.context.variables.containsKey(getIndexVariableFieldName()))
-    {
-      // The index variable is already in the context (put there by
-      // parseOperatorLimitSpecifications), so it will be declared as a context
-      // variable field by declareVariables. Registering it again as an intermediate
-      // variable would produce a duplicate field and a ClassFormatError.
-    }
-    else
-    {
-      expression.registerIntermediateVariable(getIndexVariableFieldName(), Integer.class, true);
     }
   }
 
