@@ -313,7 +313,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   public Class<?> assignTypes(Class<?> resultType)
   {
-    if (!expression.thisOrAnyUpstreamExpressionHasIndeterminantVariable())
+    if (!expression.thisOrAnyUpstreamExpressionHasFunctionalCodomain())
     {
       resultType = scalarType(resultType);
     }
@@ -511,7 +511,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     operandExpression.upstreamExpression  = expression;
     operandExpression.context             = expression.context;
     operandExpression.independentVariable = null;
-    operandExpression.clearIndeterminateVariables();
     operandExpression.className           = operandFunctionFieldName;
 
     assert indexVariableFieldName != null : "indexVariableFieldName must be known before resolving operand";

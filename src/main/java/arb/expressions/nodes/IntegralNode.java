@@ -238,12 +238,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
     evaluationExpression.context = expression.context;
 
-    evaluationExpression.clearIndeterminateVariables();
-    for (var v : expression.getIndeterminateVariables())
-    {
-      evaluationExpression.pushIndeterminateVariable(v.spliceInto(evaluationExpression)
-                                                      .asVariable());
-    }
 
     return evaluationExpression;
   }
@@ -400,7 +394,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     integrandExpression.upstreamExpression            = expression;
     integrandExpression.functionName        = null;
     integrandExpression.independentVariable = null;
-    integrandExpression.clearIndeterminateVariables();
     integrandExpression.rootNode                = null;
     integrandExpression.deferVariableResolution = true;
 
