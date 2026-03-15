@@ -91,12 +91,12 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
 
   public F instantiate()
   {
-    if ( instance != null )
+    if (instance != null)
     {
       return instance;
     }
-    
-    if (Function.class.equals(expression.functionClass))
+
+    if (expression != null && Function.class.isAssignableFrom(expression.functionClass))
     {
       expression.compile();
     }
@@ -113,7 +113,6 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
     }
     classVisitor.visitField(ACC_PUBLIC, name, functionFieldDescriptor, null, null);
     declaredAs = functionFieldDescriptor;
-
   }
 
   public void loadReferenceOntoStack(MethodVisitor mv)
@@ -149,7 +148,7 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
 
   /**
    * Compiles the expression if its not already
-   * 
+   *
    * @return
    */
   public Expression<D, R, F> getExpression()
@@ -178,22 +177,21 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
 
   public String getExpressionString()
   {
-    if ( expressionString != null )
+    if (expressionString != null)
     {
       return expressionString;
     }
     else
     {
-      if ( expression != null )
+      if (expression != null)
       {
         return expressionString = expression.toString();
       }
     }
-    if ( instance != null)
+    if (instance != null)
     {
       return instance.toString();
     }
     return null;
- }
-
+  }
 }
