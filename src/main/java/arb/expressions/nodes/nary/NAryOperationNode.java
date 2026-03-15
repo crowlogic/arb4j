@@ -513,6 +513,14 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     operandExpression.independentVariable = null;
     operandExpression.clearIndeterminateVariables();
     operandExpression.className           = operandFunctionFieldName;
+
+    assert indexVariableFieldName != null : "indexVariableFieldName must be known before resolving operand";
+    VariableNode<Integer, R, Sequence<R>> indexVar =
+        new VariableNode<>(operandExpression,
+                           operandExpression.newVariableReference(indexVariableFieldName),
+                           false);
+    operandExpression.assignInputVariable(indexVar);
+
     operandExpression.rootNode            = operandExpression.resolve();
 
     expression.continueParsingFrom(operandExpression);
