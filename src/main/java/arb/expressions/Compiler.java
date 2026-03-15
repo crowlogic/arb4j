@@ -125,6 +125,9 @@ public class Compiler
     typePrefixes.put(ComplexSequence.class, "Sℂ");
     typePrefixes.put(IntegerSequence.class, "Sℤ");
     typePrefixes.put(FractionSequence.class, "Sq");
+    typePrefixes.put(ComplexFunction.class, "Fℂ");
+    typePrefixes.put(RealFunction.class, "Fℝ");
+    typePrefixes.put(RealToComplexFunction.class, "Fℝℂ");
   }
 
   public static void addNullCheckForField(MethodVisitor mv,
