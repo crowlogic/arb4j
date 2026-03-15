@@ -38,7 +38,8 @@ public class SumNode<D, C, F extends Function<? extends D, ? extends C>>
           "additiveIdentity",
           "sum",
           "add",
-          "Σ");
+          "Σ",
+          functionForm);
     if (functionForm)
     {
       expression.require(')');

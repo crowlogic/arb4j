@@ -133,6 +133,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   public boolean                                  parsed                         = false;
 
+  public boolean                                  functionForm                   = false;
+
   public final String                             prefix;
 
   public Node<D, R, F>                            lowerLimit;
@@ -143,11 +145,17 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   public NAryOperationNode(Expression<D, R, F> expression, String identity, String prefix, String operation, String symbol)
   {
+    this(expression, identity, prefix, operation, symbol, false);
+  }
+
+  public NAryOperationNode(Expression<D, R, F> expression, String identity, String prefix, String operation, String symbol, boolean functionForm)
+  {
     super(expression);
-    this.identity  = identity;
-    this.prefix    = prefix;
-    this.operation = operation;
-    this.symbol    = symbol;
+    this.identity     = identity;
+    this.prefix       = prefix;
+    this.operation    = operation;
+    this.symbol       = symbol;
+    this.functionForm = functionForm;
     if (expression.context == null)
     {
       expression.context = new Context();
@@ -449,10 +457,15 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     getFieldFromThis(methodVisitor, expression.className, fieldName, generatedType);
   }
 
+  private boolean usedBraceInLimitSpec;
+
   private void parseUpperLimit()
   {
     upperLimit = expression.resolve();
-    expression.require('}');
+    if (usedBraceInLimitSpec)
+    {
+      expression.require('}');
+    }
   }
 
   /**
@@ -510,12 +523,20 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   private void peekIndexVariableFromLimitSpec()
   {
-    String expr = expression.expression;
-    int    pos  = expression.position;
-    int    bracePos = expr.indexOf('{', pos);
-    if (bracePos >= 0 && bracePos + 1 < expr.length())
+    String expr     = expression.expression;
+    int    pos      = expression.position;
+    int    delimPos = expr.indexOf('{', pos);
+    if (functionForm)
     {
-      int nameStart = bracePos + 1;
+      int commaPos = expr.indexOf(',', pos);
+      if (commaPos >= 0 && (delimPos < 0 || commaPos < delimPos))
+      {
+        delimPos = commaPos;
+      }
+    }
+    if (delimPos >= 0 && delimPos + 1 < expr.length())
+    {
+      int nameStart = delimPos + 1;
       int nameEnd   = nameStart;
       while (nameEnd < expr.length() && Parser.isIdentifyingCharacter(expr.charAt(nameEnd), false))
       {
@@ -538,7 +559,20 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
    */
   public Node<D, R, F> parseOperatorLimitSpecifications()
   {
-    expression.require('{');
+    boolean usedBrace;
+    if (functionForm)
+    {
+      usedBrace = expression.nextCharacterIs('{');
+      if (!usedBrace)
+      {
+        expression.require(',');
+      }
+    }
+    else
+    {
+      expression.require('{');
+      usedBrace = true;
+    }
 
     String specifiedName = expression.parseName();
     if (specifiedName == null || specifiedName.isEmpty())
@@ -561,6 +595,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
 
     expression.require('=');
+    usedBraceInLimitSpec = usedBrace;
     parseLowerLimit();
     parseUpperLimit();
     return this;
