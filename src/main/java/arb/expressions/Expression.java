@@ -3503,13 +3503,28 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean thisOrAnyUpstreamExpressionHasIndeterminantVariable()
   {
-    log.debug("#{}: thisOrAnyUpstreamExpressionHasIndeterminantVariable()", System.identityHashCode(this));
-    if (indeterminantTypes.contains(coDomainType))
+    Set<Expression<?, ?, ?>> visited = Collections.newSetFromMap(new IdentityHashMap<>());
+    Expression<?, ?, ?>      cursor  = this;
+    while (cursor != null)
     {
-      return true;
+      if (!visited.add(cursor))
+      {
+        throw new CompilerException("Cycle detected in upstreamExpression chain starting at #"
+                                    + System.identityHashCode(this)
+                                    + "="
+                                    + toString()
+                                    + "; repeated node: #"
+                                    + System.identityHashCode(cursor)
+                                    + "="
+                                    + toString());
+      }
+      if (indeterminantTypes.contains(cursor.coDomainType))
+      {
+        return true;
+      }
+      cursor = cursor.upstreamExpression;
     }
-    assert upstreamExpression != this;
-    return upstreamExpression != null && upstreamExpression.thisOrAnyUpstreamExpressionHasIndeterminantVariable();
+    return false;
   }
 
   protected void throwUnexpectedCharacterException()
