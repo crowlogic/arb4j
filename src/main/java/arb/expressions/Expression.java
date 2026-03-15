@@ -2976,7 +2976,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return getExpression() == null ? null : getExpression().substring(Math.max(0, position), getExpression().length());
   }
 
-  protected void renameVariable(String from, String to)
+  public void renameVariable(String from, String to)
   {
     if (trace)
     {
@@ -2985,6 +2985,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (independentVariable != null)
     {
       independentVariable.renameIfNamed(from, to);
+    }
+    if (rootNode != null)
+    {
+      rootNode.variableNodeStream().forEach(v -> v.renameIfNamed(from, to));
+    }
+    if (referencedVariables.containsKey(from))
+    {
+      referencedVariables.put(to, referencedVariables.remove(from));
     }
   }
 

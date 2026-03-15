@@ -85,6 +85,23 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return expression;
   }
 
+  /**
+   * Wraps this node into a standalone expression with the given variable as the
+   * independent variable. Does not re-parse anything.
+   */
+  public Expression<D, R, F> asExpression(VariableNode<D, R, F> independentVar)
+  {
+    Expression<D, R, F> expr = expression.cloneExpression();
+    expr.functionName        = null;
+    expr.independentVariable = null;
+    expr.rootNode            = null;
+    expr.assignInputVariable(expr.newVariableNode(independentVar.getName()));
+    expr.rootNode            = spliceInto(expr);
+    expr.updateStringRepresentation();
+    expr.className           = Parser.normalize(expr.getExpression());
+    return expr;
+  }
+
   public final <T extends Field<T>> T evaluate()
   {
     T        result       = (T) expression.newCoDomainInstance();
@@ -718,6 +735,10 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
       if (fieldName == null)
       {
         fieldName = expression.allocateIntermediateVariable(mv, resultType);
+      }
+      else
+      {
+        expression.loadThisAndFieldOntoStack(mv, fieldName, resultType);
       }
       return true;
     }

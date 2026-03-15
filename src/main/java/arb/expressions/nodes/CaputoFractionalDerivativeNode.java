@@ -16,6 +16,7 @@ import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.exceptions.UndefinedReferenceException;
 import arb.expressions.*;
+import arb.expressions.FunctionMapping;
 import arb.expressions.nodes.binary.ExponentiationNode;
 import arb.functions.Function;
 
@@ -57,6 +58,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   Node<D, R, F>                    operand;
   Node<D, R, F>                    integralNode;
   Expression<D, R, F>              integralExpression;
+  FunctionMapping<D, R, F>         gintMapping;
   private final Context            context;
   private final int                derivativeOrder;
 
@@ -134,9 +136,17 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
                                                                         expression.coDomainType,
                                                                         expression.functionClass);
 
-    operandFunctionMapping.expression = operand.asExpression();
+    VariableNode<D, R, F> diffVar      = variable != null ? variable : expression.independentVariable;
+    operandFunctionMapping.expression    = operand.asExpression(diffVar);
 
-    context.registerVariable(Real.named("α")).setBounds(0, false, 1, true);
+
+    // Register α temporarily if needed so the gint formula can reference it
+    boolean registeredAlphaTemporarily = false;
+    if (!context.variables.containsKey("α"))
+    {
+      context.registerVariable(Real.named("α")).setBounds(0, false, 1, true);
+      registeredAlphaTemporarily = true;
+    }
 
     Class<?> scalarType = scalarType(expression.domainType);
 
@@ -148,19 +158,20 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
                                                    null,
                                                    false);
 
-    try
+    // If the order variable isn't α, rename α to match (e.g. β)
+    if (order instanceof VariableNode<D, R, F> orderVar && !"α".equals(orderVar.getName()))
     {
-      this.integralExpression.inlineFunction("f");
-    }
-    catch (Exception e)
-    {
-      throw new CompilerException("TODO: set f.expression by substituing the operand into the root of a new expression: operand="
-                                  + operand,
-                                  e);
+      integralExpression.renameVariable("α", orderVar.getName());
+      // Remove the temporary α from context since the actual variable has a different name
+      if (registeredAlphaTemporarily)
+      {
+        context.variables.remove("α");
+      }
     }
 
-    // this.integralExpression.substitute("f", integralExpression.rootNode);
-    this.integralNode = integralExpression.rootNode;
+    this.integralNode  = integralExpression.rootNode;
+    this.gintMapping   = context.functions.get("gint");
+    expression.registerReferencedFunction("gint", gintMapping);
   }
 
   public CaputoFractionalDerivativeNode(Expression<D, R, F> expression)
@@ -306,8 +317,22 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    integralNode.isRootNode = isRootNode;
-    return integralNode.generate(mv, resultType);
+    // Load gint function reference: this.gint
+    expression.loadFieldOntoStack(Compiler.loadThisOntoStack(mv),
+                                  "gint",
+                                  gintMapping.functionFieldDescriptor());
+    // Load argument: the independent variable (x)
+    VariableNode<D, R, F> indepVar = variable != null ? variable : expression.independentVariable;
+    indepVar.generate(mv, indepVar.type());
+    // Load order parameter
+    Compiler.loadOrderParameter(mv);
+    // Load bits parameter
+    Compiler.loadBitsParameterOntoStack(mv);
+    // Load output
+    loadOutput(mv, resultType);
+    // Call gint.evaluate(input, order, bits, result)
+    gintMapping.call(mv, resultType);
+    return mv;
   }
 
   @Override
