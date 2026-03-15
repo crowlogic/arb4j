@@ -432,7 +432,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     operandExpression.context             = expression.context;
     operandExpression.independentVariable = null;
     operandExpression.clearIndeterminateVariables();
-    // The className must be the field name so the class loader can find it by that name
+    // className must match the field name so ExpressionClassLoader can find it
     operandExpression.className           = operandFunctionFieldName;
 
     operandExpression.newVariableNode(paramName);
@@ -546,6 +546,14 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
         throw new CompilerException(String.format("index variable %s already declared and not of Integer type so it cannot be used as the index",
                                                   existingIndexVariable));
       }
+      // already registered as intermediate variable, nothing to do
+    }
+    else if (expression.context != null && expression.context.variables.containsKey(getIndexVariableFieldName()))
+    {
+      // The index variable is already in the context (put there by
+      // parseOperatorLimitSpecifications), so it will be declared as a context
+      // variable field by declareVariables. Registering it again as an intermediate
+      // variable would produce a duplicate field and a ClassFormatError.
     }
     else
     {
@@ -568,11 +576,14 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
   }
 
-  protected void generateCodeToPropagateIndependentUpstreamVariablesToOperand(MethodVisitor mv, VariableNode<D, R, F> independentVariableNode)
+  protected void generateCodeToPropagateIndependentUpstreamVariablesToOperand(MethodVisitor mv,
+                                                                               VariableNode<D, R, F> independentVariableNode)
   {
     operandExpression.getReferencedVariables()
                      .entrySet()
-                     .forEach(entry -> generateCodeToPropagateIndependentUpstreamVariablesToOperand(mv, independentVariableNode, entry));
+                     .forEach(entry -> generateCodeToPropagateIndependentUpstreamVariablesToOperand(mv,
+                                                                                                    independentVariableNode,
+                                                                                                    entry));
   }
 
   protected <N extends Node<D, R, F>>
@@ -626,7 +637,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
   }
 
-  protected void generateCodeToPropagateIndependentVariableToOperand(MethodVisitor mv, VariableNode<D, R, F> independentVariableNode)
+  protected void generateCodeToPropagateIndependentVariableToOperand(MethodVisitor mv,
+                                                                      VariableNode<D, R, F> independentVariableNode)
   {
     String   varName      = independentVariableNode.reference.name;
     Class<?> varType      = independentVariableNode.type();
@@ -689,7 +701,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                                                 expr);
     if (Expression.traceNodes)
     {
-      logger.debug(String.format("\nregisterOperand(operandExpression=%s,\noperandMapping=%s\n)\n\n", operandExpression, operandMapping));
+      logger.debug(String.format("\nregisterOperand(operandExpression=%s,\noperandMapping=%s\n)\n\n",
+                                 operandExpression,
+                                 operandMapping));
     }
     expression.registerReferencedFunction(operandFunctionFieldName, operandMapping);
   }
@@ -722,7 +736,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable, Node<E, S, G> substitution)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
+                                                                                         Node<E, S, G> substitution)
   {
     if (substitution.toString().equals(variable))
     {
@@ -785,6 +800,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   public boolean dependsOn(VariableNode<D, R, F> variable)
   {
     return lowerLimit.dependsOn(variable) || upperLimit.dependsOn(variable)
-                  || (operandExpression != null && operandExpression.rootNode.dependsOn(variable.spliceInto(operandExpression).asVariable()));
+                  || (operandExpression != null
+                                && operandExpression.rootNode.dependsOn(variable.spliceInto(operandExpression)
+                                                                                 .asVariable()));
   }
 }
