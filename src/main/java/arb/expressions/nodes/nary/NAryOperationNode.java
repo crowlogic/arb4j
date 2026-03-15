@@ -22,6 +22,9 @@ import arb.expressions.Context;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
+import arb.functions.integer.ComplexSequence;
+import arb.functions.integer.IntegerSequence;
+import arb.functions.integer.RealSequence;
 import arb.functions.integer.Sequence;
 
 /**
@@ -478,7 +481,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       previousIndexValue = expression.context.variables.remove(indexVariableFieldName);
     }
 
-    operandExpression                     = new Expression<>(Integer.class, expression.coDomainType, Sequence.class);
+    Class<?> operandCoDomain              = scalarCoDomain(expression.coDomainType);
+    operandExpression                     = new Expression<>(Integer.class, operandCoDomain, Sequence.class);
     operandExpression.continueParsingFrom(expression);
     operandExpression.upstreamExpression  = expression;
     operandExpression.context             = expression.context;
@@ -792,9 +796,51 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     expression.registerReferencedFunction(operandFunctionFieldName, operandMapping);
   }
 
+  /**
+   * Returns the scalar element type for a given codomain type. For sequence types,
+   * returns the element type (e.g., RealSequence → Real). For non-sequence types,
+   * returns the type as-is.
+   */
+  static Class<?> scalarCoDomain(Class<?> type)
+  {
+    if (RealSequence.class.equals(type))
+    {
+      return Real.class;
+    }
+    if (ComplexSequence.class.equals(type))
+    {
+      return Complex.class;
+    }
+    if (IntegerSequence.class.equals(type))
+    {
+      return Integer.class;
+    }
+    if (RealPolynomial.class.equals(type))
+    {
+      return Real.class;
+    }
+    return type;
+  }
+
   public Class<?> scalarType(Class<?> resultType)
   {
-    return resultType = generatedType = (RealPolynomial.class.equals(resultType) ? Real.class : resultType);
+    if (RealPolynomial.class.equals(resultType))
+    {
+      return resultType = generatedType = Real.class;
+    }
+    if (RealSequence.class.equals(resultType))
+    {
+      return resultType = generatedType = Real.class;
+    }
+    if (ComplexSequence.class.equals(resultType))
+    {
+      return resultType = generatedType = Complex.class;
+    }
+    if (IntegerSequence.class.equals(resultType))
+    {
+      return resultType = generatedType = Integer.class;
+    }
+    return resultType = generatedType = resultType;
   }
 
   protected void setIndexToTheLowerLimit(MethodVisitor methodVisitor)
@@ -805,18 +851,27 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     Compiler.pop(methodVisitor);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
-    var nAryOperationNode = new NAryOperationNode<E, S, G>(newExpression,
-                                                           identity,
-                                                           prefix,
-                                                           operation,
-                                                           symbol,
-                                                           null,
-                                                           lowerLimit.spliceInto(newExpression),
-                                                           upperLimit.spliceInto(newExpression));
-    throw new UnsupportedOperationException("TODO: wire operandExpression into spliceInto");
+    var splicedOperandExpression = (Expression<Integer, S, Sequence<S>>) (Expression<?, ?, ?>) operandExpression;
+    var nAryOperationNode       = new NAryOperationNode<E, S, G>(newExpression,
+                                                                  identity,
+                                                                  prefix,
+                                                                  operation,
+                                                                  symbol,
+                                                                  splicedOperandExpression,
+                                                                  lowerLimit.spliceInto(newExpression),
+                                                                  upperLimit.spliceInto(newExpression));
+    nAryOperationNode.assignFieldNamesIfNecessary(newExpression.coDomainType);
+    nAryOperationNode.indexVariableFieldName   = this.indexVariableFieldName;
+    nAryOperationNode.parsed                   = this.parsed;
+    nAryOperationNode.functionClass            = newExpression.className;
+    nAryOperationNode.operandFunctionFieldName = this.operandFunctionFieldName;
+    nAryOperationNode.operandMapping           = (FunctionMapping<Integer, S, Sequence<S>>) (FunctionMapping<?, ?, ?>) this.operandMapping;
+    newExpression.registerReferencedFunction(this.operandFunctionFieldName, this.operandMapping);
+    return nAryOperationNode;
   }
 
   @Override
