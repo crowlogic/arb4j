@@ -36,8 +36,7 @@ import arb.functions.real.RealFunction;
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 @SuppressWarnings("unused")
-public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, ? extends R>>
-                                         extends
+public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                          Node<D, R, F>
 {
 
@@ -54,9 +53,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
   public abstract Node<D, R, F> integral(VariableNode<D, R, F> variable);
 
   @Override
-  public abstract <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression);
+  public abstract <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression);
 
   @Override
   public abstract String typeset();
@@ -183,11 +180,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
 
   Class<?>             type;
 
-  public BinaryOperationNode(Expression<D, R, F> expression,
-                             Node<D, R, F> left,
-                             String operation,
-                             Node<D, R, F> right,
-                             String symbol)
+  public BinaryOperationNode(Expression<D, R, F> expression, Node<D, R, F> left, String operation, Node<D, R, F> right, String symbol)
   {
     super(expression);
 
@@ -214,8 +207,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
   @Override
   public boolean dependsOn(VariableNode<D, R, F> variable)
   {
-    return (left != null && left.dependsOn(variable))
-                  || (right != null && right.dependsOn(variable));
+    return (left != null && left.dependsOn(variable)) || (right != null && right.dependsOn(variable));
   }
 
   @Override
@@ -229,8 +221,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
       return false;
     BinaryOperationNode<?, ?, ?> other = (BinaryOperationNode<?, ?, ?>) obj;
 
-    if (!Objects.equals(operation, other.operation) || !Objects.equals(symbol, other.symbol)
-                  || !Objects.equals(type(), other.type()))
+    if (!Objects.equals(operation, other.operation) || !Objects.equals(symbol, other.symbol) || !Objects.equals(type(), other.type()))
     {
       return false;
     }
@@ -247,11 +238,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
   {
     String IND = indent(2);
 
-    return String.format("\n\ngenerate(\n"
-                         + "%s%s%s    (%s),\n"
-                         + "%s%s%s    (%s %s),\n"
-                         + "%s%s%s    (%s %s),\n"
-                         + "%s%s%s)\n",
+    return String.format("\n\ngenerate(\n" + "%s%s%s    (%s),\n" + "%s%s%s    (%s %s),\n" + "%s%s%s    (%s %s),\n" + "%s%s%s)\n",
                          IND,
                          pad("this"),
                          basicPad(this),
@@ -403,9 +390,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     return (left == null || left.isScalar()) && (right == null || right.isScalar());
   }
 
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         void
-         logSubstitution(String name, Node<E, S, G> transformation, String tense)
+  public <E, S, G extends Function<? extends E, ? extends S>> void logSubstitution(String name, Node<E, S, G> transformation, String tense)
   {
     System.err.format("BinaryOperation %s(Expression[#%s]).substitute(name=%s, transformation=%s)) into this=%s of type %s\n",
                       tense,
@@ -449,8 +434,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
       var rconst = right.asLiteralConstant();
       if (lconst.isInt && rconst.isInt)
       {
-        try ( var lint = new Integer(lconst.stringValue);
-              var rint = new Integer(rconst.stringValue))
+        try ( var lint = new Integer(lconst.stringValue); var rint = new Integer(rconst.stringValue))
         {
           if (rint.sign() < 0)
           {
@@ -460,8 +444,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
               posExp.set(rint).neg();
               base.set(lint);
               base.pow(posExp, 0, powVal);
-              try ( var numerator = new Integer(1); var denominator = new Integer();
-                    var fractionResult = new Fraction())
+              try ( var numerator = new Integer(1); var denominator = new Integer(); var fractionResult = new Fraction())
               {
                 denominator.set(powVal);
                 fractionResult.set(numerator, denominator);
@@ -476,7 +459,10 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
             try ( var result = new Integer())
             {
               lint.pow(rint, 0, result);
-              return expression.newLiteralConstant(result.toString());
+              assert result.getUnsignedValue() < 1000000000 : result + " is too fucking big, lint=" + lint + " rint=" + rint + " part of " + expression;
+
+              return new LiteralConstantNode<>(expression,
+                                               result);
             }
           }
         }
@@ -490,9 +476,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     return operand != null && (operand.isAtomic() || operand instanceof NegationNode) ? "%s" : "(%s)";
   }
 
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, R, F>
-         substitute(String name, Node<E, S, G> transformation)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String name, Node<E, S, G> transformation)
   {
     left  = left.substitute(name, transformation);
     right = right.substitute(name, transformation);
@@ -601,8 +585,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     assert leftType != null : "lhs type is  null where lhs is " + left + " and a=" + a + " b=" + b;
     assert rightType != null : "rhs type is null where rhs is " + right + " and a=" + a + " b=" + b;
 
-    return (leftType.equals(a) && rightType.equals(b))
-                  || (leftType.equals(b) && rightType.equals(a));
+    return (leftType.equals(a) && rightType.equals(b)) || (leftType.equals(b) && rightType.equals(a));
   }
 
   @Override
