@@ -579,16 +579,25 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   /**
-   * Returns {@code "name=%s"} when this variable is an upstream input (its value
-   * is bound for the lifetime of the generated functional instance), otherwise
-   * delegates to {@link #toString()}.
+   * Returns {@code "name=value"} when this variable is bound in any upstream
+   * expression's context, otherwise delegates to {@link #toString()}.
    */
   @Override
   public String toStringBound()
   {
-    if (expression.context != null && expression.context.variables.containsKey(reference.name))
+    var name = reference.name;
+    Expression<?, ?, ?> e = expression;
+    while (e != null)
     {
-      return reference.name + "=" + expression.context.variables.get(reference.name);
+      if (e.context != null && e.context.variables != null)
+      {
+        var val = e.context.variables.get(name);
+        if (val != null)
+        {
+          return name + "=" + val;
+        }
+      }
+      e = e.upstreamExpression;
     }
     return reference.toString();
   }
