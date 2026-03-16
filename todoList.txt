@@ -1,4 +1,4 @@
 fix recursion for multivar functions
 constant subexpression extraction
 move intermediateVariableCounters from Context to Expression
-expressor: make it such that selecting a subset of the string and then clickign a character on the minisymbolpalette replaces the highlighted string
+fix leaked index variable in NARYOperationNode
