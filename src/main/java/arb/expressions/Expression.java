@@ -1957,28 +1957,81 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    */
   protected ClassVisitor generateToStringMethod(ClassVisitor classVisitor)
   {
-    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "toString", Compiler.getMethodDescriptor(String.class), null, null);
+    var methodVisitor = classVisitor.visitMethod(ACC_PUBLIC, "toString", Compiler.getMethodDescriptor(String.class), null, null);
     methodVisitor.visitCode();
     Compiler.annotateWithOverride(methodVisitor);
 
-    String name = "";
-    if (functionName != null && !functionName.isEmpty())
+    List<Entry<String, VariableNode<D, C, F>>> upstreamInputVars = upstreamInputVariableEntryStream().collect(Collectors.toList());
+
+    String                                     namePrefix        = (functionName != null && !functionName.isEmpty()) ? functionName + ":" : "";
+    updateStringRepresentation();
+    String bodyExpr = rootNode != null ? rootNode.toString() : getExpression();
+    String arrow    = (independentVariable == null || bodyExpr.contains("➔")) ? "" : (independentVariable.getName() + "➔");
+
+    if (upstreamInputVars.isEmpty())
     {
-      name = functionName + ":";
+      String boundExpr = rootNode != null ? rootNode.toStringBound() : getExpression();
+      String staticStr = namePrefix + arrow + boundExpr;
+
+      if (Expression.trace)
+      {
+        log.debug("generateToStringMethod(): functionName='{}' independentVariable='{}' string='{}'", functionName, independentVariable, staticStr);
+      }
+
+      methodVisitor.visitLdcInsn(staticStr);
+      Compiler.generateReturnFromMethod(methodVisitor);
+      return classVisitor;
     }
 
-    updateStringRepresentation();
-    String boundExpr = rootNode != null ? rootNode.toStringBound() : getExpression();
-    String arrow     = independentVariable == null || boundExpr.contains("➔") ? "" : (independentVariable.getName() + "➔");
-    String string    = name + arrow + boundExpr;
+    String                      fullTemplate = namePrefix + arrow + bodyExpr;
+
+    List<String>                matchedNames = new ArrayList<>();
+    List<VariableNode<D, C, F>> matchedNodes = new ArrayList<>();
+    for (Entry<String, VariableNode<D, C, F>> entry : upstreamInputVars)
+    {
+      if (fullTemplate.contains(entry.getKey()))
+      {
+        matchedNames.add(entry.getKey());
+        matchedNodes.add(entry.getValue());
+      }
+    }
+
+    if (matchedNames.isEmpty())
+    {
+      methodVisitor.visitLdcInsn(fullTemplate);
+      Compiler.generateReturnFromMethod(methodVisitor);
+      return classVisitor;
+    }
+
+    String formatString = fullTemplate;
+    for (String varName : matchedNames)
+    {
+      formatString = formatString.replace(varName, "%s");
+    }
+
+    methodVisitor.visitLdcInsn(formatString);
+
+    methodVisitor.visitLdcInsn(matchedNames.size());
+    methodVisitor.visitTypeInsn(ANEWARRAY, Type.getInternalName(Object.class));
+
+    for (int i = 0; i < matchedNames.size(); i++)
+    {
+      duplicateTopOfTheStack(methodVisitor);
+      methodVisitor.visitLdcInsn(i);
+      loadThisAndFieldOntoStack(methodVisitor, matchedNames.get(i), matchedNodes.get(i).type());
+      generateVirtualMethodInvocation(methodVisitor, Object.class, "toString", String.class);
+      methodVisitor.visitInsn(AASTORE);
+    }
+
+    invokeStaticMethod(methodVisitor, String.class, "format", String.class, String.class, Object[].class);
+
+    Compiler.generateReturnFromMethod(methodVisitor);
 
     if (Expression.trace)
     {
-      log.debug("generateToStringMethod(): functionName='{}' independentVariable='{}' string='{}'", functionName, independentVariable, string);
+      log.debug("generateToStringMethod(): dynamic path for functionName='{}' formatString='{}' vars={}", functionName, formatString, matchedNames);
     }
 
-    methodVisitor.visitLdcInsn(string);
-    Compiler.generateReturnFromMethod(methodVisitor);
     return classVisitor;
   }
 
