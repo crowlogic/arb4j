@@ -188,7 +188,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public static Class<?>[]  implementedInterfaces             = new Class[]
   { Typesettable.class, AutoCloseable.class, Initializable.class, Named.class };
 
-
   public static String      IS_INITIALIZED                    = "isInitialized";
 
   private static String     JAVA_LANG_ASSERTION_ERROR         = "java/lang/AssertionError";
@@ -212,83 +211,86 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     assert arb.functions.integer.Sequence.class.equals(Sequence.class) : "you forgot to import arb.functions.sequences.Sequence or imported a class named sequence in another package";
   }
 
-  public File compiledClassDir = new File("compiled");
+  public File                                           compiledClassDir              = new File("compiled");
 
+  public Expression<?, ?, ?>                            upstreamExpression;
 
-  public Expression<?, ?, ?>                                 upstreamExpression;
+  public char                                           character                     = 0;
 
-  public char                                                character                        = 0;
+  public String                                         className;
 
-  public String                                              className;
+  public Class<? extends C>                             coDomainType;
 
-  public Class<? extends C>                                  coDomainType;
+  public Class<F>                                       compiledClass;
 
-  public Class<F>                                            compiledClass;
+  HashMap<Class<?>, AtomicInteger>                      constantCounts                = new HashMap<>();
 
-  HashMap<Class<?>, AtomicInteger>                           constantCounts                   = new HashMap<>();
+  public Context                                        context;
 
-  public Context                                             context;
+  HashSet<String>                                       declaredIntermediateVariables = new HashSet<>();
 
-  HashSet<String>                                            declaredIntermediateVariables    = new HashSet<>();
+  public List<Dependency>                               dependencies;
 
-  public List<Dependency>                                    dependencies;
+  public Class<? extends D>                             domainType;
 
-  public Class<? extends D>                                  domainType;
+  public String                                         expression;
 
-  public String                                              expression;
+  public boolean                                        functionalDependsOnIndependentVariable;
 
-  public boolean                                             functionalDependsOnIndependentVariable;
+  private VariableNode<Object, Object, Function<?, ?>>  functionalIndependentVariable;
 
-  private VariableNode<Object, Object, Function<?, ?>>       functionalIndependentVariable;
+  public Class<? extends F>                             functionClass;
 
-  public Class<? extends F>                                  functionClass;
+  public String                                         functionClassDescriptor;
 
-  public String                                              functionClassDescriptor;
+  public String                                         functionName;
 
-  public String                                              functionName;
+  public String                                         genericFunctionClassInternalName;
 
-  public String                                              genericFunctionClassInternalName;
+  public boolean                                        inAbsoluteValue               = false;
 
-  public boolean                                             inAbsoluteValue                  = false;
-
-  public VariableNode<D, C, F>                               independentVariable;
+  public VariableNode<D, C, F>                          independentVariable;
 
   /**
    * Stores the lambda parameter variable from parseLambda() so that
-   * newFunctionalExpression() can use it as the functional's independent variable.
+   * newFunctionalExpression() can use it as the functional's independent
+   * variable.
    */
-  public VariableNode<D, C, F>                               lambdaParameter;
+  public VariableNode<D, C, F>                          lambdaParameter;
 
+  int                                                   currentLevel                  = 0;
 
-  int                                                        currentLevel                     = 0;
+  public LinkedList<Consumer<MethodVisitor>>            initializers                  = new LinkedList<>();
 
-  public LinkedList<Consumer<MethodVisitor>>                 initializers                     = new LinkedList<>();
+  public boolean                                        insideInitializer             = false;
 
-  public boolean                                             insideInitializer                = false;
+  protected F                                           instance;
 
-  protected F                                                instance;
+  public byte[]                                         instructions;
 
-  public byte[]                                              instructions;
+  public HashMap<String, IntermediateVariable<D, C, F>> intermediateVariables         = new HashMap<>();
 
-  public HashMap<String, IntermediateVariable<D, C, F>>      intermediateVariables            = new HashMap<>();
+  private ArrayList<LiteralConstantNode<D, C, F>>       literalConstantNodes;
 
-  private ArrayList<LiteralConstantNode<D, C, F>>            literalConstantNodes;
+  public HashMap<String, LiteralConstantNode<D, C, F>>  literalConstants              = new HashMap<>();
 
-  public HashMap<String, LiteralConstantNode<D, C, F>>       literalConstants                 = new HashMap<>();
+  private final Logger                                  log                           = LoggerFactory.getLogger(Expression.class);
 
-  private final Logger                                       log                              = LoggerFactory.getLogger(Expression.class);
+  public FunctionMapping<D, C, F>                       functionMapping;
 
-  public FunctionMapping<D, C, F>                            functionMapping;
+  public int                                            position                      = -1;
 
-  public int                                                 position                         = -1;
+  public char                                           previousCharacter;
 
-  public char                                                previousCharacter;
-
-  public record CursorState(int position, char character, char previousCharacter) {}
+  public record CursorState(int position, char character, char previousCharacter)
+  {
+  }
 
   public CursorState saveCursor()
   {
-    return new CursorState(position, character, previousCharacter);
+    return new CursorState(position,
+                           character,
+                           previousCharacter);
   }
 
   public void restoreCursor(CursorState state)
@@ -298,17 +300,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     previousCharacter = state.previousCharacter();
   }
 
-  public boolean                                             recursive                        = false;
+  public boolean                                          recursive           = false;
 
-  private final HashMap<String, FunctionMapping<?, ?, ?>>    referencedFunctions              = new HashMap<>();
+  private final HashMap<String, FunctionMapping<?, ?, ?>> referencedFunctions = new HashMap<>();
 
-  private HashMap<String, VariableNode<D, C, F>>             referencedVariables              = new HashMap<>();
+  private HashMap<String, VariableNode<D, C, F>>          referencedVariables = new HashMap<>();
 
-  public Node<D, C, F>                                       rootNode;
+  public Node<D, C, F>                                    rootNode;
 
-  public boolean                                             variablesDeclared                = false;
+  public boolean                                          variablesDeclared   = false;
 
-  public boolean                                             verboseTrace                     = false;
+  public boolean                                          verboseTrace        = false;
 
   public boolean acceptUntil(Predicate<Expression<?, ?, ?>> visitor)
   {
@@ -573,9 +575,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     expr.context             = context;
     expr.independentVariable = independentVariable;
 
-    expr.position          = position;
-    expr.character         = character;
-    expr.previousCharacter = previousCharacter;
+    expr.position            = position;
+    expr.character           = character;
+    expr.previousCharacter   = previousCharacter;
     return expr;
   }
 
@@ -780,11 +782,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       if (upstreamIndependentVariableNode != null && !upstreamIndependentVariableNode.type().equals(Object.class))
       {
         String upstreamIndVarName = upstreamIndependentVariableNode.reference.name;
-        classVisitor.visitField(ACC_PUBLIC,
-                                upstreamIndVarName,
-                                upstreamIndependentVariableNode.type().descriptorString(),
-                                null,
-                                null);
+        classVisitor.visitField(ACC_PUBLIC, upstreamIndVarName, upstreamIndependentVariableNode.type().descriptorString(), null, null);
         declaredVariables.add(upstreamIndVarName);
       }
     }
@@ -1025,14 +1023,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     checkLambdaParameterConflicts(paramName);
 
-    var paramVar   = newVariableNode(paramName);
+    var paramVar = newVariableNode(paramName);
     require('➔');
 
     // --- Create a sub-expression for proper lexical scoping (#876) ---
     Expression<D, C, F> subExpr = cloneExpression();
     subExpr.upstreamExpression  = this;
     subExpr.independentVariable = null;
-    subExpr.rootNode = null;
+    subExpr.rootNode            = null;
     subExpr.newVariableNode(paramName);
 
     var node = subExpr.resolve();
@@ -1043,7 +1041,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     this.previousCharacter = subExpr.previousCharacter;
 
     // Store the lambda parameter so newFunctionalExpression() can use it
-    lambdaParameter = paramVar;
+    lambdaParameter        = paramVar;
 
     return node;
   }
@@ -1621,7 +1619,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-
   protected MethodVisitor generateFunctionInitializer(MethodVisitor mv, FunctionMapping<?, ?, ?> nestedFunction, List<String> assignments)
   {
     assert nestedFunction != null : "nestedFunction shan't be null";
@@ -2120,7 +2117,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return context == null ? null : (Q) context.variables.get(reference.name);
   }
 
-
   public boolean hasIntermediateVariable(String string)
   {
     return intermediateVariables.containsKey(string);
@@ -2605,10 +2601,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     var lambdaParam = lambdaParameter;
     if (lambdaParam == null)
     {
-      lambdaParam = rootNode.variableNodeStream()
-                            .filter(v -> v.isFormalVariable)
-                            .findFirst()
-                            .orElse(null);
+      lambdaParam = rootNode.variableNodeStream().filter(v -> v.isFormalVariable).findFirst().orElse(null);
     }
     if (lambdaParam != null)
     {
@@ -3100,11 +3093,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     switch (reference.name)
     {
-
-//    case "E":
-//    case "MittagLeffler":
-//    case "mittagleffler":
-//      return new MittagLefflerFunctionNode<>(this);
+    case "int":
+      return new IntegralNode<>(this,
+                                true);
+    case "sum":
+      return new SumNode<>(this,
+                           true);
+    case "ℰ":
+    case "MittagLeffler":
+    case "mittagleffler":
+      return new MittagLefflerFunctionNode<>(this);
     case "Z":
       return new HardyZFunctionNode<>(this);
     case "ϑ":
@@ -3120,12 +3118,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     case "diff":
       return new DerivativeNode<>(this,
                                   true);
-    case "int":
-      return new IntegralNode<>(this,
-                                true);
-    case "sum":
-      return new SumNode<>(this,
-                           true);
     case "lim":
     case "limit":
       return new LimitNode<>(this);
@@ -3422,8 +3414,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                     + "="
                                     + toString());
       }
-      if (cursor.coDomainType != null
-          && (cursor.coDomainType.isInterface() || Function.class.isAssignableFrom(cursor.coDomainType)))
+      if (cursor.coDomainType != null && (cursor.coDomainType.isInterface() || Function.class.isAssignableFrom(cursor.coDomainType)))
       {
         return true;
       }
@@ -3431,7 +3422,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     return false;
   }
-
 
   protected void throwUnexpectedCharacterException()
   {
@@ -3592,12 +3582,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return context;
   }
 
-
   public String getTypeString()
   {
     return String.format("%s %s from %s to %s]", functionClass.getSimpleName(), toString(), domainType.getSimpleName(), coDomainType.getSimpleName());
   }
-
 
   public Expression<D, C, F> registerReferencedFunction(String referencedFunctionName, FunctionMapping<?, ?, ?> referenceFunctionMapping)
   {
@@ -3663,7 +3651,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return new LiteralConstantNode<D, C, F>(this,
                                             value);
   }
-
 
   /**
    * Sets this{@link #position}, this{@link #character}, and

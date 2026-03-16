@@ -41,7 +41,7 @@ import arb.functions.Function;
  * @param <F> the {@link Function} interface type, extending {@link Function
  *            Function&lt;? extends D, ? extends R&gt;}
  *
- * @author Stephen Crowley ©2024-2025
+ * @author Stephen Crowley ©2024-2026
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public final class FunctionMapping<D, R, F extends Function<? extends D, ? extends R>>

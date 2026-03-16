@@ -76,7 +76,8 @@ public class Parser
     fractions.put('⅞', FractionConstants.sevenEights);
   }
 
-  public static HashSet<Character> greekAndBlackLetterChars = new HashSet<Character>(Arrays.asList('ℭ',
+  public static HashSet<Character> greekAndBlackLetterChars = new HashSet<Character>(Arrays.asList('ℰ',
+                                                                                                   'ℭ',
                                                                                                    'Γ',
                                                                                                    'Δ',
                                                                                                    'Θ',
@@ -444,7 +445,7 @@ public class Parser
 
   /**
    * Superscript letters as {@code String[]} to support supplementary Unicode
-   * characters. 
+   * characters.
    */
   public static final String[]           superscripts                 =
   { "ᵃ",

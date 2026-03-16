@@ -94,7 +94,7 @@ public class MittagLefflerFunctionNode<D, R, F extends Function<? extends D, ? e
   @Override
   public String toString()
   {
-    return format("E(%s,%s,%s)", α, β, arg);
+    return format("ℰ(%s,%s,%s)", α, β, arg);
   }
 
   /**
@@ -132,14 +132,14 @@ public class MittagLefflerFunctionNode<D, R, F extends Function<? extends D, ? e
 
     if (expression.nextCharacterIs(','))
     {
-      // Three-argument form: E(α, β, z)
+      // Three-argument form: ℰ(α, β, z)
       this.α   = first;
       this.β   = second;
       this.arg = expression.resolve();
     }
     else
     {
-      // Two-argument form: E(α, z) with β=1
+      // Two-argument form: ℰ(α, z) with β=1
       this.α   = first;
       this.β   = one();
       this.arg = second;
@@ -203,6 +203,6 @@ public class MittagLefflerFunctionNode<D, R, F extends Function<? extends D, ? e
   @Override
   public String typeset()
   {
-    return format("E_{%s,%s}(%s)", α.typeset(), β.typeset(), arg == null ? "" : arg.typeset());
+    return format("ℰ_{%s,%s}(%s)", α.typeset(), β.typeset(), arg == null ? "" : arg.typeset());
   }
 }
