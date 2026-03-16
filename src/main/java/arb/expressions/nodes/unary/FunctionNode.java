@@ -1015,16 +1015,13 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public String toString()
   {
-//    if (mapping != null && mapping.expressionString != null)
-//    {
-//      return mapping.expressionString;
-//    }
     if ("factorial".equals(functionName))
     {
-      return String.format("(%s)!", arg.toStringWithoutIndependentVariableSpecified());
+      return String.format("(%s)!", arg == null ? "" : arg.toStringBound());
     }
-    String str = String.format("%s(%s)", functionName, arg).replaceAll("sqrt", "√").replaceAll("J0", "J₀");
-    return str;
+    return String.format("%s(%s)", functionName, arg == null ? "" : arg.toStringBound())
+                 .replaceAll("sqrt", "√")
+                 .replaceAll("J0", "J₀");
   }
 
   @Override

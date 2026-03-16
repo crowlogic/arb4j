@@ -1,5 +1,4 @@
 fix recursion for multivar functions
 constant subexpression extraction
-the generated toString() of the Expression.generateFunctionalElement() method should show the value instead of the variable name if it is declared in an upstream expression (in which case the value is known)
 move intermediateVariableCounters from Context to Expression
 expressor: make it such that selecting a subset of the string and then clickign a character on the minisymbolpalette replaces the highlighted string

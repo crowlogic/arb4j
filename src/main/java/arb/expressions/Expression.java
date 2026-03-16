@@ -1967,66 +1967,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       name = functionName + ":";
     }
 
-    // Build the string using toStringBound() so upstream-input variable nodes
-    // emit "varName=%s" instead of just "varName".
-    String boundExpr;
-    if (rootNode != null)
-    {
-      if (independentVariable != null)
-      {
-        boundExpr = String.format("%s➔%s", independentVariable.getName(), rootNode.toStringBound());
-      }
-      else
-      {
-        boundExpr = rootNode.toStringBound();
-      }
-    }
-    else
-    {
-      updateStringRepresentation();
-      boundExpr = getExpression();
-    }
-
-    String baseString = String.format("%s%s", name, boundExpr);
+    updateStringRepresentation();
+    String boundExpr = rootNode != null ? rootNode.toStringBound() : getExpression();
+    String arrow     = independentVariable == null || boundExpr.contains("➔") ? "" : (independentVariable.getName() + "➔");
+    String string    = name + arrow + boundExpr;
 
     if (Expression.trace)
     {
-      log.debug("generateToStringMethod(): functionName='{}' independentVariable='{}' baseString='{}'", functionName, independentVariable, baseString);
+      log.debug("generateToStringMethod(): functionName='{}' independentVariable='{}' string='{}'", functionName, independentVariable, string);
     }
 
-    boolean hasBoundVars = baseString.contains("%s");
-
-    if (!hasBoundVars)
-    {
-      methodVisitor.visitLdcInsn(baseString);
-    }
-    else
-    {
-      // Collect the upstream-input variable nodes in the order toStringBound()
-      // emitted their %s placeholders (tree visitor order == toString order).
-      List<VariableNode<D, C, F>> boundVars = rootNode.variableNodeStream().filter(v -> v.upstreamInput).collect(java.util.stream.Collectors.toList());
-
-      methodVisitor.visitLdcInsn(baseString);
-
-      methodVisitor.visitIntInsn(Opcodes.BIPUSH, boundVars.size());
-      methodVisitor.visitTypeInsn(Opcodes.ANEWARRAY, "java/lang/Object");
-
-      for (int i = 0; i < boundVars.size(); i++)
-      {
-        VariableNode<D, C, F> v       = boundVars.get(i);
-        Class<?>              varType = v.type();
-
-        methodVisitor.visitInsn(Opcodes.DUP);
-        methodVisitor.visitIntInsn(Opcodes.BIPUSH, i);
-        methodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
-        methodVisitor.visitFieldInsn(Opcodes.GETFIELD, className, v.getName(), varType.descriptorString());
-        methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL, Type.getInternalName(varType), "toString", Compiler.getMethodDescriptor(String.class), false);
-        methodVisitor.visitInsn(Opcodes.AASTORE);
-      }
-
-      methodVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/String", "format", "(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;", false);
-    }
-
+    methodVisitor.visitLdcInsn(string);
     Compiler.generateReturnFromMethod(methodVisitor);
     return classVisitor;
   }

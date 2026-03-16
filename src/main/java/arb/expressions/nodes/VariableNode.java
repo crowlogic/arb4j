@@ -33,8 +33,8 @@ import arb.functions.Function;
  * <li><strong>Independent variable:</strong> The input variable to the
  * containing expression or any containing-expression's input. For nullary
  * functions producing polynomials/functionals, the independent variable
- * represents the formal variable and generates identity() codegen rather
- * than loading a runtime input parameter.</li>
+ * represents the formal variable and generates identity() codegen rather than
+ * loading a runtime input parameter.</li>
  * <li><strong>Context variable:</strong> A variable defined in the
  * {@link Context} associated with this {@link #expression}, representing named
  * constants or parameters from the evaluation environment.</li>
@@ -103,7 +103,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public boolean                    upstreamInput;
 
-  public boolean                    isIndependent   = false;
+  public boolean                    isIndependent    = false;
 
   public boolean                    isFormalVariable = false;
 
@@ -194,8 +194,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return this;
     }
 
-    if (expression.thisOrAnyUpstreamExpressionHasFunctionalCodomain()
-        && !expression.anyUpstreamIndependentVariableIsNamed(getName()))
+    if (expression.thisOrAnyUpstreamExpressionHasFunctionalCodomain() && !expression.anyUpstreamIndependentVariableIsNamed(getName()))
     {
       isFormalVariable = true;
       reference.type   = expression.coDomainType;
@@ -396,10 +395,10 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   /**
-   * Generates code for the independent variable of a nullary function.
-   * Instead of loading a runtime input parameter (which is null for nullary
-   * functions), this generates an identity() call to create the formal
-   * variable (e.g., the identity polynomial for polynomial expressions).
+   * Generates code for the independent variable of a nullary function. Instead of
+   * loading a runtime input parameter (which is null for nullary functions), this
+   * generates an identity() call to create the formal variable (e.g., the
+   * identity polynomial for polynomial expressions).
    */
   public void generateNullaryIndependentVariable(MethodVisitor mv)
   {
@@ -587,9 +586,9 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public String toStringBound()
   {
-    if (upstreamInput)
+    if (expression.context != null && expression.context.variables.containsKey(reference.name))
     {
-      return reference.name + "=%s";
+      return reference.name + "=" + expression.context.variables.get(reference.name);
     }
     return reference.toString();
   }
@@ -599,7 +598,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     return reference.toString();
   }
-
 
   public String toStringVerbose()
   {
