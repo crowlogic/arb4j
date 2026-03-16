@@ -539,7 +539,14 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
   
   public Real sub(Fraction a, int bits, Real res)
   {
-    return sub(res.set(a),bits,res);
+    if (this == res)
+    {
+      try (Real tmp = new Real())
+      {
+        return sub(tmp.set(a), bits, res);
+      }
+    }
+    return sub(res.set(a), bits, res);
   }
       
   /**
