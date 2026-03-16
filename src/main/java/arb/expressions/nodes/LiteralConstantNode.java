@@ -148,6 +148,12 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
 
   public static final Logger logger = LoggerFactory.getLogger(LiteralConstantNode.class);
 
+  @Override
+  public boolean hasClosedFormFractionalDerivative(VariableNode<D, R, F> variable)
+  {
+    return true;
+  }
+
   /**
    * Đ^(α)(c) = 0 for any constant c
    */

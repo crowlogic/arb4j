@@ -42,6 +42,12 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     return l.pow(r, bits, result);
   }
 
+  @Override
+  public boolean hasClosedFormFractionalDerivative(VariableNode<D, R, F> variable)
+  {
+    return left instanceof VariableNode<D, R, F> varNode && !right.dependsOn(varNode);
+  }
+
   /**
    * Đ^(α)(t^k) = Γ(k+1)/Γ(k+1-α)*t^(k-α)
    */

@@ -70,9 +70,15 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                          Node<D, R, F>
 {
 
+  @Override
+  public boolean hasClosedFormFractionalDerivative(VariableNode<D, R, F> variable)
+  {
+    return true;
+  }
+
   /**
    * Đ^(α)(t) = Γ(2)/Γ(2-α)*t^(1-α)
-   * 
+   *
    * This is the monomial case with k=1.
    */
   @Override

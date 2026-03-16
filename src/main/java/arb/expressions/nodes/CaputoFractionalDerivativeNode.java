@@ -59,8 +59,9 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   Node<D, R, F>                    integralNode;
   Expression<D, R, F>              integralExpression;
   FunctionMapping<D, R, F>         gintMapping;
+  public Node<D, R, F>             closedFormResult;
   private final Context            context;
-  private final int                derivativeOrder;
+  private int                      derivativeOrder;
 
   private VariableNode<D, R, F>    variable;
 
@@ -82,6 +83,13 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     this.operand         = operand;
     this.context         = expression.getContext();
 
+    if (operand.hasClosedFormFractionalDerivative(variable))
+    {
+      closedFormResult    = operand.fractionalDerivative(variable, order);
+      this.derivativeOrder = 1;
+      return;
+    }
+
     this.derivativeOrder = getDerivativeOrder(order, context);
     if (derivativeOrder > 1)
     {
@@ -97,7 +105,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
    * Constructs the integral form. Only called from
    * {@link Node#fractionalDerivative(VariableNode, Node)} when no closed form
    * exists.
-   * 
+   *
    * @param variable        TODO
    * @param derivativeOrder
    */
@@ -204,8 +212,14 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
 
     expression.require(")");
 
+    if (operand.hasClosedFormFractionalDerivative(variable))
+    {
+      closedFormResult = operand.fractionalDerivative(variable, order);
+      this.derivativeOrder = 1;
+      return;
+    }
+
     derivativeOrder = getDerivativeOrder(order, context);
-    // System.out.println("do=" + derivativeOrder);
   }
 
   protected void throwFunctionSyntaxError()
@@ -317,6 +331,10 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
+    if (closedFormResult != null)
+    {
+      return closedFormResult.generate(mv, resultType);
+    }
     // Load gint function reference: this.gint
     expression.loadFieldOntoStack(Compiler.loadThisOntoStack(mv),
                                   "gint",
@@ -405,6 +423,10 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
+    if (closedFormResult != null)
+    {
+      return closedFormResult.spliceInto(newExpression);
+    }
     CaputoFractionalDerivativeNode<E, S, G> splicedNode =
                                                         new CaputoFractionalDerivativeNode<E, S, G>(newExpression,
                                                                                                     operand.spliceInto(newExpression),
@@ -418,6 +440,10 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   @Override
   public Class<?> type()
   {
+    if (closedFormResult != null)
+    {
+      return closedFormResult.type();
+    }
     return integralNode != null ? integralNode.type() : expression.coDomainType;
   }
 
