@@ -2,6 +2,7 @@ package arb.expressions;
 
 import arb.Integer;
 import arb.Real;
+import arb.functions.integer.Sequence;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
@@ -13,15 +14,33 @@ import junit.framework.TestCase;
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
+@SuppressWarnings("unchecked")
 public class BoundVariableToStringTest extends
                                        TestCase
 {
   public void testBoundUpstreamVariableAppearsInFunctionalToString()
   {
-    Context      context    = new Context(Integer.named("n").set(3));
-    RealFunction functional = RealFunction.express("t->J(n,t)", context);
-    String       str        = functional.toString();
-    assertTrue("Expected functional toString to contain 'n=3' but got: " + str,
-               str.contains("n=3"));
+    Expression<Integer, RealFunction, Sequence<RealFunction>> expr =
+        new Expression<>("BesselSequence",
+                         Integer.class,
+                         RealFunction.class,
+                         (Class) Sequence.class,
+                         "n➔t➔J(n,t)",
+                         null,
+                         "jBessel",
+                         null);
+
+    Sequence<RealFunction> seq = expr.instantiate();
+
+    try (Integer n = new Integer();
+         Real t = new Real();
+         Real result = new Real())
+    {
+      n.set(3);
+      RealFunction f = seq.evaluate(n, 0, 128, null);
+      String str = f.toString();
+      assertTrue("Expected functional toString to contain 'n=3' but got: " + str,
+                 str.contains("n=3"));
+    }
   }
 }
