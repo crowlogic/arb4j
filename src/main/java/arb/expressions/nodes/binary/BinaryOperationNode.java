@@ -428,46 +428,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     {
       return right.isZero() ? one() : zero();
     }
-    if (left.isLiteralConstant() && right.isLiteralConstant())
-    {
-      var lconst = left.asLiteralConstant();
-      var rconst = right.asLiteralConstant();
-      if (lconst.isInt && rconst.isInt)
-      {
-        try ( var lint = new Integer(lconst.stringValue); var rint = new Integer(rconst.stringValue))
-        {
-          if (rint.sign() < 0)
-          {
-            // Negative exponent: a^(-n) = 1 / a^n, result is a Fraction
-            try ( var posExp = new Integer(); var base = new Integer(); var powVal = new Integer())
-            {
-              posExp.set(rint).neg();
-              base.set(lint);
-              base.pow(posExp, 0, powVal);
-              try ( var numerator = new Integer(1); var denominator = new Integer(); var fractionResult = new Fraction())
-              {
-                denominator.set(powVal);
-                fractionResult.set(numerator, denominator);
-                return new LiteralConstantNode<>(expression,
-                                                 fractionResult);
-              }
-            }
-          }
-          else
-          {
-            // Non-negative exponent: result is an Integer
-            try ( var result = new Integer())
-            {
-              lint.pow(rint, 0, result);
-              assert result.getUnsignedValue() < 1000000000 : result + " is too fucking big, lint=" + lint + " rint=" + rint + " part of " + expression;
-
-              return new LiteralConstantNode<>(expression,
-                                               result);
-            }
-          }
-        }
-      }
-    }
+    
     return super.simplify();
   }
 
