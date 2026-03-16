@@ -583,18 +583,12 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
    * expression's context, otherwise delegates to {@link #toString()}.
    */
   @Override
-  public String toStringBound()
+  public String toString()
   {
-    if (upstreamInput)
+    if (upstreamInput && emittingBoundFormat.get())
     {
       return reference.name + "=%s";
     }
-    return reference.toString();
-  }
-
-  @Override
-  public String toString()
-  {
     return reference.toString();
   }
 
