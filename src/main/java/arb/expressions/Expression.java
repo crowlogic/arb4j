@@ -2014,30 +2014,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return classVisitor;
     }
 
-    String fullTemplate = namePrefix + arrow + bodyExpr;
+    // Use toStringBound() which emits "name=%s" for upstream input variables,
+    // giving us the format template with placeholders already in place.
+    String boundExpr    = rootNode != null ? rootNode.toStringBound() : getExpression();
+    String formatString = namePrefix + arrow + boundExpr;
 
     List<String>                matchedNames = new ArrayList<>();
     List<VariableNode<D, C, F>> matchedNodes = new ArrayList<>();
     for (Entry<String, VariableNode<D, C, F>> entry : runtimeVars)
     {
-      if (fullTemplate.contains(entry.getKey()))
-      {
-        matchedNames.add(entry.getKey());
-        matchedNodes.add(entry.getValue());
-      }
-    }
-
-    if (matchedNames.isEmpty())
-    {
-      methodVisitor.visitLdcInsn(fullTemplate);
-      Compiler.generateReturnFromMethod(methodVisitor);
-      return classVisitor;
-    }
-
-    String formatString = fullTemplate;
-    for (String varName : matchedNames)
-    {
-      formatString = formatString.replace(varName, varName + "=%s");
+      matchedNames.add(entry.getKey());
+      matchedNodes.add(entry.getValue());
     }
 
     if (Expression.trace)
