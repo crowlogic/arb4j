@@ -13,7 +13,34 @@ import org.slf4j.LoggerFactory;
 import arb.functions.Function;
 
 /**
- * 
+ * Maps a function name to its complete type signature — domain type, codomain
+ * type, and {@link Function} interface class — together with its
+ * {@link Expression} and compiled {@link #instance}, while also participating
+ * directly in ASM-based JVM bytecode emission for that declaration.
+ *
+ * <p>
+ * This is not a Prototype in the Gang-of-Four design pattern sense — that
+ * pattern, described by Gamma, Helm, Johnson, and Vlissides in <i>Design
+ * Patterns: Elements of Reusable Object-Oriented Software</i> (1994), defines
+ * an object that serves as a canonical exemplar of its kind and produces new
+ * instances by cloning itself rather than by constructing from scratch. A
+ * {@code FunctionMapping} is never cloned and has no such stamp-copying
+ * semantics; its {@link #instance} field is compiled and cached exactly once.
+ * Nor is it a mere lookup-table entry. The closest linguistic analogue is a
+ * <em>function declaration</em> in a language specification — something that
+ * carries both the full type signature and the body, and maps that declaration
+ * into executable form.
+ *
+ * <p>
+ * {@link arb.expressions.context.FunctionMappings} holds all
+ * {@code FunctionMapping} instances registered in a given {@link Context},
+ * which may itself be shared across multiple {@link Expression}s.
+ *
+ * @param <D> the domain (argument) type of the {@link Function}
+ * @param <R> the codomain (return) type of the {@link Function}
+ * @param <F> the {@link Function} interface type, extending {@link Function
+ *            Function&lt;? extends D, ? extends R&gt;}
+ *
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
@@ -60,8 +87,7 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
     if (getClass() != obj.getClass())
       return false;
     FunctionMapping<?, ?, ?> other = (FunctionMapping<?, ?, ?>) obj;
-    return Objects.equals(domain, other.domain) && Objects.equals(functionName, other.functionName)
-                  && Objects.equals(coDomain, other.coDomain);
+    return Objects.equals(domain, other.domain) && Objects.equals(functionName, other.functionName) && Objects.equals(coDomain, other.coDomain);
   }
 
   public String functionFieldDescriptor()
@@ -71,8 +97,7 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
 
   public String functionFieldDescriptor(boolean preferInterface)
   {
-    if ((preferInterface || (functionClass != null && !functionClass.isInterface()))
-                  && functionClass != null)
+    if ((preferInterface || (functionClass != null && !functionClass.isInterface())) && functionClass != null)
     {
       return declaredAs = functionClass.descriptorString();
     }
@@ -151,6 +176,7 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
    *
    * @return
    */
+  @SuppressWarnings("unchecked")
   public Expression<D, R, F> getExpression()
   {
     if (expression != null)
@@ -159,10 +185,7 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
     }
     if (expressionString != null)
     {
-      expression = Function.parse((Class<D>) domain,
-                                  (Class<R>) coDomain,
-                                  (Class<F>) functionClass,
-                                  expressionString);
+      expression = Function.parse((Class<D>) domain, (Class<R>) coDomain, (Class<F>) functionClass, expressionString);
     }
     else
     {

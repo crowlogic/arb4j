@@ -70,39 +70,25 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
     case "sin":
       // Đ^(α) sin(t) = t^(1-α) · E(2, 2-α, -t²)
-      var oneMinusAlpha = one().sub(α);
-      var twoMinusAlpha = expression.newLiteralConstant("2").sub(α);
-      var negTSquared   = t.pow(2).neg();
-      return t.pow(oneMinusAlpha).mul(
-          new MittagLefflerFunctionNode<>(expression,
-              expression.newLiteralConstant("2"),
-              twoMinusAlpha,
-              negTSquared));
-
+      return t.pow(one().sub(α)).mul(mittagLeffler(two(), two().sub(α), t.square().neg()));
     case "cos":
       // Đ^(α) cos(t) = t^(-α) · E(2, 1-α, -t²)
-      var negAlpha        = α.neg();
-      var oneMinusAlphaCos = one().sub(α);
-      var negTSquaredCos  = t.pow(2).neg();
-      return t.pow(negAlpha).mul(
-          new MittagLefflerFunctionNode<>(expression,
-              expression.newLiteralConstant("2"),
-              oneMinusAlphaCos,
-              negTSquaredCos));
-
+      return t.pow(α.neg()).mul(mittagLeffler(two(), one().sub(α), t.pow(2).neg()));
     case "exp":
       // Đ^(α) exp(t) = t^(1-α) · E(1, 2-α, t)
-      var oneMinusAlphaExp = one().sub(α);
-      var twoMinusAlphaExp = expression.newLiteralConstant("2").sub(α);
-      return t.pow(oneMinusAlphaExp).mul(
-          new MittagLefflerFunctionNode<>(expression,
-              one(),
-              twoMinusAlphaExp,
-              t));
+      return t.pow(one().sub(α)).mul(mittagLeffler(one(), two().sub(α), t));
 
     default:
       return super.fractionalDerivative(variable, α);
     }
+  }
+
+  public MittagLefflerFunctionNode<D, R, F> mittagLeffler(Node<D, R, F> α, Node<D, R, F> b, Node<D, R, F> arg)
+  {
+    return new MittagLefflerFunctionNode<>(expression,
+                                           α,
+                                           b,
+                                           arg);
   }
 
   @Override
@@ -139,8 +125,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     try
     {
-      return bitless ? domain.getMethod(functionName, coDomain)
-                     : domain.getMethod(functionName, int.class, coDomain);
+      return bitless ? domain.getMethod(functionName, coDomain) : domain.getMethod(functionName, int.class, coDomain);
     }
     catch (NoSuchMethodException e)
     {
@@ -199,7 +184,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       arg = arg.simplify();
     }
 
-
     if (isSquareRoot())
     {
       if (arg.isOne())
@@ -211,9 +195,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return simplifyExponential(this);
   }
 
-  protected static <D, R, F extends Function<? extends D, ? extends R>>
-            Node<D, R, F>
-            simplifyExponential(Node<D, R, F> node)
+  protected static <D, R, F extends Function<? extends D, ? extends R>> Node<D, R, F> simplifyExponential(Node<D, R, F> node)
   {
     var functionNode = node.asFunction();
     if (functionNode.isExponential())
@@ -232,23 +214,18 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return functionNode;
   }
 
-  public FunctionNode(Expression<D, R, F> expression,
-                      FunctionMapping<?, ?, ?> mapping,
-                      Node<D, R, F> arg)
+  public FunctionNode(Expression<D, R, F> expression, FunctionMapping<?, ?, ?> mapping, Node<D, R, F> arg)
   {
     this(mapping.functionName,
          arg,
          expression);
-    this.mapping = mapping;
+    this.prototype = mapping;
   }
 
   /**
    * Constructor with derivative order support for special functions.
    */
-  public FunctionNode(Expression<D, R, F> expression,
-                      String functionName,
-                      Node<D, R, F> argument,
-                      int derivativeOrder)
+  public FunctionNode(Expression<D, R, F> expression, String functionName, Node<D, R, F> argument, int derivativeOrder)
   {
     this(functionName,
          argument,
@@ -270,8 +247,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (obj instanceof FunctionNode<?, ?, ?> other)
     {
-      return super.equals(obj) && Objects.equals(functionName, other.functionName)
-                    && derivativeOrder == other.derivativeOrder;
+      return super.equals(obj) && Objects.equals(functionName, other.functionName) && derivativeOrder == other.derivativeOrder;
     }
     return false;
 
@@ -279,17 +255,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   static final HashSet<String>  bitlessFunctions                = new HashSet<>();
 
-  public static HashSet<String> complexFunctionsWithRealResults =
-                                                                new HashSet<>(Arrays.asList("arg",
-                                                                                            "re",
-                                                                                            "im",
-                                                                                            "real",
-                                                                                            "imag"));
+  public static HashSet<String> complexFunctionsWithRealResults = new HashSet<>(Arrays.asList("arg", "re", "im", "real", "imag"));
 
-  public static HashSet<String> integerFunctionsWithRealResults =
-                                                                new HashSet<>(Arrays.asList("sqrt",
-                                                                                            "tanh",
-                                                                                            "log"));
+  public static HashSet<String> integerFunctionsWithRealResults = new HashSet<>(Arrays.asList("sqrt", "tanh", "log"));
 
   static
   {
@@ -298,18 +266,18 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     bitlessFunctions.add("conj");
   }
 
-  public boolean         contextual = false;
+  public final boolean   contextual;
 
   public String          functionName;
 
   @SuppressWarnings("rawtypes")
-  public FunctionMapping mapping;
+  public FunctionMapping prototype;
 
   public VariableNode<?, ?, ?> getInputVariableNode()
   {
-    if (mapping != null)
+    if (prototype != null)
     {
-      Expression<?, ?, ?> variableExpression = mapping.expression;
+      Expression<?, ?, ?> variableExpression = prototype.expression;
       if (variableExpression != null)
       {
         return variableExpression.independentVariable;
@@ -340,32 +308,36 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     super(expression,
           argument);
     assert functionName != null : "functionName cannot be null";
-    this.functionName = functionName;
-    assignFunctionName();
-    if (this.expression.context != null)
+    this.functionName = rewriteFunctionName(functionName);
+    boolean isRecursive = functionName != null && functionName.equals(expression.functionName);
+
+    if (this.expression.context != null || isRecursive)
     {
-      lookupFunctionInContext();
+      if (isRecursive)
+      {
+        designateAsRecursiveFunction(type());
+      }
+      else
+      {
+        prototype = expression.context.getFunctionMapping(functionName);
+      }
+      contextual = prototype != null;
+      if (contextual)
+      {
+        expression.registerReferencedFunction(functionName, prototype);
+        generatedType = prototype.coDomain;
+      }
+
+    }
+    else
+    {
+      contextual = isRecursive;
     }
     if (generatedType == null)
     {
       generatedType = resultTypeFor(this.functionName);
     }
-    if (functionName != null && functionName.equals(expression.functionName))
-    {
-      designateAsRecursiveFunction(type());
-    }
 
-  }
-
-  private void lookupFunctionInContext()
-  {
-    mapping    = expression.context.getFunctionMapping(functionName);
-    contextual = mapping != null;
-    if (contextual)
-    {
-      expression.registerReferencedFunction(functionName, mapping);
-      generatedType = mapping.coDomain;
-    }
   }
 
   @Override
@@ -378,13 +350,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     t.accept(this);
   }
 
-  private void assignFunctionName()
+  public static String rewriteFunctionName(String functionName)
   {
-    if (functionName == null)
-    {
-      return;
-    }
-    functionName = switch (functionName)
+    return functionName == null ? null : switch (functionName)
     {
     case "sgn":
       yield "sign";
@@ -401,33 +369,29 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     };
   }
 
-  public boolean isArgumentTypeConversionNeed(FunctionMapping<D, R, F> functionMapping,
-                                              boolean isNullaryFunction)
+  public boolean isArgumentTypeConversionNeed(FunctionMapping<D, R, F> functionMapping, boolean isNullaryFunction)
   {
-    return arg != null && !functionMapping.domain.equals(arg.getGeneratedType())
-                  && !isNullaryFunction;
+    return arg != null && !functionMapping.domain.equals(arg.getGeneratedType()) && !isNullaryFunction;
   }
 
   private void checkForUndefinedReferenced(FunctionMapping<D, R, F> mapping)
   {
     if (mapping.instance == null && mapping.functionClass == null)
     {
-      throw new IllegalArgumentException(String.format("Undefined reference to function %s",
-                                                       mapping));
+      throw new IllegalArgumentException(String.format("Undefined reference to function %s", mapping));
     }
   }
 
   private void designateAsRecursiveFunction(Class<?> resultType)
   {
-    contextual = true;
-    mapping    = new FunctionMapping<>();
+    prototype = new FunctionMapping<>();
     if (generatedType == null)
     {
       generatedType = resultType;
     }
-    mapping.coDomain     = generatedType;
-    mapping.domain       = getDomainType();
-    mapping.functionName = functionName;
+    prototype.coDomain     = generatedType;
+    prototype.domain       = getDomainType();
+    prototype.functionName = functionName;
     expression.recursive = true;
   }
 
@@ -534,8 +498,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (functionMapping == null)
     {
-      throw new CompilerException(String.format("function named %s was not found in context.functions",
-                                                functionName));
+      throw new CompilerException(String.format("function named %s was not found in context.functions", functionName));
     }
 
     var instance = functionMapping.instance;
@@ -555,20 +518,12 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     var    derivative             = instance.derivative();
 
     String derivativeFunctionName = derivative.getName();
-    assert derivativeFunctionName != null : "derivativeFunctionName is null for instance "
-                                            + instance
-                                            + ": TODO: use the "
-                                            + derivative
-                                            + " directly";
+    assert derivativeFunctionName != null : "derivativeFunctionName is null for instance " + instance + ": TODO: use the " + derivative + " directly";
 
     var newDerivativeFunctionMapping = expression.context.functions.get(derivativeFunctionName);
 
-    assert newDerivativeFunctionMapping != null : "no function mapping with name "
-                                                  + derivativeFunctionName
-                                                  + " for derivative "
-                                                  + derivative
-                                                  + " of "
-                                                  + instance;
+    assert newDerivativeFunctionMapping
+                  != null : "no function mapping with name " + derivativeFunctionName + " for derivative " + derivative + " of " + instance;
 
     return new FunctionNode<D, R, F>(expression,
                                      newDerivativeFunctionMapping,
@@ -610,28 +565,22 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (functionMapping == null)
     {
-      throw new CompilerException(String.format("function named %s was not found in context.functions",
-                                                functionName));
+      throw new CompilerException(String.format("function named %s was not found in context.functions", functionName));
     }
     var instance = functionMapping.instance;
     if (instance == null)
     {
       if (functionMapping.expressionString == null)
       {
-        throw new CompilerException(String.format("Instance for function %s was not present in %s",
-                                                  functionName,
-                                                  functionMapping));
+        throw new CompilerException(String.format("Instance for function %s was not present in %s", functionName, functionMapping));
       }
-      else if (mapping.expression != null)
+      else if (prototype.expression != null)
       {
-        return mapping.expression.rootNode.spliceInto(expression).integral(variable);
+        return prototype.expression.rootNode.spliceInto(expression).integral(variable);
       }
       else
       {
-        var integrand = Function.parse(mapping.domain,
-                                       mapping.coDomain,
-                                       mapping.functionClass,
-                                       mapping.expressionString);
+        var integrand = Function.parse(prototype.domain, prototype.coDomain, prototype.functionClass, prototype.expressionString);
         integrand.upstreamExpression = expression;
         return integrand.rootNode.integral(integrand.independentVariable).simplify();
 
@@ -652,10 +601,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                           arg);
 
     }
-    assert newIntegralFunctionMapping != null : "newIntegralFunctionMapping is  null for "
-                                                + integralFunctionName
-                                                + " and functionMapping="
-                                                + functionMapping;
+    assert newIntegralFunctionMapping != null : "newIntegralFunctionMapping is  null for " + integralFunctionName + " and functionMapping=" + functionMapping;
     return new FunctionNode<D, R, F>(expression,
                                      newIntegralFunctionMapping,
                                      arg);
@@ -688,10 +634,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (Expression.traceNodes)
     {
-      logger.debug(String.format("generate(this=%s, arg=%s, resultType=%s)",
-                                 this,
-                                 arg,
-                                 resultType));
+      logger.debug(String.format("generate(this=%s, arg=%s, resultType=%s)", this, arg, resultType));
     }
 
     if (contextual)
@@ -730,9 +673,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
   }
 
-  public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor,
-                                                   Class<?> requisiteResultType,
-                                                   boolean bitless)
+  public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor, Class<?> requisiteResultType, boolean bitless)
   {
     Class<?> argType = getArgType();
     arg.generate(methodVisitor, argType);
@@ -750,39 +691,24 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     if (Compiler.doesBuiltinFunctionExist(functionName, bitless, domainType, coDomainType))
     {
 
-      methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                                    Type.getInternalName(domainType),
-                                    functionName,
-                                    functionDescriptor,
-                                    false);
+      methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL, Type.getInternalName(domainType), functionName, functionDescriptor, false);
 
       generatedType = requisiteResultType;
     }
     else
     {
-      functionDescriptor = bitless ? Compiler.getMethodDescriptor(domainType, coDomainType)
-                                   : Compiler.getMethodDescriptor(domainType,
-                                                                  int.class,
-                                                                  coDomainType);
+      functionDescriptor = bitless ? Compiler.getMethodDescriptor(domainType, coDomainType) : Compiler.getMethodDescriptor(domainType, int.class, coDomainType);
 
       if (Compiler.doesBuiltinFunctionExist(functionName, bitless, domainType, coDomainType))
       {
 
-        methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                                      Type.getInternalName(domainType),
-                                      functionName,
-                                      functionDescriptor,
-                                      false);
+        methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL, Type.getInternalName(domainType), functionName, functionDescriptor, false);
 
         generatedType = requisiteResultType;
       }
       else
       {
-        assert false : String.format("no such function named %s from %s to %s (expr=%s)",
-                                     functionName,
-                                     domainType,
-                                     coDomainType,
-                                     expression);
+        assert false : String.format("no such function named %s from %s to %s (expr=%s)", functionName, domainType, coDomainType, expression);
       }
     }
     return methodVisitor;
@@ -801,8 +727,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return functionMapping.call(mv, generatedType);
   }
 
-  private void
-          generateParameter(MethodVisitor mv, Class<? extends R> argType, boolean isNullaryFunction)
+  private void generateParameter(MethodVisitor mv, Class<? extends R> argType, boolean isNullaryFunction)
   {
     if (isNullaryFunction)
     {
@@ -832,11 +757,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public FunctionMapping<D, R, F> getFunctionMapping()
   {
-    assert expression.context
-                  != null : expression
-                            + " has no context by which to retrieve the functionMapping named "
-                            + functionName
-                            + " from";
+    assert expression.context != null : expression + " has no context by which to retrieve the functionMapping named " + functionName + " from";
     FunctionMapping<D, R, F> mapping = expression.context.getFunctionMapping(functionName);
     if (isSelfReferential(mapping))
     {
@@ -960,9 +881,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (Expression.traceNodes)
     {
-      logger.debug("loadFunctionReferenceOntoStack(functionName={} functionFieldDescripton={})",
-                   mapping.functionName,
-                   functionFieldDescriptor);
+      logger.debug("loadFunctionReferenceOntoStack(functionName={} functionFieldDescripton={})", mapping.functionName, functionFieldDescriptor);
 
     }
     expression.loadFieldOntoStack(loadThisOntoStack(mv), functionName, functionFieldDescriptor);
@@ -1009,8 +928,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     case "ϑ":
       return scalarArgType;
     case "sqrt":
-      return Integer.class.equals(expression.coDomainType) ? Real.class
-                                                           : Compiler.scalarType(expression.coDomainType);
+      return Integer.class.equals(expression.coDomainType) ? Real.class : Compiler.scalarType(expression.coDomainType);
     case "arg":
       return Real.class;
     case "ζ":
@@ -1023,16 +941,14 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       return expression.coDomainType;
     }
-    else if (((argType.equals(Integer.class) || argType.equals(Fraction.class))
-                  && integerFunctionsWithRealResults.contains(functionName))
-                  || (argType.equals(Complex.class)
-                                && complexFunctionsWithRealResults.contains(functionName)))
+    else if (((argType.equals(Integer.class) || argType.equals(Fraction.class)) && integerFunctionsWithRealResults.contains(functionName))
+                  || (argType.equals(Complex.class) && complexFunctionsWithRealResults.contains(functionName)))
     {
       return Compiler.scalarType(expression.coDomainType);
     }
-    else if (mapping != null && mapping.functionName.equals(functionName))
+    else if (prototype != null && prototype.functionName.equals(functionName))
     {
-      return mapping.coDomain;
+      return prototype.coDomain;
     }
     else
     {
@@ -1041,9 +957,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
     assert arg != null : "arg is null";
     return new FunctionNode<E, S, G>(newExpression,
@@ -1053,9 +967,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, R, F>
-         substitute(String variable, Node<E, S, G> replacement)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable, Node<E, S, G> replacement)
   {
     if (arg != null)
     {
@@ -1066,9 +978,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       Node<D, R, F>         body               = (Node<D, R, F>) replacement;
 
-      Expression<?, ?, ?>   definingExpression = mapping != null ? mapping.expression : null;
-      VariableNode<?, ?, ?> formalParam        = definingExpression
-                    != null ? definingExpression.independentVariable : null;
+      Expression<?, ?, ?>   definingExpression = prototype != null ? prototype.expression : null;
+      VariableNode<?, ?, ?> formalParam        = definingExpression != null ? definingExpression.independentVariable : null;
 
       if (formalParam != null && arg != null)
       {
@@ -1099,16 +1010,14 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       return String.format("(%s)!", arg.toStringWithoutIndependentVariableSpecified());
     }
-    String str = String.format("%s(%s)", functionName, arg)
-                       .replaceAll("sqrt", "√")
-                       .replaceAll("J0", "J₀");
+    String str = String.format("%s(%s)", functionName, arg).replaceAll("sqrt", "√").replaceAll("J0", "J₀");
     return str;
   }
 
   @Override
   public Class<?> type()
   {
-    return isBuiltin() ? resultTypeFor(functionName) : mapping.coDomain;
+    return isBuiltin() ? resultTypeFor(functionName) : prototype.coDomain;
   }
 
   @Override
@@ -1119,13 +1028,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return String.format("|%s|", arg.typeset());
     }
 
-    String name        = functionName.replaceAll("√", "sqrt")
-                                     .replaceAll("J0", "J_0")
-                                     .replaceAll("ζ", "zeta");
+    String name        = functionName.replaceAll("√", "sqrt").replaceAll("J0", "J_0").replaceAll("ζ", "zeta");
 
-    String baseTypeset = format(name.equals("sqrt") ? "\\%s{%s}" : "\\%s(%s)",
-                                name,
-                                arg == null ? "" : arg.typeset());
+    String baseTypeset = format(name.equals("sqrt") ? "\\%s{%s}" : "\\%s(%s)", name, arg == null ? "" : arg.typeset());
 
     if (derivativeOrder == 0)
     {
