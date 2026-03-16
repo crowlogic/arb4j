@@ -1017,9 +1017,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     if ("factorial".equals(functionName))
     {
-      return String.format("(%s)!", arg == null ? "" : arg.toStringBound());
+      return String.format("(%s)!", arg == null ? "" : arg);
     }
-    return String.format("%s(%s)", functionName, arg == null ? "" : arg.toStringBound())
+    return String.format("%s(%s)", functionName, arg == null ? "" : arg)
                  .replaceAll("sqrt", "√")
                  .replaceAll("J0", "J₀");
   }
