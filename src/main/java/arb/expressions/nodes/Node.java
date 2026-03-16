@@ -64,14 +64,31 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 {
 
   /**
+   * When true, {@link VariableNode#toString()} emits {@code "name=%s"}
+   * placeholders for upstream-input variables instead of bare names. Set by
+   * {@link #toStringBound()} so that every node's existing {@link #toString()}
+   * automatically propagates bound-variable formatting without needing
+   * per-node overrides.
+   */
+  public static final ThreadLocal<Boolean> emittingBoundFormat = ThreadLocal.withInitial(() -> false);
+
+  /**
    * Returns this node's string representation with upstream-bound variable names
-   * replaced by {@code "name=%s"} placeholders. The default delegates to
-   * {@link #toString()}; {@link VariableNode} overrides when
-   * {@link VariableNode#upstreamInput} is true.
+   * replaced by {@code "name=%s"} placeholders. Sets {@link #emittingBoundFormat}
+   * so that all downstream {@link #toString()} calls on child nodes (including
+   * {@link VariableNode}) produce format-ready output.
    */
   public String toStringBound()
   {
-    return toString();
+    emittingBoundFormat.set(true);
+    try
+    {
+      return toString();
+    }
+    finally
+    {
+      emittingBoundFormat.set(false);
+    }
   }
 
   public Stream<Node<D, R, F>> nodeStream()
