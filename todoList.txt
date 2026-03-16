@@ -1,6 +1,5 @@
 fix recursion for multivar functions
 constant subexpression extraction
-support chained FunctionalEvaluationNodes such as a RealFunctionalSequence f then referred to by f(3)(2)(1)
 the generated toString() of the Expression.generateFunctionalElement() method should show the value instead of the variable name if it is declared in an upstream expression (in which case the value is known)
 move intermediateVariableCounters from Context to Expression
 expressor: make it such that selecting a subset of the string and then clickign a character on the minisymbolpalette replaces the highlighted string

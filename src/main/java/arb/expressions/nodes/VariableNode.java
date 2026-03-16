@@ -151,13 +151,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public VariableNode<?, ?, ?> resolveReference()
   {
-//    if (reference.type != null)
-//    {
-//      return this;
-//      throw new CompilerException(String.format("variable already resolved and cannot be resolved again: %s",
-//                                                resolutionStateString()));
-//    }
-
     var inputVariable = expression.independentVariable;
 
     if (Expression.traceNodes)
@@ -586,11 +579,27 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return getName().charAt(0);
   }
 
+  /**
+   * Returns {@code "name=%s"} when this variable is an upstream input (its value
+   * is bound for the lifetime of the generated functional instance), otherwise
+   * delegates to {@link #toString()}.
+   */
+  @Override
+  public String toStringBound()
+  {
+    if (upstreamInput)
+    {
+      return reference.name + "=%s";
+    }
+    return reference.toString();
+  }
+
   @Override
   public String toString()
   {
     return reference.toString();
   }
+
 
   public String toStringVerbose()
   {

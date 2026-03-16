@@ -62,6 +62,18 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                           Typesettable,
                           Consumer<Consumer<Node<D, R, F>>>
 {
+
+  /**
+   * Returns this node's string representation with upstream-bound variable names
+   * replaced by {@code "name=%s"} placeholders. The default delegates to
+   * {@link #toString()}; {@link VariableNode} overrides when
+   * {@link VariableNode#upstreamInput} is true.
+   */
+  public String toStringBound()
+  {
+    return toString();
+  }
+
   public Stream<Node<D, R, F>> nodeStream()
   {
     List<Node<D, R, F>> nodes = new ArrayList<>();
@@ -96,9 +108,9 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     expr.independentVariable = null;
     expr.rootNode            = null;
     expr.assignInputVariable(expr.newVariableNode(independentVar.getName()));
-    expr.rootNode            = spliceInto(expr);
+    expr.rootNode = spliceInto(expr);
     expr.updateStringRepresentation();
-    expr.className           = Parser.normalize(expr.getExpression());
+    expr.className = Parser.normalize(expr.getExpression());
     return expr;
   }
 
@@ -147,8 +159,8 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   /**
    * Returns true if this node has a closed-form fractional derivative with
-   * respect to the given variable. Subclasses override for monomials,
-   * constants, and linear combinations.
+   * respect to the given variable. Subclasses override for monomials, constants,
+   * and linear combinations.
    */
   public boolean hasClosedFormFractionalDerivative(VariableNode<D, R, F> variable)
   {
@@ -240,8 +252,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public boolean isIndependentOfInput()
   {
-    return expression.isNullaryFunction() ? true
-                                          : isIndependentOf(expression.getIndependentVariable());
+    return expression.isNullaryFunction() ? true : isIndependentOf(expression.getIndependentVariable());
   }
 
   public int bits()
@@ -312,9 +323,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public LiteralConstantNode<D, R, F> asLiteralConstant()
   {
-    assert this instanceof LiteralConstantNode : this
-                                                 + " isn't a Literal constant, it is a "
-                                                 + this.getClass().getName();
+    assert this instanceof LiteralConstantNode : this + " isn't a Literal constant, it is a " + this.getClass().getName();
     return (LiteralConstantNode<D, R, F>) this;
   }
 
@@ -334,10 +343,8 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     if (getClass() != obj.getClass())
       return false;
     Node<?, ?, ?> other = (Node<?, ?, ?>) obj;
-    return bits == other.bits && Objects.equals(expression, other.expression)
-                  && Objects.equals(fieldName, other.fieldName)
-                  && Objects.equals(generatedType, other.generatedType)
-                  && isRootNode == other.isRootNode && position == other.position;
+    return bits == other.bits && Objects.equals(expression, other.expression) && Objects.equals(fieldName, other.fieldName)
+                  && Objects.equals(generatedType, other.generatedType) && isRootNode == other.isRootNode && position == other.position;
   }
 
   @Override
@@ -445,9 +452,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   {
     if (Expression.traceNodes)
     {
-      getLogger().debug(String.format("generateCastTo(type=%s) from generatedType=%s\n",
-                                      type,
-                                      generatedType));
+      getLogger().debug(String.format("generateCastTo(type=%s) from generatedType=%s\n", type, generatedType));
     }
     cast(methodVisitor, generatedType);
     expression.allocateIntermediateVariable(methodVisitor, type);
@@ -672,9 +677,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return apply("sinh");
   }
 
-  public abstract <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression);
+  public abstract <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression);
 
   public Node<D, R, F> sqrt()
   {
@@ -693,9 +696,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                                      subtrahend);
   }
 
-  public abstract <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, R, F>
-         substitute(String variable, Node<E, S, G> arg);
+  public abstract <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable, Node<E, S, G> arg);
 
   public abstract char symbol();
 
@@ -826,16 +827,8 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public <T extends Field<T>> T evaluate(Class<T> resultType, int bits, T result)
   {
-    assert isConstant() : "cannot evaluate the non-constant node "
-                          + this
-                          + " of class "
-                          + getClass().getSimpleName()
-                          + " at compile-time";
-    throw new UnsupportedOperationException("#862: evaluate(Class<T>) not implemented for "
-                                            + getClass().getSimpleName()
-                                            + " node '"
-                                            + this
-                                            + "'");
+    assert isConstant() : "cannot evaluate the non-constant node " + this + " of class " + getClass().getSimpleName() + " at compile-time";
+    throw new UnsupportedOperationException("#862: evaluate(Class<T>) not implemented for " + getClass().getSimpleName() + " node '" + this + "'");
   }
 
   protected Stream<VariableNode<?, ?, ?>> resolveVariables()
