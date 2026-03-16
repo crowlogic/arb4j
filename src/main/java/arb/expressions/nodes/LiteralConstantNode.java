@@ -349,7 +349,6 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   public LiteralConstantNode(Expression<D, R, F> expression, Integer value)
   {
     super(expression);
-    assert value.getUnsignedValue() < 10000000000l : value + " is too fucking big";
     isFraction         = false;
     this.isDecimal     = false;
     this.isImaginary   = false;
@@ -357,7 +356,6 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     this.intValue      = new Integer().set(value).setName(value.getName());
     this.fractionValue = null;
     this.stringValue   = value.toString();
-    assert stringValue.length() < 1000 : stringValue.length() + " is too many fucking digits. surely you don't wanna do this";
     fieldName          = expression.getNextConstantFieldName(type());
     expression.literalConstants.put(fieldName, this);
   }
