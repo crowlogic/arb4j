@@ -199,21 +199,16 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       arg = arg.simplify();
     }
 
-    Node<D, R, F> node         = this;
 
-    var           functionNode = node.asFunction();
-    if (functionNode.isSquareRoot())
+    if (isSquareRoot())
     {
-      var arg = functionNode.arg;
       if (arg.isOne())
       {
-        return node.one();
+        return one();
       }
     }
 
-    node = simplifyExponential(node);
-
-    return node;
+    return simplifyExponential(this);
   }
 
   protected static <D, R, F extends Function<? extends D, ? extends R>>

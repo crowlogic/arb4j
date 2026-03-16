@@ -297,12 +297,12 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     var four      = expression.literal(4);
     // Complete the square, for a x^2 + b x + c:
     // Let shift = b / (2 * a)
-    var shift     = b.div(two().mul(a)).simplify();
-    var u         = x.add(shift).simplify();
+    var shift     = b.div(two().mul(a));
+    var u         = x.add(shift);
 
     // Constant under root
-    var constTerm = c.sub(b.pow(2).div(four.mul(a))).simplify();
-    var k         = constTerm.sqrt().simplify();
+    var constTerm = c.sub(b.pow(2).div(four.mul(a)));
+    var k         = constTerm.sqrt();
 
     // Affine normalization, argument: u / k
     var argument  = u.div(k).simplify();
