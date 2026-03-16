@@ -146,6 +146,16 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   }
 
   /**
+   * Returns true if this node has a closed-form fractional derivative with
+   * respect to the given variable. Subclasses override for monomials,
+   * constants, and linear combinations.
+   */
+  public boolean hasClosedFormFractionalDerivative(VariableNode<D, R, F> variable)
+  {
+    return false;
+  }
+
+  /**
    * Checks if a node is easily integrable (exp, sin, cos). These functions have
    * straightforward antiderivatives.
    */

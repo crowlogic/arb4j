@@ -62,6 +62,13 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return numerator.div(denominator);
   }
 
+  @Override
+  public boolean hasClosedFormFractionalDerivative(VariableNode<D, R, F> variable)
+  {
+    return left.hasClosedFormFractionalDerivative(variable)
+                  && right.hasClosedFormFractionalDerivative(variable);
+  }
+
   /**
    * Đ^(α)(f + g) = Đ^(α)(f) + Đ^(α)(g)
    */
