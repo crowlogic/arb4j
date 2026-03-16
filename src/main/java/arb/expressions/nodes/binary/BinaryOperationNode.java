@@ -412,23 +412,6 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     left  = left.simplify();
     right = right.simplify();
 
-    if (left.isOne())
-    {
-      return one();
-    }
-    if (right.isOne())
-    {
-      return left;
-    }
-    if (right.isZero())
-    {
-      return one();
-    }
-    if (left.isZero())
-    {
-      return right.isZero() ? one() : zero();
-    }
-    
     return super.simplify();
   }
 
