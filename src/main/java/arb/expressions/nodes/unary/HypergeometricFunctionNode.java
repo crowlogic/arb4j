@@ -196,7 +196,6 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       }
       else
       {
-        // Scalar output: element is the rational function that will be evaluated
         elementType = isReal ? RationalFunction.class : isComplex ? ComplexRationalFunction.class : null;
       }
       elementFieldName = expression.newIntermediateVariable("element", elementType);
@@ -224,7 +223,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
   {
     expression.loadThisAndFieldOntoStack(mv, identityFieldName, functionalType());
     generateVirtualMethodInvocation(mv, functionalType(), "identity", functionalType());
-    mv.visitInsn(POP); // identity() returns this, discard
+    mv.visitInsn(POP);
   }
 
   @SuppressWarnings("unchecked")
@@ -302,7 +301,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
         expression.loadThisAndFieldOntoStack(mv, elementFieldName, elementType);
 
         generateEvaluateMethodInvocation(mv);
-        mv.visitInsn(POP); // Discard evaluate() return (element populated via parameter)
+        mv.visitInsn(POP);
       }
     }
 
@@ -318,13 +317,13 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     {
       loadHypergeometricFunctionOntoStack(mv);
       generateInitCall(mv);
-      mv.visitInsn(POP); // Discard init() return
+      mv.visitInsn(POP);
 
       if (isNullaryFunctionOrHasScalarCodomain())
       {
         loadHypergeometricFunctionOntoStack(mv);
 
-        if (argumentDependsOnInput)
+        if (argumentDependsOnInput && hasScalarCodomain())
         {
           expression.loadThisAndFieldOntoStack(mv, identityFieldName, functionalType());
         }
@@ -337,21 +336,18 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
         loadBitsOntoStack(mv);
         expression.loadThisAndFieldOntoStack(mv, elementFieldName, elementType);
         generateEvaluateMethodInvocation(mv);
-        mv.visitInsn(POP); // Discard evaluate() return
+        mv.visitInsn(POP);
       }
       else
       {
-        // Cases 5 & 7: evaluate directly to result
         loadHypergeometricFunctionOntoStack(mv);
 
         if (argumentDependsOnInput)
         {
-          // Case 7: domain is C, pass actual input
           loadInputParameter(mv);
         }
         else
         {
-          // Case 5: pass null
           mv.visitInsn(ACONST_NULL);
         }
 
@@ -379,14 +375,12 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     {
       if (resultType.equals(elementType))
       {
-        // Result type matches element type, just copy
         loadOutputOntoStack(mv, resultType);
         expression.loadThisAndFieldOntoStack(mv, elementFieldName, elementType);
         Compiler.invokeSetMethod(mv, resultType, resultType);
       }
       else
       {
-        // Scalar output: evaluate element at scalar input point
         loadOutputOntoStack(mv, resultType);
         expression.loadThisAndFieldOntoStack(mv, elementFieldName, elementType);
         cast(mv, elementType);
@@ -401,8 +395,6 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     }
     else
     {
-      // Cases 1,5 without scalar codomain: direct evaluate (should have been handled
-      // above)
       loadHypergeometricFunctionOntoStack(mv);
       mv.visitInsn(ACONST_NULL);
       mv.visitLdcInsn(1);
@@ -439,7 +431,6 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     Class<?> actualFieldType = argFunctionMapping.type();
     expression.loadThisAndFieldOntoStack(mv, argFunctionFieldName, actualFieldType);
 
-    // Call the appropriate init overload based on arg dependency
     Class<?> argParamType = argumentDependsOnInput ? Function.class : nullaryFunctionClass();
 
     generateVirtualMethodInvocation(mv, hypergeometricFunctionClass(), "init", hypergeometricFunctionClass(), scalarType, scalarType, argParamType);
