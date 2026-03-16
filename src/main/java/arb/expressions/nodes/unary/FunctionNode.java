@@ -56,11 +56,53 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 {
 
   @Override
-  public Node<D, R, F> fractionalDerivative(VariableNode<D, R, F> variable, Node<D, R, F> order)
+  public boolean hasClosedFormFractionalDerivative(VariableNode<D, R, F> variable)
   {
-    // assert false : "bah";
-    // TODO: insert hook for closed-form of Jacobi polyonmial Caputo derivative
-    return super.fractionalDerivative(variable, order);
+    return "sin".equals(functionName) || "cos".equals(functionName) || "exp".equals(functionName);
+  }
+
+  @Override
+  public Node<D, R, F> fractionalDerivative(VariableNode<D, R, F> variable, Node<D, R, F> α)
+  {
+    var t = variable != null ? variable : expression.independentVariable;
+
+    switch (functionName)
+    {
+    case "sin":
+      // Đ^(α) sin(t) = t^(1-α) · E(2, 2-α, -t²)
+      var oneMinusAlpha = one().sub(α);
+      var twoMinusAlpha = expression.newLiteralConstant("2").sub(α);
+      var negTSquared   = t.pow(2).neg();
+      return t.pow(oneMinusAlpha).mul(
+          new MittagLefflerFunctionNode<>(expression,
+              expression.newLiteralConstant("2"),
+              twoMinusAlpha,
+              negTSquared));
+
+    case "cos":
+      // Đ^(α) cos(t) = t^(-α) · E(2, 1-α, -t²)
+      var negAlpha        = α.neg();
+      var oneMinusAlphaCos = one().sub(α);
+      var negTSquaredCos  = t.pow(2).neg();
+      return t.pow(negAlpha).mul(
+          new MittagLefflerFunctionNode<>(expression,
+              expression.newLiteralConstant("2"),
+              oneMinusAlphaCos,
+              negTSquaredCos));
+
+    case "exp":
+      // Đ^(α) exp(t) = t^(1-α) · E(1, 2-α, t)
+      var oneMinusAlphaExp = one().sub(α);
+      var twoMinusAlphaExp = expression.newLiteralConstant("2").sub(α);
+      return t.pow(oneMinusAlphaExp).mul(
+          new MittagLefflerFunctionNode<>(expression,
+              one(),
+              twoMinusAlphaExp,
+              t));
+
+    default:
+      return super.fractionalDerivative(variable, α);
+    }
   }
 
   @Override
