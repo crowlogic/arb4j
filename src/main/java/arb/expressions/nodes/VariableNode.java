@@ -585,19 +585,9 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public String toStringBound()
   {
-    var name = reference.name;
-    Expression<?, ?, ?> e = expression;
-    while (e != null)
+    if (upstreamInput)
     {
-      if (e.context != null && e.context.variables != null)
-      {
-        var val = e.context.variables.get(name);
-        if (val != null)
-        {
-          return name + "=" + val;
-        }
-      }
-      e = e.upstreamExpression;
+      return reference.name + "=%s";
     }
     return reference.toString();
   }
