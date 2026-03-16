@@ -1,23 +1,13 @@
 package arb.expressions;
 
-import arb.Complex;
-import arb.ComplexRationalFunction;
-import arb.Fraction;
+import arb.*;
 import arb.Integer;
-import arb.RationalFunction;
-import arb.Real;
-import arb.RealConstants;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.unary.FunctionNode;
-import arb.functions.Function;
-import arb.functions.IntegerFunction;
-import arb.functions.IntegerNullaryFunction;
-import arb.functions.RealToComplexFunction;
+import arb.functions.*;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ComplexNullaryFunction;
-import arb.functions.integer.ComplexFunctionSequence;
-import arb.functions.integer.RealFunctionSequence;
-import arb.functions.integer.RealSequence;
+import arb.functions.integer.*;
 import arb.functions.polynomials.RealPolynomialNullaryFunction;
 import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
@@ -31,20 +21,39 @@ import junit.framework.TestCase;
 public class ExpressionTest extends
                             TestCase
 {
+  public void testBoundUpstreamVariableAppearsInFunctionalToString()
+  {
+    Expression<Integer, RealFunction, RealFunctionSequence> expr = new Expression<>("BesselSequence",
+                                                                                    Integer.class,
+                                                                                    RealFunction.class,
+                                                                                    RealFunctionSequence.class,
+                                                                                    "n➔t➔J(n,t)",
+                                                                                    null,
+                                                                                    "jBessel",
+                                                                                    null);
+
+    RealFunctionSequence                                    seq  = expr.instantiate();
+
+    try ( Real t = new Real(); Real result = new Real())
+    {
+      RealFunction f   = seq.apply(3);
+      String       str = f.toString();
+      assertTrue("Expected functional toString to contain 'n=3' but got: " + str, str.contains("n=3"));
+    }
+  }
+
   public void testOrderOfOperations()
   {
     var x = ComplexRationalFunction.express("(1/2)/y");
     var y = ComplexRationalFunction.express("1/(2*y)");
-    
-    
-    assertEquals(x.eval(2.3, new Complex() ), y.eval(2.3, new Complex() ));
+
+    assertEquals(x.eval(2.3, new Complex()), y.eval(2.3, new Complex()));
 
   }
 
   public void testConstantFoldingToo()
   {
-    Expression<Integer, ComplexFunction, ComplexFunctionSequence> F  =
-                                                                    ComplexFunctionSequence.parse("f:m->y->-I*(4*3^2-1)*(-1)^(-m)/((4*3^2-2)*y*π)");
+    Expression<Integer, ComplexFunction, ComplexFunctionSequence> F  = ComplexFunctionSequence.parse("f:m->y->-I*(4*3^2-1)*(-1)^(-m)/((4*3^2-2)*y*π)");
     var                                                           f  = F.instantiate();
     ComplexFunction                                               f3 = f.apply(3);
     var                                                           y  = f3.eval(2.3);
@@ -117,14 +126,12 @@ public class ExpressionTest extends
 
     assertEquals("f1 should use i=1: f1(2) = 1*2 = 2.0", 2.0, f1At2);
     assertEquals("f2 should use i=3: f2(2) = 3*2 = 6.0", 6.0, f2At2);
-    assertFalse("f1 and f2 must not be equal since i was copied by value, not by reference",
-                f1At2 == f2At2);
+    assertFalse("f1 and f2 must not be equal since i was copied by value, not by reference", f1At2 == f2At2);
   }
 
   public static void testRealToComplexFunctionWithSum()
   {
-    var f =
-          RealToComplexFunction.express("x->sin(sum(k➔x^k{k=2..4}))*cos(sum(k➔x^(k-1/2){k=2..4}))");
+    var f = RealToComplexFunction.express("x->sin(sum(k➔x^k{k=2..4}))*cos(sum(k➔x^(k-1/2){k=2..4}))");
     var r = f.realPart().eval(2.3);
     assertFalse(Double.isNaN(r));
   }
@@ -287,11 +294,7 @@ public class ExpressionTest extends
     var          context = new Context(Real.named("a").set(2),
                                        Real.named("b").set(4),
                                        Real.named("c").set(6));
-    RealFunction x       = Function.express(Real.class,
-                                            Real.class,
-                                            RealFunction.class,
-                                            "x->∂a*x+b*x²+c*x³/∂x",
-                                            context);
+    RealFunction x       = Function.express(Real.class, Real.class, RealFunction.class, "x->∂a*x+b*x²+c*x³/∂x", context);
 
     var          y       = x.evaluate(new Real("2.3",
                                                128),
@@ -336,8 +339,7 @@ public class ExpressionTest extends
                128,
                new Real());
     String inspection = F.inspect(f).toString();
-    assertFalse("Expression AST contains node(s) with null generatedType: " + inspection,
-                inspection.contains("(null)"));
+    assertFalse("Expression AST contains node(s) with null generatedType: " + inspection, inspection.contains("(null)"));
   }
 
   public static void testSumTypeset()
@@ -418,10 +420,7 @@ public class ExpressionTest extends
     Context context = new Context();
     context.registerVariable("p", new Integer(3));
     context.registerVariable("q", new Integer(2));
-    var    F   =
-             RealPolynomialNullaryFunction.parse("F",
-                                                 "Σn➔zⁿ/n!*∏k➔αₖ₍ₙ₎{k=1…p}*∏k➔βₖ₍ₙ₎{k=1…q}{n=0…N}",
-                                                 context);
+    var    F   = RealPolynomialNullaryFunction.parse("F", "Σn➔zⁿ/n!*∏k➔αₖ₍ₙ₎{k=1…p}*∏k➔βₖ₍ₙ₎{k=1…q}{n=0…N}", context);
     String str = F.toString();
     assertEquals("F:Σn➔z^(n)/n!*∏k➔αₖ₍ₙ₎{k=1…p}*∏k➔βₖ₍ₙ₎{k=1…q}{n=0…N}", str);
     var transformedExpression = F.substitute("z", RealFunction.parse("2*z"));
@@ -435,13 +434,9 @@ public class ExpressionTest extends
     context.registerVariable("p", new Integer(3));
     context.registerVariable("q", new Integer(2));
     context.registerVariable("N", new Integer(3));
-    var    F                     =
-             RealPolynomialNullaryFunction.parse("F",
-                                                 "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
-                                                 context);
+    var    F                     = RealPolynomialNullaryFunction.parse("F", "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}", context);
     var    transformedExpression = F.substitute("z", RealFunction.parse("2*z"));
-    String correct               =
-                   "F:Σn➔(((2*z)^n)*Πk➔α[k]⋰n{k=1…p})/(Γ(n+1)*Πk➔β[k]⋰n{k=1…q}){n=0…N}";
+    String correct               = "F:Σn➔(((2*z)^n)*Πk➔α[k]⋰n{k=1…p})/(Γ(n+1)*Πk➔β[k]⋰n{k=1…q}){n=0…N}";
     String str                   = transformedExpression.toString();
     // System.out.format("ideal=%s\n str=%s\n", ideal, str );
     assertEquals(correct, str);

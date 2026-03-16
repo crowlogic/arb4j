@@ -1957,25 +1957,56 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    */
   protected ClassVisitor generateToStringMethod(ClassVisitor classVisitor)
   {
-    var methodVisitor = classVisitor.visitMethod(ACC_PUBLIC, "toString", Compiler.getMethodDescriptor(String.class), null, null);
+    var methodVisitor = classVisitor.visitMethod(ACC_PUBLIC,
+                                                 "toString",
+                                                 Compiler.getMethodDescriptor(String.class),
+                                                 null,
+                                                 null);
     methodVisitor.visitCode();
     Compiler.annotateWithOverride(methodVisitor);
 
-    List<Entry<String, VariableNode<D, C, F>>> upstreamInputVars = upstreamInputVariableEntryStream().collect(Collectors.toList());
+    // Collect variables that are fields on this class with runtime-varying values.
+    // 1. Upstream input variables (ancestor scope vars, excluding immediate
+    //    parent's independent variable which the predicate filters out)
+    List<Entry<String, VariableNode<D, C, F>>> runtimeVars = new ArrayList<>();
+    upstreamInputVariableEntryStream().forEach(runtimeVars::add);
 
-    String                                     namePrefix        = (functionName != null && !functionName.isEmpty()) ? functionName + ":" : "";
+    // 2. Walk the upstream chain: each ancestor's independent variable is
+    //    propagated by value to this class as a field, but the predicate in
+    //    upstreamInputVariableEntryStream() explicitly excludes it.
+    //    Include it here since the field holds a concrete value at runtime.
+    Expression<?, ?, ?> ancestor = upstreamExpression;
+    while (ancestor != null)
+    {
+      if (ancestor.independentVariable != null)
+      {
+        String name = ancestor.independentVariable.getName();
+        var    ref  = referencedVariables.get(name);
+        if (ref != null && runtimeVars.stream().noneMatch(e -> e.getKey().equals(name)))
+        {
+          runtimeVars.add(Map.entry(name, ref));
+        }
+      }
+      ancestor = ancestor.upstreamExpression;
+    }
+
+    String namePrefix = (functionName != null && !functionName.isEmpty())
+                        ? functionName + ":"
+                        : "";
     updateStringRepresentation();
     String bodyExpr = rootNode != null ? rootNode.toString() : getExpression();
-    String arrow    = (independentVariable == null || bodyExpr.contains("➔")) ? "" : (independentVariable.getName() + "➔");
+    String arrow    = (independentVariable == null || bodyExpr.contains("➔"))
+                      ? ""
+                      : (independentVariable.getName() + "➔");
 
-    if (upstreamInputVars.isEmpty())
+    if (runtimeVars.isEmpty())
     {
       String boundExpr = rootNode != null ? rootNode.toStringBound() : getExpression();
       String staticStr = namePrefix + arrow + boundExpr;
 
       if (Expression.trace)
       {
-        log.debug("generateToStringMethod(): functionName='{}' independentVariable='{}' string='{}'", functionName, independentVariable, staticStr);
+        log.debug("generateToStringMethod(): static path string='{}'", staticStr);
       }
 
       methodVisitor.visitLdcInsn(staticStr);
@@ -1983,11 +2014,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return classVisitor;
     }
 
-    String                      fullTemplate = namePrefix + arrow + bodyExpr;
+    String fullTemplate = namePrefix + arrow + bodyExpr;
 
     List<String>                matchedNames = new ArrayList<>();
     List<VariableNode<D, C, F>> matchedNodes = new ArrayList<>();
-    for (Entry<String, VariableNode<D, C, F>> entry : upstreamInputVars)
+    for (Entry<String, VariableNode<D, C, F>> entry : runtimeVars)
     {
       if (fullTemplate.contains(entry.getKey()))
       {
@@ -2006,7 +2037,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     String formatString = fullTemplate;
     for (String varName : matchedNames)
     {
-      formatString = formatString.replace(varName, "%s");
+      formatString = formatString.replace(varName, varName + "=%s");
+    }
+
+    if (Expression.trace)
+    {
+      log.debug("generateToStringMethod(): dynamic path formatString='{}' vars={}",
+                formatString, matchedNames);
     }
 
     methodVisitor.visitLdcInsn(formatString);
@@ -2019,21 +2056,24 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       duplicateTopOfTheStack(methodVisitor);
       methodVisitor.visitLdcInsn(i);
       loadThisAndFieldOntoStack(methodVisitor, matchedNames.get(i), matchedNodes.get(i).type());
-      generateVirtualMethodInvocation(methodVisitor, Object.class, "toString", String.class);
+      generateVirtualMethodInvocation(methodVisitor,
+                                      Object.class,
+                                      "toString",
+                                      String.class);
       methodVisitor.visitInsn(AASTORE);
     }
 
-    invokeStaticMethod(methodVisitor, String.class, "format", String.class, String.class, Object[].class);
+    invokeStaticMethod(methodVisitor,
+                       String.class,
+                       "format",
+                       String.class,
+                       String.class,
+                       Object[].class);
 
     Compiler.generateReturnFromMethod(methodVisitor);
-
-    if (Expression.trace)
-    {
-      log.debug("generateToStringMethod(): dynamic path for functionName='{}' formatString='{}' vars={}", functionName, formatString, matchedNames);
-    }
-
     return classVisitor;
   }
+
 
   protected String getStringRepresentation()
   {
