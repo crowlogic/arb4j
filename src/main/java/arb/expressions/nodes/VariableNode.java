@@ -105,7 +105,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public boolean                    isIndependent    = false;
 
-  public boolean                    isFormalVariable = false;
+  public boolean                    isDeclaredVariable = false;
 
   public VariableReference<D, R, F> reference;
 
@@ -115,7 +115,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                          reference.name,
                          reference.type,
                          isIndependent,
-                         isFormalVariable,
+                         isDeclaredVariable,
                          upstreamInput,
                          expression,
                          expression.independentVariable,
@@ -196,7 +196,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (expression.thisOrAnyUpstreamExpressionHasFunctionalCodomain() && !expression.anyUpstreamIndependentVariableIsNamed(getName()))
     {
-      isFormalVariable = true;
+      isDeclaredVariable = true;
       reference.type   = expression.coDomainType;
       if (Expression.traceNodes)
       {
@@ -229,7 +229,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       this.reference.type = existingVariable.reference.type;
       isIndependent       = existingVariable.isIndependent;
-      isFormalVariable    = existingVariable.isFormalVariable;
+      isDeclaredVariable    = existingVariable.isDeclaredVariable;
     }
     else
     {
@@ -373,7 +373,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
         Compiler.cast(loadInputParameter(mv), type());
       }
     }
-    else if (isFormalVariable)
+    else if (isDeclaredVariable)
     {
       generateNullaryIndependentVariable(mv);
     }
@@ -599,7 +599,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
            + ", isIndependent="
            + isIndependent
            + ", isFormalVariable="
-           + isFormalVariable
+           + isDeclaredVariable
            + ", reference="
            + reference
            + "]";
@@ -613,7 +613,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       returnType = expression.isNullaryFunction() ? expression.coDomainType : expression.domainType;
     }
-    else if (isFormalVariable)
+    else if (isDeclaredVariable)
     {
       returnType = expression.coDomainType;
     }

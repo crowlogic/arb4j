@@ -2676,7 +2676,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     var lambdaParam = lambdaParameter;
     if (lambdaParam == null)
     {
-      lambdaParam = rootNode.variableNodeStream().filter(v -> v.isFormalVariable).findFirst().orElse(null);
+      lambdaParam = rootNode.variableNodeStream().filter(v -> v.isDeclaredVariable).findFirst().orElse(null);
     }
     if (lambdaParam != null)
     {
