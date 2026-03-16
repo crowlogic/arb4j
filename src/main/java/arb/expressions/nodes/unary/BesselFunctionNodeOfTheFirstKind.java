@@ -80,6 +80,12 @@ public class BesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends
     return String.format("J(%s,%s)", order, arg);
   }
 
+  @Override
+  public String toStringBound()
+  {
+    return String.format("J(%s,%s)", order.toStringBound(), arg.toStringBound());
+  }
+
   Node<D, R, F>  order;
 
   public boolean scalar;
