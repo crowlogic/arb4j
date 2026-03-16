@@ -42,18 +42,38 @@ public class FractionalDerivativeNodeTest extends
     assertEquals(4.064798369795109, y, 1e-6);
   }
 
+  public static void testMittagLefflerDirect()
+  {
+    // E_{2,1}(-1) = cos(1) ≈ 0.5403
+    var e21 = RealFunction.express("t➔E(2,1,-t^2)");
+    double v21 = e21.eval(1.0);
+    System.out.println("E(2,1,-1) = " + v21 + " (expected ~0.5403 = cos(1))");
+    assertEquals(Math.cos(1.0), v21, 1e-6);
+
+    // E_{2,3/2}(-1)
+    var e232 = RealFunction.express("t➔E(2,3/2,-t^2)");
+    double v232 = e232.eval(1.0);
+    System.out.println("E(2,3/2,-1) = " + v232 + " (expected ~0.8427 = sin(1)/1)");
+    assertTrue("E(2,3/2,-1) should be positive and finite, got " + v232,
+               v232 > 0 && Double.isFinite(v232));
+
+    // t^(1/2) * E(2, 3/2, -t^2) at t=1 should equal Đ^(1/2)sin(1)
+    var combined = RealFunction.express("t➔t^(1/2)*E(2,3/2,-t^2)");
+    double vc = combined.eval(1.0);
+    System.out.println("t^(1/2)*E(2,3/2,-t^2) at t=1 = " + vc);
+    assertTrue("Combined should be positive and finite, got " + vc,
+               vc > 0 && Double.isFinite(vc));
+  }
+
   public static void testFractionalDerivativeParsing()
   {
-    try
-    {
-      RealFunction.parse("t➔Đ^(1/2)sin(t)");
-      fail("Expected CompilerException for non-closed-form Caputo derivative of sin(t)");
-    }
-    catch (CompilerException e)
-    {
-      assertTrue("Should indicate TODO for series expansion: " + e.getMessage(),
-                 e.getMessage().contains("TODO"));
-    }
+    // Đ^(1/2)sin(t) = t^(1/2) · E_{2, 3/2}(-t²) via Mittag-Leffler closed form
+    var f = RealFunction.express("t➔Đ^(1/2)sin(t)");
+    var g = RealFunction.express("t➔t^(1/2)*E(2,3/2,-t^2)");
+    double value  = f.eval(1.0);
+    double direct = g.eval(1.0);
+    assertEquals(direct, value, 1e-10);
+    assertEquals(0.8460567867240202, value, 1e-6);
   }
 
 }
