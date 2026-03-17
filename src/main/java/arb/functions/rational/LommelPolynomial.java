@@ -7,8 +7,12 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
+import arb.functions.integer.RealFunctionSequence;
 
 /**
+ * 
+ * FIXME: redo this to use a {@link RealFunctionSequence} and get rid of the
+ * {@link Context}
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
@@ -35,24 +39,19 @@ public class LommelPolynomial implements
   {
     Context prototype = new Context(Real.named("v"),
                                     Integer.named("n"));
-    expression =
-               RationalNullaryFunction.compile("v₍ₙ₎*(z/2)^(-n)*pFq([½-n/2,-n/2],[v,-n,1-v-n],-z²)",
-                                               prototype);
+    expression = RationalNullaryFunction.parse("v₍ₙ₎*(z/2)^(-n)*pFq([½-n/2,-n/2],[v,-n,1-v-n],-z²)", prototype);
   }
 
   public static Expression<Object, RationalFunction, RationalNullaryFunction> expression;
 
   public RationalNullaryFunction                                              nullaryFunction;
 
-  public Real                                                                 v           =
-                                                                                Real.named("v");
+  public Real                                                                 v           = Real.named("v");
 
-  public Integer                                                                 n           =
-                                                                                Integer.named("n");
+  public Integer                                                              n           = Integer.named("n");
 
-  public final Context                                                        context     =
-                                                                                      new Context(v,
-                                                                                                  n);
+  public final Context                                                        context     = new Context(v,
+                                                                                                        n);
 
   boolean                                                                     initialized = false;
 

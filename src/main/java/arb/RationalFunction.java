@@ -11,6 +11,7 @@ package arb;
 import java.util.stream.Stream;
 import arb.exceptions.ArbException;
 import arb.expressions.Context;
+import arb.expressions.Expression;
 import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.rational.RationalNullaryFunction;
@@ -416,7 +417,17 @@ public class RationalFunction implements RealFunction,NamedField<RationalFunctio
     assert false : "TODO";
     return null;
   }
-    
+
+  public static Expression<Object, RationalFunction, RationalNullaryFunction> parse(String expression)
+  {
+    return parse(expression,null);
+  }
+  
+  public static Expression<Object, RationalFunction, RationalNullaryFunction> parse(String expression, Context context)
+  {
+    return RationalNullaryFunction.parse(null, expression, context);
+  }
+      
   @SuppressWarnings("resource")
   public static RationalFunction express(String expression)
   {

@@ -4,7 +4,9 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.expressions.Context;
+import arb.expressions.Expression;
 import arb.functions.rational.RationalFunctionSequence;
+import arb.functions.rational.RationalNullaryFunction;
 import arb.utensils.Utensils;
 import junit.framework.TestCase;
 
@@ -34,8 +36,7 @@ public class RationalFunctionTest extends
   @SuppressWarnings("resource")
   public void testAdd()
   {
-    try ( var three = new RationalFunction().set(3); var four = new RationalFunction().set(4);
-          var seven = new RationalFunction().set(7);)
+    try ( var three = new RationalFunction().set(3); var four = new RationalFunction().set(4); var seven = new RationalFunction().set(7);)
     {
       three.add(four, seven);
       assertEquals("7", seven.toString());
@@ -116,8 +117,7 @@ public class RationalFunctionTest extends
   @SuppressWarnings("resource")
   public void testSub()
   {
-    try ( var a = new RationalFunction().set(10); var b = new RationalFunction().set(3);
-          var result = new RationalFunction();)
+    try ( var a = new RationalFunction().set(10); var b = new RationalFunction().set(3); var result = new RationalFunction();)
     {
       a.sub(b, 128, result);
       assertEquals("7", result.toString());
@@ -128,8 +128,7 @@ public class RationalFunctionTest extends
   public void testMul()
   {
 
-    try ( var three = new RationalFunction().set(3); var four = new RationalFunction().set(4);
-          var result = new RationalFunction().set(7);)
+    try ( var three = new RationalFunction().set(3); var four = new RationalFunction().set(4); var result = new RationalFunction().set(7);)
     {
       three.mul(four, result);
       assertEquals("12", result.toString());
@@ -140,8 +139,7 @@ public class RationalFunctionTest extends
   public void testDiv()
   {
 
-    try ( var three = new RationalFunction().set(3); var four = new RationalFunction().set(4);
-          var result = new RationalFunction().set(7);)
+    try ( var three = new RationalFunction().set(3); var four = new RationalFunction().set(4); var result = new RationalFunction().set(7);)
     {
       three.div(four, result);
       assertEquals("3/4", result.toString());
@@ -178,22 +176,20 @@ public class RationalFunctionTest extends
     try
     {
       var context   = new Context();
-      var expressed = RationalFunction.express("pFq([-2,3+1/2,1],[2,4],1/2-x/2)");
-      RationalFunction.express("a:1", context);
-      RationalFunction.express("b:-⅞*(½ - x/2)", context);
-      RationalFunction.express("c:21/80*(½ - x/2)²", context);
-      RationalFunction expectedSum = RationalFunction.express("a+b+c", context);
-      assertEquals("(21*x^2+98*x+201)/320", expressed.toString());
-      assertEquals(expressed, expectedSum);
+      var expressed = RationalFunction.parse("pFq([-2,3+1/2,1],[2,4],1/2-x/2)");
+      RationalFunction.parse("a:1", context);
+      RationalFunction.parse("b:-⅞*(½ - x/2)", context);
+      RationalFunction.parse("c:21/80*(½ - x/2)²", context);
+      Expression<Object, RationalFunction, RationalNullaryFunction> expectedSum = RationalFunction.parse("a+b+c", context);
     }
     catch (Exception e)
     {
+      e.printStackTrace();
       thrownException = e;
     }
-    assertNotNull(thrownException);
-    assertEquals(thrownException.getMessage() + Utensils.stackTraceToString(thrownException),
-                 CompilerException.class,
-                 thrownException.getClass());
+    assertNotNull("an exception should have been thrown because a+b+c is a reference to 3 variables, not functions, as written, and they are not defined as variables in the context",
+                  thrownException);
+    assertEquals(thrownException.getMessage() + Utensils.stackTraceToString(thrownException), CompilerException.class, thrownException.getClass());
   }
 
 }

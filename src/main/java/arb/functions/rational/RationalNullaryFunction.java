@@ -20,15 +20,9 @@ public interface RationalNullaryFunction extends
     return parse(null, string, null);
   }
 
-  public static RationalNullaryFunction
-         express(String functionName, String expression, Context context)
+  public static RationalNullaryFunction express(String functionName, String expression, Context context)
   {
-    return Function.instantiate(expression,
-                                context,
-                                Object.class,
-                                RationalFunction.class,
-                                RationalNullaryFunction.class,
-                                functionName);
+    return Function.instantiate(expression, context, Object.class, RationalFunction.class, RationalNullaryFunction.class, functionName);
   }
 
   public static RationalNullaryFunction express(String expression, Context context)
@@ -41,49 +35,47 @@ public interface RationalNullaryFunction extends
     return express(null, expression, null);
   }
 
-  public static Expression<Object,RationalFunction,RationalNullaryFunction> 
-         parse(String functionName, String expression, Context context)
+  public static Expression<Object, RationalFunction, RationalNullaryFunction> parse(String functionName, String expression, Context context)
   {
-    Expression<Object,RationalFunction,RationalNullaryFunction> expr = new Expression<Object, RationalFunction, RationalNullaryFunction>(functionName
-                  != null ? functionName : Parser.transformToAcceptableJavaIdentifier(expression),
-                                                                   Object.class,
-                                                                   RationalFunction.class,
-                                                                   RationalNullaryFunction.class,
-                                                                   expression,
-                                                                   context,
-                                                                   functionName,
-                                                                   null);
-    return expr.parse(true);
+    var parsed = Function.parse(null, expression, context, Object.class, RationalFunction.class, RationalNullaryFunction.class, null, null, false);
+
+    functionName = parsed.functionName;
+    parsed.updateStringRepresentation();
+
+    if (functionName != null && context != null)
+    {
+      FunctionMapping<Object,
+                    RationalFunction,
+                    RationalNullaryFunction> mapping = context.registerFunctionMapping(functionName,
+                                                                                       null,
+                                                                                       parsed.domainType,
+                                                                                       parsed.coDomainType,
+                                                                                       parsed.functionClass,
+                                                                                       true,
+                                                                                       null,
+                                                                                       expression);
+      parsed.functionMapping   = mapping;
+      mapping.expressionString = parsed.getExpression();
+    }
+
+    return parsed;
   }
 
-  public static Expression<Object, RationalFunction, RationalNullaryFunction>
-         compile(String functionName, String expression, Context context)
+  public static Expression<Object, RationalFunction, RationalNullaryFunction> parse(String string, Context prototype)
   {
-    return Parser.parse(functionName,
-                            expression,
-                            context,
-                            Object.class,
-                            RationalFunction.class,
-                            RationalNullaryFunction.class,
-                            false);
-  }
-
-  public static Expression<Object, RationalFunction, RationalNullaryFunction>
-         compile(String string, Context prototype)
-  {
-    return compile(Parser.transformToAcceptableJavaIdentifier(string), string, prototype);
+    return parse(Parser.transformToAcceptableJavaIdentifier(string), string, prototype);
   }
 
   public default int bits()
   {
     return 128;
   }
-  
+
   public default RationalFunction evaluate(RationalFunction result)
   {
     return evaluate(bits(), result);
   }
-  
+
   public default RationalFunction evaluate()
   {
     return evaluate(bits(), new RationalFunction());
