@@ -176,7 +176,6 @@ public class RationalFunctionTest extends
     try
     {
       var context   = new Context();
-      var expressed = RationalFunction.parse("pFq([-2,3+1/2,1],[2,4],1/2-x/2)");
       RationalFunction.parse("a:1", context);
       RationalFunction.parse("b:-⅞*(½ - x/2)", context);
       RationalFunction.parse("c:21/80*(½ - x/2)²", context);
