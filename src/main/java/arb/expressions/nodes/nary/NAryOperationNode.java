@@ -6,7 +6,6 @@ import static org.objectweb.asm.Opcodes.*;
 
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.*;
@@ -474,9 +473,14 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   /**
    * Parses the operand body of this n-ary operation and wires it into a freshly
    * allocated child {@link Expression} that will be compiled as a sibling class.
-   * See the class-level Javadoc for the mandatory initialisation sequence and the
-   * reason {@link Expression#continueParsingFrom(Expression)} must be called
-   * before {@code resolve()}.
+   *
+   * <p>When the operand uses explicit arrow syntax ({@code k➔f(k)}), the index
+   * variable name is known immediately and variable resolution proceeds eagerly.
+   * Otherwise, variable resolution is deferred: the operand body is parsed with
+   * {@link Expression#deferVariableResolution} set, then
+   * {@link #parseOperatorLimitSpecifications()} extracts the index variable name
+   * from the {@code {k=a…b}} limit spec, assigns the input variable, and
+   * triggers resolution via {@link Node#resolveVariables()}.
    */
   private void parseOperand()
   {
@@ -502,10 +506,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     {
       indexVariableFieldName = paramName;
     }
-    else
-    {
-      peekIndexVariableFromLimitSpec();
-    }
 
     @SuppressWarnings("unchecked")
     Class<R> operandCoDomain              = (Class<R>) (expression.isFunctional()
@@ -518,12 +518,18 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     operandExpression.independentVariable = null;
     operandExpression.className           = operandFunctionFieldName;
 
-    assert indexVariableFieldName != null : "indexVariableFieldName must be known before resolving operand";
-    VariableNode<Integer, R, Sequence<R>> indexVar =
-        new VariableNode<>(operandExpression,
-                           operandExpression.newVariableReference(indexVariableFieldName),
-                           false);
-    operandExpression.assignInputVariable(indexVar);
+    if (hasArrow)
+    {
+      VariableNode<Integer, R, Sequence<R>> indexVar =
+          new VariableNode<>(operandExpression,
+                             operandExpression.newVariableReference(indexVariableFieldName),
+                             false);
+      operandExpression.assignInputVariable(indexVar);
+    }
+    else
+    {
+      operandExpression.deferVariableResolution = true;
+    }
 
     operandExpression.rootNode            = operandExpression.resolve();
 
@@ -533,39 +539,14 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     propagateContextVariablesToOperand();
   }
 
-  private void peekIndexVariableFromLimitSpec()
-  {
-    String expr     = expression.expression;
-    int    pos      = expression.position;
-    int    delimPos = expr.indexOf('{', pos);
-    if (functionForm)
-    {
-      int commaPos = expr.indexOf(',', pos);
-      if (commaPos >= 0 && (delimPos < 0 || commaPos < delimPos))
-      {
-        delimPos = commaPos;
-      }
-    }
-    if (delimPos >= 0 && delimPos + 1 < expr.length())
-    {
-      int nameStart = delimPos + 1;
-      int nameEnd   = nameStart;
-      while (nameEnd < expr.length() && Parser.isIdentifyingCharacter(expr.charAt(nameEnd), false))
-      {
-        nameEnd++;
-      }
-      if (nameEnd > nameStart && nameEnd < expr.length() && expr.charAt(nameEnd) == '=')
-      {
-        indexVariableFieldName = expr.substring(nameStart, nameEnd);
-      }
-    }
-  }
-
   /**
-   * Parses {@code {k=a…b}}, validates that the index variable name is consistent
-   * with what {@link #parseOperand()} already recorded, and records the lower
-   * and upper limits.  The index variable is <em>not</em> registered in the
-   * {@link Context} — it lives as a method-local {@code arb.Integer} in slot
+   * Parses {@code {k=a…b}}, records the index variable name and the lower and
+   * upper limits.  When the operand was parsed with deferred variable resolution
+   * (no arrow syntax), this method also assigns the index variable as the
+   * operand's input and triggers resolution of all deferred variable references.
+   *
+   * <p>The index variable is <em>not</em> registered in the {@link Context} —
+   * it lives as a method-local {@code arb.Integer} in slot
    * {@value #INDEX_VARIABLE_LOCAL_SLOT}, allocated by
    * {@link #allocateLocalIndexVariable(MethodVisitor)}.
    */
@@ -604,6 +585,17 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     else
     {
       indexVariableFieldName = specifiedName;
+    }
+
+    if (operandExpression.deferVariableResolution)
+    {
+      operandExpression.deferVariableResolution = false;
+      VariableNode<Integer, R, Sequence<R>> indexVar =
+          new VariableNode<>(operandExpression,
+                             operandExpression.newVariableReference(indexVariableFieldName),
+                             false);
+      operandExpression.assignInputVariable(indexVar);
+      operandExpression.rootNode.resolveVariables();
     }
 
     expression.require('=');

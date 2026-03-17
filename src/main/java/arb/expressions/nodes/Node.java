@@ -848,9 +848,16 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     throw new UnsupportedOperationException("#862: evaluate(Class<T>) not implemented for " + getClass().getSimpleName() + " node '" + this + "'");
   }
 
-  protected Stream<VariableNode<?, ?, ?>> resolveVariables()
+  public void resolveVariables()
   {
-    return variableNodeStream().map(VariableNode::resolveReference);
+    variableNodeStream().forEach(var ->
+    {
+      var.resolveReference();
+      if (var.reference.index != null)
+      {
+        var.reference.index.resolveVariables();
+      }
+    });
   }
 
 }
