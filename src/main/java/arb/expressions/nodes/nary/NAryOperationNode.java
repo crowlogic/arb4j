@@ -508,7 +508,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
 
     @SuppressWarnings("unchecked")
-    Class<R> operandCoDomain              = (Class<R>) expression.coDomainType;
+    Class<R> operandCoDomain              = (Class<R>) scalarCoDomain(expression.coDomainType);
     operandExpression                     = new Expression<>(Integer.class, operandCoDomain, Sequence.class);
     operandExpression.continueParsingFrom(expression);
     operandExpression.upstreamExpression  = expression;
@@ -524,6 +524,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     operandExpression.assignInputVariable(indexVar);
 
     operandExpression.rootNode            = operandExpression.resolve();
+    operandExpression.coDomainType         = operandExpression.rootNode.type();
 
     expression.continueParsingFrom(operandExpression);
     operandExpression.updateStringRepresentation();
