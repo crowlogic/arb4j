@@ -171,7 +171,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     if (isIndependent = isIndependent(inputVariable))
     {
       resolveIndependentVariable(inputVariable);
-      reference.type = expression.domainType;
+      reference.type = expression.isNullaryFunction() ? expression.coDomainType : expression.domainType;
       if (Expression.traceNodes)
       {
         logger.debug("resolveReference INDEPENDENT: {}", resolutionStateString());

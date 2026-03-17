@@ -152,7 +152,7 @@
 				<configuration>
 					<argLine>-ea --enable-preview --illegal-native-access=allow
 						--sun-misc-unsafe-memory-access=allow
-						-Djava.library.path=${project.basedir}</argLine>
+						-Djava.library.path=${project.basedir} @{argLine}</argLine>
 				</configuration>
 			</plugin>
 
