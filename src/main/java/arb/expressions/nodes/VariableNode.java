@@ -136,9 +136,18 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
           if (e != expression)
           {
             upstreamInput = true;
+            reference.type = e.domainType;
           }
-          reference.type = e.domainType;
-          found[0]       = iv;
+          else if (e.isNullaryFunction())
+          {
+            isDeclaredVariable = true;
+            reference.type   = e.coDomainType;
+          }
+          else
+          {
+            reference.type = e.domainType;
+          }
+          found[0] = iv;
           return true;
         }
 

@@ -29,6 +29,24 @@ All flags below are `-D` system properties passed inside `-DargLine="..."`.
 | `arb4j.traceBinaryOperationSimplification` | `false` | Traces the simplification pass for binary operation nodes (addition, multiplication, etc.), showing before/after for each simplification step. |
 | `arb4j.saveGraphs` | `false` | Saves AST graphs (for visualization/debugging of expression tree structure). |
 
+## Enabling Verbose Logging (logback-debug.xml)
+
+The project includes a `logback-debug.xml` configuration that sets all arb.* loggers to DEBUG level. To enable it, add `-Dlogback.configurationFile=logback-debug.xml` to the argLine. Combined with the trace flags, this gives you the full picture:
+
+```bash
+mvn test -Dtest="ExpressionTest#testRationalFunctionDerivative" \
+  -DargLine="-Darb4j.traceNodes=true -Darb4j.trace=true -Dlogback.configurationFile=logback-debug.xml"
+```
+
+Without `logback-debug.xml`, most DEBUG-level log output from the compiler is suppressed even when trace flags are set. Always enable it when diagnosing issues.
+
+For the full kitchen sink (all debug info + class saving + decompilation):
+
+```bash
+mvn test -Dtest="SomeTest#someMethod" \
+  -DargLine="-Darb4j.saveClasses=true -Darb4j.decompileClasses=true -Darb4j.traceNodes=true -Darb4j.trace=true -Dlogback.configurationFile=logback-debug.xml"
+```
+
 ## Typical Debugging Workflows
 
 ### VerifyError (bad bytecode)

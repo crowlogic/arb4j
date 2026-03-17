@@ -18,6 +18,7 @@
 		<javafx.version>25.0.2</javafx.version>
 		<asm.version>9.9.1</asm.version>
 		<mdep.outputFile>class.path</mdep.outputFile>
+		<argLine></argLine>
 	</properties>
 
 	<repositories>
@@ -152,7 +153,7 @@
 				<configuration>
 					<argLine>-ea --enable-preview --illegal-native-access=allow
 						--sun-misc-unsafe-memory-access=allow
-						-Djava.library.path=${project.basedir} @{argLine}</argLine>
+						-Djava.library.path=${project.basedir} ${argLine}</argLine>
 				</configuration>
 			</plugin>
 
