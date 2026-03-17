@@ -103,6 +103,10 @@ public class TypeRepresenter extends
     {
       return null;
     }
+    if ("instructions".equals(property.getName()))
+    {
+      return null;
+    }
     return super.representJavaBeanProperty(javaBean, property, propertyValue, customTag);
   }
 
