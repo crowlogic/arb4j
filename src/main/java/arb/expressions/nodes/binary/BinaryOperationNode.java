@@ -17,7 +17,8 @@ import arb.Integer;
 import arb.exceptions.CompilerException;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
-import arb.expressions.nodes.*;
+import arb.expressions.nodes.Node;
+import arb.expressions.nodes.VariableNode;
 import arb.expressions.nodes.unary.NegationNode;
 import arb.functions.Function;
 import arb.functions.RealToComplexFunction;
@@ -287,18 +288,18 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     {
       File   file = expression.saveToFile();
       String msg  =
-                 String.format("%s of type %s whose expression is '%s' cannot be represented as a %s. The expression was saved to %s\ndomain=%s\ncoDomain=%s\nfunctionClass=%s\nfunctionName=%s\nindependentVariable=%s\nexpression=%s\n",
-                               getClass(),
-                               type(),
+                 String.format("The %s-valued %s '%s' cannot be represented as a %s result. The expression was saved to %s\ndomain=%s\ncoDomain=%s\nfunctionClass=%s\nfunctionName=%s\nindependentVariable=%s\nexpression=%s\n",
+                               type().getSimpleName(),
+                               getClass().getSimpleName(),
                                this,
-                               resultType,
+                               resultType.getSimpleName(),
                                file,
                                expression.domainType,
                                expression.coDomainType,
                                expression.functionClass,
                                expression.functionName,
                                expression.independentVariable,
-                               expression);
+                               expression.toStringExtended());
       throwTypePromotionError(left.type(), right.type(), msg);
 
     }
@@ -496,7 +497,8 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
 
   public void throwTypePromotionError(Class<?> leftType, Class<?> rightType, String msg)
   {
-    throw new CompilerException(String.format("Could not determine resultant type for this=%s where left=%s is a %s-valued %s and right=%s with is a %s-valued %s in %s at position=%s where this.operation=%s in %s: %s",
+    throw new CompilerException(String.format("%s with this=%s where left=%s is a %s-valued %s and right=%s with is a %s-valued %s in %s at position=%s where this.operation=%s in %s",
+                                              msg,
                                               this,
                                               left,
                                               leftType,
@@ -507,8 +509,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
                                               toString(),
                                               position,
                                               operation,
-                                              expression.toStringExtended(),
-                                              msg));
+                                              expression.toStringExtended()));
   }
 
   /**

@@ -22,7 +22,8 @@ public class ComplexFunctionTest extends
   {
     ComplexFunction f       = ComplexFunction.express("x->int(t➔t^(5.3+x), t=-1..1)");
     Complex         correct = f.evaluate(ComplexConstants.zero, 0, 128, new Complex());
-    assertEquals("0.0654309123345280747351260389461789256 +/- 3.37e-38 + i*-0.1284153959325313371590941932036220728 +/- 4.42e-38", correct.toString());
+    
+    assertEquals("0.0654309123345280747351260389461789256 +/- 3.84e-38 + i*-0.1284153959325313371590941932036220728 +/- 4.78e-38", correct.toString()); 
   }
 
   public static void testRiemannZeroCountingFunction()

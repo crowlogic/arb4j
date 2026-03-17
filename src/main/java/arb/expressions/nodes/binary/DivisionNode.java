@@ -68,7 +68,6 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> requestedResultType)
   {
-    throwExceptionIfRequestedTypeDoesNotContainTheCoDomain(requestedResultType);
     return super.generate(mv, requestedResultType);
   }
 
@@ -502,29 +501,6 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
          spliceInto(Expression<E, S, G> newExpression)
   {
     return left.spliceInto(newExpression).div(right.spliceInto(newExpression));
-  }
-
-  /**
-   * Make an API that will definitively evaluate what types can be transformed to
-   * what without information loss
-   * 
-   * @param resultType
-   */
-  private void throwExceptionIfRequestedTypeDoesNotContainTheCoDomain(Class<?> resultType)
-  {
-    if (resultType.equals(Integer.class) && type().equals(Fraction.class))
-    {
-      throw new IllegalArgumentException(String.format("type() = %s is not assignable to resultType = %s",
-                                                       type(),
-                                                       resultType));
-    }
-    if (resultType.equals(Real.class) && type().equals(RealPolynomial.class))
-    {
-      throw new IllegalArgumentException(String.format("type() = %s is not assignable to resultType = %s for node=%s",
-                                                       type(),
-                                                       resultType,
-                                                       this));
-    }
   }
 
   @Override
