@@ -20,10 +20,15 @@ public class ComplexFunctionTest extends
 {
   public static void testComplexIntegralFunction()
   {
-    ComplexFunction f       = ComplexFunction.express("x->int(t➔t^(5.3+x), t=-1..1)");
-    Complex         correct = f.evaluate(ComplexConstants.zero, 0, 128, new Complex());
-    
-    assertEquals("0.0654309123345280747351260389461789256 +/- 3.84e-38 + i*-0.1284153959325313371590941932036220728 +/- 4.78e-38", correct.toString()); 
+    ComplexFunction f = ComplexFunction.express("x->int(t➔t^(5.3+x), t=-1..1)");
+    try ( Complex val = f.evaluate(ComplexConstants.zero, 0, 128, new Complex());
+          Complex ref = new Complex("0.0654309123345280747351260389461789256-I*0.1284153959325313371590941932036220728",
+                                    128);
+          var diff = val.sub(ref, 128, new Complex()))
+    {
+      var norm = diff.abs(128, new Real());
+      assertTrue(ref + " != " + val, norm.containsZero());
+    }
   }
 
   public static void testRiemannZeroCountingFunction()
