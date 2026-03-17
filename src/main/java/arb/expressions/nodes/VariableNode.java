@@ -579,15 +579,16 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   /**
-   * Returns {@code "name=value"} when this variable is bound in any upstream
-   * expression's context, otherwise delegates to {@link #toString()}.
+   * Returns a {@code %s} format placeholder (to be filled with the bound value)
+   * when this variable is bound in any upstream expression's context, otherwise
+   * delegates to {@link RealVariable#toString()}.
    */
   @Override
   public String toString()
   {
     if (upstreamInput && emittingBoundFormat.get())
     {
-      return reference.name + "=%s";
+      return "%s";
     }
     return reference.toString();
   }

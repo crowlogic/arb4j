@@ -57,7 +57,7 @@ public class ExpressionTest extends
     var                                                           f  = F.instantiate();
     ComplexFunction                                               f3 = f.apply(3);
     var                                                           y  = f3.eval(2.3);
-    assertEquals("ffunc:y➔-((ⅈ*35)*(-1^-m=3))/((34*y)*π)", f3.toString());
+    assertEquals("ffunc:y➔-((ⅈ*35)*(-1^-3))/((34*y)*π)", f3.toString());
 
   }
 
