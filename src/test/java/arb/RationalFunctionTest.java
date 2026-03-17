@@ -4,9 +4,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.expressions.Context;
-import arb.expressions.Expression;
 import arb.functions.rational.RationalFunctionSequence;
-import arb.functions.rational.RationalNullaryFunction;
 import arb.utensils.Utensils;
 import junit.framework.TestCase;
 
@@ -170,25 +168,47 @@ public class RationalFunctionTest extends
     assertEquals(expectedSum, expressed);
   }
 
-  public static void testHypergeometricFunctionExpressionRationalWithFunctionsMissingParenthesis()
+  public static void testUndefinedReferenceBecauseFunctionsTreatedLikeVariables()
   {
     Exception thrownException = null;
     try
     {
-      var context   = new Context();
+      var context = new Context();
       RationalFunction.parse("a:1", context);
       RationalFunction.parse("b:-⅞*(½ - x/2)", context);
       RationalFunction.parse("c:21/80*(½ - x/2)²", context);
-      Expression<Object, RationalFunction, RationalNullaryFunction> expectedSum = RationalFunction.parse("a+b+c", context);
+      var expectedSum = RationalFunction.parse("a+b+c", context);
     }
     catch (Exception e)
     {
-      e.printStackTrace();
       thrownException = e;
     }
     assertNotNull("an exception should have been thrown because a+b+c is a reference to 3 variables, not functions, as written, and they are not defined as variables in the context",
                   thrownException);
     assertEquals(thrownException.getMessage() + Utensils.stackTraceToString(thrownException), CompilerException.class, thrownException.getClass());
+  }
+
+  public static void testRationalFunctionsAddedAsVariables()
+  {
+    Exception thrownException = null;
+    var       context         = new Context();
+    try
+    {
+      context.registerVariable("a", new RationalFunction("1"));
+      context.registerVariable("b", new RationalFunction("-⅞*(½ - x/2)"));
+      context.registerVariable("c", new RationalFunction("21/80*(½ - x/2)²"));
+//      RationalFunction.parse("a:1", context);
+//      RationalFunction.parse("b:-⅞*(½ - x/2)", context);
+//      RationalFunction.parse("c:21/80*(½ - x/2)²", context);
+      var expectedSum = RationalFunction.parse("a+b+c", context);
+      var expressed   = expectedSum.instantiate().evaluate();
+      assertEquals("(21*x^2+98*x+201)/320", expressed.toString());
+    }
+    catch (Exception e)
+    {
+      thrownException = e;
+    }
+    assertNull("an exception should NOT have been thrown because a+b+c references 3 RationalFunctions defined in the Context " + context, thrownException);
   }
 
 }
