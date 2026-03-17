@@ -18,7 +18,7 @@ public interface IntegerPolynomialNullaryFunction extends
   public static IntegerPolynomialNullaryFunction
          express(String functionName, String expression, Context context)
   {
-    return Function.instantiate(expression,
+    return Function.express(expression,
                                 context,
                                 Object.class,
                                 IntegerPolynomial.class,

@@ -116,7 +116,7 @@ public interface ComplexFunction extends
 
   public static ComplexFunction express(String expression, Context context)
   {
-    return Function.instantiate(expression,
+    return Function.express(expression,
                                 context,
                                 Complex.class,
                                 Complex.class,
@@ -126,7 +126,7 @@ public interface ComplexFunction extends
 
   public static ComplexFunction express(String expression, Context context, boolean verbose)
   {
-    return Function.instantiate(expression,
+    return Function.express(expression,
                                 context,
                                 Complex.class,
                                 Complex.class,
@@ -147,7 +147,7 @@ public interface ComplexFunction extends
   public static ComplexFunction
          express(String functionName, String expression, Context context, boolean verbose)
   {
-    return Function.instantiate(expression,
+    return Function.express(expression,
                                 context,
                                 Complex.class,
                                 Complex.class,
@@ -171,7 +171,7 @@ public interface ComplexFunction extends
   public static Expression<Complex, Complex, ComplexFunction> parse(String expression,
                                                                     Context context)
   {
-    return Function.compileAndRegister(expression,
+    return Function.parseCompileAndRegister(expression,
                                        context,
                                        Complex.class,
                                        Complex.class,

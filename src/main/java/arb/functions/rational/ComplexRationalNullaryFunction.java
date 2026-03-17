@@ -26,7 +26,7 @@ public interface ComplexRationalNullaryFunction extends
   public static ComplexRationalNullaryFunction
          express(String functionName, String expression, Context context)
   {
-    return Function.instantiate(expression,
+    return Function.express(expression,
                                 context,
                                 Object.class,
                                 ComplexRationalFunction.class,
@@ -61,7 +61,7 @@ public interface ComplexRationalNullaryFunction extends
   public static Expression<Object, ComplexRationalFunction, ComplexRationalNullaryFunction>
          compile(String functionName, String expression, Context context)
   {
-    return Function.compile(Object.class,
+    return Function.parseAndCompile(Object.class,
                             ComplexRationalFunction.class,
                             ComplexRationalNullaryFunction.class,
                             expression,

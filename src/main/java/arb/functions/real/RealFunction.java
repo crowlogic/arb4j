@@ -92,7 +92,7 @@ public interface RealFunction extends
   public static RealFunction
          express(String functionName, String expression, Context context, boolean verbose)
   {
-    return Function.instantiate(expression,
+    return Function.express(expression,
                                 context,
                                 Real.class,
                                 Real.class,

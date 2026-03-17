@@ -56,7 +56,7 @@ public interface AlgebraicNumberFunction extends
 
   public static AlgebraicNumberFunction express(String expression, Context context)
   {
-    return Function.instantiate(expression,
+    return Function.express(expression,
                                 context,
                                 AlgebraicNumber.class,
                                 AlgebraicNumber.class,
@@ -66,7 +66,7 @@ public interface AlgebraicNumberFunction extends
 
   public static AlgebraicNumberFunction express(String expression, Context context, boolean verbose)
   {
-    return Function.instantiate(expression,
+    return Function.express(expression,
                                 context,
                                 AlgebraicNumber.class,
                                 AlgebraicNumber.class,
@@ -88,7 +88,7 @@ public interface AlgebraicNumberFunction extends
   public static AlgebraicNumberFunction
          express(String functionName, String expression, Context context, boolean verbose)
   {
-    return Function.instantiate(expression,
+    return Function.express(expression,
                                 context,
                                 AlgebraicNumber.class,
                                 AlgebraicNumber.class,

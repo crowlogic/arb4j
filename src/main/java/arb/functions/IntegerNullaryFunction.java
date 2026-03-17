@@ -15,7 +15,7 @@ public interface IntegerNullaryFunction extends
   public static IntegerNullaryFunction
          express(String functionName, String expression, Context context)
   {
-    return Function.instantiate(expression,
+    return Function.express(expression,
                                 context,
                                 Object.class,
                                 Integer.class,
@@ -40,7 +40,7 @@ public interface IntegerNullaryFunction extends
 
   static IntegerNullaryFunction compile(String expression, Context context)
   {
-    return Function.instantiate(expression,
+    return Function.express(expression,
                                 context,
                                 Object.class,
                                 Integer.class,

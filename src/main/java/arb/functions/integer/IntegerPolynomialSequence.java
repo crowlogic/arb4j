@@ -20,7 +20,7 @@ public interface IntegerPolynomialSequence extends
                  String expression,
                  Context context)
   {
-    return Function.instantiate(expression,
+    return Function.express(expression,
                                 context,
                                 Integer.class,
                                 RealPolynomial.class,
@@ -31,7 +31,7 @@ public interface IntegerPolynomialSequence extends
   public static IntegerPolynomialSequence
          express(String expression)
   {
-    return Function.instantiate(expression,
+    return Function.express(expression,
                                 null,
                                 Integer.class,
                                 RealPolynomial.class,
@@ -43,7 +43,7 @@ public interface IntegerPolynomialSequence extends
          express(String expression,
                  Context context)
   {
-    return Function.instantiate(expression,
+    return Function.express(expression,
                                 context,
                                 Integer.class,
                                 RealPolynomial.class,

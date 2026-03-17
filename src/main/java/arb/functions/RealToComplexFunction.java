@@ -74,7 +74,7 @@ public interface RealToComplexFunction extends
   public static RealToComplexFunction
          express(String functionName, String expression, Context context, boolean verbose)
   {
-    return Function.instantiate(expression,
+    return Function.express(expression,
                                 context,
                                 Real.class,
                                 Complex.class,
@@ -89,7 +89,7 @@ public interface RealToComplexFunction extends
 
   public static RealToComplexFunction express(String expression, Context context)
   {
-    return Function.instantiate(expression,
+    return Function.express(expression,
                                 context,
                                 Real.class,
                                 Complex.class,
@@ -99,7 +99,7 @@ public interface RealToComplexFunction extends
 
   public static RealToComplexFunction express(String expression, Context context, boolean verbose)
   {
-    return Function.instantiate(expression,
+    return Function.express(expression,
                                 context,
                                 Real.class,
                                 Complex.class,

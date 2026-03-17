@@ -64,7 +64,7 @@ public interface RealSequence extends
 
   public static Expression<?, ?, ?> compile(String string)
   {
-    return Function.compile(Integer.class, Real.class, RealSequence.class, string, new Context());
+    return Function.parseAndCompile(Integer.class, Real.class, RealSequence.class, string, new Context());
   }
 
   public static Expression<Integer, Real, RealSequence> parse(String expression)

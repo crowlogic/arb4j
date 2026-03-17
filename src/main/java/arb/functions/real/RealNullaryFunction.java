@@ -50,7 +50,7 @@ public interface RealNullaryFunction extends
 
   public static RealNullaryFunction express(String functionName, String expression, Context context)
   {
-    return Function.instantiate(expression, context, Object.class, Real.class, RealNullaryFunction.class, functionName);
+    return Function.express(expression, context, Object.class, Real.class, RealNullaryFunction.class, functionName);
   }
 
   public static RealNullaryFunction express(String expression, Context context)

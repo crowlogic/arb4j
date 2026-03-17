@@ -39,7 +39,7 @@ public interface FractionFunction extends
 
   public static FractionFunction express(String expression, Context context)
   {
-    return Function.instantiate(expression,
+    return Function.express(expression,
                                 context,
                                 Fraction.class,
                                 Fraction.class,
@@ -49,7 +49,7 @@ public interface FractionFunction extends
 
   public static FractionFunction express(String expression, Context context, boolean verbose)
   {
-    return Function.instantiate(expression,
+    return Function.express(expression,
                                 context,
                                 Fraction.class,
                                 Fraction.class,
@@ -70,7 +70,7 @@ public interface FractionFunction extends
   public static FractionFunction
          express(String functionName, String expression, Context context, boolean verbose)
   {
-    return Function.instantiate(expression,
+    return Function.express(expression,
                                 context,
                                 Fraction.class,
                                 Fraction.class,

@@ -45,7 +45,7 @@ public interface NullaryFunction<R> extends
          F
          express(Class<? extends R> coDomainClass, String functionName, String expression, Context context)
   {
-    return (F) Function.instantiate(expression,
+    return (F) Function.express(expression,
                                     context,
                                     Object.class,
                                     coDomainClass,
@@ -57,7 +57,7 @@ public interface NullaryFunction<R> extends
                                                              Class<? extends F> functionClass,
                                                              String expression)
   {
-    return (F) Function.instantiate(expression, null, Object.class, coDomainClass, functionClass, null);
+    return (F) Function.express(expression, null, Object.class, coDomainClass, functionClass, null);
   }
 
   public static <R, F extends NullaryFunction<R>> F express(Class<? extends R> coDomainClass, String expression)

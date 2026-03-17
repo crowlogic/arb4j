@@ -205,7 +205,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
       Class<C> codomainType = (Class<C>) this.codomainTypeBox.getValue();
       Class<F> functionType = (Class<F>) this.functionTypeBox.getValue();
 
-      expr     = Function.compile(domainType,
+      expr     = Function.parseAndCompile(domainType,
                                   codomainType,
                                   functionType,
                                   expressionString,

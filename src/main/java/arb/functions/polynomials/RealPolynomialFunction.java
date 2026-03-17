@@ -31,7 +31,7 @@ public interface RealPolynomialFunction extends
 
   public static RealPolynomialFunction express(String expression, boolean verbose2)
   {
-    return Function.instantiate(expression,
+    return Function.express(expression,
                        null,
                        RealPolynomial.class,
                        RealPolynomial.class,
@@ -46,7 +46,7 @@ public interface RealPolynomialFunction extends
 
   public static RealPolynomialFunction express(String expression, Context context)
   {
-    return Function.instantiate(expression,
+    return Function.express(expression,
                        context,
                        RealPolynomial.class,
                        RealPolynomial.class,
@@ -73,7 +73,7 @@ public interface RealPolynomialFunction extends
   public static RealPolynomialFunction
          express(String functionName, String expression, Context context, boolean verbose)
   {
-    RealPolynomialFunction func = Function.instantiate(expression,
+    RealPolynomialFunction func = Function.express(expression,
                                               context,
                                               RealPolynomial.class,
                                               RealPolynomial.class,
@@ -85,7 +85,7 @@ public interface RealPolynomialFunction extends
 
   public static RealPolynomialFunction express(String expression, Context context, boolean verbose)
   {
-    return Function.instantiate(expression,
+    return Function.express(expression,
                        context,
                        RealPolynomial.class,
                        RealPolynomial.class,

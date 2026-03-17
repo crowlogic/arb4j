@@ -193,7 +193,7 @@ public class HypergeometricFunctionTest extends
                                                                                  z.setName("z"));
 
       Expression<Integer, Real, Function<Integer, Real>> prototype =
-                                                                   Function.compile(Integer.class,
+                                                                   Function.parseAndCompile(Integer.class,
                                                                                     Real.class,
                                                                                     Function.class,
                                                                                     "n➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q})",
@@ -228,7 +228,7 @@ public class HypergeometricFunctionTest extends
                                                                                        z.setName("z"));
 
       Expression<Integer, Complex, Function<Integer, Complex>> prototype =
-                                                                         Function.compile(Integer.class,
+                                                                         Function.parseAndCompile(Integer.class,
                                                                                           Complex.class,
                                                                                           Function.class,
                                                                                           "n➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q})",

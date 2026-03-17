@@ -40,7 +40,7 @@ public interface ComplexNullaryFunction extends
   public static ComplexNullaryFunction
          express(String functionName, String expression, Context context)
   {
-    return Function.instantiate(expression,
+    return Function.express(expression,
                                 context,
                                 Object.class,
                                 Complex.class,

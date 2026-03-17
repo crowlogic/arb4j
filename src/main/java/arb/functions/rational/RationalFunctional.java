@@ -15,7 +15,7 @@ public interface RationalFunctional extends
 
   public static RationalFunctional express(String functionName, String expression, Context context)
   {
-    return Function.instantiate(expression,
+    return Function.express(expression,
                                 context,
                                 RationalFunction.class,
                                 RationalFunction.class,

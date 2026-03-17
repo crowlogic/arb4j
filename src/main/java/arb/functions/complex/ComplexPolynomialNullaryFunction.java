@@ -23,7 +23,7 @@ public interface ComplexPolynomialNullaryFunction extends
 
   public static ComplexPolynomialNullaryFunction express(String functionName, String expression, Context context)
   {
-    return Function.instantiate(expression,
+    return Function.express(expression,
                                 context,
                                 Object.class,
                                 ComplexPolynomial.class,

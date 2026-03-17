@@ -21,12 +21,12 @@ public interface IntegerSequence extends
 
   public static IntegerSequence express(String expression)
   {
-    return Function.instantiate(expression, null, Integer.class, Integer.class, IntegerSequence.class, null);
+    return Function.express(expression, null, Integer.class, Integer.class, IntegerSequence.class, null);
   }
 
   public static IntegerSequence express(String expression, Context context)
   {
-    return Function.instantiate(expression, context, Integer.class, Integer.class, IntegerSequence.class, null);
+    return Function.express(expression, context, Integer.class, Integer.class, IntegerSequence.class, null);
   }
 
   public static Expression<Integer, Integer, IntegerSequence> compile(String expression, Context context)

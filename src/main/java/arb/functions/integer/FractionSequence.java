@@ -72,7 +72,7 @@ public interface FractionSequence extends
 
   public static Expression<?, ?, ?> compile(String string)
   {
-    return Function.compile(Integer.class, Fraction.class, FractionSequence.class, string, new Context());
+    return Function.parseAndCompile(Integer.class, Fraction.class, FractionSequence.class, string, new Context());
   }
 
 }
