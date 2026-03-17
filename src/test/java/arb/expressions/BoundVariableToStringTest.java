@@ -39,8 +39,7 @@ public class BoundVariableToStringTest extends
       n.set(3);
       RealFunction f = seq.evaluate(n, 0, 128, null);
       String str = f.toString();
-      assertTrue("Expected functional toString to contain 'n=3' but got: " + str,
-                 str.contains("n=3"));
+      assertEquals("jBesselfunc:t➔J(3,t)", str);
     }
   }
 }
