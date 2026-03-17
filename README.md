@@ -242,4 +242,121 @@ which can be found in the root directory of this project in a file
 named License.pdf, License.txt, or License.tm which are the pdf, text, and
 TeXmacs formats of the same document respectively.
 
+---
 
+## Note for AI Agents
+
+This section documents the build environment setup that AI coding agents (Claude Code, Codex, Cursor, etc.) will need when working on this project in a fresh sandbox. Every step here is required — do not skip any of them or you will waste time rediscovering these requirements.
+
+### Prerequisites (install in this order)
+
+```bash
+# 1. Java 25 — the project requires --enable-preview features from Java 25
+sudo apt-get update
+sudo apt-get install -y openjdk-25-jdk-headless
+export JAVA_HOME=/usr/lib/jvm/java-25-openjdk-amd64
+
+# 2. Maven
+sudo apt-get install -y maven
+
+# 3. Native build toolchain and libraries
+sudo apt-get install -y clang swig libflint-dev libxdo-dev
+
+# 4. UTF-8 locale — MANDATORY. Source files use Unicode in filenames
+#    (σField.java, RiemannζFunction.java, RiemannξFunction.java).
+#    Without this, javac fails with "Invalid filename: ??Field.java"
+sudo apt-get install -y locales
+sudo sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen
+sudo locale-gen en_US.UTF-8
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+```
+
+### Building the Native Library (libarblib.so)
+
+The SWIG-generated C code targets FLINT 2.x API names. If your system has FLINT 3.x (Debian trixie/sid and later), you must apply these compatibility fixes:
+
+```bash
+# Generate SWIG wrappers
+swig -v -java -package arb -outdir src/main/java/arb native/arb.i
+
+# Patch out the 'stride' field references (removed in FLINT 3.x)
+sed -i 's/if (arg1) (arg1)->stride = arg2;/\/\/ stride removed in FLINT 3.x/' native/arb_wrap.c
+sed -i 's/result = (long) ((arg1)->stride);/result = 0; \/\/ stride removed in FLINT 3.x/' native/arb_wrap.c
+
+# Compile with FLINT 3.x API name defines
+clang -g -O3 -fPIC -shared -Wno-int-conversion \
+    -Dflint_rand_struct=flint_rand_s \
+    -Dflint_rand_init=flint_randinit \
+    -Dflint_rand_clear=flint_randclear \
+    -Dflint_rand_set_seed=flint_randseed \
+    native/arb_wrap.c native/complex.c native/ml.c \
+    -I${JAVA_HOME}/include -I${JAVA_HOME}/include/linux -I/usr/include/flint \
+    -olibarblib.so -lflint -lxdo
+```
+
+If you have FLINT 2.x (older distros), `make` works without patches.
+
+### FLINT 3.x API Name Changes Reference
+
+| SWIG-generated name (FLINT 2.x) | FLINT 3.x equivalent |
+|---|---|
+| `flint_rand_struct` | `flint_rand_s` |
+| `flint_rand_init()` | `flint_randinit()` |
+| `flint_rand_clear()` | `flint_randclear()` |
+| `flint_rand_set_seed()` | `flint_randseed()` |
+| `arb_mat_struct.stride` | removed |
+| `acb_mat_struct.stride` | removed |
+
+### Running Tests
+
+```bash
+export JAVA_HOME=/usr/lib/jvm/java-25-openjdk-amd64 LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
+mvn test
+```
+
+`libarblib.so` must be in the project root — the Maven surefire plugin sets `java.library.path` to `${project.basedir}` automatically.
+
+### One-Liner (full build from scratch)
+
+```bash
+export JAVA_HOME=/usr/lib/jvm/java-25-openjdk-amd64 LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 && \
+  make clean && \
+  swig -v -java -package arb -outdir src/main/java/arb native/arb.i && \
+  sed -i 's/if (arg1) (arg1)->stride = arg2;/\/\/ stride removed in FLINT 3.x/' native/arb_wrap.c && \
+  sed -i 's/result = (long) ((arg1)->stride);/result = 0; \/\/ stride removed in FLINT 3.x/' native/arb_wrap.c && \
+  clang -g -O3 -fPIC -shared -Wno-int-conversion \
+    -Dflint_rand_struct=flint_rand_s \
+    -Dflint_rand_init=flint_randinit \
+    -Dflint_rand_clear=flint_randclear \
+    -Dflint_rand_set_seed=flint_randseed \
+    native/arb_wrap.c native/complex.c native/ml.c \
+    -I${JAVA_HOME}/include -I${JAVA_HOME}/include/linux -I/usr/include/flint \
+    -olibarblib.so -lflint -lxdo && \
+  mvn test
+```
+
+### Known Test Failures (as of March 2026)
+
+These are the current open bugs — do not waste time trying to fix the build when these tests fail:
+
+| Root Cause | Issue | Failing Tests |
+|---|---|---|
+| DivisionNode rejects RealPolynomial→Real | [#906](https://github.com/crowlogic/arb4j/issues/906) | `HypergeometricFunctionTest.testSum`, `testHypergeometricFunctionExpressionRealPolynomial`, `testHypergeometricPolynomialReal` |
+| VerifyError in rational function derivative bytecode | [#907](https://github.com/crowlogic/arb4j/issues/907) | `ExpressionTest.testRationalFunctionDerivative` |
+| DerivativeNode applies only 1st derivative regardless of order | [#908](https://github.com/crowlogic/arb4j/issues/908) | `DerivativeNodeTest.test2ndDerivative`, `FractionalDerivativeNodeTest.testFractionalDerivativeParsing` |
+| Expression toString() format mismatches | [#909](https://github.com/crowlogic/arb4j/issues/909) | `ExpressionTest.testConstantFoldingToo`, `testSubstitutionToo`, `testSubstitutionToo2`, `RationalFunctionTest.testHypergeometricFunctionExpressionRationalWithFunctionsMissingParenthesis`, `ComplexFunctionTest.testComplexHypergeometricFunctionSequence2` |
+| Constant subexpression factorization (TODO) | [#874](https://github.com/crowlogic/arb4j/issues/874) | `RealExpressionTest.testConstantSubexpressionFactorization` |
+| Common subexpression elimination (TODO) | [#518](https://github.com/crowlogic/arb4j/issues/518) | `RealExpressionTest.testCommonSubExpressionReuse` |
+
+### Troubleshooting Quick Reference
+
+| Symptom | Fix |
+|---|---|
+| `mvn: command not found` | `sudo apt-get install -y maven` |
+| `Invalid filename: ??Field.java` | Set `LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8` and generate the locale |
+| `flint_rand_struct` undeclared | Add `-Dflint_rand_struct=flint_rand_s` (and the other 3 defines) to clang flags |
+| `no member named 'stride'` | Apply the `sed` patches to `native/arb_wrap.c` |
+| `java.lang.UnsatisfiedLinkError: no arblib` | `libarblib.so` is missing from project root — rebuild the native library |
+| `release version 25 not supported` | `export JAVA_HOME=/usr/lib/jvm/java-25-openjdk-amd64` |
+| `cannot find symbol: class ComplexFunction` | Unicode locale is not set — fix locale first, then recompile |
