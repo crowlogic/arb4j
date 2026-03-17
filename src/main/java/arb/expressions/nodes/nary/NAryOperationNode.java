@@ -35,52 +35,56 @@ import arb.functions.real.RealFunction;
  * an {@link arb.Integer} index variable running from a lower limit to an upper
  * limit inclusive.
  *
- * <p>The syntax parsed by this node is {@code ⊕f(k){k=a…b}}, where {@code ⊕}
- * is the operator sigil (Σ for sum, Π/∏ for product), {@code f(k)} is the
- * operand body (any expression in the index variable), and {@code {k=a…b}}
- * binds the index variable name and its limits. The operand body is compiled
- * as a separate {@link Sequence} class that shares the same
+ * <p>
+ * The syntax parsed by this node is {@code ⊕f(k){k=a…b}}, where {@code ⊕} is
+ * the operator sigil (Σ for sum, Π/∏ for product), {@code f(k)} is the operand
+ * body (any expression in the index variable), and {@code {k=a…b}} binds the
+ * index variable name and its limits. The operand body is compiled as a
+ * separate {@link Sequence} class that shares the same
  * {@link arb.expressions.ExpressionClassLoader} and {@link Context} as the
  * enclosing expression. That compiled {@code Sequence} is held as a field on
  * the outer generated class and called once per loop iteration.
  *
- * <h2>Index variable — method-local, not a field</h2>
- * The index variable ({@code k} above) is allocated as a method-local
- * {@code arb.Integer} in the {@code evaluate()} bytecode (local slot
- * {@value #INDEX_VARIABLE_LOCAL_SLOT}). It is never registered in the
- * {@link Context} and never declared as a class field. This avoids polluting
- * the shared context and eliminates the need to temporarily mutate context
- * state during operand parsing. The operand receives the index value as the
- * first argument to its {@code evaluate()} call each iteration.
+ * <h2>Index variable — method-local, not a field</h2> The index variable
+ * ({@code k} above) is allocated as a method-local {@code arb.Integer} in the
+ * {@code evaluate()} bytecode (local slot {@value #INDEX_VARIABLE_LOCAL_SLOT}).
+ * It is never registered in the {@link Context} and never declared as a class
+ * field. This avoids polluting the shared context and eliminates the need to
+ * temporarily mutate context state during operand parsing. The operand receives
+ * the index value as the first argument to its {@code evaluate()} call each
+ * iteration.
  *
- * <h2>Operand expression initialisation sequence</h2>
- * {@link #parseOperand()} constructs the child {@link Expression} with the
- * three-argument constructor, which leaves its internal expression string null.
- * Before calling {@code resolve()} on the child, the parent's string and cursor
- * are copied into it via
+ * <h2>Operand expression initialisation sequence</h2> {@link #parseOperand()}
+ * constructs the child {@link Expression} with the three-argument constructor,
+ * which leaves its internal expression string null. Before calling
+ * {@code resolve()} on the child, the parent's string and cursor are copied
+ * into it via
  * {@link arb.expressions.Expression#continueParsingFrom(Expression)}. Without
  * this step, {@code resolve()} immediately NPEs inside
- * {@code currentCodePoint() → getExpression().length()}. After {@code resolve()}
- * returns, the parent cursor is synced forward past the tokens the child
- * consumed, and then {@code updateStringRepresentation()} trims the child's
- * expression string to just the operand body. This ordering is mandatory:
- * setting the string before {@code resolve()} runs causes nested
+ * {@code currentCodePoint() → getExpression().length()}. After
+ * {@code resolve()} returns, the parent cursor is synced forward past the
+ * tokens the child consumed, and then {@code updateStringRepresentation()}
+ * trims the child's expression string to just the operand body. This ordering
+ * is mandatory: setting the string before {@code resolve()} runs causes nested
  * {@link NAryOperationNode} constructors to find the parent sigil at position
  * zero and recurse without bound.
  *
- * <h2>Generated loop structure</h2>
- * {@link #generate(MethodVisitor, Class)} emits:
+ * <h2>Generated loop structure</h2> {@link #generate(MethodVisitor, Class)}
+ * emits:
+ * 
  * <pre>
- *   arb.Integer index = new arb.Integer();   // local slot 5
- *   accumulator.identity();
- *   index.set(lowerLimit);
- *   cachedUpper.set(upperLimit);
- *   while (index.compareTo(cachedUpper) &lt;= 0) {
- *       accumulator = accumulator.operation(operand.evaluate(index, bits, scratch), bits);
- *       index.increment();
- *   }
- *   result.set(accumulator);
+ * arb.Integer index = new arb.Integer(); // local slot 5
+ * accumulator.identity();
+ * index.set(lowerLimit);
+ * cachedUpper.set(upperLimit);
+ * while (index.compareTo(cachedUpper) &lt;= 0)
+ * {
+ *   accumulator = accumulator.operation(operand.evaluate(index, bits, scratch), bits);
+ *   index.increment();
+ * }
+ * result.set(accumulator);
  * </pre>
+ * 
  * All of {@code accumulator}, {@code cachedUpper}, and {@code scratch} are
  * intermediate variables allocated on the outer generated class.
  *
@@ -98,11 +102,13 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   /**
    * Local variable slot in the generated {@code evaluate()} method for the
-   * {@code arb.Integer} index variable.  Slots 0–4 are: {@code this}, input,
-   * order, bits, result.  This slot is allocated by {@link #allocateLocalIndexVariable(MethodVisitor)}
-   * at the top of {@link #generate(MethodVisitor, Class)} via {@code NEW / DUP / INVOKESPECIAL / ASTORE}.
+   * {@code arb.Integer} index variable. Slots 0–4 are: {@code this}, input,
+   * order, bits, result. This slot is allocated by
+   * {@link #allocateLocalIndexVariable(MethodVisitor)} at the top of
+   * {@link #generate(MethodVisitor, Class)} via
+   * {@code NEW / DUP / INVOKESPECIAL / ASTORE}.
    */
-  public static final int                         INDEX_VARIABLE_LOCAL_SLOT       = 5;
+  public static final int                         INDEX_VARIABLE_LOCAL_SLOT      = 5;
 
   public static String                            operandEvaluateMethodSignature = Compiler.getMethodDescriptor(Object.class,
                                                                                                                 Object.class,
@@ -147,7 +153,12 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   public NAryOperationNode(Expression<D, R, F> expression, String identity, String prefix, String operation, String symbol)
   {
-    this(expression, identity, prefix, operation, symbol, false);
+    this(expression,
+         identity,
+         prefix,
+         operation,
+         symbol,
+         false);
   }
 
   public NAryOperationNode(Expression<D, R, F> expression, String identity, String prefix, String operation, String symbol, boolean functionForm)
@@ -184,10 +195,10 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                            Node<D, R, F> upperLimit)
   {
     super(expression);
-    this.identity          = identity;
-    this.prefix            = prefix;
-    this.operation         = operation;
-    this.symbol            = symbol;
+    this.identity  = identity;
+    this.prefix    = prefix;
+    this.operation = operation;
+    this.symbol    = symbol;
     if (expression.context == null)
     {
       expression.context = new Context();
@@ -298,6 +309,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   /**
    * Emits bytecode to allocate a fresh {@code arb.Integer} in local slot
    * {@value #INDEX_VARIABLE_LOCAL_SLOT}:
+   * 
    * <pre>
    *   NEW arb/Integer
    *   DUP
@@ -451,10 +463,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     if (Expression.traceNodes)
     {
-      logger.debug(String.format("%s.loadResultvariable( resultVariable= %s, generatedType=%s )\n",
-                                 getClass().getSimpleName(),
-                                 fieldName,
-                                 generatedType));
+      logger.debug(String.format("%s.loadResultvariable( resultVariable= %s, generatedType=%s )\n", getClass().getSimpleName(), fieldName, generatedType));
     }
     getFieldFromThis(methodVisitor, expression.className, fieldName, generatedType);
   }
@@ -474,14 +483,16 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
    * Parses the operand body of this n-ary operation and wires it into a freshly
    * allocated child {@link Expression} that will be compiled as a sibling class.
    *
-   * <p>When the operand uses explicit arrow syntax ({@code k➔f(k)}), the index
+   * <p>
+   * When the operand uses explicit arrow syntax ({@code k➔f(k)}), the index
    * variable name is known immediately and variable resolution proceeds eagerly.
    * Otherwise, variable resolution is deferred: the operand body is parsed with
    * {@link Expression#deferVariableResolution} set, then
    * {@link #parseOperatorLimitSpecifications()} extracts the index variable name
-   * from the {@code {k=a…b}} limit spec, assigns the input variable, and
-   * triggers resolution via {@link Node#resolveVariables()}.
+   * from the {@code {k=a…b}} limit spec, assigns the input variable, and triggers
+   * resolution via {@link Node#resolveVariables()}.
    */
+  @SuppressWarnings("unchecked")
   private void parseOperand()
   {
     assert operandFunctionFieldName != null : "assignFieldNamesIfNecessary must be called before parseOperand";
@@ -501,17 +512,15 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     {
       expression.restoreCursor(savedCursor);
     }
-
-    if (hasArrow)
+    else
     {
       indexVariableFieldName = paramName;
     }
 
-    @SuppressWarnings("unchecked")
-    Class<R> operandCoDomain              = (Class<R>) (expression.isFunctional()
-                                                        ? scalarCoDomain(expression.coDomainType)
-                                                        : expression.coDomainType);
-    operandExpression                     = new Expression<>(Integer.class, operandCoDomain, Sequence.class);
+    Class<R> operandCoDomain = (Class<R>) (expression.isFunctional() ? scalarCoDomain(expression.coDomainType) : expression.coDomainType);
+    operandExpression = new Expression<>(Integer.class,
+                                         operandCoDomain,
+                                         Sequence.class);
     operandExpression.continueParsingFrom(expression);
     operandExpression.upstreamExpression  = expression;
     operandExpression.context             = expression.context;
@@ -520,10 +529,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
     if (hasArrow)
     {
-      VariableNode<Integer, R, Sequence<R>> indexVar =
-          new VariableNode<>(operandExpression,
-                             operandExpression.newVariableReference(indexVariableFieldName),
-                             false);
+      VariableNode<Integer, R, Sequence<R>> indexVar = new VariableNode<>(operandExpression,
+                                                                          operandExpression.newVariableReference(indexVariableFieldName),
+                                                                          false);
       operandExpression.assignInputVariable(indexVar);
     }
     else
@@ -531,7 +539,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       operandExpression.deferVariableResolution = true;
     }
 
-    operandExpression.rootNode            = operandExpression.resolve();
+    operandExpression.rootNode = operandExpression.resolve();
 
     expression.continueParsingFrom(operandExpression);
     operandExpression.updateStringRepresentation();
@@ -541,12 +549,13 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   /**
    * Parses {@code {k=a…b}}, records the index variable name and the lower and
-   * upper limits.  When the operand was parsed with deferred variable resolution
+   * upper limits. When the operand was parsed with deferred variable resolution
    * (no arrow syntax), this method also assigns the index variable as the
    * operand's input and triggers resolution of all deferred variable references.
    *
-   * <p>The index variable is <em>not</em> registered in the {@link Context} —
-   * it lives as a method-local {@code arb.Integer} in slot
+   * <p>
+   * The index variable is <em>not</em> registered in the {@link Context} — it
+   * lives as a method-local {@code arb.Integer} in slot
    * {@value #INDEX_VARIABLE_LOCAL_SLOT}, allocated by
    * {@link #allocateLocalIndexVariable(MethodVisitor)}.
    */
@@ -590,10 +599,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     if (operandExpression.deferVariableResolution)
     {
       operandExpression.deferVariableResolution = false;
-      VariableNode<Integer, R, Sequence<R>> indexVar =
-          new VariableNode<>(operandExpression,
-                             operandExpression.newVariableReference(indexVariableFieldName),
-                             false);
+      VariableNode<Integer, R, Sequence<R>> indexVar = new VariableNode<>(operandExpression,
+                                                                          operandExpression.newVariableReference(indexVariableFieldName),
+                                                                          false);
       operandExpression.assignInputVariable(indexVar);
       operandExpression.rootNode.resolveVariables();
     }
@@ -676,14 +684,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
   }
 
-  protected void generateCodeToPropagateIndependentUpstreamVariablesToOperand(MethodVisitor mv,
-                                                                               VariableNode<D, R, F> independentVariableNode)
+  protected void generateCodeToPropagateIndependentUpstreamVariablesToOperand(MethodVisitor mv, VariableNode<D, R, F> independentVariableNode)
   {
     operandExpression.getReferencedVariables()
                      .entrySet()
-                     .forEach(entry -> generateCodeToPropagateIndependentUpstreamVariablesToOperand(mv,
-                                                                                                    independentVariableNode,
-                                                                                                    entry));
+                     .forEach(entry -> generateCodeToPropagateIndependentUpstreamVariablesToOperand(mv, independentVariableNode, entry));
   }
 
   protected <N extends Node<D, R, F>>
@@ -737,8 +742,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
   }
 
-  protected void generateCodeToPropagateIndependentVariableToOperand(MethodVisitor mv,
-                                                                      VariableNode<D, R, F> independentVariableNode)
+  protected void generateCodeToPropagateIndependentVariableToOperand(MethodVisitor mv, VariableNode<D, R, F> independentVariableNode)
   {
     String   varName      = independentVariableNode.reference.name;
     Class<?> varType      = independentVariableNode.type();
@@ -801,17 +805,15 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                                                 expr);
     if (Expression.traceNodes)
     {
-      logger.debug(String.format("\nregisterOperand(operandExpression=%s,\noperandMapping=%s\n)\n\n",
-                                 operandExpression,
-                                 operandMapping));
+      logger.debug(String.format("\nregisterOperand(operandExpression=%s,\noperandMapping=%s\n)\n\n", operandExpression, operandMapping));
     }
     expression.registerReferencedFunction(operandFunctionFieldName, operandMapping);
   }
 
   /**
-   * Returns the scalar element type for a given codomain type. For sequence types,
-   * returns the element type (e.g., RealSequence → Real). For non-sequence types,
-   * returns the type as-is.
+   * Returns the scalar element type for a given codomain type. For sequence
+   * types, returns the element type (e.g., RealSequence → Real). For non-sequence
+   * types, returns the type as-is.
    */
   static Class<?> scalarCoDomain(Class<?> type)
   {
@@ -880,7 +882,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
     var splicedOperandExpression = (Expression<Integer, S, Sequence<S>>) (Expression<?, ?, ?>) operandExpression;
-    var nAryOperationNode       = new NAryOperationNode<E, S, G>(newExpression,
+    var nAryOperationNode        = new NAryOperationNode<E, S, G>(newExpression,
                                                                   identity,
                                                                   prefix,
                                                                   operation,
@@ -899,8 +901,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
-                                                                                         Node<E, S, G> substitution)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable, Node<E, S, G> substitution)
   {
     if (substitution.toString().equals(variable))
     {
@@ -963,8 +964,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   public boolean dependsOn(VariableNode<D, R, F> variable)
   {
     return lowerLimit.dependsOn(variable) || upperLimit.dependsOn(variable)
-                  || (operandExpression != null
-                                && operandExpression.rootNode.dependsOn(variable.spliceInto(operandExpression)
-                                                                                 .asVariable()));
+                  || (operandExpression != null && operandExpression.rootNode.dependsOn(variable.spliceInto(operandExpression).asVariable()));
   }
 }
