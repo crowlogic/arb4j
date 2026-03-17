@@ -173,11 +173,16 @@ public class RationalFunctionTest extends
     Exception thrownException = null;
     try
     {
-      var context = new Context();
-      RationalFunction.parse("a:1", context);
-      RationalFunction.parse("b:-⅞*(½ - x/2)", context);
-      RationalFunction.parse("c:21/80*(½ - x/2)²", context);
+      var context     = new Context();
+      var a           = RationalFunction.parse("a:1", context);
+      var b           = RationalFunction.parse("b:-⅞*(½ - x/2)", context);
+      var c           = RationalFunction.parse("c:21/80*(½ - x/2)²", context);
       var expectedSum = RationalFunction.parse("a+b+c", context);
+      var ainst       = expectedSum.instantiate();
+      var af          = ainst.evaluate();
+      System.out.println(expectedSum.inspect(ainst));
+      // FIXME: extend inspect to show variablenode info
+
     }
     catch (Exception e)
     {
