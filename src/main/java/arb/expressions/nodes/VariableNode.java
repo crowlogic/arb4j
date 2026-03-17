@@ -375,7 +375,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       if (expression.isNullaryFunction())
       {
-        generateNullaryIndependentVariable(mv);
+        generateDeclaredVariableIdentity(mv);
       }
       else
       {
@@ -384,7 +384,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     else if (isDeclaredVariable)
     {
-      generateNullaryIndependentVariable(mv);
+      generateDeclaredVariableIdentity(mv);
     }
     else
     {
@@ -404,12 +404,14 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   /**
-   * Generates code for the independent variable of a nullary function. Instead of
-   * loading a runtime input parameter (which is null for nullary functions), this
-   * generates an identity() call to create the formal variable (e.g., the
-   * identity polynomial for polynomial expressions).
+   * Generates an {@code identity()} call for a declared variable — one that
+   * represents a symbolic indeterminate rather than a runtime input parameter.
+   * This applies both to nullary functions (where there is no input parameter)
+   * and to non-nullary functions whose codomain is functional (e.g.,
+   * polynomial-valued sequences where {@code x} is the polynomial
+   * indeterminate while {@code n} is the sequence index).
    */
-  public void generateNullaryIndependentVariable(MethodVisitor mv)
+  public void generateDeclaredVariableIdentity(MethodVisitor mv)
   {
     if (reference.type == null)
     {
