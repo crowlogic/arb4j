@@ -524,7 +524,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     operandExpression.assignInputVariable(indexVar);
 
     operandExpression.rootNode            = operandExpression.resolve();
-    operandExpression.coDomainType         = operandExpression.rootNode.type();
 
     expression.continueParsingFrom(operandExpression);
     operandExpression.updateStringRepresentation();
