@@ -119,10 +119,11 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                          expression.independentVariable,
                          expression.context,
                          expression.toStringExtended(),
-                         Utensils.yamlString(this), Utensils.yamlString(expression));
+                         Utensils.yamlString(this),
+                         Utensils.yamlString(expression));
   }
 
-  private VariableNode<?, ?, ?> resolveUpstreamVariables()
+  private VariableNode<?, ?, ?> resolveUpstreamIndependentVariables()
   {
     final VariableNode<?, ?, ?>[] found = new VariableNode[1];
 
@@ -155,7 +156,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public VariableNode<?, ?, ?> resolveReference()
   {
-    var inputVariable = expression.independentVariable;
 
     if (Expression.traceNodes)
     {
@@ -174,8 +174,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (isIndependent = isIndependent())
     {
-      resolveIndependentVariable();
-      reference.type = expression.isNullaryFunction() ? expression.coDomainType : expression.domainType;
+      designateAsIndependentVariable();
       if (Expression.traceNodes)
       {
         logger.debug("resolveReference INDEPENDENT: {}", resolutionStateString());
@@ -183,7 +182,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return this;
     }
 
-    var upstream = resolveUpstreamVariables();
+    var upstream = resolveUpstreamIndependentVariables();
     if (upstream != null)
     {
 
@@ -194,10 +193,10 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return this;
     }
 
-    throw new CompilerException(String.format("undefined variable reference: %s", resolutionStateString()));
+    return throwNewUndefinedReferenceException();    
   }
 
-  protected void throwNewUndefinedReferenceException()
+  protected VariableNode<?, ?, ?> throwNewUndefinedReferenceException()
   {
     throw new UndefinedReferenceException(String.format("undefined reference: %s", resolutionStateString()));
   }
@@ -374,8 +373,10 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public boolean isFunctionalVariable()
   {
-    Class<?> type = type();
-    return Function.class.isAssignableFrom(type);
+    return expression.isFunctional()|| expression.isInterfaceFunctional();
+//    
+//    Class<?> type = type();
+//    return Function.class.isAssignableFrom(type);
   }
 
   public void generateReferenceToContextualVariable(MethodVisitor mv)
@@ -529,28 +530,28 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return false;
   }
 
-  public void resolveIndependentVariable()
+  public VariableNode<D, R, F> designateAsIndependentVariable()
   {
     assert (expression.independentVariable == null
                   || expression.independentVariable.equals(expression.independentVariable)) : "inputVariable is already "
                                                                                               + expression.independentVariable
                                                                                               + " it doesnt make sense to change it to "
                                                                                               + this;
-    if (!equals(expression.independentVariable))
-    {
-      if (Expression.traceNodes)
-      {
 
-        logger.debug(String.format("#%s: resolveIndependentVariable: declaring %s as the input node to '%s' which currently has input variable %s\n",
-                                   System.identityHashCode(this),
-                                   reference,
-                                   expression,
-                                   expression.independentVariable));
-      }
-      isIndependent                  = true;
-      expression.independentVariable = this;
-      reference.type                 = expression.domainType;
+    if (Expression.traceNodes)
+    {
+
+      logger.debug(String.format("#%s: resolveIndependentVariable: declaring %s as the input node to '%s' which currently has input variable %s\n",
+                                 System.identityHashCode(this),
+                                 reference,
+                                 expression,
+                                 expression.independentVariable));
     }
+    isIndependent                  = true;
+    expression.independentVariable = this;
+    reference.type                 = expression.isNullaryFunction() ? expression.coDomainType : expression.domainType;
+    return this;
+
   }
 
   public <E, S, G extends Function<? extends E, ? extends S>> VariableNode<E, S, G> spliceInto(Expression<E, S, G> newExpression)
