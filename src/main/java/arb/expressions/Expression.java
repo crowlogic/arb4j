@@ -310,8 +310,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean                                          variablesDeclared   = false;
 
-  public boolean                                          verboseTrace        = false;
-
   public boolean acceptUntil(Predicate<Expression<?, ?, ?>> visitor)
   {
     Expression<?, ?, ?> e = this;
@@ -1957,24 +1955,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    */
   protected ClassVisitor generateToStringMethod(ClassVisitor classVisitor)
   {
-    var methodVisitor = classVisitor.visitMethod(ACC_PUBLIC,
-                                                 "toString",
-                                                 Compiler.getMethodDescriptor(String.class),
-                                                 null,
-                                                 null);
+    var methodVisitor = classVisitor.visitMethod(ACC_PUBLIC, "toString", Compiler.getMethodDescriptor(String.class), null, null);
     methodVisitor.visitCode();
     Compiler.annotateWithOverride(methodVisitor);
 
     // Collect variables that are fields on this class with runtime-varying values.
     // 1. Upstream input variables (ancestor scope vars, excluding immediate
-    //    parent's independent variable which the predicate filters out)
+    // parent's independent variable which the predicate filters out)
     List<Entry<String, VariableNode<D, C, F>>> runtimeVars = new ArrayList<>();
     upstreamInputVariableEntryStream().forEach(runtimeVars::add);
 
     // 2. Walk the upstream chain: each ancestor's independent variable is
-    //    propagated by value to this class as a field, but the predicate in
-    //    upstreamInputVariableEntryStream() explicitly excludes it.
-    //    Include it here since the field holds a concrete value at runtime.
+    // propagated by value to this class as a field, but the predicate in
+    // upstreamInputVariableEntryStream() explicitly excludes it.
+    // Include it here since the field holds a concrete value at runtime.
     Expression<?, ?, ?> ancestor = upstreamExpression;
     while (ancestor != null)
     {
@@ -1990,14 +1984,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       ancestor = ancestor.upstreamExpression;
     }
 
-    String namePrefix = (functionName != null && !functionName.isEmpty())
-                        ? functionName + ":"
-                        : "";
+    String namePrefix = (functionName != null && !functionName.isEmpty()) ? functionName + ":" : "";
     updateStringRepresentation();
     String bodyExpr = rootNode != null ? rootNode.toString() : getExpression();
-    String arrow    = (independentVariable == null || bodyExpr.contains("➔"))
-                      ? ""
-                      : (independentVariable.getName() + "➔");
+    String arrow    = (independentVariable == null || bodyExpr.contains("➔")) ? "" : (independentVariable.getName() + "➔");
 
     if (runtimeVars.isEmpty())
     {
@@ -2016,8 +2006,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     // Use toStringBound() which emits "name=%s" for upstream input variables,
     // giving us the format template with placeholders already in place.
-    String boundExpr    = rootNode != null ? rootNode.toStringBound() : getExpression();
-    String formatString = namePrefix + arrow + boundExpr;
+    String                      boundExpr    = rootNode != null ? rootNode.toStringBound() : getExpression();
+    String                      formatString = namePrefix + arrow + boundExpr;
 
     List<String>                matchedNames = new ArrayList<>();
     List<VariableNode<D, C, F>> matchedNodes = new ArrayList<>();
@@ -2029,8 +2019,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (Expression.trace)
     {
-      log.debug("generateToStringMethod(): dynamic path formatString='{}' vars={}",
-                formatString, matchedNames);
+      log.debug("generateToStringMethod(): dynamic path formatString='{}' vars={}", formatString, matchedNames);
     }
 
     methodVisitor.visitLdcInsn(formatString);
@@ -2043,24 +2032,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       duplicateTopOfTheStack(methodVisitor);
       methodVisitor.visitLdcInsn(i);
       loadThisAndFieldOntoStack(methodVisitor, matchedNames.get(i), matchedNodes.get(i).type());
-      generateVirtualMethodInvocation(methodVisitor,
-                                      Object.class,
-                                      "toString",
-                                      String.class);
+      generateVirtualMethodInvocation(methodVisitor, Object.class, "toString", String.class);
       methodVisitor.visitInsn(AASTORE);
     }
 
-    invokeStaticMethod(methodVisitor,
-                       String.class,
-                       "format",
-                       String.class,
-                       String.class,
-                       Object[].class);
+    invokeStaticMethod(methodVisitor, String.class, "format", String.class, String.class, Object[].class);
 
     Compiler.generateReturnFromMethod(methodVisitor);
     return classVisitor;
   }
-
 
   protected String getStringRepresentation()
   {
@@ -2477,13 +2457,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected MethodVisitor loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, Class<?> fieldType)
   {
-    if (verboseTrace)
-    {
-      System.out.format("Expression(#%s).loadFieldOntoStack(fieldName=%s, fieldDescriptor=%s)\n",
-                        System.identityHashCode(this),
-                        fieldName,
-                        fieldType.descriptorString());
-    }
+
     assert fieldName != null : "fieldName is null";
     assert fieldType != null : "fieldType is null";
 
@@ -2493,13 +2467,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public MethodVisitor loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, String fieldDescriptor)
   {
-    if (verboseTrace)
-    {
-      log.debug(String.format("Expression(#%s).loadFieldOntoStack(fieldName=%s, fieldDescriptor=%s)\n",
-                              System.identityHashCode(this),
-                              fieldName,
-                              fieldDescriptor));
-    }
+
     methodVisitor.visitFieldInsn(GETFIELD, className, fieldName, fieldDescriptor);
     return methodVisitor;
   }
@@ -2669,15 +2637,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     functionalExpression.context = context;
 
     // Use the lambda parameter as the functional expression's independent variable.
-    // If no explicit lambda parameter was specified, find the first formal variable
-    // in the AST — this is the implicit inner variable (e.g. 'j' in "i+j" for a
-    // RealSequenceSequence). The old code used the indeterminate variable stack for
-    // this purpose; formal variables are the replacement concept.
     var lambdaParam = lambdaParameter;
-    if (lambdaParam == null)
-    {
-      lambdaParam = rootNode.variableNodeStream().filter(v -> v.isDeclaredVariable).findFirst().orElse(null);
-    }
+   
     if (lambdaParam != null)
     {
       functionalExpression.independentVariable = lambdaParam.spliceInto(functionalExpression).asVariable();
@@ -3702,7 +3663,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public String toStringExtended()
   {
-    return stream().map(Expression::toString).collect(Collectors.joining(" => "));
+    return String.format("{domain=%s, coDomain=%s, function=%s}", domainType, coDomainType, functionClass)
+                  + stream().map(Expression::toString).collect(Collectors.joining(" => "));
   }
 
   public LiteralConstantNode<D, C, F> one()

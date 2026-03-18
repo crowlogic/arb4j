@@ -37,7 +37,7 @@ import arb.expressions.context.SerializedContextVariable;
  *      {@link TheArb4jLibrary}
  */
 public class TypeRepresenter extends
-                                Representer
+                             Representer
 {
 
   public TypeRepresenter(DumperOptions options)
@@ -59,9 +59,7 @@ public class TypeRepresenter extends
     representers.put(SerializedContextVariable.class, data ->
     {
       SerializedContextVariable contextVariable = (SerializedContextVariable) data;
-      return representSequence(getTag(String.class, Tag.SEQ),
-                               List.of(contextVariable.type, contextVariable.value),
-                               defaultFlowStyle);
+      return representSequence(getTag(String.class, Tag.SEQ), List.of(contextVariable.type, contextVariable.value), defaultFlowStyle);
     });
 
     /*
@@ -94,20 +92,20 @@ public class TypeRepresenter extends
    * we omit the entire property rather than emitting a placeholder.
    */
   @Override
-  protected NodeTuple representJavaBeanProperty(Object javaBean,
-                                                Property property,
-                                                Object propertyValue,
-                                                Tag customTag)
+  protected NodeTuple representJavaBeanProperty(Object javaBean, Property property, Object propertyValue, Tag customTag)
   {
     if (propertyValue != null && propertyValue.getClass().isSynthetic())
     {
       return null;
     }
-    if ("instructions".equals(property.getName()))
+    switch (property.getName())
     {
+    case "instructions":
+    case "logger":
       return null;
+    default:
+      return super.representJavaBeanProperty(javaBean, property, propertyValue, customTag);
     }
-    return super.representJavaBeanProperty(javaBean, property, propertyValue, customTag);
   }
 
   public class NamedStringRepresentation implements
@@ -129,9 +127,7 @@ public class TypeRepresenter extends
     public Node representData(Object data)
     {
       Context context = (Context) data;
-      return TypeRepresenter.this.representMapping(getTag(data.getClass(), Tag.MAP),
-                                                      context.variables,
-                                                      defaultFlowStyle);
+      return TypeRepresenter.this.representMapping(getTag(data.getClass(), Tag.MAP), context.variables, defaultFlowStyle);
     }
   }
 }
