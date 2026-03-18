@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.nodes.Node;
+import arb.utensils.Utensils;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -94,12 +95,18 @@ public class TextTree<N>
       sb.append("━━ ");
       if (node instanceof Node arbNode)
       {
-        Class<?> type = arbNode.type();
-        sb.append(String.format("%s=%s (%s)(%s)",
+        String   details = null;
+        Class<?> type    = arbNode.type();
+        if (arbNode.isVariable())
+        {
+          details = arbNode.asVariable().toStringVerbose() + " " + Utensils.yamlString(arbNode);
+        }
+        sb.append(String.format("%s=%s (%s)(%s)%s",
                                 arbNode.getFieldName(),
                                 node,
                                 node.getClass().getSimpleName(),
-                                type == null ? "null" : type.getSimpleName()));
+                                type == null ? "null" : type.getSimpleName(),
+                                details == null ? "" : details));
 
       }
       else

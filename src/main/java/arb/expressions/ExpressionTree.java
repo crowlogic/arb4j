@@ -67,9 +67,14 @@ public class ExpressionTree<D, R, F extends Function<? extends D, ? extends R>> 
 
           // Get the field name if available
           String fieldName = "";
+         
           if (branch instanceof Node arbNode)
           {
             fieldName = arbNode.getFieldName();
+            if ( arbNode.isVariable() )
+            {
+              arbNode.asVariable().toStringVerbose();
+            }
           }
           else
           {

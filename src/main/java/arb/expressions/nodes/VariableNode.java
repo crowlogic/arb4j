@@ -205,6 +205,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (expression.thisOrAnyUpstreamExpressionHasFunctionalCodomain() && !expression.anyUpstreamIndependentVariableIsNamed(getName()))
     {
+ //     assert !expression.isNullaryFunction() : "undefined fucking reference " + this;
       isDeclaredVariable = true;
       reference.type   = expression.coDomainType;
       if (Expression.traceNodes)
