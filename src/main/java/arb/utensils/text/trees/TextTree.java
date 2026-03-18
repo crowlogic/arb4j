@@ -99,7 +99,7 @@ public class TextTree<N>
         Class<?> type    = arbNode.type();
         if (arbNode.isVariable())
         {
-          details = arbNode.asVariable().toStringVerbose() + " " + Utensils.yamlString(arbNode);
+          details = arbNode.asVariable().toStringVerbose();
         }
         sb.append(String.format("%s=%s (%s)(%s)%s",
                                 arbNode.getFieldName(),

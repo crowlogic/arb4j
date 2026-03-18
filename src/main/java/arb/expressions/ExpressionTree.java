@@ -70,11 +70,7 @@ public class ExpressionTree<D, R, F extends Function<? extends D, ? extends R>> 
          
           if (branch instanceof Node arbNode)
           {
-            fieldName = arbNode.getFieldName();
-            if ( arbNode.isVariable() )
-            {
-              arbNode.asVariable().toStringVerbose();
-            }
+            fieldName = arbNode.getFieldName();           
           }
           else
           {
