@@ -1,0 +1,392 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\begin{document}
+
+\section{VariableNode Resolution
+Specification}\label{variablenode-resolution-specification}
+
+\subsection{Variable Kinds}\label{variable-kinds}
+
+There are exactly five kinds of variable a \texttt{VariableNode} can
+represent. The resolution logic tries them in priority order; first
+match wins.
+
+\subsubsection{1. Context Variable}\label{context-variable}
+
+A variable whose name matches a key in
+\texttt{expression.context.variables}. These are externally provided
+named constants or parameters.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Resolved by:} \texttt{resolveContextualVariable()}
+\item
+  \textbf{\texttt{reference.type} set to:}
+  \texttt{instanceVariable.getClass()}
+\item
+  \textbf{Codegen:} \texttt{loadThisAndFieldOntoStack} (field access on
+  generated class)
+\item
+  \textbf{Examples:}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{a} in \texttt{RealFunction.express("x+a",\ context)} where
+    \texttt{context.registerVariable("a",\ someReal)}
+  \item
+    \texttt{v}, \texttt{z} in Bessel expressions where they are
+    context-provided parameters
+  \item
+    \texttt{α}, \texttt{β} in
+    \texttt{P:n➔when(n=0,1,n=1,(C(1)*x-β+α)/2,...)} (Jacobi polynomials)
+  \end{itemize}
+\end{itemize}
+
+\subsubsection{2. Independent Variable
+(Non-Nullary)}\label{independent-variable-non-nullary}
+
+The input parameter of the function. Either explicitly named via arrow
+syntax (\texttt{n➔...}, \texttt{x➔...}, \texttt{t➔...}) or the first
+free variable encountered when no arrow is present. Only exists when
+\texttt{expression.isNullaryFunction()} is false.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Resolved by:} \texttt{isIndependent()} returns true,
+  \texttt{!expression.isNullaryFunction()}
+\item
+  \textbf{\texttt{reference.type} set to:}
+  \texttt{expression.domainType}
+\item
+  \textbf{Codegen:} \texttt{loadInputParameter} (first argument of
+  \texttt{evaluate()})
+\item
+  \textbf{Examples:}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{x} in \texttt{RealFunction.express("x\^{}2+1")} --- domain
+    is \texttt{Real}
+  \item
+    \texttt{n} in
+    \texttt{RationalFunctionSequence.express("n➔(½-z/2)ⁿ")} --- domain
+    is \texttt{Integer}
+  \item
+    \texttt{t} in \texttt{RealFunction.express("sin(t)")}
+  \end{itemize}
+\end{itemize}
+
+\subsubsection{3. Independent Variable
+(Nullary)}\label{independent-variable-nullary}
+
+When the expression is nullary (\texttt{domainType\ ==\ Object.class}),
+there is no input parameter, but a variable still appears. This variable
+is the placeholder variable of the codomain type. Since there is no
+input parameter, the independent variable and the placeholder variable
+are the same thing.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Resolved by:} \texttt{isIndependent()} returns true,
+  \texttt{expression.isNullaryFunction()}
+\item
+  \textbf{\texttt{reference.type} set to:}
+  \texttt{expression.coDomainType}
+\item
+  \textbf{Codegen:} \texttt{generateFunctionalVariableIdentity}
+  (allocate + \texttt{.identity()})
+\item
+  \textbf{Examples:}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{x} in \texttt{RationalFunction.express("x/2")} --- codomain
+    is \texttt{RationalFunction}
+  \item
+    \texttt{x} in
+    \texttt{RealPolynomialNullaryFunction.express("x\^{}2+1")} ---
+    codomain is \texttt{RealPolynomial}
+  \item
+    \texttt{x} in \texttt{RationalFunction.express("½-x/2")} → produces
+    \texttt{(-x+1)/2}
+  \end{itemize}
+\end{itemize}
+
+\subsubsection{4. Placeholder Variable
+(NEW)}\label{placeholder-variable-new}
+
+When the expression is non-nullary AND the codomain implements
+\texttt{Function} (i.e.~\texttt{expression.isInterfaceFunctional()} is
+true), a second free variable may appear that is neither the independent
+variable nor a context variable nor an upstream variable. This is the
+\textbf{placeholder variable} of the codomain type --- the variable of
+the output polynomial/rational function/etc.
+
+Only \textbf{one} placeholder variable is allowed per expression. A
+second unresolved free variable throws \texttt{CompilerException}.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Resolved by:} new resolution step: not context, not
+  independent, not upstream, \texttt{expression.isInterfaceFunctional()}
+  is true, \texttt{expression.placeholderVariable\ ==\ null}
+\item
+  \textbf{\texttt{reference.type} set to:}
+  \texttt{expression.coDomainType}
+\item
+  \textbf{Codegen:} \texttt{generateFunctionalVariableIdentity}
+  (allocate + \texttt{.identity()})
+\item
+  \textbf{New field on Expression:}
+  \texttt{public\ VariableNode\textless{}D,C,F\textgreater{}\ placeholderVariable}
+\item
+  \textbf{Examples:}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{z} in
+    \texttt{RationalFunctionSequence.express("n➔(½-z/2)ⁿ")} ---
+    \texttt{n} is independent (Integer), \texttt{z} is placeholder
+    (RationalFunction)
+  \item
+    \texttt{x} in \texttt{P:n➔when(n=0,1,n=1,(C(1)*x-β+α)/2,else,...)}
+    --- \texttt{n} is independent, \texttt{α}/\texttt{β} are context,
+    \texttt{x} is placeholder
+  \item
+    \texttt{x} in \texttt{f:k➔√((2*k+½)/π)*...*j(2*k,x)} --- \texttt{k}
+    is independent, \texttt{x} is placeholder
+  \end{itemize}
+\end{itemize}
+
+\subsubsection{5. Upstream Variable}\label{upstream-variable}
+
+A variable that matches the independent variable of a containing
+(upstream) expression. Occurs inside sub-expressions created by Σ, Π, or
+lambda bodies.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Resolved by:} \texttt{resolveUpstreamVariables()} walks
+  \texttt{expression.acceptUntil()}
+\item
+  \textbf{\texttt{reference.type} set to:} upstream expression's
+  \texttt{domainType}
+\item
+  \textbf{\texttt{upstreamInput} set to:} \texttt{true}
+\item
+  \textbf{Codegen:} linked field from containing class
+\item
+  \textbf{Examples:}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{x} inside a product body \texttt{Πk➔f(k,x)\{k=1…N\}} where
+    \texttt{x} is the outer expression's input
+  \item
+    \texttt{t} in nested lambda \texttt{n➔t➔sin(tⁿ)} --- \texttt{t} is
+    the inner expression's independent variable, \texttt{n} is upstream
+  \end{itemize}
+\end{itemize}
+
+\subsubsection{6. Undefined}\label{undefined}
+
+None of the above. Throws \texttt{CompilerException}.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Resolution Priority Table}\label{resolution-priority-table}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1818}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1091}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.3455}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1636}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Priority
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Condition
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Kind
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\texttt{reference.type}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Codegen
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & Name found in \texttt{context.variables} & Context &
+\texttt{instanceVariable.getClass()} & field access \\
+2 & \texttt{isIndependent()} AND nullary & Independent (nullary) &
+\texttt{coDomainType} & \texttt{.identity()} \\
+3 & \texttt{isIndependent()} AND NOT nullary & Independent (input) &
+\texttt{domainType} & \texttt{loadInputParameter} \\
+4 & \texttt{isInterfaceFunctional()} AND
+\texttt{placeholderVariable\ ==\ null} & Placeholder &
+\texttt{coDomainType} & \texttt{.identity()} \\
+5 & Found in upstream expression & Upstream & upstream's
+\texttt{domainType} & linked field \\
+6 & None & UNDEFINED & --- & throw \texttt{CompilerException} \\
+\end{longtable}
+
+\textbf{Row 4 is the only new addition.} It requires a new
+\texttt{placeholderVariable} field on \texttt{Expression}. The field is
+assigned during resolution. If a second variable hits row 4 and
+\texttt{placeholderVariable} is already assigned, it falls through to
+row 6 and throws --- only one placeholder is allowed.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Relationship Between Independent and
+Placeholder}\label{relationship-between-independent-and-placeholder}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1345}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1849}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.2185}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1765}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1765}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1092}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Expression Type
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\texttt{isNullaryFunction()}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\texttt{isInterfaceFunctional()}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Independent Variable
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Placeholder Variable
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Relationship
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{RealFunction} (Real→Real) & false & false & \texttt{x}
+(domainType=Real) & N/A & No placeholder possible; codomain is scalar \\
+\texttt{RealNullaryFunction} (Object→Real) & true & false & \texttt{x}
+if present (coDomainType=Real) & N/A & No placeholder possible; codomain
+is scalar \\
+\texttt{RationalNullaryFunction} (Object→RationalFunction) & true & true
+& \texttt{x} (coDomainType=RationalFunction) & same as independent &
+They collapse to one variable because there's no input \\
+\texttt{RationalFunctionSequence} (Integer→RationalFunction) & false &
+true & \texttt{n} (domainType=Integer) & \texttt{z}
+(coDomainType=RationalFunction) & Distinct variables; \texttt{n} is
+input, \texttt{z} is placeholder \\
+\texttt{RealPolynomialFunction} (RealPolynomial→RealPolynomial) & false
+& true & \texttt{x} (domainType=RealPolynomial) & could exist if a
+second free var appears & Independent is the input polynomial;
+placeholder would be the output polynomial's variable \\
+\texttt{RealBivariateFunction} (Real→RealFunction) & false & true
+(codomain is RealFunction) & first variable (domainType=Real) & second
+variable (coDomainType=RealFunction) & Classic bivariate split \\
+\end{longtable}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Why This Is Complete}\label{why-this-is-complete}
+
+Every variable encountered during parsing must be exactly one of:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Already known} --- its name is in \texttt{context.variables} →
+  Context Variable
+\item
+  \textbf{The input} --- it matches or becomes the independent variable
+  → Independent Variable
+\item
+  \textbf{The output type's variable} --- the codomain is functional and
+  no placeholder is yet assigned → Placeholder Variable
+\item
+  \textbf{From an enclosing scope} --- it matches an upstream
+  expression's independent variable → Upstream Variable
+\item
+  \textbf{None of the above} → Undefined, throw error
+\end{enumerate}
+
+There is no sixth option. There is no stack of placeholder variables.
+There is no concept of ``formal'', ``declared'', or ``indeterminate''
+variable. A placeholder variable is simply the single variable that the
+output functional type uses as its own variable, declared by its
+appearance in the expression, limited to exactly one per expression.
+
+\end{document}
