@@ -213,7 +213,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   private void computeIndefiniteIntegralNode(boolean compileIfNecessary)
   {
     assert integralFunction == null;
-    var rawIntegral = integrandNode.integral(integrationVariableNode.asVariable());
+    var rawIntegral = integrandNode.integral(integrationVariableNode.asVariable()).simplify();
     if (Expression.trace && logger.isDebugEnabled())
     {
       logger.debug("computeIndefiniteIntegralNode(compileIfNecessary={}) rawIntegral={}",
