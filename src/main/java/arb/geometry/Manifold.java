@@ -3,29 +3,9 @@ package arb.geometry;
 import java.util.Set;
 
 import arb.Field;
-import arb.differential.geometry.Surface;
-import arb.space.topological.EuclideanSpace;
 import arb.space.topological.TangentSpace;
 import arb.space.topological.TopologicalSpace;
 
-/**
- * A {@link Manifold} is a {@link TopologicalSpace} that locally resembles
- * {@link EuclideanSpace} near each point. More precisely, an n-dimensional
- * manifold, or n-manifold for short, is a topological space with the property
- * that each point has a neighborhood that is homeomorphic to an open subset of
- * n-dimensional {@link EuclideanSpace}.
- * 
- * One-dimensional manifolds include {@link Line}s and {@link Circle}s.
- * Two-dimensional {@link Manifold}s are otherwise known as {@link Surface};
- * examples include the {@link Plane}, the {@link Sphere}, and the
- * {@link Torus}, and also the Klein bottle and real projective plane.
- *
- * Note that {@link Lemniscate}s are not considered manifolds because they do
- * not fulfill the above condition at the intersection of the two loops. More
- * precisely, the neighborhood around the intersection point does not resemble
- * an open subset of the one-dimensional Euclidean space.
- * 
- */
 public interface Manifold<X extends Field<? extends X>> extends
                          TopologicalSpace<X>
 {

@@ -534,15 +534,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return variable;
   }
 
-  private void assignVariable(VariableNode<D, C, F> variable)
-  {
-    if (Expression.trace)
-    {
-      log.debug("#{}: assignVariable( variable={})", System.identityHashCode(this), variable);
-    }
-    assignInputVariable(variable);
-  }
-
   protected void assureInputNameHasNotAlreadyBeenAssociatedWithAContextVariable(String inputVariableName)
   {
     if (context != null)
