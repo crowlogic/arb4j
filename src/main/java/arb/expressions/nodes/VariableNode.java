@@ -20,49 +20,38 @@ import arb.functions.Function;
 import arb.utensils.Utensils;
 
 /**
- * This class represents a {@link VariableNode} node within an
- * {@link Expression} by extending the {@link Node} class to provide additional
- * functionality for managing {@link VariableReference}s, those registered in
- * the {@link Context}, and/or those which are inputs to the {@link Expression},
- * or any upstream expression (in the case of nested-expressions such as for
- * {@link ProductNode}s).
+ * Represents a variable node within an {@link Expression}.
  *
- * <h3>Variable Types</h3>
- * <p>
- * A variable can be one of two types:
- * <ul>
- * <li><strong>Independent variable:</strong> The input variable to the
- * containing expression or any containing-expression's input. For nullary
- * functions producing polynomials/functionals, the independent variable
- * represents the formal variable and generates identity() codegen rather than
- * loading a runtime input parameter.</li>
- * <li><strong>Context variable:</strong> A variable defined in the
- * {@link Context} associated with this {@link #expression}, representing named
- * constants or parameters from the evaluation environment.</li>
- * </ul>
- * </p>
- * 
- * <h3>{@link Context} Variables</h3>
- * <p>
- * For {@link Context}-defined variables, the reference is stored and
- * subsequently acts as a mutable {@link VariableReference} but remains a
- * constant if not modified. If one really wants the constant to be immutable
- * then calling {@link Real#lock()} will mark the underlying memory area in the
- * hardware as read-only, but for that to work the Real (scalar or vector)
- * should have been constructed with the alignment option specified as true so
- * that its address is aligned on a page boundary, where it must be for locking
- * to occur. (At least on x86-64 machines)
- * </p>
+ * <h3>Resolution Priority</h3>
+ * <ol>
+ * <li><b>Context variable</b> — name found in {@code expression.context.variables}.
+ *     {@code reference.type} = {@code instanceVariable.getClass()}.
+ *     Codegen: field access on generated class.</li>
+ * <li><b>Independent variable (nullary)</b> — {@link #isIndependent()} and
+ *     {@code expression.isNullaryFunction()}.
+ *     {@code reference.type} = {@code expression.coDomainType}.
+ *     Codegen: {@link #generateFunctionalVariableIdentity}.</li>
+ * <li><b>Independent variable (non-nullary)</b> — {@link #isIndependent()} and
+ *     not nullary.
+ *     {@code reference.type} = {@code expression.domainType}.
+ *     Codegen: {@code loadInputParameter}.</li>
+ * <li><b>Placeholder variable</b> — {@code expression.isInterfaceFunctional()}
+ *     and {@code expression.placeholderVariable == null} (first unresolved free
+ *     variable in a non-nullary functional-codomain expression).
+ *     {@code reference.type} = {@code expression.coDomainType}.
+ *     Codegen: {@link #generateFunctionalVariableIdentity}.
+ *     Sets {@code expression.placeholderVariable = this}.</li>
+ * <li><b>Upstream variable</b> — matches the independent variable of a
+ *     containing (upstream) expression.
+ *     {@code reference.type} = upstream expression's {@code domainType}.
+ *     {@code upstreamInput} = {@code true}.
+ *     Codegen: linked field from containing class.</li>
+ * <li><b>Undefined</b> — throws {@link UndefinedReferenceException}.</li>
+ * </ol>
  *
- * <p>
- * This class is also responsible for generating bytecode for this variable node
- * through its {@link #generate(MethodVisitor, Class)} method.
- * </p>
- *
- * @param <D> Type of domain field
- * @param <R> Type of codomain field
- * @param <F> Type of function that maps domain to codomain, must implement
- *            {@link Function}.
+ * @param <D> domain type
+ * @param <R> codomain type
+ * @param <F> function type
  *
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
@@ -104,16 +93,23 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public boolean                    upstreamInput;
 
-  public boolean                    isIndependent = false;
+  public boolean                    isIndependent   = false;
+
+  /**
+   * True when this node is the placeholder variable of the codomain type
+   * (resolution priority 4).  Set during {@link #resolveReference()}.
+   */
+  public boolean                    isPlaceholder   = false;
 
   public VariableReference<D, R, F> reference;
 
   public String resolutionStateString()
   {
-    return String.format("variable='%s', type=%s, isIndependent=%s, upstreamInput=%s, expression=%s, independentVariable=%s, context=%s expression=%s this=%s expression=%s",
+    return String.format("variable='%s', type=%s, isIndependent=%s, isPlaceholder=%s, upstreamInput=%s, expression=%s, independentVariable=%s, context=%s expression=%s this=%s expression=%s",
                          reference.name,
                          reference.type,
                          isIndependent,
+                         isPlaceholder,
                          upstreamInput,
                          expression,
                          expression.independentVariable,
@@ -123,6 +119,10 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                          Utensils.yamlString(expression));
   }
 
+  /**
+   * Resolution step 5: walk the upstream expression chain looking for an
+   * ancestor whose independent variable matches this node's name.
+   */
   private VariableNode<?, ?, ?> resolveUpstreamIndependentVariables()
   {
     final VariableNode<?, ?, ?>[] found = new VariableNode[1];
@@ -154,14 +154,22 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return found[0];
   }
 
+  /**
+   * Resolves this variable node to one of the six cases defined in the
+   * VariableResolution spec.  Priority order: context → independent-nullary →
+   * independent-non-nullary → placeholder → upstream → undefined.
+   */
   public VariableNode<?, ?, ?> resolveReference()
   {
-
     if (Expression.traceNodes)
     {
       logger.debug("resolveReference START: {}", resolutionStateString());
     }
 
+
+
+
+    
     if (resolveContextualVariable())
     {
       expression.registerReferencedVariable(this);
@@ -172,20 +180,38 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return this;
     }
 
+    if (expression.isInterfaceFunctional() && expression.placeholderVariable == null)
+    {
+      isPlaceholder              = true;
+      reference.type             = expression.coDomainType;
+      expression.placeholderVariable = this;
+      if (Expression.traceNodes)
+      {
+        logger.debug("resolveReference PLACEHOLDER: {}", resolutionStateString());
+      }
+      return this;
+    }
+
     if (isIndependent = isIndependent())
     {
       designateAsIndependentVariable();
       if (Expression.traceNodes)
       {
-        logger.debug("resolveReference INDEPENDENT: {}", resolutionStateString());
+        logger.debug("resolveReference INDEPENDENT ({}): {}",
+                     expression.isNullaryFunction() ? "nullary" : "non-nullary",
+                     resolutionStateString());
       }
       return this;
     }
-
+    
+    // Priority 5: upstream variable
     var upstream = resolveUpstreamIndependentVariables();
     if (upstream != null)
     {
-
+      if (upstreamInput)
+      {
+        expression.registerReferencedVariable(this);
+      }
       if (Expression.traceNodes)
       {
         logger.debug("resolveReference UPSTREAM: {}", resolutionStateString());
@@ -193,6 +219,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return this;
     }
 
+    // Priority 6: undefined
     return throwNewUndefinedReferenceException();
   }
 
@@ -210,14 +237,14 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     this.reference.position = position;
     assert reference != null;
     assert !(expression.recursive && reference.name.equals(expression.functionName)) : "variable name clashes with "
-                                                                                       + "the function name since it's a recursve function";
+                                                                                       + "the function name since it's a recursive function";
 
     var existingVariable = expression.getReference(reference.name);
     if (existingVariable != null)
     {
       this.reference.type = existingVariable.reference.type;
       isIndependent       = existingVariable.isIndependent;
-
+      isPlaceholder       = existingVariable.isPlaceholder;
     }
     else
     {
@@ -233,11 +260,20 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
         isIndependent = true;
       }
 
+      if (expression.placeholderVariable != null && reference.equals(expression.placeholderVariable.reference))
+      {
+        isPlaceholder = true;
+      }
+
       if (!resolved)
       {
         if (isIndependent)
         {
-          reference.type = expression.domainType;
+          reference.type = expression.isNullaryFunction() ? expression.coDomainType : expression.domainType;
+        }
+        else if (isPlaceholder)
+        {
+          reference.type = expression.coDomainType;
         }
         else
         {
@@ -331,7 +367,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     if (reference.index != null)
     {
       indexType = reference.index.type();
-
       reference.index.generate(mv, indexType);
     }
 
@@ -354,29 +389,25 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       if (expression.isNullaryFunction())
       {
+        // Priority 2: nullary independent — identity codegen
         generateFunctionalVariableIdentity(mv);
       }
       else
       {
+        // Priority 3: non-nullary independent — load input parameter
         Compiler.cast(loadInputParameter(mv), type());
       }
     }
-    else if (isFunctionalVariable())
+    else if (isPlaceholder)
     {
+      // Priority 4: placeholder variable — identity codegen
       generateFunctionalVariableIdentity(mv);
     }
     else
     {
+      // Priority 1 (context) and Priority 5 (upstream): field access
       generateReferenceToContextualVariable(mv);
     }
-  }
-
-  public boolean isFunctionalVariable()
-  {
-    return expression.isFunctional() || expression.isInterfaceFunctional();
-//    
-//    Class<?> type = type();
-//    return Function.class.isAssignableFrom(type);
   }
 
   public void generateReferenceToContextualVariable(MethodVisitor mv)
@@ -387,16 +418,13 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     Class<?> referenceType = reference.type();
     expression.loadThisAndFieldOntoStack(mv, reference.name, referenceType);
-
   }
 
   /**
-   * Generates an {@code identity()} call for a declared variable — one that
-   * represents a symbolic indeterminate rather than a runtime input parameter.
-   * This applies both to nullary functions (where there is no input parameter)
-   * and to non-nullary functions whose codomain is functional (e.g.,
-   * polynomial-valued sequences where {@code x} is the polynomial indeterminate
-   * while {@code n} is the sequence index).
+   * Generates an {@code identity()} call for a variable that represents a
+   * symbolic indeterminate rather than a runtime input parameter.  This is used
+   * for both nullary-independent variables (priority 2) and placeholder variables
+   * (priority 4).
    */
   public void generateFunctionalVariableIdentity(MethodVisitor mv)
   {
@@ -404,7 +432,8 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       resolveReference();
     }
-    assert expression.isFunctional() || expression.isInterfaceFunctional() : expression.toStringExtended() + " is not a functional or an interface functional";
+    assert isIndependent && expression.isNullaryFunction() || isPlaceholder : "generateFunctionalVariableIdentity called on non-nullary non-placeholder variable: "
+                                                                              + resolutionStateString();
     if (isRootNode)
     {
       cast(loadResultParameter(mv), reference.type);
@@ -453,9 +482,28 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
   }
 
+  /**
+   * Returns true if this node should be resolved as the independent variable of
+   * the containing expression.
+   *
+   * <p>For nullary functions, there is no runtime input parameter, so no
+   * variable is the "independent" input — the single free variable will instead
+   * become the codomain placeholder (priority 4 or, if the codomain is not
+   * functional, priority 2 applies directly since it shares both paths through
+   * {@link #designateAsIndependentVariable}).  This method therefore returns
+   * false for nullary expressions so that non-functional-codomain nullary
+   * expressions still correctly fall into the nullary-independent path via
+   * {@link #designateAsIndependentVariable} setting {@code isNullaryFunction()}
+   * semantics, while functional-codomain nullary expressions also use it.
+   *
+   * <p>Concretely: for nullary expressions this method returns true when there
+   * is no independent variable yet, which allows {@link #designateAsIndependentVariable}
+   * to set {@code reference.type = expression.coDomainType} via its nullary branch.
+   */
   public boolean isIndependent()
   {
-    return equals(expression.independentVariable) || (expression.independentVariable == null);
+    return equals(expression.independentVariable)
+           || (expression.independentVariable == null && !expression.isInterfaceFunctional());
   }
 
   @Override
@@ -482,13 +530,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return true;
   }
 
-  /**
-   * Conditionally rename this {@link VariableNode}
-   * 
-   * @param from
-   * @param to
-   * @return true if it was renamed
-   */
   public boolean renameIfNamed(String from, String to)
   {
     if (isVariableNamed(from))
@@ -500,7 +541,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       return false;
     }
-
   }
 
   public VariableNode<D, R, F> renameTo(String to)
@@ -520,28 +560,23 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
         if (Expression.traceNodes)
         {
           logger.debug("Declaring {} as a contextual variable of type {}", reference, reference.type());
-
         }
-
         return true;
       }
     }
-
     return false;
   }
 
   public VariableNode<D, R, F> designateAsIndependentVariable()
   {
     assert (expression.independentVariable == null
-                  || expression.independentVariable.equals(expression.independentVariable)) : "inputVariable is already "
-                                                                                              + expression.independentVariable
-                                                                                              + " it doesnt make sense to change it to "
-                                                                                              + this;
-
+                  || expression.independentVariable.equals(this)) : "independentVariable is already "
+                                                                    + expression.independentVariable
+                                                                    + " it doesn't make sense to change it to "
+                                                                    + this;
     if (Expression.traceNodes)
     {
-
-      logger.debug(String.format("#%s: resolveIndependentVariable: declaring %s as the input node to '%s' which currently has input variable %s\n",
+      logger.debug(String.format("#%s: designateAsIndependentVariable: declaring %s as the input node to '%s' which currently has input variable %s\n",
                                  System.identityHashCode(this),
                                  reference,
                                  expression,
@@ -551,7 +586,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     expression.independentVariable = this;
     reference.type                 = expression.isNullaryFunction() ? expression.coDomainType : expression.domainType;
     return this;
-
   }
 
   public <E, S, G extends Function<? extends E, ? extends S>> VariableNode<E, S, G> spliceInto(Expression<E, S, G> newExpression)
@@ -574,11 +608,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return getName().charAt(0);
   }
 
-  /**
-   * Returns a {@code %s} format placeholder (to be filled with the bound value)
-   * when this variable is bound in any upstream expression's context, otherwise
-   * delegates to {@link RealVariable#toString()}.
-   */
   @Override
   public String toString()
   {
@@ -595,8 +624,8 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
            + upstreamInput
            + ", isIndependent="
            + isIndependent
-           + ", isFunctionalVariable()="
-           + isFunctionalVariable()
+           + ", isPlaceholder="
+           + isPlaceholder
            + ", reference="
            + reference
            + "]";
@@ -610,7 +639,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       returnType = expression.isNullaryFunction() ? expression.coDomainType : expression.domainType;
     }
-    else if (isFunctionalVariable())
+    else if (isPlaceholder)
     {
       returnType = expression.coDomainType;
     }

@@ -496,17 +496,6 @@ public class VariableNodeResolutionTest extends
     assertEquals(Real.class, expr.coDomainType);
   }
 
-  /**
-   * Test that a RealFunction (non-nullary) with functional codomain properties
-   * has isFunctionalVariable() returning false (since Real is not a Function).
-   */
-  public void testIsFunctionalVariableForRealFunction()
-  {
-    Expression<Real, Real, RealFunction>   expr = RealFunction.parse("x");
-    VariableNode<Real, Real, RealFunction> x    = expr.getIndependentVariable();
-    assertNotNull(x);
-    assertFalse("Real codomain is not functional, so isFunctionalVariable() should be false", x.isFunctionalVariable());
-  }
 
   /**
    * Test that the expression toString() correctly represents the parsed

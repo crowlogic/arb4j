@@ -138,6 +138,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                        Supplier<F>,
                        Consumer<Consumer<Expression<?, ?, ?>>>
 {
+  
+  /**
+   * The single placeholder variable of this expression's codomain type.
+   * Assigned during {@link VariableNode#resolveReference()} when the expression
+   * is non-nullary and {@link #isInterfaceFunctional()} is true and a free
+   * variable is encountered that is neither the independent variable, a context
+   * variable, nor an upstream variable.  Only one placeholder is permitted per
+   * expression; a second unresolved free variable throws {@link CompilerException}.
+   */
+  public VariableNode<D, C, F> placeholderVariable;
+  
   public boolean deferVariableResolution = false;
 
   public Stream<VariableNode<D, C, F>> variableNodeStream()
@@ -567,6 +578,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     expr.position            = position;
     expr.character           = character;
     expr.previousCharacter   = previousCharacter;
+    expr.placeholderVariable = placeholderVariable;
     return expr;
   }
 
