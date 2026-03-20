@@ -440,7 +440,7 @@ public class VariableNodeResolutionTest extends
     Expression<Real, Real, RealFunction>   expr = RealFunction.parse("x");
     VariableNode<Real, Real, RealFunction> x    = expr.getIndependentVariable();
     assertNotNull(x);
-    assertTrue("x.isIndependent() should be true", x.isIndependent());
+    assertTrue("x.isIndependent() should be true", x.isIndependent(x));
     assertTrue("x.isIndependent field should be true", x.isIndependent);
   }
 
