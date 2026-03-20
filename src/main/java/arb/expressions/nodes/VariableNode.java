@@ -225,7 +225,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   protected VariableNode<?, ?, ?> throwNewUndefinedReferenceException()
   {
-    throw new UndefinedReferenceException(String.format("undefined reference: %s", resolutionStateString()));
+    throw new UndefinedReferenceException(String.format("undefined variable reference: %s", resolutionStateString()));
   }
 
   public VariableNode(Expression<D, R, F> expression, VariableReference<D, R, F> reference, boolean resolve)
@@ -503,7 +503,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   public boolean isIndependent()
   {
     return equals(expression.independentVariable)
-           || (expression.independentVariable == null && !expression.isInterfaceFunctional());
+           || expression.independentVariable == null;
   }
 
   @Override
