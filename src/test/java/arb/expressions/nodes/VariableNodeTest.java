@@ -57,4 +57,12 @@ public class VariableNodeTest extends
     assertEquals("x² + 3*x + 2", poly.toString());
   }
 
+  public void testResolutionOfRealToRealFunctionWithSameIndependentAndPlaceholderVariables()
+  {
+    Expression<Real, Real, RealFunction> expression = Function.parse(Real.class, Real.class, RealFunction.class, "x->x+3*x+x^2");
+    RealFunction                         f          = expression.instantiate();
+    Real                                 poly       = f.evaluate(RealConstants.two, 0, 128);
+    assertEquals("12", poly.toString());
+  }
+
 }
