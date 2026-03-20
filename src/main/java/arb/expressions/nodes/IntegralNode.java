@@ -92,9 +92,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     }
   }
 
-  public IntegralNode(Expression<D, C, F> expression,
-                      Node<D, C, F> functionEvaluationNode,
-                      VariableNode<D, C, F> variable)
+  public IntegralNode(Expression<D, C, F> expression, Node<D, C, F> functionEvaluationNode, VariableNode<D, C, F> variable)
   {
     super(expression);
     assert variable != null : "variable shan't be null";
@@ -188,16 +186,14 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       return result.spliceInto(expression).simplify();
     }
 
-    throw new UnsupportedOperationException("Unable to apply delta function sifting property to: "
-                                            + this);
+    throw new UnsupportedOperationException("Unable to apply delta function sifting property to: " + this);
   }
 
   protected void compileIndefiniteIntegral()
   {
     indefiniteIntegralExpression           = expression.cloneExpression();
     indefiniteIntegralExpression.className = "∫" + indefiniteIntegralExpression.className;
-    indefiniteIntegralExpression.rootNode  =
-                                          indefiniteIntegralNode.spliceInto(indefiniteIntegralExpression);
+    indefiniteIntegralExpression.rootNode  = indefiniteIntegralNode.spliceInto(indefiniteIntegralExpression);
     indefiniteIntegralExpression.compile();
     expression.registerSubexpression(indefiniteIntegralExpression);
   }
@@ -216,17 +212,12 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     var rawIntegral = integrandNode.integral(integrationVariableNode.asVariable()).simplify();
     if (Expression.trace && logger.isDebugEnabled())
     {
-      logger.debug("computeIndefiniteIntegralNode(compileIfNecessary={}) rawIntegral={}",
-                   compileIfNecessary,
-                   rawIntegral);
+      logger.debug("computeIndefiniteIntegralNode(compileIfNecessary={}) rawIntegral={}", compileIfNecessary, rawIntegral);
     }
 
     indefiniteIntegralNode = rawIntegral;
 
-    assert indefiniteIntegralNode != null : "indefiniteIntegralNode is null as returned from "
-                                            + integrandNode
-                                            + " of "
-                                            + integrandNode.getClass();
+    assert indefiniteIntegralNode != null : "indefiniteIntegralNode is null as returned from " + integrandNode + " of " + integrandNode.getClass();
     if (!isDefiniteIntegral() && compileIfNecessary)
     {
       compileIndefiniteIntegral();
@@ -237,8 +228,8 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   {
     Expression<D, C, F> evaluationExpression = expression.cloneExpression();
 
-    evaluationExpression.context                  = expression.context;
-    evaluationExpression.deferVariableResolution   = true;
+    evaluationExpression.context                 = expression.context;
+    evaluationExpression.deferVariableResolution = true;
 
     return evaluationExpression;
   }
@@ -250,8 +241,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     {
       return false;
     }
-    return integrandNode.dependsOn(variable)
-                  || (lowerLimitNode != null && lowerLimitNode.dependsOn(variable))
+    return integrandNode.dependsOn(variable) || (lowerLimitNode != null && lowerLimitNode.dependsOn(variable))
                   || (upperLimitNode != null && upperLimitNode.dependsOn(variable));
   }
 
@@ -272,8 +262,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       return false;
     IntegralNode<?, ?, ?> other = (IntegralNode<?, ?, ?>) obj;
     boolean               a     = Objects.equals(integrandNode, other.integrandNode);
-    boolean               b     =
-                            Objects.equals(integrationVariableNode, other.integrationVariableNode);
+    boolean               b     = Objects.equals(integrationVariableNode, other.integrationVariableNode);
     boolean               c     = Objects.equals(lowerLimitNode, other.lowerLimitNode);
     boolean               d     = Objects.equals(upperLimitNode, other.upperLimitNode);
     return a && b && c && d;
@@ -287,8 +276,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
     ensureIndefiniteIntegralNode();
 
-    return isDefiniteIntegral() ? generateDefiniteIntegral(mv, resultType)
-                                : generateIndefiniteIntegral(mv, resultType);
+    return isDefiniteIntegral() ? generateDefiniteIntegral(mv, resultType) : generateIndefiniteIntegral(mv, resultType);
   }
 
   protected MethodVisitor generateDefiniteIntegral(MethodVisitor mv, Class<?> resultType)
@@ -336,10 +324,8 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
     String integrationVariable = integrationVariableNode.getName();
 
-    var    upperResult         =
-                       upperEval.substitute(integrationVariable, upperLimitNode).simplify();
-    var    lowerResult         =
-                       lowerEval.substitute(integrationVariable, lowerLimitNode).simplify();
+    var    upperResult         = upperEval.substitute(integrationVariable, upperLimitNode).simplify();
+    var    lowerResult         = lowerEval.substitute(integrationVariable, lowerLimitNode).simplify();
 
     var    tempResult          = upperResult.sub(lowerResult).simplify();
 
@@ -391,10 +377,10 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
    */
   protected void parseIntegrandViaSubExpression(String arrowVar)
   {
-    integrandExpression                     = expression.cloneExpression();
-    integrandExpression.upstreamExpression            = expression;
-    integrandExpression.functionName        = null;
-    integrandExpression.independentVariable = null;
+    integrandExpression                         = expression.cloneExpression();
+    integrandExpression.upstreamExpression      = expression;
+    integrandExpression.functionName            = null;
+    integrandExpression.independentVariable     = null;
     integrandExpression.rootNode                = null;
     integrandExpression.deferVariableResolution = true;
 
@@ -438,10 +424,8 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     var reference = expression.require(',').parseVariableReference();
     integrationVariableName = reference.name;
 
-    VariableNode<D, C, F> inputVariableNode =
-                                            integrandExpression.newVariableNode(reference);
-    var                   ivar              =
-                               integrandExpression.assignInputVariable(inputVariableNode);
+    VariableNode<D, C, F> inputVariableNode = integrandExpression.newVariableNode(reference);
+    var                   ivar              = integrandExpression.assignInputVariable(inputVariableNode);
     integrandNode.resolveVariables();
 
     if (expression.nextCharacterIs('='))
@@ -488,8 +472,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       {
         integrationVariableName = expression.parseName();
 
-        integrandExpression.assignInputVariable(varNode =
-                                                        integrandExpression.newVariableNode(integrationVariableName));
+        integrandExpression.assignInputVariable(varNode = integrandExpression.newVariableNode(integrationVariableName));
         integrandNode.resolveVariables();
 
         if (expression.nextCharacterIs('='))
@@ -515,8 +498,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   {
     integrationVariableName = expression.parseName();
 
-    var node =
-             integrandExpression.assignInputVariable(integrandExpression.newVariableNode(integrationVariableName));
+    var node = integrandExpression.assignInputVariable(integrandExpression.newVariableNode(integrationVariableName));
     integrandNode.resolveVariables();
 
     if (expression.nextCharacterIs('∈'))
@@ -534,8 +516,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   {
     if (lowerLimitNode != null && upperLimitNode != null)
     {
-      boolean integralOverTheRealLine = lowerLimitNode.isNegativeInfinity()
-                    && upperLimitNode.isPositiveInfinity();
+      boolean integralOverTheRealLine = lowerLimitNode.isNegativeInfinity() && upperLimitNode.isPositiveInfinity();
       if (integralOverTheRealLine)
       {
         if (integrandNode.isOne())
@@ -546,8 +527,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
         {
           return applyDeltaFunctionSifting();
         }
-        throw new UnsupportedOperationException("todo: handle other cases for integral over real line: "
-                                                + this);
+        throw new UnsupportedOperationException("todo: handle other cases for integral over real line: " + this);
       }
     }
 
@@ -569,9 +549,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
     var newIntegrandNode           = integrandNode.spliceInto(newExpression);
     var newIntegrationVariableNode = integrationVariableNode.spliceInto(newExpression).asVariable();
@@ -580,19 +558,13 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
                                                                newIntegrationVariableNode);
     newIntegralNode.integrandNode           = newIntegrandNode;
     newIntegralNode.integrationVariableName = integrationVariableName;
-    newIntegralNode.upperLimitNode          =
-                                   upperLimitNode != null ? upperLimitNode.spliceInto(newExpression)
-                                                          : null;
-    newIntegralNode.lowerLimitNode          =
-                                   lowerLimitNode != null ? lowerLimitNode.spliceInto(newExpression)
-                                                          : null;
+    newIntegralNode.upperLimitNode          = upperLimitNode != null ? upperLimitNode.spliceInto(newExpression) : null;
+    newIntegralNode.lowerLimitNode          = lowerLimitNode != null ? lowerLimitNode.spliceInto(newExpression) : null;
     return newIntegralNode;
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, C, F>
-         substitute(String variable, Node<E, S, G> arg)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, C, F> substitute(String variable, Node<E, S, G> arg)
   {
     if (lowerLimitNode != null)
     {
@@ -620,14 +592,8 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   @Override
   public String toString()
   {
-    return isDefiniteIntegral() ? String.format("∫%sd%s∈(%s,%s)",
-                                                integrandNode.toString(),
-                                                integrationVariableNode.getName(),
-                                                lowerLimitNode,
-                                                upperLimitNode)
-                                : String.format("∫%sd%s",
-                                                integrandNode.toString(),
-                                                integrationVariableNode.getName());
+    return isDefiniteIntegral() ? String.format("∫%sd%s∈(%s,%s)", integrandNode.toString(), integrationVariableNode.getName(), lowerLimitNode, upperLimitNode)
+                                : String.format("∫%sd%s", integrandNode.toString(), integrationVariableNode.getName());
   }
 
   @Override
@@ -644,8 +610,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   @Override
   public String typeset()
   {
-    return lowerLimitNode == null && upperLimitNode == null ? typesetIndefiniteIntegral()
-                                                            : typesetDefiniteIntegral();
+    return lowerLimitNode == null && upperLimitNode == null ? typesetIndefiniteIntegral() : typesetDefiniteIntegral();
   }
 
   protected String typesetDefiniteIntegral()
@@ -661,10 +626,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
   protected String typesetIndefiniteIntegral()
   {
-    return String.format("%sint %s %smathd %s",
-                         "\\\\",
-                         integrandNode.typeset(),
-                         "\\\\",
-                         integrationVariableNode.typeset());
+    return String.format("%sint %s %smathd %s", "\\\\", integrandNode.typeset(), "\\\\", integrationVariableNode.typeset());
   }
 }

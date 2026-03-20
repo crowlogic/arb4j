@@ -193,7 +193,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return this;
     }
 
-    return throwNewUndefinedReferenceException();    
+    return throwNewUndefinedReferenceException();
   }
 
   protected VariableNode<?, ?, ?> throwNewUndefinedReferenceException()
@@ -373,7 +373,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public boolean isFunctionalVariable()
   {
-    return expression.isFunctional()|| expression.isInterfaceFunctional();
+    return expression.isFunctional() || expression.isInterfaceFunctional();
 //    
 //    Class<?> type = type();
 //    return Function.class.isAssignableFrom(type);

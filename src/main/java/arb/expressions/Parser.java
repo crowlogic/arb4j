@@ -399,8 +399,29 @@ public class Parser
     }
   }
 
-  public static final HashSet<Character> SUBSCRIPT_CHARACTERS         = new HashSet<
-                Character>(Arrays.asList('₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉', 'ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ', 'ₜ'));
+  public static final HashSet<Character> SUBSCRIPT_CHARACTERS         = new HashSet<Character>(Arrays.asList('₀',
+                                                                                                             '₁',
+                                                                                                             '₂',
+                                                                                                             '₃',
+                                                                                                             '₄',
+                                                                                                             '₅',
+                                                                                                             '₆',
+                                                                                                             '₇',
+                                                                                                             '₈',
+                                                                                                             '₉',
+                                                                                                             'ₐ',
+                                                                                                             'ₑ',
+                                                                                                             'ₒ',
+                                                                                                             'ₓ',
+                                                                                                             'ₔ',
+                                                                                                             'ₕ',
+                                                                                                             'ₖ',
+                                                                                                             'ₗ',
+                                                                                                             'ₘ',
+                                                                                                             'ₙ',
+                                                                                                             'ₚ',
+                                                                                                             'ₛ',
+                                                                                                             'ₜ'));
 
   public static final Character[]        SUPERSCRIPT_DIGITS_ARRAY     =
   { '⁰', '¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹' };

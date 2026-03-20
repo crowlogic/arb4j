@@ -107,16 +107,14 @@ public interface RealFunction extends
 
     if (functionName != null && context != null)
     {
-      FunctionMapping<Real,
-                    Real,
-                    RealFunction> mapping = context.registerFunctionMapping(functionName,
-                                                                            null,
-                                                                            parsed.domainType,
-                                                                            parsed.coDomainType,
-                                                                            parsed.functionClass,
-                                                                            true,
-                                                                            null,
-                                                                            expression);
+      FunctionMapping<Real, Real, RealFunction> mapping = context.registerFunctionMapping(functionName,
+                                                                                          null,
+                                                                                          parsed.domainType,
+                                                                                          parsed.coDomainType,
+                                                                                          parsed.functionClass,
+                                                                                          true,
+                                                                                          null,
+                                                                                          expression);
       parsed.functionMapping   = mapping;
       mapping.expressionString = parsed.getExpression();
     }

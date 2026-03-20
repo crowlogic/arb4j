@@ -53,17 +53,15 @@ public interface Function<D, CO> extends
          Expression<D, H, Q>
          parseAndCompile(Class<? extends D> domainClass, Class<? extends H> coDomainClass, Class<? extends Q> functionClass, String expression, Context context)
   {
-    Expression<D,
-                  H,
-                  Q> parsedExpression = Function.parse(Parser.transformToAcceptableJavaIdentifier(expression),
-                                                       expression,
-                                                       context,
-                                                       domainClass,
-                                                       coDomainClass,
-                                                       functionClass,
-                                                       null,
-                                                       null,
-                                                       true);
+    Expression<D, H, Q> parsedExpression = Function.parse(Parser.transformToAcceptableJavaIdentifier(expression),
+                                                          expression,
+                                                          context,
+                                                          domainClass,
+                                                          coDomainClass,
+                                                          functionClass,
+                                                          null,
+                                                          null,
+                                                          true);
     parsedExpression.compile();
 
     return parsedExpression;
@@ -160,15 +158,13 @@ public interface Function<D, CO> extends
                                                                         String functionName,
                                                                         boolean replace)
   {
-    Expression<D,
-                  H,
-                  Q> compiledParsedAndRegisteredExpression = parseCompileAndRegister(expression,
-                                                                                     context,
-                                                                                     domainClass,
-                                                                                     coDomainClass,
-                                                                                     functionClass,
-                                                                                     functionName,
-                                                                                     replace);
+    Expression<D, H, Q> compiledParsedAndRegisteredExpression = parseCompileAndRegister(expression,
+                                                                                        context,
+                                                                                        domainClass,
+                                                                                        coDomainClass,
+                                                                                        functionClass,
+                                                                                        functionName,
+                                                                                        replace);
     return compiledParsedAndRegisteredExpression.functionMapping != null ? compiledParsedAndRegisteredExpression.functionMapping.instance
                                                                          : compiledParsedAndRegisteredExpression.instantiate();
   }
