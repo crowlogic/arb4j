@@ -2,16 +2,9 @@ package arb.functions.real;
 
 import java.util.stream.IntStream;
 
+import arb.*;
 import arb.Float;
-import arb.FloatInterval;
-import arb.Real;
-import arb.RealDataSet;
-import arb.RealPartition;
-import arb.RoundingMode;
-import arb.expressions.Context;
-import arb.expressions.Expression;
-import arb.expressions.FunctionMapping;
-import arb.expressions.Parser;
+import arb.expressions.*;
 import arb.functions.Function;
 
 /**
@@ -89,20 +82,12 @@ public interface RealFunction extends
     return express(functionName, expression, context, false);
   }
 
-  public static RealFunction
-         express(String functionName, String expression, Context context, boolean verbose)
+  public static RealFunction express(String functionName, String expression, Context context, boolean verbose)
   {
-    return Function.express(expression,
-                                context,
-                                Real.class,
-                                Real.class,
-                                RealFunction.class,
-                                functionName);
+    return Function.express(expression, context, Real.class, Real.class, RealFunction.class, functionName);
   }
 
-  public static <E extends Expression<Real, Real, RealFunction>>
-         Expression<Real, Real, RealFunction>
-         parse(String expression)
+  public static <E extends Expression<Real, Real, RealFunction>> E parse(String expression)
   {
     return parse(expression, null, true);
   }
@@ -112,21 +97,12 @@ public interface RealFunction extends
     return parse(expression, context, true);
   }
 
-  public static Expression<Real, Real, RealFunction>
-         parse(String expression, Context context, boolean simplify)
+  public static <E extends Expression<Real, Real, RealFunction>> E parse(String expression, Context context, boolean simplify)
   {
 
-    var    parsed       = Function.parse(null,
-                                         expression,
-                                         context,
-                                         Real.class,
-                                         Real.class,
-                                         RealFunction.class,
-                                         null,
-                                         null,
-                                         simplify);
+    E   parsed       = Function.parse(null, expression, context, Real.class, Real.class, RealFunction.class, null, null, simplify);
 
-    var    functionName = parsed.functionName;
+    var functionName = parsed.functionName;
     parsed.updateStringRepresentation();
 
     if (functionName != null && context != null)
@@ -141,7 +117,7 @@ public interface RealFunction extends
                                                                             true,
                                                                             null,
                                                                             expression);
-      parsed.functionMapping           = mapping;
+      parsed.functionMapping   = mapping;
       mapping.expressionString = parsed.getExpression();
     }
 
@@ -290,8 +266,7 @@ public interface RealFunction extends
                                            interval);
       Real        values = sample.getRealYValues();
 
-      try ( RealPartition mesh =
-                               interval.generateRealPartition(bits, false, sample.getRealXValues()))
+      try ( RealPartition mesh = interval.generateRealPartition(bits, false, sample.getRealXValues()))
       {
         IntStream domain = IntStream.range(0, n);
         if (parallel)

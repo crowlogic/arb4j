@@ -2638,7 +2638,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     // Use the lambda parameter as the functional expression's independent variable.
     var lambdaParam = lambdaParameter;
-   
+
     if (lambdaParam != null)
     {
       functionalExpression.independentVariable = lambdaParam.spliceInto(functionalExpression).asVariable();
@@ -2755,7 +2755,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * @return this
    * @throws CompilerException
    */
-  public Expression<D, C, F> parse(boolean simplify)
+  @SuppressWarnings("unchecked")
+  public <D, C, F extends Function<? extends D, ? extends C>, PD, PC, PF extends Function<? extends PD, ? extends PC>, E extends Expression<D, C, F>>
+         E
+         parse(boolean simplify)
   {
     assert rootNode == null : "parse must only be called before anything else has been parsed but rootNode=" + rootNode;
     evaluateOptionalIndependentVariableSpecification();
@@ -2784,7 +2787,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     updateStringRepresentation();
     // constructAndRegisterThisFunction();
-    return this;
+    return (E) this;
   }
 
   protected Node<D, C, F> parseSuperscript(Node<D, C, F> node, char superscript, String digit)

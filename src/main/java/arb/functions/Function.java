@@ -276,8 +276,8 @@ public interface Function<D, CO> extends
     return parse(hashString, expression, context, domainClass, coDomainClass, functionClass, null, containingExpression, simplify);
   }
 
-  public static <D, H, Q extends Function<? extends D, ? extends H>, PD, PC, PF extends Function<? extends PD, ? extends PC>>
-         Expression<D, H, Q>
+  public static <D, H, Q extends Function<? extends D, ? extends H>, PD, PC, PF extends Function<? extends PD, ? extends PC>, E extends Expression<D, H, Q>>
+         E
          parse(String className,
                String expression,
                Context context,

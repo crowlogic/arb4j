@@ -1,9 +1,7 @@
 package arb.expressions;
 
 import java.text.Normalizer;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 import arb.Fraction;
 import arb.FractionConstants;
@@ -638,8 +636,8 @@ public class Parser
     return parseExpression(className, expressionString, context, domainClass, coDomainClass, functionClass, functionName, null, true);
   }
 
-  public static <D, C, F extends Function<? extends D, ? extends C>, PD, PC, PF extends Function<? extends PD, ? extends PC>>
-         Expression<D, C, F>
+  public static <D, C, F extends Function<? extends D, ? extends C>, PD, PC, PF extends Function<? extends PD, ? extends PC>, E extends Expression<D, C, F>>
+         E
          parseExpression(String className,
                          String expression,
                          Context context,
