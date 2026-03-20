@@ -47,7 +47,6 @@ module arb4j
   exports arb.expressions.nodes.unary;
   exports arb.algebra;
   exports arb.geometry;
-  exports arb.differential.geometry;
   exports arb.domains;
   exports arb.exceptions;
 
