@@ -8,28 +8,22 @@
 
 package arb;
 
-public class FastDFTCyclicScheme
-{
-  protected long    swigCPtr;
+public class FastDFTCyclicScheme {
+  protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-  public FastDFTCyclicScheme(long cPtr, boolean cMemoryOwn)
-  {
+  public FastDFTCyclicScheme(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr    = cPtr;
+    swigCPtr = cPtr;
   }
 
-  public static long getCPtr(FastDFTCyclicScheme obj)
-  {
+  public static long getCPtr(FastDFTCyclicScheme obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete()
-  {
-    if (swigCPtr != 0)
-    {
-      if (swigCMemOwn)
-      {
+  public synchronized void delete() {
+    if (swigCPtr != 0) {
+      if (swigCMemOwn) {
         swigCMemOwn = false;
         arblibJNI.delete_FastDFTCyclicScheme(swigCPtr);
       }
@@ -37,66 +31,50 @@ public class FastDFTCyclicScheme
     }
   }
 
-  public void setN(int value)
-  {
+  public void setN(int value) {
     arblibJNI.FastDFTCyclicScheme_n_set(swigCPtr, this, value);
   }
 
-  public int getN()
-  {
+  public int getN() {
     return arblibJNI.FastDFTCyclicScheme_n_get(swigCPtr, this);
   }
 
-  public void setZ(Complex value)
-  {
+  public void setZ(Complex value) {
     arblibJNI.FastDFTCyclicScheme_z_set(swigCPtr, this, Complex.getCPtr(value), value);
   }
 
-  public Complex getZ()
-  {
+  public Complex getZ() {
     long cPtr = arblibJNI.FastDFTCyclicScheme_z_get(swigCPtr, this);
-    return (cPtr == 0) ? null
-                       : new Complex(cPtr,
-                                     false);
+    return (cPtr == 0) ? null : new Complex(cPtr, false);
   }
 
-  public void setZclear(int value)
-  {
+  public void setZclear(int value) {
     arblibJNI.FastDFTCyclicScheme_zclear_set(swigCPtr, this, value);
   }
 
-  public int getZclear()
-  {
+  public int getZclear() {
     return arblibJNI.FastDFTCyclicScheme_zclear_get(swigCPtr, this);
   }
 
-  public void setNumeratorAddress(int value)
-  {
+  public void setNumeratorAddress(int value) {
     arblibJNI.FastDFTCyclicScheme_numeratorAddress_set(swigCPtr, this, value);
   }
 
-  public int getNumeratorAddress()
-  {
+  public int getNumeratorAddress() {
     return arblibJNI.FastDFTCyclicScheme_numeratorAddress_get(swigCPtr, this);
   }
 
-  public void setCyc(FastDFTStepScheme value)
-  {
+  public void setCyc(FastDFTStepScheme value) {
     arblibJNI.FastDFTCyclicScheme_cyc_set(swigCPtr, this, FastDFTStepScheme.getCPtr(value), value);
   }
 
-  public FastDFTStepScheme getCyc()
-  {
+  public FastDFTStepScheme getCyc() {
     long cPtr = arblibJNI.FastDFTCyclicScheme_cyc_get(swigCPtr, this);
-    return (cPtr == 0) ? null
-                       : new FastDFTStepScheme(cPtr,
-                                               false);
+    return (cPtr == 0) ? null : new FastDFTStepScheme(cPtr, false);
   }
 
-  public FastDFTCyclicScheme()
-  {
-    this(arblibJNI.new_FastDFTCyclicScheme(),
-         true);
+  public FastDFTCyclicScheme() {
+    this(arblibJNI.new_FastDFTCyclicScheme(), true);
   }
 
 }

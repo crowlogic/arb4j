@@ -20,32 +20,22 @@ import arb.expressions.Context;
  *      {@link TheArb4jLibrary}
  */
 
-public class IntegerPolynomial implements
-                               Named,
-                               AutoCloseable,
-                               Ring<IntegerPolynomial>,
-                               Function<Integer, Integer>
-{
-  protected long    swigCPtr;
+public class IntegerPolynomial implements Named,AutoCloseable,Ring<IntegerPolynomial>,Function<Integer,Integer> {
+  protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-  public IntegerPolynomial(long cPtr, boolean cMemoryOwn)
-  {
+  public IntegerPolynomial(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr    = cPtr;
+    swigCPtr = cPtr;
   }
 
-  public static long getCPtr(IntegerPolynomial obj)
-  {
+  public static long getCPtr(IntegerPolynomial obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete()
-  {
-    if (swigCPtr != 0)
-    {
-      if (swigCMemOwn)
-      {
+  public synchronized void delete() {
+    if (swigCPtr != 0) {
+      if (swigCMemOwn) {
         swigCMemOwn = false;
         arblibJNI.delete_IntegerPolynomial(swigCPtr);
       }
@@ -53,10 +43,7 @@ public class IntegerPolynomial implements
     }
   }
 
-  static
-  {
-    System.loadLibrary("arblib");
-  }
+  static { System.loadLibrary( "arblib" ); }
 
   /**
    * Evaluate this polynomial at a {@link ComplexFraction} point via Horner's
@@ -90,28 +77,28 @@ public class IntegerPolynomial implements
     }
     return result;
   }
-
+    
   public boolean isOne()
   {
     return arblib.fmpz_poly_is_one(this) != 0;
   }
-
+    
   public int degree()
   {
     return arblib.fmpz_poly_degree(this);
   }
-
+  
   public RationalFunction div(IntegerPolynomial operand, int prec, RationalFunction result)
   {
     result.getNumerator().set(this);
     result.getDenominator().set(operand);
     return result;
-  }
+  } 
 
   public IntegerPolynomial add(Real addend, int bits, IntegerPolynomial result)
   {
     assert addend.isInteger() : "addend " + addend + " must be an integer";
-    try ( var intVal = addend.integerValue(new Integer()))
+    try ( var intVal = addend.integerValue(new Integer()) )
     {
       return result.set(this).add(intVal, bits);
     }
@@ -119,21 +106,20 @@ public class IntegerPolynomial implements
 
   public IntegerPolynomial add(Integer intVal, int bits)
   {
-    return add(intVal, bits, this);
+    return add(intVal,bits,this);
   }
 
   public IntegerPolynomial set(IntegerPolynomial integerPolynomial)
   {
-    arblib.fmpz_poly_set(this, integerPolynomial);
-    ;
+    arblib.fmpz_poly_set(this, integerPolynomial);;
     return this;
   }
-
+  
   public IntegerPolynomial sub(IntegerPolynomial x, int bits)
   {
     return sub(x, bits, this);
   }
-
+  
   public IntegerPolynomial add(Integer in, int bits, IntegerPolynomial result)
   {
     assert in.swigCPtr != 0;
@@ -142,7 +128,7 @@ public class IntegerPolynomial implements
     arblib.fmpz_poly_add_fmpz(result, this, in.swigCPtr);
     return result;
   }
-
+  
   public IntegerPolynomial pow(Integer in, int bits, IntegerPolynomial result)
   {
     assert in.swigCPtr != 0;
@@ -152,7 +138,7 @@ public class IntegerPolynomial implements
     arblib.fmpz_poly_pow(result, this, in.getUnsignedValue());
     return result;
   }
-
+  
   public IntegerPolynomial identity()
   {
     return zero().set(1, 1);
@@ -172,21 +158,22 @@ public class IntegerPolynomial implements
     arblib.fmpz_poly_evaluate_fmpz(res.swigCPtr, this, t.swigCPtr);
     return res;
   }
-
+  
   @Override
-  public int dim()
+  public int
+         dim()
   {
     return 1;
   }
-
+    
   public IntegerPolynomial remainder;
-
+  
   @Override
   public String toString()
   {
     return arblib.fmpz_poly_get_str_pretty(this, "x");
   }
-
+  
   public String name;
 
   public IntegerPolynomial add(IntegerPolynomial addend, IntegerPolynomial res)
@@ -199,13 +186,13 @@ public class IntegerPolynomial implements
     arblib.fmpz_poly_set_si(this, i);
     return this;
   }
-
+  
   public IntegerPolynomial set(Integer i)
   {
     arblib.fmpz_poly_set_fmpz(this, i.swigCPtr);
     return this;
   }
-
+  
   public IntegerPolynomial(String str)
   {
     this();
@@ -214,7 +201,7 @@ public class IntegerPolynomial implements
 
   public static IntegerPolynomial express(String expression)
   {
-    return express(expression, null);
+    return express(expression,null);
   }
 
   public static IntegerPolynomial express(String expression, Context context)
@@ -226,7 +213,7 @@ public class IntegerPolynomial implements
   {
     return IntegerPolynomialNullaryFunction.express(str).evaluate(128, this);
   }
-
+  
   @Override
   public boolean equals(Object obj)
   {
@@ -238,20 +225,20 @@ public class IntegerPolynomial implements
 
     return arblib.fmpz_poly_equal(this, that) != 0;
   }
-
+  
   public IntegerPolynomial add(IntegerPolynomial addend, int bits, IntegerPolynomial res)
   {
     arblib.fmpz_poly_add(res, this, addend);
     return res;
   }
-
+    
   @Override
-  public void close()
+  public void close() 
   {
     delete();
   }
-
-  @Override
+  
+    @Override
   public IntegerPolynomial mul(IntegerPolynomial operand, int prec, IntegerPolynomial result)
   {
     arblib.fmpz_poly_mul(result, this, operand);
@@ -262,8 +249,8 @@ public class IntegerPolynomial implements
   @Override
   public <N extends Named> N setName(String name)
   {
-    this.name = name;
-    return (N) this;
+   this.name = name;
+   return (N) this;
   }
 
   @Override
@@ -271,14 +258,14 @@ public class IntegerPolynomial implements
   {
     return name;
   }
-
+  
   @Override
   public IntegerPolynomial div(IntegerPolynomial operand, int prec, IntegerPolynomial result)
   {
     arblib.fmpz_poly_div(result, this, operand);
     return result;
-  }
-
+  }  
+  
   @Override
   public IntegerPolynomial sub(IntegerPolynomial subtrahend, int bits, IntegerPolynomial res)
   {
@@ -305,47 +292,41 @@ public class IntegerPolynomial implements
 
     return coeffs[idx];
   }
-
+  
   public IntegerPolynomial div(IntegerPolynomial operand, IntegerPolynomial result)
   {
-    return div(operand, 0, result);
+    return div(operand,0, result);
   }
-
+  
   public IntegerPolynomial mul(IntegerPolynomial operand, IntegerPolynomial result)
   {
     return mul(operand, 0, result);
-  }
-
+  }  
+  
   public IntegerPolynomial set(int i, int j)
   {
     arblib.fmpz_poly_set_coeff_si(this, i, j);
     return this;
-  }
+  }  
 
-  public void setCoeffsNative(long value)
-  {
+  public void setCoeffsNative(long value) {
     arblibJNI.IntegerPolynomial_coeffsNative_set(swigCPtr, this, value);
   }
 
-  public long getCoeffsNative()
-  {
+  public long getCoeffsNative() {
     return arblibJNI.IntegerPolynomial_coeffsNative_get(swigCPtr, this);
   }
 
-  public void setLength(int value)
-  {
+  public void setLength(int value) {
     arblibJNI.IntegerPolynomial_length_set(swigCPtr, this, value);
   }
 
-  public int getLength()
-  {
+  public int getLength() {
     return arblibJNI.IntegerPolynomial_length_get(swigCPtr, this);
   }
 
-  public IntegerPolynomial()
-  {
-    this(arblibJNI.new_IntegerPolynomial(),
-         true);
+  public IntegerPolynomial() {
+    this(arblibJNI.new_IntegerPolynomial(), true);
   }
 
 }

@@ -8,28 +8,22 @@
 
 package arb;
 
-public class MantissaNoPointer
-{
-  protected long    swigCPtr;
+public class MantissaNoPointer {
+  protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-  public MantissaNoPointer(long cPtr, boolean cMemoryOwn)
-  {
+  public MantissaNoPointer(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr    = cPtr;
+    swigCPtr = cPtr;
   }
 
-  public static long getCPtr(MantissaNoPointer obj)
-  {
+  public static long getCPtr(MantissaNoPointer obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete()
-  {
-    if (swigCPtr != 0)
-    {
-      if (swigCMemOwn)
-      {
+  public synchronized void delete() {
+    if (swigCPtr != 0) {
+      if (swigCMemOwn) {
         swigCMemOwn = false;
         arblibJNI.delete_MantissaNoPointer(swigCPtr);
       }
@@ -37,10 +31,8 @@ public class MantissaNoPointer
     }
   }
 
-  public MantissaNoPointer()
-  {
-    this(arblibJNI.new_MantissaNoPointer(),
-         true);
+  public MantissaNoPointer() {
+    this(arblibJNI.new_MantissaNoPointer(), true);
   }
 
 }

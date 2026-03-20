@@ -8,28 +8,22 @@
 
 package arb;
 
-public class FastDFTNaiveScheme
-{
-  protected long    swigCPtr;
+public class FastDFTNaiveScheme {
+  protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-  public FastDFTNaiveScheme(long cPtr, boolean cMemoryOwn)
-  {
+  public FastDFTNaiveScheme(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr    = cPtr;
+    swigCPtr = cPtr;
   }
 
-  public static long getCPtr(FastDFTNaiveScheme obj)
-  {
+  public static long getCPtr(FastDFTNaiveScheme obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete()
-  {
-    if (swigCPtr != 0)
-    {
-      if (swigCMemOwn)
-      {
+  public synchronized void delete() {
+    if (swigCPtr != 0) {
+      if (swigCMemOwn) {
         swigCMemOwn = false;
         arblibJNI.delete_FastDFTNaiveScheme(swigCPtr);
       }
@@ -37,63 +31,49 @@ public class FastDFTNaiveScheme
     }
   }
 
-  public void setN(int value)
-  {
+  public void setN(int value) {
     arblibJNI.FastDFTNaiveScheme_n_set(swigCPtr, this, value);
   }
 
-  public int getN()
-  {
+  public int getN() {
     return arblibJNI.FastDFTNaiveScheme_n_get(swigCPtr, this);
   }
 
-  public void setDv(int value)
-  {
+  public void setDv(int value) {
     arblibJNI.FastDFTNaiveScheme_dv_set(swigCPtr, this, value);
   }
 
-  public int getDv()
-  {
+  public int getDv() {
     return arblibJNI.FastDFTNaiveScheme_dv_get(swigCPtr, this);
   }
 
-  public void setZclear(int value)
-  {
+  public void setZclear(int value) {
     arblibJNI.FastDFTNaiveScheme_zclear_set(swigCPtr, this, value);
   }
 
-  public int getZclear()
-  {
+  public int getZclear() {
     return arblibJNI.FastDFTNaiveScheme_zclear_get(swigCPtr, this);
   }
 
-  public void setZ(Complex value)
-  {
+  public void setZ(Complex value) {
     arblibJNI.FastDFTNaiveScheme_z_set(swigCPtr, this, Complex.getCPtr(value), value);
   }
 
-  public Complex getZ()
-  {
+  public Complex getZ() {
     long cPtr = arblibJNI.FastDFTNaiveScheme_z_get(swigCPtr, this);
-    return (cPtr == 0) ? null
-                       : new Complex(cPtr,
-                                     false);
+    return (cPtr == 0) ? null : new Complex(cPtr, false);
   }
 
-  public void setDz(int value)
-  {
+  public void setDz(int value) {
     arblibJNI.FastDFTNaiveScheme_dz_set(swigCPtr, this, value);
   }
 
-  public int getDz()
-  {
+  public int getDz() {
     return arblibJNI.FastDFTNaiveScheme_dz_get(swigCPtr, this);
   }
 
-  public FastDFTNaiveScheme()
-  {
-    this(arblibJNI.new_FastDFTNaiveScheme(),
-         true);
+  public FastDFTNaiveScheme() {
+    this(arblibJNI.new_FastDFTNaiveScheme(), true);
   }
 
 }

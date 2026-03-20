@@ -10,30 +10,22 @@ package arb;
 
 import static arb.arblib.*;
 
-public class Magnitude implements
-                       AutoCloseable,
-                       Comparable<Magnitude>
-{
-  protected long    swigCPtr;
+public class Magnitude implements AutoCloseable,Comparable<Magnitude> {
+  protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-  public Magnitude(long cPtr, boolean cMemoryOwn)
-  {
+  public Magnitude(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr    = cPtr;
+    swigCPtr = cPtr;
   }
 
-  public static long getCPtr(Magnitude obj)
-  {
+  public static long getCPtr(Magnitude obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete()
-  {
-    if (swigCPtr != 0)
-    {
-      if (swigCMemOwn)
-      {
+  public synchronized void delete() {
+    if (swigCPtr != 0) {
+      if (swigCMemOwn) {
         swigCMemOwn = false;
         arblibJNI.delete_Magnitude(swigCPtr);
       }
@@ -56,17 +48,17 @@ public class Magnitude implements
    */
   public Magnitude max(Magnitude mag)
   {
-    return max(mag, this);
+    return max(mag,this);
   }
 
   public Magnitude mul(Magnitude mag)
   {
-    return mul(mag, this);
+    return mul(mag,this);
   }
 
   public Magnitude sub(Magnitude t)
   {
-    return sub(t, this);
+    return sub(t,this);
   }
 
   public Magnitude sqrt()
@@ -79,7 +71,7 @@ public class Magnitude implements
     mag_sqrt(magnitude, this);
     return magnitude;
   }
-
+  
   /**
    * @see arb#mag_max(Magnitude, Magnitude, Magnitude)
    * 
@@ -92,12 +84,12 @@ public class Magnitude implements
     mag_max(res, this, that);
     return res;
   }
-
+    
   public Magnitude swap(int i, int j)
   {
     return get(i).swap(get(j));
   }
-
+  
   /**
    * Sets result to an upper bound for sqrt(this^2+otherwSide^2) using
    * {@link arb#mag_hypot(Magnitude, Magnitude, Magnitude)}y
@@ -111,29 +103,30 @@ public class Magnitude implements
     mag_hypot(result, this, otherSide);
     return result;
   }
-
+  
   public static Magnitude newVector(int i, String string)
   {
     Magnitude vec = newVector(i);
     vec.name = string;
-    return vec;
+    return vec;    
   }
+  
 
   public Magnitude set(Magnitude t)
   {
     mag_set(this, t);
     return this;
   }
-
+   
   public Magnitude init()
   {
     mag_init(this);
     return this;
   }
 
+
   /**
    * Sets the value (of this {@link Magnitude}) to positive ∞
-   * 
    * @see arb#mag_inf(Magnitude)
    * @return this
    */
@@ -142,54 +135,53 @@ public class Magnitude implements
     mag_inf(this);
     return this;
   }
-
+     
   public Magnitude log()
   {
     return log(this);
   }
-
+   
   static
   {
-    System.loadLibrary("arblib");
+   System.loadLibrary("arblib");
   }
-
+ 
   public static final int BYTES = 16;
-
-  int                     dim;
-
+ 
+  int dim;
+ 
   public Magnitude sub(Magnitude u, Magnitude res)
   {
     mag_sub(res, this, u);
     return res;
   }
-
+   
   public Magnitude(double d)
   {
     this();
     set(d);
   }
-
-  public Magnitude set(double d)
+     
+  public Magnitude set( double d )
   {
-    mag_set_d(this, d);
+    mag_set_d(this, d );
     return this;
   }
-
-  public Magnitude get(int index)
+     
+  public Magnitude get( int index )
   {
     assert index < dim;
-    return new Magnitude(swigCPtr + index * Magnitude.BYTES,
-                         false);
-  }
-
-  public static Magnitude newVector(int dim)
-  {
-    Magnitude array = _mag_vec_init(dim);
+    return new Magnitude(swigCPtr + index * Magnitude.BYTES, false);  
+  } 
+  
+ public static Magnitude newVector(int dim)
+ {
+    Magnitude array = _mag_vec_init(dim);    
     array.dim = dim;
     return array;
-  }
+ }
 
-  public String toString(int digits)
+  public String toString( int digits )
   {
     try ( Float floatMag = new Float())
     {
@@ -197,7 +189,7 @@ public class Magnitude implements
       return floatMag.toString(digits);
     }
   }
-
+  
   @Override
   public String toString()
   {
@@ -210,49 +202,49 @@ public class Magnitude implements
 
   public Magnitude clear()
   {
-    if (swigCMemOwn)
+    if ( swigCMemOwn )
     {
       mag_clear(this);
     }
     return this;
   }
-
+  
   @Override
   public void close()
-  {
+  { 
     clear();
   }
-
+  
   @Override
-  public int compareTo(Magnitude other)
+  public int compareTo( Magnitude other )
   {
-    return mag_cmp(this, other);
+    return mag_cmp( this, other );
   }
-
+  
   public double doubleValue()
   {
     return mag_get_d(this);
   }
-
+  
   public Magnitude mul(Magnitude b, Magnitude res)
   {
-    mag_mul(res, this, b);
-    return res;
+    mag_mul(res, this, b );
+    return res;    
   }
-
+  
   public Magnitude add(Magnitude u, Magnitude res)
   {
     mag_add(res, this, u);
     return res;
   }
-
+    
   public Magnitude zero()
   {
     mag_zero(this);
     return this;
   }
-
-  /**
+  
+ /**
    * @see arb#mag_swap(Magnitude, Magnitude)
    * @param that
    * @return
@@ -263,9 +255,10 @@ public class Magnitude implements
     return this;
   }
 
+
   public Magnitude inv(Magnitude magnitude)
   {
-    mag_inv(magnitude, this);
+    mag_inv(magnitude,this);
     return this;
   }
 
@@ -291,32 +284,27 @@ public class Magnitude implements
   public Magnitude pow(long y)
   {
     return pow(y, this);
-  }
+  }  
+  
 
-  public void setExp(long value)
-  {
+  public void setExp(long value) {
     arblibJNI.Magnitude_exp_set(swigCPtr, this, value);
   }
 
-  public long getExp()
-  {
+  public long getExp() {
     return arblibJNI.Magnitude_exp_get(swigCPtr, this);
   }
 
-  public void setMan(long value)
-  {
+  public void setMan(long value) {
     arblibJNI.Magnitude_man_set(swigCPtr, this, value);
   }
 
-  public long getMan()
-  {
+  public long getMan() {
     return arblibJNI.Magnitude_man_get(swigCPtr, this);
   }
 
-  public Magnitude()
-  {
-    this(arblibJNI.new_Magnitude(),
-         true);
+  public Magnitude() {
+    this(arblibJNI.new_Magnitude(), true);
   }
 
 }

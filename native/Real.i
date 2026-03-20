@@ -31,6 +31,11 @@ import arb.utensils.Utensils;
 %}
 %typemap(javacode) arb_struct %{
 
+	public RealPolynomial add( Real z, int bits, RealPolynomial result )
+	{
+	  return result.set(this).add(z,bits,result);
+	}  
+		
 	public Complex rgamma(int bits, Complex result)
 	{
 	  return result.set(this).rgamma(bits);

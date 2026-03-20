@@ -8,28 +8,22 @@
 
 package arb;
 
-public class FastDFTBluesteinScheme
-{
-  protected long    swigCPtr;
+public class FastDFTBluesteinScheme {
+  protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-  public FastDFTBluesteinScheme(long cPtr, boolean cMemoryOwn)
-  {
+  public FastDFTBluesteinScheme(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr    = cPtr;
+    swigCPtr = cPtr;
   }
 
-  public static long getCPtr(FastDFTBluesteinScheme obj)
-  {
+  public static long getCPtr(FastDFTBluesteinScheme obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete()
-  {
-    if (swigCPtr != 0)
-    {
-      if (swigCMemOwn)
-      {
+  public synchronized void delete() {
+    if (swigCPtr != 0) {
+      if (swigCMemOwn) {
         swigCMemOwn = false;
         arblibJNI.delete_FastDFTBluesteinScheme(swigCPtr);
       }
@@ -37,69 +31,51 @@ public class FastDFTBluesteinScheme
     }
   }
 
-  public void setN(int value)
-  {
+  public void setN(int value) {
     arblibJNI.FastDFTBluesteinScheme_n_set(swigCPtr, this, value);
   }
 
-  public int getN()
-  {
+  public int getN() {
     return arblibJNI.FastDFTBluesteinScheme_n_get(swigCPtr, this);
   }
 
-  public void setDv(int value)
-  {
+  public void setDv(int value) {
     arblibJNI.FastDFTBluesteinScheme_dv_set(swigCPtr, this, value);
   }
 
-  public int getDv()
-  {
+  public int getDv() {
     return arblibJNI.FastDFTBluesteinScheme_dv_get(swigCPtr, this);
   }
 
-  public void setZ(Complex value)
-  {
+  public void setZ(Complex value) {
     arblibJNI.FastDFTBluesteinScheme_z_set(swigCPtr, this, Complex.getCPtr(value), value);
   }
 
-  public Complex getZ()
-  {
+  public Complex getZ() {
     long cPtr = arblibJNI.FastDFTBluesteinScheme_z_get(swigCPtr, this);
-    return (cPtr == 0) ? null
-                       : new Complex(cPtr,
-                                     false);
+    return (cPtr == 0) ? null : new Complex(cPtr, false);
   }
 
-  public void setG(Complex value)
-  {
+  public void setG(Complex value) {
     arblibJNI.FastDFTBluesteinScheme_g_set(swigCPtr, this, Complex.getCPtr(value), value);
   }
 
-  public Complex getG()
-  {
+  public Complex getG() {
     long cPtr = arblibJNI.FastDFTBluesteinScheme_g_get(swigCPtr, this);
-    return (cPtr == 0) ? null
-                       : new Complex(cPtr,
-                                     false);
+    return (cPtr == 0) ? null : new Complex(cPtr, false);
   }
 
-  public void setRad2(FastDFTRadix2Scheme value)
-  {
+  public void setRad2(FastDFTRadix2Scheme value) {
     arblibJNI.FastDFTBluesteinScheme_rad2_set(swigCPtr, this, FastDFTRadix2Scheme.getCPtr(value), value);
   }
 
-  public FastDFTRadix2Scheme getRad2()
-  {
+  public FastDFTRadix2Scheme getRad2() {
     long cPtr = arblibJNI.FastDFTBluesteinScheme_rad2_get(swigCPtr, this);
-    return (cPtr == 0) ? null
-                       : new FastDFTRadix2Scheme(cPtr,
-                                                 false);
+    return (cPtr == 0) ? null : new FastDFTRadix2Scheme(cPtr, false);
   }
 
-  public FastDFTBluesteinScheme()
-  {
-    this(arblibJNI.new_FastDFTBluesteinScheme(),
-         true);
+  public FastDFTBluesteinScheme() {
+    this(arblibJNI.new_FastDFTBluesteinScheme(), true);
   }
 
 }

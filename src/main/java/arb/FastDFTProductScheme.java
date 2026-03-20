@@ -8,28 +8,22 @@
 
 package arb;
 
-public class FastDFTProductScheme
-{
-  protected long    swigCPtr;
+public class FastDFTProductScheme {
+  protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-  public FastDFTProductScheme(long cPtr, boolean cMemoryOwn)
-  {
+  public FastDFTProductScheme(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr    = cPtr;
+    swigCPtr = cPtr;
   }
 
-  public static long getCPtr(FastDFTProductScheme obj)
-  {
+  public static long getCPtr(FastDFTProductScheme obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete()
-  {
-    if (swigCPtr != 0)
-    {
-      if (swigCMemOwn)
-      {
+  public synchronized void delete() {
+    if (swigCPtr != 0) {
+      if (swigCMemOwn) {
         swigCMemOwn = false;
         arblibJNI.delete_FastDFTProductScheme(swigCPtr);
       }
@@ -37,43 +31,33 @@ public class FastDFTProductScheme
     }
   }
 
-  public void setN(int value)
-  {
+  public void setN(int value) {
     arblibJNI.FastDFTProductScheme_n_set(swigCPtr, this, value);
   }
 
-  public int getN()
-  {
+  public int getN() {
     return arblibJNI.FastDFTProductScheme_n_get(swigCPtr, this);
   }
 
-  public void setNumeratorAddress(int value)
-  {
+  public void setNumeratorAddress(int value) {
     arblibJNI.FastDFTProductScheme_numeratorAddress_set(swigCPtr, this, value);
   }
 
-  public int getNumeratorAddress()
-  {
+  public int getNumeratorAddress() {
     return arblibJNI.FastDFTProductScheme_numeratorAddress_get(swigCPtr, this);
   }
 
-  public void setCyc(FastDFTStepScheme value)
-  {
+  public void setCyc(FastDFTStepScheme value) {
     arblibJNI.FastDFTProductScheme_cyc_set(swigCPtr, this, FastDFTStepScheme.getCPtr(value), value);
   }
 
-  public FastDFTStepScheme getCyc()
-  {
+  public FastDFTStepScheme getCyc() {
     long cPtr = arblibJNI.FastDFTProductScheme_cyc_get(swigCPtr, this);
-    return (cPtr == 0) ? null
-                       : new FastDFTStepScheme(cPtr,
-                                               false);
+    return (cPtr == 0) ? null : new FastDFTStepScheme(cPtr, false);
   }
 
-  public FastDFTProductScheme()
-  {
-    this(arblibJNI.new_FastDFTProductScheme(),
-         true);
+  public FastDFTProductScheme() {
+    this(arblibJNI.new_FastDFTProductScheme(), true);
   }
 
 }

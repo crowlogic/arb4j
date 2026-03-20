@@ -8,28 +8,22 @@
 
 package arb;
 
-public class FastDFTScheme
-{
-  protected long    swigCPtr;
+public class FastDFTScheme {
+  protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-  public FastDFTScheme(long cPtr, boolean cMemoryOwn)
-  {
+  public FastDFTScheme(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr    = cPtr;
+    swigCPtr = cPtr;
   }
 
-  public static long getCPtr(FastDFTScheme obj)
-  {
+  public static long getCPtr(FastDFTScheme obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete()
-  {
-    if (swigCPtr != 0)
-    {
-      if (swigCMemOwn)
-      {
+  public synchronized void delete() {
+    if (swigCPtr != 0) {
+      if (swigCMemOwn) {
         swigCMemOwn = false;
         arblibJNI.delete_FastDFTScheme(swigCPtr);
       }
@@ -37,38 +31,29 @@ public class FastDFTScheme
     }
   }
 
-  public void setN(int value)
-  {
+  public void setN(int value) {
     arblibJNI.FastDFTScheme_n_set(swigCPtr, this, value);
   }
 
-  public int getN()
-  {
+  public int getN() {
     return arblibJNI.FastDFTScheme_n_get(swigCPtr, this);
   }
 
-  public void setType(int value)
-  {
+  public void setType(int value) {
     arblibJNI.FastDFTScheme_type_set(swigCPtr, this, value);
   }
 
-  public int getType()
-  {
+  public int getType() {
     return arblibJNI.FastDFTScheme_type_get(swigCPtr, this);
   }
 
-  public FastDFTSchemeUnion getT()
-  {
+  public FastDFTSchemeUnion getT() {
     long cPtr = arblibJNI.FastDFTScheme_t_get(swigCPtr, this);
-    return (cPtr == 0) ? null
-                       : new FastDFTSchemeUnion(cPtr,
-                                                false);
+    return (cPtr == 0) ? null : new FastDFTSchemeUnion(cPtr, false);
   }
 
-  public FastDFTScheme()
-  {
-    this(arblibJNI.new_FastDFTScheme(),
-         true);
+  public FastDFTScheme() {
+    this(arblibJNI.new_FastDFTScheme(), true);
   }
 
 }

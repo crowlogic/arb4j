@@ -48,33 +48,22 @@ import arb.utensils.Utensils;
  * @see TheArb4jLibrary
  */
 
-public class Fraction implements
-                      Becomable<Fraction>,
-                      AutoCloseable,
-                      NamedField<Fraction>,
-                      Verifiable,
-                      Comparable<Fraction>
-{
-  protected long    swigCPtr;
+public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fraction>,Verifiable,Comparable<Fraction> {
+  protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-  public Fraction(long cPtr, boolean cMemoryOwn)
-  {
+  public Fraction(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr    = cPtr;
+    swigCPtr = cPtr;
   }
 
-  public static long getCPtr(Fraction obj)
-  {
+  public static long getCPtr(Fraction obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete()
-  {
-    if (swigCPtr != 0)
-    {
-      if (swigCMemOwn)
-      {
+  public synchronized void delete() {
+    if (swigCPtr != 0) {
+      if (swigCMemOwn) {
         swigCMemOwn = false;
         arblibJNI.delete_Fraction(swigCPtr);
       }
@@ -82,64 +71,78 @@ public class Fraction implements
     }
   }
 
-  public AlgebraicNumber pow(Integer exponent, int bits, AlgebraicNumber result)
-  {
-    return result.set(this).pow(exponent);
-  }
 
-  public Fraction div(Integer j, int prec, Fraction result)
-  {
-    arblib.fmpq_div_fmpz(result, this, j.swigCPtr);
-    return result;
-  }
+	public AlgebraicNumber pow(Integer exponent, int bits, AlgebraicNumber result)
+	{
+	  return result.set(this).pow(exponent );
+	}
 
-  @Override
-  public Integer ceil(int bits, Integer ceil)
-  {
-    try ( Real blip = new Real())
-    {
-      return blip.set(this).ceil(bits, ceil);
-    }
-  }
+	 public Fraction div(Integer j, int prec, Fraction result)
+	 {
+	   arblib.fmpq_div_fmpz(result, this, j.swigCPtr);
+	   return result;
+	 }
 
-  public Real ceil(int prec, Real res)
-  {
-    return res.set(this).ceil(prec, res);
-  }
+	 	
+	@Override
+	public Integer ceil(int bits, Integer ceil)
+	{
+	  try ( Real blip = new Real())
+	  {
+	    return blip.set(this).ceil(bits, ceil);
+	  }
+	}
+	
+	public Real ceil( int prec, Real res )
+	{
+	  return res.set(this).ceil(prec, res);
+	}
+	
+	public Fraction(Integer num, Integer den)
+	{
+		this();
+		set(num,den);
+	}
 
-  public Fraction(Integer num, Integer den)
-  {
-    this();
-    set(num, den);
-  }
+    public Fraction set(Integer num, Integer den )
+	{
+      getNumerator().set(num);
+	  getDenominator().set(den);
+	  return this;		
+	}	
+	
+	public Real sub(AlgebraicNumber element, int prec, Real result)
+	{
+	  return result.set(this)
+	               .sub(element,
+	                    prec,
+	                    result);
+	}
 
-  public Fraction set(Integer num, Integer den)
-  {
-    getNumerator().set(num);
-    getDenominator().set(den);
-    return this;
-  }
+	public Real add(AlgebraicNumber element, int prec, Real result)
+	{
+	  return result.set(this)
+	               .add(element,
+	                    prec,
+	                    result);
+	}
 
-  public Real sub(AlgebraicNumber element, int prec, Real result)
-  {
-    return result.set(this).sub(element, prec, result);
-  }
+	public Real mul(AlgebraicNumber element, int prec, Real result)
+	{
+	  return result.set(this)
+	               .mul(element,
+	                    prec,
+	                    result);
+	}
 
-  public Real add(AlgebraicNumber element, int prec, Real result)
-  {
-    return result.set(this).add(element, prec, result);
-  }
-
-  public Real mul(AlgebraicNumber element, int prec, Real result)
-  {
-    return result.set(this).mul(element, prec, result);
-  }
-
-  public Real div(AlgebraicNumber element, int prec, Real result)
-  {
-    return result.set(this).div(element, prec, result);
-  }
-
+	public Real div(AlgebraicNumber element, int prec, Real result)
+	{
+	  return result.set(this)
+	               .div(element,
+	                    prec,
+	                    result);
+	}
+	
   public AlgebraicNumber pow(Fraction exponent, int prec, AlgebraicNumber result)
   {
     try ( AlgebraicNumber base = new AlgebraicNumber(); AlgebraicNumber exp = new AlgebraicNumber())
@@ -147,7 +150,7 @@ public class Fraction implements
       return base.set(this).pow(exp.set(exponent), prec, result);
     }
   }
-
+  
   public Complex Γ(int bits, Complex result)
   {
     result.set(this);
@@ -155,7 +158,7 @@ public class Fraction implements
     result.bits = bits;
     return result;
   }
-
+  
   public Real Γ(int bits, Real res)
   {
     return res.set(this).Γ(bits);
@@ -165,7 +168,7 @@ public class Fraction implements
   {
     return result.set(this).mul(x, prec, result);
   }
-
+    
   @SuppressWarnings("resource")
   public static Fraction named(String string)
   {
@@ -191,8 +194,8 @@ public class Fraction implements
     {
       return blip.set(this).add(real, bits, result);
     }
-  }
-
+  } 
+  
   public Real add(Fraction real, int bits, Real result)
   {
     if (result == null)
@@ -203,41 +206,41 @@ public class Fraction implements
     {
       return blip.set(this).add(real, bits, result);
     }
-  }
-
+  } 
+    
   public ComplexPolynomial add(ComplexPolynomial that, int bits, ComplexPolynomial result)
-  {
-    return result.set(this).add(that, bits);
+  {    
+    return result.set(this).add(that, bits);   
   }
 
   public Real sub(Integer element, int prec, Real result)
   {
-    return result.set(this).sub(element, prec);
+    return result.set(this).sub(element,prec);
   }
 
   public Real div(Integer element, int prec, Real result)
   {
-    return result.set(this).div(element, prec);
+    return result.set(this).div(element,prec);
   }
-
+  
   public Real mul(Fraction element, int prec, Real result)
   {
     try ( Real blip = new Real())
     {
-      return mul(result.set(element), prec, result);
+      return mul(result.set(element), prec,result);
     }
   }
-
+  
   public RealPolynomial mul(RealPolynomial that, int bits, RealPolynomial result)
   {
-    return result.set(this).mul(that, bits, result);
+    return result.set(this).mul(that,bits,result);
   }
 
   public ComplexRationalFunction div(ComplexRationalFunction divisor, int prec, ComplexRationalFunction result)
   {
     return result.set(this).div(divisor, prec, result);
   }
-
+  
   public Integer floor(int bits, Integer result)
   {
     try ( var blip = new Real())
@@ -250,54 +253,54 @@ public class Fraction implements
   {
     return arblib.fmpq_is_one(this) != 0;
   }
-
+        
   public RealPolynomial add(RealPolynomial that, int bits, RealPolynomial result)
   {
     result.set(this);
-    return result.add(that, bits);
+    return result.add(that, bits);   
   }
 
   public RationalFunction div(RationalFunction divisor, int prec, RationalFunction result)
   {
     return result.set(this).div(divisor, prec, result);
   }
-
+  
   public Fraction(Real val)
   {
     this();
     set(val);
   }
-
+  
   public Complex sub(Fraction element, int prec, Complex result)
   {
     try ( Fraction blip = new Fraction())
-    {
+    {      
       return result.set(sub(element, prec, blip));
     }
   }
-
+  
   @Override
   public Fraction inverse(Fraction res)
   {
-    arblib.fmpq_inv(res, this);
+    arblib.fmpq_inv(res, this );
     return res;
   }
-
+    
   public RealPolynomial div(RealPolynomial divisor, int prec, RealPolynomial result)
   {
     return result.set(this).div(divisor, prec, result);
   }
-
-  public Complex neg(Complex result)
+ 
+  public Complex neg( Complex result )
   {
     return result.set(this).neg();
   }
-
+   
   public RationalFunction add(RationalFunction element, int prec, RationalFunction result)
   {
     return result.set(this).add(element, prec, result);
   }
-
+  
   public Real sqrt(int bits, Real result)
   {
     assert bits > 0 : "bits must be strictly positive";
@@ -308,7 +311,7 @@ public class Fraction implements
   {
     return result.set(this).floor(bits, result);
   }
-
+ 
   public Fraction sub(Real subtrahend, int prec, Fraction result)
   {
     try ( Fraction blip = new Fraction())
@@ -316,7 +319,7 @@ public class Fraction implements
       return sub(blip.set(subtrahend), prec, result);
     }
   }
-
+  
   public Fraction add(Real addend, int prec, Fraction result)
   {
     try ( Fraction blip = new Fraction())
@@ -324,13 +327,13 @@ public class Fraction implements
       return add(blip.set(addend), prec, result);
     }
   }
-
+  
   public double doubleValue()
   {
     assert swigCPtr != 0 : "null pointer";
     return arblib.fmpq_get_d(this);
   }
-
+    
   public Fraction become(Fraction that)
   {
     close();
@@ -364,8 +367,8 @@ public class Fraction implements
     result.imaginaryPart.zero();
     return result;
   }
-
-  public ComplexFraction neg(ComplexFraction result)
+  
+  public ComplexFraction neg( ComplexFraction result )
   {
     neg(result.realPart);
     result.imaginaryPart.zero();
@@ -374,22 +377,22 @@ public class Fraction implements
 
   public Complex mul(Complex that, int bits, Complex result)
   {
-    return result.set(this).mul(that, bits, result);
+    return result.set(this).mul(that,bits,result);
   }
-
+  
   public Fraction add(Integer that, int prec, Fraction res)
   {
-    arblib.fmpq_add_fmpz(res, this, that.swigCPtr);
+    arblib.fmpq_add_fmpz(res, this, that.swigCPtr );    
     return res;
   }
-
+  
   public ComplexFraction add(Complex that, int bits, ComplexFraction result)
   {
     result.realPart.set(this);
     result.imaginaryPart.zero();
-    return result.add(that, bits, result);
+    return result.add(that, bits, result);   
   }
-
+  
   public Real sub(Real element, int prec, Real result)
   {
     return result.set(this).sub(element, prec, result);
@@ -397,11 +400,12 @@ public class Fraction implements
 
   public Fraction mul(Integer that, int prec, Fraction res)
   {
-    arblib.fmpq_sub_fmpz(res, this, that.swigCPtr);
+    arblib.fmpq_sub_fmpz(res, this, that.swigCPtr );    
     return res;
-  }
+  }  
 
-  public boolean isZero()
+  public boolean
+         isZero()
   {
     return arblib.fmpq_is_zero(this) != 0;
   }
@@ -410,29 +414,31 @@ public class Fraction implements
   {
     return result.set(this, bits).ascendingFactorial(power, bits);
   }
-
+      
   public Fraction set(int numerator, int denominator)
   {
-    getNumerator().set(numerator);
-    getDenominator().set(denominator);
-
+	getNumerator().set(numerator);
+	getDenominator().set(denominator);
+	
     return this;
   }
-
-  public ComplexRationalFunction add(ComplexRationalFunction addend, int prec, ComplexRationalFunction result)
+  
+  public ComplexRationalFunction
+         add(ComplexRationalFunction addend, int prec, ComplexRationalFunction result)
   {
     addend.realPart.add(this, prec, result.realPart);
     result.imaginaryPart.set(addend.imaginaryPart);
     return result;
   }
 
-  public ComplexRationalFunction sub(ComplexRationalFunction subtrahend, int prec, ComplexRationalFunction result)
+  public ComplexRationalFunction
+         sub(ComplexRationalFunction subtrahend, int prec, ComplexRationalFunction result)
   {
-    sub(subtrahend.realPart, prec, result.realPart);
+    sub(subtrahend.realPart,prec,result.realPart);
     subtrahend.imaginaryPart.neg(result.imaginaryPart);
     return result;
   }
-
+    
   @Override
   public boolean verify()
   {
@@ -452,26 +458,26 @@ public class Fraction implements
                                            denominator == null ? "null" : denominator.swigCPtr));
     }
   }
-
-  public Fraction sub(Integer that, int prec)
+  
+  public Fraction sub(Integer that, int prec )
   {
-    return sub(that, prec, this);
+    return sub(that,prec,this);
   }
-
-  public Fraction sub(Integer that, int prec, Fraction res)
+  
+  public Fraction sub(Integer that, int prec, Fraction res )
   {
-    arblib.fmpq_sub_fmpz(res, this, that.swigCPtr);
+    arblib.fmpq_sub_fmpz(res, this, that.swigCPtr );    
     return res;
   }
-
+  
   public Real mul(Real that, int bits, Real result)
   {
-    return result.set(this).mul(that, bits, result);
+    return result.set(this).mul(that,bits,result);
   }
-
+    
   public Real mul(Integer that, int bits, Real result)
   {
-    return result.set(this).mul(that, bits, result);
+    return result.set(this).mul(that,bits,result);
   }
 
   public Real add(Real real, int bits, Real result)
@@ -484,24 +490,24 @@ public class Fraction implements
     {
       return blip.set(this).add(real, bits, result);
     }
-  }
+  }  
 
   public ComplexRationalFunction mul(ComplexRationalFunction that, int bits, ComplexRationalFunction result)
   {
-    return result.set(this).mul(that, bits, result);
+    return result.set(this).mul(that,bits,result);
   }
-
+        
   public RationalFunction mul(RationalFunction that, int bits, RationalFunction result)
   {
-    return result.set(this).mul(that, bits, result);
+    return result.set(this).mul(that,bits,result);
   }
-
+  
   public Fraction set(Integer val)
   {
-    arblib.fmpq_set_fmpz(this, val.swigCPtr);
+    arblib.fmpq_set_fmpz(this, val.swigCPtr );
     return this;
   }
-
+  
   public RationalFunction ascendingFactorial(Integer power, int bits, RationalFunction result)
   {
     try ( Real thisReal = new Real())
@@ -510,7 +516,7 @@ public class Fraction implements
       return thisReal.ascendingFactorial(power, bits, result);
     }
   }
-
+  
   /**
    * NOTICE: this is 1-indexed, not 0 indexed like this{@link #get(int)} !!!
    * 
@@ -521,7 +527,7 @@ public class Fraction implements
   {
     return get(k.getSignedValue() - 1);
   }
-
+  
   @Override
   public String getName()
   {
@@ -535,8 +541,9 @@ public class Fraction implements
     this.name = name;
     return (N) this;
   }
-
+  
   public String name;
+
 
   public Fraction set(Fraction... elements)
   {
@@ -547,19 +554,18 @@ public class Fraction implements
     this.swigCPtr    = elements.length > 0 ? elements[0].swigCPtr : 0;
     return this;
   }
-
-  public Arena      arena;
-  public int        dim = 1;
+  
+  public Arena arena;
+  public int           dim = 1;
   public Fraction[] elements;
 
   public Fraction resize(Arena arena, int alloc)
   {
     if (alloc == dim)
-    {
-      return this;
+    {      return this;
     }
-    Fraction newLocation = Fraction.newVector(arena, alloc).setName(name);
-    int      nd          = Math.min(alloc, dim);
+    Fraction newLocation = Fraction.newVector(arena,alloc).setName(name);
+    int  nd          = Math.min(alloc, dim);
     for (int i = 0; i < nd; i++)
     {
       newLocation.get(i).set(get(i));
@@ -567,20 +573,19 @@ public class Fraction implements
     become(newLocation);
     return this;
   }
-
+  
   @SuppressWarnings("resource")
   public static Fraction newVector(Arena arena, int dim)
   {
     MemorySegment segment = arena.allocate(Long.BYTES * dim * 2);
-    Fraction      array   = new Fraction(segment.address(),
-                                         false);
-    array.arena    = arena;
-    array.dim      = dim;
-    array.elements = new Fraction[array.dim = dim];
-    for (int i = 0; i < dim; i++)
+    Fraction array = new Fraction(segment.address(),
+                                  false);
+    array.arena = arena;
+    array.dim         = dim;
+    array.elements    = new Fraction[array.dim = dim];
+    for ( int i = 0; i < dim; i++ )
     {
-      Fraction frac = new Fraction(array.swigCPtr + i * Long.BYTES * 2,
-                                   false);
+      Fraction frac = new Fraction(array.swigCPtr + i*Long.BYTES*2, false );
       array.elements[i] = frac.init();
     }
     return array;
@@ -591,7 +596,7 @@ public class Fraction implements
     arblib.fmpq_init(this);
     return this;
   }
-
+  
   static
   {
     System.loadLibrary("arblib");
@@ -600,53 +605,53 @@ public class Fraction implements
   public Complex add(Complex that, int bits, Complex result)
   {
     result.zero().getReal().set(this);
-    return result.add(that, bits);
+    return result.add(that, bits);   
   }
-
+  
   public Complex sub(Complex that, int bits, Complex result)
   {
     result.zero().getReal().set(this);
-    return result.sub(that, bits);
+    return result.sub(that, bits);   
   }
-
+  
   public ComplexPolynomial sub(ComplexPolynomial element, int prec, ComplexPolynomial result)
   {
     result.setLength(1);
     result.fitLength(1);
     result.getCoeffs().re().set(this);
     return result.sub(element, prec);
-  }
-
+  }    
+    
   public Fraction neg()
   {
     return neg(this);
   }
-
-  public Fraction neg(Fraction result)
+  
+  public Fraction neg( Fraction result )
   {
-    arblib.fmpq_neg(result, this);
+    arblib.fmpq_neg(result, this);   
     return result;
   }
-
-  public Real neg(Real result)
+ 
+  public Real neg( Real result )
   {
     return result.set(this).neg();
   }
-
+   
   public Real sub(Fraction element, int prec, Real result)
   {
     try ( Fraction blip = new Fraction())
-    {
+    {      
       return result.set(sub(element, prec, blip));
     }
   }
-
+  
   public Fraction set(int j)
   {
     arblib.fmpq_set_si(this, j, 1);
     return this;
-  }
-
+  } 
+  
   public Fraction set(Real value)
   {
     if (dim != value.dim)
@@ -688,19 +693,20 @@ public class Fraction implements
   {
     return result.set(this).sub(element, prec, result);
   }
-
+  
   public RationalFunction add(Fraction element, int prec, RationalFunction result)
   {
-    return result.set(this).add(element, prec, result);
+    return result.set(this).add(element,prec, result);
   }
-
+  
   public RationalFunction sub(RationalFunction element, int prec, RationalFunction result)
   {
     return result.set(this).sub(element, prec, result);
   }
-
+  
   @Override
-  public int hashCode()
+  public int
+         hashCode()
   {
     return Objects.hash(numerator, denominator);
   }
@@ -729,8 +735,8 @@ public class Fraction implements
     }
     Fraction that = (Fraction) obj;
     return arblib.fmpq_equal(this, that) != 0;
-  }
-
+  }    
+  
   private Integer numerator;
   private Integer denominator;
 
@@ -763,8 +769,8 @@ public class Fraction implements
     arblib.fmpq_set_str(this, str.replaceAll("⁄", "/"), 10);
     return this;
   }
-
-  @Override
+          
+@Override
   public String toString()
   {
     if (dim == 1)
@@ -781,13 +787,13 @@ public class Fraction implements
     sb.append("]");
     return sb.toString();
   }
-
+    
   public Fraction one()
   {
     arblib.fmpq_one(this);
     return this;
   }
-
+  
   public Integer getDenominator()
   {
     if (denominator == null)
@@ -815,30 +821,26 @@ public class Fraction implements
     }
     return numerator;
   }
-
+  
   @Override
-  public void close()
-  {
-    if (swigCPtr != 0)
-    {
-      if (swigCMemOwn)
-      {
-        swigCMemOwn = false;
-        if (dim == 1)
-        {
-          arblibJNI.delete_Fraction(swigCPtr);
-        }
-        // For vectors (dim > 1), we don't need to do anything here
-        // The Arena passed to newVector will handle the memory cleanup
+  public void close() {
+      if (swigCPtr != 0) {
+          if (swigCMemOwn) {
+              swigCMemOwn = false;
+              if (dim == 1) {
+                  arblibJNI.delete_Fraction(swigCPtr);
+              }
+              // For vectors (dim > 1), we don't need to do anything here
+              // The Arena passed to newVector will handle the memory cleanup
+          }
+          swigCPtr = 0;
       }
-      swigCPtr = 0;
-    }
   }
-
+  
   @Override
   public Fraction add(Fraction element, int prec, Fraction result)
   {
-    return add(element, result);
+    return add(element,result);
   }
 
   @Override
@@ -859,11 +861,11 @@ public class Fraction implements
     arblib.fmpq_div_fmpz(result, this, j);
     return result;
   }
-
+  
   @Override
   public Fraction div(Fraction j, int prec, Fraction result)
   {
-    return div(j, result);
+    return div(j,result);
   }
 
   @Override
@@ -887,7 +889,7 @@ public class Fraction implements
   @Override
   public Fraction mul(Fraction x, int prec, Fraction result)
   {
-    return mul(x, result);
+    return mul(x,result);
   }
 
   @Override
@@ -907,7 +909,7 @@ public class Fraction implements
   @Override
   public Fraction sub(Fraction element, int prec, Fraction result)
   {
-    return sub(element, result);
+    return sub(element,result);
   }
 
   @Override
@@ -916,7 +918,7 @@ public class Fraction implements
     arblib.fmpq_zero(this);
     return this;
   }
-
+  
   @Override
   public Fraction additiveIdentity()
   {
@@ -940,19 +942,20 @@ public class Fraction implements
     return result.set(this).div(divisor, prec, result);
   }
 
+  
   public Fraction pow(Integer n, int bits)
   {
-    return pow(n, bits, this);
+    return pow(n,bits,this);
   }
 
   public RationalFunction pow(Integer n, int bits, RationalFunction result)
   {
-    try ( RationalFunction blip = new RationalFunction())
+    try ( RationalFunction blip = new RationalFunction() )
     {
       return blip.set(this).pow(n, bits, result);
     }
   }
-
+    
   /**
    * Reduces this {@link Fraction} into its simplest form, dividing the
    * {@link #numerator} and the this#denominator by the highest common factor.
@@ -980,14 +983,16 @@ public class Fraction implements
   public boolean isReduced()
   {
     return arblib.fmpq_is_canonical(this) != 0;
-  }
+  }    
+
 
   @Override
-  public Stream<Fraction> stream()
+  public Stream<Fraction>
+         stream()
   {
     return Stream.of(elements);
-  }
-
+  }  
+  
   public boolean isNegative()
   {
     return sign() < 0;
@@ -997,37 +1002,33 @@ public class Fraction implements
   {
     return arblib.fmpq_sgn(this);
   }
-
+  
   @Override
   public int compareTo(Fraction o)
   {
     return arblib.fmpq_cmp(this, o);
   }
+  
+  
 
-  public void setNumeratorAddress(long value)
-  {
+  public void setNumeratorAddress(long value) {
     arblibJNI.Fraction_numeratorAddress_set(swigCPtr, this, value);
   }
 
-  public long getNumeratorAddress()
-  {
+  public long getNumeratorAddress() {
     return arblibJNI.Fraction_numeratorAddress_get(swigCPtr, this);
   }
 
-  public void setDenominatorAddress(long value)
-  {
+  public void setDenominatorAddress(long value) {
     arblibJNI.Fraction_denominatorAddress_set(swigCPtr, this, value);
   }
 
-  public long getDenominatorAddress()
-  {
+  public long getDenominatorAddress() {
     return arblibJNI.Fraction_denominatorAddress_get(swigCPtr, this);
   }
 
-  public Fraction()
-  {
-    this(arblibJNI.new_Fraction(),
-         true);
+  public Fraction() {
+    this(arblibJNI.new_Fraction(), true);
   }
 
 }

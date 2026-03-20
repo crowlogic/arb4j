@@ -8,28 +8,22 @@
 
 package arb;
 
-public class Mantissa
-{
-  protected long    swigCPtr;
+public class Mantissa {
+  protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-  public Mantissa(long cPtr, boolean cMemoryOwn)
-  {
+  public Mantissa(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr    = cPtr;
+    swigCPtr = cPtr;
   }
 
-  public static long getCPtr(Mantissa obj)
-  {
+  public static long getCPtr(Mantissa obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete()
-  {
-    if (swigCPtr != 0)
-    {
-      if (swigCMemOwn)
-      {
+  public synchronized void delete() {
+    if (swigCPtr != 0) {
+      if (swigCMemOwn) {
         swigCMemOwn = false;
         arblibJNI.delete_Mantissa(swigCPtr);
       }
@@ -37,36 +31,26 @@ public class Mantissa
     }
   }
 
-  public void setNoptr(MantissaNoPointer value)
-  {
+  public void setNoptr(MantissaNoPointer value) {
     arblibJNI.Mantissa_noptr_set(swigCPtr, this, MantissaNoPointer.getCPtr(value), value);
   }
 
-  public MantissaNoPointer getNoptr()
-  {
+  public MantissaNoPointer getNoptr() {
     long cPtr = arblibJNI.Mantissa_noptr_get(swigCPtr, this);
-    return (cPtr == 0) ? null
-                       : new MantissaNoPointer(cPtr,
-                                               false);
+    return (cPtr == 0) ? null : new MantissaNoPointer(cPtr, false);
   }
 
-  public void setPtr(MantissaPointer value)
-  {
+  public void setPtr(MantissaPointer value) {
     arblibJNI.Mantissa_ptr_set(swigCPtr, this, MantissaPointer.getCPtr(value), value);
   }
 
-  public MantissaPointer getPtr()
-  {
+  public MantissaPointer getPtr() {
     long cPtr = arblibJNI.Mantissa_ptr_get(swigCPtr, this);
-    return (cPtr == 0) ? null
-                       : new MantissaPointer(cPtr,
-                                             false);
+    return (cPtr == 0) ? null : new MantissaPointer(cPtr, false);
   }
 
-  public Mantissa()
-  {
-    this(arblibJNI.new_Mantissa(),
-         true);
+  public Mantissa() {
+    this(arblibJNI.new_Mantissa(), true);
   }
 
 }

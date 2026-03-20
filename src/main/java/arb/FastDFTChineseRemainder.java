@@ -8,28 +8,22 @@
 
 package arb;
 
-public class FastDFTChineseRemainder
-{
-  protected long    swigCPtr;
+public class FastDFTChineseRemainder {
+  protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-  public FastDFTChineseRemainder(long cPtr, boolean cMemoryOwn)
-  {
+  public FastDFTChineseRemainder(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr    = cPtr;
+    swigCPtr = cPtr;
   }
 
-  public static long getCPtr(FastDFTChineseRemainder obj)
-  {
+  public static long getCPtr(FastDFTChineseRemainder obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete()
-  {
-    if (swigCPtr != 0)
-    {
-      if (swigCMemOwn)
-      {
+  public synchronized void delete() {
+    if (swigCPtr != 0) {
+      if (swigCMemOwn) {
         swigCMemOwn = false;
         arblibJNI.delete_FastDFTChineseRemainder(swigCPtr);
       }
@@ -37,43 +31,33 @@ public class FastDFTChineseRemainder
     }
   }
 
-  public void setN(int value)
-  {
+  public void setN(int value) {
     arblibJNI.FastDFTChineseRemainder_n_set(swigCPtr, this, value);
   }
 
-  public int getN()
-  {
+  public int getN() {
     return arblibJNI.FastDFTChineseRemainder_n_get(swigCPtr, this);
   }
 
-  public void setDv(int value)
-  {
+  public void setDv(int value) {
     arblibJNI.FastDFTChineseRemainder_dv_set(swigCPtr, this, value);
   }
 
-  public int getDv()
-  {
+  public int getDv() {
     return arblibJNI.FastDFTChineseRemainder_dv_get(swigCPtr, this);
   }
 
-  public void setCyc(FastDFTStepScheme value)
-  {
+  public void setCyc(FastDFTStepScheme value) {
     arblibJNI.FastDFTChineseRemainder_cyc_set(swigCPtr, this, FastDFTStepScheme.getCPtr(value), value);
   }
 
-  public FastDFTStepScheme getCyc()
-  {
+  public FastDFTStepScheme getCyc() {
     long cPtr = arblibJNI.FastDFTChineseRemainder_cyc_get(swigCPtr, this);
-    return (cPtr == 0) ? null
-                       : new FastDFTStepScheme(cPtr,
-                                               false);
+    return (cPtr == 0) ? null : new FastDFTStepScheme(cPtr, false);
   }
 
-  public FastDFTChineseRemainder()
-  {
-    this(arblibJNI.new_FastDFTChineseRemainder(),
-         true);
+  public FastDFTChineseRemainder() {
+    this(arblibJNI.new_FastDFTChineseRemainder(), true);
   }
 
 }

@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 
 import arb.utensils.Utensils;
 
+
 /**
  * A {@link Float} contains four words: <br>
  * <ul>
@@ -35,31 +36,22 @@ import arb.utensils.Utensils;
  * 
  */
 
-public class Float implements
-                   AutoCloseable,
-                   Comparable<Float>,
-                   NamedField<Float>
-{
-  protected long    swigCPtr;
+public class Float implements AutoCloseable,Comparable<Float>,NamedField<Float> {
+  protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-  public Float(long cPtr, boolean cMemoryOwn)
-  {
+  public Float(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr    = cPtr;
+    swigCPtr = cPtr;
   }
 
-  public static long getCPtr(Float obj)
-  {
+  public static long getCPtr(Float obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete()
-  {
-    if (swigCPtr != 0)
-    {
-      if (swigCMemOwn)
-      {
+  public synchronized void delete() {
+    if (swigCPtr != 0) {
+      if (swigCMemOwn) {
         swigCMemOwn = false;
         arblibJNI.delete_Float(swigCPtr);
       }
@@ -67,12 +59,13 @@ public class Float implements
     }
   }
 
+
   @SuppressWarnings("resource")
   public static Float named(String name)
   {
     return new Float().setName(name);
   }
-
+	
   static
   {
     System.loadLibrary("arblib");
@@ -80,14 +73,14 @@ public class Float implements
 
   @Override
   public NamedRing<Float> set(Fraction val)
-  {
-    try ( var blip = new Real())
+  { 
+    try ( var blip = new Real() )
     {
       set(blip.set(val).getMid());
       return this;
     }
   }
-
+  
   public static RoundingMode defaultRoundingMode = RoundingMode.Near;
 
   public static Float valueOf(String string, int bits)
@@ -124,7 +117,7 @@ public class Float implements
   {
     return set(FloatConstants.one);
   }
-
+  
   public String name;
 
   @SuppressWarnings("unchecked")
@@ -148,7 +141,7 @@ public class Float implements
   {
     return arblib.arf_bits(this);
   }
-
+  
   /**
    * 
    * @param length
@@ -158,7 +151,8 @@ public class Float implements
    */
   public static Float newVector(int length, boolean aligned)
   {
-    return new Float(aligned ? scope.allocate(Float.BYTES * length, arb.arblib.getpagesize()) : scope.allocate(Float.BYTES * length),
+    return new Float(aligned ? scope.allocate(Float.BYTES * length,
+                                              arb.arblib.getpagesize()) : scope.allocate(Float.BYTES * length),
                      length);
   }
 
@@ -422,26 +416,24 @@ public class Float implements
   }
 
   @Override
-  public Stream<Float> stream()
+  public Stream<Float>
+         stream()
   {
     assert false : "TODO";
     return null;
   }
+  
 
-  public void setExp(long value)
-  {
+  public void setExp(long value) {
     arblibJNI.Float_exp_set(swigCPtr, this, value);
   }
 
-  public long getExp()
-  {
+  public long getExp() {
     return arblibJNI.Float_exp_get(swigCPtr, this);
   }
 
-  public Float()
-  {
-    this(arblibJNI.new_Float(),
-         true);
+  public Float() {
+    this(arblibJNI.new_Float(), true);
   }
 
 }

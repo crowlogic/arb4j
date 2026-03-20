@@ -8,28 +8,22 @@
 
 package arb;
 
-public class FastDFTStepScheme
-{
-  protected long    swigCPtr;
+public class FastDFTStepScheme {
+  protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-  public FastDFTStepScheme(long cPtr, boolean cMemoryOwn)
-  {
+  public FastDFTStepScheme(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr    = cPtr;
+    swigCPtr = cPtr;
   }
 
-  public static long getCPtr(FastDFTStepScheme obj)
-  {
+  public static long getCPtr(FastDFTStepScheme obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete()
-  {
-    if (swigCPtr != 0)
-    {
-      if (swigCMemOwn)
-      {
+  public synchronized void delete() {
+    if (swigCPtr != 0) {
+      if (swigCMemOwn) {
         swigCMemOwn = false;
         arblibJNI.delete_FastDFTStepScheme(swigCPtr);
       }
@@ -37,66 +31,50 @@ public class FastDFTStepScheme
     }
   }
 
-  public void setM(int value)
-  {
+  public void setM(int value) {
     arblibJNI.FastDFTStepScheme_m_set(swigCPtr, this, value);
   }
 
-  public int getM()
-  {
+  public int getM() {
     return arblibJNI.FastDFTStepScheme_m_get(swigCPtr, this);
   }
 
-  public void setDv(int value)
-  {
+  public void setDv(int value) {
     arblibJNI.FastDFTStepScheme_dv_set(swigCPtr, this, value);
   }
 
-  public int getDv()
-  {
+  public int getDv() {
     return arblibJNI.FastDFTStepScheme_dv_get(swigCPtr, this);
   }
 
-  public void setZ(Complex value)
-  {
+  public void setZ(Complex value) {
     arblibJNI.FastDFTStepScheme_z_set(swigCPtr, this, Complex.getCPtr(value), value);
   }
 
-  public Complex getZ()
-  {
+  public Complex getZ() {
     long cPtr = arblibJNI.FastDFTStepScheme_z_get(swigCPtr, this);
-    return (cPtr == 0) ? null
-                       : new Complex(cPtr,
-                                     false);
+    return (cPtr == 0) ? null : new Complex(cPtr, false);
   }
 
-  public void setDz(int value)
-  {
+  public void setDz(int value) {
     arblibJNI.FastDFTStepScheme_dz_set(swigCPtr, this, value);
   }
 
-  public int getDz()
-  {
+  public int getDz() {
     return arblibJNI.FastDFTStepScheme_dz_get(swigCPtr, this);
   }
 
-  public void setPre(FastDFTScheme value)
-  {
+  public void setPre(FastDFTScheme value) {
     arblibJNI.FastDFTStepScheme_pre_set(swigCPtr, this, FastDFTScheme.getCPtr(value), value);
   }
 
-  public FastDFTScheme getPre()
-  {
+  public FastDFTScheme getPre() {
     long cPtr = arblibJNI.FastDFTStepScheme_pre_get(swigCPtr, this);
-    return (cPtr == 0) ? null
-                       : new FastDFTScheme(cPtr,
-                                           false);
+    return (cPtr == 0) ? null : new FastDFTScheme(cPtr, false);
   }
 
-  public FastDFTStepScheme()
-  {
-    this(arblibJNI.new_FastDFTStepScheme(),
-         true);
+  public FastDFTStepScheme() {
+    this(arblibJNI.new_FastDFTStepScheme(), true);
   }
 
 }
