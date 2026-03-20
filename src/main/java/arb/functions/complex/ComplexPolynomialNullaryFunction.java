@@ -23,12 +23,7 @@ public interface ComplexPolynomialNullaryFunction extends
 
   public static ComplexPolynomialNullaryFunction express(String functionName, String expression, Context context)
   {
-    return Function.express(expression,
-                                context,
-                                Object.class,
-                                ComplexPolynomial.class,
-                                ComplexPolynomialNullaryFunction.class,
-                                functionName);
+    return Function.express(expression, context, Object.class, ComplexPolynomial.class, ComplexPolynomialNullaryFunction.class, functionName);
   }
 
   public static NullaryFunction<ComplexPolynomial> express(String expression, Context context)
@@ -41,17 +36,17 @@ public interface ComplexPolynomialNullaryFunction extends
     return express(null, expression, null);
   }
 
-  public static Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction>
-         parse(String functionName, String expression, Context context)
+  public static Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction> parse(String functionName, String expression, Context context)
   {
     return Function.parse(functionName != null ? functionName : Parser.transformToAcceptableJavaIdentifier(expression),
-                        expression,
-                        context,
-                        Object.class,
-                        ComplexPolynomial.class,
-                        ComplexPolynomialNullaryFunction.class,
-                        functionName,
-                        null, true);
+                          expression,
+                          context,
+                          Object.class,
+                          ComplexPolynomial.class,
+                          ComplexPolynomialNullaryFunction.class,
+                          functionName,
+                          null,
+                          true);
   }
 
 }

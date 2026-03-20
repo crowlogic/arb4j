@@ -39,8 +39,7 @@ import arb.functions.polynomials.SequenceIterator;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public abstract class RecurrentlyGeneratedOrthogonalPolynomialSequence<R, V,
-              E extends AutoCloseableAssignable<? extends E>> extends
+public abstract class RecurrentlyGeneratedOrthogonalPolynomialSequence<R, V, E extends AutoCloseableAssignable<? extends E>> extends
                                                                       OrthogonalPolynomialSequence<R, V, E> implements
                                                                       Initializable
 {
@@ -55,15 +54,7 @@ public abstract class RecurrentlyGeneratedOrthogonalPolynomialSequence<R, V,
   @Override
   public String toString()
   {
-    return String.format("%s[bits=%s, context=%s, initialized=%s, A=%s, B=%s, C=%s, P=%s]",
-                         getClass().getSimpleName(),
-                         bits,
-                         context,
-                         initialized,
-                         A,
-                         B,
-                         C,
-                         P);
+    return String.format("%s[bits=%s, context=%s, initialized=%s, A=%s, B=%s, C=%s, P=%s]", getClass().getSimpleName(), bits, context, initialized, A, B, C, P);
   }
 
   public int                      bits = 128;
@@ -133,10 +124,7 @@ public abstract class RecurrentlyGeneratedOrthogonalPolynomialSequence<R, V,
     A           = A();
     B           = B();
     C           = C();
-    P           = PolynomialSequence.express("P",
-                                             "n➔when(n=0,p0,n=1,p1,else,(A(n-1)*x+B(n-1))*P(n-1)-C(n-1)*P(n-2))",
-                                             context,
-                                             coDomainType());
+    P           = PolynomialSequence.express("P", "n➔when(n=0,p0,n=1,p1,else,(A(n-1)*x+B(n-1))*P(n-1)-C(n-1)*P(n-2))", context, coDomainType());
     initialized = true;
   }
 

@@ -67,35 +67,30 @@ import arb.utensils.Utensils;
 public class Compiler
 {
 
-  private final static Logger             log                =
-                                              LoggerFactory.getLogger(Compiler.class);
+  private final static Logger             log                = LoggerFactory.getLogger(Compiler.class);
 
-  public static boolean                   verifyBytecode     =
-                                                         Boolean.valueOf(System.getProperty("arb4j.verifyBytecode",
-                                                                                            "false"));
+  public static boolean                   verifyBytecode     = Boolean.valueOf(System.getProperty("arb4j.verifyBytecode", "false"));
 
-  public static HashSet<Class<?>>         complexScalarTypes =
-                                                             new HashSet<>(Arrays.asList(Complex.class,
-                                                                                         ComplexPolynomial.class,
-                                                                                         ComplexMatrix.class,
-                                                                                         Complex.class,
-                                                                                         ComplexSequence.class,
-                                                                                         ComplexRationalFunction.class,
-                                                                                         ComplexFunction.class,
-                                                                                         ComplexFraction.class,
-                                                                                         RealToComplexFunction.class));
+  public static HashSet<Class<?>>         complexScalarTypes = new HashSet<>(Arrays.asList(Complex.class,
+                                                                                           ComplexPolynomial.class,
+                                                                                           ComplexMatrix.class,
+                                                                                           Complex.class,
+                                                                                           ComplexSequence.class,
+                                                                                           ComplexRationalFunction.class,
+                                                                                           ComplexFunction.class,
+                                                                                           ComplexFraction.class,
+                                                                                           RealToComplexFunction.class));
 
   public static final String              objectDesc         = Type.getInternalName(Object.class);
 
-  public static HashSet<Class<?>>         realScalarTypes    =
-                                                          new HashSet<>(Arrays.asList(AlgebraicNumber.class,
-                                                                                      Integer.class,
-                                                                                      Real.class,
-                                                                                      RealPolynomial.class,
-                                                                                      RealMatrix.class,
-                                                                                      Fraction.class,
-                                                                                      RationalFunction.class,
-                                                                                      RealFunction.class));
+  public static HashSet<Class<?>>         realScalarTypes    = new HashSet<>(Arrays.asList(AlgebraicNumber.class,
+                                                                                           Integer.class,
+                                                                                           Real.class,
+                                                                                           RealPolynomial.class,
+                                                                                           RealMatrix.class,
+                                                                                           Fraction.class,
+                                                                                           RationalFunction.class,
+                                                                                           RealFunction.class));
 
   public static HashMap<Class<?>, String> typePrefixes       = new HashMap<>();
 
@@ -130,10 +125,7 @@ public class Compiler
     typePrefixes.put(RealToComplexFunction.class, "Fℝℂ");
   }
 
-  public static void addNullCheckForField(MethodVisitor mv,
-                                          String className,
-                                          String fieldName,
-                                          String fieldDesc)
+  public static void addNullCheckForField(MethodVisitor mv, String className, String fieldName, String fieldDesc)
   {
 
     Label notNullLabel = new Label();
@@ -151,8 +143,7 @@ public class Compiler
     mv.visitLabel(notNullLabel);
   }
 
-  protected static MethodVisitor annotateWith(MethodVisitor methodVisitor,
-                                              Class<? extends Annotation> annotation)
+  protected static MethodVisitor annotateWith(MethodVisitor methodVisitor, Class<? extends Annotation> annotation)
   {
     methodVisitor.visitAnnotation(annotation.descriptorString(), true).visitEnd();
     return methodVisitor;
@@ -181,20 +172,17 @@ public class Compiler
 
     if (from.equals(Real.class))
     {
-      return (to.equals(Complex.class) || to.equals(RealPolynomial.class)
-                    || to.equals(RationalFunction.class) || to.equals(Fraction.class))
+      return (to.equals(Complex.class) || to.equals(RealPolynomial.class) || to.equals(RationalFunction.class) || to.equals(Fraction.class))
                     || to.equals(AlgebraicNumber.class) || to.equals(RealFunction.class);
     }
     else if (from.equals(Complex.class))
     {
-      return (to.equals(ComplexFraction.class) || to.equals(ComplexRationalFunction.class)
-                    || to.equals(ComplexPolynomial.class));
+      return (to.equals(ComplexFraction.class) || to.equals(ComplexRationalFunction.class) || to.equals(ComplexPolynomial.class));
     }
     else if (from.equals(Fraction.class))
     {
-      return (to.equals(Real.class) || to.equals(ComplexFraction.class) || to.equals(Complex.class)
-                    || to.equals(RationalFunction.class) || to.equals(ComplexRationalFunction.class)
-                    || to.equals(AlgebraicNumber.class));
+      return (to.equals(Real.class) || to.equals(ComplexFraction.class) || to.equals(Complex.class) || to.equals(RationalFunction.class)
+                    || to.equals(ComplexRationalFunction.class) || to.equals(AlgebraicNumber.class));
     }
     else if (from.equals(Integer.class))
     {
@@ -224,8 +212,7 @@ public class Compiler
     return cw;
   }
 
-  public static MethodVisitor
-         defineMethod(ClassVisitor classVisitor, String methodName, String methodSignature)
+  public static MethodVisitor defineMethod(ClassVisitor classVisitor, String methodName, String methodSignature)
   {
     return classVisitor.visitMethod(Opcodes.ACC_PUBLIC, methodName, methodSignature, null, null);
   }
@@ -254,31 +241,21 @@ public class Compiler
     return mv;
   }
 
-  public static <D, R, F extends Function<? extends D, ? extends R>>
-         ClassVisitor
-         generateFunctionInterface(Expression<D, R, F> expression,
-                                   String className,
-                                   ClassVisitor classVisitor)
+  public static <D, R, F extends Function<? extends D, ? extends R>> ClassVisitor generateFunctionInterface(Expression<D, R, F> expression,
+                                                                                                            String className,
+                                                                                                            ClassVisitor classVisitor)
   {
     assert className != null : "className shan't be null";
     String classSignature = null;
 
     classSignature = expression.getFunctionClassTypeSignature(expression.functionClass);
 
-    classVisitor.visit(V25 | V_PREVIEW,
-                       ACC_PUBLIC | ACC_SUPER,
-                       className,
-                       classSignature,
-                       objectDesc,
-                       expression.implementedInterfaces());
+    classVisitor.visit(V25 | V_PREVIEW, ACC_PUBLIC | ACC_SUPER, className, classSignature, objectDesc, expression.implementedInterfaces());
 
     return classVisitor;
   }
 
-  public static void generateFunctionTypeParameterSignature(Class<?> fclass,
-                                                            Class<?> domainClass,
-                                                            Class<?> codomainClass,
-                                                            SignatureWriter sw)
+  public static void generateFunctionTypeParameterSignature(Class<?> fclass, Class<?> domainClass, Class<?> codomainClass, SignatureWriter sw)
   {
     switch (fclass.getTypeParameters().length)
     {
@@ -299,15 +276,13 @@ public class Compiler
     }
   }
 
-  public static MethodVisitor generateNewObjectInstruction(MethodVisitor mv,
-                                                           String functionFieldTypeDescriptor)
+  public static MethodVisitor generateNewObjectInstruction(MethodVisitor mv, String functionFieldTypeDescriptor)
   {
     mv.visitTypeInsn(Opcodes.NEW, functionFieldTypeDescriptor);
     return mv;
   }
 
-  public static MethodVisitor generateNewObjectInstruction(MethodVisitor mv,
-                                                           Class<?> functionFieldType)
+  public static MethodVisitor generateNewObjectInstruction(MethodVisitor mv, Class<?> functionFieldType)
   {
     return generateNewObjectInstruction(mv, Type.getInternalName(functionFieldType));
   }
@@ -328,8 +303,7 @@ public class Compiler
     return generateReturnFromMethod(methodVisitor, true);
   }
 
-  public static MethodVisitor generateReturnFromMethod(MethodVisitor methodVisitor,
-                                                       boolean voidReturn)
+  public static MethodVisitor generateReturnFromMethod(MethodVisitor methodVisitor, boolean voidReturn)
   {
     methodVisitor.visitInsn(voidReturn ? Opcodes.RETURN : Opcodes.ARETURN);
     methodVisitor.visitMaxs(10, 10);
@@ -339,11 +313,7 @@ public class Compiler
 
   public static ClassVisitor generateTypesetMethod(ClassVisitor classVisitor, String typeset)
   {
-    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                                 "typeset",
-                                                 getMethodDescriptor(String.class),
-                                                 null,
-                                                 null);
+    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "typeset", getMethodDescriptor(String.class), null, null);
 
     annotateWithOverride(methodVisitor);
     methodVisitor.visitCode();
@@ -352,41 +322,25 @@ public class Compiler
     return classVisitor;
   }
 
-  public static void getField(MethodVisitor mv,
-                              Class<?> classGettingFieldFrom,
-                              String functionFieldName,
-                              Class<?> fieldType)
+  public static void getField(MethodVisitor mv, Class<?> classGettingFieldFrom, String functionFieldName, Class<?> fieldType)
   {
-    getField(mv,
-             Type.getInternalName(classGettingFieldFrom),
-             functionFieldName,
-             fieldType.descriptorString());
+    getField(mv, Type.getInternalName(classGettingFieldFrom), functionFieldName, fieldType.descriptorString());
   }
 
-  public static void
-         getField(MethodVisitor mv, String classType, String functionFieldName, String typeDesc)
+  public static void getField(MethodVisitor mv, String classType, String functionFieldName, String typeDesc)
   {
     mv.visitFieldInsn(Opcodes.GETFIELD, classType, functionFieldName, typeDesc);
   }
 
-  public static MethodVisitor getFieldFromThis(MethodVisitor mv,
-                                               String thisClassInternalName,
-                                               String fieldName,
-                                               Class<?> type)
+  public static MethodVisitor getFieldFromThis(MethodVisitor mv, String thisClassInternalName, String fieldName, Class<?> type)
   {
     return getFieldFromThis(mv, thisClassInternalName, fieldName, type.descriptorString());
   }
 
-  public static MethodVisitor getFieldFromThis(MethodVisitor methodVisitor,
-                                               String thisClassInternalName,
-                                               String fieldName,
-                                               String fieldTypeSignature)
+  public static MethodVisitor getFieldFromThis(MethodVisitor methodVisitor, String thisClassInternalName, String fieldName, String fieldTypeSignature)
   {
     assert thisClassInternalName != null : "thisClassInternalName is null";
-    loadThisOntoStack(methodVisitor).visitFieldInsn(GETFIELD,
-                                                    thisClassInternalName,
-                                                    fieldName,
-                                                    fieldTypeSignature);
+    loadThisOntoStack(methodVisitor).visitFieldInsn(GETFIELD, thisClassInternalName, fieldName, fieldTypeSignature);
     return methodVisitor;
   }
 
@@ -415,9 +369,7 @@ public class Compiler
 
   public static String getMethodDescriptor(Class<?> ret, Class<?>... args)
   {
-    return Type.getMethodDescriptor(Type.getType(ret),
-                                    Utensils.classTypes(args).toArray(new Type[args.length]))
-               .replace("Ljava/lang/Void;", "V");
+    return Type.getMethodDescriptor(Type.getType(ret), Utensils.classTypes(args).toArray(new Type[args.length])).replace("Ljava/lang/Void;", "V");
 
   }
 
@@ -444,21 +396,14 @@ public class Compiler
     return typePrefix;
   }
 
-  public static void invokeBinaryOperationMethod(MethodVisitor mv,
-                                                 String operator,
-                                                 Class<?> leftType,
-                                                 Class<?> rightType,
-                                                 Class<?> returnType)
+  public static void invokeBinaryOperationMethod(MethodVisitor mv, String operator, Class<?> leftType, Class<?> rightType, Class<?> returnType)
   {
 
     String returnTypeDescriptor = returnType.descriptorString();
     mv.visitMethodInsn(INVOKEVIRTUAL,
                        Type.getInternalName(leftType),
                        operator,
-                       String.format("(%sI%s)%s",
-                                     rightType.descriptorString(),
-                                     returnTypeDescriptor,
-                                     returnTypeDescriptor),
+                       String.format("(%sI%s)%s", rightType.descriptorString(), returnTypeDescriptor, returnTypeDescriptor),
                        false);
   }
 
@@ -475,11 +420,7 @@ public class Compiler
 
   public static void invokeDefaultConstructor(MethodVisitor mv, Class<?> functionFieldType)
   {
-    mv.visitMethodInsn(Opcodes.INVOKESPECIAL,
-                       Type.getInternalName(functionFieldType),
-                       "<init>",
-                       "()V",
-                       false);
+    mv.visitMethodInsn(Opcodes.INVOKESPECIAL, Type.getInternalName(functionFieldType), "<init>", "()V", false);
   }
 
   public static void invokeDefaultConstructor(MethodVisitor mv, String functionFieldType)
@@ -487,83 +428,43 @@ public class Compiler
     mv.visitMethodInsn(Opcodes.INVOKESPECIAL, functionFieldType, "<init>", "()V", false);
   }
 
-  public static MethodVisitor invokeInterfaceMethod(MethodVisitor methodVisitor,
-                                                    Class<?> thisClass,
-                                                    String methodName,
-                                                    Class<?> retType,
-                                                    Class<?>... argTypes)
+  public static MethodVisitor invokeInterfaceMethod(MethodVisitor methodVisitor, Class<?> thisClass, String methodName, Class<?> retType, Class<?>... argTypes)
   {
     return invokeMethod(methodVisitor, thisClass, methodName, retType, true, argTypes);
   }
 
-  public static MethodVisitor invokeMethod(MethodVisitor methodVisitor,
-                                           Class<?> thisClass,
-                                           String methodName,
-                                           Class<?> retType,
-                                           boolean isInterface,
-                                           Class<?>... argTypes)
+  public static MethodVisitor
+         invokeMethod(MethodVisitor methodVisitor, Class<?> thisClass, String methodName, Class<?> retType, boolean isInterface, Class<?>... argTypes)
   {
-    return invokeMethod(methodVisitor,
-                        Type.getInternalName(thisClass),
-                        methodName,
-                        getMethodDescriptor(retType, argTypes),
-                        isInterface);
+    return invokeMethod(methodVisitor, Type.getInternalName(thisClass), methodName, getMethodDescriptor(retType, argTypes), isInterface);
   }
 
-  public static MethodVisitor invokeMethod(MethodVisitor methodVisitor,
-                                           Class<?> thisClass,
-                                           String functionName,
-                                           String methodSignature,
-                                           boolean isInterface)
+  public static MethodVisitor invokeMethod(MethodVisitor methodVisitor, Class<?> thisClass, String functionName, String methodSignature, boolean isInterface)
   {
-    return invokeMethod(methodVisitor,
-                        Type.getInternalName(thisClass),
-                        functionName,
-                        methodSignature,
-                        isInterface);
+    return invokeMethod(methodVisitor, Type.getInternalName(thisClass), functionName, methodSignature, isInterface);
   }
 
-  public static MethodVisitor invokeMethod(MethodVisitor mv,
-                                           int instruction,
-                                           Class<?> whichClass,
-                                           String methodName,
-                                           Class<?> returnType,
-                                           Class<?>... argTypes)
+  public static MethodVisitor invokeMethod(MethodVisitor mv, int instruction, Class<?> whichClass, String methodName, Class<?> returnType, Class<?>... argTypes)
   {
-    mv.visitMethodInsn(instruction,
-                       Type.getInternalName(whichClass),
-                       methodName,
-                       Compiler.getMethodDescriptor(returnType, argTypes),
-                       whichClass.isInterface());
+    mv.visitMethodInsn(instruction, Type.getInternalName(whichClass), methodName, Compiler.getMethodDescriptor(returnType, argTypes), whichClass.isInterface());
     return mv;
   }
 
-  public static MethodVisitor invokeMethod(MethodVisitor methodVisitor,
-                                           String classInternalName,
-                                           String methodName,
-                                           String methodSignature)
+  public static MethodVisitor invokeMethod(MethodVisitor methodVisitor, String classInternalName, String methodName, String methodSignature)
   {
     return invokeMethod(methodVisitor, classInternalName, methodName, methodSignature, false);
   }
 
-  public static MethodVisitor invokeMethod(MethodVisitor methodVisitor,
-                                           String classInternalName,
-                                           String methodName,
-                                           String methodSignature,
-                                           boolean isInterface)
+  public static MethodVisitor
+         invokeMethod(MethodVisitor methodVisitor, String classInternalName, String methodName, String methodSignature, boolean isInterface)
   {
-    methodVisitor.visitMethodInsn(isInterface ? INVOKEINTERFACE : INVOKEVIRTUAL,
-                                  classInternalName,
-                                  methodName,
-                                  methodSignature,
-                                  isInterface);
+    methodVisitor.visitMethodInsn(isInterface ? INVOKEINTERFACE : INVOKEVIRTUAL, classInternalName, methodName, methodSignature, isInterface);
     return methodVisitor;
   }
 
   public static MethodVisitor invokeSetMethod(MethodVisitor mv, Class<?> inType, Class<?> outType)
   {
-    assert !outType.getClass()
-                   .equals(Object.class) : "invokeSetMethod shouldn't be called for Object type";
+    assert !outType.getClass().equals(Object.class) : "invokeSetMethod shouldn't be called for Object type";
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                        Type.getInternalName(outType),
                        "set",
@@ -572,21 +473,14 @@ public class Compiler
     return mv;
   }
 
-  public static MethodVisitor invokeStaticMethod(MethodVisitor mv,
-                                                 Class<?> whichClass,
-                                                 String methodName,
-                                                 Class<?> returnType,
-                                                 Class<?>... argTypes)
+  public static MethodVisitor invokeStaticMethod(MethodVisitor mv, Class<?> whichClass, String methodName, Class<?> returnType, Class<?>... argTypes)
   {
 
     return invokeMethod(mv, INVOKESTATIC, whichClass, methodName, returnType, argTypes);
   }
 
-  public static MethodVisitor generateVirtualMethodInvocation(MethodVisitor methodVisitor,
-                                                              Class<?> thisClass,
-                                                              String methodName,
-                                                              Class<?> retType,
-                                                              Class<?>... argTypes)
+  public static MethodVisitor
+         generateVirtualMethodInvocation(MethodVisitor methodVisitor, Class<?> thisClass, String methodName, Class<?> retType, Class<?>... argTypes)
   {
     return invokeMethod(methodVisitor, thisClass, methodName, retType, false, argTypes);
   }
@@ -634,15 +528,9 @@ public class Compiler
     loadConstantOntoStack(mv, fn, Complex.class, ComplexConstants.class);
   }
 
-  public static void loadConstantOntoStack(MethodVisitor mv,
-                                           String fieldName,
-                                           Class<?> typeClass,
-                                           Class<?> staticConstantsClass)
+  public static void loadConstantOntoStack(MethodVisitor mv, String fieldName, Class<?> typeClass, Class<?> staticConstantsClass)
   {
-    mv.visitFieldInsn(Opcodes.GETSTATIC,
-                      Type.getInternalName(staticConstantsClass),
-                      fieldName,
-                      typeClass.descriptorString());
+    mv.visitFieldInsn(Opcodes.GETSTATIC, Type.getInternalName(staticConstantsClass), fieldName, typeClass.descriptorString());
   }
 
   /**
@@ -661,16 +549,12 @@ public class Compiler
    * @throws CompilerException if the class cannot be found after registration
    */
   @SuppressWarnings("unchecked")
-  public static <D, R, F extends Function<? extends D, ? extends R>>
-         Class<F>
-         loadFunctionClass(String className, byte[] bytecodes, Context context)
+  public static <D, R, F extends Function<? extends D, ? extends R>> Class<F> loadFunctionClass(String className, byte[] bytecodes, Context context)
   {
     assert className != null;
     if (Expression.trace)
     {
-      log.debug("loadFunctionClass(className={}) into Context#{}",
-                className,
-                System.identityHashCode(context));
+      log.debug("loadFunctionClass(className={}) into Context#{}", className, System.identityHashCode(context));
     }
 
     ExpressionClassLoader loader = context.getClassLoader();
@@ -758,22 +642,13 @@ public class Compiler
     methodVisitor.visitInsn(POP);
   }
 
-  public static MethodVisitor putField(MethodVisitor mv,
-                                       String fieldType,
-                                       String variableFieldName,
-                                       Class<?> variableFieldType)
+  public static MethodVisitor putField(MethodVisitor mv, String fieldType, String variableFieldName, Class<?> variableFieldType)
   {
-    mv.visitFieldInsn(Opcodes.PUTFIELD,
-                      fieldType,
-                      variableFieldName,
-                      variableFieldType.descriptorString());
+    mv.visitFieldInsn(Opcodes.PUTFIELD, fieldType, variableFieldName, variableFieldType.descriptorString());
     return mv;
   }
 
-  public static void putField(MethodVisitor mv,
-                              String owner,
-                              String variableFieldName,
-                              String variableFieldType)
+  public static void putField(MethodVisitor mv, String owner, String variableFieldName, String variableFieldType)
   {
     mv.visitFieldInsn(Opcodes.PUTFIELD, owner, variableFieldName, variableFieldType);
   }
@@ -822,47 +697,35 @@ public class Compiler
     return scalarTypes.contains(t);
   }
 
-  public static final HashSet<Class<?>> scalarTypes =
-                                                    new HashSet<>(Arrays.asList(Real.class,
-                                                                                Complex.class,
-                                                                                Integer.class,
-                                                                                Fraction.class,
-                                                                                ComplexFraction.class,
-                                                                                AlgebraicNumber.class,
-                                                                                GaussianInteger.class,
-                                                                                Quaternion.class));
+  public static final HashSet<Class<?>> scalarTypes = new HashSet<>(Arrays.asList(Real.class,
+                                                                                  Complex.class,
+                                                                                  Integer.class,
+                                                                                  Fraction.class,
+                                                                                  ComplexFraction.class,
+                                                                                  AlgebraicNumber.class,
+                                                                                  GaussianInteger.class,
+                                                                                  Quaternion.class));
 
-  public static ClassVisitor
-         declareField(ClassVisitor classVisitor, String varName, Class<?> varType)
+  public static ClassVisitor declareField(ClassVisitor classVisitor, String varName, Class<?> varType)
   {
     classVisitor.visitField(ACC_PUBLIC, varName, varType.descriptorString(), null, null);
     return classVisitor;
   }
 
-  public static String evaluationMethodDescriptor = getMethodDescriptor(Object.class,
-                                                                        Object.class,
-                                                                        int.class,
-                                                                        int.class,
-                                                                        Object.class);
+  public static String evaluationMethodDescriptor = getMethodDescriptor(Object.class, Object.class, int.class, int.class, Object.class);
 
   public static void decompileClassFile(File compiledClassDir, File file)
   {
-    Decompiler decompiler =
-                          new Decompiler.Builder().inputs(file)
-                                                  .output(new DirectoryResultSaver(compiledClassDir))
-                                                  .option(IFernflowerPreferences.INCLUDE_ENTIRE_CLASSPATH,
-                                                          true)
-                                                  .option(IFernflowerPreferences.BYTECODE_SOURCE_MAPPING,
-                                                          true)
-                                                  .build();
+    Decompiler decompiler = new Decompiler.Builder().inputs(file)
+                                                    .output(new DirectoryResultSaver(compiledClassDir))
+                                                    .option(IFernflowerPreferences.INCLUDE_ENTIRE_CLASSPATH, true)
+                                                    .option(IFernflowerPreferences.BYTECODE_SOURCE_MAPPING, true)
+                                                    .build();
 
     decompiler.decompile();
   }
 
-  public static boolean doesBuiltinFunctionExist(String functionName,
-                                                 boolean bitless,
-                                                 Class<?> domainType,
-                                                 Class<?> coDomainType)
+  public static boolean doesBuiltinFunctionExist(String functionName, boolean bitless, Class<?> domainType, Class<?> coDomainType)
   {
     if (bitless)
     {
@@ -876,16 +739,12 @@ public class Compiler
 
   public static boolean methodExists(Class<?> clazz, String methodName, Class<?>... parameterTypes)
   {
-    return Stream.of(clazz.getMethods())
-                 .anyMatch(method -> method.getName().equals(methodName)
-                               && Arrays.equals(method.getParameterTypes(), parameterTypes));
+    return Stream.of(clazz.getMethods()).anyMatch(method -> method.getName().equals(methodName) && Arrays.equals(method.getParameterTypes(), parameterTypes));
   }
 
   public static String getFunctionDescriptor(boolean bitless, Class<?> coDomainType)
   {
-    String functionDescriptor =
-                              bitless ? getMethodDescriptor(coDomainType, coDomainType)
-                                      : getMethodDescriptor(coDomainType, int.class, coDomainType);
+    String functionDescriptor = bitless ? getMethodDescriptor(coDomainType, coDomainType) : getMethodDescriptor(coDomainType, int.class, coDomainType);
     return functionDescriptor;
   }
 
@@ -893,7 +752,7 @@ public class Compiler
   {
     mv.visitJumpInsn(IFNONNULL, fieldNotNull);
     return mv;
-    
+
   }
 
 }

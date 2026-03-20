@@ -24,11 +24,7 @@ public interface NullaryFunction<R> extends
 
   public static <R extends Ring<?>, N extends NullaryFunction<? extends R>>
          Expression<Object, R, N>
-         parse(Class<? extends R> elementType,
-               Class<? extends N> nullaryFunctionType,
-               String functionName,
-               String expression,
-               Context context)
+         parse(Class<? extends R> elementType, Class<? extends N> nullaryFunctionType, String functionName, String expression, Context context)
   {
     return Function.parse(functionName != null ? functionName : Parser.transformToAcceptableJavaIdentifier(expression),
                           expression,
@@ -37,25 +33,17 @@ public interface NullaryFunction<R> extends
                           elementType,
                           nullaryFunctionType,
                           functionName,
-                          null, true);
+                          null,
+                          true);
   }
 
   @SuppressWarnings("unchecked")
-  public static <R, F extends Function<Object, R>>
-         F
-         express(Class<? extends R> coDomainClass, String functionName, String expression, Context context)
+  public static <R, F extends Function<Object, R>> F express(Class<? extends R> coDomainClass, String functionName, String expression, Context context)
   {
-    return (F) Function.express(expression,
-                                    context,
-                                    Object.class,
-                                    coDomainClass,
-                                    NullaryFunction.class,
-                                    functionName);
+    return (F) Function.express(expression, context, Object.class, coDomainClass, NullaryFunction.class, functionName);
   }
 
-  public static <R, F extends NullaryFunction<R>> F express(Class<? extends R> coDomainClass,
-                                                             Class<? extends F> functionClass,
-                                                             String expression)
+  public static <R, F extends NullaryFunction<R>> F express(Class<? extends R> coDomainClass, Class<? extends F> functionClass, String expression)
   {
     return (F) Function.express(expression, null, Object.class, coDomainClass, functionClass, null);
   }
@@ -96,9 +84,9 @@ public interface NullaryFunction<R> extends
     return evaluate(128);
   }
 
-  public static <R extends Ring<?>, N extends NullaryFunction<? extends R>>
-         Expression<Object, R, N>
-         parse(Class<? extends R> domainClass, Class<? extends N> functionClass, String expression)
+  public static <R extends Ring<?>, N extends NullaryFunction<? extends R>> Expression<Object, R, N> parse(Class<? extends R> domainClass,
+                                                                                                           Class<? extends N> functionClass,
+                                                                                                           String expression)
   {
     return parse(domainClass, functionClass, null, expression, null);
   }

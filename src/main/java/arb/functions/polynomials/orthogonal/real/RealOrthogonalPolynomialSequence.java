@@ -15,8 +15,7 @@ import arb.functions.real.RealFunction;
  *      {@link TheArb4jLibrary}
  */
 public abstract class RealOrthogonalPolynomialSequence extends
-                                                       OrthogonalPolynomialSequence<Real, Real, RealPolynomial>
-                                                       implements
+                                                       OrthogonalPolynomialSequence<Real, Real, RealPolynomial> implements
                                                        RealPolynomialSequence
 {
 

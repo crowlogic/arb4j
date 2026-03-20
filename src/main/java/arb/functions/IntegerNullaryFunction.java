@@ -12,15 +12,9 @@ import arb.expressions.Context;
 public interface IntegerNullaryFunction extends
                                         NullaryFunction<Integer>
 {
-  public static IntegerNullaryFunction
-         express(String functionName, String expression, Context context)
+  public static IntegerNullaryFunction express(String functionName, String expression, Context context)
   {
-    return Function.express(expression,
-                                context,
-                                Object.class,
-                                Integer.class,
-                                IntegerNullaryFunction.class,
-                                functionName);
+    return Function.express(expression, context, Object.class, Integer.class, IntegerNullaryFunction.class, functionName);
   }
 
   public static IntegerNullaryFunction express(String expression, Context context)
@@ -40,12 +34,7 @@ public interface IntegerNullaryFunction extends
 
   static IntegerNullaryFunction compile(String expression, Context context)
   {
-    return Function.express(expression,
-                                context,
-                                Object.class,
-                                Integer.class,
-                                IntegerNullaryFunction.class,
-                                null);
+    return Function.express(expression, context, Object.class, Integer.class, IntegerNullaryFunction.class, null);
   }
 
 }

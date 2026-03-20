@@ -27,20 +27,13 @@ public interface RealToComplexFunction extends
                           Complex.class,
                           RealToComplexFunction.class,
                           null,
-                          null, true);
+                          null,
+                          true);
   }
 
-  public static Expression<Real, Complex, RealToComplexFunction>
-         parse(String name, String expression, Context context)
+  public static Expression<Real, Complex, RealToComplexFunction> parse(String name, String expression, Context context)
   {
-    return Function.parse(name,
-                          expression,
-                          context,
-                          Real.class,
-                          Complex.class,
-                          RealToComplexFunction.class,
-                          name,
-                          null, true);
+    return Function.parse(name, expression, context, Real.class, Complex.class, RealToComplexFunction.class, name, null, true);
   }
 
   @Override
@@ -60,26 +53,18 @@ public interface RealToComplexFunction extends
     return express(expression, string, null);
   }
 
-  public static RealToComplexFunction
-         express(String functionName, String expression, Context context)
+  public static RealToComplexFunction express(String functionName, String expression, Context context)
   {
     if (Expression.trace)
     {
-      LoggerFactory.getLogger(RealToComplexFunction.class)
-                   .debug("express( functionName={}, expression={} )", functionName, expression);
+      LoggerFactory.getLogger(RealToComplexFunction.class).debug("express( functionName={}, expression={} )", functionName, expression);
     }
     return express(functionName, expression, context, false);
   }
 
-  public static RealToComplexFunction
-         express(String functionName, String expression, Context context, boolean verbose)
+  public static RealToComplexFunction express(String functionName, String expression, Context context, boolean verbose)
   {
-    return Function.express(expression,
-                                context,
-                                Real.class,
-                                Complex.class,
-                                RealToComplexFunction.class,
-                                functionName);
+    return Function.express(expression, context, Real.class, Complex.class, RealToComplexFunction.class, functionName);
   }
 
   public static RealToComplexFunction express(String expression)
@@ -89,22 +74,12 @@ public interface RealToComplexFunction extends
 
   public static RealToComplexFunction express(String expression, Context context)
   {
-    return Function.express(expression,
-                                context,
-                                Real.class,
-                                Complex.class,
-                                RealToComplexFunction.class,
-                                null);
+    return Function.express(expression, context, Real.class, Complex.class, RealToComplexFunction.class, null);
   }
 
   public static RealToComplexFunction express(String expression, Context context, boolean verbose)
   {
-    return Function.express(expression,
-                                context,
-                                Real.class,
-                                Complex.class,
-                                RealToComplexFunction.class,
-                                null);
+    return Function.express(expression, context, Real.class, Complex.class, RealToComplexFunction.class, null);
   }
 
   public default Complex eval(double t, Complex res)

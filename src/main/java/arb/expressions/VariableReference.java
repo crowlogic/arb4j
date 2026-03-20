@@ -44,11 +44,7 @@ public class VariableReference<D, R, F extends Function<? extends D, ? extends R
     @Override
     public String toString()
     {
-      return String.format("%s%s, %s%s",
-                           lowerInclusive ? "[" : "(",
-                           lower,
-                           upper,
-                           upperInclusive ? "]" : ")");
+      return String.format("%s%s, %s%s", lowerInclusive ? "[" : "(", lower, upper, upperInclusive ? "]" : ")");
     }
   }
 
@@ -118,8 +114,7 @@ public class VariableReference<D, R, F extends Function<? extends D, ? extends R
    * @param upperInclusive true if upper bound is inclusive
    * @return this
    */
-  public VariableReference<D, R, F>
-         setBounds(double lower, boolean lowerInclusive, double upper, boolean upperInclusive)
+  public VariableReference<D, R, F> setBounds(double lower, boolean lowerInclusive, double upper, boolean upperInclusive)
   {
     this.bounds = new Bounds(lower,
                              lowerInclusive,
@@ -159,9 +154,7 @@ public class VariableReference<D, R, F extends Function<? extends D, ? extends R
     return "else".equals(name) && index == null;
   }
 
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         VariableReference<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>> VariableReference<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
     var ref = new VariableReference<E, S, G>(name,
                                              index == null ? null : index.spliceInto(newExpression),

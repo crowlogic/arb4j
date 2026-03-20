@@ -31,8 +31,7 @@ public class RealSubtractionFunction implements
   {
     try ( var blip = t.borrowVariable())
     {
-      return thisFunc.evaluate(t, order, bits, res)
-                     .sub(that.evaluate(t, order, bits, blip), bits, res);
+      return thisFunc.evaluate(t, order, bits, res).sub(that.evaluate(t, order, bits, blip), bits, res);
     }
 
   }

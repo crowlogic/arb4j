@@ -42,28 +42,22 @@ import arb.functions.Function;
 import arb.functions.HypergeometricFunction;
 
 public class ComplexRationalHypergeometricFunction extends
-                                                   HypergeometricFunction<Complex, ComplexRationalFunction,
-                                                                 ComplexRationalNullaryFunction>
+                                                   HypergeometricFunction<Complex, ComplexRationalFunction, ComplexRationalNullaryFunction>
 {
 
-  public ComplexRationalHypergeometricFunction
-         init(Fraction α, Fraction β, ComplexRationalNullaryFunction constantArg)
+  public ComplexRationalHypergeometricFunction init(Fraction α, Fraction β, ComplexRationalNullaryFunction constantArg)
   {
     super.init(Complex.class, ComplexRationalFunction.class, ComplexRationalNullaryFunction.class, α, β, constantArg);
     return this;
   }
 
-  public ComplexRationalHypergeometricFunction
-         init(Fraction α, Fraction β, Function<ComplexRationalFunction, ComplexRationalFunction> inputDependentArg)
+  public ComplexRationalHypergeometricFunction init(Fraction α, Fraction β, Function<ComplexRationalFunction, ComplexRationalFunction> inputDependentArg)
   {
     super.init(Complex.class, ComplexRationalFunction.class, ComplexRationalNullaryFunction.class, α, β, inputDependentArg);
     return this;
   }
 
-  public ComplexRationalHypergeometricFunction
-         init(ComplexFraction numerator,
-              ComplexFraction denominator,
-              ComplexRationalNullaryFunction constantArg)
+  public ComplexRationalHypergeometricFunction init(ComplexFraction numerator, ComplexFraction denominator, ComplexRationalNullaryFunction constantArg)
   {
     assert numerator.imaginaryPart.isZero();
     assert denominator.imaginaryPart.isZero();
@@ -71,19 +65,14 @@ public class ComplexRationalHypergeometricFunction extends
   }
 
   public ComplexRationalHypergeometricFunction
-         init(ComplexFraction numerator,
-              ComplexFraction denominator,
-              Function<ComplexRationalFunction, ComplexRationalFunction> inputDependentArg)
+         init(ComplexFraction numerator, ComplexFraction denominator, Function<ComplexRationalFunction, ComplexRationalFunction> inputDependentArg)
   {
     assert numerator.imaginaryPart.isZero();
     assert denominator.imaginaryPart.isZero();
     return init(numerator.realPart, denominator.realPart, inputDependentArg);
   }
 
-  public ComplexRationalHypergeometricFunction
-         init(Complex numerator,
-              Complex denominator,
-              ComplexRationalNullaryFunction constantArg)
+  public ComplexRationalHypergeometricFunction init(Complex numerator, Complex denominator, ComplexRationalNullaryFunction constantArg)
   {
     var n = new ComplexFraction();
     var d = new ComplexFraction();
@@ -93,9 +82,7 @@ public class ComplexRationalHypergeometricFunction extends
   }
 
   public ComplexRationalHypergeometricFunction
-         init(Complex numerator,
-              Complex denominator,
-              Function<ComplexRationalFunction, ComplexRationalFunction> inputDependentArg)
+         init(Complex numerator, Complex denominator, Function<ComplexRationalFunction, ComplexRationalFunction> inputDependentArg)
   {
     var n = new ComplexFraction();
     var d = new ComplexFraction();

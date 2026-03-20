@@ -29,8 +29,7 @@ import arb.functions.real.RealFunction;
  *      {@link TheArb4jLibrary}
  */
 public class ModifiedLommelPolynomials extends
-                                       RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence
-                                       implements
+                                       RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence implements
                                        Initializable
 {
 

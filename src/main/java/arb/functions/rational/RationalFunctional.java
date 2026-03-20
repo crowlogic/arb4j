@@ -15,12 +15,7 @@ public interface RationalFunctional extends
 
   public static RationalFunctional express(String functionName, String expression, Context context)
   {
-    return Function.express(expression,
-                                context,
-                                RationalFunction.class,
-                                RationalFunction.class,
-                                RationalFunctional.class,
-                                functionName);
+    return Function.express(expression, context, RationalFunction.class, RationalFunction.class, RationalFunctional.class, functionName);
   }
 
   public static RationalFunctional express(String expression, Context context)
@@ -50,20 +45,12 @@ public interface RationalFunctional extends
     return expr.parse(true);
   }
 
-  public static Expression<RationalFunction, RationalFunction, RationalFunctional>
-         compile(String functionName, String expression, Context context)
+  public static Expression<RationalFunction, RationalFunction, RationalFunctional> compile(String functionName, String expression, Context context)
   {
-    return Parser.parse(functionName,
-                        expression,
-                        context,
-                        RationalFunction.class,
-                        RationalFunction.class,
-                        RationalFunctional.class,
-                        false);
+    return Parser.parse(functionName, expression, context, RationalFunction.class, RationalFunction.class, RationalFunctional.class, false);
   }
 
-  public static Expression<RationalFunction, RationalFunction, RationalFunctional>
-         compile(String string, Context prototype)
+  public static Expression<RationalFunction, RationalFunction, RationalFunctional> compile(String string, Context prototype)
   {
     return compile(Parser.transformToAcceptableJavaIdentifier(string), string, prototype);
   }

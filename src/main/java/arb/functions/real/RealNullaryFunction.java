@@ -15,20 +15,12 @@ public interface RealNullaryFunction extends
 {
   public static Expression<Object, Real, RealNullaryFunction> parse(String expression)
   {
-    return NullaryFunction.parse(Real.class,
-                                 RealNullaryFunction.class,
-                                 null,
-                                 expression,
-                                 null);
+    return NullaryFunction.parse(Real.class, RealNullaryFunction.class, null, expression, null);
   }
 
-  public static Expression<Object, Real, RealNullaryFunction>  parse(String expression, Context context)
+  public static Expression<Object, Real, RealNullaryFunction> parse(String expression, Context context)
   {
-    return NullaryFunction.parse(Real.class,
-                                 RealNullaryFunction.class,
-                                 Parser.transformToAcceptableJavaIdentifier(expression),
-                                 expression,
-                                 context);
+    return NullaryFunction.parse(Real.class, RealNullaryFunction.class, Parser.transformToAcceptableJavaIdentifier(expression), expression, context);
   }
 
   public static Expression<Object, Real, RealNullaryFunction> compile(String expression, Context context)
@@ -36,16 +28,9 @@ public interface RealNullaryFunction extends
     return compile(null, expression, context);
   }
 
-  public static Expression<Object, Real, RealNullaryFunction>
-         compile(String functionName, String expression, Context context)
+  public static Expression<Object, Real, RealNullaryFunction> compile(String functionName, String expression, Context context)
   {
-    return Parser.parse(functionName,
-                            expression,
-                            context,
-                            Object.class,
-                            Real.class,
-                            RealNullaryFunction.class,
-                            false);
+    return Parser.parse(functionName, expression, context, Object.class, Real.class, RealNullaryFunction.class, false);
   }
 
   public static RealNullaryFunction express(String functionName, String expression, Context context)

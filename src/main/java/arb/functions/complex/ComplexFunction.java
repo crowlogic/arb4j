@@ -97,15 +97,9 @@ public interface ComplexFunction extends
     return compile(expression, null);
   }
 
-  public static Expression<Complex, Complex, ComplexFunction> compile(String expression,
-                                                                      Context context)
+  public static Expression<Complex, Complex, ComplexFunction> compile(String expression, Context context)
   {
-    return Parser.parse(expression,
-                        context,
-                        Complex.class,
-                        Complex.class,
-                        ComplexFunction.class,
-                        null);
+    return Parser.parse(expression, context, Complex.class, Complex.class, ComplexFunction.class, null);
 
   }
 
@@ -116,22 +110,12 @@ public interface ComplexFunction extends
 
   public static ComplexFunction express(String expression, Context context)
   {
-    return Function.express(expression,
-                                context,
-                                Complex.class,
-                                Complex.class,
-                                ComplexFunction.class,
-                                null);
+    return Function.express(expression, context, Complex.class, Complex.class, ComplexFunction.class, null);
   }
 
   public static ComplexFunction express(String expression, Context context, boolean verbose)
   {
-    return Function.express(expression,
-                                context,
-                                Complex.class,
-                                Complex.class,
-                                ComplexFunction.class,
-                                null);
+    return Function.express(expression, context, Complex.class, Complex.class, ComplexFunction.class, null);
   }
 
   public static ComplexFunction express(String expression, String string)
@@ -144,15 +128,9 @@ public interface ComplexFunction extends
     return express(functionName, expression, context, false);
   }
 
-  public static ComplexFunction
-         express(String functionName, String expression, Context context, boolean verbose)
+  public static ComplexFunction express(String functionName, String expression, Context context, boolean verbose)
   {
-    return Function.express(expression,
-                                context,
-                                Complex.class,
-                                Complex.class,
-                                ComplexFunction.class,
-                                functionName);
+    return Function.express(expression, context, Complex.class, Complex.class, ComplexFunction.class, functionName);
   }
 
   public static Expression<Complex, Complex, ComplexFunction> parse(String expression)
@@ -168,16 +146,9 @@ public interface ComplexFunction extends
                                   true);
   }
 
-  public static Expression<Complex, Complex, ComplexFunction> parse(String expression,
-                                                                    Context context)
+  public static Expression<Complex, Complex, ComplexFunction> parse(String expression, Context context)
   {
-    return Function.parseCompileAndRegister(expression,
-                                       context,
-                                       Complex.class,
-                                       Complex.class,
-                                       ComplexFunction.class,
-                                       null,
-                                       false);
+    return Function.parseCompileAndRegister(expression, context, Complex.class, Complex.class, ComplexFunction.class, null, false);
   }
 
   /**
@@ -201,10 +172,7 @@ public interface ComplexFunction extends
    */
   public default ComplexFunction integral() throws NotIntegrableException
   {
-    throw new UnsupportedOperationException(this
-                                            + " of class "
-                                            + getClass()
-                                            + " needs to implement this method");
+    throw new UnsupportedOperationException(this + " of class " + getClass() + " needs to implement this method");
   }
 
   public default Complex eval(double t, Complex result)
@@ -229,8 +197,8 @@ public interface ComplexFunction extends
     }
   }
 
-  public default Complex eval(double d)  
+  public default Complex eval(double d)
   {
-    return eval(d,new Complex());
+    return eval(d, new Complex());
   }
 }

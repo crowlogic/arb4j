@@ -12,43 +12,22 @@ import arb.functions.Function;
  *      {@link TheArb4jLibrary}
  */
 public interface IntegerPolynomialSequence extends
-                                                 Sequence<RealPolynomial>
+                                           Sequence<RealPolynomial>
 {
 
-  public static IntegerPolynomialSequence
-         express(String functionName,
-                 String expression,
-                 Context context)
+  public static IntegerPolynomialSequence express(String functionName, String expression, Context context)
   {
-    return Function.express(expression,
-                                context,
-                                Integer.class,
-                                RealPolynomial.class,
-                                IntegerPolynomialSequence.class,
-                                functionName);
+    return Function.express(expression, context, Integer.class, RealPolynomial.class, IntegerPolynomialSequence.class, functionName);
   }
 
-  public static IntegerPolynomialSequence
-         express(String expression)
+  public static IntegerPolynomialSequence express(String expression)
   {
-    return Function.express(expression,
-                                null,
-                                Integer.class,
-                                RealPolynomial.class,
-                                IntegerPolynomialSequence.class,
-                                null);
+    return Function.express(expression, null, Integer.class, RealPolynomial.class, IntegerPolynomialSequence.class, null);
   }
 
-  public static IntegerPolynomialSequence
-         express(String expression,
-                 Context context)
+  public static IntegerPolynomialSequence express(String expression, Context context)
   {
-    return Function.express(expression,
-                                context,
-                                Integer.class,
-                                RealPolynomial.class,
-                                IntegerPolynomialSequence.class,
-                                null);
+    return Function.express(expression, context, Integer.class, RealPolynomial.class, IntegerPolynomialSequence.class, null);
   }
 
 }

@@ -13,10 +13,8 @@ import arb.functions.real.RealFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public abstract class RealOrthogonalPolynomialExpansion<
-              O extends OrthogonalPolynomialSequence<Real, Real, RealPolynomial>> extends
-                                                       OrthogonalPolynomialExpansion<Real, Real, RealPolynomial, O>
-                                                       implements
+public abstract class RealOrthogonalPolynomialExpansion<O extends OrthogonalPolynomialSequence<Real, Real, RealPolynomial>> extends
+                                                       OrthogonalPolynomialExpansion<Real, Real, RealPolynomial, O> implements
                                                        RealFunction
 
 {

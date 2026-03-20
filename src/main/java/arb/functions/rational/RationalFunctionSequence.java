@@ -12,7 +12,8 @@ import arb.functions.integer.Sequence;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface RationalFunctionSequence extends Sequence<RationalFunction>
+public interface RationalFunctionSequence extends
+                                          Sequence<RationalFunction>
 {
 
   public static Expression<Integer, RationalFunction, RationalFunctionSequence> compile(String expression)
@@ -20,15 +21,9 @@ public interface RationalFunctionSequence extends Sequence<RationalFunction>
     return compile(expression, null);
   }
 
-  public static Expression<Integer, RationalFunction, RationalFunctionSequence> compile(String expression,
-                                                                                        Context context)
+  public static Expression<Integer, RationalFunction, RationalFunctionSequence> compile(String expression, Context context)
   {
-    return Parser.parse(expression,
-                            context,
-                            Integer.class,
-                            RationalFunction.class,
-                            RationalFunctionSequence.class,
-                            null);
+    return Parser.parse(expression, context, Integer.class, RationalFunction.class, RationalFunctionSequence.class, null);
   }
 
   @Override
@@ -49,36 +44,21 @@ public interface RationalFunctionSequence extends Sequence<RationalFunction>
 
   public static RationalFunctionSequence express(String name, String expression, Context context)
   {
-    return Function.express(Integer.class,
-                            RationalFunction.class,
-                            RationalFunctionSequence.class,
-                            name,
-                            expression,
-                            context);
+    return Function.express(Integer.class, RationalFunction.class, RationalFunctionSequence.class, name, expression, context);
   }
 
-  public static Expression<Integer, RationalFunction, RationalFunctionSequence> parse(String className,
-                                                                                      String string)
+  public static Expression<Integer, RationalFunction, RationalFunctionSequence> parse(String className, String string)
   {
     return Sequence.parse(className, RationalFunctionSequence.class, RationalFunction.class, string);
   }
 
-  public static Expression<Integer, RationalFunction, RationalFunctionSequence> parse(String expression,
-                                                                                      Context context)
+  public static Expression<Integer, RationalFunction, RationalFunctionSequence> parse(String expression, Context context)
   {
     return parse(Parser.transformToAcceptableJavaIdentifier(expression), expression, context);
   }
 
-  public static Expression<Integer, RationalFunction, RationalFunctionSequence>
-         parse(String name, String expression, Context context)
+  public static Expression<Integer, RationalFunction, RationalFunctionSequence> parse(String name, String expression, Context context)
   {
-    return Function.parse(name,
-                          expression,
-                          context,
-                          Integer.class,
-                          RationalFunction.class,
-                          RationalFunctionSequence.class,
-                          null,
-                          null, true);
+    return Function.parse(name, expression, context, Integer.class, RationalFunction.class, RationalFunctionSequence.class, null, null, true);
   }
 }

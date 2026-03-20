@@ -42,28 +42,24 @@ import arb.functions.Function;
 import arb.functions.HypergeometricFunction;
 
 public class RealHypergeometricPolynomialFunction extends
-                                                  HypergeometricFunction<Real, RealPolynomial,
-                                                                RealPolynomialNullaryFunction>
+                                                  HypergeometricFunction<Real, RealPolynomial, RealPolynomialNullaryFunction>
 {
 
   // CHANGE: init for constant arg
-  public RealHypergeometricPolynomialFunction
-         init(Fraction α, Fraction β, RealPolynomialNullaryFunction constantArg)
+  public RealHypergeometricPolynomialFunction init(Fraction α, Fraction β, RealPolynomialNullaryFunction constantArg)
   {
     super.init(Real.class, RealPolynomial.class, RealPolynomialNullaryFunction.class, α, β, constantArg);
     return this;
   }
 
   // CHANGE: init for input-dependent arg
-  public RealHypergeometricPolynomialFunction
-         init(Fraction α, Fraction β, Function<RealPolynomial, RealPolynomial> inputDependentArg)
+  public RealHypergeometricPolynomialFunction init(Fraction α, Fraction β, Function<RealPolynomial, RealPolynomial> inputDependentArg)
   {
     super.init(Real.class, RealPolynomial.class, RealPolynomialNullaryFunction.class, α, β, inputDependentArg);
     return this;
   }
 
-  public RealHypergeometricPolynomialFunction
-         init(Real numerator, Real denominator, RealPolynomialNullaryFunction constantArg)
+  public RealHypergeometricPolynomialFunction init(Real numerator, Real denominator, RealPolynomialNullaryFunction constantArg)
   {
     var n = new Fraction();
     var d = new Fraction();
@@ -72,8 +68,7 @@ public class RealHypergeometricPolynomialFunction extends
     return init(n, d, constantArg);
   }
 
-  public RealHypergeometricPolynomialFunction
-         init(Real numerator, Real denominator, Function<RealPolynomial, RealPolynomial> inputDependentArg)
+  public RealHypergeometricPolynomialFunction init(Real numerator, Real denominator, Function<RealPolynomial, RealPolynomial> inputDependentArg)
   {
     var n = new Fraction();
     var d = new Fraction();

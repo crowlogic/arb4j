@@ -5,7 +5,6 @@ import java.util.HashMap;
 import arb.expressions.FunctionMapping;
 import arb.functions.Function;
 
-
 /**
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
@@ -13,7 +12,7 @@ import arb.functions.Function;
 public class FunctionMappings extends
                               HashMap<String, FunctionMapping<?, ?, ?>>
 {
-  private static final long serialVersionUID=1L;
+  private static final long serialVersionUID = 1L;
 
   @Override
   public String toString()
@@ -22,9 +21,7 @@ public class FunctionMappings extends
   }
 
   @SuppressWarnings("unchecked")
-  public <D, R, F extends Function<? extends D, ? extends R>>
-         FunctionMapping<D, R, F>
-         get(String functionName)
+  public <D, R, F extends Function<? extends D, ? extends R>> FunctionMapping<D, R, F> get(String functionName)
   {
     return (FunctionMapping<D, R, F>) super.get(functionName);
   }

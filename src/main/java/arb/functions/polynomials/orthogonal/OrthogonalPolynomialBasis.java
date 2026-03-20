@@ -9,7 +9,7 @@ import arb.functions.polynomials.PolynomialBasis;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface OrthogonalPolynomialBasis<X , E> extends
+public interface OrthogonalPolynomialBasis<X, E> extends
                                           OrthogonalBasis<X, E>,
                                           PolynomialBasis<X, E>
 {

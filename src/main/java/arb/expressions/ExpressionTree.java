@@ -53,9 +53,7 @@ public class ExpressionTree<D, R, F extends Function<? extends D, ? extends R>> 
       var current = queue.poll();
 
       // Add node definition
-      dot.append(String.format("  \"%s\" [label=\"%s\"];\n",
-                               current.toString(),
-                               current.toString()));
+      dot.append(String.format("  \"%s\" [label=\"%s\"];\n", current.toString(), current.toString()));
 
       // Process all branches
       List<Node<D, R, F>> branches = indexedBranches.get(current);
@@ -67,10 +65,10 @@ public class ExpressionTree<D, R, F extends Function<? extends D, ? extends R>> 
 
           // Get the field name if available
           String fieldName = "";
-         
+
           if (branch instanceof Node arbNode)
           {
-            fieldName = arbNode.getFieldName();           
+            fieldName = arbNode.getFieldName();
           }
           else
           {

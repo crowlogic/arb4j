@@ -13,9 +13,6 @@ public interface ComplexFunctionalSequence extends
 
   public static ComplexFunctionalSequence express(String expression, Context context)
   {
-    return Sequence.express(ComplexFunctional.class,
-                            expression,
-                            ComplexFunctionalSequence.class,
-                            context);
+    return Sequence.express(ComplexFunctional.class, expression, ComplexFunctionalSequence.class, context);
   }
 }

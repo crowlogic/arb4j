@@ -17,21 +17,14 @@ public interface ComplexRationalNullaryFunction extends
                                                 NullaryFunction<ComplexRationalFunction>
 {
 
-  public static Expression<Object, ComplexRationalFunction, ComplexRationalNullaryFunction>
-         parse(String string)
+  public static Expression<Object, ComplexRationalFunction, ComplexRationalNullaryFunction> parse(String string)
   {
     return parse(null, string, null);
   }
 
-  public static ComplexRationalNullaryFunction
-         express(String functionName, String expression, Context context)
+  public static ComplexRationalNullaryFunction express(String functionName, String expression, Context context)
   {
-    return Function.express(expression,
-                                context,
-                                Object.class,
-                                ComplexRationalFunction.class,
-                                ComplexRationalNullaryFunction.class,
-                                functionName);
+    return Function.express(expression, context, Object.class, ComplexRationalFunction.class, ComplexRationalNullaryFunction.class, functionName);
   }
 
   public static ComplexRationalNullaryFunction express(String expression, Context context)
@@ -44,28 +37,22 @@ public interface ComplexRationalNullaryFunction extends
     return express(null, expression, null);
   }
 
-  public static Expression<Object, ComplexRationalFunction, ComplexRationalNullaryFunction>
-         parse(String functionName, String expression, Context context)
+  public static Expression<Object, ComplexRationalFunction, ComplexRationalNullaryFunction> parse(String functionName, String expression, Context context)
   {
-    return Function.parse(functionName != null ? functionName
-                                               : Parser.transformToAcceptableJavaIdentifier(expression),
+    return Function.parse(functionName != null ? functionName : Parser.transformToAcceptableJavaIdentifier(expression),
                           expression,
                           context,
                           Object.class,
                           ComplexRationalFunction.class,
                           ComplexRationalNullaryFunction.class,
                           functionName,
-                          null, true);
+                          null,
+                          true);
   }
 
-  public static Expression<Object, ComplexRationalFunction, ComplexRationalNullaryFunction>
-         compile(String functionName, String expression, Context context)
+  public static Expression<Object, ComplexRationalFunction, ComplexRationalNullaryFunction> compile(String functionName, String expression, Context context)
   {
-    return Function.parseAndCompile(Object.class,
-                            ComplexRationalFunction.class,
-                            ComplexRationalNullaryFunction.class,
-                            expression,
-                            context);
+    return Function.parseAndCompile(Object.class, ComplexRationalFunction.class, ComplexRationalNullaryFunction.class, expression, context);
 //    return Compiler.compile(functionName != null ? functionName
 //                                                 : Parser.expressionToUniqueClassname(expression),
 //                            expression,

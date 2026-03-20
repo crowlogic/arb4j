@@ -7,10 +7,10 @@ import arb.expressions.Context;
 import arb.functions.Function;
 
 /**
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the {@link TheArb4jLibrary}
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
-public class RiemannSiegelThetaFunction
-                                        implements
+public class RiemannSiegelThetaFunction implements
                                         RealFunction,
                                         Typesettable,
                                         AutoCloseable,
@@ -27,10 +27,7 @@ public class RiemannSiegelThetaFunction
   {
     try ( RiemannSiegelThetaFunction t = new RiemannSiegelThetaFunction())
     {
-      var f = t.evaluate(Real.valueOf(2.3),
-                         20,
-                         128,
-                         Real.newVector(20));
+      var f = t.evaluate(Real.valueOf(2.3), 20, 128, Real.newVector(20));
       System.out.println("f=" + f);
     }
   }
@@ -63,10 +60,7 @@ public class RiemannSiegelThetaFunction
       out.fitLength(order);
       out.setLength(order);
 
-      arblib.arb_poly_riemann_siegel_theta_series(out,
-                                                  h,
-                                                  order,
-                                                  bits);
+      arblib.arb_poly_riemann_siegel_theta_series(out, h, order, bits);
 
       result.set(out.getCoeffs());
       // result.become(Real.newVector(order)).set(out.getCoeffs());
@@ -79,22 +73,13 @@ public class RiemannSiegelThetaFunction
   @Override
   public RealFunction derivative()
   {
-    return Function.express(Real.class,
-                            Real.class,
-                            RealFunction.class,
-                            "_diffϑ(t)",
-                            "diff(ϑ(t),t)",
-                            this.context);
+    return Function.express(Real.class, Real.class, RealFunction.class, "_diffϑ(t)", "diff(ϑ(t),t)", this.context);
   }
 
   @Override
   public RealFunction integral()
   {
-    return Function.express(Real.class,
-                            Real.class,
-                            RealFunction.class,
-                            "_intnull",
-                            "int(ϑ(t),t)");
+    return Function.express(Real.class, Real.class, RealFunction.class, "_intnull", "int(ϑ(t),t)");
   }
 
   @Override

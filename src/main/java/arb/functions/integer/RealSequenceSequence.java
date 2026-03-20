@@ -24,20 +24,12 @@ public interface RealSequenceSequence extends
 
   public static RealSequenceSequence express(String name, String expression, Context context)
   {
-    return Sequence.express(name,
-                            RealSequence.class,
-                            expression,
-                            RealSequenceSequence.class,
-                            context);
+    return Sequence.express(name, RealSequence.class, expression, RealSequenceSequence.class, context);
   }
 
   static RealSequenceSequence express(String expression, Context context)
   {
-    return Sequence.express(null,
-                            RealSequence.class,
-                            expression,
-                            RealSequenceSequence.class,
-                            context);
+    return Sequence.express(null, RealSequence.class, expression, RealSequenceSequence.class, context);
   }
 
 }

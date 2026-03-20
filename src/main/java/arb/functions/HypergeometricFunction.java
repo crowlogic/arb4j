@@ -14,9 +14,7 @@ import arb.expressions.Expression;
 import arb.utensils.Utensils;
 
 @SuppressWarnings("hiding")
-public abstract class HypergeometricFunction<P extends NamedRing<P>,
-              C extends NamedRing<? extends C>,
-              N extends NullaryFunction<C>> implements
+public abstract class HypergeometricFunction<P extends NamedRing<P>, C extends NamedRing<? extends C>, N extends NullaryFunction<C>> implements
                                             NullaryFunction<C>,
                                             Verifiable
 {
@@ -48,12 +46,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
   static final Logger logger = LoggerFactory.getLogger(HypergeometricFunction.class);
 
 //NEW: init for Real alpha/beta, constant arg
-  public HypergeometricFunction<P, C, N> init(Class<P> paramType,
-                                              Class<C> elementType,
-                                              Class<N> nullaryFunctionType,
-                                              Real alpha,
-                                              Real beta,
-                                              N constantArg)
+  public HypergeometricFunction<P, C, N> init(Class<P> paramType, Class<C> elementType, Class<N> nullaryFunctionType, Real alpha, Real beta, N constantArg)
   {
     Fraction af = new Fraction();
     Fraction bf = new Fraction();
@@ -63,12 +56,8 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
   }
 
 //NEW: init for Real alpha/beta, input-dependent arg
-  public HypergeometricFunction<P, C, N> init(Class<P> paramType,
-                                              Class<C> elementType,
-                                              Class<N> nullaryFunctionType,
-                                              Real alpha,
-                                              Real beta,
-                                              Function<C, C> inputDependentArg)
+  public HypergeometricFunction<P, C, N>
+         init(Class<P> paramType, Class<C> elementType, Class<N> nullaryFunctionType, Real alpha, Real beta, Function<C, C> inputDependentArg)
   {
     Fraction af = new Fraction();
     Fraction bf = new Fraction();
@@ -78,12 +67,8 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
   }
 
   @SuppressWarnings("unchecked")
-  public HypergeometricFunction<P, C, N> init(Class<P> paramType,
-                                              Class<C> elementType,
-                                              Class<N> nullaryFunctionType,
-                                              Fraction alpha,
-                                              Fraction beta,
-                                              N constantArg)
+  public HypergeometricFunction<P, C, N>
+         init(Class<P> paramType, Class<C> elementType, Class<N> nullaryFunctionType, Fraction alpha, Fraction beta, N constantArg)
   {
     this.paramType = paramType;
     if (paramType.equals(Complex.class))
@@ -111,12 +96,8 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
   }
 
   @SuppressWarnings("unchecked")
-  public HypergeometricFunction<P, C, N> init(Class<P> paramType,
-                                              Class<C> elementType,
-                                              Class<N> nullaryFunctionType,
-                                              Fraction alpha,
-                                              Fraction beta,
-                                              Function<C, C> inputDependentArg)
+  public HypergeometricFunction<P, C, N>
+         init(Class<P> paramType, Class<C> elementType, Class<N> nullaryFunctionType, Fraction alpha, Fraction beta, Function<C, C> inputDependentArg)
   {
     this.paramType = paramType;
     if (paramType.equals(Complex.class))
@@ -144,12 +125,8 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
   }
 
   @SuppressWarnings("unchecked")
-  public HypergeometricFunction<P, C, N> init(Class<P> paramType,
-                                              Class<C> elementType,
-                                              Class<N> nullaryFunctionType,
-                                              Complex alpha,
-                                              Complex beta,
-                                              N constantArg)
+  public HypergeometricFunction<P, C, N>
+         init(Class<P> paramType, Class<C> elementType, Class<N> nullaryFunctionType, Complex alpha, Complex beta, N constantArg)
   {
     this.paramType = paramType;
     this.α         = (P) Complex.newVector(alpha.dim());
@@ -165,12 +142,8 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
   }
 
   @SuppressWarnings("unchecked")
-  public HypergeometricFunction<P, C, N> init(Class<P> paramType,
-                                              Class<C> elementType,
-                                              Class<N> nullaryFunctionType,
-                                              Complex alpha,
-                                              Complex beta,
-                                              Function<C, C> inputDependentArg)
+  public HypergeometricFunction<P, C, N>
+         init(Class<P> paramType, Class<C> elementType, Class<N> nullaryFunctionType, Complex alpha, Complex beta, Function<C, C> inputDependentArg)
   {
     this.paramType = paramType;
     this.α         = (P) Complex.newVector(alpha.dim());
@@ -187,11 +160,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
 
   public void compile(Class<C> elementType, Class<N> nullaryFunctionType)
   {
-    F = NullaryFunction.parse(elementType,
-                              nullaryFunctionType,
-                              "F",
-                              "Σn➔zⁿ⋅∏k➔αₖ₍ₙ₎{k=1…p}/(n!⋅∏k➔βₖ₍ₙ₎{k=1…q}){n=0…N}",
-                              context);
+    F = NullaryFunction.parse(elementType, nullaryFunctionType, "F", "Σn➔zⁿ⋅∏k➔αₖ₍ₙ₎{k=1…p}/(n!⋅∏k➔βₖ₍ₙ₎{k=1…q}){n=0…N}", context);
     f = F.instantiate();
   }
 
@@ -245,9 +214,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
     }
     else if (α instanceof Complex a)
     {
-      var min = Stream.of(a.elements)
-                      .filter(Complex.isNegativeInteger)
-                      .min(Comparator.naturalOrder());
+      var min = Stream.of(a.elements).filter(Complex.isNegativeInteger).min(Comparator.naturalOrder());
       if (!min.isPresent())
       {
         throw new IllegalArgumentException("no negative integers in " + a);

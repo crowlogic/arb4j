@@ -241,10 +241,7 @@ public class Context implements
     assert f != null : "f is null";
     if (Expression.trace)
     {
-      log.debug(String.format("Context(#%s).injectVariableReferences(f=%s) variables={}",
-                              System.identityHashCode(this),
-                              f.getClass().getName(),
-                              variables));
+      log.debug(String.format("Context(#%s).injectVariableReferences(f=%s) variables={}", System.identityHashCode(this), f.getClass().getName(), variables));
     }
     var fields = getFields(f);
 
@@ -317,11 +314,7 @@ public class Context implements
       List<String> dependencies    = dependency.dependsOn;
       if (functionMapping.expression != null && functionMapping.expression.getReferencedFunctions() != null)
       {
-        dependencies.addAll(functionMapping.expression.getReferencedFunctions()
-                                                       .keySet()
-                                                       .stream()
-                                                       .filter(name -> !name.equals(functionName))
-                                                       .toList());
+        dependencies.addAll(functionMapping.expression.getReferencedFunctions().keySet().stream().filter(name -> !name.equals(functionName)).toList());
       }
 
       functionReferenceGraph.put(functionName, dependency);
@@ -362,9 +355,7 @@ public class Context implements
     {
       if (!replace)
       {
-        throw new IllegalArgumentException(format("a function named %s of class %s is already registered",
-                                                   functionName,
-                                                   function));
+        throw new IllegalArgumentException(format("a function named %s of class %s is already registered", functionName, function));
       }
       else
       {
@@ -453,8 +444,7 @@ public class Context implements
     HashMap<String, Dependency> sortedMap = new HashMap<>();
     for (var dependency : sortedFunctions)
     {
-      sortedMap.put(dependency.variableName,
-                    functionReferenceGraph.getOrDefault(dependency.variableName, new Dependency(dependency)));
+      sortedMap.put(dependency.variableName, functionReferenceGraph.getOrDefault(dependency.variableName, new Dependency(dependency)));
     }
     if (sortedMap.values().stream().mapToInt(f -> f.dependsOn.size()).sum() > 0)
     {
@@ -464,15 +454,10 @@ public class Context implements
     return filename;
   }
 
-  public <D, R, F extends Function<? extends D, ? extends R>> void setFieldValue(Class<?> compiledClass,
-                                                                                  F f,
-                                                                                  String variableName,
-                                                                                  Object value)
+  public <D, R, F extends Function<? extends D, ? extends R>> void setFieldValue(Class<?> compiledClass, F f, String variableName, Object value)
   {
     Class<?> functionClass = f.getClass();
-    assert functionClass.equals(compiledClass) : String.format("functionClass = %s != compiledClass = %s\n",
-                                                                functionClass,
-                                                                compiledClass);
+    assert functionClass.equals(compiledClass) : String.format("functionClass = %s != compiledClass = %s\n", functionClass, compiledClass);
 
     java.lang.reflect.Field field;
     try
@@ -497,10 +482,7 @@ public class Context implements
   @Override
   public String toString()
   {
-    return String.format("Context(#%s)[functions=%s,variables=%s]",
-                         System.identityHashCode(this),
-                         functions.keySet(),
-                         variableMap().keySet());
+    return String.format("Context(#%s)[functions=%s,variables=%s]", System.identityHashCode(this), functions.keySet(), variableMap().keySet());
   }
 
   public Stream<OrderedPair<String, Class<?>>> variableClassStream()
@@ -545,9 +527,7 @@ public class Context implements
 
     if (variables.containsKey(newName))
     {
-      throw new IllegalArgumentException(format("Cannot rename '%s' to '%s': a variable with that name already exists",
-                                                  oldName,
-                                                  newName));
+      throw new IllegalArgumentException(format("Cannot rename '%s' to '%s': a variable with that name already exists", oldName, newName));
     }
 
     variables.remove(oldName);
@@ -556,10 +536,7 @@ public class Context implements
 
     if (Expression.trace)
     {
-      log.debug(String.format("Context(#%s).rename(oldName=%s, newName=%s) completed successfully",
-                              System.identityHashCode(this),
-                              oldName,
-                              newName));
+      log.debug(String.format("Context(#%s).rename(oldName=%s, newName=%s) completed successfully", System.identityHashCode(this), oldName, newName));
     }
   }
 
@@ -592,8 +569,7 @@ public class Context implements
   public String toStringExtended()
   {
     return toString()
-                  + functionEntryStream().map(entry -> "\n" + entry.getKey() + "=" + entry.getValue().getExpressionString())
-                                         .collect(Collectors.joining(","));
+                  + functionEntryStream().map(entry -> "\n" + entry.getKey() + "=" + entry.getValue().getExpressionString()).collect(Collectors.joining(","));
   }
 
 }

@@ -28,12 +28,7 @@ public interface IntegerFunction extends
 
   public static Expression<Integer, Integer, IntegerFunction> parse(String string)
   {
-    Expression<Integer,
-                  Integer,
-                  IntegerFunction> expression = Function.parse(Integer.class,
-                                                               Integer.class,
-                                                               IntegerFunction.class,
-                                                               string);
+    Expression<Integer, Integer, IntegerFunction> expression = Function.parse(Integer.class, Integer.class, IntegerFunction.class, string);
     return expression;
   }
 

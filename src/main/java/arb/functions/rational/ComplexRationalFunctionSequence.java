@@ -16,21 +16,14 @@ public interface ComplexRationalFunctionSequence extends
                                                  Sequence<ComplexRationalFunction>
 {
 
-  public static Expression<Integer, ComplexRationalFunction, ComplexRationalFunctionSequence>
-         compile(String expression)
+  public static Expression<Integer, ComplexRationalFunction, ComplexRationalFunctionSequence> compile(String expression)
   {
     return compile(expression, null);
   }
 
-  public static Expression<Integer, ComplexRationalFunction, ComplexRationalFunctionSequence>
-         compile(String expression, Context context)
+  public static Expression<Integer, ComplexRationalFunction, ComplexRationalFunctionSequence> compile(String expression, Context context)
   {
-    return Parser.parse(expression,
-                            context,
-                            Integer.class,
-                            ComplexRationalFunction.class,
-                            ComplexRationalFunctionSequence.class,
-                            null);
+    return Parser.parse(expression, context, Integer.class, ComplexRationalFunction.class, ComplexRationalFunctionSequence.class, null);
   }
 
   @Override
@@ -49,34 +42,18 @@ public interface ComplexRationalFunctionSequence extends
     return express(null, expression, null);
   }
 
-  public static ComplexRationalFunctionSequence
-         express(String name, String expression, Context context)
+  public static ComplexRationalFunctionSequence express(String name, String expression, Context context)
   {
-    return Function.express(Integer.class,
-                            ComplexRationalFunction.class,
-                            ComplexRationalFunctionSequence.class,
-                            name,
-                            expression,
-                            context);
+    return Function.express(Integer.class, ComplexRationalFunction.class, ComplexRationalFunctionSequence.class, name, expression, context);
   }
 
-
-  public static Expression<Integer, ComplexRationalFunction, ComplexRationalFunctionSequence>
-         parse(String expression, Context context)
+  public static Expression<Integer, ComplexRationalFunction, ComplexRationalFunctionSequence> parse(String expression, Context context)
   {
     return parse(Parser.transformToAcceptableJavaIdentifier(expression), expression, context);
   }
 
-  public static Expression<Integer, ComplexRationalFunction, ComplexRationalFunctionSequence>
-         parse(String name, String expression, Context context)
+  public static Expression<Integer, ComplexRationalFunction, ComplexRationalFunctionSequence> parse(String name, String expression, Context context)
   {
-    return Function.parse(name,
-                          expression,
-                          context,
-                          Integer.class,
-                          ComplexRationalFunction.class,
-                          ComplexRationalFunctionSequence.class,
-                          null,
-                          null, true);
+    return Function.parse(name, expression, context, Integer.class, ComplexRationalFunction.class, ComplexRationalFunctionSequence.class, null, null, true);
   }
 }

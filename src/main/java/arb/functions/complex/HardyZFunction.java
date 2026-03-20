@@ -12,7 +12,7 @@ import arb.documentation.TheArb4jLibrary;
  *      {@link TheArb4jLibrary}
  */
 public class HardyZFunction implements
-                       ComplexFunction
+                            ComplexFunction
 {
   @Override
   public String toString()

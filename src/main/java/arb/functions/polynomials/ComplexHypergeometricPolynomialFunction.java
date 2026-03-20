@@ -7,36 +7,20 @@ import arb.functions.HypergeometricFunction;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
 
 public class ComplexHypergeometricPolynomialFunction extends
-                                                     HypergeometricFunction<Complex,
-                                                                   ComplexPolynomial,
-                                                                   ComplexPolynomialNullaryFunction>
+                                                     HypergeometricFunction<Complex, ComplexPolynomial, ComplexPolynomialNullaryFunction>
 {
 
   // CHANGE: init for constant arg
-  public ComplexHypergeometricPolynomialFunction
-         init(Complex α, Complex β, ComplexPolynomialNullaryFunction constantArg)
+  public ComplexHypergeometricPolynomialFunction init(Complex α, Complex β, ComplexPolynomialNullaryFunction constantArg)
   {
-    super.init(Complex.class,
-               ComplexPolynomial.class,
-               ComplexPolynomialNullaryFunction.class,
-               α,
-               β,
-               constantArg);
+    super.init(Complex.class, ComplexPolynomial.class, ComplexPolynomialNullaryFunction.class, α, β, constantArg);
     return this;
   }
 
   // CHANGE: init for input-dependent arg
-  public ComplexHypergeometricPolynomialFunction
-         init(Complex α,
-              Complex β,
-              Function<ComplexPolynomial, ComplexPolynomial> inputDependentArg)
+  public ComplexHypergeometricPolynomialFunction init(Complex α, Complex β, Function<ComplexPolynomial, ComplexPolynomial> inputDependentArg)
   {
-    super.init(Complex.class,
-               ComplexPolynomial.class,
-               ComplexPolynomialNullaryFunction.class,
-               α,
-               β,
-               inputDependentArg);
+    super.init(Complex.class, ComplexPolynomial.class, ComplexPolynomialNullaryFunction.class, α, β, inputDependentArg);
     return this;
   }
 

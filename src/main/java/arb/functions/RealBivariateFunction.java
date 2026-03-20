@@ -17,20 +17,12 @@ public interface RealBivariateFunction extends
 
   public static RealBivariateFunction express(String expression)
   {
-    return Function.express(Real.class,
-                            RealFunction.class,
-                            RealBivariateFunction.class,
-                            expression);
+    return Function.express(Real.class, RealFunction.class, RealBivariateFunction.class, expression);
   }
 
   public static RealBivariateFunction express(String expression, Context context)
   {
-    return Function.express(Real.class,
-                            RealFunction.class,
-                            RealBivariateFunction.class,
-                            null,
-                            expression,
-                            context);
+    return Function.express(Real.class, RealFunction.class, RealBivariateFunction.class, null, expression, context);
   }
 
   public static Expression<Real, RealFunction, RealBivariateFunction> parse(String expression)
@@ -38,14 +30,9 @@ public interface RealBivariateFunction extends
     return Function.parse(Real.class, RealFunction.class, RealBivariateFunction.class, expression);
   }
 
-  public static Expression<Real, RealFunction, RealBivariateFunction> parse(String expression,
-                                                                            Context context)
+  public static Expression<Real, RealFunction, RealBivariateFunction> parse(String expression, Context context)
   {
-    return Function.parse(Real.class,
-                          RealFunction.class,
-                          RealBivariateFunction.class,
-                          expression,
-                          context);
+    return Function.parse(Real.class, RealFunction.class, RealBivariateFunction.class, expression, context);
   }
 
 }

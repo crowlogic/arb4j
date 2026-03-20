@@ -28,32 +28,21 @@ public interface RealFunctionSequence extends
 
   public static RealFunctionSequence express(String name, String expression, Context context)
   {
-    return Function.express(Integer.class,
-                            RealFunction.class,
-                            RealFunctionSequence.class,
-                            name,
-                            expression,
-                            context);
+    return Function.express(Integer.class, RealFunction.class, RealFunctionSequence.class, name, expression, context);
   }
 
-  public static Expression<Integer, RealFunction, RealFunctionSequence> parse(String className,
-                                                                              String string)
+  public static Expression<Integer, RealFunction, RealFunctionSequence> parse(String className, String string)
   {
     return Sequence.parse(className, RealFunctionSequence.class, RealFunction.class, string);
   }
 
-  public static Expression<Integer, RealFunction, RealFunctionSequence>
-         parse(String className, String expression, Context context)
+  public static Expression<Integer, RealFunction, RealFunctionSequence> parse(String className, String expression, Context context)
   {
     if (className == null)
     {
       className = Parser.transformToAcceptableJavaIdentifier(expression);
     }
-    return Sequence.parse(className,
-                          RealFunctionSequence.class,
-                          RealFunction.class,
-                          expression,
-                          context);
+    return Sequence.parse(className, RealFunctionSequence.class, RealFunction.class, expression, context);
   }
 
   public static Expression<Integer, RealFunction, RealFunctionSequence> parse(String string)
@@ -61,14 +50,13 @@ public interface RealFunctionSequence extends
     return parse(null, string, null);
   }
 
-  public static Expression<Integer, RealFunction, RealFunctionSequence> parse(String string,
-                                                                              Context context)
+  public static Expression<Integer, RealFunction, RealFunctionSequence> parse(String string, Context context)
   {
     return parse(null, string, context);
   }
 
   public static RealFunctionSequence express(String expression, String string)
   {
-    return express(expression,string,null);
+    return express(expression, string, null);
   }
 }

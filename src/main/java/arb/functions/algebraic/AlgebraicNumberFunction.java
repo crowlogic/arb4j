@@ -32,21 +32,14 @@ public interface AlgebraicNumberFunction extends
                                          Function<AlgebraicNumber, AlgebraicNumber>
 {
 
-  public static Expression<AlgebraicNumber, AlgebraicNumber, AlgebraicNumberFunction>
-         compile(String expression)
+  public static Expression<AlgebraicNumber, AlgebraicNumber, AlgebraicNumberFunction> compile(String expression)
   {
     return compile(expression, null);
   }
 
-  public static Expression<AlgebraicNumber, AlgebraicNumber, AlgebraicNumberFunction>
-         compile(String expression, Context context)
+  public static Expression<AlgebraicNumber, AlgebraicNumber, AlgebraicNumberFunction> compile(String expression, Context context)
   {
-    return Parser.parse(expression,
-                            context,
-                            AlgebraicNumber.class,
-                            AlgebraicNumber.class,
-                            AlgebraicNumberFunction.class,
-                            null);
+    return Parser.parse(expression, context, AlgebraicNumber.class, AlgebraicNumber.class, AlgebraicNumberFunction.class, null);
   }
 
   public static AlgebraicNumberFunction express(String expression)
@@ -56,22 +49,12 @@ public interface AlgebraicNumberFunction extends
 
   public static AlgebraicNumberFunction express(String expression, Context context)
   {
-    return Function.express(expression,
-                                context,
-                                AlgebraicNumber.class,
-                                AlgebraicNumber.class,
-                                AlgebraicNumberFunction.class,
-                                null);
+    return Function.express(expression, context, AlgebraicNumber.class, AlgebraicNumber.class, AlgebraicNumberFunction.class, null);
   }
 
   public static AlgebraicNumberFunction express(String expression, Context context, boolean verbose)
   {
-    return Function.express(expression,
-                                context,
-                                AlgebraicNumber.class,
-                                AlgebraicNumber.class,
-                                AlgebraicNumberFunction.class,
-                                null);
+    return Function.express(expression, context, AlgebraicNumber.class, AlgebraicNumber.class, AlgebraicNumberFunction.class, null);
   }
 
   public static AlgebraicNumberFunction express(String expression, String string)
@@ -79,47 +62,40 @@ public interface AlgebraicNumberFunction extends
     return express(expression, string, null);
   }
 
-  public static AlgebraicNumberFunction
-         express(String functionName, String expression, Context context)
+  public static AlgebraicNumberFunction express(String functionName, String expression, Context context)
   {
     return express(functionName, expression, context, false);
   }
 
-  public static AlgebraicNumberFunction
-         express(String functionName, String expression, Context context, boolean verbose)
+  public static AlgebraicNumberFunction express(String functionName, String expression, Context context, boolean verbose)
   {
-    return Function.express(expression,
-                                context,
-                                AlgebraicNumber.class,
-                                AlgebraicNumber.class,
-                                AlgebraicNumberFunction.class,
-                                functionName);
+    return Function.express(expression, context, AlgebraicNumber.class, AlgebraicNumber.class, AlgebraicNumberFunction.class, functionName);
   }
 
-  public static Expression<AlgebraicNumber, AlgebraicNumber, AlgebraicNumberFunction>
-         parse(String expression)
+  public static Expression<AlgebraicNumber, AlgebraicNumber, AlgebraicNumberFunction> parse(String expression)
   {
     return Parser.parseExpression(Parser.transformToAcceptableJavaIdentifier(expression),
-                          expression,
-                          null,
-                          AlgebraicNumber.class,
-                          AlgebraicNumber.class,
-                          AlgebraicNumberFunction.class,
-                          null,
-                          null, true);
+                                  expression,
+                                  null,
+                                  AlgebraicNumber.class,
+                                  AlgebraicNumber.class,
+                                  AlgebraicNumberFunction.class,
+                                  null,
+                                  null,
+                                  true);
   }
 
-  public static Expression<AlgebraicNumber, AlgebraicNumber, AlgebraicNumberFunction>
-         parse(String expression, Context context)
+  public static Expression<AlgebraicNumber, AlgebraicNumber, AlgebraicNumberFunction> parse(String expression, Context context)
   {
     return Parser.parseExpression(Parser.transformToAcceptableJavaIdentifier(expression),
-                          expression,
-                          context,
-                          AlgebraicNumber.class,
-                          AlgebraicNumber.class,
-                          AlgebraicNumberFunction.class,
-                          null,
-                          null, true);
+                                  expression,
+                                  context,
+                                  AlgebraicNumber.class,
+                                  AlgebraicNumber.class,
+                                  AlgebraicNumberFunction.class,
+                                  null,
+                                  null,
+                                  true);
   }
 
 }

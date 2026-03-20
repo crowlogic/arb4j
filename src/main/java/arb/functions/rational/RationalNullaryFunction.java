@@ -44,16 +44,14 @@ public interface RationalNullaryFunction extends
 
     if (functionName != null && context != null)
     {
-      FunctionMapping<Object,
-                    RationalFunction,
-                    RationalNullaryFunction> mapping = context.registerFunctionMapping(functionName,
-                                                                                       null,
-                                                                                       parsed.domainType,
-                                                                                       parsed.coDomainType,
-                                                                                       parsed.functionClass,
-                                                                                       true,
-                                                                                       null,
-                                                                                       expression);
+      FunctionMapping<Object, RationalFunction, RationalNullaryFunction> mapping = context.registerFunctionMapping(functionName,
+                                                                                                                   null,
+                                                                                                                   parsed.domainType,
+                                                                                                                   parsed.coDomainType,
+                                                                                                                   parsed.functionClass,
+                                                                                                                   true,
+                                                                                                                   null,
+                                                                                                                   expression);
       parsed.functionMapping   = mapping;
       mapping.expressionString = parsed.getExpression();
     }

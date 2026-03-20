@@ -26,10 +26,7 @@ public class IntermediateVariable<D, R, F extends Function<? extends D, ? extend
     return String.format("IntermediateVariable[name=%s, type=%s]", name, type);
   }
 
-  public IntermediateVariable(Expression<D, R, F> expression,
-                              String name,
-                              Class<?> type,
-                              boolean initialize)
+  public IntermediateVariable(Expression<D, R, F> expression, String name, Class<?> type, boolean initialize)
   {
     this.expression = expression;
     this.type       = type;
@@ -49,11 +46,7 @@ public class IntermediateVariable<D, R, F extends Function<? extends D, ? extend
       String intermediateTypeInternalName = Type.getInternalName(type);
       methodVisitor.visitTypeInsn(NEW, intermediateTypeInternalName);
       methodVisitor.visitInsn(DUP);
-      methodVisitor.visitMethodInsn(INVOKESPECIAL,
-                                    intermediateTypeInternalName,
-                                    "<init>",
-                                    "()V",
-                                    false);
+      methodVisitor.visitMethodInsn(INVOKESPECIAL, intermediateTypeInternalName, "<init>", "()V", false);
       methodVisitor.visitFieldInsn(PUTFIELD, expression.className, name, type.descriptorString());
     }
     return methodVisitor;

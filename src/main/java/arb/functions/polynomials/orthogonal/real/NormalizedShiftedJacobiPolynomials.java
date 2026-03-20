@@ -21,7 +21,7 @@ public class NormalizedShiftedJacobiPolynomials extends
     return String.format("NormalizedShiftedJacobiPolynomials[α=%s, β=%s]", α, β);
   }
 
-  public final RealSequence norm =  RealSequence.express(NormalizedJacobiPolynomialSequence.NORM, context);
+  public final RealSequence norm = RealSequence.express(NormalizedJacobiPolynomialSequence.NORM, context);
 
   Real                      blip = new Real();
 
@@ -31,12 +31,12 @@ public class NormalizedShiftedJacobiPolynomials extends
     blip.close();
     blip = null;
   }
-  
+
   public NormalizedShiftedJacobiPolynomials()
   {
     super();
   }
-  
+
   @Override
   public RealPolynomial evaluate(Integer t, int order, int bits, RealPolynomial res)
   {

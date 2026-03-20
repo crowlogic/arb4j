@@ -1,6 +1,5 @@
 package arb.functions.polynomials.orthogonal;
 
-
 import java.util.ArrayList;
 
 import arb.Field;
@@ -14,9 +13,9 @@ import arb.documentation.TheArb4jLibrary;
 public class OrthogonalExpansion<D extends Field<? extends D>, C, V, O extends OrthogonalPolynomialSequence<D, C, V>>
 {
 
-  public final D projections;
+  public final D            projections;
   public final ArrayList<V> basisElements;
-  public O basis;
+  public O                  basis;
 
   public OrthogonalExpansion(D projections, ArrayList<V> basisElements)
   {

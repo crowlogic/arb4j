@@ -19,9 +19,7 @@ public interface PolynomialSequence<X, E> extends
                                    Sequence<E>
 {
 
-  public static <X, E> PolynomialSequence<X, E> express(String expression,
-                                                        Context context,
-                                                        Class<E> coDomainType)
+  public static <X, E> PolynomialSequence<X, E> express(String expression, Context context, Class<E> coDomainType)
   {
     return express(null, expression, context, coDomainType);
   }
@@ -32,16 +30,9 @@ public interface PolynomialSequence<X, E> extends
   }
 
   @SuppressWarnings("unchecked")
-  public static <X, E>
-         PolynomialSequence<X, E>
-         express(String name, String expression, Context context, Class<E> coDomainType)
+  public static <X, E> PolynomialSequence<X, E> express(String name, String expression, Context context, Class<E> coDomainType)
   {
-    return Function.express(Integer.class,
-                            coDomainType,
-                            PolynomialSequence.class,
-                            name,
-                            expression,
-                            context);
+    return Function.express(Integer.class, coDomainType, PolynomialSequence.class, name, expression, context);
   }
 
   @Override

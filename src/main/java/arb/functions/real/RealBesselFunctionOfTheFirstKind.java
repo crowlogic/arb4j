@@ -13,10 +13,9 @@ import arb.documentation.TheArb4jLibrary;
  * 
  */
 public class RealBesselFunctionOfTheFirstKind implements
-                                          AutoCloseable,
-                                          RealFunction
+                                              AutoCloseable,
+                                              RealFunction
 {
-
 
   /**
    * Copy constructor

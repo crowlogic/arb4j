@@ -12,7 +12,7 @@ import arb.functions.real.RealFunction;
  *      {@link TheArb4jLibrary}
  */
 public class Type1ChebyshevPolynomials extends
-                                           RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence
+                                       RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence
 {
 
   public static RealFunction orthoMeasure = RealFunction.express("1/√(1-y²)");

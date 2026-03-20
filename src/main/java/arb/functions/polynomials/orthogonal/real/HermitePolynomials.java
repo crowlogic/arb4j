@@ -30,12 +30,12 @@ public class HermitePolynomials extends
     }
   }
 
-  public HermitePolynomials(int bits, boolean normalize )
+  public HermitePolynomials(int bits, boolean normalize)
   {
     this(bits);
     normalized = normalize;
   }
-  
+
   public HermitePolynomials(int bits)
   {
     super(bits,

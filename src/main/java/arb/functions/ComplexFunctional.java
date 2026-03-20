@@ -8,9 +8,6 @@ public interface ComplexFunctional extends
 {
   public static ComplexFunctional express(String expression)
   {
-    return Functional.express(Complex.class,
-                              ComplexFunction.class,
-                              ComplexFunctional.class,
-                              expression);
+    return Functional.express(Complex.class, ComplexFunction.class, ComplexFunctional.class, expression);
   }
 }

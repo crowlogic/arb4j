@@ -29,10 +29,9 @@ import arb.documentation.TheArb4jLibrary;
  *      {@link TheArb4jLibrary}
  */
 public class ComplexRiemannSiegelThetaFunction implements
-                                    ComplexFunction
+                                               ComplexFunction
 {
-  public static final ComplexFunction ϑ =
-                                        ComplexFunction.express("ϑ:t->(-ⅈ*(ln⁡Γ(¼+ⅈ*t/2)-lnΓ(¼−ⅈ*t/2))−ln⁡(π)*t)/2");
+  public static final ComplexFunction ϑ = ComplexFunction.express("ϑ:t->(-ⅈ*(ln⁡Γ(¼+ⅈ*t/2)-lnΓ(¼−ⅈ*t/2))−ln⁡(π)*t)/2");
 
   public ComplexRiemannSiegelThetaFunction()
   {

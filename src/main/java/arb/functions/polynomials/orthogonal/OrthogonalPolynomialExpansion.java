@@ -25,8 +25,7 @@ import arb.functions.real.RealFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public abstract class OrthogonalPolynomialExpansion<D extends Field<? extends D>, C, V,
-              O extends OrthogonalPolynomialSequence<D, C, V>> extends
+public abstract class OrthogonalPolynomialExpansion<D extends Field<? extends D>, C, V, O extends OrthogonalPolynomialSequence<D, C, V>> extends
                                                    OrthogonalExpansion<D, C, V, O> implements
                                                    OrthonormalExpansion<D, C, OrthonormalBasis<D, C>>
 

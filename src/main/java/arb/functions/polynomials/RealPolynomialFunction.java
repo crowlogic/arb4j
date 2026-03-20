@@ -20,23 +20,19 @@ public interface RealPolynomialFunction extends
   public static Expression<RealPolynomial, RealPolynomial, RealPolynomialFunction> parse(String expression)
   {
     return Function.parse(Parser.transformToAcceptableJavaIdentifier(expression),
-                        expression,
-                        null,
-                        RealPolynomial.class,
-                        RealPolynomial.class,
-                        RealPolynomialFunction.class,
-                        null,
-                        null, true);
+                          expression,
+                          null,
+                          RealPolynomial.class,
+                          RealPolynomial.class,
+                          RealPolynomialFunction.class,
+                          null,
+                          null,
+                          true);
   }
 
   public static RealPolynomialFunction express(String expression, boolean verbose2)
   {
-    return Function.express(expression,
-                       null,
-                       RealPolynomial.class,
-                       RealPolynomial.class,
-                       RealPolynomialFunction.class,
-                       null);
+    return Function.express(expression, null, RealPolynomial.class, RealPolynomial.class, RealPolynomialFunction.class, null);
   }
 
   public static RealPolynomialFunction express(String expression)
@@ -46,12 +42,7 @@ public interface RealPolynomialFunction extends
 
   public static RealPolynomialFunction express(String expression, Context context)
   {
-    return Function.express(expression,
-                       context,
-                       RealPolynomial.class,
-                       RealPolynomial.class,
-                       RealPolynomialFunction.class,
-                       null);
+    return Function.express(expression, context, RealPolynomial.class, RealPolynomial.class, RealPolynomialFunction.class, null);
   }
 
   /**
@@ -64,33 +55,21 @@ public interface RealPolynomialFunction extends
    * @return a newly generated and constructed {@link RealPolynomialFunction}
    *         which evaluates the expression
    */
-  public static RealPolynomialFunction
-         express(String functionName, String expression, Context context)
+  public static RealPolynomialFunction express(String functionName, String expression, Context context)
   {
     return express(functionName, expression, context, false);
   }
 
-  public static RealPolynomialFunction
-         express(String functionName, String expression, Context context, boolean verbose)
+  public static RealPolynomialFunction express(String functionName, String expression, Context context, boolean verbose)
   {
-    RealPolynomialFunction func = Function.express(expression,
-                                              context,
-                                              RealPolynomial.class,
-                                              RealPolynomial.class,
-                                              RealPolynomialFunction.class,
-                                              functionName);
+    RealPolynomialFunction func = Function.express(expression, context, RealPolynomial.class, RealPolynomial.class, RealPolynomialFunction.class, functionName);
 
     return func;
   }
 
   public static RealPolynomialFunction express(String expression, Context context, boolean verbose)
   {
-    return Function.express(expression,
-                       context,
-                       RealPolynomial.class,
-                       RealPolynomial.class,
-                       RealPolynomialFunction.class,
-                       null);
+    return Function.express(expression, context, RealPolynomial.class, RealPolynomial.class, RealPolynomialFunction.class, null);
   }
 
 }

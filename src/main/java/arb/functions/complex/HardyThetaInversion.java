@@ -50,9 +50,9 @@ public class HardyThetaInversion implements
 
       reversedSeries = series.invert(seriesOrder, precision, new RealPolynomial());
 
-      thetaAtCenter  = θ.evaluate(centerPoint, 2, precision, Real.newVector(2));      
+      thetaAtCenter  = θ.evaluate(centerPoint, 2, precision, Real.newVector(2));
 
-      initialized = true;
+      initialized    = true;
     }
   }
 
@@ -64,11 +64,7 @@ public class HardyThetaInversion implements
       throw new IllegalStateException("Must call initialize(precision) before evaluate");
     }
 
-    return reversedSeries.evaluate(thetaValue.sub(thetaAtCenter.get(0), bits, result),
-                                   1,
-                                   bits,
-                                   result)
-                         .add(centerPoint, bits);
+    return reversedSeries.evaluate(thetaValue.sub(thetaAtCenter.get(0), bits, result), 1, bits, result).add(centerPoint, bits);
 
   }
 

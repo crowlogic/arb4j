@@ -24,20 +24,12 @@ public interface ComplexSequenceSequence extends
 
   public static ComplexSequenceSequence express(String name, String expression, Context context)
   {
-    return Sequence.express(name,
-                            ComplexSequence.class,
-                            expression,
-                            ComplexSequenceSequence.class,
-                            context);
+    return Sequence.express(name, ComplexSequence.class, expression, ComplexSequenceSequence.class, context);
   }
 
   static ComplexSequenceSequence express(String expression, Context context)
   {
-    return Sequence.express(null,
-                            ComplexSequence.class,
-                            expression,
-                            ComplexSequenceSequence.class,
-                            context);
+    return Sequence.express(null, ComplexSequence.class, expression, ComplexSequenceSequence.class, context);
   }
 
 }

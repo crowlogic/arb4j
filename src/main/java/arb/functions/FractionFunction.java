@@ -21,15 +21,9 @@ public interface FractionFunction extends
     return compile(expression, null);
   }
 
-  public static Expression<Fraction, Fraction, FractionFunction> compile(String expression,
-                                                                         Context context)
+  public static Expression<Fraction, Fraction, FractionFunction> compile(String expression, Context context)
   {
-    return Parser.parse(expression,
-                        context,
-                        Fraction.class,
-                        Fraction.class,
-                        FractionFunction.class,
-                        null);
+    return Parser.parse(expression, context, Fraction.class, Fraction.class, FractionFunction.class, null);
   }
 
   public static FractionFunction express(String expression)
@@ -39,22 +33,12 @@ public interface FractionFunction extends
 
   public static FractionFunction express(String expression, Context context)
   {
-    return Function.express(expression,
-                                context,
-                                Fraction.class,
-                                Fraction.class,
-                                FractionFunction.class,
-                                null);
+    return Function.express(expression, context, Fraction.class, Fraction.class, FractionFunction.class, null);
   }
 
   public static FractionFunction express(String expression, Context context, boolean verbose)
   {
-    return Function.express(expression,
-                                context,
-                                Fraction.class,
-                                Fraction.class,
-                                FractionFunction.class,
-                                null);
+    return Function.express(expression, context, Fraction.class, Fraction.class, FractionFunction.class, null);
   }
 
   public static FractionFunction express(String expression, String string)
@@ -67,15 +51,9 @@ public interface FractionFunction extends
     return express(functionName, expression, context, false);
   }
 
-  public static FractionFunction
-         express(String functionName, String expression, Context context, boolean verbose)
+  public static FractionFunction express(String functionName, String expression, Context context, boolean verbose)
   {
-    return Function.express(expression,
-                                context,
-                                Fraction.class,
-                                Fraction.class,
-                                FractionFunction.class,
-                                functionName);
+    return Function.express(expression, context, Fraction.class, Fraction.class, FractionFunction.class, functionName);
   }
 
   public static Expression<Fraction, Fraction, FractionFunction> parse(String expression)
@@ -91,8 +69,7 @@ public interface FractionFunction extends
                           true);
   }
 
-  public static Expression<Fraction, Fraction, FractionFunction> parse(String expression,
-                                                                       Context context)
+  public static Expression<Fraction, Fraction, FractionFunction> parse(String expression, Context context)
   {
     return Function.parse(Parser.transformToAcceptableJavaIdentifier(expression),
                           expression,

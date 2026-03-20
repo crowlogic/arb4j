@@ -15,8 +15,7 @@ import arb.functions.integer.RealSequence;
 public class NormalizedJacobiPolynomialSequence extends
                                                 JacobiPolynomialSequence
 {
-  public static final String NORM =
-                                  "when(n=0,1,else,2^(α+β+1)*Γ(n+α+1)*Γ(n+β+1)/(2*n+α+β+1)/Γ(n+α+β+1)/n!)";
+  public static final String NORM = "when(n=0,1,else,2^(α+β+1)*Γ(n+α+1)*Γ(n+β+1)/(2*n+α+β+1)/Γ(n+α+β+1)/n!)";
 
   Real                       blip = new Real();
 

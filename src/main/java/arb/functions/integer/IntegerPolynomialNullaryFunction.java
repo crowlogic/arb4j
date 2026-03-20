@@ -15,15 +15,9 @@ public interface IntegerPolynomialNullaryFunction extends
                                                   NullaryFunction<IntegerPolynomial>
 {
 
-  public static IntegerPolynomialNullaryFunction
-         express(String functionName, String expression, Context context)
+  public static IntegerPolynomialNullaryFunction express(String functionName, String expression, Context context)
   {
-    return Function.express(expression,
-                                context,
-                                Object.class,
-                                IntegerPolynomial.class,
-                                IntegerPolynomialNullaryFunction.class,
-                                functionName);
+    return Function.express(expression, context, Object.class, IntegerPolynomial.class, IntegerPolynomialNullaryFunction.class, functionName);
   }
 
   public static IntegerPolynomialNullaryFunction express(String expression, Context context)
@@ -36,20 +30,12 @@ public interface IntegerPolynomialNullaryFunction extends
     return express(null, expression, null);
   }
 
-  public static Expression<Object, IntegerPolynomial, IntegerPolynomialNullaryFunction>
-         compile(String functionName, String expression, Context context)
+  public static Expression<Object, IntegerPolynomial, IntegerPolynomialNullaryFunction> compile(String functionName, String expression, Context context)
   {
-    return Parser.parse(functionName,
-                            expression,
-                            context,
-                            Object.class,
-                            IntegerPolynomial.class,
-                            IntegerPolynomialNullaryFunction.class,
-                            false);
+    return Parser.parse(functionName, expression, context, Object.class, IntegerPolynomial.class, IntegerPolynomialNullaryFunction.class, false);
   }
 
-  public static Expression<Object, IntegerPolynomial, IntegerPolynomialNullaryFunction>
-         compile(String string, Context prototype)
+  public static Expression<Object, IntegerPolynomial, IntegerPolynomialNullaryFunction> compile(String string, Context prototype)
   {
     return compile(Parser.transformToAcceptableJavaIdentifier(string), string, prototype);
   }

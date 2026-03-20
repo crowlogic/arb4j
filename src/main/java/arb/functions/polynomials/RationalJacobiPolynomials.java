@@ -87,17 +87,15 @@ public class RationalJacobiPolynomials implements
 
   final public NullaryFunction<Fraction> G       = NullaryFunction.express(Fraction.class, "G", "α²-β²", context);
 
-  final public RationalFunctionSequence  A       =
-                                           RationalFunctionSequence.express("A", "n➔(F(n)*x+G())*(C(n)-1)/2", context);
+  final public RationalFunctionSequence  A       = RationalFunctionSequence.express("A", "n➔(F(n)*x+G())*(C(n)-1)/2", context);
 
   final public FractionSequence          E       = FractionSequence.express("E", "n➔n*C(n/2)*C(n-1)", context);
 
   final public FractionSequence          B       = FractionSequence.express("B", "n➔(n+α-1)*(n+β-1)*C(n)", context);
 
-  final public RationalFunctionSequence  P       =
-                                           RationalFunctionSequence.express("P",
-                                                                            "n➔when(n=0,1,n=1,(C(1)*x-β+α)/2,else,(A(n)*P(n-1)-B(n)*P(n-2))/E(n))",
-                                                                            context);
+  final public RationalFunctionSequence  P       = RationalFunctionSequence.express("P",
+                                                                                    "n➔when(n=0,1,n=1,(C(1)*x-β+α)/2,else,(A(n)*P(n-1)-B(n)*P(n-2))/E(n))",
+                                                                                    context);
 
   protected RealFunction                 orthogonalityMeasure;
 
@@ -165,12 +163,11 @@ public class RationalJacobiPolynomials implements
   {
     return ShellFunctions.seq(i, j, this);
   }
-  
+
   @Override
   public String toString()
   {
     return String.format("JacobiPolynomials[α=%s, β=%s]", α, β);
   }
-
 
 }

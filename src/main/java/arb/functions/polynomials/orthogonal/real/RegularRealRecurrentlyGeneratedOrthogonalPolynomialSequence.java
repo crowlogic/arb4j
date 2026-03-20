@@ -5,10 +5,10 @@ import arb.documentation.TheArb4jLibrary;
 import arb.functions.integer.RealSequence;
 
 /**
-*
-* @see BusinessSourceLicenseVersionOnePointOne © terms of the
-*      {@link TheArb4jLibrary}
-*/
+ *
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public abstract class RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence extends
                                                                                   RealRecurrentlyGeneratedOrthogonalPolynomialSequence
 {
@@ -17,10 +17,7 @@ public abstract class RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequenc
   private String b;
   private String c;
 
-  public RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence(int bits,
-                                                                     String a,
-                                                                     String b,
-                                                                     String c)
+  public RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence(int bits, String a, String b, String c)
   {
     super(bits);
     this.a = a;
@@ -29,22 +26,19 @@ public abstract class RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequenc
   }
 
   @Override
-  public RealSequence
-         A()
+  public RealSequence A()
   {
     return RealSequence.express("A", a, context);
   }
 
   @Override
-  public RealSequence
-         B()
+  public RealSequence B()
   {
     return RealSequence.express("B", b, context);
   }
 
   @Override
-  public RealSequence
-         C()
+  public RealSequence C()
   {
     return RealSequence.express("C", c, context);
   }

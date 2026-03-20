@@ -9,9 +9,8 @@ import arb.Real;
 public class DiracDeltaFunction implements
                                 RealFunction
 {
-  
-  public static final HeavisideStepFunction stepFunction = new HeavisideStepFunction();
 
+  public static final HeavisideStepFunction stepFunction = new HeavisideStepFunction();
 
   @Override
   public RealFunction integral()

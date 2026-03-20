@@ -50,7 +50,7 @@ public class JacobiPolynomialExpansion extends
   public JacobiPolynomialExpansion(Real α, Real β, Real projections)
   {
     super(new JacobiPolynomialSequence(α,
-                                β),
+                                       β),
           projections);
 
   }
@@ -62,7 +62,7 @@ public class JacobiPolynomialExpansion extends
     var measure = basis.orthogonalityMeasure();
 
     result.zero();
-    try ( Real blip = result.borrowVariable() )
+    try ( Real blip = result.borrowVariable())
     {
       Iterator<RealPolynomial> basisIterator = basisElements.iterator();
 

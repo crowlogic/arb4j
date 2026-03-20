@@ -7,8 +7,7 @@ import arb.Real;
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  * @see RealFunction
  */
-public final class RealAdditionFunction
-                                        implements
+public final class RealAdditionFunction implements
                                         RealFunction
 {
   private final RealFunction that;
@@ -23,17 +22,13 @@ public final class RealAdditionFunction
   @Override
   public String typeset()
   {
-    return String.format("(%s) + (%s)",
-                         thisFunc.typeset(),
-                         that.typeset());
+    return String.format("(%s) + (%s)", thisFunc.typeset(), that.typeset());
   }
 
   @Override
   public String toString()
   {
-    return String.format("(%s)+(%s)",
-                         thisFunc.toString(),
-                         that.toString());
+    return String.format("(%s)+(%s)", thisFunc.toString(), that.toString());
   }
 
   @Override
@@ -41,16 +36,7 @@ public final class RealAdditionFunction
   {
     try ( var blip = new Real())
     {
-      return thisFunc.evaluate(t,
-                               order,
-                               bits,
-                               res)
-                     .add(that.evaluate(t,
-                                        order,
-                                        bits,
-                                        blip),
-                          bits,
-                          res);
+      return thisFunc.evaluate(t, order, bits, res).add(that.evaluate(t, order, bits, blip), bits, res);
     }
 
   }

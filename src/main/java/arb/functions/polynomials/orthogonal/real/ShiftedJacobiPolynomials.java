@@ -18,7 +18,8 @@ public class ShiftedJacobiPolynomials extends
 {
 
   /**
-   * Default to alpha=beta=-1/2 which coincides with the (shifted) Type-1 Chebyshev Polynomials
+   * Default to alpha=beta=-1/2 which coincides with the (shifted) Type-1
+   * Chebyshev Polynomials
    */
   public ShiftedJacobiPolynomials()
   {

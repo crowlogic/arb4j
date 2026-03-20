@@ -12,25 +12,15 @@ import arb.expressions.Context;
  *      {@link TheArb4jLibrary}
  */
 public interface RealBivariateToComplexFunction extends
-                                                BivariateFunction<Real,
-                                                              Complex,
-                                                              RealToComplexFunction>
+                                                BivariateFunction<Real, Complex, RealToComplexFunction>
 {
   public static RealBivariateToComplexFunction express(String expression)
   {
-    return Function.express(Real.class,
-                            RealToComplexFunction.class,
-                            RealBivariateToComplexFunction.class,
-                            expression);
+    return Function.express(Real.class, RealToComplexFunction.class, RealBivariateToComplexFunction.class, expression);
   }
 
   public static RealBivariateToComplexFunction express(String expression, Context context)
   {
-    return Function.express(Real.class,
-                            RealToComplexFunction.class,
-                            RealBivariateToComplexFunction.class,
-                            null,
-                            expression,
-                            context);
+    return Function.express(Real.class, RealToComplexFunction.class, RealBivariateToComplexFunction.class, null, expression, context);
   }
 }

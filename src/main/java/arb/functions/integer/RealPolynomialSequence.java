@@ -20,42 +20,42 @@ public interface RealPolynomialSequence extends
                                         PolynomialSequence<Real, RealPolynomial>
 {
 
-  RealPolynomialSequence integralSequence = new RealPolynomialSequence()
-  {
+  RealPolynomialSequence integralSequence   = new RealPolynomialSequence()
+                                            {
 
-    @Override
-    public String getName()
-    {
-      return "∫" + RealPolynomialSequence.super.getName();
-    }
+                                              @Override
+                                              public String getName()
+                                              {
+                                                return "∫" + RealPolynomialSequence.super.getName();
+                                              }
 
-    @Override
-    public RealPolynomial evaluate(Integer n, int order, int bits, RealPolynomial res)
-    {
-      return evaluate(n, order, bits, res).integral();
-    }
-  };
-  
+                                              @Override
+                                              public RealPolynomial evaluate(Integer n, int order, int bits, RealPolynomial res)
+                                              {
+                                                return evaluate(n, order, bits, res).integral();
+                                              }
+                                            };
+
   RealPolynomialSequence derivativeSequence = new RealPolynomialSequence()
-  {
+                                            {
 
-    @Override
-    public String getName()
-    {
-      return "∂" + RealPolynomialSequence.super.getName();
-    }
+                                              @Override
+                                              public String getName()
+                                              {
+                                                return "∂" + RealPolynomialSequence.super.getName();
+                                              }
 
-    @Override
-    public RealPolynomial evaluate(Integer n, int order, int bits, RealPolynomial res)
-    {
-      return evaluate(n, order, bits, res).derivative();
-    }
-  };
-  
+                                              @Override
+                                              public RealPolynomial evaluate(Integer n, int order, int bits, RealPolynomial res)
+                                              {
+                                                return evaluate(n, order, bits, res).derivative();
+                                              }
+                                            };
+
   @Override
   public default RealPolynomialSequence integral()
   {
-   
+
     return integralSequence;
   }
 
@@ -77,30 +77,19 @@ public interface RealPolynomialSequence extends
 
   public static RealPolynomialSequence express(String name, String expression, Context context)
   {
-    return Function.express(Integer.class,
-                            RealPolynomial.class,
-                            RealPolynomialSequence.class,
-                            name,
-                            expression,
-                            context);
+    return Function.express(Integer.class, RealPolynomial.class, RealPolynomialSequence.class, name, expression, context);
   }
 
-  public static Expression<Integer, RealPolynomial, RealPolynomialSequence>
-         parse(String className, String expression, Context context)
+  public static Expression<Integer, RealPolynomial, RealPolynomialSequence> parse(String className, String expression, Context context)
   {
     if (className == null)
     {
       className = Parser.transformToAcceptableJavaIdentifier(expression);
     }
-    return Sequence.parse(className,
-                          RealPolynomialSequence.class,
-                          RealPolynomial.class,
-                          expression,
-                          context);
+    return Sequence.parse(className, RealPolynomialSequence.class, RealPolynomial.class, expression, context);
   }
 
-  public static Expression<Integer, RealPolynomial, RealPolynomialSequence> parse(String className,
-                                                                                  String string)
+  public static Expression<Integer, RealPolynomial, RealPolynomialSequence> parse(String className, String string)
   {
     return parse(className, string, null);
   }
@@ -110,8 +99,7 @@ public interface RealPolynomialSequence extends
     return parse(null, string, null);
   }
 
-  public static Expression<Integer, RealPolynomial, RealPolynomialSequence> parse(String string,
-                                                                                  Context context)
+  public static Expression<Integer, RealPolynomial, RealPolynomialSequence> parse(String string, Context context)
   {
     return parse(null, string, context);
   }

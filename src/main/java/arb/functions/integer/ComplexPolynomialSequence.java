@@ -15,7 +15,8 @@ import arb.functions.polynomials.PolynomialSequence;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface ComplexPolynomialSequence extends PolynomialSequence<Complex, ComplexPolynomial>
+public interface ComplexPolynomialSequence extends
+                                           PolynomialSequence<Complex, ComplexPolynomial>
 {
 
   @Override
@@ -29,6 +30,7 @@ public interface ComplexPolynomialSequence extends PolynomialSequence<Complex, C
   {
     return (n, order, bits, res) -> evaluate(n, order, bits, res).derivative();
   }
+
   @Override
   default Class<ComplexPolynomial> coDomainType()
   {
@@ -45,28 +47,14 @@ public interface ComplexPolynomialSequence extends PolynomialSequence<Complex, C
     return express(null, expression, null);
   }
 
-  public static Expression<Integer, ComplexPolynomial, ComplexPolynomialSequence>
-         parse(String className, String expression, Context context)
+  public static Expression<Integer, ComplexPolynomial, ComplexPolynomialSequence> parse(String className, String expression, Context context)
   {
-    return Function.parse(className,
-                          expression,
-                          context,
-                          Integer.class,
-                          ComplexPolynomial.class,
-                          ComplexPolynomialSequence.class,
-                          null,
-                          null, true);
+    return Function.parse(className, expression, context, Integer.class, ComplexPolynomial.class, ComplexPolynomialSequence.class, null, null, true);
   }
 
   public static ComplexPolynomialSequence express(String name, String expression, Context context)
   {
-    return Function.express(Integer.class,
-                            ComplexPolynomial.class,
-                            ComplexPolynomialSequence.class,
-                            name,
-                            expression,
-                            context);
+    return Function.express(Integer.class, ComplexPolynomial.class, ComplexPolynomialSequence.class, name, expression, context);
   }
-
 
 }

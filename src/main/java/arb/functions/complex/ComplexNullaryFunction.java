@@ -20,32 +20,17 @@ public interface ComplexNullaryFunction extends
 
   public static Expression<Object, Complex, ComplexNullaryFunction> parse(String expression)
   {
-    return NullaryFunction.parse(Complex.class,
-                                 ComplexNullaryFunction.class,
-                                 Parser.transformToAcceptableJavaIdentifier(expression),
-                                 expression,
-                                 null);
+    return NullaryFunction.parse(Complex.class, ComplexNullaryFunction.class, Parser.transformToAcceptableJavaIdentifier(expression), expression, null);
   }
 
-  public static Expression<Object, Complex, ComplexNullaryFunction> parse(String expression,
-                                                                          Context context)
+  public static Expression<Object, Complex, ComplexNullaryFunction> parse(String expression, Context context)
   {
-    return NullaryFunction.parse(Complex.class,
-                                 ComplexNullaryFunction.class,
-                                 null,
-                                 expression,
-                                 context);
+    return NullaryFunction.parse(Complex.class, ComplexNullaryFunction.class, null, expression, context);
   }
 
-  public static ComplexNullaryFunction
-         express(String functionName, String expression, Context context)
+  public static ComplexNullaryFunction express(String functionName, String expression, Context context)
   {
-    return Function.express(expression,
-                                context,
-                                Object.class,
-                                Complex.class,
-                                ComplexNullaryFunction.class,
-                                functionName);
+    return Function.express(expression, context, Object.class, Complex.class, ComplexNullaryFunction.class, functionName);
   }
 
   public static ComplexNullaryFunction express(String expression, Context context)

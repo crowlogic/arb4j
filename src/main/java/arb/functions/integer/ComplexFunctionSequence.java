@@ -27,16 +27,10 @@ public interface ComplexFunctionSequence extends
 
   public static ComplexFunctionSequence express(String name, String expression, Context context)
   {
-    return Function.express(Integer.class,
-                            ComplexFunction.class,
-                            ComplexFunctionSequence.class,
-                            name,
-                            expression,
-                            context);
+    return Function.express(Integer.class, ComplexFunction.class, ComplexFunctionSequence.class, name, expression, context);
   }
 
-  public static Expression<Integer, ComplexFunction, ComplexFunctionSequence>
-         parse(String className, String expr)
+  public static Expression<Integer, ComplexFunction, ComplexFunctionSequence> parse(String className, String expr)
   {
     return Sequence.parse(className, ComplexFunctionSequence.class, ComplexFunction.class, expr);
   }

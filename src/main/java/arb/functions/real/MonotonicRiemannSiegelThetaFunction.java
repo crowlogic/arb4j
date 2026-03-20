@@ -7,7 +7,8 @@ import arb.expressions.Context;
 
 /**
  * <pre>
- * The Strictly Increasing Piecewise Reflected Riemann-Siegel θ function is defined by
+ * The Strictly Increasing Piecewise Reflected Riemann-Siegel θ function is
+ * defined by
  * 
  * Let Δ:2*(ϑ(a) - ϑ(-a)) then
  * 
@@ -21,35 +22,32 @@ import arb.expressions.Context;
  * 
  * is the {@link RiemannSiegelThetaFunction}
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the {@link TheArb4jLibrary}
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
-public class MonotonicRiemannSiegelThetaFunction
-                                                 implements
+public class MonotonicRiemannSiegelThetaFunction implements
                                                  RealFunction
 {
-  Real a = Real.named("a").set(6.289835988836898);
-  
+  Real           a       = Real.named("a").set(6.289835988836898);
+
   public Context context = new Context(a);
 
   public Real a()
   {
     return a;
   }
-  
+
   @Override
   public String toString()
   {
     return monotoneθ.toString();
   }
 
-  public RealFunction        ϑ         = RealFunction.express("ϑ:t->im(lnΓ(¼+ⅈ*t/2))-(t*log(π)/2)",
-                                                              context);
+  public RealFunction        ϑ         = RealFunction.express("ϑ:t->im(lnΓ(¼+ⅈ*t/2))-(t*log(π)/2)", context);
 
-  public RealNullaryFunction Δ         = RealNullaryFunction.express("Δ:2*(ϑ(a) - ϑ(-a))",
-                                                                     context);
+  public RealNullaryFunction Δ         = RealNullaryFunction.express("Δ:2*(ϑ(a) - ϑ(-a))", context);
 
-  RealFunction               monotoneθ = RealFunction.express("monotoneϑ:t->ϑ(t)+(ϑ(a)-ϑ(t))·(1+sgn(a-|t|))+Δ()·θ(-t-a)",
-                                                              context);
+  RealFunction               monotoneθ = RealFunction.express("monotoneϑ:t->ϑ(t)+(ϑ(a)-ϑ(t))·(1+sgn(a-|t|))+Δ()·θ(-t-a)", context);
 
   RealFunction               diffMonotoneθ;
 
@@ -58,25 +56,20 @@ public class MonotonicRiemannSiegelThetaFunction
   {
     if (diffMonotoneθ == null)
     {
-      diffMonotoneθ = RealFunction.express("diffmonotoneθ:t->diff(monotoneθ(t),t)",
-                                           context);
+      diffMonotoneθ = RealFunction.express("diffmonotoneθ:t->diff(monotoneθ(t),t)", context);
     }
     return diffMonotoneθ;
   }
 
   public MonotonicRiemannSiegelThetaFunction()
   {
-    context.registerFunction("H",
-                             new HeavisideStepFunction());
+    context.registerFunction("H", new HeavisideStepFunction());
   }
 
   @Override
   public Real evaluate(Real t, int order, int bits, Real res)
   {
-    return monotoneθ.evaluate(t,
-                              order,
-                              bits,
-                              res);
+    return monotoneθ.evaluate(t, order, bits, res);
   }
 
 }

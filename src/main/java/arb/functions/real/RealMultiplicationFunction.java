@@ -3,7 +3,7 @@ package arb.functions.real;
 import arb.Real;
 
 public class RealMultiplicationFunction implements
-                                               RealFunction
+                                        RealFunction
 {
   private final RealFunction that;
   private RealFunction       thisFunc;
@@ -31,8 +31,7 @@ public class RealMultiplicationFunction implements
   {
     try ( var blip = new Real())
     {
-      return thisFunc.evaluate(t, order, bits, res)
-                     .mul(that.evaluate(t, order, bits, blip), bits, res);
+      return thisFunc.evaluate(t, order, bits, res).mul(that.evaluate(t, order, bits, blip), bits, res);
     }
 
   }

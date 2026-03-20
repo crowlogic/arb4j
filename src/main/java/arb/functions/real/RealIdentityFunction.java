@@ -12,7 +12,6 @@ public class RealIdentityFunction implements
     return "x";
   }
 
-
   @Override
   public String toString()
   {
