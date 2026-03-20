@@ -18,8 +18,7 @@ import arb.functions.Function;
 public class LimitNode<D, C, F extends Function<? extends D, ? extends C>> extends
                       Node<D, C, F>
 {
-  public static final Logger logger = LoggerFactory.getLogger(LimitNode.class);
-
+  public static final Logger         logger = LoggerFactory.getLogger(LimitNode.class);
 
   private Node<D, C, F>              operand;
   private VariableReference<D, C, F> limitingVariableReference;
@@ -32,10 +31,7 @@ public class LimitNode<D, C, F extends Function<? extends D, ? extends C>> exten
   {
     super(expression);
     operand                   = Objects.requireNonNull(expression.resolve(), "operand");
-    limitingVariableReference = Objects.requireNonNull(
-                                                       expression.require(',')
-                                                                 .parseVariableReference(),
-                                                       "limitingVariableReference");
+    limitingVariableReference = Objects.requireNonNull(expression.require(',').parseVariableReference(), "limitingVariableReference");
     limitingVariableNode      = new VariableNode<>(expression,
                                                    limitingVariableReference,
                                                    !expression.deferVariableResolution);
@@ -52,10 +48,8 @@ public class LimitNode<D, C, F extends Function<? extends D, ? extends C>> exten
   {
     super(expression);
     this.operand                   = Objects.requireNonNull(operand, "operand");
-    this.limitingVariableReference = Objects.requireNonNull(limitingVariableReference,
-                                                            "limitingVariableReference");
-    this.limitingVariableNode      =
-                              Objects.requireNonNull(limitingVariableNode, "limitingVariableNode");
+    this.limitingVariableReference = Objects.requireNonNull(limitingVariableReference, "limitingVariableReference");
+    this.limitingVariableNode      = Objects.requireNonNull(limitingVariableNode, "limitingVariableNode");
     this.point                     = Objects.requireNonNull(point, "point");
   }
 
@@ -71,12 +65,9 @@ public class LimitNode<D, C, F extends Function<? extends D, ? extends C>> exten
       return limitEvaluationNode;
     }
 
-    final String  varName     =
-                          Objects.requireNonNull(limitingVariableName(), "limitingVariableName");
+    final String  varName     = Objects.requireNonNull(limitingVariableName(), "limitingVariableName");
 
-    Node<D, C, F> substituted = operand.spliceInto(expression)
-                                       .substitute(varName, point.spliceInto(expression))
-                                       .simplify();
+    Node<D, C, F> substituted = operand.spliceInto(expression).substitute(varName, point.spliceInto(expression)).simplify();
 
     limitEvaluationNode = Objects.requireNonNull(substituted, "limitEvaluationNode");
     return limitEvaluationNode;
@@ -186,9 +177,7 @@ public class LimitNode<D, C, F extends Function<? extends D, ? extends C>> exten
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
     Objects.requireNonNull(newExpression, "newExpression");
 
@@ -210,9 +199,7 @@ public class LimitNode<D, C, F extends Function<? extends D, ? extends C>> exten
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, C, F>
-         substitute(String variable, Node<E, S, G> arg)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, C, F> substitute(String variable, Node<E, S, G> arg)
   {
     Objects.requireNonNull(variable, "variable");
     Objects.requireNonNull(arg, "arg");
@@ -222,8 +209,7 @@ public class LimitNode<D, C, F extends Function<? extends D, ? extends C>> exten
     String bound = limitingVariableName();
     if (!bound.equals(variable))
     {
-      operand =
-              Objects.requireNonNull(operand.substitute(variable, arg), "operand.substitute(...)");
+      operand = Objects.requireNonNull(operand.substitute(variable, arg), "operand.substitute(...)");
     }
 
     limitEvaluationNode = null;

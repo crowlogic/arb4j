@@ -17,8 +17,8 @@ public class SphericalBesselFunctionSequenceTest extends
     try ( SphericalBesselFunction sbf = new SphericalBesselFunction())
     {
       sbf.n.set(3);
-      var                     f   = sbf.eval(2.3);
-      assertEquals( 0.0856499630648839, f );
+      var f = sbf.eval(2.3);
+      assertEquals(0.0856499630648839, f);
     }
   }
 }

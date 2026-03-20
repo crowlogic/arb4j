@@ -10,12 +10,12 @@ import arb.expressions.nodes.binary.BinaryOperationNode;
  * A {@link Magma} consists of a set M and a {@link BinaryOperationNode} (•)
  * that maps any two elements a, b ∈ M to another element a • b ∈ M.
  * <p>
- * To qualify as a {@link Magma}, the {@link Set} and operation (M, •) must satisfy the closure
- * property (also known as the magma axiom):
+ * To qualify as a {@link Magma}, the {@link Set} and operation (M, •) must
+ * satisfy the closure property (also known as the magma axiom):
  * </p>
  * <p>
- * For all a, b in M, the result of the operation a • b is also in M: 
- * a, b ∈ M ⟹ a • b ∈ M
+ * For all a, b in M, the result of the operation a • b is also in M: a, b ∈ M ⟹
+ * a • b ∈ M
  * </p>
  * <p>
  * 
@@ -24,12 +24,11 @@ import arb.expressions.nodes.binary.BinaryOperationNode;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface Magma<X extends Magma<? extends X>> 
+public interface Magma<X extends Magma<? extends X>>
 {
-  
-  
-  public <Y extends X,Z extends X> X pow(Y x, int prec, Z result);
-  
+
+  public <Y extends X, Z extends X> X pow(Y x, int prec, Z result);
+
   /**
    * Performs multiplication
    * 

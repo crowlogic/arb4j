@@ -13,6 +13,4 @@ public interface Surface extends
                          TopologicalSpace<Real>
 {
 
-  
-
 }

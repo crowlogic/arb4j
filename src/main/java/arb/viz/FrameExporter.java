@@ -68,8 +68,7 @@ public final class FrameExporter extends
       root.applyCss();
       root.layout();
 
-      BufferedImage bimg = SwingFXUtils.fromFXImage(root.snapshot(new SnapshotParameters(), null),
-                                                    null);
+      BufferedImage bimg = SwingFXUtils.fromFXImage(root.snapshot(new SnapshotParameters(), null), null);
 
       // Save numbered PNG
       String        idx  = String.format("%04d", i);
@@ -79,11 +78,10 @@ public final class FrameExporter extends
     }
 
     // Assemble the GIF once all frames exist
-    try ( FileImageOutputStream out = new FileImageOutputStream(new File("target/sequence.gif"));
-          GifSequenceWriter gif = new GifSequenceWriter(out,
-                                                        BufferedImage.TYPE_INT_ARGB,
-                                                        DELAY,
-                                                        true))
+    try ( FileImageOutputStream out = new FileImageOutputStream(new File("target/sequence.gif")); GifSequenceWriter gif = new GifSequenceWriter(out,
+                                                                                                                                                BufferedImage.TYPE_INT_ARGB,
+                                                                                                                                                DELAY,
+                                                                                                                                                true))
     {
       for (BufferedImage f : frames)
         gif.write(f);
@@ -103,12 +101,11 @@ public final class FrameExporter extends
     XYChart            chart = new XYChart(xAxis,
                                            yAxis);
 
-    EditableDataSet    ds    = new DefaultDataSet("λ = "
-                                                  + new DecimalFormat("+#0.000;-#0.000").format(λ));
+    EditableDataSet    ds    = new DefaultDataSet("λ = " + new DecimalFormat("+#0.000;-#0.000").format(λ));
     for (double t = 0.05; t <= 4.0; t += 0.02)
     {
-      assert false : "...";        
-      //ds.add(t, Math.sin(λ * t) / (t * t));
+      assert false : "...";
+      // ds.add(t, Math.sin(λ * t) / (t * t));
     }
     chart.getDatasets().add(ds);
     return chart;

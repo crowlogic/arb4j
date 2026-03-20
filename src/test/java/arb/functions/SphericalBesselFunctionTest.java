@@ -19,8 +19,8 @@ public class SphericalBesselFunctionTest extends
       f.n.set(3);
       double x = f.eval(2.3);
 //      System.out.format("f=%s\nf(2.3)=%s\n", f,x);
-      assertEquals( 0.0856499630648839, x );
+      assertEquals(0.0856499630648839, x);
     }
-                  
+
   }
 }

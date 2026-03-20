@@ -180,13 +180,13 @@ public class RationalFunctionTest extends
       var expectedSum = RationalFunction.parse("a+b+c", context);
       var ainst       = expectedSum.instantiate();
       var af          = ainst.evaluate();
-      //System.out.println(expectedSum.inspect(ainst));
+      // System.out.println(expectedSum.inspect(ainst));
       // FIXME: extend inspect to show variablenode info
 
     }
     catch (Exception e)
     {
-      //e.printStackTrace();
+      // e.printStackTrace();
       thrownException = e;
     }
     assertNotNull("an exception should have been thrown because a+b+c is a reference to 3 variables, not functions, as written, and they are not defined as variables in the context",

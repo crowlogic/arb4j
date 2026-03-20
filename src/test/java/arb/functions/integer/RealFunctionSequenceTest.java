@@ -17,8 +17,7 @@ public class RealFunctionSequenceTest extends
   public static void testRealFunctionSeq1()
   {
 
-    RealFunctionSequence seq      =
-                             RealFunctionSequence.express("χ", "i➔p➔int(t➔t^(i+p), t=-1..1)");
+    RealFunctionSequence seq      = RealFunctionSequence.express("χ", "i➔p➔int(t➔t^(i+p), t=-1..1)");
     RealFunction         function = seq.apply(3);
     double               y        = function.eval(2.3);
     assertEquals(Double.NaN, y);
@@ -27,8 +26,7 @@ public class RealFunctionSequenceTest extends
   public static void testRealFunctionSequence()
   {
 
-    var    f  =
-             RealFunctionSequence.express("f:k➔√((2*k+½)/π)*((k+1)⋰-½)^2*√((8*k+2)/π)*(-1)^k*j(2*k,x)");
+    var    f  = RealFunctionSequence.express("f:k➔√((2*k+½)/π)*((k+1)⋰-½)^2*√((8*k+2)/π)*(-1)^k*j(2*k,x)");
     var    f3 = f.evaluate(3, 128);
     double x  = f3.eval(2.3, new Real()).doubleValue();
     assertEquals(-0.0011637168426654918, x, 6e-9);

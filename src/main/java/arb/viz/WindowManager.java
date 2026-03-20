@@ -101,8 +101,7 @@ public class WindowManager
 
   public static String convertStylesheetToDataURI(String CSS_CONTENT)
   {
-    String encoded =
-                   Base64.getEncoder().encodeToString(CSS_CONTENT.getBytes(StandardCharsets.UTF_8));
+    String encoded = Base64.getEncoder().encodeToString(CSS_CONTENT.getBytes(StandardCharsets.UTF_8));
     return "data:text/css;base64," + encoded;
   }
 
@@ -130,8 +129,7 @@ public class WindowManager
       peerGetter.setAccessible(true);
       tableViewSkinBaseFlowField = TableViewSkinBase.class.getDeclaredField("flow");
       tableViewSkinBaseFlowField.setAccessible(true);
-      resizeMethod =
-                   TableColumnHeader.class.getDeclaredMethod("resizeColumnToFitContent", int.class);
+      resizeMethod = TableColumnHeader.class.getDeclaredMethod("resizeColumnToFitContent", int.class);
       resizeMethod.setAccessible(true);
     }
     catch (Exception e)
@@ -247,9 +245,7 @@ public class WindowManager
     }
   }
 
-  public static <Y, T extends IndexedCell<? extends Y>>
-         VirtualFlow<T>
-         getVirtualFlow(TreeTableView<?> control)
+  public static <Y, T extends IndexedCell<? extends Y>> VirtualFlow<T> getVirtualFlow(TreeTableView<?> control)
   {
     return getVirtualFlow(control.getSkin());
   }

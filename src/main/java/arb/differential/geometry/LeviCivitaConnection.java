@@ -22,8 +22,7 @@ import arb.space.topological.TopologicalSpace;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface LeviCivitaConnection<X extends Field<X>, B extends TopologicalSpace<X>, M extends RiemannianManifold<X>>
-                                     extends
+public interface LeviCivitaConnection<X extends Field<X>, B extends TopologicalSpace<X>, M extends RiemannianManifold<X>> extends
                                      AffineConnection<X, B, M>
 {
 

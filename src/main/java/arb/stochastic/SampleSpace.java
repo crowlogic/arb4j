@@ -26,10 +26,11 @@ import arb.space.topological.TopologicalSpace;
  * 
  * @param <E> the type of events that occur in the {@link TopologicalSpace}
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the {@link TheArb4jLibrary}
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public interface SampleSpace<E, Σ extends σField<? extends E>> extends
-                            MeasurableSpace<E,Σ>
+                            MeasurableSpace<E, Σ>
 {
 
 }

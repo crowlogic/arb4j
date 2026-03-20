@@ -48,12 +48,11 @@ public class NodeTreeItem<D, C, F extends Function<? extends D, ? extends C>> ex
     {
       return FXCollections.observableArrayList();
     }
-    ObservableList<TreeItem<Node<D, C, F>>> collect =
-                                                    treeItem.getValue()
-                                                            .getBranches()
-                                                            .stream()
-                                                            .map(NodeTreeItem::new)
-                                                            .collect(toCollection(FXCollections::observableArrayList));
+    ObservableList<TreeItem<Node<D, C, F>>> collect = treeItem.getValue()
+                                                              .getBranches()
+                                                              .stream()
+                                                              .map(NodeTreeItem::new)
+                                                              .collect(toCollection(FXCollections::observableArrayList));
     return collect;
   }
 }

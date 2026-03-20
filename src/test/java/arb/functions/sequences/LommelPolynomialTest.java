@@ -22,7 +22,6 @@ public class LommelPolynomialTest extends
                                   TestCase
 {
 
-
   public void testLommelRationalFuctionSequenceViaSequenceNode()
   {
     RationalFunctionSequence sequence = RationalFunctionSequence.express("R(n,1⁄2;z)");
@@ -75,7 +74,7 @@ public class LommelPolynomialTest extends
     }
   }
 
-  public static  void testLommelPolynomialRealExpression()
+  public static void testLommelPolynomialRealExpression()
   {
     var    f   = RealFunction.express("R(3,1/2;z)");
     // System.out.println("f=" + f);

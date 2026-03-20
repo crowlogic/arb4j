@@ -19,14 +19,14 @@ public class LinearRegressionTest extends
     result.close();
   }
 
-  private Real x, y;
+  private Real           x, y;
   private RealPolynomial result;
 
   protected void setUp()
   {
     x      = Real.newVector(5);
     y      = Real.newVector(5);
-    result = new RealPolynomial(2);    
+    result = new RealPolynomial(2);
 
     for (int i = 0; i < 5; i++)
     {

@@ -56,9 +56,7 @@ public final class ComplexWhiteNoiseProcess implements
 
   public Spliterator<Complex> spliterator(int bits, int limit)
   {
-    return Spliterators.spliterator(iterator(bits, limit),
-                                    limit,
-                                    Spliterator.SIZED | Spliterator.ORDERED);
+    return Spliterators.spliterator(iterator(bits, limit), limit, Spliterator.SIZED | Spliterator.ORDERED);
   }
 
   public Iterator<Complex> iterator(int bits, int limit)

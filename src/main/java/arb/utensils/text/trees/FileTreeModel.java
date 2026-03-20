@@ -30,12 +30,13 @@ public class FileTreeModel implements
   {
     return root;
   }
+
   FilenameFilter filter = (dir, name) -> !name.startsWith(".");
 
   @Override
   public FileNode getNode(FileNode fileNode, int index)
   {
-    File[]   files    = fileNode.f.listFiles(filter);
+    File[] files = fileNode.f.listFiles(filter);
     Arrays.sort(files, (a, b) -> a.getAbsolutePath().compareTo(b.getAbsolutePath()));
 
     return new FileNode(files[index]);

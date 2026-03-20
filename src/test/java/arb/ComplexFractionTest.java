@@ -19,9 +19,9 @@ public class ComplexFractionTest extends
     ComplexFraction a = new ComplexFraction().set("7⁄8");
     ComplexFraction b = new ComplexFraction().set("1⁄4+ⅈ");
     f.set(a, b);
-    assertEquals("[(7⁄8)+(0)i, (1⁄4)+(1)i]",f.toString());
+    assertEquals("[(7⁄8)+(0)i, (1⁄4)+(1)i]", f.toString());
   }
-  
+
   @SuppressWarnings("resource")
   public void testArraySetAndBecome()
   {
@@ -29,15 +29,13 @@ public class ComplexFractionTest extends
     ComplexFraction a = new ComplexFraction().set("7⁄8");
     ComplexFraction b = new ComplexFraction().set("1⁄4+ⅈ");
     f.set(a, b);
-    assertEquals("[(7⁄8)+(0)i, (1⁄4)+(1)i]",f.toString());
+    assertEquals("[(7⁄8)+(0)i, (1⁄4)+(1)i]", f.toString());
     ComplexFraction g = new ComplexFraction().become(f);
-    assertEquals("[(7⁄8)+(0)i, (1⁄4)+(1)i]",g.toString());    
-    assertEquals( 16, Fraction.BYTES);
-   f.resize(1);
-    //g.resize(1);
+    assertEquals("[(7⁄8)+(0)i, (1⁄4)+(1)i]", g.toString());
+    assertEquals(16, Fraction.BYTES);
+    f.resize(1);
+    // g.resize(1);
   }
-
-  
 
   @SuppressWarnings("resource")
   public void testSet()
@@ -47,8 +45,7 @@ public class ComplexFractionTest extends
     assertFalse(a.equals(b));
     b.set(a);
     assertTrue(a + "!=" + b, a.equals(b));
-    assertTrue(a.getNumerator() + " != " + b.getNumerator(),
-               b.getNumerator().equals(a.getNumerator()));
+    assertTrue(a.getNumerator() + " != " + b.getNumerator(), b.getNumerator().equals(a.getNumerator()));
     assertTrue(b.getDenominator().equals(a.getDenominator()));
 
   }

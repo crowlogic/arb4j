@@ -11,18 +11,19 @@ import arb.documentation.TheArb4jLibrary;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class Chapter implements Reference
+public class Chapter implements
+                     Reference
 {
-  private final Book book;
+  private final Book   book;
   private final String index;
 
   public Chapter(Book book, String index)
   {
     super();
-    this.book = book;
+    this.book  = book;
     this.index = index;
   }
-  
+
   @Override
   public String toString()
   {
@@ -35,7 +36,8 @@ public class Chapter implements Reference
     return AbstractBibliography.generateCitation(this, by, getFieldMapping());
   }
 
-  private static Map<String, String> getFieldMapping() {
+  private static Map<String, String> getFieldMapping()
+  {
     Map<String, String> fields = new LinkedHashMap<>();
     fields.put("author", "author");
     fields.put("title", "title");
@@ -49,77 +51,93 @@ public class Chapter implements Reference
   }
 
   @Override
-  public String getCitationType() {
+  public String getCitationType()
+  {
     return "InBook"; // BibTeX type for chapter references
   }
 
   @Override
-  public String year() {
+  public String year()
+  {
     return book.year();
   }
 
   @Override
-  public String title() {
+  public String title()
+  {
     return book.title();
   }
 
   @Override
-  public String author() {
+  public String author()
+  {
     return book.author();
   }
 
-  public String getBookTitle() {
+  public String getBookTitle()
+  {
     return book.title();
   }
 
-  public String getChapter() {
+  public String getChapter()
+  {
     return index;
   }
 
-  public String getPublisher() {
+  public String getPublisher()
+  {
     return book.getPublisher();
   }
 
-  public String getAddress() {
+  public String getAddress()
+  {
     return book.getAddress();
   }
 
   @Override
-  public String getVolume() {
+  public String getVolume()
+  {
     return book.getVolume();
   }
 
   @Override
-  public String getNumber() {
+  public String getNumber()
+  {
     return book.getNumber();
   }
 
   @Override
-  public String getPages() {
+  public String getPages()
+  {
     return book.getPages();
   }
 
   @Override
-  public Reference setVolume(String volume) {
+  public Reference setVolume(String volume)
+  {
     return book.setVolume(volume);
   }
 
   @Override
-  public Reference setPublisher(String publisher) {
+  public Reference setPublisher(String publisher)
+  {
     return book.setPublisher(publisher);
   }
 
   @Override
-  public Reference setAddress(String address) {
+  public Reference setAddress(String address)
+  {
     return book.setAddress(address);
   }
 
   // Getters for the private fields
-  public Book getBook() {
+  public Book getBook()
+  {
     return book;
   }
 
-  public String getIndex() {
+  public String getIndex()
+  {
     return index;
   }
 }

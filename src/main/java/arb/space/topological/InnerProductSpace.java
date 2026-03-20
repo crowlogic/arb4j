@@ -25,7 +25,8 @@ import arb.documentation.TheArb4jLibrary;
  * @see NormedVectorSpace
  * @see VectorSpace
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the {@link TheArb4jLibrary}
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public interface InnerProductSpace<F extends Field<? extends F>> extends
                                   VectorSpace<F>

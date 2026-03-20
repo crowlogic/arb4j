@@ -20,10 +20,8 @@ public class ZProcessTest extends
     System.loadLibrary("arblib");
     ZProcess                       Zprocess            = new ZProcess();
     RealBivariateToComplexFunction gainFunction        = Zprocess.gainFunction();
-    RealToComplexFunction          gainAtHalfFrequency = gainFunction.evaluate(RealConstants.half,
-                                                                               128);
-    Complex                        gainAtPointInTime   =
-                                                     gainAtHalfFrequency.eval(13.2, new Complex());
+    RealToComplexFunction          gainAtHalfFrequency = gainFunction.evaluate(RealConstants.half, 128);
+    Complex                        gainAtPointInTime   = gainAtHalfFrequency.eval(13.2, new Complex());
     assertEquals(0.12587432650685262, gainAtPointInTime.getReal().doubleValue());
     assertEquals(-0.5959914833141249, gainAtPointInTime.getImag().doubleValue());
   }

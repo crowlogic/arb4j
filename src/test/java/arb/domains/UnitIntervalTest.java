@@ -44,7 +44,8 @@ public class UnitIntervalTest extends
 
   public void testContainsHalfOpen()
   {
-    try ( UnitFloatInterval interval = new UnitFloatInterval(true, false))
+    try ( UnitFloatInterval interval = new UnitFloatInterval(true,
+                                                             false))
     {
       assertTrue(interval.contains(zero));
       assertFalse(interval.contains(one));
@@ -56,7 +57,8 @@ public class UnitIntervalTest extends
 
   public void testContainsHalfClosed()
   {
-    try ( UnitFloatInterval interval = new UnitFloatInterval(false, true))
+    try ( UnitFloatInterval interval = new UnitFloatInterval(false,
+                                                             true))
     {
       assertFalse(interval.contains(zero));
       assertTrue(interval.contains(one));

@@ -2,7 +2,6 @@ package arb.geometry;
 
 import java.util.Set;
 
-
 import arb.Field;
 import arb.differential.geometry.Surface;
 import arb.space.topological.EuclideanSpace;

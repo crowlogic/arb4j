@@ -23,7 +23,8 @@ public class ComplexRationalFunctionTest extends
 
   private static ComplexFraction cf(int num, int den)
   {
-    return cf(new Fraction(num, den));
+    return cf(new Fraction(num,
+                           den));
   }
 
   private static ComplexFraction cf(String s)
@@ -49,13 +50,9 @@ public class ComplexRationalFunctionTest extends
     var context = new Context();
     context.registerVariable("v", RealConstants.half);
 
-    var R    =
-          ComplexRationalFunctionSequence.express("R:n➔(v₍ₙ₎/((z/2)^(n)))*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)",
-                                                  context);
+    var R    = ComplexRationalFunctionSequence.express("R:n➔(v₍ₙ₎/((z/2)^(n)))*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)", context);
 
-    var Rtoo =
-             ComplexRationalFunctionSequence.express("Rtoo:n➔v₍ₙ₎*(z/2)^(-n)*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)",
-                                                     context);
+    var Rtoo = ComplexRationalFunctionSequence.express("Rtoo:n➔v₍ₙ₎*(z/2)^(-n)*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)", context);
 
     var x    = R.evaluate(3, 128);
     var xToo = Rtoo.evaluate(3, 128);
@@ -68,9 +65,7 @@ public class ComplexRationalFunctionTest extends
     var    context = new Context(Real.named("v").set(RealConstants.half),
                                  Integer.named("n").set(3));
 
-    var    R       =
-             ComplexRationalNullaryFunction.express("v₍ₙ₎*(z/2)^(-n)*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)",
-                                                    context);
+    var    R       = ComplexRationalNullaryFunction.express("v₍ₙ₎*(z/2)^(-n)*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)", context);
     var    x       = R;
 
     Object x3      = x.evaluate(128);
@@ -80,9 +75,7 @@ public class ComplexRationalFunctionTest extends
   @SuppressWarnings("resource")
   public void testAddToo()
   {
-    try ( var three = new ComplexRationalFunction().set(3);
-          var four = new ComplexRationalFunction().set(4);
-          var seven = new ComplexRationalFunction().set(7);)
+    try ( var three = new ComplexRationalFunction().set(3); var four = new ComplexRationalFunction().set(4); var seven = new ComplexRationalFunction().set(7);)
     {
       three.add(four, seven);
       assertEquals("7 + 0i", seven.toString());
@@ -145,8 +138,7 @@ public class ComplexRationalFunctionTest extends
   @SuppressWarnings("resource")
   public void testSubToo()
   {
-    try ( var a = new ComplexRationalFunction().set(10);
-          var b = new ComplexRationalFunction().set(3); var result = new ComplexRationalFunction();)
+    try ( var a = new ComplexRationalFunction().set(10); var b = new ComplexRationalFunction().set(3); var result = new ComplexRationalFunction();)
     {
       a.sub(b, 128, result);
       assertEquals("7 + 0i", result.toString());
@@ -156,9 +148,7 @@ public class ComplexRationalFunctionTest extends
   @SuppressWarnings("resource")
   public void testMulToo()
   {
-    try ( var three = new ComplexRationalFunction().set(3);
-          var four = new ComplexRationalFunction().set(4);
-          var result = new ComplexRationalFunction().set(7);)
+    try ( var three = new ComplexRationalFunction().set(3); var four = new ComplexRationalFunction().set(4); var result = new ComplexRationalFunction().set(7);)
     {
       three.mul(four, result);
       assertEquals("12 + 0i", result.toString());
@@ -168,9 +158,7 @@ public class ComplexRationalFunctionTest extends
   @SuppressWarnings("resource")
   public void testDivToo()
   {
-    try ( var three = new ComplexRationalFunction().set(3);
-          var four = new ComplexRationalFunction().set(4);
-          var result = new ComplexRationalFunction().set(7);)
+    try ( var three = new ComplexRationalFunction().set(3); var four = new ComplexRationalFunction().set(4); var result = new ComplexRationalFunction().set(7);)
     {
       three.div(four, result);
       assertEquals("3/4 + 0i", result.toString());
@@ -189,8 +177,7 @@ public class ComplexRationalFunctionTest extends
     assertEquals(expectedSum, expressed);
   }
 
-  public static void
-         testComplexRationalHypergeometricFunctionExpressionRationalWithFunctionsMissingParenthesis()
+  public static void testComplexRationalHypergeometricFunctionExpressionRationalWithFunctionsMissingParenthesis()
   {
     var context   = new Context();
     var expressed = ComplexRationalFunction.express("pFq([-2,3+1/2,1],[2,4],½-x/2)");
@@ -209,11 +196,9 @@ public class ComplexRationalFunctionTest extends
 
   public static void testSquare()
   {
-    try ( ComplexRationalFunction f =
-                                    new ComplexRationalFunction("(1+2*ⅈ+3*x+4*ⅈ*x^2)/(5-6*ⅈ*x+7*x^3-8*ⅈ*x^4)");
+    try ( ComplexRationalFunction f = new ComplexRationalFunction("(1+2*ⅈ+3*x+4*ⅈ*x^2)/(5-6*ⅈ*x+7*x^3-8*ⅈ*x^4)");
           ComplexRationalFunction fSquared = f.square(128, new ComplexRationalFunction());
-          ComplexFraction point = fSquared.evaluate(cf(23, 10),
-                                                    new ComplexFraction()))
+          ComplexFraction point = fSquared.evaluate(cf(23, 10), new ComplexFraction()))
     {
       assertEquals(0.00173299324387004007955453560959, point.realPart.doubleValue());
       assertEquals(-0.009103093364133974, point.imaginaryPart.doubleValue());
@@ -231,19 +216,16 @@ public class ComplexRationalFunctionTest extends
   @SuppressWarnings("resource")
   public static void testRaiseToANegativeIntegerPower()
   {
-    try ( ComplexRationalFunction f =
-                                    new ComplexRationalFunction().set("(1+2*ⅈ+3*x+4*ⅈ*x^2)/(5-6*ⅈ*x+7*x^3-8*ⅈ*x^4)"))
+    try ( ComplexRationalFunction f = new ComplexRationalFunction().set("(1+2*ⅈ+3*x+4*ⅈ*x^2)/(5-6*ⅈ*x+7*x^3-8*ⅈ*x^4)"))
     {
       assertEquals("(-32*x^6+5*x^4-17*x^3+3*x+5)/(64*x^8+49*x^6+96*x^5+70*x^3+36*x^2+25) + ((52*x^5+8*x^4+14*x^3+38*x^2+6*x+10)/(64*x^8+49*x^6+96*x^5+70*x^3+36*x^2+25))i",
                    f.toString());
-      ComplexFraction y = f.evaluate(cf(230, 100),
-                                     new ComplexFraction());
+      ComplexFraction y = f.evaluate(cf(230, 100), new ComplexFraction());
       assertEquals(-0.07416055890090498, y.realPart.doubleValue());
       assertEquals(0.06137422303071997, y.imaginaryPart.doubleValue());
 
       ComplexRationalFunction pow = f.pow(new Integer(-2), 128, new ComplexRationalFunction());
-      ComplexFraction         y2  = pow.evaluate(cf(230, 100),
-                                                 new ComplexFraction());
+      ComplexFraction         y2  = pow.evaluate(cf(230, 100), new ComplexFraction());
       assertEquals(20.181691319585614, y2.realPart.doubleValue());
       assertEquals(106.01069622063524, y2.imaginaryPart.doubleValue());
 
@@ -286,8 +268,7 @@ public class ComplexRationalFunctionTest extends
 
   public static void testMultiplicationMoreThoroughly()
   {
-    try ( ComplexRationalFunction a = new ComplexRationalFunction();
-          ComplexRationalFunction b = new ComplexRationalFunction();)
+    try ( ComplexRationalFunction a = new ComplexRationalFunction(); ComplexRationalFunction b = new ComplexRationalFunction();)
     {
       a.realPart.set("3+4*x^2-3*x^4");
       a.imaginaryPart.set("-1+2*x-3*x^3");
@@ -308,8 +289,7 @@ public class ComplexRationalFunctionTest extends
 
   public static void testSubtractionMoreThoroughly()
   {
-    try ( ComplexRationalFunction a = new ComplexRationalFunction();
-          ComplexRationalFunction b = new ComplexRationalFunction();)
+    try ( ComplexRationalFunction a = new ComplexRationalFunction(); ComplexRationalFunction b = new ComplexRationalFunction();)
     {
       a.realPart.set("3+4*x^2-3*x^4");
       a.imaginaryPart.set("-1+2*x-3*x^3");
@@ -330,8 +310,7 @@ public class ComplexRationalFunctionTest extends
 
   public static void testDivisionMoreThoroughly()
   {
-    try ( ComplexRationalFunction a = new ComplexRationalFunction();
-          ComplexRationalFunction b = new ComplexRationalFunction();)
+    try ( ComplexRationalFunction a = new ComplexRationalFunction(); ComplexRationalFunction b = new ComplexRationalFunction();)
     {
       a.realPart.set("3+4*x^2-3*x^4");
       a.imaginaryPart.set("-1+2*x-3*x^3");
@@ -352,8 +331,7 @@ public class ComplexRationalFunctionTest extends
 
   public static void testAdditionMoreThoroughly()
   {
-    try ( ComplexRationalFunction a = new ComplexRationalFunction();
-          ComplexRationalFunction b = new ComplexRationalFunction();)
+    try ( ComplexRationalFunction a = new ComplexRationalFunction(); ComplexRationalFunction b = new ComplexRationalFunction();)
     {
       a.realPart.set("3+4*x^2-3*x^4");
       a.imaginaryPart.set("-1+2*x-3*x^3");

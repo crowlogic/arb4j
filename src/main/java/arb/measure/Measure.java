@@ -6,8 +6,8 @@ import arb.documentation.TheArb4jLibrary;
 import arb.functions.Function;
 
 /**
- * A {@link Function} from a {@link σField} over X denoted
- * Σ to the {@link Real} numbers is a {@link Measure} if it is:
+ * A {@link Function} from a {@link σField} over X denoted Σ to the {@link Real}
+ * numbers is a {@link Measure} if it is:
  * 
  * <pre>
  * 1. non-negative for all Borel sets E∈Σ                         
@@ -16,8 +16,8 @@ import arb.functions.Function;
  *       μ(∅)=0 
  * 3. σ-additive (the measure of the sum is the sum of the measure)                        
  *       μ(∑Eₖ)=∑μ(Eₖ)∀{Eₖ}⊂Σ
- *  </pre>
-
+ * </pre>
+ * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */

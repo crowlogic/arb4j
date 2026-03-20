@@ -39,8 +39,7 @@ public class TODO extends
 
   public static String convertStylesheetToDataURI(String CSS_CONTENT)
   {
-    String encoded =
-                   Base64.getEncoder().encodeToString(CSS_CONTENT.getBytes(StandardCharsets.UTF_8));
+    String encoded = Base64.getEncoder().encodeToString(CSS_CONTENT.getBytes(StandardCharsets.UTF_8));
     return "data:text/css;base64," + encoded;
   }
 
@@ -153,13 +152,7 @@ public class TODO extends
     MenuItem moveDownMenuItem = new MenuItem("Move Down");
     moveDownMenuItem.setOnAction(e -> moveSelectedItemDown());
 
-    contextMenu.getItems()
-               .addAll(loadMenuItem,
-                       saveMenuItem,
-                       saveAsMenuItem,
-                       clearMenuItem,
-                       moveUpMenuItem,
-                       moveDownMenuItem);
+    contextMenu.getItems().addAll(loadMenuItem, saveMenuItem, saveAsMenuItem, clearMenuItem, moveUpMenuItem, moveDownMenuItem);
 
     listView.setContextMenu(contextMenu);
 

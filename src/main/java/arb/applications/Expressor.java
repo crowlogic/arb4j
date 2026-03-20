@@ -98,15 +98,15 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     return expressionTree;
   }
 
-  @SuppressWarnings({ "resource", "unchecked" })
+  @SuppressWarnings(
+  { "resource", "unchecked" })
   public void constructContextTableView()
   {
     contextTableView = new TableView<Named>();
 
     // ==================== Name Column ====================
     TableColumn<Named, String> nameColumn = new TableColumn<>("Name");
-    nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()
-                  == null ? "" : cellData.getValue().getName()));
+    nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue() == null ? "" : cellData.getValue().getName()));
     nameColumn.setPrefWidth(150);
     nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
     nameColumn.setOnEditCommit(event ->
@@ -126,8 +126,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
         }
         else
         {
-          WindowManager.showAlert("Name Conflict",
-                                  "A variable named '" + newName + "' already exists");
+          WindowManager.showAlert("Name Conflict", "A variable named '" + newName + "' already exists");
           contextTableView.refresh();
         }
       }
@@ -135,9 +134,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
 
     // ==================== Type Column ====================
     TableColumn<Named, String> typeColumn = new TableColumn<>("Type");
-    typeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()
-                                                                                .getClass()
-                                                                                .getSimpleName()));
+    typeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClass().getSimpleName()));
     typeColumn.setPrefWidth(120);
     typeColumn.setCellFactory(column -> new TableCell<Named, String>()
     {
@@ -161,8 +158,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
           {
             if (choiceBox == null)
             {
-              choiceBox =
-                        new ChoiceBox<>(FXCollections.observableArrayList(ExpressionTreeView.TYPES));
+              choiceBox = new ChoiceBox<>(FXCollections.observableArrayList(ExpressionTreeView.TYPES));
               choiceBox.setConverter(new javafx.util.StringConverter<Class<?>>()
               {
                 @Override
@@ -207,8 +203,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
         {
           if (choiceBox == null)
           {
-            choiceBox =
-                      new ChoiceBox<>(FXCollections.observableArrayList(ExpressionTreeView.TYPES));
+            choiceBox = new ChoiceBox<>(FXCollections.observableArrayList(ExpressionTreeView.TYPES));
             choiceBox.setConverter(new javafx.util.StringConverter<Class<?>>()
             {
               @Override
@@ -284,8 +279,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
             }
             catch (Exception e)
             {
-              WindowManager.showAlert("Type Change Error",
-                                      "Could not change type: " + e.getMessage());
+              WindowManager.showAlert("Type Change Error", "Could not change type: " + e.getMessage());
               Utensils.wrapOrThrow(e);
             }
           }
@@ -295,8 +289,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
 
     // ==================== Value Column ====================
     TableColumn<Named, String> valueColumn = new TableColumn<>("Value");
-    valueColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()
-                                                                                 .toString()));
+    valueColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().toString()));
     valueColumn.setPrefWidth(200);
     valueColumn.setCellFactory(TextFieldTableCell.forTableColumn());
     valueColumn.setOnEditCommit(event ->
@@ -339,10 +332,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
             }
             catch (NoSuchMethodException e2)
             {
-              WindowManager.showAlert("Value Update Error",
-                                      "Type "
-                                                            + item.getClass().getSimpleName()
-                                                            + " does not support value editing");
+              WindowManager.showAlert("Value Update Error", "Type " + item.getClass().getSimpleName() + " does not support value editing");
             }
           }
         }
@@ -531,8 +521,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
             }
             else
             {
-              WindowManager.showAlert("Variable Name Conflict",
-                                      "A variable named " + newVar.getName() + " already exists");
+              WindowManager.showAlert("Variable Name Conflict", "A variable named " + newVar.getName() + " already exists");
             }
           }
           catch (Throwable t)
@@ -606,8 +595,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
   {
     var dialog = new TextInputDialog();
     dialog.setTitle("New Variable");
-    dialog.setHeaderText(rename ? "Enter the new name for the variable:"
-                                : "Enter the name for the new variable:");
+    dialog.setHeaderText(rename ? "Enter the new name for the variable:" : "Enter the name for the new variable:");
     dialog.setContentText("Variable name:");
     dialog.initOwner(tabPane.getScene().getWindow());
     var newVarName = dialog.showAndWait();
@@ -720,8 +708,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     if (currentContext != null && contextTableView != null)
     {
       // Create ObservableList from map values
-      ObservableList<Named> list =
-                                 FXCollections.observableArrayList(currentContext.variables.values());
+      ObservableList<Named> list = FXCollections.observableArrayList(currentContext.variables.values());
 
       // Add listener to keep synchronized with map changes
       currentContext.variables.addListener((MapChangeListener<String, Named>) change ->
@@ -757,8 +744,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     return false;
   }
 
-  public static HashMap<String, Boolean> applyNodeExpansionStates(HashMap<String, Boolean> states,
-                                                                  TreeItem<?> item)
+  public static HashMap<String, Boolean> applyNodeExpansionStates(HashMap<String, Boolean> states, TreeItem<?> item)
   {
     if (item != null && !item.isLeaf())
     {
@@ -776,8 +762,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     return states;
   }
 
-  public static HashMap<String, Boolean>
-         enumerateNodeExpansionStates(HashMap<String, Boolean> states, TreeItem<?> item)
+  public static HashMap<String, Boolean> enumerateNodeExpansionStates(HashMap<String, Boolean> states, TreeItem<?> item)
   {
     if (item != null && !item.isLeaf())
     {

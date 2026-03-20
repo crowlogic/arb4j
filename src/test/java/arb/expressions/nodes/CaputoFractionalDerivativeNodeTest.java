@@ -82,10 +82,7 @@ public class CaputoFractionalDerivativeNodeTest extends
     // mpmath: 2/sqrt(pi) = 1.1283791670955125738961589031215451716881...
     double dHalfT   = 2.0 / Math.sqrt(Math.PI);
     double expected = dHalfT + 1.0;
-    assertEquals("Đ^(½)(t)+t at t=1 must work after tree construction",
-                 expected,
-                 result.doubleValue(),
-                 1e-10);
+    assertEquals("Đ^(½)(t)+t at t=1 must work after tree construction", expected, result.doubleValue(), 1e-10);
   }
 
   public void testCaputoDerivativeOfConstantIsZero()

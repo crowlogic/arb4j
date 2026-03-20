@@ -40,8 +40,7 @@ public class HardyThetaInversionTest extends
       seriesOrder = 2;
     }
 
-    try ( var point = Real.valueOf(50); Real centerPoint = Real.valueOf(40);
-          Real targetThetaValue = Real.newVector(2); Real result = new Real();)
+    try ( var point = Real.valueOf(50); Real centerPoint = Real.valueOf(40); Real targetThetaValue = Real.newVector(2); Real result = new Real();)
     {
       invert(theta, precision, seriesOrder, point, centerPoint, targetThetaValue, result);
 
@@ -51,13 +50,7 @@ public class HardyThetaInversionTest extends
 //    Thread.sleep(100000000);  }
   }
 
-  protected static Real invert(RealFunction theta,
-                               int precision,
-                               int seriesOrder,
-                               Real point,
-                               Real centerPoint,
-                               Real targetThetaValue,
-                               Real result)
+  protected static Real invert(RealFunction theta, int precision, int seriesOrder, Real point, Real centerPoint, Real targetThetaValue, Real result)
   {
     try ( HardyThetaInversion inverter = new HardyThetaInversion(theta,
                                                                  centerPoint,

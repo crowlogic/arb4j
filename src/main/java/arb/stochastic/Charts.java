@@ -17,19 +17,10 @@ public class Charts
    */
   public static void configureChart(XYChart chart, boolean light)
   {
-    chart.getPlugins()
-         .addAll(new EditAxis(AxisMode.XY),
-                 new Zoomer(),
-                 new Screenshot(),
-                 new TableViewer(),
-                 new CrosshairIndicator());
+    chart.getPlugins().addAll(new EditAxis(AxisMode.XY), new Zoomer(), new Screenshot(), new TableViewer(), new CrosshairIndicator());
     chart.getRenderers().forEach(renderer -> renderer.getAxes().addAll(chart.getAxes()));
-    chart.getStylesheets()
-         .add(String.format("data:text/css,.chart-crosshair-path { -fx-stroke: %s; -fx-stroke-width: 2; }",
-                            light ? "black" : "white"));
-    chart.getStylesheets()
-         .add(String.format("data:text/css,.chart-crosshair-label { -fx-fill: %s; -fx-font-size: 16px; }",
-                            light ? "orange" : "yellow"));
+    chart.getStylesheets().add(String.format("data:text/css,.chart-crosshair-path { -fx-stroke: %s; -fx-stroke-width: 2; }", light ? "black" : "white"));
+    chart.getStylesheets().add(String.format("data:text/css,.chart-crosshair-label { -fx-fill: %s; -fx-font-size: 16px; }", light ? "orange" : "yellow"));
   }
 
   public static GridPane createGridPane(XYChart[] charts)
@@ -61,7 +52,7 @@ public class Charts
     gridPane.add(charts[1], 1, 0);
     gridPane.add(charts[2], 0, 1);
     gridPane.add(charts[3], 1, 1);
-    
+
     return gridPane;
   }
 
@@ -70,17 +61,11 @@ public class Charts
    * {@link DataSetStyleBuilder#setMarkerColor(String)} as well as
    * {@link DataSetStyleBuilder#setLineColor(String)}
    */
-  public static final String empiricialFrequencyDatasetStyle  =
-                                                      DataSetStyleBuilder.instance()
-                                                                         .setMarkerColor("darkgoldenrod")
-                                                                         .setLineColor("darkgoldenrod")
-                                                                         .build();
-  public  static final String randomMeasureDatasetStyle        = DataSetStyleBuilder.instance()
-                                                                            .setMarkerType("circle")
-                                                                            .setMarkerSize(2)
-                                                                            .build();
-  public static final String theoreticalFrequencyDatasetStyle = DataSetStyleBuilder.instance()
-                                                                            .setLineWidth(2)
-                                                                            .build();
+  public static final String empiricialFrequencyDatasetStyle  = DataSetStyleBuilder.instance()
+                                                                                   .setMarkerColor("darkgoldenrod")
+                                                                                   .setLineColor("darkgoldenrod")
+                                                                                   .build();
+  public static final String randomMeasureDatasetStyle        = DataSetStyleBuilder.instance().setMarkerType("circle").setMarkerSize(2).build();
+  public static final String theoreticalFrequencyDatasetStyle = DataSetStyleBuilder.instance().setLineWidth(2).build();
 
 }

@@ -8,27 +8,35 @@
 
 package arb;
 
-public class CharacterCodeMap {
-  protected long swigCPtr;
+public class CharacterCodeMap
+{
+  protected long    swigCPtr;
   protected boolean swigCMemOwn;
 
-  public CharacterCodeMap(long cPtr, boolean cMemoryOwn) {
+  public CharacterCodeMap(long cPtr, boolean cMemoryOwn)
+  {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr = cPtr;
+    swigCPtr    = cPtr;
   }
 
-  public static long getCPtr(CharacterCodeMap obj) {
+  public static long getCPtr(CharacterCodeMap obj)
+  {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  @SuppressWarnings({"deprecation", "removal"})
-  protected void finalize() {
+  @SuppressWarnings(
+  { "deprecation", "removal" })
+  protected void finalize()
+  {
     delete();
   }
 
-  public synchronized void delete() {
-    if (swigCPtr != 0) {
-      if (swigCMemOwn) {
+  public synchronized void delete()
+  {
+    if (swigCPtr != 0)
+    {
+      if (swigCMemOwn)
+      {
         swigCMemOwn = false;
         arblibJNI.delete_CharacterCodeMap(swigCPtr);
       }
@@ -36,40 +44,50 @@ public class CharacterCodeMap {
     }
   }
 
-  public void setKey(int value) {
+  public void setKey(int value)
+  {
     arblibJNI.CharacterCodeMap_key_set(swigCPtr, this, value);
   }
 
-  public int getKey() {
+  public int getKey()
+  {
     return arblibJNI.CharacterCodeMap_key_get(swigCPtr, this);
   }
 
-  public void setGroup(int value) {
+  public void setGroup(int value)
+  {
     arblibJNI.CharacterCodeMap_group_set(swigCPtr, this, value);
   }
 
-  public int getGroup() {
+  public int getGroup()
+  {
     return arblibJNI.CharacterCodeMap_group_get(swigCPtr, this);
   }
 
-  public void setModmask(int value) {
+  public void setModmask(int value)
+  {
     arblibJNI.CharacterCodeMap_modmask_set(swigCPtr, this, value);
   }
 
-  public int getModmask() {
+  public int getModmask()
+  {
     return arblibJNI.CharacterCodeMap_modmask_get(swigCPtr, this);
   }
 
-  public void setNeeds_binding(int value) {
+  public void setNeeds_binding(int value)
+  {
     arblibJNI.CharacterCodeMap_needs_binding_set(swigCPtr, this, value);
   }
 
-  public int getNeeds_binding() {
+  public int getNeeds_binding()
+  {
     return arblibJNI.CharacterCodeMap_needs_binding_get(swigCPtr, this);
   }
 
-  public CharacterCodeMap() {
-    this(arblibJNI.new_CharacterCodeMap(), true);
+  public CharacterCodeMap()
+  {
+    this(arblibJNI.new_CharacterCodeMap(),
+         true);
   }
 
 }

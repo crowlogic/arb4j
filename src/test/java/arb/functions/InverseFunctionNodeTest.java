@@ -32,9 +32,7 @@ public class InverseFunctionNodeTest extends
     RealFunction.express("f:x->x²", context);
     var expr = RealFunction.parse("f⁻¹(x)", context);
     var root = expr.rootNode;
-    assertTrue("Root node should be an InverseFunctionNode but was "
-               + root.getClass().getSimpleName(),
-               root instanceof InverseFunctionNode);
+    assertTrue("Root node should be an InverseFunctionNode but was " + root.getClass().getSimpleName(), root instanceof InverseFunctionNode);
     assertEquals("f", ((InverseFunctionNode<?, ?, ?>) root).forwardFunctionName);
   }
 }

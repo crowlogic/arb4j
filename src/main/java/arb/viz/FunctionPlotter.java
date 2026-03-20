@@ -76,12 +76,7 @@ public class FunctionPlotter implements
 
   public void configureChartPlugins()
   {
-    chart.getPlugins()
-         .addAll(new EditAxis(AxisMode.XY),
-                 new Zoomer(),
-                 new TableViewer(),
-                 new CrosshairIndicator(),
-                 new Screenshot());
+    chart.getPlugins().addAll(new EditAxis(AxisMode.XY), new Zoomer(), new TableViewer(), new CrosshairIndicator(), new Screenshot());
   }
 
   public Stage createScene()
@@ -139,10 +134,7 @@ public class FunctionPlotter implements
 
   public RealDataSet getDataset(int index)
   {
-    assert index < chart.getDatasets().size()
-                  && 0 <= index : String.format("0 <= index = %d < %d out of bounds",
-                                                index,
-                                                chart.getDatasets().size());
+    assert index < chart.getDatasets().size() && 0 <= index : String.format("0 <= index = %d < %d out of bounds", index, chart.getDatasets().size());
     return (RealDataSet) chart.getDatasets().get(index);
   }
 
@@ -156,10 +148,7 @@ public class FunctionPlotter implements
   {
     if (sampleCount <= 0)
     {
-      sampleCount = Math.min(10000,
-                             1 + (int) domain.length(128, new Float())
-                                             .mul(resolution, 128)
-                                             .doubleValue());
+      sampleCount = Math.min(10000, 1 + (int) domain.length(128, new Float()).mul(resolution, 128).doubleValue());
     }
     freeExistingDatasets();
     for (RealFunction function : functions)

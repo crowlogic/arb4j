@@ -28,7 +28,7 @@ public interface Connection<X extends Field<? extends X>, B extends TopologicalS
    * @param curve  the curve along which the vector is parallel transported
    * @return the parallel transported vector
    */
-  X parallelTransport(X vector, Function<Real,Complex> curve);
+  X parallelTransport(X vector, Function<Real, Complex> curve);
 
   /**
    * Computes the curvature matrix at a point in the base space.

@@ -8,8 +8,7 @@ public class NotIntegrableException extends
 
   public NotIntegrableException(String msg)
   {
-    super(
-          msg);
+    super(msg);
   }
 
 }

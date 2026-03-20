@@ -8,22 +8,28 @@
 
 package arb;
 
-public class FastDFTRadix2Scheme {
-  protected long swigCPtr;
+public class FastDFTRadix2Scheme
+{
+  protected long    swigCPtr;
   protected boolean swigCMemOwn;
 
-  public FastDFTRadix2Scheme(long cPtr, boolean cMemoryOwn) {
+  public FastDFTRadix2Scheme(long cPtr, boolean cMemoryOwn)
+  {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr = cPtr;
+    swigCPtr    = cPtr;
   }
 
-  public static long getCPtr(FastDFTRadix2Scheme obj) {
+  public static long getCPtr(FastDFTRadix2Scheme obj)
+  {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete() {
-    if (swigCPtr != 0) {
-      if (swigCMemOwn) {
+  public synchronized void delete()
+  {
+    if (swigCPtr != 0)
+    {
+      if (swigCMemOwn)
+      {
         swigCMemOwn = false;
         arblibJNI.delete_FastDFTRadix2Scheme(swigCPtr);
       }
@@ -31,49 +37,63 @@ public class FastDFTRadix2Scheme {
     }
   }
 
-  public void setE(int value) {
+  public void setE(int value)
+  {
     arblibJNI.FastDFTRadix2Scheme_e_set(swigCPtr, this, value);
   }
 
-  public int getE() {
+  public int getE()
+  {
     return arblibJNI.FastDFTRadix2Scheme_e_get(swigCPtr, this);
   }
 
-  public void setN(int value) {
+  public void setN(int value)
+  {
     arblibJNI.FastDFTRadix2Scheme_n_set(swigCPtr, this, value);
   }
 
-  public int getN() {
+  public int getN()
+  {
     return arblibJNI.FastDFTRadix2Scheme_n_get(swigCPtr, this);
   }
 
-  public void setDv(int value) {
+  public void setDv(int value)
+  {
     arblibJNI.FastDFTRadix2Scheme_dv_set(swigCPtr, this, value);
   }
 
-  public int getDv() {
+  public int getDv()
+  {
     return arblibJNI.FastDFTRadix2Scheme_dv_get(swigCPtr, this);
   }
 
-  public void setNz(int value) {
+  public void setNz(int value)
+  {
     arblibJNI.FastDFTRadix2Scheme_nz_set(swigCPtr, this, value);
   }
 
-  public int getNz() {
+  public int getNz()
+  {
     return arblibJNI.FastDFTRadix2Scheme_nz_get(swigCPtr, this);
   }
 
-  public void setZ(Complex value) {
+  public void setZ(Complex value)
+  {
     arblibJNI.FastDFTRadix2Scheme_z_set(swigCPtr, this, Complex.getCPtr(value), value);
   }
 
-  public Complex getZ() {
+  public Complex getZ()
+  {
     long cPtr = arblibJNI.FastDFTRadix2Scheme_z_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new Complex(cPtr, false);
+    return (cPtr == 0) ? null
+                       : new Complex(cPtr,
+                                     false);
   }
 
-  public FastDFTRadix2Scheme() {
-    this(arblibJNI.new_FastDFTRadix2Scheme(), true);
+  public FastDFTRadix2Scheme()
+  {
+    this(arblibJNI.new_FastDFTRadix2Scheme(),
+         true);
   }
 
 }

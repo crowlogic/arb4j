@@ -9,10 +9,7 @@ public class UnderConstructionException extends
     super();
   }
 
-  public UnderConstructionException(String message,
-                                    Throwable cause,
-                                    boolean enableSuppression,
-                                    boolean writableStackTrace)
+  public UnderConstructionException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace)
   {
     super(message,
           cause,

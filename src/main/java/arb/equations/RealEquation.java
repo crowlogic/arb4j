@@ -11,8 +11,7 @@ import arb.functions.real.RealFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RealEquation
-                          extends
+public class RealEquation extends
                           Equation<Real, Real, RealFunction>
 {
 

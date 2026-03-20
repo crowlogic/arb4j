@@ -15,10 +15,9 @@ public interface TreeModel<R>
   public R getNode(R parent, int index);
 
   public char getNodeSymbol(R node);
-  
+
   public int getNodeCount(R parent);
 
   public boolean isLeaf(R node);
-
 
 }

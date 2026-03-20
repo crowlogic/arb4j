@@ -29,9 +29,12 @@ public class UnitDiskTest extends
 
   public void setUp()
   {
-    pointInside     = new Complex(RealConstants.half, RealConstants.half);
-    pointOnBoundary = new Complex(RealConstants.one, RealConstants.zero);
-    pointOutside    = new Complex(new Real(1.5), RealConstants.zero);
+    pointInside     = new Complex(RealConstants.half,
+                                  RealConstants.half);
+    pointOnBoundary = new Complex(RealConstants.one,
+                                  RealConstants.zero);
+    pointOutside    = new Complex(new Real(1.5),
+                                  RealConstants.zero);
   }
 
   public void testContainsOpen()

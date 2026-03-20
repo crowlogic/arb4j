@@ -41,9 +41,9 @@ public class JacobiPolynomialExpansionTest extends
     coeffs.get(19).set("0.02126119466672988059353758060700755989414", 128);
     try ( RealFunction expansion = new JacobiPolynomialExpansion(coeffs))
     {
-      Real         x         = new Real("0.76",
-                                        128);
-      var          y         = expansion.evaluate(x, 1, 128, new Real());
+      Real x = new Real("0.76",
+                        128);
+      var  y = expansion.evaluate(x, 1, 128, new Real());
 
       assertTrue(y.toString().startsWith("0.804413903516878943668546309744"));
     }

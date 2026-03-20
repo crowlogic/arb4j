@@ -10,22 +10,29 @@ package arb;
 
 import static arb.arblib.*;
 
-public class DirichletGroup implements AutoCloseable {
-  protected long swigCPtr;
+public class DirichletGroup implements
+                            AutoCloseable
+{
+  protected long    swigCPtr;
   protected boolean swigCMemOwn;
 
-  public DirichletGroup(long cPtr, boolean cMemoryOwn) {
+  public DirichletGroup(long cPtr, boolean cMemoryOwn)
+  {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr = cPtr;
+    swigCPtr    = cPtr;
   }
 
-  public static long getCPtr(DirichletGroup obj) {
+  public static long getCPtr(DirichletGroup obj)
+  {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete() {
-    if (swigCPtr != 0) {
-      if (swigCMemOwn) {
+  public synchronized void delete()
+  {
+    if (swigCPtr != 0)
+    {
+      if (swigCMemOwn)
+      {
         swigCMemOwn = false;
         arblibJNI.delete_DirichletGroup(swigCPtr);
       }
@@ -33,14 +40,14 @@ public class DirichletGroup implements AutoCloseable {
     }
   }
 
-
   /**
    * Calls {@link arb#dirichlet_group_clear(DirichletGroup)}
+   * 
    * @return this
    */
   public DirichletGroup clear()
   {
-    if ( swigCMemOwn )
+    if (swigCMemOwn)
     {
       dirichlet_group_clear(this);
     }
@@ -49,10 +56,10 @@ public class DirichletGroup implements AutoCloseable {
 
   @Override
   public void close()
-  { 
-      clear();
+  {
+    clear();
   }
-  
+
   public DirichletGroup init(long q)
   {
     dirichlet_group_init(this, q);
@@ -64,75 +71,94 @@ public class DirichletGroup implements AutoCloseable {
     dirichlet_subgroup_init(this, group, q);
     return this;
   }
-    
 
-  public void setQ(long value) {
+  public void setQ(long value)
+  {
     arblibJNI.DirichletGroup_q_set(swigCPtr, this, value);
   }
 
-  public long getQ() {
+  public long getQ()
+  {
     return arblibJNI.DirichletGroup_q_get(swigCPtr, this);
   }
 
-  public void setQ_even(long value) {
+  public void setQ_even(long value)
+  {
     arblibJNI.DirichletGroup_q_even_set(swigCPtr, this, value);
   }
 
-  public long getQ_even() {
+  public long getQ_even()
+  {
     return arblibJNI.DirichletGroup_q_even_get(swigCPtr, this);
   }
 
-  public void setRad_q(long value) {
+  public void setRad_q(long value)
+  {
     arblibJNI.DirichletGroup_rad_q_set(swigCPtr, this, value);
   }
 
-  public long getRad_q() {
+  public long getRad_q()
+  {
     return arblibJNI.DirichletGroup_rad_q_get(swigCPtr, this);
   }
 
-  public void setPhi_q(long value) {
+  public void setPhi_q(long value)
+  {
     arblibJNI.DirichletGroup_phi_q_set(swigCPtr, this, value);
   }
 
-  public long getPhi_q() {
+  public long getPhi_q()
+  {
     return arblibJNI.DirichletGroup_phi_q_get(swigCPtr, this);
   }
 
-  public void setNeven(int value) {
+  public void setNeven(int value)
+  {
     arblibJNI.DirichletGroup_neven_set(swigCPtr, this, value);
   }
 
-  public int getNeven() {
+  public int getNeven()
+  {
     return arblibJNI.DirichletGroup_neven_get(swigCPtr, this);
   }
 
-  public void setNumeratorAddress(int value) {
+  public void setNumeratorAddress(int value)
+  {
     arblibJNI.DirichletGroup_numeratorAddress_set(swigCPtr, this, value);
   }
 
-  public int getNumeratorAddress() {
+  public int getNumeratorAddress()
+  {
     return arblibJNI.DirichletGroup_numeratorAddress_get(swigCPtr, this);
   }
 
-  public void setExpo(long value) {
+  public void setExpo(long value)
+  {
     arblibJNI.DirichletGroup_expo_set(swigCPtr, this, value);
   }
 
-  public long getExpo() {
+  public long getExpo()
+  {
     return arblibJNI.DirichletGroup_expo_get(swigCPtr, this);
   }
 
-  public void setP(DirichletPrimeGroup value) {
+  public void setP(DirichletPrimeGroup value)
+  {
     arblibJNI.DirichletGroup_P_set(swigCPtr, this, DirichletPrimeGroup.getCPtr(value), value);
   }
 
-  public DirichletPrimeGroup getP() {
+  public DirichletPrimeGroup getP()
+  {
     long cPtr = arblibJNI.DirichletGroup_P_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new DirichletPrimeGroup(cPtr, false);
+    return (cPtr == 0) ? null
+                       : new DirichletPrimeGroup(cPtr,
+                                                 false);
   }
 
-  public DirichletGroup() {
-    this(arblibJNI.new_DirichletGroup(), true);
+  public DirichletGroup()
+  {
+    this(arblibJNI.new_DirichletGroup(),
+         true);
   }
 
 }

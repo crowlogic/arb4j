@@ -10,22 +10,29 @@ package arb;
 
 import static arb.arblib.*;
 
-public class DirichletCharacter implements AutoCloseable {
-  protected long swigCPtr;
+public class DirichletCharacter implements
+                                AutoCloseable
+{
+  protected long    swigCPtr;
   protected boolean swigCMemOwn;
 
-  public DirichletCharacter(long cPtr, boolean cMemoryOwn) {
+  public DirichletCharacter(long cPtr, boolean cMemoryOwn)
+  {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr = cPtr;
+    swigCPtr    = cPtr;
   }
 
-  public static long getCPtr(DirichletCharacter obj) {
+  public static long getCPtr(DirichletCharacter obj)
+  {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete() {
-    if (swigCPtr != 0) {
-      if (swigCMemOwn) {
+  public synchronized void delete()
+  {
+    if (swigCPtr != 0)
+    {
+      if (swigCMemOwn)
+      {
         swigCMemOwn = false;
         arblibJNI.delete_DirichletCharacter(swigCPtr);
       }
@@ -33,14 +40,14 @@ public class DirichletCharacter implements AutoCloseable {
     }
   }
 
-
   /**
    * Calls {@link arb#dirichlet_char_clear(DirichletCharacter)}
+   * 
    * @return this
    */
   public DirichletCharacter clear()
   {
-    if ( swigCMemOwn )
+    if (swigCMemOwn)
     {
       dirichlet_char_clear(this);
     }
@@ -49,17 +56,18 @@ public class DirichletCharacter implements AutoCloseable {
 
   @Override
   public void close()
-  { 
-      clear();
+  {
+    clear();
   }
-  
+
   /**
    * 
-   * Initializes {@link DirichletCharacter} and sets its value to the principal character of a specified {@link DirichletGroup} G 
+   * Initializes {@link DirichletCharacter} and sets its value to the principal
+   * character of a specified {@link DirichletGroup} G
    *
    * @return this
    *
-   * @param group the {@link DirichletGroup} 
+   * @param group the {@link DirichletGroup}
    * 
    * @return this
    */
@@ -68,18 +76,21 @@ public class DirichletCharacter implements AutoCloseable {
     dirichlet_char_init(this, group);
     return this;
   }
-    
 
-  public void setN(long value) {
+  public void setN(long value)
+  {
     arblibJNI.DirichletCharacter_n_set(swigCPtr, this, value);
   }
 
-  public long getN() {
+  public long getN()
+  {
     return arblibJNI.DirichletCharacter_n_get(swigCPtr, this);
   }
 
-  public DirichletCharacter() {
-    this(arblibJNI.new_DirichletCharacter(), true);
+  public DirichletCharacter()
+  {
+    this(arblibJNI.new_DirichletCharacter(),
+         true);
   }
 
 }

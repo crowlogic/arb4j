@@ -31,12 +31,12 @@ public class ImageViewer extends
   @Override
   public String toString()
   {
-    return String.format("ImageViewer[%s]", getTitle() );
+    return String.format("ImageViewer[%s]", getTitle());
   }
 
   private static final long serialVersionUID = 1L;
 
-  public ImageViewer(String string,  BufferedImage image)
+  public ImageViewer(String string, BufferedImage image)
   {
     setTitle(string);
     setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);

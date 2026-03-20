@@ -30,7 +30,7 @@ public enum FormulaGenerationMethod
   {
     if (this == All)
     {
-      return RESERVED1.value()-1;
+      return RESERVED1.value() - 1;
     }
     else if (this == AutomaticForm)
     {

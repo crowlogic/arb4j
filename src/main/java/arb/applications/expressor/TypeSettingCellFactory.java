@@ -20,10 +20,8 @@ import javafx.util.Callback;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public final class TypeSettingCellFactory<D, C, F extends Function<? extends D, ? extends C>>
-                                         implements
-                                         Callback<TreeTableColumn<Node<D, C, F>, String>,
-                                                       TreeTableCell<Node<D, C, F>, String>>
+public final class TypeSettingCellFactory<D, C, F extends Function<? extends D, ? extends C>> implements
+                                         Callback<TreeTableColumn<Node<D, C, F>, String>, TreeTableCell<Node<D, C, F>, String>>
 {
   final static ConcurrentHashMap<String, Image> cache = new ConcurrentHashMap<>();
 
@@ -59,8 +57,7 @@ public final class TypeSettingCellFactory<D, C, F extends Function<? extends D, 
         catch (Exception e)
         {
           setText("Error rendering formula: " + e.getMessage() + " for string '" + item + "'");
-          System.err.format("formula for which the exception is being thrown is '%s'\n",
-                            item);
+          System.err.format("formula for which the exception is being thrown is '%s'\n", item);
 
           e.printStackTrace(System.err);
           setGraphic(null);

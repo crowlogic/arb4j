@@ -155,8 +155,7 @@ public class IntegralNodeTest extends
 
     var poly = P4.integral();
 
-    assertEquals("0.4375*x⁵ - 0.72916666666666666666666666666666666666*x³ + 0.2734375*x",
-                 poly.toString());
+    assertEquals("0.4375*x⁵ - 0.72916666666666666666666666666666666666*x³ + 0.2734375*x", poly.toString());
   }
 
   public void testAnotherIntegralOfASequence()
@@ -171,8 +170,7 @@ public class IntegralNodeTest extends
     var P4int = RealPolynomialNullaryFunction.express("int(P4(x),x)", context);
 
     var poly  = P4int.evaluate();
-    assertEquals("0.4375*x⁵ - 0.72916666666666666666666666666666666666*x³ + 0.2734375*x",
-                 poly.toString());
+    assertEquals("0.4375*x⁵ - 0.72916666666666666666666666666666666666*x³ + 0.2734375*x", poly.toString());
   }
 
   public void testAnotherToo()

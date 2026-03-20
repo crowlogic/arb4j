@@ -30,14 +30,10 @@ public class FirstFundamentalForm<S extends Surface> implements
 {
 
   @Override
-  public Real evaluate(CartesianProduct<TangentSpace<S,Real>, TangentSpace<S,Real>> t,
-                       int order,
-                       int bits,
-                       Real res)
+  public Real evaluate(CartesianProduct<TangentSpace<S, Real>, TangentSpace<S, Real>> t, int order, int bits, Real res)
   {
     assert false : "TODO: Auto-generated method stub";
     return null;
   }
-
 
 }

@@ -13,14 +13,14 @@ import arb.documentation.TheArb4jLibrary;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class GaussianInteger implements Ring<GaussianInteger>, AutoCloseable
+public class GaussianInteger implements
+                             Ring<GaussianInteger>,
+                             AutoCloseable
 {
   @Override
   public String toString()
   {
-    return String.format("%s+%si",
-                         realPart,
-                         imaginaryPart);
+    return String.format("%s+%si", realPart, imaginaryPart);
   }
 
   Integer parts         = Integer.newVector(2);
@@ -89,8 +89,7 @@ public class GaussianInteger implements Ring<GaussianInteger>, AutoCloseable
   }
 
   @Override
-  public int
-         dim()
+  public int dim()
   {
     return 1;
   }

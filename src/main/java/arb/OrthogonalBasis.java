@@ -17,7 +17,6 @@ public interface OrthogonalBasis<X, E> extends
 
 {
 
-
   /**
    * 
    * @return the {@link Measure} to which the elements of this

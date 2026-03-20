@@ -8,8 +8,7 @@ public class NotDifferentiableException extends
 
   public NotDifferentiableException(String msg)
   {
-    super(
-          msg);
+    super(msg);
   }
 
 }

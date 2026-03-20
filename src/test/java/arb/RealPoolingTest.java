@@ -99,7 +99,7 @@ public class RealPoolingTest extends
     Real level2    = tempReal1.borrowVariable();
     Real level3    = level2.borrowVariable();
 
-    assertEquals( poolOwner, tempReal1.home );
+    assertEquals(poolOwner, tempReal1.home);
     poolOwner.close();
 
     assert tempReal1.home == null : "tempReal1 should be freed";

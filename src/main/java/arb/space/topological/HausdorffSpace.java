@@ -7,10 +7,10 @@ import arb.documentation.TheArb4jLibrary;
  * 
  * @param <X>
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the {@link TheArb4jLibrary}
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
-public interface HausdorffSpace<X>
-                               extends
+public interface HausdorffSpace<X> extends
                                TopologicalSpace<X>
 {
   boolean isSeparable(int bits, X x, X y);

@@ -6,17 +6,20 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 
 /**
- * A Bornology is a mathematical structure that is defined on a set and consists of a
- * collection of subsets, referred to as "bounded sets", that satisfy certain axioms.
+ * A Bornology is a mathematical structure that is defined on a set and consists
+ * of a collection of subsets, referred to as "bounded sets", that satisfy
+ * certain axioms.
  *
  * In a Bornological space, the concept of boundedness is well-defined, but it's
- * independent from the notions of distance or topology. Bornologies provide a formalized
- * understanding of concepts like boundedness, absorbency, and balancedness.
+ * independent from the notions of distance or topology. Bornologies provide a
+ * formalized understanding of concepts like boundedness, absorbency, and
+ * balancedness.
  *
  * @param <X> the type of elements in the space
  *
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the {@link TheArb4jLibrary}
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public interface Bornology<X>
 {

@@ -44,8 +44,6 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
 
   public static final Logger  logger        = LoggerFactory.getLogger(PolynomialIntegralNode.class);
 
-
-
   @Override
   public String toString()
   {
@@ -77,9 +75,7 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
   /**
    * Original constructor — no cofactor, behaves exactly as before.
    */
-  public PolynomialIntegralNode(Expression<D, C, F> expression,
-                                Node<D, C, F> polynomialNode,
-                                Node<D, C, F> argumentNode)
+  public PolynomialIntegralNode(Expression<D, C, F> expression, Node<D, C, F> polynomialNode, Node<D, C, F> argumentNode)
   {
     this(expression,
          polynomialNode,
@@ -97,10 +93,7 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
    *                       w(t))
    * @param argumentNode   the integration variable node
    */
-  public PolynomialIntegralNode(Expression<D, C, F> expression,
-                                Node<D, C, F> polynomialNode,
-                                Node<D, C, F> cofactorNode,
-                                Node<D, C, F> argumentNode)
+  public PolynomialIntegralNode(Expression<D, C, F> expression, Node<D, C, F> polynomialNode, Node<D, C, F> cofactorNode, Node<D, C, F> argumentNode)
   {
     super(expression);
     this.polynomialNode = polynomialNode;
@@ -122,8 +115,7 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
       // Promote to ComplexPolynomial when the expression operates in the complex
       // domain
       Class<?> effectivePolynomialType = polynomialType;
-      if (Complex.class.isAssignableFrom(expression.coDomainType)
-                    && RealPolynomial.class.isAssignableFrom(polynomialType))
+      if (Complex.class.isAssignableFrom(expression.coDomainType) && RealPolynomial.class.isAssignableFrom(polynomialType))
       {
         effectivePolynomialType = ComplexPolynomial.class;
       }
@@ -148,8 +140,7 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
     var polynomialType = polynomialNode.type();
 
     // Promote to ComplexPolynomial when operating in complex domain
-    if (Complex.class.isAssignableFrom(expression.coDomainType)
-                  && RealPolynomial.class.isAssignableFrom(polynomialType))
+    if (Complex.class.isAssignableFrom(expression.coDomainType) && RealPolynomial.class.isAssignableFrom(polynomialType))
     {
       polynomialType = ComplexPolynomial.class;
     }
@@ -169,9 +160,7 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
       // Stack: [polynomial, cofactor, bits]
 
       // Load the intermediate variable for the product result
-      expression.loadFieldOntoStack(Compiler.loadThisOntoStack(mv),
-                                    productIntermediateFieldName,
-                                    Type.getDescriptor(polynomialType));
+      expression.loadFieldOntoStack(Compiler.loadThisOntoStack(mv), productIntermediateFieldName, Type.getDescriptor(polynomialType));
 
       // Stack: [polynomial, cofactor, bits, productIntermediate]
 
@@ -179,21 +168,14 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
       mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                          Type.getInternalName(polynomialType),
                          "mul",
-                         Compiler.getMethodDescriptor(polynomialType,
-                                                      polynomialType,
-                                                      int.class,
-                                                      polynomialType),
+                         Compiler.getMethodDescriptor(polynomialType, polynomialType, int.class, polynomialType),
                          false);
 
       // Stack: [productPolynomial]
     }
 
     // Call integral() on the polynomial (or product polynomial)
-    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                       Type.getInternalName(polynomialType),
-                       "integral",
-                       Compiler.getMethodDescriptor(polynomialType),
-                       false);
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, Type.getInternalName(polynomialType), "integral", Compiler.getMethodDescriptor(polynomialType), false);
 
     if (isScalar())
     {
@@ -213,11 +195,7 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
       loadOutputVariableOntoStack(mv, resultType);
 
       // Call evaluate on the integrated polynomial
-      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                         Type.getInternalName(polynomialType),
-                         "evaluate",
-                         Compiler.evaluationMethodDescriptor,
-                         false);
+      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, Type.getInternalName(polynomialType), "evaluate", Compiler.evaluationMethodDescriptor, false);
 
       if (!resultType.equals(Object.class))
       {
@@ -267,45 +245,26 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
   {
     if (cofactorNode != null)
     {
-      return "\\int "
-             + cofactorNode.typeset()
-             + " \\cdot "
-             + polynomialNode.typeset()
-             + "("
-             + argumentNode.typeset()
-             + ") d"
-             + argumentNode.typeset();
+      return "\\int " + cofactorNode.typeset() + " \\cdot " + polynomialNode.typeset() + "(" + argumentNode.typeset() + ") d" + argumentNode.typeset();
     }
-    return "\\int "
-           + polynomialNode.typeset()
-           + "("
-           + argumentNode.typeset()
-           + ") d"
-           + argumentNode.typeset();
+    return "\\int " + polynomialNode.typeset() + "(" + argumentNode.typeset() + ") d" + argumentNode.typeset();
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
     return new PolynomialIntegralNode<>(newExpression,
                                         polynomialNode.spliceInto(newExpression),
-                                        cofactorNode != null ? cofactorNode.spliceInto(newExpression)
-                                                             : null,
+                                        cofactorNode != null ? cofactorNode.spliceInto(newExpression) : null,
                                         argumentNode.spliceInto(newExpression));
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, C, F>
-         substitute(String var, Node<E, S, G> replacement)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, C, F> substitute(String var, Node<E, S, G> replacement)
   {
     return new PolynomialIntegralNode<>(expression,
                                         polynomialNode.substitute(var, replacement),
-                                        cofactorNode != null ? cofactorNode.substitute(var,
-                                                                                       replacement)
-                                                             : null,
+                                        cofactorNode != null ? cofactorNode.substitute(var, replacement) : null,
                                         argumentNode.substitute(var, replacement));
   }
 
@@ -354,9 +313,7 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
   @Override
   public boolean dependsOn(VariableNode<D, C, F> variable)
   {
-    return polynomialNode.dependsOn(variable)
-                  || (cofactorNode != null && cofactorNode.dependsOn(variable))
-                  || argumentNode.dependsOn(variable);
+    return polynomialNode.dependsOn(variable) || (cofactorNode != null && cofactorNode.dependsOn(variable)) || argumentNode.dependsOn(variable);
   }
 
 }

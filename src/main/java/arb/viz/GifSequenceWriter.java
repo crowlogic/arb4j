@@ -22,10 +22,7 @@ public final class GifSequenceWriter implements
   private final ImageWriteParam params;
   private final IIOMetadata     metadata;
 
-  public GifSequenceWriter(ImageOutputStream out,
-                           int imageType,
-                           int delayTimeMs,
-                           boolean loopContinuously) throws IOException
+  public GifSequenceWriter(ImageOutputStream out, int imageType, int delayTimeMs, boolean loopContinuously) throws IOException
   {
     writer = getWriter();
     params = writer.getDefaultWriteParam();

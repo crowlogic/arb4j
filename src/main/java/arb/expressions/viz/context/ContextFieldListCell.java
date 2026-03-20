@@ -32,7 +32,7 @@ public final class ContextFieldListCell<D, C extends Closeable, F extends Functi
                                        TextFieldListCell<Named>
 {
 
-  final Expressor<D, C, F>      analyzer;
+  final Expressor<D, C, F>     analyzer;
   final StringConverter<Named> converter;
   Spinner<java.lang.Integer>   spinner;
   HBox                         layout;
@@ -119,7 +119,7 @@ public final class ContextFieldListCell<D, C extends Closeable, F extends Functi
     spinner.valueProperty().addListener((obs, oldValue, newValue) ->
     {
       integerItem.set(newValue);
-      updateRepresentation(item);      
+      updateRepresentation(item);
       analyzer.evaluate();
     });
     spinner.setOnScroll(event ->
@@ -178,7 +178,7 @@ public final class ContextFieldListCell<D, C extends Closeable, F extends Functi
   private void updateRepresentation(Named item)
   {
     Context currentContext = analyzer.getCurrentContext();
-    if ( currentContext == null )
+    if (currentContext == null)
     {
       return;
     }

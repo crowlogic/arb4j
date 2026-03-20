@@ -26,8 +26,11 @@ import arb.functions.SurjectiveFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface FiberBundle<X extends Field<? extends X>, E extends TopologicalSpace<? extends X>, B extends TopologicalSpace<? extends X>, F extends TopologicalSpace<? extends X>, π extends SurjectiveFunction<E, B>>
-                            extends
+public interface FiberBundle<X extends Field<? extends X>,
+              E extends TopologicalSpace<? extends X>,
+              B extends TopologicalSpace<? extends X>,
+              F extends TopologicalSpace<? extends X>,
+              π extends SurjectiveFunction<E, B>> extends
                             Bundle<X, E, B, π>
 {
   /**

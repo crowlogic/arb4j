@@ -20,8 +20,7 @@ import arb.space.topological.VectorSpace;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface AffineConnection<X extends Field<? extends X>, B extends TopologicalSpace<? extends X>, M extends RiemannianManifold<? extends X>>
-                                 extends
+public interface AffineConnection<X extends Field<? extends X>, B extends TopologicalSpace<? extends X>, M extends RiemannianManifold<? extends X>> extends
                                  Connection<X, B>
 {
   public RiemannCurvatureTensor<? extends X, ? extends M> getCurvatureTensor();

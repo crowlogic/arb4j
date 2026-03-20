@@ -12,7 +12,8 @@ import arb.documentation.references.Reference;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class Referral implements Reference
+public class Referral implements
+                      Reference
 {
   public Book book;
 
@@ -27,7 +28,7 @@ public class Referral implements Reference
   @Override
   public String year()
   {
-   return book.year();
+    return book.year();
   }
 
   @Override

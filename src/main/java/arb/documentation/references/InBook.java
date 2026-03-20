@@ -56,12 +56,7 @@ public record InBook(String title,
     return fields;
   }
 
-  public InBook(String title,
-                String author,
-                String year,
-                String booktitle,
-                String chapter,
-                String pages)
+  public InBook(String title, String author, String year, String booktitle, String chapter, String pages)
   {
     this(title,
          author,

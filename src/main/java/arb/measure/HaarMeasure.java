@@ -21,8 +21,7 @@ import arb.space.topological.LocallyCompactHausdorffSpace;
  * @see BusinessSourceLicenseVersionOnePointOne for terms of the
  *      {@link TheArb4jLibrary}.
  */
-public interface HaarMeasure<X extends LocallyCompactHausdorffSpace<?>, Σ extends σField<? extends X>>
-                            extends
+public interface HaarMeasure<X extends LocallyCompactHausdorffSpace<?>, Σ extends σField<? extends X>> extends
                             RadonMeasure<X, Σ>
 {
 

@@ -30,21 +30,14 @@ public class ComplexRationalFunction implements
     imaginaryUnit.imaginaryPart.set(1, 1);
   }
 
-  public static Expression<ComplexFraction, ComplexFraction, ComplexRationalFunction>
-         compile(String expression)
+  public static Expression<ComplexFraction, ComplexFraction, ComplexRationalFunction> compile(String expression)
   {
     return compile(expression, null);
   }
 
-  public static Expression<ComplexFraction, ComplexFraction, ComplexRationalFunction>
-         compile(String expression, Context context)
+  public static Expression<ComplexFraction, ComplexFraction, ComplexRationalFunction> compile(String expression, Context context)
   {
-    return Parser.parse(expression,
-                        context,
-                        ComplexFraction.class,
-                        ComplexFraction.class,
-                        ComplexRationalFunction.class,
-                        null);
+    return Parser.parse(expression, context, ComplexFraction.class, ComplexFraction.class, ComplexRationalFunction.class, null);
   }
 
   public static ComplexRationalFunction express(String expression)
@@ -59,8 +52,7 @@ public class ComplexRationalFunction implements
 
   public static ComplexRationalFunction express(String expression, int bits)
   {
-    return ComplexRationalNullaryFunction.express(expression)
-                                         .evaluate(bits, new ComplexRationalFunction());
+    return ComplexRationalNullaryFunction.express(expression).evaluate(bits, new ComplexRationalFunction());
   }
 
   public static String group(String p, boolean t)
@@ -99,8 +91,7 @@ public class ComplexRationalFunction implements
   }
 
   @Override
-  public ComplexRationalFunction
-         add(ComplexRationalFunction element, int prec, ComplexRationalFunction result)
+  public ComplexRationalFunction add(ComplexRationalFunction element, int prec, ComplexRationalFunction result)
   {
     assert result.realPart != null : "result.realPart is null";
     assert result.imaginaryPart != null : "result.imaginaryPart is null";
@@ -197,8 +188,7 @@ public class ComplexRationalFunction implements
    * </pre>
    */
 
-  public ComplexRationalFunction
-         div(ComplexRationalFunction x, int prec, ComplexRationalFunction result)
+  public ComplexRationalFunction div(ComplexRationalFunction x, int prec, ComplexRationalFunction result)
   {
     assert result.realPart != null : "result.realPart is null";
     assert result.imaginaryPart != null : "result.imaginaryPart is null";
@@ -209,8 +199,7 @@ public class ComplexRationalFunction implements
     RationalFunction c = x.realPart;
     RationalFunction d = x.imaginaryPart;
 
-    try ( RationalFunction temp1 = new RationalFunction();
-          RationalFunction temp2 = new RationalFunction();)
+    try ( RationalFunction temp1 = new RationalFunction(); RationalFunction temp2 = new RationalFunction();)
     {
       // Calculate denominator: c^2 + d^2
       c.mul(c, prec, temp1);
@@ -303,8 +292,7 @@ public class ComplexRationalFunction implements
   }
 
   @Override
-  public ComplexFraction
-         evaluate(ComplexFraction input, int order, int bits, ComplexFraction result)
+  public ComplexFraction evaluate(ComplexFraction input, int order, int bits, ComplexFraction result)
   {
     if (result == null)
     {
@@ -313,19 +301,19 @@ public class ComplexRationalFunction implements
 
     // RationalFunction.evaluate(ComplexFraction) applies the polynomial
     // independently to real and imaginary channels:
-    //   p.evaluate(z) = p(z.re) + i*p(z.im)
+    // p.evaluate(z) = p(z.re) + i*p(z.im)
     //
     // For f(x) = realPart(x) + i*imaginaryPart(x), evaluated at z = a+bi:
-    //   realPart.evaluate(z)      = P(a) + i*P(b)
-    //   imaginaryPart.evaluate(z) = Q(a) + i*Q(b)
+    // realPart.evaluate(z) = P(a) + i*P(b)
+    // imaginaryPart.evaluate(z) = Q(a) + i*Q(b)
     //
     // f(z) = [P(a) + i*P(b)] + i*[Q(a) + i*Q(b)]
-    //       = [P(a) - Q(b)] + i*[P(b) + Q(a)]
+    // = [P(a) - Q(b)] + i*[P(b) + Q(a)]
 
     try ( var reEval = new ComplexFraction(); var imEval = new ComplexFraction())
     {
-      realPart.evaluate(input, order, bits, reEval);         // reEval = P(a) + i*P(b)
-      imaginaryPart.evaluate(input, order, bits, imEval);    // imEval = Q(a) + i*Q(b)
+      realPart.evaluate(input, order, bits, reEval); // reEval = P(a) + i*P(b)
+      imaginaryPart.evaluate(input, order, bits, imEval); // imEval = Q(a) + i*Q(b)
 
       // result.re = P(a) - Q(b)
       reEval.realPart.sub(imEval.imaginaryPart, bits, result.realPart);
@@ -335,7 +323,6 @@ public class ComplexRationalFunction implements
       return result;
     }
   }
-
 
   public Complex evaluate(Real valueOf, int order, int bits, Complex complex)
   {
@@ -389,8 +376,7 @@ public class ComplexRationalFunction implements
   }
 
   @Override
-  public ComplexRationalFunction
-         mul(ComplexRationalFunction x, int prec, ComplexRationalFunction result)
+  public ComplexRationalFunction mul(ComplexRationalFunction x, int prec, ComplexRationalFunction result)
   {
     assert result.realPart != null : "result.realPart is null";
     assert result.imaginaryPart != null : "result.imaginaryPart is null";
@@ -474,8 +460,7 @@ public class ComplexRationalFunction implements
 
     try ( RationalFunction divisor = new RationalFunction())
     {
-      realPart.pow(2, bits(), divisor)
-              .add(imaginaryPart.pow(2, bits(), result.imaginaryPart), bits(), divisor);
+      realPart.pow(2, bits(), divisor).add(imaginaryPart.pow(2, bits(), result.imaginaryPart), bits(), divisor);
       result.set(this);
       result.imaginaryPart.neg();
       result.div(divisor);
@@ -671,8 +656,7 @@ public class ComplexRationalFunction implements
   }
 
   @Override
-  public ComplexRationalFunction
-         sub(ComplexRationalFunction element, int prec, ComplexRationalFunction result)
+  public ComplexRationalFunction sub(ComplexRationalFunction element, int prec, ComplexRationalFunction result)
   {
     assert result.realPart != null : "result.realPart is null";
     assert result.imaginaryPart != null : "result.imaginaryPart is null";

@@ -27,7 +27,7 @@ public class RealTest extends
     try ( var x = Real.valueOf(-0.57); var y = new Real();)
     {
       x.pow(FractionConstants.oneHalf, bits, y);
-      assertFalse( y.isFinite());
+      assertFalse(y.isFinite());
     }
 
   }
@@ -327,6 +327,5 @@ public class RealTest extends
       }
     }
   }
-
 
 }

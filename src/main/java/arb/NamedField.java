@@ -15,12 +15,10 @@ public interface NamedField<A extends NamedField<A>> extends
 {
 
   @Override
-  public void
-         close();
+  public void close();
 
   @Override
-  default Stream<A>
-          stream()
+  default Stream<A> stream()
   {
     assert false : "TODO";
     return null;

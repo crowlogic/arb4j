@@ -231,16 +231,12 @@ public class ShellFunctions
   public static boolean javaFxInitialized = false;
 
   @SafeVarargs
-  public static <R extends RealFunction>
-         FunctionPlotter
-         plot(double left, double right, int n, R... functions)
+  public static <R extends RealFunction> FunctionPlotter plot(double left, double right, int n, R... functions)
   {
     return plot(left, right, n, Arrays.asList(functions));
   }
 
-  public static <R extends RealFunction>
-         FunctionPlotter
-         plot(double left, double right, int n, Collection<? extends R> functions)
+  public static <R extends RealFunction> FunctionPlotter plot(double left, double right, int n, Collection<? extends R> functions)
   {
     AtomicReference<FunctionPlotter> ref = new AtomicReference<>();
 
@@ -277,8 +273,7 @@ public class ShellFunctions
     return waitForFunctionPlotterToBeReleased(ref, sem);
   }
 
-  protected static FunctionPlotter
-            waitForFunctionPlotterToBeReleased(AtomicReference<FunctionPlotter> ref, Semaphore sem)
+  protected static FunctionPlotter waitForFunctionPlotterToBeReleased(AtomicReference<FunctionPlotter> ref, Semaphore sem)
   {
     try
     {

@@ -16,20 +16,13 @@ public class ZProcess implements
 
   final Context                        context = new Context();
 
-  final RealFunction                   θ       =
-                                         RealFunction.express("θ:im(lnΓ(¼+ⅈ*t/2))-(log(π)/2)*t",
-                                                              context);
+  final RealFunction                   θ       = RealFunction.express("θ:im(lnΓ(¼+ⅈ*t/2))-(log(π)/2)*t", context);
 
-  final RealBivariateToComplexFunction ϕ       =
-                                         RealBivariateToComplexFunction.express("ϕ:exp(ⅈ*λ*θ(t))*√(θ̇(t))",
-                                                                                context);
+  final RealBivariateToComplexFunction ϕ       = RealBivariateToComplexFunction.express("ϕ:exp(ⅈ*λ*θ(t))*√(θ̇(t))", context);
 
-  final RealBivariateToComplexFunction A       =
-                                         RealBivariateToComplexFunction.express("A:exp(ⅈ*λ*(θ(t)-t))*√(θ̇(t))",
-                                                                                context);
+  final RealBivariateToComplexFunction A       = RealBivariateToComplexFunction.express("A:exp(ⅈ*λ*(θ(t)-t))*√(θ̇(t))", context);
 
-  public final RealToComplexFunction   z       =
-                                         RealToComplexFunction.express("z:ζ(½+I*t)", context);
+  public final RealToComplexFunction   z       = RealToComplexFunction.express("z:ζ(½+I*t)", context);
 
   @Override
   public RealBivariateToComplexFunction gainFunction()

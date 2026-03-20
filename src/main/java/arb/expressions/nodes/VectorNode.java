@@ -34,8 +34,6 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
 {
   public static final Logger logger = LoggerFactory.getLogger(VectorNode.class);
 
-
-
   @Override
   public int dim()
   {
@@ -135,20 +133,12 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
     return mv;
   }
 
-  public void assertResultTypeAndGeneratedTypeEquality(Class<?> resultType,
-                                                       int index,
-                                                       Node<D, R, F> element)
+  public void assertResultTypeAndGeneratedTypeEquality(Class<?> resultType, int index, Node<D, R, F> element)
   {
-    assert resultType.equals(element.generatedType) : String.format("%s != %s at index %s",
-                                                                    resultType,
-                                                                    element.getGeneratedType(),
-                                                                    index);
+    assert resultType.equals(element.generatedType) : String.format("%s != %s at index %s", resultType, element.getGeneratedType(), index);
   }
 
-  public void convertTypeIfNecessary(MethodVisitor mv,
-                                     Class<?> resultType,
-                                     Node<D, R, F> element,
-                                     int index)
+  public void convertTypeIfNecessary(MethodVisitor mv, Class<?> resultType, Node<D, R, F> element, int index)
   {
     assert resultType != null : "result type cannot be null";
     Class<?> generatedElementType = element.getGeneratedType();
@@ -160,10 +150,7 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
     {
       if (Expression.trace)
       {
-        logger.debug(String.format("index %d: Converting from type %s to %s\n",
-                                   index,
-                                   generatedElementType,
-                                   resultType));
+        logger.debug(String.format("index %d: Converting from type %s to %s\n", index, generatedElementType, resultType));
       }
       element.generateCastTo(mv, resultType);
     }
@@ -185,9 +172,7 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
   @Override
   public String typeset()
   {
-    return elements.stream()
-                   .map(Node::typeset)
-                   .collect(Collectors.joining(",", "\\left[", "\\right]"));
+    return elements.stream().map(Node::typeset).collect(Collectors.joining(",", "\\left[", "\\right]"));
   }
 
   @Override
@@ -196,17 +181,13 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
     return expression.coDomainType;
   }
 
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, R, F>
-         substitute(String variable, Node<E, S, G> arg)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable, Node<E, S, G> arg)
   {
     elements.forEach(expr -> expr.substitute(variable, arg));
     return this;
   }
 
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
     var vec = new VectorNode<E, S, G>(newExpression,
                                       false);

@@ -44,9 +44,7 @@ public class OrderedPair<A, B>
   @Override
   public boolean equals(Object obj)
   {
-    return this == obj ? true : obj instanceof OrderedPair other
-                                    ? Objects.equals(a, other.a) && Objects.equals(b, other.b)
-                : false;
+    return this == obj ? true : obj instanceof OrderedPair other ? Objects.equals(a, other.a) && Objects.equals(b, other.b) : false;
   }
 
   @Override

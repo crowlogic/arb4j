@@ -19,8 +19,7 @@ public class ShiftedJacobiPolynomialsTest extends
                                                                     RealConstants.negHalf))
     {
       var P4 = P.evaluate(8, 128, new RealPolynomial());
-      assertEquals("50.2734375*x⁸ - 100.546875*x⁶ + 62.841796875*x⁴ - 12.568359375*x² - 0.60723876953125",
-                   P4.toString());
+      assertEquals("50.2734375*x⁸ - 100.546875*x⁶ + 62.841796875*x⁴ - 12.568359375*x² - 0.60723876953125", P4.toString());
     }
   }
 }

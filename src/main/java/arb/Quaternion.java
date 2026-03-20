@@ -7,19 +7,17 @@ import arb.documentation.TheArb4jLibrary;
 
 /**
  * @author Stephen A. Crowley ©2024
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the {@link TheArb4jLibrary}
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
-public class Quaternion
-                        implements
+public class Quaternion implements
                         AutoCloseable,
                         NamedField<Quaternion>
 {
   @Override
   public String toString()
   {
-    return String.format("Quaternion[left=%s, right=%s]",
-                         left,
-                         right);
+    return String.format("Quaternion[left=%s, right=%s]", left, right);
   }
 
   public final Complex left  = new Complex(); // Left component of the quaternion
@@ -28,8 +26,10 @@ public class Quaternion
   /**
    * Constructor to create a quaternion from two complex numbers.
    *
-   * @param left  The complex number representing the left component of the quaternion.
-   * @param right The complex number representing the right component of the quaternion.
+   * @param left  The complex number representing the left component of the
+   *              quaternion.
+   * @param right The complex number representing the right component of the
+   *              quaternion.
    */
   public Quaternion(Complex left, Complex right)
   {
@@ -46,8 +46,8 @@ public class Quaternion
   }
 
   /**
-   * Multiplies this {@link Quaternion} with another {@link Quaternion} and stores the
-   * result.
+   * Multiplies this {@link Quaternion} with another {@link Quaternion} and stores
+   * the result.
    *
    * @param other  The quaternion to multiply with.
    * @param bits   The precision of the operation.
@@ -59,27 +59,15 @@ public class Quaternion
     assert other != result : "aliasing result with this is not supported";
     try ( Complex a = new Complex())
     {
-      left.mul(other.left,
-               bits,
-               result.left)
-          .sub(right.mul(other.right.conj(a),
-                         bits,
-                         a),
-               bits);
-      left.mul(other.right,
-               bits,
-               result.right)
-          .add(right.mul(other.left.conj(a),
-                         bits,
-                         a),
-               bits);
+      left.mul(other.left, bits, result.left).sub(right.mul(other.right.conj(a), bits, a), bits);
+      left.mul(other.right, bits, result.right).add(right.mul(other.left.conj(a), bits, a), bits);
       return result;
     }
   }
 
   /**
-   * Adds this quaternion to another quaternion and stores the result. Quaternion addition
-   * is component-wise.
+   * Adds this quaternion to another quaternion and stores the result. Quaternion
+   * addition is component-wise.
    *
    * @param other  The quaternion to add.
    * @param bits   The precision of the operation.
@@ -88,18 +76,14 @@ public class Quaternion
    */
   public Quaternion add(Quaternion other, int bits, Quaternion result)
   {
-    left.add(other.left,
-             bits,
-             result.left);
-    right.add(other.right,
-              bits,
-              result.right);
+    left.add(other.left, bits, result.left);
+    right.add(other.right, bits, result.right);
     return result;
   }
 
   /**
-   * Subtracts another quaternion from this quaternion and stores the result. Quaternion
-   * subtraction is component-wise.
+   * Subtracts another quaternion from this quaternion and stores the result.
+   * Quaternion subtraction is component-wise.
    *
    * @param other  The quaternion to subtract.
    * @param bits   The precision of the operation.
@@ -108,18 +92,14 @@ public class Quaternion
    */
   public Quaternion sub(Quaternion other, int bits, Quaternion result)
   {
-    left.sub(other.left,
-             bits,
-             result.left);
-    right.sub(other.right,
-              bits,
-              result.right);
+    left.sub(other.left, bits, result.left);
+    right.sub(other.right, bits, result.right);
     return result;
   }
 
   /**
-   * Divides this quaternion by another quaternion and stores the result. Quaternion
-   * division is performed by multiplying the quaternion with the
+   * Divides this quaternion by another quaternion and stores the result.
+   * Quaternion division is performed by multiplying the quaternion with the
    * this{@link #multiplicativeInverse(int, Quaternion)} of this
    *
    * @param other  The quaternion to divide by.
@@ -129,12 +109,9 @@ public class Quaternion
    */
   public Quaternion div(Quaternion other, int bits, Quaternion result)
   {
-    try ( Quaternion multiplicativeInverse = other.multiplicativeInverse(bits,
-                                                                         new Quaternion()))
+    try ( Quaternion multiplicativeInverse = other.multiplicativeInverse(bits, new Quaternion()))
     {
-      return mul(multiplicativeInverse,
-                 bits,
-                 result);
+      return mul(multiplicativeInverse, bits, result);
     }
   }
 
@@ -147,11 +124,9 @@ public class Quaternion
    */
   public Quaternion multiplicativeInverse(int bits, Quaternion result)
   {
-    try ( Real λ = norm2(bits,
-                         new Real());)
+    try ( Real λ = norm2(bits, new Real());)
     {
-      return conjugate(result).div(λ,
-                                   bits);
+      return conjugate(result).div(λ, bits);
     }
   }
 
@@ -178,13 +153,12 @@ public class Quaternion
    */
   public Quaternion div(Real norm, int bits)
   {
-    return div(norm,
-               bits,
-               this);
+    return div(norm, bits, this);
   }
 
   /**
-   * Divides the quaternion by a real number and stores the result in another quaternion.
+   * Divides the quaternion by a real number and stores the result in another
+   * quaternion.
    *
    * @param norm   The real number to divide by.
    * @param bits   The precision of the operation.
@@ -193,22 +167,10 @@ public class Quaternion
    */
   public Quaternion div(Real norm, int bits, Quaternion result)
   {
-    left.re()
-        .div(norm,
-             bits,
-             result.left.re());
-    left.im()
-        .div(norm,
-             bits,
-             result.left.im());
-    right.re()
-         .div(norm,
-              bits,
-              result.right.re());
-    right.im()
-         .div(norm,
-              bits,
-              result.right.im());
+    left.re().div(norm, bits, result.left.re());
+    left.im().div(norm, bits, result.left.im());
+    right.re().div(norm, bits, result.right.re());
+    right.im().div(norm, bits, result.right.im());
     return result;
   }
 
@@ -223,22 +185,10 @@ public class Quaternion
   {
 
     result.zero();
-    left.re()
-        .addmul(left.re(),
-                bits,
-                result);
-    left.im()
-        .addmul(left.im(),
-                bits,
-                result);
-    right.re()
-         .addmul(right.re(),
-                 bits,
-                 result);
-    right.im()
-         .addmul(right.im(),
-                 bits,
-                 result);
+    left.re().addmul(left.re(), bits, result);
+    left.im().addmul(left.im(), bits, result);
+    right.re().addmul(right.re(), bits, result);
+    right.im().addmul(right.im(), bits, result);
 
     return result;
 
@@ -254,8 +204,7 @@ public class Quaternion
    */
   public Real norm(int bits, Real result)
   {
-    return norm2(bits,
-                 result).sqrt(bits);
+    return norm2(bits, result).sqrt(bits);
   }
 
   /**

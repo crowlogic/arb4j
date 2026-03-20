@@ -54,14 +54,12 @@ public class ComplexFraction implements
 
   public static NullaryFunction<ComplexFraction> express(String string)
   {
-    Expression<Object,
-                  ComplexFraction,
-                  NullaryFunction<ComplexFraction>> express = Parser.parse(string,
-                                                                           null,
-                                                                           Object.class,
-                                                                           ComplexFraction.class,
-                                                                           NullaryFunction.class,
-                                                                           null);
+    Expression<Object, ComplexFraction, NullaryFunction<ComplexFraction>> express = Parser.parse(string,
+                                                                                                 null,
+                                                                                                 Object.class,
+                                                                                                 ComplexFraction.class,
+                                                                                                 NullaryFunction.class,
+                                                                                                 null);
 
     return express.instantiate();
   }

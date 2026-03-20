@@ -127,15 +127,7 @@ public class PointValueCache implements
     @Override
     public String toString()
     {
-      return "MappedFile[path="
-             + path
-             + ", pointer="
-             + pointer
-             + ", directBuffer="
-             + directBuffer
-             + ", fileChannel="
-             + fileChannel
-             + "]";
+      return "MappedFile[path=" + path + ", pointer=" + pointer + ", directBuffer=" + directBuffer + ", fileChannel=" + fileChannel + "]";
     }
 
     long        pointer;
@@ -161,8 +153,7 @@ public class PointValueCache implements
     }
   }
 
-  private MappedFile
-          openOrCreateMemoryMappedFile(Path path, int bytes, boolean autodelete) throws IOException
+  private MappedFile openOrCreateMemoryMappedFile(Path path, int bytes, boolean autodelete) throws IOException
   {
     MappedFile mf = new MappedFile();
 
@@ -173,20 +164,13 @@ public class PointValueCache implements
                                                     StandardOpenOption.READ,
                                                     StandardOpenOption.WRITE,
                                                     StandardOpenOption.DELETE_ON_CLOSE)
-                                 : FileChannel.open(path,
-                                                    StandardOpenOption.CREATE,
-                                                    StandardOpenOption.READ,
-                                                    StandardOpenOption.WRITE);
+                                 : FileChannel.open(path, StandardOpenOption.CREATE, StandardOpenOption.READ, StandardOpenOption.WRITE);
     mf.directBuffer = mf.fileChannel.map(MapMode.READ_WRITE, 0, bytes);
 
     mf.pointer      = arblib.bufferAddress(mf.directBuffer);
     if (mf.pointer == 0)
     {
-      throw new IOException("openOrCreateMemoryMappedFile "
-                            + path
-                            + " byteSize="
-                            + bytes
-                            + " didn't succed");
+      throw new IOException("openOrCreateMemoryMappedFile " + path + " byteSize=" + bytes + " didn't succed");
     }
     return mf;
   }

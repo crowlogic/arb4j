@@ -55,7 +55,8 @@ public class MastersThesis implements
     return AbstractBibliography.generateCitation(this, key, getFieldMapping());
   }
 
-  private static Map<String, String> getFieldMapping() {
+  private static Map<String, String> getFieldMapping()
+  {
     Map<String, String> fields = new LinkedHashMap<>();
     fields.put("author", "author");
     fields.put("title", "title");
@@ -67,7 +68,8 @@ public class MastersThesis implements
   }
 
   @Override
-  public String getCitationType() {
+  public String getCitationType()
+  {
     return "MastersThesis";
   }
 
@@ -109,33 +111,40 @@ public class MastersThesis implements
   }
 
   @Override
-  public String getVolume() {
+  public String getVolume()
+  {
     return null;
   }
 
   @Override
-  public String getNumber() {
+  public String getNumber()
+  {
     return null;
   }
 
   @Override
-  public String getPages() {
+  public String getPages()
+  {
     return null;
   }
 
-  public String getUniversity() {
+  public String getUniversity()
+  {
     return university.get();
   }
 
-  public String getDegree() {
+  public String getDegree()
+  {
     return degree.get();
   }
 
-  public String getDepartment() {
+  public String getDepartment()
+  {
     return department.get();
   }
 
-  public String getAddress() {
+  public String getAddress()
+  {
     return address;
   }
 }

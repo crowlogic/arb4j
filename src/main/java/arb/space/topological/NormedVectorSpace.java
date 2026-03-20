@@ -5,21 +5,22 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 
 /**
- * A normed vector space or normed space is a {@link VectorSpace} over the {@link Real} or
- * {@link Complex} numbers, on which a norm is defined. A norm is the generalization to
- * real vector spaces of the intuitive notion of "length" in Euclidean space.
+ * A normed vector space or normed space is a {@link VectorSpace} over the
+ * {@link Real} or {@link Complex} numbers, on which a norm is defined. A norm
+ * is the generalization to real vector spaces of the intuitive notion of
+ * "length" in Euclidean space.
  * 
- * An inner product space is a normed vector space whose norm is the square root of the
- * inner product of a vector and itself.
+ * An inner product space is a normed vector space whose norm is the square root
+ * of the inner product of a vector and itself.
  * 
- * @param <X> Type of field that the space is over. Common examples are real or complex
- *            numbers.
+ * @param <X> Type of field that the space is over. Common examples are real or
+ *            complex numbers.
  * 
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the {@link TheArb4jLibrary}
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
-public interface NormedVectorSpace<F extends Field<? extends F>, V extends VectorSpace<? extends F>>
-                                  extends
+public interface NormedVectorSpace<F extends Field<? extends F>, V extends VectorSpace<? extends F>> extends
                                   VectorSpace<F>
 {
   /**

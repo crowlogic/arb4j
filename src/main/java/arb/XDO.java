@@ -8,27 +8,35 @@
 
 package arb;
 
-public class XDO {
-  protected long swigCPtr;
+public class XDO
+{
+  protected long    swigCPtr;
   protected boolean swigCMemOwn;
 
-  public XDO(long cPtr, boolean cMemoryOwn) {
+  public XDO(long cPtr, boolean cMemoryOwn)
+  {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr = cPtr;
+    swigCPtr    = cPtr;
   }
 
-  public static long getCPtr(XDO obj) {
+  public static long getCPtr(XDO obj)
+  {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  @SuppressWarnings({"deprecation", "removal"})
-  protected void finalize() {
+  @SuppressWarnings(
+  { "deprecation", "removal" })
+  protected void finalize()
+  {
     delete();
   }
 
-  public synchronized void delete() {
-    if (swigCPtr != 0) {
-      if (swigCMemOwn) {
+  public synchronized void delete()
+  {
+    if (swigCPtr != 0)
+    {
+      if (swigCMemOwn)
+      {
         swigCMemOwn = false;
         arblibJNI.delete_XDO(swigCPtr);
       }
@@ -36,89 +44,113 @@ public class XDO {
     }
   }
 
-  public void setDisplay_name(String value) {
+  public void setDisplay_name(String value)
+  {
     arblibJNI.XDO_display_name_set(swigCPtr, this, value);
   }
 
-  public String getDisplay_name() {
+  public String getDisplay_name()
+  {
     return arblibJNI.XDO_display_name_get(swigCPtr, this);
   }
 
-  public void setCharcodes(CharacterCodeMap value) {
+  public void setCharcodes(CharacterCodeMap value)
+  {
     arblibJNI.XDO_charcodes_set(swigCPtr, this, CharacterCodeMap.getCPtr(value), value);
   }
 
-  public CharacterCodeMap getCharcodes() {
+  public CharacterCodeMap getCharcodes()
+  {
     long cPtr = arblibJNI.XDO_charcodes_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new CharacterCodeMap(cPtr, false);
+    return (cPtr == 0) ? null
+                       : new CharacterCodeMap(cPtr,
+                                              false);
   }
 
-  public void setCharcodes_len(int value) {
+  public void setCharcodes_len(int value)
+  {
     arblibJNI.XDO_charcodes_len_set(swigCPtr, this, value);
   }
 
-  public int getCharcodes_len() {
+  public int getCharcodes_len()
+  {
     return arblibJNI.XDO_charcodes_len_get(swigCPtr, this);
   }
 
-  public void setKeycode_high(int value) {
+  public void setKeycode_high(int value)
+  {
     arblibJNI.XDO_keycode_high_set(swigCPtr, this, value);
   }
 
-  public int getKeycode_high() {
+  public int getKeycode_high()
+  {
     return arblibJNI.XDO_keycode_high_get(swigCPtr, this);
   }
 
-  public void setKeycode_low(int value) {
+  public void setKeycode_low(int value)
+  {
     arblibJNI.XDO_keycode_low_set(swigCPtr, this, value);
   }
 
-  public int getKeycode_low() {
+  public int getKeycode_low()
+  {
     return arblibJNI.XDO_keycode_low_get(swigCPtr, this);
   }
 
-  public void setKeysyms_per_keycode(int value) {
+  public void setKeysyms_per_keycode(int value)
+  {
     arblibJNI.XDO_keysyms_per_keycode_set(swigCPtr, this, value);
   }
 
-  public int getKeysyms_per_keycode() {
+  public int getKeysyms_per_keycode()
+  {
     return arblibJNI.XDO_keysyms_per_keycode_get(swigCPtr, this);
   }
 
-  public void setClose_display_when_freed(int value) {
+  public void setClose_display_when_freed(int value)
+  {
     arblibJNI.XDO_close_display_when_freed_set(swigCPtr, this, value);
   }
 
-  public int getClose_display_when_freed() {
+  public int getClose_display_when_freed()
+  {
     return arblibJNI.XDO_close_display_when_freed_get(swigCPtr, this);
   }
 
-  public void setQuiet(int value) {
+  public void setQuiet(int value)
+  {
     arblibJNI.XDO_quiet_set(swigCPtr, this, value);
   }
 
-  public int getQuiet() {
+  public int getQuiet()
+  {
     return arblibJNI.XDO_quiet_get(swigCPtr, this);
   }
 
-  public void setDebug(int value) {
+  public void setDebug(int value)
+  {
     arblibJNI.XDO_debug_set(swigCPtr, this, value);
   }
 
-  public int getDebug() {
+  public int getDebug()
+  {
     return arblibJNI.XDO_debug_get(swigCPtr, this);
   }
 
-  public void setFeatures_mask(int value) {
+  public void setFeatures_mask(int value)
+  {
     arblibJNI.XDO_features_mask_set(swigCPtr, this, value);
   }
 
-  public int getFeatures_mask() {
+  public int getFeatures_mask()
+  {
     return arblibJNI.XDO_features_mask_get(swigCPtr, this);
   }
 
-  public XDO() {
-    this(arblibJNI.new_XDO(), true);
+  public XDO()
+  {
+    this(arblibJNI.new_XDO(),
+         true);
   }
 
 }

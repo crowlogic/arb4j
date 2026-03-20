@@ -3,8 +3,7 @@ package arb.expressions.nodes.nary;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
-public class SumNodeTest
-                         extends
+public class SumNodeTest extends
                          TestCase
 {
   public static void testFunctionFormOfSum()

@@ -23,7 +23,7 @@ public class RealPolynomialFunctionExpressionCompilerTest extends
   {
     var context = new Context();
     try ( var P = new JacobiPolynomialSequence(RealConstants.negHalf,
-                                        RealConstants.negHalf))
+                                               RealConstants.negHalf))
     {
       var y = P.evaluate(4, 128);
       context.registerFunction("y", y);
@@ -39,8 +39,7 @@ public class RealPolynomialFunctionExpressionCompilerTest extends
   {
 
     Context context = new Context();
-    try ( var x = new RealPolynomial(1); var y = new RealPolynomial(3);
-          var z = new RealPolynomial(); var correctZ = new RealPolynomial(3))
+    try ( var x = new RealPolynomial(1); var y = new RealPolynomial(3); var z = new RealPolynomial(); var correctZ = new RealPolynomial(3))
     {
       correctZ.set(two, oneQuarter, π);
       context.registerVariable("y", y);
@@ -75,8 +74,7 @@ public class RealPolynomialFunctionExpressionCompilerTest extends
   public static void testMul()
   {
     Context context = new Context();
-    try ( var x = new RealPolynomial(1); var y = new RealPolynomial(3);
-          var z = new RealPolynomial(); var correctZ = new RealPolynomial(3))
+    try ( var x = new RealPolynomial(1); var y = new RealPolynomial(3); var z = new RealPolynomial(); var correctZ = new RealPolynomial(3))
     {
       correctZ.set(zero, half, twoπ);
       context.registerVariable("y", y);

@@ -73,8 +73,7 @@ public class IntegerPolynomialTest extends
   @SuppressWarnings("resource")
   public void testAdd()
   {
-    try ( IntegerPolynomial three = new IntegerPolynomial().set(3);
-          IntegerPolynomial four = new IntegerPolynomial().set(4);
+    try ( IntegerPolynomial three = new IntegerPolynomial().set(3); IntegerPolynomial four = new IntegerPolynomial().set(4);
           IntegerPolynomial seven = new IntegerPolynomial().set(7);)
     {
       three.add(four, seven);
@@ -97,8 +96,7 @@ public class IntegerPolynomialTest extends
   public void testMul()
   {
 
-    try ( IntegerPolynomial three = new IntegerPolynomial().set(3);
-          IntegerPolynomial four = new IntegerPolynomial().set(4);
+    try ( IntegerPolynomial three = new IntegerPolynomial().set(3); IntegerPolynomial four = new IntegerPolynomial().set(4);
           IntegerPolynomial result = new IntegerPolynomial().set(7);)
     {
       three.mul(four, result);
@@ -110,8 +108,7 @@ public class IntegerPolynomialTest extends
   public void testDiv()
   {
 
-    try ( IntegerPolynomial three = new IntegerPolynomial().set(3);
-          IntegerPolynomial four = new IntegerPolynomial().set(4);
+    try ( IntegerPolynomial three = new IntegerPolynomial().set(3); IntegerPolynomial four = new IntegerPolynomial().set(4);
           IntegerPolynomial result = new IntegerPolynomial().set(7);)
     {
       three.div(four, result);

@@ -34,8 +34,7 @@ public class OrthogonalPolynomialSequenceTest extends
 
   public static void test4thType1ChebyshevPolynomial()
   {
-    try ( ChebyshevPolynomialsOfTheFirstKind T = new ChebyshevPolynomialsOfTheFirstKind(); Integer n = new Integer();
-          Real correct = Real.newVector(5);)
+    try ( ChebyshevPolynomialsOfTheFirstKind T = new ChebyshevPolynomialsOfTheFirstKind(); Integer n = new Integer(); Real correct = Real.newVector(5);)
     {
       RealPolynomial T4 = T.evaluate(n.set(4), 1, 128, new RealPolynomial());
       correct.set(1, 0, -8, 0, 8);

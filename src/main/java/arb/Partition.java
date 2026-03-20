@@ -45,10 +45,7 @@ public interface Partition<F extends Field<F>> extends
 
   public default Stream<F> stream()
   {
-    return StreamSupport.stream(Spliterators.spliterator(iterator(),
-                                                         count(),
-                                                         Spliterator.SIZED | Spliterator.ORDERED),
-                                false);
+    return StreamSupport.stream(Spliterators.spliterator(iterator(), count(), Spliterator.SIZED | Spliterator.ORDERED), false);
   }
 
 }

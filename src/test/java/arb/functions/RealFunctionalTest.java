@@ -9,10 +9,7 @@ public class RealFunctionalTest extends
 {
   public static void testRealFunctional()
   {
-    var            expr = Function.parse(Real.class,
-                                         RealFunction.class,
-                                         RealFunctional.class,
-                                         "x➔t➔(x-t)^2");
+    var            expr = Function.parse(Real.class, RealFunction.class, RealFunctional.class, "x➔t➔(x-t)^2");
     RealFunctional f    = expr.instantiate();
     RealFunction   g    = f.evaluate(Real.valueOf("5", 128), 128);
     double         y    = g.eval(3);

@@ -11,7 +11,8 @@ import arb.documentation.TheArb4jLibrary;
  *
  * @param <X> The type of the elements in the space.
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the {@link TheArb4jLibrary}
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public interface MetrizableSpace<X> extends
                                 TopologicalSpace<X>

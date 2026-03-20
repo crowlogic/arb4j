@@ -75,9 +75,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     {
       if (!isInt)
       {
-        throw new UnsupportedTypeConversionException("literal '"
-                                                     + stringValue
-                                                     + "' cannot be represented as an Integer");
+        throw new UnsupportedTypeConversionException("literal '" + stringValue + "' cannot be represented as an Integer");
       }
       return (T) new Integer(stringValue);
     }
@@ -93,9 +91,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
         Fraction frac = new Fraction().set(stringValue);
         return (T) frac;
       }
-      throw new UnsupportedTypeConversionException("cannot convert literal '"
-                                                   + stringValue
-                                                   + "' to Fraction");
+      throw new UnsupportedTypeConversionException("cannot convert literal '" + stringValue + "' to Fraction");
     }
 
     if (resultType.equals(Real.class))
@@ -121,23 +117,15 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
         return (T) r;
       }
 
-      throw new UnsupportedTypeConversionException("compile-time Real evaluation not implemented for literal '"
-                                                   + stringValue
-                                                   + "'");
+      throw new UnsupportedTypeConversionException("compile-time Real evaluation not implemented for literal '" + stringValue + "'");
     }
 
     if (resultType.equals(Complex.class))
     {
-      throw new UnsupportedTypeConversionException("compile-time Complex evaluation not implemented for literal '"
-                                                   + stringValue
-                                                   + "'");
+      throw new UnsupportedTypeConversionException("compile-time Complex evaluation not implemented for literal '" + stringValue + "'");
     }
 
-    throw new UnsupportedTypeConversionException("unsupported requested type "
-                                                 + resultType.getName()
-                                                 + " for literal '"
-                                                 + stringValue
-                                                 + "'");
+    throw new UnsupportedTypeConversionException("unsupported requested type " + resultType.getName() + " for literal '" + stringValue + "'");
   }
 
   @Override
@@ -162,7 +150,6 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   {
     return zero();
   }
-
 
   @Override
   public boolean isNonNegativeIntegerConstant()
@@ -227,12 +214,9 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     return Objects.equals(stringValue, other.stringValue);
   }
 
-  static final String BITLESS_METHOD_DESCRIPTOR = Compiler.getMethodDescriptor(Void.class,
-                                                                               String.class);
+  static final String BITLESS_METHOD_DESCRIPTOR = Compiler.getMethodDescriptor(Void.class, String.class);
 
-  static final String METHOD_DESCRIPTOR         = Compiler.getMethodDescriptor(Void.class,
-                                                                               String.class,
-                                                                               int.class);
+  static final String METHOD_DESCRIPTOR         = Compiler.getMethodDescriptor(Void.class, String.class, int.class);
 
   @Override
   public boolean dependsOn(VariableNode<D, R, F> variable)
@@ -282,9 +266,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
 
   }
 
-  public LiteralConstantNode(Expression<D, R, F> expression,
-                             String constantValueString,
-                             String name)
+  public LiteralConstantNode(Expression<D, R, F> expression, String constantValueString, String name)
   {
     super(expression);
     assert Integer.class.equals(arb.Integer.class) : "an import statement for arb.Integer is probably missing";
@@ -430,9 +412,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
 
   public MethodVisitor loadConstantFieldFromThisOntoStack(MethodVisitor mv)
   {
-    expression.loadFieldOntoStack(loadThisOntoStack(mv),
-                                  fieldName,
-                                  generatedType.descriptorString());
+    expression.loadFieldOntoStack(loadThisOntoStack(mv), fieldName, generatedType.descriptorString());
     return mv;
   }
 
@@ -468,13 +448,8 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     {
       methodVisitor.visitIntInsn(SIPUSH, bits);
     }
-    String constructorDescriptor = needsBitsPassedToStringConstructor ? METHOD_DESCRIPTOR
-                                                                      : BITLESS_METHOD_DESCRIPTOR;
-    methodVisitor.visitMethodInsn(INVOKESPECIAL,
-                                  Type.getInternalName(type),
-                                  "<init>",
-                                  constructorDescriptor,
-                                  false);
+    String constructorDescriptor = needsBitsPassedToStringConstructor ? METHOD_DESCRIPTOR : BITLESS_METHOD_DESCRIPTOR;
+    methodVisitor.visitMethodInsn(INVOKESPECIAL, Type.getInternalName(type), "<init>", constructorDescriptor, false);
     return methodVisitor;
   }
 
@@ -495,18 +470,10 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
    */
   protected MethodVisitor generateFractionConstructor(MethodVisitor methodVisitor)
   {
-    methodVisitor.visitMethodInsn(INVOKESPECIAL,
-                                  Type.getInternalName(Fraction.class),
-                                  "<init>",
-                                  "()V",
-                                  false);
+    methodVisitor.visitMethodInsn(INVOKESPECIAL, Type.getInternalName(Fraction.class), "<init>", "()V", false);
     methodVisitor.visitInsn(DUP);
     methodVisitor.visitLdcInsn(stringValue);
-    methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
-                                  Type.getInternalName(Fraction.class),
-                                  "set",
-                                  "(Ljava/lang/String;)Larb/Fraction;",
-                                  false);
+    methodVisitor.visitMethodInsn(INVOKEVIRTUAL, Type.getInternalName(Fraction.class), "set", "(Ljava/lang/String;)Larb/Fraction;", false);
     methodVisitor.visitInsn(POP);
     return methodVisitor;
   }
@@ -519,18 +486,13 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
 
   public String toString(int depth)
   {
-    return String.format("%s[fieldName=%s, value=%s, depth=%s]",
-                         getClass().getSimpleName(),
-                         fieldName,
-                         stringValue,
-                         depth);
+    return String.format("%s[fieldName=%s, value=%s, depth=%s]", getClass().getSimpleName(), fieldName, stringValue, depth);
   }
 
   @Override
   public Class<?> type()
   {
-    return fractionValue != null ? Fraction.class : isInt ? Integer.class
-                         : isImaginary ? Complex.class : Real.class;
+    return fractionValue != null ? Fraction.class : isInt ? Integer.class : isImaginary ? Complex.class : Real.class;
   }
 
   @Override
@@ -542,9 +504,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     }
     else if (isFraction && fractionValue != null)
     {
-      return String.format("\\frac{%s}{%s}",
-                           fractionValue.getNumerator(),
-                           fractionValue.getDenominator());
+      return String.format("\\frac{%s}{%s}", fractionValue.getNumerator(), fractionValue.getDenominator());
     }
     else
     {
@@ -570,17 +530,13 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     return mul(variable);
   }
 
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, R, F>
-         substitute(String variable, Node<E, S, G> arg)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable, Node<E, S, G> arg)
   {
     return this;
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
     if (fractionValue != null)
     {

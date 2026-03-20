@@ -32,10 +32,7 @@ public final class RealWhiteNoiseProcess implements
 
   public Stream<Real> stream(int bits, int limit)
   {
-    return StreamSupport.stream(Spliterators.spliterator(iterator(bits, limit),
-                                                         limit,
-                                                         Spliterator.SIZED | Spliterator.ORDERED),
-                                false);
+    return StreamSupport.stream(Spliterators.spliterator(iterator(bits, limit), limit, Spliterator.SIZED | Spliterator.ORDERED), false);
   }
 
   public Iterator<Real> iterator(int bits, int limit)
@@ -118,11 +115,7 @@ public final class RealWhiteNoiseProcess implements
       while (u1.isZero());
 
       arblib.arb_urandom(u2, state, prec);
-      theta.set(pi.π(prec))
-           .mul(2, prec)
-           .mul(u2, prec)
-           .sin(prec, cache)
-           .mul(u1.log(prec, r).mul(-2, prec).sqrt(prec), prec);
+      theta.set(pi.π(prec)).mul(2, prec).mul(u2, prec).sin(prec, cache).mul(u1.log(prec, r).mul(-2, prec).sqrt(prec), prec);
       return theta.cos(prec, out).mul(r, prec);
     }
   }

@@ -54,12 +54,7 @@ public record Article(String title,
     return fields;
   }
 
-  public Article(String title,
-                 String author,
-                 String year,
-                 String journal,
-                 String volume,
-                 String pages)
+  public Article(String title, String author, String year, String journal, String volume, String pages)
   {
     this(title,
          author,
@@ -73,13 +68,7 @@ public record Article(String title,
          new AtomicReference<>());
   }
 
-  public Article(String title,
-                 String author,
-                 String year,
-                 String journal,
-                 String volume,
-                 String pages,
-                 String publisher)
+  public Article(String title, String author, String year, String journal, String volume, String pages, String publisher)
   {
     this(title,
          author,

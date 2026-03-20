@@ -8,7 +8,6 @@
 
 package arb;
 
-
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 
@@ -226,22 +225,30 @@ import arb.documentation.TheArb4jLibrary;
  *      {@link TheArb4jLibrary}
  * 
  */
-public class SymbolicExpression implements AutoCloseable,Typesettable {
-  protected long swigCPtr;
+public class SymbolicExpression implements
+                                AutoCloseable,
+                                Typesettable
+{
+  protected long    swigCPtr;
   protected boolean swigCMemOwn;
 
-  public SymbolicExpression(long cPtr, boolean cMemoryOwn) {
+  public SymbolicExpression(long cPtr, boolean cMemoryOwn)
+  {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr = cPtr;
+    swigCPtr    = cPtr;
   }
 
-  public static long getCPtr(SymbolicExpression obj) {
+  public static long getCPtr(SymbolicExpression obj)
+  {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete() {
-    if (swigCPtr != 0) {
-      if (swigCMemOwn) {
+  public synchronized void delete()
+  {
+    if (swigCPtr != 0)
+    {
+      if (swigCMemOwn)
+      {
         swigCMemOwn = false;
         arblibJNI.delete_SymbolicExpression(swigCPtr);
       }
@@ -249,19 +256,18 @@ public class SymbolicExpression implements AutoCloseable,Typesettable {
     }
   }
 
+  public SymbolicExpression set(String atomicString)
+  {
+    arblib.fexpr_set_string(this, atomicString);
+    return this;
+  }
 
- public SymbolicExpression set( String atomicString )
- {
-   arblib.fexpr_set_string(this, atomicString);
-   return this;
- }
- 
   @Override
   public String typeset()
   {
     return arblib.fexpr_get_str_latex(this, 0);
   }
-  
+
   @Override
   public String toString()
   {
@@ -279,27 +285,27 @@ public class SymbolicExpression implements AutoCloseable,Typesettable {
   {
     delete();
   }
-    
+
   static
   {
     System.loadLibrary("arblib");
   }
- 
- 
 
-  public void setData(long value) {
+  public void setData(long value)
+  {
     arblibJNI.SymbolicExpression_data_set(swigCPtr, this, value);
   }
 
-  public long getData() {
+  public long getData()
+  {
     return arblibJNI.SymbolicExpression_data_get(swigCPtr, this);
   }
 
-  public SymbolicExpression() 
+  public SymbolicExpression()
   {
-    this(arblibJNI.new_SymbolicExpression(), true);
+    this(arblibJNI.new_SymbolicExpression(),
+         true);
     init();
   }
-
 
 }

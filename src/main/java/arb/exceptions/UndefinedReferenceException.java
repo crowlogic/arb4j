@@ -17,10 +17,7 @@ public class UndefinedReferenceException extends
     // TODO Auto-generated constructor stub
   }
 
-  public UndefinedReferenceException(String message,
-                                     Throwable cause,
-                                     boolean enableSuppression,
-                                     boolean writableStackTrace)
+  public UndefinedReferenceException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace)
   {
     super(message,
           cause,

@@ -18,7 +18,7 @@ public class DerivativeNodeTest extends
 {
   public void test2ndDerivative()
   {
-    var c = RealFunction.express("diff(sin(t),t)" );
+    var c = RealFunction.express("diff(sin(t),t)");
     var d = RealFunction.express("cos(t)");
     assertEquals(d.toString(), c.toString());
     var e = RealFunction.express("diff(diff(sin(t),t),t)");
@@ -189,8 +189,8 @@ public class DerivativeNodeTest extends
                                  Real.named("c").set(6));
     var f          = RealFunction.parse("x->a*x+b*x²+c*x³", context, true);
     var derivative = f.rootNode.derivative().simplify();
-    f.rootNode   = derivative;
-   // f.setExpression(derivative.toString());
+    f.rootNode = derivative;
+    // f.setExpression(derivative.toString());
     var    func = f.instantiate();
     double val  = func.eval(2.3);
     assertEquals(115.61999999999998, val);

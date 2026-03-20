@@ -8,22 +8,28 @@
 
 package arb;
 
-public class DirichletPrimeGroup {
-  protected long swigCPtr;
+public class DirichletPrimeGroup
+{
+  protected long    swigCPtr;
   protected boolean swigCMemOwn;
 
-  public DirichletPrimeGroup(long cPtr, boolean cMemoryOwn) {
+  public DirichletPrimeGroup(long cPtr, boolean cMemoryOwn)
+  {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr = cPtr;
+    swigCPtr    = cPtr;
   }
 
-  public static long getCPtr(DirichletPrimeGroup obj) {
+  public static long getCPtr(DirichletPrimeGroup obj)
+  {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete() {
-    if (swigCPtr != 0) {
-      if (swigCMemOwn) {
+  public synchronized void delete()
+  {
+    if (swigCPtr != 0)
+    {
+      if (swigCMemOwn)
+      {
         swigCMemOwn = false;
         arblibJNI.delete_DirichletPrimeGroup(swigCPtr);
       }
@@ -31,32 +37,40 @@ public class DirichletPrimeGroup {
     }
   }
 
-  public void setP(long value) {
+  public void setP(long value)
+  {
     arblibJNI.DirichletPrimeGroup_p_set(swigCPtr, this, value);
   }
 
-  public long getP() {
+  public long getP()
+  {
     return arblibJNI.DirichletPrimeGroup_p_get(swigCPtr, this);
   }
 
-  public void setE(int value) {
+  public void setE(int value)
+  {
     arblibJNI.DirichletPrimeGroup_e_set(swigCPtr, this, value);
   }
 
-  public int getE() {
+  public int getE()
+  {
     return arblibJNI.DirichletPrimeGroup_e_get(swigCPtr, this);
   }
 
-  public void setG(long value) {
+  public void setG(long value)
+  {
     arblibJNI.DirichletPrimeGroup_g_set(swigCPtr, this, value);
   }
 
-  public long getG() {
+  public long getG()
+  {
     return arblibJNI.DirichletPrimeGroup_g_get(swigCPtr, this);
   }
 
-  public DirichletPrimeGroup() {
-    this(arblibJNI.new_DirichletPrimeGroup(), true);
+  public DirichletPrimeGroup()
+  {
+    this(arblibJNI.new_DirichletPrimeGroup(),
+         true);
   }
 
 }

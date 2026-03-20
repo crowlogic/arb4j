@@ -5,8 +5,7 @@ import java.util.Map;
 
 import arb.documentation.AbstractBibliography;
 
-public record Miscellaneous(String title, String author, String year, String howpublished, String note, String url)
-                           implements
+public record Miscellaneous(String title, String author, String year, String howpublished, String note, String url) implements
                            Reference
 {
 

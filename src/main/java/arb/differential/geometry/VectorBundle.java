@@ -26,8 +26,11 @@ import arb.space.topological.VectorSpace;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface VectorBundle<X extends Field<? extends X>, E extends TopologicalSpace<X>, B extends TopologicalSpace<X>, C extends Connection<X, B>, π extends SurjectiveFunction<E, B>>
-                             extends
+public interface VectorBundle<X extends Field<? extends X>,
+              E extends TopologicalSpace<X>,
+              B extends TopologicalSpace<X>,
+              C extends Connection<X, B>,
+              π extends SurjectiveFunction<E, B>> extends
                              FiberBundle<X, E, B, TopologicalVectorSpace<X>, π>
 {
   /**

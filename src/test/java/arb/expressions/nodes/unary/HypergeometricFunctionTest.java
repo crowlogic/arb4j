@@ -91,8 +91,7 @@ public class HypergeometricFunctionTest extends
   {
     var              poly = RationalNullaryFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
     RationalFunction f    = poly.evaluate(bits, new RationalFunction());
-    var              g    =
-                       RationalNullaryFunction.express("201/320+49/160*x+21/320*x^2").evaluate(128);
+    var              g    = RationalNullaryFunction.express("201/320+49/160*x+21/320*x^2").evaluate(128);
     assertEquals(g, f);
   }
 
@@ -101,8 +100,7 @@ public class HypergeometricFunctionTest extends
     boolean caughtException = false;
     try
     {
-      var            poly      =
-                          RealPolynomialNullaryFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
+      var            poly      = RealPolynomialNullaryFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
       RealPolynomial expressed = poly.evaluate(bits, new RealPolynomial());
       assertEquals("0.065625*x² + 0.30625*x + 0.628125", expressed.toString());
     }
@@ -120,8 +118,7 @@ public class HypergeometricFunctionTest extends
                               "p");
           var q = new Integer(1,
                               "q");
-          var α = Real.newVector(p.getSignedValue(), "α");
-          var β = Real.newVector(q.getSignedValue(), "β"); var N = new Integer();)
+          var α = Real.newVector(p.getSignedValue(), "α"); var β = Real.newVector(q.getSignedValue(), "β"); var N = new Integer();)
     {
       var  context    = new Context(p,
                                     q,
@@ -129,9 +126,7 @@ public class HypergeometricFunctionTest extends
                                     β.set(1),
                                     N.set(4).setName("N"));
 
-      var  expression =
-                      RealFunction.compile("z➔Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
-                                           context);
+      var  expression = RealFunction.compile("z➔Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}", context);
 
       var  sum        = expression.instantiate();
 
@@ -161,14 +156,12 @@ public class HypergeometricFunctionTest extends
   {
     RealPolynomialNullaryFunction arg = RealPolynomialNullaryFunction.express("x");
 
-    try ( RealHypergeometricPolynomialFunction F = new RealHypergeometricPolynomialFunction();
-          RealPolynomial y = new RealPolynomial();)
+    try ( RealHypergeometricPolynomialFunction F = new RealHypergeometricPolynomialFunction(); RealPolynomial y = new RealPolynomial();)
     {
       F.init(Real.newVector(-6, 2.5), Real.newVector(1.0), arg);
       RealPolynomial polynomial = F.evaluate(null, 128, y);
       assert polynomial != null;
-      assertEquals("14.6630859375*x⁶ - 70.3828125*x⁵ + 135.3515625*x⁴ - 131.25*x³ + 65.625*x² - 15*x + 1",
-                   polynomial.toString());
+      assertEquals("14.6630859375*x⁶ - 70.3828125*x⁵ + 135.3515625*x⁴ - 131.25*x³ + 65.625*x² - 15*x + 1", polynomial.toString());
       double val = polynomial.eval(2.3);
       assertEquals(145.01289685058583, val);
     }
@@ -180,31 +173,23 @@ public class HypergeometricFunctionTest extends
                               "p");
           var q = new Integer(1,
                               "q");
-          var α = Real.newVector(p.getSignedValue(), "α");
-          var β = Real.newVector(q.getSignedValue(), "β"); var z = new Real();)
+          var α = Real.newVector(p.getSignedValue(), "α"); var β = Real.newVector(q.getSignedValue(), "β"); var z = new Real();)
     {
       z.set(RealConstants.π);
       var                                                context   = new Context(p,
                                                                                  q,
-                                                                                 α.set(1.5,
-                                                                                       0.75,
-                                                                                       -3),
+                                                                                 α.set(1.5, 0.75, -3),
                                                                                  β.set(1),
                                                                                  z.setName("z"));
 
-      Expression<Integer, Real, Function<Integer, Real>> prototype =
-                                                                   Function.parseAndCompile(Integer.class,
-                                                                                    Real.class,
-                                                                                    Function.class,
-                                                                                    "n➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q})",
-                                                                                    context);
+      Expression<Integer, Real, Function<Integer, Real>> prototype = Function.parseAndCompile(Integer.class,
+                                                                                              Real.class,
+                                                                                              Function.class,
+                                                                                              "n➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q})",
+                                                                                              context);
       var                                                summand   = prototype.instantiate();
 
-      Real                                               res       =
-                                                             summand.evaluate(new Integer(3),
-                                                                              1,
-                                                                              128,
-                                                                              new Real());
+      Real                                               res       = summand.evaluate(new Integer(3), 1, 128, new Real());
       assertEquals(-244.81029976584379503781836652101052755, res.doubleValue());
     }
   }
@@ -215,30 +200,22 @@ public class HypergeometricFunctionTest extends
                               "p");
           var q = new Integer(1,
                               "q");
-          var α = Real.newVector(p.getSignedValue(), "α");
-          var β = Real.newVector(q.getSignedValue(), "β"); var z = new Real();)
+          var α = Real.newVector(p.getSignedValue(), "α"); var β = Real.newVector(q.getSignedValue(), "β"); var z = new Real();)
     {
       z.set(RealConstants.π);
       var                                                      context   = new Context(p,
                                                                                        q,
-                                                                                       α.set(1.5,
-                                                                                             0.75,
-                                                                                             -3),
+                                                                                       α.set(1.5, 0.75, -3),
                                                                                        β.set(1),
                                                                                        z.setName("z"));
 
-      Expression<Integer, Complex, Function<Integer, Complex>> prototype =
-                                                                         Function.parseAndCompile(Integer.class,
-                                                                                          Complex.class,
-                                                                                          Function.class,
-                                                                                          "n➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q})",
-                                                                                          context);
+      Expression<Integer, Complex, Function<Integer, Complex>> prototype = Function.parseAndCompile(Integer.class,
+                                                                                                    Complex.class,
+                                                                                                    Function.class,
+                                                                                                    "n➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q})",
+                                                                                                    context);
       var                                                      summand   = prototype.instantiate();
-      Complex                                                  res       =
-                                                                   summand.evaluate(new Integer(3),
-                                                                                    1,
-                                                                                    128,
-                                                                                    new Complex());
+      Complex                                                  res       = summand.evaluate(new Integer(3), 1, 128, new Complex());
       assertEquals(-244.81029976584379503781836652101052755, res.re().doubleValue());
       assertEquals(0.0, res.im().doubleValue());
 
@@ -247,8 +224,7 @@ public class HypergeometricFunctionTest extends
 
   public static void testSequenceOfRealValuedHypergeometricFunctionAsComplexValuedFunctions()
   {
-    var             f      =
-                      ComplexFunctionSequence.express("Vplus:m->pFq([1,m,-m],[1/2],1/(2*y))");
+    var             f      = ComplexFunctionSequence.express("Vplus:m->pFq([1,m,-m],[1/2],1/(2*y))");
     ComplexFunction Vplus3 = f.evaluate(3, 128);
     arb.Complex     y      = Vplus3.evaluate(new arb.Real("2.3",
                                                           128),
@@ -261,12 +237,10 @@ public class HypergeometricFunctionTest extends
 
   public static void testComplexHypergeometricFunctionSequence()
   {
-    ComplexFunctionSequence express =
-                                    ComplexFunctionSequence.express("Vpluscomplex:m➔pFq([1,m,-m],[½],-½*I/y)");
+    ComplexFunctionSequence express = ComplexFunctionSequence.express("Vpluscomplex:m➔pFq([1,m,-m],[½],-½*I/y)");
     ComplexFunction         p3      = express.evaluate(3, 128);
     arb.Complex             eval    = p3.eval(2.3, new arb.Complex());
-    assertEquals("-3.5368620037807190372740058454181982612 +/- 4.70e-38 + i*1.9404947809649049162726572840572966165 +/- 1.48e-38",
-                 eval.toString());
+    assertEquals("-3.5368620037807190372740058454181982612 +/- 4.70e-38 + i*1.9404947809649049162726572840572966165 +/- 1.48e-38", eval.toString());
   }
 
   public static void testRealSequenceOfHypergeometricFunctions()
@@ -274,19 +248,17 @@ public class HypergeometricFunctionTest extends
     var          F      = RealFunctionSequence.parse("Vplus:m->pFq([1,m,-m],[1/2],1/(2*y))");
     var          f      = F.instantiate();
     RealFunction Vplus3 = f.evaluate(3, 128);
-   // System.out.println("works: " + F.inspect(f));
+    // System.out.println("works: " + F.inspect(f));
     double       y      = Vplus3.eval(2.3);
     assertEquals(-0.3487301717761157622856908029915, y);
-    
-              F      = RealFunctionSequence.parse("Vplus:m->pFq([1,m,-m],[1/2],(1/2)/y)");
-              f      = F.instantiate();
-     Vplus3 = f.evaluate(3, 128);
-     y = Vplus3.eval(2.3);
-  //  System.out.println("borked: " + F.inspect(f) );
+
+    F      = RealFunctionSequence.parse("Vplus:m->pFq([1,m,-m],[1/2],(1/2)/y)");
+    f      = F.instantiate();
+    Vplus3 = f.evaluate(3, 128);
+    y      = Vplus3.eval(2.3);
+    // System.out.println("borked: " + F.inspect(f) );
 
     assertEquals(-0.3487301717761157622856908029915, y);
-    
-    
 
   }
 

@@ -9,10 +9,7 @@ public class SyntaxError extends
     super();
   }
 
-  public SyntaxError(String message,
-                     Throwable cause,
-                     boolean enableSuppression,
-                     boolean writableStackTrace)
+  public SyntaxError(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace)
   {
     super(message,
           cause,

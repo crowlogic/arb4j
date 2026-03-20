@@ -34,7 +34,10 @@ public class ComplexEquation extends
 
   public ComplexEquation(Context context)
   {
-    super(Complex.class, Complex.class, ComplexFunction.class,context);
+    super(Complex.class,
+          Complex.class,
+          ComplexFunction.class,
+          context);
   }
 
   public ComplexEquation initialize(String equationString, Context context)

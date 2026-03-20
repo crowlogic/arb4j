@@ -22,7 +22,8 @@ import arb.documentation.TheArb4jLibrary;
  * @see VectorSpace
  * @see TopologicalSpace
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the {@link TheArb4jLibrary}
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public interface TopologicalVectorSpace<F extends Field<? extends F>> extends
                                        VectorSpace<F>,

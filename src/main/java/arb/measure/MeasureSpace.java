@@ -31,9 +31,7 @@ import arb.space.Space;
  *      {@link TheArb4jLibrary}
  * 
  */
-public interface MeasureSpace<X,
-              Σ extends σField<? extends X>,
-              μ extends Measure<? extends X, ? extends Σ>> extends
+public interface MeasureSpace<X, Σ extends σField<? extends X>, μ extends Measure<? extends X, ? extends Σ>> extends
                              MeasurableSpace<X, Σ>
 {
   public Measure<? extends X, Σ> μ();

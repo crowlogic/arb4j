@@ -166,9 +166,7 @@ public class RealDataSetTest extends
     assertEquals(structureSize, structured.getDataCount());
     assertEquals(2, structured.getDimension());
 
-    String expectedName = String.format("varianceStructure(%s,n=%s)",
-                                        dataSet.toString(),
-                                        structureSize);
+    String expectedName = String.format("varianceStructure(%s,n=%s)", dataSet.toString(), structureSize);
     assertEquals(expectedName, structured.getName());
 
     // Verify resolution is copied

@@ -32,8 +32,7 @@ public class ArbException extends
 
   public ArbException(String msg)
   {
-    super(
-          msg);
+    super(msg);
   }
 
 }

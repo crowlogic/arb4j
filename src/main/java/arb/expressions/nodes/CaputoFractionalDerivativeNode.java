@@ -47,12 +47,10 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D, ? extends R>>
-                                           extends
+public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                            Node<D, R, F>
 {
-  public static final Logger       logger =
-                                          LoggerFactory.getLogger(CaputoFractionalDerivativeNode.class);
+  public static final Logger       logger = LoggerFactory.getLogger(CaputoFractionalDerivativeNode.class);
 
   Node<D, R, F>                    order;
   Node<D, R, F>                    operand;
@@ -67,10 +65,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
 
   private FunctionMapping<D, R, F> operandFunctionMapping;
 
-  public CaputoFractionalDerivativeNode(Expression<D, R, F> expression,
-                                        Node<D, R, F> operand,
-                                        VariableNode<D, R, F> variable,
-                                        Node<D, R, F> order)
+  public CaputoFractionalDerivativeNode(Expression<D, R, F> expression, Node<D, R, F> operand, VariableNode<D, R, F> variable, Node<D, R, F> order)
   {
     super(expression);
     assert operand != null : "operand is null";
@@ -79,13 +74,13 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     {
       order = variable.one();
     }
-    this.order           = order;
-    this.operand         = operand;
-    this.context         = expression.getContext();
+    this.order   = order;
+    this.operand = operand;
+    this.context = expression.getContext();
 
     if (operand.hasClosedFormFractionalDerivative(variable))
     {
-      closedFormResult    = operand.fractionalDerivative(variable, order);
+      closedFormResult     = operand.fractionalDerivative(variable, order);
       this.derivativeOrder = 1;
       return;
     }
@@ -139,14 +134,10 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
 
   protected void init(Node<D, R, F> operand, int derivativeOrder)
   {
-    operandFunctionMapping            = context.registerFunctionMapping("f",
-                                                                        expression.domainType,
-                                                                        expression.coDomainType,
-                                                                        expression.functionClass);
+    operandFunctionMapping = context.registerFunctionMapping("f", expression.domainType, expression.coDomainType, expression.functionClass);
 
-    VariableNode<D, R, F> diffVar      = variable != null ? variable : expression.independentVariable;
-    operandFunctionMapping.expression    = operand.asExpression(diffVar);
-
+    VariableNode<D, R, F> diffVar = variable != null ? variable : expression.independentVariable;
+    operandFunctionMapping.expression = operand.asExpression(diffVar);
 
     // Register α temporarily if needed so the gint formula can reference it
     boolean registeredAlphaTemporarily = false;
@@ -170,15 +161,16 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     if (order instanceof VariableNode<D, R, F> orderVar && !"α".equals(orderVar.getName()))
     {
       integralExpression.renameVariable("α", orderVar.getName());
-      // Remove the temporary α from context since the actual variable has a different name
+      // Remove the temporary α from context since the actual variable has a different
+      // name
       if (registeredAlphaTemporarily)
       {
         context.variables.remove("α");
       }
     }
 
-    this.integralNode  = integralExpression.rootNode;
-    this.gintMapping   = context.functions.get("gint");
+    this.integralNode = integralExpression.rootNode;
+    this.gintMapping  = context.functions.get("gint");
     expression.registerReferencedFunction("gint", gintMapping);
   }
 
@@ -214,7 +206,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
 
     if (operand.hasClosedFormFractionalDerivative(variable))
     {
-      closedFormResult = operand.fractionalDerivative(variable, order);
+      closedFormResult     = operand.fractionalDerivative(variable, order);
       this.derivativeOrder = 1;
       return;
     }
@@ -232,8 +224,6 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   {
     return integralNode != null ? integralNode.isZero() : operand.isZero();
   }
-
-
 
   /**
    * Resolve n = ⌈α⌉ at compile time.
@@ -298,11 +288,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
       }
       else
       {
-        throw new UndefinedReferenceException(varName
-                                              + " not found in "
-                                              + context
-                                              + " or as independent variable in "
-                                              + expression);
+        throw new UndefinedReferenceException(varName + " not found in " + context + " or as independent variable in " + expression);
       }
     }
     else if (power.isConstant())
@@ -336,9 +322,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
       return closedFormResult.generate(mv, resultType);
     }
     // Load gint function reference: this.gint
-    expression.loadFieldOntoStack(Compiler.loadThisOntoStack(mv),
-                                  "gint",
-                                  gintMapping.functionFieldDescriptor());
+    expression.loadFieldOntoStack(Compiler.loadThisOntoStack(mv), "gint", gintMapping.functionFieldDescriptor());
     // Load argument: the independent variable (x)
     VariableNode<D, R, F> indepVar = variable != null ? variable : expression.independentVariable;
     indepVar.generate(mv, indepVar.type());
@@ -366,9 +350,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, R, F>
-         substitute(String variable, Node<E, S, G> arg)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable, Node<E, S, G> arg)
   {
     order   = order.substitute(variable, arg);
     operand = operand.substitute(variable, arg);
@@ -396,8 +378,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   @Override
   public boolean dependsOn(VariableNode<D, R, F> variable)
   {
-    return integralNode != null ? integralNode.dependsOn(variable)
-                                : order.dependsOn(variable) || operand.dependsOn(variable);
+    return integralNode != null ? integralNode.dependsOn(variable) : order.dependsOn(variable) || operand.dependsOn(variable);
   }
 
   @Override
@@ -419,20 +400,17 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
     if (closedFormResult != null)
     {
       return closedFormResult.spliceInto(newExpression);
     }
-    CaputoFractionalDerivativeNode<E, S, G> splicedNode =
-                                                        new CaputoFractionalDerivativeNode<E, S, G>(newExpression,
-                                                                                                    operand.spliceInto(newExpression),
-                                                                                                    variable.spliceInto(newExpression),
-                                                                                                    order.spliceInto(newExpression),
-                                                                                                    derivativeOrder);
+    CaputoFractionalDerivativeNode<E, S, G> splicedNode = new CaputoFractionalDerivativeNode<E, S, G>(newExpression,
+                                                                                                      operand.spliceInto(newExpression),
+                                                                                                      variable.spliceInto(newExpression),
+                                                                                                      order.spliceInto(newExpression),
+                                                                                                      derivativeOrder);
     splicedNode.isRootNode = isRootNode;
     return splicedNode;
   }

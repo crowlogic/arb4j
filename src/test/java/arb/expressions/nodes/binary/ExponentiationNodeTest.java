@@ -17,10 +17,10 @@ public class ExponentiationNodeTest extends
 {
   public static void testExpNodeEvaluate()
   {
-    var F = RealNullaryFunction.parse("(2/3)^(-2)");
-    var root = F.rootNode;
-    var f= F.instantiate();
-    Real y = root.ceil().evaluate();
+    var  F    = RealNullaryFunction.parse("(2/3)^(-2)");
+    var  root = F.rootNode;
+    var  f    = F.instantiate();
+    Real y    = root.ceil().evaluate();
     assertEquals("3", y.toString());
   }
 
@@ -46,9 +46,7 @@ public class ExponentiationNodeTest extends
       var context = new Context();
 
       RealFunction.express("θ:im(lnΓ(¼+ⅈ*t/2))-(log(π)/2)*t", context);
-      var                   gain =
-                                 RealBivariateToComplexFunction.express("A:exp(ⅈ*λ*(θ(t)-t))*√(θ̇(t))",
-                                                                        context);
+      var                   gain = RealBivariateToComplexFunction.express("A:exp(ⅈ*λ*(θ(t)-t))*√(θ̇(t))", context);
       RealToComplexFunction func = gain.evaluate(RealConstants.half, 128);
       Complex               y    = func.eval(2.3, tmp);
       assertEquals(0.4296015350333563, y.re().doubleValue());

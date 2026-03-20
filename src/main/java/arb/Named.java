@@ -19,11 +19,7 @@ public interface Named
   public default <N extends Named> N setName(String name)
   {
     assert isRenameable() : this + " of class " + getClass().getSimpleName() + " is not renamable";
-    assert false : "TODO: "
-                   + getClass().getSimpleName()
-                   + " needs to implement setName(String) since apparently "
-                   + this
-                   + " is renamable";
+    assert false : "TODO: " + getClass().getSimpleName() + " needs to implement setName(String) since apparently " + this + " is renamable";
     return null;
   }
 

@@ -28,12 +28,7 @@ public class SumTest extends
 
     α.set(1.0, 2.0, 3.0, 4.0);
 
-    Function<Integer,
-                  Real>     numer = Function.express(Integer.class,
-                                                     Real.class,
-                                                     "F",
-                                                     "n➔Z(Σα[k]₍ₙ₋₁₎{k=1…p})",
-                                                     context);
+    Function<Integer, Real> numer = Function.express(Integer.class, Real.class, "F", "n➔Z(Σα[k]₍ₙ₋₁₎{k=1…p})", context);
 
     Integer                 in    = new Integer(2);
     Real                    val   = numer.evaluate(in, 128, new Real());
@@ -57,12 +52,7 @@ public class SumTest extends
 
     α.set(1.0, 2.0, 3.0, 4.0);
 
-    Function<Integer,
-                  Real>     numer = Function.express(Integer.class,
-                                                     Real.class,
-                                                     "F",
-                                                     "n➔Σα[k]₍ₙ₋₁₎{k=1…p}",
-                                                     context);
+    Function<Integer, Real> numer = Function.express(Integer.class, Real.class, "F", "n➔Σα[k]₍ₙ₋₁₎{k=1…p}", context);
 
     Integer                 in    = new Integer(2);
     Real                    val   = numer.evaluate(in, 128, new Real());
@@ -86,12 +76,7 @@ public class SumTest extends
     α.set(1.0, 2.0, 3.0);
     β.set(4.0);
 
-    Function<Integer,
-                  Real>     ratio = Function.express(Integer.class,
-                                                     Real.class,
-                                                     "F",
-                                                     "n➔Σα[k]₍ₙ₋₁₎{k=1…p}/Σβ[k]₍ₙ₋₁₎{k=1…q}",
-                                                     context);
+    Function<Integer, Real> ratio = Function.express(Integer.class, Real.class, "F", "n➔Σα[k]₍ₙ₋₁₎{k=1…p}/Σβ[k]₍ₙ₋₁₎{k=1…q}", context);
     Integer                 in    = new Integer(2);
     Real                    val   = ratio.evaluate(in, 128, new Real());
     assertEquals(1.5, val.doubleValue());
@@ -112,12 +97,7 @@ public class SumTest extends
     α.set(1.0, 2.0, 3.0);
     β.set(4.0);
 
-    Function<Integer, Real> ratio =
-                                  Function.express(Integer.class,
-                                                   Real.class,
-                                                   "F",
-                                                   "n➔Σα[k]₍ₙ₋₁₎{k=1…p}/Σβ[k]₍ₙ₋₁₎{k=1…q}/Σβ[k]₍ₙ₋₁₎{k=1…q}+1",
-                                                   context);
+    Function<Integer, Real> ratio = Function.express(Integer.class, Real.class, "F", "n➔Σα[k]₍ₙ₋₁₎{k=1…p}/Σβ[k]₍ₙ₋₁₎{k=1…q}/Σβ[k]₍ₙ₋₁₎{k=1…q}+1", context);
     Integer                 in    = new Integer(2);
     Real                    val   = ratio.evaluate(in, 128, new Real());
     assertEquals(1.375, val.doubleValue());

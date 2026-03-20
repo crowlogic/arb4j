@@ -67,8 +67,8 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    * When true, {@link VariableNode#toString()} emits {@code "name=%s"}
    * placeholders for upstream-input variables instead of bare names. Set by
    * {@link #toStringBound()} so that every node's existing {@link #toString()}
-   * automatically propagates bound-variable formatting without needing
-   * per-node overrides.
+   * automatically propagates bound-variable formatting without needing per-node
+   * overrides.
    */
   public static final ThreadLocal<Boolean> emittingBoundFormat = ThreadLocal.withInitial(() -> false);
 

@@ -14,22 +14,22 @@ import junit.framework.TestCase;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RealPolynomialTest
-                                extends
+public class RealPolynomialTest extends
                                 TestCase
 {
   public void testIntegralOfSequenceofPolynomialElement()
   {
     var context = new Context();
-    var P = new JacobiPolynomialSequence(RealConstants.negHalf,RealConstants.negHalf);
-    context.registerSequence("P",P);
-    var Q = RealPolynomialSequence.parse("wtf:n->int(P(n)(x),x)",context);
-    var q = Q.instantiate();
+    var P       = new JacobiPolynomialSequence(RealConstants.negHalf,
+                                               RealConstants.negHalf);
+    context.registerSequence("P", P);
+    var Q  = RealPolynomialSequence.parse("wtf:n->int(P(n)(x),x)", context);
+    var q  = Q.instantiate();
     var q3 = q.apply(3);
 //    System.out.println( "P3=" + P.apply(3));
-assertEquals( "0.3125*x⁴ - 0.46875*x²", q3.toString() );
+    assertEquals("0.3125*x⁴ - 0.46875*x²", q3.toString());
   }
-  
+
   public void testSetFraction()
   {
     try ( var r = new RealPolynomial(); var f = new Fraction();)

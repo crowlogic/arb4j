@@ -12,7 +12,8 @@ import arb.space.bornological.BornologicalSpace;
  * between elements of the set. This interface eRealtends HausdorffSpace and
  * BornologicalSpace, incorporating concepts of separability and boundedness.
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the {@link TheArb4jLibrary}
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public interface MetricSpace<F extends Field<? extends F>> extends
                             HausdorffSpace<F>,

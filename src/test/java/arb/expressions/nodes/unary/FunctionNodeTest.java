@@ -196,8 +196,7 @@ public class FunctionNodeTest extends
   public static void testDerivativeOfImaginaryPartIsRealZero()
   {
     // Expression.trace=true;
-    Expression<Real, Complex, RealToComplexFunction> fexpr =
-                                                           RealToComplexFunction.parse("diff(im(cos(I*t)),t)");
+    Expression<Real, Complex, RealToComplexFunction> fexpr = RealToComplexFunction.parse("diff(im(cos(I*t)),t)");
     assertEquals(Real.class, fexpr.rootNode.type());
     RealToComplexFunction f = fexpr.instantiate();
 

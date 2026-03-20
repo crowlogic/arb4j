@@ -20,14 +20,14 @@ import arb.documentation.TheArb4jLibrary;
 public class TextTable
 {
 
-  protected TableModel            tableModel;
+  protected TableModel           tableModel;
   protected List<TextTreeLayout> separatorPolicies = new ArrayList<TextTreeLayout>();
 
-  protected boolean               addRowNumbering;
+  protected boolean              addRowNumbering;
 
-  protected RowSorter<?>          rowSorter;
+  protected RowSorter<?>         rowSorter;
 
-  protected boolean               headless;
+  protected boolean              headless;
 
   public TextTable(TableModel tableModel)
   {

@@ -7,12 +7,13 @@ import arb.documentation.references.Reference;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class PageReferral implements Reference
+public class PageReferral implements
+                          Reference
 {
   @Override
   public String toString()
   {
-    return String.format("%s p. %s", of, page );
+    return String.format("%s p. %s", of, page);
   }
 
   public PageReferral(String page, Reference of)
@@ -22,9 +23,9 @@ public class PageReferral implements Reference
     this.of   = of;
   }
 
-  String page;
-  
-  Reference of ;
+  String    page;
+
+  Reference of;
 
   @Override
   public String year()

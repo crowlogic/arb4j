@@ -25,21 +25,13 @@ public class Equation<D, C, F extends Function<? extends D, ? extends C>>
   public Class<? extends D> domainType;
   public Context            context;
 
-  public Equation(Class<? extends D> domainType,
-                  Class<? extends C> coDomainType,
-                  Class<? extends F> functionClass,
-                  F leftSide,
-                  F rightSide)
+  public Equation(Class<? extends D> domainType, Class<? extends C> coDomainType, Class<? extends F> functionClass, F leftSide, F rightSide)
   {
     super();
     initialize(domainType, coDomainType, functionClass, leftSide, rightSide);
   }
 
-  public void initialize(Class<? extends D> domainType,
-                         Class<? extends C> coDomainType,
-                         Class<? extends F> functionClass,
-                         F leftSide,
-                         F rightSide)
+  public void initialize(Class<? extends D> domainType, Class<? extends C> coDomainType, Class<? extends F> functionClass, F leftSide, F rightSide)
   {
     this.leftSide     = leftSide;
     this.rightSide    = rightSide;
@@ -48,30 +40,20 @@ public class Equation<D, C, F extends Function<? extends D, ? extends C>>
     this.functionType = functionClass;
   }
 
-  public Equation(Class<? extends D> domainType,
-                  Class<? extends C> coDomainType,
-                  Class<? extends F> functionClass,
-                  String equationString,
-                  Context context)
+  public Equation(Class<? extends D> domainType, Class<? extends C> coDomainType, Class<? extends F> functionClass, String equationString, Context context)
   {
     super();
     initialize(domainType, coDomainType, functionClass, equationString, context);
   }
 
-  public void initialize(Class<? extends D> domainType,
-                         Class<? extends C> coDomainType,
-                         Class<? extends F> functionClass,
-                         String equationString,
-                         Context context)
+  public void
+         initialize(Class<? extends D> domainType, Class<? extends C> coDomainType, Class<? extends F> functionClass, String equationString, Context context)
   {
     initialize(domainType, coDomainType, functionClass, context);
     parse(equationString);
   }
 
-  public void initialize(Class<? extends D> domainType,
-                         Class<? extends C> coDomainType,
-                         Class<? extends F> functionClass,
-                         Context context)
+  public void initialize(Class<? extends D> domainType, Class<? extends C> coDomainType, Class<? extends F> functionClass, Context context)
   {
     this.domainType   = domainType;
     this.coDomainType = coDomainType;
@@ -79,27 +61,18 @@ public class Equation<D, C, F extends Function<? extends D, ? extends C>>
     this.context      = context;
   }
 
-  public Equation(Class<? extends D> domainType,
-                  Class<? extends C> coDomainType,
-                  Class<? extends F> functionClass,
-                  String equationString)
+  public Equation(Class<? extends D> domainType, Class<? extends C> coDomainType, Class<? extends F> functionClass, String equationString)
   {
     super();
     initialize(domainType, coDomainType, functionClass, equationString);
   }
 
-  public Equation(Class<? extends D> domainType,
-                  Class<? extends C> coDomainType,
-                  Class<? extends F> functionClass,
-                  Context context)
+  public Equation(Class<? extends D> domainType, Class<? extends C> coDomainType, Class<? extends F> functionClass, Context context)
   {
     initialize(domainType, coDomainType, functionClass, context);
   }
 
-  public void initialize(Class<? extends D> domainType,
-                         Class<? extends C> coDomainType,
-                         Class<? extends F> functionClass,
-                         String equationString)
+  public void initialize(Class<? extends D> domainType, Class<? extends C> coDomainType, Class<? extends F> functionClass, String equationString)
   {
     this.domainType   = domainType;
     this.coDomainType = coDomainType;
@@ -114,24 +87,12 @@ public class Equation<D, C, F extends Function<? extends D, ? extends C>>
 
   private void parse(String string)
   {
-    lhs = Function.parse("lhs" + Parser.transformToAcceptableJavaIdentifier(string),
-                         string,
-                         context,
-                         domainType,
-                         coDomainType,
-                         functionType,
-                         "lhs",
-                         null, true);
+    lhs =
+        Function.parse("lhs" + Parser.transformToAcceptableJavaIdentifier(string), string, context, domainType, coDomainType, functionType, "lhs", null, true);
     lhs.require('=');
     string = string.substring(lhs.position - 1, string.length());
-    rhs    = Function.parse("rhs" + Parser.transformToAcceptableJavaIdentifier(string),
-                            string,
-                            context,
-                            domainType,
-                            coDomainType,
-                            functionType,
-                            "rhs",
-                            null, true);
+    rhs    =
+        Function.parse("rhs" + Parser.transformToAcceptableJavaIdentifier(string), string, context, domainType, coDomainType, functionType, "rhs", null, true);
 
   }
 

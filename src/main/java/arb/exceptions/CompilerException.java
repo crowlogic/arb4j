@@ -4,12 +4,12 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 
 /**
-*
-* @see BusinessSourceLicenseVersionOnePointOne © terms of the
-*      {@link TheArb4jLibrary}
-*/
+ *
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public class CompilerException extends
-                                       ArbException
+                               ArbException
 {
 
   public CompilerException()
@@ -17,10 +17,7 @@ public class CompilerException extends
     super();
   }
 
-  public CompilerException(String message,
-                                   Throwable cause,
-                                   boolean enableSuppression,
-                                   boolean writableStackTrace)
+  public CompilerException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace)
   {
     super(message,
           cause,

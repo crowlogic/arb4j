@@ -56,9 +56,9 @@ public class Integer implements
 
   public RealPolynomial rgamma(int bits, RealPolynomial result)
   {
-    try ( var blip = new Real(); var realResult = new Real() )
+    try ( var blip = new Real(); var realResult = new Real())
     {
-      return result.set(blip.set(this).rgamma(bits,realResult));
+      return result.set(blip.set(this).rgamma(bits, realResult));
     }
   }
 
@@ -99,8 +99,7 @@ public class Integer implements
    * @param upperInclusive true if the upper bound is closed (inclusive)
    * @return this
    */
-  public Integer
-         setBounds(Integer lower, boolean lowerInclusive, Integer upper, boolean upperInclusive)
+  public Integer setBounds(Integer lower, boolean lowerInclusive, Integer upper, boolean upperInclusive)
   {
     this.lowerBound_          = lower;
     this.lowerBoundInclusive_ = lowerInclusive;
@@ -288,8 +287,7 @@ public class Integer implements
     return result.set(this).add(addend, bits, result);
   }
 
-  public ComplexRationalFunction
-         add(ComplexRationalFunction addend, int bits, ComplexRationalFunction result)
+  public ComplexRationalFunction add(ComplexRationalFunction addend, int bits, ComplexRationalFunction result)
   {
     return result.set(this).add(addend, bits, result);
   }
@@ -436,9 +434,7 @@ public class Integer implements
 
   public Integer ascendingFactorial(Integer n, int bits, Integer result)
   {
-    assert n.getSignedValue() >= 0 : String.format("power=%d must be non-negative where this=%d",
-                                                   n.getSignedValue(),
-                                                   getSignedValue());
+    assert n.getSignedValue() >= 0 : String.format("power=%d must be non-negative where this=%d", n.getSignedValue(), getSignedValue());
     ;
 
     try ( Real x = new Real(); Real realResult = new Real();)
@@ -557,8 +553,7 @@ public class Integer implements
     return res.set(this).div(dividend, prec);
   }
 
-  public ComplexRationalFunction
-         div(ComplexRationalFunction dividend, int prec, ComplexRationalFunction res)
+  public ComplexRationalFunction div(ComplexRationalFunction dividend, int prec, ComplexRationalFunction res)
   {
     return res.set(this).div(dividend, prec);
   }
@@ -893,8 +888,7 @@ public class Integer implements
     return res.set(this).mul(x, bits);
   }
 
-  public ComplexRationalFunction
-         mul(ComplexRationalFunction x, int bits, ComplexRationalFunction res)
+  public ComplexRationalFunction mul(ComplexRationalFunction x, int bits, ComplexRationalFunction res)
   {
     return res.set(this).mul(x, bits);
   }
@@ -1090,8 +1084,7 @@ public class Integer implements
   {
     if (!operand.isPositive())
     {
-      throw new IllegalArgumentException(operand
-                                         + " must be positive if an Integer result is required");
+      throw new IllegalArgumentException(operand + " must be positive if an Integer result is required");
     }
     arblib.fmpz_pow_fmpz(result.swigCPtr, this.swigCPtr, operand.swigCPtr);
     return result;
@@ -1215,8 +1208,7 @@ public class Integer implements
     return result.set(this).sub(operand, prec);
   }
 
-  public ComplexRationalFunction
-         sub(ComplexRationalFunction addend, int bits, ComplexRationalFunction result)
+  public ComplexRationalFunction sub(ComplexRationalFunction addend, int bits, ComplexRationalFunction result)
   {
     return result.set(this).sub(addend, bits, result);
   }
@@ -1332,7 +1324,7 @@ public class Integer implements
   @Override
   public String toString()
   {
- 
+
     if (dim > 1)
     {
       StringBuffer buf = new StringBuffer("[");

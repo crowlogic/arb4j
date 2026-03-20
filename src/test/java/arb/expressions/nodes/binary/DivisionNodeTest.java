@@ -17,9 +17,9 @@ public class DivisionNodeTest extends
   public void testAnotherArcsinIntegral()
   {
     var f = RealFunction.express("∫λ➔1/√(λ-λ²)dλ");
-    assertEquals("λ➔arcsin((λ-1⁄2)/√(1⁄4))", f.toString() );
+    assertEquals("λ➔arcsin((λ-1⁄2)/√(1⁄4))", f.toString());
   }
-  
+
   public void testSineIntegral()
   {
     var fe = RealFunction.parse("int(sin(t)/t,t)");

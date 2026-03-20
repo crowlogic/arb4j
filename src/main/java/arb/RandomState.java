@@ -8,22 +8,29 @@
 
 package arb;
 
-public class RandomState implements AutoCloseable {
-  protected long swigCPtr;
+public class RandomState implements
+                         AutoCloseable
+{
+  protected long    swigCPtr;
   protected boolean swigCMemOwn;
 
-  public RandomState(long cPtr, boolean cMemoryOwn) {
+  public RandomState(long cPtr, boolean cMemoryOwn)
+  {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr = cPtr;
+    swigCPtr    = cPtr;
   }
 
-  public static long getCPtr(RandomState obj) {
+  public static long getCPtr(RandomState obj)
+  {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete() {
-    if (swigCPtr != 0) {
-      if (swigCMemOwn) {
+  public synchronized void delete()
+  {
+    if (swigCPtr != 0)
+    {
+      if (swigCMemOwn)
+      {
         swigCMemOwn = false;
         arblibJNI.delete_RandomState(swigCPtr);
       }
@@ -31,11 +38,10 @@ public class RandomState implements AutoCloseable {
     }
   }
 
-
- static
- {
-   System.loadLibrary( "arblib" );
- }
+  static
+  {
+    System.loadLibrary("arblib");
+  }
 
   @Override
   public void close() throws Exception
@@ -48,32 +54,37 @@ public class RandomState implements AutoCloseable {
     arblib.flint_rand_init(this);
     return this;
   }
-  
+
   public RandomState seed(long seed)
   {
     arblib.flint_rand_set_seed(this, seed, seed >>> 32);
     return this;
-  }  
-     
+  }
 
-  public void set__randval(long value) {
+  public void set__randval(long value)
+  {
     arblibJNI.RandomState___randval_set(swigCPtr, this, value);
   }
 
-  public long get__randval() {
+  public long get__randval()
+  {
     return arblibJNI.RandomState___randval_get(swigCPtr, this);
   }
 
-  public void set__randval2(long value) {
+  public void set__randval2(long value)
+  {
     arblibJNI.RandomState___randval2_set(swigCPtr, this, value);
   }
 
-  public long get__randval2() {
+  public long get__randval2()
+  {
     return arblibJNI.RandomState___randval2_get(swigCPtr, this);
   }
 
-  public RandomState() {
-    this(arblibJNI.new_RandomState(), true);
+  public RandomState()
+  {
+    this(arblibJNI.new_RandomState(),
+         true);
   }
 
 }

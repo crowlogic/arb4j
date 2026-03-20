@@ -23,8 +23,10 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface Section<X extends Field<? extends X>, E extends TopologicalSpace<? extends X>, B extends TopologicalSpace<? extends X>, F extends TopologicalSpace<? extends X>>
-                        extends
+public interface Section<X extends Field<? extends X>,
+              E extends TopologicalSpace<? extends X>,
+              B extends TopologicalSpace<? extends X>,
+              F extends TopologicalSpace<? extends X>> extends
                         Function<B, E>
 {
 

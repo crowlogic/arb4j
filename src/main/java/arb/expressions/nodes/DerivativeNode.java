@@ -29,8 +29,6 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
     return operand.isConstant() || operand.isIndependentOf(expression.getIndependentVariable());
   }
 
-
-
   @Override
   public int hashCode()
   {
@@ -136,10 +134,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
       order    = expNode.right;
       if (order.type() != arb.Integer.class)
       {
-        throwSyntaxError("the order of differentiation node must generate an Integer but got order="
-                         + order
-                         + " of type "
-                         + order.type());
+        throwSyntaxError("the order of differentiation node must generate an Integer but got order=" + order + " of type " + order.type());
       }
 
     }
@@ -233,24 +228,15 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, R, F>
-         substitute(String variable, Node<E, S, G> arg)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable, Node<E, S, G> arg)
   {
     return differentiatedNode = getDifferentiatedNode().substitute(variable, arg);
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
-    assert false : "nthDerivativeNode is null for "
-                   + this
-                   + " context="
-                   + expression.context
-                   + "functions="
-                   + expression.context.functions;
+    assert false : "nthDerivativeNode is null for " + this + " context=" + expression.context + "functions=" + expression.context.functions;
     return getDifferentiatedNode().spliceInto(newExpression);
   }
 

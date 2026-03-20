@@ -70,9 +70,7 @@ public class ElseNode<D, R, F extends Function<? extends D, ? extends R>> extend
     return null;
   }
 
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, R, F>
-         substitute(String variable, Node<E, S, G> arg)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable, Node<E, S, G> arg)
   {
     return this;
   }
@@ -84,9 +82,7 @@ public class ElseNode<D, R, F extends Function<? extends D, ? extends R>> extend
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
     return new ElseNode<E, S, G>(newExpression);
   }
