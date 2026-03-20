@@ -166,10 +166,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       logger.debug("resolveReference START: {}", resolutionStateString());
     }
 
-
-
-
-    
     if (resolveContextualVariable())
     {
       expression.registerReferencedVariable(this);
@@ -180,18 +176,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return this;
     }
 
-    if (expression.isInterfaceFunctional() && expression.placeholderVariable == null)
-    {
-      isPlaceholder              = true;
-      reference.type             = expression.coDomainType;
-      expression.placeholderVariable = this;
-      if (Expression.traceNodes)
-      {
-        logger.debug("resolveReference PLACEHOLDER: {}", resolutionStateString());
-      }
-      return this;
-    }
-
+    // INDEPENDENT BEFORE PLACEHOLDER — prevents dual-flag corruption
     if (isIndependent = isIndependent())
     {
       designateAsIndependentVariable();
@@ -203,8 +188,19 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       }
       return this;
     }
-    
-    // Priority 5: upstream variable
+
+    if (expression.isInterfaceFunctional() && expression.placeholderVariable == null)
+    {
+      isPlaceholder                  = true;
+      reference.type                 = expression.coDomainType;
+      expression.placeholderVariable = this;
+      if (Expression.traceNodes)
+      {
+        logger.debug("resolveReference PLACEHOLDER: {}", resolutionStateString());
+      }
+      return this;
+    }
+
     var upstream = resolveUpstreamIndependentVariables();
     if (upstream != null)
     {
@@ -219,9 +215,9 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return this;
     }
 
-    // Priority 6: undefined
     return throwNewUndefinedReferenceException();
   }
+
 
   protected VariableNode<?, ?, ?> throwNewUndefinedReferenceException()
   {
