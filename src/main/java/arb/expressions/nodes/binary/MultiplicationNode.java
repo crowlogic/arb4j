@@ -39,8 +39,6 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     return (T) leftValue.mul(rightValue, bits, Utensils.newInstance(resultType));
   }
 
-
-
   @Override
   public boolean isZero()
   {
@@ -95,8 +93,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     var variableFactors = new ArrayList<Node<D, R, F>>();
     for (var factor : factors)
     {
-      boolean isIndependentOfVariableOfIntegration =
-                                                   factor.isScalar() && !factor.dependsOn(variable);
+      boolean isIndependentOfVariableOfIntegration = factor.isScalar() && !factor.dependsOn(variable);
 
       (isIndependentOfVariableOfIntegration ? constantFactors : variableFactors).add(factor);
     }
@@ -121,8 +118,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       // FIXME: handle the case when the argument to the FunctionalEvaluationNode is
       // some function of the variable rather than strictly equal to the variable
       // itself
-      if (polyFactor == null && f instanceof FunctionalEvaluationNode<D, R, F> fe
-                    && Polynomial.class.isAssignableFrom(fe.getFunctionNode().type())
+      if (polyFactor == null && f instanceof FunctionalEvaluationNode<D, R, F> fe && Polynomial.class.isAssignableFrom(fe.getFunctionNode().type())
                     && fe.arg.equals(variable))
       {
         polyFactor = fe;
@@ -157,17 +153,16 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       return simplifiedIbpResult;
     }
 
-    String msg =
-               String.format("TODO: support for integration of %s where left=%s[%s]∈%s and right=%s[%s]∈%s in %s where context=%s",
-                             this,
-                             left.getClass().getSimpleName(),
-                             left,
-                             left.type().getSimpleName(),
-                             right.getClass().getSimpleName(),
-                             right,
-                             right.type().getSimpleName(),
-                             expression.toStringExtended(),
-                             expression.context.toStringExtended());
+    String msg = String.format("TODO: support for integration of %s where left=%s[%s]∈%s and right=%s[%s]∈%s in %s where context=%s",
+                               this,
+                               left.getClass().getSimpleName(),
+                               left,
+                               left.type().getSimpleName(),
+                               right.getClass().getSimpleName(),
+                               right,
+                               right.type().getSimpleName(),
+                               expression.toStringExtended(),
+                               expression.context.toStringExtended());
     throw new CompilerException(msg);
   }
 
@@ -194,14 +189,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     String extra = "";
     if (n instanceof LiteralConstantNode<?, ?, ?> lc)
     {
-      extra = ", stringValue="
-              + lc.stringValue
-              + ", isInt="
-              + lc.isInt
-              + ", isFraction="
-              + lc.isFraction
-              + ", isDecimal="
-              + lc.isDecimal;
+      extra = ", stringValue=" + lc.stringValue + ", isInt=" + lc.isInt + ", isFraction=" + lc.isFraction + ", isDecimal=" + lc.isDecimal;
     }
 
     Class<?> t = null;
@@ -215,8 +203,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       t = null;
     }
 
-    return t == null ? (cls + "@" + id + "(" + s + extra + ")")
-                     : (cls + "@" + id + "<" + t.getSimpleName() + ">(" + s + extra + ")");
+    return t == null ? (cls + "@" + id + "(" + s + extra + ")") : (cls + "@" + id + "<" + t.getSimpleName() + ">(" + s + extra + ")");
   }
 
   @Override
@@ -239,11 +226,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       left = left.simplify();
       if (traceSimplify && left != oldLeft)
       {
-        logger.debug(String.format("%s[%d]   left changed: %s -> %s%n",
-                                   depthIndent(),
-                                   simplifyDepth,
-                                   debugNode(oldLeft),
-                                   debugNode(left)));
+        logger.debug(String.format("%s[%d]   left changed: %s -> %s%n", depthIndent(), simplifyDepth, debugNode(oldLeft), debugNode(left)));
       }
     }
     if (right != null)
@@ -252,11 +235,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       right = right.simplify();
       if (traceSimplify && right != oldRight)
       {
-        logger.debug(String.format("%s[%d]   right changed: %s -> %s%n",
-                                   depthIndent(),
-                                   simplifyDepth,
-                                   debugNode(oldRight),
-                                   debugNode(right)));
+        logger.debug(String.format("%s[%d]   right changed: %s -> %s%n", depthIndent(), simplifyDepth, debugNode(oldRight), debugNode(right)));
       }
     }
 
@@ -274,10 +253,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     {
       if (traceSimplify)
       {
-        logger.debug(String.format("%s[%d]   left.isOne() -> returning right=%s%n",
-                                   depthIndent(),
-                                   simplifyDepth,
-                                   debugNode(right)));
+        logger.debug(String.format("%s[%d]   left.isOne() -> returning right=%s%n", depthIndent(), simplifyDepth, debugNode(right)));
       }
       simplifyDepth--;
       return right;
@@ -286,10 +262,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     {
       if (traceSimplify)
       {
-        logger.debug(String.format("%s[%d]   right.isOne() -> returning left=%s%n",
-                                   depthIndent(),
-                                   simplifyDepth,
-                                   debugNode(left)));
+        logger.debug(String.format("%s[%d]   right.isOne() -> returning left=%s%n", depthIndent(), simplifyDepth, debugNode(left)));
       }
       simplifyDepth--;
       return left;
@@ -298,9 +271,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     {
       if (traceSimplify)
       {
-        logger.debug(String.format("%s[%d]   left.isNegOne() -> returning right.neg()%n",
-                                   depthIndent(),
-                                   simplifyDepth));
+        logger.debug(String.format("%s[%d]   left.isNegOne() -> returning right.neg()%n", depthIndent(), simplifyDepth));
       }
       simplifyDepth--;
       return right.neg();
@@ -309,9 +280,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     {
       if (traceSimplify)
       {
-        logger.debug(String.format("%s[%d]   right.isNegOne() -> returning left.neg()%n",
-                                   depthIndent(),
-                                   simplifyDepth));
+        logger.debug(String.format("%s[%d]   right.isNegOne() -> returning left.neg()%n", depthIndent(), simplifyDepth));
       }
       simplifyDepth--;
       return left.neg();
@@ -322,22 +291,17 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     {
       if (traceSimplify)
       {
-        logger.debug(String.format("%s[%d]   delta simplification -> %s%n",
-                                   depthIndent(),
-                                   simplifyDepth,
-                                   debugNode(deltaSimplification)));
+        logger.debug(String.format("%s[%d]   delta simplification -> %s%n", depthIndent(), simplifyDepth, debugNode(deltaSimplification)));
       }
       simplifyDepth--;
       return deltaSimplification;
     }
 
-    if (left instanceof LiteralConstantNode<D, R, F> leftConstant
-                  && right instanceof LiteralConstantNode<D, R, F> rightConstant)
+    if (left instanceof LiteralConstantNode<D, R, F> leftConstant && right instanceof LiteralConstantNode<D, R, F> rightConstant)
     {
       if (leftConstant.isInt && rightConstant.isInt)
       {
-        try ( var lint = new Integer(leftConstant.stringValue);
-              var rint = new Integer(rightConstant.stringValue))
+        try ( var lint = new Integer(leftConstant.stringValue); var rint = new Integer(rightConstant.stringValue))
         {
           var product = lint.mul(rint, 0, rint);
           if (traceSimplify)
@@ -355,8 +319,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       }
     }
 
-    if (left instanceof ExponentiationNode<D, R, F> leftExp
-                  && right instanceof ExponentiationNode<D, R, F> rightExp)
+    if (left instanceof ExponentiationNode<D, R, F> leftExp && right instanceof ExponentiationNode<D, R, F> rightExp)
     {
       var leftBase  = leftExp.left;
       var rightBase = rightExp.left;
@@ -367,19 +330,14 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
         var power      = leftPower.add(rightPower).simplify();
         if (traceSimplify)
         {
-          logger.debug(String.format("%s[%d]   exponent addition: base^(%s+%s)%n",
-                                     depthIndent(),
-                                     simplifyDepth,
-                                     leftPower,
-                                     rightPower));
+          logger.debug(String.format("%s[%d]   exponent addition: base^(%s+%s)%n", depthIndent(), simplifyDepth, leftPower, rightPower));
         }
         simplifyDepth--;
         return leftBase.pow(power).simplify();
       }
     }
 
-    if (left instanceof FunctionNode<D, R, F> leftFunction
-                  && right instanceof FunctionNode<D, R, F> rightFunction)
+    if (left instanceof FunctionNode<D, R, F> leftFunction && right instanceof FunctionNode<D, R, F> rightFunction)
     {
       var leftIsExponentialFunction  = leftFunction.is("exp");
       var rightIsExponentialFunction = rightFunction.is("exp");
@@ -389,19 +347,14 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
         var exponentSum = leftFunction.arg.add(rightFunction.arg).simplify();
         if (traceSimplify)
         {
-          logger.debug(String.format("%s[%d]   exp multiplication: exp(%s+%s)%n",
-                                     depthIndent(),
-                                     simplifyDepth,
-                                     leftFunction.arg,
-                                     rightFunction.arg));
+          logger.debug(String.format("%s[%d]   exp multiplication: exp(%s+%s)%n", depthIndent(), simplifyDepth, leftFunction.arg, rightFunction.arg));
         }
         simplifyDepth--;
         return exponentSum.exp().simplify();
       }
     }
 
-    if (left instanceof FunctionNode<D, R, F> leftFunction2
-                  && right instanceof FunctionNode<D, R, F> rightFunction2)
+    if (left instanceof FunctionNode<D, R, F> leftFunction2 && right instanceof FunctionNode<D, R, F> rightFunction2)
     {
       var leftIsSquareRootFunction = leftFunction2.is("sqrt");
       var functionsAreEqual        = leftFunction2.equals(rightFunction2);
@@ -418,8 +371,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     }
 
     // Combine fractions: (a/b) * (c/d) → (a*c)/(b*d)
-    if (left instanceof DivisionNode<D, R, F> leftDiv
-                  && right instanceof DivisionNode<D, R, F> rightDiv)
+    if (left instanceof DivisionNode<D, R, F> leftDiv && right instanceof DivisionNode<D, R, F> rightDiv)
     {
       var numerator   = leftDiv.left.mul(rightDiv.left).simplify();
       var denominator = leftDiv.right.mul(rightDiv.right).simplify();
@@ -479,10 +431,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
 
     if (traceSimplify)
     {
-      logger.debug(String.format("%s[%d] EXIT MultiplicationNode.simplify() returning this=%s%n",
-                                 depthIndent(),
-                                 simplifyDepth,
-                                 debugNode(this)));
+      logger.debug(String.format("%s[%d] EXIT MultiplicationNode.simplify() returning this=%s%n", depthIndent(), simplifyDepth, debugNode(this)));
     }
     simplifyDepth--;
     return this;
@@ -539,9 +488,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
     assert left != null : this + ".left is null";
     assert right != null : this + ".right is null";

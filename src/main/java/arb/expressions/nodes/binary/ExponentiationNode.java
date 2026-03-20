@@ -29,14 +29,12 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     }
 
     T l = left.evaluate((Class<T>) left.type(), bits, Utensils.newInstance((Class<T>) left.type()));
-    T r = right.evaluate((Class<T>) right.type(),
-                         bits,
-                         Utensils.newInstance((Class<T>) right.type()));
+    T r = right.evaluate((Class<T>) right.type(), bits, Utensils.newInstance((Class<T>) right.type()));
 
     if (l instanceof Fraction base && r instanceof Integer exp)
     {
-      assert AlgebraicNumber.class.equals( resultType );
-      return (T) base.pow(exp, bits, (AlgebraicNumber)Utensils.newInstance(resultType));
+      assert AlgebraicNumber.class.equals(resultType);
+      return (T) base.pow(exp, bits, (AlgebraicNumber) Utensils.newInstance(resultType));
     }
 
     return l.pow(r, bits, result);
@@ -76,8 +74,6 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     return left.isZero() && !right.isZero();
   }
 
-
-
   /**
    * Returns true when this exponentiation node has a closed-form antiderivative
    * via the power rule: ∫x^p dx = x^(p+1)/(p+1). This holds whenever the exponent
@@ -104,9 +100,7 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     return false;
   }
 
-  public ExponentiationNode(Expression<D, R, F> expression,
-                            Node<D, R, F> base,
-                            Node<D, R, F> exponent)
+  public ExponentiationNode(Expression<D, R, F> expression, Node<D, R, F> base, Node<D, R, F> exponent)
   {
     super(expression,
           base,
@@ -177,10 +171,7 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   {
     if (right.dependsOn(variable))
     {
-      throw new UnsupportedOperationException("TODO: support the special cases where the exponent in "
-                                              + this
-                                              + " depends on "
-                                              + variable);
+      throw new UnsupportedOperationException("TODO: support the special cases where the exponent in " + this + " depends on " + variable);
     }
 
     Node<D, R, F> exponent = right.add(one());
@@ -233,13 +224,11 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
       var rconst = right.asLiteralConstant();
       if (lconst.isInt && rconst.isInt)
       {
-        try ( var lint = new Integer(lconst.stringValue);
-              var rint = new Integer(rconst.stringValue))
+        try ( var lint = new Integer(lconst.stringValue); var rint = new Integer(rconst.stringValue))
         {
           if (rint.sign() < 0)
           {
-            try ( var posExp = new Integer(); var denominator = new Integer();
-                  var result = new Fraction())
+            try ( var posExp = new Integer(); var denominator = new Integer(); var result = new Fraction())
             {
               rint.neg(posExp);
               lint.pow(posExp, 0, denominator);
@@ -263,9 +252,7 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
     return left.spliceInto(newExpression).pow(right.spliceInto(newExpression));
   }
@@ -296,8 +283,6 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public String typeset()
   {
-    return String.format(String.format("{%s}^{%s}", format(left), format(right)),
-                         left.typeset(),
-                         right.typeset());
+    return String.format(String.format("{%s}^{%s}", format(left), format(right)), left.typeset(), right.typeset());
   }
 }

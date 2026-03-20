@@ -40,12 +40,9 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
           "+");
   }
 
-  static <D, R, F extends Function<? extends D, ? extends R>>
-         boolean
-         areIntegerDivisions(DivisionNode<D, R, F> leftDiv, DivisionNode<D, R, F> rightDiv)
+  static <D, R, F extends Function<? extends D, ? extends R>> boolean areIntegerDivisions(DivisionNode<D, R, F> leftDiv, DivisionNode<D, R, F> rightDiv)
   {
-    return leftDiv.left.type().equals(Integer.class) && leftDiv.right.type().equals(Integer.class)
-                  && rightDiv.left.type().equals(Integer.class)
+    return leftDiv.left.type().equals(Integer.class) && leftDiv.right.type().equals(Integer.class) && rightDiv.left.type().equals(Integer.class)
                   && rightDiv.right.type().equals(Integer.class);
   }
 
@@ -65,8 +62,7 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public boolean hasClosedFormFractionalDerivative(VariableNode<D, R, F> variable)
   {
-    return left.hasClosedFormFractionalDerivative(variable)
-                  && right.hasClosedFormFractionalDerivative(variable);
+    return left.hasClosedFormFractionalDerivative(variable) && right.hasClosedFormFractionalDerivative(variable);
   }
 
   /**
@@ -119,13 +115,11 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       return left;
     }
-    if (left instanceof LiteralConstantNode<D, R, F> lconst
-                  && right instanceof LiteralConstantNode<D, R, F> rconst)
+    if (left instanceof LiteralConstantNode<D, R, F> lconst && right instanceof LiteralConstantNode<D, R, F> rconst)
     {
       if (lconst.isInt && rconst.isInt)
       {
-        try ( var lint = lconst.asInteger(); var rint = rconst.asInteger();
-              var result = new Integer())
+        try ( var lint = lconst.asInteger(); var rint = rconst.asInteger(); var result = new Integer())
         {
           var sum = lint.add(rint, 0, result);
           return expression.newLiteralConstant(sum.toString());
@@ -148,8 +142,7 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
       return this;
     }
-    else if (left instanceof DivisionNode<D, R, F> leftDiv
-                  && right instanceof DivisionNode<D, R, F> rightDiv)
+    else if (left instanceof DivisionNode<D, R, F> leftDiv && right instanceof DivisionNode<D, R, F> rightDiv)
     {
       if (areIntegerDivisions(leftDiv, rightDiv))
       {
@@ -162,9 +155,7 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
     return left.spliceInto(newExpression).add(right.spliceInto(newExpression));
   }
@@ -174,8 +165,6 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     return format("\\left(%s + %s\\right)", left.typeset(), right.typeset());
   }
-
-
 
   @Override
   public boolean isZero()

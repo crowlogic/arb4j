@@ -74,8 +74,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   /**
    * Extract ax² + bx + c. Handles terms like x², -x², 5x², x, 3, etc.
    */
-  private QuadraticCoefficients<D, R, F>
-          extractQuadraticCoefficients(Node<D, R, F> node, VariableNode<D, R, F> variable)
+  private QuadraticCoefficients<D, R, F> extractQuadraticCoefficients(Node<D, R, F> node, VariableNode<D, R, F> variable)
   {
     Node<D, R, F>                 coeffA = null;
     Node<D, R, F>                 coeffB = null;
@@ -167,8 +166,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   /**
    * Extracts the 'a' from 'ax²'.
    */
-  private Node<D, R, F> extractQuadraticCoefficient(Node<D, R, F> term,
-                                                    VariableNode<D, R, F> variable)
+  private Node<D, R, F> extractQuadraticCoefficient(Node<D, R, F> term, VariableNode<D, R, F> variable)
   {
     // If it's just x², coefficient is 1
     if (term.isVariableSquared(variable))
@@ -233,8 +231,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (term instanceof MultiplicationNode<D, R, F> mul)
     {
-      return (mul.left.isIndependentOf(variable) && mul.right.equals(variable))
-                    || (mul.right.isIndependentOf(variable) && mul.left.equals(variable));
+      return (mul.left.isIndependentOf(variable) && mul.right.equals(variable)) || (mul.right.isIndependentOf(variable) && mul.left.equals(variable));
     }
 
     return false;
@@ -334,11 +331,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                            0);
     }
 
-    throw new UnsupportedOperationException("Integration of "
-                                            + this
-                                            + " with respect to "
-                                            + variable
-                                            + " not implemented");
+    throw new UnsupportedOperationException("Integration of " + this + " with respect to " + variable + " not implemented");
   }
 
   private boolean isSincFunction(VariableNode<D, R, F> variable)
@@ -382,8 +375,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return left.div(rightNeg.arg).neg();
     }
 
-    if (left instanceof ExponentiationNode<D, R, F> leftExp
-                  && right instanceof ExponentiationNode<D, R, F> rightExp)
+    if (left instanceof ExponentiationNode<D, R, F> leftExp && right instanceof ExponentiationNode<D, R, F> rightExp)
     {
       var leftBase  = leftExp.left;
       var rightBase = rightExp.left;
@@ -394,8 +386,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       }
     }
 
-    if (left instanceof FunctionNode<D, R, F> leftFunction
-                  && right instanceof FunctionNode<D, R, F> rightFunction)
+    if (left instanceof FunctionNode<D, R, F> leftFunction && right instanceof FunctionNode<D, R, F> rightFunction)
     {
       if (leftFunction.isExponential() && rightFunction.functionName.equals("exp"))
       {
@@ -446,11 +437,9 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       }
     }
 
-    if (left.isLiteralConstant() && left.asLiteralConstant().isInt && right.isLiteralConstant()
-                  && right.asLiteralConstant().isInt)
+    if (left.isLiteralConstant() && left.asLiteralConstant().isInt && right.isLiteralConstant() && right.asLiteralConstant().isInt)
     {
-      try ( var num = left.asLiteralConstant().asInteger();
-            var den = right.asLiteralConstant().asInteger())
+      try ( var num = left.asLiteralConstant().asInteger(); var den = right.asLiteralConstant().asInteger())
       {
         Fraction frac = new Fraction(num,
                                      den);
@@ -486,9 +475,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       return numerator.pow(one().sub(denExp.right).simplify()).simplify();
     }
-    if (numerator instanceof ExponentiationNode<D, R, F> nExp
-                  && denominator instanceof ExponentiationNode<D, R, F> dExp
-                  && nExp.left.equals(dExp.left))
+    if (numerator instanceof ExponentiationNode<D, R, F> nExp && denominator instanceof ExponentiationNode<D, R, F> dExp && nExp.left.equals(dExp.left))
     {
       return nExp.left.pow(nExp.right.sub(dExp.right).simplify()).simplify();
     }
@@ -496,9 +483,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
     return left.spliceInto(newExpression).div(right.spliceInto(newExpression));
   }
@@ -506,8 +491,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Class<?> type()
   {
-    if (left != null && right != null && left.type().equals(Integer.class)
-                  && right.type().equals(Integer.class))
+    if (left != null && right != null && left.type().equals(Integer.class) && right.type().equals(Integer.class))
     {
       return Fraction.class;
     }

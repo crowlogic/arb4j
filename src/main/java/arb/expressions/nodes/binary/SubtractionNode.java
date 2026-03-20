@@ -37,7 +37,6 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
 
   public static final Logger logger = LoggerFactory.getLogger(SubtractionNode.class);
 
-
   public SubtractionNode(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)
   {
     super(expression,
@@ -136,9 +135,7 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
     return left.spliceInto(newExpression).sub(right.spliceInto(newExpression));
   }

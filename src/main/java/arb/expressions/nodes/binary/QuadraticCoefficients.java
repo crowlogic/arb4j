@@ -14,10 +14,7 @@ class QuadraticCoefficients<D, R, F extends Function<? extends D, ? extends R>>
   final Node<D, R, F>         c;       // constant term
   final VariableNode<D, R, F> variable;
 
-  QuadraticCoefficients(Node<D, R, F> a,
-                        Node<D, R, F> b,
-                        Node<D, R, F> c,
-                        VariableNode<D, R, F> variable)
+  QuadraticCoefficients(Node<D, R, F> a, Node<D, R, F> b, Node<D, R, F> c, VariableNode<D, R, F> variable)
   {
     this.a        = a;
     this.b        = b;

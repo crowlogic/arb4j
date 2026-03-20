@@ -21,10 +21,7 @@ class CompletedSquareForm<D, R, F extends Function<? extends D, ? extends R>>
   final Node<D, R, F> argument;    // the u inside the function
   final Node<D, R, F> scale;       // scaling factor for argument
 
-  CompletedSquareForm(FunctionType type,
-                      Node<D, R, F> coefficient,
-                      Node<D, R, F> argument,
-                      Node<D, R, F> scale)
+  CompletedSquareForm(FunctionType type, Node<D, R, F> coefficient, Node<D, R, F> argument, Node<D, R, F> scale)
   {
     this.type        = type;
     this.coefficient = coefficient;

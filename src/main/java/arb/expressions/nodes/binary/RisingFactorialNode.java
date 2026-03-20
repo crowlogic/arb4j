@@ -65,9 +65,7 @@ public class RisingFactorialNode<D, R, F extends Function<? extends D, ? extends
    * @param right
    * @param expression
    */
-  public RisingFactorialNode(Node<D, R, F> left,
-                             Node<D, R, F> right,
-                             Expression<D, R, F> expression)
+  public RisingFactorialNode(Node<D, R, F> left, Node<D, R, F> right, Expression<D, R, F> expression)
   {
     super(expression,
           left,
@@ -119,9 +117,7 @@ public class RisingFactorialNode<D, R, F extends Function<? extends D, ? extends
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
     return new RisingFactorialNode<E, S, G>(left.spliceInto(newExpression),
                                             right.spliceInto(newExpression),

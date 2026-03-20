@@ -41,9 +41,9 @@ public abstract class Integration
    * @param variable The variable of integration
    * @return The integrated result
    */
-  public static <D, R, F extends Function<? extends D, ? extends R>>
-         Node<D, R, F>
-         integrateByParts(Node<D, R, F> u, Node<D, R, F> dv, VariableNode<D, R, F> variable)
+  public static <D, R, F extends Function<? extends D, ? extends R>> Node<D, R, F> integrateByParts(Node<D, R, F> u,
+                                                                                                    Node<D, R, F> dv,
+                                                                                                    VariableNode<D, R, F> variable)
   {
     if (Expression.traceNodes)
     {
@@ -65,9 +65,7 @@ public abstract class Integration
 
     if (Expression.traceNodes)
     {
-      logger.debug("applySingleStepIBP: uvTerm={}, remainingIntegral={}",
-                   uvTerm,
-                   remainingIntegral);
+      logger.debug("applySingleStepIBP: uvTerm={}, remainingIntegral={}", uvTerm, remainingIntegral);
     }
 
     return uvTerm.sub(remainingIntegral).simplify();
@@ -83,9 +81,9 @@ public abstract class Integration
    * @param shift    The expected shift
    * @return true if node equals (variable - shift)
    */
-  public static <D, R, F extends Function<? extends D, ? extends R>>
-         boolean
-         isShiftedVariable(Node<D, R, F> node, VariableNode<D, R, F> variable, Node<D, R, F> shift)
+  public static <D, R, F extends Function<? extends D, ? extends R>> boolean isShiftedVariable(Node<D, R, F> node,
+                                                                                               VariableNode<D, R, F> variable,
+                                                                                               Node<D, R, F> shift)
   {
     // Direct variable match when shift is zero
     if (shift.isZero() && node.equals(variable))
@@ -100,8 +98,7 @@ public abstract class Integration
     }
 
     // Check for (x+a) when shift is -a
-    if (node instanceof AdditionNode add && add.left.equals(variable)
-                  && shift instanceof NegationNode negShift)
+    if (node instanceof AdditionNode add && add.left.equals(variable) && shift instanceof NegationNode negShift)
     {
       return add.right.equals(negShift.arg);
     }
@@ -123,14 +120,13 @@ public abstract class Integration
    * @param variable The variable of integration
    * @return The integrated result
    */
-  public static <D, R, F extends Function<? extends D, ? extends R>>
-         Node<D, R, F>
-         applyTabularMethod(Node<D, R, F> u, Node<D, R, F> dv, VariableNode<D, R, F> variable)
+  public static <D, R, F extends Function<? extends D, ? extends R>> Node<D, R, F> applyTabularMethod(Node<D, R, F> u,
+                                                                                                      Node<D, R, F> dv,
+                                                                                                      VariableNode<D, R, F> variable)
   {
     final AtomicReference<Node<D, R, F>> result        = new AtomicReference<>(u.zero());
     final AtomicReference<Node<D, R, F>> currentU      = new AtomicReference<>(u);
-    final AtomicReference<Node<D, R, F>> currentV      =
-                                                  new AtomicReference<>(dv.integral(variable));
+    final AtomicReference<Node<D, R, F>> currentV      = new AtomicReference<>(dv.integral(variable));
 
     int                                  sign          = 1;
     int                                  maxIterations = 20;
@@ -138,11 +134,7 @@ public abstract class Integration
 
     if (Expression.traceNodes)
     {
-      logger.debug("applyTabularMethod: start u={}, dv={}, variable={}, maxIterations={}",
-                   u,
-                   dv,
-                   variable,
-                   maxIterations);
+      logger.debug("applyTabularMethod: start u={}, dv={}, variable={}, maxIterations={}", u, dv, variable, maxIterations);
     }
 
     while (!currentU.get().isZero() && iteration < maxIterations)
@@ -153,16 +145,10 @@ public abstract class Integration
 
     if (Expression.traceNodes)
     {
-      logger.debug("applyTabularMethod: end iterations={}, currentU={}, currentV={}, result={}",
-                   iteration,
-                   currentU.get(),
-                   currentV.get(),
-                   result.get());
+      logger.debug("applyTabularMethod: end iterations={}, currentU={}, currentV={}, result={}", iteration, currentU.get(), currentV.get(), result.get());
     }
 
-    assert iteration < maxIterations : String.format(" iterations = %d < maxIterations = %d",
-                                                     iteration,
-                                                     maxIterations);
+    assert iteration < maxIterations : String.format(" iterations = %d < maxIterations = %d", iteration, maxIterations);
     return result.get();
   }
 
@@ -170,9 +156,7 @@ public abstract class Integration
    * Builds a single product node from a list of factors via left-association.
    * Returns the single factor if the list has one element.
    */
-  public static <D, R, F extends Function<? extends D, ? extends R>>
-         Node<D, R, F>
-         buildProduct(List<Node<D, R, F>> factors)
+  public static <D, R, F extends Function<? extends D, ? extends R>> Node<D, R, F> buildProduct(List<Node<D, R, F>> factors)
   {
     assert !factors.isEmpty();
     var result = factors.get(0);
@@ -186,11 +170,10 @@ public abstract class Integration
   /**
    * Recursively flattens a multiplication tree into a list of non-multiplication
    * leaf factors.
-   * @return 
+   * 
+   * @return
    */
-  public static <D, R, F extends Function<? extends D, ? extends R>>
-         List<Node<D, R, F>>
-         collectFactors(Node<D, R, F> node, List<Node<D, R, F>> factors)
+  public static <D, R, F extends Function<? extends D, ? extends R>> List<Node<D, R, F>> collectFactors(Node<D, R, F> node, List<Node<D, R, F>> factors)
   {
     if (node instanceof MultiplicationNode<D, R, F> mul)
     {
@@ -217,9 +200,8 @@ public abstract class Integration
    * @return The integrated result, or null if no θ factor is present
    * @see <a href="https://github.com/crowlogic/arb4j/issues/841">#841</a>
    */
-  public static <D, R, F extends Function<? extends D, ? extends R>>
-         Node<D, R, F>
-         integrateStepFunction(List<Node<D, R, F>> factors, VariableNode<D, R, F> variable)
+  public static <D, R, F extends Function<? extends D, ? extends R>> Node<D, R, F> integrateStepFunction(List<Node<D, R, F>> factors,
+                                                                                                         VariableNode<D, R, F> variable)
   {
     FunctionNode<D, R, F> thetaNode = null;
     var                   remaining = new ArrayList<Node<D, R, F>>();
@@ -243,8 +225,7 @@ public abstract class Integration
 
     if (Expression.traceNodes)
     {
-      logger.debug("tryStepFunctionIntegration: θ found, integrating remaining {} factors (#841)",
-                   remaining.size());
+      logger.debug("tryStepFunctionIntegration: θ found, integrating remaining {} factors (#841)", remaining.size());
     }
 
     var product = buildProduct(remaining);
@@ -266,9 +247,7 @@ public abstract class Integration
    * @param variable The integration variable
    * @return The integrated result, or null if no partition works
    */
-  public static <D, R, F extends Function<? extends D, ? extends R>>
-         Node<D, R, F>
-         integrateByParts(List<Node<D, R, F>> factors, VariableNode<D, R, F> variable)
+  public static <D, R, F extends Function<? extends D, ? extends R>> Node<D, R, F> integrateByParts(List<Node<D, R, F>> factors, VariableNode<D, R, F> variable)
   {
     int n = factors.size();
     if (n < 2)
@@ -331,14 +310,12 @@ public abstract class Integration
    * @param iteration Current iteration index (for logging)
    * @return The negated sign for the next iteration
    */
-  public static <D, R, F extends Function<? extends D, ? extends R>>
-         int
-         applyTabularIteration(AtomicReference<Node<D, R, F>> result,
-                               AtomicReference<Node<D, R, F>> currentU,
-                               AtomicReference<Node<D, R, F>> currentV,
-                               VariableNode<D, R, F> variable,
-                               int sign,
-                               int iteration)
+  public static <D, R, F extends Function<? extends D, ? extends R>> int applyTabularIteration(AtomicReference<Node<D, R, F>> result,
+                                                                                               AtomicReference<Node<D, R, F>> currentU,
+                                                                                               AtomicReference<Node<D, R, F>> currentV,
+                                                                                               VariableNode<D, R, F> variable,
+                                                                                               int sign,
+                                                                                               int iteration)
   {
     Node<D, R, F> u = currentU.get();
     Node<D, R, F> v = currentV.get();
@@ -382,7 +359,6 @@ public abstract class Integration
     return -sign;
   }
 
-
   /**
    * Extracts the shift value 'a' from a delta function argument.
    * 
@@ -393,9 +369,7 @@ public abstract class Integration
    * 
    * @return The shift node, or null if pattern doesn't match
    */
-  static <D, R, F extends Function<? extends D, ? extends R>>
-         Node<D, R, F>
-         extractShiftFromDeltaArg(Node<D, R, F> deltaArg, VariableNode<D, R, F> variable)
+  static <D, R, F extends Function<? extends D, ? extends R>> Node<D, R, F> extractShiftFromDeltaArg(Node<D, R, F> deltaArg, VariableNode<D, R, F> variable)
   {
     // Case 1: δ(x) - direct variable, shift = 0
     if (deltaArg.equals(variable))
