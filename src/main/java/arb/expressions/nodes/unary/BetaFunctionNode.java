@@ -52,9 +52,9 @@ public class BetaFunctionNode<D, C, F extends Function<? extends D, ? extends C>
     return Objects.equals(x, other.x) && Objects.equals(y, other.y);
   }
 
-  private final Node<D, C, F>       x;
-  private final Node<D, C, F>       y;
-  private Node<D, C, F>             equivalentNode;
+  private final Node<D, C, F> x;
+  private final Node<D, C, F> y;
+  private Node<D, C, F>       equivalentNode;
 
   public BetaFunctionNode(Expression<D, C, F> expression)
   {
@@ -76,7 +76,7 @@ public class BetaFunctionNode<D, C, F extends Function<? extends D, ? extends C>
 //    context.registerVariable("x", expression.newCoDomainInstance());
 //    context.registerVariable("y", expression.newCoDomainInstance());
 
-    equivalentNode = x.Γ().mul(y.Γ()).div(x.add(y).Γ());
+    equivalentNode            = x.Γ().mul(y.Γ()).div(x.add(y).Γ());
     equivalentNode.isRootNode = isRootNode;
   }
 

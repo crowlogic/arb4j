@@ -38,9 +38,7 @@ import arb.functions.real.SphericalBesselFunction;
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
  */
-public class SphericalBesselFunctionNodeOfTheFirstKind<D,
-              R,
-              F extends Function<? extends D, ? extends R>> extends
+public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends D, ? extends R>> extends
                                                       FunctionNode<D, R, F>
 {
 
@@ -58,9 +56,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
     expression.require(')');
   }
 
-  public SphericalBesselFunctionNodeOfTheFirstKind(Expression<D, R, F> expression,
-                                                   Node<D, R, F> order,
-                                                   Node<D, R, F> arg)
+  public SphericalBesselFunctionNodeOfTheFirstKind(Expression<D, R, F> expression, Node<D, R, F> order, Node<D, R, F> arg)
   {
     super("j",
           null,
@@ -75,8 +71,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
                                                 expression.coDomainType.getSimpleName()));
     }
 
-    functionFieldName =
-                      expression.newIntermediateVariable("j", SphericalBesselFunction.class, true);
+    functionFieldName = expression.newIntermediateVariable("j", SphericalBesselFunction.class, true);
 
   }
 
@@ -91,8 +86,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
       logger.debug(String.format("j.generate(ν=%s, resultType=%s\n)\n", order, resultType));
     }
     generatedType = resultType;
-    return isNullaryFunction ? generateNullaryFunctionInvocation(mv, resultType)
-                             : generateEvaluateFunctionInvocation(mv);
+    return isNullaryFunction ? generateNullaryFunctionInvocation(mv, resultType) : generateEvaluateFunctionInvocation(mv);
   }
 
   public void generateArgument(MethodVisitor mv, Class<?> resultType)
@@ -143,13 +137,13 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
   public MethodVisitor invokeEvaluationMethod(MethodVisitor mv, Class<?> outType)
   {
     return Compiler.generateVirtualMethodInvocation(mv,
-                                        SphericalBesselFunction.class,
-                                        "evaluate",
-                                        expression.coDomainType,
-                                        outType,
-                                        int.class,
-                                        int.class,
-                                        expression.coDomainType);
+                                                    SphericalBesselFunction.class,
+                                                    "evaluate",
+                                                    expression.coDomainType,
+                                                    outType,
+                                                    int.class,
+                                                    int.class,
+                                                    expression.coDomainType);
   }
 
   public void loadFunctionFieldOntoStack(MethodVisitor mv)
@@ -162,17 +156,11 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
   {
     loadFunctionFieldOntoStack(mv);
     generateOrder(mv);
-    Compiler.generateVirtualMethodInvocation(mv,
-                                 SphericalBesselFunction.class,
-                                 "setOrder",
-                                 SphericalBesselFunction.class,
-                                 Integer.class);
+    Compiler.generateVirtualMethodInvocation(mv, SphericalBesselFunction.class, "setOrder", SphericalBesselFunction.class, Integer.class);
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
     return new SphericalBesselFunctionNodeOfTheFirstKind<>(newExpression,
                                                            order.spliceInto(newExpression),

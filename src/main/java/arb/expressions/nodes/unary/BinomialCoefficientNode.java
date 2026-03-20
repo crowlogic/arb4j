@@ -36,13 +36,7 @@ public class BinomialCoefficientNode<D, R, F extends Function<? extends D, ? ext
 
     Compiler.generateCallToLoadUnsignedLong(choices.generate(mv, Integer.class));
 
-    return invokeStaticMethod(mv,
-                              arblib.class,
-                              "fmpz_bin_uiui",
-                              Void.class,
-                              long.class,
-                              long.class,
-                              long.class);
+    return invokeStaticMethod(mv, arblib.class, "fmpz_bin_uiui", Void.class, long.class, long.class, long.class);
   }
 
   @Override
@@ -71,9 +65,7 @@ public class BinomialCoefficientNode<D, R, F extends Function<? extends D, ? ext
     expression.require(')');
   }
 
-  protected BinomialCoefficientNode(Expression<D, R, F> newExpression,
-                                    Node<D, R, F> combinations,
-                                    Node<D, R, F> choices)
+  protected BinomialCoefficientNode(Expression<D, R, F> newExpression, Node<D, R, F> combinations, Node<D, R, F> choices)
   {
     super("choose",
           null,
@@ -90,9 +82,7 @@ public class BinomialCoefficientNode<D, R, F extends Function<? extends D, ? ext
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
     return new BinomialCoefficientNode<E, S, G>(newExpression,
                                                 combinations.spliceInto(newExpression),

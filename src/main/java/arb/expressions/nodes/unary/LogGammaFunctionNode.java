@@ -29,11 +29,7 @@ public class LogGammaFunctionNode<D, C, F extends Function<? extends D, ? extend
   }
 
   @Override
-  protected void pushSeriesCallParamsAndInvoke(MethodVisitor mv,
-                                               Class<?> sType,
-                                               boolean isComplex,
-                                               int n,
-                                               int oneSlot)
+  protected void pushSeriesCallParamsAndInvoke(MethodVisitor mv, Class<?> sType, boolean isComplex, int n, int oneSlot)
   {
     call(mv, isComplex, n, "arb_poly_lgamma_series", "acb_poly_lgamma_series");
   }

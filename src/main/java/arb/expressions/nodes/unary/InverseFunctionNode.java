@@ -114,9 +114,7 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
    *                            f⁻¹)
    * @param expression          the containing expression
    */
-  public InverseFunctionNode(String forwardFunctionName,
-                             Node<D, R, F> argument,
-                             Expression<D, R, F> expression)
+  public InverseFunctionNode(String forwardFunctionName, Node<D, R, F> argument, Expression<D, R, F> expression)
   {
     super(expression,
           argument);
@@ -141,9 +139,7 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
    * @param mapping    the function mapping for the forward function
    * @param argument   the argument node
    */
-  public InverseFunctionNode(Expression<D, R, F> expression,
-                             FunctionMapping<?, ?, ?> mapping,
-                             Node<D, R, F> argument)
+  public InverseFunctionNode(Expression<D, R, F> expression, FunctionMapping<?, ?, ?> mapping, Node<D, R, F> argument)
   {
     this(mapping.functionName,
          argument,
@@ -151,7 +147,6 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
     this.forwardMapping = mapping;
     this.contextual     = true;
   }
-
 
   @Override
   public boolean isZero()
@@ -232,8 +227,7 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
   {
     // y·f⁻¹(y) − F(f⁻¹(y)) where F is the antiderivative of f
     // For initial support, delegate to numerical integration or throw
-    throw new UnsupportedOperationException(String.format("Symbolic integration of %s⁻¹ is not yet implemented; "
-                                                          + "use numerical integration",
+    throw new UnsupportedOperationException(String.format("Symbolic integration of %s⁻¹ is not yet implemented; " + "use numerical integration",
                                                           forwardFunctionName));
   }
 
@@ -293,9 +287,7 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
     // Load the forward function reference onto the stack
     if (contextual && forwardMapping != null)
     {
-      expression.loadFieldOntoStack(loadThisOntoStack(mv),
-                                    forwardFunctionName,
-                                    forwardMapping.functionFieldDescriptor());
+      expression.loadFieldOntoStack(loadThisOntoStack(mv), forwardFunctionName, forwardMapping.functionFieldDescriptor());
     }
     else
     {
@@ -314,13 +306,7 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
     mv.visitMethodInsn(Opcodes.INVOKESTATIC,
                        Type.getInternalName(InverseFunctionEvaluator.class),
                        "evaluate",
-                       Compiler.getMethodDescriptor(resultType,
-                                                    resultType,
-                                                    int.class,
-                                                    resultType,
-                                                    Function.class,
-                                                    String.class,
-                                                    int.class),
+                       Compiler.getMethodDescriptor(resultType, resultType, int.class, resultType, Function.class, String.class, int.class),
                        false);
 
     generatedType = resultType;
@@ -334,9 +320,7 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
     return new InverseFunctionNode<>(forwardFunctionName,
                                      arg.spliceInto(newExpression),
@@ -344,9 +328,7 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, R, F>
-         substitute(String variable, Node<E, S, G> transformation)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable, Node<E, S, G> transformation)
   {
     arg = arg.substitute(variable, transformation);
     return this;
@@ -362,16 +344,13 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
   @SuppressWarnings("unchecked")
   public <C> Class<? extends C> type()
   {
-    return (Class<? extends C>) (contextual && forwardMapping != null ? forwardMapping.domain
-                                                                      : expression.coDomainType);
+    return (Class<? extends C>) (contextual && forwardMapping != null ? forwardMapping.domain : expression.coDomainType);
   }
 
   @Override
   public String toString()
   {
-    return String.format("%s⁻¹(%s)",
-                         forwardFunctionName,
-                         arg == null ? "" : arg.toStringWithoutIndependentVariableSpecified());
+    return String.format("%s⁻¹(%s)", forwardFunctionName, arg == null ? "" : arg.toStringWithoutIndependentVariableSpecified());
   }
 
   @Override

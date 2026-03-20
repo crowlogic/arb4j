@@ -29,11 +29,7 @@ public class SineIntegralNode<D, C, F extends Function<? extends D, ? extends C>
   }
 
   @Override
-  protected void pushSeriesCallParamsAndInvoke(MethodVisitor mv,
-                                               Class<?> sType,
-                                               boolean complex,
-                                               int n,
-                                               int oneSlot)
+  protected void pushSeriesCallParamsAndInvoke(MethodVisitor mv, Class<?> sType, boolean complex, int n, int oneSlot)
   {
     call(mv, complex, n, "arb_hypgeom_si_series", "acb_hypgeom_si_series");
   }

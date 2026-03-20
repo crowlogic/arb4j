@@ -11,7 +11,7 @@ import arb.functions.Function;
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class GammaFunctionSeriesNode<D, C, F extends Function<? extends D, ? extends C>> extends
-                              PolySeriesFunctionDerivativeNode<D, C, F>
+                                    PolySeriesFunctionDerivativeNode<D, C, F>
 {
 
   public GammaFunctionSeriesNode(Expression<D, C, F> expression)
@@ -29,11 +29,7 @@ public class GammaFunctionSeriesNode<D, C, F extends Function<? extends D, ? ext
   }
 
   @Override
-  protected void pushSeriesCallParamsAndInvoke(MethodVisitor mv,
-                                               Class<?> sType,
-                                               boolean complex,
-                                               int n,
-                                               int oneSlot)
+  protected void pushSeriesCallParamsAndInvoke(MethodVisitor mv, Class<?> sType, boolean complex, int n, int oneSlot)
   {
     call(mv, complex, n, "arb_poly_gamma_series", "acb_poly_gamma_series");
   }

@@ -46,14 +46,14 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
   {
     var newNode = new HypergeometricFunctionNode<E, S, G>(newExpression,
                                                           false);
-    newNode.elementFieldName       = elementFieldName;
-    newNode.fieldName              = fieldName;
-    newNode.functionName           = functionName;
-    newNode.argFunctionFieldName   = argFunctionFieldName;
-    newNode.identityFieldName = identityFieldName;
-    newNode.arg                    = arg.spliceInto(newExpression);
-    newNode.α                      = α.spliceInto(newExpression);
-    newNode.β                      = β.spliceInto(newExpression);
+    newNode.elementFieldName     = elementFieldName;
+    newNode.fieldName            = fieldName;
+    newNode.functionName         = functionName;
+    newNode.argFunctionFieldName = argFunctionFieldName;
+    newNode.identityFieldName    = identityFieldName;
+    newNode.arg                  = arg.spliceInto(newExpression);
+    newNode.α                    = α.spliceInto(newExpression);
+    newNode.β                    = β.spliceInto(newExpression);
     newNode.initialize();
     return newNode;
   }

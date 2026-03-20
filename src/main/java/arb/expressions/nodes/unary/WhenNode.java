@@ -40,9 +40,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   private static final String INTEGER_CLASS_INTERNAL_NAME = Type.getInternalName(Integer.class);
   private static final String INT_METHOD_DESCRIPTOR       = Compiler.getMethodDescriptor(int.class);
 
-  public static <D, R, F extends Function<? extends D, ? extends R>>
-         Node<D, R, F>
-         evaluateDefaultCase(Expression<D, R, F> expression)
+  public static <D, R, F extends Function<? extends D, ? extends R>> Node<D, R, F> evaluateDefaultCase(Expression<D, R, F> expression)
   {
     expression.require(',');
     var defaultValue = expression.resolve();
@@ -57,9 +55,9 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
 
   public TreeMap<Integer, Node<D, R, F>> cases;
 
-  private Label                          defaultLabel    = new Label();
-  private Label                          endSwitch       = new Label();
-  private Label[]                        labels          = null;
+  private Label                          defaultLabel = new Label();
+  private Label                          endSwitch    = new Label();
+  private Label[]                        labels       = null;
   private VariableNode<D, R, F>          switchVariable;
 
   public WhenNode(Expression<D, R, F> expression)
@@ -84,8 +82,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     }
   }
 
-  public <E, S, G extends Function<? extends E, ? extends S>> WhenNode(
-                                                                       Expression<D, R, F> expression,
+  public <E, S, G extends Function<? extends E, ? extends S>> WhenNode(Expression<D, R, F> expression,
                                                                        Node<D, R, F> defaultNode,
                                                                        TreeMap<Integer, Node<E, S, G>> sourceCases)
   {
@@ -100,8 +97,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     }
   }
 
-  public <E, S, G extends Function<? extends E, ? extends S>> WhenNode(
-                                                                       Expression<D, R, F> expression,
+  public <E, S, G extends Function<? extends E, ? extends S>> WhenNode(Expression<D, R, F> expression,
                                                                        Node<D, R, F> defaultNode,
                                                                        TreeMap<Integer, Node<E, S, G>> sourceCases,
                                                                        VariableNode<D, R, F> switchVariable)
@@ -149,8 +145,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     Expression<?, ?, ?> expr = expression;
     while (expr != null)
     {
-      if (expr.independentVariable != null
-          && variable.reference.equals(expr.independentVariable.reference))
+      if (expr.independentVariable != null && variable.reference.equals(expr.independentVariable.reference))
       {
         return true;
       }
@@ -177,10 +172,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     }
     else if (!switchVariable.reference.equals(variable.reference))
     {
-      throw new CompilerException("all cases in a when statement must switch on the same variable, got "
-                                  + variable
-                                  + " but expected "
-                                  + switchVariable);
+      throw new CompilerException("all cases in a when statement must switch on the same variable, got " + variable + " but expected " + switchVariable);
     }
 
     expression.require('=');
@@ -230,9 +222,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    assert expression.coDomainType.equals(resultType) : String.format("expression.coDomainType = %s != resultType = %s",
-                                                                      expression.coDomainType,
-                                                                      resultType);
+    assert expression.coDomainType.equals(resultType) : String.format("expression.coDomainType = %s != resultType = %s", expression.coDomainType, resultType);
 
     labels = new Label[cases.size()];
 
@@ -269,8 +259,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
 
   public void generateIndex(MethodVisitor mv)
   {
-    if (switchVariable != null
-        && !switchVariable.reference.equals(expression.independentVariable.reference))
+    if (switchVariable != null && !switchVariable.reference.equals(expression.independentVariable.reference))
     {
       switchVariable.generate(mv, Integer.class);
     }
@@ -278,11 +267,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     {
       cast(loadInputParameter(mv), expression.domainType);
     }
-    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                       INTEGER_CLASS_INTERNAL_NAME,
-                       "getSignedValue",
-                       INT_METHOD_DESCRIPTOR,
-                       false);
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, INTEGER_CLASS_INTERNAL_NAME, "getSignedValue", INT_METHOD_DESCRIPTOR, false);
   }
 
   @Override
@@ -322,9 +307,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
     return new WhenNode<E, S, G>(newExpression,
                                  arg.spliceInto(newExpression),
@@ -332,12 +315,9 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
                                  switchVariable != null ? switchVariable.spliceInto(newExpression) : null);
   }
 
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, R, F>
-         substitute(String variable, Node<E, S, G> arg)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable, Node<E, S, G> arg)
   {
-    cases.entrySet()
-         .forEach(event -> cases.put(event.getKey(), event.getValue().substitute(variable, arg)));
+    cases.entrySet().forEach(event -> cases.put(event.getKey(), event.getValue().substitute(variable, arg)));
     return this;
   }
 
@@ -350,28 +330,19 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   @Override
   public String toString()
   {
-    String switchVar   = switchVariable != null ? switchVariable.toString()
-                                               : expression.getIndependentVariable().toString();
-    String caseString  = cases.entrySet()
-                              .stream()
-                              .map(node -> formatCase(node, switchVar))
-                              .collect(Collectors.joining(","));
+    String switchVar  = switchVariable != null ? switchVariable.toString() : expression.getIndependentVariable().toString();
+    String caseString = cases.entrySet().stream().map(node -> formatCase(node, switchVar)).collect(Collectors.joining(","));
     return String.format("when(%s,else,%s)", caseString, arg);
   }
 
   protected String formatCase(Entry<Integer, Node<D, R, F>> node, String switchVar)
   {
-    return String.format("%s=%s,%s",
-                         switchVar,
-                         node.getKey(),
-                         node.getValue());
+    return String.format("%s=%s,%s", switchVar, node.getKey(), node.getValue());
   }
 
   protected String formatCase(Entry<Integer, Node<D, R, F>> node)
   {
-    return formatCase(node,
-                      switchVariable != null ? switchVariable.toString()
-                                            : expression.getIndependentVariable().toString());
+    return formatCase(node, switchVariable != null ? switchVariable.toString() : expression.getIndependentVariable().toString());
   }
 
   @Override
@@ -383,9 +354,8 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   @Override
   public String typeset()
   {
-    String switchVar = switchVariable != null ? switchVariable.typeset()
-                                             : expression.getIndependentVariable().typeset();
-    StringBuilder sb = new StringBuilder();
+    String        switchVar = switchVariable != null ? switchVariable.typeset() : expression.getIndependentVariable().typeset();
+    StringBuilder sb        = new StringBuilder();
     sb.append("\\\\left\\\\{\\\\begin{array}{ll}\\n");
 
     for (var entry : cases.entrySet())

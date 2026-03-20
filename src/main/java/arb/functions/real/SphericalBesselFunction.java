@@ -18,12 +18,9 @@ public class SphericalBesselFunction implements
                                      AutoCloseable
 {
 
-  private static Context                              prototypeContext =
-                                                                       new Context(Integer.named("n"));
+  private static Context                              prototypeContext = new Context(Integer.named("n"));
 
-  private static Expression<Real, Real, RealFunction> prototype        =
-                                                                RealFunction.compile("(R(n,½;x)*sin(x) - R(n-1,3⁄2;x)*cos(x))/x",
-                                                                                     prototypeContext);
+  private static Expression<Real, Real, RealFunction> prototype        = RealFunction.compile("(R(n,½;x)*sin(x) - R(n-1,3⁄2;x)*cos(x))/x", prototypeContext);
 
   public final Integer                                n                = Integer.named("n");
 
@@ -37,12 +34,12 @@ public class SphericalBesselFunction implements
 
   boolean isInitialized = false;
 
-  public SphericalBesselFunction setOrder( Integer n )
+  public SphericalBesselFunction setOrder(Integer n)
   {
     this.n.set(n);
     return this;
   }
-  
+
   public void initialize()
   {
     var n = context.getVariable("n");

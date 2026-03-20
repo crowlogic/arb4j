@@ -23,8 +23,7 @@ import arb.functions.real.RealBesselFunctionOfTheFirstKind;
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
-public class BesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends D, ? extends R>>
-                                             extends
+public class BesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends D, ? extends R>> extends
                                              FunctionNode<D, R, F>
 {
 
@@ -46,8 +45,7 @@ public class BesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends
       return false;
     if (getClass() != obj.getClass())
       return false;
-    BesselFunctionNodeOfTheFirstKind<?, ?, ?> other =
-                                                    (BesselFunctionNodeOfTheFirstKind<?, ?, ?>) obj;
+    BesselFunctionNodeOfTheFirstKind<?, ?, ?> other = (BesselFunctionNodeOfTheFirstKind<?, ?, ?>) obj;
     return Objects.equals(order, other.order);
   }
 
@@ -58,9 +56,7 @@ public class BesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
     return new BesselFunctionNodeOfTheFirstKind<>(newExpression,
                                                   order.spliceInto(newExpression),
@@ -80,14 +76,11 @@ public class BesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends
     return String.format("J(%s,%s)", order, arg);
   }
 
-
   Node<D, R, F>  order;
 
   public boolean scalar;
 
-  public BesselFunctionNodeOfTheFirstKind(Expression<D, R, F> expression,
-                                          Node<D, R, F> order,
-                                          Node<D, R, F> arg)
+  public BesselFunctionNodeOfTheFirstKind(Expression<D, R, F> expression, Node<D, R, F> order, Node<D, R, F> arg)
   {
     super("J",
           null,
@@ -135,8 +128,7 @@ public class BesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends
   {
     return invokeStaticMethod(mv,
                               arblib.class,
-                              Complex.class.equals(scalarType) ? "acb_hypgeom_bessel_j"
-                                                               : "arb_hypgeom_bessel_j",
+                              Complex.class.equals(scalarType) ? "acb_hypgeom_bessel_j" : "arb_hypgeom_bessel_j",
                               Void.class,
                               scalarType,
                               scalarType,

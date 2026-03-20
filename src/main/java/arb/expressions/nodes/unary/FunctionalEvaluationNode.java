@@ -53,9 +53,7 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
     this.functionNode = functionNode;
   }
 
-  public FunctionalEvaluationNode(Expression<D, C, F> expression,
-                                  Node<D, C, F> functionNode,
-                                  Node<D, C, F> argNode)
+  public FunctionalEvaluationNode(Expression<D, C, F> expression, Node<D, C, F> functionNode, Node<D, C, F> argNode)
   {
     super(expression,
           argNode);
@@ -94,11 +92,7 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
 
     if (Expression.trace)
     {
-      logger.debug("generate(resultType={}) functionNode={} arg={} functionType={}",
-                   resultType,
-                   functionNode,
-                   arg,
-                   functionType);
+      logger.debug("generate(resultType={}) functionNode={} arg={} functionType={}", resultType, functionNode, arg, functionType);
     }
     functionNode.generate(mv, functionType);
     arg.generate(mv, resultType);
@@ -144,9 +138,7 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
     return new FunctionalEvaluationNode<E, S, G>(newExpression,
                                                  functionNode.spliceInto(newExpression),
@@ -154,9 +146,7 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, C, F>
-         substitute(String variable, Node<E, S, G> transformation)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, C, F> substitute(String variable, Node<E, S, G> transformation)
   {
     functionNode = functionNode.substitute(variable, transformation);
     arg          = arg.substitute(variable, transformation);
@@ -210,6 +200,4 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
     arg.accept(t);
   }
 
-
- 
 }

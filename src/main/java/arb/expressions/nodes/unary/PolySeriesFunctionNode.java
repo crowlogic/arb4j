@@ -26,10 +26,7 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
     this.derivativeOrder = 0;
   }
 
-  protected PolySeriesFunctionNode(String name,
-                                   Expression<D, C, F> expr,
-                                   Node<D, C, F> arg,
-                                   int order)
+  protected PolySeriesFunctionNode(String name, Expression<D, C, F> expr, Node<D, C, F> arg, int order)
   {
     super(name,
           arg,
@@ -188,10 +185,5 @@ abstract class PolySeriesFunctionNode<D, C, F extends Function<? extends D, ? ex
     return mv;
   }
 
-  protected abstract void invokeSeriesEvaluationFunction(MethodVisitor mv,
-                                                         Class<?> scalarType,
-                                                         boolean isComplex,
-                                                         int hSlot,
-                                                         int outSlot,
-                                                         Class<?> polyClass);
+  protected abstract void invokeSeriesEvaluationFunction(MethodVisitor mv, Class<?> scalarType, boolean isComplex, int hSlot, int outSlot, Class<?> polyClass);
 }

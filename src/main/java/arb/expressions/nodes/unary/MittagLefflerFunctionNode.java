@@ -75,9 +75,7 @@ public class MittagLefflerFunctionNode<D, R, F extends Function<? extends D, ? e
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
     return new MittagLefflerFunctionNode<>(newExpression,
                                            α.spliceInto(newExpression),
@@ -100,10 +98,7 @@ public class MittagLefflerFunctionNode<D, R, F extends Function<? extends D, ? e
   /**
    * Direct construction when all three parameter nodes are already resolved.
    */
-  public MittagLefflerFunctionNode(Expression<D, R, F> expression,
-                                   Node<D, R, F> alpha,
-                                   Node<D, R, F> beta,
-                                   Node<D, R, F> arg)
+  public MittagLefflerFunctionNode(Expression<D, R, F> expression, Node<D, R, F> alpha, Node<D, R, F> beta, Node<D, R, F> arg)
   {
     super("E",
           null,
@@ -189,8 +184,7 @@ public class MittagLefflerFunctionNode<D, R, F extends Function<? extends D, ? e
   {
     return invokeStaticMethod(mv,
                               arblib.class,
-                              Complex.class.equals(scalarType) ? "acb_mittag_leffler_E"
-                                                               : "arb_mittag_leffler_E",
+                              Complex.class.equals(scalarType) ? "acb_mittag_leffler_E" : "arb_mittag_leffler_E",
                               Void.class,
                               scalarType,
                               scalarType,

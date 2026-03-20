@@ -47,11 +47,7 @@ public final class HardyZFunctionNode<D, C, F extends Function<? extends D, ? ex
   }
 
   @Override
-  protected void pushSeriesCallParamsAndInvoke(MethodVisitor mv,
-                                               Class<?> S,
-                                               boolean cx,
-                                               int n,
-                                               int oneSlot)
+  protected void pushSeriesCallParamsAndInvoke(MethodVisitor mv, Class<?> S, boolean cx, int n, int oneSlot)
   {
     call(mv, cx, n, "arb_poly_riemann_siegel_z_series", "acb_poly_riemann_siegel_z_series");
   }

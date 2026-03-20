@@ -39,18 +39,11 @@ public class InverseFunctionEvaluator
    * @param maxIterations maximum number of Newton iterations
    * @return result containing f⁻¹(y)
    */
-  public static Real evaluate(Real y,
-                              int bits,
-                              Real result,
-                              Function<Real, Real> forwardFunc,
-                              String functionName,
-                              int maxIterations)
+  public static Real evaluate(Real y, int bits, Real result, Function<Real, Real> forwardFunc, String functionName, int maxIterations)
   {
-    assert forwardFunc != null : "forward function must be non-null for inverse evaluation of "
-                                 + functionName;
+    assert forwardFunc != null : "forward function must be non-null for inverse evaluation of " + functionName;
 
-    try ( Real iterate = new Real(); Real fValue = new Real(); Real fPrime = new Real();
-          Real delta = new Real(); Real residual = new Real())
+    try ( Real iterate = new Real(); Real fValue = new Real(); Real fPrime = new Real(); Real delta = new Real(); Real residual = new Real())
     {
       // Initial guess: t₀ = y
       iterate.set(y);

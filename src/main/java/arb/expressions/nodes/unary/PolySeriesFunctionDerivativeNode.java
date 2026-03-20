@@ -18,8 +18,7 @@ import arb.functions.Function;
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
  */
-abstract class PolySeriesFunctionDerivativeNode<D, C, F extends Function<? extends D, ? extends C>>
-                                               extends
+abstract class PolySeriesFunctionDerivativeNode<D, C, F extends Function<? extends D, ? extends C>> extends
                                                FunctionNode<D, C, F>
 {
 
@@ -42,8 +41,7 @@ abstract class PolySeriesFunctionDerivativeNode<D, C, F extends Function<? exten
   private static final String ACB_POLY_INIT          = "acb_poly_init";
   private static final String ACB_POLY_SET_COEFF_ACB = "acb_poly_set_coeff_acb";
   private static final String ARB_COMPLEX            = Type.getInternalName(Complex.class);
-  private static final String ARB_COMPLEX_POLYNOMIAL =
-                                                     Type.getInternalName(ComplexPolynomial.class);
+  private static final String ARB_COMPLEX_POLYNOMIAL = Type.getInternalName(ComplexPolynomial.class);
   private static final String ARB_ONE                = "arb_one";
   private static final String ARB_POLY_CLEAR         = "arb_poly_clear";
   private static final String ARB_POLY_FIT_LENGTH    = "arb_poly_fit_length";
@@ -80,10 +78,7 @@ abstract class PolySeriesFunctionDerivativeNode<D, C, F extends Function<? exten
           expr.require(')'));
   }
 
-  protected PolySeriesFunctionDerivativeNode(String name,
-                                             Expression<D, C, F> expr,
-                                             Node<D, C, F> arg,
-                                             int order)
+  protected PolySeriesFunctionDerivativeNode(String name, Expression<D, C, F> expr, Node<D, C, F> arg, int order)
   {
     super(name,
           arg,
@@ -91,11 +86,7 @@ abstract class PolySeriesFunctionDerivativeNode<D, C, F extends Function<? exten
     this.derivativeOrder = Math.max(0, order);
   }
 
-  protected void assignArgumentToElementOfPolynomial(MethodVisitor mv,
-                                                     final Class<?> S,
-                                                     final boolean isComplex,
-                                                     Class<?> polynomialClass,
-                                                     int argSlot)
+  protected void assignArgumentToElementOfPolynomial(MethodVisitor mv, final Class<?> S, final boolean isComplex, Class<?> polynomialClass, int argSlot)
   {
     mv.visitVarInsn(Opcodes.ALOAD, argSlot);
     pushInt(mv, 0);
@@ -103,23 +94,14 @@ abstract class PolySeriesFunctionDerivativeNode<D, C, F extends Function<? exten
     invokePolySetCoeffMethod(mv, S, isComplex, polynomialClass);
   }
 
-  protected int assignOneToElementOfPolynomial(MethodVisitor mv,
-                                               final Class<?> S,
-                                               final boolean isComplex,
-                                               Class<?> polynomialClass,
-                                               int argSlot)
+  protected int assignOneToElementOfPolynomial(MethodVisitor mv, final Class<?> S, final boolean isComplex, Class<?> polynomialClass, int argSlot)
   {
     int oneSlot = putOneInSlot(mv, isComplex);
     assignOneToElementOfPolynomial(mv, S, isComplex, polynomialClass, argSlot, oneSlot);
     return oneSlot;
   }
 
-  protected void assignOneToElementOfPolynomial(MethodVisitor mv,
-                                                final Class<?> S,
-                                                final boolean isComplex,
-                                                Class<?> polynomialClass,
-                                                int argSlot,
-                                                int oneSlot)
+  protected void assignOneToElementOfPolynomial(MethodVisitor mv, final Class<?> S, final boolean isComplex, Class<?> polynomialClass, int argSlot, int oneSlot)
   {
     mv.visitVarInsn(Opcodes.ALOAD, argSlot);
     pushInt(mv, 1);
@@ -127,11 +109,7 @@ abstract class PolySeriesFunctionDerivativeNode<D, C, F extends Function<? exten
     invokePolySetCoeffMethod(mv, S, isComplex, polynomialClass);
   }
 
-  public void call(MethodVisitor mv,
-                   boolean isComplex,
-                   int n,
-                   String realFunctionName,
-                   String complexFunctionName)
+  public void call(MethodVisitor mv, boolean isComplex, int n, String realFunctionName, String complexFunctionName)
   {
     Class<?> polyClass = isComplex ? ComplexPolynomial.class : RealPolynomial.class;
     pushInt(mv, n);
@@ -147,13 +125,7 @@ abstract class PolySeriesFunctionDerivativeNode<D, C, F extends Function<? exten
                        int.class);
   }
 
-  public void call(MethodVisitor mv,
-                   Class<?> S,
-                   boolean complex,
-                   int n,
-                   int oneSlot,
-                   String realFunctionName,
-                   String complexFunctionName)
+  public void call(MethodVisitor mv, Class<?> S, boolean complex, int n, int oneSlot, String realFunctionName, String complexFunctionName)
   {
     Class<?> polyClass = complex ? ComplexPolynomial.class : RealPolynomial.class;
     mv.visitVarInsn(Opcodes.ALOAD, oneSlot);
@@ -172,11 +144,7 @@ abstract class PolySeriesFunctionDerivativeNode<D, C, F extends Function<? exten
                        int.class);
   }
 
-  protected void clearPolynomials(MethodVisitor mv,
-                                  final boolean isComplex,
-                                  Class<?> polynomialClass,
-                                  int resSlot,
-                                  int argSlot)
+  protected void clearPolynomials(MethodVisitor mv, final boolean isComplex, Class<?> polynomialClass, int resSlot, int argSlot)
   {
     mv.visitVarInsn(Opcodes.ALOAD, resSlot);
     invokeClearPolyMethod(mv, isComplex, polynomialClass);
@@ -184,26 +152,20 @@ abstract class PolySeriesFunctionDerivativeNode<D, C, F extends Function<? exten
     invokeClearPolyMethod(mv, isComplex, polynomialClass);
   }
 
-  protected int createAndIninitializePolynomial(MethodVisitor mv,
-                                                final boolean isComplex,
-                                                Class<?> polynomialClass)
+  protected int createAndIninitializePolynomial(MethodVisitor mv, final boolean isComplex, Class<?> polynomialClass)
   {
     newPoly(mv, isComplex);
     int argSlot = nextLocal++;
     mv.visitVarInsn(Opcodes.ASTORE, argSlot);
     mv.visitVarInsn(Opcodes.ALOAD, argSlot);
-    invokeStaticMethod(mv,
-                       arblib.class,
-                       isComplex ? ACB_POLY_INIT : ARB_POLY_INIT,
-                       Void.class,
-                       polynomialClass);
+    invokeStaticMethod(mv, arblib.class, isComplex ? ACB_POLY_INIT : ARB_POLY_INIT, Void.class, polynomialClass);
     return argSlot;
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    final Class<?> scalarClass               = scalarType(resultType);
+    final Class<?> scalarClass     = scalarType(resultType);
     final boolean  isComplex       = Complex.class.equals(scalarClass);
     final int      n               = Math.max(1, derivativeOrder + 1);
     final int      order           = derivativeOrder;
@@ -212,11 +174,9 @@ abstract class PolySeriesFunctionDerivativeNode<D, C, F extends Function<? exten
 
     Class<?>       polynomialClass = registerIntermediateVariablesIfNotAlreadyRegistered(isComplex);
 
-    int            resSlot         =
-                           createAndIninitializePolynomial(mv, isComplex, polynomialClass);
+    int            resSlot         = createAndIninitializePolynomial(mv, isComplex, polynomialClass);
 
-    int            argSlot         =
-                           createAndIninitializePolynomial(mv, isComplex, polynomialClass);
+    int            argSlot         = createAndIninitializePolynomial(mv, isComplex, polynomialClass);
 
     setPolynomialLength(mv, isComplex, n, polynomialClass, argSlot);
 
@@ -238,49 +198,23 @@ abstract class PolySeriesFunctionDerivativeNode<D, C, F extends Function<? exten
     return mv;
   }
 
-  protected void getScalarResult(MethodVisitor mv,
-                                 final Class<?> S,
-                                 final boolean isComplex,
-                                 final int order,
-                                 int outSlot,
-                                 Class<?> polynomialClass,
-                                 int resSlot)
+  protected void
+            getScalarResult(MethodVisitor mv, final Class<?> S, final boolean isComplex, final int order, int outSlot, Class<?> polynomialClass, int resSlot)
   {
     mv.visitVarInsn(Opcodes.ALOAD, outSlot);
     mv.visitVarInsn(Opcodes.ALOAD, resSlot);
     pushInt(mv, order);
-    invokeStaticMethod(mv,
-                       arblib.class,
-                       isComplex ? ACB_POLY_GET_COEFF_ACB : ARB_POLY_GET_COEFF_ARB,
-                       Void.class,
-                       S,
-                       polynomialClass,
-                       int.class);
+    invokeStaticMethod(mv, arblib.class, isComplex ? ACB_POLY_GET_COEFF_ACB : ARB_POLY_GET_COEFF_ARB, Void.class, S, polynomialClass, int.class);
   }
 
-  protected void invokeClearPolyMethod(MethodVisitor mv,
-                                       final boolean isComplex,
-                                       Class<?> polynomialClass)
+  protected void invokeClearPolyMethod(MethodVisitor mv, final boolean isComplex, Class<?> polynomialClass)
   {
-    invokeStaticMethod(mv,
-                       arblib.class,
-                       isComplex ? ACB_POLY_CLEAR : ARB_POLY_CLEAR,
-                       Void.class,
-                       polynomialClass);
+    invokeStaticMethod(mv, arblib.class, isComplex ? ACB_POLY_CLEAR : ARB_POLY_CLEAR, Void.class, polynomialClass);
   }
 
-  protected void invokePolySetCoeffMethod(MethodVisitor mv,
-                                          final Class<?> S,
-                                          final boolean isComplex,
-                                          Class<?> polynomialClass)
+  protected void invokePolySetCoeffMethod(MethodVisitor mv, final Class<?> S, final boolean isComplex, Class<?> polynomialClass)
   {
-    invokeStaticMethod(mv,
-                       arblib.class,
-                       isComplex ? ACB_POLY_SET_COEFF_ACB : ARB_POLY_SET_COEFF_ARB,
-                       Void.class,
-                       polynomialClass,
-                       int.class,
-                       S);
+    invokeStaticMethod(mv, arblib.class, isComplex ? ACB_POLY_SET_COEFF_ACB : ARB_POLY_SET_COEFF_ARB, Void.class, polynomialClass, int.class, S);
   }
 
   /**
@@ -298,11 +232,7 @@ abstract class PolySeriesFunctionDerivativeNode<D, C, F extends Function<? exten
     return outSlot;
   }
 
-  protected abstract void pushSeriesCallParamsAndInvoke(MethodVisitor mv,
-                                                        Class<?> S,
-                                                        boolean cx,
-                                                        int n,
-                                                        int oneSlot);
+  protected abstract void pushSeriesCallParamsAndInvoke(MethodVisitor mv, Class<?> S, boolean cx, int n, int oneSlot);
 
   protected int putOneInSlot(MethodVisitor mv, final boolean isComplex)
   {
@@ -320,11 +250,7 @@ abstract class PolySeriesFunctionDerivativeNode<D, C, F extends Function<? exten
 
   protected void invokeOneMethod(MethodVisitor mv, final boolean isComplex)
   {
-    invokeStaticMethod(mv,
-                       arblib.class,
-                       isComplex ? ACB_ONE : ARB_ONE,
-                       Void.class,
-                       isComplex ? Complex.class : Real.class);
+    invokeStaticMethod(mv, arblib.class, isComplex ? ACB_ONE : ARB_ONE, Void.class, isComplex ? Complex.class : Real.class);
   }
 
   public Class<?> registerIntermediateVariablesIfNotAlreadyRegistered(final boolean isComplex)
@@ -342,19 +268,10 @@ abstract class PolySeriesFunctionDerivativeNode<D, C, F extends Function<? exten
     return polynomialClass;
   }
 
-  protected void setPolynomialLength(MethodVisitor mv,
-                                     final boolean isComplex,
-                                     final int n,
-                                     Class<?> polynomialClass,
-                                     int argSlot)
+  protected void setPolynomialLength(MethodVisitor mv, final boolean isComplex, final int n, Class<?> polynomialClass, int argSlot)
   {
     mv.visitVarInsn(Opcodes.ALOAD, argSlot);
     pushInt(mv, n);
-    invokeStaticMethod(mv,
-                       arblib.class,
-                       isComplex ? ACB_POLY_FIT_LENGTH : ARB_POLY_FIT_LENGTH,
-                       Void.class,
-                       polynomialClass,
-                       int.class);
+    invokeStaticMethod(mv, arblib.class, isComplex ? ACB_POLY_FIT_LENGTH : ARB_POLY_FIT_LENGTH, Void.class, polynomialClass, int.class);
   }
 }

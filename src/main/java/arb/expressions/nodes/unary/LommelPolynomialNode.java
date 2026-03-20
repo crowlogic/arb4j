@@ -78,12 +78,9 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     expression.require(')');
     scalarType                           = Compiler.scalarType(expression.coDomainType);
     hasScalarCodomain                    = expression.hasScalarCodomain();
-    isNullaryFunctionOrHasScalarCodomain = expression.domainType.equals(Object.class)
-                  || hasScalarCodomain;
-    functionFieldName                    =
-                      expression.newIntermediateVariable("r", LommelPolynomial.class, true);
-    elementFieldName                     =
-                     expression.newIntermediateVariable("element", RationalFunction.class, true);
+    isNullaryFunctionOrHasScalarCodomain = expression.domainType.equals(Object.class) || hasScalarCodomain;
+    functionFieldName                    = expression.newIntermediateVariable("r", LommelPolynomial.class, true);
+    elementFieldName                     = expression.newIntermediateVariable("element", RationalFunction.class, true);
     expression.registerInitializer(this::generateFunctionInitializer);
   }
 
@@ -100,10 +97,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
       loadFunctionOntoStack(mv);
       Compiler.getField(mv, LommelPolynomial.class, "n", Integer.class);
       index.generate(mv, Integer.class);
-      assert index.getGeneratedType()
-                  .equals(Integer.class) : String.format("TODO: %s needs to be cast to %s",
-                                                         index.getGeneratedType(),
-                                                         Integer.class);
+      assert index.getGeneratedType().equals(Integer.class) : String.format("TODO: %s needs to be cast to %s", index.getGeneratedType(), Integer.class);
       invokeSetMethod(mv, Integer.class, Integer.class);
 
       loadFunctionOntoStack(mv);
@@ -112,14 +106,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
       loadBitsOntoStack(mv);
       expression.loadThisAndFieldOntoStack(mv, elementFieldName, RationalFunction.class);
 
-      generateVirtualMethodInvocation(mv,
-                          LommelPolynomial.class,
-                          "evaluate",
-                          Object.class,
-                          Object.class,
-                          int.class,
-                          int.class,
-                          Object.class);
+      generateVirtualMethodInvocation(mv, LommelPolynomial.class, "evaluate", Object.class, Object.class, int.class, int.class, Object.class);
 
     }
 
@@ -132,14 +119,11 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     {
       if (Expression.trace)
       {
-        System.err.format("generateCastTo(Real) from generatedType=%s\n",
-                          Real.class,
-                          generatedType);
+        System.err.format("generateCastTo(Real) from generatedType=%s\n", Real.class, generatedType);
       }
       order.generateCastTo(mv, Real.class);
     }
-    assert order.getGeneratedType().equals(Real.class) : String.format("need Real.class but got %s",
-                                                                       order.getGeneratedType());
+    assert order.getGeneratedType().equals(Real.class) : String.format("need Real.class but got %s", order.getGeneratedType());
   }
 
   private LommelPolynomialNode<D, C, F> loadFunctionOntoStack(MethodVisitor mv)
@@ -151,8 +135,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    boolean isRationalFunctionSequence = RationalFunction.class.equals(expression.coDomainType)
-                  && Integer.class.equals(expression.domainType);
+    boolean isRationalFunctionSequence = RationalFunction.class.equals(expression.coDomainType) && Integer.class.equals(expression.domainType);
     expression.insideInitializer = false;
 
     expression.loadThisAndFieldOntoStack(mv, elementFieldName, RationalFunction.class);
@@ -190,15 +173,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
   {
     loadOutputVariableOntoStack(mv, resultType);
 
-    invokeMethod(mv,
-                 RationalFunction.class,
-                 "evaluate",
-                 resultType,
-                 false,
-                 resultType,
-                 int.class,
-                 int.class,
-                 resultType);
+    invokeMethod(mv, RationalFunction.class, "evaluate", resultType, false, resultType, int.class, int.class, resultType);
     generatedType = resultType;
   }
 
@@ -226,14 +201,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     loadBitsOntoStack(mv);
     loadOutputVariableOntoStack(mv, resultType);
 
-    generateVirtualMethodInvocation(mv,
-                        LommelPolynomial.class,
-                        "evaluate",
-                        Object.class,
-                        Object.class,
-                        int.class,
-                        int.class,
-                        Object.class);
+    generateVirtualMethodInvocation(mv, LommelPolynomial.class, "evaluate", Object.class, Object.class, int.class, int.class, Object.class);
 
     generatedType = RationalFunction.class;
     // assert false : "todo: just return element";
@@ -288,9 +256,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, C, F>
-         substitute(String variable, Node<E, S, G> arg)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, C, F> substitute(String variable, Node<E, S, G> arg)
   {
     order    = order.substitute(variable, arg);
     index    = index.substitute(variable, arg);
@@ -299,9 +265,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
     LommelPolynomialNode<E, S, G> newVar = new LommelPolynomialNode<>(newExpression);
     newVar.arg   = arg.spliceInto(newExpression);

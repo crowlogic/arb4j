@@ -28,11 +28,7 @@ public final class ZetaFunctionNode<D, C, F extends Function<? extends D, ? exte
   }
 
   @Override
-  protected void pushSeriesCallParamsAndInvoke(MethodVisitor mv,
-                                               Class<?> S,
-                                               boolean cx,
-                                               int n,
-                                               int oneSlot)
+  protected void pushSeriesCallParamsAndInvoke(MethodVisitor mv, Class<?> S, boolean cx, int n, int oneSlot)
   {
     call(mv, S, cx, n, oneSlot, "arb_poly_zeta_series", "acb_poly_zeta_series");
   }

@@ -35,8 +35,7 @@ The old `PolySeriesFunctionNode`-based version used `loadOrderParameter(mv)` whi
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
-public class RiemannSiegelThetaFunctionNode<D, C, F extends Function<? extends D, ? extends C>>
-                                           extends
+public class RiemannSiegelThetaFunctionNode<D, C, F extends Function<? extends D, ? extends C>> extends
                                            PolySeriesFunctionNode<D, C, F>
 {
   public RiemannSiegelThetaFunctionNode(Expression<D, C, F> expression)
@@ -45,9 +44,7 @@ public class RiemannSiegelThetaFunctionNode<D, C, F extends Function<? extends D
           expression);
   }
 
-  private RiemannSiegelThetaFunctionNode(Expression<D, C, F> expression,
-                                         Node<D, C, F> arg,
-                                         int order)
+  private RiemannSiegelThetaFunctionNode(Expression<D, C, F> expression, Node<D, C, F> arg, int order)
   {
     super("ϑ",
           expression,
@@ -56,12 +53,7 @@ public class RiemannSiegelThetaFunctionNode<D, C, F extends Function<? extends D
   }
 
   @Override
-  protected void invokeSeriesEvaluationFunction(MethodVisitor mv,
-                                                Class<?> scalarType,
-                                                boolean isComplex,
-                                                int hSlot,
-                                                int outSlot,
-                                                Class<?> polyClass)
+  protected void invokeSeriesEvaluationFunction(MethodVisitor mv, Class<?> scalarType, boolean isComplex, int hSlot, int outSlot, Class<?> polyClass)
   {
     mv.visitVarInsn(Opcodes.ALOAD, outSlot);
     mv.visitVarInsn(Opcodes.ALOAD, hSlot);
@@ -75,8 +67,7 @@ public class RiemannSiegelThetaFunctionNode<D, C, F extends Function<? extends D
 
     invokeStaticMethod(mv,
                        arblib.class,
-                       isComplex ? "acb_poly_riemann_siegel_theta_series"
-                                 : "arb_poly_riemann_siegel_theta_series",
+                       isComplex ? "acb_poly_riemann_siegel_theta_series" : "arb_poly_riemann_siegel_theta_series",
                        Void.class,
                        polyClass,
                        polyClass,
@@ -101,9 +92,7 @@ public class RiemannSiegelThetaFunctionNode<D, C, F extends Function<? extends D
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
     return new RiemannSiegelThetaFunctionNode<E, S, G>(newExpression,
                                                        arg.spliceInto(newExpression),

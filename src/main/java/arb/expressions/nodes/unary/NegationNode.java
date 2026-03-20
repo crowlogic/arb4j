@@ -63,9 +63,7 @@ public class NegationNode<D, R, F extends Function<? extends D, ? extends R>> ex
       LiteralConstantNode<D, R, F> lconst = arg.asLiteralConstant();
       if (lconst.isInt)
       {
-        String negatedValue = lconst.stringValue.startsWith("-")
-                                                                ? lconst.stringValue.substring(1)
-                                                                : "-" + lconst.stringValue;
+        String negatedValue = lconst.stringValue.startsWith("-") ? lconst.stringValue.substring(1) : "-" + lconst.stringValue;
         return expression.newLiteralConstant(negatedValue);
       }
     }
@@ -74,9 +72,7 @@ public class NegationNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
     return new NegationNode<E, S, G>(newExpression,
                                      arg.spliceInto(newExpression));

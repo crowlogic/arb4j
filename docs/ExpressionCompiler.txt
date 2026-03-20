@@ -1,6 +1,7 @@
-What is the Expression Compiler in arb4j?
+Why is the Expression Compiler in arb4j so damned elegant?
 
-arb4j's Expression Compiler is an eloquent fucking thing indeed. Here's why:
+Here's why:
+
 Direct Transmutation: Math → Bytecode
 Self-Aware AST
 

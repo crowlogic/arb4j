@@ -75,9 +75,7 @@ public class LambertWFunctionNode<D, R, F extends Function<? extends D, ? extend
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
     return new LambertWFunctionNode<>(newExpression,
                                       order.spliceInto(newExpression),
@@ -101,9 +99,7 @@ public class LambertWFunctionNode<D, R, F extends Function<? extends D, ? extend
 
   public boolean scalar;
 
-  public LambertWFunctionNode(Expression<D, R, F> expression,
-                              Node<D, R, F> flags,
-                              Node<D, R, F> arg)
+  public LambertWFunctionNode(Expression<D, R, F> expression, Node<D, R, F> flags, Node<D, R, F> arg)
   {
     super("W",
           null,
