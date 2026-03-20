@@ -37,7 +37,7 @@ public class VariableNodeTest extends
     RealPolynomial                                                   poly       = f.evaluate(RealConstants.two, 0, 128, new RealPolynomial());
     assertEquals("x² + 3*x", poly.toString());
   }
-  
+
   public void testResolutionOfRealToRealPolynomialFunctionWithSameIndependentAndPlaceholderVariables()
   {
     Expression<Real, RealPolynomial, Function<Real, RealPolynomial>> expression = Function.parse(Real.class,
@@ -48,5 +48,13 @@ public class VariableNodeTest extends
     RealPolynomial                                                   poly       = f.evaluate(RealConstants.two, 0, 128, new RealPolynomial());
     assertEquals("12", poly.toString());
   }
-  
+
+  public void testResolutionOfRealToRealFunctionWithDifferentIndependentAndPlaceholderVariables()
+  {
+    Expression<Real, Real, RealFunction> expression = Function.parse(Real.class, Real.class, RealFunction.class, "t->t+3*x+x^2");
+    Function<Real, Real>                 f          = expression.instantiate();
+    Real                                 poly       = f.evaluate(RealConstants.two, 0, 128);
+    assertEquals("x² + 3*x + 2", poly.toString());
+  }
+
 }
