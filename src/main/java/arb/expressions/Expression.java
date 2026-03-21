@@ -6,6 +6,7 @@ import static java.lang.String.format;
 import static org.objectweb.asm.Opcodes.*;
 
 import java.io.File;
+import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -138,18 +139,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                        Supplier<F>,
                        Consumer<Consumer<Expression<?, ?, ?>>>
 {
-  
+
   /**
-   * The single placeholder variable of this expression's codomain type.
-   * Assigned during {@link VariableNode#resolveReference()} when the expression
-   * is non-nullary and {@link #isInterfaceFunctional()} is true and a free
-   * variable is encountered that is neither the independent variable, a context
-   * variable, nor an upstream variable.  Only one placeholder is permitted per
-   * expression; a second unresolved free variable throws {@link CompilerException}.
+   * The single placeholder variable of this expression's codomain type. Assigned
+   * during {@link VariableNode#resolveReference()} when the expression is
+   * non-nullary and {@link #isInterfaceFunctional()} is true and a free variable
+   * is encountered that is neither the independent variable, a context variable,
+   * nor an upstream variable. Only one placeholder is permitted per expression; a
+   * second unresolved free variable throws {@link CompilerException}.
    */
   public VariableNode<D, C, F> placeholderVariable;
-  
-  public boolean deferVariableResolution = false;
+
+  public boolean               deferVariableResolution = false;
 
   public Stream<VariableNode<D, C, F>> variableNodeStream()
   {
@@ -2263,13 +2264,24 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public boolean isFunctional()
   {
     // return Function.class.isAssignableFrom(coDomainType);
-    return coDomainType.isInterface();
+    boolean is = coDomainType.isInterface();
+    if (is)
+    {
+      assert isInterfaceFunctional() : "what kind of interface are you returning that doesn't implement Function?";
+
+    }
+    return is;
   }
 
   public boolean isInterfaceFunctional()
   {
     return Function.class.isAssignableFrom(coDomainType);
     // return coDomainType.isInterface();
+  }
+
+  public boolean isConcreteFunctional()
+  {
+    return !(coDomainType.isInterface() || Modifier.isAbstract(coDomainType.getModifiers()));
   }
 
   /**
@@ -3728,6 +3740,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public Map<String, FunctionMapping<?, ?, ?>> getReferencedFunctions()
   {
     return Collections.unmodifiableMap(referencedFunctions);
+  }
+
+  public boolean canHavePlaceholder()
+  {
+    return isConcreteFunctional();
   }
 
 }
