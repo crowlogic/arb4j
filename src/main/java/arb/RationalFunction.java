@@ -689,7 +689,9 @@ public class RationalFunction implements RealFunction,NamedField<RationalFunctio
   @Override
   public RationalFunction mul(RationalFunction x, int prec, RationalFunction result)
   {
-  
+	assert result != null : "result is null";
+	assert x != null : "x is null";
+	
     assertPointerConsistency();
     arblib.fmpz_poly_q_mul(result, this, x);
     refreshPointers();
