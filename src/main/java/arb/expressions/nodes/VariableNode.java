@@ -118,13 +118,14 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public String resolutionStateString()
   {
-    return String.format("variable='%s', type=%s, isIndependent=%s, upstreamInput=%s, expression=%s, independentVariable=%s,context=%s",
+    return String.format("'%s' at position=%s where remaining=%s with type=%s, isIndependent=%s, upstreamInput=%s, expression=%s",
                          reference.name,
-                         reference.type,
+                         reference.position,
+                         expression.remaining(),
+                         type() != null ? type().getSimpleName() : "null",
                          isIndependent,
                          upstreamInput,
-                         expression,
-                         expression.placeholderVariable,
+                         expression.toStringExtended(),
                          expression.context);
   }
 
@@ -206,37 +207,32 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       }
       return this;
     }
-    if (  isPlaceholder() )
+    if (isPlaceholder())
     {
-      isPlaceholder = true;
-      reference.type = expression.coDomainType;
+      isPlaceholder                  = true;
+      reference.type                 = expression.coDomainType;
       expression.placeholderVariable = this;
       if (Expression.traceNodes)
       {
-        logger.debug("resolveReference UPSTREAM: {}", resolutionStateString());
+        logger.debug("resolveReference PLACEHOLDER: {}", resolutionStateString());
       }
       return this;
     }
 
-    throw new CompilerException(String.format("undefined variable reference: %s", resolutionStateString()));
+    return throwNewUndefinedReferenceException();
   }
 
   private boolean isPlaceholder()
   {
-    boolean equals = this.equals(expression.placeholderVariable);
-    boolean canHavePlaceholder = expression.canHavePlaceholder();
+    boolean equals                = this.equals(expression.placeholderVariable);
+    boolean canHavePlaceholder    = expression.canHavePlaceholder();
     boolean noExistingPlaceholder = expression.placeholderVariable == null;
-    return equals || ( noExistingPlaceholder && canHavePlaceholder );
+    return equals || (noExistingPlaceholder && canHavePlaceholder);
   }
 
-  protected void throwNewUndefinedReferenceException()
+  protected VariableNode<?, ?, ?> throwNewUndefinedReferenceException()
   {
-    throw new UndefinedReferenceException(String.format("undefined reference: %s", resolutionStateString()));
-  }
-
-  protected void throwNewIndeterminantVariableAlreadyDeclared()
-  {
-    throw new CompilerException(String.format("indeterminate variable already declared: %s", resolutionStateString()));
+    throw new UndefinedReferenceException(resolutionStateString());
   }
 
   public VariableNode(Expression<D, R, F> expression, VariableReference<D, R, F> reference, boolean resolve)
@@ -245,7 +241,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     var variables = expression.context != null ? expression.context.variables : null;
     this.expression         = expression;
     this.reference          = reference;
-    this.reference.position = position;
+    this.reference.position = position = expression.position;
     assert reference != null;
     assert !(expression.recursive && reference.name.equals(expression.functionName)) : "variable name clashes with "
                                                                                        + "the function name since it's a recursve function";
@@ -266,7 +262,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
         resolved = true;
       }
 
-      if (expression.independentVariable != null && reference.equals(expression.independentVariable.reference))
+      if (expression.independentVariable != null && equals(expression.independentVariable))
       {
         isIndependent = true;
       }
@@ -594,9 +590,13 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public <E, S, G extends Function<? extends E, ? extends S>> VariableNode<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
-    return new VariableNode<E, S, G>(newExpression,
-                                     reference.spliceInto(newExpression),
-                                     !newExpression.deferVariableResolution);
+    VariableNode<E, S, G> variableNode = new VariableNode<E, S, G>(newExpression,
+                                                                   reference.spliceInto(newExpression),
+                                                                   !newExpression.deferVariableResolution);
+    variableNode.position = position;
+    variableNode.fieldName = fieldName;
+    variableNode.isRootNode = isRootNode;
+    return variableNode;
   }
 
   public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable, Node<E, S, G> arg)

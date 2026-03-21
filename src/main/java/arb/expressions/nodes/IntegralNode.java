@@ -357,24 +357,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     return false;
   }
 
-  /**
-   * Parses the integrand by creating a properly-scoped sub-expression, following
-   * the same pattern established by {@link Expression#parseLambda(String)}.
-   * <p>
-   * The sub-expression may or may not acquire an independent variable during
-   * parsing. When the integrand contains the integration variable as a free
-   * variable (the common case), it becomes the sub-expression's independent
-   * variable — either explicitly via arrow syntax or automatically by normal
-   * parsing order. When the integrand is a constant or a contextual function
-   * evaluation that does not reference the integration variable, the
-   * sub-expression will have no independent variable; in that case, the
-   * integration variable is determined later from the {@code dx}/{@code ,x}
-   * specification.
-   * </p>
-   * 
-   * @param arrowVar the integration variable name from arrow syntax, or
-   *                 {@code null} if the variable was not explicitly specified
-   */
   protected void parseIntegrandViaSubExpression(String arrowVar)
   {
     integrandExpression                         = expression.cloneExpression();

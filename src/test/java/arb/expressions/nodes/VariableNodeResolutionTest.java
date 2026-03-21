@@ -311,7 +311,7 @@ public class VariableNodeResolutionTest extends
     Expression<Integer, RationalFunction, RationalFunctionSequence> expr = RationalFunctionSequence.compile("n➔(½-z/2)ⁿ");
 
     assertFalse("RationalFunction is a class, not an interface, so isFunctional() should be false", expr.isFunctional());
-    assertTrue("RationalFunction implements Function, so isInterfaceFunctional() should be true", expr.isInterfaceFunctional());
+    assertTrue("RationalFunction implements Function, so isInterfaceFunctional() should be true", expr.isReifiedFunctional());
   }
 
   // =========================================================================
@@ -477,11 +477,11 @@ public class VariableNodeResolutionTest extends
   {
     Expression<Real, Real, RealFunction> realExpr = RealFunction.parse("x");
     assertFalse("Real is not an interface", realExpr.isFunctional());
-    assertFalse("Real does not extend Function", realExpr.isInterfaceFunctional());
+    assertFalse("Real does not extend Function", realExpr.isReifiedFunctional());
 
     Expression<Object, RationalFunction, RationalNullaryFunction> ratExpr = RationalFunction.parse("x");
     assertFalse("RationalFunction is not an interface", ratExpr.isFunctional());
-    assertTrue("RationalFunction extends Function", ratExpr.isInterfaceFunctional());
+    assertTrue("RationalFunction extends Function", ratExpr.isReifiedFunctional());
   }
 
   /**

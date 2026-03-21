@@ -263,13 +263,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public VariableNode<D, C, F>                          independentVariable;
 
-  /**
-   * Stores the lambda parameter variable from parseLambda() so that
-   * newFunctionalExpression() can use it as the functional's independent
-   * variable.
-   */
-  public VariableNode<D, C, F>                          lambdaParameter;
-
   int                                                   currentLevel                  = 0;
 
   public LinkedList<Consumer<MethodVisitor>>            initializers                  = new LinkedList<>();
@@ -469,6 +462,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     Class<?> actualType               = type.isInterface() ? scalarType(type) : type;
     String   intermediateVariableName = newIntermediateVariable(actualType);
+    assert intermediateVariableName != null : "intermediateVariableName is null for type " + type;
     loadThisAndFieldOntoStack(methodVisitor, intermediateVariableName, actualType);
     return intermediateVariableName;
   }
@@ -992,48 +986,26 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return node;
   }
 
-  /**
-   * Parses a lambda body by creating a properly-scoped sub-expression.
-   * <p>
-   * Instead of calling {@link #resolve()} on {@code this} (which leaves all
-   * lambda parameters in a single flat scope), this method clones the current
-   * expression, clears its independent variable, and parses the body in that
-   * child scope. The lambda parameter becomes the sub-expression's
-   * <em>independent</em> variable, establishing a proper lexical scope boundary.
-   * Upstream variables (the parent's independent variable, context variables,
-   * etc.) are resolved through the {@link #upstreamExpression} chain, which
-   * {@link arb.expressions.nodes.VariableNode#resolveReference} already supports.
-   * <p>
-   * The lambda parameter is stored in {@link #lambdaParameter} so that
-   * {@link #newFunctionalExpression()} can use it as the functional's independent
-   * variable during code generation.
-   *
-   * @param paramName the name of the lambda parameter (e.g. "t" in t➔expr)
-   * @return the parsed body node, scoped to the child sub-expression
-   * @see <a href="https://github.com/crowlogic/arb4j/issues/876">#876</a>
-   */
-  public Node<D, C, F> parseLambda(String paramName)
+  public Node<D, C, F> parseLambda(String variableName)
   {
     if (trace)
     {
       log.debug("→ parseLambda(#{}) expr={}, paramName={} at position={} where remaining={}",
                 System.identityHashCode(this),
                 getExpression(),
-                paramName,
+                variableName,
                 position,
                 remaining());
     }
-    checkLambdaParameterConflicts(paramName);
+    checkLambdaParameterConflicts(variableName);
 
-    var paramVar = newVariableNode(paramName);
+    var variableNode = newVariableNode(variableName);
     require('➔');
 
-    // --- Create a sub-expression for proper lexical scoping (#876) ---
     Expression<D, C, F> subExpr = cloneExpression();
-    subExpr.upstreamExpression  = this;
-    subExpr.independentVariable = null;
-    subExpr.rootNode            = null;
-    subExpr.newVariableNode(paramName);
+    subExpr.upstreamExpression = this;
+    placeholderVariable        = subExpr.independentVariable = variableNode.spliceInto(subExpr);
+    subExpr.rootNode           = null;
 
     var node = subExpr.resolve();
 
@@ -1041,9 +1013,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     this.position          = subExpr.position;
     this.character         = subExpr.character;
     this.previousCharacter = subExpr.previousCharacter;
-
-    // Store the lambda parameter so newFunctionalExpression() can use it
-    lambdaParameter        = paramVar;
 
     return node;
   }
@@ -1467,7 +1436,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
 
     rootNode.isRootNode = true;
-    if (isFunctional())
+    if (isGeneratedFunctional())
     {
       generateFunctionalElement(mv);
     }
@@ -1482,19 +1451,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return classVisitor;
   }
 
-  /**
-   * Generate the code when the {@link #coDomainType} is an interface so that the
-   * return value is itself a {@link Function}, in this case the result argument
-   * is ignored since there {@link Function} is immutable
-   * 
-   * TODO: the generated toString() of this method should show the value instead
-   * of the variable name if it is declared in an upstream expression (in which
-   * case the value is known)
-   * 
-   * 
-   * @param mv
-   * @return initialized this{@link #newFunctionalExpression()}
-   */
   protected Expression<Object, Object, Function<?, ?>> generateFunctionalElement(MethodVisitor mv)
   {
     var functional = newFunctionalExpression();
@@ -2263,25 +2219,25 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    */
   public boolean isFunctional()
   {
-    // return Function.class.isAssignableFrom(coDomainType);
-    boolean is = coDomainType.isInterface();
-    if (is)
-    {
-      assert isInterfaceFunctional() : "what kind of interface are you returning that doesn't implement Function?";
-
-    }
-    return is;
-  }
-
-  public boolean isInterfaceFunctional()
-  {
     return Function.class.isAssignableFrom(coDomainType);
-    // return coDomainType.isInterface();
   }
 
-  public boolean isConcreteFunctional()
+  /**
+   * 
+   * @return true if this is reified meaning that the result is not a generic
+   *         function without identity but rather a {@link RealPolynomial} or
+   *         {@link RealFunction} that carries its own internal placeholder-like
+   *         variable by virtue of its flint/swig/arb evaluation routines rather
+   *         than generated as a reified class
+   */
+  public boolean isReifiedFunctional()
   {
-    return !(coDomainType.isInterface() || Modifier.isAbstract(coDomainType.getModifiers()));
+    return isFunctional() && !isGeneratedFunctional();
+  }
+
+  protected boolean isGeneratedFunctional()
+  {
+    return coDomainType.isInterface() || Modifier.isAbstract(coDomainType.getModifiers());
   }
 
   /**
@@ -2473,7 +2429,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected MethodVisitor loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, Class<?> fieldType)
   {
 
-    assert fieldName != null : "fieldName is null";
+    assert fieldName != null : "fieldName is null for " + toStringExtended();
     assert fieldType != null : "fieldType is null";
 
     methodVisitor.visitFieldInsn(GETFIELD, className, fieldName, fieldType.descriptorString());
@@ -2648,11 +2604,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       context = new Context();
     }
-
-    functionalExpression.context = context;
+    functionalExpression.expression = expression;
+    functionalExpression.context    = context;
 
     // Use the lambda parameter as the functional expression's independent variable.
-    var lambdaParam = lambdaParameter;
+    var lambdaParam = placeholderVariable;
 
     if (lambdaParam != null)
     {
@@ -2661,8 +2617,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     rootNode.isRootNode                      = true;
 
-    functionalExpression.className           = className + "func";
-    functionalExpression.functionName        = functionName + "func";
+    functionalExpression.className           = className == null ? null : className + "func";
+    functionalExpression.functionName        = functionName == null ? null : functionName + "func";
 
     functionalExpression.rootNode            = rootNode.spliceInto(functionalExpression);
     functionalExpression.rootNode.isRootNode = rootNode.isRootNode;
@@ -2702,7 +2658,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     assert prefix != null : "name shan't be null";
     var intermediateVarName = getNextIntermediateVariableFieldName(prefix, type);
-    return registerIntermediateVariable(intermediateVarName, type, initialize);
+    assert intermediateVarName != null : "intermediateVarName shan't be null";
+    String variable = registerIntermediateVariable(intermediateVarName, type, initialize);
+    assert variable != null : "registerIntermediateVariable returned null for intermediateVarName=" + intermediateVarName;
+    return variable;
   }
 
   public LiteralConstantNode<D, C, F> newConstant(int i)
@@ -2982,9 +2941,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public String registerIntermediateVariable(String intermediateVarName, Class<?> type, boolean initialize)
   {
+    assert intermediateVarName != null : "intermediateVarName shan't be null where type=" + type + "initialize=" + initialize;
     // assert !type.isInterface() : "cannot instantiate interface " + type;
 
-    if (!isFunctional())
+    if (!isGeneratedFunctional())
     {
       var newIntermediateVariable = new IntermediateVariable<>(this,
                                                                intermediateVarName,
@@ -2996,6 +2956,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
 
       intermediateVariables.put(intermediateVarName, newIntermediateVariable);
+
+      assert intermediateVarName != null : "registerIntermediateVariable returned null for intermediateVarName=" + intermediateVarName;
+
+      return intermediateVarName;
     }
     else
     {
@@ -3005,7 +2969,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return null;
     }
 
-    return intermediateVarName;
   }
 
   @SuppressWarnings("hiding")
@@ -3020,6 +2983,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public String remaining()
   {
+    if ( expression == null )
+    {
+      return "";
+    }
+    position = Math.min(position, getExpression().length() );
     return getExpression() == null ? null : getExpression().substring(Math.max(0, position), getExpression().length());
   }
 
@@ -3681,8 +3649,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public String toStringExtended()
   {
-    return String.format("{domain=%s, coDomain=%s, function=%s}", domainType, coDomainType, functionClass)
-                  + stream().map(Expression::toString).collect(Collectors.joining(" => "));
+    return String.format("{domain=%s, coDomain=%s, function=%s, %s}",
+                         domainType,
+                         coDomainType,
+                         functionClass,
+                         stream().map(Expression::toString).collect(Collectors.joining(" => ")));
   }
 
   public LiteralConstantNode<D, C, F> one()
@@ -3744,7 +3715,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean canHavePlaceholder()
   {
-    return isConcreteFunctional();
+    return isFunctional();
   }
 
 }
