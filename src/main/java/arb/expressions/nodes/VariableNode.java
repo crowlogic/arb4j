@@ -118,14 +118,13 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public String resolutionStateString()
   {
-    return String.format("'%s' at position=%s where remaining=%s with type=%s, isIndependent=%s, upstreamInput=%s, expression=%s",
+    return String.format("'%s' at position=%s where remaining=%s with type=%s, isIndependent=%s, upstreamInput=%s",
                          reference.name,
                          reference.position,
                          expression.remaining(),
                          type() != null ? type().getSimpleName() : "null",
                          isIndependent,
-                         upstreamInput,
-                         expression.toStringExtended());
+                         upstreamInput);
   }
 
   private VariableNode<?, ?, ?> resolveUpstreamVariables()
@@ -221,7 +220,11 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return this;
     }
 
-    return throwNewUndefinedReferenceException();
+    if (Expression.traceNodes)
+    {
+      logger.debug("resolveReference UNDEFINED: {}", resolutionStateString());
+    }
+    throw new UndefinedReferenceException(resolutionStateString());
   }
 
   private boolean isPlaceholder()
@@ -230,15 +233,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     boolean canHavePlaceholder    = expression.canHavePlaceholder();
     boolean noExistingPlaceholder = expression.placeholderVariable == null;
     return equals || (noExistingPlaceholder && canHavePlaceholder);
-  }
-
-  protected VariableNode<?, ?, ?> throwNewUndefinedReferenceException()
-  {
-    if (Expression.traceNodes)
-    {
-      logger.debug("resolveReference UNDEFINED: {}", resolutionStateString());
-    }
-    throw new UndefinedReferenceException(resolutionStateString());
   }
 
   public VariableNode(Expression<D, R, F> expression, VariableReference<D, R, F> reference, boolean resolve)

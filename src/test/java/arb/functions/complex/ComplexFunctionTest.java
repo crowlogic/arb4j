@@ -67,10 +67,10 @@ public class ComplexFunctionTest extends
     }
     catch (CompilerException ce)
     {
-      caughtException = ce.getMessage().contains("undefined variable reference: variable='m'");
+      caughtException = ce.getMessage().contains("'m' at position");
       if (!caughtException)
       {
-        throw new RuntimeException(ce);
+        throw ce;
       }
     }
     assertTrue("the undefined m reference was not caught when it should have been", caughtException);

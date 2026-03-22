@@ -1,6 +1,8 @@
 package arb.functions.integer;
 
+import arb.Integer;
 import arb.Real;
+import arb.expressions.Expression;
 import arb.functions.RealFunctional;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
@@ -23,12 +25,15 @@ public class ChainedFunctionalEvaluationTest extends
    */
   public static void testChainedApplicationYieldsCorrectValue()
   {
-    RealFunctionalSequence seq    = RealFunctionalSequence.express("n➔t➔q➔t^(n+q)");
-    Real                   t      = new Real("3",
-                                             BITS);
-    RealFunctional         f2     = seq.apply(2);
-    RealFunction           f2_3   = f2.evaluate(t, BITS);
-    double                 result = f2_3.eval(4.0);
+    // RealFunctionalSequence{n}=Integer->(RealFunctional=Real{t}->(RealFunction=Real{q}->Real))
+    Expression<Integer, RealFunctional, RealFunctionalSequence> expr   = RealFunctionalSequence.parse("n➔t➔q➔t^(n+q)");
+
+    RealFunctionalSequence                                      seq    = expr.instantiate();
+    Real                                                        t      = new Real("3",
+                                                                                  BITS);
+    RealFunctional                                              f2     = seq.apply(2);
+    RealFunction                                                f2_3   = f2.evaluate(t, BITS);
+    double                                                      result = f2_3.eval(4.0);
     t.close();
     assertEquals(729.0, result, 1e-10);
   }

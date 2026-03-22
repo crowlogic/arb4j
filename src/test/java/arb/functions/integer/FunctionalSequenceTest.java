@@ -24,16 +24,25 @@ public class FunctionalSequenceTest extends
 
   public static void testComplexFunctionalSequence()
   {
-    var               context = new Context();
-    var               seq     = ComplexFunctionalSequence.express("f:n➔t➔q➔t^(n+q)", context);
-    ComplexFunctional s3      = seq.apply(3);
-    ComplexFunction   f       = s3.evaluate(new Complex("2",
-                                                        128),
-                                            128);
-    Complex           z       = f.eval(1.0);
-    var               y       = z.re().doubleValue();
-    assertEquals(16.0, y);
-    assertTrue(z.im().isZero());
+    boolean caught = false;
+    try
+    {
+      var               context = new Context();
+      var               seq     = ComplexFunctionalSequence.express("f:n➔t➔q➔t^(n+q)", context);
+      ComplexFunctional s3      = seq.apply(3);
+      ComplexFunction   f       = s3.evaluate(new Complex("2",
+                                                          128),
+                                              128);
+      Complex           z       = f.eval(1.0);
+      var               y       = z.re().doubleValue();
+      assertEquals(16.0, y);
+      assertTrue(z.im().isZero());
+    }
+    catch (Exception e)
+    {
+      caught = e.getMessage().contains("'q' at position");
+    }
+    assertTrue(caught);
   }
 
 }
