@@ -162,7 +162,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 //      throw new CompilerException(String.format("variable already resolved and cannot be resolved again: %s",
 //                                                resolutionStateString()));
 //    }
-    if ("t".equals(reference.name))
+    if ("q".equals(reference.name))
     {
       System.out.println("Dammit " + resolutionStateString() );
 

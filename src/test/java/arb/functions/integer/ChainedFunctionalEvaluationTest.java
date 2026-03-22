@@ -27,7 +27,7 @@ public class ChainedFunctionalEvaluationTest extends
   {
     // RealFunctionalSequence{n}=Integer->(RealFunctional=Real{t}->(RealFunction=Real{q}->Real))
     Expression<Integer, RealFunctional, RealFunctionalSequence> expr   = RealFunctionalSequence.parse("n➔t➔q➔t^(n+q)");
-
+    //TODO: defer resolution here and poke around
     RealFunctionalSequence                                      seq    = expr.instantiate();
     Real                                                        t      = new Real("3",
                                                                                   BITS);
