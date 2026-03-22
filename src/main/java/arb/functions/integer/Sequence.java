@@ -9,6 +9,7 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
+import arb.functions.RealFunctional;
 import arb.utensils.ShellFunctions;
 
 /**
@@ -61,18 +62,7 @@ public interface Sequence<C> extends
     }
   }
 
-  public static <R, F extends Sequence<? extends R>, PD, PR, PF extends Function<? extends PD, ? extends PR>>
-         Expression<Integer, R, F>
-         parse(String className,
-               String expressionString,
-               Context context,
-               Class<? extends R> coDomainClass,
-               Class<? extends F> functionClass,
-               String functionName,
-               Expression<? extends PD, ? extends PR, ? extends PF> containingExpression)
-  {
-    return Function.parse(className, expressionString, context, Integer.class, coDomainClass, functionClass, functionName, containingExpression, true);
-  }
+
 
   public static <Q,
                 S extends Sequence<? extends Q>>
@@ -113,6 +103,11 @@ public interface Sequence<C> extends
          parse(String className, Class<? extends S> seq, Class<? extends C> coDomainType, String expr, Context context)
   {
     return Function.parse(className, expr, context, Integer.class, coDomainType, seq, null, null, true);
+  }
+
+  public static <C, S extends Sequence<? extends C>> Expression<Integer, C, S> parse(Class<? extends S> seq, Class<? extends C> coDomainType, String expr)
+  {
+    return Function.parse(null, expr, null, Integer.class, coDomainType, seq, null, null, true);
   }
 
 }

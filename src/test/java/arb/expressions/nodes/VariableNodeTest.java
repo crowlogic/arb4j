@@ -3,6 +3,7 @@ package arb.expressions.nodes;
 import arb.*;
 import arb.expressions.Expression;
 import arb.functions.Function;
+import arb.functions.RealFunctional;
 import arb.functions.polynomials.RealPolynomialNullaryFunction;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
@@ -35,7 +36,7 @@ public class VariableNodeTest extends
                                                                                                  "t->t+3*x+x^2");
     Function<Real, RealPolynomial>                                   f          = expression.instantiate();
     RealPolynomial                                                   poly       = f.evaluate(RealConstants.two, 0, 128, new RealPolynomial());
-    assertEquals("x² + 3*x", poly.toString());
+    assertEquals("x² + 3*x + 2", poly.toString());
   }
 
   public void testResolutionOfRealToRealPolynomialFunctionWithSameIndependentAndPlaceholderVariables()
@@ -49,13 +50,34 @@ public class VariableNodeTest extends
     assertEquals("12", poly.toString());
   }
 
-  public void testResolutionOfRealToRealFunctionWithDifferentIndependentAndPlaceholderVariables()
+  public void testResolutionOfRealFunctionalWithDifferentIndependentAndPlaceholderVariables()
   {
-    Expression<Real, Real, RealFunction> expression = Function.parse(Real.class, Real.class, RealFunction.class, "t->t+3*x+x^2");
-    Function<Real, Real>                 f          = expression.instantiate();
-    Real                                 poly       = f.evaluate(RealConstants.two, 0, 128);
-    assertEquals("x² + 3*x + 2", poly.toString());
+    Expression<Real, RealFunction, RealFunctional> expression = Function.parse(Real.class, RealFunction.class, RealFunctional.class, "t->t+3*x+x^2");
+    RealFunctional                                 f          = expression.instantiate();
+    RealFunction                                   poly       = f.evaluate(RealConstants.two, 0, 128);
+    var                                            x          = poly.eval(3.0);
+    assertEquals(20.0, x);
   }
+  
+  public void testResolutionOfRealFunctionalWithDifferentIndependentAndPlaceholderVariablesAndArrowUsedForOuterFunction()
+  {
+    Expression<Real, RealFunction, RealFunctional> expression = Function.parse(Real.class, RealFunction.class, RealFunctional.class, "t->x->t+3*x+x^2");
+    RealFunctional                                 f          = expression.instantiate();
+    RealFunction                                   poly       = f.evaluate(RealConstants.two, 0, 128);
+    var                                            x          = poly.eval(3.0);
+    assertEquals(20.0, x);
+  }
+  
+  public void testResolutionOfRealFunctionalWithDifferentIndependentAndPlaceholderVariablesAndNoArrowsUsed()
+  {
+    Expression<Real, RealFunction, RealFunctional> expression = Function.parse(Real.class, RealFunction.class, RealFunctional.class, "t+3*x+x^2");
+    RealFunctional                                 f          = expression.instantiate();
+    RealFunction                                   poly       = f.evaluate(RealConstants.two, 0, 128);
+    var                                            x          = poly.eval(3.0);
+    assertEquals(20.0, x);
+  }
+  
+  
 
   public void testResolutionOfRealToRealFunctionWithSameIndependentAndPlaceholderVariables()
   {

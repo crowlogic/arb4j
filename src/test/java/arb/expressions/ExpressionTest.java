@@ -310,9 +310,12 @@ public class ExpressionTest extends
     var context = new Context(Real.named("a").set(2),
                               Real.named("b").set(4),
                               Real.named("c").set(6));
-    var x       = RationalNullaryFunction.express("x->∂a*x+b*x²+c*x³/∂x", context);
+    var expr       = RationalNullaryFunction.parse("x->∂a*x+b*x²+c*x³/∂x", context);
+    var x       = expr.instantiate();
+    System.out.println( expr.inspect(x).toString());
     var poly    = x.evaluate(128);
-    assertEquals("18*x^2+8*x+2", poly.toString());
+    
+    assertEquals( "18*x^2+8*x+2", poly.toString());
     var y = poly.evaluate(new Real("2.3",
                                    128),
                           1,

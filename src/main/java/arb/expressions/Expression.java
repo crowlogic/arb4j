@@ -999,22 +999,22 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     checkLambdaParameterConflicts(variableName);
 
+    boolean prevDef = deferVariableResolution;
+    deferVariableResolution = true;
     var variableNode = newVariableNode(variableName);
     require('➔');
 
     Expression<D, C, F> subExpr = cloneExpression();
     subExpr.upstreamExpression = this;
     placeholderVariable        = subExpr.independentVariable = variableNode.spliceInto(subExpr);
-    subExpr.rootNode           = null;
-
-    var node = subExpr.resolve();
+    subExpr.rootNode           = subExpr.resolve();
 
     // Sync the parser position back to the parent expression
-    this.position          = subExpr.position;
-    this.character         = subExpr.character;
-    this.previousCharacter = subExpr.previousCharacter;
+    this.position              = subExpr.position;
+    this.character             = subExpr.character;
+    this.previousCharacter     = subExpr.previousCharacter;
 
-    return node;
+    return subExpr.rootNode;
   }
 
   private void checkLambdaParameterConflicts(String paramName)
@@ -2983,11 +2983,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public String remaining()
   {
-    if ( expression == null )
+    if (expression == null)
     {
       return "";
     }
-    position = Math.min(position, getExpression().length() );
+    position = Math.min(position, getExpression().length());
     return getExpression() == null ? null : getExpression().substring(Math.max(0, position), getExpression().length());
   }
 
@@ -3637,7 +3637,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return upstreamExpressions;
   }
 
-  public Stream<Expression<?, ?, ?>> stream()
+  public Stream<Expression<?, ?, ?>> upstreamExpressionStream()
   {
     return StreamSupport.stream(upstreamExpressionSpliterator(), false);
   }
@@ -3647,13 +3647,21 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return getUpstreamExpressions().spliterator();
   }
 
+  public String toStringSnipped()
+  {
+    return position < 0 ? expression : expression.substring(position);
+  }
+
   public String toStringExtended()
   {
-    return String.format("{domain=%s, coDomain=%s, function=%s, %s}",
+    return String.format("{domain=%s, coDomain=%s, function=%s, canHavePlaceholder=%s, independentVariable=%s, placeholderVariable=%s, expression=%s}",
                          domainType,
                          coDomainType,
                          functionClass,
-                         stream().map(Expression::toString).collect(Collectors.joining(" => ")));
+                         canHavePlaceholder(),
+                         independentVariable,
+                         placeholderVariable,
+                         upstreamExpressionStream().map(Expression::toString).collect(Collectors.joining(" 🡆 ")));
   }
 
   public LiteralConstantNode<D, C, F> one()

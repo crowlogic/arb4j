@@ -125,8 +125,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                          type() != null ? type().getSimpleName() : "null",
                          isIndependent,
                          upstreamInput,
-                         expression.toStringExtended(),
-                         expression.context);
+                         expression.toStringExtended());
   }
 
   private VariableNode<?, ?, ?> resolveUpstreamVariables()
@@ -164,8 +163,11 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 //      throw new CompilerException(String.format("variable already resolved and cannot be resolved again: %s",
 //                                                resolutionStateString()));
 //    }
+    if ("t".equals(reference.name))
+    {
+      System.out.println("Dammit " + resolutionStateString());
 
-    var inputVariable = expression.independentVariable;
+    }
 
     if (Expression.traceNodes)
     {
@@ -182,9 +184,9 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return this;
     }
 
-    if (isIndependent = isIndependent(inputVariable))
+    if (isIndependent = isIndependent())
     {
-      resolveIndependentVariable(inputVariable);
+      resolveIndependentVariable();
       reference.type = expression.domainType;
       if (Expression.traceNodes)
       {
@@ -232,6 +234,10 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   protected VariableNode<?, ?, ?> throwNewUndefinedReferenceException()
   {
+    if (Expression.traceNodes)
+    {
+      logger.debug("resolveReference UNDEFINED: {}", resolutionStateString());
+    }
     throw new UndefinedReferenceException(resolutionStateString());
   }
 
@@ -483,13 +489,13 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
   }
 
-  public boolean isIndependent(VariableNode<D, R, F> inputVariable)
+  public boolean isIndependent()
   {
     if (expression.isNullaryFunction())
     {
       return false;
     }
-    return equals(inputVariable) || (inputVariable == null && !expression.references(reference));
+    return equals(expression.getIndependentVariable()) || (expression.getIndependentVariable() == null && !expression.references(reference));
   }
 
   @Override
@@ -564,13 +570,14 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return false;
   }
 
-  public void resolveIndependentVariable(VariableNode<D, R, F> inputVariable)
+  public void resolveIndependentVariable()
   {
-    assert (inputVariable == null || inputVariable.equals(expression.independentVariable)) : "inputVariable is already "
-                                                                                             + inputVariable
-                                                                                             + " it doesnt make sense to change it to "
-                                                                                             + this;
-    if (!equals(inputVariable))
+    assert (expression.getIndependentVariable() == null
+                  || expression.getIndependentVariable().equals(expression.independentVariable)) : "inputVariable is already "
+                                                                                                   + expression.getIndependentVariable()
+                                                                                                   + " it doesnt make sense to change it to "
+                                                                                                   + this;
+    if (expression.getIndependentVariable() == null)// !expression.anyUpstreamIndependentVariableIsNamed(expression.getIndependentVariable().getName()))
     {
       if (Expression.traceNodes)
       {
@@ -593,8 +600,8 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     VariableNode<E, S, G> variableNode = new VariableNode<E, S, G>(newExpression,
                                                                    reference.spliceInto(newExpression),
                                                                    !newExpression.deferVariableResolution);
-    variableNode.position = position;
-    variableNode.fieldName = fieldName;
+    variableNode.position   = position;
+    variableNode.fieldName  = fieldName;
     variableNode.isRootNode = isRootNode;
     return variableNode;
   }
