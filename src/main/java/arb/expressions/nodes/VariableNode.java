@@ -122,9 +122,9 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                          reference.name,
                          reference.position,
                          expression.remaining(),
-                         type() != null ? type().getSimpleName() : "null",
+                         reference.type != null ? reference.type.getSimpleName() : "null",
                          isIndependent,
-                         upstreamInput);
+                         upstreamInput) + " in " + expression.toStringExtended();
   }
 
   private VariableNode<?, ?, ?> resolveUpstreamVariables()
@@ -164,7 +164,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 //    }
     if ("t".equals(reference.name))
     {
-      System.out.println("Dammit " + resolutionStateString());
+      System.out.println("Dammit " + resolutionStateString() );
 
     }
 
@@ -637,25 +637,20 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Class<?> type()
   {
-    Class<?> returnType = null;
-    if (isIndependent)
+   if (isIndependent)
     {
-      returnType = expression.domainType;
+      return reference.type = expression.domainType;
     }
-    else if (isPlaceholder)
+    else if (isPlaceholder && !expression.isReifiedFunctional())
     {
-      returnType = expression.coDomainType;
+      return reference.type = expression.coDomainType;
     }
     else
     {
-      returnType = reference.type();
+      resolveReference();
+      return reference.type();
     }
-    if (returnType == null || returnType.equals(Object.class))
-    {
-      returnType = expression.coDomainType;
-    }
-    assert returnType != null : "returnType is null for " + this;
-    return returnType;
+
   }
 
   @Override

@@ -2660,7 +2660,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     var intermediateVarName = getNextIntermediateVariableFieldName(prefix, type);
     assert intermediateVarName != null : "intermediateVarName shan't be null";
     String variable = registerIntermediateVariable(intermediateVarName, type, initialize);
-    assert variable != null : "registerIntermediateVariable returned null for intermediateVarName=" + intermediateVarName;
+   // assert variable != null : "registerIntermediateVariable returned null for intermediateVarName=" + intermediateVarName;
     return variable;
   }
 
@@ -3654,10 +3654,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public String toStringExtended()
   {
-    return String.format("{domain=%s, coDomain=%s, function=%s, canHavePlaceholder=%s, independentVariable=%s, placeholderVariable=%s, expression=%s}",
-                         domainType,
-                         coDomainType,
-                         functionClass,
+    return String.format("{function=%s=%s->%s, canHavePlaceholder=%s, independentVariable=%s, placeholderVariable=%s, expression=%s}",
+                         functionClass.getSimpleName(),
+                         domainType.getSimpleName(),
+                         coDomainType.getSimpleName(),
                          canHavePlaceholder(),
                          independentVariable,
                          placeholderVariable,

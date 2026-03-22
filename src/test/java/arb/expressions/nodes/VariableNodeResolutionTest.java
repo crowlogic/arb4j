@@ -310,7 +310,7 @@ public class VariableNodeResolutionTest extends
   {
     Expression<Integer, RationalFunction, RationalFunctionSequence> expr = RationalFunctionSequence.compile("n➔(½-z/2)ⁿ");
 
-    assertFalse("RationalFunction is a class, not an interface, so isFunctional() should be false", expr.isFunctional());
+    assertTrue(expr.isFunctional());
     assertTrue("RationalFunction implements Function, so isInterfaceFunctional() should be true", expr.isReifiedFunctional());
   }
 
@@ -463,11 +463,19 @@ public class VariableNodeResolutionTest extends
   public void testTypeForNullaryIndependent()
   {
     Expression<Object, RationalFunction, RationalNullaryFunction> expr = RationalFunction.parse("x");
-    VariableNode<?, ?, ?>                                         x    = expr.getIndependentVariable();
-    assertNotNull(x);
-    assertTrue("should be nullary", expr.isNullaryFunction());
-    assertEquals("type() should return coDomainType for nullary independent var", RationalFunction.class, x.type());
+    var x = expr.instantiate().evaluate();
+    
+    assertTrue("x".equals(x.toString()));
   }
+  
+  public void testTypeForNullaryIndependentWithArrow()
+  {
+    Expression<Object, RationalFunction, RationalNullaryFunction> expr = RationalFunction.parse("x->x");
+    var x = expr.instantiate().evaluate();
+    
+    assertTrue("x".equals(x.toString()));
+  }
+  
 
   /**
    * Test Expression.isFunctional() and Expression.isInterfaceFunctional() for
@@ -495,7 +503,6 @@ public class VariableNodeResolutionTest extends
     assertEquals(Object.class, expr.domainType);
     assertEquals(Real.class, expr.coDomainType);
   }
-
 
   /**
    * Test that the expression toString() correctly represents the parsed

@@ -319,6 +319,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     super(expression,
           argument);
+
     assert functionName != null : "functionName cannot be null";
     this.functionName = functionName;
     assignFunctionName();
@@ -926,9 +927,10 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       return Object.class;
     }
-    Class<? extends Object> argType       = arg.type();
+    Class<? extends Object> argType = arg.type();
+    assert argType != null : "argType is null for arg " + arg + " of " + this + " in " + expression.toStringExtended() + " context=" + expression.context;
 
-    Class<?>                scalarArgType = Compiler.scalarType(arg.type());
+    Class<?> scalarArgType = Compiler.scalarType(arg.type());
     switch (functionName)
     {
     case "re":
