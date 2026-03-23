@@ -1,0 +1,366 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+
+\newtheorem{theorem}{Theorem}
+
+\begin{document}
+
+\begin{theorem}[Spectral Null Space and Uniform Orthogonal Expansion of Bandlimited Stationary Covariance Operators]
+Let $\Lambda = [-L,L]$ be a compact interval in $\mathbb{R}$. Let $\mathcal{W}$ be the class of strictly positive spectral density functions $w \in L^2(\Lambda)$. For any $w \in \mathcal{W}$, define
+\begin{equation}
+    K(x)=\frac{1}{2\pi}\int_{\Lambda} w(\lambda)\,e^{i\lambda x}\,d\lambda .
+\end{equation}
+Let $\{P_n(\lambda)\}_{n=0}^\infty$ be the orthogonal polynomials with respect to the weight $w(\lambda)$ on $\Lambda$, normalized by $P_0(\lambda)=1$, and define
+\begin{equation}
+    \Phi_n(x)=\frac{1}{2\pi}\int_{\Lambda} P_n(\lambda)\,e^{i\lambda x}\,d\lambda .
+\end{equation}
+
+Then:
+\begin{enumerate}
+    \item For every $n\ge 1$,
+    \begin{equation}
+        \int_{\mathbb{R}} K(x)\,\overline{\Phi_n(x)}\,dx
+        =
+        \frac{1}{2\pi}\int_{\Lambda} w(\lambda)\,\overline{P_n(\lambda)}\,d\lambda
+        =0 .
+    \end{equation}
+
+    \item Let $\{Q_n(\lambda)\}_{n=0}^\infty$ be the orthogonal polynomials with respect to Lebesgue measure on $\Lambda$, with
+    \begin{equation}
+        h_n=\int_{\Lambda}|Q_n(\lambda)|^2\,d\lambda .
+    \end{equation}
+    Define
+    \begin{equation}
+        \mathcal{Q}_n(x)=\frac{1}{2\pi}\int_{\Lambda} Q_n(\lambda)\,e^{i\lambda x}\,d\lambda ,
+    \end{equation}
+    and
+    \begin{equation}
+        c_n=\frac{1}{h_n}\int_{\Lambda} w(\lambda)\,\overline{Q_n(\lambda)}\,d\lambda .
+    \end{equation}
+    Then
+    \begin{equation}
+        K(x)=\sum_{n=0}^\infty c_n\,\mathcal{Q}_n(x)
+    \end{equation}
+    for every $x\in\mathbb{R}$, and the convergence is uniform on $\mathbb{R}$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Adopt the Fourier convention
+\[
+    \hat f(\xi)=\int_{\mathbb{R}} f(x)\,e^{-i\xi x}\,dx,
+    \qquad
+    f(x)=\frac{1}{2\pi}\int_{\mathbb{R}} \hat f(\xi)\,e^{i\xi x}\,d\xi ,
+\]
+with Parseval identity
+\[
+    \int_{\mathbb{R}} f(x)\,\overline{g(x)}\,dx
+    =
+    \frac{1}{2\pi}\int_{\mathbb{R}} \hat f(\xi)\,\overline{\hat g(\xi)}\,d\xi .
+\]
+
+\textbf{Part 1.}
+Since
+\[
+    K(x)=\frac{1}{2\pi}\int_{\Lambda} w(\lambda)\,e^{i\lambda x}\,d\lambda,
+\]
+there holds
+\[
+    \hat K(\xi)=w(\xi)\,\mathbb{I}_{\Lambda}(\xi).
+\]
+Likewise,
+\[
+    \widehat{\Phi_n}(\xi)=P_n(\xi)\,\mathbb{I}_{\Lambda}(\xi).
+\]
+Therefore
+\[
+    \int_{\mathbb{R}} K(x)\,\overline{\Phi_n(x)}\,dx
+    =
+    \frac{1}{2\pi}\int_{\mathbb{R}} \hat K(\xi)\,\overline{\widehat{\Phi_n}(\xi)}\,d\xi
+    =
+    \frac{1}{2\pi}\int_{\Lambda} w(\lambda)\,\overline{P_n(\lambda)}\,d\lambda .
+\]
+The polynomials $P_n$ have real coefficients, so $\overline{P_n(\lambda)}=P_n(\lambda)$ on $\Lambda$. Since $P_0\equiv 1$ and $\{P_n\}$ is orthogonal with respect to the weight $w$,
+\[
+    \int_{\Lambda} w(\lambda)\,P_n(\lambda)\,P_0(\lambda)\,d\lambda =0
+\]
+for all $n\ge 1$. This proves the first assertion.
+
+\vspace{1em}
+\textbf{Part 2.}
+By Parseval,
+\[
+    \langle \Phi_n,\Phi_m\rangle_{L^2(\mathbb{R})}
+    =
+    \frac{1}{2\pi}\int_{\Lambda} P_n(\lambda)\,\overline{P_m(\lambda)}\,d\lambda .
+\]
+The Gram--Schmidt procedure depends only on ratios of inner products, so the common constant factor $(2\pi)^{-1}$ is irrelevant. Hence Gram--Schmidt applied to $\{\Phi_n\}$ in $L^2(\mathbb{R})$ produces the same coefficient relations as Gram--Schmidt applied to $\{P_n\}$ in $L^2(\Lambda,d\lambda)$. Since $\deg P_n=n$, the span of $\{P_0,\dots,P_N\}$ equals the span of $\{1,\lambda,\dots,\lambda^N\}$. Therefore the resulting orthogonal system is, up to normalization, the orthogonal polynomial system $\{Q_n\}_{n=0}^\infty$ for Lebesgue measure on $\Lambda$, and its spatial images are
+\[
+    \mathcal{Q}_n(x)=\frac{1}{2\pi}\int_{\Lambda} Q_n(\lambda)\,e^{i\lambda x}\,d\lambda .
+\]
+
+Since $\{Q_n\}$ is complete in $L^2(\Lambda)$,
+\[
+    w(\lambda)=\sum_{n=0}^\infty c_n\,Q_n(\lambda)
+\]
+in $L^2(\Lambda)$, where
+\[
+    c_n=\frac{1}{h_n}\int_{\Lambda} w(\lambda)\,\overline{Q_n(\lambda)}\,d\lambda .
+\]
+Let
+\[
+    w_N(\lambda)=\sum_{n=0}^N c_n\,Q_n(\lambda).
+\]
+Then $\|w-w_N\|_{L^2(\Lambda)}\to 0$ as $N\to\infty$.
+
+For every $x\in\mathbb{R}$,
+\[
+    K(x)-\sum_{n=0}^N c_n\,\mathcal{Q}_n(x)
+    =
+    \frac{1}{2\pi}\int_{\Lambda} \bigl(w(\lambda)-w_N(\lambda)\bigr)e^{i\lambda x}\,d\lambda .
+\]
+Hence
+\[
+    \left|K(x)-\sum_{n=0}^N c_n\,\mathcal{Q}_n(x)\right|
+    \le
+    \frac{1}{2\pi}\int_{\Lambda} |w(\lambda)-w_N(\lambda)|\,d\lambda .
+\]
+Since $\Lambda$ has finite measure,
+\[
+    \|w-w_N\|_{L^1(\Lambda)}
+    \le
+    |\Lambda|^{1/2}\,\|w-w_N\|_{L^2(\Lambda)}
+    =
+    \sqrt{2L}\,\|w-w_N\|_{L^2(\Lambda)} .
+\]
+Therefore
+\[
+    \sup_{x\in\mathbb{R}}
+    \left|K(x)-\sum_{n=0}^N c_n\,\mathcal{Q}_n(x)\right|
+    \le
+    \frac{\sqrt{2L}}{2\pi}\,\|w-w_N\|_{L^2(\Lambda)} \longrightarrow 0 .
+\]
+Thus
+\[
+    K(x)=\sum_{n=0}^\infty c_n\,\mathcal{Q}_n(x)
+\]
+for every $x\in\mathbb{R}$, with uniform convergence on $\mathbb{R}$.
+\end{proof}
+
+\bigskip
+
+\begin{theorem}[One-Sided Orthogonal Expansion Principle]
+Let $(\Omega,\mu)$ be either the spectral side or the spatial side. Let $\mathcal{F}$ denote the Fourier transform side change
+\[
+    (\mathcal{F}f)(\xi)=\int_{\mathbb{R}} f(x)\,e^{-i\xi x}\,dx,
+    \qquad
+    f(x)=\frac{1}{2\pi}\int_{\mathbb{R}} (\mathcal{F}f)(\xi)\,e^{i\xi x}\,d\xi .
+\]
+Assume that one of the two representations below is available:
+
+\medskip
+
+\noindent
+\textbf{Spectral-side representation:}
+\[
+    K(x)=\frac{1}{2\pi}\int_{\Omega} w(\lambda)\,e^{i\lambda x}\,d\lambda .
+\]
+
+\noindent
+\textbf{Spatial-side representation:}
+\[
+    w(\lambda)=\int_{\Omega} K(x)\,e^{-i\lambda x}\,dx .
+\]
+
+Assume in either case that:
+\begin{enumerate}
+    \item $\Omega$ is equipped with a measure $\mu$;
+    \item the representing function belongs to $L^2(\Omega,\mu)$;
+    \item there is a complete orthogonal system $\{Q_n\}$ in $L^2(\Omega,\mu)$;
+    \item the integral transform from that side to the dual side is well-defined for the partial sums and for the target function;
+    \item convergence in $L^2(\Omega,\mu)$ implies convergence after transformation in the sense required on the dual side.
+\end{enumerate}
+
+Then the representing function admits an $L^2(\Omega,\mu)$ expansion
+\[
+    f=\sum_{n=0}^\infty c_n\,Q_n,
+\]
+and the transformed object admits the corresponding expansion
+\[
+    \mathcal{T}f=\sum_{n=0}^\infty c_n\,\mathcal{T}Q_n,
+\]
+with the mode of convergence determined entirely by the continuity estimate available for the transform $\mathcal{T}$ on that side.
+
+In particular, if there exists a normed space $X(\Omega)$ such that:
+\begin{enumerate}
+    \item $f,f_N \in X(\Omega)$ for all partial sums $f_N$;
+    \item $f_N \to f$ in $X(\Omega)$;
+    \item for the transformed functions one has
+    \[
+        \sup_{y} |\mathcal{T}(f-f_N)(y)| \le C\,\|f-f_N\|_{X(\Omega)}
+    \]
+    with a constant $C$ independent of $N$ and of the dual variable $y$,
+\end{enumerate}
+then the transformed series converges uniformly.
+\end{theorem}
+
+\begin{proof}
+Let
+\[
+    f_N=\sum_{n=0}^N c_n\,Q_n.
+\]
+By completeness of $\{Q_n\}$ in $L^2(\Omega,\mu)$, there holds $f_N\to f$ in $L^2(\Omega,\mu)$. If the transform $\mathcal{T}$ is continuous with respect to a stronger norm $\|\cdot\|_{X(\Omega)}$ for which $f_N\to f$, then
+\[
+    \sup_y |\mathcal{T}(f-f_N)(y)| \le C\,\|f-f_N\|_{X(\Omega)} \to 0 .
+\]
+Therefore
+\[
+    \mathcal{T}f(y)=\lim_{N\to\infty}\mathcal{T}f_N(y)
+    =\lim_{N\to\infty}\sum_{n=0}^N c_n\,\mathcal{T}Q_n(y)
+\]
+uniformly in the dual variable. No separate summability hypothesis on transformed basis elements is required; only continuity of the transform in a norm that controls the desired mode of convergence is required.
+\end{proof}
+
+\bigskip
+
+\begin{theorem}[Noncompact Spectral Expansion Under Integrable Approximation]
+Let $\Omega=\mathbb{R}$ and let $w \in L^2(\mathbb{R})$. Define
+\begin{equation}
+    K(x)=\frac{1}{2\pi}\int_{\mathbb{R}} w(\lambda)\,e^{i\lambda x}\,d\lambda
+\end{equation}
+whenever the integral is well-defined. Let $\{Q_n\}_{n=0}^\infty$ be a complete orthogonal system in $L^2(\mathbb{R})$, with
+\[
+    h_n=\int_{\mathbb{R}} |Q_n(\lambda)|^2\,d\lambda,
+    \qquad
+    c_n=\frac{1}{h_n}\int_{\mathbb{R}} w(\lambda)\,\overline{Q_n(\lambda)}\,d\lambda .
+\]
+Define
+\[
+    w_N(\lambda)=\sum_{n=0}^N c_n\,Q_n(\lambda),
+    \qquad
+    \mathcal{Q}_n(x)=\frac{1}{2\pi}\int_{\mathbb{R}} Q_n(\lambda)\,e^{i\lambda x}\,d\lambda ,
+\]
+whenever these integrals are well-defined.
+
+Assume that there exists a Banach space $X \subset L^1(\mathbb{R})\cap L^2(\mathbb{R})$ such that:
+\begin{enumerate}
+    \item $w,w_N \in X$ for all $N$;
+    \item $\|w-w_N\|_X \to 0$;
+    \item there is a constant $C>0$ such that
+    \[
+        \sup_{x\in\mathbb{R}}
+        \left|
+        \frac{1}{2\pi}\int_{\mathbb{R}} f(\lambda)\,e^{i\lambda x}\,d\lambda
+        \right|
+        \le C\|f\|_X
+    \]
+    for all $f\in X$.
+\end{enumerate}
+Then
+\[
+    K(x)=\sum_{n=0}^\infty c_n\,\mathcal{Q}_n(x)
+\]
+uniformly on $\mathbb{R}$.
+\end{theorem}
+
+\begin{proof}
+Since $w_N\to w$ in $X$,
+\[
+    \sup_{x\in\mathbb{R}}
+    \left|
+    \frac{1}{2\pi}\int_{\mathbb{R}} (w(\lambda)-w_N(\lambda))\,e^{i\lambda x}\,d\lambda
+    \right|
+    \le
+    C\|w-w_N\|_X \to 0 .
+\]
+But
+\[
+    \frac{1}{2\pi}\int_{\mathbb{R}} w_N(\lambda)\,e^{i\lambda x}\,d\lambda
+    =
+    \sum_{n=0}^N c_n\,\mathcal{Q}_n(x) .
+\]
+Therefore
+\[
+    \sup_{x\in\mathbb{R}}
+    \left|
+    K(x)-\sum_{n=0}^N c_n\,\mathcal{Q}_n(x)
+    \right|
+    \to 0 .
+\]
+Thus the transformed orthogonal expansion converges uniformly on $\mathbb{R}$.
+\end{proof}
+
+\bigskip
+
+\begin{theorem}[Noncompact Spatial Expansion Under Integrable Approximation]
+Let $K \in L^2(\mathbb{R})$ and define
+\begin{equation}
+    w(\lambda)=\int_{\mathbb{R}} K(x)\,e^{-i\lambda x}\,dx
+\end{equation}
+whenever the integral is well-defined. Let $\{R_n\}_{n=0}^\infty$ be a complete orthogonal system in $L^2(\mathbb{R})$, with
+\[
+    k_n=\int_{\mathbb{R}} |R_n(x)|^2\,dx,
+    \qquad
+    a_n=\frac{1}{k_n}\int_{\mathbb{R}} K(x)\,\overline{R_n(x)}\,dx .
+\]
+Define
+\[
+    K_N(x)=\sum_{n=0}^N a_n\,R_n(x),
+    \qquad
+    \widehat{R_n}(\lambda)=\int_{\mathbb{R}} R_n(x)\,e^{-i\lambda x}\,dx ,
+\]
+whenever these integrals are well-defined.
+
+Assume that there exists a Banach space $Y \subset L^1(\mathbb{R})\cap L^2(\mathbb{R})$ such that:
+\begin{enumerate}
+    \item $K,K_N \in Y$ for all $N$;
+    \item $\|K-K_N\|_Y \to 0$;
+    \item there is a constant $C>0$ such that
+    \[
+        \sup_{\lambda\in\mathbb{R}}
+        \left|
+        \int_{\mathbb{R}} f(x)\,e^{-i\lambda x}\,dx
+        \right|
+        \le C\|f\|_Y
+    \]
+    for all $f\in Y$.
+\end{enumerate}
+Then
+\[
+    w(\lambda)=\sum_{n=0}^\infty a_n\,\widehat{R_n}(\lambda)
+\]
+uniformly on $\mathbb{R}$.
+\end{theorem}
+
+\begin{proof}
+Since $K_N\to K$ in $Y$,
+\[
+    \sup_{\lambda\in\mathbb{R}}
+    \left|
+    \int_{\mathbb{R}} (K(x)-K_N(x))\,e^{-i\lambda x}\,dx
+    \right|
+    \le
+    C\|K-K_N\|_Y \to 0 .
+\]
+But
+\[
+    \int_{\mathbb{R}} K_N(x)\,e^{-i\lambda x}\,dx
+    =
+    \sum_{n=0}^N a_n\,\widehat{R_n}(\lambda) .
+\]
+Therefore
+\[
+    \sup_{\lambda\in\mathbb{R}}
+    \left|
+    w(\lambda)-\sum_{n=0}^N a_n\,\widehat{R_n}(\lambda)
+    \right|
+    \to 0 .
+\]
+Thus the transformed orthogonal expansion converges uniformly on $\mathbb{R}$.
+\end{proof}
+
+\end{document}
+

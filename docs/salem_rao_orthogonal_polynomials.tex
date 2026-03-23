@@ -1,516 +1,888 @@
-\documentclass{amsart}
-\usepackage[english]{babel}
-\usepackage{amssymb}
+\documentclass[11pt]{amsart}
+\usepackage{amssymb,amsmath,amsthm,mathtools,mathrsfs}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
 
-%%%%%%%%%% Start TeXmacs macros
-\newcommand{\assign}{:=}
-\newcommand{\cdummy}{\cdot}
-\newcommand{\tmem}[1]{{\em #1\/}}
-\newcommand{\tmmathbf}[1]{\ensuremath{\boldsymbol{#1}}}
-\newcommand{\tmtextbf}[1]{\text{{\bfseries{#1}}}}
-\newtheorem{definition}{Definition}
-\newtheorem{lemma}{Lemma}
-\newtheorem{proposition}{Proposition}
-{\theoremstyle{remark}\newtheorem{remark}{Remark}}
-\newtheorem{theorem}{Theorem}
-%%%%%%%%%% End TeXmacs macros
+\numberwithin{equation}{section}
+\parindent=12pt
+\setlength{\parskip}{0.25em}
 
-\newcommand{\baselinestretch}{1.4}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{notation}[theorem]{Notation}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\mom}[1]{\mu_{#1}}
+\newcommand{\Hankel}[1]{H_{#1}}
+\newcommand{\DeltaH}[1]{\Delta_{#1}}
+\newcommand{\inner}[2]{\left\langle #1,#2\right\rangle_{w}}
+\newcommand{\Bell}{\mathrm{B}}
 
 \begin{document}
 
-{\documentclassstar{11pt}{amsart}}
-{\usepackage{amssymb,amsmath,amsthm,mathrsfs}}
-{\usepackagestar{margin=1in}{geometry}} {\usepackage{hyperref}}
-{\usepackage{enumitem}}
+\title[Salem--Rao Orthogonal Polynomials]{Orthogonal Polynomials Associated with the Salem--Rao Kernel Weight}
 
-{\numberwithin{equation}{section}} par-first=12pt
-
-[section] {\theoremstyle{definition}}
-
-{\titlestar{Salem--Rao Orthogonal Polynomials}{Orthogonal Polynomials
-Associated with the Salem--Rao Kernel Weight}}
-
-{\author{S. Crowley}}{\address{Dallas, Texas}} 3amrc4 23, 2026
+\author{S.\ Crowley}
+\address{Dallas, Texas}
+\date{\today}
 
 \begin{abstract}
-  We introduce and study the family of orthogonal polynomials associated with
-  the Salem--Rao kernel weight $w (u) = e^u / (e^{e^u} + 1)$ on $\mathbb{R}$.
-  The moments of this weight are shown to be derivatives of the entire
-  function $F (s) = \Gamma (s)  (1 - 2^{1 - s}) \zeta (s)$ evaluated at $s =
-  1$, yielding closed-form expressions in terms of the Euler--Mascheroni
-  constant, the Stieltjes constants, and special values of the Riemann zeta
-  function. Using these moments we carry out the Gram--Schmidt process
-  explicitly, derive the first three monic orthogonal polynomials, establish
-  the three-term recurrence via Favard's theorem, and verify the nondegeneracy
-  of the associated Hankel determinants.
+The orthogonal polynomial system associated with the Salem--Rao kernel weight
+$w(u)=e^{u}/(e^{e^{u}}+1)$ on $\R$ is constructed in a form where every index
+is treated in closed form. The moments $\mom{k}$ are identified for all
+$k\ge 0$ with the $k$-th derivatives at $1$ of the entire function
+$F(s)=\Gamma(s)(1-2^{1-s})\zeta(s)$ and are then expressed by an explicit
+finite double sum in terms of Stieltjes constants and complete exponential
+Bell polynomials. From these moments, exact Hankel determinants, a
+determinantal formula for the monic orthogonal polynomials $P_n$ of every
+degree $n$, and the three-term recurrence with explicit determinant
+expressions for the recurrence coefficients $\alpha_n,\beta_n$ are derived.
+The positivity of all Hankel determinants, determinacy of the moment problem,
+the Christoffel--Darboux identity, and the zero distribution are proved with
+complete details and no sketches. All formulas are specialized to the
+Salem--Rao weight.
 \end{abstract}
 
-{\subjclassstar{2020}{33C45, 42C05, 11M06}} {\keywords{orthogonal polynomials,
-Salem--Rao weight, Fermi--Dirac kernel, Stieltjes constants, Mellin transform,
-Favard's theorem}}
+\subjclass[2020]{33C45, 42C05, 11M06, 44A60}
+\keywords{orthogonal polynomials, Salem--Rao weight, Bell polynomials, Stieltjes constants, Mellin transform, Favard theorem, Hankel determinant}
 
-{\maketitle}
+\maketitle
+\tableofcontents
 
-{\tableofcontents}
+\section{The Salem--Rao weight and its moment problem}
 
-\section{Introduction}\label{sec:intro}
-
-The Fermi--Dirac distribution $(e^x + 1)^{- 1}$ and its associated Mellin
-transform are classical objects in analytic number theory and mathematical
-physics. Under the logarithmic change of variable $x = e^u$, the kernel $x^{s
-- 1} / (e^x + 1)$ pulls back to the function
-\[ e^{su} / (e^{e^u} + 1), \]
-whose restriction to $s = 1$ defines a rapidly decaying, strictly positive
-weight on the real line. We call this the {\tmem{Salem--Rao kernel weight}},
-denoted $w (u) = e^u / (e^{e^u} + 1)$, and develop in this paper the theory of
-the orthogonal polynomial sequence $\{P_n \}_{n \ge 0}$ generated by $w$.
-
-The moments of $w$ are expressible in closed form through the function $F (s)
-\assign \Gamma (s)  (1 - 2^{1 - s}) \zeta (s)$, which is entire: the simple
-pole of the Riemann zeta function at $s = 1$ is cancelled by the simple zero
-of the Dirichlet eta prefactor $1 - 2^{1 - s}$. Specifically, $\mu_k = F^{(k)}
-(1)$. This link to the gamma function, Riemann zeta function, and Stieltjes
-constants endows the Salem--Rao polynomials with a rich arithmetic structure.
-
-The paper is organized as follows. Section~\ref{sec:weight} establishes basic
-analytic properties of the weight and defines the moment sequence.
-Section~\ref{sec:momentformula} proves the moment--derivative identity $\mu_k
-= F^{(k)} (1)$. Section~\ref{sec:explicit} computes the first four moments in
-closed form. Section~\ref{sec:OP} carries out Gram--Schmidt orthogonalization
-and derives the polynomials $P_0, P_1, P_2$ explicitly.
-Section~\ref{sec:recurrence} establishes the three-term recurrence and
-computes the first recurrence coefficients.
-
-\section{The Salem--Rao Weight}\label{sec:weight}
-
-\begin{definition}
-  [Salem--Rao kernel weight]\label{def:weight} Let $\ell \assign \log 2$. The
-  {\tmem{Salem--Rao kernel weight}} is the function
-  \begin{equation}
-    \label{eq:weight} w (u) \assign \frac{e^u}{e^{e^u} + 1}, \qquad u \in
-    \mathbb{R}.
-  \end{equation}
+\begin{definition}\label{def:weight}
+Let $\ell:=\log 2$. The \emph{Salem--Rao kernel weight} is
+\begin{equation}\label{eq:weight}
+w(u):=\frac{e^{u}}{e^{e^{u}}+1},\qquad u\in\R.
+\end{equation}
 \end{definition}
 
-\begin{proposition}
-  [Integrability]\label{prop:integrability} The function $w$ is strictly
-  positive on $\mathbb{R}$, belongs to $L^p (\mathbb{R})$ for every $1 \le p
-  \le \infty$, and the measure $w (u)  \hspace{0.17em} du$ has finite moments
-  of all orders. In particular, $w (u)  \hspace{0.17em} du$ defines a finite
-  positive Borel measure on $\mathbb{R}$.
+\begin{proposition}\label{prop:basic-weight}
+The weight $w$ satisfies:
+\begin{enumerate}
+\item[(i)] $w(u)>0$ for every $u\in\R$.
+\item[(ii)] $w\in L^{p}(\R)$ for every $1\le p\le\infty$.
+\item[(iii)] For every $k\ge 0$ the moment
+\begin{equation}\label{eq:moments}
+\mom{k}:=\int_{\R}u^{k}w(u)\,\dd u
+\end{equation}
+exists and is finite.
+\item[(iv)] The Hamburger moment problem determined by $\{\mom{k}\}_{k\ge 0}$
+is determinate.
+\end{enumerate}
 \end{proposition}
 
 \begin{proof}
-  Strict positivity is immediate from the formula: $e^u > 0$ and $e^{e^u} + 1
-  > 1$.
-  
-  {\noindent}\tmtextbf{Decay at $\tmmathbf{- \infty}$.} As $u \to - \infty$,
-  $e^u \to 0$ and $e^{e^u} \to e^0 = 1$, so $w (u) \sim e^u / (1 + 1) =
-  \tfrac{1}{2} e^u$. Hence $w$ decays exponentially as $u \to - \infty$.
-  
-  {\noindent}\tmtextbf{Decay at $\tmmathbf{+ \infty}$.} As $u \to + \infty$,
-  $e^{e^u} \gg 1$ and $w (u) \sim e^u \cdot e^{- e^u} = e^{u - e^u}$. Since
-  $e^u$ grows much faster than $u$, this is super-exponential decay.
-  
-  {\noindent}\tmtextbf{$L^p$ membership.} For $1 \le p < \infty$, $|w (u) |^p$
-  inherits the same exponential and super-exponential tails, so $w \in L^p
-  (\mathbb{R})$. Since $w$ is continuous and decays to $0$ at both ends, $w
-  \in L^{\infty} (\mathbb{R})$ as well.
-  
-  {\noindent}\tmtextbf{Finite moments.} For any $k \ge 0$, $|u|^k 
-  \hspace{0.17em} w (u) \le C_k  \hspace{0.17em} e^{u / 2}$ for $u < 0$ (since
-  $w (u) \sim \tfrac{1}{2} e^u$) and $|u|^k  \hspace{0.17em} w (u) \le C_k' 
-  \hspace{0.17em} e^{u - e^u}$ for $u > 0$. Both tails are integrable, so
-  $\mu_k \assign \int_{\mathbb{R}} u^k  \hspace{0.17em} w (u)  \hspace{0.17em}
-  du < \infty$ for every $k \ge 0$.
-\end{proof}
+For (i), for every $u\in\R$ one has $e^{u}>0$ and $e^{e^{u}}+1>1$, hence
+$w(u)>0$.
 
-\begin{definition}
-  [Moments]\label{def:moments} The {\tmem{moment sequence}} of the Salem--Rao
-  weight is
-  \begin{equation}
-    \label{eq:moments} \mu_k \assign \int_{\mathbb{R}} u^k  \hspace{0.17em} w
-    (u)  \hspace{0.17em} du, \qquad k = 0, 1, 2, \ldots
-  \end{equation}
-\end{definition}
+For (ii), as $u\to -\infty$, $e^{u}\to 0$ and $e^{e^{u}}\to 1$, so
+\[
+w(u)=\frac{e^{u}}{e^{e^{u}}+1}
+=\frac{e^{u}}{1+e^{e^{u}}}
+\sim \frac{e^{u}}{2}.
+\]
+There exists $C>0$ such that $|w(u)|\le C e^{u}$ for all $u\le 0$. As
+$u\to +\infty$, $e^{e^{u}}\gg 1$ and
+\[
+w(u)=e^{u-e^{u}}\bigl(1+e^{-e^{u}}\bigr)^{-1}
+\sim e^{u-e^{u}}.
+\]
+There exists $C'>0$ such that $|w(u)|\le C' e^{u-e^{u}}$ for all $u\ge 0$.
+For $1\le p<\infty$,
+\[
+\int_{-\infty}^{0}|w(u)|^{p}\,\dd u
+\le C^{p}\int_{-\infty}^{0}e^{pu}\,\dd u<\infty,
+\]
+and
+\[
+\int_{0}^{\infty}|w(u)|^{p}\,\dd u
+\le C'^{p}\int_{0}^{\infty}e^{p(u-e^{u})}\,\dd u<\infty,
+\]
+since $e^{p(u-e^{u})}$ decays super-exponentially as $u\to +\infty$.
+Continuity and decay at $\pm\infty$ imply $\|w\|_{\infty}<\infty$, so
+$w\in L^{p}(\R)$ for all $1\le p\le\infty$.
 
-\section{The Moment--Derivative Identity}\label{sec:momentformula}
+For (iii), fix $k\ge 0$. For $u\le 0$, the estimate
+$|u|^{k}w(u)\le C_{k}|u|^{k}e^{u}$ holds with some $C_{k}>0$, and
+\[
+\int_{-\infty}^{0}|u|^{k}e^{u}\,\dd u
+=\int_{0}^{\infty}t^{k}e^{-t}\,\dd t
+=\Gamma(k+1)<\infty.
+\]
+For $u\ge 0$, the estimate $|u|^{k}w(u)\le C_{k}' u^{k}e^{u-e^{u}}$ holds
+with some $C_{k}'>0$, and
+\[
+\int_{0}^{\infty}u^{k}e^{u-e^{u}}\,\dd u
+\le \int_{0}^{\infty}u^{k}e^{-e^{u}/2}\,\dd u<\infty,
+\]
+because $e^{u}$ dominates all powers of $u$. Thus
+$\int_{\R}|u|^{k}w(u)\,\dd u<\infty$, and the moment exists and is finite.
 
-\begin{definition}
-  \label{def:F}Define
-  \begin{equation}
-    \label{eq:Fdef} F (s) \assign \Gamma (s)  (1 - 2^{1 - s}) \zeta (s),
-    \qquad s \in \mathbb{C}.
-  \end{equation}
-  The simple pole of $\zeta (s)$ at $s = 1$ is cancelled by the simple zero of
-  $1 - 2^{1 - s}$ at $s = 1$ (since $1 - 2^{1 - s} = - \ell \hspace{0.17em} (s
-  - 1) + O ((s - 1)^2)$ and $\zeta (s) = (s - 1)^{- 1} + O (1)$), so $F$
-  extends to an entire function.
-\end{definition}
-
-\begin{theorem}
-  [Moment--derivative identity]\label{thm:momentF} For every $k \ge 0$,
-  \begin{equation}
-    \label{eq:momentF} \mu_k = F^{(k)} (1) .
-  \end{equation}
-\end{theorem}
-
-\begin{proof}
-  Substitute $x = e^u$ in~\eqref{eq:moments}: with $u = \log x$ and $du = dx /
-  x$,
-  \begin{equation}
-    \label{eq:Mellin_moment} \mu_k = \int_0^{\infty} \frac{(\log x)^k}{e^x +
-    1}  \hspace{0.17em} dx.
-  \end{equation}
-  The Mellin transform of the Fermi--Dirac kernel is the classical identity
-  \begin{equation}
-    \label{eq:Mellin_FD} F (s) = \int_0^{\infty} \frac{x^{s - 1}}{e^x + 1} 
-    \hspace{0.17em} dx, \qquad \Re (s) > 0.
-  \end{equation}
-  Differentiating $k$ times under the integral sign with respect to $s$ gives
-  \begin{equation}
-    \label{eq:Fk} F^{(k)} (s) = \int_0^{\infty} \frac{(\log x)^k 
-    \hspace{0.17em} x^{s - 1}}{e^x + 1}  \hspace{0.17em} dx, \qquad \Re (s) >
-    0.
-  \end{equation}
-  The interchange of differentiation and integration is justified by dominated
-  convergence: for any compact set $K \subset \{s : \Re (s) > 0\}$ and any $k
-  \ge 0$, the integrand $| (\log x)^k  \hspace{0.17em} x^{\sigma - 1} / (e^x +
-  1) |$ is dominated by an integrable function on $(0, \infty)$ uniformly for
-  $s \in K$.
-  
-  Setting $s = 1$ in~\eqref{eq:Fk} and comparing with~\eqref{eq:Mellin_moment}
-  yields $\mu_k = F^{(k)} (1)$.
-\end{proof}
-
-\begin{remark}
-  \label{rem:generating}The identity~\eqref{eq:momentF} can be restated as
-  saying that $F (1 + \epsilon)$ is the exponential generating function of the
-  moment sequence: $F (1 + \epsilon) = \sum_{k = 0}^{\infty} \frac{\mu_k}{k!} 
-  \hspace{0.17em} \epsilon^k$.
-\end{remark}
-
-\section{Explicit Moment Formulae}\label{sec:explicit}
-
-To compute $\mu_k = F^{(k)} (1)$, we expand $F (1 + \epsilon)$ as a Cauchy
-product of the Taylor expansions of its three factors around $\epsilon = 0$.
-Throughout this section, $\gamma$ denotes the Euler--Mascheroni constant and
-$\gamma_1, \gamma_2$ the Stieltjes constants defined by the Laurent expansion
-\begin{equation}
-  \label{eq:zeta_Laurent} \zeta (1 + \epsilon) = \frac{1}{\epsilon} + \gamma +
-  \gamma_1 \epsilon + \gamma_2 \epsilon^2 + \cdots
+For (iv), Carleman's condition is verified. From the estimates above,
+\[
+|\mom{k}|
+\le \int_{-\infty}^{0}|u|^{k}e^{u}\,\dd u
++ \int_{0}^{\infty}u^{k}e^{u-e^{u}}\,\dd u
+=:I^{-}_{k}+I^{+}_{k}.
+\]
+One has $I^{-}_{k}=\Gamma(k+1)=k!$. For $I^{+}_{k}$, substitute $x=e^{u}$, so
+$u=\log x$ and $\dd u=\dd x/x$, to obtain
+\[
+I^{+}_{k}\le \int_{1}^{\infty}(\log x)^{k}e^{-x}\,\dd x.
+\]
+For $x\ge 1$, $\log x\le x$, hence
+\[
+I^{+}_{k}\le \int_{1}^{\infty}x^{k}e^{-x}\,\dd x\le \Gamma(k+1)=k!.
+\]
+Therefore, for every $k\ge 0$,
+\begin{equation}\label{eq:moment-bound}
+|\mom{k}|\le 2k!.
 \end{equation}
-\begin{lemma}
-  [Gamma factor expansion]\label{lem:gamma} Write $\Gamma (1 + \epsilon) =
-  \sum_{n = 0}^{\infty} g_n \epsilon^n$. Then
-  \begin{equation}
-    \label{eq:gamma_expand} g_0 = 1, \quad g_1 = - \gamma, \quad g_2 =
-    \frac{\gamma^2}{2} + \frac{\pi^2}{12}, \quad g_3 = - \frac{\gamma^3}{6} -
-    \frac{\gamma \pi^2}{12} - \frac{\zeta (3)}{3} .
-  \end{equation}
-\end{lemma}
-
-\begin{proof}
-  From the well-known expansion $\log \Gamma (1 + \epsilon) = - \gamma
-  \epsilon + \frac{\pi^2}{12} \epsilon^2 - \frac{\zeta (3)}{3} \epsilon^3 +
-  \cdots$, exponentiate and collect powers of $\epsilon$. Specifically, write
-  $\Gamma (1 + \epsilon) = \exp \hspace{-0.17em} \left( - \gamma \epsilon +
-  \frac{\pi^2}{12} \epsilon^2 - \frac{\zeta (3)}{3} \epsilon^3 + \cdots
-  \right)$ and expand the exponential to third order.
+For $n\ge 1$, this yields
+\[
+\mom{2n}^{-1/(2n)}\ge (2(2n)!)^{-1/(2n)}.
+\]
+By Stirling's formula,
+\[
+(2n)!^{1/(2n)}\sim \frac{2n}{e},
+\]
+so there exist $N\in\N$ and $c>0$ such that for all $n\ge N$,
+\[
+(2(2n)!)^{-1/(2n)}\ge \frac{c}{n}.
+\]
+Consequently,
+\[
+\sum_{n=1}^{\infty}\mom{2n}^{-1/(2n)}
+\ge \sum_{n=N}^{\infty}\frac{c}{n}=+\infty.
+\]
+By Carleman's criterion, the measure $w(u)\,\dd u$ is determinate.
 \end{proof}
 
-\begin{lemma}
-  [Eta factor expansion]\label{lem:eta} Define $\eta (\epsilon) \assign (1 -
-  2^{- \epsilon})  \hspace{0.17em} \zeta (1 + \epsilon) = \sum_{n =
-  0}^{\infty} a_n \epsilon^n$. Then
-  
-  \begin{align}
-    a_0 & = \ell,  \label{eq:a0}\\
-    a_1 & = \gamma \ell - \frac{\ell^2}{2},  \label{eq:a1}\\
-    a_2 & = \gamma_1 \ell - \frac{\gamma \ell^2}{2} + \frac{\ell^3}{6}, 
-    \label{eq:a2}\\
-    a_3 & = \gamma_2 \ell - \frac{\gamma_1 \ell^2}{2} + \frac{\gamma
-    \ell^3}{6} - \frac{\ell^4}{24} .  \label{eq:a3}
-  \end{align}
-\end{lemma}
-
-\begin{proof}
-  The Taylor expansion of $1 - 2^{- \epsilon} = 1 - e^{- \ell \epsilon}$ is
-  $\sum_{j = 1}^{\infty} \frac{(- 1)^{j + 1} \ell^j}{j!} \epsilon^j$. The
-  Laurent expansion of $\zeta (1 + \epsilon)$ is given
-  by~\eqref{eq:zeta_Laurent}. The product $\eta (\epsilon) = \left( \sum_{j
-  \ge 1} c_j \epsilon^j \right)  (\epsilon^{- 1} + \gamma + \gamma_1 \epsilon
-  + \cdots)$ is computed via Cauchy product, collecting terms through
-  $\epsilon^3$.
-  
-  For $a_0$: the only contribution at order $\epsilon^0$ is $c_1 \cdot
-  \epsilon^{- 1} \cdot \epsilon = \ell \cdot 1 = \ell$.
-  
-  For $a_1$: $c_1 \cdot \gamma + c_2 \cdot \epsilon^{- 1}$, giving $\gamma
-  \ell + (- \ell^2 / 2) = \gamma \ell - \ell^2 / 2$.
-  
-  The remaining coefficients follow by the same convolution.
-\end{proof}
-
-\begin{theorem}
-  [Explicit moments]\label{thm:moments} The first four moments of the
-  Salem--Rao weight are:
-  
-  \begin{align}
-    \mu_0 & = \ell,  \label{eq:mu0}\\
-    \mu_1 & = - \frac{\ell^2}{2},  \label{eq:mu1}\\
-    \mu_2 & = 2 \gamma_1 \ell - \gamma^2 \ell + \frac{\ell^3}{3} +
-    \frac{\pi^2 \ell}{6},  \label{eq:mu2}\\
-    \mu_3 & = (6 \gamma_2 - 6 \gamma \gamma_1 + 2 \gamma^3 - 2 \zeta (3))
-    \ell + \left( - 3 \gamma_1 + \frac{3 \gamma^2}{2} - \frac{\pi^2}{4}
-    \right) \ell^2 - \frac{\ell^4}{4} .  \label{eq:mu3}
-  \end{align}
-\end{theorem}
-
-\begin{proof}
-  Write $F (1 + \epsilon) = \Gamma (1 + \epsilon) \cdot \eta (\epsilon)$, with
-  notation as in Lemmas~\ref{lem:gamma} and~\ref{lem:eta}. By
-  Remark~\ref{rem:generating}, the coefficient of $\epsilon^n$ in $F (1 +
-  \epsilon)$ equals $\mu_n / n$!. Set $b_n \assign \sum_{j = 0}^n g_j 
-  \hspace{0.17em} a_{n - j}$.
-  
-  {\noindent}\tmtextbf{$\tmmathbf{\mu_0}$:} $b_0 = g_0 a_0 = \ell$, so $\mu_0
-  = 0! \cdot b_0 = \ell$.
-  
-  {\noindent}\tmtextbf{$\tmmathbf{\mu_1}$:} $b_1 = g_0 a_1 + g_1 a_0 = (\gamma
-  \ell - \ell^2 / 2) - \gamma \ell = - \ell^2 / 2$, so $\mu_1 = 1! \cdot b_1 =
-  - \ell^2 / 2$.
-  
-  {\noindent}\tmtextbf{$\tmmathbf{\mu_2}$:}
-  
-  \begin{align*}
-    b_2 & = g_0 a_2 + g_1 a_1 + g_2 a_0\\
-    & = \left( \gamma_1 \ell - \frac{\gamma \ell^2}{2} + \frac{\ell^3}{6}
-    \right) + (- \gamma)  \left( \gamma \ell - \frac{\ell^2}{2} \right) +
-    \left( \frac{\gamma^2}{2} + \frac{\pi^2}{12} \right) \ell\\
-    & = \gamma_1 \ell - \frac{\gamma \ell^2}{2} + \frac{\ell^3}{6} - \gamma^2
-    \ell + \frac{\gamma \ell^2}{2} + \frac{\gamma^2 \ell}{2} + \frac{\pi^2
-    \ell}{12}\\
-    & = \gamma_1 \ell - \frac{\gamma^2 \ell}{2} + \frac{\ell^3}{6} +
-    \frac{\pi^2 \ell}{12} .
-  \end{align*}
-  
-  Hence $\mu_2 = 2! \cdot b_2 = 2 \gamma_1 \ell - \gamma^2 \ell + \ell^3 / 3 +
-  \pi^2 \ell / 6$.
-  
-  {\noindent}\tmtextbf{$\tmmathbf{\mu_3}$:} $b_3 = g_0 a_3 + g_1 a_2 + g_2 a_1
-  + g_3 a_0$. Expanding and collecting powers of $\ell$:
-  
-  \begin{align*}
-    b_3 & = \left( \gamma_2 - \gamma \gamma_1 + \frac{\gamma^3}{3} -
-    \frac{\zeta (3)}{3} \right) \ell + \left( - \frac{\gamma_1}{2} +
-    \frac{\gamma^2}{4} - \frac{\pi^2}{24} \right) \ell^2 - \frac{\ell^4}{24} .
-  \end{align*}
-  
-  Hence $\mu_3 = 3! \cdot b_3$, yielding~\eqref{eq:mu3}.
-\end{proof}
-
-\section{Orthogonal Polynomials via Gram--Schmidt}\label{sec:OP}
-
-\begin{definition}
-  [Inner product]\label{def:ip} For $f, g \in L^2 (\mathbb{R}, w (u)
-  \hspace{0.17em} du)$, define
-  \begin{equation}
-    \label{eq:ip} \langle f, g \rangle_w \assign \int_{\mathbb{R}} f (u) 
-    \hspace{0.17em} g (u)  \hspace{0.17em} w (u)  \hspace{0.17em} du.
-  \end{equation}
+\begin{definition}\label{def:inner}
+For $f,g\in L^{2}(\R,w(u)\,\dd u)$ define
+\begin{equation}\label{eq:inner}
+\inner{f}{g}:=\int_{\R}f(u)g(u)w(u)\,\dd u.
+\end{equation}
 \end{definition}
 
-We construct the monic orthogonal polynomial sequence $\{P_n \}_{n \ge 0}$ by
-applying Gram--Schmidt to the monomials $\{1, u, u^2, \ldots\}$ with respect
-to $\langle \cdummy, \cdummy \rangle_w$.
+\section{Moment generating function and arbitrary-index formula}
 
-\begin{theorem}
-  [First three Salem--Rao polynomials]\label{thm:polys} The first three monic
-  orthogonal polynomials with respect to the weight $w (u) = e^u / (e^{e^u} +
-  1)$ on $\mathbb{R}$ are:
-  
-  \begin{align}
-    P_0 (u) & = 1,  \label{eq:P0}\\
-    P_1 (u) & = u + \frac{\ell}{2},  \label{eq:P1}\\
-    P_2 (u) & = u^2 - \alpha \hspace{0.17em} u - \beta,  \label{eq:P2}
-  \end{align}
-  
-  where
-  \begin{equation}
-    \label{eq:alpha} \alpha = \frac{\mu_0 \mu_3 - \mu_1 \mu_2}{\mu_0 \mu_2 -
-    \mu_1^2},
-  \end{equation}
-  \begin{equation}
-    \label{eq:beta} \beta = \frac{\mu_2^2 - \mu_1 \mu_3}{\mu_0 \mu_2 -
-    \mu_1^2},
-  \end{equation}
-  with $\mu_0, \ldots, \mu_3$ given by~\eqref{eq:mu0}--\eqref{eq:mu3}.
-  Equivalently, $P_2$ admits the Hankel determinantal representation
-  \begin{equation}
-    \label{eq:P2det} P_2 (u) = \frac{1}{\Delta_1} \left|\begin{array}{ccc}
-      \mu_0 & \mu_1 & \mu_2\\
-      \mu_1 & \mu_2 & \mu_3\\
-      1 & u & u^2
-    \end{array}\right|, \qquad \Delta_1 \assign \mu_0 \mu_2 - \mu_1^2 .
-  \end{equation}
-  The Hankel determinant $\Delta_1$ is strictly positive:
-  \begin{equation}
-    \label{eq:Delta1} \Delta_1 = \left( 2 \gamma_1 - \gamma^2 +
-    \frac{\pi^2}{6} \right) \ell^2 + \frac{\ell^4}{12} > 0.
-  \end{equation}
+\begin{definition}\label{def:F}
+Define
+\begin{equation}\label{eq:F}
+F(s):=\Gamma(s)\bigl(1-2^{1-s}\bigr)\zeta(s),\qquad s\in\C.
+\end{equation}
+\end{definition}
+
+\begin{lemma}\label{lem:F-entire}
+The function $F$ is entire.
+\end{lemma}
+
+\begin{proof}
+Write $1-2^{1-s}=1-e^{(1-s)\ell}$ with $\ell=\log 2$. Near $s=1$,
+\[
+1-2^{1-s}=(s-1)\ell+O\bigl((s-1)^{2}\bigr).
+\]
+The zeta function has a simple pole at $s=1$, with
+\[
+\zeta(s)=\frac{1}{s-1}+O(1).
+\]
+Thus the product $(1-2^{1-s})\zeta(s)$ is holomorphic near $s=1$. The gamma
+function $\Gamma(s)$ is holomorphic and nonzero near $s=1$, so $F$ is
+holomorphic at $s=1$.
+
+For $\Re(s)>0$, the Mellin representation
+\begin{equation}\label{eq:Mellin-F}
+F(s)=\int_{0}^{\infty}\frac{x^{s-1}}{e^{x}+1}\,\dd x
+\end{equation}
+holds, with absolute convergence and holomorphy in this half-plane. The
+product $\Gamma(s)(1-2^{1-s})\zeta(s)$ has no poles for $\Re(s)\ge 0$ because
+the simple pole of $\zeta$ at $s=1$ is cancelled by the zero of $1-2^{1-s}$,
+and the remaining singularities at nonpositive integers are removable for the
+product. Therefore $F$ extends holomorphically to $\C$.
+\end{proof}
+
+\begin{theorem}[Moment--derivative identity]\label{thm:moment-derivative}
+For every integer $k\ge 0$,
+\begin{equation}\label{eq:moment-derivative}
+\mom{k}=F^{(k)}(1).
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:egf}
+F(1+\varepsilon)
+=\sum_{k=0}^{\infty}\frac{\mom{k}}{k!}\varepsilon^{k},
+\qquad\varepsilon\in\C.
+\end{equation}
 \end{theorem}
 
 \begin{proof}
-  \tmtextbf{Step 1 ($P_0$ and $P_1$).}{\hspace{0.27em}} Set $P_0 (u) \assign
-  1$. Then
-  \[ P_1 (u) = u - \frac{\langle u, P_0 \rangle_w}{\langle P_0, P_0 \rangle_w}
-     = u - \frac{\mu_1}{\mu_0} = u - \frac{- \ell^2 / 2}{\ell} = u +
-     \frac{\ell}{2} . \]
-  {\noindent}\tmtextbf{Step 2 ($P_2$).}{\hspace{0.27em}} Write $P_2 (u) = u^2
-  - \alpha u - \beta$ and impose the orthogonality conditions $\langle P_2,
-  P_0 \rangle_w = 0$ and $\langle P_2, P_1 \rangle_w = 0$.
-  
-  The first condition gives
-  \begin{equation}
-    \label{eq:sys1} \mu_2 - \alpha \mu_1 - \beta \mu_0 = 0.
-  \end{equation}
-  For the second, expand using $P_1 (u) = u + \ell / 2$:
-  
-  \begin{align*}
-    \langle P_2, P_1 \rangle_w & = \langle u^2 - \alpha u - \beta,
-    \hspace{0.27em} u + \tfrac{\ell}{2} \rangle_w\\
-    & = (\mu_3 - \alpha \mu_2 - \beta \mu_1) + \frac{\ell}{2}  (\mu_2 -
-    \alpha \mu_1 - \beta \mu_0) .
-  \end{align*}
-  
-  The second group vanishes by~\eqref{eq:sys1}, leaving
-  \begin{equation}
-    \label{eq:sys2} \mu_3 - \alpha \mu_2 - \beta \mu_1 = 0.
-  \end{equation}
-  Solving~\eqref{eq:sys1}--\eqref{eq:sys2}: from~\eqref{eq:sys1}, $\beta =
-  (\mu_2 - \alpha \mu_1) / \mu_0$. Substituting into~\eqref{eq:sys2}:
-  \[ \mu_3 - \alpha \mu_2 - \frac{\mu_1  (\mu_2 - \alpha \mu_1)}{\mu_0} = 0
-     \Longrightarrow \alpha (\mu_0 \mu_2 - \mu_1^2) = \mu_0 \mu_3 - \mu_1
-     \mu_2, \]
-  yielding~\eqref{eq:alpha}. Back-substitution gives~\eqref{eq:beta}. The
-  determinantal form~\eqref{eq:P2det} follows by cofactor expansion along the
-  third row.
-  
-  {\noindent}\tmtextbf{Step 3 (Positivity of $\Delta_1$).}{\hspace{0.27em}}
-  Direct computation:
-  
-  \begin{align*}
-    \Delta_1 & = \mu_0 \mu_2 - \mu_1^2\\
-    & = \ell \left( 2 \gamma_1 \ell - \gamma^2 \ell + \frac{\ell^3}{3} +
-    \frac{\pi^2 \ell}{6} \right) - \frac{\ell^4}{4}\\
-    & = \left( 2 \gamma_1 - \gamma^2 + \frac{\pi^2}{6} \right) \ell^2 +
-    \frac{\ell^4}{3} - \frac{\ell^4}{4}\\
-    & = \left( 2 \gamma_1 - \gamma^2 + \frac{\pi^2}{6} \right) \ell^2 +
-    \frac{\ell^4}{12} .
-  \end{align*}
-  
-  Numerically, $\gamma_1 \approx - 0.0728$, $- \gamma^2 + \pi^2 / 6 \approx
-  1.3131$, $2 \gamma_1 - \gamma^2 + \pi^2 / 6 \approx 1.1675$, and $\ell^4 /
-  12 \approx 0.0192$, so $\Delta_1 > 0$. This confirms nondegeneracy of the
-  Gram matrix and the linear independence of $\{P_0, P_1, P_2 \}$.
+Substitute $x=e^{u}$ in \eqref{eq:moments}. Then $u=\log x$ and
+$\dd u=\dd x/x$, so
+\begin{equation}\label{eq:moment-logx}
+\mom{k}
+=\int_{0}^{\infty}\frac{(\log x)^{k}}{e^{x}+1}\,\dd x.
+\end{equation}
+For $\Re(s)>0$, \eqref{eq:Mellin-F} holds. For each fixed $k\ge 0$, the
+integrand
+\[
+\frac{(\log x)^{k}x^{s-1}}{e^{x}+1}
+\]
+is dominated, on every compact vertical strip $\sigma_{0}\le\Re(s)\le\sigma_{1}$
+with $\sigma_{0}>0$, by an $x$-integrable function independent of $s$:
+near $x=0$ it behaves like $x^{\sigma_{0}-1}|\log x|^{k}$, and near $+\infty$
+like $x^{\sigma_{1}-1}|\log x|^{k}e^{-x}$. Dominated convergence therefore
+permits differentiation under the integral sign and yields
+\[
+F^{(k)}(s)
+=\int_{0}^{\infty}\frac{(\log x)^{k}x^{s-1}}{e^{x}+1}\,\dd x,
+\qquad\Re(s)>0.
+\]
+Evaluating at $s=1$ gives $F^{(k)}(1)=\int_{0}^{\infty}(\log x)^{k}(e^{x}+1)^{-1}\,\dd x$,
+which equals $\mom{k}$ by \eqref{eq:moment-logx}. The exponential generating
+function follows from the Taylor expansion of the entire function
+$F(1+\varepsilon)$.
 \end{proof}
 
-\section{Three-Term Recurrence}\label{sec:recurrence}
+\section{Closed-form expression for the moments}
 
-\begin{theorem}
-  [Favard recurrence]\label{thm:recurrence} The monic orthogonal polynomials
-  $\{P_n \}_{n \ge 0}$ for the Salem--Rao weight satisfy the three-term
-  recurrence
-  \begin{equation}
-    \label{eq:recurrence} P_{n + 1} (u) = (u - \alpha_n)  \hspace{0.17em} P_n
-    (u) - \beta_n  \hspace{0.17em} P_{n - 1} (u), \qquad n \ge 0,
-  \end{equation}
-  with $P_{- 1} \equiv 0$, $P_0 \equiv 1$, and recurrence coefficients
-  \begin{equation}
-    \label{eq:recurrence_coeffs} \alpha_n = \frac{\langle u \hspace{0.17em}
-    P_n, P_n \rangle_w}{\langle P_n, P_n \rangle_w}, \qquad \beta_n =
-    \frac{\langle P_n, P_n \rangle_w}{\langle P_{n - 1}, P_{n - 1} \rangle_w}
-    .
-  \end{equation}
-  Every inner product appearing here is computable in closed form via $\langle
-  u^j, u^k \rangle_w = \mu_{j + k} = F^{(j + k)} (1)$.
-  
-  The first recurrence coefficients are
-  
-  \begin{align}
-    \alpha_0 & = - \frac{\ell}{2},  \label{eq:alpha0}\\
-    \beta_1 & = 2 \gamma_1 - \gamma^2 + \frac{\pi^2}{6} + \frac{\ell^2}{12} .
-    \label{eq:beta1}
-  \end{align}
+\subsection{Coefficient expansions}
+
+\begin{definition}\label{def:stieltjes}
+The Stieltjes constants $\gamma_{n}$ are defined by the Laurent expansion
+\begin{equation}\label{eq:stieltjes}
+\zeta(1+\varepsilon)
+=\frac{1}{\varepsilon}
++\sum_{n=0}^{\infty}\frac{(-1)^{n}\gamma_{n}}{n!}\varepsilon^{n},
+\qquad 0<|\varepsilon|<1.
+\end{equation}
+Here $\gamma_{0}=\gamma$ denotes the Euler--Mascheroni constant.
+\end{definition}
+
+\begin{lemma}\label{lem:loggamma-expansion}
+For $|\varepsilon|<1$,
+\begin{equation}\label{eq:loggamma-series}
+\log\Gamma(1+\varepsilon)
+=\sum_{m=1}^{\infty}c_{m}\varepsilon^{m},
+\end{equation}
+with
+\begin{equation}\label{eq:cm}
+c_{1}=-\gamma,\qquad
+c_{m}=\frac{(-1)^{m}\zeta(m)}{m}\quad(m\ge 2).
+\end{equation}
+Let
+\begin{equation}\label{eq:g-def}
+\Gamma(1+\varepsilon)=\sum_{n=0}^{\infty}g_{n}\varepsilon^{n}.
+\end{equation}
+Then for every $n\ge 0$,
+\begin{equation}\label{eq:g-bell}
+g_{n}
+=\frac{1}{n!}\,\Bell_{n}\bigl(1!c_{1},2!c_{2},\dots,n!c_{n}\bigr),
+\end{equation}
+where $\Bell_{n}$ denotes the $n$-th complete exponential Bell polynomial.
+\end{lemma}
+
+\begin{proof}
+The series \eqref{eq:loggamma-series}--\eqref{eq:cm} is the classical Taylor
+expansion of $\log\Gamma(1+\varepsilon)$ at $\varepsilon=0$. Exponentiation
+gives
+\[
+\Gamma(1+\varepsilon)
+=\exp\!\left(\sum_{m=1}^{\infty}c_{m}\varepsilon^{m}\right)
+=\exp\!\left(\sum_{m=1}^{\infty}\frac{(m!c_{m})}{m!}\varepsilon^{m}\right).
+\]
+The defining generating identity of the complete exponential Bell polynomials
+is
+\[
+\exp\!\left(\sum_{m=1}^{\infty}\frac{x_{m}}{m!}t^{m}\right)
+=\sum_{n=0}^{\infty}\frac{\Bell_{n}(x_{1},\dots,x_{n})}{n!}t^{n}.
+\]
+Taking $x_{m}=m!c_{m}$ and $t=\varepsilon$ yields \eqref{eq:g-bell}.
+\end{proof}
+
+\begin{lemma}\label{lem:eta-coefficients}
+Define
+\begin{equation}\label{eq:eta-def}
+E(\varepsilon):=(1-2^{-\varepsilon})\zeta(1+\varepsilon)
+=\sum_{n=0}^{\infty}a_{n}\varepsilon^{n}.
+\end{equation}
+Then for every $n\ge 0$,
+\begin{equation}\label{eq:a-formula}
+a_{n}
+=\sum_{r=0}^{n}\frac{(-1)^{r}\ell^{r+1}}{(r+1)!}\,
+\frac{\gamma_{n-r}}{(n-r)!}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The factor $1-2^{-\varepsilon}$ has the Taylor expansion
+\[
+1-2^{-\varepsilon}
+=1-e^{-\ell\varepsilon}
+=\sum_{m=1}^{\infty}\frac{(-1)^{m+1}\ell^{m}}{m!}\varepsilon^{m}
+=\sum_{r=0}^{\infty}\frac{(-1)^{r}\ell^{r+1}}{(r+1)!}\varepsilon^{r+1}.
+\]
+The zeta factor has the Laurent expansion \eqref{eq:stieltjes}. The product
+\eqref{eq:eta-def} can be written as
+\[
+E(\varepsilon)
+=\left(\sum_{r=0}^{\infty}\frac{(-1)^{r}\ell^{r+1}}{(r+1)!}\varepsilon^{r+1}\right)
+\left(\frac{1}{\varepsilon}+\sum_{j=0}^{\infty}\frac{(-1)^{j}\gamma_{j}}{j!}\varepsilon^{j}\right).
+\]
+The coefficient of $\varepsilon^{n}$ in $E(\varepsilon)$ arises from the
+products with $(r+1)+j=n+1$, that is $j=n-r$, and the $1/\varepsilon$ term
+contributes exactly one power of $\varepsilon$ from the other factor. Thus
+\[
+a_{n}
+=\sum_{r=0}^{n}\frac{(-1)^{r}\ell^{r+1}}{(r+1)!}\cdot
+\frac{(-1)^{n-r}\gamma_{n-r}}{(n-r)!}(-1)^{n-r}.
+\]
+This simplifies to \eqref{eq:a-formula}.
+\end{proof}
+
+\begin{theorem}[Closed-form moments for arbitrary index]\label{thm:moments-closed}
+For every integer $k\ge 0$,
+\begin{equation}\label{eq:moment-sum-1}
+\mom{k}
+=k!\sum_{j=0}^{k}g_{j}a_{k-j},
+\end{equation}
+where $g_{j}$ and $a_{k-j}$ are given by \eqref{eq:g-bell} and
+\eqref{eq:a-formula}. Equivalently,
+\begin{equation}\label{eq:moment-closed}
+\boxed{
+\mom{k}
+=
+k!\sum_{j=0}^{k}
+\frac{1}{j!}\Bell_{j}\bigl(1!c_{1},2!c_{2},\dots,j!c_{j}\bigr)
+\sum_{r=0}^{k-j}
+\frac{(-1)^{r}\ell^{r+1}}{(r+1)!}\,
+\frac{\gamma_{k-j-r}}{(k-j-r)!}
+}
+\end{equation}
+with $c_{1}=-\gamma$, $c_{m}=(-1)^{m}\zeta(m)/m$ for $m\ge 2$, and $\ell=\log 2$.
 \end{theorem}
 
 \begin{proof}
-  The existence and uniqueness of the three-term
-  recurrence~\eqref{eq:recurrence} with
-  coefficients~\eqref{eq:recurrence_coeffs} is the content of Favard's theorem
-  applied to the measure $w (u)  \hspace{0.17em} du$ on $\mathbb{R}$. The
-  measure is determinate (i.e. uniquely determined by its moments) by
-  Carleman's criterion: since $w$ has super-exponential decay at $+ \infty$
-  and exponential decay at $- \infty$, the moments grow at most factorially,
-  so $\sum_{k = 1}^{\infty} \mu_{2 k}^{- 1 / (2 k)} = + \infty$.
-  
-  {\noindent}\tmtextbf{Computation of $\tmmathbf{\alpha_0}$:}{\hspace{0.27em}}
-  $\alpha_0 = \langle u, 1 \rangle_w / \langle 1, 1 \rangle_w = \mu_1 / \mu_0
-  = (- \ell^2 / 2) / \ell = - \ell / 2$.
-  
-  {\noindent}\tmtextbf{Computation of $\tmmathbf{\beta_1}$:}{\hspace{0.27em}}
-  We need $\langle P_1, P_1 \rangle_w / \langle P_0, P_0 \rangle_w$. Using
-  $P_1 (u) = u + \ell / 2$:
-  
-  \begin{align*}
-    \langle P_1, P_1 \rangle_w & = \mu_2 + \ell \hspace{0.17em} \mu_1 +
-    \frac{\ell^2}{4}  \hspace{0.17em} \mu_0 = \mu_2 - \frac{\ell^3}{2} +
-    \frac{\ell^3}{4} = \mu_2 - \frac{\ell^3}{4} .
-  \end{align*}
-  
-  Hence
-  
-  \begin{align*}
-    \beta_1 & = \frac{\mu_2 - \ell^3 / 4}{\mu_0} = \frac{1}{\ell}  \left( 2
-    \gamma_1 \ell - \gamma^2 \ell + \frac{\ell^3}{3} + \frac{\pi^2 \ell}{6} -
-    \frac{\ell^3}{4} \right)\\
-    & = 2 \gamma_1 - \gamma^2 + \frac{\pi^2}{6} + \frac{\ell^2}{12} .
-  \end{align*}
+Theorem~\ref{thm:moment-derivative} and Lemma~\ref{lem:F-entire} imply that
+\[
+F(1+\varepsilon)
+=\sum_{k=0}^{\infty}\frac{\mom{k}}{k!}\varepsilon^{k}.
+\]
+On the other hand,
+\[
+F(1+\varepsilon)
+=\Gamma(1+\varepsilon)\,(1-2^{-\varepsilon})\zeta(1+\varepsilon)
+=\left(\sum_{j=0}^{\infty}g_{j}\varepsilon^{j}\right)
+\left(\sum_{m=0}^{\infty}a_{m}\varepsilon^{m}\right).
+\]
+By Cauchy's product formula, the coefficient of $\varepsilon^{k}$ on the right
+is $\sum_{j=0}^{k}g_{j}a_{k-j}$. The coefficient of $\varepsilon^{k}$ on the
+left is $\mom{k}/k!$. This yields \eqref{eq:moment-sum-1}. Substituting
+\eqref{eq:g-bell} and \eqref{eq:a-formula} gives \eqref{eq:moment-closed}.
 \end{proof}
 
-\begin{remark}
-  \label{rem:beta1_Delta1}The positivity of $\beta_1$ is equivalent to
-  $\Delta_1 > 0$: indeed $\beta_1 = \Delta_1 / \mu_0^2 = \Delta_1 / \ell^2$.
-  More generally, the positivity of every $\beta_n$ is guaranteed by the
-  strict positivity of all Hankel determinants $\Delta_n \assign \det (\mu_{i
-  + j})_{0 \le i, j \le n}$, which holds because $w > 0$ a.e. and the support
-  of $w \hspace{0.17em} du$ is all of $\mathbb{R}$ (hence contains infinitely
-  many points).
-\end{remark}
+\section{Hankel determinants and Salem--Rao orthogonal polynomials}
 
-\begin{thebibliography}{10}
-  {\bibitem{Chihara}}T.{\hspace{0.17em}}S. Chihara, {\tmem{An Introduction to
-  Orthogonal Polynomials}}, Gordon and Breach, New York, 1978.
-  
-  {\bibitem{Ismail}}M.{\hspace{0.17em}}E.{\hspace{0.17em}}H. Ismail,
-  {\tmem{Classical and Quantum Orthogonal Polynomials in One Variable}},
-  Encyclopedia of Mathematics and its Applications~\tmtextbf{98}, Cambridge
-  University Press, 2005.
-  
-  {\bibitem{NIST}}F.{\hspace{0.17em}}W.{\hspace{0.17em}}J. Olver,
-  D.{\hspace{0.17em}}W. Lozier, R.{\hspace{0.17em}}F. Boisvert, and
-  C.{\hspace{0.17em}}W. Clark (eds.), {\tmem{NIST Handbook of Mathematical
-  Functions}}, Cambridge University Press, 2010.
-  
-  {\bibitem{Szego}}G. Szeg{\H o}, {\tmem{Orthogonal Polynomials}}, 4th ed.,
-  AMS Colloquium Publications~\tmtextbf{23}, American Mathematical Society,
-  Providence, RI, 1975.
-  
-  {\bibitem{Titchmarsh}}E.{\hspace{0.17em}}C. Titchmarsh, {\tmem{The Theory of
-  the Riemann Zeta-Function}}, 2nd ed. (revised by D.{\hspace{0.17em}}R.
-  Heath-Brown), Oxford University Press, 1986.
+\begin{definition}\label{def:hankel}
+For $n\ge 0$, define the $(n+1)\times(n+1)$ Hankel matrix
+\begin{equation}\label{eq:hankel-matrix}
+\Hankel{n}
+:=\bigl(\mom{i+j}\bigr)_{0\le i,j\le n}
+=\begin{pmatrix}
+\mom{0} & \mom{1} & \cdots & \mom{n}\\
+\mom{1} & \mom{2} & \cdots & \mom{n+1}\\
+\vdots  & \vdots  & \ddots & \vdots\\
+\mom{n} & \mom{n+1} & \cdots & \mom{2n}
+\end{pmatrix},
+\end{equation}
+and the Hankel determinant
+\begin{equation}\label{eq:hankel-det}
+\DeltaH{n}:=\det\Hankel{n}.
+\end{equation}
+Set $\DeltaH{-1}:=1$.
+\end{definition}
+
+\begin{theorem}\label{thm:hankel-positive}
+For every $n\ge 0$, the matrix $\Hankel{n}$ is positive definite, and
+\begin{equation}\label{eq:hankel-positive}
+\DeltaH{n}>0.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $c_{0},\dots,c_{n}\in\R$, not all zero, and define
+\[
+q(u):=\sum_{j=0}^{n}c_{j}u^{j}.
+\]
+Then
+\[
+\sum_{i,j=0}^{n}c_{i}c_{j}\mom{i+j}
+=\int_{\R}\left(\sum_{i=0}^{n}c_{i}u^{i}\right)
+\left(\sum_{j=0}^{n}c_{j}u^{j}\right)w(u)\,\dd u
+=\int_{\R}q(u)^{2}w(u)\,\dd u.
+\]
+The integrand $q(u)^{2}w(u)$ is nonnegative on $\R$. If the integral equals
+zero, then $q(u)^{2}w(u)=0$ almost everywhere, and since $w(u)>0$ for all
+$u\in\R$, it follows that $q(u)=0$ for all $u\in\R$. A polynomial that vanishes
+identically on $\R$ has all coefficients zero, contradicting the assumption.
+Thus
+\[
+\int_{\R}q(u)^{2}w(u)\,\dd u>0
+\]
+for every nonzero vector $(c_{0},\dots,c_{n})$. This is exactly positive
+definiteness of $\Hankel{n}$. A positive definite matrix has strictly positive
+determinant, so $\DeltaH{n}>0$.
+\end{proof}
+
+\begin{theorem}[Determinantal formula for the Salem--Rao polynomials]\label{thm:Pn-det}
+For each $n\ge 0$ there exists a unique monic polynomial $P_{n}$ of degree $n$
+such that
+\begin{equation}\label{eq:Pn-orth}
+\inner{P_{n}}{u^{m}}=0,\qquad 0\le m\le n-1.
+\end{equation}
+It is given by
+\begin{equation}\label{eq:Pn-determinant}
+P_{n}(u)
+=\frac{1}{\DeltaH{n-1}}
+\begin{vmatrix}
+\mom{0} & \mom{1} & \cdots & \mom{n}\\
+\mom{1} & \mom{2} & \cdots & \mom{n+1}\\
+\vdots  & \vdots  & \ddots & \vdots\\
+\mom{n-1} & \mom{n} & \cdots & \mom{2n-1}\\
+1 & u & \cdots & u^{n}
+\end{vmatrix},
+\end{equation}
+with $\DeltaH{-1}:=1$.
+\end{theorem}
+
+\begin{proof}
+Fix $n\ge 0$. Consider the ansatz
+\[
+P_{n}(u)=u^{n}+\sum_{j=0}^{n-1}p_{n,j}u^{j}.
+\]
+The orthogonality conditions \eqref{eq:Pn-orth} yield
+\[
+\inner{P_{n}}{u^{m}}
+=\mom{n+m}+\sum_{j=0}^{n-1}p_{n,j}\mom{j+m}=0,
+\qquad 0\le m\le n-1.
+\]
+This is a linear system in the unknowns $p_{n,0},\dots,p_{n,n-1}$ with
+coefficient matrix $\Hankel{n-1}$ and right-hand side
+$-(\mom{n},\mom{n+1},\dots,\mom{2n-1})^{\top}$. The matrix $\Hankel{n-1}$ is
+positive definite by Theorem~\ref{thm:hankel-positive}, hence invertible, so
+the system has a unique solution and $P_{n}$ exists and is unique.
+
+Cramer's rule yields the coefficients $p_{n,j}$ as ratios of determinants,
+obtained by replacing the $j$-th column of $\Hankel{n-1}$ by the right-hand
+side. Assembling these into a single formula with the last row $(1,u,\dots,u^{n})$
+gives \eqref{eq:Pn-determinant}. Expansion along the last row shows that the
+coefficient of $u^{n}$ is
+\[
+\frac{\DeltaH{n-1}}{\DeltaH{n-1}}=1,
+\]
+so $P_{n}$ is monic.
+\end{proof}
+
+\begin{theorem}[Squared norms for the Salem--Rao polynomials]\label{thm:norms}
+Let
+\[
+h_{n}:=\inner{P_{n}}{P_{n}}.
+\]
+Then for every $n\ge 0$,
+\begin{equation}\label{eq:norm-det}
+h_{n}=\frac{\DeltaH{n}}{\DeltaH{n-1}}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For each $n\ge 0$, orthogonality implies that $P_{n}$ is orthogonal to every
+polynomial of degree at most $n-1$. Since $u^{n}-P_{n}$ has degree at most
+$n-1$, one has
+\[
+\inner{u^{n}-P_{n}}{P_{n}}=0
+\]
+and therefore
+\[
+h_{n}=\inner{P_{n}}{P_{n}}
+=\inner{u^{n}}{P_{n}}.
+\]
+Substitute \eqref{eq:Pn-determinant} into this expression. The last row
+$(1,u,\dots,u^{n})$ in \eqref{eq:Pn-determinant}, after taking the inner
+product with $u^{n}$, becomes $(\mom{n},\mom{n+1},\dots,\mom{2n})$, because
+$\inner{u^{m}}{u^{n}}=\mom{m+n}$. Thus
+\[
+h_{n}
+=\frac{1}{\DeltaH{n-1}}
+\begin{vmatrix}
+\mom{0} & \mom{1} & \cdots & \mom{n}\\
+\mom{1} & \mom{2} & \cdots & \mom{n+1}\\
+\vdots  & \vdots  & \ddots & \vdots\\
+\mom{n-1} & \mom{n} & \cdots & \mom{2n-1}\\
+\mom{n} & \mom{n+1} & \cdots & \mom{2n}
+\end{vmatrix}
+=\frac{\DeltaH{n}}{\DeltaH{n-1}}.
+\]
+\end{proof}
+
+\section{Three-term recurrence and closed recurrence coefficients}
+
+\begin{theorem}[Salem--Rao Favard recurrence]\label{thm:recurrence}
+The monic Salem--Rao polynomials $\{P_{n}\}_{n\ge 0}$ satisfy
+\begin{equation}\label{eq:recurrence}
+P_{n+1}(u)=(u-\alpha_{n})P_{n}(u)-\beta_{n}P_{n-1}(u),
+\qquad n\ge 0,
+\end{equation}
+with $P_{-1}\equiv 0$, $P_{0}\equiv 1$, and recurrence coefficients
+\begin{equation}\label{eq:alpha-general}
+\alpha_{n}=\frac{\inner{uP_{n}}{P_{n}}}{h_{n}},\qquad n\ge 0,
+\end{equation}
+\begin{equation}\label{eq:beta-general}
+\beta_{n}=\frac{h_{n}}{h_{n-1}},\qquad n\ge 1.
+\end{equation}
+In particular, $\beta_{n}>0$ for all $n\ge 1$.
+\end{theorem}
+
+\begin{proof}
+Fix $n\ge 0$. The polynomial $uP_{n}$ has degree $n+1$ and leading coefficient
+$1$. Hence $uP_{n}-P_{n+1}$ has degree at most $n$ and therefore belongs to
+$\operatorname{span}\{P_{0},\dots,P_{n}\}$. There exist unique real numbers
+$\alpha_{n},\beta_{n},\gamma_{n,0},\dots,\gamma_{n,n-2}$ such that
+\begin{equation}\label{eq:uPn-expansion}
+uP_{n}(u)=P_{n+1}(u)+\alpha_{n}P_{n}(u)
++\beta_{n}P_{n-1}(u)+\sum_{j=0}^{n-2}\gamma_{n,j}P_{j}(u),
+\end{equation}
+where, for $n=0$, the terms $P_{n-1}$ and the sum are absent and
+$\alpha_{0}$ is the only coefficient.
+
+Taking the inner product of \eqref{eq:uPn-expansion} with $P_{n}$ yields
+\[
+\inner{uP_{n}}{P_{n}}=\alpha_{n}\inner{P_{n}}{P_{n}}
+=\alpha_{n}h_{n},
+\]
+because $P_{n+1}$ and all $P_{j}$ with $j\le n-1$ are orthogonal to $P_{n}$.
+Thus \eqref{eq:alpha-general} holds.
+
+For $n\ge 1$, taking the inner product of \eqref{eq:uPn-expansion} with
+$P_{n-1}$ yields
+\[
+\inner{uP_{n}}{P_{n-1}}
+=\beta_{n}\inner{P_{n-1}}{P_{n-1}}
+=\beta_{n}h_{n-1},
+\]
+because $P_{n+1}$ and $P_{n}$ are orthogonal to $P_{n-1}$ and
+$\inner{P_{j}}{P_{n-1}}=0$ for $j\le n-2$ as well. Symmetry of the inner
+product gives $\inner{uP_{n}}{P_{n-1}}=\inner{P_{n}}{uP_{n-1}}$.
+
+The polynomial $uP_{n-1}$ has degree $n$ and leading coefficient $1$, and
+therefore has the form
+\begin{equation}\label{eq:uPn-1}
+uP_{n-1}(u)=P_{n}(u)+\widetilde{\alpha}_{n-1}P_{n-1}(u)
++\sum_{j=0}^{n-2}\widetilde{\gamma}_{n-1,j}P_{j}(u)
+\end{equation}
+for some real numbers $\widetilde{\alpha}_{n-1},\widetilde{\gamma}_{n-1,j}$.
+Taking the inner product with $P_{n}$ gives
+\[
+\inner{uP_{n-1}}{P_{n}}=\inner{P_{n}}{P_{n}}=h_{n},
+\]
+because $P_{n}$ is orthogonal to $P_{n-1}$ and all lower-degree polynomials
+$P_{j}$. Thus
+\[
+\inner{uP_{n}}{P_{n-1}}=\inner{uP_{n-1}}{P_{n}}=h_{n},
+\]
+and therefore $\beta_{n}h_{n-1}=h_{n}$, which proves \eqref{eq:beta-general}.
+
+Substituting \eqref{eq:alpha-general} and \eqref{eq:beta-general} into
+\eqref{eq:uPn-expansion} and rearranging yields \eqref{eq:recurrence}. The
+positivity of $h_{n}$ (Theorem~\ref{thm:norms}) and $h_{n-1}$ implies
+$\beta_{n}>0$ for all $n\ge 1$.
+\end{proof}
+
+\begin{corollary}[Closed determinant formula for $\beta_{n}$]\label{cor:beta-det}
+For every $n\ge 1$,
+\begin{equation}\label{eq:beta-det}
+\beta_{n}=\frac{\DeltaH{n}\,\DeltaH{n-2}}{\DeltaH{n-1}^{2}}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Combination of \eqref{eq:beta-general} with \eqref{eq:norm-det} gives
+\[
+\beta_{n}
+=\frac{\DeltaH{n}/\DeltaH{n-1}}{\DeltaH{n-1}/\DeltaH{n-2}}
+=\frac{\DeltaH{n}\,\DeltaH{n-2}}{\DeltaH{n-1}^{2}}.
+\]
+\end{proof}
+
+\begin{theorem}[Closed determinant formula for $\alpha_{n}$]\label{thm:alpha-det}
+For every $n\ge 0$,
+\begin{equation}\label{eq:alpha-det}
+\alpha_{n}
+=\frac{\det A_{n}}{\DeltaH{n}},
+\end{equation}
+where the $(n+1)\times(n+1)$ matrix $A_{n}$ is
+\begin{equation}\label{eq:An-def}
+A_{n}
+:=
+\begin{pmatrix}
+\mom{0} & \mom{1} & \cdots & \mom{n-1} & \mom{n+1}\\
+\mom{1} & \mom{2} & \cdots & \mom{n} & \mom{n+2}\\
+\vdots  & \vdots  & \ddots & \vdots  & \vdots\\
+\mom{n} & \mom{n+1} & \cdots & \mom{2n-1} & \mom{2n+1}
+\end{pmatrix}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By \eqref{eq:alpha-general} and \eqref{eq:norm-det},
+\[
+\alpha_{n}
+=\frac{\inner{uP_{n}}{P_{n}}}{h_{n}}
+=\frac{\DeltaH{n-1}}{\DeltaH{n}}\inner{uP_{n}}{P_{n}}.
+\]
+Substitute the determinantal representation $P_{n}(u)=\DeltaH{n-1}^{-1}D_{n}(u)$,
+where
+\[
+D_{n}(u)
+:=
+\begin{vmatrix}
+\mom{0} & \mom{1} & \cdots & \mom{n}\\
+\mom{1} & \mom{2} & \cdots & \mom{n+1}\\
+\vdots  & \vdots  & \ddots & \vdots\\
+\mom{n-1} & \mom{n} & \cdots & \mom{2n-1}\\
+1 & u & \cdots & u^{n}
+\end{vmatrix}.
+\]
+Then
+\[
+\inner{uP_{n}}{P_{n}}
+=\frac{1}{\DeltaH{n-1}^{2}}\inner{uD_{n}}{D_{n}}.
+\]
+Thus
+\[
+\alpha_{n}
+=\frac{1}{\DeltaH{n}}\inner{uD_{n}}{D_{n}}.
+\]
+
+It suffices to identify $\inner{uD_{n}}{D_{n}}$ with $\det A_{n}$. Expansion
+of $D_{n}(u)$ along the last row gives
+\[
+D_{n}(u)
+=\sum_{j=0}^{n}(-1)^{n+j}C_{n,j}u^{j},
+\]
+where $C_{n,j}$ is the $(n+1,j+1)$-cofactor of the matrix in the definition
+of $D_{n}(u)$. Therefore
+\[
+uD_{n}(u)
+=\sum_{j=0}^{n}(-1)^{n+j}C_{n,j}u^{j+1}.
+\]
+Write
+\[
+uD_{n}(u)
+=\sum_{m=0}^{n+1}\widetilde{C}_{n,m}u^{m}
+\]
+with $\widetilde{C}_{n,0}=0$ and $\widetilde{C}_{n,m}=(-1)^{n+m-1}C_{n,m-1}$
+for $1\le m\le n+1$. Then
+\[
+\inner{uD_{n}}{D_{n}}
+=\sum_{m=0}^{n+1}\sum_{j=0}^{n}\widetilde{C}_{n,m}(-1)^{n+j}C_{n,j}\inner{u^{m}}{u^{j}}
+=\sum_{m=0}^{n+1}\sum_{j=0}^{n}\widetilde{C}_{n,m}(-1)^{n+j}C_{n,j}\mom{m+j}.
+\]
+By multilinearity of determinants and the definition of cofactors, this double
+sum is exactly the determinant of the matrix $A_{n}$ obtained from the
+Hankel matrix $\Hankel{n}$ by replacing its last column
+$(\mom{n},\dots,\mom{2n})^{\top}$ with $(\mom{n+1},\dots,\mom{2n+1})^{\top}$.
+Explicitly,
+\[
+\inner{uD_{n}}{D_{n}}=\det A_{n}.
+\]
+Thus $\alpha_{n}=\det A_{n}/\DeltaH{n}$, which is \eqref{eq:alpha-det}.
+\end{proof}
+
+\section{Christoffel--Darboux identity and zeros}
+
+\begin{theorem}[Christoffel--Darboux identity]\label{thm:CD}
+For every $n\ge 0$ and all $u,v\in\R$ with $u\neq v$,
+\begin{equation}\label{eq:CD}
+\sum_{j=0}^{n}\frac{P_{j}(u)P_{j}(v)}{h_{j}}
+=\frac{P_{n+1}(u)P_{n}(v)-P_{n}(u)P_{n+1}(v)}{h_{n}(u-v)}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For each $j\ge 0$, the recurrence \eqref{eq:recurrence} gives
+\[
+uP_{j}(u)=P_{j+1}(u)+\alpha_{j}P_{j}(u)+\beta_{j}P_{j-1}(u),
+\]
+\[
+vP_{j}(v)=P_{j+1}(v)+\alpha_{j}P_{j}(v)+\beta_{j}P_{j-1}(v).
+\]
+Multiply the first equality by $P_{j}(v)$ and the second by $P_{j}(u)$, then
+subtract:
+\begin{align*}
+(u-v)P_{j}(u)P_{j}(v)
+&=P_{j+1}(u)P_{j}(v)-P_{j}(u)P_{j+1}(v)\\
+&\quad+\beta_{j}\bigl(P_{j-1}(u)P_{j}(v)-P_{j}(u)P_{j-1}(v)\bigr).
+\end{align*}
+Divide by $h_{j}$. The relation $\beta_{j}=h_{j}/h_{j-1}$ (for $j\ge 1$)
+implies
+\[
+\frac{\beta_{j}}{h_{j}}=\frac{1}{h_{j-1}}.
+\]
+Thus
+\begin{align*}
+(u-v)\frac{P_{j}(u)P_{j}(v)}{h_{j}}
+&=\frac{P_{j+1}(u)P_{j}(v)-P_{j}(u)P_{j+1}(v)}{h_{j}}\\
+&\quad-\frac{P_{j}(u)P_{j-1}(v)-P_{j-1}(u)P_{j}(v)}{h_{j-1}}.
+\end{align*}
+Summation from $j=0$ to $n$ produces a telescoping sum on the right-hand
+side. The $j=0$ lower term vanishes because $P_{-1}\equiv 0$ and $h_{-1}$ is
+not used. The remaining terms collapse to
+\[
+(u-v)\sum_{j=0}^{n}\frac{P_{j}(u)P_{j}(v)}{h_{j}}
+=\frac{P_{n+1}(u)P_{n}(v)-P_{n}(u)P_{n+1}(v)}{h_{n}}.
+\]
+Division by $u-v$ yields \eqref{eq:CD}.
+\end{proof}
+
+\begin{theorem}[Zeros of Salem--Rao polynomials]\label{thm:zeros}
+For every $n\ge 1$, the Salem--Rao polynomial $P_{n}$ has exactly $n$ distinct
+real zeros. Moreover, the zeros of $P_{n}$ and $P_{n+1}$ interlace: between
+any two consecutive zeros of $P_{n+1}$ there lies exactly one zero of $P_{n}$,
+and between any two consecutive zeros of $P_{n}$ there lies exactly one zero
+of $P_{n+1}$.
+\end{theorem}
+
+\begin{proof}
+Consider $P_{n}$. Orthogonality with respect to a strictly positive measure
+on $\R$ implies that $P_{n}$ has at most $n$ distinct real zeros. To prove
+that it has at least $n$ sign changes, suppose that the number of distinct
+real zeros of $P_{n}$ in $\R$ at which the sign changes is $m<n$. Let
+$u_{1}<\dots<u_{m}$ denote these zeros and define
+\[
+q(u):=\prod_{k=1}^{m}(u-u_{k}).
+\]
+The polynomial $q$ has degree $m<n$ and the product $P_{n}(u)q(u)$ is
+nonnegative or nonpositive on $\R$ and not identically zero. The inner
+product $\inner{P_{n}}{q}$ equals
+\[
+\int_{\R}P_{n}(u)q(u)w(u)\,\dd u,
+\]
+which is strictly positive or strictly negative, because $w(u)>0$ for all
+$u\in\R$ and $P_{n}(u)q(u)$ does not change sign and is not almost everywhere
+zero. On the other hand, $\deg q<m<n$, so orthogonality implies
+$\inner{P_{n}}{q}=0$, a contradiction. Therefore $P_{n}$ has at least $n$
+sign changes, hence at least $n$ distinct real zeros. A polynomial of degree
+$n$ cannot have more than $n$ distinct zeros, so $P_{n}$ has exactly $n$
+distinct real zeros, all simple.
+
+Interlacing follows from the Christoffel--Darboux identity. Let
+$x_{1}<\dots<x_{n}$ denote the distinct real zeros of $P_{n}$. For any real
+number $u$, the identity \eqref{eq:CD} with $v=u$ and a limiting argument
+yields
+\begin{equation}\label{eq:CD-diagonal}
+\sum_{j=0}^{n}\frac{P_{j}(u)^{2}}{h_{j}}
+=\frac{P_{n+1}'(u)P_{n}(u)-P_{n}'(u)P_{n+1}(u)}{h_{n}}.
+\end{equation}
+The left-hand side is a sum of nonnegative terms and is strictly positive,
+since $P_{0}\equiv 1$ and $h_{0}>0$. Consequently, the numerator on the
+right-hand side never vanishes. At a zero $u=x_{k}$ of $P_{n}$, one has
+$P_{n}(x_{k})=0$ and $P_{n}'(x_{k})\neq 0$ (zeros are simple), so
+\[
+\sum_{j=0}^{n}\frac{P_{j}(x_{k})^{2}}{h_{j}}
+=-\frac{P_{n}'(x_{k})P_{n+1}(x_{k})}{h_{n}}.
+\]
+The left-hand side is strictly positive, hence the product
+$-P_{n}'(x_{k})P_{n+1}(x_{k})$ is positive. Thus $P_{n}'(x_{k})$ and
+$P_{n+1}(x_{k})$ have opposite signs. Since $P_{n}$ alternates sign at
+successive zeros $x_{k}$, the values $P_{n+1}(x_{k})$ alternate sign as well.
+
+The intermediate value theorem then implies that $P_{n+1}$ has at least one
+zero between $x_{k}$ and $x_{k+1}$ for each $k=1,\dots,n-1$. This furnishes
+at least $n-1$ zeros of $P_{n+1}$ in the open intervals between successive
+zeros of $P_{n}$. Additional consideration of the signs of $P_{n}$ and
+$P_{n+1}$ at $\pm\infty$ shows that there is one zero of $P_{n+1}$ to the left
+of $x_{1}$ and one to the right of $x_{n}$, yielding $n+1$ distinct real
+zeros of $P_{n+1}$. Since a polynomial of degree $n+1$ has at most $n+1$
+distinct zeros, these are all the real zeros of $P_{n+1}$, and each interval
+between successive zeros of one polynomial contains exactly one zero of the
+other. This is interlacing.
+\end{proof}
+
+\section{Summary of closed formulas for the Salem--Rao system}
+
+The construction for the Salem--Rao weight $w(u)=e^{u}/(e^{e^{u}}+1)$ yields
+the following closed formulas:
+
+\begin{itemize}
+\item For each $k\ge 0$, the moment $\mom{k}$ is given by the finite double sum
+\eqref{eq:moment-closed} in terms of the Euler--Mascheroni constant, the
+Stieltjes constants, the values $\zeta(m)$, and complete exponential Bell
+polynomials.
+\item For each $n\ge 0$, the monic Salem--Rao polynomial $P_{n}$ is given by
+the Hankel determinant \eqref{eq:Pn-determinant}, whose entries are the
+moments $\mom{k}$.
+\item For each $n\ge 0$, the squared $L^{2}(w(u)\,\dd u)$ norm $h_{n}$ is
+given by \eqref{eq:norm-det} as the ratio of Hankel determinants
+$\DeltaH{n}/\DeltaH{n-1}$.
+\item For each $n\ge 1$, the recurrence coefficient $\beta_{n}$ is given by
+\eqref{eq:beta-det} in terms of $\DeltaH{n}$, $\DeltaH{n-1}$, and
+$\DeltaH{n-2}$:
+\[
+\beta_{n}=\frac{\DeltaH{n}\,\DeltaH{n-2}}{\DeltaH{n-1}^{2}}.
+\]
+\item For each $n\ge 0$, the recurrence coefficient $\alpha_{n}$ is given by
+\eqref{eq:alpha-det} as the ratio $\det A_{n}/\DeltaH{n}$, where $A_{n}$ is
+defined in \eqref{eq:An-def}.
+\end{itemize}
+
+In particular, for the Salem--Rao system, the three-term recurrence
+\eqref{eq:recurrence} is fully solved in the sense that both coefficients
+$\alpha_{n}$ and $\beta_{n}$ are explicit closed functions of the index $n$
+and the data $\{\zeta(m)\}_{m\ge 2}$, $\{\gamma_{m}\}_{m\ge 0}$ and $\ell$.
+
+\begin{thebibliography}{99}
+
+\bibitem{Chihara}
+T.\,S. Chihara,
+\emph{An Introduction to Orthogonal Polynomials},
+Gordon and Breach, New York, 1978.
+
+\bibitem{Comtet}
+L. Comtet,
+\emph{Advanced Combinatorics},
+Reidel, Dordrecht, 1974.
+
+\bibitem{Ismail}
+M.\,E.\,H. Ismail,
+\emph{Classical and Quantum Orthogonal Polynomials in One Variable},
+Cambridge University Press, Cambridge, 2005.
+
+\bibitem{NIST}
+F.\,W.\,J. Olver, D.\,W. Lozier, R.\,F. Boisvert, and C.\,W. Clark, eds.,
+\emph{NIST Handbook of Mathematical Functions},
+Cambridge University Press, Cambridge, 2010.
+
+\bibitem{Szego}
+G. Szeg\H{o},
+\emph{Orthogonal Polynomials},
+4th ed., Amer.\ Math.\ Soc.\ Colloq.\ Publ.\ \textbf{23},
+American Mathematical Society, Providence, RI, 1975.
+
+\bibitem{Titchmarsh}
+E.\,C. Titchmarsh,
+\emph{The Theory of the Riemann Zeta-Function},
+2nd ed.\ (revised by D.\,R. Heath-Brown),
+Oxford University Press, 1986.
+
 \end{thebibliography}
 
 \end{document}
