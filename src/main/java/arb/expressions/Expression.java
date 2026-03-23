@@ -141,6 +141,88 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 {
 
   /**
+   * Returns the type of this expression in standard mathematical notation:
+   * {@code f:var=A➔B}, where {@code f} is the function class simple name,
+   * {@code var} is the independent variable name (or {@code ?} if none),
+   * {@code A} is the domain simple name, and {@code B} is the codomain simple
+   * name — the standard f: A➔B extended to name the bound variable.
+   *
+   * @return the type string for this single expression level
+   */
+  public String typeString()
+  {
+    String var = independentVariable != null ? independentVariable.getName() : "?";
+    return format("%s:%s=%s➔%s", functionClass.getSimpleName(), var, domainType.getSimpleName(), coDomainType.getSimpleName());
+  }
+
+  /**
+   * Returns the nested type string of this expression using the notation
+   * {@code f:var=A➔B} at each level, where when B is itself a generated
+   * functional interface it is expanded inline as {@code (B=g:var=A➔B)}, giving
+   * the full nested form:
+   *
+   * <pre>
+   *   f:n=Integer➔(RealFunctional=g:q=Real➔(RealFunction=h:t=Real➔Real))
+   * </pre>
+   *
+   * For each adjacent pair of expressions in the upstream chain, asserts that the
+   * codomain of the upstream expression is assignable from the domain of the
+   * downstream expression, i.e. that the types compose correctly.
+   *
+   * @return the full nested type string
+   */
+  public String nestedTypeString()
+  {
+    LinkedList<Expression<?, ?, ?>> chain  = new LinkedList<>();
+    Expression<?, ?, ?>             cursor = this;
+    while (cursor != null)
+    {
+      chain.addFirst(cursor);
+      cursor = cursor.upstreamExpression;
+    }
+
+    for (int i = 0; i < chain.size() - 1; i++)
+    {
+      var upstream   = chain.get(i);
+      var downstream = chain.get(i + 1);
+      assert upstream.coDomainType
+                    == downstream.domainType : format("type mismatch at nesting level %d: upstream codomain %s is not assignable from downstream domain %s",
+                                                      i,
+                                                      upstream.coDomainType.getSimpleName(),
+                                                      downstream.domainType.getSimpleName());
+    }
+
+    StringBuilder sb         = new StringBuilder();
+    int           openParens = 0;
+
+    for (var expr : chain)
+    {
+      String domain = expr.domainType.getSimpleName();
+      String var    = expr.independentVariable != null ? expr.independentVariable.getName() : "?";
+      String f      = expr.functionClass.getSimpleName();
+
+      sb.append(format("%s:%s=%s➔", f, var, domain));
+
+      if (expr.isGeneratedFunctional())
+      {
+        sb.append('(').append(expr.coDomainType.getSimpleName()).append('=');
+        openParens++;
+      }
+      else
+      {
+        sb.append(expr.coDomainType.getSimpleName());
+      }
+    }
+
+    for (int i = 0; i < openParens; i++)
+    {
+      sb.append(')');
+    }
+
+    return sb.toString();
+  }
+
+  /**
    * The single placeholder variable of this expression's codomain type. Assigned
    * during {@link VariableNode#resolveReference()} when the expression is
    * non-nullary and {@link #isInterfaceFunctional()} is true and a free variable
@@ -2660,7 +2742,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     var intermediateVarName = getNextIntermediateVariableFieldName(prefix, type);
     assert intermediateVarName != null : "intermediateVarName shan't be null";
     String variable = registerIntermediateVariable(intermediateVarName, type, initialize);
-   // assert variable != null : "registerIntermediateVariable returned null for intermediateVarName=" + intermediateVarName;
+    // assert variable != null : "registerIntermediateVariable returned null for
+    // intermediateVarName=" + intermediateVarName;
     return variable;
   }
 
