@@ -1,0 +1,4 @@
+rao reformulated it as the existence of a nontrivial solution on the critical line.. extract his theorem 1 and related content from this paper and disregard the probabilistic reformulations he did in the latter half of that paper. I think there is a way to construct the solution to the equation he specified.. I derived this. Space Basically, what he's saying is find a function that is the nullspace of that Integral covariance operator.
+
+--Stephen Crowley
+

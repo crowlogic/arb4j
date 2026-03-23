@@ -1,0 +1,4 @@
+And so I was trying to solve The case of the random wave model where the kernel is j0 And the spectral density, its Fourier transform is 1 over the square root of 1 minus lambda squared. I recognized that as the orthogonality measure of the type 1 Chebyshev polynomials. And I found that if you take the Fourier transforms of said polynomials, Then If you integrate The resulting function, any of them, Against The J0 integral covariance operator You get zero. And therefore The Fourier transforms of the Chebyshev polynomials enumerates the null space of said operator. The sun. And then I found out that You can actually Orthogonalize Apply Gram-Schmidt to the Fourier transforms of those Chebyshev polynomials. And When you sum them you get a uniformly convergent expansion for J0 that is valid on the entire real line. which is Hitherto not known to exist All existing results being uniform convergence in bounded domains.
+
+
+--Stephen Crowley
