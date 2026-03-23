@@ -140,21 +140,36 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                        Consumer<Consumer<Expression<?, ?, ?>>>
 {
 
-  /**
-   * Returns the type of this expression in standard mathematical notation:
-   * {@code f:var=A➔B}, where {@code f} is the function class simple name,
-   * {@code var} is the independent variable name (or {@code ?} if none),
-   * {@code A} is the domain simple name, and {@code B} is the codomain simple
-   * name — the standard f: A➔B extended to name the bound variable.
-   *
-   * @return the type string for this single expression level
-   */
+  public final List<Expression<?, ?, ?>> downstreamExpressions = new ArrayList<>();
+
+  public Expression<?, ?, ?> registerDownstreamExpression(Expression<?, ?, ?> child)
+  {
+    child.upstreamExpression = this;
+    downstreamExpressions.add(child);
+    return child;
+  }
+
   public String typeString()
   {
     String var = independentVariable != null ? independentVariable.getName() : "?";
-    return format("%s:%s=%s➔%s", functionClass.getSimpleName(), var, domainType.getSimpleName(), coDomainType.getSimpleName());
+    if (!downstreamExpressions.isEmpty())
+    {
+      String inner = downstreamExpressions.stream()
+                                          .map(Expression::typeString)
+                                          .collect(java.util.stream.Collectors.joining(", "));
+      return format("%s:%s=%s➔(%s=%s)",
+                    functionClass.getSimpleName(),
+                    var,
+                    domainType.getSimpleName(),
+                    coDomainType.getSimpleName(),
+                    inner);
+    }
+    return format("%s:%s=%s➔%s",
+                  functionClass.getSimpleName(),
+                  var,
+                  domainType.getSimpleName(),
+                  coDomainType.getSimpleName());
   }
-
   /**
    * Returns the nested type string of this expression using the notation
    * {@code f:var=A➔B} at each level, where when B is itself a generated
