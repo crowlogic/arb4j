@@ -1,0 +1,183 @@
+Weight: \(w(u) = \frac{e^u}{e^{e^u}+1}\), \(u\in\mathbb{R}\).
+
+Starting monomials: \(1, u, u^2, \ldots\). Gram–Schmidt with inner product \(\langle f,g\rangle = \int_{\mathbb{R}} f(u)g(u)\,w(u)\,du\).
+
+First, compute the moments \(\mu_k := \int_{\mathbb{R}} u^k\,w(u)\,du\). Substituting \(x=e^u\), \(u=\log x\), \(du=dx/x\):
+
+\[
+\mu_k
+=
+\int_0^\infty \frac{(\log x)^k}{e^x+1}\,dx.
+\]
+
+This is a known integral. Using the standard result [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/37918610/08937d5b-137e-4346-bafa-77a6b1a8de02/arXiv-2003.00581v2)
+
+\[
+\int_0^\infty \frac{x^{s-1}}{e^x+1}\,dx = \Gamma(s)(1-2^{1-s})\zeta(s),
+\]
+
+and differentiating \(k\) times with respect to \(s\) at \(s=1\):
+
+\[
+\mu_k = \left.\frac{d^k}{ds^k}\Big[\Gamma(s)(1-2^{1-s})\zeta(s)\Big]\right|_{s=1}.
+\]
+
+Define \(F(s):=\Gamma(s)(1-2^{1-s})\zeta(s)\). Then \(\mu_k = F^{(k)}(1)\).
+
+***
+
+## Moment computation
+
+\(F(1)=\Gamma(1)(1-2^0)\zeta(1)\)... but \(\zeta(1)=\infty\). However, \((1-2^{1-s})\) has a zero at \(s=1\) since \(1-2^{1-1}=1-1=0\), and \(\zeta(s)\) has a simple pole at \(s=1\) with residue 1. So the product is finite. Expanding near \(s=1\) with \(s=1+\epsilon\):
+
+\[
+1-2^{-\epsilon} = 1-e^{-\epsilon\log 2} = \epsilon\log 2 - \frac{(\epsilon\log 2)^2}{2}+\cdots
+\]
+
+\[
+\zeta(1+\epsilon) = \frac{1}{\epsilon}+\gamma + O(\epsilon)
+\]
+
+\[
+\Gamma(1+\epsilon) = 1-\gamma\epsilon+O(\epsilon^2)
+\]
+
+So
+
+\[
+F(1+\epsilon)
+=
+(1-\gamma\epsilon+\cdots)\left(\epsilon\log 2 - \frac{\epsilon^2(\log 2)^2}{2}+\cdots\right)\left(\frac{1}{\epsilon}+\gamma+\cdots\right).
+\]
+
+Collecting:
+
+\[
+F(1+\epsilon) = (1-\gamma\epsilon+\cdots)\left(\log 2 + \epsilon\Big[\gamma\log 2 - \frac{(\log 2)^2}{2}\Big]+\cdots\right).
+\]
+
+Thus
+
+\[
+\mu_0 = F(1) = \log 2,
+\]
+
+\[
+\mu_1 = F'(1) = \gamma\log 2 - \frac{(\log 2)^2}{2} - \gamma\log 2 = -\frac{(\log 2)^2}{2}.
+\]
+
+Wait—need to be more careful. Expanding to higher order:
+
+\[
+F(1+\epsilon) = \Big(\log 2 + \epsilon\big[\gamma\log 2 - \tfrac{(\log 2)^2}{2}\big]+O(\epsilon^2)\Big)\Big(1-\gamma\epsilon+O(\epsilon^2)\Big)
+\]
+
+\[
+= \log 2 + \epsilon\Big[\gamma\log 2 - \tfrac{(\log 2)^2}{2} - \gamma\log 2\Big] + O(\epsilon^2)
+\]
+
+\[
+= \log 2 - \frac{(\log 2)^2}{2}\,\epsilon + O(\epsilon^2).
+\]
+
+So
+
+\[
+\boxed{\mu_0 = \log 2},\qquad \boxed{\mu_1 = -\frac{(\log 2)^2}{2}}.
+\]
+
+For \(\mu_2\) we need the \(\epsilon^2\) term. Include the next orders:
+
+\[
+\Gamma(1+\epsilon) = 1-\gamma\epsilon+\tfrac{1}{2}(\gamma^2+\tfrac{\pi^2}{6})\epsilon^2+\cdots
+\]
+
+\[
+\zeta(1+\epsilon) = \frac{1}{\epsilon}+\gamma+\gamma_1\epsilon+\cdots
+\]
+
+where \(\gamma_1\) is the first Stieltjes constant. And
+
+\[
+1-2^{-\epsilon} = \epsilon\log 2 - \frac{\epsilon^2(\log 2)^2}{2}+\frac{\epsilon^3(\log 2)^3}{6}+\cdots
+\]
+
+Define the product \(A(\epsilon):=(1-2^{-\epsilon})\zeta(1+\epsilon)\):
+
+\[
+A(\epsilon) = \left(\epsilon\log 2 - \frac{\epsilon^2(\log 2)^2}{2}+\cdots\right)\left(\frac{1}{\epsilon}+\gamma+\gamma_1\epsilon+\cdots\right)
+\]
+
+\[
+= \log 2 + \epsilon\Big[\gamma\log 2 - \frac{(\log 2)^2}{2}\Big] + \epsilon^2\Big[\gamma_1\log 2 - \frac{\gamma(\log 2)^2}{2}+\frac{(\log 2)^3}{6}\Big]+\cdots
+\]
+
+Then \(F(1+\epsilon)=\Gamma(1+\epsilon)\cdot A(\epsilon)\):
+
+\[
+F(1+\epsilon) = \Big(1-\gamma\epsilon+\tfrac{1}{2}(\gamma^2+\tfrac{\pi^2}{6})\epsilon^2+\cdots\Big)\Big(\log 2 + a_1\epsilon+a_2\epsilon^2+\cdots\Big)
+\]
+
+where \(a_1 = \gamma\log 2 - \frac{(\log 2)^2}{2}\) and \(a_2 = \gamma_1\log 2 - \frac{\gamma(\log 2)^2}{2}+\frac{(\log 2)^3}{6}\).
+
+The coefficient of \(\epsilon^2\) is:
+
+\[
+\mu_2 = a_2 - \gamma a_1 + \tfrac{1}{2}(\gamma^2+\tfrac{\pi^2}{6})\log 2.
+\]
+
+Substituting:
+
+\[
+\mu_2 = \gamma_1\log 2 - \frac{\gamma(\log 2)^2}{2}+\frac{(\log 2)^3}{6} - \gamma^2\log 2 + \frac{\gamma(\log 2)^2}{2} + \frac{\gamma^2\log 2}{2}+\frac{\pi^2\log 2}{12}.
+\]
+
+Simplifying (the \(\pm\frac{\gamma(\log 2)^2}{2}\) cancel):
+
+\[
+\boxed{\mu_2 = \gamma_1\log 2 - \frac{\gamma^2}{2}\log 2 + \frac{(\log 2)^3}{6}+\frac{\pi^2\log 2}{12}}.
+\]
+
+***
+
+## Gram–Schmidt: the first three orthogonal polynomials
+
+**\(P_0(u)=1\).**
+
+**\(P_1(u)=u - \frac{\mu_1}{\mu_0}\):**
+
+\[
+\frac{\mu_1}{\mu_0} = \frac{-(\log 2)^2/2}{\log 2} = -\frac{\log 2}{2}.
+\]
+
+\[
+\boxed{P_1(u) = u + \frac{\log 2}{2}}.
+\]
+
+**\(P_2(u) = u^2 - \alpha u - \beta\),** where \(\alpha,\beta\) are determined by \(\langle P_2, P_0\rangle=0\) and \(\langle P_2, P_1\rangle=0\).
+
+From \(\langle u^2 - \alpha u - \beta, 1\rangle_w = 0\):
+
+\[
+\mu_2 - \alpha\mu_1 - \beta\mu_0 = 0 \implies \beta = \frac{\mu_2 - \alpha\mu_1}{\mu_0}.
+\]
+
+From \(\langle u^2 - \alpha u - \beta, P_1\rangle_w = 0\), using \(P_1 = u+\frac{\log 2}{2}\):
+
+\[
+\langle u^2, u+\tfrac{\log 2}{2}\rangle - \alpha\langle u, u+\tfrac{\log 2}{2}\rangle - \beta\langle 1, u+\tfrac{\log 2}{2}\rangle = 0.
+\]
+
+This requires \(\mu_3\). Computing \(\mu_3\) from the \(\epsilon^3\) coefficient of \(F(1+\epsilon)\) requires the second Stieltjes constant \(\gamma_2\) and additional digamma expansion terms.
+
+At this point, the first two nontrivial orthogonal polynomials for the Salem–Rao weight \(w(u)=e^u/(e^{e^u}+1)\) on \(\mathbb{R}\) are:
+
+\[
+P_0(u) = 1,
+\]
+
+\[
+P_1(u) = u + \frac{\log 2}{2},
+\]
+
+and \(P_2\) is determined by the same procedure once \(\mu_3\) is included, with all moments expressible as derivatives of \(\Gamma(s)(1-2^{1-s})\zeta(s)\) at \(s=1\)—involving the Euler–Mascheroni constant, Stieltjes constants, and powers of \(\log 2\).

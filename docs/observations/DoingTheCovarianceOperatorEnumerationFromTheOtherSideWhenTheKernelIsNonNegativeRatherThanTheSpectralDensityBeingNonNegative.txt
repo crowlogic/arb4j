@@ -1,0 +1,56 @@
+Let \(K(u)\) denote the Salem–Rao kernel in the \(u\)-variable (Rao’s \(K_\theta(u)\) with \(\theta\) on the critical line; in Patkowski’s normalization it is essentially \(K(u)=e^{u}/(e^{e^{u}}+1)\)). [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/37918610/4345a22a-3ca0-458e-b202-14852f48d4d8/HarmonicAndProbabilsiticApproachestoZerosofRiemannsZetaFunction.pdf)
+
+For integrability over the whole real line, look at the tails.
+
+- As \(u\to+\infty\): \(e^{u}\to\infty\), \(e^{e^{u}}\) dominates, so
+  \[
+  K(u)\sim \frac{e^{u}}{e^{e^{u}}} = \exp\big(u-e^{u}\big),
+  \]
+  which decays *super*-exponentially. So the \(+\infty\) tail causes no problem for any \(L^{p}\).
+
+- As \(u\to-\infty\): \(e^{u}\to 0\), so \(e^{e^{u}}\to e^{0}=1\) and
+  \[
+  K(u)\sim \frac{e^{u}}{1+1} = \tfrac12 e^{u}.
+  \]
+  Thus near \(-\infty\), \(K(u)\) behaves like a plain exponential. Then
+  \[
+  \int_{-\infty}^{0} |K(u)|\,du \lesssim \int_{-\infty}^{0} e^{u}\,du <\infty.
+  \]
+
+Hence \(K\in L^{1}(\mathbb{R})\) (and in fact in every \(L^{p}\) for \(1\le p\le\infty\)). [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/37918610/08937d5b-137e-4346-bafa-77a6b1a8de02/arXiv-2003.00581v2)
+
+For the pointwise square root \(h(u):=\sqrt{K(u)}\):
+
+- As \(u\to+\infty\): 
+  \[
+  h(u)\sim \exp\big(\tfrac12(u-e^{u})\big),
+  \]
+  still super-exponentially decaying.
+
+- As \(u\to-\infty\):
+  \[
+  h(u)\sim \sqrt{\tfrac12}\,e^{u/2}.
+  \]
+  So
+  \[
+  \int_{-\infty}^{0} h(u)\,du \lesssim \int_{-\infty}^{0} e^{u/2}\,du <\infty.
+  \]
+
+Thus \(\sqrt{K}\in L^{1}(\mathbb{R})\) as well (and in all \(L^{p}\), \(1\le p\le\infty\)). [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/37918610/08937d5b-137e-4346-bafa-77a6b1a8de02/arXiv-2003.00581v2)
+
+So: both the Salem–Rao kernel on the critical line and its pointwise square root are absolutely integrable over \(\mathbb{R}\); there is no obstruction to forming their Fourier transforms or using the “Cholesky factor” picture at the level of spatial integrability.
+
+Yes, at the purely analytic level you can:
+
+- Since \(K(u)>0\) and \(K\in L^1(\mathbb{R})\cap L^2(\mathbb{R})\), you can treat \(K(u)\,du\) as a finite positive measure on \(\mathbb{R}\). [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/37918610/08937d5b-137e-4346-bafa-77a6b1a8de02/arXiv-2003.00581v2)
+- By standard theory of orthogonal polynomials on the real line (Favard-type results extended to general measures), there exists a sequence of real polynomials \(\{P_n\}_{n\ge 0}\) such that
+  \[
+  \int_{\mathbb{R}} P_n(u)P_m(u)\,K(u)\,du = 0,\quad n\neq m,
+  \]
+  with all moments finite because the tails are exponential. [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/37918610/08937d5b-137e-4346-bafa-77a6b1a8de02/arXiv-2003.00581v2)
+- Exactly the same applies with weight \(\sqrt{K(u)}\) instead of \(K(u)\): since \(\sqrt{K}\in L^1\) and has all polynomial moments finite, you also get a full orthogonal polynomial system for the measure \(\sqrt{K(u)}\,du\). [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/37918610/08937d5b-137e-4346-bafa-77a6b1a8de02/arXiv-2003.00581v2)
+
+So:
+
+- There is a canonical sequence of orthogonal polynomials with respect to \(K(u)\,du\) (and similarly for \(\sqrt{K(u)}\,du\)).
+- Their Fourier transforms give you a structured family of bandlimited-ish functions in the *spectral* picture associated with that spatial weight, and you can run all the Gram–Schmidt / nullspace constructions you outlined, now with a mathematically legitimate weight.

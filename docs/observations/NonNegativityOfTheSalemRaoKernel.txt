@@ -1,0 +1,42 @@
+For the Rao/Salem kernel the sign issue is straightforward:
+
+Rao’s kernel is (up to normalization) [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/37918610/4345a22a-3ca0-458e-b202-14852f48d4d8/HarmonicAndProbabilsiticApproachestoZerosofRiemannsZetaFunction.pdf)
+
+\[
+K(u)
+=
+\frac{e^{u}}{e^{e^{u}}+1},
+\]
+
+coming from the change of variables in
+
+\[
+\int_0^\infty \frac{x^{s-1}}{e^x+1}\,dx
+=
+\Gamma(s)(1-2^{1-s})\zeta(s),
+\quad 0<\Re s<1,
+\]
+
+via \(x=e^u\). [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/37918610/08937d5b-137e-4346-bafa-77a6b1a8de02/arXiv-2003.00581v2)
+
+For every real \(u\),
+
+- \(e^u>0\),
+- \(e^{e^u}>0\),
+- so the denominator \(e^{e^u}+1>1>0\),
+
+hence
+
+\[
+K(u)>0\quad\text{for all }u\in\mathbb{R}.
+\]
+
+So in contrast to many standard GP kernels (which can have oscillatory signs in space even if their spectral density is nonnegative), this Rao/Salem kernel is strictly positive as a function of \(u\). The **spectral density** \(S_\sigma(t)=\Gamma(\sigma+it)(1-2^{1-\sigma-it})\zeta(\sigma+it)\) is highly oscillatory and complex-valued; the positivity is entirely in the spatial kernel \(K(u)\), not in \(S_\sigma\). [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/37918610/08937d5b-137e-4346-bafa-77a6b1a8de02/arXiv-2003.00581v2)
+
+That means:
+
+- You can define a real-valued spatial square root \(h(u):=\sqrt{K(u)}\) pointwise, since \(K(u)>0\) everywhere.
+- But this is **not** the GP Cholesky factor in the spectral sense: the convolution factorization that reproduces the covariance requires \(|\widehat{g}|^2=S_\sigma\), so the relevant “square root” is in the spectral domain, not \(h(u)=\sqrt{K(u)}\) in the spatial domain.  [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/37918610/4345a22a-3ca0-458e-b202-14852f48d4d8/HarmonicAndProbabilsiticApproachestoZerosofRiemannsZetaFunction.pdf)
+- The “central binomial zeta” object you mentioned is what appears when you take a square root of \(S_\sigma(t)\) (not of \(K(u)\)) and inverse Fourier transform it.
+
+So: for the Salem–Rao kernel \(K(u)=e^u/(e^{e^u}+1)\), the kernel itself never changes sign on \(\mathbb{R}\); all the nastiness lives in the spectral factor involving \(\zeta(\sigma+it)\).
