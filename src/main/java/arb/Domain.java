@@ -1,4 +1,4 @@
-package arb.domains;
+package arb;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;

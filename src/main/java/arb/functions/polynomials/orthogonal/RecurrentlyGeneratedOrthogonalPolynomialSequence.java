@@ -4,12 +4,10 @@ import static arb.utensils.Utensils.wrapOrThrow;
 
 import java.util.List;
 
-import arb.AutoCloseableAssignable;
-import arb.Initializable;
+import arb.*;
 import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.domains.Domain;
 import arb.expressions.Context;
 import arb.functions.integer.Sequence;
 import arb.functions.polynomials.PolynomialSequence;

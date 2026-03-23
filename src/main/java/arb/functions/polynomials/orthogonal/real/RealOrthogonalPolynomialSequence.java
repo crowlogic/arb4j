@@ -1,10 +1,8 @@
 package arb.functions.polynomials.orthogonal.real;
 
-import arb.Real;
-import arb.RealPolynomial;
+import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.domains.Domain;
 import arb.functions.integer.RealPolynomialSequence;
 import arb.functions.polynomials.orthogonal.OrthogonalPolynomialSequence;
 import arb.functions.real.RealFunction;

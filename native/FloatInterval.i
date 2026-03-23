@@ -2,7 +2,7 @@
 import static arb.arblib.arf_interval_get_arb;
 import static arb.arblib.arf_interval_swap;
 
-import arb.domains.Interval;
+import arb.Interval;
 %}
 
 %typemap(javafinalize) arf_interval_struct ""

@@ -1,10 +1,10 @@
 package arb.functions.polynomials.orthogonal.real;
 
+import arb.Domain;
 import arb.Real;
 import arb.applications.Bibliography;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.domains.Domain;
 import arb.functions.real.RealFunction;
 
 /**

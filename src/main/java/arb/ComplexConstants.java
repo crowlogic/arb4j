@@ -6,7 +6,7 @@ package arb;
  */
 public class ComplexConstants
 {
-  public static final Complex constants     = Complex.newAlignedVector(9);
+  public static final Complex constants     = Complex.newAlignedVector(10);
 
   public static final Complex π             = constants.get(0);
   public static final Complex iπ            = constants.get(1);
@@ -18,7 +18,9 @@ public class ComplexConstants
   public static final Complex posInf        = constants.get(7);
   public static final Complex negInf        = constants.get(8);
   public static final Complex ⅈ             = imaginaryUnit;
+  public static final Complex unitCircle = constants.get(9);
   public static final int     prec          = RealConstants.prec;
+
 
   static
   {
@@ -34,6 +36,9 @@ public class ComplexConstants
     iπ.getImag().π(prec);
     posInf.set(RealConstants.posInf, RealConstants.zero);
     posInf.neg(negInf);
+    unitCircle.zero();
+    unitCircle.re().setRad(MagnitudeConstants.one);
+    unitCircle.im().setRad(MagnitudeConstants.one);
     constants.lock();
   }
 

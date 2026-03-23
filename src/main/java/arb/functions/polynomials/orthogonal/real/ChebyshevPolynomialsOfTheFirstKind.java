@@ -3,12 +3,10 @@ package arb.functions.polynomials.orthogonal.real;
 import java.util.Iterator;
 import java.util.List;
 
+import arb.*;
 import arb.Integer;
-import arb.Real;
-import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.domains.Domain;
 import arb.functions.integer.RealPolynomialSequence;
 import arb.functions.polynomials.RealOrthogonalPolynomialSequenceIterator;
 import arb.functions.polynomials.orthogonal.RecurrentlyGeneratedOrthogonalPolynomialSequence;

@@ -1,11 +1,8 @@
 package arb.functions.polynomials.orthogonal.complex;
 
-import arb.Complex;
-import arb.ComplexPolynomial;
+import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.domains.Domain;
-import arb.domains.UnitCircle;
 import arb.functions.polynomials.orthogonal.RecurrentlyGeneratedOrthogonalPolynomialSequence;
 
 /**
@@ -34,7 +31,7 @@ public abstract class ComplexRecurrentlyGeneratedOrthogonalPolynomialSequence ex
   @Override
   public Domain<Complex> domainOfOrthogonality()
   {
-    return UnitCircle.instance;
+    return ComplexConstants.unitCircle;
   }
 
 }

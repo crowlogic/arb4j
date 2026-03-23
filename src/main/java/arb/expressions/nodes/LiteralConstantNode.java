@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import arb.*;
 import arb.Integer;
-import arb.domains.Domain;
 import arb.exceptions.UnsupportedTypeConversionException;
 import arb.expressions.*;
 import arb.functions.Function;

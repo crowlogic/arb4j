@@ -21,7 +21,7 @@ import java.util.stream.StreamSupport;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.domains.Domain;
+import arb.Domain;
 import arb.functions.complex.ComplexNullaryFunction;
 
 /**

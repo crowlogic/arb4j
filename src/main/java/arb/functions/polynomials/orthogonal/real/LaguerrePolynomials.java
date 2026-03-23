@@ -1,10 +1,8 @@
 package arb.functions.polynomials.orthogonal.real;
 
-import arb.Real;
+import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.domains.Domain;
-import arb.domains.UpperExtendedHalfLine;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -31,6 +29,6 @@ public class LaguerrePolynomials extends
   @Override
   public Domain<Real> domainOfOrthogonality()
   {
-    return UpperExtendedHalfLine.instance;
+    return RealConstants.posInf;
   }
 }

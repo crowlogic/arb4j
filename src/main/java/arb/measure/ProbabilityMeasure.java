@@ -1,8 +1,8 @@
 package arb.measure;
 
+import arb.Domain;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.domains.Domain;
 
 /**
  * Consider a {@link ProbabilitySpace} specified by the triple (Ω,Σ,P), where

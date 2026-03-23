@@ -1,12 +1,9 @@
 package arb.functions.polynomials.orthogonal.real;
 
+import arb.*;
 import arb.Integer;
-import arb.Real;
-import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.domains.Domain;
-import arb.domains.ExtendedRealLine;
 import arb.functions.real.RealFunction;
 
 /**
@@ -48,7 +45,7 @@ public class HermitePolynomials extends
   @Override
   public Domain<Real> domainOfOrthogonality()
   {
-    return ExtendedRealLine.instance;
+    return RealConstants.posInf;
   }
 
   public static final RealFunction w = RealFunction.express("exp(-x²)");

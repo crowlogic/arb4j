@@ -1,14 +1,9 @@
 package arb.functions.polynomials;
 
-import arb.Fraction;
-import arb.Initializable;
-import arb.Real;
-import arb.RealConstants;
+import arb.*;
 import arb.applications.Bibliography;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.domains.Domain;
-import arb.domains.ExtendedRealLine;
 import arb.functions.polynomials.orthogonal.real.RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence;
 import arb.functions.real.RealBesselFunctionOfTheFirstKind;
 import arb.functions.real.RealFunction;
@@ -59,7 +54,7 @@ public class ModifiedLommelPolynomials extends
   @Override
   public Domain<Real> domainOfOrthogonality()
   {
-    return ExtendedRealLine.instance;
+    return RealConstants.posInf;
   }
 
   /**

@@ -3,13 +3,10 @@ package arb.functions.polynomials;
 import java.util.Iterator;
 import java.util.List;
 
-import arb.Fraction;
+import arb.*;
 import arb.Integer;
-import arb.RationalFunction;
-import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.domains.Domain;
 import arb.expressions.Context;
 import arb.functions.FractionFunction;
 import arb.functions.NullaryFunction;
