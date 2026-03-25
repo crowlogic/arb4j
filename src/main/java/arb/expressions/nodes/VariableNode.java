@@ -124,7 +124,9 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                          expression.remaining(),
                          reference.type != null ? reference.type.getSimpleName() : "null",
                          isIndependent,
-                         upstreamInput) + " in " + expression.toStringExtended();
+                         upstreamInput)
+           + " in "
+           + expression.toStringExtended();
   }
 
   private VariableNode<?, ?, ?> resolveUpstreamVariables()
@@ -164,7 +166,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 //    }
     if ("q".equals(reference.name))
     {
-      System.out.println("Dammit " + resolutionStateString() );
+      System.out.println("Dammit " + resolutionStateString());
 
     }
 
@@ -637,7 +639,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Class<?> type()
   {
-   if (isIndependent)
+    if (isIndependent)
     {
       return reference.type = expression.domainType;
     }
@@ -647,7 +649,11 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     else
     {
-      resolveReference();
+      if (reference.type == null)
+      {
+        resolveReference();
+      }
+
       return reference.type();
     }
 

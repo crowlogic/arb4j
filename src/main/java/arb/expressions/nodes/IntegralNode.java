@@ -180,7 +180,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
     if (otherFactor != null && shiftValue != null)
     {
-      var evalExpr = createEvaluationExpression();
+      var evalExpr = createEvaluationExpressionWithDeferredVariableResolution();
       var result   = otherFactor.spliceInto(evalExpr);
       result = result.substitute(integrationVariableNode.getName(), shiftValue);
       return result.spliceInto(expression).simplify();
@@ -224,10 +224,9 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     }
   }
 
-  private Expression<D, C, F> createEvaluationExpression()
+  private Expression<D, C, F> createEvaluationExpressionWithDeferredVariableResolution()
   {
     Expression<D, C, F> evaluationExpression = expression.cloneExpression();
-
     evaluationExpression.context                 = expression.context;
     evaluationExpression.deferVariableResolution = true;
 
@@ -316,8 +315,8 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
     ensureIndefiniteIntegralNode();
 
-    var    upperExpr           = createEvaluationExpression();
-    var    lowerExpr           = createEvaluationExpression();
+    var    upperExpr           = createEvaluationExpressionWithDeferredVariableResolution();
+    var    lowerExpr           = createEvaluationExpressionWithDeferredVariableResolution();
 
     var    upperEval           = indefiniteIntegralNode.spliceInto(upperExpr);
     var    lowerEval           = indefiniteIntegralNode.spliceInto(lowerExpr);
@@ -522,7 +521,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
     if (isDefiniteIntegral())
     {
-      return getDefiniteIntegralEvaluationNode();
+      return this;//getDefiniteIntegralEvaluationNode();
     }
     else
     {
