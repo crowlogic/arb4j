@@ -21,6 +21,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.context.SerializedContextVariable;
+import ch.qos.logback.classic.Logger;
 
 /**
  * A custom {@link Representer} implementation for serializing various Arb4j
@@ -101,9 +102,12 @@ public class TypeRepresenter extends
     switch (property.getName())
     {
     case "instructions":
-    case "logger":
       return null;
     default:
+      if (property.getType().equals(Logger.class) || property.getType().equals(org.slf4j.Logger.class))
+      {
+        return null;
+      }
       return super.representJavaBeanProperty(javaBean, property, propertyValue, customTag);
     }
   }

@@ -29,6 +29,7 @@ module arb4j
   requires transitive guru.nidi.graphviz;
   requires transitive org.slf4j;
   requires transitive vineflower;
+  requires transitive ch.qos.logback.classic;
 
   exports arb.applications;
   exports arb.applications.expressor;

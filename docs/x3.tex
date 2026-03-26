@@ -1,0 +1,233 @@
+\documentclass{amsart}
+\usepackage{amsmath,amssymb,amsthm}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+
+\begin{document}
+
+\title{Hardy $Z$ as Orthogonal Projection of Rao's Stationary Base Process}
+\maketitle
+
+\begin{theorem}
+Let $W:\mathbb{R}\times\Omega\to\mathbb{R}$ be a mean-zero stationary
+Gaussian process with covariance kernel
+\[
+  \rho(\tau)
+  = \mathbb{E}[W(u+\tau)W(u)]
+  = \Gamma\!\Bigl(\tfrac{1}{2}+i\tau\Bigr)
+    \eta\!\Bigl(\tfrac{1}{2}+i\tau\Bigr),
+  \quad \tau\in\mathbb{R},
+\]
+and spectral representation
+\[
+  W(u) = \int_{\mathbb{R}} e^{i\omega u}\,d\Phi(\omega),
+  \qquad
+  \mathbb{E}[|d\Phi(\omega)|^2] = S(\omega)\,d\omega,
+  \qquad
+  S(\omega) = \frac{e^{\omega/2}}{e^{e^{\omega}}+1}.
+\]
+Let $\theta(t)=\arg\Gamma(\frac{1}{4}+\frac{it}{2})-\frac{t}{2}\log\pi$
+be the Riemann--Siegel theta function, and let $t_0\approx 6.29$ be the
+unique positive zero of $\theta'$.  Define the non-stationary Gaussian
+process $Z:\{t>t_0\}\times\Omega\to\mathbb{R}$ by
+\[
+  Z(t) := \sqrt{\theta'(t)}
+  \int_{\mathbb{R}}
+  \frac{e^{i\omega\theta(t)}}
+       {\Gamma\!\bigl(\tfrac{1}{2}+i\omega\bigr)
+        \bigl(1-2^{1/2-i\omega}\bigr)}
+  \,d\Phi(\omega).
+\]
+Define the coefficient sequence $\{a_m\}_{m\ge 0}$ by
+\[
+  \frac{1}{\Gamma(\tfrac{1}{2}+z)}
+  = \sum_{m=0}^{\infty} a_m\,z^m,
+  \qquad z\in\mathbb{C},
+\]
+with
+\[
+  a_0 = \frac{1}{\sqrt{\pi}},
+  \qquad
+  a_m = \frac{1}{m}\sum_{j=1}^{m} j\,c_j\,a_{m-j},
+  \quad m\ge 1,
+\]
+where
+\[
+  c_1 = 2\log 2,
+  \qquad
+  c_k = \frac{(-1)^k(2^k-1)\zeta(k)}{k},
+  \quad k\ge 2.
+\]
+Then the following hold.
+
+\smallskip
+\noindent\textup{(i)} $Z$ is a mean-zero Gaussian process with covariance
+\[
+  R(t,s)
+  = \mathbb{E}[Z(t)Z(s)]
+  = \sqrt{\theta'(t)\,\theta'(s)}
+    \int_{\mathbb{R}}
+    \frac{e^{i\omega(\theta(t)-\theta(s))}\,S(\omega)}
+         {|\Gamma(\tfrac{1}{2}+i\omega)|^2
+          |1-2^{1/2-i\omega}|^2}
+    \,d\omega.
+\]
+
+\noindent\textup{(ii)} $Z$ is harmonizable, and its stationary dilation
+is $W$: there exist a Hilbert space $\mathcal{K}\supset
+\mathcal{H}=\overline{\operatorname{span}}\{Z(t):t>t_0\}$, a unitary
+group $\{U_u\}_{u\in\mathbb{R}}$ on $\mathcal{K}$, and an orthogonal
+projection $Q:\mathcal{K}\to\mathcal{H}$, with
+\[
+  Q = \int_{\mathbb{R}}
+      \frac{E(d\omega)}
+           {\Gamma(\tfrac{1}{2}+i\omega)(1-2^{1/2-i\omega})},
+\]
+where $E$ is the spectral measure of $\{U_u\}$, such that
+\[
+  Z(t) = \sqrt{\theta'(t)}\,Q\,Y(\theta(t)),
+  \qquad Y(u)=U_u Y_0,
+  \quad t>t_0.
+\]
+
+\noindent\textup{(iii)} For the arithmetic realization
+$Z(t)=e^{i\theta(t)}\zeta(\frac{1}{2}+it)$, the time-dependent
+filter impulse response
+\[
+  h_t(u)
+  = \frac{\sqrt{\theta'(t)}}{2\pi}
+    \int_{\mathbb{R}}
+    \frac{e^{i\omega(\theta(t)-u)}}
+         {\Gamma(\tfrac{1}{2}+i\omega)(1-2^{1/2-i\omega})}
+    \,d\omega
+\]
+satisfies
+\[
+  h_t(u)
+  = \sqrt{\theta'(t)}
+    \sum_{n=0}^{\infty} 2^{n/2}
+    \sum_{m=0}^{\infty} a_m\,
+    (-1)^m\,\delta^{(m)}\!\bigl(u - \theta(t) - n\log 2\bigr),
+\]
+and therefore
+\[
+  \boxed{
+  Z(t)
+  = \sqrt{\theta'(t)}
+    \sum_{n=0}^{\infty} 2^{n/2}
+    \sum_{m=0}^{\infty} a_m\,
+    W^{(m)}\!\bigl(\theta(t)+n\log 2\bigr).
+  }
+\]
+\end{theorem}
+
+\begin{proof}
+\textbf{Step 1 (Rao's spectral identity).}
+For $\Re(s)>0$ one has
+$\Gamma(s)\eta(s)=\int_0^\infty t^{s-1}/(e^t+1)\,dt$.
+The substitution $t=e^u$ gives
+$\Gamma(s)\eta(s)=\int_{\mathbb{R}} e^{su}/(e^{e^u}+1)\,du$.
+At $s=\tfrac{1}{2}+i\tau$ this becomes
+$\Gamma(\tfrac{1}{2}+i\tau)\eta(\tfrac{1}{2}+i\tau)
+=\int_{\mathbb{R}} S(\omega)e^{i\tau\omega}\,d\omega$.
+Since $S\in L^1(\mathbb{R})\cap L^\infty(\mathbb{R})$ and $S>0$,
+Bochner's theorem shows $\rho(\tau)=\hat{S}(\tau)$ is
+continuous and positive-definite, and the Kolmogorov--Cram\'{e}r
+theorem supplies $W$ with the stated spectral representation.
+
+\textbf{Step 2 (Covariance of $Z$).}
+By orthogonality of $\Phi$,
+\begin{align*}
+  \mathbb{E}[Z(t)Z(s)]
+  &= \sqrt{\theta'(t)\theta'(s)}
+     \int_{\mathbb{R}}
+     \frac{e^{i\omega\theta(t)}\,\overline{e^{i\omega\theta(s)}}\,S(\omega)}
+          {|\Gamma(\tfrac{1}{2}+i\omega)|^2|1-2^{1/2-i\omega}|^2}
+     \,d\omega \\
+  &= \sqrt{\theta'(t)\theta'(s)}
+     \int_{\mathbb{R}}
+     \frac{e^{i\omega(\theta(t)-\theta(s))}\,S(\omega)}
+          {|\Gamma(\tfrac{1}{2}+i\omega)|^2|1-2^{1/2-i\omega}|^2}
+     \,d\omega.
+\end{align*}
+This is a Morse--Transue-type integral of bounded Fr\'{e}chet
+variation in $(t,s)$, so $Z$ is weakly harmonizable.
+
+\textbf{Step 3 (Stationary dilation).}
+By the Miamee--Salehi theorem, any harmonizable process is the
+orthogonal projection of a stationary process in a larger Hilbert
+space.  The Rao operator representation supplies the contractive
+positive-definite family $T(t)=Q U_{\theta(t)}\sqrt{\theta'(t)}$,
+and Sz.-Nagy's dilation theorem lifts $T$ to a unitary group
+$\{U_u\}$ on $\mathcal{K}$.  The projection is
+\[
+  Q = \int_{\mathbb{R}}
+      \frac{E(d\omega)}
+           {\Gamma(\tfrac{1}{2}+i\omega)(1-2^{1/2-i\omega})},
+\]
+so that $Z(t)=\sqrt{\theta'(t)}\,QY(\theta(t))$ as claimed.
+
+\textbf{Step 4 (Impulse response as a distribution series).}
+The time-dependent filter impulse response is defined by
+$Z(t)=\int h_t(u)W(u)\,du$, giving
+\[
+  h_t(u)
+  = \frac{\sqrt{\theta'(t)}}{2\pi}
+    \int_{\mathbb{R}}
+    \frac{e^{i\omega(\theta(t)-u)}}
+         {\Gamma(\tfrac{1}{2}+i\omega)(1-2^{1/2-i\omega})}
+    \,d\omega.
+\]
+Since $|2^{1/2-i\omega}|=\sqrt{2}>0$ and $\sqrt{2}\ne 1$, the
+geometric series
+\[
+  \frac{1}{1-2^{1/2-i\omega}}
+  = \sum_{n=0}^{\infty} 2^{n/2}\,e^{-i\omega n\log 2}
+\]
+converges absolutely for all $\omega\in\mathbb{R}$, and dominated
+convergence (using the super-exponential decay of $S$) justifies
+interchange of sum and integral:
+\[
+  h_t(u)
+  = \sqrt{\theta'(t)}\sum_{n=0}^{\infty} 2^{n/2}\,
+    g\bigl(\theta(t)-u-n\log 2\bigr),
+  \qquad
+  g(x):=\frac{1}{2\pi}\int_{\mathbb{R}}
+  \frac{e^{i\omega x}}{\Gamma(\tfrac{1}{2}+i\omega)}\,d\omega.
+\]
+The entire function $1/\Gamma(\tfrac{1}{2}+z)=\sum_{m=0}^\infty a_m z^m$
+with $a_0=1/\sqrt{\pi}$ and Newton recurrence
+$m\,a_m=\sum_{j=1}^m j\,c_j\,a_{m-j}$,
+$c_1=2\log 2$, $c_k=(-1)^k(2^k-1)\zeta(k)/k$ for $k\ge 2$,
+gives (in the sense of tempered distributions)
+\[
+  g(x)
+  = \frac{1}{2\pi}\int_{\mathbb{R}}
+    \sum_{m=0}^{\infty} a_m(i\omega)^m e^{i\omega x}\,d\omega
+  = \sum_{m=0}^{\infty} a_m\,\delta^{(m)}(x),
+\]
+using $\frac{1}{2\pi}\int_{\mathbb{R}}(i\omega)^m e^{i\omega x}\,d\omega
+=\delta^{(m)}(x)$.  Hence
+\[
+  h_t(u)
+  = \sqrt{\theta'(t)}\sum_{n=0}^{\infty}2^{n/2}
+    \sum_{m=0}^{\infty}a_m\,\delta^{(m)}
+    \!\bigl(\theta(t)-u-n\log 2\bigr).
+\]
+
+\textbf{Step 5 (Integration against $W$).}
+Using $\int\delta^{(m)}(u-u_0)W(u)\,du=(-1)^m W^{(m)}(u_0)$
+and the sign identity
+$\delta^{(m)}(\theta(t)-u-n\log 2)=(-1)^m\delta^{(m)}(u-\theta(t)-n\log 2)$,
+the two factors of $(-1)^m$ cancel, yielding
+\[
+  Z(t)
+  = \int_{\mathbb{R}} h_t(u)\,W(u)\,du
+  = \sqrt{\theta'(t)}\sum_{n=0}^{\infty}2^{n/2}
+    \sum_{m=0}^{\infty}a_m\,W^{(m)}\!\bigl(\theta(t)+n\log 2\bigr).
+  \qquad\qed
+\]
+\end{proof}
+
+\end{document}
