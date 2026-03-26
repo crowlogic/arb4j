@@ -1,0 +1,109 @@
+Framework: Wiener–Cramér–Loève
+
+Let dW(λ) be a Hermitian orthogonal–increment measure on R with
+\[dW(\lambda)\,dW(\mu) = 0 \ (\lambda \neq \mu), \qquad dW(\lambda)\,dW(\lambda) = d\lambda.\][file:2][file:4]
+For any f,g in L^2(R), the Wiener inner product is
+\[\langle f,g\rangle_W = \int f(t)\,\overline{g(t)}\,dt = \int \widehat f(\lambda)\,\overline{\widehat g(\lambda)}\,d\lambda = \int f(\lambda)\,\overline{g(\lambda)}\,dW(\lambda).\][file:2][file:4]
+
+A stationary process with spectral density K(1/2+iu) (Rao kernel) has representation
+\[S(\tau) = \int e^{i\tau\lambda}\,h(\lambda)\,dW(\lambda),\qquad h(\lambda) = K(1/2+iu)^{1/2}.\][file:2][file:4]
+Its autocovariance is
+\[\mathrm{cov}_W\big(S(\tau),S(\tau')\big) = \int e^{i(\tau-\tau')\lambda}\,K(1/2+iu)\,d\lambda.\][file:2][file:3][file:4]
+
+Bochner core and Dirichlet eta
+
+Let \(\zeta(s)\) be the Riemann zeta function and \(\eta(s) = (1-2^{1-s})\zeta(s)\) the Dirichlet eta function.[file:2][file:4]
+On the critical line \(s = 1/2+it\) one has
+\[\eta(1/2+it) = (1-2^{1-(1/2+it)})\,\zeta(1/2+it).\][file:2][file:4]
+Define the Bochner core
+\[R(\tau) = \zeta(1/2+i\tau)\,\overline{\zeta(1/2+i\tau)} = |\zeta(1/2+i\tau)|^2.\][file:2][file:4]
+Using the Mellin–Euler integral and the substitution \(x = e^u\), Priestley’s Bochner relation gives
+\[R(\tau) = \int e^{i\tau u}\,K(1/2+iu)\,du,\][file:2][file:3][file:4]
+so \(R\) is positive definite and \(K(1/2+iu)\) is the spectral density of a unique (up to isometry) stationary process S(τ).[file:2][file:3][file:4]
+
+Riemann–Siegel quantities and Hardy Z
+
+Let \(\theta(t)\) be the Riemann–Siegel theta function
+\[\theta(t) = \Im\log \Gamma\Big(\tfrac{1}{4}+\tfrac{it}{2}\Big) - \tfrac{t}{2}\log \pi,\qquad \theta(t) = \tfrac{t}{2}\log\frac{t}{2\pi} - \tfrac{t}{2} - \tfrac{\pi}{8} + O(t^{-1})\][file:2][file:4]
+which is strictly increasing for t>0 with inverse t(τ). Define the Hardy Z–function
+\[Z(t) = e^{i\theta(t)}\,\zeta\big(\tfrac{1}{2}+it\big).\][file:2][file:4]
+
+Priestley oscillatory processes
+
+Priestley’s oscillatory process class consists of processes of the form
+\[X(t) = \int A(t,\lambda)\,e^{it\lambda}\,dZ(\lambda),\][file:3][file:4]
+where A(t,λ) is an amplitude (or gain) that is slowly varying in t and Z(λ) is an orthogonal process with \(E|dZ(\lambda)|^2 = dF(\lambda)\). Evolutionary spectrum at time t is
+\[dF_t(\lambda) = |A(t,\lambda)|^2\,dF(\lambda).\][file:3][file:4]
+Uniformly modulated processes are the special case A(t,λ)=c(t) independent of λ.[file:3]
+
+Step 1: Stationary core for |ζ|^2
+
+Define the stationary process indexed by τ
+\[S(\tau) = \int e^{i\tau\lambda}\,h(\lambda)\,dW(\lambda),\qquad h(\lambda) = K(1/2+iu)^{1/2}.\][file:2][file:3][file:4]
+Then cov_W(S(τ),S(τ')) = R(τ-τ') = |\zeta(1/2+i(τ-τ'))|^2.[file:2][file:3][file:4]
+Thus S is a stationary process with spectral density K(1/2+iu) and Bochner core R.[file:2][file:3][file:4]
+
+Step 2: Riemann–Siegel time change
+
+Define the “Riemann–Siegel time” τ as
+\[\tau = \theta(t),\qquad t = \theta^{-1}(\tau).\][file:2][file:4]
+Its derivative satisfies
+\[\theta'(t) = \frac{d\tau}{dt} = \tfrac{1}{2}\log \frac{t}{2\pi} + O(t^{-1}).\][file:2][file:4]
+Set
+\[J(t) = \frac{d\tau}{dt} = \theta'(t).\][file:2][file:4]
+This Jacobian controls the change of variables between the linear “Bochner” time τ and the physical time t, and appears in Priestley’s framework as the Radon–Nikodym derivative for reparametrization of a stationary process.[file:2][file:3][file:4]
+
+Step 3: Structural requirement linking S and ζ
+
+Impose the structural identity
+\[e^{-i\theta(t)}\,J(t)\,S(\theta(t)) = \zeta\big(\tfrac{1}{2}+it\big).\][file:2][file:4]
+Equivalently,
+\[S(\theta(t)) = e^{i\theta(t)}\,J(t)^{-1}\,\zeta\big(\tfrac{1}{2}+it\big).\][file:2][file:4]
+Using Z(t)=e^{i\theta(t)}\zeta(1/2+it), this becomes
+\[S(\theta(t)) = J(t)^{-1}\,Z(t).\][file:2][file:4]
+
+By construction, S(τ) is stationary in τ with spectral density K(1/2+iu).[file:2][file:3][file:4] The identity above says: evaluate S at τ=θ(t), undo the Hardy phase, and scale by the Jacobian, and you recover the Bochner core ζ(1/2+it).[file:2][file:4]
+
+Step 4: Rewrite S(θ(t)) via Wiener integral
+
+From the stationary representation
+\[S(\tau) = \int e^{i\tau\lambda}\,h(\lambda)\,dW(\lambda),\][file:2][file:3][file:4]
+set τ=θ(t) to get
+\[S(\theta(t)) = \int e^{i\theta(t)\lambda}\,h(\lambda)\,dW(\lambda).\][file:2][file:4]
+Therefore
+\[J(t)^{-1}Z(t) = S(\theta(t)) = \int e^{i\theta(t)\lambda}\,h(\lambda)\,dW(\lambda).\][file:2][file:4]
+Multiply by J(t) to obtain an integral representation for Z(t):
+\[Z(t) = J(t)\int e^{i\theta(t)\lambda}\,h(\lambda)\,dW(\lambda).\][file:2][file:4]
+
+Step 5: Identify Priestley oscillatory kernel and gain
+
+Compare with Priestley’s general form
+\[Z(t) = \int A(t,\lambda)\,e^{it\lambda}\,dZ(\lambda).\][file:3][file:4]
+Here the orthogonal measure is dW(λ) with spectral density 1, and the stationary colored measure dZ(λ)=h(λ)dW(λ) has spectral density K(1/2+iu).[file:2][file:3][file:4]
+Our representation has phase e^{i\theta(t)\lambda} rather than e^{it\lambda}, so the oscillatory kernel is
+\[\Phi(t,\lambda) = e^{i\theta(t)\lambda}.\][file:2][file:3][file:4]
+The full Priestley oscillatory kernel (including gain) is
+\[\phi(t,\lambda) = J(t)\,e^{i\theta(t)\lambda}\,h(\lambda).\][file:2][file:3][file:4]
+Thus
+\[Z(t) = \int \phi(t,\lambda)\,dW(\lambda),\qquad \phi(t,\lambda) = J(t)\,e^{i\theta(t)\lambda}\,h(\lambda).\][file:2][file:3][file:4]
+
+In Priestley’s notation, this is an oscillatory process with amplitude (gain)
+\[A(t,\lambda) = J(t)\,h(\lambda)\][file:2][file:3][file:4]
+and phase function θ(t) playing the role of the “instantaneous frequency clock.”[file:2][file:3][file:4]
+
+Step 6: Evolutionary spectrum of Z
+
+By Priestley’s definition, the evolutionary spectrum of Z at time t is
+\[dF_t(\lambda) = |A(t,\lambda)|^2\,d\lambda = J(t)^2\,|h(\lambda)|^2\,d\lambda = J(t)^2\,K(1/2+iu)\,d\lambda.\][file:2][file:3][file:4]
+Thus the spectral shape in λ is time–invariant (given by the Rao kernel K), while the overall power level is modulated by the scalar factor J(t)^2 = θ'(t)^2.[file:2][file:3][file:4]
+Explicitly,
+\[dF_t(\lambda) = \theta'(t)^2\,K(1/2+iu)\,d\lambda.\][file:2][file:3][file:4]
+
+Step 7: Relation to the z-oscillatory and hardy-z-priestley-2 notes
+
+The earlier z-oscillatory note realizes essentially the same structure with τ=t and an explicit factorization through η(1/2+it) and Γ(1/2+it), and identifies a three-factor amplitude decomposition into Jacobian, exponential (from Γ), and bounded oscillatory (from η). [file:4]
+The hardy-z-priestley-2 note replaces the ad hoc “inverse filter” construction by an explicit stationary core S(τ) with spectral density K(1/2+iu), a precise Riemann–Siegel time change τ=θ(t), and the structural constraint linking S(θ(t)) to ζ(1/2+it).[file:2]
+Combining them with Priestley’s original oscillatory-process and evolutionary-spectrum definitions yields the coherent Priestley representation above, with evolutionary spectrum
+\[dF_t(\lambda) = \theta'(t)^2\,K(1/2+iu)\,d\lambda\][file:2][file:3][file:4]
+and oscillatory kernel
+\[\phi(t,\lambda) = \theta'(t)\,e^{i\theta(t)\lambda}\,K(1/2+iu)^{1/2}.\][file:2][file:3][file:4]

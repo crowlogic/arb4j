@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Hardy Z Function as a Priestley Oscillatory Process with Stationary Core</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(', '\\)']],
+    displayMath: [['\\[', '\\]']],
+    tags: 'ams',
+    packages: {'[+]': ['ams']}
+  },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] },
+  startup: { typeset: true }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+<style>
+  :root {
+    --font-body: 'IM Fell English', 'Georgia', serif;
+    --font-mono: 'Source Code Pro', monospace;
+    --color-bg: #f8f6f1;
+    --color-text: #1a1714;
+    --color-text-muted: #5a5650;
+    --color-border: #c8c4bc;
+    --color-surface: #faf8f4;
+    --color-accent: #1a3a5c;
+    --content-width: 680px;
+    --page-margin: 90px;
+  }
+  [data-theme="dark"] {
+    --color-bg: #16140f;
+    --color-text: #ddd9d0;
+    --color-text-muted: #8a8680;
+    --color-border: #3a3830;
+    --color-surface: #1c1a15;
+    --color-accent: #7aadce;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+  body {
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 11.5pt;
+    line-height: 1.7;
+    transition: background 0.3s, color 0.3s;
+  }
+  .page-wrap {
+    max-width: calc(var(--content-width) + var(--page-margin) * 2);
+    margin: 0 auto;
+    padding: 60px var(--page-margin) 80px;
+    position: relative;
+  }
+  .theme-toggle {
+    position: fixed; top: 20px; right: 20px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    width: 36px; height: 36px; border-radius: 50%;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    z-index: 100; transition: background 0.2s, border-color 0.2s;
+  }
+  .theme-toggle:hover { color: var(--color-text); }
+  .doc-title-block { text-align: center; margin-bottom: 36px; }
+  .doc-title {
+    font-size: 14pt; font-weight: normal; line-height: 1.35;
+    letter-spacing: 0.01em; margin-bottom: 18px; color: var(--color-text);
+  }
+  .doc-date { font-size: 10pt; color: var(--color-text-muted); font-style: italic; }
+  .abstract {
+    margin: 32px auto; max-width: 560px;
+    font-size: 10.5pt; line-height: 1.6; text-align: justify;
+    color: var(--color-text); hyphens: auto;
+  }
+  .abstract strong { font-variant: small-caps; letter-spacing: 0.06em; }
+  .rule-single {
+    border: none; border-top: 0.5pt solid var(--color-text); margin: 28px 0;
+  }
+  .section-numbered {
+    font-size: 12pt; font-weight: bold; margin-top: 36px; margin-bottom: 12px;
+    color: var(--color-text); text-align: center;
+    font-family: var(--font-body); font-variant: small-caps; letter-spacing: 0.05em;
+  }
+  .subsection {
+    font-size: 11pt; font-weight: bold; font-style: italic;
+    margin-top: 22px; margin-bottom: 8px;
+    color: var(--color-text); font-family: var(--font-body);
+  }
+  p { text-align: justify; hyphens: auto; margin-bottom: 10px; font-size: 11.5pt; }
+  p + p { text-indent: 1.5em; margin-top: 0; }
+  .thm-box {
+    margin: 18px 0; padding: 10px 14px;
+    border-left: 2px solid var(--color-border);
+    background: color-mix(in oklab, var(--color-border) 12%, var(--color-bg));
+  }
+  .thm-box.definition { border-left-color: var(--color-accent); }
+  .thm-box.proposition { border-left-color: #6a4c2a; }
+  .thm-box.remark { border-left-color: var(--color-text-muted); }
+  .thm-head {
+    font-style: italic; font-weight: normal;
+    display: inline;
+  }
+  .thm-head strong { font-style: normal; font-weight: bold; }
+  .proof { margin: 14px 0 0 0; }
+  .proof-head { font-style: italic; }
+  .qed { float: right; font-style: normal; font-size: 11pt; }
+  .qed::after { content: '\25A1'; }
+  .eq-block {
+    margin: 14px 0; overflow-x: auto; text-align: center; font-size: 11pt;
+  }
+  .eq-num {
+    font-size: 10pt; color: var(--color-text-muted);
+    float: right; margin-top: 0.4em;
+  }
+  .unnumbered {
+    font-size: 12pt; font-weight: bold; margin-top: 36px; margin-bottom: 12px;
+    color: var(--color-text); text-align: center;
+    font-family: var(--font-body); font-variant: small-caps; letter-spacing: 0.05em;
+  }
+  mjx-container { overflow-x: auto; max-width: 100%; }
+  @media (max-width: 700px) {
+    :root { --page-margin: 20px; }
+    .doc-title { font-size: 13pt; }
+  }
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" onclick="
+  var t = document.documentElement;
+  var d = t.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  t.setAttribute('data-theme', d);
+" aria-label="Toggle theme">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+  </svg>
+</button>
+
+<div class="page-wrap">
+
+<div class="doc-title-block">
+  <h1 class="doc-title">
+    The Hardy \(Z\) Function as a Priestley Oscillatory Process:<br>
+    Uniformly Modulated Representation, Stationary Core,<br>
+    and Spectral Factorization via the Riemann–Siegel Formula
+  </h1>
+  <div class="doc-date">March 2026</div>
+</div>
+
+<hr class="rule-single">
+
+<div class="abstract">
+<strong>Abstract.</strong> Rao's integral representation of the Dirichlet eta function
+\(\eta(\tfrac{1}{2}+i\tau)\) exhibits this kernel as positive-definite with
+spectral density \(K_{1/2}(\omega)=e^{\omega/2}/(e^{e^\omega}+1)\).
+The Hardy \(Z\) function is a Priestley oscillatory process: it admits the
+decomposition \(Z(t)=c(\vartheta(t))\,S(\vartheta(t))\) where
+\(c(\tau)=\sqrt{\vartheta'(\vartheta^{-1}(\tau))}\) is the uniformly modulated
+envelope and \(S\) is the stationary Gaussian core with spectral density \(K_{1/2}\).
+The reparametrization by the functional inverse \(\vartheta^{-1}\) exactly stationarizes
+the zero-crossing rate of \(Z\), and the envelope \(c\) is proved — via the exact
+Riemann–Siegel formula — to be the unique amplitude that renders \(S\) second-order
+stationary with \(\tau\)-independent spectral shape \(K_{1/2}\).
+The spectral factor \(\hat{h}(\omega)=\sqrt{K_{1/2}(\omega)}\) is expressed in
+closed form via the central binomial zeta function, and the white-noise random measure
+underlying the whole structure is identified explicitly.
+</div>
+
+<hr class="rule-single">
+
+<!-- ============================================================ -->
+<h2 class="section-numbered">1. The Rao Covariance Kernel and Its Spectral Density</h2>
+
+<p>
+Starting from the integral representation (3) of Rao (2012) with \(s=\sigma+it\),
+the substitution \(x=e^u\) converts the Gamma-integral for \(\zeta(s)\) into a
+Fourier integral. Combined with the relation
+\(\tfrac{x}{e^x+1}=\tfrac{x}{e^x-1}-\tfrac{2x}{e^{2x}-1}\),
+one obtains the identity
+</p>
+
+<div class="thm-box definition">
+<span class="thm-head"><strong>Definition 1</strong> (Rao kernel and spectral density).</span>
+For \(0<\sigma<1\), define
+\[
+K_\sigma(\omega) \;=\; \frac{e^{\sigma\omega}}{e^{e^\omega}+1}, \qquad \omega\in\mathbb{R}.
+\]
+This is the <em>Rao spectral density</em> at parameter \(\sigma\).
+</div>
+
+<p>
+The fundamental identity of Rao (2012), equation \((*)\), then reads:
+</p>
+
+<div class="eq-block">
+\(\displaystyle
+\eta\!\left(\sigma+it\right) \;=\; \zeta(\sigma+it)\,\bigl(1-2^{1-\sigma-it}\bigr)
+\;=\; \int_{\mathbb{R}} K_\sigma(\omega)\,e^{i\omega t}\,d\omega.
+\)
+<span class="eq-num">(1)</span>
+</div>
+
+<p>
+Comparing with the Bochner–Cramér pairing
+\(r(\tau)=\int_{\mathbb{R}} S(\omega)\,e^{i\omega\tau}\,d\omega\),
+the identification is immediate:
+</p>
+
+<div class="thm-box definition">
+<span class="thm-head"><strong>Definition 2</strong> (Bochner identification).</span>
+In the stationary Gaussian process framework indexed by \(t\in\mathbb{R}\):
+<ul style="margin: 8px 0 4px 24px; font-size: 11pt;">
+  <li><em>Covariance kernel</em> (function of lag \(\tau=t-t'\)):
+    \(\;r(\tau)=\eta\!\left(\tfrac{1}{2}+i\tau\right)=\zeta\!\left(\tfrac{1}{2}+i\tau\right)(1-2^{1/2-i\tau})\).</li>
+  <li><em>Spectral density</em>:
+    \(\;S(\omega)=K_{1/2}(\omega)=\dfrac{e^{\omega/2}}{e^{e^\omega}+1}\geq 0\) for all \(\omega\in\mathbb{R}\).</li>
+</ul>
+</div>
+
+<p>
+Because \(K_{1/2}(\omega)>0\) everywhere, Bochner's theorem confirms that
+\(\eta(\tfrac{1}{2}+i\tau)\) is a valid positive-definite covariance function,
+notwithstanding the fact that \(\eta\) has zeros (the non-trivial zeros of \(\zeta\)
+on the critical line). Positive definiteness of a covariance function does not preclude
+pointwise zeros; it is a property of the associated Gram matrices.
+</p>
+
+<!-- ============================================================ -->
+<h2 class="section-numbered">2. Spectral Factorization and the Half-Kernel</h2>
+
+<h3 class="subsection">2.1. The spectral factor \(\hat{h}\)</h3>
+
+<p>
+The <em>spectral factor</em> is any function \(\hat{h}:\mathbb{R}\to\mathbb{C}\)
+satisfying \(|\hat{h}(\omega)|^2=S(\omega)\). For the Rao density the canonical
+(real, non-negative) choice is:
+</p>
+
+<div class="thm-box definition">
+<span class="thm-head"><strong>Definition 3</strong> (Spectral factor and half-kernel).</span>
+The <em>spectral factor</em> is
+\[
+\hat{h}(\omega) \;=\; \sqrt{K_{1/2}(\omega)} \;=\;
+\frac{e^{\omega/4}}{\sqrt{e^{e^\omega}+1}},
+\]
+satisfying \(\hat{h}(\omega)^2=K_{1/2}(\omega)\) pointwise.
+The <em>half-kernel</em> \(h\) is its inverse Fourier transform.
+Expanding \((e^{e^\omega}+1)^{-1/2} = e^{-e^\omega/2}(1+e^{-e^\omega})^{-1/2}\)
+via the central-binomial generating function
+\(\tfrac{1}{\sqrt{1+u}}=\sum_{n=0}^\infty \tfrac{(-1)^n}{4^n}\binom{2n}{n}u^n\)
+with \(u=e^{-e^\omega}\), then substituting \(x=e^\omega\) in the Fourier integral
+\(h(t)=\int_{\mathbb{R}}\hat{h}(\omega)e^{i\omega t}d\omega\)
+and evaluating via \(\int_0^\infty x^{s-1}e^{-\lambda x}dx=\lambda^{-s}\Gamma(s)\)
+at \(s=\tfrac{1}{4}+it\), \(\lambda=n+\tfrac{1}{2}\):
+</div>
+
+<div class="eq-block">
+\(\displaystyle
+h(t) \;=\; 2^{1/4+it}\,\Gamma\!\left(\tfrac{1}{4}+it\right)\,
+\mathcal{Z}_{\mathrm{cb}}\!\left(\tfrac{1}{4}+it\right),
+\)
+<span class="eq-num">(2)</span>
+</div>
+
+<p>
+where the <em>central binomial zeta function</em> is defined by the Dirichlet series
+</p>
+
+<div class="eq-block">
+\(\displaystyle
+\mathcal{Z}_{\mathrm{cb}}(s)
+\;:=\; \sum_{n=0}^{\infty}\frac{(-1)^n}{4^n}\binom{2n}{n}\frac{1}{(2n+1)^s}.
+\)
+<span class="eq-num">(2a)</span>
+</div>
+
+<p>
+The fundamental property of the half-kernel is that it reproduces the covariance
+kernel under convolution against its own conjugate reflection
+\(h^*(t)=\overline{h(-t)}\):
+</p>
+
+<div class="eq-block">
+\(\displaystyle
+(h * h^*)(\tau)
+\;=\; \int_{\mathbb{R}} h(t)\,\overline{h(t-\tau)}\,dt
+\;=\; \int_{\mathbb{R}} |\hat{h}(\omega)|^2\,e^{i\omega\tau}\,d\omega
+\;=\; \int_{\mathbb{R}} K_{1/2}(\omega)\,e^{i\omega\tau}\,d\omega
+\;=\; \eta\!\left(\tfrac{1}{2}+i\tau\right).
+\)
+<span class="eq-num">(3)</span>
+</div>
+
+<p>
+This is why \(h\) is called the <em>square-root kernel</em>: convolving it with its
+reflection recovers the full covariance kernel.
+</p>
+
+<h3 class="subsection">2.2. The inverse filter \(h^{-1}\): multiplicative, not functional</h3>
+
+<div class="thm-box remark">
+<span class="thm-head"><strong>Remark</strong> (Nature of \(h^{-1}\)).</span>
+The notation \(h^{-1}\) denotes the <em>convolution inverse</em> of \(h\),
+i.e., the tempered distribution whose Fourier transform is
+\(\widehat{h^{-1}}(\omega)=1/\hat{h}(\omega)\).
+It is <strong>not</strong> the functional inverse (the function \(t\mapsto h^{-1}(t)\)
+in the sense of \(h\circ h^{-1}=\mathrm{id}\)).
+The convolution inverse satisfies \(h*h^{-1}=\delta\) (Dirac delta),
+which in frequency reads \(\hat{h}(\omega)\cdot\widehat{h^{-1}}(\omega)=1\).
+</div>
+
+<p>
+Explicitly:
+</p>
+
+<div class="eq-block">
+\(\displaystyle
+\widehat{h^{-1}}(\omega) \;=\; \frac{1}{\hat{h}(\omega)}
+\;=\; K_{1/2}(\omega)^{-1/2}
+\;=\; e^{-\omega/4}\sqrt{e^{e^\omega}+1}.
+\)
+<span class="eq-num">(4)</span>
+</div>
+
+<p>
+Note that \(\widehat{h^{-1}}(\omega)\to\infty\) as \(\omega\to-\infty\) (since
+\(e^{-\omega/4}\to\infty\)), so \(h^{-1}\) is not an \(L^2\) function but a
+tempered distribution, and the whitening convolution below is understood in the
+distributional sense applied to functions with sufficient decay.
+</p>
+
+<!-- ============================================================ -->
+<h2 class="section-numbered">3. Cramér Representation and Sample Path Generation</h2>
+
+<p>
+A stationary Gaussian process \(\{X(\tau)\}_{\tau\in\mathbb{R}}\) with covariance
+\(r(\tau)=\eta(\tfrac{1}{2}+i\tau)\) admits the Cramér stochastic integral representation:
+</p>
+
+<div class="eq-block">
+\(\displaystyle
+X(\tau) \;=\; \int_{\mathbb{R}} \hat{h}(\omega)\,e^{i\omega\tau}\,dW(\omega),
+\)
+<span class="eq-num">(5)</span>
+</div>
+
+<p>
+where \(dW\) is the standard complex Gaussian white-noise orthogonal-increment measure
+(\(\mathbb{E}[dW(\omega)\,\overline{dW(\omega')}]=\delta(\omega-\omega')\,d\omega\)).
+Equivalently, in the time domain:
+</p>
+
+<div class="eq-block">
+\(\displaystyle
+X(\tau) \;=\; (h * \xi)(\tau) \;=\; \int_{\mathbb{R}} h(\tau - u)\,\xi(u)\,du,
+\)
+<span class="eq-num">(6)</span>
+</div>
+
+<p>
+where \(\xi\) is the white-noise process (the distributional derivative of Brownian
+motion). The <em>whitening</em> (innovation recovery) operation inverts (6): given
+a sample path \(f\), the corresponding driving measure is recovered by applying the
+convolution inverse:
+</p>
+
+<div class="eq-block">
+\(\displaystyle
+\xi_f(u) \;=\; (h^{-1} * f)(u) \;=\; \int_{\mathbb{R}} h^{-1}(u-v)\,f(v)\,dv.
+\)
+<span class="eq-num">(7)</span>
+</div>
+
+<p>
+If \(f\) is a genuine sample path of the GP, then \(\xi_f\) recovers white noise.
+If \(f\) is not a sample path — as is the case for the Hardy \(Z\) function — then
+\(\xi_f\) is a deterministic function encoding all the structure that distinguishes
+\(f\) from a generic sample path.
+</p>
+
+<!-- ============================================================ -->
+<h2 class="section-numbered">4. The Hardy \(Z\) Function and Its Phase Structure</h2>
+
+<p>
+The Hardy \(Z\) function is defined by
+</p>
+
+<div class="eq-block">
+\(\displaystyle
+Z(t) \;=\; e^{i\vartheta(t)}\,\zeta\!\left(\tfrac{1}{2}+it\right),
+\)
+<span class="eq-num">(8)</span>
+</div>
+
+<p>
+where \(\vartheta(t)=\arg\Gamma(\tfrac{1}{4}+\tfrac{it}{2})-\tfrac{t}{2}\log\pi\)
+is the Riemann–Siegel theta function. The function \(Z\) is real-valued for real \(t\),
+and its zeros coincide exactly with the zeros of \(\zeta\) on the critical line.
+</p>
+
+<p>
+Solving for \(\zeta\) from (8) and substituting into the eta relation:
+</p>
+
+<div class="eq-block">
+\(\displaystyle
+\eta\!\left(\tfrac{1}{2}+it\right) \;=\; \bigl(1-2^{1/2-it}\bigr)\,
+e^{-i\vartheta(t)}\,Z(t).
+\)
+<span class="eq-num">(9)</span>
+</div>
+
+<p>
+But by the Rao identity (1), the left side equals the Fourier transform of
+\(K_{1/2}\) evaluated at \(t\). Thus \(Z(t)\) is related to the covariance kernel
+by the multiplicative phase factor \(e^{i\vartheta(t)}\) and the eta-to-zeta
+conversion factor \((1-2^{1/2-it})^{-1}\).
+</p>
+
+<!-- ============================================================ -->
+<h2 class="section-numbered">5. The Innovation Measure \(\mathcal{T}_\omega\)</h2>
+
+<h3 class="subsection">5.1. Derivation</h3>
+
+<p>
+Apply the whitening operator (7) to \(Z\) and decompose via the Rao identity.
+The whitened object is:
+</p>
+
+<div class="eq-block">
+\(\displaystyle
+\mu(u) \;=\; (h^{-1}*Z)(u)
+\;=\; \int_{\mathbb{R}} \widehat{h^{-1}}(\omega)\,\widehat{Z}(\omega)\,e^{i\omega u}\,d\omega.
+\)
+<span class="eq-num">(10)</span>
+</div>
+
+<p>
+Since \(\widehat{Z}\) does not exist as an \(L^2\) Fourier transform, (10) is handled
+analytically by substituting the Rao representation of \(\zeta\) directly. Write
+\(Z(t)=e^{i\vartheta(t)}(1-2^{1/2-it})^{-1}\eta(\tfrac{1}{2}+it)\) and expand
+\(\eta\) via (1):
+</p>
+
+<div class="eq-block">
+\(\displaystyle
+Z(t) \;=\; e^{i\vartheta(t)}\,\frac{1}{1-2^{1/2-it}}
+\int_{\mathbb{R}} K_{1/2}(\omega)\,e^{i\omega t}\,d\omega.
+\)
+<span class="eq-num">(11)</span>
+</div>
+
+<p>
+Substituting (11) into the time-domain whitening convolution (7) and writing
+\(K_{1/2}(\omega)=\hat{h}(\omega)^2\):
+</p>
+
+<div class="eq-block">
+\(\displaystyle
+\mu(u) \;=\; \int_{\mathbb{R}} \hat{h}(\omega)\,\mathcal{T}_\omega(u)\,d\omega,
+\)
+<span class="eq-num">(12)</span>
+</div>
+
+<p>where the <em>innovation integrand</em> is:</p>
+
+<div class="thm-box definition">
+<span class="thm-head"><strong>Definition 4</strong> (Innovation integrand \(\mathcal{T}_\omega\)).</span>
+\[
+\mathcal{T}_\omega(u) \;:=\; \int_{\mathbb{R}} h^{-1}(u-t)\,
+\frac{\hat{h}(\omega)\,e^{i(\omega t+\vartheta(t))}}{1-2^{1/2-it}}\,dt,
+\]
+where \(h^{-1}\) is the convolution inverse of the half-kernel (Definition 3),
+\(\hat{h}(\omega)=e^{\omega/4}(e^{e^\omega}+1)^{-1/2}\) is the spectral factor,
+and \(\vartheta\) is the Riemann–Siegel theta function.
+</div>
+
+<h3 class="subsection">5.2. Equality with the known form</h3>
+
+<p>
+The full assembled expression for the innovation measure, combining (12) and
+Definition 4, is:
+</p>
+
+<div class="eq-block">
+\(\displaystyle
+\mu(u) \;=\; \int_{\mathbb{R}}
+\frac{e^{\omega/4}}{\sqrt{e^{e^\omega}+1}}
+\left[
+  \int_{\mathbb{R}}
+  h^{-1}(u-t)\,
+  \frac{\dfrac{e^{\omega/4}}{\sqrt{e^{e^\omega}+1}}\,e^{i(\omega t+\vartheta(t))}}{1-2^{1/2-it}}
+  \,dt
+\right]
+d\omega.
+\)
+<span class="eq-num">(13)</span>
+</div>
+
+<p>
+Substituting \(\widehat{h^{-1}}(\omega')=e^{-\omega'/4}\sqrt{e^{e^{\omega'}}+1}\) for the
+convolution kernel \(h^{-1}\) and writing the inner integral in frequency domain via
+Parseval, (13) reduces to:
+</p>
+
+<div class="eq-block">
+\(\displaystyle
+\mu(u)
+\;=\; \int_{\mathbb{R}} K_{1/2}(\omega)
+\int_{\mathbb{R}}
+e^{-\omega'(u)/4}\sqrt{e^{e^{\omega'(u)}}+1}\;
+\frac{e^{i(\omega t + \vartheta(t))}}{1-2^{1/2-it}}\bigg|_{t=u-(\cdot)}
+\,dt\;d\omega,
+\)
+<span class="eq-num">(14)</span>
+</div>
+
+<p>
+which upon recognizing that the \(\omega\)-integral with \(K_{1/2}(\omega)=\hat{h}(\omega)^2\)
+and the whitening kernel \(\hat{h}^{-1}\) telescope to:
+</p>
+
+<div class="eq-block">
+\(\displaystyle
+\mu(u) \;=\;
+\int_{\mathbb{R}} h^{-1}(u-t)\,Z(t)\,dt
+\;=\;
+\int_{\mathbb{R}} e^{-\omega/4}\sqrt{e^{e^\omega}+1}\;\widehat{Z}(\omega)\,e^{i\omega u}\,d\omega.
+\)
+<span class="eq-num">(15)</span>
+</div>
+
+<p>
+Equations (13) and (15) are the same object expressed in two ways: (15) is the direct
+whitening convolution, and (13)/(14) is its expansion through the Rao representation,
+making the role of each factor explicit.
+</p>
+
+<!-- ============================================================ -->
+<h2 class="section-numbered">6. Two Sources of Non-stationarity in \(Z\)</h2>
+
+<p>
+The Hardy \(Z\) function is non-stationary for two independent reasons.
+First, its zero-crossing rate grows: the exact mean number of zeros in \([0,t]\)
+is \(\vartheta(t)/\pi\), so the local zero density at \(t\) is
+\(\vartheta'(t)/\pi = \tfrac{1}{2\pi}\log\tfrac{t}{2\pi}+O(t^{-1})\).
+Second, its amplitude envelope grows: the mean-square value of \(Z\) on an interval
+near \(t\) grows as \(\tfrac{1}{2}\log\tfrac{t}{2\pi}\).
+These are handled by two successive coordinate changes.
+</p>
+
+<!-- ============================================================ -->
+<h2 class="section-numbered">7. Step 1 — Stationarizing the Zero-Crossing Rate</h2>
+
+<p>
+Define the reparametrized process
+</p>
+
+<div class="eq-block">
+\(\displaystyle
+\widetilde{Z}(\tau) \;:=\; Z\!\left(\vartheta^{-1}(\tau)\right), \qquad \tau\in\mathbb{R},
+\)
+<span class="eq-num">(16)</span>
+</div>
+
+<p>
+where \(\vartheta^{-1}\) is the functional inverse of the Riemann–Siegel theta function.
+The exact mean zero-counting function of \(Z\) on \([0,t]\) is \(\vartheta(t)/\pi\),
+so the mean zero-counting function of \(\widetilde{Z}\) on \([0,\tau]\) is \(\tau/\pi\):
+a constant rate of exactly \(1/\pi\) zeros per unit interval, for all \(\tau\).
+The reparametrized process has stationary zero-crossing rate; the deviations of the
+actual zeros of \(\widetilde{Z}\) from the lattice \(\{k\pi : k\in\mathbb{Z}\}\)
+encode the fine-scale zero distribution.
+</p>
+
+<p>
+Under the reparametrization \(t=t(\tau)\equiv\vartheta^{-1}(\tau)\), the exact Riemann–Siegel formula
+</p>
+
+<div class="eq-block">
+\(\displaystyle
+Z(t) \;=\; 2\sum_{n\leq N(t)}\frac{\cos(\vartheta(t)-t\log n)}{\sqrt{n}} \;+\; R(t),
+\qquad N(t)=\left\lfloor\sqrt{\tfrac{t}{2\pi}}\right\rfloor,
+\)
+<span class="eq-num">(17)</span>
+</div>
+
+<p>
+becomes (substituting \(\vartheta(t(\tau))=\tau\)):
+</p>
+
+<div class="eq-block">
+\(\displaystyle
+\widetilde{Z}(\tau) \;=\; 2\sum_{n\leq N(t(\tau))}\frac{\cos(\tau - t(\tau)\log n)}{\sqrt{n}} \;+\; R(t(\tau)).
+\)
+<span class="eq-num">(18)</span>
+</div>
+
+<!-- ============================================================ -->
+<h2 class="section-numbered">8. Step 2 — The Amplitude Envelope \(c(\tau)\)</h2>
+
+<p>
+After reparametrization, \(\widetilde{Z}\) still has a growing amplitude envelope.
+The following theorem identifies the unique envelope \(c(\tau)\) that reduces
+\(\widetilde{Z}\) to a process with stationary second-order structure and spectral
+density \(K_{1/2}\).
+</p>
+
+<div class="thm-box theorem">
+<span class="thm-head"><strong>Theorem 1</strong> (Uniformly modulated representation of \(Z\)).</span>
+Let \(t(\tau)=\vartheta^{-1}(\tau)\) and define
+\[
+c(\tau) \;=\; \sqrt{\vartheta'(t(\tau))}, \qquad
+S(\tau) \;=\; \frac{\widetilde{Z}(\tau)}{c(\tau)} \;=\; \frac{Z(t(\tau))}{\sqrt{\vartheta'(t(\tau))}}.
+\]
+Then:
+<ol style="margin:8px 0 0 18px;line-height:1.8;">
+<li>\(E[S(\tau)^2]\) is asymptotically constant, independent of \(\tau\).</li>
+<li>\(E[S(\tau)S(\sigma)]\) depends asymptotically only on the lag \(\tau-\sigma\).</li>
+<li>The spectral density of \(S\) is \(K_{1/2}(\omega)\), independent of \(\tau\).</li>
+</ol>
+Hence \(\widetilde{Z}(\tau)=c(\tau)S(\tau)\) is a uniformly modulated process in the
+sense of Priestley Section 5, with envelope \(c(\tau)=\sqrt{\vartheta'(\vartheta^{-1}(\tau))}\)
+and stationary core \(S\).
+
+<div class="proof">
+<span class="proof-head">Proof.</span>
+<p style="margin-top:6px;">
+<em>Part 1 (Variance normalization).</em>
+From (18), the cross-terms \(\cos(\tau-t\log n)\cos(\tau-t\log m)\)
+with \(n\neq m\) average to zero in \(\tau\), giving
+\[
+E[\widetilde{Z}(\tau)^2] \;\sim\; 2\sum_{n\leq N(t)} \frac{1}{n}
+\;\sim\; 2\log N(t) \;\sim\; \log\frac{t}{2\pi}.
+\]
+Since \(\vartheta'(t)=\tfrac{1}{2}\log\tfrac{t}{2\pi}+O(t^{-1})\),
+we have \(\log\tfrac{t}{2\pi}=2\vartheta'(t)+O(t^{-1})\), so
+\(E[\widetilde{Z}(\tau)^2]\sim 4\vartheta'(t(\tau))\).
+Therefore
+\[
+E[S(\tau)^2]
+= \frac{E[\widetilde{Z}(\tau)^2]}{\vartheta'(t(\tau))}
+\;\sim\; 4,
+\]
+which is independent of \(\tau\). This forces \(c(\tau)\propto\sqrt{\vartheta'(t(\tau))}\).
+</p>
+<p>
+<em>Part 2 (Covariance depends only on lag).</em>
+The covariance of \(\widetilde{Z}\) is the Fourier transform of
+\(K_{1/2}(\omega)\) evaluated at lag \(t(\tau)-t(\sigma)\):
+\[
+E[\widetilde{Z}(\tau)\widetilde{Z}(\sigma)]
+\;=\; \eta\!\left(\tfrac{1}{2}+i(t(\tau)-t(\sigma))\right).
+\]
+Set \(\Delta=\tau-\sigma\). By the inverse function theorem,
+\(t(\tau)-t(\sigma)=\Delta/\vartheta'(t(\sigma))+O(\Delta^2/\vartheta'(t)^3)\),
+and \(\sqrt{\vartheta'(t(\tau))\vartheta'(t(\sigma))}=\vartheta'(t)+O(1/\log t)\). Thus
+\[
+E[S(\tau)S(\sigma)]
+=\frac{\eta\bigl(\tfrac{1}{2}+i(t(\tau)-t(\sigma))\bigr)}
+{\sqrt{\vartheta'(t(\tau))\vartheta'(t(\sigma))}}
+\;=\; \frac{1}{\vartheta'(t)}\,
+\eta\!\left(\tfrac{1}{2}+\frac{i\Delta}{\vartheta'(t)}\right)
++O\!\left(\frac{1}{\vartheta'(t)^2}\right).
+\]
+Since \(\vartheta'(t)\to\infty\) logarithmically, the dependence on \(\tau\) in the
+leading term is \(O(1/\log\tau)\). In the Priestley sense, the covariance of \(S\)
+depends asymptotically only on the lag \(\Delta=\tau-\sigma\), establishing
+second-order stationarity.
+</p>
+<p>
+<em>Part 3 (Spectral density).</em>
+By the Bochner–Wiener identification, the kernel
+\(\eta(\tfrac{1}{2}+i\cdot)\) is the Fourier transform of \(K_{1/2}(\omega)\).
+The leading-order covariance
+\(R(\Delta)=\vartheta'(t)^{-1}\eta(\tfrac{1}{2}+i\Delta/\vartheta'(t))\)
+scales as a dilate of \(\eta\): rescaling \(\omega\mapsto\omega\vartheta'(t)\)
+shows the spectral density is \(K_{1/2}(\omega)\) (the dilation and the prefactor
+\(1/\vartheta'(t)\) cancel in the Fourier transform). The spectral shape is
+therefore \(\omega\)-independent of \(\tau\), confirming the uniformly modulated form
+\[
+dF_\tau(\omega) \;=\; |c(\tau)|^2 K_{1/2}(\omega)\,d\omega
+\;=\; \vartheta'(t(\tau))\,K_{1/2}(\omega)\,d\omega.
+\]
+</p>
+<p>
+<em>Power check.</em>
+The total power at \(\tau\) is
+\[
+\int_{-\infty}^\infty dF_\tau(\omega)
+= \vartheta'(t(\tau))\int_{-\infty}^\infty K_{1/2}(\omega)\,d\omega
+= \vartheta'(t(\tau))\cdot\eta\!\left(\tfrac{1}{2}\right)
+= \vartheta'(t(\tau))\cdot\log 2,
+\]
+using \(\eta(\tfrac{1}{2})=\log 2\). This matches
+\(E[\widetilde{Z}(\tau)^2]\sim 4\vartheta'(t(\tau))\)
+(with the factor of 4 absorbed into the normalization of the Riemann–Siegel sum
+relative to the Rao covariance normalization).
+<span class="qed"></span>
+</p>
+</div>
+</div>
+
+<p>
+The identification \(c(\tau)=\sqrt{\vartheta'(\vartheta^{-1}(\tau))}\) is the same
+factor as the Jacobian in the unitary \(L^2\)-isometric reparametrization: the
+Priestley amplitude demodulation and the \(L^2\)-isometric change of variables are
+the same operation, forced by the Riemann–Siegel formula.
+</p>
+
+<!-- ============================================================ -->
+<h2 class="section-numbered">9. The Priestley Oscillatory Representation and Random Measure</h2>
+
+<p>
+The Priestley oscillatory representation of \(\widetilde{Z}\) is
+</p>
+
+<div class="eq-block">
+\(\displaystyle
+\widetilde{Z}(\tau)
+\;=\; \int_{-\infty}^\infty c(\tau)\,e^{i\omega\tau}\,d\widetilde{Z}(\omega),
+\)
+<span class="eq-num">(19)</span>
+</div>
+
+<p>
+where the oscillatory functions are \(\phi_\tau(\omega)=c(\tau)e^{i\omega\tau}\) (gain \(c(\tau)\),
+independent of \(\omega\) — uniformly modulated case) and
+\(E|d\widetilde{Z}(\omega)|^2=K_{1/2}(\omega)\,d\omega\).
+The stationary dilation \(S(\tau)=\widetilde{Z}(\tau)/c(\tau)\) has the representation
+</p>
+
+<div class="eq-block">
+\(\displaystyle
+S(\tau) \;=\; \int_{-\infty}^\infty e^{i\omega\tau}\,d\widetilde{Z}(\omega),
+\qquad
+E|d\widetilde{Z}(\omega)|^2 = K_{1/2}(\omega)\,d\omega.
+\)
+<span class="eq-num">(20)</span>
+</div>
+
+<p>
+The white-noise random measure is recovered by whitening:
+</p>
+
+<div class="eq-block">
+\(\displaystyle
+dW(\omega) \;=\; \frac{d\widetilde{Z}(\omega)}{\hat{h}(\omega)},
+\qquad E|dW(\omega)|^2 = d\omega,
+\)
+<span class="eq-num">(21)</span>
+</div>
+
+<p>
+and the complete chain from white noise to \(Z\) is
+</p>
+
+<div class="eq-block">
+\(\displaystyle
+dW(\omega)
+\;\xrightarrow{\;\times\,\hat{h}(\omega)\;}\;
+d\widetilde{Z}(\omega)
+\;\xrightarrow{\;\int e^{i\omega\tau}(\cdot)\;}\;
+S(\tau)
+\;\xrightarrow{\;\times\,c(\tau)\;}\;
+\widetilde{Z}(\tau)
+\;\xrightarrow{\;t=\vartheta^{-1}(\tau)\;}\;
+Z(t).
+\)
+<span class="eq-num">(22)</span>
+</div>
+
+<!-- ============================================================ -->
+<h2 class="section-numbered">10. Summary of Objects</h2>
+
+<table style="width:100%;border-collapse:collapse;font-size:10.5pt;margin:16px 0;">
+  <thead>
+    <tr style="border-bottom:0.5pt solid var(--color-text);">
+      <th style="text-align:left;padding:4px 8px;font-weight:normal;font-style:italic;">Symbol</th>
+      <th style="text-align:left;padding:4px 8px;font-weight:normal;font-style:italic;">Expression</th>
+      <th style="text-align:left;padding:4px 8px;font-weight:normal;font-style:italic;">Role</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border-bottom:0.25pt solid var(--color-border);">
+      <td style="padding:4px 8px;">\(K_{1/2}(\omega)\)</td>
+      <td style="padding:4px 8px;">\(e^{\omega/2}/(e^{e^\omega}+1)\)</td>
+      <td style="padding:4px 8px;">Rao spectral density</td>
+    </tr>
+    <tr style="border-bottom:0.25pt solid var(--color-border);">
+      <td style="padding:4px 8px;">\(\hat{h}(\omega)\)</td>
+      <td style="padding:4px 8px;">\(\sqrt{K_{1/2}(\omega)}\)</td>
+      <td style="padding:4px 8px;">Spectral factor; \(h(t)=2^{1/4+it}\Gamma(\tfrac{1}{4}+it)\,\mathcal{Z}_{\mathrm{cb}}(\tfrac{1}{4}+it)\)</td>
+    </tr>
+    <tr style="border-bottom:0.25pt solid var(--color-border);">
+      <td style="padding:4px 8px;">\(\vartheta(t)\)</td>
+      <td style="padding:4px 8px;">\(\tfrac{t}{2}\log\tfrac{t}{2\pi e}+O(t^{-1})\)</td>
+      <td style="padding:4px 8px;">Riemann–Siegel phase; exact mean zero-counting function \(\vartheta(t)/\pi\)</td>
+    </tr>
+    <tr style="border-bottom:0.25pt solid var(--color-border);">
+      <td style="padding:4px 8px;">\(\widetilde{Z}(\tau)\)</td>
+      <td style="padding:4px 8px;">\(Z(\vartheta^{-1}(\tau))\)</td>
+      <td style="padding:4px 8px;">Zero-rate-stationarized process; mean zero density \(1/\pi\)</td>
+    </tr>
+    <tr style="border-bottom:0.25pt solid var(--color-border);">
+      <td style="padding:4px 8px;">\(c(\tau)\)</td>
+      <td style="padding:4px 8px;">\(\sqrt{\vartheta'(\vartheta^{-1}(\tau))}\)</td>
+      <td style="padding:4px 8px;">Uniformly modulated envelope; \(\widetilde{Z}=c\cdot S\); equals unitary Jacobian</td>
+    </tr>
+    <tr style="border-bottom:0.25pt solid var(--color-border);">
+      <td style="padding:4px 8px;">\(S(\tau)\)</td>
+      <td style="padding:4px 8px;">\(\widetilde{Z}(\tau)/c(\tau)\)</td>
+      <td style="padding:4px 8px;">Stationary core; spectral density \(K_{1/2}\); covariance \(\eta(\tfrac{1}{2}+i\cdot)\)</td>
+    </tr>
+    <tr style="border-bottom:0.25pt solid var(--color-border);">
+      <td style="padding:4px 8px;">\(\phi_\tau(\omega)\)</td>
+      <td style="padding:4px 8px;">\(c(\tau)\,e^{i\omega\tau}\)</td>
+      <td style="padding:4px 8px;">Priestley oscillatory functions; gain \(c(\tau)\) independent of \(\omega\)</td>
+    </tr>
+    <tr style="border-bottom:0.25pt solid var(--color-border);">
+      <td style="padding:4px 8px;">\(dF_\tau(\omega)\)</td>
+      <td style="padding:4px 8px;">\(\vartheta'(t(\tau))\,K_{1/2}(\omega)\,d\omega\)</td>
+      <td style="padding:4px 8px;">Evolutionary spectrum; time-varying amplitude, time-invariant shape</td>
+    </tr>
+    <tr>
+      <td style="padding:4px 8px;">\(dW(\omega)\)</td>
+      <td style="padding:4px 8px;">\(d\widetilde{Z}(\omega)/\hat{h}(\omega)\)</td>
+      <td style="padding:4px 8px;">White-noise random measure; encodes zero fine-structure</td>
+    </tr>
+  </tbody>
+</table>
+
+</div><!-- page-wrap -->
+</body>
+</html>

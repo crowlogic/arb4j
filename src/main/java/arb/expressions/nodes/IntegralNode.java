@@ -521,7 +521,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
     if (isDefiniteIntegral())
     {
-      return this;//getDefiniteIntegralEvaluationNode();
+      return getDefiniteIntegralEvaluationNode();
     }
     else
     {

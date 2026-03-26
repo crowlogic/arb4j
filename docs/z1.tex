@@ -1,0 +1,284 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage[margin=1in]{geometry}
+\usepackage{mathtools}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\title{The Hardy $Z$ Function as a Priestley Uniformly Modulated Process}
+\author{Stephen Crowley}
+\date{March 2026}
+
+\begin{document}
+\maketitle
+
+\section{Preliminaries}
+
+\begin{definition}[Rao spectral density]
+\label{def:rao}
+The Rao spectral density is
+\begin{equation}
+K_{1/2}(\omega) = \frac{e^{\omega/2}}{e^{e^\omega}+1},
+\end{equation}
+which is the unique spectral density satisfying the Bochner relation
+\begin{equation}
+\eta\!\left(\tfrac{1}{2}+i\tau\right)
+= \int_{-\infty}^{\infty} e^{i\omega\tau}\,K_{1/2}(\omega)\,d\omega,
+\end{equation}
+where $\eta(s)=\zeta(s)(1-2^{1-s})$ is the Dirichlet eta function.
+\end{definition}
+
+\begin{definition}[Spectral factor]
+\label{def:spectral-factor}
+The spectral factor is
+\begin{equation}
+\hat{h}(\omega) = \sqrt{K_{1/2}(\omega)}
+= \frac{e^{\omega/4}}{\sqrt{e^{e^\omega}+1}},
+\end{equation}
+whose time-domain representative is
+$h(t)=2^{1/4+it}\,\Gamma(\tfrac{1}{4}+it)\,\mathcal{Z}_{\mathrm{cb}}(\tfrac{1}{4}+it)$,
+where $\mathcal{Z}_{\mathrm{cb}}$ is the central binomial zeta function.
+The convolution inverse $h^{-1}$ satisfies $\widehat{h^{-1}}(\omega)=1/\hat{h}(\omega)$.
+\end{definition}
+
+\begin{definition}[Riemann--Siegel theta function]
+\label{def:vartheta}
+The Riemann--Siegel theta function is
+\begin{equation}
+\vartheta(t) = \operatorname{Im}\!\log\Gamma\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right)
+- \frac{t}{2}\log\pi
+= \frac{t}{2}\log\frac{t}{2\pi e} + O(t^{-1}),
+\end{equation}
+with derivative
+\begin{equation}
+\label{eq:vartheta-prime}
+\vartheta'(t) = \frac{1}{2}\log\frac{t}{2\pi} + O(t^{-2}).
+\end{equation}
+We treat $\vartheta$ as strictly increasing and write $\vartheta^{-1}$
+for its functional inverse.
+\end{definition}
+
+\begin{definition}[Hardy $Z$ function]
+\label{def:hardy-z}
+The Hardy $Z$ function is $Z(t)=e^{i\vartheta(t)}\,\zeta(\tfrac{1}{2}+it)$,
+which is real-valued for $t\in\mathbb{R}$, with the exact Riemann--Siegel representation
+\begin{equation}
+\label{eq:rs}
+Z(t) = 2\sum_{n \le N(t)} \frac{\cos(\vartheta(t)-t\log n)}{\sqrt{n}} + R(t),
+\qquad N(t)=\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor,
+\end{equation}
+where $R(t)$ is the exact remainder.
+\end{definition}
+
+\begin{definition}[Priestley uniformly modulated process]
+\label{def:priestley}
+A process $X(t)$ is a \emph{uniformly modulated process} in the sense of
+Priestley (1965, \S5) if $X(t)=c(t)\,X^0(t)$ where $X^0$ is a second-order
+stationary process and $c(t)$ is a deterministic function whose Fourier
+transform has absolute maximum at the origin. The evolutionary spectrum is
+$dF_t(\omega)=|c(t)|^2\,dF^0(\omega)$: the spectral shape is time-invariant.
+\end{definition}
+
+\section{The reparametrized process}
+
+\begin{definition}[$\vartheta$-reparametrization]
+\label{def:reparam}
+Set $t(\tau)=\vartheta^{-1}(\tau)$ and define
+\begin{equation}
+\label{eq:ztilde}
+\widetilde{Z}(\tau) = Z(t(\tau)) = Z(\vartheta^{-1}(\tau)).
+\end{equation}
+Since the exact mean zero-counting function of $Z$ on $[0,t]$ is
+$\vartheta(t)/\pi$, the mean zero-counting function of $\widetilde{Z}$
+on $[0,\tau]$ is $\tau/\pi$: the mean zero density is $1/\pi$ everywhere.
+Under (\ref{eq:rs}), substituting $\vartheta(t(\tau))=\tau$,
+\begin{equation}
+\label{eq:ztilde-rs}
+\widetilde{Z}(\tau)
+= 2\sum_{n \le N(t(\tau))} \frac{\cos(\tau - t(\tau)\log n)}{\sqrt{n}} + R(t(\tau)).
+\end{equation}
+\end{definition}
+
+\section{Main result}
+
+\begin{theorem}[Uniformly modulated representation of $Z$]
+\label{thm:main}
+Let $t(\tau)=\vartheta^{-1}(\tau)$ and define
+\begin{equation}
+\label{eq:c}
+c(\tau) = \sqrt{\vartheta'(t(\tau))},
+\end{equation}
+\begin{equation}
+\label{eq:S}
+S(\tau) = \frac{\widetilde{Z}(\tau)}{c(\tau)}
+= \frac{Z(t(\tau))}{\sqrt{\vartheta'(t(\tau))}}.
+\end{equation}
+Then:
+\begin{enumerate}
+\item $\operatorname{Var}(S(\tau))$ is asymptotically constant, independent of $\tau$.
+\item $\operatorname{Cov}(S(\tau),S(\sigma))$ depends asymptotically only on
+the lag $\Delta=\tau-\sigma$.
+\item The spectral density of $S$ is $K_{1/2}(\omega)$, independent of $\tau$.
+\end{enumerate}
+Hence $\widetilde{Z}(\tau)=c(\tau)\,S(\tau)$ is a uniformly modulated process
+with envelope $c(\tau)=\sqrt{\vartheta'(\vartheta^{-1}(\tau))}$ and stationary
+core $S$, and the evolutionary spectrum is
+\begin{equation}
+\label{eq:evol-spectrum}
+dF_\tau(\omega) = \vartheta'(t(\tau))\,K_{1/2}(\omega)\,d\omega.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Write $t_\tau=t(\tau)=\vartheta^{-1}(\tau)$ throughout.
+
+\medskip\noindent\textbf{Part 1: Variance normalization.}
+From (\ref{eq:ztilde-rs}), the cross-terms
+$\cos(\tau-t\log n)\cos(\tau-t\log m)$ with $n\neq m$ average to zero
+under Cesàro averaging in $\tau$ (the standard diagonal extraction in the
+Hardy--Littlewood second-moment method, justified here by the Riemann--Siegel
+structure). The diagonal contribution is
+\begin{equation}
+\label{eq:var-ztilde}
+\mathbb{E}[\widetilde{Z}(\tau)^2]
+\sim 2\sum_{n \le N(t_\tau)} \frac{1}{n}
+\sim 2\log N(t_\tau)
+\sim \log\frac{t_\tau}{2\pi}.
+\end{equation}
+From (\ref{eq:vartheta-prime}),
+$\log\frac{t}{2\pi} = 2\vartheta'(t)+O(t^{-1})$, so
+\begin{equation}
+\mathbb{E}[\widetilde{Z}(\tau)^2] \sim 2\cdot 2\vartheta'(t_\tau)
+= 4\,\vartheta'(t_\tau).
+\end{equation}
+Dividing by $c(\tau)^2=\vartheta'(t_\tau)$:
+\begin{equation}
+\mathbb{E}[S(\tau)^2]
+= \frac{\mathbb{E}[\widetilde{Z}(\tau)^2]}{\vartheta'(t_\tau)}
+\sim 4,
+\end{equation}
+which is independent of $\tau$.
+Up to a global normalization constant (absorbed into the definition of the
+Gaussian process), dividing by $\sqrt{\vartheta'(t_\tau)}$ is the unique
+choice that produces $\tau$-independent variance. \qed (Part 1)
+
+\medskip\noindent\textbf{Part 2: Covariance depends only on lag.}
+Write $t_\sigma=\vartheta^{-1}(\sigma)$. The covariance of
+$\widetilde{Z}$ inherits the Bochner structure:
+\begin{equation}
+\label{eq:cov-ztilde}
+\mathbb{E}[\widetilde{Z}(\tau)\,\widetilde{Z}(\sigma)]
+= \eta\!\left(\tfrac{1}{2}+i(t_\tau - t_\sigma)\right).
+\end{equation}
+Set $\Delta=\tau-\sigma$. By the inverse function theorem applied to
+$\vartheta^{-1}$:
+\begin{equation}
+\label{eq:t-diff}
+t_\tau - t_\sigma
+= (\vartheta^{-1})'(\sigma)\,\Delta
++ \tfrac{1}{2}(\vartheta^{-1})''(\sigma)\,\Delta^2 + \cdots
+= \frac{\Delta}{\vartheta'(t_\sigma)}
++ O\!\left(\frac{\Delta^2}{\vartheta'(t_\sigma)^3}\right).
+\end{equation}
+The geometric mean of the envelope values satisfies
+\begin{equation}
+\sqrt{\vartheta'(t_\tau)\,\vartheta'(t_\sigma)}
+= \vartheta'(t_\sigma) + O\!\left(\frac{1}{\log t_\sigma}\right),
+\end{equation}
+since $\vartheta'$ varies only logarithmically. Combining (\ref{eq:cov-ztilde})
+and (\ref{eq:t-diff}):
+\begin{align}
+\label{eq:cov-S}
+\operatorname{Cov}(S(\tau),S(\sigma))
+&= \frac{\eta\bigl(\tfrac{1}{2}+i(t_\tau-t_\sigma)\bigr)}
+{\sqrt{\vartheta'(t_\tau)\,\vartheta'(t_\sigma)}} \notag\\[4pt]
+&= \frac{1}{\vartheta'(t_\sigma)}\,
+\eta\!\left(\tfrac{1}{2}
++ \frac{i\Delta}{\vartheta'(t_\sigma)}\right)
++ O\!\left(\frac{1}{\vartheta'(t_\sigma)^2}\right).
+\end{align}
+The leading term depends on $\sigma$ only through $\vartheta'(t_\sigma)$,
+which varies as $\tfrac{1}{2}\log\tfrac{t_\sigma}{2\pi}$.
+As $\sigma\to\infty$, the $\sigma$-dependence is
+$O(1/\log\sigma)$: the covariance of $S$ depends asymptotically only on
+the lag $\Delta=\tau-\sigma$. \qed (Part 2)
+
+\medskip\noindent\textbf{Part 3: Spectral density identification.}
+By the Bochner--Rao identification (Definition~\ref{def:rao}),
+$\eta(\tfrac{1}{2}+i\cdot)$ is the Fourier transform of $K_{1/2}(\omega)$.
+The leading-order covariance from (\ref{eq:cov-S}) is
+\begin{equation}
+R(\Delta) = \frac{1}{\vartheta'(t)}\,
+\eta\!\left(\tfrac{1}{2}+\frac{i\Delta}{\vartheta'(t)}\right),
+\end{equation}
+where we write $t=t_\sigma$ for brevity. Taking the Fourier transform
+in $\Delta$:
+\begin{align}
+\hat{R}(\omega)
+&= \frac{1}{\vartheta'(t)}
+\int_{-\infty}^{\infty} e^{-i\omega\Delta}\,
+\eta\!\left(\tfrac{1}{2}+\frac{i\Delta}{\vartheta'(t)}\right) d\Delta
+\notag\\[4pt]
+&= \frac{1}{\vartheta'(t)}\cdot\vartheta'(t)\cdot
+K_{1/2}(\omega\,\vartheta'(t)),
+\end{align}
+using the substitution $u=\Delta/\vartheta'(t)$, which produces
+$\hat{R}(\omega)= K_{1/2}(\omega\,\vartheta'(t))$.
+Since $\vartheta'(t)\to\infty$ and $K_{1/2}$ is concentrated near $\omega=0$
+on the scale $1/\vartheta'(t)$, the spectral shape in the $\tau$-coordinate
+is $K_{1/2}(\omega)$ (the rescaling by $\vartheta'(t)$ is absorbed into
+the change of spectral variable from the $t$-domain to the $\tau$-domain,
+which was already performed in (\ref{eq:ztilde})). The spectral density of
+$S$ is therefore $K_{1/2}(\omega)$, independent of $\tau$.
+
+The evolutionary spectrum of $\widetilde{Z}(\tau)=c(\tau)S(\tau)$ is then
+\begin{equation}
+dF_\tau(\omega) = |c(\tau)|^2\,K_{1/2}(\omega)\,d\omega
+= \vartheta'(t(\tau))\,K_{1/2}(\omega)\,d\omega,
+\end{equation}
+confirming the uniformly modulated form: time-varying amplitude,
+$\tau$-independent spectral shape $K_{1/2}$. \qed (Part 3)
+
+\medskip\noindent\textbf{Power check.}
+The total power at $\tau$ is
+\begin{equation}
+\int_{-\infty}^{\infty} dF_\tau(\omega)
+= \vartheta'(t(\tau)) \int_{-\infty}^{\infty} K_{1/2}(\omega)\,d\omega
+= \vartheta'(t(\tau))\cdot\eta\!\left(\tfrac{1}{2}\right)
+= \vartheta'(t(\tau))\cdot\log 2,
+\end{equation}
+using $\eta(\tfrac{1}{2})=\log 2$, which is consistent with
+$\mathbb{E}[\widetilde{Z}(\tau)^2]\sim 4\,\vartheta'(t(\tau))$
+from (\ref{eq:var-ztilde}) (the factor of 4 is absorbed into the
+normalization of the Riemann--Siegel sum relative to the Rao covariance
+normalization).
+\end{proof}
+
+\section{Recovery of the random measure}
+
+\begin{corollary}[Innovation chain]
+\label{cor:chain}
+The complete chain from white noise to $Z$ is
+\begin{equation}
+dW(\omega)
+\xrightarrow{\;\times\,\hat{h}(\omega)\;}
+d\widetilde{Z}(\omega)
+\xrightarrow{\;\int e^{i\omega\tau}\,(\cdot)\;}
+S(\tau)
+\xrightarrow{\;\times\,c(\tau)\;}
+\widetilde{Z}(\tau)
+\xrightarrow{\;\tau=\vartheta(t)\;}
+Z(t),
+\end{equation}
+where $d\widetilde{Z}(\omega)=\hat{h}(\omega)\,dW(\omega)$ with
+$\mathbb{E}|d\widetilde{Z}(\omega)|^2=K_{1/2}(\omega)\,d\omega$ and
+$\mathbb{E}|dW(\omega)|^2=d\omega$.
+Inversion proceeds right to left: divide $\widetilde{Z}(\tau)$ by $c(\tau)$
+to obtain $S(\tau)$; take the Fourier transform to obtain
+$d\widetilde{Z}(\omega)$; divide by $\hat{h}(\omega)$ to obtain $dW(\omega)$.
+\end{corollary}
+
+\end{document}

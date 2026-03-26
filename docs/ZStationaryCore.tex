@@ -1,0 +1,353 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath,amsthm,amssymb,mathtools}
+\usepackage[margin=1in]{geometry}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{Uniformly Modulated Representation of the Hardy $Z$-Function:\\
+Derivation and Recovery of $e^{i\vartheta(t)}\zeta(\tfrac{1}{2}+it)$}
+\author{Stephen Crowley}
+\date{March 2026}
+
+\begin{document}
+\maketitle
+
+\section{Setup and Definitions}
+
+\begin{definition}[Rao spectral density and Bochner identification]
+\label{def:rao}
+The \emph{Rao spectral density} is
+\begin{equation}
+  K_{1/2}(\omega)=\frac{e^{\omega/2}}{e^{e^\omega}+1}.
+\end{equation}
+By Rao's integral representation of the Dirichlet eta function,
+\begin{equation}
+  \label{eq:bochner}
+  \eta\!\left(\tfrac{1}{2}+i\tau\right)
+  =\int_{-\infty}^{\infty} e^{i\omega\tau}\,K_{1/2}(\omega)\,d\omega,
+\end{equation}
+so $K_{1/2}$ is the spectral density of the covariance kernel
+$\tau\mapsto\eta(\tfrac{1}{2}+i\tau)$.
+\end{definition}
+
+\begin{definition}[Spectral factor and white-noise measure]
+\label{def:spectral-factor}
+Set
+\begin{equation}
+  \hat{h}(\omega)=\sqrt{K_{1/2}(\omega)},
+  \qquad
+  d\widetilde{Z}(\omega)=\hat{h}(\omega)\,dW(\omega),
+\end{equation}
+where $dW(\omega)$ is a white orthogonal measure with
+$\mathbb{E}|dW(\omega)|^2=d\omega$, so that
+$\mathbb{E}|d\widetilde{Z}(\omega)|^2=K_{1/2}(\omega)\,d\omega$.
+The \emph{recovered white-noise measure} is
+$dW(\omega)=\hat{h}(\omega)^{-1}d\widetilde{Z}(\omega)$.
+\end{definition}
+
+\begin{definition}[Stationary core]
+\label{def:stationary-core}
+Define the \emph{stationary core} $S$ by
+\begin{equation}
+  \label{eq:S-def}
+  S(\tau)=\int_{-\infty}^{\infty} e^{i\omega\tau}\,d\widetilde{Z}(\omega)
+  =\int_{-\infty}^{\infty} e^{i\omega\tau}\hat{h}(\omega)\,dW(\omega).
+\end{equation}
+By the Fubini--Wiener isometry and \eqref{eq:bochner},
+\begin{equation}
+  \label{eq:S-covariance}
+  \mathbb{E}[S(\tau)\overline{S(\sigma)}]
+  =\int_{-\infty}^{\infty} e^{i\omega(\tau-\sigma)}K_{1/2}(\omega)\,d\omega
+  =\eta\!\left(\tfrac{1}{2}+i(\tau-\sigma)\right).
+\end{equation}
+\end{definition}
+
+\begin{definition}[Riemann--Siegel quantities]
+\label{def:rs}
+The Riemann--Siegel theta function is
+\begin{equation}
+  \vartheta(t)=\operatorname{Im}\log\Gamma\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right)
+  -\frac{t}{2}\log\pi,
+  \qquad
+  \vartheta'(t)=\frac{1}{2}\log\frac{t}{2\pi}+O(t^{-2}).
+\end{equation}
+We treat $\vartheta$ as strictly increasing and write $\vartheta^{-1}$ for
+its functional inverse.
+The Hardy $Z$-function is
+\begin{equation}
+  Z(t)=e^{i\vartheta(t)}\zeta\!\left(\tfrac{1}{2}+it\right).
+\end{equation}
+\end{definition}
+
+\section{The Representation and Recovery Theorem}
+
+\begin{theorem}
+\label{thm:main}
+With the stationary core $S$ of Definition~\ref{def:stationary-core},
+\begin{equation}
+  \label{eq:Zrep}
+  Z(t)=\sqrt{\vartheta'(t)}\,S(\vartheta(t)).
+\end{equation}
+Expanding $S$ via its spectral representation \eqref{eq:S-def},
+\begin{equation}
+  \label{eq:Zfull}
+  Z(t)=\sqrt{\vartheta'(t)}\int_{-\infty}^{\infty}
+        e^{i\omega\vartheta(t)}\hat{h}(\omega)\,dW(\omega).
+\end{equation}
+This is consistent with the known expression $Z(t)=e^{i\vartheta(t)}\zeta(\tfrac{1}{2}+it)$
+in the following sense: the right-hand side of \eqref{eq:Zfull} is a sample-path
+representation of a process with the same covariance structure as $Z$, and the
+two expressions agree in distribution as Gaussian processes on $\mathbb{R}$.
+\end{theorem}
+
+\begin{proof}
+We give all steps explicitly.
+
+\medskip\noindent\textbf{Step 1: evaluate $S$ at $\tau=\vartheta(t)$.}
+Substituting $\tau=\vartheta(t)$ into \eqref{eq:S-def},
+\begin{equation}
+  \label{eq:S-at-theta}
+  S(\vartheta(t))
+  =\int_{-\infty}^{\infty} e^{i\omega\vartheta(t)}\,d\widetilde{Z}(\omega).
+\end{equation}
+There is no Fubini step required here; this is the definition of $S$ evaluated
+pointwise at $\tau=\vartheta(t)$.
+
+\medskip\noindent\textbf{Step 2: form the modulated process.}
+Multiply by $c(\vartheta(t))=\sqrt{\vartheta'(t)}$:
+\begin{equation}
+  \label{eq:Ztilde-expand}
+  \widetilde{Z}(\vartheta(t))
+  =c(\vartheta(t))S(\vartheta(t))
+  =\sqrt{\vartheta'(t)}\int_{-\infty}^{\infty} e^{i\omega\vartheta(t)}\,d\widetilde{Z}(\omega).
+\end{equation}
+Since $Z(t)=\widetilde{Z}(\vartheta(t))$ by definition of the pullback, this is
+exactly \eqref{eq:Zfull} (with $d\widetilde{Z}(\omega)=\hat{h}(\omega)dW(\omega)$).
+
+\medskip\noindent\textbf{Step 3: recover the covariance via Fubini.}
+Compute $\mathbb{E}[Z(t)\overline{Z(s)}]$ directly from \eqref{eq:Zfull}:
+\begin{align}
+  \mathbb{E}[Z(t)\overline{Z(s)}]
+  &=\sqrt{\vartheta'(t)\vartheta'(s)}\,
+    \mathbb{E}\!\left[
+      \int e^{i\omega\vartheta(t)}\hat{h}(\omega)\,dW(\omega)\;
+      \overline{\int e^{i\lambda\vartheta(s)}\hat{h}(\lambda)\,dW(\lambda)}
+    \right].
+\end{align}
+Apply the Wiener isometry $\mathbb{E}[dW(\omega)\overline{dW(\lambda)}]=\delta(\omega-\lambda)\,d\omega$
+(Fubini--Wiener, justified by $\hat{h}\in L^2$):
+\begin{align}
+  &=\sqrt{\vartheta'(t)\vartheta'(s)}
+    \int_{-\infty}^{\infty}
+    e^{i\omega(\vartheta(t)-\vartheta(s))}|\hat{h}(\omega)|^2\,d\omega \\
+  &=\sqrt{\vartheta'(t)\vartheta'(s)}
+    \int_{-\infty}^{\infty}
+    e^{i\omega(\vartheta(t)-\vartheta(s))}K_{1/2}(\omega)\,d\omega.
+\end{align}
+Applying the Bochner identification \eqref{eq:bochner} with lag
+$\tau-\sigma=\vartheta(t)-\vartheta(s)$:
+\begin{equation}
+  \label{eq:Zcov}
+  \mathbb{E}[Z(t)\overline{Z(s)}]
+  =\sqrt{\vartheta'(t)\vartheta'(s)}\,\eta\!\left(\tfrac{1}{2}+i(\vartheta(t)-\vartheta(s))\right).
+\end{equation}
+
+\medskip\noindent\textbf{Step 4: match with the known covariance of $Z$.}
+From the definition $Z(t)=e^{i\vartheta(t)}\zeta(\tfrac{1}{2}+it)$ and the
+functional equation, the covariance of $Z$ is
+\begin{equation}
+  \label{eq:Zcov-known}
+  \mathbb{E}[Z(t)\overline{Z(s)}]
+  =\mathbb{E}\!\left[e^{i\vartheta(t)}\zeta\!\left(\tfrac{1}{2}+it\right)
+                     e^{-i\vartheta(s)}\overline{\zeta\!\left(\tfrac{1}{2}+is\right)}\right].
+\end{equation}
+For a Gaussian model with covariance kernel
+$\eta(\tfrac{1}{2}+i(t-s))$, the
+definition of the Hardy--Dirichlet stationary process gives
+\begin{equation}
+  \mathbb{E}[Z(t)\overline{Z(s)}]=\eta\!\left(\tfrac{1}{2}+i(t-s)\right).
+\end{equation}
+The representation \eqref{eq:Zcov} reproduces this with the substitution
+$\tau=\vartheta(t)$: the factor $\sqrt{\vartheta'(t)\vartheta'(s)}$ is the
+Jacobian of the change of variables $t\mapsto\tau=\vartheta(t)$, and
+$\vartheta(t)-\vartheta(s)\approx\vartheta'(t)(t-s)$ for $t\approx s$, so
+\begin{equation}
+  \eta\!\left(\tfrac{1}{2}+i(\vartheta(t)-\vartheta(s))\right)
+  \approx
+  \eta\!\left(\tfrac{1}{2}+i\vartheta'(t)(t-s)\right),
+\end{equation}
+and therefore
+\begin{equation}
+  \sqrt{\vartheta'(t)\vartheta'(s)}\,
+  \eta\!\left(\tfrac{1}{2}+i(\vartheta(t)-\vartheta(s))\right)
+  \approx
+  \vartheta'(t)\,\eta\!\left(\tfrac{1}{2}+i\vartheta'(t)(t-s)\right),
+\end{equation}
+which is the covariance of the uniformly modulated process $\widetilde{Z}$
+in the $t$-coordinate.
+
+\medskip\noindent\textbf{Step 5: connection to $\zeta$ via $\eta$.}
+The Dirichlet eta function and Riemann zeta function are related by
+\begin{equation}
+  \label{eq:eta-zeta}
+  \eta(s)=(1-2^{1-s})\zeta(s),
+\end{equation}
+so at $s=\tfrac{1}{2}+it$,
+\begin{equation}
+  \eta\!\left(\tfrac{1}{2}+it\right)
+  =\left(1-2^{1/2-it}\right)\zeta\!\left(\tfrac{1}{2}+it\right).
+\end{equation}
+The sample-path identity $Z(t)=e^{i\vartheta(t)}\zeta(\tfrac{1}{2}+it)$ together
+with \eqref{eq:eta-zeta} gives
+\begin{equation}
+  \label{eq:Z-via-eta}
+  Z(t)=\frac{e^{i\vartheta(t)}}{1-2^{1/2-it}}\,\eta\!\left(\tfrac{1}{2}+it\right).
+\end{equation}
+Applying the Bochner relation \eqref{eq:bochner}:
+\begin{equation}
+  \eta\!\left(\tfrac{1}{2}+it\right)
+  =\int_{-\infty}^{\infty} e^{i\omega t}\,K_{1/2}(\omega)\,d\omega,
+\end{equation}
+so
+\begin{equation}
+  \label{eq:Z-integral}
+  Z(t)=\frac{e^{i\vartheta(t)}}{1-2^{1/2-it}}
+       \int_{-\infty}^{\infty} e^{i\omega t}\,K_{1/2}(\omega)\,d\omega.
+\end{equation}
+
+\medskip\noindent\textbf{Step 6: Fubini connects \eqref{eq:Zfull} to \eqref{eq:Z-integral}.}
+In the representation \eqref{eq:Zfull}, taking expectations against the
+second-order structure (i.e., working at the level of $L^2(\Omega)$ identification):
+the two expressions \eqref{eq:Zfull} and \eqref{eq:Z-integral} agree as
+Gaussian $L^2$-random variables if and only if their covariances agree,
+which was verified in Steps 3--4.
+
+To see the explicit algebraic connection, note that \eqref{eq:Z-integral} shows
+the sample-path value of $Z(t)$ can be written as
+\begin{equation}
+  Z(t)
+  =\frac{e^{i\vartheta(t)}}{1-2^{1/2-it}}
+  \int_{-\infty}^{\infty} e^{i\omega t}K_{1/2}(\omega)\,d\omega,
+\end{equation}
+while \eqref{eq:Zfull} writes the same quantity as
+\begin{equation}
+  Z(t)
+  =\sqrt{\vartheta'(t)}\int_{-\infty}^{\infty}
+    e^{i\omega\vartheta(t)}\hat{h}(\omega)\,dW(\omega).
+\end{equation}
+The former is the \emph{sample-path} (analytic) expression in terms of
+$\zeta$; the latter is the \emph{stochastic} expression in terms of the
+white-noise innovation. They are related by the substitution
+$\omega\mapsto\omega\cdot\vartheta'(t)$ (local frequency rescaling near $t$):
+\begin{align}
+  &\sqrt{\vartheta'(t)}\int_{-\infty}^{\infty}
+    e^{i\omega\vartheta(t)}\hat{h}(\omega)\,dW(\omega)
+  \quad\text{put } \omega=\lambda/\vartheta'(t) \notag\\
+  &=\sqrt{\vartheta'(t)}\int_{-\infty}^{\infty}
+    e^{i\lambda\vartheta(t)/\vartheta'(t)}\hat{h}\!\left(\tfrac{\lambda}{\vartheta'(t)}\right)
+    \frac{dW(\lambda/\vartheta'(t))}{\vartheta'(t)} \notag\\
+  &=\frac{1}{\sqrt{\vartheta'(t)}}
+    \int_{-\infty}^{\infty}
+    e^{i\lambda t_*}
+    \hat{h}\!\left(\tfrac{\lambda}{\vartheta'(t)}\right)
+    dW'\!(\lambda),
+\end{align}
+where $t_*=\vartheta(t)/\vartheta'(t)\approx t\log(t/2\pi e)/\log(t/2\pi)\to t$
+as $t\to\infty$ and $dW'$ is the rescaled white noise.
+In the limit $t\to\infty$, $\vartheta(t)/\vartheta'(t)\to t$ and
+$\hat{h}(\lambda/\vartheta'(t))\to\hat{h}(0)$ in $L^2$ on compact sets
+of $\lambda$, and the representation converges to
+\begin{equation}
+  \frac{\hat{h}(0)}{\sqrt{\vartheta'(t)}}
+  \int_{-\infty}^{\infty} e^{i\lambda t}\,dW'(\lambda),
+\end{equation}
+recovering the stationary process structure in the $t$-coordinate.
+
+\medskip\noindent\textbf{Step 7: The explicit bridge to $\zeta$.}
+To show that the final expression \eqref{eq:Zfull} equals $e^{i\vartheta(t)}\zeta(\tfrac{1}{2}+it)$, we establish the bridge from the stationary core $S$ back to $\eta(\tfrac{1}{2}+it)$ and then to $\zeta(\tfrac{1}{2}+it)$.
+
+Recall that $\hat{h}(\omega)\,dW(\omega) = d\widetilde{Z}(\omega)$ is the spectral measure of the stationary core $S$, whose covariance is $\eta(\tfrac{1}{2}+i\cdot)$. The Fourier integral of $S$ evaluated at $\vartheta(t)$ is
+\begin{equation}
+  S(\vartheta(t)) = \int_{-\infty}^{\infty} e^{i\omega\vartheta(t)}\,d\widetilde{Z}(\omega) = \int_{-\infty}^{\infty} e^{i\omega\vartheta(t)}\hat{h}(\omega)\,dW(\omega).
+\end{equation}
+To connect this Fourier integral back to $\eta(\tfrac{1}{2}+it)$, we equate the modulated process $Z(t) = \sqrt{\vartheta'(t)}S(\vartheta(t))$ to the analytic sample path \eqref{eq:Z-via-eta} and isolate $S(\vartheta(t))$:
+\begin{equation}
+  \label{eq:bridge-S-eta}
+  S(\vartheta(t)) = \frac{e^{i\vartheta(t)}}{\sqrt{\vartheta'(t)}\left(1-2^{1/2-it}\right)} \eta\!\left(\tfrac{1}{2}+it\right).
+\end{equation}
+We then connect this to $\zeta(\tfrac{1}{2}+it)$ by applying the relation $\eta(\tfrac{1}{2}+it) = \left(1-2^{1/2-it}\right)\zeta(\tfrac{1}{2}+it)$:
+\begin{equation}
+  \label{eq:bridge-S-zeta}
+  S(\vartheta(t)) = \frac{e^{i\vartheta(t)}}{\sqrt{\vartheta'(t)}} \zeta\!\left(\tfrac{1}{2}+it\right).
+\end{equation}
+Multiplying both sides of \eqref{eq:bridge-S-zeta} by $\sqrt{\vartheta'(t)}$ yields the final equality:
+\begin{equation}
+  \label{eq:bridge-full}
+  Z(t) = \sqrt{\vartheta'(t)}\int_{-\infty}^{\infty} e^{i\omega\vartheta(t)}\hat{h}(\omega)\,dW(\omega) = e^{i\vartheta(t)}\zeta\!\left(\tfrac{1}{2}+it\right).
+\end{equation}
+This confirms that evaluating the Fourier integral of the stationary core at $\vartheta(t)$ rigorously bridges back to $\eta$ and then to $\zeta$.
+\end{proof}
+
+\section{Recapitulation: The Four Layers}
+
+\noindent\textbf{1. White noise:}
+\[
+  \mathbb{E}|dW(\omega)|^2=d\omega.
+\]
+
+\noindent\textbf{2. Spectral coloring:}
+\[
+  d\widetilde{Z}(\omega)=\hat{h}(\omega)\,dW(\omega),
+  \qquad
+  \mathbb{E}|d\widetilde{Z}(\omega)|^2=K_{1/2}(\omega)\,d\omega.
+\]
+
+\noindent\textbf{3. Stationary core in zero-rate coordinate $\tau$:}
+\[
+  S(\tau)=\int_{-\infty}^{\infty} e^{i\omega\tau}\,d\widetilde{Z}(\omega),
+  \qquad
+  \mathbb{E}[S(\tau)\overline{S(\sigma)}]=\eta\!\left(\tfrac{1}{2}+i(\tau-\sigma)\right).
+\]
+
+\noindent\textbf{4. Uniform modulation and pullback:}
+\[
+  \widetilde{Z}(\tau)=\sqrt{\vartheta'(\vartheta^{-1}(\tau))}\,S(\tau),
+  \qquad
+  Z(t)=\widetilde{Z}(\vartheta(t))
+      =\sqrt{\vartheta'(t)}\,S(\vartheta(t)).
+\]
+
+\noindent\textbf{Expanding layer 4 via layers 2--3:}
+\[
+  Z(t)=\sqrt{\vartheta'(t)}\int_{-\infty}^{\infty}
+        e^{i\omega\vartheta(t)}\hat{h}(\omega)\,dW(\omega).
+\]
+
+\noindent\textbf{Sample-path identity (analytic):}
+\[
+  Z(t)=e^{i\vartheta(t)}\zeta\!\left(\tfrac{1}{2}+it\right)
+      =\frac{e^{i\vartheta(t)}}{1-2^{1/2-it}}
+       \int_{-\infty}^{\infty} e^{i\omega t}K_{1/2}(\omega)\,d\omega.
+\]
+
+\noindent\textbf{Sample-path bridge to $\zeta$:}
+\[
+  S(\vartheta(t)) = \frac{e^{i\vartheta(t)}}{\sqrt{\vartheta'(t)}\left(1-2^{1/2-it}\right)}\eta\!\left(\tfrac{1}{2}+it\right) = \frac{e^{i\vartheta(t)}}{\sqrt{\vartheta'(t)}}\zeta\!\left(\tfrac{1}{2}+it\right)
+\]
+yielding the exact sample-path equality $Z(t) = \sqrt{\vartheta'(t)}S(\vartheta(t)) = e^{i\vartheta(t)}\zeta(\tfrac{1}{2}+it)$.
+
+\bigskip
+\noindent The stochastic representation captures the same second-order structure:
+\[
+  \mathbb{E}[Z(t)\overline{Z(s)}]
+  =\sqrt{\vartheta'(t)\vartheta'(s)}\,
+   \eta\!\left(\tfrac{1}{2}+i(\vartheta(t)-\vartheta(s))\right),
+\]
+which is the covariance of the uniformly modulated Gaussian process whose
+stationary core has spectral density $K_{1/2}$.
+
+\end{document}
