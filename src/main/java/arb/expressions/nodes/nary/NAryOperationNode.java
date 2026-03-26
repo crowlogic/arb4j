@@ -524,7 +524,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     operandExpression.continueParsingFrom(expression);
     operandExpression.upstreamExpression  = expression;
     operandExpression.context             = expression.context;
-    operandExpression.independentVariable = null;
+    operandExpression.setIndependentVariable(null);
     operandExpression.className           = operandFunctionFieldName;
 
     if (hasArrow)
@@ -671,7 +671,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   protected void propagateInputToOperand(MethodVisitor mv)
   {
-    var independentVariableNode = expression.independentVariable;
+    var independentVariableNode = expression.getIndependentVariable();
 
     if (independentVariableNode != null && !independentVariableNode.type().equals(Object.class))
     {

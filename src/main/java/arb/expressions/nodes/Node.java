@@ -122,7 +122,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   {
     Expression<D, R, F> expr = expression.cloneExpression();
     expr.functionName        = null;
-    expr.independentVariable = null;
+    expr.setIndependentVariable(null);
     expr.rootNode            = null;
     expr.assignInputVariable(expr.newVariableNode(independentVar.getName()));
     expr.rootNode = spliceInto(expr);

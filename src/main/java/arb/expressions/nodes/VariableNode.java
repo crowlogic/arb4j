@@ -137,7 +137,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       expression.acceptUntil(e ->
       {
-        var iv = e.independentVariable;
+        var iv = e.getIndependentVariable();
         if (iv != null && reference.equals(iv.reference))
         {
           if (e != expression)
@@ -214,7 +214,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       isPlaceholder                  = true;
       reference.type                 = expression.coDomainType;
-      expression.placeholderVariable = this;
+      expression.setPlaceholderVariable(this);
       if (Expression.traceNodes)
       {
         logger.debug("resolveReference PLACEHOLDER: {}", resolutionStateString());
@@ -231,9 +231,9 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   private boolean isPlaceholder()
   {
-    boolean equals                = this.equals(expression.placeholderVariable);
+    boolean equals                = this.equals(expression.getPlaceholderVariable());
     boolean canHavePlaceholder    = expression.canHavePlaceholder();
-    boolean noExistingPlaceholder = expression.placeholderVariable == null;
+    boolean noExistingPlaceholder = expression.getPlaceholderVariable() == null;
     return equals || (noExistingPlaceholder && canHavePlaceholder);
   }
 
@@ -264,7 +264,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
         resolved = true;
       }
 
-      if (expression.independentVariable != null && equals(expression.independentVariable))
+      if (expression.getIndependentVariable() != null && equals(expression.getIndependentVariable()))
       {
         isIndependent = true;
       }
@@ -569,7 +569,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   public void resolveIndependentVariable()
   {
     assert (expression.getIndependentVariable() == null
-                  || expression.getIndependentVariable().equals(expression.independentVariable)) : "inputVariable is already "
+                  || expression.getIndependentVariable().equals(expression.getIndependentVariable())) : "inputVariable is already "
                                                                                                    + expression.getIndependentVariable()
                                                                                                    + " it doesnt make sense to change it to "
                                                                                                    + this;
@@ -582,11 +582,11 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                    System.identityHashCode(this),
                                    reference,
                                    expression,
-                                   expression.independentVariable,
-                                   expression.placeholderVariable));
+                                   expression.getIndependentVariable(),
+                                   expression.getPlaceholderVariable()));
       }
       isIndependent                  = true;
-      expression.independentVariable = this;
+      expression.setIndependentVariable(this);
       reference.type                 = expression.domainType;
     }
   }

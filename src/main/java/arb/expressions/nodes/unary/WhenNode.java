@@ -145,7 +145,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     Expression<?, ?, ?> expr = expression;
     while (expr != null)
     {
-      if (expr.independentVariable != null && variable.reference.equals(expr.independentVariable.reference))
+      if (expr.getIndependentVariable() != null && variable.reference.equals(expr.getIndependentVariable().reference))
       {
         return true;
       }
@@ -259,7 +259,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
 
   public void generateIndex(MethodVisitor mv)
   {
-    if (switchVariable != null && !switchVariable.reference.equals(expression.independentVariable.reference))
+    if (switchVariable != null && !switchVariable.reference.equals(expression.getIndependentVariable().reference))
     {
       switchVariable.generate(mv, Integer.class);
     }

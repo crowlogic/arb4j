@@ -64,7 +64,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> fractionalDerivative(VariableNode<D, R, F> variable, Node<D, R, F> α)
   {
-    var t = variable != null ? variable : expression.independentVariable;
+    var t = variable != null ? variable : expression.getIndependentVariable();
 
     switch (functionName)
     {
@@ -292,7 +292,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       Expression<?, ?, ?> variableExpression = mapping.expression;
       if (variableExpression != null)
       {
-        return variableExpression.independentVariable;
+        return variableExpression.getIndependentVariable();
       }
     }
 
@@ -596,7 +596,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       {
         var integrand = Function.parse(mapping.domain, mapping.coDomain, mapping.functionClass, mapping.expressionString);
         integrand.upstreamExpression = expression;
-        return integrand.rootNode.integral(integrand.independentVariable).simplify();
+        return integrand.rootNode.integral(integrand.getIndependentVariable()).simplify();
 
 //        throw new CompilerException(String.format("TODO: integrate parsed but yet-to-be-compiled expression string in expression '%s' where functionMapping='%s'",
 //                                                  expression,functionMapping));
@@ -994,7 +994,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       Node<D, R, F>         body               = (Node<D, R, F>) replacement;
 
       Expression<?, ?, ?>   definingExpression = mapping != null ? mapping.expression : null;
-      VariableNode<?, ?, ?> formalParam        = definingExpression != null ? definingExpression.independentVariable : null;
+      VariableNode<?, ?, ?> formalParam        = definingExpression != null ? definingExpression.getIndependentVariable() : null;
 
       if (formalParam != null && arg != null)
       {

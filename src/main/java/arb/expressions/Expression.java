@@ -151,25 +151,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public String typeString()
   {
-    String var = independentVariable != null ? independentVariable.getName() : "?";
+    String var = getIndependentVariable() != null ? getIndependentVariable().getName() : "?";
     if (!downstreamExpressions.isEmpty())
     {
-      String inner = downstreamExpressions.stream()
-                                          .map(Expression::typeString)
-                                          .collect(java.util.stream.Collectors.joining(", "));
-      return format("%s:%s=%s➔(%s=%s)",
-                    functionClass.getSimpleName(),
-                    var,
-                    domainType.getSimpleName(),
-                    coDomainType.getSimpleName(),
-                    inner);
+      String inner = downstreamExpressions.stream().map(Expression::typeString).collect(java.util.stream.Collectors.joining(", "));
+      return format("%s:%s=%s➔(%s=%s)", functionClass.getSimpleName(), var, domainType.getSimpleName(), coDomainType.getSimpleName(), inner);
     }
-    return format("%s:%s=%s➔%s",
-                  functionClass.getSimpleName(),
-                  var,
-                  domainType.getSimpleName(),
-                  coDomainType.getSimpleName());
+    return format("%s:%s=%s➔%s", functionClass.getSimpleName(), var, domainType.getSimpleName(), coDomainType.getSimpleName());
   }
+
   /**
    * Returns the nested type string of this expression using the notation
    * {@code f:var=A➔B} at each level, where when B is itself a generated
@@ -213,7 +203,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     for (var expr : chain)
     {
       String domain = expr.domainType.getSimpleName();
-      String var    = expr.independentVariable != null ? expr.independentVariable.getName() : "?";
+      String var    = expr.getIndependentVariable() != null ? expr.getIndependentVariable().getName() : "?";
       String f      = expr.functionClass.getSimpleName();
 
       sb.append(format("%s:%s=%s➔", f, var, domain));
@@ -245,9 +235,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * nor an upstream variable. Only one placeholder is permitted per expression; a
    * second unresolved free variable throws {@link CompilerException}.
    */
-  public VariableNode<D, C, F> placeholderVariable;
+  private VariableNode<D, C, F> placeholderVariable;
 
-  public boolean               deferVariableResolution = false;
+  public boolean                deferVariableResolution = false;
 
   public Stream<VariableNode<D, C, F>> variableNodeStream()
   {
@@ -358,7 +348,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean                                        inAbsoluteValue               = false;
 
-  public VariableNode<D, C, F>                          independentVariable;
+  private VariableNode<D, C, F>                         independentVariable;
 
   int                                                   currentLevel                  = 0;
 
@@ -574,9 +564,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public VariableNode<?, ?, ?> getIndependentVariableNamed(String name)
   {
-    if (independentVariable != null && independentVariable.getName().equals(name))
+    if (getIndependentVariable() != null && getIndependentVariable().getName().equals(name))
     {
-      return independentVariable;
+      return getIndependentVariable();
     }
     if (upstreamExpression != null)
     {
@@ -591,7 +581,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean thisOrAnyUpstreamIndependentVariableIsNamed(String name)
   {
-    if (independentVariable != null && independentVariable.getName().equals(name))
+    if (getIndependentVariable() != null && getIndependentVariable().getName().equals(name))
     {
       return true;
     }
@@ -614,16 +604,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     assert variable != null : "variable shan't be null";
 
-    if (independentVariable != null)
+    if (getIndependentVariable() != null)
     {
-      if (!independentVariable.equals(variable))
+      if (!getIndependentVariable().equals(variable))
       {
         throw new CompilerException(String.format("undefined variable reference '%s' at position=%s in expression '%s' "
                                                   + "since the independent variable has already been declared to be '%s' in %s",
                                                   variable,
                                                   position,
                                                   toStringExtended(),
-                                                  independentVariable,
+                                                  getIndependentVariable(),
                                                   toStringExtended()));
       }
       else
@@ -631,9 +621,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         return variable;
       }
     }
-    independentVariable                = variable;
-    independentVariable.isIndependent  = true;
-    independentVariable.reference.type = domainType;
+    setIndependentVariable(variable);
+    getIndependentVariable().isIndependent  = true;
+    getIndependentVariable().reference.type = domainType;
     return variable;
   }
 
@@ -664,8 +654,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                        context,
                                        functionName,
                                        upstreamExpression);
-    expr.context             = context;
-    expr.independentVariable = independentVariable;
+    expr.context = context;
+    expr.setIndependentVariable(independentVariable);
 
     expr.position            = position;
     expr.character           = character;
@@ -759,8 +749,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected MethodVisitor declareEvaluateMethodArguments(MethodVisitor methodVisitor, Label startLabel, Label endLabel)
   {
     methodVisitor.visitLocalVariable("this", String.format("L%s;", className), null, startLabel, endLabel, 0);
-    methodVisitor.visitLocalVariable(independentVariable != null ? independentVariable.getName()
-                                                                 : "in",
+    methodVisitor.visitLocalVariable(getIndependentVariable() != null ? getIndependentVariable().getName()
+                                                                      : "in",
                                      domainType.descriptorString(),
                                      null,
                                      startLabel,
@@ -871,7 +861,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // Declare the parent's independent variable as a field so we can receive it
     if (upstreamExpression != null)
     {
-      var upstreamIndependentVariableNode = upstreamExpression.independentVariable;
+      var upstreamIndependentVariableNode = upstreamExpression.getIndependentVariable();
       if (upstreamIndependentVariableNode != null && !upstreamIndependentVariableNode.type().equals(Object.class))
       {
         String upstreamIndVarName = upstreamIndependentVariableNode.reference.name;
@@ -936,7 +926,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (upstreamExpression != null)
     {
-      VariableNode<?, ?, ?> upstreamIndependentVariable = upstreamExpression.independentVariable;
+      VariableNode<?, ?, ?> upstreamIndependentVariable = upstreamExpression.getIndependentVariable();
       if (upstreamIndependentVariable != null && varName.equals(upstreamIndependentVariable.getName()))
       {
         return false;
@@ -1103,7 +1093,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     Expression<D, C, F> subExpr = cloneExpression();
     subExpr.upstreamExpression = this;
-    placeholderVariable        = subExpr.independentVariable = variableNode.spliceInto(subExpr);
+    placeholderVariable        = subExpr.setIndependentVariable(variableNode.spliceInto(subExpr));
     subExpr.rootNode           = subExpr.resolve();
 
     // Sync the parser position back to the parent expression
@@ -1116,7 +1106,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   private void checkLambdaParameterConflicts(String paramName)
   {
-    if (independentVariable != null && Objects.equals(independentVariable.getName(), paramName))
+    if (getIndependentVariable() != null && Objects.equals(getIndependentVariable().getName(), paramName))
     {
       throw new CompilerException("lambda parameter '" + paramName + "' conflicts with the independent variable of the containing expression");
     }
@@ -1471,7 +1461,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitLdcInsn(Type.getType(functionClass));
     mv.visitLdcInsn(op + functionName);
 
-    mv.visitLdcInsn(String.format("%s(%s,%s)", op, rootNode.toString(), independentVariable));
+    mv.visitLdcInsn(String.format("%s(%s,%s)", op, rootNode.toString(), getIndependentVariable()));
 
     if (context != null)
     {
@@ -1507,7 +1497,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     accept(containingExpression -> log.debug("#{}: logVariables: independentVariable={} upstreamExpression={}",
                                              System.identityHashCode(containingExpression),
-                                             containingExpression.independentVariable,
+                                             containingExpression.getIndependentVariable(),
                                              containingExpression.upstreamExpression));
 
   }
@@ -1554,9 +1544,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     functionalDependsOnIndependentVariable = false;
     functionalIndependentVariable          = null;
 
-    if (independentVariable != null)
+    if (getIndependentVariable() != null)
     {
-      functionalIndependentVariable = independentVariable.spliceInto(functional).asVariable();
+      functionalIndependentVariable = getIndependentVariable().spliceInto(functional).asVariable();
     }
 
     functional.generate();
@@ -1624,7 +1614,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       // Skip the current expression's independent variable — it lives in the
       // evaluate parameter slot, not as a field on this class. Already handled
       // by propagateIndependentVariableToFunctional.
-      if (independentVariable != null && varName.equals(independentVariable.getName()))
+      if (getIndependentVariable() != null && varName.equals(getIndependentVariable().getName()))
       {
         continue;
       }
@@ -1859,7 +1849,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         }
 
         // Skip if already declared as upstream independent variable
-        if (upstreamExpression != null && upstreamExpression.independentVariable != null && varName.equals(upstreamExpression.independentVariable.getName()))
+        if (upstreamExpression != null && upstreamExpression.getIndependentVariable() != null
+                      && varName.equals(upstreamExpression.getIndependentVariable().getName()))
         {
           continue;
         }
@@ -1875,7 +1866,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         // evaluate() input parameter. Attempting to GETFIELD it here (inside
         // initialize(), which has no input parameter) causes VerifyError.
         // The independent variable is propagated at evaluate-time instead.
-        if (independentVariable != null && varName.equals(independentVariable.getName()))
+        if (getIndependentVariable() != null && varName.equals(getIndependentVariable().getName()))
         {
           continue;
         }
@@ -2029,9 +2020,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Expression<?, ?, ?> ancestor = upstreamExpression;
     while (ancestor != null)
     {
-      if (ancestor.independentVariable != null)
+      if (ancestor.getIndependentVariable() != null)
       {
-        String name = ancestor.independentVariable.getName();
+        String name = ancestor.getIndependentVariable().getName();
         var    ref  = referencedVariables.get(name);
         if (ref != null && runtimeVars.stream().noneMatch(e -> e.getKey().equals(name)))
         {
@@ -2044,7 +2035,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     String namePrefix = (functionName != null && !functionName.isEmpty()) ? functionName + ":" : "";
     updateStringRepresentation();
     String bodyExpr = rootNode != null ? rootNode.toString() : getExpression();
-    String arrow    = (independentVariable == null || bodyExpr.contains("➔")) ? "" : (independentVariable.getName() + "➔");
+    String arrow    = (getIndependentVariable() == null || bodyExpr.contains("➔")) ? "" : (getIndependentVariable().getName() + "➔");
 
     if (runtimeVars.isEmpty())
     {
@@ -2103,14 +2094,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     String name = (functionName != null) ? (functionName + ":") : "";
     updateStringRepresentation();
-    String arrow  = getExpression().contains("➔") || independentVariable == null ? "" : (independentVariable.getName() + "➔");
+    String arrow  = getExpression().contains("➔") || getIndependentVariable() == null ? "" : (getIndependentVariable().getName() + "➔");
     String string = String.format("%s%s%s", name, arrow, getExpression());
 
     if (Expression.trace)
     {
       log.debug("generateToStringMethod(): functionName='{}' independentVariable='{}' name='{}' arrow='{}' string='{}'",
                 functionName,
-                independentVariable,
+                getIndependentVariable(),
                 name,
                 arrow,
                 string);
@@ -2172,19 +2163,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return Compiler.getFunctionClassTypeSignature(functionClass, domainType, coDomainType, implementedInterfaces);
   }
 
-  public VariableNode<D, C, F> getIndependentVariable()
-  {
-    return independentVariable;
-  }
-
   protected String getInputName()
   {
-    return independentVariable != null ? independentVariable.getName() : null;
+    return getIndependentVariable() != null ? getIndependentVariable().getName() : null;
   }
 
   public VariableNode<D, C, F> getInputVariable()
   {
-    return independentVariable;
+    return getIndependentVariable();
   }
 
   public String getNextConstantFieldName(Class<?> type)
@@ -2709,7 +2695,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (lambdaParam != null)
     {
-      functionalExpression.independentVariable = lambdaParam.spliceInto(functionalExpression).asVariable();
+      functionalExpression.setIndependentVariable(lambdaParam.spliceInto(functionalExpression).asVariable());
     }
 
     rootNode.isRootNode                      = true;
@@ -3013,7 +2999,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 // Stack: [funcInst, funcInst]
     mv.visitFieldInsn(GETFIELD, function.className, fieldName, fieldDescriptor);
 // Stack: [funcInst, funcInst.field] (guaranteed non-null)
-    independentVariable.generate(mv, domainType);
+    getIndependentVariable().generate(mv, domainType);
 // Stack: [funcInst, funcInst.field, indepVarValue]
     generateVirtualMethodInvocation(mv, domainType, "set", domainType, domainType);
 // Stack: [funcInst, returnValue]
@@ -3095,9 +3081,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       log.debug(String.format("Expression(#%s).rename(from=%s, to=%s)\n", System.identityHashCode(this), from, to));
     }
-    if (independentVariable != null)
+    if (getIndependentVariable() != null)
     {
-      independentVariable.renameIfNamed(from, to);
+      getIndependentVariable().renameIfNamed(from, to);
     }
     if (rootNode != null)
     {
@@ -3593,13 +3579,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     if (rootNode != null)
     {
-      if (independentVariable == null)
+      if (getIndependentVariable() == null)
       {
         str = rootNode.toString();
       }
       else
       {
-        str = String.format("%s➔%s", independentVariable.getName(), rootNode.toString());
+        str = String.format("%s➔%s", getIndependentVariable().getName(), rootNode.toString());
       }
     }
     else
@@ -3630,9 +3616,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
       return this;
     }
-    if (independentVariable != null)
+    if (getIndependentVariable() != null)
     {
-      setExpression(String.format("%s➔%s", independentVariable.getName(), rootNode.toString()));
+      setExpression(String.format("%s➔%s", getIndependentVariable().getName(), rootNode.toString()));
     }
     else
     {
@@ -3676,10 +3662,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public VariableNode<D, C, F> registerReferencedVariable(VariableNode<D, C, F> variableNode)
   {
-    assert !variableNode.equals(independentVariable) : "independent variables of this or any upstream expression are always assumed to be referenced. this is for context variables only: not adding "
-                                                       + variableNode
-                                                       + " to the referencedVariables of "
-                                                       + this.toStringExtended();
+    assert !variableNode.equals(getIndependentVariable()) : "independent variables of this or any upstream expression are always assumed to be referenced. this is for context variables only: not adding "
+                                                            + variableNode
+                                                            + " to the referencedVariables of "
+                                                            + this.toStringExtended();
     return referencedVariables.put(variableNode.reference.name, variableNode);
   }
 
@@ -3757,7 +3743,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                          domainType.getSimpleName(),
                          coDomainType.getSimpleName(),
                          canHavePlaceholder(),
-                         independentVariable,
+                         getIndependentVariable(),
                          placeholderVariable,
                          upstreamExpressionStream().map(Expression::toString).collect(Collectors.joining(" 🡆 ")));
   }
@@ -3823,5 +3809,38 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     return isFunctional();
   }
+
+  public Expression<D, C, F> setPlaceholderVariable(VariableNode<D, C, F> variableNode)
+  {
+    if (placeholderVariable != null && !placeholderVariable.equals(variableNode))
+    {
+      throw new IllegalArgumentException("placeholderVariable is already set to " + placeholderVariable + " in " + this + " cannot set it to " + variableNode );
+    }
+    if (getIndependentVariable() != null && getIndependentVariable().equals(variableNode))
+    {
+      throw new IllegalArgumentException("placeholderVariable cannot be set to " + variableNode + " since it is already the independent variable of " + this);
+
+    }
+    this.placeholderVariable = variableNode;
+    return this;
+  }
+
+  public VariableNode<D, C, F> getPlaceholderVariable()
+  {
+    return placeholderVariable;
+  }
+
+  public VariableNode<D, C, F> setIndependentVariable(VariableNode<D, C, F> independentVariable)
+  {
+    this.independentVariable = independentVariable;
+    return independentVariable;
+  }
+  
+
+  public VariableNode<D, C, F> getIndependentVariable()
+  {
+    return independentVariable;
+  }
+
 
 }

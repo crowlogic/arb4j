@@ -82,7 +82,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
   public boolean αβDependsOnInput()
   {
-    return α.dependsOn(expression.independentVariable) || β.dependsOn(expression.independentVariable);
+    return α.dependsOn(expression.getIndependentVariable()) || β.dependsOn(expression.getIndependentVariable());
   }
 
   public boolean  argumentDependsOnInput;
@@ -181,7 +181,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
     fieldName              = expression.newIntermediateVariable("hyp", hypergeometricFunctionClass(), true);
 
-    argumentDependsOnInput = arg.dependsOn(expression.independentVariable);
+    argumentDependsOnInput = arg.dependsOn(expression.getIndependentVariable());
 
     if (isNullaryFunctionOrHasScalarCodomain())
     {
@@ -252,11 +252,11 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     argExpression.context            = expression.context;
     argExpression.upstreamExpression = expression;
 
-    var independentVar = expression.independentVariable;
+    var independentVar = expression.getIndependentVariable();
     if (independentVar != null && argumentDependsOnInput)
     {
       var splicedVar = independentVar.spliceInto(argExpression).asVariable();
-      argExpression.independentVariable = splicedVar;
+      argExpression.setIndependentVariable(splicedVar);
     }
 
     argExpression.rootNode            = arg.spliceInto(argExpression);

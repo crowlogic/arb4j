@@ -298,7 +298,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
                                expression.coDomainType,
                                expression.functionClass,
                                expression.functionName,
-                               expression.independentVariable,
+                               expression.getIndependentVariable(),
                                expression.toStringExtended());
       throwTypePromotionError(left.type(), right.type(), msg);
 

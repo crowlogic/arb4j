@@ -49,7 +49,9 @@ public class ChainedFunctionalEvaluationTest extends
    */
   public static void testIndependentChainsDoNotShareState()
   {
-    RealFunctionalSequence seq  = RealFunctionalSequence.express("n➔t➔q➔t^(n+q)");
+    Expression<Integer,RealFunctional,RealFunctionalSequence> expr  = RealFunctionalSequence.parse("n➔t➔q➔t^(n+q)");
+
+    RealFunctionalSequence seq  = expr.instantiate();
 
     Real                   t2   = new Real("2",
                                            BITS);

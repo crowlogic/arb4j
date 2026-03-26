@@ -136,7 +136,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   {
     operandFunctionMapping = context.registerFunctionMapping("f", expression.domainType, expression.coDomainType, expression.functionClass);
 
-    VariableNode<D, R, F> diffVar = variable != null ? variable : expression.independentVariable;
+    VariableNode<D, R, F> diffVar = variable != null ? variable : expression.getIndependentVariable();
     operandFunctionMapping.expression = operand.asExpression(diffVar);
 
     // Register α temporarily if needed so the gint formula can reference it
@@ -324,7 +324,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     // Load gint function reference: this.gint
     expression.loadFieldOntoStack(Compiler.loadThisOntoStack(mv), "gint", gintMapping.functionFieldDescriptor());
     // Load argument: the independent variable (x)
-    VariableNode<D, R, F> indepVar = variable != null ? variable : expression.independentVariable;
+    VariableNode<D, R, F> indepVar = variable != null ? variable : expression.getIndependentVariable();
     indepVar.generate(mv, indepVar.type());
     // Load order parameter
     Compiler.loadOrderParameter(mv);
