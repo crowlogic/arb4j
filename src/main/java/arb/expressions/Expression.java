@@ -611,27 +611,41 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     assert variable != null : "variable shan't be null";
 
-    if (getIndependentVariable() != null)
+    if (canHaveIndependentVariable())
     {
-      if (!getIndependentVariable().equals(variable))
+      if (getIndependentVariable() != null)
       {
-        throw new CompilerException(String.format("undefined variable reference '%s' at position=%s in expression '%s' "
-                                                  + "since the independent variable has already been declared to be '%s' in %s",
-                                                  variable,
-                                                  position,
-                                                  toStringExtended(),
-                                                  getIndependentVariable(),
-                                                  toStringExtended()));
+        if (!getIndependentVariable().equals(variable))
+        {
+          throw new CompilerException(String.format("undefined variable reference '%s' at position=%s in expression '%s' "
+                                                    + "since the independent variable has already been declared to be '%s' in %s",
+                                                    variable,
+                                                    position,
+                                                    toStringExtended(),
+                                                    getIndependentVariable(),
+                                                    toStringExtended()));
+        }
+        else
+        {
+          return variable;
+        }
       }
-      else
-      {
-        return variable;
-      }
+      setIndependentVariable(variable);
+      getIndependentVariable().isIndependent  = true;
+      getIndependentVariable().reference.type = domainType;
+      return variable;
     }
-    setIndependentVariable(variable);
-    getIndependentVariable().isIndependent  = true;
-    getIndependentVariable().reference.type = domainType;
-    return variable;
+    else
+    {
+      if (!canHavePlaceholder())
+      {
+        throw new IllegalArgumentException(this.toStringExtended() + " cannot have a placeholder or an independent variable so it cant be set to " + variable);
+      }
+      var placeholder = setPlaceholderVariable(variable);
+      placeholder.reference.type = coDomainType;
+      return placeholder;
+    }
+
   }
 
   protected void assureInputNameHasNotAlreadyBeenAssociatedWithAContextVariable(String inputVariableName)
@@ -1139,9 +1153,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (trace)
     {
-      log.debug("#{}: evaluateOptionalIndependentVariableSpecification: remaining {} ",
-                System.identityHashCode(this),
-                remaining());
+      log.debug("#{}: evaluateOptionalIndependentVariableSpecification: remaining {} ", System.identityHashCode(this), remaining());
     }
     setExpression(normalize(getExpression()));
 
@@ -2423,7 +2435,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public String parseName()
   {
     assert position >= 0 : "position=" + position + " should not be negative for " + toStringExtended();
-    int startPos = position;
+    int     startPos              = position;
     boolean entirelySubscripted   = true;
     boolean entirelySuperscripted = true;
     while (position < getExpression().length())
@@ -2819,7 +2831,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     return new ElseNode<D, C, F>(this);
   }
-
 
   /**
    * Calls this{@link #evaluateOptionalIndependentVariableSpecification()} before
@@ -3755,14 +3766,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public String toStringExtended()
   {
-    return String.format("{function=%s=%s->%s, canHavePlaceholder=%s, independentVariable=%s, placeholderVariable=%s, expression=%s}",
+    return String.format("{function=%s=%s->%s, canHavePlaceholder=%s, independentVariable=%s, placeholderVariable=%s, expression=%s, rootNodeType=%s}",
                          functionClass.getSimpleName(),
                          domainType.getSimpleName(),
                          coDomainType.getSimpleName(),
                          canHavePlaceholder(),
                          getIndependentVariable(),
                          placeholderVariable,
-                         upstreamExpressionStream().map(Expression::toString).collect(Collectors.joining(" 🡆 ")));
+                         upstreamExpressionStream().map(Expression::toString).collect(Collectors.joining(" 🡆 ")),
+                         rootNode == null ? null : rootNode.getClass().getSimpleName());
   }
 
   public LiteralConstantNode<D, C, F> one()
@@ -3822,6 +3834,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return Collections.unmodifiableMap(referencedFunctions);
   }
 
+  public boolean canHaveIndependentVariable()
+  {
+    return !isNullaryFunction();
+  }
+
   public boolean canHavePlaceholder()
   {
     return isFunctional();
@@ -3849,6 +3866,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public VariableNode<D, C, F> setIndependentVariable(VariableNode<D, C, F> variableNode)
   {
+    assert variableNode == null || canHaveIndependentVariable() : this.toStringExtended() + " cannot even have an independent variable";
     if (independentVariable != null && !independentVariable.equals(variableNode))
     {
       throw new IllegalArgumentException("independentVariable is already set to " + independentVariable + " in " + this + " cannot set it to " + variableNode);

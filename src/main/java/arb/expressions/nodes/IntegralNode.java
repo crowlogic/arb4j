@@ -416,7 +416,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     }
     expression.require(')');
 
-    return ivar;
+    return inputVariableNode;
   }
 
   protected VariableNode<D, C, F> parseIntegralForm(Expression<D, C, F> expression)

@@ -199,7 +199,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     var upstream = resolveUpstreamVariables();
     if (upstream != null)
     {
-      if (upstreamInput || upstreamIndeterminate)
+      if (upstreamInput )
       {
         expression.registerReferencedVariable(this);
       }
@@ -345,7 +345,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   boolean         refuseToGenerateIndeterminateVariables = false;
 
-  private boolean upstreamIndeterminate;
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
@@ -631,8 +630,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
            + isPlaceholder
            + ", reference="
            + reference
-           + ", upstreamIndeterminate="
-           + upstreamIndeterminate
            + "]";
   }
 
