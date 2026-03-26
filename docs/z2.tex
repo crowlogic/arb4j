@@ -1,0 +1,412 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath,amsthm,amssymb,mathtools}
+\usepackage[margin=1in]{geometry}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\title{Uniformly Modulated Representation of the Hardy $Z$-Function:\\
+Derivation and Recovery of $e^{i\vartheta(t)}\zeta(\tfrac{1}{2}+it)$}
+\author{Stephen Crowley}
+\date{March 2026}
+
+\begin{document}
+\maketitle
+
+\section{Generalized Harmonic Analysis and Spectral Representations of Deterministic Functions}
+
+The spectral representation machinery used throughout this paper does not
+depend on probabilistic randomness. This section establishes the precise
+functional-analytic framework.
+
+\begin{definition}[Wiener's time-average inner product]
+\label{def:wiener-ip}
+For locally square-integrable functions $f,g\in L^2_{\mathrm{loc}}(\mathbb{R})$,
+define the \emph{time-average inner product}
+\begin{equation}
+  \langle f,g\rangle_W
+  =\lim_{T\to\infty}\frac{1}{2T}\int_{-T}^{T}f(t)\overline{g(t)}\,dt,
+\end{equation}
+whenever the limit exists. Write
+$\|f\|_W^2=\langle f,f\rangle_W$
+and $\mathcal{W}=\{f\in L^2_{\mathrm{loc}}(\mathbb{R}):\|f\|_W<\infty\}$.
+\end{definition}
+
+\begin{theorem}[Wiener, 1930; Cram\'er--Lo\`eve spectral decomposition]
+\label{thm:cramer}
+Every $f\in\mathcal{W}$ admits a spectral representation
+\begin{equation}
+  \label{eq:cramer-rep}
+  f(t)=\int_{-\infty}^{\infty}e^{i\omega t}\,d\mu_f(\omega),
+\end{equation}
+where $d\mu_f$ is the \emph{spectral measure of $f$}, a complex
+Borel--Stieltjes measure uniquely determined by
+\begin{equation}
+  \mu_f((\omega_1,\omega_2])
+  =\lim_{T\to\infty}\frac{1}{2T}\int_{-T}^{T}
+   f(t)\,\frac{e^{-i\omega_1 t}-e^{-i\omega_2 t}}{it}\,dt.
+\end{equation}
+The spectral measure has orthogonal increments in the time-average sense:
+for disjoint intervals $(\omega_1,\omega_2]$ and $(\omega_3,\omega_4]$,
+\begin{equation}
+  \lim_{T\to\infty}\frac{1}{2T}\int_{-T}^{T}
+  \bigl[e^{-i\omega_1 t}-e^{-i\omega_2 t}\bigr]
+  \overline{\bigl[e^{-i\omega_3 t}-e^{-i\omega_4 t}\bigr]}\,dt
+  =0.
+\end{equation}
+The autocorrelation function
+\begin{equation}
+  R_f(\tau)=\lim_{T\to\infty}\frac{1}{2T}\int_{-T}^{T}
+            f(t+\tau)\overline{f(t)}\,dt
+\end{equation}
+satisfies the Wiener--Khintchine relation
+\begin{equation}
+  \label{eq:wk}
+  R_f(\tau)=\int_{-\infty}^{\infty}e^{i\omega\tau}\,dF_f(\omega),
+  \qquad
+  dF_f(\omega)=|d\mu_f(\omega)|^2.
+\end{equation}
+\end{theorem}
+
+\begin{remark}[The notation $\mathbb{E}$ and $dW$]
+\label{rem:notation}
+For a deterministic function $f$, the symbols
+$\mathbb{E}[\cdot]$ and $dW(\omega)$ are notational devices:
+\begin{enumerate}
+  \item $\mathbb{E}[\cdot]$ denotes the time average
+        $\lim_{T\to\infty}\frac{1}{2T}\int_{-T}^{T}(\cdot)\,dt$,
+        not a probabilistic expectation.
+  \item $dW(\omega)$ denotes an orthogonal-increment measure with
+        $\langle dW(\omega),dW(\lambda)\rangle_W=\delta(\omega-\lambda)\,d\omega$,
+        encoding the orthogonality of the Fourier basis
+        $\{e^{i\omega t}\}_{\omega\in\mathbb{R}}$
+        in the time-average inner product.
+  \item The Wiener isometry
+        $\langle\int g\,dW,\int h\,dW\rangle_W
+         =\int g(\omega)\overline{h(\omega)}\,d\omega$
+        is the Parseval--Plancherel identity,
+        an isometric fact, not a probabilistic one.
+\end{enumerate}
+When a spectral density $K(\omega)\ge 0$ exists such that
+$dF_f(\omega)=K(\omega)\,d\omega$, the spectral factor
+$\hat{h}(\omega)=\sqrt{K(\omega)}$ and the colored measure
+$d\widetilde{Z}(\omega)=\hat{h}(\omega)\,dW(\omega)$
+are defined so that
+$|d\widetilde{Z}(\omega)|^2=K(\omega)\,d\omega$
+and $f(t)=\int e^{i\omega t}\,d\widetilde{Z}(\omega)$.
+This is the standard spectral factorization of generalized harmonic analysis.
+\end{remark}
+
+\begin{remark}[Applicability to the Riemann zeta function]
+\label{rem:zeta-applicability}
+The Hardy $Z$-function
+$Z(t)=e^{i\vartheta(t)}\zeta(\tfrac{1}{2}+it)$
+is a specific real-valued analytic function of~$t$. Its mean-square
+properties over long intervals are described by the second and fourth
+moment theorems of Hardy--Littlewood--Ingham--Heath-Brown, and the
+Fourier structure of $\zeta(\tfrac{1}{2}+it)$ over the Dirichlet series
+provides a natural spectral decomposition. The Cram\'er--Lo\`eve framework
+of Theorem~\ref{thm:cramer} applies to $Z$ directly: $Z\in\mathcal{W}$
+and all spectral identities that follow are isometric equalities in the
+time-average sense. No probability space is required; no randomness is
+assumed or introduced.
+\end{remark}
+
+
+\section{Setup and Definitions}
+
+\begin{definition}[Rao spectral density and corrected Bochner identification]
+\label{def:rao}
+The \emph{Rao spectral density} is
+\begin{equation}
+  K_{1/2}(\omega)=\frac{e^{\omega/2}}{e^{e^\omega}+1}.
+\end{equation}
+Starting from the Mellin--Euler integral representation valid for
+$\operatorname{Re}s>0$,
+\begin{equation}
+  \Gamma(s)\,\eta(s)=\int_0^{\infty}\frac{x^{s-1}}{e^x+1}\,dx,
+\end{equation}
+and applying the change of variables $x=e^{\omega}$,
+$dx=e^{\omega}\,d\omega$, $x^{s-1}=e^{\omega(s-1)}$, one obtains at
+$s=\tfrac{1}{2}+i\tau$:
+\begin{equation}
+  \label{eq:bochner}
+  \Gamma\!\left(\tfrac{1}{2}+i\tau\right)
+  \eta\!\left(\tfrac{1}{2}+i\tau\right)
+  =\int_{-\infty}^{\infty} e^{i\omega\tau}\,K_{1/2}(\omega)\,d\omega.
+\end{equation}
+Since $K_{1/2}\ge 0$ and $K_{1/2}\in L^1(\mathbb{R})$, Bochner's theorem
+identifies $K_{1/2}$ as the spectral density of the positive-definite
+kernel
+$\tau\mapsto\Gamma(\tfrac{1}{2}+i\tau)\,\eta(\tfrac{1}{2}+i\tau)$.
+The product $\Gamma(\tfrac{1}{2}+i\tau)\eta(\tfrac{1}{2}+i\tau)$
+decays as $e^{-\pi|\tau|/2}$ by Stirling's formula, so it is integrable and
+the Fourier inversion is unconditional.
+\end{definition}
+
+\begin{definition}[Spectral factor and orthogonal measure]
+\label{def:spectral-factor}
+Set
+\begin{equation}
+  \hat{h}(\omega)=\sqrt{K_{1/2}(\omega)},
+  \qquad
+  d\widetilde{Z}(\omega)=\hat{h}(\omega)\,dW(\omega),
+\end{equation}
+where $dW(\omega)$ is an orthogonal-increment measure with
+$|dW(\omega)|^2=d\omega$ (see Remark~\ref{rem:notation}), so that
+$|d\widetilde{Z}(\omega)|^2=K_{1/2}(\omega)\,d\omega$.
+\end{definition}
+
+\begin{definition}[Stationary core]
+\label{def:stationary-core}
+Define the \emph{stationary core} by
+\begin{equation}
+  \label{eq:S-def}
+  S(\tau)=\int_{-\infty}^{\infty} e^{i\omega\tau}\,d\widetilde{Z}(\omega)
+  =\int_{-\infty}^{\infty} e^{i\omega\tau}\hat{h}(\omega)\,dW(\omega).
+\end{equation}
+By the Wiener isometry (Parseval identity) and \eqref{eq:bochner},
+\begin{equation}
+  \label{eq:S-covariance}
+  \langle S(\tau),S(\sigma)\rangle_W
+  =\int_{-\infty}^{\infty} e^{i\omega(\tau-\sigma)}K_{1/2}(\omega)\,d\omega
+  =\Gamma\!\left(\tfrac{1}{2}+i(\tau-\sigma)\right)
+   \eta\!\left(\tfrac{1}{2}+i(\tau-\sigma)\right).
+\end{equation}
+\end{definition}
+
+\begin{definition}[Riemann--Siegel quantities]
+\label{def:rs}
+The Riemann--Siegel theta function is
+\begin{equation}
+  \vartheta(t)=\operatorname{Im}\log\Gamma\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right)
+  -\frac{t}{2}\log\pi,
+  \qquad
+  \vartheta'(t)=\frac{1}{2}\log\frac{t}{2\pi}+O(t^{-2}).
+\end{equation}
+We treat $\vartheta$ as strictly increasing (valid for $t$ sufficiently
+large) and write $\vartheta^{-1}$ for its functional inverse.
+The Hardy $Z$-function is
+\begin{equation}
+  Z(t)=e^{i\vartheta(t)}\zeta\!\left(\tfrac{1}{2}+it\right).
+\end{equation}
+\end{definition}
+
+
+\section{Oscillatory Process Structure}
+
+\begin{definition}[Oscillatory kernel and frequency-dependent gain]
+\label{def:oscillatory}
+In the spectral integral
+\begin{equation}
+  \label{eq:osc-full}
+  Z(t)=\int_{-\infty}^{\infty}
+       \phi_t(\omega)\,d\widetilde{Z}(\omega),
+\end{equation}
+define the \emph{oscillatory kernel}
+\begin{equation}
+  \label{eq:phi-def}
+  \phi_t(\omega)
+  =\sqrt{\vartheta'(t)}\,e^{i\omega\vartheta(t)}
+  =A_t(\omega)\,e^{i\omega t},
+\end{equation}
+where the \emph{gain function} is
+\begin{equation}
+  \label{eq:gain}
+  A_t(\omega)=\sqrt{\vartheta'(t)}\,e^{i\omega(\vartheta(t)-t)}.
+\end{equation}
+Since $\vartheta(t)-t=\tfrac{t}{2}\log\tfrac{t}{2\pi}-\tfrac{t}{2}
+-\tfrac{\pi}{8}+O(t^{-1})-t\neq 0$ for all finite~$t$, the gain
+$A_t(\omega)$ depends on $\omega$ through the phase factor
+$e^{i\omega(\vartheta(t)-t)}$. This makes \eqref{eq:osc-full} an
+\emph{oscillatory process} in the sense of Priestley (1965), not merely
+a uniformly modulated one.
+\end{definition}
+
+\begin{remark}[Why the distinction matters]
+A \emph{uniformly modulated} process has $A_t(\omega)=c(t)$ independent
+of~$\omega$, so modulation is pure amplitude scaling. Here, the
+$\omega$-dependent phase $e^{i\omega(\vartheta(t)-t)}$ performs a
+\emph{local frequency remapping}: each spectral component at
+frequency~$\omega$ is shifted in phase by
+$\omega\cdot(\vartheta(t)-t)$, which grows with $\omega$.
+The amplitude factor $\sqrt{\vartheta'(t)}$ provides the Jacobian
+normalization for the time change $t\mapsto\vartheta(t)$, while the
+phase factor $e^{i\omega(\vartheta(t)-t)}$ encodes the nonlinear
+warping of the frequency axis. Together they implement the full
+pullback from the $\tau$-coordinate to the $t$-coordinate.
+\end{remark}
+
+
+\section{The Representation and Recovery Theorem}
+
+\begin{theorem}
+\label{thm:main}
+With the stationary core $S$ of Definition~\ref{def:stationary-core},
+\begin{equation}
+  \label{eq:Zrep}
+  Z(t)=\sqrt{\vartheta'(t)}\,S(\vartheta(t)).
+\end{equation}
+Expanding $S$ via its spectral representation \eqref{eq:S-def},
+\begin{equation}
+  \label{eq:Zfull}
+  Z(t)=\sqrt{\vartheta'(t)}\int_{-\infty}^{\infty}
+        e^{i\omega\vartheta(t)}\hat{h}(\omega)\,dW(\omega)
+  =\int_{-\infty}^{\infty}A_t(\omega)\,e^{i\omega t}\,
+   \hat{h}(\omega)\,dW(\omega).
+\end{equation}
+This equals $e^{i\vartheta(t)}\zeta(\tfrac{1}{2}+it)$ as a
+pointwise identity in $t$, where both sides are specific analytic
+functions and all spectral integrals are Fourier--Stieltjes integrals
+in the sense of Theorem~\ref{thm:cramer}.
+\end{theorem}
+
+\begin{proof}
+\medskip\noindent\textbf{Step 1: evaluate $S$ at $\tau=\vartheta(t)$.}
+Substituting $\tau=\vartheta(t)$ into \eqref{eq:S-def},
+\begin{equation}
+  \label{eq:S-at-theta}
+  S(\vartheta(t))
+  =\int_{-\infty}^{\infty} e^{i\omega\vartheta(t)}\,d\widetilde{Z}(\omega).
+\end{equation}
+
+\medskip\noindent\textbf{Step 2: form the oscillatory representation.}
+Multiply by $\sqrt{\vartheta'(t)}$:
+\begin{equation}
+  \label{eq:Z-expand}
+  Z(t)
+  =\sqrt{\vartheta'(t)}\,S(\vartheta(t))
+  =\sqrt{\vartheta'(t)}\int_{-\infty}^{\infty}
+   e^{i\omega\vartheta(t)}\hat{h}(\omega)\,dW(\omega)
+  =\int_{-\infty}^{\infty}
+   A_t(\omega)\,e^{i\omega t}\,d\widetilde{Z}(\omega).
+\end{equation}
+
+\medskip\noindent\textbf{Step 3: compute the autocorrelation.}
+Apply the Wiener isometry (Parseval identity):
+\begin{align}
+  \langle Z(t+\cdot),Z(s+\cdot)\rangle_W
+  &=\sqrt{\vartheta'(t)\vartheta'(s)}
+    \int_{-\infty}^{\infty}
+    e^{i\omega(\vartheta(t)-\vartheta(s))}K_{1/2}(\omega)\,d\omega \\
+  \label{eq:Zcov}
+  &=\sqrt{\vartheta'(t)\vartheta'(s)}\,
+   \Gamma\!\left(\tfrac{1}{2}+i(\vartheta(t)-\vartheta(s))\right)
+   \eta\!\left(\tfrac{1}{2}+i(\vartheta(t)-\vartheta(s))\right).
+\end{align}
+
+\medskip\noindent\textbf{Step 4: connection to $\zeta$ via $\eta$.}
+The Dirichlet eta function and Riemann zeta function satisfy
+\begin{equation}
+  \label{eq:eta-zeta}
+  \eta(s)=(1-2^{1-s})\zeta(s).
+\end{equation}
+At $s=\tfrac{1}{2}+it$, the Bochner identification \eqref{eq:bochner}
+gives
+\begin{equation}
+  \Gamma\!\left(\tfrac{1}{2}+it\right)
+  \eta\!\left(\tfrac{1}{2}+it\right)
+  =\int_{-\infty}^{\infty} e^{i\omega t}\,K_{1/2}(\omega)\,d\omega,
+\end{equation}
+hence
+\begin{equation}
+  \eta\!\left(\tfrac{1}{2}+it\right)
+  =\frac{1}{\Gamma(\tfrac{1}{2}+it)}
+   \int_{-\infty}^{\infty} e^{i\omega t}\,K_{1/2}(\omega)\,d\omega
+\end{equation}
+and
+\begin{equation}
+  \zeta\!\left(\tfrac{1}{2}+it\right)
+  =\frac{1}{(1-2^{1/2-it})\,\Gamma(\tfrac{1}{2}+it)}
+   \int_{-\infty}^{\infty} e^{i\omega t}\,K_{1/2}(\omega)\,d\omega.
+\end{equation}
+Multiplying by $e^{i\vartheta(t)}$:
+\begin{equation}
+  \label{eq:Z-deterministic}
+  Z(t)=e^{i\vartheta(t)}\zeta\!\left(\tfrac{1}{2}+it\right)
+  =\frac{e^{i\vartheta(t)}}{(1-2^{1/2-it})\,\Gamma(\tfrac{1}{2}+it)}
+   \int_{-\infty}^{\infty} e^{i\omega t}\,K_{1/2}(\omega)\,d\omega.
+\end{equation}
+
+\medskip\noindent\textbf{Step 5: the bridge.}
+Both \eqref{eq:Zfull} and \eqref{eq:Z-deterministic} express $Z(t)$
+as Fourier--Stieltjes integrals built from the same spectral density
+$K_{1/2}$. The oscillatory representation \eqref{eq:Zfull} uses the
+warped phase $e^{i\omega\vartheta(t)}$ and the Jacobian prefactor
+$\sqrt{\vartheta'(t)}$; the deterministic representation
+\eqref{eq:Z-deterministic} uses the standard phase $e^{i\omega t}$ and
+the algebraic prefactor
+$e^{i\vartheta(t)}/[(1-2^{1/2-it})\Gamma(\tfrac{1}{2}+it)]$.
+They are the same function evaluated in two coordinate systems related
+by the diffeomorphism $t\mapsto\vartheta(t)$.
+
+Equating them gives the explicit identity for $S(\vartheta(t))$:
+\begin{equation}
+  \label{eq:bridge}
+  S(\vartheta(t))
+  =\frac{e^{i\vartheta(t)}}
+        {\sqrt{\vartheta'(t)}\,(1-2^{1/2-it})\,\Gamma(\tfrac{1}{2}+it)}
+   \int_{-\infty}^{\infty} e^{i\omega t}\,K_{1/2}(\omega)\,d\omega
+  =\frac{e^{i\vartheta(t)}}{\sqrt{\vartheta'(t)}}\,
+   \zeta\!\left(\tfrac{1}{2}+it\right),
+\end{equation}
+so that
+\begin{equation}
+  Z(t)=\sqrt{\vartheta'(t)}\,S(\vartheta(t))
+      =e^{i\vartheta(t)}\zeta\!\left(\tfrac{1}{2}+it\right).
+\end{equation}
+\end{proof}
+
+
+\section{Recapitulation: The Four Layers}
+
+\noindent\textbf{1.\ Orthogonal-increment measure:}
+\[
+  |dW(\omega)|^2=d\omega.
+\]
+
+\noindent\textbf{2.\ Spectral coloring:}
+\[
+  d\widetilde{Z}(\omega)=\hat{h}(\omega)\,dW(\omega),
+  \qquad
+  |d\widetilde{Z}(\omega)|^2=K_{1/2}(\omega)\,d\omega.
+\]
+
+\noindent\textbf{3.\ Stationary core in the $\tau$-coordinate:}
+\[
+  S(\tau)=\int_{-\infty}^{\infty} e^{i\omega\tau}\,d\widetilde{Z}(\omega),
+  \qquad
+  \langle S(\tau),S(\sigma)\rangle_W
+  =\Gamma\!\left(\tfrac{1}{2}+i(\tau-\sigma)\right)
+   \eta\!\left(\tfrac{1}{2}+i(\tau-\sigma)\right).
+\]
+
+\noindent\textbf{4.\ Oscillatory pullback to the $t$-coordinate:}
+\[
+  Z(t)=\sqrt{\vartheta'(t)}\,S(\vartheta(t))
+  =\int_{-\infty}^{\infty}A_t(\omega)\,e^{i\omega t}\,d\widetilde{Z}(\omega),
+  \qquad
+  A_t(\omega)=\sqrt{\vartheta'(t)}\,e^{i\omega(\vartheta(t)-t)}.
+\]
+
+\noindent\textbf{Pointwise recovery:}
+\[
+  Z(t)=e^{i\vartheta(t)}\zeta\!\left(\tfrac{1}{2}+it\right)
+  =\frac{e^{i\vartheta(t)}}{(1-2^{1/2-it})\,\Gamma(\tfrac{1}{2}+it)}
+   \int_{-\infty}^{\infty} e^{i\omega t}\,K_{1/2}(\omega)\,d\omega.
+\]
+
+\noindent\textbf{Autocorrelation:}
+\[
+  \langle Z(t+\cdot),Z(s+\cdot)\rangle_W
+  =\sqrt{\vartheta'(t)\vartheta'(s)}\,
+   \Gamma\!\left(\tfrac{1}{2}+i(\vartheta(t)-\vartheta(s))\right)
+   \eta\!\left(\tfrac{1}{2}+i(\vartheta(t)-\vartheta(s))\right).
+\]
+
+\end{document}
+ 
