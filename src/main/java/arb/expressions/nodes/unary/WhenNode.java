@@ -142,16 +142,17 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
 
   private boolean isIndependentVariableOfThisOrAncestorExpression(VariableNode<D, R, F> variable)
   {
-    Expression<?, ?, ?> expr = expression;
-    while (expr != null)
-    {
-      if (expr.getIndependentVariable() != null && variable.reference.equals(expr.getIndependentVariable().reference))
-      {
-        return true;
-      }
-      expr = expr.upstreamExpression;
-    }
-    return false;
+    return variable.isIndependent();
+//    Expression<?, ?, ?> expr = expression;
+//    while (expr != null)
+//    {
+//      if (expr.getIndependentVariable() != null && variable.equals(expr.getIndependentVariable()))
+//      {
+//        return true;
+//      }
+//      expr = expr.upstreamExpression;
+//    }
+//    return false;
   }
 
   void evaluateCase(TreeMap<Integer, Node<D, R, F>> cases, VariableNode<D, R, F> variable)

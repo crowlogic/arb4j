@@ -1092,6 +1092,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     require('➔');
 
     Expression<D, C, F> subExpr = cloneExpression();
+    subExpr.clearIndependentVariable();
     subExpr.upstreamExpression = this;
     placeholderVariable        = subExpr.setIndependentVariable(variableNode.spliceInto(subExpr));
     subExpr.rootNode           = subExpr.resolve();
@@ -2692,7 +2693,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     // Use the lambda parameter as the functional expression's independent variable.
     var lambdaParam = placeholderVariable;
-
+    placeholderVariable = null;
+    
     if (lambdaParam != null)
     {
       functionalExpression.setIndependentVariable(lambdaParam.spliceInto(functionalExpression).asVariable());
@@ -3810,7 +3812,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return isFunctional();
   }
 
-  public Expression<D, C, F> setPlaceholderVariable(VariableNode<D, C, F> variableNode)
+  public VariableNode<D, C, F> setPlaceholderVariable(VariableNode<D, C, F> variableNode)
   {
     if (placeholderVariable != null && !placeholderVariable.equals(variableNode))
     {
@@ -3822,7 +3824,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     }
     this.placeholderVariable = variableNode;
-    return this;
+    return placeholderVariable;
   }
 
   public VariableNode<D, C, F> getPlaceholderVariable()
@@ -3830,9 +3832,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return placeholderVariable;
   }
 
-  public VariableNode<D, C, F> setIndependentVariable(VariableNode<D, C, F> independentVariable)
+  public VariableNode<D, C, F> setIndependentVariable(VariableNode<D, C, F> variableNode)
   {
-    this.independentVariable = independentVariable;
+    if (independentVariable != null && !independentVariable.equals(variableNode))
+    {
+      throw new IllegalArgumentException("independentVariable is already set to " + independentVariable + " in " + this + " cannot set it to " + variableNode );
+    }
+    if (placeholderVariable != null && placeholderVariable.equals(variableNode))
+    {
+      throw new IllegalArgumentException("independentVariable cannot be set to " + variableNode + " since it is already the placeholder variable of " + toStringExtended());
+
+    }
+    this.independentVariable = variableNode;
     return independentVariable;
   }
   
@@ -3840,6 +3851,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public VariableNode<D, C, F> getIndependentVariable()
   {
     return independentVariable;
+  }
+
+  public Expression<D, C, F> clearIndependentVariable()
+  {
+    independentVariable = null;
+    return this;
+    
   }
 
 

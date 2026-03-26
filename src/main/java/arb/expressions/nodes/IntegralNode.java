@@ -361,7 +361,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     integrandExpression                         = expression.cloneExpression();
     integrandExpression.upstreamExpression      = expression;
     integrandExpression.functionName            = null;
-    integrandExpression.setIndependentVariable(null);
+    integrandExpression.clearIndependentVariable();
     integrandExpression.rootNode                = null;
     integrandExpression.deferVariableResolution = true;
 
