@@ -600,6 +600,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return false;
   }
 
+  /**
+   * FIXME: this should merge with
+   * this{@link #setIndependentVariable(VariableNode)}
+   * 
+   * @param variable
+   * @return
+   */
   public VariableNode<D, C, F> assignInputVariable(VariableNode<D, C, F> variable)
   {
     assert variable != null : "variable shan't be null";
@@ -1124,6 +1131,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return file;
   }
 
+  public static record Cursor(int position, char character, char prevCharacter)
+  {
+  };
+
   protected Expression<D, C, F> evaluateOptionalIndependentVariableSpecification()
   {
     if (trace)
@@ -1132,30 +1143,40 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     setExpression(normalize(getExpression()));
 
-    int searchPos = 0;
-    int rightArrowIndex;
+    int    searchPos         = 0;
+    int    rightArrowIndex;
 
-    if ((rightArrowIndex = getExpression().indexOf('➔', searchPos)) != -1)
+    Cursor savedPosition     = getCursor();
+    String inputVariableName = parseName();
+    skipSpaces();
+    if (nextCharacterIs('➔'))
+
     {
-      String  inputVariableName        = getExpression().substring(searchPos, rightArrowIndex).trim();
-      boolean isInputVariableSpecified = true;
-
-      isInputVariableSpecified = assureNoNumbersInTheInputVariable(inputVariableName, isInputVariableSpecified);
-
-      if (isInputVariableSpecified)
-      {
-        assureInputNameHasNotAlreadyBeenAssociatedWithAContextVariable(inputVariableName);
-
-        {
-          VariableNode<D, C, F> newRef = newVariableNode(inputVariableName);
-          assignInputVariable(newRef);
-        }
-        searchPos = rightArrowIndex + 1;
-      }
+      assureInputNameHasNotAlreadyBeenAssociatedWithAContextVariable(inputVariableName);
+      VariableNode<D, C, F> newRef = newVariableNode(inputVariableName);
+      assignInputVariable(newRef);
+    }
+    else
+    {
+      setCursor(savedPosition);
     }
 
-    position = searchPos - 1;
     return this;
+  }
+
+  public Cursor getCursor()
+  {
+    return new Cursor(position,
+                      character,
+                      previousCharacter);
+  }
+
+  public Cursor setCursor(Cursor cursor)
+  {
+    this.character         = cursor.character;
+    this.previousCharacter = cursor.prevCharacter;
+    this.position          = cursor.position;
+    return cursor;
   }
 
   protected Node<D, C, F> resolveSquareBracketedIndex()
@@ -1185,9 +1206,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return null;
   }
 
-  protected VariableReference<D, C, F> resolveVariableReference(int startPos)
+  protected VariableReference<D, C, F> resolveVariableReference()
   {
-    String identifier = parseName(startPos);
+    String identifier = parseName();
     var    index      = resolveIndex();
     return new VariableReference<D, C, F>(identifier,
                                           index);
@@ -2399,8 +2420,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * Parses an identifier name starting from {@code startPos}. Uses code-point
    * iteration to correctly handle supplementary Unicode characters.
    */
-  protected String parseName(int startPos)
+  public String parseName()
   {
+    assert position >= 0 : "position=" + position + " should not be negative for " + toStringExtended();
+    int startPos = position;
     boolean entirelySubscripted   = true;
     boolean entirelySuperscripted = true;
     while (position < getExpression().length())
@@ -2694,7 +2717,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // Use the lambda parameter as the functional expression's independent variable.
     var lambdaParam = placeholderVariable;
     placeholderVariable = null;
-    
+
     if (lambdaParam != null)
     {
       functionalExpression.setIndependentVariable(lambdaParam.spliceInto(functionalExpression).asVariable());
@@ -2797,13 +2820,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return new ElseNode<D, C, F>(this);
   }
 
-  /**
-   * @return this{@link #parseName(int)}(this{@link #position})
-   */
-  public String parseName()
-  {
-    return parseName(position);
-  }
 
   /**
    * Calls this{@link #evaluateOptionalIndependentVariableSpecification()} before
@@ -3297,7 +3313,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected Node<D, C, F> resolveIdentifier() throws CompilerException
   {
     int startPos  = position;
-    var reference = resolveVariableReference(startPos);
+    var reference = resolveVariableReference();
 
     if (nextCharacterIs('⁻'))
     {
@@ -3816,7 +3832,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (placeholderVariable != null && !placeholderVariable.equals(variableNode))
     {
-      throw new IllegalArgumentException("placeholderVariable is already set to " + placeholderVariable + " in " + this + " cannot set it to " + variableNode );
+      throw new IllegalArgumentException("placeholderVariable is already set to " + placeholderVariable + " in " + this + " cannot set it to " + variableNode);
     }
     if (getIndependentVariable() != null && getIndependentVariable().equals(variableNode))
     {
@@ -3836,17 +3852,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (independentVariable != null && !independentVariable.equals(variableNode))
     {
-      throw new IllegalArgumentException("independentVariable is already set to " + independentVariable + " in " + this + " cannot set it to " + variableNode );
+      throw new IllegalArgumentException("independentVariable is already set to " + independentVariable + " in " + this + " cannot set it to " + variableNode);
     }
     if (placeholderVariable != null && placeholderVariable.equals(variableNode))
     {
-      throw new IllegalArgumentException("independentVariable cannot be set to " + variableNode + " since it is already the placeholder variable of " + toStringExtended());
+      throw new IllegalArgumentException("independentVariable cannot be set to "
+                                         + variableNode
+                                         + " since it is already the placeholder variable of "
+                                         + toStringExtended());
 
     }
     this.independentVariable = variableNode;
     return independentVariable;
   }
-  
 
   public VariableNode<D, C, F> getIndependentVariable()
   {
@@ -3857,8 +3875,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     independentVariable = null;
     return this;
-    
-  }
 
+  }
 
 }
