@@ -1139,18 +1139,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (trace)
     {
-      log.debug("#{}: evaluateOptionalIndependentVariableSpecification: remaining {} ", System.identityHashCode(this), remaining());
+      log.debug("#{}: evaluateOptionalIndependentVariableSpecification: remaining {} ",
+                System.identityHashCode(this),
+                remaining());
     }
     setExpression(normalize(getExpression()));
 
-    int    searchPos         = 0;
-    int    rightArrowIndex;
+    nextCharacter(); // prime cursor to position 0
 
     Cursor savedPosition     = getCursor();
     String inputVariableName = parseName();
     skipSpaces();
     if (nextCharacterIs('➔'))
-
     {
       assureInputNameHasNotAlreadyBeenAssociatedWithAContextVariable(inputVariableName);
       VariableNode<D, C, F> newRef = newVariableNode(inputVariableName);
@@ -2838,7 +2838,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     assert rootNode == null : "parse must only be called before anything else has been parsed but rootNode=" + rootNode;
     evaluateOptionalIndependentVariableSpecification();
-    nextCharacter();
+    // cursor is already primed by evaluateOptionalIndependentVariableSpecification
     if (trace)
     {
       log.debug("#{}: parseRoot expression='{}'\n", System.identityHashCode(this), getExpression());
@@ -2862,7 +2862,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     rootNode.isRootNode = true;
 
     updateStringRepresentation();
-    // constructAndRegisterThisFunction();
     return (E) this;
   }
 
