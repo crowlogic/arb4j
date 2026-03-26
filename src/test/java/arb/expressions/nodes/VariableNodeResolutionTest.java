@@ -343,9 +343,9 @@ public class VariableNodeResolutionTest extends
     context.registerVariable("a", new RationalFunction("1"));
     Expression<Object, RationalFunction, RationalNullaryFunction> expr  = RationalFunction.parse("x+a", context);
 
-    VariableNode<?, ?, ?>                                         indep = expr.getIndependentVariable();
-    assertNotNull("x should be the independent variable", indep);
-    assertEquals("x", indep.getName());
+    VariableNode<?, ?, ?>                                         placeholder = expr.getPlaceholderVariable();
+    assertNotNull("x should be the placeholder variable", placeholder);
+    assertEquals("x", placeholder.getName());
   }
 
   /**
