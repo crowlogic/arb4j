@@ -488,7 +488,7 @@ public class VariableNodeResolutionTest extends
     assertFalse("Real does not extend Function", realExpr.isReifiedFunctional());
 
     Expression<Object, RationalFunction, RationalNullaryFunction> ratExpr = RationalFunction.parse("x");
-    assertFalse("RationalFunction is not an interface", ratExpr.isFunctional());
+    assertTrue(ratExpr.isFunctional());
     assertTrue("RationalFunction extends Function", ratExpr.isReifiedFunctional());
   }
 
