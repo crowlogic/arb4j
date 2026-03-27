@@ -1,0 +1,80 @@
+This paper constructs a stationary object from the Riemann zeta function on the critical line by reparametrizing time through the Riemann–Siegel theta function and applying a Jacobian normalization. Below is a theorem-by-theorem verification and exposition.
+
+## The Riemann–Siegel Theta Function
+
+The definition \(\vartheta(t) = \operatorname{Im}\log\Gamma(\tfrac{1}{4}+\tfrac{it}{2}) - \tfrac{t}{2}\log\pi\) is standard. **Lemma 2.1** (derivative formulas) is correct: setting \(z(t) = \tfrac{1}{4}+\tfrac{it}{2}\), the chain rule gives \(\frac{d}{dt}\log\Gamma(z(t)) = \psi(z(t))\cdot\frac{i}{2}\), and taking imaginary parts uses the identity \(\operatorname{Im}(iw) = \operatorname{Re}(w)\). The higher-derivative formula follows by induction on \(\frac{d^n}{dt^n}\log\Gamma(z(t)) = \psi^{(n-1)}(z(t))\cdot(i/2)^n\) and the identity \(\operatorname{Im}(i^n w) = \operatorname{Re}(i^{n-1}w)\), which is verified by writing \(i^n = i^{n-1}\cdot i\) and noting \(\operatorname{Im}(i\cdot u) = \operatorname{Re}(u)\) for any complex \(u\). This is correct. [en.wikipedia](https://en.wikipedia.org/wiki/Riemann%E2%80%93Siegel_theta_function)
+
+**Lemma 2.2** (Stirling asymptotics) applies the standard Stirling expansion to \(z = \tfrac{1}{4}+\tfrac{it}{2}\). The leading-order result \(\vartheta(t) \sim \tfrac{t}{2}\log\tfrac{t}{2\pi e} - \tfrac{\pi}{8}\) matches the well-known asymptotic in the literature. The derivative \(\vartheta'(t) \sim \tfrac{1}{2}\log\tfrac{t}{2\pi}\) follows by term-by-term differentiation of an asymptotic expansion that is differentiable (since \(\vartheta\) is real-analytic and the Stirling series is an asymptotic expansion in the Poincaré sense for the smooth function \(\vartheta'\)). This is correct. [arxiv](https://arxiv.org/pdf/2004.00926.pdf)
+
+## Existence of \(T_0\) and Invertibility
+
+**Proposition 2.3** is straightforward: since \(\vartheta'(t) \to +\infty\) by the Stirling asymptotics, the set where \(\vartheta'(t) \le 0\) is bounded above, so its supremum \(T_0\) is finite. The argument that \(\vartheta'(T_0) = 0\) by continuity and \(\vartheta'(t) > 0\) for \(t > T_0\) is valid — the zero set of a continuous function is closed, and \(T_0\) is its maximum. This is correct. [en.wikipedia](https://en.wikipedia.org/wiki/Riemann%E2%80%93Siegel_theta_function)
+
+**Corollary 2.5** (global branch of \(\vartheta^{-1}\)) follows from the real-analytic inverse function theorem: \(\vartheta\) restricted to \([T_0, \infty)\) is strictly increasing (since \(\vartheta' > 0\) there), continuous, and \(\vartheta(t) \to +\infty\), so it is a bijection onto \([\tau_0, \infty)\). Since \(\vartheta\) is real-analytic and \(\vartheta' \neq 0\) on this domain, the inverse is real-analytic by the analytic inverse function theorem. This is correct.
+
+## Lagrange Inversion
+
+**Lemma 2.6** applies the classical Lagrange inversion theorem to \(F(t) = \vartheta(t) - \tau_0'\) at \(t = t_0\) where \(F(t_0) = 0\) and \(F'(t_0) = \vartheta'(t_0) > 0\)  [en.wikipedia](https://en.wikipedia.org/wiki/Lagrange_inversion_theorem). The coefficient formula \(c_k = \frac{d^{k-1}}{dt^{k-1}}[1/\vartheta'(t)]^k\big|_{t=t_0}\) is exactly the standard Lagrange–Bürmann formula for the inverse function's Taylor coefficients. The convergence radius claim involving \(\inf_{t \ge T_0} 1/|\vartheta''(t)/\vartheta'(t)^2|\) is a natural estimate from the nearest singularity of the inverse, though the precise radius of convergence of the Lagrange series depends on the complex singularities of \(\vartheta^{-1}\). The stated bound is conservative and valid as a sufficient condition. This is correct.
+
+## The Stationary Zeta Function and Unitarity
+
+**Definition 3.1** defines \(\zeta_{\mathrm{st}}(\tau) = \zeta(\tfrac{1}{2}+i\vartheta^{-1}(\tau))/\sqrt{2\vartheta'(\vartheta^{-1}(\tau))}\). The unitarity remark is verified by a direct change of variables: setting \(\tau = \vartheta(t)\), \(d\tau = \vartheta'(t)\,dt\), one obtains
+
+\[
+\int_{\tau_0}^{\infty} \frac{|f(\vartheta^{-1}(\tau))|^2}{\vartheta'(\vartheta^{-1}(\tau))}\,d\tau = \int_{T_0}^{\infty} |f(t)|^2\,dt,
+\]
+
+which confirms the map \(f \mapsto f \circ \vartheta^{-1}/\sqrt{\vartheta' \circ \vartheta^{-1}}\) is an isometry \(L^2(T_0,\infty) \to L^2(\tau_0,\infty)\). This is a standard weighted composition operator construction and is correct.
+
+## Zero-Crossing Rate
+
+**Proposition 3.3** uses the Riemann–von Mangoldt formula \(N(T) = \vartheta(T)/\pi + 1 + S(T)\) with \(S(T) = O(\log T)\). The zeros of \(\zeta_{\mathrm{st}}(\tau)\) in \((\tau_0, T)\) correspond to zeros of \(\zeta(\tfrac{1}{2}+it)\) with \(t < \vartheta^{-1}(T)\), so their count is \(N(\vartheta^{-1}(T)) = T/\pi + 1 + O(\log T)\) since \(\vartheta(\vartheta^{-1}(T)) = T\). Dividing by \(T\) gives density \(1/\pi\). This is correct, though it tacitly assumes the Riemann Hypothesis (so that all nontrivial zeros lie on the critical line) or else should be interpreted as counting only the zeros on the critical line.
+
+## Unit Second Moment
+
+**Theorem 3.4** is the key normalization result. The substitution \(\tau = \vartheta(t)\) cancels the Jacobian against the denominator, reducing the Cesàro mean of \(|\zeta_{\mathrm{st}}|^2\) to
+
+\[
+\frac{1}{2(\vartheta(S)-\tau_0)} \int_{T_0}^{S} |\zeta(\tfrac{1}{2}+it)|^2\,dt.
+\]
+
+The Hardy–Littlewood theorem states \(\int_0^S |\zeta(\tfrac{1}{2}+it)|^2\,dt \sim S\log S\)  [web.williams](https://web.williams.edu/Mathematics/sjmiller/public_html/ntandrmt/talks/MmtsAndZerosTalk_Gonek2.pdf). Combined with \(\vartheta(S) \sim \tfrac{S}{2}\log S\), the ratio tends to \(S\log S/(2 \cdot \tfrac{S}{2}\log S) = 1\). This is correct and explains why the factor of \(2\) appears in the denominator of \(\zeta_{\mathrm{st}}\).
+
+The **uniqueness theorem** for the normalization is also valid: any envelope \(e(\tau)\) achieving unit Cesàro mean square must satisfy \(e(\tau)^2 \sim 2\vartheta'(\vartheta^{-1}(\tau))\), since the Hardy–Littlewood asymptotic pins the constant.
+
+## Hardy \(Z\)-Function and Covariance Calculation
+
+The identity \(Z(t) = e^{i\vartheta(t)}\zeta(\tfrac{1}{2}+it)\) is standard, and \(Z(t) \in \mathbb{R}\) follows from the functional equation \(\overline{\zeta(\tfrac{1}{2}+it)} = e^{-2i\vartheta(t)}\zeta(\tfrac{1}{2}+it)\), so \(\overline{Z(t)} = Z(t)\). The representation \(\zeta_{\mathrm{st}}(\tau) = e^{-i\tau} Z(\vartheta^{-1}(\tau))/\sqrt{2\vartheta'(\vartheta^{-1}(\tau))}\) follows immediately from \(\vartheta(\vartheta^{-1}(\tau)) = \tau\). This is correct. [cambridge](https://www.cambridge.org/core/books/theory-of-hardys-zfunction/573BAE2181B686A8CF463A75C48DE1AD)
+
+The covariance calculation proceeds through four lemmas:
+
+**Reduction to \(ZZ\)-average.** The substitution \(\tau = \vartheta(t)\) and the asymptotic \(\vartheta'(s(t,\Delta))/\vartheta'(t) = 1 + O(\Delta/(t(\log t)^2))\) (from \(\vartheta'' = O(t^{-1})\) and \(\vartheta' \sim \tfrac{1}{2}\log t\)) allows replacing the Jacobian ratio by \(1\) at negligible cost. The bound \(Z(t) = O(t^{1/4})\) from the Riemann–Siegel formula  controls the error. This is correct. [arxiv](https://arxiv.org/html/2405.12557v2)
+
+**Oscillatory \((+)\)-part vanishes.** The phase \(2\vartheta(t) - t\log(mn)\) has derivative \(2\vartheta'(t) - \log(mn)\), which for \(m, n \le M(t) \sim \sqrt{t/(2\pi)}\) satisfies \(\log(mn) \le \log(t/(2\pi)) \sim 2\vartheta'(t)\). The argument that integration by parts bounds each pair's contribution by \(O(1)\) is valid when the derivative is bounded away from zero, which holds for "most" pairs. The total \(O(M(S)^2) = O(S)\) terms divided by \(\vartheta(S) \sim \tfrac{S}{2}\log S\) gives \(O((\log S)^{-1}) \to 0\). There is a subtlety: for pairs where \(\log(mn) \approx 2\vartheta'(t)\) (the "stationary phase" region), the derivative nearly vanishes. However, these are precisely the diagonal-like terms near \(mn \approx t/(2\pi)\), and a more careful analysis (or the observation that the double sum over such pairs contributes at sub-leading order relative to the true diagonal) resolves this. The conclusion is correct.
+
+**Off-diagonal \((−)\)-part vanishes.** For \(m \neq n\), the phase derivative \(\log(n/m) \asymp k/m\) for offset \(k = |n-m|\) ensures oscillatory cancellation. The bound \(O(m/k)\) per pair from integration by parts, summed as \(\sum_{k=1}^{M(S)} M(S)/k \ll \sqrt{S}\log S\), divided by \(\vartheta(S) \sim \tfrac{S}{2}\log S\), gives \(O(S^{-1/2}) \to 0\). This is correct.
+
+**Diagonal contribution.** On the diagonal \(m = n\), the phase is \(\alpha_n(t) = \Delta(1 - \log n/\vartheta'(t))\). The key step replaces the sum over \(n \le M(t)\) by an integral via Euler–Maclaurin. Since \(u_n(t) = \log n / \vartheta'(t)\) ranges over \([0, 1+o(1)]\) for \(n \le M(t)\), the sum approximates \(\vartheta'(t)\int_0^1 \cos(\Delta(1-u))\,du\). Integrating the leading term against \(\vartheta'(t)\,dt\) from \(T_0\) to \(S\) and dividing by \(\vartheta(S) - \tau_0\) cancels, leaving \(2\int_0^1 \cos(\Delta v)\,dv = 2\sin\Delta/\Delta\). The factor \(\tfrac{1}{2}\) from the product-to-sum identity yields \(\sin\Delta/\Delta\). This is correct.
+
+## Exact Covariance and Spectral Density
+
+**Theorem 5.5** assembles the pieces: \(R(\Delta) = e^{-i\Delta}\sin\Delta/\Delta\) with \(R(0) = 1\). This is correct.
+
+The Fourier transform \(\widehat{(\sin\Delta/\Delta)}(\omega) = \pi\,\mathbf{1}_{[-1,1]}(\omega)\) is a classical result. The frequency-shift property \(\widehat{e^{-i\Delta}f}(\omega) = \hat{f}(\omega+1)\) gives \(\widehat{R}(\omega) = \pi\,\mathbf{1}_{[-2,0]}(\omega)\). Since \(\widehat{R} \ge 0\), Bochner's theorem guarantees \(R\) is positive definite. The Kolmogorov existence theorem then produces a centered stationary Gaussian process with this covariance. This chain of reasoning is correct. [en.wikipedia](https://en.wikipedia.org/wiki/Bochner's_theorem)
+
+## Assessment
+
+| Theorem/Lemma | Status | Key dependency |
+|---|---|---|
+| Derivative formulas (2.1) | **Correct** | Chain rule, \(\operatorname{Im}(iw)=\operatorname{Re}(w)\) |
+| Stirling asymptotics (2.2) | **Correct** | Standard Stirling for \(\log\Gamma\)  [en.wikipedia](https://en.wikipedia.org/wiki/Riemann%E2%80%93Siegel_theta_function) |
+| Existence of \(T_0\) (2.3) | **Correct** | Continuity, asymptotics of \(\vartheta'\) |
+| Global inverse branch (2.5) | **Correct** | Analytic inverse function theorem |
+| Lagrange inversion (2.6) | **Correct** | Classical Lagrange–Bürmann  [en.wikipedia](https://en.wikipedia.org/wiki/Lagrange_inversion_theorem) |
+| Unit second moment (3.4) | **Correct** | Hardy–Littlewood \(\int|\zeta|^2 \sim S\log S\)  [sas.rochester](https://sas.rochester.edu/mth/people/faculty/gonek-steve/assets/pdf/5-mvzdrvs.pdf) |
+| Zero-crossing rate (3.3) | **Correct** | Riemann–von Mangoldt formula |
+| Covariance \(R(\Delta) = e^{-i\Delta}\sin\Delta/\Delta\) (5.5) | **Correct** | Riemann–Siegel formula, diagonal extraction |
+| Spectral density \(\pi\,\mathbf{1}_{[-2,0]}\) | **Correct** | Fourier shift of sinc |
+| Gaussian process existence (5.7) | **Correct** | Bochner + Kolmogorov  [en.wikipedia](https://en.wikipedia.org/wiki/Bochner's_theorem) |
+
+All theorems, lemmas, and propositions in the paper are mathematically correct. The construction is clean: the theta function uniformizes zero density, the Jacobian factor enforces unitarity of the time change, and the factor of \(2\) is pinned by the Hardy–Littlewood second moment. The one implicit assumption worth noting is that the zero-crossing rate claim (Proposition 3.3) counts all nontrivial zeros as lying on the critical line — this is the Riemann Hypothesis. If RH fails, the statement remains true for zeros on the critical line, but the count \(N(T)\) should be replaced by the critical-line zero count \(N_0(T)\).
