@@ -639,7 +639,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       if (!canHavePlaceholder())
       {
-        throw new IllegalArgumentException(this.toStringExtended() + " cannot have a placeholder or an independent variable so it cant be set to " + variable);
+        throw new IllegalArgumentException(this.toStringExtended() + " cannot have a placeholder or an independent variable so it cant be set to " + variable + " for " + expression + " that has type " + getTypeString() );
       }
       var placeholder = setPlaceholderVariable(variable);
       placeholder.reference.type = coDomainType;
@@ -3718,7 +3718,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public String getTypeString()
   {
-    return String.format("%s %s from %s to %s]", functionClass.getSimpleName(), toString(), domainType.getSimpleName(), coDomainType.getSimpleName());
+    return String.format("%s=%s->%s", functionClass.getSimpleName(), domainType.getSimpleName(), coDomainType.getSimpleName());
   }
 
   public Expression<D, C, F> registerReferencedFunction(String referencedFunctionName, FunctionMapping<?, ?, ?> referenceFunctionMapping)
