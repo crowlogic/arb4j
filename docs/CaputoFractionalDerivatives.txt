@@ -1,0 +1,48 @@
+
+═══════════════════════════════════════════════════════════════════
+        𝐂𝐚𝐩𝐮𝐭𝐨 𝐅𝐫𝐚𝐜𝐭𝐢𝐨𝐧𝐚𝐥 𝐃𝐞𝐫𝐢𝐯𝐚𝐭𝐢𝐯𝐞𝐬 𝐢𝐧 𝐚𝐫𝐛𝟒𝐣
+═══════════════════════════════════════════════════════════════════
+
+The Caputo fractional derivative of order α generalizes ordinary
+differentiation to non-integer orders. arb4j compiles expressions
+containing the Caputo operator directly to JVM bytecode, resolving
+closed-form results at compile time when the operand's structure
+permits, and falling back to the integral definition otherwise.
+
+───────────────────────────────────────────────────────────────────
+𝐃𝐞𝐟𝐢𝐧𝐢𝐭𝐢𝐨𝐧
+───────────────────────────────────────────────────────────────────
+
+Let n = ⌈α⌉ then
+
+  ᶜDᵅ f(x) = ᶜDₓᵅ f(x) = ─────────── ∫₀ˣ (x − t)ⁿ⁻ᵅ⁻¹ f⁽ⁿ⁾(t) dt
+                            Γ(n − α)
+
+              1
+         = ─────────── ∫₀ˣ (x − t)ⁿ⁻ᵅ⁻¹ f⁽ⁿ⁾(t) dt
+           Γ(n − α)
+
+───────────────────────────────────────────────────────────────────
+𝐒𝐲𝐧𝐭𝐚𝐱
+───────────────────────────────────────────────────────────────────
+
+Two equivalent notations are recognized in arb4j expressions:
+
+  ┌──────────────┬────────────────┬──────────────────────────────────────┐
+  │ Syntax       │ Example        │ Meaning                              │
+  ├──────────────┼────────────────┼──────────────────────────────────────┤
+  │ Đ^(α)(f)     │ Đ^(α)(t²)     │ Caputo derivative of t² of order α   │
+  │ ꟲD^(α)(f)    │ ꟲD^(α)(t³)    │ Same operator, capital‐C prefix      │
+  └──────────────┴────────────────┴──────────────────────────────────────┘
+
+The exponent α must be resolvable at compile time — either a
+literal constant, a constant expression (e.g., 1/2), or a bounded
+Real variable whose ⌈upperBound⌉ determines n.
+
+───────────────────────────────────────────────────────────────────
+𝐂𝐥𝐨𝐬𝐞𝐝‐𝐅𝐨𝐫𝐦 𝐃𝐢𝐬𝐩𝐚𝐭𝐜𝐡
+───────────────────────────────────────────────────────────────────
+
+The parser calls operand.fractionalDerivative(α), which dispatches
+polymorphically. Each node subclass that has a known closed form
+overrides  
