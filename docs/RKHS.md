@@ -1,0 +1,59 @@
+What is a reproducing kernel in a reproducing kernel Hilbert space on its most general level? And specifically, how do they apply with regard to their functional analysis of the integral covariance operators of non-stationary and oscillatory processes in the sense of Priestley?Completely disregard Mercer's theorem, I'm not relegating any of this analysis to trace class operators or compact intervals in the time domain.Tie this in specifically as to how it relates to the Kolmogorov existence theorem and the Kramer spectral representation of stationary processes and the more general Priestley spectral representation theory for the non-stationary class of oscillatory processes, Gaussian processes.
+
+At the most general level, a reproducing kernel is the Gram kernel of point-evaluation in a Hilbert space of functions: if every evaluation $$f \mapsto f(t)$$ is continuous, then for each $$t$$ there is a unique representer $$k_t$$ with $$f(t)=\langle f,k_t\rangle$$, and $$K(s,t)=\langle k_t,k_s\rangle$$ is the reproducing kernel, automatically symmetric and positive semidefinite. [1][2] For stochastic processes, that same positive kernel is the covariance viewed as a functional-analytic object: for a centered Gaussian process, the covariance function can serve as the reproducing kernel of the associated Cameron-Martin/RKHS. [2]
+
+## General level
+
+Nothing in that definition requires compact time domains, trace-class covariance operators, or Mercer-type eigenfunction expansions; the index set can be any set, and a symmetric positive-definite kernel determines a unique RKHS by the Moore-Aronszajn theorem. [1][2] So, at the level you are asking for, the kernel is primary and any integral covariance operator is secondary: once a positive kernel $$R(s,t)$$ is given, the intrinsic space is the completion of finite linear combinations of $$R(\cdot,t)$$, with inner product fixed by $$\langle R(\cdot,s),R(\cdot,t)\rangle = R(s,t)$$.
+
+If one later chooses a reference measure $$\mu$$ on time and forms an integral operator
+$$
+(C_R f)(t)=\int R(t,s)f(s)\,d\mu(s),
+$$
+that operator is just one realization of the same covariance form on a particular $$L^2(\mu)$$ time-side space. In the cases where the operator square-root picture is available, the RKHS is the natural range space of $$C_R^{1/2}$$, equipped with the pulled-back norm.
+
+## Kolmogorov link
+
+The Kolmogorov existence theorem is the probabilistic counterpart of this construction: a symmetric positive covariance function gives consistent Gaussian finite-dimensional distributions, and therefore there exists a Gaussian process having that covariance. [3][4] Moore-Aronszajn takes the same positive kernel and produces the unique RKHS carrying it as reproducing kernel. [1][2]
+
+So the same object $$R$$ plays two roles at once. Probabilistically, it is enough to build the law of a Gaussian process; functionally, it is enough to build the deterministic Hilbert space of directions along which that Gaussian law translates.
+
+## Stationary case
+
+For stationary second-order processes, the covariance depends only on lag and admits a Fourier representation by a nonnegative measure, while the process itself admits the standard Cramér spectral representation as a stochastic integral against an orthogonal-increment spectral object. [5][6][7] In that case the common factorization is
+$$
+r(s,t)=r(t-s)=\int e^{is\lambda}\overline{e^{it\lambda}}\,dF(\lambda),
+$$
+so the stationary kernel is literally a Gram kernel of the feature vectors $$\phi_t(\lambda)=e^{it\lambda}$$ in $$L^2(F)$$.
+
+From the RKHS point of view, the stationary process space is therefore the image of the synthesis map
+$$
+(Tg)(t)=\int e^{it\lambda}g(\lambda)\,dF(\lambda),
+$$
+with RKHS norm given by the minimal $$L^2(F)$$-norm of a spectral coefficient $$g$$ representing $$h=Tg$$. The covariance operator on any chosen time-side $$L^2$$ space is then $$C=T T^*$$, so the operator is analyzed through its spectral factorization rather than through compact-kernel diagonalization on a bounded interval.
+
+## Priestley class
+
+Priestley’s key move was to treat spectral representation as conceptually prior to covariance representation for nonstationary processes, and his evolutionary spectrum framework generalizes the stationary notion of spectrum to time-dependent spectral structure. [8][9] Abstractly, once a nonstationary oscillatory process is written through spectral atoms $$\phi_t(\lambda)$$, its covariance is
+$$
+R(s,t)=\int \phi_s(\lambda)\overline{\phi_t(\lambda)}\,d\mu(\lambda),
+$$
+which is again a Gram kernel and therefore a reproducing kernel.
+
+For the Priestley oscillatory class, the natural atoms are of the form
+$$
+\phi_t(\lambda)=A(t,\lambda)e^{it\lambda},
+$$
+so
+$$
+R(s,t)=\int A(s,\lambda)\overline{A(t,\lambda)}e^{i(s-t)\lambda}\,d\mu(\lambda).
+$$
+That is the nonstationary analogue of the stationary Cramér factorization: the RKHS is the closure of all functions $$h$$ representable as
+$$
+h(t)=\int A(t,\lambda)e^{it\lambda}g(\lambda)\,d\mu(\lambda),
+$$
+with norm inherited from the spectral coefficient space, modulo the usual null-space identification.
+
+This is the functional-analytic reason reproducing kernels are the right language for integral covariance operators of Priestley-type processes. They identify the covariance as a Gram form coming from a spectral feature map, make the covariance operator a factored operator $$T T^*$$, and for Gaussian processes they sit exactly at the interface where Kolmogorov gives existence of the process and spectral representation gives the concrete factorization of its covariance.
+
+ 
