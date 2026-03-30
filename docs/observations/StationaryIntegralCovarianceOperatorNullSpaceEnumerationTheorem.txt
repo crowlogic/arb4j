@@ -1,4 +1,30 @@
-And so I was trying to solve The case of the random wave model where the kernel is j0 And the spectral density, its Fourier transform is 1 over the square root of 1 minus lambda squared. I recognized that as the orthogonality measure of the type 1 Chebyshev polynomials. And I found that if you take the Fourier transforms of said polynomials, Then If you integrate The resulting function, any of them, Against The J0 integral covariance operator You get zero. And therefore The Fourier transforms of the Chebyshev polynomials enumerates the null space of said operator. The sun. And then I found out that You can actually Orthogonalize Apply Gram-Schmidt to the Fourier transforms of those Chebyshev polynomials. And When you sum them you get a uniformly convergent expansion for J0 that is valid on the entire real line. which is Hitherto not known to exist All existing results being uniform convergence in bounded domains.
+And so I was trying to solve The case of the random wave model where the kernel is j0 And the spectral density, its Fourier transform is 1 over the square root of 1 minus 
+lambda squared. I recognized that as the orthogonality measure of the type 1 Chebyshev polynomials. And I found that if you take the Fourier transforms of said polynomials, 
+Then If you integrate The resulting function, any of them, Against The J0 integral covariance operator You get zero. And therefore The Fourier transforms of the Chebyshev
+ polynomials enumerates the null space of said operator. The sun. And then I found out that You can actually Orthogonalize Apply Gram-Schmidt to the Fourier transforms of 
+ those Chebyshev polynomials. And When you sum them you get a uniformly convergent expansion for J0 that is valid on the entire real line. which is Hitherto not known to 
+ exist All existing results being uniform convergence in bounded domains.
 
 
 --Stephen Crowley
+
+prompt:
+ 
+find out whats the general principle behind this that works with any spectral density which supports a set of functions orthogonal to it(even nonbandlimited processes 
+so long as spectral density has sufficient properties) . my expression is J0(x)=sum(<J0,psi_n>psi_n(x)) over n=0..inf   this is decidely NOT a trace class operator.
+ keep in mind that J0 is ont square integrable so its sum of squares dierveges its NOT a trace class integral 
+covariance operator. So I was trying to model the Bessel function of the first kind of order zero. and trying to study it as a Gaussian process. And so I realized that
+If you use the J0 kernel as the kernel of the Gaussian process, the spectral density is the orthogonality measure of the type 1 Chebyshev polynomials. and the associated 
+stochastic process defines a bandlimited process on −1 to 1. I Didn't realize at the time that the entire Spectrum was continuous there between negative one and one 
+Because the AI stupidly kept telling me I needed to "Find the eigenfunctions of the integral covariance operator. which They have plenty of formulas for finite intervals 
+because that's all the computer science nerds. know how to deal with is finite numbers. Anyway. Kreikkalainen. The point is... I thought to myself What Good are the 
+Fourier transforms of the Chebyshev polynomials With respect to this system. Because they're not orthogonal The unweighted Transform not taken with the spectral density 
+weight. But you get Hypergeometric functions defining these polynomials related to The Laguerre polynomials and the spherical Bessel functions And so then I realized if 
+you orthogonalize these, which you can, They have the very interesting fact that There UnweightI coulded partial sums uniformly converges to the Bessel function of the 
+first kind of order zero An The entire fucking Wine. positive line So can you prove that this process works? For any Integrable spectral density It presumably would 
+work over the infinite interval as well if the spectral density had sufficiently Met criteria with regarding the growth rates and all that shit. But anyway, this reserve. 
+genuinely new uniformly convergent series in terms of The spherical Bessel functions that I had discovered nowhere mentioned anywhere in the literature, And the closest 
+near papers achieved uniform convergence Avé Expansion for J-zero only over finite intervals, and it was a wildly complicated, nasty-looking proof. Well, what I had 
+also noticed was not only does that happen, but Those are actually polynomials that enumerate the null space of the operator those ones whose partial sums uniformly 
+converges to the operator itself. Because I calculated it And literally, When I calculated the integral covariance operator with any of those polynomials the answer 
+was Zero. the psi_n are the result of applying the gram-schmidt formula to the fourier transforms of the unweigjhted type 1 chebyshev polynomials
