@@ -1,6 +1,6 @@
 Exact Bessel-Function Series for E(T)
-Atkinson (1949) · Titchmarsh (1938) · Voronoï (1904)
-Assembled — March 31, 2026
+Stephen Crowley
+March 31, 2026
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
