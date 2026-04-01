@@ -33,7 +33,6 @@ import arb.utensils.ShellFunctions;
  * <pre>
  *  C(n)=2n+α+β
  *  F(n)=C(n-1)C(n)
- *  G()=α²-β²
  *  A(n,x)=(F(n)x+G)*((C(n)-1)/2)
  *  B(n)=(n+α-1)(n+β-1)*C(n)
  *  E(n)=n*C(n/2)*C(n-1)
@@ -98,9 +97,7 @@ public class JacobiPolynomialSequence extends
 
   final public RealSequence           F                    = RealSequence.express("F:n➔C(n-1)*C(n)", context);
 
-  final public RealNullaryFunction    G                    = RealNullaryFunction.express("G:α²-β²", context);
-
-  final public RealPolynomialSequence A                    = RealPolynomialSequence.express("A:n➔(F(n)*x+G())*(C(n)-1)/2", context);
+  final public RealPolynomialSequence A                    = RealPolynomialSequence.express("A:n➔(F(n)*x+α²-β²)*(C(n)-1)/2", context);
 
   final public RealSequence           E                    = RealSequence.express("E:n➔n*C(n/2)*C(n-1)", context);
 
