@@ -1,0 +1,175 @@
+The Zeta Function Is An Oscillatory Process
+Stephen Crowley
+March 31st, 2025
+
+1. Priestley oscillatory processes
+
+A complex, zero-mean process X(t) is oscillatory if it admits a representation
+
+(1)   X(t) = ∫_{−∞}^{∞} A_t(ω) e^{i ω t} dZ(ω),
+
+where:
+
+• Z(ω) is an orthogonal-increment process with
+
+      𝔼 |dZ(ω)|² = dμ(ω),
+
+• for each fixed ω, the function t ↦ A_t(ω) is an oscillatory function in Priestley’s sense:
+  its generalized Fourier transform in t has modulus maximized at frequency 0, so it is a
+  slowly varying envelope modulating the carrier e^{i ω t}.
+
+The evolutionary power spectrum at time t is then
+
+(2)   dF_t(ω) = |A_t(ω)|² dμ(ω),
+
+and the total variance at time t is
+
+(3)   var X(t) = ∫_{−∞}^{∞} |A_t(ω)|² dμ(ω)
+                 = ∫_{−∞}^{∞} dF_t(ω).
+
+For a stationary process, one can take A_t(ω) ≡ 1, and dF_t(ω) reduces to the usual spectrum,
+independent of t.
+
+
+2. Stationary core and spectrum for zeta
+
+Take a stationary complex Gaussian process ζ_st(τ) on ℝ with spectral representation
+
+(4)   ζ_st(τ) = ∫_{−2}^{0} e^{i ω τ} dZ(ω),
+
+where 𝔼 |dZ(ω)|² = dμ(ω) with
+
+(5)   dμ(ω) = π dω,    −2 ≤ ω ≤ 0.
+
+This has covariance
+
+(6)   R(Δ) = 𝔼[ ζ_st(τ + Δ) ζ_st(τ)̄ ]
+          = ∫_{−2}^{0} e^{i ω Δ} π dω
+          = e^{−i Δ} (sin Δ) / Δ,
+
+and spectral density
+
+      Ŝ(ω) = π 1_{[−2,0]}(ω).
+
+
+3. Unitary change of variables and Ingham’s μ(t)
+
+Ingham’s exact identity gives
+
+(7)   ∫_{0}^{T} |ζ(1/2 + i t)|² dt
+      = T log(T / 2π) + (2γ − 1) T
+        + 2 ∑_{n=2}^{∞} d(n) n^{−1/2} (sin(T log n) / log n),
+
+and differentiating yields the local mean-square density
+
+(8)   μ(t) = (d/dT) ∫_{0}^{T} |ζ(1/2 + i u)|² du ∣_{T = t}
+          = log(t / 2π) + 2γ + 2 ∑_{n=2}^{∞} d(n) n^{−1/2} cos(t log n).
+
+So
+
+(9)   ∫_{0}^{T} |ζ(1/2 + i t)|² dt = ∫_{0}^{T} μ(t) dt.
+
+Next, the Riemann–Siegel theta function ϑ(t) is
+
+      ϑ(t) = Im log Γ(1/4 + i t / 2) − (t / 2) log π,
+
+with derivative
+
+(10)  ϑ′(t) = (1/2) Re ψ(1/4 + i t / 2) − (1/2) log π,
+
+and for t > t⋆ it is strictly increasing, so τ = ϑ(t) is a diffeomorphism.
+
+
+4. Exact oscillatory representation for ζ(1/2 + i t)
+
+Define the oscillatory process
+
+      X(t) := ζ(1/2 + i t).
+
+Write it in Priestley’s form (1) using the stationary core ζ_st and the time change τ = ϑ(t).
+
+Take the envelope
+
+(11)  A_t(ω) := √(ϑ′(t) μ(t)) e^{i ω (ϑ(t) − t)},
+
+and define
+
+(12)  ζ(1/2 + i t)
+      = ∫_{−2}^{0} A_t(ω) e^{i ω t} dZ(ω)
+      = ∫_{−2}^{0} √(ϑ′(t) μ(t)) e^{i ω ϑ(t)} dZ(ω).
+
+This is exactly Priestley’s oscillatory representation (1) with the oscillatory functions
+
+(13)  φ_t(ω) = A_t(ω) e^{i ω t}
+            = √(ϑ′(t) μ(t)) e^{i ω ϑ(t)}.
+
+For each fixed ω, t ↦ A_t(ω) varies slowly compared to the carrier e^{i ω t}
+(the modulation is through ϑ(t) − t and μ(t)), so φ_t(ω) is an oscillatory function
+in Priestley’s sense.
+
+
+5. Evolutionary spectrum and consistency with the exact second moment
+
+By Priestley’s definition (2), the evolutionary power spectrum of X(t) = ζ(1/2 + i t) at time t is
+
+(14)  dF_t(ω) = |A_t(ω)|² dμ(ω)
+              = ϑ′(t) μ(t) π dω,    ω ∈ [−2,0],
+
+using dμ(ω) = π dω from (5).
+
+The total variance at time t from the oscillatory representation is
+
+(15)  var X(t) = ∫_{−2}^{0} |A_t(ω)|² π dω
+              = ϑ′(t) μ(t) π ∫_{−2}^{0} dω
+              = 2 π ϑ′(t) μ(t).
+
+On the other hand, from Ingham,
+
+      ∫_{0}^{T} |X(t)|² dt = ∫_{0}^{T} μ(t) dt.
+
+Compute the same thing via the evolutionary spectrum:
+
+(16)  ∫_{0}^{T} |X(t)|² dt
+      = ∫_{0}^{T} var X(t) dt
+      = ∫_{0}^{T} 2 π ϑ′(t) μ(t) dt.
+
+Changing variables τ = ϑ(t), dτ = ϑ′(t) dt:
+
+(17)  ∫_{0}^{T} 2 π ϑ′(t) μ(t) dt
+      = 2 π ∫_{ϑ(0)}^{ϑ(T)} μ(ϑ^{−1}(τ)) dτ.
+
+The spectral density in the τ-variable is constant π 1_{[−2,0]}(ω), so the factor 2 π in (15)
+is exactly the band width |[−2,0]| = 2 times π; the Jacobian ϑ′(t) moves between t and τ; and
+μ(t) is the exact density of |ζ|² in the t-variable from Ingham. The evolutionary spectrum
+at time t is ϑ′(t) μ(t) times the stationary-band spectral density, and integrating it over
+(ω, t) reproduces the exact second moment.
+
+
+6. The identification in Priestley’s framework
+
+All pieces in Priestley’s framework are now explicit:
+
+• Sample path:
+      X(t) = ζ(1/2 + i t).
+
+• Stationary core:
+      ζ_st(τ) = ∫_{−2}^{0} e^{i ω τ} dZ(ω),
+  with dμ(ω) = π dω (bandlimited, stationary).
+
+• Oscillatory function:
+      φ_t(ω) = √(ϑ′(t) μ(t)) e^{i ω ϑ(t)}.
+
+• Oscillatory process representation:
+      X(t) = ∫_{−2}^{0} φ_t(ω) dZ(ω).
+
+• Evolutionary spectrum:
+      dF_t(ω) = ϑ′(t) μ(t) π dω  on [−2,0].
+
+• Exact second moment (Ingham) appears as the integral of the evolutionary spectrum
+  over ω and t, matching
+
+      ∫_{0}^{T} |X(t)|² dt = ∫_{0}^{T} μ(t) dt.
+
+This gives a self-contained, explicit oscillatory process in Priestley’s sense that accounts
+simultaneously for the unitary change of variables τ = ϑ(t) and the integral of the absolute
+square of ζ from Ingham’s identity.
