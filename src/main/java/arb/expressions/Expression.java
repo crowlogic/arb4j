@@ -1397,17 +1397,25 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     return classVisitor;
   }
-
   protected void generateCachePeek(MethodVisitor mv)
   {
     Label cacheMiss = new Label();
     loadThisAndFieldOntoStack(mv, "cache", ArrayList.class);
-    loadInputParameter(mv);
-    Compiler.generateVirtualMethodInvocation(mv, Integer.class, "getSignedValue", int.class);
+    loadInputParameterChecked(mv);
+    Compiler.generateVirtualMethodInvocation(mv, domainType, "getSignedValue", int.class);
     Compiler.invokeStaticMethod(mv, Function.class, "peek", Object.class, ArrayList.class, int.class);
     Compiler.cast(mv, coDomainType);
     Compiler.duplicateTopOfTheStack(mv);
     mv.visitJumpInsn(Opcodes.IFNULL, cacheMiss);
+    // cache hit: result.set(cached); return result
+    // stack: cached(coDomainType)
+    mv.visitVarInsn(Opcodes.ALOAD, 4);
+    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
+    mv.visitInsn(Opcodes.SWAP);                        // stack: result(cast), cached
+    Compiler.generateVirtualMethodInvocation(mv, coDomainType, "set", coDomainType, coDomainType);
+    mv.visitInsn(Opcodes.POP);
+    mv.visitVarInsn(Opcodes.ALOAD, 4);
+    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
     mv.visitInsn(Opcodes.ARETURN);
     Compiler.designateLabel(mv, cacheMiss);
     Compiler.pop(mv);
@@ -1416,16 +1424,41 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected void generateCachePokePrologue(MethodVisitor mv)
   {
     loadThisAndFieldOntoStack(mv, "cache", ArrayList.class);
-    loadInputParameter(mv);
-    Compiler.generateVirtualMethodInvocation(mv, Integer.class, "getSignedValue", int.class);
+    loadInputParameterChecked(mv);
+    Compiler.generateVirtualMethodInvocation(mv, domainType, "getSignedValue", int.class);
   }
 
   protected void generateCachePokeEpilogue(MethodVisitor mv)
   {
+    // stack on entry: ArrayList, int   (from generateCachePokePrologue)
+    // local 4 = result (computation already written into result by root node)
+    // allocate fresh copy for the cache
+    mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(coDomainType));
+    mv.visitInsn(Opcodes.DUP);
+    mv.visitMethodInsn(Opcodes.INVOKESPECIAL,
+                       Type.getInternalName(coDomainType),
+                       "<init>", "()V", false);
+    mv.visitVarInsn(Opcodes.ASTORE, 5);                    // local5 = fresh
+    // copy result into local5
+    mv.visitVarInsn(Opcodes.ALOAD, 5);
+    mv.visitVarInsn(Opcodes.ALOAD, 4);
+    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
+    Compiler.generateVirtualMethodInvocation(mv, coDomainType, "set", coDomainType, coDomainType);
+    mv.visitInsn(Opcodes.POP);
+    // stack: ArrayList, int — poke the COPY (local5), not result (local4)
+    mv.visitVarInsn(Opcodes.ALOAD, 5);                     // stack: ArrayList, int, fresh(copy)
     Compiler.invokeStaticMethod(mv, Function.class, "poke", Object.class, ArrayList.class, int.class, Object.class);
-    Compiler.cast(mv, coDomainType);
+    mv.visitInsn(Opcodes.POP);                             // discard poke return
+    mv.visitVarInsn(Opcodes.ALOAD, 4);
+    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
+    mv.visitInsn(Opcodes.ARETURN);
   }
 
+  protected void loadInputParameterChecked(MethodVisitor mv)
+  {
+    loadInputParameter(mv);
+    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(domainType));
+  }
   protected void generateCodeToSetIsInitializedToTrue(MethodVisitor methodVisitor)
   {
     loadThisOntoStack(methodVisitor).visitInsn(Opcodes.ICONST_1);
