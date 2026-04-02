@@ -3,6 +3,7 @@ package arb.functions;
 import static arb.utensils.Utensils.wrapOrThrow;
 
 import java.io.Closeable;
+import java.util.ArrayList;
 
 import arb.Named;
 import arb.Typesettable;
@@ -25,6 +26,18 @@ public interface Function<D, CO> extends
                          Typesettable,
                          Named
 {
+
+  static <C> C peek(ArrayList<C> cache, int n)
+  {
+    return n < cache.size() ? cache.get(n) : null;
+  }
+
+  static <C> C poke(ArrayList<C> cache, int n, C value)
+  {
+    while (cache.size() <= n) cache.add(null);
+    cache.set(n, value);
+    return value;
+  }
 
   default Context getContext()
   {
