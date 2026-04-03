@@ -19,6 +19,13 @@ public class Bibliography extends
                           AbstractBibliography
 {
 
+  public static Article bochnerSomePropertiesOfModularRelations                          = new Article("Some properties of modular relations",
+                                                                                                       "S. Bochner",
+                                                                                                       "1951",
+                                                                                                       "Annals of Mathematics",
+                                                                                                       "53",
+                                                                                                       "332–363").setNumber("2");
+  
   public static InBook  lachaudSpectralAnalysisRiemannHypothesis                         = new InBook("Spectral Analysis and the Riemann Hypothesis",
                                                                                                       "Gilles Lachaud",
                                                                                                       "2004",
