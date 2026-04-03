@@ -6,13 +6,13 @@ sample paths, m ≥ 1. Let θ: ℝ → ℝ be a Cᵐ diffeomorphism with
 
 Let
 
-  Z_X = { u ∈ ℝ : X(u) = 0 },    Z_Y = { t ∈ ℝ : Y(t) = 0 }.
+  Zₓ = { u ∈ ℝ : X(u) = 0 },    Zᵧ = { t ∈ ℝ : Y(t) = 0 }.
 
 Then
 
-  Z_Y = θ⁻¹(Z_X) = { t ∈ ℝ : θ(t) ∈ Z_X },
+  Zᵧ = θ⁻¹(Zₓ) = { t ∈ ℝ : θ(t) ∈ Zₓ },
 
-and for every t₀ ∈ Z_Y with u₀ = θ(t₀), the multiplicity of the zero
+and for every t₀ ∈ Zᵧ with u₀ = θ(t₀), the multiplicity of the zero
 of Y at t₀ equals the multiplicity of the zero of X at u₀.
 
 Proof.
@@ -29,19 +29,19 @@ For any t ∈ ℝ,
 
 Therefore
 
-  Z_Y = { t ∈ ℝ : Y(t) = 0 }
+  Zᵧ = { t ∈ ℝ : Y(t) = 0 }
       = { t ∈ ℝ : X(θ(t)) = 0 }
       = { t ∈ ℝ : θ(t) ∈ Zₓ }
       = θ⁻¹(Zₓ).
 
-For multiplicities, fix t₀ ∈ Z_Y and define
+For multiplicities, fix t₀ ∈ Zᵧ and define
 
   u₀ = θ(t₀).
 
 For each integer k with 0 ≤ k ≤ m, repeated application of the product
 rule and the chain rule gives
 
-  Y⁽ᵏ⁾(t) = ∑_{j=0}^{k} Aₖ,ⱼ(t) · X⁽ʲ⁾(θ(t)),
+  Y⁽ᵏ⁾(t) = ∑ⱼ₌₀ᵏ Aₖ,ⱼ(t) · X⁽ʲ⁾(θ(t)),
 
 where, for every k ≥ 0 and 0 ≤ j ≤ k, Aₖ,ⱼ is a Cᵐ⁻ᵏ function
 given by the recursion
@@ -56,7 +56,7 @@ k ≥ 0,
 
 From this representation, for k with 0 ≤ k ≤ m,
 
-  Y⁽ᵏ⁾(t₀) = ∑_{j=0}^{k} Aₖ,ⱼ(t₀) · X⁽ʲ⁾(u₀).
+  Y⁽ᵏ⁾(t₀) = ∑ⱼ₌₀ᵏ Aₖ,ⱼ(t₀) · X⁽ʲ⁾(u₀).
 
 Let m be the multiplicity of the zero of X at u₀, i.e.
 
@@ -70,7 +70,7 @@ so
 
 For k = m,
 
-  Y⁽ᵐ⁾(t₀) = ∑_{j=0}^{m} Aₘ,ⱼ(t₀) · X⁽ʲ⁾(u₀)
+  Y⁽ᵐ⁾(t₀) = ∑ⱼ₌₀ᵐ Aₘ,ⱼ(t₀) · X⁽ʲ⁾(u₀)
             = Aₘ,ₘ(t₀) · X⁽ᵐ⁾(u₀)
             = √θ′(t₀) · (θ′(t₀))ᵐ · X⁽ᵐ⁾(u₀).
 
