@@ -31,8 +31,8 @@ Therefore
 
   Z_Y = { t ∈ ℝ : Y(t) = 0 }
       = { t ∈ ℝ : X(θ(t)) = 0 }
-      = { t ∈ ℝ : θ(t) ∈ Z_X }
-      = θ⁻¹(Z_X).
+      = { t ∈ ℝ : θ(t) ∈ Zₓ }
+      = θ⁻¹(Zₓ).
 
 For multiplicities, fix t₀ ∈ Z_Y and define
 
@@ -41,22 +41,22 @@ For multiplicities, fix t₀ ∈ Z_Y and define
 For each integer k with 0 ≤ k ≤ m, repeated application of the product
 rule and the chain rule gives
 
-  Y⁽ᵏ⁾(t) = ∑_{j=0}^{k} A_{k,j}(t) · X⁽ʲ⁾(θ(t)),
+  Y⁽ᵏ⁾(t) = ∑_{j=0}^{k} Aₖ,ⱼ(t) · X⁽ʲ⁾(θ(t)),
 
-where, for every k ≥ 0 and 0 ≤ j ≤ k, A_{k,j} is a Cᵐ⁻ᵏ function
+where, for every k ≥ 0 and 0 ≤ j ≤ k, Aₖ,ⱼ is a Cᵐ⁻ᵏ function
 given by the recursion
 
-  A_{0,0}(t) = √θ′(t),
-  A_{k+1,j}(t) = A_{k,j}′(t) + A_{k,j−1}(t) · θ′(t)    for 0 ≤ j ≤ k+1,
+  A₀,₀(t) = √θ′(t),
+  Aₖ₊₁,ⱼ(t) = Aₖ,ⱼ′(t) + Aₖ,ⱼ₋₁(t) · θ′(t)    for 0 ≤ j ≤ k+1,
 
-with the convention A_{k,−1} = A_{k,k+1} = 0, and where, for every
+with the convention Aₖ,₋₁ = Aₖ,ₖ₊₁ = 0, and where, for every
 k ≥ 0,
 
-  A_{k,k}(t) = √θ′(t) · (θ′(t))ᵏ.
+  Aₖ,ₖ(t) = √θ′(t) · (θ′(t))ᵏ.
 
 From this representation, for k with 0 ≤ k ≤ m,
 
-  Y⁽ᵏ⁾(t₀) = ∑_{j=0}^{k} A_{k,j}(t₀) · X⁽ʲ⁾(u₀).
+  Y⁽ᵏ⁾(t₀) = ∑_{j=0}^{k} Aₖ,ⱼ(t₀) · X⁽ʲ⁾(u₀).
 
 Let m be the multiplicity of the zero of X at u₀, i.e.
 
@@ -70,8 +70,8 @@ so
 
 For k = m,
 
-  Y⁽ᵐ⁾(t₀) = ∑_{j=0}^{m} A_{m,j}(t₀) · X⁽ʲ⁾(u₀)
-            = A_{m,m}(t₀) · X⁽ᵐ⁾(u₀)
+  Y⁽ᵐ⁾(t₀) = ∑_{j=0}^{m} Aₘ,ⱼ(t₀) · X⁽ʲ⁾(u₀)
+            = Aₘ,ₘ(t₀) · X⁽ᵐ⁾(u₀)
             = √θ′(t₀) · (θ′(t₀))ᵐ · X⁽ᵐ⁾(u₀).
 
 Since θ′(t₀) > 0,
