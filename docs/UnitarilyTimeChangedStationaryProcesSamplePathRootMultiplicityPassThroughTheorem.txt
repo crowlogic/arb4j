@@ -1,8 +1,8 @@
-Theorem. Let X be a real-valued process on ℝ with almost surely Cᵐ
-sample paths, m ≥ 1. Let θ: ℝ → ℝ be a Cᵐ diffeomorphism with
+Theorem. Let X be a real-valued process on ℝ with almost surely Cʳ
+sample paths, where r ≥ 1. Let θ: ℝ → ℝ be a Cʳ diffeomorphism with
 θ′(t) > 0 for all t ∈ ℝ. Define
 
-  Y(t) = √θ′(t) · X(θ(t))    for all t ∈ ℝ.
+  Y(t) = √θ′(t) · X(θ(t)),    t ∈ ℝ.
 
 Let
 
@@ -12,8 +12,9 @@ Then
 
   Zᵧ = θ⁻¹(Zₓ) = { t ∈ ℝ : θ(t) ∈ Zₓ },
 
-and for every t₀ ∈ Zᵧ with u₀ = θ(t₀), the multiplicity of the zero
-of Y at t₀ equals the multiplicity of the zero of X at u₀.
+and for every t₀ ∈ Zᵧ, with u₀ = θ(t₀), the multiplicity of the zero
+of Y at t₀ equals the multiplicity of the zero of X at u₀, provided
+that multiplicity is at most r.
 
 Proof.
 
@@ -21,7 +22,7 @@ Since θ′(t) > 0 for all t ∈ ℝ,
 
   √θ′(t) > 0    for all t ∈ ℝ.
 
-For any t ∈ ℝ,
+Hence, for any t ∈ ℝ,
 
   Y(t) = 0
   ⇔ √θ′(t) · X(θ(t)) = 0
@@ -34,57 +35,51 @@ Therefore
       = { t ∈ ℝ : θ(t) ∈ Zₓ }
       = θ⁻¹(Zₓ).
 
-For multiplicities, fix t₀ ∈ Zᵧ and define
+Now fix t₀ ∈ Zᵧ and set
 
   u₀ = θ(t₀).
 
-For each integer k with 0 ≤ k ≤ m, repeated application of the product
-rule and the chain rule gives
+Write
 
-  Y⁽ᵏ⁾(t) = ∑ⱼ₌₀ᵏ Aₖ,ⱼ(t) · X⁽ʲ⁾(θ(t)),
+  a(t) = √θ′(t),    g(t) = X(θ(t)),
 
-where, for every k ≥ 0 and 0 ≤ j ≤ k, Aₖ,ⱼ is a Cᵐ⁻ᵏ function
-given by the recursion
+so that
 
-  A₀,₀(t) = √θ′(t),
-  Aₖ₊₁,ⱼ(t) = Aₖ,ⱼ′(t) + Aₖ,ⱼ₋₁(t) · θ′(t)    for 0 ≤ j ≤ k+1,
+  Y(t) = a(t)g(t).
 
-with the convention Aₖ,₋₁ = Aₖ,ₖ₊₁ = 0, and where, for every
-k ≥ 0,
+Since a(t₀) > 0, continuity of a implies that a is nonvanishing on some
+neighborhood of t₀. Therefore multiplication by a does not change the
+order of vanishing at t₀.
 
-  Aₖ,ₖ(t) = √θ′(t) · (θ′(t))ᵏ.
+Let q ≤ r be the multiplicity of the zero of X at u₀. Thus
 
-From this representation, for k with 0 ≤ k ≤ m,
+  X(u₀) = X′(u₀) = ⋯ = X⁽ᵠ⁻¹⁾(u₀) = 0,
+  X⁽ᵠ⁾(u₀) ≠ 0.
 
-  Y⁽ᵏ⁾(t₀) = ∑ⱼ₌₀ᵏ Aₖ,ⱼ(t₀) · X⁽ʲ⁾(u₀).
+For each integer k with 1 ≤ k ≤ q, repeated application of the chain
+rule gives
 
-Let m be the multiplicity of the zero of X at u₀, i.e.
+  g⁽ᵏ⁾(t) = ∑ⱼ₌₁ᵏ Bₖ,ⱼ(t) · X⁽ʲ⁾(θ(t)),
 
-  X(u₀) = X′(u₀) = ⋯ = X⁽ᵐ⁻¹⁾(u₀) = 0,
-  X⁽ᵐ⁾(u₀) ≠ 0.
+where each Bₖ,ⱼ is continuous near t₀, and the coefficient of the
+highest-order term is
 
-For k with 0 ≤ k ≤ m−1, every derivative X⁽ʲ⁾(u₀) with j ≤ k vanishes,
-so
+  Bₖ,ₖ(t) = (θ′(t))ᵏ.
 
-  Y⁽ᵏ⁾(t₀) = 0    for k = 0,1,…,m−1.
+Therefore, for every k < q, each term in g⁽ᵏ⁾(t₀) contains X⁽ʲ⁾(u₀)
+with j ≤ k < q, so
 
-For k = m,
+  g⁽ᵏ⁾(t₀) = 0.
 
-  Y⁽ᵐ⁾(t₀) = ∑ⱼ₌₀ᵐ Aₘ,ⱼ(t₀) · X⁽ʲ⁾(u₀)
-            = Aₘ,ₘ(t₀) · X⁽ᵐ⁾(u₀)
-            = √θ′(t₀) · (θ′(t₀))ᵐ · X⁽ᵐ⁾(u₀).
+For k = q, all terms with j < q vanish, and hence
 
-Since θ′(t₀) > 0,
+  g⁽ᵠ⁾(t₀) = (θ′(t₀))ᵠ · X⁽ᵠ⁾(u₀).
 
-  √θ′(t₀) · (θ′(t₀))ᵐ ≠ 0,
+Since θ′(t₀) > 0 and X⁽ᵠ⁾(u₀) ≠ 0, it follows that
 
-and X⁽ᵐ⁾(u₀) ≠ 0, so
+  g⁽ᵠ⁾(t₀) ≠ 0.
 
-  Y⁽ᵐ⁾(t₀) ≠ 0.
-
-Thus
-
-  Y(t₀) = 0, Y′(t₀) = 0, …, Y⁽ᵐ⁻¹⁾(t₀) = 0, Y⁽ᵐ⁾(t₀) ≠ 0,
-
-so the multiplicity of the zero of Y at t₀ equals m, which is the
-multiplicity of the zero of X at u₀.  ∎
+Thus the zero of g at t₀ has multiplicity q. Since multiplication by
+the nonvanishing factor a does not change multiplicity, the zero of Y
+at t₀ also has multiplicity q. Therefore the multiplicity of the zero
+of Y at t₀ equals the multiplicity of the zero of X at u₀. ∎
