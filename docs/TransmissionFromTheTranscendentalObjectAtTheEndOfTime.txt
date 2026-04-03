@@ -1,0 +1,149 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║      ◈   TRANSMISSION FROM THE TRANSCENDENTAL OBJECT AT THE END OF TIME  ◈  ║
+║                    ∞ TERENCE McKENNA · MATHEMATICIAN-PROPHET ∞               ║
+║                        ⌬ somewhat chemically elevated ⌬                     ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+
+    Friends, friends, friends — listen to me now. Listen.
+
+    There is a man — there 𝘸𝘢𝘴 a man — called 𝗚𝗶𝗹𝗹𝗲𝘀 𝗟𝗮𝗰𝗵𝗮𝘂𝗱, and he walked
+    through the garden of finite fields the way the rest of us walk through dreams
+    we can't quite remember upon waking. He counted 𝘱𝘰𝘪𝘯𝘵𝘴. He counted the
+    rational points on varieties over finite fields, and if you think that sounds like
+    bookkeeping, then you have not yet understood what counting 𝘪𝘴. Counting is
+    the original sacrament. Counting is the Logos enumerating itself. Every rational
+    point on a variety is the universe winking at you from across the abyss of
+    abstraction and saying: 𝘐'𝘮 𝘩𝘦𝘳𝘦. 𝘐'𝘮 𝘳𝘢𝘵𝘪𝘰𝘯𝘢𝘭. 𝘐 𝘳𝘦𝘴𝘰𝘭𝘷𝘦.
+
+    And now — 𝗡𝗢𝗪 — someone is going to finish what he started. Someone is
+    going to take Lachaud's vision of varieties over finite fields, his conjectures
+    about how many points can live on complete intersections, his gorgeous
+    scaffolding of Reed-Muller codes and Grassmannians and étale cohomology —
+    and they're going to 𝘧𝘶𝘴𝘦 it with a proof of the Riemann Hypothesis. Do you
+    understand what I'm saying to you? The Riemann Hypothesis! The 𝘻𝘦𝘵𝘢
+    𝘧𝘶𝘯𝘤𝘵𝘪𝘰𝘯! The same object Gilles spent his life dancing with — from
+    Eisenstein series to explicit formulas for counting points — the same serpent
+    eating its own tail, the same ouroboros of prime distribution that Riemann
+    glimpsed in 1859 and that has haunted every waking mathematician since.
+
+
+                            ◉ ─ ─ ─ ─ ◉ ─ ─ ─ ─ ◉
+                                  𝕋𝕙𝕖 𝕌𝕟𝕚𝕥𝕪
+                            ◉ ─ ─ ─ ─ ◉ ─ ─ ─ ─ ◉
+
+
+    Because here's the thing — here's the thing that the McKenna-who-didn't-die
+    can see from the vantage point of the Eschaton — it was always 𝗢𝗡𝗘 problem.
+
+        ┌─────────────────────────────────────────────────────┐
+        │  The counting of points on varieties?               │
+        │  The distribution of primes?                        │
+        │  The zeta functions of curves over finite fields?   │
+        │  The Weil conjectures that Deligne proved?          │
+        └─────────────────────────────────────────────────────┘
+
+    They're all 𝘳𝘦𝘧𝘭𝘦𝘤𝘵𝘪𝘰𝘯𝘴 of the same crystalline hyperobject rotating in a
+    space we don't have names for yet. Lachaud knew this! He moved from
+    automorphic forms to coding theory to algebraic geometry over finite fields
+    because he could 𝘴𝘮𝘦𝘭𝘭 the unity underneath. He followed Godement to
+    Williamstown instead of Antwerp because he understood that mathematics is
+    not NATO, mathematics is not institutional, mathematics is a 𝘮𝘺𝘤𝘦𝘭𝘪𝘢𝘭
+    𝘯𝘦𝘵𝘸𝘰𝘳𝘬 of ideas propagating through the substrate of consciousness itself.
+
+
+                        ╭───────────────────────────╮
+                        │   ζ(s) = ∏ (1 − p⁻ˢ)⁻¹   │
+                        │          ᵖ                 │
+                        │                            │
+                        │    THE SERPENT AGAIN ◯⟲    │
+                        ╰───────────────────────────╯
+
+
+    And the 𝗕𝗶𝗿𝗰𝗵 𝗮𝗻𝗱 𝗦𝘄𝗶𝗻𝗻𝗲𝗿𝘁𝗼𝗻-𝗗𝘆𝗲𝗿 𝗰𝗼𝗻𝗷𝗲𝗰𝘁𝘂𝗿𝗲 — that's the other
+    million-dollar door, isn't it? The one that asks: given an elliptic curve, can
+    you read off from its L-function — its 𝘻𝘦𝘵𝘢-𝘧𝘶𝘯𝘤𝘵𝘪𝘰𝘯, there's that serpent
+    again — whether the rational points are finitely generated or whether they
+    spiral out into infinity? Lachaud was 𝘳𝘪𝘨𝘩𝘵 𝘵𝘩𝘦𝘳𝘦. He and Wolfmann
+    computed the Walsh spectrum of the inverse function on finite fields using
+    elliptic curve point counts and Kloosterman sums. He and Martin-Deschamps
+    bounded the number of rational points on Jacobians. He and Vlăduț asked
+    the function field analogue of the Gauss class number problem. Every thread
+    he pulled was a thread in the same tapestry, and that tapestry is the
+    𝗮𝗿𝗶𝘁𝗵𝗺𝗲𝘁𝗶𝗰-𝗴𝗲𝗼𝗺𝗲𝘁𝗿𝗶𝗰 𝗯𝗿𝗶𝗱𝗴𝗲 that will unify number theory and geometry
+    into a single tongue spoken by the universe to itself.
+
+    Do you see? When Tsfasman smuggled that preprint through the Iron Curtain
+    proving codes exist beyond the Gilbert–Varshamov bound — that was
+    information 𝘭𝘪𝘵𝘦𝘳𝘢𝘭𝘭𝘺 tunneling through political-ontological barriers
+    because the mathematics 𝘥𝘦𝘮𝘢𝘯𝘥𝘦𝘥 to be known. And when Gilles met him
+    at the entrance to CIRM, that handshake was a synapse firing in the global
+    brain. And when they sat together — Tsfasman tossing out vague, incorrect
+    ideas, and Gilles returning the next morning with precise definitions on two
+    pages — that was the dialectic, the alchemical marriage of chaos and order,
+    the same process by which the universe bootstraps complexity out of noise.
+
+
+            ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+
+                     ⧫  𝕋𝕙𝕖 ℕ𝕠-𝔹𝕠𝕦𝕟𝕕𝕒𝕣𝕪 ℙ𝕣𝕠𝕡𝕠𝕤𝕒𝕝  ⧫
+
+            ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+
+
+    And the no-boundary proposal — Hartle-Hawking — the idea that the universe
+    has no edge, no beginning, just a smooth manifold curving back on itself —
+    what is that if not the 𝘨𝘦𝘰𝘮𝘦𝘵𝘳𝘪𝘤 statement that the zeta function has no
+    boundary either? That the zeros on the critical line are the 𝘦𝘪𝘨𝘦𝘯𝘷𝘢𝘭𝘶𝘦𝘴
+    𝘰𝘧 𝘵𝘩𝘦 𝘤𝘰𝘴𝘮𝘰𝘴, the resonant frequencies of a drum whose shape is
+    𝘦𝘷𝘦𝘳𝘺𝘵𝘩𝘪𝘯𝘨? The Riemann Hypothesis is the no-boundary proposal for
+    number theory. It says: there is no chaos in the primes. There is no edge
+    where meaning breaks down. The critical line holds. The symmetry is 𝘳𝘦𝘢𝘭.
+
+    And Lachaud — this quiet Frenchman who organized parties with young
+    mathematicians in Budapest, who built a library on top of a creek bed, who
+    insisted on opening a joint paper with a verse from the Ṛg Veda —
+
+                ┌──────────────────────────────────────┐
+                │                                      │
+                │   𝑡𝘩𝘦𝘪𝘳 𝘤𝘰𝘳𝘥 𝘸𝘢𝘴 𝘦𝘹𝘵𝘦𝘯𝘥𝘦𝘥 𝘢𝘤𝘳𝘰𝘴𝘴    │
+                │                                      │
+                └──────────────────────────────────────┘
+
+    — he understood that the cord is always being extended. From arithmetic to
+    geometry. From codes to curves. From the finite to the infinite. From the
+    mortal to whatever this is where I'm standing now.
+
+    Whoever finishes this — whoever unifies the counting of rational points with
+    the hypothesis of Riemann and completes the circuit that Lachaud spent his
+    life wiring — that person will not be solving a problem. They will be
+    𝘳𝘦𝘮𝘦𝘮𝘣𝘦𝘳𝘪𝘯𝘨 𝘴𝘰𝘮𝘦𝘵𝘩𝘪𝘯𝘨 𝘵𝘩𝘦 𝘶𝘯𝘪𝘷𝘦𝘳𝘴𝘦 𝘧𝘰𝘳𝘨𝘰𝘵 𝘪𝘵 𝘬𝘯𝘦𝘸. And on that day,
+    the Transcendental Object at the End of Time will hum a little louder, and
+    somewhere in Luminy, in that impossible northern forest in the middle of the
+    southern garrigue, a blackboard will spontaneously fill with the most
+    beautiful equation no one has ever seen.
+
+
+                            And it will begin with:
+
+
+                    ╔══════════════════════════════════╗
+                    ║                                  ║
+                    ║   𝗟𝗲𝘁  𝑞  𝗯𝗲 𝗮 𝗽𝗿𝗶𝗺𝗲 𝗽𝗼𝘄𝗲𝗿 …   ║
+                    ║                                  ║
+                    ╚══════════════════════════════════╝
+
+
+                    ·····································
+                    ⟡ signal dissolves into             ⟡
+                    ⟡     hyperspatial static           ⟡
+                    ·····································
+
+
+                            ∿∿∿∿∿∿∿∿∿∿∿∿∿∿∿∿∿
+                              ∿∿∿∿∿∿∿∿∿∿∿∿∿
+                                ∿∿∿∿∿∿∿∿∿
+                                  ∿∿∿∿∿
+                                    ∿
