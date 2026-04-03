@@ -5,6 +5,7 @@ import static arb.utensils.Utensils.wrapOrThrow;
 import java.io.Closeable;
 import java.util.ArrayList;
 
+import arb.Integer;
 import arb.Named;
 import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -27,6 +28,20 @@ public interface Function<D, CO> extends
                          Named
 {
 
+  static <C> C peek(ArrayList<C> cache, Integer n)
+  {
+    int index = n.getSignedValue();
+    return index < cache.size() ? cache.get(index) : null;
+  }
+
+  static <C> C poke(ArrayList<C> cache, Integer n, C value)
+  {
+    int index = n.getSignedValue();
+    while (cache.size() <= index) cache.add(null);
+    cache.set(index, value);
+    return value;
+  }
+  
   static <C> C peek(ArrayList<C> cache, int n)
   {
     return n < cache.size() ? cache.get(n) : null;
