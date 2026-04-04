@@ -1,0 +1,3 @@
+#!/bin/sh
+
+dict $1 2>&1 | tee ~/words/$1.txt
