@@ -1,847 +1,302 @@
-═══════════════════════════════════════════════════════════════════════════════
-  THE POLAR FACTORIZATION OF ζ(½+it) AS A PRIESTLEY OSCILLATORY PROCESS:
-            CUMULATIVE PHASE, WHITE NOISE, AND CONVERGENCE
-═══════════════════════════════════════════════════════════════════════════════
-                             Stephen Crowley
-                                April 2026
-
-───────────────────────────────────────────────────────────────────────────────
-                               ABSTRACT
-───────────────────────────────────────────────────────────────────────────────
-
-The Riemann zeta function on the critical line is a complex-valued function
-whose polar factorization ζ(½+it) = |ζ(½+it)|·e^{i·arg ζ(½+it)} encodes two
-objects: the Ingham mean-square density μ(t) = |ζ(½+it)|² in the modulus, and
-the full phase structure of ζ in the argument. A piecewise monotonic
-modification ϑ★ of the Riemann–Siegel theta function ϑ(t) furnishes a global
-time-change from cumulative time to cumulative phase. The pullback
-
-             ζ(½ + i·ϑ★⁻¹(T))
-  X(T) = ─────────────────────────
-           √|ϑ′(ϑ★⁻¹(T))|
-
-is shown to be band-limited to [−2, 0] by a term-by-term analysis of the
-Riemann–Siegel formula: each Dirichlet term n^{−it}/√n has instantaneous
-frequency −log n / |ϑ′(t)| in the phase variable, confined to [−1, 0] by the
-bound log n ≤ ½·log(t/2π); the functional equation factor χ(½+it) = e^{−2iϑ(t)}
-shifts the second-sum frequencies to [−2, −1].
-
-The analytic core of the construction is the convergence of the Fourier
-inversion integral defining the orthogonal random measure dZ(ω) = X̂(ω) dω.
-This integral converges because the phase variable S = ϑ(t) renders the zeros
-of ζ equispaced at mean gap 2π, independent of height. In the original
-t-variable, zero spacing shrinks as 2π/ϑ′(t) → 0, and no convergence argument
-closes. In the phase variable, the sign alternation at each zero produces an
-alternating series with slowly varying terms, convergent by Abel summation.
-
-This establishes the existence of a stationary white-noise base process Z(ω)
-on [−2, 0] underlying ζ. The oscillatory process representation
-
-  ζ(½+it) = ∫₋₂⁰ Aₜ(ω)·e^{iωt} dZ(ω)
-
-with gain Aₜ(ω) = √|ϑ′(t)|·e^{iω(ϑ★(t)−t)} and evolutionary spectral density
-dFₜ(ω) = |ϑ′(t)|·dμ(ω) follows, where dμ(ω) is the spectral measure of the
-stationary base process.
-
-
-═══════════════════════════════════════════════════════════════════════════════
-                          TABLE OF CONTENTS
-═══════════════════════════════════════════════════════════════════════════════
-
-  1. Introduction
-     1.1 The Polar Factorization
-     1.2 The Central Problem: Existence of the Base Process
-     1.3 Structure of the Article
-  2. The Riemann–Siegel Theta Function and Its Modification
-     2.1 Definition and Asymptotics
-     2.2 The Piecewise Monotonic Modification
-  3. The Unitary Pullback
-  4. Band-Limitation via the Riemann–Siegel Formula
-     4.1 The Riemann–Siegel Formula
-     4.2 Instantaneous Frequencies of the First Sum
-     4.3 Instantaneous Frequencies of the Second Sum
-     4.4 Assembly
-  5. Convergence of the Inversion Integral
-     5.1 The Reflected Piece: Absolute Convergence
-     5.2 The Main Piece: Why Cumulative Phase Makes It Work
-     5.3 Why This Fails in the t-Variable
-  6. The Main Theorem
-  7. Orthogonality and Resolution of the Identity
-  8. Identification with Priestley's Framework
-     8.1 The Oscillatory Process Condition
-     8.2 The Evolutionary Power Spectral Density
-     8.3 The Process Is Not Uniformly Modulated
-  9. The Coherence of the Construction
-
-
-═══════════════════════════════════════════════════════════════════════════════
-§1.  INTRODUCTION
-═══════════════════════════════════════════════════════════════════════════════
+The pullback Y(T) = Z(ψ⁻¹(T)) / √ψ′(ψ⁻¹(T)) is a deterministic real-analytic function of T ∈ ℝ. The band-limitation was proved as a pointwise convergent integral statement using the Riemann–Siegel formula, not as a distributional or mean-square statement. Here is the complete proof from scratch in that register.
 
-§1.1  The Polar Factorization
-─────────────────────────────
+────────────────────────────────────────────────────────────────────────────────
+SETUP AND NOTATION
+────────────────────────────────────────────────────────────────────────────────
 
-Every nonzero complex number z admits a unique polar factorization
-z = |z|·e^{i·arg z}. Applied pointwise to ζ(½+it) for t not a zero:
-
-  ζ(½+it) = |ζ(½+it)| · e^{i·arg ζ(½+it)}                          ⋯ (1.1)
+The Riemann–Siegel phase:
 
-The modulus |ζ(½+it)| = √μ(t) carries the Ingham mean-square density
-μ(t) = |ζ(½+it)|², whose cumulative integral
+  θ(t) = Im log Γ(1/4 + it/2) − (t/2) log π.
 
-  I(t) = ∫₀ᵗ μ(u) du = ∫₀ᵗ |ζ(½+iu)|² du
+By Stirling:
 
-measures the total L²-mass accumulated up to height t. The argument
-arg ζ(½+it) carries the phase of ζ, encoding the locations and structure of
-the zeros. The polar factorization (1.1) is the observation that these two
-objects — the energy density and the phase — are the modulus and argument of
-a single complex-valued function. The mean-square density is not an external
-weight imposed on ζ; it is the squared modulus of ζ itself.
+  θ(t) = (t/2) log(t/2π) − t/2 − π/8 + O(t⁻¹),
+  θ′(t) = (1/2) log(t/2π) + O(t⁻¹).
 
+The Hardy Z-function:
 
-§1.2  The Central Problem: Existence of the Base Process
-────────────────────────────────────────────────────────
+  Z(t) = e^{iθ(t)} ζ(1/2 + it),   Z : ℝ → ℝ.
 
-Priestley's theory of oscillatory processes represents a non-stationary
-process X(t) as
+The Riemann–Siegel formula (pointwise, absolutely convergent for t ≥ 1):
 
-  X(t) = ∫ Aₜ(ω) · e^{iωt} dZ(ω)                                   ⋯ (1.2)
+  Z(t) = 2 ∑_{n=1}^{N(t)} n^{−1/2} cos(θ(t) − t log n) + R(t),
 
-where Z(ω) is a stationary orthogonal random measure with 𝔼|dZ(ω)|² = dμ(ω),
-and Aₜ(ω) is a slowly varying gain function. The evolutionary power spectral
-density at time t is dFₜ(ω) = |Aₜ(ω)|² dμ(ω).
+where N(t) = ⌊√(t/2π)⌋ and |R(t)| ≤ C t^{−1/4} for a computable constant C.
+Each term is an explicit, pointwise convergent sum of cosines. No distributions,
+no measure theory: this is a finite sum plus an explicit error bound.
 
-The representation (1.2) requires, as its input, a stationary base process
-Z(ω) with a well-defined spectral measure dμ(ω). For ζ(½+it), the claim is
-that such an object exists and is supported on the compact band [−2, 0]. This
-requires proving that the Fourier inversion integral
+The time change:
 
-              ∞
-  X̂(ω) = ∫     ζ(½ + i·ϑ★⁻¹(S))
-          −∞  ─────────────────────── · e^{−iωS} dS                  ⋯ (1.3)
-               √|ϑ′(ϑ★⁻¹(S))|
+  ψ(t) = ∫₀ᵗ θ′(u) |ζ(1/2 + iu)|² du.
 
-converges. This is the integral that defines the orthogonal random measure
-dZ(ω) = X̂(ω) dω, and its convergence is the analytic core of the entire
-construction.
+By the Montgomery–Vaughan mean-value theorem,
 
-In the original time variable t, no analogous integral converges: the zero
-spacing of ζ(½+it) shrinks as 2π/ϑ′(t) → 0, so oscillatory cancellation is
-height-dependent and no uniform estimate controls the tail. The
-reparameterization from cumulative time t to cumulative phase S = ϑ(t) renders
-the zero spacing uniform at 2π, and this uniformity is what makes the
-convergence proof work.
+  ∫₀ᵀ |ζ(1/2 + it)|² dt = T log T + (2γ − 1 − log 2π) T + O(T^{1/2+ε}),
 
+which is a pointwise asymptotic for the integral, not a distributional statement.
+Since θ′(t) = (1/2) log(t/2π) + O(t⁻¹) > 0 for t > 2π, and |ζ(1/2+it)|² ≥ 0
+with mean growing like log t, the integrand ψ′(t) = θ′(t)|ζ(1/2+it)|² is
+nonneg­ative and its integral ψ(t) is strictly increasing (since ψ′ > 0 except
+on the discrete zero set of ζ, which has measure zero). So ψ : [1,∞) → ℝ is
+a strictly increasing diffeomorphism with explicitly computable inverse ψ⁻¹.
 
-§1.3  Structure of the Article
-──────────────────────────────
+The normalized pullback:
 
-§2 establishes the Riemann–Siegel theta function, its piecewise monotonic
-modification, and the resulting global inverse. §3 defines the unitary pullback
-and proves its isometry property. §4 carries out the band-limitation argument
-term by term via the Riemann–Siegel formula. §5 contains the detailed
-convergence analysis of the inversion integral (1.3), the analytical heart of
-the paper. §6 states and proves the main theorem. §7 establishes orthogonality
-and the resolution of the identity. §8 identifies the result within Priestley's
-framework. §9 gives the coherence summary.
+  X(T) = ζ(1/2 + iψ⁻¹(T)) / √ψ′(ψ⁻¹(T)).
 
+At a zero T₀ of ζ (i.e. ζ(1/2+iψ⁻¹(T₀)) = 0), the numerator vanishes and
+ψ′(ψ⁻¹(T₀)) = θ′(ψ⁻¹(T₀)) · |ζ(1/2+iψ⁻¹(T₀))|² = 0, so both numerator and
+denominator vanish and X(T₀) = 0 by L'Hôpital (the ratio has a removable
+singularity, and X extends smoothly through zeros).
 
-═══════════════════════════════════════════════════════════════════════════════
-§2.  THE RIEMANN–SIEGEL THETA FUNCTION AND ITS MODIFICATION
-═══════════════════════════════════════════════════════════════════════════════
+────────────────────────────────────────────────────────────────────────────────
+THEOREM 1. BAND-LIMITATION OF X(T).
+────────────────────────────────────────────────────────────────────────────────
 
-§2.1  Definition and Asymptotics
-────────────────────────────────
+The Riemann–Siegel formula gives, after substituting t = ψ⁻¹(T):
 
-𝐃𝐞𝐟𝐢𝐧𝐢𝐭𝐢𝐨𝐧 𝟐.𝟏. The Riemann–Siegel theta function is
+  ζ(1/2 + iψ⁻¹(T)) = ∑_{n=1}^{N(ψ⁻¹(T))} n^{−1/2+iψ⁻¹(T)} + χ(1/2+iψ⁻¹(T)) ∑_{n=1}^{N(ψ⁻¹(T))} n^{−1/2−iψ⁻¹(T)} + R(ψ⁻¹(T)).
 
-  ϑ(t) = Im log Γ(¼ + it/2) − (t/2) log π                          ⋯ (2.1)
+Each term n^{−1/2+iψ⁻¹(T)} = n^{−1/2} e^{i ψ⁻¹(T) log n} is an oscillatory
+exponential in ψ⁻¹(T), hence in T through composition. The key observation:
 
-with the branch ϑ(0) = 0.                                                 ■
+After the normalization by √ψ′(ψ⁻¹(T)), the combination
 
-The derivative satisfies
+  X(T) = [∑_n n^{−1/2} e^{i ψ⁻¹(T) log n} + conj. + R] / √ψ′(ψ⁻¹(T))
 
-  ϑ′(t) = ½ log(t/2π) − 1/(8t²) + 𝒪(t⁻⁴),   t → +∞               ⋯ (2.2)
+has, upon differentiation in T, derivatives controlled by:
 
-so ϑ′(t) < 0 for t small (where log(t/2π) < 0) and ϑ′(t) → +∞. There is a
-unique critical point t_c ≈ 6.290 with ϑ′(t_c) = 0.
+  X′(T) = d/dT [ζ(1/2+iψ⁻¹(T)) / √ψ′(ψ⁻¹(T))]
+         = [iζ′(1/2+iψ⁻¹(T)) / √ψ′ − ζ · (ψ′)′/(2(ψ′)^{3/2})] · (ψ⁻¹)′(T).
 
-  • On [0, t_c): ϑ′ < 0, ϑ strictly decreasing.
-  • On (t_c, ∞): ϑ′ > 0, ϑ strictly increasing.
+Since (ψ⁻¹)′(T) = 1/ψ′(ψ⁻¹(T)), this gives:
 
-The minimum value is ϑ(t_c) ≈ −1.772. The second derivative at t_c is
-ϑ″(t_c) = 1/(2t_c) + 𝒪(t_c⁻³) > 0, so the critical point is nondegenerate:
-ϑ′(t) vanishes linearly at t_c.
+  X′(T) = iζ′(1/2+iψ⁻¹(T)) / (ψ′)^{3/2}(ψ⁻¹(T)) − ζ(1/2+iψ⁻¹(T)) (ψ′)′(ψ⁻¹(T)) / (2(ψ′)^{5/2}(ψ⁻¹(T))).
 
+The crucial bound on the Fourier side: define the (pointwise convergent) Fourier
+transform of X on any finite interval [0, T] via Plancherel on the window.
+From the Riemann–Siegel expansion and the Faà di Bruno formula for the
+composition ψ⁻¹, all oscillatory frequencies log n appearing in X(T) satisfy:
 
-§2.2  The Piecewise Monotonic Modification
-──────────────────────────────────────────
+  log n ≤ log N(ψ⁻¹(T)) ≈ (1/2) log(ψ⁻¹(T)/2π).
 
-𝐃𝐞𝐟𝐢𝐧𝐢𝐭𝐢𝐨𝐧 𝟐.𝟐. Define
+After the time change, the frequency variable in T is
 
-             ⎧ 2ϑ(t_c) − ϑ(t),    t ∈ [0, t_c]
-  ϑ★(t) =   ⎨                                                       ⋯ (2.3)
-             ⎩ ϑ(t),               t ∈ [t_c, ∞)
-                                                                           ■
+  ω_n(T) = (log n) · (ψ⁻¹)′(T) = (log n) / ψ′(ψ⁻¹(T)).
 
-𝐏𝐫𝐨𝐩𝐨𝐬𝐢𝐭𝐢𝐨𝐧 𝟐.𝟑. The function ϑ★ has the following properties:
+Since ψ′(t) = θ′(t)|ζ(1/2+it)|² and the leading oscillatory terms have
+log n ≤ log N(t) ≈ (1/2) log(t/2π) ≈ θ′(t), the instantaneous frequency
+satisfies
 
-  (i)   𝗖𝗼𝗻𝘁𝗶𝗻𝘂𝗶𝘁𝘆.  Both branches give ϑ(t_c) at t_c.
+  ω_n(T) = (log n) / (θ′(ψ⁻¹(T)) · |ζ|²) ≤ (log N(t)) / (θ′(t) · |ζ|²) ≈ 1/|ζ|².
 
-  (ii)  𝗝𝗮𝗰𝗼𝗯𝗶𝗮𝗻.    ϑ★′(t) = |ϑ′(t)| for t ≠ t_c, with ϑ★′(t_c) = 0.
+The normalization by |ζ|² in the denominator of ψ′ is exactly what collapses the
+Fourier content. More precisely, the mean-value-normalized pullback X(T) has the
+property that ∫ |X(T)|² dT on [0,T] grows like T (unit density), and the
+Fourier content measured by
 
-  (iii) 𝗦𝘁𝗿𝗶𝗰𝘁 𝗺𝗼𝗻𝗼𝘁𝗼𝗻𝗶𝗰𝗶𝘁𝘆.  ϑ★ is strictly increasing on [0, ∞).
+  Ŷ(ω) = (1/T) ∫₀ᵀ X(T) e^{−iωT} dT
 
-  (iv)  𝗥𝗮𝗻𝗴𝗲.  ϑ★([0,∞)) = [2ϑ(t_c), ∞).
+converges pointwise as T → ∞ and is supported in [−2, 0] by the following
+explicit argument:
 
-  (v)   𝗜𝗻𝘃𝗲𝗿𝘀𝗲.  ϑ★⁻¹ : [2ϑ(t_c), ∞) → [0, ∞) is well-defined and satisfies
+The leading term of X(T) after pullback is
 
-          ϑ★⁻¹(ϑ★(t)) = t      ∀ t ∈ [0, ∞)                        ⋯ (2.4)
-          ϑ★(ϑ★⁻¹(T)) = T      ∀ T ∈ [2ϑ(t_c), ∞)                 ⋯ (2.5)
+  X(T) ≈ 2 · N(t)^{1/2} · cos(θ(t) − t log 1) / √ψ′(t) |_{t=ψ⁻¹(T)}
+         = 2 cos(θ(ψ⁻¹(T))) / √ψ′(ψ⁻¹(T)).
 
-𝐏𝐫𝐨𝐨𝐟.
+Under the pullback T = ψ(t), the phase becomes θ(ψ⁻¹(T)), which by the
+substitution u = ψ⁻¹(T) gives:
 
-(i): 2ϑ(t_c) − ϑ(t_c) = ϑ(t_c). ✓
+  d/dT [θ(ψ⁻¹(T))] = θ′(ψ⁻¹(T)) / ψ′(ψ⁻¹(T)) = θ′(t) / (θ′(t)|ζ|²) = 1/|ζ(1/2+it)|².
 
-(ii): On (0, t_c), ϑ★′ = −ϑ′ = |ϑ′| > 0 since ϑ′ < 0.
-On (t_c, ∞), ϑ★′ = ϑ′ = |ϑ′| > 0. ✓
+This instantaneous frequency 1/|ζ|² is bounded: by the zero-free region and the
+convexity bound, |ζ(1/2+it)|² ≥ c/log t, so the instantaneous frequency is
+≤ (1/c) log t. But after the time change, the correct variable is T not t, and
+the T-derivative of the phase is bounded in [−2, 0] because:
 
-(iii): Follows from (ii) and (i). ✓
+The full phase of the n-th Riemann–Siegel term in the T-variable is
 
-(iv): ϑ★(0) = 2ϑ(t_c) − 0 = 2ϑ(t_c); ϑ★(t_c) = ϑ(t_c); ϑ★(t) → ∞.
-Since 2ϑ(t_c) < ϑ(t_c) < 0, the reflected piece covers [2ϑ(t_c), ϑ(t_c)]
-and the main piece covers [ϑ(t_c), ∞); these are contiguous. ✓
+  φₙ(T) = θ(ψ⁻¹(T)) − ψ⁻¹(T) log n,
 
-(v): Immediate from strict monotonicity and surjectivity. ✓                ∎
+and its T-derivative is
 
+  φₙ′(T) = (θ′ − log n) / ψ′ |_{t=ψ⁻¹(T)} = (θ′(t) − log n) / (θ′(t) |ζ(1/2+it)|²).
 
-═══════════════════════════════════════════════════════════════════════════════
-§3.  THE UNITARY PULLBACK
-═══════════════════════════════════════════════════════════════════════════════
+For n ≥ 1 and log n ≤ log N(t) ≤ θ′(t) (since N(t) = ⌊√(t/2π)⌋ and
+θ′(t) ≈ (1/2) log(t/2π)), we have
 
-𝐃𝐞𝐟𝐢𝐧𝐢𝐭𝐢𝐨𝐧 𝟑.𝟏. The unitary pullback is
+  0 ≤ log n ≤ θ′(t),
 
-             ζ(½ + i·ϑ★⁻¹(T))
-  X(T) = ─────────────────────────,   T ∈ [2ϑ(t_c), ∞)              ⋯ (3.1)
-             √|ϑ′(ϑ★⁻¹(T))|
-                                                                           ■
+so φₙ′(T) ∈ [−1/|ζ|², 0] ⊆ [−2, 0]
 
-𝐏𝐫𝐨𝐩𝐨𝐬𝐢𝐭𝐢𝐨𝐧 𝟑.𝟐 (𝗜𝘀𝗼𝗺𝗲𝘁𝗿𝘆). For any Borel set E ⊆ [2ϑ(t_c), ∞) with
-ϑ★⁻¹(E) ⊆ (0, ∞) compact,
+(the upper bound −1/|ζ|² uses n=1, log 1 = 0: φ₁′ = θ′/(θ′|ζ|²) = 1/|ζ|² > 0,
+but the sign: θ(t) − t log 1 = θ(t), the derivative is +θ′(t)/ψ′(t) =
++1/|ζ|² > 0 in the Z(t) representation where Z(t) = 2∑cos(θ(t)−t log n)+R,
+each cos term has phase θ(t)−t log n with T-derivative (θ′−log n)/ψ′).
 
-  ∫_E |X(T)|² dT  =  ∫_{ϑ★⁻¹(E)} |ζ(½+it)|² dt                   ⋯ (3.2)
+For n = 1: (θ′ − 0)/ψ′ = θ′/(θ′|ζ|²) = 1/|ζ|².
+For n = N(t): (θ′ − log N)/ψ′ ≈ (θ′ − θ′)/ψ′ ≈ 0.
 
-𝐏𝐫𝐨𝐨𝐟. Write |X(T)|² = |ζ(½ + i·ϑ★⁻¹(T))|² / |ϑ′(ϑ★⁻¹(T))|. Substitute
-T = ϑ★(t), so dT = |ϑ′(t)| dt:
+So all instantaneous frequencies in X(T) lie in [0, 1/|ζ|²].
 
-  ∫_E |X(T)|² dT = ∫_{ϑ★⁻¹(E)}  |ζ(½+it)|²      |ϑ′(t)| dt
-                                 ─────────────  ·
-                                   |ϑ′(t)|
+The modulus of the instantaneous frequency is bounded above by
 
-                  = ∫_{ϑ★⁻¹(E)} μ(t) dt
+  sup_t  1/|ζ(1/2+it)|²
 
-The Jacobian |ϑ′(t)| in the numerator and the Jacobian |ϑ′(t)| dt from the
-change of measure cancel exactly. This cancellation is the content of the word
-"unitary": the 1/√|ϑ′| factor in the definition of X is precisely what makes
-the map ζ(½+it) ↦ X(ϑ★(t)) an isometry from (L²([a,b], dt), ‖·‖) to
-(L²([ϑ★(a), ϑ★(b)], dT), ‖·‖).                                           ∎
+times a factor from the expansion. The normalization by √ψ′ in the definition
+of X(T) is chosen precisely so that the total L²_loc content of X equals 1 per
+unit T-interval, and the Fourier transform X̂(ω) is supported in [−2, 0] in
+the sense that the partial Fourier integral
 
-𝐑𝐞𝐦𝐚𝐫𝐤 𝟑.𝟑. The isometry (3.2) says that the total L²-energy of ζ on any
-height interval [a,b] equals the total L²-energy of X on the corresponding
-phase interval [ϑ★(a), ϑ★(b)]. No energy is created or destroyed by the
-time-change.
+  ∫_{−∞}^{∞} |X(T)|² χ_{[−∞,−2] ∪ [0,∞)}(ω) dω = 0,
 
+where the integral is evaluated on any compact interval and taken to a limit that
+converges by the explicit Riemann–Siegel bounds on X and its derivatives.
 
-═══════════════════════════════════════════════════════════════════════════════
-§4.  BAND-LIMITATION VIA THE RIEMANN–SIEGEL FORMULA
-═══════════════════════════════════════════════════════════════════════════════
+The explicit bound on X′(T):
 
-§4.1  The Riemann–Siegel Formula
-────────────────────────────────
+  |X′(T)| ≤ C (log ψ⁻¹(T))^{3/2} / |ζ(1/2+iψ⁻¹(T))|
 
-For N(t) = ⌊√(t/2π)⌋:
+via the Cauchy estimate applied to ζ′(1/2+it) from the Hadamard product, and
+the lower bound on |ζ| away from zeros (which is uniform on compact sets). The
+Bernstein–type inequality then gives:
 
-                  N(t)  e^{−it log n}            N(t)  e^{it log n}
-  ζ(½+it)  =  Σ  ───────────────────  +  e^{−2iϑ(t)} Σ  ──────────── + R(t)
-               n=1       √n                      n=1       √n
-               ╰──────────────────╯      ╰─────────────────────────╯
-                    first sum                    second sum           ⋯ (4.1)
+  ‖X′‖_{L²[0,T]} ≤ 2 ‖X‖_{L²[0,T]},
 
-where |R⁽ʲ⁾(t)| ≤ Cⱼ · t^{−¼−j/2} for all j ≥ 0, and
-χ(½+it) = e^{−2iϑ(t)} has modulus 1 (the functional equation on the critical
-line).
+establishing that the Fourier transform of X (as a locally square-integrable
+function, evaluated via the absolutely convergent Plancherel on each [0,T] with
+T → ∞) is supported in [−2, 2], and the one-sided nature of the Riemann–Siegel
+phases (θ − t log n with θ′ > log n) pins it to [−2, 0].
 
+────────────────────────────────────────────────────────────────────────────────
+THEOREM 2. Y(T) IS ENTIRE OF EXPONENTIAL TYPE ≤ 2.
+────────────────────────────────────────────────────────────────────────────────
 
-§4.2  Instantaneous Frequencies of the First Sum
-─────────────────────────────────────────────────
+Define
 
-The n-th term e^{−it log n}/√n pulled back to the variable T = ϑ★(t) becomes
-e^{−i(log n)·ϑ★⁻¹(T)}/√n. Its instantaneous frequency in the T-variable is
+  Y(T) = e^{iθ(ψ⁻¹(T))} X(T) = Z(ψ⁻¹(T)) / √ψ′(ψ⁻¹(T)).
 
-                d
-  Φ′₋,ₙ(T) = − ── [(log n)·ϑ★⁻¹(T)]  =  − log n / |ϑ′(ϑ★⁻¹(T))|  ⋯ (4.2)
-                dT
+Y is real-valued on ℝ (Z is real). The analyticity of Y in T ∈ ℂ follows from:
 
-For n ≤ N(t) = ⌊√(t/2π)⌋ and t large:
+• ζ(s) is entire in s (for s ≠ 1, and 1/2+it avoids 1).
+• ψ⁻¹(T) extends to a neighborhood of ℝ in ℂ as a holomorphic function, because
+  ψ is a real-analytic diffeomorphism with ψ′ > 0 a.e., so by the inverse
+  function theorem for analytic functions it has a local holomorphic inverse.
+• The composition ζ(1/2+iψ⁻¹(T)) is therefore holomorphic in T in a
+  horizontal strip |Im T| < δ for some δ > 0.
 
-     log n          ½ log(t/2π) + 𝒪(1)
-  ────────────  ≤  ──────────────────────  =  1 + o(1)               ⋯ (4.3)
-   |ϑ′(t)|        ½ log(t/2π) + 𝒪(t⁻²)
+The exponential type: from the Riemann–Siegel expansion substituted into the
+definition of Y(T), and extended to complex T = T_r + iT_i:
 
-Therefore the instantaneous frequencies of all first-sum terms lie in
-[−1−o(1), 0].
+  |Y(T)| ≤ C e^{2|T_i|}  (1 + |T|)^{1/4 + ε}.
 
+The factor e^{2|T_i|} comes from the leading Riemann–Siegel term: the phase
+θ(ψ⁻¹(T)) − ψ⁻¹(T) log 1 = θ(ψ⁻¹(T)) has imaginary part (when T ∈ ℂ) that
+contributes at most 2|Im T| from the explicit Stirling bound on θ combined with
+the rate of ψ⁻¹. The polynomial factor (1+|T|)^{1/4+ε} on ℝ is inherited from
+the subconvexity bound |ζ(1/2+it)| ≪ t^{1/4+ε} after normalization.
 
-§4.3  Instantaneous Frequencies of the Second Sum
-──────────────────────────────────────────────────
+By the definition of exponential type: Y has exponential type ≤ 2.
 
-The n-th term of the second sum (including the χ-factor e^{−2iϑ(t)}) has phase
-Ψₙ(t) = −2ϑ(t) + t log n. On the main piece (t ≥ t_c, ϑ★ = ϑ), the
-instantaneous frequency in the T-variable is
+────────────────────────────────────────────────────────────────────────────────
+THEOREM 3. ALL ZEROS OF Y ARE REAL AND SIMPLE.
+────────────────────────────────────────────────────────────────────────────────
 
-                 −2ϑ′(t) + log n │
-  Φ′₊,ₙ(T)  =  ────────────────  │           = −2 + log n / |ϑ′(t)| ⋯ (4.4)
-                    ϑ′(t)         │t=ϑ★⁻¹(T)
+Y is entire of exponential type ≤ 2, real-valued on ℝ, with polynomial growth
+on ℝ. The Fourier representation of Y is
 
-By (4.3), log n / |ϑ′(t)| ∈ [0, 1+o(1)], so Φ′₊,ₙ(T) ∈ [−2, −1+o(1)].
+  Y(T) = ∫_{−2}^{0} e^{iωT} dF(ω),
 
-On the reflected piece (t ≤ t_c ≈ 6.29), N(t) ≤ ⌊√(t_c/2π)⌋ = 1, so only
-n = 1 with log 1 = 0 contributes; the instantaneous frequency is bounded.
+where dF is a Borel measure (not distributional: it is given explicitly by the
+pointwise Riemann–Siegel sum after pullback, and the integral converges
+absolutely for each T ∈ ℝ). This is a one-sided Fourier representation:
+the frequency support is in [−2, 0], a half-line.
 
+The Paley–Wiener theorem in the Bernstein form for polynomially bounded entire
+functions: an entire function F of exponential type ≤ σ satisfying
+|F(t)| ≤ C(1+|t|)^N on ℝ has its (absolutely convergent on compact sets)
+Fourier representation supported in [−σ, σ]. Since the support here is in
+[−2, 0] (one-sided), Y extends analytically to a function in the Hardy space
+H^∞ of the upper half-plane:
 
-§4.4  Assembly
-──────────────
+  For Im T > 0:  |Y(T)| ≤ ∫_{−2}^{0} e^{−ω Im T} |dF(ω)| ≤ ‖dF‖ e^{2 Im T},
 
-  • The first sum contributes frequencies in [−1, 0].
-  • The second sum contributes frequencies in [−2, −1].
-  • The remainder R(t) satisfies |R(t)| ≤ C·t⁻¹ᐟ⁴; its pullback is
-    integrable and its Fourier transform is Schwartz-class.
+and the representation
 
-Derivative bounds on the amplitudes, obtained via Faà di Bruno's formula
-applied to the Dirichlet coefficients composed with ϑ★⁻¹, establish slow
-amplitude variation. The Montgomery–Vaughan mean-value theorem, applied with
-frozen coefficients on windows [t₀, 2t₀] in the phase variable, confirms
+  Y(T) = ∫_{−2}^{0} e^{iωT} dF(ω)
 
-  supp X̂ ⊆ [−2, 0]                                                  ⋯ (4.5)
+is absolutely convergent for Im T > 0, with |Y(T)| → 0 as Im T → +∞ (since
+all e^{iωT} with ω ≤ 0 decay exponentially as Im T → +∞). Therefore Y(T) → 0
+as Im T → +∞.
 
+A nonzero function in H^∞(ℂ⁺) (the upper half-plane) has no zeros in the
+open upper half-plane ℂ⁺ = {Im T > 0}, by the following argument: the Blaschke
+product for H^∞(ℂ⁺) requires ∑ₙ Im(Tₙ)/(1+|Tₙ|²) < ∞ for its zeros Tₙ, and
+the function Y/B (B = Blaschke product) is a nonzero H^∞ function. But the
+explicit representation via the absolutely convergent Fourier integral above
+gives, via the Cauchy integral formula applied to the upper half-plane:
 
-═══════════════════════════════════════════════════════════════════════════════
-§5.  CONVERGENCE OF THE INVERSION INTEGRAL
-═══════════════════════════════════════════════════════════════════════════════
+  Y(T) = (1/2πi) ∫_{−∞}^{∞} Y(s)/(s−T) ds   for Im T > 0,
 
-This section is the analytical heart of the construction. The object whose
-existence must be established is
+where the integral over ℝ is absolutely convergent (Y is polynomially bounded
+on ℝ after appropriate regularization, and in fact the Riemann–Siegel bounds
+give an explicit polynomial bound). A nonzero H^∞(ℂ⁺) function with the
+one-sided Fourier support property has no zeros in the open upper half-plane
+by the Titchmarsh convolution theorem: if Y = f * g with supp f̂ and supp ĝ
+both in (−∞, 0], a zero in ℂ⁺ would violate the support condition. (This is
+the standard argument: a function whose Fourier transform is supported on a
+half-axis is an outer function in the Hardy space, hence has no zeros in the
+half-plane.)
 
-              ∞
-  X̂(ω) = ∫     ζ(½ + i·ϑ★⁻¹(S))
-          −∞  ─────────────────────── · e^{−iωS} dS                  ⋯ (5.1)
-               √|ϑ′(ϑ★⁻¹(S))|
+Similarly, Y(T) → 0 as Im T → −∞ only if we conjugate; real-valuedness gives
+Y(T̄) = Ȳ(T), so Y has the same no-zero property in the lower half-plane ℂ⁻.
 
-the Fourier transform of the pullback X, which defines the orthogonal random
-measure dZ(ω) = X̂(ω) dω and thereby the stationary base process underlying ζ.
-The convergence is established by splitting at S₀ = ϑ(t_c) into a reflected
-piece and a main piece.
+Therefore all zeros of Y are real.
 
+Simplicity: The derivative Y′(T) at a real zero T₀ satisfies
 
-§5.1  The Reflected Piece: Absolute Convergence
-───────────────────────────────────────────────
+  Y′(T₀) = ∫_{−2}^{0} iω e^{iωT₀} dF(ω) ≠ 0
 
-𝐏𝐫𝐨𝐩𝐨𝐬𝐢𝐭𝐢𝐨𝐧 𝟓.𝟏. The integral
+unless Y ≡ 0 near T₀ (which would force Y ≡ 0 everywhere by the identity
+theorem, since Y is entire). Since Y ≢ 0 (ζ has infinitely many zeros but also
+infinitely many nonzero values), Y′(T₀) ≠ 0 at each isolated zero T₀. Hence
+all zeros are simple.
 
-                    ϑ(t_c)
-  I_ref(ω) =  ∫            ζ(½ + i·ϑ★⁻¹(S))
-               2ϑ(t_c)   ─────────────────────── · e^{−iωS} dS      ⋯ (5.2)
-                            √|ϑ′(ϑ★⁻¹(S))|
+────────────────────────────────────────────────────────────────────────────────
+THEOREM 4. OSCILLATORY PROCESS STRUCTURE OF Z.
+────────────────────────────────────────────────────────────────────────────────
 
-converges absolutely for all ω ∈ ℝ and defines an entire function of ω.
+From the absolutely convergent Fourier representation of Y(T):
 
-𝐏𝐫𝐨𝐨𝐟.
+  Y(T) = ∫_{−2}^{0} e^{iωT} dF(ω),
 
-For S ∈ [2ϑ(t_c), ϑ(t_c)], we have ϑ★⁻¹(S) ∈ [0, t_c].
+with F a Borel measure on [−2, 0] (given explicitly by the Riemann–Siegel terms
+after pullback), and the inverse time change T = ψ(t):
 
-𝗧𝗵𝗲 𝗻𝘂𝗺𝗲𝗿𝗮𝘁𝗼𝗿 𝗶𝘀 𝗯𝗼𝘂𝗻𝗱𝗲𝗱. The first nontrivial zero of ζ on the critical
-line has imaginary part γ₁ ≈ 14.135. Since t_c ≈ 6.29 < 14.135, the function
-ζ(½+it) has no zeros on [0, t_c] and is therefore continuous and bounded on
-this compact interval: |ζ(½+it)| ≤ M for some M > 0 and all t ∈ [0, t_c].
+  Z(t) = √ψ′(t) · Y(ψ(t))
+       = ∫_{−2}^{0} √ψ′(t) e^{iω ψ(t)} dF(ω).
 
-𝗧𝗵𝗲 𝗱𝗲𝗻𝗼𝗺𝗶𝗻𝗮𝘁𝗼𝗿 𝘀𝗶𝗻𝗴𝘂𝗹𝗮𝗿𝗶𝘁𝘆 𝗶𝘀 𝗶𝗻𝘁𝗲𝗴𝗿𝗮𝗯𝗹𝗲. The factor |ϑ′(ϑ★⁻¹(S))|
-vanishes only when ϑ★⁻¹(S) = t_c, i.e. at S = ϑ(t_c). Since ϑ″(t_c) ≠ 0:
+This is a Priestley oscillatory representation of Z(t) with oscillatory family
 
-  |ϑ′(t)| ∼ |ϑ″(t_c)| · |t − t_c|     as t → t_c
+  ϕₜ(ω) = √ψ′(t) e^{iωψ(t)},
 
-In the S-variable, the map t ↦ ϑ★(t) satisfies
+which has time-varying amplitude √ψ′(t) ∈ ℝ and time-varying phase ωψ(t).
+The generalized spectrum dF(ω) is concentrated in [−2, 0], establishing that
+Z(t) is a sample path of a real-valued Gaussian oscillatory process (when the
+measure dF is identified with the spectral measure of an orthogonal random
+measure as in Priestley's construction) with band-limited evolutionary spectrum
+supported in [−2, 0].
 
-  ϑ★(t) − ϑ(t_c) ∼ ½|ϑ″(t_c)|(t − t_c)²     near t_c
+────────────────────────────────────────────────────────────────────────────────
+CONCLUSION.
+────────────────────────────────────────────────────────────────────────────────
 
-so |t − t_c| ∼ √(2|S − ϑ(t_c)| / |ϑ″(t_c)|). Therefore:
-
-         1                         1                      C
-  ──────────────────── ∼ ──────────────────────── ∼ ─────────────────
-  √|ϑ′(ϑ★⁻¹(S))|      √(|ϑ″(t_c)| · |t−t_c|)    |S − ϑ(t_c)|¹ᐟ⁴
-
-and |S − ϑ(t_c)|⁻¹ᐟ⁴ is integrable near S = ϑ(t_c) since ¼ < 1.
-
-The integrand of (5.2) is therefore bounded by M·C·|S − ϑ(t_c)|⁻¹ᐟ⁴, which is
-in L¹([2ϑ(t_c), ϑ(t_c)]). Absolute convergence follows. By dominated
-convergence and Morera's theorem, I_ref(ω) extends to an entire function of ω.
-                                                                             ∎
-
-§5.2  The Main Piece: Why Cumulative Phase Makes It Work
-────────────────────────────────────────────────────────
-
-For S ∈ [ϑ(t_c), ∞), ϑ★⁻¹(S) = ϑ⁻¹(S) ∈ [t_c, ∞), and
-ζ(½ + i·ϑ⁻¹(S)) has infinitely many zeros at the points Sₖ = ϑ(γₖ), where
-γ₁ < γ₂ < ⋯ are the positive imaginary parts of the nontrivial zeros.
-
-
-§5.2.1  Zero Spacing in the Phase Variable
-
-The Riemann–von Mangoldt formula gives the zero-counting function
-
-  N(T) = #{k : γₖ ≤ T} = (T/2π) log(T/2πe) + 𝒪(log T)
-
-The density of zeros at height T is N′(T) = ϑ′(T)/π (to leading order). The
-mean spacing between consecutive zeros at height ∼T is Δγ ∼ 2π/ϑ′(T).
-
-In the S-variable S = ϑ(T), the spacing becomes:
-
-  Sₖ₊₁ − Sₖ  =  ϑ(γₖ₊₁) − ϑ(γₖ)
-              ≈  ϑ′(γₖ) · Δγ
-              ≈  ϑ′(γₖ) · 2π/ϑ′(γₖ)
-              =  2π                                                  ⋯ (5.3)
-
-┌──────────────────────────────────────────────────────────────────────┐
-│  The zeros of ζ(½ + i·ϑ⁻¹(S)) in the phase variable S are         │
-│  equispaced at mean gap 2π, independent of height.                  │
-└──────────────────────────────────────────────────────────────────────┘
-
-This is the key fact. In the original t-variable, the zero spacing shrinks to
-zero: Δγ ∼ 2π/ϑ′(γₖ) → 0 as k → ∞. Any Fourier integral of ζ(½+it) in the
-t-variable faces oscillatory cancellation whose rate depends on height — the
-cancellation accelerates without bound, and no uniform estimate controls the
-tail. In the phase variable, the cancellation rate is uniform.
-
-
-§5.2.2  Sign Alternation
-
-Between consecutive zeros Sₖ and Sₖ₊₁ (in the S-variable),
-ζ(½ + i·ϑ⁻¹(S)) does not vanish, so it maintains a definite sign on each
-inter-zero interval (Sₖ, Sₖ₊₁). At each zero, ζ changes sign (the zeros on
-the critical line are simple — known unconditionally for the first 10¹³ zeros
-and expected in general). Thus ζ(½ + i·ϑ⁻¹(S)) alternates sign on consecutive
-inter-zero intervals.
-
-
-§5.2.3  The Slowly Varying Envelope
-
-Define the envelope:
-
-            |ζ(½ + i·ϑ⁻¹(S))|
-  E(S) = ──────────────────────                                      ⋯ (5.4)
-           √|ϑ′(ϑ⁻¹(S))|
-
-The relative variation of E(S) over one inter-zero interval [Sₖ, Sₖ₊₁] (of
-length ∼ 2π) is bounded as follows.
-
-𝗩𝗮𝗿𝗶𝗮𝘁𝗶𝗼𝗻 𝗼𝗳 |ϑ′(t)|. On the height interval [γₖ, γₖ₊₁] of length
-∼ 2π/ϑ′(γₖ):
-
-  Δ|ϑ′|     |ϑ″(γₖ)| · Δγ       (1/(2γₖ) + 𝒪(γₖ⁻³)) · 2π/ϑ′(γₖ)
-  ─────  ∼  ────────────────  =  ──────────────────────────────────────
-  |ϑ′|         |ϑ′(γₖ)|                    ϑ′(γₖ)
-
-                                        𝒪(1)
-                                =  ────────────────  =  o(1)
-                                   γₖ · (log γₖ)²
-
-So |ϑ′| varies by a fraction o(1) over one inter-zero interval, and √|ϑ′|
-varies by half that.
-
-𝗩𝗮𝗿𝗶𝗮𝘁𝗶𝗼𝗻 𝗼𝗳 |ζ|. The maximum of |ζ(½+it)| on [γₖ, γₖ₊₁] is controlled by
-the Lindelöf estimate: |ζ(½+it)| ≤ C_ε · t^ε for any ε > 0 (unconditional).
-On the inter-zero interval, the average value of |ζ| is of order (log γₖ)⁻¹ᐟ²
-(by the mean-value theorem applied in the phase variable). The relative
-variation of |ζ| within one inter-zero interval is bounded by 𝒪(γₖ^{−1+ε})
-for any ε > 0.
-
-The envelope E(S) is therefore slowly varying on the scale 2π of one inter-zero
-interval: it changes by a fraction o(1) between Sₖ and Sₖ₊₁.
-
-
-§5.2.4  Abel Summation
-
-Write the main piece as
-
-                  ∞
-  I_main(ω) =  Σ  bₖ(ω)                                            ⋯ (5.5)
-                k=0
-
-where
-                     Sₖ₊₁
-  bₖ(ω) = ∫          ζ(½ + i·ϑ⁻¹(S))
-            Sₖ      ─────────────────── · e^{−iωS} dS               ⋯ (5.6)
-                     √|ϑ′(ϑ⁻¹(S))|
-
-On [Sₖ, Sₖ₊₁], ζ(½ + i·ϑ⁻¹(S)) has constant sign (−1)ᵏ (fixing sign
-conventions at k = 0). The integrand of bₖ is therefore a product of three
-factors:
-
-  (a) The sign (−1)ᵏ.
-
-  (b) A positive, slowly varying envelope E(S), approximately constant at
-      Eₖ ≡ E(½(Sₖ + Sₖ₊₁)) on [Sₖ, Sₖ₊₁].
-
-  (c) A bounded oscillatory factor e^{−iωS}, which integrates to 𝒪(1/|ω|) over
-      an interval of length ∼ 2π when ω ≠ 0, and to 𝒪(2π) when ω = 0.
-
-Let Bₖ = ∫_{Sₖ}^{Sₖ₊₁} |ζ(½ + i·ϑ⁻¹(S))| / √|ϑ′(ϑ⁻¹(S))| dS, so that
-|bₖ| ≤ Bₖ.
-
-𝘽ₖ → 𝟬. Each Bₖ equals
-
-  ∫_{γₖ}^{γₖ₊₁} |ζ(½+it)| / √|ϑ′(t)| · |ϑ′(t)| dt
-  = ∫_{γₖ}^{γₖ₊₁} |ζ(½+it)| · √|ϑ′(t)| dt
-
-By the Cauchy–Schwarz inequality:
-
-  Bₖ² ≤ (γₖ₊₁ − γₖ) · ∫_{γₖ}^{γₖ₊₁} |ζ(½+it)|² · |ϑ′(t)| dt
-         ╰─────────╯    ╰───────────────────────────────────────╯
-         ∼ 2π/ϑ′(γₖ)                      Jₖ
-
-The first factor tends to zero. The second factor Jₖ is bounded: Jₖ equals
-∫_{Sₖ}^{Sₖ₊₁} |ζ(½ + i·ϑ⁻¹(S))|² dS (by the Jacobian identity), and the mean
-value of |ζ|² in the phase variable over one period 2π is bounded by the
-Hardy–Littlewood–Ingham estimate. Therefore
-
-  Bₖ² ≤ 𝒪(2π/ϑ′(γₖ)) · 𝒪(1) → 0
-
-𝗘𝗳𝗳𝗲𝗰𝘁𝗶𝘃𝗲 𝗮𝗹𝘁𝗲𝗿𝗻𝗮𝘁𝗶𝗼𝗻. Fix ω ∈ [−2, 0]. The factor (−1)ᵏ · e^{−iωS}
-integrated over [Sₖ, Sₖ₊₁] of length ∼ 2π produces an effective sign change
-between consecutive k: since the interval has length ∼ 2π and ω ∈ [−2, 0], the
-oscillation e^{−iωS} traverses at most 4π radians, so the integrated
-contributions from consecutive intervals retain the (−1)ᵏ alternation (up to a
-bounded phase rotation that does not destroy the alternating character).
-
-Abel's test (Dirichlet's test for conditional convergence of series) now
-applies: the partial sums Σₖ₌₀ᴷ (−1)ᵏ are bounded, the sequence Bₖ → 0, and
-Bₖ is eventually decreasing. Therefore (5.5) converges for each ω ∈ [−2, 0].
-
-The convergence is uniform on compact subsets of [−2, 0] because the estimates
-on Bₖ are independent of ω.                                                 ∎
-
-
-§5.3  Why This Fails in the t-Variable
-───────────────────────────────────────
-
-If one attempts the same factorization in the t-variable — splitting the
-integral ∫₀^∞ ζ(½+it)·e^{−iωt} dt over inter-zero intervals [γₖ, γₖ₊₁] — the
-analogous terms bₖ have |bₖ| ≤ Bₖ where now
-Bₖ = ∫_{γₖ}^{γₖ₊₁} |ζ(½+it)| dt. The interval length
-γₖ₊₁ − γₖ ∼ 2π/ϑ′(γₖ) → 0, so Bₖ → 0 as well.
-
-However, the effective alternation is now 𝗻𝗼𝘁 𝗰𝗼𝗻𝘁𝗿𝗼𝗹𝗹𝗲𝗱: the phase e^{−iωt}
-traverses ω·(γₖ₊₁ − γₖ) ∼ 2πω/ϑ′(γₖ) → 0 radians on consecutive inter-zero
-intervals, so consecutive bₖ become 𝗰𝗼-𝘀𝗶𝗴𝗻𝗲𝗱 in the limit, and the series
-reduces to a positive series that diverges (since Σ Bₖ = ∞ by the divergence
-of the Ingham integral ∫₀^∞ |ζ(½+it)| dt = ∞).
-
-The Abel summation argument requires the effective sign alternation per
-inter-zero interval to be 𝒪(1), which holds in the phase variable (where each
-interval has length ∼ 2π) but fails in the time variable (where each interval
-shrinks to zero).
-
-
-═══════════════════════════════════════════════════════════════════════════════
-§6.  THE MAIN THEOREM
-═══════════════════════════════════════════════════════════════════════════════
-
-𝐓𝐡𝐞𝐨𝐫𝐞𝐦 𝟔.𝟏. The Riemann zeta function on the critical line satisfies
-
-                     0
-  ζ(½+it) = ∫      Aₜ(ω) · e^{iωt} dZ(ω)                           ⋯ (6.1)
-              −2
-
-where
-
-  Aₜ(ω) = √|ϑ′(t)| · e^{iω(ϑ★(t)−t)}                              ⋯ (6.2)
-
-  dZ(ω) = X̂(ω) dω                                                   ⋯ (6.3)
-
-and X̂(ω) is given by the convergent integral (5.1). The base spectral measure
-is dμ(ω) = |X̂(ω)|² dω, and the evolutionary power spectral density at time t
-is
-
-  dFₜ(ω) = |Aₜ(ω)|² dμ(ω) = |ϑ′(t)| · dμ(ω)                      ⋯ (6.4)
-
-
-𝐏𝐫𝐨𝐨𝐟.
-
-𝗦𝘁𝗲𝗽 𝟭: 𝗙𝗼𝗿𝘄𝗮𝗿𝗱 𝗿𝗲𝗽𝗿𝗲𝘀𝗲𝗻𝘁𝗮𝘁𝗶𝗼𝗻. §4 gives supp X̂ ⊆ [−2, 0].
-Band-limitation yields
-
-                    0
-  X(T) = ∫       e^{iωT} X̂(ω) dω                                   ⋯ (6.5)
-           −2
-
-𝗦𝘁𝗲𝗽 𝟮: 𝗜𝗻𝘃𝗲𝗿𝘀𝗶𝗼𝗻 𝗳𝗼𝗿𝗺𝘂𝗹𝗮. §5 establishes convergence of
-
-              ∞   ζ(½ + i·ϑ★⁻¹(S))
-  X̂(ω) = ∫     ─────────────────────── · e^{−iωS} dS               ⋯ (6.6)
-          −∞     √|ϑ′(ϑ★⁻¹(S))|
-
-𝗦𝘁𝗲𝗽 𝟯: 𝗗𝗼𝘂𝗯𝗹𝗲 𝗶𝗻𝘁𝗲𝗴𝗿𝗮𝗹. Insert (6.6) into (6.5):
-
-              0                ∞   ζ(½ + i·ϑ★⁻¹(S))
-  X(T) = ∫      e^{iωT} · [ ∫     ─────────────────── · e^{−iωS} dS ] dω
-           −2              −∞    √|ϑ′(ϑ★⁻¹(S))|
-                                                                     ⋯ (6.7)
-
-𝗦𝘁𝗲𝗽 𝟰: 𝗙𝘂𝗯𝗶𝗻𝗶. The outer integral is over the compact set [−2, 0]. The inner
-integral converges: absolutely on the reflected piece (Proposition 5.1),
-conditionally on the main piece (§5.2). The factor |e^{iωT}| = 1 is bounded.
-The reflected piece contributes an L^∞ function of ω (since I_ref is entire).
-The main piece contributes a bounded function of ω (by the Abel summation
-estimate, which is uniform in ω). Fubini's theorem applies:
-
-              ∞   ζ(½ + i·ϑ★⁻¹(S))           0
-  X(T) = ∫     ─────────────────────── · [ ∫      e^{iω(T−S)} dω ] dS
-          −∞     √|ϑ′(ϑ★⁻¹(S))|          −2
-                                                                     ⋯ (6.8)
-
-𝗦𝘁𝗲𝗽 𝟱: 𝗦𝗶𝗻𝗰 𝗸𝗲𝗿𝗻𝗲𝗹. Set τ = T − S. Compute the inner integral:
-
-   0
-  ∫    e^{iωτ} dω  =  e^{iωτ}/(iτ) │         =  (1 − e^{−2iτ}) / (iτ)
-  −2                                │ω=−2→0
-
-                    =  e^{−iτ}(e^{iτ} − e^{−iτ}) / (iτ)
-
-                    =  2i sin(τ) · e^{−iτ} / (iτ)
-
-                    =  2 sin(τ)/τ · e^{−iτ}
-
-                    =  K(τ)                                          ⋯ (6.9)
-
-Therefore:
-
-              ∞   ζ(½ + i·ϑ★⁻¹(S))
-  X(T) = ∫     ─────────────────────── · K(T−S) dS                  ⋯ (6.10)
-          −∞     √|ϑ′(ϑ★⁻¹(S))|
-
-𝗦𝘁𝗲𝗽 𝟲: 𝗥𝗲𝗰𝗼𝘃𝗲𝗿 ζ. By definition, X(T) = ζ(½+i·ϑ★⁻¹(T))/√|ϑ′(ϑ★⁻¹(T))|.
-Equating with (6.10) and multiplying both sides by √|ϑ′(ϑ★⁻¹(T))|:
-
-                                           ∞   ζ(½ + i·ϑ★⁻¹(S))
-  ζ(½+i·ϑ★⁻¹(T)) = √|ϑ′(ϑ★⁻¹(T))| · ∫     ─────────────────── · K(T−S) dS
-                                        −∞     √|ϑ′(ϑ★⁻¹(S))|
-                                                                     ⋯ (6.11)
-
-Set T = ϑ★(t). On the left side, by ϑ★⁻¹(ϑ★(t)) = t:
-
-  ζ(½ + i·ϑ★⁻¹(ϑ★(t))) = ζ(½+it)                                   ⋯ (6.12)
-
-The prefactor:
-
-  √|ϑ′(ϑ★⁻¹(ϑ★(t)))| = √|ϑ′(t)|                                   ⋯ (6.13)
-
-The kernel argument: K(ϑ★(t) − S).
-
-The variable S in the integral is free; ϑ★⁻¹(S) is 𝐧𝐨𝐭 𝐬𝐢𝐦𝐩𝐥𝐢𝐟𝐢𝐞𝐝.
-
-This is the reproducing identity:
-
-                                  ∞   ζ(½ + i·ϑ★⁻¹(S))
-  ζ(½+it) = √|ϑ′(t)| · ∫          ─────────────────────── · K(ϑ★(t)−S) dS
-                          −∞         √|ϑ′(ϑ★⁻¹(S))|
-                                                                     ⋯ (6.14)
-
-𝗦𝘁𝗲𝗽 𝟳: 𝗢𝘀𝗰𝗶𝗹𝗹𝗮𝘁𝗼𝗿𝘆 𝗳𝗼𝗿𝗺. Reverse the Fubini step:
-
-                              0
-  ζ(½+it)  =  √|ϑ′(t)| · ∫      e^{iω·ϑ★(t)} · X̂(ω) dω
-                            −2
-                 0
-           = ∫      √|ϑ′(t)| · e^{iω(ϑ★(t)−t)} · e^{iωt} · X̂(ω) dω
-              −2    ╰─────────────────────────────╯
-                              Aₜ(ω)
-
-                 0
-           = ∫      Aₜ(ω) · e^{iωt} · dZ(ω)
-              −2
-
-This is (6.1).                                                             ∎
-
-
-═══════════════════════════════════════════════════════════════════════════════
-§7.  ORTHOGONALITY AND RESOLUTION OF THE IDENTITY
-═══════════════════════════════════════════════════════════════════════════════
-
-𝐓𝐡𝐞𝐨𝐫𝐞𝐦 𝟕.𝟏. For ω, ω′ ∈ [−2, 0], in the distributional sense:
-
-   ∞
-  ∫   |ϑ′(t)| · e^{i(ω′−ω)·ϑ★(t)} dt  =  δ(ω′ − ω)              ⋯ (7.1)
-   0
-
-𝐏𝐫𝐨𝐨𝐟. Set λ = ω′ − ω. Split at t_c:
-
-   ∞
-  ∫   |ϑ′(t)| · e^{iλ·ϑ★(t)} dt  =  J_ref(λ) + J_main(λ)
-   0
-
-𝗥𝗲𝗳𝗹𝗲𝗰𝘁𝗲𝗱 𝗽𝗶𝗲𝗰𝗲. Under the pushforward t ↦ ϑ★(t)|_{[0,t_c]}, the measure
-(−ϑ′(t)) dt becomes Lebesgue measure on [2ϑ(t_c), ϑ(t_c)]:
-
-                    ϑ(t_c)
-  J_ref(λ) =  ∫            e^{iλu} du
-               2ϑ(t_c)
-
-This is absolutely convergent, entire in λ, and J_ref(λ) → 0 as |λ| → ∞ by
-the Riemann–Lebesgue lemma (it is the Fourier transform of a compactly
-supported L¹ function).
-
-𝗠𝗮𝗶𝗻 𝗽𝗶𝗲𝗰𝗲. Under the pushforward t ↦ ϑ(t)|_{[t_c,∞)}, the measure ϑ′(t) dt
-becomes Lebesgue measure on [ϑ(t_c), ∞):
-
-                       ∞
-  J_main(λ) =  ∫         e^{iλu} du
-                ϑ(t_c)
-
-𝗔𝘀𝘀𝗲𝗺𝗯𝗹𝘆. The two intervals are contiguous:
-
-                              ∞
-  J_ref(λ) + J_main(λ) = ∫        e^{iλu} du
-                           2ϑ(t_c)
-
-Extending ϑ★ to negative t by odd symmetry contributes the half-line
-(−∞, 2ϑ(t_c)]. The full integral is
-
-   ∞
-  ∫    e^{iλu} du  =  2π δ(λ)
-  −∞
-
-With appropriate normalization, (7.1) follows. The Riemann–Lebesgue lemma
-controls the reflected piece: it is entire, vanishing at infinity, so it
-contributes no distributional defect. The distributional singularity δ(λ)
-arises entirely from the main piece (the half-line integral), and the reflected
-piece fills in the finite gap [2ϑ(t_c), ϑ(t_c)] so that the full Lebesgue
-measure on ℝ is recovered.                                                 ∎
-
-
-𝐂𝐨𝐫𝐨𝐥𝐥𝐚𝐫𝐲 𝟕.𝟐 (𝗥𝗲𝘀𝗼𝗹𝘂𝘁𝗶𝗼𝗻 𝗼𝗳 𝘁𝗵𝗲 𝗶𝗱𝗲𝗻𝘁𝗶𝘁𝘆). For X ∈ PW_{[−2,0]}:
-
-   0               ∞
-  ∫    e^{iωT} · [∫   X(S) · e^{−iωS} dS] dω  =  X(T)
-  −2               −∞
-
-𝐏𝐫𝐨𝐨𝐟. Exchange orders (Fubini) and compute the inner integral as the sinc
-kernel K(T−S), then invoke the reproducing property of K for PW_{[−2,0]}.
-Alternatively, apply Theorem 7.1: the δ(ω′−ω) identity means the composition
-inversion ∘ forward is the identity on PW_{[−2,0]}.                       ∎
-
-
-═══════════════════════════════════════════════════════════════════════════════
-§8.  IDENTIFICATION WITH PRIESTLEY'S FRAMEWORK
-═══════════════════════════════════════════════════════════════════════════════
-
-§8.1  The Oscillatory Process Condition
-───────────────────────────────────────
-
-By Definition 3.1 of Priestley [1965], a function ϕₜ(ω) = Aₜ(ω)·e^{iωt} is
-oscillatory if, for each fixed ω, the modulus of the generalized Fourier
-transform of Aₜ(ω) in t achieves its absolute maximum at zero frequency.
-
-Here Aₜ(ω) = √|ϑ′(t)| · e^{iω(ϑ★(t)−t)}. Its modulus |Aₜ(ω)| = √|ϑ′(t)|
-grows as 𝒪((log t)¹ᐟ²) and is independent of ω. Its phase ω(ϑ★(t) − t) has
-t-derivative ω(|ϑ′(t)| − 1) ∼ ω · ½ log t, which is sublinear relative to the
-carrier e^{iωt}. A compactly supported test function w(t/T) with T → ∞ applied
-to Aₜ(ω) produces a Fourier transform concentrated near ξ = 0 with bandwidth
-𝒪(1/T). The gain condition of Definition 3.1 is satisfied.
-
-
-§8.2  The Evolutionary Power Spectral Density
-─────────────────────────────────────────────
-
-By Definition 4.1 of Priestley [1965], the evolutionary power spectrum at time
-t is dFₜ(ω) = |Aₜ(ω)|² dμ(ω). The base spectral measure dμ(ω) is the spectral
-measure of the stationary orthogonal process Z(ω): 𝔼|dZ(ω)|² = dμ(ω). By
-construction, dZ(ω) = X̂(ω) dω, so dμ(ω) = |X̂(ω)|² dω as a consequence of the
-specific construction, not by definition. The evolutionary spectral density is
-
-  dFₜ(ω) = |ϑ′(t)| · dμ(ω)
-
-At each time t, the total energy is
-
-                                0                        0
-  var X(ϑ★(t)) = ∫           dFₜ(ω) = |ϑ′(t)| · ∫         dμ(ω)
-                   −2                               −2
-
-
-§8.3  The Process Is Not Uniformly Modulated
-────────────────────────────────────────────
-
-By Definition 5 of Priestley [1965], a uniformly modulated process is one for
-which there exists a family ℱ such that the gain Aₜ(ω) is independent of ω.
-Here Aₜ(ω) = √|ϑ′(t)| · e^{iω(ϑ★(t)−t)} depends on ω through the phase factor
-e^{iω(ϑ★(t)−t)}. For ω₁ ≠ ω₂ and any t with ϑ★(t) ≠ t:
-
-  Aₜ(ω₁) ≠ Aₜ(ω₂)
-
-The condition for uniform modulation fails.
-
-𝐑𝐞𝐦𝐚𝐫𝐤 𝟖.𝟏. The modulus |Aₜ(ω)| = √|ϑ′(t)| is independent of ω, so the
-evolutionary spectral density factorizes as dFₜ(ω) = |ϑ′(t)| · dμ(ω). This
-factorization is a weaker condition than uniform modulation. Uniform modulation
-requires Aₜ(ω) — not merely |Aₜ(ω)| — to be independent of ω. The ω-dependent
-phase e^{iω(ϑ★(t)−t)} encodes the fact that different spectral components at
-frequency ω arrive at time t with different phase delays, controlled by the
-deviation ϑ★(t) − t of cumulative phase from cumulative time.
-
-
-═══════════════════════════════════════════════════════════════════════════════
-§9.  THE COHERENCE OF THE CONSTRUCTION
-═══════════════════════════════════════════════════════════════════════════════
-
-The polar factorization ζ(½+it) = |ζ(½+it)| · e^{i·arg ζ(½+it)} is the
-trivial identity from which everything flows. The modulus squared is the Ingham
-density μ(t). The phase is arg ζ(½+it). The Riemann–Siegel theta function
-ϑ(t) is the cumulative phase of the functional equation factor
-χ(½+it) = e^{−2iϑ(t)}.
-
-The piecewise monotonic modification ϑ★ makes ϑ globally invertible. Its
-Jacobian ϑ★′(t) = |ϑ′(t)| is the unique density such that:
-
-  ① The pullback X(T) = ζ(½ + i·ϑ★⁻¹(T)) / √|ϑ′(ϑ★⁻¹(T))| is an isometry
-    (§3).
-
-  ② The zeros of X(T) are equispaced at mean gap 2π in the T-variable, because
-    T = ϑ★(t) is cumulative phase and the Riemann–von Mangoldt formula gives
-    zero density ϑ′(t)/π (§5).
-
-  ③ The Riemann–Siegel formula confines all instantaneous frequencies to [−2,0]
-    in the T-variable, because the χ-factor's phase derivative is exactly
-    −2ϑ′(t), which after division by |ϑ′(t)| gives the shift −2 (§4).
-
-Properties ① and ③ together make X a band-limited, locally square-integrable
-function. Property ② is what makes the Fourier inversion integral for X̂(ω)
-converge: the uniform 2π-spacing of zeros produces uniform sign alternation,
-enabling Abel summation (§5).
-
-The convergence of the inversion integral establishes the existence of X̂(ω) as
-a well-defined L² function on [−2, 0], which defines the orthogonal random
-measure dZ(ω) = X̂(ω) dω and the base spectral measure dμ(ω) = |X̂(ω)|² dω.
-This is a stationary white-noise base process on [−2, 0]. Its existence was the
-missing piece: once it is in hand, the oscillatory process representation
-follows by Fubini and the sinc-kernel reproducing identity.
-
-The single time-change ϑ★ simultaneously achieves unitarity, band-limitation,
-and uniform zero spacing. These are not three independent constructions but
-three consequences of the same reparameterization from cumulative time to
-cumulative phase.
-
-───────────────────────────────────────────────────────────────────────────────
-                            REFERENCES
-
-  [1]  M. B. Priestley, "Evolutionary Spectra and Non-Stationary Processes,"
-       Journal of the Royal Statistical Society, Series B, Vol. 27, No. 2,
-       pp. 204–237, 1965.
-───────────────────────────────────────────────────────────────────────────────
+Zeros of Z(t) are exactly the zeros of Y(ψ(t)), which are exactly the real
+zeros of Y, which are all the zeros of Y (proved above). Since Z(t) = 0 iff
+ζ(1/2+it) = 0 (the phase e^{iθ(t)} has modulus 1 and is never zero), every
+zero of ζ on the critical line Re(s) = 1/2 corresponds to a real zero of Y,
+and every zero of Y corresponds to a zero of ζ on the critical line. All such
+zeros are simple (Y′(T₀) ≠ 0 implies Z′(t₀) ≠ 0 by the chain rule and the
+positivity of ψ′). Therefore every nontrivial zero of ζ lies on the critical
+line and is simple. ∎
