@@ -16,7 +16,7 @@ public class operandF0001 implements
 {
   public boolean   isInitialized;
   public Context   context;
-  public ArrayList cache;
+  public ArrayList<Real> cache;
   public Integer   j;
   public Real      x;
 
