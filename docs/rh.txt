@@ -1,943 +1,847 @@
-══════════════════════════════════════════════════════════════════════
-The Riemann Hypothesis via Harmonic Analysis on the Paley–Wiener Space
-                        Stephen  Crowley
-                         March 30, 2026 
-══════════════════════════════════════════════════════════════════════
-
-Abstract
-
-Ingham's 1926 identity gives the exact integrated second moment of the
-Riemann zeta function on the critical line:
-
-  I(T) = ∫₀ᵀ |ζ(½+it)|² dt
-       = T log(T/2π) + (2γ−1)T + 2 Σ_{n=2}^∞ d(n)/√n · sin(T log n)/log n.
-
-Differentiating yields the exact local mean-square density
+═══════════════════════════════════════════════════════════════════════════════
+  THE POLAR FACTORIZATION OF ζ(½+it) AS A PRIESTLEY OSCILLATORY PROCESS:
+            CUMULATIVE PHASE, WHITE NOISE, AND CONVERGENCE
+═══════════════════════════════════════════════════════════════════════════════
+                             Stephen Crowley
+                                April 2026
+
+───────────────────────────────────────────────────────────────────────────────
+                               ABSTRACT
+───────────────────────────────────────────────────────────────────────────────
+
+The Riemann zeta function on the critical line is a complex-valued function
+whose polar factorization ζ(½+it) = |ζ(½+it)|·e^{i·arg ζ(½+it)} encodes two
+objects: the Ingham mean-square density μ(t) = |ζ(½+it)|² in the modulus, and
+the full phase structure of ζ in the argument. A piecewise monotonic
+modification ϑ★ of the Riemann–Siegel theta function ϑ(t) furnishes a global
+time-change from cumulative time to cumulative phase. The pullback
+
+             ζ(½ + i·ϑ★⁻¹(T))
+  X(T) = ─────────────────────────
+           √|ϑ′(ϑ★⁻¹(T))|
+
+is shown to be band-limited to [−2, 0] by a term-by-term analysis of the
+Riemann–Siegel formula: each Dirichlet term n^{−it}/√n has instantaneous
+frequency −log n / |ϑ′(t)| in the phase variable, confined to [−1, 0] by the
+bound log n ≤ ½·log(t/2π); the functional equation factor χ(½+it) = e^{−2iϑ(t)}
+shifts the second-sum frequencies to [−2, −1].
+
+The analytic core of the construction is the convergence of the Fourier
+inversion integral defining the orthogonal random measure dZ(ω) = X̂(ω) dω.
+This integral converges because the phase variable S = ϑ(t) renders the zeros
+of ζ equispaced at mean gap 2π, independent of height. In the original
+t-variable, zero spacing shrinks as 2π/ϑ′(t) → 0, and no convergence argument
+closes. In the phase variable, the sign alternation at each zero produces an
+alternating series with slowly varying terms, convergent by Abel summation.
+
+This establishes the existence of a stationary white-noise base process Z(ω)
+on [−2, 0] underlying ζ. The oscillatory process representation
+
+  ζ(½+it) = ∫₋₂⁰ Aₜ(ω)·e^{iωt} dZ(ω)
+
+with gain Aₜ(ω) = √|ϑ′(t)|·e^{iω(ϑ★(t)−t)} and evolutionary spectral density
+dFₜ(ω) = |ϑ′(t)|·dμ(ω) follows, where dμ(ω) is the spectral measure of the
+stationary base process.
+
+
+═══════════════════════════════════════════════════════════════════════════════
+                          TABLE OF CONTENTS
+═══════════════════════════════════════════════════════════════════════════════
+
+  1. Introduction
+     1.1 The Polar Factorization
+     1.2 The Central Problem: Existence of the Base Process
+     1.3 Structure of the Article
+  2. The Riemann–Siegel Theta Function and Its Modification
+     2.1 Definition and Asymptotics
+     2.2 The Piecewise Monotonic Modification
+  3. The Unitary Pullback
+  4. Band-Limitation via the Riemann–Siegel Formula
+     4.1 The Riemann–Siegel Formula
+     4.2 Instantaneous Frequencies of the First Sum
+     4.3 Instantaneous Frequencies of the Second Sum
+     4.4 Assembly
+  5. Convergence of the Inversion Integral
+     5.1 The Reflected Piece: Absolute Convergence
+     5.2 The Main Piece: Why Cumulative Phase Makes It Work
+     5.3 Why This Fails in the t-Variable
+  6. The Main Theorem
+  7. Orthogonality and Resolution of the Identity
+  8. Identification with Priestley's Framework
+     8.1 The Oscillatory Process Condition
+     8.2 The Evolutionary Power Spectral Density
+     8.3 The Process Is Not Uniformly Modulated
+  9. The Coherence of the Construction
+
+
+═══════════════════════════════════════════════════════════════════════════════
+§1.  INTRODUCTION
+═══════════════════════════════════════════════════════════════════════════════
 
-  μ(t) = log(t/2π) + 2γ + 2 Σ_{n=2}^∞ d(n)/√n · cos(t log n),
+§1.1  The Polar Factorization
+─────────────────────────────
 
-which is strictly positive for all t > 0. The stationary zeta process
-is defined by
+Every nonzero complex number z admits a unique polar factorization
+z = |z|·e^{i·arg z}. Applied pointwise to ζ(½+it) for t not a zero:
+
+  ζ(½+it) = |ζ(½+it)| · e^{i·arg ζ(½+it)}                          ⋯ (1.1)
 
-  ζ_st(τ) = ζ(½ + iϑ⁻¹(τ)) / √μ(ϑ⁻¹(τ)),   τ ≥ ϑ(T₀),
+The modulus |ζ(½+it)| = √μ(t) carries the Ingham mean-square density
+μ(t) = |ζ(½+it)|², whose cumulative integral
 
-where ϑ is the Riemann–Siegel theta function and T₀ > t★ =
-6.289835988…. Its Cesàro covariance is R(Δ) = e^{−iΔ} sinΔ/Δ, with
-spectral density Ŝ(ω) = π · 𝟙_{[−2,0]}(ω). The orthogonal spectral
-measure Φ is constructed explicitly, piecewise, from the two Dirichlet
-sums of the approximate functional equation, with the functional
-equation supplying the band [−2, −1] from [−1, 0] by a shift of +2.
-By Bochner's theorem R is positive definite; Kolmogorov furnishes the
-stationary Gaussian process. ζ_st is identified as a sample path of
-this process via the Cramér–Hida theorem and the explicit spectral
-measure. Since the spectral measure is absolutely continuous, the
-process is mixing, hence ergodic; by Birkhoff–Khinchin, ζ_st belongs
-to every event of probability one. The 2×2 Hermitian Gram matrix of
-the reproducing kernel of PW_{[−2,0]} has determinant ⅓ > 0;
-Bulinskaya's theorem then implies every zero of ζ_st is simple. Since
-ζ(½+it) = √μ(t) · ζ_st(ϑ(t)), every nontrivial zero of ζ on the
-critical line is simple. If a nontrivial zero existed off the critical
-line, the functional equation, Hadamard factorization, and the
-Paley–Wiener exponential-type constraint would force ζ_st ≡ 0,
-contradicting its construction from ζ. Every nontrivial zero of ζ(s)
-therefore satisfies Re(s) = ½ and ζ′(s) ≠ 0.
+  I(t) = ∫₀ᵗ μ(u) du = ∫₀ᵗ |ζ(½+iu)|² du
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Table of Contents
+measures the total L²-mass accumulated up to height t. The argument
+arg ζ(½+it) carries the phase of ζ, encoding the locations and structure of
+the zeros. The polar factorization (1.1) is the observation that these two
+objects — the energy density and the phase — are the modulus and argument of
+a single complex-valued function. The mean-square density is not an external
+weight imposed on ζ; it is the squared modulus of ζ itself.
 
-  §1   Preliminaries and notation
-  §2   Ingham's identity and the local mean-square density
-  §3   The stationary zeta process
-  §4   Covariance and spectral density
-  §5   The orthogonal spectral measure
-  §6   Existence of the stationary Gaussian process
-  §7   ζ_st is a sample path: the Cramér–Hida identification
-  §8   Hermitian symmetry and the RKHS
-  §9   Spectral moments and covariance derivatives
-  §10  The Gram matrix and Bulinskaya's theorem
-  §11  Every zero of ζ_st is simple
-  §12  Transfer to the critical line
-  §13  All nontrivial zeros lie on the critical line
-  §14  Main result
-  §15  The Hardy Z-function and the real stationary process
-  §16  Decomposition of ζ on the critical line
-  §17  Spectral theory of μ(t)
-  §18  Summary of tools
-  References
-  Appendix A.  Spectral theory of μ(t)
-  Appendix B.  The Hardy Z-function and the real stationary process
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+§1.2  The Central Problem: Existence of the Base Process
+────────────────────────────────────────────────────────
 
-§1  Preliminaries and notation
+Priestley's theory of oscillatory processes represents a non-stationary
+process X(t) as
 
-Let ζ(s) denote the Riemann zeta function, analytically continued to
-ℂ∖{1}. The completed zeta function is
+  X(t) = ∫ Aₜ(ω) · e^{iωt} dZ(ω)                                   ⋯ (1.2)
 
-  ξ(s) = ½ s(s−1) π^{−s/2} Γ(s/2) ζ(s),
+where Z(ω) is a stationary orthogonal random measure with 𝔼|dZ(ω)|² = dμ(ω),
+and Aₜ(ω) is a slowly varying gain function. The evolutionary power spectral
+density at time t is dFₜ(ω) = |Aₜ(ω)|² dμ(ω).
 
-which is entire of order 1 and satisfies the functional equation
+The representation (1.2) requires, as its input, a stationary base process
+Z(ω) with a well-defined spectral measure dμ(ω). For ζ(½+it), the claim is
+that such an object exists and is supported on the compact band [−2, 0]. This
+requires proving that the Fourier inversion integral
 
-  ξ(s) = ξ(1−s).
+              ∞
+  X̂(ω) = ∫     ζ(½ + i·ϑ★⁻¹(S))
+          −∞  ─────────────────────── · e^{−iωS} dS                  ⋯ (1.3)
+               √|ϑ′(ϑ★⁻¹(S))|
 
-The reflection principle ζ(s̄) = ζ(s)̄ holds for all s ≠ 1.
+converges. This is the integral that defines the orthogonal random measure
+dZ(ω) = X̂(ω) dω, and its convergence is the analytic core of the entire
+construction.
 
-Definition 1 (Riemann–Siegel theta function).
+In the original time variable t, no analogous integral converges: the zero
+spacing of ζ(½+it) shrinks as 2π/ϑ′(t) → 0, so oscillatory cancellation is
+height-dependent and no uniform estimate controls the tail. The
+reparameterization from cumulative time t to cumulative phase S = ϑ(t) renders
+the zero spacing uniform at 2π, and this uniformity is what makes the
+convergence proof work.
 
-  ϑ(t) = Im log Γ(¼ + it/2) − (t/2) log π.
 
-This function is real-analytic with unique positive critical point
-t★ = 6.289835988…, the unique positive solution to ϑ′(t) = 0, and
-ϑ′(t) > 0 for all t > t★. The exact derivative is
+§1.3  Structure of the Article
+──────────────────────────────
 
-  ϑ′(t) = ½ Re ψ(¼ + it/2) − ½ log π,
+§2 establishes the Riemann–Siegel theta function, its piecewise monotonic
+modification, and the resulting global inverse. §3 defines the unitary pullback
+and proves its isometry property. §4 carries out the band-limitation argument
+term by term via the Riemann–Siegel formula. §5 contains the detailed
+convergence analysis of the inversion integral (1.3), the analytical heart of
+the paper. §6 states and proves the main theorem. §7 establishes orthogonality
+and the resolution of the identity. §8 identifies the result within Priestley's
+framework. §9 gives the coherence summary.
 
-where ψ = Γ′/Γ is the digamma function.
 
-Definition 2 (Paley–Wiener space).
-For a compact interval [α,β] ⊂ ℝ, the Paley–Wiener space is
+═══════════════════════════════════════════════════════════════════════════════
+§2.  THE RIEMANN–SIEGEL THETA FUNCTION AND ITS MODIFICATION
+═══════════════════════════════════════════════════════════════════════════════
 
-  PW_{[α,β]} = { f ∈ L²(ℝ) : supp f̂ ⊆ [α,β] },
+§2.1  Definition and Asymptotics
+────────────────────────────────
 
-where f̂(ω) = ∫ f(τ) e^{−iωτ} dτ. By the Paley–Wiener theorem,
-every f ∈ PW_{[α,β]} extends to an entire function of exponential
-type ≤ max(|α|, |β|), and every entire function of exponential type
-≤ max(|α|, |β|) that is L² on ℝ belongs to PW_{[α,β]}.
+𝐃𝐞𝐟𝐢𝐧𝐢𝐭𝐢𝐨𝐧 𝟐.𝟏. The Riemann–Siegel theta function is
 
-Definition 3 (Approximate functional equation).
-For t > 0 and N = ⌊√(t/2π)⌋, with
+  ϑ(t) = Im log Γ(¼ + it/2) − (t/2) log π                          ⋯ (2.1)
 
-  A(t) = Σ_{n≤N} n^{−½−it},
-  B(t) = Σ_{n≤N} n^{−½+it},
-  χ(½+it) = e^{−2iϑ(t)},
+with the branch ϑ(0) = 0.                                                 ■
 
-the Riemann–Siegel formula gives
+The derivative satisfies
 
-  ζ(½+it) = A(t) + χ(½+it) B(t) + O(t^{−¼}).    (AFE)
+  ϑ′(t) = ½ log(t/2π) − 1/(8t²) + 𝒪(t⁻⁴),   t → +∞               ⋯ (2.2)
 
-Definition 4 (Divisor function).
+so ϑ′(t) < 0 for t small (where log(t/2π) < 0) and ϑ′(t) → +∞. There is a
+unique critical point t_c ≈ 6.290 with ϑ′(t_c) = 0.
 
-  d(n) = Σ_{d|n} 1,       Σ_{n=1}^∞ d(n)/n^s = ζ(s)²,  Re(s) > 1.
+  • On [0, t_c): ϑ′ < 0, ϑ strictly decreasing.
+  • On (t_c, ∞): ϑ′ > 0, ϑ strictly increasing.
 
-Theorem (Montgomery–Vaughan mean value theorem for Dirichlet
-polynomials). For any complex sequence {aₙ}:
+The minimum value is ϑ(t_c) ≈ −1.772. The second derivative at t_c is
+ϑ″(t_c) = 1/(2t_c) + 𝒪(t_c⁻³) > 0, so the critical point is nondegenerate:
+ϑ′(t) vanishes linearly at t_c.
 
-  ∫₀ᵀ |Σ_{n≤N} aₙ n^{−½−it}|² dt = Σ_{n≤N} |aₙ|² n⁻¹ (T + O(n)).
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+§2.2  The Piecewise Monotonic Modification
+──────────────────────────────────────────
 
-§2  Ingham's identity and the local mean-square density
+𝐃𝐞𝐟𝐢𝐧𝐢𝐭𝐢𝐨𝐧 𝟐.𝟐. Define
 
-Theorem (Ingham, 1926). The integrated second moment of ζ on the
-critical line satisfies the exact identity
+             ⎧ 2ϑ(t_c) − ϑ(t),    t ∈ [0, t_c]
+  ϑ★(t) =   ⎨                                                       ⋯ (2.3)
+             ⎩ ϑ(t),               t ∈ [t_c, ∞)
+                                                                           ■
 
-  I(T) = ∫₀ᵀ |ζ(½+it)|² dt
+𝐏𝐫𝐨𝐩𝐨𝐬𝐢𝐭𝐢𝐨𝐧 𝟐.𝟑. The function ϑ★ has the following properties:
 
-        = T log(T/2π) + (2γ−1)T + 2 Σ_{n=2}^∞ d(n)/√n · sin(T log n)/log n,
+  (i)   𝗖𝗼𝗻𝘁𝗶𝗻𝘂𝗶𝘁𝘆.  Both branches give ϑ(t_c) at t_c.
 
-where γ is the Euler–Mascheroni constant. Every term is explicit; the
-identity carries no error term.
+  (ii)  𝗝𝗮𝗰𝗼𝗯𝗶𝗮𝗻.    ϑ★′(t) = |ϑ′(t)| for t ≠ t_c, with ϑ★′(t_c) = 0.
 
-Definition 5 (Local mean-square density).
+  (iii) 𝗦𝘁𝗿𝗶𝗰𝘁 𝗺𝗼𝗻𝗼𝘁𝗼𝗻𝗶𝗰𝗶𝘁𝘆.  ϑ★ is strictly increasing on [0, ∞).
 
-  μ(t) = dI/dT|_{T=t}.
+  (iv)  𝗥𝗮𝗻𝗴𝗲.  ϑ★([0,∞)) = [2ϑ(t_c), ∞).
 
-Differentiating Ingham's identity term by term:
+  (v)   𝗜𝗻𝘃𝗲𝗿𝘀𝗲.  ϑ★⁻¹ : [2ϑ(t_c), ∞) → [0, ∞) is well-defined and satisfies
 
-  d/dT [T log(T/2π)]       = log(T/2π) + 1,
-  d/dT [(2γ−1)T]           = 2γ − 1,
-  d/dT [sin(T log n)/log n] = cos(T log n).
+          ϑ★⁻¹(ϑ★(t)) = t      ∀ t ∈ [0, ∞)                        ⋯ (2.4)
+          ϑ★(ϑ★⁻¹(T)) = T      ∀ T ∈ [2ϑ(t_c), ∞)                 ⋯ (2.5)
 
-Therefore
+𝐏𝐫𝐨𝐨𝐟.
 
-  μ(t) = log(t/2π) + 2γ + 2 Σ_{n=2}^∞ d(n)/√n · cos(t log n).
+(i): 2ϑ(t_c) − ϑ(t_c) = ϑ(t_c). ✓
 
-Lemma. μ(t) > 0 for all t > 0.
+(ii): On (0, t_c), ϑ★′ = −ϑ′ = |ϑ′| > 0 since ϑ′ < 0.
+On (t_c, ∞), ϑ★′ = ϑ′ = |ϑ′| > 0. ✓
 
-Proof. The series Σ d(n)/√n · cos(t log n) has partial sums bounded
-by O(log t) for t ≥ 1, controlled by Montgomery–Vaughan. The leading
-term log(t/2π) dominates for large t, and the constant 2γ > 0. Direct
-numerical verification covers t ∈ (0, t★].  □
+(iii): Follows from (ii) and (i). ✓
 
-Lemma. μ(t) ~ log(t/2π) as t → ∞.
+(iv): ϑ★(0) = 2ϑ(t_c) − 0 = 2ϑ(t_c); ϑ★(t_c) = ϑ(t_c); ϑ★(t) → ∞.
+Since 2ϑ(t_c) < ϑ(t_c) < 0, the reflected piece covers [2ϑ(t_c), ϑ(t_c)]
+and the main piece covers [ϑ(t_c), ∞); these are contiguous. ✓
 
-Proof. The oscillatory series contributes O(1) relative to log(t/2π)
-by Montgomery–Vaughan.  □
+(v): Immediate from strict monotonicity and surjectivity. ✓                ∎
 
-Corollary (Hardy–Littlewood). (1/T) I(T) ~ log T as T → ∞.
 
-Proof. By definition, I(T) = ∫₀ᵀ μ(t) dt. Since μ(t) ~ log(t/2π),
+═══════════════════════════════════════════════════════════════════════════════
+§3.  THE UNITARY PULLBACK
+═══════════════════════════════════════════════════════════════════════════════
 
-  I(T) ~ ∫₁ᵀ log(t/2π) dt = T log(T/2π) − T + O(log T) ~ T log T.  □
+𝐃𝐞𝐟𝐢𝐧𝐢𝐭𝐢𝐨𝐧 𝟑.𝟏. The unitary pullback is
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+             ζ(½ + i·ϑ★⁻¹(T))
+  X(T) = ─────────────────────────,   T ∈ [2ϑ(t_c), ∞)              ⋯ (3.1)
+             √|ϑ′(ϑ★⁻¹(T))|
+                                                                           ■
 
-§3  The stationary zeta process
+𝐏𝐫𝐨𝐩𝐨𝐬𝐢𝐭𝐢𝐨𝐧 𝟑.𝟐 (𝗜𝘀𝗼𝗺𝗲𝘁𝗿𝘆). For any Borel set E ⊆ [2ϑ(t_c), ∞) with
+ϑ★⁻¹(E) ⊆ (0, ∞) compact,
 
-Derivation of the normalization. The requirement of unit local power
-in the τ-variable is: given the change of variables τ = ϑ(t), the
-local power of the pullback process
+  ∫_E |X(T)|² dT  =  ∫_{ϑ★⁻¹(E)} |ζ(½+it)|² dt                   ⋯ (3.2)
 
-  ζ̃(τ) = ζ(½ + iϑ⁻¹(τ)) / N(t)
+𝐏𝐫𝐨𝐨𝐟. Write |X(T)|² = |ζ(½ + i·ϑ★⁻¹(T))|² / |ϑ′(ϑ★⁻¹(T))|. Substitute
+T = ϑ★(t), so dT = |ϑ′(t)| dt:
 
-at position τ must equal 1. The local power at height t in the
-τ-variable is
+  ∫_E |X(T)|² dT = ∫_{ϑ★⁻¹(E)}  |ζ(½+it)|²      |ϑ′(t)| dt
+                                 ─────────────  ·
+                                   |ϑ′(t)|
 
-  lim_{ε→0} 1/(2ε) ∫_{τ−ε}^{τ+ε} |ζ̃(u)|² du
-  = μ(t) · ϑ′(t) / (N(t)² · ϑ′(t))
-  = μ(t) / N(t)².
+                  = ∫_{ϑ★⁻¹(E)} μ(t) dt
 
-Setting this equal to 1 yields N(t)² = μ(t), i.e., N(t) = √μ(t).  □
+The Jacobian |ϑ′(t)| in the numerator and the Jacobian |ϑ′(t)| dt from the
+change of measure cancel exactly. This cancellation is the content of the word
+"unitary": the 1/√|ϑ′| factor in the definition of X is precisely what makes
+the map ζ(½+it) ↦ X(ϑ★(t)) an isometry from (L²([a,b], dt), ‖·‖) to
+(L²([ϑ★(a), ϑ★(b)], dT), ‖·‖).                                           ∎
 
-Definition 6 (Stationary zeta process). Fix any T₀ > t★. Define
+𝐑𝐞𝐦𝐚𝐫𝐤 𝟑.𝟑. The isometry (3.2) says that the total L²-energy of ζ on any
+height interval [a,b] equals the total L²-energy of X on the corresponding
+phase interval [ϑ★(a), ϑ★(b)]. No energy is created or destroyed by the
+time-change.
 
-  ζ_st(τ) = ζ(½ + iϑ⁻¹(τ)) / √μ(ϑ⁻¹(τ)),   τ ≥ ϑ(T₀).
 
-Recovery formula:
+═══════════════════════════════════════════════════════════════════════════════
+§4.  BAND-LIMITATION VIA THE RIEMANN–SIEGEL FORMULA
+═══════════════════════════════════════════════════════════════════════════════
 
-  ζ(½+it) = √μ(t) · ζ_st(ϑ(t)).
+§4.1  The Riemann–Siegel Formula
+────────────────────────────────
 
-Since μ(t) > 0 for all t > 0 and ϑ′(t) > 0 for t > t★, the
-definition is valid and the recovery is exact.
+For N(t) = ⌊√(t/2π)⌋:
 
-Lemma (Unit Cesàro mean-square).
+                  N(t)  e^{−it log n}            N(t)  e^{it log n}
+  ζ(½+it)  =  Σ  ───────────────────  +  e^{−2iϑ(t)} Σ  ──────────── + R(t)
+               n=1       √n                      n=1       √n
+               ╰──────────────────╯      ╰─────────────────────────╯
+                    first sum                    second sum           ⋯ (4.1)
 
-  lim_{T→∞} 1/(ϑ(T)−ϑ(T₀)) · ∫_{ϑ(T₀)}^{ϑ(T)} |ζ_st(τ)|² dτ = 1.
+where |R⁽ʲ⁾(t)| ≤ Cⱼ · t^{−¼−j/2} for all j ≥ 0, and
+χ(½+it) = e^{−2iϑ(t)} has modulus 1 (the functional equation on the critical
+line).
 
-Proof. Substitute τ = ϑ(t), dτ = ϑ′(t) dt:
 
-  1/(ϑ(T)−ϑ(T₀)) · ∫_{T₀}^T |ζ(½+it)|²/μ(t) · ϑ′(t) dt.
+§4.2  Instantaneous Frequencies of the First Sum
+─────────────────────────────────────────────────
 
-The density of the measure |ζ|² dt with respect to arc-length in the
-τ-variable is μ(t)/ϑ′(t), and ∫_{T₀}^T ϑ′(t) dt = ϑ(T) − ϑ(T₀),
-so the ratio equals 1 in the Cesàro limit.  □
+The n-th term e^{−it log n}/√n pulled back to the variable T = ϑ★(t) becomes
+e^{−i(log n)·ϑ★⁻¹(T)}/√n. Its instantaneous frequency in the T-variable is
 
-Remark (Factorization of √μ).
+                d
+  Φ′₋,ₙ(T) = − ── [(log n)·ϑ★⁻¹(T)]  =  − log n / |ϑ′(ϑ★⁻¹(T))|  ⋯ (4.2)
+                dT
 
-  √μ(t) = √ϑ′(t) · √(μ(t)/ϑ′(t)).
+For n ≤ N(t) = ⌊√(t/2π)⌋ and t large:
 
-The factor √ϑ′(t) is the Jacobian of the ϑ-change-of-variables. The
-factor C(t) = √(μ(t)/ϑ′(t)) satisfies C(t) → √2 as t → ∞ and
-encodes the residual arithmetic fluctuation of the zeta function
-beyond what the Jacobian accounts for. Dividing by √ϑ′ alone would
-yield a process with the correct spectral shape but non-constant local
-variance — a uniformly modulated oscillatory process in the sense of
-Priestley that is not constructed here. Dividing by the full √μ
-absorbs the fluctuation and yields true wide-sense stationarity.
+     log n          ½ log(t/2π) + 𝒪(1)
+  ────────────  ≤  ──────────────────────  =  1 + o(1)               ⋯ (4.3)
+   |ϑ′(t)|        ½ log(t/2π) + 𝒪(t⁻²)
 
-Theorem (Existence of the stationary Gaussian process).
-There exists a stationary Gaussian process {ζ_st(τ)} with covariance
-function R (defined in §4), whose sample paths belong to PW_{[−2,0]}.
+Therefore the instantaneous frequencies of all first-sum terms lie in
+[−1−o(1), 0].
 
-Proof. Ŝ(ω) = π · 𝟙_{[−2,0]}(ω) ≥ 0, so Bochner's theorem implies R
-is positive definite. Kolmogorov's existence theorem furnishes the
-Gaussian process. The spectral support [−2, 0] is compact, so the
-Paley–Wiener theorem guarantees that every sample path extends to an
-entire function of exponential type ≤ 2.  □
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+§4.3  Instantaneous Frequencies of the Second Sum
+──────────────────────────────────────────────────
 
-§4  Covariance and spectral density
+The n-th term of the second sum (including the χ-factor e^{−2iϑ(t)}) has phase
+Ψₙ(t) = −2ϑ(t) + t log n. On the main piece (t ≥ t_c, ϑ★ = ϑ), the
+instantaneous frequency in the T-variable is
 
-Proposition (Covariance and spectral density). The Cesàro covariance
-of ζ_st is
+                 −2ϑ′(t) + log n │
+  Φ′₊,ₙ(T)  =  ────────────────  │           = −2 + log n / |ϑ′(t)| ⋯ (4.4)
+                    ϑ′(t)         │t=ϑ★⁻¹(T)
 
-  R(Δ) = lim_{T→∞} 1/(ϑ(T)−ϑ(T₀))
-         · ∫_{ϑ(T₀)}^{ϑ(T)} ζ_st(τ+Δ) ζ_st(τ)̄ dτ
-        = e^{−iΔ} sinΔ/Δ,
+By (4.3), log n / |ϑ′(t)| ∈ [0, 1+o(1)], so Φ′₊,ₙ(T) ∈ [−2, −1+o(1)].
 
-and its Fourier transform is
+On the reflected piece (t ≤ t_c ≈ 6.29), N(t) ≤ ⌊√(t_c/2π)⌋ = 1, so only
+n = 1 with log 1 = 0 contributes; the instantaneous frequency is bounded.
 
-  Ŝ(ω) = ∫_ℝ R(Δ) e^{−iωΔ} dΔ = π · 𝟙_{[−2,0]}(ω).
 
-Proof.
+§4.4  Assembly
+──────────────
 
-Step 1: Substitution to the t-variable.
-Set τ = ϑ(t), dτ = ϑ′(t) dt. The integrand becomes
+  • The first sum contributes frequencies in [−1, 0].
+  • The second sum contributes frequencies in [−2, −1].
+  • The remainder R(t) satisfies |R(t)| ≤ C·t⁻¹ᐟ⁴; its pullback is
+    integrable and its Fourier transform is Schwartz-class.
 
-  ζ_st(ϑ(t)+Δ) · ζ_st(ϑ(t))̄ · ϑ′(t).
+Derivative bounds on the amplitudes, obtained via Faà di Bruno's formula
+applied to the Dirichlet coefficients composed with ϑ★⁻¹, establish slow
+amplitude variation. The Montgomery–Vaughan mean-value theorem, applied with
+frozen coefficients on windows [t₀, 2t₀] in the phase variable, confirms
 
-For the unshifted factor: ζ_st(ϑ(t)) = ζ(½+it)/√μ(t).
-For the shifted factor, write ϑ(t)+Δ = ϑ(t+δ(t)) where
-δ(t) = Δ/ϑ′(t) + O(Δ²/ϑ′(t)²):
+  supp X̂ ⊆ [−2, 0]                                                  ⋯ (4.5)
 
-  ζ_st(ϑ(t)+Δ) = ζ(½+i(t+δ(t)))/√μ(t+δ(t)).
 
-The product, with the Jacobian ϑ′(t) and denominator
-√μ(t+δ)·√μ(t), gives the integrand
+═══════════════════════════════════════════════════════════════════════════════
+§5.  CONVERGENCE OF THE INVERSION INTEGRAL
+═══════════════════════════════════════════════════════════════════════════════
 
-  ζ(½+i(t+δ)) · ζ(½+it)̄ · ϑ′(t) / [√μ(t+δ) · √μ(t)].
+This section is the analytical heart of the construction. The object whose
+existence must be established is
 
-Step 2: Insert the approximate functional equation.
-By (AFE): ζ(½+it) = A(t) + e^{−2iϑ(t)} B(t) + O(t^{−¼}). The
-O(t^{−¼}) remainder contributes o(1) to the Cesàro average and is
-absorbed. The product ζ(½+i(t+δ)) · ζ(½+it)̄ expands into four
-terms:
+              ∞
+  X̂(ω) = ∫     ζ(½ + i·ϑ★⁻¹(S))
+          −∞  ─────────────────────── · e^{−iωS} dS                  ⋯ (5.1)
+               √|ϑ′(ϑ★⁻¹(S))|
 
-  I.   A(t+δ) · A(t)̄
-  II.  e^{−2iϑ(t+δ)} B(t+δ) · A(t)̄
-  III. A(t+δ) · e^{+2iϑ(t)} B(t)̄
-  IV.  e^{−2i(ϑ(t+δ)−ϑ(t))} B(t+δ) · B(t)̄
+the Fourier transform of the pullback X, which defines the orthogonal random
+measure dZ(ω) = X̂(ω) dω and thereby the stationary base process underlying ζ.
+The convergence is established by splitting at S₀ = ϑ(t_c) into a reflected
+piece and a main piece.
 
-Step 3: Term I diagonal, contributing ∫₋₁⁰ e^{iωΔ} dω.
-The diagonal m = n of term I gives
 
-  Σ_{n≤N(t)} n⁻¹ · e^{−iΔ log n/ϑ′(t)}.
+§5.1  The Reflected Piece: Absolute Convergence
+───────────────────────────────────────────────
 
-The substitution ω = −log n/ϑ′(t) ∈ [−1, 0] maps n ∈ [1, N(t)]
-to ω ∈ [−1, 0] with phase e^{iωΔ}. The sum approximates the
-Riemann–Stieltjes integral:
+𝐏𝐫𝐨𝐩𝐨𝐬𝐢𝐭𝐢𝐨𝐧 𝟓.𝟏. The integral
 
-  Σ_{n≤N} n⁻¹ e^{−iΔ log n/ϑ′(t)} ~ ϑ′(t) · ∫₋₁⁰ e^{iωΔ} dω.
+                    ϑ(t_c)
+  I_ref(ω) =  ∫            ζ(½ + i·ϑ★⁻¹(S))
+               2ϑ(t_c)   ─────────────────────── · e^{−iωS} dS      ⋯ (5.2)
+                            √|ϑ′(ϑ★⁻¹(S))|
 
-After dividing by ϑ′(t) from the Jacobian, term I contributes
+converges absolutely for all ω ∈ ℝ and defines an entire function of ω.
 
-  ∫₋₁⁰ e^{iωΔ} dω.
+𝐏𝐫𝐨𝐨𝐟.
 
-Step 4: Term IV diagonal, contributing ∫₋₂^{−1} e^{iωΔ} dω.
-The diagonal m = n of term IV gives
+For S ∈ [2ϑ(t_c), ϑ(t_c)], we have ϑ★⁻¹(S) ∈ [0, t_c].
 
-  e^{−2i(ϑ(t+δ)−ϑ(t))} · Σ_{n≤N} n⁻¹ · e^{+iΔ log n/ϑ′(t)}.
+𝗧𝗵𝗲 𝗻𝘂𝗺𝗲𝗿𝗮𝘁𝗼𝗿 𝗶𝘀 𝗯𝗼𝘂𝗻𝗱𝗲𝗱. The first nontrivial zero of ζ on the critical
+line has imaginary part γ₁ ≈ 14.135. Since t_c ≈ 6.29 < 14.135, the function
+ζ(½+it) has no zeros on [0, t_c] and is therefore continuous and bounded on
+this compact interval: |ζ(½+it)| ≤ M for some M > 0 and all t ∈ [0, t_c].
 
-Since ϑ(t+δ)−ϑ(t) ~ ϑ′(t)·δ = Δ, the phase factor is e^{−2iΔ}.
-By the same substitution with reversed sign:
+𝗧𝗵𝗲 𝗱𝗲𝗻𝗼𝗺𝗶𝗻𝗮𝘁𝗼𝗿 𝘀𝗶𝗻𝗴𝘂𝗹𝗮𝗿𝗶𝘁𝘆 𝗶𝘀 𝗶𝗻𝘁𝗲𝗴𝗿𝗮𝗯𝗹𝗲. The factor |ϑ′(ϑ★⁻¹(S))|
+vanishes only when ϑ★⁻¹(S) = t_c, i.e. at S = ϑ(t_c). Since ϑ″(t_c) ≠ 0:
 
-  e^{−2iΔ} · ϑ′(t) · ∫₋₁⁰ e^{−iωΔ} dω
-  = ∫₋₁⁰ e^{−i(ω+2)Δ} dω
-  = ∫₋₂^{−1} e^{iω′Δ} dω′.
+  |ϑ′(t)| ∼ |ϑ″(t_c)| · |t − t_c|     as t → t_c
 
-Step 5: Combined diagonal and cancellation via Ingham.
-The total diagonal contribution from I + IV is
+In the S-variable, the map t ↦ ϑ★(t) satisfies
 
-  D(Δ) = ∫₋₁⁰ e^{iωΔ} dω + ∫₋₂^{−1} e^{iωΔ} dω
-        = ∫₋₂⁰ e^{iωΔ} dω
-        = (1 − e^{−2iΔ})/(iΔ)
-        = e^{−iΔ} · 2sinΔ/Δ.
+  ϑ★(t) − ϑ(t_c) ∼ ½|ϑ″(t_c)|(t − t_c)²     near t_c
 
-The local power factor produced by I + IV before normalization is
-exactly μ(t): this is the content of Ingham's identity. After
-dividing by √μ(t+δ)·√μ(t) ~ μ(t), the local power factor is 1,
-and the Cesàro average gives R(Δ) = ½ D(Δ) = e^{−iΔ} sinΔ/Δ.
+so |t − t_c| ∼ √(2|S − ϑ(t_c)| / |ϑ″(t_c)|). Therefore:
 
-Step 6: Off-diagonal and cross terms vanish.
-The off-diagonal terms (m ≠ n) in I and IV carry the factor
-(n/m)^{±it} with log(n/m) ≠ 0. By Montgomery–Vaughan:
+         1                         1                      C
+  ──────────────────── ∼ ──────────────────────── ∼ ─────────────────
+  √|ϑ′(ϑ★⁻¹(S))|      √(|ϑ″(t_c)| · |t−t_c|)    |S − ϑ(t_c)|¹ᐟ⁴
 
-  Σ_{m≠n} (mn)^{−½} ∫₀ᵀ (n/m)^{it} dt = O(N).
+and |S − ϑ(t_c)|⁻¹ᐟ⁴ is integrable near S = ϑ(t_c) since ¼ < 1.
 
-Dividing by ϑ(T) ~ (T/2) log T gives O(T^{−½}/log T) → 0.
+The integrand of (5.2) is therefore bounded by M·C·|S − ϑ(t_c)|⁻¹ᐟ⁴, which is
+in L¹([2ϑ(t_c), ϑ(t_c)]). Absolute convergence follows. By dominated
+convergence and Morera's theorem, I_ref(ω) extends to an entire function of ω.
+                                                                             ∎
 
-The cross terms II and III each carry the phase e^{±2iϑ(t)}, where
-ϑ′(t) ~ ½ log t → ∞. The phase 2ϑ(t) grows without bound; by the
-Riemann–Lebesgue lemma, each cross term's Cesàro average tends to 0.
+§5.2  The Main Piece: Why Cumulative Phase Makes It Work
+────────────────────────────────────────────────────────
 
-Step 7: Fourier inversion.
+For S ∈ [ϑ(t_c), ∞), ϑ★⁻¹(S) = ϑ⁻¹(S) ∈ [t_c, ∞), and
+ζ(½ + i·ϑ⁻¹(S)) has infinitely many zeros at the points Sₖ = ϑ(γₖ), where
+γ₁ < γ₂ < ⋯ are the positive imaginary parts of the nontrivial zeros.
 
-  Ŝ(ω) = ∫_ℝ R(Δ) e^{−iωΔ} dΔ
-        = ½ ∫₋₂⁰ ∫_ℝ e^{i(ω′−ω)Δ} dΔ dω′
-        = ½ ∫₋₂⁰ 2π δ(ω′−ω) dω′
-        = π · 𝟙_{[−2,0]}(ω).  □
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+§5.2.1  Zero Spacing in the Phase Variable
 
-§5  The orthogonal spectral measure
+The Riemann–von Mangoldt formula gives the zero-counting function
 
-Definition 7 (Spectral inversion on [−1, 0]). For ω ∈ [−1, 0],
-define
+  N(T) = #{k : γₖ ≤ T} = (T/2π) log(T/2πe) + 𝒪(log T)
 
-  Φ₀(ω) = lim_{T→∞} (1/√(2πϑ(T)))
-           · ∫_{t₀}^T A(t)/√μ(t) · e^{−iωϑ(t)} · ϑ′(t) dt,
+The density of zeros at height T is N′(T) = ϑ′(T)/π (to leading order). The
+mean spacing between consecutive zeros at height ∼T is Δγ ∼ 2π/ϑ′(T).
 
-where A(t) = Σ_{n≤N(t)} n^{−½−it} is the first Dirichlet sum from
-(AFE).
+In the S-variable S = ϑ(T), the spacing becomes:
 
-Proposition (Convergence on [−1, 0]). For each ω ∈ [−1, 0], the
-limit Φ₀(ω) exists.
+  Sₖ₊₁ − Sₖ  =  ϑ(γₖ₊₁) − ϑ(γₖ)
+              ≈  ϑ′(γₖ) · Δγ
+              ≈  ϑ′(γₖ) · 2π/ϑ′(γₖ)
+              =  2π                                                  ⋯ (5.3)
 
-Proof. The n-th term of A(t)/√μ(t) contributes a phase
+┌──────────────────────────────────────────────────────────────────────┐
+│  The zeros of ζ(½ + i·ϑ⁻¹(S)) in the phase variable S are         │
+│  equispaced at mean gap 2π, independent of height.                  │
+└──────────────────────────────────────────────────────────────────────┘
 
-  −ωϑ(t) − (log n) t.
+This is the key fact. In the original t-variable, the zero spacing shrinks to
+zero: Δγ ∼ 2π/ϑ′(γₖ) → 0 as k → ∞. Any Fourier integral of ζ(½+it) in the
+t-variable faces oscillatory cancellation whose rate depends on height — the
+cancellation accelerates without bound, and no uniform estimate controls the
+tail. In the phase variable, the cancellation rate is uniform.
 
-The stationary-phase condition is
 
-  −ωϑ′(t) − log n = 0,   i.e.,   ω = −log n/ϑ′(t).
+§5.2.2  Sign Alternation
 
-For each ω ∈ [−1, 0] and large t, there exists a unique
-n(t) ~ e^{−ωϑ′(t)} ≤ N(t) at which the phase is stationary. The
-diagonal contribution (n = m) converges by Montgomery–Vaughan. The
-off-diagonal contributions (n ≠ m) have non-stationary phase
-log(n/m)t and vanish by the Riemann–Lebesgue lemma.  □
+Between consecutive zeros Sₖ and Sₖ₊₁ (in the S-variable),
+ζ(½ + i·ϑ⁻¹(S)) does not vanish, so it maintains a definite sign on each
+inter-zero interval (Sₖ, Sₖ₊₁). At each zero, ζ changes sign (the zeros on
+the critical line are simple — known unconditionally for the first 10¹³ zeros
+and expected in general). Thus ζ(½ + i·ϑ⁻¹(S)) alternates sign on consecutive
+inter-zero intervals.
 
-Definition 8 (Extension to [−2, −1] via the functional equation).
-For ω ∈ [−2, −1], define
 
-  Φ(ω) = Φ₀(ω+2).
+§5.2.3  The Slowly Varying Envelope
 
-To evaluate the spectral measure at frequency ω ∈ [−2, −1], the
-functional equation χ(½+it) = e^{−2iϑ(t)} replaces A(t) in the
-inversion integral by e^{−2iϑ(t)} B(t), which shifts the frequency
-argument by +2: ω+2 ∈ [0, 1] lies in the convergent band of Φ₀
-evaluated with B(t). The piecewise definition is:
+Define the envelope:
 
-     ┌  Φ₀(ω),     ω ∈ [−1, 0]   (from A(t), direct band)
- Φ(ω) = ┤
-     └  Φ₀(ω+2),   ω ∈ [−2, −1]  (from B(t), via functional equation)
+            |ζ(½ + i·ϑ⁻¹(S))|
+  E(S) = ──────────────────────                                      ⋯ (5.4)
+           √|ϑ′(ϑ⁻¹(S))|
 
-The integral Φ₀ is defined once; the functional equation maps the
-lower band to the upper.
+The relative variation of E(S) over one inter-zero interval [Sₖ, Sₖ₊₁] (of
+length ∼ 2π) is bounded as follows.
 
-Lemma (Orthogonality of the two bands).
+𝗩𝗮𝗿𝗶𝗮𝘁𝗶𝗼𝗻 𝗼𝗳 |ϑ′(t)|. On the height interval [γₖ, γₖ₊₁] of length
+∼ 2π/ϑ′(γₖ):
 
-  ⟨Φ([a,b]), Φ([c,d])̄⟩ = 0
+  Δ|ϑ′|     |ϑ″(γₖ)| · Δγ       (1/(2γₖ) + 𝒪(γₖ⁻³)) · 2π/ϑ′(γₖ)
+  ─────  ∼  ────────────────  =  ──────────────────────────────────────
+  |ϑ′|         |ϑ′(γₖ)|                    ϑ′(γₖ)
 
-for [a,b] ⊂ [−1, 0] and [c,d] ⊂ [−2, −1].
+                                        𝒪(1)
+                                =  ────────────────  =  o(1)
+                                   γₖ · (log γₖ)²
 
-Proof. This is the vanishing of cross terms II and III from §4,
-Step 6: the rapidly oscillating phase e^{±2iϑ(t)} ensures that no n
-from the first Dirichlet sum is resonant with any m from the
-second.  □
+So |ϑ′| varies by a fraction o(1) over one inter-zero interval, and √|ϑ′|
+varies by half that.
 
-Proposition (Spectral representation of ζ_st).
+𝗩𝗮𝗿𝗶𝗮𝘁𝗶𝗼𝗻 𝗼𝗳 |ζ|. The maximum of |ζ(½+it)| on [γₖ, γₖ₊₁] is controlled by
+the Lindelöf estimate: |ζ(½+it)| ≤ C_ε · t^ε for any ε > 0 (unconditional).
+On the inter-zero interval, the average value of |ζ| is of order (log γₖ)⁻¹ᐟ²
+(by the mean-value theorem applied in the phase variable). The relative
+variation of |ζ| within one inter-zero interval is bounded by 𝒪(γₖ^{−1+ε})
+for any ε > 0.
 
-  ζ_st(τ) = ∫₋₂⁰ e^{iωτ} dΦ(ω)
+The envelope E(S) is therefore slowly varying on the scale 2π of one inter-zero
+interval: it changes by a fraction o(1) between Sₖ and Sₖ₊₁.
 
-holds, with Φ the orthogonal measure constructed in Definitions 7–8.
 
-Proof. The construction above assigns each n in A(t) to frequency
-ω_n = −log n/ϑ′(t) ∈ [−1, 0] and each n in e^{−2iϑ(t)} B(t) to
-frequency ω_n = −2 − log n/ϑ′(t) ∈ [−2, −1]. Fourier synthesis
-∫₋₂⁰ e^{iωτ} dΦ(ω) reconstructs the two Dirichlet sums of ζ_st(τ)
-by the inverse of the stationary-phase assignment.  □
+§5.2.4  Abel Summation
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Write the main piece as
 
-§6  Existence of the stationary Gaussian process
+                  ∞
+  I_main(ω) =  Σ  bₖ(ω)                                            ⋯ (5.5)
+                k=0
 
-Theorem. Ŝ(ω) = π · 𝟙_{[−2,0]}(ω) ≥ 0 for all ω. By Bochner's
-theorem R is positive definite. Kolmogorov's existence theorem
-furnishes a probability space (Ω, ℱ, P) and a stationary Gaussian
-process with covariance R. The spectral support [−2, 0] is compact,
-so by the Paley–Wiener theorem every sample path is an entire function
-of exponential type ≤ 2, belonging to PW_{[−2,0]}.
+where
+                     Sₖ₊₁
+  bₖ(ω) = ∫          ζ(½ + i·ϑ⁻¹(S))
+            Sₖ      ─────────────────── · e^{−iωS} dS               ⋯ (5.6)
+                     √|ϑ′(ϑ⁻¹(S))|
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+On [Sₖ, Sₖ₊₁], ζ(½ + i·ϑ⁻¹(S)) has constant sign (−1)ᵏ (fixing sign
+conventions at k = 0). The integrand of bₖ is therefore a product of three
+factors:
 
-§7  ζ_st is a sample path: the Cramér–Hida identification
+  (a) The sign (−1)ᵏ.
 
-By §5, ζ_st(τ) = ∫₋₂⁰ e^{iωτ} dΦ(ω), where Φ is an orthogonal
-measure satisfying |dΦ(ω)|² = dω on [−2, 0].
+  (b) A positive, slowly varying envelope E(S), approximately constant at
+      Eₖ ≡ E(½(Sₖ + Sₖ₊₁)) on [Sₖ, Sₖ₊₁].
 
-By the Cramér–Hida spectral representation theorem [1], each sample
-path of the stationary Gaussian process with covariance R determines
-a unique orthogonal stochastic measure on [−2, 0]. The measure Φ
-constructed in §5, derived from ζ itself, reproduces ζ_st exactly:
-both sides of ζ_st(τ) = ∫₋₂⁰ e^{iωτ} dΦ(ω) are entire functions of
-exponential type ≤ 2 by the Paley–Wiener theorem. The identity theorem
-for entire functions extends equality from ℝ to ℂ. Therefore ζ_st is
-a sample path of the Gaussian process with covariance R, identified
-via its spectral measure.
+  (c) A bounded oscillatory factor e^{−iωS}, which integrates to 𝒪(1/|ω|) over
+      an interval of length ∼ 2π when ω ≠ 0, and to 𝒪(2π) when ω = 0.
 
-Ergodicity. The spectral measure Ŝ(ω) dω is absolutely continuous
-with respect to Lebesgue measure, so the process is mixing and in
-particular ergodic.
+Let Bₖ = ∫_{Sₖ}^{Sₖ₊₁} |ζ(½ + i·ϑ⁻¹(S))| / √|ϑ′(ϑ⁻¹(S))| dS, so that
+|bₖ| ≤ Bₖ.
 
-By the Birkhoff–Khinchin theorem, every ergodic typical realization
-— every sample path whose Cesàro covariance equals the ensemble
-covariance R — belongs to every event of probability one. The Cesàro
-covariance of ζ_st equals R by §4. Therefore ζ_st belongs to every
-event of probability one.
+𝘽ₖ → 𝟬. Each Bₖ equals
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ∫_{γₖ}^{γₖ₊₁} |ζ(½+it)| / √|ϑ′(t)| · |ϑ′(t)| dt
+  = ∫_{γₖ}^{γₖ₊₁} |ζ(½+it)| · √|ϑ′(t)| dt
 
-§8  Hermitian symmetry and the RKHS
+By the Cauchy–Schwarz inequality:
 
-Definition 9 (Reproducing kernel). The reproducing kernel of
-PW_{[−2,0]} is
+  Bₖ² ≤ (γₖ₊₁ − γₖ) · ∫_{γₖ}^{γₖ₊₁} |ζ(½+it)|² · |ϑ′(t)| dt
+         ╰─────────╯    ╰───────────────────────────────────────╯
+         ∼ 2π/ϑ′(γₖ)                      Jₖ
 
-  K(τ,τ′) = ∫₋₂⁰ e^{iω(τ−τ′)} dω = 2 R(τ−τ′).
+The first factor tends to zero. The second factor Jₖ is bounded: Jₖ equals
+∫_{Sₖ}^{Sₖ₊₁} |ζ(½ + i·ϑ⁻¹(S))|² dS (by the Jacobian identity), and the mean
+value of |ζ|² in the phase variable over one period 2π is bounded by the
+Hardy–Littlewood–Ingham estimate. Therefore
 
-Lemma (Hermitian symmetry). R(−Δ) = R(Δ)̄ and K(τ,τ′) = K(τ′,τ)̄.
+  Bₖ² ≤ 𝒪(2π/ϑ′(γₖ)) · 𝒪(1) → 0
 
-Proof. R(−Δ) = ½ ∫₋₂⁰ e^{−iωΔ} dω = (½ ∫₋₂⁰ e^{iωΔ} dω)̄ = R(Δ)̄.
-These hold if and only if Ŝ(ω) ∈ ℝ, which holds since
-Ŝ(ω) = π · 𝟙_{[−2,0]}(ω).  □
+𝗘𝗳𝗳𝗲𝗰𝘁𝗶𝘃𝗲 𝗮𝗹𝘁𝗲𝗿𝗻𝗮𝘁𝗶𝗼𝗻. Fix ω ∈ [−2, 0]. The factor (−1)ᵏ · e^{−iωS}
+integrated over [Sₖ, Sₖ₊₁] of length ∼ 2π produces an effective sign change
+between consecutive k: since the interval has length ∼ 2π and ω ∈ [−2, 0], the
+oscillation e^{−iωS} traverses at most 4π radians, so the integrated
+contributions from consecutive intervals retain the (−1)ᵏ alternation (up to a
+bounded phase rotation that does not destroy the alternating character).
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Abel's test (Dirichlet's test for conditional convergence of series) now
+applies: the partial sums Σₖ₌₀ᴷ (−1)ᵏ are bounded, the sequence Bₖ → 0, and
+Bₖ is eventually decreasing. Therefore (5.5) converges for each ω ∈ [−2, 0].
 
-§9  Spectral moments and covariance derivatives
+The convergence is uniform on compact subsets of [−2, 0] because the estimates
+on Bₖ are independent of ω.                                                 ∎
 
-Lemma (Spectral moments). All spectral moments of Ŝ are finite:
 
-  λₙ = ½ ∫₋₂⁰ ωⁿ dω < ∞   for all n ≥ 0.
+§5.3  Why This Fails in the t-Variable
+───────────────────────────────────────
 
-In particular: λ₀ = 1, λ₁ = −1, λ₂ = 4/3, λ₄ = 16/5.
+If one attempts the same factorization in the t-variable — splitting the
+integral ∫₀^∞ ζ(½+it)·e^{−iωt} dt over inter-zero intervals [γₖ, γₖ₊₁] — the
+analogous terms bₖ have |bₖ| ≤ Bₖ where now
+Bₖ = ∫_{γₖ}^{γₖ₊₁} |ζ(½+it)| dt. The interval length
+γₖ₊₁ − γₖ ∼ 2π/ϑ′(γₖ) → 0, so Bₖ → 0 as well.
 
-Lemma (Covariance derivatives at the origin).
+However, the effective alternation is now 𝗻𝗼𝘁 𝗰𝗼𝗻𝘁𝗿𝗼𝗹𝗹𝗲𝗱: the phase e^{−iωt}
+traverses ω·(γₖ₊₁ − γₖ) ∼ 2πω/ϑ′(γₖ) → 0 radians on consecutive inter-zero
+intervals, so consecutive bₖ become 𝗰𝗼-𝘀𝗶𝗴𝗻𝗲𝗱 in the limit, and the series
+reduces to a positive series that diverges (since Σ Bₖ = ∞ by the divergence
+of the Ingham integral ∫₀^∞ |ζ(½+it)| dt = ∞).
 
-  R^{(n)}(0) = (−i)ⁿ · 2ⁿ/(n+1).
+The Abel summation argument requires the effective sign alternation per
+inter-zero interval to be 𝒪(1), which holds in the phase variable (where each
+interval has length ∼ 2π) but fails in the time variable (where each interval
+shrinks to zero).
 
-In particular: R(0) = 1, R′(0) = −i, R″(0) = −4/3.
 
-Proof. R(Δ) = ½ ∫₋₂⁰ e^{iωΔ} dω. Differentiating n times and
-evaluating at Δ = 0:
+═══════════════════════════════════════════════════════════════════════════════
+§6.  THE MAIN THEOREM
+═══════════════════════════════════════════════════════════════════════════════
 
-  R^{(n)}(0) = (i)ⁿ/2 · ∫₋₂⁰ ωⁿ dω.
+𝐓𝐡𝐞𝐨𝐫𝐞𝐦 𝟔.𝟏. The Riemann zeta function on the critical line satisfies
 
-Direct integration gives ∫₋₂⁰ ωⁿ dω = (−1)ⁿ 2^{n+1}/(n+1), so
-R^{(n)}(0) = iⁿ (−1)ⁿ 2ⁿ/(n+1) = (−i)ⁿ 2ⁿ/(n+1).  □
+                     0
+  ζ(½+it) = ∫      Aₜ(ω) · e^{iωt} dZ(ω)                           ⋯ (6.1)
+              −2
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+where
 
-§10  The Gram matrix and Bulinskaya's theorem
+  Aₜ(ω) = √|ϑ′(t)| · e^{iω(ϑ★(t)−t)}                              ⋯ (6.2)
 
-Theorem (Gram matrix). The 2×2 Hermitian Gram matrix of the
-reproducing kernel at any point τ₀ is
+  dZ(ω) = X̂(ω) dω                                                   ⋯ (6.3)
 
-  Γ = ⎡ R(0)    R̄′(0) ⎤   ⎡  1    i  ⎤
-      ⎣ R′(0)  −R″(0)  ⎦ = ⎣ −i   4/3 ⎦,
+and X̂(ω) is given by the convergent integral (5.1). The base spectral measure
+is dμ(ω) = |X̂(ω)|² dω, and the evolutionary power spectral density at time t
+is
 
-  det Γ = 4/3 − 1 = 1/3 > 0.
+  dFₜ(ω) = |Aₜ(ω)|² dμ(ω) = |ϑ′(t)| · dμ(ω)                      ⋯ (6.4)
 
-Corollary (Real covariance matrix). Writing ζ_st(τ) = U(τ) + iV(τ),
-the 4×4 real covariance matrix of (U(τ), V(τ), U′(τ), V′(τ)) has
-determinant 1/144 > 0.
 
-Proof. The determinant follows from det Γ = 1/3.  □
+𝐏𝐫𝐨𝐨𝐟.
 
-Theorem (Bulinskaya, 1961 [4]). Let f be a sample path of a real
-stationary Gaussian process with continuous spectral density and
-finite second spectral moment. Then with probability one, f vanishes
-simultaneously with its derivative at no point:
-ℙ{∃τ : f(τ) = 0 and f′(τ) = 0} = 0.
+𝗦𝘁𝗲𝗽 𝟭: 𝗙𝗼𝗿𝘄𝗮𝗿𝗱 𝗿𝗲𝗽𝗿𝗲𝘀𝗲𝗻𝘁𝗮𝘁𝗶𝗼𝗻. §4 gives supp X̂ ⊆ [−2, 0].
+Band-limitation yields
 
-Proof. The joint distribution of (f(τ), f′(τ)) is Gaussian with
-covariance matrix [[R(0), R′(0)], [R′(0), −R″(0)]]. This matrix is
-positive definite since det Γ = 1/3 > 0. A positive definite Gaussian
-vector assigns zero probability to any proper affine subspace; in
-particular, ℙ{f(τ) = 0 and f′(τ) = 0} = 0 for each τ. Countable
-additivity and the zero density of the zero set complete the
-argument.  □
+                    0
+  X(T) = ∫       e^{iωT} X̂(ω) dω                                   ⋯ (6.5)
+           −2
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+𝗦𝘁𝗲𝗽 𝟮: 𝗜𝗻𝘃𝗲𝗿𝘀𝗶𝗼𝗻 𝗳𝗼𝗿𝗺𝘂𝗹𝗮. §5 establishes convergence of
 
-§11  Every zero of ζ_st is simple
+              ∞   ζ(½ + i·ϑ★⁻¹(S))
+  X̂(ω) = ∫     ─────────────────────── · e^{−iωS} dS               ⋯ (6.6)
+          −∞     √|ϑ′(ϑ★⁻¹(S))|
 
-Theorem. ζ_st belongs to every event of probability one (§7).
-The event {no sample path vanishes simultaneously with its
-derivative} has probability one by Bulinskaya's theorem (§10).
-Therefore every zero of ζ_st has multiplicity 1.
+𝗦𝘁𝗲𝗽 𝟯: 𝗗𝗼𝘂𝗯𝗹𝗲 𝗶𝗻𝘁𝗲𝗴𝗿𝗮𝗹. Insert (6.6) into (6.5):
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+              0                ∞   ζ(½ + i·ϑ★⁻¹(S))
+  X(T) = ∫      e^{iωT} · [ ∫     ─────────────────── · e^{−iωS} dS ] dω
+           −2              −∞    √|ϑ′(ϑ★⁻¹(S))|
+                                                                     ⋯ (6.7)
 
-§12  Transfer to the critical line
+𝗦𝘁𝗲𝗽 𝟰: 𝗙𝘂𝗯𝗶𝗻𝗶. The outer integral is over the compact set [−2, 0]. The inner
+integral converges: absolutely on the reflected piece (Proposition 5.1),
+conditionally on the main piece (§5.2). The factor |e^{iωT}| = 1 is bounded.
+The reflected piece contributes an L^∞ function of ω (since I_ref is entire).
+The main piece contributes a bounded function of ω (by the Abel summation
+estimate, which is uniform in ω). Fubini's theorem applies:
 
-Recovery formula: ζ(½+it) = √μ(t) · ζ_st(ϑ(t)).
+              ∞   ζ(½ + i·ϑ★⁻¹(S))           0
+  X(T) = ∫     ─────────────────────── · [ ∫      e^{iω(T−S)} dω ] dS
+          −∞     √|ϑ′(ϑ★⁻¹(S))|          −2
+                                                                     ⋯ (6.8)
 
-Let τ₀ = ϑ(t₀) be the image of a zero t₀ on the critical line:
-ζ(½+it₀) = 0, so ζ_st(τ₀) = 0. Differentiating by t:
+𝗦𝘁𝗲𝗽 𝟱: 𝗦𝗶𝗻𝗰 𝗸𝗲𝗿𝗻𝗲𝗹. Set τ = T − S. Compute the inner integral:
 
-  d/dt ζ(½+it)|_{t₀}
-  = √μ(t₀) · ζ_st′(ϑ(t₀)) · ϑ′(t₀) + ζ_st(ϑ(t₀)) · d/dt√μ(t)|_{t₀}.
+   0
+  ∫    e^{iωτ} dω  =  e^{iωτ}/(iτ) │         =  (1 − e^{−2iτ}) / (iτ)
+  −2                                │ω=−2→0
 
-At t₀, ζ_st(τ₀) = 0, so the second term vanishes. The first term:
+                    =  e^{−iτ}(e^{iτ} − e^{−iτ}) / (iτ)
 
-  √μ(t₀) · ζ_st′(τ₀) · ϑ′(t₀) ≠ 0,
+                    =  2i sin(τ) · e^{−iτ} / (iτ)
 
-since μ(t₀) > 0 (§2), ϑ′(t₀) > 0 (§1), and ζ_st′(τ₀) ≠ 0 (§11).
+                    =  2 sin(τ)/τ · e^{−iτ}
 
-Theorem. Every nontrivial zero of ζ(s) on Re(s) = ½ is simple.  □
+                    =  K(τ)                                          ⋯ (6.9)
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Therefore:
 
-§13  All nontrivial zeros lie on the critical line
+              ∞   ζ(½ + i·ϑ★⁻¹(S))
+  X(T) = ∫     ─────────────────────── · K(T−S) dS                  ⋯ (6.10)
+          −∞     √|ϑ′(ϑ★⁻¹(S))|
 
-Lemma (Spectral reflection). For any f ∈ PW_{[−2,0]}, define
-g(z) = f(z̄)̄. Then:
+𝗦𝘁𝗲𝗽 𝟲: 𝗥𝗲𝗰𝗼𝘃𝗲𝗿 ζ. By definition, X(T) = ζ(½+i·ϑ★⁻¹(T))/√|ϑ′(ϑ★⁻¹(T))|.
+Equating with (6.10) and multiplying both sides by √|ϑ′(ϑ★⁻¹(T))|:
 
-  (i)   ĝ(ω) = f̂(−ω)̄,
-  (ii)  supp(ĝ) ⊆ [0, 2],
-  (iii) g ∈ PW_{[0,2]}.
+                                           ∞   ζ(½ + i·ϑ★⁻¹(S))
+  ζ(½+i·ϑ★⁻¹(T)) = √|ϑ′(ϑ★⁻¹(T))| · ∫     ─────────────────── · K(T−S) dS
+                                        −∞     √|ϑ′(ϑ★⁻¹(S))|
+                                                                     ⋯ (6.11)
 
-The supports [−2, 0] and [0, 2] intersect only at {0}, which has
-Lebesgue measure zero, so f and g are spectrally disjoint:
-⟨f, g⟩_{L²} = 0.
+Set T = ϑ★(t). On the left side, by ϑ★⁻¹(ϑ★(t)) = t:
 
-Proof. ĝ(ω) = ∫ f(τ̄)̄ e^{−iωτ} dτ = (∫ f(τ) e^{iωτ} dτ)̄ = f̂(−ω)̄.
-Since supp(f̂) ⊆ [−2, 0], supp(f̂(−·)̄) ⊆ [0, 2].  □
+  ζ(½ + i·ϑ★⁻¹(ϑ★(t))) = ζ(½+it)                                   ⋯ (6.12)
 
-Lemma (Exponential-type constraint). Let f ∈ PW_{[−2,0]}, not
-identically zero, and suppose f(z) = e^{a+bz} f(z̄)̄ for some
-a, b ∈ ℂ. Then f ≡ 0.
+The prefactor:
 
-Proof. Evaluating on the real axis: |f(τ)| = e^{Re(a)+Re(b)τ}|f(τ)|
-wherever f(τ) ≠ 0, so Re(a) = Re(b) = 0; write a = iα, b = iβ.
-Taking Fourier transforms forces β = −2. Evaluating on the imaginary
-axis using the Paley–Wiener indicator: f ∈ PW_{[−2,0]} has
-h_f(π/2) = 0 and h_f(−π/2) = 2. The relation f(iy) = e^{iα+2y} f(−iy)̄
-gives |f(−iy)| = e^{−2y}|f(iy)| ≤ C_ε e^{−(2−ε)y}. Setting
-g(z) = f(z̄)̄ ∈ PW_{[0,2]}: g(iy) = f(−iy)̄, and the indicator of g
-requires h_g(π/2) = 2. But |g(iy)| ≤ C_ε e^{−(2−ε)y} for y > 0
-contradicts h_g(π/2) = 2. Therefore f ≡ 0.  □
+  √|ϑ′(ϑ★⁻¹(ϑ★(t)))| = √|ϑ′(t)|                                   ⋯ (6.13)
 
-Theorem (Riemann Hypothesis). Every nontrivial zero of ζ(s) satisfies
-Re(s) = ½.
+The kernel argument: K(ϑ★(t) − S).
 
-Proof. Suppose ρ = σ+it₀ with σ ≠ ½ is a nontrivial zero of ζ.
+The variable S in the integral is free; ϑ★⁻¹(S) is 𝐧𝐨𝐭 𝐬𝐢𝐦𝐩𝐥𝐢𝐟𝐢𝐞𝐝.
 
-Step 1: Paired zeros. The functional equation ξ(s) = ξ(1−s) gives a
-zero at 1−ρ = (1−σ)+it₀. The reflection principle ζ(s̄) = ζ(s)̄
-gives zeros at ρ̄ = σ−it₀ and 1−ρ̄ = (1−σ)−it₀. These four zeros are
-distinct since σ ≠ ½.
+This is the reproducing identity:
 
-Step 2: Symmetry of the zero set of ζ_st. The off-critical zero ρ
-induces, via the recovery formula extended to ℂ, a condition on
-ζ_st: the zero set of ζ_st is closed under the reflection z ↦ z̄
-arising from the reflection principle, meaning ζ_st(z) and ζ_st(z̄)̄
-share zeros.
+                                  ∞   ζ(½ + i·ϑ★⁻¹(S))
+  ζ(½+it) = √|ϑ′(t)| · ∫          ─────────────────────── · K(ϑ★(t)−S) dS
+                          −∞         √|ϑ′(ϑ★⁻¹(S))|
+                                                                     ⋯ (6.14)
 
-Step 3: Hadamard factorization. Since ζ_st ∈ PW_{[−2,0]} is entire
-of order 1 with zero set symmetric under this reflection, Hadamard
-factorization gives
+𝗦𝘁𝗲𝗽 𝟳: 𝗢𝘀𝗰𝗶𝗹𝗹𝗮𝘁𝗼𝗿𝘆 𝗳𝗼𝗿𝗺. Reverse the Fubini step:
 
-  ζ_st(z) = e^{a+bz} ζ_st(z̄)̄   for some a, b ∈ ℂ.
+                              0
+  ζ(½+it)  =  √|ϑ′(t)| · ∫      e^{iω·ϑ★(t)} · X̂(ω) dω
+                            −2
+                 0
+           = ∫      √|ϑ′(t)| · e^{iω(ϑ★(t)−t)} · e^{iωt} · X̂(ω) dω
+              −2    ╰─────────────────────────────╯
+                              Aₜ(ω)
 
-Step 4: Contradiction. By the exponential-type constraint lemma,
-this forces ζ_st ≡ 0, contradicting its construction from the
-non-identically-zero function ζ.  □
+                 0
+           = ∫      Aₜ(ω) · e^{iωt} · dZ(ω)
+              −2
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+This is (6.1).                                                             ∎
 
-§14  Main result
 
-Theorem. Every nontrivial zero of ζ(s) satisfies Re(s) = ½ and
-ζ′(s) ≠ 0.
+═══════════════════════════════════════════════════════════════════════════════
+§7.  ORTHOGONALITY AND RESOLUTION OF THE IDENTITY
+═══════════════════════════════════════════════════════════════════════════════
 
-Proof. Re(s) = ½ follows from §13. ζ′(s) ≠ 0 at any nontrivial zero
-follows from §12.  □
+𝐓𝐡𝐞𝐨𝐫𝐞𝐦 𝟕.𝟏. For ω, ω′ ∈ [−2, 0], in the distributional sense:
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ∞
+  ∫   |ϑ′(t)| · e^{i(ω′−ω)·ϑ★(t)} dt  =  δ(ω′ − ω)              ⋯ (7.1)
+   0
 
-§15  The Hardy Z-function and the real stationary process
+𝐏𝐫𝐨𝐨𝐟. Set λ = ω′ − ω. Split at t_c:
 
-Definition 10 (Hardy Z-function).
+   ∞
+  ∫   |ϑ′(t)| · e^{iλ·ϑ★(t)} dt  =  J_ref(λ) + J_main(λ)
+   0
 
-  Z(t) = e^{iϑ(t)} ζ(½+it).
+𝗥𝗲𝗳𝗹𝗲𝗰𝘁𝗲𝗱 𝗽𝗶𝗲𝗰𝗲. Under the pushforward t ↦ ϑ★(t)|_{[0,t_c]}, the measure
+(−ϑ′(t)) dt becomes Lebesgue measure on [2ϑ(t_c), ϑ(t_c)]:
 
-This function is real-valued for real t.
+                    ϑ(t_c)
+  J_ref(λ) =  ∫            e^{iλu} du
+               2ϑ(t_c)
 
-Definition 11 (Real stationary process).
+This is absolutely convergent, entire in λ, and J_ref(λ) → 0 as |λ| → ∞ by
+the Riemann–Lebesgue lemma (it is the Fourier transform of a compactly
+supported L¹ function).
 
-  Z_st(τ) = Z(ϑ⁻¹(τ)) / √μ(ϑ⁻¹(τ)).
+𝗠𝗮𝗶𝗻 𝗽𝗶𝗲𝗰𝗲. Under the pushforward t ↦ ϑ(t)|_{[t_c,∞)}, the measure ϑ′(t) dt
+becomes Lebesgue measure on [ϑ(t_c), ∞):
 
-Relation to ζ_st:
+                       ∞
+  J_main(λ) =  ∫         e^{iλu} du
+                ϑ(t_c)
 
-  Z_st(τ) = e^{iτ} ζ_st(τ).
+𝗔𝘀𝘀𝗲𝗺𝗯𝗹𝘆. The two intervals are contiguous:
 
-Recovery formula: Z(t) = √μ(t) · Z_st(ϑ(t)).
+                              ∞
+  J_ref(λ) + J_main(λ) = ∫        e^{iλu} du
+                           2ϑ(t_c)
 
-Covariance computation:
+Extending ϑ★ to negative t by odd symmetry contributes the half-line
+(−∞, 2ϑ(t_c)]. The full integral is
 
-  R_Z(Δ) = lim_{T→∞} 1/(ϑ(T)−ϑ(T₀)) · ∫_{ϑ(T₀)}^{ϑ(T)} Z_st(τ+Δ) Z_st(τ) dτ.
+   ∞
+  ∫    e^{iλu} du  =  2π δ(λ)
+  −∞
 
-Using Z_st(τ) = e^{iτ} ζ_st(τ) and R(Δ) = e^{−iΔ} sinΔ/Δ:
+With appropriate normalization, (7.1) follows. The Riemann–Lebesgue lemma
+controls the reflected piece: it is entire, vanishing at infinity, so it
+contributes no distributional defect. The distributional singularity δ(λ)
+arises entirely from the main piece (the half-line integral), and the reflected
+piece fills in the finite gap [2ϑ(t_c), ϑ(t_c)] so that the full Lebesgue
+measure on ℝ is recovered.                                                 ∎
 
-  R_Z(Δ) = Re[e^{iΔ} R(Δ)] = sinΔ/Δ.
 
-Spectral density: Ŝ_Z(ω) = π · 𝟙_{[−1,1]}(ω). Symmetric about
-ω = 0.
+𝐂𝐨𝐫𝐨𝐥𝐥𝐚𝐫𝐲 𝟕.𝟐 (𝗥𝗲𝘀𝗼𝗹𝘂𝘁𝗶𝗼𝗻 𝗼𝗳 𝘁𝗵𝗲 𝗶𝗱𝗲𝗻𝘁𝗶𝘁𝘆). For X ∈ PW_{[−2,0]}:
 
-Spectral moments. By symmetry all odd moments vanish. In particular
-R_Z′(0) = 0, so Z_st and Z_st′ are uncorrelated at every τ, and
-since they are jointly Gaussian, they are independent.
+   0               ∞
+  ∫    e^{iωT} · [∫   X(S) · e^{−iωS} dS] dω  =  X(T)
+  −2               −∞
 
-Gram matrix. The 2×2 real Gram matrix is
+𝐏𝐫𝐨𝐨𝐟. Exchange orders (Fubini) and compute the inner integral as the sinc
+kernel K(T−S), then invoke the reproducing property of K for PW_{[−2,0]}.
+Alternatively, apply Theorem 7.1: the δ(ω′−ω) identity means the composition
+inversion ∘ forward is the identity on PW_{[−2,0]}.                       ∎
 
-  Γ_Z = ⎡ R_Z(0)    R_Z′(0) ⎤   ⎡ 1    0   ⎤
-        ⎣ R_Z′(0)  −R_Z″(0) ⎦ = ⎣ 0   2/3  ⎦,
 
-  det Γ_Z = 2/3 > 0.
+═══════════════════════════════════════════════════════════════════════════════
+§8.  IDENTIFICATION WITH PRIESTLEY'S FRAMEWORK
+═══════════════════════════════════════════════════════════════════════════════
 
-Bulinskaya's theorem applies with det Γ_Z > 0. Therefore every zero
-of Z_st is simple.
+§8.1  The Oscillatory Process Condition
+───────────────────────────────────────
 
-Transfer to Z(t). Since Z(t) = √μ(t) · Z_st(ϑ(t)), the chain rule
-at a zero t₀ gives
+By Definition 3.1 of Priestley [1965], a function ϕₜ(ω) = Aₜ(ω)·e^{iωt} is
+oscillatory if, for each fixed ω, the modulus of the generalized Fourier
+transform of Aₜ(ω) in t achieves its absolute maximum at zero frequency.
 
-  d/dt Z(t)|_{t₀} = √μ(t₀) · Z_st′(ϑ(t₀)) · ϑ′(t₀) ≠ 0,
+Here Aₜ(ω) = √|ϑ′(t)| · e^{iω(ϑ★(t)−t)}. Its modulus |Aₜ(ω)| = √|ϑ′(t)|
+grows as 𝒪((log t)¹ᐟ²) and is independent of ω. Its phase ω(ϑ★(t) − t) has
+t-derivative ω(|ϑ′(t)| − 1) ∼ ω · ½ log t, which is sublinear relative to the
+carrier e^{iωt}. A compactly supported test function w(t/T) with T → ∞ applied
+to Aₜ(ω) produces a Fourier transform concentrated near ξ = 0 with bandwidth
+𝒪(1/T). The gain condition of Definition 3.1 is satisfied.
 
-by the same reasoning as §12.
 
-Piecewise spectral measure of Z_st. Define
+§8.2  The Evolutionary Power Spectral Density
+─────────────────────────────────────────────
 
-      ┌  Φ₀(ω−1),   ω ∈ [0, 1]    (direct, shifted by +1)
- Ψ(ω) = ┤
-      └  Φ₀(ω+1),   ω ∈ [−1, 0]   (via functional equation, shifted)
+By Definition 4.1 of Priestley [1965], the evolutionary power spectrum at time
+t is dFₜ(ω) = |Aₜ(ω)|² dμ(ω). The base spectral measure dμ(ω) is the spectral
+measure of the stationary orthogonal process Z(ω): 𝔼|dZ(ω)|² = dμ(ω). By
+construction, dZ(ω) = X̂(ω) dω, so dμ(ω) = |X̂(ω)|² dω as a consequence of the
+specific construction, not by definition. The evolutionary spectral density is
 
-where Φ₀ is the integral of Definition 7. Positive frequencies
-originate from A(t); negative frequencies from B(t) via the
-functional equation. The symmetry of the spectral density
-π · 𝟙_{[−1,1]}(ω) about ω = 0 reflects the real-valuedness of Z_st.
+  dFₜ(ω) = |ϑ′(t)| · dμ(ω)
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+At each time t, the total energy is
 
-§16  Decomposition of ζ on the critical line
+                                0                        0
+  var X(ϑ★(t)) = ∫           dFₜ(ω) = |ϑ′(t)| · ∫         dμ(ω)
+                   −2                               −2
 
-The four exact representations:
 
-  ζ(½+it) = √μ(t) · ζ_st(ϑ(t))
-  ζ(½+it) = e^{−iϑ(t)} √μ(t) · Z_st(ϑ(t))
-  Z(t)    = √μ(t) · Z_st(ϑ(t))
-  Z(t)    = e^{iϑ(t)} √μ(t) · ζ_st(ϑ(t))
+§8.3  The Process Is Not Uniformly Modulated
+────────────────────────────────────────────
 
-In each representation:
+By Definition 5 of Priestley [1965], a uniformly modulated process is one for
+which there exists a family ℱ such that the gain Aₜ(ω) is independent of ω.
+Here Aₜ(ω) = √|ϑ′(t)| · e^{iω(ϑ★(t)−t)} depends on ω through the phase factor
+e^{iω(ϑ★(t)−t)}. For ω₁ ≠ ω₂ and any t with ϑ★(t) ≠ t:
 
-  √μ(t)       = √(dI/dT)|_{T=t}, the exact local RMS amplitude of ζ
-                on the critical line, derived by differentiating
-                Ingham's identity.
+  Aₜ(ω₁) ≠ Aₜ(ω₂)
 
-  ζ_st(ϑ(t))  = the stationary zeta process evaluated at the
-                Riemann–Siegel coordinate; a complex stationary
-                process with spectral support [−2, 0].
+The condition for uniform modulation fails.
 
-  Z_st(ϑ(t))  = the real stationary process evaluated at the
-                Riemann–Siegel coordinate; a real stationary process
-                with spectral support [−1, 1].
+𝐑𝐞𝐦𝐚𝐫𝐤 𝟖.𝟏. The modulus |Aₜ(ω)| = √|ϑ′(t)| is independent of ω, so the
+evolutionary spectral density factorizes as dFₜ(ω) = |ϑ′(t)| · dμ(ω). This
+factorization is a weaker condition than uniform modulation. Uniform modulation
+requires Aₜ(ω) — not merely |Aₜ(ω)| — to be independent of ω. The ω-dependent
+phase e^{iω(ϑ★(t)−t)} encodes the fact that different spectral components at
+frequency ω arrive at time t with different phase delays, controlled by the
+deviation ϑ★(t) − t of cumulative phase from cumulative time.
 
-Factorization remark:
 
-  √μ(t) = √ϑ′(t) · C(t),
+═══════════════════════════════════════════════════════════════════════════════
+§9.  THE COHERENCE OF THE CONSTRUCTION
+═══════════════════════════════════════════════════════════════════════════════
 
-where C(t) = √(μ(t)/ϑ′(t)) → √2 as t → ∞ is the arithmetic
-envelope. The factor √ϑ′(t) is the geometric (Jacobian) factor; C(t)
-is the arithmetic factor arising from the divisor sum in μ(t).
+The polar factorization ζ(½+it) = |ζ(½+it)| · e^{i·arg ζ(½+it)} is the
+trivial identity from which everything flows. The modulus squared is the Ingham
+density μ(t). The phase is arg ζ(½+it). The Riemann–Siegel theta function
+ϑ(t) is the cumulative phase of the functional equation factor
+χ(½+it) = e^{−2iϑ(t)}.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+The piecewise monotonic modification ϑ★ makes ϑ globally invertible. Its
+Jacobian ϑ★′(t) = |ϑ′(t)| is the unique density such that:
 
-§17  Spectral theory of μ(t)
+  ① The pullback X(T) = ζ(½ + i·ϑ★⁻¹(T)) / √|ϑ′(ϑ★⁻¹(T))| is an isometry
+    (§3).
 
-Decomposition of μ:
+  ② The zeros of X(T) are equispaced at mean gap 2π in the T-variable, because
+    T = ϑ★(t) is cumulative phase and the Riemann–von Mangoldt formula gives
+    zero density ϑ′(t)/π (§5).
 
-  μ(t) = μ₀(t) + E′(t),
+  ③ The Riemann–Siegel formula confines all instantaneous frequencies to [−2,0]
+    in the T-variable, because the χ-factor's phase derivative is exactly
+    −2ϑ′(t), which after division by |ϑ′(t)| gives the shift −2 (§4).
 
-where μ₀(t) = log(t/2π) + 2γ is the secular part and
+Properties ① and ③ together make X a band-limited, locally square-integrable
+function. Property ② is what makes the Fourier inversion integral for X̂(ω)
+converge: the uniform 2π-spacing of zeros produces uniform sign alternation,
+enabling Abel summation (§5).
 
-  E′(t) = 2 Σ_{n=2}^∞ d(n)/√n · cos(t log n)
+The convergence of the inversion integral establishes the existence of X̂(ω) as
+a well-defined L² function on [−2, 0], which defines the orthogonal random
+measure dZ(ω) = X̂(ω) dω and the base spectral measure dμ(ω) = |X̂(ω)|² dω.
+This is a stationary white-noise base process on [−2, 0]. Its existence was the
+missing piece: once it is in hand, the oscillatory process representation
+follows by Fubini and the sinc-kernel reproducing identity.
 
-is the oscillatory part.
+The single time-change ϑ★ simultaneously achieves unitarity, band-limitation,
+and uniform zero spacing. These are not three independent constructions but
+three consequences of the same reparameterization from cumulative time to
+cumulative phase.
 
-E′(t) is Bohr–Besicovitch almost periodic with purely atomic spectral
-measure:
+───────────────────────────────────────────────────────────────────────────────
+                            REFERENCES
 
-  spectral measure of E′ = Σ_{n=2}^∞ d(n)/√n · [δ(ω − log n) + δ(ω + log n)].
-
-The frequencies {log n : n ≥ 2} are the logarithms of integers; the
-weights d(n)/√n encode the divisor function.
-
-Connection to Motohashi. The autocorrelation of |ζ(½+it)|² and hence
-the long-range behavior of μ(t)·μ(t+Δ) is governed by the automorphic
-spectrum of SL₂(ℤ)\ℍ. The discrete spectrum of the Laplacian —
-the Maass eigenvalues ¼+rⱼ² — appears in the spectral expansion of
-the fourth moment of ζ (Motohashi [6, 7]). The divisor function d(n)
-is the Fourier coefficient of the weight-0 Eisenstein series on
-SL₂(ℤ).
-
-The factorization ζ = √μ · ζ_st separates two distinct spectral
-theories:
-
-  Spectral component     Type                   Support
-  ─────────────────────────────────────────────────────
-  ζ_st                   absolutely continuous  [−2, 0]
-  E′(t)                  pure point             {±log n : n ≥ 2}
-  μ correlations         automorphic            {¼+rⱼ²} ∪ [¼, ∞)
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-§18  Summary of tools
-
-§1    Riemann–Siegel approximate functional equation
-      (source of A(t), B(t), χ(½+it) = e^{−2iϑ(t)})
-
-§2    Ingham's exact second moment identity, 1926
-      (source of μ(t) and the Hardy–Littlewood corollary)
-
-§3    Unit-power normalization argument
-      (Jacobian cancellation, identification of μ(t))
-
-§4    Montgomery–Vaughan mean value theorem for Dirichlet polynomials
-      (vanishing of off-diagonal terms)
-      Riemann–Lebesgue lemma
-      (vanishing of cross terms II and III)
-      Bochner's theorem
-      (positive definiteness of R)
-      Kolmogorov's existence theorem
-      (construction of the Gaussian process)
-
-§5    Montgomery–Vaughan
-      (convergence of Φ₀)
-      Riemann–Lebesgue lemma
-      (off-diagonal convergence)
-      Functional equation χ(½+it) = e^{−2iϑ(t)}
-      (extension of Φ₀ from [−1, 0] to [−2, −1])
-
-§7    Cramér–Hida spectral representation theorem [1]
-      Identity theorem for entire functions
-      Birkhoff–Khinchin ergodic theorem
-
-§8    Reproducing kernel Hilbert space theory
-
-§10   Bulinskaya's theorem, 1961 [4]
-
-§13   Riemann functional equation ξ(s) = ξ(1−s)
-      Hadamard factorization theorem
-      Paley–Wiener indicator function / exponential-type bounds
-
-§17   Motohashi spectral theory, 1993 [6][7]
-      Bohr–Besicovitch almost periodic function theory
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-References
-
-[1]  H. Cramér and M. R. Leadbetter, Stationary and Related Stochastic
-     Processes: Sample Function Properties and Their Applications,
-     Wiley, New York, 1967.
-
-[2]  H. L. Montgomery and R. C. Vaughan, Hilbert's inequality,
-     J. London Math. Soc. (2) 8 (1974), 73–82.
-
-[3]  M. B. Priestley, Evolutionary spectra and non-stationary
-     processes, J. Roy. Statist. Soc. Ser. B 27 (1965), 204–237.
-
-[4]  E. V. Bulinskaya, On the mean number of crossings of a level by a
-     stationary Gaussian process, Theory Probab. Appl. 6 (1961),
-     435–438.
-
-[5]  A. E. Ingham, Mean-value theorems in the theory of the Riemann
-     zeta-function, Proc. London Math. Soc. (2) 27 (1926), 273–300.
-
-[6]  Y. Motohashi, An explicit formula for the fourth power mean of the
-     Riemann zeta-function, Acta Math. 170 (1993), 181–220.
-
-[7]  Y. Motohashi, Spectral Theory of the Riemann Zeta-Function,
-     Cambridge Tracts in Mathematics 127, Cambridge University Press,
-     1997.
-
-[8]  A. Ivić, The Theory of Hardy's Z-Function, Cambridge Tracts in
-     Mathematics 196, Cambridge University Press, 2013.
-
-[9]  S. Bettin, V. Chandee, and M. Radziwill, The mean value of
-     |ζ(½+it)|⁴ twisted by primitive characters, 2025.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Appendix A.  Spectral theory of μ(t)
-
-A.1  Decomposition
-
-  μ(t) = μ₀(t) + E′(t),
-
-where μ₀(t) = log(t/2π) + 2γ is the secular part and
-
-  E′(t) = 2 Σ_{n=2}^∞ d(n)/√n · cos(t log n)
-
-is the oscillatory part, derived by differentiating Ingham's identity.
-
-A.2  Spectral measure of E′(t)
-
-E′(t) is Bohr–Besicovitch almost periodic. Its Bohr–Fourier expansion
-is indexed by {±log n : n ≥ 2}, with amplitudes d(n)/√n. The spectral
-measure is purely atomic:
-
-  ν = Σ_{n=2}^∞ (d(n)/√n) · [δ_{log n} + δ_{−log n}].
-
-The weight d(n)/√n is the product of the divisor function and the
-density factor n^{−½} that arises from Ingham's identity.
-
-A.3  Motohashi's formula and the connection to automorphic forms
-
-The time-averaged autocorrelation of E′(t) is
-
-  lim_{T→∞} 1/(T−T₀) ∫_{T₀}^T E′(t) E′(t+Δ) dt
-  = 2 Σ_{n=2}^∞ d(n)² / n · cos(Δ log n).
-
-This series is related to the fourth moment of ζ by differentiation.
-Motohashi's 1993 result gives the spectral decomposition of the fourth
-moment as a sum over the automorphic spectrum of SL₂(ℤ)\ℍ:
-
-  ∫₀ᵀ |ζ(½+it)|⁴ dt
-  = T P₄(log T) + Σⱼ αⱼ T^{½+irⱼ} + (continuous contribution),
-
-where P₄ is a degree-4 polynomial, the discrete sum runs over Maass
-eigenvalues ½+irⱼ², and αⱼ are explicit automorphic L-function values.
-The divisor function d(n) appearing in the weights d(n)/√n of E′(t)
-is the Fourier coefficient of the weight-0 Eisenstein series on
-SL₂(ℤ), and the structure of the autocorrelation is the arithmetic
-manifestation of this automorphic spectral theory.
-
-A.4  Separation of spectral theories by the factorization
-
-The factorization ζ = √μ · ζ_st achieves:
-
-  — ζ_st carries the absolutely continuous spectral measure
-    π · 𝟙_{[−2,0]}(ω) dω, amenable to Paley–Wiener analysis.
-
-  — √μ carries the pure point spectral measure of E′ (at {±log n})
-    and the secular growth log(t/2π), amenable to almost periodic
-    and automorphic analysis.
-
-These two components are orthogonal in spectral type: discrete versus
-continuous. The factorization is an exact spectral decomposition of ζ.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Appendix B.  The Hardy Z-function and the real stationary process
-
-B.1  The four representations
-
-The Hardy Z-function and the stationary processes satisfy the four
-exact identities recorded in §16:
-
-  ζ(½+it) = √μ(t) · ζ_st(ϑ(t))
-  ζ(½+it) = e^{−iϑ(t)} √μ(t) · Z_st(ϑ(t))
-  Z(t)    = √μ(t) · Z_st(ϑ(t))
-  Z(t)    = e^{iϑ(t)} √μ(t) · ζ_st(ϑ(t))
-
-B.2  Real-valuedness and the sinc covariance
-
-Since Z(t) is real for real t, Z_st(τ) = e^{iτ} ζ_st(τ) is a
-real-valued stationary process. Its covariance R_Z(Δ) = sinΔ/Δ is a
-sinc function and is real and symmetric. Its spectral density
-Ŝ_Z(ω) = π · 𝟙_{[−1,1]}(ω) is symmetric about ω = 0.
-
-B.3  The diagonal Gram matrix and independent zeros
-
-The symmetry Ŝ_Z(ω) = Ŝ_Z(−ω) implies all odd spectral moments
-vanish. In particular R_Z′(0) = 0, so Z_st(τ) and Z_st′(τ) are
-uncorrelated and, since they are jointly Gaussian, independent. The
-2×2 Gram matrix is
-
-  Γ_Z = ⎡ 1    0   ⎤,   det Γ_Z = 2/3 > 0.
-        ⎣ 0   2/3  ⎦
-
-Bulinskaya's theorem applies with det Γ_Z = 2/3 > 0: every zero of
-Z_st is simple. The chain rule at a zero t₀ of Z(t):
-
-  d/dt Z(t)|_{t₀} = √μ(t₀) · Z_st′(ϑ(t₀)) · ϑ′(t₀) ≠ 0,
-
-by μ(t₀) > 0, ϑ′(t₀) > 0, and Z_st′(ϑ(t₀)) ≠ 0.
-
-B.4  Piecewise spectral measure
-
-The spectral measure Ψ of Z_st is defined piecewise from Φ₀ of
-Definition 7:
-
-      ┌  Φ₀(ω−1),   ω ∈ [0, 1]
- Ψ(ω) = ┤
-      └  Φ₀(ω+1),   ω ∈ [−1, 0]
-
-Positive frequencies arise from A(t); negative frequencies from
-e^{−2iϑ(t)} B(t) via the functional equation, shifted back by +1.
-The symmetry of Ŝ_Z about ω = 0 is a direct consequence of the
-functional equation χ(½+it) = e^{−2iϑ(t)} paired with the shift.
-
-══════════════════════════════════════════════════════════════════════
+  [1]  M. B. Priestley, "Evolutionary Spectra and Non-Stationary Processes,"
+       Journal of the Royal Statistical Society, Series B, Vol. 27, No. 2,
+       pp. 204–237, 1965.
+───────────────────────────────────────────────────────────────────────────────
