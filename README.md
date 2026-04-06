@@ -10,11 +10,12 @@ Put the zeros to bed,
 And the band −2 to 0 fell in line.
 
 #
-Zeta breathes in ψ,
+zeta breathes in ψ,
 
 stone wheel of the spectrum turns,
 
 zeros stand in place.
+
 #
 
 # arb4j Overview
