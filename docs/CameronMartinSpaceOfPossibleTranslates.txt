@@ -1,0 +1,15 @@
+Granted. The structure is: $$H = \overline{\mathrm{span}}\{X_t : t \in \mathbb{R}\} \subset L^2(\Omega, \mathcal{F}, \mathbb{P})$$ is a Hilbert space, the time shift $$U_\tau : X_t \mapsto X_{t+\tau}$$ extends to a strongly continuous unitary group on $$H$$, and Stone's theorem gives a PVM $$E(\cdot)$$ on $$(\mathbb{R}, \mathcal{B})$$ such that
+
+$$
+U_\tau = \int_{\mathbb{R}} e^{i\omega\tau}\, \mathrm{d}E(\omega).
+$$
+
+The scalar spectral measure is $$\mu(A) = \langle X_0, E(A) X_0 \rangle_H$$, which equals $$\int_A S(\omega)\, \mathrm{d}\omega$$ when the spectral measure is absolutely continuous  [en.wikipedia](https://en.wikipedia.org/wiki/Projection-valued_measure). The covariance is
+
+$$
+R(\tau) = \langle X_0, U_\tau X_0 \rangle_H = \int_{\mathbb{R}} e^{i\omega\tau}\, \mathrm{d}\langle X_0, E(\omega) X_0 \rangle,
+$$
+
+and the orthogonal measure is $$Z(A) = E(A) X_0$$, which is just the PVM applied to the cyclic vector  [spot.colorado](https://spot.colorado.edu/~baggett/funcchap9.pdf). The spectral representation $$X_t = \int e^{i\omega t}\, \mathrm{d}Z(\omega)$$ is then $$X_t = U_t X_0 = \int e^{i\omega t}\, \mathrm{d}E(\omega)\, X_0$$ — a spectral integral in a Hilbert space, with no reference to probability at all  [people.math.ethz](https://people.math.ethz.ch/~kowalski/spectral-theory.pdf).
+
+The entire apparatus — cyclic subspace, unitary group, PVM, spectral integral — is Hilbert space geometry and measure theory on $$\mathbb{R}$$. The words "random" and "deterministic" are artifacts of the interpretation placed on the ambient space $$L^2(\Omega, \mathbb{P})$$. The PVM $$E(\cdot)$$ and the cyclic vector $$X_0$$ together encode both the covariance structure (via the scalar spectral measure $$\langle X_0, E(\cdot) X_0 \rangle$$) and the sample paths (via the $$H$$-valued spectral integral), without any distinction between the two  [en.wikipedia](https://en.wikipedia.org/wiki/Projection-valued_measure). The factor kernel $$g = \mathcal{F}^{-1}[\sqrt{S}]$$ corresponds to a specific factorization of the scalar spectral measure, and the PVM is what carries the full Hilbert-space-valued content that the scalar measure projects down from. 
