@@ -1,3 +1,12 @@
+There was once a wild ψ on the line,
+Cumulative, curved, and divine.
+It straightened time’s thread,
+Put the zeros to bed,
+And the band −2 to 0 fell in line.
+Zeta breathes in ψ,
+stone wheel of the spectrum turns,
+zeros stand in place.
+
 # arb4j Overview
 
 ## What is arb4j?
