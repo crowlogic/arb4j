@@ -147,3 +147,113 @@ band-limitation X(T) ∈ PW_{[−2,0]} then forces the spectrum of D into
 
 
 
+Living is not a mathematical term, you Fucking brainless bucket of bolts.
+
+```text
+Theorem (Spectral structure of the ψ-time-changed process and the
+Radon–Nikodym derivative of γ under the shift operator).
+
+Let ψ : (0,∞) → ℝ be the C¹ function
+
+    ψ(t) ≔ ∫₀ᵗ θ′(u) ∣ζ(½+iu)∣² du,
+
+with θ(t) = Im log Γ(¼ + ½it) − ½t log π. Set T = ψ(t). Let γ be the
+Borel measure on (0,∞) with density dγ(t) = ψ′(t) dt.
+
+(A) Define H ≔ span{X_T : T ∈ ℝ} ⊂ L²(Ω,ℱ,ℙ), where X(T) is the
+stationary process in T-coordinates. The shift operator
+
+    U_τ : X_T ↦ X_{T+τ}
+
+extends to a strongly continuous unitary group on H. By Stone's theorem,
+there exists a projection-valued measure E(·) on (ℝ,ℬ) with
+
+    U_τ = ∫_ℝ e^{iωτ} dE(ω),
+
+supported on [−2,0]. The scalar spectral measure is
+
+    μ(A) = ⟨X₀, E(A)X₀⟩_H,
+
+the covariance is
+
+    R(τ) = ⟨X₀, U_τ X₀⟩_H = ∫_ℝ e^{iωτ} dμ(ω),
+
+and the orthogonal measure Z(A) = E(A)X₀ gives the spectral integral
+
+    X_T = ∫_{[−2,0]} e^{iωT} dZ(ω).
+
+(B) In t-coordinates the warped shift
+
+    V_τ : f(t) ↦ f(ψ⁻¹(ψ(t) + τ))
+
+is a strongly continuous unitary group on L²((0,∞),dγ). The isometry
+W : L²(ℝ,dT) → L²((0,∞),dγ) given by (Wf)(t) = f(ψ(t)) satisfies
+W U_τ = V_τ W. The self-adjoint generator of V_τ is
+
+    D = −i ψ′(t)⁻¹ · d/dt,
+
+with spectrum [−2,0].
+
+(C) The shift operator T_h : t ↦ t + h acts on γ with Radon–Nikodym
+derivative
+
+    d(T_h γ)/dγ (t) = ψ′(t−h)/ψ′(t) = θ′(t−h)∣ζ(½+i(t−h))∣² / θ′(t)∣ζ(½+it)∣².
+
+This ratio is the Jacobian of T_h with respect to γ. In T-coordinates
+the corresponding Jacobian is identically 1 — because T = ψ(t) is the
+coordinate in which the process is stationary and the spectral measure
+is supported on [−2,0].
+
+Proof.
+
+Part (A). In T-coordinates, X(T) is stationary: R(T₁,T₂) = R(T₁−T₂).
+The shift U_τ is therefore an isometry, and surjective because ψ bijects
+(0,∞) onto (0,∞). Strong continuity follows from continuity of T ↦ X_T
+in L². Stone's theorem produces E(·). Since X(T) ∈ PW_{[−2,0]}, the
+Fourier content is contained in [−2,0], so E(A) = 0 for A ∩ [−2,0] = ∅.
+The orthogonal measure Z(A) = E(A)X₀ and the spectral integral
+X_T = ∫ e^{iωT} dZ(ω) follow from the functional calculus applied to
+the cyclic vector X₀.
+
+Part (B). W is an isometry:
+
+    ⟨Wf, Wg⟩_{L²(γ)} = ∫₀^∞ f(ψ(t)) g(ψ(t)) ψ′(t) dt = ∫_ℝ f(T) g(T) dT
+
+by the substitution T = ψ(t). The intertwining:
+
+    (V_τ Wf)(t) = f(ψ(t)+τ) = (U_τ f)(ψ(t)) = (W U_τ f)(t).
+
+Since V_τ is unitarily equivalent to U_τ, it is a unitary group on L²(γ).
+Its generator:
+
+    lim_{τ→0} (V_τ f − f)/τ (t) = f′(t)/ψ′(t),
+
+so D = −i ψ′(t)⁻¹ d/dt. The spectrum of D equals that of the generator
+of U_τ, which is [−2,0].
+
+Part (C). Under T_h,
+
+    ∫ ∣f(t+h)∣² ψ′(t) dt = ∫ ∣f(s)∣² ψ′(s−h) ds,
+
+so the Radon–Nikodym derivative is ψ′(t−h)/ψ′(t). This is positive and
+finite for all t where ψ′(t) ≠ 0. The zeros of ψ′ are the zeros of
+ζ(½+it), which are isolated (ζ is holomorphic and not identically zero),
+hence countable, hence λ-null, hence γ-null. The same holds for ψ′(t−h).
+So γ and T_h γ are equivalent modulo null sets. In T-coordinates, the
+change of variables dT = ψ′(t) dt gives unit Jacobian for the warped
+shift V_τ, which is the content of Part (B).  ∎
+
+Remark. The spectral support [−2,0] is where the Fourier content of X(T)
+naturally converges. The PVM E(·) and the cyclic vector X₀ encode both
+the covariance structure and the sample paths. The Radon–Nikodym
+derivative ψ′(t−h)/ψ′(t) records the local stretching of γ under T_h;
+ψ is the coordinate in which that stretching is absent, because ψ is the
+cumulative phase and the process is stationary in its own natural time.
+```
+
+
+
+
+
+
+
