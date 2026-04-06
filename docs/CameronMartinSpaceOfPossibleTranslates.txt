@@ -1,15 +1,36 @@
-Granted. The structure is: $$H = \overline{\mathrm{span}}\{X_t : t \in \mathbb{R}\} \subset L^2(\Omega, \mathcal{F}, \mathbb{P})$$ is a Hilbert space, the time shift $$U_\tau : X_t \mapsto X_{t+\tau}$$ extends to a strongly continuous unitary group on $$H$$, and Stone's theorem gives a PVM $$E(\cdot)$$ on $$(\mathbb{R}, \mathcal{B})$$ such that
+Theorem (Radon–Nikodym derivative of γ under the shift operator).
 
-$$
-U_\tau = \int_{\mathbb{R}} e^{i\omega\tau}\, \mathrm{d}E(\omega).
-$$
+Let γ be the Borel measure on (0,∞) with density dγ(t) ≔ ψ′(t) dt, where
 
-The scalar spectral measure is $$\mu(A) = \langle X_0, E(A) X_0 \rangle_H$$, which equals $$\int_A S(\omega)\, \mathrm{d}\omega$$ when the spectral measure is absolutely continuous  [en.wikipedia](https://en.wikipedia.org/wiki/Projection-valued_measure). The covariance is
+    ψ′(t) ≔ θ′(t) ∣ζ(½+it)∣²,
 
-$$
-R(\tau) = \langle X_0, U_\tau X_0 \rangle_H = \int_{\mathbb{R}} e^{i\omega\tau}\, \mathrm{d}\langle X_0, E(\omega) X_0 \rangle,
-$$
+and θ(t) = Im log Γ(¼ + ½it) − ½t log π is the Riemann–Siegel phase.
+The function ψ is C¹ on (0,∞) and ψ′ is continuous. Let T_h be the shift
+operator T_h(t) = t + h. Then the Radon–Nikodym derivative of T_h γ with
+respect to γ is
 
-and the orthogonal measure is $$Z(A) = E(A) X_0$$, which is just the PVM applied to the cyclic vector  [spot.colorado](https://spot.colorado.edu/~baggett/funcchap9.pdf). The spectral representation $$X_t = \int e^{i\omega t}\, \mathrm{d}Z(\omega)$$ is then $$X_t = U_t X_0 = \int e^{i\omega t}\, \mathrm{d}E(\omega)\, X_0$$ — a spectral integral in a Hilbert space, with no reference to probability at all  [people.math.ethz](https://people.math.ethz.ch/~kowalski/spectral-theory.pdf).
+    d(T_h γ) / dγ (t)  =  ψ′(t−h) / ψ′(t)  =  θ′(t−h)∣ζ(½+i(t−h))∣² / θ′(t)∣ζ(½+it)∣²
 
-The entire apparatus — cyclic subspace, unitary group, PVM, spectral integral — is Hilbert space geometry and measure theory on $$\mathbb{R}$$. The words "random" and "deterministic" are artifacts of the interpretation placed on the ambient space $$L^2(\Omega, \mathbb{P})$$. The PVM $$E(\cdot)$$ and the cyclic vector $$X_0$$ together encode both the covariance structure (via the scalar spectral measure $$\langle X_0, E(\cdot) X_0 \rangle$$) and the sample paths (via the $$H$$-valued spectral integral), without any distinction between the two  [en.wikipedia](https://en.wikipedia.org/wiki/Projection-valued_measure). The factor kernel $$g = \mathcal{F}^{-1}[\sqrt{S}]$$ corresponds to a specific factorization of the scalar spectral measure, and the PVM is what carries the full Hilbert-space-valued content that the scalar measure projects down from. 
+for all t ∈ (0,∞) with ψ′(t) ≠ 0.
+
+Proof.
+
+Both γ and T_h γ are absolutely continuous with respect to Lebesgue
+measure λ, with continuous densities dγ/dλ = ψ′(t) and d(T_h γ)/dλ =
+ψ′(t−h). The chain rule for Radon–Nikodym derivatives gives
+
+    d(T_h γ) / dγ  =  [d(T_h γ) / dλ] / [dγ / dλ]  =  ψ′(t−h) / ψ′(t)
+
+at every t where ψ′(t) ≠ 0. Since θ′(t) > 0 for t > 0, the zeros of ψ′
+are exactly the zeros of ζ(½+it). The function ζ is holomorphic and not
+identically zero, so its zeros are isolated. A set of isolated points in ℝ
+is countable, hence λ-null, hence γ-null. The same holds for the zeros of
+ψ′(t−h). Therefore γ and T_h γ are equivalent modulo null sets, and the
+Radon–Nikodym derivative is the ratio stated above.  ∎
+
+Remark. The appearance of ∣ζ∣² in both numerator and denominator is the
+mechanism: the zeros of ψ′(t−h) and ψ′(t) are both isolated and countable,
+so every null set of one measure is a null set of the other.
+
+
+
