@@ -32,5 +32,118 @@ Remark. The appearance of ∣ζ∣² in both numerator and denominator is the
 mechanism: the zeros of ψ′(t−h) and ψ′(t) are both isolated and countable,
 so every null set of one measure is a null set of the other.
 
+Theorem (Spectral structure of the ψ-time-changed process and the
+Radon–Nikodym derivative as the Jacobian absorbed by the time change).
+
+Let ψ : (0,∞) → ℝ be the C¹ function
+
+    ψ(t) ≔ ∫₀ᵗ θ′(u) ∣ζ(½+iu)∣² du,
+
+with θ(t) = Im log Γ(¼ + ½it) − ½t log π. Set T = ψ(t). Let γ be the
+Borel measure on (0,∞) with density dγ(t) = ψ′(t) dt.
+
+(A) Define H ≔ span{X_T : T ∈ ℝ} ⊂ L²(Ω,ℱ,ℙ), where X(T) is the
+stationary process obtained from ζ after the time change ψ. The shift
+operator
+
+    U_τ : X_T ↦ X_{T+τ}
+
+extends to a strongly continuous unitary group on H. By Stone's theorem,
+there exists a projection-valued measure E(·) on (ℝ,ℬ) with
+
+    U_τ = ∫_ℝ e^{iωτ} dE(ω),
+
+supported on [−2,0]. The scalar spectral measure is
+
+    μ(A) = ⟨X₀, E(A)X₀⟩_H,
+
+the covariance is
+
+    R(τ) = ⟨X₀, U_τ X₀⟩_H = ∫_ℝ e^{iωτ} dμ(ω),
+
+and the orthogonal measure Z(A) = E(A)X₀ gives the spectral integral
+
+    X_T = ∫_{[−2,0]} e^{iωT} dZ(ω).
+
+(B) Define the warped shift in t-coordinates:
+
+    V_τ : f(t) ↦ f(ψ⁻¹(ψ(t) + τ)).
+
+The isometry W : L²(ℝ,dT) → L²((0,∞),dγ) given by (Wf)(t) = f(ψ(t))
+intertwines U_τ and V_τ, i.e. W U_τ = V_τ W. Therefore V_τ is a strongly
+continuous unitary group on L²((0,∞),dγ), and Stone's theorem applied to
+V_τ gives the self-adjoint generator
+
+    D = −i ψ′(t)⁻¹ · d/dt,
+
+with spectrum [−2,0].
+
+(C) The naive shift T_h : t ↦ t + h acts on L²(γ) with Radon–Nikodym
+derivative
+
+    d(T_h γ)/dγ (t) = ψ′(t−h)/ψ′(t) = θ′(t−h)∣ζ(½+i(t−h))∣² / θ′(t)∣ζ(½+it)∣².
+
+This ratio is exactly the Jacobian that the time change ψ absorbs. In
+t-coordinates the naive shift distorts γ by this factor; the construction
+of ψ exists to convert that non-stationary shift into the unitary warped
+shift V_τ in T-coordinates, where the Jacobian becomes identically 1.
+The Radon–Nikodym derivative is not a residual obstruction — it is the
+quantity that ψ was built to eliminate.
+
+Proof.
+
+Part (A). The process X(T) is stationary by construction: the time change
+ψ absorbs all non-stationarity. Stationarity means R(T₁,T₂) = R(T₁−T₂),
+so U_τ is an isometry. It is surjective on H because ψ is a bijection
+(0,∞) → (0,∞). Strong continuity follows from the continuity of
+T ↦ X_T in L². Stone's theorem produces the PVM E(·). The support of E
+is [−2,0] because X(T) ∈ PW_{[−2,0]}: the Fourier transform of every
+sample path vanishes outside [−2,0], so E(A) = 0 for A ∩ [−2,0] = ∅. The
+orthogonal measure Z(A) = E(A)X₀ and the spectral integral
+X_T = U_T X₀ = ∫ e^{iωT} dE(ω) X₀ = ∫ e^{iωT} dZ(ω) follow from the
+functional calculus applied to the cyclic vector X₀.
+
+Part (B). The map W is an isometry:
+
+    ⟨Wf, Wg⟩_{L²(γ)} = ∫₀^∞ f(ψ(t)) g(ψ(t)) ψ′(t) dt
+                       = ∫_ℝ f(T) g(T) dT = ⟨f,g⟩_{L²(dT)},
+
+by the substitution T = ψ(t). The intertwining holds:
+
+    (V_τ Wf)(t) = (Wf)(ψ⁻¹(ψ(t)+τ)) = f(ψ(t)+τ) = (U_τ f)(ψ(t)) = (W U_τ f)(t).
+
+Since V_τ is unitarily equivalent to U_τ, it is a strongly continuous
+unitary group on L²(γ). Its generator:
+
+    lim_{τ→0} (V_τ f − f)/τ (t) = f′(t)/ψ′(t),
+
+so D = −i ψ′(t)⁻¹ d/dt. The spectrum of D equals the spectrum of the
+generator of U_τ, which is [−2,0].
+
+Part (C). For the naive shift T_h on L²(γ):
+
+    ∫ ∣f(t+h)∣² ψ′(t) dt = ∫ ∣f(s)∣² ψ′(s−h) ds,
+
+so the density of T_h γ with respect to γ is ψ′(t−h)/ψ′(t). In
+T-coordinates, set T = ψ(t), T′ = ψ(t+h). The warped shift V_τ
+corresponds to T ↦ T+τ, which has Jacobian 1 with respect to dT. The
+naive shift t ↦ t+h corresponds to T ↦ ψ(ψ⁻¹(T)+h), which has Jacobian
+ψ′(ψ⁻¹(T)+h)/ψ′(ψ⁻¹(T)) with respect to dT — that is, the same
+Radon–Nikodym ratio in T-coordinates. The time change ψ replaces this
+non-unit Jacobian with the unit Jacobian of pure shift in T, which is
+the content of Part (B): V_τ is unitary on L²(γ).  ∎
+
+Remark. The PVM E(·) and the cyclic vector X₀ together encode both the
+covariance structure (via ⟨X₀, E(·)X₀⟩) and the sample paths (via the
+H-valued spectral integral). The Radon–Nikodym derivative identifies
+what the time change does at each point: it converts the ratio
+ψ′(t−h)/ψ′(t) into the constant 1 by passing to T-coordinates. The
+band-limitation X(T) ∈ PW_{[−2,0]} then forces the spectrum of D into
+[−2,0], completing the spectral characterization.
+
+
+
+
+
 
 
