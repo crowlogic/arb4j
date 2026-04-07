@@ -19,7 +19,7 @@ public class AbsoluteUnitaryTimeChangeTest extends
   {
     RealFunction      f = RealFunction.express("tanh(x)");
     RealFunction      ψ = RealFunction.express("x^2");
-    RealFunction      g = RealFunction.express("sqrt(diff(t^2,t))*tanh(t^2)");
+    RealFunction      g = RealFunction.express("√(diff(t²,t))*tanh(t²)");
     try ( AbsoluteUnitaryTimeChange U = new AbsoluteUnitaryTimeChange(f,
                                                 ψ))
     {
