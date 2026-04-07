@@ -1,0 +1,107 @@
+Theorem (Unitary time-change by total variation).
+
+Let g : [0, ∞) → ℝ be continuously differentiable with derivative g′
+locally integrable, and with discrete critical set
+
+  C = { t ≥ 0 : g′(t) = 0 },   C ∩ [0, L] finite for every L > 0.
+
+Assume
+
+  ∫₀^∞ |g′(u)| du = ∞.
+
+Define the total variation function
+
+  G(t) = ∫₀^t |g′(u)| du,   t ≥ 0.
+
+Define U_G on L²_loc([0, ∞)) by
+
+  (U_G f)(t) = √(|g′(t)|) · f(G(t)),
+
+and define U_G⁻¹ by
+
+  (U_G⁻¹ h)(T) = h(G⁻¹(T)) / √(|g′(G⁻¹(T))|).
+
+Then:
+
+(1) G is a strictly increasing homeomorphism [0, ∞) → [0, ∞).
+
+(2) U_G is a local L²-isometry: for every compact K ⊂ [0, ∞),
+
+      ∫_K |(U_G f)(t)|² dt = ∫_{G(K)} |f(T)|² dT.
+
+(3) U_G⁻¹ U_G = id and U_G U_G⁻¹ = id on L²_loc([0, ∞)).
+
+(4) For every t₀ ∈ C and every continuous h ∈ L²_loc([0, ∞)),
+
+      lim_{t → t₀} (U_G(U_G⁻¹ h))(t) = h(t₀).
+
+
+Proof.
+
+(1) Strict monotonicity and surjectivity of G.
+
+Fix 0 ≤ a < b. On [a, b] the critical set C ∩ [a, b] is finite. The
+function |g′| is continuous and nonnegative on [a, b] and vanishes only
+at finitely many points. A continuous nonnegative function on a closed
+interval that is zero only at finitely many points has strictly positive
+integral, so
+
+  G(b) − G(a) = ∫_a^b |g′(u)| du > 0.
+
+Thus G is strictly increasing. Continuity of g′ implies continuity of G,
+and G(0) = 0. The hypothesis ∫₀^∞ |g′(u)| du = ∞ gives G(t) → ∞ as
+t → ∞. Therefore G : [0, ∞) → [0, ∞) is a continuous, strictly monotone
+bijection, hence a homeomorphism, and G⁻¹ is continuous and strictly
+increasing.
+
+(2) Local L²-isometry.
+
+Let K ⊂ [0, ∞) be compact and f ∈ L²_loc([0, ∞)). Then
+
+  ∫_K |(U_G f)(t)|² dt = ∫_K |g′(t)| · |f(G(t))|² dt.
+
+Set T = G(t). Since G is absolutely continuous and strictly increasing,
+the change of variables formula gives dT = |g′(t)| dt, and G maps K
+homeomorphically onto the compact set G(K). Hence
+
+  ∫_K |g′(t)| · |f(G(t))|² dt = ∫_{G(K)} |f(T)|² dT.
+
+(3) Two-sided inverse identities.
+
+Fix f ∈ L²_loc([0, ∞)). For every T ∈ [0, ∞)  G(C), write
+t = G⁻¹(T), so g′(t) ≠ 0, and compute:
+
+  (U_G⁻¹(U_G f))(T)
+    = (U_G f)(G⁻¹(T)) / √(|g′(G⁻¹(T))|)
+    = √(|g′(t)|) · f(G(t)) / √(|g′(t)|)
+    = f(G(G⁻¹(T)))
+    = f(T).
+
+The exceptional set G(C) is the image of the discrete set C under the
+strictly increasing continuous map G, so G(C) is discrete and has
+Lebesgue measure zero. Hence U_G⁻¹ U_G f = f a.e., i.e. in L²_loc.
+
+Similarly, fix h ∈ L²_loc([0, ∞)). For every t ∈ [0, ∞)  C, we have
+g′(t) ≠ 0, and:
+
+  (U_G(U_G⁻¹ h))(t)
+    = √(|g′(t)|) · (U_G⁻¹ h)(G(t))
+    = √(|g′(t)|) · h(G⁻¹(G(t))) / √(|g′(G⁻¹(G(t)))|)
+    = √(|g′(t)|) · h(t) / √(|g′(t)|)
+    = h(t).
+
+The set C is discrete, hence measure zero, so U_G U_G⁻¹ h = h in L²_loc.
+
+(4) Pointwise continuity at critical points.
+
+Let t₀ ∈ C and let h be continuous. By part (3), for every t ≠ t₀ in a
+punctured neighborhood of t₀ (which is disjoint from C since C is
+discrete), we have the exact algebraic identity
+
+  (U_G(U_G⁻¹ h))(t) = h(t).
+
+Therefore
+
+  lim_{t → t₀} (U_G(U_G⁻¹ h))(t) = lim_{t → t₀} h(t) = h(t₀),
+
+where the last equality uses continuity of h.                            ∎ 
