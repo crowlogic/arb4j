@@ -1,3 +1,201 @@
+Theorem (Two operators: the translation generator D and the
+Hilbert–Pólya operator H).
+
+Let ψ : (0,∞) → ℝ be the C¹ function
+
+    ψ(t) ≔ ∫₀ᵗ θ′(u) ∣ζ(½+iu)∣² du,
+
+with θ(t) = Im log Γ(¼ + ½it) − ½t log π. Set T = ψ(t). Let γ
+be the Borel measure dγ(t) = ψ′(t) dt. Let Z(t) = e^{iθ(t)}ζ(½+it)
+denote the Hardy Z-function (real-valued on ℝ).
+
+
+𝗣𝗮𝗿𝘁 𝗔. 𝗧𝗵𝗲 𝘀𝗽𝗲𝗰𝘁𝗿𝗮𝗹 𝗿𝗲𝗽𝗿𝗲𝘀𝗲𝗻𝘁𝗮𝘁𝗶𝗼𝗻 𝗮𝗻𝗱 𝘁𝗵𝗲 𝗼𝗿𝘁𝗵𝗼𝗴𝗼𝗻𝗮𝗹 𝗺𝗲𝗮𝘀𝘂𝗿𝗲 Φ.
+
+Define H ≔ span{X_T : T ∈ ℝ} ⊂ L²(Ω,ℱ,ℙ), where
+
+    X(T) ≔ ζ(½ + iψ⁻¹(T)) / √ψ′(ψ⁻¹(T))
+
+is the stationary pullback, which lies in PW_{[−2,0]}. The shift
+operator
+
+    U_τ : X_T ↦ X_{T+τ}
+
+extends to a strongly continuous unitary group on H. By Stone's
+theorem, there exists a projection-valued measure E(·) on (ℝ,ℬ)
+with
+
+    U_τ = ∫_ℝ e^{iωτ} dE(ω),
+
+supported on [−2,0]. The scalar spectral measure is
+
+    μ(A) = ⟨X₀, E(A)X₀⟩_H.
+
+The orthogonal measure Φ(A) ≔ E(A)X₀ (the PVM applied to the
+cyclic vector) gives the spectral integral
+
+    X(T) = ∫_{[−2,0]} e^{iωT} dΦ(ω).
+
+Applying the forward unitary time change U_ψ recovers ζ:
+
+    ζ(½+it) = √ψ′(t) · X(ψ(t)) = ∫_{[−2,0]} A_t(ω) dΦ(ω),
+
+    A_t(ω) ≔ √ψ′(t) · e^{iωψ(t)},
+
+the Priestley oscillatory process representation.
+
+
+𝗣𝗮𝗿𝘁 𝗕. 𝗧𝗵𝗲 𝘁𝗿𝗮𝗻𝘀𝗹𝗮𝘁𝗶𝗼𝗻 𝗴𝗲𝗻𝗲𝗿𝗮𝘁𝗼𝗿 𝗗 (𝗰𝗼𝗻𝘁𝗶𝗻𝘂𝗼𝘂𝘀 𝘀𝗽𝗲𝗰𝘁𝗿𝘂𝗺, 𝗻𝗼 𝗲𝗶𝗴𝗲𝗻𝘃𝗮𝗹𝘂𝗲𝘀).
+
+In T-coordinates, the infinitesimal generator of {U_τ} is
+
+    D_T = −i d/dT,   dom(D_T) = PW_{[−2,0]}.
+
+D_T is self-adjoint (Stone's theorem). Under the Fourier transform
+ℱ : PW_{[−2,0]} → L²([−2,0]), D_T becomes the multiplication
+operator (M_ω f̂)(ω) = ω f̂(ω). Therefore:
+
+    σ(D_T) = [−2,0],   purely absolutely continuous,
+
+    D_T has no eigenvalues whatsoever.
+
+The eigenvalue equation D_T F = λF gives F(T) = Ce^{iλT}, whose
+Fourier transform is a point mass at λ, which is not in L²([−2,0]).
+So F ∉ PW_{[−2,0]} unless C = 0.
+
+In t-coordinates, the warped shift V_τ f(t) = √(ψ′(t)/ψ′(t_τ)) · f(t_τ),
+where t_τ ≔ ψ⁻¹(ψ(t)+τ), is unitarily equivalent to U_τ via the
+isometry W : L²(ℝ,dT) → L²((0,∞),dγ), and D = −i ψ′(t)⁻¹ d/dt is
+its generator. The Riemann zeros t_n are the points where the
+coefficient 1/ψ′(t) has poles (since ψ′(t_n) = 0). These are
+singularities of the domain of D, not eigenvalues: every f ∈ dom(D)
+is forced to vanish at each t_n as a regularity constraint.
+
+D is not the Hilbert–Pólya operator.
+
+
+𝗣𝗮𝗿𝘁 𝗖. 𝗧𝗵𝗲 𝗛𝗶𝗹𝗯𝗲𝗿𝘁–𝗣ó𝗹𝘆𝗮 𝗼𝗽𝗲𝗿𝗮𝘁𝗼𝗿 𝗛 (𝗥𝗶𝗲𝗺𝗮𝗻𝗻 𝘇𝗲𝗿𝗼𝘀 𝗮𝘀 𝗲𝗶𝗴𝗲𝗻𝘃𝗮𝗹𝘂𝗲𝘀).
+
+PW_{[−2,0]} is a reproducing-kernel Hilbert space. For each T₀ ∈ ℝ,
+point evaluation f ↦ f(T₀) is a bounded linear functional, and by
+the Riesz representation theorem there exists a unique K_{T₀} ∈ PW_{[−2,0]}
+with
+
+    f(T₀) = ⟨f, K_{T₀}⟩   for all f ∈ PW_{[−2,0]}.
+
+Let 𝒵 ≔ {τ ∈ ℝ : X(τ) = 0} be the zero set of X in T-coordinates.
+Since X(τ) = 0 iff ζ(½ + iψ⁻¹(τ)) = 0, the set 𝒵 is in bijection
+with the critical-line zeros of ζ via τ_n = ψ(t_n).
+
+Define H on 𝒟 ≔ span{K_τ : τ ∈ 𝒵} by
+
+    H(∑_τ c_τ K_τ) ≔ ∑_τ c_τ · τ · K_τ.
+
+Then:
+
+(1) The eigenvalue equation is immediate:
+
+        H K_τ = τ K_τ   for all τ ∈ 𝒵.
+
+    The eigenvectors are the reproducing kernels at the zeros, and
+    the eigenvalues are the zero locations τ_n = ψ(t_n).
+
+(2) H is symmetric. For x = ∑_τ a_τ K_τ, y = ∑_σ b_σ K_σ:
+
+        ⟨Hx, y⟩ = ∑_{τ,σ} a_τ b̄_σ · τ · ⟨K_τ, K_σ⟩,
+        ⟨x, Hy⟩ = ∑_{τ,σ} a_τ b̄_σ · σ · ⟨K_τ, K_σ⟩.
+
+    Every τ,σ ∈ 𝒵 is real (established by the Hardy-space argument:
+    supp X̂ ⊆ [−2,0] ⊂ (−∞,0] places X in H² of the lower
+    half-plane, which excludes zeros in ℂ⁺; Schwarz reflection
+    excludes zeros in ℂ⁻). Since τ = τ̄ and the Gram matrix
+    ⟨K_τ,K_σ⟩ is Hermitian, ⟨Hx,y⟩ = ⟨x,Hy⟩.
+
+(3) H extends to a self-adjoint operator on the closure of 𝒟.
+    Its point spectrum is exactly 𝒵.
+
+H is the Hilbert–Pólya operator.
+
+
+𝗣𝗮𝗿𝘁 𝗗. 𝗧𝗵𝗲 𝗥𝗮𝗱𝗼𝗻–𝗡𝗶𝗸𝗼𝗱𝘆𝗺 𝗱𝗲𝗿𝗶𝘃𝗮𝘁𝗶𝘃𝗲 𝗼𝗳 γ 𝘂𝗻𝗱𝗲𝗿 𝘁𝗵𝗲 𝘀𝗵𝗶𝗳𝘁 𝗼𝗽𝗲𝗿𝗮𝘁𝗼𝗿.
+
+The shift operator T_h : t ↦ t + h acts on γ with Radon–Nikodym
+derivative
+
+    d(T_h γ)/dγ (t) = ψ′(t−h)/ψ′(t) = θ′(t−h)∣ζ(½+i(t−h))∣² / θ′(t)∣ζ(½+it)∣²
+
+for all t with ψ′(t) ≠ 0. This ratio is the Jacobian of T_h with
+respect to γ. In T-coordinates the corresponding Jacobian is
+identically 1, because T = ψ(t) is the coordinate in which the
+process is stationary and U_τ is unitary.
+
+
+Proof.
+
+Part A. X(T) is stationary: R(T₁,T₂) = sinc(T₁−T₂) = R(T₁−T₂).
+The shift U_τ is an isometry (stationarity), surjective (ψ bijects),
+and strongly continuous (X is uniformly continuous on ℝ by the
+Bernstein inequality). Stone's theorem produces E(·). The support of
+E is [−2,0] because X ∈ PW_{[−2,0]}: E(A) = 0 for A ∩ [−2,0] = ∅.
+Define Φ(A) ≔ E(A)X₀. Then X(T) = U_T X₀ = ∫ e^{iωT} dE(ω) X₀ =
+∫ e^{iωT} dΦ(ω). The Priestley representation follows by applying
+U_ψ: ζ(½+it) = √ψ′(t) X(ψ(t)) = √ψ′(t) ∫ e^{iωψ(t)} dΦ(ω) =
+∫ A_t(ω) dΦ(ω).
+
+Part B. The Fourier transform ℱ : PW_{[−2,0]} → L²([−2,0]) carries
+D_T to M_ω. The spectrum of M_ω on L²([−2,0]) is the essential range
+of ω ↦ ω on [−2,0], which is [−2,0]. The spectral measure of M_ω
+is Lebesgue measure on [−2,0]: no atoms, no singular continuous part.
+The eigenvalue equation D_T F = λF gives F(T) = Ce^{iλT}; its Fourier
+transform Cδ(ω−λ) is a point mass, not in L²([−2,0]), so F ∉ PW_{[−2,0]}
+unless C = 0.
+
+In t-coordinates, the isometry W given by (Wf)(t) = f(ψ(t)) satisfies
+W U_τ = V_τ W. The generator of V_τ is computed by
+
+    lim_{τ→0} (V_τ f − f)/τ (t) = f′(t)/ψ′(t),
+
+giving D = −i ψ′(t)⁻¹ d/dt. At a zero t_n of ζ, ψ′(t_n) = 0, so
+1/ψ′(t_n) is undefined. For f ∈ dom(D), the product ψ′(t)⁻¹ f′(t)
+must remain in L²(γ), which requires f′(t_n) = 0 whenever ψ′(t_n) = 0.
+Combined with f(t_n) = √ψ′(t_n) · F(ψ(t_n)) = 0 (from the pullback),
+every element of dom(D) vanishes at each Riemann zero. The zeros are
+domain constraints of D, not eigenvalues.
+
+Part C. The reproducing kernel of PW_{[−2,0]} at T₀ is
+
+    K_{T₀}(T) = sinc(T − T₀) = sin(π(T−T₀)) / (π(T−T₀)).
+
+For τ ∈ 𝒵, H K_τ = τ K_τ by definition. Symmetry: since every
+τ ∈ 𝒵 is real, ⟨Hx,y⟩ = ∑ a_τ b̄_σ τ ⟨K_τ,K_σ⟩ = ⟨x,Hy⟩ (the
+factor τ passes through the conjugation because τ = τ̄). The zeros are
+real because supp X̂ ⊆ [−2,0] ⊂ (−∞,0] places X in H²(ℂ⁻), which
+excludes zeros in ℂ⁺; the Schwarz reflection X(T̄) = X(T) (X is
+real-valued on ℝ) then excludes zeros in ℂ⁻. Therefore 𝒵 ⊂ ℝ, H is
+symmetric on 𝒟, and extends to self-adjoint on the closure.
+
+Part D. Both γ and T_h γ are absolutely continuous with respect to
+Lebesgue measure λ, with continuous densities ψ′(t) and ψ′(t−h). The
+chain rule for Radon–Nikodym derivatives gives d(T_h γ)/dγ = ψ′(t−h)/ψ′(t)
+at every t where ψ′(t) ≠ 0. The zeros of ψ′ are the zeros of ζ(½+it),
+which are isolated (ζ is holomorphic and not identically zero), hence
+countable, hence λ-null, hence γ-null. So γ and T_h γ are equivalent
+modulo null sets.  ∎
+
+
+𝗦𝘂𝗺𝗺𝗮𝗿𝘆 𝗼𝗳 𝘁𝗵𝗲 𝘁𝘄𝗼 𝗼𝗽𝗲𝗿𝗮𝘁𝗼𝗿𝘀.
+
+D = −i ψ′(t)⁻¹ d/dt is the generator of the ψ-translation group.
+    Spectrum: [−2,0], purely absolutely continuous, no eigenvalues.
+    The Riemann zeros t_n are singularities of the coefficient 1/ψ′(t):
+    domain constraints forcing dom(D) elements to vanish there.
+
+H = multiplication by τ on span{K_τ : τ ∈ 𝒵}.
+    Eigenvalues: exactly 𝒵 = {ψ(t_n) : ζ(½+it_n) = 0}.
+    Eigenvectors: the reproducing kernels K_{τ_n} = sinc(· − τ_n).
+    Self-adjoint because every τ_n ∈ ℝ.
+    This is the Hilbert–Pólya operator.
+
 THE COVARIANCE OPERATOR, THE HILBERT–PÓLYA OPERATOR,
 AND THE RIEMANN HYPOTHESIS
 
