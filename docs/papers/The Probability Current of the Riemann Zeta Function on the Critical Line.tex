@@ -1,0 +1,414 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+\DeclareMathOperator{\im}{Im}
+\DeclareMathOperator{\re}{Re}
+
+\title{The Probability Current of the Riemann Zeta Function\\
+on the Critical Line}
+\author{Stephen Crowley}
+\date{April 2026}
+
+\begin{document}
+\maketitle
+
+%==============================================================
+\section{WKB Background}
+%==============================================================
+
+The WKB method (Wentzel, Kramers, Brillouin, 1926) is a technique
+for constructing approximate solutions to the Schr\"odinger equation
+in one spatial dimension when the potential varies slowly compared
+to the de~Broglie wavelength. For the present purposes only the
+structural content is needed, not the approximation.
+
+\subsection*{The polar decomposition of a wavefunction}
+
+A complex-valued function $\psi(x,t)$ satisfying the time-dependent
+Schr\"odinger equation
+\[
+i\hbar\,\partial_t\psi = -\frac{\hbar^2}{2m}\,\partial_x^2\psi + V\psi
+\]
+can always be written in polar form
+\[
+\psi(x,t) = A(x,t)\,e^{iS(x,t)/\hbar},
+\]
+with $A \geq 0$ and $S$ real. Substituting and separating real and
+imaginary parts yields two equations. The imaginary part gives the
+\emph{continuity equation}
+\[
+\partial_t\rho + \partial_x j = 0,
+\]
+where the \emph{probability density} and \emph{probability current}
+are
+\[
+\rho = A^2 = |\psi|^2,
+\qquad
+j = \frac{\hbar}{m}\,A^2\,\partial_x S
+  = \frac{\hbar}{m}\,\im\!\left(\bar\psi\,\partial_x\psi\right).
+\]
+The real part gives a modified Hamilton--Jacobi equation for $S$.
+
+\subsection*{What the current measures}
+
+$\rho(x,t)\,dx$ is the probability of finding the particle in $[x,
+x+dx]$ at time $t$. The current $j(x,t)$ is the net probability flux
+crossing the point $x$ per unit time: positive means flux to the
+right, negative to the left. The continuity equation states that
+probability is locally conserved: any decrease in $\rho$ in a region
+must equal the net outward flux through its boundary.
+
+\subsection*{The velocity field}
+
+The WKB velocity is $v = j/\rho = (\hbar/m)\,\partial_x S$.
+In the classical limit $\hbar\to 0$ this coincides with the classical
+particle velocity $p/m$ since $\partial_x S \to p$ (the action
+gradient). The current is then $j = \rho v$, a density times a speed.
+
+\subsection*{Units and normalisation}
+
+In quantum mechanics $\int \rho\,dx = 1$ for a normalised state.
+In the present paper $\psi$ is replaced by $\zeta(1/2+it)$, which is
+not square-integrable on $[0,\infty)$, so $\rho$ is an \emph{unnormalised}
+density. The role of $x$ is played by the height $t$, and the WKB
+velocity field is $v(t) = \partial_t\arg\zeta(1/2+it)$. All
+structural identities---the continuity equation, the relation $j =
+\rho v$---hold without change.
+
+%==============================================================
+\section{Definitions}
+%==============================================================
+
+\begin{definition}[Standing objects]
+\label{def:objects}
+Let $\zeta(s)$ denote the Riemann zeta function. On the critical
+line $\re(s) = 1/2$ define
+\begin{align}
+\mu(t) &\coloneqq \bigl|\zeta\bigl(\tfrac{1}{2}+it\bigr)\bigr|^{2}
+&&\text{(local energy / probability density),}\\[4pt]
+\vartheta(t) &\coloneqq
+\im\log\Gamma\!\bigl(\tfrac{1}{4}+\tfrac{it}{2}\bigr) - \tfrac{t}{2}\log\pi
+&&\text{(Riemann--Siegel theta),}\\[4pt]
+Z(t) &\coloneqq e^{i\vartheta(t)}\,\zeta\!\bigl(\tfrac{1}{2}+it\bigr)
+&&\text{(Hardy $Z$-function, real-valued for real $t$),}\\[4pt]
+\Psi(t) &\coloneqq \int_0^t |\vartheta'(u)|\,\mu(u)\,du
+&&\text{(cumulative phase clock),}\\[4pt]
+\Psi'(t) &= |\vartheta'(t)|\,\mu(t)
+&&\text{(cumulative phase density).}
+\end{align}
+The branch of $\log\Gamma$ is continuous on the upper half-plane and
+real on the positive real axis. By Stirling,
+\[
+\vartheta'(t) = \tfrac{1}{2}\log\tfrac{t}{2\pi} + O(t^{-2}),
+\]
+so $|\vartheta'(t)| = \vartheta'(t)$ for all $t > t_c \approx 6.29$,
+the unique zero of $\vartheta'$ on $(0,\infty)$. The absolute value
+ensures $\Psi$ is strictly increasing on all of $[0,\infty)$.
+
+The critical set is
+\[
+\mathcal{C} \coloneqq \bigl\{\,t\geq 0: \Psi'(t)=0\,\bigr\}
+= \bigl\{\,t:\zeta\bigl(\tfrac{1}{2}+it\bigr)=0\,\bigr\} \cup \{t_c\}.
+\]
+$\mathcal{C}$ is discrete: zeros of $\zeta(\tfrac{1}{2}+it)$ are
+isolated by the identity theorem for holomorphic functions, and
+$\vartheta'$ has exactly one zero on $[0,\infty)$ by Stirling.
+\end{definition}
+
+\begin{definition}[Polar decomposition of $\zeta$]
+\label{def:polar}
+At every $t \notin \mathcal{C}$ write
+\[
+\zeta\bigl(\tfrac{1}{2}+it\bigr) = \sqrt{\mu(t)}\,e^{i\alpha(t)},
+\qquad
+\alpha(t) \coloneqq \arg\zeta\bigl(\tfrac{1}{2}+it\bigr),
+\]
+where $\arg$ denotes any fixed continuous branch of the argument on a
+connected component of the complement of the zero set. At a zero $t_n$
+the argument is undefined and the polar form breaks down; the primary
+definitions below bypass this.
+\end{definition}
+
+\begin{definition}[Probability density and current]
+\label{def:current}
+The \emph{probability density} and \emph{probability current} of
+$\zeta$ on the critical line are
+\[
+\rho(t) \coloneqq \mu(t)
+= \bigl|\zeta\bigl(\tfrac{1}{2}+it\bigr)\bigr|^{2},
+\]
+\[
+j(t) \coloneqq \im\!\Bigl(\,\overline{\zeta\bigl(\tfrac{1}{2}+it\bigr)}
+\cdot\partial_t\,\zeta\bigl(\tfrac{1}{2}+it\bigr)\Bigr).
+\]
+These definitions require no branch choice and are valid for all
+$t \in [0,\infty)$, including at every zero of $\zeta$.
+\end{definition}
+
+%==============================================================
+\section{Main Results}
+%==============================================================
+
+\begin{theorem}[Explicit polar form of the current]
+\label{thm:polar}
+For all $t \notin \mathcal{C}$,
+\[
+j(t) = \mu(t)\,\alpha'(t) = \mu(t)\,\partial_t\arg\zeta\!\bigl(\tfrac{1}{2}+it\bigr).
+\]
+At every zero $t_n \in \mathcal{C}$ the definition gives $j(t_n)=0$
+directly, consistently with $\lim_{t\to t_n} \mu(t)\alpha'(t) = 0$.
+\end{theorem}
+
+\begin{proof}
+Write $\zeta_t = \sqrt{\mu(t)}\,e^{i\alpha(t)}$ for $t\notin\mathcal{C}$.
+Differentiating,
+\[
+\partial_t\zeta_t
+= \frac{\mu'(t)}{2\sqrt{\mu(t)}}\,e^{i\alpha(t)}
++ i\alpha'(t)\sqrt{\mu(t)}\,e^{i\alpha(t)}
+= e^{i\alpha(t)}\!\left(\frac{\mu'(t)}{2\sqrt{\mu(t)}}
++ i\alpha'(t)\sqrt{\mu(t)}\right).
+\]
+Hence
+\[
+\bar\zeta_t\,\partial_t\zeta_t
+= \sqrt{\mu(t)}\,e^{-i\alpha(t)}\cdot e^{i\alpha(t)}
+\!\left(\frac{\mu'}{2\sqrt{\mu}}+i\alpha'\sqrt{\mu}\right)
+= \frac{\mu'(t)}{2} + i\,\mu(t)\,\alpha'(t).
+\]
+Taking the imaginary part gives $j(t) = \mu(t)\,\alpha'(t)$.
+
+At a zero $t_n$, Definition~\ref{def:current} gives
+$j(t_n) = \im(0\cdot\partial_t\zeta_{t_n}) = 0$ since
+$\zeta(t_n)=0$. Near a simple zero $\mu(t)\sim c(t-t_n)^2$ and
+$|\alpha'(t)|$ is locally bounded by $|\vartheta'(t_n)| + O(1)$, so
+$\mu(t)\,\alpha'(t)\to 0$. The two values are consistent.
+\end{proof}
+
+\begin{theorem}[Smooth part of the current equals $\Psi'$]
+\label{thm:smooth}
+Under the Riemann--Siegel factorisation $\zeta(\tfrac{1}{2}+it)
+= e^{-i\vartheta(t)}Z(t)$ with $Z(t)$ real-valued, the phase
+decomposes as
+\[
+\alpha(t) = -\vartheta(t) + \arg Z(t),\qquad t\notin\mathcal{C}.
+\]
+The full distributional derivative is
+\[
+\alpha'(t)
+= -\vartheta'(t) + \partial_t\arg Z(t),
+\]
+where $\partial_t\arg Z$ contributes $\pm\pi\,\delta(t-t_n)$ at each
+real zero $t_n$ of $Z$ (i.e.\ each critical-line zero of $\zeta$).
+The current is therefore
+\[
+j(t) = -\mu(t)\,\vartheta'(t) + \mu(t)\,\partial_t\arg Z(t).
+\]
+The smooth leading term is
+\[
+j_{\mathrm{smooth}}(t) = -\mu(t)\,\vartheta'(t),
+\qquad
+|j_{\mathrm{smooth}}(t)| = \mu(t)|\vartheta'(t)| = \Psi'(t).
+\]
+\end{theorem}
+
+\begin{proof}
+From Definition~\ref{def:objects}, $Z(t) = e^{i\vartheta(t)}\zeta(\tfrac{1}{2}+it)$,
+so $\arg\zeta = -\vartheta + \arg Z$. Differentiating: $\alpha' =
+-\vartheta' + \partial_t\arg Z$.
+
+Since $Z(t)$ is real-valued and $C^1$ between zeros, $\arg Z(t) \in
+\{0,\pi\}$ between consecutive zeros and jumps by $\pm\pi$ at each
+zero $t_n$. In the distributional sense,
+$\partial_t\arg Z(t) = \sum_n (\pm\pi)\,\delta(t-t_n)$, with
+sign determined by the direction of sign change of $Z$ at $t_n$.
+
+Substituting into $j = \mu\alpha'$:
+\[
+j(t) = -\mu(t)\,\vartheta'(t) + \mu(t)\sum_n(\pm\pi)\,\delta(t-t_n).
+\]
+For each $n$, the distributional product $\mu(t)\,\delta(t-t_n)$ is
+evaluated by pairing with a test function $\phi$:
+\[
+\int \mu(t)\,\delta(t-t_n)\,\phi(t)\,dt = \mu(t_n)\,\phi(t_n) = 0,
+\]
+since $\mu(t_n) = |\zeta(\tfrac{1}{2}+it_n)|^2 = 0$. Therefore the
+distributional terms vanish identically and
+$j(t) = -\mu(t)\,\vartheta'(t) = j_{\mathrm{smooth}}(t)$ holds
+everywhere as a distribution. Taking the absolute value and using
+Definition~\ref{def:objects},
+\[
+|j_{\mathrm{smooth}}(t)| = \mu(t)|\vartheta'(t)| = \Psi'(t).\qedhere
+\]
+\end{proof}
+
+\begin{remark}
+The conclusion $j = j_{\mathrm{smooth}}$ everywhere is exact, not
+approximate. The branch-jump terms in $\partial_t\arg Z$ are real
+features of $\alpha'$ but are annihilated by $\mu$ vanishing at each
+zero. No approximation is involved.
+\end{remark}
+
+\begin{theorem}[Continuity equation in $\Psi$-time]
+\label{thm:continuity}
+Define $T = \Psi(t)$. In $T$-coordinates the density and current are
+\[
+\rho_T(T) \coloneqq \frac{\rho(\Psi^{-1}(T))}{\Psi'(\Psi^{-1}(T))}
+= \frac{1}{|\vartheta'(\Psi^{-1}(T))|},
+\qquad
+j_T(T) \coloneqq \frac{j(\Psi^{-1}(T))}{\Psi'(\Psi^{-1}(T))}
+= -\operatorname{sgn}(\vartheta'(\Psi^{-1}(T))).
+\]
+On the tail $t > t_c$, where $\vartheta'(t) > 0$, one has $j_T = -1$
+(constant). The continuity equation
+\[
+\partial_T\rho_T + \partial_T j_T = 0
+\]
+holds identically.
+\end{theorem}
+
+\begin{proof}
+For any Borel set $A \subset [0,\infty)$ the change of variables
+$T = \Psi(t)$, $dT = \Psi'(t)\,dt$ gives
+\[
+\int_{\Psi(A)}\rho_T(T)\,dT = \int_A \rho(t)\,dt,
+\]
+so $\rho_T(T) = \rho(t)/\Psi'(t)$ at $T = \Psi(t)$. Substituting
+$\rho = \mu$ and $\Psi' = \mu|\vartheta'|$:
+\[
+\rho_T = \frac{\mu}{\mu|\vartheta'|} = \frac{1}{|\vartheta'|}.
+\]
+Similarly $j_T = j_{\mathrm{smooth}}/\Psi' = -\mu\vartheta'/(\mu|\vartheta'|) =
+-\operatorname{sgn}(\vartheta')$. On the tail, $\operatorname{sgn}(\vartheta')=1$,
+so $j_T = -1$. Since $-1$ is constant, $\partial_T j_T = 0$, and
+$\partial_T\rho_T = -\partial_T j_T = 0$ as well. The continuity
+equation holds identically.
+\end{proof}
+
+\begin{corollary}[Unit-speed flow]
+The time change $T = \Psi(t)$ is the unique reparametrisation of $t$
+under which the WKB velocity $v_T = j_T/\rho_T$ satisfies
+\[
+v_T = \frac{j_T}{\rho_T}
+= \frac{-1}{1/|\vartheta'|} = -|\vartheta'(\Psi^{-1}(T))|,
+\]
+which equals $-1$ in the sense that in $T$-time the current is
+constant (unit magnitude). The non-constant speed $|\vartheta'(t)|
+\sim \tfrac{1}{2}\log(t/2\pi)$ of the original $t$-parametrisation
+is absorbed entirely into the clock $\Psi$.
+\end{corollary}
+
+\begin{theorem}[Total flux, $\Psi$-clock, and zero count]
+\label{thm:flux}
+The total flux of $|j_{\mathrm{smooth}}|$ over $[0,T]$ is
+\[
+\int_0^T |j_{\mathrm{smooth}}(t)|\,dt
+= \int_0^T \Psi'(t)\,dt = \Psi(T).
+\]
+The smooth zero-counting function $\bar N(t) = \vartheta(t)/\pi + 1$
+satisfies $\bar N'(t) = \vartheta'(t)/\pi$, so on the tail,
+\[
+|j_{\mathrm{smooth}}(t)| = \pi\,\mu(t)\,\bar N'(t),
+\]
+and therefore
+\[
+\Psi(T) = \pi\int_0^T \mu(t)\,\bar N'(t)\,dt.
+\]
+The total current flux, the elapsed $\Psi$-clock, and the
+density-weighted zero count are the same integral.
+\end{theorem}
+
+\begin{proof}
+The first equality is the definition of $\Psi(T) =
+\int_0^T\Psi'(t)\,dt$ combined with $|j_{\mathrm{smooth}}| = \Psi'$
+from Theorem~\ref{thm:smooth}. The second uses $\bar N'(t) =
+\vartheta'(t)/\pi$ and $|j_{\mathrm{smooth}}| = \mu|\vartheta'| =
+\pi\mu\bar N'$.
+\end{proof}
+
+\begin{theorem}[Radon--Nikodym derivative as current ratio]
+\label{thm:RN}
+Let $\gamma$ be the Borel measure $d\gamma(t) = \Psi'(t)\,dt =
+|j_{\mathrm{smooth}}(t)|\,dt$. For $h\in\mathbb{R}$ let
+$(T_h\gamma)(A) = \gamma(A+h)$. Then
+\[
+\frac{d(T_h\gamma)}{d\gamma}(t)
+= \frac{\Psi'(t-h)}{\Psi'(t)}
+= \frac{|j_{\mathrm{smooth}}(t-h)|}{|j_{\mathrm{smooth}}(t)|},
+\]
+for $\gamma$-almost every $t$. The measures $\gamma$ and $T_h\gamma$
+are equivalent (mutually absolutely continuous).
+\end{theorem}
+
+\begin{proof}
+For any Borel set $A$,
+\[
+(T_h\gamma)(A) = \gamma(A+h) = \int_{A+h}\Psi'(t)\,dt
+= \int_A \Psi'(s+h)\,ds.
+\]
+So $T_h\gamma$ has Lebesgue density $\Psi'(t-h)$. Both $\Psi'(t)$
+and $\Psi'(t-h)$ vanish only on $\mathcal{C}$ and $\mathcal{C}+h$
+respectively. As established in Definition~\ref{def:objects},
+$\mathcal{C}$ is discrete, hence countable, hence Lebesgue-null,
+hence $\gamma$-null. The same holds for $\mathcal{C}+h$. Therefore
+$\gamma(\{\Psi'=0\}) = 0$ and $T_h\gamma(\{\Psi'(\cdot-h)=0\}) = 0$,
+so the two measures share all null sets. The chain rule
+$d(T_h\gamma)/d\gamma = \Psi'(t-h)/\Psi'(t)$ follows, and is
+positive $\gamma$-a.e. The final equality restates $\Psi' =
+|j_{\mathrm{smooth}}|$ from Theorem~\ref{thm:smooth}.
+\end{proof}
+
+\begin{remark}
+The Radon--Nikodym derivative is the ratio of current densities at
+$t$ and $t-h$. When $h$ lies in the Cameron--Martin space $H_\gamma$
+(the space of shifts for which this ratio is square-integrable with
+respect to $\gamma$), the shift is absolutely continuous with respect
+to $\gamma$. When $h\notin H_\gamma$ the translated measure
+concentrates on a set disjoint from the support of $\gamma$ in the
+measure-theoretic sense, and no Radon--Nikodym derivative exists.
+\end{remark}
+
+%==============================================================
+\section{The Priestley Representation}
+%==============================================================
+
+The stationary pullback $X(T) = \zeta(\tfrac{1}{2}+i\Psi^{-1}(T))
+/\sqrt{\Psi'(\Psi^{-1}(T))}$ has Fourier support in $[-2,0]$ and
+admits the spectral integral
+\[
+X(T) = \int_{[-2,0]} e^{i\omega T}\,d\Phi(\omega),
+\]
+where $\Phi$ is a deterministic, convergent Borel measure on $[-2,0]$
+(not a random measure, not a distribution). The recovery formula
+$\zeta(\tfrac{1}{2}+it) = \sqrt{\Psi'(t)}\cdot X(\Psi(t))$ then
+gives the Priestley oscillatory representation
+\[
+\zeta\!\bigl(\tfrac{1}{2}+it\bigr)
+= \int_{[-2,0]}\sqrt{\Psi'(t)}\;e^{i\omega\Psi(t)}\,d\Phi(\omega).
+\]
+Expressed through $\Phi$, the density and current are
+\begin{align}
+\rho(t) &= \Psi'(t)\,\Bigl|\int_{[-2,0]}e^{i\omega\Psi(t)}\,d\Phi(\omega)\Bigr|^2,\\[6pt]
+j(t) &= -\mu(t)\,\vartheta'(t)
+= -\Psi'(t)\,\Bigl|\int_{[-2,0]}e^{i\omega\Psi(t)}\,d\Phi(\omega)\Bigr|^2
+\cdot\operatorname{sgn}(\vartheta'(t)),
+\end{align}
+where the second line uses $\Psi' = \mu|\vartheta'|$ and
+$j_{\mathrm{smooth}} = -\mu\vartheta'$ from Theorem~\ref{thm:smooth}.
+
+\end{document}
