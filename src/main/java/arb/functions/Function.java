@@ -31,25 +31,47 @@ public interface Function<D, CO> extends
   static <C> C peek(ArrayList<C> cache, Integer n)
   {
     int index = n.getSignedValue();
-    return index < cache.size() ? cache.get(index) : null;
+    if (index < 0 || index >= cache.size())
+    {
+      return null;
+    }
+    return cache.get(index);
   }
 
   static <C> C poke(ArrayList<C> cache, Integer n, C value)
   {
     int index = n.getSignedValue();
-    while (cache.size() <= index) cache.add(null);
+    if (index < 0)
+    {
+      return value;
+    }
+    while (cache.size() <= index)
+    {
+      cache.add(null);
+    }
     cache.set(index, value);
     return value;
   }
-  
+
   static <C> C peek(ArrayList<C> cache, int n)
   {
-    return n < cache.size() ? cache.get(n) : null;
+    if (n < 0 || n >= cache.size())
+    {
+      return null;
+    }
+    return cache.get(n);
   }
 
   static <C> C poke(ArrayList<C> cache, int n, C value)
   {
-    while (cache.size() <= n) cache.add(null);
+    if (n < 0)
+    {
+      return value;
+    }
+    while (cache.size() <= n)
+    {
+      cache.add(null);
+    }
     cache.set(n, value);
     return value;
   }

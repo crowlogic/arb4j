@@ -142,7 +142,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean shouldCache()
   {
-    return domainType.equals(Integer.class) && !isGeneratedFunctional();
+    return domainType.equals(Integer.class) && !isGeneratedFunctional() && upstreamExpression == null;
   }
 
   protected void declareCacheField(ClassVisitor cw)
@@ -164,6 +164,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       mv.visitMethodInsn(Opcodes.INVOKESPECIAL, internalName, "<init>", "()V", false);
       mv.visitFieldInsn(Opcodes.PUTFIELD, className, "cache", Type.getDescriptor(ArrayList.class));
     }
+  }
+
+  /**
+   * The next available local variable slot in the generated evaluate() method.
+   * Slots 0-4 are: this, input, order, bits, result. Code that needs local
+   * storage during evaluate() calls {@link #allocateLocalVariableSlot()} to
+   * obtain a non-conflicting slot.
+   */
+  public int nextLocalVariableSlot = 5;
+
+  /**
+   * Allocates and returns the next available local variable slot for use in
+   * the generated evaluate() method bytecode. Each call returns a unique slot.
+   */
+  public int allocateLocalVariableSlot()
+  {
+    return nextLocalVariableSlot++;
   }
 
   public final List<Expression<?, ?, ?>> downstreamExpressions = new ArrayList<>();
@@ -1421,42 +1438,65 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Compiler.pop(mv);
   }
 
+  private int cacheArrayListSlot = -1;
+  private int cacheIndexSlot     = -1;
+
+  /**
+   * Stores the cache ArrayList and the int index in dynamically allocated
+   * local variable slots. Nothing is left on the operand stack, so
+   * rootNode.generate() runs with a clean stack regardless of branching
+   * (when/switch nodes).
+   */
   protected void generateCachePokePrologue(MethodVisitor mv)
   {
+    cacheArrayListSlot = allocateLocalVariableSlot();
+    cacheIndexSlot     = allocateLocalVariableSlot();
     loadThisAndFieldOntoStack(mv, "cache", ArrayList.class);
+    mv.visitVarInsn(Opcodes.ASTORE, cacheArrayListSlot);
     loadInputParameterChecked(mv);
     Compiler.generateVirtualMethodInvocation(mv, domainType, "getSignedValue", int.class);
+    mv.visitVarInsn(Opcodes.ISTORE, cacheIndexSlot);
   }
 
-protected void generateCachePokeEpilogue(MethodVisitor mv)
-{
-  // stack on entry: ArrayList, int, <result>   (result left by rootNode.generate)
-  // allocate fresh copy
-  mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(coDomainType));
-  mv.visitInsn(Opcodes.DUP);
-  mv.visitMethodInsn(Opcodes.INVOKESPECIAL,
-                     Type.getInternalName(coDomainType), "<init>", "()V", false);
-  mv.visitVarInsn(Opcodes.ASTORE, 5);            // local5 = fresh copy
+  /**
+   * After rootNode.generate() has left the computed result on the stack:
+   * allocate a fresh copy, copy result into it, poke into the cache, and
+   * return the result.
+   */
+  protected void generateCachePokeEpilogue(MethodVisitor mv)
+  {
+    int freshCopySlot = allocateLocalVariableSlot();
 
-  // copy result (local4) into local5
-  mv.visitVarInsn(Opcodes.ALOAD, 5);
-  mv.visitVarInsn(Opcodes.ALOAD, 4);
-  mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
-  Compiler.generateVirtualMethodInvocation(mv, coDomainType, "set", coDomainType, coDomainType);
-  mv.visitInsn(Opcodes.POP);                     // discard set() return value
+    // stack on entry: <result> (left by rootNode.generate)
+    // pop the result — it has already been written into local4 (the result parameter)
+    mv.visitInsn(Opcodes.POP);
 
-  // stack is now: ArrayList, int, <result>  — pop the leftover computation result
-  mv.visitInsn(Opcodes.POP);
+    // allocate fresh copy of coDomainType
+    mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(coDomainType));
+    mv.visitInsn(Opcodes.DUP);
+    mv.visitMethodInsn(Opcodes.INVOKESPECIAL,
+                       Type.getInternalName(coDomainType), "<init>", "()V", false);
+    mv.visitVarInsn(Opcodes.ASTORE, freshCopySlot);
 
-  // stack: ArrayList, int
-  mv.visitVarInsn(Opcodes.ALOAD, 5);             // stack: ArrayList, int, freshCopy
-  Compiler.invokeStaticMethod(mv, Function.class, "poke", Object.class, ArrayList.class, int.class, Object.class);
-  mv.visitInsn(Opcodes.POP);                     // discard poke return value
+    // copy result (local4) into fresh copy
+    mv.visitVarInsn(Opcodes.ALOAD, freshCopySlot);
+    mv.visitVarInsn(Opcodes.ALOAD, 4);
+    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
+    Compiler.generateVirtualMethodInvocation(mv, coDomainType, "set", coDomainType, coDomainType);
+    mv.visitInsn(Opcodes.POP);                   // discard set() return value
 
-  mv.visitVarInsn(Opcodes.ALOAD, 4);
-  mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
-  mv.visitInsn(Opcodes.ARETURN);
-}
+    // poke(cache, index, freshCopy)
+    mv.visitVarInsn(Opcodes.ALOAD, cacheArrayListSlot);
+    mv.visitVarInsn(Opcodes.ILOAD, cacheIndexSlot);
+    mv.visitVarInsn(Opcodes.ALOAD, freshCopySlot);
+    Compiler.invokeStaticMethod(mv, Function.class, "poke", Object.class, ArrayList.class, int.class, Object.class);
+    mv.visitInsn(Opcodes.POP);                   // discard poke return value
+
+    // return result
+    mv.visitVarInsn(Opcodes.ALOAD, 4);
+    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
+    mv.visitInsn(Opcodes.ARETURN);
+  }
 
   protected void loadInputParameterChecked(MethodVisitor mv)
   {
@@ -1638,6 +1678,8 @@ protected void generateCachePokeEpilogue(MethodVisitor mv)
     {
       parse(true);
     }
+
+    nextLocalVariableSlot = 5;
 
     Label startLabel = new Label();
     Label endLabel   = new Label();
