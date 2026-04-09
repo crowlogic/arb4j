@@ -1,0 +1,92 @@
+Hilbert Space Structure of Stationary Processes:
+Stone’s Theorem, Projection-Valued Measures, and Orthogonal Random Measures
+
+The broad architecture is correct up to the final claim about sample paths. What follows separates what holds from what does not.
+
+Stone’s Theorem and the Cramér Measure
+
+The time-shift operator U: xₙ ↦ xₙ₊₁ is unitary on the closed linear span Hₓ ≔ overline{span}{xₙ : n ∈ ℤ} inside L²(Ω, 𝔉, P). Stone’s theorem gives a projection-valued measure (resolution of the identity) E on the torus 𝕋 such that
+
+Uⁿ = ∫_𝕋 eⁱⁿᶿ E(dθ),
+
+and applying E to x₀ produces the Cramér measure Y(·) ≔ E(·)x₀, which is an orthogonally scattered L²(Ω)-valued measure: disjoint sets get orthogonal masses. The Cramér representation then follows immediately:
+
+xₙ = ∫_𝕋 eⁱⁿᶿ Y(dθ).
+
+The Kolmogorov Isomorphism
+
+The Kolmogorov Isomorphism Theorem (KIT) establishes a unitary (Gramian-isometric in the operator-valued setting) map between the spectral domain L²(𝕋, ℬ, μ) and the time domain Hₓ by extending the assignment eₙ(θ) = eⁱⁿᶿ ↦ xₙ. This is the one-to-one correspondence that the Cramér representation encodes: it is a correspondence between functions in L²(μ) and elements of L²(Ω), mediated by the orthogonal measure Y.
+
+Where the RKHS Claim Breaks
+
+The RKHS ℋ_K of the covariance kernel K(s,t) = Cov(x_s, x_t) is isometrically isomorphic to Hₓ via the Loève isometry, which maps K(·, t) ↦ x_t and extends by linearity and closure. But this is a map from functions in ℋ_K to elements of L²(Ω) — not to sample paths.
+
+Sample paths ω ↦ x(·, ω) are realizations, and for a Gaussian process they almost surely do not belong to ℋ_K. This is a classical result (Driscoll 1973, Lukić–Beder 2001): the RKHS of a Gaussian process and its sample-path support are almost surely disjoint — the RKHS has measure zero under the process law. The RKHS captures the smoothness template of the covariance kernel; sample paths are typically one degree rougher (for example, Matérn with smoothness s gives an RKHS of Sobolev order s, but sample paths only lie in Sobolev spaces of order < s − d/2 for domain dimension d).
+
+What Corresponds to What
+
+The correct chain of correspondences is:
+
+Object                         Space                               Role
+----------------------------------------------------------------------------
+Projection-valued measure E    Bounded operators on Hₓ             Stone’s spectral resolution of U
+Cramér measure Y = E(·)x₀      Orthogonally scattered in L²(Ω)     Spectral measure
+L²(𝕋, μ)                       Functions on the frequency domain   Spectral domain
+Hₓ ⊂ L²(Ω)                     Process elements                    Time domain
+RKHS ℋ_K                       Functions on the index set          Isomorphic to Hₓ via Loève map
+Sample paths x(·, ω)           Realizations                        a.s. not in ℋ_K for Gaussian processes
+----------------------------------------------------------------------------
+
+So: the Stone group, its infinitesimal generator (or spectral resolution), and the resulting orthogonally scattered Cramér measure — all of that is exactly right, and it does go back to Cramér (1940, 1942) with the Hilbert module refinements due to Masani, Kakihara, Mandrekar–Salehi, and more recently Durand–Roueff for the functional setting. The one-to-one correspondence, however, is between L²(μ) and Hₓ ⊂ L²(Ω) (process elements, not sample paths), and the RKHS sits isomorphic to Hₓ but on the function side of the Loève map. Sample paths live elsewhere.
+
+A sample path is indeed the collection (X_t(ω))_{t∈T}, i.e. a function t ↦ X_t(ω). That does not make it an element of the RKHS of the covariance, and the standard theorems separate those two roles very sharply.
+
+For a second-order stationary process on ℤ with covariance γ(n), Cramér and Kolmogorov put everything in the closed linear span Hₓ = overline{span}{Xₙ : n ∈ ℤ} ⊂ L²(Ω). The shift U Xₙ = Xₙ₊₁ is a unitary group on this Hilbert space, and Stone’s theorem gives a projection-valued measure E on the circle such that Uⁿ = ∫ eⁱⁿᶿ E(dθ). The Cramér spectral measure is Y(·) = E(·)X₀, orthogonally scattered, and the process has spectral representation Xₙ = ∫ eⁱⁿᶿ Y(dθ). This is all at the level of elements of L²(Ω), not of pointwise paths.
+
+The Kolmogorov isomorphism takes functions on the frequency side to process elements on the time side. In the scalar case, you complete span{eⁱⁿᶿ} in L²(μ) for the spectral measure μ, and extend the map eⁱⁿᶿ ↦ Xₙ by continuity to a unitary T : L²(μ) → Hₓ. A function f ∈ L²(μ) corresponds to the element ∫ f(θ) Y(dθ), and Cramér’s measure Y encodes exactly that isometry. Again, this is a bijection between an L²-space on the frequency domain and the Hilbert subspace Hₓ of process elements.
+
+The RKHS ℋ_K associated with the covariance kernel K(s,t) = 𝔼[X_s overline{X_t}] is another Hilbert space of functions on the index set. The Loève isometry maps K(·, t) to X_t, extends by linearity and closure, and identifies ℋ_K isometrically with Hₓ. In the Gaussian case, ℋ_K is exactly the Cameron–Martin space of the Gaussian measure: translating by an element h ∈ ℋ_K gives an equivalent Gaussian law; translating by something outside ℋ_K gives a singular law. That is a statement about the geometry of the measure on the path space and its tangent directions, not a statement that typical realizations lie in ℋ_K.
+
+On the other hand, a sample path is a single ω-section t ↦ X_t(ω) in whatever function space you choose to realize the process (e.g. C[0,1], L²[0,1], or ℓ^∞). For Gaussian processes with infinite-dimensional RKHS, the classical results say that almost surely the path is not in the RKHS of the covariance kernel. For instance, for Wiener measure on C[0,1], the covariance kernel is K(s,t) = min(s,t), its RKHS is the Sobolev space of absolutely continuous functions with square-integrable derivative and zero at 0, and Brownian sample paths are almost surely nowhere differentiable, so the path and the RKHS live in the same ambient function space but do not coincide. More generally, if H(K) is infinite-dimensional, then H(K) has Gaussian measure zero under the law of X; a rigorous version of this is given in the RKHS-of-Gaussian-priors literature and in Driscoll’s zero–one law refinements.
+
+So: the one-to-one correspondences are (i) between L²(μ) and the closed linear span of the process elements {X_t} via Kolmogorov’s isometry and the Cramér measure, and (ii) between the covariance RKHS ℋ_K and that same span via the Loève isometry. Sample paths are families of process elements indexed by t, and they live in a path space carrying the process law; they are not, in general, elements of ℋ_K, even though ℋ_K is constructed from the same covariance and is isomorphic to the L²-closure of those process elements.
+
+Identifying the projection-valued measure with the orthogonal measure in the sample-path representation is exactly the right picture. The only subtlety is which space you are in when you say it.
+
+In Cramér’s setup you start with the unitary group of shifts Uᵗ acting on the closed linear span of the process, Hₓ ⊂ L²(Ω). Stone gives a projection-valued measure E(·) on the Borel σ-algebra of the frequency domain (circle or line) so that
+
+Uᵗ = ∫ eⁱᵗλ E(dλ),
+
+and for each t you have
+
+X_t = Uᵗ X₀ = ∫ eⁱᵗλ E(dλ) X₀.
+
+Defining the orthogonal measure Φ(B) ≔ E(B) X₀, you rewrite this as
+
+X_t = ∫ eⁱᵗλ Φ(dλ),
+
+with Φ an L²(Ω)-valued, orthogonally scattered, countably additive measure on the Borel sets of the frequency domain, in the Lebesgue–Stieltjes sense. This is the standard spectral representation of a second-order stationary process, and it is literally the same E repackaged as Φ.
+
+Now fix a sample ω. The spectral representation says that for each t,
+
+X_t(ω) = ∫ eⁱᵗλ Φ(dλ)(ω),
+
+i.e. the sample path t ↦ X_t(ω) is given by the same kind of Lebesgue–Stieltjes integral against the sample measure B ↦ Φ(B)(ω). For each ω, Φ(·)(ω) is a complex measure on the Borel sets, and the path is recovered by integrating the kernel eⁱᵗλ against that measure. The “E = Φ” identification is precisely this: E is the operator-valued spectral measure, Φ is its action on the cyclic vector X₀, and the path-level representation is the same spectral integral evaluated at ω.
+
+So: in the Hilbert-space picture you have E; in the stochastic picture you push E through a fixed vector to get the orthogonal measure Φ; and on each sample path you see exactly the same Lebesgue–Stieltjes integral representation with Φ(·)(ω) as a complex Borel measure. The RKHS sits on the function side of this story, but the structural identification between E and Φ is correct.
+
+In this setup, “cyclic vector” is exactly the precise way to say what is meant about that base member.
+
+For a unitary U on a Hilbert space H, a vector x₀ is cyclic if the closed linear span of {Uⁿ x₀ : n ∈ ℤ} is all of H. Equivalently, overline{span}{p(U)x₀ : p a polynomial} = H. That is: x₀ is a single vector whose orbit under the group {Uᵗ} generates the whole space.
+
+In the Cramér–Kolmogorov picture, you take H = Hₓ = overline{span}{X_t : t ∈ ℝ} ⊂ L²(Ω) and Uᵗ X_s = X_{s+t}; under mild conditions this is a unitary group with X₀ cyclic for {Uᵗ}, so X₀ is the natural cyclic vector. Stone’s theorem gives the projection-valued measure E on the Borel σ-algebra of the frequency domain, and you define the orthogonal measure by Φ(B) ≔ E(B) X₀. Then
+
+X_t = Uᵗ X₀ = ∫ eⁱᵗλ E(dλ) X₀ = ∫ eⁱᵗλ Φ(dλ),
+
+and on each sample ω,
+
+X_t(ω) = ∫ eⁱᵗλ Φ(dλ)(ω),
+
+with λ ↦ Φ(dλ)(ω) a complex Borel measure in the Lebesgue–Stieltjes sense.
+
+So: X₀ is the cyclic vector, and the notation Φₓ(B) ≔ E(B) X₀ (or similar) is the clean way to make explicit that the orthogonal measure is the spectral measure E seen from the base vector X₀, while the sample-path integral is just that same object evaluated at ω. 
