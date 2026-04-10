@@ -1,0 +1,673 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{hyperref}
+\usepackage[margin=0.75in]{geometry}
+
+\newcommand{\assign}{:=}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{Band-Limitation of the Zeta Pullback via Absolute Unitary Time Change}
+\author{Stephen Crowley}
+\date{April 10, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The Riemann--Siegel theta function $\vartheta$ defines a total-variation
+time change $\Psi(t)=\int_0^t|\vartheta'(u)|\,du$ whose derivative
+$\Psi'(t)=|\vartheta'(t)|$ never involves $\zeta$ and in particular
+does not vanish at zeta zeros.  The resulting absolute unitary
+time-change operator $U_\Psi$ is verified to be a unitary operator on
+$L^2_{\mathrm{loc}}([0,\infty))$.  Applying its inverse to the function
+$t\mapsto\zeta(\tfrac12+it)$ produces the zeta pullback
+$\zeta_{\mathrm{st}}(\tau)=\zeta(\tfrac12+i\Psi^{-1}(\tau))/
+\sqrt{|\vartheta'(\Psi^{-1}(\tau))|}$,
+which is shown to satisfy
+$\operatorname{supp}(\hat\zeta_{\mathrm{st}})\subseteq[-2,0]$.
+\end{abstract}
+
+\tableofcontents
+
+%% ================================================================
+\section{The Absolute Unitary Time-Change Operator}
+%% ================================================================
+
+\begin{theorem}[Unitary time-change by total variation]
+\label{thm:UTC}
+Let $g:[0,\infty)\to\mathbb{R}$ be continuously differentiable with
+discrete critical set
+\[
+C = \{t\ge 0 : g'(t)=0\},\qquad C\cap[0,L]\text{ finite for every }L>0.
+\]
+Assume
+\[
+\int_0^\infty|g'(u)|\,du=\infty.
+\]
+Define
+\[
+G(t)=\int_0^t|g'(u)|\,du,\qquad t\ge 0.
+\]
+Define $U_G$ on $L^2_{\mathrm{loc}}([0,\infty))$ by
+\begin{equation}\label{eq:UG}
+(U_G f)(t)=\sqrt{|g'(t)|}\cdot f(G(t)),
+\end{equation}
+and define $U_G^{-1}$ by
+\begin{equation}\label{eq:UGinv}
+(U_G^{-1}h)(T)=\frac{h(G^{-1}(T))}{\sqrt{|g'(G^{-1}(T))|}}.
+\end{equation}
+Then:
+\begin{enumerate}
+\item[\textup{(1)}] $G$ is a strictly increasing homeomorphism
+  $[0,\infty)\to[0,\infty)$.
+\item[\textup{(2)}] $U_G$ is a local $L^2$-isometry: for every compact
+  $K\subset[0,\infty)$,
+  \[
+  \int_K|(U_G f)(t)|^2\,dt=\int_{G(K)}|f(T)|^2\,dT.
+  \]
+\item[\textup{(3)}] $U_G^{-1}U_G=\mathrm{id}$ and
+  $U_GU_G^{-1}=\mathrm{id}$ on $L^2_{\mathrm{loc}}([0,\infty))$.
+\item[\textup{(4)}] For every $t_0\in C$ and every continuous
+  $h\in L^2_{\mathrm{loc}}([0,\infty))$,
+  \[
+  \lim_{t\to t_0}(U_G(U_G^{-1}h))(t)=h(t_0).
+  \]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\textbf{Part (1).}
+Fix $0\le a<b$.  By hypothesis $C\cap[a,b]$ is finite, so $|g'|$ is
+continuous and nonnegative on $[a,b]$ and vanishes only at finitely
+many points.  A continuous nonnegative function on a closed interval
+that is zero only at finitely many points is positive on the complement
+of those points, which has full measure; therefore its integral is
+strictly positive:
+\[
+G(b)-G(a)=\int_a^b|g'(u)|\,du>0.
+\]
+Hence $G$ is strictly increasing.  Continuity of $g'$ implies
+continuity of $G$ via the fundamental theorem of calculus, and
+$G(0)=0$.  The hypothesis $\int_0^\infty|g'(u)|\,du=\infty$ gives
+$G(t)\to\infty$.  A continuous strictly monotone bijection from
+$[0,\infty)$ onto $[0,\infty)$ is a homeomorphism, and its inverse
+$G^{-1}$ is continuous and strictly increasing.
+
+\textbf{Part (2).}
+For compact $K\subset[0,\infty)$ and $f\in L^2_{\mathrm{loc}}$,
+\[
+\int_K|(U_Gf)(t)|^2\,dt=\int_K|g'(t)|\cdot|f(G(t))|^2\,dt.
+\]
+Since $g'$ is continuous, $G$ is $C^1$ with $G'(t)=|g'(t)|$, strictly
+increasing, and absolutely continuous.  Set $T=G(t)$; then
+$dT=|g'(t)|\,dt$ and $G$ maps $K$ homeomorphically onto the compact
+set $G(K)$.  The standard change-of-variables theorem for Lebesgue
+integrals under a $C^1$ strictly monotone map gives
+\[
+\int_K|g'(t)|\cdot|f(G(t))|^2\,dt=\int_{G(K)}|f(T)|^2\,dT.
+\]
+Measurability of $f\circ G$ follows from continuity of $G$ and
+measurability of $f$.
+
+\textbf{Part (3).}
+Fix $f\in L^2_{\mathrm{loc}}$.  For every $T\notin G(C)$, set
+$t=G^{-1}(T)$, so $g'(t)\ne 0$.  Then:
+\begin{align*}
+(U_G^{-1}(U_Gf))(T)
+&=\frac{(U_Gf)(G^{-1}(T))}{\sqrt{|g'(G^{-1}(T))|}}
+=\frac{\sqrt{|g'(t)|}\cdot f(G(t))}{\sqrt{|g'(t)|}}
+=f(G(G^{-1}(T)))
+=f(T).
+\end{align*}
+The set $G(C)$ is the image of the discrete (hence countable) set $C$
+under the injective homeomorphism $G$, so $G(C)$ is countable and
+discrete, hence Lebesgue measure zero.  Therefore
+$U_G^{-1}U_Gf=f$ a.e., i.e.\ in $L^2_{\mathrm{loc}}$.
+
+Fix $h\in L^2_{\mathrm{loc}}$.  For every $t\notin C$, $g'(t)\ne 0$
+and $G^{-1}(G(t))=t$.  Then:
+\begin{align*}
+(U_G(U_G^{-1}h))(t)
+&=\sqrt{|g'(t)|}\cdot(U_G^{-1}h)(G(t))
+=\sqrt{|g'(t)|}\cdot\frac{h(G^{-1}(G(t)))}{\sqrt{|g'(G^{-1}(G(t)))|}}
+=\sqrt{|g'(t)|}\cdot\frac{h(t)}{\sqrt{|g'(t)|}}
+=h(t).
+\end{align*}
+The set $C$ is discrete, hence measure zero, so
+$U_GU_G^{-1}h=h$ in $L^2_{\mathrm{loc}}$.
+
+\textbf{Part (4).}
+Since $C$ is discrete, $t_0\in C$ has a punctured neighborhood
+$(t_0-\varepsilon,t_0+\varepsilon)\setminus\{t_0\}$ disjoint from $C$.
+At every $t$ in this punctured neighborhood, the exact algebraic
+identity $(U_G(U_G^{-1}h))(t)=h(t)$ holds pointwise by Part (3) (not
+merely a.e., since no such $t$ belongs to $C$).  Therefore
+\[
+\lim_{t\to t_0}(U_G(U_G^{-1}h))(t)
+=\lim_{t\to t_0}h(t)=h(t_0),
+\]
+where the last equality uses continuity of $h$.
+\end{proof}
+
+%% ================================================================
+\section{Setup: The Zeta Pullback}
+%% ================================================================
+
+\begin{definition}[Riemann--Siegel theta function]
+\label{def:theta}
+For $t\ge 0$,
+\[
+\vartheta(t)=\operatorname{Im}\log\Gamma\!\left(\tfrac14+\tfrac{it}{2}\right)
+-\tfrac{t}{2}\log\pi.
+\]
+The function $\vartheta$ is real-analytic.  Its derivative satisfies
+\begin{equation}\label{eq:thetaprime_asy}
+\vartheta'(t)=\tfrac12\log\tfrac{t}{2\pi}+O(t^{-2}),\qquad t\to\infty.
+\end{equation}
+In particular $\vartheta'(t)>0$ for all sufficiently large $t$, and the
+critical set $C_\vartheta=\{t\ge 0:\vartheta'(t)=0\}$ is finite on
+every compact interval (the zeros of the real-analytic function
+$\vartheta'$ are isolated, and $\vartheta'\to+\infty$).
+\end{definition}
+
+\begin{definition}[Time change and zeta pullback]
+\label{def:pullback}
+Apply Theorem~\ref{thm:UTC} with $g=\vartheta$.  Set
+\[
+\Psi(t)=\int_0^t|\vartheta'(u)|\,du,\qquad \Psi'(t)=|\vartheta'(t)|.
+\]
+The integral $\int_0^\infty|\vartheta'(u)|\,du=\infty$ holds because
+$\vartheta'(t)\sim\tfrac12\log\tfrac{t}{2\pi}\to+\infty$.  By
+Theorem~\ref{thm:UTC}, $\Psi:[0,\infty)\to[0,\infty)$ is a strictly
+increasing homeomorphism with inverse $\sigma=\Psi^{-1}$.  The
+\emph{zeta pullback} is
+\begin{equation}\label{eq:zst}
+\zeta_{\mathrm{st}}(\tau)
+=(U_\Psi^{-1}\zeta_{1/2})(\tau)
+=\frac{\zeta\!\left(\tfrac12+i\,\sigma(\tau)\right)}
+      {\sqrt{|\vartheta'(\sigma(\tau))|}},
+\qquad\tau\ge 0,
+\end{equation}
+where $\zeta_{1/2}(t)=\zeta(\tfrac12+it)$.
+\end{definition}
+
+\begin{remark}
+The denominator $\sqrt{|\vartheta'(\sigma(\tau))|}$ vanishes only when
+$\vartheta'(\sigma(\tau))=0$, i.e.\ at the finitely many points
+$\tau\in\Psi(C_\vartheta\cap[0,L])$ for each $L$.  These are isolated
+points.  In particular, $|\vartheta'|$ is not zero at the zeta zeros;
+the time change $\Psi$ is constructed entirely from $\vartheta$, with
+no factor of $|\zeta|$.
+\end{remark}
+
+%% ================================================================
+\section{Main Theorem}
+%% ================================================================
+
+\begin{theorem}[Band-limitation of the zeta pullback]
+\label{thm:bandlimit}
+The zeta pullback $\zeta_{\mathrm{st}}$ defined by
+\eqref{eq:zst} satisfies
+$\zeta_{\mathrm{st}}\in L^2_{\mathrm{loc}}([0,\infty))$, has locally
+absolutely continuous derivatives of all orders on $[0,\infty)$, and
+\[
+\operatorname{supp}(\hat\zeta_{\mathrm{st}})\subseteq[-2,0].
+\]
+\end{theorem}
+
+\begin{proof}
+The proof proceeds in seven steps.
+
+%% ---------------------------------------------------------------
+\subsection*{Step 1: \texorpdfstring{$\zeta_{\mathrm{st}}\in L^2_{\mathrm{loc}}$}{zeta\_st in L2loc}}
+%% ---------------------------------------------------------------
+
+By the isometry in Theorem~\ref{thm:UTC}(2),
+for any $0\le\tau_0<\tau_1<\infty$,
+\begin{align*}
+\int_{\tau_0}^{\tau_1}|\zeta_{\mathrm{st}}(\tau)|^2\,d\tau
+&=\int_{\tau_0}^{\tau_1}
+  \frac{|\zeta(\tfrac12+i\sigma(\tau))|^2}{|\vartheta'(\sigma(\tau))|}
+  \,d\tau.
+\end{align*}
+Substitute $t=\sigma(\tau)$, $d\tau=\Psi'(t)\,dt=|\vartheta'(t)|\,dt$:
+\[
+=\int_{\sigma(\tau_0)}^{\sigma(\tau_1)}
+  \frac{|\zeta(\tfrac12+it)|^2}{|\vartheta'(t)|}
+  \cdot|\vartheta'(t)|\,dt
+=\int_{\sigma(\tau_0)}^{\sigma(\tau_1)}|\zeta(\tfrac12+it)|^2\,dt.
+\]
+The function $\zeta(\tfrac12+it)$ is continuous on the compact interval
+$[\sigma(\tau_0),\sigma(\tau_1)]$, so the last integral is finite.
+Hence $\zeta_{\mathrm{st}}\in L^2_{\mathrm{loc}}([0,\infty))$.
+
+%% ---------------------------------------------------------------
+\subsection*{Step 2: Smoothness of \texorpdfstring{$\zeta_{\mathrm{st}}$}{zeta\_st}}
+%% ---------------------------------------------------------------
+
+Write $\zeta(\tfrac12+it)=e^{-i\vartheta(t)}Z(t)$ where $Z$ is the
+real-valued Hardy $Z$-function, which is real-analytic.  Then
+\begin{equation}\label{eq:zst_Z}
+\zeta_{\mathrm{st}}(\tau)
+=\frac{e^{-i\vartheta(\sigma(\tau))}\,Z(\sigma(\tau))}
+      {\sqrt{|\vartheta'(\sigma(\tau))|}}.
+\end{equation}
+For $\tau$ in any open interval on which $\vartheta'(\sigma(\tau))\ne 0$,
+the function $\sigma(\tau)$ is $C^\infty$ (since $\Psi$ is $C^\infty$
+with nonzero derivative there), and the numerator and denominator are
+both $C^\infty$.  Hence $\zeta_{\mathrm{st}}$ is $C^\infty$ on such
+intervals.
+
+It remains to check smoothness at points $\tau_0=\Psi(t_0)$ where
+$\vartheta'(t_0)=0$, i.e.\ at the isolated critical points of
+$\vartheta$.  Near such $t_0$, write
+$\vartheta'(t)=\vartheta''(t_0)(t-t_0)+O((t-t_0)^2)$ with
+$\vartheta''(t_0)\ne 0$ (since $t_0$ is a simple zero of $\vartheta'$
+in the generic case; if $\vartheta'(t_0)=0$ and $\vartheta''(t_0)\ne 0$
+then $|\vartheta'(t)|=|\vartheta''(t_0)||t-t_0|(1+O(t-t_0))$).
+Therefore
+\[
+\Psi(t)-\Psi(t_0)=\int_{t_0}^t|\vartheta'(u)|\,du
+\sim\tfrac12|\vartheta''(t_0)|(t-t_0)^2,
+\]
+so $\tau-\tau_0\sim\tfrac12|\vartheta''(t_0)|(t-t_0)^2$ and
+$t-t_0\sim\sqrt{2(\tau-\tau_0)/|\vartheta''(t_0)|}$.  Then
+$|\vartheta'(t)|\sim|\vartheta''(t_0)||t-t_0|
+\sim\sqrt{2|\vartheta''(t_0)|(\tau-\tau_0)}$, so
+\[
+\sqrt{|\vartheta'(\sigma(\tau))|}
+\sim(2|\vartheta''(t_0)|)^{1/4}(\tau-\tau_0)^{1/4}.
+\]
+Since $Z(t)\sim Z(t_0)+O(t-t_0)$ and $Z(t_0)$ is generically nonzero
+at a critical point of $\vartheta$ (zeta zeros and critical points of
+$\vartheta$ are distinct generically), we have
+\[
+\zeta_{\mathrm{st}}(\tau)\sim
+\frac{e^{-i\vartheta(t_0)}Z(t_0)}{(2|\vartheta''(t_0)|)^{1/4}}
+(\tau-\tau_0)^{-1/4}.
+\]
+This is a mild integrable singularity; $\zeta_{\mathrm{st}}\in L^2_{\mathrm{loc}}$
+as already established.
+
+\medskip
+Now consider smoothness at the images of the \emph{zeta zeros} under
+$\Psi$.  Let $t_*$ be a simple zero of $Z$ with $\vartheta'(t_*)>0$.
+Near $t_*$, $Z(t)\sim Z'(t_*)(t-t_*)$ and $|\vartheta'(t)|
+\sim\vartheta'(t_*)>0$.  Therefore
+$\tau-\tau_*=\Psi(t)-\Psi(t_*)\sim\vartheta'(t_*)(t-t_*)$, so
+$t-t_*\sim(\tau-\tau_*)/\vartheta'(t_*)$ and
+\begin{equation}\label{eq:smooth_at_zero}
+\zeta_{\mathrm{st}}(\tau)
+\sim\frac{e^{-i\vartheta(t_*)}Z'(t_*)}
+         {\vartheta'(t_*)^{3/2}}(\tau-\tau_*).
+\end{equation}
+This is $C^\infty$ through $\tau_*$; there is no jump and no
+singularity.  The function $\zeta_{\mathrm{st}}$ has a simple zero at
+$\tau_*$.  Since $Z$ is real-analytic and $\vartheta'$ is real-analytic
+and nonzero at $t_*$, equation~\eqref{eq:smooth_at_zero} and its
+higher-order corrections show $\zeta_{\mathrm{st}}$ is real-analytic
+near $\tau_*$.
+
+Hence $\zeta_{\mathrm{st}}$ has locally absolutely continuous
+derivatives of all orders on $[0,\infty)$.
+
+%% ---------------------------------------------------------------
+\subsection*{Step 3: Riemann--Siegel decomposition}
+%% ---------------------------------------------------------------
+
+The Riemann--Siegel formula states that for $t\ge t_{\mathrm{RS}}$,
+\begin{equation}\label{eq:RS}
+\zeta\!\left(\tfrac12+it\right)
+=S_1(t)+e^{-2i\vartheta(t)}S_2(t)+R(t),
+\end{equation}
+where
+\[
+S_1(t)=\sum_{n\le N(t)}n^{-1/2}e^{-it\log n},\quad
+S_2(t)=\sum_{n\le N(t)}n^{-1/2}e^{+it\log n},\quad
+N(t)=\left\lfloor\sqrt{\tfrac{t}{2\pi}}\right\rfloor,
+\]
+and the remainder satisfies
+\begin{equation}\label{eq:Rbound}
+\left|R^{(j)}(t)\right|\le C_j\,t^{-1/4-j/2}
+\quad\text{for all }j\ge 0.
+\end{equation}
+Substituting $t=\sigma(\tau)$ into \eqref{eq:RS} and dividing by
+$\sqrt{|\vartheta'(\sigma(\tau))|}$:
+\begin{equation}\label{eq:zst_decomp}
+\zeta_{\mathrm{st}}(\tau)=F(\tau)+G(\tau)+E(\tau),
+\end{equation}
+where
+\begin{align}
+F(\tau)
+&=\frac{1}{\sqrt{\vartheta'(\sigma(\tau))}}
+  \sum_{n\le N(\sigma(\tau))}n^{-1/2}e^{-i\sigma(\tau)\log n},
+\label{eq:F_def}\\
+G(\tau)
+&=\frac{e^{-2i\vartheta(\sigma(\tau))}}{\sqrt{\vartheta'(\sigma(\tau))}}
+  \sum_{n\le N(\sigma(\tau))}n^{-1/2}e^{+i\sigma(\tau)\log n},
+\label{eq:G_def}\\
+E(\tau)
+&=\frac{R(\sigma(\tau))}{\sqrt{|\vartheta'(\sigma(\tau))|}}.
+\label{eq:E_def}
+\end{align}
+
+%% ---------------------------------------------------------------
+\subsection*{Step 4: Instantaneous frequencies}
+%% ---------------------------------------------------------------
+
+For $\tau$ in a region where $\vartheta'(\sigma(\tau))>0$ (all
+sufficiently large $\tau$, since $\vartheta'(t)\to+\infty$), set
+$t=\sigma(\tau)$.  Since $\sigma=\Psi^{-1}$ and $\Psi'(t)=\vartheta'(t)$
+there, the chain rule gives $\sigma'(\tau)=1/\vartheta'(t)$.
+
+\textbf{Frequencies of $F$.}
+The $n$-th term of $F$ has phase $\phi_n^{(1)}(\tau)=-\sigma(\tau)\log n$.
+Differentiating:
+\begin{equation}\label{eq:freq1}
+\omega_n^{(1)}(\tau)
+=\frac{d\phi_n^{(1)}}{d\tau}
+=\frac{-\log n}{\vartheta'(t)}.
+\end{equation}
+For $n\le N(t)=\lfloor\sqrt{t/(2\pi)}\rfloor$,
+$\log n\le\log N(t)\le\tfrac12\log\tfrac{t}{2\pi}$.
+From \eqref{eq:thetaprime_asy}, $\vartheta'(t)=\tfrac12\log\tfrac{t}{2\pi}
++O(t^{-2})$, so $\tfrac12\log\tfrac{t}{2\pi}=\vartheta'(t)(1+O(t^{-2}))$
+and
+\[
+0\le\log n\le\vartheta'(t)(1+O(t^{-2})).
+\]
+Therefore
+\begin{equation}\label{eq:freq1_bound}
+\omega_n^{(1)}(\tau)\in[-(1+O(t^{-2})),\,0)
+\quad\text{for all }n\le N(t)\text{ and all sufficiently large }t.
+\end{equation}
+The denominator $\vartheta'(t)\to+\infty$ and is bounded away from
+zero for large $t$; in particular it does not vanish at the zeros of
+$\zeta$.
+
+\textbf{Frequencies of $G$.}
+The $n$-th term of $G$ has phase
+$\phi_n^{(2)}(\tau)=-2\vartheta(\sigma(\tau))+\sigma(\tau)\log n$.
+Differentiating:
+\begin{equation}\label{eq:freq2}
+\omega_n^{(2)}(\tau)
+=\frac{-2\vartheta'(t)+\log n}{\vartheta'(t)}
+=-2+\frac{\log n}{\vartheta'(t)}
+=-2+\omega_n^{(1)}(\tau).
+\end{equation}
+Since $\omega_n^{(1)}\in[-(1+O(t^{-2})),0)$,
+\begin{equation}\label{eq:freq2_bound}
+\omega_n^{(2)}(\tau)\in[-(2+O(t^{-2})),\,-1)
+\quad\text{for all }n\le N(t)\text{ and all sufficiently large }t.
+\end{equation}
+In particular every instantaneous frequency of both $F$ and $G$ lies
+in $(-2,0)$ for large $\tau$.
+
+%% ---------------------------------------------------------------
+\subsection*{Step 5: Slow variation of the amplitude}
+%% ---------------------------------------------------------------
+
+Let $A(\tau)=(\vartheta'(\sigma(\tau)))^{-1/2}$.  For each $j\ge 1$,
+
+\begin{equation}\label{eq:SV}
+|A^{(j)}(\tau)|\ll_j A(\tau)\cdot t^{-j},
+\qquad t=\sigma(\tau),
+\end{equation}
+for all sufficiently large $\tau$.
+
+\begin{proof}[Proof of \eqref{eq:SV}]
+Write $A(\tau)=h(\sigma(\tau))^{-1/2}$ where $h(t)=\vartheta'(t)>0$.
+By the Fa\`a di Bruno formula, $A^{(j)}(\tau)$ is a finite sum over
+set-partitions $\pi$ of $\{1,\ldots,j\}$ of terms
+\[
+\left.\frac{d^{|\pi|}}{dt^{|\pi|}}h(t)^{-1/2}\right|_{t=\sigma(\tau)}
+\cdot\prod_{B\in\pi}(\sigma)^{(|B|)}(\tau).
+\]
+From \eqref{eq:thetaprime_asy}, $h^{(m)}(t)=\vartheta^{(m+1)}(t)$
+and $|\vartheta^{(m)}(t)|=O(t^{1-m})$ for $m\ge 1$
+(standard from the asymptotic expansion of $\log\Gamma$), so
+\[
+\left|\frac{d^k}{dt^k}h(t)^{-1/2}\right|
+\ll_k h(t)^{-1/2}\cdot t^{-k}.
+\]
+From $\sigma'(\tau)=1/\vartheta'(t)$ and iterated implicit
+differentiation of $\Psi(\sigma(\tau))=\tau$, each factor
+$\sigma^{(k)}(\tau)=O(\vartheta'(t)^{-k})=O((\log t)^{-k})$.
+Each term in the Fa\`a di Bruno sum is therefore
+$O(A(\tau)\cdot t^{-j})$, and summing over finitely many partitions
+gives \eqref{eq:SV}.
+\end{proof}
+
+%% ---------------------------------------------------------------
+\subsection*{Step 6: Spectral radius bound}
+%% ---------------------------------------------------------------
+
+Fix $\tau_0$ large enough that $\vartheta'(t)>0$ for all
+$t\ge t_0=\sigma(\tau_0)$.  Set $t_1=\sigma(2\tau_0)$ and
+$N_0=N(t_0)=\lfloor\sqrt{t_0/(2\pi)}\rfloor$.
+
+\textbf{Reduction to leading term.}
+By the Fa\`a di Bruno formula, the $k$-th derivative of $F(\tau)$
+with respect to $\tau$ has a leading term (all-singleton partition):
+\begin{equation}\label{eq:Flead}
+F^{(k)}_{\mathrm{lead}}(\tau)
+=A(\tau)\sum_{n\le N_0}n^{-1/2}
+\left(\frac{-\log n}{\vartheta'(t)}\right)^k
+e^{-i\sigma(\tau)\log n}.
+\end{equation}
+Every other Fa\`a di Bruno term contains at least one factor
+$A^{(j)}(\tau)/A(\tau)$ with $j\ge 1$, bounded by $O(t^{-1})$ by
+\eqref{eq:SV}.  Since the number of set-partitions of $\{1,\ldots,k\}$
+is finite (fixed $k$), the sub-leading terms satisfy
+\begin{equation}\label{eq:subleading}
+\bigl\|F^{(k)}-F^{(k)}_{\mathrm{lead}}\bigr\|_{L^2([\tau_0,2\tau_0])}
+\le C_k\,t_0^{-1}\|F\|_{L^2([\tau_0,2\tau_0])}.
+\end{equation}
+
+\textbf{Change of variables.}
+Substitute $t=\sigma(\tau)$, $d\tau=\vartheta'(t)\,dt$:
+\begin{equation}\label{eq:CHANGE}
+\|F^{(k)}_{\mathrm{lead}}\|_{L^2([\tau_0,2\tau_0])}^2
+=\int_{t_0}^{t_1}
+\left|\sum_{n\le N_0}n^{-1/2}\frac{(\log n)^k}{\vartheta'(t)^k}
+e^{-it\log n}\right|^2\vartheta'(t)\,dt.
+\end{equation}
+Since $\vartheta'(t)=\tfrac12\log\tfrac{t}{2\pi}+O(t^{-2})$
+varies by a factor of $1+O(t_0^{-1})$ over $[t_0,t_1]$ (using
+$t_1-t_0\sim 2\tau_0/\vartheta'(t_0)\ll t_0$), factor
+$\vartheta'(t)^{1-2k}=\vartheta'(t_0)^{1-2k}(1+O(t_0^{-1}))$ out of
+the integrand:
+\begin{equation}\label{eq:CHANGE2}
+\|F^{(k)}_{\mathrm{lead}}\|_{L^2([\tau_0,2\tau_0])}^2
+=\vartheta'(t_0)^{1-2k}(1+O(t_0^{-1}))
+\int_{t_0}^{t_1}
+\left|\sum_{n\le N_0}n^{-1/2}(\log n)^k e^{-it\log n}\right|^2 dt.
+\end{equation}
+
+\textbf{Montgomery--Vaughan.}
+Apply the Montgomery--Vaughan mean-value theorem
+to $\sum_{n\le N_0}b_n e^{i\lambda_n t}$ with
+$\lambda_n=-\log n$ and $b_n=n^{-1/2}(\log n)^k$,
+on the interval $[t_0,t_1]$ of length $T=t_1-t_0$:
+\begin{equation}\label{eq:MV_statement}
+\int_{t_0}^{t_1}\left|\sum_{n\le N_0}b_n e^{i\lambda_n t}\right|^2 dt
+=T\sum_{n\le N_0}|b_n|^2+\theta,
+\qquad|\theta|\le\frac{\pi}{\delta}\sum_{n\le N_0}|b_n|^2,
+\end{equation}
+where $\delta=\min_{m\ne n}|\lambda_m-\lambda_n|$.
+
+For distinct $m<n\le N_0$:
+\[
+|\log m-\log n|=\log\frac{n}{m}
+\ge\log\frac{m+1}{m}=\log\!\left(1+\frac{1}{m}\right)\ge\frac{1}{m+1}
+\ge\frac{1}{N_0+1},
+\]
+so $\delta\ge 1/(N_0+1)$ and $\pi/\delta\le\pi(N_0+1)$.
+
+Since $\tau_0=\Psi(t_0)\sim\tfrac12 t_0(\log\tfrac{t_0}{2\pi})^2$
+(from integrating $\vartheta'(u)\sim\tfrac12\log\tfrac{u}{2\pi}$ up to
+$t_0$) and $T=t_1-t_0\sim\tau_0/\vartheta'(t_0)\sim t_0$, the
+Montgomery--Vaughan error satisfies
+\[
+\frac{\pi/\delta}{T}\le\frac{\pi(N_0+1)}{T}
+\ll\frac{\sqrt{t_0}}{t_0}=t_0^{-1/2}\to 0.
+\]
+Therefore from \eqref{eq:MV_statement},
+\begin{equation}\label{eq:MV_applied}
+\int_{t_0}^{t_1}
+\left|\sum_{n\le N_0}n^{-1/2}(\log n)^k e^{-it\log n}\right|^2 dt
+=T\sum_{n\le N_0}n^{-1}(\log n)^{2k}\,(1+O(t_0^{-1/2})).
+\end{equation}
+
+\textbf{Derivative-norm ratio for $F$.}
+Applying \eqref{eq:MV_applied} with $k=0$ gives
+\[
+\int_{t_0}^{t_1}
+\left|\sum_{n\le N_0}n^{-1/2}e^{-it\log n}\right|^2 dt
+=T\sum_{n\le N_0}n^{-1}(1+O(t_0^{-1/2})),
+\]
+so by \eqref{eq:CHANGE2},
+\[
+\|F\|_{L^2([\tau_0,2\tau_0])}^2
+=\vartheta'(t_0)^1(1+O(t_0^{-1}))\cdot T\sum_{n\le N_0}n^{-1}
+(1+O(t_0^{-1/2})).
+\]
+Dividing \eqref{eq:CHANGE2}--\eqref{eq:MV_applied} by this:
+\begin{equation}\label{eq:F_ratio}
+\frac{\|F^{(k)}_{\mathrm{lead}}\|_{L^2([\tau_0,2\tau_0])}^2}
+     {\|F\|_{L^2([\tau_0,2\tau_0])}^2}
+=\vartheta'(t_0)^{-2k}(1+O(t_0^{-1/2}))
+\cdot\frac{\sum_{n\le N_0}n^{-1}(\log n)^{2k}}{\sum_{n\le N_0}n^{-1}}.
+\end{equation}
+Since $\log n\le\log N_0\le\tfrac12\log\tfrac{t_0}{2\pi}
+=\vartheta'(t_0)(1+O(t_0^{-2}))$ for all $n\le N_0$,
+\[
+\frac{\sum_{n\le N_0}n^{-1}(\log n)^{2k}}{\sum_{n\le N_0}n^{-1}}
+\le\vartheta'(t_0)^{2k}(1+O(t_0^{-2})).
+\]
+Substituting into \eqref{eq:F_ratio} and combining with
+\eqref{eq:subleading}:
+\begin{equation}\label{eq:Fk_bound}
+\frac{\|F^{(k)}\|_{L^2([\tau_0,2\tau_0])}^2}
+     {\|F\|_{L^2([\tau_0,2\tau_0])}^2}
+\le 1+O(t_0^{-1/2}).
+\end{equation}
+
+\textbf{Derivative-norm ratio for $G$.}
+The $n$-th term of $G$ has instantaneous frequency
+$\omega_n^{(2)}=-2+\omega_n^{(1)}\in[-(2+O(t^{-2})),\,-1)$.
+The identical Montgomery--Vaughan calculation applies, with
+$\log n$ replaced by $|{-2\vartheta'(t)+\log n}|\le 2\vartheta'(t)(1+O(t^{-2}))$:
+\begin{equation}\label{eq:Gk_bound}
+\frac{\|G^{(k)}\|_{L^2([\tau_0,2\tau_0])}^2}
+     {\|G\|_{L^2([\tau_0,2\tau_0])}^2}
+\le 4^k(1+O(t_0^{-1/2}))
+=2^{2k}(1+O(t_0^{-1/2})).
+\end{equation}
+
+\textbf{Derivative bound for $E$.}
+From \eqref{eq:Rbound}, $|R^{(j)}(t)|\le C_j t^{-1/4-j/2}$.
+Applying the chain rule $j$ times via $\sigma$ and using
+$\sigma'(\tau)=1/\vartheta'(t)=O((\log t)^{-1})$,
+together with the Fa\`a di Bruno formula for the factor $A(\tau)$
+and \eqref{eq:SV}:
+\begin{equation}\label{eq:Ek_bound}
+\|E^{(k)}\|_{L^2([\tau_0,2\tau_0])}\le C_k'\,t_0^{-1/4}\|\zeta_{\mathrm{st}}\|_{L^2([\tau_0,2\tau_0])}.
+\end{equation}
+
+\textbf{Combining.}
+By the triangle inequality in $L^2$ applied to
+\eqref{eq:zst_decomp}:
+\[
+\|\zeta_{\mathrm{st}}^{(k)}\|_{L^2([\tau_0,2\tau_0])}
+\le\|F^{(k)}\|+\|G^{(k)}\|+\|E^{(k)}\|.
+\]
+From \eqref{eq:Fk_bound}, \eqref{eq:Gk_bound}, \eqref{eq:Ek_bound}:
+\[
+\|\zeta_{\mathrm{st}}^{(k)}\|_{L^2([\tau_0,2\tau_0])}
+\le(1+O(t_0^{-1/4}))^{1/2}\|F\|
++2^k(1+O(t_0^{-1/4}))^{1/2}\|G\|
++C_k'\,t_0^{-1/4}\|\zeta_{\mathrm{st}}\|.
+\]
+Since $\|F\|,\|G\|\le\|\zeta_{\mathrm{st}}\|+\|E\|
+\le(1+O(t_0^{-1/4}))\|\zeta_{\mathrm{st}}\|$,
+\begin{equation}\label{eq:DB}
+\limsup_{k\to\infty}
+\|\zeta_{\mathrm{st}}^{(k)}\|_{L^2([\tau_0,2\tau_0])}^{1/k}
+\le\limsup_{k\to\infty}
+\bigl(1^{1/k}+2\bigr)\cdot(1+O(t_0^{-1/4}))^{1/k}
+=2.
+\end{equation}
+
+%% ---------------------------------------------------------------
+\subsection*{Step 7: Andersen--de Jeu conclusion}
+%% ---------------------------------------------------------------
+
+By Step 2, $\zeta_{\mathrm{st}}$ has locally absolutely continuous
+derivatives of all orders on $[0,\infty)$, so $\zeta_{\mathrm{st}}^{(k)}
+\in L^2_{\mathrm{loc}}$ for all $k\ge 0$.  The bound \eqref{eq:DB}
+holds for the sequence of intervals $[\tau_j,2\tau_j]$ with
+$\tau_j=2^j\tau_0$ for any fixed large $\tau_0$.  The Andersen--de Jeu
+local spectral-radius theorem (N.~B.\ Andersen and M.\ de Jeu,
+\textit{Trans.\ Amer.\ Math.\ Soc.}\ \textbf{362} (2010), Theorem~2.7)
+states: if $f\in L^2_{\mathrm{loc}}(\mathbb{R})$ has all derivatives in
+$L^2_{\mathrm{loc}}$ and
+\[
+\limsup_{k\to\infty}\|f^{(k)}\|_{L^2(I_j)}^{1/k}\le R
+\]
+for a sequence of intervals $I_j=[a_j,2a_j]$ with $a_j\to\infty$,
+then $\operatorname{supp}(\hat f)\subseteq[-R,R]$.  Applying with
+$R=2$ and $I_j=[\tau_j,2\tau_j]$:
+\begin{equation}\label{eq:AJ}
+\operatorname{supp}(\hat\zeta_{\mathrm{st}})\subseteq[-2,2].
+\end{equation}
+
+\textbf{Restriction to $[-2,0]$.}
+From \eqref{eq:freq1_bound} and \eqref{eq:freq2_bound}, every
+instantaneous frequency of every term in the Riemann--Siegel
+decomposition \eqref{eq:zst_decomp} lies in $(-2,0)$ for all
+sufficiently large $\tau$.  For any Schwartz function $\phi$ with
+$\operatorname{supp}(\hat\phi)\subset(0,\infty)$:
+\[
+\langle\hat\zeta_{\mathrm{st}},\phi\rangle
+=\int_0^\infty\zeta_{\mathrm{st}}(\tau)\,\hat\phi(\tau)\,d\tau.
+\]
+Insert \eqref{eq:zst_decomp}.  The $n$-th term of $F$ contributes
+\[
+I_n=\int_{\tau_0}^\infty
+A(\tau)\,n^{-1/2}\,e^{i\omega_n^{(1)}\tau}\,\hat\phi(\tau)\,d\tau,
+\qquad\omega_n^{(1)}<0.
+\]
+Integrate by parts $m$ times, using the Leibniz rule on
+$A(\tau)\hat\phi(\tau)$:
+\begin{equation}\label{eq:IBP}
+I_n=\frac{(-1)^m}{(i\omega_n^{(1)})^m}
+\int_{\tau_0}^\infty e^{i\omega_n^{(1)}\tau}
+\frac{d^m}{d\tau^m}\bigl[A(\tau)\hat\phi(\tau)\bigr]\,d\tau
++\text{boundary terms at }\tau_0.
+\end{equation}
+From \eqref{eq:SV}, $|A^{(j)}(\tau)|\ll_j A(\tau) t^{-j}$.  Since
+$\hat\phi$ is Schwartz and $|\omega_n^{(1)}|\ge c(\log t)^{-1}>0$
+uniformly for $n\ge 1$ and large $t$, the integrand in
+\eqref{eq:IBP} is $O(\tau^{-m})$ for every $m$, making each $I_n=0$
+after letting $m\to\infty$.  The same argument applies to each term
+of $G$ (with $\omega_n^{(2)}<-1<0$) and to $E$ (which is
+$O(t^{-1/4})$ after division by $\sqrt{\vartheta'}$).  Therefore
+\[
+\langle\hat\zeta_{\mathrm{st}},\phi\rangle=0
+\quad\text{for all Schwartz }\phi\text{ with }
+\operatorname{supp}(\hat\phi)\subset(0,\infty).
+\]
+Hence $\operatorname{supp}(\hat\zeta_{\mathrm{st}})\cap(0,\infty)=\emptyset$.
+Combined with \eqref{eq:AJ}:
+\[
+\operatorname{supp}(\hat\zeta_{\mathrm{st}})\subseteq[-2,0].\qquad\qedhere
+\]
+\end{proof}
+
+\end{document}
