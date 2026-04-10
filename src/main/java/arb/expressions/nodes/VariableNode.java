@@ -611,6 +611,10 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public String toString()
   {
+    if (upstreamInput && Node.emittingBoundFormat.get())
+    {
+      return "%s";
+    }
     return reference.toString();
   }
 
