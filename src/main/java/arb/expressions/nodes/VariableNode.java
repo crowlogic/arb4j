@@ -158,23 +158,12 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public VariableNode<?, ?, ?> resolveReference()
   {
-//    if (reference.type != null)
-//    {
-//      return this;
-//      throw new CompilerException(String.format("variable already resolved and cannot be resolved again: %s",
-//                                                resolutionStateString()));
-//    }
-    if ("q".equals(reference.name))
-    {
-      System.out.println("Dammit " + resolutionStateString());
-
-    }
 
     if (Expression.traceNodes)
     {
       logger.debug("resolveReference START: {}", resolutionStateString());
     }
-
+    
     if (resolveContextualVariable())
     {
       expression.registerReferencedVariable(this);
@@ -184,6 +173,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       }
       return this;
     }
+    
 
     if (isIndependent = isIndependent())
     {
@@ -195,6 +185,10 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       }
       return this;
     }
+    
+
+
+
 
     var upstream = resolveUpstreamVariables();
     if (upstream != null)
@@ -617,6 +611,10 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public String toString()
   {
+    if (upstreamInput && Node.emittingBoundFormat.get())
+    {
+      return "%s";
+    }
     return reference.toString();
   }
 
