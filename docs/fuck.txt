@@ -1,0 +1,429 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath, amssymb, amsthm}
+
+\title{A Normalized Zeta-Process with Unit Ces\`aro Mean Square}
+\author{}
+\date{}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\begin{document}
+
+\maketitle
+
+\section{Notation and Standing Assumptions}
+
+Let $\zeta(s)$ denote the Riemann zeta function, and let
+\[
+\vartheta(t)
+\]
+denote the Riemann--Siegel theta function. We recall that $\vartheta$ is a real-valued $C^\infty$ function on $(0,\infty)$ and that there exists a unique $t_0>0$ such that $\vartheta$ has a global minimum at $t_0$ and is strictly increasing on $(t_0,\infty)$.\footnote{For background on $\vartheta(t)$ see, e.g., Titchmarsh--Heath-Brown, \emph{The Theory of the Riemann Zeta-Function}.}
+
+Define
+\[
+\tau_0 := \vartheta(t_0),
+\]
+and let
+\[
+\sigma : [\tau_0,\infty) \to [t_0,\infty)
+\]
+denote the inverse of $\vartheta$ restricted to $[t_0,\infty)$; that is,
+\[
+\vartheta(\sigma(\tau)) = \tau, \qquad \tau \ge \tau_0.
+\]
+
+All functions and integrals below are considered for $\tau$ sufficiently large that $\sigma(\tau)$ is well-defined. Whenever integrals and Ces\`aro means are taken over $[0,T]$ in the $\tau$-variable, the contribution of any fixed initial subinterval $[0,A]$ with $A \ge 0$ is $O(1/T)$ and tends to zero as $T\to\infty$. Thus, for Ces\`aro limits, we may freely discard such initial intervals.
+
+\section{Definitions}
+
+\begin{definition}
+For $T \ge 0$ define
+\begin{equation}\label{def:V}
+V(T) := \int_0^T \left|\zeta\!\left(\frac{1}{2} + it\right)\right|^2 \, dt.
+\end{equation}
+\end{definition}
+
+\begin{definition}
+For $\tau \ge \tau_0$ define
+\begin{equation}\label{def:Y}
+Y(\tau) := \frac{\zeta\!\left(\frac{1}{2} + i\sigma(\tau)\right)}{\sqrt{\vartheta'(\sigma(\tau))}}.
+\end{equation}
+\end{definition}
+
+\begin{definition}
+For $\tau \ge \tau_0$ define
+\begin{equation}\label{def:W}
+W(\tau) := \int_{\tau_0}^{\tau} |Y(s)|^2 \, ds.
+\end{equation}
+\end{definition}
+
+\begin{definition}
+For $\tau > \tau_0$ with $W(\tau) > 0$ define
+\begin{equation}\label{def:X}
+X(\tau) := Y(\tau) \sqrt{\frac{\tau}{W(\tau)}}.
+\end{equation}
+\end{definition}
+
+Note that $W(\tau_0) = 0$ and $W(\tau)$ is strictly increasing for $\tau > \tau_0$, since $W'(\tau) = |Y(\tau)|^2 \ge 0$. The process $X(\tau)$ is defined for all $\tau$ sufficiently large (so that $W(\tau) > 0$), and any ambiguity at the left endpoint is irrelevant for Ces\`aro limits.
+
+\section{Auxiliary Facts}
+
+We require two classical facts about the second moment of $\zeta$ on the critical line and about the Riemann--Siegel theta function.
+
+\begin{lemma}[Ingham]\label{lem:Ingham}
+There exists a function $E : [0,\infty) \to \mathbb{R}$ such that
+\begin{equation}\label{eq:Ingham}
+V(T)
+= T \log\frac{T}{2\pi} + (2\gamma - 1) T + E(T),
+\end{equation}
+for all $T \ge 0$, where $\gamma$ is the Euler--Mascheroni constant, and
+\[
+E(T) = O\!\left(T^{1/2}\right)
+\]
+as $T \to \infty$.
+\end{lemma}
+
+\begin{lemma}[Riemann--Siegel theta function]\label{lem:theta-asym}
+The function $\vartheta$ is $C^\infty$ on $(0,\infty)$ and strictly increasing on $(t_0,\infty)$. Moreover, there is an explicit asymptotic expansion
+\begin{equation}\label{eq:theta-asym}
+\vartheta(t)
+= \frac{t}{2} \log\frac{t}{2\pi} - \frac{t}{2} - \frac{\pi}{8} + r(t),
+\end{equation}
+where $r(t)$ is smooth and satisfies $r(t) = O(t^{-1})$ and $r'(t) = O(t^{-2})$ as $t \to \infty$.
+\end{lemma}
+
+Lemmas \ref{lem:Ingham} and \ref{lem:theta-asym} are standard; see Ingham's original paper on mean values of the zeta function, and Titchmarsh--Heath-Brown for detailed properties of $\vartheta$.
+
+\section{Main Theorem}
+
+\begin{theorem}\label{thm:main}
+With $V$, $Y$, $W$, and $X$ defined by \eqref{def:V}--\eqref{def:X}, we have
+\begin{equation}\label{eq:main-limit}
+\lim_{T \to \infty} \frac{1}{T} \int_{\tau_0}^T |X(\tau)|^2 \, d\tau = 1.
+\end{equation}
+\end{theorem}
+
+\subsection*{Step 1: Exact Relation Between $W$ and $V$}
+
+\begin{lemma}\label{lem:W-V}
+For all $\tau \ge \tau_0$,
+\begin{equation}\label{eq:W-V}
+W(\tau) = V(\sigma(\tau)) - V(\sigma(\tau_0)).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+By definition \eqref{def:W} and \eqref{def:Y},
+\[
+W(\tau)
+= \int_{\tau_0}^{\tau} |Y(s)|^2 \, ds
+= \int_{\tau_0}^{\tau}
+   \frac{\left|\zeta\!\left(\tfrac{1}{2} + i\sigma(s)\right)\right|^2}{\vartheta'(\sigma(s))}
+   \, ds.
+\]
+Set $t = \sigma(s)$. Since $\vartheta(\sigma(s)) = s$ for $s \ge \tau_0$, the inverse function theorem gives
+\[
+\sigma'(s) = \frac{1}{\vartheta'(\sigma(s))}.
+\]
+Thus
+\[
+ds = \vartheta'(t) \, dt,
+\]
+and the integrand factor $\vartheta'(\sigma(s))^{-1}$ becomes $\vartheta'(t)^{-1}$. Therefore
+\[
+W(\tau)
+= \int_{\sigma(\tau_0)}^{\sigma(\tau)}
+   \left|\zeta\!\left(\tfrac{1}{2} + it\right)\right|^2 dt
+= V(\sigma(\tau)) - V(\sigma(\tau_0)).
+\]
+This is an exact identity.
+\end{proof}
+
+For brevity let
+\[
+C_0 := -V(\sigma(\tau_0)),
+\]
+so that
+\begin{equation}\label{eq:W-V-C0}
+W(\tau) = V(\sigma(\tau)) + C_0.
+\end{equation}
+The constant $C_0$ is finite and does not depend on $\tau$.
+
+\subsection*{Step 2: Exact Expression for the Mean Square of $X$}
+
+Since
+\[
+W(\tau) = \int_{\tau_0}^{\tau} |Y(s)|^2 ds,
+\]
+the fundamental theorem of calculus gives
+\begin{equation}\label{eq:Wprime}
+W'(\tau) = |Y(\tau)|^2
+\end{equation}
+for all $\tau > \tau_0$. By definition \eqref{def:X},
+\[
+|X(\tau)|^2
+= |Y(\tau)|^2 \cdot \frac{\tau}{W(\tau)}
+= W'(\tau)\cdot\frac{\tau}{W(\tau)}.
+\]
+Therefore,
+\begin{equation}\label{eq:mean-square-X}
+\frac{1}{T} \int_{\tau_0}^T |X(\tau)|^2 \, d\tau
+= \frac{1}{T} \int_{\tau_0}^T \frac{W'(\tau)\,\tau}{W(\tau)} \, d\tau.
+\end{equation}
+Equation \eqref{eq:mean-square-X} is an exact identity, with no approximations.
+
+\subsection*{Step 3: Asymptotic Behaviour of $W$}
+
+We next use Lemma \ref{lem:Ingham} and Lemma \ref{lem:theta-asym} to describe $W(\tau)$ asymptotically, and then pass to a precise asymptotic for $\log W(\tau)$.
+
+\begin{lemma}\label{lem:sigma-asym}
+There exists a function $\delta(\tau)$ such that, for all $\tau \ge \tau_1$ (for some $\tau_1 \ge \tau_0$),
+\begin{equation}\label{eq:sigma-asym}
+\sigma(\tau)
+= \frac{2\tau}{\log\tau} + \delta(\tau),
+\end{equation}
+where $\delta(\tau)$ is real-valued and satisfies
+\[
+\delta(\tau) = O\!\left(\frac{\tau\log\log\tau}{(\log\tau)^2}\right)
+\]
+as $\tau \to \infty$.
+\end{lemma}
+
+\begin{proof}
+Insert $t = \sigma(\tau)$ into \eqref{eq:theta-asym}:
+\[
+\tau = \vartheta(\sigma(\tau))
+= \frac{\sigma(\tau)}{2} \log\frac{\sigma(\tau)}{2\pi}
+  - \frac{\sigma(\tau)}{2} - \frac{\pi}{8} + r(\sigma(\tau)).
+\]
+For large $\tau$, the leading behaviour is governed by
+\[
+\frac{\sigma(\tau)}{2}\log\sigma(\tau) - \frac{\sigma(\tau)}{2}.
+\]
+A standard inversion of such asymptotic relations (for example via the method of successive approximations) yields \eqref{eq:sigma-asym} with the stated bound on $\delta(\tau)$; this is a routine calculus exercise once one observes that $\log\sigma(\tau) \sim \log\tau$ and $r(\sigma(\tau)) = O(\sigma(\tau)^{-1})$.
+\end{proof}
+
+\begin{lemma}\label{lem:W-asym}
+There exists a function $\varepsilon(\tau)$ such that
+\begin{equation}\label{eq:W-asym}
+W(\tau) = 2\tau\bigl(1 + \varepsilon(\tau)\bigr) + C_0
+\end{equation}
+for all $\tau \ge \tau_1$, with
+\[
+\varepsilon(\tau) = O\!\left(\frac{\log\log\tau}{\log\tau}\right)
+\]
+as $\tau \to \infty$.
+\end{lemma}
+
+\begin{proof}
+From \eqref{eq:W-V-C0} and Lemma \ref{lem:Ingham},
+\begin{align*}
+W(\tau)
+&= V(\sigma(\tau)) + C_0 \\
+&= \sigma(\tau)\log\frac{\sigma(\tau)}{2\pi}
+   + (2\gamma - 1)\sigma(\tau)
+   + E(\sigma(\tau)) + C_0.
+\end{align*}
+Insert \eqref{eq:sigma-asym}. The leading term is
+\[
+\sigma(\tau)\log\frac{\sigma(\tau)}{2\pi}.
+\]
+Using $\sigma(\tau) = \frac{2\tau}{\log\tau} + \delta(\tau)$ and $\log\sigma(\tau) = \log\tau + O(\log\log\tau)$, a straightforward expansion shows that
+\[
+\sigma(\tau)\log\frac{\sigma(\tau)}{2\pi} = 2\tau + O\!\left(\frac{\tau\log\log\tau}{\log\tau}\right).
+\]
+The $(2\gamma-1)\sigma(\tau)$ term is $O(\tau/\log\tau)$ and is absorbed into the same error term. Since $E(T) = O(T^{1/2})$ and $\sigma(\tau) \asymp \tau/\log\tau$ for large $\tau$, we have $E(\sigma(\tau)) = O\bigl((\tau/\log\tau)^{1/2}\bigr)$, which is also dominated by $O(\tau\log\log\tau/\log\tau)$ for large $\tau$. Thus
+\[
+W(\tau) = 2\tau + O\!\left(\frac{\tau\log\log\tau}{\log\tau}\right) + C_0.
+\]
+This has the form \eqref{eq:W-asym} with
+\[
+\varepsilon(\tau) = O\!\left(\frac{\log\log\tau}{\log\tau}\right).
+\]
+\end{proof}
+
+\begin{lemma}\label{lem:logW-asym}
+For $\tau \ge \tau_1$,
+\begin{equation}\label{eq:logW-asym}
+\log W(\tau) = \log(2\tau) + \eta(\tau),
+\end{equation}
+where $\eta(\tau)$ is real-valued and satisfies
+\[
+\eta(\tau) = O\!\left(\frac{\log\log\tau}{\log\tau}\right)
+\]
+as $\tau \to \infty$.
+\end{lemma}
+
+\begin{proof}
+From \eqref{eq:W-asym},
+\[
+W(\tau) = 2\tau\bigl(1 + \varepsilon(\tau)\bigr) + C_0.
+\]
+Since $\varepsilon(\tau) \to 0$ and $C_0$ is constant, we may write
+\[
+W(\tau) = 2\tau\bigl(1 + \tilde{\varepsilon}(\tau)\bigr),
+\]
+where $\tilde{\varepsilon}(\tau) = \varepsilon(\tau) + C_0/(2\tau)$ satisfies the same bound
+\[
+\tilde{\varepsilon}(\tau) = O\!\left(\frac{\log\log\tau}{\log\tau}\right).
+\]
+Then
+\[
+\log W(\tau)
+= \log(2\tau) + \log\bigl(1 + \tilde{\varepsilon}(\tau)\bigr).
+\]
+For $\tau$ large, $\tilde{\varepsilon}(\tau)$ is small, and the Taylor expansion of $\log(1+u)$ at $u=0$ gives
+\[
+\log\bigl(1 + \tilde{\varepsilon}(\tau)\bigr)
+= \tilde{\varepsilon}(\tau) + O\bigl(\tilde{\varepsilon}(\tau)^2\bigr).
+\]
+Thus we may define
+\[
+\eta(\tau) := \log\bigl(1 + \tilde{\varepsilon}(\tau)\bigr),
+\]
+which satisfies
+\[
+\eta(\tau) = O\!\left(\frac{\log\log\tau}{\log\tau}\right)
+\]
+as $\tau \to \infty$.
+\end{proof}
+
+\subsection*{Step 4: Evaluation of the Ces\`aro Mean}
+
+We return to \eqref{eq:mean-square-X}. For $T > \tau_1$,
+\[
+\int_{\tau_0}^T \frac{W'(\tau)\,\tau}{W(\tau)} \, d\tau
+= \int_{\tau_0}^{\tau_1} \frac{W'(\tau)\,\tau}{W(\tau)} \, d\tau
+  + \int_{\tau_1}^T \frac{W'(\tau)\,\tau}{W(\tau)} \, d\tau.
+\]
+The first integral over $[\tau_0,\tau_1]$ is a finite constant independent of $T$. For the second, observe that
+\[
+\frac{W'(\tau)}{W(\tau)} = \frac{d}{d\tau} \bigl(\log W(\tau)\bigr)
+\]
+for all $\tau > \tau_0$. Hence
+\begin{equation}\label{eq:int-by-parts}
+\int_{\tau_1}^T \frac{W'(\tau)\,\tau}{W(\tau)} \, d\tau
+= \int_{\tau_1}^T \tau \, d\bigl(\log W(\tau)\bigr)
+= \Bigl[\tau \log W(\tau)\Bigr]_{\tau_1}^{T}
+  - \int_{\tau_1}^T \log W(\tau) \, d\tau.
+\end{equation}
+Using Lemma \ref{lem:logW-asym}, we have
+\[
+\log W(\tau) = \log(2\tau) + \eta(\tau),
+\]
+with $\eta(\tau) = O(\log\log\tau / \log\tau)$. Therefore,
+\begin{align*}
+\tau \log W(\tau)
+&= \tau \log(2\tau) + \tau\,\eta(\tau), \\
+\int_{\tau_1}^T \log W(\tau) \, d\tau
+&= \int_{\tau_1}^T \log(2\tau)\,d\tau
+   + \int_{\tau_1}^T \eta(\tau)\,d\tau.
+\end{align*}
+Compute the main terms explicitly:
+\[
+\int_{\tau_1}^T \log(2\tau)\,d\tau
+= \int_{\tau_1}^T (\log 2 + \log\tau)\,d\tau
+= (T - \tau_1)\log 2 + \Bigl[\tau\log\tau - \tau\Bigr]_{\tau_1}^T.
+\]
+In particular,
+\[
+\int_{\tau_1}^T \log(2\tau)\,d\tau
+= T\log 2 + T\log T - T + O(1)
+\]
+as $T\to\infty$.
+
+Furthermore,
+\[
+T\eta(T) = O\!\left(T\frac{\log\log T}{\log T}\right),
+\]
+and
+\[
+\int_{\tau_1}^T \eta(\tau)\,d\tau
+= O\!\left(\int_{\tau_1}^T \frac{\log\log\tau}{\log\tau} \, d\tau\right)
+= O\!\left(T\frac{\log\log T}{\log T}\right),
+\]
+since $\log\log\tau / \log\tau$ is decreasing for large $\tau$ and bounded by $\log\log T / \log T$ on $[\tau_1,T]$.
+
+Substituting into \eqref{eq:int-by-parts}, we obtain
+\begin{align*}
+\int_{\tau_1}^T \frac{W'(\tau)\,\tau}{W(\tau)} \, d\tau
+&= \Bigl[T\log(2T) + T\eta(T)\Bigr]
+   - \Bigl[\tau_1\log W(\tau_1)\Bigr] \\
+&\quad - \Bigl[T\log 2 + T\log T - T + O(1)\Bigr]
+   - \int_{\tau_1}^T \eta(\tau)\,d\tau.
+\end{align*}
+The $T\log(2T)$ term cancels $T\log 2 + T\log T$, leaving
+\[
+\int_{\tau_1}^T \frac{W'(\tau)\,\tau}{W(\tau)} \, d\tau
+= T + T\eta(T) - \int_{\tau_1}^T \eta(\tau)\,d\tau + O(1).
+\]
+Using the bounds on $\eta$, we find
+\[
+T\eta(T) = O\!\left(T\frac{\log\log T}{\log T}\right),
+\qquad
+\int_{\tau_1}^T \eta(\tau)\,d\tau
+= O\!\left(T\frac{\log\log T}{\log T}\right),
+\]
+so
+\begin{equation}\label{eq:int-Wprime-t-over-W}
+\int_{\tau_1}^T \frac{W'(\tau)\,\tau}{W(\tau)} \, d\tau
+= T + O\!\left(T\frac{\log\log T}{\log T}\right).
+\end{equation}
+
+Adding back the finite contribution from $[\tau_0,\tau_1]$,
+\[
+\int_{\tau_0}^T \frac{W'(\tau)\,\tau}{W(\tau)} \, d\tau
+= T + O\!\left(T\frac{\log\log T}{\log T}\right).
+\]
+
+Dividing by $T$ and recalling \eqref{eq:mean-square-X} yields
+\[
+\frac{1}{T} \int_{\tau_0}^T |X(\tau)|^2 \, d\tau
+= 1 + O\!\left(\frac{\log\log T}{\log T}\right),
+\]
+and therefore
+\[
+\lim_{T\to\infty} \frac{1}{T} \int_{\tau_0}^T |X(\tau)|^2 \, d\tau = 1.
+\]
+This proves Theorem \ref{thm:main}.
+\qedhere
+
+\section{Autocovariance (Exact Definition)}
+
+For completeness, we record the exact autocovariance of the process $X(\tau)$, without any asymptotic substitutions.
+
+\begin{definition}
+For $h \in \mathbb{R}$, assuming the limit exists, define the autocovariance of $X$ at lag $h$ by
+\begin{equation}\label{eq:R-def}
+R(h)
+:= \lim_{T\to\infty} \frac{1}{T} \int_{\tau_0}^T X(\tau+h)\,\overline{X(\tau)} \, d\tau.
+\end{equation}
+\end{definition}
+
+Substituting the definition \eqref{def:X} and \eqref{def:Y}, we obtain the exact analytic expression
+\begin{equation}\label{eq:R-exact}
+R(h)
+= \lim_{T\to\infty} \frac{1}{T} \int_{\tau_0}^T
+   \frac{\zeta\!\left(\frac{1}{2} + i\sigma(\tau+h)\right)\,
+         \overline{\zeta\!\left(\frac{1}{2} + i\sigma(\tau)\right)}}
+        {\sqrt{\vartheta'(\sigma(\tau+h))\,\vartheta'(\sigma(\tau))}}
+   \cdot
+   \frac{\sqrt{(\tau+h)\,\tau}}{\sqrt{W(\tau+h)\,W(\tau)}}
+   \, d\tau,
+\end{equation}
+whenever the limit exists. No approximations or asymptotic replacements have been made in \eqref{eq:R-exact}; it follows directly from the definitions.
+
+Theorem \ref{thm:main} is the special case $h = 0$ of \eqref{eq:R-def} applied to the real-valued process $|X(\tau)|^2$; namely,
+\[
+R(0)
+= \lim_{T\to\infty} \frac{1}{T} \int_{\tau_0}^T |X(\tau)|^2 \, d\tau
+= 1.
+\]
+
+\end{document} 
