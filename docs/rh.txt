@@ -1,7 +1,6 @@
-THEOREM (Band-limitation of the Jacobian-normalized pullback
-of ζ on the critical line through the inverse of the
-cumulative variance-weighted phase, and the Riemann
-hypothesis).
+THEOREM (Band-limitation of the unitary pullback
+of ζ on the critical line through the inverse of its
+cumulative variance-weighted phase).
 
 Stephen Crowley, April 2026
 
