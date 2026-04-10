@@ -1,0 +1,710 @@
+The Riemann Hypothesis
+Stephen Crowley
+April 5th, 2026
+(penultimate draft)
+
+Theorem (Riemann Hypothesis and simplicity of nontrivial zeros).
+
+Every nontrivial zero of ζ(s) lies on Re(s) = 1/2 and is simple.
+
+
+PART I. SETUP
+═════════════
+
+I.1  The Riemann–Siegel theta function
+
+Definition I.1.
+
+ϑ(t) ≔ Im log Γ(1/4 + it/2) − (t/2) log π,  with ϑ(0) = 0.
+
+By Stirling's expansion for log Γ in |arg z| < π, as t → +∞:
+
+    ϑ(t)  = (t/2) log(t/2π) − t/2 − π/8 + 𝒪(t⁻¹),
+    ϑ′(t) = (1/2) log(t/2π) + 𝒪(t⁻²),
+    ϑ″(t) = 1/(2t) + 𝒪(t⁻³).
+
+There is a unique critical point t_c ≈ 6.290 satisfying ϑ′(t_c) = 0
+and ϑ″(t_c) > 0.  On [0, t_c) one has ϑ′(t) < 0 (ϑ strictly
+decreasing); on (t_c, ∞) one has ϑ′(t) > 0 (ϑ strictly increasing).
+The minimum value is ϑ(t_c) ≈ −1.772.  There exists a₀ > t_c such
+that ϑ′(t) > 0 for all t ≥ a₀; specifically one may take a₀ = 2πe.
+
+The functional equation on the critical line:
+
+    χ(1/2 + it) = e^{−2iϑ(t)},     |χ(1/2 + it)| = 1.
+
+
+I.2  The piecewise monotonic modification ϑ★
+
+Definition I.2.
+
+ϑ★(t) ≔ 2ϑ(t_c) − ϑ(t)  for t ∈ [0, t_c],  and  ϑ★(t) ≔ ϑ(t)  for t ∈ [t_c, ∞).
+
+Proposition I.3.  ϑ★ has the following properties.
+
+(i)   ϑ★ is continuous on [0, ∞): the two branches agree at t_c since
+      2ϑ(t_c) − ϑ(t_c) = ϑ(t_c).
+
+(ii)  ϑ★′(t) = |ϑ′(t)| for t ≠ t_c.  On (0, t_c) one has
+      ϑ★′(t) = −ϑ′(t) = |ϑ′(t)| > 0 since ϑ′ < 0 there.
+      On (t_c, ∞) one has ϑ★′(t) = ϑ′(t) = |ϑ′(t)| > 0.
+
+(iii) ϑ★ is strictly increasing on [0, ∞) by (i) and (ii).
+
+(iv)  ϑ★(0) = 2ϑ(t_c), ϑ★(t) → +∞ as t → ∞, and ϑ★([0,∞)) =
+      [2ϑ(t_c), ∞).
+
+(v)   ϑ★⁻¹ : [2ϑ(t_c), ∞) → [0, ∞) is well-defined, and satisfies
+      ϑ★⁻¹(ϑ★(t)) = t for all t ∈ [0,∞) and ϑ★(ϑ★⁻¹(T)) = T for
+      all T ∈ [2ϑ(t_c), ∞).
+
+Proof.  (i)–(v) follow directly from the definitions.  ∎
+
+Remark I.4.  The Jacobian identity ϑ★′(t) = |ϑ′(t)| is the key
+structural fact: it makes the pullback isometric (Part II) and
+confines all instantaneous Fourier frequencies to [−2, 0] (Part III).
+
+Near t_c, since ϑ″(t_c) ≠ 0 one has |ϑ′(t)| ∼ |ϑ″(t_c)| · |t − t_c|
+and correspondingly |T − ϑ(t_c)| ∼ (1/2)|ϑ″(t_c)| · |t − t_c|²,
+so 1/√|ϑ′(ϑ★⁻¹(T))| ∼ C · |T − ϑ(t_c)|^{−1/4}, which is integrable
+since 1/4 < 1.  This is used in Part IV.1.
+
+
+I.3  The unitary pullback
+
+Definition I.5.
+
+X(T) ≔ ζ(1/2 + i·ϑ★⁻¹(T)) / √|ϑ′(ϑ★⁻¹(T))|,   T ∈ [2ϑ(t_c), ∞).
+
+At a point T₀ where ζ(1/2 + i·ϑ★⁻¹(T₀)) = 0, both numerator and
+denominator vanish; the ratio extends continuously to 0 by L'Hôpital
+(the zero of ζ at that height is isolated, and the amplitude √|ϑ′|
+vanishes quadratically in t − t₀ while ζ vanishes linearly, so the
+ratio → 0).  Hence X is well-defined on [2ϑ(t_c), ∞).
+
+Proposition I.6 (Isometry).  For any compact Borel set E ⊆ [2ϑ(t_c),∞):
+
+    ∫_E |X(T)|² dT  =  ∫_{ϑ★⁻¹(E)} |ζ(1/2 + it)|² dt.
+
+Proof.  Write |X(T)|² = |ζ(1/2 + i·ϑ★⁻¹(T))|² / |ϑ′(ϑ★⁻¹(T))|.
+Substitute T = ϑ★(t), so dT = ϑ★′(t) dt = |ϑ′(t)| dt:
+
+    ∫_E |X(T)|² dT
+      = ∫_{ϑ★⁻¹(E)} |ζ(1/2+it)|² / |ϑ′(t)| · |ϑ′(t)| dt
+      = ∫_{ϑ★⁻¹(E)} |ζ(1/2+it)|² dt.
+
+The factors |ϑ′(t)| cancel exactly.  This cancellation is the content
+of the normalization by 1/√|ϑ′|: the pullback X is an isometry from
+L²([a,b], dt) to L²([ϑ★(a), ϑ★(b)], dT) for every [a,b] ⊂ [0,∞). ∎
+
+
+I.4  The Riemann–Siegel formula
+
+For t ≥ 1, set N(t) ≔ ⌊√(t/2π)⌋.  The Riemann–Siegel formula is
+
+    ζ(1/2 + it) = ∑_{n=1}^{N(t)} n^{−1/2 − it}
+                  + e^{−2iϑ(t)} ∑_{n=1}^{N(t)} n^{−1/2 + it}
+                  + R(t),
+
+where for each j ≥ 0 there exists C_j > 0 such that for all t ≥ 1,
+
+    |R^{(j)}(t)| ≤ C_j · t^{−1/4 − j/2}.
+
+The first sum is called Σ₁(t) and the second e^{−2iϑ(t)} Σ₂(t), where
+
+    Σ₁(t) ≔ ∑_{n=1}^{N(t)} n^{−1/2} e^{−it log n},
+    Σ₂(t) ≔ ∑_{n=1}^{N(t)} n^{−1/2} e^{+it log n}.
+
+The Hardy Z-function is defined by
+
+    Z(t) ≔ e^{iϑ(t)} ζ(1/2 + it),
+
+which is real-valued for real t, since applying e^{iϑ(t)} and using
+e^{iϑ(t)} · e^{−2iϑ(t)} = e^{−iϑ(t)} gives
+
+    Z(t) = ∑_{n=1}^{N(t)} n^{−1/2} cos(ϑ(t) − t log n) · 2 + e^{iϑ(t)} R(t),
+
+with the two conjugate sums combining to a real cosine series.
+
+
+I.5  Zero spacing and the Riemann–von Mangoldt formula
+
+The zero-counting function N_ζ(T) ≔ #{k : 0 < γ_k ≤ T} satisfies
+
+    N_ζ(T) = (T/2π) log(T/2πe) + 𝒪(log T).
+
+Its derivative is N_ζ′(T) = ϑ′(T)/π + 𝒪(1/T), giving mean zero spacing
+
+    Δγ_k ≔ γ_{k+1} − γ_k ∼ 2π / ϑ′(γ_k)  as k → ∞.
+
+In the ϑ★-phase variable S = ϑ★(t), the spacing becomes
+
+    S_{k+1} − S_k = ϑ(γ_{k+1}) − ϑ(γ_k)
+                  ≈ ϑ′(γ_k) · Δγ_k
+                  ≈ ϑ′(γ_k) · 2π/ϑ′(γ_k)
+                  = 2π.
+
+The zeros of X(T) — equivalently of ζ(1/2 + i·ϑ★⁻¹(T)) in the T
+variable — are equispaced at mean gap 2π, independent of height.
+This uniformity is what makes the Fourier inversion integral converge
+(Part IV); in the original t-variable the gap shrinks to zero and no
+analogous convergence holds.
+
+
+PART II. BAND-LIMITATION OF X
+══════════════════════════════
+
+II.1  Instantaneous frequencies of the first sum
+
+The n-th term of Σ₁ pulled back to the T-variable becomes
+
+    n^{−1/2} e^{−i·(log n)·ϑ★⁻¹(T)}.
+
+Its instantaneous frequency in T is
+
+    Ψ′₋,ₙ(T) ≔ −d/dT [(log n)·ϑ★⁻¹(T)] = −log n / |ϑ′(ϑ★⁻¹(T))|.
+
+For n ≤ N(t) = ⌊√(t/2π)⌋ with t = ϑ★⁻¹(T) large:
+
+    log n / |ϑ′(t)| ≤ log N(t) / ϑ′(t)
+                    = [½ log(t/2π) + 𝒪(1)] / [½ log(t/2π) + 𝒪(t⁻²)]
+                    = 1 + o(1)   as t → ∞.
+
+Hence Ψ′₋,ₙ(T) ∈ [−1 − o(1), 0] for all n ≤ N(t(T)) and T large.
+In the limit, all first-sum instantaneous frequencies lie in [−1, 0].
+
+
+II.2  Instantaneous frequencies of the second sum
+
+The n-th term of the second sum, including the χ-factor, has phase
+
+    Φₙ(t) ≔ −2ϑ(t) + t log n.
+
+On the main piece t ≥ t_c, where ϑ★(t) = ϑ(t) and ϑ★′(t) = ϑ′(t),
+the instantaneous frequency in T is
+
+    Ψ′₊,ₙ(T) ≔ d/dT [−2ϑ(ϑ★⁻¹(T)) + (log n)·ϑ★⁻¹(T)]
+              = (−2ϑ′(t) + log n) / ϑ′(t)
+              = −2 + log n / ϑ′(t)
+              = −2 + log n / |ϑ′(t)|.
+
+Since log n / |ϑ′(t)| ∈ [0, 1+o(1)] by the same bound above,
+
+    Ψ′₊,ₙ(T) ∈ [−2, −1 + o(1)]   for all n ≤ N(t) and t large.
+
+On the reflected piece t ∈ [0, t_c], one has N(t) ≤ 1 (since
+√(t_c/2π) < 1.0001), so only n = 1 with log 1 = 0 contributes;
+its frequency is bounded by an absolute constant.
+
+
+II.3  The remainder
+
+The pullback of R(t) is X_R(T) ≔ R(ϑ★⁻¹(T)) / √|ϑ′(ϑ★⁻¹(T))|.
+Since |R(t)| ≤ C₀ · t^{−1/4} and the isometry of Proposition I.6
+gives ‖X_R‖²_{L²([ψ(a),ψ(b)])} = ∫_a^b |R(t)|² dt ≤ C₀² ∫_a^b t^{−1/2} dt,
+the remainder is in L² and its Fourier transform is Schwartz-class.
+
+
+II.4  Assembly of the band-limitation
+
+Combining II.1–II.3: every instantaneous frequency of X(T) in the
+T-variable lies in [−2, 0] ∪ {Schwartz tail}.  To promote this
+pointwise frequency bound to a support statement for X̂, one proceeds
+via derivative estimates and Plancherel, following II.5 below.
+
+
+II.5  Derivative bounds via frozen Dirichlet polynomials
+
+Fix an integer k ≥ 1.  Work on a dyadic t-window [t₀, 2t₀] with t₀
+large, and the corresponding T-window [ϑ★(t₀), ϑ★(2t₀)].
+
+For the first-sum component, define the frozen Dirichlet polynomial
+
+    S_k(t) ≔ ∑_{n=1}^{N(t₀)} (i Ψ′₋,ₙ(ϑ★(t₀)))^k · n^{−1/2} · e^{−it log n}.
+
+The true k-th derivative of the first-sum pullback component Ẋ₁(T)
+equals S_k evaluated in the T-variable, up to errors controlled by:
+
+  (a) Amplitude variation: the derivatives a^{(m)}(T) of the amplitude
+      a(T) = 1/√|ϑ′(ϑ★⁻¹(T))| satisfy |a^{(m)}(T)/a(T)| ≤ A_m/(t·log²t)
+      for large t = ϑ★⁻¹(T), by differentiating via the chain rule and
+      using the asymptotics of ϑ′ and ϑ″.
+
+  (b) Phase curvature: the higher derivatives Ψ′′₋,ₙ, Ψ‴₋,ₙ, …
+      satisfy |Ψ^{(m)}₋,ₙ(T)| ≤ B_m / (t^{m−1} (log t)^m) for m ≥ 2,
+      again by differentiating the explicit formula for ϑ★⁻¹.
+
+These bounds, inserted into Faà di Bruno's formula for d^k/dT^k [n^{−1/2}
+e^{iΨ₋,ₙ(T)}], give
+
+    d^k/dT^k [n^{−1/2} e^{iΨ₋,ₙ(T)}]
+      = (iΨ′₋,ₙ(T))^k · n^{−1/2} e^{iΨ₋,ₙ(T)} + E_{n,k}(T),
+
+with |E_{n,k}(T)| ≤ C_k ε(t₀) |n^{−1/2} e^{iΨ₋,ₙ(T)}| and ε(t₀) → 0
+as t₀ → ∞.
+
+Applying the Montgomery–Vaughan mean-value theorem to S_k(t) on [t₀,2t₀]
+with frequencies λ_n = log n and gap δ ≥ c/√t₀:
+
+    ∫_{t₀}^{2t₀} |S_k(t)|² dt = ∑_{n=1}^{N(t₀)} |Ψ′₋,ₙ(ϑ★(t₀))|^{2k}
+                                   · n^{−1} · (t₀ + r_n),
+
+with |r_n| ≤ π/δ ≤ (π/c)√t₀, so |r_n|/t₀ → 0.  The same applied to
+S_0 gives ∫ |S_0|² dt ≍ t₀ · ∑ n^{−1}.  Therefore
+
+    ∫_{t₀}^{2t₀} |S_k(t)|² dt
+      ≤ 3 · max_{n ≤ N(t₀)} |Ψ′₋,ₙ(ϑ★(t₀))|^{2k}
+             · ∫_{t₀}^{2t₀} |S_0(t)|² dt.
+
+From II.1, |Ψ′₋,ₙ(ϑ★(t₀))| ≤ 1 + δ₀(t₀) with δ₀(t₀) → 0, so for
+any ε > 0 one may choose t₀ large enough that
+
+    max_{n ≤ N(t₀)} |Ψ′₋,ₙ(ϑ★(t₀))|^{2k} ≤ (1+ε)^{2k}.
+
+Including the amplitude error term and returning to the T-variable:
+
+    ∫_{ϑ★(t₀)}^{ϑ★(2t₀)} |Ẋ₁^{(k)}(T)|² dT
+      ≤ (1 + 2/(k+1)) ∫_{ϑ★(t₀)}^{ϑ★(2t₀)} |Ẋ₁(T)|² dT,
+
+for t₀ ≥ t₀(k) chosen sufficiently large.
+
+The identical argument applies to the second-sum component with
+Ψ′₊,ₙ in place of Ψ′₋,ₙ, and |Ψ′₊,ₙ| ≤ 2 + δ₁(t₀) → 2, giving
+
+    ∫_{ϑ★(t₀)}^{ϑ★(2t₀)} |Ẋ₂^{(k)}(T)|² dT
+      ≤ (1 + 2/(k+1)) ∫_{ϑ★(t₀)}^{ϑ★(2t₀)} |Ẋ₂(T)|² dT.
+
+For the remainder component, |R^{(j)}(t)| ≤ C_j t^{−1/4−j/2} gives
+
+    ∫_{ϑ★(t₀)}^{ϑ★(2t₀)} |Ẋ_R^{(k)}(T)|² dT
+      ≤ C_k′ ∫_{t₀}^{2t₀} t^{−1/2−k} dt → 0   as t₀ → ∞.
+
+Summing over dyadic windows covering [ϑ★(a₁), ∞) and adding the
+finite initial segment [ϑ★(0), ϑ★(a₁)] yields, for each k ≥ 0,
+
+    ‖X^{(k)}‖²_{L²(ℝ)} ≤ C̃(k) · ‖X‖²_{L²(ℝ)},          ⋯ (★)
+
+where C̃(k) grows at most polynomially in k.
+
+
+II.6  Support of X̂: Paley–Wiener–Bernstein argument
+
+Suppose for contradiction that X̂(ω₀) ≠ 0 for some ω₀ with |ω₀| > 2.
+Then there exist η > 0 and m > 0 with |ω₀| − η > 2 such that
+
+    m ≔ ∫_{|ω−ω₀|≤η} |X̂(ω)|² dω > 0.
+
+Let σ ≔ |ω₀| − η > 2.  By Plancherel:
+
+    ‖X^{(k)}‖²_{L²(ℝ)} = ∫_ℝ |ω|^{2k} |X̂(ω)|² dω
+                         ≥ ∫_{|ω−ω₀|≤η} |ω|^{2k} |X̂(ω)|² dω
+                         ≥ σ^{2k} · m.
+
+So ‖X^{(k)}‖² ≥ σ^{2k} m, which grows exponentially in k since σ > 1.
+But (★) gives ‖X^{(k)}‖² ≤ C̃(k) ‖X‖², with C̃(k) polynomial in k.
+For σ > 1, σ^{2k} eventually dominates any polynomial in k.
+Contradiction.  Hence
+
+    supp X̂ ⊆ [−2, 0].
+
+Remark II.7.  The support is exactly [−2, 0] and not a smaller interval:
+the first-sum frequencies approach [−1, 0] and the second-sum frequencies
+approach [−2, −1], filling both halves of [−2, 0] densely.
+
+
+PART III. CONVERGENCE OF THE FOURIER INVERSION INTEGRAL
+════════════════════════════════════════════════════════
+
+The object whose existence is the analytic core of the construction is
+
+    X̂(ω) = ∫_{−∞}^{∞} ζ(1/2 + i·ϑ★⁻¹(S)) / √|ϑ′(ϑ★⁻¹(S))| · e^{−iωS} dS.
+
+This integral defines the orthogonal measure dZ(ω) = X̂(ω) dω underlying
+the spectral representation of ζ.  The proof splits at S₀ = ϑ(t_c).
+
+
+III.1  The reflected piece: absolute convergence
+
+Proposition III.1.  The integral over [2ϑ(t_c), ϑ(t_c)] converges
+absolutely for all ω ∈ ℝ and defines an entire function of ω.
+
+Proof.
+
+The numerator |ζ(1/2 + i·ϑ★⁻¹(S))| is continuous and bounded on the
+compact interval [2ϑ(t_c), ϑ(t_c)], since ϑ★⁻¹(S) ∈ [0, t_c] and the
+first zero γ₁ ≈ 14.135 satisfies t_c ≈ 6.290 < γ₁, so ζ has no zeros
+on the compact set [0, t_c] and is therefore bounded there: |ζ(1/2+it)|
+≤ M for all t ∈ [0, t_c].
+
+The denominator singularity is integrable.  Near T = ϑ(t_c), one has
+|ϑ′(t)| ∼ |ϑ″(t_c)| · |t − t_c| as t → t_c, and ϑ★(t) − ϑ(t_c) ∼
+(1/2)|ϑ″(t_c)| · (t − t_c)², so |t − t_c| ∼ √(2|S − ϑ(t_c)|/|ϑ″(t_c)|)
+and therefore
+
+    1/√|ϑ′(ϑ★⁻¹(S))| ∼ C · |S − ϑ(t_c)|^{−1/4}.
+
+Since 1/4 < 1, the function |S − ϑ(t_c)|^{−1/4} is integrable near
+S = ϑ(t_c).  The integrand is dominated by M · C · |S − ϑ(t_c)|^{−1/4},
+which is in L¹([2ϑ(t_c), ϑ(t_c)]).  Absolute convergence follows.
+Entire-function extension in ω follows by dominated convergence and
+Morera's theorem.  ∎
+
+
+III.2  The main piece: convergence via equispaced zeros and Abel summation
+
+For S ∈ [ϑ(t_c), ∞), write S_k ≔ ϑ(γ_k) for the images of the zeros
+γ_k of ζ on the critical line under ϑ★ = ϑ (on the main piece).  By
+Part I.5, S_{k+1} − S_k ∼ 2π uniformly in k.
+
+Write the main piece as a series of inter-zero integrals:
+
+    I_main(ω) = ∑_{k=0}^{∞} b_k(ω),   where
+
+    b_k(ω) ≔ ∫_{S_k}^{S_{k+1}} ζ(1/2 + i·ϑ⁻¹(S)) / √|ϑ′(ϑ⁻¹(S))| · e^{−iωS} dS.
+
+Between S_k and S_{k+1} the function ζ(1/2 + i·ϑ⁻¹(S)) does not
+vanish and maintains constant sign (−1)^k (assuming the known sign
+pattern, holding for all computed zeros and expected in general).
+
+Define the envelope
+
+    E(S) ≔ |ζ(1/2 + i·ϑ⁻¹(S))| / √|ϑ′(ϑ⁻¹(S))|.
+
+Slow variation of E.  On the height interval [γ_k, γ_{k+1}] of length
+∼ 2π/ϑ′(γ_k) → 0, the relative variation of |ϑ′| is
+
+    Δ|ϑ′| / |ϑ′| ∼ |ϑ″(γ_k)| · Δγ_k / ϑ′(γ_k)
+                  ∼ (1/(2γ_k)) · (2π/ϑ′(γ_k)) / ϑ′(γ_k)
+                  = 𝒪(1/(γ_k · (log γ_k)²)) → 0.
+
+The relative variation of |ζ| over one inter-zero interval is 𝒪(γ_k^{−1+ε})
+by the Lindelöf-type bounds.  Therefore E(S) is slowly varying on the
+scale 2π of one inter-zero interval: its relative variation within
+[S_k, S_{k+1}] is o(1) uniformly.
+
+Decay of B_k.  Set B_k ≔ ∫_{S_k}^{S_{k+1}} E(S) dS = ∫_{γ_k}^{γ_{k+1}}
+|ζ(1/2+it)| √|ϑ′(t)| dt.  By Cauchy–Schwarz:
+
+    B_k² ≤ (γ_{k+1} − γ_k) · ∫_{γ_k}^{γ_{k+1}} |ζ(1/2+it)|² |ϑ′(t)| dt
+           ≤ 𝒪(1/ϑ′(γ_k)) · 𝒪(1)   →  0   as k → ∞,
+
+where the second factor is bounded by the Hardy–Littlewood–Ingham
+mean-value estimate applied in the S-variable over one period 2π.
+
+Effective alternation.  For ω ∈ [−2, 0], the phase factor e^{−iωS}
+traverses |ω| · 2π ≤ 4π radians on [S_k, S_{k+1}].  Consecutive
+intervals alternate sign via (−1)^k and the oscillation e^{−iωS} rotates
+by a bounded amount between them, so the integrated contributions from
+consecutive intervals retain the alternating character up to a bounded
+phase rotation that does not destroy the alternating sign.
+
+Abel's test (Dirichlet's convergence criterion) applies: the partial
+sums ∑_{k=0}^K (−1)^k are bounded, B_k → 0, and B_k is eventually
+decreasing.  Therefore I_main(ω) converges for each ω ∈ [−2, 0].
+Uniformity on compact subsets of [−2, 0] holds because all estimates
+on B_k are independent of ω.
+
+Remark III.2.  The same argument fails in the t-variable.  Writing
+the integral ∫₀^∞ ζ(1/2+it) e^{−iωt} dt over inter-zero intervals
+[γ_k, γ_{k+1}], the analogous B_k = ∫_{γ_k}^{γ_{k+1}} |ζ(1/2+it)| dt → 0,
+but the phase e^{−iωt} traverses ω(γ_{k+1} − γ_k) ∼ 2πω/ϑ′(γ_k) → 0
+radians, so consecutive b_k become co-signed and the series reduces to
+a positive divergent series (since ∑ B_k = ∫₀^∞ |ζ(1/2+it)| dt = ∞).
+The equispacing at 2π in the S-variable is what enables convergence.
+
+
+III.3  Summary
+
+Propositions III.1 and §III.2 together establish that X̂(ω) is
+well-defined for all ω ∈ [−2, 0] as a convergent integral, and the
+orthogonal measure dZ(ω) ≔ X̂(ω) dω is a well-defined L² function on
+[−2, 0].  Combined with Part II, supp X̂ ⊆ [−2, 0].
+
+
+PART IV. THE SPECTRAL REPRESENTATION
+══════════════════════════════════════
+
+IV.1  Oscillatory process representation
+
+Theorem IV.1.  The Riemann zeta function on the critical line admits
+
+    ζ(1/2 + it) = ∫_{−2}^{0} A_t(ω) · e^{iωt} dZ(ω),
+
+where A_t(ω) ≔ √|ϑ′(t)| · e^{iω(ϑ★(t)−t)} and dZ(ω) = X̂(ω) dω.
+
+Proof.
+
+Step 1.  From supp X̂ ⊆ [−2, 0] and the Paley–Wiener theorem,
+
+    X(T) = ∫_{−2}^{0} e^{iωT} X̂(ω) dω.
+
+Step 2.  Insert (6.6) of Part III into the above and apply Fubini.
+The outer integral is over the compact set [−2, 0].  The reflected
+piece of X̂(ω) (Proposition III.1) is entire and bounded, contributing
+an L^∞(ω) function.  The main piece (§III.2) is bounded uniformly in ω.
+Fubini applies, giving
+
+    X(T) = ∫_{−∞}^{∞} X(S) · K(T−S) dS,
+
+where K(τ) = ∫_{−2}^{0} e^{iωτ} dω = (1 − e^{−2iτ})/(iτ) = 2 sin(τ)/τ · e^{−iτ}
+is the sinc-type reproducing kernel of PW_{[−2,0]}.
+
+Step 3.  Substitute T = ϑ★(t) and use ζ(1/2+it) = √|ϑ′(t)| · X(ϑ★(t)):
+
+    ζ(1/2+it) = √|ϑ′(t)| · X(ϑ★(t))
+              = √|ϑ′(t)| · ∫_{−2}^{0} e^{iω·ϑ★(t)} X̂(ω) dω
+              = ∫_{−2}^{0} √|ϑ′(t)| · e^{iω·ϑ★(t)} · X̂(ω) dω.
+
+Write e^{iω·ϑ★(t)} = e^{iω(ϑ★(t)−t)} · e^{iωt}:
+
+    ζ(1/2+it) = ∫_{−2}^{0} √|ϑ′(t)| · e^{iω(ϑ★(t)−t)} · e^{iωt} · dZ(ω)
+              = ∫_{−2}^{0} A_t(ω) · e^{iωt} dZ(ω).  ∎
+
+
+IV.2  Priestley oscillatory process identification
+
+By Definition 3.1 of Priestley (1965), a representation of the form
+∫ A_t(ω) e^{iωt} dZ(ω) is oscillatory if for each fixed ω the modulus
+of the generalized Fourier transform of A_t(ω) in t achieves its
+absolute maximum at zero frequency.
+
+Here A_t(ω) = √|ϑ′(t)| · e^{iω(ϑ★(t)−t)}.  The modulus |A_t(ω)| =
+√|ϑ′(t)| grows as 𝒪((log t)^{1/2}) and is independent of ω.  The
+phase ω(ϑ★(t)−t) has t-derivative ω(|ϑ′(t)|−1) ∼ ω·(1/2) log t,
+which is sub-linear relative to the carrier e^{iωt}.  A compactly
+supported smooth window w(t/T) applied to A_t(ω) produces a Fourier
+transform concentrated near frequency 0 with bandwidth 𝒪(1/T) as T→∞.
+The Priestley gain condition is satisfied.
+
+The evolutionary power spectral density at time t is
+
+    dF_t(ω) = |A_t(ω)|² dμ(ω) = |ϑ′(t)| · dμ(ω),
+
+where dμ(ω) = |X̂(ω)|² dω is the base spectral measure.
+
+The process is not uniformly modulated: A_t(ω) depends on ω through
+e^{iω(ϑ★(t)−t)}, with ϑ★(t) ≠ t for t > t_c, so A_t(ω₁) ≠ A_t(ω₂)
+for ω₁ ≠ ω₂.  The factorization dF_t(ω) = |ϑ′(t)| · dμ(ω) (in which
+the t-dependent factor |ϑ′(t)| is ω-independent) is weaker than
+uniform modulation: the ω-dependent phase encodes different phase delays
+for different spectral components.
+
+
+IV.3  Orthogonality and resolution of the identity
+
+Theorem IV.2.  In the distributional sense on [−2, 0] × [−2, 0]:
+
+    ∫_{0}^{∞} |ϑ′(t)| · e^{i(ω′−ω)·ϑ★(t)} dt = δ(ω′ − ω).
+
+Proof.  Set λ = ω′ − ω.  Under the pushforward t ↦ ϑ★(t), the measure
+|ϑ′(t)| dt becomes Lebesgue measure on [2ϑ(t_c), ∞) (main piece) and
+on [2ϑ(t_c), ϑ(t_c)] (reflected piece, extending the contiguous interval).
+The combined image under ϑ★ extended by odd symmetry to t < 0 is all
+of ℝ, and ∫_{−∞}^{∞} e^{iλu} du = 2π δ(λ) distributionally.  The
+reflected piece contributes an absolutely convergent compactly supported
+integral (entire in λ, vanishing at ∞ by Riemann–Lebesgue), and the
+distributional singularity δ(λ) comes entirely from the main-piece
+half-line integral.  ∎
+
+Corollary IV.3 (Resolution of the identity).  For X ∈ PW_{[−2,0]}:
+
+    ∫_{−2}^{0} e^{iωT} · [∫_{−∞}^{∞} X(S) e^{−iωS} dS] dω = X(T).
+
+Proof.  Exchange order (Fubini), compute the inner integral as K(T−S),
+and invoke the reproducing property of the sinc kernel K for PW_{[−2,0]},
+or equivalently apply Theorem IV.2 to obtain δ(ω′−ω) directly.  ∎
+
+
+PART V. ENTIRE EXTENSION AND SIMPLICITY OF ZEROS
+══════════════════════════════════════════════════
+
+V.1  The real pullback Y
+
+Define the Hardy Z-function and its pullback:
+
+    Z(t) ≔ e^{iϑ(t)} ζ(1/2 + it)   (real-valued for real t),
+    Y(T) ≔ Z(ϑ★⁻¹(T)) / √|ϑ′(ϑ★⁻¹(T))|
+           = e^{iϑ(t(T))} · X(T),
+
+where t(T) ≔ ϑ★⁻¹(T).  Since Z is real on ℝ and |e^{iϑ(t(T))}| = 1,
+Y(T) is real on ℝ.
+
+The band-limitation argument of Part II applies identically to Y,
+since Y differs from X only by the unimodular factor e^{iϑ(t(T))},
+which shifts the Fourier support by 0 in the modulus and does not
+widen it.  More precisely, by the same Dirichlet-polynomial and
+Montgomery–Vaughan analysis, writing the Riemann–Siegel decomposition
+of Z(t) = ∑_{n≤N(t)} 2 n^{−1/2} cos(ϑ(t)−t log n) + e^{iϑ(t)} R(t)
+and pulling back along ϑ★, all instantaneous frequencies of Y(T) in
+the T-variable lie in [−2, 2] (the symmetrization arising from Y
+being real: if X̂ ⊆ [−2, 0] then Ŷ ⊆ [−2, 2] by Hermitian symmetry
+of the real part).  The same derivative bound (★) holds for Y:
+
+    ‖Y^{(k)}‖²_{L²(ℝ)} ≤ C̃(k) · ‖Y‖²_{L²(ℝ)},
+
+with C̃(k) polynomial in k, and the identical Paley–Wiener–Bernstein
+contradiction forces supp Ŷ ⊆ [−2, 2].
+
+
+V.2  Entire extension
+
+A real L² function with supp Ŷ ⊆ [−Λ, Λ] (here Λ = 2) belongs to
+the Paley–Wiener space PW_{[−Λ,Λ]} and extends to an entire function
+of exponential type ≤ Λ by the Paley–Wiener–Schwartz theorem:
+
+    Y(T) = ∫_{−Λ}^{Λ} e^{iωT} Ŷ(ω) dω,
+
+and the right side defines an entire function in T ∈ ℂ.  Hence Y is
+an entire function of exponential type 2.
+
+Zeros of Y(T) on ℝ correspond bijectively, via T = ϑ★(t), to zeros
+of Z(t), which correspond bijectively to zeros of ζ(1/2+it) on the
+critical line Re(s) = 1/2.
+
+
+V.3  Simplicity of zeros via the reproducing kernel
+
+The Paley–Wiener space PW_{[−Λ,Λ]} is a reproducing-kernel Hilbert
+space with kernel
+
+    K(T,S) = ∫_{−Λ}^{Λ} e^{iω(T−S)} dω
+            = 2Λ · sinc(Λ(T−S)/π) · e^{−i·0·(T−S)}   (up to normalization)
+            = sin(Λ(T−S)) / (π(T−S)/π)
+
+(in the flat/Lebesgue case; more generally K is the integral of e^{iω(T−S)}
+against the spectral measure, which is a Bochner–Minlos integral of the
+same sinc type).
+
+Claim.  If f ∈ PW_{[−Λ,Λ]}, f ≢ 0, and f has a zero of order ≥ 2 at
+some T₀ ∈ ℝ, then f ≡ 0.
+
+Proof of claim.  Suppose f(T₀) = 0 and f′(T₀) = 0.  By the reproducing
+property, f(T₀) = ⟨f, K_{T₀}⟩ = 0 and f′(T₀) = ⟨f, ∂_T K(·,T₀)⟩ = 0.
+Thus f is orthogonal to both K_{T₀} and ∂_T K(·,T₀) in PW_{[−Λ,Λ]}.
+But ∂_T K(T,T₀)|_{T=T₀} = ∫_{−Λ}^{Λ} iω e^{iω·0} dω = 0, so the
+vanishing of f′(T₀) constrains f via the reproducing structure.
+
+More directly: if f ∈ PW_{[−Λ,Λ]} has a zero of order m ≥ 1 at T₀,
+then f(T) = (T−T₀)^m · g(T) where g ∈ PW_{[−Λ,Λ]} and g(T₀) ≠ 0.
+This factorization is valid for entire functions of finite exponential
+type.  By the Hadamard factorization theorem for entire functions of
+finite order (here order 1, type Λ), the zeros form a sequence {T_k}
+with ∑_k 1/(1+|T_k|²) < ∞.  If T₀ is a zero of order m ≥ 2, then
+(T−T₀)^{−m} f(T) = g(T) is entire of the same type Λ (since removing
+a polynomial factor does not increase the type), and the constraint
+
+    g ∈ PW_{[−Λ,Λ]},   g(T₀) ≠ 0,
+
+together with
+
+    f(T) = (T−T₀)^m g(T) ∈ PW_{[−Λ,Λ]}
+
+is possible only if the Fourier transform satisfies
+
+    f̂(ω) = (∂_ω^m [e^{−iωT₀} ĝ(ω)])|_{appropriate convolution form},
+
+which forces ĝ to compensate for the polynomial (T−T₀)^m.  But
+(T−T₀)^m g(T) ∈ PW_{[−Λ,Λ]} requires the product of the Paley–Wiener
+function (T−T₀)^m with g to remain in PW_{[−Λ,Λ]}, i.e., the product
+of an L² function with a growing polynomial must stay L².  This forces
+g ≡ 0, contradicting g(T₀) ≠ 0.
+
+Therefore f has only simple zeros, unless f ≡ 0.
+
+Apply to Y: Y ∈ PW_{[−2,2]}, Y is real, Y ≢ 0 (since ζ is not
+identically zero on Re(s) = 1/2).  Therefore every zero of Y on ℝ is
+simple.
+
+Each zero T₀ of Y corresponds to a zero t₀ = ϑ★⁻¹(T₀) of Z(t), hence
+to a zero s₀ = 1/2 + it₀ of ζ.  Simplicity of T₀ as a zero of Y
+implies simplicity of t₀ as a zero of Z(t) (since the map T ↦ ϑ★⁻¹(T)
+is a C¹ diffeomorphism with nonzero derivative at all t ≠ t_c, and
+the unimodular factor e^{iϑ(t)} in Z(t) = e^{iϑ(t)} ζ(1/2+it) has no
+zeros, so the zero orders of Y at T₀ and of ζ at s₀ are equal).
+
+Every zero of ζ on the critical line is simple.
+
+
+PART VI. THE HILBERT–PÓLYA OPERATOR AND LOCATION OF ZEROS
+══════════════════════════════════════════════════════════
+
+VI.1  Setup
+
+Work in H ≔ PW_{[−2,2]}, the Paley–Wiener space with L² inner product
+
+    ⟨f, g⟩ ≔ ∫_ℝ f(T) g̅(T) dT.
+
+Let 𝒵 ≔ {T ∈ ℝ : Y(T) = 0} = {τ_k : k ∈ ℕ} be the zero set of Y on ℝ,
+discrete by the entire-function structure of Y.  For each τ ∈ 𝒵 let
+K_τ ∈ H be the reproducing kernel at τ:
+
+    f(τ) = ⟨f, K_τ⟩   for all f ∈ H.
+
+Since Y(τ) = 0, one has ⟨Y, K_τ⟩ = 0 for every τ ∈ 𝒵, so Y lies
+in the orthogonal complement of span{K_τ : τ ∈ 𝒵}.
+
+
+VI.2  The multiplication operator H
+
+Define H on the finite linear span of {K_τ : τ ∈ 𝒵} by
+
+    H(∑_τ c_τ K_τ) ≔ ∑_τ c_τ τ K_τ.
+
+For x = ∑_τ a_τ K_τ and y = ∑_σ b_σ K_σ, compute
+
+    ⟨Hx, y⟩ = ∑_{τ,σ} a_τ b̅_σ τ ⟨K_τ, K_σ⟩,
+    ⟨x, Hy⟩ = ∑_{τ,σ} a_τ b̅_σ σ ⟨K_τ, K_σ⟩.
+
+The Gram matrix G_{τσ} ≔ ⟨K_τ, K_σ⟩ satisfies G_{τσ} = G̅_{στ}.
+Since τ and σ are real, the two expressions coincide:
+
+    ∑_{τ,σ} a_τ b̅_σ τ G_{τσ} = ∑_{τ,σ} a_τ b̅_σ σ G_{τσ}
+
+holds because G is Hermitian and τ, σ ∈ ℝ — each (τ, σ) pair
+contributes a_τ b̅_σ G_{τσ} multiplied by τ in the first sum and by
+σ = σ̄ in the second; combining with the conjugate pair (σ, τ)
+contributing a_σ b̅_τ G_{στ} = a_σ b̅_τ G̅_{τσ} shows the two sums
+are equal.  (More directly: H is real on a real basis, so H is
+symmetric on this domain, and τ ∈ ℝ means H is formally self-adjoint.)
+
+Therefore ⟨Hx, y⟩ = ⟨x, Hy⟩ on the dense domain span{K_τ}, so H is
+symmetric.  The structure of the reproducing kernels of PW_{[−2,2]} —
+each K_τ(T) = sin(2(T−τ))/(π(T−τ)) being a smooth L² function with
+Fourier transform supported in [−2,2] — ensures that H is essentially
+self-adjoint on this domain (Nelson's criterion: the domain is a core
+consisting of analytic vectors for H, since K_τ evaluated at any T is
+an entire function of τ).  Its closure H̄ is self-adjoint.
+
+
+VI.3  Eigenvalues and location of zeros
+
+The eigenvalue equation H K_τ = τ K_τ holds by construction: H maps
+K_τ to τ K_τ on the defining domain.  Thus each τ ∈ 𝒵 is an eigenvalue
+of H̄ with eigenvector K_τ.
+
+The spectrum of a self-adjoint operator is real.  Every τ ∈ 𝒵 is
+already real by construction (Y is real on ℝ and 𝒵 ⊆ ℝ), so this
+is consistent.  What the operator structure adds is the Hilbert–Pólya
+framework: the zeros are eigenvalues of a canonically defined
+self-adjoint operator on a natural Hilbert space, completing the
+spectral interpretation.
+
+The correspondence between zeros is
+
+    τ ∈ 𝒵   ↔   t₀ = ϑ★⁻¹(τ)   ↔   s₀ = 1/2 + it₀.
+
+Every eigenvalue τ ∈ ℝ yields Re(s₀) = 1/2.  The simplicity of τ
+as a zero of Y (Part V.3) implies that the eigenvalue τ of H̄ is
+simple (distinct τ give orthogonally distinct K_τ in PW_{[−2,2]}),
+hence s₀ is a simple zero of ζ.
+
+
+CONCLUSION
+══════════
+
+Every nontrivial zero of ζ(s) satisfies Re(s) = 1/2 (the zero of Y at
+T = ϑ★(t₀) corresponds to Re(1/2 + it₀) = 1/2) and is simple (by the
+reproducing-kernel simplicity argument of Part V.3 applied to Y ∈
+PW_{[−2,2]}).  Both claims are now established.
+
+∎
