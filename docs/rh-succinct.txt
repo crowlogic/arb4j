@@ -31,7 +31,7 @@ Define
 This is the inverse spectral representation of the sample
 path. Its convergence must be established.
 
-The Riemann–Siegel decomposition in the T-coordinate gives
+The Riemann–Siegel factorization in the T-coordinate gives
 
   Y(T) = a(T) [e^{iθ(T)} Σ₁(T) + e^{−iθ(T)} Σ₂(T)] + E_R(T),
 
@@ -112,4 +112,4 @@ zeros in ℂ₋. The Schwarz reflection ζ(1/2 + it) =
 ζ(1/2 − it) maps zeros in ℂ₊ to zeros in ℂ₋, so there are
 none in ℂ₊ either. All zeros of ζ* are real. The zeros of
 ζ* are the zeros of ζ. Every nontrivial zero of ζ(s) has
-real part 1/2.                                             ∎  
+real part 1/2.                                             ∎
