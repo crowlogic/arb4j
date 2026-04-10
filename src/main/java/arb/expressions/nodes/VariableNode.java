@@ -163,6 +163,17 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       logger.debug("resolveReference START: {}", resolutionStateString());
     }
+    
+    if (resolveContextualVariable())
+    {
+      expression.registerReferencedVariable(this);
+      if (Expression.traceNodes)
+      {
+        logger.debug("resolveReference CONTEXT: {}", resolutionStateString());
+      }
+      return this;
+    }
+    
 
     if (isIndependent = isIndependent())
     {
@@ -175,15 +186,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return this;
     }
     
-    if (resolveContextualVariable())
-    {
-      expression.registerReferencedVariable(this);
-      if (Expression.traceNodes)
-      {
-        logger.debug("resolveReference CONTEXT: {}", resolutionStateString());
-      }
-      return this;
-    }
+
 
 
 
