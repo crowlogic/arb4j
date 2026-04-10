@@ -518,7 +518,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       indexVariableFieldName = paramName;
     }
 
-    Class<R> operandCoDomain = (Class<R>) (expression.isFunctional() ? scalarCoDomain(expression.coDomainType) : expression.coDomainType);
+    Class<R> operandCoDomain = (Class<R>) (expression.isFunctional() && !Polynomial.class.isAssignableFrom(expression.coDomainType)
+                                             ? scalarCoDomain(expression.coDomainType)
+                                             : expression.coDomainType);
     operandExpression = new Expression<>(Integer.class,
                                          operandCoDomain,
                                          Sequence.class);
