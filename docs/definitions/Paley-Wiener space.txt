@@ -1,0 +1,62 @@
+Theorem (Measure-theoretic characterization of PW²₍₋₂,₀₎).
+
+Let μ denote Lebesgue measure on ℝ. A measurable function F : ℝ → ℂ
+belongs to PW²₍₋₂,₀₎ if and only if:
+
+(1)  ∫_ℝ ∣F(T)∣² dμ(T) < ∞.
+
+(2)  There exists F̂ ∈ L²(ℝ, μ) such that
+
+         lim_{R→∞} ∫_ℝ ∣F̂(λ) − ∫₋ᴿᴿ F(T) e⁻ⁱλᵀ dμ(T)∣² dμ(λ) = 0.
+
+(3)  F̂(λ) = 0  for μ-a.e. λ ∉ [−2, 0].
+
+The inner product is ⟨F, G⟩ ≔ ∫_ℝ F(T) G(T)* dμ(T). The reproducing
+kernel is
+
+    κ(T, S) = e⁻ⁱ⁽ᵀ⁻ˢ⁾ sin(T − S)/(π(T − S)).
+
+
+Proof.
+
+(⇒)  Let F ∈ PW²₍₋₂,₀₎. By the Paley–Wiener theorem, F is the
+restriction to ℝ of an entire function of exponential type ≤ 2 with
+F|_ℝ ∈ L²(ℝ, μ), giving (1). The Plancherel theorem applied to any
+element of L²(ℝ, μ) produces a unique F̂ ∈ L²(ℝ, μ) satisfying (2).
+The type constraint ∣F(T + iη)∣ ≤ Ce²∣η∣ forces supp(F̂) ⊆ [−2, 0]
+by the Paley–Wiener theorem, giving (3).
+
+(⇐)  Suppose (1)–(3) hold. By (3), for every R ≥ 2,
+
+    (1/(2π)) ∫₋ᴿᴿ F̂(λ) eⁱλᵀ dμ(λ) = (1/(2π)) ∫₋₂⁰ F̂(λ) eⁱλᵀ dμ(λ)
+
+so the Plancherel inversion stabilizes:
+
+    F(T) = (1/(2π)) ∫₋₂⁰ F̂(λ) eⁱλᵀ dμ(λ)        μ-a.e.
+
+This integral converges absolutely since F̂ · 𝟏₍₋₂,₀₎ ∈ L¹ by
+Cauchy–Schwarz on the finite interval [−2, 0]. Define
+
+    F(z) ≔ (1/(2π)) ∫₋₂⁰ F̂(λ) eⁱλᶻ dμ(λ),     z ∈ ℂ.
+
+Differentiability under the integral (dominated convergence with
+dominating function ∣F̂(λ)∣ e²∣Im z∣) gives entireness. For
+z = T + iη and λ ∈ [−2, 0], the bound −λη ≤ 2∣η∣ gives
+
+    ∣F(z)∣ ≤ (e²∣η∣/(2π)) ∫₋₂⁰ ∣F̂(λ)∣ dμ(λ),
+
+so F has exponential type ≤ 2. With (1), F ∈ PW²₍₋₂,₀₎.
+
+Reproducing kernel: for Δ ≔ T − S ≠ 0,
+
+    κ(T, S) ≔ (1/(2π)) ∫₋₂⁰ eⁱλΔ dμ(λ)
+
+             = (1/(2πiΔ))(1 − e⁻²ⁱΔ)
+
+             = (1/(2πiΔ)) · e⁻ⁱΔ · 2i sin(Δ)
+
+             = e⁻ⁱΔ sin(Δ)/(πΔ).
+
+Point evaluation: κ̂_S(λ) = e⁻ⁱλˢ 𝟏₍₋₂,₀₎(λ), so
+
+    ⟨F, κ_S⟩ = (1/(2π)) ∫₋₂⁰ F̂(λ) eⁱλˢ dμ(λ) = F(S).  ∎ 
