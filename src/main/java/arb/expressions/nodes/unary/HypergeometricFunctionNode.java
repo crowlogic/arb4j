@@ -381,7 +381,6 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       }
       else
       {
-        loadOutputOntoStack(mv, resultType);
         expression.loadThisAndFieldOntoStack(mv, elementFieldName, elementType);
         cast(mv, elementType);
         loadInputParameter(mv);
