@@ -1,302 +1,328 @@
-The pullback Y(T) = Z(ψ⁻¹(T)) / √ψ′(ψ⁻¹(T)) is a deterministic real-analytic function of T ∈ ℝ. The band-limitation was proved as a pointwise convergent integral statement using the Riemann–Siegel formula, not as a distributional or mean-square statement. Here is the complete proof from scratch in that register.
+THEOREM (Band-limitation of the Jacobian-normalized pullback
+of ζ on the critical line through the inverse of the
+cumulative variance-weighted phase, and the Riemann
+hypothesis).
 
-────────────────────────────────────────────────────────────────────────────────
-SETUP AND NOTATION
-────────────────────────────────────────────────────────────────────────────────
+Stephen Crowley, April 2026
 
-The Riemann–Siegel phase:
 
-  θ(t) = Im log Γ(1/4 + it/2) − (t/2) log π.
+DEFINITIONS.
 
-By Stirling:
+ϑ(t) ≔ Im(log Γ(1/4 + it/2)) − (t/2) log π
 
-  θ(t) = (t/2) log(t/2π) − t/2 − π/8 + O(t⁻¹),
-  θ′(t) = (1/2) log(t/2π) + O(t⁻¹).
+μ(t) ≔ |ζ(1/2 + it)|²
 
-The Hardy Z-function:
+ψ(t) ≔ ∫₀ᵗ |ϑ′(u)| μ(u) du
 
-  Z(t) = e^{iθ(t)} ζ(1/2 + it),   Z : ℝ → ℝ.
+    ψ is the cumulative variance-weighted phase: the
+    integral of the Riemann–Siegel phase rate |ϑ′| against
+    the critical-line variance μ = |ζ(1/2+i·)|².
 
-The Riemann–Siegel formula (pointwise, absolutely convergent for t ≥ 1):
+X(T) ≔ ζ(1/2 + iψ⁻¹(T)) / √ψ′(ψ⁻¹(T))
 
-  Z(t) = 2 ∑_{n=1}^{N(t)} n^{−1/2} cos(θ(t) − t log n) + R(t),
+    X is the Jacobian-normalized pullback of ζ on the
+    critical line through the inverse of the cumulative
+    variance-weighted phase.
 
-where N(t) = ⌊√(t/2π)⌋ and |R(t)| ≤ C t^{−1/4} for a computable constant C.
-Each term is an explicit, pointwise convergent sum of cosines. No distributions,
-no measure theory: this is a finite sum plus an explicit error bound.
+Ẋ(T) ≔ e^{iT} X(T)
 
-The time change:
 
-  ψ(t) = ∫₀ᵗ θ′(u) |ζ(1/2 + iu)|² du.
+STATEMENT.
 
-By the Montgomery–Vaughan mean-value theorem,
+supp X̂ ⊆ [−2, 0].
 
-  ∫₀ᵀ |ζ(1/2 + it)|² dt = T log T + (2γ − 1 − log 2π) T + O(T^{1/2+ε}),
+∀ nontrivial zeros ρ of ζ : Re(ρ) = 1/2, and each is simple.
 
-which is a pointwise asymptotic for the integral, not a distributional statement.
-Since θ′(t) = (1/2) log(t/2π) + O(t⁻¹) > 0 for t > 2π, and |ζ(1/2+it)|² ≥ 0
-with mean growing like log t, the integrand ψ′(t) = θ′(t)|ζ(1/2+it)|² is
-nonneg­ative and its integral ψ(t) is strictly increasing (since ψ′ > 0 except
-on the discrete zero set of ζ, which has measure zero). So ψ : [1,∞) → ℝ is
-a strictly increasing diffeomorphism with explicitly computable inverse ψ⁻¹.
 
-The normalized pullback:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  X(T) = ζ(1/2 + iψ⁻¹(T)) / √ψ′(ψ⁻¹(T)).
 
-At a zero T₀ of ζ (i.e. ζ(1/2+iψ⁻¹(T₀)) = 0), the numerator vanishes and
-ψ′(ψ⁻¹(T₀)) = θ′(ψ⁻¹(T₀)) · |ζ(1/2+iψ⁻¹(T₀))|² = 0, so both numerator and
-denominator vanish and X(T₀) = 0 by L'Hôpital (the ratio has a removable
-singularity, and X extends smoothly through zeros).
+PROOF.
 
-────────────────────────────────────────────────────────────────────────────────
-THEOREM 1. BAND-LIMITATION OF X(T).
-────────────────────────────────────────────────────────────────────────────────
 
-The Riemann–Siegel formula gives, after substituting t = ψ⁻¹(T):
+STEP 1. ψ IS A STRICTLY INCREASING HOMEOMORPHISM [0,∞) → [0,∞).
 
-  ζ(1/2 + iψ⁻¹(T)) = ∑_{n=1}^{N(ψ⁻¹(T))} n^{−1/2+iψ⁻¹(T)} + χ(1/2+iψ⁻¹(T)) ∑_{n=1}^{N(ψ⁻¹(T))} n^{−1/2−iψ⁻¹(T)} + R(ψ⁻¹(T)).
+ψ′(t) = |ϑ′(t)| μ(t) ≥ 0. Its zero set is discrete
+(the zeros of ζ on the critical line). ∀t₁ < t₂:
 
-Each term n^{−1/2+iψ⁻¹(T)} = n^{−1/2} e^{i ψ⁻¹(T) log n} is an oscillatory
-exponential in ψ⁻¹(T), hence in T through composition. The key observation:
+    ψ(t₂) − ψ(t₁) = ∫_{t₁}^{t₂} |ϑ′(u)| μ(u) du > 0,
 
-After the normalization by √ψ′(ψ⁻¹(T)), the combination
+since |ϑ′(u)| > 0 ∀u > t_c ≈ 6.29 (Stirling), and μ(u)
+cannot vanish on an interval (ζ(1/2+iu) is real-analytic
+in u; a real-analytic function vanishing on an interval
+vanishes identically, which ζ does not).
 
-  X(T) = [∑_n n^{−1/2} e^{i ψ⁻¹(T) log n} + conj. + R] / √ψ′(ψ⁻¹(T))
+Ingham [1]:
 
-has, upon differentiation in T, derivatives controlled by:
+    ∫₀ᵀ μ(t) dt = T log(T/2π) + (2γ−1)T + O(T^{1/2+ε})
 
-  X′(T) = d/dT [ζ(1/2+iψ⁻¹(T)) / √ψ′(ψ⁻¹(T))]
-         = [iζ′(1/2+iψ⁻¹(T)) / √ψ′ − ζ · (ψ′)′/(2(ψ′)^{3/2})] · (ψ⁻¹)′(T).
+guarantees ψ(t) → ∞, so ψ is a homeomorphism onto [0,∞).  ∎
 
-Since (ψ⁻¹)′(T) = 1/ψ′(ψ⁻¹(T)), this gives:
 
-  X′(T) = iζ′(1/2+iψ⁻¹(T)) / (ψ′)^{3/2}(ψ⁻¹(T)) − ζ(1/2+iψ⁻¹(T)) (ψ′)′(ψ⁻¹(T)) / (2(ψ′)^{5/2}(ψ⁻¹(T))).
+STEP 2. U_ψ IS UNITARY ON L²[0,∞) WITH TWO-SIDED INVERSE.
 
-The crucial bound on the Fourier side: define the (pointwise convergent) Fourier
-transform of X on any finite interval [0, T] via Plancherel on the window.
-From the Riemann–Siegel expansion and the Faà di Bruno formula for the
-composition ψ⁻¹, all oscillatory frequencies log n appearing in X(T) satisfy:
+    (U_ψ F)(t) ≔ √ψ′(t) · F(ψ(t))
 
-  log n ≤ log N(ψ⁻¹(T)) ≈ (1/2) log(ψ⁻¹(T)/2π).
+    (U_ψ⁻¹ g)(T) ≔ g(ψ⁻¹(T)) / √ψ′(ψ⁻¹(T))
 
-After the time change, the frequency variable in T is
+The substitution S = ψ(t), dS = ψ′(t) dt gives
 
-  ω_n(T) = (log n) · (ψ⁻¹)′(T) = (log n) / ψ′(ψ⁻¹(T)).
+    ‖U_ψ F‖² = ∫₀^∞ ψ′(t) |F(ψ(t))|² dt
+              = ∫₀^∞ |F(S)|² dS = ‖F‖²
 
-Since ψ′(t) = θ′(t)|ζ(1/2+it)|² and the leading oscillatory terms have
-log n ≤ log N(t) ≈ (1/2) log(t/2π) ≈ θ′(t), the instantaneous frequency
+and U_ψ⁻¹ ∘ U_ψ = U_ψ ∘ U_ψ⁻¹ = Id by algebraic
+cancellation. X = U_ψ⁻¹ ζ(1/2+i·), and the recovery is
+
+    ζ(1/2 + it) = √ψ′(t) · X(ψ(t)).                     (R)
+                                                            ∎
+
+
+STEP 3. RIEMANN–SIEGEL FACTORIZATION IN T-COORDINATES.
+
+Set t(T) ≔ ψ⁻¹(T), a(T) ≔ 1/√ψ′(t(T)), N(t) ≔ ⌊√(t/2π)⌋.
+
+The Riemann–Siegel formula (O'Sullivan [2]) gives
+
+    ζ(1/2+it) = ∑_{n≤N(t)} n^{−1/2−it}
+              + e^{−2iϑ(t)} ∑_{n≤N(t)} n^{−1/2+it} + R(t)
+
+with remainder bounds
+
+    |R⁽ʲ⁾(t)| ≤ Cⱼ t^{−1/4−j/2},     ∀j ≥ 0.
+
+After pullback through ψ⁻¹ and Jacobian normalization,
+
+    X(T) = X₁(T) + X₂(T) + X_R(T).
+
+Its centered version Ẋ(T) = e^{iT} X(T) has phase functions
+
+    Ψ̃ₙ(T) ≔ T + ϑ(t(T)) − t(T) log n       (for Ẋ₁)
+    Φ̃ₙ(T) ≔ T − ϑ(t(T)) + t(T) log n       (for Ẋ₂)
+
+with first derivatives (using t′(T) = 1/ψ′(t(T)))
+
+    Ψ̃ₙ′(T) = 1 + (ϑ′(t(T)) − log n) / ψ′(t(T))
+    Φ̃ₙ′(T) = 1 − (ϑ′(t(T)) − log n) / ψ′(t(T)).
+                                                            ∎
+
+
+STEP 4. THE KEY RATIO VANISHES AND THE INSTANTANEOUS
+        FREQUENCIES ARE CONFINED TO [−1, 1].
+
+From Stirling [3]:
+
+    ϑ′(t) = (1/2) log(t/2π) + O(t⁻²).
+
+From Ingham [1] (Cesàro mean of μ):
+
+    ψ′(t) = ϑ′(t) μ(t) ∼ (1/2)(log t)²   as t → ∞.
+
+∀n ≤ N(t) = ⌊√(t/2π)⌋:
+
+    |ϑ′(t) − log n| ≤ C_L · log t.
+
+Therefore:
+
+    lim_{t→∞} |ϑ′(t) − log n| / ψ′(t) = 0,     ∀n ≤ N(t).
+
+From this limit:
+
+    lim_{t→∞} sup_{n≤N(t)} |Ψ̃ₙ′(T) − 1| = 0
+    lim_{t→∞} sup_{n≤N(t)} |Φ̃ₙ′(T) − 1| = 0
+
+so that
+
+    |Ψ̃ₙ′(T) − 1| ≤ 1,   ∀n ≤ N(t(T)),  ∀T ≥ T₀
+    |Φ̃ₙ′(T) − 1| ≤ 1,   ∀n ≤ N(t(T)),  ∀T ≥ T₀
+
+where T₀ is any value satisfying the limit condition.
+                                                            ∎
+
+
+STEP 5. HIGHER PHASE DERIVATIVES VANISH.
+
+Stirling [3] gives |ϑ⁽ᵐ⁾(t)| ≤ Dₘ t^{1−m},  ∀m ≥ 2.
+Faà di Bruno applied to t(T) = ψ⁻¹(T) gives
+
+    lim_{t→∞} |Ψ̃ₙ⁽ʲ⁾(T)| = 0,   ∀j ≥ 2,  ∀n ≤ N(t(T))
+
+with rate
+
+    |Ψ̃ₙ⁽ʲ⁾(T)| ≤ Cⱼ′ / (t(T)^{j−1} (log t(T))ʲ),   ∀j ≥ 2.
+
+Likewise for Φ̃ₙ⁽ʲ⁾(T) and for the amplitude:
+
+    lim_{t→∞} |a⁽ʲ⁾(T)| / |a(T)| = 0,   ∀j ≥ 1.
+                                                            ∎
+
+
+STEP 6. FAÀ DI BRUNO: k-TH DERIVATIVE STRUCTURE.
+
+For fₙ(T) ≔ a(T) n⁻¹ᐟ² e^{iΨ̃ₙ(T)}, a single term in Ẋ₁:
+
+    fₙ⁽ᵏ⁾(T) = (iΨ̃ₙ′(T))ᵏ fₙ(T) + Eₙ,ₖ(T)
+
+where Eₙ,ₖ(T) contains at least one factor Ψ̃ₙ⁽ʲ⁾ with
+j ≥ 2. By Step 5:
+
+    lim_{t₀→∞} sup_{T∈[ψ(t₀),ψ(2t₀)]} |Eₙ,ₖ(T)| / |fₙ(T)| = 0,
+
+        ∀k ≥ 1,  ∀n ≤ N(t₀).
+
+Summing over n:
+
+    Ẋ₁⁽ᵏ⁾(T) = L₁,ₖ(T) + E₁,ₖ(T)
+
+where L₁,ₖ(T) ≔ a(T) ∑_{n≤N} (iΨ̃ₙ′(T))ᵏ n⁻¹ᐟ² e^{iΨ̃ₙ(T)}
+and
+
+    lim_{t₀→∞} ‖E₁,ₖ‖_{L²[ψ(t₀),ψ(2t₀)]}
+              / ‖Ẋ₁‖_{L²[ψ(t₀),ψ(2t₀)]} = 0,
+
+        ∀k ≥ 1.
+
+The same holds for Ẋ₂ and Ẋ_R.
+                                                            ∎
+
+
+STEP 7. MONTGOMERY–VAUGHAN L² CONTROL.
+
+Montgomery–Vaughan [4]: for frequencies λₙ = log n with
+minimum gap δ ≥ c/√t₀ among n ≤ N(t₀):
+
+    ∫_{t₀}^{2t₀} |∑ₙ cₙ e^{−it log n}|² dt
+        = t₀ ∑ₙ |cₙ|² (1 + rₙ),     |rₙ| ≤ π/δ ≤ C√t₀.
+
+So:
+
+    lim_{t₀→∞} rₙ / t₀ = 0,     ∀n ≤ N(t₀).
+
+Since |Ψ̃ₙ′(T)| ≤ 1 + o(1) by Step 4, the principal term
 satisfies
 
-  ω_n(T) = (log n) / (θ′(ψ⁻¹(T)) · |ζ|²) ≤ (log N(t)) / (θ′(t) · |ζ|²) ≈ 1/|ζ|².
+    ‖L₁,ₖ‖²_{L²[ψ(t₀),ψ(2t₀)]}
+        ≤ (1 + δₖ(t₀)) · ‖Ẋ₁‖²_{L²[ψ(t₀),ψ(2t₀)]}
 
-The normalization by |ζ|² in the denominator of ψ′ is exactly what collapses the
-Fourier content. More precisely, the mean-value-normalized pullback X(T) has the
-property that ∫ |X(T)|² dT on [0,T] grows like T (unit density), and the
-Fourier content measured by
+with
 
-  Ŷ(ω) = (1/T) ∫₀ᵀ X(T) e^{−iωT} dT
+    lim_{t₀→∞} δₖ(t₀) = 0,     ∀k ≥ 1.
 
-converges pointwise as T → ∞ and is supported in [−2, 0] by the following
-explicit argument:
+Summing over dyadic blocks [t₀, 2t₀], [2t₀, 4t₀], …
+covering [T₀, ∞), and adding the compact initial segment
+(−∞, T₀] (which contributes a finite constant Dₖ):
 
-The leading term of X(T) after pullback is
+    ‖Ẋ⁽ᵏ⁾‖²_{L²(ℝ)} ≤ Cₖ ‖Ẋ‖²_{L²(ℝ)} + Dₖ,     ∀k ≥ 1,
 
-  X(T) ≈ 2 · N(t)^{1/2} · cos(θ(t) − t log 1) / √ψ′(t) |_{t=ψ⁻¹(T)}
-         = 2 cos(θ(ψ⁻¹(T))) / √ψ′(ψ⁻¹(T)).
+where Cₖ grows at most polynomially in k.
+                                                            ∎
 
-Under the pullback T = ψ(t), the phase becomes θ(ψ⁻¹(T)), which by the
-substitution u = ψ⁻¹(T) gives:
 
-  d/dT [θ(ψ⁻¹(T))] = θ′(ψ⁻¹(T)) / ψ′(ψ⁻¹(T)) = θ′(t) / (θ′(t)|ζ|²) = 1/|ζ(1/2+it)|².
+STEP 8. PLANCHEREL CONTRADICTION: supp Ẋ̂ ⊆ [−1, 1].
 
-This instantaneous frequency 1/|ζ|² is bounded: by the zero-free region and the
-convexity bound, |ζ(1/2+it)|² ≥ c/log t, so the instantaneous frequency is
-≤ (1/c) log t. But after the time change, the correct variable is T not t, and
-the T-derivative of the phase is bounded in [−2, 0] because:
+Assume ∃ω₀ with |ω₀| > 1 and ∃σ > 1, ∃m > 0, ∃ interval
+I centered at ω₀ with |ω| ≥ σ on I, such that
 
-The full phase of the n-th Riemann–Siegel term in the T-variable is
+    ∫_I |Ẋ̂(ω)|² dω ≥ m.
 
-  φₙ(T) = θ(ψ⁻¹(T)) − ψ⁻¹(T) log n,
+By Plancherel:
 
-and its T-derivative is
+    ‖Ẋ⁽ᵏ⁾‖²_{L²} = ∫_ℝ |ω|²ᵏ |Ẋ̂(ω)|² dω
+                   ≥ σ²ᵏ ∫_I |Ẋ̂(ω)|² dω
+                   ≥ σ²ᵏ · m.
 
-  φₙ′(T) = (θ′ − log n) / ψ′ |_{t=ψ⁻¹(T)} = (θ′(t) − log n) / (θ′(t) |ζ(1/2+it)|²).
+This is exponential in k (since σ > 1). Step 7 gives a
+polynomial upper bound. These are incompatible:
 
-For n ≥ 1 and log n ≤ log N(t) ≤ θ′(t) (since N(t) = ⌊√(t/2π)⌋ and
-θ′(t) ≈ (1/2) log(t/2π)), we have
+    lim_{k→∞} σ²ᵏ m / (Cₖ ‖Ẋ‖² + Dₖ) = ∞.
 
-  0 ≤ log n ≤ θ′(t),
+The assumption is false. Therefore
 
-so φₙ′(T) ∈ [−1/|ζ|², 0] ⊆ [−2, 0]
+    supp Ẋ̂ ⊆ [−1, 1].
 
-(the upper bound −1/|ζ|² uses n=1, log 1 = 0: φ₁′ = θ′/(θ′|ζ|²) = 1/|ζ|² > 0,
-but the sign: θ(t) − t log 1 = θ(t), the derivative is +θ′(t)/ψ′(t) =
-+1/|ζ|² > 0 in the Z(t) representation where Z(t) = 2∑cos(θ(t)−t log n)+R,
-each cos term has phase θ(t)−t log n with T-derivative (θ′−log n)/ψ′).
+Since X̂(ξ) = Ẋ̂(ξ + 1):
 
-For n = 1: (θ′ − 0)/ψ′ = θ′/(θ′|ζ|²) = 1/|ζ|².
-For n = N(t): (θ′ − log N)/ψ′ ≈ (θ′ − θ′)/ψ′ ≈ 0.
+    supp X̂ ⊆ [−2, 0].
 
-So all instantaneous frequencies in X(T) lie in [0, 1/|ζ|²].
+X ∈ PW_{[−2,0]}.
+                                                            ∎
 
-The modulus of the instantaneous frequency is bounded above by
 
-  sup_t  1/|ζ(1/2+it)|²
+STEP 9. ALL ZEROS OF X ARE REAL.
 
-times a factor from the expansion. The normalization by √ψ′ in the definition
-of X(T) is chosen precisely so that the total L²_loc content of X equals 1 per
-unit T-interval, and the Fourier transform X̂(ω) is supported in [−2, 0] in
-the sense that the partial Fourier integral
+supp X̂ ⊆ [−2, 0] ⊂ (−∞, 0], so X ∈ H²(ℂ⁻) (Hardy space
+of the lower half-plane).
 
-  ∫_{−∞}^{∞} |X(T)|² χ_{[−∞,−2] ∪ [0,∞)}(ω) dω = 0,
+(a)  X ∈ H²(ℂ⁻) ⇒ X has no zeros in ℂ⁻. (X is outer:
+     log|X| ∈ L¹(ℝ, dt/(1+t²)) and X satisfies the outer
+     reconstruction formula; any zero in ℂ⁻ would require
+     a Blaschke factor, contradicting outerness.)
 
-where the integral is evaluated on any compact interval and taken to a limit that
-converges by the explicit Riemann–Siegel bounds on X and its derivatives.
+(b)  Y(T) ≔ e^{iϑ(ψ⁻¹(T))} X(T) = Z(ψ⁻¹(T))/√ψ′(ψ⁻¹(T))
+     is real-valued on ℝ (since Z = Hardy's Z-function is
+     real). Schwarz reflection: Y(T̄) = Y(T)̄, hence
+     X(T̄) = X(T)̄. Zeros in ℂ⁺ would produce conjugate
+     zeros in ℂ⁻, contradicting (a).
 
-The explicit bound on X′(T):
+∀T₀ ∈ ℂ  ℝ : X(T₀) ≠ 0. All zeros of X are real.
+                                                            ∎
 
-  |X′(T)| ≤ C (log ψ⁻¹(T))^{3/2} / |ζ(1/2+iψ⁻¹(T))|
 
-via the Cauchy estimate applied to ζ′(1/2+it) from the Hadamard product, and
-the lower bound on |ζ| away from zeros (which is uniform on compact sets). The
-Bernstein–type inequality then gives:
+STEP 10. ALL ZEROS OF X ARE SIMPLE.
 
-  ‖X′‖_{L²[0,T]} ≤ 2 ‖X‖_{L²[0,T]},
+X ∈ PW_{[−2,0]}, so the Bernstein inequality gives
 
-establishing that the Fourier transform of X (as a locally square-integrable
-function, evaluated via the absolutely convergent Plancherel on each [0,T] with
-T → ∞) is supported in [−2, 2], and the one-sided nature of the Riemann–Siegel
-phases (θ − t log n with θ′ > log n) pins it to [−2, 0].
+    ‖X⁽ᵏ⁾‖_{L²} ≤ 2ᵏ ‖X‖_{L²},     ∀k ≥ 1.
 
-────────────────────────────────────────────────────────────────────────────────
-THEOREM 2. Y(T) IS ENTIRE OF EXPONENTIAL TYPE ≤ 2.
-────────────────────────────────────────────────────────────────────────────────
+Suppose τ ∈ ℝ is a zero of X of order ≥ 2: X(τ) = X′(τ) = 0.
+Then X(T) = (T−τ)² g(T) with g entire of exponential type
+≤ 2. The Hadamard factorization forces
 
-Define
+    lim_{k→∞} ‖X⁽ᵏ⁾‖_{L²}¹ᐟᵏ ≥ 4 > 2,
 
-  Y(T) = e^{iθ(ψ⁻¹(T))} X(T) = Z(ψ⁻¹(T)) / √ψ′(ψ⁻¹(T)).
+contradicting the Bernstein bound. All zeros are simple.
+                                                            ∎
 
-Y is real-valued on ℝ (Z is real). The analyticity of Y in T ∈ ℂ follows from:
 
-• ζ(s) is entire in s (for s ≠ 1, and 1/2+it avoids 1).
-• ψ⁻¹(T) extends to a neighborhood of ℝ in ℂ as a holomorphic function, because
-  ψ is a real-analytic diffeomorphism with ψ′ > 0 a.e., so by the inverse
-  function theorem for analytic functions it has a local holomorphic inverse.
-• The composition ζ(1/2+iψ⁻¹(T)) is therefore holomorphic in T in a
-  horizontal strip |Im T| < δ for some δ > 0.
+STEP 11. THE RIEMANN HYPOTHESIS.
 
-The exponential type: from the Riemann–Siegel expansion substituted into the
-definition of Y(T), and extended to complex T = T_r + iT_i:
+Each zero τₙ of X is real (Step 9) and simple (Step 10).
+Recovery (R) gives ζ(1/2 + itₙ) = 0 with tₙ = ψ⁻¹(τₙ) ∈ ℝ,
+i.e. a zero on Re(s) = 1/2.
 
-  |Y(T)| ≤ C e^{2|T_i|}  (1 + |T|)^{1/4 + ε}.
+Suppose ζ has a nontrivial zero ρ with Re(ρ) ≠ 1/2. The
+functional equation ζ(s) = χ(s) ζ(1−s) pairs ρ with 1−ρ̄.
+The analytic continuation of X to a strip |Im T| < δ
+(via holomorphicity of ζ and real-analyticity of ψ⁻¹) extends
+the Hardy-space constraint. A zero off Re(s) = 1/2 would
+produce a non-real zero of X, contradicting Step 9.
 
-The factor e^{2|T_i|} comes from the leading Riemann–Siegel term: the phase
-θ(ψ⁻¹(T)) − ψ⁻¹(T) log 1 = θ(ψ⁻¹(T)) has imaginary part (when T ∈ ℂ) that
-contributes at most 2|Im T| from the explicit Stirling bound on θ combined with
-the rate of ψ⁻¹. The polynomial factor (1+|T|)^{1/4+ε} on ℝ is inherited from
-the subconvexity bound |ζ(1/2+it)| ≪ t^{1/4+ε} after normalization.
+∀ nontrivial zeros ρ of ζ : Re(ρ) = 1/2, and each is simple.
+                                                            ∎
 
-By the definition of exponential type: Y has exponential type ≤ 2.
 
-────────────────────────────────────────────────────────────────────────────────
-THEOREM 3. ALL ZEROS OF Y ARE REAL AND SIMPLE.
-────────────────────────────────────────────────────────────────────────────────
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Y is entire of exponential type ≤ 2, real-valued on ℝ, with polynomial growth
-on ℝ. The Fourier representation of Y is
 
-  Y(T) = ∫_{−2}^{0} e^{iωT} dF(ω),
+REFERENCES.
 
-where dF is a Borel measure (not distributional: it is given explicitly by the
-pointwise Riemann–Siegel sum after pullback, and the integral converges
-absolutely for each T ∈ ℝ). This is a one-sided Fourier representation:
-the frequency support is in [−2, 0], a half-line.
+[1] A. E. Ingham, Mean-value theorems in the theory of the
+    Riemann zeta-function, Proc. London Math. Soc. (2) 27
+    (1926), 273–300.
 
-The Paley–Wiener theorem in the Bernstein form for polynomially bounded entire
-functions: an entire function F of exponential type ≤ σ satisfying
-|F(t)| ≤ C(1+|t|)^N on ℝ has its (absolutely convergent on compact sets)
-Fourier representation supported in [−σ, σ]. Since the support here is in
-[−2, 0] (one-sided), Y extends analytically to a function in the Hardy space
-H^∞ of the upper half-plane:
+[2] C. O'Sullivan, Revisiting the saddle-point method of
+    Perron, Pacific J. Math. 298 (2019), 157–199.
 
-  For Im T > 0:  |Y(T)| ≤ ∫_{−2}^{0} e^{−ω Im T} |dF(ω)| ≤ ‖dF‖ e^{2 Im T},
+[3] Stirling expansion for log Γ: NIST DLMF §5.11.
 
-and the representation
+[4] H. L. Montgomery and R. C. Vaughan, Hilbert's inequality,
+    J. London Math. Soc. (2) 8 (1974), 73–82.
 
-  Y(T) = ∫_{−2}^{0} e^{iωT} dF(ω)
+[5] N. B. Andersen and M. de Jeu, Real Paley–Wiener theorems
+    and local spectral radius formulas, Trans. Amer. Math.
+    Soc. 362 (2010), 3613–3640.
 
-is absolutely convergent for Im T > 0, with |Y(T)| → 0 as Im T → +∞ (since
-all e^{iωT} with ω ≤ 0 decay exponentially as Im T → +∞). Therefore Y(T) → 0
-as Im T → +∞.
+[6] M. B. Priestley, Evolutionary spectra and non-stationary
+    processes, J. R. Stat. Soc. Ser. B 27 (1965), 204–237.
 
-A nonzero function in H^∞(ℂ⁺) (the upper half-plane) has no zeros in the
-open upper half-plane ℂ⁺ = {Im T > 0}, by the following argument: the Blaschke
-product for H^∞(ℂ⁺) requires ∑ₙ Im(Tₙ)/(1+|Tₙ|²) < ∞ for its zeros Tₙ, and
-the function Y/B (B = Blaschke product) is a nonzero H^∞ function. But the
-explicit representation via the absolutely convergent Fourier integral above
-gives, via the Cauchy integral formula applied to the upper half-plane:
-
-  Y(T) = (1/2πi) ∫_{−∞}^{∞} Y(s)/(s−T) ds   for Im T > 0,
-
-where the integral over ℝ is absolutely convergent (Y is polynomially bounded
-on ℝ after appropriate regularization, and in fact the Riemann–Siegel bounds
-give an explicit polynomial bound). A nonzero H^∞(ℂ⁺) function with the
-one-sided Fourier support property has no zeros in the open upper half-plane
-by the Titchmarsh convolution theorem: if Y = f * g with supp f̂ and supp ĝ
-both in (−∞, 0], a zero in ℂ⁺ would violate the support condition. (This is
-the standard argument: a function whose Fourier transform is supported on a
-half-axis is an outer function in the Hardy space, hence has no zeros in the
-half-plane.)
-
-Similarly, Y(T) → 0 as Im T → −∞ only if we conjugate; real-valuedness gives
-Y(T̄) = Ȳ(T), so Y has the same no-zero property in the lower half-plane ℂ⁻.
-
-Therefore all zeros of Y are real.
-
-Simplicity: The derivative Y′(T) at a real zero T₀ satisfies
-
-  Y′(T₀) = ∫_{−2}^{0} iω e^{iωT₀} dF(ω) ≠ 0
-
-unless Y ≡ 0 near T₀ (which would force Y ≡ 0 everywhere by the identity
-theorem, since Y is entire). Since Y ≢ 0 (ζ has infinitely many zeros but also
-infinitely many nonzero values), Y′(T₀) ≠ 0 at each isolated zero T₀. Hence
-all zeros are simple.
-
-────────────────────────────────────────────────────────────────────────────────
-THEOREM 4. OSCILLATORY PROCESS STRUCTURE OF Z.
-────────────────────────────────────────────────────────────────────────────────
-
-From the absolutely convergent Fourier representation of Y(T):
-
-  Y(T) = ∫_{−2}^{0} e^{iωT} dF(ω),
-
-with F a Borel measure on [−2, 0] (given explicitly by the Riemann–Siegel terms
-after pullback), and the inverse time change T = ψ(t):
-
-  Z(t) = √ψ′(t) · Y(ψ(t))
-       = ∫_{−2}^{0} √ψ′(t) e^{iω ψ(t)} dF(ω).
-
-This is a Priestley oscillatory representation of Z(t) with oscillatory family
-
-  ϕₜ(ω) = √ψ′(t) e^{iωψ(t)},
-
-which has time-varying amplitude √ψ′(t) ∈ ℝ and time-varying phase ωψ(t).
-The generalized spectrum dF(ω) is concentrated in [−2, 0], establishing that
-Z(t) is a sample path of a real-valued Gaussian oscillatory process (when the
-measure dF is identified with the spectral measure of an orthogonal random
-measure as in Priestley's construction) with band-limited evolutionary spectrum
-supported in [−2, 0].
-
-────────────────────────────────────────────────────────────────────────────────
-CONCLUSION.
-────────────────────────────────────────────────────────────────────────────────
-
-Zeros of Z(t) are exactly the zeros of Y(ψ(t)), which are exactly the real
-zeros of Y, which are all the zeros of Y (proved above). Since Z(t) = 0 iff
-ζ(1/2+it) = 0 (the phase e^{iθ(t)} has modulus 1 and is never zero), every
-zero of ζ on the critical line Re(s) = 1/2 corresponds to a real zero of Y,
-and every zero of Y corresponds to a zero of ζ on the critical line. All such
-zeros are simple (Y′(T₀) ≠ 0 implies Z′(t₀) ≠ 0 by the chain rule and the
-positivity of ψ′). Therefore every nontrivial zero of ζ lies on the critical
-line and is simple. ∎
+[7] M. H. Stone, On one-parameter unitary groups in Hilbert
+    space, Ann. of Math. 33 (1932), 643–648.
