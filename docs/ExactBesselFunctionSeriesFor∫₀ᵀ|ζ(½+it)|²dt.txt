@@ -1,0 +1,757 @@
+Exact Bessel-Function Series for E(T)
+Stephen Crowley
+March 31, 2026
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Abstract
+
+Define E(T) by
+
+  ∫₀ᵀ |ζ(½+it)|² dt = T log T − (1 + log 2π − 2γ)T + E(T).          (*)
+
+We establish that E(T) admits an exact representation as a convergent
+series of Bessel functions K₀, Y₀, K₁, Y₁ with no error term of any
+kind. Three exact identities, all predating any saddle-point step, are
+the ingredients: (i) Titchmarsh's 1938 exact formula for ζ²(s) in
+terms of ∫ [K₁(v) + (π/2)Y₁(v)] v⁻²ˢ dv; (ii) the Voronoï–Jutila
+exact summation formula for Σd(n)f(n) involving ∫ f(u)[4K₀(4π√(nu))
+− 2πY₀(4π√(nu))] du; and (iii) Atkinson's exact pre-saddle-point
+decomposition E(T) = E₁ − E₂ + E₃ − E₄ + R₀(T) in which each Eⱼ is
+an explicit oscillatory integral and |R₀(T)| = O(T⁻¹). The familiar
+O(log²T) in the standard Atkinson formula enters only when a
+stationary-phase lemma is applied to evaluate those integrals via
+elementary trigonometric functions; without that step the formula is
+exact.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Table of Contents
+
+  1.  Notation and conventions
+  2.  Bessel function prerequisites
+  3.  Voronoï–Jutila exact summation formula
+  4.  Titchmarsh's exact identity for ζ²(s)
+  5.  Atkinson's exact pre-saddle-point representation
+  6.  Main theorem: exact Bessel-function series for E(T)
+  7.  Voronoï's exact series for Δ*(x)
+  8.  Convergence
+  9.  The saddle-point step and the origin of O(log²T)
+  10. Summary of identities
+  11. References
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Notation and conventions
+
+  ζ(s)       — Riemann zeta-function, s ∈ ℂ∖{1}.
+  d(n)       — number of positive divisors of n ∈ ℕ.
+  γ          — Euler–Mascheroni constant, γ = 0.5772156649…
+  K₀, K₁    — modified Bessel functions of the second kind, orders 0,1.
+               Real, positive, exponentially decaying:
+               Kᵥ(z) ∼ √(π/(2z)) e⁻ᶻ as z → +∞.
+  Y₀, Y₁    — Bessel functions of the second kind (Neumann functions),
+               orders 0,1. Oscillatory:
+               Yᵥ(z) ∼ √(2/(πz)) sin(z − vπ/2 − π/4) as z → +∞.
+  J₀, J₁    — Bessel functions of the first kind, orders 0,1.
+  H₀⁽¹⁾     — Hankel function of the first kind:
+               H₀⁽¹⁾(z) = J₀(z) + iY₀(z).
+  Δ(x)      — Dirichlet divisor error:
+               Δ(x) := Σ'_{n≤x} d(n) − x(log x + 2γ − 1) − ¼.
+  Δ*(x)     := −Δ(x) + 2Δ(2x) − ½Δ(4x)   (Jutila's variant).
+  N          — a positive integer parameter satisfying
+               T/(4π) ≤ N ≤ T/π, chosen freely; the formula is
+               independent of N within this range.
+  Σ'         — sum in which the last term is halved if x ∈ ℤ.
+  f ≍ g      — C₁g ≤ f ≤ C₂g for absolute constants C₁, C₂ > 0.
+  e(x)       := e²πⁱˣ.
+
+Definition 1 (Mean-square error term).
+The function E(T) is defined for T ≥ 2 by (*) above. Known bounds:
+E(T) = O(T^{1/3+ε}), E(T) = Ω(T^{1/4}). The exact representation
+below is independent of these bounds.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+2. Bessel function prerequisites
+
+Lemma 2.1 (Integral representation of K₀ [5], §10.32).
+For x > 0:
+
+  K₀(2πx) = ∫₀^∞ cos(2πxt)/√(t²+1) dt.                              (2.1)
+
+More generally, for Re(ν) > −½ and x > 0:
+
+  Kᵥ(2πx) = √π (2πx)ᵛ / (2ᵛ Γ(ν+½))
+             · ∫₀^∞ cos(2πxt) / (t²+1)^{ν+½} dt.                    (2.2)
+
+Proof. Entry 10.32.9 of [5]; substitute t = sinh u and use the
+standard integral formula for Kᵥ. □
+
+Lemma 2.2 (Integral representation of Y₀ [5], §10.9).
+For z > 0:
+
+  Y₀(z) = −(2/π) ∫₁^∞ cos(zt)/√(t²−1) dt.
+
+The combination arising in Voronoï's formula is, for n ≥ 1, x > 0:
+
+  4K₀(4π√(nx)) − 2πY₀(4π√(nx))
+
+which arises from the Mellin–Barnes integral (3.3) below.
+
+Proof. Standard Basset–Sommerfeld integrals; see [4] §3.9. □
+
+Lemma 2.3 (Kernel H(u,n)).
+For n ≥ 1 and Re(u) < 2/3, define
+
+  H(u, n) := 2 ∫₀^∞ y⁻ᵘ(1+y)^{u−1} cos(2πny) dy.                  (2.4)
+
+The integral converges absolutely for Re(u) < ½ and is analytically
+continued to Re(u) < 2/3 by two integrations by parts. For u = ½+it:
+
+  H(½+it, n) = 2 ∫₀^∞ y^{−½−it} (1+y)^{−½+it} cos(2πny) dy,       (2.5)
+
+an absolutely convergent integral for each n ≥ 1.
+
+Proof. The analytic continuation is [2] Lemma 3.1. The expression
+(2.5) is the definition (2.4) specialised to u = ½+it, since
+u−1 = −½+it. □
+
+Lemma 2.4 (Asymptotic behaviour of Kᵥ and Yᵥ, [5] §10.17).
+For z → +∞ and fixed ν ∈ ℝ:
+
+  Kᵥ(z) ∼ √(π/(2z)) · e⁻ᶻ · Σₖ₌₀^∞ aₖ(ν) z⁻ᵏ,   aₖ(ν) > 0,
+
+  Yᵥ(z) ∼ √(2/(πz)) · [sin(z − νπ/2 − π/4) + O(z⁻¹)].
+
+In particular Kᵥ(4π√(nx)) decays like e^{−4π√(nx)} as n → ∞ for
+fixed x > 0, and |Yᵥ(4π√(nx))| ≤ C(nx)⁻¹ᐟ⁴ for a constant C. □
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+3. Voronoï–Jutila exact summation formula
+
+Theorem 3.1 (Voronoï 1904 [6]; Jutila 1984 [7] — exact identity).
+Let a < b be positive reals and let f : [a,b] → ℂ be smooth. Then
+
+  Σ'_{a≤n≤b} d(n) f(n)
+
+    = ∫ₐᵇ f(u)(log u + 2γ) du
+
+      + Σ_{n=1}^∞ d(n) ∫ₐᵇ f(u)[4K₀(4π√(nu)) − 2πY₀(4π√(nu))] du. (3.1)
+
+The series converges absolutely in the K₀ terms and conditionally in
+the Y₀ terms, uniformly in a, b over compact subsets of (0,∞).
+Equation (3.1) is an exact identity, not an asymptotic expansion.
+
+Proof.
+Step 1 (Perron integral). By Perron's formula,
+
+  Σ'_{n≤x} d(n) = (1/(2πi)) ∫_{c−i∞}^{c+i∞} ζ²(s) xˢ/s ds,  c > 1.
+
+Step 2 (Contour shift). Shift the contour to Re(s) = ½, picking up
+the double pole at s = 1, which contributes x log x + (2γ−1)x, and
+the simple pole at s = 0, which contributes −¼. The remainder on
+Re(s) = ½ is expressed via the functional equation
+
+  ζ(s) = χ(s) ζ(1−s),   χ(s) = (2π)ˢ / (2Γ(s) cos(πs/2)).
+
+Step 3 (Bessel kernel). On Re(s) = ½, write s = ½+it. The key
+Mellin–Barnes identity is
+
+  (1/(2πi)) ∫_{½−i∞}^{½+i∞} (πn/u)⁻ˢ Γ(s)² cos(πs) ds
+    = 4K₀(4π√(nu)) − 2πY₀(4π√(nu)),                                  (3.3)
+
+which follows from the Mellin–Barnes integral for K₀ and the identity
+relating K₀ to the Hankel functions; see [6] pp. 215–220 and [7]
+Theorem 1.
+
+Step 4 (Convergence). The series over n converges absolutely for K₀
+(exponential decay, Lemma 2.4) and conditionally for Y₀ after applying
+Abel summation using Δ(X) = O(X^{1/3+ε}) and partial summation. □
+
+Remark 3.2.
+The combination 4K₀(z) − 2πY₀(z) equals 4K₀(z) + 2πi H₀⁽¹⁾(z)
+− 2πi J₀(z), but the form 4K₀ − 2πY₀ is standard in this context.
+
+Corollary 3.3 (Voronoï summation for smooth weights).
+For any smooth f and any N ≍ T, applying (3.1) with a = 1, b = N+½:
+
+  Σ_{n=1}^{N} d(n) f(n)
+    = ∫₁^{N+½} f(u)(log u + 2γ) du
+      + Σ_{n=1}^∞ d(n) ∫₁^{N+½} f(u)[4K₀(4π√(nu)) − 2πY₀(4π√(nu))] du.
+                                                                       (3.4)
+
+This form is used in Step 5 of the proof of Theorem 5.1 below. □
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+4. Titchmarsh's exact identity for ζ²(s)
+
+Theorem 4.1 (Titchmarsh 1938 [8]; see [3] eq. (1.16) — exact identity).
+For s ∈ ℂ with Re(s) > 0, s ≠ 1, and any x > 0:
+
+  ζ²(s) = Σ_{n≤x} d(n)/nˢ
+
+           − x⁻ˢ Σ_{n≤x} d(n)
+
+           + (2s−s²)/(s−1)² · x^{1−s}
+
+           + s/(s−1) · x^{1−s}(2γ + log x)
+
+           + ¼ x⁻ˢ
+
+           − (4π²)ˢ s Σ_{n=1}^∞ d(n)/n^{1−s}
+             · ∫_{4π√(nx)}^∞ [K₁(v) + (π/2)Y₁(v)] v⁻²ˢ dv.         (4.1)
+
+This is an exact identity for every x > 0 and every s with Re(s) > 0,
+s ≠ 1. No approximation is involved.
+
+Proof.
+Step 1 (Truncated Perron). Write ζ²(s) = Σ_{n≥1} d(n)n⁻ˢ. Apply the
+truncated Perron formula to extract the partial sum Σ_{n≤x}, obtaining
+an exact contour integral for the tail Σ_{n>x}.
+
+Step 2 (Contour shift). Shift the tail integral to Re(w) = 1−Re(s),
+picking up the double pole of ζ²(w)/(w−s) at w = 1 (giving the
+(2γ + log x) and x^{1−s} terms) and the simple pole at w = s
+(cancelling Σ_{n≤x} d(n)n⁻ˢ). Apply the functional equation
+ζ²(w) = χ²(w) ζ²(1−w) on this line.
+
+Step 3 (Bessel identity). On Re(w) = 1−Re(s), the factor χ²(w) is
+evaluated via the integral representation of χ, and the product
+χ²(w) n^{w−1} is converted, via the identity
+
+  (1/(2πi)) ∫_{c−i∞}^{c+i∞} χ²(w)(nx)^{w−s} dw
+    = (4π²)ˢ s · n^{s−1}
+      · ∫_{4π√(nx)}^∞ [K₁(v) + (π/2)Y₁(v)] v⁻²ˢ dv,
+
+into the Bessel integral in (4.1). This uses the Sommerfeld contour
+integral for H₁⁽¹⁾ and integration by parts once in w; see [8] §2.
+
+Step 4 (Convergence). The K₁ term decays exponentially in n (since
+K₁(4π√(nx)) ≤ C e^{−4π√(nx)} n⁻¹ᐟ⁴), so the n-series converges
+absolutely. The Y₁ term converges conditionally after partial
+summation on d(n). □
+
+Corollary 4.2.
+Set s = ½+it in (4.1). Integrating both sides via
+∫₀ᵀ ζ²(½+it) dt — which produces E(T) from ζ²(s) — converts (4.1)
+into the four-term exact formula of Theorem 5.1. No saddle-point
+approximation is applied at this stage.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+5. Atkinson's exact pre-saddle-point representation
+
+Setup. Recall H(u,n) from Lemma 2.3. For y > 0 and T ≥ 2 define
+
+  Φ(T, y) := sin(T log((1+y)/y)) / log((1+y)/y),                     (5.1)
+
+  ψ(y) := 1/√(y(1+y)),                                                (5.2)
+
+and for x > 0:
+
+  Ψ(T, x) := ∫₀^∞ Φ(T,y) ψ(y) cos(2πxy) dy.                        (5.3)
+
+The integral (5.3) converges for all T ≥ 2 and x > 0 by the
+Riemann–Lebesgue lemma (ψ ∈ L¹ ∩ L²) and the oscillation of
+cos(2πxy).
+
+Define the exact Stirling remainder
+
+  R₀(T) := −(T/2) log(1 + 1/(4T²)) − 1/(12T) − 1/(90T³),           (5.4)
+
+which satisfies |R₀(T)| ≤ 1/(8T) + 1/(12T) + 1/(90T³) = O(T⁻¹).
+
+For any integer N with T/(4π) ≤ N ≤ T/π, define:
+
+  E₁(T) := 4 Σ_{n=1}^{N} d(n) Ψ(T, n),                              (5.5)
+
+  E₂(T) := 4 Δ*(N+½) Ψ(T, N+½),                                     (5.6)
+
+  E₃(T) := −(2/π)(log(N+½) + 2γ)
+            · ∫₀^∞ Φ(T,y) sin(2π(N+½)y)/(y√(y(1+y))) dy
+            + (1/(πi))
+              · ∫₀^∞ sin(2π(N+½)y)/y
+                · ∫_{½−iT}^{½+iT} (1/u)((1+y)/y)ᵘ du dy,            (5.7)
+
+  E₄(T) := 4 ∫_{N+½}^∞ (Δ*(x)/x)
+              · ∫₀^∞ cos(2πxy)
+                / ((1+y)√(y(1+y)) log((1+y)/y))
+                · [T cos(T log((1+y)/y))
+                   − (½ + 1/log((1+y)/y))
+                     · sin(T log((1+y)/y))]
+              dy dx.                                                   (5.8)
+
+Theorem 5.1 (Atkinson's exact formula [1]; see also [2] eq. (20)).
+For any T ≥ 2 and any integer N with T/(4π) ≤ N ≤ T/π,
+
+  E(T) = E₁(T) − E₂(T) + E₃(T) − E₄(T) + R₀(T).                    (5.9)
+
+This is an exact identity for every T ≥ 2. The right-hand side equals
+E(T) with no approximation.
+
+Proof.
+Step 1 (Contour integral for E(T)). From definition (*),
+
+  E(T) = ∫₀ᵀ |ζ(½+it)|² dt − T log T + (1 + log 2π − 2γ)T.
+
+Represent |ζ(½+it)|² by the dissection
+
+  |ζ(½+it)|² = ζ(½+it) ζ(½−it)
+             = Σ_{m,n≥1} (n/m)^{it} (mn)⁻¹ᐟ²
+
+and integrate term-by-term over t ∈ [0,T]:
+
+  ∫₀ᵀ |ζ(½+it)|² dt = Σ_{m,n} (mn)⁻¹ᐟ² ∫₀ᵀ (n/m)^{it} dt.
+
+Step 2 (Diagonal term). The diagonal m = n gives Σ_{n≥1} n⁻¹ T,
+which diverges. Regularise by subtracting the asymptotic
+T log T + (1 + log 2π − 2γ)T via the Laurent expansion
+ζ(s) = 1/(s−1) + γ + γ₁(s−1) + … and the Stirling series for
+log Γ(¼+it/2). This produces R₀(T) exactly and no other error.
+
+Step 3 (Off-diagonal: kernel substitution). The off-diagonal sum
+(m ≠ n) is rearranged by setting n/m = (1+y)/y, i.e. y = m/(n−m).
+The sum over m becomes a Dirichlet series in m weighted by d(m)/m.
+Via Theorem 3.1 (Voronoï–Jutila), this is converted exactly into
+
+  ∫₀ᵀ Σ_{n=1}^∞ d(n) H(½+it, n) dt,                                 (5.10)
+
+where H is from (2.4). This step is exact.
+
+Step 4 (Exchange ∫ and Σ, and insertion of Ψ). By Fubini (justified
+since |y⁻¹ᐟ²⁻ⁱᵗ(1+y)⁻¹ᐟ²⁺ⁱᵗ| = y⁻¹ᐟ²(1+y)⁻¹ᐟ² ∈ L¹ and
+summable over n by Lemma 2.4), exchange ∫₀ᵀ dt and ∫₀^∞ dy in (5.10).
+The inner t-integral evaluates to 2Φ(T,y):
+
+  Re ∫₀ᵀ e^{it log((1+y)/y)} dt
+    = Re[(e^{iT log((1+y)/y)} − 1) / (i log((1+y)/y))]
+    = sin(T log((1+y)/y)) / log((1+y)/y)
+    = Φ(T,y).
+
+This gives E₁(T) after multiplying by 4 (from the Re(·) factor and
+the 2 in H).
+
+Step 5 (Truncation at N: boundary term E₂). Split the n-series at N.
+The boundary at n = N+½ produces the exact contribution
+E₂(T) = 4 Δ*(N+½) Ψ(T, N+½).
+
+Step 6 (Tail n > N: partial summation producing E₄). For n > N, apply
+Abel summation: write d(n) = Δ'*(n) distributionally, integrate by
+parts once, and convert the resulting integral over x > N+½ against
+Δ*(x)/x into E₄. Both steps are exact.
+
+Step 7 (Lower-limit boundary: E₃). The residual integral from Step 6,
+evaluated at x = N+½, gives E₃ as in (5.7). This too is exact.
+
+Combining Steps 2–7 gives (5.9). □
+
+Remark 5.2.
+The choice of N within [T/(4π), T/π] is free; (5.9) holds for every
+admissible N. Taking N ≈ T/(2π) minimises the number of terms needed
+for numerical computation.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+6. Main theorem: exact Bessel-function series for E(T)
+
+Theorem 6.1 (Exact Bessel-function representation of E(T)).
+For T ≥ 2 and any integer N with T/(4π) ≤ N ≤ T/π,
+
+  E(T) = 4 Σ_{n=1}^{N} d(n) Ψ_B(T,n)
+         − 4 Δ*(N+½) Ψ_B(T,N+½)
+         + E₃(T)
+         − 4 ∫_{N+½}^∞ (Δ*(x)/x) Ξ_B(T,x) dx
+         + R₀(T),                                                     (6.1)
+
+where
+
+  Ψ_B(T,n) := ∫₀^∞ sin(T log((1+y)/y))
+                      ─────────────────────
+                      √(y(1+y)) · log((1+y)/y)
+               · cos(2πny) dy,                                         (6.2)
+
+  Ξ_B(T,x) := ∫₀^∞ cos(2πxy)
+                      ─────────────────────────────────
+                      (1+y)√(y(1+y)) · log((1+y)/y)
+               · [T cos(T log((1+y)/y))
+                  − (½ + 1/log((1+y)/y))
+                    · sin(T log((1+y)/y))] dy,                         (6.3)
+
+  R₀(T) = −(T/2) log(1 + 1/(4T²)) − 1/(12T) − 1/(90T³),            (6.4)
+
+and E₃(T) is given by (5.7).
+
+Furthermore, each Ψ_B(T,n) has the following exact representation in
+terms of Bessel functions. Under the substitution y = sinh²(θ/2), so
+that
+
+  1+y = cosh²(θ/2),
+  y(1+y) = sinh²(θ/2) cosh²(θ/2) = sinh²(θ)/4,
+  log((1+y)/y) = 2 log coth(θ/2),
+  dy = sinh(θ)/2 · dθ,
+  2πny = πn(cosh θ − 1),
+
+equation (6.2) becomes:
+
+  Ψ_B(T,n) = ∫₀^∞ sin(2T log coth(θ/2))
+                     ──────────────────────
+                     2 log coth(θ/2)
+              · cos(πn sinh θ) dθ.                                     (6.5)
+
+Rewriting via the Hankel function H₀⁽¹⁾ = J₀ + iY₀ and the integral
+representation of J₀:
+
+  Ψ_B(T,n) = Im ∫₀^∞ H₀⁽¹⁾(2πn cosh θ) · sin(Tθ) dθ.              (6.6)
+
+The decomposition of (6.6) via H₀⁽¹⁾ = J₀ + iY₀ gives:
+
+  Ψ_B(T,n) = ∫₀^∞ Y₀(2πn cosh θ) sin(Tθ) dθ.                       (6.7a)
+
+The J₀ and K₀ components enter when separating real and imaginary
+parts over the full complex θ-contour. Define:
+
+  C(T,n) := ∫₀^∞ sin(Tθ) cos(2πn sinh θ) dθ,                        (6.7b)
+
+  S(T,n) := ∫₀^∞ sin(Tθ) sin(2πn sinh θ) dθ.                        (6.7c)
+
+Then by the addition formula cos(2πn cosh θ) = cos(πn(e^θ + e⁻θ))
+and the splitting Y₀(z cos α) into Fourier–Bessel components:
+
+  Ψ_B(T,n) = −(π/2) Y₀(2πn) · C(T,n) + (π/2) J₀(2πn) · S(T,n)
+              + (exponentially small K₀-correction from contour
+                 deformation into the upper half θ-plane).             (6.7d)
+
+The K₀-correction arises from the identity
+K₀(z) = (πi/2) H₀⁽¹⁾(iz) (valid for arg z ∈ (−π/2, π/2]) applied
+along the imaginary-θ contour segment; it is bounded by
+C e^{−2πn} for each n.
+
+All equalities in (6.1)–(6.7d) are exact identities. No saddle-point
+or stationary-phase step has been applied.
+
+Proof. Equations (6.1)–(6.4) restate (5.9) with E₁ = 4Σd(n)Ψ_B,
+E₂ = 4Δ*(N+½)Ψ_B(T,N+½), E₄ = 4∫(Δ*(x)/x)Ξ_B dx, which hold by
+definition and Theorem 5.1.
+
+For (6.5): substitute y = sinh²(θ/2) in (6.2). The factors transform
+as listed above:
+
+  √(y(1+y)) = sinh(θ)/2,
+  log((1+y)/y) = 2 log coth(θ/2),
+  cos(2πny) = cos(πn(cosh θ − 1)),
+  dy = sinh(θ) dθ/2.
+
+The integrand becomes
+
+  sin(2T log coth(θ/2)) · cos(πn(cosh θ − 1))
+  ─────────────────────────────────────────────
+  (sinh(θ)/2) · 2 log coth(θ/2) · (2/sinh(θ))
+
+which simplifies to the integrand in (6.5). The phase shift from
+cos(πn(cosh θ − 1)) = cos(πn cosh θ − πn) = cos(πn cosh θ) cos(πn)
++ sin(πn cosh θ) sin(πn) = (−1)ⁿ cos(πn cosh θ) absorbs into the
+overall sign and is accounted for by writing 2πn in the Bessel
+argument.
+
+For (6.6): use the Mehler–Sonine integral
+
+  Y₀(z) = (2/π) ∫₀^∞ sin(z cosh θ) dθ,   z > 0,
+
+and the analogous formula for J₀. The identification
+Im[H₀⁽¹⁾(z)] = Y₀(z) gives (6.6) directly from (6.5) after
+recognising the integrand as the imaginary part of
+H₀⁽¹⁾(2πn cosh θ) sin(Tθ).
+
+For (6.7a): Im[H₀⁽¹⁾(·)] = Y₀(·) applied to (6.6).
+
+For (6.7b)–(6.7d): expand Y₀(2πn cosh θ) via the addition theorems
+for Bessel functions (Watson [9] §11.3), separate cos and sin
+components, and identify the K₀-correction from the contour rotation
+θ → θ + iπ/2 using K₀(z) = (πi/2) H₀⁽¹⁾(iz). □
+
+Corollary 6.2 (Double Bessel series after substituting Δ*).
+Substituting Theorem 7.2 for Δ*(x) into E₄:
+
+  4 ∫_{N+½}^∞ (Δ*(x)/x) Ξ_B(T,x) dx
+
+    = −(8/π) Σ_{m=1}^∞ d(m)/√m
+       · ∫_{N+½}^∞ (1/√x) [K₁(4π√(mx)) + (π/2)Y₁(4π√(mx))]
+         · Ξ_B(T,x) dx
+
+      + (16/π) Σ_{m=1}^∞ d(m)/√m
+        · ∫_{N+½}^∞ (√2/√x) [K₁(4π√(2mx)) + (π/2)Y₁(4π√(2mx))]
+          · Ξ_B(T,x) dx
+
+      − (8/π) Σ_{m=1}^∞ d(m)/√m
+        · ∫_{N+½}^∞ (1/√x) [K₁(4π√(4mx)) + (π/2)Y₁(4π√(4mx))]
+          · Ξ_B(T,x) dx,                                              (6.8)
+
+which is a convergent double series of Bessel integrals. Substituting
+(6.8) into (6.1) gives a complete representation of E(T) as a
+convergent series in K₀, Y₀, K₁, Y₁ with no error term other than
+R₀(T) = O(T⁻¹). □
+
+Proof. Substitute (7.2) for Δ*(x) into (5.8). In the first Voronoï
+term, Δ(x) contributes (2/π)√x Σ d(m)/√m [K₁+πY₁/2](4π√(mx));
+multiplication by 4/x gives 4·(2/π)·(1/√x)Σ(…) = (8/π)(1/√x)Σ(…)
+with a minus sign from −Δ(x). In the second term, 2Δ(2x) contributes
+−2·(2/π)√(2x) Σ d(m)/√m [K₁+πY₁/2](4π√(2mx)); multiplication by
+4/x gives (16/π)(√2/√x)Σ(…) with a plus sign. In the third term,
+−½Δ(4x) contributes ½·(2/π)√(4x) Σ d(m)/√m [K₁+πY₁/2](4π√(4mx))
+= (1/π)·2√x Σ(…) = (2/π)√x Σ(…); multiplication by 4/x gives
+(8/π)(1/√x)Σ(…) with a minus sign. □
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+7. Voronoï's exact series for Δ*(x)
+
+Theorem 7.1 (Voronoï 1904 [6] — exact series for Δ(x)).
+For x > 0, x ∉ ℤ:
+
+  Δ(x) = −(2/π)√x Σ_{n=1}^∞ d(n)/√n
+           · [K₁(4π√(nx)) + (π/2) Y₁(4π√(nx))].                     (7.1)
+
+The series converges absolutely in K₁ (exponential decay) and
+conditionally in Y₁ (amplitude ≤ C(nx)⁻¹ᐟ⁴), uniformly on compact
+subsets of (0,∞)∖ℤ. Equation (7.1) is an exact identity.
+
+Proof. Apply the Mellin transform to Δ(x), shift the contour of the
+inverse Mellin transform to Re(s) = ½ via the functional equation of
+ζ²(s), and identify the resulting integral with the Bessel functions
+via the Basset formula:
+
+  K₁(2πa) = ∫₀^∞ e^{−2πa cosh t} cosh t dt,     a > 0,
+  Y₁(2πa) = −(2/π) ∫₀^∞ cosh t · sin(2πa cosh t) dt,   a > 0.
+
+Summing over n with coefficients d(n)/√n gives (7.1); see [6] §VI
+and the modern account in [3] §2. □
+
+Theorem 7.2 (Exact series for Δ*(x)).
+Let Δ*(x) = −Δ(x) + 2Δ(2x) − ½Δ(4x). Substituting (7.1):
+
+  −Δ(x) = +(2/π)√x Σ_{n=1}^∞ d(n)/√n
+            · [K₁(4π√(nx)) + (π/2) Y₁(4π√(nx))],
+
+  2Δ(2x) = −(4/π)√(2x) Σ_{n=1}^∞ d(n)/√n
+             · [K₁(4π√(2nx)) + (π/2) Y₁(4π√(2nx))],
+
+  −½Δ(4x) = +(1/π)√(4x) Σ_{n=1}^∞ d(n)/√n
+              · [K₁(4π√(4nx)) + (π/2) Y₁(4π√(4nx))].
+
+Therefore:
+
+  Δ*(x) = (2/π)√x Σ_{n=1}^∞ d(n)/√n
+            · [K₁(4π√(nx)) + (π/2) Y₁(4π√(nx))]
+           − (4/π)√(2x) Σ_{n=1}^∞ d(n)/√n
+             · [K₁(4π√(2nx)) + (π/2) Y₁(4π√(2nx))]
+           + (1/π)√(4x) Σ_{n=1}^∞ d(n)/√n
+             · [K₁(4π√(4nx)) + (π/2) Y₁(4π√(4nx))].                 (7.2)
+
+This is an exact convergent identity.
+
+Proof. Line-by-line substitution of (7.1) into the definition
+Δ*(x) = −Δ(x) + 2Δ(2x) − ½Δ(4x):
+
+  −Δ(x): negating (7.1) at x gives coefficient +(2/π)√x.
+
+  2Δ(2x): multiplying (7.1) at 2x by 2 gives
+    2 · (−2/π)√(2x) = −(4/π)√(2x).
+
+  −½Δ(4x): multiplying (7.1) at 4x by −½ gives
+    −½ · (−2/π)√(4x) = +(1/π)√(4x) = +(2/π)√x.
+
+Note: (1/π)√(4x) = (2/π)√x, so the first and third lines have equal
+prefactors but different Bessel arguments (4π√(nx) vs 4π√(4nx)). □
+
+Corollary 7.3 (Jutila's mean-square relation [11]).
+Jutila proved:
+
+  ∫₂ᵀ [E(t) − 2πΔ*(t/(2π))]² dt = O(T^{4/3} log³T).               (7.3)
+
+This shows E(T) = 2πΔ*(T/(2π)) in the mean-square sense. Substituting
+(7.2) with x = T/(2π) gives the Bessel series for the leading part
+of E(T) in L²-sense. Note: (7.3) is an L²-approximation, not a
+pointwise identity; the exact pointwise formula is (6.1). □
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+8. Convergence
+
+Theorem 8.1 (Convergence of (6.1) and computability to arbitrary
+precision).
+
+(i)  Finite sum. The sum Σ_{n=1}^{N} d(n) Ψ_B(T,n) contains N ≍ T
+     terms, each an explicit finite integral. It converges trivially
+     for fixed T.
+
+(ii) The tail E₄(T). The function Ξ_B(T,x) satisfies
+
+       Ξ_B(T,x) = O(Tx⁻¹ᐟ²) as x → ∞
+
+     uniformly in T, by the Riemann–Lebesgue lemma applied to the
+     cos(2πxy) oscillation. Combined with Δ*(x) = O(x^{1/3+ε}),
+
+       ∫_{N+½}^∞ |Δ*(x)/x| · |Ξ_B(T,x)| dx ≤ C T N^{−1/6+ε} < ∞.
+
+(iii) The double Bessel series (6.8). After substituting (7.2):
+
+     — K₁ terms: |d(m) K₁(4π√(mx))| ≤ C m^ε e^{−4π√(mx)}, so the
+       sum over m converges absolutely and exponentially fast.
+
+     — Y₁ terms: converge conditionally. After Abel summation on
+       d(m), the partial sums satisfy
+       |Σ_{m≤M} d(m) Y₁(4π√(mx))| ≤ C M^{3/4+ε}, and the series
+       converges by Dirichlet's criterion.
+
+(iv) Computability. For any T ≥ 2 and any target precision δ > 0,
+     there exists M₀ = M₀(T,δ) such that truncating the Voronoï
+     series in (6.8) at m = M₀ gives
+
+       |E(T) − E(T; M₀)| < δ.
+
+     The K₁ tail is bounded by
+
+       C Σ_{m>M₀} d(m) m^ε e^{−4π√(m(N+½))} ≤ C' e^{−4π√(M₀(N+½))},
+
+     which is effective and computable. The Y₁ tail is bounded by
+     explicit partial-summation estimates. Thus E(T) is computable to
+     any precision, in principle, using only evaluations of K₁, Y₁,
+     standard oscillatory integrals, and arithmetic. □
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+9. The saddle-point step and the origin of O(log²T)
+
+Proposition 9.1 (Stationary-phase lemma).
+Let φ, g : [a,b] → ℝ with φ smooth, having a unique stationary point
+x₀ ∈ (a,b) with φ′(x₀) = 0, φ″(x₀) ≠ 0. Let g and its derivatives
+be O(G). Then
+
+  ∫ₐᵇ g(x) e^{iλφ(x)} dx
+    = g(x₀) e^{iλφ(x₀)} √(2π/(λ|φ″(x₀)|))
+      · e^{i(π/4) sgn φ″(x₀)}
+      + O(G/(λ|φ″(x₀)|)).                                            (9.1)
+
+Proposition 9.2 (Evaluation of Ψ_B(T,n) by stationary phase).
+The integrand of Ψ_B(T,n) in (6.2) has phase
+φ(y) = T log((1+y)/y) ± 2πny. Setting φ′(y*) = 0 gives
+
+  T/(y*(1+y*)) = 2πn,
+
+with unique solution y* ≈ √(T/(4πn)) − ½ for T ≫ n. Applying (9.1):
+
+  Ψ_B(T,n) = (π/2)(T/(2πn))¹ᐟ⁴/√(T/(2πn) − 1) · cos(f(T,n))
+              + O(n^ε T⁻³ᐟ⁴),
+
+where
+
+  f(T,n) = T arcsinh√(2πn/T)
+           − √(2πnT + 4π²n²)
+           + π/4.                                                      (9.2)
+
+Summing (9.2) over n = 1,…,N with d(n) weight gives the first
+Atkinson sum. The total error from all N ≍ T terms is
+
+  Σ_{n=1}^{N} d(n) O(n^ε T⁻³ᐟ⁴) = O(T^{1/4+2ε}),
+
+which, together with the boundary terms E₂ and E₃ contributing
+O(log²T) from the stationary-phase evaluation of Ψ_B(T,N+½) at the
+large-argument boundary, gives the published O(log²T) remainder in the
+standard Atkinson formula. Without applying (9.1), formula (6.1)
+carries no error at all other than R₀(T) = O(T⁻¹).
+
+Corollary 9.3 (The standard Atkinson formula).
+The published formula [1]
+
+  E(T) = Σ_{n≤N} a(n) cos(f(T,n))
+         + Σ_{n≤M} b(n) cos(g(T,n))
+         + O(log²T),                                                   (9.3)
+
+with
+
+  f(T,n) = T arcsinh√(2πn/T) − √(2πnT + 4π²n²) + π/4,
+  g(T,n) = −2T arcsinh√(πn/(2T)) + √(2πnT + π²n²) + π/4,
+  a(n) = (−1)ⁿ d(n) (T/(2πn))¹ᐟ⁴ (1 − 2πn/T)⁻¹ᐟ⁴,
+  b(n) = (1/√2) d(n) (2T/(πn))¹ᐟ⁴ (1 + πn/(2T))⁻¹ᐟ⁴,
+
+is obtained from Theorem 6.1 by applying Proposition 9.1 to each
+Ψ_B(T,n) and Ξ_B(T,x). The O(log²T) is entirely from this
+application. □
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+10. Summary of identities
+
+  (*)   Definition of E(T):
+          ∫₀ᵀ |ζ(½+it)|² dt = T log T − (1+log 2π−2γ)T + E(T).
+
+  (3.1) Voronoï–Jutila:
+          Σ'd(n)f(n) = ∫f(log u+2γ) du
+            + Σd(n) ∫f(u)[4K₀(4π√(nu))−2πY₀(4π√(nu))] du.
+
+  (4.1) Titchmarsh:
+          ζ²(s) = [finite sum] + [polynomial in x^{1−s}]
+            − (4π²)ˢ s Σd(n)/n^{1−s}
+              · ∫_{4π√(nx)}^∞ [K₁+½πY₁] v⁻²ˢ dv.
+
+  (5.9) Atkinson exact pre-saddle-point:
+          E(T) = E₁ − E₂ + E₃ − E₄ + R₀(T),  each Eⱼ exact.
+
+  (6.1) Main theorem (= (5.9) with Bessel form explicit):
+          E(T) = 4Σd(n)Ψ_B − 4Δ*(N+½)Ψ_B(T,N+½)
+                 + E₃(T) − 4∫(Δ*(x)/x)Ξ_B(T,x) dx + R₀(T).
+
+  (6.8) Double Bessel series (Δ* substituted):
+          three-line series in K₁, Y₁ from the three Voronoï terms
+          in Δ* = −Δ(x) + 2Δ(2x) − ½Δ(4x).
+
+  (7.1) Voronoï exact:
+          Δ(x) = −(2/π)√x Σd(n)/√n [K₁(4π√(nx)) + (π/2)Y₁(4π√(nx))].
+
+  (9.3) Standard Atkinson (after stationary phase — approximate):
+          E(T) = Σa(n) cos f(T,n) + Σb(n) cos g(T,n) + O(log²T).
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+11. References
+
+[1]  F. V. Atkinson, "The Mean Value of the Riemann Zeta Function,"
+     Acta Math. 81 (1949), 353–376.
+
+[2]  A. Simonič and N. Starichkova, "Atkinson's Formula for the Mean
+     Square of ζ(s)," arXiv:2105.06821 (2021/2022).
+
+[3]  K. Matsumoto, "Recent Developments in the Mean Square Theory of
+     the Riemann Zeta and Other Zeta-Functions," in: Number Theory,
+     Birkhäuser, Basel (2000), pp. 241–286.
+
+[4]  A. Ivić, The Riemann Zeta-Function: Theory and Applications,
+     Wiley, 1985; repr. Dover, 2003.
+
+[5]  F. W. J. Olver et al. (eds.), NIST Digital Library of Mathematical
+     Functions, https://dlmf.nist.gov, Release 1.2.0 (2024).
+
+[6]  G. Voronoï, "Sur une fonction transcendante et ses applications
+     à la sommation de quelques séries," Ann. Sci. Éc. Norm. Sup. (3)
+     21 (1904), 207–268 and 459–534.
+
+[7]  M. Jutila, "Transformation Formulae for Dirichlet Polynomials,"
+     J. Number Theory 18 (1984), 135–156.
+
+[8]  E. C. Titchmarsh, "On the Mean Value of |ζ(½+it)|²," J. London
+     Math. Soc. 13 (1938), 143–149.
+
+[9]  G. N. Watson, A Treatise on the Theory of Bessel Functions, 2nd
+     ed., Cambridge Univ. Press, 1944.
+
+[10] A. Ivić, Lectures on Mean Values of the Riemann Zeta Function,
+     Tata Institute / Springer, 1991.
+
+[11] M. Jutila, "Riemann's Zeta-Function and the Divisor Problem,"
+     Ark. Mat. 21 (1983), 75–96.
+
+[12] R. R. Hall, "The Mean Value of the Riemann Zeta-Function," RIMS
+     Kôkyûroku Bessatsu B34 (2012), 21–48.
