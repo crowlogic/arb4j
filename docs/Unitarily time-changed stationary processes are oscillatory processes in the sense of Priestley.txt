@@ -1,0 +1,99 @@
+Theorem (Unitarily time-changed stationary processes are oscillatory).  
+Let X be a zero-mean stationary process on ℝ with covariance
+
+  R_X(τ) = ∫_{ℝ} e^{iλτ} f_X(λ) dλ,
+
+and let θ: ℝ → ℝ be C¹ with θ′(t) > 0. Define
+
+  Y(t) = √θ′(t) · X(θ(t)).
+
+Let C_Y(t,s) denote the covariance of Y. As proved in the covariance
+theorem, we have
+
+  C_Y(t,s) = √(θ′(t)θ′(s)) · R_X(θ(t) − θ(s)).
+
+Then Y is an oscillatory process in the sense of Priestley, with
+oscillatory kernel
+
+  A_t(λ) = √θ′(t) · e^{iλ(θ(t) − t)},
+
+and evolutionary spectrum
+
+  dF_Y(t,λ) = |A_t(λ)|² f_X(λ) dλ
+            = θ′(t) f_X(λ) dλ.
+
+Proof.
+
+From the covariance theorem for the unitarily time-changed stationary
+process, the covariance of Y is
+
+  C_Y(t,s) = √(θ′(t)θ′(s)) · R_X(θ(t) − θ(s)).
+
+Insert the spectral representation of R_X:
+
+  R_X(θ(t) − θ(s)) = ∫_{ℝ} e^{iλ(θ(t) − θ(s))} f_X(λ) dλ.
+
+Therefore
+
+  C_Y(t,s) = √(θ′(t)θ′(s)) ∫_{ℝ} e^{iλ(θ(t) − θ(s))} f_X(λ) dλ.
+
+Bring the prefactor inside the integral:
+
+  C_Y(t,s) = ∫_{ℝ} √θ′(t) e^{iλθ(t)} · √θ′(s) e^{-iλθ(s)} f_X(λ) dλ.
+
+Write
+
+  √θ′(t) e^{iλθ(t)} = A_t(λ) e^{iλt},
+
+where
+
+  A_t(λ) = √θ′(t) · e^{iλ(θ(t) − t)}.
+
+Then
+
+  √θ′(s) e^{-iλθ(s)} = A_s(λ)̄ e^{-iλs},
+
+and hence
+
+  C_Y(t,s) = ∫_{ℝ} A_t(λ) e^{iλt} · A_s(λ)̄ e^{-iλs} f_X(λ) dλ
+           = ∫_{ℝ} A_t(λ) A_s(λ)̄ e^{iλ(t−s)} f_X(λ) dλ.
+
+This is exactly Priestley’s oscillatory covariance form: there exists a
+family {A_t(λ)} such that
+
+  C_Y(t,s) = ∫_{ℝ} A_t(λ) A_s(λ)̄ e^{iλ(t−s)} dF(λ),
+
+with dF(λ) = f_X(λ) dλ. Consequently Y is an oscillatory process in
+Priestley’s sense.
+
+For the evolutionary spectrum, Priestley defines, for an oscillatory
+process with kernel A_t(λ) and base measure dF(λ), the evolutionary
+spectrum at time t by
+
+  dF_Y(t,λ) = |A_t(λ)|² dF(λ).
+
+Here
+
+  dF(λ) = f_X(λ) dλ,
+
+and
+
+  A_t(λ) = √θ′(t) · e^{iλ(θ(t) − t)}.
+
+Thus
+
+  |A_t(λ)|² = |√θ′(t)|² · |e^{iλ(θ(t) − t)}|²
+             = θ′(t),
+
+so
+
+  dF_Y(t,λ) = θ′(t) f_X(λ) dλ,
+
+and the evolutionary spectral density is
+
+  f_Y(t,λ) = θ′(t) f_X(λ).
+
+The covariance C_Y(t,s) of the unitarily time-changed stationary
+process therefore has the oscillatory form required by Priestley, with
+oscillatory kernel A_t(λ) determined by θ, and the corresponding
+evolutionary spectrum is θ′(t) f_X(λ) dλ.  ∎ 

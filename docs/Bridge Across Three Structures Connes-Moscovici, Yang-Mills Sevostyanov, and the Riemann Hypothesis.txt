@@ -1,0 +1,499 @@
+Bridge Across Three Structures: Connes–Moscovici, Yang–Mills/Sevostyanov,
+and the Riemann Hypothesis
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄: 𝗪𝗵𝗮𝘁 𝗜𝘀 𝗕𝗲𝗶𝗻𝗴 𝗖𝗼𝗻𝗻𝗲𝗰𝘁𝗲𝗱
+
+Three bodies of mathematics are in play. The first is the Connes–Moscovici
+1982 L²-index theorem: for a G-invariant elliptic operator P on a
+homogeneous space M = G∕H, the analytical index ind_G P, defined via a
+canonical von Neumann trace on the commutant of the left regular
+representation, equals a topological index computed from characteristic
+classes in relative Lie algebra cohomology. The second is Sevostyanov's
+non-perturbative quantization program: the Yang–Mills Hamiltonian is
+identified as a gradient-squared potential (with the Chern–Simons
+functional as the potential), and this structure allows a canonical family
+of quantizations on weighted L² spaces, producing, in the abelian case, a
+rigorous mass gap via the Bochner–Minlos theorem and Fock space spectral
+theory. The third is the narrative in the attached RH session: the
+ζ-function, after a cumulative-phase time change ψ, becomes a band-limited
+stationary process in the Paley–Wiener space PW_{[−2,0]}, from which the
+Riemann hypothesis and simplicity of zeros are argued via Hardy space
+theory, Schwarz reflection, and Bulinskaya's theorem.
+
+The connections are not metaphorical. They run along eight identifiable
+mathematical axes, each a structural correspondence — same theorem, same
+construction, same obstruction — realized in different guises across the
+three texts.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+𝗖𝗼𝗻𝗻𝗲𝗰𝘁𝗶𝗼𝗻 𝗜: 𝗧𝗵𝗲 𝗩𝗼𝗻 𝗡𝗲𝘂𝗺𝗮𝗻𝗻 𝗧𝗿𝗮𝗰𝗲 𝗮𝘀 𝗤𝘂𝗮𝗻𝘁𝗶𝘇𝗮𝘁𝗶𝗼𝗻 𝗠𝗲𝗮𝘀𝘂𝗿𝗲
+
+In Connes–Moscovici, the entire index theory rests on the G-trace tr_G,
+the canonical semifinite faithful normal trace on the von Neumann algebra
+ℳ_G — the commutant of the left regular representation L of G on L²(G).
+Its defining property is
+
+    tr_G(R(f)∗ R(f)) = ∫_G ∣f(g)∣² dg.
+
+This trace replaces ordinary dimension: instead of dim ker P, one computes
+
+    dim_G ker P = tr_G K_{ker P},
+
+which is finite even when ker P is infinite-dimensional as a Hilbert space.
+The key identity (Corollary 2.3 in CM) is
+
+    tr_G(P) = k_P(1),
+
+the G-trace of a G-invariant operator equals the diagonal value of its
+convolution kernel at the identity.
+
+In Sevostyanov, the quantized Yang–Mills Hamiltonian acts on
+L²(𝒟∕𝒦, dμ), where μ is a probability measure with density ψ e^{−2φ},
+with φ = CS the Chern–Simons functional. This is not Lebesgue measure: it
+is a weighted measure determined by the potential, exactly as in a
+ground-state representation. The function ψ encodes the quantization
+ambiguity: different ψ yield unitarily inequivalent quantum theories. After
+the unitary intertwining
+
+    U : L²(M, dμ) → L²(M, dvol),   f ↦ f · √(ψ e^{−2φ}),
+
+the Hamiltonian becomes
+
+    Ĥ = ½ ∑_a ξ_a∗ ξ_a : L²(M, dμ) → L²(M, dμ),
+
+where ξ_a are directional derivatives and ξ_a∗ their adjoints in the
+weighted L². The measure dμ plays the role of the ground-state weight:
+potential information is carried by the measure rather than by explicit
+multiplication terms in Ĥ, exactly as the G-trace encodes the Haar measure
+in Connes–Moscovici.
+
+In the zeta narrative, the covariance kernel
+
+    K(t,s) = √ψ′(t) · sinc(ψ(t) − ψ(s)) · √ψ′(s)
+
+defines a positive semidefinite operator C on L²[0,∞). The diagonal
+
+    K(t,t) = 2ψ′(t) = 2θ′(t) ∣ζ(½+it)∣²
+
+is the reproducing kernel evaluation at the diagonal — the analogue of
+k_P(1). All three constructions share the same structural role for their
+respective measures or traces: they encode the geometry of the underlying
+group action and convert infinite-volume or infinite-dimensional kernel
+data into finite, controlled scalars.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+𝗖𝗼𝗻𝗻𝗲𝗰𝘁𝗶𝗼𝗻 𝗜𝗜: 𝗢𝗿𝗯𝗶𝘁 𝗦𝗽𝗮𝗰𝗲𝘀, 𝗔𝘃𝗲𝗿𝗮𝗴𝗶𝗻𝗴, 𝗮𝗻𝗱 𝗦𝘆𝗺𝗽𝗹𝗲𝗰𝘁𝗶𝗰 𝗥𝗲𝗱𝘂𝗰𝘁𝗶𝗼𝗻
+
+The configuration space in all three theories is a quotient of a function
+space by a group.
+
+In Connes–Moscovici, M = G∕H is the left coset space, and every
+construction passes through the averaging operation
+
+    Av(P) = ∫_G L(g) P L(g)⁻¹ dg,
+
+which converts a general compactly supported ΨDO into a G-invariant one.
+Lemma 1.2 establishes that every G-invariant ΨDO is an average:
+P = Av(fP) for any cut-off f with ∫_G f dg = 1.
+
+In Sevostyanov, the Marsden–Weinstein symplectic reduction theorem
+(Proposition 3) is applied to the gauge group 𝒦 acting on the phase space
+T𝒟. The moment map is
+
+    μ(A,E) = div_A E   (Gauss's law),
+
+the constraint surface is { (A,E) : div_A E = 0 }, and the reduced phase
+space is
+
+    μ⁻¹(0) ∕ 𝒦  ≅  T∗(𝒟∕𝒦).
+
+The horizontal subspaces ker div_A (Coulomb gauge) are the analogues of
+CM's homogeneous tangent directions. A key lemma identifies the annihilator
+of the gauge orbit in T𝒟 with the kernel of dμ, in exact parallel with
+CM's identification of the symbol as the element of K_H(V), the equivariant
+K-theory group of the co-isotropy representation.
+
+In the zeta narrative, the cumulative phase change
+
+    ψ(t) = ∫₀ᵗ θ′(u) ∣ζ(½+iu)∣² du
+
+is the reduction operation: it absorbs the non-stationarity of the zeta
+process (irregular zero spacing, growth of θ′(t)) into a single
+reparametrization, yielding a stationary band-limited process X(T) on the
+quotient timeline. This is a Priestley oscillatory-process reduction: the
+evolutionary spectrum collapses into a stationary one under the time
+change, exactly as CM's averaging collapses a general ΨDO into a
+G-invariant one.
+
+The Gribov obstruction — the impossibility of globally section-izing
+𝒟∕𝒦 — is the infinite-dimensional analogue of CM's non-existence of a
+global right-inverse for G → G∕H when the isotropy representation is
+non-trivial. Both are topological obstructions to choosing global
+representatives; both are resolved by working intrinsically on the quotient.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+𝗖𝗼𝗻𝗻𝗲𝗰𝘁𝗶𝗼𝗻 𝗜𝗜𝗜: 𝗧𝗵𝗲 𝗜𝗻𝗱𝗲𝘅 𝗮𝘀 𝗮 𝗧𝗼𝗽𝗼𝗹𝗼𝗴𝗶𝗰𝗮𝗹 𝗜𝗻𝘃𝗮𝗿𝗶𝗮𝗻𝘁 𝗼𝗳 𝘁𝗵𝗲 𝗦𝗽𝗲𝗰𝘁𝗿𝘂𝗺
+
+The deepest structural connection runs through the passage from an analytic
+invariant to a topological one.
+
+In Connes–Moscovici, the main theorem ind_G P = ind_t[σ(P)] states that
+
+    ind_G D⁺_ε = (−1)ⁿ (ch(ε) · Â(𝔤,H))[V],
+
+where ch(ε) is the Chern character of an H-representation ε and Â(𝔤,H) is
+the relative Â-class computed from the curvature of the canonical connection
+on G → G∕H. The topological index depends only on the principal symbol
+σ(P) and is stable under homotopy.
+
+In Sevostyanov, the key structural observation (Proposition 5) is that the
+potential vector field G = ∗F is the gradient of the Chern–Simons
+functional CS:
+
+    G = grad CS,   so   ½⟨G,G⟩ = ½ ∥grad CS∥².
+
+The Hamiltonian takes the form
+
+    H = ½ (⟨p,p⟩ + ∥grad CS∥²).
+
+This is a gradient-squared Hamiltonian, the same structure as Witten-type
+Morse theory. The quantization measure
+
+    dμ ∝ e^{−2 CS(A)} dA
+
+transforms a topological datum — the winding number and homotopy type of
+connections — into an analytic datum: the spectrum of Ĥ. The mass gap ½m
+arises from this topological structure, not from an ad hoc potential.
+
+In the zeta narrative, the assertion X(T) ∈ PW_{[−2,0]} is a spectral
+index statement: the Fourier transform is supported in a fixed compact
+interval. Band-limitation implies Hardy-space membership, which implies
+zero-free half-planes. The support [−2,0] plays the role of the topological
+index: determined by the Riemann–Siegel expansion after the time change,
+encoding the zero structure globally, just as the Chern character integral
+encodes the index.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+𝗖𝗼𝗻𝗻𝗲𝗰𝘁𝗶𝗼𝗻 𝗜𝗩: 𝗧𝗵𝗲 𝗖𝗵𝗲𝗿𝗻–𝗦𝗶𝗺𝗼𝗻𝘀 𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻𝗮𝗹 𝗮𝘀 𝗟𝗶𝗻𝗸𝗶𝗻𝗴 𝗧𝗵𝗿𝗲𝗮𝗱
+
+The Chern–Simons functional appears explicitly in two of the three texts
+and underlies the third implicitly.
+
+In Connes–Moscovici, the topological index involves Chern–Weil
+representatives ch(ε) = [tr exp(Ω_ε)] and Â, built from the curvature
+Ω_ε(X,Y) = iε(Ω(X,Y)) of the canonical connection on the homogeneous
+bundle, evaluated in H∗(𝔤,H;ℝ). The projection θ: 𝔤 → 𝔥 and the
+curvature Ω = −½[−,−]_𝔥 are the same data that, in finite-dimensional
+gauge theory, produce the Chern–Simons 3-form on principal bundles.
+
+In Sevostyanov, the Chern–Simons functional
+
+    CS(A) = ∫_{ℝ³} Tr(A ∧ dA + ⅓ A ∧ A ∧ A)
+
+is the potential whose gradient is G = ∗F. In the abelian case this
+reduces to CS(A) = ½ ∫ A ∧ dA (magnetic helicity), and the Gaussian
+exponent becomes
+
+    −1/(2c²) ⟨G,G⟩ − 2 CS(A) − ½(c²+m) ⟨A,A⟩,
+
+entirely controlled by CS together with a regularizing quadratic form.
+
+In the zeta narrative, the Riemann–Siegel phase
+
+    θ(t) = Im log Γ(¼ + ½it) − ½ t log π
+
+is the arithmetic analogue of the Chern–Simons phase: it is a winding
+number of the Γ-factor of ζ, and the time change
+
+    ψ(t) = ∫₀ᵗ θ′(u) ∣ζ(½+iu)∣² du
+
+is built from it. The instantaneous frequency of each Riemann–Siegel term
+n^{−½} cos(θ(t) − t log n) after the time change is ≈ log n ∕ θ′(t), and
+since log N(t) ≈ θ′(t), this ratio stays ≤ 2 — the same growth rate that
+controls the Chern–Simons phase winding.
+
+In all three: the Chern–Simons phase (or its analogue) is the winding
+invariant of the respective principal object; it encodes topological charge
+and controls the scale at which spectral components are measured.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+𝗖𝗼𝗻𝗻𝗲𝗰𝘁𝗶𝗼𝗻 𝗩: 𝗦𝗲𝗹𝗳-𝗔𝗱𝗷𝗼𝗶𝗻𝘁𝗻𝗲𝘀𝘀 𝘃𝗶𝗮 𝗧𝗵𝗿𝗲𝗲 𝗗𝗶𝗳𝗳𝗲𝗿𝗲𝗻𝘁 𝗠𝗲𝗰𝗵𝗮𝗻𝗶𝘀𝗺𝘀
+
+All three theories arrive at self-adjointness as the organizing structural
+requirement, via three distinct but structurally equivalent mechanisms.
+
+In Connes–Moscovici, self-adjointness is automatic: G-invariant ΨDOs of
+order 0 live in the commutant ℳ_G(ξ) of the left regular representation,
+which is a von Neumann algebra consisting of bounded operators. The trace
+tr_G is faithful and normal on this algebra. The exact sequence
+
+    0 → C∗_G(ξ) → Ψ∗_G(ξ) → C_H(S,E,E) → 0
+
+(Proposition 1.7) places Ψ∗_G(ξ) as a C∗-algebra extension; normal
+elements with real spectrum correspond to self-adjoint operators.
+
+In Sevostyanov, self-adjointness is not automatic. The operator
+
+    Ĥ = ½ ∑_a ξ_a∗(x) ξ_a(x)
+
+is initially defined on smooth compactly supported vectors in L²(M,dμ)
+and is symmetric and non-negative. The Friedrichs extension theorem applies:
+the quadratic form
+
+    Q(f,f) = ½ ∑_a ∥ξ_a f∥² ≥ 0
+
+is non-negative and densely defined, hence closable, and its closure defines
+the canonical self-adjoint extension. The condition 1 ∈ L²(M,dμ) (μ is a
+probability measure) gives Ĥ(1) = 0, establishing the constant function as
+the vacuum ground state at eigenvalue 0.
+
+In the zeta narrative, self-adjointness of the Hilbert–Pólya operator
+
+    D = −i ψ′(t)⁻¹ · d∕dt
+
+on H_K is established by Stone's theorem. The one-parameter family
+
+    (V_ε f)(t) = f(ψ⁻¹(ψ(t) + ε))
+
+is a strongly continuous unitary group on H_K: in T-coordinates it is
+the translation group (U_ε g)(T) = g(T+ε) on PW_{[−2,0]}, conjugated by
+the unitary time-change isomorphism. Stone's theorem then gives D as the
+unique self-adjoint generator of (V_ε). The spectrum of D is [−2,0],
+purely absolutely continuous. The Riemann zeros t_n appear as singularities
+of the coefficient 1∕ψ′(t_n): since ψ′(t_n) = 0, domain constraints force
+every f ∈ Dom(D) to vanish at each t_n.
+
+The three mechanisms — von Neumann algebra structure, Friedrichs extension
+of a non-negative form, Stone's theorem — are the three fundamental routes
+to self-adjointness in functional analysis. Each is appropriate to its
+context; all express the same principle: the operator's spectrum is real
+because the underlying geometry is Hermitian.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+𝗖𝗼𝗻𝗻𝗲𝗰𝘁𝗶𝗼𝗻 𝗩𝗜: 𝗧𝗵𝗲 𝗞𝗲𝗿𝗻𝗲𝗹 𝗼𝗳 𝘁𝗵𝗲 𝗢𝗽𝗲𝗿𝗮𝘁𝗼𝗿 = 𝗧𝗵𝗲 𝗗𝗶𝘀𝗰𝗿𝗲𝘁𝗲 𝗚𝗲𝗼𝗺𝗲𝘁𝗿𝘆
+
+In all three theories, the kernel of the central operator encodes discrete
+arithmetic or geometric data.
+
+In Connes–Moscovici, Theorem 6.1 states that ker P is a finite direct sum
+of irreducible discrete series representations of G — the irreducible
+unitary representations with L²-matrix coefficients that "fit" in L²(G)
+without continuous spectral contribution. Existence of discrete series is
+governed by the rank condition rank(K) = rank(G) (Harish-Chandra). A
+corollary: if rank(K_S) < rank(S) for a semisimple factor S, then ker P = {0}
+for every G-invariant elliptic P.
+
+In Sevostyanov, ker Ĥ is one-dimensional, spanned by Ω = 1 ∈ L²(𝒟∕𝒦,dμ).
+The eigenvalue 0 is simple. The mass gap ½m is the infimum of the spectrum
+above 0: no state exists between 0 and ½m. In the Fock space picture each
+one-particle mode labelled by momentum k has energy ≥ ½m, so the gap is
+the separation between the one-dimensional kernel and the rest of the
+spectrum.
+
+In the zeta narrative, the degeneracy locus of C encodes the zeros: for
+every Riemann zero t_n and every f,
+
+    (Cf)(t_n) = 0.
+
+Every vector in the range of C vanishes at each t_n. This is not an
+eigenvalue condition — Cf ≠ 0 in general — but a nodal condition: the
+geometric locus of zeros of ζ is the locus where the covariance degenerates.
+The Riemann zeros are to C what the discrete series are to P: isolated
+features of the spectral geometry carrying deep arithmetic information.
+
+Montgomery's pair correlation conjecture and Rudnick–Sarnak's results
+sharpen the parallel: the Riemann zeros follow GUE statistics, the same
+random matrix ensemble underlying the unitary representation theory of U(n),
+the group whose representation theory generates discrete series of semisimple
+groups.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+𝗖𝗼𝗻𝗻𝗲𝗰𝘁𝗶𝗼𝗻 𝗩𝗜𝗜: 𝗛𝗲𝗮𝘁 𝗞𝗲𝗿𝗻𝗲𝗹, 𝗔𝘀𝘆𝗺𝗽𝘁𝗼𝘁𝗶𝗰 𝗘𝘅𝗽𝗮𝗻𝘀𝗶𝗼𝗻, 𝗮𝗻𝗱 𝘁𝗵𝗲 𝗠𝗮𝘀𝘀 𝗚𝗮𝗽
+
+The heat kernel method mediates between spectral and topological data in
+Connes–Moscovici and reappears structurally in both other settings.
+
+In Connes–Moscovici, the McKean–Singer identity with the G-trace gives
+
+    tr_G e^{−tΔ⁺} − tr_G e^{−tΔ⁻} = dim_G ker D⁺ − dim_G ker D⁻ = ind_G D⁺
+
+for all t > 0. As t → 0⁺ each G-trace expands asymptotically as
+
+    tr_G e^{−tΔ^±} ∼ ∑_{k ≥ −m} c_k(Δ^±) t^{k∕2},
+
+and the index equals the constant term c₀(Δ⁺) − c₀(Δ⁻), expressed as a
+Chern–Weil integral — the t-independent part of the heat trace difference.
+
+In Sevostyanov, the harmonic oscillator model (ψ = e^{−x²∕2} on ℝ) gives
+the Hermite operator
+
+    Ĥ = −½ e^{x²∕2} (d∕dx) e^{−x²∕2} (d∕dx) : L²(ℝ, e^{−x²∕2}dx) → L²(ℝ, e^{−x²∕2}dx),
+
+with spectrum {0, ½, 1, 3∕2, …}. The heat semigroup e^{−tĤ} is the Mehler
+(Ornstein–Uhlenbeck) kernel, and
+
+    tr(e^{−tĤ}) = ∑_{n≥0} e^{−nt∕2} = (1 − e^{−t∕2})⁻¹,
+
+whose Taylor expansion generates the Bernoulli numbers — the same numbers
+appearing in the Â-genus formula and Chern character. Both the oscillator
+heat trace and the CM index integrand are evaluations of the same regularized
+determinant det(1 − e^{−tĤ}).
+
+In the zeta narrative, the restriction C_L of C to [0,L] has eigenfunctions
+given by prolate spheroidal wave functions (PSWFs) with eigenvalues λ_n(L).
+These exhibit the Landau–Widom phase transition near the Shannon number
+N(L) ≈ 2L∕π: λ_n(L) ≈ 1 for n ≪ N(L), λ_n(L) ≈ 0 for n ≫ N(L). The
+transition width is the "index density" of the truncated operator, the
+analogue of the t → 0 constant term in the CM heat trace.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+𝗖𝗼𝗻𝗻𝗲𝗰𝘁𝗶𝗼𝗻 𝗩𝗜𝗜𝗜: 𝗞𝗶𝗹𝗹𝗶𝗻𝗴 𝗙𝗼𝗿𝗺, 𝗠𝗲𝘁𝗿𝗶𝗰, 𝗮𝗻𝗱 𝗣𝗼𝘀𝗶𝘁𝗶𝘃𝗶𝘁𝘆
+
+The RH session opens with an isometric embedding problem: for the Cartan
+decomposition SL(n,ℂ) = P · G with G = SU(n), when does a smooth isometric
+section f : (G,g) → (G_ℂ,g_k) exist? Writing the differential at the
+identity as F(v) = v + φ(v) with φ : 𝔰𝔲(n) → 𝔭, the isometry condition
+reduces to
+
+    B_k(v,w) + B_k(φ(v),φ(w)) = g_e(v,w),   v,w ∈ 𝔰𝔲(n),
+
+which requires g_e + B_k|_{𝔰𝔲(n)} to be positive semidefinite — the metric
+g must dominate the (negative of the) Killing form in every direction.
+
+In Connes–Moscovici, the co-isotropy representation on
+
+    V = { ξ ∈ 𝔤∗ : ξ|_𝔥 = 0 }
+
+must admit an Ad∗(H)-invariant orientation. This requires the representation
+Ad∗ : H → SO(V) to be orientable — a positivity condition on the isotropy
+representation analogous to g_e + B_k ≥ 0. When it holds, the Thom
+isomorphism τ : R(H) → K_H(V) exists and the Bott class β generates K_H(V)
+as an R(H)-module.
+
+In Sevostyanov, the naive Gaussian measure with ψ = exp(−½⟨G,G⟩) fails
+because the exponent in ψ e^{−2 CS(A)} is not negative definite — the cross
+term ⟨G,G⟩ − 2 CS(A) is sign-indefinite. The corrected Ansatz adds the
+term −½(c²+m)⟨A,A⟩, yielding the exponent
+
+    −1∕(2c²) ⟨G,G⟩ − 2 CS(A) − ½(c²+m) ⟨A,A⟩.
+
+A completing-the-square computation shows this is strictly negative definite.
+The added mass-like term ½(c²+m)∥A∥² dominates the indefinite part, exactly
+as g must dominate the Killing form in the embedding problem.
+
+In the RH narrative, Weil's positivity criterion states that RH is
+equivalent to W(f ∗ f̄♯) ≤ 0 for all admissible test functions f. The L²
+norm of f plays the role of the metric; the Weil distribution W plays the
+role of the Killing form — a sesquilinear form requiring global non-positivity
+to hold over a full function space. In all three settings, the governing
+structure is: a bilinear form must satisfy a sign condition globally, and
+the obstruction to this is the same infinitesimal-to-global passage.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+𝗖𝗼𝗻𝗻𝗲𝗰𝘁𝗶𝗼𝗻 𝗜𝗫: 𝗡𝗼𝗻-𝗖𝗼𝗺𝗽𝗮𝗰𝘁𝗻𝗲𝘀𝘀 𝗮𝘀 𝘁𝗵𝗲 𝗨𝗻𝗶𝘃𝗲𝗿𝘀𝗮𝗹 𝗢𝗯𝘀𝘁𝗿𝘂𝗰𝘁𝗶𝗼𝗻
+
+All three theories confront non-compactness as the primary obstruction.
+Each uses a structurally similar device to tame it.
+
+In Connes–Moscovici, M = G∕H is non-compact, so the ordinary Fredholm
+theory fails: ker P can be infinite-dimensional. The G-dimension
+
+    dim_G 𝒲 = tr_G K_𝒲
+
+replaces dim: it is finite even for G-invariant subspaces of L²(G) on a
+non-compact quotient. Cut-off functions f with ∫_G f = 1 localize integrals,
+and the identity tr_G(P) = k_P(1) converts "integration over infinite
+volume" into evaluation at a single group element.
+
+In Sevostyanov, non-compactness is twofold: the spatial domain ℝ³ and the
+infinite-dimensional configuration space 𝒟∕𝒦. The Bochner–Minlos theorem
+resolves both: for a nuclear space 𝒮 ⊂ H ⊂ 𝒮′ (Schwartz divergence-free
+vector fields), any continuous, positive-definite, normalized functional
+
+    Φ(φ) = exp(−½ ⟨Ĉφ, φ⟩),   φ ∈ 𝒮,
+
+is the characteristic functional of a unique Gaussian probability measure
+on 𝒮′. Spectral analysis of Ĉ = (−Δ + m)⁻¹ gives spectrum in (0,1],
+confirming positivity and boundedness and validating the construction. The
+nuclear space 𝒮 is the compact "core," analogous to the compact quotient
+Γ∖G in Atiyah's covering L²-index theorem.
+
+In the zeta narrative, the non-compact domain is { s = ½+it : t ∈ (0,∞) }.
+The time change ψ converts the non-stationary zeta process into a
+stationary one on all of ℝ. The Paley–Wiener theorem then controls the
+non-compactness: a function entire of exponential type with Fourier support
+in [−2,0] is polynomially bounded in every direction — non-compactness of
+ℝ is controlled by the exponential type, exactly as the G-trace controls
+non-compactness of G.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+𝗖𝗼𝗺𝗽𝗹𝗲𝘁𝗲 𝗠𝗮𝗽 𝗼𝗳 𝗖𝗼𝗿𝗿𝗲𝘀𝗽𝗼𝗻𝗱𝗲𝗻𝗰𝗲𝘀
+
+Structure                  CM (1982)                       Sevostyanov (YM)                   RH Narrative (ζ)
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Ambient space              M = G∕H homogeneous             𝒟∕𝒦 gauge orbit                    Re(s) = ½ critical line
+Group action               Left G on L²(M,ξ)               Gauge group 𝒦 on 𝒟                 ℝ× reparametrization
+Reduction                  Averaging Av(P)                 Marsden–Weinstein                  Time change ψ(t)
+Canonical measure/trace    tr_G on ℳ_G                     dμ = ψ e^{−2φ} dvol               Covariance kernel K(t,s)
+Trace localization         tr_G(P) = k_P(1)                Weighted L² intertwining           K(t,t) = 2ψ′(t)
+Topological invariant      ch(ε) in H∗(𝔤,H;ℝ)             Chern–Simons functional CS(A)      Riemann–Siegel phase θ(t)
+Index / gap                ind_G P = (ch · Â)[V]           Mass gap = ½m                      Band support [−2,0]
+Self-adjointness           Von Neumann algebra, C∗         Friedrichs extension               Stone's theorem
+Kernel encodes             Discrete series of G            Vacuum Ω = 1, ker Ĥ = ℂ·Ω         Zeros of ζ (nodal locus of C)
+Non-compactness tamed      G-dimension dim_G = tr_G K      Bochner–Minlos on nuclear space    Paley–Wiener exponential type
+Positivity condition       g_e + B_k|_{𝔰𝔲(n)} ≥ 0         Exponent negative definite         Weil W(f∗f̄♯) ≤ 0
+Vanishing criterion        rank(K) < rank(G) ⟹ ker P = 0  Free theory (m=0) has no gap       Hardy membership excludes off-line zeros
+Heat / spectral structure  McKean–Singer heat traces       Mehler kernel, Bernoulli numbers   PSWF eigenvalues, Landau–Widom
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+𝗦𝘆𝗻𝘁𝗵𝗲𝘀𝗶𝘀: 𝗢𝗻𝗲 𝗧𝗵𝗲𝗼𝗿𝗲𝗺 𝗶𝗻 𝗧𝗵𝗿𝗲𝗲 𝗟𝗮𝗻𝗴𝘂𝗮𝗴𝗲𝘀
+
+The governing principle, stated uniformly across all three:
+
+    A G-invariant elliptic operator on a non-compact space with group
+    symmetry has an L²-index (or spectral gap, or band-limited zero
+    structure) that is controlled by a topological invariant of the group
+    action, constructed from the same Chern–Weil data that governs the
+    representation theory. Self-adjointness forces the index∕gap∕zeros to
+    be real; the von Neumann or Gaussian measure converts the non-compact
+    geometry into a finite datum.
+
+In Connes–Moscovici this becomes the L²-index theorem. In Sevostyanov it
+becomes the mass gap theorem for the abelian case and the conjecture for
+the non-abelian case. In the RH narrative it becomes the band-limitation
+and Hardy-space framework.
+
+The non-abelian Yang–Mills open problem — constructing the non-Gaussian
+measure dμ ∝ ψ e^{−2 CS(A)} dA for a non-abelian gauge group — is exactly
+the problem the CM theorem would address if extended to infinite-dimensional
+G. In CM, the formal degree deg(π) of a discrete series representation is
+the analogue of the mass m: a positive real number measuring the "density"
+of π in L²(G), just as m measures the spectral gap. The reciprocity theorem
+(CM Proposition 7.3A),
+
+    ind_G D = ∑_π (dim ker D_π − dim ker D_π∗) deg(π),
+
+is the operator-algebraic analogue of the Wiener–Itô–Segal decomposition
+of the mass-gap Fock space into particle sectors.
+
+The remaining open problem — rigorous band-limitation of X(T) under uniform
+control of the Riemann–Siegel remainder through the time change ψ — is the
+zeta analogue of the Sevostyanov open problem. Both require constructing a
+specific measure or spectral object on an infinite-dimensional space and
+verifying its required properties. Both share the same logical structure:
+the abelian or local case is fully rigorous; the non-abelian or global case
+requires controlling a non-Gaussian or non-uniform object that is the
+principal obstruction.

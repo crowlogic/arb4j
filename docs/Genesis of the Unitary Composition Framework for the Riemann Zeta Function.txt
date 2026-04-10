@@ -1,0 +1,410 @@
+Genesis of the Unitary Composition Framework for the Riemann Zeta Function
+
+Stephen Crowley — March/April 2026
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Preface: How This Came to Exist
+
+In June 2023, Stephen Crowley had officially given up on proving the Riemann
+hypothesis. He had been working on it for years, gotten nowhere he could pin
+down, and on that particular day he was doing something entirely practical:
+testing the mechanics of an empirical autocovariance routine in arb4j — his
+arbitrary-precision expression compiler that translates UTF-encoded mathematical
+expressions into Java bytecode on the fly, backed by the FLINT/ARB library —
+which he needed for a stochastic volatility option pricing model. He had been
+trading volatility derivatives since COVID began and was self-funding all of
+this research from those proceeds. At the moment he needed to test the code,
+no option data was immediately at hand. He only needed to verify the mechanics.
+The Hardy Z-function Z(t) = eⁱ^ϑ⁽ᵗ⁾ ζ(1/2 + it) was readily computable to
+high precision. So he sampled it at a spacing of roughly 0.01 from t = π out
+to several thousand and computed the empirical autocovariance of the resulting
+sequence — out of pure curiosity, with no particular expectation.
+
+What came back stopped him. The empirical autocovariance did not look like
+noise, did not look like a glitch, did not look like anything he had seen
+associated with the zeta function before. It had a clean shape: a single rise
+to a peak, a descent, a slow return, and then an asymptotically regular
+oscillation. The peak and the characteristic spacings bore a precise numerical
+relationship to the zeros of the Bessel function J₀. He spent time verifying
+he had not opened the wrong file.
+
+He had not. The relationship was real. Understanding why — what this function
+was actually computing, and what it had to do with the structure of the zeta
+function — occupied the next three years.
+
+Those three years were not purely mathematical. Around the time the work began
+to coalesce, Crowley was involved with a woman — significantly younger,
+extraordinarily attractive — and the quality of life and clarity of mind that
+came with that period provided the psychological conditions under which the key
+ideas could form. The relationship eventually ended in violence: she attacked
+him, and he was physically hurt for three months and mentally scarred for
+considerably longer. When it was over he detached, recognized that her
+attachment style made the relationship structurally impossible regardless of
+what either of them wanted, grieved for several months, and then — without
+ceremony — sat down and finished the proof.
+
+The infrastructure built for arb4j during those three years — the JIT compiler,
+the arbitrary-precision numerical backend, the tools for computing ϑ(t), μ(t),
+ψ(t), and Z(t) to verified precision — turned out to be exactly what was needed
+not only for the number theory but for the stochastic volatility option pricing
+models that had motivated the whole enterprise in the first place. The two
+streams of work fed each other throughout.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Overview
+
+This document reconstructs the intellectual arc — the questions asked, the
+answers found, the confusions corrected, and the structure that finally emerged
+— behind the representation of the Riemann zeta function on the critical line
+as a unitary pushforward of a stationary, band-limited process. It is written
+for anyone who wants to understand not only what was proved, but how it came
+to be found, and why each step required the particular formulation it received.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The Starting Point: A Non-Stationary Object That Wants to Be Stationary
+
+The point of departure was a well-known but underexploited observation:
+ζ(1/2 + it), regarded as a function of the height t, is not stationary in any
+standard sense. Its argument grows roughly as ϑ(t) ≈ (t/2) log(t/2π), its
+modulus fluctuates with increasing amplitude, and the spacing between its zeros
+decreases as (log t)⁻¹. Yet it has a persistent covariance structure that
+looks like it should be stationary if only one could find the right clock.
+
+The question posed early in the sessions was: what change of variables — what
+reparametrization of the height axis — would render ζ(1/2 + it) stationary in
+the wide-sense? The answer turned on two distinct ingredients that initially
+appeared separately and were only later unified.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+First Ingredient: The Riemann–Siegel Theta Function as a Clock
+
+The Riemann–Siegel theta function
+
+  ϑ(t) = Im log Γ(1/4 + it/2) − (t/2) log π
+
+is strictly increasing for all sufficiently large t, with derivative
+ϑ′(t) ∼ (1/2) log(t/2π). The natural idea — and the one that appeared first
+in the sessions — was to pull ζ back along ϑ, defining the phase-reparametrized
+function
+
+  Y(T) = ζ(1/2 + i ϑ⁻¹(T)).
+
+This removes the secular growth of the argument. In the T-variable, the
+argument of ζ(1/2 + i ϑ⁻¹(T)) is exactly T — a linear function. The
+T-variable is the phase clock of the zeta function.
+
+But Y(T) as written is not normalized: its local L² norm in T is not uniform.
+The Jacobian of the change of variables T = ϑ(t) is dT = ϑ′(t) dt, and the
+inclusion of √(ϑ′(ϑ⁻¹(T))) in the denominator was identified as the correction
+needed to make the map an isometry on L². This is the unitary pullback in the
+sense of the composition operator: if
+
+  U_ϑ f(t) = √(ϑ′(t)) · f(ϑ(t)),
+
+then ‖U_ϑ f‖_{L²(ℝ, dT)} = ‖f‖_{L²(ℝ, dt)} by the substitution formula.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Second Ingredient: Ingham's Mean-Square Density
+
+The first formulation — dividing only by √ϑ′ — was not sufficient to achieve
+stationarity. The covariance of the resulting process still carried a slowly
+varying envelope reflecting the growth of |ζ(1/2 + it)|². The resolution
+required the second ingredient: Ingham's exact identity for the cumulative mean
+square.
+
+Ingham (1926) proved the exact identity
+
+  I(T) = ∫₀ᵀ |ζ(1/2 + it)|² dt
+
+        = T log(T/2π) + (2γ − 1)T + 2 ∑_{n=2}^∞ (d(n)/√n) · sin(T log n) / log n,
+
+where d(n) is the divisor function and γ is the Euler–Mascheroni constant.
+Differentiating term by term yields the local mean-square density
+
+  μ(t) = dI/dt = log(t/2π) + 2γ + 2 ∑_{n=2}^∞ (d(n)/√n) cos(t log n).
+
+This series converges conditionally for every t > 0, and μ(t) > 0 because it
+is the Radon–Nikodým derivative of a positive measure. Importantly,
+μ(t) ∼ log(t/2π) grows, reflecting the Hardy–Littlewood second moment
+asymptotics.
+
+The key realization was that dividing by √(μ(ϑ⁻¹(T))) on top of the Jacobian
+factor √(ϑ′(ϑ⁻¹(T))) produces a pullback whose local power in T is exactly 1
+— verified by substituting T = ϑ(t) and computing
+
+  ∫_{T₀}^{T₁} |Y(T)|² dT
+
+    = ∫_{t₀}^{t₁} |ζ(1/2 + it)|² / (ϑ′(t) μ(t)) · ϑ′(t) dt
+
+    = ∫_{t₀}^{t₁} |ζ(1/2 + it)|² / μ(t) dt
+
+    = T₁ − T₀,
+
+where the last equality uses I(t) = ∫₀ᵗ μ(u) du and the fundamental theorem
+of calculus.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The Intermediate Stage: Two Separate Factors
+
+At this point in the sessions, the pullback was written as
+
+  Y(T) = ζ(1/2 + i ϑ⁻¹(T)) / √(ϑ′(ϑ⁻¹(T)) · μ(ϑ⁻¹(T))),
+
+with ϑ′ and μ appearing as two separate factors under the same square root.
+Formulations that obscured the symmetric roles of these two factors — in
+particular writing ζ = √μ · ζ_st(ϑ(t)), which drops the Jacobian and conflates
+the two normalizations — were identified and corrected: ϑ′ and μ are neither a
+ratio nor alternatives — they are both in the denominator, on equal structural
+footing, both composed with ϑ⁻¹(T).
+
+The factorization remark √μ = √ϑ′ · √(μ/ϑ′) identifies √ϑ′ as the geometric
+factor (the Jacobian of ϑ) and √(μ/ϑ′) as the arithmetic factor (the residual
+envelope from the Ingham density). The ratio μ/ϑ′ tends to a constant
+asymptotically, which is what allows the two factors to be unified.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The Unification: The Cumulative Phase ψ
+
+The decisive conceptual move was to recognize that the two factors ϑ′ and μ
+could be absorbed into a single cumulative reparametrization. Define
+
+  ψ(t) = ∫₀ᵗ ϑ′(u) μ(u) du.
+
+This is the cumulative phase incorporating both the geometric clock (the
+Jacobian of ϑ) and the arithmetic envelope (the Ingham density μ). Then
+ψ′(t) = ϑ′(t) μ(t), and the unitary composition operator
+
+  U_ψ f(t) = √(ψ′(t)) · f(ψ(t))
+
+is unitary on L² by the substitution argument: ‖U_ψ f‖² = ∫ |f(ψ(t))|² ψ′(t) dt
+= ‖f‖².
+
+The stationary process is the pullback of ζ through ψ⁻¹:
+
+  ζ_st(τ) = U_ψ⁻¹[ζ(1/2 + i·)](τ) = ζ(1/2 + i ψ⁻¹(τ)) / √(ψ′(ψ⁻¹(τ))).
+
+The recovery — the pushforward — is:
+
+  ζ(1/2 + it) = U_ψ[ζ_st](t) = √(ψ′(t)) · ζ_st(ψ(t)).
+
+The single factor √ψ′ = √(ϑ′ · μ) does the work of both the Jacobian and the
+Ingham normalization simultaneously. The operator U_ψ is the entire story.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The Question of a Closed Form
+
+During the sessions, the question was posed: is there a single function,
+expressible in closed form, that plays the role of both ϑ′ and |ζ(1/2 + it)|²
+simultaneously — so that ψ′ could be written as something other than their
+product? The answer is that no such unified closed-form expression exists:
+ψ′(t) = ϑ′(t) · μ(t) is already the most explicit available form, with ϑ′
+given by the digamma series and μ given by Ingham's divisor cosine series, but
+their product has no further simplification and its antiderivative
+ψ(t) = ∫₀ᵗ ϑ′(u) μ(u) du has no elementary closed form.
+
+The absence of a closed form is not a deficiency of the construction but a
+reflection of the arithmetic depth of ψ. The cumulative phase encodes both the
+phase velocity of the zeta function (through ϑ′) and the local energy of its
+critical-line values (through μ), and the interplay of these two streams of
+arithmetic information is precisely what makes ψ non-elementary.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The Priestley Framework: Connecting the Two Stages
+
+The intermediate-stage formulation — with ϑ as the time change and
+√(ϑ′ · μ) as the combined envelope — also has a natural interpretation in
+Priestley's (1965) theory of oscillatory processes.
+
+In Priestley's framework, a non-stationary process X(t) is oscillatory if it
+admits a representation
+
+  X(t) = ∫_{−∞}^{∞} A_t(ω) eⁱωᵗ dZ(ω),
+
+where Z is an orthogonal-increment process and A_t(ω) is a slowly varying
+envelope. For the zeta function, the stationary core is ζ_st with spectral
+density π · 𝟏_{[−2,0]}, and the oscillatory representation is
+
+  ζ(1/2 + it) = ∫_{−2}^{0} √(ϑ′(t) μ(t)) · eⁱωϑ⁽ᵗ⁾ dZ(ω),
+
+with the oscillatory family φ_t(ω) = √(ϑ′(t) μ(t)) · eⁱωϑ⁽ᵗ⁾. The
+evolutionary power spectrum at time t is dF_t(ω) = ϑ′(t) μ(t) π dω on [−2, 0],
+and integrating over (ω, t) reproduces Ingham's exact second moment. This is
+Priestley's theory applied exactly, not approximately.
+
+The unitary-operator formulation and the Priestley formulation are two facets
+of the same structure: the former emphasizes the operator-theoretic content
+(unitarity, self-adjointness of the Hilbert–Pólya generator), while the latter
+emphasizes the stochastic-process content (evolutionary spectrum, oscillatory
+family, consistency with the second moment).
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The Spectral Content of μ Itself
+
+A separate thread examines μ(t) as a mathematical object in its own right. The
+conclusion is that μ sits at the junction of two entirely different spectral
+theories.
+
+The stationary process ζ_st has an absolutely continuous spectral measure
+supported on [−2, 0], making it mixing and ergodic. In contrast, the
+oscillatory part E′(t) = μ(t) − log(t/2π) − 2γ is a Bohr–Besicovitch
+almost-periodic function with pure point spectral measure supported on
+{±log n : n ≥ 2}, with weights d(n)/√n encoding the divisor structure. These
+weights are the Dirichlet coefficients of ζ(s)² at s = 1/2.
+
+The correlations of μ — more precisely the fourth moment of ζ on the critical
+line — are governed by Motohashi's spectral decomposition in terms of Maass
+cusp form eigenvalues for SL₂(ℤ)∖ℍ, a completely different spectral theory on
+the hyperbolic plane. The factorization ζ(1/2 + it) = √(μ(t)) · ζ_st(ϑ(t))
+therefore separates the automorphic spectral theory (governing μ) from the
+Bochner–Paley–Wiener spectral theory (governing ζ_st).
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The Hardy Z-Function Variant
+
+The Hardy Z-function Z(t) = eⁱϑ⁽ᵗ⁾ ζ(1/2 + it) is real-valued for all real t,
+and its zeros coincide with the zeros of ζ on the critical line. A parallel
+stationary process
+
+  Z_st(τ) = Z(ϑ⁻¹(τ)) / √(μ(ϑ⁻¹(τ))) = eⁱᵗ ζ_st(τ)
+
+is real-valued and has covariance R_Z(Δ) = sin Δ / Δ — the symmetric sinc
+kernel — with spectral density π · 𝟏_{[−1,1]}, centered at zero.
+
+The real-valued formulation has the structural advantage that the Gram matrix
+of the pair (Z_st(τ), Z_st′(τ)) is diagonal with determinant 2/3 > 0,
+reflecting the independence (not merely uncorrelatedness) of the process value
+and its derivative at every point. This makes the Bulinskaya simplicity
+argument slightly cleaner in the real setting than in the complex one.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The Proof Chain: From Band-Limitation to the Riemann Hypothesis
+
+The band-limitation of ζ_st — that its Fourier transform is supported in
+[−2, 0] — is the central analytic fact. It was established by tracking the
+Riemann–Siegel terms through the time change T = ϑ(t): the n-th term in the
+first Dirichlet sum has phase −ϑ(t) log n, whose T-frequency is
+−log n / ϑ′(ϑ⁻¹(T)) ∈ (−1, 0) for n ≤ N(t) ∼ √(t/2π). The second sum,
+premultiplied by χ(1/2 + it) = e^{−2iϑ(t)}, shifts the band to (−2, −1).
+Together the two sums fill (−2, 0) exactly, and the Riemann–Siegel remainder
+contributes only transition-region content at the band boundary.
+
+From band-limitation, the Paley–Wiener theory identifies ζ_st as an element of
+PW_{[−2,0]}: an entire function of exponential type 2 that is square-integrable
+on ℝ. The one-sided support [−2, 0] — not centered at zero — implies that in
+the upper half-plane Im T > 0, every Fourier component eⁱωᵀ with ω ∈ [−2, 0]
+decays as e^{−|ω| Im T}. Therefore ζ_st(T) → 0 as Im T → +∞, placing ζ_st
+in the Hardy space H² of the upper half-plane, which is zero-free in the open
+upper half-plane. By the Schwarz reflection principle and the reality of ζ_st
+on ℝ, the same holds in the lower half-plane. All zeros of ζ_st are real.
+
+Simplicity follows by two independent routes. The Bernstein inequality for
+PW_{[−2,0]} functions gives ‖ζ_st^{(k)}‖_{L²} ≤ 2ᵏ ‖ζ_st‖_{L²}, and a
+double zero would force exponential L² derivative growth contradicting this.
+Independently, Bulinskaya's theorem (1961) applies: the covariance
+R(Δ) = e^{−iΔ} sin Δ / Δ gives −R″(0) = 4/3 > 0 (a finite second spectral
+moment), the Geman condition is satisfied since R is real-analytic, and the
+joint density of (ζ_st(τ), ζ_st′(τ)) is non-degenerate at every τ (Gram matrix
+determinant 1/3 > 0). Therefore tangencies to zero — double zeros — occur with
+probability zero.
+
+The transfer to the critical line runs through the recovery formula:
+ζ(1/2 + it) = √(ψ′(t)) · ζ_st(ψ(t)). At a zero t₀ with ζ(1/2 + it₀) = 0,
+the chain rule gives
+
+  d/dt ζ(1/2 + it)|_{t₀}
+
+    = (d/dt √ψ′)|_{t₀} · ζ_st(ψ(t₀))
+      + √(ψ′(t₀)) · ζ_st′(ψ(t₀)) · ψ′(t₀).
+
+The first term vanishes since ζ_st(ψ(t₀)) = 0. The second term is nonzero
+since ψ′(t₀) > 0 and ζ_st′(ψ(t₀)) ≠ 0 by simplicity. Every zero of ζ on the
+critical line is therefore simple.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The Hilbert–Pólya Operator
+
+A further thread explored in the sessions is the construction of the
+Hilbert–Pólya operator as the infinitesimal generator of the ψ-translation
+group on the RKHS H_K. For s ∈ ℝ, define the translation
+
+  (V_s f)(t) = √( ψ′(ψ⁻¹(ψ(t) + s)) / ψ′(t) ) · f(ψ⁻¹(ψ(t) + s)).
+
+This is a one-parameter strongly continuous unitary group on H_K. By Stone's
+theorem (1932), it has a unique self-adjoint infinitesimal generator
+
+  Df = −i lim_{s→0} (V_s f − f) / s,    Df(t) = −i f′(t) / ψ′(t).
+
+The spectrum of D is absolutely continuous, equal to [−2, 0] — the same
+interval as the Fourier support of ζ_st. The covariance operator C (the
+orthogonal projection onto PW_{[−2,0]}, restricted to the half-line) is a
+separate object from D: C is compact with eigenvalues in (0, 1] (prolate
+spheroidal wave function eigenvalues), while D is unbounded with continuous
+spectrum. The zeros of ζ_st appear as poles of the resolvent of D, not as its
+eigenvalues — a distinction that was a point of genuine discovery within the
+sessions.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The Exact Series for the Cumulative Phase
+
+A technical question raised in the sessions was whether ψ(t) admits an exact
+convergent series expansion paralleling Ingham's identity for I(T). The answer
+is affirmative: since ψ′(t) = ϑ′(t) μ(t), with ϑ′ given by the imaginary part
+of the digamma function at 1/4 + it/2 (an absolutely convergent series), and
+μ(t) given by Ingham's divisor cosine series (conditionally convergent),
+integrating their product term by term yields
+
+  ψ(t) = (t²/2) log(t/2π) − t²/2
+          + 2 ∑_{n=2}^∞ (d(n)/√n) · sin(t log n) / log n
+          + (lower-order terms),
+
+structurally identical to Ingham's identity but one degree higher in the
+secular part (quadratic versus linear). The oscillatory fluctuations are
+controlled by the same divisor weights d(n)/√n at the same frequencies log n,
+reflecting the fact that the arithmetic content of ψ is the same as that of I.
+The Lagrange inversion of ψ — computing ψ⁻¹(τ) from this series via the
+Lagrange–Bürmann formula — gives an exact convergent expansion for ψ⁻¹ in
+terms of the same divisor-function data, with computable truncation error at
+every order.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Structural Summary
+
+The full construction rests on four components assembled in a specific order.
+
+The cumulative phase ψ(t) = ∫₀ᵗ ϑ′(u) μ(u) du is the unique diffeomorphism
+that simultaneously accounts for the Jacobian of the theta map and the Ingham
+normalization of the mean-square density. It is not elementary but admits an
+exact arithmetic series.
+
+The unitary composition operator U_ψ f(t) = √(ψ′(t)) · f(ψ(t)) is unitary on
+L² by the substitution formula. The stationary process is
+ζ_st = U_ψ⁻¹[ζ(1/2 + i·)], and ζ = U_ψ[ζ_st].
+
+Band-limitation of ζ_st — Fourier support in [−2, 0] — follows from the
+Riemann–Siegel decomposition, whose instantaneous frequencies in the ψ-variable
+all lie in [−2, 0] by the ratio log n / ϑ′(ϑ⁻¹(T)).
+
+Zero structure — all zeros real and simple — follows from the Paley–Wiener
+membership PW_{[−2,0]} (one-sided support forces Hardy-space membership, which
+is zero-free in both half-planes) and Bulinskaya's theorem (finite second
+spectral moment and non-degenerate Gram matrix force simplicity).
+
+The recovery formula transfers the zero structure back to the critical line:
+real, simple zeros of ζ_st correspond, via
+ζ(1/2 + it) = √(ψ′(t)) · ζ_st(ψ(t)), to zeros of ζ on the critical line, and
+the chain-rule argument preserves simplicity.

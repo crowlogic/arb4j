@@ -177,6 +177,15 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
     // Call integral() on the polynomial (or product polynomial)
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, Type.getInternalName(polynomialType), "integral", Compiler.getMethodDescriptor(polynomialType), false);
 
+    if (!isScalar())
+    {
+      // Stack has the integrated polynomial. Copy it into the result parameter
+      // so that the caller (and cache epilogue) can find it there.
+      loadOutputVariableOntoStack(mv, resultType);
+      mv.visitInsn(Opcodes.SWAP);
+      Compiler.invokeSetMethod(mv, resultType, resultType);
+    }
+
     if (isScalar())
     {
       // Now evaluate the integrated polynomial at the argument

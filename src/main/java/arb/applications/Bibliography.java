@@ -18,6 +18,21 @@ import arb.documentation.references.*;
 public class Bibliography extends
                           AbstractBibliography
 {
+
+  public static Article bochnerSomePropertiesOfModularRelations                          = new Article("Some properties of modular relations",
+                                                                                                       "S. Bochner",
+                                                                                                       "1951",
+                                                                                                       "Annals of Mathematics",
+                                                                                                       "53",
+                                                                                                       "332–363").setNumber("2");
+  
+  public static InBook  lachaudSpectralAnalysisRiemannHypothesis                         = new InBook("Spectral Analysis and the Riemann Hypothesis",
+                                                                                                      "Gilles Lachaud",
+                                                                                                      "2004",
+                                                                                                      "数理解析研究所講究録",
+                                                                                                      "1384",
+                                                                                                      "146--157").setPublisher("RIMS, Kyoto University");
+
   public static Article cambanisMeasurabilitySecondOrderProcess                          =
                                                                 new Article("The measurability of a stochastic process of second order and its linear space",
                                                                             "Stamatis Cambanis",

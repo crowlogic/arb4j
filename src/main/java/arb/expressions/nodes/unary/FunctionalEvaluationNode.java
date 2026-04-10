@@ -48,9 +48,32 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
   public FunctionalEvaluationNode(Expression<D, C, F> expression, Node<D, C, F> functionNode)
   {
     super(expression,
-          expression.resolve());
+          resolveArgWithFunctionalDomain(expression, functionNode));
     expression.require(')');
     this.functionNode = functionNode;
+  }
+
+  /**
+   * When the function node's type is a reified functional (e.g. RealPolynomial),
+   * its argument is an evaluation-point variable (e.g. x in P(3)(x)). If the
+   * enclosing expression is nullary, promote its domainType to the scalar type
+   * of the functional so that the argument variable can be resolved as an
+   * independent variable. The promotion persists so that downstream code
+   * (e.g. IntegralNode.parseFunctionForm) finds the independent variable
+   * already assigned.
+   */
+  @SuppressWarnings("unchecked")
+  private static <D, C, F extends Function<? extends D, ? extends C>> Node<D, C, F> resolveArgWithFunctionalDomain(
+                                                                                                                    Expression<D, C, F> expression,
+                                                                                                                    Node<D, C, F> functionNode)
+  {
+    Class<?> fnType = functionNode.type();
+    if (expression.isNullaryFunction() && Function.class.isAssignableFrom(fnType) && !fnType.isInterface()
+        && !java.lang.reflect.Modifier.isAbstract(fnType.getModifiers()))
+    {
+      expression.domainType = (Class<? extends D>) Compiler.scalarType(fnType);
+    }
+    return expression.resolve();
   }
 
   public FunctionalEvaluationNode(Expression<D, C, F> expression, Node<D, C, F> functionNode, Node<D, C, F> argNode)

@@ -40,6 +40,7 @@ public interface RealFunction extends
                                     that);
   }
 
+
   public default RealFunction add(RealFunction that)
   {
     return new RealAdditionFunction(this,

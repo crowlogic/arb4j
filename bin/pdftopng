@@ -1,0 +1,4 @@
+#!/bin/sh
+
+gs -dNOPAUSE -dBATCH -sDEVICE=png16m -r600 -sOutputFile="$1.page%04d.png" "$1"
+for f in "$1".page*.png; do echo "$f" && convert "$f" -gravity South -chop 0x200 "$(basename "$f")"; done

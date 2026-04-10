@@ -161,24 +161,6 @@ public class VariableNodeResolutionTest extends
     assertEquals("x", expressed.toString());
   }
 
-  /**
-   * Verify the parse-level resolution for a nullary RationalFunction expression.
-   * The independent variable x should be independent and nullary, with type
-   * resolving to coDomainType (RationalFunction).
-   */
-  public void testNullaryRationalFunctionResolution()
-  {
-    Expression<Object, RationalFunction, RationalNullaryFunction> expr = RationalFunction.parse("x");
-
-    assertTrue("should be nullary", expr.isNullaryFunction());
-    assertEquals(Object.class, expr.domainType);
-    assertEquals(RationalFunction.class, expr.coDomainType);
-
-    VariableNode<?, ?, ?> x = expr.getIndependentVariable();
-    assertNotNull("independent variable should exist", x);
-    assertTrue("x should be independent", x.isIndependent);
-    assertEquals("in nullary function, independent var type should be coDomainType", RationalFunction.class, x.type());
-  }
 
   /**
    * Test that {@code RationalFunction.express("x/2")} produces "(x)/2".

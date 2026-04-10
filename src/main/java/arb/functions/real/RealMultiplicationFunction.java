@@ -2,6 +2,11 @@ package arb.functions.real;
 
 import arb.Real;
 
+/**
+ * 
+ * @author Stephen Crowley ©2024-2025
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
+ */
 public class RealMultiplicationFunction implements
                                         RealFunction
 {

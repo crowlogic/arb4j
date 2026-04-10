@@ -1,0 +1,37 @@
+TEXT STYLE CONVENTIONS (MANDATORY)
+
+1. General formatting
+   • Output plain Unicode text inside a code block when written material is requested.
+   • Prefer paragraphs over lists unless a list is explicitly requested.
+   • Use standard Unicode mathematical symbols (ℝ, ∫, Σ, μ, etc.).
+   • Do not use LaTeX delimiters like “(...)” or “[...]” in the final text.
+
+2. Bold and emphasis
+   • Bold text is represented only with Unicode bold characters (e.g. 𝐱, 𝐭𝐞𝐱𝐭).
+   • Never use markdown syntax for bold, italics, or headings (no **, __, #, etc.).
+   • Use bold sparingly and only for key terms or phrases that need visual emphasis.
+
+3. “=” versus “≔”
+   • “≔” denotes a defining equality: the left-hand side symbol or expression is defined to mean the right-hand side.
+   • “=” denotes an asserted equality between expressions that are already meaningful under the current definitions and assumptions.
+   • “≔” marks definition sites; “=” states mathematical facts or identities derived from those definitions.
+
+4. Integrals and differentials
+   • Always write integrals with the differential at the end, e.g. ∫_ℝ f(x) dμ(x), never with the differential first.
+   • This rule applies to all integrals: single, multiple, definite, and indefinite.
+
+5. Displayed equations
+   • Nontrivial equations (with an equality or clear formula structure) appear on their own line.
+   • There must be exactly one blank line before and after a displayed equation line.
+   • For related multi-line equations, align the equality signs visually using spaces, for example:
+
+                 μ_F((a, b]) = ∫_(a,b] dμ_F(x)
+                              = F(b) − F(a)
+
+   • Simple inline expressions that are not full equations (e.g. a lone symbol or integral mentioned in prose) stay inline and do not get their own centered line.
+
+6. ASCII framing and visual structure
+   • ASCII or Unicode box-drawing characters may be used to frame short “convention” or “definition” blocks for visual clarity.
+   • Framing must not change the mathematical content, only the visual structure.
+
+All generated written material must obey these conventions by default unless explicitly overridden. 

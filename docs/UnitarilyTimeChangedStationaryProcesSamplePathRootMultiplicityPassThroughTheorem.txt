@@ -1,0 +1,85 @@
+Theorem. Let X be a real-valued process on ℝ with almost surely Cʳ
+sample paths, where r ≥ 1. Let θ: ℝ → ℝ be a Cʳ diffeomorphism with
+θ′(t) > 0 for all t ∈ ℝ. Define
+
+  Y(t) = √θ′(t) · X(θ(t)),    t ∈ ℝ.
+
+Let
+
+  Zₓ = { u ∈ ℝ : X(u) = 0 },    Zᵧ = { t ∈ ℝ : Y(t) = 0 }.
+
+Then
+
+  Zᵧ = θ⁻¹(Zₓ) = { t ∈ ℝ : θ(t) ∈ Zₓ },
+
+and for every t₀ ∈ Zᵧ, with u₀ = θ(t₀), the multiplicity of the zero
+of Y at t₀ equals the multiplicity of the zero of X at u₀, provided
+that multiplicity is at most r.
+
+Proof.
+
+Since θ′(t) > 0 for all t ∈ ℝ,
+
+  √θ′(t) > 0    for all t ∈ ℝ.
+
+Hence, for any t ∈ ℝ,
+
+  Y(t) = 0
+  ⇔ √θ′(t) · X(θ(t)) = 0
+  ⇔ X(θ(t)) = 0.
+
+Therefore
+
+  Zᵧ = { t ∈ ℝ : Y(t) = 0 }
+      = { t ∈ ℝ : X(θ(t)) = 0 }
+      = { t ∈ ℝ : θ(t) ∈ Zₓ }
+      = θ⁻¹(Zₓ).
+
+Now fix t₀ ∈ Zᵧ and set
+
+  u₀ = θ(t₀).
+
+Write
+
+  a(t) = √θ′(t),    g(t) = X(θ(t)),
+
+so that
+
+  Y(t) = a(t)g(t).
+
+Since a(t₀) > 0, continuity of a implies that a is nonvanishing on some
+neighborhood of t₀. Therefore multiplication by a does not change the
+order of vanishing at t₀.
+
+Let q ≤ r be the multiplicity of the zero of X at u₀. Thus
+
+  X(u₀) = X′(u₀) = ⋯ = X⁽ᵠ⁻¹⁾(u₀) = 0,
+  X⁽ᵠ⁾(u₀) ≠ 0.
+
+For each integer k with 1 ≤ k ≤ q, repeated application of the chain
+rule gives
+
+  g⁽ᵏ⁾(t) = ∑ⱼ₌₁ᵏ Bₖ,ⱼ(t) · X⁽ʲ⁾(θ(t)),
+
+where each Bₖ,ⱼ is continuous near t₀, and the coefficient of the
+highest-order term is
+
+  Bₖ,ₖ(t) = (θ′(t))ᵏ.
+
+Therefore, for every k < q, each term in g⁽ᵏ⁾(t₀) contains X⁽ʲ⁾(u₀)
+with j ≤ k < q, so
+
+  g⁽ᵏ⁾(t₀) = 0.
+
+For k = q, all terms with j < q vanish, and hence
+
+  g⁽ᵠ⁾(t₀) = (θ′(t₀))ᵠ · X⁽ᵠ⁾(u₀).
+
+Since θ′(t₀) > 0 and X⁽ᵠ⁾(u₀) ≠ 0, it follows that
+
+  g⁽ᵠ⁾(t₀) ≠ 0.
+
+Thus the zero of g at t₀ has multiplicity q. Since multiplication by
+the nonvanishing factor a does not change multiplicity, the zero of Y
+at t₀ also has multiplicity q. Therefore the multiplicity of the zero
+of Y at t₀ equals the multiplicity of the zero of X at u₀. ∎

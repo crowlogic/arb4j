@@ -47,7 +47,7 @@ import arb.functions.real.RealFunction;
  *
  * <h2>Index variable — method-local, not a field</h2> The index variable
  * ({@code k} above) is allocated as a method-local {@code arb.Integer} in the
- * {@code evaluate()} bytecode (local slot {@value #INDEX_VARIABLE_LOCAL_SLOT}).
+ * {@code evaluate()} bytecode (local slot {@code indexVariableLocalSlot}).
  * It is never registered in the {@link Context} and never declared as a class
  * field. This avoids polluting the shared context and eliminates the need to
  * temporarily mutate context state during operand parsing. The operand receives
@@ -102,13 +102,12 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   /**
    * Local variable slot in the generated {@code evaluate()} method for the
-   * {@code arb.Integer} index variable. Slots 0–4 are: {@code this}, input,
-   * order, bits, result. This slot is allocated by
-   * {@link #allocateLocalIndexVariable(MethodVisitor)} at the top of
-   * {@link #generate(MethodVisitor, Class)} via
-   * {@code NEW / DUP / INVOKESPECIAL / ASTORE}.
+   * {@code arb.Integer} index variable. Dynamically allocated via
+   * {@link Expression#allocateLocalVariableSlot()} to avoid conflicts with
+   * cache locals or other generated code. Assigned in
+   * {@link #allocateLocalIndexVariable(MethodVisitor)}.
    */
-  public static final int                         INDEX_VARIABLE_LOCAL_SLOT      = 5;
+  public int                                        indexVariableLocalSlot         = -1;
 
   public static String                            operandEvaluateMethodSignature = Compiler.getMethodDescriptor(Object.class,
                                                                                                                 Object.class,
@@ -308,7 +307,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   /**
    * Emits bytecode to allocate a fresh {@code arb.Integer} in local slot
-   * {@value #INDEX_VARIABLE_LOCAL_SLOT}:
+   * {@code indexVariableLocalSlot}:
    * 
    * <pre>
    *   NEW arb/Integer
@@ -319,10 +318,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
    */
   protected void allocateLocalIndexVariable(MethodVisitor mv)
   {
+    indexVariableLocalSlot = expression.allocateLocalVariableSlot();
     Compiler.generateNewObjectInstruction(mv, Integer.class);
     Compiler.duplicateTopOfTheStack(mv);
     Compiler.invokeDefaultConstructor(mv, Integer.class);
-    mv.visitVarInsn(ASTORE, INDEX_VARIABLE_LOCAL_SLOT);
+    mv.visitVarInsn(ASTORE, indexVariableLocalSlot);
   }
 
   public Class<?> assignTypes(Class<?> resultType)
@@ -450,12 +450,13 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   /**
    * Loads the method-local {@code arb.Integer} index variable from local slot
-   * {@value #INDEX_VARIABLE_LOCAL_SLOT} onto the operand stack.
+   * {@code indexVariableLocalSlot} onto the operand stack.
    */
   MethodVisitor loadIndexVariable(MethodVisitor methodVisitor)
   {
     assert indexVariableFieldName != null : String.format("indexVariableFieldName is null %s\n", this);
-    methodVisitor.visitVarInsn(ALOAD, INDEX_VARIABLE_LOCAL_SLOT);
+    assert indexVariableLocalSlot >= 0 : "indexVariableLocalSlot not yet allocated";
+    methodVisitor.visitVarInsn(ALOAD, indexVariableLocalSlot);
     return methodVisitor;
   }
 
@@ -517,7 +518,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       indexVariableFieldName = paramName;
     }
 
-    Class<R> operandCoDomain = (Class<R>) (expression.isFunctional() ? scalarCoDomain(expression.coDomainType) : expression.coDomainType);
+    Class<R> operandCoDomain = (Class<R>) (expression.isFunctional() && !Polynomial.class.isAssignableFrom(expression.coDomainType)
+                                             ? scalarCoDomain(expression.coDomainType)
+                                             : expression.coDomainType);
     operandExpression = new Expression<>(Integer.class,
                                          operandCoDomain,
                                          Sequence.class);
@@ -556,7 +559,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
    * <p>
    * The index variable is <em>not</em> registered in the {@link Context} — it
    * lives as a method-local {@code arb.Integer} in slot
-   * {@value #INDEX_VARIABLE_LOCAL_SLOT}, allocated by
+   * {@code indexVariableLocalSlot}, allocated by
    * {@link #allocateLocalIndexVariable(MethodVisitor)}.
    */
   public Node<D, R, F> parseOperatorLimitSpecifications()

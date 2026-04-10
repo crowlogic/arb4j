@@ -1,0 +1,759 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathrsfs}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\begin{document}
+
+\thispagestyle{empty}
+
+\noindent
+数理解析研究所講究録 1384 巻 2004 年 146--157
+
+\vspace{2em}
+
+\begin{center}
+{\Large SPECTRAL ANALYSIS AND THE RIEMANN HYPOTHESIS}
+
+\vspace{1em}
+
+GILLES LACHAUD
+\end{center}
+
+\vspace{1em}
+
+\noindent
+\textbf{ABSTRACT.} The explicit formulas of Riemann and Guinad-Weil relates the set of prime numbers with the set of non-trivial zeros of the zeta function of Riemann. We recall Alain Connes' spectral interpretation of the critical zeros of the Riemann zeta function as eigenvalues of the absorption spectrum of an unbounded operator in a suitable Hilbert space. We then give a spectral interpretation of the zeros of the Dedekind zeta function of an algebraic number field $K$ of degree $n$ in an automorphic setting.
+
+If $K$ is a complex quadratic field, the \emph{torical forms} are the functions defined on the modular surface $X$, such that the sum of this function over the Gauss points of $K$ is zero, and Eisenstein series provide such torical forms.
+
+In the case of a general number field, a fundamental basis defines a maximal torus $T$ of the general linear group $G = \mathrm{GL}_n$. The \emph{torical forms} are the functions defined on the modular variety $X$ associated to $G$, such that the integral over the subvariety induced by $T$ is zero. Alternately, the torical forms are the functions which are orthogonal to \emph{orbital series} on $X$.
+
+The Riemann hypothesis is equivalent to certain conditions concerning some spaces of torical forms, constructed from Eisenstein series, the \emph{torical wave packets}. Furthermore, we define a Hilbert space and a self-adjoint operator on this space, whose spectrum equals the set of critical zeros of the Dedekind zeta function of $K$.
+
+\vspace{2em}
+
+\noindent
+\textbf{CONTENTS}
+
+\medskip
+
+\noindent
+Introduction \quad 2
+
+\noindent
+1.\ Explicit Formulas \quad 2
+
+\noindent
+2.\ Operators in Hilbert spaces \quad 3
+
+\noindent
+A Pólya-Hilbert space on the half-line \quad 5
+
+\noindent
+3.\ Theta Series \quad 5
+
+\noindent
+4.\ The orthogonal of theta series \quad 5
+
+\noindent
+Torical forms : imaginary quadratic fields \quad 7
+
+\noindent
+5.\ Eisenstein Series \quad 7
+
+\noindent
+6.\ Measures associated to imaginary quadratic fields \quad 7
+
+\noindent
+7.\ Torical forms \quad 8
+
+\noindent
+An automorphic Pólya-Hilbert space \quad 9
+
+\noindent
+8.\ The idele class group \quad 9
+
+\noindent
+9.\ Eisenstein series \quad 9
+
+\noindent
+10.\ Torical forms \quad 10
+
+\noindent
+11.\ The space $T^2(X)$ \quad 10
+
+\noindent
+Sources on Riemann's memoir \quad 12
+
+\noindent
+References \quad 12
+
+\newpage
+
+\noindent
+数理解析研究所講究録 1384 巻 2004 年 146--157
+
+\vspace{2em}
+
+\begin{center}
+GILLES LACHAUD
+\end{center}
+
+\vspace{1em}
+
+\section*{INTRODUCTION}
+
+\subsection*{1.\ Explicit Formulas}
+
+In Bernhard Riemann's fundamental memoir on prime numbers \cite{R1}, one finds many special functions introduced here for the first time. Rather than an announcement of results, this paper is a program on the investigation of the behaviour of the distribution of prime numbers (recall that the Prime number Theorem, namely
+\[
+\pi(x) \sim \frac{x}{\log x},
+\]
+was not proven at that time). Here $\pi(x) = \# \{p \in P \mid p \leq x\}$, where $P$ is the set of prime numbers. First of all, Riemann replaces $P$ by the larger set
+\[
+Q = \{2, 3, 4, 5, 7, 8, 9, 11, 13, 16, 17 \dots \}
+\]
+of prime powers, and defines
+\[
+\Pi(x) = \# \{q \in Q \mid q \leq x\},
+\]
+suitably normalised at integer values, in such a way that
+\[
+\Pi(x) = \pi(x) + \frac{1}{2}\pi(x^{1/2}) + \frac{1}{3}\pi(x^{1/3}) + \dots
+\]
+The \emph{zeta function}, defined by the expressions
+\[
+\zeta(s) = \prod_p \frac{1}{1 - p^{-s}} = \sum_{n=1}^{\infty} \frac{1}{n^s}
+\]
+which are both convergent for $\mathrm{Re}(s) > 1$ and divergent for $s = 1$, admits an analytic continuation over the whole complex plane; it has only one pole, located at the point $s = 1$, and the following \emph{functional equation} holds:
+\[
+\xi(s) = \xi(1-s), \quad \xi(s) = \pi^{-s/2} \Gamma\left(\frac{s}{2}\right) \zeta(s),
+\]
+where $\Gamma(s)$ is Euler's Gamma function. By writing
+\[
+\log \zeta(s) = s \int_1^{\infty} x^{-s-1} \Pi(x)\,dx \quad (\mathrm{Re}(s) > 1).
+\]
+and by Mellin inversion (we owe to Riemann the discovery of Mellin transformation), he deduces the \emph{explicit formula}
+\begin{equation}
+\Pi(x) = \mathrm{Li}(x) - \sum_{\rho}' \mathrm{Li}(x^\rho) + \int_x^{\infty} \frac{1}{x^2 - 1} \frac{dx}{x \log x} + \log \frac{1}{2},
+\tag{1}
+\end{equation}
+with the following notations: $\rho$ runs over the set
+\[
+\mathcal{R} = \{\rho \in \mathbb{C} \mid \zeta(\rho) = 0 \text{ and } 0 \leq \mathrm{Re}(s) \leq 1\},
+\]
+The function $\mathrm{Li}(x)$ is the \emph{integral logarithm}: if $\mathrm{Re}(s) > 0$ and $x > 1$, then
+\[
+\mathrm{Li}(x^s) = \int_0^x \frac{z^{s-1}}{\log z}\,dz.
+\]
+The convergence of the RHS is conditional and the summation has to be performed as follows:
+\[
+\sum_{\rho \in \mathcal{R}}' \Phi(x^\rho) = \lim_{T \to \infty} \sum_{|\mathrm{Im} \rho| \leq T} \Phi(x^\rho).
+\]
+In the same memoir, one finds \emph{Riemann's Hypothesis} (RH): the zeros of $\zeta(s)$ in $\mathcal{R}$ all lie on the \emph{critical line}
+\[
+L = \{s \in \mathbb{C} \mid \mathrm{Re}(s) = \tfrac{1}{2}\}.
+\]
+
+Then Riemann deduces from (1) by heuristic considerations that if (RH) is true, then
+\[
+\Pi(x) = \mathrm{Li}\, x + O(x^{1/2} \log x),
+\]
+a strong form of the Prime Number Theorem. Formula (1), which shows the intrinsic relation between the two sets $Q$ and $\mathcal{R}$, is a special case of the general \emph{explicit formula of Guinand-Weil}; here is the version of Bombieri \cite{B}. Let $\Lambda(n)$ be the von Mangoldt function:
+\[
+\Lambda(n) = \log p \text{ if } n \text{ is a power of } p \text{ and } \Lambda(n) = 0 \text{ elsewhere}.
+\]
+If $\mathrm{Re}(s) > 1$, then
+\[
+- \frac{\zeta'}{\zeta}(s) = \sum_{n=2}^{\infty} \frac{\Lambda(n)}{n^s}.
+\]
+Then for a sufficiently regular class of test functions,
+\begin{equation}
+\tilde{u}(0) + \tilde{u}(1) - \sum_{\rho \in \mathcal{R}}' \tilde{u}(\rho)
+ = \sum_{n=1}^{\infty} \Lambda(n) [u(n) + u^*(n)] + W_{\infty}(u),
+\tag{2}
+\end{equation}
+where $W_{\infty}(u)$ is the finite part of some divergent integral, where
+\[
+\tilde{u}(s) = \int_0^{\infty} u(t) t^{s-1}\,dt
+\]
+is the \emph{Mellin transform} of $u$, and where
+\[
+u^*(t) = \frac{1}{t} u\left(\frac{1}{t}\right).
+\]
+The LHS and RHS of (2) are respectively called the \emph{spectral side} and the \emph{arithmetical side} of the explicit formula. André Weil proved that (RH) is equivalent to the positivity of the distribution defined by any side of (2). Note the minus sign in (1) and (2). Now introduce \emph{Chebyshev's function}
+\[
+\psi(x) = \sum_{n=1}^x \Lambda(n).
+\]
+The density of this function is
+\[
+\frac{d\psi(x)}{dx} = (\log x) \frac{d\Pi(x)}{dx},
+\]
+therefore, by (1)
+\begin{equation}
+\frac{d\psi(x)}{dx} = 1 - \sum_{\gamma \in Z} \frac{\cos(\gamma \log x)}{\sqrt{x}} - \frac{1}{x(x^2 - 1)},
+\tag{3}
+\end{equation}
+where
+\[
+Z = \left\{\gamma \in \mathbb{C} \mid \zeta\left(\tfrac{1}{2} + i\gamma\right) = 0 \text{ and } |\mathrm{Im}\,\gamma| < \tfrac{1}{2}\right\}.
+\]
+
+\subsection*{2.\ Operators in Hilbert spaces}
+
+The density (3) is a \emph{trigonometrical series} and looks like a \emph{signal}, a series of \emph{eigenstates} or \emph{eigenvibrations} of a mysterious and hypothetical system whose spectrum is $Z$. The states of this system would be given by functions
+\[
+f(x) = \sum_{\gamma \in Z} c_{\gamma} x^{i\gamma},
+\]
+and an operator of the system is then given by
+\[
+Hf(x) = \sum_{\gamma \in Z} h(\gamma) c_{\gamma} x^{i\gamma},
+\]
+in such a way that
+\[
+\mathrm{Spec}\, H = \{h(\gamma) \mid \gamma \in Z\}
+\]
+and
+\[
+\mathrm{Trace}\, H = \sum_{\gamma \in Z} h(\gamma).
+\]
+Such a system would give an interpretation of the spectral side of the explicit formula as a trace.
+
+In his works on integral equations, David Hilbert states the following result: an (unbounded) normal operator $D$ of an Hilbert space $\mathcal{H}$ is self-adjoint if and only if its spectrum $\mathrm{Spec}\, D$, which is a closed subset of the complex plane, is included in the real line. And he is reported to have said: ``And with this theorem, Sirs, we shall prove the Riemann Hypothesis''. The same idea appears in the papers of Pólya. In this circle of ideas, there are two approaches of the Riemann hypothesis. We can try the following: define a Hilbert space $\mathcal{H}$ and a closed unbounded operator $D$ in $\mathcal{H}$, with dense domain, such that
+\[
+\mathrm{Spec}\, D = Z,
+\]
+then prove that $\mathrm{Spec}\, D$ is included in the real line (this condition is for instance fulfilled if $D$ is self-adjoint). Of course, there are tautological answers to the constructions of such couples $(D, \mathcal{H})$, by considering for instance
+\[
+\mathcal{H} = \bigoplus_{\gamma} H_{\gamma}, \quad \dim H_{\gamma} = 1, \quad Dx_{\gamma} = \gamma x_{\gamma} \text{ if } x_{\gamma} \in H_{\gamma},
+\]
+or, as in the discussion above, $\mathcal{H}$ could be the space of functions
+\[
+f(x) = \sum_{\gamma \in Z} c_{\gamma} x^{i\gamma}, \quad \sum_{\gamma \in Z} |c_{\gamma}|^2 < \infty, \quad Dx = -ix \frac{d}{dx},
+\]
+(if $Z \subset \mathbb{R}$, $\mathcal{H}$ is a space of Besicovitch almost periodic functions on $\mathbb{R}_+^{\times}$); but these constructions do not bring much information! In his fundamental article \cite{C}, Alain Connes reverses the process: the idea is to define a Hilbert space $\mathcal{H}$ and a closed unbounded operator $D$ in $\mathcal{H}$ such that
+\[
+\mathrm{Spec}\, D = \mathcal{Y},
+\]
+where
+\[
+\mathcal{Y} = Z \cap \mathbb{R} = \left\{\gamma \in \mathbb{R} \mid \zeta\left(\tfrac{1}{2} + i\gamma\right) = 0\right\},
+\]
+then try to prove that $\mathrm{Spec}\, D = Z$ through an analysis of the trace of the corresponding representation of test functions, as to be compared to the explicit formula. Such a couple $(D, \mathcal{H})$ is called a \emph{Pólya-Hilbert space}. It is worthwhile to observe that the minus sign in the explicit formula indicates that the Pólya-Hilbert space providing the spectral realization of the zeros should appear as the last term of an exact sequence of Hilbert spaces,
+\[
+0 \longrightarrow \mathcal{H}_0 \longrightarrow \mathcal{H}_1 \longrightarrow \mathcal{H} \longrightarrow 0
+\]
+We may as well define the Pólya-Hilbert space as
+\[
+\mathcal{H} = \mathcal{H}_1 \ominus \mathcal{H}_0,
+\]
+since this is the dual of $\mathcal{H}$, and the trace formula is to be read on
+\[
+\mathcal{H}_0 = \mathcal{H}_1 \ominus \mathcal{H}
+\]
+We quote \cite{C}: ``The Pólya-Hilbert space should appear on its negative $\ominus \mathcal{H}$. In other words, the spectral interpretation of the zeros of the Riemann zeta function should be as an \emph{absorption spectrum} rather than an emission spectrum, to borrow the language of spectroscopy''.
+
+\section*{A PÓLYA-HILBERT SPACE ON THE HALF-LINE}
+
+\subsection*{3.\ Theta Series}
+
+We now describe a simplified version of the construction of Connes. This construction lies on a key result, already appearing in Riemann's memoir, who expressed the zeta function as the Mellin transform of the Jacobi theta series (Weil found the same calculations in a manuscript of Eisenstein). This construction has been generalized by Müntz in 1922 as follows: if $\varphi$ belongs to the Schwartz space $\mathcal{S}(\mathbb{R})$, the function
+\[
+\vartheta(\varphi)(x) = x^{1/2} \sum_{n \neq 0} \varphi(nx), \quad x > 0,
+\]
+is quickly decreasing at infinity. The Fourier-Mellin transform
+\[
+\widehat{\vartheta(\varphi)}(\lambda) = \int_0^{\infty} \vartheta(\varphi)(x) x^{i\lambda}\,d^{\times}x
+\]
+defined if $\mathrm{Im}\,\lambda < -1/2$, admits an analytic continuation to the whole complex plane, with at worst simple poles if $\lambda = \pm i/2$.
+
+\medskip
+
+\noindent
+\textbf{Proposition 1.} \emph{If $\varphi \in \mathcal{S}(\mathbb{R})$, and if $\lambda \in \mathbb{C}$, then}
+\begin{equation}
+\widehat{\vartheta(\varphi)}(\lambda) = \zeta\left(\tfrac{1}{2} + i\lambda\right) \Gamma\left(\varphi, \tfrac{1}{2} + i\lambda\right),
+\tag{4}
+\end{equation}
+\emph{where $\Gamma(\varphi, s)$ is the Mellin transform of $\varphi(t) + \varphi(-t)$.}
+
+\medskip
+
+This shows that $\widehat{\vartheta(\varphi)}$ vanishes at the zeros of $\zeta(1/2 + i\lambda)$: these zeros are \emph{missing spectral values}. Hence, we can hope that they will appear in the orthogonal of the space generated by the series $\vartheta(\varphi)$ in a suitable space.
+
+\subsection*{4.\ The orthogonal of theta series}
+
+Unfortunately, the space $L^2(\mathbb{R}_+^{\times})$ is not convenient: there is no discrete spectrum inside. If $\delta \in \mathbb{R}$, denote by $L_{\delta}^2(\mathbb{R}_+^{\times}) = L_{\delta}^2$ the Hilbert space of functions on $\mathbb{R}_+^{\times}$ such that
+\[
+\|f\|^2 = \int_0^{\infty} |f(x)|^2 (1 + \log^2 x)^{\delta/2}\,d^{\times}x < \infty.
+\]
+Assume now $\delta > 1$. The spaces $L_{\delta}^2$ and $L_{-\delta}^2$ are mutually duals through the scalar product
+\[
+(f, g) = \int_0^{\infty} f(x) \overline{g(x)}\,d^{\times}x.
+\]
+The Fourier-Mellin transform converts the upper triple of the diagram below into the lower one:
+\[
+L_{\delta}^2 \subset L^2 \subset L_{-\delta}^2
+\]
+\[
+\downarrow
+\]
+\[
+\mathcal{S}(\mathbb{R}) \subset H^{\delta/2}(\mathbb{R}) \subset L^2(\mathbb{R}) \subset H^{-\delta/2}(\mathbb{R}) \subset \mathcal{S}'(\mathbb{R})
+\]
+where $H^m(\mathbb{R})$ is the Sobolev space of order $m$. If $f \in L_{\delta}^2$ and if $\psi \in L_{-\delta}^2$, then
+\begin{equation}
+\int_0^{\infty} f(x) \psi(x)\,d^{\times}x = \frac{1}{2\pi} \int_{\mathbb{R}} \hat{f}(\lambda) \hat{\psi}(\lambda)\,d\lambda,
+\tag{5}
+\end{equation}
+using Leibniz' notation for distributions.
+
+Let $\mathcal{S}(\mathbb{R})_0$ be the subspace of $\mathcal{S}(\mathbb{R})$ made of functions such that
+\[
+\mathcal{F}\varphi(0) = \varphi(0) = 0.
+\]
+Let $\Theta$ be the subspace of $L_{\delta}^2$ generated by the series $\vartheta(\varphi)$, where $\varphi \in \mathcal{S}(\mathbb{R})_0$. Thanks to the introduction of $\delta$, there do are discrete spectral values in $\Theta^{\perp}$:
+
+\medskip
+
+\noindent
+\textbf{Theorem 2.} \emph{Assume $\delta < 3$ for simplicity. Then $\psi \in L_{-\delta}^2$ is in $\Theta^{\perp}$ if and only if $\hat{\psi}$ is a measure with support included in the locally finite set $\mathcal{Y}$. In other words, any $\psi \in \Theta^{\perp}$ can be written as a convergent series in $L_{-\delta}^2$}
+\[
+\psi(x) = \sum_{\gamma} c_{\gamma} x^{i\gamma}.
+\]
+\emph{Remark that we recover the tautological space of almost periodic functions!}
+
+\medskip
+
+\noindent
+\emph{Proof.} From proposition 1 and formula (5), we get
+\[
+(\psi \mid \vartheta(\bar{\varphi})) = \int_0^{\infty} \psi(x) \vartheta(\varphi)(x)\,d^{\times}x
+\]
+\[
+= \frac{1}{2\pi} \int_{\mathbb{R}} \overline{\vartheta(\varphi)}(\lambda)\,d\hat{\psi}(\lambda)
+\]
+\[
+= \frac{1}{2\pi} \int_{\mathbb{R}} \zeta(\tfrac{1}{2} + i\lambda)\, \Gamma(\varphi, \tfrac{1}{2} + i\lambda)\,d\hat{\psi}(\lambda).
+\]
+$\square$
+
+\medskip
+
+The regular representation of $\mathbb{R}_+^{\times}$ in $L_{\delta}^2$ induces a semi-group of operators
+\[
+[V(t)f](x) = f(e^t x), \quad t \in \mathbb{R}_+^{\times}, \quad x \in \mathbb{R}_+^{\times},
+\]
+which is of class $(C_0)$, since it satisfies the growth estimate
+\[
+\|V(t)\| = O(t)^{\delta/2}.
+\]
+The quotient space $\mathcal{H}_{\delta} = L_{\delta}^2 / \Theta$ appears as the last term of the exact sequence
+\[
+0 \longrightarrow \Theta \longrightarrow L_{\delta}^2(\mathbb{R}_+^{\times}) \longrightarrow \mathcal{H}_{\delta} \longrightarrow 0
+\]
+Moreover,
+\[
+\mathcal{H}_{\delta}^* = \Theta^{\perp} \subset L_{-\delta}^2.
+\]
+The space $\Theta$ is invariant under the semi-group $V$, and we get in this way a semi-group $W$ in $\mathcal{H}_{\delta}$, coming with an infinitesimal generator $D_{\delta}$. The spectrum of $D_{\delta}$ can be computed in $\Theta^{\perp}$ through the transposed semi-group ${}^{t}W$: we find that
+\[
+{}^{t}D_{\delta} f = ix \frac{df}{dx}
+\]
+if $f \in \Theta^{\perp}$ is sufficiently regular. From Theorem 2 we get:
+
+\medskip
+
+\noindent
+\textbf{Theorem 3.} \emph{The spectrum of $D_{\delta}$ is equal to $\mathcal{Y}$: the couple $(\mathcal{H}_{\delta}, D_{\delta})$ is a Pólya-Hilbert space.}
+
+\medskip
+
+We remark that the operator $D_{\delta}$ is neither self-adjoint, nor normal, since
+\[
+{}^{t}D_{\delta}^* f = ix \frac{df}{dx} - \frac{i}{2} \frac{\delta \log x}{1 + (\log x)^2} f.
+\]
+The character of $W$ is
+\[
+\text{Trace } W(u) = \sum_{\gamma \in \mathcal{Y}} \tilde{u}(\tfrac{1}{2} + i\gamma),
+\]
+where
+\[
+W(u) = \int_{Z(\mathbb{A}) \backslash G(\mathbb{A})} W(x) u(x)\,dx,
+\]
+and where $\tilde{u}$ is the Mellin transform of the test function $u$. The strategy proposed by Alain Connes is then to prove that
+\[
+\tilde{u}(0) + \tilde{u}(1) - \text{Trace } W(u)
+\]
+is equal to the arithmetic side of the explicit formula, and he provides deep arguments towards this goal.
+
+\section*{TORICAL FORMS : IMAGINARY QUADRATIC FIELDS}
+
+\subsection*{5.\ Eisenstein Series}
+
+Let $H$ be the upper half-plane made of $z = x + iy$ such that $y > 0$. If $s \in \mathbb{C}$ and if $\text{Re } s > 1$, the \emph{Eisenstein series} $\text{E}(z, s)$ is the special function defined by
+\[
+\text{E}(z, s) = \sum_{(m,n)=1} \frac{y^s}{|cz+d|^{2s}} = \sum_{(\Gamma \cap P) \backslash \Gamma} (\text{Im } \gamma z)^s,
+\]
+where $\Gamma = SL(2, \mathbb{Z})$ is the modular group and
+\[
+P = \left\{ \begin{pmatrix} 1 & x \\ 0 & 1 \end{pmatrix} \right\}.
+\]
+Then $\text{E}(\gamma z, s) = \text{E}(z, s)$ if $\gamma \in \Gamma$, and $\text{E}(z, s)$ defines a function on the \emph{modular surface} $X = \Gamma \backslash H$. The function
+\[
+\text{E}^{\times}(z, s) = \xi(2s) \text{E}(z, s)
+\]
+admits a meromorphic continuation to the whole plane, and is regular except for simple poles at $s = 0$ and $s = 1$. Moreover $\text{E}(z, s)$ satisfies the following functional equation:
+\[
+\text{E}^{\times}(z, 1-s) = \text{E}^{\times}(z, s)
+\]
+that is,
+\[
+\text{E}(z, s) = c(s) \text{E}(z, 1-s), \quad \text{where } c(s) = \frac{\xi(2(1-s))}{\xi(2s)}.
+\]
+The Eisenstein series is not harmonic, but it is an eigenfunction of the Laplace operator of $H$:
+\[
+\Delta = -y^2 \left( \frac{\partial^2}{\partial x^2} + \frac{\partial^2}{\partial y^2} \right),
+\]
+namely
+\[
+\Delta \text{E}(z, s) = s(1-s) \text{E}(z, s).
+\]
+
+\subsection*{6.\ Measures associated to imaginary quadratic fields}
+
+Let $K$ an imaginary quadratic field with discriminant $D < 0$. A \emph{Gauss point} of $K$ of discriminant $D$ is a complex number
+\[
+z = \frac{-b + \sqrt{D}}{2a}
+\]
+such that
+\[
+a > 0, \quad (a, b, c) = 1, \quad b^2 - 4ac = D, \quad a, b, c \in \mathbb{Z},
+\]
+and belonging to the fundamental domain $\mathcal{F}$:
+\[
+-\frac{1}{2} < \text{Re } z \leq \frac{1}{2}, \quad |z| > 1 \text{ if } -\frac{1}{2} < \text{Re } z < 0, \quad |z| \geq 1 \text{ if } 0 \leq \text{Re } z \leq \frac{1}{2}.
+\]
+The map
+\[
+z \mapsto \mathfrak{a}_z = \mathbb{Z} \oplus z\mathbb{Z}
+\]
+induces a one-to-one correspondence from the set of Gauss points of discriminant $D$ to the class group $Cl_K$ of $K$, and the number $h_K$ of Gauss points is equal to the class number of $K$. We denote by $C \mapsto z_C$ the reciprocal map from $Cl_K$ to the set of Gauss points. Introduce now the measure with finite support on $H$:
+\[
+\oint F(z)\,dm(z) = \sum_{C \in Cl_K} F(z_C).
+\]
+
+\medskip
+
+\noindent
+\textbf{Proposition 4} (Hecke's formula for imaginary quadratic fields).\ 
+\emph{Let $K$ be an imaginary quadratic field of discriminant $D < 0$, and $\zeta_K(s)$ the Dedekind zeta function of $K$. If $s \neq 1$, then}
+\[
+\zeta(2s) \oint \text{E}(z, s)\,dm(z) = \frac{w}{2} \left( \frac{|D|}{4} \right)^{s/2} \zeta_K(s),
+\]
+\emph{where $w$ is the order of the group of roots of unity in $K$.}
+
+\medskip
+
+\noindent
+\emph{Proof} \cite{S}. Consider any ideal $\mathfrak{b} \in C^{-1}$. If $\mathfrak{a} \in C$, the map
+\[
+\xi \mapsto (\xi) \mathfrak{b}^{-1}
+\]
+induces a bijection $\mathfrak{b} / W \longrightarrow \mathfrak{a}$, where $W$ is the set of roots of unity in $K$. Hence,
+\[
+\zeta(C, s) = \sum_{\mathfrak{a} \in C} \frac{1}{N(\mathfrak{a})^s} = \frac{N(\mathfrak{b})^s}{w} \sum_{\xi \in \mathfrak{b}}' \frac{1}{N(\xi)^s}.
+\]
+Let $z_C = z$ be the Gauss point with image $C^{-1}$, in such a way that $\mathfrak{b} = \mathbb{Z} \oplus z_C \mathbb{Z}$. Then
+\[
+\begin{vmatrix} 1 & z_C \\ 1 & \bar{z}_C \end{vmatrix} = |\bar{z}_C - z_C| = 2y_C = N(\mathfrak{b}) \sqrt{|D|}.
+\]
+Hence,
+\[
+\zeta(C, s) = \frac{1}{w} \left( \frac{|D|}{4} \right)^{-s/2} \sum_{m,n}' \frac{y_C^s}{|mz_C + n|^{2s}}.
+\]
+Now
+\[
+\zeta(2s) \text{E}(z_C, s) = \frac{1}{2} \sum_{m,n}' \frac{y_C^s}{|mz_C + n|^{2s}},
+\]
+hence
+\[
+\zeta(2s) \text{E}(z_C, s) = \frac{w}{2} \left( \frac{|D|}{4} \right)^{s/2} \frac{1}{N(\mathfrak{b})^s} \zeta(C, s),
+\]
+from which the result follows by summation. $\square$
+
+\subsection*{7.\ Torical forms}
+
+Following Zagier \cite{Z}, we say that $F$ is a \emph{torical form} for $K$ if
+\[
+\oint F(z)\,dm(z) = 0.
+\]
+An (Eisenstein) \emph{wave packet} is a (finite) linear combination of Eisenstein series. More precisely, the space $E(X)$ of wave packets is made of functions
+\[
+W(\mu)(z) = \int_B \text{E}(z, s)\,d\mu(s) = \sum c_i \text{E}(z, s_i) \quad (z \in H),
+\]
+where $\mu = \sum c_i \delta(s_i)$ belongs to the space $\mathcal{M}_2(B)$ of measures with finite support in the open strip
+\[
+B = \{s \in \mathbb{C} \mid 0 < \text{Re}(s) < 1\},
+\]
+this support being assumed disjoint from the set of poles of $\text{E}(z, s)$. The \emph{spectrum} of $F$ is the support of $\mu$. Hecke's formula implies:
+
+\medskip
+
+\noindent
+\textbf{Proposition 5.} \emph{$F \in E(X)$ is torical if and only if}
+\[
+\text{Spec } F \subset \{s \in B \mid \zeta_K(s) = 0\}.
+\]
+\emph{The moral is that we can use torical wave-packets to build a Pólya-Hilbert space for the Dedekind zeta function of $K$!}
+
+\section*{AN AUTOMORPHIC PÓLYA-HILBERT SPACE}
+
+\subsection*{8.\ The idele class group}
+
+Let $K$ be a global field. If one wish to generalize the preceding constructions to the zeta function of $K$ and to $L$-functions, the natural setting for such constructions is the ring $\mathbb{A}_K$ of adeles of $K$ \cite{W}. In fact, the starting point of Connes' theory is based on the geometry of the noncommutative space
+\[
+K^{\times} \backslash \mathbb{A}_K.
+\]
+Let $C_K = K^{\times} \backslash \mathbb{A}_K^{\times}$ be the idele class group of $K$. Then one defines the mapping $\vartheta$ from the Schwartz-Bruhat space $\mathcal{S}(\mathbb{A}_K)$ to $L^2(C_K)$ given by
+\[
+\vartheta(\varphi)(x) = |x|^{1/2} \sum_{q \in K^{\times}} \varphi(qx), \quad x \in C_K,
+\]
+and the calculations of section 3 are a downgrade of this construction.
+
+Moreover, the modular surface $\Gamma \backslash H$ is a quotient of $GL_2(\mathbb{Q}) \backslash GL_2(\mathbb{A})$, where $\mathbb{A}$ is the ring of adeles of $\mathbb{Q}$, and if one wants to generalize to any number field the construction of the preceding section, one needs to replace $GL_2$ by $GL_n$, as we shall show now.
+
+Assume that $K$ is an algebraic number field of degree $n > 1$, and let $\mathcal{O}$ be the ring of integers of $K$. Let $(\alpha_1, \dots, \alpha_n)$, with $\alpha_1 = 1$, be a \emph{fundamental basis} of $K$, i.e.\ a basis such that the map
+\[
+\iota : u = (u_1, \dots, u_n) \mapsto u_1 \alpha_1 + \dots + u_n \alpha_n
+\]
+is an isomorphism from $\mathbb{Z}^n$ to $\mathcal{O}$. The right regular representation $\pi$ of $K$ in $\mathbb{Q}^n$ is defined as follows: if $\xi \in K^{\times}$, we denote by $\rho(\xi)$ the multiplication by $\xi$, and we set
+\[
+\pi(\xi).u = \iota^{-1} \circ \rho(\xi) \circ \iota(u).
+\]
+The representation $\pi$ is ``algebraic'' and its image is a maximal torus $T$ of the algebraic group $G = GL_n$ ($T$ is not split over $\mathbb{Q}$). For instance, if $K$ is quadratic, with discriminant $D \equiv 2$ or $3 \pmod 4$ and if $(\alpha_1, \alpha_2) = (1, \sqrt{D})$, then
+\[
+\pi(x + y\sqrt{D}) = \begin{pmatrix} x & y \\ Dy & x \end{pmatrix}.
+\]
+If $G_{\mathbb{A}}$ is the group of points of $G$ with values in $\mathbb{A}$, the representation $\pi$ induces an isomorphism
+\[
+C_K \xrightarrow{\sim} T_{\mathbb{Q}} \backslash T_{\mathbb{A}} \subset G_{\mathbb{Q}} \backslash G_{\mathbb{A}}.
+\]
+
+\subsection*{9.\ Eisenstein series}
+
+The Eisenstein series admits the following generalization. Let
+\[
+P = \left\{ \begin{pmatrix} g' & x \\ 0 & t \end{pmatrix} \right\}
+\]
+be the standard maximal parabolic subgroup of $G$ of type $(n-1, 1)$, with
+\[
+g' \in GL_{n-1}, \quad t \in \mathbb{G}_m = GL_1, \quad x \in \mathbb{A}^{n-1}.
+\]
+The module of $P_{\mathbb{A}}$ is
+\[
+\delta_P(p) = \left| \frac{t^{n-1}}{\det g'} \right|_{\mathbb{A}}.
+\]
+Now $G_{\mathbb{A}} = P_{\mathbb{A}} \mathbf{K}$, where $\mathbf{K}$ is the usual maximal compact subgroup of $G_{\mathbb{A}}$. If $g = p\kappa \in G_{\mathbb{A}}$, with $p \in P$ and $\kappa \in \mathbf{K}$, we set $\delta_P(g) = \delta_P(p)$. The normalized Eisenstein series corresponding to $P$ is
+\[
+\text{E}(g, s) = \sum_{\gamma \in P_{\mathbb{Q}} \backslash G_{\mathbb{Q}}} \delta_P(\gamma g)^s, \quad g \in G_{\mathbb{A}}.
+\]
+
+This series is convergent if $\text{Re}(s) > 1$ and belongs to the space $C(X)$ of continuous functions on the \emph{modular variety}
+\[
+X = G_{\mathbb{Q}} Z_{\mathbb{A}} \backslash G_{\mathbb{A}} / \mathbf{K},
+\]
+where $Z$ is the center of $G$. The series $\text{E}(g, s)$ admits a meromorphic continuation to the whole plane: the function $\xi(ns) \text{E}(g, s)$ is regular except for simple poles at $s = 0$ and $s = 1$. The following functional equation holds:
+\[
+\text{E}(g, s) = c(s) \text{E}({}^t g^{-1}, 1-s), \quad \text{where } c(s) = \xi(n(1-s)) / \xi(ns).
+\]
+Moreover, if $\Delta$ is the Laplace operator of $X$ (a second order differential operator which is a suitable multiple of the Casimir operator of the Lie algebra of $G$), and if $s$ is not a pole, then
+\[
+\Delta \text{E}(g, s) = s(1-s) \text{E}(g, s).
+\]
+
+\subsection*{10.\ Torical forms}
+
+Let $U_T$ be the maximal compact subgroup of the adelic torus $T_{\mathbb{A}}$. The group $T_{\mathbb{Q}} Z_{\mathbb{A}} \backslash T_{\mathbb{A}} / U_T$ is an extension of the class group $Cl_K$ of $K$ by a topological torus (a product of circles) of dimension $r = r_1 + r_2 - 1$, where $r_1$ and $r_2$ are respectively the number of real and imaginary places of $K$:
+\[
+1 \longrightarrow SO(2, \mathbb{R})^r \longrightarrow T_{\mathbb{Q}} Z_{\mathbb{A}} \backslash T_{\mathbb{A}} / U_T \longrightarrow Cl_K \longrightarrow 1
+\]
+If $F \in C(X)$, the constant term of $F$ is
+\[
+\oint F(hg)\,dh = \int_{T_{\mathbb{Q}} Z_{\mathbb{A}} \backslash T_{\mathbb{A}} / U_T} F(hg)\,dh,
+\]
+and we say that $F \in C(X)$ is a \emph{torical form} if the constant term of $F$ is equal to zero for every $g \in G_{\mathbb{A}}$; we denote by $T(X)$ the space of such forms.
+
+Let $\xi$ be a primitive element of $K$, and $\epsilon$ the conjugacy class of $\pi(\xi)$ in $G_{\mathbb{Q}}$. The \emph{orbital series} of a test function $u \in C_c(Z_{\mathbb{A}} \backslash G_{\mathbb{A}} / \mathbf{K})$ is
+\[
+u_{\epsilon}(g) = \sum_{\gamma \in \epsilon} u(g^{-1} \gamma g).
+\]
+The function $u_{\epsilon}$ has compact support on $X$. Here is a vague form of presentation of $T(X)$ on its negative:
+
+\medskip
+
+\noindent
+\textbf{Proposition 6.} \emph{The function $F \in C(X)$ is a torical form if and only if}
+\[
+\int_{G_{\mathbb{Q}} Z_{\mathbb{A}} \backslash G_{\mathbb{A}}} F(g) u_{\epsilon}(g)\,dg = 0
+\]
+\emph{for every test function $u$.}
+
+\subsection*{11.\ The space $T^2(X)$}
+
+The adelic Hecke's formula \cite{L1} shows that $\text{E}(g, s)$ is a torical form if and only if $\zeta_K(s) = 0$, more precisely:
+
+\medskip
+
+\noindent
+\textbf{Proposition 7.} \emph{If $g \in G_{\mathbb{A}}$, then}
+\[
+\oint \text{E}(hg, s)\,dh = \zeta_K(s) H(g, s),
+\]
+\emph{where $\xi(ns) H(g, s)$ is holomorphic in the half-plane $\text{Re } s > 0$. Moreover, there is $g_K \in G_{\mathbb{A}}$ such that $\xi(ns) H(g_K, s, \chi)$ does not vanish in $\mathbb{C}$.}
+
+\medskip
+
+Now we can define the space $E(X)$ of wave-packets as in section 7, and Proposition 7 gives Proposition 5 in the general setting.
+
+We say that a wave packet is \emph{principal} if its spectrum is contained in the critical line $L$, and we denote by $E^1(X)$ the space of principal wave packets. Proposition 5 implies that $\zeta_K(s)$ satisfies (RH) if and only if any torical wave packet is principal.
+
+\medskip
+
+Let us go back to the case of imaginary quadratic fields for a minut. Let $\mathfrak{F}_{m}$ be the fundamental domain $\mathcal{F}$ of $\Gamma \backslash H$ truncated at $y = m$, and $\chi_{m}$ the characteristic function of $\mathfrak{F}_{m}$. If $F \in C(X)$, we define
+\[
+\Lambda^{m} F = F \chi_{m}.
+\]
+One denotes by $\mathcal{A}^{2}(X)$ the pre-Hilbert space made of functions $F \in C(X)$ such that
+\[
+\|F\|_{2}^{2} = \lim_{m \to \infty} \frac{1}{4 \log m} \int_{X} |\Lambda^{m} F(z)|^{2}\,dm(z) < +\infty.
+\]
+The operator $\Lambda^{m}$ has been generalized for the modular variety by Langlands and Arthur \cite{A}; hence, we can define the space $\mathcal{A}^{2}(X)$ in the general setting. Let $A^{2}(X)$ be the Hilbert space associated to $\mathcal{A}^{2}(X)$. This definition is an automorphic analog of almost periodic functions. Then the following results hold \cite{L1,L2}. From the Maass-Selberg relations, one deduces :
+
+\medskip
+
+\noindent
+\textbf{Proposition 8.} \emph{If $F$ is a non-zero principal wave-packet, then}
+\[
+0 < \|F\|_{2} < +\infty,
+\]
+\emph{and $E^{1}(X) \subset A^{2}(X)$. If $n = 2$, then}
+\[
+E^{1}(X) = E(X) \cap A^{2}(X).
+\]
+
+\medskip
+
+\noindent
+\textbf{Theorem 9.} \emph{The following conditions are equivalent :}
+\begin{itemize}
+\item[(i)] \emph{The roots of $\zeta_{K}(s)$ in $B$ lie on the critical line.}
+\item[(ii)] \emph{Any torical wave-packet belongs to $A^{2}(X)$.}
+\end{itemize}
+
+\medskip
+
+Now we denote by $T^{2}(X)$ the Hilbert space which is the closure of $E^{1}(X) \cap T(X)$ in $A^{2}(X)$. Let $D$ be the unbounded operator in $T^{2}(X)$ defined by the Laplace operator $\Delta$, with domain the closure of $E^{1}(X) \cap T(X)$ for the norm $\|\Delta F\|_{2}$. Let
+\[
+\mathcal{Y} = \left\{ \gamma \in \mathbb{R} \mid \zeta_{K}\left(\tfrac{1}{2} + i\gamma\right) = 0 \right\}.
+\]
+
+\medskip
+
+\noindent
+\textbf{Theorem 10.} \emph{The operator $D$ is self-adjoint, and}
+\[
+\text{Spec } D = \{ \lambda \mid \lambda = \tfrac{1}{4} + \gamma^{2},\ \gamma \in \mathcal{Y} \}.
+\]
+\emph{The eigenvalues are double if $n \geq 3$ and simple if $n = 2$.}
+
+\medskip
+
+In other words, $(T^{2}(X), D)$ is a Pólya-Hilbert space for $\zeta_{K}(s)$ (leaving aside the change of variables from $\gamma$ to $\lambda$). It is worthwhile to notice that the spectrum of $D$ takes into account the zeros of $\zeta_{K}(s)$ with uniform multiplicity, but this is compatible with the usual conjectures.
+
+Let $\mathfrak{A}(G)$ be the Hecke algebra of functions $u \in C_{c}(Z_{\mathbb{A}} \backslash G_{\mathbb{A}})$ bi-invariant under $K$ and $R(u)$ the right regular representation of $\mathfrak{A}(G)$ in $C(X)$ :
+\[
+R(u)f(x) = \int_{Z(\mathbb{A}) \backslash G(\mathbb{A})} f(xy) u(y)\,dy.
+\]
+If $u \in \mathfrak{A}(G)$, then $R(u)E(g, s) = \tilde{u}(s)E(g, s)$, with the entire function
+\[
+\tilde{u}(s) = \int_{Z_{\mathbb{A}} \backslash G_{\mathbb{A}}} \delta_{P}(g)^{s} u(g)\,dg ;
+\]
+we thus get a representation $R_{0}(u)$ of $\mathfrak{A}(G)$ in $T^{2}(X)$.
+
+\medskip
+
+\noindent
+\textbf{Corollary 11.} \emph{If $u \in \mathfrak{A}(G)$, then}
+\[
+\text{Trace } R_{0}(u) = \sum_{\gamma \in \mathcal{Y}} \tilde{u}\left(\tfrac{1}{2} + i\gamma\right),
+\]
+\emph{where we assume $\gamma \geq 0$ if $n = 2$.}
+
+\section*{SOURCES ON RIEMANN'S MEMOIR}
+
+\begin{enumerate}
+\item Riemann, Bernhard, \emph{Ueber die Anzahl der Primzahlen unter einer gegebenen Grösse} [On the Number of Prime Numbers less than a Given Quantity]. Monatsber.\ Königl.\ Preuss.\ Akad.\ Wiss.\ Berlin, (November 1859), 671. See \cite{R2,R3,R4}. See also
+
+\texttt{http://www.maths.tcd.ie/pub/HistMath/People/Riemann/Zeta/}
+
+\texttt{http://www.wolfram.com/products/publicon/documents/}
+
+\item Riemann, Bernhard, \emph{Gesammelte Mathematische Werke und Wissenschaftlicher Nachlass}, herausgegeben unter Mitwirkung von Richard Dedekind, von Heinrich Weber. Leipzig, B.\ G.\ Teubner 1892, 145--153.
+
+\texttt{http://www.emis.de/classics/Riemann/index.html.}
+
+\item Riemann, Bernhard, \emph{Collected mathematical works}, according to the edition by H.\ Weber and R.\ Dedekind, newly edited by R.\ Narasimhan, Springer-Verlag, Berlin, 1990.
+
+\item Riemann, Bernhard, \emph{Œuvres mathématiques}, J.\ Gabay, Paris, 1990. Réimpression de l'édition de 1898.
+\end{enumerate}
+
+\section*{REFERENCES}
+
+\begin{enumerate}
+\item Arthur, James, \emph{A Trace Formula for Reductive groups II : Applications of a Truncation Operator}, Compositio Math.\ 40 (1980), 87--121.
+\item Bombieri, Enrico, \emph{Remarks on Weil's quadratic functional in the theory of prime numbers I}. Rend.\ Mat.\ Acc.\ Lincei (9) 11 (2000), 183--233.
+\item Connes, Alain, \emph{Trace formula in noncommutative geometry and the zeros of the Riemann zeta function}, Sel.\ Math., New Ser.\ 5 (1999), 29--106.
+
+\texttt{http://www.birkhauser.ch/journals/2900/papers/9005001/90050029.pdf}
+
+\item Lachaud, Gilles, \emph{Zéros des fonction L et formes toriques} [Zeros of L-functions and torical forms], C.\ R.\ Acad.\ Sci.\ Paris Sér.\ I Math.\ 335 (2002), 219--222.
+
+\texttt{http://iml.univ-mrs.fr/editions/preprint2002/preprint2002.html}
+
+\item Lachaud, Gilles, \emph{Zéros des fonction L et formes toriques}, in preparation.
+\item Siegel, Carl Ludwig, \emph{Advanced analytic number theory}, Tata Inst.\ Fund.\ Res.\ Studies in Math.\ 9, T.I.F.R., Bombay, 1980, VII + 268 pp.,
+\item Weil, André, \emph{Basic Number Theory}, Grund.\ math.\ Wiss.\ Einzel., Band 144, Springer, Berlin, 1967.
+\item Zagier, Don, \emph{Eisenstein Series and the Riemann zeta function}, in : \emph{Automorphic Forms, representation theory and arithmetic}, Tata Inst.\ Fund.\ Res.\ Studies in Math.\ 10, T.I.F.R., Bombay, 1981, pp.\ 275--301.
+\end{enumerate}
+
+\vfill
+
+\noindent
+INSTITUT DE MATHÉMATIQUES DE LUMINY (IML)\\
+LUMINY CASE 907, 13288 MARSEILLE CEDEX 9 - FRANCE
+
+\medskip
+
+\noindent
+\emph{E-mail address}: \texttt{lachaud@iml.univ-mrs.fr}
+
+\begin{thebibliography}{9}
+\bibitem{R1} Riemann, Bernhard, Ueber die Anzahl der Primzahlen unter einer gegebenen Grösse.
+\bibitem{R2} Riemann, Bernhard, Gesammelte Mathematische Werke und Wissenschaftlicher Nachlass.
+\bibitem{R3} Riemann, Bernhard, Collected mathematical works.
+\bibitem{R4} Riemann, Bernhard, Œuvres mathématiques.
+\bibitem{B} Bombieri, Enrico, Remarks on Weil's quadratic functional in the theory of prime numbers I.
+\bibitem{C} Connes, Alain, Trace formula in noncommutative geometry and the zeros of the Riemann zeta function.
+\bibitem{L1} Lachaud, Gilles, Zéros des fonction L et formes toriques, C.\ R.\ Acad.\ Sci.\ Paris Sér.\ I Math.\ 335 (2002), 219--222.
+\bibitem{L2} Lachaud, Gilles, Zéros des fonction L et formes toriques, in preparation.
+\bibitem{S} Siegel, Carl Ludwig, Advanced analytic number theory.
+\bibitem{W} Weil, André, Basic Number Theory.
+\bibitem{Z} Zagier, Don, Eisenstein Series and the Riemann zeta function.
+\end{thebibliography}
+
+\end{document}

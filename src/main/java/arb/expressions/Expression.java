@@ -140,6 +140,49 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                        Consumer<Consumer<Expression<?, ?, ?>>>
 {
 
+  public boolean shouldCache()
+  {
+    return domainType.equals(Integer.class) && !isGeneratedFunctional() && upstreamExpression == null;
+  }
+
+  protected void declareCacheField(ClassVisitor cw)
+  {
+    if (shouldCache())
+    {
+      cw.visitField(Opcodes.ACC_PUBLIC, "cache", Type.getDescriptor(ArrayList.class), null, null);
+    }
+  }
+
+  protected void generateCacheFieldInitializer(MethodVisitor mv)
+  {
+    if (shouldCache())
+    {
+      String internalName = Type.getInternalName(ArrayList.class);
+      loadThisOntoStack(mv);
+      mv.visitTypeInsn(Opcodes.NEW, internalName);
+      mv.visitInsn(Opcodes.DUP);
+      mv.visitMethodInsn(Opcodes.INVOKESPECIAL, internalName, "<init>", "()V", false);
+      mv.visitFieldInsn(Opcodes.PUTFIELD, className, "cache", Type.getDescriptor(ArrayList.class));
+    }
+  }
+
+  /**
+   * The next available local variable slot in the generated evaluate() method.
+   * Slots 0-4 are: this, input, order, bits, result. Code that needs local
+   * storage during evaluate() calls {@link #allocateLocalVariableSlot()} to
+   * obtain a non-conflicting slot.
+   */
+  public int nextLocalVariableSlot = 5;
+
+  /**
+   * Allocates and returns the next available local variable slot for use in
+   * the generated evaluate() method bytecode. Each call returns a unique slot.
+   */
+  public int allocateLocalVariableSlot()
+  {
+    return nextLocalVariableSlot++;
+  }
+
   public final List<Expression<?, ?, ?>> downstreamExpressions = new ArrayList<>();
 
   public Expression<?, ?, ?> registerDownstreamExpression(Expression<?, ?, ?> child)
@@ -639,7 +682,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       if (!canHavePlaceholder())
       {
-        throw new IllegalArgumentException(this.toStringExtended() + " cannot have a placeholder or an independent variable so it cant be set to " + variable + " for " + expression + " that has type " + getTypeString() );
+        throw new IllegalArgumentException(this.toStringExtended()
+                                           + " cannot have a placeholder or an independent variable so it cant be set to "
+                                           + variable
+                                           + " for "
+                                           + expression
+                                           + " that has type "
+                                           + getTypeString());
       }
       var placeholder = setPlaceholderVariable(variable);
       placeholder.reference.type = coDomainType;
@@ -786,9 +835,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected void declareFields(ClassVisitor cw)
   {
     cw.visitField(Opcodes.ACC_PUBLIC, IS_INITIALIZED, "Z", null, null);
-
     declareContext(cw);
-
+    declareCacheField(cw);
     if (!coDomainType.isInterface())
     {
       declareLiteralConstants(cw);
@@ -1366,7 +1414,95 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     return classVisitor;
   }
+  protected void generateCachePeek(MethodVisitor mv)
+  {
+    Label cacheMiss = new Label();
+    loadThisAndFieldOntoStack(mv, "cache", ArrayList.class);
+    loadInputParameterChecked(mv);
+    Compiler.generateVirtualMethodInvocation(mv, domainType, "getSignedValue", int.class);
+    Compiler.invokeStaticMethod(mv, Function.class, "peek", Object.class, ArrayList.class, int.class);
+    Compiler.cast(mv, coDomainType);
+    Compiler.duplicateTopOfTheStack(mv);
+    mv.visitJumpInsn(Opcodes.IFNULL, cacheMiss);
+    // cache hit: result.set(cached); return result
+    // stack: cached(coDomainType)
+    mv.visitVarInsn(Opcodes.ALOAD, 4);
+    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
+    mv.visitInsn(Opcodes.SWAP);                        // stack: result(cast), cached
+    Compiler.generateVirtualMethodInvocation(mv, coDomainType, "set", coDomainType, coDomainType);
+    mv.visitInsn(Opcodes.POP);
+    mv.visitVarInsn(Opcodes.ALOAD, 4);
+    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
+    mv.visitInsn(Opcodes.ARETURN);
+    Compiler.designateLabel(mv, cacheMiss);
+    Compiler.pop(mv);
+  }
 
+  private int cacheArrayListSlot = -1;
+  private int cacheIndexSlot     = -1;
+
+  /**
+   * Stores the cache ArrayList and the int index in dynamically allocated
+   * local variable slots. Nothing is left on the operand stack, so
+   * rootNode.generate() runs with a clean stack regardless of branching
+   * (when/switch nodes).
+   */
+  protected void generateCachePokePrologue(MethodVisitor mv)
+  {
+    cacheArrayListSlot = allocateLocalVariableSlot();
+    cacheIndexSlot     = allocateLocalVariableSlot();
+    loadThisAndFieldOntoStack(mv, "cache", ArrayList.class);
+    mv.visitVarInsn(Opcodes.ASTORE, cacheArrayListSlot);
+    loadInputParameterChecked(mv);
+    Compiler.generateVirtualMethodInvocation(mv, domainType, "getSignedValue", int.class);
+    mv.visitVarInsn(Opcodes.ISTORE, cacheIndexSlot);
+  }
+
+  /**
+   * After rootNode.generate() has left the computed result on the stack:
+   * allocate a fresh copy, copy result into it, poke into the cache, and
+   * return the result.
+   */
+  protected void generateCachePokeEpilogue(MethodVisitor mv)
+  {
+    int freshCopySlot = allocateLocalVariableSlot();
+
+    // stack on entry: <result> (left by rootNode.generate)
+    // pop the result — it has already been written into local4 (the result parameter)
+    mv.visitInsn(Opcodes.POP);
+
+    // allocate fresh copy of coDomainType
+    mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(coDomainType));
+    mv.visitInsn(Opcodes.DUP);
+    mv.visitMethodInsn(Opcodes.INVOKESPECIAL,
+                       Type.getInternalName(coDomainType), "<init>", "()V", false);
+    mv.visitVarInsn(Opcodes.ASTORE, freshCopySlot);
+
+    // copy result (local4) into fresh copy
+    mv.visitVarInsn(Opcodes.ALOAD, freshCopySlot);
+    mv.visitVarInsn(Opcodes.ALOAD, 4);
+    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
+    Compiler.generateVirtualMethodInvocation(mv, coDomainType, "set", coDomainType, coDomainType);
+    mv.visitInsn(Opcodes.POP);                   // discard set() return value
+
+    // poke(cache, index, freshCopy)
+    mv.visitVarInsn(Opcodes.ALOAD, cacheArrayListSlot);
+    mv.visitVarInsn(Opcodes.ILOAD, cacheIndexSlot);
+    mv.visitVarInsn(Opcodes.ALOAD, freshCopySlot);
+    Compiler.invokeStaticMethod(mv, Function.class, "poke", Object.class, ArrayList.class, int.class, Object.class);
+    mv.visitInsn(Opcodes.POP);                   // discard poke return value
+
+    // return result
+    mv.visitVarInsn(Opcodes.ALOAD, 4);
+    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
+    mv.visitInsn(Opcodes.ARETURN);
+  }
+
+  protected void loadInputParameterChecked(MethodVisitor mv)
+  {
+    loadInputParameter(mv);
+    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(domainType));
+  }
   protected void generateCodeToSetIsInitializedToTrue(MethodVisitor methodVisitor)
   {
     loadThisOntoStack(methodVisitor).visitInsn(Opcodes.ICONST_1);
@@ -1543,6 +1679,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       parse(true);
     }
 
+    nextLocalVariableSlot = 5;
+
     Label startLabel = new Label();
     Label endLabel   = new Label();
 
@@ -1551,9 +1689,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     designateLabel(mv, startLabel);
     Compiler.annotateWithOverride(mv);
+
     if (needsInitializer())
     {
       generateConditionalInitializater(mv);
+    }
+
+    boolean cache = shouldCache();
+
+    if (cache)
+    {
+      generateCachePeek(mv);
+      generateCachePokePrologue(mv);
     }
 
     rootNode.isRootNode = true;
@@ -1564,6 +1711,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     else
     {
       rootNode.generate(mv, coDomainType);
+    }
+
+    if (cache)
+    {
+      generateCachePokeEpilogue(mv);
     }
 
     designateLabel(mv, endLabel);
@@ -1774,6 +1926,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected MethodVisitor generateInitializationCode(MethodVisitor mv)
   {
     generateCodeToThrowErrorIfAlreadyInitialized(mv);
+    generateCacheFieldInitializer(mv);
     if (trace)
     {
       log.debug("generateInitializationCode for className={} functionName={}: referencedFunctions={}",
@@ -1782,25 +1935,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                 getReferencedFunctions().keySet());
     }
     addChecksForNullVariableReferences(mv);
-
-    // Phase 1: Ensure all referenced function instances are constructed
-    // (null-check + new). This must happen before context wiring.
     generateReferencedFunctionInstances(mv);
-
-    // Phase 2: Wire context and upstream variables to the now-existing
-    // nested function instances, BEFORE dependency initialization which
-    // may call methods (hypergeometric init/evaluate) that use them.
     propagateUpstreamInputVariablesToNestedFunctions(mv);
-
-    // Phase 3: Initialize in proper dependency order.
-    // The duplicate constructReferencedFunctionInstanceIfItIsNull call
-    // was removed from generateDependencyAssignments since Phase 1
-    // already guarantees non-null (#848).
     if (dependencies != null)
     {
       dependencies.forEach(dependency -> generateDependencyAssignments(mv, dependency));
     }
-
     try
     {
       insideInitializer = true;
@@ -1810,7 +1950,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       insideInitializer = false;
     }
-
     if (recursive)
     {
       generateSelfReference(mv);
@@ -2631,7 +2770,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     boolean hasRegisteredInitializers = !initializers.isEmpty();
     boolean hasDependencies           = dependencies != null && !dependencies.isEmpty();
     boolean hasReferencedFunctions    = !getReferencedFunctions().isEmpty();
-    return contextHasVariables || hasRegisteredInitializers || hasDependencies || recursive || hasReferencedFunctions;
+    return contextHasVariables || hasRegisteredInitializers || hasDependencies || recursive || hasReferencedFunctions || shouldCache();
   }
 
   @SuppressWarnings("unchecked")
