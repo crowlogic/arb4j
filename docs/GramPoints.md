@@ -42,7 +42,7 @@ Define the continuous phase offset
 
 $$\psi_1(t) = \vartheta(t) - t.$$
 
-This is a smooth, real-valued function on $(0,\infty)$. Sampled at the Gram grid it gives
+Sampled at the Gram grid:
 
 $$X_1(n) := \psi_1(g_n) = \vartheta(g_n) - g_n = n\pi - g_n.$$
 
@@ -60,11 +60,13 @@ These three objects are three samplings of the same underlying structure:
 
 $\sigma_n$ is the arithmetic image of the continuous phase offset $\vartheta(t)-t$ on the Gram grid. The smooth part $\frac{1}{\pi}\vartheta(T)+1$ predicts $n+1$ zeros up to $g_n$; the staircase $N(g_n)$ records the actual count; their difference is $\sigma_n$.
 
-This is not a numerical coincidence. The Backlund formula
+The Backlund formula
 
 $$N(T) = \frac{1}{\pi}\vartheta(T) + 1 + S(T)$$
 
 says that $S(T)$ is identically the residual between the smooth phase clock and the actual zero count. Evaluating at $T = g_n$ and using $\vartheta(g_n)=n\pi$ gives $\sigma_n = S(g_n)$ exactly.
+
+**Both $X_1(n)$ and $\sigma_n$ have mean zero.** The unconditional result $\frac{1}{T}\int_0^T S(t)\,dt \to 0$ implies $\sigma_n$ averages to zero over long ranges. The same holds for $X_1(n) = n\pi - g_n$: the Gram points asymptotically track the linear grid $n\pi$, so the real-valued offset fluctuates around zero. Both sequences are centered oscillations around the same smooth prediction.
 
 ---
 
@@ -98,7 +100,7 @@ where $j_n$ is the number of zeros (with multiplicity) in $(g_{n-1},g_n]$.
 - $j_n=0$: $\Delta\sigma_n=-1$,
 - $j_n=2$: $\Delta\sigma_n=1$.
 
-Gram's law says $\Delta\sigma_n=0$ at every good Gram point, which is precisely the statement that one zero falls in each Gram interval.
+Gram's law says $\Delta\sigma_n=0$ at every good Gram point.
 
 ---
 
@@ -110,7 +112,7 @@ $$\psi_k(t) = \vartheta(t) - kt.$$
 
 $\psi_k$ has a unique critical point at $t^*_k = 2\pi e^{2k}$ (global minimum) and a unique zero $t^{(k)}_0 > t^*_k$. For $k=1$: $t^*_1 = 2\pi e^2 \approx 46.83$ and $t^{(1)}_0 \approx 126.3$.
 
-The first bad Gram point at $n=126$ is the first index where $\psi_1(g_n) > 0$, i.e., where $g_n < n\pi$, i.e., where the actual Gram point has fallen behind its linear shadow $n\pi$. For all $n < 126$, $\psi_1(g_n) < 0$ uniformly, so $g_n > n\pi$ and Gram's law holds throughout.
+The first bad Gram point at $n=126$ is the first index where $\psi_1(g_n) > 0$, i.e., where $g_n < n\pi$. For all $n < 126$, $\psi_1(g_n) < 0$ uniformly, so $g_n > n\pi$ and Gram's law holds throughout.
 
 The level-$k$ Gram grid $\{g^{(k)}_n\}$ satisfies $\psi_k(g^{(k)}_n) = n\pi$. The $k$-th level process is
 
@@ -193,9 +195,9 @@ All formulas are unconditional. The jump $\Delta\sigma_n = j_n - 1$ holds whethe
 
 ## Band-limitedness
 
-**Theorem.** Let $F(u) = Z(e^u)$. As a tempered distribution on $\mathbb{R}$,
+**Theorem.** Let $F(u) = Z(e^u)$. As a tempered distribution on $\mathbb{R}$, the support of $\hat{F}$ satisfies
 
-$$\operatorname{supp}\widehat{F} \subset [-2,\,0].$$
+$$\text{supp}\,\hat{F} \subset [-2,\,0].$$
 
 **Proof sketch.** Under $t = e^u$, each Dirichlet term $m^{-1/2-it}$ contributes Fourier mass at frequency $-\log m$. The truncation $m \le \lfloor\sqrt{e^u/(2\pi)}\rfloor$ bounds these to $[-1,0]$ after normalization. The functional equation $\xi(s)=\xi(1-s)$ reflects each term to normalized frequencies in $[-2,-1]$. The union is $[-2,0]$. Phase rotation by $X_k(n)$ at every level acts within the existing spectrum without introducing frequencies outside $[-2,0]$.
 
@@ -207,7 +209,7 @@ The band-limitedness places $F(u) = Z(e^u)$ in the Paley--Wiener space $PW_{[-2,
 
 $$\int_{-\infty}^{\infty} \frac{\log f(\omega)}{1+\omega^2}\,d\omega = -\infty,$$
 
-where $f$ is the spectral density. For $F$, the spectral measure is purely atomic — supported on the discrete set $\{-\log m : m \ge 1\}$ and their reflections — so there is no density $f$, and the integral diverges to $-\infty$. Therefore the innovation variance is identically zero: $F$ is a deterministic process in the Wold--Kolmogorov sense. Knowledge of $F$ on any half-line $(-\infty, u_0]$ determines $F$ on all of $\mathbb{R}$.
+where $f$ is the spectral density. For $F$, the spectral measure is purely atomic -- supported on the discrete set $\{-\log m : m \ge 1\}$ and their reflections -- so there is no density $f$, and the integral diverges to $-\infty$. Therefore the innovation variance is identically zero: $F$ is a deterministic process in the Wold--Kolmogorov sense. Knowledge of $F$ on any half-line $(-\infty, u_0]$ determines $F$ on all of $\mathbb{R}$.
 
 The translation semigroup $T_s F(u) = F(u+s)$ acts on $PW_{[-2,0]}$, which is invariant under it. There is no stochastic component in $F$ itself.
 
@@ -219,7 +221,7 @@ The apparent randomness in the distribution of zeros does not arise as an innova
 
 $$S(T) = N(T) - \frac{1}{\pi}\vartheta(T) - 1,$$
 
-the residual between the zero-counting staircase and the smooth phase count. This is exactly the object whose Gram-grid sampling gives $\sigma_n$.
+the residual between the zero-counting staircase and the smooth phase count. This is exactly the object whose Gram-grid sampling gives $\sigma_n$, and which has mean zero: $\frac{1}{T}\int_0^T S(t)\,dt \to 0$.
 
 Selberg's central limit theorem: under uniform sampling of $T$ in $[T_0, 2T_0]$,
 
@@ -233,7 +235,7 @@ $$\pi S(T) = -\sum_{m=2}^{\infty} \frac{\Lambda(m)}{m^{1/2}\log m}\sin(T\log m)$
 
 is the explicit representation of this residual as a prime-power phase sum. At Gram points $T = g_n = n\pi - X_1(n)$, the same sum gives $\pi\sigma_n$ through the angle-difference expansion above, connecting the deterministic Paley--Wiener signal $F$, the smooth phase offset $\psi_1$, the real-valued sample $X_1(n)$, the integer-valued sample $\sigma_n$, and the Gaussian fluctuation of $S(T)$ in a single unified structure.
 
-This residual $S(T)$ — the prime-phase sum, the discrete arithmetic image of $\vartheta(t)-t$, and the innovation-analog of the deterministic process $F$ — has not been analyzed within an explicit spectral factorization in the prediction-theoretic sense. That is the open problem.
+This residual $S(T)$ -- the prime-phase sum, the discrete arithmetic image of $\vartheta(t)-t$, and the innovation-analog of the deterministic process $F$ -- has not been analyzed within an explicit spectral factorization in the prediction-theoretic sense. That is the open problem.
 
 ---
 
