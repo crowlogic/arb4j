@@ -150,9 +150,7 @@ All formulas above are unconditional. The relation to zero simplicity is:
 - if all zeros in $(g_{n-1},g_n]$ are simple, then $\Delta\sigma_n = j_n-1$ where $j_n$ is the number of zeros,
 - if a zero of multiplicity $m$ lies in the interval, it contributes $m$ to $j_n$.
 
-The simplicity of zeros of $\zeta$ is itself an open conjecture, independent of the Riemann Hypothesis. The best unconditional result is that at least 40.77% of nontrivial zeros are both simple and on the critical line (Conrey, 1989). Neither simplicity nor the Riemann Hypothesis is assumed in the Backlund formula or in the Gram-point analysis.
-
-Note: arguments that claim to derive the Riemann Hypothesis from the behavior of $S(T)$ at individual zeros are circular, because the conclusion that $S(T)$ can only jump by $\pm 1$ is equivalent to assuming that all zeros are simple — which is the very thing being claimed.
+The simplicity of zeros of $\zeta$ is an open conjecture, independent of the Riemann Hypothesis. The best unconditional result is that at least 40.77% of nontrivial zeros are both simple and on the critical line (Conrey, 1989). Neither simplicity nor the Riemann Hypothesis is assumed in the Backlund formula or in the Gram-point analysis.
 
 ---
 
@@ -216,17 +214,17 @@ $$\int_{-\infty}^{\infty} \frac{\log f(\omega)}{1+\omega^2}\,d\omega > -\infty$$
 
 fails for $F$: the spectral measure is purely atomic (supported on $\{-\log m : m \ge 1\}$ and their reflections), so $\log f = -\infty$ on a set of infinite measure. Therefore the innovation variance is zero, and $F$ is deterministic in the Wold--Kolmogorov sense: any half-line sample determines the whole function.
 
-The semigroup of translations $T_s F(u) = F(u+s)$ acts on $PW_{[-2,0]}$, which is invariant under it. The "randomness" visible in the zeros is not a Wold innovation of $F$ itself. It is the fluctuation structure of
+The semigroup of translations $T_s F(u) = F(u+s)$ acts on $PW_{[-2,0]}$, which is invariant under it. The fluctuation structure of
 
-$$S(T) = N(T) - \frac{1}{\pi}\vartheta(T) - 1,$$
+$$S(T) = N(T) - \frac{1}{\pi}\vartheta(T) - 1$$
 
-the discrepancy between the zero-counting staircase and the smooth phase count. Selberg's central limit theorem states that under uniform sampling of $T$ in $[T_0, 2T_0]$, the distribution of
+is the discrepancy between the zero-counting staircase and the smooth phase count. Selberg's central limit theorem states that under uniform sampling of $T$ in $[T_0, 2T_0]$, the distribution of
 
 $$\frac{S(T)}{\sqrt{\frac{1}{2\pi}\log\log T_0}}$$
 
-converges to the standard Gaussian as $T_0 \to \infty$. This Gaussian fluctuation arises from the quasi-independence of the prime-frequency phases $\{T\log p \bmod 2\pi\}$ across distinct primes $p$ when $T$ is drawn uniformly. The primes are the spectral atoms, and their phase quasi-independence under random sampling is the source of the distributional randomness observed in $S(T)$.
+converges to the standard Gaussian as $T_0 \to \infty$. This Gaussian fluctuation arises from the quasi-independence of the prime-frequency phases $\{T\log p \bmod 2\pi\}$ across distinct primes $p$ when $T$ is drawn uniformly. The primes are the spectral atoms, and their phase quasi-independence under random sampling is the source of the distributional behavior of $S(T)$.
 
-Thus the residual that connects the deterministic signal $F(u)$ to the arithmetic of the zeros is $S(T)$ itself, expressed as the von Mangoldt prime-power phase sum. This object has not yet been analyzed within an explicit spectral factorization in the prediction-theoretic sense.
+The residual connecting the deterministic signal $F(u)$ to the arithmetic of the zeros is $S(T)$ itself, expressed as the von Mangoldt prime-power phase sum. This object has not been analyzed within an explicit spectral factorization in the prediction-theoretic sense.
 
 ---
 
