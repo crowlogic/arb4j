@@ -18,8 +18,13 @@ and the total-variation time-change function
   G(t) = ∫₀ᵗ |ϑ'(u)| · |ζ(1/2 + iu)|² du.
 
 Write σ = G⁻¹. Since |ϑ'(t)| > 0 for t ≥ t_* and |ζ(1/2+it)|² > 0 a.e.,
-G is a strictly increasing homeomorphism [t_*, ∞) → [G(t_*), ∞) and σ is
-continuous and strictly increasing.
+the Unitary Time-Change (UTC) Theorem applies: G is a strictly increasing
+homeomorphism [t_*, ∞) → [G(t_*), ∞), G⁻¹ is continuous and strictly
+increasing, and U_G defined by
+
+  (U_G f)(t) = √(g'(t)) · f(G(t))
+
+is a local L²-isometry.
 
 Define the unitary pullback
 
@@ -38,13 +43,14 @@ PROOF
 STEP 1. Y ∈ L²_loc
 ───────────────────────────────────────────────────────────────────────────────
 
-Fix a compact window [τ₀, 2τ₀]. Substitute dτ = g'(t) dt:
+Fix a compact window [τ₀, 2τ₀]. By the UTC isometry, substituting
+dτ = g'(t) dt:
 
   ∫_{τ₀}^{2τ₀} |Y(τ)|² dτ
 
     = ∫_{σ(τ₀)}^{σ(2τ₀)}
         |ζ(1/2+it)|²
-        ─────────────────────── · |ϑ'(t)| · |ζ(1/2+it)|² dt
+        ─────────────────────────────── · |ϑ'(t)| · |ζ(1/2+it)|² dt
         |ϑ'(t)| · |ζ(1/2+it)|²
 
     = ∫_{σ(τ₀)}^{σ(2τ₀)} |ζ(1/2+it)|² dt.                      ... (L2)
@@ -74,8 +80,8 @@ and the remainder satisfies
 
   |R^{(j)}(t)| ≤ C_j · t^{−1/4 − j/2}   for all j ≥ 0.         ... (Rbd)
 
-Note: the time change is G, not ϑ alone. At t = σ(τ), the factor
-e^{−2iϑ(σ(τ))} is NOT equal to e^{−2iτ}.
+The time change is G (which weights by |ζ|²), not ϑ alone. At t = σ(τ), the
+factor e^{−2iϑ(σ(τ))} is NOT equal to e^{−2iτ}.
 
 Divide (RS) at t = σ(τ) by |ζ(1/2+it)| · √|ϑ'(t)| and write
 
@@ -93,31 +99,38 @@ Then:
 STEP 3. PHASE DERIVATIVES AND NON-POSITIVE INSTANTANEOUS FREQUENCIES
 ───────────────────────────────────────────────────────────────────────────────
 
-Set t = σ(τ). Then σ'(τ) = 1/g'(t) = 1/(|ϑ'(t)| · |ζ|²).
+Set t = σ(τ). Write σ'(τ) = 1/g'(t) = 1/(|ϑ'(t)| · |ζ|²).
 
 FIRST SUM F. The n-th term has phase φ_{1,n}(τ) = −σ(τ) · log n, so
 
-  ω_{1,n}(τ) = −log n / (|ϑ'(t)| · |ζ|²).                       ... (F1)
+  ω_{1,n}(τ) = dφ_{1,n}/dτ = −log n / (|ϑ'(t)| · |ζ|²).         ... (F1)
 
-SECOND SUM H. The n-th term has phase φ_{2,n}(τ) = −2ϑ(σ(τ)) + σ(τ)·log n,
+SECOND SUM H. The n-th term has phase
+
+  φ_{2,n}(τ) = −2ϑ(σ(τ)) + σ(τ) · log n,
+
 so
 
   ω_{2,n}(τ) = (−2|ϑ'(t)| + log n) / (|ϑ'(t)| · |ζ|²)
               = (−2 + log n/|ϑ'(t)|) / |ζ|².                    ... (F2)
 
-NON-POSITIVITY. From N(t) = ⌊√(t/2π)⌋ and Stirling:
+NON-POSITIVITY. From N(t) = ⌊√(t/2π)⌋:
 
-  log n ≤ (1/2) log(t/2π)   for n ≤ N(t).                       ... (NB)
+  n ≤ N(t)  ⟹  log n ≤ (1/2) log(t/2π).                        ... (NB)
+
+The Stirling expansion gives
 
   |ϑ'(t)| = (1/2) log(t/2π) − π/(8t) + O(t^{−3}).               ... (TH)
 
-Combining:
+Combining (NB) and (TH):
 
   log n / |ϑ'(t)| ≤ 1 + ε(t),   ε(t) = O(1/(t log t)) → 0.     ... (BOUND)
 
-Since log n ≥ 0 and |ϑ'(t)| > 0 and |ζ|² > 0 a.e.:
+Since log n ≥ 0 and |ϑ'(t)| > 0:
 
-  ω_{1,n}(τ) ≤ 0   and   ω_{2,n}(τ) ≤ −(1 − ε(t))/|ζ|² ≤ 0.
+  ω_{1,n}(τ) = −log n / (|ϑ'(t)| · |ζ|²) ≤ 0,
+
+  ω_{2,n}(τ) = (−2 + log n/|ϑ'(t)|) / |ζ|² ≤ −(1 − ε(t))/|ζ|² ≤ 0.
 
 Every instantaneous frequency ω_n(τ) in (★) is non-positive everywhere.    □
 
@@ -126,18 +139,16 @@ Every instantaneous frequency ω_n(τ) in (★) is non-positive everywhere.    �
 STEP 4. SLOW VARIATION OF B(τ)
 ───────────────────────────────────────────────────────────────────────────────
 
-By the Faà di Bruno formula applied to
-B(τ) = [|ϑ'(σ(τ))| · |ζ(1/2+iσ(τ))|²]^{−1/2},
-each derivative B^{(j)}(τ) is a finite sum of Faà di Bruno terms of the form
+By the Faà di Bruno formula applied to B(τ) = [|ϑ'(σ(τ))| · |ζ(1/2+iσ(τ))|²]^{−1/2},
+each derivative B^{(j)}(τ) is a sum of terms of the form
 
   (d^{|π|}/dt^{|π|} [|ϑ'(t)|^{−1/2} · |ζ|^{−1}])|_{t=σ(τ)}
   · ∏_{B∈π} σ^{(|B|)}(τ).
 
-Differentiating G(σ(τ)) = τ repeatedly:
-σ^{(k)}(τ) = Q_k(g',...,g^{(k)}) / g'(t)^{2k−1}
-for universal polynomials Q_k. Paris's bounds |ϑ^{(m)}(t)| ≤ C_m t^{1−m}
-control all derivatives of g'. Each Faà di Bruno term satisfies
-|term| ≪ B(τ) · τ₀^{−1+ε}, giving:
+Differentiating G(σ(τ)) = τ repeatedly gives
+σ^{(k)}(τ) = Q_k(g',...,g^{(k)}) / g'(t)^{2k−1} for universal polynomials Q_k.
+Paris's bounds |ϑ^{(m)}(t)| ≤ C_m t^{1−m} control all derivatives of g'.
+Each Faà di Bruno term satisfies |term| ≪ B(τ) · τ₀^{−1+ε}, so
 
   |B^{(j)}(τ)| ≪_j B(τ) · τ₀^{−1+ε}   on [τ₀, 2τ₀].           ... (SV)
 
@@ -151,13 +162,13 @@ STEP 5. SPECTRAL RADIUS BOUND VIA MONTGOMERY–VAUGHAN
 Fix [τ₀, 2τ₀]. Set t₀ = σ(τ₀), t₁ = σ(2τ₀), N₀ = N(t₀).
 
 WINDOW LENGTH. From G(t₁) − G(t₀) = τ₀ and g'(t) ~ |ϑ'(t₀)| · (avg |ζ|²)
-over [t₀, t₁], with ∫_{t₀}^{t₁} |ζ|² dt ~ T log T and
-|ϑ'(t₀)| ~ (log t₀)/2:
+over [t₀, t₁], with ∫_{t₀}^{t₁} |ζ|² dt ~ T log T and |ϑ'(t₀)| ~ (log t₀)/2,
+one gets T ~ t₀. Hence
 
-  T ~ t₀,   hence  N₀/T ~ t₀^{−1/2} → 0,  so T ≫ N₀.           ... (WIN)
+  N₀/T ~ √t₀/t₀ = t₀^{−1/2} → 0,  so T ≫ N₀.                  ... (WIN)
 
-K-TH DERIVATIVE. By (SV), subleading Faà di Bruno terms in F^{(k)} are each
-O(τ₀^{−1+ε})‖F‖ in L²-norm. The leading term is
+K-TH DERIVATIVE. Differentiating F k times and discarding lower Faà di Bruno
+terms (each O(τ₀^{−1+ε})‖F‖ by (SV)), the leading term is
 
   F^{(k)}(τ)|_lead = B(τ) · Σ_{n≤N₀} n^{−1/2} · (ω_{1,n}(τ))^k
                                                 · e^{iφ_{1,n}(τ)}.
@@ -170,7 +181,7 @@ Changing variables τ → t via dτ = g'(t) dt:
         · |Σ_{n≤N₀} n^{−1/2} (log n)^k e^{−it log n}|² dt
       + O(τ₀^{−1+ε})‖F‖².                                       ... (CV)
 
-Freeze |ϑ'(t)| ≈ |ϑ'(t₀)| (relative error O(t₀^{−1}) by (TH)). Set
+Freeze |ϑ'(t)| ≈ |ϑ'(t₀)| (relative error O(t₀^{−1}) by (TH)) and set
 a_n^{(k)} = n^{−1/2} · (log n / |ϑ'(t₀)|)^k.
 
 MONTGOMERY–VAUGHAN (1974): For distinct frequencies λ_n = −log n with gap
@@ -180,9 +191,8 @@ MONTGOMERY–VAUGHAN (1974): For distinct frequencies λ_n = −log n with gap
     = T · Σ_{n≤N₀} n^{−1}·(log n/|ϑ'(t₀)|)^{2k} · (1 + O(t₀^{−1/2})).
                                                                   ... (MV)
 
-By (BOUND), each (log n/|ϑ'(t₀)|)^{2k} ≤ (1+ε(t₀))^{2k}. Combined with
-the |ζ|^{2k} averaging in (CV) via Cauchy–Schwarz and the mean-value bound
-∫_{t₀}^{t₁} |ζ|^{2k} dt, and (MV):
+By (BOUND), each (log n/|ϑ'(t₀)|)^{2k} ≤ (1+ε(t₀))^{2k}. Combined with the
+|ζ|^{2k} averaging in (CV) and (MV):
 
   ‖F^{(k)}‖² ≤ (1 + ε(t₀))^{2k} · ‖F‖² · (1 + o(1)),           ... (FBD)
 
@@ -192,11 +202,11 @@ the |ζ|^{2k} averaging in (CV) via Cauchy–Schwarz and the mean-value bound
 
 (EBD) follows from (Rbd): |E^{(k)}(τ)| ≤ C_k · t₀^{−1/4−k/2} · B(τ).
 
-Triangle inequality applied to Y = F + H + E:
+Triangle inequality:
 
   ‖Y^{(k)}‖_{L²([τ₀,2τ₀])} ≤ (2+ε(t₀))^k·(1+o(1))·‖Y‖.         ... (DB)
 
-Taking k-th roots and k → ∞:
+Taking k-th roots:
 
   limsup_{k→∞} ‖Y^{(k)}‖^{1/k}_{L²([τ₀,2τ₀])} ≤ 2 + ε(t₀).    ... (SR) □
 
@@ -208,8 +218,8 @@ STEP 6. supp(Ŷ) ⊆ [−2, 0]
 PART A: supp(Ŷ) ⊆ [−2, 2].
 
 For any ε > 0, (SR) holds with bound 2+ε for all sufficiently large τ₀.
-Andersen–de Jeu (Trans. Amer. Math. Soc. 362 (2010), Thm. 2.7) applied
-along a sequence τ_j → ∞ gives supp(Ŷ) ⊆ [−(2+ε), 2+ε]. Since ε > 0 is
+Andersen–de Jeu (Trans. Amer. Math. Soc. 362 (2010), Thm. 2.7) applied along
+a sequence τ_j → ∞ gives supp(Ŷ) ⊆ [−(2+ε), 2+ε]. Since ε > 0 is
 arbitrary:
 
   supp(Ŷ) ⊆ [−2, 2].
@@ -217,61 +227,64 @@ arbitrary:
 
 PART B: supp(Ŷ) ∩ (0, ∞) = ∅.
 
-Fix λ > 0 and consider the operator D_λ = d/dτ + λ. For any f ∈ L²(ℝ):
+Fix λ > 0 and consider the operator D_λ = d/dτ + λ. For any ξ ∈ ℝ:
 
-  (D_λ^k f)^(ξ) = (iξ + λ)^k · f̂(ξ).                           ... (FT)
+  D_λ^k Y ^(ξ) = (iξ + λ)^k · Ŷ(ξ).                            ... (FT)
 
-CUTOFF SEQUENCE. For j ≥ 1, let χ_j be a smooth cutoff equal to 1 on
-[τ_j, 2τ_j] (where τ_j = 2^j τ₀) and equal to 0 outside a neighborhood
-of width τ_j on each side, with |χ_j^{(m)}| ≤ C_m τ_j^{−m}. Set
-Y_j = χ_j · Y ∈ L²(ℝ).
+DYADIC CUTOFFS. For each j ≥ 1, let τ_j = 2^j τ₀ and let χ_j be a smooth
+cutoff equal to 1 on I_j = [τ_j, 2τ_j] and transitioning to 0 on intervals
+of length δ_j = τ_j on each side, with
 
-UPPER BOUND FOR Y_j. By the Leibniz rule:
+  |χ_j^{(m)}| ≤ C_m τ_j^{−m}   for all m ≥ 0.
 
-  D_λ^k(χ_j Y) = Σ_{m=0}^k C(k,m) χ_j^{(m)} · D_λ^{k−m} Y.
+Set Y_j = χ_j · Y ∈ L²(ℝ).
 
-The m = 0 term is χ_j · D_λ^k Y, controlled by (SR) on [τ_j, 2τ_j]. For
-m ≥ 1, each |χ_j^{(m)}| ≤ C_m τ_j^{−m} and (SR) applied locally to
-D_λ^{k−m} Y on the transition support gives
-‖D_λ^{k−m} Y‖ ≤ (λ+ε)^{k−m}(1+o(1))‖Y‖. Summing via the binomial theorem:
+UPPER BOUND FOR Y_j. On I_j, Y_j = Y, so (DB) applies to Y_j on I_j without
+change. For the global L²(ℝ) norm of D_λ^k Y_j, expand by Leibniz:
 
-  ‖D_λ^k Y_j‖_{L²(ℝ)} ≤ (λ + ε + C/τ_j)^k · ‖Y‖_{L²_loc}.
+  D_λ^k Y_j = Σ_{m=0}^{k} C(k,m) χ_j^{(m)} · D_λ^{k−m} Y.
+
+The m = 0 term is χ_j · D_λ^k Y, controlled by (DB) applied locally. For
+m ≥ 1, each |χ_j^{(m)}| ≤ C_m τ_j^{−m} and (SR) applied on neighboring
+windows gives ‖D_λ^{k−m} Y‖_{L²} ≤ (λ+ε)^{k−m}(1+o(1))‖Y‖. Hence the
+boundary sum is bounded by
+
+  Σ_{m=1}^{k} C(k,m) C_m τ_j^{−m} (λ+ε)^{k−m} ‖Y‖
+    ≤ ‖Y‖ · (λ + ε + C/τ_j)^k,
+
+using the binomial theorem with C = sup_m C_m^{1/m}. The k-th root of the
+total bound gives λ + ε + C/τ_j. Therefore:
+
+  limsup_{k→∞} ‖D_λ^k Y_j‖_{L²(ℝ)}^{1/k} ≤ λ + ε + C/τ_j.    ... (SRλ)
+
+LOWER BOUND FOR Y_j. Suppose Ŷ does not vanish a.e. on (0,∞). Then there
+exists an interval I = [ξ₁, ξ₂] ⊂ (0,∞) with ξ₁ > 0 and
+
+  ∫_I |Ŷ(ξ)|² dξ > 0.
+
+Since Y_j = χ_j Y → Y in L²(ℝ) (by dominated convergence as χ_j → 1 on
+any compact set), Plancherel gives Ŷ_j → Ŷ in L²(ℝ), so
+
+  ∫_I |Ŷ_j(ξ)|² dξ → ∫_I |Ŷ(ξ)|² dξ > 0.
+
+Hence for all sufficiently large j there exists c > 0 such that
+∫_I |Ŷ_j(ξ)|² dξ ≥ c. By the global Plancherel identity for Y_j ∈ L²(ℝ):
+
+  ‖D_λ^k Y_j‖_{L²(ℝ)}² = ∫ |iξ+λ|^{2k} |Ŷ_j(ξ)|² dξ
+                         ≥ (ξ₁²+λ²)^k ∫_I |Ŷ_j(ξ)|² dξ
+                         ≥ c · (ξ₁²+λ²)^k.
 
 Taking k-th roots:
 
-  limsup_{k→∞} ‖D_λ^k Y_j‖^{1/k}_{L²(ℝ)} ≤ λ + ε + C/τ_j.     ... (UB)
+  limsup_{k→∞} ‖D_λ^k Y_j‖_{L²(ℝ)}^{1/k} ≥ √(ξ₁²+λ²) > λ.    ... (LB)
 
-LOWER BOUND FROM POSITIVE-FREQUENCY MASS. Suppose for contradiction that
-Ŷ does not vanish a.e. on (0,∞). Then there exists an interval
-I = [ξ₁, ξ₂] ⊂ (0,∞) with ξ₁ > 0 and
-
-  ∫_I |Ŷ(ξ)|² dξ =: c > 0.
-
-Since Y_j = χ_j Y → Y in L²_loc as j → ∞, Plancherel gives Ŷ_j → Ŷ in
-L²_loc(ℝ̂). Hence for all sufficiently large j:
-
-  ∫_I |Ŷ_j(ξ)|² dξ ≥ c/2 > 0.
-
-By Plancherel globally for Y_j ∈ L²(ℝ):
-
-  ‖D_λ^k Y_j‖²_{L²(ℝ)} = ∫ |iξ+λ|^{2k} |Ŷ_j(ξ)|² dξ
-                         ≥ (ξ₁²+λ²)^k · ∫_I |Ŷ_j(ξ)|² dξ
-                         ≥ (c/2)(ξ₁²+λ²)^k.
-
-Taking k-th roots:
-
-  limsup_{k→∞} ‖D_λ^k Y_j‖^{1/k}_{L²(ℝ)} ≥ √(ξ₁²+λ²).         ... (LB)
-
-CONTRADICTION. Choose ε and j large enough that
-
-  λ + ε + C/τ_j < √(ξ₁²+λ²).
-
-This is possible since √(ξ₁²+λ²) > λ for ξ₁ > 0. Then (UB) and (LB)
-are contradictory.
+CONTRADICTION. Since ξ₁ > 0 and λ > 0, we have √(ξ₁²+λ²) > λ. Choose j
+large enough that C/τ_j < (√(ξ₁²+λ²) − λ)/2 and ε < (√(ξ₁²+λ²) − λ)/2.
+Then (SRλ) gives the limsup ≤ λ + ε + C/τ_j < √(ξ₁²+λ²), contradicting
+(LB).
 
 Hence ∫_I |Ŷ(ξ)|² dξ = 0 for every interval I ⊂ (0,∞), so Ŷ(ξ) = 0 for
 a.e. ξ > 0, and supp(Ŷ) ∩ (0,∞) = ∅.
-
 
 CONCLUSION. Combining Parts A and B:
 

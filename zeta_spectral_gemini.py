@@ -25,7 +25,7 @@ N_T     = 80000
 N_OMEGA = 2560
 N_WORKERS = os.cpu_count()
 
-OMEGAS  = np.linspace(-2.0, 0.0, N_OMEGA, endpoint=False)
+OMEGAS  = np.linspace(-3.0, 3.0, N_OMEGA, endpoint=False)
 D_OMEGA = OMEGAS[1] - OMEGAS[0]
 
 

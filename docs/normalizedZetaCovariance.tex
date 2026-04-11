@@ -1,0 +1,452 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{amsmath,amssymb,latexsym}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\assign}{:=}
+\newcommand{\tmem}[1]{{\em #1\/}}
+\newcommand{\tmtextbf}[1]{\text{{\bfseries{#1}}}}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\title{Convergence of the Autocovariance of the Normalized Zeta-Process}
+
+\author{Stephen Crowley}
+
+\date{April 2026}
+
+\maketitle
+
+\section{Notation and Definitions}
+
+All notation follows the companion document establishing unit Ces{\`a}ro mean
+square. Let $\zeta (s)$ denote the Riemann zeta function, $\vartheta (t) =
+\mathrm{Im} \log \Gamma (\tfrac{1}{4} + \tfrac{it}{2}) - \tfrac{t}{2} \log
+\pi$ the Riemann--Siegel theta function, and $t_0$ the unique point where
+$\vartheta$ attains its global minimum on $(0, \infty)$. Let $\tau_0 =
+\vartheta (t_0)$, and let $\sigma : [\tau_0, \infty) \to [t_0, \infty)$ denote
+the inverse of $\vartheta$ restricted to $[t_0, \infty)$.
+
+Define the second-moment integral
+\[ V (T) \assign \int_0^T \left| \zeta \hspace{-0.17em} \left( \tfrac{1}{2} +
+   it \right) \right|^2 dt, \]
+the pullback
+\[ Y (\tau) \assign \frac{\zeta \hspace{-0.17em} \left( \tfrac{1}{2} + i
+   \sigma (\tau) \right)}{\sqrt{\vartheta' (\sigma (\tau))}}, \]
+the cumulative local energy
+\[ W (\tau) \assign \int_{\tau_0}^{\tau} |Y (s) |^2  \hspace{0.17em} ds, \]
+and the normalized process
+\[ X (\tau) \assign Y (\tau) \sqrt{\frac{\tau}{W (\tau)}} . \]
+From the companion document, the following facts are established:
+\begin{enumerate}
+  \item[(F1)] $W (\tau) = V (\sigma (\tau)) - V (\sigma (\tau_0))$ (exact
+  identity, by change of variables $t = \sigma (s)$).
+  
+  \item[(F2)] $W (\tau) = 2 \tau (1 + \varepsilon (\tau))$ with $\varepsilon
+  (\tau) = O (\log \log \tau / \log \tau)$.
+  
+  \item[(F3)] $\lim_{T \to \infty}  \frac{1}{T}  \int_{\tau_0}^T |X (\tau) |^2
+  \hspace{0.17em} d \tau = 1$.
+\end{enumerate}
+
+\section{Statement}
+
+\begin{theorem}
+  \label{thm:cov}For every fixed $h \in \mathbb{R}$, the Ces{\`a}ro
+  autocovariance
+  \begin{equation}
+    \label{eq:Rdef} R (h) \assign \lim_{T \to \infty}  \frac{1}{T} 
+    \int_{\tau_0}^T X (\tau + h) \hspace{0.17em} \overline{X (\tau)}
+    \hspace{0.17em} d \tau
+  \end{equation}
+  exists and equals
+  \begin{equation}
+    \label{eq:Rvalue} R (h) = \frac{e^{- ih} \sin h}{h},
+  \end{equation}
+  with the convention $R (0) = 1$.
+\end{theorem}
+
+\begin{corollary}
+  \label{cor:spectral}The spectral density of the process $X$ is
+  \[ \hat{S} (\omega) = \pi \cdot \textbf{1}_{[- 2, 0]} (\omega) . \]
+\end{corollary}
+
+By direct computation,
+\[ \int_{- \infty}^{\infty} R (h)  \hspace{0.17em} e^{- i \omega h} 
+   \hspace{0.17em} dh = \int_{- \infty}^{\infty} \frac{e^{- ih} \sin h}{h} 
+   \hspace{0.17em} e^{- i \omega h}  \hspace{0.17em} dh = \int_{-
+   \infty}^{\infty} \frac{\sin h}{h}  \hspace{0.17em} e^{- i (\omega + 1) h} 
+   \hspace{0.17em} dh = \pi \cdot \textbf{1}_{[- 1, 1]}  (\omega + 1) = \pi
+   \cdot \textbf{1}_{[- 2, 0]} (\omega), \]
+using the standard identity $\int_{- \infty}^{\infty} (\sin h / h) 
+\hspace{0.17em} e^{- i \alpha h}  \hspace{0.17em} dh = \pi \cdot
+\textbf{1}_{[- 1, 1]} (\alpha)$.
+
+\section{Proof of Theorem~\ref{thm:cov}}
+
+The proof proceeds in four steps.
+
+\subsection*{Step 1: Separation of the Slowly Varying Prefactor}
+
+Substituting the definitions of $X$ and $Y$:
+\[ X (\tau + h) \hspace{0.17em} \overline{X (\tau)} = Y (\tau + h)
+   \hspace{0.17em} \overline{Y (\tau)} \cdot \frac{\sqrt{(\tau + h) 
+   \hspace{0.17em} \tau}}{\sqrt{W (\tau + h)  \hspace{0.17em} W (\tau)}} . \]
+Define the prefactor
+\begin{equation}
+  \label{eq:alpha-def} \alpha (\tau, h) \assign \frac{\sqrt{(\tau + h) 
+  \hspace{0.17em} \tau}}{\sqrt{W (\tau + h)  \hspace{0.17em} W (\tau)}} .
+\end{equation}
+\begin{lemma}
+  \label{lem:alpha}For each fixed $h \in \mathbb{R}$,
+  \[ \alpha (\tau, h) = \frac{1}{2} + O \hspace{-0.17em} \left( \frac{\log
+     \log \tau}{\log \tau} \right) \]
+  as $\tau \to \infty$.
+\end{lemma}
+
+\begin{proof}
+  By (F2), $W (\tau) = 2 \tau (1 + \varepsilon (\tau))$ with $\varepsilon
+  (\tau) = O (\log \log \tau / \log \tau)$. For fixed $h$,
+  \[ W (\tau + h) = 2 (\tau + h)  (1 + \varepsilon (\tau + h)) = 2 \tau \left(
+     1 + \frac{h}{\tau} \right)  (1 + \varepsilon (\tau + h)) . \]
+  Therefore
+  
+  \begin{align*}
+    \alpha (\tau, h) & = \frac{\sqrt{(\tau + h)  \hspace{0.17em}
+    \tau}}{\sqrt{2 (\tau + h)  (1 + \varepsilon (\tau + h)) \cdot 2 \tau (1 +
+    \varepsilon (\tau))}}\\
+    & = \frac{1}{2} \cdot \frac{1}{\sqrt{(1 + \varepsilon (\tau + h))  (1 +
+    \varepsilon (\tau))}} .
+  \end{align*}
+  
+  Since $\varepsilon (\tau + h)$ and $\varepsilon (\tau)$ are both $O (\log
+  \log \tau / \log \tau)$, the Taylor expansion $1 / \sqrt{(1 + u)  (1 + v)} =
+  1 - (u + v) / 2 + O (u^2 + v^2)$ yields
+  \[ \alpha (\tau, h) = \frac{1}{2} + O \hspace{-0.17em} \left( \frac{\log
+     \log \tau}{\log \tau} \right) . \]
+\end{proof}
+
+Write $\alpha (\tau, h) = \frac{1}{2} + \beta (\tau, h)$ with $\beta (\tau, h)
+= O (\log \log \tau / \log \tau)$. Then
+\begin{equation}
+  \label{eq:split} \frac{1}{T}  \int_{\tau_0}^T X (\tau + h) \hspace{0.17em}
+  \overline{X (\tau)} \hspace{0.17em} d \tau = \frac{1}{2}  \hspace{0.17em}
+  \mathcal{I} (T, h) +\mathcal{E} (T, h),
+\end{equation}
+where
+\[ \mathcal{I} (T, h) \assign \frac{1}{T}  \int_{\tau_0}^T Y (\tau + h)
+   \hspace{0.17em} \overline{Y (\tau)} \hspace{0.17em} d \tau, \qquad
+   \mathcal{E} (T, h) \assign \frac{1}{T}  \int_{\tau_0}^T \beta (\tau, h) 
+   \hspace{0.17em} Y (\tau + h) \hspace{0.17em} \overline{Y (\tau)}
+   \hspace{0.17em} d \tau . \]
+\begin{lemma}
+  \label{lem:error-vanishes}$\mathcal{E} (T, h) \to 0$ as $T \to \infty$ for
+  every fixed $h$.
+\end{lemma}
+
+\begin{proof}
+  By Cauchy--Schwarz,
+  \[ |\mathcal{E}(T, h) | \le \sup_{\tau \ge \tau_0} | \beta (\tau, h) | \cdot
+     \frac{1}{T}  \int_{\tau_0}^T |Y (\tau + h) | \hspace{0.17em} |Y (\tau) | 
+     \hspace{0.17em} d \tau . \]
+  Applying Cauchy--Schwarz to the integral:
+  \[ \frac{1}{T}  \int_{\tau_0}^T |Y (\tau + h) | \hspace{0.17em} |Y (\tau) | 
+     \hspace{0.17em} d \tau \le \left( \frac{1}{T}  \int_{\tau_0}^T |Y (\tau +
+     h) |^2  \hspace{0.17em} d \tau \right)^{1 / 2}  \left( \frac{1}{T} 
+     \int_{\tau_0}^T |Y (\tau) |^2  \hspace{0.17em} d \tau \right)^{1 / 2} .
+  \]
+  By (F2), $\frac{1}{T}  \int_{\tau_0}^T |Y (\tau) |^2  \hspace{0.17em} d \tau
+  = W (T) / T = 2 + o (1)$. For the shifted version, the shift by fixed $h$
+  changes the integral by $O (1)$, so both factors are $O (1)$. Since $\sup |
+  \beta (\tau, h) | = O (\log \log T / \log T) \to 0$, the product tends to
+  zero.
+\end{proof}
+
+By \eqref{eq:split} and Lemma~\ref{lem:error-vanishes}, to prove
+Theorem~\ref{thm:cov} it suffices to show
+\begin{equation}
+  \label{eq:suffices} \lim_{T \to \infty} \mathcal{I} (T, h) = \int_{- 2}^0
+  e^{i \omega h}  \hspace{0.17em} d \omega = \frac{2 e^{- ih} \sin h}{h},
+\end{equation}
+since then $R (h) = \frac{1}{2} \cdot \frac{2 e^{- ih} \sin h}{h} = \frac{e^{-
+ih} \sin h}{h}$.
+
+\subsection*{Step 2: Change of Variables to the Height Line}
+
+Set $t = \sigma (\tau)$, so $\tau = \vartheta (t)$, $d \tau = \vartheta' (t) 
+\hspace{0.17em} dt$. Then
+\[ \overline{Y (\tau)} = \frac{\overline{\zeta (\tfrac{1}{2} +
+   it)}}{\sqrt{\vartheta' (t)}} . \]
+For the shifted term, $\sigma (\tau + h) = \sigma (\vartheta (t) + h)$. Define
+the induced height-shift
+\begin{equation}
+  \label{eq:delta-def} \delta_h (t) \assign \sigma (\vartheta (t) + h) - t.
+\end{equation}
+\begin{lemma}
+  \label{lem:delta}For each fixed $h$,
+  \[ \delta_h (t) = \frac{h}{\vartheta' (t)} + O \hspace{-0.17em} \left(
+     \frac{1}{t (\log t)^3} \right) \]
+  as $t \to \infty$.
+\end{lemma}
+
+\begin{proof}
+  By the mean value theorem applied to $\sigma$ at $\vartheta (t)$,
+  \[ \sigma (\vartheta (t) + h) - \sigma (\vartheta (t)) = h \hspace{0.17em}
+     \sigma' (\vartheta (t)) + \frac{h^2}{2} \sigma'' (\xi) \]
+  for some $\xi$ between $\vartheta (t)$ and $\vartheta (t) + h$. Since
+  $\sigma' (s) = 1 / \vartheta' (\sigma (s))$ and $\sigma (\vartheta (t)) =
+  t$, the leading term is $h / \vartheta' (t)$. For the remainder, $\sigma''
+  (s) = - \vartheta'' (\sigma (s)) / (\vartheta' (\sigma (s)))^3$ and
+  $\vartheta'' (t) = O (t^{- 1})$, $\vartheta' (t) \sim \frac{1}{2} \log (t /
+  2 \pi)$, giving $\sigma'' (\xi) = O (1 / (t (\log t)^3))$.
+\end{proof}
+
+Since $\vartheta' (t) \sim \frac{1}{2} \log (t / 2 \pi)$, we have $\delta_h
+(t) \sim 2 h / \log (t / 2 \pi) \to 0$. The shifted pullback is
+\[ Y (\tau + h) = \frac{\zeta (\tfrac{1}{2} + i (t + \delta_h
+   (t)))}{\sqrt{\vartheta'  (t + \delta_h (t))}} . \]
+Changing variables $\tau \to t$ in $\mathcal{I}$:
+\begin{equation}
+  \label{eq:I-height} \mathcal{I} (T, h) = \frac{1}{\vartheta (T_t)} 
+  \int_{t_0}^{T_t} \frac{\zeta (\tfrac{1}{2} + i (t + \delta_h (t)))
+  \hspace{0.17em} \overline{\zeta (\tfrac{1}{2} + it)}}{\sqrt{\vartheta'  (t +
+  \delta_h (t))  \hspace{0.17em} \vartheta' (t)}}  \hspace{0.17em} \vartheta'
+  (t)  \hspace{0.17em} dt,
+\end{equation}
+where $T_t = \sigma (T_{\tau})$ corresponds to the upper limit of integration
+in the $\tau$-variable.
+
+Since $\delta_h (t) \to 0$, a first-order Taylor expansion gives
+\[ \vartheta'  (t + \delta_h (t)) = \vartheta' (t) + \delta_h (t) 
+   \hspace{0.17em} \vartheta'' (t) + O (\delta_h (t)^2  \hspace{0.17em}
+   \vartheta''' (t)) . \]
+Using $\vartheta'' (t) = O (t^{- 1})$ and $\delta_h (t) = O (1 / \log t)$:
+\[ \frac{\vartheta' (t)}{\vartheta'  (t + \delta_h (t))} = 1 + O
+   \hspace{-0.17em} \left( \frac{1}{t \log t} \right) . \]
+Therefore
+\[ \frac{\sqrt{\vartheta' (t)}}{\sqrt{\vartheta'  (t + \delta_h (t))}} = 1 + O
+   \hspace{-0.17em} \left( \frac{1}{t \log t} \right) . \]
+\begin{lemma}
+  \label{lem:jacobian-simplify}For fixed $h$,
+  \[ \mathcal{I} (T, h) = \frac{1}{\vartheta (T_t)}  \int_{t_0}^{T_t} \zeta
+     \hspace{-0.17em} \left( \tfrac{1}{2} + i (t + \delta_h (t)) \right)
+     \overline{\zeta \hspace{-0.17em} \left( \tfrac{1}{2} + it \right)}
+     \hspace{0.17em} dt \hspace{0.27em} + \hspace{0.27em} o (1) \]
+  as $T_t \to \infty$.
+\end{lemma}
+
+\begin{proof}
+  From \eqref{eq:I-height}, after cancelling $\sqrt{\vartheta' (t)}$ from
+  numerator and denominator:
+  \[ \mathcal{I} (T, h) = \frac{1}{\vartheta (T_t)}  \int_{t_0}^{T_t} \zeta
+     (\tfrac{1}{2} + i (t + \delta_h (t))) \hspace{0.17em} \overline{\zeta
+     (\tfrac{1}{2} + it)} \cdot \frac{\sqrt{\vartheta' (t)}}{\sqrt{\vartheta' 
+     (t + \delta_h (t))}}  \hspace{0.17em} dt. \]
+  Write the ratio as $1 + \gamma (t)$ with $\gamma (t) = O (1 / (t \log t))$.
+  By Cauchy--Schwarz,
+  \[ \frac{1}{\vartheta (T_t)}  \int_{t_0}^{T_t} | \gamma (t) |
+     \hspace{0.17em} | \zeta (\tfrac{1}{2} + i (t + \delta_h (t))) |
+     \hspace{0.17em} | \zeta (\tfrac{1}{2} + it) | \hspace{0.17em} dt \le \sup
+     | \gamma (t) | \cdot \frac{1}{\vartheta (T_t)}  \int_{t_0}^{T_t} | \zeta
+     (\tfrac{1}{2} + i (t + \delta_h (t))) | \hspace{0.17em} | \zeta
+     (\tfrac{1}{2} + it) |  \hspace{0.17em} dt. \]
+  By Cauchy--Schwarz on the integral, each factor is controlled by $V (T_t)^{1
+  / 2} = O (T_t^{1 / 2} (\log T_t)^{1 / 2})$. Since $\vartheta (T_t) \asymp
+  T_t \log T_t$ and $\sup | \gamma (t) | = O (1 / (t_0 \log t_0))$, the error
+  is $O (T_t / (\vartheta (T_t) \cdot t_0 \log t_0)) = o (1)$.
+\end{proof}
+
+\subsection*{Step 3: Approximate Functional Equation and Diagonal Extraction}
+
+For $t \ge t_{\mathrm{RS}}$, the approximate functional equation gives
+\begin{equation}
+  \label{eq:AFE} \zeta (\tfrac{1}{2} + it) = \underbrace{\sum_{n \le N (t)}
+  n^{- 1 / 2 - it}}_{A (t)} + e^{- 2 i \vartheta (t)} \underbrace{\sum_{n \le
+  N (t)} n^{- 1 / 2 + it}}_{B (t)} + R (t),
+\end{equation}
+where $N (t) = \lfloor \sqrt{t / (2 \pi)} \rfloor$ and $|R^{(j)} (t) | \le C_j
+\hspace{0.17em} t^{- 1 / 4 - j / 2}$.
+
+The product $\zeta (\tfrac{1}{2} + i (t + \delta)) \hspace{0.17em}
+\overline{\zeta (\tfrac{1}{2} + it)}$ expands into four main terms:
+
+\begin{align*}
+  \text{I} & = A (t + \delta) \hspace{0.17em} \overline{A (t)},\\
+  \text{II} & = A (t + \delta)  \hspace{0.17em} e^{2 i \vartheta (t)}
+  \hspace{0.17em} \overline{B (t)},\\
+  \text{III} & = e^{- 2 i \vartheta (t + \delta)}  \hspace{0.17em} B (t +
+  \delta) \hspace{0.17em} \overline{A (t)},\\
+  \text{IV} & = e^{- 2 i \vartheta (t + \delta)}  \hspace{0.17em} B (t +
+  \delta)  \hspace{0.17em} e^{2 i \vartheta (t)} \hspace{0.17em} \overline{B
+  (t)},
+\end{align*}
+
+plus cross-terms involving $R$, which we treat separately. Here $\delta =
+\delta_h (t)$ throughout.
+
+{\noindent}\tmtextbf{Term~I (diagonal, upper band).}\enspace
+\[ A (t + \delta) \hspace{0.17em} \overline{A (t)} = \sum_{m, n \le N (t)}
+   \frac{1}{\sqrt{mn}}  \hspace{0.17em} m^{- i (t + \delta)}  \hspace{0.17em}
+   n^{it} = \sum_{m, n \le N (t)} \frac{1}{\sqrt{mn}}  \hspace{0.17em} (n /
+   m)^{it}  \hspace{0.17em} m^{- i \delta} . \]
+The {\tmem{diagonal}} ($m = n$) contributes
+\begin{equation}
+  \label{eq:diagI} D_{\mathrm{I}} (t) \assign \sum_{n \le N (t)} \frac{1}{n} 
+  \hspace{0.17em} n^{- i \delta_h (t)} = \sum_{n \le N (t)} \frac{e^{- i
+  \delta_h (t) \log n}}{n} .
+\end{equation}
+The {\tmem{off-diagonal}} ($m \ne n$) terms carry the oscillating factor $(n /
+m)^{it}$ with $\log (n / m) \ne 0$. By the Montgomery--Vaughan mean-value
+theorem applied to the Ces{\`a}ro average over the window $[t_0, T_t]$ with
+normalization $1 / \vartheta (T_t)$, the off-diagonal contributes $o (1)$ as
+$T_t \to \infty$, since the cross-term error is $O (\sqrt{T_t} / \vartheta
+(T_t)) = O (1 / \sqrt{T_t \log^2 T_t}) = o (1)$.
+
+For the diagonal \eqref{eq:diagI}, use Lemma~\ref{lem:delta}: $\delta_h (t)
+\log n = h \log n / \vartheta' (t) + O (\log n / (t (\log t)^3))$. Define the
+spectral variable
+\begin{equation}
+  \label{eq:omega-def} \omega_n (t) \assign - \frac{\log n}{\vartheta' (t)} .
+\end{equation}
+For $1 \le n \le N (t)$ with $N (t) = \lfloor \sqrt{t / (2 \pi)} \rfloor$, we
+have $0 \le \log n \le \frac{1}{2} \log (t / (2 \pi))$ and $\vartheta' (t) =
+\frac{1}{2} \log (t / (2 \pi)) + O (t^{- 2})$, so
+\[ \omega_n (t) \in [- 1 - O (t^{- 2}), \hspace{0.27em} 0] . \]
+The phase in \eqref{eq:diagI} is $- i \delta_h (t) \log n = i \omega_n (t) 
+\hspace{0.17em} h \hspace{0.17em} (1 + O (1 / (t \log^2 t)))$.
+
+The Ces{\`a}ro average of the diagonal is
+\begin{equation}
+  \label{eq:cesaro-diagI} \frac{1}{\vartheta (T_t)}  \int_{t_0}^{T_t}
+  D_{\mathrm{I}} (t)  \hspace{0.17em} dt = \frac{1}{\vartheta (T_t)} 
+  \int_{t_0}^{T_t} \sum_{n \le N (t)} \frac{e^{i \omega_n (t)  \hspace{0.17em}
+  h \hspace{0.17em} (1 + o (1))}}{n}  \hspace{0.17em} dt.
+\end{equation}
+As $t \to \infty$, the sum $\sum_{n \le N (t)} 1 / n \sim \frac{1}{2} \log (t
+/ (2 \pi)) \sim \vartheta' (t)$, and the spectral variable $\omega_n (t)$
+ranges over $[- 1, 0]$ with density converging to uniform (Lebesgue) measure
+on $[- 1, 0]$. More precisely, the partial-summation identity
+\[ \sum_{n \le N} \frac{f (\log n / L)}{n} = \int_0^1 f (u)  \hspace{0.17em} L
+   \hspace{0.17em} du + O \hspace{-0.17em} \left( \frac{\log N}{N} \right), \]
+where $L = \log N$ and $u = \log n / L$, applied with $f (u) = e^{- iuh}$ and
+$L = \frac{1}{2} \log (t / (2 \pi))$, yields
+\[ D_{\mathrm{I}} (t) = \vartheta' (t)  \int_{- 1}^0 e^{i \omega h} 
+   \hspace{0.17em} d \omega + O (1) . \]
+Therefore
+
+\begin{align*}
+  \frac{1}{\vartheta (T_t)}  \int_{t_0}^{T_t} D_{\mathrm{I}} (t) 
+  \hspace{0.17em} dt & = \frac{1}{\vartheta (T_t)}  \int_{t_0}^{T_t}
+  \vartheta' (t)  \hspace{0.17em} dt \cdot \int_{- 1}^0 e^{i \omega h} 
+  \hspace{0.17em} d \omega + O \hspace{-0.17em} \left( \frac{T_t}{\vartheta
+  (T_t)} \right)\\
+  & = \frac{\vartheta (T_t) - \vartheta (t_0)}{\vartheta (T_t)} \cdot \int_{-
+  1}^0 e^{i \omega h}  \hspace{0.17em} d \omega + O \hspace{-0.17em} \left(
+  \frac{1}{\log T_t} \right)\\
+  & \to \int_{- 1}^0 e^{i \omega h}  \hspace{0.17em} d \omega .
+\end{align*}
+
+{\noindent}\tmtextbf{Term~IV (diagonal, lower band).}\enspace The phase factor
+is $e^{- 2 i \vartheta (t + \delta) + 2 i \vartheta (t)}$. By the mean value
+theorem,
+\[ \vartheta (t + \delta) - \vartheta (t) = \delta \hspace{0.17em} \vartheta'
+   (t) + O (\delta^2  \hspace{0.17em} \vartheta'' (t)) = h + O
+   \hspace{-0.17em} \left( \frac{1}{t (\log t)^2} \right), \]
+since $\delta \hspace{0.17em} \vartheta' (t) = h + O (1 / (t (\log t)^2))$
+from Lemma~\ref{lem:delta}. Thus the phase factor is $e^{- 2 ih}  (1 + O (1 /
+(t (\log t)^2)))$.
+
+Term~IV is
+\[ e^{- 2 ih + o (1)}  \hspace{0.17em} B (t + \delta) \hspace{0.17em}
+   \overline{B (t)} = e^{- 2 ih + o (1)}  \sum_{m, n \le N (t)}
+   \frac{1}{\sqrt{mn}}  \hspace{0.17em} (m / n)^{it}  \hspace{0.17em} m^{i
+   \delta} . \]
+The diagonal ($m = n$) contributes
+\[ D_{\mathrm{IV}} (t) = e^{- 2 ih + o (1)}  \sum_{n \le N (t)} \frac{e^{i
+   \delta_h (t) \log n}}{n} . \]
+The phase per summand is $e^{i \delta_h (t) \log n} = e^{- i \omega_n (t) 
+\hspace{0.17em} h \hspace{0.17em} (1 + o (1))}$ (note the sign reversal from
+$n^{+ it}$ in $B$). After the $e^{- 2 ih}$ prefactor, the total phase of the
+$n$-th term at spectral variable $\omega_n$ is $e^{- 2 ih} e^{- i \omega_n h}
+= e^{i (- \omega_n - 2) h}$. Defining $\tilde{\omega}_n = - \omega_n - 2 \in
+[- 2, - 1]$ for $\omega_n \in [- 1, 0]$:
+\[ D_{\mathrm{IV}} (t) = \vartheta' (t)  \int_{- 2}^{- 1} e^{i \omega h} 
+   \hspace{0.17em} d \omega + O (1) . \]
+The same Ces{\`a}ro averaging as for Term~I gives
+\[ \frac{1}{\vartheta (T_t)}  \int_{t_0}^{T_t} D_{\mathrm{IV}} (t) 
+   \hspace{0.17em} dt \to \int_{- 2}^{- 1} e^{i \omega h}  \hspace{0.17em} d
+   \omega . \]
+{\noindent}\tmtextbf{Terms~II and~III (cross-terms).}\enspace Term~II carries
+the phase $e^{2 i \vartheta (t)}$, and Term~III carries $e^{- 2 i \vartheta (t
++ \delta)} = e^{- 2 i \vartheta (t)} e^{- 2 ih + o (1)}$. In both cases, the
+phases $e^{\pm 2 i \vartheta (t)}$ oscillate with instantaneous frequency $\pm
+2 \vartheta' (t) \to \pm \infty$, while the amplitudes (products of Dirichlet
+polynomials of length $N (t) \asymp t^{1 / 2}$) have Ces{\`a}ro mean square $O
+(\vartheta' (t))$ by the Montgomery--Vaughan theorem. The Riemann--Lebesgue
+lemma (in the Ces{\`a}ro averaging form: the Ces{\`a}ro mean of $f (t) e^{i
+\lambda (t)}$ vanishes when $\lambda' (t) \to \infty$ and $f$ has at most
+polynomial growth) gives
+\[ \frac{1}{\vartheta (T_t)}  \int_{t_0}^{T_t} (\text{Term~II}) 
+   \hspace{0.17em} dt \to 0, \qquad \frac{1}{\vartheta (T_t)} 
+   \int_{t_0}^{T_t} (\text{Term~III})  \hspace{0.17em} dt \to 0. \]
+{\noindent}\tmtextbf{Remainder cross-terms.}\enspace Every cross-term
+involving $R (t) = O (t^{- 1 / 4})$ produces a product bounded pointwise by $O
+(t^{- 1 / 4}) \cdot O (t^{1 / 4 + \varepsilon}) = O (t^{\varepsilon})$ (using
+the convexity bound $\zeta (\tfrac{1}{2} + it) \ll t^{1 / 4 + \varepsilon}$
+for the other factor). After Ces{\`a}ro averaging:
+\[ \frac{1}{\vartheta (T_t)}  \int_{t_0}^{T_t} O (t^{\varepsilon}) 
+   \hspace{0.17em} dt = O \hspace{-0.17em} \left( \frac{T_t^{1 +
+   \varepsilon}}{\vartheta (T_t)} \right) = O \hspace{-0.17em} \left(
+   \frac{T_t^{\varepsilon}}{\log T_t} \right) = o (1) . \]
+
+\subsection*{Step 4: Assembly}
+
+Combining all terms:
+
+\begin{align*}
+  \lim_{T_t \to \infty}  \frac{1}{\vartheta (T_t)}  \int_{t_0}^{T_t} \zeta
+  (\tfrac{1}{2} + i (t + \delta_h (t))) \hspace{0.17em} \overline{\zeta
+  (\tfrac{1}{2} + it)} \hspace{0.17em} dt & = \int_{- 1}^0 e^{i \omega h} 
+  \hspace{0.17em} d \omega + \int_{- 2}^{- 1} e^{i \omega h}  \hspace{0.17em}
+  d \omega\\
+  & = \int_{- 2}^0 e^{i \omega h}  \hspace{0.17em} d \omega .
+\end{align*}
+
+By Lemma~\ref{lem:jacobian-simplify}, $\mathcal{I} (T, h)$ has the same limit:
+\[ \lim_{T \to \infty} \mathcal{I} (T, h) = \int_{- 2}^0 e^{i \omega h} 
+   \hspace{0.17em} d \omega = \frac{2 e^{- ih} \sin h}{h} . \]
+By \eqref{eq:split} and Lemma~\ref{lem:error-vanishes}:
+\[ R (h) = \frac{1}{2} \cdot \frac{2 e^{- ih} \sin h}{h} = \frac{e^{- ih} \sin
+   h}{h} . \]
+{\noindent}\tmtextbf{Consistency check at $h = 0$.}\enspace$R (0) = \lim_{h
+\to 0} (e^{- ih} \sin h) / h = 1$, which matches Theorem~1 of the companion
+document (unit Ces{\`a}ro mean square of $X$). $\Box$
+
+\section{References}
+
+\begin{enumerate}
+  \item A.{\hspace{0.17em}}E.~Ingham, Mean-value theorems in the theory of the
+  Riemann zeta-function, {\tmem{Proc. London Math. Soc.}} (2) \tmtextbf{27}
+  (1928), 273--300.
+  
+  \item E.{\hspace{0.17em}}C.~Titchmarsh, {\tmem{The Theory of the Riemann
+  Zeta-Function}}, 2nd ed. (revised by D.{\hspace{0.17em}}R.~Heath-Brown),
+  Oxford University Press, 1986.
+  
+  \item H.{\hspace{0.17em}}L.~Montgomery and R.{\hspace{0.17em}}C.~Vaughan,
+  Hilbert's inequality, {\tmem{J. London Math. Soc.}} (2) \tmtextbf{8} (1974),
+  73--82.
+  
+  \item C.~O'Sullivan, A generalization of the Riemann--Siegel formula,
+  {\tmem{J. Number Theory}} \tmtextbf{128} (2008), 2043--2066.
+  
+  \item R.{\hspace{0.17em}}B.~Paris, Refined asymptotics of the
+  Riemann--Siegel theta function, 2020, arXiv:2004.00926.
+\end{enumerate}
+
+\end{document}
