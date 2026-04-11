@@ -47,11 +47,12 @@ public class RiemannSiegelThetaFunction implements
   @Override
   public Real evaluate(Real t, int order, int bits, Real result)
   {
-    try ( RealPolynomial h = new RealPolynomial(order); RealPolynomial out = new RealPolynomial(order))
+    int hLen = Math.max(order, 2);
+    try ( RealPolynomial h = new RealPolynomial(hLen); RealPolynomial out = new RealPolynomial(order))
     {
 
-      h.fitLength(order);
-      h.setLength(order);
+      h.fitLength(hLen);
+      h.setLength(hLen);
 
       // h(x) = t + x
       h.get(0).set(t); // constant term = t*x^0=t*1=t
