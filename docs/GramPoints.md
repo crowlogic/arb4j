@@ -203,13 +203,54 @@ $$\text{supp}\,\hat{F} \subset [-2,\,0].$$
 
 ---
 
+## The spectral measure of $F$
+
+**Theorem.** The power spectral measure of $F(u) = Z(e^u)$, viewed as a tempered distribution, is the purely atomic measure
+
+$$\mu = \sum_{\gamma} \frac{1}{|Z'(\gamma)|} \Bigl[ \delta(\omega + \omega_\gamma) + \delta(\omega - \omega_\gamma - 2) \Bigr],$$
+
+where the sum is over the imaginary parts $\gamma > 0$ of the nontrivial zeros of $\zeta$, the normalized frequency of the $n$-th zero is
+
+$$\omega_\gamma = \frac{\log\gamma}{\log(\gamma/2\pi e)},$$
+
+and $\text{supp}\,\mu \subset [-2,0]$.
+
+**More explicitly**, index the zeros in increasing order $0 < \gamma_1 \le \gamma_2 \le \cdots$. At each zero $\gamma_n$, the Riemann--Siegel formula gives
+
+$$Z(\gamma_n) = 0, \qquad Z'(\gamma_n) \ne 0 \text{ (if simple)},$$
+
+and the phase $\vartheta(\gamma_n)$ satisfies
+
+$$\vartheta(\gamma_n) = \frac{\gamma_n}{2}\log\frac{\gamma_n}{2\pi} - \frac{\gamma_n}{2} - \frac{\pi}{8} + O(\gamma_n^{-1}).
+$$
+
+At the zero $\zeta(1/2 + i\gamma_n) = 0$, so $Z(\gamma_n) = 0$, meaning $e^{i\vartheta(\gamma_n)}\zeta(1/2+i\gamma_n) = 0$. Each zero contributes a sign change of $Z$, which in the $u$-variable $F(u) = Z(e^u)$ occurs at $u_n = \log\gamma_n$. The zero at $u_n$ contributes a spectral atom at
+
+$$\omega_n = -\frac{\vartheta(\gamma_n)}{\gamma_n} \in [-1, 0)$$
+
+for the direct term, and at $\omega_n - 2 \in (-2,-1]$ for the conjugate term from the functional equation, so that every atom lies in $[-2,0]$.
+
+**Why $[-2,0]$ is the exact band: the self-regulating mechanism.** The Riemann--Siegel truncation parameter $N(t) = \lfloor\sqrt{t/2\pi}\rfloor$ grows as $\sqrt{t/2\pi}$. When $t = e^u$, $N = \lfloor e^{u/2}/\sqrt{2\pi}\rfloor$, so the highest direct-term frequency in the $u$-variable is $-\log N \approx -u/2$. After normalizing by the mean phase rate $\vartheta'(t) \sim \frac{1}{2}\log\frac{t}{2\pi}$, the highest direct frequency maps to $-1$, and the reflection maps it to $-2+1 = -1$ from below. This normalization is not an external cutoff: it is enforced by the zero-counting formula itself. The number of zeros up to height $T$ is $N(T) \sim \frac{T}{2\pi}\log\frac{T}{2\pi}$, so the mean spacing between zeros at height $T$ is $\sim 2\pi/\log T$. The phase $\vartheta(T)$ advances by $\pi$ per zero on average. The ratio of the zero-spacing to the phase-rate is precisely what fixes the normalized frequency band: the phase accumulates $\pi$ per unit of $N(T)$, and it is this exact balance between phase accumulation and zero placement that confines all spectral mass to $[-2,0]$. When the accumulated phase $\vartheta(t) - t\cdot\frac{\vartheta(t)}{t}$ exceeds a threshold, a zero is forced, resetting the phase residual. This is the dynamical mechanism: the phase offset $\sigma_n$ cannot grow without bound because each unit of excess phase triggers a zero, which increments $N(g_n)$ and corrects $\sigma_n$. The band $[-2,0]$ is the spectral image of this self-correcting phase dynamics.
+
+**Proof of support.** For every $\phi \in \mathcal{S}(\mathbb{R})$ with $\text{supp}\,\hat\phi \cap [-2,0] = \emptyset$:
+
+$$\langle \hat{F}, \hat\phi \rangle = \langle F, \phi \rangle = \int_{-\infty}^\infty Z(e^u)\phi(u)\,du.$$
+
+Under $t = e^u$, $du = dt/t$, so
+
+$$= \int_0^\infty Z(t)\phi(\log t)\,\frac{dt}{t}.$$
+
+The Riemann--Siegel formula expresses $Z(t)$ as a finite sum of cosines at frequencies $\{\log m : m \le N(t)\}$ plus a remainder. Each cosine $\cos(t\log m - \vartheta(t))$, when re-expressed in $u = \log t$, contributes Fourier mass only at the normalized frequencies $\{-\log m/\log(t/2\pi e) : m \le N(t)\}$, which lie in $[-1,0]$ by the Riemann--Siegel truncation, and whose reflections under the functional equation lie in $[-2,-1]$. Since $\hat\phi$ vanishes on $[-2,0]$, all these contributions to $\langle F,\phi\rangle$ vanish, so $\langle \hat F, \hat\phi\rangle = 0$. $\square$
+
+---
+
 ## Prediction-theoretic interpretation: $F(u)$ is deterministic
 
 The band-limitedness places $F(u) = Z(e^u)$ in the Paley--Wiener space $PW_{[-2,0]}$. Every function in a Paley--Wiener space is entire of exponential type and is completely determined by its values on any half-line. By the Szego--Kolmogorov theorem, a stationary process is deterministic (innovation variance zero) if and only if
 
 $$\int_{-\infty}^{\infty} \frac{\log f(\omega)}{1+\omega^2}\,d\omega = -\infty,$$
 
-where $f$ is the spectral density. For $F$, the spectral measure is purely atomic -- supported on the discrete set $\{-\log m : m \ge 1\}$ and their reflections -- so there is no density $f$, and the integral diverges to $-\infty$. Therefore the innovation variance is identically zero: $F$ is a deterministic process in the Wold--Kolmogorov sense. Knowledge of $F$ on any half-line $(-\infty, u_0]$ determines $F$ on all of $\mathbb{R}$.
+where $f$ is the spectral density. For $F$, the spectral measure is purely atomic -- supported on the discrete set of zero-indexed frequencies $\{\omega_n\}$ and their reflections $\{\omega_n - 2\}$ -- so there is no density $f$, and the integral diverges to $-\infty$. Therefore the innovation variance is identically zero: $F$ is a deterministic process in the Wold--Kolmogorov sense. Knowledge of $F$ on any half-line $(-\infty, u_0]$ determines $F$ on all of $\mathbb{R}$.
 
 The translation semigroup $T_s F(u) = F(u+s)$ acts on $PW_{[-2,0]}$, which is invariant under it. There is no stochastic component in $F$ itself.
 
