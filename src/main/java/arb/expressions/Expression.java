@@ -844,6 +844,89 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     declareFunctionReferences(cw);
     declareVariables(cw);
+    declareJetStampFields(cw);
+  }
+
+  /**
+   * Walk the parsed AST, collect every unique {@link JetState} referenced by
+   * {@link JetNode}s, and declare the corresponding int stamp fields:
+   * <ul>
+   * <li>{@code evalStamp} — one per generated class, incremented each
+   * {@code evaluate()} call</li>
+   * <li>{@code jetStamp_X} — one per unique jet, compared against
+   * {@code evalStamp} to memoize the series computation</li>
+   * </ul>
+   */
+  protected void declareJetStampFields(ClassVisitor cw)
+  {
+    Set<JetState> jetStates = collectJetStates();
+    if (jetStates.isEmpty())
+    {
+      return;
+    }
+    cw.visitField(Opcodes.ACC_PUBLIC, "evalStamp", "I", null, null);
+    for (JetState state : jetStates)
+    {
+      cw.visitField(Opcodes.ACC_PUBLIC, state.stampFieldName, "I", null, null);
+    }
+  }
+
+  /**
+   * Collect all unique {@link JetState} instances from the expression tree by
+   * walking every {@link JetNode}.
+   */
+  @SuppressWarnings("rawtypes")
+  protected Set<JetState> collectJetStates()
+  {
+    Set<JetState> states = new LinkedHashSet<>();
+    if (rootNode == null)
+    {
+      return states;
+    }
+    rootNode.accept(node ->
+    {
+      if (node instanceof JetNode jetNode)
+      {
+        states.add(jetNode.getSharedState());
+      }
+    });
+    return states;
+  }
+
+  /**
+   * Walk the AST and merge {@link JetNode}s that share the same
+   * {@link JetState#structuralKey structuralKey} (same function, same argument)
+   * to reference a single canonical {@link JetState}. This ensures that
+   * differentiation-produced siblings of the same jet share one polynomial
+   * buffer and one stamp field, and that
+   * {@link JetState#getMaxCoefficientNeeded()} reflects the maximum across all
+   * siblings.
+   */
+  @SuppressWarnings("rawtypes")
+  protected void deduplicateJets()
+  {
+    if (rootNode == null)
+    {
+      return;
+    }
+    Map<String, JetState> registry = new HashMap<>();
+    rootNode.accept(node ->
+    {
+      if (node instanceof JetNode jetNode)
+      {
+        String   key       = jetNode.structuralKey();
+        JetState canonical = registry.computeIfAbsent(key, k -> jetNode.getSharedState());
+        if (canonical != jetNode.getSharedState())
+        {
+          canonical.updateMax(jetNode.getCoefficientIndex());
+          jetNode.setSharedState(canonical);
+        }
+        else
+        {
+          canonical.updateMax(jetNode.getCoefficientIndex());
+        }
+      }
+    });
   }
 
   protected ClassVisitor declareFunctionReferences(ClassVisitor classVisitor)
@@ -1328,6 +1411,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       generateFunctionInterface(this, className, classVisitor);
       generateDomainTypeMethod(classVisitor);
       generateCoDomainTypeMethod(classVisitor);
+      deduplicateJets();
       generateEvaluationMethod(classVisitor);
       generateDiffererentiationAndIntegrationMethods(classVisitor);
       declareFields(classVisitor);
@@ -1695,6 +1779,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       generateConditionalInitializater(mv);
     }
 
+    if (!collectJetStates().isEmpty())
+    {
+      generateEvalStampIncrement(mv);
+    }
+
     boolean cache = shouldCache();
 
     if (cache)
@@ -1722,6 +1811,22 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     declareEvaluateMethodArguments(mv, startLabel, endLabel);
     Compiler.generateReturnFromMethod(mv);
     return classVisitor;
+  }
+
+  /**
+   * Emit {@code ++this.evalStamp} at the top of the evaluate method body. This
+   * gives each {@code evaluate()} call a unique stamp value so that
+   * {@link JetNode}s can compare their per-jet {@code jetStamp_X} against it to
+   * avoid redundant series recomputation within the same call.
+   */
+  protected void generateEvalStampIncrement(MethodVisitor mv)
+  {
+    loadThisOntoStack(mv);
+    mv.visitInsn(Opcodes.DUP);
+    mv.visitFieldInsn(Opcodes.GETFIELD, className, "evalStamp", "I");
+    mv.visitInsn(Opcodes.ICONST_1);
+    mv.visitInsn(Opcodes.IADD);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, className, "evalStamp", "I");
   }
 
   protected Expression<Object, Object, Function<?, ?>> generateFunctionalElement(MethodVisitor mv)
@@ -3377,13 +3482,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     case "mittagleffler":
       return new MittagLefflerFunctionNode<>(this);
     case "Z":
-      return new HardyZFunctionNode<>(this);
+      return new HardyZJetNode<>(this);
     case "ϑ":
     case "vartheta":
-      return new RiemannSiegelThetaFunctionNode<>(this);
+      return new RiemannSiegelThetaJetNode<>(this);
     case "ζ":
     case "zeta":
-      return new ZetaFunctionNode<>(this);
+      return new ZetaJetNode<>(this);
     case "when":
       return new WhenNode<>(this);
     case "fracdiff":
@@ -3419,9 +3524,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     case "lnΓ":
     case "logGamma":
     case "logΓ":
-      return new LogGammaFunctionNode<>(this);
+      return new LogGammaJetNode<>(this);
     case "si":
-      return new SineIntegralNode<>(this);
+      return new SineIntegralJetNode<>(this);
     default:
 
       // Regular function call with parentheses
