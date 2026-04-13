@@ -139,20 +139,27 @@ public abstract class JetNode<D, C, F extends Function<? extends D, ? extends C>
 
     mv.visitLabel(skipCompute);
 
-    // --- Read coefficient[coefficientIndex] from jetPoly into result ---
-    loadOutputVariableOntoStack(mv, scalarType);
+    if (isRootNode && coefficientIndex == 0)
+    {
+      // Series mode: copy all `order` coefficients from the jet polynomial
+      // into the result vector, matching the PolySeriesFunctionNode contract.
+      // for (int i = 0; i < order; i++) result.get(i).set(jetPoly.get(i))
+      emitSeriesCopyLoop(mv, scalarType, polyClass, className);
+    }
+    else
+    {
+      // Scalar mode: read a single coefficient from the jet polynomial.
+      loadOutputVariableOntoStack(mv, scalarType);
 
-    // Load this.jetFieldName
-    expression.loadFieldOntoStack(loadThisOntoStack(mv),
-                                  sharedState.jetFieldName,
-                                  polyClass.descriptorString());
+      expression.loadFieldOntoStack(loadThisOntoStack(mv),
+                                    sharedState.jetFieldName,
+                                    polyClass.descriptorString());
 
-    // .get(coefficientIndex)
-    mv.visitLdcInsn(coefficientIndex);
-    generateVirtualMethodInvocation(mv, polyClass, "get", scalarType, int.class);
+      mv.visitLdcInsn(coefficientIndex);
+      generateVirtualMethodInvocation(mv, polyClass, "get", scalarType, int.class);
 
-    // result.set(coefficient)
-    generateVirtualMethodInvocation(mv, scalarType, "set", scalarType, scalarType);
+      generateVirtualMethodInvocation(mv, scalarType, "set", scalarType, scalarType);
+    }
 
     generatedType = scalarType;
     return mv;
@@ -251,6 +258,59 @@ public abstract class JetNode<D, C, F extends Function<? extends D, ? extends C>
     loadBitsParameterOntoStack(mv);
 
     emitSeriesCall(mv, scalarType, isComplex);
+  }
+
+  /**
+   * Emit a loop that copies all {@code order} coefficients from the jet
+   * polynomial into the result vector:
+   * <pre>
+   * for (int i = 0; i < order; i++)
+   *   result.get(i).set(jetPoly.get(i));
+   * </pre>
+   * This matches the {@link PolySeriesFunctionNode} series contract needed
+   * by callers like {@code HardyThetaInversion.buildTaylorSeries}.
+   */
+  private void emitSeriesCopyLoop(MethodVisitor mv, Class<?> scalarType, Class<?> polyClass, String className)
+  {
+    int iSlot = expression.allocateLocalVariableSlot();
+
+    Label loopStart = new Label();
+    Label loopEnd   = new Label();
+
+    // int i = 0
+    mv.visitInsn(Opcodes.ICONST_0);
+    mv.visitVarInsn(Opcodes.ISTORE, iSlot);
+
+    // loop condition: i < order
+    mv.visitLabel(loopStart);
+    mv.visitVarInsn(Opcodes.ILOAD, iSlot);
+    loadOrderParameter(mv);
+    mv.visitJumpInsn(Opcodes.IF_ICMPGE, loopEnd);
+
+    // result.get(i).set(jetPoly.get(i))
+    loadResultParameter(mv);
+    Compiler.cast(mv, scalarType);
+    mv.visitVarInsn(Opcodes.ILOAD, iSlot);
+    generateVirtualMethodInvocation(mv, scalarType, "get", scalarType, int.class);
+
+    expression.loadFieldOntoStack(loadThisOntoStack(mv),
+                                  sharedState.jetFieldName,
+                                  polyClass.descriptorString());
+    mv.visitVarInsn(Opcodes.ILOAD, iSlot);
+    generateVirtualMethodInvocation(mv, polyClass, "get", scalarType, int.class);
+
+    generateVirtualMethodInvocation(mv, scalarType, "set", scalarType, scalarType);
+    pop(mv);
+
+    // i++
+    mv.visitIincInsn(iSlot, 1);
+    mv.visitJumpInsn(Opcodes.GOTO, loopStart);
+
+    mv.visitLabel(loopEnd);
+
+    // Leave result on the stack for the caller
+    loadResultParameter(mv);
+    Compiler.cast(mv, scalarType);
   }
 
   @Override
