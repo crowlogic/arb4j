@@ -1,0 +1,110 @@
+
+# =============================================================================
+# Empirical Autocovariance of the Reparametrized Process X(u)
+# =============================================================================
+#
+# X(u) = Z(θ⁻¹(u)) / √θ'(θ⁻¹(u))
+#
+# where Z(t) = e^{iϑ(t)} ζ(1/2 + it)  and  θ(t) = ∫₀ᵗ ϑ'(s) σ²(s) ds
+#
+# After reparametrization, X has unit variance and unit mean zero spacing.
+# The autocovariance K(Δu) = E[X(u) X(u+Δu)] depends only on the lag.
+#
+# -----------------------------------------------------------------------------
+# INPUT
+# -----------------------------------------------------------------------------
+#   t_max      : upper bound of the computation window on the t-axis
+#   N          : number of sample points in the t-grid
+#   n_lags     : number of lag values Δu at which to evaluate K(Δu)
+#   lag_max    : maximum lag in the u-coordinate
+#
+# -----------------------------------------------------------------------------
+# PHASE, VARIANCE, AND TIME CHANGE (precomputation on t-grid)
+# -----------------------------------------------------------------------------
+#
+#   t[k] = k * t_max / N                for k = 0, ..., N
+#
+#   for k = 0 to N:
+#       ϑ[k]  = RiemannSiegelTheta(t[k])          # Riemann-Siegel theta
+#       ϑ'[k] = (1/2) log(t[k] / (2π))            # derivative of theta
+#       σ²[k] = Var(ζ(1/2 + it[k]))               # local variance ≈ log(t[k])
+#       θ'[k] = ϑ'[k] * σ²[k]                     # integrand of time change
+#
+#   # Cumulative time change by trapezoidal integration
+#   θ[0] = 0
+#   for k = 1 to N:
+#       θ[k] = θ[k-1] + (θ'[k-1] + θ'[k]) * (t[k] - t[k-1]) / 2
+#
+# -----------------------------------------------------------------------------
+# EVALUATE Z(t) ON THE t-GRID
+# -----------------------------------------------------------------------------
+#
+#   for k = 0 to N:
+#       Z[k] = exp(i * ϑ[k]) * ζ(1/2 + i*t[k])
+#
+#   # where ζ(1/2 + it) is computed by Riemann-Siegel formula or mpmath
+#
+# -----------------------------------------------------------------------------
+# CONSTRUCT X(u) ON A UNIFORM u-GRID
+# -----------------------------------------------------------------------------
+#
+#   u_max = θ[N]                                    # total reparametrized length
+#   M     = floor(u_max / du)                       # number of uniform u-samples
+#   du    = u_max / M                               # uniform u-spacing
+#
+#   for j = 0 to M:
+#       u[j] = j * du
+#
+#       # Invert θ: find t such that θ(t) = u[j]
+#       # Use binary search on the monotone array θ[0..N]
+#       idx = BinarySearch(θ, u[j])
+#       t_j = LinearInterpolate(t, θ, u[j], idx)
+#
+#       # Evaluate θ'(t_j) by interpolation
+#       θ'_j = LinearInterpolate(θ', t, t_j)
+#
+#       # Evaluate Z(t_j) by interpolation (or recompute)
+#       Z_j  = LinearInterpolate(Z, t, t_j)
+#
+#       # The reparametrized unit-variance, unit-zero-spacing process
+#       X[j] = Z_j / √(θ'_j)
+#
+# -----------------------------------------------------------------------------
+# EMPIRICAL AUTOCOVARIANCE
+# -----------------------------------------------------------------------------
+#
+#   # Lag grid in u-coordinates
+#   Δu[m] = m * lag_max / n_lags        for m = 0, ..., n_lags
+#
+#   # Convert each lag to an index offset
+#   for m = 0 to n_lags:
+#       offset = round(Δu[m] / du)
+#       L      = M - offset              # number of valid pairs
+#
+#       if L <= 0:
+#           K_hat[m] = NaN
+#           continue
+#
+#       # Windowed empirical autocovariance
+#       sum = 0
+#       for j = 0 to L-1:
+#           sum = sum + Re(X[j]) * Re(X[j + offset])
+#
+#       K_hat[m] = sum / L
+#
+#   # K_hat[0] should be ≈ 1 (unit variance)
+#   # K_hat[m] → 0 as Δu[m] → ∞ (covariance decays)
+#
+# -----------------------------------------------------------------------------
+# OUTPUT
+# -----------------------------------------------------------------------------
+#
+#   Return arrays  Δu[0..n_lags],  K_hat[0..n_lags]
+#
+#   Verification checks:
+#       K_hat[0] ≈ 1                     (unit variance)
+#       K_hat[m] → 0  for large m        (covariance decay)
+#       Zero density of X ≈ 1/π * √(-K''(0)/K(0)) per unit u
+#                        ≈ 1  by construction of θ
+#
+# ========================================================== 
