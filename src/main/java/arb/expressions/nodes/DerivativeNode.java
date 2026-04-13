@@ -151,11 +151,25 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
 
   }
 
+  private int getIntegerOrder()
+  {
+    if (order == null)
+    {
+      return 1;
+    }
+    return order.evaluate(arb.Integer.class, 128, new arb.Integer()).getSignedValue();
+  }
+
   private Node<D, R, F> getDifferentiatedNode()
   {
     if (differentiatedNode == null)
     {
-      differentiatedNode = operand.differentiate(variable);
+      differentiatedNode = operand;
+      int n = getIntegerOrder();
+      for (int i = 0; i < n; i++)
+      {
+        differentiatedNode = differentiatedNode.differentiate(variable);
+      }
       differentiatedNode = differentiatedNode.simplify();
     }
     return differentiatedNode;

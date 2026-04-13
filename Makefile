@@ -3,7 +3,7 @@ VERSION=$(shell $(BASEDIR)/bin/arb4jVersion)
 SOURCES=native/arb_wrap.c native/complex.c native/ml.c
 JAVA_HOME=$(shell readlink -f `which javac` | sed "s:bin/javac::")
 C_INCLUDES=-I$(JAVA_HOME)include -I$(JAVA_HOME)include/linux -I/usr/include/flint
-CFLAGS=-g -O3 -fPIC -shared -Wno-int-conversion 
+CFLAGS=-g -O3 -fPIC -shared -Wno-int-conversion -Dflint_rand_struct=flint_rand_s -Dflint_rand_init=flint_randinit -Dflint_rand_clear=flint_randclear -Dflint_rand_set_seed=flint_randseed 
 SWIGFLAGS=-v -java -package arb -outdir src/main/java/arb
 
 all: libarblib.so 
@@ -14,6 +14,8 @@ build/libs/arb4j-$(VERSION).jar: install
 
 native/arb_wrap.c: $(shell find native -name "*.i") 
 	swig $(SWIGFLAGS) native/arb.i
+	sed -i 's/if (arg1) (arg1)->stride = arg2;/\/\/ stride removed in FLINT 3.1-3.2/' native/arb_wrap.c
+	sed -i 's/result = (long) ((arg1)->stride);/result = 0; \/\/ stride removed in FLINT 3.1-3.2/' native/arb_wrap.c
 
 libarblib.so: $(SOURCES)
 	clang-22 $(CFLAGS) $(SOURCES) $(C_INCLUDES) -olibarblib.so -lflint -lxdo 
