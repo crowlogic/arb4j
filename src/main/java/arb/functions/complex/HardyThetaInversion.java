@@ -7,9 +7,17 @@ import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
 
 /**
+ * @deprecated Use {@link RealFunction#invert(Real, int, int)} instead. This
+ *             class is superseded by the Lagrange series reversion default
+ *             method on {@link RealFunction}, which does exactly the same thing
+ *             but is available on any {@link RealFunction} instance and is
+ *             wired into the expression compiler via
+ *             {@link arb.expressions.nodes.unary.InverseFunctionNode}.
+ *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
+@Deprecated
 public class HardyThetaInversion implements
                                  RealFunction
 {

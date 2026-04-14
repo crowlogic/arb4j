@@ -113,6 +113,10 @@ public class arblib {
     arblibJNI.arb_poly_revert_series(RealPolynomial.getCPtr(Qinv), Qinv, RealPolynomial.getCPtr(Q), Q, n, prec);
   }
 
+  public static void acb_poly_revert_series(ComplexPolynomial h, ComplexPolynomial f, int n, int prec) {
+    arblibJNI.acb_poly_revert_series(ComplexPolynomial.getCPtr(h), h, ComplexPolynomial.getCPtr(f), f, n, prec);
+  }
+
   public static void qqbar_zero(AlgebraicNumber res) {
     arblibJNI.qqbar_zero(AlgebraicNumber.getCPtr(res), res);
   }

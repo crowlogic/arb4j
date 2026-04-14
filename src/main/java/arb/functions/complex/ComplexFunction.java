@@ -1,6 +1,7 @@
 package arb.functions.complex;
 
 import arb.Complex;
+import arb.ComplexPolynomial;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -200,5 +201,52 @@ public interface ComplexFunction extends
   public default Complex eval(double d)
   {
     return eval(d, new Complex());
+  }
+
+  /**
+   * Returns the compositional inverse f⁻¹ expanded as a Lagrange series
+   * reversion about {@code centerPoint}, truncated to {@code seriesOrder}
+   * terms at the given {@code precision}.
+   *
+   * The returned {@link ComplexFunction} evaluates f⁻¹(w) by:
+   * <ol>
+   *   <li>Building the Taylor series of this function at centerPoint</li>
+   *   <li>Zeroing the constant term</li>
+   *   <li>Reverting the series via {@code acb_poly_revert_series} (Lagrange inversion)</li>
+   *   <li>Evaluating the reverted polynomial at (w − f(centerPoint))</li>
+   *   <li>Adding back centerPoint</li>
+   * </ol>
+   *
+   * @param centerPoint expansion center for the Taylor/Lagrange series
+   * @param seriesOrder number of terms in the series (controls accuracy)
+   * @param precision   working precision in bits
+   * @return a {@link ComplexFunction} representing f⁻¹
+   */
+  public default ComplexFunction invert(Complex centerPoint, int seriesOrder, int precision)
+  {
+    ComplexPolynomial series = new ComplexPolynomial();
+    series.setLength(seriesOrder);
+    series.fitLength(seriesOrder);
+    evaluate(centerPoint, seriesOrder, precision, series.getCoeffs());
+
+    Complex fAtCenter = new Complex();
+    fAtCenter.set(series.get(0));
+    series.get(0).zero();
+
+    ComplexPolynomial reverted    = series.invert(seriesOrder, precision, new ComplexPolynomial());
+    Complex           savedCenter = new Complex();
+    savedCenter.set(centerPoint);
+
+    return new ComplexFunction()
+    {
+      @Override
+      public Complex evaluate(Complex w, int order, int bits, Complex result)
+      {
+        w.sub(fAtCenter, bits, result);
+        reverted.evaluate(result, order, bits, result);
+        result.add(savedCenter, bits);
+        return result;
+      }
+    };
   }
 }

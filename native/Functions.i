@@ -66,6 +66,7 @@ void arb_poly_riemann_siegel_z_series(arb_poly_t res, const arb_poly_t h, slong 
 void arb_poly_riemann_siegel_theta_series(arb_poly_t res, const arb_poly_t h, slong n, slong prec);
 
 void arb_poly_revert_series(arb_poly_t Qinv, const arb_poly_t Q, slong n, slong prec);
+void acb_poly_revert_series(acb_poly_t h, const acb_poly_t f, slong n, slong prec);
 
 void qqbar_zero(qqbar_t res);
 

@@ -283,6 +283,53 @@ public interface RealFunction extends
     }
   }
 
+  /**
+   * Returns the compositional inverse f⁻¹ expanded as a Lagrange series
+   * reversion about {@code centerPoint}, truncated to {@code seriesOrder}
+   * terms at the given {@code precision}.
+   *
+   * The returned {@link RealFunction} evaluates f⁻¹(y) by:
+   * <ol>
+   *   <li>Building the Taylor series of this function at centerPoint</li>
+   *   <li>Zeroing the constant term</li>
+   *   <li>Reverting the series via {@code arb_poly_revert_series} (Lagrange inversion)</li>
+   *   <li>Evaluating the reverted polynomial at (y − f(centerPoint))</li>
+   *   <li>Adding back centerPoint</li>
+   * </ol>
+   *
+   * @param centerPoint expansion center for the Taylor/Lagrange series
+   * @param seriesOrder number of terms in the series (controls accuracy)
+   * @param precision   working precision in bits
+   * @return a {@link RealFunction} representing f⁻¹
+   */
+  public default RealFunction invert(Real centerPoint, int seriesOrder, int precision)
+  {
+    RealPolynomial series = new RealPolynomial();
+    series.setLength(seriesOrder);
+    series.fitLength(seriesOrder);
+    evaluate(centerPoint, seriesOrder, precision, series.getCoeffs());
+
+    Real fAtCenter = new Real();
+    fAtCenter.set(series.get(0));
+    series.get(0).zero();
+
+    RealPolynomial reverted    = series.invert(seriesOrder, precision, new RealPolynomial());
+    Real           savedCenter = new Real();
+    savedCenter.set(centerPoint);
+
+    return new RealFunction()
+    {
+      @Override
+      public Real evaluate(Real y, int order, int bits, Real result)
+      {
+        y.sub(fAtCenter, bits, result);
+        reverted.evaluate(result, order, bits, result);
+        result.add(savedCenter, bits);
+        return result;
+      }
+    };
+  }
+
   @Override
   public default RealFunction derivative()
   {

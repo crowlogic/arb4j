@@ -1,6 +1,7 @@
 package arb.expressions.nodes.unary;
 
 import static arb.expressions.Compiler.loadBitsParameterOntoStack;
+import static arb.expressions.Compiler.loadOrderParameter;
 import static arb.expressions.Compiler.loadThisOntoStack;
 
 import java.util.*;
@@ -25,10 +26,12 @@ import arb.functions.Function;
  * {@code f(x)⁻¹ = 1/f(x)} where ⁻¹ appears <b>after</b> the closing
  * parenthesis, which is handled by ordinary exponentiation to the power −1.
  * <p>
- * Evaluation uses Newton-Raphson iteration to solve {@code f(t) − y = 0} for
- * {@code t} given the target value {@code y}. The forward function's derivative
- * {@code f′} is required and is obtained via the expression compiler's
- * automatic differentiation infrastructure.
+ * Evaluation uses Lagrange series reversion to compute f⁻¹. The forward
+ * function's Taylor series is expanded, the constant term is zeroed, and the
+ * series is reverted via {@code arb_poly_revert_series} (real) or
+ * {@code acb_poly_revert_series} (complex). The resulting inverted function is
+ * cached in a field of the generated class so the expensive reversion runs
+ * once.
  * <p>
  * The derivative of the inverse function is computed analytically:
  * 
@@ -49,7 +52,7 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
                                 UnaryOperationNode<D, R, F>
 {
 
-  private static final Logger logger         = LoggerFactory.getLogger(InverseFunctionNode.class);
+  private static final Logger logger              = LoggerFactory.getLogger(InverseFunctionNode.class);
 
   /**
    * The Unicode superscript inverse marker: ⁻¹ (U+207B U+00B9). The parser
@@ -57,12 +60,13 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
    * opening parenthesis to distinguish compositional inverse from multiplicative
    * inverse.
    */
-  public static final String  INVERSE_MARKER = "\u207B\u00B9";
+  public static final String  INVERSE_MARKER      = "\u207B\u00B9";
 
   /**
-   * Maximum number of Newton-Raphson iterations before declaring non-convergence.
+   * Default number of terms in the Lagrange series reversion, matching
+   * {@link arb.functions.complex.HardyThetaInversion}.
    */
-  public static final int     MAX_ITERATIONS = 64;
+  public static final int     DEFAULT_SERIES_ORDER = 20;
 
   /**
    * The name of the forward function whose compositional inverse this node
@@ -82,27 +86,16 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
    * Whether the forward function is a contextual (user-defined) function rather
    * than a builtin.
    */
-  public boolean              contextual     = false;
+  public boolean              contextual          = false;
 
   /**
-   * Field name for the intermediate variable holding the Newton iterate.
+   * Field name in the generated class for the cached inverted function (type is
+   * the function interface, e.g. RealFunction or ComplexFunction). Initially null;
+   * populated on first evaluate() call.
    */
-  private String              iterateFieldName;
+  private String              invertedFunctionFieldName;
 
-  /**
-   * Field name for the intermediate variable holding f(xₙ).
-   */
-  private String              fValueFieldName;
 
-  /**
-   * Field name for the intermediate variable holding f′(xₙ).
-   */
-  private String              fPrimeFieldName;
-
-  /**
-   * Field name for the intermediate variable holding the correction delta.
-   */
-  private String              deltaFieldName;
 
   /**
    * Constructs an InverseFunctionNode for the compositional inverse of the named
@@ -130,6 +123,14 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
       }
     }
     generatedType = expression.coDomainType;
+
+    // Allocate a field on the generated class for caching the inverted function.
+    // The function interface type (e.g. RealFunction) is an interface, so
+    // IntermediateVariable.generateInitializer() correctly skips the NEW call —
+    // the field starts as null and is populated on first evaluate().
+    // Null-check on this field serves as the initialization guard (no separate
+    // boolean needed).
+    this.invertedFunctionFieldName = expression.newIntermediateVariable("inv", expression.functionClass, true);
   }
 
   /**
@@ -252,16 +253,20 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
   }
 
   /**
-   * Generates bytecode that performs Newton-Raphson iteration to compute f⁻¹(y)
-   * by solving f(t) − y = 0:
-   * 
+   * Generates bytecode that computes f⁻¹(y) via Lagrange series reversion:
+   *
    * <pre>
-   *   t₀ = y                          (initial guess)
-   *   tₙ₊₁ = tₙ − (f(tₙ) − y) / f′(tₙ)
+   *   if (!invInit) {
+   *       inv = forwardFunc.invert(y, seriesOrder, bits);
+   *       invInit = true;
+   *   }
+   *   result = inv.evaluate(y, order, bits, result);
    * </pre>
-   * 
-   * Iteration continues until the correction magnitude is below the precision
-   * threshold determined by the bits parameter, or MAX_ITERATIONS is reached.
+   *
+   * The forward function's Taylor series is expanded at the first evaluation
+   * point, the constant term is zeroed, and the series is reverted via
+   * {@code arb_poly_revert_series}. The resulting inverted function is cached
+   * in a field of the generated class so the expensive reversion runs once.
    */
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
@@ -271,44 +276,92 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
       logger.debug("generate(this={}, arg={}, resultType={})", this, arg, resultType);
     }
 
-    // TODO: full bytecode generation for Newton-Raphson loop
-    // For initial stub: generate the argument (the target value y), then
-    // invoke a runtime helper method that performs the iteration.
-    //
-    // The runtime method signature:
-    // public static <T> T newtonInverse(Function<T,T> f, T y, int bits, T result)
-    //
-    // Phase 1 implementation generates a call to this helper.
+    String   internalName          = expression.className.replace('.', '/');
+    Class<?> functionInterfaceType = expression.functionClass;
+    String   functionDescriptor    = functionInterfaceType.descriptorString();
+    Class<?> domainType            = expression.domainType;
 
-    arg.generate(mv, resultType);
-    loadBitsParameterOntoStack(mv);
-    loadOutputVariableOntoStack(mv, resultType);
+    // ---- Lazy initialization check ----
+    // if (this.inv1 != null) goto alreadyInverted
+    Label alreadyInverted = new Label();
+    expression.loadFieldOntoStack(loadThisOntoStack(mv), invertedFunctionFieldName, functionDescriptor);
+    mv.visitJumpInsn(Opcodes.IFNONNULL, alreadyInverted);
 
-    // Load the forward function reference onto the stack
+    // ---- Compute the inverted function (runs once) ----
+
+    // Load forward function reference: this.<forwardFunctionName>
     if (contextual && forwardMapping != null)
     {
-      expression.loadFieldOntoStack(loadThisOntoStack(mv), forwardFunctionName, forwardMapping.functionFieldDescriptor());
+      expression.loadFieldOntoStack(loadThisOntoStack(mv),
+                                    forwardFunctionName,
+                                    forwardMapping.functionFieldDescriptor());
     }
     else
     {
-      // For builtin functions, push null — the runtime helper must handle builtins
-      // by name
-      mv.visitInsn(Opcodes.ACONST_NULL);
+      throw new UnsupportedOperationException(
+          String.format("Inverse of non-contextual function '%s' is not supported; "
+                        + "the function must be registered in the expression context",
+                        forwardFunctionName));
     }
 
-    // Push the function name as a string constant for the runtime helper
-    mv.visitLdcInsn(forwardFunctionName);
+    // Load center point (the argument value y, used as expansion center)
+    // Stack: [forwardFunc]
+    arg.generate(mv, domainType);
+    // Stack: [forwardFunc, centerPoint]
 
-    // Push max iterations
-    mv.visitLdcInsn(MAX_ITERATIONS);
+    // Load series order (default 20, matching HardyThetaInversion)
+    mv.visitLdcInsn(DEFAULT_SERIES_ORDER);
+    // Stack: [forwardFunc, centerPoint, 20]
 
-    // Invoke the runtime Newton-Raphson helper
-    mv.visitMethodInsn(Opcodes.INVOKESTATIC,
-                       Type.getInternalName(InverseFunctionEvaluator.class),
+    // Load precision (bits parameter from evaluate() signature, slot 3)
+    loadBitsParameterOntoStack(mv);
+    // Stack: [forwardFunc, centerPoint, 20, bits]
+
+    // INVOKEINTERFACE functionInterfaceType.invert(domainType, int, int) → functionInterfaceType
+    mv.visitMethodInsn(Opcodes.INVOKEINTERFACE,
+                       Type.getInternalName(functionInterfaceType),
+                       "invert",
+                       Compiler.getMethodDescriptor(functionInterfaceType, domainType, int.class, int.class),
+                       true);
+    // Stack: [invertedFunction]
+
+    // Store into field: this.inv1 = invertedFunction
+    loadThisOntoStack(mv);
+    mv.visitInsn(Opcodes.SWAP);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName, invertedFunctionFieldName, functionDescriptor);
+
+    // ---- Evaluate the cached inverted function ----
+    Compiler.designateLabel(mv, alreadyInverted);
+
+    // Load this.inv1 (the cached inverted function)
+    expression.loadFieldOntoStack(loadThisOntoStack(mv), invertedFunctionFieldName, functionDescriptor);
+    // Stack: [invertedFunction]
+
+    // Load argument (the target value y at which to evaluate f⁻¹)
+    arg.generate(mv, domainType);
+    // Stack: [invertedFunction, y]
+
+    // Load order parameter (slot 2)
+    loadOrderParameter(mv);
+    // Stack: [invertedFunction, y, order]
+
+    // Load bits parameter (slot 3)
+    loadBitsParameterOntoStack(mv);
+    // Stack: [invertedFunction, y, order, bits]
+
+    // Load output variable
+    loadOutputVariableOntoStack(mv, resultType);
+    // Stack: [invertedFunction, y, order, bits, result]
+
+    // INVOKEINTERFACE functionInterfaceType.evaluate(D, int, int, R) → R
+    mv.visitMethodInsn(Opcodes.INVOKEINTERFACE,
+                       Type.getInternalName(functionInterfaceType),
                        "evaluate",
-                       Compiler.getMethodDescriptor(resultType, resultType, int.class, resultType, Function.class, String.class, int.class),
-                       false);
+                       Compiler.evaluationMethodDescriptor,
+                       true);
+    // Stack: [result]
 
+    Compiler.cast(mv, resultType);
     generatedType = resultType;
     return mv;
   }

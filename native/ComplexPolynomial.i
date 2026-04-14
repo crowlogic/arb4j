@@ -555,4 +555,30 @@ import java.util.Objects;
   }
 
   public Complex coeffs;
+
+  /**
+   * Computes the compositional inverse (reversion) of this polynomial using
+   * Lagrange inversion via {@code acb_poly_revert_series}. The input must
+   * have zero constant term and nonzero linear coefficient.
+   *
+   * @param order number of terms in the reverted series
+   * @param bits  working precision in bits
+   * @param result preallocated polynomial to hold the result
+   * @return result, containing the reverted series
+   */
+  public ComplexPolynomial invert(int order, int bits, ComplexPolynomial result)
+  {
+    if (!get(0).isZero())
+    {
+      throw new arb.exceptions.ArbException(
+          "(acb_poly_revert_series): Input must have zero constant term but instead had " + get(0));
+    }
+    if (get(1).isZero())
+    {
+      throw new arb.exceptions.ArbException(
+          "(acb_poly_revert_series): Input must have nonzero linear coefficient but instead had " + get(1));
+    }
+    arblib.acb_poly_revert_series(result, this, order, bits);
+    return result;
+  }
 %};
