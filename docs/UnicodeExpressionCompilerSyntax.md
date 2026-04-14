@@ -53,3 +53,58 @@ Java is not "just imperative" in this role — it is performing **generative met
 Java here is doing something more specific than general-purpose imperative programming. Each `Node` subclass contains a `generate()` method that knows how to emit its own bytecode — the AST is a self-compiling data structure. This is the **interpreter pattern elevated to a compiler pattern**: polymorphic dispatch over an algebraic data type (the Node hierarchy) where each variant produces target code rather than executing directly. 
 
 The formal classification: **Java acts as an imperative object-oriented metalanguage performing staged, generative metaprogramming** — it translates declarative specifications into imperative bytecode, bridging the paradigm gap between what the user writes and what the machine executes. 
+
+## Integral Syntax
+
+There are two syntactic forms for integrals.
+
+### Arrow Form (Unicode)
+
+Definite integral: `∫var➔integrand dvar∈(lower,upper)` or `∫var➔integrand dvar∈{lower..upper}`
+
+Indefinite integral: `∫var➔integrand dvar`
+
+Examples:
+
+```
+x➔∫y➔1/sqrt(1-y^2)dy∈(-1,x)
+t➔∫s➔w(s)ds∈{-1..t}
+```
+
+### Function Form
+
+Definite integral: `int(integrand, var=lower…upper)`
+
+Indefinite integral: `int(integrand, var)`
+
+Examples:
+
+```
+int(sin(x),x)
+int(x,x=2..4)
+```
+
+### Nested Integrals
+
+Nested (iterated) integrals are supported. In the arrow form, the inner integral must be parenthesized so that the outer `d`-token is unambiguous:
+
+```
+x➔∫y➔(∫z➔(y*z)dz∈(0,1))dy∈(0,1)
+```
+
+This represents ∫₀¹∫₀¹ y·z dz dy. The parentheses around the inner `∫z➔(y*z)dz∈(0,1)` are required — without them, the parser cannot distinguish where the inner integrand ends and the outer `dy` begins.
+
+More generally, whenever a bare variable name immediately precedes `d` followed by the integration variable name, the parser reads them as a single identifier. To avoid this ambiguity, ensure the integrand ends with a non-identifier character such as `)`, a digit, or a superscript. For example:
+
+| Expression | Status | Reason |
+|---|---|---|
+| `∫y➔exp(y)dy∈(0,1)` | ✓ | integrand ends with `)` |
+| `∫y➔y^2dy∈(0,1)` | ✓ | integrand ends with `2` |
+| `∫y➔(y)dy∈(0,1)` | ✓ | integrand ends with `)` |
+| `∫y➔ydy∈(0,1)` | ✗ | `ydy` is parsed as one identifier |
+
+### Fubini/Tonelli Integration Order Exchange
+
+When nested integrals have constant finite bounds and the integrand is the immediate child of the outer integral, `simplify()` may automatically exchange the order of integration via the Fubini–Tonelli theorem. This is implemented by `ExchangeabilityChecker` (structural analysis) and `IntegrabilityChecker` (analytic validity). The `@FubiniApplicable` annotation can be placed on a function class to assert that Fubini's theorem applies when the automatic heuristics are insufficient.
+
+See [Issue #549](https://github.com/crowlogic/arb4j/issues/549).

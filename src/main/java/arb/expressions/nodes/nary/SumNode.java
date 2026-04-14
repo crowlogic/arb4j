@@ -5,6 +5,7 @@ import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
+import arb.functions.integer.Sequence;
 
 /**
  * Parse represent and generate bytecodes for the sum operator where the syntax
@@ -52,17 +53,65 @@ public class SumNode<D, C, F extends Function<? extends D, ? extends C>> extends
          false);
   }
 
+  /**
+   * Linearity of integration over finite sums:
+   * ∫[Σᵢ₌ₐᵇ fᵢ(x)]dx = Σᵢ₌ₐᵇ [∫fᵢ(x)dx]
+   *
+   * <p>Valid for all bounded sums (finite number of terms). For unbounded
+   * sums, this requires the Dominated Convergence Theorem.</p>
+   *
+   * @see <a href="https://github.com/crowlogic/arb4j/issues/549">#549</a>
+   */
+  @SuppressWarnings("unchecked")
   @Override
   public Node<D, C, F> integral(VariableNode<D, C, F> variable)
   {
-    assert false : "TODO: implement ∫[∑ᵢ₌₁ⁿfᵢ(x)]dx = ∑ᵢ₌₁ⁿ[∫fᵢ(x)dx]";
-    return null;
+    // Clone the operand expression and integrate its body
+    Expression<Integer, C, Sequence<C>> integratedOperand =
+      (Expression<Integer, C, Sequence<C>>) (Expression<?, ?, ?>) operandExpression.cloneExpression();
+    VariableNode<Integer, C, Sequence<C>> splicedVar =
+      (VariableNode<Integer, C, Sequence<C>>) (VariableNode<?, ?, ?>) variable.spliceInto(operandExpression);
+    integratedOperand.rootNode = operandExpression.rootNode.integral(splicedVar);
+    integratedOperand.updateStringRepresentation();
+
+    return new NAryOperationNode<>(expression,
+                                   identity,
+                                   prefix,
+                                   operation,
+                                   symbol,
+                                   integratedOperand,
+                                   lowerLimit,
+                                   upperLimit);
   }
 
+  /**
+   * Linearity of differentiation over finite sums:
+   * ∂/∂x [Σᵢ₌ₐᵇ fᵢ(x)] = Σᵢ₌ₐᵇ [∂fᵢ(x)/∂x]
+   *
+   * <p>Valid for all bounded sums (finite number of terms). For unbounded
+   * sums, this requires uniform convergence of the differentiated series.</p>
+   *
+   * @see <a href="https://github.com/crowlogic/arb4j/issues/549">#549</a>
+   */
+  @SuppressWarnings("unchecked")
   @Override
   public Node<D, C, F> differentiate(VariableNode<D, C, F> variable)
   {
-    assert false : "TODO: implement ∂[∑ᵢ₌₁ⁿfᵢ(x)]/∂x = ∑ᵢ₌₁ⁿ[∂fᵢ(x)/∂x]";
-    return null;
+    // Clone the operand expression and differentiate its body
+    Expression<Integer, C, Sequence<C>> differentiatedOperand =
+      (Expression<Integer, C, Sequence<C>>) (Expression<?, ?, ?>) operandExpression.cloneExpression();
+    VariableNode<Integer, C, Sequence<C>> splicedVar =
+      (VariableNode<Integer, C, Sequence<C>>) (VariableNode<?, ?, ?>) variable.spliceInto(operandExpression);
+    differentiatedOperand.rootNode = operandExpression.rootNode.differentiate(splicedVar);
+    differentiatedOperand.updateStringRepresentation();
+
+    return new NAryOperationNode<>(expression,
+                                   identity,
+                                   prefix,
+                                   operation,
+                                   symbol,
+                                   differentiatedOperand,
+                                   lowerLimit,
+                                   upperLimit);
   }
 }

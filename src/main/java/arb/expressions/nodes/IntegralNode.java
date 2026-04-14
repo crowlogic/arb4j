@@ -101,6 +101,32 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     ensureIndefiniteIntegralNode();
   }
 
+  /**
+   * Constructs an IntegralNode with explicit bounds, deferring computation of
+   * the indefinite integral. Used by {@link #exchangeOrder(IntegralNode)} to
+   * construct the rewritten integral tree without eagerly integrating.
+   *
+   * @param expression the enclosing expression
+   * @param integrand  the integrand node
+   * @param variable   the integration variable
+   * @param lower      the lower limit (null for indefinite)
+   * @param upper      the upper limit (null for indefinite)
+   */
+  IntegralNode(Expression<D, C, F> expression,
+               Node<D, C, F> integrand,
+               VariableNode<D, C, F> variable,
+               Node<D, C, F> lower,
+               Node<D, C, F> upper)
+  {
+    super(expression);
+    assert variable != null : "variable shan't be null";
+    integrandNode              = integrand;
+    integrationVariableNode    = variable;
+    integrationVariableName    = variable.getName();
+    lowerLimitNode             = lower;
+    upperLimitNode             = upper;
+  }
+
   @Override
   public void accept(Consumer<Node<D, C, F>> t)
   {
@@ -345,6 +371,64 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     return null;
   }
 
+  /**
+   * Exchanges the order of integration between this outer integral and a
+   * directly nested inner integral, applying Fubini's theorem:
+   *
+   * <pre>
+   * ∫ₐᵇ [∫_c^d f(x,y) dy] dx  →  ∫_c^d [∫ₐᵇ f(x,y) dx] dy
+   * </pre>
+   *
+   * <p>Preconditions (must be verified by
+   * {@link ExchangeabilityChecker#isStructurallyExchangeable} and
+   * {@link IntegrabilityChecker#isAnalyticallyValid} before calling):</p>
+   * <ul>
+   *   <li>The inner operator is a direct descendant of this node's operand</li>
+   *   <li>All intermediate nodes on the path are linear operators</li>
+   *   <li>The inner operator's bounds are independent of this operator's
+   *       bound variable (constant-limits case)</li>
+   * </ul>
+   *
+   * @param inner the inner accumulation operator to swap with this outer
+   *              operator (must be an IntegralNode)
+   * @return the new outer node after the swap
+   *
+   * @see <a href="https://github.com/crowlogic/arb4j/issues/549">#549</a>
+   */
+  public Node<D, C, F> exchangeOrder(IntegralNode<D, C, F> inner)
+  {
+    assert inner != null : "inner operator must not be null";
+    assert inner != this : "cannot exchange an operator with itself";
+
+    // Extract the components from both operators
+    Node<D, C, F>         innerIntegrand = inner.integrandNode;
+    VariableNode<D, C, F> outerVar       = this.integrationVariableNode;
+    VariableNode<D, C, F> innerVar       = inner.integrationVariableNode;
+    Node<D, C, F>         outerLower     = this.lowerLimitNode;
+    Node<D, C, F>         outerUpper     = this.upperLimitNode;
+    Node<D, C, F>         innerLower     = inner.lowerLimitNode;
+    Node<D, C, F>         innerUpper     = inner.upperLimitNode;
+
+    // Construct the new inner integral: ∫ₐᵇ f(x,y) dx
+    // (uses the outer's variable and bounds, wrapping the original integrand)
+    // Uses the deferred constructor to avoid eagerly computing the indefinite
+    // integral — that happens when simplify() is called on the result.
+    IntegralNode<D, C, F> newInner = new IntegralNode<>(expression,
+                                                         innerIntegrand,
+                                                         outerVar,
+                                                         outerLower,
+                                                         outerUpper);
+
+    // Construct the new outer integral: ∫_c^d [newInner] dy
+    IntegralNode<D, C, F> newOuter = new IntegralNode<>(expression,
+                                                         newInner,
+                                                         innerVar,
+                                                         innerLower,
+                                                         innerUpper);
+
+    return newOuter;
+  }
+
   public boolean isDefiniteIntegral()
   {
     return lowerLimitNode != null && upperLimitNode != null;
@@ -481,6 +565,22 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     if (integrationVariableNode == null)
     {
       return this;
+    }
+
+    // Fubini exchange: if the integrand is a nested integral or sum that is
+    // structurally and analytically exchangeable, try swapping the order.
+    // This is opportunistic — only applied when it enables simplification.
+    if (isDefiniteIntegral() && integrandNode instanceof IntegralNode<D, C, F> innerIntegral)
+    {
+      if (ExchangeabilityChecker.isStructurallyExchangeable(this, innerIntegral)
+          && IntegrabilityChecker.isAnalyticallyValid(this, innerIntegral))
+      {
+        Node<D, C, F> exchanged = exchangeOrder(innerIntegral);
+        if (exchanged != this)
+        {
+          return exchanged;
+        }
+      }
     }
 
     ensureIndefiniteIntegralNode();
