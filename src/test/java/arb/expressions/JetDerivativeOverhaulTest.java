@@ -190,28 +190,42 @@ public class JetDerivativeOverhaulTest extends
   }
 
   /**
-   * Verify that the derivativeCache grows correctly across calls with
-   * increasing order. After order=2 then order=4, the cache must have expanded
-   * without recompiling earlier derivatives, and the coefficients must be
-   * correct.
+   * Verify that the derivativeCache extends from the highest cached derivative
+   * rather than rebuilding from scratch. Call with order=3, then order=6 on the
+   * same instance. Access the derivativeCache field to confirm it grew
+   * incrementally (size 3 after first call, size 6 after second) and that the
+   * Taylor coefficients of t^5 at t=1 are the binomial coefficients C(5,k).
    */
-  public void testDerivativeCacheGrowth()
+  @SuppressWarnings("unchecked")
+  public void testDerivativeCacheExtendsFromHighest() throws Exception
   {
-    var f = RealFunction.express("t^3+t");
+    var f = RealFunction.express("t^5");
 
-    // f(t) = t^3+t at t=1: f(1)=2, f'(1)=4, f''(1)=6, f'''(1)=6
-    // c_0=2, c_1=4, c_2=6/2=3, c_3=6/6=1
-    try ( Real point = Real.valueOf(1); Real result2 = Real.newVector(2); Real result4 = Real.newVector(4))
+    // t^5 at t=1: Taylor coefficients are C(5,k) = 1, 5, 10, 10, 5, 1
+    try ( Real point = Real.valueOf(1); Real r3 = Real.newVector(3); Real r6 = Real.newVector(6))
     {
-      f.evaluate(point, 2, bits, result2);
-      assertEquals("order=2: c_0 = 2", 2.0, result2.get(0).doubleValue(), tol);
-      assertEquals("order=2: c_1 = 4", 4.0, result2.get(1).doubleValue(), tol);
+      f.evaluate(point, 3, bits, r3);
+      assertEquals("order=3: c_0", 1.0, r3.get(0).doubleValue(), tol);
+      assertEquals("order=3: c_1", 5.0, r3.get(1).doubleValue(), tol);
+      assertEquals("order=3: c_2", 10.0, r3.get(2).doubleValue(), tol);
 
-      f.evaluate(point, 4, bits, result4);
-      assertEquals("order=4: c_0 = 2", 2.0, result4.get(0).doubleValue(), tol);
-      assertEquals("order=4: c_1 = 4", 4.0, result4.get(1).doubleValue(), tol);
-      assertEquals("order=4: c_2 = 3", 3.0, result4.get(2).doubleValue(), tol);
-      assertEquals("order=4: c_3 = 1", 1.0, result4.get(3).doubleValue(), tol);
+      // Inspect the derivativeCache field: should have 3 entries (f, f', f'')
+      var cacheField = f.getClass().getField("derivativeCache");
+      var cache      = (java.util.ArrayList<?>) cacheField.get(f);
+      assertEquals("Cache should have 3 entries after order=3", 3, cache.size());
+
+      // Second call with order=6 — cache must extend from entry 2 (f''),
+      // not rebuild from entry 0
+      f.evaluate(point, 6, bits, r6);
+      assertEquals("Cache should have 6 entries after order=6", 6, cache.size());
+
+      // Verify all 6 binomial coefficients
+      double[] expected =
+      { 1, 5, 10, 10, 5, 1 };
+      for (int k = 0; k < 6; k++)
+      {
+        assertEquals("c_" + k, expected[k], r6.get(k).doubleValue(), tol);
+      }
     }
   }
 }
