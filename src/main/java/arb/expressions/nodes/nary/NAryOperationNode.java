@@ -803,7 +803,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
    * types, returns the element type (e.g., RealSequence → Real). For non-sequence
    * types, returns the type as-is.
    */
-  static Class<?> scalarCoDomain(Class<?> type)
+  public static Class<?> scalarCoDomain(Class<?> type)
   {
     if (RealSequence.class.equals(type))
     {

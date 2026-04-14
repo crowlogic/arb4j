@@ -365,24 +365,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return nextLocalVariableSlot++;
   }
 
-  public final List<Expression<?, ?, ?>> downstreamExpressions = new ArrayList<>();
-
-  public Expression<?, ?, ?> registerDownstreamExpression(Expression<?, ?, ?> child)
-  {
-    child.superExpression = this;
-    downstreamExpressions.add(child);
-    return child;
-  }
+  public Expression<?, ?, ?>                            functionalChild;
 
   public String typeString()
   {
-    String var = getIndependentVariable() != null ? getIndependentVariable().getName() : "?";
-    if (!downstreamExpressions.isEmpty())
-    {
-      String inner = downstreamExpressions.stream().map(Expression::typeString).collect(java.util.stream.Collectors.joining(", "));
-      return format("%s:%s=%s➔(%s=%s)", functionClass.getSimpleName(), var, domainType.getSimpleName(), coDomainType.getSimpleName(), inner);
-    }
-    return format("%s:%s=%s➔%s", functionClass.getSimpleName(), var, domainType.getSimpleName(), coDomainType.getSimpleName());
+    String var      = getIndependentVariable() != null ? getIndependentVariable().getName() : "?";
+    String func     = functionClass.getSimpleName();
+    String domain   = domainType.getSimpleName();
+    String codomain = functionalChild != null ? "(" + functionalChild.typeString() + ")" : coDomainType.getSimpleName();
+    return format("%s:%s=%s➔%s", func, var, domain, codomain);
   }
 
   /**
@@ -1404,7 +1395,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       String arrowVar = parseExplicitInputVariableIfPresent();
       if (arrowVar != null && coDomainType.isInterface())
       {
-        node = parseLambda(arrowVar);
+        node = parseInputVariableAssignment(arrowVar);
       }
       else if (arrowVar == null)
       {
@@ -1448,18 +1439,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return node;
   }
 
-  public Node<D, C, F> parseLambda(String variableName)
+  public Node<D, C, F> parseInputVariableAssignment(String variableName)
   {
     if (trace)
     {
-      log.debug("→ parseLambda(#{}) expr={}, paramName={} at position={} where remaining={}",
+      log.debug("→ parseInputVariableAssignment(#{}) expr={}, paramName={} at position={} where remaining={}",
                 System.identityHashCode(this),
                 getExpression(),
                 variableName,
                 position,
                 remaining());
     }
-    checkLambdaParameterConflicts(variableName);
+    checkInputVariableConflicts(variableName);
 
     boolean prevDef = deferVariableResolution;
     deferVariableResolution = true;
@@ -1467,7 +1458,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     Expression<D, C, F> subExpr = cloneExpression();
     subExpr.clearIndependentVariable();
-    subExpr.superExpression = this;
+    subExpr.superExpression    = this;
+    if (isGeneratedFunctional())
+    {
+      subExpr.functionClass    = (Class) coDomainType;
+      subExpr.domainType       = (Class) resolveChildDomain(coDomainType);
+      subExpr.coDomainType     = (Class) resolveChildCoDomain(coDomainType);
+      this.functionalChild     = subExpr;
+    }
     placeholderVariable        = subExpr.setIndependentVariable(variableNode.spliceInto(subExpr));
     subExpr.rootNode           = subExpr.resolve();
 
@@ -1479,11 +1477,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return subExpr.rootNode;
   }
 
-  private void checkLambdaParameterConflicts(String paramName)
+  private void checkInputVariableConflicts(String paramName)
   {
     if (getIndependentVariable() != null && Objects.equals(getIndependentVariable().getName(), paramName))
     {
-      throw new CompilerException("lambda parameter '" + paramName + "' conflicts with the independent variable of the containing expression");
+      throw new CompilerException("input variable '" + paramName + "' conflicts with the independent variable of the containing expression");
     }
   }
 
@@ -3186,6 +3184,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                               funcCoDomain,
                                                                               funcClass);
     functionalExpression.superExpression = this;
+    this.functionalChild                 = functionalExpression;
     if (context == null)
     {
       context = new Context();
@@ -3193,13 +3192,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     functionalExpression.expression = expression;
     functionalExpression.context    = context;
 
-    // Use the lambda parameter as the functional expression's independent variable.
-    var lambdaParam = placeholderVariable;
-    placeholderVariable = null;
+    // Use the declared variable as the functional expression's independent variable.
+    var declaredVariable = placeholderVariable;
+    placeholderVariable   = null;
 
-    if (lambdaParam != null)
+    if (declaredVariable != null)
     {
-      functionalExpression.setIndependentVariable(lambdaParam.spliceInto(functionalExpression).asVariable());
+      functionalExpression.setIndependentVariable(declaredVariable.spliceInto(functionalExpression).asVariable());
     }
 
     rootNode.isRootNode                      = true;
@@ -3211,6 +3210,49 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     functionalExpression.rootNode.isRootNode = rootNode.isRootNode;
     functionalExpression.updateStringRepresentation();
     return functionalExpression;
+  }
+
+  static Class<?> resolveChildDomain(Class<?> parentCoDomainType)
+  {
+    if (RealFunction.class.equals(parentCoDomainType) || RealFunctional.class.equals(parentCoDomainType)
+        || RealToComplexFunction.class.equals(parentCoDomainType))
+    {
+      return Real.class;
+    }
+    if (ComplexFunction.class.equals(parentCoDomainType) || ComplexFunctional.class.equals(parentCoDomainType))
+    {
+      return Complex.class;
+    }
+    if (RealSequence.class.equals(parentCoDomainType) || ComplexSequence.class.equals(parentCoDomainType))
+    {
+      return Integer.class;
+    }
+    throw new UnsupportedOperationException("cannot resolve child domain for " + parentCoDomainType);
+  }
+
+  static Class<?> resolveChildCoDomain(Class<?> parentCoDomainType)
+  {
+    if (RealFunction.class.equals(parentCoDomainType) || RealSequence.class.equals(parentCoDomainType))
+    {
+      return Real.class;
+    }
+    if (RealFunctional.class.equals(parentCoDomainType))
+    {
+      return RealFunction.class;
+    }
+    if (ComplexFunction.class.equals(parentCoDomainType) || ComplexSequence.class.equals(parentCoDomainType))
+    {
+      return Complex.class;
+    }
+    if (ComplexFunctional.class.equals(parentCoDomainType))
+    {
+      return ComplexFunction.class;
+    }
+    if (RealToComplexFunction.class.equals(parentCoDomainType))
+    {
+      return Complex.class;
+    }
+    throw new UnsupportedOperationException("cannot resolve child codomain for " + parentCoDomainType);
   }
 
   private F newInstance()
