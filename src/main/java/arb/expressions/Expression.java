@@ -3536,7 +3536,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     List<CongruenceClass<D, C, F>> redundant =
       classes.stream()
              .filter(CongruenceClass::isRedundant)
-             .filter(c -> !c.canonical().isAtomic())
              .filter(c -> !c.canonical().isLeaf())
              .filter(c -> independentVariable != null
                           && c.canonical().dependsOn((VariableNode<D, C, F>) independentVariable))
