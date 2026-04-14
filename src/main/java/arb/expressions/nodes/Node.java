@@ -238,6 +238,62 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return false;
   }
 
+  /**
+   * Returns true if this node is provably non-negative. Conservative — returns
+   * true only for patterns that are guaranteed non-negative:
+   * <ul>
+   *   <li>Squares: f(x)^2 or f(x)^(2n) for even integer n</li>
+   *   <li>Absolute values: |f(x)|</li>
+   *   <li>Exponentials: exp(f(x))</li>
+   *   <li>Products of provably non-negative factors</li>
+   *   <li>Non-negative literal constants (0, 1, 2, ...)</li>
+   * </ul>
+   *
+   * @see <a href="https://github.com/crowlogic/arb4j/issues/549">#549</a>
+   */
+  public boolean isProvablyNonNegative()
+  {
+    if (isLiteralConstant())
+    {
+      return !asLiteralConstant().toString().startsWith("-");
+    }
+    if (this instanceof ExponentiationNode<D, R, F> pow)
+    {
+      if (pow.right.isLiteralConstant())
+      {
+        String expStr = pow.right.toString();
+        try
+        {
+          int expVal = Integer.parseInt(expStr);
+          if (expVal % 2 == 0 && expVal >= 0)
+          {
+            return true;
+          }
+        }
+        catch (NumberFormatException e)
+        {
+          // not an integer exponent
+        }
+      }
+    }
+    if (this instanceof AbsoluteValueNode)
+    {
+      return true;
+    }
+    if (this instanceof FunctionNode<D, R, F> func)
+    {
+      if (func.is("exp"))
+      {
+        return true;
+      }
+    }
+    if (this instanceof MultiplicationNode<D, R, F> mul)
+    {
+      return mul.left.isProvablyNonNegative() && mul.right.isProvablyNonNegative();
+    }
+    return false;
+  }
+
   public String toStringWithoutIndependentVariableSpecified()
   {
     String str        = toString();

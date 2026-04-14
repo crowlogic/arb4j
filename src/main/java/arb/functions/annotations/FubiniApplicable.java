@@ -12,9 +12,9 @@ import java.lang.annotation.Target;
  * at the annotated expression.
  *
  * <p>When the automated integrability heuristics in
- * {@link arb.expressions.nodes.IntegrabilityChecker} cannot determine
- * validity, this annotation serves as a user-provided assertion that the
- * exchange is mathematically justified.</p>
+ * {@link arb.expressions.nodes.IntegralNode#isAnalyticallyValidToExchangeWith}
+ * cannot determine validity, this annotation serves as a user-provided
+ * assertion that the exchange is mathematically justified.</p>
  *
  * @see <a href="https://github.com/crowlogic/arb4j/issues/549">#549</a>
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms

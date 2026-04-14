@@ -105,6 +105,6 @@ More generally, whenever a bare variable name immediately precedes `d` followed 
 
 ### Fubini/Tonelli Integration Order Exchange
 
-When nested integrals have constant finite bounds and the integrand is the immediate child of the outer integral, `simplify()` may automatically exchange the order of integration via the Fubini–Tonelli theorem. This is implemented by `ExchangeabilityChecker` (structural analysis) and `IntegrabilityChecker` (analytic validity). The `@FubiniApplicable` annotation can be placed on a function class to assert that Fubini's theorem applies when the automatic heuristics are insufficient.
+When nested integrals have constant finite bounds and the integrand is the immediate child of the outer integral, `simplify()` may automatically exchange the order of integration via the Fubini–Tonelli theorem. The structural and analytic validity checks are instance methods on `IntegralNode` itself: `isStructurallyExchangeableWith(inner)`, `isAnalyticallyValidToExchangeWith(inner)`, and `exchangeOrder(inner)`. The `@FubiniApplicable` annotation can be placed on a function class to assert that Fubini's theorem applies when the automatic heuristics are insufficient.
 
 See [Issue #549](https://github.com/crowlogic/arb4j/issues/549).

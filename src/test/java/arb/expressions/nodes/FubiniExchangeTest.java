@@ -8,8 +8,8 @@ import junit.framework.TestCase;
 /**
  * Tests for Fubini/Tonelli order-of-integration exchange (Issue #549).
  *
- * @see ExchangeabilityChecker
- * @see IntegrabilityChecker
+ * @see IntegralNode#isStructurallyExchangeableWith
+ * @see IntegralNode#isAnalyticallyValidToExchangeWith
  * @see <a href="https://github.com/crowlogic/arb4j/issues/549">#549</a>
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
  */
@@ -28,17 +28,15 @@ public class FubiniExchangeTest extends
     Expression<Real, Real, RealFunction> expr = RealFunction.parse("x➔∫y➔(∫z➔(y*z)dz∈(0,1))dy∈(0,1)");
     expr.simplify();
 
-    // After simplification, the double integral should have been processed.
-    // The outer IntegralNode should recognize the inner IntegralNode.
     assertNotNull(expr.rootNode);
   }
 
   /**
-   * Test that the ExchangeabilityChecker correctly identifies directly
+   * Test that isStructurallyExchangeableWith correctly identifies directly
    * nested IntegralNodes as exchangeable when bounds are constant.
    */
   @SuppressWarnings("unchecked")
-  public void testExchangeabilityCheckerDirectNesting()
+  public void testStructuralExchangeabilityDirectNesting()
   {
     Expression<Real, Real, RealFunction> expr = RealFunction.parse("x➔∫y➔(∫z➔(y*z)dz∈(0,1))dy∈(0,1)", null, false);
 
@@ -53,15 +51,15 @@ public class FubiniExchangeTest extends
     IntegralNode<Real, Real, RealFunction> inner = (IntegralNode<Real, Real, RealFunction>) outer.integrandNode;
 
     assertTrue("directly nested integrals with constant bounds should be exchangeable",
-               ExchangeabilityChecker.isStructurallyExchangeable(outer, inner));
+               outer.isStructurallyExchangeableWith(inner));
   }
 
   /**
-   * Test that the IntegrabilityChecker approves exchange when both
+   * Test that isAnalyticallyValidToExchangeWith approves exchange when both
    * operators have finite constant bounds (Fubini on compact rectangle).
    */
   @SuppressWarnings("unchecked")
-  public void testIntegrabilityCheckerFiniteBounds()
+  public void testAnalyticValidityFiniteBounds()
   {
     Expression<Real, Real, RealFunction> expr = RealFunction.parse("x➔∫y➔(∫z➔(y*z)dz∈(0,1))dy∈(0,1)", null, false);
 
@@ -69,7 +67,7 @@ public class FubiniExchangeTest extends
     IntegralNode<Real, Real, RealFunction> inner = (IntegralNode<Real, Real, RealFunction>) outer.integrandNode;
 
     assertTrue("finite constant bounds should satisfy Fubini",
-               IntegrabilityChecker.isAnalyticallyValid(outer, inner));
+               outer.isAnalyticallyValidToExchangeWith(inner));
   }
 
   /**
@@ -79,7 +77,7 @@ public class FubiniExchangeTest extends
   {
     Expression<Real, Real, RealFunction> expr = RealFunction.parse("x^2");
     assertTrue("x^2 should be provably non-negative",
-               IntegrabilityChecker.isProvablyNonNegative(expr.rootNode));
+               expr.rootNode.isProvablyNonNegative());
   }
 
   /**
@@ -89,7 +87,7 @@ public class FubiniExchangeTest extends
   {
     Expression<Real, Real, RealFunction> expr = RealFunction.parse("exp(x)");
     assertTrue("exp(x) should be provably non-negative",
-               IntegrabilityChecker.isProvablyNonNegative(expr.rootNode));
+               expr.rootNode.isProvablyNonNegative());
   }
 
   /**
@@ -100,7 +98,7 @@ public class FubiniExchangeTest extends
   {
     Expression<Real, Real, RealFunction> expr = RealFunction.parse("x^2*exp(x)");
     assertTrue("x^2*exp(x) should be provably non-negative",
-               IntegrabilityChecker.isProvablyNonNegative(expr.rootNode));
+               expr.rootNode.isProvablyNonNegative());
   }
 
   /**
@@ -135,20 +133,19 @@ public class FubiniExchangeTest extends
   }
 
   /**
-   * Test that ExchangeabilityChecker.findExchangeableInnerOperator finds the
-   * inner integral when directly nested.
+   * Test that findExchangeableInnerIntegral finds the inner integral when
+   * directly nested.
    */
   @SuppressWarnings("unchecked")
-  public void testFindExchangeableInnerOperator()
+  public void testFindExchangeableInnerIntegral()
   {
     Expression<Real, Real, RealFunction> expr = RealFunction.parse("x➔∫y➔(∫z➔(y*z)dz∈(0,1))dy∈(0,1)", null, false);
 
     IntegralNode<Real, Real, RealFunction> outer = (IntegralNode<Real, Real, RealFunction>) expr.rootNode;
 
-    Node<Real, Real, RealFunction> found = ExchangeabilityChecker.findExchangeableInnerOperator(outer);
-    assertNotNull("should find an exchangeable inner operator", found);
-    assertTrue("found operator should be IntegralNode", found instanceof IntegralNode);
-    assertSame("found operator should be the direct integrand", outer.integrandNode, found);
+    IntegralNode<Real, Real, RealFunction> found = outer.findExchangeableInnerIntegral();
+    assertNotNull("should find an exchangeable inner integral", found);
+    assertSame("found integral should be the direct integrand", outer.integrandNode, found);
   }
 
   /**
@@ -163,6 +160,6 @@ public class FubiniExchangeTest extends
                expr.rootNode instanceof IntegralNode);
     IntegralNode<Real, Real, RealFunction> integral = (IntegralNode<Real, Real, RealFunction>) expr.rootNode;
     assertTrue("integral with constant 0,1 bounds should have finite constant bounds",
-               IntegrabilityChecker.hasFiniteConstantBounds(integral));
+               integral.hasFiniteConstantBounds());
   }
 }
