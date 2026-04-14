@@ -380,6 +380,88 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
 
   public abstract boolean isCommutative();
 
+  /**
+   * Returns {@code true} if this operator is associative — i.e. {@code (a op b)
+   * op c == a op (b op c)}. Override in subclasses; defaults to {@code false}.
+   */
+  public boolean isAssociative()
+  {
+    return false;
+  }
+
+  /**
+   * Collects all leaf operands of a chain of the same associative-commutative
+   * operator type. For example, given {@code (a + b) + c} where all nodes are
+   * {@link AdditionNode}, this collects {@code [a, b, c]}.
+   */
+  public void collectOperands(List<Node<D, R, F>> operands)
+  {
+    if (left != null && left.getClass() == getClass())
+    {
+      ((BinaryOperationNode<D, R, F>) left).collectOperands(operands);
+    }
+    else if (left != null)
+    {
+      operands.add(left);
+    }
+    if (right != null && right.getClass() == getClass())
+    {
+      ((BinaryOperationNode<D, R, F>) right).collectOperands(operands);
+    }
+    else if (right != null)
+    {
+      operands.add(right);
+    }
+  }
+
+  @Override
+  public boolean isEquivalentTo(Node<D, R, F> other)
+  {
+    if (other == null || getClass() != other.getClass())
+    {
+      return false;
+    }
+    BinaryOperationNode<D, R, F> o = (BinaryOperationNode<D, R, F>) other;
+
+    if (isAssociative() && isCommutative())
+    {
+      List<Node<D, R, F>> thisOperands  = new ArrayList<>();
+      List<Node<D, R, F>> otherOperands = new ArrayList<>();
+      collectOperands(thisOperands);
+      o.collectOperands(otherOperands);
+      if (thisOperands.size() != otherOperands.size())
+      {
+        return false;
+      }
+      thisOperands.sort(Comparator.comparing(Node::toString));
+      otherOperands.sort(Comparator.comparing(Node::toString));
+      for (int i = 0; i < thisOperands.size(); i++)
+      {
+        if (!thisOperands.get(i).isEquivalentTo(otherOperands.get(i)))
+        {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    if (isCommutative())
+    {
+      return (left.isEquivalentTo(o.left) && right.isEquivalentTo(o.right))
+          || (left.isEquivalentTo(o.right) && right.isEquivalentTo(o.left));
+    }
+
+    return left.isEquivalentTo(o.left) && right.isEquivalentTo(o.right);
+  }
+
+  @Override
+  public int depth()
+  {
+    int ld = left == null ? 0 : left.depth();
+    int rd = right == null ? 0 : right.depth();
+    return 1 + Math.max(ld, rd);
+  }
+
   @Override
   public boolean isAtomic()
   {

@@ -98,6 +98,12 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
   }
 
   @Override
+  public int depth()
+  {
+    return 1 + elements.stream().mapToInt(Node::depth).max().orElse(0);
+  }
+
+  @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     int dimensions = elements.size();

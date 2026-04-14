@@ -93,6 +93,12 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
+  public boolean isAssociative()
+  {
+    return true;
+  }
+
+  @Override
   public Node<D, R, F> simplify()
   {
     // Rewrite a + (-b) as a - b BEFORE simplifying children,

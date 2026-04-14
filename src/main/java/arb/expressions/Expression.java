@@ -3489,11 +3489,118 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return false;
   }
 
+  /**
+   * Performs common subexpression elimination (CSE) on the parsed expression
+   * tree. Identifies nodes that compute equivalent subexpressions via
+   * {@link Node#isEquivalentTo(Node)} and wraps them in {@link SharedNode}s so
+   * that each common subexpression is computed once and reused.
+   * 
+   * @see <a href="https://github.com/crowlogic/arb4j/issues/518">#518</a>
+   */
+  @SuppressWarnings("unchecked")
   public Expression<D, C, F> optimize()
   {
-    assert false : "TODO: expr compiler: Implement common subexpression elimination #518 https://github.com/crowlogic/arb4j/issues/518";
-
+    eliminateCommonSubexpressions();
     return this;
+  }
+
+  /**
+   * Groups all AST nodes into {@link CongruenceClass}es via
+   * {@link Node#isEquivalentTo(Node)}, identifies redundant (multi-member)
+   * classes of non-leaf, input-dependent subexpressions, and wraps them in
+   * {@link SharedNode}s — canonical (first occurrence) computes and stores,
+   * references (subsequent occurrences) just load.
+   */
+  @SuppressWarnings("unchecked")
+  private void eliminateCommonSubexpressions()
+  {
+    // Phase 1: Collect all nodes into CongruenceClasses
+    List<CongruenceClass<D, C, F>> classes = new ArrayList<>();
+    rootNode.accept(node ->
+    {
+      for (CongruenceClass<D, C, F> c : classes)
+      {
+        if (c.canonical().isEquivalentTo(node))
+        {
+          c.add(node);
+          return;
+        }
+      }
+      CongruenceClass<D, C, F> fresh = new CongruenceClass<>(node.toString());
+      fresh.add(node);
+      classes.add(fresh);
+    });
+
+    // Phase 2: Filter to redundant, non-leaf, input-dependent classes
+    Node<D, C, F> independentVariable = isNullaryFunction() ? null : getIndependentVariable();
+    List<CongruenceClass<D, C, F>> redundant =
+      classes.stream()
+             .filter(CongruenceClass::isRedundant)
+             .filter(c -> !c.canonical().isAtomic())
+             .filter(c -> !c.canonical().isLeaf())
+             .filter(c -> independentVariable != null
+                          && c.canonical().dependsOn((VariableNode<D, C, F>) independentVariable))
+             .sorted(Comparator.comparingInt(c -> c.canonical().depth()))
+             .toList();
+
+    if (redundant.isEmpty())
+    {
+      return;
+    }
+
+    // Phase 3: Build identity map from node instance -> SharedNode replacement
+    IdentityHashMap<Node<D, C, F>, SharedNode<D, C, F>> replacements = new IdentityHashMap<>();
+    for (CongruenceClass<D, C, F> cc : redundant)
+    {
+      String fieldName = newIntermediateVariable("cse", cc.type());
+      // First member is canonical: compute + store
+      replacements.put(cc.canonical(), new SharedNode<>(cc.canonical(), fieldName, true));
+      // Remaining members are references: just load
+      for (int i = 1; i < cc.size(); i++)
+      {
+        replacements.put(cc.get(i), new SharedNode<>(cc.get(i), fieldName, false));
+      }
+    }
+
+    // Phase 4: Walk the tree and replace children by identity
+    rootNode = replaceByIdentity(rootNode, replacements);
+  }
+
+  /**
+   * Recursively walks the AST and replaces any node whose identity appears in
+   * the replacement map. Container nodes have their children replaced first
+   * (bottom-up), then the node itself is checked.
+   */
+  @SuppressWarnings("unchecked")
+  private Node<D, C, F> replaceByIdentity(Node<D, C, F> node,
+                                           IdentityHashMap<Node<D, C, F>, SharedNode<D, C, F>> replacements)
+  {
+    // Recurse into children first (bottom-up)
+    if (node instanceof BinaryOperationNode<D, C, F> binOp)
+    {
+      binOp.left  = replaceByIdentity(binOp.left, replacements);
+      binOp.right = replaceByIdentity(binOp.right, replacements);
+    }
+    else if (node instanceof FunctionNode<D, C, F> funcNode)
+    {
+      if (funcNode.arg != null)
+      {
+        funcNode.arg = replaceByIdentity(funcNode.arg, replacements);
+      }
+    }
+    else if (node instanceof VectorNode<D, C, F> vecNode)
+    {
+      vecNode.elements.replaceAll(e -> replaceByIdentity(e, replacements));
+    }
+    else if (node instanceof NAryOperationNode<D, C, F> naryNode)
+    {
+      naryNode.lowerLimit = replaceByIdentity(naryNode.lowerLimit, replacements);
+      naryNode.upperLimit = replaceByIdentity(naryNode.upperLimit, replacements);
+    }
+
+    // Now check if this node itself should be replaced
+    SharedNode<D, C, F> replacement = replacements.get(node);
+    return replacement != null ? replacement : node;
   }
 
   public ElseNode<D, C, F> otherwise()

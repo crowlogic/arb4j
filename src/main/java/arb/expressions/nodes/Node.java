@@ -278,6 +278,37 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return expression.isNullaryFunction() ? true : isIndependentOf(expression.getIndependentVariable());
   }
 
+  /**
+   * Returns {@code true} if this node computes an equivalent subexpression to
+   * {@code other}. The default implementation checks structural identity via
+   * {@link #getClass()} and {@link #toString()}. Subclasses override to encode
+   * algebraic awareness — e.g. commutative operators check both operand
+   * orderings.
+   */
+  public boolean isEquivalentTo(Node<D, R, F> other)
+  {
+    return other != null && getClass() == other.getClass() && toString().equals(other.toString());
+  }
+
+  /**
+   * Returns {@code true} if this node is a leaf — a {@link VariableNode} or
+   * {@link LiteralConstantNode} that is trivially cheap to evaluate and should
+   * not be wrapped as a common subexpression.
+   */
+  public boolean isLeaf()
+  {
+    return isVariable() || isLiteralConstant();
+  }
+
+  /**
+   * Returns the depth of this node in the AST. Leaf nodes have depth 0.
+   * Container nodes return 1 + max child depth.
+   */
+  public int depth()
+  {
+    return 0;
+  }
+
   public int bits()
   {
     return bits;

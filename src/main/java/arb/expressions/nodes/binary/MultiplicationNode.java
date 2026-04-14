@@ -175,6 +175,12 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     return !expression.coDomainType.equals(Quaternion.class);
   }
 
+  @Override
+  public boolean isAssociative()
+  {
+    return isCommutative();
+  }
+
   public static String debugNode(Node<?, ?, ?> n)
   {
     if (n == null)

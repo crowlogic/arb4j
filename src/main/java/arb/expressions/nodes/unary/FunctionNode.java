@@ -893,6 +893,23 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
+  public boolean isEquivalentTo(Node<D, R, F> other)
+  {
+    if (!(other instanceof FunctionNode<D, R, F> o))
+    {
+      return false;
+    }
+    return functionName.equals(o.functionName)
+        && (arg == null ? o.arg == null : arg.isEquivalentTo(o.arg));
+  }
+
+  @Override
+  public int depth()
+  {
+    return 1 + (arg == null ? 0 : arg.depth());
+  }
+
+  @Override
   public boolean isScalar()
   {
     return arg.isScalar();

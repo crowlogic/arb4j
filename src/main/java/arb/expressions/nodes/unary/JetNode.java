@@ -362,4 +362,14 @@ public abstract class JetNode<D, C, F extends Function<? extends D, ? extends C>
   {
     return sharedState.structuralKey;
   }
+
+  @Override
+  public boolean isEquivalentTo(Node<D, C, F> other)
+  {
+    if (!(other instanceof JetNode<D, C, F> o))
+    {
+      return false;
+    }
+    return sharedState == o.sharedState && coefficientIndex == o.coefficientIndex;
+  }
 }
