@@ -273,7 +273,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
   public void generateHypergeometricFunctionInitializer(MethodVisitor mv)
   {
-    expression.insideInitializer = true;
+    expression.generationContext = GenerationContext.Initialization;
 
     loadHypergeometricFunctionOntoStack(mv);
     generateInitCall(mv);
@@ -305,13 +305,13 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       }
     }
 
-    expression.insideInitializer = false;
+    expression.generationContext = GenerationContext.Evaluation;
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    expression.insideInitializer = false;
+    expression.generationContext = GenerationContext.Evaluation;
 
     if (αβDependsOnInput())
     {

@@ -14,6 +14,7 @@ import arb.RationalFunction;
 import arb.Real;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
+import arb.expressions.GenerationContext;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
@@ -86,7 +87,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
 
   public void generateFunctionInitializer(MethodVisitor mv)
   {
-    expression.insideInitializer = true;
+    expression.generationContext = GenerationContext.Initialization;
     loadFunctionOntoStack(mv);
     Compiler.getField(mv, LommelPolynomial.class, "v", Real.class);
     generateOrder(mv);
@@ -136,7 +137,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     boolean isRationalFunctionSequence = RationalFunction.class.equals(expression.coDomainType) && Integer.class.equals(expression.domainType);
-    expression.insideInitializer = false;
+    expression.generationContext = GenerationContext.Evaluation;
 
     expression.loadThisAndFieldOntoStack(mv, elementFieldName, RationalFunction.class);
 

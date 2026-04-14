@@ -11,6 +11,7 @@ import arb.Integer;
 import arb.exceptions.CompilerException;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
+import arb.expressions.GenerationContext;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
@@ -80,7 +81,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
   {
     boolean isNullaryFunction = expression.domainType.equals(Object.class);
 
-    expression.insideInitializer = false;
+    expression.generationContext = GenerationContext.Evaluation;
     if (Expression.trace)
     {
       logger.debug(String.format("j.generate(ν=%s, resultType=%s\n)\n", order, resultType));

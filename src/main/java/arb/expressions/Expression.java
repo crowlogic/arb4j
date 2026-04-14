@@ -577,7 +577,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public LinkedList<Consumer<MethodVisitor>>            initializers                  = new LinkedList<>();
 
-  public boolean                                        insideInitializer             = false;
+  public GenerationContext                               generationContext             = GenerationContext.Evaluation;
 
   protected F                                           instance;
 
@@ -1052,6 +1052,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected void declareFields(ClassVisitor cw)
   {
     cw.visitField(Opcodes.ACC_PUBLIC, IS_INITIALIZED, "Z", null, null);
+    if (hasStaticNodes)
+    {
+      cw.visitField(Opcodes.ACC_PUBLIC, "staticPrecision", "I", null, null);
+    }
     declareContext(cw);
     declareCacheField(cw);
     if (!coDomainType.isInterface())
@@ -1469,10 +1473,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     placeholderVariable        = subExpr.setIndependentVariable(variableNode.spliceInto(subExpr));
     subExpr.rootNode           = subExpr.resolve();
 
-    // Sync the parser position back to the parent expression
-    this.position              = subExpr.position;
-    this.character             = subExpr.character;
-    this.previousCharacter     = subExpr.previousCharacter;
+    setCursorFrom(subExpr);
 
     return subExpr.rootNode;
   }
@@ -1607,7 +1608,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       generateDomainTypeMethod(classVisitor);
       generateCoDomainTypeMethod(classVisitor);
       deduplicateJets();
+      replaceConstantNodes();
       generateEvaluationMethod(classVisitor);
+      generateStaticEvaluationMethod(classVisitor);
       generateDiffererentiationAndIntegrationMethods(classVisitor);
       declareFields(classVisitor);
       generateInitializationMethod(classVisitor);
@@ -1823,6 +1826,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     generateInvocationOfDefaultNoArgConstructor(mv, true);
 
+    if (hasStaticNodes)
+    {
+      // Initialize staticPrecision to -1 so the first evaluate() call
+      // unconditionally triggers evaluateStaticSubexpressions()
+      loadThisOntoStack(mv);
+      mv.visitLdcInsn(-1);
+      mv.visitFieldInsn(Opcodes.PUTFIELD, className.replace('.', '/'), "staticPrecision", "I");
+    }
+
     // Only root expressions create their own Context.
     // Child arg classes receive the parent's context via initialize() (#842)
     if (context != null && superExpression == null)
@@ -1975,6 +1987,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       generateConditionalInitializater(mv);
     }
 
+    if (hasStaticNodes)
+    {
+      generateStaticPrecisionCheck(mv);
+    }
+
     boolean hasJets = !collectJetStates().isEmpty();
 
     // --- order > 1 dispatch to Taylor series path (non-jet expressions only) ---
@@ -2031,6 +2048,38 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       mv.visitEnd();
     }
     return classVisitor;
+  }
+
+  /**
+   * Emits a check at the top of {@code evaluate()} that calls
+   * {@code evaluateStaticSubexpressions(input, order, bits, result)} when
+   * {@code bits > this.staticPrecision}.
+   */
+  protected void generateStaticPrecisionCheck(MethodVisitor mv)
+  {
+    String internalName = className.replace('.', '/');
+    Label  skipLabel    = new Label();
+
+    // if (this.staticPrecision >= bits) goto skipLabel
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(Opcodes.GETFIELD, internalName, "staticPrecision", "I");
+    Compiler.loadBitsParameterOntoStack(mv); // ILOAD 3
+    mv.visitJumpInsn(Opcodes.IF_ICMPGE, skipLabel);
+
+    // this.evaluateStaticSubexpressions(input, order, bits, result)
+    loadThisOntoStack(mv);
+    mv.visitVarInsn(Opcodes.ALOAD, 1);  // input
+    mv.visitVarInsn(Opcodes.ILOAD, 2);  // order
+    mv.visitVarInsn(Opcodes.ILOAD, 3);  // bits
+    mv.visitVarInsn(Opcodes.ALOAD, 4);  // result
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                       internalName,
+                       EVALUATE_STATIC_SUBEXPRESSIONS,
+                       Compiler.evaluationMethodDescriptor,
+                       false);
+    mv.visitInsn(Opcodes.POP);          // discard return value
+
+    designateLabel(mv, skipLabel);
   }
 
   /**
@@ -2269,12 +2318,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     try
     {
-      insideInitializer = true;
+      generationContext = GenerationContext.Initialization;
       initializers.forEach(initializer -> initializer.accept(mv));
     }
     finally
     {
-      insideInitializer = false;
+      generationContext = GenerationContext.Evaluation;
     }
     if (recursive)
     {
@@ -2282,6 +2331,117 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     generateCodeToSetIsInitializedToTrue(mv);
     return mv;
+  }
+
+  /**
+   * The name of the generated method that evaluates constant subexpressions.
+   */
+  public static final String EVALUATE_STATIC_SUBEXPRESSIONS = "evaluateStaticSubexpressions";
+
+  /**
+   * Whether this expression has any {@link StaticNode} wrappers after
+   * {@link #replaceConstantNodes()} has run.
+   */
+  protected boolean hasStaticNodes = false;
+
+  /**
+   * Generates the {@code evaluateStaticSubexpressions} method on the generated
+   * class. This method has the same parameter layout as {@code evaluate()}
+   * ({@code Object, int, int, Object}) so that {@code ILOAD 3} resolves to
+   * {@code bits}. It computes every {@link StaticNode} delegate, storing the
+   * result into the corresponding field, and then writes {@code bits} into the
+   * {@code staticPrecision} field.
+   * <p>
+   * Called from {@code evaluate()} whenever {@code bits > staticPrecision}.
+   */
+  protected ClassVisitor generateStaticEvaluationMethod(ClassVisitor classVisitor)
+  {
+    if (!hasStaticNodes)
+    {
+      return classVisitor;
+    }
+    var mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
+                                      EVALUATE_STATIC_SUBEXPRESSIONS,
+                                      Compiler.evaluationMethodDescriptor,
+                                      null,
+                                      null);
+    mv.visitCode();
+    try
+    {
+      generationContext = GenerationContext.StaticEvaluation;
+      generateStaticSubexpressionComputations(mv);
+
+      // this.staticPrecision = bits
+      loadThisOntoStack(mv);
+      Compiler.loadBitsParameterOntoStack(mv);
+      mv.visitFieldInsn(Opcodes.PUTFIELD, className.replace('.', '/'), "staticPrecision", "I");
+    }
+    finally
+    {
+      generationContext = GenerationContext.Evaluation;
+    }
+    mv.visitInsn(Opcodes.ACONST_NULL);
+    mv.visitInsn(Opcodes.ARETURN);
+    mv.visitMaxs(0, 0);
+    mv.visitEnd();
+    return classVisitor;
+  }
+
+  /**
+   * Emits bytecode that computes each {@link StaticNode} and stores the result
+   * into its field. Called inside
+   * {@link #generateStaticEvaluationMethod(ClassVisitor)} where
+   * {@link #generationContext} is {@link GenerationContext#StaticEvaluation}.
+   * <p>
+   * Each delegate's {@code generate()} leaves the computed result on the
+   * stack. This method then stores that reference into the StaticNode's own
+   * field via {@code PUTFIELD}.
+   */
+  @SuppressWarnings("rawtypes")
+  protected void generateStaticSubexpressionComputations(MethodVisitor mv)
+  {
+    String internalName = className.replace('.', '/');
+    rootNode.nodeStream()
+            .filter(node -> node instanceof StaticNode)
+            .map(node -> (StaticNode) node)
+            .forEach(staticNode ->
+            {
+              boolean wasRootNode            = staticNode.delegate.isRootNode;
+              staticNode.delegate.isRootNode = false;
+              staticNode.generate(mv, staticNode.type());
+              staticNode.delegate.isRootNode = wasRootNode;
+              // stack: [result]
+              // store into this.fieldName: need this under result
+              loadThisOntoStack(mv);
+              mv.visitInsn(Opcodes.SWAP);
+              mv.visitFieldInsn(Opcodes.PUTFIELD,
+                                internalName,
+                                staticNode.fieldName,
+                                staticNode.type().descriptorString());
+            });
+  }
+
+  /**
+   * Walks the expression tree and replaces constant non-leaf, non-root subtree
+   * roots with {@link StaticNode} wrappers. Only replaces the highest-level
+   * constant nodes — their children remain unwrapped since the parent's
+   * generate will traverse them.
+   */
+  protected void replaceConstantNodes()
+  {
+    if (rootNode == null || isGeneratedFunctional() || isNullaryFunction())
+    {
+      return;
+    }
+    rootNode       = rootNode.replaceConstantNodes();
+    hasStaticNodes = rootNode.nodeStream().anyMatch(n -> n instanceof StaticNode);
+    if (trace)
+    {
+      log.debug("replaceConstantNodes: hasStaticNodes={} className={} root={}",
+                hasStaticNodes,
+                className,
+                rootNode.getClass().getSimpleName());
+    }
   }
 
   /**

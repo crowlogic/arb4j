@@ -123,6 +123,16 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   }
 
   @Override
+  public boolean dependsOn(VariableNode<D, R, F> variable)
+  {
+    if (switchVariable != null && switchVariable.reference.equals(variable.reference))
+    {
+      return true;
+    }
+    return super.dependsOn(variable);
+  }
+
+  @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
     TreeMap<Integer, Node<D, R, F>> differentiatedCases = new TreeMap<>();

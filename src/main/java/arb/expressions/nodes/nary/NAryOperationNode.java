@@ -889,6 +889,13 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   }
 
   @Override
+  public Node<D, R, F> replaceConstantNodes()
+  {
+    lowerLimit = lowerLimit.replaceConstantNodes();
+    upperLimit = upperLimit.replaceConstantNodes();
+    return super.replaceConstantNodes();
+  }
+
   public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable, Node<E, S, G> substitution)
   {
     if (substitution.toString().equals(variable))

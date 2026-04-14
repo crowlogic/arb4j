@@ -372,7 +372,7 @@ import arb.utensils.Utensils;
 
   public Fraction mul(Integer that, int prec, Fraction res)
   {
-    arblib.fmpq_sub_fmpz(res, this, that.swigCPtr );    
+    arblib.fmpq_mul_fmpz(res, this, that.swigCPtr );    
     return res;
   }  
 

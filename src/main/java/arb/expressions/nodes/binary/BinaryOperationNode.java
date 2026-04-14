@@ -17,6 +17,7 @@ import arb.Integer;
 import arb.exceptions.CompilerException;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
+import arb.expressions.GenerationContext;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.expressions.nodes.unary.NegationNode;
@@ -307,7 +308,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     left.generate(mv, left.type());
     right.generate(mv, right.type());
 
-    if (expression.insideInitializer)
+    if (expression.generationContext == GenerationContext.Initialization)
     {
       mv.visitLdcInsn(initializerBits);
     }
@@ -414,6 +415,14 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     right = right.simplify();
 
     return super.simplify();
+  }
+
+  @Override
+  public Node<D, R, F> replaceConstantNodes()
+  {
+    left  = left.replaceConstantNodes();
+    right = right.replaceConstantNodes();
+    return super.replaceConstantNodes();
   }
 
   public String stringFormat(Node<?, ?, ?> operand)

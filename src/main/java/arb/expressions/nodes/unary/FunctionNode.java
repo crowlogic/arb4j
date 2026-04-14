@@ -207,6 +207,16 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return simplifyExponential(this);
   }
 
+  @Override
+  public Node<D, R, F> replaceConstantNodes()
+  {
+    if (arg != null)
+    {
+      arg = arg.replaceConstantNodes();
+    }
+    return super.replaceConstantNodes();
+  }
+
   protected static <D, R, F extends Function<? extends D, ? extends R>> Node<D, R, F> simplifyExponential(Node<D, R, F> node)
   {
     var functionNode = node.asFunction();

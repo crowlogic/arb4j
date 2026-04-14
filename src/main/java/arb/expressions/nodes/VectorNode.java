@@ -181,6 +181,13 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
     return expression.coDomainType;
   }
 
+  @Override
+  public Node<D, R, F> replaceConstantNodes()
+  {
+    elements.replaceAll(e -> e.replaceConstantNodes());
+    return super.replaceConstantNodes();
+  }
+
   public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable, Node<E, S, G> arg)
   {
     elements.forEach(expr -> expr.substitute(variable, arg));
@@ -202,7 +209,7 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
   @Override
   public void accept(Consumer<Node<D, R, F>> t)
   {
-    elements.forEach(t);
+    elements.forEach(element -> element.accept(t));
     t.accept(this);
   }
 

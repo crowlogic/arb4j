@@ -245,14 +245,20 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return arrowIndex == -1 ? str : str.substring(arrowIndex + 1);
   }
 
+  private Boolean constantFlag;
+
   /**
-   * @return true if this node's evaluation is independent of all input parameters
+   * @return true if this node's evaluation is independent of all input parameters.
+   *         Computed once and cached.
    */
   public boolean isConstant()
   {
+    if (constantFlag != null)
+    {
+      return constantFlag;
+    }
     if (isIndependentOfInput())
     {
-      // Check that all branches are also constant using functional traversal
       final boolean[] allConstant =
       { true };
       accept(node ->
@@ -262,9 +268,9 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
           allConstant[0] = false;
         }
       });
-      return allConstant[0];
+      return constantFlag = allConstant[0];
     }
-    return false;
+    return constantFlag = false;
   }
 
   public boolean isIndependentOfInput()
@@ -609,7 +615,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   protected void loadBitsOntoStack(MethodVisitor mv)
   {
-    if (expression.insideInitializer)
+    if (expression.generationContext == GenerationContext.Initialization)
     {
       mv.visitLdcInsn(128);
     }
@@ -676,6 +682,32 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public Node<D, R, F> simplify()
   {
+    return this;
+  }
+
+  /**
+   * Recursively replaces constant non-atomic subtrees with
+   * {@link StaticNode} wrappers so that they are evaluated once in
+   * {@code evaluateStaticSubexpressions()} and loaded from a field
+   * thereafter.
+   *
+   * <p>Container nodes must override this to recurse into each child field,
+   * reassign it with the return value, then delegate to
+   * {@code super.replaceConstantNodes()} — identical to the
+   * {@link #simplify()} pattern.
+   *
+   * @return {@code this}, or a {@link StaticNode} wrapping {@code this}
+   */
+  public Node<D, R, F> replaceConstantNodes()
+  {
+    if (isAtomic())
+    {
+      return this;
+    }
+    if (isConstant())
+    {
+      return new StaticNode<>(this);
+    }
     return this;
   }
 
