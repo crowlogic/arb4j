@@ -190,6 +190,15 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     this.operation = operation;
     this.left      = left;
     this.symbol    = symbol;
+
+    if (left != null)
+    {
+      left.parent = this;
+    }
+    if (right != null)
+    {
+      right.parent = this;
+    }
   }
 
   @Override
@@ -204,6 +213,27 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
       right.accept(t);
     }
     t.accept(this);
+  }
+
+  @Override
+  public void replaceChild(Node<D, R, F> oldChild, Node<D, R, F> newChild)
+  {
+    if (left == oldChild)
+    {
+      left            = newChild;
+      newChild.parent = this;
+      oldChild.parent = null;
+    }
+    else if (right == oldChild)
+    {
+      right           = newChild;
+      newChild.parent = this;
+      oldChild.parent = null;
+    }
+    else
+    {
+      throw new IllegalArgumentException(oldChild + " is not a child of " + this);
+    }
   }
 
   @Override

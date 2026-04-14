@@ -507,4 +507,10 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return format("\\frac{%s}{%s}", left.typeset(), right.typeset());
   }
 
+  @Override
+  public boolean isLinearOperator(VariableNode<D, R, F> outerVar, VariableNode<D, R, F> innerVar)
+  {
+    return !right.dependsOn(outerVar) && !right.dependsOn(innerVar);
+  }
+
 }

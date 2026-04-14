@@ -190,4 +190,10 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return false;
   }
 
+  @Override
+  public boolean isLinearOperator(VariableNode<D, R, F> outerVar, VariableNode<D, R, F> innerVar)
+  {
+    return true;
+  }
+
 }

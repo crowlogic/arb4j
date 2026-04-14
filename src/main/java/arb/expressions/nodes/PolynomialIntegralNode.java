@@ -99,6 +99,14 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
     this.polynomialNode = polynomialNode;
     this.cofactorNode   = cofactorNode;
     this.argumentNode   = argumentNode;
+
+    polynomialNode.parent = this;
+    if (cofactorNode != null)
+    {
+      cofactorNode.parent = this;
+    }
+    argumentNode.parent = this;
+
     if (!Polynomial.class.isAssignableFrom(polynomialNode.type()))
     {
       throw new CompilerException(polynomialNode

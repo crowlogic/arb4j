@@ -100,14 +100,15 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
     super(expression);
     assert operand != null : "variable is null";
     this.operand = operand;
+    operand.parent = this;
     variable     = expression.getIndependentVariable();
-
   }
 
   public DerivativeNode(Expression<D, R, F> expression, boolean functionForm)
   {
     super(expression);
-    operand = expression.resolve();
+    operand        = expression.resolve();
+    operand.parent = this;
 
     if (functionForm)
     {

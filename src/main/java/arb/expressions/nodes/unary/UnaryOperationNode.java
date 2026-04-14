@@ -42,12 +42,20 @@ public abstract class UnaryOperationNode<D, R, F extends Function<? extends D, ?
   {
     super(arg.expression);
     this.arg = arg;
+    if (arg != null)
+    {
+      arg.parent = this;
+    }
   }
 
   public UnaryOperationNode(Expression<D, R, F> expression, Node<D, R, F> arg)
   {
     super(expression);
     this.arg = arg;
+    if (arg != null)
+    {
+      arg.parent = this;
+    }
   }
 
   @Override

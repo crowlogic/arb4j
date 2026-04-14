@@ -70,6 +70,7 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
         var e = expression.resolve();
         if (e != null)
         {
+          e.parent = this;
           elements.add(e);
         }
       }

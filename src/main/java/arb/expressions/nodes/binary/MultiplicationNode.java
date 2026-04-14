@@ -512,4 +512,12 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   {
     return left.isProvablyNonNegative() && right.isProvablyNonNegative();
   }
+
+  @Override
+  public boolean isLinearOperator(VariableNode<D, R, F> outerVar, VariableNode<D, R, F> innerVar)
+  {
+    boolean leftIndep  = !left.dependsOn(outerVar) && !left.dependsOn(innerVar);
+    boolean rightIndep = !right.dependsOn(outerVar) && !right.dependsOn(innerVar);
+    return leftIndep || rightIndep;
+  }
 }

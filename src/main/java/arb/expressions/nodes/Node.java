@@ -250,6 +250,147 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return false;
   }
 
+  /**
+   * Replace a direct child of this node with a new node. The old child's parent
+   * is cleared and the new child's parent is set to this node.
+   *
+   * @param oldChild the existing child to replace (identity match)
+   * @param newChild the replacement node
+   * @throws IllegalArgumentException if oldChild is not a direct child
+   *
+   * @see <a href="https://github.com/crowlogic/arb4j/issues/885">#885</a>
+   */
+  public void replaceChild(Node<D, R, F> oldChild, Node<D, R, F> newChild)
+  {
+    throw new UnsupportedOperationException(getClass().getSimpleName()
+                                            + " has no replaceable children");
+  }
+
+  /**
+   * Returns true if this node is a linear operator with respect to the given
+   * variables — meaning it preserves integration/summation exchange. Subclasses
+   * that represent linear operations (addition, subtraction, negation,
+   * scalar multiplication, scalar division) override this.
+   *
+   * @param outerVar the outer operator's integration/summation variable
+   * @param innerVar the inner operator's integration/summation variable
+   * @return true if this node is linear with respect to both variables
+   *
+   * @see <a href="https://github.com/crowlogic/arb4j/issues/885">#885</a>
+   */
+  public boolean isLinearOperator(VariableNode<D, R, F> outerVar, VariableNode<D, R, F> innerVar)
+  {
+    return false;
+  }
+
+  /**
+   * Walks from {@code inner} up to {@code outer} via {@link #parent} pointers,
+   * checking that every intermediate node is a
+   * {@linkplain #isLinearOperator linear operator} with respect to both
+   * operator variables.
+   *
+   * @param outer    the ancestor operator node
+   * @param inner    the descendant operator node
+   * @param outerVar the outer operator's bound variable
+   * @param innerVar the inner operator's bound variable
+   * @return true if all intermediate nodes are linear operators
+   *
+   * @see <a href="https://github.com/crowlogic/arb4j/issues/885">#885</a>
+   */
+  public static <D, R, F extends Function<? extends D, ? extends R>>
+         boolean
+         isLinearPath(Node<D, R, F> outer,
+                      Node<D, R, F> inner,
+                      VariableNode<D, R, F> outerVar,
+                      VariableNode<D, R, F> innerVar)
+  {
+    for (Node<D, R, F> n = inner.parent; n != null && n != outer; n = n.parent)
+    {
+      if (!n.isLinearOperator(outerVar, innerVar))
+      {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
+   * Exchange two nested operator nodes in the expression tree by reassigning
+   * six pointers. The outer operator becomes the inner and vice versa.
+   * <p>
+   * Before:
+   * <pre>
+   *   parent → outer { body: ... inner { body: integrand } ... }
+   * </pre>
+   * After:
+   * <pre>
+   *   parent → inner { body: outer { body: integrand } }
+   * </pre>
+   *
+   * @param outer the outer (ancestor) operator node
+   * @param inner the inner (descendant) operator node that is the direct
+   *              body/integrand of the outer node
+   *
+   * @see <a href="https://github.com/crowlogic/arb4j/issues/885">#885</a>
+   */
+  public static <D, R, F extends Function<? extends D, ? extends R>>
+         void
+         exchange(Node<D, R, F> outer, Node<D, R, F> inner)
+  {
+    Node<D, R, F> outerParent   = outer.parent;
+    Node<D, R, F> innerBody     = getBody(inner);
+
+    // Rewire: parent now points to inner instead of outer
+    if (outerParent != null)
+    {
+      outerParent.replaceChild(outer, inner);
+    }
+    inner.parent = outerParent;
+
+    // Inner's body becomes the outer node
+    setBody(inner, outer);
+    outer.parent = inner;
+
+    // Outer's body becomes the inner's old body
+    setBody(outer, innerBody);
+    if (innerBody != null)
+    {
+      innerBody.parent = outer;
+    }
+  }
+
+  /**
+   * Gets the body/integrand/operand of an operator node.
+   */
+  public Node<D, R, F> getBody()
+  {
+    return null;
+  }
+
+  /**
+   * Sets the body/integrand/operand of an operator node.
+   */
+  public void setBody(Node<D, R, F> body)
+  {
+    throw new UnsupportedOperationException(getClass().getSimpleName()
+                                            + " does not have a settable body");
+  }
+
+  private static <D, R, F extends Function<? extends D, ? extends R>>
+          Node<D, R, F>
+          getBody(Node<D, R, F> node)
+  {
+    return node.getBody();
+  }
+
+  private static <D, R, F extends Function<? extends D, ? extends R>>
+          void
+          setBody(Node<D, R, F> node, Node<D, R, F> body)
+  {
+    node.setBody(body);
+  }
+
+
   public String toStringWithoutIndependentVariableSpecified()
   {
     String str        = toString();
@@ -335,6 +476,8 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   public Class<?>            generatedType;
 
   public boolean             isRootNode = false;
+
+  public Node<D, R, F>       parent;
 
   public int                 position;
 

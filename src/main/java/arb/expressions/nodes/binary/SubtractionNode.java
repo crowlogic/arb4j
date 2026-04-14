@@ -159,4 +159,10 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
     String lhs = left == null ? "" : left.typeset();
     return format("\\left(%s-%s\\right)", "0".equals(lhs) ? "" : lhs, right.typeset());
   }
+
+  @Override
+  public boolean isLinearOperator(VariableNode<D, R, F> outerVar, VariableNode<D, R, F> innerVar)
+  {
+    return true;
+  }
 }

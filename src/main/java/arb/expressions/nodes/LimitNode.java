@@ -38,6 +38,12 @@ public class LimitNode<D, C, F extends Function<? extends D, ? extends C>> exten
     expression.require('=');
     point = Objects.requireNonNull(expression.resolve(), "point");
     expression.require(')');
+
+    operand.parent = this;
+    if (point != null)
+    {
+      point.parent = this;
+    }
   }
 
   private LimitNode(Expression<D, C, F> expression,
@@ -51,6 +57,9 @@ public class LimitNode<D, C, F extends Function<? extends D, ? extends C>> exten
     this.limitingVariableReference = Objects.requireNonNull(limitingVariableReference, "limitingVariableReference");
     this.limitingVariableNode      = Objects.requireNonNull(limitingVariableNode, "limitingVariableNode");
     this.point                     = Objects.requireNonNull(point, "point");
+
+    operand.parent = this;
+    point.parent   = this;
   }
 
   private String limitingVariableName()

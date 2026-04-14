@@ -50,7 +50,8 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
     super(expression,
           resolveArgWithFunctionalDomain(expression, functionNode));
     expression.require(')');
-    this.functionNode = functionNode;
+    this.functionNode        = functionNode;
+    functionNode.parent = this;
   }
 
   /**
@@ -80,7 +81,8 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
   {
     super(expression,
           argNode);
-    this.functionNode = functionNode;
+    this.functionNode        = functionNode;
+    functionNode.parent = this;
   }
 
   /**

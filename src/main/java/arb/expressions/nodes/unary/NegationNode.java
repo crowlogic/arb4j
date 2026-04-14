@@ -127,4 +127,10 @@ public class NegationNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return arg.differentiate(variable).neg();
   }
 
+  @Override
+  public boolean isLinearOperator(VariableNode<D, R, F> outerVar, VariableNode<D, R, F> innerVar)
+  {
+    return true;
+  }
+
 }

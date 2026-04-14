@@ -78,6 +78,16 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     this.operand = operand;
     this.context = expression.getContext();
 
+    operand.parent = this;
+    if (variable != null)
+    {
+      variable.parent = this;
+    }
+    if (order != null)
+    {
+      order.parent = this;
+    }
+
     if (operand.hasClosedFormFractionalDerivative(variable))
     {
       closedFormResult     = operand.fractionalDerivative(variable, order);
@@ -119,6 +129,16 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     this.order           = order;
     this.operand         = operand;
     this.context         = expression.getContext();
+
+    operand.parent = this;
+    if (variable != null)
+    {
+      variable.parent = this;
+    }
+    if (order != null)
+    {
+      order.parent = this;
+    }
 
     this.derivativeOrder = derivativeOrder;
 

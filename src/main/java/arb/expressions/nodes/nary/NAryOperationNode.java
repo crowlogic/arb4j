@@ -207,6 +207,15 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     generatedType   = expression.coDomainType;
     this.lowerLimit = lowerLimit;
     this.upperLimit = upperLimit;
+
+    if (lowerLimit != null)
+    {
+      lowerLimit.parent = this;
+    }
+    if (upperLimit != null)
+    {
+      upperLimit.parent = this;
+    }
   }
 
   @Override
@@ -215,6 +224,40 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     lowerLimit.accept(t);
     upperLimit.accept(t);
     t.accept(this);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public void replaceChild(Node<D, R, F> oldChild, Node<D, R, F> newChild)
+  {
+    if (operandExpression != null && operandExpression.rootNode == oldChild)
+    {
+      operandExpression.rootNode = (Node<Integer, R, Sequence<R>>) (Node<?, ?, ?>) newChild;
+      newChild.parent            = this;
+      oldChild.parent            = null;
+    }
+    else
+    {
+      throw new IllegalArgumentException(oldChild + " is not a child of " + this);
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public Node<D, R, F> getBody()
+  {
+    return operandExpression != null ? (Node<D, R, F>) (Node<?, ?, ?>) operandExpression.rootNode
+                                     : null;
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public void setBody(Node<D, R, F> body)
+  {
+    if (operandExpression != null)
+    {
+      operandExpression.rootNode = (Node<Integer, R, Sequence<R>>) (Node<?, ?, ?>) body;
+    }
   }
 
   protected void assignFieldNamesIfNecessary(Class<?> resultType)

@@ -369,6 +369,21 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     t.accept(this);
   }
 
+  @Override
+  public void replaceChild(Node<D, R, F> oldChild, Node<D, R, F> newChild)
+  {
+    if (arg == oldChild)
+    {
+      arg             = newChild;
+      newChild.parent = this;
+      oldChild.parent = null;
+    }
+    else
+    {
+      throw new IllegalArgumentException(oldChild + " is not a child of " + this);
+    }
+  }
+
   private void assignFunctionName()
   {
     if (functionName == null)

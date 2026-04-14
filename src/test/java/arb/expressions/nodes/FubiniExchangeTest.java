@@ -102,7 +102,14 @@ public class FubiniExchangeTest extends
   }
 
   /**
-   * Test that exchangeOrder produces a structurally valid swapped integral.
+   * Test that exchangeOrder performs an in-place swap of two nested integrals
+   * using the 6-pointer exchange from {@link Node#exchange}.
+   *
+   * Before: outer{var=y, body=inner{var=z, body=y*z}}
+   * After:  inner{var=z, body=outer{var=y, body=y*z}}
+   *
+   * The Java references still point to the same objects — the exchange
+   * rewires parent/body/child pointers so that inner is now at root position.
    */
   @SuppressWarnings("unchecked")
   public void testExchangeOrderProducesSwappedStructure()
@@ -112,24 +119,24 @@ public class FubiniExchangeTest extends
     IntegralNode<Real, Real, RealFunction> outer = (IntegralNode<Real, Real, RealFunction>) expr.rootNode;
     IntegralNode<Real, Real, RealFunction> inner = (IntegralNode<Real, Real, RealFunction>) outer.integrandNode;
 
-    String outerVarBefore = outer.integrationVariableNode.getName();
-    String innerVarBefore = inner.integrationVariableNode.getName();
+    assertEquals("y", outer.integrationVariableNode.getName());
+    assertEquals("z", inner.integrationVariableNode.getName());
 
-    Node<Real, Real, RealFunction> exchanged = outer.exchangeOrder(inner);
+    // exchangeOrder is void — performs in-place 6-pointer swap
+    outer.exchangeOrder(inner);
 
-    assertTrue("exchanged result should be IntegralNode",
-               exchanged instanceof IntegralNode);
-
-    IntegralNode<Real, Real, RealFunction> newOuter = (IntegralNode<Real, Real, RealFunction>) exchanged;
-
-    assertEquals("new outer should use old inner's variable",
-                 innerVarBefore, newOuter.integrationVariableNode.getName());
-
-    assertTrue("new outer's integrand should be IntegralNode",
-               newOuter.integrandNode instanceof IntegralNode);
-    IntegralNode<Real, Real, RealFunction> newInner = (IntegralNode<Real, Real, RealFunction>) newOuter.integrandNode;
-    assertEquals("new inner should use old outer's variable",
-                 outerVarBefore, newInner.integrationVariableNode.getName());
+    // After exchange: inner is now at root, outer is its body
+    // The objects keep their own variable nodes; positions in the tree swapped.
+    assertSame("inner's body should now be outer",
+               outer, inner.integrandNode);
+    assertEquals("outer still owns variable y",
+                 "y", outer.integrationVariableNode.getName());
+    assertEquals("inner still owns variable z",
+                 "z", inner.integrationVariableNode.getName());
+    assertSame("inner's parent should be null (root position)",
+               null, inner.parent);
+    assertSame("outer's parent should be inner",
+               inner, outer.parent);
   }
 
   /**
@@ -161,5 +168,41 @@ public class FubiniExchangeTest extends
     IntegralNode<Real, Real, RealFunction> integral = (IntegralNode<Real, Real, RealFunction>) expr.rootNode;
     assertTrue("integral with constant 0,1 bounds should have finite constant bounds",
                integral.hasFiniteConstantBounds());
+  }
+
+  /**
+   * Test that parent pointers are set correctly during parsing.
+   * Issue #885: every child's parent field should point to its containing node.
+   */
+  @SuppressWarnings("unchecked")
+  public void testParentPointersSetDuringParsing()
+  {
+    Expression<Real, Real, RealFunction> expr = RealFunction.parse("x➔∫y➔(∫z➔(y*z)dz∈(0,1))dy∈(0,1)", null, false);
+
+    IntegralNode<Real, Real, RealFunction> outer = (IntegralNode<Real, Real, RealFunction>) expr.rootNode;
+    IntegralNode<Real, Real, RealFunction> inner = (IntegralNode<Real, Real, RealFunction>) outer.integrandNode;
+
+    assertSame("inner integral's parent should be the outer integral",
+               outer, inner.parent);
+    assertSame("inner's integrand parent should be the inner integral",
+               inner, inner.integrandNode.parent);
+  }
+
+  /**
+   * Test that isLinearPath correctly identifies a linear path between
+   * nested integrals with no intermediate nodes.
+   */
+  @SuppressWarnings("unchecked")
+  public void testIsLinearPathDirectNesting()
+  {
+    Expression<Real, Real, RealFunction> expr = RealFunction.parse("x➔∫y➔(∫z➔(y*z)dz∈(0,1))dy∈(0,1)", null, false);
+
+    IntegralNode<Real, Real, RealFunction> outer = (IntegralNode<Real, Real, RealFunction>) expr.rootNode;
+    IntegralNode<Real, Real, RealFunction> inner = (IntegralNode<Real, Real, RealFunction>) outer.integrandNode;
+
+    assertTrue("direct nesting should be a linear path",
+               Node.isLinearPath(outer, inner,
+                                outer.integrationVariableNode,
+                                inner.integrationVariableNode));
   }
 }

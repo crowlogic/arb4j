@@ -29,6 +29,7 @@ public abstract class CachedNode<D, R, F extends Function<? extends D, ? extends
   {
     super(delegate.expression);
     this.delegate  = delegate;
+    delegate.parent = this;
     this.fieldName = expression.newIntermediateVariable(fieldPrefix, delegate.type());
     this.position  = delegate.position;
     this.bits      = delegate.bits;

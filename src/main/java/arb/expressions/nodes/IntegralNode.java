@@ -1,6 +1,5 @@
 package arb.expressions.nodes;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -11,13 +10,8 @@ import org.slf4j.LoggerFactory;
 
 import arb.exceptions.CompilerException;
 import arb.expressions.*;
-import arb.expressions.nodes.binary.AdditionNode;
-import arb.expressions.nodes.binary.BinaryOperationNode;
-import arb.expressions.nodes.binary.DivisionNode;
 import arb.expressions.nodes.binary.MultiplicationNode;
 import arb.expressions.nodes.binary.SubtractionNode;
-import arb.expressions.nodes.unary.FunctionNode;
-import arb.expressions.nodes.unary.NegationNode;
 import arb.functions.Function;
 import arb.functions.annotations.FubiniApplicable;
 
@@ -104,6 +98,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     super(expression);
     assert variable != null : "variable shan't be null";
     integrandNode           = functionEvaluationNode;
+    integrandNode.parent    = this;
     integrationVariableNode = variable;
     ensureIndefiniteIntegralNode();
   }
@@ -128,6 +123,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     super(expression);
     assert variable != null : "variable shan't be null";
     integrandNode              = integrand;
+    integrandNode.parent       = this;
     integrationVariableNode    = variable;
     integrationVariableName    = variable.getName();
     lowerLimitNode             = lower;
@@ -148,6 +144,33 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       upperLimitNode.accept(t);
     }
     t.accept(this);
+  }
+
+  @Override
+  public void replaceChild(Node<D, C, F> oldChild, Node<D, C, F> newChild)
+  {
+    if (integrandNode == oldChild)
+    {
+      integrandNode   = newChild;
+      newChild.parent = this;
+      oldChild.parent = null;
+    }
+    else
+    {
+      throw new IllegalArgumentException(oldChild + " is not a child of " + this);
+    }
+  }
+
+  @Override
+  public Node<D, C, F> getBody()
+  {
+    return integrandNode;
+  }
+
+  @Override
+  public void setBody(Node<D, C, F> body)
+  {
+    integrandNode = body;
   }
 
   /**
@@ -380,7 +403,8 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
   /**
    * Exchanges the order of integration between this outer integral and a
-   * directly nested inner integral, applying Fubini's theorem:
+   * nested inner integral using the in-place 6-pointer swap from
+   * {@link Node#exchange}.
    *
    * <pre>
    * ∫ₐᵇ [∫_c^d f(x,y) dy] dx  →  ∫_c^d [∫ₐᵇ f(x,y) dx] dy
@@ -388,52 +412,19 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
    *
    * <p>Preconditions (must be verified by
    * {@link #isStructurallyExchangeableWith} and
-   * {@link #isAnalyticallyValidToExchangeWith} before calling):</p>
-   * <ul>
-   *   <li>The inner operator is a direct descendant of this node's operand</li>
-   *   <li>All intermediate nodes on the path are linear operators</li>
-   *   <li>The inner operator's bounds are independent of this operator's
-   *       bound variable (constant-limits case)</li>
-   * </ul>
+   * {@link #isAnalyticallyValidToExchangeWith} before calling).</p>
    *
-   * @param inner the inner accumulation operator to swap with this outer
-   *              operator (must be an IntegralNode)
-   * @return the new outer node after the swap
+   * @param inner the inner integral to swap with this outer integral
    *
+   * @see Node#exchange
    * @see <a href="https://github.com/crowlogic/arb4j/issues/549">#549</a>
+   * @see <a href="https://github.com/crowlogic/arb4j/issues/885">#885</a>
    */
-  public Node<D, C, F> exchangeOrder(IntegralNode<D, C, F> inner)
+  public void exchangeOrder(IntegralNode<D, C, F> inner)
   {
     assert inner != null : "inner operator must not be null";
     assert inner != this : "cannot exchange an operator with itself";
-
-    // Extract the components from both operators
-    Node<D, C, F>         innerIntegrand = inner.integrandNode;
-    VariableNode<D, C, F> outerVar       = this.integrationVariableNode;
-    VariableNode<D, C, F> innerVar       = inner.integrationVariableNode;
-    Node<D, C, F>         outerLower     = this.lowerLimitNode;
-    Node<D, C, F>         outerUpper     = this.upperLimitNode;
-    Node<D, C, F>         innerLower     = inner.lowerLimitNode;
-    Node<D, C, F>         innerUpper     = inner.upperLimitNode;
-
-    // Construct the new inner integral: ∫ₐᵇ f(x,y) dx
-    // (uses the outer's variable and bounds, wrapping the original integrand)
-    // Uses the deferred constructor to avoid eagerly computing the indefinite
-    // integral — that happens when simplify() is called on the result.
-    IntegralNode<D, C, F> newInner = new IntegralNode<>(expression,
-                                                         innerIntegrand,
-                                                         outerVar,
-                                                         outerLower,
-                                                         outerUpper);
-
-    // Construct the new outer integral: ∫_c^d [newInner] dy
-    IntegralNode<D, C, F> newOuter = new IntegralNode<>(expression,
-                                                         newInner,
-                                                         innerVar,
-                                                         innerLower,
-                                                         innerUpper);
-
-    return newOuter;
+    Node.exchange(this, inner);
   }
 
   public boolean isDefiniteIntegral()
@@ -476,41 +467,29 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   }
 
   /**
-   * Determines whether this outer integral and a directly nested inner integral
-   * are structurally exchangeable per Fubini's theorem. Three conditions are
-   * checked:
+   * Determines whether this outer integral and the given inner integral are
+   * structurally exchangeable per Fubini's theorem. Three conditions:
    * <ol>
-   *   <li>The inner integral is a descendant of this integral's integrand on a
-   *       single path</li>
-   *   <li>Every intermediate node on that path is a linear operator</li>
-   *   <li>Neither integral's bounds depend on the other's integration
-   *       variable</li>
+   *   <li>The inner integral is a descendant of this integral's integrand</li>
+   *   <li>Every intermediate node on the path is a
+   *       {@linkplain Node#isLinearOperator linear operator}</li>
+   *   <li>Neither integral's bounds depend on the other's variable</li>
    * </ol>
    *
    * @param inner the candidate inner integral
    * @return true if the two integrals are structurally exchangeable
    *
    * @see <a href="https://github.com/crowlogic/arb4j/issues/549">#549</a>
+   * @see <a href="https://github.com/crowlogic/arb4j/issues/885">#885</a>
    */
   public boolean isStructurallyExchangeableWith(IntegralNode<D, C, F> inner)
   {
-    List<Node<D, C, F>> path = findPathToDescendant(inner);
-    if (path == null)
+    if (inner.parent == null)
     {
       return false;
     }
-    for (Node<D, C, F> node : path)
-    {
-      if (node == this || node == inner)
-      {
-        continue;
-      }
-      if (!isLinearOperator(node, integrationVariableNode, inner.integrationVariableNode))
-      {
-        return false;
-      }
-    }
-    return areBoundsIndependentOf(inner);
+    return Node.isLinearPath(this, inner, integrationVariableNode, inner.integrationVariableNode)
+           && areBoundsIndependentOf(inner);
   }
 
   /**
@@ -546,38 +525,23 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   }
 
   /**
-   * Searches this integral's integrand subtree for the first nested integral
-   * that is both structurally and analytically exchangeable with this one.
+   * If this integral's integrand is itself an integral that is both structurally
+   * and analytically exchangeable with this one, return it. Otherwise null.
    *
-   * @return the first exchangeable inner integral, or null if none found
+   * @return the exchangeable inner integral, or null if the integrand is not one
    *
    * @see <a href="https://github.com/crowlogic/arb4j/issues/549">#549</a>
    */
+  @SuppressWarnings("unchecked")
   public IntegralNode<D, C, F> findExchangeableInnerIntegral()
   {
-    @SuppressWarnings("unchecked")
-    IntegralNode<D, C, F>[] result = new IntegralNode[1];
-    integrandNode.accept(new Consumer<Node<D, C, F>>()
+    if (integrandNode instanceof IntegralNode<D, C, F> inner
+        && isStructurallyExchangeableWith(inner)
+        && isAnalyticallyValidToExchangeWith(inner))
     {
-      @Override
-      @SuppressWarnings("unchecked")
-      public void accept(Node<D, C, F> node)
-      {
-        if (result[0] != null)
-        {
-          return;
-        }
-        if (node instanceof IntegralNode<D, C, F> candidate && candidate != IntegralNode.this)
-        {
-          if (isStructurallyExchangeableWith(candidate)
-              && isAnalyticallyValidToExchangeWith(candidate))
-          {
-            result[0] = candidate;
-          }
-        }
-      }
-    });
-    return result[0];
+      return inner;
+    }
+    return null;
   }
 
   /**
@@ -607,125 +571,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     return true;
   }
 
-  /**
-   * Finds the path from this integral's integrand to a descendant node.
-   * Returns null if the descendant is not reachable on a single branch.
-   * The returned list includes this node and the target as endpoints.
-   */
-  private List<Node<D, C, F>> findPathToDescendant(Node<D, C, F> target)
-  {
-    List<Node<D, C, F>> path = new ArrayList<>();
-    path.add(this);
-    if (integrandNode == target)
-    {
-      path.add(target);
-      return path;
-    }
-    if (findPathDFS(integrandNode, target, path))
-    {
-      return path;
-    }
-    return null;
-  }
 
-  /**
-   * Recursive DFS that builds the path from current to target.
-   */
-  private static <D, C, F extends Function<? extends D, ? extends C>>
-          boolean
-          findPathDFS(Node<D, C, F> current, Node<D, C, F> target, List<Node<D, C, F>> path)
-  {
-    path.add(current);
-    if (current == target)
-    {
-      return true;
-    }
-    if (current instanceof BinaryOperationNode<D, C, F> binop)
-    {
-      if (binop.left != null && containsNode(binop.left, target))
-      {
-        return findPathDFS(binop.left, target, path);
-      }
-      if (binop.right != null && containsNode(binop.right, target))
-      {
-        return findPathDFS(binop.right, target, path);
-      }
-    }
-    else if (current instanceof FunctionNode<D, C, F> func)
-    {
-      if (func.arg != null && containsNode(func.arg, target))
-      {
-        return findPathDFS(func.arg, target, path);
-      }
-    }
-    else if (current instanceof IntegralNode<D, C, F> integral)
-    {
-      if (containsNode(integral.integrandNode, target))
-      {
-        return findPathDFS(integral.integrandNode, target, path);
-      }
-    }
-    path.remove(path.size() - 1);
-    return false;
-  }
-
-  /**
-   * Returns true if target is found anywhere in the subtree rooted at root
-   * (identity check).
-   */
-  private static <D, C, F extends Function<? extends D, ? extends C>>
-          boolean
-          containsNode(Node<D, C, F> root, Node<D, C, F> target)
-  {
-    if (root == target)
-    {
-      return true;
-    }
-    boolean[] found = { false };
-    root.accept(new Consumer<Node<D, C, F>>()
-    {
-      @Override
-      public void accept(Node<D, C, F> node)
-      {
-        if (node == target)
-        {
-          found[0] = true;
-        }
-      }
-    });
-    return found[0];
-  }
-
-  /**
-   * Checks whether a node on the path between two integrals is a linear
-   * operator with respect to both bound variables.
-   */
-  private static <D, C, F extends Function<? extends D, ? extends C>>
-          boolean
-          isLinearOperator(Node<D, C, F> node,
-                           VariableNode<D, C, F> outerVar,
-                           VariableNode<D, C, F> innerVar)
-  {
-    if (node instanceof AdditionNode || node instanceof SubtractionNode)
-    {
-      return true;
-    }
-    if (node instanceof NegationNode)
-    {
-      return true;
-    }
-    if (node instanceof MultiplicationNode<D, C, F> mul)
-    {
-      boolean leftIndep  = !mul.left.dependsOn(outerVar) && !mul.left.dependsOn(innerVar);
-      boolean rightIndep = !mul.right.dependsOn(outerVar) && !mul.right.dependsOn(innerVar);
-      return leftIndep || rightIndep;
-    }
-    if (node instanceof DivisionNode<D, C, F> div)
-    {
-      return !div.right.dependsOn(outerVar) && !div.right.dependsOn(innerVar);
-    }
-    return false;
-  }
 
   @Override
   public boolean isAtomic()
@@ -749,6 +595,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     }
 
     integrandExpression.rootNode = integrandNode = integrandExpression.resolve();
+    integrandNode.parent         = this;
 
     expression.position          = integrandExpression.position;
     expression.character         = integrandExpression.character;
@@ -861,18 +708,13 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     }
 
     // Fubini exchange: if the integrand is a nested integral that is
-    // structurally and analytically exchangeable, swap the order.
-    if (isDefiniteIntegral() && integrandNode instanceof IntegralNode<D, C, F> innerIntegral)
+    // structurally and analytically exchangeable, swap the order in-place.
+    IntegralNode<D, C, F> exchangeable = findExchangeableInnerIntegral();
+    if (exchangeable != null)
     {
-      if (isStructurallyExchangeableWith(innerIntegral)
-          && isAnalyticallyValidToExchangeWith(innerIntegral))
-      {
-        Node<D, C, F> exchanged = exchangeOrder(innerIntegral);
-        if (exchanged != this)
-        {
-          return exchanged;
-        }
-      }
+      exchangeOrder(exchangeable);
+      // After exchange, 'exchangeable' is now the outer node
+      return exchangeable;
     }
 
     ensureIndefiniteIntegralNode();

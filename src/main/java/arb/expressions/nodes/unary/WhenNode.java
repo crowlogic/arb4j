@@ -93,6 +93,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     for (var entry : sourceCases.entrySet())
     {
       var value = entry.getValue().spliceInto(expression);
+      value.parent = this;
       this.cases.put(entry.getKey(), value);
     }
   }
@@ -110,6 +111,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     for (var entry : sourceCases.entrySet())
     {
       var value = entry.getValue().spliceInto(expression);
+      value.parent = this;
       this.cases.put(entry.getKey(), value);
     }
   }
@@ -190,6 +192,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
 
     var constant = evaluateCondition();
     var value    = expression.resolve();
+    value.parent = this;
     cases.put(new Integer(constant.stringValue), value);
   }
 
@@ -198,7 +201,8 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     Node<D, R, F> node = expression.resolve();
     if (node instanceof ElseNode)
     {
-      arg = evaluateDefaultCase(expression);
+      arg        = evaluateDefaultCase(expression);
+      arg.parent = this;
     }
     else if (node instanceof VariableNode<D, R, F> variable)
     {
