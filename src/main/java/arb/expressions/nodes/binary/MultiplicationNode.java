@@ -506,4 +506,10 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   {
     return format("\\left(%s \\cdot %s\\right)", left.typeset(), right.typeset());
   }
+
+  @Override
+  public boolean isProvablyNonNegative()
+  {
+    return left.isProvablyNonNegative() && right.isProvablyNonNegative();
+  }
 }

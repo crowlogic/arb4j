@@ -1108,4 +1108,10 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return derivativeOrder;
   }
 
+  @Override
+  public boolean isProvablyNonNegative()
+  {
+    return is("exp");
+  }
+
 }

@@ -41,4 +41,10 @@ public class AbsoluteValueNode<D, R, F extends Function<? extends D, ? extends R
           parser);
   }
 
+  @Override
+  public boolean isProvablyNonNegative()
+  {
+    return true;
+  }
+
 }

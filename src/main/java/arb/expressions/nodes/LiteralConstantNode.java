@@ -170,6 +170,24 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   }
 
   @Override
+  public boolean isProvablyNonNegative()
+  {
+    if (isNonNegativeIntegerConstant())
+    {
+      return true;
+    }
+    if (isDecimal)
+    {
+      return !stringValue.startsWith("-");
+    }
+    if (fractionValue != null)
+    {
+      return fractionValue.sign() >= 0;
+    }
+    return false;
+  }
+
+  @Override
   public boolean isPositiveInfinity()
   {
     if (super.isPositiveInfinity())

@@ -197,6 +197,17 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   }
 
   @Override
+  public boolean isProvablyNonNegative()
+  {
+    if (right.isNonNegativeIntegerConstant())
+    {
+      int expVal = right.asLiteralConstant().asInteger().getSignedValue();
+      return expVal % 2 == 0;
+    }
+    return false;
+  }
+
+  @Override
   public Node<D, R, F> simplify()
   {
     left  = left.simplify();
