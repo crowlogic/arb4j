@@ -1066,7 +1066,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (!coDomainType.isInterface())
     {
       declareLiteralConstants(cw);
-      declareIntermediateVariables(cw);
     }
     declareFunctionReferences(cw);
     declareVariables(cw);
