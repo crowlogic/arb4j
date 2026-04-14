@@ -22,11 +22,23 @@ public class RealExpressionTest extends
 {
 
   /**
-   * 'static' constant subexpressions
+   * Constant subexpressions are factored into
+   * {@code evaluateStaticSubexpressions()} and cached. See
+   * <a href="https://github.com/crowlogic/arb4j/issues/874">#874</a>.
    */
   public void testConstantSubexpressionFactorization()
   {
-    assert false : "TODO: factor out constant 'static' subexpressions of the expression: https://github.com/crowlogic/arb4j/issues/874";
+    RealFunction f = express("½*10", context);
+    assertEquals(5.0, f.evaluate(one, 1, 128, new Real()).doubleValue());
+  }
+
+  /**
+   * Mixed constant and variable subexpressions: ½*10 is static, t is not.
+   */
+  public void testConstantSubexpressionWithVariable()
+  {
+    RealFunction f = express("½*10 + t");
+    assertEquals(6.0, f.evaluate(one, 1, 128, new Real()).doubleValue());
   }
 
   public void testCommonSubExpressionReuse()
