@@ -195,4 +195,32 @@ public class FubiniExchangeTest extends
                                 outer.integrationVariableNode,
                                 inner.integrationVariableNode));
   }
+
+  /**
+   * Test α-conversion: Node.alphaConvert renames variables within a subtree.
+   */
+  public void testAlphaConvert()
+  {
+    Expression<Real, Real, RealFunction> expr = RealFunction.parse("x➔∫y➔(y*x)dy∈(0,1)", null, false);
+
+    IntegralNode<Real, Real, RealFunction> integral = expr.rootNode.asIntegralNode();
+    assertTrue("integrand should reference y before rename",
+               integral.integrandNode.variableNodeStream().anyMatch(v -> v.isVariableNamed("y")));
+
+    integral.integrandNode.alphaConvert("y", "y′");
+
+    assertFalse("integrand should not reference y after rename",
+                integral.integrandNode.variableNodeStream().anyMatch(v -> v.isVariableNamed("y")));
+    assertTrue("integrand should reference y′ after rename",
+               integral.integrandNode.variableNodeStream().anyMatch(v -> v.isVariableNamed("y′")));
+  }
+
+  /**
+   * Test freshVariableName appends a prime.
+   */
+  public void testFreshVariableName()
+  {
+    assertEquals("x′", Node.freshVariableName("x"));
+    assertEquals("x′′", Node.freshVariableName("x′"));
+  }
 }

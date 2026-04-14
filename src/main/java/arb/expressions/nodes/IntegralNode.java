@@ -424,6 +424,22 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   {
     assert inner != null : "inner operator must not be null";
     assert inner != this : "cannot exchange an operator with itself";
+
+    // α-convert to avoid variable capture: if the outer's bounds reference
+    // the inner's variable, rename the inner's variable to a fresh name
+    // before swapping so that the references remain free after exchange.
+    String innerVarName = inner.integrationVariableNode.getName();
+    boolean outerBoundsReferenceInnerVar =
+        (lowerLimitNode != null && lowerLimitNode.dependsOn(inner.integrationVariableNode))
+        || (upperLimitNode != null && upperLimitNode.dependsOn(inner.integrationVariableNode));
+
+    if (outerBoundsReferenceInnerVar)
+    {
+      String freshName = Node.freshVariableName(innerVarName);
+      inner.alphaConvert(innerVarName, freshName);
+      inner.integrationVariableNode.renameTo(freshName);
+    }
+
     Node.exchange(this, inner);
   }
 

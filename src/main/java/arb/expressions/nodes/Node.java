@@ -360,6 +360,33 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   }
 
   /**
+   * α-converts (renames) all occurrences of the variable named {@code oldName}
+   * to {@code newName} within this node's subtree. Used to avoid variable
+   * capture when exchanging nested operators.
+   *
+   * @param oldName the current variable name to rename
+   * @param newName the fresh variable name to use
+   *
+   * @see <a href="https://github.com/crowlogic/arb4j/issues/885">#885</a>
+   */
+  public void alphaConvert(String oldName, String newName)
+  {
+    variableNodeStream().forEach(v -> v.renameIfNamed(oldName, newName));
+  }
+
+  /**
+   * Generates a fresh variable name by appending a prime (′) to the given name.
+   * If the name already ends with a prime, adds another one.
+   *
+   * @param baseName the variable name to derive a fresh name from
+   * @return a new name guaranteed to differ from the original
+   */
+  public static String freshVariableName(String baseName)
+  {
+    return baseName + "′";
+  }
+
+  /**
    * Gets the body/integrand/operand of an operator node.
    */
   public Node<D, R, F> getBody()
