@@ -1,15 +1,27 @@
 package arb.expressions;
 
+import java.util.Set;
+
 import arb.Real;
+import arb.expressions.nodes.unary.JetNode;
+import arb.expressions.nodes.unary.JetState;
 import arb.functions.real.RealFunction;
+import arb.functions.real.RiemannSiegelThetaFunction;
 import junit.framework.TestCase;
 
 /**
- * Tests for the jet derivative overhaul:
+ * Tests that the jet derivative overhaul actually does what it was designed to
+ * do:
  * <ol>
- * <li>Multi-order Taylor series bytecode path for non-jet expressions</li>
- * <li>JetNode memoization — shared series computation across consumers</li>
- * <li>DerivativeCache correctness — factorial division at higher orders</li>
+ * <li>JetNode series computation produces the same Taylor coefficients as the
+ * reference {@link RiemannSiegelThetaFunction} implementation</li>
+ * <li>Two consumers of the same jet (ϑ(t) and ϑ'(t) in one expression) share a
+ * single {@link JetState} after deduplication, meaning one ARB jet call serves
+ * both</li>
+ * <li>The series copy loop correctly distributes all {@code order} coefficients
+ * from the jet polynomial into the result vector</li>
+ * <li>The Taylor series bytecode path for non-jet expressions computes correct
+ * Taylor coefficients via the derivative() chain</li>
  * </ol>
  * 
  * @author Stephen Crowley ©2024-2026
@@ -19,151 +31,187 @@ public class JetDerivativeOverhaulTest extends
                                         TestCase
 {
 
+  static final int    bits = 128;
+  static final double tol  = 1e-12;
+
   /**
-   * Test the Taylor series bytecode path on a non-jet expression.
-   * 
-   * f(t) = t^3 + 2*t^2 + 3*t + 4
-   * 
-   * At t = 1:
-   *   f(1)   = 1 + 2 + 3 + 4 = 10
-   *   f'(t)  = 3*t^2 + 4*t + 3, f'(1) = 10
-   *   f''(t) = 6*t + 4,         f''(1) = 10
-   * 
-   * Taylor coefficients: c_k = f^(k)(1) / k!
-   *   c_0 = 10
-   *   c_1 = 10
-   *   c_2 = 10/2 = 5
+   * Verify that the compiled expression ϑ(t) evaluated at order=5 produces
+   * identical Taylor coefficients to the hand-coded
+   * {@link RiemannSiegelThetaFunction}, which directly calls
+   * {@code arb_poly_riemann_siegel_theta_series}. This proves the JetNode
+   * correctly invokes the ARB jet function and the series copy loop correctly
+   * writes all coefficients into the result vector.
    */
-  public void testTaylorSeriesPathPolynomial()
+  public void testJetCoefficientsMatchReference()
   {
-    int precision = 128;
-    int order     = 3;
+    int order = 5;
 
-    var f = RealFunction.express("t^3+2*t^2+3*t+4");
-
-    try ( Real point = Real.valueOf(1); Real result = Real.newVector(order))
+    try ( RiemannSiegelThetaFunction reference = new RiemannSiegelThetaFunction();
+          Real point = Real.valueOf(50);
+          Real refResult = Real.newVector(order);
+          Real jetResult = Real.newVector(order))
     {
-      f.evaluate(point, order, precision, result);
+      reference.evaluate(point, order, bits, refResult);
 
-      assertEquals("c_0 = f(1) = 10", 10.0, result.get(0).doubleValue());
-      assertEquals("c_1 = f'(1)/1! = 10", 10.0, result.get(1).doubleValue());
-      assertEquals("c_2 = f''(1)/2! = 5", 5.0, result.get(2).doubleValue());
+      var jetExpr = RealFunction.express("ϑ(t)");
+      jetExpr.evaluate(point, order, bits, jetResult);
+
+      for (int k = 0; k < order; k++)
+      {
+        double ref = refResult.get(k).doubleValue();
+        double jet = jetResult.get(k).doubleValue();
+        assertEquals("Taylor coefficient c[" + k + "] mismatch", ref, jet, Math.abs(ref) * tol + tol);
+      }
     }
   }
 
   /**
-   * Test Taylor path at a non-unity evaluation point.
-   * 
-   * f(t) = t^4 at t = 2:
-   *   f(2)    = 16
-   *   f'(t)   = 4*t^3,     f'(2)   = 32
-   *   f''(t)  = 12*t^2,    f''(2)  = 48
-   *   f'''(t) = 24*t,      f'''(2) = 48
-   *   f''''(t)= 24,        f''''(2)= 24
-   * 
-   * Taylor coefficients:
-   *   c_0 = 16
-   *   c_1 = 32
-   *   c_2 = 48/2 = 24
-   *   c_3 = 48/6 = 8
-   *   c_4 = 24/24 = 1
+   * Parse ϑ(t)+diff(ϑ(t),t) and verify that after compilation, both JetNodes
+   * share a single {@link JetState} — meaning the ARB jet function is called
+   * once, and both the value ϑ(t) (coefficientIndex=0) and the derivative
+   * ϑ'(t) (coefficientIndex=1) are read from that one polynomial buffer.
    */
-  public void testTaylorSeriesPathHigherOrder()
+  @SuppressWarnings("rawtypes")
+  public void testJetStateDeduplication()
   {
-    int precision = 128;
-    int order     = 5;
+    var parsed = RealFunction.parse("ϑ(t)+diff(ϑ(t),t)");
+
+    // Before compilation, collectJetStates may have separate JetState objects
+    parsed.compile();
+
+    // After compilation, deduplicateJets() has run; collect the JetStates from
+    // the AST and verify they all point to the same object
+    final JetState[] seen = new JetState[1];
+    parsed.rootNode.accept(node ->
+    {
+      if (node instanceof JetNode jetNode)
+      {
+        if (seen[0] == null)
+        {
+          seen[0] = jetNode.getSharedState();
+        }
+        else
+        {
+          assertSame("All JetNodes for ϑ(t) must share a single JetState instance", seen[0],
+                     jetNode.getSharedState());
+        }
+      }
+    });
+    assertNotNull("Should have found at least one JetNode", seen[0]);
+    assertTrue("Shared JetState maxCoefficientNeeded must be >= 1 (derivative needs index 1)",
+               seen[0].getMaxCoefficientNeeded() >= 1);
+  }
+
+  /**
+   * Verify that ϑ(t)+diff(ϑ(t),t) at t=50 produces ϑ(50)+ϑ'(50), using the
+   * reference implementation to compute both values independently. This
+   * confirms that the two JetNode consumers reading coefficients 0 and 1 from
+   * the shared jet polynomial produce correct arithmetic.
+   */
+  public void testSharedJetTwoConsumers()
+  {
+    try ( RiemannSiegelThetaFunction reference = new RiemannSiegelThetaFunction();
+          Real point = Real.valueOf(50);
+          Real refResult = Real.newVector(2);
+          Real exprResult = new Real())
+    {
+      // Reference: ϑ(50) and ϑ'(50) from the series coefficients
+      reference.evaluate(point, 2, bits, refResult);
+      double theta0 = refResult.get(0).doubleValue();
+      double theta1 = refResult.get(1).doubleValue();
+      double expected = theta0 + theta1;
+
+      // Expression with two jet consumers
+      var f = RealFunction.express("ϑ(t)+diff(ϑ(t),t)");
+      f.evaluate(point, 1, bits, exprResult);
+      double actual = exprResult.doubleValue();
+
+      assertEquals("ϑ(50)+ϑ'(50) from shared jet", expected, actual, Math.abs(expected) * tol);
+    }
+  }
+
+  /**
+   * Verify that diff(ϑ(t),t) evaluated at order=1 gives the same value as
+   * coefficient[1] from the reference series. This confirms the JetNode
+   * differentiation mechanism (coefficientIndex advancement) correctly reads
+   * the derivative from the jet polynomial.
+   */
+  public void testJetDifferentiationReadsCorrectCoefficient()
+  {
+    try ( RiemannSiegelThetaFunction reference = new RiemannSiegelThetaFunction();
+          Real point = Real.valueOf(50);
+          Real refResult = Real.newVector(2);
+          Real derivResult = new Real())
+    {
+      reference.evaluate(point, 2, bits, refResult);
+      double expectedDerivative = refResult.get(1).doubleValue();
+
+      var diffExpr = RealFunction.express("diff(ϑ(t),t)");
+      diffExpr.evaluate(point, 1, bits, derivResult);
+      double actual = derivResult.doubleValue();
+
+      assertEquals("diff(ϑ(t),t) at t=50 must equal reference coefficient[1]", expectedDerivative, actual,
+                   Math.abs(expectedDerivative) * tol);
+    }
+  }
+
+  /**
+   * Verify the Taylor series bytecode path for a non-jet expression. For
+   * f(t) = t^4 at t=2, the Taylor coefficients are:
+   * 
+   * <pre>
+   *   c_0 = f(2)       = 16
+   *   c_1 = f'(2)/1!   = 32
+   *   c_2 = f''(2)/2!  = 24
+   *   c_3 = f'''(2)/3! = 8
+   *   c_4 = f⁴(2)/4!   = 1
+   * </pre>
+   * 
+   * This expression has no JetNodes, so order>1 goes through the
+   * derivativeCache-based Taylor path emitted in
+   * {@link Expression#generateTaylorSeriesPath}.
+   */
+  public void testTaylorSeriesPathNonJet()
+  {
+    int order = 5;
 
     var f = RealFunction.express("t^4");
 
     try ( Real point = Real.valueOf(2); Real result = Real.newVector(order))
     {
-      f.evaluate(point, order, precision, result);
+      f.evaluate(point, order, bits, result);
 
-      assertEquals("c_0 = f(2) = 16", 16.0, result.get(0).doubleValue());
-      assertEquals("c_1 = f'(2)/1! = 32", 32.0, result.get(1).doubleValue());
-      assertEquals("c_2 = f''(2)/2! = 24", 24.0, result.get(2).doubleValue());
-      assertEquals("c_3 = f'''(2)/3! = 8", 8.0, result.get(3).doubleValue());
-      assertEquals("c_4 = f''''(2)/4! = 1", 1.0, result.get(4).doubleValue());
+      assertEquals("c_0 = f(2) = 16", 16.0, result.get(0).doubleValue(), tol);
+      assertEquals("c_1 = f'(2)/1! = 32", 32.0, result.get(1).doubleValue(), tol);
+      assertEquals("c_2 = f''(2)/2! = 24", 24.0, result.get(2).doubleValue(), tol);
+      assertEquals("c_3 = f'''(2)/3! = 8", 8.0, result.get(3).doubleValue(), tol);
+      assertEquals("c_4 = f''''(2)/4! = 1", 1.0, result.get(4).doubleValue(), tol);
     }
   }
 
   /**
-   * Test that JetNode memoization works: evaluating a jet-bearing expression
-   * with order > 1 should produce correct results (the JetNode computes the
-   * series once per evaluate() call via the evalStamp mechanism).
-   * 
-   * Uses ϑ(t) (Riemann-Siegel theta) at t = 50, order = 3. Verifies that
-   * the result has non-trivial values in all coefficient slots.
-   */
-  public void testJetNodeMemoization()
-  {
-    int precision = 128;
-    int order     = 3;
-
-    var theta = RealFunction.express("ϑ(t)");
-
-    try ( Real point = Real.valueOf(50); Real result = Real.newVector(order))
-    {
-      theta.evaluate(point, order, precision, result);
-
-      // c_0 = ϑ(50)
-      double c0 = result.get(0).doubleValue();
-      assertTrue("ϑ(50) should be near 26.46, got " + c0, Math.abs(c0 - 26.46) < 0.1);
-
-      // c_1 = ϑ'(50) / 1! — should be nonzero
-      double c1 = result.get(1).doubleValue();
-      assertTrue("ϑ'(50)/1! should be nonzero, got " + c1, Math.abs(c1) > 1e-10);
-
-      // c_2 = ϑ''(50) / 2! — should be nonzero
-      double c2 = result.get(2).doubleValue();
-      assertTrue("ϑ''(50)/2! should be nonzero, got " + c2, Math.abs(c2) > 1e-10);
-    }
-  }
-
-  /**
-   * Test that the derivativeCache is populated correctly across repeated calls
-   * with increasing order. After calling with order=2 then order=4, the cache
-   * should have grown to hold derivatives 0..3 without recompiling earlier ones.
+   * Verify that the derivativeCache grows correctly across calls with
+   * increasing order. After order=2 then order=4, the cache must have expanded
+   * without recompiling earlier derivatives, and the coefficients must be
+   * correct.
    */
   public void testDerivativeCacheGrowth()
   {
-    int precision = 128;
-
     var f = RealFunction.express("t^3+t");
 
+    // f(t) = t^3+t at t=1: f(1)=2, f'(1)=4, f''(1)=6, f'''(1)=6
+    // c_0=2, c_1=4, c_2=6/2=3, c_3=6/6=1
     try ( Real point = Real.valueOf(1); Real result2 = Real.newVector(2); Real result4 = Real.newVector(4))
     {
-      // f(t) = t^3 + t at t=1
-      // f(1) = 2, f'(1) = 4, f''(1) = 6, f'''(1) = 6
-      // c_0=2, c_1=4, c_2=3, c_3=1
+      f.evaluate(point, 2, bits, result2);
+      assertEquals("order=2: c_0 = 2", 2.0, result2.get(0).doubleValue(), tol);
+      assertEquals("order=2: c_1 = 4", 4.0, result2.get(1).doubleValue(), tol);
 
-      // First call with order=2
-      f.evaluate(point, 2, precision, result2);
-      assertEquals("c_0 = 2", 2.0, result2.get(0).doubleValue());
-      assertEquals("c_1 = 4", 4.0, result2.get(1).doubleValue());
-
-      // Second call with order=4 — cache should grow, not fail
-      f.evaluate(point, 4, precision, result4);
-      assertEquals("c_0 = 2", 2.0, result4.get(0).doubleValue());
-      assertEquals("c_1 = 4", 4.0, result4.get(1).doubleValue());
-      assertEquals("c_2 = f''(1)/2! = 6/2 = 3", 3.0, result4.get(2).doubleValue());
-      assertEquals("c_3 = f'''(1)/3! = 6/6 = 1", 1.0, result4.get(3).doubleValue());
-    }
-  }
-
-  /**
-   * Verify that the order=1 path still works unchanged (no regression).
-   */
-  public void testOrder1Unchanged()
-  {
-    int precision = 128;
-
-    var f = RealFunction.express("t^2+1");
-
-    try ( Real point = Real.valueOf(3); Real result = new Real())
-    {
-      f.evaluate(point, 1, precision, result);
-      assertEquals("f(3) = 10", 10.0, result.doubleValue());
+      f.evaluate(point, 4, bits, result4);
+      assertEquals("order=4: c_0 = 2", 2.0, result4.get(0).doubleValue(), tol);
+      assertEquals("order=4: c_1 = 4", 4.0, result4.get(1).doubleValue(), tol);
+      assertEquals("order=4: c_2 = 3", 3.0, result4.get(2).doubleValue(), tol);
+      assertEquals("order=4: c_3 = 1", 1.0, result4.get(3).doubleValue(), tol);
     }
   }
 }
