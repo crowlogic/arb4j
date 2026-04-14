@@ -5,7 +5,7 @@ import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
 /**
- * Also see {@link GammaFunctionSeriesNode} for a version that computes
+ * Also see {@link GammaJetNode} for a version that computes
  * derivatives with the accelerated flint/arb methods
  * 
  * @author Stephen Crowley ©2024-2025

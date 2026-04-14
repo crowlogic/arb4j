@@ -14,8 +14,7 @@ import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
 /**
- * Jet node for the Riemann-Siegel theta function ϑ(t). Replaces
- * {@link RiemannSiegelThetaFunctionNode}.
+ * Jet node for the Riemann-Siegel theta function ϑ(t).
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}

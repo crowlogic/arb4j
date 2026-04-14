@@ -14,7 +14,7 @@ import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
 /**
- * Jet node for the Hardy Z-function Z(t). Replaces {@link HardyZFunctionNode}.
+ * Jet node for the Hardy Z-function Z(t).
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}

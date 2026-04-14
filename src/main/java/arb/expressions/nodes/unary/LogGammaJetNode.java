@@ -14,8 +14,7 @@ import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
 /**
- * Jet node for the log-gamma function lnΓ(t). Replaces
- * {@link LogGammaFunctionNode}.
+ * Jet node for the log-gamma function lnΓ(t).
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}

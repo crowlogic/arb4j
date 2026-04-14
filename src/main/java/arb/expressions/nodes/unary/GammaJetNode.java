@@ -14,8 +14,7 @@ import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
 /**
- * Jet node for the Gamma function Γ(t). Replaces
- * {@link GammaFunctionSeriesNode}.
+ * Jet node for the Gamma function Γ(t).
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}

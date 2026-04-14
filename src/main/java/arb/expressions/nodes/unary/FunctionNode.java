@@ -487,9 +487,12 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                      arg,
                                      1);
     case "ζ":
-      return new ZetaFunctionNode<>(expression,
-                                    arg,
-                                    1);
+    {
+      boolean isComplex = Complex.class.equals(scalarType(expression.coDomainType));
+      JetState state    = new JetState("ζ", arg.toString(), isComplex);
+      state.updateMax(1);
+      return new ZetaJetNode<>(expression, arg, 1, state);
+    }
     default:
       return new DerivativeNode<>(expression,
                                   this);

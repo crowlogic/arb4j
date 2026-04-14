@@ -142,7 +142,7 @@ public abstract class JetNode<D, C, F extends Function<? extends D, ? extends C>
     if (isRootNode && coefficientIndex == 0)
     {
       // Series mode: copy all `order` coefficients from the jet polynomial
-      // into the result vector, matching the PolySeriesFunctionNode contract.
+      // into the result vector, matching the series contract.
       // for (int i = 0; i < order; i++) result.get(i).set(jetPoly.get(i))
       emitSeriesCopyLoop(mv, scalarType, polyClass, className);
     }
@@ -267,8 +267,8 @@ public abstract class JetNode<D, C, F extends Function<? extends D, ? extends C>
    * for (int i = 0; i < order; i++)
    *   result.get(i).set(jetPoly.get(i));
    * </pre>
-   * This matches the {@link PolySeriesFunctionNode} series contract needed
-   * by callers like {@code HardyThetaInversion.buildTaylorSeries}.
+   * This matches the series contract needed by callers like
+   * {@code HardyThetaInversion.buildTaylorSeries}.
    */
   private void emitSeriesCopyLoop(MethodVisitor mv, Class<?> scalarType, Class<?> polyClass, String className)
   {

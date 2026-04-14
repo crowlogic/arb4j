@@ -14,8 +14,7 @@ import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
 /**
- * Jet node for the Riemann zeta function ζ(s). Replaces
- * {@link ZetaFunctionNode}.
+ * Jet node for the Riemann zeta function ζ(s).
  * 
  * <p>
  * The zeta series call has a different signature from the other series

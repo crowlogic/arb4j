@@ -326,9 +326,9 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (isSincFunction(variable))
     {
-      return new SineIntegralNode<D, R, F>(expression,
-                                           variable,
-                                           0);
+      boolean  isComplex = Complex.class.equals(arb.expressions.Compiler.scalarType(expression.coDomainType));
+      JetState state     = new JetState("si", variable.toString(), isComplex);
+      return new SineIntegralJetNode<>(expression, variable, 0, state);
     }
 
     throw new UnsupportedOperationException("Integration of " + this + " with respect to " + variable + " not implemented");

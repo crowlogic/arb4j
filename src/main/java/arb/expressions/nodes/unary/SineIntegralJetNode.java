@@ -14,7 +14,7 @@ import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
 /**
- * Jet node for the sine integral si(t). Replaces {@link SineIntegralNode}.
+ * Jet node for the sine integral si(t).
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
@@ -28,8 +28,8 @@ public class SineIntegralJetNode<D, C, F extends Function<? extends D, ? extends
           expression);
   }
 
-  protected SineIntegralJetNode(Expression<D, C, F> expression, Node<D, C, F> arg, int coefficientIndex,
-                                 JetState sharedState)
+  public SineIntegralJetNode(Expression<D, C, F> expression, Node<D, C, F> arg, int coefficientIndex,
+                              JetState sharedState)
   {
     super("si",
           expression,
