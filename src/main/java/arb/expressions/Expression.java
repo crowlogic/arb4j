@@ -166,6 +166,187 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
+  static final String arrayListDescriptor  = Type.getDescriptor(ArrayList.class);
+  static final String arrayListInternal    = Type.getInternalName(ArrayList.class);
+  static final String functionInternal     = Type.getInternalName(Function.class);
+  static final String fieldInternal        = Type.getInternalName(Field.class);
+
+  protected void declareDerivativeCacheField(ClassVisitor cw)
+  {
+    cw.visitField(Opcodes.ACC_PUBLIC, "derivativeCache", arrayListDescriptor, null, null);
+  }
+
+  protected void generateDerivativeCacheFieldInitializer(MethodVisitor mv)
+  {
+    loadThisOntoStack(mv);
+    mv.visitTypeInsn(Opcodes.NEW, arrayListInternal);
+    mv.visitInsn(Opcodes.DUP);
+    mv.visitMethodInsn(Opcodes.INVOKESPECIAL, arrayListInternal, "<init>", "()V", false);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, className, "derivativeCache", arrayListDescriptor);
+  }
+
+  /**
+   * Emit the Taylor series evaluation path for order > 1 in the generated
+   * evaluate() method. When the order parameter exceeds 1, this code:
+   * <ol>
+   * <li>Grows the derivativeCache by calling derivative() on the last entry</li>
+   * <li>Loops k = 0..order-1, evaluating each cached derivative at (t, 1, bits)
+   *     into result.get(k)</li>
+   * <li>Divides by k! for k >= 2 to produce Taylor coefficients</li>
+   * </ol>
+   * <p>Local variable layout for the Taylor path:</p>
+   * <pre>
+   *   slot 5: k (loop counter)
+   *   slot 6: factorial (long, occupies slots 6-7)
+   *   slot 8: element (Object, result.get(k))
+   * </pre>
+   */
+  protected void generateTaylorSeriesPath(MethodVisitor mv, Label taylorLabel)
+  {
+    mv.visitLabel(taylorLabel);
+
+    // --- Lazy-init derivativeCache if null (when initialize() was not called) ---
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(Opcodes.GETFIELD, className, "derivativeCache", arrayListDescriptor);
+    Label cacheNotNull = new Label();
+    mv.visitJumpInsn(Opcodes.IFNONNULL, cacheNotNull);
+    loadThisOntoStack(mv);
+    mv.visitTypeInsn(Opcodes.NEW, arrayListInternal);
+    mv.visitInsn(Opcodes.DUP);
+    mv.visitMethodInsn(Opcodes.INVOKESPECIAL, arrayListInternal, "<init>", "()V", false);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, className, "derivativeCache", arrayListDescriptor);
+    mv.visitLabel(cacheNotNull);
+
+    // --- Ensure derivativeCache[0] = this ---
+    // if (derivativeCache.isEmpty()) derivativeCache.add(this)
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(Opcodes.GETFIELD, className, "derivativeCache", arrayListDescriptor);
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, arrayListInternal, "size", "()I", false);
+    Label cacheNotEmpty = new Label();
+    mv.visitJumpInsn(Opcodes.IFNE, cacheNotEmpty);
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(Opcodes.GETFIELD, className, "derivativeCache", arrayListDescriptor);
+    loadThisOntoStack(mv);
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, arrayListInternal, "add", "(Ljava/lang/Object;)Z", false);
+    mv.visitInsn(Opcodes.POP); // discard boolean return
+    mv.visitLabel(cacheNotEmpty);
+
+    // --- long factorial = 1; ---
+    // slot 5 = k (int), slot 6-7 = factorial (long), slot 8 = element (Object)
+    int kSlot         = 5;
+    int factorialSlot = 6;
+    int elementSlot   = 8;
+
+    mv.visitInsn(Opcodes.LCONST_1);
+    mv.visitVarInsn(Opcodes.LSTORE, factorialSlot);
+
+    // --- int k = 0; ---
+    mv.visitInsn(Opcodes.ICONST_0);
+    mv.visitVarInsn(Opcodes.ISTORE, kSlot);
+
+    Label loopTop      = new Label();
+    Label loopEnd      = new Label();
+
+    // --- loopTop: if (k >= order) goto loopEnd ---
+    mv.visitLabel(loopTop);
+    mv.visitVarInsn(Opcodes.ILOAD, kSlot);
+    mv.visitVarInsn(Opcodes.ILOAD, 2); // order
+    mv.visitJumpInsn(Opcodes.IF_ICMPGE, loopEnd);
+
+    // --- if (k > 0) factorial *= k ---
+    mv.visitVarInsn(Opcodes.ILOAD, kSlot);
+    Label skipFactorial = new Label();
+    mv.visitJumpInsn(Opcodes.IFLE, skipFactorial);
+    mv.visitVarInsn(Opcodes.LLOAD, factorialSlot);
+    mv.visitVarInsn(Opcodes.ILOAD, kSlot);
+    mv.visitInsn(Opcodes.I2L);
+    mv.visitInsn(Opcodes.LMUL);
+    mv.visitVarInsn(Opcodes.LSTORE, factorialSlot);
+    mv.visitLabel(skipFactorial);
+
+    // --- Grow derivativeCache while cache.size() <= k ---
+    Label growCheck = new Label();
+    Label growDone  = new Label();
+    mv.visitLabel(growCheck);
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(Opcodes.GETFIELD, className, "derivativeCache", arrayListDescriptor);
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, arrayListInternal, "size", "()I", false);
+    mv.visitVarInsn(Opcodes.ILOAD, kSlot);
+    mv.visitJumpInsn(Opcodes.IF_ICMPGT, growDone); // size > k means cache has entry k
+    // prev = cache.get(cache.size() - 1)
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(Opcodes.GETFIELD, className, "derivativeCache", arrayListDescriptor);
+    mv.visitInsn(Opcodes.DUP); // stack: cache, cache
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, arrayListInternal, "size", "()I", false);
+    mv.visitInsn(Opcodes.ICONST_1);
+    mv.visitInsn(Opcodes.ISUB); // stack: cache, size-1
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, arrayListInternal, "get", "(I)Ljava/lang/Object;", false);
+    mv.visitTypeInsn(Opcodes.CHECKCAST, functionInternal);
+    // call prev.derivative()
+    mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, functionInternal, "derivative",
+                       "()L" + functionInternal + ";", true);
+    // stack: newDerivative; push cache again for add
+    // need cache ref on stack before the value
+    // Reload cache, swap
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(Opcodes.GETFIELD, className, "derivativeCache", arrayListDescriptor);
+    mv.visitInsn(Opcodes.SWAP); // stack: cache, newDerivative
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, arrayListInternal, "add", "(Ljava/lang/Object;)Z", false);
+    mv.visitInsn(Opcodes.POP); // discard boolean
+    mv.visitJumpInsn(Opcodes.GOTO, growCheck);
+    mv.visitLabel(growDone);
+
+    // --- fk = derivativeCache.get(k) ---
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(Opcodes.GETFIELD, className, "derivativeCache", arrayListDescriptor);
+    mv.visitVarInsn(Opcodes.ILOAD, kSlot);
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, arrayListInternal, "get", "(I)Ljava/lang/Object;", false);
+    mv.visitTypeInsn(Opcodes.CHECKCAST, functionInternal);
+    // stack: fk (Function)
+
+    // --- element = result.get(k) ---
+    mv.visitVarInsn(Opcodes.ALOAD, 4); // result
+    mv.visitTypeInsn(Opcodes.CHECKCAST, fieldInternal);
+    mv.visitVarInsn(Opcodes.ILOAD, kSlot);
+    mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, fieldInternal, "get", "(I)Ljava/lang/Object;", true);
+    mv.visitVarInsn(Opcodes.ASTORE, elementSlot);
+
+    // --- fk.evaluate(t, 1, bits, element) ---
+    // stack already has fk; push args
+    mv.visitVarInsn(Opcodes.ALOAD, 1); // t
+    mv.visitInsn(Opcodes.ICONST_1);    // order = 1
+    mv.visitVarInsn(Opcodes.ILOAD, 3); // bits
+    mv.visitVarInsn(Opcodes.ALOAD, elementSlot); // element
+    mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, functionInternal, "evaluate",
+                       Compiler.evaluationMethodDescriptor, true);
+    mv.visitInsn(Opcodes.POP); // discard return value
+
+    // --- if (k >= 2) element.div((int)factorial, bits, element) ---
+    mv.visitVarInsn(Opcodes.ILOAD, kSlot);
+    mv.visitInsn(Opcodes.ICONST_2);
+    Label skipDiv = new Label();
+    mv.visitJumpInsn(Opcodes.IF_ICMPLT, skipDiv);
+    mv.visitVarInsn(Opcodes.ALOAD, elementSlot);
+    mv.visitTypeInsn(Opcodes.CHECKCAST, fieldInternal);
+    mv.visitVarInsn(Opcodes.LLOAD, factorialSlot);
+    mv.visitInsn(Opcodes.L2I); // truncate to int for div(int,int,X)
+    mv.visitVarInsn(Opcodes.ILOAD, 3); // bits
+    mv.visitVarInsn(Opcodes.ALOAD, elementSlot); // result = element itself
+    mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, fieldInternal, "div",
+                       "(IILjava/lang/Object;)Ljava/lang/Object;", true);
+    mv.visitInsn(Opcodes.POP); // discard return
+    mv.visitLabel(skipDiv);
+
+    // --- k++ ---
+    mv.visitIincInsn(kSlot, 1);
+    mv.visitJumpInsn(Opcodes.GOTO, loopTop);
+
+    // --- return result ---
+    mv.visitLabel(loopEnd);
+    mv.visitVarInsn(Opcodes.ALOAD, 4); // result
+    mv.visitInsn(Opcodes.ARETURN);
+  }
+
   /**
    * The next available local variable slot in the generated evaluate() method.
    * Slots 0-4 are: this, input, order, bits, result. Code that needs local
@@ -845,6 +1026,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     declareFunctionReferences(cw);
     declareVariables(cw);
     declareJetStampFields(cw);
+    declareDerivativeCacheField(cw);
   }
 
   /**
@@ -1765,10 +1947,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     nextLocalVariableSlot = 5;
 
-    Label startLabel = new Label();
-    Label endLabel   = new Label();
+    Label startLabel  = new Label();
+    Label endLabel    = new Label();
+    Label taylorLabel = new Label();
 
-    var   mv         = visitEvaluationMethod(classVisitor);
+    var   mv          = visitEvaluationMethod(classVisitor);
     mv.visitCode();
 
     designateLabel(mv, startLabel);
@@ -1779,7 +1962,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       generateConditionalInitializater(mv);
     }
 
-    if (!collectJetStates().isEmpty())
+    boolean hasJets = !collectJetStates().isEmpty();
+
+    // --- order > 1 dispatch to Taylor series path (non-jet expressions only) ---
+    if (!hasJets)
+    {
+      mv.visitVarInsn(Opcodes.ILOAD, 2); // order
+      mv.visitInsn(Opcodes.ICONST_1);
+      mv.visitJumpInsn(Opcodes.IF_ICMPGT, taylorLabel);
+    }
+
+    if (hasJets)
     {
       generateEvalStampIncrement(mv);
     }
@@ -1809,7 +2002,21 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     designateLabel(mv, endLabel);
     declareEvaluateMethodArguments(mv, startLabel, endLabel);
-    Compiler.generateReturnFromMethod(mv);
+
+    if (hasJets)
+    {
+      Compiler.generateReturnFromMethod(mv);
+    }
+    else
+    {
+      mv.visitInsn(Opcodes.ARETURN);
+
+      // --- Taylor series evaluation for order > 1 ---
+      generateTaylorSeriesPath(mv, taylorLabel);
+
+      mv.visitMaxs(0, 0);
+      mv.visitEnd();
+    }
     return classVisitor;
   }
 
@@ -2032,6 +2239,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     generateCodeToThrowErrorIfAlreadyInitialized(mv);
     generateCacheFieldInitializer(mv);
+    generateDerivativeCacheFieldInitializer(mv);
     if (trace)
     {
       log.debug("generateInitializationCode for className={} functionName={}: referencedFunctions={}",
