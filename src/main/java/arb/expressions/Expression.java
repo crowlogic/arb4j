@@ -617,17 +617,25 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   /**
    * Attempts to consume an explicit input variable declaration of the form
-   * {@code name➔} from the current cursor position. If the next tokens are a
-   * valid identifier followed by the arrow character {@code ➔}, the name is
-   * consumed and returned. Otherwise the cursor is restored to its original
-   * position and {@code null} is returned.
-   * 
+   * {@code name➔} or {@code name∈(a,b)➔} from the current cursor position.
+   * If the next tokens are a valid identifier, optionally followed by {@code ∈}
+   * and an interval specification, followed by the arrow character {@code ➔},
+   * the name is consumed and returned. Otherwise the cursor is restored to its
+   * original position and {@code null} is returned.
+   *
+   * <p>If the {@code ∈} operator is present, the interval bounds are parsed
+   * and stored in {@link #pendingInputVariableBounds} for the caller to apply
+   * via {@link VariableReference#setBounds}.
+   *
    * @return the declared variable name, or {@code null} if no arrow declaration
    *         is present
+   *
+   * @see <a href="https://github.com/crowlogic/arb4j/issues/878">#878</a>
    */
   public String parseExplicitInputVariableIfPresent()
   {
     CursorState saved = saveCursor();
+    pendingInputVariableBounds = null;
     try
     {
       String name = parseName();
@@ -637,19 +645,106 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         return null;
       }
       skipSpaces();
-      if (character == '\u2794')
+      if (character == '\u2208') // ∈
+      {
+        nextCharacter();
+        pendingInputVariableBounds = parseIntervalBounds();
+        skipSpaces();
+      }
+      if (character == '\u2794') // ➔
       {
         nextCharacter();
         return name;
       }
+      pendingInputVariableBounds = null;
       restoreCursor(saved);
       return null;
     }
     catch (RuntimeException e)
     {
+      pendingInputVariableBounds = null;
       restoreCursor(saved);
       return null;
     }
+  }
+
+  /**
+   * Parsed interval bounds from the most recent
+   * {@link #parseExplicitInputVariableIfPresent} call, or {@code null} if no
+   * {@code ∈} operator was present.
+   *
+   * @see <a href="https://github.com/crowlogic/arb4j/issues/878">#878</a>
+   */
+  VariableReference.Bounds pendingInputVariableBounds;
+
+  /**
+   * Parses an interval specification of the form {@code (a,b)}, {@code [a,b]},
+   * {@code [a,b)}, or {@code (a,b]}. The bracket type determines inclusivity:
+   * {@code [} = inclusive, {@code (} = exclusive.
+   *
+   * @return the parsed bounds
+   * @throws CompilerException if the interval syntax is malformed
+   *
+   * @see <a href="https://github.com/crowlogic/arb4j/issues/878">#878</a>
+   */
+  VariableReference.Bounds parseIntervalBounds()
+  {
+    boolean lowerInclusive;
+    if (character == '[')
+    {
+      lowerInclusive = true;
+      nextCharacter();
+    }
+    else if (character == '(' || character == '{')
+    {
+      lowerInclusive = false;
+      nextCharacter();
+    }
+    else
+    {
+      throw new CompilerException("expected '(' or '[' after ∈ at position " + position);
+    }
+
+    Node<D, C, F> lowerNode = resolve();
+    require(',', '…');
+    Node<D, C, F> upperNode = resolve();
+
+    boolean upperInclusive;
+    if (character == ']')
+    {
+      upperInclusive = true;
+      nextCharacter();
+    }
+    else if (character == ')' || character == '}')
+    {
+      upperInclusive = false;
+      nextCharacter();
+    }
+    else
+    {
+      throw new CompilerException("expected ')' or ']' to close interval at position " + position);
+    }
+
+    double lower = evaluateBoundToDouble(lowerNode);
+    double upper = evaluateBoundToDouble(upperNode);
+
+    return new VariableReference.Bounds(lower,
+                                        lowerInclusive,
+                                        upper,
+                                        upperInclusive);
+  }
+
+  /**
+   * Evaluates a bound node to a double value. The node must be a literal
+   * constant or a negated literal constant.
+   */
+  private double evaluateBoundToDouble(Node<D, C, F> node)
+  {
+    if (node.isLiteralConstant())
+    {
+      return Double.parseDouble(node.asLiteralConstant().stringValue);
+    }
+    throw new CompilerException("interval bound must be a literal constant, got: " + node);
   }
 
   public boolean                                          recursive           = false;
@@ -1512,6 +1607,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       assureInputNameHasNotAlreadyBeenAssociatedWithAContextVariable(inputVariableName);
       VariableNode<D, C, F> newRef = newVariableNode(inputVariableName);
+      if (pendingInputVariableBounds != null)
+      {
+        newRef.reference.bounds = pendingInputVariableBounds;
+        pendingInputVariableBounds = null;
+      }
       assignInputVariable(newRef);
     }
 
