@@ -542,6 +542,17 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return (VariableNode<D, R, F>) this;
   }
 
+  public boolean isIntegral()
+  {
+    return false;
+  }
+
+  public IntegralNode<D, R, F> asIntegralNode()
+  {
+    assert isIntegral() : this + " isn't an IntegralNode";
+    return (IntegralNode<D, R, F>) this;
+  }
+
   @Override
   public boolean equals(Object obj)
   {

@@ -532,14 +532,15 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
    *
    * @see <a href="https://github.com/crowlogic/arb4j/issues/549">#549</a>
    */
-  @SuppressWarnings("unchecked")
   public IntegralNode<D, C, F> findExchangeableInnerIntegral()
   {
-    if (integrandNode instanceof IntegralNode<D, C, F> inner
-        && isStructurallyExchangeableWith(inner)
-        && isAnalyticallyValidToExchangeWith(inner))
+    if (integrandNode.isIntegral())
     {
-      return inner;
+      IntegralNode<D, C, F> inner = integrandNode.asIntegralNode();
+      if (isStructurallyExchangeableWith(inner) && isAnalyticallyValidToExchangeWith(inner))
+      {
+        return inner;
+      }
     }
     return null;
   }
@@ -577,6 +578,12 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   public boolean isAtomic()
   {
     return false;
+  }
+
+  @Override
+  public boolean isIntegral()
+  {
+    return true;
   }
 
   protected void parseIntegrandViaSubExpression(String arrowVar)
