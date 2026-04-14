@@ -16,7 +16,6 @@ import arb.*;
 import arb.Integer;
 import arb.exceptions.CompilerException;
 import arb.expressions.*;
-import arb.expressions.Expression.CursorState;
 import arb.expressions.Context;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
@@ -498,24 +497,10 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     assert operandFunctionFieldName != null : "assignFieldNamesIfNecessary must be called before parseOperand";
 
-    CursorState savedCursor = expression.saveCursor();
-    String      paramName   = expression.parseName();
-    boolean     hasArrow    = false;
-    expression.skipSpaces();
-
-    if (expression.character == '\u2794')
+    String arrowVar = expression.parseExplicitInputVariableIfPresent();
+    if (arrowVar != null)
     {
-      expression.require('\u2794');
-      hasArrow = true;
-    }
-
-    if (!hasArrow)
-    {
-      expression.restoreCursor(savedCursor);
-    }
-    else
-    {
-      indexVariableFieldName = paramName;
+      indexVariableFieldName = arrowVar;
     }
 
     Class<R> operandCoDomain = (Class<R>) (expression.isFunctional() && !Polynomial.class.isAssignableFrom(expression.coDomainType)
@@ -525,12 +510,12 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                          operandCoDomain,
                                          Sequence.class);
     operandExpression.continueParsingFrom(expression);
-    operandExpression.upstreamExpression  = expression;
+    operandExpression.superExpression  = expression;
     operandExpression.context             = expression.context;
     operandExpression.setIndependentVariable(null);
     operandExpression.className           = operandFunctionFieldName;
 
-    if (hasArrow)
+    if (arrowVar != null)
     {
       VariableNode<Integer, R, Sequence<R>> indexVar = new VariableNode<>(operandExpression,
                                                                           operandExpression.newVariableReference(indexVariableFieldName),

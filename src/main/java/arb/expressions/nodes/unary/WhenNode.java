@@ -150,7 +150,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
 //      {
 //        return true;
 //      }
-//      expr = expr.upstreamExpression;
+//      expr = expr.superExpression;
 //    }
 //    return false;
   }

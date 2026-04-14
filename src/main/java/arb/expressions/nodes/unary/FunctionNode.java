@@ -572,13 +572,14 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   protected static final Logger logger = LoggerFactory.getLogger(FunctionNode.class);
 
+  @SuppressWarnings("unchecked")
   private Node<D, R, F> integrateContextualFunction(VariableNode<D, R, F> variable)
   {
     if (Expression.traceNodes)
     {
       logger.debug("integrateContextualFunction(): functionName={}", functionName);
     }
-    var functionMapping = expression.context.getFunctionMapping(functionName);
+    FunctionMapping functionMapping = expression.context.getFunctionMapping(functionName);
 
     if (functionMapping == null)
     {
@@ -591,14 +592,14 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       {
         throw new CompilerException(String.format("Instance for function %s was not present in %s", functionName, functionMapping));
       }
-      else if (mapping.expression != null)
+      else if (functionMapping.expression != null)
       {
-        return mapping.expression.rootNode.spliceInto(expression).integral(variable);
+        return functionMapping.expression.rootNode.spliceInto(expression).integral(variable);
       }
       else
       {
-        var integrand = Function.parse(mapping.domain, mapping.coDomain, mapping.functionClass, mapping.expressionString);
-        integrand.upstreamExpression = expression;
+        var integrand = Function.parse(functionMapping.domain, functionMapping.coDomain, functionMapping.functionClass, functionMapping.expressionString);
+        integrand.superExpression = expression;
         return integrand.rootNode.integral(integrand.getIndependentVariable()).simplify();
 
 //        throw new CompilerException(String.format("TODO: integrate parsed but yet-to-be-compiled expression string in expression '%s' where functionMapping='%s'",

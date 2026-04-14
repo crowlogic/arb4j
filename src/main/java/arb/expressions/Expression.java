@@ -142,7 +142,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean shouldCache()
   {
-    return domainType.equals(Integer.class) && !isGeneratedFunctional() && upstreamExpression == null;
+    return domainType.equals(Integer.class) && !isGeneratedFunctional() && superExpression == null;
   }
 
   protected void declareCacheField(ClassVisitor cw)
@@ -369,7 +369,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Expression<?, ?, ?> registerDownstreamExpression(Expression<?, ?, ?> child)
   {
-    child.upstreamExpression = this;
+    child.superExpression = this;
     downstreamExpressions.add(child);
     return child;
   }
@@ -408,7 +408,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     while (cursor != null)
     {
       chain.addFirst(cursor);
-      cursor = cursor.upstreamExpression;
+      cursor = cursor.superExpression;
     }
 
     for (int i = 0; i < chain.size() - 1; i++)
@@ -537,7 +537,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public File                                           compiledClassDir              = new File("compiled");
 
-  public Expression<?, ?, ?>                            upstreamExpression;
+  public Expression<?, ?, ?>                            superExpression;
+
+  public final List<Expression<?, ?, ?>>                 subExpressions                = new ArrayList<>();
+
+  public Expression<?, ?, ?> getSuperExpression()
+  {
+    return superExpression;
+  }
 
   public char                                           character                     = 0;
 
@@ -617,6 +624,43 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     previousCharacter = state.previousCharacter();
   }
 
+  /**
+   * Attempts to consume an explicit input variable declaration of the form
+   * {@code name➔} from the current cursor position. If the next tokens are a
+   * valid identifier followed by the arrow character {@code ➔}, the name is
+   * consumed and returned. Otherwise the cursor is restored to its original
+   * position and {@code null} is returned.
+   * 
+   * @return the declared variable name, or {@code null} if no arrow declaration
+   *         is present
+   */
+  public String parseExplicitInputVariableIfPresent()
+  {
+    CursorState saved = saveCursor();
+    try
+    {
+      String name = parseName();
+      if (name == null || name.isEmpty())
+      {
+        restoreCursor(saved);
+        return null;
+      }
+      skipSpaces();
+      if (character == '\u2794')
+      {
+        nextCharacter();
+        return name;
+      }
+      restoreCursor(saved);
+      return null;
+    }
+    catch (RuntimeException e)
+    {
+      restoreCursor(saved);
+      return null;
+    }
+  }
+
   public boolean                                          recursive           = false;
 
   private final HashMap<String, FunctionMapping<?, ?, ?>> referencedFunctions = new HashMap<>();
@@ -636,14 +680,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       {
         return true;
       }
-      e = e.upstreamExpression;
+      e = e.superExpression;
     }
     return false;
   }
 
   public Expression(Class<? extends D> domain, Class<? extends C> coDomain, Class<? extends F> function)
   {
-    this.upstreamExpression               = null;
+    this.superExpression               = null;
     this.domainType                       = domain;
     this.coDomainType                     = coDomain;
     this.functionClass                    = function;
@@ -687,7 +731,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                     Expression<?, ?, ?> ascenentExpression)
   {
     assert className != null : "className needs to be specified";
-    this.upstreamExpression               = ascenentExpression;
+    this.superExpression               = ascenentExpression;
     this.className                        = className;
     this.domainType                       = domain;
     this.coDomainType                     = codomain;
@@ -705,7 +749,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     if (Expression.trace)
     {
-      log.debug("#{}: new Expression(className={}, domain={}, coDomain={}, function={}, expression={}, context={}, functionName={}, upstreamExpression={}#{})",
+      log.debug("#{}: new Expression(className={}, domain={}, coDomain={}, function={}, expression={}, context={}, functionName={}, superExpression={}#{})",
                 System.identityHashCode(this),
                 className,
                 domain,
@@ -793,9 +837,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       return getIndependentVariable();
     }
-    if (upstreamExpression != null)
+    if (superExpression != null)
     {
-      var immediatelyUpstreamIndependentVariable = upstreamExpression.getIndependentVariable();
+      var immediatelyUpstreamIndependentVariable = superExpression.getIndependentVariable();
       if (immediatelyUpstreamIndependentVariable != null)
       {
         return immediatelyUpstreamIndependentVariable;
@@ -804,20 +848,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return null;
   }
 
-  public boolean thisOrAnyUpstreamIndependentVariableIsNamed(String name)
+  public boolean thisOrAnySuperIndependentVariableIsNamed(String name)
   {
     if (getIndependentVariable() != null && getIndependentVariable().getName().equals(name))
     {
       return true;
     }
-    return anyUpstreamIndependentVariableIsNamed(name);
+    return anySuperIndependentVariableIsNamed(name);
   }
 
-  public boolean anyUpstreamIndependentVariableIsNamed(String name)
+  public boolean anySuperIndependentVariableIsNamed(String name)
   {
-    if (upstreamExpression != null)
+    if (superExpression != null)
     {
-      if (upstreamExpression.thisOrAnyUpstreamIndependentVariableIsNamed(name))
+      if (superExpression.thisOrAnySuperIndependentVariableIsNamed(name))
       {
         return true;
       }
@@ -905,7 +949,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                        getExpression(),
                                        context,
                                        functionName,
-                                       upstreamExpression);
+                                       superExpression);
     expr.context = context;
     expr.setIndependentVariable(independentVariable);
 
@@ -943,10 +987,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     assert context != null : "context is null for "
                              + this
-                             + " and upstreamExpression="
-                             + upstreamExpression
-                             + " upstreamExpression.context="
-                             + upstreamExpression.context;
+                             + " and superExpression="
+                             + superExpression
+                             + " superExpression.context="
+                             + superExpression.context;
     compiledClass = loadFunctionClass(className, instructions, context);
     return this;
   }
@@ -1194,9 +1238,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected void declareVariables(ClassVisitor classVisitor)
   {
     // Declare the parent's independent variable as a field so we can receive it
-    if (upstreamExpression != null)
+    if (superExpression != null)
     {
-      var upstreamIndependentVariableNode = upstreamExpression.getIndependentVariable();
+      var upstreamIndependentVariableNode = superExpression.getIndependentVariable();
       if (upstreamIndependentVariableNode != null && !upstreamIndependentVariableNode.type().equals(Object.class))
       {
         String upstreamIndVarName = upstreamIndependentVariableNode.reference.name;
@@ -1259,9 +1303,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return false;
     }
 
-    if (upstreamExpression != null)
+    if (superExpression != null)
     {
-      VariableNode<?, ?, ?> upstreamIndependentVariable = upstreamExpression.getIndependentVariable();
+      VariableNode<?, ?, ?> upstreamIndependentVariable = superExpression.getIndependentVariable();
       if (upstreamIndependentVariable != null && varName.equals(upstreamIndependentVariable.getName()))
       {
         return false;
@@ -1358,23 +1402,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     else if (isIdentifierCharacter())
     {
-      // PEEK AHEAD: check if identifier is followed by arrow (nested lambda)
-      int    savedPos                      = position;
-      char   savedChar                     = character;
-
-      String possibleVariableSpecification = parseName();
-      skipSpaces();
-
-      if ((character == '➔') && coDomainType.isInterface())
+      String arrowVar = parseExplicitInputVariableIfPresent();
+      if (arrowVar != null && coDomainType.isInterface())
       {
-        node = parseLambda(possibleVariableSpecification);
+        node = parseLambda(arrowVar);
+      }
+      else if (arrowVar == null)
+      {
+        node = resolveIdentifier();
       }
       else
       {
-        // Not a lambda, reset and parse normally
-        position  = savedPos;
-        character = savedChar;
-        node      = resolveIdentifier();
+        throw new CompilerException("arrow variable declaration '" + arrowVar
+                                    + "➔' found but coDomain " + coDomainType.getSimpleName()
+                                    + " is not a functional interface");
       }
     }
     else if (nextCharacterIs('ꟲ'))
@@ -1424,11 +1465,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     boolean prevDef = deferVariableResolution;
     deferVariableResolution = true;
     var variableNode = newVariableNode(variableName);
-    require('➔');
 
     Expression<D, C, F> subExpr = cloneExpression();
     subExpr.clearIndependentVariable();
-    subExpr.upstreamExpression = this;
+    subExpr.superExpression = this;
     placeholderVariable        = subExpr.setIndependentVariable(variableNode.spliceInto(subExpr));
     subExpr.rootNode           = subExpr.resolve();
 
@@ -1459,10 +1499,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return file;
   }
 
-  public static record Cursor(int position, char character, char prevCharacter)
-  {
-  };
-
   protected Expression<D, C, F> evaluateOptionalIndependentVariableSpecification()
   {
     if (trace)
@@ -1473,36 +1509,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     nextCharacter(); // prime cursor to position 0
 
-    Cursor savedPosition     = getCursor();
-    String inputVariableName = parseName();
-    skipSpaces();
-    if (nextCharacterIs('➔'))
+    String inputVariableName = parseExplicitInputVariableIfPresent();
+    if (inputVariableName != null)
     {
       assureInputNameHasNotAlreadyBeenAssociatedWithAContextVariable(inputVariableName);
       VariableNode<D, C, F> newRef = newVariableNode(inputVariableName);
       assignInputVariable(newRef);
     }
-    else
-    {
-      setCursor(savedPosition);
-    }
 
     return this;
-  }
-
-  public Cursor getCursor()
-  {
-    return new Cursor(position,
-                      character,
-                      previousCharacter);
-  }
-
-  public Cursor setCursor(Cursor cursor)
-  {
-    this.character         = cursor.character;
-    this.previousCharacter = cursor.prevCharacter;
-    this.position          = cursor.position;
-    return cursor;
   }
 
   protected Node<D, C, F> resolveSquareBracketedIndex()
@@ -1813,7 +1828,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     // Only root expressions create their own Context.
     // Child arg classes receive the parent's context via initialize() (#842)
-    if (context != null && upstreamExpression == null)
+    if (context != null && superExpression == null)
     {
       generateContextInitializer(mv);
     }
@@ -1932,10 +1947,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public void logVariables()
   {
-    accept(containingExpression -> log.debug("#{}: logVariables: independentVariable={} upstreamExpression={}",
+    accept(containingExpression -> log.debug("#{}: logVariables: independentVariable={} superExpression={}",
                                              System.identityHashCode(containingExpression),
                                              containingExpression.getIndependentVariable(),
-                                             containingExpression.upstreamExpression));
+                                             containingExpression.superExpression));
 
   }
 
@@ -2312,7 +2327,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       String nestedClassName = funcMapping.functionName;
 
       // Share parent's context with child arg class (#842)
-      if (nestedExpr.upstreamExpression != null)
+      if (nestedExpr.superExpression != null)
       {
         String contextTypeDesc = Context.class.descriptorString();
         // Generate: this.<funcFieldName>.context = this.context
@@ -2336,8 +2351,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         }
 
         // Skip if already declared as upstream independent variable
-        if (upstreamExpression != null && upstreamExpression.getIndependentVariable() != null
-                      && varName.equals(upstreamExpression.getIndependentVariable().getName()))
+        if (superExpression != null && superExpression.getIndependentVariable() != null
+                      && varName.equals(superExpression.getIndependentVariable().getName()))
         {
           continue;
         }
@@ -2504,7 +2519,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // propagated by value to this class as a field, but the predicate in
     // upstreamInputVariableEntryStream() explicitly excludes it.
     // Include it here since the field holds a concrete value at runtime.
-    Expression<?, ?, ?> ancestor = upstreamExpression;
+    Expression<?, ?, ?> ancestor = superExpression;
     while (ancestor != null)
     {
       if (ancestor.getIndependentVariable() != null)
@@ -2516,7 +2531,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
           runtimeVars.add(Map.entry(name, ref));
         }
       }
-      ancestor = ancestor.upstreamExpression;
+      ancestor = ancestor.superExpression;
     }
 
     String namePrefix = (functionName != null && !functionName.isEmpty()) ? functionName + ":" : "";
@@ -3171,7 +3186,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     var functionalExpression = new Expression<Object, Object, Function<?, ?>>(funcDomain,
                                                                               funcCoDomain,
                                                                               funcClass);
-    functionalExpression.upstreamExpression = this;
+    functionalExpression.superExpression = this;
     if (context == null)
     {
       context = new Context();
@@ -3539,10 +3554,22 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   @SuppressWarnings("hiding")
   public <A, B, Q extends Function<? extends A, ? extends B>> FunctionMapping<A, B, Q> registerSubexpression(Expression<A, B, Q> expr)
   {
+    if (expr.superExpression == null)
+    {
+      expr.superExpression = this;
+      subExpressions.add(expr);
+    }
+    else if (expr.superExpression != this && !subExpressions.contains(expr))
+    {
+      subExpressions.add(expr);
+    }
+
     if (context == null)
     {
       context = new Context();
     }
+    expr.context = context;
+
     return context.registerFunctionMapping(expr.className, expr.instantiate(), expr.domainType, expr.coDomainType, Function.class, true, expr, null);
   }
 
@@ -3992,7 +4019,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       if (!visited.add(cursor))
       {
-        throw new CompilerException("Cycle detected in upstreamExpression chain starting at #"
+        throw new CompilerException("Cycle detected in superExpression chain starting at #"
                                     + System.identityHashCode(this)
                                     + "="
                                     + toString()
@@ -4005,7 +4032,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       {
         return true;
       }
-      cursor = cursor.upstreamExpression;
+      cursor = cursor.superExpression;
     }
     return false;
   }
@@ -4126,12 +4153,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   @Override
   public void accept(Consumer<Expression<?, ?, ?>> t)
   {
-    assert upstreamExpression != this;
+    assert superExpression != this;
     t.accept(this);
 
-    if (upstreamExpression != null)
+    if (superExpression != null)
     {
-      upstreamExpression.accept(t);
+      superExpression.accept(t);
     }
 
   }
@@ -4192,22 +4219,22 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public LinkedList<Expression<?, ?, ?>> getUpstreamExpressions()
   {
-    var                 upstreamExpressions = new LinkedList<Expression<?, ?, ?>>();
+    var                 superExpressions = new LinkedList<Expression<?, ?, ?>>();
     Expression<?, ?, ?> e                   = this;
     do
     {
-      upstreamExpressions.add(e);
+      superExpressions.add(e);
     }
-    while ((e = e.upstreamExpression) != null);
-    return upstreamExpressions;
+    while ((e = e.superExpression) != null);
+    return superExpressions;
   }
 
-  public Stream<Expression<?, ?, ?>> upstreamExpressionStream()
+  public Stream<Expression<?, ?, ?>> superExpressionStream()
   {
-    return StreamSupport.stream(upstreamExpressionSpliterator(), false);
+    return StreamSupport.stream(superExpressionSpliterator(), false);
   }
 
-  public Spliterator<Expression<?, ?, ?>> upstreamExpressionSpliterator()
+  public Spliterator<Expression<?, ?, ?>> superExpressionSpliterator()
   {
     return getUpstreamExpressions().spliterator();
   }
@@ -4226,7 +4253,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                          canHavePlaceholder(),
                          getIndependentVariable(),
                          placeholderVariable,
-                         upstreamExpressionStream().map(Expression::toString).collect(Collectors.joining(" 🡆 ")),
+                         superExpressionStream().map(Expression::toString).collect(Collectors.joining(" 🡆 ")),
                          rootNode == null ? null : rootNode.getClass().getSimpleName());
   }
 

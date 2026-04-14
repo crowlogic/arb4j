@@ -359,7 +359,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   protected void parseIntegrandViaSubExpression(String arrowVar)
   {
     integrandExpression                         = expression.cloneExpression();
-    integrandExpression.upstreamExpression      = expression;
+    integrandExpression.superExpression      = expression;
     integrandExpression.functionName            = null;
     integrandExpression.clearIndependentVariable();
     integrandExpression.rootNode                = null;
@@ -381,24 +381,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
   protected VariableNode<D, C, F> parseFunctionForm(Expression<D, C, F> expression)
   {
-    String arrowVar  = null;
-    int    savedPos  = expression.position;
-    char   savedChar = expression.character;
-
-    if (expression.isIdentifierCharacter())
-    {
-      String maybeName = expression.parseName();
-      expression.skipSpaces();
-      if (expression.nextCharacterIs('➔'))
-      {
-        arrowVar = maybeName;
-      }
-      else
-      {
-        expression.position  = savedPos;
-        expression.character = savedChar;
-      }
-    }
+    String arrowVar = expression.parseExplicitInputVariableIfPresent();
 
     parseIntegrandViaSubExpression(arrowVar);
 
@@ -421,24 +404,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
   protected VariableNode<D, C, F> parseIntegralForm(Expression<D, C, F> expression)
   {
-    String arrowVar  = null;
-    int    savedPos  = expression.position;
-    char   savedChar = expression.character;
-
-    if (expression.isIdentifierCharacter())
-    {
-      String maybeName = expression.parseName();
-      expression.skipSpaces();
-      if (expression.nextCharacterIs('➔'))
-      {
-        arrowVar = maybeName;
-      }
-      else
-      {
-        expression.position  = savedPos;
-        expression.character = savedChar;
-      }
-    }
+    String arrowVar = expression.parseExplicitInputVariableIfPresent();
 
     parseIntegrandViaSubExpression(arrowVar);
 
