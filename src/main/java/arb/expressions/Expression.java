@@ -331,9 +331,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitVarInsn(Opcodes.LLOAD, factorialSlot);
     mv.visitInsn(Opcodes.L2I); // truncate to int for div(int,int,X)
     mv.visitVarInsn(Opcodes.ILOAD, 3); // bits
-    mv.visitVarInsn(Opcodes.ALOAD, elementSlot); // result = element itself
+    mv.visitVarInsn(Opcodes.ALOAD, elementSlot);
+    mv.visitTypeInsn(Opcodes.CHECKCAST, fieldInternal); // cast Object to Field
     mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, fieldInternal, "div",
-                       "(IILjava/lang/Object;)Ljava/lang/Object;", true);
+                       "(IIL" + fieldInternal + ";)L" + fieldInternal + ";", true);
     mv.visitInsn(Opcodes.POP); // discard return
     mv.visitLabel(skipDiv);
 
