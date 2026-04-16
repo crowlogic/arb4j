@@ -722,4 +722,40 @@ public class Parser
   {
     return parse(className, expression, context, domainClass, coDomainClass, functionClass, className);
   }
+
+  /**
+   * Replace characters that are illegal in JVM field names with safe
+   * alternatives. The structural key retains the original characters for
+   * semantic comparison; only the field names used in bytecode are sanitized.
+   */
+  public static String sanitizeFieldName(String raw)
+  {
+    StringBuilder sb = new StringBuilder(raw.length());
+    for (int i = 0; i < raw.length(); i++)
+    {
+      char c = raw.charAt(i);
+      switch (c)
+      {
+      case '(' -> sb.append("LP");
+      case ')' -> sb.append("RP");
+      case '[' -> sb.append("LB");
+      case ']' -> sb.append("RB");
+      case '/' -> sb.append("Sl");
+      case '\\' -> sb.append("Bs");
+      case '.' -> sb.append("Dt");
+      case ';' -> sb.append("Sc");
+      case '+' -> sb.append("Pl");
+      case '-' -> sb.append("Mi");
+      case '*' -> sb.append("Mu");
+      case ' ' -> sb.append("Sp");
+      case '=' -> sb.append("Eq");
+      case '<' -> sb.append("Lt");
+      case '>' -> sb.append("Gt");
+      case '{' -> sb.append("LC");
+      case '}' -> sb.append("RC");
+      default -> sb.append(c);
+      }
+    }
+    return sb.toString();
+  }
 }

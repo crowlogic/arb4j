@@ -122,22 +122,20 @@ public abstract class JetNode<D, C, F extends Function<? extends D, ? extends C>
     mv.visitFieldInsn(Opcodes.GETFIELD, className, sharedState.stampFieldName, "I");
 
     // Load this.evalStamp
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD, className, "evalStamp", "I");
+    Compiler.getFieldFromThis(mv, className, "evalStamp", "I");
 
     // If equal, skip computation
-    mv.visitJumpInsn(Opcodes.IF_ICMPEQ, skipCompute);
-
+    Compiler.jumpToIfEqual(mv, skipCompute);
+    
     // --- Compute jet ---
     emitJetComputation(mv, scalarType, isComplex, polyClass, className);
 
     // Update stamp: this.jetStamp_X = this.evalStamp
     loadThisOntoStack(mv);
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD, className, "evalStamp", "I");
-    mv.visitFieldInsn(Opcodes.PUTFIELD, className, sharedState.stampFieldName, "I");
-
-    mv.visitLabel(skipCompute);
+    Compiler.getFieldFromThis(mv, className, "evalStamp", "I" );
+    Compiler.putField(mv, className, sharedState.stampFieldName, "I" );
+   
+    Compiler.designateLabel(mv, skipCompute);
 
     if (isRootNode && coefficientIndex == 0)
     {

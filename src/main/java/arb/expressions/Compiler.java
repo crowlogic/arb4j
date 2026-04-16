@@ -502,6 +502,13 @@ public class Compiler
     return methodVisitor;
   }
 
+  
+  public static MethodVisitor jumpToIfEqual(MethodVisitor mv, Label skipCompute)
+  {
+    mv.visitJumpInsn(Opcodes.IF_ICMPEQ, skipCompute);
+    return mv;
+  }
+  
   public static MethodVisitor jumpToIfNotEqual(MethodVisitor mv, Label alreadyInitialized)
   {
     mv.visitJumpInsn(Opcodes.IFNE, alreadyInitialized);
@@ -754,5 +761,7 @@ public class Compiler
     return mv;
 
   }
+
+
 
 }
