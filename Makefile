@@ -14,11 +14,9 @@ build/libs/arb4j-$(VERSION).jar: install
 
 native/arb_wrap.c: $(shell find native -name "*.i") 
 	swig $(SWIGFLAGS) native/arb.i
-	sed -i 's/if (arg1) (arg1)->stride = arg2;/\/\/ stride removed in FLINT 3.1-3.2/' native/arb_wrap.c
-	sed -i 's/result = (long) ((arg1)->stride);/result = 0; \/\/ stride removed in FLINT 3.1-3.2/' native/arb_wrap.c
 
 libarblib.so: $(SOURCES)
-	clang-22 $(CFLAGS) $(SOURCES) $(C_INCLUDES) -olibarblib.so -lflint -lxdo 
+	clang $(CFLAGS) $(SOURCES) $(C_INCLUDES) -olibarblib.so -lflint -lxdo 
 
 clean:
 	rm -rf libarblib.so *.o native/arb_wrap.c build/*
