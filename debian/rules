@@ -17,7 +17,6 @@ DOC_DIR := $(DOCDEST)/usr/share/doc/$(PKG)/api
 	dh $@ --with javahelper
 
 override_dh_auto_clean:
-	$(MAKE) clean
 
 override_dh_auto_build:
 	$(MAKE) libarblib.so
