@@ -1,0 +1,13 @@
+# There is no need to list following files, since they are automatically
+# installed:
+# * debian/copyright                (to all packages)
+# * debian/<package>.copyright      (for <package>)
+# * debian/<package>.README.Debian  (for <package>)
+# * debian/<package>.TODO           (for <package>)
+# * debian/README.Debian  (for first binary package listed in debian/control)
+# * debian/TODOM          (for first binary package listed in debian/control)
+
+
+# * This is for the first binary package listed in debian/control
+# * Create debian/<binary-packagename>.docs if needed for the non-first binary
+#   package listed in debian/control

@@ -1,0 +1,8 @@
+# If upstream provides an examples directory, you will often want to use
+# examples/* rather than examples in this file.  The latter would create
+# /usr/share/doc/package/examples/examples directory.
+
+
+# * This is for the first binary package listed in debian/control
+# * Create debian/<binary-packagename>.examples if needed for the non-first
+#   binary package listed in debian/control

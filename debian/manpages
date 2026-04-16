@@ -1,0 +1,9 @@
+# You must remove unused comment lines for the released package.
+# See dh_installman(1)
+#
+# Lists man pages to be installed
+
+
+# * This is for the first binary package listed in debian/control
+# * Create debian/<binary-packagename>.manpages if needed for the non-first
+#   binary package listed in debian/control
