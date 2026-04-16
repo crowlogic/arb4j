@@ -5,6 +5,8 @@ Maintainer: Stephen Crowley <steve@crowlogic.net>
 Build-Depends: debhelper-compat (= 13),
                openjdk-25-jdk,
                javahelper,
+               maven,
+               clang,
                swig,
                libflint-dev,
                libgmp-dev,

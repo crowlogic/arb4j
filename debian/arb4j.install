@@ -1,2 +1,2 @@
-usr/share/java/arb4j.jar
-usr/lib/jni/libarb4j.so
+usr/share/java/arb4j-*.jar
+usr/lib/jni/libarblib.so

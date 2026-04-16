@@ -3,38 +3,34 @@
 export JAVA_HOME := /usr/lib/jvm/java-25-openjdk-$(shell dpkg-architecture -qDEB_HOST_ARCH)
 export PATH      := $(JAVA_HOME)/bin:$(PATH)
 
-DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
+PKG     := arb4j
+DOCPKG  := arb4j-doc
+VER     := $(shell bin/arb4jVersion)
+DESTDIR := $(CURDIR)/debian/$(PKG)
+DOCDEST := $(CURDIR)/debian/$(DOCPKG)
 
-PKG        := arb4j
-DOCPKG     := arb4j-doc
-DESTDIR    := $(CURDIR)/debian/$(PKG)
-DOCDEST    := $(CURDIR)/debian/$(DOCPKG)
-
-JAR_DIR    := $(DESTDIR)/usr/share/java
-JNI_DIR    := $(DESTDIR)/usr/lib/jni
-DOC_DIR    := $(DOCDEST)/usr/share/doc/$(PKG)/api
+JAR_DIR := $(DESTDIR)/usr/share/java
+JNI_DIR := $(DESTDIR)/usr/lib/jni
+DOC_DIR := $(DOCDEST)/usr/share/doc/$(PKG)/api
 
 %:
 	dh $@ --with javahelper
 
 override_dh_auto_clean:
-	./gradlew --no-daemon clean
-	rm -rf build
+	$(MAKE) clean
 
 override_dh_auto_build:
-	./gradlew --no-daemon assemble javadoc
-	$(MAKE) -f debian/jni.mk \
-	    CFLAGS="$(shell dpkg-buildflags --get CFLAGS) -fPIC \
-	            -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux \
-	            $(shell pkg-config --cflags flint)" \
-	    LDFLAGS="$(shell dpkg-buildflags --get LDFLAGS) \
-	             $(shell pkg-config --libs flint) -lxdo -lmpfr -lgmp"
+	$(MAKE) libarblib.so
+	$(MAKE) jar
+	$(MAKE) documentation
+
+override_dh_auto_test:
 
 override_dh_auto_install:
 	install -d $(JAR_DIR) $(JNI_DIR) $(DOC_DIR)
-	install -m 0644 build/libs/$(PKG).jar        $(JAR_DIR)/$(PKG).jar
-	install -m 0644 build/jni/libarb4j.so        $(JNI_DIR)/libarb4j.so
-	cp -a build/docs/javadoc/. $(DOC_DIR)/
+	install -m 0644 libarblib.so                  $(JNI_DIR)/libarblib.so
+	install -m 0644 build/$(PKG)-$(VER).jar       $(JAR_DIR)/$(PKG)-$(VER).jar
+	cp -a build/apidocs/.                         $(DOC_DIR)/
 
-override_dh_auto_test:
-	# tests require GUI / native env; skippe
+override_dh_strip:
+	dh_strip --no-automatic-dbgsym

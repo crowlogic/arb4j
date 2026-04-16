@@ -1,2 +1,1 @@
-usr/share/java/arb4j.jar
-usr/share/java/arb4j-1.0.jar
+usr/share/java/arb4j-#VERSION#.jar usr/share/java/arb4j.jar
