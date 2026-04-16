@@ -32,5 +32,7 @@ override_dh_auto_install:
 	install -m 0644 build/$(PKG)-$(VER).jar       $(JAR_DIR)/$(PKG)-$(VER).jar
 	cp -a build/apidocs/.                         $(DOC_DIR)/
 
+override_dh_install:
+
 override_dh_strip:
 	dh_strip --no-automatic-dbgsym
