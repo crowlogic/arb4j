@@ -1,7 +1,7 @@
 Source: arb4j
 Section: java
 Priority: optional
-Maintainer: Stephen Crowley <steve@crowlogic.net>
+Maintainer: Stephen Crowley <stephencrowley214@gmail.com>
 Build-Depends: debhelper-compat (= 13),
                openjdk-25-jdk,
                javahelper,
