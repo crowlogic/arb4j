@@ -1,0 +1,322 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{hyperref}
+
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+
+\DeclareMathOperator{\Im}{Im}
+\DeclareMathOperator{\Re}{Re}
+\let\Im\relax
+\let\Re\relax
+\DeclareMathOperator{\ImOp}{Im}
+\DeclareMathOperator{\ReOp}{Re}
+\renewcommand{\Im}{\ImOp}
+\renewcommand{\Re}{\ReOp}
+
+\title{Exact Integration-by-Parts Decomposition of the\\
+Truncated $\zeta$-Spectral Transform\\
+and the Off-Band Structure}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Setup (exact)}
+
+\begin{definition}[Riemann--Siegel $Z$, $\theta$, $N$]\label{def:basic}
+\[
+\theta(t) \;=\; \Im\log\Gamma\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right) \;-\; \tfrac{t}{2}\log\pi,
+\]
+\[
+\theta'(t) \;=\; \tfrac{1}{2}\,\Re\,\psi\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right) \;-\; \tfrac{1}{2}\log\pi,\qquad \psi := \Gamma'/\Gamma,
+\]
+\[
+\theta''(t) \;=\; -\tfrac{1}{4}\,\Im\,\psi'\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right),
+\]
+\[
+Z(t) \;=\; e^{i\theta(t)}\zeta(\tfrac{1}{2}+it),\qquad N(t) \;=\; \lfloor\sqrt{t/(2\pi)}\rfloor.
+\]
+\end{definition}
+
+\begin{proposition}[Strict monotonicity of $\theta'$]\label{prop:mono}
+For every real $t>0$, $\theta''(t)>0$, so $\theta'$ is strictly increasing on
+$(0,\infty)$.
+\end{proposition}
+
+\begin{proof}
+From the series $\psi'(s) = \sum_{k\ge 0}(s+k)^{-2}$, the imaginary part of
+$(s+k)^{-2}$ with $s = \tfrac{1}{4}+\tfrac{it}{2}$ is
+\[
+\Im\,(s+k)^{-2} \;=\; -\,\frac{2\,\Re(s+k)\,\Im(s+k)}{|s+k|^{4}}
+\;=\; -\,\frac{2\,(\tfrac{1}{4}+k)\,(t/2)}{|s+k|^{4}} \;<\;0
+\]
+for $t>0$. Summing, $\Im\psi'(\tfrac{1}{4}+\tfrac{it}{2})<0$, hence
+$\theta''(t)=-\tfrac{1}{4}\Im\psi'>0$.
+\end{proof}
+
+\begin{definition}[Riemann--Siegel exact identity]\label{def:rs}
+\[
+Z(t) \;=\; 2\sum_{n=1}^{N(t)} n^{-1/2}\cos\!\bigl(\theta(t)-t\log n\bigr)
+\;+\; (-1)^{N(t)-1}\!\left(\tfrac{t}{2\pi}\right)^{-1/4}\!
+R\!\left(\tfrac{t}{2\pi}\right),
+\]
+where
+\[
+R(\tau) \;=\; \frac{e^{-i\pi/8}\,e^{i\pi\tau}}{(2\pi)^{1/2}\,\tau^{1/4}}
+\cdot\frac{1}{2\pi i}\int_{0\swarrow 1}
+\frac{e^{i\pi w^{2}/2 \,-\, 2\pi\sqrt{\tau}\,w}}{e^{i\pi w}-e^{-i\pi w}}\,dw,
+\]
+with the contour $0\swarrow 1$ being the straight line of direction
+$e^{-i\pi/4}$ crossing the real axis between $0$ and $1$.
+\end{definition}
+
+\begin{definition}[Truncated spectral transform]\label{def:KT}
+For $T_{0}>0$, $T>T_{0}$, and $\nu\in\mathbb{R}$,
+\[
+K_{T}(\nu) \;=\; \frac{1}{2\pi}\int_{T_{0}}^{T}\zeta(\tfrac{1}{2}+it)
+\sqrt{\theta'(t)}\,e^{-i\nu\theta(t)}\,dt.
+\]
+Using $\zeta(\tfrac{1}{2}+it) = e^{-i\theta(t)}Z(t)$ and setting
+$\mu := \nu+1$,
+\[
+K_{T}(\nu) \;=\; \frac{1}{2\pi}\int_{T_{0}}^{T}Z(t)\sqrt{\theta'(t)}\,
+e^{-i\mu\theta(t)}\,dt.
+\]
+\end{definition}
+
+\section{Decomposition by Riemann--Siegel (exact)}
+
+Expand $2\cos(\theta(t)-t\log n) = e^{i\theta(t)-it\log n}+e^{-i\theta(t)+it\log n}$
+and substitute Definition~\ref{def:rs} into Definition~\ref{def:KT}.
+Define, for $\sigma\in\{+,-\}$, $n\ge 1$, $\mu\in\mathbb{R}$,
+\[
+\Phi_{n,\sigma,\mu}(t) \;:=\; (\sigma-\mu)\theta(t)-\sigma t\log n,
+\qquad
+\Phi_{n,\sigma,\mu}'(t) \;=\; (\sigma-\mu)\theta'(t)-\sigma\log n,
+\]
+\[
+t_{n} \;:=\; \max(T_{0},\,2\pi n^{2}),
+\qquad
+J_{n,\sigma}(T,\mu) \;:=\; \int_{t_{n}}^{T}\sqrt{\theta'(t)}\,
+e^{i\Phi_{n,\sigma,\mu}(t)}\,dt,
+\]
+\[
+K_{T}^{R}(\mu) \;:=\; \frac{1}{2\pi}\int_{T_{0}}^{T}(-1)^{N(t)-1}
+\!\left(\tfrac{t}{2\pi}\right)^{-1/4}\!
+R\!\left(\tfrac{t}{2\pi}\right)\sqrt{\theta'(t)}\,e^{-i\mu\theta(t)}\,dt.
+\]
+Then, exactly,
+\begin{equation}\label{eq:decomp}
+K_{T}(\nu) \;=\; \frac{1}{2\pi}\sum_{\sigma\in\{+,-\}}\sum_{n=1}^{\infty}
+n^{-1/2}\,J_{n,\sigma}(T,\mu) \;+\; K_{T}^{R}(\mu),
+\end{equation}
+with the convention $J_{n,\sigma}(T,\mu) = 0$ whenever $t_{n}>T$ (so that the
+sum over $n$ is finite for each finite $T$, truncated at $n\le N(T)$ whenever
+$T\ge T_{0}\ge 2\pi$).
+
+\section{Change of variable $x = \theta'(t)$}
+
+By Proposition~\ref{prop:mono}, $\theta'$ is a strictly increasing bijection
+from $(0,\infty)$ onto $\theta'((0,\infty))$. Let $t(x) := (\theta')^{-1}(x)$
+and set
+\[
+x_{0} \;:=\; \theta'(T_{0}),\qquad X \;:=\; \theta'(T),
+\qquad \beta_{n} \;:=\; \theta'(2\pi n^{2}).
+\]
+The change of variable $x = \theta'(t)$, with $dt = dx/\theta''(t(x))$,
+converts each $J_{n,\sigma}$ into
+\[
+J_{n,\sigma}(T,\mu) \;=\;
+\int_{\beta_{n}\vee x_{0}}^{X}\!
+\frac{\sqrt{x}}{\theta''(t(x))}\,
+\exp\!\bigl(i\widetilde\Phi_{n,\sigma,\mu}(x)\bigr)\,dx,
+\]
+where $\widetilde\Phi_{n,\sigma,\mu}(x) := \Phi_{n,\sigma,\mu}(t(x))$ and
+$\beta_{n}\vee x_{0} := \max(\beta_{n},x_{0})$. Its $x$-derivative is
+\[
+\frac{d\widetilde\Phi_{n,\sigma,\mu}}{dx}(x)
+\;=\; \frac{\Phi_{n,\sigma,\mu}'(t(x))}{\theta''(t(x))}
+\;=\; \frac{(\sigma-\mu)x-\sigma\log n}{\theta''(t(x))}.
+\]
+
+\section{The stationary-in-range condition}
+
+The numerator $(\sigma-\mu)x-\sigma\log n$ is linear in $x$ with unique zero
+\[
+x^{*}_{n,\sigma,\mu} \;=\; \frac{\sigma\log n}{\sigma-\mu}.
+\]
+
+\begin{lemma}[Exact sign of $x^{*}$]\label{lem:xsign}
+For $\mu\ne\pm 1$:
+\begin{itemize}
+\item $\sigma=+$: $x^{*} = \log n/(1-\mu)$ is $>0$ iff $\mu<1$.
+\item $\sigma=-$: $x^{*} = \log n/(1+\mu)$ is $>0$ iff $\mu>-1$.
+\end{itemize}
+Consequently, if $\mu>1$ then $x^{*}>0$ only for $\sigma=-$; if $\mu<-1$ then
+$x^{*}>0$ only for $\sigma=+$. In each case
+$x^{*} = \log n/(1+|\mu|)\in(0,\log n/(|\mu|+1))$.
+\end{lemma}
+
+\begin{definition}[Stationary-in-range set]
+For $|\mu|>1$, set
+\[
+S(\mu) \;:=\; \bigl\{\,n\ge 1 \;:\; \beta_{n}\;\le\;\tfrac{\log n}{1+|\mu|}\,\bigr\}.
+\]
+\end{definition}
+
+\begin{lemma}[Finiteness of $S(\mu)$]\label{lem:Sfinite}
+For every $|\mu|>1$, $S(\mu)$ is finite.
+\end{lemma}
+
+\begin{proof}
+$\beta_{n} = \theta'(2\pi n^{2}) =
+\tfrac{1}{2}\Re\psi(\tfrac{1}{4}+i\pi n^{2}) - \tfrac{1}{2}\log\pi$.
+The asymptotic $\psi(z)\sim\log z$ as $|z|\to\infty$ with
+$|\arg z|<\pi$ yields
+$\Re\psi(\tfrac{1}{4}+i\pi n^{2})\to \log|i\pi n^{2}| = \log(\pi n^{2})$
+as $n\to\infty$, so
+$\beta_{n} = \tfrac{1}{2}\log(\pi n^{2}) - \tfrac{1}{2}\log\pi +o(1) = \log n + o(1)$.
+For $|\mu|>1$, $\log n/(1+|\mu|)<\log n$ for all $n\ge 2$, and the gap
+$\log n - \log n/(1+|\mu|) = |\mu|\log n/(1+|\mu|)$ grows unboundedly with
+$n$. Hence for all sufficiently large $n$,
+$\beta_{n}>\log n/(1+|\mu|)$, i.e., $n\notin S(\mu)$. Finiteness follows.
+\end{proof}
+
+\begin{remark}
+The asymptotic $\beta_{n} = \log n + o(1)$ used in the proof is a statement
+about $\psi$'s leading behavior; it is invoked only to establish finiteness
+of $S(\mu)$ and not used elsewhere. The value of $\beta_{n}$ at any fixed
+$n$ is given \emph{exactly} by the digamma formula above.
+\end{remark}
+
+\section{Integration by parts in $x$ for $n\notin S(\mu)$}
+
+For $n\notin S(\mu)$, the phase derivative
+$\widetilde\Phi_{n,\sigma,\mu}'(x) = ((\sigma-\mu)x-\sigma\log n)/\theta''(t(x))$
+has constant sign on $[\beta_{n}\vee x_{0},X]$, because the linear factor
+$(\sigma-\mu)x-\sigma\log n$ has no zero in this interval (its unique zero
+$x^{*}$ is either $\le 0$, by Lemma~\ref{lem:xsign}, or $<\beta_{n}$, by
+definition of $S(\mu)$) and $\theta''(t(x))>0$.
+
+\begin{theorem}[Exact integration-by-parts identity for $n\notin S(\mu)$]
+\label{thm:ibp}
+For $|\mu|>1$, $n\notin S(\mu)$, $\sigma\in\{+,-\}$, and all $T>T_{0}$
+with $X=\theta'(T)>\beta_{n}\vee x_{0}$,
+\begin{align}
+J_{n,\sigma}(T,\mu) \;&=\;
+\underbrace{\frac{\sqrt{X}}{i\bigl[(\sigma-\mu)X-\sigma\log n\bigr]}
+\,e^{i\widetilde\Phi_{n,\sigma,\mu}(X)}}_{U_{n,\sigma}(T,\mu)\;(T\text{-dependent})}
+\nonumber\\
+&\quad
+-\;\underbrace{\frac{\sqrt{\beta_{n}\vee x_{0}}}
+{i\bigl[(\sigma-\mu)(\beta_{n}\vee x_{0})-\sigma\log n\bigr]}
+\,e^{i\widetilde\Phi_{n,\sigma,\mu}(\beta_{n}\vee x_{0})}}_{L_{n,\sigma}(\mu)\;
+(T\text{-independent once }T_{0}\text{ fixed})}
+\nonumber\\
+&\quad
++\;\underbrace{\int_{\beta_{n}\vee x_{0}}^{X}
+\frac{(\sigma-\mu)x+\sigma\log n}
+{2i\sqrt{x}\,\bigl[(\sigma-\mu)x-\sigma\log n\bigr]^{2}}
+\,e^{i\widetilde\Phi_{n,\sigma,\mu}(x)}\,dx}_{I_{n,\sigma}(T,\mu)}.
+\label{eq:ibpcore}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Integration by parts on
+$\int A(x)\,e^{i\widetilde\Phi(x)}\,dx$ with
+$A(x)=\sqrt{x}/\theta''(t(x))$ gives, exactly,
+\[
+\int_{\beta_{n}\vee x_{0}}^{X}A(x)\,e^{i\widetilde\Phi(x)}\,dx
+\;=\;
+\left[\frac{A(x)}{i\widetilde\Phi'(x)}\,e^{i\widetilde\Phi(x)}\right]_{\beta_{n}\vee x_{0}}^{X}
+\;-\;\int_{\beta_{n}\vee x_{0}}^{X}\!\left[\frac{A(x)}{i\widetilde\Phi'(x)}\right]'
+\,e^{i\widetilde\Phi(x)}\,dx.
+\]
+Substituting $\widetilde\Phi'(x) = ((\sigma-\mu)x-\sigma\log n)/\theta''(t(x))$
+cancels $\theta''$ exactly:
+\[
+\frac{A(x)}{\widetilde\Phi'(x)}
+\;=\; \frac{\sqrt{x}/\theta''(t(x))}
+{((\sigma-\mu)x-\sigma\log n)/\theta''(t(x))}
+\;=\; \frac{\sqrt{x}}{(\sigma-\mu)x-\sigma\log n}.
+\]
+Differentiate this elementary rational expression:
+\[
+\frac{d}{dx}\!\left[\frac{\sqrt{x}}{(\sigma-\mu)x-\sigma\log n}\right]
+\;=\;
+\frac{\tfrac{1}{2}x^{-1/2}[(\sigma-\mu)x-\sigma\log n]-\sqrt{x}(\sigma-\mu)}
+{[(\sigma-\mu)x-\sigma\log n]^{2}}
+\]
+\[
+\;=\;-\,\frac{(\sigma-\mu)x+\sigma\log n}
+{2\sqrt{x}\,[(\sigma-\mu)x-\sigma\log n]^{2}}.
+\]
+Assembling the three pieces and moving the sign of the remainder inside the
+integrand gives \eqref{eq:ibpcore} exactly.
+\end{proof}
+
+\begin{remark}[Core lemma]
+Theorem~\ref{thm:ibp} is the core lemma. It splits each mode
+$J_{n,\sigma}(T,\mu)$ into:
+\begin{itemize}
+\item $U_{n,\sigma}(T,\mu)$: upper boundary, depends on $T$.
+\item $L_{n,\sigma}(\mu)$: lower boundary, \emph{$T$-independent} once
+$T_{0}$ is fixed and $T\ge t_{n}$.
+\item $I_{n,\sigma}(T,\mu)$: a remainder integral.
+\end{itemize}
+In particular, the lower-boundary evaluation at $x=\beta_{n}\vee x_{0}$ is
+fixed in $T$ once $T$ is large enough that $X>\beta_{n}$.
+\end{remark}
+
+\section{Assembled exact identity for $|\mu|>1$}
+
+Combining~\eqref{eq:decomp} and~\eqref{eq:ibpcore}, summed over $\sigma$
+and $n$:
+\[
+K_{T}(\nu)
+\;=\;
+\frac{1}{2\pi}\sum_{\sigma}\sum_{n\notin S(\mu)}n^{-1/2}
+\bigl[U_{n,\sigma}(T,\mu)-L_{n,\sigma}(\mu)+I_{n,\sigma}(T,\mu)\bigr]
+\;+\;\frac{1}{2\pi}\sum_{\sigma}\sum_{n\in S(\mu)}n^{-1/2}J_{n,\sigma}(T,\mu)
+\;+\;K_{T}^{R}(\mu),
+\]
+valid for all $T$ large enough that $X=\theta'(T)$ exceeds
+$\max_{n\in S(\mu)}\beta_{n}$ and $\max_{n\notin S(\mu),\,n\le N(T)}x^{*}_{n}$
+(the latter is automatic since $n\notin S(\mu)$ means $x^{*}_{n}<\beta_{n}$,
+hence $x^{*}_{n}<X$ whenever $X>\beta_{n}$, trivially).
+
+Each summand on the right-hand side has an exact closed form in terms of the
+data $\theta$, $\psi$, $n$, $\mu$, $T$. The only sum over $n$ is finite for
+each finite $T$ (truncated at $n\le N(T)$ by $J_{n,\sigma}=0$ for $n>N(T)$).
+
+\section{Remark on the boundary $|\mu|=1$ and the ``reflection'' question}
+
+The condition $|\mu|>1$ is not a statement about any reflection symmetry of
+$\zeta$; it is the exact algebraic condition for the linear function
+$(\sigma-\mu)x-\sigma\log n$ in the $x$-variable to have its zero outside the
+physical $x>0$ range. At $\mu=1$ the zero diverges: for $\sigma=+$,
+$x^{*}=\log n/(1-\mu)\to+\infty$ as $\mu\uparrow 1$, and for $\sigma=-$,
+$x^{*}=\log n/(1+\mu)\to\log n/2$ remains finite, which is the boundary value.
+The geometric picture is that the band of $\mu$ for which \emph{some} mode
+$(n,\sigma)$ carries a stationary point in the positive-$x$ half-line is
+exactly $(-1,1)$, with $\sigma=+$ contributing for $\mu\in(-1,1)$ via
+$x^{*}\in(\log n/2,\infty)$ and $\sigma=-$ contributing via
+$x^{*}\in(0,\log n/2)$, glued at $\mu=0$ where both $\sigma$'s give
+$x^{*}=\log n$.
+
+The functional equation of $\zeta$ produces the symmetry $Z(t)=Z(-t)$, which
+translates into $\overline{K_{T}(\nu)} = K_{T}(-\nu)$ times a phase factor.
+This is a reflection in $\nu$ about $0$, not a shift by $1$. The shift
+$\mu=\nu+1$ centering the band at $\mu=0$ originates from the
+$e^{-i\theta(t)}$ extraction in $Z = e^{i\theta}\zeta$, i.e., from
+the phase convention in Riemann--Siegel.
+
+\end{document}
