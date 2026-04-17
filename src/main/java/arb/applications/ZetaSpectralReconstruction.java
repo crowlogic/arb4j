@@ -17,7 +17,11 @@ import arb.stochastic.Charts;
 import arb.viz.WindowManager;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
+import io.fair_acc.chartfx.renderer.ErrorStyle;
+import io.fair_acc.chartfx.renderer.LineStyle;
+import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
 import io.fair_acc.dataset.spi.DoubleDataSet;
+import io.fair_acc.dataset.utils.DataSetStyleBuilder;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
@@ -114,6 +118,17 @@ public class ZetaSpectralReconstruction extends
   public static final double DT            = (T_MAX - T0) / (N_T - 1);
   public static final double D_OMEGA       = (OMEGA_HI - OMEGA_LO) / N_OMEGA;
 
+  /**
+   * Band of support for the spectral density c(ω). Outside [OMEGA_BAND_LO,
+   * OMEGA_BAND_HI] the density decays to zero as T → ∞; restricting the
+   * inverse-Fourier reconstruction integral to this interval removes the
+   * residual off-band noise that is still present at finite T.
+   */
+  public static final double OMEGA_BAND_LO = -2.0;
+  public static final double OMEGA_BAND_HI = 0.0;
+  public static final int    K_LO          = (int) Math.ceil((OMEGA_BAND_LO - OMEGA_LO) / D_OMEGA);
+  public static final int    K_HI          = (int) Math.floor((OMEGA_BAND_HI - OMEGA_LO) / D_OMEGA);
+
   private static final String AMP_EXPR   = "ζ(½+ⅈ*t)*√(diff(ϑ(t),t))";
   private static final String ZETA_EXPR  = "ζ(½+ⅈ*t)";
   private static final String THETA_EXPR = "ϑ(t)";
@@ -129,6 +144,7 @@ public class ZetaSpectralReconstruction extends
   private boolean   separateWindows = false;
 
   private XYChart   comparisonChart;
+  private XYChart   ratioChart;
   private XYChart   phiChart;
   private XYChart   powerChart;
 
@@ -482,10 +498,30 @@ public class ZetaSpectralReconstruction extends
   }
 
   /**
+   * Build a fine-detail renderer for the Φ(ω) and power traces: thin polyline
+   * with no markers and no error surface, so every one of the
+   * N_OMEGA = 2560 sample points contributes a line segment. The default
+   * chartfx {@code XYChart} renderer produces a visibly coarser line than the
+   * matplotlib reference; {@link ErrorDataSetRenderer} with {@code LineStyle
+   * .NORMAL} and no marker drawing matches the thin-line look of the Python
+   * figure.
+   */
+  static ErrorDataSetRenderer newFineLineRenderer()
+  {
+    ErrorDataSetRenderer r = new ErrorDataSetRenderer();
+    r.setPolyLineStyle(LineStyle.NORMAL);
+    r.setErrorStyle(ErrorStyle.NONE);
+    r.setDrawMarker(false);
+    r.setDrawBubbles(false);
+    return r;
+  }
+
+  /**
    * Build the two panels of Figure 2 — cumulative Φ(ω) and cumulative |dΦ|²
    * versus a straight-line theoretical shape. Stored into
    * {@link #phiChart} and {@link #powerChart}.
    */
+
   void buildSpectralMeasureCharts()
   {
     // dΦ_k = density[k] · D_OMEGA, accumulate Φ in arb precision.
@@ -521,12 +557,36 @@ public class ZetaSpectralReconstruction extends
       }
     }
 
-    double   finalPower  = power[N_OMEGA - 1];
+    // Theoretical flat-density power line drawn only over the band [-2, 0]:
+    // zero below OMEGA_BAND_LO, linear ramp from 0 to power[K_HI]-power[K_LO]
+    // shifted by power[K_LO] between OMEGA_BAND_LO and OMEGA_BAND_HI, flat
+    // above OMEGA_BAND_HI. This matches the interpretation that the spectral
+    // density is zero off [-2, 0] and (notionally) flat on it.
+    double   bandStart   = power[K_LO];
+    double   bandFinal   = power[K_HI];
+    double   bandSpan    = bandFinal - bandStart;
+    int      bandCount   = K_HI - K_LO + 1;
     double[] theoryPower = new double[N_OMEGA];
     for (int k = 0; k < N_OMEGA; k++)
     {
-      theoryPower[k] = finalPower * k / (double) (N_OMEGA - 1);
+      if (k < K_LO)
+      {
+        theoryPower[k] = bandStart;
+      }
+      else if (k > K_HI)
+      {
+        theoryPower[k] = bandFinal;
+      }
+      else
+      {
+        theoryPower[k] = bandStart + bandSpan * (k - K_LO) / (double) (bandCount - 1);
+      }
     }
+
+    String thinRed  = DataSetStyleBuilder.instance().setLineColor("black").setMarkerColor("black").setLineWidth(1).build();
+    String thinBlue = DataSetStyleBuilder.instance().setLineColor("cornflowerblue").setMarkerColor("cornflowerblue").setLineWidth(1).build();
+    String dashRed  = DataSetStyleBuilder.instance().setLineColor("red").setMarkerColor("red").setLineWidth(1).setLineDashes(6.0, 6.0).build();
+    String blackEmp = DataSetStyleBuilder.instance().setLineColor("black").setMarkerColor("black").setLineWidth(1).build();
 
     phiChart = new XYChart(new DefaultNumericAxis("ω",
                                                   ""),
@@ -535,8 +595,11 @@ public class ZetaSpectralReconstruction extends
     phiChart.setTitle("Cumulative Spectral Measure Φ(ω) = ∫ dΦ");
     DoubleDataSet reDs = new DoubleDataSet("Re Φ(ω)").set(omegas, phiRe);
     DoubleDataSet imDs = new DoubleDataSet("Im Φ(ω)").set(omegas, phiIm);
-    imDs.setStyle("strokeColor=cornflowerblue;");
-    phiChart.getDatasets().addAll(reDs, imDs);
+    reDs.setStyle(thinRed);
+    imDs.setStyle(thinBlue);
+    ErrorDataSetRenderer phiRenderer = newFineLineRenderer();
+    phiRenderer.getDatasets().addAll(reDs, imDs);
+    phiChart.getRenderers().setAll(phiRenderer);
     phiChart.getXAxis().setAutoRanging(false);
     phiChart.getXAxis().setMin(OMEGA_LO);
     phiChart.getXAxis().setMax(OMEGA_HI);
@@ -547,9 +610,12 @@ public class ZetaSpectralReconstruction extends
                                                     ""));
     powerChart.setTitle("Spectral Distribution Function");
     DoubleDataSet empDs    = new DoubleDataSet("Empirical: cumulative sum of |dΦ|²").set(omegas, power);
-    DoubleDataSet theoryDs = new DoubleDataSet("Theoretical shape (flat spectral density)").set(omegas, theoryPower);
-    theoryDs.setStyle("strokeColor=red; strokeDashArray=6,6;");
-    powerChart.getDatasets().addAll(empDs, theoryDs);
+    DoubleDataSet theoryDs = new DoubleDataSet("Theoretical shape (flat spectral density on [-2, 0])").set(omegas, theoryPower);
+    empDs.setStyle(blackEmp);
+    theoryDs.setStyle(dashRed);
+    ErrorDataSetRenderer powerRenderer = newFineLineRenderer();
+    powerRenderer.getDatasets().addAll(empDs, theoryDs);
+    powerChart.getRenderers().setAll(powerRenderer);
     powerChart.getXAxis().setAutoRanging(false);
     powerChart.getXAxis().setMin(OMEGA_LO);
     powerChart.getXAxis().setMax(OMEGA_HI);
