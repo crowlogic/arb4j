@@ -29,6 +29,7 @@ override_dh_auto_install:
 	install -d $(JAR_DIR) $(JNI_DIR) $(DOC_DIR)
 	install -m 0644 libarblib.so                  $(JNI_DIR)/libarblib.so
 	install -m 0644 build/$(PKG)-$(VER).jar       $(JAR_DIR)/$(PKG)-$(VER).jar
+	ln -sf $(PKG)-$(VER).jar                      $(JAR_DIR)/$(PKG).jar
 	cp -a build/apidocs/.                         $(DOC_DIR)/
 
 override_dh_install:
