@@ -1,10 +1,21 @@
 package arb.applications;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
+import javax.imageio.ImageIO;
 
 import arb.Complex;
 import arb.Real;
@@ -24,10 +35,13 @@ import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
 import io.fair_acc.dataset.spi.DoubleDataSet;
 import io.fair_acc.dataset.utils.DataSetStyleBuilder;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
@@ -113,16 +127,44 @@ public class ZetaSpectralReconstruction extends
                                         Application
 {
   public static final double T0            = 6.289835988;
-  public static final double T_MAX         = 1000.0;
+  /**
+   * Upper limit of the integration window in t. Mutable because the
+   * time-sweep animation driver overrides it on a per-frame basis via the
+   * {@code --T_MAX=<value>} command line parameter so a single JVM
+   * invocation renders one frame at one T_MAX. Default matches the
+   * reference Python script.
+   */
+  public static       double T_MAX         = 1000.0;
   public static final double T_DISPLAY_MAX = 100.0;
-  public static final int    N_T           = 80000;
+  /**
+   * Number of samples on the dense t-grid. Mutable for the same reason as
+   * {@link #T_MAX}: the animation driver scales N_T proportionally to
+   * T_MAX so that the timestep dt stays fixed across frames.
+   */
+  public static       int    N_T           = 80000;
   public static final int    N_OMEGA       = 10240;
   public static final double OMEGA_LO      = -3.0;
   public static final double OMEGA_HI      = +1.0;
   public static final int    BITS          = 128;
 
-  public static final double DT            = (T_MAX - T0) / (N_T - 1);
+  /**
+   * Timestep on the t-grid. Not {@code final}: {@link #recomputeDerived()}
+   * rewrites it after any runtime override of {@link #T_MAX} or
+   * {@link #N_T}.
+   */
+  public static       double DT            = (T_MAX - T0) / (N_T - 1);
   public static final double D_OMEGA       = (OMEGA_HI - OMEGA_LO) / N_OMEGA;
+
+  /**
+   * Recompute quantities derived from {@link #T_MAX} and {@link #N_T}.
+   * Called from {@link #processParameters()} after parsing command-line
+   * overrides so that every subsequent reference to {@link #DT} sees the
+   * updated timestep.
+   */
+  static void recomputeDerived()
+  {
+    DT = (T_MAX - T0) / (N_T - 1);
+  }
 
   /**
    * Band of support for the spectral density c(ω). Outside [OMEGA_BAND_LO,
@@ -159,6 +201,29 @@ public class ZetaSpectralReconstruction extends
   private boolean   dark            = true;
   private boolean   light;
   private boolean   separateWindows = false;
+
+  /**
+   * When non-null, the program runs headless: it renders the three charts
+   * into a single off-screen scene, writes a PNG to this path, and exits
+   * without opening a window. Set by {@code --render=<path>}.
+   */
+  private String    renderPath      = null;
+
+  /**
+   * When positive, the program runs in sweep-driver mode: it spawns child
+   * JVMs to render {@code sweepFrames} frames at geometrically spaced
+   * {@link #T_MAX} values from {@link #sweepTMin} to {@link #sweepTMax},
+   * writing PNG frames into {@link #sweepDir}. Child JVMs invoke the same
+   * class with {@code --render=...} and {@code --T_MAX=...}. After all
+   * frames exist on disk, the driver invokes ffmpeg via ProcessBuilder
+   * to stitch them into animation.mp4 at {@link #sweepFps} fps.
+   */
+  private int       sweepFrames     = 0;
+  private double    sweepTMin       = 1000.0;
+  private double    sweepTMax       = 10000.0;
+  private int       sweepFps        = 10;
+  private String    sweepDir        = null;
+  private int       sweepParallel   = Runtime.getRuntime().availableProcessors();
 
   private XYChart   comparisonChart;
   private XYChart   ratioChart;
@@ -870,11 +935,22 @@ public class ZetaSpectralReconstruction extends
     {
       light = true;
     }
-    // Named parameters are currently unused but are read so future overrides
-    // (e.g., --N_T=, --T_MAX=) can be wired in without changing call sites.
     if (named != null && !named.isEmpty())
     {
-      System.out.printf("[params] named parameters: %s%n", named);
+      if (named.containsKey("T_MAX"))
+      {
+        T_MAX = Double.parseDouble(named.get("T_MAX"));
+      }
+      if (named.containsKey("N_T"))
+      {
+        N_T = Integer.parseInt(named.get("N_T"));
+      }
+      if (named.containsKey("render"))
+      {
+        renderPath = named.get("render");
+      }
+      recomputeDerived();
+      System.out.printf("[params] T_MAX=%g, N_T=%d, DT=%.6g, render=%s%n", T_MAX, N_T, DT, renderPath);
     }
   }
 
@@ -957,6 +1033,12 @@ public class ZetaSpectralReconstruction extends
     buildSpectralMeasureCharts();
     configureCharts();
 
+    if (renderPath != null)
+    {
+      renderToPngAndExit(stage);
+      return;
+    }
+
     if (separateWindows)
     {
       initializeChartsInTheirOwnWindows(stage);
@@ -968,8 +1050,239 @@ public class ZetaSpectralReconstruction extends
     }
   }
 
-  public static void main(String[] args)
+  /**
+   * Render the three charts (comparison pane stacked above the phi and
+   * power panels) into a single offscreen scene, snapshot it to a
+   * {@link WritableImage}, convert to a {@link java.awt.image.BufferedImage},
+   * and write a PNG at {@link #renderPath}. Exits the JavaFX application
+   * when done. The scene is rendered at a fixed 1920 x 1080 size so every
+   * frame in a sweep is pixel-compatible for ffmpeg stitching.
+   */
+  void renderToPngAndExit(Stage stage)
   {
+    try
+    {
+      GridPane gridPane = new GridPane();
+      gridPane.setHgap(10);
+      gridPane.setVgap(10);
+      RowConstraints r1 = new RowConstraints();
+      r1.setPercentHeight(40);
+      RowConstraints r2 = new RowConstraints();
+      r2.setPercentHeight(30);
+      RowConstraints r3 = new RowConstraints();
+      r3.setPercentHeight(30);
+      gridPane.getRowConstraints().addAll(r1, r2, r3);
+
+      final int FRAME_W = 1920;
+      final int FRAME_H = 1080;
+      comparisonPane.setPrefSize(FRAME_W, FRAME_H * 40 / 100);
+      phiChart.setPrefSize(FRAME_W, FRAME_H * 30 / 100);
+      powerChart.setPrefSize(FRAME_W, FRAME_H * 30 / 100);
+      GridPane.setHgrow(comparisonPane, Priority.ALWAYS);
+      GridPane.setVgrow(comparisonPane, Priority.ALWAYS);
+      GridPane.setHgrow(phiChart, Priority.ALWAYS);
+      GridPane.setVgrow(phiChart, Priority.ALWAYS);
+      GridPane.setHgrow(powerChart, Priority.ALWAYS);
+      GridPane.setVgrow(powerChart, Priority.ALWAYS);
+      gridPane.add(comparisonPane, 0, 0);
+      gridPane.add(phiChart, 0, 1);
+      gridPane.add(powerChart, 0, 2);
+      gridPane.setPrefSize(FRAME_W, FRAME_H);
+
+      Scene scene = new Scene(gridPane, FRAME_W, FRAME_H);
+      stage.setScene(scene);
+      if (dark)
+      {
+        WindowManager.setMoreConduciveStyle(scene);
+      }
+
+      // Stage must be shown and a layout pulse must run for chart-fx to
+      // size axes and draw datasets; without this the snapshot is blank.
+      // We set opacity to 0 and position offscreen, show briefly, snapshot,
+      // then exit. This is the standard chart-fx offscreen-rendering trick
+      // because the Canvas-backed renderers only paint in response to a
+      // layout pass on a live scene.
+      stage.setOpacity(0.0);
+      stage.setX(-10000);
+      stage.setY(-10000);
+      stage.setWidth(FRAME_W);
+      stage.setHeight(FRAME_H);
+      stage.show();
+
+      // Two pulses of layout/paint before snapshot so chart-fx has a chance
+      // to fully render. A single runLater is not always enough.
+      Platform.runLater(() -> Platform.runLater(() ->
+      {
+        try
+        {
+          SnapshotParameters sp = new SnapshotParameters();
+          WritableImage img = scene.getRoot().snapshot(sp, null);
+          java.awt.image.BufferedImage bi = SwingFXUtils.fromFXImage(img, null);
+          File outFile = new File(renderPath);
+          File parent = outFile.getParentFile();
+          if (parent != null)
+          {
+            parent.mkdirs();
+          }
+          ImageIO.write(bi, "png", outFile);
+          System.out.printf("[render] wrote %s (%d x %d)%n", renderPath, bi.getWidth(), bi.getHeight());
+        }
+        catch (IOException e)
+        {
+          System.err.println("[render] write failed: " + e);
+          e.printStackTrace();
+        }
+        finally
+        {
+          Platform.exit();
+        }
+      }));
+    }
+    catch (Exception e)
+    {
+      System.err.println("[render] setup failed: " + e);
+      e.printStackTrace();
+      Platform.exit();
+    }
+  }
+
+  /**
+   * Sweep driver (runs in the invoking JVM, not inside start()): spawn
+   * child JVMs with {@code --render=... --T_MAX=... --N_T=...} for each
+   * of {@code frameCount} frames at geometrically spaced {@link #T_MAX}
+   * values from {@code tMin} to {@code tMax}, writing PNG frames into
+   * {@code outDir}. The driver keeps {@code maxParallel} child JVMs
+   * running at once. Frames whose output PNG already exists on disk are
+   * skipped, so a crashed driver can resume by being restarted. After
+   * all frames exist, runs ffmpeg via ProcessBuilder to stitch them into
+   * animation.mp4 at {@code fps} frames per second.
+   *
+   * The driver also starts an Xvfb virtual display so child JVMs have a
+   * DISPLAY to render into; at end of sweep the Xvfb process is stopped.
+   *
+   * N_T is scaled proportionally to T_MAX so the timestep dt stays fixed
+   * across frames. With T_MAX = 1000, N_T = 80000 gives dt approx 0.0124.
+   * For T_MAX = X, N_T = round(80000 * X / 1000).
+   */
+  static void runSweep(int frameCount, double tMin, double tMax, String outDir, int maxParallel, int fps) throws Exception
+  {
+    Path dir = Paths.get(outDir);
+    Files.createDirectories(dir);
+
+    // Start Xvfb so child JVMs have a DISPLAY.
+    int xvfbDisplay = 99;
+    ProcessBuilder xvfbPb = new ProcessBuilder("Xvfb",
+                                               ":" + xvfbDisplay,
+                                               "-screen", "0", "1920x1080x24",
+                                               "-nolisten", "tcp");
+    xvfbPb.redirectError(new File(dir.toFile(), "xvfb.log"));
+    xvfbPb.redirectOutput(new File(dir.toFile(), "xvfb.log"));
+    Process xvfb = xvfbPb.start();
+    Thread.sleep(500); // give Xvfb a beat to come up
+    System.out.printf("[sweep] Xvfb started on :%d pid=%d%n", xvfbDisplay, xvfb.pid());
+
+    try
+    {
+      String javaHome = System.getProperty("java.home");
+      String javaBin  = javaHome + File.separator + "bin" + File.separator + "java";
+      String classpath = System.getProperty("java.class.path");
+      String mainClass = ZetaSpectralReconstruction.class.getName();
+
+      ExecutorService pool = Executors.newFixedThreadPool(maxParallel);
+      List<Future<?>> futures = new ArrayList<>();
+
+      for (int i = 0; i < frameCount; i++)
+      {
+        final int frameIdx = i;
+        final double tMaxI = tMin * Math.pow(tMax / tMin, (double) i / (frameCount - 1));
+        final int    nTi   = (int) Math.round(80000.0 * tMaxI / 1000.0);
+        final String frameName = String.format("frame_%04d_T_%08.2f.png", frameIdx, tMaxI);
+        final Path   framePath = dir.resolve(frameName);
+
+        futures.add(pool.submit(() ->
+        {
+          if (Files.exists(framePath) && Files.size(framePath) > 0)
+          {
+            System.out.printf("[sweep] frame %03d T_MAX=%.2f already exists, skipping%n", frameIdx, tMaxI);
+            return null;
+          }
+          System.out.printf("[sweep] frame %03d T_MAX=%.2f N_T=%d starting%n", frameIdx, tMaxI, nTi);
+          ProcessBuilder pb = new ProcessBuilder(javaBin,
+                                                 "-cp", classpath,
+                                                 "--enable-native-access=ALL-UNNAMED",
+                                                 mainClass,
+                                                 "--T_MAX=" + tMaxI,
+                                                 "--N_T=" + nTi,
+                                                 "--render=" + framePath.toString(),
+                                                 "--light");
+          pb.environment().put("DISPLAY", ":" + xvfbDisplay);
+          pb.redirectError(new File(dir.toFile(), String.format("frame_%04d.log", frameIdx)));
+          pb.redirectOutput(new File(dir.toFile(), String.format("frame_%04d.log", frameIdx)));
+          Process p = pb.start();
+          int rc = p.waitFor();
+          if (rc != 0)
+          {
+            System.err.printf("[sweep] frame %03d exited rc=%d%n", frameIdx, rc);
+          }
+          else
+          {
+            System.out.printf("[sweep] frame %03d done%n", frameIdx);
+          }
+          return null;
+        }));
+      }
+
+      pool.shutdown();
+      pool.awaitTermination(24, TimeUnit.HOURS);
+      for (Future<?> f : futures)
+      {
+        try { f.get(); } catch (Exception e) { System.err.println("[sweep] worker threw: " + e); }
+      }
+
+      // Stitch with ffmpeg.
+      String pattern = dir.toString() + "/frame_%04d_T_*.png";
+      // ffmpeg glob pattern requires -pattern_type glob:
+      ProcessBuilder ff = new ProcessBuilder("ffmpeg",
+                                             "-y",
+                                             "-framerate", Integer.toString(fps),
+                                             "-pattern_type", "glob",
+                                             "-i", dir.toString() + "/frame_*.png",
+                                             "-c:v", "libx264",
+                                             "-pix_fmt", "yuv420p",
+                                             "-vf", "scale=trunc(iw/2)*2:trunc(ih/2)*2",
+                                             dir.toString() + "/animation.mp4");
+      ff.redirectError(new File(dir.toFile(), "ffmpeg.log"));
+      ff.redirectOutput(new File(dir.toFile(), "ffmpeg.log"));
+      Process ffp = ff.start();
+      int rc = ffp.waitFor();
+      System.out.printf("[sweep] ffmpeg rc=%d, output=%s/animation.mp4%n", rc, dir);
+    }
+    finally
+    {
+      xvfb.destroy();
+      xvfb.waitFor(5, TimeUnit.SECONDS);
+    }
+  }
+
+  public static void main(String[] args) throws Exception
+  {
+    // Sweep mode is driven from main() directly because it spawns child
+    // JVMs and must not call Application.launch. Args: --sweep=N,DIR,FPS
+    for (String a : args)
+    {
+      if (a.startsWith("--sweep="))
+      {
+        String[] parts = a.substring("--sweep=".length()).split(",");
+        int frameCount = Integer.parseInt(parts[0]);
+        String outDir  = parts[1];
+        int fps        = parts.length > 2 ? Integer.parseInt(parts[2]) : 10;
+        double tMin    = parts.length > 3 ? Double.parseDouble(parts[3]) : 1000.0;
+        double tMax    = parts.length > 4 ? Double.parseDouble(parts[4]) : 10000.0;
+        int maxParallel = Runtime.getRuntime().availableProcessors();
+        runSweep(frameCount, tMin, tMax, outDir, maxParallel, fps);
+        return;
+      }
+    }
     launch(args);
   }
 }
