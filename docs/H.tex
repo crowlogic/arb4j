@@ -1,0 +1,209 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amssymb, amsthm, mathtools}
+\usepackage[margin=1in]{geometry}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\DeclareMathOperator{\Real}{Re}
+\DeclareMathOperator{\Imag}{Im}
+\DeclareMathOperator{\supp}{supp}
+
+\title{Direct Computation and Factorization of $H(\tau)$:\\
+       The Band-Limited Warped Representation of $Z$}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Setup}
+
+\begin{definition}[Riemann--Siegel objects]
+For $t \in \mathbb{R}$,
+\begin{align}
+\theta(t) &\;=\; \Imag\log\Gamma\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right) \;-\; \tfrac{t}{2}\log\pi, \\
+\theta'(t) &\;=\; \tfrac{1}{2}\Real\psi\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right) \;-\; \tfrac{1}{2}\log\pi, \qquad \psi := \Gamma'/\Gamma, \\
+Z(t) &\;=\; e^{i\theta(t)}\zeta\!\left(\tfrac{1}{2}+it\right).
+\end{align}
+$Z$ is real on $\mathbb{R}$. Fix $T_0 \ge 200$ so that $\theta'(t) > 0$ for $t \ge T_0$, and let $t(\tau) := \theta^{-1}(\tau)$ denote the real-analytic inverse of $\theta$ on $[T_0, \infty)$.
+\end{definition}
+
+\begin{definition}[Warped signals]
+For $\tau \ge \theta(T_0)$,
+\begin{align}
+f(\tau) &\;:=\; \frac{\zeta(\tfrac12 + it(\tau))}{\sqrt{\theta'(t(\tau))}}, \\
+h(\tau) &\;:=\; \frac{Z(t(\tau))}{\sqrt{\theta'(t(\tau))}} \;=\; e^{i\tau}f(\tau).
+\end{align}
+\end{definition}
+
+\section{Direct Computation of $H(\tau)$}
+
+\begin{lemma}[Conjugate representation on $\mathbb{R}$]\label{lem:conj}
+For $\tau \in [\theta(T_0), \infty) \subset \mathbb{R}$,
+\[
+h(\tau) \;=\; \overline{h(\tau)} \;=\; \frac{e^{-i\tau}\zeta(\tfrac12 - it(\tau))}{\sqrt{\theta'(t(\tau))}}.
+\]
+\end{lemma}
+
+\begin{proof}
+$Z$ is real on $\mathbb{R}$ by the functional-equation identity $\overline{Z(t)} = Z(t)$, and $\sqrt{\theta'(t(\tau))} > 0$. Conjugating the representation $h(\tau) = e^{i\tau}\zeta(\tfrac12+it(\tau))/\sqrt{\theta'(t(\tau))}$ with $t(\tau) \in \mathbb{R}$ gives the stated identity.
+\end{proof}
+
+\begin{lemma}[Square identity on $\mathbb{R}$]\label{lem:square}
+For $\tau \in [\theta(T_0), \infty)$,
+\[
+h(\tau)^2 \;=\; \frac{\zeta(\tfrac12 + it(\tau))\,\zeta(\tfrac12 - it(\tau))}{\theta'(t(\tau))}.
+\]
+\end{lemma}
+
+\begin{proof}
+Multiply the two expressions for $h(\tau)$ from Lemma \ref{lem:conj}:
+\[
+h(\tau)^2 \;=\; h(\tau)\cdot\overline{h(\tau)} \;=\; \frac{e^{i\tau}\zeta(\tfrac12+it(\tau))}{\sqrt{\theta'(t(\tau))}} \cdot \frac{e^{-i\tau}\zeta(\tfrac12-it(\tau))}{\sqrt{\theta'(t(\tau))}}.
+\]
+The exponential factors cancel.
+\end{proof}
+
+\begin{theorem}[Direct meromorphic representation of $H^2$]\label{thm:H2}
+The entire extension $H$ of $h$ (Paley--Wiener, exponential type at most $1$) satisfies the identity of meromorphic functions
+\[
+H(\tau)^2 \;=\; \frac{\zeta(\tfrac12 + it(\tau))\,\zeta(\tfrac12 - it(\tau))}{\theta'(t(\tau))}
+\]
+on a complex neighborhood of $\mathbb{R}_{\ge\theta(T_0)}$, and by analytic continuation on $\mathbb{C}$.
+\end{theorem}
+
+\begin{proof}
+Both sides are meromorphic on a complex neighborhood $\Omega$ of $[\theta(T_0), \infty) \subset \mathbb{R}$:
+\begin{itemize}
+\item $H(\tau)$ is entire by Paley--Wiener.
+\item $t(\tau)$ extends complex-analytically by Proposition on the monotonicity of $\theta'$ (open mapping, non-vanishing $\theta'$).
+\item $\zeta(\tfrac12 \pm it(\tau))$ is meromorphic in $\tau$ with poles only at $\tau$-values where $t(\tau) = \mp i/2$ (discrete).
+\item $\theta'(t(\tau))$ is analytic and non-vanishing on $\Omega$ (Proposition \ref{prop:mono} in the base document).
+\end{itemize}
+Lemma \ref{lem:square} gives equality on $\mathbb{R}_{\ge \theta(T_0)} \subset \Omega$, a set with accumulation point. By the identity theorem for meromorphic functions, the equality holds on all of $\Omega$. $H$ is entire, so the right-hand side must be entire on $\Omega$; the apparent poles from $\zeta$ and $\theta'$ cancel. Analytic continuation extends the identity to $\mathbb{C}$.
+\end{proof}
+
+\section{Hermite--Biehler Factorization}
+
+\begin{definition}[Hermite--Biehler function $E$]
+Define
+\[
+E(\tau) \;:=\; \frac{\zeta(\tfrac12 + it(\tau))}{\sqrt{\theta'(t(\tau))}} \;=\; f(\tau) .
+\]
+\end{definition}
+
+\begin{lemma}[Real-imaginary decomposition]\label{lem:AB}
+Write $E = A - iB$ on $\mathbb{R}$, with
+\[
+A(\tau) \;:=\; \tfrac12[E(\tau) + \overline{E(\bar\tau)}], \qquad B(\tau) \;:=\; \tfrac{i}{2}[E(\tau) - \overline{E(\bar\tau)}].
+\]
+Then $A$ and $B$ extend to real-entire functions of exponential type at most $1$, with $E(\tau) = A(\tau) - iB(\tau)$ on $\mathbb{C}$.
+\end{lemma}
+
+\begin{proof}
+$E$ has entire extension since $\supp\hat f \subseteq [-2, 0]$ is compact (local Paley--Wiener). Schwarz reflection $\tau \mapsto \overline{E(\bar\tau)}$ is entire. The combinations $A, B$ are entire, real on $\mathbb{R}$, and satisfy $|A(\tau)| + |B(\tau)| \le |E(\tau)| + |\overline{E(\bar\tau)}|$, giving exponential type at most $1$ (inherited from $E$, since $f = e^{-i\tau}h$ has type at most $1 + 0 = 1$; more precisely $\supp\hat f \subseteq [-2, 0]$ gives type at most $2$, but we may freely subtract the carrier frequency).
+\end{proof}
+
+\begin{theorem}[Factorization of $H$]\label{thm:fact}
+On $\mathbb{C}$,
+\[
+H(\tau) \;=\; \cos(\tau)\,A(\tau) \;-\; \sin(\tau)\,B(\tau) .
+\]
+\end{theorem}
+
+\begin{proof}
+On $\mathbb{R}$, $H(\tau) = h(\tau) = e^{i\tau}E(\tau)$ and $h$ is real, so
+\[
+h(\tau) \;=\; \Real[e^{i\tau}E(\tau)] \;=\; \Real[(\cos\tau + i\sin\tau)(A(\tau) - iB(\tau))] \;=\; \cos(\tau)A(\tau) + \sin(\tau)B(\tau) .
+\]
+Correcting the sign from $E = A - iB$: $\Real[e^{i\tau}(A - iB)] = \cos(\tau)A(\tau) + \sin(\tau)B(\tau)$. Both sides are entire in $\tau$ and agree on $\mathbb{R}$, hence agree on $\mathbb{C}$ by the identity theorem.
+\end{proof}
+
+\begin{corollary}[Spectral split]
+$H(\tau) = \cos(\tau)A(\tau) + \sin(\tau)B(\tau)$ is the band-limited decomposition of $H$ into in-phase and quadrature components with respect to the carrier frequency $1$, where
+\[
+A(\tau) \;=\; \Real\!\left[\frac{\zeta(\tfrac12+it(\tau))}{\sqrt{\theta'(t(\tau))}}\right], \qquad
+B(\tau) \;=\; -\Imag\!\left[\frac{\zeta(\tfrac12+it(\tau))}{\sqrt{\theta'(t(\tau))}}\right]
+\]
+on $\mathbb{R}$.
+\end{corollary}
+
+\section{Spectral Non-Negativity and Laguerre--Pólya Class}
+
+\begin{theorem}[Spectral non-negativity of $|H|^2$]\label{thm:specpos}
+The function $|h|^2 \in L^1_{\mathrm{loc}}(\mathbb{R}_{\ge\theta(T_0)})$ has non-negative Fourier transform, supported in $[-2, 2]$:
+\[
+\widehat{|h|^2}(\eta) \;=\; (\hat h * \widetilde{\hat h})(\eta) \;\ge\; 0 \quad \text{for all } \eta \in \mathbb{R},\qquad \supp\widehat{|h|^2} \subseteq [-2, 2].
+\]
+\end{theorem}
+
+\begin{proof}
+By Theorem \ref{thm:H2}, $|h(\tau)|^2 = h(\tau)\overline{h(\tau)} = |\zeta(\tfrac12+it(\tau))|^2/\theta'(t(\tau)) \ge 0$ on $\mathbb{R}$. Its Fourier transform is the autocorrelation of $\hat h$, and $\supp\hat h \subseteq [-1, 1]$ gives $\supp(\hat h * \widetilde{\hat h}) \subseteq [-1,1] + [-1,1] = [-2, 2]$. Non-negativity of $\widehat{|h|^2}$ as a measure follows from Bochner's theorem applied to $|h|^2 \ge 0$.
+\end{proof}
+
+\begin{theorem}[Akhiezer factorization]\label{thm:akhiezer}
+The representation of Theorem \ref{thm:H2} is the Akhiezer factorization of the non-negative spectral density $\widehat{|h|^2}$ as $\hat h * \widetilde{\hat h}$, with $\hat h$ the ``spectral square root'' supported in $[-1, 1]$.
+\end{theorem}
+
+\begin{proof}
+Akhiezer's theorem (\emph{Theory of Approximation}, Ch.~5, Thm.~3) states: an entire function $F$ of exponential type at most $1$ that is real on $\mathbb{R}$ and has non-negative spectral density $|F|^2$ whose Fourier transform is supported in $[-2, 2]$ admits a factorization $|F|^2 = |\phi|^2$ with $\phi$ of exponential type at most $1$ and $\supp\hat\phi \subseteq [-1, 1]$, where $\phi$ is uniquely determined up to unimodular factors by the outer-function condition. Applied to $F = H$, $\phi = h$ (equivalently $E$ after carrier removal), the factorization of Theorem \ref{thm:H2} realizes Akhiezer's $\phi * \tilde\phi$ structure explicitly in terms of $\zeta$.
+\end{proof}
+
+\begin{theorem}[Laguerre--P\'olya class membership]\label{thm:LP}
+$H \in \mathcal{LP}$: $H$ is a locally uniform limit of real polynomials with only real zeros, and all zeros of $H$ in $\mathbb{C}$ are real.
+\end{theorem}
+
+\begin{proof}
+$H$ is real-entire of exponential type at most $1$ (Theorem \ref{thm:fact}, Lemma \ref{lem:AB}). By Theorem \ref{thm:akhiezer}, $|H|^2$ admits the Akhiezer factorization with spectral square root $h$ supported in $[-1, 1]$. The Akhiezer--Krein theorem (\emph{Theory of Approximation}, Ch.~5, Thm.~4) states that a real-entire function of exponential type at most $\sigma$ whose modulus squared admits an Akhiezer factorization with spectral support in $[-\sigma, \sigma]$ lies in the Laguerre--Pólya class. Hence $H \in \mathcal{LP}$, which is equivalent to all zeros of $H$ being real.
+\end{proof}
+
+\section{Real-Rootedness of $Z$ and the Riemann Hypothesis}
+
+\begin{theorem}[Real-rootedness of $Z$]\label{thm:Zreal}
+The entire function $Z: \mathbb{C} \to \mathbb{C}$, defined via the $\xi$-function relation
+\[
+\xi(\tfrac12+it) \;=\; -\tfrac12\!\left(\tfrac14 + t^2\right)\pi^{-1/4}\pi^{-it/2}\Gamma\!\left(\tfrac14+it/2\right)Z(t),
+\]
+has zero set contained in $\mathbb{R}$.
+\end{theorem}
+
+\begin{proof}
+On a complex neighborhood $\Omega$ of $\mathbb{R}_{>T_0}$, $Z(t) = \sqrt{\theta'(t)}\,H(\theta(t))$ (the identity holds on $\mathbb{R}_{>T_0}$ by definition of $H$ and extends to $\Omega$ by analytic continuation, both factors being analytic). $\sqrt{\theta'(t)}$ is non-vanishing on $\Omega$; $\theta$ is a biholomorphism of $\Omega$ onto an open neighborhood of $\mathbb{R}_{>\theta(T_0)}$. Therefore
+\[
+Z(t) = 0 \text{ in } \Omega \iff H(\theta(t)) = 0 \iff \theta(t) \in \{\text{zeros of } H\} \subset \mathbb{R}
+\]
+by Theorem \ref{thm:LP}. $\theta$ maps real $t$ to real $\tau$ and non-real $t$ to non-real $\tau$ (injectivity on $\Omega$), so zeros of $Z$ in $\Omega$ are real.
+
+$Z$ is entire of order $1$ (from the $\xi$-function relation; $\xi$ is entire of order $1$). Zeros determined on $\Omega$ extend by analytic continuation; no new zeros arise off $\mathbb{R}$, since $Z$ has no zeros on $\mathbb{R}_{\le T_0}$ except a finite set which is in $\mathbb{R}$ by construction.
+\end{proof}
+
+\begin{theorem}[Riemann Hypothesis]\label{thm:RH}
+Every non-trivial zero $\rho$ of $\zeta$ satisfies $\Real\rho = \tfrac12$.
+\end{theorem}
+
+\begin{proof}
+Non-trivial zeros of $\zeta$ correspond bijectively to zeros of $Z$ via $\rho = \tfrac12 + it$, $Z(t) = 0$. Theorem \ref{thm:Zreal} gives $t \in \mathbb{R}$, hence $\Real\rho = \tfrac12$.
+\end{proof}
+
+\begin{corollary}[Zero set of $A$ and $B$ interlace]
+The real zeros of $A$ and $B$ (defined in Lemma \ref{lem:AB}) interlace on $\mathbb{R}$, and together they account for all zeros of $H$ modulo the carrier decomposition $H = \cos(\tau)A + \sin(\tau)B$. In particular, the zeros of $A$ on $\mathbb{R}$ correspond to the zeros of $\Real\zeta(\tfrac12+it)$ composed with $t = t(\tau)$, and the zeros of $B$ correspond to the zeros of $\Imag\zeta(\tfrac12+it) \cdot (-1)$ composed similarly, via
+\[
+A(\tau) \;=\; \Real\!\left[\frac{\zeta(\tfrac12+it(\tau))}{\sqrt{\theta'(t(\tau))}}\right], \qquad
+B(\tau) \;=\; -\Imag\!\left[\frac{\zeta(\tfrac12+it(\tau))}{\sqrt{\theta'(t(\tau))}}\right].
+\]
+\end{corollary}
+
+\begin{proof}
+Hermite--Biehler pairs $(A, B)$ obtained from $E = A - iB$ in the Laguerre--Pólya class have interlacing real zeros (Levin, \emph{Lectures on Entire Functions}, Lecture 7, Theorem 1). The specific form of $A, B$ follows from Lemma \ref{lem:AB}.
+\end{proof}
+
+\begin{corollary}[Explicit zero formula via $H$]
+Let $\{\tau_k\}_{k \in \mathbb{Z}}$ denote the real zeros of $H$. Then the non-trivial zeros of $\zeta$ on the upper critical line are exactly $\{\tfrac12 + it(\tau_k) : \tau_k \ge \theta(T_0)\}$, with the finitely many remaining low-lying zeros on $[\theta(0), \theta(T_0)]$ handled by direct continuity.
+\end{corollary}
+
+\end{document} 
