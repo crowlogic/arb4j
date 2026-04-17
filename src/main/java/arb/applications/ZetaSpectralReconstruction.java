@@ -638,7 +638,7 @@ public class ZetaSpectralReconstruction extends
     stOpenBandDs.setStyle(DataSetStyleBuilder.instance().setLineColor("darkgreen").setMarkerColor("darkgreen").setLineWidth(1.0).build());
     stNoPedDs.setStyle(DataSetStyleBuilder.instance().setLineColor("purple").setMarkerColor("purple").setLineWidth(1.0).build());
     pedestalDs.setStyle(DataSetStyleBuilder.instance().setLineColor("gray").setMarkerColor("gray").setLineWidth(1.0).setLineDashes(2.0, 4.0).build());
-    residualDs.setStyle(DataSetStyleBuilder.instance().setLineColor("crimson").setMarkerColor("crimson").setLineWidth(0.8).build());
+    residualDs.setStyle(DataSetStyleBuilder.instance().setLineColor("firebrick").setMarkerColor("firebrick").setLineWidth(0.8).build());
 
     chart.getDatasets().addAll(trueDs, stDs, stOpenBandDs, stNoPedDs, pedestalDs, residualDs);
 
