@@ -498,20 +498,18 @@ public class ZetaSpectralReconstruction extends
   }
 
   /**
-   * Build a fine-detail renderer for the Φ(ω) and power traces: thin polyline
-   * with no markers and no error surface, so every one of the
-   * N_OMEGA = 2560 sample points contributes a line segment. The default
-   * chartfx {@code XYChart} renderer produces a visibly coarser line than the
-   * matplotlib reference; {@link ErrorDataSetRenderer} with {@code LineStyle
-   * .NORMAL} and no marker drawing matches the thin-line look of the Python
-   * figure.
+   * Build a scatter renderer for the Φ(ω) and power traces: small markers,
+   * no connecting polyline. With N_OMEGA = 2560 samples and the Python
+   * reference drawn at {@code lw=0, markersize≈1}, this is the rendering
+   * that resolves the fine oscillatory detail without the polyline smoothing
+   * the rapid sign changes at adjacent ω samples.
    */
-  static ErrorDataSetRenderer newFineLineRenderer()
+  static ErrorDataSetRenderer newScatterRenderer()
   {
     ErrorDataSetRenderer r = new ErrorDataSetRenderer();
-    r.setPolyLineStyle(LineStyle.NORMAL);
+    r.setPolyLineStyle(LineStyle.NONE);
     r.setErrorStyle(ErrorStyle.NONE);
-    r.setDrawMarker(false);
+    r.setDrawMarker(true);
     r.setDrawBubbles(false);
     return r;
   }
@@ -585,10 +583,27 @@ public class ZetaSpectralReconstruction extends
       }
     }
 
-    String thinRed  = DataSetStyleBuilder.instance().setLineColor("black").setMarkerColor("black").setLineWidth(1).build();
-    String thinBlue = DataSetStyleBuilder.instance().setLineColor("cornflowerblue").setMarkerColor("cornflowerblue").setLineWidth(1).build();
-    String dashRed  = DataSetStyleBuilder.instance().setLineColor("red").setMarkerColor("red").setLineWidth(1).setLineDashes(6.0, 6.0).build();
-    String blackEmp = DataSetStyleBuilder.instance().setLineColor("black").setMarkerColor("black").setLineWidth(1).build();
+    // Scatter style for the empirical traces: small filled circles, no line.
+    // The theoretical-shape trace stays a dashed line so it is visually
+    // distinct from the empirical point cloud.
+    String scatterBlack = DataSetStyleBuilder.instance()
+                                              .setLineColor("black")
+                                              .setMarkerColor("black")
+                                              .setMarkerType("circle")
+                                              .setMarkerSize(1.5)
+                                              .build();
+    String scatterBlue  = DataSetStyleBuilder.instance()
+                                              .setLineColor("cornflowerblue")
+                                              .setMarkerColor("cornflowerblue")
+                                              .setMarkerType("circle")
+                                              .setMarkerSize(1.5)
+                                              .build();
+    String dashRed      = DataSetStyleBuilder.instance()
+                                              .setLineColor("red")
+                                              .setMarkerColor("red")
+                                              .setLineWidth(1.5)
+                                              .setLineDashes(6.0, 6.0)
+                                              .build();
 
     phiChart = new XYChart(new DefaultNumericAxis("ω",
                                                   ""),
@@ -597,9 +612,9 @@ public class ZetaSpectralReconstruction extends
     phiChart.setTitle("Cumulative Spectral Measure Φ(ω) = ∫ dΦ");
     DoubleDataSet reDs = new DoubleDataSet("Re Φ(ω)").set(omegas, phiRe);
     DoubleDataSet imDs = new DoubleDataSet("Im Φ(ω)").set(omegas, phiIm);
-    reDs.setStyle(thinRed);
-    imDs.setStyle(thinBlue);
-    ErrorDataSetRenderer phiRenderer = newFineLineRenderer();
+    reDs.setStyle(scatterBlack);
+    imDs.setStyle(scatterBlue);
+    ErrorDataSetRenderer phiRenderer = newScatterRenderer();
     phiRenderer.getDatasets().addAll(reDs, imDs);
     phiChart.getRenderers().setAll(phiRenderer);
     phiChart.getXAxis().setAutoRanging(false);
@@ -613,11 +628,19 @@ public class ZetaSpectralReconstruction extends
     powerChart.setTitle("Spectral Distribution Function");
     DoubleDataSet empDs    = new DoubleDataSet("Empirical: cumulative sum of |dΦ|²").set(omegas, power);
     DoubleDataSet theoryDs = new DoubleDataSet("Theoretical shape (flat spectral density on [-2, 0])").set(omegas, theoryPower);
-    empDs.setStyle(blackEmp);
+    empDs.setStyle(scatterBlack);
     theoryDs.setStyle(dashRed);
-    ErrorDataSetRenderer powerRenderer = newFineLineRenderer();
-    powerRenderer.getDatasets().addAll(empDs, theoryDs);
-    powerChart.getRenderers().setAll(powerRenderer);
+    // Empirical as scatter, theoretical as a dashed line — two renderers on
+    // the same chart because one is point-style and the other is line-style.
+    ErrorDataSetRenderer powerScatter = newScatterRenderer();
+    powerScatter.getDatasets().add(empDs);
+    ErrorDataSetRenderer powerLine    = new ErrorDataSetRenderer();
+    powerLine.setPolyLineStyle(LineStyle.NORMAL);
+    powerLine.setErrorStyle(ErrorStyle.NONE);
+    powerLine.setDrawMarker(false);
+    powerLine.setDrawBubbles(false);
+    powerLine.getDatasets().add(theoryDs);
+    powerChart.getRenderers().setAll(powerScatter, powerLine);
     powerChart.getXAxis().setAutoRanging(false);
     powerChart.getXAxis().setMin(OMEGA_LO);
     powerChart.getXAxis().setMax(OMEGA_HI);
