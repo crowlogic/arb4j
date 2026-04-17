@@ -16,13 +16,26 @@ Z(t) \;=\; e^{i\theta(t)}\zeta(\tfrac{1}{2}+it),\qquad N(t) := \lfloor\sqrt{t/(2
 \]
 Fix \(T_{0}>0\); set \(\mu := \nu+1\), \(x_{0} := \theta'(T_{0})\), \(X := \theta'(T)\), \(\beta_{n} := \theta'(2\pi n^{2})\).
 
+For \(\sigma\in\{+,-\}\), \(n\ge 1\), \(\mu\in\mathbb{R}\), define the phase
+\[
+\Phi_{n,\sigma,\mu}(t) \;:=\; (\sigma-\mu)\theta(t) - \sigma t\log n,
+\]
+and its pullback along \(t(x) := (\theta')^{-1}(x)\),
+\[
+\widetilde\Phi_{n,\sigma,\mu}(x) \;:=\; \Phi_{n,\sigma,\mu}(t(x)) \;=\; (\sigma-\mu)\,\theta(t(x)) \;-\; \sigma\, t(x)\,\log n,
+\]
+so that by the chain rule together with \(t'(x) = 1/\theta''(t(x))\) and \(\theta'(t(x)) = x\),
+\[
+\widetilde\Phi_{n,\sigma,\mu}'(x) \;=\; \bigl[(\sigma-\mu)\theta'(t(x)) - \sigma\log n\bigr]\cdot t'(x) \;=\; \frac{(\sigma-\mu)x - \sigma\log n}{\theta''(t(x))}.
+\]
+
 ---
 
 ## Structural map of the proof
 
 The theorem — that \(K_{T}(\nu)\to 0\) as \(T\to\infty\) for \(|\nu|>1\) — is proved by combining nine self-contained lemmas into a single identity and letting \(T\to\infty\) term-by-term. The lemmas are arranged as:
 
-- **Lemmas 1–3**: *Monotonicity and change-of-variable infrastructure.* Lemma 1 proves \(\theta'\) is strictly increasing, so its inverse \(\tau := \theta^{-1}\) exists; Lemma 2 is the \(L^{2}\)-unitary pullback \(g(x) := Z(\tau(x))/\sqrt{\theta'(\tau(x))}\) and the exact Fourier identity \(2\pi K_{T}(\nu) = \int g(x)e^{-i\mu x}dx\); Lemma 3 is the unit zero-crossing rate of \(g\) in the \(x\)-variable.
+- **Lemmas 1–3**: *Monotonicity and change-of-variable infrastructure.* Lemma 1 proves \(\theta'\) is strictly increasing, so its inverse \(\tau := \theta^{-1}\) exists; Lemma 2 is the \(L^{2}\)-unitary pullback \(g(x) := Z(\tau(x))/\sqrt{\theta'(\tau(x))}\) and the exact Fourier identity \(2\pi K_{T}(\nu) = \int g(x)e^{-i\mu x}dx\); Definition 1 decomposes \(g = g_{\mathrm{main}} + g_{R}\) exactly via Lemma 4; Lemma 3 is the unit zero-crossing rate of \(g_{\mathrm{main}}\) in the \(x\)-variable.
 - **Lemma 4**: *Exact Riemann–Siegel identity* for \(Z(t)\) — closed-form contour-integral representation of the remainder.
 - **Lemma 5**: *Riemann–Siegel decomposition of \(K_{T}(\nu)\)* — expands \(Z(t)\) under the integral, decomposes into sum-of-integrals plus \(K_{T}^{R}(\mu)\).
 - **Lemmas 6–7**: *Sign and finiteness of the exceptional set.* Lemma 6 identifies the unique stationary point \(x^{*}\) of each linear phase factor; Lemma 7 shows \(S(\mu) := \{n\ge 1 : \beta_{n}\le\log n/(1+|\mu|)\}\) is finite.
@@ -59,23 +72,41 @@ and \(\int |g(x)|^{2}\,dx = \int |Z(t)|^{2}\,dt\).
 
 **Proof.** Substitute \(x = \theta(t)\), \(dx = \theta'(t)\,dt\): the integrand factor \(\sqrt{\theta'(t)}\) combines with \(dt = dx/\theta'(t)\) to give \(1/\sqrt{\theta'(\tau(x))}\,dx\); \(Z(t)\) becomes \(Z(\tau(x))\); and \(e^{-i\mu\theta(t)} = e^{-i\mu x}\). The isometry follows from \(|g(x)|^{2}\,dx = |Z(\tau(x))|^{2}/\theta'(\tau(x)) \cdot \theta'(\tau(x))\,dt = |Z(t)|^{2}\,dt\). \(\square\)
 
-## Lemma 3 (Unit zero-crossing rate of \(g\) in the pullback variable)
+## Definition 1 (Mode decomposition of \(g\))
 
-For \(\sigma\in\{+,-\}\) and \(n\ge 1\), let
+In Lemma 2, \(g(x) = Z(\tau(x))/\sqrt{\theta'(\tau(x))}\) with \(\tau := \theta^{-1}\). Substituting the exact Riemann–Siegel identity (Lemma 4) for \(Z(\tau(x))\) and using \(N(\tau(x)) = \lfloor\sqrt{\tau(x)/(2\pi)}\rfloor\) gives the exact decomposition
 \[
-a_{n,\sigma}(x) \;:=\; \frac{n^{-1/2}}{\sqrt{\theta'(\tau(x))}}\, e^{-i\sigma\tau(x)\log n}\,\mathbf{1}_{\{\tau(x)\ge 2\pi n^{2}\}}.
+g(x) \;=\; g_{\mathrm{main}}(x) \;+\; g_{R}(x),
 \]
-Then the \(x\)-phase derivative of \(a_{n,\sigma}\) is, exactly,
+where
 \[
-\frac{d}{dx}\bigl(-\sigma\tau(x)\log n\bigr) \;=\; -\,\frac{\sigma\log n}{\theta'(\tau(x))},
+a_{n,\sigma}(x) \;:=\; \frac{n^{-1/2}}{\sqrt{\theta'(\tau(x))}}\, e^{-i\sigma\tau(x)\log n}\,\mathbf{1}_{\{\tau(x)\ge 2\pi n^{2}\}},
+\qquad \sigma\in\{+,-\},\; n\ge 1,
 \]
-which has constant sign \(\le 0\) for \(\sigma=+\) and \(\ge 0\) for \(\sigma=-\). On the support of \(a_{n,\sigma}\), \(\theta'(\tau(x))\ge\beta_{n}\), so
 \[
-\left|\frac{\log n}{\theta'(\tau(x))}\right| \;\le\; \frac{\log n}{\beta_{n}} \;=\; 1+o(1) \quad\text{as } n\to\infty.
+A_{\sigma}(x) \;:=\; \sum_{n=1}^{\infty} a_{n,\sigma}(x) \;=\; \frac{1}{\sqrt{\theta'(\tau(x))}}\sum_{n=1}^{N(\tau(x))} n^{-1/2}\,e^{-i\sigma\tau(x)\log n},
 \]
-Consequently the Riemann–Siegel expansion of \(g\) (Lemma 4 below) decomposes as \(g_{\mathrm{main}}(x) = e^{ix}A_{+}(x) + e^{-ix}A_{-}(x)\), where the instantaneous \(x\)-frequencies of \(A_{\pm}\) lie in \([\mp 1,0]\cup[0,\pm 1]\) (asymptotically in \(n\)); the factors \(e^{\pm ix}\) translate by \(\pm 1\), so the instantaneous \(x\)-frequency of \(g_{\mathrm{main}}\) lies in \([-1,1]\). This is the **unit zero-crossing rate** in \(x\).
+\[
+g_{\mathrm{main}}(x) \;:=\; e^{i\theta(\tau(x))}A_{+}(x) \;+\; e^{-i\theta(\tau(x))}A_{-}(x) \;=\; e^{ix}A_{+}(x) \;+\; e^{-ix}A_{-}(x),
+\]
+\[
+g_{R}(x) \;:=\; \frac{(-1)^{N(\tau(x))-1}\,(\tau(x)/2\pi)^{-1/4}\,R(\tau(x)/2\pi)}{\sqrt{\theta'(\tau(x))}}.
+\]
+The identity \(e^{\pm i\theta(\tau(x))} = e^{\pm ix}\) uses \(\theta(\tau(x)) = x\).
 
-**Proof.** Direct calculation using \(\tau'(x) = 1/\theta'(\tau(x))\) (from Lemma 1's strict monotonicity, \(\tau'\) is the reciprocal of the derivative of the direct map). The bound \(\log n/\beta_{n} = 1+o(1)\) follows from the digamma asymptotic \(\Re\psi(\tfrac14 + i\pi n^{2})\to\log(\pi n^{2})\), so \(\beta_{n} = \log n + o(1)\). \(\square\)
+## Lemma 3 (Unit zero-crossing rate of \(g_{\mathrm{main}}\) in the pullback variable)
+
+With \(a_{n,\sigma}\), \(A_{\pm}\), \(g_{\mathrm{main}}\) as in Definition 1, the \(x\)-phase derivative of \(a_{n,\sigma}\) is, exactly,
+\[
+\frac{d}{dx}\bigl(-\sigma\tau(x)\log n\bigr) \;=\; -\,\sigma\log n\cdot\tau'(x) \;=\; -\,\frac{\sigma\log n}{\theta'(\tau(x))},
+\]
+which has constant sign \(\le 0\) for \(\sigma=+\) and \(\ge 0\) for \(\sigma=-\). On the support of \(a_{n,\sigma}\), \(\tau(x)\ge 2\pi n^{2}\), so by Lemma 1 (monotonicity of \(\theta'\)), \(\theta'(\tau(x))\ge \theta'(2\pi n^{2}) = \beta_{n}\), and therefore
+\[
+\left|\frac{\log n}{\theta'(\tau(x))}\right| \;\le\; \frac{\log n}{\beta_{n}}.
+\]
+Consequently each instantaneous \(x\)-frequency of \(A_{\sigma}(x) = \sum_{n} a_{n,\sigma}(x)\) lies in the interval \([-\log n/\beta_{n},\,0]\) for \(\sigma=+\) and \([0,\,\log n/\beta_{n}]\) for \(\sigma=-\); the factors \(e^{\pm ix}\) translate each by \(\pm 1\), so the instantaneous \(x\)-frequency of \(g_{\mathrm{main}}\) lies in the closed interval \([-1 - \sup_{n}\log n/\beta_{n},\; 1 + \sup_{n}\log n/\beta_{n}]\). This is the **unit zero-crossing rate** in \(x\) in the sense that every per-mode \(x\)-phase derivative satisfies \(|\log n/\theta'(\tau(x))|\le \log n/\beta_{n}\) exactly, uniformly on the support of \(a_{n,\sigma}\).
+
+**Proof.** The derivative identity is direct from \(\tau'(x) = 1/\theta'(\tau(x))\) (from Lemma 1). The bound \(|\log n/\theta'(\tau(x))|\le \log n/\beta_{n}\) on the support of \(a_{n,\sigma}\) is the inequality \(\theta'(\tau(x))\ge\beta_{n}\) from Lemma 1 applied at \(\tau(x)\ge 2\pi n^{2}\), without asymptotic replacement. \(\square\)
 
 ## Lemma 4 (Exact Riemann–Siegel identity)
 
@@ -93,13 +124,9 @@ with the contour \(0\swarrow 1\) being the straight line of direction \(e^{-i\pi
 
 ## Lemma 5 (Riemann–Siegel decomposition of \(K_{T}(\nu)\))
 
-Define, for \(\sigma\in\{+,-\}\), \(n\ge 1\), \(\mu\in\mathbb{R}\),
+With \(\Phi_{n,\sigma,\mu}\) as in Global Notation, set
 \[
-\Phi_{n,\sigma,\mu}(t) \;:=\; (\sigma-\mu)\theta(t) - \sigma t\log n,
-\qquad
-t_{n} \;:=\; \max(T_{0},\,2\pi n^{2}),
-\]
-\[
+t_{n} \;:=\; \max(T_{0},\,2\pi n^{2}),\qquad
 J_{n,\sigma}(T,\mu) \;:=\; \int_{t_{n}}^{T}\sqrt{\theta'(t)}\, e^{i\Phi_{n,\sigma,\mu}(t)}\,dt,
 \]
 \[
@@ -115,11 +142,11 @@ with \(J_{n,\sigma}(T,\mu)=0\) whenever \(t_{n}>T\).
 
 ## Lemma 6 (Exact sign of the stationary-point \(x^{*}\))
 
-Under the change of variable \(x = \theta'(t)\), the phase derivative becomes
+With \(\widetilde\Phi_{n,\sigma,\mu}\) as in Global Notation, the \(x\)-phase derivative
 \[
-\frac{d\widetilde\Phi_{n,\sigma,\mu}}{dx}(x) \;=\; \frac{(\sigma-\mu)x - \sigma\log n}{\theta''(t(x))},
+\widetilde\Phi_{n,\sigma,\mu}'(x) \;=\; \frac{(\sigma-\mu)x - \sigma\log n}{\theta''(t(x))}
 \]
-whose numerator has unique zero
+has numerator with unique zero
 \[
 x^{*}_{n,\sigma,\mu} \;=\; \frac{\sigma\log n}{\sigma-\mu}.
 \]
@@ -140,7 +167,7 @@ Define \(S(\mu) := \{n\ge 1 : \beta_{n}\le \log n/(1+|\mu|)\}\). For every \(|\m
 
 ## Lemma 8 (Exact integration-by-parts identity for \(J_{n,\sigma}(T,\mu)\), \(n\notin S(\mu)\))
 
-Let \(\widetilde\Phi_{n,\sigma,\mu}(x) := \Phi_{n,\sigma,\mu}(t(x))\) with \(t(x) = (\theta')^{-1}(x)\). For \(|\mu|>1\), \(n\notin S(\mu)\), \(\sigma\in\{+,-\}\), and all \(T>T_{0}\) with \(X>\beta_{n}\vee x_{0}\),
+With \(\widetilde\Phi_{n,\sigma,\mu}\) and \(t(x)\) as in Global Notation: for \(|\mu|>1\), \(n\notin S(\mu)\), \(\sigma\in\{+,-\}\), and all \(T>T_{0}\) with \(X>\beta_{n}\vee x_{0}\),
 \[
 J_{n,\sigma}(T,\mu) \;=\; U_{n,\sigma}(T,\mu) \;-\; L_{n,\sigma}(\mu) \;+\; I_{n,\sigma}(T,\mu),
 \]
@@ -155,7 +182,7 @@ L_{n,\sigma}(\mu) \;=\; \frac{\sqrt{\beta_{n}\vee x_{0}}}{i\bigl[(\sigma-\mu)(\b
 I_{n,\sigma}(T,\mu) \;=\; \int_{\beta_{n}\vee x_{0}}^{X}\!\frac{(\sigma-\mu)x+\sigma\log n}{2i\sqrt{x}\,\bigl[(\sigma-\mu)x-\sigma\log n\bigr]^{2}}\, e^{i\widetilde\Phi_{n,\sigma,\mu}(x)}\,dx.
 \]
 
-**Proof.** Change of variable \(x = \theta'(t)\) (Lemma 1) converts \(J_{n,\sigma}\) into \(\int_{\beta_{n}\vee x_{0}}^{X}[\sqrt{x}/\theta''(t(x))]\,e^{i\widetilde\Phi(x)}\,dx\) with \(\widetilde\Phi'(x) = ((\sigma-\mu)x-\sigma\log n)/\theta''(t(x))\). By Lemma 6 together with the definition of \(S(\mu)\), the linear factor \((\sigma-\mu)x-\sigma\log n\) has no zero on \([\beta_{n}\vee x_{0},X]\) for \(n\notin S(\mu)\); hence \(\widetilde\Phi'(x)\ne 0\) on the interval. One integration by parts:
+**Proof.** Change of variable \(x = \theta'(t)\) (Lemma 1) converts \(J_{n,\sigma}\) into \(\int_{\beta_{n}\vee x_{0}}^{X}[\sqrt{x}/\theta''(t(x))]\,e^{i\widetilde\Phi(x)}\,dx\) with \(\widetilde\Phi'(x)\) as in Global Notation. By Lemma 6 together with the definition of \(S(\mu)\), the linear factor \((\sigma-\mu)x-\sigma\log n\) has no zero on \([\beta_{n}\vee x_{0},X]\) for \(n\notin S(\mu)\); hence \(\widetilde\Phi'(x)\ne 0\) on the interval. One integration by parts:
 \[
 \int A(x)\,e^{i\widetilde\Phi(x)}\,dx \;=\; \left[\frac{A(x)}{i\widetilde\Phi'(x)}\,e^{i\widetilde\Phi(x)}\right]_{\beta_{n}\vee x_{0}}^{X} \;-\; \int\!\left[\frac{A(x)}{i\widetilde\Phi'(x)}\right]'\!e^{i\widetilde\Phi(x)}\,dx,
 \]
