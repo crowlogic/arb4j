@@ -133,6 +133,108 @@ public class ZetaSpectralReconstruction extends
   private XYChart   powerChart;
 
   /**
+   * Thread-safe single-line console progress meter. Every call to
+   * {@link #tick()} advances an atomic counter; a refresh is emitted only when
+   * at least {@value #REFRESH_MILLIS} ms have elapsed since the previous
+   * refresh, guarded by a lock so the stdout line is never interleaved. On
+   * {@link #finish()} the final state (100%) is written followed by a newline.
+   *
+   * Output format:
+   *   \r[label] [###########.........] 55.3% 442500/800000 eta 00:03:21
+   */
+  private static final class ProgressMeter
+  {
+    private static final int         BAR_WIDTH      = 40;
+    private static final long        REFRESH_MILLIS = 100L;
+
+    private final String             label;
+    private final int                total;
+    private final long               startMillis;
+    private final java.util.concurrent.atomic.AtomicInteger done =
+                                     new java.util.concurrent.atomic.AtomicInteger();
+    private final java.util.concurrent.atomic.AtomicLong    lastRefreshMillis =
+                                     new java.util.concurrent.atomic.AtomicLong();
+    private final Object             refreshLock    = new Object();
+
+    ProgressMeter(String label, int total)
+    {
+      this.label       = label;
+      this.total       = total;
+      this.startMillis = System.currentTimeMillis();
+      this.lastRefreshMillis.set(0L);
+    }
+
+    void tick()
+    {
+      int  d   = done.incrementAndGet();
+      long now = System.currentTimeMillis();
+      long prev = lastRefreshMillis.get();
+      if (d < total && now - prev < REFRESH_MILLIS)
+      {
+        return;
+      }
+      if (!lastRefreshMillis.compareAndSet(prev, now))
+      {
+        return;
+      }
+      render(d, now);
+    }
+
+    void finish()
+    {
+      synchronized (refreshLock)
+      {
+        render(total, System.currentTimeMillis());
+        System.out.println();
+        System.out.flush();
+      }
+    }
+
+    private void render(int d, long now)
+    {
+      synchronized (refreshLock)
+      {
+        double frac       = total == 0 ? 1.0 : (double) d / (double) total;
+        if (frac > 1.0)       frac = 1.0;
+        int    filled     = (int) Math.round(frac * BAR_WIDTH);
+        StringBuilder bar = new StringBuilder(BAR_WIDTH + 2);
+        bar.append('[');
+        for (int i = 0; i < BAR_WIDTH; i++)
+        {
+          bar.append(i < filled ? '#' : '.');
+        }
+        bar.append(']');
+
+        long elapsedMillis = now - startMillis;
+        long etaMillis     = d > 0 && d < total
+                             ? (long) (elapsedMillis * ((double) (total - d) / d))
+                             : 0L;
+        String etaStr      = formatHms(etaMillis);
+        String elapsedStr  = formatHms(elapsedMillis);
+
+        System.out.printf("\r[%s] %s %5.1f%% %d/%d elapsed %s eta %s   ",
+                          label,
+                          bar.toString(),
+                          frac * 100.0,
+                          d,
+                          total,
+                          elapsedStr,
+                          etaStr);
+        System.out.flush();
+      }
+    }
+
+    private static String formatHms(long millis)
+    {
+      long total   = millis / 1000L;
+      long hours   = total / 3600L;
+      long minutes = (total % 3600L) / 60L;
+      long seconds = total % 60L;
+      return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    }
+  }
+
+  /**
    * Phase 1. Precompute θ(t_j), ζ(½+ⅈt_j), and A(t_j) on the dense t-grid,
    * in parallel across the common ForkJoinPool. Each task owns its own
    * {@link Context} and compiled expressions.
@@ -140,7 +242,8 @@ public class ZetaSpectralReconstruction extends
   void precomputeTGrid()
   {
     System.out.printf("[pre] building dense t-grid [%g, %g] with N_T=%d, dt=%.6g%n", T0, T_MAX, N_T, DT);
-    long t0 = System.currentTimeMillis();
+    long            t0    = System.currentTimeMillis();
+    ProgressMeter   meter = new ProgressMeter("pre", N_T);
 
     thetaVals = new double[N_T];
     ampVals   = Complex.newVector(N_T);
@@ -171,8 +274,10 @@ public class ZetaSpectralReconstruction extends
         zetaVals.get(j).set(zeta);
         thetaVals[j] = theta.doubleValue();
       }
+      meter.tick();
     });
 
+    meter.finish();
     System.out.printf("[pre] done in %.2fs%n", (System.currentTimeMillis() - t0) / 1000.0);
   }
 
@@ -184,7 +289,8 @@ public class ZetaSpectralReconstruction extends
   void computeSpectralDensity()
   {
     System.out.printf("[density] computing for N_OMEGA=%d%n", N_OMEGA);
-    long t0 = System.currentTimeMillis();
+    long          t0    = System.currentTimeMillis();
+    ProgressMeter meter = new ProgressMeter("density", N_OMEGA);
 
     density = Complex.newVector(N_OMEGA);
 
@@ -219,8 +325,10 @@ public class ZetaSpectralReconstruction extends
         // multiply by dt; drop the 1/(2π) prefactor by design
         sum.mul(dtReal, BITS, density.get(k));
       }
+      meter.tick();
     });
 
+    meter.finish();
     System.out.printf("[density] done in %.2fs%n", (System.currentTimeMillis() - t0) / 1000.0);
   }
 
@@ -231,7 +339,8 @@ public class ZetaSpectralReconstruction extends
   void reconstructZetaSt()
   {
     System.out.printf("[rec] reconstructing stationary zeta directly on %d points...%n", N_T);
-    long t0 = System.currentTimeMillis();
+    long          t0    = System.currentTimeMillis();
+    ProgressMeter meter = new ProgressMeter("rec", N_T);
 
     zetaStRec = Complex.newVector(N_T);
 
@@ -260,8 +369,10 @@ public class ZetaSpectralReconstruction extends
 
         sum.mul(dOmegaR, BITS, zetaStRec.get(j));
       }
+      meter.tick();
     });
 
+    meter.finish();
     System.out.printf("[rec] done in %.2fs%n", (System.currentTimeMillis() - t0) / 1000.0);
   }
 
