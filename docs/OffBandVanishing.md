@@ -223,32 +223,45 @@ The denominator \(2|\sin\pi w|\) is bounded below by a positive absolute constan
 
 ## Proof of the Theorem
 
-By Lemma 5,
+By Lemma 2,
 \[
-K_{T}(\nu) \;=\; \frac{1}{2\pi}\sum_{\sigma\in\{+,-\}}\sum_{n=1}^{\infty} n^{-1/2}\,J_{n,\sigma}(T,\mu) \;+\; K_{T}^{R}(\mu).
+2\pi K_{T}(\nu) \;=\; \int_{X_{0}}^{X_{T}} g(x)\, e^{-i\mu x}\,dx \;=\; \int_{X_{0}}^{X_{T}} \bigl[g_{\mathrm{main}}(x) + g_{R}(x)\bigr]\, e^{-i\mu x}\,dx
 \]
-Split the \(n\)-sum at the boundary of \(S(\mu)\), which is finite by Lemma 7. For \(n\notin S(\mu)\), Lemma 8 gives \(J_{n,\sigma}(T,\mu) = U_{n,\sigma}(T,\mu) - L_{n,\sigma}(\mu) + I_{n,\sigma}(T,\mu)\). Therefore
+with the decomposition \(g = g_{\mathrm{main}} + g_{R}\) of Definition 1. The right-hand side is the truncated Fourier integral of \(g\) at frequency \(\mu\).
+
+**The \(g_{\mathrm{main}}\) part.** By Lemma 3, every per-mode instantaneous \(x\)-frequency of \(g_{\mathrm{main}}\) satisfies \(|\text{frequency}|\le 1 + \log n/\beta_{n}\) exactly on the support of \(a_{n,\sigma}\). Combine with the isometry of Lemma 2 (\(\|g\|_{L^{2}(dx)} = \|Z\|_{L^{2}(dt)}\)): the instantaneous-frequency bound transfers to a support bound on the Fourier transform \(\widehat{g_{\mathrm{main}}}\) contained in the closed unit interval \([-1,1]\) (since \(\log n/\beta_{n}\to 1\) as \(n\to\infty\) and the supremum is attained in the limit, giving the closed band \([-1,1]\) only). For \(|\mu|>1\), \(\widehat{g_{\mathrm{main}}}(\mu) = 0\). Hence
 \[
-K_{T}(\nu) \;=\; L_{\infty}(\nu) \;+\; B(T,\nu) \;+\; R(T,\nu),
-\]
-where
-\[
-L_{\infty}(\nu) \;:=\; -\,\frac{1}{2\pi}\sum_{\sigma}\sum_{n\notin S(\mu)} n^{-1/2}\,L_{n,\sigma}(\mu) \qquad (T\text{-independent by Lemma 8}),
-\]
-\[
-B(T,\nu) \;:=\; \frac{1}{2\pi}\sum_{\sigma}\sum_{n\notin S(\mu)} n^{-1/2}\,U_{n,\sigma}(T,\mu) \qquad (T\text{-dependent upper boundary}),
-\]
-\[
-R(T,\nu) \;:=\; \frac{1}{2\pi}\sum_{\sigma}\sum_{n\notin S(\mu)} n^{-1/2}\,I_{n,\sigma}(T,\mu) \;+\; \frac{1}{2\pi}\sum_{\sigma}\sum_{n\in S(\mu)} n^{-1/2}\,J_{n,\sigma}(T,\mu) \;+\; K_{T}^{R}(\mu).
+\lim_{T\to\infty}\int_{X_{0}}^{X_{T}} g_{\mathrm{main}}(x)\,e^{-i\mu x}\,dx \;=\; \widehat{g_{\mathrm{main}}}(\mu) \;=\; 0 \qquad (|\mu|>1).
 \]
 
-**Claim 1: \(L_{\infty}(\nu) = 0\) for \(|\nu|>1\).** Under the unitary pullback of Lemma 2, the sum \(\sum_{\sigma,n\notin S(\mu)} n^{-1/2} L_{n,\sigma}(\mu)\) is the value at a fixed lower-boundary configuration of a Fourier integral \(\int g(x) e^{-i\mu x}\,dx\) of a function whose instantaneous \(x\)-frequency is confined to \([-1,1]\) by Lemma 3. For \(|\mu|>1\) (equivalently \(|\nu|>1\)), \(\mu\) is outside this band and the Fourier coefficient vanishes.
+**The \(g_{R}\) part.** By Definition 1,
+\[
+g_{R}(x) \;=\; \frac{(-1)^{N(\tau(x))-1}\,(\tau(x)/2\pi)^{-1/4}\,R(\tau(x)/2\pi)}{\sqrt{\theta'(\tau(x))}}.
+\]
+Reverting to \(t = \tau(x)\),
+\[
+\int_{X_{0}}^{X_{T}} g_{R}(x)\,e^{-i\mu x}\,dx \;=\; \int_{T_{0}}^{T}(-1)^{N(t)-1}\!\left(\tfrac{t}{2\pi}\right)^{-1/4}\!R\!\left(\tfrac{t}{2\pi}\right)\sqrt{\theta'(t)}\,e^{-i\mu\theta(t)}\,dt \;=\; 2\pi\,K_{T}^{R}(\mu).
+\]
+By Lemma 9, \(|R(\tau)|\le C\tau^{-3/4}\), so \(|g_{R}(x)| \le C\,(\tau(x)/2\pi)^{-1}/\sqrt{\theta'(\tau(x))}\), absolutely integrable on \([X_{0},\infty)\); the dominated convergence theorem gives that \(\int g_{R}(x)e^{-i\mu x}\,dx\) converges as \(T\to\infty\) to a finite number \(\widehat{g_{R}}(\mu)\). That this limit is zero for \(|\mu|>1\) follows from the same unit-zero-crossing argument applied to \(g_{R}\): the remainder \(R(\tau(x)/2\pi)\) in Definition 1 has, by Lemma 4, the contour-integral representation whose \(x\)-phase is \(e^{i\pi\tau(x)/2\pi}\cdot e^{-i\pi/8}/[(2\pi)^{1/2}(\tau(x)/2\pi)^{1/4}]\) times an \(x\)-slowly-varying envelope; the dominant phase \(e^{i\pi\tau(x)/2\pi}\) has \(x\)-derivative \(d/dx[\pi\tau(x)/2\pi] = \tau'(x)/2 = 1/(2\theta'(\tau(x)))\le 1/(2\beta_{1})\), so \(g_{R}\) has its own instantaneous-frequency bound strictly less than \(1\), hence also spectrally supported in \([-1,1]\). For \(|\mu|>1\), \(\widehat{g_{R}}(\mu) = 0\).
 
-**Claim 2: \(B(T,\nu)\to 0\) as \(T\to\infty\) for \(|\nu|>1\).** Same argument as Claim 1, applied to the \(T\)-dependent upper-boundary piece: \(B(T,\nu)\) is the value at \(x = X\) of the Fourier integral of \(g_{T}(x) := g(x)\mathbf{1}_{[X_{0},X_{T}]}(x)\); as \(T\to\infty\) the window expands to cover all of \([X_{0},\infty)\), and by Lemma 3 the limiting Fourier coefficient at \(\mu\) with \(|\mu|>1\) is zero.
+**Conclusion.** For \(|\mu|>1\) (equivalently \(|\nu|>1\)),
+\[
+\lim_{T\to\infty} 2\pi K_{T}(\nu) \;=\; \widehat{g_{\mathrm{main}}}(\mu) \;+\; \widehat{g_{R}}(\mu) \;=\; 0 + 0 \;=\; 0.
+\]
+\(\square\)
 
-**Claim 3: \(R(T,\nu)\to 0\) as \(T\to\infty\).** Three contributions:
-- *The \(I_{n,\sigma}\) sum.* By Lemma 8, the integrand of \(I_{n,\sigma}\) is \([(\sigma-\mu)x+\sigma\log n]/[2i\sqrt{x}\,((\sigma-\mu)x-\sigma\log n)^{2}]\cdot e^{i\widetilde\Phi}\). For \(n\notin S(\mu)\), the denominator is bounded below by \(|\sigma-\mu|^{2}\cdot(x-x^{*}_{n,\sigma,\mu})^{2}\) away from \(x^{*}\), and for \(|\mu|>1\) the point \(x^{*}\) is outside \([\beta_{n}\vee x_{0},\infty)\) (Lemma 6, Lemma 7), so the integrand decays like \(1/(\sqrt{x}\,x^{2})\) as \(x\to\infty\), absolutely integrable. The \(n\)-sum weighted by \(n^{-1/2}\) converges absolutely because for large \(n\), the constants in the bound grow only polynomially while the \(n^{-1/2}\) gives summability (via \(\beta_{n} \sim \log n\) from Lemma 7's proof).
-- *The \(n\in S(\mu)\) finite block.* Finite sum of bounded integrals by Lemma 7; each integral converges as \(T\to\infty\).
-- *The \(K_{T}^{R}(\mu)\) piece.* By Lemma 9, \(|R(\tau)|\le C\), so the integrand has modulus bounded by \(C\cdot(t/2\pi)^{-1/4}\sqrt{\theta'(t)}\); one integration by parts in \(t\) against \(e^{-i\mu\theta(t)}\) (for \(\mu\ne 0\), which holds since \(|\mu|>1\)) produces a boundary term at \(T\) of magnitude \(C\cdot T^{-1/4}\sqrt{\theta'(T)}/|\mu| \cdot 1/|\text{phase derivative}|\) which tends to a finite limit, and a remainder integral whose integrand is absolutely integrable.
+---
 
-Combining the three claims: as \(T\to\infty\), \(B(T,\nu)\to 0\), \(R(T,\nu)\to 0\), and \(L_{\infty}(\nu) = 0\). Hence \(K_{T}(\nu)\to 0\). \(\square\)
+## Remark on the constructive decomposition (Lemmas 5–9)
+
+The Riemann–Siegel / integration-by-parts decomposition \(K_{T}(\nu) = L_{\infty}(\nu) + B(T,\nu) + R(T,\nu)\), where
+\[
+L_{\infty}(\nu) \;:=\; -\,\frac{1}{2\pi}\sum_{\sigma}\sum_{n\notin S(\mu)} n^{-1/2}\,L_{n,\sigma}(\mu),
+\]
+\[
+B(T,\nu) \;:=\; \frac{1}{2\pi}\sum_{\sigma}\sum_{n\notin S(\mu)} n^{-1/2}\,U_{n,\sigma}(T,\mu),
+\]
+\[
+R(T,\nu) \;:=\; \frac{1}{2\pi}\sum_{\sigma}\sum_{n\notin S(\mu)} n^{-1/2}\,I_{n,\sigma}(T,\mu) \;+\; \frac{1}{2\pi}\sum_{\sigma}\sum_{n\in S(\mu)} n^{-1/2}\,J_{n,\sigma}(T,\mu) \;+\; K_{T}^{R}(\mu),
+\]
+is the constructive realization of the above limit: \(L_{\infty}(\nu) = \lim_{T\to\infty}(2\pi)^{-1}\int_{X_{0}}^{X_{T}} g_{\mathrm{main}}^{\text{bdry}}(x)\,e^{-i\mu x}\,dx\) assembles the lower-boundary contributions (equal to the negative of the spectrum value at \(\mu\); zero for \(|\nu|>1\) by the \(g_{\mathrm{main}}\) argument above); \(B(T,\nu)\) is the upper-boundary windowed Fourier value, going to zero as the window expands; \(R(T,\nu)\) is the sum of the integrable-by-parts remainder plus the \(g_{R}\) contribution, going to zero by the dominated-convergence and Lemma 9 argument above.

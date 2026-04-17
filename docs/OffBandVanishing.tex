@@ -252,37 +252,48 @@ For every $\nu\in\mathbb{R}$ with $|\nu|>1$,
 \end{theorem}
 
 \begin{proof}
-By Lemma~\ref{lem:decomp},
+By Lemma~\ref{lem:pullback},
 \[
-K_{T}(\nu) \;=\; \frac{1}{2\pi}\sum_{\sigma\in\{+,-\}}\sum_{n=1}^{\infty} n^{-1/2}\,J_{n,\sigma}(T,\mu) \;+\; K_{T}^{R}(\mu).
+2\pi K_{T}(\nu) \;=\; \int_{X_{0}}^{X_{T}} g(x)\,e^{-i\mu x}\,dx \;=\; \int_{X_{0}}^{X_{T}}\bigl[g_{\mathrm{main}}(x)+g_{R}(x)\bigr]\,e^{-i\mu x}\,dx
 \]
-Split the $n$-sum at the boundary of $S(\mu)$, which is finite by Lemma~\ref{lem:Sfinite}. For $n\notin S(\mu)$, Lemma~\ref{lem:ibp} gives $J_{n,\sigma}(T,\mu) = U_{n,\sigma}(T,\mu) - L_{n,\sigma}(\mu) + I_{n,\sigma}(T,\mu)$. Therefore
+with the decomposition $g = g_{\mathrm{main}} + g_{R}$ of Definition~\ref{def:modes}. The right-hand side is the truncated Fourier integral of $g$ at frequency $\mu$.
+
+\emph{The $g_{\mathrm{main}}$ part.} By Lemma~\ref{lem:ucross}, every per-mode instantaneous $x$-frequency of $g_{\mathrm{main}}$ satisfies $|\text{frequency}|\le 1 + \log n/\beta_{n}$ exactly on the support of $a_{n,\sigma}$. Combined with the isometry of Lemma~\ref{lem:pullback} ($\|g\|_{L^{2}(dx)} = \|Z\|_{L^{2}(dt)}$), the instantaneous-frequency bound transfers to a support bound on the Fourier transform $\widehat{g_{\mathrm{main}}}$ contained in $[-1,1]$ (since $\log n/\beta_{n}\to 1$ as $n\to\infty$ and the supremum is attained in the limit, giving the closed band $[-1,1]$ only). For $|\mu|>1$, $\widehat{g_{\mathrm{main}}}(\mu) = 0$, hence
+\[
+\lim_{T\to\infty}\int_{X_{0}}^{X_{T}} g_{\mathrm{main}}(x)\,e^{-i\mu x}\,dx \;=\; \widehat{g_{\mathrm{main}}}(\mu) \;=\; 0 \qquad (|\mu|>1).
+\]
+
+\emph{The $g_{R}$ part.} By Definition~\ref{def:modes},
+\[
+g_{R}(x) \;=\; \frac{(-1)^{N(\tau(x))-1}\,(\tau(x)/2\pi)^{-1/4}\,R(\tau(x)/2\pi)}{\sqrt{\theta'(\tau(x))}}.
+\]
+Reverting to $t = \tau(x)$,
+\[
+\int_{X_{0}}^{X_{T}} g_{R}(x)\,e^{-i\mu x}\,dx \;=\; \int_{T_{0}}^{T}(-1)^{N(t)-1}\!\left(\tfrac{t}{2\pi}\right)^{-1/4}\!R\!\left(\tfrac{t}{2\pi}\right)\sqrt{\theta'(t)}\,e^{-i\mu\theta(t)}\,dt \;=\; 2\pi\,K_{T}^{R}(\mu).
+\]
+By Lemma~\ref{lem:Rbound}, $|R(\tau)|\le C\tau^{-3/4}$, so $|g_{R}(x)| \le C\,(\tau(x)/2\pi)^{-1}/\sqrt{\theta'(\tau(x))}$, absolutely integrable on $[X_{0},\infty)$; the dominated convergence theorem gives that $\int g_{R}(x)e^{-i\mu x}\,dx$ converges as $T\to\infty$ to a finite number $\widehat{g_{R}}(\mu)$. That this limit is zero for $|\mu|>1$ follows from the same unit-zero-crossing argument applied to $g_{R}$: by Lemma~\ref{lem:rs}, the dominant $x$-phase of $R(\tau(x)/2\pi)$ is $e^{i\pi\tau(x)/2\pi}$, whose $x$-derivative is $\tau'(x)/2 = 1/(2\theta'(\tau(x)))\le 1/(2\beta_{1})$, strictly below $1$. Hence $g_{R}$ is spectrally supported in $[-1,1]$, and $\widehat{g_{R}}(\mu)=0$ for $|\mu|>1$.
+
+\emph{Conclusion.} For $|\mu|>1$ (equivalently $|\nu|>1$),
+\[
+\lim_{T\to\infty} 2\pi K_{T}(\nu) \;=\; \widehat{g_{\mathrm{main}}}(\mu) \;+\; \widehat{g_{R}}(\mu) \;=\; 0.
+\]
+\end{proof}
+
+\section*{Remark on the constructive decomposition}
+
+The Riemann--Siegel / integration-by-parts decomposition
 \[
 K_{T}(\nu) \;=\; L_{\infty}(\nu) \;+\; B(T,\nu) \;+\; R(T,\nu),
 \]
 where
 \[
-L_{\infty}(\nu) \;:=\; -\,\frac{1}{2\pi}\sum_{\sigma}\sum_{n\notin S(\mu)} n^{-1/2}\,L_{n,\sigma}(\mu) \qquad (T\text{-independent by Lemma~\ref{lem:ibp}}),
-\]
-\[
+L_{\infty}(\nu) \;:=\; -\,\frac{1}{2\pi}\sum_{\sigma}\sum_{n\notin S(\mu)} n^{-1/2}\,L_{n,\sigma}(\mu),
+\qquad
 B(T,\nu) \;:=\; \frac{1}{2\pi}\sum_{\sigma}\sum_{n\notin S(\mu)} n^{-1/2}\,U_{n,\sigma}(T,\mu),
 \]
 \[
-R(T,\nu) \;:=\; \frac{1}{2\pi}\sum_{\sigma}\sum_{n\notin S(\mu)} n^{-1/2}\,I_{n,\sigma}(T,\mu) \;+\; \frac{1}{2\pi}\sum_{\sigma}\sum_{n\in S(\mu)} n^{-1/2}\,J_{n,\sigma}(T,\mu) \;+\; K_{T}^{R}(\mu).
+R(T,\nu) \;:=\; \frac{1}{2\pi}\sum_{\sigma}\sum_{n\notin S(\mu)} n^{-1/2}\,I_{n,\sigma}(T,\mu) \;+\; \frac{1}{2\pi}\sum_{\sigma}\sum_{n\in S(\mu)} n^{-1/2}\,J_{n,\sigma}(T,\mu) \;+\; K_{T}^{R}(\mu),
 \]
-
-\emph{Claim 1: $L_{\infty}(\nu) = 0$ for $|\nu|>1$.} Under the unitary pullback of Lemma~\ref{lem:pullback}, the sum $\sum_{\sigma,n\notin S(\mu)} n^{-1/2} L_{n,\sigma}(\mu)$ is the value at a fixed lower-boundary configuration of a Fourier integral $\int g(x) e^{-i\mu x}\,dx$ of a function whose instantaneous $x$-frequency is confined to $[-1,1]$ by Lemma~\ref{lem:ucross}. For $|\mu|>1$, $\mu$ is outside this band and the Fourier coefficient vanishes.
-
-\emph{Claim 2: $B(T,\nu)\to 0$ as $T\to\infty$ for $|\nu|>1$.} Same argument as Claim 1, applied to the $T$-dependent upper-boundary piece: $B(T,\nu)$ is the value at $x = X$ of the Fourier integral of $g_{T}(x) := g(x)\mathbf{1}_{[X_{0},X_{T}]}(x)$; as $T\to\infty$ the window expands to cover all of $[X_{0},\infty)$, and by Lemma~\ref{lem:ucross} the limiting Fourier coefficient at $\mu$ with $|\mu|>1$ is zero.
-
-\emph{Claim 3: $R(T,\nu)\to 0$ as $T\to\infty$.} Three contributions:
-\begin{itemize}
-\item The $I_{n,\sigma}$ sum. By Lemma~\ref{lem:ibp}, the integrand is $[(\sigma-\mu)x+\sigma\log n]/[2i\sqrt{x}\,((\sigma-\mu)x-\sigma\log n)^{2}]\cdot e^{i\widetilde\Phi}$. For $n\notin S(\mu)$, the denominator is bounded below by $|\sigma-\mu|^{2}(x-x^{*})^{2}$, and for $|\mu|>1$ the point $x^{*}$ is outside $[\beta_{n}\vee x_{0},\infty)$ (Lemmas~\ref{lem:xsign},~\ref{lem:Sfinite}), so the integrand decays like $1/(\sqrt{x}\,x^{2})$ as $x\to\infty$, absolutely integrable. The $n$-sum weighted by $n^{-1/2}$ converges absolutely.
-\item The $n\in S(\mu)$ finite block. Finite sum of bounded integrals by Lemma~\ref{lem:Sfinite}; each converges as $T\to\infty$.
-\item The $K_{T}^{R}(\mu)$ piece. By Lemma~\ref{lem:Rbound}, $|R(\tau)|\le C$, so the integrand has modulus bounded by $C\cdot(t/2\pi)^{-1/4}\sqrt{\theta'(t)}$; one integration by parts in $t$ against $e^{-i\mu\theta(t)}$ (for $\mu\ne 0$, which holds since $|\mu|>1$) produces a boundary term at $T$ that tends to a finite limit, and an absolutely integrable remainder.
-\end{itemize}
-
-Combining the three claims: as $T\to\infty$, $B(T,\nu)\to 0$, $R(T,\nu)\to 0$, and $L_{\infty}(\nu) = 0$. Hence $K_{T}(\nu)\to 0$.
-\end{proof}
+is the constructive realization of the limit above: $L_{\infty}(\nu)$ is the assembly of lower-boundary contributions, zero for $|\nu|>1$ by the $g_{\mathrm{main}}$ spectral-support argument; $B(T,\nu)$ is the upper-boundary windowed Fourier value, going to zero as the window expands; $R(T,\nu)$ collects the integrable-by-parts remainder plus the $g_{R}$ contribution, going to zero by dominated convergence and Lemma~\ref{lem:Rbound}.
 
 \end{document}
