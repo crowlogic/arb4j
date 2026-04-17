@@ -544,7 +544,8 @@ public class ZetaSpectralReconstruction extends
       "\\zeta_{st}(\\tau) \\;=\\; \\mathrm{pedestal} + \\mathrm{carrier} + \\mathrm{interior}",
       "\\mathrm{pedestal} \\;=\\; \\operatorname{Re}\\bigl[c(0)\\,d\\omega\\bigr] \\quad (\\omega = 0 \\text{ endpoint, DC offset})",
       "\\mathrm{carrier} \\;=\\; \\operatorname{Re}\\bigl[c(-2)\\,e^{-2\\,i\\tau}\\,d\\omega\\bigr] \\quad (\\omega = -2 \\text{ endpoint, oscillatory})",
-      "\\mathrm{interior} \\;=\\; \\sum_{k = K_{LO}+1}^{K_{HI}-1} \\operatorname{Re}\\bigl[c(\\omega_k)\\,e^{i\\omega_k\\tau}\\bigr]\\,d\\omega \\quad (\\omega \\in (-2, 0) \\text{ open band})"
+      "\\mathrm{interior} \\;=\\; \\sum_{k = K_{LO}+1}^{K_{HI}-1} \\operatorname{Re}\\bigl[c(\\omega_k)\\,e^{i\\omega_k\\tau}\\bigr]\\,d\\omega \\quad (\\omega \\in (-2, 0) \\text{ open band})",
+      "R(\\tau) \\;=\\; \\zeta\\!\\left(\\tfrac{1}{2}+i\\,\\theta^{-1}(\\tau)\\right) - \\zeta_{st}(\\tau) \\quad (\\text{off-band residual, complement of }[-2,0])"
     };
     VBox box = new VBox(2);
     box.setMouseTransparent(true);
@@ -584,6 +585,7 @@ public class ZetaSpectralReconstruction extends
     double[] zStOpenBandPlot    = new double[displayCount];
     double[] zStNoPedestalPlot  = new double[displayCount];
     double[] pedestalPlot       = new double[displayCount];
+    double[] residualPlot       = new double[displayCount];
 
     // The pedestal is a constant: density[K_ZERO] · D_OMEGA, independent of τ.
     double pedestalRe;
@@ -606,6 +608,10 @@ public class ZetaSpectralReconstruction extends
         zStOpenBandPlot[w]    = zetaStRecOpenBand.get(j).re().doubleValue();
         zStNoPedestalPlot[w]  = zetaStRecNoPedestal.get(j).re().doubleValue();
         pedestalPlot[w]       = pedestalRe;
+        // Off-band residual R(τ) = ζ(1/2 + i θ⁻¹(τ)) − ζ_st(τ). This is the
+        // signal content that lives in the complement of the reconstruction
+        // band [-2, 0]: what the band-limited reconstruction discards.
+        residualPlot[w]       = zTruePlot[w] - zStPlot[w];
         w++;
       }
     }
@@ -626,13 +632,15 @@ public class ZetaSpectralReconstruction extends
     DoubleDataSet stOpenBandDs  = new DoubleDataSet("Re ζ_st(τ)  [open-band reconstruction, ω ∈ (-2, 0)]").set(tauPlot, zStOpenBandPlot);
     DoubleDataSet stNoPedDs     = new DoubleDataSet("Re ζ_st(τ) − pedestal  [carrier + interior]").set(tauPlot, zStNoPedestalPlot);
     DoubleDataSet pedestalDs    = new DoubleDataSet("Pedestal = Re[c(0) · dω]  [ω = 0 endpoint DC]").set(tauPlot, pedestalPlot);
+    DoubleDataSet residualDs    = new DoubleDataSet("Re R(τ) = Re ζ − Re ζ_st  [off-band residual, complement of [-2, 0]]").set(tauPlot, residualPlot);
 
     stDs.setStyle(DataSetStyleBuilder.instance().setLineColor("cornflowerblue").setMarkerColor("cornflowerblue").setLineWidth(1.2).setLineDashes(6.0, 6.0).build());
     stOpenBandDs.setStyle(DataSetStyleBuilder.instance().setLineColor("darkgreen").setMarkerColor("darkgreen").setLineWidth(1.0).build());
     stNoPedDs.setStyle(DataSetStyleBuilder.instance().setLineColor("purple").setMarkerColor("purple").setLineWidth(1.0).build());
     pedestalDs.setStyle(DataSetStyleBuilder.instance().setLineColor("gray").setMarkerColor("gray").setLineWidth(1.0).setLineDashes(2.0, 4.0).build());
+    residualDs.setStyle(DataSetStyleBuilder.instance().setLineColor("crimson").setMarkerColor("crimson").setLineWidth(0.8).build());
 
-    chart.getDatasets().addAll(trueDs, stDs, stOpenBandDs, stNoPedDs, pedestalDs);
+    chart.getDatasets().addAll(trueDs, stDs, stOpenBandDs, stNoPedDs, pedestalDs, residualDs);
 
     // Vertical root markers — every sign-change root of each series, all of
     // them, collapsed into a single {@link DoubleDataSet} per series so only
@@ -653,7 +661,7 @@ public class ZetaSpectralReconstruction extends
     mainRenderer.setErrorStyle(ErrorStyle.NONE);
     mainRenderer.setDrawMarker(false);
     mainRenderer.setDrawBubbles(false);
-    mainRenderer.getDatasets().addAll(trueDs, stDs, stOpenBandDs, stNoPedDs, pedestalDs);
+    mainRenderer.getDatasets().addAll(trueDs, stDs, stOpenBandDs, stNoPedDs, pedestalDs, residualDs);
 
     ErrorDataSetRenderer rootRenderer = new ErrorDataSetRenderer();
     rootRenderer.setPolyLineStyle(LineStyle.NORMAL);
@@ -728,32 +736,41 @@ public class ZetaSpectralReconstruction extends
 
     // Theoretical flat-density power curve under the conjecture that the
     // spectral density c(ω) is identically zero outside [-2, 0] and (for
-    // visual comparison) constant on [-2, 0]. With c(ω) = 0 off-band, the
-    // cumulative |dΦ|² integral is constant at power[K_LO] for ω ≤ -2,
-    // rises linearly across the band from power[K_LO] to power[K_HI]
-    // over [-2, 0], and is flat at power[K_HI] for ω ≥ 0. The ramp
-    // endpoints are the empirical cumulative power at the band edges,
-    // so the theoretical line connects to the empirical curve at both
-    // ω = -2 and ω = 0.
-    double   powerLoBand = power[K_LO];
-    double   powerHiBand = power[K_HI];
-    double   bandSpan    = powerHiBand - powerLoBand;
+    // visual comparison) constant on [-2, 0]. The ramp is anchored to the
+    // empirical plateau levels: power[0] on the left (where the empirical
+    // cumulative curve enters the window from ω = OMEGA_LO) and
+    // power[N_OMEGA − 1] on the right (where it has finished accumulating
+    // and sits flat). The theoretical curve is flat at power[0] for ω ≤ -2,
+    // rises linearly to power[N_OMEGA − 1] across [-2, 0], and is flat at
+    // power[N_OMEGA − 1] for ω ≥ 0, so the dashed line connects to the
+    // empirical plateau on both sides and the two endpoints agree with
+    // what the black trace does past the band edges.
+    double   powerLeft   = power[0];
+    double   powerRight  = power[N_OMEGA - 1];
+    double   bandSpan    = powerRight - powerLeft;
     int      bandCount   = K_HI - K_LO + 1;
     double[] theoryPower = new double[N_OMEGA];
+    double[] deltaPower  = new double[N_OMEGA];
     for (int k = 0; k < N_OMEGA; k++)
     {
       if (k < K_LO)
       {
-        theoryPower[k] = powerLoBand;
+        theoryPower[k] = powerLeft;
       }
       else if (k > K_HI)
       {
-        theoryPower[k] = powerHiBand;
+        theoryPower[k] = powerRight;
       }
       else
       {
-        theoryPower[k] = powerLoBand + bandSpan * (k - K_LO) / (double) (bandCount - 1);
+        theoryPower[k] = powerLeft + bandSpan * (k - K_LO) / (double) (bandCount - 1);
       }
+      // Complement-of-band cumulative deficit: how much empirical cumulative
+      // |dΦ|² mass differs from the flat-density prediction at each ω. On
+      // the band edges the two curves are anchored to meet, so delta is zero
+      // at ω = -2 and ω = 0 by construction; outside the band it measures
+      // the off-band mass the conjecture predicts should vanish as T → ∞.
+      deltaPower[k] = power[k] - theoryPower[k];
     }
 
     // Scatter style for the empirical traces: small filled circles, no line.
@@ -803,14 +820,24 @@ public class ZetaSpectralReconstruction extends
     powerChart.setTitle(String.format("Spectral Distribution Function — "
                                     + "integrated over t ∈ [%.6f, %.1f]",
                                       T0, T_MAX));
+    String scatterMagenta = DataSetStyleBuilder.instance()
+                                                .setLineColor("magenta")
+                                                .setMarkerColor("magenta")
+                                                .setMarkerType("circle")
+                                                .setMarkerSize(1.5)
+                                                .build();
+
     DoubleDataSet empDs    = new DoubleDataSet("Empirical: cumulative sum of |dΦ|²").set(omegas, power);
-    DoubleDataSet theoryDs = new DoubleDataSet("Theoretical shape (flat spectral density on [-2, 0])").set(omegas, theoryPower);
+    DoubleDataSet theoryDs = new DoubleDataSet("Theoretical shape (flat spectral density on [-2, 0], anchored to empirical plateaus)").set(omegas, theoryPower);
+    DoubleDataSet deltaDs  = new DoubleDataSet("Off-band cumulative deficit Δ(ω) = empirical − theoretical").set(omegas, deltaPower);
     empDs.setStyle(scatterBlack);
     theoryDs.setStyle(dashRed);
-    // Empirical as scatter, theoretical as a dashed line — two renderers on
-    // the same chart because one is point-style and the other is line-style.
+    deltaDs.setStyle(scatterMagenta);
+    // Empirical and off-band deficit rendered as scatter, theoretical
+    // rendered as a dashed line — two renderers on the same chart because
+    // the point-style and line-style datasets need different rendering.
     ErrorDataSetRenderer powerScatter = newScatterRenderer();
-    powerScatter.getDatasets().add(empDs);
+    powerScatter.getDatasets().addAll(empDs, deltaDs);
     ErrorDataSetRenderer powerLine    = new ErrorDataSetRenderer();
     powerLine.setPolyLineStyle(LineStyle.NORMAL);
     powerLine.setErrorStyle(ErrorStyle.NONE);
