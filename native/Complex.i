@@ -1012,15 +1012,27 @@ import arb.functions.complex.ComplexNullaryFunction;
     return arblib.acb_equal(this, that) != 0;
   }
   
+  /**
+   * Sets the dimension of this as an array (a contiguous array of pointers to
+   * {@link Complex}s, copying the contents as well since almost always the newly
+   * reserved location will be in a different portion of the heap
+   * 
+   * @param alloc
+   * @return this
+   */
   public Complex resize(int alloc)
   {
-    swigCPtr = SWIGTYPE_p_void.getCPtr(arblib.flint_realloc(new SWIGTYPE_p_void(swigCPtr,
-                                                                             false),
-                                                         2 * (long)alloc * Complex.BYTES));
-    Complex newElements[] = new Complex[alloc];
-    System.arraycopy(elements, 0, newElements, 0, dim);
-    this.dim = alloc;
-    elements = newElements;
+    if (alloc == dim)
+    {
+      return this;
+    }
+    Complex newLocation = Complex.newVector(alloc).setName(name);
+    int     nd          = Math.min(size(), newLocation.size());
+    for (int i = 0; i < nd; i++)
+    {
+      newLocation.get(i).set(get(i));
+    }
+    become(newLocation);
     return this;
   }
     
