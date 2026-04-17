@@ -398,6 +398,36 @@ public class ZetaSpectralReconstruction extends
    * the interpolated zero. Mirrors the Python reference
    * {@code find_sign_change_roots}.
    */
+  /**
+   * Build a single {@link DoubleDataSet} encoding all vertical root markers
+   * for one series. For each root r, the point pair (r, yLo), (r, yHi) is
+   * appended; between successive roots a (NaN, NaN) point is inserted so the
+   * polyline renderer breaks the stroke and does not draw a horizontal line
+   * joining one vertical marker to the next.
+   */
+  static DoubleDataSet newRootMarkerDataSet(String label, double[] roots, double yLo, double yHi, String color)
+  {
+    int n = roots.length;
+    double[] xs = new double[n * 3];
+    double[] ys = new double[n * 3];
+    for (int i = 0; i < n; i++)
+    {
+      xs[3 * i]     = roots[i];
+      ys[3 * i]     = yLo;
+      xs[3 * i + 1] = roots[i];
+      ys[3 * i + 1] = yHi;
+      xs[3 * i + 2] = Double.NaN;
+      ys[3 * i + 2] = Double.NaN;
+    }
+    DoubleDataSet ds = new DoubleDataSet(label).set(xs, ys);
+    ds.setStyle(DataSetStyleBuilder.instance()
+                                    .setLineColor(color)
+                                    .setMarkerColor(color)
+                                    .setLineWidth(0.6)
+                                    .build());
+    return ds;
+  }
+
   static double[] findSignChangeRoots(double[] x, double[] y)
   {
     List<Double> roots = new ArrayList<>();
@@ -471,28 +501,16 @@ public class ZetaSpectralReconstruction extends
 
     chart.getDatasets().addAll(trueDs, stDs);
 
-    // Vertical root markers — every 10th sign-change root of each series.
-    // Encode each as a two-point DoubleDataSet spanning the y range.
+    // Vertical root markers — every sign-change root of each series, all of
+    // them, collapsed into a single {@link DoubleDataSet} per series so only
+    // one legend entry appears. Each root is two consecutive points
+    // (r, yLo) and (r, yHi); between successive roots a (NaN, NaN) pair
+    // breaks the polyline so the two vertical strokes are not joined by a
+    // diagonal line across the chart.
     double yLo = -6.0;
     double yHi = 6.0;
-    for (int i = 0; i < rootsTrue.length; i += 10)
-    {
-      double r = rootsTrue[i];
-      DoubleDataSet line = new DoubleDataSet(String.format("zTrue root %d", i)).set(new double[]
-      { r, r }, new double[]
-      { yLo, yHi });
-      line.setStyle("strokeColor=red; strokeWidth=0.6; opacity=0.3;");
-      chart.getDatasets().add(line);
-    }
-    for (int i = 0; i < rootsSt.length; i += 10)
-    {
-      double r = rootsSt[i];
-      DoubleDataSet line = new DoubleDataSet(String.format("zSt root %d", i)).set(new double[]
-      { r, r }, new double[]
-      { yLo, yHi });
-      line.setStyle("strokeColor=orange; strokeWidth=0.6; opacity=0.3;");
-      chart.getDatasets().add(line);
-    }
+    chart.getDatasets().add(newRootMarkerDataSet("zTrue roots", rootsTrue, yLo, yHi, "red"));
+    chart.getDatasets().add(newRootMarkerDataSet("zSt roots",   rootsSt,   yLo, yHi, "orange"));
 
     return chart;
   }
