@@ -110,7 +110,7 @@ public class ZetaSpectralReconstruction extends
   public static final double T_MAX         = 1000.0;
   public static final double T_DISPLAY_MAX = 100.0;
   public static final int    N_T           = 80000;
-  public static final int    N_OMEGA       = 2560;
+  public static final int    N_OMEGA       = 5120;
   public static final double OMEGA_LO      = -3.0;
   public static final double OMEGA_HI      = +1.0;
   public static final int    BITS          = 128;
@@ -493,7 +493,9 @@ public class ZetaSpectralReconstruction extends
                                                        ""),
                                 new DefaultNumericAxis("Re",
                                                        ""));
-    chart.setTitle("High-Resolution Comparison: True Zeta vs Stationary Spectral Process");
+    chart.setTitle(String.format("High-Resolution Comparison: True Zeta vs Stationary Spectral Process — "
+                               + "t ∈ [%.6f, %.1f] displayed, integrated over t ∈ [%.6f, %.1f]",
+                                 T0, T_DISPLAY_MAX, T0, T_MAX));
 
     DoubleDataSet trueDs = new DoubleDataSet("Re ζ(1/2 + i θ⁻¹(τ))  [nonstationary ∘ θ⁻¹]").set(tauPlot, zTruePlot);
     DoubleDataSet stDs   = new DoubleDataSet("Re ζ_st(τ)  [stationary spectral reconstruction]").set(tauPlot, zStPlot);
@@ -506,11 +508,31 @@ public class ZetaSpectralReconstruction extends
     // one legend entry appears. Each root is two consecutive points
     // (r, yLo) and (r, yHi); between successive roots a (NaN, NaN) pair
     // breaks the polyline so the two vertical strokes are not joined by a
-    // diagonal line across the chart.
+    // diagonal line across the chart. These are attached to a dedicated
+    // {@link ErrorDataSetRenderer} with {@code setAllowNaNs(true)} so the
+    // NaN separator is honored as a stroke break; the default renderer does
+    // not respect NaN and draws diagonal lines across the chart.
     double yLo = -6.0;
     double yHi = 6.0;
-    chart.getDatasets().add(newRootMarkerDataSet("zTrue roots", rootsTrue, yLo, yHi, "red"));
-    chart.getDatasets().add(newRootMarkerDataSet("zSt roots",   rootsSt,   yLo, yHi, "orange"));
+    DoubleDataSet trueRootsDs = newRootMarkerDataSet("zTrue roots", rootsTrue, yLo, yHi, "red");
+    DoubleDataSet stRootsDs   = newRootMarkerDataSet("zSt roots",   rootsSt,   yLo, yHi, "orange");
+
+    ErrorDataSetRenderer mainRenderer = new ErrorDataSetRenderer();
+    mainRenderer.setPolyLineStyle(LineStyle.NORMAL);
+    mainRenderer.setErrorStyle(ErrorStyle.NONE);
+    mainRenderer.setDrawMarker(false);
+    mainRenderer.setDrawBubbles(false);
+    mainRenderer.getDatasets().addAll(trueDs, stDs);
+
+    ErrorDataSetRenderer rootRenderer = new ErrorDataSetRenderer();
+    rootRenderer.setPolyLineStyle(LineStyle.NORMAL);
+    rootRenderer.setErrorStyle(ErrorStyle.NONE);
+    rootRenderer.setDrawMarker(false);
+    rootRenderer.setDrawBubbles(false);
+    rootRenderer.setAllowNaNs(true);
+    rootRenderer.getDatasets().addAll(trueRootsDs, stRootsDs);
+
+    chart.getRenderers().setAll(mainRenderer, rootRenderer);
 
     return chart;
   }
@@ -627,7 +649,9 @@ public class ZetaSpectralReconstruction extends
                                                   ""),
                            new DefaultNumericAxis("Φ(ω)",
                                                   ""));
-    phiChart.setTitle("Cumulative Spectral Measure Φ(ω) = ∫ dΦ");
+    phiChart.setTitle(String.format("Cumulative Spectral Measure Φ(ω) = ∫ dΦ — "
+                                  + "integrated over t ∈ [%.6f, %.1f]",
+                                    T0, T_MAX));
     DoubleDataSet reDs = new DoubleDataSet("Re Φ(ω)").set(omegas, phiRe);
     DoubleDataSet imDs = new DoubleDataSet("Im Φ(ω)").set(omegas, phiIm);
     reDs.setStyle(scatterBlack);
@@ -643,7 +667,9 @@ public class ZetaSpectralReconstruction extends
                                                     ""),
                              new DefaultNumericAxis("Power",
                                                     ""));
-    powerChart.setTitle("Spectral Distribution Function");
+    powerChart.setTitle(String.format("Spectral Distribution Function — "
+                                    + "integrated over t ∈ [%.6f, %.1f]",
+                                      T0, T_MAX));
     DoubleDataSet empDs    = new DoubleDataSet("Empirical: cumulative sum of |dΦ|²").set(omegas, power);
     DoubleDataSet theoryDs = new DoubleDataSet("Theoretical shape (flat spectral density on [-2, 0])").set(omegas, theoryPower);
     empDs.setStyle(scatterBlack);
