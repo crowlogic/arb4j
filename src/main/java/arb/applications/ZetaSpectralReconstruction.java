@@ -557,29 +557,31 @@ public class ZetaSpectralReconstruction extends
       }
     }
 
-    // Theoretical flat-density power line drawn only over the band [-2, 0]:
-    // zero below OMEGA_BAND_LO, linear ramp from 0 to power[K_HI]-power[K_LO]
-    // shifted by power[K_LO] between OMEGA_BAND_LO and OMEGA_BAND_HI, flat
-    // above OMEGA_BAND_HI. This matches the interpretation that the spectral
-    // density is zero off [-2, 0] and (notionally) flat on it.
-    double   bandStart   = power[K_LO];
-    double   bandFinal   = power[K_HI];
-    double   bandSpan    = bandFinal - bandStart;
+    // Theoretical flat-density power curve under the conjecture that the
+    // spectral density c(ω) is identically zero outside [-2, 0] and (for
+    // visual comparison) constant on [-2, 0]. With c(ω) = 0 off-band, the
+    // cumulative |dΦ|² integral is zero for ω < -2, rises linearly from 0
+    // to the band's share of total power over [-2, 0], and is flat at that
+    // value for ω > 0. The band-share of power is the empirical
+    // on-band increment power[K_HI] − power[K_LO] (any gap between this
+    // curve and the empirical curve is exactly the off-band noise that
+    // the conjecture predicts will vanish as T → ∞).
+    double   bandPower   = power[K_HI] - power[K_LO];
     int      bandCount   = K_HI - K_LO + 1;
     double[] theoryPower = new double[N_OMEGA];
     for (int k = 0; k < N_OMEGA; k++)
     {
       if (k < K_LO)
       {
-        theoryPower[k] = bandStart;
+        theoryPower[k] = 0.0;
       }
       else if (k > K_HI)
       {
-        theoryPower[k] = bandFinal;
+        theoryPower[k] = bandPower;
       }
       else
       {
-        theoryPower[k] = bandStart + bandSpan * (k - K_LO) / (double) (bandCount - 1);
+        theoryPower[k] = bandPower * (k - K_LO) / (double) (bandCount - 1);
       }
     }
 
