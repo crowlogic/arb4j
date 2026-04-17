@@ -142,7 +142,7 @@ public class ZetaSpectralReconstruction extends
    * T_MAX so that the timestep dt stays fixed across frames.
    */
   public static       int    N_T           = 80000;
-  public static final int    N_OMEGA       = 10240;
+  public static final int    N_OMEGA       = 20480;
   public static final double OMEGA_LO      = -3.0;
   public static final double OMEGA_HI      = +1.0;
   public static final int    BITS          = 128;
