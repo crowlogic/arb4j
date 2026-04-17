@@ -14,6 +14,7 @@ import arb.expressions.Context;
 import arb.functions.RealToComplexFunction;
 import arb.functions.real.RealFunction;
 import arb.stochastic.Charts;
+import arb.utensils.Utensils;
 import arb.viz.WindowManager;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
@@ -23,10 +24,15 @@ import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
 import io.fair_acc.dataset.spi.DoubleDataSet;
 import io.fair_acc.dataset.utils.DataSetStyleBuilder;
 import javafx.application.Application;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
@@ -110,7 +116,7 @@ public class ZetaSpectralReconstruction extends
   public static final double T_MAX         = 1000.0;
   public static final double T_DISPLAY_MAX = 100.0;
   public static final int    N_T           = 80000;
-  public static final int    N_OMEGA       = 5120;
+  public static final int    N_OMEGA       = 10240;
   public static final double OMEGA_LO      = -3.0;
   public static final double OMEGA_HI      = +1.0;
   public static final int    BITS          = 128;
@@ -129,6 +135,15 @@ public class ZetaSpectralReconstruction extends
   public static final int    K_LO          = (int) Math.ceil((OMEGA_BAND_LO - OMEGA_LO) / D_OMEGA);
   public static final int    K_HI          = (int) Math.floor((OMEGA_BAND_HI - OMEGA_LO) / D_OMEGA);
 
+  /**
+   * Index of the ω = 0 sample in the OMEGAS grid. Under OMEGA_LO = −3 and
+   * N_OMEGA chosen so that (OMEGA_HI − OMEGA_LO)/N_OMEGA divides 3 evenly,
+   * this is an integer: K0 = 3 / D_OMEGA = K_HI. Kept as its own named
+   * constant because the pedestal term depends on density[K0], not on
+   * density[K_HI] conceptually (they happen to coincide here).
+   */
+  public static final int    K_ZERO        = (int) Math.round((0.0 - OMEGA_LO) / D_OMEGA);
+
   private static final String AMP_EXPR   = "ζ(½+ⅈ*t)*√(diff(ϑ(t),t))";
   private static final String ZETA_EXPR  = "ζ(½+ⅈ*t)";
   private static final String THETA_EXPR = "ϑ(t)";
@@ -138,6 +153,8 @@ public class ZetaSpectralReconstruction extends
   private Complex   zetaVals;
   private Complex   density;
   private Complex   zetaStRec;
+  private Complex   zetaStRecNoPedestal; // ζ_st − (pedestal at ω = 0, evaluated at τ_j)
+  private Complex   zetaStRecOpenBand;   // ζ_st summed only over k ∈ [K_LO+1, K_HI-1]
 
   private boolean   dark            = true;
   private boolean   light;
@@ -147,6 +164,7 @@ public class ZetaSpectralReconstruction extends
   private XYChart   ratioChart;
   private XYChart   phiChart;
   private XYChart   powerChart;
+  private StackPane comparisonPane;
 
   /**
    * Thread-safe single-line console progress meter. Every call to
@@ -349,29 +367,58 @@ public class ZetaSpectralReconstruction extends
   }
 
   /**
-   * Phase 3. Direct inverse-Fourier reconstruction of ζ_st(τ_j) for every
-   * j in the precomputed τ = θ(t) grid. Parallel over j.
+   * Phase 3. Inverse-Fourier reconstruction of ζ_st(τ_j) for every j in the
+   * precomputed τ = θ(t) grid. Computes three closely related signals in a
+   * single pass over k ∈ [K_LO, K_HI], the band of support for the
+   * conjectured spectral density:
+   *
+   * <ul>
+   *   <li><b>{@link #zetaStRec}</b> — closed-band reconstruction,
+   *       summed over k ∈ [K_LO, K_HI] inclusive (includes both endpoints,
+   *       which carry large mass at ω = −2 and ω = 0).</li>
+   *   <li><b>{@link #zetaStRecOpenBand}</b> — open-band reconstruction,
+   *       summed over k ∈ (K_LO, K_HI), i.e. the same sum with both
+   *       endpoint contributions subtracted. Diagnoses whether the
+   *       non-negativity of ζ_st on the displayed window is driven by the
+   *       endpoint mass.</li>
+   *   <li><b>{@link #zetaStRecNoPedestal}</b> — closed-band reconstruction
+   *       with the ω = 0 endpoint contribution subtracted. At ω = 0 the
+   *       exponential {@code exp(i·0·τ)} is 1, so this endpoint contributes
+   *       a constant (the "pedestal") to ζ_st equal to
+   *       {@code density[K_ZERO] · D_OMEGA}. Removing it isolates the
+   *       oscillatory carrier-and-interior part.</li>
+   * </ul>
+   *
+   * Parallel over j.
    */
   void reconstructZetaSt()
   {
-    System.out.printf("[rec] reconstructing stationary zeta directly on %d points...%n", N_T);
+    System.out.printf("[rec] reconstructing stationary zeta (closed / open-band / pedestal-removed) on %d points...%n", N_T);
     long          t0    = System.currentTimeMillis();
     ProgressMeter meter = new ProgressMeter("rec", N_T);
 
-    zetaStRec = Complex.newVector(N_T);
+    zetaStRec           = Complex.newVector(N_T);
+    zetaStRecOpenBand   = Complex.newVector(N_T);
+    zetaStRecNoPedestal = Complex.newVector(N_T);
 
     IntStream.range(0, N_T).parallel().forEach(j ->
     {
       double tauJ = thetaVals[j];
 
-      try ( Complex sum     = new Complex();
-            Complex phase   = new Complex();
-            Complex argPhi  = new Complex();
-            Complex term    = new Complex();
-            Real    dOmegaR = new Real().set(D_OMEGA))
+      try ( Complex sum         = new Complex();
+            Complex endpointLo  = new Complex();
+            Complex endpointHi  = new Complex();
+            Complex pedestal    = new Complex();
+            Complex phase       = new Complex();
+            Complex argPhi      = new Complex();
+            Complex term        = new Complex();
+            Complex scratch     = new Complex();
+            Real    dOmegaR     = new Real().set(D_OMEGA))
       {
         sum.set(0, 0);
-        for (int k = 0; k < N_OMEGA; k++)
+
+        // Closed-band sum over k ∈ [K_LO, K_HI].
+        for (int k = K_LO; k <= K_HI; k++)
         {
           double omegaK = OMEGA_LO + k * D_OMEGA;
 
@@ -381,9 +428,36 @@ public class ZetaSpectralReconstruction extends
 
           density.get(k).mul(phase, BITS, term);
           sum.add(term, BITS, sum);
+
+          // Snapshot the two band-endpoint contributions.
+          if (k == K_LO)
+          {
+            endpointLo.set(term);
+          }
+          if (k == K_HI)
+          {
+            endpointHi.set(term);
+          }
+          // The pedestal term is the contribution at ω = 0; K_ZERO coincides
+          // with K_HI under the current grid, so reuse that evaluation.
+          if (k == K_ZERO)
+          {
+            pedestal.set(term);
+          }
         }
 
+        // Closed-band reconstruction: Σ · dω.
         sum.mul(dOmegaR, BITS, zetaStRec.get(j));
+
+        // Open-band reconstruction: subtract both endpoint terms before
+        // multiplying by dω.
+        sum.sub(endpointLo, BITS, scratch);
+        scratch.sub(endpointHi, BITS, scratch);
+        scratch.mul(dOmegaR, BITS, zetaStRecOpenBand.get(j));
+
+        // Pedestal-removed reconstruction: subtract just the ω = 0 term.
+        sum.sub(pedestal, BITS, scratch);
+        scratch.mul(dOmegaR, BITS, zetaStRecNoPedestal.get(j));
       }
       meter.tick();
     });
@@ -452,6 +526,41 @@ public class ZetaSpectralReconstruction extends
     return out;
   }
 
+  /**
+   * Build the set of LaTeX ImageViews that annotate the comparison chart with
+   * the closed-band decomposition
+   *
+   * ζ_st(τ) = pedestal + carrier_{ω = -2} + interior
+   *
+   * where each term is the explicit Riemann-sum contribution at that location
+   * in the band [-2, 0]. The formulas are written as a single multi-line
+   * align block so the three components share a common baseline and the
+   * definitions of pedestal, carrier, and interior are grouped next to the
+   * equation that uses them.
+   */
+  static VBox buildLatexAnnotations()
+  {
+    String[] formulas = {
+      "\\zeta_{st}(\\tau) \\;=\\; \\mathrm{pedestal} + \\mathrm{carrier} + \\mathrm{interior}",
+      "\\mathrm{pedestal} \\;=\\; \\operatorname{Re}\\bigl[c(0)\\,d\\omega\\bigr] \\quad (\\omega = 0 \\text{ endpoint, DC offset})",
+      "\\mathrm{carrier} \\;=\\; \\operatorname{Re}\\bigl[c(-2)\\,e^{-2\\,i\\tau}\\,d\\omega\\bigr] \\quad (\\omega = -2 \\text{ endpoint, oscillatory})",
+      "\\mathrm{interior} \\;=\\; \\sum_{k = K_{LO}+1}^{K_{HI}-1} \\operatorname{Re}\\bigl[c(\\omega_k)\\,e^{i\\omega_k\\tau}\\bigr]\\,d\\omega \\quad (\\omega \\in (-2, 0) \\text{ open band})"
+    };
+    VBox box = new VBox(2);
+    box.setMouseTransparent(true);
+    box.setPickOnBounds(false);
+    box.setAlignment(Pos.TOP_LEFT);
+    StackPane.setAlignment(box, Pos.TOP_LEFT);
+    for (String formula : formulas)
+    {
+      ImageView iv = new ImageView(SwingFXUtils.toFXImage(Utensils.renderLatexFormulaAsBufferedImage(formula, 18), null));
+      iv.setMouseTransparent(true);
+      iv.setPickOnBounds(false);
+      box.getChildren().add(iv);
+    }
+    return box;
+  }
+
   XYChart newComparisonChart()
   {
     // Mask: t_j ∈ [T0, T_DISPLAY_MAX]
@@ -469,9 +578,21 @@ public class ZetaSpectralReconstruction extends
       }
     }
 
-    double[] tauPlot   = new double[displayCount];
-    double[] zTruePlot = new double[displayCount];
-    double[] zStPlot   = new double[displayCount];
+    double[] tauPlot            = new double[displayCount];
+    double[] zTruePlot          = new double[displayCount];
+    double[] zStPlot            = new double[displayCount];
+    double[] zStOpenBandPlot    = new double[displayCount];
+    double[] zStNoPedestalPlot  = new double[displayCount];
+    double[] pedestalPlot       = new double[displayCount];
+
+    // The pedestal is a constant: density[K_ZERO] · D_OMEGA, independent of τ.
+    double pedestalRe;
+    try ( Complex pedestalC = new Complex();
+          Real    dOmegaR   = new Real().set(D_OMEGA))
+    {
+      density.get(K_ZERO).mul(dOmegaR, BITS, pedestalC);
+      pedestalRe = pedestalC.re().doubleValue();
+    }
 
     int w = 0;
     for (int j = 0; j < N_T && w < displayCount; j++)
@@ -479,9 +600,12 @@ public class ZetaSpectralReconstruction extends
       double tj = T0 + j * DT;
       if (tj >= T0 && tj <= T_DISPLAY_MAX)
       {
-        tauPlot[w]   = thetaVals[j];
-        zTruePlot[w] = zetaVals.get(j).re().doubleValue();
-        zStPlot[w]   = zetaStRec.get(j).re().doubleValue();
+        tauPlot[w]            = thetaVals[j];
+        zTruePlot[w]          = zetaVals.get(j).re().doubleValue();
+        zStPlot[w]            = zetaStRec.get(j).re().doubleValue();
+        zStOpenBandPlot[w]    = zetaStRecOpenBand.get(j).re().doubleValue();
+        zStNoPedestalPlot[w]  = zetaStRecNoPedestal.get(j).re().doubleValue();
+        pedestalPlot[w]       = pedestalRe;
         w++;
       }
     }
@@ -497,11 +621,18 @@ public class ZetaSpectralReconstruction extends
                                + "t ∈ [%.6f, %.1f] displayed, integrated over t ∈ [%.6f, %.1f]",
                                  T0, T_DISPLAY_MAX, T0, T_MAX));
 
-    DoubleDataSet trueDs = new DoubleDataSet("Re ζ(1/2 + i θ⁻¹(τ))  [nonstationary ∘ θ⁻¹]").set(tauPlot, zTruePlot);
-    DoubleDataSet stDs   = new DoubleDataSet("Re ζ_st(τ)  [stationary spectral reconstruction]").set(tauPlot, zStPlot);
-    stDs.setStyle("strokeDashArray=6,6; strokeColor=cornflowerblue;");
+    DoubleDataSet trueDs        = new DoubleDataSet("Re ζ(1/2 + i θ⁻¹(τ))  [nonstationary ∘ θ⁻¹]").set(tauPlot, zTruePlot);
+    DoubleDataSet stDs          = new DoubleDataSet("Re ζ_st(τ)  [closed-band reconstruction, ω ∈ [-2, 0]]").set(tauPlot, zStPlot);
+    DoubleDataSet stOpenBandDs  = new DoubleDataSet("Re ζ_st(τ)  [open-band reconstruction, ω ∈ (-2, 0)]").set(tauPlot, zStOpenBandPlot);
+    DoubleDataSet stNoPedDs     = new DoubleDataSet("Re ζ_st(τ) − pedestal  [carrier + interior]").set(tauPlot, zStNoPedestalPlot);
+    DoubleDataSet pedestalDs    = new DoubleDataSet("Pedestal = Re[c(0) · dω]  [ω = 0 endpoint DC]").set(tauPlot, pedestalPlot);
 
-    chart.getDatasets().addAll(trueDs, stDs);
+    stDs.setStyle(DataSetStyleBuilder.instance().setLineColor("cornflowerblue").setMarkerColor("cornflowerblue").setLineWidth(1.2).setLineDashes(6.0, 6.0).build());
+    stOpenBandDs.setStyle(DataSetStyleBuilder.instance().setLineColor("darkgreen").setMarkerColor("darkgreen").setLineWidth(1.0).build());
+    stNoPedDs.setStyle(DataSetStyleBuilder.instance().setLineColor("purple").setMarkerColor("purple").setLineWidth(1.0).build());
+    pedestalDs.setStyle(DataSetStyleBuilder.instance().setLineColor("gray").setMarkerColor("gray").setLineWidth(1.0).setLineDashes(2.0, 4.0).build());
+
+    chart.getDatasets().addAll(trueDs, stDs, stOpenBandDs, stNoPedDs, pedestalDs);
 
     // Vertical root markers — every sign-change root of each series, all of
     // them, collapsed into a single {@link DoubleDataSet} per series so only
@@ -522,7 +653,7 @@ public class ZetaSpectralReconstruction extends
     mainRenderer.setErrorStyle(ErrorStyle.NONE);
     mainRenderer.setDrawMarker(false);
     mainRenderer.setDrawBubbles(false);
-    mainRenderer.getDatasets().addAll(trueDs, stDs);
+    mainRenderer.getDatasets().addAll(trueDs, stDs, stOpenBandDs, stNoPedDs, pedestalDs);
 
     ErrorDataSetRenderer rootRenderer = new ErrorDataSetRenderer();
     rootRenderer.setPolyLineStyle(LineStyle.NORMAL);
@@ -598,28 +729,30 @@ public class ZetaSpectralReconstruction extends
     // Theoretical flat-density power curve under the conjecture that the
     // spectral density c(ω) is identically zero outside [-2, 0] and (for
     // visual comparison) constant on [-2, 0]. With c(ω) = 0 off-band, the
-    // cumulative |dΦ|² integral is zero for ω < -2, rises linearly from 0
-    // to the band's share of total power over [-2, 0], and is flat at that
-    // value for ω > 0. The band-share of power is the empirical
-    // on-band increment power[K_HI] − power[K_LO] (any gap between this
-    // curve and the empirical curve is exactly the off-band noise that
-    // the conjecture predicts will vanish as T → ∞).
-    double   bandPower   = power[K_HI] - power[K_LO];
+    // cumulative |dΦ|² integral is constant at power[K_LO] for ω ≤ -2,
+    // rises linearly across the band from power[K_LO] to power[K_HI]
+    // over [-2, 0], and is flat at power[K_HI] for ω ≥ 0. The ramp
+    // endpoints are the empirical cumulative power at the band edges,
+    // so the theoretical line connects to the empirical curve at both
+    // ω = -2 and ω = 0.
+    double   powerLoBand = power[K_LO];
+    double   powerHiBand = power[K_HI];
+    double   bandSpan    = powerHiBand - powerLoBand;
     int      bandCount   = K_HI - K_LO + 1;
     double[] theoryPower = new double[N_OMEGA];
     for (int k = 0; k < N_OMEGA; k++)
     {
       if (k < K_LO)
       {
-        theoryPower[k] = 0.0;
+        theoryPower[k] = powerLoBand;
       }
       else if (k > K_HI)
       {
-        theoryPower[k] = bandPower;
+        theoryPower[k] = powerHiBand;
       }
       else
       {
-        theoryPower[k] = bandPower * (k - K_LO) / (double) (bandCount - 1);
+        theoryPower[k] = powerLoBand + bandSpan * (k - K_LO) / (double) (bandCount - 1);
       }
     }
 
@@ -739,8 +872,11 @@ public class ZetaSpectralReconstruction extends
       GridPane.setHgrow(chart, Priority.ALWAYS);
       GridPane.setVgrow(chart, Priority.ALWAYS);
     }
+    comparisonPane.setPrefSize(10000, 10000);
+    GridPane.setHgrow(comparisonPane, Priority.ALWAYS);
+    GridPane.setVgrow(comparisonPane, Priority.ALWAYS);
 
-    gridPane.add(comparisonChart, 0, 0);
+    gridPane.add(comparisonPane, 0, 0);
     gridPane.add(phiChart, 0, 1);
     gridPane.add(powerChart, 0, 2);
 
@@ -757,17 +893,19 @@ public class ZetaSpectralReconstruction extends
 
   protected void initializeChartsInTheirOwnWindows(Stage stage)
   {
-    Stage[]   stages = new Stage[]
+    Stage[]    stages = new Stage[]
     { stage, new Stage(), new Stage() };
-    XYChart[] charts = new XYChart[]
-    { comparisonChart, phiChart, powerChart };
+    javafx.scene.Parent[] roots = new javafx.scene.Parent[]
+    { comparisonPane, phiChart, powerChart };
+    String[]   titles = new String[]
+    { comparisonChart.getTitle(), phiChart.getTitle(), powerChart.getTitle() };
 
-    for (int i = 0; i < charts.length; i++)
+    for (int i = 0; i < roots.length; i++)
     {
-      Scene scene = new Scene(charts[i]);
+      Scene scene = new Scene(roots[i]);
       stages[i].setScene(scene);
       stages[i].setMaximized(true);
-      stages[i].setTitle(charts[i].getTitle());
+      stages[i].setTitle(titles[i]);
       WindowManager.installEscapeKeyCloseHandler(stages[i]);
       if (dark)
       {
@@ -787,6 +925,8 @@ public class ZetaSpectralReconstruction extends
     reconstructZetaSt();
 
     comparisonChart = newComparisonChart();
+    comparisonPane  = new StackPane();
+    comparisonPane.getChildren().addAll(comparisonChart, buildLatexAnnotations());
     buildSpectralMeasureCharts();
     configureCharts();
 
