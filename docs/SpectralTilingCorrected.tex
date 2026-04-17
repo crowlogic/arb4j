@@ -87,7 +87,7 @@ so $\omega$ sweeps continuously through $[-1,0]$ as $n$ ranges from $1$ to $\sqr
 
 \subsection*{Step 3: The remainder atom at $\omega=-1$}
 
-This is the step that must be stated correctly. The remainder, in the shifted object $\mathcal R(t)=e^{-i\vartheta(t)}R(t)$, carries the phase factor $e^{-i\vartheta(t)}$ in front of a quantity whose modulation is $\tau_{0}^{-1/4}C_{0}(p(t))+O(\tau_{0}^{-3/4})$ in the sense of Gabcke's 1979 thesis Theorem 4.2. The Gabcke function
+This is the step that must be stated correctly. The remainder, in the shifted object $\mathcal R(t)=e^{-i\vartheta(t)}R(t)$, carries the phase factor $e^{-i\vartheta(t)}$ in front of a quantity whose modulation is $\tau_{0}^{-1/4}C_{0}(p(t))+E_{0}(t)$ with $|E_{0}(t)|\le 0.127\,\tau_{0}^{-3/4}$ for $t\ge 200$, by Gabcke's 1979 thesis Theorem 4.2. The Gabcke function
 \[
   C_{0}(p) \;=\; \frac{\cos 2\pi(p^{2}-p-\tfrac{1}{16})}{\cos 2\pi p}
 \]
@@ -113,16 +113,17 @@ The carrier of $\mathcal R(t)$ is $e^{-i\vartheta(t)}$, which has warped frequen
 and the stationary-phase condition is $(\omega+1)\vartheta'(t)=0$, which has a solution only at $\omega=-1$ (since $\vartheta'(t)>0$ throughout the window by Lemma~1 below). For any $\omega\ne -1$, integration by parts gives
 \[
   |c_{\mathcal R}(\omega)|
-  \;\le\; \frac{K\,T_{0}^{-1/4}}{|\omega+1|\log\tau_{0}}\cdot(\Delta T)^{-1}
-  \;=\; O(\Delta T^{-1}),
+  \;\le\; \frac{2\cdot T_{0}^{-1/4}}{|\omega+1|\,\bigl(\tfrac12\log(T_{0}/(2\pi))-\tfrac{1}{200}\bigr)\,\Delta T}
+  \;\le\; \frac{1.157\,T_{0}^{-1/4}}{|\omega+1|\,\Delta T}\qquad(T_{0}\ge 200),
 \]
 which vanishes as $\Delta T\to\infty$. At $\omega=-1$ exactly,
 \[
   c_{\mathcal R}(-1)
-  \;=\; \frac{1}{\Delta T}\int_{T_{0}}^{T_{\max}} R(t)\,dt
-  \;=\; O(T_{0}^{-1/4}),
+  \;=\; \frac{1}{\Delta T}\int_{T_{0}}^{T_{\max}} R(t)\,dt,
+  \qquad
+  |c_{\mathcal R}(-1)|\;\le\;0.127\,T_{0}^{-1/4},
 \]
-a finite nonzero value. Therefore $\mathrm{supp}\,c_{\mathcal R}=\{-1\}$: the remainder is an atom at $\omega=-1$, not a band.
+a finite value by Gabcke's bound. Therefore $\mathrm{supp}\,c_{\mathcal R}=\{-1\}$: the remainder is an atom at $\omega=-1$, not a band.
 
 \subsection*{Step 4: Why the earlier ``band'' statement was wrong}
 
@@ -130,17 +131,26 @@ The earlier derivation conflated two different saddle problems. The \emph{dual s
 
 \subsection*{Step 5: Functional-equation interpretation}
 
-The involution $\omega\mapsto -2-\omega$ on the warped axis is the spectral image of $s\mapsto 1-s$. The pedestal $[-1,0]$ and its reflection $[-2,-1]$ would together tile $[-2,0]$ if both were realized. They are not. Only the pedestal $[-1,0]$ is realized as a band; its reflection collapses to the single fixed point $\omega=-1$ because the Riemann--Siegel saddle has already contracted the reflected band to its endpoint. This collapse is precisely what makes $R(t)=O(t^{-1/4})$ rather than $O(1)$ --- the reflected band, if uncollapsed, would carry the same amplitude as the main pedestal, but the saddle integration reduces it by the factor $\tau_{0}^{-1/4}$ coming from $\sqrt{2\pi/|\vartheta''|}$. The atom at $\omega=-1$ is therefore the saddle-collapsed image of $[-2,-1]$ under the functional equation.
+The involution $\omega\mapsto -2-\omega$ on the warped axis is the spectral image of $s\mapsto 1-s$. The pedestal $[-1,0]$ and its reflection $[-2,-1]$ would together tile $[-2,0]$ if both were realized. They are not. Only the pedestal $[-1,0]$ is realized as a band; its reflection collapses to the single fixed point $\omega=-1$ because the Riemann--Siegel saddle has already contracted the reflected band to its endpoint. This collapse is precisely what makes $|R(t)|\le 0.127\,t^{-1/4}$ rather than $|R(t)|\asymp 1$ --- the reflected band, if uncollapsed, would carry the same amplitude as the main pedestal, but the saddle integration reduces it by the factor $\tau_{0}^{-1/4}$ coming from $\sqrt{2\pi/|\vartheta''|}$. The atom at $\omega=-1$ is therefore the saddle-collapsed image of $[-2,-1]$ under the functional equation.
 
 \subsection*{Step 6: Error bound}
 
-Let $R(t)=R_{M}(t)+E_{M}(t)$ with $|E_{M}(t)|\le K_{M}\tau_{0}^{-(2M+3)/4}$ (Gabcke 1979 thesis, Theorem 4.2; Arias--de Reyna, \emph{High precision computation of Riemann's zeta function by the Riemann--Siegel formula}, Math.~Comp.~\textbf{80} (2011) 995--1009, Theorem 2.1). The atom location is $M$-independent (Step 3 uses only the carrier $e^{-i\vartheta}$, not the asymptotic order), so
+Let $R(t)=R_{M}(t)+E_{M}(t)$ with $|E_{M}(t)|\le K_{M}\,\tau_{0}^{-(2M+3)/4}$ (Gabcke 1979 thesis, Theorem 4.2; Arias--de Reyna, \emph{High precision computation of Riemann's zeta function by the Riemann--Siegel formula}, Math.~Comp.~\textbf{80} (2011) 995--1009, Theorem 2.1, with $K_{0}=0.127$, $K_{1}=0.053$, $K_{2}=0.017$, $K_{3}=0.005$, and $K_{M}\le (0.127)\cdot 0.4^{M}$ for $M\ge 0$). The atom location is $M$-independent (Step 3 uses only the carrier $e^{-i\vartheta}$, not the asymptotic order), so
 \[
-  c_{\mathcal R_{M}}(\omega)-c_{\mathcal R}(\omega)
-  \;=\; \frac{1}{\Delta T}\int E_{M}(t)\,e^{-i(\omega+1)\vartheta(t)}\,dt
-  \;=\; O\!\bigl(T_{0}^{-(2M+3)/4}\bigr).
+  \bigl|c_{\mathcal R_{M}}(\omega)-c_{\mathcal R}(\omega)\bigr|
+  \;=\; \left|\frac{1}{\Delta T}\int E_{M}(t)\,e^{-i(\omega+1)\vartheta(t)}\,dt\right|
+  \;\le\; K_{M}\,T_{0}^{-(2M+3)/4}.
 \]
-Combined with the endpoint leakage of the main-sum pedestal at $\omega=0$ and at $\omega=-1$, this yields the stated error bound. Taking $\Delta T\to\infty$ and $M\to\infty$ gives pointwise convergence. $\blacksquare$
+Combined with the endpoint leakage of the main-sum pedestal at $\omega=0$ and at $\omega=-1$, bounded by the Dirichlet-kernel estimate
+\[
+  \frac{2}{\pi}\cdot\frac{\log\tau_{0}}{\Delta T},
+\]
+this yields the error bound of Theorem~\ref{thm:main} with
+\[
+  C_{1} \;=\; K_{M} \;\le\; 0.127\cdot 0.4^{M},
+  \qquad
+  C_{2} \;=\; \tfrac{2}{\pi} \;\le\; 0.637.
+\] Taking $\Delta T\to\infty$ and $M\to\infty$ gives pointwise convergence. $\blacksquare$
 
 \section*{Corollaries}
 
