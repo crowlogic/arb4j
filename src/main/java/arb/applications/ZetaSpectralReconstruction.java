@@ -112,7 +112,7 @@ public class ZetaSpectralReconstruction extends
   public static final int    N_T           = 80000;
   public static final int    N_OMEGA       = 2560;
   public static final double OMEGA_LO      = -3.0;
-  public static final double OMEGA_HI      = +3.0;
+  public static final double OMEGA_HI      = +1.0;
   public static final int    BITS          = 128;
 
   public static final double DT            = (T_MAX - T0) / (N_T - 1);
