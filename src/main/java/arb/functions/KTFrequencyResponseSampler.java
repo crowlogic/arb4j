@@ -1,5 +1,7 @@
 package arb.functions;
 
+import java.util.stream.IntStream;
+
 import arb.Complex;
 import arb.FloatInterval;
 import arb.Real;
@@ -72,39 +74,47 @@ public class KTFrequencyResponseSampler implements
    * Sample K_T(ν) at N equally spaced ν in the frequency band. Populates the
    * internal {@link #realPart} and {@link #imagPart} {@link RealDataSet}s and
    * returns this.
+   *
+   * The N independent integrations are dispatched across the common ForkJoinPool
+   * by {@link IntStream#parallel()}. Each parallel task owns its own
+   * {@link KTFrequencyFunctional} and integrator, its own scratch {@link Real}
+   * and {@link Complex} instances, and writes only to the k-th slot of the
+   * output {@link RealDataSet}s — these are disjoint rows of a preallocated
+   * {@link arb.RealMatrix}, so there is no write contention and no
+   * synchronization is required.
    */
   public KTFrequencyResponseSampler sample()
   {
-    try ( KTFrequencyFunctional K = new KTFrequencyFunctional(T0,
-                                                              dt,
-                                                              bits);
-          Real                   nuLo   = new Real().set(frequencyBand.left());
-          Real                   nuHi   = new Real().set(frequencyBand.right());
-          Real                   width  = new Real();
-          Real                   step   = new Real();
-          Real                   offset = new Real();
-          Real                   nu     = new Real();
-          Complex                value  = new Complex())
+    Real nuLo = new Real().set(frequencyBand.left());
+    Real nuHi = new Real().set(frequencyBand.right());
+
+    try ( Real width = nuHi.sub(nuLo, bits, new Real());
+          Real step  = width.div(N - 1, bits, new Real()))
     {
-      nuHi.sub(nuLo, bits, width);
-      width.div(N - 1, bits, step);
-
-      for (int k = 0; k < N; k++)
+      IntStream.range(0, N).parallel().forEach(k ->
       {
-        step.mul(k, bits, offset);
-        nuLo.add(offset, bits, nu);
-        frequencies.get(k).set(nu);
-
-        try ( RealToComplexFunction F = K.evaluate(nu, 1, bits, null))
+        try ( Real    offset = step.mul(k, bits, new Real());
+              Real    nu     = nuLo.add(offset, bits, new Real());
+              Complex value  = new Complex();
+              KTFrequencyFunctional    K = new KTFrequencyFunctional(T0,
+                                                                     dt,
+                                                                     bits);
+              RealToComplexFunction    F = K.evaluate(nu, 1, bits, null))
         {
           ((NumericalComplexFunctionIntegral) F).evaluate(T, 1, bits, value);
-        }
 
-        realPart.getTimes().get(k).set(nu);
-        realPart.getValues().get(k).set(value.getReal());
-        imagPart.getTimes().get(k).set(nu);
-        imagPart.getValues().get(k).set(value.getImag());
-      }
+          frequencies.get(k).set(nu);
+          realPart.getTimes().get(k).set(nu);
+          realPart.getValues().get(k).set(value.getReal());
+          imagPart.getTimes().get(k).set(nu);
+          imagPart.getValues().get(k).set(value.getImag());
+        }
+      });
+    }
+    finally
+    {
+      nuLo.close();
+      nuHi.close();
     }
     return this;
   }

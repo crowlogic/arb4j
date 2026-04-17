@@ -78,7 +78,6 @@ public class KTFrequencyFunctional implements
   @Override
   public void close()
   {
-    T0.close();
-    dt.close();
+    // T0 and dt are borrowed from the caller; they are not disposed here.
   }
 }
