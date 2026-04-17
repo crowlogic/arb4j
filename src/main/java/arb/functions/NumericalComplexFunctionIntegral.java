@@ -57,9 +57,16 @@ public class NumericalComplexFunctionIntegral implements
 
     if (jTarget >= count)
     {
-      int newCount = jTarget + 1;
-      yValues    = yValues.resize(newCount);
-      cumulative = cumulative.resize(newCount);
+      int     newCount       = jTarget + 1;
+      Complex newYValues     = Complex.newVector(newCount);
+      Complex newCumulative  = Complex.newVector(newCount);
+      for (int i = 0; i < count; i++)
+      {
+        newYValues.get(i).set(yValues.get(i));
+        newCumulative.get(i).set(cumulative.get(i));
+      }
+      yValues.become(newYValues);
+      cumulative.become(newCumulative);
 
       try ( Real tr = new Real(); Complex trap = new Complex(); Real halfDt = new Real().set(dt / 2.0))
       {
