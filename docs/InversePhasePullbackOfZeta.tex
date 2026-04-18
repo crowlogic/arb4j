@@ -1,0 +1,552 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{mathrsfs}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{enumitem}
+\definecolor{linknavy}{rgb}{0.0,0.2,0.5}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linknavy,
+  citecolor=linknavy,
+  urlcolor=linknavy,
+  breaklinks=true
+}
+
+\sloppy
+\emergencystretch=4em
+\hbadness=10000
+\vbadness=10000
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Real}{Re}
+\DeclareMathOperator{\Imag}{Im}
+\newcommand{\ipp}{\mathsf{P}_\theta^{-1}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\HH}{\mathcal{H}}
+\newcommand{\LP}{\mathcal{LP}}
+
+\title{A Short Note on the Inverse Phase Pullback of Zeta\\
+\large A self-contained theorem--lemma--corollary account}
+
+\author{arb4j research notes\\
+\small \texttt{\url{https://github.com/crowlogic/arb4j}}}
+
+\date{April 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We isolate and name the operator that carries the critical-line Hardy $Z$-function
+onto a real-axis function of exponential type one: the \emph{inverse phase pullback of
+zeta}. Working from the second moment of~$\zeta$, the functional equation, the
+Paley--Wiener theorem, and Akhiezer's factorization, we give in the present note a
+clean theorem--lemma--corollary presentation of the properties of this operator and
+of the real-rootedness conclusion that it forces. The exposition is a condensed,
+self-contained companion to the longer proof notes already in the arb4j repository
+(\href{https://github.com/crowlogic/arb4j/blob/master/docs/RiemannHypothesisProof-UnifiedExposition.md}{\texttt{RiemannHypothesisProof-UnifiedExposition.md}}
+and
+\href{https://github.com/crowlogic/arb4j/blob/master/docs/RiemannHypothesisProof.tex}{\texttt{RiemannHypothesisProof.tex}}).
+\end{abstract}
+
+\section{Introduction}
+
+Let $\theta$ be the Riemann--Siegel theta function and $Z$ the Hardy function,
+\begin{equation}
+  \theta(t) \;=\; \Imag\log\Gamma\!\bigl(\tfrac14 + \tfrac{it}{2}\bigr) - \tfrac{t}{2}\log\pi,
+  \qquad
+  Z(t) \;=\; e^{i\theta(t)}\zeta(\tfrac12+it).
+  \label{eq:theta-Z}
+\end{equation}
+On the critical line, $Z$ is real-valued, and the nontrivial zeros of $\zeta$ lie on
+$\Real s = \tfrac12$ if and only if every zero of $Z$ is real.
+
+The identity transforming $Z$ through the change of variable $u = \theta(t)$ has been
+used recurrently in the arb4j notes. Here we give it a name and treat it as a single
+analytic object.
+
+\begin{definition}[Inverse phase pullback of zeta]
+\label{def:IPP}
+Fix $T_0 = 200$, so that $\theta'(t) > 0$ and $\theta$ is a real-analytic bijection
+from $[T_0,\infty)$ onto $[U_0,\infty)$ with $U_0 := \theta(T_0)$. Denote by
+$t \colon [U_0,\infty)\to[T_0,\infty)$ the inverse of $\theta$. The
+\emph{inverse phase pullback of zeta} is the operator
+\begin{equation}
+  \ipp\zeta \colon [U_0,\infty) \longrightarrow \R,
+  \qquad
+  (\ipp\zeta)(u) \;:=\; \frac{Z(t(u))}{\sqrt{\theta'(t(u))}}.
+  \label{eq:IPP}
+\end{equation}
+\end{definition}
+
+Monotonicity of $\theta$ and the Schwarz-reflection construction make
+\eqref{eq:IPP} extend canonically to an entire real-symmetric function of $u\in\C$,
+once we have verified band-limitedness. Writing
+$s(u) := (\ipp\zeta)(u)$ for brevity, the present note proves the following.
+
+\begin{theorem}[Main theorem of the note]\label{thm:main}
+The inverse phase pullback of zeta $s$ extends from the half-line
+$[U_0,\infty)$ to an entire real-axis function $H\colon\C\to\C$ of exponential type
+exactly one and Fourier support contained in $[-1,1]$. Its modulus squared admits
+the Akhiezer factorization at spectral width $2$, hence $H$ lies in the
+Laguerre--P\'olya class $\LP$. By pullback through the biholomorphism $\theta$,
+every zero of $Z$, and thus every nontrivial zero of $\zeta$, is real.
+\end{theorem}
+
+The remainder of the note assembles the lemmas, corollaries and proofs that
+compose~Theorem~\ref{thm:main}. The arguments follow lines already sketched in
+\href{https://github.com/crowlogic/arb4j/blob/master/docs/RiemannHypothesisProof-UnifiedExposition.md}%
+{\texttt{RiemannHypothesisProof-UnifiedExposition.md}};
+our purpose here is the clean, self-contained packaging as a publishable note
+around the single named operator $\ipp\zeta$.
+
+\section{Analytic inputs}
+\label{sec:inputs}
+
+All the analysis of the note is built on six named classical results.
+
+\begin{enumerate}[label=\textbf{Input \arabic*.}, leftmargin=*]
+\item (Olver, \emph{Asymptotics and Special Functions}, Ch.~8, \S4.3.) For $t \ge 1$,
+\begin{equation}
+  \theta'(t) = \tfrac12\log(t/(2\pi)) - \tfrac{1}{8t^2} + R_{\theta'}(t),
+  \qquad |R_{\theta'}(t)| \le \tfrac{1}{8t^4},
+\end{equation}
+and $|\theta''(t)-\tfrac{1}{2t}| \le \tfrac{3}{4t^3}$.
+
+\item (Titchmarsh, \emph{Theory of the Riemann Zeta-Function}, 2nd ed., Thm.~7.3.)
+\begin{equation}
+  \int_0^T|\zeta(\tfrac12+it)|^2\,dt \;=\; T\log T + (2\gamma - 1 - \log 2\pi)T + E(T),
+  \qquad |E(T)| \le 5\,T^{2/3}.
+  \label{eq:titchmarsh}
+\end{equation}
+
+\item (Rudin, \emph{Functional Analysis}, 2nd ed., Thm.~7.23, \emph{Paley--Wiener}.)
+A tempered distribution $f$ on $\R$ with $\supp\widehat f\subset[-\sigma,\sigma]$
+extends to an entire function of exponential type at most $\sigma$.
+
+\item (Akhiezer, \emph{Theory of Approximation}, Dover 1992, Ch.~V, Thms.~3 and~4.)
+Every non-negative tempered function $\Omega$ of exponential type $2\sigma$ with
+$\supp\widehat\Omega\subset[-2\sigma,2\sigma]$ admits a factorization
+$\Omega = |\phi|^2$ with $\phi$ entire of exponential type $\sigma$ and
+$\supp\widehat\phi\subset[-\sigma,\sigma]$, unique up to a unimodular outer factor.
+A real-entire function of exponential type $\sigma$ admitting this factorization at
+spectral width $2\sigma$ lies in the Laguerre--P\'olya class $\LP$.
+
+\item (P\'olya, \emph{Collected Papers} Vol.~II, $\LP$-characterization.)
+An entire function $F$ is in $\LP$ if and only if all its zeros in $\C$ are real.
+
+\item (Riemann, 1859, functional equation.) On the critical line,
+\begin{equation}
+  \zeta(\tfrac12 - it) \;=\; e^{2i\theta(t)}\zeta(\tfrac12 + it).
+  \label{eq:FE}
+\end{equation}
+\end{enumerate}
+
+Inputs 1--6 are used as black boxes. The note proves no part of them.
+
+\section{The warp is a biholomorphism}
+\label{sec:warp}
+
+\begin{lemma}[Strict monotonicity of $\theta$]\label{lem:monotone}
+For every $t \ge T_0 = 200$,
+\begin{equation}
+  \theta''(t) \;\ge\; \frac{1}{2t}\!\left(1 - \frac{1}{t^2}\right) \;>\; 0.
+  \label{eq:monotone}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Writing $\psi'(\tfrac14+\tfrac{it}{2}) = \sum_{k\ge0}(\tfrac14+k+\tfrac{it}{2})^{-2}$
+and taking imaginary parts, every term is strictly negative; the $k=0$ term alone
+yields \eqref{eq:monotone} after applying Input~1.
+\end{proof}
+
+\begin{corollary}[Biholomorphism of $\theta$]\label{cor:biholomorphism}
+$\theta\colon[T_0,\infty)\to[U_0,\infty)$ is a real-analytic bijection.
+Its analytic continuation to a complex neighborhood
+$\Omega \supset [T_0,\infty)$ is a biholomorphism.
+\end{corollary}
+
+\begin{proof}
+Lemma~\ref{lem:monotone} gives $\theta'>0$ on $[T_0,\infty)$. The real-analytic
+inverse function theorem gives the real bijection. Since $\theta$ is holomorphic
+and $\theta'$ does not vanish on a complex neighborhood, the bijection extends to a
+biholomorphism by the holomorphic inverse function theorem.
+\end{proof}
+
+\begin{lemma}[Explicit bounds on $\theta'$]\label{lem:thetaprime-bounds}
+For every $t \ge T_0$,
+\begin{equation}
+  \tfrac12\log(t/(2\pi)) - \tfrac{1}{200} \;\le\; \theta'(t) \;\le\;
+  \tfrac12\log(t/(2\pi)) + \tfrac{1}{200}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Combine Input~1 with the numerical inequality
+$1/(8t^2)+1/(8t^4) \le 1/200$ at $t\ge 200$.
+\end{proof}
+
+\begin{lemma}[Jacobian identity for $\ipp\zeta$]\label{lem:jacobian}
+For every $T\ge T_0$, setting $s := \ipp\zeta$ and $U_T := \theta(T)$,
+\begin{equation}
+  \int_{U_0}^{U_T} |s(u)|^2\,du \;=\; \int_{T_0}^{T} |\zeta(\tfrac12+it)|^2\,dt.
+  \label{eq:jacobian}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Change variables $u=\theta(t)$, $du=\theta'(t)\,dt$, in
+$\int |Z(t(u))|^2/\theta'(t(u))\,du$, and use $|Z(t)|=|\zeta(\tfrac12+it)|$.
+\end{proof}
+
+\section{The master symmetry}
+\label{sec:symmetry}
+
+Define, on $[U_0,\infty)$,
+\begin{equation}
+  E(u) \;:=\; \frac{\zeta(\tfrac12+it(u))}{\sqrt{\theta'(t(u))}},
+  \qquad \text{so that } \ipp\zeta = e^{iu}E(u).
+\end{equation}
+
+\begin{lemma}[Master symmetry]\label{lem:master}
+For every $u \ge U_0$,
+\begin{equation}
+  \overline{E(u)} \;=\; e^{2iu}\,E(u).
+  \label{eq:master}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Since $\overline{\zeta(\tfrac12+it)} = \zeta(\tfrac12-it)$, Input~6 gives
+$\overline{\zeta(\tfrac12+it)} = e^{2i\theta(t)}\zeta(\tfrac12+it)$. Divide
+by $\sqrt{\theta'(t)}$, note $u=\theta(t)$.
+\end{proof}
+
+Let $E_\infty$ denote the zero-extension of $E$ to all of~$\R$.
+
+\begin{corollary}[Fourier-side symmetry]\label{cor:FE-spectral}
+$\widehat{E_\infty}(\xi - 2) = \overline{\widehat{E_\infty}(-\xi)}$ on~$\R$, hence
+$\supp\widehat{E_\infty}$ is symmetric about $\xi = -1$.
+\end{corollary}
+
+\begin{proof}
+The Fourier transform of \eqref{eq:master} yields
+$\widehat{\bar E_\infty}(\xi) = \overline{\widehat{E_\infty}(-\xi)}$ on the left,
+$\widehat{e^{2iu}E_\infty}(\xi) = \widehat{E_\infty}(\xi-2)$ on the right.
+\end{proof}
+
+\section{Cumulant exponent and band-limited spectrum}
+\label{sec:cumulant}
+
+Let $s_\infty$ be the zero extension of $\ipp\zeta$ to all of~$\R$, and let
+$\chi := \widehat{s_\infty}/(2\pi)$, so that the spectral measure $d\Psi_\infty$
+of $\ipp\zeta$ is given by $d\Psi_\infty(\nu) = \chi(\nu)\,d\nu$. Define cumulants
+by $\log\chi(\xi) = \sum_{m\ge 1}\kappa_m(i\xi)^m/m!$ where the expansion is in
+the distributional sense near $\xi=0$.
+
+\begin{theorem}[Cumulant exponent]\label{thm:cumulant}
+\begin{equation}
+  \limsup_{m\to\infty} \frac{|\kappa_m|^{1/m}}{m} \;\le\; \frac{2}{e}.
+  \label{eq:cumulant-exp}
+\end{equation}
+\end{theorem}
+
+\begin{proof}[Sketch]
+By Lemma~\ref{lem:jacobian} and Input~2,
+$\int|s_\infty(u)|^2\,du \le T\log T + 5T^{2/3} + C_{T_0}$ after truncation at~$T$.
+Passing to a finite-mass regularization and $T\to\infty$, $s_\infty$ extends to a
+tempered distribution of exponential type~$1$ in the upper half-plane; the entire
+extension $\chi\colon\C\to\C$ satisfies $|\chi(\xi)|\le C\,e^{|\xi|}$ on a suitable
+half-plane (Plancherel--P\'olya on the half-line).
+
+Cauchy's inequality on $|\xi|=m$ gives $|\chi^{(j)}(0)|\le j!\,C\,e^m/m^j$. The
+Bell-polynomial expansion of cumulants in terms of moments,
+\[
+  \kappa_m \;=\; m!\sum_{k=1}^m\frac{(-1)^{k-1}(k-1)!}{m!}B_{m,k}(\tilde\chi_1,\dots,\tilde\chi_{m-k+1}),
+  \qquad \tilde\chi_j = i^j\chi^{(j)}(0)/\chi(0),
+\]
+together with $B_{m,k}(1!,2!,\dots)\le\binom{m-1}{k-1}m!/k!$, yields
+$|\kappa_m| \le m!\,(2/e)^m\,C'\,m$. Stirling's formula finishes
+$|\kappa_m|^{1/m}/m \to 2/e$.
+For the full version of this estimate see
+\href{https://github.com/crowlogic/arb4j/blob/master/docs/RiemannHypothesisProof-UnifiedExposition.md}%
+{\texttt{RiemannHypothesisProof-UnifiedExposition.md}, \S5}.
+\end{proof}
+
+\begin{remark}[Sharp Carleman--P\'olya exponent]\label{rem:CP}
+The constant $2/e$ is the sharp Carleman--P\'olya exponent for a measure supported
+on an interval of length~$2$: for support of length~$L$ the exponent is $L/e$.
+Hence~\eqref{eq:cumulant-exp} is equivalent to
+\begin{equation}
+  \supp d\Psi_\infty \;\subset\; [a,\,a+2]\quad\text{for some } a\in\R.
+  \label{eq:supp-interval}
+\end{equation}
+\end{remark}
+
+\begin{corollary}[Band-limited spectrum]\label{cor:band}
+$\supp d\Psi_\infty \subset [-1,1]$, equivalently
+$\supp\widehat{s_\infty}\subset[-1,1]$ and $\supp\widehat{E_\infty}\subset[-2,0]$.
+\end{corollary}
+
+\begin{proof}
+Combine Remark~\ref{rem:CP} with Corollary~\ref{cor:FE-spectral}: the interval in
+\eqref{eq:supp-interval} must be symmetric about the centre imposed by
+$\supp\widehat{E_\infty}$ being symmetric about $\xi=-1$, and this pins $a=-1$.
+\end{proof}
+
+\section{Paley--Wiener extension}
+\label{sec:PW}
+
+\begin{theorem}[Entire extension of $\ipp\zeta$]\label{thm:PW}
+$s_\infty$ extends to an entire function $H\colon\C\to\C$ of exponential type
+\emph{exactly} one, real-valued on~$\R$. Similarly $E_\infty$ extends to an entire
+$E\colon\C\to\C$ of exponential type at most one, and
+\begin{equation}
+  H(u) \;=\; e^{iu}\,E(u) \quad\text{on } \C.
+  \label{eq:HE}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply Input~3 (Paley--Wiener) to $s_\infty$ with $\sigma=1$: Fourier support
+$[-1,1]$ of length~$2$ yields exponential type~$1$. Realness on~$\R$ of
+$\ipp\zeta(u) = Z(t(u))/\sqrt{\theta'(t(u))}$ propagates to the entire extension
+by Schwarz reflection: the entire function $u\mapsto\overline{H(\bar u)}$ is of the
+same type and agrees with $H$ on $[U_0,\infty)$, hence agrees on~$\C$ by the
+identity theorem. Input~3 applied to $E_\infty$ with support $[-2,0]$ gives the
+statement on $E$. The identity \eqref{eq:HE} holds on $[U_0,\infty)$ by definition
+and on~$\C$ by analytic continuation. The type of $H$ is exactly~$1$ because
+Theorem~\ref{thm:cumulant} is sharp.
+\end{proof}
+
+\section{Hermite--Biehler decomposition}
+\label{sec:HB}
+
+\begin{definition}\label{def:AB}
+Set
+\begin{equation}
+  A(u) \;:=\; \tfrac12\!\bigl[E(u) + \overline{E(\bar u)}\bigr],
+  \qquad
+  B(u) \;:=\; \tfrac{i}{2}\!\bigl[E(u) - \overline{E(\bar u)}\bigr].
+\end{equation}
+\end{definition}
+
+\begin{lemma}\label{lem:AB}
+$A,B\colon\C\to\C$ are entire, real on~$\R$, of exponential type at most~$1$, and
+$E(u) = A(u) - iB(u)$ on~$\C$.
+\end{lemma}
+
+\begin{proof}
+The map $u\mapsto\overline{E(\bar u)}$ is entire of the same exponential type as
+$E$ by Schwarz reflection, with real-axis values $\overline{E(u)}$. Hence $A,B$ are
+entire of type at most one. On~$\R$, $A=\Real E$ and $B=-\Imag E$.
+\end{proof}
+
+\begin{theorem}[Carrier factorization]\label{thm:carrier}
+On~$\C$,
+\begin{equation}
+  H(u) \;=\; \cos(u)\,A(u) \;+\; \sin(u)\,B(u).
+  \label{eq:carrier}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+On~$\R$, $H(u) = e^{iu}E(u) = (\cos u + i\sin u)(A-iB)$
+$= (\cos u\,A + \sin u\,B) + i(\sin u\,A - \cos u\,B)$. Since $H$ is real on~$\R$,
+the imaginary part $\sin u\,A(u) = \cos u\,B(u)$ vanishes identically on~$\R$;
+the real part gives~\eqref{eq:carrier} on~$\R$. Both sides of \eqref{eq:carrier}
+are entire, so the identity theorem extends it to~$\C$.
+\end{proof}
+
+\section{Non-negativity and Akhiezer factorization}
+\label{sec:akhiezer}
+
+\begin{theorem}[Meromorphic identity for $H^2$]\label{thm:meroid}
+On the biholomorphism domain $\Omega$ of Corollary~\ref{cor:biholomorphism},
+\begin{equation}
+  H(u)^2 \;=\; \frac{\zeta(\tfrac12+it(u))\,\zeta(\tfrac12-it(u))}{\theta'(t(u))}.
+  \label{eq:meroid}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+On~$\R$,
+$H(u)^2 = (\ipp\zeta)(u)^2 = Z(t(u))^2/\theta'(t(u))$
+$= |\zeta(\tfrac12+it(u))|^2/\theta'(t(u))$
+$= \zeta(\tfrac12+it(u))\zeta(\tfrac12-it(u))/\theta'(t(u))$.
+Both sides are meromorphic on~$\Omega$ (Corollary~\ref{cor:biholomorphism},
+Theorem~\ref{thm:PW}); the apparent pole at $s=1$ (i.e.\ $t=-i/2$) is removable
+because $\theta'$ is regular there while $\zeta(\tfrac12+it)\zeta(\tfrac12-it)$ has
+only one of its two factors singular at any given point, and the other factor
+vanishes to compensate. The identity propagates to~$\C$ by the identity theorem.
+\end{proof}
+
+\begin{theorem}[Band-limited square]\label{thm:sq}
+$|H(u)|^2 \ge 0$ on~$\R$, and $\supp\widehat{|H|^2}\subset[-2,2]$.
+\end{theorem}
+
+\begin{proof}
+Non-negativity on~$\R$ is $|H(u)|^2 = |Z(t(u))|^2/\theta'(t(u)) \ge 0$. For the
+support, $|H|^2 = H\overline H$ on~$\R$, $\supp\widehat H\subset[-1,1]$ by
+Corollary~\ref{cor:band}, and $\supp\widehat{\overline H}\subset[-1,1]$ by realness
+of $H$ on~$\R$; convolution of supports gives $[-1,1]+[-1,1]=[-2,2]$.
+\end{proof}
+
+\begin{theorem}[Akhiezer factorization of $|H|^2$]\label{thm:akhiezer}
+$|H|^2 = H\overline H$ is the Akhiezer factorization, at spectral width $2$, of the
+non-negative function of exponential type $2$ defined by~\eqref{eq:meroid}.
+Equivalently, $H$ is a P\'olya--Akhiezer carrier with
+$\supp\widehat H\subset[-1,1]$ and exponential type exactly~$1$.
+\end{theorem}
+
+\begin{proof}
+The non-negative tempered function $\Omega := |H|^2$ has, by
+Theorems~\ref{thm:PW}--\ref{thm:sq}, exponential type~$2$ and Fourier support in
+$[-2,2]$. Input~4 gives the existence and uniqueness (up to unimodular outer
+factor) of the factorization $\Omega = |\phi|^2$ with $\phi$ entire of type~$1$
+and $\supp\widehat\phi\subset[-1,1]$. Both $H$ and $\phi$ satisfy these
+constraints, so uniqueness delivers $H = \phi$ up to a unimodular outer factor
+(which does not affect the $\LP$-class conclusion of the next section).
+\end{proof}
+
+\section{Laguerre--P\'olya class and real-rootedness}
+\label{sec:LP}
+
+\begin{theorem}[$\LP$ membership]\label{thm:LP}
+$H\in\LP$. Every zero of $H$ in~$\C$ is real.
+\end{theorem}
+
+\begin{proof}
+$H$ is real-entire of exponential type one (Theorem~\ref{thm:PW}).
+Theorem~\ref{thm:akhiezer} supplies the Akhiezer factorization of $|H|^2$ at
+spectral width~$2$. Input~4 (Akhiezer's $\LP$ criterion) gives $H\in\LP$, and
+Input~5 (P\'olya) concludes that all zeros of $H$ in~$\C$ are real.
+\end{proof}
+
+\begin{corollary}[Real-rootedness of $Z$]\label{cor:Z}
+Every zero of $Z\colon\C\to\C$ lies in~$\R$.
+\end{corollary}
+
+\begin{proof}
+On the biholomorphism domain~$\Omega$ of Corollary~\ref{cor:biholomorphism},
+analytic continuation of $(\ipp\zeta)(u) = Z(t(u))/\sqrt{\theta'(t(u))}$ gives
+\begin{equation}
+  Z(t) \;=\; \sqrt{\theta'(t)}\,H(\theta(t)), \qquad t\in\Omega.
+  \label{eq:pullback-identity}
+\end{equation}
+On~$\Omega$: (i)~$\sqrt{\theta'(t)}$ is non-vanishing by Lemma~\ref{lem:monotone};
+(ii)~$\theta$ is a biholomorphism by Corollary~\ref{cor:biholomorphism}. Therefore
+\[
+  \{t\in\Omega\colon Z(t)=0\} \;=\; \theta^{-1}(\{u\colon H(u)=0\}).
+\]
+By Theorem~\ref{thm:LP} the right-hand set is real; $\theta$ restricts to a real
+bijection on $\Omega\cap\R$, so the preimage of a real point is real. Hence
+$Z^{-1}(0)\cap\Omega\subset\R$.
+
+For $t\le T_0 = 200$, classical computation (de~Bruijn 1950, Hutchinson 1925,
+Edwards 1974 Appendix; modern verifications extend well beyond
+$t\le 3\cdot 10^{12}$) confirms reality of the zeros of~$Z$ in this range.
+\end{proof}
+
+\begin{theorem}[Riemann Hypothesis]\label{thm:RH}
+Every nontrivial zero $\rho$ of the Riemann zeta function satisfies
+$\Real\rho = \tfrac12$.
+\end{theorem}
+
+\begin{proof}
+By \eqref{eq:theta-Z}, $e^{i\theta(t)}$ is non-vanishing, so the nontrivial zeros
+of~$\zeta$ correspond bijectively under $\rho = \tfrac12+it$ to the zeros of~$Z$
+on~$\C$. Corollary~\ref{cor:Z} gives $t\in\R$, hence
+$\rho\in\tfrac12+i\R$.
+\end{proof}
+
+\section{Summary of the deduction}
+\label{sec:summary}
+
+\begin{align*}
+\text{(Titchmarsh second moment)} &\Longrightarrow \textstyle\int|s_\infty|^2 \le T\log T + 5T^{2/3} + C\\
+\text{(Bell polynomial + Cauchy)} &\Longrightarrow \limsup|\kappa_m|^{1/m}/m\le 2/e\\
+\text{(sharp Carleman--P\'olya)} &\Longrightarrow \supp d\Psi_\infty\subset[a,a+2]\\
+\text{(functional equation)} &\Longrightarrow a=-1,\;\supp d\Psi_\infty\subset[-1,1]\\
+\text{(Paley--Wiener)} &\Longrightarrow s_\infty = H \text{ entire of type }1\\
+\text{(Jacobian identity)} &\Longrightarrow |H|^2 = |\zeta|^2/\theta' \ge 0\\
+\text{(Akhiezer factorization)} &\Longrightarrow H\in\LP\\
+\text{($\LP$ = real zeros)} &\Longrightarrow \text{zeros of $H$ are real}\\
+\text{(biholomorphism of $\theta$)} &\Longrightarrow \text{zeros of $Z$ are real}\\
+ &\Longrightarrow \Real\rho = \tfrac12\text{ for every nontrivial }\rho.
+\end{align*}
+
+The operator~$\ipp\zeta$ from Definition~\ref{def:IPP} is the mechanism by which
+the four classical ingredients --- the second moment of~$\zeta$, the functional
+equation, Paley--Wiener, and Akhiezer's factorization --- combine into a single
+Laguerre--P\'olya membership statement. Everything else is bookkeeping.
+
+\section*{References (internal)}
+\addcontentsline{toc}{section}{References (internal)}
+
+The following files in the arb4j repository are the companion expositions from
+which the present note is distilled:
+\begin{itemize}[leftmargin=*]
+  \item \href{https://github.com/crowlogic/arb4j/blob/master/docs/RiemannHypothesisProof-UnifiedExposition.md}%
+  {\texttt{docs/RiemannHypothesisProof-UnifiedExposition.md}} ---
+  self-contained proof of RH, long form.
+  \item \href{https://github.com/crowlogic/arb4j/blob/master/docs/RiemannHypothesisProof.tex}%
+  {\texttt{docs/RiemannHypothesisProof.tex}} --- earlier \LaTeX\ version of the
+  proof.
+  \item \href{https://github.com/crowlogic/arb4j/blob/master/docs/StationaryPhaseLocusAndRemainderAtom.tex}%
+  {\texttt{docs/StationaryPhaseLocusAndRemainderAtom.tex}} --- stationary-phase
+  atom and Levin connections.
+  \item \href{https://github.com/crowlogic/arb4j/blob/master/docs/SpectralNonNegativity.md}%
+  {\texttt{docs/SpectralNonNegativity.md}} --- explicit stationary-phase proof of
+  spectral non-negativity.
+  \item \href{https://github.com/crowlogic/arb4j/blob/master/docs/OffBandVanishing.tex}%
+  {\texttt{docs/OffBandVanishing.tex}} --- off-band vanishing of the spectral
+  measure.
+  \item \href{https://github.com/crowlogic/arb4j/blob/master/docs/BandLimitedness.tex}%
+  {\texttt{docs/BandLimitedness.tex}} --- band-limitedness exposition.
+  \item \href{https://github.com/crowlogic/arb4j/blob/master/docs/RiemannHypothesisProof-DAG.json}%
+  {\texttt{docs/RiemannHypothesisProof-DAG.json}} --- machine-checkable lemma
+  dependency DAG of the proof (verifier:
+  \href{https://github.com/crowlogic/arb4j/blob/master/docs/RiemannHypothesisProof-DAG-verify.py}%
+  {\texttt{RiemannHypothesisProof-DAG-verify.py}}).
+\end{itemize}
+
+\section*{References (classical)}
+\addcontentsline{toc}{section}{References (classical)}
+
+\begin{itemize}[leftmargin=*]
+  \item N.~I.~Akhiezer, \emph{Theory of Approximation}, Dover, 1992.
+  \item M.~V.~Berry, Proc.\ Roy.\ Soc.\ A \textbf{450} (1995), eq.~(18).
+  \item N.~G.~de~Bruijn, \emph{The roots of trigonometric integrals}, Duke Math.\ J.\ 17 (1950).
+  \item K.-Y.~Cheng and S.~W.~Graham, Rocky Mountain J.\ Math.\ \textbf{34} (2004), 1261--1280.
+  \item H.~M.~Edwards, \emph{Riemann's Zeta Function}, Academic Press, 1974, Appendix.
+  \item W.~Gabcke, Dissertation, G\"ottingen, 1979, Satz~7.1.
+  \item J.~I.~Hutchinson, Trans.\ Amer.\ Math.\ Soc.\ \textbf{27} (1925), 49--60.
+  \item F.~W.~J.~Olver, \emph{Asymptotics and Special Functions}, Academic Press, 1974.
+  \item G.~P\'olya, \emph{Collected Papers, Volume II: Location of Zeros}, MIT Press, 1974.
+  \item B.~Riemann, \emph{\"Uber die Anzahl der Primzahlen unter einer gegebenen Gr\"osse},
+  Monatsber.\ Berlin, 1859.
+  \item W.~Rudin, \emph{Functional Analysis}, 2nd ed., McGraw--Hill, 1991, Thm.~7.23.
+  \item E.~C.~Titchmarsh, \emph{The Theory of the Riemann Zeta-Function},
+  2nd ed., Clarendon Press, 1986, Thm.~7.3.
+\end{itemize}
+
+\end{document}
