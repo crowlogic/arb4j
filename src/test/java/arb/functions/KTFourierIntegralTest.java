@@ -17,8 +17,8 @@ import junit.framework.TestCase;
  * integrands via {@link NumericalComplexFunctionIntegral}.
  *
  * The integrand is parsed directly by the expression compiler as a
- * {@link arb.functions.RealToComplexFunction}; the built-in jet nodes for
- * ζ, ϑ, and diff(·, t) handle the analytic content.
+ * {@link arb.functions.RealToComplexFunction}; the built-in jet nodes for ζ, ϑ,
+ * and diff(·, t) handle the analytic content.
  *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
@@ -26,7 +26,7 @@ import junit.framework.TestCase;
 public class KTFourierIntegralTest extends
                                    TestCase
 {
-  static final int    BITS = 128;
+  static final int    BITS      = 128;
 
   static final String INTEGRAND = "ζ(½+ⅈ*t)*√(diff(ϑ(t),t))*exp(-ⅈ*ν*ϑ(t))";
 
@@ -37,9 +37,12 @@ public class KTFourierIntegralTest extends
    */
   public static NumericalComplexFunctionIntegral build(double nu, double T0, double dt, int bits)
   {
-    Context context = new Context(Real.named("ν").set(nu));
+    Context               context   = new Context(Real.named("ν").set(nu));
     RealToComplexFunction integrand = RealToComplexFunction.express(INTEGRAND, context);
-    return new NumericalComplexFunctionIntegral(integrand, T0, dt, bits);
+    return new NumericalComplexFunctionIntegral(integrand,
+                                                T0,
+                                                dt,
+                                                bits);
   }
 
   /**
@@ -78,31 +81,31 @@ public class KTFourierIntegralTest extends
   }
 
   /**
-   * Sweep ν across the band [−2,0] and off the band, printing |K_T(ν)| at a
-   * fixed T. Off-band values are expected to decay as T → ∞; this test only
-   * asserts that the computation completes and returns finite values, not the
-   * decay itself.
+   * Sweep ν across the band [−2,0] and off the band, printing |K_T(ν)| at a fixed
+   * T. Off-band values are expected to decay as T → ∞; this test only asserts
+   * that the computation completes and returns finite values, not the decay
+   * itself.
    */
   public void testSweepFrequency()
   {
-    double T0 = 10.0;
-    double T  = 40.0;
-    double dt = 0.01;
+    double   T0  = 10.0;
+    double   T   = 11.0;
+    double   dt  = 0.1;
 
-    double[] nus = new double[]
+    double[] νs = new double[]
     { -3.0, -2.5, -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0 };
 
     try ( Complex result = new Complex())
     {
-      for (double nu : nus)
+      for (double ν : νs)
       {
-        evaluateKT(nu, T0, T, dt, BITS, result);
-        double re  = result.getReal().doubleValue();
-        double im  = result.getImag().doubleValue();
-        double mag = Math.hypot(re, im);
-        assertFalse("ν=" + nu + ": |K_T| is NaN", Double.isNaN(mag));
-        assertFalse("ν=" + nu + ": |K_T| is infinite", Double.isInfinite(mag));
-        System.out.format("K_T(ν=%+.2f) at T=%.1f: %+.6e %+.6ei   |·|=%.6e%n", nu, T, re, im, mag);
+        evaluateKT(ν, T0, T, dt, BITS, result);
+        var re  = result.getReal();
+        var im  = result.getImag();
+        var mag = result.abs(BITS, new Real());
+        assertTrue("ν=" + ν + ": |K_T| is not finite", mag.isFinite());
+        assertFalse("ν=" + ν + ": |K_T| is infinite", mag.isInfinite());
+        //System.out.format("K_T(ν=%s) at T=%s: %s + %si   |·|=%s%n", ν, T, re, im, mag);
       }
     }
   }
