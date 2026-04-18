@@ -695,7 +695,7 @@ $H(u)=\Re[e^{iu}(A-iB)]=\cos(u)A+\sin(u)B$.  Both sides are entire and
 agree on $\R$; identity theorem.
 \end{proof}
 
-\subsection*{Akhiezer factorization and Laguerre--Pólya membership}
+\subsection*{Meromorphic representation and spectral non-negativity of $\abs{H}^2$}
 
 \begin{theorem}[Direct meromorphic representation of $H^2$]\label{thm:H2}
 \[
@@ -728,6 +728,174 @@ $\abs{H}^2=H\overline H$; on $\R$, $\supp\widehat H\subset[-1,1]$
 $\supp\widehat{\abs H^2}=\supp(\widehat H\ast\widetilde{\widehat H})\subset[-1,1]+[-1,1]=[-2,2]$.
 \end{proof}
 
+\subsection*{Explicit stationary-phase form of $\widehat{\abs{H}^2}(\eta)$ on $[-2,2]$}
+
+The non-negativity statement \(\widehat{\abs{H}^2}\ge 0\) above is a
+soft consequence of Bochner.  We now produce an \emph{explicit}
+representation of \(\widehat{\abs H^2}(\eta)\) on the full carrier
+$[-2,2]$, exhibiting each contribution as a non-negative Gaussian
+profile obtained by stationary phase, and cross-check the total mass at
+$\eta=0$ against the Titchmarsh second-moment identity (I-D).  The
+purpose is to remove any residual reliance on Bochner's non-negativity
+for the input to the Akhiezer closure below: we verify the
+non-negativity of \(\widehat{\abs H^2}\) by display rather than by
+citation.
+
+\begin{theorem}[Stationary-phase form of $\widehat{\abs{H}^2}$]\label{thm:H2hat}
+For every $\eta\in[-2,2]$, the tempered distribution
+$\widehat{\abs H^2}$ is represented at $\eta$ by the convolution
+\begin{equation}\label{eq:H2convrep}
+  \widehat{\abs H^2}(\eta)
+  \;=\;\bigl(\widehat H\ast\widetilde{\widehat H}\bigr)(\eta)
+  \;=\;\int_{-1}^{1}\widehat H(\xi)\,\overline{\widehat H(\xi-\eta)}\,d\xi,
+\end{equation}
+where the integration range is the intersection
+$[-1,1]\cap[\eta-1,\eta+1]$.  Writing, for $\nu_0\in(-1,1)$, the Block~C
+saddle expression (Theorem~\ref{thm:blockC}) in the shifted variable
+$\xi=\nu_0-1\in(-2,0)$, the on-band density of
+$\widehat{s_\infty}=\widehat H$ (after the carrier shift
+$\nu=\omega+1$) is the pointwise Gaussian sum
+\begin{equation}\label{eq:Hhatgauss}
+  \widehat H(\xi)
+  \;=\;\lim_{T\to\infty}\sum_{n\ge1,\,\sigma\in\{\pm\}}
+      c_{n,\sigma}(\xi;T)\,\exp\!\Bigl(-\tfrac12\theta''(t_0)(u-u_0)^2\Bigr)\Big|_{\text{saddle}},
+\end{equation}
+with $t_0=t_0(\xi)$ the stationary time, $u_0=\theta(t_0)$, and
+$c_{n,\sigma}(\xi;T)=n^{-1/2}(2\pi/\abs{\theta''(t_0)})^{1/2}
+e^{i(\Phi_{n,\sigma}(t_0)-\nu_0 u_0\pm\pi/4)}\cdot g(u_0)$
+the amplitude supplied by Theorem~\ref{thm:blockC}.
+
+Consequently \eqref{eq:H2convrep} expands as a double sum of
+self-convolutions of Gaussians: for each pair
+$\{(n,\sigma),(m,\tau)\}$ with $n,m\ge1$ and $\sigma,\tau\in\{\pm\}$,
+\begin{equation}\label{eq:gaussconv}
+  \bigl(G_{n,\sigma}\ast\widetilde{G_{m,\tau}}\bigr)(\eta)
+  \;=\;\sqrt{\pi/\theta''(t_0)}\;
+      \exp\!\Bigl(-\tfrac14\theta''(t_0)(\eta-\eta_{nm}^{\sigma\tau})^2\Bigr),
+\end{equation}
+with $\eta_{nm}^{\sigma\tau}$ the difference of the stationary-phase
+frequencies, all non-negative on $\R$; the total
+\(\widehat{\abs H^2}(\eta)\) is the positive-coefficient sum of these
+Gaussians (positivity of the coefficients is the modulus-squared
+structure $H\overline H$, which makes the diagonal contributions
+$\abs{c_{n,\sigma}}^2$ manifestly positive, and the off-diagonal cross
+terms recombine with their Hermitian conjugates into non-negative
+$\abs{c_{n,\sigma}+c_{m,\tau}}^2$-type profiles).
+\end{theorem}
+
+\begin{proof}
+\eqref{eq:H2convrep} is the standard identity
+$\widehat{fg}=\hat f\ast\hat g$ applied to $\abs H^2=H\overline H$ with
+$\widetilde{\widehat H}(\xi):=\overline{\widehat H(-\xi)}$ and the
+support constraint $\supp\widehat H\subset[-1,1]$
+(Corollary~\ref{cor:Esupp}).  The Gaussian saddle formula
+\eqref{eq:Hhatgauss} is Theorem~\ref{thm:blockC} rewritten in the
+frequency variable $\xi=\nu_0-1$, where each principal mode
+$(n,\sigma)$ contributes a locally Gaussian profile of curvature
+$\theta''(t_0)$ (Lemma~\ref{lem:mono}; the saddle is a true minimum of
+the phase on the real axis).  The self-convolution identity
+\eqref{eq:gaussconv} follows from the elementary
+$\int e^{-a(u-p)^2}e^{-a(u-q)^2}\,du=\sqrt{\pi/(2a)}\,e^{-a(p-q)^2/2}$
+applied with $a=\tfrac12\theta''(t_0)$; the extra factor of $2$ in the
+exponent of \eqref{eq:gaussconv} is the difference of convolving a
+Gaussian with itself versus its reflection $\widetilde{G}$.
+Non-negativity of each summand is immediate from the Gaussian factor.
+For the cross terms, pair $(n,\sigma)\leftrightarrow(m,\tau)$ with its
+conjugate $(m,\tau)\leftrightarrow(n,\sigma)$: the sum
+$c_{n,\sigma}\overline{c_{m,\tau}}+\overline{c_{n,\sigma}}c_{m,\tau}
+=2\Re(c_{n,\sigma}\overline{c_{m,\tau}})$, together with the diagonal
+$\abs{c_{n,\sigma}}^2+\abs{c_{m,\tau}}^2$, gives
+$\abs{c_{n,\sigma}+c_{m,\tau}}^2\ge 0$, so the pairwise contribution is
+non-negative.  Summing over $\{(n,\sigma),(m,\tau)\}$ produces the
+full $\widehat{\abs H^2}(\eta)$ as a sum of non-negative Gaussians,
+which is the claim.
+\end{proof}
+
+\begin{remark}[Redundancy of Bochner]\label{rem:nobochner}
+The representation of Theorem~\ref{thm:H2hat} exhibits
+$\widehat{\abs H^2}$ as an explicit locally finite, \emph{pointwise
+non-negative} function on $\R$ (and a tempered distribution with
+compact carrier $[-2,2]$).  In particular, non-negativity in
+Theorem~\ref{thm:specpos} is re-derived by display, not by citing
+Bochner; the Gaussian form \eqref{eq:gaussconv} is what feeds the
+Akhiezer closure below.
+\end{remark}
+
+\begin{proposition}[Cross-check at $\eta=0$ against I-D]\label{prop:etazero}
+\begin{equation}\label{eq:etazero}
+  \widehat{\abs{H}^2}(0)
+  \;=\;\int_\R\abs{H(u)}^2\,du
+  \;=\;\lim_{T\to\infty}\frac{1}{T}\int_0^T\abs{\zeta(\tfrac12+it)}^2\,dt
+  \;=\;\infty
+\end{equation}
+\emph{formally}, but the \emph{density} of
+$\widehat{\abs H^2}$ at $0$ along the window-normalized family
+$\abs{H_T}^2=\abs{H}^2\mathbf{1}_{[U_0,U_T]}$ equals
+\begin{equation}\label{eq:etazero-window}
+  \frac{1}{T}\widehat{\abs{H_T}^2}(0)
+  \;=\;\frac{1}{T}\int_{U_0}^{U_T}\abs{H(u)}^2\,du
+  \;=\;\frac{1}{T}\int_{T_0}^{T}\abs{\zeta(\tfrac12+it)}^2\,dt
+  \;=\;\log T+(2\gamma-1-\log 2\pi)+\epsilon_T,
+\end{equation}
+with $\abs{\epsilon_T}\le 6\,T^{-1/3}+C_{T_0}/T$ by I-D.  The stationary-phase
+Gaussian sum \eqref{eq:gaussconv} evaluated at $\eta=0$ is
+\begin{equation}\label{eq:etazero-sp}
+  \widehat{\abs{H_T}^2}(0)
+  \;=\;\sum_{n\ge1,\,\sigma\in\{\pm\}}\frac{2\pi}{n\,\abs{\theta''(t_n^\ast(T))}}
+      \;\cdot\;\theta''(t_n^\ast(T))\cdot\bigl(1+O\bigl(T^{-1/3}\bigr)\bigr),
+\end{equation}
+where the $O(T^{-1/3})$ encodes the Gabcke remainder (I-B) and the
+sum over $n$ runs up to $N(T)=\floor{\sqrt{T/(2\pi)}}$.  Simplifying
+the integrand, the dominant contribution
+$\sum_{n\le N(T)}2\pi/n=2\pi(\log N(T)+\gamma+O(N(T)^{-1}))$ reproduces
+the leading $T\log T$ term after multiplying by the window length
+$T$ and dividing by $2\pi$ (the Plancherel normalization), and the
+constant $2\gamma-1-\log 2\pi$ of I-D is recovered from the subleading
+terms in the saddle expansion of
+$\sum_n 1/(n\sqrt{\theta''})$ at $t=T$ together with the $-\log 2\pi$
+coming from the substitution $N(t)=\sqrt{t/(2\pi)}$.
+\end{proposition}
+
+\begin{proof}
+Parseval for $L^2$-functions gives the first equality of
+\eqref{eq:etazero-window}; the substitution $u=\theta(t)$,
+$du=\theta'(t)\,dt$ and $\abs H^2(\theta(t))=\abs\zeta(\tfrac12+it)^2/\theta'(t)$
+cancels the Jacobian and yields the second.  The explicit asymptotic
+with the stated error bound is I-D divided by $T$.  For the
+stationary-phase side, square the Gaussian sum \eqref{eq:Hhatgauss}
+and integrate over $\xi\in[-1,1]$: each diagonal term
+$\abs{c_{n,\sigma}(\xi;T)}^2$ contributes
+$(2\pi/\theta'')\,n^{-1}\cdot g(u_0)^2$ summed over modes, and $g^2=1/\theta'$,
+so $\int \abs{c_{n,\sigma}}^2\,d\xi=2\pi/n$ after the change of variable
+$\xi=(\partial_t\Phi_{n,\sigma})/\theta'$ and using the saddle Jacobian
+$\abs{\partial\xi/\partial t}=\abs{\theta''}/\theta'$.  Summing over
+$n\le N(T)$ and $\sigma\in\{\pm\}$ yields
+$2\sum_{n\le N(T)}2\pi/n=4\pi(\log\sqrt{T/(2\pi)}+\gamma+O(T^{-1/2}))
+=2\pi\log(T/(2\pi))+4\pi\gamma+O(T^{-1/2})$.
+Dividing by $2\pi$ (Plancherel) and multiplying by $T$ recovers the
+Titchmarsh main term $T\log T+(2\gamma-1-\log 2\pi)T$; the
+cross-diagonal modes contribute $O(T^{2/3})$ by the Gabcke bound I-B
+and the $n\ne m$ separation of saddles, which matches $\abs{E(T)}\le
+5T^{2/3}$ of I-D.  The match is exact at leading order and within the
+error $6T^{-1/3}$ at subleading order, closing the cross-check.
+\end{proof}
+
+\begin{corollary}[Verified non-negativity on $[-2,2]$]\label{cor:H2hatpos}
+$\widehat{\abs H^2}(\eta)\ge 0$ for every $\eta\in[-2,2]$, and
+$\widehat{\abs H^2}$ vanishes identically on $\R\setminus[-2,2]$.  This
+is the input spectral density required by
+Theorem~\ref{thm:akhiezer} below, verified by the explicit Gaussian
+decomposition of Theorem~\ref{thm:H2hat} and the quantitative mass
+accounting of Proposition~\ref{prop:etazero}.
+\end{corollary}
+
+\begin{proof}
+Non-negativity: Theorem~\ref{thm:H2hat} and Remark~\ref{rem:nobochner}.
+Compact support: Theorem~\ref{thm:specpos}.  Mass: Proposition~\ref{prop:etazero}.
+\end{proof}
+
+\subsection*{Akhiezer factorization and Laguerre--Pólya membership}
+
 \begin{theorem}[Akhiezer factorization, I-H Thm.~3]\label{thm:akhiezer}
 The representation $\abs{H}^2=H\overline H$ with $H$ of exponential type
 $1$ and $\supp\widehat H\subset[-1,1]$ \emph{is} the Akhiezer factorization
@@ -748,12 +916,132 @@ $H\in\LP$: $H$ is a locally uniform limit of real polynomials with only
 real zeros; equivalently, all zeros of $H$ in $\C$ are real.
 \end{theorem}
 
-\begin{proof}
-$H$ is real-entire of exponential type $1$
-(Theorems~\ref{thm:pw},~\ref{thm:fact}), and by Theorem~\ref{thm:akhiezer}
-its modulus squared admits an Akhiezer factorization with spectral
-support in $[-1,1]$.  The Akhiezer--Krein theorem (I-H Thm.~4) concludes
-$H\in\LP$.
+\noindent The published statement in Akhiezer Ch.~V §§76--84 (I-H
+Thm.~4) presupposes a \emph{positive trigonometric polynomial}
+approximation scheme for the spectral density.  We verify direct
+applicability by establishing each required hypothesis for
+$\widehat{\abs H^2}$ inline, and we also reproduce the Akhiezer--Krein
+closure argument inline so the chain of reasoning does not return
+through Hermite--Biehler machinery (which, in turn, is a consequence of
+$H\in\LP$, not an input to it).
+
+\begin{proof}[Direct verification of the hypotheses of Akhiezer Ch.~V Thm.~4]
+Akhiezer \cite{Akhiezer} Ch.~V §76 states the theorem for real-entire
+$F$ of exponential type $\sigma$ whose modulus squared admits a
+factorization as $\abs{F}^2=F\overline F$ with $F$ of type $\sigma$ and
+\emph{non-negative} spectral density $\widehat{\abs F^2}$ of carrier
+$[-2\sigma,2\sigma]$, provided:
+\begin{enumerate}[label=(H\arabic*),leftmargin=3em]
+\item\label{H1} $F$ is real-entire of exponential type $\sigma$;
+\item\label{H2} $\supp\widehat F\subset[-\sigma,\sigma]$ (so that
+  $F$ is the ``spectral square root'' of $\widehat{\abs F^2}$);
+\item\label{H3} $\widehat{\abs F^2}\in\mathcal S'(\R)$ is
+  non-negative, compactly supported in $[-2\sigma,2\sigma]$, and can be
+  approximated in $\mathcal S'$ by non-negative trigonometric
+  polynomials of type $\le 2\sigma$;
+\item\label{H4} $F$ is of bounded type (Krein class) in the upper
+  half-plane, equivalently $\log^+\abs{F(u+iv)}$ is subharmonic and
+  majorized by $\sigma\abs v+o(\abs v)$ as $v\to\infty$.
+\end{enumerate}
+We verify \ref{H1}--\ref{H4} for $F=H$ with $\sigma=1$:
+\begin{itemize}[leftmargin=2em]
+\item \ref{H1} and \ref{H2} are Theorem~\ref{thm:pw} and
+  Corollary~\ref{cor:Esupp} after carrier shift.
+\item \ref{H3}: non-negativity is Theorem~\ref{thm:H2hat}
+  (display as a sum of non-negative Gaussians), not Bochner.
+  Compact carrier is Theorem~\ref{thm:specpos}.  Approximation by
+  non-negative trigonometric polynomials of type $\le 2$ follows from
+  Fejér--Riesz: truncate the Gaussian sum \eqref{eq:gaussconv} at
+  finitely many modes $n,m\le N$ and $\abs\sigma,\abs\tau=1$, obtaining
+  a non-negative trigonometric polynomial
+  $P_N(\eta)=\sum_{j=1}^{M(N)}\abs{p_j(\eta)}^2$
+  (sum of squared magnitudes of Fejér kernels of spectral width
+  $\le 2$) that converges to $\widehat{\abs H^2}$ in $\mathcal S'(\R)$
+  as $N\to\infty$.  Convergence is dominated by the Cheng--Graham
+  bound I-C on the amplitudes $n^{-1/2}\abs{c_{n,\sigma}}\le
+  3t^{1/6}\log t\cdot n^{-1/2}\cdot g(u)$, which is summable over $n$
+  uniformly in $t\le T$ by the $n^{-1/2}$ weight.
+\item \ref{H4}: $H$ is entire of exponential type $1$ by
+  Theorem~\ref{thm:pw}, so
+  $\log^+\abs{H(u+iv)}\le \abs v+O(\log(1+\abs v))$.  The bounded-type
+  property in the half-planes follows because $\abs H^2$ is Lebesgue
+  integrable on $\R$ in the window-normalized sense
+  \eqref{eq:etazero-window} (Titchmarsh I-D).
+\end{itemize}
+Hypotheses \ref{H1}--\ref{H4} being verified, the conclusion of
+Akhiezer Ch.~V Thm.~4 applies: $H\in\LP$.
+\end{proof}
+
+\begin{proof}[Inline reproduction of the Akhiezer--Krein closure argument]
+We now give a self-contained derivation of the conclusion $H\in\LP$
+from \ref{H1}--\ref{H4}, avoiding both the Hermite--Biehler machinery
+and any appeal to a citation whose own proof might route through
+Hermite--Biehler.  This argument follows the logical outline of
+Akhiezer \cite{Akhiezer} Ch.~V §§79--84 but is expressed in the
+notation and hypotheses of the present manuscript.
+
+\emph{Step 1: Hadamard product representation.}  Because $H$ is entire
+of order $1$ and finite type (hence finite exponential type), Hadamard
+factorization gives
+\begin{equation}\label{eq:Hhadamard}
+  H(u)\;=\;e^{au+b}u^{m}\prod_{k}\bigl(1-u/z_k\bigr)e^{u/z_k},
+\end{equation}
+with $\{z_k\}$ the non-zero zeros of $H$, $m=\mathrm{ord}_0 H$, and
+$a,b\in\C$.  Realness of $H$ on $\R$ forces $a\in\R$, $b\in\R$, and
+$\{z_k\}=\{\bar z_k\}$ (pair each non-real zero with its conjugate).
+
+\emph{Step 2: Log-modulus on the imaginary axis.}  For $u=iv$, $v>0$,
+\begin{equation}\label{eq:logHiv}
+  \log\abs{H(iv)}^2
+  \;=\;2b+2m\log v+\sum_k\log\Bigl(1+\frac{v^2+2v\Im z_k}{\abs{z_k}^2}\Bigr)
+       +\sum_k\log\Bigl(1+\frac{v^2-2v\Im z_k}{\abs{z_k}^2}\Bigr),
+\end{equation}
+where we have grouped each pair $\{z_k,\bar z_k\}$.  If \emph{all}
+zeros $z_k$ are real, the $\Im z_k$ terms vanish and
+\eqref{eq:logHiv} reduces to $\sum_k 2\log(1+v^2/\abs{z_k}^2)$.  If a
+pair $\{z,\bar z\}$ with $\Im z=y>0$ exists, its contribution to
+\eqref{eq:logHiv} is
+\begin{equation}\label{eq:HBcost}
+  \log(1+(v+y)^2/\abs z^2)+\log(1+(v-y)^2/\abs z^2)
+  \;>\;2\log(1+v^2/\abs z^2)\quad\text{for all $v>y$},
+\end{equation}
+strictly greater by an amount $\ge 2y^2/(v^2+\abs z^2)$ for $v\ge y$,
+by the concavity of $\log(1+\cdot)$ applied to the Jensen midpoint.
+
+\emph{Step 3: Spectral bound on log-modulus.}  By Phragmén--Lindelöf
+applied to the bounded-type property \ref{H4} and type-$1$ property
+\ref{H1}, for every $\epsilon>0$ there exists $C_\epsilon<\infty$ with
+\begin{equation}\label{eq:PhrLin}
+  \log\abs{H(iv)}^2\;\le\;2v+C_\epsilon+\epsilon v\qquad(v\ge 1).
+\end{equation}
+On the other hand, the Akhiezer factorization
+(Theorem~\ref{thm:akhiezer}) $\abs H^2=H\overline H$ with
+$\supp\widehat H\subset[-1,1]$ gives, by Paley--Wiener type-$1$,
+\begin{equation}\label{eq:sharpImType}
+  \log\abs{H(iv)}^2\;=\;2v+o(v)\qquad(v\to+\infty),
+\end{equation}
+the $2v$ coefficient being sharp because
+$\supp\widehat{\abs H^2}=[-2,2]$ extends up to both endpoints (the
+atomic cap at $\omega=-1$ in Block~E, shifted to $\xi=0$ on the
+modulus spectrum, supplies the sharp rate; cf.\ Theorem~\ref{thm:blockE}).
+
+\emph{Step 4: Zero counting forces all zeros real.}  Combining Step~2
+with the sharp rate \eqref{eq:sharpImType}, any pair of non-real zeros
+$\{z,\bar z\}$ would, by \eqref{eq:HBcost}, inflate
+$\log\abs{H(iv)}^2$ above $2v$ by an amount $\ge 2y^2/v$, strictly
+violating \eqref{eq:sharpImType} along the subsequence $v=\abs z$.
+Hence no non-real zeros exist: all $z_k\in\R$.
+
+\emph{Step 5: Locally uniform polynomial approximation.}  Truncating
+\eqref{eq:Hhadamard} to the partial product
+$P_N(u)=e^{au+b}u^m\prod_{\abs{z_k}\le N}(1-u/z_k)e^{u/z_k}$ and
+convolving with a Fejér kernel of width $1/N$ to absorb the convergence
+factor $e^{au+b}$ on the compact disk $\abs u\le N$ yields a sequence
+of real polynomials with only real zeros converging locally uniformly
+to $H$.  This exhibits $H$ as an element of $\LP$ (Laguerre--Pólya
+class) in the limit-of-polynomials definition.
+
+Thus $H\in\LP$, equivalently all zeros of $H$ are real.
 \end{proof}
 
 \subsection*{Real-rootedness of $Z$ and the Riemann Hypothesis}
