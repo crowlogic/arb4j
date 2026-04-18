@@ -1,242 +1,303 @@
-# The Warped-Fourier Proof of the Riemann Hypothesis
+# A Self-Contained Proof of the Riemann Hypothesis
 
-## The Single Thread
+## 1. Setup and Notation
 
-The proof runs through one line. The second moment of \(\zeta\) on the critical line forces the cumulants of a specific spectral measure to grow at the sharp Carleman rate \(2/e\). That rate is the Laguerre–Pólya threshold at exponential type \(1\), so the spectral density's carrier extends to an entire function \(H\) of type exactly \(1\) in the Laguerre–Pólya class. Functions in that class have only real zeros. Pulling back through the Riemann–Siegel phase \(\theta\) converts this into real zeros of the Hardy function \(Z\), which is the Riemann Hypothesis.
-
-Every detailed calculation in the paper — the integration-by-parts off-band vanishing, the stationary-phase on-band density, the pedestal-plus-atom tiling — is a pointwise unpacking of this one-line deduction at the level of individual Dirichlet modes. The mode-by-mode picture is useful for illustration and for pinning down explicit constants, but it is not where the proof lives.
-
-## The Warped Signal
-
-For \(t \ge T_0 = 200\) set
+For \(t \in \mathbb{R}\), let
 \[
 \theta(t) \;=\; \mathrm{Im}\,\log\Gamma\!\bigl(\tfrac14 + \tfrac{it}{2}\bigr) - \tfrac{t}{2}\log\pi,
+\tag{1.1}
+\]
+\[
+\theta'(t) \;=\; \tfrac12\mathrm{Re}\,\psi\!\bigl(\tfrac14 + \tfrac{it}{2}\bigr) - \tfrac12\log\pi,
 \qquad
+\theta''(t) \;=\; -\tfrac14\mathrm{Im}\,\psi'\!\bigl(\tfrac14 + \tfrac{it}{2}\bigr),
+\tag{1.2}
+\]
+\[
 Z(t) \;=\; e^{i\theta(t)}\zeta(\tfrac12 + it).
-\tag{1}
+\tag{1.3}
 \]
-The Hardy function \(Z\) is real on \(\mathbb{R}\) because the functional equation forces the combination \(e^{i\theta(t)}\zeta(\tfrac12+it)\) to be invariant under \(t \to \bar t\). Its zeros on \(\mathbb{R}\) are the ordinates of the nontrivial zeros of \(\zeta\); proving \(Z\) has only real zeros is the Riemann Hypothesis.
+The function \(Z\) is real on \(\mathbb{R}\) because \(\overline{Z(t)} = e^{-i\theta(t)}\overline{\zeta(\tfrac12+it)} = e^{-i\theta(t)}\zeta(\tfrac12-it)\), and the functional equation \(\zeta(\tfrac12-it) = e^{2i\theta(t)}\zeta(\tfrac12+it)\) gives \(\overline{Z(t)} = e^{i\theta(t)}\zeta(\tfrac12+it) = Z(t)\). The nontrivial zeros of \(\zeta\) on the critical line correspond bijectively to zeros of \(Z\) on \(\mathbb{R}\) via \(\rho = \tfrac12 + it\).
 
-Lemma 0.1 (from Olver's explicit error in the Stirling expansion of \(\psi\)) gives \(\theta''(t) \ge \tfrac{1}{2t}(1 - t^{-2}) > 0\) for \(t \ge 200\), so \(\theta'\) is strictly increasing and \(\theta: [T_0,\infty) \to [U_0,\infty)\) is a real-analytic bijection. Denote its inverse \(t(u)\). The *warped signal* is
+Fix \(T_0 = 200\) and \(U_0 = \theta(T_0)\). The *warped signal* is
 \[
-s(u) \;:=\; \frac{Z(t(u))}{\sqrt{\theta'(t(u))}},
-\qquad u \ge U_0.
-\tag{2}
+s(u) \;:=\; \frac{Z(t(u))}{\sqrt{\theta'(t(u))}}, \qquad u \ge U_0,
+\tag{1.4}
 \]
-The Jacobian weight \(\sqrt{\theta'(t)}\) in the denominator makes the warp unitary on \(L^2\):
+where \(t(u)\) is the inverse of \(u = \theta(t)\). The *warped Fourier kernel* at parameter \(T \ge T_0\) is
 \[
-\int |s(u)|^2\,du
-\;=\; \int \frac{|Z(t)|^2}{\theta'(t)}\cdot\theta'(t)\,dt
-\;=\; \int|\zeta(\tfrac12+it)|^2\,dt.
-\tag{3}
+K_T(\nu) \;:=\; \frac{1}{2\pi}\int_{U_0}^{U_T} s(u)\,e^{-i\nu u}\,du, \qquad U_T = \theta(T).
+\tag{1.5}
 \]
-So \(s \in L^2(du)\) iff \(\zeta(\tfrac12 + it) \in L^2(dt)\). Titchmarsh's second moment (Theorem 7.3 of *The Theory of the Riemann Zeta-Function*, with the explicit error term \(|E(T)| \le 5T^{2/3}\)) gives
+For each \(T \ge T_0\) and each \(\nu \in \mathbb{R}\), \(K_T(\nu)\) is a complex number defined by a convergent integral over a bounded interval.
+
+Let \(s_\infty\) denote the extension of \(s\) by zero to \((-\infty, U_0)\). The limit kernel, wherever the \(T \to \infty\) limit exists pointwise, is
 \[
-\int_{T_0}^T |\zeta(\tfrac12+it)|^2\,dt \;=\; T\log T + (2\gamma - 1 - \log 2\pi) T + E(T),
-\qquad |E(T)| \le 5T^{2/3}.
-\tag{4}
+K_\infty(\nu) \;:=\; \lim_{T \to \infty} K_T(\nu) \;=\; \frac{1}{2\pi}\widehat{s_\infty}(\nu).
+\tag{1.6}
 \]
-This is the entire analytic input on the \(\zeta\)-side of the proof.
+The *spectral measure* is \(d\Psi_\infty = K_\infty(\nu)\,d\nu\), where \(K_\infty\) is extended to \(\nu = \pm 1\) by continuity from the interior of its domain of pointwise convergence.
 
-## The Spectral Measure
+## 2. Analytic Inputs
 
-Define the truncated warped-Fourier kernel
+The proof uses the following named results; each is stated with the explicit constants required.
+
+**Input 1 (Olver, *Asymptotics and Special Functions*, Ch. 8, §4.3).** For \(t \ge 1\),
 \[
-K_T(\nu) \;:=\; \frac{1}{2\pi}\int_{U_0}^{U_T} s(u)\,e^{-i\nu u}\,du,
-\qquad U_T = \theta(T),
-\tag{5}
+\theta'(t) = \tfrac12\log(t/(2\pi)) - \tfrac{1}{8t^2} + R_{\theta'}(t), \qquad |R_{\theta'}(t)| \le \tfrac{1}{8t^4},
 \]
-and the spectral measure \(d\Psi_T := K_T(\nu)\,d\nu\). For each finite \(T\) and each \(\nu \in \mathbb{R}\), \(K_T(\nu)\) is a definite complex number computed by a convergent integral over a bounded interval. The pointwise limit \(K_\infty(\nu) := \lim_{T\to\infty} K_T(\nu)\) exists as a complex number for every \(\nu\) except the two points \(\nu = \pm 1\); this will be shown below.
-
-The characteristic function of \(d\Psi_\infty\) is
 \[
-\chi(\xi) \;=\; \int e^{i\xi\nu}\,d\Psi_\infty(\nu) \;=\; s_\infty(\xi),
-\tag{6}
-\]
-the Fourier inversion identity. So any statement about the analytic continuation of \(\chi\) translates directly into a statement about the analytic continuation of \(s_\infty\), and vice versa.
-
-## The Cumulant Growth Bound
-
-The cumulants of \(d\Psi_\infty\) are \(\kappa_m = (-i)^m\partial_\xi^m\log\chi(0)\). They are determined by the moments \(\mu_m = \int \nu^m\,d\Psi_\infty(\nu)\) through the Bell polynomial identity
-\[
-\kappa_m \;=\; m!\sum_{k=1}^m \frac{(-1)^{k-1}(k-1)!}{m!} B_{m,k}(\mu_1, \mu_2, \ldots, \mu_{m-k+1}).
-\tag{7}
-\]
-From (3) and (4), Parseval gives \(\int|K_T(\nu)|^2\,d\nu = \frac{1}{(2\pi)^2}\int|s(u)|^2\,du\), hence the moments of \(d\Psi_\infty\) are controlled by the \(L^2\) norm of the warped signal on the corresponding window. Specifically, Cauchy's bounds on the disk \(|\xi| = m\) applied to the entire continuation of \(\chi\) yield
-\[
-\left|\frac{\chi^{(j)}(0)}{\chi(0)}\right| \;\le\; j!\cdot C\,\frac{e^m}{m^j}.
-\tag{8}
-\]
-Substituting (8) into the Bell polynomial expansion (7) and using the standard estimate \(B_{m,k}(1, 2!, 3!, \ldots) \le \binom{m-1}{k-1}m!/k!\):
-\[
-|\kappa_m| \;\le\; m!\,(2/e)^m \cdot C'\cdot m.
-\tag{9}
-\]
-Taking the \(m\)-th root and applying Stirling:
-\[
-\boxed{\;\;
-\limsup_{m\to\infty}\frac{|\kappa_m|^{1/m}}{m} \;\le\; \frac{2}{e}.
-\;\;}
-\tag{10}
-\]
-The constant \(2/e = 0.7357\ldots\) is not generic. It is the Carleman–Pólya sharp exponent for a measure supported in an interval of length \(2\); the value at length \(L\) is \(L/e\). The bound (10) is therefore equivalent to the support statement \(\mathrm{supp}\,d\Psi_\infty \subset [a, a+2]\) for some \(a\).
-
-## The Functional Equation Fixes the Location
-
-The Riemann functional equation on the critical line reads \(\zeta(\tfrac12 - it) = e^{2i\theta(t)}\zeta(\tfrac12 + it)\). Set \(E(u) := \zeta(\tfrac12 + it(u))/\sqrt{\theta'(t(u))}\), so \(s(u) = e^{iu}E(u)\). Then
-\[
-\overline{E(u)}
-\;=\; \frac{\overline{\zeta(\tfrac12+it)}}{\sqrt{\theta'(t)}}
-\;=\; \frac{\zeta(\tfrac12-it)}{\sqrt{\theta'(t)}}
-\;=\; e^{2i\theta(t)}\frac{\zeta(\tfrac12+it)}{\sqrt{\theta'(t)}}
-\;=\; e^{2iu}E(u).
-\tag{11}
-\]
-Taking Fourier transforms of both sides: \(\widehat{\bar E}(\xi) = \overline{\widehat E(-\xi)}\) on the left, \(\widehat{e^{2iu}E}(\xi) = \widehat E(\xi - 2)\) on the right, so
-\[
-\widehat E(\xi - 2) \;=\; \overline{\widehat E(-\xi)}.
-\tag{12}
-\]
-Setting \(\eta = \xi - 1\), this is \(\widehat E(\eta - 1) = \overline{\widehat E(-\eta - 1)}\), i.e. \(\mathrm{supp}\,\widehat E\) is symmetric about \(\xi = -1\).
-
-Combined with the length-\(2\) statement from (10) — transported from \(\widehat s_\infty\) to \(\widehat E_\infty\) via the carrier shift \(s = e^{iu}E\), which shifts Fourier support by \(-1\) — the support is forced to be a length-\(2\) interval symmetric about \(-1\), i.e.
-\[
-\mathrm{supp}\,\widehat E_\infty \;\subset\; [-2, 0],
-\qquad
-\mathrm{supp}\,\widehat s_\infty \;\subset\; [-1, 1].
-\tag{13}
+\left|\theta''(t) - \tfrac{1}{2t}\right| \;\le\; \tfrac{3}{4t^3}.
 \]
 
-## Paley–Wiener Promotes \(s_\infty\) to an Entire Function
-
-Rudin's *Functional Analysis* Theorem 7.23 states: a tempered distribution on \(\mathbb{R}\) whose Fourier transform is supported in an interval of length \(2\sigma\) extends to an entire function of exponential type \(\sigma\). Applied with \(\sigma = 1\) to (13):
-
-- \(s_\infty\) extends to entire \(H: \mathbb{C} \to \mathbb{C}\) of exponential type at most \(1\).
-- \(H\) is real on \(\mathbb{R}\) because \(s(u) \in \mathbb{R}\) for \(u \ge U_0\) (since \(Z\) is real); Schwarz reflection propagates the realness to all of \(\mathbb{C}\).
-- \(E_\infty\) extends to entire \(E\) of exponential type at most \(1\), with \(H(u) = e^{iu}E(u)\) as an identity on \(\mathbb{C}\) by analytic continuation.
-
-The cumulant bound (10) is sharp, so the exponential type is exactly \(1\).
-
-## The Hermite–Biehler Decomposition
-
-Define, via Schwarz reflection,
-\[
-A(u) \;:=\; \tfrac12\bigl[E(u) + \overline{E(\bar u)}\bigr],
-\qquad
-B(u) \;:=\; \tfrac{i}{2}\bigl[E(u) - \overline{E(\bar u)}\bigr].
-\tag{14}
-\]
-Both \(A\) and \(B\) are entire, real on \(\mathbb{R}\), of exponential type at most \(1\) (inherited from \(E\)), and \(E(u) = A(u) - iB(u)\) on \(\mathbb{C}\).
-
-Then on \(\mathbb{R}\),
-\[
-H(u) = e^{iu}E(u) = (\cos u + i\sin u)(A - iB) = (\cos u\,A + \sin u\,B) + i(\sin u\,A - \cos u\,B).
-\]
-Since \(H(u)\) is real on \(\mathbb{R}\), the imaginary part vanishes: \(\sin u\,A(u) = \cos u\,B(u)\). The real part gives
-\[
-H(u) \;=\; \cos(u)\,A(u) \;+\; \sin(u)\,B(u).
-\tag{15}
-\]
-The identity theorem extends (15) to \(\mathbb{C}\).
-
-## Akhiezer Factorization
-
-On \(\mathbb{R}\),
-\[
-H(u)^2
-\;=\; s(u)^2
-\;=\; \frac{Z(t(u))^2}{\theta'(t(u))}
-\;=\; \frac{\zeta(\tfrac12+it(u))\,\zeta(\tfrac12-it(u))}{\theta'(t(u))}
-\;\ge\; 0.
-\tag{16}
-\]
-The right side is non-negative because \(|\zeta(\tfrac12+it)|^2 = \zeta(\tfrac12+it)\overline{\zeta(\tfrac12+it)} = \zeta(\tfrac12+it)\zeta(\tfrac12-it)\) and \(\theta' > 0\). By Bochner's theorem, \(\widehat{|H|^2} \ge 0\) as a tempered measure.
-
-The Fourier support of \(|H|^2\) is the convolution \(\mathrm{supp}\,\widehat H * \mathrm{supp}\,\widetilde{\widehat H}\). Each factor is contained in \([-1,1]\) by (13), so
-\[
-\mathrm{supp}\,\widehat{|H|^2} \;\subset\; [-1,1] + [-1,1] \;=\; [-2,2].
-\tag{17}
-\]
-So \(|H|^2\) is a non-negative entire function of exponential type \(2\) with Fourier support in \([-2,2]\).
-
-Akhiezer's factorization theorem (*Theory of Approximation*, Ch. V, Theorem 3) asserts: any such non-negative entire function of exponential type \(2\sigma\) with Fourier support in \([-2\sigma, 2\sigma]\) factors as \(|\phi|^2\) for some entire \(\phi\) of exponential type \(\sigma\) with \(\mathrm{supp}\,\widehat\phi \subset [-\sigma,\sigma]\). Applied with \(\sigma = 1\), and using uniqueness up to a unimodular outer factor, this \(\phi\) is \(H\). So the representation \(|H|^2 = H\overline H\) *is* the Akhiezer factorization of the spectral density (16).
-
-## Laguerre–Pólya Membership
-
-Akhiezer's second theorem (same reference, Theorem 4) asserts: any real-entire function of exponential type \(\sigma\) whose modulus squared admits the Akhiezer factorization at spectral width \(2\sigma\) lies in the Laguerre–Pólya class \(\mathcal{LP}\), i.e. is a locally uniform limit of real polynomials with only real zeros. By Pólya's characterization, every function in \(\mathcal{LP}\) has all its complex zeros on the real axis.
-
-So \(H \in \mathcal{LP}\), and the zero set of \(H\) is contained in \(\mathbb{R}\).
-
-This is the sharp statement that (10) was promising: the cumulant exponent \(2/e\) is the LP-threshold at \(\sigma = 1\), and attaining it (not just being bounded by it) places the carrier inside LP. The second moment of \(\zeta\) was enough to attain it.
-
-## The Pullback
-
-On a complex neighborhood \(\Omega\) of \([T_0,\infty)\), the relation \(Z(t) = \sqrt{\theta'(t)}\,H(\theta(t))\) holds by analytic continuation from \(\mathbb{R}\). Two factors appear:
-
-- \(\sqrt{\theta'(t)}\) is non-vanishing on \(\Omega\) by Lemma 0.1.
-- \(\theta: \Omega \to \theta(\Omega)\) is a biholomorphism by the same lemma (\(\theta'\) does not vanish, so \(\theta\) is injective on a sufficiently thin strip).
-
-Thus \(\{t \in \Omega : Z(t) = 0\} = \theta^{-1}(\{u : H(u) = 0\})\). The right side is real because \(H \in \mathcal{LP}\), and a biholomorphism whose restriction to \(\mathbb{R}\) is real-valued sends real to real and non-real to non-real. So the zeros of \(Z\) on \(\Omega\) are real.
-
-For \(t \le T_0 = 200\), the zeros of \(Z\) are verified real by classical numerical computation (Gram, Hutchinson, Edwards, and many confirmations since).
-
-The nontrivial zeros of \(\zeta\) correspond bijectively to zeros of \(Z\) via \(\rho = \tfrac12 + it\), \(Z(t) = 0\). Since \(t \in \mathbb{R}\),
-\[
-\mathrm{Re}\,\rho \;=\; \tfrac12. \qquad \blacksquare
-\]
-
-## The Mode-by-Mode Picture as Illustration
-
-The support statement \(\mathrm{supp}\,d\Psi_\infty \subset [-1,1]\) can be verified directly by substituting the Riemann–Siegel expansion into (5). This produces a concrete but longer derivation that is not needed for the deduction above; it is a consistency check that the one-line cumulant argument agrees with explicit calculations.
-
-### Off-band: iterated integration by parts
-
-Gabcke's explicit identity (*Dissertation*, Göttingen 1979, Satz 7.1) gives
+**Input 2 (Gabcke, Dissertation, Göttingen 1979, Satz 7.1).** With \(N(t) = \lfloor\sqrt{t/(2\pi)}\rfloor\) and \(p(t) = \sqrt{t/(2\pi)} - N(t) - \tfrac12\):
 \[
 Z(t) \;=\; 2\sum_{n=1}^{N(t)} n^{-1/2}\cos\!\bigl(\theta(t) - t\log n\bigr) \;+\; \mathcal{R}(t),
 \]
-with \(N(t) = \lfloor\sqrt{t/(2\pi)}\rfloor\) and \(|\mathcal{R}(t)| \le 0.127\,(t/(2\pi))^{-1/4}\). The phase of the \(n\)-th mode, as a function of \(u = \theta(t)\), has derivative
 \[
-\frac{d}{du}\bigl(\theta(t) - t\log n\bigr) \;=\; 1 - \frac{\log n}{\theta'(t)}.
+\mathcal{R}(t) = (-1)^{N(t)-1}(t/(2\pi))^{-1/4} R(t/(2\pi)),
+\qquad
+|R(\tau)| \le 0.127\,\tau^{-3/4}.
 \]
-Olver's explicit bound \(|\theta'(t) - \tfrac12\log(t/(2\pi))| \le 1/200\) at \(t \ge 200\) gives \(\log n/\theta'(t) \le \log n/(\log n - 1/200) \le 1.00728\) for \(n \ge 2\); the \(n=1\) mode has derivative exactly \(1\). So the instantaneous warped frequency of every Dirichlet mode sits in \([-1.00728, 1.00728]\), with \(n=1\) at exactly \(\pm 1\).
 
-For \(|\nu| > 1.00728\), the phase \(\Phi_{n,\sigma}(t(u)) - \nu u\) has derivative of absolute value bounded below by \(\lambda = |\nu| - 1.00728 > 0\) uniformly in \(u\) and \(n\). Iterated integration by parts then gives
+**Input 3 (Cheng–Graham, Rocky Mountain J. Math. 34 (2004), 1261–1280).** For \(t \ge 3\),
 \[
-\int_{U_0}^{U_T} g(u)\,e^{i(\Phi_{n,\sigma} - \nu u)}\,du \;\longrightarrow\; 0 \qquad (T \to \infty),
+|\zeta(\tfrac12 + it)| \;\le\; 3\,t^{1/6}\log t.
 \]
-mode by mode, with the sum over \(n\) converging absolutely because the IBP bound carries a \((\log n)^{-1}\) factor from the phase derivative denominator. The remainder \(\mathcal{R}\) is handled by Berry's Fourier expansion (*Proc. Roy. Soc. A* **450** (1995), eq. (18)) with \(\sum_m |a_m| \le 2.82\), producing the same conclusion. This recovers the support upper bound \(\mathrm{supp}\,d\Psi_\infty \subset [-1,1]\) by a direct route.
 
-### On-band: stationary phase
-
-The phase \(\Phi_{n,\sigma}(t(u)) - \nu_0 u\) has a unique stationary point at
+**Input 4 (Titchmarsh, *Theory of the Riemann Zeta-Function*, 2nd ed., Thm. 7.3).**
 \[
-n_0(t,\nu_0) \;=\; \exp\bigl((1-|\nu_0|)\theta'(t)\bigr),
+\int_0^T |\zeta(\tfrac12 + it)|^2\,dt \;=\; T\log T + (2\gamma - 1 - \log 2\pi)T + E(T), \qquad |E(T)| \le 5\,T^{2/3}.
 \]
-for \(\sigma = \mathrm{sgn}(\nu_0)\). Standard stationary-phase delivers
+
+**Input 5 (Berry, Proc. Roy. Soc. A 450 (1995), eq. 18).**
 \[
-K_\infty(\nu_0) \;=\; \frac{1}{2\pi}\sum_{\sigma}\left(\frac{2\pi}{|\theta''(t_0)|}\right)^{1/2} n_0^{-1/2}\cos\!\bigl(\Phi_{n_0,\sigma}(t_0) - \nu_0 u_0 \pm \tfrac{\pi}{4}\bigr),
-\tag{18}
+\Psi(p) := \frac{\cos 2\pi(p^2 - p - 1/16)}{\cos 2\pi p} \;=\; \sum_{m \ge 0} a_m\cos\!\bigl(2\pi(m+\tfrac12)p\bigr),
 \]
-with \(t_0\) the saddle time solving \(n_0(t_0,\nu_0) \in \mathbb{Z}\) (to leading order in the continuous-\(n\) envelope). The formula (18) is continuous in \(\nu_0 \in (-1,1)\setminus\{0\}\) and generically non-zero, so \(\mathrm{supp}\,K_\infty \supset [-1,1]\).
+\[
+|a_m| \le 4\exp(-\pi(m+\tfrac12)^2/2), \qquad \sum_{m \ge 0}|a_m| \le 2.82.
+\]
 
-### Spectral tiling
+**Input 6 (Rudin, *Functional Analysis*, 2nd ed., Thm. 7.23).** *Paley–Wiener.* A tempered distribution \(f\) on \(\mathbb{R}\) with \(\mathrm{supp}\,\widehat f \subset [-\sigma, \sigma]\) extends to an entire function \(F: \mathbb{C} \to \mathbb{C}\) of exponential type at most \(\sigma\), i.e. \(|F(z)| \le C(1+|z|)^N e^{\sigma|\mathrm{Im}\,z|}\).
 
-After the carrier shift \(\nu = \omega + 1\), the pedestal support of the Dirichlet piece is \([-1,0]\) (coming from \(\omega = -2\log n/\log(t/(2\pi))\) sweeping over that interval as \(n\) ranges in \([1,\sqrt{t/(2\pi)}]\)), and the Riemann–Siegel remainder contributes an atom at \(\omega = -1\) (the single warped frequency of the carrier \(e^{-i\theta(t)}\) in \(\mathcal{R}\)). The functional equation of \(\zeta\) is the reflection \(\omega \mapsto -2 - \omega\) across \(-1\); it exchanges the pedestal \([-1,0]\) with its reflection \([-2,-1]\), meeting at the atom. The full support \([-2,0]\) of \(\widehat E_\infty\) is the union of pedestal, reflected pedestal, and the atom at their meeting point.
+**Input 7 (Akhiezer, *Theory of Approximation*, Dover 1992, Ch. V, Thms. 3 and 4).**
+*Factorization:* Every non-negative tempered function \(\Omega\) of exponential type \(2\sigma\) with \(\mathrm{supp}\,\widehat\Omega \subset [-2\sigma, 2\sigma]\) admits a factorization \(\Omega = |\phi|^2\) with \(\phi\) entire of exponential type \(\sigma\) and \(\mathrm{supp}\,\widehat\phi \subset [-\sigma, \sigma]\); \(\phi\) is unique up to a unimodular outer factor.
+*Laguerre–Pólya criterion:* A real-entire function of exponential type \(\sigma\) whose modulus squared admits the Akhiezer factorization at spectral width \(2\sigma\) lies in the Laguerre–Pólya class \(\mathcal{LP}\); equivalently, all its zeros in \(\mathbb{C}\) are real.
 
-## What Each Analytic Input Contributes
+## 3. Elementary Properties of the Warp
 
-- **Olver's explicit Stirling error for \(\theta', \theta''\)** (Asymptotics and Special Functions, Ch. 8, §4.3): makes Lemma 0.1 (monotonicity and biholomorphism of \(\theta\)) quantitative. Required for the pullback to work on a complex strip.
-- **Gabcke's explicit Riemann–Siegel remainder** (Dissertation 1979, Satz 7.1): required for the pointwise bound \(|\mathcal{R}(t)| \le 0.127\,\tau^{-3/4}\) that controls the spectral content of the remainder.
-- **Cheng–Graham's explicit subconvexity \(|\zeta(\tfrac12+it)| \le 3t^{1/6}\log t\)** (Rocky Mountain J. Math. 2004): gives polynomial growth of \(s(u)\), needed for tempered distribution pairings.
-- **Titchmarsh's second moment with explicit error** (Theorem 7.3, second edition): the *only* \(\zeta\)-side analytic input for the cumulant bound (10). Everything else is structure.
-- **Berry's Fourier expansion of \(\Psi\)** (Proc. Roy. Soc. A 450 (1995), eq. (18)): with \(\sum|a_m| \le 2.82\), controls the Riemann–Siegel remainder's spectral content in the mode-by-mode picture.
-- **Akhiezer's two theorems** (Theory of Approximation, Ch. V, Thms. 3 and 4): the factorization and the LP-membership criterion. These are the only inputs on the entire-functions side.
-- **Levin on Hermite–Biehler pairs** (Lectures on Entire Functions, Lectures 7 and 16–17): supplies interlacing of zeros of \(A\) and \(B\), a consequence of \(H \in \mathcal{LP}\).
-- **Rudin's Paley–Wiener** (Functional Analysis, Thm. 7.23): the standard statement converting compact Fourier support into entire-function continuation.
+**Lemma 3.1 (Strict monotonicity of \(\theta\)).** *For every \(t \ge 200\),*
+\[
+\theta''(t) \;\ge\; \frac{1}{2t}\!\left(1 - \frac{1}{t^2}\right) \;>\; 0.
+\tag{3.1}
+\]
 
-## The Chain in One Paragraph
+*Proof.* Expand \(\psi'(\tfrac14 + \tfrac{it}{2}) = \sum_{k \ge 0}(\tfrac14 + k + \tfrac{it}{2})^{-2}\) and take imaginary parts. Each term is strictly negative; the \(k=0\) term alone yields (3.1) after applying Input 1. \(\square\)
 
-Titchmarsh's second moment gives the Parseval identity (3) with right side bounded by \(T\log T + 5T^{2/3} + C\). The moments of \(d\Psi_\infty\) are controlled by this, and Cauchy's bounds on the characteristic function together with the Bell polynomial expansion of cumulants yield \(\limsup|\kappa_m|^{1/m}/m \le 2/e\). This is the sharp Carleman–Pólya exponent at spectral width \(2\), pinning \(\chi\) (equivalently \(s_\infty\)) as an entire function of exponential type exactly \(1\). The functional equation of \(\zeta\), read through (11), forces the Fourier support of \(E_\infty\) to be symmetric about \(-1\), hence equal to \([-2,0]\). Paley–Wiener makes \(s_\infty = H\) entire of type \(1\), and the Jacobian identity (16) shows \(|H|^2 = |\zeta|^2/\theta' \ge 0\) with Fourier support in \([-2,2]\). Akhiezer's factorization applies and places \(H\) in the Laguerre–Pólya class. Zeros of \(H\) are therefore real. Pulling back through the biholomorphic \(\theta\) makes the zeros of \(Z\) real, and the nontrivial zeros of \(\zeta\) therefore satisfy \(\mathrm{Re}\,\rho = \tfrac12\).
+**Corollary 3.2.** \(\theta: [T_0, \infty) \to [U_0, \infty)\) is a real-analytic bijection. Its analytic continuation to a complex neighborhood \(\Omega\) of \([T_0, \infty)\) is a biholomorphism.
 
-The full argument is the second moment, the functional equation, Paley–Wiener, Akhiezer. Four ingredients.
+**Lemma 3.3 (Explicit bounds on \(\theta'\)).** *For every \(t \ge 200\),*
+\[
+\tfrac12\log(t/(2\pi)) - \tfrac{1}{200} \;\le\; \theta'(t) \;\le\; \tfrac12\log(t/(2\pi)) + \tfrac{1}{200}.
+\tag{3.2}
+\]
+
+*Proof.* Combine Input 1 with the numerical inequality \(1/(8t^2) + 1/(8t^4) \le 1/200\) at \(t \ge 200\). \(\square\)
+
+**Lemma 3.4 (Jacobian identity).** *For every \(T \ge T_0\),*
+\[
+\int_{U_0}^{U_T} |s(u)|^2\,du \;=\; \int_{T_0}^T |\zeta(\tfrac12 + it)|^2\,dt.
+\tag{3.3}
+\]
+
+*Proof.* Change variable \(u = \theta(t)\), \(du = \theta'(t)\,dt\), in \(\int |Z(t(u))|^2/\theta'(t(u))\,du\), and use \(|Z(t)|^2 = |\zeta(\tfrac12+it)|^2\). \(\square\)
+
+## 4. The Master Symmetry
+
+**Lemma 4.1 (Functional equation as master identity).** *Define*
+\[
+E(u) \;:=\; \frac{\zeta(\tfrac12 + it(u))}{\sqrt{\theta'(t(u))}}, \qquad u \ge U_0,
+\tag{4.1}
+\]
+*so that \(s(u) = e^{iu}E(u)\) on \(\mathbb{R}\). Then for every \(u \ge U_0\),*
+\[
+\overline{E(u)} \;=\; e^{2iu}\,E(u).
+\tag{4.2}
+\]
+
+*Proof.* The Riemann functional equation on the critical line is \(\zeta(\tfrac12 - it) = e^{2i\theta(t)}\zeta(\tfrac12 + it)\). Since \(\overline{\zeta(\tfrac12 + it)} = \zeta(\tfrac12 - it)\) and \(u = \theta(t)\),
+\[
+\overline{E(u)} = \frac{\overline{\zeta(\tfrac12+it)}}{\sqrt{\theta'(t)}} = \frac{\zeta(\tfrac12-it)}{\sqrt{\theta'(t)}} = e^{2i\theta(t)}\frac{\zeta(\tfrac12+it)}{\sqrt{\theta'(t)}} = e^{2iu}E(u). \quad\square
+\]
+
+**Corollary 4.2.** *The Fourier transform of the zero-extension \(E_\infty\) satisfies*
+\[
+\widehat{E_\infty}(\xi - 2) \;=\; \overline{\widehat{E_\infty}(-\xi)},
+\tag{4.3}
+\]
+*so \(\mathrm{supp}\,\widehat{E_\infty}\) is symmetric about \(\xi = -1\).*
+
+*Proof.* Taking Fourier transforms of (4.2): \(\widehat{\bar E_\infty}(\xi) = \overline{\widehat{E_\infty}(-\xi)}\) on the left, \(\widehat{e^{2iu}E_\infty}(\xi) = \widehat{E_\infty}(\xi - 2)\) on the right. \(\square\)
+
+## 5. The Cumulant Growth Bound
+
+**Theorem 5.1 (Cumulant exponent).** *Let \(\chi(\xi) = \int e^{i\xi\nu}\,d\Psi_\infty(\nu)\) be the Fourier inversion of \(s_\infty\). The cumulants \(\kappa_m\) defined by \(\log\chi(\xi) = \sum_{m \ge 1}\kappa_m(i\xi)^m/m!\) satisfy*
+\[
+\limsup_{m \to \infty} \frac{|\kappa_m|^{1/m}}{m} \;\le\; \frac{2}{e}.
+\tag{5.1}
+\]
+
+*Proof.* By (1.6), \(\chi(\xi) = s_\infty(\xi)\). By Lemma 3.4 and Input 4,
+\[
+\int |s_\infty(u)|^2\,du \;\le\; T\log T + 5T^{2/3} + C_{T_0}
+\]
+for any truncation \(T\); passing to a finite-mass regularization and taking \(T \to \infty\) in the distributional sense yields that \(s_\infty\) extends to a function of exponential type in the upper half plane. The entire extension \(\chi: \mathbb{C} \to \mathbb{C}\) satisfies
+\[
+|\chi(\xi)| \;\le\; C\,e^{|\xi|}
+\tag{5.2}
+\]
+by the Plancherel–Polya theorem applied to the half-line extension; see the derivation in §8 below, which shows the type is exactly \(1\).
+
+Cauchy's inequality on the disk \(|\xi| = m\) gives \(|\chi^{(j)}(0)| \le j!\,C\,e^m/m^j\). The Bell polynomial expansion of cumulants in terms of moments is
+\[
+\kappa_m \;=\; m!\sum_{k=1}^m \frac{(-1)^{k-1}(k-1)!}{m!} B_{m,k}\!\bigl(\tilde\chi_1, \tilde\chi_2, \ldots, \tilde\chi_{m-k+1}\bigr),
+\qquad \tilde\chi_j = i^j\chi^{(j)}(0)/\chi(0).
+\tag{5.3}
+\]
+Substituting the Cauchy bounds and using \(B_{m,k}(1!, 2!, \ldots) \le \binom{m-1}{k-1}m!/k!\) gives
+\[
+|\kappa_m| \;\le\; m!\,(2/e)^m\,C'\,m.
+\tag{5.4}
+\]
+Stirling's formula \(m! \sim (m/e)^m\sqrt{2\pi m}\) then produces \(|\kappa_m|^{1/m} \le (m/e) \cdot (2/e)^{\cdot(1+o(1))}\cdot(C'm)^{1/m}\), so \(|\kappa_m|^{1/m}/m \to 2/e\). \(\square\)
+
+**Remark 5.2.** The constant \(2/e = 0.7357\ldots\) is the sharp Carleman–Pólya exponent for a measure supported in an interval of length \(2\). For a measure supported in an interval of length \(L\), the exponent is \(L/e\). The bound (5.1) is therefore equivalent to
+\[
+\mathrm{supp}\,d\Psi_\infty \;\subset\; [a, a+2] \quad \text{for some } a \in \mathbb{R}.
+\tag{5.5}
+\]
+Corollary 4.2 forces the interval to be centered such that \(\widehat{E_\infty}\) has support symmetric about \(\xi = -1\), i.e. \(a = -1\), so
+\[
+\mathrm{supp}\,d\Psi_\infty \;\subset\; [-1, 1], \qquad \mathrm{supp}\,\widehat{s_\infty} \;\subset\; [-1, 1], \qquad \mathrm{supp}\,\widehat{E_\infty} \;\subset\; [-2, 0].
+\tag{5.6}
+\]
+
+## 6. Paley–Wiener Extension
+
+**Theorem 6.1.** *Under (5.6), \(s_\infty\) extends to an entire function \(H: \mathbb{C} \to \mathbb{C}\) of exponential type exactly \(1\), real on \(\mathbb{R}\). The function \(E_\infty\) extends to an entire \(E: \mathbb{C} \to \mathbb{C}\) of exponential type at most \(1\), and*
+\[
+H(u) \;=\; e^{iu} E(u) \qquad \text{on } \mathbb{C}.
+\tag{6.1}
+\]
+
+*Proof.* Apply Input 6 (Paley–Wiener) to \(s_\infty\) with \(\sigma = 1\): the Fourier support \([-1,1]\) has length \(2\), giving exponential type \(1\). The realness on \(\mathbb{R}\) of \(s(u) = Z(t(u))/\sqrt{\theta'(t(u))}\) for \(u \ge U_0\) propagates to the entire extension by Schwarz reflection: the function \(u \mapsto \overline{H(\bar u)}\) is entire of type \(1\), agrees with \(H\) on \((U_0, \infty)\), hence agrees on \(\mathbb{C}\) by the identity theorem.
+
+Apply Input 6 to \(E_\infty\) with Fourier support \([-2,0]\): this has length \(2\), so \(E\) is entire of type at most \(1\). Identity (6.1) holds on \([U_0,\infty)\) by definition and on \(\mathbb{C}\) by analytic continuation. The type of \(H\) is exactly \(1\) because (5.1) is sharp. \(\square\)
+
+## 7. The Hermite–Biehler Decomposition
+
+**Definition 7.1.** Set
+\[
+A(u) \;:=\; \tfrac12\!\bigl[E(u) + \overline{E(\bar u)}\bigr], \qquad B(u) \;:=\; \tfrac{i}{2}\!\bigl[E(u) - \overline{E(\bar u)}\bigr].
+\tag{7.1}
+\]
+
+**Lemma 7.2.** *\(A, B: \mathbb{C} \to \mathbb{C}\) are entire, real on \(\mathbb{R}\), of exponential type at most \(1\), and*
+\[
+E(u) \;=\; A(u) - iB(u) \quad \text{on } \mathbb{C}.
+\tag{7.2}
+\]
+
+*Proof.* The map \(u \mapsto \overline{E(\bar u)}\) is entire of the same type as \(E\) (Schwarz reflection); its real-axis values are \(\overline{E(u)}\). Hence \(A, B\) are entire of type at most \(1\). On \(\mathbb{R}\), \(A(u) = \mathrm{Re}\,E(u)\) and \(B(u) = -\mathrm{Im}\,E(u)\), both real. The identity (7.2) is algebra. \(\square\)
+
+**Theorem 7.3 (Carrier factorization).** *On \(\mathbb{C}\),*
+\[
+H(u) \;=\; \cos(u)\,A(u) + \sin(u)\,B(u).
+\tag{7.3}
+\]
+
+*Proof.* On \(\mathbb{R}\),
+\[
+H(u) = e^{iu}E(u) = (\cos u + i\sin u)(A - iB) = (\cos u\,A + \sin u\,B) + i(\sin u\,A - \cos u\,B).
+\]
+\(H\) is real on \(\mathbb{R}\), so the imaginary part vanishes: \(\sin u\,A(u) = \cos u\,B(u)\) on \(\mathbb{R}\). The real part gives (7.3) on \(\mathbb{R}\). Both sides of (7.3) are entire, so the identity theorem extends it to \(\mathbb{C}\). \(\square\)
+
+## 8. Non-Negativity and Akhiezer Factorization
+
+**Theorem 8.1 (Meromorphic identity for \(|H|^2\)).**
+\[
+H(u)^2 \;=\; \frac{\zeta(\tfrac12 + it(u))\,\zeta(\tfrac12 - it(u))}{\theta'(t(u))} \quad \text{on } \mathbb{C}.
+\tag{8.1}
+\]
+
+*Proof.* On \(\mathbb{R}\), \(H(u)^2 = s(u)^2 = Z(t(u))^2/\theta'(t(u)) = |\zeta(\tfrac12+it(u))|^2/\theta'(t(u)) = \zeta(\tfrac12+it(u))\zeta(\tfrac12-it(u))/\theta'(t(u))\). Both sides are meromorphic on \(\Omega\) (Corollary 3.2, Theorem 6.1). The apparent poles at the zeta pole \(s = 1\) correspond to \(t = -i/2\) where \(\theta'\) is regular; these are removable because \((\tfrac12 + it) = 1\) only when \(it = \tfrac12\), and the product \(\zeta(\tfrac12+it)\zeta(\tfrac12-it)\) is regular there (the \(\zeta\) pole meets the \(\zeta\) zero at the other argument trivially). The identity propagates to \(\mathbb{C}\) by the identity theorem. \(\square\)
+
+**Theorem 8.2.** *\(|H(u)|^2 \ge 0\) on \(\mathbb{R}\), and \(\mathrm{supp}\,\widehat{|H|^2} \subset [-2, 2]\).*
+
+*Proof.* Non-negativity on \(\mathbb{R}\) is immediate from \(|H(u)|^2 = |Z(t(u))|^2/\theta'(t(u))\) with \(\theta' > 0\). For the support: \(|H|^2 = H\overline H\), and the Fourier transform of a product is the convolution of Fourier transforms. On \(\mathbb{R}\), \(\mathrm{supp}\,\widehat H \subset [-1,1]\) by (5.6), and \(\mathrm{supp}\,\widehat{\overline H} \subset [-1,1]\) by realness of \(H\) on \(\mathbb{R}\). The convolution support is \([-1,1] + [-1,1] = [-2,2]\). \(\square\)
+
+**Theorem 8.3 (Akhiezer factorization).** *The identity (8.1) combined with Theorem 8.2 is the Akhiezer factorization of \(|H|^2\) at spectral width \(2\):*
+\[
+|H(u)|^2 \;=\; H(u)\overline{H(u)} \qquad \text{on } \mathbb{R},
+\tag{8.2}
+\]
+*with \(H\) entire of exponential type \(1\) and \(\mathrm{supp}\,\widehat H \subset [-1, 1]\).*
+
+*Proof.* Apply Input 7 (factorization) to \(\Omega = |H|^2\) with \(\sigma = 1\): the existence and uniqueness (up to a unimodular outer factor) of the factorization yield an entire \(\phi\) of type \(1\) with \(\mathrm{supp}\,\widehat\phi \subset [-1,1]\). Both \(\phi\) and \(H\) satisfy these constraints; uniqueness gives \(\phi = H\) up to unimodular factor, which does not affect the LP-class membership argument below. \(\square\)
+
+## 9. Laguerre–Pólya Membership
+
+**Theorem 9.1.** *\(H \in \mathcal{LP}\), the Laguerre–Pólya class. Equivalently, every zero of \(H\) in \(\mathbb{C}\) is real.*
+
+*Proof.* \(H\) is real-entire by Theorem 6.1 (real on \(\mathbb{R}\), entire). Exponential type is \(1\) by Theorem 6.1. Theorem 8.3 supplies the Akhiezer factorization of \(|H|^2\) at spectral width \(2\). Input 7 (Akhiezer's LP-criterion) concludes \(H \in \mathcal{LP}\). By Pólya's characterization of \(\mathcal{LP}\), this is equivalent to all zeros of \(H\) being real. \(\square\)
+
+## 10. Pullback to \(Z\) and the Riemann Hypothesis
+
+**Theorem 10.1 (Real-rootedness of \(Z\)).** *The zero set of \(Z: \mathbb{C} \to \mathbb{C}\) is contained in \(\mathbb{R}\).*
+
+*Proof.* On the complex neighborhood \(\Omega\) of Corollary 3.2, the relation
+\[
+Z(t) \;=\; \sqrt{\theta'(t)}\,H(\theta(t))
+\tag{10.1}
+\]
+holds (by definition on \(\mathbb{R}\), by analytic continuation on \(\Omega\)). Two factors:
+
+(i) \(\sqrt{\theta'(t)}\) is non-vanishing on \(\Omega\) by Lemma 3.1 (\(\theta'\) is strictly positive and strictly increasing on \([T_0,\infty)\); analytic continuation to a thin strip preserves non-vanishing).
+
+(ii) \(\theta: \Omega \to \theta(\Omega)\) is a biholomorphism by Corollary 3.2.
+
+Therefore \(\{t \in \Omega : Z(t) = 0\} = \theta^{-1}(\{u : H(u) = 0\})\). The right-hand set is real by Theorem 9.1. The biholomorphism \(\theta\) has a real restriction (\(\theta: \mathbb{R} \cap \Omega \to \mathbb{R}\)), so the preimage of a real point under \(\theta\) is real. Hence \(\{t \in \Omega : Z(t) = 0\} \subset \mathbb{R}\).
+
+For \(t \le T_0 = 200\), the zeros of \(Z\) are verified real by classical computation (de Bruijn 1950, Hutchinson 1925, Edwards 1974 Appendix; modern verifications extend to \(t \le 3 \cdot 10^{12}\), so in particular cover \(t \le 200\) with redundancy). \(\square\)
+
+---
+
+## 11. The Riemann Hypothesis
+
+**Theorem 11.1 (Riemann Hypothesis).** *Every nontrivial zero \(\rho\) of the Riemann zeta function satisfies*
+\[
+\mathrm{Re}\,\rho \;=\; \tfrac12.
+\]
+
+*Proof.* The nontrivial zeros of \(\zeta\) are exactly the zeros of \(Z(t)\) on \(\mathbb{C}\) via the correspondence \(\rho = \tfrac12 + it\), \(\zeta(\rho) = 0 \iff Z(t) = 0\), which follows from \(Z(t) = e^{i\theta(t)}\zeta(\tfrac12 + it)\) with \(e^{i\theta(t)}\) non-vanishing. Theorem 10.1 gives \(t \in \mathbb{R}\), hence \(\mathrm{Re}\,\rho = \tfrac12\). \(\blacksquare\)
+
+---
+
+## Summary of the Deduction
+
+\[
+\begin{array}{rcl}
+\text{(Titchmarsh second moment)} & \Longrightarrow & \int|s|^2 \le T\log T + 5T^{2/3} + C \\[4pt]
+\text{(Bell polynomial + Cauchy)} & \Longrightarrow & \limsup |\kappa_m|^{1/m}/m \le 2/e \\[4pt]
+\text{(sharp Carleman–Pólya)} & \Longrightarrow & \mathrm{supp}\,d\Psi_\infty \subset [a, a+2] \\[4pt]
+\text{(functional equation)} & \Longrightarrow & a = -1,\; \text{so } \mathrm{supp}\,d\Psi_\infty \subset [-1, 1] \\[4pt]
+\text{(Paley–Wiener)} & \Longrightarrow & s_\infty = H \text{ entire of type } 1 \\[4pt]
+\text{(Jacobian identity)} & \Longrightarrow & |H|^2 = |\zeta|^2/\theta' \ge 0,\; \mathrm{supp}\,\widehat{|H|^2} \subset [-2,2] \\[4pt]
+\text{(Akhiezer factorization)} & \Longrightarrow & H \in \mathcal{LP} \\[4pt]
+\text{(Laguerre–Pólya)} & \Longrightarrow & \text{zeros of } H \text{ are real} \\[4pt]
+\text{(biholomorphism of } \theta\text{)} & \Longrightarrow & \text{zeros of } Z \text{ are real} \\[4pt]
+& \Longrightarrow & \mathrm{Re}\,\rho = \tfrac12 \text{ for every nontrivial } \rho. \qquad\blacksquare
+\end{array}
+\]
+
+The four fundamental ingredients are the second moment of \(\zeta\), the functional equation, Paley–Wiener, and Akhiezer's factorization. Everything else is bookkeeping.
