@@ -149,7 +149,16 @@ public class ExpressionTree<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public boolean isLeaf(Node<D, R, F> node)
   {
-    return node.isAtomic();
+    // Structural predicate: "has no children". Not {@link Node#isAtomic()},
+    // which is a toString() parenthesization flag — FunctionNode subclasses
+    // return isAtomic() == true yet expose real children via getBranches().
+    // See #867.
+    if (node == null)
+    {
+      return true;
+    }
+    var branches = node.getBranches();
+    return branches == null || branches.isEmpty();
   }
 
   @Override

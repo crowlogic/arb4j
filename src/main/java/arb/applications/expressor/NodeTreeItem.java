@@ -28,7 +28,21 @@ public class NodeTreeItem<D, C, F extends Function<? extends D, ? extends C>> ex
   @Override
   public boolean isLeaf()
   {
-    return getValue().isAtomic();
+    // Must be a STRUCTURAL predicate — "no children" — not the toString()
+    // parenthesization flag {@link Node#isAtomic()}. FunctionNode and its
+    // subclasses (LommelPolynomialNode, HypergeometricFunctionNode,
+    // JetNode, SphericalBesselFunctionNodeOfTheFirstKind, …) return
+    // isAtomic() == true yet legitimately expose real children via
+    // getBranches(); delegating to isAtomic() here prevents the
+    // TreeTableView from rendering a disclosure arrow and silently hides
+    // their subtrees (see #867).
+    Node<D, C, F> value = getValue();
+    if (value == null)
+    {
+      return true;
+    }
+    var branches = value.getBranches();
+    return branches == null || branches.isEmpty();
   }
 
   @Override
