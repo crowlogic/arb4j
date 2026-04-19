@@ -4,7 +4,7 @@ The theorem to be verified is: for every fixed \(\nu \in \mathbb{R} \setminus [-
 \[
 \lim_{T \to \infty} K_T(\nu) = 0, \qquad K_T(\nu) := \frac{1}{2\pi}\int_{T_0}^{T} Z(t)\sqrt{\theta'(t)}\,e^{-i(\nu+1)\theta(t)}\,dt.
 \]
-The proof proceeds in two phases: (1) establishing that \(K_\infty(\nu) := \lim_{T\to\infty} K_T(\nu)\) exists as a finite limit, via IBP on each Riemann–Siegel mode; (2) identifying that finite limit as zero, via a direct computation of the instantaneous \(u\)-frequency of \(s(u) := Z(t(u))/\sqrt{\theta'(t(u))}\) under \(u = \theta(t)\).
+The proof proceeds in two phases: (1) establishing that \(K_\infty(\nu) := \lim_{T\to\infty} K_T(\nu)\) exists as a finite limit for \(\nu \notin [-2,0]\), via IBP on each Riemann–Siegel mode; (2) identifying that finite limit as zero for \(\nu \notin [-2,0]\), via a direct computation of the instantaneous \(u\)-frequency of \(s(u) := Z(t(u))/\sqrt{\theta'(t(u))}\) under \(u = \theta(t)\).
 
 ---
 
@@ -65,7 +65,7 @@ Combining with the \(\sqrt{\theta'(t)}\) factor gives exactly \(J_{n,\sigma}(T,\
 
 **Claim.** \(\mathcal{R}(\infty,\mu) - \mathcal{R}(T,\mu) = O(T^{-1/4}(\log T)^{-1/2}) \to 0\).
 
-**Verification.** Since \(R(t) = O(t^{-1/4})\) and \(\sqrt{\theta'(t)} = O((\log t)^{1/2})\), the amplitude is \(O(t^{-1/4}(\log t)^{1/2})\). The phase is \(-\mu\theta(t)\) with derivative \(-\mu\theta'(t)\), bounded away from zero and growing. IBP gives boundary \(O(T^{-1/4}(\log T)^{-1/2}) \to 0\). ✓
+**Verification.** Since \(R(t) = O(t^{-1/4})\) and \(\sqrt{\theta'(t)} = O((\log t)^{1/2})\), the amplitude is \(O(t^{-1/4}(\log t)^{1/2})\). The phase is \(-\mu\theta(t)\) with derivative \(-\mu\theta'(t)\), bounded away from zero and growing for \(|\mu|>1\). IBP gives boundary \(O(T^{-1/4}(\log T)^{-1/2}) \to 0\). ✓
 
 ---
 
@@ -140,7 +140,7 @@ for all \(t \geq T\), diverging as \(T\to\infty\). The IBP argument of Step 6b a
 
 ---
 
-## Step 8: Assembly — \(K_\infty(\nu)\) Exists
+## Step 8: Assembly — \(K_\infty(\nu)\) Exists as a Finite Limit for \(|\mu|>1\)
 
 The difference decomposes exactly as:
 
@@ -152,11 +152,11 @@ K_\infty(\nu) - K_T(\nu) = \frac{1}{2\pi}\sum_\sigma\Bigl[\sum_{n\notin S(\mu)} 
 - \(n\in S(\mu)\) tails: each \(O(\theta'(T)^{-1/2})\), finitely many.
 - \(\mathcal{R}\)-tail: \(O(T^{-1/4}(\log T)^{-1/2})\).
 
-Every component vanishes as \(T\to\infty\), establishing \(K_\infty(\nu) = \lim_{T\to\infty} K_T(\nu)\) as a finite limit. ✓
+Every component vanishes as \(T\to\infty\), establishing \(K_\infty(\nu) = \lim_{T\to\infty} K_T(\nu)\) as a finite limit for every \(\nu\notin[-2,0]\). ✓
 
 ---
 
-## Step 9: Identification \(K_\infty(\nu) = 0\)
+## Step 9: \(K_\infty(\nu) = 0\) for \(\nu \notin [-2,0]\)
 
 Apply \(u = \theta(t)\) (invertible by Step 1) to write
 
@@ -188,7 +188,7 @@ The definition \(K_T(\nu) = \frac{1}{2\pi}\int Z(t)\sqrt{\theta'(t)}\,e^{-i(\nu+
 
 For the Riemann–Siegel remainder: \(R(t(u))/\sqrt{\theta'(t(u))}\) has \(u\)-frequency derivative \(\frac{d[\arg R]}{dt}\cdot\frac{1}{\theta'(t)} = O(1)\cdot O((\log t)^{-1}) \to 0\), so its instantaneous \(u\)-frequency also lies in \([-2,0]\).
 
-Therefore the Fourier support of \(s\) in the \(u\)-variable is contained in \([-2,0]\), and
+Therefore the Fourier support of \(s\) is contained in \([-2,0]\), and
 
 \[
 K_\infty(\nu) = \hat{s}(\nu) = 0 \qquad \text{for every } \nu\in\mathbb{R}\setminus[-2,0]. \qquad\square
