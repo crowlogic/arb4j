@@ -1424,10 +1424,29 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return coDomainType.equals(Integer.class);
   }
 
+  /**
+   * Reference-identity equality. Expression instances are identified by
+   * their object identity: every parsed/compiled Expression gets its own
+   * AST and its own generated class, so two non-identical Expressions are
+   * never considered equal for the purposes of collection lookup. The
+   * previous implementation recursed through {@code rootNode.equals}, which
+   * combined with {@link arb.expressions.nodes.Node#equals}'s former
+   * inclusion of {@code expression} in its structural compare formed an
+   * equality cycle that overflowed the stack as soon as a sub-expression
+   * and its parent were compared. Callers that want structural equivalence
+   * between two Expressions can compare their rendered {@code toString}
+   * forms or their root nodes with {@code Node#isEquivalentTo}.
+   */
   @Override
   public boolean equals(Object obj)
   {
-    return obj instanceof Expression exp ? Objects.equals(rootNode, exp.rootNode) : false;
+    return this == obj;
+  }
+
+  @Override
+  public int hashCode()
+  {
+    return System.identityHashCode(this);
   }
 
   /**
