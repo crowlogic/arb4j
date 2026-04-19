@@ -357,10 +357,43 @@ public class Context implements
       {
         throw new IllegalArgumentException(format("a function named %s of class %s is already registered", functionName, function));
       }
-      else
+      // replace=true: actually overwrite the mapping's content. Keep the
+      // existing FunctionMapping identity (callers may hold references) but
+      // refresh expression/instance/functionClass/domain/coDomain with the
+      // freshly-provided values. Previously this branch silently kept the
+      // stale data and only updated expressionString below, which left
+      // mapping.instance pointing to a class defined by a discarded
+      // ExpressionClassLoader. After a subsequent Context.resetClassLoader()
+      // and recompile, the outer class's field for this operand was typed by
+      // the NEW loader while mapping.instance was still the OLD class, so
+      // injectFunctionReferences' Field.set threw IllegalArgumentException
+      // ("Can not set X field ... to X") because the two Class<?> objects
+      // had the same FQN but different defining ClassLoaders.
+      mapping = alreadyMappedFunctionMapping;
+      if (expression != null)
       {
-        mapping = alreadyMappedFunctionMapping;
+        mapping.expression = expression;
       }
+      if (function != null)
+      {
+        mapping.instance = function;
+      }
+      if (functionClass != null)
+      {
+        mapping.functionClass = functionClass;
+      }
+      if (domainType != null)
+      {
+        mapping.domain = domainType;
+      }
+      if (coDomainType != null)
+      {
+        mapping.coDomain = coDomainType;
+      }
+      // The cached field descriptor derives from functionClass; invalidate it
+      // so the next functionFieldDescriptor() call recomputes from the fresh
+      // class rather than returning the stale descriptor string.
+      mapping.invalidateDescriptorCache();
     }
     else
     {
