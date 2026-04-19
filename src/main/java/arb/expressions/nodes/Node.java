@@ -64,23 +64,40 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 {
 
   /**
-   * When true, {@link VariableNode#toString()} emits {@code "name=%s"}
-   * placeholders for upstream-input variables instead of bare names. Set by
-   * {@link #toStringBound()} so that every node's existing {@link #toString()}
-   * automatically propagates bound-variable formatting without needing per-node
-   * overrides.
+   * When true, {@link VariableNode#toString()} emits indexed format specifiers
+   * ({@code "%1$s"}, {@code "%2$s"}, …) for upstream-input variables instead of
+   * bare names. Set by {@link #toStringBound(Map)} so that every node's existing
+   * {@link #toString()} automatically propagates bound-variable formatting
+   * without needing per-node overrides.
    */
-  public static final ThreadLocal<Boolean> emittingBoundFormat = ThreadLocal.withInitial(() -> false);
+  public static final ThreadLocal<Boolean>              emittingBoundFormat   = ThreadLocal.withInitial(() -> false);
 
   /**
-   * Returns this node's string representation with upstream-bound variable names
-   * replaced by {@code "name=%s"} placeholders. Sets {@link #emittingBoundFormat}
-   * so that all downstream {@link #toString()} calls on child nodes (including
-   * {@link VariableNode}) produce format-ready output.
+   * One-based indices of upstream-input variables within the format arguments
+   * array, keyed by variable name. Every occurrence of variable {@code x} with
+   * index {@code i} emits {@code "%i$s"}, reusing the same positional argument
+   * so that repeated occurrences do not consume extra arguments.
    */
-  public String toStringBound()
+  public static final ThreadLocal<Map<String, java.lang.Integer>> boundVariableIndices  = ThreadLocal.withInitial(Collections::emptyMap);
+
+  /**
+   * Returns this node's string representation with every upstream-bound
+   * variable name replaced by an indexed format specifier {@code "%N$s"}
+   * (where {@code N} is the 1-based position of the variable in
+   * {@code variableIndices}). Indexed specifiers let repeated occurrences of
+   * the same variable reuse a single positional argument, so the resulting
+   * format string can be safely passed to {@link String#format} with an
+   * argument array containing one entry per unique variable name.
+   *
+   * @param variableIndices map from upstream-input variable name to 1-based
+   *                        argument position; if null or empty, every upstream
+   *                        variable falls back to the legacy bare {@code "%s"}
+   *                        specifier.
+   */
+  public String toStringBound(Map<String, java.lang.Integer> variableIndices)
   {
     emittingBoundFormat.set(true);
+    boundVariableIndices.set(variableIndices == null ? Collections.emptyMap() : variableIndices);
     try
     {
       return toString();
@@ -88,7 +105,19 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     finally
     {
       emittingBoundFormat.set(false);
+      boundVariableIndices.set(Collections.emptyMap());
     }
+  }
+
+  /**
+   * Legacy entry point retained for callers that do not need indexed
+   * specifiers. Every upstream-input variable occurrence emits the bare
+   * {@code "%s"}; use {@link #toStringBound(Map)} when the resulting format
+   * string will be fed to {@link String#format} with repeated variables.
+   */
+  public String toStringBound()
+  {
+    return toStringBound(Collections.emptyMap());
   }
 
   public Stream<Node<D, R, F>> nodeStream()

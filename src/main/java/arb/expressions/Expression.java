@@ -3187,7 +3187,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (runtimeVars.isEmpty())
     {
-      String boundExpr = rootNode != null ? rootNode.toStringBound() : getExpression();
+      String boundExpr = rootNode != null ? rootNode.toStringBound(Collections.emptyMap()) : getExpression();
       String staticStr = namePrefix + arrow + boundExpr;
 
       if (Expression.trace)
@@ -3200,18 +3200,28 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return classVisitor;
     }
 
-    // Use toStringBound() which emits "name=%s" for upstream input variables,
-    // giving us the format template with placeholders already in place.
-    String                      boundExpr    = rootNode != null ? rootNode.toStringBound() : getExpression();
-    String                      formatString = namePrefix + arrow + boundExpr;
-
-    List<String>                matchedNames = new ArrayList<>();
-    List<VariableNode<D, C, F>> matchedNodes = new ArrayList<>();
+    // Build a 1-based index map (name → position in args array) so every
+    // occurrence of variable x emits the same indexed specifier "%N$s" and
+    // they all share one positional argument. Without this, an expression
+    // that mentions x twice produces two "%s" placeholders but only one
+    // argument, yielding a MissingFormatArgumentException from String.format.
+    // The indices match the order in which entries are added to
+    // the Object[] args array below.
+    List<String>                matchedNames     = new ArrayList<>();
+    List<VariableNode<D, C, F>> matchedNodes     = new ArrayList<>();
+    Map<String, java.lang.Integer> variableIndices  = new HashMap<>();
+    int                         nextIndex        = 1;
     for (Entry<String, VariableNode<D, C, F>> entry : runtimeVars)
     {
       matchedNames.add(entry.getKey());
       matchedNodes.add(entry.getValue());
+      variableIndices.put(entry.getKey(), nextIndex++);
     }
+
+    // toStringBound(variableIndices) emits indexed specifiers so repeated
+    // occurrences of the same variable share a single argument slot.
+    String                      boundExpr    = rootNode != null ? rootNode.toStringBound(variableIndices) : getExpression();
+    String                      formatString = namePrefix + arrow + boundExpr;
 
     if (Expression.trace)
     {

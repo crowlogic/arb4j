@@ -698,7 +698,11 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     if (upstreamInput && Node.emittingBoundFormat.get())
     {
-      return "%s";
+      java.lang.Integer index = Node.boundVariableIndices.get().get(reference.name);
+      // Indexed form "%N$s" when the caller supplied a position map, so that
+      // every occurrence of the same variable shares a single argument slot.
+      // Bare "%s" falls back for legacy callers that don't need indexed args.
+      return index != null ? String.format("%%%d$s", index) : "%s";
     }
     return reference.toString();
   }
