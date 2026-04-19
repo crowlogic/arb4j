@@ -2523,9 +2523,33 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   /**
    * Walks the expression tree and replaces constant non-leaf, non-root subtree
-   * roots with {@link StaticNode} wrappers. Only replaces the highest-level
-   * constant nodes — their children remain unwrapped since the parent's
-   * generate will traverse them.
+   * roots with {@link StaticNode} wrappers, then iterates a static-factor
+   * segregation pass over multiplication/division chains until a fixed point is
+   * reached. The segregation step merges the already-hoisted static factors of
+   * each mul/div chain into one composite {@link StaticNode} so the generated
+   * {@code evaluate()} body no longer recomputes dynamic products of purely
+   * cached values.
+   *
+   * <p>Iteration sketch (see issue #955):
+   * <ol>
+   *   <li>Run {@link Node#replaceConstantNodes()} to wrap every maximal
+   *       input-independent subtree in a {@link StaticNode}.</li>
+   *   <li>For each mul/div chain in the tree, collect operands while tracking
+   *       numerator/denominator role under {@link DivisionNode} alternation,
+   *       partition into static and dynamic, and rebuild the chain as
+   *       {@code dynamicChain * compositeStatic} (or
+   *       {@code dynamicChain / compositeStatic} if the chain has no dynamic
+   *       factors at all). The composite static is assembled from the
+   *       <em>delegates</em> of the input static nodes; the old StaticNode
+   *       wrappers' intermediate-variable registrations are removed so
+   *       {@link #declareIntermediateVariables} and {@link #generateCloseMethod}
+   *       see only the surviving fields.</li>
+   *   <li>Re-run {@link Node#replaceConstantNodes()}; the rebuilt composite
+   *       subtree is constant and becomes a new {@link StaticNode}.</li>
+   *   <li>Repeat until no further collapses are produced (fixed point).</li>
+   * </ol>
+   * {@link StaticNode#replaceConstantNodes()} is idempotent, so the repeated
+   * first step does not double-wrap anything.
    */
   protected void replaceConstantNodes()
   {
@@ -2539,14 +2563,328 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // after the first memoization. Invalidate so the hoist traversal
     // sees the post-resolution truth.
     rootNode.nodeStream().forEach(n -> n.invalidateConstantFlag());
-    rootNode       = rootNode.replaceConstantNodes();
+    rootNode = rootNode.replaceConstantNodes();
+
+    int    maxIterations = 8;
+    int    iteration     = 0;
+    while (iteration++ < maxIterations)
+    {
+      boolean changed = segregateStaticFactorsInTree(rootNode);
+      if (!changed)
+      {
+        break;
+      }
+      // After segregation the freshly built composite subtrees contain
+      // raw delegates whose constant flags must be recomputed, and the
+      // composite expression itself is constant and should be wrapped.
+      rootNode.nodeStream().forEach(n -> n.invalidateConstantFlag());
+      rootNode = rootNode.replaceConstantNodes();
+    }
+    assert iteration <= maxIterations
+                 : "static-hoisting fixed point not reached in " + maxIterations + " iterations";
+
     hasStaticNodes = rootNode.nodeStream().anyMatch(n -> n instanceof StaticNode);
     if (trace)
     {
-      log.debug("replaceConstantNodes: hasStaticNodes={} className={} root={}",
+      log.debug("replaceConstantNodes: hasStaticNodes={} iterations={} className={} root={}",
                 hasStaticNodes,
+                iteration,
                 className,
                 rootNode.getClass().getSimpleName());
+    }
+  }
+
+  /**
+   * Finds every maximal {@link MultiplicationNode}/{@link DivisionNode} chain
+   * in the current {@link #rootNode} tree and applies
+   * {@link #segregateStaticFactorsAt(Node)} to each. Returns {@code true} if
+   * any rewrite was performed.
+   *
+   * <p>Traversal uses {@link Node#nodeStream()} (which goes through each
+   * node's own {@link Node#accept} method, not through the risky
+   * {@code spliceInto}-based {@link Node#getBranches}) so that n-ary nodes,
+   * jet nodes, integral nodes, etc. are walked correctly. A {@link CachedNode}
+   * is opaque to {@code accept}, so its delegate subtree is never
+   * revisited — exactly what we want, because cached subtrees are already
+   * owned by a generated field and must not be restructured.
+   *
+   * <p>A chain "top" is a mul/div node whose parent is not itself a mul/div.
+   * Interior mul/div nodes will be absorbed by their ancestor's
+   * {@link #collectMulDivOperands} descent, so processing them independently
+   * would duplicate work.
+   */
+  @SuppressWarnings(
+  { "rawtypes", "unchecked" })
+  private boolean segregateStaticFactorsInTree(Node<?, ?, ?> tree)
+  {
+    if (tree == null)
+    {
+      return false;
+    }
+
+    // Snapshot the chain tops before any rewriting, because
+    // segregateStaticFactorsAt mutates parent/child links.
+    List<Node<?, ?, ?>> chainTops = tree.nodeStream()
+                                       .filter(Expression::isMulOrDiv)
+                                       .filter(n -> !isMulOrDiv(n.parent))
+                                       .collect(Collectors.toCollection(ArrayList::new));
+
+    boolean changed = false;
+    for (Node<?, ?, ?> chainTop : chainTops)
+    {
+      // If this chain top was already replaced by an ancestor's rewrite
+      // its parent pointer will have been cleared; skip such stale nodes.
+      // (rootNode has parent==null legitimately — that's the only case we
+      // allow a null parent on a node we still want to process.)
+      if (chainTop != rootNode && chainTop.parent == null)
+      {
+        continue;
+      }
+      changed |= segregateStaticFactorsAt(chainTop);
+    }
+    return changed;
+  }
+
+  /**
+   * @return {@code true} if {@code node} is a {@link MultiplicationNode} or
+   *         a {@link DivisionNode}. Factored out to avoid a series of
+   *         {@code instanceof} tests at call sites.
+   */
+  private static boolean isMulOrDiv(Node<?, ?, ?> node)
+  {
+    return node instanceof MultiplicationNode<?, ?, ?> || node instanceof DivisionNode<?, ?, ?>;
+  }
+
+  /**
+   * Segregates the static and dynamic factors of a single maximal
+   * {@link MultiplicationNode}/{@link DivisionNode} chain rooted at
+   * {@code chainRoot}. See {@link #replaceConstantNodes()} for the
+   * role of this pass in the fixed-point loop.
+   *
+   * <p>The chain is scanned left-to-right, and the sign of each operand is
+   * tracked: entering the right-hand side of a {@link DivisionNode} flips
+   * the sign. After partitioning operands into static (those wrapped in a
+   * {@link StaticNode}) and dynamic, the chain is rebuilt as
+   * <pre>
+   *   dynamicNumProduct / dynamicDenProduct  *  S(staticNumProduct / staticDenProduct)
+   * </pre>
+   * where every factor in the composite static is taken as the raw delegate
+   * of the contributing {@link StaticNode}. The stale
+   * {@link IntermediateVariable} registrations of the unwrapped StaticNodes
+   * are dropped so their fields are not declared, initialised, or closed.
+   *
+   * @return {@code true} if the tree was rewritten, {@code false} otherwise
+   */
+  @SuppressWarnings(
+  { "rawtypes", "unchecked" })
+  private boolean segregateStaticFactorsAt(Node chainRoot)
+  {
+    List<FactorRole> factors = new ArrayList<>();
+    collectMulDivOperands(chainRoot, +1, factors);
+
+    List<FactorRole> staticFactors  = new ArrayList<>();
+    List<FactorRole> dynamicFactors = new ArrayList<>();
+    for (FactorRole f : factors)
+    {
+      if (f.node instanceof StaticNode)
+      {
+        staticFactors.add(f);
+      }
+      else
+      {
+        dynamicFactors.add(f);
+      }
+    }
+
+    // Nothing to collapse unless at least two static factors will merge
+    // into a single composite. One static factor in a chain is already
+    // cached in exactly one field — rebuilding it would change nothing.
+    if (staticFactors.size() < 2)
+    {
+      return false;
+    }
+
+    // Special case: chain is entirely static AND rooted at the expression
+    // root. A root node cannot be wrapped as a {@link StaticNode} (the
+    // root generate() contract writes into the caller's result slot, see
+    // {@link Node#replaceConstantNodes}). Rewriting would unwrap the
+    // existing per-factor StaticNodes into a raw tree; the subsequent
+    // replaceConstantNodes() pass would re-wrap each constant subtree
+    // individually (because the root itself stays unwrapped), and this
+    // segregation pass would fire again — an infinite oscillation.
+    // Leaving the root as Mul(S(a), S(b), ...) is already optimal: each
+    // static factor is loaded from its own field with no recomputation.
+    if (dynamicFactors.isEmpty() && chainRoot.isRootNode)
+    {
+      return false;
+    }
+
+    // Build the composite-static subtree from the raw delegates. The
+    // delegates have already been retargeted as children of new operator
+    // nodes, so their old parent pointers will be overwritten by the
+    // Mul/Div constructors called below.
+    Node compositeStaticRaw = buildFactorTree(unwrapStaticDelegates(staticFactors));
+    if (compositeStaticRaw == null)
+    {
+      return false;
+    }
+
+    // Drop the now-orphaned intermediate-variable fields of the
+    // unwrapped StaticNodes. Their computation has been subsumed into
+    // compositeStaticRaw; on the next hoist pass a single fresh field
+    // will be allocated for the whole composite.
+    for (FactorRole s : staticFactors)
+    {
+      StaticNode sn = (StaticNode) s.node;
+      if (sn.fieldName != null)
+      {
+        intermediateVariables.remove(sn.fieldName);
+        declaredIntermediateVariables.remove(sn.fieldName);
+      }
+    }
+
+    Node replacement;
+    if (dynamicFactors.isEmpty())
+    {
+      // Chain is entirely static. This case is normally subsumed by
+      // plain replaceConstantNodes() in the next iteration, but
+      // returning the raw composite lets the caller wrap it afresh.
+      replacement = compositeStaticRaw;
+    }
+    else
+    {
+      Node dynamicTree = buildFactorTree(dynamicFactors);
+      // Multiply by the composite. Wrapping compositeStaticRaw in a
+      // StaticNode here is redundant with the next iteration's
+      // replaceConstantNodes() pass and would also mis-register its
+      // intermediate variable before the full tree's generation starts,
+      // so we leave the composite raw for the fixed-point loop to wrap.
+      replacement = dynamicTree.mul(compositeStaticRaw);
+    }
+
+    // Preserve the rootness flag of the node we are replacing so that
+    // generate() continues to write into the caller's result slot.
+    boolean wasRoot = chainRoot.isRootNode;
+    replacement.isRootNode = wasRoot;
+
+    Node parent = chainRoot.parent;
+    if (parent == null)
+    {
+      // chainRoot was the expression root.
+      rootNode = replacement;
+      replacement.parent = null;
+    }
+    else
+    {
+      parent.replaceChild(chainRoot, replacement);
+    }
+    return true;
+  }
+
+  /**
+   * Recursively walks a {@link MultiplicationNode}/{@link DivisionNode} chain
+   * collecting every non-Mul/Div operand along with its accumulated
+   * numerator/denominator sign. The right operand of a {@link DivisionNode}
+   * flips the sign; all other descents preserve it. Stops descending at a
+   * {@link StaticNode} so its cached subtree is treated as an atomic factor.
+   */
+  @SuppressWarnings(
+  { "rawtypes", "unchecked" })
+  private void collectMulDivOperands(Node node, int sign, List<FactorRole> out)
+  {
+    if (node instanceof MultiplicationNode mul)
+    {
+      collectMulDivOperands(mul.left, sign, out);
+      collectMulDivOperands(mul.right, sign, out);
+    }
+    else if (node instanceof DivisionNode div)
+    {
+      collectMulDivOperands(div.left, sign, out);
+      collectMulDivOperands(div.right, -sign, out);
+    }
+    else
+    {
+      out.add(new FactorRole(node, sign));
+    }
+  }
+
+  /**
+   * Returns {@code factors} with every {@link StaticNode} replaced by its
+   * {@link CachedNode#delegate}. The delegate's {@code parent} will be
+   * overwritten when it is wired into the rebuilt chain; we null it here
+   * to make the detachment from its former StaticNode parent explicit.
+   */
+  @SuppressWarnings(
+  { "rawtypes", "unchecked" })
+  private List<FactorRole> unwrapStaticDelegates(List<FactorRole> factors)
+  {
+    List<FactorRole> out = new ArrayList<>(factors.size());
+    for (FactorRole f : factors)
+    {
+      if (f.node instanceof StaticNode sn)
+      {
+        Node delegate = sn.delegate;
+        delegate.parent = null;
+        out.add(new FactorRole(delegate, f.sign));
+      }
+      else
+      {
+        out.add(f);
+      }
+    }
+    return out;
+  }
+
+  /**
+   * Reassembles an ordered list of signed factors into a single
+   * multiplication/division tree. Numerator factors are multiplied together
+   * left-to-right and denominator factors are composed into a single
+   * denominator that is divided in once at the end. Returns {@code null}
+   * when the list is empty.
+   */
+  @SuppressWarnings(
+  { "rawtypes", "unchecked" })
+  private Node buildFactorTree(List<FactorRole> factors)
+  {
+    Node num = null;
+    Node den = null;
+    for (FactorRole f : factors)
+    {
+      if (f.sign > 0)
+      {
+        num = (num == null) ? f.node : num.mul(f.node);
+      }
+      else
+      {
+        den = (den == null) ? f.node : den.mul(f.node);
+      }
+    }
+    if (num == null && den == null)
+    {
+      return null;
+    }
+    if (num == null)
+    {
+      // All factors are in the denominator: represent as 1 / den.
+      num = one();
+    }
+    return (den == null) ? num : num.div(den);
+  }
+
+  /**
+   * Ordered pair of a factor node and its role in a mul/div chain
+   * (+1 = numerator, -1 = denominator). Used by
+   * {@link #collectMulDivOperands}.
+   */
+  private static final class FactorRole
+  {
+    final Node<?, ?, ?> node;
+    final int           sign;
+
+    FactorRole(Node<?, ?, ?> node, int sign)
+    {
+      this.node = node;
+      this.sign = sign;
     }
   }
 

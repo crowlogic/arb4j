@@ -532,6 +532,19 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
   @Override
   public Node<D, R, F> replaceConstantNodes()
   {
+    // If the whole subtree rooted here is constant, wrap it as a single
+    // {@link StaticNode} directly — recursing into children first would
+    // wrap each child individually, producing nested StaticNodes inside a
+    // StaticNode (the outer wrapper's delegate would hold StaticNode
+    // children, each with its own cached field that is never read at
+    // evaluate-time because the outer field subsumes them). The
+    // fixed-point hoisting loop in {@link Expression#replaceConstantNodes}
+    // relies on this early return to collapse composite constant subtrees
+    // into one cached field instead of a tree of them.
+    if (!isRootNode && isConstant())
+    {
+      return super.replaceConstantNodes();
+    }
     left  = left.replaceConstantNodes();
     right = right.replaceConstantNodes();
     return super.replaceConstantNodes();

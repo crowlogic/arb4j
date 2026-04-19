@@ -51,6 +51,20 @@ public class StaticNode<D, R, F extends Function<? extends D, ? extends R>> exte
     return true;
   }
 
+  /**
+   * A {@link StaticNode} already owns its cached field and has a
+   * {@link CachedNode#delegate}; re-wrapping it on a subsequent pass of
+   * {@link Expression#replaceConstantNodes()} would double-cache the same
+   * computation and, worse, orphan the inner {@link #fieldName}. The
+   * fixed-point hoisting loop relies on this override to be idempotent —
+   * repeated passes converge instead of compounding wrappers.
+   */
+  @Override
+  public Node<D, R, F> replaceConstantNodes()
+  {
+    return this;
+  }
+
   @Override
   public boolean dependsOn(VariableNode<D, R, F> variable)
   {
