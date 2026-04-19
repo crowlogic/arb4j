@@ -925,12 +925,39 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public boolean isEquivalentTo(Node<D, R, F> other)
   {
-    if (!(other instanceof FunctionNode<D, R, F> o))
+    if (other == null || getClass() != other.getClass())
     {
       return false;
     }
-    return functionName.equals(o.functionName)
-        && (arg == null ? o.arg == null : arg.isEquivalentTo(o.arg));
+    FunctionNode<D, R, F> o = (FunctionNode<D, R, F>) other;
+    if (!functionName.equals(o.functionName))
+    {
+      return false;
+    }
+    // Compare all branches exposed by the subclass (arg plus any extra
+    // structural children such as Lommel's index/order or the spherical
+    // Bessel function's order) so that calls with matching arg but
+    // differing indices are NOT collapsed by the CSE pass.
+    List<Node<D, R, F>> left  = getBranches();
+    List<Node<D, R, F>> right = o.getBranches();
+    if (left.size() != right.size())
+    {
+      return false;
+    }
+    for (int i = 0; i < left.size(); i++)
+    {
+      Node<D, R, F> a = left.get(i);
+      Node<D, R, F> b = right.get(i);
+      if (a == null)
+      {
+        if (b != null) return false;
+      }
+      else if (!a.isEquivalentTo(b))
+      {
+        return false;
+      }
+    }
+    return true;
   }
 
   @Override

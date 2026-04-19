@@ -1069,6 +1069,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     if (instructions == null)
     {
+      optimize();
       generate();
     }
     assert context != null : "context is null for "
@@ -1704,11 +1705,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     try
     {
+      // The AST must be frozen before any bytecode is emitted. All
+      // tree-rewriting passes live in optimize(); generate() only reads
+      // the finalised tree. Call optimize() here defensively for callers
+      // that invoke generate() directly without first going through
+      // compile().
+      optimize();
+
       generateFunctionInterface(this, className, classVisitor);
       generateDomainTypeMethod(classVisitor);
       generateCoDomainTypeMethod(classVisitor);
-      deduplicateJets();
-      replaceConstantNodes();
       generateEvaluationMethod(classVisitor);
       generateStaticEvaluationMethod(classVisitor);
       generateInvalidateStaticCacheMethod(classVisitor);
@@ -2444,6 +2450,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * {@link #replaceConstantNodes()} has run.
    */
   protected boolean hasStaticNodes = false;
+
+  /**
+   * Set by {@link #optimize()} once all AST-rewriting passes (jet
+   * deduplication, static-subexpression hoisting, common-subexpression
+   * elimination) have run. Used as an idempotency guard so that repeated
+   * optimize/compile/generate calls never re-mutate the tree.
+   */
+  protected boolean optimized = false;
 
   /**
    * Emit {@code public void invalidateStaticCache()} that resets
@@ -3975,7 +3989,22 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   @SuppressWarnings("unchecked")
   public Expression<D, C, F> optimize()
   {
+    if (optimized)
+    {
+      return this;
+    }
+    if (rootNode == null)
+    {
+      parse(true);
+    }
+    // Order matters: deduplicate jet siblings so that the static-hoisting
+    // pass sees canonical JetState references, then hoist constant /
+    // fixed-instance-data subtrees into StaticNodes, then eliminate any
+    // remaining input-dependent common subexpressions.
+    deduplicateJets();
+    replaceConstantNodes();
     eliminateCommonSubexpressions();
+    optimized = true;
     return this;
   }
 
