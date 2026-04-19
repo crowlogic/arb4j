@@ -1,6 +1,20 @@
-arb4j (0.99.9.9.7-1) UNRELEASED; urgency=low
+arb4j (0.99.9.9.8) UNRELEASED; urgency=low
 
+  [ Stephen Crowley ]
   * Initial release. Closes: #nnnn
     <nnnn is the bug number of your ITP>
 
- -- Stephen Crowley <crow@localhost>  Thu, 16 Apr 2026 17:31:05 -0500
+  [ crow ]
+  * 960: MissingFormatArgumentException in generated toString() when a
+bound upstream variable occurs more than once
+  * 867: expressiontree view not working in expressor for some nodes
+  * 959: Architectural rule: parse → optimize → generate; no AST
+mutation in generate()
+  * 957: Static hoisting misses parameter-only subexpressions
+(follow-up to #955)
+  * 958: invalidateStaticCache() method on generated functions (for
+parameter estimation / mutable context variables)
+  * 955: Iterate static hoisting to a fixed point for generated
+functionals, with performance-first cache closure
+
+ -- crow <crow@core>  Sun, 19 Apr 2026 06:38:54 -0500
