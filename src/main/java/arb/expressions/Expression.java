@@ -1711,6 +1711,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       replaceConstantNodes();
       generateEvaluationMethod(classVisitor);
       generateStaticEvaluationMethod(classVisitor);
+      generateInvalidateStaticCacheMethod(classVisitor);
       generateDiffererentiationAndIntegrationMethods(classVisitor);
       declareFields(classVisitor);
       generateInitializationMethod(classVisitor);
@@ -2443,6 +2444,36 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * {@link #replaceConstantNodes()} has run.
    */
   protected boolean hasStaticNodes = false;
+
+  /**
+   * Emit {@code public void invalidateStaticCache()} that resets
+   * {@code staticPrecision = -1}, forcing the next {@code evaluate()} call to
+   * re-run {@code evaluateStaticSubexpressions}. Only emitted when
+   * {@link #hasStaticNodes} is true — otherwise the {@code Function}
+   * interface's no-op default is inherited.
+   * <p>
+   * Required for workflows that mutate bound-parameter instance data or
+   * {@link Context} variables between evaluations (parameter estimation,
+   * Monte-Carlo sweeps, etc.) where the cached value of an
+   * {@code upstreamInput}-dependent subtree would otherwise become stale.
+   */
+  protected ClassVisitor generateInvalidateStaticCacheMethod(ClassVisitor classVisitor)
+  {
+    if (!hasStaticNodes)
+    {
+      return classVisitor;
+    }
+    var mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "invalidateStaticCache", "()V", null, null);
+    mv.visitCode();
+    // this.staticPrecision = -1
+    loadThisOntoStack(mv);
+    mv.visitInsn(Opcodes.ICONST_M1);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, className.replace('.', '/'), "staticPrecision", "I");
+    mv.visitInsn(Opcodes.RETURN);
+    mv.visitMaxs(0, 0);
+    mv.visitEnd();
+    return classVisitor;
+  }
 
   /**
    * Generates the {@code evaluateStaticSubexpressions} method on the generated

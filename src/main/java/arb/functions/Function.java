@@ -99,6 +99,28 @@ public interface Function<D, CO> extends
     return null;
   }
 
+  /**
+   * Drop the cached static-subexpression values so that the next
+   * {@link #evaluate(Object, int, int, Object) evaluate} call recomputes every
+   * subtree that was lifted into {@code evaluateStaticSubexpressions} by
+   * fixed-point static hoisting.
+   * <p>
+   * Generated classes with at least one hoisted static subexpression override
+   * this to reset the internal {@code staticPrecision} sentinel to {@code -1}.
+   * Call this whenever a parameter field or a {@link Context} variable that
+   * participates in a hoisted subtree has been mutated between calls — e.g.
+   * during parameter estimation, Monte-Carlo sweeps, or any workflow that
+   * rebinds the bound-parameter instance data rather than constructing a
+   * fresh function object. Functions with no hoisted state inherit this
+   * no-op default.
+   *
+   * @see arb.expressions.nodes.StaticNode
+   */
+  public default void invalidateStaticCache()
+  {
+
+  }
+
   public static <D, H, Q extends Function<? extends D, ? extends H>>
          Expression<D, H, Q>
          parseAndCompile(Class<? extends D> domainClass, Class<? extends H> coDomainClass, Class<? extends Q> functionClass, String expression, Context context)
