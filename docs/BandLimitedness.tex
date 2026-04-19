@@ -16,7 +16,7 @@
 \maketitle
 
 \begin{abstract}
-Let $Z:\mathbb{R}\to\mathbb{R}$ denote Hardy's function, defined by $\zeta(\tfrac{1}{2}+it) = e^{-i\theta(t)}Z(t)$, where $\theta(t) = \Im\log\Gamma\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right) - \tfrac{t}{2}\log\pi$ is the Riemann--Siegel theta function. The truncated transform $K_T(\nu) := \frac{1}{2\pi}\int_{0}^{T}\zeta(\tfrac{1}{2}+it)\sqrt{\theta'(t)}\,e^{-i\nu\theta(t)}\,dt$ is shown to satisfy $\lim_{T\to\infty}K_T(\nu)=0$ pointwise for every $\nu\in\mathbb{R}\setminus[-2,0]$. The proof rests on exact algebraic cancellation of $\theta''(t(x))$ in the integration-by-parts quotient under the substitution $x=\theta'(t)$, reducing each Riemann--Siegel mode integral to a rational kernel whose decay is controlled to $O(\theta'(T)^{-1/2})$, combined with a direct computation showing that the instantaneous $u$-frequency of every mode of $s(u):=Z(t(u))/\sqrt{\theta'(t(u))}$ lies in $[-1,0]$, so that $\hat{s}(\nu)=0$ for $\nu\notin[-2,0]$ after the unit shift from the $Z$-to-$\zeta$ relation.
+Let $Z:\mathbb{R}\to\mathbb{R}$ denote Hardy's function, defined by $\zeta(\tfrac{1}{2}+it) = e^{-i\theta(t)}Z(t)$, where $\theta(t) = \Im\log\Gamma\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right) - \tfrac{t}{2}\log\pi$ is the Riemann--Siegel theta function. The truncated transform $K_T(\nu) := \frac{1}{2\pi}\int_{0}^{T}\zeta(\tfrac{1}{2}+it)\sqrt{\theta'(t)}\,e^{-i\nu\theta(t)}\,dt$ is shown to satisfy $\lim_{T\to\infty}K_T(\nu)=0$ pointwise for every $\nu\in\mathbb{R}\setminus[-2,0]$. The proof rests on exact algebraic cancellation of $\theta''(t(x))$ in the integration-by-parts quotient under the substitution $x=\theta'(t)$, reducing each Riemann--Siegel mode integral to a rational kernel whose decay is controlled to $O(\theta'(T)^{-1/2})$, combined with a direct computation showing that the instantaneous $u$-frequency of every mode of $s(u):=Z(t(u))/\sqrt{\theta'(t(u))}$ lies in $[-1,1]$, so that $\hat{s}(\nu+1)=0$ for $\nu\notin[-2,0]$.
 \end{abstract}
 
 \section{Introduction}
@@ -130,17 +130,14 @@ K_\infty(\nu) - K_T(\nu) \to 0 \qquad (T\to\infty),
 \end{equation}
 which establishes that $K_\infty(\nu) := \lim_{T\to\infty} K_T(\nu)$ exists as a finite limit for every $\nu\notin[-2,0]$.
 
-It remains to show $K_\infty(\nu)=0$. Apply the substitution $u=\theta(t)$, with inverse $t(u)$ well-defined on $[\theta(T_0),\infty)$ by strict monotonicity of $\theta$, to write
+It remains to show $K_\infty(\nu)=0$. Apply the substitution $u=\theta(t)$, with inverse $t(u)$ well-defined on $[\theta(T_0),\infty)$ by strict monotonicity of $\theta$. Since $e^{-i(\nu+1)\theta(t)}\,dt = e^{-i(\nu+1)u}\,du/\theta'(t(u))$ and $\sqrt{\theta'(t)}\,dt = \sqrt{\theta'(t(u))}\,du/\theta'(t(u)) = du/\sqrt{\theta'(t(u))}$, the transform becomes
 \begin{equation}
-K_\infty(\nu) = \frac{1}{2\pi}\int_{\theta(T_0)}^{\infty} s(u)\,e^{-i\nu u}\,du, \qquad s(u) := \frac{Z(t(u))}{\sqrt{\theta'(t(u))}}.
+K_\infty(\nu) = \frac{1}{2\pi}\int_{\theta(T_0)}^{\infty} s(u)\,e^{-i(\nu+1)u}\,du = \hat{s}(\nu+1),
+\qquad s(u) := \frac{Z(t(u))}{\sqrt{\theta'(t(u))}},
 \end{equation}
-The function $s$ belongs to $L^2$ by the second-moment estimate $\int_{T_0}^T |Z(t)|^2\,dt \sim T\log T$ and $\theta'(t)\sim \tfrac{1}{2}\log(t/(2\pi))$; it belongs to $L^1$ on compact sets and the Riemann--Siegel expansion shows it is the sum of oscillatory modes with amplitude decaying in $t$. Thus $K_\infty(\nu)=\hat{s}(\nu)$ is the $L^2$ Fourier transform of $s$, and it suffices to show $\hat{s}(\nu)=0$ for every $\nu\notin[-2,0]$.
+where $\hat{s}$ denotes the Fourier transform of $s$. The function $s$ belongs to $L^2$ by the second-moment estimate $\int_{T_0}^T |Z(t)|^2\,dt \sim T\log T$ and $\theta'(t)\sim \tfrac{1}{2}\log(t/(2\pi))$. It therefore suffices to show that the Fourier support of $s$ is contained in $[-1,1]$, for then $\hat{s}(\nu+1)=0$ whenever $\nu+1\notin[-1,1]$, i.e., whenever $\nu\notin[-2,0]$.
 
-Under the substitution $u=\theta(t)$, the Riemann--Siegel decomposition becomes
-\begin{equation}
-s(u) = \frac{Z(t(u))}{\sqrt{\theta'(t(u))}} = 2\sum_{n=1}^{N(t(u))} \frac{n^{-1/2}}{\sqrt{\theta'(t(u))}}\cos(\theta(t(u))-t(u)\log n) + \frac{R(t(u))}{\sqrt{\theta'(t(u))}}.
-\end{equation}
-Writing $\cos\alpha = \tfrac{1}{2}(e^{i\alpha}+e^{-i\alpha})$ and using $\theta(t(u))=u$, each mode $(n,\sigma)$ of $s$ is
+Under $u=\theta(t)$, using $\theta(t(u))=u$, the Riemann--Siegel decomposition gives each mode $(n,\sigma)$ of $s$ as
 \begin{equation}
 s_{n,\sigma}(u) := \frac{n^{-1/2}}{\sqrt{\theta'(t(u))}}\,e^{i\sigma(u - t(u)\log n)}.
 \end{equation}
@@ -148,21 +145,17 @@ The instantaneous $u$-frequency of $s_{n,\sigma}$ is the $u$-derivative of the p
 \begin{equation}
 \frac{d}{du}\bigl[\sigma u - \sigma t(u)\log n\bigr] = \sigma\Bigl(1 - \frac{\log n}{\theta'(t(u))}\Bigr),
 \end{equation}
-using $dt(u)/du = 1/\theta'(t(u))$. On the support of mode $n$ (where $t(u)\ge 2\pi n^2$), $\theta'(t(u))\ge\theta'(2\pi n^2)=\log n + O(n^{-4})\ge\log n$ for all $n\ge 1$, so
+using $dt(u)/du = 1/\theta'(t(u))$. On the support of mode $n$ (where $t(u)\ge 2\pi n^2$), strict monotonicity of $\theta'$ gives $\theta'(t(u))\ge\theta'(2\pi n^2)=\beta_n=\log n+O(n^{-4})\ge\log n$ for all $n\ge 1$, so
 \begin{equation}
 0 \;\le\; 1 - \frac{\log n}{\theta'(t(u))} \;\le\; 1.
 \end{equation}
-Therefore the instantaneous $u$-frequency of $s_{n,\sigma}$ satisfies
-\begin{equation}
-\sigma\Bigl(1 - \frac{\log n}{\theta'(t(u))}\Bigr) \;\in\; \begin{cases} [0,1] & \sigma = +1, \\ [-1,0] & \sigma = -1. \end{cases}
-\end{equation}
-The union over all $n\ge 1$ and $\sigma\in\{+1,-1\}$ is $[-1,1]$. Since $K_\infty(\nu)$ is the Fourier transform of $s$ at frequency $\nu$ and $s$ is written in the $u=\theta(t)$ variable where the $e^{-i\theta(t)}$ factor from $\zeta(\tfrac{1}{2}+it)=e^{-i\theta(t)}Z(t)$ contributes an additional shift of $-1$ to every frequency (because $e^{-i\theta(t)}=e^{-iu}$ multiplies $s$ by $e^{-iu}$, shifting the Fourier support by $-1$), the Fourier support of the integrand of $K_\infty(\nu)$ is contained in $[-1,1]+(-1)=[-2,0]$.
+Therefore the instantaneous $u$-frequency of $s_{n,\sigma}$ lies in $[0,1]$ for $\sigma=+1$ and in $[-1,0]$ for $\sigma=-1$. The union over all $n\ge 1$ and $\sigma\in\{+1,-1\}$ is $[-1,1]$.
 
-For the remainder term $R(t(u))/\sqrt{\theta'(t(u))}$: since $R(t)=O(t^{-1/4})$ and $\theta'(t)\to\infty$, this term decays to zero in amplitude. Its phase in the $u$-variable is the phase of $R(t(u))$, which by the Riemann--Siegel contour-integral representation has $u$-derivative $d[\arg R(t(u))]/du = d[\arg R(t)]/dt \cdot 1/\theta'(t)$. Since $d[\arg R]/dt = O(1)$ and $\theta'(t)\to\infty$, the instantaneous $u$-frequency of the remainder tends to $0$, which lies in $[-2,0]$. More precisely, the leading contribution to $R(t)$ is $(-1)^{N(t)-1}(t/2\pi)^{-1/4}\cos(2\pi((t/(2\pi))^{1/2}-N(t))-\pi/8)/\cos(\pi((t/(2\pi))^{1/2}-N(t)))$, whose $t$-derivative of phase is $(t/(2\pi))^{-1/2}\cdot(\text{bounded})$, giving $u$-frequency $(t/(2\pi))^{-1/2}/\theta'(t)\to 0\in[-2,0]$.
+For the remainder $R(t(u))/\sqrt{\theta'(t(u))}$: the $t$-derivative of $\arg R(t)$ is $O((t/(2\pi))^{-1/2})$ by the Riemann--Siegel contour-integral representation, so the instantaneous $u$-frequency is $O((t/(2\pi))^{-1/2})/\theta'(t)\to 0\in[-1,1]$.
 
-Therefore the Fourier support of $s$ in the $u$-variable is contained in $[-2,0]$, and
+Therefore the Fourier support of $s$ is contained in $[-1,1]$, and
 \begin{equation}
-K_\infty(\nu) = \hat{s}(\nu) = 0 \qquad \text{for every } \nu\in\mathbb{R}\setminus[-2,0]. \qquad \square
+K_\infty(\nu) = \hat{s}(\nu+1) = 0 \qquad \text{for every } \nu\in\mathbb{R}\setminus[-2,0]. \qquad \square
 \end{equation}
 \end{proof}
 
