@@ -5020,14 +5020,47 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Node<D, C, F> newLiteralConstant(Integer numerator)
   {
+    LiteralConstantNode<D, C, F> existing = findExistingLiteralConstant(numerator.toString());
+    if (existing != null)
+    {
+      return existing;
+    }
     return new LiteralConstantNode<D, C, F>(this,
                                             numerator);
   }
 
   public Node<D, C, F> newFractionLiteralConstant(Fraction value)
   {
+    LiteralConstantNode<D, C, F> existing = findExistingLiteralConstant(value.toString());
+    if (existing != null)
+    {
+      return existing;
+    }
     return new LiteralConstantNode<D, C, F>(this,
                                             value);
+  }
+
+  /**
+   * Returns the existing {@link LiteralConstantNode} in this expression
+   * whose {@link LiteralConstantNode#stringValue} equals {@code stringValue},
+   * or {@code null} if none. This lets the public {@code newLiteralConstant}
+   * / {@code newFractionLiteralConstant} factories short-circuit when a
+   * simplification step would otherwise mint a fresh node object for a
+   * value that already has a cached field — the caller gets back the
+   * original node instead of a duplicate that would later collide on
+   * {@code fieldName} inside {@link LiteralConstantNode}'s constructor.
+   */
+  @SuppressWarnings("unchecked")
+  private LiteralConstantNode<D, C, F> findExistingLiteralConstant(String stringValue)
+  {
+    for (var existing : literalConstants.values())
+    {
+      if (existing.stringValue.equals(stringValue))
+      {
+        return (LiteralConstantNode<D, C, F>) existing;
+      }
+    }
+    return null;
   }
 
   /**
