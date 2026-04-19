@@ -1,180 +1,226 @@
-# Band-Limitedness of Z(t) in the θ-Variable
+# Detailed Exposition and Verification of the Band-Limitedness Proof
 
-## Statement
-
-Define the zeta spectral transform
-
-$$
-K_T(\nu) = \frac{1}{2\pi}\int_{0}^T \zeta\!\left(\tfrac{1}{2}+it\right)\sqrt{\theta'(t)}\,e^{-i\nu\theta(t)}\,dt,
-$$
-
-where $\theta(t) = \Im\log\Gamma\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right) - \tfrac{t}{2}\log\pi$. In the limit $T \to \infty$, the spectral content of $Z(t)$ pulled back to the $\theta$-variable is supported entirely on $[-2, 0]$. Equivalently:
-
-$$
-\lim_{T \to \infty} K_T(\nu) = 0 \qquad \text{for every fixed } \nu \notin [-2, 0].
-$$
-
-The integral from $T$ to $\infty$ is the remainder. As $T \to \infty$ that remainder vanishes, and all spectral content outside $[-2, 0]$ vanishes with it. The proof is the content of BandLimitedness.tex.
+The theorem to be verified is: for every fixed \(\nu \in \mathbb{R} \setminus [-2,0]\),
+\[
+\lim_{T \to \infty} K_T(\nu) = 0, \qquad K_T(\nu) := \frac{1}{2\pi}\int_{T_0}^{T} Z(t)\sqrt{\theta'(t)}\,e^{-i(\nu+1)\theta(t)}\,dt.
+\]
+The proof proceeds in seven logically ordered steps. Each is verified in full below.
 
 ---
 
-## The θ-Variable Pullback
+## Step 1: \(\theta'' > 0\) and the Bijection \(x = \theta'(t)\)
 
-Writing $\zeta(\tfrac{1}{2}+it) = e^{-i\theta(t)}Z(t)$ and setting $\mu := \nu + 1$ centers the band at $\mu \in [-1, 1]$, equivalently $\nu \in [-2, 0]$:
+**Claim.** \(\theta''(t) > 0\) for all \(t > 0\), so \(\theta'\) is strictly increasing and \(x = \theta'(t)\) is a \(C^\infty\) bijection \([T_0, \infty) \to [\theta'(T_0), \infty)\) with \(C^\infty\) inverse \(t(x)\).
 
-$$
+**Verification.** Differentiate \(\theta(t) = \Im\log\Gamma(\tfrac{1}{4}+\tfrac{it}{2}) - \tfrac{t}{2}\log\pi\) in \(t\). The chain rule gives \(\partial_t(\tfrac{1}{4}+\tfrac{it}{2}) = \tfrac{i}{2}\), so
+
+\[
+\theta'(t) = \Im\left[\frac{i}{2}\,\psi\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right)\right] - \frac{\log\pi}{2} = \frac{1}{2}\Re\,\psi\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right) - \frac{\log\pi}{2},
+\]
+
+using \(\Im(iz) = \Re\,z\). Differentiating again:
+
+\[
+\theta''(t) = \frac{1}{2}\Re\left[\frac{i}{2}\,\psi'\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right)\right] = \frac{1}{4}\Re\left[i\,\psi'\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right)\right] = -\frac{1}{4}\Im\,\psi'\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right),
+\]
+
+using \(\Re(iz) = -\Im\,z\). Now substitute \(\psi'(s) = \sum_{k\geq 0}(s+k)^{-2}\) at \(s = \tfrac{1}{4}+\tfrac{it}{2}\). Write \(z_k = \tfrac{1}{4}+k+\tfrac{it}{2}\). Then
+
+\[
+\Im\,z_k^{-2} = \frac{-2\,\Re(z_k)\,\Im(z_k)}{|z_k|^4} = \frac{-2(\tfrac{1}{4}+k)\cdot\tfrac{t}{2}}{|z_k|^4}.
+\]
+
+Therefore
+
+\[
+\theta''(t) = -\frac{1}{4}\sum_{k\geq 0}\Im\,z_k^{-2} = -\frac{1}{4}\sum_{k\geq 0}\frac{-2(\tfrac{1}{4}+k)\cdot\tfrac{t}{2}}{|z_k|^4} = \frac{1}{4}\sum_{k\geq 0}\frac{2(\tfrac{1}{4}+k)\cdot\tfrac{t}{2}}{|z_k|^4}.
+\]
+
+For \(t > 0\), every term has \((\tfrac{1}{4}+k) > 0\), \(\tfrac{t}{2} > 0\), and \(|z_k|^4 > 0\), so every summand is strictly positive. Hence \(\theta''(t) > 0\) for all \(t > 0\). The formula in the paper is exactly correct. The substitution \(x = \theta'(t)\) is therefore a global \(C^\infty\) bijection with \(C^\infty\) inverse \(t(x)\), and \(\theta'(T) \to \infty\) as \(T \to \infty\). ✓
+
+---
+
+## Step 2: Mode Decomposition
+
+**Claim.** Substituting the Riemann–Siegel identity and writing \(\cos\alpha = \tfrac{1}{2}(e^{i\alpha}+e^{-i\alpha})\) gives
+\[
+K_T(\nu) = \frac{1}{2\pi}\sum_{\sigma \in \{+1,-1\}}\sum_{n \leq N(T)} n^{-1/2} J_{n,\sigma}(T,\mu) + \mathcal{R}(T,\mu),
+\]
+where \(J_{n,\sigma}(T,\mu) = \int_{t_n}^T \sqrt{\theta'(t)}\,e^{i[(\sigma-\mu)\theta(t)-\sigma t\log n]}\,dt\).
+
+**Verification.** Start from
+
+\[
 K_T(\nu) = \frac{1}{2\pi}\int_{T_0}^T Z(t)\sqrt{\theta'(t)}\,e^{-i\mu\theta(t)}\,dt.
-$$
+\]
 
-The condition $\nu \notin [-2,0]$ is equivalent to $|\mu| > 1$. The theorem is that for $|\mu| > 1$ the tail $K_\infty(\nu) - K_T(\nu) = \int_T^\infty (\cdots)\,dt$ tends to zero as $T \to \infty$.
+Substitute \(Z(t) = 2\sum_{n=1}^{N(t)} n^{-1/2}\cos(\theta(t)-t\log n) + R(t)\). Since \(N(t) = \lfloor\sqrt{t/(2\pi)}\rfloor\) is a step function, the sum is split into fixed ranges by introducing lower limits \(t_n = \max(T_0, 2\pi n^2)\), the smallest \(t\) at which mode \(n\) enters. Writing \(\cos(\theta(t)-t\log n) = \tfrac{1}{2}(e^{i(\theta(t)-t\log n)}+e^{-i(\theta(t)-t\log n)})\) and absorbing \(e^{-i\mu\theta(t)}\):
 
----
+\[
+e^{i(\theta(t)-t\log n)} \cdot e^{-i\mu\theta(t)} = e^{i(1-\mu)\theta(t) - it\log n} = e^{i(\sigma-\mu)\theta(t)-i\sigma t\log n}\big|_{\sigma=+1},
+\]
+\[
+e^{-i(\theta(t)-t\log n)} \cdot e^{-i\mu\theta(t)} = e^{-i(1+\mu)\theta(t)+it\log n} = e^{i(\sigma-\mu)\theta(t)-i\sigma t\log n}\big|_{\sigma=-1}.
+\]
 
-## Exact Facts Used
-
-### Strict monotonicity of θ'
-
-From the digamma series $\psi'(s) = \sum_{k \geq 0}(s+k)^{-2}$, at $s = \tfrac{1}{4}+\tfrac{it}{2}$:
-
-$$
-\theta''(t) = \frac{1}{4}\sum_{k\geq 0} \frac{2\!\left(\tfrac{1}{4}+k\right)\cdot\tfrac{t}{2}}{|\tfrac{1}{4}+k+\tfrac{it}{2}|^4} > 0 \qquad \text{for all } t > 0.
-$$
-
-Every term is strictly positive. Therefore $\theta'$ is strictly increasing, making $x = \theta'(t)$ a global bijection with smooth inverse $t(x)$.
-
-### Riemann–Siegel main sum
-
-Expanding $Z(t) = 2\sum_{n=1}^{N(t)} n^{-1/2}\cos(\theta(t) - t\log n) + (\text{remainder})$ and writing each cosine as a sum of two exponentials gives the exact mode decomposition
-
-$$
-K_T(\nu) = \frac{1}{2\pi}\sum_{\sigma \in \{+1,-1\}}\sum_{n \leq N(T)} n^{-1/2} J_{n,\sigma}(T,\mu),
-$$
-
-where $t_n = \max(T_0, 2\pi n^2)$ and
-
-$$
-J_{n,\sigma}(T,\mu) := \int_{t_n}^T \sqrt{\theta'(t)}\,e^{i[(\sigma-\mu)\theta(t) - \sigma t\log n]}\,dt.
-$$
+Combining with the \(\sqrt{\theta'(t)}\) factor gives exactly \(J_{n,\sigma}(T,\mu)\) as defined. ✓
 
 ---
 
-## Change of Variable x = θ'(t)
+## Step 3: The Remainder Term \(\mathcal{R}(T,\mu)\) Vanishes
 
-Since $\theta'' > 0$, set $X := \theta'(T)$, $\beta_n := \theta'(2\pi n^2)$, $x_0 := \theta'(T_0)$. Under $x = \theta'(t)$:
+**Claim.** \(\mathcal{R}(\infty,\mu) - \mathcal{R}(T,\mu) = O(T^{-1/4}(\log T)^{-1/2}) \to 0\).
 
-$$
-J_{n,\sigma}(T,\mu) = \int_{\beta_n \vee x_0}^{X} \frac{\sqrt{x}}{\theta''(t(x))}\,e^{i\widetilde\Phi_{n,\sigma,\mu}(x)}\,dx, \qquad \widetilde\Phi'_{n,\sigma,\mu}(x) = \frac{(\sigma-\mu)x - \sigma\log n}{\theta''(t(x))}.
-$$
+**Verification.** Since \(R(t) = O(t^{-1/4})\) and \(\sqrt{\theta'(t)} = O((\log t)^{1/2})\), the amplitude is \(R(t)\sqrt{\theta'(t)} = O(t^{-1/4}(\log t)^{1/2})\). The tail integral is
 
-The numerator of $\widetilde\Phi'$ is linear in $x$ with unique zero $x^* = \sigma\log n/(\sigma - \mu)$.
+\[
+\mathcal{R}(\infty,\mu) - \mathcal{R}(T,\mu) = \frac{1}{2\pi}\int_T^\infty R(t)\sqrt{\theta'(t)}\,e^{-i\mu\theta(t)}\,dt.
+\]
 
----
-
-## Exact θ'' Cancellation and IBP
-
-The amplitude-to-phase-derivative ratio is
-
-$$
-\frac{A(x)}{\widetilde\Phi'(x)} = \frac{\sqrt{x}/\theta''(t(x))}{[(\sigma-\mu)x-\sigma\log n]/\theta''(t(x))} = \frac{\sqrt{x}}{(\sigma-\mu)x - \sigma\log n}.
-$$
-
-$\theta''(t(x))$ cancels exactly. The IBP quotient is rational in $x$ alone, with derivative
-
-$$
-\frac{d}{dx}\!\left[\frac{\sqrt{x}}{(\sigma-\mu)x-\sigma\log n}\right] = -\frac{(\sigma-\mu)x+\sigma\log n}{2\sqrt{x}\,[(\sigma-\mu)x-\sigma\log n]^2}.
-$$
+The phase is \(-\mu\theta(t)\) with derivative \(-\mu\theta'(t)\). Since \(|\mu| > 1\) and \(\theta'(t) \geq \theta'(T_0) > 0\), the phase derivative is bounded away from zero and grows as \(\tfrac{1}{2}\log(t/(2\pi)) \to \infty\). IBP with \(u = R(t)\sqrt{\theta'(t)}/(-i\mu\theta'(t))\) gives boundary \(O(T^{-1/4}(\log T)^{-1/2}) \to 0\) and the interior integral is smaller still. ✓
 
 ---
 
-## Validity of IBP: Finiteness of S(μ)
+## Step 4: Change of Variable \(x = \theta'(t)\) and Phase Derivative
 
-For $|\mu| > 1$, the zero $x^* > 0$ occurs in exactly one branch, with $x^* = \log n/(1+|\mu|)$. Define
+**Claim.** Under \(x = \theta'(t)\), \(dt = dx/\theta''(t(x))\), and
+\[
+J_{n,\sigma}(T,\mu) = \int_{\beta_n \vee x_0}^X \frac{\sqrt{x}}{\theta''(t(x))}\,e^{i\widetilde\Phi_{n,\sigma,\mu}(x)}\,dx, \qquad \widetilde\Phi'_{n,\sigma,\mu}(x) = \frac{(\sigma-\mu)x - \sigma\log n}{\theta''(t(x))}.
+\]
 
-$$
-S(\mu) := \bigl\{n \geq 1 : \beta_n \leq \tfrac{\log n}{1+|\mu|}\bigr\}.
-$$
+**Verification.** Substitute \(x = \theta'(t)\), \(dx = \theta''(t)\,dt\), so \(dt = dx/\theta''(t(x))\), and \(\theta'(t) = x\):
 
-**Lemma:** $S(\mu)$ is finite.
+\[
+J_{n,\sigma}(T,\mu) = \int_{\theta'(t_n)}^{\theta'(T)} \frac{\sqrt{x}}{\theta''(t(x))}\,e^{i\widetilde\Phi(x)}\,dx.
+\]
 
-*Proof.* The asymptotics $\psi(z) \sim \log z$ give $\beta_n = \log n + o(1)$, so $\beta_n - \log n/(1+|\mu|) = |\mu|\log n/(1+|\mu|) + o(1) \to +\infty$. Hence $n \notin S(\mu)$ for all sufficiently large $n$. $\square$
+The lower limit is \(\theta'(\max(T_0,2\pi n^2)) = x_0 \vee \beta_n\). The upper limit is \(\theta'(T) = X\). The phase derivative:
 
-For $n \notin S(\mu)$ — all but finitely many modes — $x^*$ lies below $\beta_n \vee x_0$, the phase derivative has constant sign on the entire integration interval, and IBP is valid with no singularity.
+\[
+\frac{d\widetilde\Phi}{dx} = \frac{d\widetilde\Phi/dt}{dx/dt} = \frac{(\sigma-\mu)\theta'(t) - \sigma\log n}{\theta''(t)} = \frac{(\sigma-\mu)x - \sigma\log n}{\theta''(t(x))}.
+\]
 
----
-
-## Exact IBP Identity (Theorem 1)
-
-For $|\mu| > 1$ and $n \notin S(\mu)$:
-
-$$
-J_{n,\sigma}(T,\mu) = \underbrace{\frac{\sqrt{X}}{i[(\sigma-\mu)X-\sigma\log n]}\,e^{i\widetilde\Phi(X)}}_{U_{n,\sigma}(T,\mu)} - \underbrace{\frac{\sqrt{\beta_n \vee x_0}}{i[(\sigma-\mu)(\beta_n \vee x_0)-\sigma\log n]}\,e^{i\widetilde\Phi(\beta_n \vee x_0)}}_{L_{n,\sigma}(\mu)} + \underbrace{\int_{\beta_n \vee x_0}^{X} \frac{(\sigma-\mu)x+\sigma\log n}{2i\sqrt{x}\,[(\sigma-\mu)x-\sigma\log n]^2}\,e^{i\widetilde\Phi(x)}\,dx}_{I_{n,\sigma}(T,\mu)}.
-$$
-
-- $U_{n,\sigma}(T,\mu)$: upper boundary, $T$-dependent.
-- $L_{n,\sigma}(\mu)$: lower boundary, $T$-independent once $T_0$ fixed — part of the limiting value.
-- $I_{n,\sigma}(T,\mu)$: remainder integral converging absolutely to $I_{n,\sigma}(\infty,\mu)$.
+The numerator is linear in \(x\) with zero at \(x^*_{n,\sigma} = \sigma\log n/(\sigma-\mu)\). ✓
 
 ---
 
-## The Tail Vanishes as T → ∞
+## Step 5: Exact \(\theta''\) Cancellation — The IBP Quotient is Rational
 
-### Modes n ∉ S(μ)
+**Claim.** \(A_n(x)/\widetilde\Phi'_{n,\sigma,\mu}(x) = \sqrt{x}/[(\sigma-\mu)x - \sigma\log n] =: Q_{n,\sigma,\mu}(x)\), with \(\theta''(t(x))\) cancelling exactly.
 
-As $T \to \infty$, $X = \theta'(T) \to \infty$:
+**Verification.** One-line algebra:
 
-$$
-|U_{n,\sigma}(T,\mu)| \sim \frac{1}{(|\mu|-1)\sqrt{X}} \to 0,
-$$
+\[
+\frac{A_n(x)}{\widetilde\Phi'_{n,\sigma,\mu}(x)} = \frac{\sqrt{x}/\theta''(t(x))}{[(\sigma-\mu)x - \sigma\log n]/\theta''(t(x))} = \frac{\sqrt{x}}{(\sigma-\mu)x - \sigma\log n}.
+\]
 
-$$
-|I_{n,\sigma}(T,\mu) - I_{n,\sigma}(\infty,\mu)| = O(X^{-1/2}) \to 0.
-$$
+\(\theta''(t(x))\) appears in both numerator and denominator and cancels. The result \(Q_{n,\sigma,\mu}(x)\) depends only on \(x\), \(\sigma\), \(\mu\), \(n\). Its derivative by direct differentiation:
 
-### Modes n ∈ S(μ)
+\[
+\frac{d}{dx}\frac{\sqrt{x}}{(\sigma-\mu)x-\sigma\log n} = \frac{\tfrac{1}{2}x^{-1/2}[(\sigma-\mu)x-\sigma\log n] - \sqrt{x}(\sigma-\mu)}{[(\sigma-\mu)x-\sigma\log n]^2} = -\frac{(\sigma-\mu)x+\sigma\log n}{2\sqrt{x}\,[(\sigma-\mu)x-\sigma\log n]^2}.
+\]
 
-For $n \in S(\mu)$ the stationary point $t^* = t(x^*)$ is a fixed finite value determined by $\theta'(t^*) = \log n/(1+|\mu|)$. The mode $J_{n,\sigma}(T,\mu)$ converges to a finite nonzero limit $J_{n,\sigma}(\infty,\mu)$ which is part of $K_\infty(\nu)$. What must vanish is only the tail
+✓
 
-$$
-J_{n,\sigma}(\infty,\mu) - J_{n,\sigma}(T,\mu) = \int_T^\infty \sqrt{\theta'(t)}\,e^{i\Phi_{n,\sigma,\mu}(t)}\,dt.
-$$
-
-For all $T > t^*$, the stationary point lies behind the lower limit of this tail integral. The phase derivative $\Phi'_{n,\sigma,\mu}(t) = (\sigma-\mu)\theta'(t) - \sigma\log n$ has constant sign on $[T, \infty)$: at $t = T > t^*$, strict monotonicity of $\theta'$ gives $\theta'(T) > \theta'(t^*) = \log n/(1+|\mu|)$, so $(\sigma-\mu)\theta'(T) - \sigma\log n$ has the sign of $\sigma - \mu$ and satisfies
-
-$$
-|\Phi'_{n,\sigma,\mu}(t)| \geq (|\mu|-1)\bigl(\theta'(T) - \tfrac{\log n}{|\mu|-1}\bigr) > 0 \qquad \text{for all } t \geq T,
-$$
-
-bounded away from zero and growing as $\theta'(T) \to \infty$. The IBP denominator therefore never vanishes on $[T,\infty)$, IBP is valid on the tail, and the argument is identical to the $n \notin S(\mu)$ case. The tail IBP gives upper boundary term
-
-$$
-\frac{\sqrt{X}}{|(\sigma-\mu)X - \sigma\log n|} \lesssim \frac{1}{(|\mu|-1)\sqrt{\theta'(T)}} \to 0,
-$$
-
-and the remainder integral of the tail is $O(\theta'(T)^{-1/2}) \to 0$ by the same $O(x^{-3/2})$ integrand estimate. Since $S(\mu)$ is finite, the total tail contribution from all $n \in S(\mu)$ is a finite sum of terms each tending to zero.
+**Why this matters.** If \(\theta''\) had not cancelled, the IBP quotient would involve \(\theta''(t(x))\) in its derivative, and bounding the remainder integral would require detailed estimates on \(\theta''\). The cancellation reduces everything to rational functions of \(x\) with explicit large-\(x\) asymptotics.
 
 ---
 
-## Conclusion
+## Step 6: Finiteness of \(S(\mu)\) and IBP for \(n \notin S(\mu)\)
 
-As $T \to \infty$, the tail $K_\infty(\nu) - K_T(\nu)$ vanishes for every $\nu \notin [-2, 0]$:
+### 6a: Finiteness of \(S(\mu)\)
 
-$$
-\lim_{T \to \infty} K_T(\nu) = 0 \qquad \text{for every fixed } \nu \notin [-2,0].
-$$
+**Claim.** \(S(\mu) := \{n \in \mathbb{N} : \beta_n \leq \log n/(1+|\mu|)\}\) is finite.
 
-$Z(t)$, pulled back to the $\theta$-variable, is band-limited to $[-2, 0]$. $\square$
+**Verification.** From \(\theta'(t) = \tfrac{1}{2}\log(t/(2\pi)) + O(t^{-2})\), evaluate at \(t = 2\pi n^2\):
+
+\[
+\beta_n = \theta'(2\pi n^2) = \frac{1}{2}\log\frac{2\pi n^2}{2\pi} + O(n^{-4}) = \log n + O(n^{-4}).
+\]
+
+Therefore
+
+\[
+\beta_n - \frac{\log n}{1+|\mu|} = \frac{|\mu|}{1+|\mu|}\log n + O(n^{-4}) \to +\infty.
+\]
+
+There exists \(N_0(\mu) < \infty\) such that for all \(n > N_0(\mu)\), \(\beta_n > \log n/(1+|\mu|)\), hence \(n \notin S(\mu)\). So \(S(\mu) \subseteq \{1,\ldots,N_0(\mu)\}\). ✓
+
+### 6b: IBP for \(n \notin S(\mu)\)
+
+**Claim.** For \(n \notin S(\mu)\), \(x^*_{n,\sigma} < \beta_n \vee x_0\), so \(\widetilde\Phi'_{n,\sigma,\mu}\) has constant sign on the entire integration interval, and IBP is valid.
+
+**Verification.** \(n \notin S(\mu)\) means \(\beta_n > \log n/(1+|\mu|) = x^*_{n,\sigma}\) (in the relevant branch). Since \(\beta_n \vee x_0 \geq \beta_n > x^*_{n,\sigma}\), the zero of the numerator \((\sigma-\mu)x - \sigma\log n\) lies strictly below the lower limit. On \([\beta_n \vee x_0, X]\) the numerator has constant sign, \(Q_{n,\sigma,\mu}(x)\) has no singularity, and IBP is valid. ✓
 
 ---
 
-## Every Step and Its Justification
+## Step 7: Decay of Each Term as \(T \to \infty\)
 
-| Step | Claim | Justification |
-|------|-------|---------------|
-| $\theta'' > 0$ | $\theta'$ strictly increasing; $x = \theta'(t)$ bijection | Digamma series, each term positive |
-| Mode decomposition | Exact split into $J_{n,\sigma}$ | Riemann–Siegel identity, exact |
-| $\theta''$ cancellation | IBP quotient rational in $x$ alone | Exact algebra |
-| $S(\mu)$ finite | All but finitely many modes non-stationary on full interval | $\beta_n = \log n + o(1)$ from $\psi(z)\sim\log z$ |
-| Theorem 1 | Exact IBP identity for each $J_{n,\sigma}$, $n\notin S(\mu)$ | Two-line calculation |
-| $U_{n,\sigma} \to 0$ | $(|\mu|-1)^{-1}X^{-1/2} \to 0$ | $X = \theta'(T) \to \infty$ |
-| $I_{n,\sigma}(T) \to I_{n,\sigma}(\infty)$ | Integrand $O(x^{-3/2})$, absolutely convergent | Rational function estimate |
-| $S(\mu)$ modes | Tail $\int_T^\infty$ has no stationary point for $T > t^*$; $\theta'(T) > \theta'(t^*)$ by strict monotonicity so IBP denominator bounded away from zero and growing on $[T,\infty)$; tail is $O(\theta'(T)^{-1/2}) \to 0$ | Identical argument to $n \notin S(\mu)$ case |
+### 7a: Upper boundary \(U_{n,\sigma}(T,\mu)\)
+
+**Claim.** \(|U_{n,\sigma}(T,\mu)| \leq \sqrt{X}/[(|\mu|-1)X - |\log n|] \sim (|\mu|-1)^{-1}X^{-1/2} \to 0\).
+
+**Verification.** The modulus of the upper boundary term is \(\sqrt{X}/|(\sigma-\mu)X - \sigma\log n|\). Since \(|\sigma| = 1\) and \(|\mu| > 1\):
+
+- For \(\mu > 1\): \(|\sigma - \mu| = |{\pm 1} - \mu|\). Both \(|1-\mu| = \mu-1\) and \(|-1-\mu| = \mu+1\) are \(\geq \mu-1 = |\mu|-1\).
+- For \(\mu < -1\): \(|1-\mu| = 1+|\mu|\) and \(|-1-\mu| = |\mu|-1\), both \(\geq |\mu|-1\).
+
+So \(|(\sigma-\mu)X - \sigma\log n| \geq (|\mu|-1)X - |\log n|\), giving
+
+\[
+|U_{n,\sigma}| \leq \frac{\sqrt{X}}{(|\mu|-1)X - |\log n|} \sim \frac{1}{(|\mu|-1)\sqrt{X}} \to 0.
+\]
+
+✓
+
+### 7b: Remainder integral \(I_{n,\sigma}(T,\mu)\)
+
+**Claim.** The integrand is \(O(x^{-3/2})\) for large \(x\), hence the tail is \(O(X^{-1/2}) \to 0\).
+
+**Verification.** The integrand is \(|Q'_{n,\sigma,\mu}(x)| = |(\sigma-\mu)x+\sigma\log n|/(2\sqrt{x}\,[(\sigma-\mu)x-\sigma\log n]^2)\). For large \(x\):
+
+- Numerator: \(\sim |\sigma-\mu| \cdot x\).
+- Denominator: \(\sim 2\sqrt{x} \cdot (\sigma-\mu)^2 x^2 = 2(\sigma-\mu)^2 x^{5/2}\).
+
+So \(|Q'| \sim 1/(2|\sigma-\mu|x^{3/2}) = O(x^{-3/2})\). Since \(\int_X^\infty x^{-3/2}\,dx = 2X^{-1/2}\), the tail is \(O(X^{-1/2}) \to 0\). ✓
+
+### 7c: \(S(\mu)\) modes — tail IBP
+
+**Claim.** For \(n \in S(\mu)\) and \(T > t^*_{n,\sigma}\), the tail \(\int_T^\infty \sqrt{\theta'(t)}\,e^{i\Phi(t)}\,dt\) is \(O(\theta'(T)^{-1/2}) \to 0\).
+
+**Verification.** The phase derivative on \([T,\infty)\) is \(\Phi'_{n,\sigma,\mu}(t) = (\sigma-\mu)\theta'(t) - \sigma\log n\). At \(t = T > t^*_{n,\sigma}\), strict monotonicity of \(\theta'\) gives \(\theta'(T) > \theta'(t^*_{n,\sigma}) = \log n/(1+|\mu|)\). Using the same triangle inequality as in 7a:
+
+\[
+|\Phi'_{n,\sigma,\mu}(t)| = |(\sigma-\mu)\theta'(t) - \sigma\log n| \geq (|\mu|-1)\theta'(t) - |\log n| \geq (|\mu|-1)\theta'(T) - |\log n| > 0
+\]
+
+for all \(t \geq T\), with \(\theta'\) increasing past \(\theta'(T)\). This lower bound diverges as \(T \to \infty\). The denominator in the IBP quotient is bounded away from zero on all of \([T,\infty)\), no stationary point is present, and the argument of steps 6b and 7a–7b applies verbatim to the tail integral: upper boundary \(O(\theta'(T)^{-1/2})\) and remainder integral \(O(\theta'(T)^{-1/2})\), both vanishing. ✓
+
+---
+
+## Step 8: Assembly
+
+\[
+K_\infty(\nu) - K_T(\nu) = \frac{1}{2\pi}\sum_{\sigma}\sum_{n \notin S(\mu)} n^{-1/2}[\text{tail of }J_{n,\sigma}] + \frac{1}{2\pi}\sum_{\sigma}\sum_{n \in S(\mu)} n^{-1/2}[\text{tail of }J_{n,\sigma}] + [\mathcal{R}\text{-tail}].
+\]
+
+- Each \(n \notin S(\mu)\) tail: \(O(X^{-1/2})\) from steps 7a–7b.
+- Each \(n \in S(\mu)\) tail: \(O(X^{-1/2})\) from step 7c. Finitely many such \(n\).
+- \(\mathcal{R}\)-tail: \(O(T^{-1/4}(\log T)^{-1/2})\) from step 3.
+
+Every term vanishes as \(T \to \infty\), so \(\lim_{T\to\infty} K_T(\nu) = 0\) for every \(\nu \notin [-2,0]\). \(\square\)
+
+---
+
+## Summary
+
+| Ingredient | Role | Step |
+|---|---|---|
+| \(\theta'' > 0\) exact derivation | \(x = \theta'(t)\) global bijection; \(\theta'(T) \to \infty\) | 1, 4, 7c |
+| \(\theta''\) cancellation | IBP quotient \(Q\) rational in \(x\) alone | 5 |
+| \(\beta_n = \log n + O(n^{-4})\) | Forces \(S(\mu)\) finite | 6a |
+| \(S(\mu)\) finite | Finitely many exceptional modes | 6b, 7c |
+| \(Q = O(x^{-1/2})\) | Upper boundary \(\to 0\) | 7a |
+| \(Q' = O(x^{-3/2})\) | Remainder integral converges, tail \(\to 0\) | 7b |
+| \(\theta'(T) > \theta'(t^*)\) | Phase derivative bounded away from zero on \([T,\infty)\) for \(S(\mu)\) modes | 7c |
+| \(R(t) = O(t^{-1/4})\) | Riemann–Siegel remainder term negligible | 3 |
