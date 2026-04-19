@@ -355,8 +355,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     this.intValue      = new Integer().set(value).setName(value.getName());
     this.fractionValue = null;
     this.stringValue   = value.toString();
-    fieldName          = expression.getNextConstantFieldName(type());
-    expression.literalConstants.put(fieldName, this);
+    assignDedupedFieldName(expression);
   }
 
   public LiteralConstantNode(Expression<D, R, F> expression, Fraction value)
@@ -369,7 +368,33 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     this.isInt              = false;
     (this.fractionValue = new Fraction()).set(value);
     this.stringValue = value.toString();
-    fieldName        = expression.getNextConstantFieldName(type());
+    assignDedupedFieldName(expression);
+  }
+
+  /**
+   * Assigns {@link #fieldName} by first scanning
+   * {@link Expression#literalConstants} for an existing node whose
+   * {@link #stringValue} matches; if found, the existing
+   * {@code fieldName} is reused so only one field is emitted for repeated
+   * literals. Otherwise, a fresh field name is allocated and this node is
+   * registered. This path is invoked from the {@link Integer}- and
+   * {@link Fraction}-argument constructors, which previously bypassed the
+   * deduplication logic that the {@link String}-argument constructor
+   * already performs — leaving code like
+   * {@code ½*π^½*(8j+2)^½*Γ(½k+j+½)/Γ(½k+½-j)/...} with nine separate
+   * {@code cq000N} fields each initialised to the same {@code 1⁄2}.
+   */
+  private void assignDedupedFieldName(Expression<D, R, F> expression)
+  {
+    for (var existingConstant : expression.literalConstants.values())
+    {
+      if (existingConstant.stringValue.equals(stringValue))
+      {
+        fieldName = existingConstant.fieldName;
+        return;
+      }
+    }
+    fieldName = expression.getNextConstantFieldName(type());
     expression.literalConstants.put(fieldName, this);
   }
 
