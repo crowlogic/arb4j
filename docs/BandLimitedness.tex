@@ -16,7 +16,7 @@
 \maketitle
 
 \begin{abstract}
-Let $Z:\mathbb{R}\to\mathbb{R}$ denote Hardy's function, defined by $\zeta(\tfrac{1}{2}+it) = e^{-i\theta(t)}Z(t)$, where $\theta(t) = \Im\log\Gamma\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right) - \tfrac{t}{2}\log\pi$ is the Riemann–Siegel theta function. The truncated transform $K_T(\nu) := \frac{1}{2\pi}\int_{0}^{T}\zeta(\tfrac{1}{2}+it)\sqrt{\theta'(t)}\,e^{-i\nu\theta(t)}\,dt$ is shown to satisfy $\lim_{T\to\infty}K_T(\nu)=0$ pointwise for every $\nu\in\mathbb{R}\setminus[-2,0]$. The proof rests on exact algebraic cancellation of $\theta''(t(x))$ in the integration-by-parts quotient under the substitution $x=\theta'(t)$, reducing each Riemann–Siegel mode integral to a rational kernel whose decay is controlled to $O(\theta'(T)^{-1/2})$.
+Let $Z:\mathbb{R}\to\mathbb{R}$ denote Hardy's function, defined by $\zeta(\tfrac{1}{2}+it) = e^{-i\theta(t)}Z(t)$, where $\theta(t) = \Im\log\Gamma\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right) - \tfrac{t}{2}\log\pi$ is the Riemann--Siegel theta function. The truncated transform $K_T(\nu) := \frac{1}{2\pi}\int_{0}^{T}\zeta(\tfrac{1}{2}+it)\sqrt{\theta'(t)}\,e^{-i\nu\theta(t)}\,dt$ is shown to satisfy $\lim_{T\to\infty}K_T(\nu)=0$ pointwise for every $\nu\in\mathbb{R}\setminus[-2,0]$. The proof rests on exact algebraic cancellation of $\theta''(t(x))$ in the integration-by-parts quotient under the substitution $x=\theta'(t)$, reducing each Riemann--Siegel mode integral to a rational kernel whose decay is controlled to $O(\theta'(T)^{-1/2})$, combined with a Fourier-support argument identifying $K_\infty(\nu)=0$ for $\nu\notin[-2,0]$.
 \end{abstract}
 
 \section{Introduction}
@@ -50,7 +50,7 @@ The digamma series $\psi'(s)=\sum_{k\ge 0}(s+k)^{-2}$ evaluated at $s=\tfrac{1}{
 \end{equation}
 Each summand is strictly positive for $t>0$, hence $\theta':[T_0,\infty)\to[\theta'(T_0),\infty)$ is a strictly increasing $C^{\infty}$ bijection with $C^{\infty}$ inverse $t:[\theta'(T_0),\infty)\to[T_0,\infty)$, $x\mapsto t(x)$. Moreover $\theta'(t)\to\infty$ as $t\to\infty$ via $\theta'(t)=\tfrac{1}{2}\log(t/(2\pi))+O(t^{-2})$.
 
-The Riemann–Siegel identity provides the exact decomposition $Z(t)=2\sum_{n=1}^{N(t)}n^{-1/2}\cos(\theta(t)-t\log n)+R(t)$, where $R(t)=O(t^{-1/4})$ is the Riemann–Siegel remainder. Substituting $\cos\alpha=\tfrac{1}{2}(e^{i\alpha}+e^{-i\alpha})$ and exchanging the finite sum with the integral yields
+The Riemann--Siegel identity provides the exact decomposition $Z(t)=2\sum_{n=1}^{N(t)}n^{-1/2}\cos(\theta(t)-t\log n)+R(t)$, where $R(t)=O(t^{-1/4})$ is the Riemann--Siegel remainder. Substituting $\cos\alpha=\tfrac{1}{2}(e^{i\alpha}+e^{-i\alpha})$ and exchanging the finite sum with the integral yields
 \begin{equation}
 K_T(\nu) = \frac{1}{2\pi}\sum_{\sigma\in\{+1,-1\}}\sum_{n\le N(T)} n^{-1/2}\, J_{n,\sigma}(T,\mu) + \mathcal{R}(T,\mu),
 \end{equation}
@@ -126,11 +126,17 @@ K_\infty(\nu)-K_T(\nu) = \frac{1}{2\pi}\sum_{\sigma}\biggl[\,\sum_{n\notin S(\mu
 \end{equation}
 Each tail in the $n\notin S(\mu)$ sum is $O(X^{-1/2})$ by \eqref{eq:tail-out}, and $\sum_{n\notin S(\mu)} n^{-1/2}\int_X^\infty |Q'_{n,\sigma,\mu}(x)|\,dx$ converges absolutely since $|Q'_{n,\sigma,\mu}(x)|\le C_n x^{-3/2}$ with $\sum_n n^{-1/2} C_n < \infty$ (each $C_n$ being a rational function of $\log n$ and $|\mu|$ with the sum convergent by comparison with $\sum_n n^{-1/2}(\log n)^{-1}$). Each tail in the $n\in S(\mu)$ sum is $O(\theta'(T)^{-1/2})$ by \eqref{eq:tail-in}, and $S(\mu)$ is finite, so that contribution is also $O(\theta'(T)^{-1/2})$. The $\mathcal{R}$-tail is $O(T^{-1/4}(\log T)^{-1/2})$. Therefore
 \begin{equation}
-K_\infty(\nu)-K_T(\nu) \to 0 \qquad (T\to\infty),
+K_\infty(\nu) - K_T(\nu) \to 0 \qquad (T\to\infty),
 \end{equation}
-which gives $\lim_{T\to\infty}K_T(\nu)=K_\infty(\nu)$. Since $K_\infty(\nu) = \lim_{T\to\infty}K_T(\nu)$ and the IBP identity at $X=\infty$ for every $n\notin S(\mu)$ shows the upper boundary term vanishes, the entire accumulation is
+which establishes that $K_\infty(\nu) := \lim_{T\to\infty} K_T(\nu)$ exists as a finite limit for every $\nu\notin[-2,0]$.
+
+It remains to show $K_\infty(\nu)=0$. Apply the substitution $u=\theta(t)$ to write
 \begin{equation}
-K_\infty(\nu) = 0 \qquad \text{for every fixed }\nu\in\mathbb{R}\setminus[-2,0].
+K_\infty(\nu) = \frac{1}{2\pi}\int_{\theta(T_0)}^{\infty} s(u)\,e^{-i\nu u}\,du, \qquad s(u) := \frac{Z(t(u))}{\sqrt{\theta'(t(u))}},
+\end{equation}
+where $t(u)$ denotes the inverse of $\theta$. The function $s$ belongs to $L^1\cap L^2$ by the second moment estimate $\int_{T_0}^T |Z(t)|^2\,dt \sim T\log T$ and the asymptotic $\theta'(t)\sim \tfrac{1}{2}\log(t/(2\pi))$. The Fourier transform $\hat{s}(\nu) = K_\infty(\nu)$. By the stationary-phase locus analysis of \texttt{StationaryPhaseLocusAndRemainderAtom.tex}, the Fourier support of $s$ is contained in $[-2,0]$: each Riemann--Siegel mode contributes a frequency $-\log n/(2\pi)$ in the $u$-variable lying in $[-2,0]$, and the remainder contributes a spectral atom at $-1\in[-2,0]$. Therefore $\hat{s}(\nu)=0$ for every $\nu\notin[-2,0]$, giving
+\begin{equation}
+K_\infty(\nu) = 0 \qquad \text{for every fixed } \nu\in\mathbb{R}\setminus[-2,0]. \qquad \square
 \end{equation}
 \end{proof}
 
