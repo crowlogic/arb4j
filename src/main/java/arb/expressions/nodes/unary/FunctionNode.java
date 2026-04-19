@@ -218,6 +218,16 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       // there is nothing to hoist.
       return this;
     }
+    // If the whole function call is constant, wrap it as a single
+    // StaticNode instead of recursing into {@code arg} and wrapping its
+    // constant sub-subtrees individually. This avoids nested StaticNodes
+    // (StaticNode whose delegate is a FunctionNode whose arg is itself a
+    // StaticNode), which the fixed-point hoisting loop relies on to
+    // produce one composite cached field per maximal constant subtree.
+    if (!isRootNode && isConstant())
+    {
+      return super.replaceConstantNodes();
+    }
     arg = arg.replaceConstantNodes();
     return super.replaceConstantNodes();
   }
