@@ -638,18 +638,22 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return (IntegralNode<D, R, F>) this;
   }
 
+  /**
+   * Reference-identity equality. A node's {@link #expression} field is a
+   * back-pointer to the owning {@link Expression}, whose own {@code equals}
+   * recurses through its {@code rootNode}; including {@code expression} in
+   * {@code Node.equals} therefore creates an equality cycle that overflows
+   * the stack the first time two distinct sub-expressions share structural
+   * shape. Subclasses that need deep structural equality (arithmetic
+   * operations, function calls) override {@link #equals(Object)} to walk
+   * their own typed children; this base implementation intentionally does
+   * not attempt a generic structural compare because {@link #getBranches()}
+   * is a tree-view affordance and may flatten, reorder, or omit children.
+   */
   @Override
   public boolean equals(Object obj)
   {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    Node<?, ?, ?> other = (Node<?, ?, ?>) obj;
-    return bits == other.bits && Objects.equals(expression, other.expression) && Objects.equals(fieldName, other.fieldName)
-                  && Objects.equals(generatedType, other.generatedType) && isRootNode == other.isRootNode && position == other.position;
+    return this == obj;
   }
 
   @Override
@@ -784,10 +788,15 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return null;
   }
 
+  /**
+   * Identity hash, matching the reference-identity {@link #equals(Object)}
+   * on this base class. Subclasses that override {@code equals} for
+   * structural comparison must also override {@code hashCode}.
+   */
   @Override
   public int hashCode()
   {
-    return Objects.hash(bits, expression, fieldName, generatedType, isRootNode, position);
+    return System.identityHashCode(this);
   }
 
   /**

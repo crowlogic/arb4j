@@ -90,6 +90,21 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
     return Objects.equals(domain, other.domain) && Objects.equals(functionName, other.functionName) && Objects.equals(coDomain, other.coDomain);
   }
 
+  /**
+   * Clears the cached {@link #functionFieldDescriptor} and {@link #declaredAs}
+   * strings so the next {@link #functionFieldDescriptor()} call recomputes
+   * them from the current {@link #functionClass}. Needed when a mapping is
+   * overwritten with a newly-compiled operand class (e.g. after
+   * {@link Context#resetClassLoader()} and a recompile) so downstream
+   * consumers don't keep using the stale descriptor from the previous
+   * ClassLoader generation.
+   */
+  public void invalidateDescriptorCache()
+  {
+    this.functionFieldDescriptor = null;
+    this.declaredAs              = null;
+  }
+
   public String functionFieldDescriptor()
   {
     return functionFieldDescriptor = functionFieldDescriptor(false);

@@ -922,43 +922,24 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return true;
   }
 
-  @Override
-  public boolean isEquivalentTo(Node<D, R, F> other)
-  {
-    if (other == null || getClass() != other.getClass())
-    {
-      return false;
-    }
-    FunctionNode<D, R, F> o = (FunctionNode<D, R, F>) other;
-    if (!functionName.equals(o.functionName))
-    {
-      return false;
-    }
-    // Compare all branches exposed by the subclass (arg plus any extra
-    // structural children such as Lommel's index/order or the spherical
-    // Bessel function's order) so that calls with matching arg but
-    // differing indices are NOT collapsed by the CSE pass.
-    List<Node<D, R, F>> left  = getBranches();
-    List<Node<D, R, F>> right = o.getBranches();
-    if (left.size() != right.size())
-    {
-      return false;
-    }
-    for (int i = 0; i < left.size(); i++)
-    {
-      Node<D, R, F> a = left.get(i);
-      Node<D, R, F> b = right.get(i);
-      if (a == null)
-      {
-        if (b != null) return false;
-      }
-      else if (!a.isEquivalentTo(b))
-      {
-        return false;
-      }
-    }
-    return true;
-  }
+  /**
+   * Defers to {@link Node#isEquivalentTo} (which compares {@code getClass()}
+   * and {@code toString()}). Subclasses such as {@link LommelPolynomialNode}
+   * and {@link SphericalBesselFunctionNodeOfTheFirstKind} override
+   * {@code toString()} to render every structural child (index, order, arg),
+   * so the rendered form already distinguishes e.g. {@code R(n,½;x)} from
+   * {@code R(n-1,3/2;x)} and the CSE pass will not collapse them.
+   * <p>
+   * An earlier revision walked {@link #getBranches()} here, but
+   * {@code getBranches()} is a tree-view affordance (populated for
+   * {@link arb.expressions.nodes.Node.NodeTreeItem} / {@link TextTree} /
+   * {@link ExpressionTree} rendering), not a programmatic traversal API:
+   * several implementations flatten or reorder children and some
+   * (e.g. {@link CachedNode}, {@link DerivativeNode}) delegate to another
+   * node whose back-pointers form a cycle once sub-expressions are stitched
+   * together, which made structural equality recurse indefinitely.
+   */
+
 
   @Override
   public int depth()
