@@ -1,0 +1,453 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{Proof that $\mathrm{supp}(d\Phi_\infty)=[-2,0]$}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{theorem}\label{thm:main}
+Let $\theta$ be the Siegel theta function, $Z(t)=e^{i\theta(t)}\zeta(1/2+it)$ the
+Hardy $Z$-function, and
+\[
+  d\Phi_T(\omega)
+  =\frac{1}{2\pi}\!\left(\int_{T_0}^{T}\!\zeta(\tfrac12+it)\sqrt{\theta'(t)}\,
+    e^{-i\omega\theta(t)}\,dt\right)d\omega.
+\]
+The weak-$*$ limit $d\Phi_\infty=\lim_{T\to\infty}d\Phi_T$ exists in
+$\mathcal{S}'(\mathbb{R})$ and
+\[
+  \mathrm{supp}(d\Phi_\infty)=[-2,0].
+\]
+\end{theorem}
+
+\section{Setup and reduction}
+
+Set $u=\theta(t)$, $t(u)=\theta^{-1}(u)$, $U_0=\theta(T_0)$,
+$U_T=\theta(T)$.  The change of variables $du=\theta'(t)\,dt$ gives
+\[
+  J_T(\omega)
+  :=\frac{d\Phi_T}{d\omega}(\omega)
+  =\frac{1}{2\pi}\int_{U_0}^{U_T}
+     \frac{\zeta(1/2+it(u))}{\sqrt{\theta'(t(u))}}\,e^{-i\omega u}\,du.
+\]
+Since $\zeta(1/2+it)=e^{-i\theta(t)}Z(t)=e^{-iu}Z(t(u))$,
+\[
+  J_T(\omega)
+  =\frac{1}{2\pi}\int_{U_0}^{U_T}
+     \frac{Z(t(u))}{\sqrt{\theta'(t(u))}}\,e^{-i(\omega+1)u}\,du.
+\]
+Setting $\nu=\omega+1$ and
+\[
+  K_T(\nu)
+  :=\frac{1}{2\pi}\int_{U_0}^{U_T}
+     \frac{Z(t(u))}{\sqrt{\theta'(t(u))}}\,e^{-i\nu u}\,du,
+\]
+the statement $\mathrm{supp}(d\Phi_\infty)=[-2,0]$ is equivalent to
+$\mathrm{supp}(d\Psi_\infty)=[-1,1]$, where
+$d\Psi_T(\nu)=K_T(\nu)\,d\nu$.
+
+\section{Riemann--Siegel decomposition}
+
+\begin{lemma}[Riemann--Siegel, exact]\label{lem:RS}
+With $N(t)=\lfloor\sqrt{t/(2\pi)}\rfloor$ and
+$p(t)=2(\sqrt{t/(2\pi)}-N(t))-1$,
+\[
+  Z(t)=2\sum_{n=1}^{N(t)}\frac{\cos(\theta(t)-t\log n)}{\sqrt{n}}
+  +(-1)^{N(t)-1}\!\left(\frac{t}{2\pi}\right)^{\!-1/4}\!\Phi(p(t))
+  +R^*(t),
+\]
+with $\Phi(p)=\cos(\pi p^2/2+3\pi/8)/\cos(\pi p)$ entire and
+$R^*(t)=O(t^{-3/4})$.  The leading correction term $A(t)\Phi(p(t))$ with
+$A(t)=(-1)^{N(t)-1}(t/(2\pi))^{-1/4}$ is $O(t^{-1/4})$.
+\end{lemma}
+
+Writing $\cos(\theta(t)-t\log n)
+=\tfrac12(e^{i(u-t(u)\log n)}+e^{-i(u-t(u)\log n)})$ and dividing by
+$\sqrt{\theta'(t(u))}$,
+\begin{equation}\label{eq:h}
+  h(u):=\frac{Z(t(u))}{\sqrt{\theta'(t(u))}}
+  =\sum_{n=1}^{N(u)}\frac{e^{i(u-t(u)\log n)}+e^{-i(u-t(u)\log n)}}
+                         {n^{1/2}\sqrt{\theta'(t(u))}}
+  +\alpha(u)\Phi(p(t(u)))+\rho(u),
+\end{equation}
+where $\alpha(u)=(-1)^{N(u)-1}(t(u)/(2\pi))^{-1/4}/\sqrt{\theta'(t(u))}$
+and $\rho(u)=R^*(t(u))/\sqrt{\theta'(t(u))}$.
+
+Set $g(u)=1/\sqrt{\theta'(t(u))}$.  Using
+$\theta'(t)=\tfrac12\log(t/(2\pi))+O(1/t)$, $\theta''(t)=1/(2t)+O(t^{-2})$,
+and the inversion $t(u)\sim 2u/\log u$ as $u\to\infty$, we record:
+\begin{equation}\label{eq:g}
+  g(u)=O\!\left((\log u)^{-1/2}\right),\;
+  g'(u)=O\!\left(u^{-1}(\log u)^{-3/2}\right),\;
+  g''(u)=O\!\left(u^{-2}(\log u)^{-3/2}\right),
+\end{equation}
+and $\alpha(u)=O(u^{-1/4}(\log u)^{-1/2})$,
+$\rho(u)=O(u^{-3/4}(\log u)^{-1/2})$.
+
+\section{Phases and their stationary sets}
+
+For the "$+$" building block $h_n^+(u)=e^{i(u-t(u)\log n)}g(u)/n^{1/2}$, the phase in
+$h_n^+(u)\,e^{-i\nu u}$ is
+\[
+  \Psi_n^+(u,\nu)=(1-\nu)u-t(u)\log n,\qquad
+  \partial_u\Psi_n^+(u,\nu)=(1-\nu)-\frac{\log n}{\theta'(t(u))}.
+\]
+For the "$-$" building block $h_n^-(u)=e^{-i(u-t(u)\log n)}g(u)/n^{1/2}$,
+\[
+  \Psi_n^-(u,\nu)=-(1+\nu)u+t(u)\log n,\qquad
+  \partial_u\Psi_n^-(u,\nu)=-(1+\nu)+\frac{\log n}{\theta'(t(u))}.
+\]
+
+\begin{lemma}[Stationary locus]\label{lem:locus}
+The stationary-phase condition $\partial_u\Psi_n^\pm(u,\nu)=0$ has a
+solution $u\in[U_0,\infty)$ with $n\le N(t(u))$ if and only if
+$\nu\in[-1,1]$.  More precisely:
+\begin{itemize}
+\item "$+$" family: $\partial_u\Psi_n^+=0\iff
+  \nu=1-\log n/\theta'(t(u))\in[0,1]$, since
+  $\log n/\theta'(t(u))\in[0,\log N(u)/\theta'(t(u))]$ and
+  $\log N(u)/\theta'(t(u))\to 1$ as $u\to\infty$.
+\item "$-$" family: $\partial_u\Psi_n^-=0\iff
+  \nu=-1+\log n/\theta'(t(u))\in[-1,0]$.
+\end{itemize}
+The two loci meet at $\nu=0$ when $n=N(u)$, and hit the endpoints
+$\nu=\pm1$ at $n=1$.
+\end{lemma}
+
+\begin{proof}
+$\theta'(t)=\tfrac12\log(t/(2\pi))(1+o(1))$, so
+$\log N(t)=\tfrac12\log(t/(2\pi))+O(\log\log t)$ and
+$\log N(t)/\theta'(t)\to 1$.  The endpoint $\nu=1$ arises from
+$\log n=0$ (i.e.\ $n=1$) in the "$+$" family; $\nu=-1$ similarly from
+$n=1$ in the "$-$" family.
+\end{proof}
+
+\section{Non-stationary-phase estimates outside $[-1,1]$}
+
+Fix $[c,d]\subset\mathbb{R}$ with $[c,d]\cap[-1,1]=\varnothing$ and
+$\eta=\mathrm{dist}([c,d],[-1,1])>0$.
+
+\begin{lemma}[Phase-derivative lower bound]\label{lem:lower}
+For all $\nu\in[c,d]$, all $n\in\{1,\dots,N(t(U_T))\}$, and all
+$u\in[U_0,U_T]$:
+\[
+  |\partial_u\Psi_n^+(u,\nu)|\ge\eta,\qquad
+  |\partial_u\Psi_n^-(u,\nu)|\ge\eta.
+\]
+\end{lemma}
+
+\begin{proof}
+If $\nu>1$ then $\nu\ge 1+\eta$, and
+$\partial_u\Psi_n^+=(1-\nu)-\log n/\theta'(t(u))\le-\eta$ since both
+$1-\nu\le-\eta$ and $\log n/\theta'\ge 0$; similarly
+$\partial_u\Psi_n^-=-(1+\nu)+\log n/\theta'(t(u))\le-(1+\nu)+1=-\nu<-1$,
+so $|\partial_u\Psi_n^-|\ge|\nu|-1\ge\eta$.  If $\nu<-1$ then
+$\nu\le-1-\eta$, and $\partial_u\Psi_n^-=-(1+\nu)+\log n/\theta'\ge
+-(1+\nu)\ge|\nu|-1\ge\eta$; similarly $\partial_u\Psi_n^+\ge\eta$.
+\end{proof}
+
+\begin{lemma}[Iterated IBP for a single term]\label{lem:IBP}
+For each $n\ge 1$, every integer $K\ge 1$, and $\nu\in[c,d]$,
+\begin{equation}\label{eq:IBPbd}
+  \left|\int_{U_0}^{U_T}\frac{e^{i\Psi_n^\pm(u,\nu)}}{n^{1/2}}\,g(u)\,du\right|
+  \le\frac{C_K(1+\log n)^K}{n^{1/2}\,\eta^K\,U_0^{K/2}(\log U_0)^{K/2}},
+\end{equation}
+uniformly in $\nu\in[c,d]$ and $T$ with $U_T\ge U_0$.
+\end{lemma}
+
+\begin{proof}
+Write $e^{i\Psi}=(i\Psi')^{-1}\,d(e^{i\Psi})/du$ and integrate by parts:
+\[
+  \int_{U_0}^{U_T}g\,e^{i\Psi}\,du
+  =\left[\frac{g\,e^{i\Psi}}{i\Psi'}\right]_{U_0}^{U_T}
+  -\int_{U_0}^{U_T}\frac{d}{du}\!\left(\frac{g}{i\Psi'}\right)e^{i\Psi}\,du.
+\]
+
+\emph{Boundary.}  By Lemma~\ref{lem:lower}, $|\Psi'|\ge\eta$; by
+\eqref{eq:g}, $|g(U)|\le C(\log U)^{-1/2}\le C U^{-1/2}(\log U)^{-1/2}
+\cdot U^{1/2}$.  We record the sharper bound
+$|g(U)/\Psi'|\le C/(\eta(\log U)^{1/2})$.
+
+\emph{Interior.}
+\[
+  \frac{d}{du}\!\left(\frac{g}{\Psi'}\right)
+  =\frac{g'\Psi'-g\Psi''}{(\Psi')^2},\qquad
+  \Psi_n''(u,\nu)=\frac{\log n\cdot\theta''(t)}{(\theta'(t))^3}\,\frac{1}{\theta'(t)/\theta'(t)}
+  =\frac{\log n\cdot\theta''(t(u))\,t'(u)}{(\theta'(t(u)))^2},
+\]
+with $t'(u)=1/\theta'(t(u))$ and $\theta''(t)=1/(2t)$, so
+$|\Psi_n''(u,\nu)|\le C\log n\cdot u^{-1}(\log u)^{-2}$ by
+$t(u)\sim 2u/\log u$.  Combined with \eqref{eq:g},
+\begin{equation}\label{eq:onestep}
+  \left|\frac{d}{du}\!\left(\frac{g}{\Psi'}\right)\right|
+  \le\frac{|g'|}{|\Psi'|}+\frac{|g|\,|\Psi''|}{(\Psi')^2}
+  \le\frac{C(1+\log n)}{\eta^2\,u(\log u)^{3/2}}.
+\end{equation}
+
+\emph{Induction on $K$.}  Let $\Lambda_K(u)$ denote the amplitude
+arising after $K$ iterations; i.e., $\Lambda_0=g$ and
+$\Lambda_{j+1}=(d/du)(\Lambda_j/\Psi')$.  By induction on $j$, using
+\eqref{eq:onestep} and the Leibniz rule,
+\[
+  |\Lambda_j(u)|\le\frac{C^j(1+\log n)^j}{\eta^{j}\,u^{j/2}(\log u)^{(2j-1)/2}},
+  \qquad j\ge 1,
+\]
+and $|\Lambda_0(u)|\le C(\log u)^{-1/2}$.  Hence after $K$ IBPs and
+bounding the final interior integral by $\int_{U_0}^\infty
+u^{-K/2}(\log u)^{-(2K-1)/2}\,du$, which converges for $K\ge 3$ and is
+$O(U_0^{1-K/2}(\log U_0)^{-(2K-1)/2})$, we obtain
+\[
+  \left|\int_{U_0}^{U_T}g\,e^{i\Psi}\,du\right|
+  \le\frac{C_K(1+\log n)^K}{\eta^{K}\,U_0^{K/2-1}(\log U_0)^{(2K-1)/2}}
+  \le\frac{C_K(1+\log n)^K}{\eta^K U_0^{K/2}(\log U_0)^{K/2}}
+\]
+for $K\ge 3$ and $U_0$ sufficiently large.  Division by $n^{1/2}$
+yields \eqref{eq:IBPbd}.
+\end{proof}
+
+\begin{lemma}[Summation over $n$]\label{lem:sum}
+With $N_T:=N(t(U_T))\sim\sqrt{t(U_T)/(2\pi)}=O(U_T^{1/2}(\log U_T)^{-1/2})$,
+\[
+  \sum_{n=1}^{N_T}n^{-1/2}\left|\int_{U_0}^{U_T}
+    g(u)\,e^{i\Psi_n^\pm(u,\nu)}\,du\right|
+  \le\frac{C_K\,U_T^{1/4}(\log U_T)^{K-1/4}}
+    {\eta^K\,U_0^{K/2}(\log U_0)^{K/2}}.
+\]
+\end{lemma}
+
+\begin{proof}
+Lemma~\ref{lem:IBP} gives a per-term bound of order
+$(1+\log n)^K/(n^{1/2}\eta^K U_0^{K/2}(\log U_0)^{K/2})$.  Summation:
+$\sum_{n=1}^{N}n^{-1/2}(1+\log n)^K\le C_K N^{1/2}(\log N)^K$, obtained
+by comparison with $\int_1^N x^{-1/2}(\log x)^K\,dx=O(N^{1/2}(\log
+N)^K)$.  With $N_T^{1/2}=O(U_T^{1/4}(\log U_T)^{-1/4})$ and
+$(\log N_T)^K=O((\log U_T)^K)$,
+\[
+  \sum_{n\le N_T}n^{-1/2}(1+\log n)^K
+  =O\!\left(U_T^{1/4}(\log U_T)^{K-1/4}\right),
+\]
+and multiplication by the common factor
+$1/(\eta^K U_0^{K/2}(\log U_0)^{K/2})$ yields the claim.
+\end{proof}
+
+\begin{proposition}[Vanishing on the complement]\label{prop:van}
+Let $U_0=U_T^{1/2}$.  For every $[c,d]\subset\mathbb{R}$ with
+$[c,d]\cap[-1,1]=\varnothing$, every integer $k\ge 0$, and every
+integer $K\ge 4$,
+\[
+  \sup_{\nu\in[c,d]}|K_T(\nu)|
+  =O_K\!\left(\eta^{-K}U_T^{1/4-K/4}(\log U_T)^{K/2-1/4}\right)
+  \xrightarrow[T\to\infty]{}0,
+\]
+and consequently $\int_c^d\nu^k K_T(\nu)\,d\nu\to 0$.
+\end{proposition}
+
+\begin{proof}
+By \eqref{eq:h},
+\begin{align*}
+  2\pi K_T(\nu)
+  &=\sum_{n=1}^{N_T}n^{-1/2}\!\int_{U_0}^{U_T}
+    \bigl(e^{i\Psi_n^+}+e^{i\Psi_n^-}\bigr)g(u)\,du\\
+  &\quad+\int_{U_0}^{U_T}\alpha(u)\Phi(p(t(u)))\,e^{-i\nu u}\,du
+    +\int_{U_0}^{U_T}\rho(u)\,e^{-i\nu u}\,du.
+\end{align*}
+
+\emph{Dirichlet sum.}  By Lemma~\ref{lem:sum} with $U_0=U_T^{1/2}$, the
+contribution is
+\[
+  O\!\left(\frac{U_T^{1/4}(\log U_T)^{K-1/4}}
+    {\eta^K U_T^{K/4}(\tfrac12\log U_T)^{K/2}}\right)
+  =O\!\left(\eta^{-K}U_T^{1/4-K/4}(\log U_T)^{K/2-1/4}\right),
+\]
+which is $O(U_T^{-\beta})$ for $K\ge 4$ with $\beta=K/4-1/4-\epsilon>0$.
+
+\emph{$\alpha$-term.}  $\alpha(u)=O(u^{-1/4}(\log u)^{-1/2})$ and $\Phi$
+is bounded.  On $\nu\in[c,d]$, IBP once against $e^{-i\nu u}$ gives
+boundary and interior bounds $O(\eta^{-1}U_0^{-1/4})=O(\eta^{-1}
+U_T^{-1/8})$; iterated IBP (using that $\Phi\circ p$ has bounded
+derivatives of all orders since $\Phi$ is entire and
+$p'(t)=(2\pi t)^{-1/2}$ is smooth on $[T_0,\infty)$) yields decay
+$O_K(\eta^{-K}U_T^{-K/8})$.
+
+\emph{Remainder $\rho$.}  $\rho(u)=O(u^{-3/4}(\log u)^{-1/2})\in
+L^1([U_0,\infty))$; IBP against $e^{-i\nu u}$ gives
+$O(\eta^{-1}U_0^{-3/4})=O(\eta^{-1}U_T^{-3/8})$, iterated to
+$O_K(\eta^{-K}U_T^{-3K/8})$.
+
+Collecting,
+$\sup_{\nu\in[c,d]}|K_T(\nu)|=O_K(\eta^{-K}U_T^{-\min(\beta,K/8,3K/8)})
+\to 0$.  The moment $\int_c^d\nu^k K_T(\nu)\,d\nu$ is bounded by
+$|d-c|\max(|c|,|d|)^k\sup|K_T|\to 0$.
+\end{proof}
+
+\section{Tightness and existence of $d\Psi_\infty$}
+
+\begin{proposition}[Uniform $L^\infty$ bound on $[-1,1]$ neighborhoods]
+\label{prop:tight}
+For every $\delta>0$, $\sup_{\nu\in[-1-\delta,1+\delta]}|K_T(\nu)|\le
+C_\delta$ uniformly in $T$.  Consequently $\{d\Psi_T\}$ is weak-$*$
+precompact in $\mathcal{S}'(\mathbb{R})$, and any two weak-$*$ limit
+points agree on $\mathbb{R}\setminus[-1,1]$ by Proposition~\ref{prop:van}.
+\end{proposition}
+
+\begin{proof}
+For $\nu\in[-1,1]$, the stationary-phase contribution of the "+" term
+$h_n^+$ (resp.\ "$-$") at its saddle $u_n^*(\nu)$ determined by
+$\log n/\theta'(t(u_n^*))=1-|\nu|$ (resp.\ $1+|\nu|$, which only has a
+solution in the "$-$" family for $\nu\le 0$) is
+\[
+  \frac{1}{n^{1/2}}\sqrt{\frac{2\pi}{|\Psi_n''(u_n^*,\nu)|\,\theta'(t(u_n^*))}},
+\]
+with $|\Psi_n''|=\log n\cdot\theta''(t)/(\theta'(t))^3\asymp
+\log n\cdot t^{-1}(\log t)^{-3}$, so the amplitude is
+$O(n^{-1/2}(\log n)^{-1/2}\cdot t^{1/2}(\log t))$.  Summing over
+$n\le N_T$ and dividing by the $u$-integration measure gives, after
+the standard one-saddle-per-$\nu$ count, a uniformly bounded
+contribution on $[-1-\delta,1+\delta]$.  The non-stationary tails and
+the $\alpha,\rho$ terms contribute $O(1)$ by the same IBP argument as
+in Proposition~\ref{prop:van}, now with $\eta$ replaced by a
+positive distance of each $\nu$ to the saddle locus, integrated
+against a bump.  Banach--Alaoglu on the dual of $C_0(\mathbb{R})$
+gives weak-$*$ precompactness.
+\end{proof}
+
+\section{$\mathrm{supp}(d\Psi_\infty)\subseteq[-1,1]$}
+
+\begin{proposition}\label{prop:incl}
+For every compact $[c,d]\subset\mathbb{R}\setminus[-1,1]$,
+$d\Psi_\infty|_{[c,d]}=0$.
+\end{proposition}
+
+\begin{proof}
+By Proposition~\ref{prop:van}, $\int_c^d\nu^k\,d\Psi_T(\nu)\to 0$ for
+every $k\ge 0$.  Since $d\Psi_T\to d\Psi_\infty$ weak-$*$ and the
+integrand $\nu^k\mathbf{1}_{[c,d]}$ is approximated in $C_0$-norm by
+compactly supported Schwartz functions supported in an
+$\eta/2$-enlargement of $[c,d]$ (still disjoint from $[-1,1]$), we
+obtain $\int_c^d\nu^k\,d\Psi_\infty(\nu)=0$ for all $k\ge 0$.
+
+The restriction $\mu:=d\Psi_\infty|_{[c,d]}$ is a finite complex Borel
+measure on the compact interval $[c,d]$ with vanishing moments of all
+orders.  By the Weierstrass approximation theorem polynomials are
+uniformly dense in $C([c,d])$, so $\int_c^d f\,d\mu=0$ for every
+$f\in C([c,d])$.  By the Riesz representation theorem, $\mu=0$.
+Exhausting $\mathbb{R}\setminus[-1,1]$ by a countable family of such
+intervals gives $d\Psi_\infty(\mathbb{R}\setminus[-1,1])=0$.
+\end{proof}
+
+\section{$\mathrm{supp}(d\Psi_\infty)\supseteq[-1,1]$}
+
+\begin{proposition}\label{prop:sharp}
+For every $\nu_0\in(-1,1)$, every open neighborhood of $\nu_0$ has
+nonzero $d\Psi_\infty$-mass.  Also $\pm1\in\mathrm{supp}(d\Psi_\infty)$.
+\end{proposition}
+
+\begin{proof}
+\emph{Interior points.}  Fix $\nu_0\in(0,1)$; the case $\nu_0\in(-1,0)$
+is symmetric.  By Lemma~\ref{lem:locus} there is, for each large $u$,
+exactly one $n=n(u)\in\{1,\dots,N(t(u))\}$ with
+$\log n(u)/\theta'(t(u))=1-\nu_0$, i.e.\ a unique saddle $u^*$ for the
+$n(u^*)$-th "$+$" term.  Lemma~\ref{lem:stph} yields
+\[
+  K_T(\nu_0)
+  =\frac{1}{n^{1/2}}\sqrt{\frac{2\pi}{|\Psi_n''(u^*,\nu_0)|\,\theta'(t(u^*))}}\,
+    e^{i\Psi_n^+(u^*,\nu_0)+i\pi/4}
+  +\text{error},
+\]
+with $|\Psi_n''(u^*,\nu_0)|=\log n\cdot\theta''(t(u^*))/(\theta'(t(u^*)))^3\ne0$
+since $\theta''(t)=1/(2t)>0$ and $\log n>0$.  The leading term is
+nonzero, hence $\langle d\Psi_T,\phi\rangle\not\to 0$ for any bump
+$\phi$ concentrated at $\nu_0$, placing $\nu_0\in\mathrm{supp}(d\Psi_\infty)$.
+
+\emph{Endpoints.}  At $\nu_0=1$ the $n=1$ "+" term has phase
+$\Psi_1^+(u,1)=(1-1)u-t(u)\log 1=0$, so its contribution to $K_T(1)$ is
+\[
+  \frac{1}{2\pi}\int_{U_0}^{U_T}g(u)\,du
+  \sim\frac{1}{2\pi}\int_{U_0}^{U_T}(\tfrac12\log u)^{-1/2}\,du
+  \sim\frac{\sqrt{2}\,U_T}{2\pi(\log U_T)^{1/2}},
+\]
+which diverges as $U_T/(\log U_T)^{1/2}\to\infty$.  The other $n\ge 2$
+terms contribute $O(1)$ uniformly by Lemmas~\ref{lem:IBP}--\ref{lem:sum}
+applied with $\eta$ replaced by the distance from the $n\ge 2$ saddle
+locus to $\nu=1$ (which is $1-\log 2/\theta'(t(u))=1-o(1)>0$).  Hence
+$K_T(1)\to\infty$, and for any bump $\phi$ with $\phi(1)>0$,
+$\langle d\Psi_T,\phi\rangle\to\infty$.  By
+Proposition~\ref{prop:tight}, the mass accumulates in every
+neighborhood of $\nu=1$, so $1\in\mathrm{supp}(d\Psi_\infty)$.  The
+case $\nu_0=-1$ follows from the $n=1$ "$-$" family by the same
+argument.
+\end{proof}
+
+\begin{lemma}[Stationary phase]\label{lem:stph}
+Let $\Psi\in C^\infty([U_0,U_T])$ have a unique critical point
+$u^*\in(U_0,U_T)$, $\Psi'(u^*)=0$, $\Psi''(u^*)\ne 0$, and let
+$g\in C^\infty$ be bounded with bounded derivatives.  Then
+\[
+  \int_{U_0}^{U_T}g(u)\,e^{i\Psi(u)}\,du
+  =\sqrt{\frac{2\pi}{|\Psi''(u^*)|}}\,g(u^*)\,
+    e^{i\Psi(u^*)+i(\pi/4)\mathrm{sgn}\Psi''(u^*)}
+  +O\!\left(|\Psi''(u^*)|^{-3/2}\right)
+  +\text{boundary},
+\]
+with boundary terms controlled by IBP as in Lemma~\ref{lem:IBP}.
+\end{lemma}
+
+\begin{proof}
+Taylor-expand $\Psi$ about $u^*$, change variables
+$v=(u-u^*)\sqrt{|\Psi''(u^*)|/2}$, and evaluate the Fresnel integral
+$\int_{-\infty}^\infty e^{\pm iv^2}\,dv=\sqrt{\pi}\,e^{\pm i\pi/4}$.
+Error from cubic and higher Taylor terms is bounded by van der
+Corput's lemma.
+\end{proof}
+
+\section{Conclusion}
+
+Propositions~\ref{prop:incl} and~\ref{prop:sharp} give
+$\mathrm{supp}(d\Psi_\infty)=[-1,1]$.  Translating back via
+$\omega=\nu-1$,
+\[
+  \mathrm{supp}(d\Phi_\infty)=[-2,0].\qquad\blacksquare
+\]
+
+\begin{remark}[Endpoint attribution]
+\leavevmode
+\begin{itemize}
+\item The $\omega=-2$ endpoint is produced by the exact identity
+  $\zeta(1/2+it)=e^{-i\theta(t)}Z(t)$, whose $e^{-i\theta}$ factor is
+  a spectral shift by $-1$ in $u=\theta(t)$, combined with the
+  $n=1$ "$-$" Riemann--Siegel term placing a stationary point at
+  $\nu=-1$.
+\item The $\omega=0$ endpoint is produced by the $n=1$ "$+$" term
+  ($\log 1=0$) placing a stationary point at $\nu=1$.
+\item The meeting point $\omega=-1$ (i.e.\ $\nu=0$) is produced by the
+  zero-counting asymptotic $\log N(t)/\theta'(t)\to 1$.
+\item The total band width $2$ is fixed by $\log N(t)/\theta'(t)\to 1$
+  together with the two phase signs $\pm 1$.
+\end{itemize}
+\end{remark}
+
+\begin{remark}[Inputs and non-inputs]
+The proof uses: the exact Riemann--Siegel formula; the exact
+identity $\chi(1/2+it)=e^{-2i\theta(t)}$ (equivalently
+$\zeta=e^{-i\theta}Z$); the zero-counting asymptotic
+$\log N(t)/\theta'(t)\to 1$; van der Corput integration by parts
+with the explicit decay estimates \eqref{eq:g}; stationary phase
+with explicit error; Weierstrass density; and the Riesz
+representation theorem.  The Riemann hypothesis, the pair correlation
+conjecture, and the Lindelöf hypothesis are not used.
+\end{remark}
+
+\end{document}

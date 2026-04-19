@@ -1,0 +1,101 @@
+\section*{Position after backtrack}
+
+For $|\mu|>1$, the exact identity stands:
+\[
+K_T(\nu) \;=\; \sum_{\sigma\in\{+,-\}}\sum_{n=1}^{\infty}\frac{n^{-1/2}}{2\pi}\,J_{n,\sigma}(T,\mu) \;+\; K_T^{R}(\mu)
+\]
+\[
+J_{n,\sigma}(T,\mu) \;=\; \int_{t_n}^{T}\sqrt{\theta'(t)}\,e^{i\Phi_{n,\sigma,\mu}(t)}\,dt,\qquad t_{n}=\max(T_{0},2\pi n^{2})
+\]
+\[
+\Phi_{n,\sigma,\mu}(t) \;=\; (\sigma-\mu)\theta(t)-\sigma t\log n,\qquad \Phi_{n,\sigma,\mu}'(t) \;=\; (\sigma-\mu)\theta'(t)-\sigma\log n
+\]
+
+The dead end was: evaluating $\Phi_{n,\sigma,\mu}'$ at the exact point $t=2\pi n^{2}$ required asserting $\theta'(2\pi n^{2})=\log n$, which is false.
+
+Route that does \textbf{not} hit that dead end: \textbf{do not evaluate $\theta'$ or the boundary at $t=2\pi n^{2}$}. Instead, change the integration variable to $x := \theta'(t)$.
+
+\section*{Change of variable $x = \theta'(t)$}
+
+$\theta'$ is strictly increasing on $[T_{0},\infty)$ (since $\theta''(t) = -\tfrac{1}{4}\Im\psi'(\tfrac{1}{4}+\tfrac{it}{2}) > 0$ --- from the integral representation $\psi'(s) = \sum_{k\ge 0}(s+k)^{-2}$, imaginary part of each term is $-2\Re(s+k)\Im(s+k)/|s+k|^4$, with $\Re(s+k)>0$ and $\Im(s+k) = t/2>0$, so $\Im\psi'<0$, so $\theta''>0$).
+
+Define the inverse $t(x) := (\theta')^{-1}(x)$. Set $x_{0} := \theta'(T_{0})$, $X := \theta'(T)$, and $\beta_{n} := \theta'(2\pi n^{2})$. Then $t_{n}=2\pi n^{2}$ corresponds to $x=\beta_{n}$, and $\theta'(t)=x$ means $t=t(x)$.
+
+Change variable $dt = dx/\theta''(t(x))$:
+\[
+J_{n,\sigma}(T,\mu) \;=\; \int_{\beta_{n}\vee x_0}^{X}\!\!\sqrt{x}\;e^{i\Phi_{n,\sigma,\mu}(t(x))}\;\frac{dx}{\theta''(t(x))}
+\]
+where $\beta_{n}\vee x_0 = \max(\beta_{n},x_0)$. The phase, as a function of $x$, I will denote $\widetilde\Phi_{n,\sigma,\mu}(x) := \Phi_{n,\sigma,\mu}(t(x))$; its derivative in $x$ is
+\[
+\frac{d\widetilde\Phi_{n,\sigma,\mu}}{dx}(x) \;=\; \frac{\Phi_{n,\sigma,\mu}'(t(x))}{\theta''(t(x))} \;=\; \frac{(\sigma-\mu)x-\sigma\log n}{\theta''(t(x))}
+\]
+
+\textbf{Now} the first factor $(\sigma-\mu)x-\sigma\log n$ is a linear function of $x$ with known exact coefficients, and it vanishes at exactly one point $x^{*}_{n,\sigma,\mu} := \sigma\log n/(\sigma-\mu)$ --- an exact real number computed from $n,\sigma,\mu$ alone, with no digamma involved.
+
+\textbf{Exact condition for a stationary point of the phase $\widetilde\Phi_{n,\sigma,\mu}$ on the integration interval:} $x^{*}_{n,\sigma,\mu}\in[\beta_{n}\vee x_{0},\,X]$.
+
+$\beta_{n}\vee x_{0}$ depends on the digamma (for $\beta_{n}$), but the \textbf{critical value} $x^{*}$ does not. The stationary point lies in the integration interval iff $\beta_{n}\le x^{*}_{n,\sigma,\mu}\le X$ (once $T$ is large enough that $X\ge x^{*}$).
+
+Expand:
+\[
+x^{*}_{n,\sigma,\mu} \;=\; \frac{\sigma\log n}{\sigma-\mu}
+\]
+\begin{itemize}
+\item $\sigma=+,\,|\mu|>1$: $x^{*} = \log n/(1-\mu)$. For $\mu>1$: $x^{*}<0$; but $x=\theta'(t)>0$ for $t\ge T_{0}$, so $x^{*}\notin$ integration range. No stationary point. For $\mu<-1$: $x^{*}=\log n/(1-\mu)\in(0,\log n/2]$; could be in range.
+\item $\sigma=-,\,|\mu|>1$: $x^{*} = -\log n/(-1-\mu)=\log n/(1+\mu)$. For $\mu>1$: $x^{*}\in(0,\log n/2]$. For $\mu<-1$: $x^{*}<0$, not in range.
+\end{itemize}
+
+So: for $\mu>1$, stationary points only from $\sigma=-$; for $\mu<-1$, only from $\sigma=+$. In each case the stationary point is $x^{*}=\log n/(1+|\mu|)$ (unified), lying in $(0,\log n/2)$.
+
+\textbf{Exact stationarity-in-range condition:} $\beta_{n}\le \log n/(1+|\mu|)\le X$.
+
+The right inequality $\log n/(1+|\mu|)\le X = \theta'(T)$ is satisfied for all but finitely many $n$ (specifically, $n$ with $\log n\le(1+|\mu|)\theta'(T)$, i.e., $n\le e^{(1+|\mu|)\theta'(T)}$ --- a finite set growing with $T$).
+
+The left inequality $\beta_{n}=\theta'(2\pi n^{2})\le\log n/(1+|\mu|)$ is the \textbf{exact} digamma condition. Since $\theta'$ is unbounded and strictly increasing, and $\theta'(2\pi n^{2})$ grows (by Stirling, as $\log n$ up to lower-order terms), while $\log n/(1+|\mu|)$ grows slower (by the factor $1/(1+|\mu|)<1$), we have $\theta'(2\pi n^{2}) > \log n/(1+|\mu|)$ for all sufficiently large $n$, and the inequality \textbf{fails} --- no stationary point.
+
+\textbf{Precise claim (exact, not asymptotic).} The set $S(\mu) := \{n\ge 1:\beta_{n}\le\log n/(1+|\mu|)\}$ is finite for each $|\mu|>1$. For $n\notin S(\mu)$, the stationary point $x^{*}_{n}$ lies to the \textbf{left} of $\beta_{n}$ and hence outside the $x$-integration interval $[\beta_{n}\vee x_{0},X]$.
+
+For $n\notin S(\mu)$, $\widetilde\Phi_{n,\sigma,\mu}'(x)$ has constant sign on the integration interval, and $(\sigma-\mu)x-\sigma\log n$ is bounded away from zero on $[\beta_{n}\vee x_{0},X]$ by the exact distance $|(\sigma-\mu)\beta_{n}-\sigma\log n|$ at the left endpoint.
+
+For $n\in S(\mu)$ (finitely many), the stationary point is in the integration range and must be treated by the stationary-phase contour contribution, which is a specific exact complex number (given by the Fresnel integral on the actual contour plus the boundary difference) --- \textbf{finitely many} such contributions for each $\mu$.
+
+\section*{The finite-$S(\mu)$ contributions}
+
+Each $n\in S(\mu)$ contributes exactly:
+\[
+\frac{n^{-1/2}}{2\pi}\int_{\beta_{n}\vee x_{0}}^{X}\!\!\frac{\sqrt{x}}{\theta''(t(x))}\,\exp\!\bigl(i\widetilde\Phi_{n,\sigma,\mu}(x)\bigr)\,dx
+\]
+where $\sigma\in\{\pm\}$ is the unique sign that places $x^{*}>0$ (determined by the sign of $\mu$).
+
+These are exact oscillatory integrals with an interior zero of the phase derivative at $x^{*}=\log n/(1+|\mu|)$. Once $T$ is large enough that $X>x^{*}$, \textbf{the integral from $\beta_n\vee x_0$ to any $X$ larger than $x^{*}$} splits exactly as
+\[
+\int_{\beta_{n}\vee x_{0}}^{X} = \int_{\beta_{n}\vee x_{0}}^{x^{*}} + \int_{x^{*}}^{X}
+\]
+Each of those pieces is a one-sided oscillatory integral with phase derivative of constant sign and zero at the split-point endpoint.
+
+\textbf{Key observation.} As $T\to\infty$, $X\to\infty$, and the piece $\int_{\beta_n\vee x_0}^{x^*}$ is \textbf{$T$-independent} (it depends only on $\mu$ and $n$, through $x^*$ and $\beta_n$).
+
+The only $T$-dependence is in the piece $\int_{x^*}^{X}$, whose phase derivative on this interval is $(\sigma-\mu)x-\sigma\log n$, vanishing at the left endpoint $x^*$ and growing (in magnitude) linearly in $x-x^*$ as $x$ moves away: $(\sigma-\mu)(x-x^*)$, since $(\sigma-\mu)x^*=\sigma\log n$ by definition of $x^*$.
+
+\section*{Continuing: the $T$-dependent piece for $n\in S(\mu)$}
+
+\[
+Q_{n,\sigma}(T,\mu) \;:=\; \int_{x^{*}}^{X}\!\!\frac{\sqrt{x}}{\theta''(t(x))}\,\exp\!\bigl(i\widetilde\Phi_{n,\sigma,\mu}(x)\bigr)\,dx
+\]
+
+Phase derivative on this interval: $\widetilde\Phi_{n,\sigma,\mu}'(x) = ((\sigma-\mu)x-\sigma\log n)/\theta''(t(x)) = (\sigma-\mu)(x-x^{*})/\theta''(t(x))$.
+
+Substitute $y = x-x^{*}$, $y\in[0,X-x^{*}]$:
+\[
+Q_{n,\sigma}(T,\mu) \;=\; \int_{0}^{X-x^{*}}\!\!\frac{\sqrt{x^{*}+y}}{\theta''(t(x^{*}+y))}\;\exp\!\Bigl(i\widetilde\Phi_{n,\sigma,\mu}(x^{*}+y)\Bigr)\,dy
+\]
+with $\widetilde\Phi'(x^{*}+y) = (\sigma-\mu)y/\theta''(t(x^{*}+y))$, nonzero for $y>0$.
+
+\section*{Where this is going}
+
+The stationary-in-range set $S(\mu)$ is finite (exact statement, no approximation). For $n\notin S(\mu)$, $J_{n,\sigma}$ has phase-derivative bounded away from zero on the entire integration interval, bounded below by the exact value $|(\sigma-\mu)\beta_{n}-\sigma\log n|$ at the left endpoint.
+
+Continuing from here, the next substantial step is to integrate by parts in the $x$-variable for $n\notin S(\mu)$, where the phase derivative is monotone and nonzero --- this is a genuine integration by parts (not a handwave), and it produces exact boundary terms at $x=\beta_{n}\vee x_{0}$ (a function of $n,\mu$ alone) and at $x=X$ (a function of $T$), plus a remainder integral.
+
+Before I continue: the boundary at $x=X$ carries the $T$-dependence. The $x$-boundary at $\beta_n\vee x_0$ is $T$-independent. This is the honest realization of your earlier insight that ``the lower-saddle-or-entry boundary is $T$-independent.''
+\end{itemize}
