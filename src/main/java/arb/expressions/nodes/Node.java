@@ -428,7 +428,20 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   private Boolean constantFlag;
 
   /**
-   * @return true if this node's evaluation is independent of all input parameters.
+   * @return true if this node's evaluation is independent of all input parameters
+   *         AND depends only on data whose identity is fixed for the lifetime of
+   *         the enclosing function instance — i.e., literal constants and
+   *         {@link VariableNode}s whose values are bound at instance
+   *         initialization time ({@link VariableNode#isFixedInstanceData()}
+   *         bound-parameter / upstream-input variables emitted as private
+   *         fields of the generated class). Such subtrees may be safely
+   *         hoisted into {@code evaluateStaticSubexpressions()} where they are
+   *         computed once per precision and cached in a field.
+   *         <p>
+   *         Variables whose values can change independently of the input —
+   *         mutable context variables, indeterminate placeholders — cause this
+   *         to return {@code false}, as does the evaluation variable itself.
+   *         <p>
    *         Computed once and cached.
    */
   public boolean isConstant()
@@ -443,7 +456,11 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
       { true };
       accept(node ->
       {
-        if ((node != this && !node.isIndependentOfInput()) || node.isVariable())
+        if (node != this && !node.isIndependentOfInput())
+        {
+          allConstant[0] = false;
+        }
+        else if (node.isVariable() && !node.asVariable().isFixedInstanceData())
         {
           allConstant[0] = false;
         }

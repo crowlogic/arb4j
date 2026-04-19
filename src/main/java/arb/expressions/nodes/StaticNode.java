@@ -54,12 +54,12 @@ public class StaticNode<D, R, F extends Function<? extends D, ? extends R>> exte
   @Override
   public boolean dependsOn(VariableNode<D, R, F> variable)
   {
-    return false;
+    return delegate.dependsOn(variable);
   }
 
   @Override
   public boolean isIndependentOf(VariableNode<D, R, F> variable)
   {
-    return true;
+    return delegate.isIndependentOf(variable);
   }
 }

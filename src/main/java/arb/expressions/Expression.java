@@ -3077,7 +3077,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return isFunctional() && !isGeneratedFunctional();
   }
 
-  protected boolean isGeneratedFunctional()
+  public boolean isGeneratedFunctional()
   {
     return coDomainType.isInterface() || Modifier.isAbstract(coDomainType.getModifiers());
   }

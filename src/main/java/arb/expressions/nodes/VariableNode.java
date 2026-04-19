@@ -512,6 +512,54 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   /**
+   * Returns {@code true} if this variable refers to a bound parameter of the
+   * enclosing function instance — i.e., a value emitted as a private field of
+   * the generated class that is assigned at instance initialization time and
+   * never mutated thereafter. Such variables behave as fixed identity data
+   * for the lifetime of the instance, so subexpressions that depend only on
+   * them (and not on the per-call evaluation variable) can be safely hoisted
+   * into {@code evaluateStaticSubexpressions()}.
+   * <p>
+   * This is currently the case for upstream-input variables of <em>inner
+   * expressions of a generated functional</em>: e.g. the {@code n} in
+   * {@code n➔t➔…} as seen by the inner {@code t} expression. The outer
+   * functional constructs a fresh inner instance per evaluation
+   * (see {@code Expression.generateFunctionalElement}) and propagates {@code n}
+   * into a field of that instance exactly once, so the instance's static
+   * caches can safely depend on it.
+   * <p>
+   * Upstream-input variables of expressions that are <em>not</em> the inner
+   * body of a generated functional (for instance a persistent operand
+   * expression of an N-ary operator inside a scalar-valued outer expression)
+   * are deliberately excluded: the operand instance outlives any single
+   * outer evaluate, and its upstream-variable fields get re-propagated on
+   * every outer call — hoisting based on them would cache a stale value.
+   * The evaluation variable, indeterminate placeholders, and mutable
+   * {@link Context} variables are likewise excluded.
+   *
+   * @return true if this variable's value is fixed for the lifetime of the
+   *         function instance and subtrees depending only on it may be
+   *         hoisted.
+   */
+  public boolean isFixedInstanceData()
+  {
+    if (isIndependent || isPlaceholder)
+    {
+      return false;
+    }
+    if (!upstreamInput)
+    {
+      return false;
+    }
+    // Only trust upstream inputs when THIS expression is the inner body
+    // of a generated functional — i.e., the enclosing class is constructed
+    // fresh per outer-evaluate, so the upstream-propagated fields are set
+    // once at construction and never mutated afterward.
+    Expression<?, ?, ?> parent = expression == null ? null : expression.superExpression;
+    return parent != null && parent.isGeneratedFunctional();
+  }
+
+  /**
    * Conditionally rename this {@link VariableNode}
    * 
    * @param from
