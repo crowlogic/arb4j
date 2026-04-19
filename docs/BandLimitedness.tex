@@ -16,11 +16,7 @@
 \maketitle
 
 \begin{abstract}
-<<<<<<< HEAD
 Let $Z:\mathbb{R}\to\mathbb{R}$ denote Hardy's function, defined by $\zeta(\tfrac{1}{2}+it) = e^{-i\theta(t)}Z(t)$, where $\theta(t) = \Im\log\Gamma\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right) - \tfrac{t}{2}\log\pi$ is the Riemann–Siegel theta function. The truncated transform $K_T(\nu) := \frac{1}{2\pi}\int_{0}^{T}\zeta(\tfrac{1}{2}+it)\sqrt{\theta'(t)}\,e^{-i\nu\theta(t)}\,dt$ is shown to satisfy $\lim_{T\to\infty}K_T(\nu)=0$ pointwise for every $\nu\in\mathbb{R}\setminus[-2,0]$. The proof rests on exact algebraic cancellation of $\theta''(t(x))$ in the integration-by-parts quotient under the substitution $x=\theta'(t)$, reducing each Riemann–Siegel mode integral to a rational kernel whose decay is controlled to $O(\theta'(T)^{-1/2})$.
-=======
-Let $Z:\mathbb{R}\to\mathbb{R}$ denote Hardy's function, defined by $\zeta(\tfrac{1}{2}+it) = e^{-i\theta(t)}Z(t)$, where $\theta(t) = \Im\log\Gamma\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right) - \tfrac{t}{2}\log\pi$ is the Riemann--Siegel theta function. The truncated transform $K_T(\nu) := \frac{1}{2\pi}\int_{0}^{T}\zeta(\tfrac{1}{2}+it)\sqrt{\theta'(t)}\,e^{-i\nu\theta(t)}\,dt$ is shown to satisfy $\lim_{T\to\infty}K_T(\nu)=0$ pointwise for every $\nu\in\mathbb{R}\setminus[-2,0]$. The proof rests on exact algebraic cancellation of $\theta''(t(x))$ in the integration-by-parts quotient under the substitution $x=\theta'(t)$, reducing each Riemann--Siegel mode integral to a rational kernel whose decay is controlled to $O(\theta'(T)^{-1/2})$.
->>>>>>> branch 'master' of git@github.com:crowlogic/arb4j.git
 \end{abstract}
 
 \section{Introduction}
@@ -54,11 +50,7 @@ The digamma series $\psi'(s)=\sum_{k\ge 0}(s+k)^{-2}$ evaluated at $s=\tfrac{1}{
 \end{equation}
 Each summand is strictly positive for $t>0$, hence $\theta':[T_0,\infty)\to[\theta'(T_0),\infty)$ is a strictly increasing $C^{\infty}$ bijection with $C^{\infty}$ inverse $t:[\theta'(T_0),\infty)\to[T_0,\infty)$, $x\mapsto t(x)$. Moreover $\theta'(t)\to\infty$ as $t\to\infty$ via $\theta'(t)=\tfrac{1}{2}\log(t/(2\pi))+O(t^{-2})$.
 
-<<<<<<< HEAD
 The Riemann–Siegel identity provides the exact decomposition $Z(t)=2\sum_{n=1}^{N(t)}n^{-1/2}\cos(\theta(t)-t\log n)+R(t)$, where $R(t)=O(t^{-1/4})$ is the Riemann–Siegel remainder. Substituting $\cos\alpha=\tfrac{1}{2}(e^{i\alpha}+e^{-i\alpha})$ and exchanging the finite sum with the integral yields
-=======
-The Riemann--Siegel identity provides the exact decomposition $Z(t)=2\sum_{n=1}^{N(t)}n^{-1/2}\cos(\theta(t)-t\log n)+R(t)$, where $R(t)=O(t^{-1/4})$ is the Riemann--Siegel remainder. Substituting $\cos\alpha=\tfrac{1}{2}(e^{i\alpha}+e^{-i\alpha})$ and exchanging the finite sum with the integral yields
->>>>>>> branch 'master' of git@github.com:crowlogic/arb4j.git
 \begin{equation}
 K_T(\nu) = \frac{1}{2\pi}\sum_{\sigma\in\{+1,-1\}}\sum_{n\le N(T)} n^{-1/2}\, J_{n,\sigma}(T,\mu) + \mathcal{R}(T,\mu),
 \end{equation}
