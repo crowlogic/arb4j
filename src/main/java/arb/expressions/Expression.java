@@ -4083,6 +4083,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * Recursively walks the AST and replaces any node whose identity appears in
    * the replacement map. Container nodes have their children replaced first
    * (bottom-up), then the node itself is checked.
+   * 
+   * FIXME: remove this instanceif idiocy
    */
   @SuppressWarnings("unchecked")
   private Node<D, C, F> replaceByIdentity(Node<D, C, F> node,
