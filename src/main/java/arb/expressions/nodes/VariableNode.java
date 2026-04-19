@@ -248,6 +248,11 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       this.reference.type = existingVariable.reference.type;
       isIndependent       = existingVariable.isIndependent;
       isPlaceholder       = existingVariable.isPlaceholder;
+      // Propagate upstreamInput — otherwise only the first occurrence of a
+      // variable at a given expression level retains the flag, and any
+      // subexpression built from subsequent occurrences cannot be
+      // recognised as parameter-invariant fixed instance data.
+      upstreamInput       = existingVariable.upstreamInput;
     }
     else
     {
@@ -640,6 +645,16 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     variableNode.position   = position;
     variableNode.fieldName  = fieldName;
     variableNode.isRootNode = isRootNode;
+    // If this variable was a genuine upstream input in the source
+    // expression, preserve that status in the new expression as long as
+    // the variable still resolves to the SAME ancestor independent
+    // variable in the new expression's chain. Without this, splicing a
+    // subtree into a sibling/descendant expression can lose
+    // upstreamInput for subtrees built from prior occurrences.
+    if (upstreamInput)
+    {
+      variableNode.upstreamInput = true;
+    }
     return variableNode;
   }
 

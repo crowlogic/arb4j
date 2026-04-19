@@ -428,6 +428,18 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   private Boolean constantFlag;
 
   /**
+   * Clears the memoized value of {@link #isConstant()} at this node.
+   * Must be called whenever a child is rewritten (e.g. during
+   * {@link #replaceConstantNodes()}) so a subsequent query reflects the
+   * new structure. Overrides that cache additional state must override
+   * this to clear it too.
+   */
+  public void invalidateConstantFlag()
+  {
+    constantFlag = null;
+  }
+
+  /**
    * @return true if this node's evaluation is independent of all input parameters
    *         AND depends only on data whose identity is fixed for the lifetime of
    *         the enclosing function instance — i.e., literal constants and
@@ -941,7 +953,24 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    */
   public Node<D, R, F> replaceConstantNodes()
   {
-    if (isAtomic())
+    // Genuine leaves (variable references and literal constants) are
+    // already single-instruction loads at evaluate() time, so wrapping
+    // them adds a field load for no benefit. isAtomic() is overridden
+    // to {@code true} on some non-leaf nodes (notably FunctionNode) to
+    // control parenthesisation in toString — that's a display concern,
+    // not a hoisting concern. For hoisting, the right gate is
+    // "leafness": variable or literal only.
+    if (isLeaf())
+    {
+      return this;
+    }
+    // The root node's generate contract writes into the caller's result
+    // parameter (see Node.generate and isRootNode handling); wrapping
+    // the root as a StaticNode would short-circuit that contract and
+    // return the cached field instead of populating the supplied result.
+    // The task only requires hoisting subexpressions, not whole root
+    // expressions, so leave the root alone.
+    if (isRootNode)
     {
       return this;
     }

@@ -2533,6 +2533,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       return;
     }
+    // The isConstant() memoization is populated opportunistically during
+    // parsing and simplification; by the time we get here, variables may
+    // have had their upstreamInput / fixedInstanceData flags finalised
+    // after the first memoization. Invalidate so the hoist traversal
+    // sees the post-resolution truth.
+    rootNode.nodeStream().forEach(n -> n.invalidateConstantFlag());
     rootNode       = rootNode.replaceConstantNodes();
     hasStaticNodes = rootNode.nodeStream().anyMatch(n -> n instanceof StaticNode);
     if (trace)

@@ -210,10 +210,15 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> replaceConstantNodes()
   {
-    if (arg != null)
+    if (arg == null)
     {
-      arg = arg.replaceConstantNodes();
+      // Some FunctionNode instances (eg. context-lookup binom) carry no
+      // argument subtree; their constancy cannot be evaluated here and
+      // they are already single-instruction invocations at runtime, so
+      // there is nothing to hoist.
+      return this;
     }
+    arg = arg.replaceConstantNodes();
     return super.replaceConstantNodes();
   }
 
