@@ -312,7 +312,6 @@ public class ExpressionTest extends
                               Real.named("c").set(6));
     var expr       = RationalNullaryFunction.parse("x->∂a*x+b*x²+c*x³/∂x", context);
     var x       = expr.instantiate();
-    System.out.println( expr.inspect(x).toString());
     var poly    = x.evaluate(128);
     
     assertEquals( "18*x^2+8*x+2", poly.toString());
