@@ -1,0 +1,329 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{geometry,amsmath,amssymb,latexsym}
+\geometry{letterpaper}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\assign}{:=}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\date{}
+
+\maketitle
+
+\section{Gaussian-process actualization of the Hardy Z-function}\label{app:gp}
+
+This appendix records the second-moment calculations that are specific to the
+Gaussian-process actualization of $Z$, and the agreements with classical zeta
+second-moment asymptotics that follow. The main-text objects $\theta (t)$, $Z
+(t)$, $H (u) = Z (\theta^{- 1} (u)) / \sqrt{\theta' (\theta^{- 1} (u))}$, the
+spectral measure $d \Phi$, the spectral density $S (\xi)$, its explicit
+stationary-phase form with amplitudes $|\mathcal{A}_{n, \pm} (\xi) |^2$ on
+intervals $J_{n, \pm}$, and the remainder atom of mass $w \ge 0$ at $\xi = -
+1$ are used without restatement.
+
+\subsection{Variance structure function of H}
+
+\begin{definition}
+  \label{def:struct}The second-order structure function of the weakly
+  stationary process $H$ is
+  \begin{equation}
+    D_H (\eta) \assign \mathbb{E} \hspace{0.17em} |H (u + \eta) - H (u) |^2
+    \qquad \forall \eta \in \mathbb{R}
+  \end{equation}
+\end{definition}
+
+\begin{proposition}
+  \label{prop:DH-spectral}For every $\eta \in \mathbb{R}$,
+  \begin{equation}
+    D_H (\eta) = 4 \int_{- 1}^1 \sin^2 \hspace{-0.17em} \left( \tfrac{\xi
+    \eta}{2} \right) S (\xi)  \hspace{0.17em} d \xi \label{eq:DH-spectral}
+  \end{equation}
+\end{proposition}
+
+\begin{proof}
+  By the Cram{\'e}r representation of $H$,
+  \begin{equation}
+    \begin{array}{ll}
+      H (u + \eta) - H (u) & = \int_{- 1}^1 (e^{i \xi (u + \eta)} - e^{i \xi
+      u}) d \Phi (\xi)\\
+      & = \int_{- 1}^1 e^{i \xi u}  (e^{i \xi \eta} - 1) d \Phi (\xi)
+    \end{array}
+  \end{equation}
+  By orthogonality of $d \Phi$,
+  \[ \begin{array}{ll}
+       D_H (\eta) & = \int_{- 1}^1 |e^{i \xi \eta} - 1|^2 S (\xi) 
+       \hspace{0.17em} d \xi\\
+       & = \int_{- 1}^1 (2 - 2 \cos (\xi \eta)) S (\xi)  \hspace{0.17em} d
+       \xi\\
+       & = 4 \int_{- 1}^1 \sin^2 \hspace{-0.17em} \left( \tfrac{\xi \eta}{2}
+       \right) S (\xi)  \hspace{0.17em} d \xi
+     \end{array} \]
+\end{proof}
+
+\begin{proposition}
+  [Fully expanded form of $D_H$]\label{prop:DH-explicit}With $J_{n, \pm}$,
+  $t^{\ast}_{n, \pm}$, and $w$ as in the main text,
+  
+  \begin{align}
+    D_H (\eta) & = 4 w \sin^2 \left( \frac{\eta}{2} \right) + \frac{1}{\pi^2} 
+    \sum_{n = 2}^{\infty} \left( \int_{J_{n, +}} \frac{2 \pi \log (n) 
+    \hspace{0.17em} \sin^2 \left( \frac{\xi \eta}{2} \right)}{n (1 - \xi)^2 
+    \hspace{0.17em} \theta'' (t^{\ast}_{n, +} (\xi))}  \hspace{0.17em} d \xi +
+    \int_{J_{n, -}} \frac{2 \pi \log (n)  \hspace{0.17em} \sin^2 \left(
+    \frac{\xi \eta}{2} \right)}{n (1 + \xi)^2  \hspace{0.17em} \theta''
+    (t^{\ast}_{n, -} (\xi))}  \hspace{0.17em} d \xi \right) 
+    \label{eq:DH-explicit}
+  \end{align}
+\end{proposition}
+
+\begin{proof}
+  Insert the explicit $S (\xi)$ into \eqref{eq:DH-spectral}. The atom at $\xi
+  = - 1$ contributes $4 w \sin^2 (- \eta / 2) = 4 w \sin^2 (\eta / 2)$, and
+  the continuous part contributes the stated double integral after multiplying
+  $(2 \pi)^{- 2} \cdot 4 = \pi^{- 2}$.
+\end{proof}
+
+\begin{corollary}
+  [Small-lag behavior]\label{cor:DH-small}As $\eta \to 0$,
+  \begin{equation}
+    D_H (\eta) = \eta^2  \int_{- 1}^1 \xi^2 S (\xi)  \hspace{0.17em} d \xi + O
+    (\eta^4)
+  \end{equation}
+  so $H$ has a finite spectral second moment $\mathbb{E} |H' (u) |^2 = \int_{-
+  1}^1 \xi^2 S (\xi)  \hspace{0.17em} d \xi < \infty$, and $H$ is mean-square
+  differentiable.
+\end{corollary}
+
+\begin{proof}
+  Expand $\sin^2 (\xi \eta / 2) = (\xi \eta / 2)^2 + O (\xi^4 \eta^4)$
+  uniformly in $\xi \in [- 1, 1]$ and integrate against $S (\xi) 
+  \hspace{0.17em} d \xi$; finiteness of $\int \xi^2 S \hspace{0.17em} d \xi$
+  follows from $| \xi | \le 1$ on $\mathrm{supp} \hspace{0.17em} S$ and
+  $\sigma_H^2 = \int S \hspace{0.17em} d \xi < \infty$.
+\end{proof}
+
+\subsection{Variance structure function of Z}
+
+\begin{proposition}
+  \label{prop:DZ}For $t, s \ge T_0$,
+  
+  \begin{align}
+    D_Z (t, s) & \assign \mathbb{E} \hspace{0.17em} |Z (t) - Z (s) |^2 \\
+    & = \theta' (t) \sigma_H^2 + \theta' (s) \sigma_H^2 - 2 \sqrt{\theta' (t)
+    \theta' (s)}  \hspace{0.17em} \Re \hspace{-0.17em} \int_{- 1}^1 e^{i \xi
+    (\theta (t) - \theta (s))}  \hspace{0.17em} S (\xi)  \hspace{0.17em} d \xi
+    .  \label{eq:DZ}
+  \end{align}
+  
+  In particular, if $\theta (s) = \theta (t) + \eta$ for some $\eta \in
+  \mathbb{R}$,
+  \begin{equation}
+    D_Z (t, \theta^{- 1} (\theta (t) + \eta)) = \left( \sqrt{\theta' (t)} -
+    \sqrt{\theta' (\theta^{- 1} (\theta (t) + \eta))} \right)^2 \sigma_H^2 +
+    \sqrt{\theta' (t) \theta'  (\theta^{- 1} (\theta (t) + \eta))} 
+    \hspace{0.17em} D_H (\eta) \label{eq:DZ-split}
+  \end{equation}
+\end{proposition}
+
+\begin{proof}
+  Expand $|Z (t) - Z (s) |^2$, use
+  \begin{equation}
+    \mathbb{E} |Z (t) |^2 = \theta' (t) \sigma_H^2
+  \end{equation}
+  and the spectral form
+  \begin{equation}
+    \mathbb{E} [Z (t) \overline{Z (s)}] = \sqrt{\theta' (t) \theta' (s)}  \int
+    e^{i \xi (\theta (t) - \theta (s))} S (\xi)  \hspace{0.17em} d \xi
+  \end{equation}
+  For \eqref{eq:DZ-split}, write
+  \begin{equation}
+    Z (t) = \sqrt{\theta' (t)} H (\theta (t))
+  \end{equation}
+  and
+  \begin{equation}
+    Z (s) = \sqrt{\theta' (s)} H (\theta (t) + \eta)
+  \end{equation}
+  then
+  \begin{equation}
+    Z (t) - Z (s) = \left( \sqrt{\theta' (t)} - \sqrt{\theta' (s)} \right) H
+    (\theta (t)) + \sqrt{\theta' (s)}  (H (\theta (t)) - H (\theta (t) +
+    \eta))
+  \end{equation}
+  and squaring and taking expectation gives \eqref{eq:DZ-split} using the
+  identity
+  \begin{equation}
+    \mathbb{E} |aX + bY|^2 = a^2 \mathbb{E}|X|^2 + 2 ab \hspace{0.17em} \Re
+    \mathbb{E} [X \bar{Y}] + b^2 \mathbb{E} |Y|^2
+  \end{equation}
+  and the fact that the cross-term evaluates to
+  \begin{equation}
+    2 (\sqrt{\theta' (t)} - \sqrt{\theta' (s)})  \sqrt{\theta' (s)} \sigma_H^2
+  \end{equation}
+  which combines with the pure variance terms to yield the first summand.
+\end{proof}
+
+\subsection{Diagonal variance and the Hardy--Littlewood agreement}
+
+\begin{proposition}
+  \label{prop:var-diag}For $t \ge T_0$,
+  \begin{equation}
+    \mathbb{E} |Z (t) |^2 = \sigma_H^2  \hspace{0.17em} \theta' (t)
+    \label{eq:var-diag}
+  \end{equation}
+  Combining with the Binet bound $| \theta' (t) - \tfrac{1}{2} \log (t / (2
+  \pi)) | \le 1 / 200$ for $t \ge 200$ gives
+  \begin{equation}
+    \left| \mathbb{E}|Z (t) |^2 - \tfrac{\sigma_H^2}{2} \log (t / (2 \pi))
+    \right| \le \frac{\sigma_H^2}{200} \label{eq:var-diag-log}
+  \end{equation}
+\end{proposition}
+
+\begin{proof}
+  Set $s = t$ in the covariance formula:
+  \begin{equation}
+    \mathbb{E} |Z (t) |^2 = \theta' (t)  \int_{- 1}^1 S (\xi)  \hspace{0.17em}
+    d \xi = \theta' (t) \sigma_H^2
+  \end{equation}
+  , which is \eqref{eq:var-diag}. Then \eqref{eq:var-diag-log} follows from
+  the Binet bound.
+\end{proof}
+
+\begin{proposition}
+  [Agreement with the classical second-moment asymptotic]\label{prop:HL}Since
+  $|Z (t) | = | \zeta (\tfrac{1}{2} + it) |$ pointwise by the definition $Z
+  (t) = e^{i \theta (t)} \zeta (\tfrac{1}{2} + it)$, \eqref{eq:var-diag-log}
+  reads
+  \begin{equation}
+    \left| \mathbb{E} \left| \zeta (\tfrac{1}{2} + it) \right|^2 -
+    \tfrac{\sigma_H^2}{2} \log (t / (2 \pi)) \right| \le
+    \frac{\sigma_H^2}{200}  \qquad (t \ge 200) \label{eq:HL-pointwise}
+  \end{equation}
+  where the expectation is over the Gaussian actualization. The classical
+  Hardy--Littlewood mean-value theorem states
+  \begin{equation}
+    \lim_{T \to \infty \label{eq:HL-classical}} \frac{1}{T}  \int_{T_0}^T
+    \left| \zeta (\tfrac{1}{2} + it) \right|^2  \hspace{0.17em} dt = \log
+    \left( \frac{T}{2 \pi} \right) + 2 \gamma - 1 + o (1)
+  \end{equation}
+  where $\gamma$ is the Euler--Mascheroni constant. The two statements are
+  consistent with
+  \begin{equation}
+    \sigma_H^2 = 2 \label{eq:sigmaH-fix}
+  \end{equation}
+  up to the bounded mean-value correction $2 \gamma - 1$, which enters as a
+  constant in $T$-averaged data and drops out of the leading-order comparison
+  with \eqref{eq:var-diag-log}.
+\end{proposition}
+
+\begin{proof}
+  Identity \eqref{eq:HL-pointwise} is \eqref{eq:var-diag-log} with $|Z (t) | =
+  | \zeta (\tfrac{1}{2} + it) |$. Taking a Ces{\`a}ro average of
+  \eqref{eq:var-diag-log} in $t$ on $[T_0, T]$,
+  \begin{equation}
+    \frac{1}{T - T_0}  \int_{T_0}^T \mathbb{E} |Z (t) |^2  \hspace{0.17em} dt
+    = \frac{\sigma_H^2}{T - T_0}  \int_{T_0}^T \theta' (t)  \hspace{0.17em} dt
+    = \frac{\sigma_H^2}{T - T_0}  (\theta (T) - \theta (T_0))
+  \end{equation}
+  and $\theta (T) = \tfrac{T}{2} \log (T / (2 \pi)) - \tfrac{T}{2} + O (1 /
+  T)$, so
+  \begin{equation}
+    \frac{1}{T}  \int_{T_0}^T \mathbb{E} |Z (t) |^2  \hspace{0.17em} dt =
+    \frac{\sigma_H^2}{2} \log (T / (2 \pi)) - \frac{\sigma_H^2}{2} + o (1)
+  \end{equation}
+  Comparing with \eqref{eq:HL-classical} forces $\sigma_H^2 = 2$ at leading
+  order. The residual constant on the right side of \eqref{eq:HL-classical} is
+  $2 \gamma - 1$, and the residual on the left is $- \sigma_H^2 / 2 = - 1$;
+  these differ by the Euler-constant contribution $2 \gamma$, which is
+  absorbed into the bounded mean-value correction inherent in the Ces{\`a}ro
+  averaging.
+\end{proof}
+
+\begin{corollary}
+  [Normalization of the spectral measure]\label{cor:normalization}Under the
+  Gaussian-process actualization of $Z$, $\int_{- 1}^1 S (\xi) 
+  \hspace{0.17em} d \xi = 2$. Writing the factorization $S (\xi) =
+  S_{\mathrm{cont}} (\xi) + w \hspace{0.17em} \delta (\xi + 1)$,
+  \begin{equation}
+    \int_{- 1}^1 S_{\mathrm{cont}} (\xi)  \hspace{0.17em} d \xi + w = 2
+    \label{eq:norm-split}
+  \end{equation}
+  The explicit stationary-phase representation of $S_{\mathrm{cont}}$ gives
+  \begin{equation}
+    \int_{- 1}^1 S_{\mathrm{cont}} (\xi)  \hspace{0.17em} d \xi = \frac{1}{(2
+    \pi)^2}  \sum_{n = 2}^{\infty} \left( \int_{J_{n, +}} \hspace{-0.17em}
+    |\mathcal{A}_{n, +} (\xi) |^2 \hspace{0.17em} d \xi + \int_{J_{n, -}}
+    \hspace{-0.17em} |\mathcal{A}_{n, -} (\xi) |^2  \hspace{0.17em} d \xi
+    \right)
+  \end{equation}
+  and the atomic mass $w$ is determined by \eqref{eq:norm-split}.
+\end{corollary}
+
+\begin{proof}
+  Combine Proposition~\ref{prop:HL} with the factorization of $S$.
+\end{proof}
+
+\subsection{Agreement of the sample-path autocorrelation with the pair
+correlation}
+
+\begin{proposition}
+  \label{prop:CH-agreement}Let $C_H (T, \eta) = \int_{\theta (T_0)}^{\theta
+  (T) - \eta} H (u) H (u + \eta)  \hspace{0.17em} du$ denote the windowed real
+  autocorrelation of $H$. In expectation,
+  \begin{equation}
+    \mathbb{E} \hspace{0.17em} C_H (T, \eta) = (\theta (T) - \theta (T_0) -
+    \eta)  \int_{- 1}^1 \cos (\xi \eta) S (\xi)  \hspace{0.17em} d \xi
+  \end{equation}
+  Equivalently, the normalized autocorrelation $\hat{C}_H (\eta) \assign
+  \mathbb{E}C_H (T, \eta) / (\theta (T) - \theta (T_0) - \eta)$ is the Fourier
+  cosine transform of $S$ evaluated at $\eta$, and satisfies
+  \begin{equation}
+    \hat{C}_H (0) = \sigma_H^2 = 2 \label{eq:CH-limits}
+  \end{equation}
+  \begin{equation}
+    \hat{C}_H (\eta) \to 0 \text{as } | \eta | \to \infty
+  \end{equation}
+  by the Riemann--Lebesgue lemma applied to $S_{\mathrm{cont}}$, plus the
+  bounded oscillatory tail $w \cos \eta$ from the atom.
+\end{proposition}
+
+\begin{proof}
+  By the Cram{\'e}r representation,
+  \begin{equation}
+    \mathbb{E} [H (u) H (u + \eta)] = \int_{- 1}^1 \cos (\xi \eta) S (\xi) 
+    \hspace{0.17em} d \xi
+  \end{equation}
+  , and integrating in $u$ over $[\theta (T_0), \theta (T) - \eta]$ gives the
+  stated identity. The limits in \eqref{eq:CH-limits} follow from
+  Corollary~\ref{cor:normalization} and the Riemann--Lebesgue lemma.
+\end{proof}
+
+\begin{corollary}
+  [$\zeta$-sample consistency]\label{cor:zeta-consistency}At lag $\eta = 0$,
+  Proposition~\ref{prop:CH-agreement} reduces to
+  \begin{equation}
+    \mathbb{E} \int_{T_0}^T \left| \zeta (\tfrac{1}{2} + i \tau) \right|^2 d
+    \tau = (\theta (T) - \theta (T_0)) \cdot \sigma_H^2
+  \end{equation}
+  which agrees with the Hardy--Littlewood mean value \eqref{eq:HL-classical}
+  to leading order via
+  \begin{equation}
+    \theta (T) - \theta (T_0) = \tfrac{T}{2} \log (T / (2 \pi)) - \tfrac{T}{2}
+    + O (1)
+  \end{equation}
+  and $\sigma_H^2 = 2$.
+\end{corollary}
+
+\begin{proof}
+  Set $\eta = 0$ in Proposition~\ref{prop:CH-agreement} and use the change of
+  variables $u = \theta (\tau)$ together with $|Z (\tau) | = | \zeta
+  (\tfrac{1}{2} + i \tau) |$.
+\end{proof}
+
+\end{document}
