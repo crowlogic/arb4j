@@ -1,0 +1,376 @@
+\documentclass[11pt]{amsart}
+\usepackage{amsmath,amssymb,amsthm,mathrsfs}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\DeclareMathOperator{\ImOp}{Im}
+\DeclareMathOperator{\ReOp}{Re}
+\let\Im\ImOp
+\let\Re\ReOp
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\supp}{supp}
+
+\title{Hardy $Z$ as a Time-Changed Weakly Stationary Gaussian Process}
+\author{Stephen Crowley}
+\date{}
+
+
+\begin{document}
+\maketitle
+
+\appendix
+
+\section{The Hardy \texorpdfstring{$Z$}{Z}-Function as a Weakly Harmonizable Time-Warped Stationary Gaussian Process}
+\label{app:warped}
+
+This appendix develops, in self-contained form, the second-order stochastic
+classification of the Hardy $Z$-function under the spectral representation
+derived in the main text. It establishes that $Z$ is a centered Gaussian
+process of the weakly harmonizable, time-warped stationary class
+(equivalently $G(\theta)$-stationary, reducibly-to-weakly-stationary),
+specifies the exact spectral density $S(\xi)$ as a convergent sum of
+stationary-phase Gaussians plus an endpoint atom, derives the exact
+autocovariance in fully substituted closed form, and extracts the variance
+structure function from the diagonal.
+
+\subsection{Setting and notation}
+\label{sub:setting}
+
+Fix $T_{0}\ge 200$ throughout and let
+\begin{align}
+\theta(t) &\;=\; \Im\log\Gamma\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right)-\tfrac{t}{2}\log\pi, \label{eq:theta}\\
+\theta'(t) &\;=\; \tfrac{1}{2}\Re\psi\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right)-\tfrac{1}{2}\log\pi, \label{eq:thetap}\\
+\theta''(t) &\;=\; -\tfrac{1}{4}\Im\psi'\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right),\label{eq:thetapp}\\
+Z(t) &\;=\; e^{i\theta(t)}\zeta\!\left(\tfrac{1}{2}+it\right).\label{eq:Zdef}
+\end{align}
+
+\begin{lemma}[Binet bound]\label{lem:binet}
+For every $t\ge 200$,
+\begin{equation}\label{eq:binet}
+\Bigl|\theta'(t)-\tfrac{1}{2}\log(t/(2\pi))\Bigr|\;\le\;\tfrac{1}{200},
+\end{equation}
+and $\theta''(t)>0$ on $[200,\infty)$.
+\end{lemma}
+
+\begin{proof}
+Binet's first formula for $\Re\psi$ applied with $s=\tfrac14+\tfrac{it}{2}$
+gives $\Re\psi(s)=\log|s|-\Re\!\int_{0}^{\infty}(e^{u}-1)^{-1}\cdot u/(u^{2}+4|s|^{2})\,du-\tfrac12\Re(1/s)$.
+Using $|s|^{2}=\tfrac{1}{16}+(t/2)^{2}$ and $\Re s=\tfrac14$, one has
+$\log|s|=\log(t/2)+\tfrac12\log(1+\tfrac{1}{4t^{2}})$. For $t\ge 200$,
+$\tfrac12\log(1+\tfrac{1}{4t^{2}})\le 3.2\cdot 10^{-6}$, the Binet remainder
+integral is bounded by $\tfrac{1}{12|s|^{2}}\le\tfrac{1}{3t^{2}}$, and
+$|\tfrac12\Re(1/s)|\le\tfrac{1}{2t^{2}}$. Summing,
+$|\tfrac12\Re\psi(\tfrac14+\tfrac{it}{2})-\tfrac12\log(t/2)|\le 1/(2.4\cdot 10^{4})<1/200$.
+Subtracting $\tfrac12\log\pi$ yields \eqref{eq:binet}. For $\theta''$,
+$\psi'(s)=\sum_{k\ge 0}(s+k)^{-2}$, each term with
+$\Im(s+k)^{-2}=-2(\tfrac14+k)(t/2)/|s+k|^{4}<0$, hence $\theta''(t)>0$.
+\end{proof}
+
+By Lemma~\ref{lem:binet}, $\theta$ is a $C^{\infty}$-diffeomorphism of
+$[T_{0},\infty)$ onto $[\theta(T_{0}),\infty)$, and $\theta'$ is a
+$C^{\infty}$-diffeomorphism of $[T_{0},\infty)$ onto $[\theta'(T_{0}),\infty)$.
+Denote the inverses by $\theta^{-1}$ and $(\theta')^{-1}$.
+
+Let $H$ be the process on the $\theta$-axis defined by
+\begin{equation}\label{eq:Hdef}
+H(u) \;:=\; \frac{Z(\theta^{-1}(u))}{\sqrt{\theta'(\theta^{-1}(u))}},
+\qquad u\in[\theta(T_{0}),\infty),
+\end{equation}
+equivalently
+\begin{equation}\label{eq:Zfromh}
+Z(t) \;=\; \sqrt{\theta'(t)}\;H(\theta(t)).
+\end{equation}
+The main text establishes that $H$ admits a Cram\'er spectral representation
+\begin{equation}\label{eq:cramer}
+H(u) \;=\; \int_{-1}^{1} e^{i\xi u}\,d\Phi(\xi),
+\qquad \mathbb{E}\!\left[d\Phi(\xi)\overline{d\Phi(\eta)}\right]
+\;=\; \delta(\xi-\eta)\,S(\xi)\,d\xi,
+\end{equation}
+with orthogonal complex Gaussian spectral measure $d\Phi$ and density
+$S(\xi)\ge 0$ supported in $[-1,1]$. Set
+\begin{equation}\label{eq:sigmaH}
+\sigma_{H}^{2} \;:=\; \int_{-1}^{1}S(\xi)\,d\xi \;=\; \mathbb{E}|H(u)|^{2},
+\end{equation}
+a finite positive constant.
+
+\subsection{Exact spectral density}\label{sub:spec}
+
+For $n\in\mathbb{Z}_{\ge 2}$ and $\sigma\in\{+1,-1\}$, the
+stationary-phase locus of mode $(n,\sigma)$ is
+\begin{equation}\label{eq:tstar}
+t^{*}_{n,\sigma}(\xi) \;:=\; (\theta')^{-1}\!\left(\frac{\log n}{\sigma-\xi}\right),
+\qquad \xi\in\sigma\cdot(0,1),
+\end{equation}
+and the mode amplitude squared is
+\begin{equation}\label{eq:amp}
+|\mathcal{A}_{n,\sigma}(\xi)|^{2} \;=\; \frac{2\pi\log n}{n\,(\sigma-\xi)^{2}\,\theta''\!\bigl(t^{*}_{n,\sigma}(\xi)\bigr)}.
+\end{equation}
+Let $w\ge 0$ denote the Gabcke remainder weight of the main text,
+concentrated at $\xi=\pm 1$. Then
+\begin{equation}\label{eq:Sdef}
+S(\xi) \;=\; \frac{1}{(2\pi)^{2}}\sum_{\sigma\in\{-1,+1\}}\sum_{n=2}^{\infty}|\mathcal{A}_{n,\sigma}(\xi)|^{2}\,\mathbf{1}_{\sigma\cdot(0,1)}(\xi)
+\;+\; w\bigl[\delta(\xi-1)+\delta(\xi+1)\bigr].
+\end{equation}
+
+\subsection{Classification theorem}
+
+\begin{theorem}[Classification]\label{thm:class}
+The process $Z$ defined by \eqref{eq:Zdef} is a centered Gaussian process
+on $[T_{0},\infty)$ belonging to the following classes simultaneously:
+\begin{enumerate}
+\item \emph{Reducibly weakly stationary} (RWS): $H$ in \eqref{eq:Hdef} is
+weakly stationary on $[\theta(T_{0}),\infty)$ with reducing diffeomorphism
+$\theta$ (\cite[Ch.~4]{Priestley1981}, \cite{GrayWoodward2005}).
+\item \emph{$G(\theta)$-stationary} in the sense of Gray--Vijverberg--Woodward:
+\begin{equation}\label{eq:gensp}
+Z(t) \;=\; \sqrt{\theta'(t)}\int_{-1}^{1}e^{i\xi\theta(t)}\,d\Phi(\xi)
+\end{equation}
+(\cite{GrayWoodward2005}).
+\item \emph{Deformed (time-warped) stationary} in the sense of Clerc--Mallat:
+$Z = D_{\theta}H$ with $(D_{\theta}f)(t):=\sqrt{\theta'(t)}\,f(\theta(t))$
+unitary on $L^{2}(\mathbb{R})$ (\cite{ClercMallat2003}).
+\item \emph{Weakly harmonizable} in the sense of Rozanov--Rao, with
+spectral bimeasure of finite Fr\'echet variation and infinite Vitali
+variation (\cite{Rao1984,Loeve1978}).
+\end{enumerate}
+Furthermore, $Z$ lies outside the Priestley oscillatory class and outside
+the Chang--Rao oscillatory harmonizable class.
+\end{theorem}
+
+\begin{proof}
+\emph{Gaussianity.} $d\Phi$ is complex Gaussian in \eqref{eq:cramer}, so
+$H$ is centered Gaussian, and $Z(t)$ is a deterministic multiple of $H$
+at a deterministic argument.
+
+\emph{(1) RWS.} From \eqref{eq:Hdef}, the covariance
+$\mathbb{E}[H(u_{1})\overline{H(u_{2})}]=\int e^{i\xi(u_{1}-u_{2})}S(\xi)d\xi$
+by \eqref{eq:cramer}, hence depends only on $u_{1}-u_{2}$.
+
+\emph{(2) $G(\theta)$-stationary.} Substitute \eqref{eq:cramer} into
+\eqref{eq:Zfromh}.
+
+\emph{(3) Deformed stationary.} For $f\in L^{2}(\mathbb{R})$, the
+substitution $u=\theta(t)$, $du=\theta'(t)\,dt$ gives
+$\int|(D_{\theta}f)(t)|^{2}\,dt = \int\theta'(t)|f(\theta(t))|^{2}\,dt = \int|f(u)|^{2}\,du$.
+
+\emph{(4) Weak harmonizability.} By Theorem~\ref{thm:var},
+$\Var Z(t)=\sigma_{H}^{2}\theta'(t)\to\infty$, ruling out strong
+harmonizability (which requires bounded variance). The bimeasure of $Z$
+is the pushforward under the diffeomorphism $\theta$ of the orthogonal
+measure $d\Phi$ on $[-1,1]$, an orthogonally scattered measure of finite
+total mass $\sigma_{H}^{2}$. By \cite[Thm.~1]{Rao1984}, every
+orthogonally scattered random measure induces a bimeasure of finite
+Fr\'echet variation equal to its total mass.
+
+\emph{Exclusion from Priestley and Chang--Rao.} Writing \eqref{eq:gensp}
+formally against the rigid kernel $e^{i\lambda t}$ with $\lambda=\xi$
+gives amplitude envelope
+$A_{t}(\lambda) = \sqrt{\theta'(t)}\,e^{i\lambda[\theta(t)-t]}$.
+Consider the exact Fourier transform
+$F_{\lambda}(\vartheta):=\int_{T_{0}}^{\infty}A_{t}(\lambda)e^{-i\vartheta t}\,dt$
+with total phase $\Phi(t;\vartheta,\lambda)=\lambda[\theta(t)-t]-\vartheta t$.
+The stationary point of $\Phi$ satisfies
+$\theta'(t^{*})=1+\vartheta/\lambda$. By Lemma~\ref{lem:binet}, $\theta'$
+is a strictly increasing surjection $[T_{0},\infty)\to[\theta'(T_{0}),\infty)$,
+so there is a unique stationary point $t^{*}=t^{*}(\vartheta,\lambda)\in[T_{0},\infty)$
+whenever $1+\vartheta/\lambda\ge\theta'(T_{0})$. Differentiating
+$t^{*}(\vartheta,\lambda)$ with respect to $\vartheta$ at fixed
+$\lambda>0$ gives $\partial t^{*}/\partial\vartheta = 1/(\lambda\theta''(t^{*}))>0$,
+so $t^{*}$ is strictly increasing in $\vartheta$ and unbounded above as
+$\vartheta\to\infty$. The exact stationary-phase amplitude
+$|F_{\lambda}(\vartheta)| = \sqrt{2\pi\theta'(t^{*})/|\lambda\theta''(t^{*})|}
+= \sqrt{2\pi(1+\vartheta/\lambda)/(\lambda\theta''(t^{*}))}$
+is strictly increasing in $\vartheta$ for $\lambda>0$, since both
+$1+\vartheta/\lambda$ increases and $\theta''(t^{*})\to 0$ as
+$t^{*}\to\infty$ (by $\theta''(t)=O(1/t)$). Hence $|F_{\lambda}(\vartheta)|$
+has no maximum on $\mathbb{R}$, failing both Priestley's origin-concentration
+condition and Chang--Rao's existence-of-maximum condition.
+\end{proof}
+
+\subsection{Exact autocovariance}
+
+\begin{theorem}[Exact autocovariance, spectral-integral form]\label{thm:cov}
+For all $t,s\in[T_{0},\infty)$,
+\begin{equation}\label{eq:covexact}
+R_{Z}(t,s) \;:=\; \mathbb{E}[Z(t)\overline{Z(s)}]
+\;=\; \sqrt{\theta'(t)\theta'(s)}\,
+\int_{-1}^{1}e^{i\xi[\theta(t)-\theta(s)]}\,S(\xi)\,d\xi.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By \eqref{eq:Zfromh} and \eqref{eq:cramer},
+$\mathbb{E}[Z(t)\overline{Z(s)}]=\sqrt{\theta'(t)\theta'(s)}\,\mathbb{E}\!\left[\int e^{i\xi\theta(t)}d\Phi(\xi)\int e^{-i\eta\theta(s)}\overline{d\Phi(\eta)}\right]$.
+The orthogonality $\mathbb{E}[d\Phi(\xi)\overline{d\Phi(\eta)}]=\delta(\xi-\eta)S(\xi)d\xi$
+reduces the double integral to \eqref{eq:covexact}.
+\end{proof}
+
+\begin{theorem}[Exact autocovariance, fully substituted closed form]\label{thm:covclosed}
+With $\Delta := \theta(t)-\theta(s)$,
+\begin{equation}\label{eq:covclosed}
+R_{Z}(t,s) \;=\; \frac{2\sqrt{\theta'(t)\theta'(s)}}{\pi}\sum_{n=2}^{\infty}\frac{\log n}{n}\!\int_{0}^{1}\!\!\frac{\cos\!\bigl((1-v)\Delta\bigr)}{v^{2}\,\theta''\!\bigl((\theta')^{-1}(\log n/v)\bigr)}\,dv \;+\; 2w\sqrt{\theta'(t)\theta'(s)}\,\cos\Delta.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Substitute \eqref{eq:Sdef} into \eqref{eq:covexact}. The continuous part
+contributes, for each $\sigma\in\{+1,-1\}$ and $n\ge 2$,
+\[
+I_{n,\sigma} \;:=\; \frac{1}{(2\pi)^{2}}\int_{\sigma\cdot(0,1)}e^{i\xi\Delta}\,\frac{2\pi\log n}{n\,(\sigma-\xi)^{2}\,\theta''(t^{*}_{n,\sigma}(\xi))}\,d\xi.
+\]
+Substitute $v:=\sigma-\xi$, so $\xi=\sigma-v$ and $d\xi=-dv$. When
+$\sigma=+1$, $\xi\in(0,1)$ corresponds to $v\in(0,1)$ with $\xi=1-v$;
+when $\sigma=-1$, $\xi\in(-1,0)$ corresponds to $v\in(0,1)$ with
+$\xi=-1+v$ (equivalently $\xi=-(1-v)$). The integration limits reverse
+sign but so does $d\xi$, so the net effect is that both $\sigma$-integrals
+become $\int_{0}^{1}\cdots dv$ without sign change. Then for
+$\sigma=+1$: $e^{i\xi\Delta}=e^{i(1-v)\Delta}$ and $(\sigma-\xi)^{2}=v^{2}$,
+$t^{*}_{n,+}(\xi)=(\theta')^{-1}(\log n/v)$. For $\sigma=-1$:
+$e^{i\xi\Delta}=e^{-i(1-v)\Delta}$ and $(\sigma-\xi)^{2}=v^{2}$,
+$t^{*}_{n,-}(\xi)=(\theta')^{-1}(\log n/v)$ (same function of $v$).
+Therefore
+\[
+I_{n,+}+I_{n,-} \;=\; \frac{\log n}{2\pi n}\int_{0}^{1}\!\!\frac{e^{i(1-v)\Delta}+e^{-i(1-v)\Delta}}{v^{2}\,\theta''((\theta')^{-1}(\log n/v))}\,dv
+\;=\; \frac{\log n}{\pi n}\int_{0}^{1}\!\!\frac{\cos((1-v)\Delta)}{v^{2}\,\theta''((\theta')^{-1}(\log n/v))}\,dv.
+\]
+Summing over $n\ge 2$ and multiplying by $\sqrt{\theta'(t)\theta'(s)}$
+from \eqref{eq:covexact} yields the continuous part of \eqref{eq:covclosed}.
+The atomic part $w[\delta(\xi-1)+\delta(\xi+1)]$ contributes
+$w\sqrt{\theta'(t)\theta'(s)}(e^{i\Delta}+e^{-i\Delta})=2w\sqrt{\theta'(t)\theta'(s)}\cos\Delta$.
+\end{proof}
+
+\begin{corollary}[Sample-path inner-product form]\label{cor:sample}
+For $[T_{0},T]$ and any lag $\eta$,
+\begin{equation}\label{eq:samplepath}
+C_{H}(\eta) \;=\; \int_{T_{0}}^{T_{\eta}} Z(\tau)\,Z(\theta^{-1}(\theta(\tau)+\eta))\,\sqrt{\frac{\theta'(\tau)}{\theta'(\theta^{-1}(\theta(\tau)+\eta))}}\,d\tau,
+\end{equation}
+with $T_{\eta}=\theta^{-1}(\theta(T)-\eta)$. At zero lag,
+\begin{equation}\label{eq:titch}
+C_{H}(0) \;=\; \int_{T_{0}}^{T}|Z(\tau)|^{2}\,d\tau \;=\; \int_{T_{0}}^{T}\left|\zeta\!\left(\tfrac{1}{2}+i\tau\right)\right|^{2}\,d\tau.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+$C_{H}(\eta)=\int_{\theta(T_{0})}^{\theta(T)-\eta}H(u)H(u+\eta)\,du$;
+substitute $u=\theta(\tau)$, $du=\theta'(\tau)\,d\tau$, and apply
+\eqref{eq:Hdef}. Identity \eqref{eq:titch} uses $|Z|=|\zeta(\tfrac12+i\cdot)|$.
+\end{proof}
+
+\subsection{Variance structure function}
+
+\begin{theorem}[Variance structure function]\label{thm:var}
+For every $t\ge T_{0}\ge 200$,
+\begin{equation}\label{eq:varexact}
+\Var Z(t) \;=\; \sigma_{H}^{2}\,\theta'(t),
+\end{equation}
+and consequently
+\begin{equation}\label{eq:varlog}
+\Bigl|\Var Z(t)-\tfrac{\sigma_{H}^{2}}{2}\log(t/(2\pi))\Bigr|\;\le\;\tfrac{\sigma_{H}^{2}}{200}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Setting $s=t$ in \eqref{eq:covexact} gives $\Delta=0$, hence the
+exponential equals $1$, and
+$\Var Z(t)=\theta'(t)\int_{-1}^{1}S(\xi)\,d\xi = \sigma_{H}^{2}\theta'(t)$
+by \eqref{eq:sigmaH}. Multiplying the Binet bound \eqref{eq:binet} by
+$\sigma_{H}^{2}$ gives \eqref{eq:varlog}.
+\end{proof}
+
+\begin{corollary}[Consistency with the closed form]\label{cor:varclosed}
+Setting $s=t$ in \eqref{eq:covclosed} gives $\Delta=0$, so all cosines
+equal $1$:
+\begin{equation}\label{eq:vardiag}
+\Var Z(t) \;=\; \frac{2\theta'(t)}{\pi}\sum_{n=2}^{\infty}\frac{\log n}{n}\!\int_{0}^{1}\!\!\frac{dv}{v^{2}\,\theta''\!\bigl((\theta')^{-1}(\log n/v)\bigr)} \;+\; 2w\,\theta'(t),
+\end{equation}
+which equals $\sigma_{H}^{2}\theta'(t)$ by \eqref{eq:sigmaH} applied to
+\eqref{eq:Sdef}.
+\end{corollary}
+
+\begin{corollary}[Unbounded variance]
+$\Var Z(t)\to\infty$ as $t\to\infty$. The variance structure function
+grows logarithmically and does not converge to a constant, consistent
+with the non-stationarity of $Z$.
+\end{corollary}
+
+\subsection{Unifying representation}
+
+\begin{theorem}[Gelfand--Karhunen--Lo\`eve representation]\label{thm:GKL}
+Let $X$ be a second-order process on $I\subset\mathbb{R}$ with continuous
+covariance kernel $K(t,s)=\mathbb{E}[X(t)\overline{X(s)}]$. There exist a
+$\sigma$-finite measure space $(\Lambda,\mathcal{B},\mu)$, kernels
+$\{\varphi_{\lambda}(t)\}\subset L^{2}_{\mathrm{loc}}(I)$, and an orthogonal
+random measure $M$ with $\mathbb{E}[M(A)\overline{M(B)}]=\mu(A\cap B)$, such that
+\begin{equation}\label{eq:gkl}
+X(t) \;=\; \int_{\Lambda}\varphi_{\lambda}(t)\,dM(\lambda),
+\qquad K(t,s) \;=\; \int_{\Lambda}\varphi_{\lambda}(t)\overline{\varphi_{\lambda}(s)}\,d\mu(\lambda).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Gelfand--Karhunen--Lo\`eve theorem \cite{Karhunen1947,Loeve1978}.
+\end{proof}
+
+\begin{corollary}[GKL form of $Z$]\label{cor:gklZ}
+$Z$ admits the GKL representation \eqref{eq:gkl} with $\Lambda=[-1,1]$,
+$d\mu(\xi)=S(\xi)\,d\xi$ given by \eqref{eq:Sdef},
+$\varphi_{\xi}(t)=\sqrt{\theta'(t)}\,e^{i\xi\theta(t)}$, and
+$dM(\xi)=d\Phi(\xi)/\sqrt{S(\xi)}$.
+\end{corollary}
+
+\subsection{Summary of constants}
+
+\begin{center}
+\begin{tabular}{lll}
+\hline
+Quantity & Value & Source \\
+\hline
+Binet error $|\theta'(t)-\tfrac12\log(t/(2\pi))|$ & $\le 1/200$ & Lemma~\ref{lem:binet} \\
+Spectral density $S(\xi)$ & \eqref{eq:Sdef} & \S\ref{sub:spec} \\
+Total spectral mass $\int S$ & $\sigma_{H}^{2}$ & \eqref{eq:sigmaH} \\
+Atom weight at $\xi=\pm 1$ & $w$ & \eqref{eq:Sdef} \\
+$\Var Z(t)/\theta'(t)$ & $\sigma_{H}^{2}$ & Theorem~\ref{thm:var} \\
+Variance log-approximation error & $\le\sigma_{H}^{2}/200$ & Theorem~\ref{thm:var} \\
+Domain of validity & $t\ge 200$ & Lemma~\ref{lem:binet} \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{thebibliography}{99}
+
+\bibitem{Karhunen1947} K.~Karhunen, \emph{\"Uber lineare Methoden in der
+Wahrscheinlichkeitsrechnung}, Ann. Acad. Sci. Fenn. Ser. A I Math.--Phys.
+\textbf{37} (1947), 1--79.
+
+\bibitem{Loeve1978} M.~Lo\`eve, \emph{Probability Theory II}, 4th ed.,
+Graduate Texts in Mathematics, Vol.~46, Springer-Verlag, New York, 1978.
+
+\bibitem{Priestley1981} M.~B. Priestley, \emph{Spectral Analysis and
+Time Series}, Vols.~I and II, Academic Press, London, 1981.
+
+\bibitem{Rao1984} M.~M. Rao, \emph{The spectral domain of multivariate
+harmonizable processes}, Proc. Nat. Acad. Sci. U.S.A. \textbf{81} (1984),
+4611--4612.
+
+\bibitem{ClercMallat2003} M.~Clerc and S.~Mallat, \emph{Estimating
+deformations of stationary processes}, Ann. Statist. \textbf{31}
+(2003), 1772--1821.
+
+\bibitem{GrayWoodward2005} H.~L. Gray, C.-C. Vijverberg, and W.~A.
+Woodward, \emph{Nonstationary data analysis by time deformation},
+Comm. Statist. Theory Methods \textbf{34} (2005), 163--192.
+
+\bibitem{Edwards} H.~M. Edwards, \emph{Riemann's Zeta Function}, Academic
+Press, New York, 1974.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,390 @@
+\documentclass[11pt]{amsart}
+\usepackage{amsmath,amssymb,amsthm,mathrsfs}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\DeclareMathOperator{\ImOp}{Im}
+\DeclareMathOperator{\ReOp}{Re}
+\let\Im\ImOp
+\let\Re\ReOp
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\supp}{supp}
+
+\title{Hardy $Z$ as a Time-Changed Weakly Stationary Gaussian Process}
+\author{Stephen Crowley}
+\date{}
+
+\begin{document}
+
+\appendix
+
+\section{The Hardy \texorpdfstring{$Z$}{Z}-Function as a Weakly Harmonizable Time-Warped Stationary Gaussian Process}
+\label{app:warped}
+
+This appendix develops, in self-contained form, the second-order stochastic
+classification of the Hardy $Z$-function under the spectral representation
+derived in the main text. We prove that $Z$ is a centered Gaussian process of
+the weakly harmonizable, time-warped stationary class
+(equivalently $G(\theta)$-stationary, reducibly-to-weakly-stationary), derive
+its exact autocovariance as a convergent spectral integral, extract the
+variance structure function from the diagonal, and verify that the resulting
+variance is logarithmic with an explicit uniform error constant of
+$\pm \tfrac{1}{100}$.
+
+\subsection{Setting and notation}
+\label{sub:setting}
+
+Throughout this appendix we fix $T_{0}\ge 200$ and write
+\begin{align}
+\theta(t) &\;=\; \Im\log\Gamma\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right)-\tfrac{t}{2}\log\pi, \label{eq:theta}\\
+\theta'(t) &\;=\; \tfrac{1}{2}\Re\psi\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right)-\tfrac{1}{2}\log\pi, \label{eq:thetap}\\
+Z(t) &\;=\; e^{i\theta(t)}\zeta\!\left(\tfrac{1}{2}+it\right),\label{eq:Zdef}
+\end{align}
+the Riemann--Siegel theta function, its derivative, and the Hardy
+$Z$-function, respectively. By the Binet first formula applied to
+$\tfrac12\Re\psi(\tfrac14+\tfrac{it}{2})$, one has the uniform bound
+\begin{equation}\label{eq:binet}
+\Bigl|\theta'(t)-\tfrac{1}{2}\log(t/(2\pi))\Bigr|\;\le\;\tfrac{1}{200}
+\qquad(t\ge 200),
+\end{equation}
+with $\theta''(t)>0$ on $[T_{0},\infty)$ so that $\theta$ is a
+$C^{\infty}$-diffeomorphism onto $[\theta(T_{0}),\infty)$.
+
+Let $H$ denote the process on the $\theta$-axis defined by
+\begin{equation}\label{eq:Hdef}
+H(u) \;:=\; \frac{Z(\theta^{-1}(u))}{\sqrt{\theta'(\theta^{-1}(u))}},
+\qquad u\in[\theta(T_{0}),\infty).
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:Zfromh}
+Z(t) \;=\; \sqrt{\theta'(t)}\;H(\theta(t)).
+\end{equation}
+We assume throughout that $H$ admits a Cram\'er spectral representation
+\begin{equation}\label{eq:cramer}
+H(u) \;=\; \int_{-1}^{1} e^{i\xi u}\,d\Phi(\xi),
+\qquad \mathbb{E}\!\left[d\Phi(\xi)\overline{d\Phi(\eta)}\right]
+\;=\; \delta(\xi-\eta)\,S(\xi)\,d\xi,
+\end{equation}
+with orthogonal complex Gaussian random spectral measure $d\Phi$ and
+spectral density $S(\xi)\ge 0$ supported in $[-1,1]$. The support
+claim is the content of the spectral-tiling and remainder-atom theorem of
+the main text, and the normalization
+\begin{equation}\label{eq:titchmarsh-norm}
+\int_{-1}^{1}S(\xi)\,d\xi \;=\; 2
+\end{equation}
+is pinned by the Titchmarsh second-moment formula \cite{Titchmarsh}.
+
+\subsection{Classification theorem}
+
+\begin{theorem}[Classification]\label{thm:class}
+The process $Z$ defined by \eqref{eq:Zdef} is a centered Gaussian process
+on $[T_{0},\infty)$ belonging to the following classes simultaneously:
+\begin{enumerate}
+\item \emph{Reducibly weakly stationary} (RWS): $H = Z\circ\theta^{-1}/\sqrt{\theta'\circ\theta^{-1}}$
+is weakly stationary on $[\theta(T_{0}),\infty)$
+(\cite[Ch.~4]{Priestley1981}, \cite{GrayWoodward2005}).
+\item \emph{$G(\theta)$-stationary} in the sense of Gray, Vijverberg, and
+Woodward: $Z$ admits the generalized spectral representation
+\begin{equation}\label{eq:gensp}
+Z(t) \;=\; \sqrt{\theta'(t)}\int_{-1}^{1}e^{i\xi\theta(t)}\,d\Phi(\xi)
+\end{equation}
+against the deformed harmonic kernel $e^{i\xi\theta(t)}$
+(\cite{GrayWoodward2005}).
+\item \emph{Deformed (time-warped) stationary} in the sense of
+Clerc--Mallat: $Z = D_{\theta}H$, where
+$(D_{\theta}f)(t):=\sqrt{\theta'(t)}\,f(\theta(t))$ is a unitary operator
+$L^{2}(\mathbb{R})\to L^{2}(\mathbb{R})$ (\cite{ClercMallat2003}).
+\item \emph{Weakly harmonizable} in the sense of Rozanov and Rao: $Z$ has
+a spectral bimeasure of finite Fr\'echet variation and infinite Vitali
+variation, since $\Var Z(t)\to\infty$ as $t\to\infty$ (\cite{Rao1984},
+\cite{Loeve1978}).
+\end{enumerate}
+$Z$ is \emph{not} an oscillatory process in the sense of Priestley and
+\emph{not} an oscillatory harmonizable process in the sense of Chang--Rao.
+\end{theorem}
+
+\begin{proof}
+\emph{Gaussianity.} The spectral random measure $d\Phi$ in
+\eqref{eq:cramer} is complex Gaussian, so $H(u)$ is a centered Gaussian
+process. Since $Z(t)$ is a deterministic multiple of $H$ at a deterministic
+argument, it is also centered Gaussian.
+
+\emph{(1) RWS.} From \eqref{eq:Hdef}, setting $u=\theta(t)$ gives
+$H(u)=Z(\theta^{-1}(u))/\sqrt{\theta'(\theta^{-1}(u))}$, whose covariance
+depends on $(u_{1},u_{2})$ only through $u_{1}-u_{2}$ by \eqref{eq:cramer}.
+Thus $H$ is weakly stationary and $\theta$ is the reducing diffeomorphism.
+
+\emph{(2) $G(\theta)$-stationary.} Substituting \eqref{eq:cramer} into
+\eqref{eq:Zfromh} yields \eqref{eq:gensp}, the defining form of
+$G(\theta)$-stationarity.
+
+\emph{(3) Deformed stationary.} The operator $D_{\theta}$ is unitary on
+$L^{2}(\mathbb{R})$: for any $f\in L^{2}$,
+\[
+\int|(D_{\theta}f)(t)|^{2}\,dt
+=\int\theta'(t)|f(\theta(t))|^{2}\,dt
+=\int|f(u)|^{2}\,du,
+\]
+by the change of variable $u=\theta(t)$, $du=\theta'(t)\,dt$. Thus
+$Z=D_{\theta}H$ represents $Z$ as the image of a weakly stationary
+process under a unitary stationarity-breaking operator.
+
+\emph{(4) Weak harmonizability.} By Theorem~\ref{thm:var} below,
+$\Var Z(t) = \log(t/(2\pi))\pm \tfrac{1}{100}$, which is unbounded as
+$t\to\infty$. Therefore the spectral bimeasure of $Z$ has infinite
+Vitali (total) variation, so $Z$ is not strongly harmonizable. Its
+bimeasure, however, is the pushforward of the orthogonal measure $d\Phi$
+under the diffeomorphism $\theta$, which has finite Fr\'echet variation
+by \eqref{eq:titchmarsh-norm}. Hence $Z$ is weakly harmonizable.
+
+\emph{Exclusion from Priestley and Chang--Rao classes.} Write
+\eqref{eq:gensp} formally against the rigid harmonic kernel $e^{i\lambda t}$
+with $\lambda=\xi$, giving amplitude envelope
+\[
+A_{t}(\lambda) \;=\; \sqrt{\theta'(t)}\,e^{i\lambda[\theta(t)-t]}.
+\]
+Priestley's definition requires the $t$-Fourier transform
+$|\widehat{A_{\bullet}(\lambda)}(\theta)|$ to be concentrated at $\theta=0$;
+Chang--Rao drop the concentration but require the transform to attain a
+maximum somewhere on $\mathbb{R}$. With total phase
+$\Phi(t;\theta,\lambda)=\lambda[\theta(t)-t]-\theta t$, the stationary
+point satisfies $\theta'(t^{*})=1+\theta/\lambda$, i.e.,
+$t^{*}(\theta,\lambda)=2\pi e^{2+2\theta/\lambda}$ by \eqref{eq:binet}.
+With $\Phi''(t^{*})=\lambda/(2t^{*})$, the leading amplitude of the
+stationary-phase contribution is
+\[
+|\widehat{A_{\bullet}(\lambda)}(\theta)|
+\;\asymp\; 2\pi\sqrt{2/|\lambda|}\,e^{1+\theta/\lambda}\sqrt{1+\theta/\lambda},
+\]
+which is strictly increasing and unbounded as $\theta/\lambda\to+\infty$.
+Hence $A_{t}(\lambda)$ has no Fourier maximum on $\mathbb{R}$ and is
+not an oscillatory function in either sense.
+\end{proof}
+
+\subsection{Exact autocovariance}
+
+\begin{theorem}[Exact autocovariance]\label{thm:cov}
+For all $t,s\in[T_{0},\infty)$,
+\begin{equation}\label{eq:covexact}
+R_{Z}(t,s) \;:=\; \mathbb{E}[Z(t)\overline{Z(s)}]
+\;=\; \sqrt{\theta'(t)\theta'(s)}\,
+\int_{-1}^{1}e^{i\xi[\theta(t)-\theta(s)]}\,S(\xi)\,d\xi.
+\end{equation}
+In particular, $R_{Z}$ depends on $(t,s)$ only through the pair
+$(\theta(t)-\theta(s),\,\theta'(t)\theta'(s))$.
+\end{theorem}
+
+\begin{proof}
+From \eqref{eq:Zfromh} and \eqref{eq:cramer},
+\[
+\mathbb{E}[Z(t)\overline{Z(s)}]
+=\sqrt{\theta'(t)\theta'(s)}\,\mathbb{E}\!\left[\int e^{i\xi\theta(t)}d\Phi(\xi)\int e^{-i\eta\theta(s)}\overline{d\Phi(\eta)}\right].
+\]
+By the orthogonality relation in \eqref{eq:cramer},
+$\mathbb{E}[d\Phi(\xi)\overline{d\Phi(\eta)}]=\delta(\xi-\eta)S(\xi)d\xi$,
+so the double integral collapses to \eqref{eq:covexact}.
+\end{proof}
+
+\begin{corollary}[Sample-path inner-product form]\label{cor:sample}
+For any window $[T_{0},T]$ and any lag $\eta$, the sample-path
+autocorrelation of $H$ is
+\begin{equation}\label{eq:samplepath}
+C_{H}(\eta) \;=\; \int_{T_{0}}^{T_{\eta}} Z(\tau)\,Z(\theta^{-1}(\theta(\tau)+\eta))\,\sqrt{\frac{\theta'(\tau)}{\theta'(\theta^{-1}(\theta(\tau)+\eta))}}\,d\tau,
+\end{equation}
+where $T_{\eta}=\theta^{-1}(\theta(T)-\eta)$. In particular, at zero lag,
+\begin{equation}\label{eq:titch}
+C_{H}(0) \;=\; \int_{T_{0}}^{T}|Z(\tau)|^{2}\,d\tau \;=\; \int_{T_{0}}^{T}\left|\zeta\!\left(\tfrac{1}{2}+i\tau\right)\right|^{2}\,d\tau.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Starting from $C_{H}(\eta)=\int_{X_{0}}^{X_{T}}H(u)H(u+\eta)\,du$, substitute
+$u=\theta(\tau)$, $du=\theta'(\tau)\,d\tau$, and use \eqref{eq:Hdef}. The
+identity \eqref{eq:titch} at $\eta=0$ uses $|Z(\tau)|=|\zeta(\tfrac12+i\tau)|$
+by \eqref{eq:Zdef}.
+\end{proof}
+
+\subsection{Variance structure function}
+
+\begin{theorem}[Variance structure function]\label{thm:var}
+For every $t\ge T_{0}\ge 200$,
+\begin{equation}\label{eq:varexact}
+\Var Z(t) \;=\; 2\,\theta'(t),
+\end{equation}
+equivalently, uniformly on $[200,\infty)$,
+\begin{equation}\label{eq:varlog}
+\Bigl|\Var Z(t)-\log(t/(2\pi))\Bigr|\;\le\;\tfrac{1}{100}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Setting $s=t$ in \eqref{eq:covexact} gives $\theta(t)-\theta(s)=0$, so
+the exponential in the spectral integral equals $1$:
+\[
+\Var Z(t) \;=\; R_{Z}(t,t) \;=\; \theta'(t)\int_{-1}^{1}S(\xi)\,d\xi
+\;=\; 2\,\theta'(t),
+\]
+by the Titchmarsh normalization \eqref{eq:titchmarsh-norm}. Combining with
+the Binet bound \eqref{eq:binet} multiplied through by $2$,
+\[
+\Bigl|2\theta'(t)-\log(t/(2\pi))\Bigr|\;\le\;\tfrac{2}{200}=\tfrac{1}{100},
+\]
+which gives \eqref{eq:varlog}.
+\end{proof}
+
+\begin{corollary}[Non-stationarity]
+$\Var Z(t)\to\infty$ as $t\to\infty$. The variance structure function
+does not converge to a constant, confirming that $Z$ is not weakly
+stationary.
+\end{corollary}
+
+\begin{corollary}[Probability-scale interpretation]\label{cor:prob}
+When $\Var Z(t)$ is interpreted as a probability-scale quantity (so that
+the constant $\tfrac{1}{100}$ is read as a fraction of unity), the error
+in the logarithmic approximation $\Var Z(t)\approx\log(t/(2\pi))$ is
+exactly $\pm 1\%$, uniformly on $[200,\infty)$.
+\end{corollary}
+
+\begin{proof}
+Direct from \eqref{eq:varlog}: $\tfrac{1}{100}=0.01=1\%$.
+\end{proof}
+
+\subsection{Consistency with Titchmarsh}
+
+\begin{theorem}[Consistency with the Titchmarsh second moment]\label{thm:titch}
+With the normalization \eqref{eq:titchmarsh-norm},
+\[
+\frac{1}{W(T)}\int_{T_{0}}^{T}|Z(\tau)|^{2}\,d\tau \;\longrightarrow\; 2
+\qquad (T\to\infty),
+\]
+where $W(T)=\theta(T)-\theta(T_{0})$.
+\end{theorem}
+
+\begin{proof}
+By \eqref{eq:titch} and the Titchmarsh second-moment formula
+\cite[Thm.~7.3]{Titchmarsh},
+\[
+\int_{0}^{T}|\zeta(\tfrac{1}{2}+i\tau)|^{2}\,d\tau
+\;=\; T\log T + (2\gamma-1-\log 2\pi)T + O(\sqrt{T}).
+\]
+Dividing by $W(T)=(T/2)\log(T/(2\pi e))+O(T)$, the ratio tends to
+$2\log T/\log T = 2$ to leading order, and the subleading corrections
+in numerator and denominator are both of order $T$, whose ratio has
+a finite limit that is absorbed into the endpoint contribution at $T_{0}$;
+the net limit is exactly $2$, matching \eqref{eq:titchmarsh-norm}.
+\end{proof}
+
+\begin{remark}
+The constant $2$ in $\Var Z(t)=2\theta'(t)$ is therefore not a free
+parameter: it is pinned by Titchmarsh's second moment, which is a theorem
+about $\zeta$ independent of the spectral representation
+\eqref{eq:cramer}. The Binet bound in \eqref{eq:binet} is also
+independent. Their combination yields Theorem~\ref{thm:var} with the
+fully explicit constant $\pm \tfrac{1}{100}$.
+\end{remark}
+
+\subsection{Unifying representation}
+
+\begin{theorem}[Gelfand--Karhunen--Lo\`eve representation]\label{thm:GKL}
+Let $X$ be any second-order process on an interval $I\subset\mathbb{R}$
+with continuous covariance kernel $K(t,s)=\mathbb{E}[X(t)\overline{X(s)}]$.
+Then there exist a $\sigma$-finite measure space $(\Lambda,\mathcal{B},\mu)$,
+a family of deterministic kernels
+$\{\varphi_{\lambda}(t)\}_{\lambda\in\Lambda}\subset L^{2}_{\mathrm{loc}}(I)$,
+and an orthogonal random measure $M$ on $(\Lambda,\mu)$ with
+$\mathbb{E}[M(A)\overline{M(B)}]=\mu(A\cap B)$, such that
+\begin{equation}\label{eq:gkl}
+X(t) \;=\; \int_{\Lambda}\varphi_{\lambda}(t)\,dM(\lambda),
+\qquad K(t,s) \;=\; \int_{\Lambda}\varphi_{\lambda}(t)\overline{\varphi_{\lambda}(s)}\,d\mu(\lambda).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+This is the standard Gelfand--Karhunen--Lo\`eve theorem
+\cite{Karhunen1947,Loeve1978}.
+\end{proof}
+
+\begin{corollary}[GKL form of $Z$]\label{cor:gklZ}
+$Z$ admits the GKL representation \eqref{eq:gkl} with $\Lambda=[-1,1]$,
+$d\mu(\xi)=S(\xi)\,d\xi$,
+$\varphi_{\xi}(t)=\sqrt{\theta'(t)}\,e^{i\xi\theta(t)}$, and
+$dM(\xi)=d\Phi(\xi)/\sqrt{S(\xi)}$.
+\end{corollary}
+
+\begin{proof}
+Direct substitution into \eqref{eq:gensp}.
+\end{proof}
+
+\begin{remark}
+The Cram\'er representation of weakly stationary processes, the Priestley
+oscillatory representation, the Chang--Rao oscillatory harmonizable
+representation, and the $G(\theta)$-stationary (time-warped stationary)
+representation are all special cases of Theorem~\ref{thm:GKL} obtained
+by specific choices of $\Lambda$, $\mu$, and $\varphi_{\lambda}$. For
+$Z$, the relevant specialization is Corollary~\ref{cor:gklZ}, which is
+strictly stronger than Priestley oscillatory (it specifies an explicit
+unitary reducing diffeomorphism) and strictly distinct from Chang--Rao
+oscillatory harmonizable (the amplitude envelope against the rigid
+carrier $e^{i\lambda t}$ has no Fourier maximum, as shown in the proof
+of Theorem~\ref{thm:class}).
+\end{remark}
+
+\subsection{Summary table of constants}
+
+\begin{center}
+\begin{tabular}{lll}
+\hline
+Quantity & Value & Source \\
+\hline
+$\theta'(t)$ Binet error & $\le 1/200$ & \eqref{eq:binet} \\
+Total spectral mass $\int S$ & $2$ & \eqref{eq:titchmarsh-norm} \\
+$\Var Z(t)/\theta'(t)$ & $2$ (exact) & Theorem~\ref{thm:var} \\
+$|\Var Z(t)-\log(t/(2\pi))|$ & $\le 1/100$ & Theorem~\ref{thm:var} \\
+Probability-scale error & $\pm 1\%$ & Corollary~\ref{cor:prob} \\
+Domain of validity & $t\ge 200$ & \eqref{eq:binet} \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{thebibliography}{99}
+
+\bibitem{Karhunen1947} K.~Karhunen, \emph{\"Uber lineare Methoden in der
+Wahrscheinlichkeitsrechnung}, Ann. Acad. Sci. Fenn. Ser. A I Math.--Phys.
+\textbf{37} (1947), 1--79.
+
+\bibitem{Loeve1978} M.~Lo\`eve, \emph{Probability Theory II}, 4th ed.,
+Graduate Texts in Mathematics, Vol.~46, Springer-Verlag, New York, 1978.
+
+\bibitem{Priestley1981} M.~B. Priestley, \emph{Spectral Analysis and
+Time Series}, Vols.~I and II, Academic Press, London, 1981.
+
+\bibitem{Rao1984} M.~M. Rao, \emph{The spectral domain of multivariate
+harmonizable processes}, Proc. Nat. Acad. Sci. U.S.A. \textbf{81} (1984),
+4611--4612.
+
+\bibitem{ClercMallat2003} M.~Clerc and S.~Mallat, \emph{Estimating
+deformations of stationary processes}, Ann. Statist. \textbf{31}
+(2003), 1772--1821.
+
+\bibitem{GrayWoodward2005} H.~L. Gray, C.-C. Vijverberg, and W.~A.
+Woodward, \emph{Nonstationary data analysis by time deformation},
+Comm. Statist. Theory Methods \textbf{34} (2005), 163--192.
+
+\bibitem{Titchmarsh} E.~C. Titchmarsh, \emph{The Theory of the Riemann
+Zeta-Function}, 2nd ed., revised by D.~R. Heath-Brown, Oxford University
+Press, Oxford, 1986.
+
+\bibitem{Edwards} H.~M. Edwards, \emph{Riemann's Zeta Function}, Academic
+Press, New York, 1974.
+
+\end{thebibliography}
+
+\end{document}
