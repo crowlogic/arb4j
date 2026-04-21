@@ -423,7 +423,7 @@ where $d\Phi$ is a complex-valued orthogonal Borel measure on $[-1,1]$ with cova
 \begin{equation}\label{eq:Phicov}
 \mathbb{E}\bigl[d\Phi(\xi)\,\overline{d\Phi(\xi')}\bigr] \;=\; \delta(\xi-\xi')\,dS(\xi).
 \end{equation}
-The support condition $\supp S\subseteq[-1,1]$ of Theorem~\ref{thm:bandlim} localizes $d\Phi$ to the interval $[-1,1]$. Reality of $Y$ on $\mathbb{R}$ is equivalent to the Hermitian symmetry $d\Phi(-\xi)=\overline{d\Phi(\xi)}$, under which $S$ is an even measure on $[-1,1]$. The integral is a stochastic integral in the orthogonal-increments sense; test functions $f$ are paired with $d\Phi$ under the $L^2(S)$ isometry
+The support condition $\supp S\subseteq[-1,1]$ of Theorem~\ref{thm:bandlim} localizes $d\Phi$ to the interval $[-1,1]$. Reality of $Y$ on $\mathbb{R}$ is equivalent to the Hermitian symmetry $d\Phi(-\xi)=\overline{d\Phi(\xi)}$, under which $S$ is an even measure on $[-1,1]$. Test functions $f$ are paired with $d\Phi$ under the $L^2(S)$ isometry
 \begin{equation}\label{eq:isomL2S}
 \mathbb{E}\Bigl|\int f(\xi)\,d\Phi(\xi)\Bigr|^2 \;=\; \int|f(\xi)|^2\,dS(\xi),
 \end{equation}
@@ -451,7 +451,7 @@ R_Z(t,s) \;:=\; \mathbb{E}\bigl[Z(t)\,\overline{Z(s)}\bigr] \;=\; \sqrt{\Theta'(
 \end{equation}
 
 \begin{proof}[Derivation of \eqref{eq:RZ} from \eqref{eq:cramerZ}]
-Fix $t,s\in\mathbb{R}$. Expanding the product and pulling the (deterministic) amplitudes outside the expectation,
+Fix $t,s\in\mathbb{R}$. Expanding the product and pulling the amplitudes outside the expectation,
 \begin{equation}\label{eq:RZ-step1}
 \mathbb{E}\bigl[Z(t)\,\overline{Z(s)}\bigr] \;=\; \sqrt{\Theta'(t)\,\Theta'(s)}\ \mathbb{E}\!\left[\int_{-1}^{1} e^{i\xi\Theta(t)}\,d\Phi(\xi)\ \overline{\int_{-1}^{1}e^{i\xi'\Theta(s)}\,d\Phi(\xi')}\right].
 \end{equation}
@@ -467,7 +467,7 @@ The exchange of the two $\xi$-integrals with the expectation in \eqref{eq:RZ-ste
 \end{equation}
 where in the middle equality we used $\mathbb{E}[\Phi(B_k)\overline{\Phi(C_\ell)}]=S(B_k\cap C_\ell)$ (the integrated form of \eqref{eq:Phicov}) and the fact that for simple functions the double sum is finite so Fubini applies pointwise. Bounded-continuous functions on $[-1,1]$ are $L^2(S)$-limits of simple functions (standard, since $S([-1,1])<\infty$ if one replaces $S$ by $S$-on-$[-1,1]$, which is finite because Theorem~\ref{thm:bandlim} supports $S$ in $[-1,1]$ but does not bound its total mass; for the identity \eqref{eq:RZ-step2} the tests $e^{i\cdot\Theta(t)}$ and $e^{i\cdot\Theta(s)}$ are bounded on the compact set $[-1,1]$, so they are in $L^2(S|_{[-1,1]})$ even when $S$ itself is infinite on $\mathbb{R}$), and the bilinear form in \eqref{eq:RZ-step2} extends continuously in both arguments by the $L^2(S)$ isometry \eqref{eq:isomL2S}, yielding the claim. No assumption on the admissible constant $c$ is used beyond $c>c_{**}$, which is the standing hypothesis on $\Theta$.
 
-The exchange in \eqref{eq:cramerZ} itself --- the equality $\sqrt{\Theta'(t)}\,Y(\Theta(t)) = \sqrt{\Theta'(t)}\int_{-1}^{1} e^{i\xi\Theta(t)}\,d\Phi(\xi)$ --- is the pointwise (a.s.) substitution $u\mapsto\Theta(t)$ in \eqref{eq:cramerY}, valid because $\Theta(t)\in\mathbb{R}$ for $t\in\mathbb{R}$ and the sample path $Y(\Theta(t))$ is defined a.s.\ by the Cram\'er representation evaluated at the point $\Theta(t)$. No integral exchange is required: the inner Wiener integral is the same random variable, with the deterministic phase $e^{i\xi u}$ evaluated at $u=\Theta(t)$.
+The exchange in \eqref{eq:cramerZ} itself --- the equality $\sqrt{\Theta'(t)}\,Y(\Theta(t)) = \sqrt{\Theta'(t)}\int_{-1}^{1} e^{i\xi\Theta(t)}\,d\Phi(\xi)$ --- is the pointwise substitution $u\mapsto\Theta(t)$ in \eqref{eq:cramerY}, valid because $\Theta(t)\in\mathbb{R}$ for $t\in\mathbb{R}$ and the sample path $Y(\Theta(t))$ is defined by the Cram\'er representation evaluated at the point $\Theta(t)$. No integral exchange is required: the inner Wiener integral is the same element of $L^2(\Omega_P,\mathbb{P})$, with the phase $e^{i\xi u}$ evaluated at $u=\Theta(t)$.
 \end{proof}
 
 The identity \eqref{eq:RZ} is the time-warped autocovariance of the stationary underlying process. Non-stationarity of $Z$ is expressed entirely through the pair $(\Theta'(t)\Theta'(s))^{1/2}$ and the argument $\Theta(t)-\Theta(s)$: the frequency content is the same $S$ supported in $[-1,1]$; the time dependence is absorbed into the biholomorphic reparametrisation $\Theta$ and the half-Jacobian amplitude.
