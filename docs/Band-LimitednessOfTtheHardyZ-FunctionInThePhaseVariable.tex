@@ -26,11 +26,11 @@
 \begin{abstract}
 Let $\zeta$ denote the Riemann zeta function, $Z(t) = e^{i\theta(t)}\zeta(\tfrac{1}{2}+it)$ the Hardy Z-function, and $\theta(t) = \Im\log\Gamma(\tfrac{1}{4}+\tfrac{it}{2}) - \tfrac{t}{2}\log\pi$ the Riemann--Siegel theta function. The function $Z$ is meromorphic on $\mathbb{C}$ with poles inherited from $\zeta$; on the open strip $\{|\Im t|<\tfrac{1}{2}\}$, $Z$ is holomorphic. For any constant
 \begin{equation}\label{eq:cstarstar-abs}
-c \;>\; c_{**} \;:=\; \tfrac{1}{2}\!\left(\gamma + 3\log 2 + \tfrac{\pi}{2} + \log\pi\right) \;+\; \tfrac{1}{8}\sup_{|\Im t|<1/2}\!\left|\psi'(\tfrac{1}{4}+\tfrac{it}{2})\right|,
+c \;>\; c_{**} \;:=\; \tfrac{1}{2}\!\left(\gamma + 3\log 2 + \tfrac{\pi}{2} + \log\pi\right) \;+\; \tfrac{1}{8}\sup_{|\Im t|<1/2}\!\left|\psi'(\tfrac{1}{4}+\tfrac{it}{2})\right|
 \end{equation}
 define $\Theta(t) := \theta(t) + ct$ and let $Y$ be the unitary inverse phase pullback of $Z$, namely
 \begin{equation}\label{eq:Ydef-abs}
-Y(u) \;:=\; \frac{Z(\Theta^{-1}(u))}{\sqrt{\Theta'(\Theta^{-1}(u))}}.
+Y(u) \;:=\; \frac{Z(\Theta^{-1}(u))}{\sqrt{\Theta'(\Theta^{-1}(u))}}
 \end{equation}
 The Fourier support of $Y$ is contained in $[-1,1]$. By the Paley--Wiener theorem, $Y$ extends to an entire function of exponential type $\le 1$. Combined with the non-negativity of the spectral measure $S:=|\widehat{Y}|^2$ and Akhiezer's theorem, $Y$ belongs to the Laguerre--P\'olya class. The unitary identity $Z(t) = Y(\Theta(t))\sqrt{\Theta'(t)}$, valid on the strip $\{|\Im t| < \tfrac{1}{2}\}$ where $\Theta$ is an injective biholomorphism with non-vanishing derivative and $Z$ is holomorphic, transfers the real zero locus of $Y$ to that of $Z$. Therefore every non-trivial zero $\rho$ of $\zeta$ satisfies $\Re\rho = \tfrac{1}{2}$.
 \end{abstract}
@@ -51,7 +51,7 @@ For $t\in\mathbb{C}$ with $\tfrac{1}{4}+\tfrac{it}{2}\notin\mathbb{Z}_{\le 0}$,
 \begin{align}
 \theta(t) &\;=\; \Im\log\Gamma\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right) - \tfrac{t}{2}\log\pi, \label{eq:theta}\\
 \theta'(t) &\;=\; \tfrac{1}{2}\Re\psi\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right) - \tfrac{1}{2}\log\pi, \label{eq:thetap}\\
-\theta''(t) &\;=\; -\tfrac{1}{4}\Im\psi'\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right). \label{eq:thetapp}
+\theta''(t) &\;=\; -\tfrac{1}{4}\Im\psi'\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right) \label{eq:thetapp}
 \end{align}
 The nearest pole of $\psi'(\tfrac{1}{4}+\tfrac{it}{2})$ to $\mathbb{R}$ is at $t=-i$, at distance $1$ from $\mathbb{R}$; $\theta$, $\theta'$, $\theta''$ are holomorphic on $\{|\Im t|<1\}$.
 
@@ -62,14 +62,14 @@ For every $t>0$, $\theta''(t)>0$.
 \begin{proof}
 $\psi'(s)=\sum_{k\ge 0}(s+k)^{-2}$. With $z_k=\tfrac{1}{4}+k+\tfrac{it}{2}$,
 \begin{equation}\label{eq:Imzk2}
-\Im z_k^{-2} \;=\; \frac{-2(\tfrac{1}{4}+k)(t/2)}{|z_k|^4} \;<\; 0 \qquad (k\ge 0,\ t>0).
+\Im z_k^{-2} \;=\; \frac{-2(\tfrac{1}{4}+k)(t/2)}{|z_k|^4} \;<\; 0 \qquad (k\ge 0,\ t>0)
 \end{equation}
 Summing, $\Im\psi'(\tfrac{1}{4}+\tfrac{it}{2})<0$, therefore $\theta''(t)>0$.
 \end{proof}
 
 \begin{lemma}[Exact value of $\theta'(0)$]\label{lem:thetaprime0}
 \begin{equation}\label{eq:thetaprime0}
-\theta'(0) \;=\; \tfrac{1}{2}\psi(\tfrac{1}{4}) - \tfrac{1}{2}\log\pi \;=\; -\tfrac{1}{2}\!\left(\gamma + 3\log 2 + \tfrac{\pi}{2} + \log\pi\right).
+\theta'(0) \;=\; \tfrac{1}{2}\psi(\tfrac{1}{4}) - \tfrac{1}{2}\log\pi \;=\; -\tfrac{1}{2}\!\left(\gamma + 3\log 2 + \tfrac{\pi}{2} + \log\pi\right)
 \end{equation}
 \end{lemma}
 
@@ -81,7 +81,7 @@ $\psi(\tfrac{1}{4})=-\gamma-3\log 2-\tfrac{\pi}{2}$ from $\psi(\tfrac{3}{4})-\ps
 \begin{align}
 c_* &\;:=\; -\theta'(0) \;=\; \tfrac{1}{2}(\gamma+3\log 2+\tfrac{\pi}{2}+\log\pi), \label{eq:cstar}\\
 M &\;:=\; \tfrac{1}{2}\sup_{|\Im t|<1/2}|\theta''(t)| \;=\; \tfrac{1}{8}\sup_{|\Im t|<1/2}|\psi'(\tfrac{1}{4}+\tfrac{it}{2})|, \label{eq:Mdef}\\
-c_{**} &\;:=\; c_* + M. \label{eq:cstarstar}
+c_{**} &\;:=\; c_* + M \label{eq:cstarstar}
 \end{align}
 A real $c$ is \emph{admissible} if $c>c_{**}$.
 \end{definition}
@@ -115,7 +115,7 @@ If $\Theta(t_1)=\Theta(t_2)$, the straight-line integral gives $(t_2-t_1)\int_0^
 \begin{lemma}[Holomorphy of $Z$ on the strip]\label{lem:Zholo}
 $\zeta(\tfrac{1}{2}+it)$ is meromorphic on $\mathbb{C}$ with a single simple pole at $t=-i/2$ (image of $s=1$ under $s=\tfrac{1}{2}+it$). The factor $e^{i\theta(t)}$ is holomorphic and non-vanishing on $\{|\Im t|<1\}$. Therefore $Z$ is meromorphic on $\{|\Im t|<1\}$ and holomorphic on
 \begin{equation}\label{eq:Omega}
-\Omega \;:=\; \{|\Im t|<\tfrac{1}{2}\}.
+\Omega \;:=\; \{|\Im t|<\tfrac{1}{2}\}
 \end{equation}
 \end{lemma}
 
@@ -128,7 +128,7 @@ Meromorphy of $\zeta$ with simple pole at $s=1$ is classical (\cite{Titchmarsh},
 \begin{definition}[Unitary inverse phase pullback]\label{def:Htilde}
 For admissible $c$ and $u\ge 0$, the \emph{unitary inverse phase pullback} of $Z$ is
 \begin{equation}\label{eq:Ydef}
-Y(u) \;:=\; \frac{Z(\Theta^{-1}(u))}{\sqrt{\Theta'(\Theta^{-1}(u))}}.
+Y(u) \;:=\; \frac{Z(\Theta^{-1}(u))}{\sqrt{\Theta'(\Theta^{-1}(u))}}
 \end{equation}
 Extend to $\mathbb{R}$ by $Y(-u):=Y(u)$. The half-Jacobian factor $1/\sqrt{\Theta'(\Theta^{-1}(u))}$ renders the map $Z\mapsto Y$ an $L^2$-isometry under the change of variable $u=\Theta(t)$.
 \end{definition}
@@ -140,7 +140,7 @@ $Y$ is real-valued on $\mathbb{R}$.
 \begin{definition}[Mode threshold]\label{def:betan}
 For each $n\ge 1$,
 \begin{equation}\label{eq:betan}
-\beta_n \;:=\; \Theta'(2\pi n^2) \;=\; \tfrac{1}{2}\Re\psi\!\left(\tfrac{1}{4}+i\pi n^2\right) - \tfrac{1}{2}\log\pi + c.
+\beta_n \;:=\; \Theta'(2\pi n^2) \;=\; \tfrac{1}{2}\Re\psi\!\left(\tfrac{1}{4}+i\pi n^2\right) - \tfrac{1}{2}\log\pi + c
 \end{equation}
 \end{definition}
 
@@ -149,18 +149,18 @@ The quantity $\beta_n$ is given exactly in closed form as a value of the digamma
 \begin{lemma}[Asymptotic of $\beta_n$ from the exact form]\label{lem:betaasymp}
 As $n\to\infty$,
 \begin{equation}\label{eq:betaasymp}
-\beta_n \;=\; \log n + c + O(n^{-4}).
+\beta_n \;=\; \log n + c + O(n^{-4})
 \end{equation}
 \end{lemma}
 
 \begin{proof}
 The digamma asymptotic
 \begin{equation}\label{eq:digasymp}
-\psi(s) = \log s - \frac{1}{2s} - \sum_{k\ge 1}\frac{B_{2k}}{2k\,s^{2k}},\qquad |\arg s|<\pi,
+\psi(s) = \log s - \frac{1}{2s} - \sum_{k\ge 1}\frac{B_{2k}}{2k\,s^{2k}},\qquad |\arg s|<\pi
 \end{equation}
 applied at $s=\tfrac{1}{4}+i\pi n^2$ with $|s|=\sqrt{\tfrac{1}{16}+\pi^2 n^4}$ yields
 \begin{equation}\label{eq:Repsi-asymp}
-\Re\psi(s) = \log|s| + O(|s|^{-2}) = \tfrac{1}{2}\log(\tfrac{1}{16}+\pi^2 n^4) + O(n^{-4}) = 2\log n + \log\pi + O(n^{-4}).
+\Re\psi(s) = \log|s| + O(|s|^{-2}) = \tfrac{1}{2}\log(\tfrac{1}{16}+\pi^2 n^4) + O(n^{-4}) = 2\log n + \log\pi + O(n^{-4})
 \end{equation}
 Therefore $\tfrac{1}{2}\Re\psi(\tfrac{1}{4}+i\pi n^2) = \log n + \tfrac{1}{2}\log\pi + O(n^{-4})$ and $\beta_n = \log n + c + O(n^{-4})$.
 \end{proof}
@@ -168,14 +168,14 @@ Therefore $\tfrac{1}{2}\Re\psi(\tfrac{1}{4}+i\pi n^2) = \log n + \tfrac{1}{2}\lo
 \begin{definition}[Truncated transform]\label{def:KT}
 For $T>0$, $\mu\in\mathbb{R}$,
 \begin{equation}\label{eq:KT}
-K_T(\mu) := \tfrac{1}{2\pi}\int_{0}^{T}Z(t)\sqrt{\Theta'(t)}\,e^{-i\mu\Theta(t)}\,dt = \tfrac{1}{2\pi}\int_{\Theta(0)}^{\Theta(T)}Y(u)\,e^{-i\mu u}\,du.
+K_T(\mu) := \tfrac{1}{2\pi}\int_{0}^{T}Z(t)\sqrt{\Theta'(t)}\,e^{-i\mu\Theta(t)}\,dt = \tfrac{1}{2\pi}\int_{\Theta(0)}^{\Theta(T)}Y(u)\,e^{-i\mu u}\,du
 \end{equation}
 \end{definition}
 
 \begin{lemma}[Riemann--Siegel identity]\label{lem:RS}
 For $t>0$,
 \begin{equation}\label{eq:RS}
-Z(t) = 2\sum_{n=1}^{N(t)}n^{-1/2}\cos(\theta(t)-t\log n) + R(t),\qquad N(t):=\lfloor\sqrt{t/(2\pi)}\rfloor,\quad R(t)=O(t^{-1/4}).
+Z(t) = 2\sum_{n=1}^{N(t)}n^{-1/2}\cos(\theta(t)-t\log n) + R(t),\qquad N(t):=\lfloor\sqrt{t/(2\pi)}\rfloor,\quad R(t)=O(t^{-1/4})
 \end{equation}
 \end{lemma}
 
@@ -188,14 +188,14 @@ For every admissible $c$ and every $\mu\in\mathbb{R}$ with $|\mu|>1$, $\lim_{T\t
 \begin{proof}
 Substituting Lemma~\ref{lem:RS} into $K_T$ and expanding $\cos\alpha=\tfrac{1}{2}(e^{i\alpha}+e^{-i\alpha})$,
 \begin{equation}\label{eq:KTexpand}
-K_T(\mu)=\tfrac{1}{2\pi}\sum_{\sigma\in\{\pm 1\}}\sum_{n\le N(T)}n^{-1/2}J_{n,\sigma}(T,\mu)+\mathcal{R}(T,\mu),
+K_T(\mu)=\tfrac{1}{2\pi}\sum_{\sigma\in\{\pm 1\}}\sum_{n\le N(T)}n^{-1/2}J_{n,\sigma}(T,\mu)+\mathcal{R}(T,\mu)
 \end{equation}
 with $t_n:=2\pi n^2$,
 \begin{equation}\label{eq:Jnsigma}
-J_{n,\sigma}(T,\mu):=\int_{t_n}^{T}\sqrt{\Theta'(t)}\,e^{i[\sigma\theta(t)-\sigma t\log n-\mu\Theta(t)]}\,dt,
+J_{n,\sigma}(T,\mu):=\int_{t_n}^{T}\sqrt{\Theta'(t)}\,e^{i[\sigma\theta(t)-\sigma t\log n-\mu\Theta(t)]}\,dt
 \end{equation}
 \begin{equation}\label{eq:RRdef}
-\mathcal{R}(T,\mu):=\tfrac{1}{2\pi}\int_{0}^{T}R(t)\sqrt{\Theta'(t)}\,e^{-i\mu\Theta(t)}\,dt.
+\mathcal{R}(T,\mu):=\tfrac{1}{2\pi}\int_{0}^{T}R(t)\sqrt{\Theta'(t)}\,e^{-i\mu\Theta(t)}\,dt
 \end{equation}
 The argument proceeds in the following steps.
 
@@ -205,20 +205,20 @@ The argument proceeds in the following steps.
 
 \item \emph{Change of variable.} Set $x:=\Theta'(t)=\theta'(t)+c$, $dx=\theta''(t)\,dt$, $X:=\Theta'(T)$:
 \begin{equation}\label{eq:Jchange}
-J_{n,\sigma}(T,\mu)=\int_{\beta_n\vee\Theta'(0)}^{X}\frac{\sqrt{x}}{\theta''(t(x))}\,e^{i\widetilde\Phi_{n,\sigma,\mu}(x)}\,dx,
+J_{n,\sigma}(T,\mu)=\int_{\beta_n\vee\Theta'(0)}^{X}\frac{\sqrt{x}}{\theta''(t(x))}\,e^{i\widetilde\Phi_{n,\sigma,\mu}(x)}\,dx
 \end{equation}
 \begin{equation}\label{eq:tildePhiprime}
-\widetilde\Phi'_{n,\sigma,\mu}(x)=\frac{(\sigma-\mu)x-\sigma\log n-\sigma c}{\theta''(t(x))}.
+\widetilde\Phi'_{n,\sigma,\mu}(x)=\frac{(\sigma-\mu)x-\sigma\log n-\sigma c}{\theta''(t(x))}
 \end{equation}
 
 \item \emph{Exact $\theta''$ cancellation.}
 \begin{equation}\label{eq:Qcancel}
-Q_{n,\sigma,\mu}(x)=\frac{\sqrt{x}}{(\sigma-\mu)x-\sigma\log n-\sigma c},\qquad Q'_{n,\sigma,\mu}(x)=O(x^{-3/2}).
+Q_{n,\sigma,\mu}(x)=\frac{\sqrt{x}}{(\sigma-\mu)x-\sigma\log n-\sigma c},\qquad Q'_{n,\sigma,\mu}(x)=O(x^{-3/2})
 \end{equation}
 
 \item \emph{Finiteness of the exceptional set.} Define $\mathcal{S}(\mu):=\{n:\beta_n\le(\log n+c)/(1+|\mu|)\}$. By Lemma~\ref{lem:betaasymp},
 \begin{equation}\label{eq:Sfinite}
-\beta_n-\frac{\log n+c}{1+|\mu|}=\frac{|\mu|}{1+|\mu|}(\log n+c)+O(n^{-4})\to\infty,
+\beta_n-\frac{\log n+c}{1+|\mu|}=\frac{|\mu|}{1+|\mu|}(\log n+c)+O(n^{-4})\to\infty
 \end{equation}
 therefore $\mathcal{S}(\mu)$ is finite.
 
@@ -228,13 +228,13 @@ therefore $\mathcal{S}(\mu)$ is finite.
 
 \item \emph{Assembly.}
 \begin{equation}\label{eq:Kassembly}
-K_\infty(\mu)-K_T(\mu)=\tfrac{1}{2\pi}\sum_\sigma\!\left[\sum_{n\notin\mathcal{S}(\mu)}n^{-1/2}O(X^{-1/2})+\sum_{n\in\mathcal{S}(\mu)}n^{-1/2}O(\Theta'(T)^{-1/2})\right]+O(T^{-1/4}(\log T)^{-1/2}).
+K_\infty(\mu)-K_T(\mu)=\tfrac{1}{2\pi}\sum_\sigma\!\left[\sum_{n\notin\mathcal{S}(\mu)}n^{-1/2}O(X^{-1/2})+\sum_{n\in\mathcal{S}(\mu)}n^{-1/2}O(\Theta'(T)^{-1/2})\right]+O(T^{-1/4}(\log T)^{-1/2})
 \end{equation}
 All terms vanish as $T\to\infty$; $K_\infty(\mu)$ exists.
 
 \item \emph{Identification.} The mode $(n,\sigma)$ instantaneous $u$-frequency is
 \begin{equation}\label{eq:instfreq}
-\sigma\cdot\frac{\theta'(t)-\log n}{\Theta'(t)}=\sigma\cdot\frac{\theta'(t)-\log n}{\theta'(t)+c}.
+\sigma\cdot\frac{\theta'(t)-\log n}{\Theta'(t)}=\sigma\cdot\frac{\theta'(t)-\log n}{\theta'(t)+c}
 \end{equation}
 On $t\ge 2\pi n^2$, $\theta'(t)\ge\theta'(2\pi n^2)=\beta_n-c=\tfrac{1}{2}\Re\psi(\tfrac{1}{4}+i\pi n^2)-\tfrac{1}{2}\log\pi$. Numerator $\ge 0$; denominator exceeds numerator by $c+\log n>0$; ratio in $[0,1)$. The Riemann--Siegel remainder has $u$-frequency $O((\log t)^{-1})\to 0$.
 
@@ -248,7 +248,7 @@ Therefore $\supp S\subseteq[-1,1]$, and $K_\infty(\mu)=\widehat{Y}(\mu)=0$ for $
 \begin{corollary}[Paley--Wiener]\label{cor:PW}
 $Y$ extends to an entire function of exponential type $\le 1$:
 \begin{equation}\label{eq:PW}
-Y(z)=\int_{-1}^{1}\widehat{Y}(\xi)\,e^{i\xi z}\,d\xi,\qquad |Y(z)|\le\|\widehat{Y}\|\,e^{|\Im z|}.
+Y(z)=\int_{-1}^{1}\widehat{Y}(\xi)\,e^{i\xi z}\,d\xi,\qquad |Y(z)|\le\|\widehat{Y}\|\,e^{|\Im z|}
 \end{equation}
 \end{corollary}
 
@@ -281,7 +281,7 @@ $Y$ is real on $\mathbb{R}$ (Definition~\ref{def:Htilde}), entire of exponential
 \begin{theorem}[Unitary inverse phase pullback identity]\label{thm:utc}
 For every admissible $c$ and every $t\in\Omega=\{|\Im t|<\tfrac{1}{2}\}$,
 \begin{equation}\label{eq:utc}
-Z(t)=Y(\Theta(t))\sqrt{\Theta'(t)},
+Z(t)=Y(\Theta(t))\sqrt{\Theta'(t)}
 \end{equation}
 where $\sqrt{\Theta'(\cdot)}$ is the holomorphic branch on $\Omega$ that is positive on $\mathbb{R}$.
 \end{theorem}
@@ -331,11 +331,12 @@ The two directions carry standard names in differential geometry: a pullback is 
 Technically one could reverse the point of view and call $Z$ itself the \emph{phase pushforward} of the stationary process $Y$: starting from $Y$ on the $u$-line, one lets out the line along $\Theta$ and expands $Y$ outward into $t$-space, obtaining $Z$. Equivalently, the stationary process $Y$ could be defined as the pushforward of $Z$ along the phase --- sending $Z$ forth into $u$-coordinates. This naming is formally consistent, but it reads against the grain of what is being constructed. Stationarity is a property of something gathered and settled; producing it by \emph{pushing} an object outward into a new space is the wrong English motion. One naturally assembles a stationary object by \emph{pulling in} values from the non-stationary source. ``Unitary inverse phase pullback'' is therefore the name used throughout: it matches the geometric direction of the construction and the linguistic image of stationarity as something retrieved, not something broadcast.
 
 \paragraph{Ditty.}
+English grammar and category theory disagree here. In plain English a \emph{function} is the active thing --- something that acts, takes an argument, produces a value; a \emph{measure} is what remains, passively assigning mass to sets without acting on anything. The English grammar would therefore pair functions with pushforward and measures with pullback. Category theory goes the other way: functions transform contravariantly (they pull back), measures transform covariantly (they push forth), because a pullback of a function $f$ along $\Theta$ is the composition $f\circ\Theta$ (the function retreats along the map), while the pushforward of a measure $\mu$ is $\mu\circ\Theta^{-1}$ (the mass is transported forward along the map). The category-theoretic convention wins in practice; the English reading is the anti-pattern. The mnemonic records the inversion:
 \begin{quote}
-Functions pull back, measures push forth.\\
-$Z$ lives in $t$, so $u$ must go north:\\
-compose with $\Theta^{-1}$, put half-Jacobian in tow ---\\
-that's the unitary inverse phase pullback, row by row.
+In English a function acts, a measure stays put;\\
+in category theory that reading's kaput:\\
+functions pull back, measures push forth,\\
+and the unitary inverse phase pullback points north.
 \end{quote}
 
 \subsection{Why is the spectral measure non-negative?}\label{app:PSD-colloquial}
@@ -346,7 +347,7 @@ The autocorrelation of any real, locally square-integrable function is a positiv
 
 The autocorrelation in Lemma~\ref{lem:PSD} is that of $Y$ itself, the unitary inverse phase pullback of $Z$. In $u$-coordinates,
 \begin{equation}\label{eq:Cetadef}
-C(\eta) \;=\; \lim_{U\to\infty}\frac{1}{2U}\int_{-U}^{U}Y(u)\,Y(u+\eta)\,du,
+C(\eta) \;=\; \lim_{U\to\infty}\frac{1}{2U}\int_{-U}^{U}Y(u)\,Y(u+\eta)\,du
 \end{equation}
 a positive-definite tempered distribution. Because the map $Z\mapsto Y$ is an $L^2$-isometry under $u=\Theta(t)$, this is equivalent to correlating $Z$ against itself with respect to the $u$-shift $\eta$, which is a nonlinear (roughly logarithmic) shift in the original $t$-coordinate.
 
@@ -375,7 +376,7 @@ The growing variance manifests in three compatible ways.
 \paragraph{Representation at finite window.}
 Pointwise values of the spectral density at interior $\xi_0\in(-1,1)$ are approached through windowed periodograms
 \begin{equation}\label{eq:PUxi0}
-P_U(\xi_0) \;:=\; \frac{1}{2U}\!\left|\int_{-U}^{U}Y(u)\,e^{-i\xi_0 u}\,du\right|^2.
+P_U(\xi_0) \;:=\; \frac{1}{2U}\!\left|\int_{-U}^{U}Y(u)\,e^{-i\xi_0 u}\,du\right|^2
 \end{equation}
 Any figure produced at finite $U$ is a \emph{representation} at window scale $U$.
 
@@ -383,15 +384,15 @@ Any figure produced at finite $U$ is a \emph{representation} at window scale $U$
 
 Fix $\xi\in(-1,1)$ and let $P_U(\xi)$ be the windowed periodogram. Two features of the plot change with $U$: the overall vertical scale, and the local fluctuation amplitude around that scale. Both are controlled by the local mean power
 \begin{equation}\label{eq:Pbardef}
-\bar P(U) \;:=\; \frac{1}{2U}\int_{-U}^{U}Y(u)^2\,du \;=\; \frac{1}{2U}\int_{\Theta^{-1}(-U)}^{\Theta^{-1}(U)}\!\! Z(t)^2\,dt,
+\bar P(U) \;:=\; \frac{1}{2U}\int_{-U}^{U}Y(u)^2\,du \;=\; \frac{1}{2U}\int_{\Theta^{-1}(-U)}^{\Theta^{-1}(U)}\!\! Z(t)^2\,dt
 \end{equation}
 the second equality by the $L^2$-isometry of the unitary inverse phase pullback. By Parseval in the tempered sense,
 \begin{equation}\label{eq:Parseval}
-\int_{-\infty}^{\infty}P_U(\xi)\,d\xi \;=\; 2\pi\,\bar P(U).
+\int_{-\infty}^{\infty}P_U(\xi)\,d\xi \;=\; 2\pi\,\bar P(U)
 \end{equation}
 Using $\Theta(t)\sim\tfrac{t}{2}\log(t/(2\pi e))+ct$ and the Hardy--Littlewood moment $\int_0^T Z(t)^2\,dt\sim T\log T$ (\cite{Titchmarsh}, \S7.3),
 \begin{equation}\label{eq:PbarAsymp}
-\bar P(U) \;\sim\; \log\!\big(\Theta^{-1}(U)\big) \;\sim\; \log U + \log\log U + O(1)\qquad (U\to\infty).
+\bar P(U) \;\sim\; \log\!\big(\Theta^{-1}(U)\big) \;\sim\; \log U + \log\log U + O(1)\qquad (U\to\infty)
 \end{equation}
 $P_U(\xi)$ fluctuates around $\bar P(U)$ on a scale comparable to $\bar P(U)$ itself, with wider fluctuations near the edges $|\xi|\to 1^-$.
 
@@ -399,11 +400,11 @@ $P_U(\xi)$ fluctuates around $\bar P(U)$ on a scale comparable to $\bar P(U)$ it
 
 At every finite $U$ the periodogram $P_U$ has finite total mass $2\pi\bar P(U)$ by Parseval. Dividing by this total mass produces the normalized spectral probability measure at scale $U$,
 \begin{equation}\label{eq:Ptildedef}
-\widetilde P_U(\xi) \;:=\; \frac{P_U(\xi)}{2\pi\,\bar P(U)},\qquad \int_{-\infty}^{\infty}\widetilde P_U(\xi)\,d\xi = 1,
+\widetilde P_U(\xi) \;:=\; \frac{P_U(\xi)}{2\pi\,\bar P(U)},\qquad \int_{-\infty}^{\infty}\widetilde P_U(\xi)\,d\xi = 1
 \end{equation}
 a probability density on $\mathbb{R}$ at every $U$. By Theorem~\ref{thm:bandlim} the probability mass of $\widetilde P_U$ outside $[-1,1]$ vanishes as $U\to\infty$, so the family is tight on $[-1,1]$. By Helly--Prokhorov, $\widetilde P_U$ converges weakly as $U\to\infty$ to a probability measure $\nu_\infty$ on $[-1,1]$:
 \begin{equation}\label{eq:Ptildeweak}
-\int f\,d\widetilde P_U \;\longrightarrow\; \int f\,d\nu_\infty\qquad \text{for every } f\in C_b(\mathbb{R}).
+\int f\,d\widetilde P_U \;\longrightarrow\; \int f\,d\nu_\infty\qquad \text{for every } f\in C_b(\mathbb{R})
 \end{equation}
 $\nu_\infty$ is the normalized spectral density of $Y$: a probability measure of total mass $1$ supported in $[-1,1]$.
 
@@ -417,53 +418,79 @@ $S$ and $\nu_\infty$ are distinct, both well-defined:
 
 As a generalized second-order stationary process on $\mathbb{R}_u$ with non-negative tempered spectral measure $S$ supported in $[-1,1]$, $Y$ admits a Cram\'er spectral representation of its sample path,
 \begin{equation}\label{eq:cramerY}
-Y(u) \;=\; \int_{-1}^{1} e^{i\xi u}\,d\Phi(\xi),
+Y(u) \;=\; \int_{-1}^{1} e^{i\xi u}\,d\Phi(\xi)
 \end{equation}
 where $d\Phi$ is a complex-valued orthogonal Borel measure on $[-1,1]$ with covariance structure
 \begin{equation}\label{eq:Phicov}
-\mathbb{E}\bigl[d\Phi(\xi)\,\overline{d\Phi(\xi')}\bigr] \;=\; \delta(\xi-\xi')\,dS(\xi).
+\mathbb{E}\bigl[d\Phi(\xi)\,\overline{d\Phi(\xi')}\bigr] \;=\; \delta(\xi-\xi')\,dS(\xi)
 \end{equation}
 The support condition $\supp S\subseteq[-1,1]$ of Theorem~\ref{thm:bandlim} localizes $d\Phi$ to the interval $[-1,1]$. Reality of $Y$ on $\mathbb{R}$ is equivalent to the Hermitian symmetry $d\Phi(-\xi)=\overline{d\Phi(\xi)}$, under which $S$ is an even measure on $[-1,1]$. Test functions $f$ are paired with $d\Phi$ under the $L^2(S)$ isometry
 \begin{equation}\label{eq:isomL2S}
-\mathbb{E}\Bigl|\int f(\xi)\,d\Phi(\xi)\Bigr|^2 \;=\; \int|f(\xi)|^2\,dS(\xi),
+\mathbb{E}\Bigl|\int f(\xi)\,d\Phi(\xi)\Bigr|^2 \;=\; \int|f(\xi)|^2\,dS(\xi)
 \end{equation}
 which requires $f\in L^2(S)$ and permits $S$ to have infinite total mass. The Cram\'er representation exists at the level of $S$: it is the reconstruction theorem for the process. $\nu_\infty$ is the scale-invariant spectral shape of the same process.
 
-\paragraph{Inverse representation of $d\Phi$.} The orthogonal Borel measure $d\Phi$ is recovered from the sample path $Y$ by the inverse Fourier pairing
+\paragraph{Inverse representation of $d\Phi$.} The orthogonal Borel measure $d\Phi$ is recovered from the sample path $Y$ by the truncated Fourier inversion
 \begin{equation}\label{eq:Phiinverse}
-\Phi(B) \;=\; \frac{1}{2\pi}\int_{-1}^{1}\mathbb{1}_B(\xi)\,d\Phi(\xi) \;=\; \lim_{U\to\infty}\frac{1}{2\pi}\int_{-U}^{U}Y(u)\,\widehat{\mathbb{1}_B}(-u)\,du
+\Phi(B) \;=\; \lim_{U\to\infty}\frac{1}{2\pi}\int_{-U}^{U}Y(u)\,\widehat{\mathbb{1}_B}(-u)\,du
 \end{equation}
 for every Borel set $B\subseteq[-1,1]$, the limit taken in $L^2(\Omega_P,\mathbb{P})$; here $\widehat{\mathbb{1}_B}(u)=\int_B e^{i\xi u}\,d\xi$. Equivalently, for every $f\in L^2(S)$,
 \begin{equation}\label{eq:Phiinverse-test}
-\int_{-1}^{1}f(\xi)\,d\Phi(\xi) \;=\; \lim_{U\to\infty}\frac{1}{2\pi}\int_{-U}^{U}Y(u)\,\check f(u)\,du,\qquad \check f(u)=\int_{-1}^{1}f(\xi)\,e^{-i\xi u}\,d\xi,
+\int_{-1}^{1}f(\xi)\,d\Phi(\xi) \;=\; \lim_{U\to\infty}\frac{1}{2\pi}\int_{-U}^{U}Y(u)\,\check f(u)\,du,\qquad \check f(u)=\int_{-1}^{1}f(\xi)\,e^{-i\xi u}\,d\xi
 \end{equation}
 again in $L^2(\Omega_P,\mathbb{P})$. Existence of the limit is the $L^2(S)$ isometry \eqref{eq:isomL2S} together with the truncated Fourier inversion on $Y$.
 
-\paragraph{Time-warped representation of $Z$.} Combining Theorem~\ref{thm:utc} with \eqref{eq:cramerY} yields, for every admissible $c$ and every $t\in\Omega$,
-\begin{equation}\label{eq:cramerZ}
-Z(t) \;=\; \sqrt{\Theta'(t)}\,Y(\Theta(t)) \;=\; \sqrt{\Theta'(t)}\int_{-1}^{1} e^{i\xi\Theta(t)}\,d\Phi(\xi).
+\paragraph{Inserting $d\Phi$ into the forward representation.} Fix an admissible $c$ and $t\in\Omega\cap\mathbb{R}$. Apply \eqref{eq:Phiinverse-test} with test function $f(\xi)=e^{i\xi\Theta(t)}$; this $f$ is continuous on $[-1,1]$ hence in $L^2(S|_{[-1,1]})$. The inner $\xi$-integral in the inverse formula is Lebesgue,
+\begin{equation}\label{eq:check-f-closed}
+\check f(u) \;=\; \int_{-1}^{1}e^{i\xi\Theta(t)}\,e^{-i\xi u}\,d\xi \;=\; \int_{-1}^{1}e^{i\xi(\Theta(t)-u)}\,d\xi \;=\; \frac{2\sin(\Theta(t)-u)}{\Theta(t)-u}
 \end{equation}
-This is the unitary time-change of the Cram\'er representation: the same orthogonal Borel measure $d\Phi$ that represents the stationary sample path $Y$ represents $Z$ after the biholomorphic reparametrisation $u\mapsto\Theta(t)$ and the half-Jacobian amplitude $\sqrt{\Theta'(t)}$. The representation \eqref{eq:cramerZ} depends on the admissible constant $c$ only through $\Theta=\theta+c\cdot\mathrm{id}$; the orthogonal Borel measure $d\Phi$ itself is a spectral object of $Y$, independent of $c$.
+so that \eqref{eq:Phiinverse-test} reads
+\begin{equation}\label{eq:Phiinv-insert}
+\int_{-1}^{1}e^{i\xi\Theta(t)}\,d\Phi(\xi) \;=\; \lim_{U\to\infty}\frac{1}{\pi}\int_{-U}^{U}Y(u)\,\frac{\sin(\Theta(t)-u)}{\Theta(t)-u}\,du
+\end{equation}
+in $L^2(\Omega_P,\mathbb{P})$. The passage from the nested $(\xi,u)$-form of \eqref{eq:Phiinverse-test} to the single $u$-integral \eqref{eq:Phiinv-insert} exchanges the order of $\xi$- and $u$-integration. At every finite $U$ this is Fubini on the product measure $d\xi\otimes du$ on $[-1,1]\times[-U,U]$: the integrand satisfies
+\begin{equation}\label{eq:Fubini-bound}
+\bigl|Y(u)\,e^{i\xi(\Theta(t)-u)}\bigr| \;=\; |Y(u)|
+\end{equation}
+and
+\begin{equation}\label{eq:Fubini-L1}
+\int_{-U}^{U}\!\int_{-1}^{1}|Y(u)|\,d\xi\,du \;=\; 2\int_{-U}^{U}|Y(u)|\,du \;<\; \infty
+\end{equation}
+since $Y$ is locally $L^2$ on $\mathbb{R}$ hence locally $L^1$ on the compact $[-U,U]$; $[-1,1]$ has finite Lebesgue measure. Fubini therefore applies: the double integral factors in either order, with the same value,
+\begin{equation}\label{eq:Fubini-swap}
+\int_{-U}^{U}Y(u)\!\left(\int_{-1}^{1}e^{i\xi(\Theta(t)-u)}\,d\xi\right)\!du \;=\; \int_{-1}^{1}\!\left(\int_{-U}^{U}Y(u)\,e^{i\xi(\Theta(t)-u)}\,du\right)\!d\xi
+\end{equation}
+and the $L^2(\Omega_P,\mathbb{P})$-limit $U\to\infty$ on both sides exists, with the limit on the right equal to $\int_{-1}^{1}e^{i\xi\Theta(t)}\,d\Phi(\xi)$ by truncated Fourier inversion for $Y$. The bound \eqref{eq:Fubini-bound} is independent of $c$, and the only appearance of $c$ in \eqref{eq:Fubini-swap} is through the real translate $\Theta(t)=\theta(t)+ct$ in the phase; Fubini's hypothesis is therefore satisfied for every admissible $c>c_{**}$.
+
+\paragraph{Time-warped representation of $Z$.} The limit on the right of \eqref{eq:Phiinv-insert} is the sinc-kernel sampling of $Y$ at the point $\Theta(t)\in\mathbb{R}$. Since $Y$ is band-limited to $[-1,1]$ by Theorem~\ref{thm:bandlim} and $\Theta(t)\in\mathbb{R}$, Paley--Wiener sampling gives
+\begin{equation}\label{eq:sinc-recover}
+\lim_{U\to\infty}\frac{1}{\pi}\int_{-U}^{U}Y(u)\,\frac{\sin(\Theta(t)-u)}{\Theta(t)-u}\,du \;=\; Y(\Theta(t))
+\end{equation}
+in $L^2(\Omega_P,\mathbb{P})$. Combining \eqref{eq:Phiinv-insert}, \eqref{eq:sinc-recover}, and Theorem~\ref{thm:utc} ($Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$),
+\begin{equation}\label{eq:cramerZ}
+Z(t) \;=\; \sqrt{\Theta'(t)}\,Y(\Theta(t)) \;=\; \sqrt{\Theta'(t)}\int_{-1}^{1} e^{i\xi\Theta(t)}\,d\Phi(\xi)
+\end{equation}
+for every admissible $c$ and every $t\in\Omega\cap\mathbb{R}$. This is the unitary time-change of the Cram\'er representation: the same orthogonal Borel measure $d\Phi$ that represents the stationary sample path $Y$ represents $Z$ after the biholomorphic reparametrisation $u\mapsto\Theta(t)$ and the half-Jacobian amplitude $\sqrt{\Theta'(t)}$. The representation \eqref{eq:cramerZ} depends on the admissible constant $c$ only through $\Theta=\theta+c\cdot\mathrm{id}$; the orthogonal Borel measure $d\Phi$ itself is a spectral object of $Y$, independent of $c$.
 
 \paragraph{Covariance of $Z$.} From \eqref{eq:cramerZ}, the covariance of $Z$ at $t,s\in\Omega\cap\mathbb{R}$ is
 \begin{equation}\label{eq:RZ}
-R_Z(t,s) \;:=\; \mathbb{E}\bigl[Z(t)\,\overline{Z(s)}\bigr] \;=\; \sqrt{\Theta'(t)\,\Theta'(s)}\int_{-1}^{1} e^{i\xi(\Theta(t)-\Theta(s))}\,dS(\xi).
+R_Z(t,s) \;:=\; \mathbb{E}\bigl[Z(t)\,\overline{Z(s)}\bigr] \;=\; \sqrt{\Theta'(t)\,\Theta'(s)}\int_{-1}^{1} e^{i\xi(\Theta(t)-\Theta(s))}\,dS(\xi)
 \end{equation}
 
 \begin{proof}[Derivation of \eqref{eq:RZ} from \eqref{eq:cramerZ}]
 Fix $t,s\in\mathbb{R}$. Expanding the product and pulling the amplitudes outside the expectation,
 \begin{equation}\label{eq:RZ-step1}
-\mathbb{E}\bigl[Z(t)\,\overline{Z(s)}\bigr] \;=\; \sqrt{\Theta'(t)\,\Theta'(s)}\ \mathbb{E}\!\left[\int_{-1}^{1} e^{i\xi\Theta(t)}\,d\Phi(\xi)\ \overline{\int_{-1}^{1}e^{i\xi'\Theta(s)}\,d\Phi(\xi')}\right].
+\mathbb{E}\bigl[Z(t)\,\overline{Z(s)}\bigr] \;=\; \sqrt{\Theta'(t)\,\Theta'(s)}\ \mathbb{E}\!\left[\int_{-1}^{1} e^{i\xi\Theta(t)}\,d\Phi(\xi)\ \overline{\int_{-1}^{1}e^{i\xi'\Theta(s)}\,d\Phi(\xi')}\right]
 \end{equation}
 The two Wiener integrals are each elements of $L^2(\Omega_P,\mathbb{P})$ with $L^2(S)$-norms equal to $\|e^{i\cdot\Theta(t)}\|_{L^2(S)}=S([-1,1])^{1/2}$ and $\|e^{i\cdot\Theta(s)}\|_{L^2(S)}=S([-1,1])^{1/2}$, which are finite whenever the integrals are taken against a compactly supported test function --- here the restriction of $e^{i\cdot\Theta(t)}$ and $e^{i\cdot\Theta(s)}$ to the compact set $[-1,1]$. The Wiener--It\^o product rule (the bilinear form of \eqref{eq:isomL2S}) gives
 \begin{equation}\label{eq:RZ-step2}
-\mathbb{E}\!\left[\int_{-1}^{1} e^{i\xi\Theta(t)}\,d\Phi(\xi)\ \overline{\int_{-1}^{1}e^{i\xi'\Theta(s)}\,d\Phi(\xi')}\right] \;=\; \int_{-1}^{1} e^{i\xi\Theta(t)}\,\overline{e^{i\xi\Theta(s)}}\,dS(\xi).
+\mathbb{E}\!\left[\int_{-1}^{1} e^{i\xi\Theta(t)}\,d\Phi(\xi)\ \overline{\int_{-1}^{1}e^{i\xi'\Theta(s)}\,d\Phi(\xi')}\right] \;=\; \int_{-1}^{1} e^{i\xi\Theta(t)}\,\overline{e^{i\xi\Theta(s)}}\,dS(\xi)
 \end{equation}
 Combining \eqref{eq:RZ-step1} and \eqref{eq:RZ-step2} gives \eqref{eq:RZ}.
 
 The exchange of the two $\xi$-integrals with the expectation in \eqref{eq:RZ-step2} is an instance of the bilinear It\^o isometry and not an application of Fubini directly. The Fubini justification of that bilinear isometry is standard: for simple functions $f=\sum_k a_k\mathbb{1}_{B_k}$ with $B_k\subseteq[-1,1]$ pairwise disjoint and Borel, and $g=\sum_\ell b_\ell\mathbb{1}_{C_\ell}$ similarly, orthogonality of the increments $\{\Phi(B_k)\}$ gives
 \begin{equation}\label{eq:RZ-step3}
-\mathbb{E}\!\left[\int f\,d\Phi\ \overline{\int g\,d\Phi}\right] \;=\; \sum_{k}\!\sum_\ell a_k\overline{b_\ell}\,\mathbb{E}\bigl[\Phi(B_k)\overline{\Phi(C_\ell)}\bigr] \;=\; \sum_k a_k\overline{b_k}\,S(B_k\cap C_k) \;=\; \int f\,\bar g\,dS,
+\mathbb{E}\!\left[\int f\,d\Phi\ \overline{\int g\,d\Phi}\right] \;=\; \sum_{k}\!\sum_\ell a_k\overline{b_\ell}\,\mathbb{E}\bigl[\Phi(B_k)\overline{\Phi(C_\ell)}\bigr] \;=\; \sum_k a_k\overline{b_k}\,S(B_k\cap C_k) \;=\; \int f\,\bar g\,dS
 \end{equation}
 where in the middle equality we used $\mathbb{E}[\Phi(B_k)\overline{\Phi(C_\ell)}]=S(B_k\cap C_\ell)$ (the integrated form of \eqref{eq:Phicov}) and the fact that for simple functions the double sum is finite so Fubini applies pointwise. Bounded-continuous functions on $[-1,1]$ are $L^2(S)$-limits of simple functions (standard, since $S([-1,1])<\infty$ if one replaces $S$ by $S$-on-$[-1,1]$, which is finite because Theorem~\ref{thm:bandlim} supports $S$ in $[-1,1]$ but does not bound its total mass; for the identity \eqref{eq:RZ-step2} the tests $e^{i\cdot\Theta(t)}$ and $e^{i\cdot\Theta(s)}$ are bounded on the compact set $[-1,1]$, so they are in $L^2(S|_{[-1,1]})$ even when $S$ itself is infinite on $\mathbb{R}$), and the bilinear form in \eqref{eq:RZ-step2} extends continuously in both arguments by the $L^2(S)$ isometry \eqref{eq:isomL2S}, yielding the claim. No assumption on the admissible constant $c$ is used beyond $c>c_{**}$, which is the standing hypothesis on $\Theta$.
 
