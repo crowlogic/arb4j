@@ -170,9 +170,9 @@ Therefore $\tfrac{1}{2}\Re\psi(\tfrac{1}{4}+i\pi n^2) = \log n + \tfrac{1}{2}\lo
 \end{proof}
 
 \begin{definition}[Truncated transform]\label{def:KT}
-For $T>T_0>0$, $\mu\in\mathbb{R}$,
+For $T>0$, $\mu\in\mathbb{R}$,
 \[
-K_T(\mu) := \tfrac{1}{2\pi}\int_{T_0}^{T}Z(t)\sqrt{\Theta'(t)}\,e^{-i\mu\Theta(t)}\,dt = \tfrac{1}{2\pi}\int_{\Theta(T_0)}^{\Theta(T)}Y(u)\,e^{-i\mu u}\,du.
+K_T(\mu) := \tfrac{1}{2\pi}\int_{0}^{T}Z(t)\sqrt{\Theta'(t)}\,e^{-i\mu\Theta(t)}\,dt = \tfrac{1}{2\pi}\int_{\Theta(0)}^{\Theta(T)}Y(u)\,e^{-i\mu u}\,du.
 \]
 \end{definition}
 
@@ -194,12 +194,12 @@ Substituting Lemma~\ref{lem:RS} into $K_T$ and expanding $\cos\alpha=\tfrac{1}{2
 \[
 K_T(\mu)=\tfrac{1}{2\pi}\sum_{\sigma\in\{\pm 1\}}\sum_{n\le N(T)}n^{-1/2}J_{n,\sigma}(T,\mu)+\mathcal{R}(T,\mu),
 \]
-with $t_n:=\max(T_0,2\pi n^2)$,
+with $t_n:=2\pi n^2$,
 \[
 J_{n,\sigma}(T,\mu):=\int_{t_n}^{T}\sqrt{\Theta'(t)}\,e^{i[\sigma\theta(t)-\sigma t\log n-\mu\Theta(t)]}\,dt,
 \]
 \[
-\mathcal{R}(T,\mu):=\tfrac{1}{2\pi}\int_{T_0}^{T}R(t)\sqrt{\Theta'(t)}\,e^{-i\mu\Theta(t)}\,dt.
+\mathcal{R}(T,\mu):=\tfrac{1}{2\pi}\int_{0}^{T}R(t)\sqrt{\Theta'(t)}\,e^{-i\mu\Theta(t)}\,dt.
 \]
 The argument proceeds in the following steps.
 
@@ -209,7 +209,7 @@ The argument proceeds in the following steps.
 
 \item \emph{Change of variable.} Set $x:=\Theta'(t)=\theta'(t)+c$, $dx=\theta''(t)\,dt$, $X:=\Theta'(T)$:
 \[
-J_{n,\sigma}(T,\mu)=\int_{\beta_n\vee\Theta'(T_0)}^{X}\frac{\sqrt{x}}{\theta''(t(x))}\,e^{i\widetilde\Phi_{n,\sigma,\mu}(x)}\,dx,
+J_{n,\sigma}(T,\mu)=\int_{\beta_n\vee\Theta'(0)}^{X}\frac{\sqrt{x}}{\theta''(t(x))}\,e^{i\widetilde\Phi_{n,\sigma,\mu}(x)}\,dx,
 \]
 \[
 \widetilde\Phi'_{n,\sigma,\mu}(x)=\frac{(\sigma-\mu)x-\sigma\log n-\sigma c}{\theta''(t(x))}.
