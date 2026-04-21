@@ -512,11 +512,24 @@ for the total mass of $S$ restricted to $[-1,1]$; this quantity is finite when $
 \end{equation}
 for every $t\in\Omega\cap\mathbb{R}$. The variance of $Z$ is the total spectral mass of $Y$ amplified by the instantaneous phase rate $\Theta'(t)$; it is the diagonal restriction of the covariance, with no dependence on the off-diagonal phase.
 
-From the Binet asymptotic $\theta'(t)=\tfrac{1}{2}\log(t/(2\pi))+O(t^{-2})$ and $\Theta'(t)=\theta'(t)+c$,
-\begin{equation}\label{eq:varZasymp}
-\Var Z(t) \;=\; \sigma_Y^2\!\left[\tfrac{1}{2}\log(t/(2\pi))+c\right]+O(t^{-2})
+\paragraph{Pinning of $\sigma_Y^{2}$ by the Hardy--Littlewood second moment.}
+The value $\sigma_Y^{2}=2$ is not a free calibration; it is pinned as a theorem by the Hardy--Littlewood second moment of $\zeta$. Integrating \eqref{eq:varZ} against $dt$ on $[0,T]$,
+\begin{equation}\label{eq:varintegrate}
+\int_{0}^{T}\Var Z(t)\,dt \;=\; \sigma_Y^{2}\!\int_{0}^{T}\Theta'(t)\,dt \;=\; \sigma_Y^{2}\,[\Theta(T)-\Theta(0)].
 \end{equation}
-as $t\to\infty$, so $\Var Z(t)\to\infty$: $Z$ is not bounded in $L^2$. The logarithmic growth of the variance matches, on integration, the Hardy--Littlewood second moment $\int_{0}^{T}|Z(t)|^{2}\,dt = \int_{0}^{T}\Var Z(t)\,dt \sim \tfrac{\sigma_Y^2}{2}\,T\log T$ provided the calibration $\sigma_Y^2 = 2$ is adopted; that calibration is fixed once and for all by the identity $\int_{0}^{T}|Z(t)|^{2}\,dt = \int_{0}^{T}|\zeta(\tfrac{1}{2}+it)|^{2}\,dt\sim T\log T$ (\cite{Titchmarsh},~\S7.3). With $\sigma_Y^2=2$, the leading term in \eqref{eq:varZasymp} is exactly $\log(t/(2\pi))+2c$.
+On the left, by \eqref{eq:Ztoeta} applied pathwise to the second power and taking expectation,
+\begin{equation}\label{eq:varintegrate2}
+\int_{0}^{T}\Var Z(t)\,dt \;=\; \int_{0}^{T}\mathbb{E}\bigl|\zeta(\tfrac{1}{2}+it)\bigr|^{2}\,dt \;=\; \int_{0}^{T}\bigl|\zeta(\tfrac{1}{2}+it)\bigr|^{2}\,dt,
+\end{equation}
+the outer expectation being trivial since $|\zeta(\tfrac{1}{2}+it)|^{2}$ is not a chance quantity. On the right, $\Theta(T)=\theta(T)+cT=\tfrac{T}{2}\log(T/(2\pi))-\tfrac{T}{2}+cT+O(1)$. Hardy--Littlewood (\cite{Titchmarsh},~\S7.3) gives $\int_{0}^{T}|\zeta(\tfrac{1}{2}+it)|^{2}\,dt = T\log T - (1+\log 2\pi - 2\gamma)T + O(T^{1/2}\log T)$. Dividing both \eqref{eq:varintegrate} and the Hardy--Littlewood identity by $T\log T$ and taking $T\to\infty$ equates the two leading coefficients: the right side of \eqref{eq:varintegrate} contributes $\sigma_Y^{2}\cdot\tfrac{1}{2}$ and Hardy--Littlewood contributes $1$, forcing
+\begin{equation}\label{eq:sigmaYfixed}
+\sigma_Y^{2} \;=\; 2.
+\end{equation}
+No degree of freedom remains; $\sigma_Y^{2}=2$ is a theorem derived from Hardy--Littlewood, not a convention. With $\sigma_Y^{2}=2$, \eqref{eq:varZ} becomes the exact identity
+\begin{equation}\label{eq:varZexact}
+\Var Z(t) \;=\; 2\,\Theta'(t),
+\end{equation}
+with $\Theta'(t)=\theta'(t)+c=\tfrac{1}{2}\Re\psi(\tfrac{1}{4}+\tfrac{it}{2})-\tfrac{1}{2}\log\pi+c$ by \eqref{eq:thetap}. No asymptotic expansion of $\theta'$ enters: \eqref{eq:varZexact} holds for every $t\in\Omega\cap\mathbb{R}$ as an identity between $\Var Z$ and the digamma function.
 
 \subsection{Sample-path autocorrelation under the unitary time change}\label{app:sampleautocorr}
 
