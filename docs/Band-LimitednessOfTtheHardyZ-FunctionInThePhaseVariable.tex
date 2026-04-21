@@ -28,22 +28,22 @@ Let $\zeta$ denote the Riemann zeta function, $Z(t) = e^{i\theta(t)}\zeta(\tfrac
 \[
 c \;>\; c_{**} \;:=\; \tfrac{1}{2}\!\left(\gamma + 3\log 2 + \tfrac{\pi}{2} + \log\pi\right) \;+\; \tfrac{1}{8}\sup_{|\Im t|<1/2}\!\left|\psi'(\tfrac{1}{4}+\tfrac{it}{2})\right|,
 \]
-define $\tilde\theta(t) := \theta(t) + ct$ and let $\tilde H$ be the unitary inverse phase pullback of $Z$, namely
+define $\Theta(t) := \theta(t) + ct$ and let $Y$ be the unitary inverse phase pullback of $Z$, namely
 \[
-\tilde H(u) \;:=\; \frac{Z(\tilde\theta^{-1}(u))}{\sqrt{\tilde\theta'(\tilde\theta^{-1}(u))}}.
+Y(u) \;:=\; \frac{Z(\Theta^{-1}(u))}{\sqrt{\Theta'(\Theta^{-1}(u))}}.
 \]
-The Fourier support of $\tilde H$ is contained in $[-1,1]$. By the Paley--Wiener theorem, $\tilde H$ extends to an entire function of exponential type $\le 1$. Combined with the non-negativity of the spectral measure $S:=|\widehat{\tilde H}|^2$ and Akhiezer's theorem, $\tilde H$ belongs to the Laguerre--P\'olya class. The unitary identity $Z(t) = \tilde H(\tilde\theta(t))\sqrt{\tilde\theta'(t)}$, valid on the strip $\{|\Im t| < \tfrac{1}{2}\}$ where $\tilde\theta$ is an injective biholomorphism with non-vanishing derivative and $Z$ is holomorphic, transfers the real zero locus of $\tilde H$ to that of $Z$. Therefore every non-trivial zero $\rho$ of $\zeta$ satisfies $\Re\rho = \tfrac{1}{2}$.
+The Fourier support of $Y$ is contained in $[-1,1]$. By the Paley--Wiener theorem, $Y$ extends to an entire function of exponential type $\le 1$. Combined with the non-negativity of the spectral measure $S:=|\widehat{Y}|^2$ and Akhiezer's theorem, $Y$ belongs to the Laguerre--P\'olya class. The unitary identity $Z(t) = Y(\Theta(t))\sqrt{\Theta'(t)}$, valid on the strip $\{|\Im t| < \tfrac{1}{2}\}$ where $\Theta$ is an injective biholomorphism with non-vanishing derivative and $Z$ is holomorphic, transfers the real zero locus of $Y$ to that of $Z$. Therefore every non-trivial zero $\rho$ of $\zeta$ satisfies $\Re\rho = \tfrac{1}{2}$.
 \end{abstract}
 
 \section{Introduction}
 
 The Hardy Z-function $Z(t) = e^{i\theta(t)}\zeta(\tfrac{1}{2}+it)$ is real-valued on $\mathbb{R}$ and holomorphic on the open strip $\{|\Im t|<\tfrac{1}{2}\}$. It is not entire: the pole of $\zeta$ at $s=1$ pulls back under $s=\tfrac{1}{2}+it$ to a pole at $t=-i/2$. The zero locus of $Z$ in the open strip $\{|\Im t|<\tfrac{1}{2}\}$ determines the zero locus of $\zeta$ in the critical strip $\{0<\Re s<1\}$ via $s=\tfrac{1}{2}+it$.
 
-The Riemann--Siegel phase $\theta$ fails to be monotone on $[0,\infty)$: $\theta'$ is strictly increasing but negative on $[0,t_c]$ and positive on $[t_c,\infty)$, where $t_c\approx 6.2898$ is the unique real zero of $\theta'$. The argument presented here restores global monotonicity by the linear shift $\tilde\theta(t):=\theta(t)+ct$ with $c>c_{**}$ chosen so that $\tilde\theta'$ is bounded below and non-vanishing on $\{|\Im t|<\tfrac{1}{2}\}$. The unitary inverse phase pullback $\tilde H(u):=Z(\tilde\theta^{-1}(u))/\sqrt{\tilde\theta'(\tilde\theta^{-1}(u))}$ satisfies the biholomorphic identity $Z(t)=\tilde H(\tilde\theta(t))\sqrt{\tilde\theta'(t)}$ on the open strip, where $Z$ is holomorphic.
+The Riemann--Siegel phase $\theta$ fails to be monotone on $[0,\infty)$: $\theta'$ is strictly increasing but negative on $[0,t_c]$ and positive on $[t_c,\infty)$, where $t_c\approx 6.2898$ is the unique real zero of $\theta'$. The argument presented here restores global monotonicity by the linear shift $\Theta(t):=\theta(t)+ct$ with $c>c_{**}$ chosen so that $\Theta'$ is bounded below and non-vanishing on $\{|\Im t|<\tfrac{1}{2}\}$. The unitary inverse phase pullback $Y(u):=Z(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u))}$ satisfies the biholomorphic identity $Z(t)=Y(\Theta(t))\sqrt{\Theta'(t)}$ on the open strip, where $Z$ is holomorphic.
 
 All spectral quantities, in particular the mode thresholds $\beta_n$, are given in closed form as values of the digamma function $\psi$ at explicit complex arguments. Asymptotic expansions are derived from these exact forms and used only where needed for the finiteness of the exceptional set $\mathcal{S}(\mu)$.
 
-The main technical content (Theorem~\ref{thm:bandlim}) is band-limitedness of $\tilde H$: $\supp S\subseteq[-1,1]$. Paley--Wiener gives $\tilde H$ entire of exponential type $\le 1$; Akhiezer gives reality of its zeros; the unitary identity transfers reality to the zeros of $Z$ inside the open strip; the equivalence $\zeta(\tfrac{1}{2}+it)=0\iff Z(t)=0$, valid on $\{|\Im t|<\tfrac{1}{2}\}\setminus\{\pm i/2\}$ where the non-trivial zeros of $\zeta$ lie, yields the conclusion for $\zeta$.
+The main technical content (Theorem~\ref{thm:bandlim}) is band-limitedness of $Y$: $\supp S\subseteq[-1,1]$. Paley--Wiener gives $Y$ entire of exponential type $\le 1$; Akhiezer gives reality of its zeros; the unitary identity transfers reality to the zeros of $Z$ inside the open strip; the equivalence $\zeta(\tfrac{1}{2}+it)=0\iff Z(t)=0$, valid on $\{|\Im t|<\tfrac{1}{2}\}\setminus\{\pm i/2\}$ where the non-trivial zeros of $\zeta$ lie, yields the conclusion for $\zeta$.
 
 \section{The Phase Function}
 
@@ -98,20 +98,20 @@ $M<\infty$.
 $\psi'$ is holomorphic on $\mathbb{C}\setminus\mathbb{Z}_{\le 0}$. The set $\{\tfrac{1}{4}+\tfrac{it}{2}:|\Im t|\le\tfrac{1}{2}\}$ is at distance $\ge\tfrac{1}{4}$ from $\mathbb{Z}_{\le 0}$. As $|\Re t|\to\infty$, $|\psi'|=O(|\Re t|^{-1})\to 0$.
 \end{proof}
 
-\begin{lemma}[Strict positivity of $\tilde\theta'$ on the strip]\label{lem:tildenonvan}
-For every admissible $c$, $\Re\tilde\theta'(t)\ge c-c_{**}>0$ on $\{|\Im t|<\tfrac{1}{2}\}$.
+\begin{lemma}[Strict positivity of $\Theta'$ on the strip]\label{lem:tildenonvan}
+For every admissible $c$, $\Re\Theta'(t)\ge c-c_{**}>0$ on $\{|\Im t|<\tfrac{1}{2}\}$.
 \end{lemma}
 
 \begin{proof}
-$|\Re\theta'(\tau+i\sigma)-\theta'(\tau)|\le|\sigma|\cdot 2M\le M$. $\theta'$ is even on $\mathbb{R}$ and increasing on $[0,\infty)$, therefore $\theta'(\tau)\ge-c_*$. Therefore $\Re\tilde\theta'(t)\ge-c_*-M+c=c-c_{**}>0$.
+$|\Re\theta'(\tau+i\sigma)-\theta'(\tau)|\le|\sigma|\cdot 2M\le M$. $\theta'$ is even on $\mathbb{R}$ and increasing on $[0,\infty)$, therefore $\theta'(\tau)\ge-c_*$. Therefore $\Re\Theta'(t)\ge-c_*-M+c=c-c_{**}>0$.
 \end{proof}
 
-\begin{lemma}[Injectivity of $\tilde\theta$]\label{lem:stripinj}
-For every admissible $c$, $\tilde\theta$ is injective on $\{|\Im t|<\tfrac{1}{2}\}$ and bijective $\mathbb{R}\to\mathbb{R}$.
+\begin{lemma}[Injectivity of $\Theta$]\label{lem:stripinj}
+For every admissible $c$, $\Theta$ is injective on $\{|\Im t|<\tfrac{1}{2}\}$ and bijective $\mathbb{R}\to\mathbb{R}$.
 \end{lemma}
 
 \begin{proof}
-If $\tilde\theta(t_1)=\tilde\theta(t_2)$, the straight-line integral gives $(t_2-t_1)\int_0^1\tilde\theta'(\gamma(s))\,ds=0$; the real part of the integral is $\ge c-c_{**}>0$, therefore $t_1=t_2$.
+If $\Theta(t_1)=\Theta(t_2)$, the straight-line integral gives $(t_2-t_1)\int_0^1\Theta'(\gamma(s))\,ds=0$; the real part of the integral is $\ge c-c_{**}>0$, therefore $t_1=t_2$.
 \end{proof}
 
 \section{The Hardy Z-Function on the Strip}
@@ -132,19 +132,19 @@ Meromorphy of $\zeta$ with simple pole at $s=1$ is classical (\cite{Titchmarsh},
 \begin{definition}[Unitary inverse phase pullback]\label{def:Htilde}
 For admissible $c$ and $u\ge 0$, the \emph{unitary inverse phase pullback} of $Z$ is
 \[
-\tilde H(u) \;:=\; \frac{Z(\tilde\theta^{-1}(u))}{\sqrt{\tilde\theta'(\tilde\theta^{-1}(u))}}.
+Y(u) \;:=\; \frac{Z(\Theta^{-1}(u))}{\sqrt{\Theta'(\Theta^{-1}(u))}}.
 \]
-Extend to $\mathbb{R}$ by $\tilde H(-u):=\tilde H(u)$. The half-Jacobian factor $1/\sqrt{\tilde\theta'(\tilde\theta^{-1}(u))}$ renders the map $Z\mapsto\tilde H$ an $L^2$-isometry under the change of variable $u=\tilde\theta(t)$.
+Extend to $\mathbb{R}$ by $Y(-u):=Y(u)$. The half-Jacobian factor $1/\sqrt{\Theta'(\Theta^{-1}(u))}$ renders the map $Z\mapsto Y$ an $L^2$-isometry under the change of variable $u=\Theta(t)$.
 \end{definition}
 
-$\tilde H$ is real-valued on $\mathbb{R}$.
+$Y$ is real-valued on $\mathbb{R}$.
 
 \section{Band-Limitedness}
 
 \begin{definition}[Mode threshold]\label{def:betan}
 For each $n\ge 1$,
 \[
-\beta_n \;:=\; \tilde\theta'(2\pi n^2) \;=\; \tfrac{1}{2}\Re\psi\!\left(\tfrac{1}{4}+i\pi n^2\right) - \tfrac{1}{2}\log\pi + c.
+\beta_n \;:=\; \Theta'(2\pi n^2) \;=\; \tfrac{1}{2}\Re\psi\!\left(\tfrac{1}{4}+i\pi n^2\right) - \tfrac{1}{2}\log\pi + c.
 \]
 \end{definition}
 
@@ -172,7 +172,7 @@ Therefore $\tfrac{1}{2}\Re\psi(\tfrac{1}{4}+i\pi n^2) = \log n + \tfrac{1}{2}\lo
 \begin{definition}[Truncated transform]\label{def:KT}
 For $T>T_0>0$, $\mu\in\mathbb{R}$,
 \[
-K_T(\mu) := \tfrac{1}{2\pi}\int_{T_0}^{T}Z(t)\sqrt{\tilde\theta'(t)}\,e^{-i\mu\tilde\theta(t)}\,dt = \tfrac{1}{2\pi}\int_{\tilde\theta(T_0)}^{\tilde\theta(T)}\tilde H(u)\,e^{-i\mu u}\,du.
+K_T(\mu) := \tfrac{1}{2\pi}\int_{T_0}^{T}Z(t)\sqrt{\Theta'(t)}\,e^{-i\mu\Theta(t)}\,dt = \tfrac{1}{2\pi}\int_{\Theta(T_0)}^{\Theta(T)}Y(u)\,e^{-i\mu u}\,du.
 \]
 \end{definition}
 
@@ -185,8 +185,8 @@ Z(t) = 2\sum_{n=1}^{N(t)}n^{-1/2}\cos(\theta(t)-t\log n) + R(t),\qquad N(t):=\lf
 
 \begin{proof}\cite{Edwards}, \S7.4, Theorem 7.1.\end{proof}
 
-\begin{theorem}[Band-limitedness of $\tilde H$]\label{thm:bandlim}
-For every admissible $c$ and every $\mu\in\mathbb{R}$ with $|\mu|>1$, $\lim_{T\to\infty}K_T(\mu)=0$. Equivalently, $\supp S\subseteq[-1,1]$, where $S:=|\widehat{\tilde H}|^2$.
+\begin{theorem}[Band-limitedness of $Y$]\label{thm:bandlim}
+For every admissible $c$ and every $\mu\in\mathbb{R}$ with $|\mu|>1$, $\lim_{T\to\infty}K_T(\mu)=0$. Equivalently, $\supp S\subseteq[-1,1]$, where $S:=|\widehat{Y}|^2$.
 \end{theorem}
 
 \begin{proof}
@@ -196,20 +196,20 @@ K_T(\mu)=\tfrac{1}{2\pi}\sum_{\sigma\in\{\pm 1\}}\sum_{n\le N(T)}n^{-1/2}J_{n,\s
 \]
 with $t_n:=\max(T_0,2\pi n^2)$,
 \[
-J_{n,\sigma}(T,\mu):=\int_{t_n}^{T}\sqrt{\tilde\theta'(t)}\,e^{i[\sigma\theta(t)-\sigma t\log n-\mu\tilde\theta(t)]}\,dt,
+J_{n,\sigma}(T,\mu):=\int_{t_n}^{T}\sqrt{\Theta'(t)}\,e^{i[\sigma\theta(t)-\sigma t\log n-\mu\Theta(t)]}\,dt,
 \]
 \[
-\mathcal{R}(T,\mu):=\tfrac{1}{2\pi}\int_{T_0}^{T}R(t)\sqrt{\tilde\theta'(t)}\,e^{-i\mu\tilde\theta(t)}\,dt.
+\mathcal{R}(T,\mu):=\tfrac{1}{2\pi}\int_{T_0}^{T}R(t)\sqrt{\Theta'(t)}\,e^{-i\mu\Theta(t)}\,dt.
 \]
 The argument proceeds in the following steps.
 
 \begin{enumerate}[label=(\roman*),leftmargin=*]
 
-\item \emph{Remainder vanishing.} $R(t)\sqrt{\tilde\theta'(t)}=O(t^{-1/4}(\log t)^{1/2})$; the phase derivative $|-\mu\tilde\theta'(t)|\ge|\mu|(c-c_*)$ and grows as $\tfrac{|\mu|}{2}\log(t/(2\pi))$. Integration by parts gives $\mathcal{R}(\infty,\mu)-\mathcal{R}(T,\mu)=O(T^{-1/4}(\log T)^{-1/2})\to 0$.
+\item \emph{Remainder vanishing.} $R(t)\sqrt{\Theta'(t)}=O(t^{-1/4}(\log t)^{1/2})$; the phase derivative $|-\mu\Theta'(t)|\ge|\mu|(c-c_*)$ and grows as $\tfrac{|\mu|}{2}\log(t/(2\pi))$. Integration by parts gives $\mathcal{R}(\infty,\mu)-\mathcal{R}(T,\mu)=O(T^{-1/4}(\log T)^{-1/2})\to 0$.
 
-\item \emph{Change of variable.} Set $x:=\tilde\theta'(t)=\theta'(t)+c$, $dx=\theta''(t)\,dt$, $X:=\tilde\theta'(T)$:
+\item \emph{Change of variable.} Set $x:=\Theta'(t)=\theta'(t)+c$, $dx=\theta''(t)\,dt$, $X:=\Theta'(T)$:
 \[
-J_{n,\sigma}(T,\mu)=\int_{\beta_n\vee\tilde\theta'(T_0)}^{X}\frac{\sqrt{x}}{\theta''(t(x))}\,e^{i\widetilde\Phi_{n,\sigma,\mu}(x)}\,dx,
+J_{n,\sigma}(T,\mu)=\int_{\beta_n\vee\Theta'(T_0)}^{X}\frac{\sqrt{x}}{\theta''(t(x))}\,e^{i\widetilde\Phi_{n,\sigma,\mu}(x)}\,dx,
 \]
 \[
 \widetilde\Phi'_{n,\sigma,\mu}(x)=\frac{(\sigma-\mu)x-\sigma\log n-\sigma c}{\theta''(t(x))}.
@@ -228,42 +228,42 @@ therefore $\mathcal{S}(\mu)$ is finite.
 
 \item \emph{IBP for $n\notin\mathcal{S}(\mu)$.} Constant-sign phase derivative; boundary $O(X^{-1/2})$, tail $\le 2CX^{-1/2}$.
 
-\item \emph{IBP tail for $n\in\mathcal{S}(\mu)$.} Past the stationary point, $|\Phi'_{n,\sigma,\mu}(t)|\ge(|\mu|-1)\tilde\theta'(T)-|\log n+c|>0$, diverging; integration by parts gives $O(\tilde\theta'(T)^{-1/2})$.
+\item \emph{IBP tail for $n\in\mathcal{S}(\mu)$.} Past the stationary point, $|\Phi'_{n,\sigma,\mu}(t)|\ge(|\mu|-1)\Theta'(T)-|\log n+c|>0$, diverging; integration by parts gives $O(\Theta'(T)^{-1/2})$.
 
 \item \emph{Assembly.}
 \[
-K_\infty(\mu)-K_T(\mu)=\tfrac{1}{2\pi}\sum_\sigma\!\left[\sum_{n\notin\mathcal{S}(\mu)}n^{-1/2}O(X^{-1/2})+\sum_{n\in\mathcal{S}(\mu)}n^{-1/2}O(\tilde\theta'(T)^{-1/2})\right]+O(T^{-1/4}(\log T)^{-1/2}).
+K_\infty(\mu)-K_T(\mu)=\tfrac{1}{2\pi}\sum_\sigma\!\left[\sum_{n\notin\mathcal{S}(\mu)}n^{-1/2}O(X^{-1/2})+\sum_{n\in\mathcal{S}(\mu)}n^{-1/2}O(\Theta'(T)^{-1/2})\right]+O(T^{-1/4}(\log T)^{-1/2}).
 \]
 All terms vanish as $T\to\infty$; $K_\infty(\mu)$ exists.
 
 \item \emph{Identification.} The mode $(n,\sigma)$ instantaneous $u$-frequency is
 \[
-\sigma\cdot\frac{\theta'(t)-\log n}{\tilde\theta'(t)}=\sigma\cdot\frac{\theta'(t)-\log n}{\theta'(t)+c}.
+\sigma\cdot\frac{\theta'(t)-\log n}{\Theta'(t)}=\sigma\cdot\frac{\theta'(t)-\log n}{\theta'(t)+c}.
 \]
 On $t\ge 2\pi n^2$, $\theta'(t)\ge\theta'(2\pi n^2)=\beta_n-c=\tfrac{1}{2}\Re\psi(\tfrac{1}{4}+i\pi n^2)-\tfrac{1}{2}\log\pi$. Numerator $\ge 0$; denominator exceeds numerator by $c+\log n>0$; ratio in $[0,1)$. The Riemann--Siegel remainder has $u$-frequency $O((\log t)^{-1})\to 0$.
 
 \end{enumerate}
 
-Therefore $\supp S\subseteq[-1,1]$, and $K_\infty(\mu)=\widehat{\tilde H}(\mu)=0$ for $|\mu|>1$.
+Therefore $\supp S\subseteq[-1,1]$, and $K_\infty(\mu)=\widehat{Y}(\mu)=0$ for $|\mu|>1$.
 \end{proof}
 
 \section{Entire Extension and Laguerre--P\'olya Membership}
 
 \begin{corollary}[Paley--Wiener]\label{cor:PW}
-$\tilde H$ extends to an entire function of exponential type $\le 1$:
+$Y$ extends to an entire function of exponential type $\le 1$:
 \[
-\tilde H(z)=\int_{-1}^{1}\widehat{\tilde H}(\xi)\,e^{i\xi z}\,d\xi,\qquad |\tilde H(z)|\le\|\widehat{\tilde H}\|\,e^{|\Im z|}.
+Y(z)=\int_{-1}^{1}\widehat{Y}(\xi)\,e^{i\xi z}\,d\xi,\qquad |Y(z)|\le\|\widehat{Y}\|\,e^{|\Im z|}.
 \]
 \end{corollary}
 
 \begin{proof}\cite{Rudin}, Theorem 19.3; \cite{Hormander}, Theorem 7.3.1.\end{proof}
 
 \begin{lemma}[Non-negativity of the spectral measure]\label{lem:PSD}
-The spectral measure $S:=|\widehat{\tilde H}|^2$ is a non-negative tempered measure on $\mathbb{R}$, supported in $[-1,1]$.
+The spectral measure $S:=|\widehat{Y}|^2$ is a non-negative tempered measure on $\mathbb{R}$, supported in $[-1,1]$.
 \end{lemma}
 
 \begin{proof}
-The autocorrelation $C(\eta):=\langle\tilde H,\tilde H(\cdot+\eta)\rangle$ is positive-definite in the tempered sense; Bochner--Schwartz (\cite{Rudin-FA}, Theorem 7.7) identifies its Fourier transform with a non-negative tempered measure $S$; support from Theorem~\ref{thm:bandlim}.
+The autocorrelation $C(\eta):=\langle Y,Y(\cdot+\eta)\rangle$ is positive-definite in the tempered sense; Bochner--Schwartz (\cite{Rudin-FA}, Theorem 7.7) identifies its Fourier transform with a non-negative tempered measure $S$; support from Theorem~\ref{thm:bandlim}.
 \end{proof}
 
 \begin{theorem}[Akhiezer]\label{thm:akhiezer}
@@ -272,12 +272,12 @@ A real-valued entire function $F$ of exponential type $\le\tau$ whose spectral m
 
 \begin{proof}\cite{Levin}, Lecture 16, Theorem 3; \cite{Akhiezer}, \S V.4.\end{proof}
 
-\begin{corollary}[Reality of zeros of $\tilde H$]\label{cor:Hzero}
-All zeros of $\tilde H$ in $\mathbb{C}$ are real.
+\begin{corollary}[Reality of zeros of $Y$]\label{cor:Hzero}
+All zeros of $Y$ in $\mathbb{C}$ are real.
 \end{corollary}
 
 \begin{proof}
-$\tilde H$ is real on $\mathbb{R}$ (Definition~\ref{def:Htilde}), entire of exponential type $\le 1$ (Corollary~\ref{cor:PW}), with spectral measure $S$ non-negative and supported in $[-1,1]$ (Lemma~\ref{lem:PSD}). Apply Theorem~\ref{thm:akhiezer}.
+$Y$ is real on $\mathbb{R}$ (Definition~\ref{def:Htilde}), entire of exponential type $\le 1$ (Corollary~\ref{cor:PW}), with spectral measure $S$ non-negative and supported in $[-1,1]$ (Lemma~\ref{lem:PSD}). Apply Theorem~\ref{thm:akhiezer}.
 \end{proof}
 
 \section{Transfer to the Hardy Z-Function}
@@ -285,13 +285,13 @@ $\tilde H$ is real on $\mathbb{R}$ (Definition~\ref{def:Htilde}), entire of expo
 \begin{theorem}[Unitary inverse phase pullback identity]\label{thm:utc}
 For every admissible $c$ and every $t\in\Omega=\{|\Im t|<\tfrac{1}{2}\}$,
 \[
-Z(t)=\tilde H(\tilde\theta(t))\sqrt{\tilde\theta'(t)},
+Z(t)=Y(\Theta(t))\sqrt{\Theta'(t)},
 \]
-where $\sqrt{\tilde\theta'(\cdot)}$ is the holomorphic branch on $\Omega$ that is positive on $\mathbb{R}$.
+where $\sqrt{\Theta'(\cdot)}$ is the holomorphic branch on $\Omega$ that is positive on $\mathbb{R}$.
 \end{theorem}
 
 \begin{proof}
-On $[0,\infty)$ the identity is Definition~\ref{def:Htilde} rearranged. Both sides are holomorphic on $\Omega$: $Z$ is holomorphic on $\Omega$ by Lemma~\ref{lem:Zholo}; $\tilde\theta$ is holomorphic on $\{|\Im t|<1\}\supset\Omega$; $\tilde H$ is entire by Corollary~\ref{cor:PW}; $\sqrt{\tilde\theta'(t)}$ admits a holomorphic branch since $\tilde\theta'$ is non-vanishing on the simply connected $\Omega$ by Lemma~\ref{lem:tildenonvan}. The identity theorem extends the equality from $[0,\infty)$ to $\Omega$.
+On $[0,\infty)$ the identity is Definition~\ref{def:Htilde} rearranged. Both sides are holomorphic on $\Omega$: $Z$ is holomorphic on $\Omega$ by Lemma~\ref{lem:Zholo}; $\Theta$ is holomorphic on $\{|\Im t|<1\}\supset\Omega$; $Y$ is entire by Corollary~\ref{cor:PW}; $\sqrt{\Theta'(t)}$ admits a holomorphic branch since $\Theta'$ is non-vanishing on the simply connected $\Omega$ by Lemma~\ref{lem:tildenonvan}. The identity theorem extends the equality from $[0,\infty)$ to $\Omega$.
 \end{proof}
 
 \begin{theorem}[Reality of zeros of $Z$ in the critical strip]\label{thm:Zreal}
@@ -299,7 +299,7 @@ Every zero of $Z$ in $\Omega=\{|\Im t|<\tfrac{1}{2}\}$ is real.
 \end{theorem}
 
 \begin{proof}
-Let $t_0\in\Omega$ satisfy $Z(t_0)=0$. Theorem~\ref{thm:utc} gives $\tilde H(\tilde\theta(t_0))\sqrt{\tilde\theta'(t_0)}=0$. Lemma~\ref{lem:tildenonvan} gives $\sqrt{\tilde\theta'(t_0)}\ne 0$, therefore $\tilde H(\tilde\theta(t_0))=0$. Corollary~\ref{cor:Hzero} gives $\tilde\theta(t_0)\in\mathbb{R}$. Lemma~\ref{lem:stripinj}, therefore, gives $t_0\in\mathbb{R}$.
+Let $t_0\in\Omega$ satisfy $Z(t_0)=0$. Theorem~\ref{thm:utc} gives $Y(\Theta(t_0))\sqrt{\Theta'(t_0)}=0$. Lemma~\ref{lem:tildenonvan} gives $\sqrt{\Theta'(t_0)}\ne 0$, therefore $Y(\Theta(t_0))=0$. Corollary~\ref{cor:Hzero} gives $\Theta(t_0)\in\mathbb{R}$. Lemma~\ref{lem:stripinj}, therefore, gives $t_0\in\mathbb{R}$.
 \end{proof}
 
 \section{The Zero Locus of $\zeta$}
@@ -326,51 +326,51 @@ The reason is semantic, not technical. The intuition is geometric, in the plain 
 
 \emph{Pushforward.} Now picture yourself sitting with a kite wound up at your feet and you want it out in the sky: you let out the line and send it forth, expanding it into the space it will occupy. That outgoing, spreading motion is a pushforward.
 
-Apply that picture here. $Z$ is being sent outward: it is spread across the $t$-line, expanded into that space. To build $\tilde H$ on the $u$-line, one sits at a point $u$, reaches back through the phase map via $\tilde\theta^{-1}$, grabs the value $Z(\tilde\theta^{-1}(u))$, and reels it in. That retrieving is exactly why the operation is called a pullback: $Z$ has been sent out, and one has to pull it back to gather it at $u$. Since the reeling is done along $\tilde\theta^{-1}$, the qualifier is ``inverse phase.'' The adjective ``unitary'' records that the half-Jacobian $1/\sqrt{\tilde\theta'(\tilde\theta^{-1}(u))}$ is included so that $L^2$-mass is preserved under the operation.
+Apply that picture here. $Z$ is being sent outward: it is spread across the $t$-line, expanded into that space. To build $Y$ on the $u$-line, one sits at a point $u$, reaches back through the phase map via $\Theta^{-1}$, grabs the value $Z(\Theta^{-1}(u))$, and reels it in. That retrieving is exactly why the operation is called a pullback: $Z$ has been sent out, and one has to pull it back to gather it at $u$. Since the reeling is done along $\Theta^{-1}$, the qualifier is ``inverse phase.'' The adjective ``unitary'' records that the half-Jacobian $1/\sqrt{\Theta'(\Theta^{-1}(u))}$ is included so that $L^2$-mass is preserved under the operation.
 
 \paragraph{Contravariance and covariance.}
-The two directions carry standard names in differential geometry: a pullback is \emph{contravariant} and a pushforward is \emph{covariant}, referring to how each transforms under composition of maps. Objects that live as functions or scalar fields --- things one evaluates at a point --- transform contravariantly: they pull back, against the direction of the map. Objects that live as tangent vectors, velocities, or measures --- things that carry a notion of flow or mass --- transform covariantly: they push forward, with the direction of the map. The split is the same one that distinguishes covectors from vectors, or differential forms from densities: it records which kind of geometric object is being transported and which way the arrow of transport naturally runs. Under this classification, $Z$ and $\tilde H$ are scalar-like, half-density data, and the natural transport between them is contravariant --- a pullback.
+The two directions carry standard names in differential geometry: a pullback is \emph{contravariant} and a pushforward is \emph{covariant}, referring to how each transforms under composition of maps. Objects that live as functions or scalar fields --- things one evaluates at a point --- transform contravariantly: they pull back, against the direction of the map. Objects that live as tangent vectors, velocities, or measures --- things that carry a notion of flow or mass --- transform covariantly: they push forward, with the direction of the map. The split is the same one that distinguishes covectors from vectors, or differential forms from densities: it records which kind of geometric object is being transported and which way the arrow of transport naturally runs. Under this classification, $Z$ and $Y$ are scalar-like, half-density data, and the natural transport between them is contravariant --- a pullback.
 
 \paragraph{A remark on the dual naming.}
-Technically one could reverse the point of view and call $Z$ itself the \emph{phase pushforward} of the stationary process $\tilde H$: starting from $\tilde H$ on the $u$-line, one lets out the line along $\tilde\theta$ and expands $\tilde H$ outward into $t$-space, obtaining $Z$. Equivalently, the stationary process $\tilde H$ could be defined as the pushforward of $Z$ along the phase --- sending $Z$ forth into $u$-coordinates. This naming is formally consistent, but it reads against the grain of what is being constructed. Stationarity is a property of something gathered and settled; producing it by \emph{pushing} an object outward into a new space is the wrong English motion. One naturally assembles a stationary object by \emph{pulling in} values from the non-stationary source. ``Unitary inverse phase pullback'' is therefore the name used throughout: it matches the geometric direction of the construction and the linguistic image of stationarity as something retrieved, not something broadcast.
+Technically one could reverse the point of view and call $Z$ itself the \emph{phase pushforward} of the stationary process $Y$: starting from $Y$ on the $u$-line, one lets out the line along $\Theta$ and expands $Y$ outward into $t$-space, obtaining $Z$. Equivalently, the stationary process $Y$ could be defined as the pushforward of $Z$ along the phase --- sending $Z$ forth into $u$-coordinates. This naming is formally consistent, but it reads against the grain of what is being constructed. Stationarity is a property of something gathered and settled; producing it by \emph{pushing} an object outward into a new space is the wrong English motion. One naturally assembles a stationary object by \emph{pulling in} values from the non-stationary source. ``Unitary inverse phase pullback'' is therefore the name used throughout: it matches the geometric direction of the construction and the linguistic image of stationarity as something retrieved, not something broadcast.
 
 \paragraph{Ditty.}
 \begin{quote}
 Functions pull back, measures push forth.\\
 $Z$ lives in $t$, so $u$ must go north:\\
-compose with $\tilde\theta^{-1}$, put half-Jacobian in tow ---\\
+compose with $\Theta^{-1}$, put half-Jacobian in tow ---\\
 that's the unitary inverse phase pullback, row by row.
 \end{quote}
 
 \subsection{Why is the spectral measure non-negative?}\label{app:PSD-colloquial}
 
-The autocorrelation of any real, locally square-integrable function is a positive-definite tempered distribution: the Gram matrix of finitely many translates of $\tilde H$ restricted to a common window has non-negative eigenvalues, a one-line consequence of Cauchy--Schwarz. Bochner--Schwartz identifies the Fourier transform of a positive-definite tempered distribution with a non-negative tempered measure, and Wiener--Khinchin identifies that Fourier transform with $S=|\widehat{\tilde H}|^2$. Non-negativity of the spectral measure is the Fourier-side restatement of this universal property of autocorrelations; the support condition $\supp S\subseteq[-1,1]$ is delivered by Theorem~\ref{thm:bandlim} and combines with non-negativity to invoke Akhiezer.
+The autocorrelation of any real, locally square-integrable function is a positive-definite tempered distribution: the Gram matrix of finitely many translates of $Y$ restricted to a common window has non-negative eigenvalues, a one-line consequence of Cauchy--Schwarz. Bochner--Schwartz identifies the Fourier transform of a positive-definite tempered distribution with a non-negative tempered measure, and Wiener--Khinchin identifies that Fourier transform with $S=|\widehat{Y}|^2$. Non-negativity of the spectral measure is the Fourier-side restatement of this universal property of autocorrelations; the support condition $\supp S\subseteq[-1,1]$ is delivered by Theorem~\ref{thm:bandlim} and combines with non-negativity to invoke Akhiezer.
 
 \subsection{What is being autocorrelated?}\label{app:autocorr}
 
-The autocorrelation in Lemma~\ref{lem:PSD} is that of $\tilde H$ itself, the unitary inverse phase pullback of $Z$. In $u$-coordinates,
+The autocorrelation in Lemma~\ref{lem:PSD} is that of $Y$ itself, the unitary inverse phase pullback of $Z$. In $u$-coordinates,
 \[
-C(\eta) \;=\; \lim_{U\to\infty}\frac{1}{2U}\int_{-U}^{U}\tilde H(u)\,\tilde H(u+\eta)\,du,
+C(\eta) \;=\; \lim_{U\to\infty}\frac{1}{2U}\int_{-U}^{U}Y(u)\,Y(u+\eta)\,du,
 \]
-a positive-definite tempered distribution. Because the map $Z\mapsto\tilde H$ is an $L^2$-isometry under $u=\tilde\theta(t)$, this is equivalent to correlating $Z$ against itself with respect to the $u$-shift $\eta$, which is a nonlinear (roughly logarithmic) shift in the original $t$-coordinate.
+a positive-definite tempered distribution. Because the map $Z\mapsto Y$ is an $L^2$-isometry under $u=\Theta(t)$, this is equivalent to correlating $Z$ against itself with respect to the $u$-shift $\eta$, which is a nonlinear (roughly logarithmic) shift in the original $t$-coordinate.
 
 \subsection{What does the picture look like?}\label{app:picture}
 
 Three objects merit mental plots.
 
-\emph{The function $\tilde H(u)$.} An envelope-modulated real oscillation of zero mean. The envelope decays like $1/\sqrt{\log t}$ expressed in $u$-coordinates. The zero crossings are the images under $\tilde\theta$ of the non-trivial Riemann zeros; the phase variable straightens out their spacing.
+\emph{The function $Y(u)$.} An envelope-modulated real oscillation of zero mean. The envelope decays like $1/\sqrt{\log t}$ expressed in $u$-coordinates. The zero crossings are the images under $\Theta$ of the non-trivial Riemann zeros; the phase variable straightens out their spacing.
 
-\emph{The autocorrelation $C(\eta)$.} A sharp peak at $\eta=0$, symmetric in $\eta$ because $\tilde H$ is real, with oscillatory decay whose frequency content sits inside $[-1,1]$.
+\emph{The autocorrelation $C(\eta)$.} A sharp peak at $\eta=0$, symmetric in $\eta$ because $Y$ is real, with oscillatory decay whose frequency content sits inside $[-1,1]$.
 
 \emph{The spectral measure $S$.} A non-negative tempered measure strictly supported in $[-1,1]$, symmetric about $\xi=0$ after the even extension. Its shape inside $[-1,1]$ encodes the distribution of zero spacings of $Z$ in $u$-coordinates.
 
 \subsection{Locally $L^2$ and the growing variance}\label{app:localL2}
 
-$\tilde H$ is locally $L^2$, on compact subsets $[-U,U]$ of arbitrarily large length $U$. The band-limit established in Theorem~\ref{thm:bandlim} is a statement about the Fourier support of $\tilde H$ as a tempered distribution on $\mathbb{R}$. All uses of Paley--Wiener, Bochner--Schwartz, and Akhiezer in the main text are read in the tempered-distributional form, the framework for band-limited objects that are not globally $L^2$.
+$Y$ is locally $L^2$, on compact subsets $[-U,U]$ of arbitrarily large length $U$. The band-limit established in Theorem~\ref{thm:bandlim} is a statement about the Fourier support of $Y$ as a tempered distribution on $\mathbb{R}$. All uses of Paley--Wiener, Bochner--Schwartz, and Akhiezer in the main text are read in the tempered-distributional form, the framework for band-limited objects that are not globally $L^2$.
 
 The growing variance manifests in three compatible ways.
 
-\emph{Envelope in $u$-coordinates.} $\tilde H(u)$ has an amplitude envelope that grows slowly as $|u|\to\infty$; the local mean-square $\bar P(U):=\tfrac{1}{2U}\int_{-U}^{U}\tilde H(u)^2\,du$ grows without bound as $U\to\infty$.
+\emph{Envelope in $u$-coordinates.} $Y(u)$ has an amplitude envelope that grows slowly as $|u|\to\infty$; the local mean-square $\bar P(U):=\tfrac{1}{2U}\int_{-U}^{U}Y(u)^2\,du$ grows without bound as $U\to\infty$.
 
 \emph{Autocorrelation as a tempered distribution.} $C(\eta)$ is the windowed-limit positive-definite distribution of \S\ref{app:autocorr}. Bochner--Schwartz identifies its Fourier transform with the non-negative tempered measure $S$, and Theorem~\ref{thm:bandlim} localizes $S$ to $[-1,1]$.
 
@@ -379,7 +379,7 @@ The growing variance manifests in three compatible ways.
 \paragraph{Representation at finite window.}
 Pointwise values of the spectral density at interior $\xi_0\in(-1,1)$ are approached through windowed periodograms
 \[
-P_U(\xi_0) \;:=\; \frac{1}{2U}\!\left|\int_{-U}^{U}\tilde H(u)\,e^{-i\xi_0 u}\,du\right|^2.
+P_U(\xi_0) \;:=\; \frac{1}{2U}\!\left|\int_{-U}^{U}Y(u)\,e^{-i\xi_0 u}\,du\right|^2.
 \]
 Any figure produced at finite $U$ is a \emph{representation} at window scale $U$.
 
@@ -387,15 +387,15 @@ Any figure produced at finite $U$ is a \emph{representation} at window scale $U$
 
 Fix $\xi\in(-1,1)$ and let $P_U(\xi)$ be the windowed periodogram. Two features of the plot change with $U$: the overall vertical scale, and the local fluctuation amplitude around that scale. Both are controlled by the local mean power
 \[
-\bar P(U) \;:=\; \frac{1}{2U}\int_{-U}^{U}\tilde H(u)^2\,du \;=\; \frac{1}{2U}\int_{\tilde\theta^{-1}(-U)}^{\tilde\theta^{-1}(U)}\!\! Z(t)^2\,dt,
+\bar P(U) \;:=\; \frac{1}{2U}\int_{-U}^{U}Y(u)^2\,du \;=\; \frac{1}{2U}\int_{\Theta^{-1}(-U)}^{\Theta^{-1}(U)}\!\! Z(t)^2\,dt,
 \]
 the second equality by the $L^2$-isometry of the unitary inverse phase pullback. By Parseval in the tempered sense,
 \[
 \int_{-\infty}^{\infty}P_U(\xi)\,d\xi \;=\; 2\pi\,\bar P(U).
 \]
-Using $\tilde\theta(t)\sim\tfrac{t}{2}\log(t/(2\pi e))+ct$ and the Hardy--Littlewood moment $\int_0^T Z(t)^2\,dt\sim T\log T$ (\cite{Titchmarsh}, \S7.3),
+Using $\Theta(t)\sim\tfrac{t}{2}\log(t/(2\pi e))+ct$ and the Hardy--Littlewood moment $\int_0^T Z(t)^2\,dt\sim T\log T$ (\cite{Titchmarsh}, \S7.3),
 \[
-\bar P(U) \;\sim\; \log\!\big(\tilde\theta^{-1}(U)\big) \;\sim\; \log U + \log\log U + O(1)\qquad (U\to\infty).
+\bar P(U) \;\sim\; \log\!\big(\Theta^{-1}(U)\big) \;\sim\; \log U + \log\log U + O(1)\qquad (U\to\infty).
 \]
 $P_U(\xi)$ fluctuates around $\bar P(U)$ on a scale comparable to $\bar P(U)$ itself, with wider fluctuations near the edges $|\xi|\to 1^-$.
 
@@ -409,7 +409,7 @@ a probability density on $\mathbb{R}$ at every $U$. By Theorem~\ref{thm:bandlim}
 \[
 \int f\,d\widetilde P_U \;\longrightarrow\; \int f\,d\nu_\infty\qquad \text{for every } f\in C_b(\mathbb{R}).
 \]
-$\nu_\infty$ is the normalized spectral density of $\tilde H$: a probability measure of total mass $1$ supported in $[-1,1]$.
+$\nu_\infty$ is the normalized spectral density of $Y$: a probability measure of total mass $1$ supported in $[-1,1]$.
 
 $S$ and $\nu_\infty$ are distinct, both well-defined:
 \begin{itemize}[leftmargin=*]
@@ -419,15 +419,15 @@ $S$ and $\nu_\infty$ are distinct, both well-defined:
 
 \subsection{Cram\'er representation of the sample path}\label{app:cramer}
 
-As a generalized stationary process on $\mathbb{R}_u$, $\tilde H$ admits a Cram\'er spectral representation of its sample path,
+As a generalized stationary process on $\mathbb{R}_u$, $Y$ admits a Cram\'er spectral representation of its sample path,
 \[
-\tilde H(u) \;=\; \int_{-1}^{1} e^{i\xi u}\,d\Phi(\xi),
+Y(u) \;=\; \int_{-1}^{1} e^{i\xi u}\,d\Phi(\xi),
 \]
 where $d\Phi$ is a complex-valued orthogonal random measure on $[-1,1]$ with covariance structure
 \[
 \mathbb{E}\bigl[d\Phi(\xi)\,\overline{d\Phi(\xi')}\bigr] \;=\; \delta(\xi-\xi')\,dS(\xi).
 \]
-The support condition $\supp S\subseteq[-1,1]$ of Theorem~\ref{thm:bandlim} localizes $d\Phi$ to the interval $[-1,1]$. Reality of $\tilde H$ on $\mathbb{R}$ is equivalent to the Hermitian symmetry $d\Phi(-\xi)=\overline{d\Phi(\xi)}$, under which $S$ is an even measure on $[-1,1]$. The integral is a stochastic integral in the orthogonal-increments sense; test functions $f$ are paired with $d\Phi$ under the $L^2(S)$ norm identity
+The support condition $\supp S\subseteq[-1,1]$ of Theorem~\ref{thm:bandlim} localizes $d\Phi$ to the interval $[-1,1]$. Reality of $Y$ on $\mathbb{R}$ is equivalent to the Hermitian symmetry $d\Phi(-\xi)=\overline{d\Phi(\xi)}$, under which $S$ is an even measure on $[-1,1]$. The integral is a stochastic integral in the orthogonal-increments sense; test functions $f$ are paired with $d\Phi$ under the $L^2(S)$ norm identity
 \[
 \mathbb{E}\Bigl|\int f(\xi)\,d\Phi(\xi)\Bigr|^2 \;=\; \int|f(\xi)|^2\,dS(\xi),
 \]
