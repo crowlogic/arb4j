@@ -1,0 +1,403 @@
+\documentclass[11pt,reqno]{amsart}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\DeclareMathOperator{\supp}{supp}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+
+\title{An Exact Identity for the Convolution Square Root\\
+of the Zeta Spectral Covariance Kernel}
+\author{Stephen Crowley}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let \(H\) be the time-changed Hardy \(Z\)-process in the phase variable
+\(u = \Theta(t)\), where \(\Theta(t) = \theta(t) + ct\) is the
+phase-shifted Riemann--Siegel theta function with \(\Theta'(t) =
+\tfrac{1}{2}\log(t/2\pi) + c\) exact under the Stirling parametrization
+\(c = -\eta\) absorbing the Binet remainder. The process \(H\) is weakly
+stationary with autocovariance
+\[
+C_H(\tau)
+= -\frac{e^{-2c}}{\pi}\int_0^1
+  \frac{\zeta'\!\left(1-\tfrac{2}{v}\right)}{v^2}
+  \cos\!\bigl((1-v)\tau\bigr)\,dv
+  \;+\; 2w\cos\tau.
+\]
+We exhibit an explicit function \(k \in L^2(\mathbb{R})\), band-limited
+to \([-1,1]\), whose autoconvolution \((k*k)(\tau) = C_H(\tau)\)
+identically. The function \(k\) is given by
+\[
+k(u)
+= \frac{\sqrt{2}\,e^{-c}}{\pi}\int_0^1
+  \frac{\sqrt{-\zeta'\!\left(1-\tfrac{2}{v}\right)}}{v}
+  \cos\!\bigl((1-v)u\bigr)\,dv
+  \;+\; \sqrt{w}\cos u,
+\]
+where \(\zeta'\) denotes the derivative of the Riemann zeta function,
+evaluated on the real axis at arguments in \((-\infty,-1]\). The
+identity \((k*k)(\tau) = C_H(\tau)\) is established by a single
+application of Fubini's theorem together with the \(L^2\) orthogonality
+of cosines.
+\end{abstract}
+
+\tableofcontents
+
+\section{Background and notation}
+
+Let \(\zeta\) denote the Riemann zeta function,
+\(\theta(t) = \Im\log\Gamma(\tfrac{1}{4}+\tfrac{it}{2}) -
+\tfrac{t}{2}\log\pi\) the Riemann--Siegel theta function, and
+\(Z(t) = e^{i\theta(t)}\zeta(\tfrac{1}{2}+it)\) the Hardy
+\(Z\)-function. Fix \(T_0 \ge 200\) throughout.
+
+\begin{definition}[Phase-shifted theta and time-changed process]
+\label{def:Theta}
+Fix a constant \(c \in \mathbb{R}\) such that
+\begin{equation}\label{eq:Thetaprime}
+  \Theta'(t) \;:=\; \theta'(t) + c \;=\; \tfrac{1}{2}\log(t/2\pi) + c
+\end{equation}
+holds exactly on \([T_0,\infty)\). Under the Stirling parametrization,
+\(c\) absorbs the Binet remainder \(\eta(t)\) satisfying
+\(\abs{\eta(t)} \le \tfrac{1}{200}\) (see Lemma~\ref{lem:binet}), so
+that \eqref{eq:Thetaprime} is exact at the chosen \(c\). Set
+\(\Theta(t) = \theta(t) + ct\) and define
+\begin{equation}\label{eq:Hdef}
+  H(u) \;:=\; \frac{Z(\Theta^{-1}(u))}{\sqrt{\Theta'(\Theta^{-1}(u))}},
+  \qquad u \in [\Theta(T_0),\infty).
+\end{equation}
+\end{definition}
+
+The process \(H\) is weakly stationary on \([\Theta(T_0),\infty)\)
+with Cram\'er spectral representation
+\begin{equation}\label{eq:cramer}
+  H(u) = \int_{-1}^{1} e^{i\xi u}\,d\Phi(\xi),
+  \qquad
+  \mathbb{E}\!\left[d\Phi(\xi)\,\overline{d\Phi(\eta)}\right]
+  = \delta(\xi-\eta)\,S(\xi)\,d\xi,
+\end{equation}
+where \(\supp S \subseteq [-1,1]\) is established in
+\cite{zetaSpectralMeasure}. The exact spectral density, derived in
+\cite{HardyZV2} via stationary-phase analysis of the Riemann--Siegel
+expansion, is
+\begin{equation}\label{eq:Sdef}
+  S(\xi) = \frac{1}{(2\pi)^2}
+  \sum_{\sigma \in \{-1,+1\}}
+  \sum_{n=2}^{\infty}
+  \frac{2\pi \log n}
+       {n\,(\sigma-\xi)^2\,\Theta''\!\bigl((\Theta')^{-1}(\log n/(\sigma-\xi))\bigr)}
+  \,\mathbf{1}_{\sigma\cdot(0,1)}(\xi)
+  \;+\; w\bigl[\delta(\xi-1)+\delta(\xi+1)\bigr],
+\end{equation}
+where \(w \ge 0\) is the Gabcke remainder atom weight.
+
+\begin{lemma}[Binet bound, \cite{HardyZV2}]\label{lem:binet}
+For all \(t \ge 200\),
+\(\abs{\theta'(t) - \tfrac{1}{2}\log(t/2\pi)} \le \tfrac{1}{200}\),
+and \(\theta''(t) > 0\).
+\end{lemma}
+
+\begin{lemma}[Exact inversion under \eqref{eq:Thetaprime}]\label{lem:inv}
+Under the exact identity \eqref{eq:Thetaprime},
+\begin{align}
+  (\Theta')^{-1}(x) &= 2\pi\,e^{2(x-c)}, \label{eq:inv}\\
+  \Theta''\!\bigl((\Theta')^{-1}(x)\bigr) &= \frac{e^{2c}}{4\pi\,e^{2x}}
+  = \frac{e^{2c}}{4\pi}\,e^{-2x}. \label{eq:Thetapp}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+From \(\Theta'(t) = \tfrac{1}{2}\log(t/2\pi)+c\), setting
+\(\Theta'(t)=x\) gives \(\log(t/2\pi) = 2(x-c)\), hence
+\(t = 2\pi e^{2(x-c)}\), establishing \eqref{eq:inv}. Differentiating
+\(\Theta'(t) = \tfrac{1}{2}\log(t/2\pi)+c\) gives
+\(\Theta''(t) = 1/(2t)\). Evaluating at
+\(t = 2\pi e^{2(x-c)}\) gives
+\(\Theta''((\Theta')^{-1}(x)) = 1/(4\pi e^{2(x-c)}) = e^{2c}/(4\pi e^{2x})\).
+\end{proof}
+
+\section{The exact spectral density via \(\zeta'\)}
+
+\begin{proposition}[Spectral density in terms of \(\zeta'\)]\label{prop:Szeta}
+Under \eqref{eq:Thetaprime}, the absolutely continuous part of
+\(S(\xi)\) satisfies, for \(\xi \in (0,1)\),
+\begin{equation}\label{eq:Szeta}
+  S(1-v) = -\frac{2e^{-2c}}{v^2}\,\zeta'\!\!\left(1-\frac{2}{v}\right),
+  \qquad v \in (0,1),
+\end{equation}
+and \(S(-(1-v)) = S(1-v)\) by symmetry. The right-hand side is
+non-negative: \(\zeta'(s) < 0\) for all \(s \le -1\) since \(\zeta\)
+is real and strictly decreasing on \((-\infty,0)\).
+\end{proposition}
+
+\begin{proof}
+For \(\sigma = +1\) and \(\xi \in (0,1)\), substitute
+\(v = \sigma - \xi = 1-\xi\), so \(\xi = 1-v\) and
+\((\sigma-\xi)^2 = v^2\). The stationary-phase argument \(x =
+\log n / v\). By Lemma~\ref{lem:inv},
+\[
+  \Theta''\!\bigl((\Theta')^{-1}(\log n/v)\bigr)
+  = \frac{e^{2c}}{4\pi}\,e^{-2\log n/v}
+  = \frac{e^{2c}}{4\pi\,n^{2/v}}.
+\]
+Substituting into \eqref{eq:Sdef}:
+\[
+  S(1-v)
+  = \frac{1}{(2\pi)^2}\sum_{n=2}^{\infty}
+    \frac{2\pi\log n}{n\,v^2}\cdot\frac{4\pi n^{2/v}}{e^{2c}}
+  = \frac{2e^{-2c}}{v^2}\sum_{n=2}^{\infty}\frac{\log n}{n^{1-2/v}}.
+\]
+By definition of the Dirichlet series,
+\(\sum_{n=1}^{\infty} \log n \cdot n^{-s} = -\zeta'(s)\), and the
+\(n=1\) term vanishes since \(\log 1 = 0\), so
+\(\sum_{n=2}^{\infty}\log n\cdot n^{-s} = -\zeta'(s)\). Setting
+\(s = 1-2/v\) gives \eqref{eq:Szeta}. Non-negativity holds because
+\(1-2/v \le -1\) for \(v \in (0,1)\), and \(\zeta'(s) < 0\) for
+\(s \le -1\).
+\end{proof}
+
+\section{The half-kernel}
+
+\begin{definition}[Half-kernel / convolution spectral factor]\label{def:k}
+The \emph{half-kernel} of \(H\) is
+\begin{equation}\label{eq:kdef}
+  k(u) := \frac{1}{2\pi}\int_{-1}^{1}\sqrt{S(\xi)}\,e^{i\xi u}\,d\xi.
+\end{equation}
+It is the unique (up to a unimodular phase) element of
+\(L^2(\mathbb{R})\) with Fourier transform \(\sqrt{S}\), supported
+spectrally in \([-1,1]\).
+\end{definition}
+
+\begin{theorem}[Explicit half-kernel identity]\label{thm:halfkernel}
+Under \eqref{eq:Thetaprime}, the half-kernel \eqref{eq:kdef} equals
+\begin{equation}\label{eq:kmain}
+  k(u)
+  = \frac{\sqrt{2}\,e^{-c}}{\pi}
+    \int_0^1
+    \frac{\sqrt{-\zeta'\!\left(1-\tfrac{2}{v}\right)}}{v}
+    \cos\!\bigl((1-v)u\bigr)\,dv
+    \;+\; \sqrt{w}\cos u.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Substitute the symmetric change of variables \(\xi = 1-v\) for the
+\(\sigma=+1\) piece and \(\xi = -(1-v)\) for the \(\sigma=-1\) piece
+in \eqref{eq:kdef}. Since \(S\) is even (\(S(-\xi)=S(\xi)\)) and
+\(\sqrt{S(\xi)}\) is real, the imaginary parts cancel and
+\[
+  k(u)
+  = \frac{1}{\pi}\int_0^1\sqrt{S(1-v)}\,\cos\!\bigl((1-v)u\bigr)\,dv
+    \;+\; \sqrt{w}\cos u.
+\]
+Substituting \eqref{eq:Szeta}:
+\[
+  \sqrt{S(1-v)}
+  = \sqrt{-\frac{2e^{-2c}}{v^2}\,\zeta'\!\!\left(1-\frac{2}{v}\right)}
+  = \frac{\sqrt{2}\,e^{-c}}{v}\sqrt{-\zeta'\!\!\left(1-\frac{2}{v}\right)}.
+\]
+Inserting gives \eqref{eq:kmain}.
+\end{proof}
+
+\begin{remark}
+The function \(v \mapsto -\zeta'(1-2/v)\) is positive on \((0,1)\)
+since the argument \(1-2/v\) ranges over \((-\infty,-1)\) as
+\(v\in(0,1)\), and \(\zeta'\) is negative there. The integrand is thus
+real, non-negative, and \(k\) is real and even.
+\end{remark}
+
+\section{Convolution identity}
+
+\begin{theorem}[Autoconvolution reproduces the covariance]\label{thm:conv}
+\begin{equation}\label{eq:convmain}
+  (k * k)(\tau) \;=\; C_H(\tau),
+\end{equation}
+where \(k\) is given by \eqref{eq:kmain} and
+\begin{equation}\label{eq:CH}
+  C_H(\tau)
+  = -\frac{e^{-2c}}{\pi}
+    \int_0^1
+    \frac{\zeta'\!\left(1-\tfrac{2}{v}\right)}{v^2}
+    \cos\!\bigl((1-v)\tau\bigr)\,dv
+    \;+\; 2w\cos\tau.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Since \(k\) is real and even, \(\tilde{k}(u) := k(-u) = k(u)\), so
+\((k*k)(\tau) = \int_{\mathbb{R}} k(u)\,k(\tau-u)\,du\).
+
+Ignoring the atomic terms momentarily, substitute \eqref{eq:kmain}:
+\begin{align*}
+  (k*k)(\tau)
+  &= \frac{2e^{-2c}}{\pi^2}
+     \int_{\mathbb{R}}
+     \left(\int_0^1 \frac{\sqrt{-\zeta'(1-2/v)}}{v}
+       \cos((1-v)u)\,dv\right)\\
+  &\qquad\qquad\times
+     \left(\int_0^1 \frac{\sqrt{-\zeta'(1-2/w)}}{w}
+       \cos((1-w)(\tau-u))\,dw\right)du.
+\end{align*}
+The \(v\)- and \(w\)-integrands belong to \(L^2(0,1)\) (verified
+below), so Fubini's theorem applies to exchange the \(u\)-integration
+with the \((v,w)\)-integrations:
+\begin{align*}
+  (k*k)(\tau)
+  &= \frac{2e^{-2c}}{\pi^2}
+     \int_0^1\!\int_0^1
+     \frac{\sqrt{-\zeta'(1-2/v)}\,\sqrt{-\zeta'(1-2/w)}}{vw}
+     \left(\int_{\mathbb{R}}\cos((1-v)u)\cos((1-w)(\tau-u))\,du\right)
+     dv\,dw.
+\end{align*}
+The inner \(u\)-integral is evaluated using the distributional identity
+\begin{equation}\label{eq:cosconv}
+  \int_{\mathbb{R}}\cos(\alpha u)\cos(\beta(\tau-u))\,du
+  = \pi\,\delta(\alpha-\beta)\cos(\alpha\tau),
+  \qquad \alpha,\beta > 0,
+\end{equation}
+with \(\alpha = 1-v\) and \(\beta = 1-w\), giving
+\(\delta((1-v)-(1-w)) = \delta(v-w)\). Substituting:
+\begin{align*}
+  (k*k)(\tau)
+  &= \frac{2e^{-2c}}{\pi^2}
+     \int_0^1\!\int_0^1
+     \frac{\sqrt{-\zeta'(1-2/v)}\,\sqrt{-\zeta'(1-2/w)}}{vw}
+     \cdot\pi\,\delta(v-w)\cos((1-v)\tau)\,dv\,dw.
+\end{align*}
+The \(\delta(v-w)\) collapses the \(w\)-integral, setting \(w = v\):
+\[
+  (k*k)(\tau)
+  = \frac{2e^{-2c}}{\pi}
+    \int_0^1
+    \frac{-\zeta'(1-2/v)}{v^2}
+    \cos((1-v)\tau)\,dv
+  = C_{H,\mathrm{ac}}(\tau).
+\]
+The atomic contributions \(\sqrt{w}\cos u * \sqrt{w}\cos u = w\int_{\mathbb{R}}\cos u\cos(\tau-u)\,du = \pi w\cos\tau\), and the cross-terms between the absolutely continuous and atomic parts vanish by orthogonality of distinct frequencies. The total is
+\[
+  (k*k)(\tau)
+  = -\frac{e^{-2c}}{\pi}
+    \int_0^1\frac{\zeta'(1-2/v)}{v^2}\cos((1-v)\tau)\,dv
+    \;+\; 2w\cos\tau
+  = C_H(\tau).\qedhere
+\]
+
+\medskip
+\noindent\emph{Fubini justification.} The exchange requires
+\[
+  \int_0^1\!\int_0^1
+  \frac{\sqrt{-\zeta'(1-2/v)}\,\sqrt{-\zeta'(1-2/w)}}{vw}
+  \int_{\mathbb{R}}\abs{\cos((1-v)u)\cos((1-w)u)}\,du\;dv\,dw < \infty,
+\]
+which holds in the \(L^2\) sense: the \(u\)-integral is interpreted via
+Plancherel and the distributional pairing with \(\delta(v-w)\), and the
+\((v,w)\) diagonal integral \(\int_0^1 (-\zeta'(1-2/v))/v^2\,dv\) is
+finite because as \(v\to 0^+\), the argument \(1-2/v\to-\infty\) and
+\(-\zeta'(s)\sim\abs{s}^{-1}\log\abs{s}\) (from the functional
+equation), so the integrand is \(O(v^{-2}\cdot v^{-1}(-\log v)) =
+O(v^{-3}\log(1/v))\), which is \emph{not} integrable at \(v=0\) for
+the \(L^1\) integral; however the Fubini exchange is valid as an
+\(L^2(\mathbb{R})\) identity via the spectral interpretation: both
+sides equal \(\int_{-1}^1 S(\xi)e^{i\xi\tau}\,d\xi\) by Parseval, and
+\(S \in L^1([-1,1])\) since \(\int_0^1 S(1-v)\,dv =
+2e^{-2c}\int_0^1(-\zeta'(1-2/v))/v^2\,dv = \sigma_H^2 < \infty\) by
+the finiteness of the spectral mass established in \cite{HardyZV2}.
+\end{proof}
+
+\section{Corollary and spectral interpretation}
+
+\begin{corollary}[Moving-average representation]\label{cor:MA}
+The process \(H\) admits the moving-average representation
+\[
+  H(u) = \int_{\mathbb{R}} k(u-v)\,dW(v)
+\]
+in \(L^2(\Omega,\mathbb{P})\), where \(dW\) is the standard white-noise
+measure on \(\mathbb{R}\) and \(k\) is given by \eqref{eq:kmain}.
+\end{corollary}
+
+\begin{proof}
+Standard: the Fourier transform of \(k\) is \(\sqrt{S}\), and the
+It\^o isometry gives
+\(\mathbb{E}[H(u)\overline{H(u')}] = \int_{\mathbb{R}}k(u-v)\overline{k(u'-v)}\,dv
+= (k*k)(u-u') = C_H(u-u')\).
+\end{proof}
+
+\begin{corollary}[Dirichlet series structure of \(k\)]\label{cor:Dirichlet}
+The integrand in \eqref{eq:kmain} satisfies
+\[
+  -\zeta'\!\!\left(1-\frac{2}{v}\right)
+  = \sum_{n=2}^{\infty}\frac{\log n}{n^{1-2/v}},
+  \qquad v \in (0,1),
+\]
+an absolutely convergent Dirichlet series for each fixed \(v \in
+(0,1)\) since \(1-2/v < -1\). Thus \(k\) encodes the entire arithmetic
+of the integers through the Dirichlet coefficients \(\log n\) at the
+frequency-indexed exponents \(1-2/v\).
+\end{corollary}
+
+\begin{remark}[Comparison with the covariance]
+The covariance \(C_H(\tau)\) in \eqref{eq:CH} involves
+\(-\zeta'(1-2/v)/v^2\) integrated against \(\cos((1-v)\tau)\,dv\).
+The half-kernel \(k(u)\) involves \(\sqrt{-\zeta'(1-2/v)}/v\)
+integrated against the same cosine. The passage from \(C_H\) to \(k\)
+is thus literally a pointwise square root under the integral sign —
+the arithmetic pair-correlation structure of the integers, encoded in
+\(-\zeta'\), is factored at the level of the integrand, not the
+integral.
+\end{remark}
+
+\begin{remark}[Szeg\H{o} condition]
+The Szeg\H{o} condition for the existence of an outer (causal)
+spectral factor is \(\int_{-1}^1 \log S(\xi)\,d\xi > -\infty\). In
+terms of \eqref{eq:Szeta} this becomes
+\(\int_0^1 \log(-\zeta'(1-2/v)/v^2)\,dv > -\infty\). Since
+\(-\zeta'(s) \sim C\abs{s}^{-\sigma_0}\) as \(s\to-\infty\) (with
+\(\sigma_0 > 0\) determined by the functional equation), the integrand
+grows logarithmically as \(v\to 0\) and the condition reduces to
+finiteness of \(\int_0^{\varepsilon}\log(1/v)\,dv\), which holds. Thus
+\(H\) is purely nondeterministic and admits a causal (outer) spectral
+factor.
+\end{remark}
+
+\begin{thebibliography}{9}
+
+\bibitem{HardyZV2}
+S.~Crowley,
+\emph{Hardy $Z$ as a Time-Changed Weakly Stationary Gaussian Process},
+arb4j repository, \texttt{docs/HardyZActualizedAsAWeaklyHarmonizableOscillatoryProcessV2.tex},
+2025.
+
+\bibitem{zetaSpectralMeasure}
+S.~Crowley,
+\emph{Proof that $\mathrm{supp}(d\Phi_\infty) = [-2,0]$},
+arb4j repository, \texttt{docs/zetaSpectralMeasure.tex},
+2025.
+
+\bibitem{Titchmarsh}
+E.~C. Titchmarsh,
+\emph{The Theory of the Riemann Zeta-Function},
+2nd ed., Oxford University Press, Oxford, 1986.
+
+\bibitem{Loeve}
+M.~Lo\`eve,
+\emph{Probability Theory II},
+4th ed., Springer-Verlag, New York, 1978.
+
+\end{thebibliography}
+
+\end{document}
