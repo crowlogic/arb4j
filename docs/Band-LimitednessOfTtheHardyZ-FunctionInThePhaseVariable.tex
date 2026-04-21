@@ -15,6 +15,7 @@
 \let\Im\ImOp
 \let\Re\ReOp
 \DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Var}{Var}
 
 \title{Band-Limitedness of the Hardy Z-Function in the Phase Variable}
 \author{Stephen Crowley}
@@ -498,6 +499,40 @@ The exchange in \eqref{eq:cramerZ} itself --- the equality $\sqrt{\Theta'(t)}\,Y
 \end{proof}
 
 The identity \eqref{eq:RZ} is the time-warped autocovariance of the stationary underlying process. Non-stationarity of $Z$ is expressed entirely through the pair $(\Theta'(t)\Theta'(s))^{1/2}$ and the argument $\Theta(t)-\Theta(s)$: the frequency content is the same $S$ supported in $[-1,1]$; the time dependence is absorbed into the biholomorphic reparametrisation $\Theta$ and the half-Jacobian amplitude.
+
+\subsection{Variance structure function}\label{app:varstruct}
+
+At coincident times $s=t$ the covariance \eqref{eq:RZ} reduces to the variance of $Z(t)$, and the $\xi$-integral in \eqref{eq:RZ} loses its oscillatory factor. Write
+\begin{equation}\label{eq:sigmaYdef}
+\sigma_Y^2 \;:=\; S([-1,1]) \;=\; \int_{-1}^{1}dS(\xi)
+\end{equation}
+for the total mass of $S$ restricted to $[-1,1]$; this quantity is finite when $Y$ is second-order on $\mathbb{R}$, which is the hypothesis of the Cram\'er representation \eqref{eq:cramerY}. Setting $s=t$ in \eqref{eq:RZ} then gives $\Theta(t)-\Theta(s)=0$, the exponential equals $1$, and
+\begin{equation}\label{eq:varZ}
+\Var Z(t) \;=\; R_Z(t,t) \;=\; \Theta'(t)\int_{-1}^{1}dS(\xi) \;=\; \sigma_Y^2\,\Theta'(t)
+\end{equation}
+for every $t\in\Omega\cap\mathbb{R}$. The variance of $Z$ is the total spectral mass of $Y$ amplified by the instantaneous phase rate $\Theta'(t)$; it is the diagonal restriction of the covariance, with no dependence on the off-diagonal phase.
+
+From the Binet asymptotic $\theta'(t)=\tfrac{1}{2}\log(t/(2\pi))+O(t^{-2})$ and $\Theta'(t)=\theta'(t)+c$,
+\begin{equation}\label{eq:varZasymp}
+\Var Z(t) \;=\; \sigma_Y^2\!\left[\tfrac{1}{2}\log(t/(2\pi))+c\right]+O(t^{-2})
+\end{equation}
+as $t\to\infty$, so $\Var Z(t)\to\infty$: $Z$ is not bounded in $L^2$. The logarithmic growth of the variance matches, on integration, the Hardy--Littlewood second moment $\int_{0}^{T}|Z(t)|^{2}\,dt = \int_{0}^{T}\Var Z(t)\,dt \sim \tfrac{\sigma_Y^2}{2}\,T\log T$ provided the calibration $\sigma_Y^2 = 2$ is adopted; that calibration is fixed once and for all by the identity $\int_{0}^{T}|Z(t)|^{2}\,dt = \int_{0}^{T}|\zeta(\tfrac{1}{2}+it)|^{2}\,dt\sim T\log T$ (\cite{Titchmarsh},~\S7.3). With $\sigma_Y^2=2$, the leading term in \eqref{eq:varZasymp} is exactly $\log(t/(2\pi))+2c$.
+
+\subsection{Sample-path autocorrelation under the unitary time change}\label{app:sampleautocorr}
+
+The stationary process $Y$ carries a sample-path autocorrelation, and the unitary time change expresses it directly on $Z$. For any window $[A,B]\subset\mathbb{R}_u$ in the $u$-variable and any lag $\eta\in\mathbb{R}$,
+\begin{equation}\label{eq:CYdef}
+C_Y(\eta;A,B) \;:=\; \int_{A}^{B-\eta}Y(u)\,\overline{Y(u+\eta)}\,du
+\end{equation}
+is the unnormalized sample autocorrelation of $Y$ on $[A,B]$ at lag $\eta$. Apply the substitution $u=\Theta(\tau)$, $du=\Theta'(\tau)\,d\tau$, using $Y(u)=Z(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u))}$ from \eqref{eq:Ydef}. The pair $(u,u+\eta)$ becomes $(\Theta(\tau),\Theta(\tau)+\eta)$, and the second argument is the image of $\Theta^{-1}(\Theta(\tau)+\eta)$ under $\Theta$. Writing $\tau'(\tau,\eta) := \Theta^{-1}(\Theta(\tau)+\eta)$ for the lagged time in $t$-coordinates,
+\begin{equation}\label{eq:sampleYZ}
+C_Y(\eta;A,B) \;=\; \int_{\Theta^{-1}(A)}^{\Theta^{-1}(B-\eta)} Z(\tau)\,\overline{Z(\tau'(\tau,\eta))}\,\sqrt{\frac{\Theta'(\tau)}{\Theta'(\tau'(\tau,\eta))}}\,d\tau
+\end{equation}
+where the integrand combines the two half-Jacobian factors $1/\sqrt{\Theta'(\tau)}\cdot 1/\sqrt{\Theta'(\tau'(\tau,\eta))}$ from the two evaluations of $Y$ with the single Jacobian $\Theta'(\tau)$ from $du=\Theta'(\tau)\,d\tau$, giving the asymmetric ratio $\sqrt{\Theta'(\tau)/\Theta'(\tau'(\tau,\eta))}$. Equation \eqref{eq:sampleYZ} is the $t$-variable expression of the stationary sample-path autocorrelation of $Y$ at lag $\eta$: translation-invariant on the $u$-axis becomes non-translation-invariant on the $t$-axis precisely through the asymmetric ratio and the $\Theta^{-1}$-images of the window endpoints. At zero lag, $\tau'(\tau,0)=\tau$, the ratio is $1$, and
+\begin{equation}\label{eq:sampleZ-zero}
+C_Y(0;A,B) \;=\; \int_{A}^{B}|Y(u)|^{2}\,du \;=\; \int_{\Theta^{-1}(A)}^{\Theta^{-1}(B)}|Z(\tau)|^{2}\,d\tau \;=\; \int_{\Theta^{-1}(A)}^{\Theta^{-1}(B)}\bigl|\zeta(\tfrac{1}{2}+i\tau)\bigr|^{2}\,d\tau
+\end{equation}
+using $|Z(\tau)|=|\zeta(\tfrac{1}{2}+i\tau)|$ on the real line. The right-hand side is the integrated second moment of $\zeta$ on the critical line over the window $[\Theta^{-1}(A),\Theta^{-1}(B)]$; as the window expands, it returns the Hardy--Littlewood asymptotic $T\log T$ and couples directly to \eqref{eq:varZ} through $\sigma_Y^2 = 2$. Identity \eqref{eq:sampleYZ} is independent of the admissible constant $c$ only up to the $c$-dependence of $\Theta$: changing $c$ rescales the window in $t$-coordinates through $\Theta^{-1}$ but does not change the integrated identity \eqref{eq:sampleZ-zero}.
 
 \begin{thebibliography}{9}
 
