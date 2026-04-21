@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|article|std-latex>>
+<style|<tuple|generic|framed-theorems>>
 
 <\body>
   <\hide-preamble>
@@ -30,28 +30,118 @@
       2+<tfrac|\<pi\>|2>+log \<pi\>|)><space|0.27em>+<space|0.27em><tfrac|1|8>sup<rsub|<around|\||\<Im\>*t|\|>\<less\>1/2><space|-0.17em><around*|\||\<psi\><rprime|'>*<around|(|<tfrac|1|4>+<tfrac|i*t|2>|)>|\|>,
     </equation*>
 
-    define <math|<wide|\<theta\>|~><around|(|t|)>\<assign\>\<theta\><around|(|t|)>+c*t>
-    and let <math|<wide|H|~>> be the unitary inverse phase pullback of
-    <math|Z>, namely
+    define <math|\<Theta\><around|(|t|)>\<assign\>\<theta\><around|(|t|)>+c*t>
+    and let <math|Y> be the unitary inverse phase pullback of <math|Z>,
+    namely
 
     <\equation*>
-      <wide|H|~><around|(|u|)><space|0.27em>\<assign\><space|0.27em><frac|Z<around|(|<wide|\<theta\>|~><rsup|-1><around|(|u|)>|)>|<sqrt|<wide|\<theta\>|~><rprime|'><around|(|<wide|\<theta\>|~><rsup|-1><around|(|u|)>|)>>>.
+      Y<around|(|u|)><space|0.27em>\<assign\><space|0.27em><frac|Z<around|(|\<Theta\><rsup|-1><around|(|u|)>|)>|<sqrt|\<Theta\><rprime|'><around|(|\<Theta\><rsup|-1><around|(|u|)>|)>>>.
     </equation*>
 
-    The Fourier support of <math|<wide|H|~>> is contained in
-    <math|<around|[|-1,1|]>>. By the Paley--Wiener theorem, <math|<wide|H|~>>
-    extends to an entire function of exponential type <math|\<le\>1>.
-    Combined with the non-negativity of the power spectral density
-    <math|<around|\||<wide|<wide|H|~>|^>|\|><rsup|2>> and Akhiezer's theorem,
-    <math|<wide|H|~>> belongs to the Laguerre--Pólya class. The unitary
-    identity <math|Z<around|(|t|)>=<wide|H|~><around|(|<wide|\<theta\>|~><around|(|t|)>|)><sqrt|<wide|\<theta\>|~><rprime|'><around|(|t|)>>>,
+    The Fourier support of <math|Y> is contained in <math|<around|[|-1,1|]>>.
+    By the Paley--Wiener theorem, <math|Y> extends to an entire function of
+    exponential type <math|\<le\>1>. Combined with the non-negativity of the
+    spectral measure <math|S\<assign\><around|\||<wide|Y|^>|\|><rsup|2>> and
+    Akhiezer's theorem, <math|Y> belongs to the Laguerre--Pólya class. The
+    unitary identity <math|Z<around|(|t|)>=Y<around|(|\<Theta\><around|(|t|)>|)><sqrt|\<Theta\><rprime|'><around|(|t|)>>>,
     valid on the strip <math|<around|{|<around|\||\<Im\>*t|\|>\<less\><tfrac|1|2>|}>>
-    where <math|<wide|\<theta\>|~>> is an injective biholomorphism with
-    non-vanishing derivative and <math|Z> is holomorphic, transfers the real
-    zero locus of <math|<wide|H|~>> to that of <math|Z>. Therefore every
-    non-trivial zero <math|\<rho\>> of <math|\<zeta\>> satisfies
+    where <math|\<Theta\>> is an injective biholomorphism with non-vanishing
+    derivative and <math|Z> is holomorphic, transfers the real zero locus of
+    <math|Y> to that of <math|Z>. Therefore every non-trivial zero
+    <math|\<rho\>> of <math|\<zeta\>> satisfies
     <math|\<Re\>*\<rho\>=<tfrac|1|2>>.
   </abstract>>
+
+  <\table-of-contents|toc>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>Introduction>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-1><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>The
+    Phase Function> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-2><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|3<space|2spc>The
+    Hardy Z-Function on the Strip> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-3><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|4<space|2spc>The
+    Unitary Inverse Phase Pullback> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-4><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|5<space|2spc>Band-Limitedness>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-5><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|6<space|2spc>Entire
+    Extension and Laguerre\UPólya Membership>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-6><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|7<space|2spc>Transfer
+    to the Hardy Z-Function> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-7><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|8<space|2spc>The
+    Zero Locus of <with|mode|math|\<zeta\>>>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-8><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|9<space|2spc>Answers
+    to Frequently Anticipated Questions> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-9><vspace|0.5fn>
+
+    <with|par-left|1tab|9.1<space|2spc>Why \Pinverse phase pullback\Q and not
+    \Pphase pushforward\Q? <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-10>>
+
+    <with|par-left|3tab|Contravariance and covariance.
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-11>>
+
+    <with|par-left|3tab|A remark on the dual naming.
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-12>>
+
+    <with|par-left|3tab|Ditty. <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-13>>
+
+    <with|par-left|1tab|9.2<space|2spc>Why is the spectral measure
+    non-negative? <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-14>>
+
+    <with|par-left|1tab|9.3<space|2spc>What is being autocorrelated?
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-15>>
+
+    <with|par-left|1tab|9.4<space|2spc>What does the picture look like?
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-16>>
+
+    <with|par-left|1tab|9.5<space|2spc>Locally <with|mode|math|L<rsup|2>> and
+    the growing variance <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-17>>
+
+    <with|par-left|3tab|Representation at finite window.
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-18>>
+
+    <with|par-left|1tab|9.6<space|2spc>Scale of the spectral representation
+    at finite window <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-19>>
+
+    <with|par-left|1tab|9.7<space|2spc>The normalized spectral measure
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-20>>
+
+    <with|par-left|1tab|9.8<space|2spc>Cramér representation of the sample
+    path <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-21>>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-22><vspace|0.5fn>
+  </table-of-contents>
 
   <section|Introduction>
 
@@ -71,26 +161,27 @@
   <math|<around|[|t<rsub|c>,\<infty\>|)>>, where
   <math|t<rsub|c>\<approx\>6.2898> is the unique real zero of
   <math|\<theta\><rprime|'>>. The argument presented here restores global
-  monotonicity by the linear shift <math|<wide|\<theta\>|~><around|(|t|)>\<assign\>\<theta\><around|(|t|)>+c*t>
+  monotonicity by the linear shift <math|\<Theta\><around|(|t|)>\<assign\>\<theta\><around|(|t|)>+c*t>
   with <math|c\<gtr\>c<rsub|\<ast\>\<ast\>>> chosen so that
-  <math|<wide|\<theta\>|~><rprime|'>> is bounded below and non-vanishing on
+  <math|\<Theta\><rprime|'>> is bounded below and non-vanishing on
   <math|<around|{|<around|\||\<Im\>*t|\|>\<less\><tfrac|1|2>|}>>. The unitary
-  inverse phase pullback <math|<wide|H|~><around|(|u|)>\<assign\>Z<around|(|<wide|\<theta\>|~><rsup|-1><around|(|u|)>|)>/<sqrt|<wide|\<theta\>|~><rprime|'><around|(|<wide|\<theta\>|~><rsup|-1><around|(|u|)>|)>>>
-  satisfies the biholomorphic identity <math|Z<around|(|t|)>=<wide|H|~><around|(|<wide|\<theta\>|~><around|(|t|)>|)><sqrt|<wide|\<theta\>|~><rprime|'><around|(|t|)>>>
+  inverse phase pullback <math|Y<around|(|u|)>\<assign\>Z<around|(|\<Theta\><rsup|-1><around|(|u|)>|)>/<sqrt|\<Theta\><rprime|'><around|(|\<Theta\><rsup|-1><around|(|u|)>|)>>>
+  satisfies the biholomorphic identity <math|Z<around|(|t|)>=Y<around|(|\<Theta\><around|(|t|)>|)><sqrt|\<Theta\><rprime|'><around|(|t|)>>>
   on the open strip, where <math|Z> is holomorphic.
 
   All spectral quantities, in particular the mode thresholds
   <math|\<beta\><rsub|n>>, are given in closed form as values of the digamma
   function <math|\<psi\>> at explicit complex arguments. Asymptotic
   expansions are derived from these exact forms and used only where needed
-  for the finiteness of the exceptional set <math|S<around|(|\<mu\>|)>>.
+  for the finiteness of the exceptional set
+  <math|\<cal-S\><around|(|\<mu\>|)>>.
 
   The main technical content (Theorem<nbsp><reference|thm:bandlim>) is
-  band-limitedness of <math|<wide|H|~>>: <math|<supp><wide|<wide|H|~>|^>\<subseteq\><around|[|-1,1|]>>.
-  Paley\UWiener gives <math|<wide|H|~>> entire of exponential type
-  <math|\<le\>1>; Akhiezer gives reality of its zeros; the unitary identity
-  transfers reality to the zeros of <math|Z> inside the open strip; the
-  equivalence <math|\<zeta\>*<around|(|<tfrac|1|2>+i*t|)>=0\<Longleftrightarrow\>Z<around|(|t|)>=0>,
+  band-limitedness of <math|Y>: <math|<supp>S\<subseteq\><around|[|-1,1|]>>.
+  Paley\UWiener gives <math|Y> entire of exponential type <math|\<le\>1>;
+  Akhiezer gives reality of its zeros; the unitary identity transfers reality
+  to the zeros of <math|Z> inside the open strip; the equivalence
+  <math|\<zeta\>*<around|(|<tfrac|1|2>+i*t|)>=0\<Longleftrightarrow\>Z<around|(|t|)>=0>,
   valid on <math|<around|{|<around|\||\<Im\>*t|\|>\<less\><tfrac|1|2>|}>\<setminus\><around|{|\<pm\>i/2|}>>
   where the non-trivial zeros of <math|\<zeta\>> lie, yields the conclusion
   for <math|\<zeta\>>.
@@ -121,9 +212,9 @@
     <math|\<psi\><rprime|'><around|(|s|)>=<big|sum><rsub|k\<ge\>0><around|(|s+k|)><rsup|-2>>.
     With <math|z<rsub|k>=<tfrac|1|4>+k+<tfrac|i*t|2>>,
 
-    <\equation*>
-      \<Im\>*z<rsub|k><rsup|-2><space|0.27em>=<space|0.27em><frac|-2*<around|(|<tfrac|1|4>+k|)>*<around|(|t/2|)>|<around|\||z<rsub|k>|\|><rsup|4>><space|0.27em>\<less\><space|0.27em>0*<space|2em><around|(|k\<ge\>0,t\<gtr\>0|)>.
-    </equation*>
+    <\equation>
+      \<Im\>*z<rsub|k><rsup|-2><space|0.27em>=<space|0.27em><frac|-2*<around|(|<tfrac|1|4>+k|)>*<around|(|t/2|)>|<around|\||z<rsub|k>|\|><rsup|4>><space|0.27em>\<less\><space|0.27em>0*<space|2em><around|(|k\<ge\>0,t\<gtr\>0|)>
+    </equation>
 
     Summing, <math|\<Im\>*\<psi\><rprime|'>*<around|(|<tfrac|1|4>+<tfrac|i*t|2>|)>\<less\>0>,
     therefore <math|\<theta\><rprime|''><around|(|t|)>\<gtr\>0>.
@@ -132,11 +223,11 @@
   <\lemma>
     [Exact value of <math|\<theta\><rprime|'><around|(|0|)>>]<label|lem:thetaprime0>
 
-    <\equation*>
+    <\equation>
       \<theta\><rprime|'><around|(|0|)><space|0.27em>=<space|0.27em><tfrac|1|2>\<psi\><around|(|<tfrac|1|4>|)>-<tfrac|1|2>log
       \<pi\><space|0.27em>=<space|0.27em>-<tfrac|1|2><space|-0.17em><around*|(|\<gamma\>+3*log
-      2+<tfrac|\<pi\>|2>+log \<pi\>|)>.
-    </equation*>
+      2+<tfrac|\<pi\>|2>+log \<pi\>|)>
+    </equation>
   </lemma>
 
   <\proof>
@@ -150,18 +241,18 @@
   <\definition>
     [Admissible constant]<label|def:cstar>
 
-    <\equation*>
+    <\equation>
       c<rsub|\<ast\>>\<assign\>-\<theta\><rprime|'><around|(|0|)>=<tfrac|1|2><around|(|\<gamma\>+3*log
-      2+<tfrac|\<pi\>|2>+log \<pi\>|)>,
-    </equation*>
+      2+<tfrac|\<pi\>|2>+log \<pi\>|)>
+    </equation>
 
-    <\equation*>
-      M\<assign\><tfrac|1|2>sup<rsub|<around|\||\<Im\>*t|\|>\<less\>1/2><around|\||\<theta\><rprime|''><around|(|t|)>|\|>=<tfrac|1|8>sup<rsub|<around|\||\<Im\>*t|\|>\<less\>1/2><around|\||\<psi\><rprime|'>*<around|(|<tfrac|1|4>+<tfrac|i*t|2>|)>|\|>,
-    </equation*>
+    <\equation>
+      M\<assign\><tfrac|1|2>sup<rsub|<around|\||\<Im\>*t|\|>\<less\>1/2><around|\||\<theta\><rprime|''><around|(|t|)>|\|>=<tfrac|1|8>sup<rsub|<around|\||\<Im\>*t|\|>\<less\>1/2><around|\||\<psi\><rprime|'>*<around|(|<tfrac|1|4>+<tfrac|i*t|2>|)>|\|>
+    </equation>
 
-    <\equation*>
-      c<rsub|\<ast\>\<ast\>>\<assign\>c<rsub|\<ast\>>+M.
-    </equation*>
+    <\equation>
+      c<rsub|\<ast\>\<ast\>>\<assign\>c<rsub|\<ast\>>+M
+    </equation>
 
     A real <math|c> is <em|admissible> if
     <math|c\<gtr\>c<rsub|\<ast\>\<ast\>>>.
@@ -181,9 +272,9 @@
   </proof>
 
   <\lemma>
-    [Strict positivity of <math|<wide|\<theta\>|~><rprime|'>> on the
+    [Strict positivity of <math|\<Theta\><rprime|'>> on the
     strip]<label|lem:tildenonvan> For every admissible <math|c>,
-    <math|\<Re\>*<wide|\<theta\>|~><rprime|'><around|(|t|)>\<ge\>c-c<rsub|\<ast\>\<ast\>>\<gtr\>0>
+    <math|\<Re\>*\<Theta\><rprime|'><around|(|t|)>\<ge\>c-c<rsub|\<ast\>\<ast\>>\<gtr\>0>
     on <math|<around|{|<around|\||\<Im\>*t|\|>\<less\><tfrac|1|2>|}>>.
   </lemma>
 
@@ -192,19 +283,19 @@
     <math|\<theta\><rprime|'>> is even on <math|\<bbb-R\>> and increasing on
     <math|<around|[|0,\<infty\>|)>>, therefore
     <math|\<theta\><rprime|'><around|(|\<tau\>|)>\<ge\>-c<rsub|\<ast\>>>.
-    Therefore <math|\<Re\>*<wide|\<theta\>|~><rprime|'><around|(|t|)>\<ge\>-c<rsub|\<ast\>>-M+c=c-c<rsub|\<ast\>\<ast\>>\<gtr\>0>.
+    Therefore <math|\<Re\>*\<Theta\><rprime|'><around|(|t|)>\<ge\>-c<rsub|\<ast\>>-M+c=c-c<rsub|\<ast\>\<ast\>>\<gtr\>0>.
   </proof>
 
   <\lemma>
-    [Injectivity of <math|<wide|\<theta\>|~>>]<label|lem:stripinj> For every
-    admissible <math|c>, <math|<wide|\<theta\>|~>> is injective on
+    [Injectivity of <math|\<Theta\>>]<label|lem:stripinj> For every
+    admissible <math|c>, <math|\<Theta\>> is injective on
     <math|<around|{|<around|\||\<Im\>*t|\|>\<less\><tfrac|1|2>|}>> and
     bijective <math|\<bbb-R\>\<to\>\<bbb-R\>>.
   </lemma>
 
   <\proof>
-    If <math|<wide|\<theta\>|~><around|(|t<rsub|1>|)>=<wide|\<theta\>|~><around|(|t<rsub|2>|)>>,
-    the straight-line integral gives <math|<around|(|t<rsub|2>-t<rsub|1>|)>*<big|int><rsub|0><rsup|1><wide|\<theta\>|~><rprime|'><around|(|\<gamma\><around|(|s|)>|)>*<space|0.17em>d*s=0>;
+    If <math|\<Theta\><around|(|t<rsub|1>|)>=\<Theta\><around|(|t<rsub|2>|)>>,
+    the straight-line integral gives <math|<around|(|t<rsub|2>-t<rsub|1>|)>*<big|int><rsub|0><rsup|1>\<Theta\><rprime|'><around|(|\<gamma\><around|(|s|)>|)>*<space|0.17em>d*s=0>;
     the real part of the integral is <math|\<ge\>c-c<rsub|\<ast\>\<ast\>>\<gtr\>0>,
     therefore <math|t<rsub|1>=t<rsub|2>>.
   </proof>
@@ -243,26 +334,26 @@
     <math|Z> is
 
     <\equation*>
-      <wide|H|~><around|(|u|)><space|0.27em>\<assign\><space|0.27em><frac|Z<around|(|<wide|\<theta\>|~><rsup|-1><around|(|u|)>|)>|<sqrt|<wide|\<theta\>|~><rprime|'><around|(|<wide|\<theta\>|~><rsup|-1><around|(|u|)>|)>>>.
+      Y<around|(|u|)><space|0.27em>\<assign\><space|0.27em><frac|Z<around|(|\<Theta\><rsup|-1><around|(|u|)>|)>|<sqrt|\<Theta\><rprime|'><around|(|\<Theta\><rsup|-1><around|(|u|)>|)>>>.
     </equation*>
 
-    Extend to <math|\<bbb-R\>> by <math|<wide|H|~><around|(|-u|)>\<assign\><wide|H|~><around|(|u|)>>.
-    The half-Jacobian factor <math|1/<sqrt|<wide|\<theta\>|~><rprime|'><around|(|<wide|\<theta\>|~><rsup|-1><around|(|u|)>|)>>>
-    renders the map <math|Z\<mapsto\><wide|H|~>> an <math|L<rsup|2>>-isometry
-    under the change of variable <math|u=<wide|\<theta\>|~><around|(|t|)>>.
+    Extend to <math|\<bbb-R\>> by <math|Y*<around|(|-u|)>\<assign\>Y<around|(|u|)>>.
+    The half-Jacobian factor <math|1/<sqrt|\<Theta\><rprime|'><around|(|\<Theta\><rsup|-1><around|(|u|)>|)>>>
+    renders the map <math|Z\<mapsto\>Y> an <math|L<rsup|2>>-isometry under
+    the change of variable <math|u=\<Theta\><around|(|t|)>>.
   </definition>
 
-  <math|<wide|H|~>> is real-valued on <math|\<bbb-R\>>.
+  <math|Y> is real-valued on <math|\<bbb-R\>>.
 
   <section|Band-Limitedness>
 
   <\definition>
     [Mode threshold]<label|def:betan> For each <math|n\<ge\>1>,
 
-    <\equation*>
-      \<beta\><rsub|n><space|0.27em>\<assign\><space|0.27em><wide|\<theta\>|~><rprime|'>*<around|(|2*\<pi\>*n<rsup|2>|)><space|0.27em>=<space|0.27em><tfrac|1|2>\<Re\>*\<psi\>*<space|-0.17em><around*|(|<tfrac|1|4>+i*\<pi\>*n<rsup|2>|)>-<tfrac|1|2>log
-      \<pi\>+c.
-    </equation*>
+    <\equation>
+      \<beta\><rsub|n><space|0.27em>\<assign\><space|0.27em>\<Theta\><rprime|'>*<around|(|2*\<pi\>*n<rsup|2>|)><space|0.27em>=<space|0.27em><tfrac|1|2>\<Re\>*\<psi\>*<space|-0.17em><around*|(|<tfrac|1|4>+i*\<pi\>*n<rsup|2>|)>-<tfrac|1|2>log
+      \<pi\>+c
+    </equation>
   </definition>
 
   The quantity <math|\<beta\><rsub|n>> is given exactly in closed form as a
@@ -272,29 +363,29 @@
     [Asymptotic of <math|\<beta\><rsub|n>> from the exact
     form]<label|lem:betaasymp> As <math|n\<to\>\<infty\>>,
 
-    <\equation*>
+    <\equation>
       \<beta\><rsub|n><space|0.27em>=<space|0.27em>log
-      n+c+O<around|(|n<rsup|-4>|)>.
-    </equation*>
+      n+c+O<around|(|n<rsup|-4>|)>
+    </equation>
   </lemma>
 
   <\proof>
     The digamma asymptotic
 
-    <\equation*>
+    <\equation>
       \<psi\><around|(|s|)>=log s-<frac|1|2*s>-<big|sum><rsub|k\<ge\>1><frac|B<rsub|2*k>|2*k*<space|0.17em>s<rsup|2*k>>,<space|2em><around|\||arg
-      s|\|>\<less\>\<pi\>,
-    </equation*>
+      s|\|>\<less\>\<pi\>
+    </equation>
 
     applied at <math|s=<tfrac|1|4>+i*\<pi\>*n<rsup|2>> with
     <math|<around|\||s|\|>=<sqrt|<tfrac|1|16>+\<pi\><rsup|2>*n<rsup|4>>>
     yields
 
-    <\equation*>
+    <\equation>
       \<Re\>*\<psi\><around|(|s|)>=log\|s\|+O<around|(|<around|\||s|\|><rsup|-2>|)>=<tfrac|1|2>log
       <around|(|<tfrac|1|16>+\<pi\><rsup|2>*n<rsup|4>|)>+O<around|(|n<rsup|-4>|)>=2*log
-      n+log \<pi\>+O<around|(|n<rsup|-4>|)>.
-    </equation*>
+      n+log \<pi\>+O<around|(|n<rsup|-4>|)>
+    </equation>
 
     Therefore <math|<tfrac|1|2>\<Re\>*\<psi\>*<around|(|<tfrac|1|4>+i*\<pi\>*n<rsup|2>|)>=log
     n+<tfrac|1|2>log \<pi\>+O<around|(|n<rsup|-4>|)>> and
@@ -302,12 +393,12 @@
   </proof>
 
   <\definition>
-    [Truncated transform]<label|def:KT> For <math|T\<gtr\>T<rsub|0>\<gtr\>0>,
+    [Truncated transform]<label|def:KT> For <math|T\<gtr\>0>,
     <math|\<mu\>\<in\>\<bbb-R\>>,
 
-    <\equation*>
-      K<rsub|T><around|(|\<mu\>|)>\<assign\><tfrac|1|2*\<pi\>><big|int><rsub|T<rsub|0>><rsup|T>Z<around|(|t|)><sqrt|<wide|\<theta\>|~><rprime|'><around|(|t|)>>*<space|0.17em>e<rsup|-i*\<mu\>*<wide|\<theta\>|~><around|(|t|)>>*<space|0.17em>d*t=<tfrac|1|2*\<pi\>><big|int><rsub|<wide|\<theta\>|~><around|(|T<rsub|0>|)>><rsup|<wide|\<theta\>|~><around|(|T|)>><wide|H|~><around|(|u|)>*<space|0.17em>e<rsup|-i*\<mu\>*u>*<space|0.17em>d*u.
-    </equation*>
+    <\equation>
+      K<rsub|T><around|(|\<mu\>|)>\<assign\><tfrac|1|2*\<pi\>><big|int><rsub|0><rsup|T>Z<around|(|t|)><sqrt|\<Theta\><rprime|'><around|(|t|)>>*<space|0.17em>e<rsup|-i*\<mu\>*\<Theta\><around|(|t|)>>*<space|0.17em>d*t=<tfrac|1|2*\<pi\>><big|int><rsub|\<Theta\><around|(|0|)>><rsup|\<Theta\><around|(|T|)>>Y<around|(|u|)>*<space|0.17em>e<rsup|-i*\<mu\>*u>*<space|0.17em>d*u
+    </equation>
   </definition>
 
   <\lemma>
@@ -316,7 +407,7 @@
     <\equation*>
       Z<around|(|t|)>=2*<big|sum><rsub|n=1><rsup|N<around|(|t|)>>n<rsup|-1/2>*cos
       <around|(|\<theta\><around|(|t|)>-t*log
-      n|)>+R<around|(|t|)>,<space|2em>N<around|(|t|)>\<assign\><around|\<lfloor\>|<sqrt|t/<around|(|2*\<pi\>|)>>|\<rfloor\>>,<space|1em>R<around|(|t|)>=O<around|(|t<rsup|-1/4>|)>.
+      n|)>+R<around|(|t|)>,<space|2em>N<around|(|t|)>\<assign\><around|\<lfloor\>|<sqrt|t/<around|(|2*\<pi\>|)>>|\<rfloor\>>,<space|1em>R<around|(|t|)>=O<around|(|t<rsup|-1/4>|)>
     </equation*>
   </lemma>
 
@@ -325,11 +416,12 @@
   </proof>
 
   <\theorem>
-    [Band-limitedness of <math|<wide|H|~>>]<label|thm:bandlim> For every
-    admissible <math|c> and every <math|\<mu\>\<in\>\<bbb-R\>> with
+    [Band-limitedness of <math|Y>]<label|thm:bandlim> For every admissible
+    <math|c> and every <math|\<mu\>\<in\>\<bbb-R\>> with
     <math|<around|\||\<mu\>|\|>\<gtr\>1>, <math|lim<rsub|T\<to\>\<infty\>>
     K<rsub|T><around|(|\<mu\>|)>=0>. Equivalently,
-    <math|<supp><wide|<wide|H|~>|^>\<subseteq\><around|[|-1,1|]>>.
+    <math|<supp>S\<subseteq\><around|[|-1,1|]>>, where
+    <math|S\<assign\><around|\||<wide|Y|^>|\|><rsup|2>>.
   </theorem>
 
   <\proof>
@@ -340,34 +432,34 @@
       K<rsub|T><around|(|\<mu\>|)>=<tfrac|1|2*\<pi\>><big|sum><rsub|\<sigma\>\<in\><around|{|\<pm\>1|}>><big|sum><rsub|n\<le\>N<around|(|T|)>>n<rsup|-1/2>*J<rsub|n,\<sigma\>><around|(|T,\<mu\>|)>+\<cal-R\><around|(|T,\<mu\>|)>,
     </equation*>
 
-    with <math|t<rsub|n>\<assign\>max <around|(|T<rsub|0>,2*\<pi\>*n<rsup|2>|)>>,
+    with <math|t<rsub|n>\<assign\>2*\<pi\>*n<rsup|2>>,
 
     <\equation*>
-      J<rsub|n,\<sigma\>><around|(|T,\<mu\>|)>\<assign\><big|int><rsub|t<rsub|n>><rsup|T><sqrt|<wide|\<theta\>|~><rprime|'><around|(|t|)>>*<space|0.17em>e<rsup|i*<around|[|\<sigma\>*\<theta\><around|(|t|)>-\<sigma\>*t*log
-      n-\<mu\>*<wide|\<theta\>|~><around|(|t|)>|]>>*<space|0.17em>d*t,
+      J<rsub|n,\<sigma\>><around|(|T,\<mu\>|)>\<assign\><big|int><rsub|t<rsub|n>><rsup|T><sqrt|\<Theta\><rprime|'><around|(|t|)>>*<space|0.17em>e<rsup|i*<around|[|\<sigma\>*\<theta\><around|(|t|)>-\<sigma\>*t*log
+      n-\<mu\>*\<Theta\><around|(|t|)>|]>>*<space|0.17em>d*t,
     </equation*>
 
     <\equation*>
-      \<cal-R\><around|(|T,\<mu\>|)>\<assign\><tfrac|1|2*\<pi\>><big|int><rsub|T<rsub|0>><rsup|T>R<around|(|t|)><sqrt|<wide|\<theta\>|~><rprime|'><around|(|t|)>>*<space|0.17em>e<rsup|-i*\<mu\>*<wide|\<theta\>|~><around|(|t|)>>*<space|0.17em>d*t.
+      \<cal-R\><around|(|T,\<mu\>|)>\<assign\><tfrac|1|2*\<pi\>><big|int><rsub|0><rsup|T>R<around|(|t|)><sqrt|\<Theta\><rprime|'><around|(|t|)>>*<space|0.17em>e<rsup|-i*\<mu\>*\<Theta\><around|(|t|)>>*<space|0.17em>d*t.
     </equation*>
 
     The argument proceeds in the following steps.
 
     <\enumerate>
-      <item><em|Remainder vanishing.> <math|R<around|(|t|)><sqrt|<wide|\<theta\>|~><rprime|'><around|(|t|)>>=O<around|(|t<rsup|-1/4><around|(|log
+      <item><em|Remainder vanishing.> <math|R<around|(|t|)><sqrt|\<Theta\><rprime|'><around|(|t|)>>=O<around|(|t<rsup|-1/4><around|(|log
       t|)><rsup|1/2>|)>>; the phase derivative
-      <math|<around|\||-\<mu\>*<wide|\<theta\>|~><rprime|'><around|(|t|)>|\|>\<ge\><around|\||\<mu\>|\|>*<around|(|c-c<rsub|\<ast\>>|)>>
+      <math|<around|\||-\<mu\>*\<Theta\><rprime|'><around|(|t|)>|\|>\<ge\><around|\||\<mu\>|\|>*<around|(|c-c<rsub|\<ast\>>|)>>
       and grows as <math|<tfrac|<around|\||\<mu\>|\|>|2>log
       <around|(|t/<around|(|2*\<pi\>|)>|)>>. Integration by parts gives
       <math|\<cal-R\><around|(|\<infty\>,\<mu\>|)>-\<cal-R\><around|(|T,\<mu\>|)>=O<around|(|T<rsup|-1/4><around|(|log
       T|)><rsup|-1/2>|)>\<to\>0>.
 
-      <item><em|Change of variable.> Set <math|x\<assign\><wide|\<theta\>|~><rprime|'><around|(|t|)>=\<theta\><rprime|'><around|(|t|)>+c>,
+      <item><em|Change of variable.> Set <math|x\<assign\>\<Theta\><rprime|'><around|(|t|)>=\<theta\><rprime|'><around|(|t|)>+c>,
       <math|d*x=\<theta\><rprime|''><around|(|t|)>*<space|0.17em>d*t>,
-      <math|X\<assign\><wide|\<theta\>|~><rprime|'><around|(|T|)>>:
+      <math|X\<assign\>\<Theta\><rprime|'><around|(|T|)>>:
 
       <\equation*>
-        J<rsub|n,\<sigma\>><around|(|T,\<mu\>|)>=<big|int><rsub|\<beta\><rsub|n>\<vee\><wide|\<theta\>|~><rprime|'><around|(|T<rsub|0>|)>><rsup|X><frac|<sqrt|x>|\<theta\><rprime|''><around|(|t<around|(|x|)>|)>>*<space|0.17em>e<rsup|i*<wide|\<Phi\>|~><rsub|n,\<sigma\>,\<mu\>><around|(|x|)>>*<space|0.17em>d*x,
+        J<rsub|n,\<sigma\>><around|(|T,\<mu\>|)>=<big|int><rsub|\<beta\><rsub|n>\<vee\>\<Theta\><rprime|'><around|(|0|)>><rsup|X><frac|<sqrt|x>|\<theta\><rprime|''><around|(|t<around|(|x|)>|)>>*<space|0.17em>e<rsup|i*<wide|\<Phi\>|~><rsub|n,\<sigma\>,\<mu\>><around|(|x|)>>*<space|0.17em>d*x,
       </equation*>
 
       <\equation*>
@@ -383,7 +475,7 @@
       </equation*>
 
       <item><em|Finiteness of the exceptional set.> Define
-      <math|S<around|(|\<mu\>|)>\<assign\><around|{|n:\<beta\><rsub|n>\<le\><around|(|log
+      <math|\<cal-S\><around|(|\<mu\>|)>\<assign\><around|{|n:\<beta\><rsub|n>\<le\><around|(|log
       n+c|)>/<around|(|1+<around|\||\<mu\>|\|>|)>|}>>. By
       Lemma<nbsp><reference|lem:betaasymp>,
 
@@ -392,21 +484,21 @@
         n+c|)>+O<around|(|n<rsup|-4>|)>\<to\>\<infty\>,
       </equation*>
 
-      therefore <math|S<around|(|\<mu\>|)>> is finite.
+      therefore <math|\<cal-S\><around|(|\<mu\>|)>> is finite.
 
-      <item><em|IBP for <math|n\<nin\>S<around|(|\<mu\>|)>>.> Constant-sign
-      phase derivative; boundary <math|O<around|(|X<rsup|-1/2>|)>>, tail
-      <math|\<le\>2*C*X<rsup|-1/2>>.
+      <item><em|IBP for <math|n\<nin\>\<cal-S\><around|(|\<mu\>|)>>.>
+      Constant-sign phase derivative; boundary
+      <math|O<around|(|X<rsup|-1/2>|)>>, tail <math|\<le\>2*C*X<rsup|-1/2>>.
 
-      <item><em|IBP tail for <math|n\<in\>S<around|(|\<mu\>|)>>.> Past the
-      stationary point, <math|<around|\||\<Phi\><rprime|'><rsub|n,\<sigma\>,\<mu\>><around|(|t|)>|\|>\<ge\><around|(|<around|\||\<mu\>|\|>-1|)>*<wide|\<theta\>|~><rprime|'><around|(|T|)>-<around|\||log
+      <item><em|IBP tail for <math|n\<in\>\<cal-S\><around|(|\<mu\>|)>>.>
+      Past the stationary point, <math|<around|\||\<Phi\><rprime|'><rsub|n,\<sigma\>,\<mu\>><around|(|t|)>|\|>\<ge\><around|(|<around|\||\<mu\>|\|>-1|)>*\<Theta\><rprime|'><around|(|T|)>-<around|\||log
       n+c|\|>\<gtr\>0>, diverging; integration by parts gives
-      <math|O<around|(|<wide|\<theta\>|~><rprime|'><around|(|T|)><rsup|-1/2>|)>>.
+      <math|O<around|(|\<Theta\><rprime|'><around|(|T|)><rsup|-1/2>|)>>.
 
       <item><em|Assembly.>
 
       <\equation*>
-        K<rsub|\<infty\>><around|(|\<mu\>|)>-K<rsub|T><around|(|\<mu\>|)>=<tfrac|1|2*\<pi\>><big|sum><rsub|\<sigma\>><space|-0.17em><around*|[|<big|sum><rsub|n\<nin\>S<around|(|\<mu\>|)>>n<rsup|-1/2>*O<around|(|X<rsup|-1/2>|)>+<big|sum><rsub|n\<in\>S<around|(|\<mu\>|)>>n<rsup|-1/2>*O<around|(|<wide|\<theta\>|~><rprime|'><around|(|T|)><rsup|-1/2>|)>|]>+O<around|(|T<rsup|-1/4><around|(|log
+        K<rsub|\<infty\>><around|(|\<mu\>|)>-K<rsub|T><around|(|\<mu\>|)>=<tfrac|1|2*\<pi\>><big|sum><rsub|\<sigma\>><space|-0.17em><around*|[|<big|sum><rsub|n\<nin\>\<cal-S\><around|(|\<mu\>|)>>n<rsup|-1/2>*O<around|(|X<rsup|-1/2>|)>+<big|sum><rsub|n\<in\>\<cal-S\><around|(|\<mu\>|)>>n<rsup|-1/2>*O<around|(|\<Theta\><rprime|'><around|(|T|)><rsup|-1/2>|)>|]>+O<around|(|T<rsup|-1/4><around|(|log
         T|)><rsup|-1/2>|)>.
       </equation*>
 
@@ -418,7 +510,7 @@
 
       <\equation*>
         \<sigma\>\<cdot\><frac|\<theta\><rprime|'><around|(|t|)>-log
-        n|<wide|\<theta\>|~><rprime|'><around|(|t|)>>=\<sigma\>\<cdot\><frac|\<theta\><rprime|'><around|(|t|)>-log
+        n|\<Theta\><rprime|'><around|(|t|)>>=\<sigma\>\<cdot\><frac|\<theta\><rprime|'><around|(|t|)>-log
         n|\<theta\><rprime|'><around|(|t|)>+c>.
       </equation*>
 
@@ -430,19 +522,19 @@
       <math|O<around|(|<around|(|log t|)><rsup|-1>|)>\<to\>0>.
     </enumerate>
 
-    Therefore <math|<supp><wide|<wide|H|~>|^>\<subseteq\><around|[|-1,1|]>>,
-    and <math|K<rsub|\<infty\>><around|(|\<mu\>|)>=<wide|<wide|H|~>|^><around|(|\<mu\>|)>=0>
+    Therefore <math|<supp>S\<subseteq\><around|[|-1,1|]>>, and
+    <math|K<rsub|\<infty\>><around|(|\<mu\>|)>=<wide|Y|^><around|(|\<mu\>|)>=0>
     for <math|<around|\||\<mu\>|\|>\<gtr\>1>.
   </proof>
 
   <section|Entire Extension and Laguerre\UPólya Membership>
 
   <\corollary>
-    [Paley\UWiener]<label|cor:PW> <math|<wide|H|~>> extends to an entire
-    function of exponential type <math|\<le\>1>:
+    [Paley\UWiener]<label|cor:PW> <math|Y> extends to an entire function of
+    exponential type <math|\<le\>1>:
 
     <\equation*>
-      <wide|H|~><around|(|z|)>=<big|int><rsub|-1><rsup|1><wide|<wide|H|~>|^><around|(|\<xi\>|)>*<space|0.17em>e<rsup|i*\<xi\>*z>*<space|0.17em>d*\<xi\>,<space|2em><around|\||<wide|H|~><around|(|z|)>|\|>\<le\><around|\<\|\|\>|<wide|<wide|H|~>|^>|\<\|\|\>>*<space|0.17em>e<rsup|<around|\||\<Im\>*z|\|>>.
+      Y<around|(|z|)>=<big|int><rsub|-1><rsup|1><wide|Y|^><around|(|\<xi\>|)>*<space|0.17em>e<rsup|i*\<xi\>*z>*<space|0.17em>d*\<xi\>,<space|2em><around|\||Y<around|(|z|)>|\|>\<le\><around|\<\|\|\>|<wide|Y|^>|\<\|\|\>>*<space|0.17em>e<rsup|<around|\||\<Im\>*z|\|>>.
     </equation*>
   </corollary>
 
@@ -451,24 +543,26 @@
   </proof>
 
   <\lemma>
-    [Non-negativity of the spectral density]<label|lem:PSD>
-    <math|<around|\||<wide|<wide|H|~>|^><around|(|\<xi\>|)>|\|><rsup|2>\<ge\>0>
-    as a measure on <math|\<bbb-R\>>, supported in <math|<around|[|-1,1|]>>.
+    [Non-negativity of the spectral measure]<label|lem:PSD> The spectral
+    measure <math|S\<assign\><around|\||<wide|Y|^>|\|><rsup|2>> is a
+    non-negative tempered measure on <math|\<bbb-R\>>, supported in
+    <math|<around|[|-1,1|]>>.
   </lemma>
 
   <\proof>
-    The autocorrelation <math|C<around|(|\<eta\>|)>\<assign\><around|\<langle\>|<wide|H|~>,<wide|H|~>|(>\<cdot\>+\<eta\>)\<rangle\>>
-    is positive-definite; Bochner (<cite|Rudin>, Theorem 9.11) gives
-    <math|<around|\||<wide|<wide|H|~>|^>|\|><rsup|2>\<ge\>0>; support from
+    The autocorrelation <math|C<around|(|\<eta\>|)>\<assign\><around|\<langle\>|Y,Y|(>\<cdot\>+\<eta\>)\<rangle\>>
+    is positive-definite in the tempered sense; Bochner\USchwartz
+    (<cite|Rudin-FA>, Theorem 7.7) identifies its Fourier transform with a
+    non-negative tempered measure <math|S>; support from
     Theorem<nbsp><reference|thm:bandlim>.
   </proof>
 
   <\theorem>
     [Akhiezer]<label|thm:akhiezer> A real-valued entire function <math|F> of
-    exponential type <math|\<le\>\<tau\>> with
-    <math|<around|\||<wide|F|^>|\|><rsup|2>> a non-negative measure supported
-    in <math|<around|[|-\<tau\>,\<tau\>|]>> belongs to the Laguerre\UPólya
-    class. All zeros of <math|F> are real.
+    exponential type <math|\<le\>\<tau\>> whose spectral measure
+    <math|<around|\||<wide|F|^>|\|><rsup|2>> is a non-negative measure
+    supported in <math|<around|[|-\<tau\>,\<tau\>|]>> belongs to the
+    Laguerre\UPólya class. All zeros of <math|F> are real.
   </theorem>
 
   <\proof>
@@ -476,16 +570,16 @@
   </proof>
 
   <\corollary>
-    [Reality of zeros of <math|<wide|H|~>>]<label|cor:Hzero> All zeros of
-    <math|<wide|H|~>> in <math|\<bbb-C\>> are real.
+    [Reality of zeros of <math|Y>]<label|cor:Hzero> All zeros of <math|Y> in
+    <math|\<bbb-C\>> are real.
   </corollary>
 
   <\proof>
-    <math|<wide|H|~>> is real on <math|\<bbb-R\>>
-    (Definition<nbsp><reference|def:Htilde>), entire of exponential type
-    <math|\<le\>1> (Corollary<nbsp><reference|cor:PW>), with
-    <math|<around|\||<wide|<wide|H|~>|^>|\|><rsup|2>> non-negative on
-    <math|<around|[|-1,1|]>> (Lemma<nbsp><reference|lem:PSD>). Apply
+    <math|Y> is real on <math|\<bbb-R\>> (Definition<nbsp><reference|def:Htilde>),
+    entire of exponential type <math|\<le\>1>
+    (Corollary<nbsp><reference|cor:PW>), with spectral measure <math|S>
+    non-negative and supported in <math|<around|[|-1,1|]>>
+    (Lemma<nbsp><reference|lem:PSD>). Apply
     Theorem<nbsp><reference|thm:akhiezer>.
   </proof>
 
@@ -496,11 +590,11 @@
     admissible <math|c> and every <math|t\<in\>\<Omega\>=<around|{|<around|\||\<Im\>*t|\|>\<less\><tfrac|1|2>|}>>,
 
     <\equation*>
-      Z<around|(|t|)>=<wide|H|~><around|(|<wide|\<theta\>|~><around|(|t|)>|)><sqrt|<wide|\<theta\>|~><rprime|'><around|(|t|)>>,
+      Z<around|(|t|)>=Y<around|(|\<Theta\><around|(|t|)>|)><sqrt|\<Theta\><rprime|'><around|(|t|)>>,
     </equation*>
 
-    where <math|<sqrt|<wide|\<theta\>|~><rprime|'><around|(|\<cdummy\>|)>>>
-    is the holomorphic branch on <math|\<Omega\>> that is positive on
+    where <math|<sqrt|\<Theta\><rprime|'><around|(|\<cdummy\>|)>>> is the
+    holomorphic branch on <math|\<Omega\>> that is positive on
     <math|\<bbb-R\>>.
   </theorem>
 
@@ -508,15 +602,14 @@
     On <math|<around|[|0,\<infty\>|)>> the identity is
     Definition<nbsp><reference|def:Htilde> rearranged. Both sides are
     holomorphic on <math|\<Omega\>>: <math|Z> is holomorphic on
-    <math|\<Omega\>> by Lemma<nbsp><reference|lem:Zholo>;
-    <math|<wide|\<theta\>|~>> is holomorphic on
-    <math|<around|{|<around|\||\<Im\>*t|\|>\<less\>1|}>\<supset\>\<Omega\>>;
-    <math|<wide|H|~>> is entire by Corollary<nbsp><reference|cor:PW>;
-    <math|<sqrt|<wide|\<theta\>|~><rprime|'><around|(|t|)>>> admits a
-    holomorphic branch since <math|<wide|\<theta\>|~><rprime|'>> is
-    non-vanishing on the simply connected <math|\<Omega\>> by
-    Lemma<nbsp><reference|lem:tildenonvan>. The identity theorem extends the
-    equality from <math|<around|[|0,\<infty\>|)>> to <math|\<Omega\>>.
+    <math|\<Omega\>> by Lemma<nbsp><reference|lem:Zholo>; <math|\<Theta\>> is
+    holomorphic on <math|<around|{|<around|\||\<Im\>*t|\|>\<less\>1|}>\<supset\>\<Omega\>>;
+    <math|Y> is entire by Corollary<nbsp><reference|cor:PW>;
+    <math|<sqrt|\<Theta\><rprime|'><around|(|t|)>>> admits a holomorphic
+    branch since <math|\<Theta\><rprime|'>> is non-vanishing on the simply
+    connected <math|\<Omega\>> by Lemma<nbsp><reference|lem:tildenonvan>. The
+    identity theorem extends the equality from
+    <math|<around|[|0,\<infty\>|)>> to <math|\<Omega\>>.
   </proof>
 
   <\theorem>
@@ -528,12 +621,12 @@
   <\proof>
     Let <math|t<rsub|0>\<in\>\<Omega\>> satisfy
     <math|Z<around|(|t<rsub|0>|)>=0>. Theorem<nbsp><reference|thm:utc> gives
-    <math|<wide|H|~><around|(|<wide|\<theta\>|~><around|(|t<rsub|0>|)>|)><sqrt|<wide|\<theta\>|~><rprime|'><around|(|t<rsub|0>|)>>=0>.
+    <math|Y<around|(|\<Theta\><around|(|t<rsub|0>|)>|)><sqrt|\<Theta\><rprime|'><around|(|t<rsub|0>|)>>=0>.
     Lemma<nbsp><reference|lem:tildenonvan> gives
-    <math|<sqrt|<wide|\<theta\>|~><rprime|'><around|(|t<rsub|0>|)>>\<ne\>0>,
-    therefore <math|<wide|H|~><around|(|<wide|\<theta\>|~><around|(|t<rsub|0>|)>|)>=0>.
+    <math|<sqrt|\<Theta\><rprime|'><around|(|t<rsub|0>|)>>\<ne\>0>, therefore
+    <math|Y<around|(|\<Theta\><around|(|t<rsub|0>|)>|)>=0>.
     Corollary<nbsp><reference|cor:Hzero> gives
-    <math|<wide|\<theta\>|~><around|(|t<rsub|0>|)>\<in\>\<bbb-R\>>.
+    <math|\<Theta\><around|(|t<rsub|0>|)>\<in\>\<bbb-R\>>.
     Lemma<nbsp><reference|lem:stripinj>, therefore, gives
     <math|t<rsub|0>\<in\>\<bbb-R\>>.
   </proof>
@@ -580,16 +673,15 @@
   motion is a pushforward.
 
   Apply that picture here. <math|Z> is being sent outward: it is spread
-  across the <math|t>-line, expanded into that space. To build
-  <math|<wide|H|~>> on the <math|u>-line, one sits at a point <math|u>,
-  reaches back through the phase map via <math|<wide|\<theta\>|~><rsup|-1>>,
-  grabs the value <math|Z<around|(|<wide|\<theta\>|~><rsup|-1><around|(|u|)>|)>>,
-  and reels it in. That retrieving is exactly why the operation is called a
-  pullback: <math|Z> has been sent out, and one has to pull it back to gather
-  it at <math|u>. Since the reeling is done along
-  <math|<wide|\<theta\>|~><rsup|-1>>, the qualifier is \Pinverse phase.\Q The
-  adjective \Punitary\Q records that the half-Jacobian
-  <math|1/<sqrt|<wide|\<theta\>|~><rprime|'><around|(|<wide|\<theta\>|~><rsup|-1><around|(|u|)>|)>>>
+  across the <math|t>-line, expanded into that space. To build <math|Y> on
+  the <math|u>-line, one sits at a point <math|u>, reaches back through the
+  phase map via <math|\<Theta\><rsup|-1>>, grabs the value
+  <math|Z<around|(|\<Theta\><rsup|-1><around|(|u|)>|)>>, and reels it in.
+  That retrieving is exactly why the operation is called a pullback: <math|Z>
+  has been sent out, and one has to pull it back to gather it at <math|u>.
+  Since the reeling is done along <math|\<Theta\><rsup|-1>>, the qualifier is
+  \Pinverse phase.\Q The adjective \Punitary\Q records that the half-Jacobian
+  <math|1/<sqrt|\<Theta\><rprime|'><around|(|\<Theta\><rsup|-1><around|(|u|)>|)>>>
   is included so that <math|L<rsup|2>>-mass is preserved under the operation.
 
   <paragraph|Contravariance and covariance.> The two directions carry
@@ -603,95 +695,243 @@
   map. The split is the same one that distinguishes covectors from vectors,
   or differential forms from densities: it records which kind of geometric
   object is being transported and which way the arrow of transport naturally
-  runs. Under this classification, <math|Z> and <math|<wide|H|~>> are
-  scalar-like, half-density data, and the natural transport between them is
-  contravariant \V a pullback.
+  runs. Under this classification, <math|Z> and <math|Y> are scalar-like,
+  half-density data, and the natural transport between them is contravariant
+  \V a pullback.
 
   <paragraph|A remark on the dual naming.> Technically one could reverse the
   point of view and call <math|Z> itself the <em|phase pushforward> of the
-  stationary process <math|<wide|H|~>>: starting from <math|<wide|H|~>> on
-  the <math|u>-line, one lets out the line along <math|<wide|\<theta\>|~>>
-  and expands <math|<wide|H|~>> outward into <math|t>-space, obtaining
-  <math|Z>. Equivalently, the stationary process <math|<wide|H|~>> could be
-  defined as the pushforward of <math|Z> along the phase \V sending <math|Z>
-  forth into <math|u>-coordinates. This naming is formally consistent, but it
-  reads against the grain of what is being constructed. Stationarity is a
-  property of something gathered and settled; producing it by <em|pushing> an
-  object outward into a new space is the wrong English motion. One naturally
-  assembles a stationary object by <em|pulling in> values from the
-  non-stationary source. \PUnitary inverse phase pullback\Q is therefore the
-  name used throughout: it matches the geometric direction of the
-  construction and the linguistic image of stationarity as something
-  retrieved, not something broadcast.
+  stationary process <math|Y>: starting from <math|Y> on the <math|u>-line,
+  one lets out the line along <math|\<Theta\>> and expands <math|Y> outward
+  into <math|t>-space, obtaining <math|Z>. Equivalently, the stationary
+  process <math|Y> could be defined as the pushforward of <math|Z> along the
+  phase \V sending <math|Z> forth into <math|u>-coordinates. This naming is
+  formally consistent, but it reads against the grain of what is being
+  constructed. Stationarity is a property of something gathered and settled;
+  producing it by <em|pushing> an object outward into a new space is the
+  wrong English motion. One naturally assembles a stationary object by
+  <em|pulling in> values from the non-stationary source. \PUnitary inverse
+  phase pullback\Q is therefore the name used throughout: it matches the
+  geometric direction of the construction and the linguistic image of
+  stationarity as something retrieved, not something broadcast.
 
   <paragraph|Ditty.>
 
   <\quote-env>
     Functions pull back, measures push forth.<next-line><math|Z> lives in
     <math|t>, so <math|u> must go north:<next-line>compose with
-    <math|<wide|\<theta\>|~><rsup|-1>>, put half-Jacobian in tow
+    <math|\<Theta\><rsup|-1>>, put half-Jacobian in tow
     <emdash><next-line>that's the unitary inverse phase pullback, row by row.
   </quote-env>
 
-  <subsection|Why is the spectral density
+  <subsection|Why is the spectral measure
   non-negative?><label|app:PSD-colloquial>
 
-  The autocorrelation of any real, square-integrable function is
-  automatically a positive-definite function: the Gram matrix of finitely
-  many translates of <math|<wide|H|~>> in <math|L<rsup|2>> has non-negative
-  eigenvalues, a one-line consequence of Cauchy\USchwarz. Bochner's theorem
-  then says that the Fourier transform of a positive-definite function is a
-  non-negative measure, and the Wiener\UKhinchin identity identifies that
-  Fourier transform with <math|<around|\||<wide|<wide|H|~>|^>|\|><rsup|2>>.
-  The non-negativity of the spectral density is therefore the Fourier-side
-  restatement of a universal property of autocorrelations of real
-  <math|L<rsup|2>> functions; what is specific to <math|<wide|H|~>> is the
-  additional support condition <math|<supp><around|\||<wide|<wide|H|~>|^>|\|><rsup|2>\<subseteq\><around|[|-1,1|]>>,
-  delivered by Theorem<nbsp><reference|thm:bandlim> and used in combination
-  with non-negativity to invoke Akhiezer.
+  The autocorrelation of any real, locally square-integrable function is a
+  positive-definite tempered distribution: the Gram matrix of finitely many
+  translates of <math|Y> restricted to a common window has non-negative
+  eigenvalues, a one-line consequence of Cauchy\USchwarz. Bochner\USchwartz
+  identifies the Fourier transform of a positive-definite tempered
+  distribution with a non-negative tempered measure, and Wiener\UKhinchin
+  identifies that Fourier transform with <math|S=<around|\||<wide|Y|^>|\|><rsup|2>>.
+  Non-negativity of the spectral measure is the Fourier-side restatement of
+  this universal property of autocorrelations; the support condition
+  <math|<supp>S\<subseteq\><around|[|-1,1|]>> is delivered by
+  Theorem<nbsp><reference|thm:bandlim> and combines with non-negativity to
+  invoke Akhiezer.
 
   <subsection|What is being autocorrelated?><label|app:autocorr>
 
-  The autocorrelation in Lemma<nbsp><reference|lem:PSD> is that of
-  <math|<wide|H|~>> itself, the unitary inverse phase pullback of <math|Z>.
-  In <math|u>-coordinates,
+  The autocorrelation in Lemma<nbsp><reference|lem:PSD> is that of <math|Y>
+  itself, the unitary inverse phase pullback of <math|Z>. In
+  <math|u>-coordinates,
 
   <\equation*>
-    C<around|(|\<eta\>|)><space|0.27em>=<space|0.27em><big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|H|~><around|(|u|)><space|0.17em><wide|H|~>*<around|(|u+\<eta\>|)>*<space|0.17em>d*u.
+    C<around|(|\<eta\>|)><space|0.27em>=<space|0.27em>lim<rsub|U\<to\>\<infty\>>
+    <frac|1|2*U>*<big|int><rsub|-U><rsup|U>Y<around|(|u|)>*<space|0.17em>Y*<around|(|u+\<eta\>|)>*<space|0.17em>d*u,
   </equation*>
 
-  Because the map <math|Z\<mapsto\><wide|H|~>> is an
-  <math|L<rsup|2>>-isometry under <math|u=<wide|\<theta\>|~><around|(|t|)>>,
-  this is equivalent to correlating <math|Z> against itself with respect to
-  the <math|u>-shift <math|\<eta\>>, which is a nonlinear (roughly
-  logarithmic) shift in the original <math|t>-coordinate. It is not the
-  autocorrelation of <math|Z> in <math|t>, which would be a different object
-  reflecting the non-stationary spacing of the Riemann zeros on the critical
-  line.
+  a positive-definite tempered distribution. Because the map
+  <math|Z\<mapsto\>Y> is an <math|L<rsup|2>>-isometry under
+  <math|u=\<Theta\><around|(|t|)>>, this is equivalent to correlating
+  <math|Z> against itself with respect to the <math|u>-shift <math|\<eta\>>,
+  which is a nonlinear (roughly logarithmic) shift in the original
+  <math|t>-coordinate.
 
   <subsection|What does the picture look like?><label|app:picture>
 
   Three objects merit mental plots.
 
-  <em|The function <math|<wide|H|~><around|(|u|)>>.> An envelope-modulated
-  real oscillation of zero mean. The envelope decays like <math|1/<sqrt|log
-  t>> expressed in <math|u>-coordinates. The zero crossings are the images
-  under <math|<wide|\<theta\>|~>> of the non-trivial Riemann zeros; the phase
-  variable straightens out their spacing.
+  <em|The function <math|Y<around|(|u|)>>.> An envelope-modulated real
+  oscillation of zero mean. The envelope decays like <math|1/<sqrt|log t>>
+  expressed in <math|u>-coordinates. The zero crossings are the images under
+  <math|\<Theta\>> of the non-trivial Riemann zeros; the phase variable
+  straightens out their spacing.
 
   <em|The autocorrelation <math|C<around|(|\<eta\>|)>>.> A sharp peak at
-  <math|\<eta\>=0> of height <math|<around|\<\|\|\>|<wide|H|~>|\<\|\|\>><rsub|L<rsup|2>><rsup|2>>,
-  symmetric in <math|\<eta\>> because <math|<wide|H|~>> is real, with
-  oscillatory decay whose frequency content sits inside
-  <math|<around|[|-1,1|]>>. Envelope decay is no faster than
-  <math|1/<around|\||\<eta\>|\|>> unless <math|<around|\||<wide|<wide|H|~>|^>|\|><rsup|2>>
-  vanishes smoothly at <math|\<pm\>1>.
+  <math|\<eta\>=0>, symmetric in <math|\<eta\>> because <math|Y> is real,
+  with oscillatory decay whose frequency content sits inside
+  <math|<around|[|-1,1|]>>.
 
-  <em|The spectral density <math|<around|\||<wide|<wide|H|~>|^><around|(|\<xi\>|)>|\|><rsup|2>>.>
-  A non-negative function (or measure) strictly supported in
-  <math|<around|[|-1,1|]>>, symmetric about <math|\<xi\>=0> after the even
-  extension. Its shape inside <math|<around|[|-1,1|]>> encodes the
-  distribution of zero spacings of <math|Z> in <math|u>-coordinates.
+  <em|The spectral measure <math|S>.> A non-negative tempered measure
+  strictly supported in <math|<around|[|-1,1|]>>, symmetric about
+  <math|\<xi\>=0> after the even extension. Its shape inside
+  <math|<around|[|-1,1|]>> encodes the distribution of zero spacings of
+  <math|Z> in <math|u>-coordinates.
+
+  <subsection|Locally <math|L<rsup|2>> and the growing
+  variance><label|app:localL2>
+
+  <math|Y> is locally <math|L<rsup|2>>, on compact subsets
+  <math|<around|[|-U,U|]>> of arbitrarily large length <math|U>. The
+  band-limit established in Theorem<nbsp><reference|thm:bandlim> is a
+  statement about the Fourier support of <math|Y> as a tempered distribution
+  on <math|\<bbb-R\>>. All uses of Paley\UWiener, Bochner\USchwartz, and
+  Akhiezer in the main text are read in the tempered-distributional form, the
+  framework for band-limited objects that are not globally <math|L<rsup|2>>.
+
+  The growing variance manifests in three compatible ways.
+
+  <em|Envelope in <math|u>-coordinates.> <math|Y<around|(|u|)>> has an
+  amplitude envelope that grows slowly as
+  <math|<around|\||u|\|>\<to\>\<infty\>>; the local mean-square
+  <math|<wide|P|\<bar\>><around|(|U|)>\<assign\><tfrac|1|2*U><big|int><rsub|-U><rsup|U>Y<around|(|u|)><rsup|2>*<space|0.17em>d*u>
+  grows without bound as <math|U\<to\>\<infty\>>.
+
+  <em|Autocorrelation as a tempered distribution.>
+  <math|C<around|(|\<eta\>|)>> is the windowed-limit positive-definite
+  distribution of Ÿ<reference|app:autocorr>. Bochner\USchwartz identifies its
+  Fourier transform with the non-negative tempered measure <math|S>, and
+  Theorem<nbsp><reference|thm:bandlim> localizes <math|S> to
+  <math|<around|[|-1,1|]>>.
+
+  <em|Spectral measure as a tempered measure on <math|<around|[|-1,1|]>>.>
+  <math|S> is a non-negative tempered measure on <math|\<bbb-R\>>, supported
+  in <math|<around|[|-1,1|]>>, of infinite total mass.
+
+  <paragraph|Representation at finite window.> Pointwise values of the
+  spectral density at interior <math|\<xi\><rsub|0>\<in\><around|(|-1,1|)>>
+  are approached through windowed periodograms
+
+  <\equation*>
+    P<rsub|U><around|(|\<xi\><rsub|0>|)><space|0.27em>\<assign\><space|0.27em><frac|1|2*U><space|-0.17em><around*|\||<big|int><rsub|-U><rsup|U>Y<around|(|u|)>*<space|0.17em>e<rsup|-i*\<xi\><rsub|0>*u>*<space|0.17em>d*u|\|><rsup|2>.
+  </equation*>
+
+  Any figure produced at finite <math|U> is a <em|representation> at window
+  scale <math|U>.
+
+  <subsection|Scale of the spectral representation at finite
+  window><label|app:windowscale>
+
+  Fix <math|\<xi\>\<in\><around|(|-1,1|)>> and let
+  <math|P<rsub|U><around|(|\<xi\>|)>> be the windowed periodogram. Two
+  features of the plot change with <math|U>: the overall vertical scale, and
+  the local fluctuation amplitude around that scale. Both are controlled by
+  the local mean power
+
+  <\equation*>
+    <wide|P|\<bar\>><around|(|U|)><space|0.27em>\<assign\><space|0.27em><frac|1|2*U>*<big|int><rsub|-U><rsup|U>Y<around|(|u|)><rsup|2>*<space|0.17em>d*u<space|0.27em>=<space|0.27em><frac|1|2*U>*<big|int><rsub|\<Theta\><rsup|-1>*<around|(|-U|)>><rsup|\<Theta\><rsup|-1><around|(|U|)>><space|-0.17em><space|-0.17em>Z<around|(|t|)><rsup|2>*<space|0.17em>d*t,
+  </equation*>
+
+  the second equality by the <math|L<rsup|2>>-isometry of the unitary inverse
+  phase pullback. By Parseval in the tempered sense,
+
+  <\equation*>
+    <big|int><rsub|-\<infty\>><rsup|\<infty\>>P<rsub|U><around|(|\<xi\>|)>*<space|0.17em>d*\<xi\><space|0.27em>=<space|0.27em>2*\<pi\>*<space|0.17em><wide|P|\<bar\>><around|(|U|)>.
+  </equation*>
+
+  Using <math|\<Theta\><around|(|t|)>\<sim\><tfrac|t|2>log
+  <around|(|t/<around|(|2*\<pi\>*e|)>|)>+c*t> and the Hardy\ULittlewood
+  moment <math|<big|int><rsub|0><rsup|T>Z<around|(|t|)><rsup|2>*<space|0.17em>d*t\<sim\>T*log
+  T> (<cite|Titchmarsh>, Ÿ7.3),
+
+  <\equation*>
+    <wide|P|\<bar\>><around|(|U|)><space|0.27em>\<sim\><space|0.27em>log
+    <space|-0.17em><around*|(|\<Theta\><rsup|-1><around|(|U|)>|)><space|0.27em>\<sim\><space|0.27em>log
+    U+log log U+O<around|(|1|)>*<space|2em><around|(|U\<to\>\<infty\>|)>.
+  </equation*>
+
+  <math|P<rsub|U><around|(|\<xi\>|)>> fluctuates around
+  <math|<wide|P|\<bar\>><around|(|U|)>> on a scale comparable to
+  <math|<wide|P|\<bar\>><around|(|U|)>> itself, with wider fluctuations near
+  the edges <math|<around|\||\<xi\>|\|>\<to\>1<rsup|->>.
+
+  <subsection|The normalized spectral measure><label|app:normalized>
+
+  At every finite <math|U> the periodogram <math|P<rsub|U>> has finite total
+  mass <math|2*\<pi\>*<wide|P|\<bar\>><around|(|U|)>> by Parseval. Dividing
+  by this total mass produces the normalized spectral probability measure at
+  scale <math|U>,
+
+  <\equation*>
+    <wide|P|~><rsub|U><around|(|\<xi\>|)><space|0.27em>\<assign\><space|0.27em><frac|P<rsub|U><around|(|\<xi\>|)>|2*\<pi\>*<space|0.17em><wide|P|\<bar\>><around|(|U|)>>,<space|2em><big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|P|~><rsub|U><around|(|\<xi\>|)>*<space|0.17em>d*\<xi\>=1,
+  </equation*>
+
+  a probability density on <math|\<bbb-R\>> at every <math|U>. By
+  Theorem<nbsp><reference|thm:bandlim> the probability mass of
+  <math|<wide|P|~><rsub|U>> outside <math|<around|[|-1,1|]>> vanishes as
+  <math|U\<to\>\<infty\>>, so the family is tight on
+  <math|<around|[|-1,1|]>>. By Helly\UProkhorov, <math|<wide|P|~><rsub|U>>
+  converges weakly as <math|U\<to\>\<infty\>> to a probability measure
+  <math|\<nu\><rsub|\<infty\>>> on <math|<around|[|-1,1|]>>:
+
+  <\equation*>
+    <big|int>f*<space|0.17em>d*<wide|P|~><rsub|U><space|0.27em>\<longrightarrow\><space|0.27em><big|int>f*<space|0.17em>d*\<nu\><rsub|\<infty\>>*<space|2em><text|for
+    every >f\<in\>C<rsub|b><around|(|\<bbb-R\>|)>.
+  </equation*>
+
+  <math|\<nu\><rsub|\<infty\>>> is the normalized spectral density of
+  <math|Y>: a probability measure of total mass <math|1> supported in
+  <math|<around|[|-1,1|]>>.
+
+  <math|S> and <math|\<nu\><rsub|\<infty\>>> are distinct, both well-defined:
+
+  <\itemize|leftmargin=*>
+    <item><math|S>: non-negative tempered spectral measure on
+    <math|<around|[|-1,1|]>>, infinite total mass, delivered by
+    Theorem<nbsp><reference|thm:bandlim> and Bochner\USchwartz
+    (<cite|Rudin-FA>, Theorem 7.7).
+
+    <item><math|\<nu\><rsub|\<infty\>>>: probability measure on
+    <math|<around|[|-1,1|]>>, the weak-<math|\<ast\>> limit of the normalized
+    windowed periodograms <math|<wide|P|~><rsub|U>>.
+  </itemize>
+
+  <subsection|Cramér representation of the sample path><label|app:cramer>
+
+  As a generalized stationary process on <math|\<bbb-R\><rsub|u>>, <math|Y>
+  admits a Cramér spectral representation of its sample path,
+
+  <\equation*>
+    Y<around|(|u|)><space|0.27em>=<space|0.27em><big|int><rsub|-1><rsup|1>e<rsup|i*\<xi\>*u>*<space|0.17em>d*\<Phi\><around|(|\<xi\>|)>,
+  </equation*>
+
+  where <math|d*\<Phi\>> is a complex-valued orthogonal random measure on
+  <math|<around|[|-1,1|]>> with covariance structure
+
+  <\equation*>
+    \<bbb-E\>*<around*|[|d*\<Phi\><around|(|\<xi\>|)><space|0.17em><wide|d*\<Phi\><around|(|\<xi\><rprime|'>|)>|\<bar\>>|]><space|0.27em>=<space|0.27em>\<delta\>*<around|(|\<xi\>-\<xi\><rprime|'>|)>*<space|0.17em>d*S<around|(|\<xi\>|)>.
+  </equation*>
+
+  The support condition <math|<supp>S\<subseteq\><around|[|-1,1|]>> of
+  Theorem<nbsp><reference|thm:bandlim> localizes <math|d*\<Phi\>> to the
+  interval <math|<around|[|-1,1|]>>. Reality of <math|Y> on <math|\<bbb-R\>>
+  is equivalent to the Hermitian symmetry
+  <math|d*\<Phi\>*<around|(|-\<xi\>|)>=<wide|d*\<Phi\><around|(|\<xi\>|)>|\<bar\>>>,
+  under which <math|S> is an even measure on <math|<around|[|-1,1|]>>. The
+  integral is a stochastic integral in the orthogonal-increments sense; test
+  functions <math|f> are paired with <math|d*\<Phi\>> under the
+  <math|L<rsup|2><around|(|S|)>> norm identity
+
+  <\equation*>
+    \<bbb-E\><around*|\||<big|int>f<around|(|\<xi\>|)>*<space|0.17em>d*\<Phi\><around|(|\<xi\>|)>|\|><rsup|2><space|0.27em>=<space|0.27em><big|int><around|\||f<around|(|\<xi\>|)>|\|><rsup|2>*<space|0.17em>d*S<around|(|\<xi\>|)>,
+  </equation*>
+
+  which requires <math|f\<in\>L<rsup|2><around|(|S|)>> and permits <math|S>
+  to have infinite total mass. The Cramér representation exists at the level
+  of <math|S>: it is the reconstruction theorem for the process.
+  <math|\<nu\><rsub|\<infty\>>> is the scale-invariant spectral shape of the
+  same process.
 
   <\thebibliography|9>
     <bibitem|AbramowitzStegun>M.<nbsp>Abramowitz and I.<nbsp>A.<nbsp>Stegun
@@ -713,6 +953,9 @@
     <bibitem|Rudin>W.<nbsp>Rudin, <em|Real and Complex Analysis>, 3rd ed.,
     McGraw\UHill, 1987.
 
+    <bibitem|Rudin-FA>W.<nbsp>Rudin, <em|Functional Analysis>, 2nd ed.,
+    McGraw\UHill, 1991.
+
     <bibitem|Titchmarsh>E.<nbsp>C.<nbsp>Titchmarsh, <em|The Theory of the
     Riemann Zeta-Function>, 2nd ed., revised by D.<nbsp>R.<nbsp>Heath-Brown,
     Oxford University Press, 1986.
@@ -721,7 +964,7 @@
 
 <\initial>
   <\collection>
-    <associate|font-base-size|11>
+    <associate|magnification|1.2>
     <associate|page-height|auto>
     <associate|page-medium|paper>
     <associate|page-type|letter>
@@ -731,58 +974,68 @@
 
 <\references>
   <\collection>
-    <associate|app:FAQ|<tuple|9|8|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|app:PSD-colloquial|<tuple|9.2|10|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|app:autocorr|<tuple|9.3|10|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|app:picture|<tuple|9.4|11|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|app:pullback-vs-pushforward|<tuple|9.1|9|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|auto-1|<tuple|1|1|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|auto-10|<tuple|9.1|9|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|auto-11|<tuple|1|9|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|auto-12|<tuple|2|10|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|auto-13|<tuple|3|10|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|auto-14|<tuple|9.2|10|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|auto-15|<tuple|9.3|10|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|auto-16|<tuple|9.4|11|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|auto-17|<tuple|9.4|11|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|auto-2|<tuple|2|2|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|auto-3|<tuple|3|4|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|auto-4|<tuple|4|4|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|auto-5|<tuple|5|4|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|auto-6|<tuple|6|7|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|auto-7|<tuple|7|8|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|auto-8|<tuple|8|8|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|auto-9|<tuple|9|8|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|bib-AbramowitzStegun|<tuple|AbramowitzStegun|11|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|bib-Akhiezer|<tuple|Akhiezer|11|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|bib-Edwards|<tuple|Edwards|11|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|bib-Hormander|<tuple|Hormander|11|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|bib-Levin|<tuple|Levin|11|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|bib-Rudin|<tuple|Rudin|11|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|bib-Titchmarsh|<tuple|Titchmarsh|11|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|cor:Hzero|<tuple|17|7|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|cor:PW|<tuple|14|7|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|cor:RH|<tuple|20|8|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|def:Htilde|<tuple|8|4|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|def:KT|<tuple|11|5|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|def:betan|<tuple|9|4|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|def:cstar|<tuple|3|3|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|eq:theta|<tuple|1|2|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|eq:thetap|<tuple|2|2|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|eq:thetapp|<tuple|3|2|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|lem:Mfinite|<tuple|4|3|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|lem:PSD|<tuple|15|7|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|lem:RS|<tuple|12|5|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|lem:Zholo|<tuple|7|4|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|lem:betaasymp|<tuple|10|4|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|lem:stripinj|<tuple|6|3|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|lem:thetapp|<tuple|1|2|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|lem:thetaprime0|<tuple|2|3|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|lem:tildenonvan|<tuple|5|3|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|thm:Zreal|<tuple|19|8|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|thm:akhiezer|<tuple|16|7|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|thm:bandlim|<tuple|13|5|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
-    <associate|thm:utc|<tuple|18|8|Band-LimitednessOfTtheHardyZ-FunctionInThePhaseVariable.tex>>
+    <associate|app:FAQ|<tuple|9|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|app:PSD-colloquial|<tuple|9.2|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|app:autocorr|<tuple|9.3|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|app:cramer|<tuple|9.8|13|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|app:localL2|<tuple|9.5|11|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|app:normalized|<tuple|9.7|12|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|app:picture|<tuple|9.4|11|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|app:pullback-vs-pushforward|<tuple|9.1|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|app:windowscale|<tuple|9.6|12|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-1|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-10|<tuple|9.1|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-11|<tuple|1|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-12|<tuple|2|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-13|<tuple|3|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-14|<tuple|9.2|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-15|<tuple|9.3|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-16|<tuple|9.4|11|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-17|<tuple|9.5|11|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-18|<tuple|1|11|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-19|<tuple|9.6|12|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-2|<tuple|2|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-20|<tuple|9.7|12|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-21|<tuple|9.8|13|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-22|<tuple|9.8|13|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-3|<tuple|3|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-4|<tuple|4|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-5|<tuple|5|5|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-6|<tuple|6|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-7|<tuple|7|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-8|<tuple|8|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-9|<tuple|9|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-AbramowitzStegun|<tuple|AbramowitzStegun|13|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-Akhiezer|<tuple|Akhiezer|13|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-Edwards|<tuple|Edwards|13|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-Hormander|<tuple|Hormander|13|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-Levin|<tuple|Levin|13|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-Rudin|<tuple|Rudin|13|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-Rudin-FA|<tuple|Rudin-FA|13|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-Titchmarsh|<tuple|Titchmarsh|13|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|cor:Hzero|<tuple|17|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|cor:PW|<tuple|14|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|cor:RH|<tuple|20|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|def:Htilde|<tuple|8|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|def:KT|<tuple|11|5|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|def:betan|<tuple|9|5|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|def:cstar|<tuple|3|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:theta|<tuple|1|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:thetap|<tuple|2|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:thetapp|<tuple|3|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|lem:Mfinite|<tuple|4|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|lem:PSD|<tuple|15|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|lem:RS|<tuple|12|5|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|lem:Zholo|<tuple|7|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|lem:betaasymp|<tuple|10|5|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|lem:stripinj|<tuple|6|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|lem:thetapp|<tuple|1|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|lem:thetaprime0|<tuple|2|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|lem:tildenonvan|<tuple|5|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|thm:Zreal|<tuple|19|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|thm:akhiezer|<tuple|16|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|thm:bandlim|<tuple|13|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|thm:utc|<tuple|18|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
   </collection>
 </references>
 
@@ -799,11 +1052,13 @@
 
       Hormander
 
-      Rudin
+      Rudin-FA
 
       Levin
 
       Akhiezer
+
+      Titchmarsh
     </associate>
     <\associate|toc>
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Introduction>
@@ -861,7 +1116,7 @@
       <with|par-left|<quote|3tab>|Ditty. <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-13>>
 
-      <with|par-left|<quote|1tab>|9.2<space|2spc>Why is the spectral density
+      <with|par-left|<quote|1tab>|9.2<space|2spc>Why is the spectral measure
       non-negative? <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-14>>
 
@@ -873,9 +1128,30 @@
       like? <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-16>>
 
+      <with|par-left|<quote|1tab>|9.5<space|2spc>Locally
+      <with|mode|<quote|math>|L<rsup|2>> and the growing variance
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-17>>
+
+      <with|par-left|<quote|3tab>|Representation at finite window.
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-18>>
+
+      <with|par-left|<quote|1tab>|9.6<space|2spc>Scale of the spectral
+      representation at finite window <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-19>>
+
+      <with|par-left|<quote|1tab>|9.7<space|2spc>The normalized spectral
+      measure <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-20>>
+
+      <with|par-left|<quote|1tab>|9.8<space|2spc>Cramér representation of the
+      sample path <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-21>>
+
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-17><vspace|0.5fn>
+      <no-break><pageref|auto-22><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
