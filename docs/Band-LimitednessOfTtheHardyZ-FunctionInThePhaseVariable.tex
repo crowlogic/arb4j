@@ -32,7 +32,7 @@ define $\tilde\theta(t) := \theta(t) + ct$ and let $\tilde H$ be the unitary inv
 \[
 \tilde H(u) \;:=\; \frac{Z(\tilde\theta^{-1}(u))}{\sqrt{\tilde\theta'(\tilde\theta^{-1}(u))}}.
 \]
-The Fourier support of $\tilde H$ is contained in $[-1,1]$. By the Paley--Wiener theorem, $\tilde H$ extends to an entire function of exponential type $\le 1$. Combined with the non-negativity of the power spectral density $|\widehat{\tilde H}|^2$ and Akhiezer's theorem, $\tilde H$ belongs to the Laguerre--P\'olya class. The unitary identity $Z(t) = \tilde H(\tilde\theta(t))\sqrt{\tilde\theta'(t)}$, valid on the strip $\{|\Im t| < \tfrac{1}{2}\}$ where $\tilde\theta$ is an injective biholomorphism with non-vanishing derivative and $Z$ is holomorphic, transfers the real zero locus of $\tilde H$ to that of $Z$. Therefore every non-trivial zero $\rho$ of $\zeta$ satisfies $\Re\rho = \tfrac{1}{2}$.
+The Fourier support of $\tilde H$ is contained in $[-1,1]$. By the Paley--Wiener theorem, $\tilde H$ extends to an entire function of exponential type $\le 1$. Combined with the non-negativity of the spectral measure $S:=|\widehat{\tilde H}|^2$ and Akhiezer's theorem, $\tilde H$ belongs to the Laguerre--P\'olya class. The unitary identity $Z(t) = \tilde H(\tilde\theta(t))\sqrt{\tilde\theta'(t)}$, valid on the strip $\{|\Im t| < \tfrac{1}{2}\}$ where $\tilde\theta$ is an injective biholomorphism with non-vanishing derivative and $Z$ is holomorphic, transfers the real zero locus of $\tilde H$ to that of $Z$. Therefore every non-trivial zero $\rho$ of $\zeta$ satisfies $\Re\rho = \tfrac{1}{2}$.
 \end{abstract}
 
 \section{Introduction}
@@ -41,9 +41,9 @@ The Hardy Z-function $Z(t) = e^{i\theta(t)}\zeta(\tfrac{1}{2}+it)$ is real-value
 
 The Riemann--Siegel phase $\theta$ fails to be monotone on $[0,\infty)$: $\theta'$ is strictly increasing but negative on $[0,t_c]$ and positive on $[t_c,\infty)$, where $t_c\approx 6.2898$ is the unique real zero of $\theta'$. The argument presented here restores global monotonicity by the linear shift $\tilde\theta(t):=\theta(t)+ct$ with $c>c_{**}$ chosen so that $\tilde\theta'$ is bounded below and non-vanishing on $\{|\Im t|<\tfrac{1}{2}\}$. The unitary inverse phase pullback $\tilde H(u):=Z(\tilde\theta^{-1}(u))/\sqrt{\tilde\theta'(\tilde\theta^{-1}(u))}$ satisfies the biholomorphic identity $Z(t)=\tilde H(\tilde\theta(t))\sqrt{\tilde\theta'(t)}$ on the open strip, where $Z$ is holomorphic.
 
-All spectral quantities, in particular the mode thresholds $\beta_n$, are given in closed form as values of the digamma function $\psi$ at explicit complex arguments. Asymptotic expansions are derived from these exact forms and used only where needed for the finiteness of the exceptional set $S(\mu)$.
+All spectral quantities, in particular the mode thresholds $\beta_n$, are given in closed form as values of the digamma function $\psi$ at explicit complex arguments. Asymptotic expansions are derived from these exact forms and used only where needed for the finiteness of the exceptional set $\mathcal{S}(\mu)$.
 
-The main technical content (Theorem~\ref{thm:bandlim}) is band-limitedness of $\tilde H$: $\supp\widehat{\tilde H}\subseteq[-1,1]$. Paley--Wiener gives $\tilde H$ entire of exponential type $\le 1$; Akhiezer gives reality of its zeros; the unitary identity transfers reality to the zeros of $Z$ inside the open strip; the equivalence $\zeta(\tfrac{1}{2}+it)=0\iff Z(t)=0$, valid on $\{|\Im t|<\tfrac{1}{2}\}\setminus\{\pm i/2\}$ where the non-trivial zeros of $\zeta$ lie, yields the conclusion for $\zeta$.
+The main technical content (Theorem~\ref{thm:bandlim}) is band-limitedness of $\tilde H$: $\supp S\subseteq[-1,1]$. Paley--Wiener gives $\tilde H$ entire of exponential type $\le 1$; Akhiezer gives reality of its zeros; the unitary identity transfers reality to the zeros of $Z$ inside the open strip; the equivalence $\zeta(\tfrac{1}{2}+it)=0\iff Z(t)=0$, valid on $\{|\Im t|<\tfrac{1}{2}\}\setminus\{\pm i/2\}$ where the non-trivial zeros of $\zeta$ lie, yields the conclusion for $\zeta$.
 
 \section{The Phase Function}
 
@@ -186,7 +186,7 @@ Z(t) = 2\sum_{n=1}^{N(t)}n^{-1/2}\cos(\theta(t)-t\log n) + R(t),\qquad N(t):=\lf
 \begin{proof}\cite{Edwards}, \S7.4, Theorem 7.1.\end{proof}
 
 \begin{theorem}[Band-limitedness of $\tilde H$]\label{thm:bandlim}
-For every admissible $c$ and every $\mu\in\mathbb{R}$ with $|\mu|>1$, $\lim_{T\to\infty}K_T(\mu)=0$. Equivalently, $\supp\widehat{\tilde H}\subseteq[-1,1]$.
+For every admissible $c$ and every $\mu\in\mathbb{R}$ with $|\mu|>1$, $\lim_{T\to\infty}K_T(\mu)=0$. Equivalently, $\supp S\subseteq[-1,1]$, where $S:=|\widehat{\tilde H}|^2$.
 \end{theorem}
 
 \begin{proof}
@@ -220,19 +220,19 @@ J_{n,\sigma}(T,\mu)=\int_{\beta_n\vee\tilde\theta'(T_0)}^{X}\frac{\sqrt{x}}{\the
 Q_{n,\sigma,\mu}(x)=\frac{\sqrt{x}}{(\sigma-\mu)x-\sigma\log n-\sigma c},\qquad Q'_{n,\sigma,\mu}(x)=O(x^{-3/2}).
 \]
 
-\item \emph{Finiteness of the exceptional set.} Define $S(\mu):=\{n:\beta_n\le(\log n+c)/(1+|\mu|)\}$. By Lemma~\ref{lem:betaasymp},
+\item \emph{Finiteness of the exceptional set.} Define $\mathcal{S}(\mu):=\{n:\beta_n\le(\log n+c)/(1+|\mu|)\}$. By Lemma~\ref{lem:betaasymp},
 \[
 \beta_n-\frac{\log n+c}{1+|\mu|}=\frac{|\mu|}{1+|\mu|}(\log n+c)+O(n^{-4})\to\infty,
 \]
-therefore $S(\mu)$ is finite.
+therefore $\mathcal{S}(\mu)$ is finite.
 
-\item \emph{IBP for $n\notin S(\mu)$.} Constant-sign phase derivative; boundary $O(X^{-1/2})$, tail $\le 2CX^{-1/2}$.
+\item \emph{IBP for $n\notin\mathcal{S}(\mu)$.} Constant-sign phase derivative; boundary $O(X^{-1/2})$, tail $\le 2CX^{-1/2}$.
 
-\item \emph{IBP tail for $n\in S(\mu)$.} Past the stationary point, $|\Phi'_{n,\sigma,\mu}(t)|\ge(|\mu|-1)\tilde\theta'(T)-|\log n+c|>0$, diverging; integration by parts gives $O(\tilde\theta'(T)^{-1/2})$.
+\item \emph{IBP tail for $n\in\mathcal{S}(\mu)$.} Past the stationary point, $|\Phi'_{n,\sigma,\mu}(t)|\ge(|\mu|-1)\tilde\theta'(T)-|\log n+c|>0$, diverging; integration by parts gives $O(\tilde\theta'(T)^{-1/2})$.
 
 \item \emph{Assembly.}
 \[
-K_\infty(\mu)-K_T(\mu)=\tfrac{1}{2\pi}\sum_\sigma\!\left[\sum_{n\notin S(\mu)}n^{-1/2}O(X^{-1/2})+\sum_{n\in S(\mu)}n^{-1/2}O(\tilde\theta'(T)^{-1/2})\right]+O(T^{-1/4}(\log T)^{-1/2}).
+K_\infty(\mu)-K_T(\mu)=\tfrac{1}{2\pi}\sum_\sigma\!\left[\sum_{n\notin\mathcal{S}(\mu)}n^{-1/2}O(X^{-1/2})+\sum_{n\in\mathcal{S}(\mu)}n^{-1/2}O(\tilde\theta'(T)^{-1/2})\right]+O(T^{-1/4}(\log T)^{-1/2}).
 \]
 All terms vanish as $T\to\infty$; $K_\infty(\mu)$ exists.
 
@@ -244,7 +244,7 @@ On $t\ge 2\pi n^2$, $\theta'(t)\ge\theta'(2\pi n^2)=\beta_n-c=\tfrac{1}{2}\Re\ps
 
 \end{enumerate}
 
-Therefore $\supp\widehat{\tilde H}\subseteq[-1,1]$, and $K_\infty(\mu)=\widehat{\tilde H}(\mu)=0$ for $|\mu|>1$.
+Therefore $\supp S\subseteq[-1,1]$, and $K_\infty(\mu)=\widehat{\tilde H}(\mu)=0$ for $|\mu|>1$.
 \end{proof}
 
 \section{Entire Extension and Laguerre--P\'olya Membership}
@@ -258,16 +258,16 @@ $\tilde H$ extends to an entire function of exponential type $\le 1$:
 
 \begin{proof}\cite{Rudin}, Theorem 19.3; \cite{Hormander}, Theorem 7.3.1.\end{proof}
 
-\begin{lemma}[Non-negativity of the spectral density]\label{lem:PSD}
-$|\widehat{\tilde H}(\xi)|^2\ge 0$ as a measure on $\mathbb{R}$, supported in $[-1,1]$.
+\begin{lemma}[Non-negativity of the spectral measure]\label{lem:PSD}
+The spectral measure $S:=|\widehat{\tilde H}|^2$ is a non-negative tempered measure on $\mathbb{R}$, supported in $[-1,1]$.
 \end{lemma}
 
 \begin{proof}
-The autocorrelation $C(\eta):=\langle\tilde H,\tilde H(\cdot+\eta)\rangle$ is positive-definite; Bochner (\cite{Rudin}, Theorem 9.11) gives $|\widehat{\tilde H}|^2\ge 0$; support from Theorem~\ref{thm:bandlim}.
+The autocorrelation $C(\eta):=\langle\tilde H,\tilde H(\cdot+\eta)\rangle$ is positive-definite in the tempered sense; Bochner--Schwartz (\cite{Rudin-FA}, Theorem 7.7) identifies its Fourier transform with a non-negative tempered measure $S$; support from Theorem~\ref{thm:bandlim}.
 \end{proof}
 
 \begin{theorem}[Akhiezer]\label{thm:akhiezer}
-A real-valued entire function $F$ of exponential type $\le\tau$ with $|\hat F|^2$ a non-negative measure supported in $[-\tau,\tau]$ belongs to the Laguerre--P\'olya class. All zeros of $F$ are real.
+A real-valued entire function $F$ of exponential type $\le\tau$ whose spectral measure $|\hat F|^2$ is a non-negative measure supported in $[-\tau,\tau]$ belongs to the Laguerre--P\'olya class. All zeros of $F$ are real.
 \end{theorem}
 
 \begin{proof}\cite{Levin}, Lecture 16, Theorem 3; \cite{Akhiezer}, \S V.4.\end{proof}
@@ -277,7 +277,7 @@ All zeros of $\tilde H$ in $\mathbb{C}$ are real.
 \end{corollary}
 
 \begin{proof}
-$\tilde H$ is real on $\mathbb{R}$ (Definition~\ref{def:Htilde}), entire of exponential type $\le 1$ (Corollary~\ref{cor:PW}), with $|\widehat{\tilde H}|^2$ non-negative on $[-1,1]$ (Lemma~\ref{lem:PSD}). Apply Theorem~\ref{thm:akhiezer}.
+$\tilde H$ is real on $\mathbb{R}$ (Definition~\ref{def:Htilde}), entire of exponential type $\le 1$ (Corollary~\ref{cor:PW}), with spectral measure $S$ non-negative and supported in $[-1,1]$ (Lemma~\ref{lem:PSD}). Apply Theorem~\ref{thm:akhiezer}.
 \end{proof}
 
 \section{Transfer to the Hardy Z-Function}
@@ -342,17 +342,17 @@ compose with $\tilde\theta^{-1}$, put half-Jacobian in tow ---\\
 that's the unitary inverse phase pullback, row by row.
 \end{quote}
 
-\subsection{Why is the spectral density non-negative?}\label{app:PSD-colloquial}
+\subsection{Why is the spectral measure non-negative?}\label{app:PSD-colloquial}
 
-The autocorrelation of any real, square-integrable function is automatically a positive-definite function: the Gram matrix of finitely many translates of $\tilde H$ in $L^2$ has non-negative eigenvalues, a one-line consequence of Cauchy--Schwarz. Bochner's theorem then says that the Fourier transform of a positive-definite function is a non-negative measure, and the Wiener--Khinchin identity identifies that Fourier transform with $|\widehat{\tilde H}|^2$. The non-negativity of the spectral density is therefore the Fourier-side restatement of a universal property of autocorrelations of real $L^2$ functions; what is specific to $\tilde H$ is the additional support condition $\supp|\widehat{\tilde H}|^2\subseteq[-1,1]$, delivered by Theorem~\ref{thm:bandlim} and used in combination with non-negativity to invoke Akhiezer.
+The autocorrelation of any real, locally square-integrable function is a positive-definite tempered distribution: the Gram matrix of finitely many translates of $\tilde H$ restricted to a common window has non-negative eigenvalues, a one-line consequence of Cauchy--Schwarz. Bochner--Schwartz identifies the Fourier transform of a positive-definite tempered distribution with a non-negative tempered measure, and Wiener--Khinchin identifies that Fourier transform with $S=|\widehat{\tilde H}|^2$. Non-negativity of the spectral measure is the Fourier-side restatement of this universal property of autocorrelations; the support condition $\supp S\subseteq[-1,1]$ is delivered by Theorem~\ref{thm:bandlim} and combines with non-negativity to invoke Akhiezer.
 
 \subsection{What is being autocorrelated?}\label{app:autocorr}
 
 The autocorrelation in Lemma~\ref{lem:PSD} is that of $\tilde H$ itself, the unitary inverse phase pullback of $Z$. In $u$-coordinates,
 \[
-C(\eta) \;=\; \int_{-\infty}^\infty \tilde H(u)\,\tilde H(u+\eta)\,du.
+C(\eta) \;=\; \lim_{U\to\infty}\frac{1}{2U}\int_{-U}^{U}\tilde H(u)\,\tilde H(u+\eta)\,du,
 \]
-Because the map $Z\mapsto\tilde H$ is an $L^2$-isometry under $u=\tilde\theta(t)$, this is equivalent to correlating $Z$ against itself with respect to the $u$-shift $\eta$, which is a nonlinear (roughly logarithmic) shift in the original $t$-coordinate. It is not the autocorrelation of $Z$ in $t$, which would be a different object reflecting the non-stationary spacing of the Riemann zeros on the critical line.
+a positive-definite tempered distribution. Because the map $Z\mapsto\tilde H$ is an $L^2$-isometry under $u=\tilde\theta(t)$, this is equivalent to correlating $Z$ against itself with respect to the $u$-shift $\eta$, which is a nonlinear (roughly logarithmic) shift in the original $t$-coordinate.
 
 \subsection{What does the picture look like?}\label{app:picture}
 
@@ -360,9 +360,78 @@ Three objects merit mental plots.
 
 \emph{The function $\tilde H(u)$.} An envelope-modulated real oscillation of zero mean. The envelope decays like $1/\sqrt{\log t}$ expressed in $u$-coordinates. The zero crossings are the images under $\tilde\theta$ of the non-trivial Riemann zeros; the phase variable straightens out their spacing.
 
-\emph{The autocorrelation $C(\eta)$.} A sharp peak at $\eta=0$ of height $\|\tilde H\|_{L^2}^2$, symmetric in $\eta$ because $\tilde H$ is real, with oscillatory decay whose frequency content sits inside $[-1,1]$. Envelope decay is no faster than $1/|\eta|$ unless $|\widehat{\tilde H}|^2$ vanishes smoothly at $\pm 1$.
+\emph{The autocorrelation $C(\eta)$.} A sharp peak at $\eta=0$, symmetric in $\eta$ because $\tilde H$ is real, with oscillatory decay whose frequency content sits inside $[-1,1]$.
 
-\emph{The spectral density $|\widehat{\tilde H}(\xi)|^2$.} A non-negative function (or measure) strictly supported in $[-1,1]$, symmetric about $\xi=0$ after the even extension. Its shape inside $[-1,1]$ encodes the distribution of zero spacings of $Z$ in $u$-coordinates.
+\emph{The spectral measure $S$.} A non-negative tempered measure strictly supported in $[-1,1]$, symmetric about $\xi=0$ after the even extension. Its shape inside $[-1,1]$ encodes the distribution of zero spacings of $Z$ in $u$-coordinates.
+
+\subsection{Locally $L^2$ and the growing variance}\label{app:localL2}
+
+$\tilde H$ is locally $L^2$, on compact subsets $[-U,U]$ of arbitrarily large length $U$. The band-limit established in Theorem~\ref{thm:bandlim} is a statement about the Fourier support of $\tilde H$ as a tempered distribution on $\mathbb{R}$. All uses of Paley--Wiener, Bochner--Schwartz, and Akhiezer in the main text are read in the tempered-distributional form, the framework for band-limited objects that are not globally $L^2$.
+
+The growing variance manifests in three compatible ways.
+
+\emph{Envelope in $u$-coordinates.} $\tilde H(u)$ has an amplitude envelope that grows slowly as $|u|\to\infty$; the local mean-square $\bar P(U):=\tfrac{1}{2U}\int_{-U}^{U}\tilde H(u)^2\,du$ grows without bound as $U\to\infty$.
+
+\emph{Autocorrelation as a tempered distribution.} $C(\eta)$ is the windowed-limit positive-definite distribution of \S\ref{app:autocorr}. Bochner--Schwartz identifies its Fourier transform with the non-negative tempered measure $S$, and Theorem~\ref{thm:bandlim} localizes $S$ to $[-1,1]$.
+
+\emph{Spectral measure as a tempered measure on $[-1,1]$.} $S$ is a non-negative tempered measure on $\mathbb{R}$, supported in $[-1,1]$, of infinite total mass.
+
+\paragraph{Representation at finite window.}
+Pointwise values of the spectral density at interior $\xi_0\in(-1,1)$ are approached through windowed periodograms
+\[
+P_U(\xi_0) \;:=\; \frac{1}{2U}\!\left|\int_{-U}^{U}\tilde H(u)\,e^{-i\xi_0 u}\,du\right|^2.
+\]
+Any figure produced at finite $U$ is a \emph{representation} at window scale $U$.
+
+\subsection{Scale of the spectral representation at finite window}\label{app:windowscale}
+
+Fix $\xi\in(-1,1)$ and let $P_U(\xi)$ be the windowed periodogram. Two features of the plot change with $U$: the overall vertical scale, and the local fluctuation amplitude around that scale. Both are controlled by the local mean power
+\[
+\bar P(U) \;:=\; \frac{1}{2U}\int_{-U}^{U}\tilde H(u)^2\,du \;=\; \frac{1}{2U}\int_{\tilde\theta^{-1}(-U)}^{\tilde\theta^{-1}(U)}\!\! Z(t)^2\,dt,
+\]
+the second equality by the $L^2$-isometry of the unitary inverse phase pullback. By Parseval in the tempered sense,
+\[
+\int_{-\infty}^{\infty}P_U(\xi)\,d\xi \;=\; 2\pi\,\bar P(U).
+\]
+Using $\tilde\theta(t)\sim\tfrac{t}{2}\log(t/(2\pi e))+ct$ and the Hardy--Littlewood moment $\int_0^T Z(t)^2\,dt\sim T\log T$ (\cite{Titchmarsh}, \S7.3),
+\[
+\bar P(U) \;\sim\; \log\!\big(\tilde\theta^{-1}(U)\big) \;\sim\; \log U + \log\log U + O(1)\qquad (U\to\infty).
+\]
+$P_U(\xi)$ fluctuates around $\bar P(U)$ on a scale comparable to $\bar P(U)$ itself, with wider fluctuations near the edges $|\xi|\to 1^-$.
+
+\subsection{The normalized spectral measure}\label{app:normalized}
+
+At every finite $U$ the periodogram $P_U$ has finite total mass $2\pi\bar P(U)$ by Parseval. Dividing by this total mass produces the normalized spectral probability measure at scale $U$,
+\[
+\widetilde P_U(\xi) \;:=\; \frac{P_U(\xi)}{2\pi\,\bar P(U)},\qquad \int_{-\infty}^{\infty}\widetilde P_U(\xi)\,d\xi = 1,
+\]
+a probability density on $\mathbb{R}$ at every $U$. By Theorem~\ref{thm:bandlim} the probability mass of $\widetilde P_U$ outside $[-1,1]$ vanishes as $U\to\infty$, so the family is tight on $[-1,1]$. By Helly--Prokhorov, $\widetilde P_U$ converges weakly as $U\to\infty$ to a probability measure $\nu_\infty$ on $[-1,1]$:
+\[
+\int f\,d\widetilde P_U \;\longrightarrow\; \int f\,d\nu_\infty\qquad \text{for every } f\in C_b(\mathbb{R}).
+\]
+$\nu_\infty$ is the normalized spectral density of $\tilde H$: a probability measure of total mass $1$ supported in $[-1,1]$.
+
+$S$ and $\nu_\infty$ are distinct, both well-defined:
+\begin{itemize}[leftmargin=*]
+\item $S$: non-negative tempered spectral measure on $[-1,1]$, infinite total mass, delivered by Theorem~\ref{thm:bandlim} and Bochner--Schwartz (\cite{Rudin-FA}, Theorem 7.7).
+\item $\nu_\infty$: probability measure on $[-1,1]$, the weak-$*$ limit of the normalized windowed periodograms $\widetilde P_U$.
+\end{itemize}
+
+\subsection{Cram\'er representation of the sample path}\label{app:cramer}
+
+As a generalized stationary process on $\mathbb{R}_u$, $\tilde H$ admits a Cram\'er spectral representation of its sample path,
+\[
+\tilde H(u) \;=\; \int_{-1}^{1} e^{i\xi u}\,d\Phi(\xi),
+\]
+where $d\Phi$ is a complex-valued orthogonal random measure on $[-1,1]$ with covariance structure
+\[
+\mathbb{E}\bigl[d\Phi(\xi)\,\overline{d\Phi(\xi')}\bigr] \;=\; \delta(\xi-\xi')\,dS(\xi).
+\]
+The support condition $\supp S\subseteq[-1,1]$ of Theorem~\ref{thm:bandlim} localizes $d\Phi$ to the interval $[-1,1]$. Reality of $\tilde H$ on $\mathbb{R}$ is equivalent to the Hermitian symmetry $d\Phi(-\xi)=\overline{d\Phi(\xi)}$, under which $S$ is an even measure on $[-1,1]$. The integral is a stochastic integral in the orthogonal-increments sense; test functions $f$ are paired with $d\Phi$ under the $L^2(S)$ norm identity
+\[
+\mathbb{E}\Bigl|\int f(\xi)\,d\Phi(\xi)\Bigr|^2 \;=\; \int|f(\xi)|^2\,dS(\xi),
+\]
+which requires $f\in L^2(S)$ and permits $S$ to have infinite total mass. The Cram\'er representation exists at the level of $S$: it is the reconstruction theorem for the process. $\nu_\infty$ is the scale-invariant spectral shape of the same process.
 
 \begin{thebibliography}{9}
 
@@ -383,6 +452,9 @@ B.~Ya.~Levin, \emph{Lectures on Entire Functions}, Translations of Mathematical 
 
 \bibitem{Rudin}
 W.~Rudin, \emph{Real and Complex Analysis}, 3rd ed., McGraw--Hill, 1987.
+
+\bibitem{Rudin-FA}
+W.~Rudin, \emph{Functional Analysis}, 2nd ed., McGraw--Hill, 1991.
 
 \bibitem{Titchmarsh}
 E.~C.~Titchmarsh, \emph{The Theory of the Riemann Zeta-Function}, 2nd ed., revised by D.~R.~Heath-Brown, Oxford University Press, 1986.
