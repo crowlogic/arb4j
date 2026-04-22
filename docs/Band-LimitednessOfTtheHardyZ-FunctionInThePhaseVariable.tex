@@ -240,15 +240,49 @@ The union of mode instantaneous $u$-frequencies together with the remainder freq
 \end{enumerate}
 \end{proof}
 
-\begin{corollary}[Cram\'er spectral representation]\label{cor:cramer}
-There exists a finite complex Borel measure $d\Phi$ on $[-1,1]$, Hermitian symmetric $\overline{d\Phi(-\xi)}=d\Phi(\xi)$, such that
+\begin{corollary}[Spectral measure from the inverse integral]\label{cor:cramer}
+For $U>0$ and $\xi\in\mathbb{R}$, define the one-sided windowed inverse integral
+\begin{equation}\label{eq:Phiplus}
+\Phi_U^+(\xi)\;:=\;\frac{1}{2\pi}\int_{0}^{U} Y(u)\,e^{-i\xi u}\,du.
+\end{equation}
+The mean-square limit
+\begin{equation}\label{eq:PhiLIM}
+\Phi^+(\xi)\;:=\;\underset{U\to\infty}{\mathrm{l.i.m.}}\ \Phi_U^+(\xi)
+\end{equation}
+exists in $L^2([0,1],d\xi)$. Setting
+\begin{equation}\label{eq:PhiFull}
+\Phi(\xi)\;:=\;\begin{cases}\Phi^+(\xi)&0\le\xi\le 1,\\ \overline{\Phi^+(-\xi)}&-1\le\xi<0,\\ 0&|\xi|>1,\end{cases}
+\end{equation}
+defines a function $\Phi\in L^2([-1,1],d\xi)$. The associated complex Borel measure $d\Phi(\xi):=\Phi(\xi)\,d\xi$ satisfies the Hermitian symmetry $\overline{d\Phi(-\xi)}=d\Phi(\xi)$ and gives the Cram\'er representation
 \begin{equation}\label{eq:CramerRep}
-Y(u)=\int_{-1}^{1}e^{i\xi u}\,d\Phi(\xi),\qquad u\in\mathbb{R}.
+Y(u)\;=\;\int_{-1}^{1}e^{i\xi u}\,d\Phi(\xi),\qquad u\in\mathbb{R}.
 \end{equation}
 \end{corollary}
 
 \begin{proof}
-By Theorem~\ref{thm:bandlim} the power spectral density $S$ of $Y$ vanishes outside $[-1,1]$, so the spectral measure of $Y$ is supported in $[-1,1]$. Reality of $Y$ on $\mathbb{R}$ forces the spectral measure to be even, equivalently the Hermitian symmetry $\overline{d\Phi(-\xi)}=d\Phi(\xi)$ on the complex spectral measure. The Cram\'er reconstruction theorem (\cite{CramerLeadbetter},~\S7.5) applied to a non-negative finite Borel measure on the compact interval $[-1,1]$ produces an orthogonal complex Borel measure $d\Phi$ on $[-1,1]$ with $|d\Phi|^2$ the spectral measure of $Y$, and the representation \eqref{eq:CramerRep} holds.
+\emph{Convergence on $\xi\in(0,1)$.} Substitute $u=\Theta(t)$, $du=\Theta'(t)\,dt$, $Y(\Theta(t))=Z(t)/\sqrt{\Theta'(t)}$; then
+\begin{equation}\label{eq:PhiUinT}
+\Phi_U^+(\xi)\;=\;\frac{1}{2\pi}\int_{\Theta^{-1}(\Theta(0)\vee 0)}^{\Theta^{-1}(U)} Z(t)\sqrt{\Theta'(t)}\,e^{-i\xi\Theta(t)}\,dt,
+\end{equation}
+and inserting the Riemann--Siegel expansion \eqref{eq:RS}, $\Phi_U^+(\xi)$ is a finite sum of mode integrals with phase derivative $\Phi'_{n,\sigma,\xi}(t)=(\sigma-\xi)\Theta'(t)-\sigma(\log n+c)$ identical to the phase analysis of Theorem~\ref{thm:bandlim}, plus a remainder with phase derivative $-\xi\Theta'(t)$ treated as in step~(i). For $\xi\in(0,1)$, each mode $(n,\sigma)$ has phase slope tending to $\pm\infty$ with constant sign past a bounded threshold, so the integration-by-parts analysis of steps~(iii)--(vi) applies uniformly on compact subsets of $(0,1)$ and produces the bound
+\begin{equation}\label{eq:PhiUbd}
+|\Phi_U^+(\xi)-\Phi_{U'}^+(\xi)|\;=\;O\!\big((\log\Theta^{-1}(U\wedge U'))^{-1/2}\big)
+\end{equation}
+uniformly on each compact $[\xi_0,1-\xi_0]\subset(0,1)$. Hence $\{\Phi_U^+\}_{U>0}$ is Cauchy in $L^2_{\mathrm{loc}}([0,1],d\xi)$. Parseval on the windowed inverse integral,
+\begin{equation}\label{eq:PhiParseval}
+\int_{\mathbb{R}}|\Phi_U^+(\xi)|^2\,d\xi\;=\;\frac{1}{2\pi}\int_{0}^{U}|Y(u)|^2\,du\;=\;\frac{1}{2\pi}\int_{0}^{\Theta^{-1}(U)}|Z(t)|^2\,dt,
+\end{equation}
+combined with Theorem~\ref{thm:bandlim} which gives $\Phi_U^+(\xi)\to 0$ in $L^2$-sense for $|\xi|>1$, concentrates the $L^2$ mass of $\Phi_U^+$ on $[-1,1]$. The mean-square limit $\Phi^+\in L^2([0,1],d\xi)$ therefore exists.
+
+\emph{Divergence at $\xi=0$ for the $\sigma=-1$ modes.} At $\xi=0$, the $\sigma=-1$ mode has phase slope $-\Theta'(t)+(\log n+c)\to-\infty$ with amplitude $\sqrt{\Theta'(t)}$; integration by parts converges. But at $\xi=0$ the $\sigma=+1$ mode has slope $\Theta'(t)-(\log n+c)$, which vanishes at the stationary point $t_n^*$ defined by $\Theta'(t_n^*)=\log n+c$, and the integral has a stationary-phase contribution $O(\sqrt{t_n^*})$ that does not decay. Summed over $n\le N(T)$ this is $O(T^{1/2})$, so $\Phi_U^+(0)$ is unbounded as $U\to\infty$: the mean-square limit does not extend continuously to $\xi=0$ from the positive side. The reflection defines $\Phi$ on $[-1,0]$ by \eqref{eq:PhiFull}.
+
+\emph{Hermitian symmetry.} $Y$ is real on $\mathbb{R}$, so $\overline{\Phi_U^+(\xi)}=\tfrac{1}{2\pi}\int_0^U Y(u)e^{i\xi u}du$, which is $\Phi_U^+(-\xi)$ with argument reflected; passing to the mean-square limit, $\overline{\Phi^+(\xi)}$ is the mean-square limit of the inverse integral evaluated at $-\xi$ on the same half-line. The definition \eqref{eq:PhiFull} makes this Hermitian extension exact: $\overline{\Phi(-\xi)}=\Phi(\xi)$ for $\xi\in[-1,1]$.
+
+\emph{Representation \eqref{eq:CramerRep}.} For $u\in\mathbb{R}$, Plancherel applied to \eqref{eq:PhiLIM} gives
+\begin{equation}\label{eq:YfromPhi}
+Y(u)\;=\;\int_{-1}^{1}e^{i\xi u}\,\Phi(\xi)\,d\xi\;=\;\int_{-1}^{1}e^{i\xi u}\,d\Phi(\xi),
+\end{equation}
+the $L^2$-Fourier inversion theorem applied to the function $\Phi\in L^2([-1,1],d\xi)\subset L^2(\mathbb{R},d\xi)$, whose Fourier transform is $Y$ on $\mathbb{R}$ by Theorem~\ref{thm:bandlim} and \eqref{eq:PhiParseval}.
 \end{proof}
 
 \section{Entire Extension and Laguerre--P\'olya Membership}
