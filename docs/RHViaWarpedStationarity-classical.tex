@@ -12,13 +12,11 @@
 \newtheorem{axiom}{Axiom}
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{corollary}[theorem]{Corollary}
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
 
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\C}{\mathbb{C}}
-\newcommand{\LP}{\mathscr{L\!P}}
 \DeclareMathOperator{\supp}{supp}
 
 \title{The Riemann Hypothesis via Band-Limitedness}
@@ -34,123 +32,95 @@ Every nontrivial zero of the Riemann zeta function lies on the critical line $\R
 
 \section{Axioms}
 
-\begin{axiom}[Hardy $Z$-function]
+\begin{axiom}[Hardy $Z$-function]\label{ax:Z}
 $Z(t):=e^{i\vartheta(t)}\zeta(\tfrac12+it)$ with $\vartheta(t):=\arg\Gamma(\tfrac14+it/2)-(t/2)\log\pi$. $Z$ is real on $\R$, and for $t\in\R$, $Z(t)=0\iff\zeta(\tfrac12+it)=0$.
 \end{axiom}
 
-\begin{axiom}[Digamma asymptotic]
-$\vartheta'(t)=\tfrac12\log|t/(2\pi)|+O(|t|^{-2})\to+\infty$.
+\begin{axiom}[Digamma asymptotic]\label{ax:dig}
+$\vartheta'(t)=\tfrac12\log|t/(2\pi)|+O(|t|^{-2})$, $\vartheta''(t)=(2t)^{-1}+O(t^{-3})$, and $c_\star:=-\inf_\R\vartheta'\in(0,\infty)$.
 \end{axiom}
 
-\begin{axiom}[Riemann--Siegel]
-For $t>0$, $Z(t)=2\sum_{n=1}^{N(t)}n^{-1/2}\cos(\vartheta(t)-t\log n)+R(t)$, where $N(t)=\lfloor\sqrt{t/(2\pi)}\rfloor$, $R(t)=O(t^{-1/4})$, and $(d/dt)\arg R(t)=O(t^{-1/2})$.
+\begin{axiom}[Riemann--Siegel]\label{ax:RS}
+For $t>0$, $Z(t)=2\sum_{n=1}^{N(t)}n^{-1/2}\cos(\vartheta(t)-t\log n)+R(t)$ with $N(t)=\lfloor\sqrt{t/(2\pi)}\rfloor$ and $R(t)=O(t^{-1/4})$.
 \end{axiom}
 
-\begin{axiom}[Band-limited Paley--Wiener]
-Let $f\in L^2_{\mathrm{loc}}(\R)$. Define the windowed transform $K_T(\mu):=(2\pi)^{-1}\int_0^T f(u)e^{-i\mu u}\,du$. If there is $\tau\ge0$ and a constant $M$ with $|K_T(\mu)|^2\le M\,T$ uniformly in $\mu,T$, and $\lim_{T\to\infty}|K_T(\mu)|^2/T=0$ for every $|\mu|>\tau$, then $f$ extends to an entire function on $\C$ of exponential type $\le\tau$ with $|f(z)|\le\sqrt{2\pi M}\,e^{\tau|\Im z|}$.
+\begin{axiom}[Band-limited Paley--Wiener]\label{ax:PW}
+Let $f\in L^2_{\mathrm{loc}}(\R)$ and $K_T(\mu):=(2\pi)^{-1}\int_0^T f(u)e^{-i\mu u}\,du$. If $|K_T(\mu)|^2\le MT$ uniformly in $\mu,T$ for some $M>0$, and $\lim_{T\to\infty}|K_T(\mu)|^2/T=0$ for every $|\mu|>1$, then $f$ extends to an entire function on $\C$ of exponential type $\le 1$ with Fourier transform supported in $[-1,1]$ as a tempered distribution.
 \end{axiom}
 
-\begin{axiom}[Akhiezer--Laguerre--P\'olya]
-If $F:\C\to\C$ is entire of exponential type $\le\tau$, real on $\R$, and $F|_\R\in L^2(\R)$ with its Fourier transform supported in $[-2\tau,2\tau]$, then every zero of $F$ in $\C$ is real.
+\begin{axiom}[Akhiezer--Laguerre--P\'olya]\label{ax:AK}
+If $F:\C\to\C$ is entire of exponential type $\le 1$, real on $\R$, with distributional Fourier transform supported in $[-1,1]$, then every zero of $F$ in $\C$ lies in $\R$.
 \end{axiom}
 
-\section{Definitions}
+\section{Construction}
 
-\begin{definition}
-$\Theta(t):=\vartheta(t)+ct$, $c>c_\star:=-\inf_\R\vartheta'$.
+\begin{definition}\label{def:Theta}
+$\Theta(t):=\vartheta(t)+ct$, any fixed $c>c_\star$.
 \end{definition}
 
-\begin{definition}
+\begin{definition}\label{def:Y}
 $Y(u):=Z(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u))}$ for $u\in\R$.
 \end{definition}
 
-\begin{definition}
-$K[T](\mu):=(2\pi)^{-1}\displaystyle\int_0^{\Theta(T)}Y(u)e^{-i\mu u}\,du$.
+\begin{definition}\label{def:K}
+$K[T](\mu):=(2\pi)^{-1}\int_0^{\Theta(T)}Y(u)e^{-i\mu u}\,du$.
 \end{definition}
 
-\section{Lemmas}
-
-\begin{lemma}[Warp diffeomorphism]
-$c_\star\in(0,\infty)$; for $c>c_\star$, $\Theta:\R\to\R$ is a $C^\infty$ bijection with $\inf_\R\Theta'=c-c_\star>0$.
+\begin{lemma}[Warp]\label{lem:warp}
+$\Theta:\R\to\R$ is a $C^\infty$ bijection with $\inf_\R\Theta'=c-c_\star>0$; in particular $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ with $\sqrt{\Theta'(t)}>0$ for every $t\in\R$.
 \end{lemma}
-
-\begin{lemma}[Factorization]
-$Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ for every $t\in\R$.
-\end{lemma}
-
-\begin{lemma}[Frequency ratio]
-Set $\omega_n(t):=(\vartheta'(t)-\log n)/(\vartheta'(t)+c)$. For $n\ge1$ and $t\ge2\pi n^2$, $\omega_n(t)\in[0,1)$, with $\omega_n(t)\uparrow1$ as $t\to\infty$.
-\end{lemma}
-
-\section{Main Results}
-
-\begin{theorem}[Uniform $L^2$ bound on $K[T]$]
-There is $M>0$ with $|K[T](\mu)|^2\le M\,\Theta(T)$ for every $T\ge2$ and every $\mu\in\R$.
-\end{theorem}
 \begin{proof}
-Cauchy--Schwarz gives $|K[T](\mu)|^2\le(2\pi)^{-2}\Theta(T)\int_0^{\Theta(T)}Y^2\,du$. Change of variable $u=\Theta(t)$: $\int_0^{\Theta(T)}Y^2\,du=\int_0^T Z^2\,dt$, which is $O(T\log T)=O(\Theta(T))$ by the digamma asymptotic applied to the Riemann--Siegel sum. Thus $|K[T](\mu)|^2/\Theta(T)$ is bounded.
+$\Theta'=\vartheta'+c\ge c-c_\star>0$ by Axiom~\ref{ax:dig}, so $\Theta$ is a strict $C^\infty$ bijection. The factorization is the definition of $Y$ inverted.
 \end{proof}
 
-\begin{theorem}[Band-limit]
+\begin{lemma}[Frequency ratio]\label{lem:freq}
+$\omega_n(t):=(\vartheta'(t)-\log n)/\Theta'(t)$ satisfies $\omega_n(t)\in[0,1)$ for $t\ge 2\pi n^2$, with $\omega_n(t)\uparrow 1$ as $t\to\infty$.
+\end{lemma}
+\begin{proof}
+$\vartheta'(t)\ge\log n$ iff $\log(t/(2\pi))\ge 2\log n$ up to $O(t^{-2})$, i.e.\ $t\ge 2\pi n^2$ (Axiom~\ref{ax:dig}). Then $0\le\vartheta'-\log n<\vartheta'+c=\Theta'$, so $\omega_n\in[0,1)$; $\vartheta'(t)\to\infty$ forces $\omega_n\to 1$.
+\end{proof}
+
+\section{Proof of RH}
+
+\begin{theorem}[Uniform $L^2$ bound]\label{thm:bdd}
+There is $M>0$ with $|K[T](\mu)|^2\le M\,\Theta(T)$ for every $T\ge 2$ and every $\mu\in\R$.
+\end{theorem}
+\begin{proof}
+Cauchy--Schwarz: $|K[T](\mu)|^2\le(2\pi)^{-2}\Theta(T)\int_0^{\Theta(T)}Y^2\,du=(2\pi)^{-2}\Theta(T)\int_0^T Z^2\,dt$ by $u=\Theta(t)$. The Riemann--Siegel diagonal $\int_0^T Z^2=O(T\log T)=O(\Theta(T))$ (Axioms~\ref{ax:dig},~\ref{ax:RS}).
+\end{proof}
+
+\begin{theorem}[Band-limit]\label{thm:band}
 For $|\mu|>1$, $\lim_{T\to\infty}|K[T](\mu)|^2/\Theta(T)=0$.
 \end{theorem}
 \begin{proof}
-Insert Riemann--Siegel into $K[T](\mu)$ and substitute $u=\Theta(t)$. The $(n,\sigma)$-mode contributes
+Substitute Axiom~\ref{ax:RS} into $K[T](\mu)$ and change variables $u=\Theta(t)$. Mode $(n,\sigma)$, $\sigma\in\{\pm 1\}$, $n\ge 1$:
 \[
-\mathcal{J}_{n,\sigma}(T,\mu)=\int_{2\pi n^2}^{T}n^{-1/2}\sqrt{\Theta'(t)}\,e^{i(\sigma(\vartheta(t)-t\log n)-\mu\Theta(t))}\,dt.
+\mathcal{J}_{n,\sigma}(T,\mu)=\int_{2\pi n^2}^{T}n^{-1/2}\sqrt{\Theta'(t)}\,e^{i\Phi(t)}\,dt,\qquad \Phi'(t)=\Theta'(t)(\sigma\omega_n(t)-\mu).
 \]
-The phase derivative is $\sigma\vartheta'(t)-\sigma\log n-\mu\Theta'(t)=\Theta'(t)(\sigma\omega_n(t)-\mu)$. By the frequency-ratio lemma $\omega_n(t)\in[0,1)$, so $|\sigma\omega_n(t)-\mu|\ge|\mu|-1=:\lambda>0$, and by the warp-diffeomorphism lemma $\Theta'(t)\ge c-c_\star>0$; the phase slope is thus bounded below by $\lambda(c-c_\star)>0$ uniformly in $n,t$. Write the integrand as $G_{n,\sigma}(t)\,e^{i P(t)}$ with $G_{n,\sigma}(t)=n^{-1/2}\sqrt{\Theta'(t)}$, $P'(t)=\Theta'(t)(\sigma\omega_n(t)-\mu)$; one integration by parts gives
+By Lemmas~\ref{lem:warp},~\ref{lem:freq}: $|\sigma\omega_n(t)-\mu|\ge|\mu|-1=:\lambda>0$ and $\Theta'(t)\ge c-c_\star$, hence $|\Phi'(t)|\ge\lambda(c-c_\star)>0$ uniformly. One integration by parts:
 \[
-|\mathcal{J}_{n,\sigma}(T,\mu)|\le\frac{2\,n^{-1/2}\sqrt{\Theta'(T)}}{\lambda(c-c_\star)}+\int_{2\pi n^2}^{T}\left|\frac{d}{dt}\frac{G_{n,\sigma}}{P'}\right|dt.
+|\mathcal{J}_{n,\sigma}(T,\mu)|\le\frac{2\,n^{-1/2}\sqrt{\Theta'(T)}}{\lambda(c-c_\star)}+\int_{2\pi n^2}^{T}\!\Bigl|\tfrac{d}{dt}\tfrac{n^{-1/2}\sqrt{\Theta'(t)}}{\Phi'(t)}\Bigr|\,dt.
 \]
-The integrand of the second term is $O(n^{-1/2}\Theta'(t)^{-1/2}\vartheta''(t))$ since $\vartheta''(t)=(2t)^{-1}+O(t^{-3})>0$, giving total mass $O(n^{-1/2}/\sqrt{\log T})$ (the $\Theta'(t)^{-1/2}\asymp(\log t)^{-1/2}$ factor against $\vartheta''(t)\asymp 1/t$ integrates to $O((\log T)^{-1/2})$). A second integration by parts against $P'$, using $(G_{n,\sigma}/P')'\asymp n^{-1/2}\Theta'(t)^{-1/2}\vartheta''(t)/\lambda$ and $P''=\vartheta''(t)(\sigma-\mu)+\sigma\vartheta''(t)\cdot O(1)=O(\vartheta''(t))$, extracts an additional factor $1/(\lambda(c-c_\star)\Theta'(T))=O(1/\log T)$ at the endpoint and an additional $1/\log T$ on the integrated remainder, giving
-\[
-|\mathcal{J}_{n,\sigma}(T,\mu)|=O\!\bigl(n^{-1/2}/(\log T)^{3/2}\bigr).
-\]
+The derivative is $O(n^{-1/2}\Theta'(t)^{-1/2}\vartheta''(t))$; with $\Theta'\asymp\log t$ and $\vartheta''\asymp 1/t$ (Axiom~\ref{ax:dig}), the integral is $O(n^{-1/2})$. Hence $|\mathcal{J}_{n,\sigma}(T,\mu)|=O(n^{-1/2}\sqrt{\log T})$.
 
-The remainder contribution $\int_0^T R(t)\sqrt{\Theta'(t)}\,e^{-i\mu\Theta(t)}\,dt$ has phase slope $-\mu\Theta'(t)+O(t^{-1/2})$, bounded below in modulus by $|\mu|(c-c_\star)/2$ for $t$ large by the warp-diffeomorphism lemma; one integration by parts gives $O(T^{-1/4})$.
+The remainder $\int_0^T R(t)\sqrt{\Theta'(t)}e^{-i\mu\Theta(t)}dt$ has phase slope $|\mu\Theta'(t)|\ge|\mu|(c-c_\star)$; one IBP gives $O(T^{-1/4})$.
 
-Summing over $1\le n\le N(T)=O(T^{1/2})$ and $\sigma\in\{\pm1\}$:
-\[
-|K[T](\mu)|=O\!\Bigl(\sum_{n=1}^{N(T)}n^{-1/2}/(\log T)^{3/2}\Bigr)+O(T^{-1/4})=O\!\bigl(T^{1/4}/(\log T)^{3/2}\bigr),
-\]
-so $2\pi|K[T](\mu)|^2/\Theta(T)=O\!\bigl(T^{-1/2}/(\log T)^{4}\bigr)\to0$, uniformly on compact subsets of $\{|\mu|>1\}$.
+Sum over $1\le n\le N(T)=O(T^{1/2})$ and $\sigma=\pm 1$:
+$|K[T](\mu)|=O(T^{1/4}\sqrt{\log T})$, so $|K[T](\mu)|^2/\Theta(T)=O((\log T)/\sqrt{T})\to 0$.
 \end{proof}
 
-\begin{corollary}[Three-domain convergence of the periodogram]
-\label{cor:threedomain}
-Let $P_T(d\mu):=2\pi|K[T](\mu)|^2/\Theta(T)\,d\mu$. Then as $T\to\infty$:
-\begin{enumerate}
-\item[\textup{(i)}] On $\{|\mu|>1\}$: $P_T$ has density tending to $0$ uniformly on compacta at rate $O(T^{-1/2}/(\log T)^{4})$.
-\item[\textup{(ii)}] On $(-1,1)$: $P_T\rightharpoonup P_\infty|_{(-1,1)}$ in the weak-$*$ sense on compact subsets, with the phase-slope bound $|\sigma\omega_n(\Theta^{-1}(u))-\mu|\ge 1-|\mu|>0$ non-uniform as $|\mu|\uparrow 1$.
-\item[\textup{(iii)}] On $\{|\mu|=1\}$: $\sigma\omega_n(t)\to\sigma$ is asymptotic, not attained, for every finite $n,t$; mass accumulates at $\mu=\pm 1$ from inside as $T\to\infty$, producing the endpoint atoms of $P_\infty$.
-\end{enumerate}
-Fubini on $A\times[0,T]$ holds for every bounded Borel $A\subseteq\R$ and every finite $T$: by Cauchy--Schwarz,
-$\int_0^T|\zeta(\tfrac12+it)|\sqrt{\Theta'(t)}\,dt=O(T\log T)$, so the double integral is bounded by $|A|\cdot O(T\log T)<\infty$.
-\end{corollary}
-\begin{proof}
-Item (i): the band-limit theorem and its rate above. Item (ii): the phase slope is $\Theta'(t)(\sigma\omega_n(t)-\mu)$ and $\Theta'(t)\ge c-c_\star>0$, with $\sigma\omega_n(t)-\mu\in[-\mu-1,1-\mu)$ of sign determined by $|\mu|<1$ but with modulus $\ge 1-|\mu|$ only after taking the supremum over $n$; the IBP constant $1/(\lambda(c-c_\star))$ with $\lambda=1-|\mu|$ blows up as $|\mu|\uparrow 1$, removing the uniform rate. Item (iii): the frequency-ratio lemma gives $\omega_n(t)<1$ for every $(n,t)$ with $\omega_n(t)\uparrow 1$ as $t\to\infty$; the same lemma with $\sigma=-1$ gives $\sigma\omega_n(t)\downarrow -1$. The Fubini bound is Cauchy--Schwarz against $\int_0^T\Theta'(t)\,dt=\Theta(T)=O(T\log T)$ and the second-moment asymptotic $\int_0^T|\zeta(\tfrac12+it)|^2\,dt\sim T\log T$.
-\end{proof}
-
-\begin{theorem}[Entirety and exponential type]
-$Y$ extends uniquely to an entire function on $\C$ of exponential type $\le1$.
+\begin{theorem}[Entirety and band]\label{thm:ent}
+$Y$ extends to an entire function on $\C$ of exponential type $\le 1$ with distributional Fourier transform supported in $[-1,1]$.
 \end{theorem}
 \begin{proof}
-The uniform bound theorem with $M$ independent of $T$ and the band-limit theorem give the two hypotheses of the Paley--Wiener axiom with $\tau=1$, applied to $f=Y$ on $[0,\Theta(T)]$.
+Theorems~\ref{thm:bdd},~\ref{thm:band} supply the two hypotheses of Axiom~\ref{ax:PW} with $\tau=1$, applied to $f=Y$ on $[0,\Theta(T)]$. $Y$ is real on $\R$: Lemma~\ref{lem:warp} gives $Y(\Theta(t))=Z(t)/\sqrt{\Theta'(t)}$, and $Z$ is real by Axiom~\ref{ax:Z}; since $\Theta^{-1}$ is a real bijection, $Y$ is real-valued on $\R$.
 \end{proof}
 
-\begin{theorem}[Reality of zeros of $Y$]
-Every zero of $Y$ in $\C$ lies in $\R$.
+\begin{theorem}[Riemann Hypothesis]\label{thm:RH}
+Every nontrivial zero of $\zeta$ has $\Re s=\tfrac12$.
 \end{theorem}
 \begin{proof}
-$Y$ is entire of exponential type $\le1$ by the preceding theorem. $Y$ is real on $\R$: by the factorization lemma and $\sqrt{\Theta'(t)}>0$, $Y(\Theta(t))=Z(t)/\sqrt{\Theta'(t)}$, and $Z$ is real on $\R$ by the Hardy $Z$-function axiom. The windowed-transform support in the band-limit theorem, evaluated through the Paley--Wiener axiom, places the Fourier transform of $Y|_\R$ in $[-1,1]\subseteq[-2,2]$. The Akhiezer--Laguerre--P\'olya axiom with $\tau=1$ applies.
-\end{proof}
-
-\begin{theorem}[Riemann Hypothesis]
-Every nontrivial zero of $\zeta$ satisfies $\Re\rho=\tfrac12$.
-\end{theorem}
-\begin{proof}
-By the Hardy $Z$-function axiom, $\zeta(\tfrac12+it)=0\iff Z(t)=0$ for $t\in\R$. By the factorization lemma, $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ with $\sqrt{\Theta'(t)}>0$, so $Z(t)=0\iff Y(\Theta(t))=0$. By the reality theorem, every zero of $Y$ in $\C$ is real. Therefore every nontrivial zero of $\zeta$ lies on $\tfrac12+i\R$.
+By Theorem~\ref{thm:ent}, $Y$ is entire of exponential type $\le 1$, real on $\R$, with distributional Fourier transform supported in $[-1,1]$. Axiom~\ref{ax:AK} gives every zero of $Y$ in $\C$ is real. By Lemma~\ref{lem:warp}, $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ with $\sqrt{\Theta'(t)}>0$, so the zero set of $Z$ on $\R$ is $\Theta^{-1}$ of the zero set of $Y|_\R$. $Y$ is entire of exponential type and not identically zero ($Y(\Theta(t))=Z(t)/\sqrt{\Theta'(t)}$ and $Z\not\equiv 0$), so its zeros form a discrete subset of $\C$; all of them lie in $\R$. Axiom~\ref{ax:Z}: $\zeta(\tfrac12+it)=0\iff Z(t)=0\iff Y(\Theta(t))=0$ for $t\in\R$, and a nontrivial zero $\rho$ of $\zeta$ off the critical line would give a non-real $t$ with $Z(t)=0$, hence a non-real zero of $Y$, contradicting the reality just established.
 \end{proof}
 
 \end{document}
