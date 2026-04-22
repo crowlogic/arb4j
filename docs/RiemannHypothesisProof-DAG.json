@@ -69,7 +69,7 @@
     "AX-WK": {
       "kind": "axiom",
       "name": "Wiener–Khinchin identification of spectral measure",
-      "statement": "For a time-average WSS function with covariance c(η) = ∫ e^{iηξ} dμ(ξ), the measure μ is the spectral measure; its absolutely continuous part coincides with the power spectral density S(μ) = lim 2π|K_T(μ)|²/T where it is defined",
+      "statement": "For a time-average WSS function with covariance c(η) = ∫ e^{iηξ} dμ(ξ), μ is the spectral measure; its absolutely continuous part has Radon–Nikodym derivative equal to the power spectral density S(ξ) = lim 2π|K_T(ξ)|²/T (a function, not a measure) where the limit exists",
       "source": "Wiener 1930; Khinchin 1934; Doob, Stochastic Processes, Ch. X §3",
       "deps": []
     },
@@ -83,7 +83,7 @@
     "AX-Akhiezer": {
       "kind": "axiom",
       "name": "Akhiezer Laguerre–Pólya criterion",
-      "statement": "A real entire function F of exponential type ≤ τ whose spectral measure is a non-negative finite Borel measure supported in [−τ,τ] belongs to the Laguerre–Pólya class; all complex zeros of F are real",
+      "statement": "A real entire function F of exponential type ≤ τ whose autocorrelation measure (Fourier transform of |F|² as a tempered distribution) is a non-negative finite Borel measure supported in [−2τ,2τ] belongs to the Laguerre–Pólya class; all complex zeros of F are real",
       "source": "Akhiezer, Theory of Approximation, §V.4; Levin, Lectures on Entire Functions, Lecture 16 Thm. 3",
       "deps": []
     },
@@ -167,7 +167,7 @@
     "thm:Akhiezer": {
       "kind": "theorem",
       "name": "Akhiezer Laguerre–Pólya criterion (paper statement)",
-      "statement": "A real-valued entire function of exponential type ≤ τ whose spectral measure is non-negative and supported in [−τ,τ] lies in the Laguerre–Pólya class; all complex zeros are real",
+      "statement": "A real-valued entire function of exponential type ≤ τ whose autocorrelation measure (Fourier transform of |F|² as a tempered distribution) is non-negative and supported in [−2τ,2τ] lies in the Laguerre–Pólya class; all complex zeros are real",
       "location": "Theorem thm:Akhiezer",
       "deps": ["AX-Akhiezer"]
     },
