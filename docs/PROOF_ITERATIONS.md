@@ -137,6 +137,25 @@ Verification:
 
 Compiled: 3 pages, clean log.
 
-### Iter 8 — fixed-point revision pass
+### Iter 8 — fixed-point revision pass, flaw found, do NOT commit
 
-Read Iter 7 source top to bottom looking for revisions needed. Fixed points reached when no revision is made on a full read. Revisions found on this pass will be applied and the pass restarted.
+Read Iter 7 source top to bottom. Found two fatal false inferences. See P11 and P12.
+
+## Additional problems found in Iter 8 review
+
+| # | Problem | Rectification | Never repeat |
+|---|---|---|---|
+| P11 | Iter 7 Axiom ax:crit "Critical-line parametrization" writes every nontrivial $\zeta$-zero as $\rho=\tfrac12+i\tau$ for $\tau\in\R$. That IS RH. Begging the question as an axiom. | Replace with the correct parametrization: every nontrivial zero has the form $\rho=\tfrac12+i\tau$ for a unique $\tau\in\C$ with $\Im\tau\in(-\tfrac12,\tfrac12)$ (critical-strip constraint translated to $\tau$-coordinates). RH $\equiv$ $\tau\in\R$. | Never encode the conclusion RH ($\tau\in\R$) inside an axiom. |
+| P12 | Iter 7 proof invokes "$Y$ has no complex zeros, so $\tau\in\R$." But Iter 7 defined $Y$ only on $\R$. A function defined on $\R$ has no zeros outside $\R$ vacuously — its domain is $\R$ — so the axiom is empty and proves nothing. To rule out a complex $\tau$, some object must take a value at a complex argument. Either (a) $Y$ is defined on $\C$ (i.e.\ the PW entire extension), or (b) $Z$ is evaluated at the complex $\tau$ through some extension. The user has forbidden (b) via the strip argument and forbidden analytic continuation discussions. The only self-consistent resolution: Axiom F5 must be stated on an object with a complex domain, namely the PW extension $\widetilde Y$; that extension exists by the PW theorem already in the proof (Axioms ax:PW + ax:AK combined with the bound and band-limit theorems). F5 then says $\{\widetilde Y=0\}\subset\R$ in $\C$. The RH proof goes: $\zeta(\rho)=0$ at $\rho=\tfrac12+i\tau$ with $\tau\in\C$, $|\Im\tau|<\tfrac12$; through the factorization $Z=\sqrt{\Theta'}\cdot\widetilde Y\circ\Theta$ extended to the strip (or via the real-line identity plus any extension of $Z$ consistent with Axiom ax:Z's natural domain), $Z(\tau)=0$ yields $\widetilde Y(\Theta(\tau))=0$; F5 places $\Theta(\tau)\in\R$; $\Theta$ bijection on $\R$ plus $\Theta$ holomorphic in a neighborhood gives $\tau\in\R$. **This requires the strip extension the user forbade.** | Either reintroduce the strip extension of $\Theta$ and $\widetilde Y$ (user has forbidden this), OR reformulate Axiom ax:crit so that $\tau$ is a priori constrained, OR accept that Axiom F5 is ineffective without a complex domain. The construction cannot close under the current constraints. Must request user guidance. | Never state an axiom about "no complex zeros" of a function whose domain is only $\R$. The axiom must be on an object with a complex domain, or it is vacuous. |
+
+### Iter 8 status: BLOCKED
+
+The RH proof as presently constrained (no strip, no analytic continuation, $Y$ defined only on $\R$, no $\widetilde Y$ entire extension) cannot close. Axiom F5 on a real-domain $Y$ is vacuous; the nontrivial-zero parameter $\tau$ is a priori complex (in the critical strip $|\Im\tau|<\tfrac12$); nothing in the axiom set restricts $\tau$ to $\R$ except by importing RH itself (P11).
+
+The resolution requires one of:
+
+1. State F5 on the PW entire extension $\widetilde Y:\C\to\C$. Then $\widetilde Y(w)=0\Rightarrow w\in\R$. This requires the PW theorem (already in axiom set) to produce $\widetilde Y$, and requires extending the factorization $Z=\sqrt{\Theta'}\cdot\widetilde Y\circ\Theta$ off $\R$ — which requires a strip for $\Theta,\sqrt{\Theta'}$ and invokes the identity theorem. User forbade this.
+2. State F5 in spectral-measure form: the spectral measure of $Y$ (as a weakly harmonizable process/function on $\R$) is supported on $[-1,1]$, hence by Akhiezer the PW extension has real zeros only. Same content as (1) via different wrapping.
+3. Abandon the claim that F5 alone closes RH. The construction's output is $Y\in PW_1$ with $\widetilde Y$-zeros real by Akhiezer; zeros of $Z$ on $\R$ are exactly $\Theta^{-1}$ of $\widetilde Y$-zeros on $\R$; but without a strip argument, one cannot transport a hypothetical complex $\tau$-zero of $Z$ to a $\widetilde Y$-zero, so one cannot rule it out.
+
+No commit. Awaiting user resolution of the strip-vs-closure conflict.
