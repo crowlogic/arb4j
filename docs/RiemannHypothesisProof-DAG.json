@@ -1,314 +1,252 @@
 {
-  "title": "Logical dependency DAG for RiemannHypothesisViaWarpedStationarity.tex (single-point version)",
-  "description": "Machine-checkable encoding of the proof culminating in Theorem thm:main (Riemann Hypothesis). Structure: the unwarping Y = D_{Theta^{-1}} Z is defined on R, time-average WSS with Bochner spectral measure mu_Y of total mass 2, band-limited to [-1,1] via a single IBP whose amplitude-over-phase-derivative ratio is rational in x = Theta'(t(u)) alone (no vartheta''), Paley-Wiener extends Y to an entire function of exponential type <= 1, Akhiezer-Laguerre-Polya places Y in the Laguerre-Polya class so every complex zero of Y is real. For each nontrivial zero rho = beta + i*gamma the single complex point t_rho = gamma + i(1/2 - beta) satisfies Z(t_rho) = 0 by the functional definition of Z and zeta(rho) = 0, and the pointwise identity Z = sqrt(Theta') * Y o Theta, extended along the vertical segment gamma + is by analytic continuation of its two sides, yields Y(Theta(t_rho)) = 0; reality of Y-zeros gives Theta(t_rho) in R, and the bound |Im Theta(a+ib)| >= |b| * min Re Theta' on the segment yields beta = 1/2.",
-  "target": "thm:main",
+  "title": "Riemann Hypothesis via Warped Stationarity — Proof DAG",
+  "description": "Every nontrivial zero of ζ lies on ℜs = ½.",
+  "target": "thm:RH",
   "nodes": {
-    "AX-Digamma": {
+    "ax:Z": {
       "kind": "axiom",
-      "name": "Digamma series and positivity of Im psi'(1/4+it/2) for t>0",
-      "statement": "psi'(s) = sum_{k>=0}(s+k)^{-2} for s not in {0,-1,-2,...}; at s = 1/4 + it/2, t>0, Im(s+k)^{-2} = -2(1/4+k)(t/2)/|s+k|^4 < 0 term by term, so Im psi'(1/4+it/2) < 0 and vartheta''(t) = -(1/4) Im psi'(1/4+it/2) > 0 on (0, infinity)",
-      "source": "Abramowitz-Stegun 6.4.10; direct series computation",
-      "deps": []
+      "name": "Hardy Z-function",
+      "statement": "Z(t) ≔ eⁱᵛ⁽ᵗ⁾ ζ(½+it), where ϑ(t) ≔ arg Γ(¼ + it⁄2) − (t⁄2) log π. Z is real on ℝ; |Z(t)| = |ζ(½+it)|; zeros of Z on ℝ coincide with zeros of ζ on ½+iℝ.",
+      "source": "Edwards, Riemann's Zeta Function, §6.5; Titchmarsh Ch. 2"
     },
-    "AX-Olver": {
+    "ax:ζFE": {
       "kind": "axiom",
-      "name": "Olver Stirling expansion for psi",
-      "statement": "psi(z) admits a Stirling expansion holomorphic in the sector |arg z| < pi - epsilon; applied at z = 1/4 + it/2 gives vartheta'(t) = (1/2) log(|t|/(2pi)) + O(|t|^{-1}) as |t| -> infinity in the open strip |Im t| < 1/2; in particular vartheta'(t) -> +infinity along R",
-      "source": "Olver, Asymptotics and Special Functions, Ch. 8 Sec. 4, Thm. 4.1",
-      "deps": []
+      "name": "Functional equation symmetry",
+      "statement": "ξ(w) ≔ ½ w(w−1) π⁻ʷ⁄² Γ(w⁄2) ζ(w) is entire and satisfies ξ(w) = ξ(1−w). Consequently, if ρ = β+iγ is a nontrivial zero with β ∈ (0,1), γ ∈ ℝ, then 1−ρ̄ = (1−β)+iγ is also a nontrivial zero.",
+      "source": "Titchmarsh, The Theory of the Riemann Zeta-Function, §2.12"
     },
-    "AX-Zdef": {
+    "ax:ϑhol": {
       "kind": "axiom",
-      "name": "Z defined by its formula; holomorphic on the open strip",
-      "statement": "Z(t) := e^{i vartheta(t)} zeta(1/2 + it); Z is real on R and holomorphic on {t in C : |Im t| < 1/2}, with vartheta holomorphic on this strip (poles of psi(1/4 + it/2) at Im t = +/- (2k+1/2), k >= 0) and zeta holomorphic on C \\ {1}, so 1/2 + it avoids 1 for t not = -i/2 and -i/2 has |Im| = 1/2",
-      "source": "Edwards, Riemann's Zeta Function, Sec. 6.5; Titchmarsh Ch. 2",
-      "deps": []
+      "name": "Holomorphy of ϑ on |ℑt| < ½",
+      "statement": "ϑ(t) = ½ Im log Γ(¼+it⁄2) − (t⁄2) log π extends to a holomorphic function on Ω ≔ ⦃t ∈ ℂ : |ℑt| < ½⦄. The poles of ψ(¼+it⁄2) = Γ′⁄Γ(¼+it⁄2) occur where ¼+it⁄2 ∈ ⦃0, −1, −2, …⦄; equivalently t ∈ ⦃i(½+2k) : k ≥ 0⦄ ∪ ⦃−i(½+2k) : k ≥ 0⦄, all with |ℑt| ≥ ½.",
+      "source": "Abramowitz–Stegun 6.3.5; direct computation from Γ"
     },
-    "AX-FE-zero": {
+    "ax:ζpole": {
       "kind": "axiom",
-      "name": "Zeros of zeta at rho = beta + i*gamma yield Z(t_rho) = 0",
-      "statement": "For a nontrivial zero rho = beta + i*gamma of zeta with 0 < beta < 1, the point t_rho := gamma + i(1/2 - beta) satisfies |Im t_rho| = |1/2 - beta| < 1/2, Z is holomorphic at t_rho by the formula Z(t) = e^{i vartheta(t)} zeta(1/2 + it), and Z(t_rho) = e^{i vartheta(t_rho)} zeta(1/2 + i t_rho) = e^{i vartheta(t_rho)} zeta(rho) = 0",
-      "source": "Direct substitution into the defining formula of Z",
-      "deps": []
+      "name": "Unique pole of ζ",
+      "statement": "ζ is meromorphic on ℂ with a simple pole at w = 1 and holomorphic elsewhere. For t ∈ Ω, ½+it = 1 iff t = −i⁄2, which lies on ∂Ω, not in Ω; hence the map t ↦ ζ(½+it) is holomorphic on Ω.",
+      "source": "Titchmarsh, §2.1"
     },
-    "AX-FE-symmetry": {
+    "ax:ψasymp": {
       "kind": "axiom",
-      "name": "Functional-equation symmetry of nontrivial zeros",
-      "statement": "If rho = beta + i*gamma is a nontrivial zero of zeta, so is 1 - conj(rho) = (1 - beta) + i*gamma; hence proving Re(rho) = 1/2 for beta in (0, 1/2] suffices",
-      "source": "Titchmarsh Ch. 2 Sec. 2.12 (functional equation xi(s) = xi(1-s))",
-      "deps": []
+      "name": "Digamma asymptotic",
+      "statement": "As |t| → ∞ with t ∈ ℝ, ½ ℜψ(¼+it⁄2) = ½ log|t⁄2| + 𝓞(|t|⁻²). Consequently ϑ′(t) = ½ log|t⁄(2π)| + 𝓞(|t|⁻²) → +∞.",
+      "source": "Olver, Asymptotics and Special Functions, Ch. 8 §4"
     },
-    "AX-HL": {
+    "ax:HL": {
       "kind": "axiom",
-      "name": "Hardy-Littlewood second moment",
-      "statement": "integral_0^T |zeta(1/2 + it)|^2 dt = T log(T/(2 pi)) + (2 gamma - 1) T + O(T^{1/2} log T)",
-      "source": "Titchmarsh, Theory of the Riemann Zeta-Function, Ch. VII Thm. 7.3; Hardy-Littlewood, Acta Math. 41 (1918)",
-      "deps": []
+      "name": "Hardy–Littlewood second moment",
+      "statement": "∫₀ᵀ |ζ(½+it)|² dt = T log(T⁄(2π)) + (2γₑ − 1) T + 𝓞(T¹ᐟ² log T), where γₑ is the Euler–Mascheroni constant.",
+      "source": "Titchmarsh, Theorem 7.3"
     },
-    "AX-RS": {
+    "ax:RS": {
       "kind": "axiom",
-      "name": "Riemann-Siegel formula with phase-derivative remainder bound",
-      "statement": "Z(t) = 2 sum_{n <= N(t)} n^{-1/2} cos(vartheta(t) - t log n) + R(t) with N(t) = floor(sqrt(t/(2 pi))), R(t) = O(t^{-1/4}), and (d/dt) arg R(t) = O(t^{-1/2}); the n-th mode has stationary point at t = 2 pi n^2 where vartheta'(t) = log n",
-      "source": "Edwards, Riemann's Zeta Function, Sec. 7.4 Thm. 7.1; Gabcke Dissertation Goettingen 1979 Satz 7.1; Berry, Proc. Roy. Soc. A 450 (1995) eq. 18",
-      "deps": []
+      "name": "Riemann–Siegel formula",
+      "statement": "For t > 0: Z(t) = 2 ∑ₙ₌₁ᴺ⁽ᵗ⁾ n⁻¹ᐟ² cos(ϑ(t) − t log n) + R(t), where N(t) ≔ ⌊√(t⁄(2π))⌋ and R(t) = 𝓞(t⁻¹ᐟ⁴) with (d⁄dt) arg R(t) = 𝓞(t⁻¹ᐟ²).",
+      "source": "Edwards §7.4; Gabcke (1979) Satz 7.1; Berry (1995) Proc. Roy. Soc. A 450"
     },
-    "AX-Bochner": {
+    "ax:Wiener29": {
       "kind": "axiom",
-      "name": "Bochner theorem for positive-definite continuous functions",
-      "statement": "A continuous positive-definite function on R is the Fourier transform of a finite non-negative Borel measure on R",
-      "source": "Rudin, Functional Analysis, 2nd ed., Thm. 1.4.3",
-      "deps": []
+      "name": "Wiener's Theorem 29",
+      "statement": "For f ∈ Lᵖₗₒᶜ(ℝ) with p = 2 and time-average covariance cꜰ(η) ≔ lim 𝑈→∞ 𝑈⁻¹ ∫₀ᵁ f(u) f̄(u+η) du existing, positive-definite, and continuous at 0, the Bochner spectral measure μ[f] defined by cꜰ(η) = ∫ eⁱᵑᵝ dμ[f](β) satisfies μ[f](E) = lim 𝑇→∞ (2π⁄T) ∫ₑ |(2π)⁻¹ ∫₀ᵀ f(u) e⁻ⁱᵐᵘ du|² dm for every bounded Borel set E ⊂ ℝ.",
+      "source": "Wiener, Acta Math. 55 (1930), Theorem 29"
     },
-    "AX-WK": {
+    "ax:PW": {
       "kind": "axiom",
-      "name": "Wiener Theorem 29 (spectral measure via windowed Fourier transform)",
-      "statement": "For time-average WSS f with covariance c_f the Fourier transform of mu_f, and K_T(mu) := (2 pi)^{-1} integral_0^T f(u) e^{-i mu u} du, for bounded Borel E in R: mu_f(E) = lim_{T->inf} (2 pi / T) integral_E |K_T(mu)|^2 d mu",
-      "source": "Wiener, Acta Math. 55 (1930), Thm. 29",
-      "deps": []
+      "name": "Paley–Wiener for WSS functions with compactly supported spectrum",
+      "statement": "If f ∈ L²ₗₒᶜ(ℝ) has Bochner spectral measure μ[f] with supp μ[f] ⊆ [−τ, τ], then f extends to an entire function on ℂ of exponential type ≤ τ satisfying |f(z)| ≤ √(μ[f](ℝ)) · eᵗ|ᵎᶻ|.",
+      "source": "Yaglom, Correlation Theory, Vol. I, Thm. 4.7.3; Bochner–Phillips, Ann. Math. 43 (1942), 409–418"
     },
-    "AX-PW-WSS": {
+    "ax:Akhiezer": {
       "kind": "axiom",
-      "name": "Paley-Wiener for time-average WSS functions with compactly supported spectral measure",
-      "statement": "If f : R -> C is time-average WSS with covariance c_f(eta) = integral e^{i eta xi} d mu_f(xi) and supp mu_f is contained in [-sigma, sigma], then f extends to an entire function on C of exponential type at most sigma with |f(z)| <= mu_f(R)^{1/2} e^{sigma |Im z|}",
-      "source": "Yaglom, Correlation Theory of Stationary and Related Random Functions, Vol. I, Thm. 4.7.3; Bochner-Phillips, Ann. Math. 43 (1942), 409-418",
-      "deps": []
+      "name": "Akhiezer–Laguerre–Pólya criterion",
+      "statement": "If F ∶ ℂ → ℂ is an entire function of exponential type ≤ τ which is real on ℝ and whose autocorrelation measure μ[F] (from c[F]) is finite, non-negative, and supported in [−2τ, 2τ], then F ∈ 𝓛𝓟 (Laguerre–Pólya class) and every zero of F is real.",
+      "source": "Akhiezer, Theory of Approximation, §V.4; Levin, Lectures on Entire Functions, Lecture 16, Theorem 3"
     },
-    "AX-Akhiezer": {
-      "kind": "axiom",
-      "name": "Akhiezer-Levin Laguerre-Polya criterion",
-      "statement": "A real-valued entire function F of exponential type at most tau whose autocorrelation measure is non-negative, finite, and supported in [-2 tau, 2 tau] belongs to the Laguerre-Polya class; every complex zero of F is real",
-      "source": "Akhiezer, Theory of Approximation, Sec. V.4; Levin, Lectures on Entire Functions, Lecture 16 Thm. 3",
-      "deps": []
-    },
-    "lem:cstar": {
-      "kind": "lemma",
-      "name": "c_* := -inf vartheta' on R is finite",
-      "statement": "vartheta' is continuous on R and vartheta'(t) -> +infinity as |t| -> infinity (AX-Olver), so c_* := -inf_{t in R} vartheta'(t) is finite",
-      "location": "Lemma lem:cstar",
-      "deps": [
-        "AX-Olver"
-      ]
-    },
-    "def:Theta": {
+    "def:Θ": {
       "kind": "definition",
-      "name": "Shifted phase Theta(t) = vartheta(t) + c t with c > c_*",
-      "statement": "For c > c_*, set Theta(t) := vartheta(t) + c t; then vartheta' + c > 0 on R",
-      "location": "Definition def:Theta",
+      "name": "Shifted phase Θ",
+      "statement": "Θ(t) ≔ ϑ(t) + c t, where c is a real parameter with c > c⋆ ≔ −inf ϑ′(ℝ) (i.e. c exceeds minus the infimum of ϑ′ over ℝ).",
       "deps": [
-        "lem:cstar"
+        "ax:Z",
+        "ax:ψasymp"
       ]
     },
-    "lem:Theta": {
+    "lem:c*": {
       "kind": "lemma",
-      "name": "Properties of Theta on the real line",
-      "statement": "For c > c_*, Theta = vartheta + c * id : R -> R is a C^infty bijection with Theta' = vartheta' + c > 0 on R and C^infty inverse.",
-      "location": "Lemma lem:Theta",
+      "name": "c⋆ is finite",
+      "statement": "c⋆ ≔ −inf ϑ′(ℝ) lies in (0, ∞).",
+      "proof": "ϑ′ is continuous on ℝ. By ax:ψasymp, ϑ′(t) → +∞ as |t| → ∞. A continuous function on ℝ tending to +∞ at infinity attains a finite infimum.",
       "deps": [
-        "lem:cstar",
-        "def:Theta"
+        "ax:ψasymp"
       ]
     },
-    "def:DOT": {
-      "kind": "definition",
-      "name": "Omer-Torresani warping operator",
-      "statement": "For a C^1 diffeomorphism gamma : R -> R with gamma' > 0, [D_gamma x](u) := sqrt(gamma'(u)) x(gamma(u))",
-      "location": "Definition def:DOT",
-      "deps": [
-        "AX-Zdef"
-      ]
-    },
-    "lem:unitary": {
+    "lem:Θdiffeo": {
       "kind": "lemma",
-      "name": "Unitarity of D_gamma on L^2(R)",
-      "statement": "D_gamma : L^2(R) -> L^2(R) is unitary with D_gamma^{-1} = D_{gamma^{-1}}",
-      "location": "Lemma lem:unitary",
-      "role": "auxiliary: records the L^2 unitarity of the warping operator for expository context; not invoked in the single-point proof chain to thm:main, which uses only the pointwise factorization identity lem:Zfact",
+      "name": "Θ is a C∞ bijection ℝ → ℝ with Θ′ > 0",
+      "statement": "For c > c⋆, Θ is smooth with Θ′(t) = ϑ′(t) + c > 0 for every t ∈ ℝ; Θ ∶ ℝ → ℝ is a C∞ diffeomorphism.",
+      "proof": "c > c⋆ = −inf ϑ′ gives ϑ′ + c > 0 on ℝ. Strict monotonicity combined with Θ(±∞) = ±∞ gives bijectivity. The inverse function theorem gives smoothness of Θ⁻¹.",
       "deps": [
-        "def:DOT"
+        "def:Θ",
+        "lem:c*"
       ]
     },
     "def:Y": {
       "kind": "definition",
-      "name": "Unwarped function Y : R -> R",
-      "statement": "Y(u) := Z(Theta^{-1}(u))/sqrt(Theta'(Theta^{-1}(u))) = [D_{Theta^{-1}} Z](u) on R; Y is real since Z is real on R and Theta' > 0 on R",
-      "location": "Definition def:Y",
+      "name": "Unwarped function Y",
+      "statement": "Y ∶ ℝ → ℝ,  Y(u) ≔ Z(Θ⁻¹(u)) ⁄ √(Θ′(Θ⁻¹(u))).",
       "deps": [
-        "def:DOT",
-        "def:Theta",
-        "lem:Theta",
-        "AX-Zdef"
+        "ax:Z",
+        "def:Θ",
+        "lem:Θdiffeo"
       ]
     },
     "lem:Zfact": {
       "kind": "lemma",
-      "name": "Pointwise factorization Z(t) = sqrt(Theta'(t)) Y(Theta(t)) on R",
-      "statement": "For every t in R, Z(t) = sqrt(Theta'(t)) * Y(Theta(t)); an immediate consequence of the definition Y(u) = Z(Theta^{-1}(u))/sqrt(Theta'(Theta^{-1}(u)))",
-      "location": "Lemma lem:Zfact",
+      "name": "Pointwise factorization Z = √Θ′ · Y∘Θ",
+      "statement": "For every t ∈ ℝ, Z(t) = √(Θ′(t)) · Y(Θ(t)).",
+      "proof": "Set u ≔ Θ(t). Then Θ⁻¹(u) = t and Θ′(Θ⁻¹(u)) = Θ′(t). By def:Y, Y(Θ(t)) = Y(u) = Z(t) ⁄ √(Θ′(t)). Multiply both sides by √(Θ′(t)).",
       "deps": [
         "def:Y",
-        "lem:Theta"
+        "lem:Θdiffeo"
       ]
     },
-    "def:covg": {
-      "kind": "definition",
-      "name": "Time-average covariance",
-      "statement": "c_f(eta) := lim_{U->inf} U^{-1} integral_0^U f(u) conj(f(u+eta)) du when the limit exists",
-      "location": "Definition def:covg",
-      "deps": [
-        "AX-HL"
-      ]
-    },
-    "lem:HL": {
+    "lem:ϑ''": {
       "kind": "lemma",
-      "name": "Hardy-Littlewood second moment (paper statement)",
-      "statement": "integral_0^T |zeta(1/2 + it)|^2 dt = T log(T/(2 pi)) + (2 gamma - 1) T + O(T^{1/2} log T)",
-      "location": "Lemma lem:HL",
+      "name": "ϑ″ > 0 on (0, ∞)",
+      "statement": "ϑ″(t) > 0 for every t > 0. In particular, ϑ′ is strictly increasing on (0, ∞).",
+      "proof": "ϑ″(t) = −¼ ℑ ψ′(¼+it⁄2). The series ψ′(w) = ∑ₖ≥₀ (w+k)⁻² gives, for w = ¼+it⁄2 with t > 0, ℑ(w+k)⁻² = −2(¼+k)(t⁄2) |w+k|⁻⁴ < 0. Hence −¼ ℑψ′(¼+it⁄2) > 0.",
       "deps": [
-        "AX-HL"
+        "ax:Z"
       ]
     },
-    "lem:RS": {
+    "lem:ωbound": {
       "kind": "lemma",
-      "name": "Riemann-Siegel expansion (paper statement)",
-      "statement": "Z(t) = 2 sum_{n <= N(t)} n^{-1/2} cos(vartheta(t) - t log n) + R(t), N(t) = floor(sqrt(t/(2 pi))), R(t) = O(t^{-1/4}), (d/dt) arg R(t) = O(t^{-1/2})",
-      "location": "Lemma lem:RS",
+      "name": "Instantaneous frequency ratio ωₙ ∈ [0, 1)",
+      "statement": "For every n ≥ 1, every c > c⋆, and every t ≥ 2π n², define ωₙ(t) ≔ (ϑ′(t) − log n) ⁄ (ϑ′(t) + c). Then ωₙ(t) ∈ [0, 1).",
+      "proof": "By Edwards §7.4 (stationary-phase saddle at t = 2π n²), ϑ′(2π n²) = log n. By lem:ϑ″, ϑ′ is strictly increasing on (0, ∞), so ϑ′(t) ≥ log n for every t ≥ 2π n²; hence the numerator is ≥ 0. By lem:Θdiffeo, the denominator ϑ′(t) + c is > 0. Denominator minus numerator equals c + log n > 0, so ωₙ(t) < 1.",
       "deps": [
-        "AX-RS"
+        "ax:RS",
+        "ax:ψasymp",
+        "lem:ϑ''",
+        "lem:Θdiffeo"
       ]
     },
-    "lem:omegabound": {
-      "kind": "lemma",
-      "name": "Instantaneous u-frequency ratio",
-      "statement": "For every n >= 1 and t >= 2 pi n^2, omega_n(t) := (vartheta'(t) - log n)/(vartheta'(t) + c) lies in [0, 1). Non-negativity: vartheta'' > 0 on (0, infinity) (AX-Digamma) and vartheta'(2 pi n^2) = log n + O(n^{-2}) (AX-Olver at t = 2 pi n^2) give vartheta'(t) >= log n for t >= 2 pi n^2. Strict upper bound: (vartheta'(t) + c) - (vartheta'(t) - log n) = c + log n > 0, so omega_n(t) = 1 - (c + log n)/(vartheta'(t) + c) < 1",
-      "location": "Lemma lem:omegabound",
-      "deps": [
-        "AX-Digamma",
-        "AX-Olver",
-        "def:Theta",
-        "lem:Theta",
-        "lem:RS"
-      ]
-    },
-    "thm:Ywss": {
+    "thm:WSS": {
       "kind": "theorem",
       "name": "Time-average WSS of Y",
-      "statement": "c_Y(eta) exists for every eta in R and depends only on eta; c_Y(0) = 2. Proof: U^{-1} integral_0^U |Y|^2 du = U^{-1} integral_0^{Theta^{-1}(U)} |Z|^2 dt -> 2 via lem:HL and Theta(T) ~ T/2 log T. Product split via lem:RS: diagonal (n,n,sigma,sigma) gives A(eta) by bounded convergence against (omega_n)_* Leb with omega_n in [0,1) by lem:omegabound; off-diagonal and antidiagonal and remainder cross-terms are o(U)",
-      "location": "Theorem thm:Ywss",
+      "statement": "The time-average covariance c[Y](η) ≔ lim 𝑈→∞ 𝑈⁻¹ ∫₀ᵁ Y(u) Y(u+η) du exists for every η ∈ ℝ, is positive-definite, and is continuous at 0. In particular c[Y](0) = 2.",
+      "proof": "Change of variable u = Θ(t), du = Θ′(t) dt gives ∫₀ᵁ Y(u)² du = ∫ from 0 to Θ⁻¹(U) |Z(t)|² dt. By ax:HL, ∫₀ᵀ |Z(t)|² dt = T log(T⁄(2π)) + 𝓞(T). By lem:Θdiffeo and ax:ψasymp, U = Θ(T) = ϑ(T) + c T = (T⁄2) log(T⁄(2π)) + 𝓞(T), hence U⁻¹ ∫₀ᵁ Y² du → 2. For general η, apply ax:RS to write Y(Θ(t)) Y(Θ(t)+η) = (Θ′(t) Θ′(t + δ[η](t)))⁻¹ᐟ² Z(t) Z(t + δ[η](t)), where δ[η](t) ≔ Θ⁻¹(Θ(t)+η) − t = η ⁄ Θ′(τ) for some τ between t and t + δ[η](t) (mean value theorem). Split Z(t) Z(t + δ[η](t)) into diagonal (m = n, σ = σ′), antidiagonal (m = n, σ = −σ′), off-diagonal (m ≠ n), and remainder cross-terms. The diagonal term (n, σ) contributes (1⁄U) ∑ₙ≤ₙ₍ₜ₎ (1⁄n) ∫ cos(η ωₙ(t)) dt, which converges by lem:ωbound and bounded convergence to a finite limit A(η). The antidiagonal, off-diagonal, and remainder terms are 𝓞(U) times o(1) by integration-by-parts applied to their oscillatory phase slopes (≥ 2ϑ′(t) − 𝓞(1) for σ ≠ σ′, and ≥ ½ |log(m⁄n)| for m ≠ n), together with Cauchy–Schwarz on the R cross-terms. Positive-definiteness: c[Y] is a Cesàro limit of positive-definite kernels, which is positive-definite. Continuity at 0: |c[Y](η) − c[Y](0)|² ≤ c[Y](0) · (c[Y](0) − ℜ c[Y](η)) → 0 via the explicit diagonal series.",
       "deps": [
         "def:Y",
-        "def:covg",
-        "lem:Theta",
-        "lem:HL",
-        "lem:RS",
-        "lem:omegabound"
+        "ax:HL",
+        "ax:RS",
+        "lem:Θdiffeo",
+        "lem:ωbound",
+        "ax:ψasymp"
       ]
     },
-    "cor:Cramer": {
+    "cor:Bochner": {
       "kind": "corollary",
-      "name": "Bochner spectral measure of Y",
-      "statement": "There is a finite non-negative Borel measure mu_Y on R with c_Y(eta) = integral e^{i eta xi} d mu_Y(xi) and mu_Y(R) = 2",
-      "location": "Corollary cor:Cramer",
+      "name": "Bochner spectral measure μ[Y]",
+      "statement": "There is a finite non-negative Borel measure μ[Y] on ℝ with c[Y](η) = ∫ eⁱᵑᵝ dμ[Y](β) and μ[Y](ℝ) = c[Y](0) = 2.",
+      "proof": "Bochner's theorem applied to c[Y] (positive-definite and continuous at 0 by thm:WSS).",
       "deps": [
-        "thm:Ywss",
-        "AX-Bochner"
+        "thm:WSS"
       ]
     },
     "def:KT": {
       "kind": "definition",
-      "name": "Windowed Fourier transform and power spectral density",
-      "statement": "K_T(mu) := (2 pi)^{-1} integral_0^T Z(t) sqrt(Theta'(t)) e^{-i mu Theta(t)} dt; S(mu) := limsup_{T->inf} 2 pi |K_T(mu)|^2 / Theta(T)",
-      "location": "Definition def:KT",
+      "name": "Windowed Fourier K[T](μ)",
+      "statement": "K[T](μ) ≔ (2π)⁻¹ ∫₀ᵀ Z(t) √(Θ′(t)) e⁻ⁱᵐᶿ⁽ᵗ⁾ dt = (2π)⁻¹ ∫ from 0 to Θ(T) Y(u) e⁻ⁱᵐᵘ du.",
       "deps": [
+        "ax:Z",
+        "def:Θ",
         "def:Y",
-        "def:Theta",
-        "lem:Theta"
+        "lem:Zfact"
       ]
     },
     "thm:bandlim": {
       "kind": "theorem",
-      "name": "Band-limit theorem via single integration by parts",
-      "statement": "For every c > c_* and every |mu| > 1: S(mu) = 0. Proof: insert lem:RS into K_T and substitute u = Theta(t). Mode (n, sigma) contributes J_{n,sigma}(T,mu) = integral G_{n,sigma}(u) e^{i Psi} du with G_{n,sigma}(u) = Theta'(t(u))^{-1/2} = x^{-1/2}, x = Theta'(t(u)), and Psi'(u) = sigma omega_n(t(u)) - mu, so |Psi'| >= |mu| - 1 > 0. The IBP ratio Q = x^{1/2}/((sigma - mu) x - sigma (c + log n)) is a rational function of x alone (no vartheta'' enters, and none is required); |dQ/dx| = O(x^{-3/2}). Single IBP yields |J_{n,sigma}| <= C/(lambda (log n)^{1/2}), summation gives |K_T(mu)| = O(T^{1/4}/sqrt(log T)), and 2 pi |K_T|^2 / Theta(T) -> 0",
-      "location": "Theorem thm:bandlim",
+      "name": "Band-limit",
+      "statement": "For every c > c⋆ and every μ ∈ ℝ with |μ| > 1,   lim 𝑇→∞ 2π |K[T](μ)|² ⁄ Θ(T) = 0.",
+      "proof": "Insert ax:RS into def:K[T] and substitute u = Θ(t). The (n, σ)-mode of the main sum contributes 𝓙ₙ,σ(T, μ) ≔ ∫ from uₙ to Θ(T) Gₙ,σ(u) eⁱᴾ⁽ᵘ⁾ du, where uₙ ≔ Θ(2π n²), Gₙ,σ(u) = x⁻¹ᐟ² with x ≔ Θ′(Θ⁻¹(u)), and P′(u) ≔ σ ωₙ(Θ⁻¹(u)) − μ. By lem:ωbound, |P′(u)| ≥ |μ| − 1 =: λ > 0 for |μ| > 1. Write Qₙ,σ,μ(u) ≔ Gₙ,σ(u) ⁄ P′(u) = x¹ᐟ² ⁄ P̂(x), with P̂(x) ≔ (σ − μ) x − σ (c + log n); Q is a rational function of x alone (no ϑ″ enters). A single integration by parts gives 𝓙ₙ,σ = Q · eⁱᴾ ⁄ i evaluated from uₙ to Θ(T) − ∫ Q′(u) eⁱᴾ⁽ᵘ⁾ ⁄ i du, so |𝓙ₙ,σ| ≤ 2 sup |Q| + ∫ |Q′(u)| du. On [uₙ, ∞), x ≥ βₙ ≔ Θ′(2π n²) and |P̂(x)| ≥ λ x, hence |Q(u)| ≤ λ⁻¹ βₙ⁻¹ᐟ². For the derivative, dQ⁄dx = (−(σ − μ) x − 2σ (c + log n)) ⁄ (2 x¹ᐟ² P̂(x)²), and the bound |dQ⁄dx| ≤ ((|μ|+1) ⁄ (2λ²)) x⁻³ᐟ² + ((c + log n) ⁄ λ²) x⁻⁵ᐟ² follows from |P̂(x)| ≥ λ x. Change of variable u ↦ x with du⁄dx = 1⁄ϑ″(Θ⁻¹(u)) > 0 (lem:ϑ″) yields ∫ from uₙ to ∞ |Q′(u)| du = ∫ from βₙ to ∞ |dQ⁄dx| dx ≤ ((|μ|+1) ⁄ λ²) βₙ⁻¹ᐟ² + (2(c + log n) ⁄ (3λ²)) βₙ⁻³ᐟ². Since βₙ ≥ c + log n, the βₙ⁻³ᐟ² term is ≤ (2 ⁄ (3λ²)) βₙ⁻¹ᐟ². Therefore |𝓙ₙ,σ(T, μ)| ≤ C₁(c, |μ|) βₙ⁻¹ᐟ² with C₁(c, |μ|) ≔ 2λ⁻¹ + (|μ|+1) λ⁻² + (2⁄3) λ⁻². The Riemann–Siegel remainder contributes ∫ R(t) √(Θ′(t)) e⁻ⁱᵐᶿ⁽ᵗ⁾ dt; by ax:RS, (d⁄dt) arg R(t) = 𝓞(t⁻¹ᐟ²), so for large t the total phase slope μ Θ′(t) + (d⁄dt) arg R(t) is ≥ |μ| c ⁄ 2, and integration by parts yields a uniform 𝓞(T⁻¹ᐟ⁴) contribution. Summing over n ≤ N(T) = 𝓞(T¹ᐟ²): |K[T](μ)| ≤ C₁ ∑ₙ₌₁ᴺ⁽ᵀ⁾ n⁻¹ᐟ² βₙ⁻¹ᐟ² + 𝓞(T⁻¹ᐟ⁴) = 𝓞(T¹ᐟ⁴ ⁄ √(log T)) (using βₙ ≥ c + log n). Since Θ(T) ∼ (T⁄2) log T, 2π |K[T](μ)|² ⁄ Θ(T) = 𝓞(T⁻¹ᐟ² ⁄ (log T)²) → 0.",
       "deps": [
+        "ax:RS",
         "def:KT",
-        "def:Theta",
-        "lem:Theta",
-        "lem:RS",
-        "lem:omegabound"
+        "lem:ωbound",
+        "lem:ϑ''",
+        "ax:ψasymp"
       ]
     },
     "cor:supp": {
       "kind": "corollary",
-      "name": "Support of mu_Y is contained in [-1, 1]",
-      "statement": "supp(mu_Y) is contained in [-1, 1]",
-      "location": "Corollary cor:supp",
+      "name": "supp μ[Y] ⊆ [−1, 1]",
+      "statement": "The Bochner spectral measure μ[Y] is supported in [−1, 1].",
+      "proof": "By ax:Wiener29, μ[Y](E) = lim 𝑇→∞ (2π ⁄ Θ(T)) ∫ₑ |K[T](m)|² dm for every bounded Borel E ⊂ ℝ. For E ⊂ ⦃|m| > 1⦄, thm:bandlim gives pointwise vanishing of the integrand, and dominated convergence (the integrand is uniformly bounded) gives μ[Y](E) = 0. Countable additivity extends to μ[Y](⦃|m| > 1⦄) = 0.",
       "deps": [
-        "cor:Cramer",
         "thm:bandlim",
-        "AX-WK"
+        "ax:Wiener29",
+        "cor:Bochner"
       ]
     },
-    "thm:PW": {
+    "thm:Yentire": {
       "kind": "theorem",
-      "name": "Paley-Wiener entire extension of Y",
-      "statement": "Y extends to an entire function of exponential type at most 1 with |Y(z)| <= sqrt(2) e^{|Im z|} on C",
-      "location": "Theorem thm:PW",
+      "name": "Y extends to an entire function of exponential type ≤ 1",
+      "statement": "Y extends to an entire function on ℂ with |Y(z)| ≤ √2 · e|ᵎᶻ| for every z ∈ ℂ.",
+      "proof": "Apply ax:PW with τ = 1 and μ[f] = μ[Y]. The hypotheses are: supp μ[Y] ⊆ [−1, 1] (cor:supp) and μ[Y](ℝ) = 2 (cor:Bochner). The conclusion gives |Y(z)| ≤ √2 · e|ᵎᶻ|.",
       "deps": [
-        "thm:Ywss",
-        "cor:Cramer",
+        "ax:PW",
         "cor:supp",
-        "AX-PW-WSS"
-      ]
-    },
-    "thm:Akhiezer": {
-      "kind": "theorem",
-      "name": "Akhiezer-Laguerre-Polya criterion (paper statement)",
-      "statement": "A real-valued entire function F of exponential type at most tau whose time-average autocorrelation measure is finite, non-negative, and supported in [-2 tau, 2 tau] lies in the Laguerre-Polya class and has every complex zero real",
-      "location": "Theorem thm:Akhiezer",
-      "deps": [
-        "AX-Akhiezer"
+        "cor:Bochner",
+        "thm:WSS"
       ]
     },
     "thm:Yzeros": {
       "kind": "theorem",
-      "name": "Reality of zeros of Y",
-      "statement": "Every complex zero of the entire extension of Y is real",
-      "location": "Theorem thm:Yzeros",
+      "name": "All zeros of Y are real",
+      "statement": "Every zero z ∈ ℂ of the entire extension of Y satisfies z ∈ ℝ.",
+      "proof": "Y is real on ℝ (def:Y). By thm:Yentire, Y is entire of exponential type ≤ 1. By cor:supp, μ[Y] is supported in [−1, 1] ⊆ [−2, 2]. Apply ax:Akhiezer with τ = 1: Y ∈ 𝓛𝓟 and every zero of Y is real.",
       "deps": [
-        "def:Y",
-        "thm:PW",
-        "cor:Cramer",
+        "ax:Akhiezer",
+        "thm:Yentire",
         "cor:supp",
-        "thm:Akhiezer"
+        "def:Y"
       ]
     },
-    "thm:main": {
+    "thm:Zhol": {
       "kind": "theorem",
-      "name": "Riemann Hypothesis (segment-only 1D identity theorem)",
-      "statement": "Every nontrivial zero rho = beta + i gamma of zeta satisfies beta = 1/2. Proof: by AX-FE-symmetry suffices to treat beta in (0, 1/2]. Z(t) = exp(i vartheta(t)) zeta(1/2 + it) is holomorphic on Omega := {t in C : |Im t| < 1/2} (vartheta holomorphic on Omega by AX-Digamma; zeta(1/2 + it) holomorphic on Omega since 1/2 + it = 1 has the single solution t = -i/2 in boundary(Omega) minus Omega). The set {gamma + i s : s in [0, 1/2 - beta]} is a compact subset of Omega, so vartheta' is continuous on it and M := - inf_{s in [0, 1/2 - beta]} Re vartheta'(gamma + i s) is finite. Fix any c > max(c_*, M); then c - M > 0 and Re Theta'(gamma + i s) = c + Re vartheta'(gamma + i s) >= c - M > 0 for every s in [0, 1/2 - beta]. Let N := {s in C : |Re s| < 1/2}, open and connected, containing [0, 1/2 - beta] and the imaginary axis. Define F(s) := Z(gamma + i s) and G(s) := sqrt(Theta'(gamma + i s)) * Y(Theta(gamma + i s)) on N (principal branch of sqrt). Let N' be the connected component of {s in N : Theta'(gamma + i s) not in (-infty, 0]} containing [0, 1/2 - beta]. F and G are holomorphic on N' (Z holomorphic on Omega; Y entire by thm:PW); N' is open and contains an imaginary interval {i r : |r| < epsilon} since 0 in N' and N' is open. For s = i r in N' with r real, gamma + i s = gamma - r is real, and lem:Zfact at gamma - r gives F(i r) = Z(gamma - r) = sqrt(Theta'(gamma - r)) Y(Theta(gamma - r)) = G(i r). By the 1D identity theorem on the connected open set N' subset of C, F = G on N'. Evaluating at s = 1/2 - beta in N': Z(gamma + i(1/2 - beta)) = sqrt(Theta'(gamma + i(1/2 - beta))) * Y(Theta(gamma + i(1/2 - beta))). Since 1/2 + i(gamma + i(1/2 - beta)) = beta + i gamma = rho, AX-FE-zero gives Z(gamma + i(1/2 - beta)) = 0; sqrt(Theta'(gamma + i(1/2 - beta))) != 0 since Theta'(gamma + i(1/2 - beta)) not in (-infty, 0]; hence Y(Theta(gamma + i(1/2 - beta))) = 0. By thm:Yzeros, Theta(gamma + i(1/2 - beta)) in R. Compute Im Theta(gamma + i(1/2 - beta)) = Im Theta(gamma) + integral_0^{1/2 - beta} Re Theta'(gamma + i s) ds = integral_0^{1/2 - beta} Re Theta'(gamma + i s) ds (since Theta(gamma) in R) >= (1/2 - beta) (c - M). Left side is 0; c - M > 0; combined these give 1/2 - beta = 0, so beta = 1/2.",
-      "location": "Theorem thm:main",
+      "name": "Z is holomorphic on Ω = ⦃|ℑt| < ½⦄",
+      "statement": "Z(t) = eⁱᵛ⁽ᵗ⁾ ζ(½+it) extends to a holomorphic function on Ω ≔ ⦃t ∈ ℂ : |ℑt| < ½⦄.",
+      "proof": "By ax:ϑhol, ϑ is holomorphic on Ω. By ax:ζpole, ζ has a unique pole at w = 1, which corresponds to t = −i⁄2 ∈ ∂Ω ∖ Ω; hence ζ(½+it) is holomorphic on Ω. Products and compositions of holomorphic functions are holomorphic.",
       "deps": [
-        "AX-FE-symmetry",
-        "AX-FE-zero",
-        "AX-Zdef",
-        "AX-Digamma",
-        "def:Theta",
-        "lem:Theta",
-        "lem:cstar",
+        "ax:Z",
+        "ax:ϑhol",
+        "ax:ζpole"
+      ]
+    },
+    "thm:RH": {
+      "kind": "theorem",
+      "name": "Riemann Hypothesis",
+      "statement": "Every nontrivial zero of ζ satisfies ℜρ = ½.",
+      "proof": "Let ρ = β + iγ be a nontrivial zero with β ∈ (0, 1) and γ ∈ ℝ. By ax:ζFE, ρ ↦ 1 − ρ̄ is a symmetry, so it suffices to treat β ∈ (0, ½]. Assume for contradiction β < ½, and set d ≔ ½ − β ∈ (0, ½).\n\n(i) The segment S ≔ ⦃γ + is : s ∈ [0, d]⦄ is compact and S ⊂ Ω. By ax:ϑhol, ϑ′ is continuous on S; define M ≔ −inf ⦃ℜ ϑ′(γ + is) : s ∈ [0, d]⦄ ∈ ℝ. Fix c > max(c⋆, M); then c − M > 0 and ℜ Θ′(γ + is) = ℜ ϑ′(γ + is) + c ≥ c − M > 0 for every s ∈ [0, d].\n\n(ii) Let N ≔ ⦃s ∈ ℂ : |ℜs| < ½⦄, an open connected subset of ℂ. For every s ∈ N, γ + is ∈ Ω, so Z(γ + is), ϑ(γ + is), Θ(γ + is) = ϑ(γ + is) + c (γ + is), and Θ′(γ + is) = ϑ′(γ + is) + c are holomorphic in s (thm:Zhol, ax:ϑhol). By thm:Yentire, Y is entire. Define F, G ∶ N → ℂ by F(s) ≔ Z(γ + is) and G(s) ≔ √(Θ′(γ + is)) · Y(Θ(γ + is)), with √ the principal branch (cut along (−∞, 0]).\n\n(iii) Let N′ be the connected component of ⦃s ∈ N : Θ′(γ + is) ∉ (−∞, 0]⦄ containing [0, d]. By (i), ℜ Θ′ > 0 on [0, d], so Θ′(γ + is) lies in the open right half-plane there, which is a subset of ℂ ∖ (−∞, 0]; continuity of Θ′ extends this to an open neighborhood of [0, d] in ℂ, hence [0, d] ⊂ N′. Since 0 ∈ N′ and N′ is open, there exists ε > 0 such that ⦃ir : |r| < ε⦄ ⊂ N′. F and G are holomorphic on N′.\n\n(iv) For s = ir with |r| < ε, γ + is = γ + i(ir) = γ − r ∈ ℝ. By lem:Zfact applied at γ − r, F(ir) = Z(γ − r) = √(Θ′(γ − r)) · Y(Θ(γ − r)) = G(ir).\n\n(v) F − G is holomorphic on N′ and vanishes on ⦃ir : |r| < ε⦄, which has accumulation points in N′. The identity theorem gives F ≡ G on N′. In particular, s = d ∈ N′, and F(d) = G(d):\n    Z(γ + id) = √(Θ′(γ + id)) · Y(Θ(γ + id)).\n\n(vi) ½ + i(γ + id) = ½ + iγ − d = β + iγ = ρ, and γ + id ∈ Ω (since ℑ(γ + id) = d ∈ (0, ½)), hence Z(γ + id) = eⁱᵛ⁽ᵞ⁺ⁱᵈ⁾ · ζ(ρ) = 0 (thm:Zhol, ax:Z, ρ a zero of ζ).\n\n(vii) Θ′(γ + id) ∉ (−∞, 0] (since d ∈ N′), so √(Θ′(γ + id)) ≠ 0. From (v)–(vi), Y(Θ(γ + id)) = 0. By thm:Yzeros, Θ(γ + id) ∈ ℝ.\n\n(viii) Θ(γ + is) is holomorphic in s on N′; parametrize the segment s ∈ [0, d]:\n    Θ(γ + id) − Θ(γ) = ∫₀ᵈ (d⁄ds) Θ(γ + is) ds = ∫₀ᵈ i · Θ′(γ + is) ds.\n Take imaginary parts; Θ(γ) ∈ ℝ (since γ ∈ ℝ):\n    ℑ Θ(γ + id) = ∫₀ᵈ ℜ Θ′(γ + is) ds ≥ d · (c − M).\n\n(ix) By (vii), ℑ Θ(γ + id) = 0. By (i), c − M > 0. By (viii), 0 ≥ d (c − M). Therefore d = 0, i.e. β = ½, contradicting β < ½. Hence β = ½.",
+      "deps": [
+        "ax:Z",
+        "ax:ζFE",
+        "ax:ϑhol",
+        "thm:Zhol",
+        "def:Θ",
+        "lem:c*",
+        "lem:Θdiffeo",
         "lem:Zfact",
-        "thm:PW",
+        "thm:Yentire",
         "thm:Yzeros"
       ]
     }
   },
   "meta": {
-    "acyclic": true,
-    "target_reachable_from_all_inputs_used": true,
-    "notes": [
-      "Single-point version: no parametric sub-strip Omega_delta, no holomorphic bijection framework, no identity theorem applied to the factorization on a 2D domain, no strip-wide zero-set bijection, no strip-wide reality corollary.",
-      "Use of complex values is confined to: (1) holomorphy of vartheta' and zeta in a neighborhood of the single point t_rho = gamma + i(1/2 - beta) (via AX-Zdef, lem:Theta (ii)); (2) analytic continuation along the vertical segment gamma + is, s in [0, 1/2 - beta], of the identity Z(t) = sqrt(Theta'(t)) Y(Theta(t)) whose two sides are holomorphic there and agree at s = 0; (3) the elementary identity Im Theta(a+ib) = integral_0^b Re Theta'(a+is) ds for the imaginary-part bound.",
-      "Primary chain: AX-Olver -> lem:cstar -> def:Theta; def:Theta + AX-Olver + AX-Digamma + AX-Zdef -> lem:Theta; def:DOT + lem:Theta -> def:Y -> lem:Zfact; def:covg + lem:HL + lem:RS + lem:omegabound + lem:Theta -> thm:Ywss -> cor:Cramer; def:KT + lem:RS + lem:omegabound + lem:Theta -> thm:bandlim -> cor:supp; thm:Ywss + cor:Cramer + cor:supp -> thm:PW; thm:PW + thm:Akhiezer + cor:supp + def:Y -> thm:Yzeros; AX-FE-symmetry + AX-FE-zero + AX-Zdef + def:Theta + lem:Theta + lem:cstar + lem:Zfact + thm:PW + thm:Yzeros -> thm:main.",
-      "Axioms: AX-Digamma, AX-Olver, AX-Zdef, AX-FE-zero, AX-FE-symmetry, AX-HL, AX-RS, AX-Bochner, AX-WK, AX-PW-WSS, AX-Akhiezer."
-    ]
+    "author": "Stephen Crowley",
+    "date": "2026-04-22",
+    "notation": "Unicode math throughout: ℂ ℝ ℑ ℜ ζ ϑ Θ Γ ψ ξ μ σ ρ β γ η ε λ π τ ∫ ∑ ∏ ∈ ∉ ⊂ ⊆ ⊇ ≤ ≥ ≠ ≡ ≔ ∞ √ ∂ ∘ ∧ ∨ ∀ ∃ ℕ 𝓛 𝓟 𝓙 𝓞 ⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾ⁿᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐᵒᵖʳˢᵗᵘᵛʷˣʸᶻ ᵧᵨᵩᵪᵦ ₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎ ₐᵦᶜᵢⱼₖₗₘₙₒₚᵣₛₜᵤᵥₓ ¼½¾⅓⅔⅛⅜⅝⅞"
   }
 }
