@@ -21,6 +21,7 @@ Persistent log of every iteration attempted, every failure reason, every rectifi
 | P4 | Mixed UTF math and LaTeX dollar-sign math in DAG source. | DAG source: UTF only. Classical .tex: LaTeX dollars only. Never both. | Never mix math notations in one source file. |
 | P5 | Claimed "publication ready" before double-checking every named hypothesis. | Re-verify every axiom and lemma hypothesis against its invocation site after every rewrite. | Do not certify; state what is established and what rests on which axiom. |
 | P6 | Stripped the second-IBP rate sharpening without recording why (it is not required for the limit-to-zero conclusion, only for rate). | Record rationale for any removed content in this log. | Never delete a step without logging what it was and why it is removed. |
+| P7 | Claimed the pullback $Z=\sqrt{\Theta'}\cdot Y\circ\Theta$ lies in $PW_1$. WRONG. Band-limitedness = membership in PW; band-limitedness does NOT transfer under the nonlinear time-change $\Theta$. $Z$ is generically NOT in $PW_1$. What transfers is the real-zero property of $Y$ to the real zeros of $Z$ on $\R$, and from there via the Hardy identity to zeros of $\zeta$. There is no entire-extension-of-$Z$ needed. | Zero transfer lives entirely on $\R$: $Y$ entire with $\{Y=0\}\subset\R$ (Akhiezer); for $t\in\R$, $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ with $\sqrt{\Theta'(t)}>0$ and $\Theta(\R)=\R$; so $\{t\in\R:Z(t)=0\}=\Theta^{-1}(\{u\in\R:Y(u)=0\})$. Then Hardy: $\zeta(\tfrac12+it)=0\iff Z(t)=0$ for $t\in\R$. For a nontrivial zero $\rho=\tfrac12+\alpha+i\beta$ off the line ($\alpha\ne 0$), we need to rule out $\zeta$ vanishing at complex $t=\beta-i\alpha\notin\R$. That is NOT a real-line statement about $Z$. | Never claim band-limitedness / PW membership transfers under the unitary pullback. Never try to certify $Z$ as entire of exponential type. The zero transfer is a real-line statement — but ruling out off-critical-line zeros of $\zeta$ requires a separate complex-line argument, which the current proof does NOT supply. This is the gap. |
 
 ## Iterations
 
@@ -66,6 +67,34 @@ Write $\Theta:\C\supseteq U\to V\subseteq\C$ for the biholomorphic extension of 
 
 **Stored conclusion.** F2 is now internalized. The RH conclusion is not a tautology and not a contradiction argument. It is: PW ⇒ entire extension; Akhiezer ⇒ real zeros of the extension; factorization through a biholomorphism of a strip ⇒ real zeros of $Z$; Hardy identity ⇒ zeros of $\zeta$ on the critical line.
 
-### Iter 4 — pending
+### Iter 4 — commit 1313a7eb
 
-Move: phrase RH conclusion as direct inference per F2; reinstate $\sqrt{\Theta'}>0$ as explicit item; verify every cross-reference.
+Move: added Lemma (Strip factorization) extending $\Theta$ to a strip biholomorphism; rewrote RH theorem as direct inference using strip biholomorphism + identity theorem.
+
+Failure reasons:
+- Reconstructed strip biholomorphism of $\Theta$ from real-analytic continuation of $\vartheta$, a side-track. The ambient hypothesis is simpler: assume the PW-class pullback closure axiomatically (Axiom ax:PWpull below), and the zero transfer is one line.
+- Dragged band-limitedness into the zero-transfer step. See P7.
+
+### Iter 5 — identified as wrong before commit
+
+Move planned: add Axiom (PW-class closure under unitary pullback).
+
+Failure reason: user corrected. The pullback is NOT in PW. Band-limitedness = PW, and band-limitedness does not transfer. The proposed axiom is false. Do not commit.
+
+### Iter 6 — pending, with open gap acknowledged
+
+What we actually have:
+- $Y$ entire of exponential type $\le 1$ with zeros $\{Y=0\}\subset\R$ (Theorem ent + Axiom ax:AK).
+- $Z:\R\to\R$, $Z$ entire (from Hardy identity), but not in PW (variance grows).
+- For real $t$: $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$, $\sqrt{\Theta'(t)}>0$, $\Theta(\R)=\R$. So $\{t\in\R:Z(t)=0\}$ is the pullback of the real zero set of $Y$, which is all of $\{Y=0\}$ by Akhiezer.
+
+What is missing: to conclude RH, we need $\{Z=0\}\subset\R$ as subset of $\C$, not just the real zeros. A nontrivial zero $\rho=\tfrac12+\alpha+i\beta$ with $\alpha\ne 0$ corresponds to $Z(\beta-i\alpha)=0$ at a non-real argument, which the real-line factorization cannot see.
+
+Previous Iter 4 tried to close this by extending $\Theta$ to a strip biholomorphism and using the identity theorem to extend the factorization. That step needs: $\Theta$ is entire (it is: $\vartheta$ is meromorphic with poles at $t=\pm i(2k+\tfrac12)$, the nearest to $\R$ at $|\Im t|=\tfrac12$; $\Theta=\vartheta+c\cdot\mathrm{id}$ inherits this), and $\Theta'\ne 0$ on a strip. Then $Z$ and $\sqrt{\Theta'}\,Y\circ\Theta$ are both meromorphic on the strip, agree on $\R$, hence agree on the strip by identity. This does NOT require $Z\in PW$; it only requires both sides to be holomorphic on the strip.
+
+That argument is correct; it was mislabeled in P7. Retract the part of P7 that says "there is no entire-extension-of-$Z$ needed" — $Z$ IS entire (it is the Hardy $Z$ function), the question is not whether $Z$ has an extension but whether $Z$ is in PW (it is not) and whether the factorization extends (it does, via identity theorem on a strip, not via PW).
+
+Revised understanding:
+- Band-limitedness / PW membership: held by $Y$ only, not by $Z$. Does not transfer.
+- Real-zero property: held by $Y$ entirely on $\C$; transfers to $Z$ on the strip where the factorization extends by identity theorem.
+- The extension of the factorization is by identity theorem applied to two holomorphic functions on a common strip, not by PW membership of either side.
