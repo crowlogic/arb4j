@@ -240,55 +240,15 @@ The union of mode instantaneous $u$-frequencies together with the remainder freq
 \end{enumerate}
 \end{proof}
 
-\begin{corollary}[Normalized spectral measure $\nu_\infty$]\label{cor:nuinfty}
-For every admissible $c$, the normalized windowed periodograms
-\begin{equation}\label{eq:PUdef}
-P_T(\mu):=\frac{2\pi|K_T(\mu)|^2}{\Theta(T)},\qquad \widetilde P_T(\mu):=\frac{P_T(\mu)}{\int_{\mathbb{R}}P_T(\mu')\,d\mu'}
-\end{equation}
-are, at every finite $T$ for which the denominator is strictly positive, probability densities on $\mathbb{R}$ with $\int\widetilde P_T\,d\mu=1$. The family $\{\widetilde P_T\}_{T\ge T_0}$ is tight on $[-1,1]$, and converges weakly as $T\to\infty$ to a probability measure $\nu_\infty$ on $[-1,1]$:
-\begin{equation}\label{eq:nuinftyweak}
-\int f(\mu)\,\widetilde P_T(\mu)\,d\mu\longrightarrow\int_{-1}^{1}f(\mu)\,d\nu_\infty(\mu)\qquad\text{for every }f\in C_b(\mathbb{R}).
-\end{equation}
-\end{corollary}
-
-\begin{proof}
-\emph{Finite total mass of $P_T$.} At every finite $T>0$, $K_T(\mu)=\tfrac{1}{2\pi}\int_{\Theta(0)}^{\Theta(T)}Y(u)e^{-i\mu u}\,du$ is the Fourier transform of the compactly-supported $L^2$ function $Y\mathbf{1}_{[\Theta(0),\Theta(T)]}$. Parseval applied to this function gives
-\begin{equation}\label{eq:ParsevalKT}
-\int_{\mathbb{R}}|K_T(\mu)|^2\,d\mu=\frac{1}{2\pi}\int_{\Theta(0)}^{\Theta(T)}|Y(u)|^2\,du=\frac{1}{2\pi}\int_{0}^{T}|Z(t)|^2\,dt,
-\end{equation}
-the last equality by the change of variable $u=\Theta(t)$, $du=\Theta'(t)\,dt$ with $Y(\Theta(t))^2\,\Theta'(t)=Z(t)^2$ from \eqref{eq:Ydef}. Hence
-\begin{equation}\label{eq:PTmass}
-\int_{\mathbb{R}}P_T(\mu)\,d\mu=\frac{2\pi}{\Theta(T)}\int_{\mathbb{R}}|K_T(\mu)|^2\,d\mu=\frac{1}{\Theta(T)}\int_{0}^{T}|Z(t)|^2\,dt.
-\end{equation}
-By Hardy--Littlewood (\cite{Titchmarsh},~\S7.3), $\int_0^T|Z(t)|^2\,dt=T\log T+O(T)$, and $\Theta(T)=\tfrac{T}{2}\log T+O(T)$; therefore
-\begin{equation}\label{eq:PTmassLimit}
-\int_{\mathbb{R}}P_T(\mu)\,d\mu\longrightarrow 2\qquad (T\to\infty),
-\end{equation}
-a strictly positive finite limit, so the denominator in \eqref{eq:PUdef} is strictly positive for all sufficiently large $T$ and $\widetilde P_T$ is a probability density for every such $T$.
-
-\emph{Tightness on $[-1,1]$.} The bound \eqref{eq:PSDupper} is uniform in $\mu$ on every compact $K\subset\mathbb{R}\setminus[-1,1]$: the exceptional set $\mathcal{S}(\mu)$ is locally constant in $\mu$ on the connected components of $\mathbb{R}\setminus[-1,1]$, so the implicit constant in $|K_T(\mu)|^2\le C(\mu)T^{1/2}$ is bounded on $K$. For every $\delta>0$,
-\begin{equation}\label{eq:PT-tail}
-\int_{|\mu|>1+\delta}P_T(\mu)\,d\mu\le \|P_T\|_\infty^{K_R}\cdot 2(R-1-\delta)+\int_{|\mu|>R}P_T(\mu)\,d\mu,
-\end{equation}
-for any $R>1+\delta$, where $K_R:=\{1+\delta\le|\mu|\le R\}$. The first term is $O((T\log T)^{-1/2})\to 0$ by \eqref{eq:PSDupper}; the second is bounded by $\int_{\mathbb{R}}P_T\,d\mu$ minus the mass on $[-R,R]$. Since $\int_{\mathbb{R}}P_T\,d\mu\to 2$ and taking $R\to\infty$ after $T\to\infty$ gives $\int_{|\mu|>R}P_T\,d\mu\le 2-\liminf\int_{-R}^{R}P_T\,d\mu$, so choosing $R$ large (using $P_T\ge 0$) makes the second term arbitrarily small in the $\limsup$. Hence $\int_{|\mu|>1+\delta}P_T(\mu)\,d\mu\to 0$ for every $\delta>0$, and dividing by the total mass $\int_{\mathbb{R}}P_T\to 2$,
-\begin{equation}\label{eq:Ptilde-tail}
-\widetilde P_T(\{|\mu|>1+\delta\})\longrightarrow 0\qquad(T\to\infty,\ \text{every }\delta>0),
-\end{equation}
-which is the tightness of $\{\widetilde P_T\}$ on $[-1,1]$.
-
-\emph{Weak limit.} Tightness and Helly's selection theorem (\cite{Billingsley},~Theorem 6.1) together give a subsequence $T_{k_j}\to\infty$ and a probability measure $\nu_\infty$ on $[-1,1]$ with $\widetilde P_{T_{k_j}}\Rightarrow\nu_\infty$. Uniqueness along the full sequence: for every $f\in C_c((-1,1))$, dominated convergence applied to the Riemann--Siegel mode expansion \eqref{eq:KTexpand} inside $P_T$ gives $\lim_{T\to\infty}\int f\,P_T\,d\mu$ as a single value; combined with $\int P_T\,d\mu\to 2$, this yields $\int f\,d\nu_\infty=\tfrac{1}{2}\lim_{T\to\infty}\int f\,P_T\,d\mu$ independent of subsequence. The pullback analysis controls both the mass outside $[-1,1]$ and the limit inside; Helly only packages the tight family into a measure.
-\end{proof}
-
 \begin{corollary}[Cram\'er spectral representation]\label{cor:cramer}
-Let $d\Phi$ be the unique complex Borel measure on $[-1,1]$ with $|d\Phi|^2=\nu_\infty$ and $\overline{d\Phi(-\xi)}=d\Phi(\xi)$ (reality of $Y$). Then
+There exists a finite complex Borel measure $d\Phi$ on $[-1,1]$, Hermitian symmetric $\overline{d\Phi(-\xi)}=d\Phi(\xi)$, such that
 \begin{equation}\label{eq:CramerRep}
-Y(u)=\int_{-1}^{1}e^{i\xi u}\,d\Phi(\xi),\qquad u\in\mathbb{R},
+Y(u)=\int_{-1}^{1}e^{i\xi u}\,d\Phi(\xi),\qquad u\in\mathbb{R}.
 \end{equation}
-in the $L^2$-isometric sense $\|Y\mathbf{1}_{[A,B]}\|_2^2=\int_{-1}^{1}|\widehat{\mathbf{1}_{[A,B]}}(\xi)|^2\,d|\Phi|^2(\xi)$ for every finite interval $[A,B]$.
 \end{corollary}
 
 \begin{proof}
-The Cram\'er reconstruction theorem for second-order stationary processes (\cite{CramerLeadbetter},~\S7.5) asserts: given a non-negative finite Borel measure $\nu$ on a compact interval $I\subset\mathbb{R}$, there exists an orthogonal complex Borel measure $d\Phi$ on $I$ with $|d\Phi|^2=\nu$, and the process $u\mapsto\int_{I}e^{i\xi u}\,d\Phi(\xi)$ has spectral measure $\nu$ on $I$. Reality of $Y$ on $\mathbb{R}$ is equivalent to the Hermitian symmetry $\overline{d\Phi(-\xi)}=d\Phi(\xi)$, which is compatible with $\nu_\infty$ since $|K_T(-\mu)|=|K_T(\mu)|$ (from $Y$ real) makes $P_T$ even in $\mu$ and $\nu_\infty$ even on $[-1,1]$. Applied to $\nu=\nu_\infty\cdot C$ (with the absolute constant $C=\lim_T\int_{\mathbb{R}}P_T\,d\mu=2$ from \eqref{eq:PTmassLimit} restoring physical normalization), the reconstruction gives \eqref{eq:CramerRep}. Uniqueness of $d\Phi$ given $|d\Phi|^2$ and Hermitian symmetry on $[-1,1]$ follows from the standard Gram--Schmidt construction of orthogonal measures (\cite{CramerLeadbetter},~loc.\ cit.).
+By Theorem~\ref{thm:bandlim} the power spectral density $S$ of $Y$ vanishes outside $[-1,1]$, so the spectral measure of $Y$ is supported in $[-1,1]$. Reality of $Y$ on $\mathbb{R}$ forces the spectral measure to be even, equivalently the Hermitian symmetry $\overline{d\Phi(-\xi)}=d\Phi(\xi)$ on the complex spectral measure. The Cram\'er reconstruction theorem (\cite{CramerLeadbetter},~\S7.5) applied to a non-negative finite Borel measure on the compact interval $[-1,1]$ produces an orthogonal complex Borel measure $d\Phi$ on $[-1,1]$ with $|d\Phi|^2$ the spectral measure of $Y$, and the representation \eqref{eq:CramerRep} holds.
 \end{proof}
 
 \section{Entire Extension and Laguerre--P\'olya Membership}
@@ -406,9 +366,6 @@ For $t\in\mathbb{R}$, $|e^{i\theta(t)}|=1$, so $e^{i\theta(t)}$ is a nonzero com
 
 \bibitem{AbramowitzStegun}
 M.~Abramowitz and I.~A.~Stegun (eds.), \emph{Handbook of Mathematical Functions}, Dover, 1972.
-
-\bibitem{Billingsley}
-P.~Billingsley, \emph{Convergence of Probability Measures}, 2nd ed., Wiley, 1999.
 
 \bibitem{CramerLeadbetter}
 H.~Cram\'er and M.~R.~Leadbetter, \emph{Stationary and Related Processes}, Wiley, 1967.
