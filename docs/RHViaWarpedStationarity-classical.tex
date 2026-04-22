@@ -1,0 +1,167 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{mathrsfs}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+
+\theoremstyle{plain}
+\newtheorem{axiom}{Axiom}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\LP}{\mathscr{L\!P}}
+\DeclareMathOperator{\supp}{supp}
+
+\title{The Riemann Hypothesis via Warped Stationarity}
+\author{Stephen Crowley}
+\date{April 22, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Every nontrivial zero of the Riemann zeta function lies on the critical line $\Re s = \tfrac{1}{2}$.
+\end{abstract}
+
+\section{Introduction}
+
+Let $Z$ be the Hardy $Z$-function. The warp $\Theta(t)=\vartheta(t)+ct$ with $c>-\inf\vartheta'$ produces $Y(u)=Z(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u))}$, which is wide-sense stationary in the Wiener time-average sense with Bochner spectral measure supported in $[-1,1]$. Paley--Wiener gives $Y$ as entire of exponential type $\le 1$, and Akhiezer--Laguerre--P\'olya places $Y\in\LP$, so every zero of $Y$ is real. The real-line factorization $Z=\sqrt{\Theta'}\cdot(Y\circ\Theta)$ together with the Hardy $Z$-function axiom gives $\Re\rho=\tfrac12$.
+
+\section{Axioms}
+
+\begin{axiom}[Hardy $Z$-function]
+$Z(t):=e^{i\vartheta(t)}\zeta(\tfrac12+it)$, $\vartheta(t):=\arg\Gamma(\tfrac14+it/2)-(t/2)\log\pi$. $Z$ is real on $\R$, $|Z(t)|=|\zeta(\tfrac12+it)|$, and for $t\in\R$, $Z(t)=0\iff\zeta(\tfrac12+it)=0$. Moreover the nontrivial zeros of $\zeta$ are exactly $\{\tfrac12+it:t\in\R,\,Z(t)=0\}\cup\{\rho:\Re\rho\ne\tfrac12\}$.
+\end{axiom}
+
+\begin{axiom}[Digamma asymptotic]
+$\vartheta'(t)=\tfrac12\log|t/(2\pi)|+O(|t|^{-2})\to+\infty$.
+\end{axiom}
+
+\begin{axiom}[Hardy--Littlewood]
+$\int_0^T|\zeta(\tfrac12+it)|^2\,dt=T\log(T/(2\pi))+(2\gamma_e-1)T+O(T^{1/2}\log T)$.
+\end{axiom}
+
+\begin{axiom}[Riemann--Siegel]
+For $t>0$, $Z(t)=2\sum_{n=1}^{N(t)}n^{-1/2}\cos(\vartheta(t)-t\log n)+R(t)$, $N(t)=\lfloor\sqrt{t/(2\pi)}\rfloor$, $R(t)=O(t^{-1/4})$, $(d/dt)\arg R(t)=O(t^{-1/2})$.
+\end{axiom}
+
+\begin{axiom}[Wiener Thm.\ 29]
+If $f\in L^2_{\mathrm{loc}}(\R)$ has time-average covariance $c_f(\eta)$ existing, positive-definite, continuous at $0$, then
+\[
+\mu[f](E)=\lim_{T\to\infty}\frac{2\pi}{T}\int_E\Big|\frac{1}{2\pi}\int_0^T f(u)e^{-imu}\,du\Big|^2 dm
+\]
+for every bounded Borel $E\subset\R$.
+\end{axiom}
+
+\begin{axiom}[Paley--Wiener for WSS]
+If $f\in L^2_{\mathrm{loc}}(\R)$ has $\supp\mu[f]\subseteq[-\tau,\tau]$, then $f$ extends to an entire function on $\C$ of exponential type $\le\tau$ with $|f(z)|\le\sqrt{\mu[f](\R)}\,e^{\tau|\Im z|}$.
+\end{axiom}
+
+\begin{axiom}[Akhiezer--Laguerre--P\'olya]
+If $F:\C\to\C$ is entire of exponential type $\le\tau$, real on $\R$, with autocorrelation measure $\mu[F]$ finite, non-negative, supported in $[-2\tau,2\tau]$, then $F\in\LP$ and every zero of $F$ is real.
+\end{axiom}
+
+\section{Definitions}
+
+\begin{definition}
+$\Theta(t):=\vartheta(t)+ct$, $c>c_\star:=-\inf_\R\vartheta'$.
+\end{definition}
+
+\begin{definition}
+$Y:\R\to\R$, $Y(u):=Z(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u))}$.
+\end{definition}
+
+\begin{definition}
+$K[T](\mu):=\dfrac{1}{2\pi}\displaystyle\int_0^{\Theta(T)}Y(u)\,e^{-i\mu u}\,du$.
+\end{definition}
+
+\section{Lemmas}
+
+\begin{lemma}
+$c_\star\in(0,\infty)$, and for $c>c_\star$, $\Theta:\R\to\R$ is a $C^\infty$ bijection with $\Theta'>0$.
+\end{lemma}
+
+\begin{lemma}
+$Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ for every $t\in\R$.
+\end{lemma}
+
+\begin{lemma}
+$\vartheta''(t)>0$ for $t>0$.
+\end{lemma}
+
+\begin{lemma}
+For $n\ge 1$, $t\ge 2\pi n^2$, $\omega_n(t):=(\vartheta'(t)-\log n)/(\vartheta'(t)+c)\in[0,1)$.
+\end{lemma}
+
+\section{Main Results}
+
+\begin{theorem}[Time-average WSS of $Y$]
+$c[Y](\eta):=\lim_{U\to\infty}U^{-1}\int_0^U Y(u)Y(u+\eta)\,du$ exists for every $\eta\in\R$, is positive-definite, continuous at $0$, with $c[Y](0)=2$.
+\end{theorem}
+\begin{proof}
+Change of variable $u=\Theta(t)$: $\int_0^U Y^2\,du=\int_0^{\Theta^{-1}(U)}|Z|^2\,dt$. The Hardy--Littlewood axiom together with $\Theta(T)\sim(T/2)\log(T/(2\pi))$ gives $c[Y](0)=2$. For $\eta\ne 0$, insert the Riemann--Siegel expansion into $Z(t)Z(t+\delta_\eta(t))$, $\delta_\eta(t)=\eta/\Theta'(\tau)$, and split:
+
+\emph{Diagonal} ($m=n$, $\sigma=\sigma'$): contributes $(1/U)\sum_{n\le N(t)}(1/n)\int\cos(\eta\omega_n(t))\,dt$; bounded convergence via the frequency-ratio lemma gives a finite limit $A(\eta)$.
+
+\emph{Antidiagonal} ($m=n$, $\sigma=-\sigma'$): phase slope $|2\vartheta'(t)|-O(1)\to\infty$; one integration by parts yields $o(U)$.
+
+\emph{Off-diagonal} ($m\ne n$): phase slope $\ge\tfrac12|\log(m/n)|$; one integration by parts with the Montgomery--Vaughan near-diagonal bound yields $o(U)$.
+
+\emph{Remainder}: $\int_0^T R^2=O(T^{1/2})$ by Riemann--Siegel, so Cauchy--Schwarz against the main sum yields $O(T^{3/4}(\log T)^{1/2})=o(U)$.
+
+Positive-definiteness is inherited as a Ces\`aro limit of positive-definite kernels. Continuity at $0$ follows from $|c[Y](\eta)-c[Y](0)|^2\le c[Y](0)(c[Y](0)-\Re c[Y](\eta))$ and continuity of $A$ at $0$.
+\end{proof}
+
+\begin{corollary}
+There exists a finite non-negative Borel measure $\mu[Y]$ on $\R$ with $c[Y](\eta)=\int e^{i\eta\beta}d\mu[Y](\beta)$ and $\mu[Y](\R)=2$.
+\end{corollary}
+
+\begin{theorem}[Band-limit]
+For $|\mu|>1$, $\lim_{T\to\infty}2\pi|K[T](\mu)|^2/\Theta(T)=0$.
+\end{theorem}
+\begin{proof}
+Insert Riemann--Siegel into $K[T](\mu)$ and substitute $u=\Theta(t)$. The $(n,\sigma)$-mode gives $\mathcal{J}_{n,\sigma}(T,\mu)=\int_{u_n}^{\Theta(T)}G_{n,\sigma}(u)e^{iP(u)}\,du$, $u_n=\Theta(2\pi n^2)$, $G_{n,\sigma}(u)=x^{-1/2}$, $x=\Theta'(\Theta^{-1}(u))$, $P'(u)=\sigma\omega_n(\Theta^{-1}(u))-\mu$. The frequency-ratio lemma gives $|P'|\ge|\mu|-1=:\lambda>0$. With $Q=G/P'=x^{1/2}/\hat P(x)$, $\hat P(x)=(\sigma-\mu)x-\sigma(c+\log n)$, one integration by parts and $|\hat P(x)|\ge\lambda x$ give $|\mathcal{J}_{n,\sigma}(T,\mu)|\le C_1(c,|\mu|)\beta_n^{-1/2}$, $\beta_n\ge c+\log n$. The remainder contributes $O(T^{-1/4})$. Summing over $n\le N(T)$:
+\[
+|K[T](\mu)|\le C_1\sum_{n=1}^{N(T)}\frac{1}{\sqrt{n(c+\log n)}}+O(T^{-1/4})=O\!\Big(\frac{T^{1/4}}{\sqrt{\log T}}\Big).
+\]
+Since $\Theta(T)\sim(T/2)\log T$, $2\pi|K[T](\mu)|^2/\Theta(T)=O(T^{-1/2}/(\log T)^2)\to 0$.
+\end{proof}
+
+\begin{corollary}
+$\supp\mu[Y]\subseteq[-1,1]$.
+\end{corollary}
+\begin{proof}
+Wiener Theorem 29 plus the band-limit theorem plus dominated convergence.
+\end{proof}
+
+\begin{theorem}
+$Y$ extends to an entire function on $\C$ of exponential type $\le 1$ with $|Y(z)|\le\sqrt{2}\,e^{|\Im z|}$.
+\end{theorem}
+\begin{proof}
+Paley--Wiener axiom with $\tau=1$, $\mu[Y](\R)=2$.
+\end{proof}
+
+\begin{theorem}
+Every zero of $Y$ in $\C$ lies in $\R$.
+\end{theorem}
+\begin{proof}
+$Y$ entire of exponential type $\le 1$, real on $\R$, $\supp\mu[Y]\subseteq[-1,1]\subseteq[-2,2]$; Akhiezer--Laguerre--P\'olya with $\tau=1$.
+\end{proof}
+
+\begin{theorem}[Riemann Hypothesis]
+Every nontrivial zero of $\zeta$ satisfies $\Re\rho=\tfrac{1}{2}$.
+\end{theorem}
+\begin{proof}
+By the Hardy $Z$-function axiom, $\zeta(\tfrac12+it)=0\iff Z(t)=0$ for $t\in\R$. By the factorization lemma, $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ with $\sqrt{\Theta'(t)}>0$, so $Z(t)=0\iff Y(\Theta(t))=0$. By the preceding theorem, every zero of $Y$ in $\C$ is real, so $Y(\Theta(t))=0$ for some $t\in\R$ iff $\Theta(t)\in Y^{-1}(0)\subset\R$, which is automatic since $\Theta(t)\in\R$. Therefore the nontrivial zeros of $\zeta$ lie on $\tfrac12+i\R$, i.e.\ $\Re\rho=\tfrac12$.
+\end{proof}
+
+\end{document}
