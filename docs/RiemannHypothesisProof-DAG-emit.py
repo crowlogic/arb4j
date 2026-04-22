@@ -6,8 +6,14 @@ All math is rendered from the Unicode strings in the DAG verbatim.
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
+
+
+# Filled in emit() once the DAG is loaded; maps every prose-reference spelling
+# (including variants like def:K[T] or lem:ϑ″) to the canonical node id.
+REF_MAP: dict = {}
 
 
 ORDER_SECTIONS = [
@@ -62,10 +68,81 @@ def escape_tex_specials(text: str) -> str:
     return ''.join(out)
 
 
+# Patterns that convert prose integrals / evaluation bars / cross-references
+# into proper inline LaTeX math.  Applied AFTER escape_tex_specials so backslashes
+# we introduce here survive intact.
+_REF_RE = re.compile(r"(ax|lem|thm|cor|def|prop):([A-Za-zΘωϑψ0-9*⋆'′″\[\]]+)")
+_INT_RE = re.compile(r"∫\s*from\s+(\S+)\s+to\s+(\S+)")
+# Expression = one non-whitespace token, optionally extended through operator
+# connectives (·, ⋅, ⁄, ∕, /) with surrounding spaces.  The connective set
+# stays short on purpose so the match never crosses an ordinary word boundary.
+_EVAL_RE = re.compile(
+    r"((?:\S+)(?:\s*[·⋅⁄∕/]\s*\S+)*)\s+evaluated\s+from\s+(\S+)\s+to\s+(\S+)"
+)
+
+
+def _canonical_ref(raw: str) -> str | None:
+    """Map a prose spelling (e.g. 'def:K[T]', 'lem:ϑ″') to the canonical node id."""
+    if raw in REF_MAP:
+        return REF_MAP[raw]
+    # Normalize known spelling variants.
+    alt = raw.replace("[", "").replace("]", "")
+    if alt in REF_MAP:
+        return REF_MAP[alt]
+    alt2 = raw.replace("″", "''")
+    if alt2 in REF_MAP:
+        return REF_MAP[alt2]
+    return None
+
+
+def format_math(text: str) -> str:
+    """Post-process a TeX-escaped body: wrap integrals, add evaluation bars,
+    and turn bare node identifiers (ax:HL, lem:Θdiffeo, …) into \ref commands."""
+    # 1. Evaluation bars: "EXPR evaluated from A to B" → \(EXPR \big|_{A}^{B}\).
+    def eval_sub(m: re.Match) -> str:
+        expr, a, b = m.group(1), m.group(2), m.group(3)
+        # Strip a trailing punctuation character from b if present so it stays outside math.
+        trail = ""
+        while b and b[-1] in ",.;:":
+            trail = b[-1] + trail
+            b = b[:-1]
+        return rf"\({expr}\,\big|_{{{a}}}^{{{b}}}\){trail}"
+
+    text = _EVAL_RE.sub(eval_sub, text)
+
+    # 2. Integrals: "∫ from A to B" → \(\int_{A}^{B}\).
+    def int_sub(m: re.Match) -> str:
+        a, b = m.group(1), m.group(2)
+        trail = ""
+        while b and b[-1] in ",.;:":
+            trail = b[-1] + trail
+            b = b[:-1]
+        return rf"\(\int_{{{a}}}^{{{b}}}\){trail}"
+
+    text = _INT_RE.sub(int_sub, text)
+
+    # 3. Cross-references: bare node identifiers become \ref{node-...}.
+    def ref_sub(m: re.Match) -> str:
+        raw = m.group(0)
+        canon = _canonical_ref(raw)
+        if canon is None:
+            return raw
+        label = f"node-{canon}".replace(":", "-")
+        return rf"\ref{{{label}}}"
+
+    text = _REF_RE.sub(ref_sub, text)
+    return text
+
+
 def emit_statement(text: str) -> str:
-    """Emit a statement body. Paragraph breaks on blank lines. Escapes TeX specials."""
+    """Emit a statement body. Paragraph breaks on blank lines. Escapes TeX specials
+    then applies math/reference formatting."""
     paragraphs = text.split("\n\n")
-    return "\n\n".join(escape_tex_specials(p.strip()) for p in paragraphs if p.strip())
+    return "\n\n".join(
+        format_math(escape_tex_specials(p.strip()))
+        for p in paragraphs
+        if p.strip()
+    )
 
 
 def emit_node(nid: str, node: dict) -> str:
@@ -94,6 +171,16 @@ def emit(dag: dict) -> str:
     nodes = dag["nodes"]
     target = dag["target"]
     title = dag.get("title", "")
+
+    # Populate the global reference map: canonical id → canonical id plus known aliases.
+    REF_MAP.clear()
+    for nid in nodes:
+        REF_MAP[nid] = nid
+    # Known prose variants.
+    if "def:KT" in REF_MAP:
+        REF_MAP["def:K[T]"] = "def:KT"
+    if "lem:ϑ''" in REF_MAP:
+        REF_MAP["lem:ϑ″"] = "lem:ϑ''"
     desc = dag.get("description", "")
     author = dag.get("meta", {}).get("author", "")
     date = dag.get("meta", {}).get("date", "")

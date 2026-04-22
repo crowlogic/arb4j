@@ -1,5 +1,5 @@
 {
-  "title": "Riemann Hypothesis via Warped Stationarity — Proof DAG",
+  "title": "Riemann Hypothesis via Warped Stationarity",
   "description": "Every nontrivial zero of ζ lies on ℜs = ½.",
   "target": "thm:RH",
   "nodes": {

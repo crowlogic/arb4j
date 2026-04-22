@@ -18,7 +18,7 @@
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{axiom}[theorem]{Axiom}
 
-\title{Riemann Hypothesis via Warped Stationarity — Proof DAG}
+\title{Riemann Hypothesis via Warped Stationarity}
 \author{Stephen Crowley}
 \date{2026-04-22}
 \begin{document}
@@ -74,7 +74,7 @@ Y ∶ ℝ → ℝ,  Y(u) ≔ Z(Θ⁻¹(u)) ⁄ √(Θ′(Θ⁻¹(u))).
 \end{definition}
 
 \begin{definition}[{Windowed Fourier transform K[T]}]\label{node-def-KT}
-K[T](μ) ≔ (2π)⁻¹ ∫₀ᵀ Z(t) √(Θ′(t)) e⁻ⁱᵐᶿ⁽ᵗ⁾ dt = (2π)⁻¹ ∫ from 0 to Θ(T) Y(u) e⁻ⁱᵐᵘ du.
+K[T](μ) ≔ (2π)⁻¹ ∫₀ᵀ Z(t) √(Θ′(t)) e⁻ⁱᵐᶿ⁽ᵗ⁾ dt = (2π)⁻¹ \(\int_{0}^{Θ(T)}\) Y(u) e⁻ⁱᵐᵘ du.
 \end{definition}
 
 \section*{Lemmas}
@@ -82,7 +82,7 @@ K[T](μ) ≔ (2π)⁻¹ ∫₀ᵀ Z(t) √(Θ′(t)) e⁻ⁱᵐᶿ⁽ᵗ⁾ dt =
 c⋆ ≔ −inf ϑ′(ℝ) lies in (0, ∞).
 \end{lemma}
 \begin{proof}
-ϑ′ is continuous on ℝ. By ax:ψasymp, ϑ′(t) → +∞ as |t| → ∞. A continuous function on ℝ tending to +∞ at infinity attains a finite infimum.
+ϑ′ is continuous on ℝ. By \ref{node-ax-ψasymp}, ϑ′(t) → +∞ as |t| → ∞. A continuous function on ℝ tending to +∞ at infinity attains a finite infimum.
 \end{proof}
 
 \begin{lemma}[{Θ is a C∞ bijection ℝ → ℝ with Θ′ > 0}]\label{node-lem-Θdiffeo}
@@ -96,7 +96,7 @@ c > c⋆ = −inf ϑ′ gives ϑ′ + c > 0 on ℝ. Strict monotonicity combined
 For every t ∈ ℝ, Z(t) = √(Θ′(t)) · Y(Θ(t)).
 \end{lemma}
 \begin{proof}
-Set u ≔ Θ(t). Then Θ⁻¹(u) = t and Θ′(Θ⁻¹(u)) = Θ′(t). By def:Y, Y(Θ(t)) = Y(u) = Z(t) ⁄ √(Θ′(t)). Multiply both sides by √(Θ′(t)).
+Set u ≔ Θ(t). Then Θ⁻¹(u) = t and Θ′(Θ⁻¹(u)) = Θ′(t). By \ref{node-def-Y}, Y(Θ(t)) = Y(u) = Z(t) ⁄ √(Θ′(t)). Multiply both sides by √(Θ′(t)).
 \end{proof}
 
 \begin{lemma}[{ϑ″ > 0 on (0, ∞)}]\label{node-lem-ϑ''}
@@ -110,7 +110,7 @@ Set u ≔ Θ(t). Then Θ⁻¹(u) = t and Θ′(Θ⁻¹(u)) = Θ′(t). By def:Y,
 For every n ≥ 1, every c > c⋆, and every t ≥ 2π n², define ωₙ(t) ≔ (ϑ′(t) − log n) ⁄ (ϑ′(t) + c). Then ωₙ(t) ∈ [0, 1).
 \end{lemma}
 \begin{proof}
-By Edwards §7.4 (stationary-phase saddle at t = 2π n²), ϑ′(2π n²) = log n. By lem:ϑ″, ϑ′ is strictly increasing on (0, ∞), so ϑ′(t) ≥ log n for every t ≥ 2π n²; hence the numerator is ≥ 0. By lem:Θdiffeo, the denominator ϑ′(t) + c is > 0. Denominator minus numerator equals c + log n > 0, so ωₙ(t) < 1.
+By Edwards §7.4 (stationary-phase saddle at t = 2π n²), ϑ′(2π n²) = log n. By \ref{node-lem-ϑ''}, ϑ′ is strictly increasing on (0, ∞), so ϑ′(t) ≥ log n for every t ≥ 2π n²; hence the numerator is ≥ 0. By \ref{node-lem-Θdiffeo}, the denominator ϑ′(t) + c is > 0. Denominator minus numerator equals c + log n > 0, so ωₙ(t) < 1.
 \end{proof}
 
 \section*{Theorems and Corollaries}
@@ -118,49 +118,49 @@ By Edwards §7.4 (stationary-phase saddle at t = 2π n²), ϑ′(2π n²) = log 
 The time-average covariance c[Y](η) ≔ lim 𝑈→∞ 𝑈⁻¹ ∫₀ᵁ Y(u) Y(u+η) du exists for every η ∈ ℝ, is positive-definite, and is continuous at 0. In particular c[Y](0) = 2.
 \end{theorem}
 \begin{proof}
-Change of variable u = Θ(t), du = Θ′(t) dt gives ∫₀ᵁ Y(u)² du = ∫ from 0 to Θ⁻¹(U) |Z(t)|² dt. By ax:HL, ∫₀ᵀ |Z(t)|² dt = T log(T⁄(2π)) + 𝓞(T). By lem:Θdiffeo and ax:ψasymp, U = Θ(T) = ϑ(T) + c T = (T⁄2) log(T⁄(2π)) + 𝓞(T), hence U⁻¹ ∫₀ᵁ Y² du → 2. For general η, apply ax:RS to write Y(Θ(t)) Y(Θ(t)+η) = (Θ′(t) Θ′(t + δ[η](t)))⁻¹ᐟ² Z(t) Z(t + δ[η](t)), where δ[η](t) ≔ Θ⁻¹(Θ(t)+η) − t = η ⁄ Θ′(τ) for some τ between t and t + δ[η](t) (mean value theorem). Split Z(t) Z(t + δ[η](t)) into diagonal (m = n, σ = σ′), antidiagonal (m = n, σ = −σ′), off-diagonal (m ≠ n), and remainder cross-terms. The diagonal term (n, σ) contributes (1⁄U) ∑ₙ≤ₙ₍ₜ₎ (1⁄n) ∫ cos(η ωₙ(t)) dt, which converges by lem:ωbound and bounded convergence to a finite limit A(η). The antidiagonal, off-diagonal, and remainder terms are 𝓞(U) times o(1) by integration-by-parts applied to their oscillatory phase slopes (≥ 2ϑ′(t) − 𝓞(1) for σ ≠ σ′, and ≥ ½ |log(m⁄n)| for m ≠ n), together with Cauchy–Schwarz on the R cross-terms. Positive-definiteness: c[Y] is a Cesàro limit of positive-definite kernels, which is positive-definite. Continuity at 0: |c[Y](η) − c[Y](0)|² ≤ c[Y](0) · (c[Y](0) − ℜ c[Y](η)) → 0 via the explicit diagonal series.
+Change of variable u = Θ(t), du = Θ′(t) dt gives ∫₀ᵁ Y(u)² du = \(\int_{0}^{Θ⁻¹(U)}\) |Z(t)|² dt. By \ref{node-ax-HL}, ∫₀ᵀ |Z(t)|² dt = T log(T⁄(2π)) + 𝓞(T). By \ref{node-lem-Θdiffeo} and \ref{node-ax-ψasymp}, U = Θ(T) = ϑ(T) + c T = (T⁄2) log(T⁄(2π)) + 𝓞(T), hence U⁻¹ ∫₀ᵁ Y² du → 2. For general η, apply \ref{node-ax-RS} to write Y(Θ(t)) Y(Θ(t)+η) = (Θ′(t) Θ′(t + δ[η](t)))⁻¹ᐟ² Z(t) Z(t + δ[η](t)), where δ[η](t) ≔ Θ⁻¹(Θ(t)+η) − t = η ⁄ Θ′(τ) for some τ between t and t + δ[η](t) (mean value theorem). Split Z(t) Z(t + δ[η](t)) into diagonal (m = n, σ = σ′), antidiagonal (m = n, σ = −σ′), off-diagonal (m ≠ n), and remainder cross-terms. The diagonal term (n, σ) contributes (1⁄U) ∑ₙ≤ₙ₍ₜ₎ (1⁄n) ∫ cos(η ωₙ(t)) dt, which converges by \ref{node-lem-ωbound} and bounded convergence to a finite limit A(η). The antidiagonal, off-diagonal, and remainder terms are 𝓞(U) times o(1) by integration-by-parts applied to their oscillatory phase slopes (≥ 2ϑ′(t) − 𝓞(1) for σ ≠ σ′, and ≥ ½ |log(m⁄n)| for m ≠ n), together with Cauchy–Schwarz on the R cross-terms. Positive-definiteness: c[Y] is a Cesàro limit of positive-definite kernels, which is positive-definite. Continuity at 0: |c[Y](η) − c[Y](0)|² ≤ c[Y](0) · (c[Y](0) − ℜ c[Y](η)) → 0 via the explicit diagonal series.
 \end{proof}
 
 \begin{corollary}[{Bochner spectral measure μ[Y]}]\label{node-cor-Bochner}
 There is a finite non-negative Borel measure μ[Y] on ℝ with c[Y](η) = ∫ eⁱᵑᵝ dμ[Y](β) and μ[Y](ℝ) = c[Y](0) = 2.
 \end{corollary}
 \begin{proof}
-Bochner's theorem applied to c[Y] (positive-definite and continuous at 0 by thm:WSS).
+Bochner's theorem applied to c[Y] (positive-definite and continuous at 0 by \ref{node-thm-WSS}).
 \end{proof}
 
 \begin{theorem}[{Band-limit}]\label{node-thm-bandlim}
 For every c > c⋆ and every μ ∈ ℝ with |μ| > 1,   lim 𝑇→∞ 2π |K[T](μ)|² ⁄ Θ(T) = 0.
 \end{theorem}
 \begin{proof}
-Insert ax:RS into def:K[T] and substitute u = Θ(t). The (n, σ)-mode of the main sum contributes 𝓙ₙ,σ(T, μ) ≔ ∫ from uₙ to Θ(T) Gₙ,σ(u) eⁱᴾ⁽ᵘ⁾ du, where uₙ ≔ Θ(2π n²), Gₙ,σ(u) = x⁻¹ᐟ² with x ≔ Θ′(Θ⁻¹(u)), and P′(u) ≔ σ ωₙ(Θ⁻¹(u)) − μ. By lem:ωbound, |P′(u)| ≥ |μ| − 1 =: λ > 0 for |μ| > 1. Write Qₙ,σ,μ(u) ≔ Gₙ,σ(u) ⁄ P′(u) = x¹ᐟ² ⁄ P̂(x), with P̂(x) ≔ (σ − μ) x − σ (c + log n); Q is a rational function of x alone (no ϑ″ enters). A single integration by parts gives 𝓙ₙ,σ = Q · eⁱᴾ ⁄ i evaluated from uₙ to Θ(T) − ∫ Q′(u) eⁱᴾ⁽ᵘ⁾ ⁄ i du, so |𝓙ₙ,σ| ≤ 2 sup |Q| + ∫ |Q′(u)| du. On [uₙ, ∞), x ≥ βₙ ≔ Θ′(2π n²) and |P̂(x)| ≥ λ x, hence |Q(u)| ≤ λ⁻¹ βₙ⁻¹ᐟ². For the derivative, dQ⁄dx = (−(σ − μ) x − 2σ (c + log n)) ⁄ (2 x¹ᐟ² P̂(x)²), and the bound |dQ⁄dx| ≤ ((|μ|+1) ⁄ (2λ²)) x⁻³ᐟ² + ((c + log n) ⁄ λ²) x⁻⁵ᐟ² follows from |P̂(x)| ≥ λ x. Change of variable u ↦ x with du⁄dx = 1⁄ϑ″(Θ⁻¹(u)) > 0 (lem:ϑ″) yields ∫ from uₙ to ∞ |Q′(u)| du = ∫ from βₙ to ∞ |dQ⁄dx| dx ≤ ((|μ|+1) ⁄ λ²) βₙ⁻¹ᐟ² + (2(c + log n) ⁄ (3λ²)) βₙ⁻³ᐟ². Since βₙ ≥ c + log n, the βₙ⁻³ᐟ² term is ≤ (2 ⁄ (3λ²)) βₙ⁻¹ᐟ². Therefore |𝓙ₙ,σ(T, μ)| ≤ C₁(c, |μ|) βₙ⁻¹ᐟ² with C₁(c, |μ|) ≔ 2λ⁻¹ + (|μ|+1) λ⁻² + (2⁄3) λ⁻². The Riemann–Siegel remainder contributes ∫ R(t) √(Θ′(t)) e⁻ⁱᵐᶿ⁽ᵗ⁾ dt; by ax:RS, (d⁄dt) arg R(t) = 𝓞(t⁻¹ᐟ²), so for large t the total phase slope μ Θ′(t) + (d⁄dt) arg R(t) is ≥ |μ| c ⁄ 2, and integration by parts yields a uniform 𝓞(T⁻¹ᐟ⁴) contribution. Summing over n ≤ N(T) = 𝓞(T¹ᐟ²): |K[T](μ)| ≤ C₁ ∑ₙ₌₁ᴺ⁽ᵀ⁾ n⁻¹ᐟ² βₙ⁻¹ᐟ² + 𝓞(T⁻¹ᐟ⁴) = 𝓞(T¹ᐟ⁴ ⁄ √(log T)) (using βₙ ≥ c + log n). Since Θ(T) ∼ (T⁄2) log T, 2π |K[T](μ)|² ⁄ Θ(T) = 𝓞(T⁻¹ᐟ² ⁄ (log T)²) → 0.
+Insert \ref{node-ax-RS} into \ref{node-def-KT} and substitute u = Θ(t). The (n, σ)-mode of the main sum contributes 𝓙ₙ,σ(T, μ) ≔ \(\int_{uₙ}^{Θ(T)}\) Gₙ,σ(u) eⁱᴾ⁽ᵘ⁾ du, where uₙ ≔ Θ(2π n²), Gₙ,σ(u) = x⁻¹ᐟ² with x ≔ Θ′(Θ⁻¹(u)), and P′(u) ≔ σ ωₙ(Θ⁻¹(u)) − μ. By \ref{node-lem-ωbound}, |P′(u)| ≥ |μ| − 1 =: λ > 0 for |μ| > 1. Write Qₙ,σ,μ(u) ≔ Gₙ,σ(u) ⁄ P′(u) = x¹ᐟ² ⁄ P̂(x), with P̂(x) ≔ (σ − μ) x − σ (c + log n); Q is a rational function of x alone (no ϑ″ enters). A single integration by parts gives 𝓙ₙ,σ = \(Q · eⁱᴾ ⁄ i\,\big|_{uₙ}^{Θ(T)}\) − ∫ Q′(u) eⁱᴾ⁽ᵘ⁾ ⁄ i du, so |𝓙ₙ,σ| ≤ 2 sup |Q| + ∫ |Q′(u)| du. On [uₙ, ∞), x ≥ βₙ ≔ Θ′(2π n²) and |P̂(x)| ≥ λ x, hence |Q(u)| ≤ λ⁻¹ βₙ⁻¹ᐟ². For the derivative, dQ⁄dx = (−(σ − μ) x − 2σ (c + log n)) ⁄ (2 x¹ᐟ² P̂(x)²), and the bound |dQ⁄dx| ≤ ((|μ|+1) ⁄ (2λ²)) x⁻³ᐟ² + ((c + log n) ⁄ λ²) x⁻⁵ᐟ² follows from |P̂(x)| ≥ λ x. Change of variable u ↦ x with du⁄dx = 1⁄ϑ″(Θ⁻¹(u)) > 0 (\ref{node-lem-ϑ''}) yields \(\int_{uₙ}^{∞}\) |Q′(u)| du = \(\int_{βₙ}^{∞}\) |dQ⁄dx| dx ≤ ((|μ|+1) ⁄ λ²) βₙ⁻¹ᐟ² + (2(c + log n) ⁄ (3λ²)) βₙ⁻³ᐟ². Since βₙ ≥ c + log n, the βₙ⁻³ᐟ² term is ≤ (2 ⁄ (3λ²)) βₙ⁻¹ᐟ². Therefore |𝓙ₙ,σ(T, μ)| ≤ C₁(c, |μ|) βₙ⁻¹ᐟ² with C₁(c, |μ|) ≔ 2λ⁻¹ + (|μ|+1) λ⁻² + (2⁄3) λ⁻². The Riemann–Siegel remainder contributes ∫ R(t) √(Θ′(t)) e⁻ⁱᵐᶿ⁽ᵗ⁾ dt; by \ref{node-ax-RS}, (d⁄dt) arg R(t) = 𝓞(t⁻¹ᐟ²), so for large t the total phase slope μ Θ′(t) + (d⁄dt) arg R(t) is ≥ |μ| c ⁄ 2, and integration by parts yields a uniform 𝓞(T⁻¹ᐟ⁴) contribution. Summing over n ≤ N(T) = 𝓞(T¹ᐟ²): |K[T](μ)| ≤ C₁ ∑ₙ₌₁ᴺ⁽ᵀ⁾ n⁻¹ᐟ² βₙ⁻¹ᐟ² + 𝓞(T⁻¹ᐟ⁴) = 𝓞(T¹ᐟ⁴ ⁄ √(log T)) (using βₙ ≥ c + log n). Since Θ(T) ∼ (T⁄2) log T, 2π |K[T](μ)|² ⁄ Θ(T) = 𝓞(T⁻¹ᐟ² ⁄ (log T)²) → 0.
 \end{proof}
 
 \begin{corollary}[{supp μ[Y] ⊆ [−1, 1]}]\label{node-cor-supp}
 The Bochner spectral measure μ[Y] is supported in [−1, 1].
 \end{corollary}
 \begin{proof}
-By ax:Wiener29, μ[Y](E) = lim 𝑇→∞ (2π ⁄ Θ(T)) ∫ₑ |K[T](m)|² dm for every bounded Borel E ⊂ ℝ. For E ⊂ ⦃|m| > 1⦄, thm:bandlim gives pointwise vanishing of the integrand, and dominated convergence (the integrand is uniformly bounded) gives μ[Y](E) = 0. Countable additivity extends to μ[Y](⦃|m| > 1⦄) = 0.
+By \ref{node-ax-Wiener29}, μ[Y](E) = lim 𝑇→∞ (2π ⁄ Θ(T)) ∫ₑ |K[T](m)|² dm for every bounded Borel E ⊂ ℝ. For E ⊂ ⦃|m| > 1⦄, \ref{node-thm-bandlim} gives pointwise vanishing of the integrand, and dominated convergence (the integrand is uniformly bounded) gives μ[Y](E) = 0. Countable additivity extends to μ[Y](⦃|m| > 1⦄) = 0.
 \end{proof}
 
 \begin{theorem}[{Y extends to an entire function of exponential type ≤ 1}]\label{node-thm-Yentire}
 Y extends to an entire function on ℂ with |Y(z)| ≤ √2 · e|ᵎᶻ| for every z ∈ ℂ.
 \end{theorem}
 \begin{proof}
-Apply ax:PW with τ = 1 and μ[f] = μ[Y]. The hypotheses are: supp μ[Y] ⊆ [−1, 1] (cor:supp) and μ[Y](ℝ) = 2 (cor:Bochner). The conclusion gives |Y(z)| ≤ √2 · e|ᵎᶻ|.
+Apply \ref{node-ax-PW} with τ = 1 and μ[f] = μ[Y]. The hypotheses are: supp μ[Y] ⊆ [−1, 1] (\ref{node-cor-supp}) and μ[Y](ℝ) = 2 (\ref{node-cor-Bochner}). The conclusion gives |Y(z)| ≤ √2 · e|ᵎᶻ|.
 \end{proof}
 
 \begin{theorem}[{All zeros of Y are real}]\label{node-thm-Yzeros}
 Every zero z ∈ ℂ of the entire extension of Y satisfies z ∈ ℝ.
 \end{theorem}
 \begin{proof}
-Y is real on ℝ (def:Y). By thm:Yentire, Y is entire of exponential type ≤ 1. By cor:supp, μ[Y] is supported in [−1, 1] ⊆ [−2, 2]. Apply ax:Akhiezer with τ = 1: Y ∈ 𝓛𝓟 and every zero of Y is real.
+Y is real on ℝ (\ref{node-def-Y}). By \ref{node-thm-Yentire}, Y is entire of exponential type ≤ 1. By \ref{node-cor-supp}, μ[Y] is supported in [−1, 1] ⊆ [−2, 2]. Apply \ref{node-ax-Akhiezer} with τ = 1: Y ∈ 𝓛𝓟 and every zero of Y is real.
 \end{proof}
 
 \begin{theorem}[{Riemann Hypothesis}]\label{node-thm-RH}
 Every nontrivial zero of ζ satisfies ℜρ = ½.
 \end{theorem}
 \begin{proof}
-By ax:Z, for t ∈ ℝ, ζ(½ + it) = 0 iff Z(t) = 0. By lem:Zfact, Z(t) = √(Θ′(t)) · Y(Θ(t)) for every t ∈ ℝ. By lem:Θdiffeo, Θ is a bijection ℝ → ℝ with Θ′ > 0, hence √(Θ′(t)) ≠ 0 and Θ(t) ∈ ℝ. Therefore Z(t) = 0 iff Y(Θ(t)) = 0. By thm:Yentire and cor:supp, Y is entire of exponential type ≤ 1 with spectrum in [−1, 1]; by thm:Yzeros (Akhiezer–Laguerre–Pólya), every zero of Y is real. The zeros of Z on ℝ are therefore the real points Θ⁻¹(ξ) with ξ a (real) zero of Y. Consequently every zero of the Hardy Z-function on ℝ is real, and the corresponding nontrivial zeros of ζ lie on ½ + iℝ.
+By \ref{node-ax-Z}, for t ∈ ℝ, ζ(½ + it) = 0 iff Z(t) = 0. By \ref{node-lem-Zfact}, Z(t) = √(Θ′(t)) · Y(Θ(t)) for every t ∈ ℝ. By \ref{node-lem-Θdiffeo}, Θ is a bijection ℝ → ℝ with Θ′ > 0, hence √(Θ′(t)) ≠ 0 and Θ(t) ∈ ℝ. Therefore Z(t) = 0 iff Y(Θ(t)) = 0. By \ref{node-thm-Yentire} and \ref{node-cor-supp}, Y is entire of exponential type ≤ 1 with spectrum in [−1, 1]; by \ref{node-thm-Yzeros} (Akhiezer–Laguerre–Pólya), every zero of Y is real. The zeros of Z on ℝ are therefore the real points Θ⁻¹(ξ) with ξ a (real) zero of Y. Consequently every zero of the Hardy Z-function on ℝ is real, and the corresponding nontrivial zeros of ζ lie on ½ + iℝ.
 \end{proof}
 
 \end{document}
