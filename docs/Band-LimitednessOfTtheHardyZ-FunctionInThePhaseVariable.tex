@@ -310,11 +310,7 @@ where $\Phi_R$ is the Riemann--Siegel remainder contribution obtained by inserti
 \begin{equation}\label{eq:perint}
 \int_{J_{n,\sigma}}|\mathcal A_{n,\sigma}(\xi)|^{2}\,d\xi\;=\;\int_{r_n/\beta_n}^{1}\frac{2\pi(\log n+c)}{v^{3}\,\theta''\!\bigl((\Theta')^{-1}((\log n+c)/v)\bigr)}\,dv
 \end{equation}
-under the substitution $v:=1-\sigma\xi$ (so $v\in[r_n/\beta_n,1]$, $\xi=\sigma(1-v)$, $(1-\sigma\xi)=v$, $(\sigma-\xi)^{2}=v^{2}$). The integrand has an integrable endpoint singularity at $v=0$ ($\xi=\sigma$) of Chebyshev type: $\theta''(t)\sim 1/(2t)$ by the digamma asymptotic \eqref{eq:digasymp}, and $\Theta'(t)\sim\tfrac12\log(t/(2\pi))$ gives $t^{*}(v)\sim 2\pi\,e^{2(\log n+c)/v}=2\pi n^{2/v}e^{2c/v}$ for small $v$, so
-\[
-v^{3}\,\theta''(t^{*}(v))\;\sim\;\frac{v^{3}}{4\pi\,n^{2/v}e^{2c/v}}\qquad(v\to 0^{+}),
-\]
-which decays faster than any power of $v$; the integrand $2\pi(\log n+c)/[v^{3}\theta''(t^{*}(v))]$ therefore grows super-polynomially as $v\to 0^{+}$, yet the integral is finite because the lower endpoint $v=r_n/\beta_n>0$ truncates the singularity. Summing \eqref{eq:perint} over $(n,\sigma)$ together with $\|\Phi_R\|_{L^{2}}^{2}$ equals $\|\Phi\|_{L^{2}([-1,1])}^{2}$, which by \eqref{eq:PhiParseval} is the mean-square limit of $(2\pi)^{-1}\int_{0}^{U}|Y(u)|^{2}\,du$.
+under the substitution $v:=1-\sigma\xi$ (so $v\in[r_n/\beta_n,1]$, $\xi=\sigma(1-v)$, $(1-\sigma\xi)=v$, $(\sigma-\xi)^{2}=v^{2}$). The lower endpoint $v=r_n/\beta_n>0$ is strictly positive by \eqref{eq:betaasymp}, so the integrand $2\pi(\log n+c)/[v^{3}\theta''(t^{*}(v))]$ is continuous and bounded on $[r_n/\beta_n,1]$ and the integral is finite. Summing \eqref{eq:perint} over $(n,\sigma)$ together with $\|\Phi_R\|_{L^{2}}^{2}$ equals $\|\Phi\|_{L^{2}([-1,1])}^{2}$, which by \eqref{eq:PhiParseval} is the mean-square limit of $(2\pi)^{-1}\int_{0}^{U}|Y(u)|^{2}\,du$.
 \end{proposition}
 
 \begin{proof}
