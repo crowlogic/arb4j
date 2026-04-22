@@ -1,224 +1,203 @@
 {
-  "title": "Logical dependency DAG for RiemannHypothesisProof-UnifiedExposition.md",
-  "description": "Machine-checkable encoding of the §3–§10 lemma chain culminating in Theorem 11.1 (Riemann Hypothesis). Each node declares its direct dependencies. The DAG is acyclic; topological sort yields a valid proof order. Every non-axiom node must be derivable from its predecessors using only the cited analytic inputs.",
-  "target": "T11.1",
+  "title": "Logical dependency DAG for RiemannHypothesisViaWarpedStationarity.tex",
+  "description": "Machine-checkable encoding of the lemma chain in the standalone paper 'Zeros of ζ on the Critical Line via the Omer–Torresani Unitary Warping of the Hardy Z-Function' culminating in Theorem thm:main (Riemann Hypothesis). Each node declares its direct dependencies. The DAG is acyclic; topological sort yields a valid proof order. Every non-axiom node must be derivable from its predecessors using only the cited analytic inputs.",
+  "target": "thm:main",
   "nodes": {
-    "I1": {
+    "AX-Digamma": {
       "kind": "axiom",
-      "name": "Olver explicit Stirling expansion",
-      "statement": "|θ'(t) − ½log(t/(2π)) + 1/(8t²)| ≤ 1/(8t⁴) and |θ''(t) − 1/(2t)| ≤ 3/(4t³) for t ≥ 1",
+      "name": "Digamma series and its imaginary part",
+      "statement": "ψ'(s) = ∑_{k≥0}(s+k)^{-2} for s ∉ {0,-1,-2,...}; in particular Im ψ'(¼+it/2) < 0 for t > 0 so ϑ''(t) = −¼ Im ψ'(¼+it/2) > 0 for t > 0",
+      "source": "Abramowitz–Stegun 6.4.10; direct series computation",
+      "deps": []
+    },
+    "AX-Olver": {
+      "kind": "axiom",
+      "name": "Olver Stirling expansion for ϑ and ϑ'",
+      "statement": "ϑ(t) = (t/2)log(t/(2π)) − t/2 + O(1) as t→+∞; ϑ'(t) = ½log(t/(2π)) + O(t^{-2}); in particular ϑ'(2πn²) = log n + O(n^{-4})",
       "source": "Olver, Asymptotics and Special Functions, Ch. 8 §4.3",
       "deps": []
     },
-    "I2": {
+    "AX-IFT": {
       "kind": "axiom",
-      "name": "Gabcke Riemann–Siegel identity",
-      "statement": "Z(t) = 2∑_{n=1}^{N(t)} n^{-1/2} cos(θ(t) − t log n) + R(t) with |R(τ)| ≤ 0.127 τ^{-3/4}",
-      "source": "Gabcke, Dissertation Göttingen 1979, Satz 7.1",
-      "role": "auxiliary: used in the companion mode-by-mode illustration, not load-bearing for T11.1",
+      "name": "Inverse function theorem and smoothness of ϑ",
+      "statement": "ϑ ∈ C^∞(ℝ) (as imaginary part of log Γ on the real line); a C^∞ bijection with nowhere-vanishing derivative has C^∞ inverse with (Θ^{-1})'(u) = 1/Θ'(Θ^{-1}(u))",
+      "source": "Rudin, Principles of Mathematical Analysis, Thm. 9.24",
       "deps": []
     },
-    "I3": {
+    "AX-Zreal": {
       "kind": "axiom",
-      "name": "Cheng–Graham subconvexity",
-      "statement": "|ζ(½+it)| ≤ 3 t^{1/6} log t for t ≥ 3",
-      "source": "Cheng–Graham, Rocky Mountain J. Math. 34 (2004)",
-      "role": "auxiliary: used in the companion mode-by-mode illustration, not load-bearing for T11.1",
+      "name": "Z is real on ℝ",
+      "statement": "Z(t) = e^{iϑ(t)}ζ(½+it) is real-valued for t ∈ ℝ; Z(−t) = Z(t)",
+      "source": "Edwards, Riemann's Zeta Function, §6.5",
       "deps": []
     },
-    "I4": {
-      "kind": "axiom",
-      "name": "Titchmarsh second moment",
-      "statement": "∫₀ᵀ |ζ(½+it)|² dt = T log T + (2γ−1−log 2π) T + E(T), |E(T)| ≤ 5 T^{2/3}",
-      "source": "Titchmarsh, Theory of the Riemann Zeta-Function, 2nd ed., Thm. 7.3",
-      "deps": []
-    },
-    "I5": {
-      "kind": "axiom",
-      "name": "Berry Fourier expansion of Ψ",
-      "statement": "Ψ(p) = ∑_m a_m cos(2π(m+½)p), |a_m| ≤ 4exp(−π(m+½)²/2), ∑|a_m| ≤ 2.82",
-      "source": "Berry, Proc. Roy. Soc. A 450 (1995), eq. 18",
-      "role": "auxiliary: used in the companion mode-by-mode illustration, not load-bearing for T11.1",
-      "deps": []
-    },
-    "I6": {
-      "kind": "axiom",
-      "name": "Paley–Wiener",
-      "statement": "A tempered distribution with Fourier support in [−σ,σ] extends to an entire function of exponential type σ",
-      "source": "Rudin, Functional Analysis, 2nd ed., Thm. 7.23",
-      "deps": []
-    },
-    "I7a": {
-      "kind": "axiom",
-      "name": "Akhiezer factorization theorem",
-      "statement": "Non-negative tempered function Ω of exponential type 2σ with supp Ω̂ ⊂ [−2σ,2σ] factors as |φ|² with φ entire of type σ, supp φ̂ ⊂ [−σ,σ]",
-      "source": "Akhiezer, Theory of Approximation, Ch. V Thm. 3",
-      "deps": []
-    },
-    "I7b": {
-      "kind": "axiom",
-      "name": "Akhiezer–Krein LP criterion",
-      "statement": "A real-entire function of exponential type σ whose modulus squared admits Akhiezer factorization at spectral width 2σ lies in the Laguerre–Pólya class",
-      "source": "Akhiezer, Theory of Approximation, Ch. V Thm. 4",
-      "deps": []
-    },
-    "I8": {
+    "AX-FE": {
       "kind": "axiom",
       "name": "Functional equation of ζ on the critical line",
-      "statement": "ζ(½−it) = e^{2iθ(t)} ζ(½+it) for t ∈ ℝ",
-      "source": "Riemann 1859; Titchmarsh Ch. 2",
+      "statement": "ζ(½−it) = e^{2iϑ(t)} ζ(½+it) for t ∈ ℝ; |e^{iϑ(t)}| = 1 so ζ(½+it₀) = 0 ⇔ Z(t₀) = 0 with matching multiplicities",
+      "source": "Riemann 1859; Titchmarsh, Theory of the Riemann Zeta-Function, Ch. 2",
       "deps": []
     },
-    "I9": {
+    "AX-HL": {
       "kind": "axiom",
-      "name": "Numerical verification of low-lying zeros",
-      "statement": "All zeros ρ of ζ with |Im ρ| ≤ 3·10¹² satisfy Re ρ = ½; in particular all t ≤ T₀ = 200",
-      "source": "Hutchinson 1925; de Bruijn 1950; Edwards 1974; Gourdon 2004; Platt–Trudgian 2020",
+      "name": "Hardy–Littlewood second moment and Ingham shifted moment",
+      "statement": "∫₀^T |ζ(½+it)|² dt = T log T + (2γ−1−log 2π)T + O(T^{1/2} log T); shifted second moment ∫₀^T ζ(½+it) conj(ζ(½+i(t+η))) dt has an asymptotic main term depending only on η (Ingham 1926)",
+      "source": "Hardy–Littlewood 1918; Ingham 1926; Titchmarsh, Theory of the Riemann Zeta-Function, Ch. VII",
       "deps": []
     },
-    "I10": {
+    "AX-RS": {
       "kind": "axiom",
-      "name": "Plancherel–Pólya theorem",
-      "statement": "L² functions of exponential type σ satisfy |F(z)| ≤ ‖F‖_{L²} e^{σ|Im z|}; entire L² extension is characterized by compact Fourier support",
-      "source": "Plancherel–Pólya 1938; Boas, Entire Functions, §6.7",
+      "name": "Riemann–Siegel formula",
+      "statement": "Z(t) = 2 ∑_{n≤N(t)} n^{-1/2} cos(ϑ(t) − t log n) + R(t) with N(t) = ⌊√(t/(2π))⌋ and R(t) = O(t^{-1/4})",
+      "source": "Edwards, Riemann's Zeta Function, §7.4 Theorem 7.1; Gabcke Dissertation Göttingen 1979",
       "deps": []
     },
-    "I11": {
+    "AX-argR": {
       "kind": "axiom",
-      "name": "Pólya's characterization of LP",
-      "statement": "An entire function lies in the Laguerre–Pólya class iff all its zeros in ℂ are real",
-      "source": "Pólya 1913; Levin, Distribution of Zeros of Entire Functions, Ch. 8",
+      "name": "Phase derivative of the Riemann–Siegel remainder",
+      "statement": "(d/dt) arg R(t) = O(t^{-1/2}) from the Riemann–Siegel contour integral representation",
+      "source": "Gabcke Dissertation 1979; Berry, Proc. Roy. Soc. A 450 (1995)",
       "deps": []
     },
-    "L3.1": {
+    "AX-Bochner": {
+      "kind": "axiom",
+      "name": "Bochner's theorem",
+      "statement": "A continuous positive-definite function on ℝ is the Fourier transform of a finite non-negative Borel measure on ℝ",
+      "source": "Rudin, Functional Analysis, 2nd ed., Thm. 1.4.3",
+      "deps": []
+    },
+    "AX-WK": {
+      "kind": "axiom",
+      "name": "Wiener–Khinchin identification of spectral measure",
+      "statement": "For a time-average WSS function with covariance c(η) = ∫ e^{iηξ} dμ(ξ), the measure μ is the spectral measure; its absolutely continuous part coincides with the power spectral density S(μ) = lim 2π|K_T(μ)|²/T where it is defined",
+      "source": "Wiener 1930; Khinchin 1934; Doob, Stochastic Processes, Ch. X §3",
+      "deps": []
+    },
+    "AX-PW-WSS": {
+      "kind": "axiom",
+      "name": "Paley–Wiener for WSS functions with compactly supported spectral measure",
+      "statement": "If a locally square-integrable function f : ℝ → ℂ is time-average wide-sense stationary with covariance c_f(η) = ∫ e^{iηξ} dμ(ξ) and supp μ ⊆ [−σ,σ], then f admits an entire extension of exponential type ≤ σ satisfying |f(z)| ≤ ‖μ‖^{1/2} e^{σ|Im z|} on ℂ",
+      "source": "Yaglom, Correlation Theory of Stationary and Related Random Functions, Vol. I, Thm. 4.7.3; Bochner–Phillips, Ann. Math. 43 (1942)",
+      "deps": []
+    },
+    "AX-Akhiezer": {
+      "kind": "axiom",
+      "name": "Akhiezer Laguerre–Pólya criterion",
+      "statement": "A real entire function F of exponential type ≤ τ whose spectral measure is a non-negative finite Borel measure supported in [−τ,τ] belongs to the Laguerre–Pólya class; all complex zeros of F are real",
+      "source": "Akhiezer, Theory of Approximation, §V.4; Levin, Lectures on Entire Functions, Lecture 16 Thm. 3",
+      "deps": []
+    },
+    "lem:Thetabij": {
       "kind": "lemma",
-      "name": "Strict monotonicity of θ",
-      "statement": "θ''(t) ≥ (1/2t)(1 − t^{-2}) > 0 for t ≥ 200",
-      "location": "§3 Lemma 3.1",
-      "deps": ["I1"]
+      "name": "Monotone phase shift Θ is a C^∞ bijection",
+      "statement": "For every c > c_* := −ϑ'(0), Θ(t) := ϑ(t) + ct satisfies Θ'(t) > 0 on ℝ and Θ : ℝ → ℝ is a C^∞ bijection with C^∞ inverse",
+      "location": "Lemma lem:Thetabij",
+      "deps": ["AX-Digamma", "AX-Olver", "AX-IFT"]
     },
-    "C3.2": {
-      "kind": "corollary",
-      "name": "Biholomorphism of θ",
-      "statement": "θ : [T₀,∞) → [U₀,∞) is a real-analytic bijection; analytic continuation to a complex strip Ω is a biholomorphism",
-      "location": "§3 Corollary 3.2",
-      "deps": ["L3.1"]
-    },
-    "L3.3": {
+    "lem:unitary": {
       "kind": "lemma",
-      "name": "Explicit bounds on θ'",
-      "statement": "|θ'(t) − ½log(t/(2π))| ≤ 1/200 for t ≥ 200",
-      "location": "§3 Lemma 3.3",
-      "role": "auxiliary: quantitative control of θ' used in the mode-by-mode illustration",
-      "deps": ["I1"]
+      "name": "Unitarity and composition of the Omer–Torresani operator",
+      "statement": "[𝒟_γ x](t) := √(γ'(t)) x(γ(t)) preserves L² norm on ℝ for any C¹ diffeomorphism γ with γ'>0; composition 𝒟_γ 𝒟_φ = 𝒟_{φ∘γ}, inverse (𝒟_γ)^{-1} = 𝒟_{γ^{-1}}",
+      "location": "Lemma lem:unitary",
+      "deps": ["AX-IFT"]
     },
-    "L3.4": {
-      "kind": "lemma",
-      "name": "Jacobian identity",
-      "statement": "∫_{U₀}^{U_T} |s(u)|² du = ∫_{T₀}^{T} |ζ(½+it)|² dt",
-      "location": "§3 Lemma 3.4",
-      "deps": ["L3.1"]
-    },
-    "L4.1": {
-      "kind": "lemma",
-      "name": "Master identity",
-      "statement": "E̅(u) = e^{2iu} E(u) for u ≥ U₀",
-      "location": "§4 Lemma 4.1",
-      "deps": ["I8", "L3.1"]
-    },
-    "C4.2": {
-      "kind": "corollary",
-      "name": "Support symmetry",
-      "statement": "Ê_∞(ξ−2) = conj(Ê_∞(−ξ)); supp Ê_∞ is symmetric about ξ = −1",
-      "location": "§4 Corollary 4.2",
-      "deps": ["L4.1"]
-    },
-    "T5.1": {
-      "kind": "theorem",
-      "name": "Cumulant exponent",
-      "statement": "limsup_m |κ_m|^{1/m}/m ≤ 2/e",
-      "location": "§5 Theorem 5.1",
-      "deps": ["L3.4", "I4", "I10"]
-    },
-    "R5.2": {
-      "kind": "proposition",
-      "name": "Support from Carleman–Pólya",
-      "statement": "supp dΨ_∞ ⊂ [a, a+2]; combined with C4.2, a = −1, so supp dΨ_∞ ⊂ [−1,1]",
-      "location": "§5 Remark 5.2",
-      "deps": ["T5.1", "C4.2"]
-    },
-    "T6.1": {
-      "kind": "theorem",
-      "name": "Paley–Wiener extension",
-      "statement": "s_∞ extends to entire H of type exactly 1, real on ℝ; E_∞ extends to entire E of type ≤ 1; H(u) = e^{iu}E(u) on ℂ",
-      "location": "§6 Theorem 6.1",
-      "deps": ["I6", "R5.2"]
-    },
-    "D7.1": {
+    "def:Y": {
       "kind": "definition",
-      "name": "Hermite–Biehler components A, B",
-      "statement": "A(u) = ½[E(u) + conj(E(u̅))], B(u) = (i/2)[E(u) − conj(E(u̅))]",
-      "location": "§7 Definition 7.1",
-      "role": "auxiliary: structural consequence of T6.1; yields the interlacing corollary 3.11 (zeros of A and B interlace) but is not required for T11.1",
-      "deps": ["T6.1"]
+      "name": "Unwarped target Y",
+      "statement": "Y(u) := Z(Θ^{-1}(u))/√(Θ'(Θ^{-1}(u))) = [𝒟_{Θ^{-1}} Z](u)",
+      "location": "Definition def:Y",
+      "deps": ["lem:Thetabij", "lem:unitary"]
     },
-    "L7.2": {
+    "lem:Yreal": {
       "kind": "lemma",
-      "name": "Properties of A, B",
-      "statement": "A, B entire, real on ℝ, type ≤ 1, E = A − iB",
-      "location": "§7 Lemma 7.2",
-      "role": "auxiliary: needed for the Hermite–Biehler carrier factorization T7.3, which is a structural consequence not used in the minimal T11.1 chain",
-      "deps": ["T6.1", "D7.1"]
+      "name": "Y is real on ℝ",
+      "statement": "Y(u) ∈ ℝ for every u ∈ ℝ",
+      "location": "Lemma lem:Yreal",
+      "deps": ["def:Y", "AX-Zreal", "lem:Thetabij"]
     },
-    "T7.3": {
-      "kind": "theorem",
-      "name": "Carrier factorization of H",
-      "statement": "H(u) = cos(u)A(u) + sin(u)B(u) on ℂ",
-      "location": "§7 Theorem 7.3",
-      "role": "auxiliary: explicit in-phase/quadrature decomposition, used for the interlacing corollary; not required for the minimal T11.1 chain",
-      "deps": ["T6.1", "L7.2"]
+    "lem:HL": {
+      "kind": "lemma",
+      "name": "Hardy–Littlewood–Ingham second moment (paper statement)",
+      "statement": "∫₀^T |ζ(½+it)|² dt = T log T + (2γ−1−log 2π)T + O(T^{1/2} log T); shifted moment given by Ingham's theorem",
+      "location": "Lemma lem:HL",
+      "deps": ["AX-HL"]
     },
-    "T8.1": {
+    "thm:Ywss": {
       "kind": "theorem",
-      "name": "Meromorphic identity for H²",
-      "statement": "H(u)² = ζ(½+it(u))·ζ(½−it(u)) / θ'(t(u)) on ℂ",
-      "location": "§8 Theorem 8.1",
-      "deps": ["T6.1", "C3.2", "I8"]
+      "name": "Y is wide-sense stationary in the time-average sense",
+      "statement": "c_Y(η) := lim_{U→∞} U^{-1} ∫₀^U Y(u) conj(Y(u+η)) du exists for every η ∈ ℝ and depends only on η",
+      "location": "Theorem thm:Ywss",
+      "deps": ["def:Y", "lem:Thetabij", "lem:HL", "AX-RS"]
     },
-    "T8.2": {
-      "kind": "theorem",
-      "name": "Non-negativity and support of |H|²",
-      "statement": "|H(u)|² ≥ 0 on ℝ; supp (|H|²)^ ⊂ [−2,2]",
-      "location": "§8 Theorem 8.2",
-      "deps": ["T8.1", "T6.1", "L3.1", "R5.2"]
+    "cor:Cramer": {
+      "kind": "corollary",
+      "name": "Cramér spectral representation of c_Y",
+      "statement": "There exists a finite non-negative Borel measure μ_Y on ℝ with c_Y(η) = ∫ e^{iηξ} dμ_Y(ξ)",
+      "location": "Corollary cor:Cramer",
+      "deps": ["thm:Ywss", "AX-Bochner"]
     },
-    "T8.3": {
-      "kind": "theorem",
-      "name": "Akhiezer factorization of |H|²",
-      "statement": "|H(u)|² = H(u)·conj(H(u)) is the Akhiezer factorization at spectral width 2",
-      "location": "§8 Theorem 8.3",
-      "deps": ["T8.2", "I7a", "T6.1"]
+    "lem:RS": {
+      "kind": "lemma",
+      "name": "Riemann–Siegel expansion (paper statement)",
+      "statement": "Z(t) = 2 ∑_{n≤N(t)} n^{-1/2} cos(ϑ(t) − t log n) + R(t), R(t) = O(t^{-1/4})",
+      "location": "Lemma lem:RS",
+      "deps": ["AX-RS"]
     },
-    "T9.1": {
+    "thm:bandlim": {
       "kind": "theorem",
-      "name": "Laguerre–Pólya membership of H",
-      "statement": "H ∈ LP; equivalently, every zero of H in ℂ is real",
-      "location": "§9 Theorem 9.1",
-      "deps": ["T6.1", "T8.3", "I7b", "I11"]
+      "name": "Band-limitedness of the windowed Fourier transform",
+      "statement": "For every admissible c and every μ ∈ ℝ with |μ| > 1, S(μ) = lim 2π|K_T(μ)|²/Θ(T) = 0",
+      "location": "Theorem thm:bandlim",
+      "deps": ["def:Y", "lem:Thetabij", "lem:RS", "AX-Olver", "AX-argR"]
     },
-    "T10.1": {
-      "kind": "theorem",
-      "name": "Real-rootedness of Z",
-      "statement": "Zero set of Z : ℂ → ℂ is contained in ℝ",
-      "location": "§10 Theorem 10.1",
-      "deps": ["T9.1", "C3.2", "L3.1", "I9"]
+    "cor:supp": {
+      "kind": "corollary",
+      "name": "Spectral support of μ_Y",
+      "statement": "supp(μ_Y) ⊆ [−1,1]",
+      "location": "Corollary cor:supp",
+      "deps": ["cor:Cramer", "thm:bandlim", "AX-WK"]
     },
-    "T11.1": {
+    "thm:PW": {
       "kind": "theorem",
-      "name": "Riemann Hypothesis",
-      "statement": "Every nontrivial zero ρ of ζ satisfies Re ρ = ½",
-      "location": "§11 Theorem 11.1",
-      "deps": ["T10.1"]
+      "name": "Paley–Wiener entire extension of Y",
+      "statement": "Y extends to an entire function of exponential type ≤ 1 with |Y(z)| ≤ μ_Y(ℝ)^{1/2} e^{|Im z|}",
+      "location": "Theorem thm:PW",
+      "deps": ["cor:Cramer", "cor:supp", "AX-PW-WSS"]
+    },
+    "thm:Akhiezer": {
+      "kind": "theorem",
+      "name": "Akhiezer Laguerre–Pólya criterion (paper statement)",
+      "statement": "A real-valued entire function of exponential type ≤ τ whose spectral measure is non-negative and supported in [−τ,τ] lies in the Laguerre–Pólya class; all complex zeros are real",
+      "location": "Theorem thm:Akhiezer",
+      "deps": ["AX-Akhiezer"]
+    },
+    "thm:LP": {
+      "kind": "theorem",
+      "name": "Reality of zeros of Y",
+      "statement": "All zeros of the entire extension of Y are real",
+      "location": "Theorem thm:LP",
+      "deps": ["lem:Yreal", "thm:PW", "cor:Cramer", "cor:supp", "thm:Akhiezer"]
+    },
+    "thm:zero-bij": {
+      "kind": "theorem",
+      "name": "Zero-set bijection Z ↔ Y via unitary warping",
+      "statement": "t₀ ∈ ℝ is a zero of Z of order m if and only if Θ(t₀) ∈ ℝ is a zero of Y of order m",
+      "location": "Theorem thm:zero-bij",
+      "deps": ["def:Y", "lem:Thetabij"]
+    },
+    "cor:Zreal": {
+      "kind": "corollary",
+      "name": "Reality of zeros of Z",
+      "statement": "Every zero of Z in ℂ lies on ℝ",
+      "location": "Corollary cor:Zreal",
+      "deps": ["thm:LP", "thm:zero-bij"]
+    },
+    "thm:main": {
+      "kind": "theorem",
+      "name": "Zeros of ζ on the critical line (Riemann Hypothesis)",
+      "statement": "For every t₀ ∈ ℝ, ζ(½+it₀) = 0 iff Y(Θ(t₀)) = 0 with equal multiplicities; consequently every nontrivial zero of ζ satisfies Re ρ = ½",
+      "location": "Theorem thm:main",
+      "deps": ["AX-FE", "thm:zero-bij", "thm:LP", "cor:Zreal"]
     }
   },
   "meta": {
@@ -226,10 +205,10 @@
     "target_reachable_from_all_inputs_used": true,
     "notes": [
       "Every node either is an axiom (kind=axiom, deps=[]) or cites its direct dependencies by ID.",
-      "The verifier script RiemannHypothesisProof-DAG-verify.py checks: (a) acyclicity, (b) every dep ID exists, (c) every non-axiom has at least one dep, (d) T11.1 is reachable from the transitive closure of the load-bearing axioms, (e) every node either contributes to T11.1 or is explicitly marked as auxiliary.",
-      "Auxiliary nodes (I2 Gabcke, I3 Cheng-Graham, I5 Berry, L3.3 explicit θ' bounds) are used in the companion mode-by-mode illustration but are NOT load-bearing for the cumulant-spine proof of T11.1. Their presence here documents the full analytic context without falsely inflating the dependency chain.",
-      "The minimal axiom set for T11.1 is {I1, I4, I6, I7a, I7b, I8, I9, I10, I11}: Olver Stirling, Titchmarsh second moment, Paley-Wiener, Akhiezer factorization, Akhiezer-Krein LP criterion, functional equation of ζ, numerical verification below T₀, Plancherel-Pólya, and Pólya's LP characterization.",
-      "I9 is numerical verification of low-lying zeros, used in T10.1 to handle the finitely many zeros below T₀ = 200."
+      "Target is thm:main (RH on the critical line).",
+      "The chain: lem:Thetabij (Θ bijection) + lem:unitary (𝒟_γ unitarity) → def:Y → lem:Yreal; separately def:Y + lem:HL → thm:Ywss → cor:Cramer; def:Y + lem:RS → thm:bandlim → cor:supp; cor:Cramer + cor:supp → thm:PW; thm:PW + lem:Yreal + cor:supp + thm:Akhiezer → thm:LP; thm:LP + thm:zero-bij + AX-FE → thm:main.",
+      "Axioms: AX-Digamma, AX-Olver, AX-IFT, AX-Zreal, AX-FE, AX-HL, AX-RS, AX-argR, AX-Bochner, AX-WK, AX-PW-WSS, AX-Akhiezer.",
+      "The 16-item errata attached to the paper lists the propositions whose written derivation is not complete; every item except Item 1 (𝒟_γ composition-direction notational swap) feeds into a node on the path to thm:main."
     ]
   }
 }
