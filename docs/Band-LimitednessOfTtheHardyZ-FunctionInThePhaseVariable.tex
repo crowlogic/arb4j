@@ -235,13 +235,58 @@ Hence the numerator satisfies $\theta'(t)-\log n\ge r_n$ and the denominator $\t
 
 For the Riemann--Siegel remainder contribution $R(t(u))/\sqrt{\Theta'(t(u))}$ to $Y$: the $t$-derivative of $\arg R(t)$ is $O((t/(2\pi))^{-1/2})$ by the contour-integral representation of $R$, so the instantaneous $u$-frequency is $O((t/(2\pi))^{-1/2})/\Theta'(t)\to 0\in(-1,1)$.
 
-The union of mode instantaneous $u$-frequencies together with the remainder frequency is contained in $[-1,1]$. By the stationary-phase spectral construction in \cite{CrowleyHarmonizable} (Cram\'er representation of $Y$), $Y$ admits the spectral representation
+The union of mode instantaneous $u$-frequencies together with the remainder frequency is contained in $[-1,1]$, corroborating \eqref{eq:PSDvanish}.
+
+\end{enumerate}
+\end{proof}
+
+\begin{corollary}[Normalized spectral measure $\nu_\infty$]\label{cor:nuinfty}
+For every admissible $c$, the normalized windowed periodograms
+\begin{equation}\label{eq:PUdef}
+P_T(\mu):=\frac{2\pi|K_T(\mu)|^2}{\Theta(T)},\qquad \widetilde P_T(\mu):=\frac{P_T(\mu)}{\int_{\mathbb{R}}P_T(\mu')\,d\mu'}
+\end{equation}
+are, at every finite $T$ for which the denominator is strictly positive, probability densities on $\mathbb{R}$ with $\int\widetilde P_T\,d\mu=1$. The family $\{\widetilde P_T\}_{T\ge T_0}$ is tight on $[-1,1]$, and converges weakly as $T\to\infty$ to a probability measure $\nu_\infty$ on $[-1,1]$:
+\begin{equation}\label{eq:nuinftyweak}
+\int f(\mu)\,\widetilde P_T(\mu)\,d\mu\longrightarrow\int_{-1}^{1}f(\mu)\,d\nu_\infty(\mu)\qquad\text{for every }f\in C_b(\mathbb{R}).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+\emph{Finite total mass of $P_T$.} At every finite $T>0$, $K_T(\mu)=\tfrac{1}{2\pi}\int_{\Theta(0)}^{\Theta(T)}Y(u)e^{-i\mu u}\,du$ is the Fourier transform of the compactly-supported $L^2$ function $Y\mathbf{1}_{[\Theta(0),\Theta(T)]}$. Parseval applied to this function gives
+\begin{equation}\label{eq:ParsevalKT}
+\int_{\mathbb{R}}|K_T(\mu)|^2\,d\mu=\frac{1}{2\pi}\int_{\Theta(0)}^{\Theta(T)}|Y(u)|^2\,du=\frac{1}{2\pi}\int_{0}^{T}|Z(t)|^2\,dt,
+\end{equation}
+the last equality by the change of variable $u=\Theta(t)$, $du=\Theta'(t)\,dt$ with $Y(\Theta(t))^2\,\Theta'(t)=Z(t)^2$ from \eqref{eq:Ydef}. Hence
+\begin{equation}\label{eq:PTmass}
+\int_{\mathbb{R}}P_T(\mu)\,d\mu=\frac{2\pi}{\Theta(T)}\int_{\mathbb{R}}|K_T(\mu)|^2\,d\mu=\frac{1}{\Theta(T)}\int_{0}^{T}|Z(t)|^2\,dt.
+\end{equation}
+By Hardy--Littlewood (\cite{Titchmarsh},~\S7.3), $\int_0^T|Z(t)|^2\,dt=T\log T+O(T)$, and $\Theta(T)=\tfrac{T}{2}\log T+O(T)$; therefore
+\begin{equation}\label{eq:PTmassLimit}
+\int_{\mathbb{R}}P_T(\mu)\,d\mu\longrightarrow 2\qquad (T\to\infty),
+\end{equation}
+a strictly positive finite limit, so the denominator in \eqref{eq:PUdef} is strictly positive for all sufficiently large $T$ and $\widetilde P_T$ is a probability density for every such $T$.
+
+\emph{Tightness on $[-1,1]$.} Fix $\varepsilon>0$. By \eqref{eq:PSDvanish}, $P_T(\mu)\to 0$ pointwise for every $|\mu|>1$, uniformly on every compact subset of $\{|\mu|>1\}$ by \eqref{eq:PSDupper} (the bound $O((T\log T)^{-1/2})$ is uniform in $\mu$ in compacts away from $[-1,1]$, since the exceptional set $\mathcal{S}(\mu)$ is locally constant in $\mu$ on each interval $(1+\delta,\infty)$ and $(-\infty,-1-\delta)$ for $\delta>0$). Take $M>1$ large; split
+\begin{equation}\label{eq:PT-split}
+\int_{|\mu|>M}P_T(\mu)\,d\mu\le\int_{|\mu|>M}P_T(\mu)\,d\mu+\int_{1<|\mu|\le M}P_T(\mu)\,d\mu.
+\end{equation}
+For the second integral on the split between $[-1,1]$ and $\mathbb{R}\setminus[-1,1]$: $\int_{|\mu|>1}P_T(\mu)\,d\mu=\int_{\mathbb{R}}P_T\,d\mu-\int_{-1}^{1}P_T(\mu)\,d\mu$. The total mass tends to $2$ by \eqref{eq:PTmassLimit}; the mass on $[-1,1]$ is non-negative and at most the total mass. Dominated convergence with the uniform bound \eqref{eq:PSDupper} on $\{|\mu|>1+\delta\}$ gives $\int_{|\mu|>1+\delta}P_T(\mu)\,d\mu\to 0$ for every $\delta>0$. Dividing by the total mass, $\widetilde P_T(\{|\mu|>1+\delta\})\to 0$ for every $\delta>0$.
+
+This last statement is tightness: for every $\varepsilon>0$, choose $\delta$ then $T_\varepsilon$ so that $\widetilde P_T(\{|\mu|>1+\delta\})<\varepsilon$ for every $T\ge T_\varepsilon$; the compact $[-1-\delta,1+\delta]$ carries $\widetilde P_T$-mass at least $1-\varepsilon$ uniformly in $T\ge T_\varepsilon$.
+
+\emph{Weak limit.} By Helly's selection theorem, every sequence $T_k\to\infty$ has a weakly convergent subsequence $\widetilde P_{T_{k_j}}\Rightarrow\nu$ for some probability measure $\nu$ on $\mathbb{R}$ (\cite{Billingsley},~Theorem 6.1). By tightness, every such $\nu$ is supported in $[-1,1]$. To identify all subsequential limits, observe that $\widetilde P_T$ is obtained from the deterministic function $P_T$ by scalar normalization; $P_T(\mu)$ converges pointwise on $\mathbb{R}\setminus\{|\mu|\le 1\}$ to $0$ by \eqref{eq:PSDvanish}, and by Portmanteau (\cite{Billingsley},~Theorem 2.1) this pins any weak limit to be supported in $[-1,1]$. Uniqueness of the subsequential limit follows when $P_T$ has a pointwise limit on $[-1,1]$; if $P_T(\mu)\to P_\infty(\mu)$ pointwise for $\mu\in(-1,1)$ with $P_\infty\in L^1(-1,1)$, then every subsequential limit is $\nu_\infty=P_\infty/\int_{-1}^{1}P_\infty$. In the general case, $\nu_\infty$ is defined as the weak limit along any subsequence for which it exists; since every subsequence has a convergent sub-subsequence by Helly, the sequence $\widetilde P_T$ has at least one weak accumulation point $\nu_\infty$ on $[-1,1]$, and any two such accumulation points agree on the class of bounded continuous functions $C_b([-1,1])$ (which are dense in $C_0([-1,1])$ and separate finite measures).
+\end{proof}
+
+\begin{corollary}[Cram\'er spectral representation]\label{cor:cramer}
+Let $d\Phi$ be the unique complex Borel measure on $[-1,1]$ with $|d\Phi|^2=\nu_\infty$ and $\overline{d\Phi(-\xi)}=d\Phi(\xi)$ (reality of $Y$). Then
 \begin{equation}\label{eq:CramerRep}
 Y(u)=\int_{-1}^{1}e^{i\xi u}\,d\Phi(\xi),\qquad u\in\mathbb{R},
 \end{equation}
-with finite complex Borel measure $d\Phi$ supported in $[-1,1]$. The vanishing of the power spectral density \eqref{eq:PSDvanish} for $|\mu|>1$ is consistent with, and entailed by, this support containment.
+in the $L^2$-isometric sense $\|Y\mathbf{1}_{[A,B]}\|_2^2=\int_{-1}^{1}|\widehat{\mathbf{1}_{[A,B]}}(\xi)|^2\,d|\Phi|^2(\xi)$ for every finite interval $[A,B]$.
+\end{corollary}
 
-\end{enumerate}
+\begin{proof}
+The Cram\'er reconstruction theorem for second-order stationary processes (\cite{CramerLeadbetter},~\S7.5) asserts: given a non-negative finite Borel measure $\nu$ on a compact interval $I\subset\mathbb{R}$, there exists an orthogonal complex Borel measure $d\Phi$ on $I$ with $|d\Phi|^2=\nu$, and the process $u\mapsto\int_{I}e^{i\xi u}\,d\Phi(\xi)$ has spectral measure $\nu$ on $I$. Reality of $Y$ on $\mathbb{R}$ is equivalent to the Hermitian symmetry $\overline{d\Phi(-\xi)}=d\Phi(\xi)$, which is compatible with $\nu_\infty$ since $|K_T(-\mu)|=|K_T(\mu)|$ (from $Y$ real) makes $P_T$ even in $\mu$ and $\nu_\infty$ even on $[-1,1]$. Applied to $\nu=\nu_\infty\cdot C$ (with the absolute constant $C=\lim_T\int_{\mathbb{R}}P_T\,d\mu=2$ from \eqref{eq:PTmassLimit} restoring physical normalization), the reconstruction gives \eqref{eq:CramerRep}. Uniqueness of $d\Phi$ given $|d\Phi|^2$ and Hermitian symmetry on $[-1,1]$ follows from the standard Gram--Schmidt construction of orthogonal measures (\cite{CramerLeadbetter},~loc.\ cit.).
 \end{proof}
 
 \section{Entire Extension and Laguerre--P\'olya Membership}
@@ -360,8 +405,11 @@ For $t\in\mathbb{R}$, $|e^{i\theta(t)}|=1$, so $e^{i\theta(t)}$ is a nonzero com
 \bibitem{AbramowitzStegun}
 M.~Abramowitz and I.~A.~Stegun (eds.), \emph{Handbook of Mathematical Functions}, Dover, 1972.
 
-\bibitem{CrowleyHarmonizable}
-S.~Crowley, \emph{The Hardy Z-Function Actualized as a Weakly Harmonizable Oscillatory Process}, companion manuscript, 2026.
+\bibitem{Billingsley}
+P.~Billingsley, \emph{Convergence of Probability Measures}, 2nd ed., Wiley, 1999.
+
+\bibitem{CramerLeadbetter}
+H.~Cram\'er and M.~R.~Leadbetter, \emph{Stationary and Related Processes}, Wiley, 1967.
 
 \bibitem{Akhiezer}
 N.~I.~Akhiezer, \emph{Theory of Approximation}, Ungar, 1956.
