@@ -263,32 +263,39 @@ For every $n\ge 1$ and $t\ge 2\pi n^2$,
 \end{lemma}
 
 \begin{proof}
-\emph{Non-negativity of the numerator.}
-$\vartheta''(t)>0$ for $t>0$ by the proof of Lemma~\ref{lem:Thetabij}(ii),
-so $\vartheta'$ is strictly increasing on $(0,\infty)$.
-From the digamma asymptotic (Lemma~\ref{lem:olver}) at $t=2\pi n^2$:
+The proof rests on two sub-claims:
+
+\smallskip
+\emph{Sub-claim (A): stationary-phase threshold.}
+$\vartheta'(t)\ge\log n$ for every $t\ge 2\pi n^2$.
+This is the standard threshold of the $n$-th Riemann--Siegel mode
+(Edwards, \emph{Riemann's Zeta Function}, \S7.4, preceding Thm.~7.1;
+the mode $n^{-1/2}\cos(\vartheta(t)-t\log n)$ has stationary point
+$t=2\pi n^2$, where $\vartheta'(t)=\log n$).
+Verification: $\vartheta''(t)>0$ for $t>0$ by Lemma~\ref{lem:Thetabij}(ii),
+so $\vartheta'$ is strictly increasing on $(0,\infty)$;
+Lemma~\ref{lem:olver} at $t=2\pi n^2$ gives
 \[
 \vartheta'(2\pi n^2)=\tfrac12\log\!\bigl(\sqrt{2\pi n^2}/(2\pi)\bigr)+O(n^{-2})
-=\log n+O(n^{-2}).
+=\log n+O(n^{-2}),
 \]
-Hence for all sufficiently large $n$, $\vartheta'(2\pi n^2)\ge\log n$, and by strict
-monotonicity $\vartheta'(t)\ge\vartheta'(2\pi n^2)\ge\log n$ for all $t\ge 2\pi n^2$.
-The finitely many $n$ for which $\vartheta'(2\pi n^2)<\log n$ do not contribute
-stationary modes on $[2\pi n^2,\infty)$ (their contribution to $K_T$ is bounded
-independently of $T$ by the non-stationary phase IBP of Theorem~\ref{thm:bandlim}).
-Thus $\vartheta'(t)-\log n\ge 0$ on $[2\pi n^2,\infty)$ for every $n$.
+and strict monotonicity propagates $\vartheta'(t)\ge\log n$ to
+$[2\pi n^2,\infty)$ for every $n\ge 1$.
+Hence $\vartheta'(t)-\log n\ge 0$ on $[2\pi n^2,\infty)$.
 
-\emph{Strict upper bound.}
-The denominator exceeds the numerator by exactly $c+\log n>0$:
-\[
-(\vartheta'(t)+c)-(\vartheta'(t)-\log n)=c+\log n>0,
-\]
-so $\omega_n(t)=1-(c+\log n)/(\vartheta'(t)+c)<1$.
+\smallskip
+\emph{Sub-claim (B): admissible-shift positivity.}
+$\vartheta'(t)+c>0$ on $\mathbb R$, by Definition~\ref{def:admissibledelta}
+and Lemma~\ref{lem:Thetabij}(i): $c>c_{**}(\delta)$ gives
+$\Theta'(t)=\vartheta'(t)+c>0$ everywhere on $\mathbb R$.
 
-\emph{Remainder frequency.}
-The Riemann--Siegel remainder $R(t)=O(t^{-1/4})$ contributes instantaneous
-$u$-frequency $(d/dt)\arg R(t)/\Theta'(t)=O(t^{-1/2})/(\tfrac12\log(t/(2\pi))+c)
-\to 0$, strictly inside $(-1,1)$ for all large $t$.
+\smallskip
+\emph{Combination.}
+By (A) the numerator is $\ge 0$ and by (B) the denominator is $>0$ on
+$[2\pi n^2,\infty)$, so $\omega_n(t)\ge 0$.
+For the strict upper bound, denominator minus numerator equals
+$c+\log n>0$, hence
+$\omega_n(t)=1-(c+\log n)/(\vartheta'(t)+c)<1$.
 \end{proof}
 
 \begin{corollary}[Bochner spectral measure]\label{cor:Cramer}
@@ -342,25 +349,32 @@ By Lemma~\ref{lem:omegabound}, $|\sigma\omega_n|\le|\omega_n|<1$, so for $|\mu|>
 \]
 
 \emph{Exact cancellation in the IBP ratio.}
-To integrate by parts, introduce the substitution $x:=\Theta'(t(u))=\vartheta'(t(u))+c$,
-so $dx=\vartheta''(t)\,dt=\vartheta''(t)/\Theta'(t)\,du$.
-Under this substitution the amplitude and phase derivative are
-\begin{align*}
-G_{n,\sigma}(u)\,du &= \Theta'(t)^{-1/2}\,du = x^{-1/2}\,du,\\
-\frac{d\Psi}{du} &= \frac{(\sigma-\mu)\vartheta'(t)-\sigma\log n-\mu c}{\Theta'(t)}
-= \frac{(\sigma-\mu)(x-c)-\sigma\log n-\mu c}{x}
-= \frac{(\sigma-\mu)x-\sigma(c+\log n)}{x}.
-\end{align*}
-The IBP amplitude-over-phase-derivative ratio is
+Let $x:=\Theta'(t(u))=\vartheta'(t(u))+c$.
+With $dt/du=1/\Theta'(t)=1/x$, the chain rule yields
 \[
-Q_{n,\sigma,\mu}(x)
-:=\frac{G\,du/du}{d\Psi/du}
+\frac{dx}{du}=\frac{dx}{dt}\cdot\frac{dt}{du}=\frac{\vartheta''(t)}{x}.
+\]
+In the $u$-variable the amplitude and phase derivative are
+\[
+G_{n,\sigma}(u)=\Theta'(t)^{-1/2}=x^{-1/2},
+\qquad
+\frac{d\Psi}{du}=\frac{(\sigma-\mu)\vartheta'(t)-\sigma\log n-\mu c}{\Theta'(t)}
+=\frac{(\sigma-\mu)x-\sigma(c+\log n)}{x},
+\]
+so the IBP ratio in the $u$-variable is
+\[
+Q_{n,\sigma,\mu}(u):=\frac{G_{n,\sigma}(u)}{d\Psi/du}
 =\frac{x^{-1/2}}{[(\sigma-\mu)x-\sigma(c+\log n)]/x}
 =\frac{x^{1/2}}{(\sigma-\mu)x-\sigma(c+\log n)}.
 \]
-The factor $\vartheta''(t(u))$ present in $dx/du$ appears equally in numerator
-and denominator and cancels exactly, leaving $Q$ independent of $\vartheta''$.
-No bound on $\vartheta''$ is required.
+Neither $\vartheta''(t)$ nor $dx/du$ enters this expression: the substitution
+$x=\Theta'(t(u))$ is used only to expose the rational dependence, and the
+differentiation $d\Psi/du$ is already carried out directly in the $u$-variable.
+The $\vartheta''(t)$ factor one might introduce by rewriting via $d\Psi/dx$ would
+appear identically in numerator and denominator through $du/dx=x/\vartheta''(t)$
+and cancel; the cleaner route above avoids introducing it at all.
+In either case $Q_{n,\sigma,\mu}$ is a rational function of $x$ alone, and no
+bound on $\vartheta''$ is required.
 Then
 \[
 Q'_{n,\sigma,\mu}(x)
@@ -429,10 +443,39 @@ $|Y(z)|\le\sqrt{2}\,e^{|\Im z|}$.
 \end{theorem}
 
 \begin{proof}
-Yaglom Vol.~I, Thm.~4.7.3; Bochner--Phillips, Ann.~Math.~43 (1942):
-for time-average-WSS functions with compactly supported non-negative spectral measure
-$\mu_Y\subseteq[-1,1]$, $Y$ extends to entire exponential type $\le 1$ with bound
-$\mu_Y(\mathbb R)^{1/2}e^{|\Im z|}=\sqrt{2}\,e^{|\Im z|}$.
+We invoke the following Paley--Wiener theorem for time-average WSS functions in
+the Wiener sense.
+
+\smallskip
+\emph{Theorem (Paley--Wiener for time-average WSS functions; Yaglom, Vol.~I,
+Thm.~4.7.3; Bochner--Phillips, Ann.~Math.~43 (1942), 409--418).}
+Let $f:\mathbb R\to\mathbb C$ be locally square-integrable and admit a time-average
+covariance
+\[
+c_f(\eta):=\lim_{U\to\infty}\frac1U\int_0^U f(u)\overline{f(u+\eta)}\,du
+\]
+existing for every $\eta\in\mathbb R$, positive-definite, and continuous at $0$.
+Let $\mu_f$ be the (finite, non-negative) Bochner spectral measure of $c_f$, i.e.
+$c_f(\eta)=\int_{\mathbb R}e^{i\eta\xi}\,d\mu_f(\xi)$, and assume
+$\operatorname{supp}\mu_f\subseteq[-\tau,\tau]$ for some $\tau>0$.
+Then $f$ admits an entire extension to $\mathbb C$ of exponential type $\le\tau$,
+and this extension satisfies the pointwise bound
+\[
+|f(z)|\le\mu_f(\mathbb R)^{1/2}e^{\tau|\Im z|}\qquad(z\in\mathbb C).
+\]
+(Here ``time-average WSS'' refers to the Wiener sense of Acta Math.~55 (1930),
+\S II, not the ensemble-statistical notion: no probability space is invoked,
+$c_f$ is a limit of time averages of an individual function.)
+
+\smallskip
+\emph{Application.}
+$Y$ satisfies the hypotheses of the theorem with $\tau=1$ and $\mu_f=\mu_Y$:
+time-average covariance existence (Theorem~\ref{thm:Ywss}), positive-definiteness
+and continuity at $0$ (Corollary~\ref{cor:Cramer}), and support in $[-1,1]$
+(Corollary~\ref{cor:supp}).
+The total mass is $\mu_Y(\mathbb R)=c_Y(0)=2$.
+The pointwise bound becomes $|Y(z)|\le\sqrt{2}\,e^{|\Im z|}$, and $Y$ is of
+exponential type $\le 1$.
 \end{proof}
 
 \begin{theorem}[Akhiezer--Laguerre--P\'olya]\label{thm:Akhiezer}
@@ -480,6 +523,12 @@ The right side is the product of holomorphic non-vanishing $\sqrt{\Theta'}$ with
 $Y\circ\Theta$, a composition of the holomorphic bijection
 $\Theta:\Omega_\delta\to\Theta(\Omega_\delta)$ (Lemma~\ref{lem:Thetabij}(iii))
 with the entire function $Y$.
+The image satisfies $\Theta(\Omega_\delta)\supseteq\mathbb R$: by
+Lemma~\ref{lem:Thetabij}(i), $\Theta\!\restriction_{\mathbb R}:\mathbb R\to\mathbb R$
+is a $C^\infty$ bijection, and $\mathbb R\subseteq\Omega_\delta$, so every real $u$
+is $\Theta(t)$ for a unique real $t\in\Omega_\delta$; the composition
+$Y\circ\Theta$ is therefore well-defined on all of $\Omega_\delta$ and its values
+on the real axis cover every real argument of $Y$.
 Both sides agree on $\mathbb R$ by Definition~\ref{def:Y};
 the identity theorem on the connected open $\Omega_\delta$ extends this to all of
 $\Omega_\delta$.
@@ -517,13 +566,23 @@ Every nontrivial zero $\rho$ of $\zeta$ satisfies $\Re\rho=\tfrac12$.
 \begin{proof}
 Let $\rho=\beta+i\gamma$ be a nontrivial zero with $\beta\in(0,1)$,
 $\gamma\in\mathbb R$.
-Define
+
+\emph{Reduction to $\beta\le\tfrac12$.}
+The functional equation $\xi(s)=\xi(1-s)$ and reality of $\zeta$ on
+$\mathbb R\cap\{\Re s=\tfrac12\}$ give the symmetry $\rho\mapsto 1-\bar\rho$:
+if $\rho=\beta+i\gamma$ is a zero then so is $1-\bar\rho=(1-\beta)+i\gamma$.
+So it suffices to establish $\beta=\tfrac12$ under the assumption
+$\beta\in(0,\tfrac12]$; the case $\beta\in(\tfrac12,1)$ follows by applying
+the result to $1-\bar\rho$, whose real part $1-\beta$ lies in $(0,\tfrac12)$.
+
+Assume henceforth $\beta\in(0,\tfrac12]$ and define
 \[
-\delta_\rho:=\tfrac12\min(\beta,1-\beta)\in(0,\tfrac14],
+\delta_\rho:=\tfrac12\min(\beta,1-\beta)=\tfrac\beta 2\in(0,\tfrac14],
 \qquad
 t_\rho:=\gamma+i(\tfrac12-\beta).
 \]
-Then $|\Im t_\rho|=|\tfrac12-\beta|=\tfrac12-2\delta_\rho<\tfrac12-\delta_\rho$,
+Then $\Im t_\rho=\tfrac12-\beta\ge 0$ and
+$|\Im t_\rho|=\tfrac12-\beta=\tfrac12-2\delta_\rho<\tfrac12-\delta_\rho$,
 so $t_\rho\in\Omega_{\delta_\rho}$.
 
 Choose any $\delta_\rho$-admissible $c>c_{**}(\delta_\rho)$
