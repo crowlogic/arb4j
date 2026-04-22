@@ -205,13 +205,13 @@ therefore $\mathcal{S}(\mu)$ is finite.
 
 \item \emph{IBP tail for $n\in\mathcal{S}(\mu)$.} Past the stationary point, $|\Phi'_{n,\sigma,\mu}(t)|\ge(|\mu|-1)\Theta'(T)-|\log n+c|>0$, diverging; integration by parts gives $O(\Theta'(T)^{-1/2})$.
 
-\item \emph{Assembly into power spectral density.} For every finite $T>0$ and every $\mu\in\mathbb{R}$, $K_T(\mu)$ is a well-defined bounded continuous function of $\mu$ (as a finite-interval Fourier integral of a bounded integrand). The normalized object $2\pi|K_T(\mu)|^2/\Theta(T)$ converges pointwise to the function $S(\mu)$ defined in \eqref{eq:PSDdef}. Since $\int_0^U|Y|^2du=O(U\log U)\to\infty$ as $U\to\infty$, the unnormalized limit $\lim_{T\to\infty}K_T(\mu)$ need not be a finite Fourier transform of an $L^2$ function; the normalization by $\Theta(T)$ extracts the power at frequency $\mu$. Using \eqref{eq:KTexpand} and the Cauchy--Schwarz inequality,
+\item \emph{Assembly into power spectral density.} For every finite $T>0$ and every $\mu\in\mathbb{R}$, $K_T(\mu)$ is a well-defined bounded continuous function of $\mu$ (as a finite-interval Fourier integral of a bounded integrand). The normalized object $2\pi|K_T(\mu)|^2/\Theta(T)$ converges pointwise to the function $S(\mu)$ defined in \eqref{eq:PSDdef}. $Y\notin L^2(\mathbb{R})$ since $\int_0^U|Y|^2du=T\log T+O(T)\to\infty$ with $U=\Theta(T)$; the normalization by $\Theta(T)$ extracts the power at frequency $\mu$ from the windowed transform. Using \eqref{eq:KTexpand} and the Cauchy--Schwarz inequality,
 \begin{equation}\label{eq:KTbound}
 |K_T(\mu)|\le\tfrac{1}{2\pi}\sum_\sigma\sum_{n\le N(T)}n^{-1/2}|J_{n,\sigma}(T,\mu)|+|\mathcal{R}(T,\mu)|.
 \end{equation}
-For $n\notin\mathcal{S}(\mu)$, $|J_{n,\sigma}(T,\mu)|\le 2\sup_x|Q_{n,\sigma,\mu}(x)|+\int|Q'_{n,\sigma,\mu}|\,dx=O(1)$ uniformly in $T$; for $n\in\mathcal{S}(\mu)$ (finite set), $|J_{n,\sigma}(T,\mu)|=O(\Theta(T)^{1/2})$ trivially from the amplitude $\sqrt{\Theta'(t)}\le\sqrt{X}$ and interval length $T$. Thus
+For $n\notin\mathcal{S}(\mu)$, $|J_{n,\sigma}(T,\mu)|\le 2\sup_x|Q_{n,\sigma,\mu}(x)|+\int|Q'_{n,\sigma,\mu}|\,dx=O(1)$ uniformly in $T$; for $n\in\mathcal{S}(\mu)$ (finite set), step~(vi) gives $|J_{n,\sigma}(T,\mu)|=O(\Theta'(T)^{-1/2})=O((\log T)^{-1/2})$. Thus
 \begin{equation}\label{eq:KTgrowth}
-|K_T(\mu)|=O\!\left(N(T)^{1/2}+|\mathcal{S}(\mu)|\Theta(T)^{1/2}\right)=O(T^{1/4})
+|K_T(\mu)|=O\!\left(N(T)^{1/2}+|\mathcal{S}(\mu)|\,(\log T)^{-1/2}\right)=O(T^{1/4})
 \end{equation}
 (using $\Theta(T)\sim\tfrac{T}{2}\log T$ and $N(T)=O(T^{1/2})$). Hence
 \begin{equation}\label{eq:PSDupper}
@@ -231,7 +231,7 @@ On the support of mode $n$ (where $t\ge 2\pi n^2$), strict monotonicity of $\the
 \begin{equation}\label{eq:thetaprimebd}
 \theta'(t)\ge\theta'(2\pi n^2)=\beta_n-c=\log n+r_n,\qquad r_n=O(n^{-4}).
 \end{equation}
-Hence the numerator satisfies $\theta'(t)-\log n\ge r_n$ and the denominator $\theta'(t)+c\ge\beta_n=\log n+c+r_n$; for every $n\ge 1$ and admissible $c$ (in particular $c>c_*$) the denominator is bounded below by a positive constant. The ratio \eqref{eq:instfreq} lies strictly in $(-1,1)$: the numerator is smaller than the denominator by exactly $c>0$, giving ratio $<1$; and $|r_n|\to 0$ with the denominator bounded below by $c_*>0$ gives ratio $>-1$. Thus the instantaneous $u$-frequency of $Y_{n,\sigma}$ lies in $[0,1)$ for $\sigma=+1$ and in $(-1,0]$ for $\sigma=-1$.
+Hence the numerator satisfies $\theta'(t)-\log n\ge r_n$ and the denominator $\theta'(t)+c\ge\beta_n=\log n+c+r_n$; for every $n\ge 1$ and admissible $c$ (in particular $c>c_*$) the denominator is bounded below by a positive constant. The ratio \eqref{eq:instfreq} lies strictly in $(-1,1)$: the numerator is smaller than the denominator by exactly $c>0$, giving ratio $<1$; and $|r_n|\to 0$ with the denominator bounded below by $c-c_*>0$ gives ratio $>-1$. Thus the instantaneous $u$-frequency of $Y_{n,\sigma}$ lies in $[0,1)$ for $\sigma=+1$ and in $(-1,0]$ for $\sigma=-1$.
 
 For the Riemann--Siegel remainder contribution $R(t(u))/\sqrt{\Theta'(t(u))}$ to $Y$: the $t$-derivative of $\arg R(t)$ is $O((t/(2\pi))^{-1/2})$ by the contour-integral representation of $R$, so the instantaneous $u$-frequency is $O((t/(2\pi))^{-1/2})/\Theta'(t)\to 0\in(-1,1)$.
 
