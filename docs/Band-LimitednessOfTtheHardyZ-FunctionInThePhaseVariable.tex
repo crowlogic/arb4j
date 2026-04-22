@@ -205,7 +205,7 @@ therefore $\mathcal{S}(\mu)$ is finite.
 
 \item \emph{IBP tail for $n\in\mathcal{S}(\mu)$.} Past the stationary point, $|\Phi'_{n,\sigma,\mu}(t)|\ge(|\mu|-1)\Theta'(T)-|\log n+c|>0$, diverging; integration by parts gives $O(\Theta'(T)^{-1/2})$.
 
-\item \emph{Assembly into power spectral density.} Since $Y$ is not $L^2(\mathbb{R})$ (its second moment $\int_0^U|Y|^2du=O(U\log U)$ diverges as $U\to\infty$), $K_\infty(\mu)$ does not exist as a function; the bound \eqref{eq:PSDdef} measures the power at frequency $\mu$ through normalization by $\Theta(T)$. Using \eqref{eq:KTexpand} and the Cauchy--Schwarz inequality,
+\item \emph{Assembly into power spectral density.} For every finite $T>0$ and every $\mu\in\mathbb{R}$, $K_T(\mu)$ is a well-defined bounded continuous function of $\mu$ (as a finite-interval Fourier integral of a bounded integrand). The normalized object $2\pi|K_T(\mu)|^2/\Theta(T)$ converges pointwise to the function $S(\mu)$ defined in \eqref{eq:PSDdef}. Since $\int_0^U|Y|^2du=O(U\log U)\to\infty$ as $U\to\infty$, the unnormalized limit $\lim_{T\to\infty}K_T(\mu)$ need not be a finite Fourier transform of an $L^2$ function; the normalization by $\Theta(T)$ extracts the power at frequency $\mu$. Using \eqref{eq:KTexpand} and the Cauchy--Schwarz inequality,
 \begin{equation}\label{eq:KTbound}
 |K_T(\mu)|\le\tfrac{1}{2\pi}\sum_\sigma\sum_{n\le N(T)}n^{-1/2}|J_{n,\sigma}(T,\mu)|+|\mathcal{R}(T,\mu)|.
 \end{equation}
