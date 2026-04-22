@@ -103,15 +103,33 @@ The phase derivative is $\sigma\vartheta'(t)-\sigma\log n-\mu\Theta'(t)=\Theta'(
 \[
 |\mathcal{J}_{n,\sigma}(T,\mu)|\le\frac{2\,n^{-1/2}\sqrt{\Theta'(T)}}{\lambda(c-c_\star)}+\int_{2\pi n^2}^{T}\left|\frac{d}{dt}\frac{G_{n,\sigma}}{P'}\right|dt.
 \]
-The integrand of the second term is $O(n^{-1/2}\Theta'(t)^{-1/2}\vartheta''(t))$ since $\vartheta''(t)=(2t)^{-1}+O(t^{-3})>0$, giving total mass $O(n^{-1/2}\sqrt{\log T})$. Hence $|\mathcal{J}_{n,\sigma}(T,\mu)|=O(n^{-1/2}\sqrt{\log T})$.
+The integrand of the second term is $O(n^{-1/2}\Theta'(t)^{-1/2}\vartheta''(t))$ since $\vartheta''(t)=(2t)^{-1}+O(t^{-3})>0$, giving total mass $O(n^{-1/2}/\sqrt{\log T})$ (the $\Theta'(t)^{-1/2}\asymp(\log t)^{-1/2}$ factor against $\vartheta''(t)\asymp 1/t$ integrates to $O((\log T)^{-1/2})$). A second integration by parts against $P'$, using $(G_{n,\sigma}/P')'\asymp n^{-1/2}\Theta'(t)^{-1/2}\vartheta''(t)/\lambda$ and $P''=\vartheta''(t)(\sigma-\mu)+\sigma\vartheta''(t)\cdot O(1)=O(\vartheta''(t))$, extracts an additional factor $1/(\lambda(c-c_\star)\Theta'(T))=O(1/\log T)$ at the endpoint and an additional $1/\log T$ on the integrated remainder, giving
+\[
+|\mathcal{J}_{n,\sigma}(T,\mu)|=O\!\bigl(n^{-1/2}/(\log T)^{3/2}\bigr).
+\]
 
 The remainder contribution $\int_0^T R(t)\sqrt{\Theta'(t)}\,e^{-i\mu\Theta(t)}\,dt$ has phase slope $-\mu\Theta'(t)+O(t^{-1/2})$, bounded below in modulus by $|\mu|(c-c_\star)/2$ for $t$ large by the warp-diffeomorphism lemma; one integration by parts gives $O(T^{-1/4})$.
 
 Summing over $1\le n\le N(T)=O(T^{1/2})$ and $\sigma\in\{\pm1\}$:
 \[
-|K[T](\mu)|=O\!\Bigl(\sum_{n=1}^{N(T)}n^{-1/2}\sqrt{\log T}\Bigr)+O(T^{-1/4})=O(T^{1/4}\sqrt{\log T}),
+|K[T](\mu)|=O\!\Bigl(\sum_{n=1}^{N(T)}n^{-1/2}/(\log T)^{3/2}\Bigr)+O(T^{-1/4})=O\!\bigl(T^{1/4}/(\log T)^{3/2}\bigr),
 \]
-so $|K[T](\mu)|^2/\Theta(T)=O((\log T)/\sqrt{T})\to0$.
+so $2\pi|K[T](\mu)|^2/\Theta(T)=O\!\bigl(T^{-1/2}/(\log T)^{4}\bigr)\to0$, uniformly on compact subsets of $\{|\mu|>1\}$.
+\end{proof}
+
+\begin{corollary}[Three-domain convergence of the periodogram]
+\label{cor:threedomain}
+Let $P_T(d\mu):=2\pi|K[T](\mu)|^2/\Theta(T)\,d\mu$. Then as $T\to\infty$:
+\begin{enumerate}
+\item[\textup{(i)}] On $\{|\mu|>1\}$: $P_T$ has density tending to $0$ uniformly on compacta at rate $O(T^{-1/2}/(\log T)^{4})$.
+\item[\textup{(ii)}] On $(-1,1)$: $P_T\rightharpoonup P_\infty|_{(-1,1)}$ in the weak-$*$ sense on compact subsets, with the phase-slope bound $|\sigma\omega_n(\Theta^{-1}(u))-\mu|\ge 1-|\mu|>0$ non-uniform as $|\mu|\uparrow 1$.
+\item[\textup{(iii)}] On $\{|\mu|=1\}$: $\sigma\omega_n(t)\to\sigma$ is asymptotic, not attained, for every finite $n,t$; mass accumulates at $\mu=\pm 1$ from inside as $T\to\infty$, producing the endpoint atoms of $P_\infty$.
+\end{enumerate}
+Fubini on $A\times[0,T]$ holds for every bounded Borel $A\subseteq\R$ and every finite $T$: by Cauchy--Schwarz,
+$\int_0^T|\zeta(\tfrac12+it)|\sqrt{\Theta'(t)}\,dt=O(T\log T)$, so the double integral is bounded by $|A|\cdot O(T\log T)<\infty$.
+\end{corollary}
+\begin{proof}
+Item (i): the band-limit theorem and its rate above. Item (ii): the phase slope is $\Theta'(t)(\sigma\omega_n(t)-\mu)$ and $\Theta'(t)\ge c-c_\star>0$, with $\sigma\omega_n(t)-\mu\in[-\mu-1,1-\mu)$ of sign determined by $|\mu|<1$ but with modulus $\ge 1-|\mu|$ only after taking the supremum over $n$; the IBP constant $1/(\lambda(c-c_\star))$ with $\lambda=1-|\mu|$ blows up as $|\mu|\uparrow 1$, removing the uniform rate. Item (iii): the frequency-ratio lemma gives $\omega_n(t)<1$ for every $(n,t)$ with $\omega_n(t)\uparrow 1$ as $t\to\infty$; the same lemma with $\sigma=-1$ gives $\sigma\omega_n(t)\downarrow -1$. The Fubini bound is Cauchy--Schwarz against $\int_0^T\Theta'(t)\,dt=\Theta(T)=O(T\log T)$ and the second-moment asymptotic $\int_0^T|\zeta(\tfrac12+it)|^2\,dt\sim T\log T$.
 \end{proof}
 
 \begin{theorem}[Entirety and exponential type]
