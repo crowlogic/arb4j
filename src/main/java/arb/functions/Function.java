@@ -89,8 +89,7 @@ public interface Function<D, CO> extends
 
   public default Function<D, CO> derivative()
   {
-    assert false : "TODO: " + getClass() + " should implement this";
-    return null;
+    throw new UnsupportedOperationException("TODO: " + getClass() + " should implement derivative()");
   }
 
   public default Function<D, CO> integral()

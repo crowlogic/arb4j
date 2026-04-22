@@ -157,6 +157,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     operandFunctionMapping = context.registerFunctionMapping("f", expression.domainType, expression.coDomainType, expression.functionClass);
 
     VariableNode<D, R, F> diffVar = variable != null ? variable : expression.getIndependentVariable();
+
     operandFunctionMapping.expression = operand.asExpression(diffVar);
 
     // Register α temporarily if needed so the gint formula can reference it
@@ -175,7 +176,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
                                                    expression.coDomainType,
                                                    expression.functionClass,
                                                    null,
-                                                   false);
+                                                   true);
 
     // If the order variable isn't α, rename α to match (e.g. β)
     if (order instanceof VariableNode<D, R, F> orderVar && !"α".equals(orderVar.getName()))

@@ -534,19 +534,38 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return new ZetaJetNode<>(expression, arg, 1, state);
     }
     default:
-      return new DerivativeNode<>(expression,
-                                  this);
-//      throw new UnsupportedOperationException("Derivative not implemented for function: "
-//                                              + functionName
-//                                              + " in expression '"
-//                                              + expression
-//                                              + "'");
+      throw new UnsupportedOperationException("Derivative not implemented for builtin function: "
+                                              + functionName
+                                              + " in expression '"
+                                              + expression
+                                              + "'. Register the function in the context with a name prefix "
+                                              + "(e.g. \"P:v->...\" instead of \"v->...\") so it can be differentiated symbolically.");
     }
   }
 
   public Node<D, R, F> arcsinDerivative()
   {
     return one().div(one().sub(arg.pow(2)).sqrt());
+  }
+
+  /**
+   * Splices a function mapping's expression body into the current expression and
+   * differentiates it symbolically. If the function was defined with a different
+   * independent variable name (e.g. P:v->... used inside an expression with
+   * independent variable t), substitutes the function's variable with our own
+   * before differentiating to avoid UndefinedReferenceException.
+   */
+  @SuppressWarnings("unchecked")
+  private Node<D, R, F> differentiateBodyOf(FunctionMapping<?, ?, ?> functionMapping)
+  {
+    Node<D, R, F>            body       = (Node<D, R, F>) functionMapping.expression.rootNode.spliceInto(expression);
+    VariableNode<D, R, F>    ourIndep   = expression.getIndependentVariable();
+    VariableNode<?, ?, ?>    fnIndep    = functionMapping.expression.getIndependentVariable();
+    if (fnIndep != null && ourIndep != null && !fnIndep.getName().equals(ourIndep.getName()))
+    {
+      body = body.substitute(fnIndep.getName(), ourIndep);
+    }
+    return body.derivative().simplify();
   }
 
   private Node<D, R, F> differentiateContextualFunction()
@@ -564,7 +583,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       if (functionMapping.expression != null)
       {
-        return functionMapping.expression.rootNode.spliceInto(expression).derivative().simplify();
+        return differentiateBodyOf(functionMapping);
       }
       return new DerivativeNode<>(expression,
                                   this);
@@ -572,7 +591,27 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     setFunctionContext(instance);
 
-    var    derivative             = instance.derivative();
+    Function<?, ?> derivative = null;
+    try
+    {
+      derivative = instance.derivative();
+    }
+    catch (UnsupportedOperationException | AssertionError ignored)
+    {
+      // instance.derivative() is not implemented for this compiled function.
+      // Fall back to symbolic differentiation of the expression body below.
+    }
+
+    if (derivative == null)
+    {
+      // Fall back to symbolic differentiation of the expression body.
+      if (functionMapping.expression != null)
+      {
+        return differentiateBodyOf(functionMapping);
+      }
+      return new DerivativeNode<>(expression,
+                                  this);
+    }
 
     String derivativeFunctionName = derivative.getName();
     assert derivativeFunctionName != null : "derivativeFunctionName is null for instance " + instance + ": TODO: use the " + derivative + " directly";
