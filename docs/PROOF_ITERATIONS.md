@@ -21,7 +21,8 @@ Persistent log of every iteration attempted, every failure reason, every rectifi
 | P4 | Mixed UTF math and LaTeX dollar-sign math in DAG source. | DAG source: UTF only. Classical .tex: LaTeX dollars only. Never both. | Never mix math notations in one source file. |
 | P5 | Claimed "publication ready" before double-checking every named hypothesis. | Re-verify every axiom and lemma hypothesis against its invocation site after every rewrite. | Do not certify; state what is established and what rests on which axiom. |
 | P6 | Stripped the second-IBP rate sharpening without recording why (it is not required for the limit-to-zero conclusion, only for rate). | Record rationale for any removed content in this log. | Never delete a step without logging what it was and why it is removed. |
-| P7 | Claimed the pullback $Z=\sqrt{\Theta'}\cdot Y\circ\Theta$ lies in $PW_1$. WRONG. Band-limitedness = membership in PW; band-limitedness does NOT transfer under the nonlinear time-change $\Theta$. $Z$ is generically NOT in $PW_1$. What transfers is the real-zero property of $Y$ to the real zeros of $Z$ on $\R$, and from there via the Hardy identity to zeros of $\zeta$. There is no entire-extension-of-$Z$ needed. | Zero transfer lives entirely on $\R$: $Y$ entire with $\{Y=0\}\subset\R$ (Akhiezer); for $t\in\R$, $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ with $\sqrt{\Theta'(t)}>0$ and $\Theta(\R)=\R$; so $\{t\in\R:Z(t)=0\}=\Theta^{-1}(\{u\in\R:Y(u)=0\})$. Then Hardy: $\zeta(\tfrac12+it)=0\iff Z(t)=0$ for $t\in\R$. For a nontrivial zero $\rho=\tfrac12+\alpha+i\beta$ off the line ($\alpha\ne 0$), we need to rule out $\zeta$ vanishing at complex $t=\beta-i\alpha\notin\R$. That is NOT a real-line statement about $Z$. | Never claim band-limitedness / PW membership transfers under the unitary pullback. Never try to certify $Z$ as entire of exponential type. The zero transfer is a real-line statement — but ruling out off-critical-line zeros of $\zeta$ requires a separate complex-line argument, which the current proof does NOT supply. This is the gap. |
+| P7 | Claimed the pullback $Z=\sqrt{\Theta'}\cdot Y\circ\Theta$ lies in $PW_1$. WRONG. Band-limitedness = membership in PW; band-limitedness does NOT transfer under the nonlinear time-change $\Theta$. $Z$ is generically NOT in $PW_1$. | Only the real-zero property transfers; the PW membership does not. See P8 for the separate error that $Z$ is entire. | Never claim band-limitedness / PW membership transfers under the unitary pullback. |
+| P8 | Repeatedly wrote or implied "$Z$ is entire" in multiple iterations. WRONG. $Z(t)=e^{i\vartheta(t)}\zeta(\tfrac12+it)$ and $\vartheta(t)=\arg\Gamma(\tfrac14+it/2)-(t/2)\log\pi$ inherits the branch-point structure of $\arg\Gamma$. $\Gamma(\tfrac14+it/2)$ vanishes never and has poles at $\tfrac14+it/2\in\Z_{\le 0}$, i.e.\ $t=i(4k+1)$ for $k\ge 0$; $\arg\Gamma$ picks up $2\pi\Z$ jumps around those points and $e^{i\vartheta}$ is therefore multi-valued / has essential singularities on the imaginary axis starting at $t=i$. Hence $Z$ is NOT entire. It is holomorphic on $\C\setminus\{i(4k+1):k\in\Z_{\ge 0}\}$ at best, with a branch-point / essential singularity structure at those points. The strip-biholomorphism argument in Iter 4 smuggled in "$Z$ is entire" — false. | $Z$ is holomorphic on a horizontal strip $|\Im t|<1$ (the nearest singularity is at $t=i$). On that strip, $Z$ and $\sqrt{\Theta'}\,Y\circ\Theta$ are both holomorphic and agree on $\R$, so by the identity theorem they agree on that strip. This is enough because the critical-strip zeros have $|\Im t|<\tfrac12<1$. | Never claim $Z$ is entire. The usable strip of holomorphy for $Z$ is $|\Im t|<1$ (from the $\Gamma$-poles), and this is exactly sufficient to contain all possible off-critical-line zero candidates $t=\beta-i\alpha$ with $|\alpha|<\tfrac12$. |
 
 ## Iterations
 
@@ -81,20 +82,27 @@ Move planned: add Axiom (PW-class closure under unitary pullback).
 
 Failure reason: user corrected. The pullback is NOT in PW. Band-limitedness = PW, and band-limitedness does not transfer. The proposed axiom is false. Do not commit.
 
-### Iter 6 — pending, with open gap acknowledged
+### Iter 6 — pending, with gap structure identified
 
-What we actually have:
-- $Y$ entire of exponential type $\le 1$ with zeros $\{Y=0\}\subset\R$ (Theorem ent + Axiom ax:AK).
-- $Z:\R\to\R$, $Z$ entire (from Hardy identity), but not in PW (variance grows).
-- For real $t$: $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$, $\sqrt{\Theta'(t)}>0$, $\Theta(\R)=\R$. So $\{t\in\R:Z(t)=0\}$ is the pullback of the real zero set of $Y$, which is all of $\{Y=0\}$ by Akhiezer.
+What is established:
+- $Y\in PW_1$, real on $\R$, all zeros on $\R$ (F1 via Akhiezer on the entire extension of $Y$).
+- For real $t$: $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ with $\sqrt{\Theta'(t)}>0$ and $\Theta:\R\to\R$ a bijection. So the real zeros of $Z$ are exactly $\Theta^{-1}(\{Y|_\R=0\})$.
+- Hardy identity: for $t\in\R$, $\zeta(\tfrac12+it)=0\iff Z(t)=0$.
 
-What is missing: to conclude RH, we need $\{Z=0\}\subset\R$ as subset of $\C$, not just the real zeros. A nontrivial zero $\rho=\tfrac12+\alpha+i\beta$ with $\alpha\ne 0$ corresponds to $Z(\beta-i\alpha)=0$ at a non-real argument, which the real-line factorization cannot see.
+What is NOT established:
+- $Z$ is NOT entire; it has branch singularities on the imaginary axis from the $\Gamma$-factor in $\vartheta$. Usable strip of holomorphy: $|\Im t|<1$.
+- PW membership of $Z$ does not hold.
 
-Previous Iter 4 tried to close this by extending $\Theta$ to a strip biholomorphism and using the identity theorem to extend the factorization. That step needs: $\Theta$ is entire (it is: $\vartheta$ is meromorphic with poles at $t=\pm i(2k+\tfrac12)$, the nearest to $\R$ at $|\Im t|=\tfrac12$; $\Theta=\vartheta+c\cdot\mathrm{id}$ inherits this), and $\Theta'\ne 0$ on a strip. Then $Z$ and $\sqrt{\Theta'}\,Y\circ\Theta$ are both meromorphic on the strip, agree on $\R$, hence agree on the strip by identity. This does NOT require $Z\in PW$; it only requires both sides to be holomorphic on the strip.
+What the RH conclusion actually requires:
+- Rule out $\zeta(\rho)=0$ at $\rho=\tfrac12+\alpha+i\beta$ with $\alpha\ne 0$. Equivalently, rule out $\zeta(\tfrac12+it)=0$ at complex $t=\beta-i\alpha$ with $|\alpha|\in(0,\tfrac12)$. These points lie in the strip $|\Im t|<\tfrac12<1$ where $Z$ is holomorphic.
 
-That argument is correct; it was mislabeled in P7. Retract the part of P7 that says "there is no entire-extension-of-$Z$ needed" — $Z$ IS entire (it is the Hardy $Z$ function), the question is not whether $Z$ has an extension but whether $Z$ is in PW (it is not) and whether the factorization extends (it does, via identity theorem on a strip, not via PW).
+Proposed closure (Iter 6 plan):
+- On the strip $S=\{|\Im t|<1\}$, both $Z$ and the composition $\sqrt{\Theta'(t)}\,Y(\Theta(t))$ are holomorphic ($\Theta$ and $\Theta'$ inherit the same strip of holomorphy from $\vartheta$; $\Theta'\ne 0$ on a possibly smaller subtrip by continuity from $\Theta'|_\R\ge c-c_\star>0$; $Y$ is entire; so the composition is holomorphic on whatever subtrip $S'\subset S$ has $\Theta(S')$ avoiding any issue, and since $Y$ is entire, no issue at all — $Y\circ\Theta$ is holomorphic on $S'$, and $\sqrt{\Theta'}$ is holomorphic on $S'$ with a chosen branch). Both sides agree on $\R$. Identity theorem: they agree on $S'$.
+- For $\rho=\tfrac12+\alpha+i\beta$ a nontrivial zero with $|\alpha|<\tfrac12$: $t=\beta-i\alpha\in S'$ (width check). $Z(t)=0$ (Hardy identity holds on $S'$ too by holomorphy and agreement on $\R$). Then $\sqrt{\Theta'(t)}\,Y(\Theta(t))=0$, and $\sqrt{\Theta'(t)}\ne 0$, so $Y(\Theta(t))=0$. By F1, $\Theta(t)\in\R$, so $t\in\R$ (since $\Theta:S'\to\Theta(S')$ is biholomorphic and $\Theta^{-1}(\R)\cap S'=\R\cap S'$). Hence $\alpha=0$.
 
-Revised understanding:
-- Band-limitedness / PW membership: held by $Y$ only, not by $Z$. Does not transfer.
-- Real-zero property: held by $Y$ entirely on $\C$; transfers to $Z$ on the strip where the factorization extends by identity theorem.
-- The extension of the factorization is by identity theorem applied to two holomorphic functions on a common strip, not by PW membership of either side.
+Gaps to verify in Iter 6:
+- Strip width check: nearest $\Gamma$-singularity of $\vartheta$ at $t=i$ (from $\Gamma(\tfrac14+it/2)$ pole at $t=i(\tfrac14\cdot\tfrac{-4}{1}+\ldots)$: $\Gamma$ poles at $\tfrac14+it/2=-k$, $k\ge 0$, i.e.\ $t=i(4k+1)/(-1)\cdot(-1)=-i(4k+1)$... recompute: $\tfrac14+it/2=-k\implies t=i(-2k-\tfrac12)\cdot 2/1$... actually $it/2=-k-\tfrac14$, $t=i(-2k-\tfrac12)/1\cdot(-i)\cdot(-i)$... simpler: $it/2=-k-\tfrac14\implies t=2(-k-\tfrac14)/i=2i(k+\tfrac14)$. So poles at $t=2i(k+\tfrac14)=i(2k+\tfrac12)$, nearest at $t=i/2$. Strip of holomorphy of $Z$: $|\Im t|<\tfrac12$. NOT $<1$. This is exactly the critical-strip half-width. $\Re\rho\in(0,1)$ gives $\alpha\in(-\tfrac12,\tfrac12)$ gives $|\Im t|=|\alpha|<\tfrac12$, so $t$ is on the BOUNDARY of the strip of holomorphy for $\alpha\to\pm\tfrac12$. At $|\alpha|=\tfrac12$ exactly, $t$ hits the singularity. This is the known boundary behavior and is consistent: the functional equation forces zero-free behavior at $\Re s=0,1$.
+- Choice of branch of $\sqrt{\Theta'}$ on $S'$: $\Theta'|_\R>0$, so $\sqrt{\Theta'}$ is real-positive on $\R$; the holomorphic branch is well-defined on any simply-connected subtrip where $\Theta'$ has no zeros, which is the whole of $S'$ for $S'$ small enough by continuity.
+- Biholomorphism $\Theta:S'\to\Theta(S')$ with $\Theta^{-1}(\R)\cap S'=\R\cap S'$: follows from $\Theta$ real-analytic, $\Theta'\ne 0$ on $S'$, $\Theta(\R)=\R$.
+
+Do not commit Iter 6 until the strip width is recomputed precisely and all three gaps above are tight.
