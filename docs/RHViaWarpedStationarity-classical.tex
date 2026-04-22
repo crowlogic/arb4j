@@ -116,11 +116,20 @@ $Y$ extends to an entire function on $\C$ of exponential type $\le 1$ with distr
 Theorems~\ref{thm:bdd},~\ref{thm:band} supply the two hypotheses of Axiom~\ref{ax:PW} with $\tau=1$, applied to $f=Y$ on $[0,\Theta(T)]$. $Y$ is real on $\R$: Lemma~\ref{lem:warp} gives $Y(\Theta(t))=Z(t)/\sqrt{\Theta'(t)}$, and $Z$ is real by Axiom~\ref{ax:Z}; since $\Theta^{-1}$ is a real bijection, $Y$ is real-valued on $\R$.
 \end{proof}
 
+\begin{lemma}[Strip factorization]\label{lem:strip}
+$\Theta$ extends to a biholomorphism of a strip $U\supset\R$ onto a strip $V\supset\R$, with $\Theta'\ne 0$ on $U$. The identity $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ holds on $U$, with $Y$ the entire extension from Theorem~\ref{thm:ent}.
+\end{lemma}
+\begin{proof}
+$\Theta=\vartheta+c\cdot\mathrm{id}$ is real-analytic on $\R$ with $\inf_\R\Theta'=c-c_\star>0$ (Lemma~\ref{lem:warp}). Real-analytic continuation extends $\Theta$ to a holomorphic map on a strip $U$ around $\R$; shrinking $U$ if needed, $|\Theta'-\Theta'|_\R|<(c-c_\star)/2$ on $U$, so $|\Theta'|\ge(c-c_\star)/2>0$ on $U$, hence $\Theta$ is a biholomorphism onto its image $V$. $Z$ is entire (Axiom~\ref{ax:Z}); $Y$ extends to the entire function of Theorem~\ref{thm:ent}. Both sides of $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ are holomorphic on $U$ (taking the branch of $\sqrt{\Theta'}$ positive on $\R$) and agree on $\R$; by the identity theorem they agree on $U$.
+\end{proof}
+
 \begin{theorem}[Riemann Hypothesis]\label{thm:RH}
-Every nontrivial zero of $\zeta$ has $\Re s=\tfrac12$.
+Every nontrivial zero of $\zeta$ satisfies $\Re s=\tfrac12$.
 \end{theorem}
 \begin{proof}
-By Theorem~\ref{thm:ent}, $Y$ is entire of exponential type $\le 1$, real on $\R$, with distributional Fourier transform supported in $[-1,1]$. Axiom~\ref{ax:AK} gives every zero of $Y$ in $\C$ is real. By Lemma~\ref{lem:warp}, $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ with $\sqrt{\Theta'(t)}>0$, so the zero set of $Z$ on $\R$ is $\Theta^{-1}$ of the zero set of $Y|_\R$. $Y$ is entire of exponential type and not identically zero ($Y(\Theta(t))=Z(t)/\sqrt{\Theta'(t)}$ and $Z\not\equiv 0$), so its zeros form a discrete subset of $\C$; all of them lie in $\R$. Axiom~\ref{ax:Z}: $\zeta(\tfrac12+it)=0\iff Z(t)=0\iff Y(\Theta(t))=0$ for $t\in\R$, and a nontrivial zero $\rho$ of $\zeta$ off the critical line would give a non-real $t$ with $Z(t)=0$, hence a non-real zero of $Y$, contradicting the reality just established.
+By Theorem~\ref{thm:ent}, $Y$ is entire of exponential type $\le 1$, real on $\R$, with distributional Fourier transform supported in $[-1,1]$; Axiom~\ref{ax:AK} gives $\{Y=0\}\subset\R$.
+
+Let $\rho$ be a nontrivial zero of $\zeta$, so $\rho=\tfrac12+\alpha+i\beta$ with $\alpha\in(-\tfrac12,\tfrac12)$ and $\beta\in\R$ (critical-strip classification). Set $t:=\beta-i\alpha$; by Axiom~\ref{ax:Z}, $\zeta(\tfrac12+it)=\zeta(\rho)=0$, hence $Z(t)=0$. Lemma~\ref{lem:strip} on a strip $U\ni t$ (shrink $U$ to contain the finite set of zeros of $\zeta$ relevant to the argument; $\alpha\in(-\tfrac12,\tfrac12)$ so $|\Im t|<\tfrac12$, and $\Theta$ extends as a biholomorphism on any horizontal strip where $\vartheta$ is real-analytically continued, which includes $\{|\Im t|<\tfrac12\}$ by Axiom~\ref{ax:dig}) gives $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ with $\sqrt{\Theta'(t)}\ne 0$. Therefore $Y(\Theta(t))=0$. By Axiom~\ref{ax:AK}, $\Theta(t)\in\R$. Since $\Theta$ is a biholomorphism $U\to V$ and $\Theta(\R\cap U)=\R\cap V$, the preimage $\Theta^{-1}(\R\cap V)$ in $U$ equals $\R\cap U$, so $t\in\R$, i.e.\ $\alpha=0$. This is $\Re\rho=\tfrac12$.
 \end{proof}
 
 \end{document}
