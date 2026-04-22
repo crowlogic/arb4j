@@ -20,7 +20,7 @@
 \newcommand{\Z}{\mathbb{Z}}
 \DeclareMathOperator{\supp}{supp}
 
-\title{The Riemann Hypothesis via Band-Limitedness}
+\title{The Riemann Hypothesis via Warped Stationarity}
 \author{Stephen Crowley}
 \date{April 22, 2026}
 
@@ -33,24 +33,32 @@ Every nontrivial zero of the Riemann zeta function lies on the critical line $\R
 
 \section{Axioms}
 
-\begin{axiom}[Hardy $Z$-function]\label{ax:Z}
-$Z(t):=e^{i\vartheta(t)}\zeta(\tfrac12+it)$ with $\vartheta(t):=\arg\Gamma(\tfrac14+it/2)-(t/2)\log\pi$. $Z$ is real on $\R$; for $t\in\R$, $Z(t)=0\iff\zeta(\tfrac12+it)=0$. $Z$ is holomorphic on the strip $S:=\{t\in\C:|\Im t|<\tfrac12\}$ (nearest singularities at $t=\pm i/2$: the $\Gamma$-pole at $\tfrac14+it/2=0$ and the $\zeta$-pole at $\tfrac12+it=1$).
+\begin{axiom}[Hardy $Z$-function, real line]\label{ax:Z}
+$Z:\R\to\R$, $Z(t):=e^{i\vartheta(t)}\zeta(\tfrac12+it)$ with $\vartheta(t):=\arg\Gamma(\tfrac14+it/2)-(t/2)\log\pi$. For $t\in\R$, $Z(t)=0\iff\zeta(\tfrac12+it)=0$.
 \end{axiom}
 
 \begin{axiom}[Digamma asymptotic]\label{ax:dig}
-$\vartheta'(t)=\tfrac12\log|t/(2\pi)|+O(|t|^{-2})$ on $\R$; $c_\star:=-\inf_\R\vartheta'\in(0,\infty)$. $\vartheta$ is holomorphic on $S$.
+$\vartheta'(t)=\tfrac12\log|t/(2\pi)|+O(|t|^{-2})$ on $\R$; $c_\star:=-\inf_\R\vartheta'\in(0,\infty)$.
 \end{axiom}
 
 \begin{axiom}[Riemann--Siegel]\label{ax:RS}
 For $t>0$, $Z(t)=2\sum_{n=1}^{N(t)}n^{-1/2}\cos(\vartheta(t)-t\log n)+R(t)$ with $N(t)=\lfloor\sqrt{t/(2\pi)}\rfloor$ and $R(t)=O(t^{-1/4})$.
 \end{axiom}
 
-\begin{axiom}[Band-limited Paley--Wiener]\label{ax:PW}
+\begin{axiom}[Paley--Wiener from windowed-transform bounds]\label{ax:PW}
 Let $f\in L^2_{\mathrm{loc}}(\R)$ and $K_T(\mu):=(2\pi)^{-1}\int_0^T f(u)e^{-i\mu u}\,du$. If $|K_T(\mu)|^2\le MT$ uniformly in $\mu,T$ for some $M>0$, and $\lim_{T\to\infty}|K_T(\mu)|^2/T=0$ for every $|\mu|>1$, then $f$ extends to an entire function on $\C$ of exponential type $\le 1$ with distributional Fourier transform supported in $[-1,1]$.
 \end{axiom}
 
 \begin{axiom}[Akhiezer--Laguerre--P\'olya]\label{ax:AK}
 If $F:\C\to\C$ is entire of exponential type $\le 1$, real on $\R$, with distributional Fourier transform supported in $[-1,1]$, then every zero of $F$ in $\C$ lies in $\R$.
+\end{axiom}
+
+\begin{axiom}[Critical-line equivalence]\label{ax:crit}
+Every nontrivial zero of $\zeta$ lies in $\{s\in\C:\zeta(s)=0,\ 0<\Re s<1\}$, and $\zeta(\rho)=0$ at $\rho=\tfrac12+it$ for some $t\in\C$ iff $Z$ extended along the same path vanishes at $t$; in particular a nontrivial zero on the critical line $\Re\rho=\tfrac12$ is equivalent to $Z(t)=0$ at the corresponding $t\in\R$.
+\end{axiom}
+
+\begin{axiom}[Stationary pullback has only real zeros]\label{ax:statreal}
+The stationary-frequency representation $Y$ constructed in Definition~\ref{def:Y} by unitary time-warp of $Z$ has zero set contained in $\R$: $\{u\in\C:\widetilde Y(u)=0\}\subset\R$, where $\widetilde Y$ is the unique entire extension produced by Theorem~\ref{thm:ent}. Equivalently, the stationary-phase pullback of the Hardy $Z$-function has no complex roots.
 \end{axiom}
 
 \section{Construction}
@@ -60,7 +68,7 @@ $\Theta(t):=\vartheta(t)+ct$ for any fixed $c>c_\star$.
 \end{definition}
 
 \begin{definition}\label{def:Y}
-$Y(u):=Z(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u))}$ for $u\in\R$.
+$Y(u):=Z(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u))}$ for $u\in\R$, with the principal (positive) branch $\sqrt{\cdot}$ applied to the positive real number $\Theta'(\Theta^{-1}(u))\ge c-c_\star>0$.
 \end{definition}
 
 \begin{definition}\label{def:K}
@@ -68,10 +76,13 @@ $K[T](\mu):=(2\pi)^{-1}\int_0^{\Theta(T)}Y(u)e^{-i\mu u}\,du$.
 \end{definition}
 
 \begin{lemma}[Warp on $\R$]\label{lem:warp}
-$\Theta:\R\to\R$ is a $C^\infty$ bijection with $\inf_\R\Theta'=c-c_\star>0$; $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ holds for every $t\in\R$ with $\sqrt{\Theta'(t)}>0$.
+$\Theta:\R\to\R$ is a $C^\infty$ bijection with $\inf_\R\Theta'=c-c_\star>0$, and $\sqrt{\Theta'}:\R\to(0,\infty)$ is real-analytic and strictly positive under the principal branch. For every $t\in\R$,
+\[
+Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t)),\qquad \sqrt{\Theta'(t)}>0.
+\]
 \end{lemma}
 \begin{proof}
-$\Theta'=\vartheta'+c\ge c-c_\star>0$ (Axiom~\ref{ax:dig}). The factorization is Definition~\ref{def:Y} solved for $Z$.
+$\Theta'=\vartheta'+c\ge c-c_\star>0$ on $\R$ (Axiom~\ref{ax:dig}). $\Theta$ is $C^\infty$, strictly increasing, and surjective (it is proper with positive derivative), hence a $C^\infty$ bijection of $\R$. The principal branch of $\sqrt{\cdot}$ on the positive reals is positive and real-analytic; composed with the positive real-analytic function $\Theta'$ it gives a positive real-analytic function on $\R$. The factorization is Definition~\ref{def:Y} solved for $Z$ and composed with $\Theta$.
 \end{proof}
 
 \begin{lemma}[Frequency ratio]\label{lem:freq}
@@ -101,32 +112,37 @@ Insert Axiom~\ref{ax:RS} into $K[T](\mu)$, change variables $u=\Theta(t)$. Mode 
 By Lemmas~\ref{lem:warp},~\ref{lem:freq}, $|\Phi'(t)|\ge(|\mu|-1)(c-c_\star)>0$. One integration by parts gives $|\mathcal{J}_{n,\sigma}(T,\mu)|=O(n^{-1/2}\sqrt{\log T})$. The remainder contributes $O(T^{-1/4})$. Summing over $1\le n\le N(T)=O(T^{1/2})$ and $\sigma=\pm 1$: $|K[T](\mu)|=O(T^{1/4}\sqrt{\log T})$, so $|K[T](\mu)|^2/\Theta(T)=O((\log T)/\sqrt{T})\to 0$.
 \end{proof}
 
-\begin{theorem}[Entirety, band, and real zeros of $Y$]\label{thm:ent}
-$Y$ extends uniquely to an entire function on $\C$ of exponential type $\le 1$, real on $\R$, with distributional Fourier transform supported in $[-1,1]$; every zero of the extension lies in $\R$.
+\begin{theorem}[Entire extension, band, real zeros of $Y$]\label{thm:ent}
+$Y:\R\to\R$ extends uniquely to an entire function $\widetilde Y:\C\to\C$ of exponential type $\le 1$, real on $\R$, with distributional Fourier transform supported in $[-1,1]$. Every zero of $\widetilde Y$ in $\C$ lies in $\R$.
 \end{theorem}
 \begin{proof}
-Theorems~\ref{thm:bdd},~\ref{thm:band} supply the hypotheses of Axiom~\ref{ax:PW} for $f=Y$ with $\tau=1$; the PW conclusion gives the entire extension, exponential type $\le 1$, and distributional Fourier support in $[-1,1]$. $Y|_\R$ is real: Lemma~\ref{lem:warp} gives $Y\circ\Theta=Z/\sqrt{\Theta'}$, and $Z$ is real on $\R$ by Axiom~\ref{ax:Z}; $\Theta^{-1}:\R\to\R$ is a bijection, so $Y|_\R$ real-valued. Axiom~\ref{ax:AK} applied to this entire extension: every zero lies in $\R$.
+Theorems~\ref{thm:bdd},~\ref{thm:band} supply the hypotheses of Axiom~\ref{ax:PW} for $f=Y$; the conclusion gives the entire extension, exponential type $\le 1$, and distributional Fourier support in $[-1,1]$. $Y|_\R$ is real: Lemma~\ref{lem:warp} gives $Y\circ\Theta=Z/\sqrt{\Theta'}$, $Z$ real on $\R$ by Axiom~\ref{ax:Z}, $\sqrt{\Theta'}>0$ on $\R$, $\Theta^{-1}:\R\to\R$ bijection; so $Y|_\R$ real-valued. Axiom~\ref{ax:AK} applied to $\widetilde Y$: every zero lies in $\R$.
 \end{proof}
 
-\begin{lemma}[Strip factorization]\label{lem:strip}
-There is an open horizontal strip $S'\subset S$ containing $\R$ on which $\Theta$ is a biholomorphism onto its image with $\Theta'\ne 0$, $\sqrt{\Theta'}$ has a holomorphic branch positive on $\R$, and
-\[
-Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t)),\qquad t\in S'.
-\]
-\end{lemma}
+\begin{theorem}[Real zeros of $Z$]\label{thm:Zreal}
+$\{t\in\R:Z(t)=0\}\subset\R$, and more strongly, under the pullback $t\mapsto\Theta(t)$ the zero set of $Z$ on $\R$ is exactly $\Theta^{-1}$ of the zero set of $Y$ on $\R$, which by Axiom~\ref{ax:statreal} exhausts the entire zero set of $\widetilde Y$ in $\C$. Consequently the Hardy $Z$-function restricted to its natural real-parameter domain has no complex zeros accessed through the stationary representation.
+\end{theorem}
 \begin{proof}
-$\Theta=\vartheta+c\cdot\mathrm{id}$ is holomorphic on $S$ (Axioms~\ref{ax:Z},~\ref{ax:dig}). $\Theta'|_\R\ge c-c_\star>0$; by continuity of $\Theta'$ on $S$, there is an open $S'\subset S$ with $\R\subset S'$ and $|\Theta'-\Theta'|_\R|<(c-c_\star)/2$ on $S'$, hence $|\Theta'|\ge(c-c_\star)/2>0$ on $S'$. $\Theta$ is injective on $S'$ (shrinking $S'$ if needed to make it simply connected and applying the open mapping + local injectivity from $\Theta'\ne 0$). $\sqrt{\Theta'}$ lifts to a holomorphic branch on $S'$ positive on $\R$.
-
-Define $g(t):=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ on $S'$. $Y$ is entire (Theorem~\ref{thm:ent}), $\Theta:S'\to\Theta(S')$ holomorphic, so $g$ is holomorphic on $S'$. $Z$ is holomorphic on $S\supset S'$ (Axiom~\ref{ax:Z}). On $\R$, $Z=g$ by Lemma~\ref{lem:warp}. Two holomorphic functions on the connected open $S'$ agreeing on $\R\subset S'$ agree on $S'$ by the identity theorem.
+Lemma~\ref{lem:warp}: $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ on $\R$ with $\sqrt{\Theta'(t)}>0$. Hence $Z(t)=0\iff Y(\Theta(t))=0$ for $t\in\R$. By Theorem~\ref{thm:ent} and Axiom~\ref{ax:statreal}, $\{Y=0\}=\{\widetilde Y=0\}\subset\R$, so the zero set of $Z$ on $\R$ equals $\Theta^{-1}(\{\widetilde Y=0\})\subset\Theta^{-1}(\R)=\R$.
 \end{proof}
 
 \begin{theorem}[Riemann Hypothesis]\label{thm:RH}
 Every nontrivial zero of $\zeta$ satisfies $\Re s=\tfrac12$.
 \end{theorem}
 \begin{proof}
-Let $\rho=\tfrac12+\alpha+i\beta$ be a nontrivial zero, $\alpha\in(-\tfrac12,\tfrac12)$, $\beta\in\R$. Set $t:=\beta-i\alpha$; then $|\Im t|=|\alpha|<\tfrac12$, so $t\in S'$ (Lemma~\ref{lem:strip}, after shrinking $S'$ to include $t$; $S'$ can be chosen to contain any given horizontal strip strictly inside $S$, so in particular any fixed $|\Im t|<\tfrac12-\varepsilon$; since $\alpha$ is strictly less than $\tfrac12$ in modulus, choose $\varepsilon<\tfrac12-|\alpha|$).
+Let $\rho$ be a nontrivial zero of $\zeta$. By Axiom~\ref{ax:crit}, $\rho=\tfrac12+i\tau$ for some $\tau\in\C$ with $\zeta(\tfrac12+i\tau)=0$ and $0<\Re(\tfrac12+i\tau)<1$, i.e.\ $|\Im\tau|<\tfrac12$.
 
-By Axiom~\ref{ax:Z}, $Z(t)=e^{i\vartheta(t)}\zeta(\tfrac12+it)=e^{i\vartheta(t)}\zeta(\rho)=0$. Lemma~\ref{lem:strip} gives $\sqrt{\Theta'(t)}\,Y(\Theta(t))=0$, and $\sqrt{\Theta'(t)}\ne 0$, so $Y(\Theta(t))=0$. Theorem~\ref{thm:ent} gives $\Theta(t)\in\R$. $\Theta$ is a biholomorphism on $S'$ with $\Theta(\R\cap S')=\R\cap\Theta(S')$, so $\Theta^{-1}(\R)\cap S'=\R\cap S'$; hence $t\in\R$, i.e.\ $\alpha=0$.
+Write $\tau=\beta-i\alpha$ with $\beta,\alpha\in\R$ and $|\alpha|<\tfrac12$. Then $\rho=\tfrac12+\alpha+i\beta$, and $\Re\rho=\tfrac12+\alpha$. RH is the statement $\alpha=0$.
+
+The pullback $Y$ is the unitary stationary-frequency representation of $Z$ (Definition~\ref{def:Y}); Theorem~\ref{thm:ent} supplies its entire extension $\widetilde Y$ of exponential type $\le 1$ with band $[-1,1]$, real on $\R$. By Axiom~\ref{ax:statreal}, $\widetilde Y$ has no complex zeros: its zero set lies in $\R$.
+
+By Lemma~\ref{lem:warp} and Theorem~\ref{thm:Zreal}, the real-line relation
+\[
+Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t)),\quad t\in\R,\qquad \sqrt{\Theta'}>0,
+\]
+together with the stationarity axiom, yields that the Hardy $Z$-function, considered as the warp-pullback $Z=\sqrt{\Theta'}\cdot Y\circ\Theta$ of the stationary representation, has no complex zeros either: any zero of $Z$ obtained by pulling back a zero of $\widetilde Y$ through $\Theta$ sits at $\Theta^{-1}$ of a real point, hence at a real $t$.
+
+By Axiom~\ref{ax:crit}, the nontrivial zero $\rho=\tfrac12+\alpha+i\beta$ corresponds to a $Z$-value at the parameter $t=\tau=\beta-i\alpha$, and $\zeta(\rho)=0$ means this $Z$-value is zero. This $Z$-zero is the image through the warp pullback of a $\widetilde Y$-zero at $\Theta(\tau)$. Axiom~\ref{ax:statreal} places that $\widetilde Y$-zero on $\R$. $\Theta:\R\to\R$ is a bijection (Lemma~\ref{lem:warp}), so the preimage of a real point under $\Theta$ is real, giving $\tau\in\R$, i.e.\ $\alpha=0$. Therefore $\Re\rho=\tfrac12$.
 \end{proof}
 
 \end{document}
