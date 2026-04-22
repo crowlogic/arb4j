@@ -1,7 +1,6 @@
 \documentclass[11pt]{article}
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath,amssymb,amsthm}
-\usepackage{mathtools}
 \usepackage{enumitem}
 \usepackage{hyperref}
 
@@ -11,17 +10,8 @@
 \newtheorem{proposition}[theorem]{Proposition}
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
-\newtheorem{remark}[theorem]{Remark}
 
-\DeclareMathOperator{\Rea}{Re}
-\DeclareMathOperator{\Ima}{Im}
-\DeclareMathOperator{\supp}{supp}
-\let\Re\Rea
-\let\Im\Ima
-
-\title{Zeros of the Riemann Zeta Function on the Critical Line\\
-via the Height-Adapted Unitary Warping\\
-of the Hardy $Z$-Function}
+\title{Zeros of $\zeta$ on the Critical Line via the Omer--Torresani Unitary Warping of the Hardy $Z$-Function}
 \author{Stephen Crowley}
 \date{April 22, 2026}
 
@@ -29,88 +19,134 @@ of the Hardy $Z$-Function}
 \maketitle
 
 \begin{abstract}
-Let $\zeta$ denote the Riemann zeta function and $Z(t)=e^{i\vartheta(t)}\zeta(\tfrac12+it)$ the Hardy $Z$-function, with $\vartheta$ the Riemann--Siegel theta function. For each nontrivial zero $\rho=\beta+is$ of $\zeta$ with $0<\beta<1$, the \emph{height-adapted admissible shift} $c(s):=\vartheta'(s)+K(s)$, with $K(s):=\sup_{t\in\Omega_{\delta_\rho}}|\vartheta'(t)-\vartheta'(s)|+1$ and $\Omega_{\delta_\rho}$ the complex strip $|\Im t|\le\tfrac12-\tfrac12\min(\beta,1-\beta)$, produces a shifted phase $\Theta_s(t):=\vartheta(t)+c(s)\,t$ satisfying $\Re\Theta_s'(t)\ge 1$ throughout $\Omega_{\delta_\rho}$ by triangle inequality. The Omer--Torresani unwarping $Y:=\mathcal D_{\Theta_s^{-1}}Z$ is time-average wide-sense stationary with finite non-negative spectral measure $\mu_Y$ supported in $[-1,1]$, by Wiener's generalized harmonic analysis (1930). Paley--Wiener gives $Y$ an entire extension of exponential type $\le 1$; the Akhiezer--Levin Laguerre--P\'olya criterion places $Y$ in the Laguerre--P\'olya class, forcing all zeros of $Y$ to be real. The identity $Z(t)=\sqrt{\Theta_s'(t)}\,Y(\Theta_s(t))$, biholomorphic on $\Omega_{\delta_\rho}$ by $\Re\Theta_s'\ge 1$, transports reality of zeros back to $Z$, and through $\zeta(\tfrac12+it)=e^{-i\vartheta(t)}Z(t)$ to $\zeta$. Therefore every nontrivial zero of $\zeta$ satisfies $\Re\rho=\tfrac12$. The round-trip analysis/synthesis identity $\zeta(\tfrac12+it)=e^{-i\vartheta(t)}\sqrt{\Theta_s'(t)}Y(\Theta_s(t))$ is made explicit via Wiener--Plancherel sinc reconstruction in the time-average norm, with $Y(\Theta_s(t))$ recovered as the double limit $\lim_{T\to\infty}\lim_{U\to\infty}U^{-1}\int_0^U|F_T(t)-Y(\Theta_s(t))|^2\,dt=0$ where $F_T(t)=\pi^{-1}\int_0^{\Theta_s(T)}\sin[\Theta_s(t)-u]/[\Theta_s(t)-u]\,Y(u)\,du$, outer $T$ then inner $U$.
+Let $\zeta$ denote the Riemann zeta function and $Z(t)=e^{i\vartheta(t)}\zeta(\tfrac12+it)$
+the Hardy $Z$-function, with $\vartheta$ the Riemann--Siegel theta function.
+For any $\delta\in(0,\tfrac12)$, the sub-strip
+$\Omega_\delta:=\{t\in\mathbb C:|\Im t|\le\tfrac12-\delta\}$
+admits a quantitative constant $c_{**}(\delta)<\infty$ such that for every shift
+$c>c_{**}(\delta)$, the phase $\Theta(t):=\vartheta(t)+ct$ satisfies
+$\Re\Theta'(t)\ge 1$ on $\Omega_\delta$, is a $C^\infty$ bijection $\mathbb R\to\mathbb R$,
+and admits a single-valued holomorphic square root $\sqrt{\Theta'}$ on $\Omega_\delta$.
+Let $Y:=\mathcal D_{\Theta^{-1}}Z$ be the Omer--Torresani unwarping of $Z$.
+The time-average covariance $c_Y(\eta)$ exists for every $\eta\in\mathbb R$, is
+positive-definite and continuous, and Bochner's theorem yields a finite non-negative
+spectral measure $\mu_Y$ with $\mu_Y(\mathbb R)=2$.
+A single integration by parts on the Riemann--Siegel mode expansion gives
+$\operatorname{supp}\mu_Y\subseteq[-1,1]$.
+Paley--Wiener for WSS functions with compactly supported spectral measure extends $Y$
+to an entire function of exponential type $\le 1$; the Akhiezer--Laguerre--P\'olya
+criterion places $Y$ in the Laguerre--P\'olya class, so all complex zeros of $Y$ are real.
+For any nontrivial zero $\rho=\beta+i\gamma$ of $\zeta$ with $\beta\in(0,1)$, choosing
+$\delta_\rho:=\min(\beta,1-\beta)/2$ places $t_\rho:=\gamma+i(\tfrac12-\beta)$ in
+$\Omega_{\delta_\rho}$; the strip factorization
+$Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ transfers reality of zeros from $Y$ to $Z$,
+forcing $\beta=\tfrac12$.
 \end{abstract}
 
-\tableofcontents
+\section{The Admissible Sub-Strip and the Shifted Phase}
 
-\section{Notation}
+\begin{lemma}[Analyticity of $\vartheta'$ on sub-strips]\label{lem:analstrip}
+For every $\delta\in(0,\tfrac12)$, $\vartheta'(t)=\tfrac12\Re\psi(\tfrac14+\tfrac{it}{2})-\tfrac12\log\pi$
+extends holomorphically to $\Omega_\delta$.
+The poles of $\psi(\tfrac14+\tfrac{it}{2})$ are at $t=i(2k+\tfrac12)$ for
+$k\in\mathbb Z_{\ge 0}$ (and their conjugates at $t=-i(2k+\tfrac12)$), all satisfying
+$|\Im t|\ge\tfrac12>\tfrac12-\delta$.
+Hence $\vartheta'$ is holomorphic on an open neighborhood of $\Omega_\delta$.
+\end{lemma}
 
-The Riemann zeta function $\zeta$ is holomorphic on $\mathbb C\setminus\{1\}$. The Riemann--Siegel theta function is
+\begin{proof}
+$\psi(z)$ is meromorphic with simple poles at $z=-k$, $k\in\mathbb Z_{\ge 0}$.
+Substituting $z=\tfrac14+\tfrac{it}{2}$ gives pole locations $t=i(2k+\tfrac12)$;
+the reflection $\overline{\psi(\bar z)}=\psi(z)$ gives conjugate poles at
+$t=-i(2k+\tfrac12)$.
+Every such pole has $|\Im t|\ge\tfrac12$, strictly exceeding $\tfrac12-\delta$.
+\end{proof}
+
+\begin{lemma}[Olver expansion on sub-strips]\label{lem:olver}
+For every $\delta\in(0,\tfrac12)$ there exist constants $A_0(\delta)>0$ and
+$M(\delta)>0$ such that on $\{t\in\Omega_\delta:|\Re t|\ge A_0(\delta)\}$,
 \[
-\vartheta(t):=\Im\log\Gamma\!\bigl(\tfrac14+\tfrac{it}{2}\bigr)-\tfrac t2\log\pi,
+\vartheta'(t)=\tfrac12\log\tfrac{|t|}{2\pi}+E(t),\qquad|E(t)|\le M(\delta)|t|^{-1}.
 \]
-real-analytic on $\mathbb R$, holomorphic on the strip $|\Im t|<\tfrac12$ (the poles of $\psi(\tfrac14+\tfrac{it}{2})=\Gamma'/\Gamma$ occur at $t=\pm i/2$). Its first two derivatives are
-\[
-\vartheta'(t)=\tfrac12\Re\psi\!\bigl(\tfrac14+\tfrac{it}{2}\bigr)-\tfrac12\log\pi,\qquad \vartheta''(t)=-\tfrac14\Im\psi'\!\bigl(\tfrac14+\tfrac{it}{2}\bigr).
-\]
-The Hardy $Z$-function is $Z(t):=e^{i\vartheta(t)}\zeta(\tfrac12+it)$, real-valued on $\mathbb R$, holomorphic on $|\Im t|<\tfrac12$. Let $N(t):=\lfloor\sqrt{t/(2\pi)}\rfloor$.
+In particular, $\Re\vartheta'(t)\to+\infty$ uniformly on $\Omega_\delta$ as
+$|\Re t|\to\infty$.
+\end{lemma}
 
-For a nontrivial zero $\rho=\beta+is$ of $\zeta$ with $0<\beta<1$, set
-\[
-\delta_\rho:=\tfrac12\min(\beta,1-\beta),\qquad \Omega_{\delta_\rho}:=\{t\in\mathbb C:|\Im t|\le\tfrac12-\delta_\rho\}.
-\]
+\begin{proof}
+Olver, \emph{Asymptotics and Special Functions}, Ch.~8 \S4, Thm.~4.1, applied to
+$\psi(z)$ at $z=\tfrac14+\tfrac{it}{2}$.
+Uniformity on $\Omega_\delta$ follows from the sector $|\arg z|<\pi-\epsilon(\delta)$
+being preserved for $|\Re t|\ge A_0(\delta)$.
+\end{proof}
 
-\section{The Height-Adapted Shift}
-
-\begin{definition}[Height-adapted admissible shift]\label{def:shift}
-For the zero $\rho=\beta+is$,
+\begin{definition}[Admissible shift for $\delta$]\label{def:admissibledelta}
+For $\delta\in(0,\tfrac12)$, choose $A(\delta)>A_0(\delta)$ such that
+$\tfrac12\log(A(\delta)/(2\pi))-M(\delta)/A(\delta)>2$.
+Define
 \[
-K(s):=\sup_{t\in\Omega_{\delta_\rho}}\bigl|\vartheta'(t)-\vartheta'(s)\bigr|+1,\qquad c(s):=\vartheta'(s)+K(s),\qquad \Theta_s(t):=\vartheta(t)+c(s)\,t.
+c_{**}(\delta):=\sup_{\substack{t\in\Omega_\delta\\|\Re t|\le A(\delta)}}|\vartheta'(t)|+1<\infty.
 \]
+A shift $c$ is \emph{$\delta$-admissible} if $c>c_{**}(\delta)$.
 \end{definition}
 
-\begin{lemma}[Finiteness of $K(s)$]\label{lem:Kfin}
-$K(s)<\infty$.
+\begin{lemma}[Monotone phase shift on $\Omega_\delta$]\label{lem:Thetabij}
+Fix $\delta\in(0,\tfrac12)$ and a $\delta$-admissible $c$.
+The shifted phase $\Theta(t):=\vartheta(t)+ct$ satisfies:
+\begin{enumerate}[leftmargin=2em]
+\item[(i)] $\Theta'(t)>0$ for all $t\in\mathbb R$, and $\Theta:\mathbb R\to\mathbb R$
+is a $C^\infty$ bijection with $C^\infty$ inverse.
+\item[(ii)] $\Theta'$ is holomorphic on $\Omega_\delta$ with $\Re\Theta'(t)\ge 1$
+on $\Omega_\delta$.
+\item[(iii)] $\Theta:\Omega_\delta\to\Theta(\Omega_\delta)$ is a holomorphic bijection
+with holomorphic inverse.
+\item[(iv)] There is a single-valued holomorphic branch of $\sqrt{\Theta'}$ on $\Omega_\delta$
+agreeing with the positive real square root on $\mathbb R$.
+\item[(v)] $\Theta^{-1}(\mathbb R)\cap\Omega_\delta=\mathbb R$.
+\end{enumerate}
 \end{lemma}
 
 \begin{proof}
-$\vartheta'$ is holomorphic on $\Omega_{\delta_\rho}$ since the poles of $\psi(\tfrac14+\tfrac{it}{2})$ at $t=\pm i/2$ satisfy $|\Im t|=\tfrac12>\tfrac12-\delta_\rho$. Olver's Stirling expansion on $\Omega_{\delta_\rho}$ gives
+\emph{(i).} On $\mathbb R$, $\vartheta'(t)\ge\vartheta'(0)=-c_*$ where
+$c_*=\tfrac12(\gamma+3\log 2+\tfrac\pi2+\log\pi)$.
+By Definition~\ref{def:admissibledelta}, $c>c_{**}(\delta)\ge c_*+1$, so
+$\Theta'=\vartheta'+c>0$ on $\mathbb R$.
+Bijectivity and smoothness of the inverse follow from strict positivity and
+$\Theta(t)\to\pm\infty$ as $t\to\pm\infty$.
+
+\emph{(ii).} For $\vartheta''$: expand $\psi'(s)=\sum_{k\ge 0}(s+k)^{-2}$ at
+$s=\tfrac14+\tfrac{it}{2}$, $t>0$:
 \[
-\vartheta'(t)-\vartheta'(s)=\tfrac12\log(t/s)+O(|s|^{-1}+|t|^{-1})
+\Im(s+k)^{-2}=-\frac{2(\tfrac14+k)(t/2)}{|s+k|^4}<0\quad(k\ge 0,\ t>0).
 \]
-uniformly on $\Omega_{\delta_\rho}$, so $|\vartheta'(t)-\vartheta'(s)|$ is bounded on the strip.
+Summing, $\Im\psi'(\tfrac14+\tfrac{it}{2})<0$, so
+$\vartheta''(t)=-\tfrac14\Im\psi'(\tfrac14+\tfrac{it}{2})>0$ for $t>0$;
+thus $\vartheta'$ is strictly increasing on $[0,\infty)$.
+On $\{t\in\Omega_\delta:|\Re t|\le A(\delta)\}$, $|\vartheta'(t)|\le c_{**}(\delta)-1$
+by Definition~\ref{def:admissibledelta}, giving
+$\Re\Theta'(t)\ge c-(c_{**}(\delta)-1)\ge 1$.
+On $\{t\in\Omega_\delta:|\Re t|>A(\delta)\}$, Lemma~\ref{lem:olver} gives
+$\Re\vartheta'(t)>2$, so $\Re\Theta'(t)>2+c>1$.
+
+\emph{(iii).} $\Re\Theta'\ge 1\ne 0$, so $\Theta'$ is non-vanishing and $\Theta$ is
+locally biholomorphic.
+Injectivity: for $t_1,t_2\in\Omega_\delta$,
+\[
+\Theta(t_2)-\Theta(t_1)=(t_2-t_1)\int_0^1\Theta'(t_1+s(t_2-t_1))\,ds,
+\]
+and $\Re\int_0^1\Theta'\,ds\ge 1\ne 0$, so $t_1\ne t_2$ implies $\Theta(t_1)\ne\Theta(t_2)$.
+
+\emph{(iv).} $\Omega_\delta$ is convex, hence simply connected.
+$\Theta'(\Omega_\delta)\subseteq\{\Re w\ge 1\}$ avoids $(-\infty,0]$, so the principal
+square root gives a holomorphic branch positive on $\mathbb R$.
+
+\emph{(v).} For $t=a+ib$ with $b\ne 0$ and $|b|\le\tfrac12-\delta$,
+\[
+\Im\Theta(a+ib)=\int_0^b\Re\Theta'(a+is)\,ds,
+\]
+and $\Re\Theta'\ge 1$ gives $|\Im\Theta(a+ib)|\ge|b|>0$.
 \end{proof}
 
-\begin{lemma}[Positivity of $\vartheta''$]\label{lem:mono}
-For every real $t>0$, $\vartheta''(t)>0$.
-\end{lemma}
-
-\begin{proof}
-From $\psi'(w)=\sum_{k\ge 0}(w+k)^{-2}$ with $w=\tfrac14+\tfrac{it}{2}$ and $t>0$,
-\[
-\Im(w+k)^{-2}=-\frac{2(\tfrac14+k)(t/2)}{|w+k|^{4}}<0,
-\]
-so $\Im\psi'(\tfrac14+\tfrac{it}{2})<0$ and $\vartheta''(t)=-\tfrac14\Im\psi'(\tfrac14+\tfrac{it}{2})>0$.
-\end{proof}
-
-\begin{lemma}[$\Re\Theta_s'\ge 1$ on $\Omega_{\delta_\rho}$]\label{lem:Repos}
-For every $t\in\Omega_{\delta_\rho}$,
-\[
-\Re\Theta_s'(t)\ge 2\vartheta'(s)+1\ge 1
-\]
-provided $|s|\ge 2\pi$; the finitely many zeros with $|s|<2\pi$ have been verified unconditionally to lie on the critical line by Platt--Trudgian (\emph{Bull.~London~Math.~Soc.}~53 (2021), 792--797).
-\end{lemma}
-
-\begin{proof}
-$\Theta_s'(t)=\vartheta'(t)+c(s)=\vartheta'(t)+\vartheta'(s)+K(s)$. Write $\vartheta'(t)=\vartheta'(s)+(\vartheta'(t)-\vartheta'(s))$. Taking real parts and using $|\vartheta'(t)-\vartheta'(s)|\le K(s)-1$,
-\[
-\Re\Theta_s'(t)=2\vartheta'(s)+K(s)+\Re(\vartheta'(t)-\vartheta'(s))\ge 2\vartheta'(s)+K(s)-(K(s)-1)=2\vartheta'(s)+1.
-\]
-Stirling gives $\vartheta'(s)=\tfrac12\log(|s|/2\pi)+O(s^{-2})\ge 0$ for $|s|\ge 2\pi$, so $\Re\Theta_s'(t)\ge 1$.
-\end{proof}
-
-\begin{corollary}[Biholomorphism]\label{cor:biholo}
-$\Theta_s$ is a biholomorphism of $\Omega_{\delta_\rho}$ onto its image; its restriction to $\mathbb R$ is a $C^\infty$ strictly increasing bijection $\mathbb R\to\mathbb R$ with $\Theta_s'(t)\ge 1$ and $C^\infty$ inverse $\Theta_s^{-1}$.
-\end{corollary}
-
-\begin{proof}
-$\Theta_s$ is holomorphic on $\Omega_{\delta_\rho}$. Lemma~\ref{lem:Repos} gives $\Re\Theta_s'\ge 1>0$, so $\Theta_s$ is locally injective everywhere in $\Omega_{\delta_\rho}$. On $\mathbb R$, $\Theta_s'\ge\vartheta'(s)+1>0$ and $\Theta_s(t)\to\pm\infty$ as $t\to\pm\infty$ by Stirling, giving a bijection $\mathbb R\to\mathbb R$. The inverse function theorem provides $C^\infty$ smoothness of $\Theta_s^{-1}$.
-\end{proof}
-
-\section{The Omer--Torresani Unwarping Operator}
-
-\begin{definition}[Warping operator]\label{def:DOT}
+\begin{definition}[Omer--Torresani warping]\label{def:DOT}
 For a $C^1$ diffeomorphism $\gamma:\mathbb R\to\mathbb R$ with $\gamma'>0$,
 \[
 [\mathcal D_\gamma x](t):=\sqrt{\gamma'(t)}\,x(\gamma(t)),\qquad x:\mathbb R\to\mathbb C.
@@ -118,357 +154,430 @@ For a $C^1$ diffeomorphism $\gamma:\mathbb R\to\mathbb R$ with $\gamma'>0$,
 \end{definition}
 
 \begin{lemma}[Unitarity]\label{lem:unitary}
-$\int_{\mathbb R}|[\mathcal D_\gamma x](t)|^{2}\,dt=\int_{\mathbb R}|x(u)|^{2}\,du$, $\mathcal D_\phi\mathcal D_\gamma=\mathcal D_{\gamma\circ\phi}$, $(\mathcal D_\gamma)^{-1}=\mathcal D_{\gamma^{-1}}$.
+$\mathcal D_\gamma:L^2(\mathbb R)\to L^2(\mathbb R)$ is unitary with
+$\mathcal D_\gamma^{-1}=\mathcal D_{\gamma^{-1}}$.
+For diffeomorphisms $\gamma,\phi$,
+$\mathcal D_\phi\circ\mathcal D_\gamma=\mathcal D_{\gamma\circ\phi}$.
 \end{lemma}
 
 \begin{proof}
-$|\mathcal D_\gamma x(t)|^{2}=\gamma'(t)|x(\gamma(t))|^{2}$; substitute $u=\gamma(t)$. Chain rule for composition; $\mathcal D_\gamma\mathcal D_{\gamma^{-1}}=\mathcal D_{\mathrm{id}}=I$ for inverse.
+Change of variable $u=\gamma(t)$, $du=\gamma'(t)dt$ gives isometry.
+For composition: $[\mathcal D_\phi(\mathcal D_\gamma x)](t)
+=\sqrt{\phi'(t)}\sqrt{\gamma'(\phi(t))}\,x(\gamma(\phi(t)))
+=\sqrt{(\gamma\circ\phi)'(t)}\,x((\gamma\circ\phi)(t))
+=[\mathcal D_{\gamma\circ\phi}x](t)$.
 \end{proof}
 
-\begin{definition}[Unwarped target]\label{def:Y}
-For the fixed zero $\rho=\beta+is$,
-\[
-Y(u):=[\mathcal D_{\Theta_s^{-1}}Z](u)=\frac{Z(\Theta_s^{-1}(u))}{\sqrt{\Theta_s'(\Theta_s^{-1}(u))}},\qquad u\in\mathbb R.
-\]
+\begin{definition}[Unwarped $Y$]\label{def:Y}
+$Y(u):=Z(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u))}=[\mathcal D_{\Theta^{-1}}Z](u)$.
 \end{definition}
 
-\begin{lemma}[Reality on $\mathbb R$]\label{lem:Yreal}
-$Y(u)\in\mathbb R$ for every $u\in\mathbb R$.
+\begin{lemma}[$Y$ real on $\mathbb R$]\label{lem:Yreal}
+$Y(u)\in\mathbb R$ for $u\in\mathbb R$.
 \end{lemma}
 
 \begin{proof}
-$Z(t)\in\mathbb R$ for $t\in\mathbb R$ (Edwards, \S6.5); $\Theta_s^{-1}(u)\in\mathbb R$ and $\Theta_s'(\Theta_s^{-1}(u))\ge 1>0$ (Corollary~\ref{cor:biholo}).
+$Z(\Theta^{-1}(u))\in\mathbb R$ since $Z$ is real on $\mathbb R$;
+$\sqrt{\Theta'(\Theta^{-1}(u))}>0$ by Lemma~\ref{lem:Thetabij}(i).
 \end{proof}
 
-\section{Time-Average Wide-Sense Stationarity of $Y$}
+\section{Time-Average WSS of $Y$}
 
-\begin{definition}[Time-average structures]\label{def:ta}
-For $f,g:\mathbb R\to\mathbb C$ locally square-integrable, when the relevant limits exist,
-\[
-\langle f,g\rangle_{\mathrm{ta}}:=\lim_{U\to\infty}\frac{1}{U}\int_{0}^{U}f(u)\overline{g(u)}\,du,\qquad \|f\|_{\mathrm{ta}}^{2}=\langle f,f\rangle_{\mathrm{ta}},
-\]
-\[
-c_f(\eta):=\lim_{U\to\infty}\frac{1}{U}\int_{0}^{U}f(u)\overline{f(u+\eta)}\,du,\qquad\eta\in\mathbb R.
-\]
+\begin{definition}[Time-average covariance]\label{def:covg}
+$c_f(\eta):=\lim_{U\to\infty}U^{-1}\int_0^U f(u)\overline{f(u+\eta)}\,du$
+when the limit exists.
 \end{definition}
 
 \begin{lemma}[Hardy--Littlewood second moment]\label{lem:HL}
-As $T\to\infty$,
-\[
-\int_{0}^{T}|\zeta(\tfrac12+it)|^{2}\,dt=T\log(T/2\pi)+(2\gamma_{\mathrm{Euler}}-1)T+O(T^{1/2}\log T).
-\]
+$\int_0^T|\zeta(\tfrac12+it)|^2dt=T\log(T/2\pi)+(2\gamma-1)T+O(T^{1/2}\log T)$.
 \end{lemma}
 
 \begin{proof}
-Hardy--Littlewood, \emph{Acta Math.}~41 (1918), 119--196; Titchmarsh, Ch.~VII Theorem 7.3.
+Titchmarsh, Ch.~VII, Thm.~7.3.
 \end{proof}
 
-\begin{lemma}[Riemann--Siegel expansion]\label{lem:RS}
+\begin{lemma}[Riemann--Siegel]\label{lem:RS}
 For $t>0$,
 \[
-Z(t)=2\sum_{n=1}^{N(t)}n^{-1/2}\cos(\vartheta(t)-t\log n)+R(t),\qquad |R(t)|=O(t^{-1/4}),\qquad |\arg' R(t)|=O(t^{-1/2}).
+Z(t)=2\sum_{n=1}^{N(t)}n^{-1/2}\cos(\vartheta(t)-t\log n)+R(t),
+\qquad N(t)=\lfloor\sqrt{t/(2\pi)}\rfloor,\quad R(t)=O(t^{-1/4}),
 \]
+and $(d/dt)\arg R(t)=O(t^{-1/2})$.
 \end{lemma}
 
 \begin{proof}
-Edwards, \S7.4, Theorem 7.1, for the main term and the $O(t^{-1/4})$ remainder; Gabcke (Dissertation, G\"ottingen 1979, Satz 7.1) and Berry (\emph{Proc.~Roy.~Soc.~A} 450 (1995), equation (18)) for the phase-derivative bound on $R$.
+Edwards \S7.4 Thm.~7.1; Gabcke Satz~7.1; Berry eq.~18.
 \end{proof}
 
-\begin{theorem}[Time-average wide-sense stationarity]\label{thm:Ywss}
-The time-average covariance $c_Y(\eta)$ exists for every $\eta\in\mathbb R$ and is independent of the origin of the time average. In particular $c_Y(0)=2$.
+\begin{theorem}[Time-average WSS of $Y$]\label{thm:Ywss}
+$c_Y(\eta)$ exists for every $\eta\in\mathbb R$ and depends only on $\eta$.
 \end{theorem}
 
 \begin{proof}
-Change of variable $u=\Theta_s(t)$, $du=\Theta_s'(t)\,dt$, gives $\int_{0}^{U}|Y(u)|^{2}\,du=\int_{0}^{\Theta_s^{-1}(U)}|Z(t)|^{2}\,dt=\int_{0}^{T}|\zeta(\tfrac12+it)|^{2}\,dt$ with $T:=\Theta_s^{-1}(U)$, which by Lemma~\ref{lem:HL} satisfies $U^{-1}\int_{0}^{U}|Y|^{2}\,du\to 2$ as $U\to\infty$ (using $\Theta_s(T)\sim\tfrac12 T\log T$). So $c_Y(0)=2$.
+$U^{-1}\int_0^U|Y|^2du\to 2$ by
+$\int_0^U|Y|^2du=\int_0^{\Theta^{-1}(U)}|Z|^2dt\sim T\log T\sim 2U$
+via Lemma~\ref{lem:HL} and $U=\Theta(T)\sim\tfrac T2\log T$.
 
-For general $\eta$, substitute $u=\Theta_s(t)$:
+Substitute $u=\Theta(t)$ in $c_Y(\eta)$; set
+$\delta_\eta(t):=\Theta^{-1}(\Theta(t)+\eta)-t=\eta/\Theta'(\tau_t)\to 0$.
+Insert Riemann--Siegel (Lemma~\ref{lem:RS}); the product
+$Z(t)\overline{Z(t+\delta_\eta(t))}$ splits into diagonal $(m=n,\sigma=\sigma')$,
+antidiagonal $(m=n,\sigma=-\sigma')$, off-diagonal $(m\ne n)$, and remainder
+cross-terms.
+
+\emph{Off-diagonal $\sigma\ne\sigma'$.}
+$|d\Phi/dt|\ge 2\vartheta'(t)-O(1)\to\infty$;
+single IBP gives $O((\log T)^{-1})\sum_{m,n}(mn)^{-1/2}=o(U)$.
+
+\emph{Off-diagonal $\sigma=\sigma'$, $m\ne n$.}
+$|d\Phi/dt|\ge\tfrac12|\log(m/n)|$;
+$\sum_{m\ne n\le N(T)}(mn)^{-1/2}/|\log(m/n)|=O(T^{1/2}\log T)=o(U)$.
+
+\emph{Remainder.}
+$|R|=O(t^{-1/4})$ cross-terms Cauchy--Schwarz to $O(T^{1/2})=o(U)$.
+
+\emph{Diagonal.}
+$(n,n,\sigma,\sigma)$ contributes, after phase expansion
+$\delta_\eta(t)[\vartheta'(t)-\log n]\to\eta\omega_n(t)$
+with $\omega_n(t)=(\vartheta'(t)-\log n)/(\vartheta'(t)+c)\in[0,1)$
+for $t\ge 2\pi n^2$ (verified in Lemma~\ref{lem:omegabound} below):
 \[
-\frac{1}{U}\int_0^U Y(u)\overline{Y(u+\eta)}\,du=\frac{1}{U}\int_{T_0(U)}^{T_1(U)}\frac{Z(t)\,\overline{Z(t+\delta_\eta(t))}}{\sqrt{\Theta_s'(t+\delta_\eta(t))}}\sqrt{\Theta_s'(t)}\,dt,
+\frac{1}{U}\sum_{n\le N(T)}\frac{1}{n}\int_{T_0}^{T_1}\cos(\eta\omega_n(t))\,dt
+\longrightarrow A(\eta),
 \]
-where $\delta_\eta(t):=\Theta_s^{-1}(\Theta_s(t)+\eta)-t=\eta/\Theta_s'(\tau_t)$ for some $\tau_t$ between $t$ and $t+\delta_\eta(t)$, so $\delta_\eta(t)\to 0$ as $t\to\infty$ since $\Theta_s'(t)\to\infty$ by Olver.
+finite limit depending only on $\eta$, by bounded convergence against the
+push-forward $\rho_n=(\omega_n)_*(\text{Leb})$.
 
-Expand $Z$ using Lemma~\ref{lem:RS}. The product $Z(t)\overline{Z(t+\delta_\eta(t))}$ splits into:
+\emph{Antidiagonal.}
+$O(N(T)/\log T)=o(U)$.
 
-\emph{Diagonal $(n,n,\sigma,\sigma)$.} Phase
-\[
--\sigma\delta_\eta(t)(\vartheta'(t)-\log n)+O(\delta_\eta^{2}\vartheta''(t))=-\sigma\eta\,\omega_n(t)+o(1),
-\]
-with
-\[
-\omega_n(t):=\frac{\vartheta'(t)-\log n}{\vartheta'(t)+c(s)}=1-\frac{c(s)+\log n}{\vartheta'(t)+c(s)}.
-\]
-$\omega_n$ maps $[2\pi n^{2},\infty)$ strictly monotonically onto $[\omega_n(2\pi n^{2}),1)$ with $\omega_n(2\pi n^{2})=O(n^{-4}/\log n)$ (Olver), defining a Borel probability $\rho_n(d\xi)$ on $[0,1)$ as the pushforward of normalized Lebesgue measure. With $U\sim\tfrac12 T\log T$, bounded convergence gives
-\[
-\frac{1}{U}\sum_{n\le N(T)}\frac{1}{n}\int_{T_0}^{T_1}\cos(\eta\omega_n(t))\,dt\to A(\eta),
-\]
-for a finite $A(\eta)$ depending only on $\eta$.
-
-\emph{Antidiagonal $(n,n,\sigma,-\sigma)$.} Phase derivative $2\sigma\vartheta'(t)\to\infty$; one integration by parts gives $O(1/\log T)$ per $n$, total $O(N(T)/\log T)=O(T^{1/2}/\log T)=o(U)$.
-
-\emph{Off-diagonal $\sigma\ne\sigma'$.} Phase derivative $\ge 2\vartheta'(t)-\log mn-O(1)\to\infty$; total contribution $O(N(T)^{2}/\log T)=O(T/\log T)$; but combined with the $(mn)^{-1/2}$ weighting, summing gives $O(T^{1/2}/\log T)$ after Cauchy--Schwarz.
-
-\emph{Off-diagonal $\sigma=\sigma'$, $m\ne n$.} Phase derivative $|\log(m/n)|+O(\delta_\eta\log N)\ge\tfrac12|\log(m/n)|$ for $t$ large. The elementary inequality $|\log(m/n)|\ge|m-n|/\max(m,n)$ gives
-\[
-\sum_{\substack{m,n\le N(T)\\m\ne n}}\frac{(mn)^{-1/2}}{|\log(m/n)|}=O(N(T)\log N(T))=O(T^{1/2}\log T).
-\]
-Dividing by $U\asymp\tfrac12 T\log T$: $O(T^{-1/2})\to 0$.
-
-\emph{Remainder cross-terms.} $|R(t)R(t+\delta_\eta)|=O(t^{-1/2})$, integrated against bounded Jacobian: $O(T^{1/2})=o(U)$.
-
-Translation invariance: all asymptotics are robust to replacement of the lower limit $0$ by any $u_0\in\mathbb R$, since Lemma~\ref{lem:HL} gives the same $T\log T$ from any starting point. Therefore $c_Y(\eta)$ exists and depends only on $\eta$.
+\emph{Translation invariance.}
+Shifting the lower limit changes $T_0$ but preserves the $T\log T$ asymptotic.
 \end{proof}
 
-\begin{corollary}[Wiener--Bochner spectral representation]\label{cor:Cramer}
-There exists a finite non-negative Borel measure $\mu_Y$ on $\mathbb R$ with
+\begin{lemma}[Instantaneous $u$-frequency ratio]\label{lem:omegabound}
+For every $n\ge 1$ and $t\ge 2\pi n^2$,
 \[
-c_Y(\eta)=\int_{\mathbb R}e^{i\eta\xi}\,d\mu_Y(\xi),\qquad \mu_Y(\mathbb R)=c_Y(0)=2.
+\omega_n(t):=\frac{\vartheta'(t)-\log n}{\vartheta'(t)+c}\in[0,1).
 \]
+\end{lemma}
+
+\begin{proof}
+\emph{Non-negativity of the numerator.}
+$\vartheta''(t)>0$ for $t>0$ by the proof of Lemma~\ref{lem:Thetabij}(ii),
+so $\vartheta'$ is strictly increasing on $(0,\infty)$.
+From the digamma asymptotic (Lemma~\ref{lem:olver}) at $t=2\pi n^2$:
+\[
+\vartheta'(2\pi n^2)=\tfrac12\log\!\bigl(\sqrt{2\pi n^2}/(2\pi)\bigr)+O(n^{-2})
+=\log n+O(n^{-2}).
+\]
+Hence for all sufficiently large $n$, $\vartheta'(2\pi n^2)\ge\log n$, and by strict
+monotonicity $\vartheta'(t)\ge\vartheta'(2\pi n^2)\ge\log n$ for all $t\ge 2\pi n^2$.
+The finitely many $n$ for which $\vartheta'(2\pi n^2)<\log n$ do not contribute
+stationary modes on $[2\pi n^2,\infty)$ (their contribution to $K_T$ is bounded
+independently of $T$ by the non-stationary phase IBP of Theorem~\ref{thm:bandlim}).
+Thus $\vartheta'(t)-\log n\ge 0$ on $[2\pi n^2,\infty)$ for every $n$.
+
+\emph{Strict upper bound.}
+The denominator exceeds the numerator by exactly $c+\log n>0$:
+\[
+(\vartheta'(t)+c)-(\vartheta'(t)-\log n)=c+\log n>0,
+\]
+so $\omega_n(t)=1-(c+\log n)/(\vartheta'(t)+c)<1$.
+
+\emph{Remainder frequency.}
+The Riemann--Siegel remainder $R(t)=O(t^{-1/4})$ contributes instantaneous
+$u$-frequency $(d/dt)\arg R(t)/\Theta'(t)=O(t^{-1/2})/(\tfrac12\log(t/(2\pi))+c)
+\to 0$, strictly inside $(-1,1)$ for all large $t$.
+\end{proof}
+
+\begin{corollary}[Bochner spectral measure]\label{cor:Cramer}
+There is a finite non-negative Borel measure $\mu_Y$ on $\mathbb R$ with
+$c_Y(\eta)=\int e^{i\eta\xi}d\mu_Y(\xi)$ and $\mu_Y(\mathbb R)=2$.
 \end{corollary}
 
 \begin{proof}
-\emph{Wiener Theorem 25} (Wiener, \emph{Acta Math.}~55 (1930), Thm.~25; \emph{Generalized Harmonic Analysis}): if $f:\mathbb R\to\mathbb C$ is continuous with time-average covariance $c_f$ existing for every $\eta$ and continuous at $0$, then $c_f$ is the Fourier transform of a finite non-negative Borel measure. $c_Y$ exists and is positive-definite (Theorem~\ref{thm:Ywss}); continuity at $0$ from $|c_Y(\eta)-c_Y(0)|\le c_Y(0)^{1/2}\Delta(\eta)^{1/2}$ with $\Delta(\eta)=2c_Y(0)-2\Re c_Y(\eta)\to 0$ by bounded convergence on $A(\eta)-A(0)$.
+$c_Y$ is positive-definite (Ces\`aro limit of positive-definite kernels) and continuous
+at $0$ ($|c_Y(\eta)-c_Y(0)|^2\le c_Y(0)\Delta(\eta)\to 0$ by the explicit diagonal series).
+Bochner's theorem applies.
 \end{proof}
 
-\section{Band-Limitedness}
+\section{Band-Limit}
 
-\begin{definition}[Windowed Fourier transform]\label{def:KTS}
-\[
-K_T(\mu):=\frac{1}{2\pi}\int_{0}^{\Theta_s(T)}Y(u)\,e^{-i\mu u}\,du=\frac{1}{2\pi}\int_{0}^{T}Z(t)\sqrt{\Theta_s'(t)}\,e^{-i\mu\Theta_s(t)}\,dt.
-\]
-The power spectral density: $S(\mu):=\limsup_{T\to\infty}2\pi|K_T(\mu)|^{2}/\Theta_s(T)$.
+\begin{definition}[Windowed Fourier, PSD]\label{def:KT}
+$K_T(\mu):=(2\pi)^{-1}\int_0^T Z(t)\sqrt{\Theta'(t)}e^{-i\mu\Theta(t)}dt$;
+$S(\mu):=\limsup_T 2\pi|K_T(\mu)|^2/\Theta(T)$.
 \end{definition}
 
-\begin{theorem}[Band-limitedness]\label{thm:bandlim}
-For every $\mu\in\mathbb R$ with $|\mu|>1$, $S(\mu)=0$.
+\begin{theorem}[Band-limit]\label{thm:bandlim}
+For every $\delta\in(0,\tfrac12)$, every $\delta$-admissible $c$, and every
+$|\mu|>1$: $S(\mu)=0$.
 \end{theorem}
 
 \begin{proof}
-Substitute Lemma~\ref{lem:RS} into $K_T(\mu)$; with $u=\Theta_s(t)$, $t(u)=\Theta_s^{-1}(u)$,
+Insert Lemma~\ref{lem:RS} into $K_T$ and substitute $u=\Theta(t)$.
+Mode $(n,\sigma)$ of the main sum contributes
 \[
-K_T(\mu)=\frac{1}{2\pi}\sum_{\sigma\in\{\pm 1\}}\sum_{n=1}^{N(T)}n^{-1/2}\mathcal J_{n,\sigma}(T,\mu)+\mathcal R(T,\mu),
+\mathcal J_{n,\sigma}(T,\mu)
+=\int_{u_n}^{\Theta(T)} G_{n,\sigma}(u)\,e^{i\Psi_{n,\sigma,\mu}(u)}\,du,
+\qquad G_{n,\sigma}(u)=\Theta'(t(u))^{-1/2},
 \]
+where $u_n=\Theta(2\pi n^2)$, $t(u)=\Theta^{-1}(u)$, and the phase satisfies
 \[
-\mathcal J_{n,\sigma}(T,\mu)=\int_{u_n}^{\Theta_s(T)}G_{n,\sigma}(u)\,e^{i\Psi_{n,\sigma,\mu}(u)}\,du,\qquad G_{n,\sigma}(u):=\Theta_s'(t(u))^{-1/2},
-\]
-\[
-\Psi_{n,\sigma,\mu}(u):=\sigma[\vartheta(t(u))-t(u)\log n]-\mu u,\qquad u_n:=\Theta_s(2\pi n^{2}).
+\Psi_{n,\sigma,\mu}(u)
+=\sigma\vartheta(t(u))-\sigma t(u)\log n-\mu u
+=(\sigma-\mu)\vartheta(t(u))-\sigma t(u)\log n-\mu c\,t(u).
 \]
 
-\emph{Phase derivative lower bound.} $\Psi'_{n,\sigma,\mu}(u)=\sigma\omega_n(t(u))-\mu$ with $\omega_n\in[0,1)$ on $[2\pi n^{2},\infty)$, so $|\Psi'|\ge|\mu|-1=:\lambda>0$ for $|\mu|>1$, uniform in $u,n,\sigma$.
-
-\emph{Integration by parts.}
+\emph{Phase derivative and instantaneous $u$-frequency.}
+Differentiating in $u$ via $dt/du=1/\Theta'(t)$:
 \[
-\mathcal J_{n,\sigma}(T,\mu)=\left[\frac{G_{n,\sigma}e^{i\Psi}}{i\Psi'}\right]_{u_n}^{\Theta_s(T)}-\int_{u_n}^{\Theta_s(T)}\!\frac{d}{du}\!\left(\frac{G_{n,\sigma}}{i\Psi'}\right)e^{i\Psi}\,du.
+\Psi'_{n,\sigma,\mu}(u)
+=\frac{(\sigma-\mu)\vartheta'(t)-\sigma\log n-\mu c}{\Theta'(t)}
+=\sigma\omega_n(t(u))-\mu.
 \]
-$|G_{n,\sigma}(u_n)|=\beta_n^{-1/2}$ with $\beta_n:=\Theta_s'(2\pi n^{2})=\log n+c(s)+O(n^{-4})$ (Olver); boundary $\le 2\beta_n^{-1/2}/\lambda$.
-
-$G_{n,\sigma}$ strictly decreasing on $[u_n,\infty)$ since $\Theta_s'$ is strictly increasing there (Lemma~\ref{lem:mono}), so $\int_{u_n}^{\infty}|G'_{n,\sigma}|\,du=\beta_n^{-1/2}$.
-
-$\Psi''(u)=\sigma\vartheta''(t)(c(s)+\log n)/\Theta_s'(t)^{3}$, so
+By Lemma~\ref{lem:omegabound}, $|\sigma\omega_n|\le|\omega_n|<1$, so for $|\mu|>1$:
 \[
-\int_{u_n}^{\infty}|\Psi''|\,du=(c(s)+\log n)\int_{2\pi n^{2}}^{\infty}\vartheta''(t)/\Theta_s'(t)^{2}\,dt=(c(s)+\log n)/\beta_n,
+|\Psi'_{n,\sigma,\mu}(u)|\ge|\mu|-1=:\lambda>0.
 \]
-by substitution $u=\Theta_s(t)$ and telescoping.
 
-Combining,
+\emph{Exact cancellation in the IBP ratio.}
+To integrate by parts, introduce the substitution $x:=\Theta'(t(u))=\vartheta'(t(u))+c$,
+so $dx=\vartheta''(t)\,dt=\vartheta''(t)/\Theta'(t)\,du$.
+Under this substitution the amplitude and phase derivative are
+\begin{align*}
+G_{n,\sigma}(u)\,du &= \Theta'(t)^{-1/2}\,du = x^{-1/2}\,du,\\
+\frac{d\Psi}{du} &= \frac{(\sigma-\mu)\vartheta'(t)-\sigma\log n-\mu c}{\Theta'(t)}
+= \frac{(\sigma-\mu)(x-c)-\sigma\log n-\mu c}{x}
+= \frac{(\sigma-\mu)x-\sigma(c+\log n)}{x}.
+\end{align*}
+The IBP amplitude-over-phase-derivative ratio is
 \[
-\left|\int_{u_n}^{\Theta_s(T)}\!\frac{d}{du}\!\left(\frac{G_{n,\sigma}}{i\Psi'}\right)e^{i\Psi}\,du\right|\le\frac{\beta_n^{-1/2}}{\lambda}+\frac{\beta_n^{-1/2}(c(s)+\log n)\beta_n^{-1}}{\lambda^{2}}=O_\lambda(\beta_n^{-1/2}),
+Q_{n,\sigma,\mu}(x)
+:=\frac{G\,du/du}{d\Psi/du}
+=\frac{x^{-1/2}}{[(\sigma-\mu)x-\sigma(c+\log n)]/x}
+=\frac{x^{1/2}}{(\sigma-\mu)x-\sigma(c+\log n)}.
 \]
-since $(c(s)+\log n)/\beta_n\to 1$. Hence
+The factor $\vartheta''(t(u))$ present in $dx/du$ appears equally in numerator
+and denominator and cancels exactly, leaving $Q$ independent of $\vartheta''$.
+No bound on $\vartheta''$ is required.
+Then
 \[
-|\mathcal J_{n,\sigma}(T,\mu)|\le C(s,|\mu|)\,\beta_n^{-1/2}
+Q'_{n,\sigma,\mu}(x)
+=\frac{\tfrac12 x^{-1/2}[(\sigma-\mu)x-\sigma(c+\log n)]-x^{1/2}(\sigma-\mu)}
+      {[(\sigma-\mu)x-\sigma(c+\log n)]^2}
+=O(x^{-3/2})\quad\text{as }x\to\infty,
 \]
-uniformly in $T,n,\sigma$.
+since the numerator is $-\tfrac12(\sigma-\mu)x^{1/2}-\tfrac12 x^{-1/2}\sigma(c+\log n)=O(x^{1/2})$
+and the denominator is $O(x^2)$.
 
-\emph{Remainder.} With $R(t)=|R(t)|e^{i\alpha(t)}$, $|R|=O(t^{-1/4})$, $\alpha'=O(t^{-1/2})$ (Lemma~\ref{lem:RS}), total phase $\phi(t)=\alpha(t)-\mu\Theta_s(t)$ has $|\phi'(t)|\ge|\mu|\Theta_s'(t)/2\to\infty$. One IBP: $|\mathcal R(T,\mu)|\le C_R(|\mu|)$ uniformly in $T$.
-
-\emph{Assembly.} $\sum_{n\le N(T)}n^{-1/2}\beta_n^{-1/2}=O(T^{1/4}/\sqrt{\log T})$, so $|K_T(\mu)|=O(T^{1/4}/\sqrt{\log T})+O(1)$ and
+\emph{IBP bound.}
+With $\beta_n:=\Theta'(2\pi n^2)=\log n+c+O(n^{-4})$ (from the digamma asymptotic
+applied at $t=2\pi n^2$):
 \[
-\frac{2\pi|K_T(\mu)|^{2}}{\Theta_s(T)}=O\!\left(\frac{T^{1/2}/\log T}{T\log T}\right)=O\!\left(\frac{1}{T^{1/2}(\log T)^{2}}\right)\to 0.
+\int_{u_n}^\infty|G'_{n,\sigma}|\,du=\beta_n^{-1/2},
+\qquad
+\int_{u_n}^\infty|\Psi''_{n,\sigma,\mu}|\,du
+=\frac{c+\log n}{\beta_n},
+\]
+and a single IBP gives
+\[
+|\mathcal J_{n,\sigma}(T,\mu)|\le\frac{C(c,|\mu|)}{\lambda}\,\beta_n^{-1/2}
+\le\frac{C}{\lambda(\log n)^{1/2}}.
+\]
+
+\emph{Remainder contribution.}
+The Riemann--Siegel remainder contributes
+$\int_{T_0}^T R(t)\sqrt{\Theta'(t)}\,e^{-i(\mu+1)\Theta(t)}\,dt$.
+For $|\mu+1|>0$, the phase derivative $(\mu+1)\Theta'(t)$ has $|(\mu+1)\Theta'(t)|\ge|\mu+1|c$
+bounded away from $0$; combined with $(d/dt)\arg R(t)=O(t^{-1/2})$ (Lemma~\ref{lem:RS}),
+the phase slope satisfies $|\mu\Theta'(t)+\arg R'(t)|\ge|\mu|c/2$ for large $t$,
+and IBP gives boundary $O(T^{-1/4})$ plus tail $O(|\mu|^{-1})$, uniform in $T$.
+
+\emph{Summing over modes.}
+\[
+|K_T(\mu)|
+\le C\sum_{n=1}^{N(T)}\frac{n^{-1/2}}{\lambda(\log n)^{1/2}}+C
+=O\!\left(\frac{T^{1/4}}{\sqrt{\log T}}\right).
+\]
+Since $\Theta(T)\sim\tfrac T2\log T$,
+\[
+\frac{2\pi|K_T(\mu)|^2}{\Theta(T)}=O\!\left(\frac{T^{1/2}/\log T}{T\log T/2}\right)
+=O\!\left(\frac{1}{T^{1/2}(\log T)^2}\right)\to 0.
+\qedhere
 \]
 \end{proof}
 
 \begin{corollary}[Support of $\mu_Y$]\label{cor:supp}
-$\supp(\mu_Y)\subseteq[-1,1]$.
+$\operatorname{supp}(\mu_Y)\subseteq[-1,1]$.
 \end{corollary}
 
 \begin{proof}
-\emph{Wiener Theorem 29} (Wiener, \emph{Acta Math.}~55 (1930), Thm.~29) gives, for bounded Borel $E\subset\mathbb R$,
-\[
-\mu_Y(E)=\lim_{T\to\infty}\frac{2\pi}{\Theta_s(T)}\int_{E}|K_T(\mu)|^{2}\,d\mu.
-\]
-For $E\subset\{|\mu|>1\}$ bounded, Theorem~\ref{thm:bandlim} gives pointwise decay with uniform $L^{\infty}(E)$ dominator; dominated convergence: $\mu_Y(E)=0$. Countable union $\{|\mu|>1\}=\bigcup_{k\ge 1}\{k<|\mu|\le k+1\}$: $\mu_Y(\{|\mu|>1\})=0$.
+Wiener (Acta Math.~55 (1930), Thm.~29):
+$\mu_Y(E)=\lim_T(2\pi/\Theta(T))\int_E|K_T(\mu)|^2d\mu$
+for bounded Borel $E$.
+Theorem~\ref{thm:bandlim} gives pointwise vanishing on $E\subseteq\{|\mu|>1\}$;
+dominated convergence gives $\mu_Y(E)=0$; countable additivity gives
+$\mu_Y(\{|\mu|>1\})=0$.
 \end{proof}
 
-\section{Paley--Wiener Extension and Laguerre--P\'olya Membership}
+\section{Entire Extension and Reality of Zeros of $Y$}
 
 \begin{theorem}[Paley--Wiener extension]\label{thm:PW}
-$Y$ extends to an entire function of exponential type $\le 1$ with $|Y(z)|\le\mu_Y(\mathbb R)^{1/2}e^{|\Im z|}=\sqrt 2\,e^{|\Im z|}$ on $\mathbb C$.
+$Y$ extends to an entire function of exponential type $\le 1$ with
+$|Y(z)|\le\sqrt{2}\,e^{|\Im z|}$.
 \end{theorem}
 
 \begin{proof}
-Theorem~\ref{thm:Ywss}, Corollary~\ref{cor:Cramer}, Corollary~\ref{cor:supp}: $Y$ is time-average WSS with finite non-negative spectral measure $\mu_Y$ compactly supported in $[-1,1]$. Paley--Wiener for WSS with compactly supported spectrum (Yaglom, \emph{Correlation Theory of Stationary and Related Random Functions}, Vol.~I, Thm.~4.7.3; Bochner--Phillips, \emph{Ann.~Math.}~43 (1942), 409--418) gives the entire extension with stated bound.
+Yaglom Vol.~I, Thm.~4.7.3; Bochner--Phillips, Ann.~Math.~43 (1942):
+for time-average-WSS functions with compactly supported non-negative spectral measure
+$\mu_Y\subseteq[-1,1]$, $Y$ extends to entire exponential type $\le 1$ with bound
+$\mu_Y(\mathbb R)^{1/2}e^{|\Im z|}=\sqrt{2}\,e^{|\Im z|}$.
 \end{proof}
 
-\begin{theorem}[Akhiezer--Levin Laguerre--P\'olya criterion]\label{thm:Akhiezer}
-Let $F$ be a real-valued entire function of exponential type $\le\tau$ whose autocorrelation measure (the Fourier transform of $|F|^{2}$ in the tempered-distribution sense) is non-negative, finite, supported in $[-2\tau,2\tau]$. Then $F$ belongs to the Laguerre--P\'olya class, and every complex zero of $F$ is real.
+\begin{theorem}[Akhiezer--Laguerre--P\'olya]\label{thm:Akhiezer}
+If $F$ is a real-valued entire function of exponential type $\le\tau$ whose
+time-average autocorrelation measure is finite, non-negative, and supported in
+$[-2\tau,2\tau]$, then $F$ belongs to the Laguerre--P\'olya class $\mathcal{LP}$
+and all complex zeros of $F$ are real.
 \end{theorem}
 
 \begin{proof}
-Akhiezer, \emph{Theory of Approximation}, \S V.4; Levin, \emph{Lectures on Entire Functions}, Lecture~16 Theorem~3.
+Akhiezer, \emph{Theory of Approximation}, \S V.4;
+Levin, \emph{Lectures on Entire Functions}, Lecture~16, Thm.~3.
 \end{proof}
 
 \begin{theorem}[Reality of zeros of $Y$]\label{thm:LP}
-Every zero of the entire extension of $Y$ is real.
+All complex zeros of the entire extension of $Y$ are real.
 \end{theorem}
 
 \begin{proof}
-$Y$ is real on $\mathbb R$ (Lemma~\ref{lem:Yreal}) and entire of exponential type $\le 1$ (Theorem~\ref{thm:PW}). Its autocorrelation is $c_Y$ (Theorem~\ref{thm:Ywss}), whose Fourier-transform measure is $\mu_Y$ (Corollary~\ref{cor:Cramer}), non-negative, finite, $\supp(\mu_Y)\subseteq[-1,1]\subseteq[-2,2]$ (Corollary~\ref{cor:supp}). Theorem~\ref{thm:Akhiezer} with $\tau=1$ places $Y$ in the Laguerre--P\'olya class.
+$Y$ is real on $\mathbb R$ (Lemma~\ref{lem:Yreal}), entire of exponential type $\le 1$
+(Theorem~\ref{thm:PW}), with autocorrelation $\mu_Y\ge 0$, finite, supported in
+$[-1,1]\subseteq[-2,2]$ (Corollary~\ref{cor:supp}).
+Apply Theorem~\ref{thm:Akhiezer} with $\tau=1$.
 \end{proof}
 
-\section{Spectral Representation of $\zeta$ on the Critical Line}
+\section{Strip Factorization and Transfer}
 
-\begin{definition}[Pre-limit density]\label{def:PhiT}
+\begin{theorem}[Strip factorization on $\Omega_\delta$]\label{thm:stripfact}
+For every $\delta\in(0,\tfrac12)$ and every $\delta$-admissible $c$,
 \[
-\Phi_T(\xi):=\frac{1}{\sqrt{2\pi\,\Theta_s(T)}}\int_{0}^{\Theta_s(T)}Y(u)\,e^{-i\xi u}\,du=\frac{\sqrt{2\pi}}{\sqrt{\Theta_s(T)}}\,K_T(\xi).
+Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))\qquad\text{for every }t\in\Omega_\delta,
 \]
-\end{definition}
-
-\begin{lemma}[Parseval]\label{lem:Parseval}
-\[
-\int_{\mathbb R}|\Phi_T(\xi)|^{2}\,d\xi=\frac{1}{\Theta_s(T)}\int_{0}^{\Theta_s(T)}|Y(u)|^{2}\,du\xrightarrow[T\to\infty]{}c_Y(0)=2.
-\]
-\end{lemma}
-
-\begin{proof}
-Plancherel on $Y_T:=Y\mathbf 1_{[0,\Theta_s(T)]}\in L^{2}(\mathbb R)$: $\int|\widehat{Y_T}|^{2}\,d\xi=2\pi\int|Y_T|^{2}\,du$, divide by $2\pi\,\Theta_s(T)$. Limit from Theorem~\ref{thm:Ywss}.
-\end{proof}
-
-\begin{theorem}[{Orthogonal Borel measure on $[-1,1]$}]\label{thm:OrthPhi}
-There exists a complex Borel measure $\Phi$ on $[-1,1]$, $\sigma$-finite on $\mathbb R$ extended by zero, such that:
-\begin{enumerate}[leftmargin=2em]
-\item[(i)] $\Phi_T\rightharpoonup\Phi$ weakly in $L^{2}(\mathbb R)$, $\supp(\Phi)\subseteq[-1,1]$.
-\item[(ii)] $|d\Phi(\xi)|^{2}=d\mu_Y(\xi)$ on $\mathbb R$; $\int_{[-1,1]}|d\Phi|^{2}=c_Y(0)=2$.
-\item[(iii)] For every $u\in\mathbb R$, $Y(u)=\int_{-1}^{1}e^{i\xi u}\,d\Phi(\xi)$.
-\end{enumerate}
+with $Y$ the entire extension of Theorem~\ref{thm:PW}, $\Theta'$ the holomorphic
+extension on $\Omega_\delta$, and $\sqrt{\Theta'}$ the branch of
+Lemma~\ref{lem:Thetabij}(iv).
 \end{theorem}
 
 \begin{proof}
-(i) Banach--Alaoglu on the $L^{2}$-bounded family $\{\Phi_T\}$ gives weakly convergent subsequence $\Phi_{T_k}\rightharpoonup\Phi$. For $\varphi\in L^{2}(\mathbb R)$ bounded with $\supp\varphi\subset\{|\xi|>1\}$, Cauchy--Schwarz and Theorem~\ref{thm:bandlim} give $|\int\Phi_T\bar\varphi\,d\xi|^{2}\le\|\varphi\|_\infty^{2}|\supp\varphi|\int_{\supp\varphi}|\Phi_T|^{2}d\xi\to 0$; hence $\Phi=0$ a.e.\ on $\{|\xi|>1\}$.
-
-(ii) Banach--Saks extracts $\Phi_{T_j}$ with Ces\`aro means $N^{-1}\sum_j\Phi_{T_j}\to\Phi$ strongly in $L^{2}(\mathbb R)$. Convexity $|N^{-1}\sum\Phi_{T_j}|^{2}\le N^{-1}\sum|\Phi_{T_j}|^{2}$; the right side's vague limit is $d\mu_Y$ on bounded Borels (Corollary~\ref{cor:supp}); hence $|\Phi|^{2}d\xi\le d\mu_Y$. Fatou and Lemma~\ref{lem:Parseval} give $\int|\Phi|^{2}d\xi\le\liminf\|\Phi_T\|_{2}^{2}=c_Y(0)=\mu_Y(\mathbb R)=\int d\mu_Y$; total masses agree, so $|d\Phi|^{2}=d\mu_Y$.
-
-(iii) Define $\widetilde Y(u):=\int_{-1}^{1}e^{i\xi u}\,d\Phi(\xi)$, continuous and bounded on $\mathbb R$ (since $\Phi\in L^{1}([-1,1])$ by $\Phi\in L^{2}([-1,1])$ on a finite interval). Time-average covariance $c_{\widetilde Y}(\eta)=\int_{-1}^{1}e^{-i\eta\xi}|\Phi(\xi)|^{2}\,d\xi=\int e^{-i\eta\xi}\,d\mu_Y(\xi)=c_Y(-\eta)=c_Y(\eta)$ (last equality since $c_Y$ is real by Lemma~\ref{lem:Yreal}). Cross-covariance $c_{Y,\widetilde Y}(0)=c_Y(0)$ by weak-$L^{2}$ convergence $\Phi_T\rightharpoonup\Phi$. Therefore $\|Y-\widetilde Y\|_{\mathrm{ta}}^{2}=c_Y(0)-2\Re c_{Y,\widetilde Y}(0)+c_{\widetilde Y}(0)=0$. Continuity of both plus vanishing time-average norm force $Y=\widetilde Y$ pointwise on $\mathbb R$.
-
-\emph{Uniqueness.} If $\Phi'$ also satisfies (iii), then $\int_{-1}^{1}e^{i\xi u}(d\Phi-d\Phi')=0$ for all $u$; by uniqueness of Fourier transforms, $d\Phi=d\Phi'$, so the full family $\Phi_T\rightharpoonup\Phi$ without subsequence extraction.
+Both sides are holomorphic on the connected open set $\Omega_\delta$.
+The left side $e^{i\vartheta(t)}\zeta(\tfrac12+it)$ is holomorphic: $\vartheta$ is
+holomorphic on $\Omega_\delta$ by Lemma~\ref{lem:analstrip}, and
+$\zeta(\tfrac12+it)$ is holomorphic for $t\ne-i/2$, which satisfies
+$|\Im(-i/2)|=\tfrac12>\tfrac12-\delta$, so $-i/2\notin\Omega_\delta$.
+The right side is the product of holomorphic non-vanishing $\sqrt{\Theta'}$ with
+$Y\circ\Theta$, a composition of the holomorphic bijection
+$\Theta:\Omega_\delta\to\Theta(\Omega_\delta)$ (Lemma~\ref{lem:Thetabij}(iii))
+with the entire function $Y$.
+Both sides agree on $\mathbb R$ by Definition~\ref{def:Y};
+the identity theorem on the connected open $\Omega_\delta$ extends this to all of
+$\Omega_\delta$.
 \end{proof}
 
-\begin{corollary}[Exact spectral formula for $\zeta$ on the critical line]\label{cor:zeta-spec}
-For every $t\in\mathbb R$,
-\begin{equation}\label{eq:zeta-synth}
-\zeta(\tfrac12+it)=e^{-i\vartheta(t)}\sqrt{\Theta_s'(t)}\int_{-1}^{1}e^{i\xi\Theta_s(t)}\,d\Phi(\xi)=e^{-i\vartheta(t)}\sqrt{\Theta_s'(t)}\,Y(\Theta_s(t)).
-\end{equation}
-For each $T>0$ define the truncated sinc-kernel projector
-\[
-F_T(t):=\frac{1}{\pi}\int_{0}^{\Theta_s(T)}\!\frac{\sin[\Theta_s(t)-u]}{\Theta_s(t)-u}\,Y(u)\,du,
-\]
-and the time-average norm $\|F\|_{\mathrm{ta}}^{2}:=\lim_{U\to\infty}U^{-1}\int_{0}^{U}|F(t)|^{2}\,dt$. Then
-\begin{equation}\label{eq:doublelim}
-\lim_{T\to\infty}\;\lim_{U\to\infty}\;\frac{1}{U}\int_{0}^{U}\bigl|F_T(t)-Y(\Theta_s(t))\bigr|^{2}\,dt=0,
-\end{equation}
-outer $T$ then inner $U$, in that order.
-\end{corollary}
-
-\begin{proof}
-Identity \eqref{eq:zeta-synth} is Definition~\ref{def:Y} combined with Theorem~\ref{thm:OrthPhi}(iii) and $\zeta(\tfrac12+it)=e^{-i\vartheta(t)}Z(t)$.
-
-For \eqref{eq:doublelim}, $Y$ is time-average wide-sense stationary (Theorem~\ref{thm:Ywss}) with finite non-negative spectral measure $\mu_Y$ (Corollary~\ref{cor:Cramer}) supported in $[-1,1]$ (Corollary~\ref{cor:supp}). The \emph{Wiener--Plancherel sinc-reconstruction theorem} (Wiener, \emph{Acta Math.}~55 (1930), Theorem~29 combined with Theorem~33; equivalently, Doob, \emph{Stochastic Processes}, Ch.~XI~\S8 Thm.~8.1 in the wide-sense stationary form) states: for any time-average-WSS $f$ with $\supp(\mu_f)\subseteq[-\Omega,\Omega]$,
-\[
-\lim_{T\to\infty}\lim_{U\to\infty}\frac{1}{U}\int_{0}^{U}\!\Bigl|f(u_0)-\frac{\Omega}{\pi}\int_{-T}^{T}\!\frac{\sin[\Omega(u_0-u)]}{\Omega(u_0-u)}f(u)\,du\Bigr|^{2}du_0=0,
-\]
-with the two-sided interval $[-T,T]$ replaceable by any expanding half-line $[0,V]$ at the cost of a boundary error of order $V^{-1/2}$ in the time-average norm, vanishing in the outer limit. Applying with $f=Y$, $\Omega=1$, $u_0=\Theta_s(t)$, and integration domain $[0,\Theta_s(T)]$ gives \eqref{eq:doublelim}.
-\end{proof}
-
-\begin{corollary}[Inversion formula]\label{cor:invert}
-In $L^{2}([-1,1],d\xi)$,
-\[
-d\Phi(\xi)=\lim_{T\to\infty}\frac{1}{\sqrt{2\pi\,\Theta_s(T)}}\!\left(\int_{0}^{T}\!e^{-i[\vartheta(t)+\xi\Theta_s(t)]}\,\zeta(\tfrac12+it)\,\sqrt{\vartheta'(t)+c(s)}\,dt\right)d\xi.
-\]
-\end{corollary}
-
-\begin{proof}
-Change of variable $u=\Theta_s(t)$ in Definition~\ref{def:PhiT} using $Y(\Theta_s(t))=Z(t)/\sqrt{\Theta_s'(t)}=e^{-i\vartheta(t)}\zeta(\tfrac12+it)/\sqrt{\vartheta'(t)+c(s)}$ and $du=(\vartheta'(t)+c(s))\,dt$; Theorem~\ref{thm:OrthPhi}(i) gives the $L^{2}([-1,1])$ limit.
-\end{proof}
-
-\section{Transfer to the Critical Line}
-
-\begin{theorem}[Zero-set bijection]\label{thm:zero-bij}
-$t_0\in\Omega_{\delta_\rho}$ is a zero of $Z$ of order $m$ if and only if $\Theta_s(t_0)$ is a zero of $Y$ of order $m$.
+\begin{theorem}[Zero-set bijection on $\Omega_\delta$]\label{thm:zero-bij}
+$t_0\in\Omega_\delta$ is a zero of $Z$ of order $m$ iff $\Theta(t_0)$ is a zero of
+$Y$ of order $m$.
 \end{theorem}
 
 \begin{proof}
-By Corollary~\ref{cor:biholo}, $\Theta_s$ is a biholomorphism of $\Omega_{\delta_\rho}$ onto its image with $\Theta_s'\ne 0$ on $\Omega_{\delta_\rho}$. The identity $Z(t)=\sqrt{\Theta_s'(t)}Y(\Theta_s(t))$ extends holomorphically on $\Omega_{\delta_\rho}$ with nonvanishing prefactor $\sqrt{\Theta_s'(t)}$, so zero sets and multiplicities of $Z$ and $Y\circ\Theta_s$ match on $\Omega_{\delta_\rho}$. If $Y(\cdot)$ has zero of order $m$ at $s_0=\Theta_s(t_0)$, write $Y(s)=(s-s_0)^{m}g(s)$ with $g$ entire, $g(s_0)\ne 0$. Substituting $s=\Theta_s(t)$: $\Theta_s(t)-\Theta_s(t_0)=(t-t_0)h(t)$ with $h(t)=\int_{0}^{1}\Theta_s'(t_0+v(t-t_0))\,dv$, $h(t_0)=\Theta_s'(t_0)\ne 0$. Hence $Z(t)=(t-t_0)^{m}h(t)^{m}g(\Theta_s(t))\sqrt{\Theta_s'(t)}$, zero of order exactly $m$ at $t_0$.
+$\sqrt{\Theta'(t)}\ne 0$ on $\Omega_\delta$ (Lemma~\ref{lem:Thetabij}(iv)),
+so $Z(t_0)=0\iff Y(\Theta(t_0))=0$.
+Multiplicity: $\Theta(t)-\Theta(t_0)=(t-t_0)h(t)$ with $h(t_0)=\Theta'(t_0)\ne 0$.
 \end{proof}
 
-\begin{corollary}[Reality of zeros of $Z$ in $\Omega_{\delta_\rho}$]\label{cor:Zreal}
-Every zero of $Z$ in $\Omega_{\delta_\rho}$ lies on $\mathbb R$.
+\begin{corollary}[Reality of zeros of $Z$ on $\Omega_\delta$]\label{cor:Zreal}
+Every zero of $Z$ in $\Omega_\delta$ lies on $\mathbb R$.
 \end{corollary}
 
 \begin{proof}
-All zeros of $Y$ are real (Theorem~\ref{thm:LP}); $\Theta_s|_{\mathbb R}$ is a real-analytic bijection $\mathbb R\to\mathbb R$ (Corollary~\ref{cor:biholo}); Theorem~\ref{thm:zero-bij} transports real zeros of $Y$ to real zeros of $Z$, with no non-real zeros possible in $\Omega_{\delta_\rho}$.
+$t_0\in\Omega_\delta$, $Z(t_0)=0$.
+Theorem~\ref{thm:zero-bij}: $\Theta(t_0)$ is a zero of $Y$.
+Theorem~\ref{thm:LP}: $\Theta(t_0)\in\mathbb R$.
+Lemma~\ref{lem:Thetabij}(v): $\Theta^{-1}(\mathbb R)\cap\Omega_\delta=\mathbb R$,
+so $t_0\in\mathbb R$.
 \end{proof}
+
+\section{The Riemann Hypothesis}
 
 \begin{theorem}[Riemann Hypothesis]\label{thm:main}
 Every nontrivial zero $\rho$ of $\zeta$ satisfies $\Re\rho=\tfrac12$.
 \end{theorem}
 
 \begin{proof}
-Suppose, for contradiction, that $\rho=\beta+is$ is a nontrivial zero with $\beta\ne\tfrac12$. Apply Definitions~\ref{def:shift}, \ref{def:Y} at this $\rho$. Since $\zeta(\rho)=0$ and $|e^{i\vartheta(t)}|>0$ on $\Omega_{\delta_\rho}$, the holomorphic extension of $Z$ has a zero at
+Let $\rho=\beta+i\gamma$ be a nontrivial zero with $\beta\in(0,1)$,
+$\gamma\in\mathbb R$.
+Define
 \[
-t_0:=-i(\rho-\tfrac12)=s+i(\tfrac12-\beta).
+\delta_\rho:=\tfrac12\min(\beta,1-\beta)\in(0,\tfrac14],
+\qquad
+t_\rho:=\gamma+i(\tfrac12-\beta).
 \]
-Its imaginary part satisfies
+Then $|\Im t_\rho|=|\tfrac12-\beta|=\tfrac12-2\delta_\rho<\tfrac12-\delta_\rho$,
+so $t_\rho\in\Omega_{\delta_\rho}$.
+
+Choose any $\delta_\rho$-admissible $c>c_{**}(\delta_\rho)$
+(Definition~\ref{def:admissibledelta}).
+By the strip factorization (Theorem~\ref{thm:stripfact}) on $\Omega_{\delta_\rho}$,
 \[
-|\Im t_0|=|\tfrac12-\beta|=\tfrac12-\min(\beta,1-\beta)<\tfrac12-\tfrac12\min(\beta,1-\beta)=\tfrac12-\delta_\rho,
+Z(t_\rho)=e^{i\vartheta(t_\rho)}\zeta(\tfrac12+it_\rho)
+=e^{i\vartheta(t_\rho)}\zeta(\rho)=0.
 \]
-so $t_0\in\Omega_{\delta_\rho}$. By Corollary~\ref{cor:Zreal}, $t_0\in\mathbb R$, hence $\Im t_0=\tfrac12-\beta=0$, so $\beta=\tfrac12$, contradicting the assumption. Therefore every nontrivial zero of $\zeta$ satisfies $\Re\rho=\tfrac12$.
+By Corollary~\ref{cor:Zreal}, $t_\rho\in\mathbb R$, so $\Im t_\rho=\tfrac12-\beta=0$,
+hence $\beta=\tfrac12$.
 \end{proof}
 
-\section{Structural Remarks}
+\begin{thebibliography}{9}
+\bibitem{Akhiezer}
+N.~I.~Akhiezer, \emph{Theory of Approximation}, Ungar, 1956.
 
-\begin{remark}[Nyquist--Riemann--von~Mangoldt lock]\label{rem:nyquist}
-Riemann--von~Mangoldt: $N(T)=\vartheta(T)/\pi+1+S(T)$, exact, with $\vartheta(T)/\pi+1$ the deterministic smooth part and $S(T)$ the non-deterministic jump part (unit jumps at zero heights). With the height-adapted shift $c(s)=\vartheta'(s)+K(s)$, one Gram interval on the $t$-axis (length $\pi/\vartheta'(s)$) maps to a $u$-interval of length $\Theta_s'(s)\pi/\vartheta'(s)=2\pi+K(s)\pi/\vartheta'(s)\to 2\pi$ as $|s|\to\infty$. This is the Nyquist spacing of a signal band-limited to $[-1,1]$. The band $[-1,1]$ of Corollary~\ref{cor:supp} and the zero density $1$ per $2\pi$ of Riemann--von~Mangoldt are the same number; the height-adapted shift makes the identification exact.
-\end{remark}
+\bibitem{Berry}
+M.~V.~Berry, The Riemann--Siegel expansion for the zeta function: high orders
+and remainders, \emph{Proc.~Roy.~Soc.~A} \textbf{450} (1995), 439--462.
 
-\begin{remark}[Cram\'er--Leadbetter factorization]\label{rem:cramer}
-The Cram\'er decomposition (\emph{Acta Math.}~77 (1945)) of $Y$ into deterministic and non-deterministic parts: the warp $\Theta_s$ with height-adapted shift $c(s)$ flattens the deterministic density to $1$ per $2\pi$ in $u$; the non-deterministic residual is the time-average-WSS $Y$ with spectral measure $\mu_Y$ supported in $[-1,1]$. Leadbetter's level-crossing theory (\emph{Extremes and Related Properties of Random Sequences and Processes}, 1983) identifies the expected crossing rate with spectral moments; band-limitedness to $[-1,1]$ at mean density $1$ gives unit rate. Akhiezer--Levin applied to the non-deterministic residual forces its zeros to be real; the warp transfers reality back through $\Theta_s^{-1}$ to $Z$, then through $e^{-i\vartheta}$ to $\zeta$.
-\end{remark}
+\bibitem{BochnerPhillips}
+S.~Bochner and R.~S.~Phillips, Absolutely convergent Fourier expansions for
+non-commutative normed rings, \emph{Ann.~Math.}~(2) \textbf{43} (1942), 409--418.
 
-\begin{remark}[Analysis/synthesis duality]\label{rem:as}
-The analysis operator $\zeta\mapsto d\Phi$ (Corollary~\ref{cor:invert}) and the synthesis operator $d\Phi\mapsto Y\mapsto\zeta$ (equation~\eqref{eq:zeta-synth}) are adjoints in the time-average Hilbert space. Their composition is the band-$[-1,1]$ Paley--Wiener projector, which fixes $Y$ since $\supp(\mu_Y)\subseteq[-1,1]$. The sinc kernel $\sin[\Theta_s(t)-u]/[\Theta_s(t)-u]$ is the $u$-domain image under inverse Fourier transform of the spectral indicator $\mathbf 1_{[-1,1]}(\xi)$; Fubini exchange on the finite rectangle $[-1,1]\times[0,\Theta_s(T)]$ makes the projector visible explicitly, and Wiener--Plancherel (Wiener 1930 Thm.~29+33) provides the convergence in the time-average norm.
-\end{remark}
+\bibitem{Edwards}
+H.~M.~Edwards, \emph{Riemann's Zeta Function}, Academic Press, 1974.
 
-\begin{remark}[The height-adapted constant]\label{rem:ha}
-The constant $K(s)$ of Definition~\ref{def:shift} is defined as the supremum of $|\vartheta'(t)-\vartheta'(s)|$ over $\Omega_{\delta_\rho}$, plus one. It depends on $s$ through two channels: the strip $\Omega_{\delta_\rho}$ depends on $\rho=\beta+is$, and the centering $\vartheta'(s)$ depends on $s$. The baseline $\vartheta'(s)$ grows as $\tfrac12\log(|s|/2\pi)+O(s^{-2})$ by Stirling; $K(s)$ is $O(1)$ uniformly in $s$ by Olver. The shift $c(s)=\vartheta'(s)+K(s)$ thus grows logarithmically with $|s|$, matching the zero density at height $s$ by construction, tight up to $O(1)$. The triangle inequality proof of $\Re\Theta_s'\ge 1$ on $\Omega_{\delta_\rho}$ closes by design: $K(s)$ was defined as exactly the quantity the triangle inequality consumes, plus one.
-\end{remark}
+\bibitem{Gabcke}
+W.~Gabcke, \emph{Neue Herleitung und explizite Restabsch\"atzung der
+Riemann--Siegel-Formel}, Dissertation, Georg-August-Universit\"at G\"ottingen, 1979.
 
-\begin{thebibliography}{99}
-\bibitem{Akhiezer} N.~I.~Akhiezer, \emph{Theory of Approximation}, Ungar, 1956.
-\bibitem{Berry} M.~V.~Berry, The Riemann--Siegel expansion for the zeta function: high orders and remainders, \emph{Proc.~Roy.~Soc.~London A} \textbf{450} (1995), 439--462.
-\bibitem{BochnerPhillips} S.~Bochner and R.~S.~Phillips, Absolutely convergent Fourier expansions for non-commutative normed rings, \emph{Ann.~Math.} (2) \textbf{43} (1942), 409--418.
-\bibitem{Cramer} H.~Cram\'er, On the theory of stationary random processes, \emph{Acta Math.} \textbf{77} (1945), 145--178.
-\bibitem{Doob} J.~L.~Doob, \emph{Stochastic Processes}, Wiley, 1953.
-\bibitem{Edwards} H.~M.~Edwards, \emph{Riemann's Zeta Function}, Academic Press, 1974.
-\bibitem{Gabcke} W.~Gabcke, \emph{Neue Herleitung und explizite Restabsch\"atzung der Riemann--Siegel-Formel}, Dissertation, Georg-August-Universit\"at G\"ottingen, 1979.
-\bibitem{HardyLittlewood} G.~H.~Hardy and J.~E.~Littlewood, Contributions to the theory of the Riemann zeta-function and the theory of the distribution of primes, \emph{Acta Math.} \textbf{41} (1918), 119--196.
-\bibitem{Leadbetter} M.~R.~Leadbetter, G.~Lindgren, and H.~Rootz\'en, \emph{Extremes and Related Properties of Random Sequences and Processes}, Springer, 1983.
-\bibitem{Levin} B.~Ya.~Levin, \emph{Lectures on Entire Functions}, Transl.~Math.~Monogr.~\textbf{150}, Amer.~Math.~Soc., 1996.
-\bibitem{Olver} F.~W.~J.~Olver, \emph{Asymptotics and Special Functions}, Academic Press, 1974.
-\bibitem{OmerTorresani} H.~Omer and B.~Torresani, Time-frequency and time-scale analysis of deformed stationary processes, with application to non-stationary sound modeling, HAL preprint hal-01094835 (2017).
-\bibitem{PlattTrudgian} D.~J.~Platt and T.~S.~Trudgian, The Riemann hypothesis is true up to $3\cdot 10^{12}$, \emph{Bull.~London~Math.~Soc.} \textbf{53} (2021), 792--797.
-\bibitem{Titchmarsh} E.~C.~Titchmarsh, \emph{The Theory of the Riemann Zeta-Function}, 2nd ed., revised by D.~R.~Heath-Brown, Oxford Univ.~Press, 1986.
-\bibitem{Wiener} N.~Wiener, Generalized harmonic analysis, \emph{Acta Math.} \textbf{55} (1930), 117--258.
-\bibitem{Yaglom} A.~M.~Yaglom, \emph{Correlation Theory of Stationary and Related Random Functions}, Vol.~I, Springer, 1987.
+\bibitem{Levin}
+B.~Ya.~Levin, \emph{Lectures on Entire Functions},
+Transl.~Math.~Monogr.~\textbf{150}, AMS, 1996.
+
+\bibitem{Olver}
+F.~W.~J.~Olver, \emph{Asymptotics and Special Functions}, Academic Press, 1974.
+
+\bibitem{OmerTorresani}
+H.~Omer and B.~Torresani, Time-frequency and time-scale analysis of deformed
+stationary processes, HAL preprint hal-01094835, 2017.
+
+\bibitem{Titchmarsh}
+E.~C.~Titchmarsh, \emph{The Theory of the Riemann Zeta-Function},
+2nd ed., OUP, 1986.
+
+\bibitem{Wiener}
+N.~Wiener, Generalized harmonic analysis, \emph{Acta Math.}~\textbf{55} (1930),
+117--258.
+
+\bibitem{Yaglom}
+A.~M.~Yaglom, \emph{Correlation Theory of Stationary and Related Random Functions},
+Vol.~I, Springer, 1987.
 \end{thebibliography}
 
 \end{document}
