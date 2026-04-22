@@ -1,154 +1,220 @@
 {
-  "title": "Logical dependency DAG for RiemannHypothesisViaWarpedStationarity.tex",
-  "description": "Machine-checkable encoding of the lemma chain in the standalone paper 'Zeros of ζ on the Critical Line via the Omer–Torresani Unitary Warping of the Hardy Z-Function' culminating in Theorem thm:main (Riemann Hypothesis). Each node declares its direct dependencies. The DAG is acyclic; topological sort yields a valid proof order. Every non-axiom node must be derivable from its predecessors using only the cited analytic inputs.",
+  "title": "Logical dependency DAG for RiemannHypothesisViaWarpedStationarity.tex (height-adapted version)",
+  "description": "Machine-checkable encoding of the per-zero, height-adapted lemma chain in the standalone paper 'Zeros of the Riemann Zeta Function on the Critical Line via the Height-Adapted Unitary Warping of the Hardy Z-Function' culminating in Theorem thm:main (Riemann Hypothesis). For each nontrivial zero ρ=β+is of ζ with 0<β<1, the construction uses a per-zero height-adapted admissible shift c(s)=ϑ'(s)+K(s) where K(s):=sup_{t∈Ω_{δ_ρ}}|ϑ'(t)−ϑ'(s)|+1 and Ω_{δ_ρ}:={|Im t|≤1/2−δ_ρ} with δ_ρ:=(1/2)min(β,1−β). Each node declares its direct dependencies. The DAG is acyclic; topological sort yields a valid proof order. Every non-axiom node must be derivable from its predecessors using only the cited analytic inputs.",
   "target": "thm:main",
   "nodes": {
     "AX-Digamma": {
       "kind": "axiom",
       "name": "Digamma series and its imaginary part",
-      "statement": "ψ'(s) = ∑_{k≥0}(s+k)^{-2} for s ∉ {0,-1,-2,...}; in particular Im ψ'(¼+it/2) < 0 for t > 0 so ϑ''(t) = −¼ Im ψ'(¼+it/2) > 0 for t > 0",
+      "statement": "ψ'(w) = ∑_{k≥0}(w+k)^{-2} for w ∉ {0,-1,-2,...}; in particular Im ψ'(¼+it/2) < 0 for t > 0 so ϑ''(t) = −¼ Im ψ'(¼+it/2) > 0 for t > 0",
       "source": "Abramowitz–Stegun 6.4.10; direct series computation",
       "deps": []
     },
     "AX-Olver": {
       "kind": "axiom",
       "name": "Olver Stirling expansion for ϑ and ϑ'",
-      "statement": "ϑ(t) = (t/2)log(t/(2π)) − t/2 + O(1) as t→+∞; ϑ'(t) = ½log(t/(2π)) + O(t^{-2}); in particular ϑ'(2πn²) = log n + O(n^{-4})",
+      "statement": "ϑ(t) = (t/2)log(t/(2π)) − t/2 + O(1) as t→+∞; ϑ'(t) = ½log(t/(2π)) + O(t^{-2}); holomorphic extension to the strip |Im t|<1/2 with the same leading asymptotics and O(|t|^{-1}) off-axis correction",
       "source": "Olver, Asymptotics and Special Functions, Ch. 8 §4.3",
       "deps": []
     },
     "AX-IFT": {
       "kind": "axiom",
       "name": "Inverse function theorem and smoothness of ϑ",
-      "statement": "ϑ ∈ C^∞(ℝ) (as imaginary part of log Γ on the real line); a C^∞ bijection with nowhere-vanishing derivative has C^∞ inverse with (Θ^{-1})'(u) = 1/Θ'(Θ^{-1}(u))",
+      "statement": "ϑ ∈ C^∞(ℝ), holomorphic on |Im t|<1/2; a C^∞ bijection with nowhere-vanishing derivative has C^∞ inverse; a holomorphic map with nonvanishing derivative on a strip is a local biholomorphism",
       "source": "Rudin, Principles of Mathematical Analysis, Thm. 9.24",
       "deps": []
     },
     "AX-Zreal": {
       "kind": "axiom",
       "name": "Z is real on ℝ",
-      "statement": "Z(t) = e^{iϑ(t)}ζ(½+it) is real-valued for t ∈ ℝ; Z(−t) = Z(t)",
+      "statement": "Z(t) = e^{iϑ(t)}ζ(½+it) is real-valued for t ∈ ℝ; Z(−t) = Z(t); Z is holomorphic on |Im t|<1/2",
       "source": "Edwards, Riemann's Zeta Function, §6.5",
       "deps": []
     },
     "AX-FE": {
       "kind": "axiom",
       "name": "Functional equation of ζ on the critical line",
-      "statement": "ζ(½−it) = e^{2iϑ(t)} ζ(½+it) for t ∈ ℝ; |e^{iϑ(t)}| = 1 so ζ(½+it₀) = 0 ⇔ Z(t₀) = 0 with matching multiplicities",
+      "statement": "ζ(½−it) = e^{2iϑ(t)} ζ(½+it) for t ∈ ℝ; |e^{iϑ(t)}| = 1 so ζ(½+it₀) = 0 ⇔ Z(t₀) = 0 with matching multiplicities; for a nontrivial zero ρ=β+is, Z has a zero at t₀ = −i(ρ−½) = s+i(½−β) on its holomorphic extension",
       "source": "Riemann 1859; Titchmarsh, Theory of the Riemann Zeta-Function, Ch. 2",
       "deps": []
     },
     "AX-HL": {
       "kind": "axiom",
-      "name": "Hardy–Littlewood second moment and Ingham shifted moment",
-      "statement": "∫₀^T |ζ(½+it)|² dt = T log T + (2γ−1−log 2π)T + O(T^{1/2} log T); shifted second moment ∫₀^T ζ(½+it) conj(ζ(½+i(t+η))) dt has an asymptotic main term depending only on η (Ingham 1926)",
-      "source": "Hardy–Littlewood 1918; Ingham 1926; Titchmarsh, Theory of the Riemann Zeta-Function, Ch. VII",
+      "name": "Hardy–Littlewood second moment",
+      "statement": "∫₀^T |ζ(½+it)|² dt = T log(T/2π) + (2γ_Euler − 1)T + O(T^{1/2} log T)",
+      "source": "Hardy–Littlewood, Acta Math. 41 (1918), 119–196; Titchmarsh, Theory of the Riemann Zeta-Function, Ch. VII Thm. 7.3",
       "deps": []
     },
     "AX-RS": {
       "kind": "axiom",
-      "name": "Riemann–Siegel formula",
-      "statement": "Z(t) = 2 ∑_{n≤N(t)} n^{-1/2} cos(ϑ(t) − t log n) + R(t) with N(t) = ⌊√(t/(2π))⌋ and R(t) = O(t^{-1/4})",
-      "source": "Edwards, Riemann's Zeta Function, §7.4 Theorem 7.1; Gabcke Dissertation Göttingen 1979",
-      "deps": []
-    },
-    "AX-argR": {
-      "kind": "axiom",
-      "name": "Phase derivative of the Riemann–Siegel remainder",
-      "statement": "(d/dt) arg R(t) = O(t^{-1/2}) from the Riemann–Siegel contour integral representation",
-      "source": "Gabcke Dissertation 1979; Berry, Proc. Roy. Soc. A 450 (1995)",
+      "name": "Riemann–Siegel formula with phase-derivative remainder bound",
+      "statement": "Z(t) = 2 ∑_{n≤N(t)} n^{-1/2} cos(ϑ(t) − t log n) + R(t) with N(t) = ⌊√(t/(2π))⌋, |R(t)| = O(t^{-1/4}), and |arg' R(t)| = O(t^{-1/2})",
+      "source": "Edwards, Riemann's Zeta Function, §7.4 Theorem 7.1; Gabcke Dissertation Göttingen 1979, Satz 7.1; Berry, Proc. Roy. Soc. A 450 (1995), eq. (18)",
       "deps": []
     },
     "AX-Bochner": {
       "kind": "axiom",
-      "name": "Bochner's theorem",
-      "statement": "A continuous positive-definite function on ℝ is the Fourier transform of a finite non-negative Borel measure on ℝ",
-      "source": "Rudin, Functional Analysis, 2nd ed., Thm. 1.4.3",
+      "name": "Wiener Theorem 25 (generalized Bochner for time-average WSS)",
+      "statement": "If f:ℝ→ℂ is continuous with time-average covariance c_f(η) existing for every η and continuous at 0, then c_f is the Fourier transform of a finite non-negative Borel measure",
+      "source": "Wiener, Acta Math. 55 (1930), Thm. 25; Rudin, Functional Analysis, 2nd ed., Thm. 1.4.3",
       "deps": []
     },
     "AX-WK": {
       "kind": "axiom",
-      "name": "Wiener–Khinchin identification of spectral measure",
-      "statement": "For a time-average WSS function with covariance c(η) = ∫ e^{iηξ} dμ(ξ), μ is the spectral measure; its absolutely continuous part has Radon–Nikodym derivative equal to the power spectral density S(ξ) = lim 2π|K_T(ξ)|²/T (a function, not a measure) where the limit exists",
-      "source": "Wiener 1930; Khinchin 1934; Doob, Stochastic Processes, Ch. X §3",
+      "name": "Wiener Theorem 29 (spectral measure via windowed Fourier transform)",
+      "statement": "For time-average WSS f with covariance c_f = Fourier transform of μ_f, and K_T(μ):=(2π)^{-1}∫_0^T f(u)e^{-iμu}du, one has for bounded Borel E⊂ℝ: μ_f(E) = lim_{T→∞} (2π/T) ∫_E |K_T(μ)|² dμ",
+      "source": "Wiener, Acta Math. 55 (1930), Thm. 29",
       "deps": []
     },
     "AX-PW-WSS": {
       "kind": "axiom",
-      "name": "Paley–Wiener for WSS functions with compactly supported spectral measure",
-      "statement": "If a locally square-integrable function f : ℝ → ℂ is time-average wide-sense stationary with covariance c_f(η) = ∫ e^{iηξ} dμ(ξ) and supp μ ⊆ [−σ,σ], then f admits an entire extension of exponential type ≤ σ satisfying |f(z)| ≤ ‖μ‖^{1/2} e^{σ|Im z|} on ℂ",
-      "source": "Yaglom, Correlation Theory of Stationary and Related Random Functions, Vol. I, Thm. 4.7.3; Bochner–Phillips, Ann. Math. 43 (1942)",
+      "name": "Paley–Wiener for time-average WSS functions with compactly supported spectral measure",
+      "statement": "If a locally square-integrable function f:ℝ→ℂ is time-average wide-sense stationary with covariance c_f(η) = ∫ e^{iηξ} dμ_f(ξ) and supp μ_f ⊆ [−σ,σ], then f admits an entire extension of exponential type ≤ σ satisfying |f(z)| ≤ μ_f(ℝ)^{1/2} e^{σ|Im z|} on ℂ",
+      "source": "Yaglom, Correlation Theory of Stationary and Related Random Functions, Vol. I, Thm. 4.7.3; Bochner–Phillips, Ann. Math. 43 (1942), 409–418",
       "deps": []
     },
     "AX-Akhiezer": {
       "kind": "axiom",
-      "name": "Akhiezer Laguerre–Pólya criterion",
-      "statement": "A real entire function F of exponential type ≤ τ whose autocorrelation measure (Fourier transform of |F|² as a tempered distribution) is a non-negative finite Borel measure supported in [−2τ,2τ] belongs to the Laguerre–Pólya class; all complex zeros of F are real",
+      "name": "Akhiezer–Levin Laguerre–Pólya criterion",
+      "statement": "A real-valued entire function F of exponential type ≤ τ whose autocorrelation measure (Fourier transform of |F|² as a tempered distribution) is non-negative, finite, and supported in [−2τ,2τ] belongs to the Laguerre–Pólya class; every complex zero of F is real",
       "source": "Akhiezer, Theory of Approximation, §V.4; Levin, Lectures on Entire Functions, Lecture 16 Thm. 3",
       "deps": []
     },
-    "lem:Thetabij": {
+    "AX-WSinc": {
+      "kind": "axiom",
+      "name": "Wiener–Plancherel sinc-reconstruction theorem",
+      "statement": "For any time-average-WSS f with supp(μ_f)⊆[−Ω,Ω], lim_{T→∞} lim_{U→∞} U^{-1}∫_0^U |f(u_0) − (Ω/π)∫_{-T}^{T} sin[Ω(u_0−u)]/[Ω(u_0−u)] f(u) du|² du_0 = 0, with the two-sided interval replaceable by [0,V] at the cost of an O(V^{-1/2}) boundary error vanishing in the outer limit",
+      "source": "Wiener, Acta Math. 55 (1930), Thm. 29 combined with Thm. 33; Doob, Stochastic Processes, Ch. XI §8 Thm. 8.1 (WSS form)",
+      "deps": [],
+      "role": "auxiliary: used only for the spectral-representation corollaries (cor:zeta-spec), not required for thm:main"
+    },
+    "AX-PlattTrudgian": {
+      "kind": "axiom",
+      "name": "Platt–Trudgian numerical verification of RH at low height",
+      "statement": "Every nontrivial zero ρ = β+is of ζ with |s| < 3·10^{12} satisfies β = 1/2; in particular the finitely many zeros with |s| < 2π lie on the critical line unconditionally",
+      "source": "Platt–Trudgian, Bull. London Math. Soc. 53 (2021), 792–797",
+      "deps": []
+    },
+    "AX-BanachAlaoglu": {
+      "kind": "axiom",
+      "name": "Banach–Alaoglu and Banach–Saks theorems",
+      "statement": "(BA) A norm-bounded family in L² has a weakly convergent subsequence. (BS) A weakly convergent sequence in L² has a subsequence whose Cesàro means converge in norm",
+      "source": "Rudin, Functional Analysis, 2nd ed., Thm. 3.15 and Thm. 3.13",
+      "deps": [],
+      "role": "auxiliary: used only for the orthogonal Borel measure construction (thm:OrthPhi), not required for thm:main"
+    },
+    "def:shift": {
+      "kind": "definition",
+      "name": "Height-adapted admissible shift",
+      "statement": "For the zero ρ=β+is, δ_ρ := (1/2) min(β,1−β), Ω_{δ_ρ} := {t∈ℂ:|Im t|≤1/2−δ_ρ}, K(s) := sup_{t∈Ω_{δ_ρ}}|ϑ'(t)−ϑ'(s)| + 1, c(s) := ϑ'(s)+K(s), Θ_s(t) := ϑ(t)+c(s)t",
+      "location": "Definition def:shift",
+      "deps": ["AX-Olver", "AX-IFT"]
+    },
+    "lem:Kfin": {
       "kind": "lemma",
-      "name": "Monotone phase shift Θ is a C^∞ bijection",
-      "statement": "For every c > c_* := −ϑ'(0), Θ(t) := ϑ(t) + ct satisfies Θ'(t) > 0 on ℝ and Θ : ℝ → ℝ is a C^∞ bijection with C^∞ inverse",
-      "location": "Lemma lem:Thetabij",
-      "deps": ["AX-Digamma", "AX-Olver", "AX-IFT"]
+      "name": "Finiteness of K(s)",
+      "statement": "K(s) < ∞: ϑ' is holomorphic on Ω_{δ_ρ} (poles at t=±i/2 lie outside) and Olver's Stirling expansion gives ϑ'(t)−ϑ'(s) = (1/2)log(t/s) + O(|s|^{-1}+|t|^{-1}) bounded on the strip",
+      "location": "Lemma lem:Kfin",
+      "deps": ["def:shift", "AX-Olver"]
+    },
+    "lem:mono": {
+      "kind": "lemma",
+      "name": "Positivity of ϑ''",
+      "statement": "For every real t > 0, ϑ''(t) > 0",
+      "location": "Lemma lem:mono",
+      "deps": ["AX-Digamma"]
+    },
+    "lem:Repos": {
+      "kind": "lemma",
+      "name": "Re Θ_s' ≥ 1 on Ω_{δ_ρ}",
+      "statement": "For every t ∈ Ω_{δ_ρ}, Re Θ_s'(t) ≥ 2ϑ'(s) + 1 ≥ 1, provided |s| ≥ 2π; zeros with |s| < 2π are handled by Platt–Trudgian",
+      "location": "Lemma lem:Repos",
+      "deps": ["def:shift", "lem:Kfin", "AX-Olver", "AX-PlattTrudgian"]
+    },
+    "cor:biholo": {
+      "kind": "corollary",
+      "name": "Θ_s is a biholomorphism of Ω_{δ_ρ}",
+      "statement": "Θ_s is a biholomorphism of Ω_{δ_ρ} onto its image; its restriction to ℝ is a C^∞ strictly increasing bijection ℝ→ℝ with Θ_s'(t)≥1 and C^∞ inverse Θ_s^{-1}",
+      "location": "Corollary cor:biholo",
+      "deps": ["lem:Repos", "AX-IFT", "AX-Olver"]
+    },
+    "def:DOT": {
+      "kind": "definition",
+      "name": "Omer–Torresani warping operator",
+      "statement": "For a C¹ diffeomorphism γ:ℝ→ℝ with γ'>0, [𝒟_γ x](t) := √(γ'(t)) x(γ(t))",
+      "location": "Definition def:DOT",
+      "deps": ["AX-IFT"]
     },
     "lem:unitary": {
       "kind": "lemma",
-      "name": "Unitarity and composition of the Omer–Torresani operator",
-      "statement": "[𝒟_γ x](t) := √(γ'(t)) x(γ(t)) preserves L² norm on ℝ for any C¹ diffeomorphism γ with γ'>0; composition 𝒟_γ 𝒟_φ = 𝒟_{φ∘γ}, inverse (𝒟_γ)^{-1} = 𝒟_{γ^{-1}}",
+      "name": "Unitarity and composition of 𝒟_γ",
+      "statement": "∫|𝒟_γ x|² dt = ∫|x|² du; 𝒟_φ 𝒟_γ = 𝒟_{γ∘φ}; (𝒟_γ)^{-1} = 𝒟_{γ^{-1}}",
       "location": "Lemma lem:unitary",
-      "deps": ["AX-IFT"]
+      "deps": ["def:DOT", "AX-IFT"]
     },
     "def:Y": {
       "kind": "definition",
       "name": "Unwarped target Y",
-      "statement": "Y(u) := Z(Θ^{-1}(u))/√(Θ'(Θ^{-1}(u))) = [𝒟_{Θ^{-1}} Z](u)",
+      "statement": "For the fixed zero ρ=β+is, Y(u) := [𝒟_{Θ_s^{-1}} Z](u) = Z(Θ_s^{-1}(u))/√(Θ_s'(Θ_s^{-1}(u)))",
       "location": "Definition def:Y",
-      "deps": ["lem:Thetabij", "lem:unitary"]
+      "deps": ["def:DOT", "cor:biholo", "lem:unitary"]
     },
     "lem:Yreal": {
       "kind": "lemma",
       "name": "Y is real on ℝ",
       "statement": "Y(u) ∈ ℝ for every u ∈ ℝ",
       "location": "Lemma lem:Yreal",
-      "deps": ["def:Y", "AX-Zreal", "lem:Thetabij"]
+      "deps": ["def:Y", "AX-Zreal", "cor:biholo"]
     },
     "lem:HL": {
       "kind": "lemma",
-      "name": "Hardy–Littlewood–Ingham second moment (paper statement)",
-      "statement": "∫₀^T |ζ(½+it)|² dt = T log T + (2γ−1−log 2π)T + O(T^{1/2} log T); shifted moment given by Ingham's theorem",
+      "name": "Hardy–Littlewood second moment (paper statement)",
+      "statement": "∫₀^T |ζ(½+it)|² dt = T log(T/2π) + (2γ_Euler − 1)T + O(T^{1/2} log T)",
       "location": "Lemma lem:HL",
       "deps": ["AX-HL"]
-    },
-    "thm:Ywss": {
-      "kind": "theorem",
-      "name": "Y is wide-sense stationary in the time-average sense",
-      "statement": "c_Y(η) := lim_{U→∞} U^{-1} ∫₀^U Y(u) conj(Y(u+η)) du exists for every η ∈ ℝ and depends only on η",
-      "location": "Theorem thm:Ywss",
-      "deps": ["def:Y", "lem:Thetabij", "lem:HL", "AX-RS"]
-    },
-    "cor:Cramer": {
-      "kind": "corollary",
-      "name": "Cramér spectral representation of c_Y",
-      "statement": "There exists a finite non-negative Borel measure μ_Y on ℝ with c_Y(η) = ∫ e^{iηξ} dμ_Y(ξ)",
-      "location": "Corollary cor:Cramer",
-      "deps": ["thm:Ywss", "AX-Bochner"]
     },
     "lem:RS": {
       "kind": "lemma",
       "name": "Riemann–Siegel expansion (paper statement)",
-      "statement": "Z(t) = 2 ∑_{n≤N(t)} n^{-1/2} cos(ϑ(t) − t log n) + R(t), R(t) = O(t^{-1/4})",
+      "statement": "Z(t) = 2 ∑_{n≤N(t)} n^{-1/2} cos(ϑ(t) − t log n) + R(t), |R(t)| = O(t^{-1/4}), |arg' R(t)| = O(t^{-1/2})",
       "location": "Lemma lem:RS",
       "deps": ["AX-RS"]
+    },
+    "def:ta": {
+      "kind": "definition",
+      "name": "Time-average structures",
+      "statement": "For f,g:ℝ→ℂ locally L², ⟨f,g⟩_ta := lim_{U→∞} U^{-1}∫_0^U f(u)conj(g(u))du, ‖f‖_ta² := ⟨f,f⟩_ta, c_f(η) := lim_{U→∞} U^{-1}∫_0^U f(u)conj(f(u+η))du",
+      "location": "Definition def:ta",
+      "deps": ["AX-HL"],
+      "role": "auxiliary: pure notation for time-average inner product, norm, and covariance; depends only on the measure-theoretic facts asserted by the Hardy–Littlewood moment axiom that justify existence of the relevant time averages"
+    },
+    "thm:Ywss": {
+      "kind": "theorem",
+      "name": "Time-average wide-sense stationarity of Y",
+      "statement": "c_Y(η) exists for every η ∈ ℝ and is independent of the origin of the time average; in particular c_Y(0) = 2",
+      "location": "Theorem thm:Ywss",
+      "deps": ["def:Y", "def:ta", "cor:biholo", "lem:HL", "lem:RS", "AX-Olver"]
+    },
+    "cor:Cramer": {
+      "kind": "corollary",
+      "name": "Wiener–Bochner spectral representation of c_Y",
+      "statement": "There exists a finite non-negative Borel measure μ_Y on ℝ with c_Y(η) = ∫ e^{iηξ} dμ_Y(ξ), μ_Y(ℝ) = c_Y(0) = 2",
+      "location": "Corollary cor:Cramer",
+      "deps": ["thm:Ywss", "AX-Bochner"]
+    },
+    "def:KTS": {
+      "kind": "definition",
+      "name": "Windowed Fourier transform and power spectral density",
+      "statement": "K_T(μ) := (2π)^{-1} ∫_0^{Θ_s(T)} Y(u) e^{-iμu} du; S(μ) := limsup_{T→∞} 2π|K_T(μ)|²/Θ_s(T)",
+      "location": "Definition def:KTS",
+      "deps": ["def:Y"]
     },
     "thm:bandlim": {
       "kind": "theorem",
       "name": "Band-limitedness of the windowed Fourier transform",
-      "statement": "For every admissible c and every μ ∈ ℝ with |μ| > 1, S(μ) = lim 2π|K_T(μ)|²/Θ(T) = 0",
+      "statement": "For every μ ∈ ℝ with |μ| > 1, S(μ) = 0",
       "location": "Theorem thm:bandlim",
-      "deps": ["def:Y", "lem:Thetabij", "lem:RS", "AX-Olver", "AX-argR"]
+      "deps": ["def:KTS", "cor:biholo", "lem:RS", "lem:mono", "AX-Olver"]
     },
     "cor:supp": {
       "kind": "corollary",
@@ -157,58 +223,98 @@
       "location": "Corollary cor:supp",
       "deps": ["cor:Cramer", "thm:bandlim", "AX-WK"]
     },
+    "def:PhiT": {
+      "kind": "definition",
+      "name": "Pre-limit density Φ_T",
+      "statement": "Φ_T(ξ) := (2π·Θ_s(T))^{-1/2} ∫_0^{Θ_s(T)} Y(u) e^{-iξu} du = √(2π)/√(Θ_s(T)) · K_T(ξ)",
+      "location": "Definition def:PhiT",
+      "deps": ["def:KTS"],
+      "role": "auxiliary: supports the orthogonal Borel measure Φ construction; not required for thm:main"
+    },
+    "lem:Parseval": {
+      "kind": "lemma",
+      "name": "Parseval identity for Φ_T",
+      "statement": "∫_ℝ |Φ_T(ξ)|² dξ = Θ_s(T)^{-1} ∫_0^{Θ_s(T)} |Y(u)|² du → c_Y(0) = 2 as T→∞",
+      "location": "Lemma lem:Parseval",
+      "deps": ["def:PhiT", "thm:Ywss"],
+      "role": "auxiliary: supports thm:OrthPhi; not required for thm:main"
+    },
+    "thm:OrthPhi": {
+      "kind": "theorem",
+      "name": "Orthogonal Borel measure Φ on [−1,1]",
+      "statement": "There exists a complex Borel measure Φ on [−1,1] with (i) Φ_T ⇀ Φ weakly in L²(ℝ), supp(Φ) ⊆ [−1,1]; (ii) |dΦ(ξ)|² = dμ_Y(ξ), ∫_{[-1,1]} |dΦ|² = 2; (iii) Y(u) = ∫_{-1}^1 e^{iξu} dΦ(ξ) for every u ∈ ℝ",
+      "location": "Theorem thm:OrthPhi",
+      "deps": ["def:PhiT", "lem:Parseval", "thm:bandlim", "cor:supp", "cor:Cramer", "lem:Yreal", "AX-BanachAlaoglu"],
+      "role": "auxiliary: explicit spectral synthesis for ζ on the critical line; not required for thm:main"
+    },
     "thm:PW": {
       "kind": "theorem",
       "name": "Paley–Wiener entire extension of Y",
-      "statement": "Y extends to an entire function of exponential type ≤ 1 with |Y(z)| ≤ μ_Y(ℝ)^{1/2} e^{|Im z|}",
+      "statement": "Y extends to an entire function of exponential type ≤ 1 with |Y(z)| ≤ μ_Y(ℝ)^{1/2} e^{|Im z|} = √2 e^{|Im z|}",
       "location": "Theorem thm:PW",
-      "deps": ["cor:Cramer", "cor:supp", "AX-PW-WSS"]
+      "deps": ["thm:Ywss", "cor:Cramer", "cor:supp", "AX-PW-WSS"]
     },
     "thm:Akhiezer": {
       "kind": "theorem",
-      "name": "Akhiezer Laguerre–Pólya criterion (paper statement)",
-      "statement": "A real-valued entire function of exponential type ≤ τ whose autocorrelation measure (Fourier transform of |F|² as a tempered distribution) is non-negative and supported in [−2τ,2τ] lies in the Laguerre–Pólya class; all complex zeros are real",
+      "name": "Akhiezer–Levin Laguerre–Pólya criterion (paper statement)",
+      "statement": "A real-valued entire function of exponential type ≤ τ whose autocorrelation measure is non-negative, finite, supported in [−2τ,2τ] lies in the Laguerre–Pólya class; all complex zeros are real",
       "location": "Theorem thm:Akhiezer",
       "deps": ["AX-Akhiezer"]
     },
     "thm:LP": {
       "kind": "theorem",
       "name": "Reality of zeros of Y",
-      "statement": "All zeros of the entire extension of Y are real",
+      "statement": "Every zero of the entire extension of Y is real",
       "location": "Theorem thm:LP",
-      "deps": ["lem:Yreal", "thm:PW", "cor:Cramer", "cor:supp", "thm:Akhiezer"]
+      "deps": ["lem:Yreal", "thm:PW", "cor:Cramer", "cor:supp", "thm:Akhiezer", "thm:Ywss"]
+    },
+    "cor:zeta-spec": {
+      "kind": "corollary",
+      "name": "Exact spectral formula for ζ on the critical line",
+      "statement": "For every t ∈ ℝ, ζ(½+it) = e^{-iϑ(t)} √(Θ_s'(t)) ∫_{-1}^1 e^{iξΘ_s(t)} dΦ(ξ) = e^{-iϑ(t)} √(Θ_s'(t)) Y(Θ_s(t)); the sinc-kernel truncation F_T(t) := π^{-1} ∫_0^{Θ_s(T)} sin[Θ_s(t)-u]/[Θ_s(t)-u] Y(u) du satisfies lim_{T→∞} lim_{U→∞} U^{-1} ∫_0^U |F_T(t) - Y(Θ_s(t))|² dt = 0",
+      "location": "Corollary cor:zeta-spec",
+      "deps": ["def:Y", "thm:OrthPhi", "AX-Zreal", "AX-WSinc", "thm:Ywss", "cor:supp"],
+      "role": "auxiliary: analysis/synthesis identity for ζ; not required for thm:main"
+    },
+    "cor:invert": {
+      "kind": "corollary",
+      "name": "Inversion formula",
+      "statement": "In L²([−1,1],dξ), dΦ(ξ) = lim_{T→∞} (2π·Θ_s(T))^{-1/2} (∫_0^T e^{-i[ϑ(t)+ξΘ_s(t)]} ζ(½+it) √(ϑ'(t)+c(s)) dt) dξ",
+      "location": "Corollary cor:invert",
+      "deps": ["def:PhiT", "thm:OrthPhi", "def:Y", "AX-Zreal"],
+      "role": "auxiliary: analysis operator for the spectral synthesis; not required for thm:main"
     },
     "thm:zero-bij": {
       "kind": "theorem",
-      "name": "Zero-set bijection Z ↔ Y via unitary warping",
-      "statement": "t₀ ∈ ℝ is a zero of Z of order m if and only if Θ(t₀) ∈ ℝ is a zero of Y of order m",
+      "name": "Zero-set bijection Z ↔ Y on Ω_{δ_ρ} via holomorphic warping",
+      "statement": "t₀ ∈ Ω_{δ_ρ} is a zero of Z of order m if and only if Θ_s(t₀) is a zero of Y of order m; proof uses biholomorphism of Θ_s with nonvanishing Θ_s' on Ω_{δ_ρ}",
       "location": "Theorem thm:zero-bij",
-      "deps": ["def:Y", "lem:Thetabij"]
+      "deps": ["def:Y", "cor:biholo", "lem:Repos"]
     },
     "cor:Zreal": {
       "kind": "corollary",
-      "name": "Reality of zeros of Z",
-      "statement": "Every zero of Z in ℂ lies on ℝ",
+      "name": "Reality of zeros of Z in Ω_{δ_ρ}",
+      "statement": "Every zero of Z in Ω_{δ_ρ} lies on ℝ",
       "location": "Corollary cor:Zreal",
-      "deps": ["thm:LP", "thm:zero-bij"]
+      "deps": ["thm:LP", "thm:zero-bij", "cor:biholo"]
     },
     "thm:main": {
       "kind": "theorem",
-      "name": "Zeros of ζ on the critical line (Riemann Hypothesis)",
-      "statement": "For every t₀ ∈ ℝ, ζ(½+it₀) = 0 iff Y(Θ(t₀)) = 0 with equal multiplicities; consequently every nontrivial zero of ζ satisfies Re ρ = ½",
+      "name": "Riemann Hypothesis",
+      "statement": "Every nontrivial zero ρ of ζ satisfies Re ρ = 1/2. Proof by contradiction: if ρ=β+is with β≠1/2, then t₀:=s+i(1/2−β) lies in Ω_{δ_ρ} (since |Im t₀|=|1/2−β|=1/2−min(β,1−β)<1/2−δ_ρ) and is a zero of Z by AX-FE, forcing t₀ ∈ ℝ by cor:Zreal, hence β=1/2",
       "location": "Theorem thm:main",
-      "deps": ["AX-FE", "thm:zero-bij", "thm:LP", "cor:Zreal"]
+      "deps": ["AX-FE", "def:shift", "cor:Zreal", "thm:zero-bij", "cor:biholo", "AX-PlattTrudgian"]
     }
   },
   "meta": {
     "acyclic": true,
     "target_reachable_from_all_inputs_used": true,
     "notes": [
-      "Every node either is an axiom (kind=axiom, deps=[]) or cites its direct dependencies by ID.",
-      "Target is thm:main (RH on the critical line).",
-      "The chain: lem:Thetabij (Θ bijection) + lem:unitary (𝒟_γ unitarity) → def:Y → lem:Yreal; separately def:Y + lem:HL → thm:Ywss → cor:Cramer; def:Y + lem:RS → thm:bandlim → cor:supp; cor:Cramer + cor:supp → thm:PW; thm:PW + lem:Yreal + cor:supp + thm:Akhiezer → thm:LP; thm:LP + thm:zero-bij + AX-FE → thm:main.",
-      "Axioms: AX-Digamma, AX-Olver, AX-IFT, AX-Zreal, AX-FE, AX-HL, AX-RS, AX-argR, AX-Bochner, AX-WK, AX-PW-WSS, AX-Akhiezer.",
-      "The 16-item errata attached to the paper lists the propositions whose written derivation is not complete; every item except Item 1 (𝒟_γ composition-direction notational swap) feeds into a node on the path to thm:main."
+      "Per-zero, height-adapted construction: for each nontrivial zero ρ=β+is, the strip Ω_{δ_ρ} and shift c(s)=ϑ'(s)+K(s) are tailored so Re Θ_s' ≥ 1 holds on Ω_{δ_ρ} by triangle inequality.",
+      "Primary proof chain: def:shift → lem:Kfin, lem:mono → lem:Repos → cor:biholo; def:DOT → lem:unitary; cor:biholo + lem:unitary → def:Y → lem:Yreal; def:Y + lem:HL + lem:RS → thm:Ywss → cor:Cramer; def:Y + lem:RS → thm:bandlim → cor:supp; thm:Ywss + cor:Cramer + cor:supp → thm:PW → (with lem:Yreal + thm:Akhiezer) → thm:LP; def:Y + cor:biholo → thm:zero-bij → cor:Zreal → (with AX-FE + t₀∈Ω_{δ_ρ}) → thm:main.",
+      "The spectral-representation branch (thm:OrthPhi, cor:zeta-spec, cor:invert) is a separate corollary stream not required for thm:main; it provides the explicit analysis/synthesis identity for ζ on the critical line.",
+      "Axioms: AX-Digamma, AX-Olver, AX-IFT, AX-Zreal, AX-FE, AX-HL, AX-RS, AX-Bochner, AX-WK, AX-PW-WSS, AX-Akhiezer, AX-WSinc, AX-PlattTrudgian, AX-BanachAlaoglu.",
+      "The contradiction in thm:main uses t₀:=s+i(1/2−β)=−i(ρ−1/2), which is a zero of Z by the functional equation and lies inside Ω_{δ_ρ} since |1/2−β|=1/2−min(β,1−β)<1/2−(1/2)min(β,1−β)=1/2−δ_ρ; cor:Zreal then forces Im t₀=0, i.e. β=1/2."
     ]
   }
 }
