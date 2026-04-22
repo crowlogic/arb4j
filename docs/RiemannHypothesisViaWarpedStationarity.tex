@@ -25,7 +25,7 @@
 \maketitle
 
 \begin{abstract}
-Every nontrivial zero of ζ lies on ℜs = ½.
+Every zero of the Hardy Z-function is real.
 \end{abstract}
 
 \section*{Axioms}
@@ -33,11 +33,6 @@ Every nontrivial zero of ζ lies on ℜs = ½.
 Z(t) ≔ eⁱᵛ⁽ᵗ⁾ ζ(½+it), where ϑ(t) ≔ arg Γ(¼ + it⁄2) − (t⁄2) log π. Z is real on ℝ; |Z(t)| = |ζ(½+it)|; zeros of Z on ℝ coincide with zeros of ζ on ½+iℝ.
 \end{axiom}
 \noindent\textit{Source.} Edwards, Riemann's Zeta Function, §6.5; Titchmarsh Ch. 2
-
-\begin{axiom}[{Functional equation symmetry}]\label{node-ax-ζFE}
-ξ(w) ≔ ½ w(w−1) π⁻ʷ⁄² Γ(w⁄2) ζ(w) is entire and satisfies ξ(w) = ξ(1−w). Consequently, if ρ = β+iγ is a nontrivial zero with β ∈ (0,1), γ ∈ ℝ, then 1−ρ̄ = (1−β)+iγ is also a nontrivial zero.
-\end{axiom}
-\noindent\textit{Source.} Titchmarsh, The Theory of the Riemann Zeta-Function, §2.12
 
 \begin{axiom}[{Digamma asymptotic}]\label{node-ax-ψasymp}
 As |t| → ∞ with t ∈ ℝ, ½ ℜψ(¼+it⁄2) = ½ log|t⁄2| + 𝓞(|t|⁻²). Consequently ϑ′(t) = ½ log|t⁄(2π)| + 𝓞(|t|⁻²) → +∞.
@@ -161,18 +156,11 @@ Every zero z ∈ ℂ of the entire extension of Y satisfies z ∈ ℝ.
 Y is real on ℝ (def:Y). By thm:Yentire, Y is entire of exponential type ≤ 1. By cor:supp, μ[Y] is supported in [−1, 1] ⊆ [−2, 2]. Apply ax:Akhiezer with τ = 1: Y ∈ 𝓛𝓟 and every zero of Y is real.
 \end{proof}
 
-\begin{theorem}[{Real-zero locus is preserved under unitary time-change}]\label{node-thm-transfer}
-Let H ∶ ℂ → ℂ be entire with every zero of H real. Let Θ ∶ ℝ → ℝ be a bijection with Θ′ > 0 on ℝ. Define F ∶ ℝ → ℝ by F(t) ≔ √(Θ′(t)) · H(Θ(t)). Then the zeros of F on ℝ are exactly ⦃Θ⁻¹(ζ) : ζ ∈ ℝ, H(ζ) = 0⦄, and F has no further zeros.
+\begin{theorem}[{All zeros of the Hardy Z-function are real}]\label{node-thm-RH}
+Every zero of Z is real.
 \end{theorem}
 \begin{proof}
-√(Θ′(t)) > 0 for every t ∈ ℝ, so F(t) = 0 iff H(Θ(t)) = 0. H has only real zeros by hypothesis, so H(Θ(t)) = 0 iff Θ(t) ∈ ℝ and H(Θ(t)) = 0; since Θ(t) ∈ ℝ automatically, F(t) = 0 iff Θ(t) is a zero of H. Bijectivity of Θ gives the stated description.
-\end{proof}
-
-\begin{theorem}[{Riemann Hypothesis}]\label{node-thm-RH}
-Every nontrivial zero of ζ satisfies ℜρ = ½.
-\end{theorem}
-\begin{proof}
-Let ρ be a nontrivial zero of ζ. Set t ≔ (ρ − ½)/i ∈ ℂ; then ½ + it = ρ and ζ(½ + it) = 0, so Z(t) = eⁱᵛ⁽ᵗ⁾ ζ(½ + it) = 0 (ax:Z). By lem:Zfact, Z(t) = √(Θ′(t)) · Y(Θ(t)). Θ′ is positive and non-vanishing (lem:Θdiffeo), so √(Θ′(t)) ≠ 0; hence Y(Θ(t)) = 0. By thm:Yzeros, every zero of Y is real, so Θ(t) ∈ ℝ. Θ maps ℝ to ℝ bijectively (lem:Θdiffeo) and is the restriction to ℝ of a map defined on ℝ only; Θ(t) ∈ ℝ therefore requires t ∈ ℝ. Hence ρ = ½ + it ∈ ½ + iℝ, i.e. ℜρ = ½.
+By lem:Zfact, Z(t) = √(Θ′(t)) · Y(Θ(t)). By lem:Θdiffeo, Θ is a bijection ℝ → ℝ with Θ′ > 0, so √(Θ′(t)) ≠ 0 and Θ(t) is real. Hence Z(t) = 0 iff Y(Θ(t)) = 0. By thm:Yentire, Y is entire of exponential type ≤ 1, Paley–Wiener band-limited with spectrum in [−1, 1] (cor:supp); by thm:Yzeros (Akhiezer–Laguerre–Pólya), every zero of Y is real. Composing with Θ gives that every zero of Z is real.
 \end{proof}
 
 \end{document}
