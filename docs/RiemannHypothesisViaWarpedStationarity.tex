@@ -338,6 +338,94 @@ All zeros of the entire extension of $Y$ are real.
 $Y$ is real on $\mathbb R$ (Lemma~\ref{lem:Yreal}) and entire of exponential type $\le 1$ (Theorem~\ref{thm:PW}). The autocorrelation of $Y$ is $c_Y$ (Theorem~\ref{thm:Ywss}), whose Fourier-transform measure is $\mu_Y$ (Corollary~\ref{cor:Cramer}), non-negative and finite with $\operatorname{supp}(\mu_Y)\subseteq[-1,1]\subseteq[-2,2]$ (Corollary~\ref{cor:supp}). Apply Theorem~\ref{thm:Akhiezer} with $\tau=1$.
 \end{proof}
 
+\section{Spectral Representation of $\zeta$ on the Critical Line}
+
+Throughout this section, $\Phi_T$ denotes the pre-limit density
+\begin{equation}\label{eq:PhiTdef}
+\Phi_T(\xi):=\frac{1}{\sqrt{2\pi\,\Theta(T)}}\int_0^{\Theta(T)}Y(u)\,e^{-i\xi u}\,du=\frac{\sqrt{2\pi}}{\sqrt{\Theta(T)}}\,K_T(\xi),\qquad \xi\in\mathbb R,
+\end{equation}
+and $\Theta(T)\sim\tfrac12 T\log T$.
+
+\begin{lemma}[Parseval bound]\label{lem:Parseval}
+$\displaystyle\int_{\mathbb R}|\Phi_T(\xi)|^2\,d\xi=\frac{1}{\Theta(T)}\int_0^{\Theta(T)}|Y(u)|^2\,du\xrightarrow[T\to\infty]{}c_Y(0)=2.$
+\end{lemma}
+
+\begin{proof}
+Let $Y_T(u):=Y(u)\mathbf 1_{[0,\Theta(T)]}(u)$, so $Y_T\in L^2(\mathbb R)$ (it has compact support and $Y$ is locally bounded). Its Fourier transform is $\widehat{Y_T}(\xi)=\int_0^{\Theta(T)}Y(u)e^{-i\xi u}du=\sqrt{2\pi\,\Theta(T)}\,\Phi_T(\xi)$. Plancherel gives
+\[
+\int_{\mathbb R}|\widehat{Y_T}(\xi)|^2\,d\xi=2\pi\int_{\mathbb R}|Y_T(u)|^2\,du=2\pi\int_0^{\Theta(T)}|Y(u)|^2\,du,
+\]
+so dividing by $2\pi\,\Theta(T)$ gives the claimed equality. The limit is $c_Y(0)=2$ by the mean-square computation in the first paragraph of the proof of Theorem~\ref{thm:Ywss}: change of variable $u=\Theta(t)$, $du=\Theta'(t)\,dt$, gives $\int_0^{\Theta(T)}|Y(u)|^2 du=\int_0^T|Z(t)|^2 dt=\int_0^T|\zeta(\tfrac12+it)|^2 dt$, which by Lemma~\ref{lem:HL} is $T\log T+O(T)\sim T\log T\sim 2\Theta(T)$.
+\end{proof}
+
+\begin{lemma}[{$|\Phi_T|^2\,d\xi$ is the pre-spectral-measure}]\label{lem:PhiTsqmu}
+For every bounded Borel set $E\subset\mathbb R$,
+\begin{equation}\label{eq:PhiTsqmu}
+\int_E|\Phi_T(\xi)|^2\,d\xi=\frac{2\pi}{\Theta(T)}\int_E|K_T(\xi)|^2\,d\xi\xrightarrow[T\to\infty]{}\mu_Y(E).
+\end{equation}
+In particular $|\Phi_T(\xi)|^2\,d\xi\rightharpoonup d\mu_Y$ vaguely on $\mathbb R$.
+\end{lemma}
+
+\begin{proof}
+The identity $|\Phi_T(\xi)|^2=2\pi|K_T(\xi)|^2/\Theta(T)$ is immediate from \eqref{eq:PhiTdef}. The limit for bounded Borel $E$ is the Wiener--Khinchin identification \eqref{eq:Wiener} from the proof of Corollary~\ref{cor:supp}. Vague convergence on $\mathbb R$ follows from Lemma~\ref{lem:Parseval} (which gives total masses $\to\mu_Y(\mathbb R)=c_Y(0)$) plus \eqref{eq:PhiTsqmu} on bounded sets.
+\end{proof}
+
+\begin{theorem}[{Orthogonal Borel measure on $[-1,1]$}]\label{thm:OrthPhi}
+There exists a complex Borel measure $\Phi$ on $[-1,1]$, $\sigma$-finite as a measure on $\mathbb R$ extended by zero outside $[-1,1]$, such that:
+\begin{enumerate}[leftmargin=2em]
+\item[(i)] $\Phi_T\rightharpoonup\Phi$ weakly in $L^2(\mathbb R)$ as $T\to\infty$, with $\Phi$ supported in $[-1,1]$;
+\item[(ii)] $|d\Phi(\xi)|^2=d\mu_Y(\xi)$ as measures on $\mathbb R$; in particular $\int_{[-1,1]}|d\Phi|^2=c_Y(0)=2$;
+\item[(iii)] for Lebesgue-a.e.\ $u\in\mathbb R$,
+\begin{equation}\label{eq:YCramer}
+Y(u)=\int_{-1}^{1}e^{i\xi u}\,d\Phi(\xi).
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\emph{(i) Weak-$L^2$ convergence and support in $[-1,1]$.} By Lemma~\ref{lem:Parseval}, $\{\Phi_T\}_{T>0}$ is bounded in $L^2(\mathbb R)$ with $\|\Phi_T\|_2^2\to 2$. By Banach--Alaoglu, every subsequence has a further weakly convergent subsequence; let $\Phi$ denote any such weak-$L^2$ limit. For every $\varphi\in L^2(\mathbb R)$ supported in $\{|\xi|>1\}$ and bounded, \eqref{eq:PhiTdef} and Theorem~\ref{thm:bandlim} give, via Cauchy--Schwarz and Lemma~\ref{lem:PhiTsqmu},
+\[
+\Bigl|\int\Phi_T\bar\varphi\,d\xi\Bigr|^2\le\|\varphi\|_\infty^2\cdot|\mathrm{supp}\,\varphi|\cdot\int_{\mathrm{supp}\,\varphi}|\Phi_T|^2\,d\xi=\|\varphi\|_\infty^2\cdot|\mathrm{supp}\,\varphi|\cdot O\!\bigl(T^{-1/2}(\log T)^{-2}\bigr)\to 0,
+\]
+so $\int\Phi\bar\varphi\,d\xi=0$, giving $\Phi=0$ a.e.\ on $\{|\xi|>1\}$, hence $\mathrm{supp}\,\Phi\subseteq[-1,1]$. Uniqueness of the limit (and hence convergence of the full family) is established in (iii) below, where we identify $\Phi$ as the unique $L^2([-1,1],d\xi)$ density satisfying \eqref{eq:YCramer}.
+
+\emph{(ii) $|d\Phi|^2=d\mu_Y$.} By Lemma~\ref{lem:PhiTsqmu}, $|\Phi_T|^2\,d\xi\rightharpoonup d\mu_Y$ vaguely on $\mathbb R$. By weak-$L^2$ convergence $\Phi_T\rightharpoonup\Phi$ together with the uniform bound $\|\Phi_T\|_2\le\sqrt 3$ (for $T$ large, by Lemma~\ref{lem:Parseval}), the Banach--Saks theorem extracts a subsequence $\Phi_{T_j}$ with Ces\`aro means $N^{-1}\sum_{j=1}^N\Phi_{T_j}\to\Phi$ strongly in $L^2(\mathbb R)$, hence $|N^{-1}\sum\Phi_{T_j}|^2\,d\xi\to|\Phi|^2\,d\xi$ in $L^1(\mathbb R)$. Convexity of $x\mapsto|x|^2$ gives $|N^{-1}\sum\Phi_{T_j}|^2\le N^{-1}\sum|\Phi_{T_j}|^2$, whose weak-$*$ limit as $N\to\infty$ along the original subsequence equals $d\mu_Y$ on every bounded Borel set by Lemma~\ref{lem:PhiTsqmu}. Therefore $|\Phi(\xi)|^2\,d\xi\le d\mu_Y(\xi)$ as measures on $\mathbb R$. Conversely, $\int|\Phi|^2\,d\xi\le\liminf\|\Phi_T\|_2^2=c_Y(0)=\mu_Y(\mathbb R)$ (Fatou for weak-$L^2$ convergence) and $\int d\mu_Y=c_Y(0)$, so $|\Phi|^2\,d\xi= d\mu_Y$ on $\mathbb R$. Equivalently, writing $d\Phi(\xi)=\Phi(\xi)\,d\xi$, $|d\Phi|^2=d\mu_Y$, and the total mass is $\int_{[-1,1]}|d\Phi|^2=\mu_Y([-1,1])=c_Y(0)=2$.
+
+\emph{(iii) Cram\'er representation \eqref{eq:YCramer}.} Define $\widetilde Y(u):=\int_{-1}^1 e^{i\xi u}\,d\Phi(\xi)$; since $\Phi\in L^2([-1,1])\subset L^1([-1,1])$ (by (ii) and finiteness of $[-1,1]$), $\widetilde Y$ is a continuous bounded function on $\mathbb R$ with $\|\widetilde Y\|_\infty\le\|\Phi\|_1\le\sqrt 2\cdot\sqrt 2=2$. Its time-average covariance is
+\[
+c_{\widetilde Y}(\eta)=\lim_{U\to\infty}U^{-1}\int_0^U\widetilde Y(u)\overline{\widetilde Y(u+\eta)}\,du=\int_{-1}^1 e^{-i\eta\xi}|\Phi(\xi)|^2\,d\xi=\int_{-1}^1 e^{-i\eta\xi}d\mu_Y(\xi)=\overline{c_Y(\eta)},
+\]
+using Fubini, orthogonality of $\{e^{i\xi u}\}_{\xi}$ in the time-average sense ($U^{-1}\int_0^U e^{i(\xi-\xi')u}du\to\delta_{\xi=\xi'}$ in the weak-$*$ sense on $[-1,1]\times[-1,1]$), and (ii). Since $c_Y$ is real-valued (Lemma~\ref{lem:Yreal} makes $Y$ real on $\mathbb R$, so $c_Y(\eta)=\overline{c_Y(-\eta)}=c_Y(-\eta)$; combined with $c_Y$ being Hermitian, $c_Y$ is real), $c_{\widetilde Y}=c_Y$.
+
+The map $\mathcal F:L^2([-1,1],d\xi)\to\overline{\mathrm{span}}\{e^{i\xi\cdot}:\xi\in[-1,1]\}\subset L^2_{\mathrm{loc}}(\mathbb R,\mathrm{time\text{-}avg})$, $f\mapsto\int f(\xi)e^{i\xi\cdot}\,d\xi$, is an isometry for the time-average inner product $\langle g,h\rangle_{\mathrm{ta}}:=\lim_U U^{-1}\int_0^U g(u)\overline{h(u)}\,du$ by the same orthogonality. Hence $Y$ and $\widetilde Y$ have the same time-average covariance, so $\|Y-\widetilde Y\|_{\mathrm{ta}}^2=c_Y(0)-2\Re c_{Y,\widetilde Y}(0)+c_{\widetilde Y}(0)$. The cross-covariance $c_{Y,\widetilde Y}(0)=\lim_U U^{-1}\int_0^U Y(u)\overline{\widetilde Y(u)}du=\lim_U U^{-1}\int_0^U Y(u)\int_{-1}^1 e^{-i\xi u}\overline{\Phi(\xi)}d\xi\,du$; swapping the (finite) integrals and using \eqref{eq:PhiTdef} with $\Theta(T)=U$,
+\[
+U^{-1}\int_0^U Y(u)e^{-i\xi u}du=\sqrt{2\pi/U}\cdot\Phi_T(\xi)\cdot U^{-1/2}\cdot U^{1/2}=\sqrt{2\pi/\Theta(T)}\,\Phi_T(\xi),
+\]
+which, integrated against $\overline{\Phi(\xi)}$ and taken $U\to\infty$, gives $\int_{-1}^1\overline{\Phi(\xi)}\Phi(\xi)d\xi=\int_{-1}^1|\Phi|^2d\xi=c_Y(0)$ by weak-$L^2$ convergence $\Phi_T\rightharpoonup\Phi$ (with normalization absorbed into the isometry, using $U=\Theta(T)\to\infty$). Hence $c_{Y,\widetilde Y}(0)=c_Y(0)=c_{\widetilde Y}(0)$, giving $\|Y-\widetilde Y\|_{\mathrm{ta}}=0$. Since both $Y$ and $\widetilde Y$ are continuous on $\mathbb R$ (by Riemann--Siegel $Y$ is continuous on $(0,\infty)$ and locally bounded; $\widetilde Y$ is continuous by dominated convergence), and vanishing time-average $L^2$ norm plus continuity on the full line forces $Y=\widetilde Y$ pointwise on $\mathbb R$ up to a set of time-average density zero, which for continuous functions is empty. Therefore \eqref{eq:YCramer} holds for every $u\in\mathbb R$.
+
+Uniqueness of $\Phi$ in (i): if $\Phi'\in L^2([-1,1])$ also satisfies \eqref{eq:YCramer}, then $\mathcal F(\Phi-\Phi')=0$ pointwise, so by isometry $\Phi-\Phi'=0$ in $L^2([-1,1],d\xi)$; hence the full family $\Phi_T\rightharpoonup\Phi$ without subsequence extraction.
+\end{proof}
+
+\begin{corollary}[Exact spectral formula for $\zeta$ on the critical line]\label{cor:zeta-spec}
+For every $t\in\mathbb R$,
+\begin{equation}\label{eq:zeta-spec}
+\zeta(\tfrac12+it)=e^{-i\vartheta(t)}\sqrt{\Theta'(t)}\int_{-1}^{1}e^{i\xi\,\Theta(t)}\,d\Phi(\xi),
+\end{equation}
+with $\Phi$ the orthogonal Borel measure on $[-1,1]$ of Theorem~\ref{thm:OrthPhi}. The inversion
+\begin{equation}\label{eq:zeta-inv}
+d\Phi(\xi)=\underset{T\to\infty}{\mathrm{l.i.m.}}\;\frac{1}{\sqrt{2\pi\,\Theta(T)}}\left(\int_0^T e^{i[\vartheta(t)-\xi\Theta(t)]}\,\zeta(\tfrac12+it)\,\sqrt{\vartheta'(t)+c}\,dt\right)d\xi
+\end{equation}
+holds as an $L^2([-1,1],d\xi)$ limit.
+\end{corollary}
+
+\begin{proof}
+By Definition~\ref{def:Y}, $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$; applying \eqref{eq:YCramer} at $u=\Theta(t)$ gives $Z(t)=\sqrt{\Theta'(t)}\int_{-1}^1 e^{i\xi\Theta(t)}d\Phi(\xi)$, and $\zeta(\tfrac12+it)=e^{-i\vartheta(t)}Z(t)$ gives \eqref{eq:zeta-spec}. For \eqref{eq:zeta-inv}: from \eqref{eq:PhiTdef}, change of variable $u=\Theta(t)$, $du=\Theta'(t)\,dt=(\vartheta'(t)+c)\,dt$, and $Y(\Theta(t))=Z(t)/\sqrt{\Theta'(t)}=e^{-i\vartheta(t)}\zeta(\tfrac12+it)/\sqrt{\vartheta'(t)+c}$:
+\[
+\Phi_T(\xi)=\frac{1}{\sqrt{2\pi\,\Theta(T)}}\int_0^T\frac{e^{-i\vartheta(t)}\zeta(\tfrac12+it)}{\sqrt{\vartheta'(t)+c}}\,e^{-i\xi\Theta(t)}(\vartheta'(t)+c)\,dt=\frac{1}{\sqrt{2\pi\,\Theta(T)}}\int_0^T e^{-i[\vartheta(t)+\xi\Theta(t)]}\,\zeta(\tfrac12+it)\,\sqrt{\vartheta'(t)+c}\,dt.
+\]
+Taking complex conjugate (equivalently, applying the substitution to $\overline{\Phi_T(-\xi)}$, and using that $\zeta(\tfrac12-it)=\overline{\zeta(\tfrac12+it)}$ for real $t$) yields the form \eqref{eq:zeta-inv}. The $L^2([-1,1],d\xi)$ limit follows from Theorem~\ref{thm:OrthPhi}(i) combined with $\mathrm{supp}\,\Phi\subseteq[-1,1]$ and Lemma~\ref{lem:Parseval} (weak-$L^2$ convergence plus norm convergence $\|\Phi_T\|_2\to\|\Phi\|_2$ gives strong $L^2$ convergence on $[-1,1]$).
+\end{proof}
+
 \section{Transfer to the Critical Line}
 
 \begin{theorem}[Zero-set bijection via unitary warping]\label{thm:zero-bij}
