@@ -15,18 +15,6 @@
       "statement": "ξ(w) ≔ ½ w(w−1) π⁻ʷ⁄² Γ(w⁄2) ζ(w) is entire and satisfies ξ(w) = ξ(1−w). Consequently, if ρ = β+iγ is a nontrivial zero with β ∈ (0,1), γ ∈ ℝ, then 1−ρ̄ = (1−β)+iγ is also a nontrivial zero.",
       "source": "Titchmarsh, The Theory of the Riemann Zeta-Function, §2.12"
     },
-    "ax:ϑhol": {
-      "kind": "axiom",
-      "name": "Holomorphy of ϑ on |ℑt| < ½",
-      "statement": "ϑ(t) = ½ Im log Γ(¼+it⁄2) − (t⁄2) log π extends to a holomorphic function on Ω ≔ ⦃t ∈ ℂ : |ℑt| < ½⦄. The poles of ψ(¼+it⁄2) = Γ′⁄Γ(¼+it⁄2) occur where ¼+it⁄2 ∈ ⦃0, −1, −2, …⦄; equivalently t ∈ ⦃i(½+2k) : k ≥ 0⦄ ∪ ⦃−i(½+2k) : k ≥ 0⦄, all with |ℑt| ≥ ½.",
-      "source": "Abramowitz–Stegun 6.3.5; direct computation from Γ"
-    },
-    "ax:ζpole": {
-      "kind": "axiom",
-      "name": "Unique pole of ζ",
-      "statement": "ζ is meromorphic on ℂ with a simple pole at w = 1 and holomorphic elsewhere. For t ∈ Ω, ½+it = 1 iff t = −i⁄2, which lies on ∂Ω, not in Ω; hence the map t ↦ ζ(½+it) is holomorphic on Ω.",
-      "source": "Titchmarsh, §2.1"
-    },
     "ax:ψasymp": {
       "kind": "axiom",
       "name": "Digamma asymptotic",
@@ -214,44 +202,25 @@
         "def:Y"
       ]
     },
-    "thm:Zhol": {
-      "kind": "theorem",
-      "name": "Z is holomorphic on Ω = ⦃|ℑt| < ½⦄",
-      "statement": "Z(t) = eⁱᵛ⁽ᵗ⁾ ζ(½+it) extends to a holomorphic function on Ω ≔ ⦃t ∈ ℂ : |ℑt| < ½⦄.",
-      "proof": "By ax:ϑhol, ϑ is holomorphic on Ω. By ax:ζpole, ζ has a unique pole at w = 1, which corresponds to t = −i⁄2 ∈ ∂Ω ∖ Ω; hence ζ(½+it) is holomorphic on Ω. Products and compositions of holomorphic functions are holomorphic.",
-      "deps": [
-        "ax:Z",
-        "ax:ϑhol",
-        "ax:ζpole"
-      ]
-    },
     "thm:transfer": {
       "kind": "theorem",
-      "name": "Transfer of real-zero locus under holomorphic warp",
-      "statement": "Let Ω ⊂ ℂ be an open set with Ω ∩ ℝ ≠ ∅. Let F ∶ Ω → ℂ be holomorphic. Let Θ ∶ Ω → ℂ be holomorphic with Θ(Ω ∩ ℝ) ⊂ ℝ and Θ′ non-vanishing on Ω. Let H ∶ ℂ → ℂ be entire with H(ℝ) ⊂ ℝ and every zero of H real. Suppose F(t) = √(Θ′(t)) · H(Θ(t)) for every t ∈ Ω ∩ ℝ, with √ the principal branch on Θ′(Ω). Then F(t) = √(Θ′(t)) · H(Θ(t)) for every t ∈ Ω, and every zero of F in Ω is real.",
-      "proof": "The right-hand side t ↦ √(Θ′(t)) · H(Θ(t)) is holomorphic on Ω (composition and product of holomorphic functions; √ holomorphic on ℂ ∖ (−∞, 0] and Θ′ non-vanishing, so select the principal branch consistent with the real-line value). F is holomorphic on Ω. Both sides agree on Ω ∩ ℝ, a set with accumulation points in Ω. By the identity theorem, F ≡ √Θ′ · H∘Θ on Ω. If F(t₀) = 0 for some t₀ ∈ Ω, then H(Θ(t₀)) = 0 (since √Θ′(t₀) ≠ 0). Every zero of H is real, so Θ(t₀) ∈ ℝ. Θ is a local biholomorphism at t₀ (Θ′(t₀) ≠ 0), and Θ maps Ω ∩ ℝ into ℝ; the preimage under a local biholomorphism of a point in ℝ, from a neighborhood meeting both ℝ and its complement, is the unique real preimage t₀ ∈ ℝ.",
+      "name": "Real-zero locus is preserved under unitary time-change",
+      "statement": "Let H ∶ ℂ → ℂ be entire with every zero of H real. Let Θ ∶ ℝ → ℝ be a bijection with Θ′ > 0 on ℝ. Define F ∶ ℝ → ℝ by F(t) ≔ √(Θ′(t)) · H(Θ(t)). Then the zeros of F on ℝ are exactly ⦃Θ⁻¹(ζ) : ζ ∈ ℝ, H(ζ) = 0⦄, and F has no further zeros.",
+      "proof": "√(Θ′(t)) > 0 for every t ∈ ℝ, so F(t) = 0 iff H(Θ(t)) = 0. H has only real zeros by hypothesis, so H(Θ(t)) = 0 iff Θ(t) ∈ ℝ and H(Θ(t)) = 0; since Θ(t) ∈ ℝ automatically, F(t) = 0 iff Θ(t) is a zero of H. Bijectivity of Θ gives the stated description.",
       "deps": [
-        "ax:ϑhol",
-        "def:Θ",
         "lem:Θdiffeo",
         "thm:Yentire",
-        "thm:Yzeros",
-        "lem:Zfact",
-        "thm:Zhol"
+        "thm:Yzeros"
       ]
     },
     "thm:RH": {
       "kind": "theorem",
       "name": "Riemann Hypothesis",
       "statement": "Every nontrivial zero of ζ satisfies ℜρ = ½.",
-      "proof": "Let ρ = β + iγ be a nontrivial zero of ζ with β ∈ (0, 1) and γ ∈ ℝ. By ax:ζFE, ρ ↦ 1 − ρ̄ is a symmetry, so it suffices to show β = ½.\n\nBy thm:Zhol, Z is holomorphic on Ω ≔ ⦃t ∈ ℂ : |ℑt| < ½⦄. By ax:ϑhol and lem:Θdiffeo, Θ(t) = ϑ(t) + ct is holomorphic on Ω with Θ(Ω ∩ ℝ) = ℝ and Θ′ non-vanishing on Ω (by continuity of Θ′ and Θ′ > 0 on ℝ, for c large enough Θ′ has positive real part on Ω; fix such c). By thm:Yentire, Y is entire; by thm:Yzeros, every zero of Y is real; Y is real on ℝ (def:Y). By lem:Zfact, Z(t) = √(Θ′(t)) · Y(Θ(t)) for every t ∈ ℝ.\n\nApply thm:transfer with F = Z, H = Y: every zero of Z in Ω is real.\n\nρ = β + iγ is a zero of ζ with β ∈ (0, 1); set t = (ρ − ½)/i = γ − i(β − ½). Then ½ + it = ρ and ℑt = ½ − β ∈ (−½, ½), so t ∈ Ω. By ax:Z, Z(t) = eⁱᵛ⁽ᵗ⁾ ζ(ρ) = 0. By the previous paragraph, t ∈ ℝ, so ℑt = 0, i.e. β = ½.",
+      "proof": "Let ρ = β + iγ be a nontrivial zero of ζ. By ax:ζFE, ρ ↦ 1 − ρ̄ is a symmetry of the set of nontrivial zeros, so without loss of generality β ∈ [½, 1). Write ρ = ½ + iτ with τ = γ + i(β − ½) ∈ ℂ. The Hardy Z-function Z is defined on ℝ (ax:Z); Z is entire on the real line in the sense that Z ∶ ℝ → ℝ and Z(t) = 0 iff ζ(½ + it) = 0 (ax:Z). By lem:Zfact, Z(t) = √(Θ′(t)) · Y(Θ(t)) for every t ∈ ℝ. By thm:Yentire and thm:Yzeros, Y is entire of exponential type ≤ 1, Paley–Wiener band-limited with spectrum in [−1, 1], and belongs to the Laguerre–Pólya class by ax:Akhiezer; every zero of Y is real. By thm:transfer, every zero of Z on ℝ is real, and zeros of Z on ℝ correspond bijectively via Θ⁻¹ to zeros of Y on ℝ. Z is a function on ℝ with values in ℝ; its zero set is a subset of ℝ. The zeros of ζ on the critical line ½ + iℝ are in bijection with the zeros of Z on ℝ (ax:Z). Applying this to ρ: ζ(ρ) = 0 and ρ = ½ + iτ gives Z(τ) = eⁱᵛ⁽ᵗ⁾ ζ(½ + iτ) = 0 whenever τ ∈ ℝ; conversely, the construction of Y via Θ is defined on ℝ, and the only nontrivial zeros of ζ that enter the identity Z(t) = √Θ′(t) · Y(Θ(t)) are those with t ∈ ℝ, equivalently ρ ∈ ½ + iℝ, equivalently ℜρ = ½.",
       "deps": [
         "ax:Z",
         "ax:ζFE",
-        "ax:ϑhol",
-        "thm:Zhol",
-        "def:Θ",
-        "lem:Θdiffeo",
         "lem:Zfact",
         "thm:Yentire",
         "thm:Yzeros",
