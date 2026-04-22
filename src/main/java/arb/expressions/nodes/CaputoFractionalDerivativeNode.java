@@ -232,6 +232,13 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     }
 
     derivativeOrder = getDerivativeOrder(order, context);
+    if (derivativeOrder > 1)
+    {
+      throw new UnsupportedOperationException(String.format("Caputo fractional derivative with n = ⌈α⌉ = %d > 1 "
+                                                            + "is not yet supported. Only α ∈ (0, 1] (n = 1) is currently implemented.",
+                                                            derivativeOrder));
+    }
+    init(operand, derivativeOrder);
   }
 
   protected void throwFunctionSyntaxError()
