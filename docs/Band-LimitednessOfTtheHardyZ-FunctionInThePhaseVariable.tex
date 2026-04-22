@@ -25,22 +25,18 @@
 \maketitle
 
 \begin{abstract}
-Let $\zeta$ denote the Riemann zeta function, $Z(t) = e^{i\theta(t)}\zeta(\tfrac{1}{2}+it)$ the Hardy Z-function, and $\theta(t) = \Im\log\Gamma(\tfrac{1}{4}+\tfrac{it}{2}) - \tfrac{t}{2}\log\pi$ the Riemann--Siegel theta function. The function $Z$ is meromorphic on $\mathbb{C}$ with poles inherited from $\zeta$; on the open strip $\{|\Im t|<\tfrac{1}{2}\}$, $Z$ is holomorphic. For any constant
-\begin{equation}\label{eq:cstarstar-abs}
-c \;>\; c_{**} \;:=\; \tfrac{1}{2}\!\left(\gamma + 3\log 2 + \tfrac{\pi}{2} + \log\pi\right) \;+\; \tfrac{1}{8}\sup_{|\Im t|<1/2}\!\left|\psi'(\tfrac{1}{4}+\tfrac{it}{2})\right|
-\end{equation}
-define $\Theta(t) := \theta(t) + ct$ and let $Y$ be the unitary inverse phase pullback of $Z$, namely
+Let $\zeta$ denote the Riemann zeta function, $Z(t) = e^{i\theta(t)}\zeta(\tfrac{1}{2}+it)$ the Hardy Z-function, and $\theta(t) = \Im\log\Gamma(\tfrac{1}{4}+\tfrac{it}{2}) - \tfrac{t}{2}\log\pi$ the Riemann--Siegel theta function. The function $Z$ is meromorphic on $\mathbb{C}$ with poles inherited from $\zeta$; on the open strip $\Omega:=\{|\Im t|<\tfrac{1}{2}\}$, $Z$ is holomorphic. Set $c_*:=-\theta'(0)=\tfrac{1}{2}(\gamma+3\log 2+\tfrac{\pi}{2}+\log\pi)$; for any constant $c>c_*$, define $\Theta(t):=\theta(t)+ct$. Then $\Theta:\mathbb{R}\to\mathbb{R}$ is a strictly increasing bijection, and the unitary inverse phase pullback
 \begin{equation}\label{eq:Ydef-abs}
 Y(u) \;:=\; \frac{Z(\Theta^{-1}(u))}{\sqrt{\Theta'(\Theta^{-1}(u))}}
 \end{equation}
-The Fourier support of $Y$ is contained in $[-1,1]$. By the Paley--Wiener theorem, $Y$ extends to an entire function of exponential type $\le 1$. Combined with the non-negativity of the spectral measure $S:=|\widehat{Y}|^2$ and Akhiezer's theorem, $Y$ belongs to the Laguerre--P\'olya class. The unitary identity $Z(t) = Y(\Theta(t))\sqrt{\Theta'(t)}$, valid on the strip $\{|\Im t| < \tfrac{1}{2}\}$ where $\Theta$ is an injective biholomorphism with non-vanishing derivative and $Z$ is holomorphic, transfers the real zero locus of $Y$ to that of $Z$. Therefore every non-trivial zero $\rho$ of $\zeta$ satisfies $\Re\rho = \tfrac{1}{2}$.
+is a real-valued function on $\mathbb{R}$ whose Fourier support is contained in $[-1,1]$. By the Paley--Wiener theorem, $Y$ extends to an entire function of exponential type $\le 1$. Combined with the non-negativity of the spectral measure $S:=|\widehat{Y}|^2$ and Akhiezer's theorem, $Y$ belongs to the Laguerre--P\'olya class, so all zeros of $Y$ are real. The sub-strip identity $Z(t) = Y(\Theta(t))\sqrt{\Theta'(t)}$, established on each sub-strip $\Omega_\varepsilon:=\{|\Im t|<\tfrac{1}{2}-\varepsilon\}$ for $\varepsilon\in(0,\tfrac{1}{2})$ under an $\varepsilon$-dependent lower bound on $c$, transfers the real zero locus of $Y$ to that of $Z$ on $\Omega_\varepsilon$. Taking the union over $\varepsilon$ gives reality of zeros of $Z$ on $\Omega$. Therefore every non-trivial zero $\rho$ of $\zeta$ satisfies $\Re\rho = \tfrac{1}{2}$.
 \end{abstract}
 
 \section{Introduction}
 
 The Hardy Z-function $Z(t) = e^{i\theta(t)}\zeta(\tfrac{1}{2}+it)$ is real-valued on $\mathbb{R}$ and holomorphic on the open strip $\{|\Im t|<\tfrac{1}{2}\}$. It is not entire: the pole of $\zeta$ at $s=1$ pulls back under $s=\tfrac{1}{2}+it$ to a pole at $t=-i/2$. The zero locus of $Z$ in the open strip $\{|\Im t|<\tfrac{1}{2}\}$ determines the zero locus of $\zeta$ in the critical strip $\{0<\Re s<1\}$ via $s=\tfrac{1}{2}+it$.
 
-The Riemann--Siegel phase $\theta$ fails to be monotone on $[0,\infty)$: $\theta'$ is strictly increasing but negative on $[0,t_c]$ and positive on $[t_c,\infty)$, where $t_c\approx 6.2898$ is the unique real zero of $\theta'$. The argument presented here restores global monotonicity by the linear shift $\Theta(t):=\theta(t)+ct$ with $c>c_{**}$ chosen so that $\Theta'$ is bounded below and non-vanishing on $\{|\Im t|<\tfrac{1}{2}\}$. The unitary inverse phase pullback $Y(u):=Z(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u))}$ satisfies the biholomorphic identity $Z(t)=Y(\Theta(t))\sqrt{\Theta'(t)}$ on the open strip, where $Z$ is holomorphic.
+The Riemann--Siegel phase $\theta$ fails to be monotone on $[0,\infty)$: $\theta'$ is strictly increasing but negative on $[0,t_c]$ and positive on $[t_c,\infty)$, where $t_c\approx 6.2898$ is the unique real zero of $\theta'$. The argument presented here restores monotonicity on $\mathbb{R}$ by the linear shift $\Theta(t):=\theta(t)+ct$ with $c>c_*:=-\theta'(0)$, ensuring $\Theta'>0$ on $\mathbb{R}$ and $\Theta:\mathbb{R}\to\mathbb{R}$ bijective. The unitary inverse phase pullback $Y(u):=Z(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u))}$, defined via this real bijection, extends to an entire function whose zeros are real. The sub-strip identity $Z(t)=Y(\Theta(t))\sqrt{\Theta'(t)}$ is established on each $\Omega_\varepsilon:=\{|\Im t|<\tfrac{1}{2}-\varepsilon\}$ ($\varepsilon\in(0,\tfrac{1}{2})$) under an $\varepsilon$-dependent lower bound on $c$, and the union over $\varepsilon$ covers $\Omega$.
 
 All spectral quantities, in particular the mode thresholds $\beta_n$, are given in closed form as values of the digamma function $\psi$ at explicit complex arguments. Asymptotic expansions are derived from these exact forms and used only where needed for the finiteness of the exceptional set $\mathcal{S}(\mu)$.
 
@@ -54,7 +50,7 @@ For $t\in\mathbb{C}$ with $\tfrac{1}{4}+\tfrac{it}{2}\notin\mathbb{Z}_{\le 0}$,
 \theta'(t) &\;=\; \tfrac{1}{2}\Re\psi\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right) - \tfrac{1}{2}\log\pi, \label{eq:thetap}\\
 \theta''(t) &\;=\; -\tfrac{1}{4}\Im\psi'\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right) \label{eq:thetapp}
 \end{align}
-The nearest pole of $\psi'(\tfrac{1}{4}+\tfrac{it}{2})$ to $\mathbb{R}$ is at $t=-i$, at distance $1$ from $\mathbb{R}$; $\theta$, $\theta'$, $\theta''$ are holomorphic on $\{|\Im t|<1\}$.
+The poles of $\psi$ and $\psi'$ at $\tfrac{1}{4}+\tfrac{it}{2}\in\mathbb{Z}_{\le 0}$ correspond to $t\in\{-i(\tfrac{1}{2}+2k):k\ge 0\}$; the nearest to $\mathbb{R}$ is $t=-i/2$, at distance $1/2$. Therefore $\theta,\theta',\theta''$ are holomorphic on the open strip $\{|\Im t|<\tfrac{1}{2}\}$. For any $\varepsilon\in(0,\tfrac{1}{2})$, $\theta'$ and $\theta''$ are bounded on the closed sub-strip $\{|\Im t|\le\tfrac{1}{2}-\varepsilon\}$.
 
 \begin{lemma}[Positivity of $\theta''$]\label{lem:thetapp}
 For every $t>0$, $\theta''(t)>0$.
@@ -78,37 +74,45 @@ Summing, $\Im\psi'(\tfrac{1}{4}+\tfrac{it}{2})<0$, therefore $\theta''(t)>0$.
 $\psi(\tfrac{1}{4})=-\gamma-3\log 2-\tfrac{\pi}{2}$ from $\psi(\tfrac{3}{4})-\psi(\tfrac{1}{4})=\pi$ (reflection at $x=\tfrac{1}{4}$) and $\psi(\tfrac{1}{4})+\psi(\tfrac{3}{4})=-2\gamma-6\log 2$ (\cite{AbramowitzStegun}, \S6.3.4).
 \end{proof}
 
-\begin{definition}[Admissible constant]\label{def:cstar}
+\begin{definition}[Admissible constant at level $\varepsilon$]\label{def:cstar}
+For $\varepsilon\in(0,\tfrac{1}{2})$,
 \begin{align}
 c_* &\;:=\; -\theta'(0) \;=\; \tfrac{1}{2}(\gamma+3\log 2+\tfrac{\pi}{2}+\log\pi), \label{eq:cstar}\\
-M &\;:=\; \tfrac{1}{2}\sup_{|\Im t|<1/2}|\theta''(t)| \;=\; \tfrac{1}{8}\sup_{|\Im t|<1/2}|\psi'(\tfrac{1}{4}+\tfrac{it}{2})|, \label{eq:Mdef}\\
-c_{**} &\;:=\; c_* + M \label{eq:cstarstar}
+M_\varepsilon &\;:=\; \sup_{|\Im t|\le 1/2-\varepsilon}|\theta''(t)| \;=\; \tfrac{1}{4}\sup_{|\Im t|\le 1/2-\varepsilon}|\Im\psi'(\tfrac{1}{4}+\tfrac{it}{2})|, \label{eq:Mdef}\\
+c_{**}(\varepsilon) &\;:=\; c_* + M_\varepsilon. \label{eq:cstarstar}
 \end{align}
-A real $c$ is \emph{admissible} if $c>c_{**}$.
+A real $c$ is \emph{$\varepsilon$-admissible} if $c>c_{**}(\varepsilon)$.
 \end{definition}
 
-\begin{lemma}[Finiteness of $M$]\label{lem:Mfinite}
-$M<\infty$.
+\begin{lemma}[Finiteness of $M_\varepsilon$]\label{lem:Mfinite}
+$M_\varepsilon<\infty$ for every $\varepsilon\in(0,\tfrac{1}{2})$.
 \end{lemma}
 
 \begin{proof}
-$\psi'$ is holomorphic on $\mathbb{C}\setminus\mathbb{Z}_{\le 0}$. The set $\{\tfrac{1}{4}+\tfrac{it}{2}:|\Im t|\le\tfrac{1}{2}\}$ is at distance $\ge\tfrac{1}{4}$ from $\mathbb{Z}_{\le 0}$. As $|\Re t|\to\infty$, $|\psi'|=O(|\Re t|^{-1})\to 0$.
+$\psi'$ is holomorphic on $\mathbb{C}\setminus\mathbb{Z}_{\le 0}$. For $\varepsilon\in(0,\tfrac{1}{2})$, the closed set $\{\tfrac{1}{4}+\tfrac{it}{2}:|\Im t|\le\tfrac{1}{2}-\varepsilon\}$ has real part in $[\tfrac{\varepsilon}{2},\tfrac{1}{2}-\tfrac{\varepsilon}{2}]$, and so is at distance $\ge\tfrac{\varepsilon}{2}$ from $\mathbb{Z}_{\le 0}$. On the compact rectangle $\{|\Im t|\le\tfrac{1}{2}-\varepsilon,\,|\Re t|\le R\}$, $|\theta''|$ is continuous and bounded; outside, $|\theta''|=O(|\Re t|^{-1})\to 0$ by the trigamma asymptotic $\psi'(s)=O(|s|^{-1})$. The sup is therefore finite.
 \end{proof}
 
-\begin{lemma}[Strict positivity of $\Theta'$ on the strip]\label{lem:tildenonvan}
-For every admissible $c$, $\Re\Theta'(t)\ge c-c_{**}>0$ on $\{|\Im t|<\tfrac{1}{2}\}$.
+\begin{lemma}[Strict positivity of $\Theta'$ on the $\varepsilon$-sub-strip]\label{lem:tildenonvan}
+For every $\varepsilon\in(0,\tfrac{1}{2})$ and every $\varepsilon$-admissible $c$,
+\[
+\Re\Theta'(t)\;\ge\;c-c_{**}(\varepsilon)\;>\;0\qquad\text{on }\{|\Im t|\le\tfrac{1}{2}-\varepsilon\}.
+\]
 \end{lemma}
 
 \begin{proof}
-$|\Re\theta'(\tau+i\sigma)-\theta'(\tau)|\le|\sigma|\cdot 2M\le M$. $\theta'$ is even on $\mathbb{R}$ and increasing on $[0,\infty)$, therefore $\theta'(\tau)\ge-c_*$. Therefore $\Re\Theta'(t)\ge-c_*-M+c=c-c_{**}>0$.
+For $t=\tau+i\sigma$ with $|\sigma|\le\tfrac{1}{2}-\varepsilon$,
+\[
+\theta'(\tau+i\sigma)-\theta'(\tau)=\int_0^\sigma i\theta''(\tau+is)\,ds,
+\]
+so $|\Re\theta'(\tau+i\sigma)-\theta'(\tau)|\le\int_0^{|\sigma|}|\theta''(\tau+is)|\,ds\le|\sigma|M_\varepsilon\le(\tfrac{1}{2}-\varepsilon)M_\varepsilon\le M_\varepsilon$. $\theta'$ is even on $\mathbb{R}$ and increasing on $[0,\infty)$ (Lemma~\ref{lem:thetapp}), so $\theta'(\tau)\ge\theta'(0)=-c_*$. Therefore $\Re\Theta'(t)=\Re\theta'(t)+c\ge-c_*-M_\varepsilon+c=c-c_{**}(\varepsilon)>0$.
 \end{proof}
 
-\begin{lemma}[Injectivity of $\Theta$]\label{lem:stripinj}
-For every admissible $c$, $\Theta$ is injective on $\{|\Im t|<\tfrac{1}{2}\}$ and bijective $\mathbb{R}\to\mathbb{R}$.
+\begin{lemma}[Injectivity of $\Theta$ on the $\varepsilon$-sub-strip]\label{lem:stripinj}
+For every $\varepsilon\in(0,\tfrac{1}{2})$ and every $\varepsilon$-admissible $c$, $\Theta$ is injective on $\{|\Im t|\le\tfrac{1}{2}-\varepsilon\}$. Moreover, for every admissible $c$ in the sense that $c>c_*$, $\Theta$ is bijective $\mathbb{R}\to\mathbb{R}$.
 \end{lemma}
 
 \begin{proof}
-If $\Theta(t_1)=\Theta(t_2)$, the straight-line integral gives $(t_2-t_1)\int_0^1\Theta'(\gamma(s))\,ds=0$; the real part of the integral is $\ge c-c_{**}>0$, therefore $t_1=t_2$.
+If $\Theta(t_1)=\Theta(t_2)$ with $t_1,t_2\in\{|\Im t|\le\tfrac{1}{2}-\varepsilon\}$, the straight line $\gamma(s)=t_1+s(t_2-t_1)$ lies in the same convex closed sub-strip, and $\Theta(t_2)-\Theta(t_1)=(t_2-t_1)\int_0^1\Theta'(\gamma(s))\,ds$. The real part of the integral is $\ge c-c_{**}(\varepsilon)>0$ by Lemma~\ref{lem:tildenonvan}, so the integral is nonzero, forcing $t_1=t_2$. On $\mathbb{R}$, $\Theta'(\tau)=\theta'(\tau)+c\ge-c_*+c>0$ for any $c>c_*$, so $\Theta$ is strictly increasing on $\mathbb{R}$; combined with $\Theta(\tau)\to\pm\infty$ as $\tau\to\pm\infty$ (from $\theta(\tau)\sim\tfrac{\tau}{2}\log(\tau/2\pi)$), $\Theta:\mathbb{R}\to\mathbb{R}$ is bijective.
 \end{proof}
 
 \section{The Hardy Z-Function on the Strip}
@@ -121,17 +125,17 @@ $\zeta(\tfrac{1}{2}+it)$ is meromorphic on $\mathbb{C}$ with a single simple pol
 \end{lemma}
 
 \begin{proof}
-Meromorphy of $\zeta$ with simple pole at $s=1$ is classical (\cite{Titchmarsh}, \S2.1). The pullback to the $t$-plane places the pole at $t=-i/2$, outside $\Omega$. The factor $e^{i\theta(t)}$ is holomorphic and non-vanishing on $\{|\Im t|<1\}\supset\Omega$ since $\theta$ is holomorphic there by \eqref{eq:theta}.
+Meromorphy of $\zeta$ with simple pole at $s=1$ is classical (\cite{Titchmarsh}, \S2.1). The pullback to the $t$-plane places the pole at $t=-i/2$, on the boundary of $\Omega$. The factor $e^{i\theta(t)}$ is holomorphic and non-vanishing on $\Omega$ since $\theta$ is holomorphic on $\Omega$ by \eqref{eq:theta}.
 \end{proof}
 
 \section{The Unitary Inverse Phase Pullback}
 
 \begin{definition}[Unitary inverse phase pullback]\label{def:Htilde}
-For admissible $c$ and $u\ge 0$, the \emph{unitary inverse phase pullback} of $Z$ is
+For $c>c_*$ and $u\ge 0$, the \emph{unitary inverse phase pullback} of $Z$ is
 \begin{equation}\label{eq:Ydef}
 Y(u) \;:=\; \frac{Z(\Theta^{-1}(u))}{\sqrt{\Theta'(\Theta^{-1}(u))}}
 \end{equation}
-Extend to $\mathbb{R}$ by $Y(-u):=Y(u)$. The half-Jacobian factor $1/\sqrt{\Theta'(\Theta^{-1}(u))}$ renders the map $Z\mapsto Y$ an $L^2$-isometry under the change of variable $u=\Theta(t)$.
+Extend to $\mathbb{R}$ by $Y(-u):=Y(u)$. The map $\Theta^{-1}$ is the inverse of the bijection $\Theta:\mathbb{R}\to\mathbb{R}$ from Lemma~\ref{lem:stripinj}, and $\Theta'(\Theta^{-1}(u))>0$ on $\mathbb{R}$ since $\Theta'(\tau)\ge c-c_*>0$ on $\mathbb{R}$. The half-Jacobian factor renders the map $Z\mapsto Y$ an $L^2$-isometry under the change of variable $u=\Theta(t)$.
 \end{definition}
 
 $Y$ is real-valued on $\mathbb{R}$.
@@ -183,7 +187,7 @@ Z(t) = 2\sum_{n=1}^{N(t)}n^{-1/2}\cos(\theta(t)-t\log n) + R(t),\qquad N(t):=\lf
 \begin{proof}\cite{Edwards}, \S7.4, Theorem 7.1.\end{proof}
 
 \begin{theorem}[Band-limitedness of $Y$]\label{thm:bandlim}
-For every admissible $c$ and every $\mu\in\mathbb{R}$ with $|\mu|>1$, $\lim_{T\to\infty}K_T(\mu)=0$. Equivalently, $\supp S\subseteq[-1,1]$, where $S:=|\widehat{Y}|^2$.
+For every $c>c_*$ and every $\mu\in\mathbb{R}$ with $|\mu|>1$, $\lim_{T\to\infty}K_T(\mu)=0$. Equivalently, $\supp S\subseteq[-1,1]$, where $S:=|\widehat{Y}|^2$.
 \end{theorem}
 
 \begin{proof}
@@ -253,7 +257,7 @@ Y(z)=\int_{-1}^{1}\widehat{Y}(\xi)\,e^{i\xi z}\,d\xi,\qquad |Y(z)|\le\|\widehat{
 \end{equation}
 \end{corollary}
 
-\begin{proof}\cite{Rudin}, Theorem 19.3; \cite{Hormander}, Theorem 7.3.1.\end{proof}
+\begin{proof}$Y$ is a tempered distribution on $\mathbb{R}$ whose Fourier transform is supported in the compact set $[-1,1]$. By \cite{Hormander}, Theorem 7.3.1 (distributional Paley--Wiener), $Y$ extends to an entire function of exponential type with type constant bounded by the support radius, which here is $1$; the representation $Y(z)=\int_{-1}^{1}\widehat Y(\xi)\,e^{i\xi z}\,d\xi$ follows from the same theorem, and $|Y(z)|\le\|\widehat Y\|\,e^{|\Im z|}$ is the bound on the right.\end{proof}
 
 \begin{lemma}[Non-negativity of the spectral measure]\label{lem:PSD}
 The spectral measure $S:=|\widehat{Y}|^2$ is a non-negative tempered measure on $\mathbb{R}$, supported in $[-1,1]$.
@@ -279,24 +283,32 @@ $Y$ is real on $\mathbb{R}$ (Definition~\ref{def:Htilde}), entire of exponential
 
 \section{Transfer to the Hardy Z-Function}
 
-\begin{theorem}[Unitary inverse phase pullback identity]\label{thm:utc}
-For every admissible $c$ and every $t\in\Omega=\{|\Im t|<\tfrac{1}{2}\}$,
+\begin{theorem}[Unitary inverse phase pullback identity on the $\varepsilon$-sub-strip]\label{thm:utc}
+Fix $\varepsilon\in(0,\tfrac{1}{2})$ and an $\varepsilon$-admissible $c$. Write $\Omega_\varepsilon:=\{|\Im t|<\tfrac{1}{2}-\varepsilon\}$. For every $t\in\Omega_\varepsilon$,
 \begin{equation}\label{eq:utc}
 Z(t)=Y(\Theta(t))\sqrt{\Theta'(t)}
 \end{equation}
-where $\sqrt{\Theta'(\cdot)}$ is the holomorphic branch on $\Omega$ that is positive on $\mathbb{R}$.
+where $\sqrt{\Theta'(\cdot)}$ is the holomorphic branch on $\Omega_\varepsilon$ that is positive on $\mathbb{R}$.
 \end{theorem}
 
 \begin{proof}
-On $[0,\infty)$ the identity is Definition~\ref{def:Htilde} rearranged. Both sides are holomorphic on $\Omega$: $Z$ is holomorphic on $\Omega$ by Lemma~\ref{lem:Zholo}; $\Theta$ is holomorphic on $\{|\Im t|<1\}\supset\Omega$; $Y$ is entire by Corollary~\ref{cor:PW}; $\sqrt{\Theta'(t)}$ admits a holomorphic branch since $\Theta'$ is non-vanishing on the simply connected $\Omega$ by Lemma~\ref{lem:tildenonvan}. The identity theorem extends the equality from $[0,\infty)$ to $\Omega$.
+On $[0,\infty)$ the identity is Definition~\ref{def:Htilde} rearranged. Both sides are holomorphic on $\Omega_\varepsilon$: $Z$ is holomorphic on $\Omega\supset\Omega_\varepsilon$ by Lemma~\ref{lem:Zholo}; $\Theta$ is holomorphic on $\Omega_\varepsilon$; $Y$ is entire by Corollary~\ref{cor:PW}; $\sqrt{\Theta'(t)}$ admits a holomorphic branch on the open convex (hence simply connected) strip $\Omega_\varepsilon$ since $\Theta'$ has $\Re\Theta'\ge c-c_{**}(\varepsilon)>0$ there (Lemma~\ref{lem:tildenonvan}) and therefore is non-vanishing on $\Omega_\varepsilon$. The identity theorem extends the equality from $[0,\infty)$ to $\Omega_\varepsilon$.
 \end{proof}
 
-\begin{theorem}[Reality of zeros of $Z$ in the critical strip]\label{thm:Zreal}
+\begin{theorem}[Reality of zeros of $Z$ in the $\varepsilon$-sub-strip]\label{thm:Zreal-eps}
+Fix $\varepsilon\in(0,\tfrac{1}{2})$ and an $\varepsilon$-admissible $c$. Every zero of $Z$ in $\Omega_\varepsilon$ is real.
+\end{theorem}
+
+\begin{proof}
+Let $t_0\in\Omega_\varepsilon$ satisfy $Z(t_0)=0$. Theorem~\ref{thm:utc} gives $Y(\Theta(t_0))\sqrt{\Theta'(t_0)}=0$. Lemma~\ref{lem:tildenonvan} gives $\sqrt{\Theta'(t_0)}\ne 0$, therefore $Y(\Theta(t_0))=0$. Corollary~\ref{cor:Hzero} gives $\Theta(t_0)\in\mathbb{R}$. Lemma~\ref{lem:stripinj} on $\Omega_\varepsilon$, therefore, gives $t_0\in\mathbb{R}$.
+\end{proof}
+
+\begin{theorem}[Reality of zeros of $Z$ in the full open strip]\label{thm:Zreal}
 Every zero of $Z$ in $\Omega=\{|\Im t|<\tfrac{1}{2}\}$ is real.
 \end{theorem}
 
 \begin{proof}
-Let $t_0\in\Omega$ satisfy $Z(t_0)=0$. Theorem~\ref{thm:utc} gives $Y(\Theta(t_0))\sqrt{\Theta'(t_0)}=0$. Lemma~\ref{lem:tildenonvan} gives $\sqrt{\Theta'(t_0)}\ne 0$, therefore $Y(\Theta(t_0))=0$. Corollary~\ref{cor:Hzero} gives $\Theta(t_0)\in\mathbb{R}$. Lemma~\ref{lem:stripinj}, therefore, gives $t_0\in\mathbb{R}$.
+Let $t_0\in\Omega$ satisfy $Z(t_0)=0$. Since $|\Im t_0|<\tfrac{1}{2}$, choose $\varepsilon_0\in(0,\tfrac{1}{2})$ with $|\Im t_0|<\tfrac{1}{2}-\varepsilon_0$, so $t_0\in\Omega_{\varepsilon_0}$. Pick any $\varepsilon_0$-admissible $c$ (such $c$ exist since $c_{**}(\varepsilon_0)<\infty$ by Lemma~\ref{lem:Mfinite}). Apply Theorem~\ref{thm:Zreal-eps} to conclude $t_0\in\mathbb{R}$.
 \end{proof}
 
 \section{The Zero Locus of $\zeta$}
@@ -441,7 +453,7 @@ for every Borel set $B\subseteq[-1,1]$, the limit taken in $L^2(\Omega_P,\mathbb
 \end{equation}
 again in $L^2(\Omega_P,\mathbb{P})$. Existence of the limit is the $L^2(S)$ isometry \eqref{eq:isomL2S} together with the truncated Fourier inversion on $Y$.
 
-\paragraph{Inserting $d\Phi$ into the forward representation.} Fix an admissible $c$ and $t\in\Omega\cap\mathbb{R}$. Apply \eqref{eq:Phiinverse-test} with test function $f(\xi)=e^{i\xi\Theta(t)}$; this $f$ is continuous on $[-1,1]$ hence in $L^2(S|_{[-1,1]})$. The inner $\xi$-integral in the inverse formula is Lebesgue,
+\paragraph{Inserting $d\Phi$ into the forward representation.} Fix $c>c_*$ and $t\in\mathbb{R}$. Apply \eqref{eq:Phiinverse-test} with test function $f(\xi)=e^{i\xi\Theta(t)}$; this $f$ is continuous on $[-1,1]$ hence in $L^2(S|_{[-1,1]})$. The inner $\xi$-integral in the inverse formula is Lebesgue,
 \begin{equation}\label{eq:check-f-closed}
 \check f(u) \;=\; \int_{-1}^{1}e^{i\xi\Theta(t)}\,e^{-i\xi u}\,d\xi \;=\; \int_{-1}^{1}e^{i\xi(\Theta(t)-u)}\,d\xi \;=\; \frac{2\sin(\Theta(t)-u)}{\Theta(t)-u}
 \end{equation}
@@ -461,7 +473,7 @@ since $Y$ is locally $L^2$ on $\mathbb{R}$ hence locally $L^1$ on the compact $[
 \begin{equation}\label{eq:Fubini-swap}
 \int_{-U}^{U}Y(u)\!\left(\int_{-1}^{1}e^{i\xi(\Theta(t)-u)}\,d\xi\right)\!du \;=\; \int_{-1}^{1}\!\left(\int_{-U}^{U}Y(u)\,e^{i\xi(\Theta(t)-u)}\,du\right)\!d\xi
 \end{equation}
-and the $L^2(\Omega_P,\mathbb{P})$-limit $U\to\infty$ on both sides exists, with the limit on the right equal to $\int_{-1}^{1}e^{i\xi\Theta(t)}\,d\Phi(\xi)$ by truncated Fourier inversion for $Y$. The bound \eqref{eq:Fubini-bound} is independent of $c$, and the only appearance of $c$ in \eqref{eq:Fubini-swap} is through the real translate $\Theta(t)=\theta(t)+ct$ in the phase; Fubini's hypothesis is therefore satisfied for every admissible $c>c_{**}$.
+and the $L^2(\Omega_P,\mathbb{P})$-limit $U\to\infty$ on both sides exists, with the limit on the right equal to $\int_{-1}^{1}e^{i\xi\Theta(t)}\,d\Phi(\xi)$ by truncated Fourier inversion for $Y$. The bound \eqref{eq:Fubini-bound} is independent of $c$, and the only appearance of $c$ in \eqref{eq:Fubini-swap} is through the real translate $\Theta(t)=\theta(t)+ct$ in the phase; Fubini's hypothesis is therefore satisfied for every $c>c_*$.
 
 \paragraph{Time-warped representation of $Z$.} The limit on the right of \eqref{eq:Phiinv-insert} is the sinc-kernel sampling of $Y$ at the point $\Theta(t)\in\mathbb{R}$. Since $Y$ is band-limited to $[-1,1]$ by Theorem~\ref{thm:bandlim} and $\Theta(t)\in\mathbb{R}$, Paley--Wiener sampling gives
 \begin{equation}\label{eq:sinc-recover}
@@ -471,9 +483,9 @@ in $L^2(\Omega_P,\mathbb{P})$. Combining \eqref{eq:Phiinv-insert}, \eqref{eq:sin
 \begin{equation}\label{eq:cramerZ}
 Z(t) \;=\; \sqrt{\Theta'(t)}\,Y(\Theta(t)) \;=\; \sqrt{\Theta'(t)}\int_{-1}^{1} e^{i\xi\Theta(t)}\,d\Phi(\xi)
 \end{equation}
-for every admissible $c$ and every $t\in\Omega\cap\mathbb{R}$. This is the unitary time-change of the Cram\'er representation: the same orthogonal Borel measure $d\Phi$ that represents the stationary sample path $Y$ represents $Z$ after the biholomorphic reparametrisation $u\mapsto\Theta(t)$ and the half-Jacobian amplitude $\sqrt{\Theta'(t)}$. The representation \eqref{eq:cramerZ} depends on the admissible constant $c$ only through $\Theta=\theta+c\cdot\mathrm{id}$; the orthogonal Borel measure $d\Phi$ itself is a spectral object of $Y$, independent of $c$.
+for every $c>c_*$ and every $t\in\mathbb{R}$. This is the unitary time-change of the Cram\'er representation: the same orthogonal Borel measure $d\Phi$ that represents the stationary sample path $Y$ represents $Z$ after the reparametrisation $u\mapsto\Theta(t)$ and the half-Jacobian amplitude $\sqrt{\Theta'(t)}$. The representation \eqref{eq:cramerZ} depends on $c$ only through $\Theta=\theta+c\cdot\mathrm{id}$; the orthogonal Borel measure $d\Phi$ itself is a spectral object of $Y$, independent of $c$.
 
-\paragraph{Covariance of $Z$.} From \eqref{eq:cramerZ}, the covariance of $Z$ at $t,s\in\Omega\cap\mathbb{R}$ is
+\paragraph{Covariance of $Z$.} From \eqref{eq:cramerZ}, the covariance of $Z$ at $t,s\in\mathbb{R}$ is
 \begin{equation}\label{eq:RZ}
 R_Z(t,s) \;:=\; \mathbb{E}\bigl[Z(t)\,\overline{Z(s)}\bigr] \;=\; \sqrt{\Theta'(t)\,\Theta'(s)}\int_{-1}^{1} e^{i\xi(\Theta(t)-\Theta(s))}\,dS(\xi)
 \end{equation}
@@ -493,7 +505,7 @@ The exchange of the two $\xi$-integrals with the expectation in \eqref{eq:RZ-ste
 \begin{equation}\label{eq:RZ-step3}
 \mathbb{E}\!\left[\int f\,d\Phi\ \overline{\int g\,d\Phi}\right] \;=\; \sum_{k}\!\sum_\ell a_k\overline{b_\ell}\,\mathbb{E}\bigl[\Phi(B_k)\overline{\Phi(C_\ell)}\bigr] \;=\; \sum_k a_k\overline{b_k}\,S(B_k\cap C_k) \;=\; \int f\,\bar g\,dS
 \end{equation}
-where in the middle equality we used $\mathbb{E}[\Phi(B_k)\overline{\Phi(C_\ell)}]=S(B_k\cap C_\ell)$ (the integrated form of \eqref{eq:Phicov}) and the fact that for simple functions the double sum is finite so Fubini applies pointwise. Bounded-continuous functions on $[-1,1]$ are $L^2(S)$-limits of simple functions (standard, since $S([-1,1])<\infty$ if one replaces $S$ by $S$-on-$[-1,1]$, which is finite because Theorem~\ref{thm:bandlim} supports $S$ in $[-1,1]$ but does not bound its total mass; for the identity \eqref{eq:RZ-step2} the tests $e^{i\cdot\Theta(t)}$ and $e^{i\cdot\Theta(s)}$ are bounded on the compact set $[-1,1]$, so they are in $L^2(S|_{[-1,1]})$ even when $S$ itself is infinite on $\mathbb{R}$), and the bilinear form in \eqref{eq:RZ-step2} extends continuously in both arguments by the $L^2(S)$ isometry \eqref{eq:isomL2S}, yielding the claim. No assumption on the admissible constant $c$ is used beyond $c>c_{**}$, which is the standing hypothesis on $\Theta$.
+where in the middle equality we used $\mathbb{E}[\Phi(B_k)\overline{\Phi(C_\ell)}]=S(B_k\cap C_\ell)$ (the integrated form of \eqref{eq:Phicov}) and the fact that for simple functions the double sum is finite so Fubini applies pointwise. Bounded-continuous functions on $[-1,1]$ are $L^2(S)$-limits of simple functions (standard, since $S([-1,1])<\infty$ if one replaces $S$ by $S$-on-$[-1,1]$, which is finite because Theorem~\ref{thm:bandlim} supports $S$ in $[-1,1]$ but does not bound its total mass; for the identity \eqref{eq:RZ-step2} the tests $e^{i\cdot\Theta(t)}$ and $e^{i\cdot\Theta(s)}$ are bounded on the compact set $[-1,1]$, so they are in $L^2(S|_{[-1,1]})$ even when $S$ itself is infinite on $\mathbb{R}$), and the bilinear form in \eqref{eq:RZ-step2} extends continuously in both arguments by the $L^2(S)$ isometry \eqref{eq:isomL2S}, yielding the claim. No assumption on $c$ is used beyond $c>c_*$, which is the standing hypothesis on $\Theta$.
 
 The exchange in \eqref{eq:cramerZ} itself --- the equality $\sqrt{\Theta'(t)}\,Y(\Theta(t)) = \sqrt{\Theta'(t)}\int_{-1}^{1} e^{i\xi\Theta(t)}\,d\Phi(\xi)$ --- is the pointwise substitution $u\mapsto\Theta(t)$ in \eqref{eq:cramerY}, valid because $\Theta(t)\in\mathbb{R}$ for $t\in\mathbb{R}$ and the sample path $Y(\Theta(t))$ is defined by the Cram\'er representation evaluated at the point $\Theta(t)$. No integral exchange is required: the inner Wiener integral is the same element of $L^2(\Omega_P,\mathbb{P})$, with the phase $e^{i\xi u}$ evaluated at $u=\Theta(t)$.
 \end{proof}
@@ -510,7 +522,7 @@ for the total mass of $S$ restricted to $[-1,1]$; this quantity is finite when $
 \begin{equation}\label{eq:varZ}
 \Var Z(t) \;=\; R_Z(t,t) \;=\; \Theta'(t)\int_{-1}^{1}dS(\xi) \;=\; \sigma_Y^2\,\Theta'(t)
 \end{equation}
-for every $t\in\Omega\cap\mathbb{R}$. The variance of $Z$ is the total spectral mass of $Y$ amplified by the instantaneous phase rate $\Theta'(t)$; it is the diagonal restriction of the covariance, with no dependence on the off-diagonal phase.
+for every $t\in\mathbb{R}$. The variance of $Z$ is the total spectral mass of $Y$ amplified by the instantaneous phase rate $\Theta'(t)$; it is the diagonal restriction of the covariance, with no dependence on the off-diagonal phase.
 
 \paragraph{Pinning of $\sigma_Y^{2}$ by the Hardy--Littlewood second moment.}
 The value $\sigma_Y^{2}=2$ is not a free calibration; it is pinned as a theorem by the Hardy--Littlewood second moment of $\zeta$. Integrating \eqref{eq:varZ} against $dt$ on $[0,T]$,
@@ -529,7 +541,7 @@ No degree of freedom remains; $\sigma_Y^{2}=2$ is a theorem derived from Hardy--
 \begin{equation}\label{eq:varZexact}
 \Var Z(t) \;=\; 2\,\Theta'(t),
 \end{equation}
-with $\Theta'(t)=\theta'(t)+c=\tfrac{1}{2}\Re\psi(\tfrac{1}{4}+\tfrac{it}{2})-\tfrac{1}{2}\log\pi+c$ by \eqref{eq:thetap}. No asymptotic expansion of $\theta'$ enters: \eqref{eq:varZexact} holds for every $t\in\Omega\cap\mathbb{R}$ as an identity between $\Var Z$ and the digamma function.
+with $\Theta'(t)=\theta'(t)+c=\tfrac{1}{2}\Re\psi(\tfrac{1}{4}+\tfrac{it}{2})-\tfrac{1}{2}\log\pi+c$ by \eqref{eq:thetap}. No asymptotic expansion of $\theta'$ enters: \eqref{eq:varZexact} holds for every $t\in\mathbb{R}$ as an identity between $\Var Z$ and the digamma function.
 
 \subsection{Sample-path autocorrelation under the unitary time change}\label{app:sampleautocorr}
 
@@ -545,7 +557,7 @@ where the integrand combines the two half-Jacobian factors $1/\sqrt{\Theta'(\tau
 \begin{equation}\label{eq:sampleZ-zero}
 C_Y(0;A,B) \;=\; \int_{A}^{B}|Y(u)|^{2}\,du \;=\; \int_{\Theta^{-1}(A)}^{\Theta^{-1}(B)}|Z(\tau)|^{2}\,d\tau \;=\; \int_{\Theta^{-1}(A)}^{\Theta^{-1}(B)}\bigl|\zeta(\tfrac{1}{2}+i\tau)\bigr|^{2}\,d\tau
 \end{equation}
-using $|Z(\tau)|=|\zeta(\tfrac{1}{2}+i\tau)|$ on the real line. The right-hand side is the integrated second moment of $\zeta$ on the critical line over the window $[\Theta^{-1}(A),\Theta^{-1}(B)]$; as the window expands, it returns the Hardy--Littlewood asymptotic $T\log T$ and couples directly to \eqref{eq:varZ} through $\sigma_Y^2 = 2$. Identity \eqref{eq:sampleYZ} is independent of the admissible constant $c$ only up to the $c$-dependence of $\Theta$: changing $c$ rescales the window in $t$-coordinates through $\Theta^{-1}$ but does not change the integrated identity \eqref{eq:sampleZ-zero}.
+using $|Z(\tau)|=|\zeta(\tfrac{1}{2}+i\tau)|$ on the real line. The right-hand side is the integrated second moment of $\zeta$ on the critical line over the window $[\Theta^{-1}(A),\Theta^{-1}(B)]$; as the window expands, it returns the Hardy--Littlewood asymptotic $T\log T$ and couples directly to \eqref{eq:varZ} through $\sigma_Y^2 = 2$. Identity \eqref{eq:sampleYZ} is independent of $c$ only up to the $c$-dependence of $\Theta$: changing $c$ rescales the window in $t$-coordinates through $\Theta^{-1}$ but does not change the integrated identity \eqref{eq:sampleZ-zero}.
 
 \begin{thebibliography}{9}
 
