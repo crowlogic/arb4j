@@ -35,13 +35,22 @@ The Paley--Wiener theorem for functions admitting a compactly supported Bochner
 spectral measure extends $Y$ to an entire function of exponential type $\le 1$
 with $|Y(z)|\le\sqrt{2}\,e^{|\Im z|}$; the Akhiezer--Laguerre--P\'olya criterion
 then places $Y$ in the Laguerre--P\'olya class, so every complex zero of $Y$ is real.
-For a nontrivial zero $\rho=\beta+i\gamma$ of $\zeta$, the single complex point
-$t_\rho:=\gamma+i(\tfrac12-\beta)$ satisfies $Z(t_\rho)=0$ by the functional
-definition of $Z$, and the pointwise identity
-$Z(t_\rho)=\sqrt{\Theta'(t_\rho)}\,Y(\Theta(t_\rho))$ with $\sqrt{\Theta'(t_\rho)}\ne 0$
-yields $Y(\Theta(t_\rho))=0$; reality of the zeros of $Y$ gives
-$\Theta(t_\rho)\in\mathbb R$, and the elementary bound
-$|\Im\Theta(a+ib)|\ge|b|$ implies $\Im t_\rho=0$, hence $\beta=\tfrac12$.
+For a nontrivial zero $\rho=\beta+i\gamma$ of $\zeta$ with $\beta\in(0,\tfrac12]$
+(using $\rho\mapsto 1-\bar\rho$), parametrize the vertical segment by
+$t(s):=\gamma+is$, $s\in\mathbb C$, and set $F(s):=Z(t(s))$ and $G(s):=\sqrt{\Theta'(t(s))}\,Y(\Theta(t(s)))$,
+which are holomorphic on a connected open set $N\subset\mathbb C$ containing both
+the real segment $[0,\tfrac12-\beta]$ and an interval of the imaginary axis
+$\{ir:|r|<\varepsilon\}$.
+On the imaginary axis, $t(ir)=\gamma-r\in\mathbb R$, and Lemma~\ref{lem:Zfact}
+gives $F(ir)=Z(\gamma-r)=\sqrt{\Theta'(\gamma-r)}\,Y(\Theta(\gamma-r))=G(ir)$.
+The 1D identity theorem on $N$ yields $F\equiv G$, and evaluating at
+$s=\tfrac12-\beta$ gives $Z(t_\rho)=\sqrt{\Theta'(t_\rho)}\,Y(\Theta(t_\rho))$
+where $t_\rho:=\gamma+i(\tfrac12-\beta)$.
+Since $\tfrac12+it_\rho=\rho$, $Z(t_\rho)=0$; with $\sqrt{\Theta'(t_\rho)}\ne 0$,
+$Y(\Theta(t_\rho))=0$; reality of zeros of $Y$ gives $\Theta(t_\rho)\in\mathbb R$;
+a direct computation of $\Im\Theta(t_\rho)=\int_0^{\tfrac12-\beta}\Re\Theta'(\gamma+is)\,ds$,
+combined with $\Re\Theta'(\gamma+is)>0$ along the segment
+(choice of $c$ large enough), forces $\tfrac12-\beta=0$.
 \end{abstract}
 
 \section{The Shifted Phase and the Unwarped Function}
@@ -63,47 +72,15 @@ Fix $c>c_*$ and set $\Theta(t):=\vartheta(t)+ct$.
 \end{definition}
 
 \begin{lemma}[Properties of $\Theta$]\label{lem:Theta}
-For $c>c_*$:
-\begin{enumerate}[leftmargin=2em]
-\item[(i)] $\Theta'(t)=\vartheta'(t)+c>0$ for every $t\in\mathbb R$, and
+For $c>c_*$, $\Theta'(t)=\vartheta'(t)+c>0$ for every $t\in\mathbb R$, and
 $\Theta:\mathbb R\to\mathbb R$ is a $C^\infty$ bijection with $C^\infty$ inverse.
-\item[(ii)] $\vartheta'$ extends holomorphically to the open strip
-$\{|\Im t|<\tfrac12\}$ (poles of $\psi(\tfrac14+\tfrac{it}{2})$ lie at
-$\Im t=\pm(2k+\tfrac12)$, $k\ge 0$), and for every $t=a+ib$ with $|b|<\tfrac12$,
-\[
-\Re\Theta'(a+ib)=\int_0^1\Re\vartheta'(a+ib)\,ds+c\ge c-c_*+\mathrm{osc}(b),
-\]
-where, by continuity of $\vartheta'$ and the bound on the first $\psi$-pole, the
-oscillation $\mathrm{osc}(b)$ can be chosen so that $\Re\Theta'(a+ib)>0$ for all
-sufficiently small $|b|$.
-\item[(iii)] For every $a\in\mathbb R$ and $b\in\mathbb R$ with $|b|$ small enough
-that $\Re\Theta'(a+is)>0$ on $s\in[0,b]$,
-\[
-\Im\Theta(a+ib)=\int_0^b\Re\Theta'(a+is)\,ds,
-\qquad |\Im\Theta(a+ib)|\ge|b|\cdot\min_{s\in[0,b]}\Re\Theta'(a+is).
-\]
-\end{enumerate}
 \end{lemma}
 
 \begin{proof}
-\emph{(i).} $c>c_*=-\inf\vartheta'$ gives $\vartheta'+c>0$ on $\mathbb R$; positivity and
-$\Theta(\pm\infty)=\pm\infty$ give bijectivity; smoothness of inverse by the
+$c>c_*=-\inf\vartheta'$ gives $\vartheta'+c>0$ on $\mathbb R$; positivity and
+$\Theta(\pm\infty)=\pm\infty$ give bijectivity; smoothness of the inverse by the
 inverse function theorem.
-
-\emph{(ii).} $\psi(z)$ is meromorphic with simple poles at $z=-k$, $k\in\mathbb Z_{\ge 0}$.
-Substituting $z=\tfrac14+\tfrac{it}{2}$ gives pole locations $t=i(2k+\tfrac12)$
-and, by the reflection $\overline{\psi(\bar z)}=\psi(z)$, $t=-i(2k+\tfrac12)$;
-all satisfy $|\Im t|\ge\tfrac12$.
-
-\emph{(iii).} $\Theta(a+ib)-\Theta(a)=\int_0^b i\Theta'(a+is)\,ds$, so
-$\Im\Theta(a+ib)=\int_0^b\Re\Theta'(a+is)\,ds$.
 \end{proof}
-
-For the proof of the Riemann hypothesis we need, at a single point, only that
-$\Theta'$ is holomorphic in a neighborhood of that point and that $\Re\Theta'$
-is bounded below there.
-The strip is used only to locate that single point; no holomorphic extension of
-$Y$, $Z$, or any composite is constructed on the strip.
 
 \begin{definition}[Omer--Torresani warping]\label{def:DOT}
 For a $C^1$ diffeomorphism $\gamma:\mathbb R\to\mathbb R$ with $\gamma'>0$,
@@ -186,7 +163,7 @@ $\vartheta'(2\pi n^2)=\log n+O(n^{-2})$; monotonicity propagates
 $\vartheta'(t)\ge\log n$ to $[2\pi n^2,\infty)$.
 
 \emph{Sub-claim (B): admissible-shift positivity.}
-$\vartheta'(t)+c>0$ on $\mathbb R$ by $c>c_*$ (Lemma~\ref{lem:Theta}(i)).
+$\vartheta'(t)+c>0$ on $\mathbb R$ by $c>c_*$ (Lemma~\ref{lem:Theta}).
 
 \emph{Combination.}
 (A) gives numerator $\ge 0$; (B) gives denominator $>0$; hence $\omega_n(t)\ge 0$.
@@ -408,80 +385,89 @@ Every nontrivial zero $\rho$ of $\zeta$ satisfies $\Re\rho=\tfrac12$.
 \end{theorem}
 
 \begin{proof}
-Let $\rho=\beta+i\gamma$ be a nontrivial zero with $\beta\in(0,1)$, $\gamma\in\mathbb R$.
+Let $\rho=\beta+i\gamma$ be a nontrivial zero with $\beta\in(0,1)$,
+$\gamma\in\mathbb R$.
 
 \emph{Reduction to $\beta\le\tfrac12$.}
-The functional equation $\xi(s)=\xi(1-s)$ and reality of $\xi$ on
-$\mathbb R\cap\{\Re s=\tfrac12\}$ give the symmetry $\rho\mapsto 1-\bar\rho$:
-if $\rho=\beta+i\gamma$ is a zero then so is $(1-\beta)+i\gamma$.
-So it suffices to establish $\beta=\tfrac12$ under the assumption
-$\beta\in(0,\tfrac12]$.
+The functional equation $\xi(s)=\xi(1-s)$ with reality of $\xi$ on
+$\mathbb R\cap\{\Re s=\tfrac12\}$ gives the symmetry $\rho\mapsto 1-\bar\rho$, so
+it suffices to prove $\beta=\tfrac12$ assuming $\beta\in(0,\tfrac12]$.
 
-Fix $c>c_*$ (Lemma~\ref{lem:cstar}), so that $\Theta(t)=\vartheta(t)+ct$ is a
-$C^\infty$ bijection $\mathbb R\to\mathbb R$ with $\Theta'>0$ on $\mathbb R$
-(Lemma~\ref{lem:Theta}(i)).
-Define the single complex point
-\[
-t_\rho:=\gamma+i(\tfrac12-\beta),\qquad \Im t_\rho=\tfrac12-\beta\in[0,\tfrac12).
-\]
+\emph{One-parameter complexification.}
+Define $t:\mathbb C\to\mathbb C$ by $t(s):=\gamma+is$; then $t(ir)=\gamma-r\in\mathbb R$
+for every $r\in\mathbb R$, and $t(\tfrac12-\beta)=\gamma+i(\tfrac12-\beta)=:t_\rho$.
+Let $m_\rho:=-\inf_{s\in[0,\tfrac12-\beta]}\Re\vartheta'(\gamma+is)$, which is finite
+since $\vartheta'$ is holomorphic on the open set $\{|\Im t|<\tfrac12\}$ (poles of
+$\psi(\tfrac14+\tfrac{it}{2})$ lie at $\Im t=\pm(2k+\tfrac12)$, $k\ge 0$) and the
+segment $\{\gamma+is:s\in[0,\tfrac12-\beta]\}$ is compactly contained in it.
+Fix $c>\max(c_*,m_\rho)$.
 
-\emph{The identity $Z(t_\rho)=0$.}
-The Hardy $Z$-function is $Z(t)=e^{i\vartheta(t)}\zeta(\tfrac12+it)$.
-Both $\vartheta$ and the map $t\mapsto\tfrac12+it$ are holomorphic at $t_\rho$
-(the nearest pole of $\vartheta'$ sits at $|\Im t|=\tfrac12$, and $\tfrac12+it_\rho$
-avoids $s=1$), so $Z$ is defined at $t_\rho$ by the formula above, and
-$\tfrac12+it_\rho=\tfrac12+i\gamma-(\tfrac12-\beta)=\beta+i\gamma=\rho$, giving
-\[
-Z(t_\rho)=e^{i\vartheta(t_\rho)}\zeta(\rho)=0.
-\]
+\emph{Holomorphy of $Z$ on a strip.}
+$Z(t)=e^{i\vartheta(t)}\zeta(\tfrac12+it)$ is holomorphic on
+$\Omega:=\{t\in\mathbb C:|\Im t|<\tfrac12\}$: $\vartheta$ is holomorphic on $\Omega$
+(the $\psi$-poles lie at $\Im t=\pm(2k+\tfrac12)$, $k\ge 0$), and
+$\tfrac12+it\in\mathbb C\setminus\{1\}$ for every $t\in\Omega$ since $t=-i/2$
+lies on $\partial\Omega$ not in $\Omega$, so $\zeta(\tfrac12+it)$ is holomorphic on
+$\Omega$.
 
-\emph{The factorization identity at $t_\rho$.}
-The formula $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ of Lemma~\ref{lem:Zfact} is
-an identity of elementary expressions in $t$ via the formulae defining $Z$,
-$\Theta$, $\sqrt{\Theta'}$, and $Y$, and extends to any complex $t$ at which
-each factor is defined and $\Theta'(t)\notin(-\infty,0]$.
-At $t_\rho$ all three quantities $\Theta'(t_\rho)$, $\sqrt{\Theta'(t_\rho)}$, and
-$Y(\Theta(t_\rho))$ are well-defined:
-\begin{itemize}[leftmargin=2em,itemsep=2pt,topsep=2pt]
-\item $\Theta'(t_\rho)=\vartheta'(t_\rho)+c$ is finite, $\vartheta'$ being holomorphic
-on $\{|\Im t|<\tfrac12\}$ (Lemma~\ref{lem:Theta}(ii)), and $\Re\Theta'(t_\rho)>0$
-for $\beta$ close enough to $\tfrac12$ from below.
-For general $\beta\in(0,\tfrac12]$, take a path from $\gamma$ to $t_\rho$ along the
-vertical segment $\gamma+is$, $s\in[0,\tfrac12-\beta]$; since
-$\vartheta'(\gamma+is)$ is continuous in $s$ with $\vartheta'(\gamma)+c>0$, and
-$\Re\vartheta'(a+is)=\Re\vartheta'(a)+O(s)$ uniformly on compacts avoiding the
-$\psi$-poles, choosing $c$ large enough that $c-c_*$ dominates the oscillation on
-the entire segment gives $\Re\Theta'(\gamma+is)>0$ throughout.
-\item $\sqrt{\Theta'(t_\rho)}$ is the principal branch, single-valued since
-$\Theta'(t_\rho)$ lies in the open right half-plane $\{\Re w>0\}$ by the previous
-bullet.
-\item $Y(\Theta(t_\rho))$ is defined by the entire extension of $Y$
-(Theorem~\ref{thm:PW}), which assigns a value to every complex argument.
-\end{itemize}
-Each factor being a holomorphic function of $t$ in an open neighborhood of $t_\rho$
-(and all three being simultaneously well-defined there), the pointwise identity
-$Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ — which holds for every real $t$ by
-Lemma~\ref{lem:Zfact} — continues to hold at $t=t_\rho$ by analytic continuation
-along the vertical segment $\gamma+is$, on which both sides are holomorphic.
-Hence
+\emph{The two holomorphic functions on a common domain.}
+Let $N:=t^{-1}(\Omega)=\{s\in\mathbb C:|\Re s|<\tfrac12\}$, a connected open
+vertical strip containing both the real interval
+$[0,\tfrac12-\beta]\subset(-\tfrac12,\tfrac12)$ and the full imaginary axis
+$i\mathbb R$.
+Define
 \[
-0=Z(t_\rho)=\sqrt{\Theta'(t_\rho)}\,Y(\Theta(t_\rho)).
+F(s):=Z(t(s)),
+\qquad
+G(s):=\sqrt{\Theta'(t(s))}\,Y(\Theta(t(s))),
 \]
+where $\sqrt{\cdot}$ is the principal branch.
+$F$ is holomorphic on $N$ by holomorphy of $Z$ on $\Omega$.
+For $s\in N$, $\Theta'(t(s))=\vartheta'(t(s))+c$ is holomorphic, and on the real
+segment $[0,\tfrac12-\beta]\subset N$ one has $\Re\Theta'(\gamma+is)\ge c-m_\rho>0$
+by the choice of $c$, so $\Theta'(t(s))$ avoids $(-\infty,0]$ in a connected open
+neighborhood of that segment inside $N$.
+The entire extension of $Y$ (Theorem~\ref{thm:PW}) makes $Y\circ\Theta\circ t$
+holomorphic on all of $N$.
+Let $N'\subset N$ be the connected component of
+$\{s\in N:\Theta'(t(s))\notin(-\infty,0]\}$ containing the real segment
+$[0,\tfrac12-\beta]$; then $F,G$ are both holomorphic on $N'$, and
+$i\mathbb R\cap N'$ is nonempty (since $s=0\in N'$ and $N'$ is open, it contains
+an imaginary interval $\{ir:|r|<\varepsilon\}$ for some $\varepsilon>0$).
+
+\emph{Coincidence on the imaginary segment.}
+For $s=ir\in N'$, $t(ir)=\gamma-r\in\mathbb R$, so
+$F(ir)=Z(\gamma-r)$, and Lemma~\ref{lem:Zfact} at the real argument $\gamma-r$
+gives $Z(\gamma-r)=\sqrt{\Theta'(\gamma-r)}\,Y(\Theta(\gamma-r))=G(ir)$.
+Hence $F=G$ on the open imaginary interval $\{ir:|r|<\varepsilon\}\subset N'$.
+
+\emph{1D identity theorem.}
+$N'$ is connected and open in $\mathbb C$, $F-G$ is holomorphic on $N'$, and the
+zero set of $F-G$ contains an open interval of $i\mathbb R$, which has accumulation
+points in $N'$.
+Therefore $F\equiv G$ on $N'$; at $s_0:=\tfrac12-\beta\in N'$,
+\[
+Z(t_\rho)=F(s_0)=G(s_0)=\sqrt{\Theta'(t_\rho)}\,Y(\Theta(t_\rho)).
+\]
+$\tfrac12+it_\rho=\tfrac12+i\gamma-(\tfrac12-\beta)=\beta+i\gamma=\rho$ and
+$t_\rho\in\Omega$, so $Z(t_\rho)=e^{i\vartheta(t_\rho)}\zeta(\rho)=0$.
+The principal-branch factor $\sqrt{\Theta'(t_\rho)}$ is nonzero since
+$\Theta'(t_\rho)\notin(-\infty,0]$; hence $Y(\Theta(t_\rho))=0$.
 
 \emph{Reality of $\Theta(t_\rho)$.}
-$\sqrt{\Theta'(t_\rho)}\ne 0$, so $Y(\Theta(t_\rho))=0$.
-By Theorem~\ref{thm:Yzeros}, every complex zero of the entire function $Y$ is real,
-so $\Theta(t_\rho)\in\mathbb R$.
+$Y$ is entire (Theorem~\ref{thm:PW}) with every complex zero real
+(Theorem~\ref{thm:Yzeros}), so $\Theta(t_\rho)\in\mathbb R$.
 
-\emph{Reality of $t_\rho$.}
-Along the vertical segment $\gamma+is$, $s\in[0,\tfrac12-\beta]$, we have
-$\Re\Theta'(\gamma+is)>0$ by the choice of $c$, so by Lemma~\ref{lem:Theta}(iii),
+\emph{Conclusion.}
+With $\Theta'(t(s))$ holomorphic on the real segment $s\in[0,\tfrac12-\beta]$
+and $\Re\Theta'(\gamma+is)\ge c-m_\rho>0$ there,
 \[
-\Im\Theta(t_\rho)=\int_0^{\tfrac12-\beta}\Re\Theta'(\gamma+is)\,ds\ge (\tfrac12-\beta)\cdot\min_s\Re\Theta'(\gamma+is)>0
+\Im\Theta(t_\rho)=\Im\Theta(\gamma+i(\tfrac12-\beta))
+=\int_0^{\tfrac12-\beta}\Re\Theta'(\gamma+is)\,ds
+\ge (\tfrac12-\beta)(c-m_\rho).
 \]
-if $\beta<\tfrac12$.
-But $\Theta(t_\rho)\in\mathbb R$ means $\Im\Theta(t_\rho)=0$; combined with the
-strict lower bound above, this forces $\tfrac12-\beta=0$.
+The left side is $0$ since $\Theta(t_\rho)\in\mathbb R$, and the right side is
+$\ge 0$ with equality iff $\tfrac12-\beta=0$.
 Hence $\beta=\tfrac12$.
 \end{proof}
 
