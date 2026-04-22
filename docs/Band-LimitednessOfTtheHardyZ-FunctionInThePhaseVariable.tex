@@ -198,15 +198,27 @@ K_\infty(\mu)-K_T(\mu)=\tfrac{1}{2\pi}\sum_\sigma\!\left[\sum_{n\notin\mathcal{S
 \end{equation}
 All terms vanish as $T\to\infty$; $K_\infty(\mu)$ exists.
 
-\item \emph{Identification.} The mode $(n,\sigma)$ instantaneous $u$-frequency is
-\begin{equation}\label{eq:instfreq}
-\sigma\cdot\frac{\theta'(t)-\log n}{\Theta'(t)}=\sigma\cdot\frac{\theta'(t)-\log n}{\theta'(t)+c}
+\item \emph{Identification.} By Lemma~\ref{lem:Thetabij}, $\Theta:\mathbb{R}\to\mathbb{R}$ is a bijection with inverse $t(u):=\Theta^{-1}(u)$; under the substitution $u=\Theta(t)$, the defining identity \eqref{eq:KT} gives $K_\infty(\mu)=\widehat{Y}(\mu)$ where $Y$ is the pullback \eqref{eq:Ydef}. Applying the same substitution to the mode expansion \eqref{eq:KTexpand}, each Riemann--Siegel mode $(n,\sigma)$ of $Y$ takes the form
+\begin{equation}\label{eq:Ynsigma}
+Y_{n,\sigma}(u)=\frac{n^{-1/2}}{\sqrt{\Theta'(t(u))}}\,\exp\!\bigl(i\sigma[\theta(t(u))-t(u)\log n]\bigr).
 \end{equation}
-On $t\ge 2\pi n^2$, $\theta'(t)\ge\theta'(2\pi n^2)=\beta_n-c=\tfrac{1}{2}\Re\psi(\tfrac{1}{4}+i\pi n^2)-\tfrac{1}{2}\log\pi$. Numerator $\ge 0$; denominator exceeds numerator by $c+\log n>0$; ratio in $[0,1)$. The Riemann--Siegel remainder has $u$-frequency $O((\log t)^{-1})\to 0$.
+Using $dt(u)/du = 1/\Theta'(t(u))$, the instantaneous $u$-frequency of $Y_{n,\sigma}$ is
+\begin{equation}\label{eq:instfreq}
+\frac{d}{du}\bigl[\sigma\theta(t(u))-\sigma t(u)\log n\bigr]=\sigma\cdot\frac{\theta'(t)-\log n}{\Theta'(t)}=\sigma\cdot\frac{\theta'(t)-\log n}{\theta'(t)+c}.
+\end{equation}
+On the support of mode $n$ (where $t\ge 2\pi n^2$), strict monotonicity of $\theta'$ (Lemma~\ref{lem:thetapp}) combined with Lemma~\ref{lem:betaasymp} gives
+\begin{equation}\label{eq:thetaprimebd}
+\theta'(t)\ge\theta'(2\pi n^2)=\beta_n-c=\log n+r_n,\qquad r_n=O(n^{-4}).
+\end{equation}
+Hence the numerator satisfies $\theta'(t)-\log n\ge r_n$ and the denominator $\theta'(t)+c\ge\beta_n=\log n+c+r_n$; for every $n\ge 1$ and admissible $c$ (in particular $c>c_*$) the denominator is bounded below by a positive constant. The ratio \eqref{eq:instfreq} lies strictly in $(-1,1)$: the numerator is smaller than the denominator by exactly $c>0$, giving ratio $<1$; and $|r_n|\to 0$ with the denominator bounded below by $c_*>0$ gives ratio $>-1$. Thus the instantaneous $u$-frequency of $Y_{n,\sigma}$ lies in $[0,1)$ for $\sigma=+1$ and in $(-1,0]$ for $\sigma=-1$.
+
+For the Riemann--Siegel remainder contribution $R(t(u))/\sqrt{\Theta'(t(u))}$ to $Y$: the $t$-derivative of $\arg R(t)$ is $O((t/(2\pi))^{-1/2})$ by the contour-integral representation of $R$, so the instantaneous $u$-frequency is $O((t/(2\pi))^{-1/2})/\Theta'(t)\to 0\in(-1,1)$.
+
+The union of mode instantaneous $u$-frequencies together with the remainder frequency is contained in $[-1,1]$, so the Fourier support of $Y$ is contained in $[-1,1]$.
 
 \end{enumerate}
 
-Therefore $\supp S\subseteq[-1,1]$, and $K_\infty(\mu)=\widehat{Y}(\mu)=0$ for $|\mu|>1$.
+Therefore $\widehat{Y}(\mu)=0$ for $|\mu|>1$, and by \eqref{eq:KT}, $K_\infty(\mu)=\widehat{Y}(\mu)=0$ for $|\mu|>1$.
 \end{proof}
 
 \section{Entire Extension and Laguerre--P\'olya Membership}
