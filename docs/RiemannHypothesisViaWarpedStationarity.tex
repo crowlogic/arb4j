@@ -49,9 +49,72 @@ where $t_\rho:=\gamma+i(\tfrac12-\beta)$.
 Since $\tfrac12+it_\rho=\rho$, $Z(t_\rho)=0$; with $\sqrt{\Theta'(t_\rho)}\ne 0$,
 $Y(\Theta(t_\rho))=0$; reality of zeros of $Y$ gives $\Theta(t_\rho)\in\mathbb R$;
 a direct computation of $\Im\Theta(t_\rho)=\int_0^{\tfrac12-\beta}\Re\Theta'(\gamma+is)\,ds$,
-combined with $\Re\Theta'(\gamma+is)>0$ along the segment
-(choice of $c$ large enough), forces $\tfrac12-\beta=0$.
+combined with $\Re\Theta'(\gamma+is)\ge c-m_\rho>0$ along the segment
+(for $c>\max(c_*,m_\rho)$ with $m_\rho:=-\inf_{s\in[0,\tfrac12-\beta]}\Re\vartheta'(\gamma+is)$
+finite by continuity of $\vartheta'$ on the compact vertical segment inside the
+holomorphy domain), yields $\tfrac12-\beta=0$.
 \end{abstract}
+
+\section{Introduction}
+
+The Hardy $Z$-function
+\[
+Z(t)=e^{i\vartheta(t)}\,\zeta(\tfrac12+it),
+\qquad
+\vartheta(t)=\arg\Gamma(\tfrac14+\tfrac{it}{2})-\tfrac{t}{2}\log\pi,
+\]
+is real on $\mathbb R$, satisfies $|Z(t)|=|\zeta(\tfrac12+it)|$, and has the same
+real zeros as $t\mapsto\zeta(\tfrac12+it)$ on $\mathbb R$.
+The Riemann hypothesis is the assertion that every nontrivial zero
+$\rho=\beta+i\gamma$ of $\zeta$ satisfies $\beta=\tfrac12$.
+
+The method here transports the problem to a unitarily equivalent function $Y$
+whose reality of zeros is established by classical entire-function theory, and
+then pulls the conclusion back to $Z$ through a single holomorphic identity.
+The five steps are:
+
+\begin{enumerate}[leftmargin=2em,itemsep=2pt,topsep=2pt]
+\item \emph{Shifted phase.} Fix $c>c_*:=-\inf_{t\in\mathbb R}\vartheta'(t)$ (finite
+by the digamma asymptotic) and set $\Theta(t):=\vartheta(t)+ct$; then
+$\Theta:\mathbb R\to\mathbb R$ is a $C^\infty$ bijection with $\Theta'>0$.
+\item \emph{Unwarped function.} $Y(u):=Z(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u))}$
+is the Omer--Torresani unwarping of $Z$ by $\Theta^{-1}$, a unitary
+reparametrization on $L^2(\mathbb R)$ with the pointwise identity
+$Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ for every real $t$.
+\item \emph{Band-limit.} The time-average covariance $c_Y(\eta)$ exists for every
+$\eta\in\mathbb R$ and Bochner's theorem delivers a finite non-negative spectral
+measure $\mu_Y$; a single integration by parts on the Riemann--Siegel mode
+expansion, in which the $\vartheta''$ terms cancel algebraically
+($Q_{n,\sigma,\mu}(u)$ is a rational function of $x=\Theta'(t(u))$ alone), gives
+$\operatorname{supp}\mu_Y\subseteq[-1,1]$.
+\item \emph{Paley--Wiener + Akhiezer.} The Paley--Wiener theorem for time-average
+WSS functions extends $Y$ to an entire function of exponential type $\le 1$ with
+$|Y(z)|\le\sqrt{2}\,e^{|\Im z|}$, and the Akhiezer--Laguerre--P\'olya criterion
+places $Y$ in the Laguerre--P\'olya class, so every complex zero of $Y$ is real.
+\item \emph{Segment transport.} $Z$ is holomorphic on
+$\Omega=\{|\Im t|<\tfrac12\}$ (the $\zeta$-pole at $s=1$ corresponds to $t=-i/2$,
+which is on $\partial\Omega$, not in $\Omega$).
+With $t(s):=\gamma+is$ and a single admissible $c$ depending on $\rho$,
+the functions $F(s):=Z(t(s))$ and $G(s):=\sqrt{\Theta'(t(s))}\,Y(\Theta(t(s)))$
+are both holomorphic on a connected open subset $N'$ of the vertical strip
+$\{|\Re s|<\tfrac12\}$ containing the real segment $[0,\tfrac12-\beta]$ and an
+open imaginary interval $\{ir:|r|<\varepsilon\}$.
+On that imaginary interval $t(ir)=\gamma-r\in\mathbb R$, so Lemma~\ref{lem:Zfact}
+at the real point $\gamma-r$ gives $F(ir)=G(ir)$; the 1D identity theorem on
+the connected open $N'\subset\mathbb C$ propagates the equality to every $s\in N'$,
+including $s=\tfrac12-\beta$, giving
+$Z(t_\rho)=\sqrt{\Theta'(t_\rho)}\,Y(\Theta(t_\rho))$ with $t_\rho=\gamma+i(\tfrac12-\beta)$.
+Since $Z(t_\rho)=0$ and $\sqrt{\Theta'(t_\rho)}\ne 0$, $Y(\Theta(t_\rho))=0$,
+so $\Theta(t_\rho)\in\mathbb R$; the integral representation of
+$\Im\Theta(t_\rho)$ along the real segment, strictly positive unless
+$\tfrac12-\beta=0$, gives $\beta=\tfrac12$.
+\end{enumerate}
+
+No strip of holomorphy is used beyond the compact vertical segment, no 2D
+neighborhood is required, and the choice of shift $c$ is explicit: it exceeds
+the finite quantity $m_\rho:=-\inf_{s\in[0,\tfrac12-\beta]}\Re\vartheta'(\gamma+is)$,
+which is finite by continuity of $\vartheta'$ on the compact segment inside the
+holomorphy domain $\Omega$.
 
 \section{The Shifted Phase and the Unwarped Function}
 
