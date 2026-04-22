@@ -133,6 +133,25 @@ public class CaputoFractionalDerivativeNodeTest extends
     }
   }
 
+  /**
+   * Regression: fracdiff(P(v), v^½) where P is user-defined in a Context used
+   * to throw UnsupportedOperationException("Derivative not implemented for
+   * builtin function: P") because the Caputo integrand was being built in a
+   * fresh sub-expression whose Context didn't contain P. Now the operand body
+   * is inlined and dispatched via closed-form fractional derivative nodes.
+   */
+  public void testFracdiffOfContextualFunction()
+  {
+    try (Context context = new Context())
+    {
+      RealFunction.express("P:v->-(v^2)/2", context);
+      RealFunction f      = RealFunction.express("fracdiff(P(v),v^½)", context);
+      // Đ^½(-(v²)/2) at v=2 = -(1/2)*Γ(3)/Γ(5/2)*2^(3/2) = -8√2/(3√π)
+      double       result = f.eval(2.0);
+      assertEquals(-8.0 * Math.sqrt(2.0) / (3.0 * Math.sqrt(Math.PI)), result, 1e-6);
+    }
+  }
+
   public void testParseFractionalDerivativeFunctionForm()
   {
     var f = RealFunction.parse("fracdiff(sin(t),t^2)");

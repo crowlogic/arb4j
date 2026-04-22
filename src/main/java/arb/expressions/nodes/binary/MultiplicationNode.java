@@ -70,6 +70,36 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   }
 
   @Override
+  public boolean hasClosedFormFractionalDerivative(VariableNode<D, R, F> variable)
+  {
+    VariableNode<D, R, F> diffVar = variable != null ? variable : expression.getIndependentVariable();
+    if (!left.dependsOn(diffVar) && right.hasClosedFormFractionalDerivative(variable))
+    {
+      return true;
+    }
+    if (!right.dependsOn(diffVar) && left.hasClosedFormFractionalDerivative(variable))
+    {
+      return true;
+    }
+    return false;
+  }
+
+  @Override
+  public Node<D, R, F> fractionalDerivative(VariableNode<D, R, F> variable, Node<D, R, F> α)
+  {
+    VariableNode<D, R, F> diffVar = variable != null ? variable : expression.getIndependentVariable();
+    if (!left.dependsOn(diffVar) && right.hasClosedFormFractionalDerivative(variable))
+    {
+      return left.mul(right.fractionalDerivative(variable, α));
+    }
+    if (!right.dependsOn(diffVar) && left.hasClosedFormFractionalDerivative(variable))
+    {
+      return right.mul(left.fractionalDerivative(variable, α));
+    }
+    return super.fractionalDerivative(variable, α);
+  }
+
+  @Override
   public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
     // Simplify first -- catches e.g. (x-a)*δ(x-a) = 0

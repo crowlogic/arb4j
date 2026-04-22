@@ -66,6 +66,24 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
+  public boolean hasClosedFormFractionalDerivative(VariableNode<D, R, F> variable)
+  {
+    VariableNode<D, R, F> diffVar = variable != null ? variable : expression.getIndependentVariable();
+    return !right.dependsOn(diffVar) && left.hasClosedFormFractionalDerivative(variable);
+  }
+
+  @Override
+  public Node<D, R, F> fractionalDerivative(VariableNode<D, R, F> variable, Node<D, R, F> α)
+  {
+    VariableNode<D, R, F> diffVar = variable != null ? variable : expression.getIndependentVariable();
+    if (!right.dependsOn(diffVar) && left.hasClosedFormFractionalDerivative(variable))
+    {
+      return left.fractionalDerivative(variable, α).div(right);
+    }
+    return super.fractionalDerivative(variable, α);
+  }
+
+  @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> requestedResultType)
   {
     return super.generate(mv, requestedResultType);

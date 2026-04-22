@@ -18,6 +18,7 @@ import arb.exceptions.UndefinedReferenceException;
 import arb.expressions.*;
 import arb.expressions.FunctionMapping;
 import arb.expressions.nodes.binary.ExponentiationNode;
+import arb.expressions.nodes.unary.FunctionNode;
 import arb.functions.Function;
 
 /**
@@ -87,6 +88,10 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     {
       order.parent = this;
     }
+
+
+    this.operand = tryInlineOperandBody(this.operand);
+    operand      = this.operand;
 
     if (operand.hasClosedFormFractionalDerivative(variable))
     {
@@ -225,6 +230,10 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
 
     expression.require(")");
 
+
+    this.operand = tryInlineOperandBody(this.operand);
+    operand      = this.operand;
+
     if (operand.hasClosedFormFractionalDerivative(variable))
     {
       closedFormResult     = operand.fractionalDerivative(variable, order);
@@ -245,6 +254,48 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   protected void throwFunctionSyntaxError()
   {
     throw new CompilerException("the function syntax for Caputo fractional derivatives is fracdiff(f(t),t^a) where a is the order of differentiation");
+  }
+
+  /**
+   * If the operand is a call to a user-defined function registered in the current
+   * {@link Context}, and whose argument is a bare variable matching the function's
+   * own independent variable, splice the function body directly into this expression
+   * in place of the call. This avoids the context cross-linking problem that occurs
+   * when the Caputo integrand is built in a fresh sub-expression whose Context does
+   * not contain the user-defined function, which would otherwise cause
+   * {@code FunctionNode.differentiateBodyOf} to look up the function in the built-in
+   * table and throw {@link UnsupportedOperationException}.
+   */
+  @SuppressWarnings("unchecked")
+  protected Node<D, R, F> tryInlineOperandBody(Node<D, R, F> operand)
+  {
+    if (context == null)
+    {
+      return operand;
+    }
+    if (!(operand instanceof FunctionNode))
+    {
+      return operand;
+    }
+    FunctionNode<D, R, F> fn = (FunctionNode<D, R, F>) operand;
+    FunctionMapping<D, R, F> mapping = context.getFunctionMapping(fn.functionName);
+    if (mapping == null || mapping.expression == null)
+    {
+      return operand;
+    }
+    if (!(fn.arg instanceof VariableNode))
+    {
+      return operand;
+    }
+    VariableNode<D, R, F> argVar = fn.arg.asVariable();
+    VariableNode<?, ?, ?> fnIndep = mapping.expression.getIndependentVariable();
+    if (fnIndep == null || !argVar.getName().equals(fnIndep.getName()))
+    {
+      return operand;
+    }
+    Node<D, R, F> inlined = (Node<D, R, F>) mapping.expression.rootNode.spliceInto(this.expression);
+    inlined.parent = this;
+    return inlined;
   }
 
   @Override

@@ -85,7 +85,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   /**
    * Đ^(α)(t) = Γ(2)/Γ(2-α)*t^(1-α)
-   * 
+   *
    * This is the monomial case with k=1.
    */
   @Override
@@ -101,6 +101,17 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return numerator.div(denomArg.Γ()).mul(term);
     }
     return zero();
+  }
+
+  @Override
+  public boolean hasClosedFormFractionalDerivative(VariableNode<D, R, F> variable)
+  {
+    VariableNode<D, R, F> diffVar = variable != null ? variable : expression.getIndependentVariable();
+    if (diffVar == null)
+    {
+      return true;
+    }
+    return this.getName().equals(diffVar.getName()) || !this.dependsOn(diffVar);
   }
 
   public boolean isZero()

@@ -128,6 +128,22 @@ public class NegationNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
+  public boolean hasClosedFormFractionalDerivative(VariableNode<D, R, F> variable)
+  {
+    return arg.hasClosedFormFractionalDerivative(variable);
+  }
+
+  @Override
+  public Node<D, R, F> fractionalDerivative(VariableNode<D, R, F> variable, Node<D, R, F> α)
+  {
+    if (arg.hasClosedFormFractionalDerivative(variable))
+    {
+      return arg.fractionalDerivative(variable, α).neg();
+    }
+    return super.fractionalDerivative(variable, α);
+  }
+
+  @Override
   public boolean isLinearOperator(VariableNode<D, R, F> outerVar, VariableNode<D, R, F> innerVar)
   {
     return true;

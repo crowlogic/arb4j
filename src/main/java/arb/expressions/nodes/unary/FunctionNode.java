@@ -534,6 +534,16 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return new ZetaJetNode<>(expression, arg, 1, state);
     }
     default:
+      if (expression.context != null)
+      {
+        FunctionMapping<?, ?, ?> ctxMapping = expression.context.getFunctionMapping(functionName);
+        if (ctxMapping != null && ctxMapping.expression != null)
+        {
+          contextual = true;
+          mapping    = ctxMapping;
+          return differentiateBodyOf(ctxMapping);
+        }
+      }
       throw new UnsupportedOperationException("Derivative not implemented for builtin function: "
                                               + functionName
                                               + " in expression '"

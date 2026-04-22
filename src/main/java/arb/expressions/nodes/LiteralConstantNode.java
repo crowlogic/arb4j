@@ -340,8 +340,47 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     {
       fieldName = expression.getNextConstantFieldName(type());
     }
+    else
+    {
+      advanceConstantCounterPast(expression, fieldName, type());
+    }
 
     expression.literalConstants.put(fieldName, this);
+  }
+
+  /**
+   * When a spliced node carries its source expression's generated fieldName
+   * (e.g. {@code cℤ0000}) into a destination expression, the destination's
+   * constant counter does not know about it. A later call to
+   * {@link Expression#getNextConstantFieldName(Class)} would then hand out the
+   * same name and {@link Expression#literalConstants} would silently overwrite
+   * the carried-in entry. Bump the counter past the carried index so future
+   * allocations skip already-used slots.
+   */
+  private static <D, R, F extends Function<? extends D, ? extends R>> void advanceConstantCounterPast(Expression<D, R, F> expression,
+                                                                                                      String name,
+                                                                                                      Class<?> type)
+  {
+    String prefix = "c" + Compiler.getVariablePrefix(type);
+    if (name == null || !name.startsWith(prefix))
+    {
+      return;
+    }
+    String suffix = name.substring(prefix.length());
+    int idx;
+    try
+    {
+      idx = java.lang.Integer.parseInt(suffix);
+    }
+    catch (NumberFormatException e)
+    {
+      return;
+    }
+    var counter = expression.getConstantCounter(type);
+    while (counter.get() <= idx)
+    {
+      counter.compareAndSet(counter.get(), idx + 1);
+    }
   }
 
   @SuppressWarnings("resource")
