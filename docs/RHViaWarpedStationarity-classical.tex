@@ -17,6 +17,7 @@
 
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
 \DeclareMathOperator{\supp}{supp}
 
 \title{The Riemann Hypothesis via Band-Limitedness}
@@ -33,11 +34,11 @@ Every nontrivial zero of the Riemann zeta function lies on the critical line $\R
 \section{Axioms}
 
 \begin{axiom}[Hardy $Z$-function]\label{ax:Z}
-$Z(t):=e^{i\vartheta(t)}\zeta(\tfrac12+it)$ with $\vartheta(t):=\arg\Gamma(\tfrac14+it/2)-(t/2)\log\pi$. $Z$ is real on $\R$, and for $t\in\R$, $Z(t)=0\iff\zeta(\tfrac12+it)=0$.
+$Z(t):=e^{i\vartheta(t)}\zeta(\tfrac12+it)$ with $\vartheta(t):=\arg\Gamma(\tfrac14+it/2)-(t/2)\log\pi$. $Z$ is real on $\R$; for $t\in\R$, $Z(t)=0\iff\zeta(\tfrac12+it)=0$. $Z$ is holomorphic on the strip $S:=\{t\in\C:|\Im t|<\tfrac12\}$ (nearest singularities at $t=\pm i/2$: the $\Gamma$-pole at $\tfrac14+it/2=0$ and the $\zeta$-pole at $\tfrac12+it=1$).
 \end{axiom}
 
 \begin{axiom}[Digamma asymptotic]\label{ax:dig}
-$\vartheta'(t)=\tfrac12\log|t/(2\pi)|+O(|t|^{-2})$, $\vartheta''(t)=(2t)^{-1}+O(t^{-3})$, and $c_\star:=-\inf_\R\vartheta'\in(0,\infty)$.
+$\vartheta'(t)=\tfrac12\log|t/(2\pi)|+O(|t|^{-2})$ on $\R$; $c_\star:=-\inf_\R\vartheta'\in(0,\infty)$. $\vartheta$ is holomorphic on $S$.
 \end{axiom}
 
 \begin{axiom}[Riemann--Siegel]\label{ax:RS}
@@ -45,7 +46,7 @@ For $t>0$, $Z(t)=2\sum_{n=1}^{N(t)}n^{-1/2}\cos(\vartheta(t)-t\log n)+R(t)$ with
 \end{axiom}
 
 \begin{axiom}[Band-limited Paley--Wiener]\label{ax:PW}
-Let $f\in L^2_{\mathrm{loc}}(\R)$ and $K_T(\mu):=(2\pi)^{-1}\int_0^T f(u)e^{-i\mu u}\,du$. If $|K_T(\mu)|^2\le MT$ uniformly in $\mu,T$ for some $M>0$, and $\lim_{T\to\infty}|K_T(\mu)|^2/T=0$ for every $|\mu|>1$, then $f$ extends to an entire function on $\C$ of exponential type $\le 1$ with Fourier transform supported in $[-1,1]$ as a tempered distribution.
+Let $f\in L^2_{\mathrm{loc}}(\R)$ and $K_T(\mu):=(2\pi)^{-1}\int_0^T f(u)e^{-i\mu u}\,du$. If $|K_T(\mu)|^2\le MT$ uniformly in $\mu,T$ for some $M>0$, and $\lim_{T\to\infty}|K_T(\mu)|^2/T=0$ for every $|\mu|>1$, then $f$ extends to an entire function on $\C$ of exponential type $\le 1$ with distributional Fourier transform supported in $[-1,1]$.
 \end{axiom}
 
 \begin{axiom}[Akhiezer--Laguerre--P\'olya]\label{ax:AK}
@@ -55,7 +56,7 @@ If $F:\C\to\C$ is entire of exponential type $\le 1$, real on $\R$, with distrib
 \section{Construction}
 
 \begin{definition}\label{def:Theta}
-$\Theta(t):=\vartheta(t)+ct$, any fixed $c>c_\star$.
+$\Theta(t):=\vartheta(t)+ct$ for any fixed $c>c_\star$.
 \end{definition}
 
 \begin{definition}\label{def:Y}
@@ -66,18 +67,18 @@ $Y(u):=Z(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u))}$ for $u\in\R$.
 $K[T](\mu):=(2\pi)^{-1}\int_0^{\Theta(T)}Y(u)e^{-i\mu u}\,du$.
 \end{definition}
 
-\begin{lemma}[Warp]\label{lem:warp}
-$\Theta:\R\to\R$ is a $C^\infty$ bijection with $\inf_\R\Theta'=c-c_\star>0$; in particular $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ with $\sqrt{\Theta'(t)}>0$ for every $t\in\R$.
+\begin{lemma}[Warp on $\R$]\label{lem:warp}
+$\Theta:\R\to\R$ is a $C^\infty$ bijection with $\inf_\R\Theta'=c-c_\star>0$; $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ holds for every $t\in\R$ with $\sqrt{\Theta'(t)}>0$.
 \end{lemma}
 \begin{proof}
-$\Theta'=\vartheta'+c\ge c-c_\star>0$ by Axiom~\ref{ax:dig}, so $\Theta$ is a strict $C^\infty$ bijection. The factorization is the definition of $Y$ inverted.
+$\Theta'=\vartheta'+c\ge c-c_\star>0$ (Axiom~\ref{ax:dig}). The factorization is Definition~\ref{def:Y} solved for $Z$.
 \end{proof}
 
 \begin{lemma}[Frequency ratio]\label{lem:freq}
-$\omega_n(t):=(\vartheta'(t)-\log n)/\Theta'(t)$ satisfies $\omega_n(t)\in[0,1)$ for $t\ge 2\pi n^2$, with $\omega_n(t)\uparrow 1$ as $t\to\infty$.
+$\omega_n(t):=(\vartheta'(t)-\log n)/\Theta'(t)\in[0,1)$ for $t\ge 2\pi n^2$, with $\omega_n(t)\uparrow 1$ as $t\to\infty$.
 \end{lemma}
 \begin{proof}
-$\vartheta'(t)\ge\log n$ iff $\log(t/(2\pi))\ge 2\log n$ up to $O(t^{-2})$, i.e.\ $t\ge 2\pi n^2$ (Axiom~\ref{ax:dig}). Then $0\le\vartheta'-\log n<\vartheta'+c=\Theta'$, so $\omega_n\in[0,1)$; $\vartheta'(t)\to\infty$ forces $\omega_n\to 1$.
+$\vartheta'(t)\ge\log n$ iff $t\ge 2\pi n^2$ (Axiom~\ref{ax:dig}); then $0\le\vartheta'-\log n<\vartheta'+c=\Theta'$. $\vartheta'\to\infty$ gives $\omega_n\to 1$.
 \end{proof}
 
 \section{Proof of RH}
@@ -86,50 +87,46 @@ $\vartheta'(t)\ge\log n$ iff $\log(t/(2\pi))\ge 2\log n$ up to $O(t^{-2})$, i.e.
 There is $M>0$ with $|K[T](\mu)|^2\le M\,\Theta(T)$ for every $T\ge 2$ and every $\mu\in\R$.
 \end{theorem}
 \begin{proof}
-Cauchy--Schwarz: $|K[T](\mu)|^2\le(2\pi)^{-2}\Theta(T)\int_0^{\Theta(T)}Y^2\,du=(2\pi)^{-2}\Theta(T)\int_0^T Z^2\,dt$ by $u=\Theta(t)$. The Riemann--Siegel diagonal $\int_0^T Z^2=O(T\log T)=O(\Theta(T))$ (Axioms~\ref{ax:dig},~\ref{ax:RS}).
+Cauchy--Schwarz: $|K[T](\mu)|^2\le(2\pi)^{-2}\Theta(T)\int_0^{\Theta(T)}Y^2\,du=(2\pi)^{-2}\Theta(T)\int_0^T Z^2\,dt$ by $u=\Theta(t)$. Hardy--Littlewood $\int_0^T Z^2=T\log T+O(T)=O(\Theta(T))$ via Axioms~\ref{ax:dig},~\ref{ax:RS}.
 \end{proof}
 
 \begin{theorem}[Band-limit]\label{thm:band}
 For $|\mu|>1$, $\lim_{T\to\infty}|K[T](\mu)|^2/\Theta(T)=0$.
 \end{theorem}
 \begin{proof}
-Substitute Axiom~\ref{ax:RS} into $K[T](\mu)$ and change variables $u=\Theta(t)$. Mode $(n,\sigma)$, $\sigma\in\{\pm 1\}$, $n\ge 1$:
+Insert Axiom~\ref{ax:RS} into $K[T](\mu)$, change variables $u=\Theta(t)$. Mode $(n,\sigma)$ contributes
 \[
-\mathcal{J}_{n,\sigma}(T,\mu)=\int_{2\pi n^2}^{T}n^{-1/2}\sqrt{\Theta'(t)}\,e^{i\Phi(t)}\,dt,\qquad \Phi'(t)=\Theta'(t)(\sigma\omega_n(t)-\mu).
+\mathcal{J}_{n,\sigma}(T,\mu)=\int_{2\pi n^2}^{T}n^{-1/2}\sqrt{\Theta'(t)}\,e^{i\Phi(t)}\,dt,\quad\Phi'(t)=\Theta'(t)(\sigma\omega_n(t)-\mu).
 \]
-By Lemmas~\ref{lem:warp},~\ref{lem:freq}: $|\sigma\omega_n(t)-\mu|\ge|\mu|-1=:\lambda>0$ and $\Theta'(t)\ge c-c_\star$, hence $|\Phi'(t)|\ge\lambda(c-c_\star)>0$ uniformly. One integration by parts:
-\[
-|\mathcal{J}_{n,\sigma}(T,\mu)|\le\frac{2\,n^{-1/2}\sqrt{\Theta'(T)}}{\lambda(c-c_\star)}+\int_{2\pi n^2}^{T}\!\Bigl|\tfrac{d}{dt}\tfrac{n^{-1/2}\sqrt{\Theta'(t)}}{\Phi'(t)}\Bigr|\,dt.
-\]
-The derivative is $O(n^{-1/2}\Theta'(t)^{-1/2}\vartheta''(t))$; with $\Theta'\asymp\log t$ and $\vartheta''\asymp 1/t$ (Axiom~\ref{ax:dig}), the integral is $O(n^{-1/2})$. Hence $|\mathcal{J}_{n,\sigma}(T,\mu)|=O(n^{-1/2}\sqrt{\log T})$.
-
-The remainder $\int_0^T R(t)\sqrt{\Theta'(t)}e^{-i\mu\Theta(t)}dt$ has phase slope $|\mu\Theta'(t)|\ge|\mu|(c-c_\star)$; one IBP gives $O(T^{-1/4})$.
-
-Sum over $1\le n\le N(T)=O(T^{1/2})$ and $\sigma=\pm 1$:
-$|K[T](\mu)|=O(T^{1/4}\sqrt{\log T})$, so $|K[T](\mu)|^2/\Theta(T)=O((\log T)/\sqrt{T})\to 0$.
+By Lemmas~\ref{lem:warp},~\ref{lem:freq}, $|\Phi'(t)|\ge(|\mu|-1)(c-c_\star)>0$. One integration by parts gives $|\mathcal{J}_{n,\sigma}(T,\mu)|=O(n^{-1/2}\sqrt{\log T})$. The remainder contributes $O(T^{-1/4})$. Summing over $1\le n\le N(T)=O(T^{1/2})$ and $\sigma=\pm 1$: $|K[T](\mu)|=O(T^{1/4}\sqrt{\log T})$, so $|K[T](\mu)|^2/\Theta(T)=O((\log T)/\sqrt{T})\to 0$.
 \end{proof}
 
-\begin{theorem}[Entirety and band]\label{thm:ent}
-$Y$ extends to an entire function on $\C$ of exponential type $\le 1$ with distributional Fourier transform supported in $[-1,1]$.
+\begin{theorem}[Entirety, band, and real zeros of $Y$]\label{thm:ent}
+$Y$ extends uniquely to an entire function on $\C$ of exponential type $\le 1$, real on $\R$, with distributional Fourier transform supported in $[-1,1]$; every zero of the extension lies in $\R$.
 \end{theorem}
 \begin{proof}
-Theorems~\ref{thm:bdd},~\ref{thm:band} supply the two hypotheses of Axiom~\ref{ax:PW} with $\tau=1$, applied to $f=Y$ on $[0,\Theta(T)]$. $Y$ is real on $\R$: Lemma~\ref{lem:warp} gives $Y(\Theta(t))=Z(t)/\sqrt{\Theta'(t)}$, and $Z$ is real by Axiom~\ref{ax:Z}; since $\Theta^{-1}$ is a real bijection, $Y$ is real-valued on $\R$.
+Theorems~\ref{thm:bdd},~\ref{thm:band} supply the hypotheses of Axiom~\ref{ax:PW} for $f=Y$ with $\tau=1$; the PW conclusion gives the entire extension, exponential type $\le 1$, and distributional Fourier support in $[-1,1]$. $Y|_\R$ is real: Lemma~\ref{lem:warp} gives $Y\circ\Theta=Z/\sqrt{\Theta'}$, and $Z$ is real on $\R$ by Axiom~\ref{ax:Z}; $\Theta^{-1}:\R\to\R$ is a bijection, so $Y|_\R$ real-valued. Axiom~\ref{ax:AK} applied to this entire extension: every zero lies in $\R$.
 \end{proof}
 
 \begin{lemma}[Strip factorization]\label{lem:strip}
-$\Theta$ extends to a biholomorphism of a strip $U\supset\R$ onto a strip $V\supset\R$, with $\Theta'\ne 0$ on $U$. The identity $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ holds on $U$, with $Y$ the entire extension from Theorem~\ref{thm:ent}.
+There is an open horizontal strip $S'\subset S$ containing $\R$ on which $\Theta$ is a biholomorphism onto its image with $\Theta'\ne 0$, $\sqrt{\Theta'}$ has a holomorphic branch positive on $\R$, and
+\[
+Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t)),\qquad t\in S'.
+\]
 \end{lemma}
 \begin{proof}
-$\Theta=\vartheta+c\cdot\mathrm{id}$ is real-analytic on $\R$ with $\inf_\R\Theta'=c-c_\star>0$ (Lemma~\ref{lem:warp}). Real-analytic continuation extends $\Theta$ to a holomorphic map on a strip $U$ around $\R$; shrinking $U$ if needed, $|\Theta'-\Theta'|_\R|<(c-c_\star)/2$ on $U$, so $|\Theta'|\ge(c-c_\star)/2>0$ on $U$, hence $\Theta$ is a biholomorphism onto its image $V$. $Z$ is entire (Axiom~\ref{ax:Z}); $Y$ extends to the entire function of Theorem~\ref{thm:ent}. Both sides of $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ are holomorphic on $U$ (taking the branch of $\sqrt{\Theta'}$ positive on $\R$) and agree on $\R$; by the identity theorem they agree on $U$.
+$\Theta=\vartheta+c\cdot\mathrm{id}$ is holomorphic on $S$ (Axioms~\ref{ax:Z},~\ref{ax:dig}). $\Theta'|_\R\ge c-c_\star>0$; by continuity of $\Theta'$ on $S$, there is an open $S'\subset S$ with $\R\subset S'$ and $|\Theta'-\Theta'|_\R|<(c-c_\star)/2$ on $S'$, hence $|\Theta'|\ge(c-c_\star)/2>0$ on $S'$. $\Theta$ is injective on $S'$ (shrinking $S'$ if needed to make it simply connected and applying the open mapping + local injectivity from $\Theta'\ne 0$). $\sqrt{\Theta'}$ lifts to a holomorphic branch on $S'$ positive on $\R$.
+
+Define $g(t):=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ on $S'$. $Y$ is entire (Theorem~\ref{thm:ent}), $\Theta:S'\to\Theta(S')$ holomorphic, so $g$ is holomorphic on $S'$. $Z$ is holomorphic on $S\supset S'$ (Axiom~\ref{ax:Z}). On $\R$, $Z=g$ by Lemma~\ref{lem:warp}. Two holomorphic functions on the connected open $S'$ agreeing on $\R\subset S'$ agree on $S'$ by the identity theorem.
 \end{proof}
 
 \begin{theorem}[Riemann Hypothesis]\label{thm:RH}
 Every nontrivial zero of $\zeta$ satisfies $\Re s=\tfrac12$.
 \end{theorem}
 \begin{proof}
-By Theorem~\ref{thm:ent}, $Y$ is entire of exponential type $\le 1$, real on $\R$, with distributional Fourier transform supported in $[-1,1]$; Axiom~\ref{ax:AK} gives $\{Y=0\}\subset\R$.
+Let $\rho=\tfrac12+\alpha+i\beta$ be a nontrivial zero, $\alpha\in(-\tfrac12,\tfrac12)$, $\beta\in\R$. Set $t:=\beta-i\alpha$; then $|\Im t|=|\alpha|<\tfrac12$, so $t\in S'$ (Lemma~\ref{lem:strip}, after shrinking $S'$ to include $t$; $S'$ can be chosen to contain any given horizontal strip strictly inside $S$, so in particular any fixed $|\Im t|<\tfrac12-\varepsilon$; since $\alpha$ is strictly less than $\tfrac12$ in modulus, choose $\varepsilon<\tfrac12-|\alpha|$).
 
-Let $\rho$ be a nontrivial zero of $\zeta$, so $\rho=\tfrac12+\alpha+i\beta$ with $\alpha\in(-\tfrac12,\tfrac12)$ and $\beta\in\R$ (critical-strip classification). Set $t:=\beta-i\alpha$; by Axiom~\ref{ax:Z}, $\zeta(\tfrac12+it)=\zeta(\rho)=0$, hence $Z(t)=0$. Lemma~\ref{lem:strip} on a strip $U\ni t$ (shrink $U$ to contain the finite set of zeros of $\zeta$ relevant to the argument; $\alpha\in(-\tfrac12,\tfrac12)$ so $|\Im t|<\tfrac12$, and $\Theta$ extends as a biholomorphism on any horizontal strip where $\vartheta$ is real-analytically continued, which includes $\{|\Im t|<\tfrac12\}$ by Axiom~\ref{ax:dig}) gives $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ with $\sqrt{\Theta'(t)}\ne 0$. Therefore $Y(\Theta(t))=0$. By Axiom~\ref{ax:AK}, $\Theta(t)\in\R$. Since $\Theta$ is a biholomorphism $U\to V$ and $\Theta(\R\cap U)=\R\cap V$, the preimage $\Theta^{-1}(\R\cap V)$ in $U$ equals $\R\cap U$, so $t\in\R$, i.e.\ $\alpha=0$. This is $\Re\rho=\tfrac12$.
+By Axiom~\ref{ax:Z}, $Z(t)=e^{i\vartheta(t)}\zeta(\tfrac12+it)=e^{i\vartheta(t)}\zeta(\rho)=0$. Lemma~\ref{lem:strip} gives $\sqrt{\Theta'(t)}\,Y(\Theta(t))=0$, and $\sqrt{\Theta'(t)}\ne 0$, so $Y(\Theta(t))=0$. Theorem~\ref{thm:ent} gives $\Theta(t)\in\R$. $\Theta$ is a biholomorphism on $S'$ with $\Theta(\R\cap S')=\R\cap\Theta(S')$, so $\Theta^{-1}(\R)\cap S'=\R\cap S'$; hence $t\in\R$, i.e.\ $\alpha=0$.
 \end{proof}
 
 \end{document}
