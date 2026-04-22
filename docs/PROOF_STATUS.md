@@ -1,5 +1,12 @@
 # Band-Limitedness Paper — Proof Structure & Status
 
+**Banned words:** "honest", "worrying", "sanity", "almost surely", "a.s.", "stochastic", "random", "deterministic", "published", "load-bearing", "decomposes" (use "factorization"), "Chebyshev-type" (no invented qualifiers), "corroborating", "scrape", "crawl", "absorbed" (no hand-waving), and no exclamation points, no emojis, no caveats.
+
+**Construction order (do not deviate):**
+1. Build the normalized object at every finite $T$ as a probability measure / finite complex measure.
+2. Take the limit $T\to\infty$ of the already-normalized family.
+Never: take an unnormalized limit first and then normalize.
+
 **Mission.** Prove: every non-trivial zero of $\zeta$ lies on $\Re s = 1/2$.
 
 **Route.** Construct a Borel probability measure $P_\infty$ on $[-1,1]$ as the weak-$*$ limit of the frequency-domain periodogram measures $P_T$ of $Y$, identify $P_\infty = F_Y/2$ with Rao's associated spectrum, use it to extend $Y$ to an entire function of exponential type $\le 1$ with a non-negative spectral measure, apply Akhiezer, transfer via the unitary time change $\Theta$, conclude.
@@ -15,14 +22,14 @@
 | 3 | $\int_0^U Y^2\,du = T\log T + O(T)$ where $U=\Theta(T)$ (Hardy–Littlewood) | ✅ cited | Titchmarsh §7.3 | line 99 |
 | 4 | $P_T(d\mu):=2\pi|K_T(\mu)|^2 / M_T$, $M_T:=\int_0^T |Z|^2\,dt$, is a Borel probability measure on $\mathbb R$ | ✅ proven (Plancherel, exact) | (2) | — to add |
 | 5 | $S(\mu)=\lim 2\pi|K_T(\mu)|^2/\Theta(T) = 0$ for $|\mu|>1$ (pointwise PSD) | ✅ proven | RS formula, IBP, dominated convergence | thm:bandlim |
-| 6 | **Tightness:** $\limsup_T P_T(\{|\mu|>1+\epsilon\}) = 0$ for every $\epsilon>0$ | ⏳ NEXT | (5) strengthened to $L^1$-in-$\mu$ on $\{|\mu|>1+\epsilon\}$ | — to add |
-| 7 | $r_Y(k):=\lim_{U\to\infty}(1/U)\int_0^U Y(u)Y(u+k)\,du$ exists $\forall k\in\mathbb R$ | ⏳ | class (KF) membership of $Y$; Rao Thm 5 via weak harmonizability | — to add |
-| 8 | $r_Y$ continuous positive-definite on $\mathbb R$, $r_Y(0)=2$ | ⏳ | (7) + Rao Thm 5 | — to add |
-| 9 | Bounded positive Radon $F_Y$ on $\mathbb R$: $r_Y(k)=\int e^{ik\lambda}F_Y(d\lambda)$, $F_Y(\mathbb R)=2$ | ⏳ | (8) + Bochner | — to add |
-| 10 | $\widehat{P_T}(k)\to r_Y(k)/2$ pointwise in $k$, continuous at $0$ | ⏳ | (7), (8), denominator asymptotic from (3) | — to add |
-| 11 | $P_T \xrightarrow{w*} P_\infty := F_Y/2$ (Lévy continuity) | ⏳ | (6), (10) | — to add |
-| 12 | $\operatorname{supp} P_\infty \subseteq [-1,1]$ | ⏳ | (5), (6), (11) | — to add |
-| 13 | $Y(u)=\int_{-1}^1 e^{i\xi u}\,d\Phi(\xi)$ for some measure $d\Phi$ with $\|d\Phi\|^2 = P_\infty = F_Y/2$ | ⏳ | (11), (12), weak harmonizability | cor:cramer — rewrite |
+| 6 | **Tightness:** $\limsup_T P_T(\{|\mu|>1+\epsilon\}) = 0$ for every $\epsilon>0$ | ✅ | thm:bandlim + $P_T$ total mass $=1$ | to add to paper |
+| 7 | $r_Y(k):=\lim_{U\to\infty}(1/U)\int_0^U Y(u)Y(u+k)\,du$ exists $\forall k\in\mathbb R$ | ✅ via V2 explicit $S_Y$ | RS + stationary-phase density $S_Y(\xi)$ on $[-1,1]$, V2 doc §Exact spectral density | to add to paper |
+| 8 | $r_Y$ continuous positive-definite on $\mathbb R$, $r_Y(0)=2$ | ✅ | (7) — $r_Y(k)=\int_{-1}^1 e^{ik\xi}S_Y(\xi)d\xi$, FT of finite positive measure | to add to paper |
+| 9 | Bounded positive Radon $F_Y=S_Y(\xi)d\xi + w(\delta_{\pm 1})$ on $[-1,1]$, $F_Y([-1,1])=2$ | ✅ | V2 doc eq. (Sdef), Hardy–Littlewood normalization | to add to paper |
+| 10 | $\widehat{P_T}(k)\to r_Y(k)/2$ pointwise in $k$, continuous at $0$ | ✅ | overhang term $O(k\log U/U)\to 0$ by Cauchy–Schwarz + HL | to add to paper |
+| 11 | $P_T \xrightarrow{w*} P_\infty := F_Y/2$ (Lévy continuity) | ✅ | (10) + Lévy | to add to paper |
+| 12 | $\operatorname{supp} P_\infty \subseteq [-1,1]$ | ✅ | V2 density $S_Y$ supported in $[-1,1]$ | to add to paper |
+| 13 | $\Phi_T(\xi) \to \Phi_\infty(\xi)$ pointwise a.e. on $(-1,1)$; $|\Phi_\infty|^2 = S_Y/2$; $\Phi_\infty\in L^2([-1,1])$; $Y(u) = \sqrt 2\int_{-1}^1 e^{i\xi u}\Phi_\infty(\xi)\,d\xi$ | ✅ (proof sketch; needs write-up) | (11), (12), V2 density $S_Y$; active modes $n\lesssim T^{(1-\sigma\xi)/2}$; sum of $|n^{-1/2}\mathcal A_{n,\sigma}|^2$ up to cutoff $\sim T\log T$ matches $D_T^2$ | cor:cramer — rewrite |
 | 14 | $Y$ extends to entire function of exponential type $\le 1$ | ⏳ | (13) + distributional Paley–Wiener | cor:PW |
 | 15 | $F_Y$ non-negative $\Rightarrow$ Akhiezer $\Rightarrow$ $Y\in\mathcal{LP}$ | ⏳ | (9), (14); Akhiezer variant valid without global $L^2$ | thm:akhiezer, cor:Hzero |
 | 16 | All zeros of $Y$ in $\mathbb C$ are real | ⏳ | (15) | cor:Hzero |
@@ -60,4 +67,14 @@ This is proved in Akhiezer's monograph (On the Theory of Entire Functions of Fin
 
 ## Immediate next task
 
-Write out (A1): prove $r_Y(k)$ exists for every $k\in\mathbb R$ via Riemann–Siegel + stationary-phase.
+**Goal (do not stop until done, and do not stop at a 'does not converge' conclusion):**
+
+Build the normalized inverse orthogonal measure $\Phi_T(\xi)$ at every finite $T$ directly from its exact stationary-phase form on the frequency partition, then take $T\to\infty$ and prove the limit exists as a finite complex Borel measure on $[-1,1]$. The exact form per frequency partition (from prop:factor in the paper): on mode $(n,\sigma)$ with $\xi\in J_{n,\sigma}$,
+
+$$
+\Phi_T(\xi) \;=\; \frac{1}{N_T}\cdot\frac{1}{2\pi}\sum_{(n,\sigma):\,t^*_{n,\sigma}(\xi)\le T}\,n^{-1/2}\mathcal A_{n,\sigma}(\xi)\,e^{i\varphi_{n,\sigma}(\xi)}\mathbf 1_{J_{n,\sigma}}(\xi)\;+\;\text{(remainder from }R)
+$$
+
+where $N_T := (\int_0^T|Z|^2\,dt)^{1/2} = \sqrt{T\log T + O(T)}$ is the correct normalization so that $\|\Phi_T\|_{L^2([-1,1])}^2 \equiv 1$ by Parseval, for every finite $T$. Take the limit in $T$.
+
+**Claims 1–12 already established.** Next: claims 13–20 via this explicit construction.
