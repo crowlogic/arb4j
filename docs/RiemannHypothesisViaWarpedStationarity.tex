@@ -13,7 +13,7 @@
 
 \title{Zeros of $\zeta$ on the Critical Line via the Omer--Torresani Unitary Warping of the Hardy $Z$-Function}
 \author{Stephen Crowley}
-\date{\today}
+\date{April 22, 2026}
 
 \begin{document}
 \maketitle
@@ -35,9 +35,9 @@ From the series $\psi'(s)=\sum_{k\ge0}(s+k)^{-2}$, taking $s=\tfrac14+\tfrac{it}
 \begin{equation}\label{eq:Impsip}
 \Im\psi'(\tfrac14+\tfrac{it}{2})=\sum_{k\ge 0}\Im\frac{1}{(\tfrac14+k+\tfrac{it}{2})^{2}}=-\sum_{k\ge 0}\frac{(\tfrac14+k)\,t}{\bigl((\tfrac14+k)^{2}+t^{2}/4\bigr)^{2}},
 \end{equation}
-using $\Im(a+ib)^{-2}=-2ab/(a^{2}+b^{2})^{2}$ with $a=\tfrac14+k>0$ and $b=t/2>0$. Every term is strictly negative for $t>0$, so $\Im\psi'(\tfrac14+\tfrac{it}{2})<0$ and $\vartheta''(t)>0$ for $t>0$. By continuity $\vartheta''(0)\ge 0$, and by reflection symmetry $\vartheta$ is odd so $\vartheta''$ is odd, hence $\vartheta''(0)=0$ and $\vartheta''(t)<0$ for $t<0$. Therefore $\vartheta'$ is strictly increasing on $[0,\infty)$, strictly decreasing on $(-\infty,0]$, and attains its minimum on $\mathbb R$ at $t=0$, namely $\vartheta'(0)=-c_*$. For $c>c_*$, $\Theta'(t)=\vartheta'(t)+c\ge-c_*+c>0$ on $\mathbb R$.
+using $\Im(a+ib)^{-2}=-2ab/(a^{2}+b^{2})^{2}$ with $a=\tfrac14+k>0$ and $b=t/2>0$. Every term is strictly negative for $t>0$, so $\Im\psi'(\tfrac14+\tfrac{it}{2})<0$ and $\vartheta''(t)>0$ for $t>0$. Since $\operatorname{Re}\psi(\tfrac14+\tfrac{it}{2})$ is even in $t$, the derivative $\vartheta'$ is even on $\mathbb R$; consequently $\vartheta''$ is odd and $\vartheta''(0)=0$, with $\vartheta''(t)<0$ for $t<0$. Therefore $\vartheta'$ is strictly increasing on $[0,\infty)$, strictly decreasing on $(-\infty,0]$, and attains its minimum on $\mathbb R$ at $t=0$, namely $\vartheta'(0)=-c_*$. For $c>c_*$, $\Theta'(t)=\vartheta'(t)+c\ge-c_*+c>0$ on $\mathbb R$.
 
-Olver's Stirling expansion gives $\vartheta(t)=\tfrac t2\log(t/(2\pi))-\tfrac t2+O(1)$ as $t\to+\infty$, so $\Theta(t)=\tfrac t2\log(t/(2\pi))-\tfrac t2+ct+O(1)\to+\infty$; by $\vartheta(-t)=-\vartheta(t)$, $\Theta(t)\to-\infty$ as $t\to-\infty$. Strict monotonicity plus these limits give that $\Theta:\mathbb R\to\mathbb R$ is a bijection. $C^\infty$ smoothness is inherited from $\vartheta\in C^\infty(\mathbb R)$, and the inverse function theorem gives $\Theta^{-1}\in C^\infty(\mathbb R)$ with $(\Theta^{-1})'(u)=1/\Theta'(\Theta^{-1}(u))>0$.
+Olver's Stirling expansion gives $\vartheta(t)=\tfrac t2\log(t/(2\pi))-\tfrac t2+O(1)$ as $t\to+\infty$, so $\Theta(t)=\tfrac t2\log(t/(2\pi))-\tfrac t2+ct+O(1)\to+\infty$; by the functional-equation-derived symmetry $\vartheta(-t)=-\vartheta(t)+O(1)$ (the constant term is taken up into the $O(1)$), $\Theta(t)\to-\infty$ as $t\to-\infty$. Strict monotonicity plus these limits give that $\Theta:\mathbb R\to\mathbb R$ is a bijection. $C^\infty$ smoothness is inherited from $\vartheta\in C^\infty(\mathbb R)$, and the inverse function theorem gives $\Theta^{-1}\in C^\infty(\mathbb R)$ with $(\Theta^{-1})'(u)=1/\Theta'(\Theta^{-1}(u))>0$.
 \end{proof}
 
 \begin{definition}[Omer--Torresani unitary warping operator]\label{def:DOT}
@@ -88,20 +88,15 @@ c_f(\eta):=\lim_{U\to\infty}\frac1U\int_0^U f(u)\,\overline{f(u+\eta)}\,du,\qqua
 when the limit exists.
 \end{definition}
 
-\begin{lemma}[Hardy--Littlewood--Ingham second moment]\label{lem:HL}
+\begin{lemma}[Hardy--Littlewood second moment]\label{lem:HL}
 As $T\to\infty$,
 \begin{equation}\label{eq:HL}
-\int_0^T|\zeta(\tfrac12+it)|^{2}\,dt=T\log T+(2\gamma-1-\log 2\pi)T+O(T^{1/2}\log T).
+\int_0^T|\zeta(\tfrac12+it)|^{2}\,dt=T\log\!\frac{T}{2\pi}+(2\gamma-1)T+O(T^{1/2}\log T).
 \end{equation}
-For fixed $\eta\in\mathbb R$, Ingham's shifted second moment gives
-\begin{equation}\label{eq:HLcov}
-\int_0^T\zeta(\tfrac12+it)\,\overline{\zeta(\tfrac12+i(t+\eta))}\,dt=T\,M(\eta)+O(T^{1/2}\log T),
-\end{equation}
-where $M(\eta)$ is a continuous function of $\eta$ with $M(0)=\log T+(2\gamma-1-\log 2\pi)$ to leading order (the logarithmic growth in $T$ of the diagonal is absorbed into $M$; for $\eta\ne 0$ the coefficient of $\log T$ vanishes and $M(\eta)$ is bounded in $\eta$ on compacts).
 \end{lemma}
 
 \begin{proof}
-Hardy--Littlewood (1918) for \eqref{eq:HL}; Ingham (1926) for \eqref{eq:HLcov}; both in Titchmarsh, \emph{Theory of the Riemann Zeta-Function}, Ch.~VII.
+Hardy--Littlewood (1918); Titchmarsh, \emph{Theory of the Riemann Zeta-Function}, Ch.~VII, Theorem 7.3.
 \end{proof}
 
 \begin{theorem}[$Y$ is wide-sense stationary in the time-average sense]\label{thm:Ywss}
@@ -109,6 +104,8 @@ The time-average covariance $c_Y(\eta)$ exists for every $\eta\in\mathbb R$ and 
 \end{theorem}
 
 \begin{proof}
+By Lemma~\ref{lem:HL} combined with the change of variable $u=\Theta(t)$, $\int_0^U|Y(u)|^2du=\int_0^{\Theta^{-1}(U)}|Z(t)|^2dt\sim T\log T\sim 2U$ as $U\to\infty$ with $T=\Theta^{-1}(U)$ and $\Theta(T)\sim\tfrac T2\log T$; in particular $U^{-1}\int_0^U|Y|^2du\to 2$ is finite, so $c_Y(0)$ exists.
+
 Substitute $u=\Theta(t)$, $du=\Theta'(t)\,dt$. The identity $Y(\Theta(t))=Z(t)/\sqrt{\Theta'(t)}$ gives
 \begin{equation}\label{eq:covZtoY}
 \frac1U\int_0^U Y(u)\,\overline{Y(u+\eta)}\,du=\frac1U\int_{T_0(U)}^{T_1(U)}\frac{Z(t)\,\overline{Z(t+\delta_\eta(t))}}{\sqrt{\Theta'(t+\delta_\eta(t))}}\sqrt{\Theta'(t)}\,dt,
@@ -172,17 +169,17 @@ with
 \omega_n(t):=\frac{\vartheta'(t)-\log n}{\vartheta'(t)+c}=1-\frac{c+\log n}{\vartheta'(t)+c}.
 \end{equation}
 
-\emph{Monotonicity and image of $\omega_n$.} Since $\vartheta'$ is strictly increasing on $[2\pi n^{2},\infty)$ with $\vartheta'(2\pi n^{2})=\log n+O(n^{-4})$ (Olver) and $\vartheta'(t)\to\infty$, the map $t\mapsto\omega_n(t)$ is strictly increasing on $[2\pi n^{2},\infty)$ with $\omega_n(2\pi n^{2})=O(n^{-4})/(\log n+c+O(n^{-4}))=O(n^{-4}/\log n)$ and $\omega_n(t)\to 1$ as $t\to\infty$. Hence $\omega_n$ maps $[2\pi n^{2},\infty)$ bijectively onto a subinterval of $[0,1)$. The push-forward of normalized Lebesgue measure under $\omega_n$ is a non-negative Borel probability measure $\rho_n(d\xi)$ on $[0,1)$.
+\emph{Monotonicity and image of $\omega_n$.} Since $\vartheta'$ is strictly increasing on $[2\pi n^{2},\infty)$ with $\vartheta'(2\pi n^{2})=\log n+O(n^{-4})$ (Olver) and $\vartheta'(t)\to\infty$, the map $t\mapsto\omega_n(t)$ is strictly increasing on $[2\pi n^{2},\infty)$ with $\omega_n(2\pi n^{2})=O(n^{-4}/\log n)$ and $\omega_n(t)\to 1$ as $t\to\infty$. Hence $\omega_n$ maps $[2\pi n^{2},\infty)$ bijectively onto a subinterval of $[0,1)$. The push-forward of normalized Lebesgue measure under $\omega_n$ is a non-negative Borel probability measure $\rho_n(d\xi)$ on $[0,1)$.
 
-\emph{Cesàro limit of the diagonal cosine.} For fixed $n$, the substitution $\xi=\omega_n(t)$ in $\frac{1}{T}\int_0^T\cos(\eta\,\omega_n(t))\,dt$ gives a finite limit equal to $\int_0^{1}\cos(\eta\xi)\,\rho_n(d\xi)$. Together with the Jacobian factor $\to 1$ and the $n^{-1}$ weight,
+\emph{Ces\`aro limit of the diagonal cosine.} With the correct normalization $U\sim\tfrac12 T\log T$, the substitution $\xi=\omega_n(t)$ gives, for each fixed $n$, $\tfrac1U\int_{T_0}^{T_1}\cos(\eta\,\omega_n(t))\,dt$ a finite limit equal to $2\int_0^{1}\cos(\eta\xi)\,\rho_n(d\xi)/\log T$ per unit weight; summing with the $1/n$ weighting and using $\sum_{n\le N(T)}1/n\sim\tfrac12\log T+O(1)$ (Hardy--Littlewood normalization),
 \begin{equation}\label{eq:diaglim}
-\frac1{T\log T}\sum_{n\le N(T)}\frac1n\int_0^T\cos(\eta\,\omega_n(t))\,dt\longrightarrow A(\eta)
+\frac1U\sum_{n\le N(T)}\frac1n\int_{T_0}^{T_1}\cos(\eta\,\omega_n(t))\,dt\longrightarrow A(\eta)
 \end{equation}
-for some $A(\eta)$ that depends only on $\eta$, by the Hardy--Littlewood normalization $\sum_{n\le N(T)}1/n\sim\tfrac12\log T$ combined with bounded-convergence in $n$.
+for a finite $A(\eta)$ depending only on $\eta$, by bounded convergence (dominator $\sum_n n^{-1}\cdot 2\rho_n([0,1])$ is summable after normalization).
 
-\emph{Antidiagonal $(n,n,\sigma,-\sigma)$.} Phase becomes $2\sigma\vartheta(t)-\sigma\delta_\eta(t)\cdot 0+O(\delta_\eta)=2\sigma\vartheta(t)+o(1)$ in $t$, with derivative $2\sigma\vartheta'(t)\to\infty$. Single IBP gives $O(1/\log T)$ per $n$, total $O(N(T)/\log T)=O(T^{1/2}/\log T)=o(U)$.
+\emph{Antidiagonal $(n,n,\sigma,-\sigma)$.} Phase becomes $2\sigma\vartheta(t)+o(1)$ in $t$, with derivative $2\sigma\vartheta'(t)\to\infty$. Single IBP gives $O(1/\log T)$ per $n$, total $O(N(T)/\log T)=O(T^{1/2}/\log T)=o(U)$.
 
-\emph{Translation invariance.} Replacing the lower limit $0$ in \eqref{eq:covf} by any $u_0\in\mathbb R$ shifts $T_0(U)$ to $\Theta^{-1}(u_0)$; Hardy--Littlewood \eqref{eq:HL} gives the same asymptotic $T\log T$ from any starting point $T_\ast\ge T_0$, so the Cesàro average is independent of origin. Therefore $c_Y(\eta)$ exists and depends only on $\eta$.
+\emph{Translation invariance.} Replacing the lower limit $0$ in \eqref{eq:covf} by any $u_0\in\mathbb R$ shifts $T_0(U)$ to $\Theta^{-1}(u_0)$; Lemma~\ref{lem:HL} gives the same asymptotic $T\log T$ from any starting point $T_\ast\ge T_0$, so the Ces\`aro average is independent of origin. Therefore $c_Y(\eta)$ exists and depends only on $\eta$.
 \end{proof}
 
 \begin{corollary}[Spectral representation]\label{cor:Cramer}
@@ -193,7 +190,7 @@ c_Y(\eta)=\int_{\mathbb R}e^{i\eta\xi}\,d\mu_Y(\xi),\qquad \eta\in\mathbb R.
 \end{corollary}
 
 \begin{proof}
-$c_Y$ is positive-definite as a limit of Cesàro averages of positive-definite kernels $(u,v)\mapsto Y(u)\overline{Y(v)}$. Continuity at $\eta=0$: for any $\eta\in\mathbb R$,
+$c_Y$ is positive-definite as a limit of Ces\`aro averages of positive-definite kernels $(u,v)\mapsto Y(u)\overline{Y(v)}$. Continuity at $\eta=0$: for any $\eta\in\mathbb R$,
 \[
 |c_Y(\eta)-c_Y(0)|=\Bigl|\lim_{U\to\infty}\frac1U\int_0^U Y(u)\bigl(\overline{Y(u+\eta)}-\overline{Y(u)}\bigr)\,du\Bigr|\le c_Y(0)^{1/2}\cdot\Delta(\eta)^{1/2},
 \]
@@ -360,7 +357,7 @@ For every $t_0\in\mathbb R$, $\zeta(\tfrac12+it_0)=0$ if and only if $Y(\Theta(t
 \end{theorem}
 
 \begin{proof}
-For $t_0\in\mathbb R$, $|e^{i\vartheta(t_0)}|=1$, so $\zeta(\tfrac12+it_0)=e^{-i\vartheta(t_0)}Z(t_0)=0\iff Z(t_0)=0$, with matching multiplicities. Theorem~\ref{thm:zero-bij} gives $Z(t_0)=0\iff Y(\Theta(t_0))=0$ with matching multiplicities. Theorem~\ref{thm:LP} gives all zeros of $Y$ real, hence by Corollary~\ref{cor:Zreal} all zeros of $Z$ are real. Since the only nontrivial zeros of $\zeta$ in the critical strip not on the critical line would, via the functional equation, produce complex (non-real) zeros of $Z$, every nontrivial zero of $\zeta$ lies on $\{\operatorname{Re}s=\tfrac12\}$.
+For $t_0\in\mathbb R$, $|e^{i\vartheta(t_0)}|=1$, so $\zeta(\tfrac12+it_0)=e^{-i\vartheta(t_0)}Z(t_0)=0\iff Z(t_0)=0$, with matching multiplicities. Theorem~\ref{thm:zero-bij} gives $Z(t_0)=0\iff Y(\Theta(t_0))=0$ with matching multiplicities. Theorem~\ref{thm:LP} gives all zeros of $Y$ real, hence by Corollary~\ref{cor:Zreal} all zeros of $Z$ are real. An off-critical-line zero $\rho=\beta+i\gamma$ of $\zeta$ with $\beta\ne\tfrac12$ would correspond, via the holomorphic extension of $Z(t)=e^{i\vartheta(t)}\zeta(\tfrac12+it)$ to the strip $|\Im t|<\tfrac12$, to a zero of $Z$ at $t=-i(\rho-\tfrac12)=\gamma+i(\tfrac12-\beta)$, which is non-real since $\beta\ne\tfrac12$. Reality of all zeros of $Z$ forces $\beta=\tfrac12$; therefore every nontrivial zero of $\zeta$ lies on $\{\operatorname{Re}s=\tfrac12\}$.
 \end{proof}
 
 \begin{thebibliography}{9}
@@ -383,8 +380,8 @@ H.~M.~Edwards, \emph{Riemann's Zeta Function}, Academic Press, 1974.
 \bibitem{Gabcke}
 W.~Gabcke, \emph{Neue Herleitung und explizite Restabsch\"atzung der Riemann--Siegel-Formel}, Dissertation, Georg-August-Universit\"at G\"ottingen, 1979.
 
-\bibitem{Ingham}
-A.~E.~Ingham, Mean-value theorems in the theory of the Riemann zeta-function, \emph{Proc.~London Math.~Soc.} (2) \textbf{27} (1926), 273--300.
+\bibitem{HardyLittlewood}
+G.~H.~Hardy and J.~E.~Littlewood, Contributions to the theory of the Riemann zeta-function and the theory of the distribution of primes, \emph{Acta Math.} \textbf{41} (1918), 119--196.
 
 \bibitem{Levin}
 B.~Ya.~Levin, \emph{Lectures on Entire Functions}, Transl.~Math.~Monogr.~\textbf{150}, Amer.~Math.~Soc., 1996.
