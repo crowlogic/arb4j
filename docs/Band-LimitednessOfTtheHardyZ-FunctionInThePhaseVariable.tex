@@ -165,79 +165,105 @@ Equivalently, the power spectral density of $Y$ is supported in $[-1,1]$.
 \end{theorem}
 
 \begin{proof}
-Substituting Lemma~\ref{lem:RS} into $K_T$ and expanding $\cos\alpha=\tfrac{1}{2}(e^{i\alpha}+e^{-i\alpha})$,
-\begin{equation}\label{eq:KTexpand}
-K_T(\mu)=\tfrac{1}{2\pi}\sum_{\sigma\in\{\pm 1\}}\sum_{n\le N(T)}n^{-1/2}J_{n,\sigma}(T,\mu)+\mathcal{R}(T,\mu)
+The proof identifies $Z$ as a Clerc--Mallat warped process via the Omer--Torresani unitary warping operator, pulls the windowed integrand through the warping back to the $u$-variable of the warped target $Y$, and applies a single integration by parts in $u$ per mode.
+
+\medskip
+\noindent\emph{(A) Clerc--Mallat identification.} Write $\mathcal D_\Theta Y$ for the Omer--Torresani warping operator $[\mathcal D_\Theta Y](t):=\sqrt{\Theta'(t)}\,Y(\Theta(t))$. By \eqref{eq:Ydef}, $Z=\mathcal D_\Theta Y$ on $\mathbb R$. The conditions $\Theta\in C^\infty(\mathbb R)$ and $\Theta'>0$ on $\mathbb R$ (Lemma~\ref{lem:Thetabij}) place $Z$ in the Clerc--Mallat deformed stationary class in the original sense of CM-Eq.~3 \cite{ClercMallat2003}, and in the Omer--Torresani unitary form without the upper-bound condition $\Theta'\le C<\infty$; the unboundedness of $\Theta'$ at infinity is benign for unitarity. In particular $\mathcal D_\Theta$ is a unitary bijection $L^2_{\mathrm{loc}}(\mathbb R)\to L^2_{\mathrm{loc}}(\mathbb R)$ under the change of variable $u=\Theta(t)$, and the identity \eqref{eq:KT} expresses $K_T(\mu)$ as a pure Fourier integral of $Y$ in the $u$-variable:
+\begin{equation}\label{eq:KT-u}
+K_T(\mu)=\tfrac{1}{2\pi}\int_{\Theta(0)}^{\Theta(T)}Y(u)\,e^{-i\mu u}\,du.
 \end{equation}
-with $t_n:=2\pi n^2$,
+All subsequent analysis is in the $u$-variable.
+
+\medskip
+\noindent\emph{(B) Riemann--Siegel factorization of $Y$.} Substituting \eqref{eq:RS} into \eqref{eq:Ydef} and expanding the cosine, for $u$ in the image $\Theta([0,\infty))$, with $t=\Theta^{-1}(u)$,
+\begin{equation}\label{eq:Ymode}
+Y(u)=\sum_{\sigma\in\{\pm1\}}\sum_{n=1}^{N(t(u))}n^{-1/2}Y_{n,\sigma}(u)+Y_R(u),
+\end{equation}
+\begin{equation}\label{eq:Ynmode}
+Y_{n,\sigma}(u):=\frac{1}{\sqrt{\Theta'(t(u))}}\,e^{i\sigma[\theta(t(u))-t(u)\log n]},
+\qquad
+Y_R(u):=\frac{R(t(u))}{\sqrt{\Theta'(t(u))}}.
+\end{equation}
+Let $u_n:=\Theta(2\pi n^2)$; mode $(n,\sigma)$ contributes to \eqref{eq:Ymode} on $\{u\ge u_n\}$. Substituting \eqref{eq:Ymode} into \eqref{eq:KT-u} gives
+\begin{equation}\label{eq:KTexpand}
+K_T(\mu)=\tfrac{1}{2\pi}\sum_{\sigma\in\{\pm1\}}\sum_{n\le N(T)}n^{-1/2}\mathcal J_{n,\sigma}(T,\mu)+\mathcal R(T,\mu),
+\end{equation}
+with the mode integrals and remainder integral taken in the $u$-variable
 \begin{equation}\label{eq:Jnsigma}
-J_{n,\sigma}(T,\mu):=\int_{t_n}^{T}\sqrt{\Theta'(t)}\,e^{i[\sigma\theta(t)-\sigma t\log n-\mu\Theta(t)]}\,dt
+\mathcal J_{n,\sigma}(T,\mu):=\int_{u_n}^{\Theta(T)}G_{n,\sigma}(u)\,e^{i\Psi_{n,\sigma,\mu}(u)}\,du,\qquad G_{n,\sigma}(u):=\frac{1}{\sqrt{\Theta'(t(u))}},
+\end{equation}
+\begin{equation}\label{eq:Psidef}
+\Psi_{n,\sigma,\mu}(u):=\sigma[\theta(t(u))-t(u)\log n]-\mu u,
 \end{equation}
 \begin{equation}\label{eq:RRdef}
-\mathcal{R}(T,\mu):=\tfrac{1}{2\pi}\int_{0}^{T}R(t)\sqrt{\Theta'(t)}\,e^{-i\mu\Theta(t)}\,dt
-\end{equation}
-The argument proceeds in the following steps.
-
-\begin{enumerate}[label=(\roman*),leftmargin=*]
-
-\item \emph{Remainder vanishing.} $R(t)\sqrt{\Theta'(t)}=O(t^{-1/4}(\log t)^{1/2})$; the phase derivative $|-\mu\Theta'(t)|\ge|\mu|(c-c_*)$ and grows as $\tfrac{|\mu|}{2}\log(t/(2\pi))$. Integration by parts gives $\mathcal{R}(\infty,\mu)-\mathcal{R}(T,\mu)=O(T^{-1/4}(\log T)^{-1/2})\to 0$.
-
-\item \emph{Change of variable.} Set $x:=\Theta'(t)=\theta'(t)+c$, $dx=\theta''(t)\,dt$, $X:=\Theta'(T)$:
-\begin{equation}\label{eq:Jchange}
-J_{n,\sigma}(T,\mu)=\int_{\beta_n\vee\Theta'(0)}^{X}\frac{\sqrt{x}}{\theta''(t(x))}\,e^{i\widetilde\Phi_{n,\sigma,\mu}(x)}\,dx
-\end{equation}
-\begin{equation}\label{eq:tildePhiprime}
-\widetilde\Phi'_{n,\sigma,\mu}(x)=\frac{(\sigma-\mu)x-\sigma\log n-\sigma c}{\theta''(t(x))}
+\mathcal R(T,\mu):=\tfrac{1}{2\pi}\int_{\Theta(0)}^{\Theta(T)}Y_R(u)\,e^{-i\mu u}\,du.
 \end{equation}
 
-\item \emph{Exact $\theta''$ cancellation.}
-\begin{equation}\label{eq:Qcancel}
-Q_{n,\sigma,\mu}(x)=\frac{\sqrt{x}}{(\sigma-\mu)x-\sigma\log n-\sigma c},\qquad Q'_{n,\sigma,\mu}(x)=O(x^{-3/2})
+\medskip
+\noindent\emph{(C) Instantaneous $u$-frequency of $Y_{n,\sigma}$.} The phase of $Y_{n,\sigma}$ is $\Psi^0_{n,\sigma}(u):=\sigma[\theta(t(u))-t(u)\log n]$. Using $dt/du=1/\Theta'(t)=1/(\theta'(t)+c)$,
+\begin{equation}\label{eq:instfreq2}
+\frac{d\Psi^0_{n,\sigma}}{du}(u)=\sigma\,\frac{\theta'(t(u))-\log n}{\theta'(t(u))+c}.
+\end{equation}
+On the support $\{u\ge u_n\}$ of mode $(n,\sigma)$, strict monotonicity of $\theta'$ (Lemma~\ref{lem:thetapp}) gives $\theta'(t(u))\ge\theta'(2\pi n^2)=\beta_n-c=\log n+r_n$ with $r_n=O(n^{-4})$ by Lemma~\ref{lem:betaasymp}. Hence the numerator $\theta'(t)-\log n\ge r_n$ and the denominator $\theta'(t)+c\ge\beta_n=\log n+c+r_n\ge c-c_*>0$. The numerator is less than the denominator by exactly the positive quantity $c$, and the denominator is bounded below by $c-c_*>0$ while $r_n\to0$; consequently
+\begin{equation}\label{eq:instbd}
+\left|\frac{d\Psi^0_{n,\sigma}}{du}(u)\right|<1\quad\text{for every }u\ge u_n\text{ and every }n\ge1.
+\end{equation}
+Explicitly, $\Psi^{0\,\prime}_{n,+}$ lies in $[0,1)$ and $\Psi^{0\,\prime}_{n,-}$ in $(-1,0]$.
+
+\medskip
+\noindent\emph{(D) Per-mode IBP for $|\mu|>1$.} For $|\mu|>1$, \eqref{eq:instbd} gives the uniform phase-derivative lower bound
+\begin{equation}\label{eq:Psiprimelb}
+|\Psi'_{n,\sigma,\mu}(u)|=\left|\frac{d\Psi^0_{n,\sigma}}{du}(u)-\mu\right|\ge |\mu|-1=:\lambda>0,\qquad u\ge u_n,
+\end{equation}
+for every $(n,\sigma)$; the sign of $\Psi'_{n,\sigma,\mu}(u)$ is constant on $[u_n,\infty)$ because the inequality \eqref{eq:instbd} prevents $\Psi'_{n,\sigma,\mu}$ from crossing zero. One integration by parts on $\mathcal J_{n,\sigma}$ with $G_{n,\sigma}$ against $e^{i\Psi_{n,\sigma,\mu}}$,
+\begin{equation}\label{eq:JIBP1}
+\mathcal J_{n,\sigma}(T,\mu)=\left[\frac{G_{n,\sigma}(u)\,e^{i\Psi_{n,\sigma,\mu}(u)}}{i\Psi'_{n,\sigma,\mu}(u)}\right]_{u_n}^{\Theta(T)}-\int_{u_n}^{\Theta(T)}\frac{d}{du}\!\left(\frac{G_{n,\sigma}(u)}{i\Psi'_{n,\sigma,\mu}(u)}\right)e^{i\Psi_{n,\sigma,\mu}(u)}\,du.
+\end{equation}
+The boundary term is bounded by $2\,\sup_{u\ge u_n}|G_{n,\sigma}(u)|/\lambda\le 2/(\lambda\sqrt{c-c_*})$, independent of $T$. For the tail,
+\[
+G_{n,\sigma}'(u)=-\frac{\theta''(t(u))}{2\,\Theta'(t(u))^{5/2}},
+\]
+and the substitution $u=\Theta(t)$ gives
+\begin{align*}
+\int_{u_n}^{\infty}|G_{n,\sigma}'(u)|\,du
+&=\int_{2\pi n^2}^{\infty}\frac{\theta''(t)}{2\Theta'(t)^{5/2}}\,\Theta'(t)\,dt
+=\int_{2\pi n^2}^{\infty}\frac{\theta''(t)}{2\Theta'(t)^{3/2}}\,dt\\
+&=\Bigl[-\Theta'(t)^{-1/2}\Bigr]_{2\pi n^2}^{\infty}=\beta_n^{-1/2},
+\end{align*}
+using $\theta''>0$ (Lemma~\ref{lem:thetapp}) and $\Theta'(t)\to\infty$ as $t\to\infty$. The second-phase-derivative estimate
+\[
+|\Psi''_{n,\sigma,\mu}(u)|=\left|\frac{d}{du}\frac{d\Psi^0_{n,\sigma}}{du}\right|=\frac{c\,\theta''(t(u))}{\Theta'(t(u))^3}\le\frac{c\,\theta''(t(u))}{\Theta'(t(u))^2}
+\]
+gives
+\[
+\int_{u_n}^{\infty}\frac{|\Psi''_{n,\sigma,\mu}(u)|}{\Theta'(t(u))^{-1/2}\vee 1}\,du\le c\int_{2\pi n^2}^{\infty}\frac{\theta''(t)}{\Theta'(t)^{3/2}}\,dt=O(\beta_n^{-1/2}).
+\]
+Therefore the tail integrand in \eqref{eq:JIBP1} is dominated by $|G_{n,\sigma}'|/\lambda+|G_{n,\sigma}||\Psi''_{n,\sigma,\mu}|/\lambda^2$, and its integral is $O(\lambda^{-2}\beta_n^{-1/2})$ uniformly in $T$. Consequently
+\begin{equation}\label{eq:Jbd}
+|\mathcal J_{n,\sigma}(T,\mu)|\le\frac{C_0(c)}{\lambda}+\frac{C_1(c)}{\lambda^2\,\sqrt{\beta_n}}\le\frac{C_2(c)}{\lambda}
+\end{equation}
+for every $T$ and every $(n,\sigma)$.
+
+\medskip
+\noindent\emph{(E) Remainder contribution.} The Riemann--Siegel remainder $R(t)$ admits the Riemann--Siegel contour-integral representation (\cite{Edwards}, \S7.4) whose $t$-derivative of the argument is $O((t/(2\pi))^{-1/2})$; pulled back, $Y_R(u)$ has instantaneous $u$-frequency $O((t(u)/(2\pi))^{-1/2})/\Theta'(t(u))\to 0$, hence lies in $(-\tfrac12,\tfrac12)$ for $u$ sufficiently large. Pulled-back amplitude satisfies $|Y_R(u)|=|R(t(u))|/\sqrt{\Theta'(t(u))}=O(t(u)^{-1/4}/\sqrt{\log t(u)})$, which is integrable against $e^{-i\mu u}$ after one integration by parts with phase derivative $|-\mu+O(\cdot)|\ge\tfrac12(|\mu|-1)>0$ for $u$ large. Therefore
+\begin{equation}\label{eq:Rbd}
+|\mathcal R(T,\mu)|\le C_R(|\mu|)\qquad\text{uniformly in }T.
 \end{equation}
 
-\item \emph{Finiteness of the exceptional set.} Define $\mathcal{S}(\mu):=\{n:\beta_n\le(\log n+c)/(1+|\mu|)\}$. By Lemma~\ref{lem:betaasymp},
-\begin{equation}\label{eq:Sfinite}
-\beta_n-\frac{\log n+c}{1+|\mu|}=\frac{|\mu|}{1+|\mu|}(\log n+c)+O(n^{-4})\to\infty
-\end{equation}
-therefore $\mathcal{S}(\mu)$ is finite.
-
-\item \emph{IBP for $n\notin\mathcal{S}(\mu)$.} Constant-sign phase derivative; boundary $O(X^{-1/2})$, tail $\le 2CX^{-1/2}$.
-
-\item \emph{IBP tail for $n\in\mathcal{S}(\mu)$.} Past the stationary point, $|\Phi'_{n,\sigma,\mu}(t)|\ge(|\mu|-1)\Theta'(T)-|\log n+c|>0$, diverging; integration by parts gives $O(\Theta'(T)^{-1/2})$.
-
-\item \emph{Assembly into power spectral density.} For every finite $T>0$ and every $\mu\in\mathbb{R}$, $K_T(\mu)$ is a well-defined bounded continuous function of $\mu$ (as a finite-interval Fourier integral of a bounded integrand). The normalized object $2\pi|K_T(\mu)|^2/\Theta(T)$ converges pointwise to the function $S(\mu)$ defined in \eqref{eq:PSDdef}. $Y\notin L^2(\mathbb{R})$ since $\int_0^U|Y|^2du=T\log T+O(T)\to\infty$ with $U=\Theta(T)$; the normalization by $\Theta(T)$ extracts the power at frequency $\mu$ from the windowed transform. Using \eqref{eq:KTexpand} and the Cauchy--Schwarz inequality,
+\medskip
+\noindent\emph{(F) Power spectral density vanishing.} Combining \eqref{eq:Jbd} and \eqref{eq:Rbd} in \eqref{eq:KTexpand},
 \begin{equation}\label{eq:KTbound}
-|K_T(\mu)|\le\tfrac{1}{2\pi}\sum_\sigma\sum_{n\le N(T)}n^{-1/2}|J_{n,\sigma}(T,\mu)|+|\mathcal{R}(T,\mu)|.
+|K_T(\mu)|\le\frac{C_2(c)}{2\pi\lambda}\sum_{\sigma}\sum_{n\le N(T)}n^{-1/2}+C_R(|\mu|)=O(N(T)^{1/2})=O(T^{1/4}),
 \end{equation}
-For $n\notin\mathcal{S}(\mu)$, $|J_{n,\sigma}(T,\mu)|\le 2\sup_x|Q_{n,\sigma,\mu}(x)|+\int|Q'_{n,\sigma,\mu}|\,dx=O(1)$ uniformly in $T$; for $n\in\mathcal{S}(\mu)$ (finite set), step~(vi) gives $|J_{n,\sigma}(T,\mu)|=O(\Theta'(T)^{-1/2})=O((\log T)^{-1/2})$. Thus
-\begin{equation}\label{eq:KTgrowth}
-|K_T(\mu)|=O\!\left(N(T)^{1/2}+|\mathcal{S}(\mu)|\,(\log T)^{-1/2}\right)=O(T^{1/4})
-\end{equation}
-(using $\Theta(T)\sim\tfrac{T}{2}\log T$ and $N(T)=O(T^{1/2})$). Hence
+using $\sum_{n\le N}n^{-1/2}=O(N^{1/2})$ and $N(T)=\lfloor\sqrt{T/(2\pi)}\rfloor$. Since $\Theta(T)\sim\tfrac{T}{2}\log T$,
 \begin{equation}\label{eq:PSDupper}
 \frac{2\pi|K_T(\mu)|^2}{\Theta(T)}=O\!\left(\frac{T^{1/2}}{T\log T}\right)=O((T\log T)^{-1/2})\longrightarrow 0.
 \end{equation}
 Therefore $S(\mu)=0$ for every $\mu$ with $|\mu|>1$.
 
-\item \emph{Cram\'er spectral support.} By Lemma~\ref{lem:Thetabij}, $\Theta:\mathbb{R}\to\mathbb{R}$ is a bijection with inverse $t(u):=\Theta^{-1}(u)$; under the substitution $u=\Theta(t)$, the mode expansion \eqref{eq:KTexpand} rearranges to a mode expansion of $Y$: each Riemann--Siegel mode $(n,\sigma)$ of $Y$ takes the form
-\begin{equation}\label{eq:Ynsigma}
-Y_{n,\sigma}(u)=\frac{n^{-1/2}}{\sqrt{\Theta'(t(u))}}\,\exp\!\bigl(i\sigma[\theta(t(u))-t(u)\log n]\bigr).
-\end{equation}
-Using $dt(u)/du = 1/\Theta'(t(u))$, the instantaneous $u$-frequency of $Y_{n,\sigma}$ is
-\begin{equation}\label{eq:instfreq}
-\frac{d}{du}\bigl[\sigma\theta(t(u))-\sigma t(u)\log n\bigr]=\sigma\cdot\frac{\theta'(t)-\log n}{\Theta'(t)}=\sigma\cdot\frac{\theta'(t)-\log n}{\theta'(t)+c}.
-\end{equation}
-On the support of mode $n$ (where $t\ge 2\pi n^2$), strict monotonicity of $\theta'$ (Lemma~\ref{lem:thetapp}) combined with Lemma~\ref{lem:betaasymp} gives
-\begin{equation}\label{eq:thetaprimebd}
-\theta'(t)\ge\theta'(2\pi n^2)=\beta_n-c=\log n+r_n,\qquad r_n=O(n^{-4}).
-\end{equation}
-Hence the numerator satisfies $\theta'(t)-\log n\ge r_n$ and the denominator $\theta'(t)+c\ge\beta_n=\log n+c+r_n$; for every $n\ge 1$ and admissible $c$ (in particular $c>c_*$) the denominator is bounded below by a positive constant. The ratio \eqref{eq:instfreq} lies strictly in $(-1,1)$: the numerator is smaller than the denominator by exactly $c>0$, giving ratio $<1$; and $|r_n|\to 0$ with the denominator bounded below by $c-c_*>0$ gives ratio $>-1$. Thus the instantaneous $u$-frequency of $Y_{n,\sigma}$ lies in $[0,1)$ for $\sigma=+1$ and in $(-1,0]$ for $\sigma=-1$.
+\medskip
+\noindent\emph{(G) Frequency-location summary.} The $\sigma=+1$ modes have instantaneous $u$-frequency in $[0,1)$, the $\sigma=-1$ modes in $(-1,0]$ (part (C)), and the Riemann--Siegel remainder contribution has instantaneous $u$-frequency tending to $0\in(-1,1)$ (part (E)). This is the frequency-location data used by Corollary~\ref{cor:cramer}.
 
-For the Riemann--Siegel remainder contribution $R(t(u))/\sqrt{\Theta'(t(u))}$ to $Y$: the $t$-derivative of $\arg R(t)$ is $O((t/(2\pi))^{-1/2})$ by the contour-integral representation of $R$, so the instantaneous $u$-frequency is $O((t/(2\pi))^{-1/2})/\Theta'(t)\to 0\in(-1,1)$.
-
-The $\sigma=+1$ modes populate $[0,1)$, the $\sigma=-1$ modes populate $(-1,0]$, and the remainder frequency lies at $0$; this is the frequency-location data used by Corollary~\ref{cor:cramer}.
-
-\end{enumerate}
 \end{proof}
 
 \begin{corollary}[Spectral measure from the inverse integral]\label{cor:cramer}
@@ -454,6 +480,9 @@ $\zeta(\tfrac{1}{2}+it)=e^{-i\theta(t)}Z(t)$ on $\mathbb R$ (Introduction). $Z(t
 
 \bibitem{AbramowitzStegun}
 M.~Abramowitz and I.~A.~Stegun (eds.), \emph{Handbook of Mathematical Functions}, Dover, 1972.
+
+\bibitem{ClercMallat2003}
+M.~Clerc and S.~Mallat, \emph{Estimating deformations of stationary processes}, The Annals of Statistics \textbf{31} (2003), no.~6, 1772--1821.
 
 \bibitem{CramerLeadbetter}
 H.~Cram\'er and M.~R.~Leadbetter, \emph{Stationary and Related Processes}, Wiley, 1967.
