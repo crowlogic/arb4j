@@ -29,99 +29,99 @@ Every nontrivial zero of ζ lies on ℜs = ½.
 \end{abstract}
 
 \section*{Axioms}
-\begin{axiom}[Hardy Z-function]\label{node-ax-Z}
+\begin{axiom}[{Hardy Z-function}]\label{node-ax-Z}
 Z(t) ≔ eⁱᵛ⁽ᵗ⁾ ζ(½+it), where ϑ(t) ≔ arg Γ(¼ + it⁄2) − (t⁄2) log π. Z is real on ℝ; |Z(t)| = |ζ(½+it)|; zeros of Z on ℝ coincide with zeros of ζ on ½+iℝ.
 \end{axiom}
 \noindent\textit{Source.} Edwards, Riemann's Zeta Function, §6.5; Titchmarsh Ch. 2
 
-\begin{axiom}[Functional equation symmetry]\label{node-ax-ζFE}
+\begin{axiom}[{Functional equation symmetry}]\label{node-ax-ζFE}
 ξ(w) ≔ ½ w(w−1) π⁻ʷ⁄² Γ(w⁄2) ζ(w) is entire and satisfies ξ(w) = ξ(1−w). Consequently, if ρ = β+iγ is a nontrivial zero with β ∈ (0,1), γ ∈ ℝ, then 1−ρ̄ = (1−β)+iγ is also a nontrivial zero.
 \end{axiom}
 \noindent\textit{Source.} Titchmarsh, The Theory of the Riemann Zeta-Function, §2.12
 
-\begin{axiom}[Holomorphy of ϑ on |ℑt| < ½]\label{node-ax-ϑhol}
+\begin{axiom}[{Holomorphy of ϑ on |ℑt| < ½}]\label{node-ax-ϑhol}
 ϑ(t) = ½ Im log Γ(¼+it⁄2) − (t⁄2) log π extends to a holomorphic function on Ω ≔ ⦃t ∈ ℂ : |ℑt| < ½⦄. The poles of ψ(¼+it⁄2) = Γ′⁄Γ(¼+it⁄2) occur where ¼+it⁄2 ∈ ⦃0, −1, −2, …⦄; equivalently t ∈ ⦃i(½+2k) : k ≥ 0⦄ ∪ ⦃−i(½+2k) : k ≥ 0⦄, all with |ℑt| ≥ ½.
 \end{axiom}
 \noindent\textit{Source.} Abramowitz–Stegun 6.3.5; direct computation from Γ
 
-\begin{axiom}[Unique pole of ζ]\label{node-ax-ζpole}
+\begin{axiom}[{Unique pole of ζ}]\label{node-ax-ζpole}
 ζ is meromorphic on ℂ with a simple pole at w = 1 and holomorphic elsewhere. For t ∈ Ω, ½+it = 1 iff t = −i⁄2, which lies on ∂Ω, not in Ω; hence the map t ↦ ζ(½+it) is holomorphic on Ω.
 \end{axiom}
 \noindent\textit{Source.} Titchmarsh, §2.1
 
-\begin{axiom}[Digamma asymptotic]\label{node-ax-ψasymp}
+\begin{axiom}[{Digamma asymptotic}]\label{node-ax-ψasymp}
 As |t| → ∞ with t ∈ ℝ, ½ ℜψ(¼+it⁄2) = ½ log|t⁄2| + 𝓞(|t|⁻²). Consequently ϑ′(t) = ½ log|t⁄(2π)| + 𝓞(|t|⁻²) → +∞.
 \end{axiom}
 \noindent\textit{Source.} Olver, Asymptotics and Special Functions, Ch. 8 §4
 
-\begin{axiom}[Hardy–Littlewood second moment]\label{node-ax-HL}
+\begin{axiom}[{Hardy–Littlewood second moment}]\label{node-ax-HL}
 ∫₀ᵀ |ζ(½+it)|² dt = T log(T⁄(2π)) + (2γₑ − 1) T + 𝓞(T¹ᐟ² log T), where γₑ is the Euler–Mascheroni constant.
 \end{axiom}
 \noindent\textit{Source.} Titchmarsh, Theorem 7.3
 
-\begin{axiom}[Riemann–Siegel formula]\label{node-ax-RS}
+\begin{axiom}[{Riemann–Siegel formula}]\label{node-ax-RS}
 For t > 0: Z(t) = 2 ∑ₙ₌₁ᴺ⁽ᵗ⁾ n⁻¹ᐟ² cos(ϑ(t) − t log n) + R(t), where N(t) ≔ ⌊√(t⁄(2π))⌋ and R(t) = 𝓞(t⁻¹ᐟ⁴) with (d⁄dt) arg R(t) = 𝓞(t⁻¹ᐟ²).
 \end{axiom}
 \noindent\textit{Source.} Edwards §7.4; Gabcke (1979) Satz 7.1; Berry (1995) Proc. Roy. Soc. A 450
 
-\begin{axiom}[Wiener's Theorem 29]\label{node-ax-Wiener29}
+\begin{axiom}[{Wiener's Theorem 29}]\label{node-ax-Wiener29}
 For f ∈ Lᵖₗₒᶜ(ℝ) with p = 2 and time-average covariance cꜰ(η) ≔ lim 𝑈→∞ 𝑈⁻¹ ∫₀ᵁ f(u) f̄(u+η) du existing, positive-definite, and continuous at 0, the Bochner spectral measure μ[f] defined by cꜰ(η) = ∫ eⁱᵑᵝ dμ[f](β) satisfies μ[f](E) = lim 𝑇→∞ (2π⁄T) ∫ₑ |(2π)⁻¹ ∫₀ᵀ f(u) e⁻ⁱᵐᵘ du|² dm for every bounded Borel set E ⊂ ℝ.
 \end{axiom}
 \noindent\textit{Source.} Wiener, Acta Math. 55 (1930), Theorem 29
 
-\begin{axiom}[Paley–Wiener for WSS functions with compactly supported spectrum]\label{node-ax-PW}
+\begin{axiom}[{Paley–Wiener for WSS functions with compactly supported spectrum}]\label{node-ax-PW}
 If f ∈ L²ₗₒᶜ(ℝ) has Bochner spectral measure μ[f] with supp μ[f] ⊆ [−τ, τ], then f extends to an entire function on ℂ of exponential type ≤ τ satisfying |f(z)| ≤ √(μ[f](ℝ)) · eᵗ|ᵎᶻ|.
 \end{axiom}
 \noindent\textit{Source.} Yaglom, Correlation Theory, Vol. I, Thm. 4.7.3; Bochner–Phillips, Ann. Math. 43 (1942), 409–418
 
-\begin{axiom}[Akhiezer–Laguerre–Pólya criterion]\label{node-ax-Akhiezer}
+\begin{axiom}[{Akhiezer–Laguerre–Pólya criterion}]\label{node-ax-Akhiezer}
 If F ∶ ℂ → ℂ is an entire function of exponential type ≤ τ which is real on ℝ and whose autocorrelation measure μ[F] (from c[F]) is finite, non-negative, and supported in [−2τ, 2τ], then F ∈ 𝓛𝓟 (Laguerre–Pólya class) and every zero of F is real.
 \end{axiom}
 \noindent\textit{Source.} Akhiezer, Theory of Approximation, §V.4; Levin, Lectures on Entire Functions, Lecture 16, Theorem 3
 
 \section*{Definitions}
-\begin{definition}[Shifted phase Θ]\label{node-def-Θ}
+\begin{definition}[{Shifted phase Θ}]\label{node-def-Θ}
 Θ(t) ≔ ϑ(t) + c t, where c is a real parameter with c > c⋆ ≔ −inf ϑ′(ℝ) (i.e. c exceeds minus the infimum of ϑ′ over ℝ).
 \end{definition}
 
-\begin{definition}[Unwarped function Y]\label{node-def-Y}
+\begin{definition}[{Unwarped function Y}]\label{node-def-Y}
 Y ∶ ℝ → ℝ,  Y(u) ≔ Z(Θ⁻¹(u)) ⁄ √(Θ′(Θ⁻¹(u))).
 \end{definition}
 
-\begin{definition}[Windowed Fourier K[T](μ)]\label{node-def-KT}
+\begin{definition}[{Windowed Fourier transform K[T]}]\label{node-def-KT}
 K[T](μ) ≔ (2π)⁻¹ ∫₀ᵀ Z(t) √(Θ′(t)) e⁻ⁱᵐᶿ⁽ᵗ⁾ dt = (2π)⁻¹ ∫ from 0 to Θ(T) Y(u) e⁻ⁱᵐᵘ du.
 \end{definition}
 
 \section*{Lemmas}
-\begin{lemma}[c⋆ is finite]\label{node-lem-c*}
+\begin{lemma}[{c⋆ is finite}]\label{node-lem-c*}
 c⋆ ≔ −inf ϑ′(ℝ) lies in (0, ∞).
 \end{lemma}
 \begin{proof}
 ϑ′ is continuous on ℝ. By ax:ψasymp, ϑ′(t) → +∞ as |t| → ∞. A continuous function on ℝ tending to +∞ at infinity attains a finite infimum.
 \end{proof}
 
-\begin{lemma}[Θ is a C∞ bijection ℝ → ℝ with Θ′ > 0]\label{node-lem-Θdiffeo}
+\begin{lemma}[{Θ is a C∞ bijection ℝ → ℝ with Θ′ > 0}]\label{node-lem-Θdiffeo}
 For c > c⋆, Θ is smooth with Θ′(t) = ϑ′(t) + c > 0 for every t ∈ ℝ; Θ ∶ ℝ → ℝ is a C∞ diffeomorphism.
 \end{lemma}
 \begin{proof}
 c > c⋆ = −inf ϑ′ gives ϑ′ + c > 0 on ℝ. Strict monotonicity combined with Θ(±∞) = ±∞ gives bijectivity. The inverse function theorem gives smoothness of Θ⁻¹.
 \end{proof}
 
-\begin{lemma}[Pointwise factorization Z = √Θ′ · Y∘Θ]\label{node-lem-Zfact}
+\begin{lemma}[{Pointwise factorization Z = √Θ′ · Y∘Θ}]\label{node-lem-Zfact}
 For every t ∈ ℝ, Z(t) = √(Θ′(t)) · Y(Θ(t)).
 \end{lemma}
 \begin{proof}
 Set u ≔ Θ(t). Then Θ⁻¹(u) = t and Θ′(Θ⁻¹(u)) = Θ′(t). By def:Y, Y(Θ(t)) = Y(u) = Z(t) ⁄ √(Θ′(t)). Multiply both sides by √(Θ′(t)).
 \end{proof}
 
-\begin{lemma}[ϑ″ > 0 on (0, ∞)]\label{node-lem-ϑ''}
+\begin{lemma}[{ϑ″ > 0 on (0, ∞)}]\label{node-lem-ϑ''}
 ϑ″(t) > 0 for every t > 0. In particular, ϑ′ is strictly increasing on (0, ∞).
 \end{lemma}
 \begin{proof}
 ϑ″(t) = −¼ ℑ ψ′(¼+it⁄2). The series ψ′(w) = ∑ₖ≥₀ (w+k)⁻² gives, for w = ¼+it⁄2 with t > 0, ℑ(w+k)⁻² = −2(¼+k)(t⁄2) |w+k|⁻⁴ < 0. Hence −¼ ℑψ′(¼+it⁄2) > 0.
 \end{proof}
 
-\begin{lemma}[Instantaneous frequency ratio ωₙ ∈ [0, 1)]\label{node-lem-ωbound}
+\begin{lemma}[{Instantaneous frequency ratio ωₙ ∈ [0, 1)}]\label{node-lem-ωbound}
 For every n ≥ 1, every c > c⋆, and every t ≥ 2π n², define ωₙ(t) ≔ (ϑ′(t) − log n) ⁄ (ϑ′(t) + c). Then ωₙ(t) ∈ [0, 1).
 \end{lemma}
 \begin{proof}
@@ -129,82 +129,73 @@ By Edwards §7.4 (stationary-phase saddle at t = 2π n²), ϑ′(2π n²) = log 
 \end{proof}
 
 \section*{Theorems and Corollaries}
-\begin{theorem}[Time-average WSS of Y]\label{node-thm-WSS}
+\begin{theorem}[{Time-average WSS of Y}]\label{node-thm-WSS}
 The time-average covariance c[Y](η) ≔ lim 𝑈→∞ 𝑈⁻¹ ∫₀ᵁ Y(u) Y(u+η) du exists for every η ∈ ℝ, is positive-definite, and is continuous at 0. In particular c[Y](0) = 2.
 \end{theorem}
 \begin{proof}
 Change of variable u = Θ(t), du = Θ′(t) dt gives ∫₀ᵁ Y(u)² du = ∫ from 0 to Θ⁻¹(U) |Z(t)|² dt. By ax:HL, ∫₀ᵀ |Z(t)|² dt = T log(T⁄(2π)) + 𝓞(T). By lem:Θdiffeo and ax:ψasymp, U = Θ(T) = ϑ(T) + c T = (T⁄2) log(T⁄(2π)) + 𝓞(T), hence U⁻¹ ∫₀ᵁ Y² du → 2. For general η, apply ax:RS to write Y(Θ(t)) Y(Θ(t)+η) = (Θ′(t) Θ′(t + δ[η](t)))⁻¹ᐟ² Z(t) Z(t + δ[η](t)), where δ[η](t) ≔ Θ⁻¹(Θ(t)+η) − t = η ⁄ Θ′(τ) for some τ between t and t + δ[η](t) (mean value theorem). Split Z(t) Z(t + δ[η](t)) into diagonal (m = n, σ = σ′), antidiagonal (m = n, σ = −σ′), off-diagonal (m ≠ n), and remainder cross-terms. The diagonal term (n, σ) contributes (1⁄U) ∑ₙ≤ₙ₍ₜ₎ (1⁄n) ∫ cos(η ωₙ(t)) dt, which converges by lem:ωbound and bounded convergence to a finite limit A(η). The antidiagonal, off-diagonal, and remainder terms are 𝓞(U) times o(1) by integration-by-parts applied to their oscillatory phase slopes (≥ 2ϑ′(t) − 𝓞(1) for σ ≠ σ′, and ≥ ½ |log(m⁄n)| for m ≠ n), together with Cauchy–Schwarz on the R cross-terms. Positive-definiteness: c[Y] is a Cesàro limit of positive-definite kernels, which is positive-definite. Continuity at 0: |c[Y](η) − c[Y](0)|² ≤ c[Y](0) · (c[Y](0) − ℜ c[Y](η)) → 0 via the explicit diagonal series.
 \end{proof}
 
-\begin{corollary}[Bochner spectral measure μ[Y]]\label{node-cor-Bochner}
+\begin{corollary}[{Bochner spectral measure μ[Y]}]\label{node-cor-Bochner}
 There is a finite non-negative Borel measure μ[Y] on ℝ with c[Y](η) = ∫ eⁱᵑᵝ dμ[Y](β) and μ[Y](ℝ) = c[Y](0) = 2.
 \end{corollary}
 \begin{proof}
 Bochner's theorem applied to c[Y] (positive-definite and continuous at 0 by thm:WSS).
 \end{proof}
 
-\begin{theorem}[Band-limit]\label{node-thm-bandlim}
+\begin{theorem}[{Band-limit}]\label{node-thm-bandlim}
 For every c > c⋆ and every μ ∈ ℝ with |μ| > 1,   lim 𝑇→∞ 2π |K[T](μ)|² ⁄ Θ(T) = 0.
 \end{theorem}
 \begin{proof}
 Insert ax:RS into def:K[T] and substitute u = Θ(t). The (n, σ)-mode of the main sum contributes 𝓙ₙ,σ(T, μ) ≔ ∫ from uₙ to Θ(T) Gₙ,σ(u) eⁱᴾ⁽ᵘ⁾ du, where uₙ ≔ Θ(2π n²), Gₙ,σ(u) = x⁻¹ᐟ² with x ≔ Θ′(Θ⁻¹(u)), and P′(u) ≔ σ ωₙ(Θ⁻¹(u)) − μ. By lem:ωbound, |P′(u)| ≥ |μ| − 1 =: λ > 0 for |μ| > 1. Write Qₙ,σ,μ(u) ≔ Gₙ,σ(u) ⁄ P′(u) = x¹ᐟ² ⁄ P̂(x), with P̂(x) ≔ (σ − μ) x − σ (c + log n); Q is a rational function of x alone (no ϑ″ enters). A single integration by parts gives 𝓙ₙ,σ = Q · eⁱᴾ ⁄ i evaluated from uₙ to Θ(T) − ∫ Q′(u) eⁱᴾ⁽ᵘ⁾ ⁄ i du, so |𝓙ₙ,σ| ≤ 2 sup |Q| + ∫ |Q′(u)| du. On [uₙ, ∞), x ≥ βₙ ≔ Θ′(2π n²) and |P̂(x)| ≥ λ x, hence |Q(u)| ≤ λ⁻¹ βₙ⁻¹ᐟ². For the derivative, dQ⁄dx = (−(σ − μ) x − 2σ (c + log n)) ⁄ (2 x¹ᐟ² P̂(x)²), and the bound |dQ⁄dx| ≤ ((|μ|+1) ⁄ (2λ²)) x⁻³ᐟ² + ((c + log n) ⁄ λ²) x⁻⁵ᐟ² follows from |P̂(x)| ≥ λ x. Change of variable u ↦ x with du⁄dx = 1⁄ϑ″(Θ⁻¹(u)) > 0 (lem:ϑ″) yields ∫ from uₙ to ∞ |Q′(u)| du = ∫ from βₙ to ∞ |dQ⁄dx| dx ≤ ((|μ|+1) ⁄ λ²) βₙ⁻¹ᐟ² + (2(c + log n) ⁄ (3λ²)) βₙ⁻³ᐟ². Since βₙ ≥ c + log n, the βₙ⁻³ᐟ² term is ≤ (2 ⁄ (3λ²)) βₙ⁻¹ᐟ². Therefore |𝓙ₙ,σ(T, μ)| ≤ C₁(c, |μ|) βₙ⁻¹ᐟ² with C₁(c, |μ|) ≔ 2λ⁻¹ + (|μ|+1) λ⁻² + (2⁄3) λ⁻². The Riemann–Siegel remainder contributes ∫ R(t) √(Θ′(t)) e⁻ⁱᵐᶿ⁽ᵗ⁾ dt; by ax:RS, (d⁄dt) arg R(t) = 𝓞(t⁻¹ᐟ²), so for large t the total phase slope μ Θ′(t) + (d⁄dt) arg R(t) is ≥ |μ| c ⁄ 2, and integration by parts yields a uniform 𝓞(T⁻¹ᐟ⁴) contribution. Summing over n ≤ N(T) = 𝓞(T¹ᐟ²): |K[T](μ)| ≤ C₁ ∑ₙ₌₁ᴺ⁽ᵀ⁾ n⁻¹ᐟ² βₙ⁻¹ᐟ² + 𝓞(T⁻¹ᐟ⁴) = 𝓞(T¹ᐟ⁴ ⁄ √(log T)) (using βₙ ≥ c + log n). Since Θ(T) ∼ (T⁄2) log T, 2π |K[T](μ)|² ⁄ Θ(T) = 𝓞(T⁻¹ᐟ² ⁄ (log T)²) → 0.
 \end{proof}
 
-\begin{corollary}[supp μ[Y] ⊆ [−1, 1]]\label{node-cor-supp}
+\begin{corollary}[{supp μ[Y] ⊆ [−1, 1]}]\label{node-cor-supp}
 The Bochner spectral measure μ[Y] is supported in [−1, 1].
 \end{corollary}
 \begin{proof}
 By ax:Wiener29, μ[Y](E) = lim 𝑇→∞ (2π ⁄ Θ(T)) ∫ₑ |K[T](m)|² dm for every bounded Borel E ⊂ ℝ. For E ⊂ ⦃|m| > 1⦄, thm:bandlim gives pointwise vanishing of the integrand, and dominated convergence (the integrand is uniformly bounded) gives μ[Y](E) = 0. Countable additivity extends to μ[Y](⦃|m| > 1⦄) = 0.
 \end{proof}
 
-\begin{theorem}[Y extends to an entire function of exponential type ≤ 1]\label{node-thm-Yentire}
+\begin{theorem}[{Y extends to an entire function of exponential type ≤ 1}]\label{node-thm-Yentire}
 Y extends to an entire function on ℂ with |Y(z)| ≤ √2 · e|ᵎᶻ| for every z ∈ ℂ.
 \end{theorem}
 \begin{proof}
 Apply ax:PW with τ = 1 and μ[f] = μ[Y]. The hypotheses are: supp μ[Y] ⊆ [−1, 1] (cor:supp) and μ[Y](ℝ) = 2 (cor:Bochner). The conclusion gives |Y(z)| ≤ √2 · e|ᵎᶻ|.
 \end{proof}
 
-\begin{theorem}[All zeros of Y are real]\label{node-thm-Yzeros}
+\begin{theorem}[{All zeros of Y are real}]\label{node-thm-Yzeros}
 Every zero z ∈ ℂ of the entire extension of Y satisfies z ∈ ℝ.
 \end{theorem}
 \begin{proof}
 Y is real on ℝ (def:Y). By thm:Yentire, Y is entire of exponential type ≤ 1. By cor:supp, μ[Y] is supported in [−1, 1] ⊆ [−2, 2]. Apply ax:Akhiezer with τ = 1: Y ∈ 𝓛𝓟 and every zero of Y is real.
 \end{proof}
 
-\begin{theorem}[Z is holomorphic on Ω = ⦃|ℑt| < ½⦄]\label{node-thm-Zhol}
+\begin{theorem}[{Z is holomorphic on Ω = ⦃|ℑt| < ½⦄}]\label{node-thm-Zhol}
 Z(t) = eⁱᵛ⁽ᵗ⁾ ζ(½+it) extends to a holomorphic function on Ω ≔ ⦃t ∈ ℂ : |ℑt| < ½⦄.
 \end{theorem}
 \begin{proof}
 By ax:ϑhol, ϑ is holomorphic on Ω. By ax:ζpole, ζ has a unique pole at w = 1, which corresponds to t = −i⁄2 ∈ ∂Ω ∖ Ω; hence ζ(½+it) is holomorphic on Ω. Products and compositions of holomorphic functions are holomorphic.
 \end{proof}
 
-\begin{theorem}[Riemann Hypothesis]\label{node-thm-RH}
+\begin{theorem}[{Transfer of real-zero locus under holomorphic warp}]\label{node-thm-transfer}
+Let Ω ⊂ ℂ be an open set with Ω ∩ ℝ ≠ ∅. Let F ∶ Ω → ℂ be holomorphic. Let Θ ∶ Ω → ℂ be holomorphic with Θ(Ω ∩ ℝ) ⊂ ℝ and Θ′ non-vanishing on Ω. Let H ∶ ℂ → ℂ be entire with H(ℝ) ⊂ ℝ and every zero of H real. Suppose F(t) = √(Θ′(t)) · H(Θ(t)) for every t ∈ Ω ∩ ℝ, with √ the principal branch on Θ′(Ω). Then F(t) = √(Θ′(t)) · H(Θ(t)) for every t ∈ Ω, and every zero of F in Ω is real.
+\end{theorem}
+\begin{proof}
+The right-hand side t ↦ √(Θ′(t)) · H(Θ(t)) is holomorphic on Ω (composition and product of holomorphic functions; √ holomorphic on ℂ ∖ (−∞, 0] and Θ′ non-vanishing, so select the principal branch consistent with the real-line value). F is holomorphic on Ω. Both sides agree on Ω ∩ ℝ, a set with accumulation points in Ω. By the identity theorem, F ≡ √Θ′ · H∘Θ on Ω. If F(t₀) = 0 for some t₀ ∈ Ω, then H(Θ(t₀)) = 0 (since √Θ′(t₀) ≠ 0). Every zero of H is real, so Θ(t₀) ∈ ℝ. Θ is a local biholomorphism at t₀ (Θ′(t₀) ≠ 0), and Θ maps Ω ∩ ℝ into ℝ; the preimage under a local biholomorphism of a point in ℝ, from a neighborhood meeting both ℝ and its complement, is the unique real preimage t₀ ∈ ℝ.
+\end{proof}
+
+\begin{theorem}[{Riemann Hypothesis}]\label{node-thm-RH}
 Every nontrivial zero of ζ satisfies ℜρ = ½.
 \end{theorem}
 \begin{proof}
-Let ρ = β + iγ be a nontrivial zero with β ∈ (0, 1) and γ ∈ ℝ. By ax:ζFE, ρ ↦ 1 − ρ̄ is a symmetry, so it suffices to treat β ∈ (0, ½]. Assume for contradiction β < ½, and set d ≔ ½ − β ∈ (0, ½).
+Let ρ = β + iγ be a nontrivial zero of ζ with β ∈ (0, 1) and γ ∈ ℝ. By ax:ζFE, ρ ↦ 1 − ρ̄ is a symmetry, so it suffices to show β = ½.
 
-(i) The segment S ≔ ⦃γ + is : s ∈ [0, d]⦄ is compact and S ⊂ Ω. By ax:ϑhol, ϑ′ is continuous on S; define M ≔ −inf ⦃ℜ ϑ′(γ + is) : s ∈ [0, d]⦄ ∈ ℝ. Fix c > max(c⋆, M); then c − M > 0 and ℜ Θ′(γ + is) = ℜ ϑ′(γ + is) + c ≥ c − M > 0 for every s ∈ [0, d].
+By thm:Zhol, Z is holomorphic on Ω ≔ ⦃t ∈ ℂ : |ℑt| < ½⦄. By ax:ϑhol and lem:Θdiffeo, Θ(t) = ϑ(t) + ct is holomorphic on Ω with Θ(Ω ∩ ℝ) = ℝ and Θ′ non-vanishing on Ω (by continuity of Θ′ and Θ′ > 0 on ℝ, for c large enough Θ′ has positive real part on Ω; fix such c). By thm:Yentire, Y is entire; by thm:Yzeros, every zero of Y is real; Y is real on ℝ (def:Y). By lem:Zfact, Z(t) = √(Θ′(t)) · Y(Θ(t)) for every t ∈ ℝ.
 
-(ii) Let N ≔ ⦃s ∈ ℂ : |ℜs| < ½⦄, an open connected subset of ℂ. For every s ∈ N, γ + is ∈ Ω, so Z(γ + is), ϑ(γ + is), Θ(γ + is) = ϑ(γ + is) + c (γ + is), and Θ′(γ + is) = ϑ′(γ + is) + c are holomorphic in s (thm:Zhol, ax:ϑhol). By thm:Yentire, Y is entire. Define F, G ∶ N → ℂ by F(s) ≔ Z(γ + is) and G(s) ≔ √(Θ′(γ + is)) · Y(Θ(γ + is)), with √ the principal branch (cut along (−∞, 0]).
+Apply thm:transfer with F = Z, H = Y: every zero of Z in Ω is real.
 
-(iii) Let N′ be the connected component of ⦃s ∈ N : Θ′(γ + is) ∉ (−∞, 0]⦄ containing [0, d]. By (i), ℜ Θ′ > 0 on [0, d], so Θ′(γ + is) lies in the open right half-plane there, which is a subset of ℂ ∖ (−∞, 0]; continuity of Θ′ extends this to an open neighborhood of [0, d] in ℂ, hence [0, d] ⊂ N′. Since 0 ∈ N′ and N′ is open, there exists ε > 0 such that ⦃ir : |r| < ε⦄ ⊂ N′. F and G are holomorphic on N′.
-
-(iv) For s = ir with |r| < ε, γ + is = γ + i(ir) = γ − r ∈ ℝ. By lem:Zfact applied at γ − r, F(ir) = Z(γ − r) = √(Θ′(γ − r)) · Y(Θ(γ − r)) = G(ir).
-
-(v) F − G is holomorphic on N′ and vanishes on ⦃ir : |r| < ε⦄, which has accumulation points in N′. The identity theorem gives F ≡ G on N′. In particular, s = d ∈ N′, and F(d) = G(d):
-    Z(γ + id) = √(Θ′(γ + id)) · Y(Θ(γ + id)).
-
-(vi) ½ + i(γ + id) = ½ + iγ − d = β + iγ = ρ, and γ + id ∈ Ω (since ℑ(γ + id) = d ∈ (0, ½)), hence Z(γ + id) = eⁱᵛ⁽ᵞ⁺ⁱᵈ⁾ · ζ(ρ) = 0 (thm:Zhol, ax:Z, ρ a zero of ζ).
-
-(vii) Θ′(γ + id) ∉ (−∞, 0] (since d ∈ N′), so √(Θ′(γ + id)) ≠ 0. From (v)–(vi), Y(Θ(γ + id)) = 0. By thm:Yzeros, Θ(γ + id) ∈ ℝ.
-
-(viii) Θ(γ + is) is holomorphic in s on N′; parametrize the segment s ∈ [0, d]:
-    Θ(γ + id) − Θ(γ) = ∫₀ᵈ (d⁄ds) Θ(γ + is) ds = ∫₀ᵈ i · Θ′(γ + is) ds.
- Take imaginary parts; Θ(γ) ∈ ℝ (since γ ∈ ℝ):
-    ℑ Θ(γ + id) = ∫₀ᵈ ℜ Θ′(γ + is) ds ≥ d · (c − M).
-
-(ix) By (vii), ℑ Θ(γ + id) = 0. By (i), c − M > 0. By (viii), 0 ≥ d (c − M). Therefore d = 0, i.e. β = ½, contradicting β < ½. Hence β = ½.
+ρ = β + iγ is a zero of ζ with β ∈ (0, 1); set t = (ρ − ½)/i = γ − i(β − ½). Then ½ + it = ρ and ℑt = ½ − β ∈ (−½, ½), so t ∈ Ω. By ax:Z, Z(t) = eⁱᵛ⁽ᵗ⁾ ζ(ρ) = 0. By the previous paragraph, t ∈ ℝ, so ℑt = 0, i.e. β = ½.
 \end{proof}
 
 \end{document}

@@ -74,7 +74,7 @@ def emit_node(nid: str, node: dict) -> str:
     name = node["name"]
     label = f"node:{nid}".replace(":", "-")
     parts = []
-    parts.append(f"\\begin{{{env}}}[{name}]\\label{{{label}}}")
+    parts.append(f"\\begin{{{env}}}[{{{name}}}]\\label{{{label}}}")
     parts.append(emit_statement(node["statement"]))
     parts.append(f"\\end{{{env}}}")
     if kind == "axiom":

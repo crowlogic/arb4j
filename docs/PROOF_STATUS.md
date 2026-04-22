@@ -2,6 +2,8 @@
 
 **Banned words:** "honest", "worrying", "sanity", "almost surely", "a.s.", "stochastic", "random", "deterministic", "published", "load-bearing", "decomposes" (use "factorization"), "Chebyshev-type" (no invented qualifiers), "corroborating", "scrape", "crawl", "absorbed" (no hand-waving), and no exclamation points, no emojis, no caveats.
 
+**Process = function.** $Y$ is a locally-$L^2$ function on $\mathbb R$. There is no sample space, no $\omega$, no expectation. The "autocovariance" is the time average $c_Y(h)=\lim_{U\to\infty}(1/U)\int_0^U Y(u)Y(u+h)\,du$. The "spectral measure" is the Fourier transform of $c_Y$ via Bochner applied to $c_Y$ as a continuous positive-definite function (which it is, by class (KF)). Do not write $\mathbb E$, do not write $d\Phi$ with a probabilistic interpretation, do not invoke the Omer–Torresani OT-Lemma-1 white-noise statement. Use only the Clerc–Mallat covariance identity (★★) and the scale-transport theorem at the level of deterministic time averages.
+
 **Construction order (do not deviate):**
 1. Build the normalized object at every finite $T$ as a probability measure / finite complex measure.
 2. Take the limit $T\to\infty$ of the already-normalized family.

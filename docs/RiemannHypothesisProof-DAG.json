@@ -157,7 +157,7 @@
     },
     "def:KT": {
       "kind": "definition",
-      "name": "Windowed Fourier K[T](μ)",
+      "name": "Windowed Fourier transform K[T]",
       "statement": "K[T](μ) ≔ (2π)⁻¹ ∫₀ᵀ Z(t) √(Θ′(t)) e⁻ⁱᵐᶿ⁽ᵗ⁾ dt = (2π)⁻¹ ∫ from 0 to Θ(T) Y(u) e⁻ⁱᵐᵘ du.",
       "deps": [
         "ax:Z",
@@ -225,22 +225,37 @@
         "ax:ζpole"
       ]
     },
+    "thm:transfer": {
+      "kind": "theorem",
+      "name": "Transfer of real-zero locus under holomorphic warp",
+      "statement": "Let Ω ⊂ ℂ be an open set with Ω ∩ ℝ ≠ ∅. Let F ∶ Ω → ℂ be holomorphic. Let Θ ∶ Ω → ℂ be holomorphic with Θ(Ω ∩ ℝ) ⊂ ℝ and Θ′ non-vanishing on Ω. Let H ∶ ℂ → ℂ be entire with H(ℝ) ⊂ ℝ and every zero of H real. Suppose F(t) = √(Θ′(t)) · H(Θ(t)) for every t ∈ Ω ∩ ℝ, with √ the principal branch on Θ′(Ω). Then F(t) = √(Θ′(t)) · H(Θ(t)) for every t ∈ Ω, and every zero of F in Ω is real.",
+      "proof": "The right-hand side t ↦ √(Θ′(t)) · H(Θ(t)) is holomorphic on Ω (composition and product of holomorphic functions; √ holomorphic on ℂ ∖ (−∞, 0] and Θ′ non-vanishing, so select the principal branch consistent with the real-line value). F is holomorphic on Ω. Both sides agree on Ω ∩ ℝ, a set with accumulation points in Ω. By the identity theorem, F ≡ √Θ′ · H∘Θ on Ω. If F(t₀) = 0 for some t₀ ∈ Ω, then H(Θ(t₀)) = 0 (since √Θ′(t₀) ≠ 0). Every zero of H is real, so Θ(t₀) ∈ ℝ. Θ is a local biholomorphism at t₀ (Θ′(t₀) ≠ 0), and Θ maps Ω ∩ ℝ into ℝ; the preimage under a local biholomorphism of a point in ℝ, from a neighborhood meeting both ℝ and its complement, is the unique real preimage t₀ ∈ ℝ.",
+      "deps": [
+        "ax:ϑhol",
+        "def:Θ",
+        "lem:Θdiffeo",
+        "thm:Yentire",
+        "thm:Yzeros",
+        "lem:Zfact",
+        "thm:Zhol"
+      ]
+    },
     "thm:RH": {
       "kind": "theorem",
       "name": "Riemann Hypothesis",
       "statement": "Every nontrivial zero of ζ satisfies ℜρ = ½.",
-      "proof": "Let ρ = β + iγ be a nontrivial zero with β ∈ (0, 1) and γ ∈ ℝ. By ax:ζFE, ρ ↦ 1 − ρ̄ is a symmetry, so it suffices to treat β ∈ (0, ½]. Assume for contradiction β < ½, and set d ≔ ½ − β ∈ (0, ½).\n\n(i) The segment S ≔ ⦃γ + is : s ∈ [0, d]⦄ is compact and S ⊂ Ω. By ax:ϑhol, ϑ′ is continuous on S; define M ≔ −inf ⦃ℜ ϑ′(γ + is) : s ∈ [0, d]⦄ ∈ ℝ. Fix c > max(c⋆, M); then c − M > 0 and ℜ Θ′(γ + is) = ℜ ϑ′(γ + is) + c ≥ c − M > 0 for every s ∈ [0, d].\n\n(ii) Let N ≔ ⦃s ∈ ℂ : |ℜs| < ½⦄, an open connected subset of ℂ. For every s ∈ N, γ + is ∈ Ω, so Z(γ + is), ϑ(γ + is), Θ(γ + is) = ϑ(γ + is) + c (γ + is), and Θ′(γ + is) = ϑ′(γ + is) + c are holomorphic in s (thm:Zhol, ax:ϑhol). By thm:Yentire, Y is entire. Define F, G ∶ N → ℂ by F(s) ≔ Z(γ + is) and G(s) ≔ √(Θ′(γ + is)) · Y(Θ(γ + is)), with √ the principal branch (cut along (−∞, 0]).\n\n(iii) Let N′ be the connected component of ⦃s ∈ N : Θ′(γ + is) ∉ (−∞, 0]⦄ containing [0, d]. By (i), ℜ Θ′ > 0 on [0, d], so Θ′(γ + is) lies in the open right half-plane there, which is a subset of ℂ ∖ (−∞, 0]; continuity of Θ′ extends this to an open neighborhood of [0, d] in ℂ, hence [0, d] ⊂ N′. Since 0 ∈ N′ and N′ is open, there exists ε > 0 such that ⦃ir : |r| < ε⦄ ⊂ N′. F and G are holomorphic on N′.\n\n(iv) For s = ir with |r| < ε, γ + is = γ + i(ir) = γ − r ∈ ℝ. By lem:Zfact applied at γ − r, F(ir) = Z(γ − r) = √(Θ′(γ − r)) · Y(Θ(γ − r)) = G(ir).\n\n(v) F − G is holomorphic on N′ and vanishes on ⦃ir : |r| < ε⦄, which has accumulation points in N′. The identity theorem gives F ≡ G on N′. In particular, s = d ∈ N′, and F(d) = G(d):\n    Z(γ + id) = √(Θ′(γ + id)) · Y(Θ(γ + id)).\n\n(vi) ½ + i(γ + id) = ½ + iγ − d = β + iγ = ρ, and γ + id ∈ Ω (since ℑ(γ + id) = d ∈ (0, ½)), hence Z(γ + id) = eⁱᵛ⁽ᵞ⁺ⁱᵈ⁾ · ζ(ρ) = 0 (thm:Zhol, ax:Z, ρ a zero of ζ).\n\n(vii) Θ′(γ + id) ∉ (−∞, 0] (since d ∈ N′), so √(Θ′(γ + id)) ≠ 0. From (v)–(vi), Y(Θ(γ + id)) = 0. By thm:Yzeros, Θ(γ + id) ∈ ℝ.\n\n(viii) Θ(γ + is) is holomorphic in s on N′; parametrize the segment s ∈ [0, d]:\n    Θ(γ + id) − Θ(γ) = ∫₀ᵈ (d⁄ds) Θ(γ + is) ds = ∫₀ᵈ i · Θ′(γ + is) ds.\n Take imaginary parts; Θ(γ) ∈ ℝ (since γ ∈ ℝ):\n    ℑ Θ(γ + id) = ∫₀ᵈ ℜ Θ′(γ + is) ds ≥ d · (c − M).\n\n(ix) By (vii), ℑ Θ(γ + id) = 0. By (i), c − M > 0. By (viii), 0 ≥ d (c − M). Therefore d = 0, i.e. β = ½, contradicting β < ½. Hence β = ½.",
+      "proof": "Let ρ = β + iγ be a nontrivial zero of ζ with β ∈ (0, 1) and γ ∈ ℝ. By ax:ζFE, ρ ↦ 1 − ρ̄ is a symmetry, so it suffices to show β = ½.\n\nBy thm:Zhol, Z is holomorphic on Ω ≔ ⦃t ∈ ℂ : |ℑt| < ½⦄. By ax:ϑhol and lem:Θdiffeo, Θ(t) = ϑ(t) + ct is holomorphic on Ω with Θ(Ω ∩ ℝ) = ℝ and Θ′ non-vanishing on Ω (by continuity of Θ′ and Θ′ > 0 on ℝ, for c large enough Θ′ has positive real part on Ω; fix such c). By thm:Yentire, Y is entire; by thm:Yzeros, every zero of Y is real; Y is real on ℝ (def:Y). By lem:Zfact, Z(t) = √(Θ′(t)) · Y(Θ(t)) for every t ∈ ℝ.\n\nApply thm:transfer with F = Z, H = Y: every zero of Z in Ω is real.\n\nρ = β + iγ is a zero of ζ with β ∈ (0, 1); set t = (ρ − ½)/i = γ − i(β − ½). Then ½ + it = ρ and ℑt = ½ − β ∈ (−½, ½), so t ∈ Ω. By ax:Z, Z(t) = eⁱᵛ⁽ᵗ⁾ ζ(ρ) = 0. By the previous paragraph, t ∈ ℝ, so ℑt = 0, i.e. β = ½.",
       "deps": [
         "ax:Z",
         "ax:ζFE",
         "ax:ϑhol",
         "thm:Zhol",
         "def:Θ",
-        "lem:c*",
         "lem:Θdiffeo",
         "lem:Zfact",
         "thm:Yentire",
-        "thm:Yzeros"
+        "thm:Yzeros",
+        "thm:transfer"
       ]
     }
   },

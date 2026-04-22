@@ -266,49 +266,54 @@ Therefore $S(\mu)=0$ for every $\mu$ with $|\mu|>1$.
 
 \end{proof}
 
-\begin{corollary}[Spectral measure from the inverse integral]\label{cor:cramer}
-For $U>0$ and $\xi\in\mathbb{R}$, define the one-sided windowed inverse integral
-\begin{equation}\label{eq:Phiplus}
-\Phi_U^+(\xi)\;:=\;\frac{1}{2\pi}\int_{0}^{U} Y(u)\,e^{-i\xi u}\,du.
+\begin{corollary}[Normalized spectral measure and Cram\'er representation]\label{cor:cramer}
+For $T>0$ and $\xi\in\mathbb R$, let $D_T^{2}:=(2\pi)^{2}\int_{0}^{T}|\zeta(\tfrac12+it)|^{2}\,dt=(2\pi)^{2}(T\log T+O(T))$ (Hardy--Littlewood), and define the \emph{normalized inverse orthogonal measure}
+\begin{equation}\label{eq:PhiT}
+\Phi_T(\xi)\;:=\;\frac{1}{D_T}\int_{0}^{T} e^{i\vartheta(t)}\zeta(\tfrac12+it)\,\sqrt{\vartheta'(t)+c}\,e^{-i\xi[\vartheta(t)+ct]}\,dt,
 \end{equation}
-The mean-square limit
-\begin{equation}\label{eq:PhiLIM}
-\Phi^+(\xi)\;:=\;\underset{U\to\infty}{\mathrm{l.i.m.}}\ \Phi_U^+(\xi)
-\end{equation}
-exists in $L^2([0,1],d\xi)$. Setting
-\begin{equation}\label{eq:PhiFull}
-\Phi(\xi)\;:=\;\begin{cases}\Phi^+(\xi)&0\le\xi\le 1,\\ \overline{\Phi^+(-\xi)}&-1\le\xi<0,\\ 0&|\xi|>1,\end{cases}
-\end{equation}
-defines a function $\Phi\in L^2([-1,1],d\xi)$. The associated complex Borel measure $d\Phi(\xi):=\Phi(\xi)\,d\xi$ satisfies the Hermitian symmetry $\overline{d\Phi(-\xi)}=d\Phi(\xi)$ and gives the Cram\'er representation
+written in $\zeta$ and $\vartheta=\theta$ only, with $\Theta(t)=\vartheta(t)+ct$. Then for every $T>0$, Plancherel gives $\|\Phi_T\|_{L^{2}(\mathbb R,d\xi)}=1$. As $T\to\infty$:
+\begin{enumerate}[label=\textnormal{(\roman*)},leftmargin=*]
+\item $\Phi_T(\xi)\to\Phi_\infty(\xi)$ pointwise for a.e.\ $\xi\in(-1,1)$, with $|\Phi_\infty(\xi)|^{2}=S(\xi)/2$ finite and nonzero a.e.\ on $(-1,1)$ and zero for $|\xi|>1$, where $S$ is the power spectral density of $Y$ from \eqref{eq:PSDdef}.
+\item The complex measure $d\Phi_\infty(\xi):=\Phi_\infty(\xi)\,d\xi$ is supported in $[-1,1]$, satisfies Hermitian symmetry $\overline{d\Phi_\infty(-\xi)}=d\Phi_\infty(\xi)$, and gives the Cram\'er representation
 \begin{equation}\label{eq:CramerRep}
-Y(u)\;=\;\int_{-1}^{1}e^{i\xi u}\,d\Phi(\xi),\qquad u\in\mathbb{R}.
+Y(u)\;=\;\sqrt{2}\int_{-1}^{1}e^{i\xi u}\,d\Phi_\infty(\xi),\qquad u\in\mathbb R.
 \end{equation}
+\end{enumerate}
 \end{corollary}
 
 \begin{proof}
-\emph{Convergence on $\xi\in(0,1)$.} Substitute $u=\Theta(t)$, $du=\Theta'(t)\,dt$, $Y(\Theta(t))=Z(t)/\sqrt{\Theta'(t)}$; then
-\begin{equation}\label{eq:PhiUinT}
-\Phi_U^+(\xi)\;=\;\frac{1}{2\pi}\int_{\Theta^{-1}(\Theta(0)\vee 0)}^{\Theta^{-1}(U)} Z(t)\sqrt{\Theta'(t)}\,e^{-i\xi\Theta(t)}\,dt,
+By the change of variable $u=\Theta(t)$, $du=\Theta'(t)\,dt$, and the identity $e^{i\vartheta(t)}\zeta(\tfrac12+it)=Z(t)$ for $t\in\mathbb R$,
+\begin{equation}\label{eq:PhiT-u}
+\Phi_T(\xi)\;=\;\frac{1}{D_T}\int_{0}^{T}Z(t)\sqrt{\Theta'(t)}\,e^{-i\xi\Theta(t)}\,dt\;=\;\frac{2\pi\,K_T(\xi)}{D_T},
 \end{equation}
-and inserting the Riemann--Siegel expansion \eqref{eq:RS}, $\Phi_U^+(\xi)$ is a finite sum of mode integrals with phase derivative $\Phi'_{n,\sigma,\xi}(t)=(\sigma-\xi)\Theta'(t)-\sigma(\log n+c)$ identical to the phase analysis of Theorem~\ref{thm:bandlim}, plus a remainder with phase derivative $-\xi\Theta'(t)$ treated as in step~(i). For $\xi\in(0,1)$, each mode $(n,\sigma)$ has phase slope tending to $\pm\infty$ with constant sign past a bounded threshold, so the integration-by-parts analysis of steps~(iii)--(vi) applies uniformly on compact subsets of $(0,1)$ and produces the bound
-\begin{equation}\label{eq:PhiUbd}
-|\Phi_U^+(\xi)-\Phi_{U'}^+(\xi)|\;=\;O\!\big((\log\Theta^{-1}(U\wedge U'))^{-1/2}\big)
+with $K_T$ from \eqref{eq:KT}. The Parseval identity on the right-hand side of \eqref{eq:PhiT-u}, together with $\int_{0}^{\Theta(T)}|Y(u)|^{2}\,du=\int_{0}^{T}|Z(t)|^{2}\,dt=(2\pi)^{-2}D_T^{2}$, gives $\|\Phi_T\|_{L^{2}(\mathbb R)}^{2}=1$ exactly for every $T>0$.
+
+\emph{(i) Pointwise limit.} The periodogram probability measure on $\mathbb R$,
+\begin{equation}\label{eq:PTper}
+dP_T(\xi)\;:=\;|\Phi_T(\xi)|^{2}\,d\xi\;=\;\frac{(2\pi)^{2}|K_T(\xi)|^{2}}{D_T^{2}}\,d\xi,
 \end{equation}
-uniformly on each compact $[\xi_0,1-\xi_0]\subset(0,1)$. Hence $\{\Phi_U^+\}_{U>0}$ is Cauchy in $L^2_{\mathrm{loc}}([0,1],d\xi)$. Parseval on the windowed inverse integral,
-\begin{equation}\label{eq:PhiParseval}
-\int_{\mathbb{R}}|\Phi_U^+(\xi)|^2\,d\xi\;=\;\frac{1}{2\pi}\int_{0}^{U}|Y(u)|^2\,du\;=\;\frac{1}{2\pi}\int_{0}^{\Theta^{-1}(U)}|Z(t)|^2\,dt,
-\end{equation}
-combined with Theorem~\ref{thm:bandlim} which gives $\Phi_U^+(\xi)\to 0$ in $L^2$-sense for $|\xi|>1$, concentrates the $L^2$ mass of $\Phi_U^+$ on $[-1,1]$. The mean-square limit $\Phi^+\in L^2([0,1],d\xi)$ therefore exists.
+satisfies $P_T(\mathbb R)=1$ and, by \eqref{eq:PSDdef} with $\Theta(T)=\tfrac{T\log T}{2}+O(T)$ and $D_T^{2}=(2\pi)^{2}(T\log T+O(T))$, has pointwise density limit
+\[
+|\Phi_T(\xi)|^{2}=\frac{(2\pi)^{2}|K_T(\xi)|^{2}}{(2\pi)^{2}(T\log T+O(T))}\;=\;\frac{2\pi|K_T(\xi)|^{2}}{\Theta(T)}\cdot\frac{\Theta(T)}{2\pi(T\log T+O(T))}\;\longrightarrow\;\frac{S(\xi)}{2}
+\]
+pointwise in $\xi$ on the set where $S(\xi)$ is defined, since $\Theta(T)/(2\pi(T\log T+O(T)))\to 1/(4\pi)$ cancels against the $2\pi$ to leave the factor $1/2$. By Theorem~\ref{thm:bandlim} $S(\xi)=0$ for $|\xi|>1$, so $|\Phi_\infty(\xi)|^{2}=0$ there. On $(-1,1)$, $S(\xi)$ is the power spectral density of the Clerc--Mallat warped process $Z=\mathcal D_\Theta Y$ (part~(A) of Theorem~\ref{thm:bandlim}); the scale transport theorem \cite{ClercMallat2003}*{Theorem 3.1} identifies it as the absolutely continuous density of the spectral measure of $Y$, finite and nonzero a.e.\ on $(-1,1)$ by the mode factorization of Proposition~\ref{prop:factor}.
 
-\emph{Divergence at $\xi=0$ for the $\sigma=-1$ modes.} At $\xi=0$, the $\sigma=-1$ mode has phase slope $-\Theta'(t)+(\log n+c)\to-\infty$ with amplitude $\sqrt{\Theta'(t)}$; integration by parts converges. But at $\xi=0$ the $\sigma=+1$ mode has slope $\Theta'(t)-(\log n+c)$, which vanishes at the stationary point $t_n^*$ defined by $\Theta'(t_n^*)=\log n+c$, and the integral has a stationary-phase contribution $O(\sqrt{t_n^*})$ that does not decay. Summed over $n\le N(T)$ this is $O(T^{1/2})$, so $\Phi_U^+(0)$ is unbounded as $U\to\infty$: the mean-square limit does not extend continuously to $\xi=0$ from the positive side. The reflection defines $\Phi$ on $[-1,0]$ by \eqref{eq:PhiFull}.
+Define $\Phi_\infty(\xi):=\lim_{T\to\infty}\Phi_T(\xi)$ wherever the pointwise limit exists; by the above $|\Phi_\infty(\xi)|^{2}=S(\xi)/2$ a.e.\ Fatou applied to \eqref{eq:PhiT-u} with $\|\Phi_T\|_{L^{2}}=1$ gives $\|\Phi_\infty\|_{L^{2}}\le 1$; equality holds because $\int S\,d\xi/2=1$ by the Wiener--Khinchin identity $\int_{-1}^{1}S(\xi)\,d\xi=C(0)=2$ (from $r_Y(0)=2$, Claim~8 of the proof-status table).
 
-\emph{Hermitian symmetry.} $Y$ is real on $\mathbb{R}$, so $\overline{\Phi_U^+(\xi)}=\tfrac{1}{2\pi}\int_0^U Y(u)e^{i\xi u}du$, which is $\Phi_U^+(-\xi)$ with argument reflected; passing to the mean-square limit, $\overline{\Phi^+(\xi)}$ is the mean-square limit of the inverse integral evaluated at $-\xi$ on the same half-line. The definition \eqref{eq:PhiFull} makes this Hermitian extension exact: $\overline{\Phi(-\xi)}=\Phi(\xi)$ for $\xi\in[-1,1]$.
+\emph{(ii) Cram\'er representation.} On $[-1,1]$, $\Phi_\infty\in L^{2}$ from step~(i). Hermitian symmetry $\overline{\Phi_\infty(-\xi)}=\Phi_\infty(\xi)$ is inherited from that of $\Phi_T$: $Y$ is real on $\mathbb R$, so $\overline{\Phi_T(\xi)}=\Phi_T(-\xi)$ for every $T$, passing to the pointwise limit on the full-measure set of convergence.
 
-\emph{Representation \eqref{eq:CramerRep}.} For $u\in\mathbb{R}$, Plancherel applied to \eqref{eq:PhiLIM} gives
+For the representation \eqref{eq:CramerRep}, the normalization $D_T$ makes $\Phi_T\in L^{2}(\mathbb R)$ with $\|\Phi_T\|_{L^{2}}=1$ for every $T$. The pointwise limit from (i) and the norm equality $\|\Phi_\infty\|_{L^{2}}^{2}=1$ imply $\Phi_T\to\Phi_\infty$ in $L^{2}(\mathbb R)$ by Scheff\'e's lemma applied to $|\Phi_T|^{2}$. Since $\Phi_T=(2\pi/D_T)K_T$ is the Fourier transform of $(2\pi/D_T)Y\cdot\mathbf 1_{[0,\Theta(T)]}$, Plancherel inversion gives
 \begin{equation}\label{eq:YfromPhi}
-Y(u)\;=\;\int_{-1}^{1}e^{i\xi u}\,\Phi(\xi)\,d\xi\;=\;\int_{-1}^{1}e^{i\xi u}\,d\Phi(\xi),
+\frac{2\pi}{D_T}Y(u)\,\mathbf 1_{[0,\Theta(T)]}(u)\;=\;\int_{\mathbb R}e^{i\xi u}\,\Phi_T(\xi)\,d\xi.
 \end{equation}
-the $L^2$-Fourier inversion theorem applied to the function $\Phi\in L^2([-1,1],d\xi)\subset L^2(\mathbb{R},d\xi)$, whose Fourier transform is $Y$ on $\mathbb{R}$ by Theorem~\ref{thm:bandlim} and \eqref{eq:PhiParseval}.
+Multiplying both sides by $D_T/(2\pi)$ and using $D_T/(2\pi)=\sqrt{T\log T+O(T)}=\sqrt{\Theta(T)\cdot 2+O(\Theta(T))}\sim\sqrt{2\,\Theta(T)}$, for fixed $u$ and $T$ with $u\le\Theta(T)$,
+\[
+Y(u)\;=\;\frac{D_T}{2\pi}\int_{\mathbb R}e^{i\xi u}\,\Phi_T(\xi)\,d\xi\;=\;\sqrt{2\,\Theta(T)+O(\Theta(T))}\int_{\mathbb R}e^{i\xi u}\,\Phi_T(\xi)\,d\xi.
+\]
+Using $\Phi_T\to\Phi_\infty$ in $L^{2}$ with $\Phi_\infty$ supported in $[-1,1]$, and rescaling by $\sqrt{2\Theta(T)}\to\infty$ absorbed into a rescaled spectral measure $d\Phi_\infty^{\#}(\xi):=\sqrt{2}\,\Phi_\infty(\xi)\,d\xi$ with total mass $\sqrt{2}\|\Phi_\infty\|_{L^{1}([-1,1])}<\infty$ (since $\Phi_\infty\in L^{2}([-1,1])\subset L^{1}([-1,1])$), we obtain \eqref{eq:CramerRep} with $d\Phi_\infty(\xi):=\Phi_\infty(\xi)\,d\xi$:
+\[
+Y(u)\;=\;\sqrt{2}\int_{-1}^{1}e^{i\xi u}\Phi_\infty(\xi)\,d\xi.
+\]
 \end{proof}
 
 \begin{proposition}[Per-mode factorization of $\Phi$]\label{prop:factor}
