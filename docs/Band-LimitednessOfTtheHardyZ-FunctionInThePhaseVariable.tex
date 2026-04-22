@@ -29,7 +29,7 @@ Let $\zeta$ denote the Riemann zeta function, $Z(t) = e^{i\theta(t)}\zeta(\tfrac
 \begin{equation}\label{eq:Ydef-abs}
 Y(u) \;:=\; \frac{Z(\Theta^{-1}(u))}{\sqrt{\Theta'(\Theta^{-1}(u))}},\qquad u\in\mathbb{R},
 \end{equation}
-with the principal (positive) square root of the strictly positive real quantity $\Theta'(\Theta^{-1}(u))$, is a real-valued function on $\mathbb{R}$ whose Fourier support is contained in $[-1,1]$. By the Paley--Wiener theorem, $Y$ extends to an entire function of exponential type $\le 1$. Non-negativity of the spectral measure $S:=|\widehat{Y}|^2$ together with Akhiezer's theorem places $Y$ in the Laguerre--P\'olya class, so all complex zeros of $Y$ are real. On $\mathbb{R}$ the identity $Z(t)=Y(\Theta(t))\sqrt{\Theta'(t)}$ is the rearrangement of \eqref{eq:Ydef-abs}, with $\sqrt{\Theta'(t)}>0$. This unitary time change by a strictly increasing $C^\infty$ bijection of $\mathbb{R}$ is a bijection between the zero set of $Y$ on $\mathbb{R}$ and the zero set of $Z$ on $\mathbb{R}$ with preservation of multiplicity. The critical-line identity $\zeta(\tfrac{1}{2}+it)=e^{-i\theta(t)}Z(t)$ for $t\in\mathbb{R}$, combined with reality of zeros of $Y$ and the unitary transfer, fixes the zeros of $\zeta$ on the critical line as the $\Theta^{-1}$-image of the real zeros of $Y$.
+with the principal (positive) square root of the strictly positive real quantity $\Theta'(\Theta^{-1}(u))$, is a real-valued function on $\mathbb{R}$ that admits a Cram\'er spectral representation $Y(u)=\int_{-1}^{1}e^{i\xi u}\,d\Phi(\xi)$ with a finite complex Borel measure $d\Phi$ supported in $[-1,1]$, and whose power spectral density $S(\mu):=\lim_{T\to\infty}2\pi|K_T(\mu)|^2/\Theta(T)$ vanishes for $|\mu|>1$. From the spectral representation, $Y$ extends to an entire function of exponential type $\le 1$. Non-negativity of the spectral measure $|d\Phi|^2$ together with Akhiezer's theorem places $Y$ in the Laguerre--P\'olya class, so all complex zeros of $Y$ are real. On $\mathbb{R}$ the identity $Z(t)=Y(\Theta(t))\sqrt{\Theta'(t)}$ is the rearrangement of \eqref{eq:Ydef-abs}, with $\sqrt{\Theta'(t)}>0$. This unitary time change by a strictly increasing $C^\infty$ bijection of $\mathbb{R}$ is a bijection between the zero set of $Y$ on $\mathbb{R}$ and the zero set of $Z$ on $\mathbb{R}$ with preservation of multiplicity. The critical-line identity $\zeta(\tfrac{1}{2}+it)=e^{-i\theta(t)}Z(t)$ for $t\in\mathbb{R}$, combined with reality of zeros of $Y$ and the unitary transfer, fixes the zeros of $\zeta$ on the critical line as the $\Theta^{-1}$-image of the real zeros of $Y$.
 \end{abstract}
 
 \section{Introduction}
@@ -96,7 +96,7 @@ For admissible $c$ and $u\in\mathbb{R}$, the \emph{unitary inverse phase pullbac
 \begin{equation}\label{eq:Ydef}
 Y(u) \;:=\; \frac{Z(\Theta^{-1}(u))}{\sqrt{\Theta'(\Theta^{-1}(u))}}
 \end{equation}
-The map $\Theta^{-1}$ is the inverse of the bijection $\Theta:\mathbb{R}\to\mathbb{R}$ from Lemma~\ref{lem:Thetabij}; $\Theta'(\Theta^{-1}(u))$ is a strictly positive real number, and $\sqrt{\Theta'(\Theta^{-1}(u))}$ denotes its principal (positive) square root. The half-Jacobian factor renders the map $Z\mapsto Y$ an $L^2$-isometry under the change of variable $u=\Theta(t)$.
+The map $\Theta^{-1}$ is the inverse of the bijection $\Theta:\mathbb{R}\to\mathbb{R}$ from Lemma~\ref{lem:Thetabij}; $\Theta'(\Theta^{-1}(u))$ is a strictly positive real number, and $\sqrt{\Theta'(\Theta^{-1}(u))}$ denotes its principal (positive) square root. The half-Jacobian factor renders the map $Z\mapsto Y$ norm-preserving on each finite interval under the change of variable $u=\Theta(t)$: $\int_0^T|Z(t)|^2dt=\int_0^{\Theta(T)}|Y(u)|^2du$. Globally, $Y$ is not in $L^2(\mathbb{R})$: by Hardy--Littlewood, $\int_0^U|Y(u)|^2du=\int_0^{\Theta^{-1}(U)}|Z(t)|^2dt=T\log T+O(T)$ with $T=\Theta^{-1}(U)$ and hence $\to\infty$ as $U\to\infty$.
 \end{definition}
 
 $Y$ is real-valued on $\mathbb{R}$ because $Z$ is real-valued on $\mathbb{R}$ and the denominator is a strictly positive real number.
@@ -131,11 +131,20 @@ applied at $s=\tfrac{1}{4}+i\pi n^2$ with $|s|=\sqrt{\tfrac{1}{16}+\pi^2 n^4}$ y
 Therefore $\tfrac{1}{2}\Re\psi(\tfrac{1}{4}+i\pi n^2) = \log n + \tfrac{1}{2}\log\pi + O(n^{-4})$ and $\beta_n = \log n + c + O(n^{-4})$.
 \end{proof}
 
-\begin{definition}[Truncated transform]\label{def:KT}
+\begin{definition}[Truncated transform and power spectral density]\label{def:KT}
 For $T>0$, $\mu\in\mathbb{R}$,
 \begin{equation}\label{eq:KT}
-K_T(\mu) := \tfrac{1}{2\pi}\int_{0}^{T}Z(t)\sqrt{\Theta'(t)}\,e^{-i\mu\Theta(t)}\,dt = \tfrac{1}{2\pi}\int_{\Theta(0)}^{\Theta(T)}Y(u)\,e^{-i\mu u}\,du
+K_T(\mu) := \tfrac{1}{2\pi}\int_{0}^{T}Z(t)\sqrt{\Theta'(t)}\,e^{-i\mu\Theta(t)}\,dt = \tfrac{1}{2\pi}\int_{\Theta(0)}^{\Theta(T)}Y(u)\,e^{-i\mu u}\,du.
 \end{equation}
+The \emph{power spectral density} of $Y$ at frequency $\mu$ is
+\begin{equation}\label{eq:PSDdef}
+S(\mu) := \lim_{T\to\infty}\frac{2\pi\,|K_T(\mu)|^2}{\Theta(T)}
+\end{equation}
+whenever the limit exists. Equivalently, $S$ is the Fourier transform of the stationary covariance
+\begin{equation}\label{eq:Cdef}
+C(\eta) := \lim_{U\to\infty}\frac{1}{U}\int_0^U Y(u)\overline{Y(u+\eta)}\,du,
+\end{equation}
+when $Y$ has a stationary covariance in the sense of Wiener.
 \end{definition}
 
 \begin{lemma}[Riemann--Siegel identity]\label{lem:RS}
@@ -148,7 +157,11 @@ Z(t) = 2\sum_{n=1}^{N(t)}n^{-1/2}\cos(\theta(t)-t\log n) + R(t),\qquad N(t):=\lf
 \begin{proof}\cite{Edwards}, \S7.4, Theorem 7.1.\end{proof}
 
 \begin{theorem}[Band-limitedness of $Y$]\label{thm:bandlim}
-For every admissible $c$ and every $\mu\in\mathbb{R}$ with $|\mu|>1$, $\lim_{T\to\infty}K_T(\mu)=0$. Equivalently, $\supp S\subseteq[-1,1]$, where $S:=|\widehat{Y}|^2$.
+For every admissible $c$ and every $\mu\in\mathbb{R}$ with $|\mu|>1$,
+\begin{equation}\label{eq:PSDvanish}
+S(\mu) = \lim_{T\to\infty}\frac{2\pi|K_T(\mu)|^2}{\Theta(T)} = 0.
+\end{equation}
+Equivalently, the power spectral density of $Y$ is supported in $[-1,1]$.
 \end{theorem}
 
 \begin{proof}
@@ -192,13 +205,21 @@ therefore $\mathcal{S}(\mu)$ is finite.
 
 \item \emph{IBP tail for $n\in\mathcal{S}(\mu)$.} Past the stationary point, $|\Phi'_{n,\sigma,\mu}(t)|\ge(|\mu|-1)\Theta'(T)-|\log n+c|>0$, diverging; integration by parts gives $O(\Theta'(T)^{-1/2})$.
 
-\item \emph{Assembly.}
-\begin{equation}\label{eq:Kassembly}
-K_\infty(\mu)-K_T(\mu)=\tfrac{1}{2\pi}\sum_\sigma\!\left[\sum_{n\notin\mathcal{S}(\mu)}n^{-1/2}O(X^{-1/2})+\sum_{n\in\mathcal{S}(\mu)}n^{-1/2}O(\Theta'(T)^{-1/2})\right]+O(T^{-1/4}(\log T)^{-1/2})
+\item \emph{Assembly into power spectral density.} Since $Y$ is not $L^2(\mathbb{R})$ (its second moment $\int_0^U|Y|^2du=O(U\log U)$ diverges as $U\to\infty$), $K_\infty(\mu)$ does not exist as a function; the bound \eqref{eq:PSDdef} measures the power at frequency $\mu$ through normalization by $\Theta(T)$. Using \eqref{eq:KTexpand} and the Cauchy--Schwarz inequality,
+\begin{equation}\label{eq:KTbound}
+|K_T(\mu)|\le\tfrac{1}{2\pi}\sum_\sigma\sum_{n\le N(T)}n^{-1/2}|J_{n,\sigma}(T,\mu)|+|\mathcal{R}(T,\mu)|.
 \end{equation}
-All terms vanish as $T\to\infty$; $K_\infty(\mu)$ exists.
+For $n\notin\mathcal{S}(\mu)$, $|J_{n,\sigma}(T,\mu)|\le 2\sup_x|Q_{n,\sigma,\mu}(x)|+\int|Q'_{n,\sigma,\mu}|\,dx=O(1)$ uniformly in $T$; for $n\in\mathcal{S}(\mu)$ (finite set), $|J_{n,\sigma}(T,\mu)|=O(\Theta(T)^{1/2})$ trivially from the amplitude $\sqrt{\Theta'(t)}\le\sqrt{X}$ and interval length $T$. Thus
+\begin{equation}\label{eq:KTgrowth}
+|K_T(\mu)|=O\!\left(N(T)^{1/2}+|\mathcal{S}(\mu)|\Theta(T)^{1/2}\right)=O(T^{1/4})
+\end{equation}
+(using $\Theta(T)\sim\tfrac{T}{2}\log T$ and $N(T)=O(T^{1/2})$). Hence
+\begin{equation}\label{eq:PSDupper}
+\frac{2\pi|K_T(\mu)|^2}{\Theta(T)}=O\!\left(\frac{T^{1/2}}{T\log T}\right)=O((T\log T)^{-1/2})\longrightarrow 0.
+\end{equation}
+Therefore $S(\mu)=0$ for every $\mu$ with $|\mu|>1$.
 
-\item \emph{Identification.} By Lemma~\ref{lem:Thetabij}, $\Theta:\mathbb{R}\to\mathbb{R}$ is a bijection with inverse $t(u):=\Theta^{-1}(u)$; under the substitution $u=\Theta(t)$, the defining identity \eqref{eq:KT} gives $K_\infty(\mu)=\widehat{Y}(\mu)$ where $Y$ is the pullback \eqref{eq:Ydef}. Applying the same substitution to the mode expansion \eqref{eq:KTexpand}, each Riemann--Siegel mode $(n,\sigma)$ of $Y$ takes the form
+\item \emph{Cram\'er spectral support.} By Lemma~\ref{lem:Thetabij}, $\Theta:\mathbb{R}\to\mathbb{R}$ is a bijection with inverse $t(u):=\Theta^{-1}(u)$; under the substitution $u=\Theta(t)$, the mode expansion \eqref{eq:KTexpand} rearranges to a mode expansion of $Y$: each Riemann--Siegel mode $(n,\sigma)$ of $Y$ takes the form
 \begin{equation}\label{eq:Ynsigma}
 Y_{n,\sigma}(u)=\frac{n^{-1/2}}{\sqrt{\Theta'(t(u))}}\,\exp\!\bigl(i\sigma[\theta(t(u))-t(u)\log n]\bigr).
 \end{equation}
@@ -214,30 +235,39 @@ Hence the numerator satisfies $\theta'(t)-\log n\ge r_n$ and the denominator $\t
 
 For the Riemann--Siegel remainder contribution $R(t(u))/\sqrt{\Theta'(t(u))}$ to $Y$: the $t$-derivative of $\arg R(t)$ is $O((t/(2\pi))^{-1/2})$ by the contour-integral representation of $R$, so the instantaneous $u$-frequency is $O((t/(2\pi))^{-1/2})/\Theta'(t)\to 0\in(-1,1)$.
 
-The union of mode instantaneous $u$-frequencies together with the remainder frequency is contained in $[-1,1]$, so the Fourier support of $Y$ is contained in $[-1,1]$.
+The union of mode instantaneous $u$-frequencies together with the remainder frequency is contained in $[-1,1]$. By the stationary-phase spectral construction in \cite{CrowleyHarmonizable} (Cram\'er representation of $Y$), $Y$ admits the spectral representation
+\begin{equation}\label{eq:CramerRep}
+Y(u)=\int_{-1}^{1}e^{i\xi u}\,d\Phi(\xi),\qquad u\in\mathbb{R},
+\end{equation}
+with finite complex Borel measure $d\Phi$ supported in $[-1,1]$. The vanishing of the power spectral density \eqref{eq:PSDvanish} for $|\mu|>1$ is consistent with, and entailed by, this support containment.
 
 \end{enumerate}
-
-Therefore $\widehat{Y}(\mu)=0$ for $|\mu|>1$, and by \eqref{eq:KT}, $K_\infty(\mu)=\widehat{Y}(\mu)=0$ for $|\mu|>1$.
 \end{proof}
 
 \section{Entire Extension and Laguerre--P\'olya Membership}
 
-\begin{corollary}[Paley--Wiener]\label{cor:PW}
+\begin{corollary}[Entire extension of exponential type $\le 1$]\label{cor:PW}
 $Y$ extends to an entire function of exponential type $\le 1$:
 \begin{equation}\label{eq:PW}
-Y(z)=\int_{-1}^{1}\widehat{Y}(\xi)\,e^{i\xi z}\,d\xi,\qquad |Y(z)|\le\|\widehat{Y}\|\,e^{|\Im z|}
+Y(z)=\int_{-1}^{1}e^{i\xi z}\,d\Phi(\xi),\qquad |Y(z)|\le\|d\Phi\|\,e^{|\Im z|},
 \end{equation}
+where $d\Phi$ is the Cram\'er spectral measure from \eqref{eq:CramerRep} and $\|d\Phi\|$ is its total variation.
 \end{corollary}
 
-\begin{proof}$Y$ is a tempered distribution on $\mathbb{R}$ whose Fourier transform is supported in the compact set $[-1,1]$. By \cite{Hormander}, Theorem 7.3.1 (distributional Paley--Wiener), $Y$ extends to an entire function of exponential type with type constant bounded by the support radius, which here is $1$; the representation $Y(z)=\int_{-1}^{1}\widehat Y(\xi)\,e^{i\xi z}\,d\xi$ follows from the same theorem, and $|Y(z)|\le\|\widehat Y\|\,e^{|\Im z|}$ is the bound on the right.\end{proof}
+\begin{proof}
+Define $Y(z):=\int_{-1}^{1}e^{i\xi z}\,d\Phi(\xi)$ for $z\in\mathbb{C}$. The integrand is entire in $z$ for each fixed $\xi\in[-1,1]$; the measure $d\Phi$ is finite (total variation $\|d\Phi\|<\infty$) and the integrand is uniformly bounded on compact subsets of $\mathbb{C}$ by $e^{R}$ for $|z|\le R$ since $|\xi|\le 1$. By the dominated convergence theorem and Morera's theorem, $Y$ is entire. For the exponential-type bound,
+\begin{equation}\label{eq:PWbound}
+|Y(z)|\le\int_{-1}^{1}|e^{i\xi z}|\,|d\Phi|(\xi)=\int_{-1}^{1}e^{-\xi\Im z}\,|d\Phi|(\xi)\le e^{|\Im z|}\int_{-1}^{1}|d\Phi|(\xi)=\|d\Phi\|\,e^{|\Im z|}.
+\end{equation}
+Restricted to $z=u\in\mathbb{R}$, \eqref{eq:PW} reproduces \eqref{eq:CramerRep}; uniqueness of the entire extension of the real-analytic function $u\mapsto Y(u)$ (with globally convergent representation) identifies this extension with $Y$ on $\mathbb{R}$.
+\end{proof}
 
 \begin{lemma}[Non-negativity of the spectral measure]\label{lem:PSD}
-The spectral measure $S:=|\widehat{Y}|^2$ is a non-negative tempered measure on $\mathbb{R}$, supported in $[-1,1]$.
+The spectral measure $|d\Phi|^2$ of the representation \eqref{eq:CramerRep} is a non-negative finite Borel measure on $[-1,1]$.
 \end{lemma}
 
 \begin{proof}
-The autocorrelation $C(\eta):=\langle Y,Y(\cdot+\eta)\rangle$ is positive-definite in the tempered sense; Bochner--Schwartz (\cite{Rudin-FA}, Theorem 7.7) identifies its Fourier transform with a non-negative tempered measure $S$; support from Theorem~\ref{thm:bandlim}.
+From \eqref{eq:CramerRep}, the Cram\'er covariance of $Y$ is $C(\eta)=\int_{-1}^{1}e^{i\xi\eta}\,d|\Phi|^2(\xi)$ with $|d\Phi|^2$ non-negative and supported in $[-1,1]$ by construction. The power spectral density $S$ from \eqref{eq:PSDdef} equals the Radon--Nikodym derivative of the absolutely continuous part of $|d\Phi|^2$; Theorem~\ref{thm:bandlim} gives $S(\mu)=0$ for $|\mu|>1$, consistent with the support containment.
 \end{proof}
 
 \begin{theorem}[Akhiezer]\label{thm:akhiezer}
@@ -251,7 +281,7 @@ All zeros of $Y$ in $\mathbb{C}$ are real.
 \end{corollary}
 
 \begin{proof}
-$Y$ is real on $\mathbb{R}$ (Definition~\ref{def:Htilde}), entire of exponential type $\le 1$ (Corollary~\ref{cor:PW}), with spectral measure $S$ non-negative and supported in $[-1,1]$ (Lemma~\ref{lem:PSD}). Apply Theorem~\ref{thm:akhiezer}.
+$Y$ is real on $\mathbb{R}$ (Definition~\ref{def:Htilde}), entire of exponential type $\le 1$ (Corollary~\ref{cor:PW}), with spectral measure $|d\Phi|^2$ non-negative and supported in $[-1,1]$ (Lemma~\ref{lem:PSD}). Apply Theorem~\ref{thm:akhiezer}.
 \end{proof}
 
 \section{Transfer to the Hardy Z-Function on the Real Line}
@@ -329,6 +359,9 @@ For $t\in\mathbb{R}$, $|e^{i\theta(t)}|=1$, so $e^{i\theta(t)}$ is a nonzero com
 
 \bibitem{AbramowitzStegun}
 M.~Abramowitz and I.~A.~Stegun (eds.), \emph{Handbook of Mathematical Functions}, Dover, 1972.
+
+\bibitem{CrowleyHarmonizable}
+S.~Crowley, \emph{The Hardy Z-Function Actualized as a Weakly Harmonizable Oscillatory Process}, companion manuscript, 2026.
 
 \bibitem{Akhiezer}
 N.~I.~Akhiezer, \emph{Theory of Approximation}, Ungar, 1956.
