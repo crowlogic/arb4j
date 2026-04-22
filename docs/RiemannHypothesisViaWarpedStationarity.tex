@@ -302,4 +302,40 @@ E.~C.~Titchmarsh, \emph{The Theory of the Riemann Zeta-Function}, 2nd ed., revis
 
 \end{thebibliography}
 
+\section*{Errata}
+
+\begin{enumerate}[leftmargin=*]
+\item The proof of Lemma~\ref{lem:Thetabij} does not display the sign of $\Im\psi'(\tfrac14+\tfrac{it}{2})$ for $t>0$.
+
+\item The statement in Lemma~\ref{lem:unitary} has $\mathcal D_\gamma\mathcal D_\phi=\mathcal D_{\phi\circ\gamma}$; the proof establishes $\mathcal D_\phi\mathcal D_\gamma=\mathcal D_{\gamma\circ\phi}$.
+
+\item Equation (\ref{eq:HLcov}) contains the placeholder $e^{i\eta/2\cdot\log(\text{``average''})}$.
+
+\item The proof of Theorem~\ref{thm:Ywss} refers to ``Part~D'' of Theorem~\ref{thm:bandlim}, which does not exist.
+
+\item The Jacobian factor in (\ref{eq:diagterm}) is $\Theta'(t)\cdot\Theta'(t)/(\Theta'(t)\Theta'(t+\delta_\eta(t)))$, inconsistent with the $u=\Theta(t)$ substitution in the preceding line.
+
+\item The limit $\delta_\eta(t)[\vartheta'(t)+\log n]\to\eta(\vartheta'(t)-c+\log n)/\Theta'(t)+\eta(2c)/\Theta'(t)$ in the proof of Theorem~\ref{thm:Ywss} introduces $-c$ and $+2c$ shifts without derivation.
+
+\item The push-forward density $\rho_n$ in (\ref{eq:limdiag}) is invoked without a monotonicity statement for $\omega_n$ or a verification that its image lies in $[0,1)$.
+
+\item The final formula for $c_Y(\eta)$ in the proof of Theorem~\ref{thm:Ywss} contains a factor $1/(\log T)$ inside a $T\to\infty$ limit.
+
+\item Corollary~\ref{cor:Cramer} invokes Bochner's theorem without establishing continuity of $c_Y$ at $\eta=0$.
+
+\item The identity (\ref{eq:Gprime-int}) for $\int|G'_{n,\sigma}|\,du$ is stated without the monotonicity of $G$ that converts $|G'|$ to $-G'$.
+
+\item The bound $|\Psi''_{n,\sigma,\mu}|\le c\vartheta''(t)/\Theta'(t)^{2}$ in the proof of Theorem~\ref{thm:bandlim} is not the direct derivative of $\Psi'_{n,\sigma,\mu}$.
+
+\item The bound $(d/dt)\arg R(t)=O(t^{-1/2})$ in the Remainder paragraph of Theorem~\ref{thm:bandlim} is stated without citation.
+
+\item The Remainder paragraph of Theorem~\ref{thm:bandlim} concludes $|\mathcal R(T,\mu)|\le C_R(|\mu|)$ from a one-line IBP without exhibiting the boundary and tail estimates.
+
+\item Corollary~\ref{cor:supp} dismisses the singular part of $\mu_Y$ on $\{|\mu|>1\}$ by the phrase ``detected by the same windowed-Fourier analysis producing a nonzero $\limsup$,'' without a Wiener-type integral identity.
+
+\item The proof of Theorem~\ref{thm:PW} invokes ``$L^{2}$-Fourier inversion'' to identify $Y$ on $\mathbb R$ with the Paley--Wiener integral, but $Y\notin L^{2}(\mathbb R)$ by the Hardy--Littlewood second moment.
+
+\item Theorem~\ref{thm:Akhiezer} is stated in a form that presumes $F\in L^{2}(\mathbb R)$, and the application in Theorem~\ref{thm:LP} does not reconcile this with Item~15.
+\end{enumerate}
+
 \end{document}
