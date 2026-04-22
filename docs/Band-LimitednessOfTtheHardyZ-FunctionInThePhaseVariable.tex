@@ -285,6 +285,52 @@ Y(u)\;=\;\int_{-1}^{1}e^{i\xi u}\,\Phi(\xi)\,d\xi\;=\;\int_{-1}^{1}e^{i\xi u}\,d
 the $L^2$-Fourier inversion theorem applied to the function $\Phi\in L^2([-1,1],d\xi)\subset L^2(\mathbb{R},d\xi)$, whose Fourier transform is $Y$ on $\mathbb{R}$ by Theorem~\ref{thm:bandlim} and \eqref{eq:PhiParseval}.
 \end{proof}
 
+\begin{proposition}[Per-mode factorization of $\Phi$]\label{prop:factor}
+For each $n\ge 1$ and $\sigma\in\{\pm1\}$, let
+\begin{equation}\label{eq:tstar}
+t^{*}_{n,\sigma}(\xi)\;:=\;(\Theta')^{-1}\!\left(\frac{\log n+c}{1-\sigma\xi}\right),
+\end{equation}
+defined for those $\xi$ with $1-\sigma\xi>0$ and $(\log n+c)/(1-\sigma\xi)\ge\beta_n$; equivalently (using \eqref{eq:betaasymp} with $r_n=O(n^{-4})$), for
+\begin{equation}\label{eq:Jns}
+\xi\in J_{n,+}\;:=\;\bigl[r_n/\beta_n,\,1\bigr)\quad (\sigma=+1),\qquad \xi\in J_{n,-}\;:=\;\bigl(-1,\,-r_n/\beta_n\bigr]\quad (\sigma=-1).
+\end{equation}
+Let
+\begin{equation}\label{eq:Ans}
+|\mathcal A_{n,\sigma}(\xi)|^{2}\;:=\;\frac{2\pi(\log n+c)}{(1-\sigma\xi)\,(\sigma-\xi)^{2}\,\theta''\!\bigl(t^{*}_{n,\sigma}(\xi)\bigr)},
+\end{equation}
+and
+\begin{equation}\label{eq:varphins}
+\varphi_{n,\sigma}(\xi)\;:=\;\sigma\theta\!\bigl(t^{*}_{n,\sigma}(\xi)\bigr)-\sigma\,t^{*}_{n,\sigma}(\xi)\log n-\xi\,\Theta\!\bigl(t^{*}_{n,\sigma}(\xi)\bigr)+\tfrac{\pi}{4}\sigma.
+\end{equation}
+Then the density $\Phi$ from Corollary~\ref{cor:cramer} admits the mode-by-mode factorization
+\begin{equation}\label{eq:Phifactor}
+\Phi(\xi)\;=\;\frac{1}{2\pi}\sum_{\sigma\in\{\pm1\}}\sum_{n=1}^{\infty}n^{-1/2}\,\mathcal A_{n,\sigma}(\xi)\,e^{i\varphi_{n,\sigma}(\xi)}\,\mathbf{1}_{J_{n,\sigma}}(\xi)\;+\;\Phi_R(\xi),\qquad \xi\in[-1,1],
+\end{equation}
+where $\Phi_R$ is the Riemann--Siegel remainder contribution obtained by inserting $R(t)$ into $\Phi_U^+$ and passing to the mean-square limit. The amplitude $|\mathcal A_{n,\sigma}(\xi)|^{2}$ is integrable on $J_{n,\sigma}$ in the sense that
+\begin{equation}\label{eq:perint}
+\int_{J_{n,\sigma}}|\mathcal A_{n,\sigma}(\xi)|^{2}\,d\xi\;=\;\int_{r_n/\beta_n}^{1}\frac{2\pi(\log n+c)}{v^{3}\,\theta''\!\bigl((\Theta')^{-1}((\log n+c)/v)\bigr)}\,dv
+\end{equation}
+under the substitution $v:=1-\sigma\xi$ (so $v\in[r_n/\beta_n,1]$, $\xi=\sigma(1-v)$, $(1-\sigma\xi)=v$, $(\sigma-\xi)^{2}=v^{2}$). The integrand has an integrable endpoint singularity at $v=0$ ($\xi=\sigma$) of Chebyshev type: $\theta''(t)\sim 1/(2t)$ by the digamma asymptotic \eqref{eq:digasymp}, and $\Theta'(t)\sim\tfrac12\log(t/(2\pi))$ gives $t^{*}(v)\sim 2\pi\,e^{2(\log n+c)/v}=2\pi n^{2/v}e^{2c/v}$ for small $v$, so
+\[
+v^{3}\,\theta''(t^{*}(v))\;\sim\;\frac{v^{3}}{4\pi\,n^{2/v}e^{2c/v}}\qquad(v\to 0^{+}),
+\]
+which decays faster than any power of $v$; the integrand $2\pi(\log n+c)/[v^{3}\theta''(t^{*}(v))]$ therefore grows super-polynomially as $v\to 0^{+}$, yet the integral is finite because the lower endpoint $v=r_n/\beta_n>0$ truncates the singularity. Summing \eqref{eq:perint} over $(n,\sigma)$ together with $\|\Phi_R\|_{L^{2}}^{2}$ equals $\|\Phi\|_{L^{2}([-1,1])}^{2}$, which by \eqref{eq:PhiParseval} is the mean-square limit of $(2\pi)^{-1}\int_{0}^{U}|Y(u)|^{2}\,du$.
+\end{proposition}
+
+\begin{proof}
+Substitute $u=\Theta(t)$, $du=\Theta'(t)\,dt$, $Y(\Theta(t))=Z(t)/\sqrt{\Theta'(t)}$ into $\Phi_U^{+}(\xi)$ as in \eqref{eq:PhiUinT}; insert the Riemann--Siegel expansion \eqref{eq:RS} and expand $\cos\alpha=\tfrac12(e^{i\alpha}+e^{-i\alpha})$, giving
+\begin{equation}\label{eq:PhiUmodesum}
+\Phi_U^{+}(\xi)\;=\;\frac{1}{2\pi}\sum_{\sigma}\sum_{n\le N(\Theta^{-1}(U))}n^{-1/2}\int_{t_n}^{\Theta^{-1}(U)}\sqrt{\Theta'(t)}\,e^{i\Psi_{n,\sigma,\xi}(t)}\,dt\;+\;\Phi_{U,R}^{+}(\xi),
+\end{equation}
+with $\Psi_{n,\sigma,\xi}(t):=\sigma\theta(t)-\sigma t\log n-\xi\Theta(t)$, so $\Psi'_{n,\sigma,\xi}(t)=(\sigma-\xi)\Theta'(t)-\sigma(\log n+c)$ and $\Psi''_{n,\sigma,\xi}(t)=(\sigma-\xi)\theta''(t)$ (since $\Theta''=\theta''$). The stationary point $t^{*}_{n,\sigma}(\xi)$ satisfies $\Psi'_{n,\sigma,\xi}(t^{*})=0$, i.e.\ $\Theta'(t^{*})=(\log n+c)/(1-\sigma\xi)$, which inverts to \eqref{eq:tstar} on $J_{n,\sigma}$. For $\xi$ in the interior of $J_{n,\sigma}$ the stationary point lies in $(t_n,\infty)$ with $\Psi''_{n,\sigma,\xi}(t^{*})=(\sigma-\xi)\theta''(t^{*})\ne 0$, and classical stationary phase (\cite{Hormander}, Theorem~7.7.5) produces
+\[
+\int_{t_n}^{\Theta^{-1}(U)}\sqrt{\Theta'(t)}\,e^{i\Psi_{n,\sigma,\xi}(t)}\,dt\;=\;\sqrt{\frac{2\pi\,\Theta'(t^{*})}{|\Psi''_{n,\sigma,\xi}(t^{*})|}}\,e^{i\Psi_{n,\sigma,\xi}(t^{*})+i(\pi/4)\operatorname{sgn}\Psi''_{n,\sigma,\xi}(t^{*})}\;+\;O\!\bigl(\Theta'(t^{*})^{-1/2}\bigr),
+\]
+uniformly for $\xi$ in any compact subset of the interior of $J_{n,\sigma}$ and $U\ge t^{*}$. Using $|\sigma-\xi|=1-\sigma\xi$ on $J_{n,\sigma}$ and $\operatorname{sgn}(\sigma-\xi)=\sigma$, the leading factor is exactly $\mathcal A_{n,\sigma}(\xi)\,e^{i\varphi_{n,\sigma}(\xi)}$ in \eqref{eq:Ans}--\eqref{eq:varphins}. The $O(\Theta'(t^{*})^{-1/2})$ remainder vanishes in the mean-square limit on compact subsets of the interior of $J_{n,\sigma}$ by the IBP tail bound \eqref{eq:PhiUbd}. Passing to $U\to\infty$ in \eqref{eq:PhiUmodesum} in $L^{2}$ gives \eqref{eq:Phifactor}.
+
+For \eqref{eq:perint}: substitute $v=1-\sigma\xi$, so $\xi=\sigma(1-v)$, $d\xi=-\sigma\,dv$, $(\sigma-\xi)=\sigma v$ hence $(\sigma-\xi)^{2}=v^{2}$, $(1-\sigma\xi)=v$; the range $\xi\in J_{n,\sigma}$ becomes $v\in[r_n/\beta_n,1]$. Substituting into \eqref{eq:Ans} gives the integrand $2\pi(\log n+c)/[v^{3}\,\theta''(t^{*}(v))]$ as stated. Summability: $\int|\Phi|^{2}\,d\xi$ is finite by \eqref{eq:PhiParseval}; non-negativity of $|\mathcal A_{n,\sigma}(\xi)|^{2}\,\mathbf{1}_{J_{n,\sigma}}(\xi)+|\Phi_R(\xi)|^{2}$ and Tonelli's theorem reduce the $(n,\sigma)$ sum and the $\xi$-integral to a single integration of a non-negative function, whose total equals $\|\Phi\|_{L^{2}}^{2}$.
+\end{proof}
+
 \section{Entire Extension and Laguerre--P\'olya Membership}
 
 \begin{corollary}[Entire extension of exponential type $\le 1$]\label{cor:PW}
@@ -393,6 +439,18 @@ The zero set of $\zeta$ on the critical line $\{\Re s=\tfrac{1}{2}\}$, counted w
 
 \begin{proof}
 For $t\in\mathbb{R}$, $|e^{i\theta(t)}|=1$, so $e^{i\theta(t)}$ is a nonzero complex number; hence $\zeta(\tfrac{1}{2}+it)=e^{-i\theta(t)}Z(t)$ gives $\zeta(\tfrac{1}{2}+it)=0 \iff Z(t)=0$, with matching orders of vanishing at every $t\in\mathbb{R}$ (multiplication by the non-vanishing real-analytic factor $e^{-i\theta(t)}$ does not alter the order of a zero of the real-analytic factor $Z(t)$ at a real point). Corollary~\ref{cor:Zreal} identifies the real zero set of $Z$ with $\Theta^{-1}$ applied to the zero set of $Y$. The map $t\mapsto\tfrac{1}{2}+it$ is a bijection $\mathbb{R}\to\{\Re s=\tfrac{1}{2}\}$. Composing gives the stated identification.
+\end{proof}
+
+\begin{corollary}[Spectral reconstruction of $\zeta$ on the critical line]\label{cor:Zeta-recon}
+For every $t\in\mathbb R$,
+\begin{equation}\label{eq:Zeta-recon}
+\zeta(\tfrac{1}{2}+it)\;=\;e^{-i\theta(t)}\,\sqrt{\Theta'(t)}\,\int_{-1}^{1}e^{i\xi\,\Theta(t)}\,d\Phi(\xi),
+\end{equation}
+where $d\Phi$ is the spectral measure from Corollary~\ref{cor:cramer} with the per-mode factorization \eqref{eq:Phifactor}.
+\end{corollary}
+
+\begin{proof}
+$\zeta(\tfrac{1}{2}+it)=e^{-i\theta(t)}Z(t)$ on $\mathbb R$ (Introduction). $Z(t)=Y(\Theta(t))\sqrt{\Theta'(t)}$ on $\mathbb R$ by \eqref{eq:UTCreal}. $Y(u)=\int_{-1}^{1}e^{i\xi u}\,d\Phi(\xi)$ for $u\in\mathbb R$ by \eqref{eq:CramerRep}. Compose with $u=\Theta(t)$.
 \end{proof}
 
 \appendix
