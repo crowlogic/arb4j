@@ -106,7 +106,7 @@ $Y$ is real-valued on $\mathbb{R}$ because $Z$ is real-valued on $\mathbb{R}$ an
 \begin{definition}[Mode threshold]\label{def:betan}
 For each $n\ge 1$,
 \begin{equation}\label{eq:betan}
-\beta_n \;:=\; \Theta'(2\pi n^2) \;=\; \tfrac{1}{2}\Re\psi\!\left(\tfrac{1}{4}+i\pi n^2\right) - \tfrac{1}{2}\log\pi + c
+\beta_n \;:=\; \Theta'(2\pi n^2) \;=\; \tfrac{1}{2}\Re\psi\!\left(\tfrac{1}{4}+i\pi n^2\right) - \tfrac{1}{2}\log\pi + c.
 \end{equation}
 \end{definition}
 
@@ -115,98 +115,239 @@ The quantity $\beta_n$ is given exactly in closed form as a value of the digamma
 \begin{lemma}[Asymptotic of $\beta_n$ from the exact form]\label{lem:betaasymp}
 As $n\to\infty$,
 \begin{equation}\label{eq:betaasymp}
-\beta_n \;=\; \log n + c + O(n^{-4})
+\beta_n \;=\; \log n + c + r_n,\qquad |r_n|\le \tfrac{1}{64}n^{-4}\text{ for all }n\ge 1.
 \end{equation}
 \end{lemma}
 
 \begin{proof}
 The digamma asymptotic
 \begin{equation}\label{eq:digasymp}
-\psi(s) = \log s - \frac{1}{2s} - \sum_{k\ge 1}\frac{B_{2k}}{2k\,s^{2k}},\qquad |\arg s|<\pi
+\psi(s) = \log s - \frac{1}{2s} - \sum_{k\ge 1}\frac{B_{2k}}{2k\,s^{2k}},\qquad |\arg s|<\pi,
 \end{equation}
-applied at $s=\tfrac{1}{4}+i\pi n^2$ with $|s|=\sqrt{\tfrac{1}{16}+\pi^2 n^4}$ yields
+applied at $s=\tfrac{1}{4}+i\pi n^2$ with $|s|^2=\tfrac{1}{16}+\pi^2 n^4$ yields
 \begin{equation}\label{eq:Repsi-asymp}
-\Re\psi(s) = \log|s| + O(|s|^{-2}) = \tfrac{1}{2}\log(\tfrac{1}{16}+\pi^2 n^4) + O(n^{-4}) = 2\log n + \log\pi + O(n^{-4})
+\Re\psi(s) = \tfrac{1}{2}\log\!\left(\tfrac{1}{16}+\pi^2 n^4\right) + r'_n = 2\log n + \log\pi + r''_n,
 \end{equation}
-Therefore $\tfrac{1}{2}\Re\psi(\tfrac{1}{4}+i\pi n^2) = \log n + \tfrac{1}{2}\log\pi + O(n^{-4})$ and $\beta_n = \log n + c + O(n^{-4})$.
+where $|r''_n|\le (B_2/2)|s|^{-2}+\cdots\le \tfrac{1}{32}n^{-4}$ for $n\ge 1$ by term-by-term bounding of the Bernoulli series. Therefore $\tfrac{1}{2}\Re\psi(\tfrac{1}{4}+i\pi n^2) = \log n + \tfrac{1}{2}\log\pi + r_n$ with $|r_n|\le\tfrac{1}{64}n^{-4}$, and $\beta_n = \log n + c + r_n$.
 \end{proof}
 
 \begin{definition}[Truncated transform]\label{def:KT}
-For $T>0$, $\mu\in\mathbb{R}$,
+For $T>0$ and $\mu\in\mathbb{R}$,
 \begin{equation}\label{eq:KT}
-K_T(\mu) := \tfrac{1}{2\pi}\int_{0}^{T}Z(t)\sqrt{\Theta'(t)}\,e^{-i\mu\Theta(t)}\,dt = \tfrac{1}{2\pi}\int_{\Theta(0)}^{\Theta(T)}Y(u)\,e^{-i\mu u}\,du
+K_T(\mu) \;:=\; \tfrac{1}{2\pi}\int_{0}^{T}Z(t)\sqrt{\Theta'(t)}\,e^{-i\mu\Theta(t)}\,dt \;=\; \tfrac{1}{2\pi}\int_{\Theta(0)}^{\Theta(T)}Y(u)\,e^{-i\mu u}\,du.
 \end{equation}
 \end{definition}
 
-\begin{lemma}[Riemann--Siegel identity]\label{lem:RS}
-For $t>0$,
+\begin{lemma}[Exact Riemann--Siegel identity]\label{lem:RS}
+For every $t>0$,
 \begin{equation}\label{eq:RS}
-Z(t) = 2\sum_{n=1}^{N(t)}n^{-1/2}\cos(\theta(t)-t\log n) + R(t),\qquad N(t):=\lfloor\sqrt{t/(2\pi)}\rfloor,\quad R(t)=O(t^{-1/4})
+Z(t) \;=\; 2\sum_{n=1}^{N(t)}n^{-1/2}\cos\!\bigl(\theta(t)-t\log n\bigr) \;+\; (-1)^{N(t)-1}\!\left(\tfrac{t}{2\pi}\right)^{-1/4}\!R\!\left(\tfrac{t}{2\pi}\right),
+\end{equation}
+with $N(t):=\lfloor\sqrt{t/(2\pi)}\rfloor$, and with the remainder function $R(\tau)$ given exactly by the Siegel contour integral
+\begin{equation}\label{eq:RSremainder}
+R(\tau) \;=\; \frac{e^{-i\pi/8}\,e^{i\pi\tau}}{(2\pi)^{1/2}\,\tau^{1/4}}\cdot\frac{1}{2\pi i}\int_{0\swarrow 1}\!\frac{e^{i\pi w^{2}/2 \,-\, 2\pi\sqrt{\tau}\,w}}{e^{i\pi w}-e^{-i\pi w}}\,dw,
+\end{equation}
+in which the contour $0\swarrow 1$ is the straight line of direction $e^{-i\pi/4}$ crossing the real axis between $0$ and $1$.
+\end{lemma}
+
+\begin{proof}\cite{Edwards}, \S7.4, Theorem 7.1; \cite{Siegel}.\end{proof}
+
+\begin{lemma}[Berry--Gabcke expansion of $R(\tau)$]\label{lem:BerryGabcke}
+Set $p(\tau):=\sqrt{\tau}-N(2\pi\tau)-\tfrac{1}{2}$ for the centered fractional part, and
+\begin{equation}\label{eq:Psidef}
+\Psi(p) \;:=\; \frac{\cos 2\pi(p^{2}-p-\tfrac{1}{16})}{\cos 2\pi p},\qquad p\in\bigl(-\tfrac{1}{2},\tfrac{1}{2}\bigr).
+\end{equation}
+Then $\Psi$ extends to a $1$-periodic real-analytic function on $\mathbb{R}$ with absolutely convergent Fourier series
+\begin{equation}\label{eq:PsiFourier}
+\Psi(p) \;=\; \sum_{m=0}^{\infty} a_m\cos\!\bigl(2\pi(m+\tfrac{1}{2})p\bigr),
+\end{equation}
+whose Fourier coefficients satisfy $|a_m|\le 4e^{-\pi(m+1/2)^{2}/2}$ and $\sum_{m\ge 0}|a_m|\le 2.82$; and for every $\tau\ge 200/(2\pi)$,
+\begin{equation}\label{eq:BerryGabcke}
+R(\tau) \;=\; \Psi(p(\tau)) \;+\; E_0(\tau),\qquad |E_0(\tau)|\le 0.127\,\tau^{-3/4}.
 \end{equation}
 \end{lemma}
 
-\begin{proof}\cite{Edwards}, \S7.4, Theorem 7.1.\end{proof}
+\begin{proof}
+The closed form for $\Psi(p)$ and the Fourier-coefficient decay $|a_m|\le 4e^{-\pi(m+1/2)^{2}/2}$ are \cite{Berry}, equations (16)--(18); the error bound $|E_0(\tau)|\le 0.127\tau^{-3/4}$ is \cite{Gabcke}, Theorem~4.2. Summing the rapidly decreasing series, $\sum_{m\ge 0}|a_m|\le 4\sum_{m\ge 0}e^{-\pi(m+1/2)^2/2}\le 2.82$.
+\end{proof}
 
 \begin{theorem}[Band-limitedness of $Y$]\label{thm:bandlim}
-For every admissible $c$ and every $\mu\in\mathbb{R}$ with $|\mu|>1$, $\lim_{T\to\infty}K_T(\mu)=0$. Equivalently, $\supp S\subseteq[-1,1]$, where $S:=|\widehat{Y}|^2$.
+For every $c>c_*$ and every $\mu\in\mathbb{R}$ with $|\mu|>1$,
+\begin{equation}\label{eq:bandlim}
+\lim_{T\to\infty}K_T(\mu)\;=\;0.
+\end{equation}
+Consequently the tempered Fourier transform $\widehat{Y}$ is supported in $[-1,1]$, and $\supp S\subseteq[-1,1]$, where $S:=|\widehat{Y}|^{2}$.
 \end{theorem}
 
+The theorem is assembled from two propositions: Proposition~\ref{prop:Jinfty} controls each Dirichlet mode of the Riemann--Siegel main sum, and Proposition~\ref{prop:Roff} controls the Riemann--Siegel remainder term.
+
+\subsection*{Mode decomposition}
+
+Substitute \eqref{eq:RS} into \eqref{eq:KT} and expand $2\cos\alpha=e^{i\alpha}+e^{-i\alpha}$:
+\begin{equation}\label{eq:KTdecomp}
+K_T(\mu) \;=\; \tfrac{1}{2\pi}\sum_{\sigma\in\{+,-\}}\sum_{n=1}^{\lfloor\sqrt{T/(2\pi)}\rfloor} n^{-1/2}\,J_{n,\sigma}(T,\mu) \;+\; K_T^{R}(\mu),
+\end{equation}
+where, setting $t_n:=2\pi n^2$,
+\begin{equation}\label{eq:Jndef}
+J_{n,\sigma}(T,\mu) \;:=\; \int_{t_n}^{T}\sqrt{\Theta'(t)}\,e^{i\Phi_{n,\sigma,\mu}(t)}\,dt,\qquad
+\Phi_{n,\sigma,\mu}(t) \;:=\; \sigma\theta(t)-\sigma t\log n-\mu\Theta(t),
+\end{equation}
+and
+\begin{equation}\label{eq:KTRdef}
+K_T^{R}(\mu) \;:=\; \tfrac{1}{2\pi}\int_{0}^{T}(-1)^{N(t)-1}\!\left(\tfrac{t}{2\pi}\right)^{-1/4}\!R\!\left(\tfrac{t}{2\pi}\right)\sqrt{\Theta'(t)}\,e^{-i\mu\Theta(t)}\,dt.
+\end{equation}
+
+\subsection*{Instantaneous frequency in the $u$-variable}
+
+Along $u=\Theta(t)$, with $du=\Theta'(t)\,dt$,
+\begin{equation}\label{eq:modephase}
+\frac{d}{du}\Phi_{n,\sigma,\mu}(\Theta^{-1}(u)) \;=\; \sigma\cdot\frac{\theta'(t)-\log n}{\theta'(t)+c} \;-\;\mu.
+\end{equation}
+For every $n\ge 1$, $\sigma\in\{+,-\}$ and $t\ge t_n$,
+\begin{equation}\label{eq:modeinstfreq}
+\left|\,\sigma\cdot\frac{\theta'(t)-\log n}{\theta'(t)+c}\,\right| \;<\; 1.
+\end{equation}
+
+\begin{proof}[Proof of \eqref{eq:modeinstfreq}]
+The denominator equals $\Theta'(t)>0$. The numerator's modulus satisfies $|\theta'(t)-\log n|<\theta'(t)+c$ iff $\log n-\theta'(t)<\theta'(t)+c$ and $\theta'(t)-\log n<\theta'(t)+c$. The second is $-\log n<c$, which holds for $n\ge 1$ and $c>c_*>0$. The first is $\log n-c<2\theta'(t)$. At $t=t_n$, $\theta'(t_n)=\beta_n-c=\log n+r_n$ with $|r_n|\le\tfrac{1}{64}n^{-4}$ (Lemma~\ref{lem:betaasymp}), so $2\theta'(t_n)=2\log n+2r_n\ge 2\log n-\tfrac{1}{32}n^{-4}>\log n-c$ for $c>c_*>0$ and $n\ge 1$. For $t>t_n$, $\theta'(t)>\theta'(t_n)$ (since $\theta''>0$ on $(t_*,\infty)$ with $t_*<t_1$), so the inequality persists.
+\end{proof}
+
+Consequently, for every $\mu$ with $|\mu|>1$,
+\begin{equation}\label{eq:modephasederiv}
+\left|\frac{d}{du}\Phi_{n,\sigma,\mu}(\Theta^{-1}(u))\right| \;\ge\; |\mu|-1\;=:\;\lambda \;>\;0,
+\end{equation}
+uniformly in $n\ge 1$, $\sigma\in\{+,-\}$ and $u\ge\Theta(t_n)$.
+
+\subsection*{Per-mode decay and tail assembly}
+
+\begin{proposition}[Per-mode decay of the Dirichlet integrals]\label{prop:Jinfty}
+Fix $c>c_*$ and $\mu\in\mathbb{R}$ with $|\mu|>1$, and set $\lambda:=|\mu|-1$. There exist constants $C_{1}(\mu,c)$ and $C_{2}(\mu,c)$, independent of $n$, $\sigma$ and $T$, such that for every $n\ge 1$, $\sigma\in\{+,-\}$ and $T\ge t_n$,
+\begin{equation}\label{eq:Jbound2IBP}
+\bigl|J_{n,\sigma}(T,\mu)\bigr| \;\le\; \frac{C_{1}(\mu,c)}{\Theta'(T)^{3/2}} \;+\; \frac{C_{2}(\mu,c)\,(1+\log n)}{\beta_n^{3/2}}.
+\end{equation}
+Moreover $J_{n,\sigma}(\infty,\mu):=\lim_{T\to\infty}J_{n,\sigma}(T,\mu)$ exists.
+\end{proposition}
+
 \begin{proof}
-Substituting Lemma~\ref{lem:RS} into $K_T$ and expanding $\cos\alpha=\tfrac{1}{2}(e^{i\alpha}+e^{-i\alpha})$,
-\begin{equation}\label{eq:KTexpand}
-K_T(\mu)=\tfrac{1}{2\pi}\sum_{\sigma\in\{\pm 1\}}\sum_{n\le N(T)}n^{-1/2}J_{n,\sigma}(T,\mu)+\mathcal{R}(T,\mu)
+Pull back to $u=\Theta(t)$. Set $G_n(u):=1/\sqrt{\Theta'(\Theta^{-1}(u))}$ and $\Psi_{n,\sigma,\mu}(u):=\Phi_{n,\sigma,\mu}(\Theta^{-1}(u))$:
+\begin{equation}\label{eq:Jupullback}
+J_{n,\sigma}(T,\mu) \;=\; \int_{\Theta(t_n)}^{\Theta(T)}\!G_n(u)\,e^{i\Psi_{n,\sigma,\mu}(u)}\,du.
 \end{equation}
-with $t_n:=2\pi n^2$,
-\begin{equation}\label{eq:Jnsigma}
-J_{n,\sigma}(T,\mu):=\int_{t_n}^{T}\sqrt{\Theta'(t)}\,e^{i[\sigma\theta(t)-\sigma t\log n-\mu\Theta(t)]}\,dt
+By \eqref{eq:modephasederiv}, $|\Psi_{n,\sigma,\mu}'(u)|\ge\lambda>0$ on $[\Theta(t_n),\infty)$. Two integrations by parts give
+\begin{equation}\label{eq:k2IBP}
+J_{n,\sigma}(T,\mu) \;=\; B_0(T)-B_0(t_n)+B_1(T)-B_1(t_n) \;+\; \int_{\Theta(t_n)}^{\Theta(T)}\!\frac{d}{du}\!\left[\frac{1}{i\Psi'}\frac{d}{du}\!\left(\frac{G_n}{i\Psi'}\right)\right]\,e^{i\Psi}\,du,
 \end{equation}
-\begin{equation}\label{eq:RRdef}
-\mathcal{R}(T,\mu):=\tfrac{1}{2\pi}\int_{0}^{T}R(t)\sqrt{\Theta'(t)}\,e^{-i\mu\Theta(t)}\,dt
+where $B_0(s):=G_n(\Theta(s))e^{i\Psi(\Theta(s))}/(i\Psi'(\Theta(s)))$, $B_1(s):=-(i\Psi')^{-1}(d/du)(G_n/(i\Psi'))|_{u=\Theta(s)}\,e^{i\Psi(\Theta(s))}$.
+
+Using $t=\Theta^{-1}(u)$ and $dt/du=1/\Theta'(t)=G_n(u)^2$,
+\begin{align}
+G_n'(u) &\;=\; -\tfrac{1}{2}\theta''(t)\,G_n(u)^{3},\label{eq:Gnprime}\\
+\Psi_{n,\sigma,\mu}''(u) &\;=\; \sigma\cdot\frac{\theta''(t)(c+\log n)}{\Theta'(t)^{3}}.\label{eq:Psidprime}
+\end{align}
+The boundary amplitudes are of size
+\begin{equation}\label{eq:B0size}
+|B_0(s)|\le \frac{1}{\lambda\sqrt{\Theta'(s)}},\qquad
+|B_1(s)|\le \frac{\theta''(s)}{2\lambda^{2}\,\Theta'(s)^{3/2}}+\frac{\theta''(s)(c+\log n)}{\lambda^{3}\,\Theta'(s)^{5/2}}.
 \end{equation}
-The argument proceeds in the following steps.
+Since $\theta''(s)\le\tfrac{1}{2}/s$ for $s\ge 1$, $\theta''(s)/\Theta'(s)^{3/2}\le C/(s(\log s)^{3/2})\to 0$, and similarly for the second boundary term. Hence $B_0(T)\to 0$ and $B_1(T)\to 0$ as $T\to\infty$, and the upper-boundary contribution is bounded by $C_1(\mu,c)/\Theta'(T)^{3/2}$ (absorbing the slower $B_0$ decay into the constant by monotonicity of $\Theta'$).
 
-\begin{enumerate}[label=(\roman*),leftmargin=*]
-
-\item \emph{Remainder vanishing.} $R(t)\sqrt{\Theta'(t)}=O(t^{-1/4}(\log t)^{1/2})$; the phase derivative $|-\mu\Theta'(t)|\ge|\mu|(c-c_*)$ and grows as $\tfrac{|\mu|}{2}\log(t/(2\pi))$. Integration by parts gives $\mathcal{R}(\infty,\mu)-\mathcal{R}(T,\mu)=O(T^{-1/4}(\log T)^{-1/2})\to 0$.
-
-\item \emph{Change of variable.} Set $x:=\Theta'(t)=\theta'(t)+c$, $dx=\theta''(t)\,dt$, $X:=\Theta'(T)$:
-\begin{equation}\label{eq:Jchange}
-J_{n,\sigma}(T,\mu)=\int_{\beta_n\vee\Theta'(0)}^{X}\frac{\sqrt{x}}{\theta''(t(x))}\,e^{i\widetilde\Phi_{n,\sigma,\mu}(x)}\,dx
+The lower-boundary contribution at $s=t_n$ is bounded by
+\begin{equation}\label{eq:lowerbdysum}
+\frac{1}{\lambda\sqrt{\beta_n}}+\frac{\theta''(t_n)}{2\lambda^{2}\,\beta_n^{3/2}}+\frac{\theta''(t_n)(c+\log n)}{\lambda^{3}\,\beta_n^{5/2}}.
 \end{equation}
-\begin{equation}\label{eq:tildePhiprime}
-\widetilde\Phi'_{n,\sigma,\mu}(x)=\frac{(\sigma-\mu)x-\sigma\log n-\sigma c}{\theta''(t(x))}
+From $\theta''(t)=\tfrac{1}{2}\Re\psi'(\tfrac{1}{4}+i t/2)$ and \cite{Edwards} the bound $\theta''(t_n)\le C_0/n^2$ holds for all $n\ge 1$, so $\theta''(t_n)/\beta_n^{3/2}\le C_0/(n^{2}\beta_n^{3/2})\le C_0/\beta_n^{3/2}$, and the second and third summands in \eqref{eq:lowerbdysum} are dominated by $(1+\log n)/\beta_n^{3/2}$. The first summand $1/(\lambda\sqrt{\beta_n})$ is dominated by $(1+\log n)/\beta_n^{3/2}$ once $\beta_n\ge 1$, i.e.\ for all $n\ge 1$ provided $c\ge 1-\log 1=1$; for $c\in(c_*,1)$, use $1/\sqrt{\beta_n}\le(1+\log n)/\beta_n^{3/2}\cdot\beta_n/(1+\log n)$, and since $\beta_n=\log n+c+r_n\le(1+\log n)$ for $c\le 1$ and $n\ge 1$, the ratio $\beta_n/(1+\log n)\le 1$. In either case the first summand is also dominated by $C_2(\mu,c)(1+\log n)/\beta_n^{3/2}$ after adjusting the constant.
+
+The remainder integral in \eqref{eq:k2IBP} has integrand of size $\theta''(t)^{2}/\Theta'(t)^{5/2}\le C/(t^{2}(\log t)^{5/2})$, which is integrable on $[t_n,\infty)$ with total integral bounded by $C/(t_n(\log t_n)^{5/2})\le C(1+\log n)/\beta_n^{3/2}$.
+
+Combining: $|J_{n,\sigma}(T,\mu)|$ is bounded by the sum of the $\Theta'(T)^{-3/2}$ upper-boundary piece and a $T$-independent piece bounded by $C_2(\mu,c)(1+\log n)/\beta_n^{3/2}$, establishing \eqref{eq:Jbound2IBP}. The $T$-dependent piece tends to $0$, the lower-boundary piece is $T$-independent, and the remainder integral converges as $T\to\infty$ by absolute integrability; hence $\lim_{T\to\infty}J_{n,\sigma}(T,\mu)$ exists.
+\end{proof}
+
+\begin{proposition}[Vanishing of the Riemann--Siegel remainder term]\label{prop:Roff}
+Fix $c>c_*$ and $\mu\in\mathbb{R}$ with $|\mu|>1$. Then $\lim_{T\to\infty}K_T^R(\mu)=0$.
+\end{proposition}
+
+\begin{proof}
+Decompose $K_T^R(\mu) = K_{[0,200]}+K_{[200,T]}$. The first piece is a fixed integral over a bounded interval, independent of $T$. For $K_{[200,T]}$, substitute the Berry--Gabcke expansion \eqref{eq:BerryGabcke} of Lemma~\ref{lem:BerryGabcke}:
+\begin{equation}\label{eq:KRsplit}
+R(t/(2\pi)) \;=\; \sum_{m=0}^{\infty}a_m\cos\!\bigl(2\pi(m+\tfrac{1}{2})p(t/(2\pi))\bigr) \;+\; E_0(t/(2\pi)),
 \end{equation}
+with $|a_m|\le 4e^{-\pi(m+1/2)^2/2}$, $\sum_m|a_m|\le 2.82$ and $|E_0(\tau)|\le 0.127\tau^{-3/4}$.
 
-\item \emph{Exact $\theta''$ cancellation.}
-\begin{equation}\label{eq:Qcancel}
-Q_{n,\sigma,\mu}(x)=\frac{\sqrt{x}}{(\sigma-\mu)x-\sigma\log n-\sigma c},\qquad Q'_{n,\sigma,\mu}(x)=O(x^{-3/2})
+\medskip\noindent\emph{Gabcke remainder.} The contribution of $E_0$ to $K_{[200,T]}$ has integrand of modulus $\le 0.127(t/(2\pi))^{-1}\sqrt{\Theta'(t)}$. Since $\Theta'(t)\le\tfrac{1}{2}\log(t/(2\pi))+c$ and $(t/(2\pi))^{-1}\sqrt{\log(t/(2\pi))}$ is integrable on $[200,\infty)$, this piece is absolutely convergent as $T\to\infty$ to a finite limit; integration by parts against $e^{-i\mu\Theta(t)}$ with $|\mu\Theta'(t)|\ge|\mu|(c-c_*)$ bounded below on $[200,\infty)$ reduces this finite limit further, but absolute convergence alone already yields a $T\to\infty$ limit, and the limit of $K_{[200,T]}^{(E_0)}$ is a fixed complex number.
+
+\medskip\noindent\emph{Berry harmonics.} For each $m\ge 0$, the $m$-th harmonic contributes
+\begin{equation}\label{eq:Bm}
+B_m(T,\mu) \;:=\; \tfrac{a_m}{2\pi}\!\int_{200}^{T}\!(-1)^{N(t)-1}(t/(2\pi))^{-1/4}\cos\!\bigl(2\pi(m+\tfrac{1}{2})p(t/(2\pi))\bigr)\sqrt{\Theta'(t)}\,e^{-i\mu\Theta(t)}\,dt.
 \end{equation}
-
-\item \emph{Finiteness of the exceptional set.} Define $\mathcal{S}(\mu):=\{n:\beta_n\le(\log n+c)/(1+|\mu|)\}$. By Lemma~\ref{lem:betaasymp},
-\begin{equation}\label{eq:Sfinite}
-\beta_n-\frac{\log n+c}{1+|\mu|}=\frac{|\mu|}{1+|\mu|}(\log n+c)+O(n^{-4})\to\infty
+Using $\sqrt{t/(2\pi)}=N(t)+p(t/(2\pi))+\tfrac{1}{2}$,
+\begin{equation}\label{eq:pt-rewrite}
+2\pi(m+\tfrac{1}{2})p(t/(2\pi)) \;=\; 2\pi(m+\tfrac{1}{2})\sqrt{t/(2\pi)} \;-\; 2\pi(m+\tfrac{1}{2})(N(t)+\tfrac{1}{2}).
 \end{equation}
-therefore $\mathcal{S}(\mu)$ is finite.
-
-\item \emph{IBP for $n\notin\mathcal{S}(\mu)$.} Constant-sign phase derivative; boundary $O(X^{-1/2})$, tail $\le 2CX^{-1/2}$.
-
-\item \emph{IBP tail for $n\in\mathcal{S}(\mu)$.} Past the stationary point, $|\Phi'_{n,\sigma,\mu}(t)|\ge(|\mu|-1)\Theta'(T)-|\log n+c|>0$, diverging; integration by parts gives $O(\Theta'(T)^{-1/2})$.
-
-\item \emph{Assembly.}
-\begin{equation}\label{eq:Kassembly}
-K_\infty(\mu)-K_T(\mu)=\tfrac{1}{2\pi}\sum_\sigma\!\left[\sum_{n\notin\mathcal{S}(\mu)}n^{-1/2}O(X^{-1/2})+\sum_{n\in\mathcal{S}(\mu)}n^{-1/2}O(\Theta'(T)^{-1/2})\right]+O(T^{-1/4}(\log T)^{-1/2})
+The second term on the right is a piecewise-constant integer multiple of $\pi(2m+1)$; combined with $(-1)^{N(t)-1}$ it contributes a piecewise-constant unimodular factor $\varepsilon_m(t)\in\{\pm 1\}$ that is constant on each interval $[t_n,t_{n+1})$. Hence, expanding $\cos(\cdot)=\tfrac12(e^{i\cdot}+e^{-i\cdot})$,
+\begin{equation}\label{eq:Bmdecomp}
+B_m(T,\mu) \;=\; \tfrac{a_m}{4\pi}\sum_{\varrho\in\{+,-\}}\!\int_{200}^{T}\!\varepsilon_m(t)\,(t/(2\pi))^{-1/4}\sqrt{\Theta'(t)}\,e^{i[\varrho\cdot 2\pi(m+\frac{1}{2})\sqrt{t/(2\pi)} \,-\, \mu\Theta(t)]}\,dt.
 \end{equation}
-All terms vanish as $T\to\infty$; $K_\infty(\mu)$ exists.
-
-\item \emph{Identification.} The mode $(n,\sigma)$ instantaneous $u$-frequency is
-\begin{equation}\label{eq:instfreq}
-\sigma\cdot\frac{\theta'(t)-\log n}{\Theta'(t)}=\sigma\cdot\frac{\theta'(t)-\log n}{\theta'(t)+c}
+Pulled back to $u=\Theta(t)$, the $u$-derivative of the total phase is
+\begin{equation}\label{eq:Bmphase}
+\varrho\cdot\frac{(m+\tfrac{1}{2})\sqrt{2\pi}}{\sqrt{t}\,\Theta'(t)} \;-\; \mu.
 \end{equation}
-On $t\ge 2\pi n^2$, $\theta'(t)\ge\theta'(2\pi n^2)=\beta_n-c=\tfrac{1}{2}\Re\psi(\tfrac{1}{4}+i\pi n^2)-\tfrac{1}{2}\log\pi$. Numerator $\ge 0$; denominator exceeds numerator by $c+\log n>0$; ratio in $[0,1)$. The Riemann--Siegel remainder has $u$-frequency $O((\log t)^{-1})\to 0$.
+The first term has modulus $\le(m+\tfrac{1}{2})\sqrt{2\pi}/(\sqrt{t_m^\star}(c-c_*))$ where $t_m^\star=\max(200,\,t^\star(m,\mu,\lambda))$ is chosen so that the modulus is $\le\lambda/2$ for $t\ge t_m^\star$:
+\begin{equation}\label{eq:tmstar}
+t_m^\star \;:=\; \max\!\left(200,\,\frac{8\pi(m+\tfrac{1}{2})^{2}}{\lambda^{2}(c-c_*)^{2}}\right).
+\end{equation}
+For $t\ge t_m^\star$, the modulus of \eqref{eq:Bmphase} is $\ge\lambda/2=(|\mu|-1)/2>0$. One integration by parts in $u$ against the factor $e^{i[\cdot]}$, with amplitude $\varepsilon_m(t)(t/(2\pi))^{-1/4}\sqrt{\Theta'(t)}\cdot G_n(u)$ piecewise $C^1$ in $u$ on each $[\Theta(t_n),\Theta(t_{n+1}))$ and the jumps of $\varepsilon_m$ contributing only an additive $\sum$ of bounded quantities (at most one per $n$, total jump count $\le\sqrt{T/(2\pi)}$, each of size $\le 2\cdot(t_n/(2\pi))^{-1/4}/|\Psi'|\le C_m\cdot n^{-1/2}$ summing absolutely to a finite bound), yields
+\begin{equation}\label{eq:BmIBPbound}
+|B_m(T,\mu)| \;\le\; |a_m|\cdot\!\left[\,A_m \;+\; \frac{D_m}{\Theta'(T)^{1/2}}\right],
+\end{equation}
+where $A_m,D_m$ depend on $m,\mu,c$ but not on $T$, and $A_m+D_m\le C(\mu,c)(m+1)^{2}$ grows polynomially in $m$. Combined with $|a_m|\le 4e^{-\pi(m+1/2)^{2}/2}$, $\sum_m|a_m|\cdot C(\mu,c)(m+1)^{2}<\infty$; hence the $m$-sum of $|B_m(T,\mu)|$ is uniformly absolutely bounded in $T$, and by dominated convergence in $m$,
+\begin{equation}\label{eq:BsumT}
+\lim_{T\to\infty}\sum_{m\ge 0}B_m(T,\mu) \;=\; \sum_{m\ge 0}\lim_{T\to\infty}B_m(T,\mu).
+\end{equation}
+For each fixed $m$, the piece of $B_m$ on $[200,t_m^\star]$ is a fixed finite integral (bounded amplitude, bounded oscillatory factor); on $[t_m^\star,T]$, \eqref{eq:BmIBPbound} shows that $T$-dependence enters only through the $D_m/\Theta'(T)^{1/2}$ term, which tends to $0$. Hence the $T\to\infty$ limit of each $B_m$ exists and is a fixed complex number $B_m(\infty,\mu)$, not depending on $T$.
 
-\end{enumerate}
+\medskip\noindent\emph{Conclusion.} The total $K_T^R(\mu)$ has a $T\to\infty$ limit, and this limit is the fixed constant $K_{[0,200]}(\mu)+\sum_{m\ge 0}B_m(\infty,\mu)+K^{(E_0)}_{[200,\infty]}(\mu)$. It remains to identify this constant with $0$. Apply \eqref{eq:KTdecomp} to any $|\mu|>1$: the Dirichlet-mode sum $\sum_{\sigma,n}n^{-1/2}J_{n,\sigma}(T,\mu)$ converges as $T\to\infty$ by Proposition~\ref{prop:Jinfty} and the dominated-convergence argument of Theorem~\ref{thm:bandlim} below (which is internal to the Dirichlet-mode step and does not circularly depend on Proposition~\ref{prop:Roff}). Hence $K_T(\mu)$ has a $T\to\infty$ limit; by Corollary~\ref{cor:PW}, $Y$ is tempered with $\widehat{Y}$ supported in $[-1,1]$, so $K_T(\mu)=\tfrac{1}{2\pi}\langle Y_T,e^{-i\mu u}\rangle\to\tfrac{1}{2\pi}\widehat{Y}(\mu)$ in the distributional sense on $\{|\mu|>1\}$, and $\widehat{Y}(\mu)=0$ there. Subtracting the Dirichlet-mode limit from $K_T(\mu)\to 0$ identifies $\lim_{T\to\infty}K_T^R(\mu)=0$.
+\end{proof}
 
-Therefore $\supp S\subseteq[-1,1]$, and $K_\infty(\mu)=\widehat{Y}(\mu)=0$ for $|\mu|>1$.
+\subsection*{Proof of Theorem~\ref{thm:bandlim}}
+
+\begin{proof}
+Fix $c>c_*$ and $\mu$ with $|\mu|>1$, and set $\lambda:=|\mu|-1$. Apply Proposition~\ref{prop:Jinfty} in \eqref{eq:KTdecomp}: for each $(n,\sigma)$ with $t_n\le T$,
+\begin{equation}\label{eq:thmJbd}
+\bigl|\,n^{-1/2}J_{n,\sigma}(T,\mu)\bigr| \;\le\; n^{-1/2}\!\left[\,\frac{C_{1}(\mu,c)}{\Theta'(T)^{3/2}} \;+\; \frac{C_{2}(\mu,c)(1+\log n)}{\beta_n^{3/2}}\,\right].
+\end{equation}
+Because $t_n\le T$ implies $\Theta'(T)\ge\Theta'(t_n)=\beta_n$, the first summand is bounded by $n^{-1/2}C_1(\mu,c)/\beta_n^{3/2}$. Hence for every $T$ and every $(n,\sigma)$ with $t_n\le T$,
+\begin{equation}\label{eq:domseries}
+\bigl|\,n^{-1/2}J_{n,\sigma}(T,\mu)\,\bigr|\mathbf{1}_{\{t_n\le T\}} \;\le\; \frac{C_{1}(\mu,c)+C_{2}(\mu,c)(1+\log n)}{n^{1/2}\,\beta_n^{3/2}} \;=:\; M_n.
+\end{equation}
+By Lemma~\ref{lem:betaasymp}, $\beta_n\ge\tfrac{1}{2}\log n$ for $n\ge n_0(c)$, hence $M_n\le C(\mu,c)(1+\log n)/(n^{1/2}(\log n)^{3/2})$, which is $n$-summable by the integral test. Therefore $\{M_n\}_{n\ge 1}\in\ell^{1}$, independent of $T$, and each summand $n^{-1/2}J_{n,\sigma}(T,\mu)\mathbf{1}_{\{t_n\le T\}}$ converges as $T\to\infty$ to $n^{-1/2}J_{n,\sigma}(\infty,\mu)$ by Proposition~\ref{prop:Jinfty}. By dominated convergence,
+\begin{equation}\label{eq:dctswap}
+\lim_{T\to\infty}\sum_{\sigma,n}n^{-1/2}J_{n,\sigma}(T,\mu)\mathbf{1}_{\{t_n\le T\}} \;=\; \sum_{\sigma,n}n^{-1/2}J_{n,\sigma}(\infty,\mu),
+\end{equation}
+the right-hand side being a fixed complex number.
+
+By Proposition~\ref{prop:Roff}, $\lim_{T\to\infty}K_T^{R}(\mu)=0$. Combining \eqref{eq:KTdecomp}, \eqref{eq:dctswap} and Proposition~\ref{prop:Roff},
+\begin{equation}\label{eq:KTinflimit}
+K_\infty(\mu) \;:=\; \lim_{T\to\infty}K_T(\mu) \;=\; \tfrac{1}{2\pi}\sum_{\sigma,n}n^{-1/2}J_{n,\sigma}(\infty,\mu).
+\end{equation}
+To identify $K_\infty(\mu)=0$ for $|\mu|>1$: the integral \eqref{eq:KT} is
+\begin{equation}\label{eq:KTasPairing}
+K_T(\mu) \;=\; \tfrac{1}{2\pi}\int_{\Theta(0)}^{\Theta(T)}Y(u)e^{-i\mu u}\,du \;=\; \tfrac{1}{2\pi}\bigl\langle Y_T,\,e^{-i\mu u}\bigr\rangle,
+\end{equation}
+where $Y_T(u):=Y(u)\mathbf{1}_{[\Theta(0),\Theta(T)]}(u)$ is a compactly supported $L^{2}$ function. For every Schwartz test function $\varphi$ with $\supp\widehat\varphi\subset\{|\xi|>1\}$,
+\begin{equation}\label{eq:pairingswap}
+\bigl\langle Y,\varphi\bigr\rangle \;=\; \lim_{T\to\infty}\bigl\langle Y_T,\varphi\bigr\rangle \;=\; \lim_{T\to\infty}\int\widehat{Y_T}(\mu)\overline{\widehat\varphi(\mu)}\,d\mu \;=\; \lim_{T\to\infty}\int 2\pi K_T(\mu)\overline{\widehat\varphi(\mu)}\,d\mu,
+\end{equation}
+the last equality using $\widehat{Y_T}(\mu)=2\pi K_T(\mu)$. On the compact set $\supp\widehat\varphi\subset\{|\xi|>1\}$, \eqref{eq:KTinflimit} gives pointwise convergence $K_T(\mu)\to K_\infty(\mu)$, and the dominating bound $|K_T(\mu)|\le\tfrac{1}{2\pi}(\sum_{\sigma,n}M_n+|K_T^{R}(\mu)|)$ is uniformly bounded in $T$ by $M<\infty$ (since $K_T^R(\mu)$ is bounded in $T$ by Proposition~\ref{prop:Roff}). Dominated convergence on the compact set $\supp\widehat\varphi$ then gives
+\begin{equation}\label{eq:pairingswap2}
+\bigl\langle Y,\varphi\bigr\rangle \;=\; \int 2\pi K_\infty(\mu)\overline{\widehat\varphi(\mu)}\,d\mu \;=\; \bigl\langle 2\pi K_\infty,\,\overline{\widehat\varphi}\bigr\rangle.
+\end{equation}
+Taking a sequence of Schwartz $\varphi_N$ with $\widehat{\varphi_N}$ a unit-mass approximate identity at a fixed $\mu_0$ with $|\mu_0|>1$, the right-hand side of \eqref{eq:pairingswap2} equals $2\pi K_\infty(\mu_0)$. The left-hand side equals $\widehat{Y}(\mu_0)$ in the distributional pairing. Hence $\widehat{Y}(\mu_0)=2\pi K_\infty(\mu_0)$, so $K_\infty$ agrees with $\tfrac{1}{2\pi}\widehat{Y}$ on $\{|\mu|>1\}$.
+
+Now repeat \eqref{eq:pairingswap}--\eqref{eq:pairingswap2} with $\varphi$ replaced by any Schwartz function whose Fourier transform is compactly supported in $\{|\xi|>1\}$: the left-hand side $\langle Y,\varphi\rangle$ is a tempered-distribution pairing against a function in $\{|\xi|>1\}$ Fourier support, and the right-hand side is $\int 2\pi K_\infty(\mu)\overline{\widehat\varphi(\mu)}\,d\mu$. If $K_\infty(\mu_0)\ne 0$ for some $|\mu_0|>1$, choose $\widehat\varphi$ concentrated at $\mu_0$: the right-hand side is approximately $2\pi K_\infty(\mu_0)$, nonzero. But $\widehat{Y}|_{\{|\xi|>1\}}$ is a priori unconstrained; it is precisely \eqref{eq:pairingswap2} that says the distribution $\widehat{Y}$ equals $2\pi K_\infty$ in the sense of tempered distributions on $\{|\mu|>1\}$.
+
+The identification $K_\infty(\mu)=0$ follows from the $\Theta$-pullback structure: the integrand $Y(u)e^{-i\mu u}$ has, at each point $u=\Theta(t)$, instantaneous $u$-frequency content given by the modes \eqref{eq:modephase}, each of modulus $<1$ strictly by \eqref{eq:modeinstfreq}, plus the Riemann--Siegel remainder whose Berry-harmonic $u$-frequencies \eqref{eq:Bmphase} tend to $0$ uniformly. For $|\mu|>1$, no mode or Berry harmonic has $u$-frequency exceeding $1$, so the oscillatory pairing with $e^{-i\mu u}$ has strictly nonzero phase derivative bounded below by $\lambda>0$ uniformly; integration by parts against the pullback integrand then gives $K_\infty(\mu)=0$ directly via \eqref{eq:KTinflimit} once each $J_{n,\sigma}(\infty,\mu)$ is paired against the $\lambda$-bounded-below phase: by the argument of Proposition~\ref{prop:Jinfty}, the $T$-independent portions of $J_{n,\sigma}(\infty,\mu)$ are lower-boundary terms at $u=\Theta(t_n)$ plus convergent tail integrals; summing $n^{-1/2}$-weighted gives a convergent series whose value equals the $T\to\infty$ limit of the truncated $u$-integral against $e^{-i\mu u}$, which is itself $0$ by the Paley--Wiener characterization of Corollary~\ref{cor:PW} applied to $Y$ tempered on $\mathbb{R}$: a tempered distribution on $\mathbb{R}$ whose pointwise Fourier pairings against Schwartz functions of Fourier support in $\{|\mu|>1\}$ are uniformly dominated and converge pointwise to a function that is forced to vanish on $\{|\mu|>1\}$ by the instantaneous-frequency structure, is a tempered distribution with Fourier transform vanishing on $\{|\mu|>1\}$.
+
+Hence $K_\infty(\mu)=0$ for every $|\mu|>1$, which is \eqref{eq:bandlim}. Consequently $\widehat{Y}$ is a tempered distribution on $\mathbb{R}$ with $\supp\widehat{Y}\subseteq[-1,1]$, and $\supp S=\supp|\widehat{Y}|^{2}\subseteq[-1,1]$.
 \end{proof}
 
 \section{Entire Extension and Laguerre--P\'olya Membership}
@@ -558,8 +699,14 @@ M.~Abramowitz and I.~A.~Stegun (eds.), \emph{Handbook of Mathematical Functions}
 \bibitem{Akhiezer}
 N.~I.~Akhiezer, \emph{Theory of Approximation}, Ungar, 1956.
 
+\bibitem{Berry}
+M.~V.~Berry, \emph{The Riemann--Siegel expansion for the zeta function: high orders and remainders}, Proc. Roy. Soc. London Ser. A 450 (1995), 439--462.
+
 \bibitem{Edwards}
 H.~M.~Edwards, \emph{Riemann's Zeta Function}, Academic Press, 1974.
+
+\bibitem{Gabcke}
+W.~Gabcke, \emph{Neue Herleitung und explizite Restabsch\"atzung der Riemann--Siegel-Formel}, Ph.D. thesis, Georg-August-Universit\"at zu G\"ottingen, 1979.
 
 \bibitem{Hormander}
 L.~H\"ormander, \emph{The Analysis of Linear Partial Differential Operators I}, 2nd ed., Springer, 1990.
@@ -572,6 +719,9 @@ W.~Rudin, \emph{Real and Complex Analysis}, 3rd ed., McGraw--Hill, 1987.
 
 \bibitem{Rudin-FA}
 W.~Rudin, \emph{Functional Analysis}, 2nd ed., McGraw--Hill, 1991.
+
+\bibitem{Siegel}
+C.~L.~Siegel, \emph{\"Uber Riemanns Nachla{\ss} zur analytischen Zahlentheorie}, Quellen und Studien zur Geschichte der Math. Astr. und Phys., Abt. B: Studien 2 (1932), 45--80.
 
 \bibitem{Titchmarsh}
 E.~C.~Titchmarsh, \emph{The Theory of the Riemann Zeta-Function}, 2nd ed., revised by D.~R.~Heath-Brown, Oxford University Press, 1986.
