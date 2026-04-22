@@ -175,7 +175,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
                                                    expression.coDomainType,
                                                    expression.functionClass,
                                                    null,
-                                                   false);
+                                                   true);
 
     // If the order variable isn't α, rename α to match (e.g. β)
     if (order instanceof VariableNode<D, R, F> orderVar && !"α".equals(orderVar.getName()))

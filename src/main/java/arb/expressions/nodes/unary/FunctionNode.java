@@ -534,13 +534,12 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return new ZetaJetNode<>(expression, arg, 1, state);
     }
     default:
-      return new DerivativeNode<>(expression,
-                                  this);
-//      throw new UnsupportedOperationException("Derivative not implemented for function: "
-//                                              + functionName
-//                                              + " in expression '"
-//                                              + expression
-//                                              + "'");
+      throw new UnsupportedOperationException("Derivative not implemented for builtin function: "
+                                              + functionName
+                                              + " in expression '"
+                                              + expression
+                                              + "'. Register the function in the context with a name prefix "
+                                              + "(e.g. \"P:v->...\" instead of \"v->...\") so it can be differentiated symbolically.");
     }
   }
 
@@ -572,7 +571,20 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     setFunctionContext(instance);
 
-    var    derivative             = instance.derivative();
+    var derivative = instance.derivative();
+
+    if (derivative == null)
+    {
+      // instance.derivative() is not implemented for this compiled function
+      // (default Function.derivative() returns null). Fall back to symbolic
+      // differentiation of the expression body if available.
+      if (functionMapping.expression != null)
+      {
+        return functionMapping.expression.rootNode.spliceInto(expression).derivative().simplify();
+      }
+      return new DerivativeNode<>(expression,
+                                  this);
+    }
 
     String derivativeFunctionName = derivative.getName();
     assert derivativeFunctionName != null : "derivativeFunctionName is null for instance " + instance + ": TODO: use the " + derivative + " directly";
