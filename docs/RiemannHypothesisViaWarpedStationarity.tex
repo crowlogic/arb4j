@@ -36,23 +36,32 @@ spectral measure extends $Y$ to an entire function of exponential type $\le 1$
 with $|Y(z)|\le\sqrt{2}\,e^{|\Im z|}$; the Akhiezer--Laguerre--P\'olya criterion
 then places $Y$ in the Laguerre--P\'olya class, so every complex zero of $Y$ is real.
 For a nontrivial zero $\rho=\beta+i\gamma$ of $\zeta$ with $\beta\in(0,\tfrac12]$
-(using $\rho\mapsto 1-\bar\rho$), parametrize the vertical segment by
-$t(s):=\gamma+is$, $s\in\mathbb C$, and set $F(s):=Z(t(s))$ and $G(s):=\sqrt{\Theta'(t(s))}\,Y(\Theta(t(s)))$,
-which are holomorphic on a connected open set $N\subset\mathbb C$ containing both
-the real segment $[0,\tfrac12-\beta]$ and an interval of the imaginary axis
-$\{ir:|r|<\varepsilon\}$.
-On the imaginary axis, $t(ir)=\gamma-r\in\mathbb R$, and Lemma~\ref{lem:Zfact}
-gives $F(ir)=Z(\gamma-r)=\sqrt{\Theta'(\gamma-r)}\,Y(\Theta(\gamma-r))=G(ir)$.
-The 1D identity theorem on $N$ yields $F\equiv G$, and evaluating at
-$s=\tfrac12-\beta$ gives $Z(t_\rho)=\sqrt{\Theta'(t_\rho)}\,Y(\Theta(t_\rho))$
-where $t_\rho:=\gamma+i(\tfrac12-\beta)$.
-Since $\tfrac12+it_\rho=\rho$, $Z(t_\rho)=0$; with $\sqrt{\Theta'(t_\rho)}\ne 0$,
-$Y(\Theta(t_\rho))=0$; reality of zeros of $Y$ gives $\Theta(t_\rho)\in\mathbb R$;
-a direct computation of $\Im\Theta(t_\rho)=\int_0^{\tfrac12-\beta}\Re\Theta'(\gamma+is)\,ds$,
-combined with $\Re\Theta'(\gamma+is)\ge c-m_\rho>0$ along the segment
-(for $c>\max(c_*,m_\rho)$ with $m_\rho:=-\inf_{s\in[0,\tfrac12-\beta]}\Re\vartheta'(\gamma+is)$
-finite by continuity of $\vartheta'$ on the compact vertical segment inside the
-holomorphy domain), yields $\tfrac12-\beta=0$.
+(using $\rho\mapsto 1-\bar\rho$), define for $s$ in the connected open strip
+$N=\{s\in\mathbb C:|\Re s|<\tfrac12\}$ the two holomorphic functions
+$F(s):=Z(\gamma+is)$ and
+$G(s):=\sqrt{\Theta'(\gamma+is)}\,Y(\Theta(\gamma+is))$,
+with $\sqrt{\cdot}$ the principal branch.
+The finite number
+$M:=-\inf_{s\in[0,\tfrac12-\beta]}\Re\vartheta'(\gamma+is)$
+exists because $\vartheta'$ is continuous on the compact vertical segment
+$\{\gamma+is:s\in[0,\tfrac12-\beta]\}$ lying inside the holomorphy domain
+$\{|\Im t|<\tfrac12\}$ of $\vartheta$; choosing any $c>\max(c_*,M)$ makes
+$\Re\Theta'(\gamma+is)\ge c-M>0$ along the segment.
+On the open imaginary interval $\{ir:|r|<\varepsilon\}$, $\gamma+i\cdot ir=\gamma-r\in\mathbb R$
+and Lemma~\ref{lem:Zfact} gives $F(ir)=G(ir)$.
+The 1D identity theorem on the connected open component of $N$ on which both are
+defined yields $F\equiv G$, and evaluation at $s=\tfrac12-\beta$ gives
+\[
+Z(\gamma+i(\tfrac12-\beta))=\sqrt{\Theta'(\gamma+i(\tfrac12-\beta))}\;Y(\Theta(\gamma+i(\tfrac12-\beta))).
+\]
+Since $\tfrac12+i(\gamma+i(\tfrac12-\beta))=\rho$, the left side is $0$; the
+principal-branch factor is nonzero; reality of zeros of $Y$ gives
+$\Theta(\gamma+i(\tfrac12-\beta))\in\mathbb R$; and
+\[
+\Im\Theta(\gamma+i(\tfrac12-\beta))=\int_0^{\tfrac12-\beta}\Re\Theta'(\gamma+is)\,ds
+\ge(\tfrac12-\beta)(c-M)
+\]
+combined with $c-M>0$ gives $\tfrac12-\beta=0$.
 \end{abstract}
 
 \section{Introduction}
@@ -85,36 +94,46 @@ $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ for every real $t$.
 $\eta\in\mathbb R$ and Bochner's theorem delivers a finite non-negative spectral
 measure $\mu_Y$; a single integration by parts on the Riemann--Siegel mode
 expansion, in which the $\vartheta''$ terms cancel algebraically
-($Q_{n,\sigma,\mu}(u)$ is a rational function of $x=\Theta'(t(u))$ alone), gives
-$\operatorname{supp}\mu_Y\subseteq[-1,1]$.
+($Q_{n,\sigma,\mu}(u)$ is a rational function of $x=\Theta'(\Theta^{-1}(u))$ alone),
+gives $\operatorname{supp}\mu_Y\subseteq[-1,1]$.
 \item \emph{Paley--Wiener + Akhiezer.} The Paley--Wiener theorem for time-average
 WSS functions extends $Y$ to an entire function of exponential type $\le 1$ with
 $|Y(z)|\le\sqrt{2}\,e^{|\Im z|}$, and the Akhiezer--Laguerre--P\'olya criterion
 places $Y$ in the Laguerre--P\'olya class, so every complex zero of $Y$ is real.
 \item \emph{Segment transport.} $Z$ is holomorphic on
-$\Omega=\{|\Im t|<\tfrac12\}$ (the $\zeta$-pole at $s=1$ corresponds to $t=-i/2$,
-which is on $\partial\Omega$, not in $\Omega$).
-With $t(s):=\gamma+is$ and a single admissible $c$ depending on $\rho$,
-the functions $F(s):=Z(t(s))$ and $G(s):=\sqrt{\Theta'(t(s))}\,Y(\Theta(t(s)))$
-are both holomorphic on a connected open subset $N'$ of the vertical strip
-$\{|\Re s|<\tfrac12\}$ containing the real segment $[0,\tfrac12-\beta]$ and an
-open imaginary interval $\{ir:|r|<\varepsilon\}$.
-On that imaginary interval $t(ir)=\gamma-r\in\mathbb R$, so Lemma~\ref{lem:Zfact}
-at the real point $\gamma-r$ gives $F(ir)=G(ir)$; the 1D identity theorem on
-the connected open $N'\subset\mathbb C$ propagates the equality to every $s\in N'$,
-including $s=\tfrac12-\beta$, giving
-$Z(t_\rho)=\sqrt{\Theta'(t_\rho)}\,Y(\Theta(t_\rho))$ with $t_\rho=\gamma+i(\tfrac12-\beta)$.
-Since $Z(t_\rho)=0$ and $\sqrt{\Theta'(t_\rho)}\ne 0$, $Y(\Theta(t_\rho))=0$,
-so $\Theta(t_\rho)\in\mathbb R$; the integral representation of
-$\Im\Theta(t_\rho)$ along the real segment, strictly positive unless
-$\tfrac12-\beta=0$, gives $\beta=\tfrac12$.
+$\Omega=\{t\in\mathbb C:|\Im t|<\tfrac12\}$ (the $\zeta$-pole at argument $1$
+corresponds to $t=-i/2\in\partial\Omega\setminus\Omega$).
+With $s\in\mathbb C$ a new complex variable (distinct from the real/complex
+variable $t$ of $Z$), define on the connected open strip
+$N=\{s\in\mathbb C:|\Re s|<\tfrac12\}$
+\[
+F(s):=Z(\gamma+is),
+\qquad
+G(s):=\sqrt{\Theta'(\gamma+is)}\;Y(\Theta(\gamma+is)).
+\]
+For $s=ir$ with small $|r|$, $\gamma+is=\gamma-r\in\mathbb R$, and the pointwise
+real-line identity $Z=\sqrt{\Theta'}\,Y\circ\Theta$ gives $F(ir)=G(ir)$.
+The 1D identity theorem on the connected open component of $N$ on which
+$\Theta'(\gamma+is)\notin(-\infty,0]$ propagates the equality from the imaginary
+interval to $s=\tfrac12-\beta$:
+\[
+Z(\gamma+i(\tfrac12-\beta))=\sqrt{\Theta'(\gamma+i(\tfrac12-\beta))}\;Y(\Theta(\gamma+i(\tfrac12-\beta))).
+\]
+$\tfrac12+i(\gamma+i(\tfrac12-\beta))=\rho$ gives $Z(\gamma+i(\tfrac12-\beta))=0$;
+the $\sqrt{\cdot}$ factor is nonzero; so $Y(\Theta(\gamma+i(\tfrac12-\beta)))=0$
+and $\Theta(\gamma+i(\tfrac12-\beta))\in\mathbb R$ by reality of zeros of $Y$; and
+$\Im\Theta(\gamma+i(\tfrac12-\beta))=\int_0^{\tfrac12-\beta}\Re\Theta'(\gamma+is)\,ds\ge(\tfrac12-\beta)(c-M)$,
+combined with $c-M>0$, gives $\beta=\tfrac12$.
 \end{enumerate}
 
-No strip of holomorphy is used beyond the compact vertical segment, no 2D
-neighborhood is required, and the choice of shift $c$ is explicit: it exceeds
-the finite quantity $m_\rho:=-\inf_{s\in[0,\tfrac12-\beta]}\Re\vartheta'(\gamma+is)$,
-which is finite by continuity of $\vartheta'$ on the compact segment inside the
-holomorphy domain $\Omega$.
+No 2D neighborhood of $\Omega$ is used; the only complex extension of $Z$
+required is its holomorphy on $\Omega$.
+The shift $c$ is explicit: $c>\max(c_*,M)$ with
+\[
+M\ :=\ -\inf_{s\in[0,\tfrac12-\beta]}\Re\vartheta'(\gamma+is),
+\]
+finite because $\vartheta'$ is continuous on the compact vertical segment
+$\{\gamma+is:s\in[0,\tfrac12-\beta]\}\subset\Omega$.
 
 \section{The Shifted Phase and the Unwarped Function}
 
@@ -166,15 +185,17 @@ $Y:\mathbb R\to\mathbb R$, $Y(u):=Z(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u)
 \end{definition}
 
 \begin{lemma}[Pointwise factorization identity]\label{lem:Zfact}
-For every $u\in\mathbb R$, with $t:=\Theta^{-1}(u)$,
+For every $t\in\mathbb R$,
 \[
-Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))=\sqrt{\Theta'(t)}\,Y(u).
+Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t)).
 \]
 \end{lemma}
 
 \begin{proof}
-From Definition~\ref{def:Y}, $Y(\Theta(t))=Z(t)/\sqrt{\Theta'(t)}$; multiply both
-sides by $\sqrt{\Theta'(t)}$.
+Set $u:=\Theta(t)$, so $\Theta^{-1}(u)=t$ and $\Theta'(\Theta^{-1}(u))=\Theta'(t)$.
+By Definition~\ref{def:Y},
+$Y(\Theta(t))=Y(u)=Z(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u))}=Z(t)/\sqrt{\Theta'(t)}$;
+multiply both sides by $\sqrt{\Theta'(t)}$.
 \end{proof}
 
 \section{Time-Average WSS of $Y$}
@@ -302,26 +323,26 @@ For every $c>c_*$ and every $|\mu|>1$: $S(\mu)=0$.
 \end{theorem}
 
 \begin{proof}
-Insert Lemma~\ref{lem:RS} into $K_T$ and substitute $u=\Theta(t)$.
+Insert Lemma~\ref{lem:RS} into $K_T$ and substitute $u=\Theta(t)$, so $dt=du/\Theta'(\Theta^{-1}(u))$.
 Mode $(n,\sigma)$ of the main sum contributes
 \[
 \mathcal J_{n,\sigma}(T,\mu)
 =\int_{u_n}^{\Theta(T)} G_{n,\sigma}(u)\,e^{i\Psi_{n,\sigma,\mu}(u)}\,du,
-\qquad G_{n,\sigma}(u)=\Theta'(t(u))^{-1/2},
+\qquad G_{n,\sigma}(u)=\Theta'(\Theta^{-1}(u))^{-1/2},
 \]
-where $u_n=\Theta(2\pi n^2)$, $t(u)=\Theta^{-1}(u)$, and the phase is
+where $u_n:=\Theta(2\pi n^2)$, and the phase is
 \[
 \Psi_{n,\sigma,\mu}(u)
-=\sigma\vartheta(t(u))-\sigma t(u)\log n-\mu u
-=(\sigma-\mu)\vartheta(t(u))-\sigma t(u)\log n-\mu c\,t(u).
+=\sigma\vartheta(\Theta^{-1}(u))-\sigma\,\Theta^{-1}(u)\,\log n-\mu u
+=(\sigma-\mu)\vartheta(\Theta^{-1}(u))-\sigma\,\Theta^{-1}(u)\log n-\mu c\,\Theta^{-1}(u).
 \]
 
 \emph{Phase derivative and instantaneous $u$-frequency.}
-Differentiating in $u$ via $dt/du=1/\Theta'(t)$,
+Differentiating in $u$ via $d\Theta^{-1}(u)/du=1/\Theta'(\Theta^{-1}(u))$,
 \[
 \Psi'_{n,\sigma,\mu}(u)
-=\frac{(\sigma-\mu)\vartheta'(t)-\sigma\log n-\mu c}{\Theta'(t)}
-=\sigma\omega_n(t(u))-\mu.
+=\frac{(\sigma-\mu)\vartheta'(\Theta^{-1}(u))-\sigma\log n-\mu c}{\Theta'(\Theta^{-1}(u))}
+=\sigma\omega_n(\Theta^{-1}(u))-\mu.
 \]
 By Lemma~\ref{lem:omegabound}, $|\sigma\omega_n|\le|\omega_n|<1$, so for $|\mu|>1$:
 \[
@@ -329,7 +350,7 @@ By Lemma~\ref{lem:omegabound}, $|\sigma\omega_n|\le|\omega_n|<1$, so for $|\mu|>
 \]
 
 \emph{Exact cancellation in the IBP ratio.}
-Set $x:=\Theta'(t(u))=\vartheta'(t(u))+c$.
+Set $x:=\Theta'(\Theta^{-1}(u))=\vartheta'(\Theta^{-1}(u))+c$.
 Then $G_{n,\sigma}(u)=x^{-1/2}$ and
 \[
 \frac{d\Psi}{du}=\frac{(\sigma-\mu)x-\sigma(c+\log n)}{x},
@@ -452,85 +473,96 @@ Let $\rho=\beta+i\gamma$ be a nontrivial zero with $\beta\in(0,1)$,
 $\gamma\in\mathbb R$.
 
 \emph{Reduction to $\beta\le\tfrac12$.}
-The functional equation $\xi(s)=\xi(1-s)$ with reality of $\xi$ on
-$\mathbb R\cap\{\Re s=\tfrac12\}$ gives the symmetry $\rho\mapsto 1-\bar\rho$, so
+The functional equation $\xi(w)=\xi(1-w)$ with reality of $\xi$ on
+$\mathbb R\cap\{\Re w=\tfrac12\}$ gives the symmetry $\rho\mapsto 1-\bar\rho$, so
 it suffices to prove $\beta=\tfrac12$ assuming $\beta\in(0,\tfrac12]$.
 
-\emph{One-parameter complexification.}
-Define $t:\mathbb C\to\mathbb C$ by $t(s):=\gamma+is$; then $t(ir)=\gamma-r\in\mathbb R$
-for every $r\in\mathbb R$, and $t(\tfrac12-\beta)=\gamma+i(\tfrac12-\beta)=:t_\rho$.
-Let $m_\rho:=-\inf_{s\in[0,\tfrac12-\beta]}\Re\vartheta'(\gamma+is)$, which is finite
-since $\vartheta'$ is holomorphic on the open set $\{|\Im t|<\tfrac12\}$ (poles of
-$\psi(\tfrac14+\tfrac{it}{2})$ lie at $\Im t=\pm(2k+\tfrac12)$, $k\ge 0$) and the
-segment $\{\gamma+is:s\in[0,\tfrac12-\beta]\}$ is compactly contained in it.
-Fix $c>\max(c_*,m_\rho)$.
-
-\emph{Holomorphy of $Z$ on a strip.}
+\emph{Holomorphy of $Z$ on the strip $\Omega$.}
 $Z(t)=e^{i\vartheta(t)}\zeta(\tfrac12+it)$ is holomorphic on
 $\Omega:=\{t\in\mathbb C:|\Im t|<\tfrac12\}$: $\vartheta$ is holomorphic on $\Omega$
-(the $\psi$-poles lie at $\Im t=\pm(2k+\tfrac12)$, $k\ge 0$), and
-$\tfrac12+it\in\mathbb C\setminus\{1\}$ for every $t\in\Omega$ since $t=-i/2$
-lies on $\partial\Omega$ not in $\Omega$, so $\zeta(\tfrac12+it)$ is holomorphic on
-$\Omega$.
+(the poles of $\psi(\tfrac14+\tfrac{it}{2})$ lie at $\Im t=\pm(2k+\tfrac12)$,
+$k\ge 0$), and $\tfrac12+it\in\mathbb C\setminus\{1\}$ for every $t\in\Omega$ since
+the equation $\tfrac12+it=1$ has the single solution $t=-i/2\in\partial\Omega\setminus\Omega$.
 
-\emph{The two holomorphic functions on a common domain.}
-Let $N:=t^{-1}(\Omega)=\{s\in\mathbb C:|\Re s|<\tfrac12\}$, a connected open
-vertical strip containing both the real interval
-$[0,\tfrac12-\beta]\subset(-\tfrac12,\tfrac12)$ and the full imaginary axis
-$i\mathbb R$.
-Define
+\emph{Admissible shift.}
+The set $\{\gamma+is:s\in[0,\tfrac12-\beta]\}\subset\Omega$ is compact, so
+$\vartheta'$ is continuous on it, and
 \[
-F(s):=Z(t(s)),
-\qquad
-G(s):=\sqrt{\Theta'(t(s))}\,Y(\Theta(t(s))),
+M\ :=\ -\inf_{s\in[0,\tfrac12-\beta]}\Re\vartheta'(\gamma+is)
 \]
-where $\sqrt{\cdot}$ is the principal branch.
-$F$ is holomorphic on $N$ by holomorphy of $Z$ on $\Omega$.
-For $s\in N$, $\Theta'(t(s))=\vartheta'(t(s))+c$ is holomorphic, and on the real
-segment $[0,\tfrac12-\beta]\subset N$ one has $\Re\Theta'(\gamma+is)\ge c-m_\rho>0$
-by the choice of $c$, so $\Theta'(t(s))$ avoids $(-\infty,0]$ in a connected open
-neighborhood of that segment inside $N$.
-The entire extension of $Y$ (Theorem~\ref{thm:PW}) makes $Y\circ\Theta\circ t$
-holomorphic on all of $N$.
-Let $N'\subset N$ be the connected component of
-$\{s\in N:\Theta'(t(s))\notin(-\infty,0]\}$ containing the real segment
-$[0,\tfrac12-\beta]$; then $F,G$ are both holomorphic on $N'$, and
-$i\mathbb R\cap N'$ is nonempty (since $s=0\in N'$ and $N'$ is open, it contains
-an imaginary interval $\{ir:|r|<\varepsilon\}$ for some $\varepsilon>0$).
+is finite.
+Fix any $c>\max(c_*,M)$; then $c-M>0$ and
+$\Re\Theta'(\gamma+is)=\Re\vartheta'(\gamma+is)+c\ge c-M>0$ for every
+$s\in[0,\tfrac12-\beta]$.
 
-\emph{Coincidence on the imaginary segment.}
-For $s=ir\in N'$, $t(ir)=\gamma-r\in\mathbb R$, so
-$F(ir)=Z(\gamma-r)$, and Lemma~\ref{lem:Zfact} at the real argument $\gamma-r$
-gives $Z(\gamma-r)=\sqrt{\Theta'(\gamma-r)}\,Y(\Theta(\gamma-r))=G(ir)$.
-Hence $F=G$ on the open imaginary interval $\{ir:|r|<\varepsilon\}\subset N'$.
+\emph{Two holomorphic functions of $s$.}
+Let $N:=\{s\in\mathbb C:|\Re s|<\tfrac12\}$, a connected open vertical strip of
+$\mathbb C$; for every $s\in N$, $\gamma+is\in\Omega$, so $Z(\gamma+is)$,
+$\vartheta(\gamma+is)$, $\Theta(\gamma+is):=\vartheta(\gamma+is)+c(\gamma+is)$,
+and $\Theta'(\gamma+is)=\vartheta'(\gamma+is)+c$ are holomorphic in $s$.
+$Y$ is entire (Theorem~\ref{thm:PW}), so $Y(\Theta(\gamma+is))$ is holomorphic in
+$s\in N$.
+Define, for $s\in N$,
+\[
+F(s):=Z(\gamma+is),
+\qquad
+G(s):=\sqrt{\Theta'(\gamma+is)}\;Y(\Theta(\gamma+is)),
+\]
+with $\sqrt{\cdot}$ the principal branch (domain $\mathbb C\setminus(-\infty,0]$).
+Let $N'\subset N$ be the connected component of
+$\{s\in N:\Theta'(\gamma+is)\notin(-\infty,0]\}$ containing the real segment
+$[0,\tfrac12-\beta]$.
+$N'$ is open: the real segment is a connected subset on which
+$\Re\Theta'(\gamma+is)\ge c-M>0$, so $\Theta'(\gamma+is)$ lies in the open
+right half-plane $\{\Re w>0\}\subset\mathbb C\setminus(-\infty,0]$, a condition
+preserved in an open neighborhood.
+$F$ and $G$ are both holomorphic on $N'$.
+Since $0\in N'$ and $N'$ is open, $N'$ contains $\{ir:|r|<\varepsilon\}$ for some
+$\varepsilon>0$.
+
+\emph{Coincidence on an imaginary segment.}
+For $|r|<\varepsilon$, with $s=ir$, $\gamma+is=\gamma+i\cdot ir=\gamma-r\in\mathbb R$.
+Lemma~\ref{lem:Zfact} at the real argument $\gamma-r$ gives
+\[
+F(ir)=Z(\gamma-r)=\sqrt{\Theta'(\gamma-r)}\,Y(\Theta(\gamma-r))=G(ir).
+\]
 
 \emph{1D identity theorem.}
-$N'$ is connected and open in $\mathbb C$, $F-G$ is holomorphic on $N'$, and the
-zero set of $F-G$ contains an open interval of $i\mathbb R$, which has accumulation
+$F-G$ is holomorphic on the connected open set $N'\subset\mathbb C$, and its zero
+set contains the open interval $\{ir:|r|<\varepsilon\}$, which has accumulation
 points in $N'$.
-Therefore $F\equiv G$ on $N'$; at $s_0:=\tfrac12-\beta\in N'$,
+Therefore $F\equiv G$ on $N'$; in particular at $s=\tfrac12-\beta\in[0,\tfrac12-\beta]\subset N'$,
 \[
-Z(t_\rho)=F(s_0)=G(s_0)=\sqrt{\Theta'(t_\rho)}\,Y(\Theta(t_\rho)).
+Z(\gamma+i(\tfrac12-\beta))\ =\ F(\tfrac12-\beta)\ =\ G(\tfrac12-\beta)\ =\ \sqrt{\Theta'(\gamma+i(\tfrac12-\beta))}\;Y(\Theta(\gamma+i(\tfrac12-\beta))).
 \]
-$\tfrac12+it_\rho=\tfrac12+i\gamma-(\tfrac12-\beta)=\beta+i\gamma=\rho$ and
-$t_\rho\in\Omega$, so $Z(t_\rho)=e^{i\vartheta(t_\rho)}\zeta(\rho)=0$.
-The principal-branch factor $\sqrt{\Theta'(t_\rho)}$ is nonzero since
-$\Theta'(t_\rho)\notin(-\infty,0]$; hence $Y(\Theta(t_\rho))=0$.
 
-\emph{Reality of $\Theta(t_\rho)$.}
-$Y$ is entire (Theorem~\ref{thm:PW}) with every complex zero real
-(Theorem~\ref{thm:Yzeros}), so $\Theta(t_\rho)\in\mathbb R$.
-
-\emph{Conclusion.}
-With $\Theta'(t(s))$ holomorphic on the real segment $s\in[0,\tfrac12-\beta]$
-and $\Re\Theta'(\gamma+is)\ge c-m_\rho>0$ there,
+\emph{Left side is zero.}
+$\tfrac12+i(\gamma+i(\tfrac12-\beta))=\tfrac12+i\gamma-(\tfrac12-\beta)=\beta+i\gamma=\rho$,
+and $\gamma+i(\tfrac12-\beta)\in\Omega$ since
+$\Im(\gamma+i(\tfrac12-\beta))=\tfrac12-\beta\in[0,\tfrac12)$, so
 \[
-\Im\Theta(t_\rho)=\Im\Theta(\gamma+i(\tfrac12-\beta))
-=\int_0^{\tfrac12-\beta}\Re\Theta'(\gamma+is)\,ds
-\ge (\tfrac12-\beta)(c-m_\rho).
+Z(\gamma+i(\tfrac12-\beta))=e^{i\vartheta(\gamma+i(\tfrac12-\beta))}\zeta(\rho)=0.
 \]
-The left side is $0$ since $\Theta(t_\rho)\in\mathbb R$, and the right side is
-$\ge 0$ with equality iff $\tfrac12-\beta=0$.
+
+\emph{Consequence for $Y$.}
+$\sqrt{\Theta'(\gamma+i(\tfrac12-\beta))}\ne 0$ since
+$\Theta'(\gamma+i(\tfrac12-\beta))\in\mathbb C\setminus(-\infty,0]$
+(else $\tfrac12-\beta\notin N'$); hence $Y(\Theta(\gamma+i(\tfrac12-\beta)))=0$.
+By Theorem~\ref{thm:Yzeros}, $\Theta(\gamma+i(\tfrac12-\beta))\in\mathbb R$.
+
+\emph{Integral representation and conclusion.}
+On the real segment $s\in[0,\tfrac12-\beta]$, $\Theta(\gamma+is)$ is holomorphic
+in $s$, and
+\[
+\Theta(\gamma+i(\tfrac12-\beta))-\Theta(\gamma)=\int_0^{\tfrac12-\beta}\frac{d}{ds}\Theta(\gamma+is)\,ds
+=\int_0^{\tfrac12-\beta} i\,\Theta'(\gamma+is)\,ds,
+\]
+so, taking imaginary parts and using $\Theta(\gamma)\in\mathbb R$,
+\[
+\Im\Theta(\gamma+i(\tfrac12-\beta))=\int_0^{\tfrac12-\beta}\Re\Theta'(\gamma+is)\,ds\ \ge\ (\tfrac12-\beta)(c-M).
+\]
+$\Theta(\gamma+i(\tfrac12-\beta))\in\mathbb R$ gives the left side is $0$;
+$c-M>0$; the right side vanishes iff $\tfrac12-\beta=0$.
 Hence $\beta=\tfrac12$.
 \end{proof}
 
