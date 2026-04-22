@@ -129,7 +129,23 @@ Differentiating in $t$ and using $\delta_\eta(t)=\eta/\Theta'(\tau_t)=O(1/\log t
 \begin{equation}\label{eq:Phipr}
 \frac{d\Phi}{dt}=(\sigma-\sigma')\vartheta'(t)-\sigma\log m+\sigma'\log n+O(\delta_\eta(t)\,\vartheta''(t))+O(\delta_\eta(t)\log n).
 \end{equation}
-For $\sigma\ne\sigma'$, $|d\Phi/dt|\ge 2\vartheta'(t)-\log mn-O(1)\to\infty$. For $\sigma=\sigma'$ with $m\ne n$, $|d\Phi/dt|\ge|\log(m/n)|-O(\delta_\eta(t)\log N(t))\ge\tfrac12|\log(m/n)|$ for $t$ large. In both cases a single integration by parts on the $t$-integral gives the cross-term contribution $O(1)$ uniformly in $T$, hence $O(1/U)$ after division by $U$ in \eqref{eq:covZtoY}. Summing $n^{-1/2}m^{-1/2}$ over $m,n\le N(T)$ with $m\ne n$ gives total off-diagonal contribution $O(N(T)/U)=O(T^{1/2}/U)\to 0$ as $U\to\infty$ since $U\asymp \tfrac12 T\log T$.
+For $\sigma\ne\sigma'$, $|d\Phi/dt|\ge 2\vartheta'(t)-\log mn-O(1)\to\infty$. For $\sigma=\sigma'$ with $m\ne n$, $|d\Phi/dt|\ge|\log(m/n)|-O(\delta_\eta(t)\log N(t))\ge\tfrac12|\log(m/n)|$ for $t$ large.
+
+Integration by parts on $\int_{T_0}^{T_1}e^{i\Phi(t)}\,dt$ with the amplitude $(mn)^{-1/2}\sqrt{\Theta'(t)/\Theta'(t+\delta_\eta(t))}=(mn)^{-1/2}(1+o(1))$ gives boundary term $\le 2(mn)^{-1/2}/|d\Phi/dt|$ and a tail term of the same order, so the contribution of the $(m,n,\sigma,\sigma')$ cross-term to $\int_{T_0}^{T_1}Z(t)\overline{Z(t+\delta_\eta(t))}\sqrt{\Theta'(t)/\Theta'(t+\delta_\eta(t))}\,dt$ is bounded by
+\begin{equation}\label{eq:offdiag-per}
+C(mn)^{-1/2}\cdot\frac{1}{|\log(m/n)|}\quad(\sigma=\sigma',\ m\ne n),\qquad C(mn)^{-1/2}/\vartheta'(T_0)\quad(\sigma\ne\sigma'),
+\end{equation}
+uniformly in $T$. The $\sigma\ne\sigma'$ case contributes $O((\log T)^{-1})\sum_{m,n\le N(T)}(mn)^{-1/2}=O(N(T)/\log T)=O(T^{1/2}/\log T)$.
+
+For $\sigma=\sigma'$, $m\ne n$, use the elementary inequality $|\log(m/n)|\ge|m-n|/\max(m,n)$ for positive integers (since $\log(1+x)\le x$ and $\log(1-x)\le -x$ for $0<x<1$). By symmetry in $(m,n)$, assume $m>n$ and pick up a factor of $2$:
+\[
+\sum_{\substack{m,n\le N(T)\\m\ne n}}\frac{(mn)^{-1/2}}{|\log(m/n)|}\le 2\sum_{m=2}^{N(T)}\sum_{n=1}^{m-1}\frac{(mn)^{-1/2}\,m}{m-n}=2\sum_{m=2}^{N(T)}m^{1/2}\sum_{k=1}^{m-1}\frac{(m-k)^{-1/2}}{k},
+\]
+with $k:=m-n$. Split the inner sum at $k=\lfloor m/2\rfloor$: for $k\le m/2$, $(m-k)^{-1/2}\le\sqrt{2}\,m^{-1/2}$ and $\sum_{k=1}^{m/2}1/k=O(\log m)$, giving $O(m^{-1/2}\log m)$; for $k>m/2$, substituting $n=m-k\in[1,m/2]$ gives $\sum_{n=1}^{m/2}n^{-1/2}/(m-n)\le(2/m)\sum_{n=1}^{m/2}n^{-1/2}=O(m^{-1/2})$. Hence the inner sum is $O(m^{-1/2}\log m)$, and
+\[
+\sum_{\substack{m,n\le N(T)\\m\ne n}}\frac{(mn)^{-1/2}}{|\log(m/n)|}=O\!\Bigl(\sum_{m=2}^{N(T)}\log m\Bigr)=O(N(T)\log N(T))=O(T^{1/2}\log T).
+\]
+Dividing by $U\asymp\tfrac12 T\log T$, the total off-diagonal contribution to \eqref{eq:covZtoY} is $O(T^{-1/2})\to 0$ as $U\to\infty$.
 
 \emph{Remainder cross-terms.} $|R(t)|=O(t^{-1/4})$ and $|R(t+\delta_\eta)|=O(t^{-1/4})$, so the product with any $n^{-1/2}$-weighted cosine integrated against $\sqrt{\Theta'(t)/\Theta'(t+\delta_\eta(t))}=1+O(\delta_\eta(t)\vartheta''(t))$ over $[T_0,T_1]$ contributes $O(T^{1/2})$ after Cauchy--Schwarz, which is $o(U)=o(T\log T)$.
 
