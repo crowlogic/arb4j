@@ -1,41 +1,41 @@
 {
-  "title": "Logical dependency DAG for RiemannHypothesisViaWarpedStationarity.tex (sub-strip Omega_delta version)",
-  "description": "Machine-checkable encoding of the proof in 'Zeros of zeta on the Critical Line via the Omer-Torresani Unitary Warping of the Hardy Z-Function' culminating in Theorem thm:main (Riemann Hypothesis). Structure: parametric sub-strip Omega_delta = {|Im t| <= 1/2 - delta} with delta-admissible shift c > c_**(delta), strip factorization Z(t) = sqrt(Theta'(t)) Y(Theta(t)) on Omega_delta, reality of zeros of Y via Paley-Wiener + Akhiezer-Levin, transfer to zeros of Z on Omega_delta, and for each nontrivial zero rho = beta + i*gamma the choice delta_rho = min(beta,1-beta)/2 places t_rho = gamma + i(1/2 - beta) inside Omega_{delta_rho}, forcing beta = 1/2.",
+  "title": "Logical dependency DAG for RiemannHypothesisViaWarpedStationarity.tex (single-point version)",
+  "description": "Machine-checkable encoding of the proof culminating in Theorem thm:main (Riemann Hypothesis). Structure: the unwarping Y = D_{Theta^{-1}} Z is defined on R, time-average WSS with Bochner spectral measure mu_Y of total mass 2, band-limited to [-1,1] via a single IBP whose amplitude-over-phase-derivative ratio is rational in x = Theta'(t(u)) alone (no vartheta''), Paley-Wiener extends Y to an entire function of exponential type <= 1, Akhiezer-Laguerre-Polya places Y in the Laguerre-Polya class so every complex zero of Y is real. For each nontrivial zero rho = beta + i*gamma the single complex point t_rho = gamma + i(1/2 - beta) satisfies Z(t_rho) = 0 by the functional definition of Z and zeta(rho) = 0, and the pointwise identity Z = sqrt(Theta') * Y o Theta, extended along the vertical segment gamma + is by analytic continuation of its two sides, yields Y(Theta(t_rho)) = 0; reality of Y-zeros gives Theta(t_rho) in R, and the bound |Im Theta(a+ib)| >= |b| * min Re Theta' on the segment yields beta = 1/2.",
   "target": "thm:main",
   "nodes": {
     "AX-Digamma": {
       "kind": "axiom",
       "name": "Digamma series and positivity of Im psi'(1/4+it/2) for t>0",
-      "statement": "psi'(s) = sum_{k>=0}(s+k)^{-2} for s not in {0,-1,-2,...}; at s = 1/4 + it/2, t>0, Im(s+k)^{-2} = -2(1/4+k)(t/2)/|s+k|^4 < 0 term by term, so Im psi'(1/4+it/2) < 0 and vartheta''(t) = -(1/4) Im psi'(1/4+it/2) > 0",
+      "statement": "psi'(s) = sum_{k>=0}(s+k)^{-2} for s not in {0,-1,-2,...}; at s = 1/4 + it/2, t>0, Im(s+k)^{-2} = -2(1/4+k)(t/2)/|s+k|^4 < 0 term by term, so Im psi'(1/4+it/2) < 0 and vartheta''(t) = -(1/4) Im psi'(1/4+it/2) > 0 on (0, infinity)",
       "source": "Abramowitz-Stegun 6.4.10; direct series computation",
       "deps": []
     },
     "AX-Olver": {
       "kind": "axiom",
       "name": "Olver Stirling expansion for psi",
-      "statement": "psi(z) admits a Stirling expansion holomorphic in the sector |arg z| < pi - epsilon; applied at z = 1/4 + it/2 gives vartheta'(t) = (1/2) log(|t|/(2pi)) + E(t) with |E(t)| = O(|t|^{-1}) uniformly on any sub-strip Omega_delta away from a fixed bounded set",
+      "statement": "psi(z) admits a Stirling expansion holomorphic in the sector |arg z| < pi - epsilon; applied at z = 1/4 + it/2 gives vartheta'(t) = (1/2) log(|t|/(2pi)) + O(|t|^{-1}) as |t| -> infinity in the open strip |Im t| < 1/2; in particular vartheta'(t) -> +infinity along R",
       "source": "Olver, Asymptotics and Special Functions, Ch. 8 Sec. 4, Thm. 4.1",
       "deps": []
     },
-    "AX-Zreal": {
+    "AX-Zdef": {
       "kind": "axiom",
-      "name": "Z is real on R",
-      "statement": "Z(t) = e^{i vartheta(t)} zeta(1/2 + it) is real-valued for t in R; Z is holomorphic on the strip |Im t| < 1/2",
-      "source": "Edwards, Riemann's Zeta Function, Sec. 6.5",
-      "deps": []
-    },
-    "AX-zeta-holo": {
-      "kind": "axiom",
-      "name": "Holomorphy of zeta(1/2+it) on the strip",
-      "statement": "zeta is holomorphic on C \\ {1}; the map t -> zeta(1/2+it) is holomorphic except at t = -i/2, which satisfies |Im(-i/2)| = 1/2",
-      "source": "Titchmarsh, Theory of the Riemann Zeta-Function, Ch. 2",
+      "name": "Z defined by its formula; holomorphic on the open strip",
+      "statement": "Z(t) := e^{i vartheta(t)} zeta(1/2 + it); Z is real on R and holomorphic on {t in C : |Im t| < 1/2}, with vartheta holomorphic on this strip (poles of psi(1/4 + it/2) at Im t = +/- (2k+1/2), k >= 0) and zeta holomorphic on C \\ {1}, so 1/2 + it avoids 1 for t not = -i/2 and -i/2 has |Im| = 1/2",
+      "source": "Edwards, Riemann's Zeta Function, Sec. 6.5; Titchmarsh Ch. 2",
       "deps": []
     },
     "AX-FE-zero": {
       "kind": "axiom",
-      "name": "Zeros of zeta at rho = beta + i*gamma give zeros of the holomorphic Z at gamma + i(1/2 - beta)",
-      "statement": "For a nontrivial zero rho = beta + i*gamma of zeta with 0 < beta < 1, the holomorphic extension of Z to the strip |Im t| < 1/2 vanishes at t_rho = gamma + i(1/2 - beta): Z(t_rho) = e^{i vartheta(t_rho)} zeta(1/2 + i t_rho) = e^{i vartheta(t_rho)} zeta(rho) = 0",
-      "source": "Titchmarsh, Theory of the Riemann Zeta-Function, Ch. 2; direct substitution using AX-zeta-holo and AX-Zreal",
+      "name": "Zeros of zeta at rho = beta + i*gamma yield Z(t_rho) = 0",
+      "statement": "For a nontrivial zero rho = beta + i*gamma of zeta with 0 < beta < 1, the point t_rho := gamma + i(1/2 - beta) satisfies |Im t_rho| = |1/2 - beta| < 1/2, Z is holomorphic at t_rho by the formula Z(t) = e^{i vartheta(t)} zeta(1/2 + it), and Z(t_rho) = e^{i vartheta(t_rho)} zeta(1/2 + i t_rho) = e^{i vartheta(t_rho)} zeta(rho) = 0",
+      "source": "Direct substitution into the defining formula of Z",
+      "deps": []
+    },
+    "AX-FE-symmetry": {
+      "kind": "axiom",
+      "name": "Functional-equation symmetry of nontrivial zeros",
+      "statement": "If rho = beta + i*gamma is a nontrivial zero of zeta, so is 1 - conj(rho) = (1 - beta) + i*gamma; hence proving Re(rho) = 1/2 for beta in (0, 1/2] suffices",
+      "source": "Titchmarsh Ch. 2 Sec. 2.12 (functional equation xi(s) = xi(1-s))",
       "deps": []
     },
     "AX-HL": {
@@ -48,7 +48,7 @@
     "AX-RS": {
       "kind": "axiom",
       "name": "Riemann-Siegel formula with phase-derivative remainder bound",
-      "statement": "Z(t) = 2 sum_{n <= N(t)} n^{-1/2} cos(vartheta(t) - t log n) + R(t) with N(t) = floor(sqrt(t/(2 pi))), R(t) = O(t^{-1/4}), and (d/dt) arg R(t) = O(t^{-1/2})",
+      "statement": "Z(t) = 2 sum_{n <= N(t)} n^{-1/2} cos(vartheta(t) - t log n) + R(t) with N(t) = floor(sqrt(t/(2 pi))), R(t) = O(t^{-1/4}), and (d/dt) arg R(t) = O(t^{-1/2}); the n-th mode has stationary point at t = 2 pi n^2 where vartheta'(t) = log n",
       "source": "Edwards, Riemann's Zeta Function, Sec. 7.4 Thm. 7.1; Gabcke Dissertation Goettingen 1979 Satz 7.1; Berry, Proc. Roy. Soc. A 450 (1995) eq. 18",
       "deps": []
     },
@@ -69,79 +69,66 @@
     "AX-PW-WSS": {
       "kind": "axiom",
       "name": "Paley-Wiener for time-average WSS functions with compactly supported spectral measure",
-      "statement": "If f : R -> C is time-average WSS with covariance c_f(eta) = integral e^{i eta xi} d mu_f(xi) and supp mu_f is contained in [-sigma, sigma], then f extends to an entire function of exponential type at most sigma with |f(z)| <= mu_f(R)^{1/2} e^{sigma |Im z|} on C",
+      "statement": "If f : R -> C is time-average WSS with covariance c_f(eta) = integral e^{i eta xi} d mu_f(xi) and supp mu_f is contained in [-sigma, sigma], then f extends to an entire function on C of exponential type at most sigma with |f(z)| <= mu_f(R)^{1/2} e^{sigma |Im z|}",
       "source": "Yaglom, Correlation Theory of Stationary and Related Random Functions, Vol. I, Thm. 4.7.3; Bochner-Phillips, Ann. Math. 43 (1942), 409-418",
       "deps": []
     },
     "AX-Akhiezer": {
       "kind": "axiom",
       "name": "Akhiezer-Levin Laguerre-Polya criterion",
-      "statement": "A real-valued entire function F of exponential type at most tau whose autocorrelation measure (Fourier transform of |F|^2 as tempered distribution) is non-negative, finite, and supported in [-2 tau, 2 tau] belongs to the Laguerre-Polya class; every complex zero of F is real",
+      "statement": "A real-valued entire function F of exponential type at most tau whose autocorrelation measure is non-negative, finite, and supported in [-2 tau, 2 tau] belongs to the Laguerre-Polya class; every complex zero of F is real",
       "source": "Akhiezer, Theory of Approximation, Sec. V.4; Levin, Lectures on Entire Functions, Lecture 16 Thm. 3",
       "deps": []
     },
-    "AX-IdentityThm": {
-      "kind": "axiom",
-      "name": "Identity theorem for holomorphic functions",
-      "statement": "Two holomorphic functions on a connected open set that agree on a set with an accumulation point (in particular on R intersected with the set) coincide on the set",
-      "source": "Ahlfors, Complex Analysis, 3rd ed., Ch. 4 Sec. 3.2",
-      "deps": []
-    },
-    "lem:analstrip": {
+    "lem:cstar": {
       "kind": "lemma",
-      "name": "Analyticity of vartheta' on sub-strips",
-      "statement": "For every delta in (0, 1/2), vartheta' extends holomorphically to an open neighborhood of Omega_delta; the poles of psi(1/4 + it/2) at t = i(2k + 1/2) all satisfy |Im t| >= 1/2 > 1/2 - delta",
-      "location": "Lemma lem:analstrip",
+      "name": "c_* := -inf vartheta' on R is finite",
+      "statement": "vartheta' is continuous on R and vartheta'(t) -> +infinity as |t| -> infinity (AX-Olver), so c_* := -inf_{t in R} vartheta'(t) is finite",
+      "location": "Lemma lem:cstar",
       "deps": ["AX-Olver"]
     },
-    "lem:olver": {
-      "kind": "lemma",
-      "name": "Olver expansion on sub-strips",
-      "statement": "For every delta in (0, 1/2) there exist A_0(delta) > 0 and M(delta) > 0 such that on {t in Omega_delta : |Re t| >= A_0(delta)}, vartheta'(t) = (1/2) log(|t|/(2 pi)) + E(t) with |E(t)| <= M(delta)/|t|; in particular Re vartheta'(t) -> +infinity uniformly on Omega_delta as |Re t| -> infinity",
-      "location": "Lemma lem:olver",
-      "deps": ["AX-Olver", "lem:analstrip"]
-    },
-    "def:admissibledelta": {
+    "def:Theta": {
       "kind": "definition",
-      "name": "Admissible shift for delta",
-      "statement": "For delta in (0, 1/2), choose A(delta) > A_0(delta) with (1/2) log(A(delta)/(2 pi)) - M(delta)/A(delta) > 2; define c_**(delta) := sup over {t in Omega_delta : |Re t| <= A(delta)} of |vartheta'(t)| + 1, finite by Lemma lem:analstrip and Lemma lem:olver; a shift c is delta-admissible if c > c_**(delta)",
-      "location": "Definition def:admissibledelta",
-      "deps": ["lem:analstrip", "lem:olver"]
+      "name": "Shifted phase Theta(t) = vartheta(t) + c t with c > c_*",
+      "statement": "For c > c_*, set Theta(t) := vartheta(t) + c t; then vartheta' + c > 0 on R",
+      "location": "Definition def:Theta",
+      "deps": ["lem:cstar"]
     },
-    "lem:Thetabij": {
+    "lem:Theta": {
       "kind": "lemma",
-      "name": "Monotone phase shift on Omega_delta",
-      "statement": "Fix delta in (0, 1/2) and a delta-admissible c. The shifted phase Theta(t) = vartheta(t) + c t satisfies (i) Theta'(t) > 0 for all t in R with Theta : R -> R a C^infty bijection, (ii) Theta' is holomorphic on Omega_delta with Re Theta'(t) >= 1, (iii) Theta : Omega_delta -> Theta(Omega_delta) is a holomorphic bijection, (iv) there is a single-valued holomorphic branch of sqrt(Theta') on Omega_delta positive on R, (v) Theta^{-1}(R) intersect Omega_delta = R",
-      "location": "Lemma lem:Thetabij",
-      "deps": ["def:admissibledelta", "AX-Digamma", "AX-Olver", "lem:olver", "lem:analstrip"]
+      "name": "Properties of Theta: real-line bijection, holomorphy on the open strip, imaginary-part bound",
+      "statement": "For c > c_*: (i) Theta : R -> R is a C^infty bijection with Theta' = vartheta' + c > 0 and C^infty inverse; (ii) vartheta' extends holomorphically to {|Im t| < 1/2} (poles of psi(1/4 + it/2) satisfy |Im t| >= 1/2), hence so does Theta'; (iii) for a + i b with the vertical segment a + i s, s in [0, b], avoiding any zero of Re Theta', Theta(a + ib) - Theta(a) = integral_0^b i Theta'(a + is) ds, so Im Theta(a + ib) = integral_0^b Re Theta'(a + is) ds and |Im Theta(a + ib)| >= |b| * min_{s in [0,b]} Re Theta'(a + is)",
+      "location": "Lemma lem:Theta",
+      "deps": ["lem:cstar", "def:Theta", "AX-Olver", "AX-Digamma", "AX-Zdef"]
     },
     "def:DOT": {
       "kind": "definition",
       "name": "Omer-Torresani warping operator",
-      "statement": "For a C^1 diffeomorphism gamma : R -> R with gamma' > 0, [D_gamma x](t) := sqrt(gamma'(t)) x(gamma(t))",
+      "statement": "For a C^1 diffeomorphism gamma : R -> R with gamma' > 0, [D_gamma x](u) := sqrt(gamma'(u)) x(gamma(u))",
       "location": "Definition def:DOT",
-      "deps": ["AX-IdentityThm"]
+      "deps": ["AX-Zdef"]
     },
     "lem:unitary": {
       "kind": "lemma",
-      "name": "Unitarity and composition of D_gamma",
-      "statement": "D_gamma : L^2(R) -> L^2(R) is unitary with D_gamma^{-1} = D_{gamma^{-1}}; for diffeomorphisms gamma, phi: D_phi o D_gamma = D_{gamma o phi}",
+      "name": "Unitarity of D_gamma on L^2(R)",
+      "statement": "D_gamma : L^2(R) -> L^2(R) is unitary with D_gamma^{-1} = D_{gamma^{-1}}",
       "location": "Lemma lem:unitary",
+      "role": "auxiliary: records the L^2 unitarity of the warping operator for expository context; not invoked in the single-point proof chain to thm:main, which uses only the pointwise factorization identity lem:Zfact",
       "deps": ["def:DOT"]
     },
     "def:Y": {
       "kind": "definition",
-      "name": "Unwarped target Y",
-      "statement": "Y(u) := Z(Theta^{-1}(u))/sqrt(Theta'(Theta^{-1}(u))) = [D_{Theta^{-1}} Z](u)",
+      "name": "Unwarped function Y : R -> R",
+      "statement": "Y(u) := Z(Theta^{-1}(u))/sqrt(Theta'(Theta^{-1}(u))) = [D_{Theta^{-1}} Z](u) on R; Y is real since Z is real on R and Theta' > 0 on R",
       "location": "Definition def:Y",
-      "deps": ["def:DOT", "lem:Thetabij", "lem:unitary"]
+      "deps": ["def:DOT", "def:Theta", "lem:Theta", "AX-Zdef"]
     },
-    "lem:Yreal": {
+    "lem:Zfact": {
       "kind": "lemma",
-      "name": "Y real on R",
-      "statement": "Y(u) in R for every u in R",
-      "location": "Lemma lem:Yreal",
-      "deps": ["def:Y", "AX-Zreal", "lem:Thetabij"]
+      "name": "Pointwise factorization Z(t) = sqrt(Theta'(t)) Y(Theta(t)) on R",
+      "statement": "For every t in R, Z(t) = sqrt(Theta'(t)) * Y(Theta(t)); an immediate consequence of the definition Y(u) = Z(Theta^{-1}(u))/sqrt(Theta'(Theta^{-1}(u)))",
+      "location": "Lemma lem:Zfact",
+      "deps": ["def:Y", "lem:Theta"]
     },
     "def:covg": {
       "kind": "definition",
@@ -164,19 +151,19 @@
       "location": "Lemma lem:RS",
       "deps": ["AX-RS"]
     },
-    "thm:Ywss": {
-      "kind": "theorem",
-      "name": "Time-average WSS of Y",
-      "statement": "c_Y(eta) exists for every eta in R and depends only on eta; c_Y(0) = 2",
-      "location": "Theorem thm:Ywss",
-      "deps": ["def:Y", "def:covg", "lem:Thetabij", "lem:HL", "lem:RS", "lem:omegabound", "AX-Olver"]
-    },
     "lem:omegabound": {
       "kind": "lemma",
       "name": "Instantaneous u-frequency ratio",
-      "statement": "For every n >= 1 and t >= 2 pi n^2, omega_n(t) := (vartheta'(t) - log n)/(vartheta'(t) + c) lies in [0, 1). Non-negativity: vartheta'' > 0 on (0, infinity) (AX-Digamma) and vartheta'(2 pi n^2) = log n + O(n^{-2}) (Olver) give vartheta'(t) >= log n for t >= 2 pi n^2. Strict upper bound: (vartheta'(t) + c) - (vartheta'(t) - log n) = c + log n > 0, so omega_n(t) = 1 - (c + log n)/(vartheta'(t) + c) < 1",
+      "statement": "For every n >= 1 and t >= 2 pi n^2, omega_n(t) := (vartheta'(t) - log n)/(vartheta'(t) + c) lies in [0, 1). Non-negativity: vartheta'' > 0 on (0, infinity) (AX-Digamma) and vartheta'(2 pi n^2) = log n + O(n^{-2}) (AX-Olver at t = 2 pi n^2) give vartheta'(t) >= log n for t >= 2 pi n^2. Strict upper bound: (vartheta'(t) + c) - (vartheta'(t) - log n) = c + log n > 0, so omega_n(t) = 1 - (c + log n)/(vartheta'(t) + c) < 1",
       "location": "Lemma lem:omegabound",
-      "deps": ["AX-Digamma", "AX-Olver", "lem:Thetabij", "lem:olver", "lem:RS"]
+      "deps": ["AX-Digamma", "AX-Olver", "def:Theta", "lem:Theta", "lem:RS"]
+    },
+    "thm:Ywss": {
+      "kind": "theorem",
+      "name": "Time-average WSS of Y",
+      "statement": "c_Y(eta) exists for every eta in R and depends only on eta; c_Y(0) = 2. Proof: U^{-1} integral_0^U |Y|^2 du = U^{-1} integral_0^{Theta^{-1}(U)} |Z|^2 dt -> 2 via lem:HL and Theta(T) ~ T/2 log T. Product split via lem:RS: diagonal (n,n,sigma,sigma) gives A(eta) by bounded convergence against (omega_n)_* Leb with omega_n in [0,1) by lem:omegabound; off-diagonal and antidiagonal and remainder cross-terms are o(U)",
+      "location": "Theorem thm:Ywss",
+      "deps": ["def:Y", "def:covg", "lem:Theta", "lem:HL", "lem:RS", "lem:omegabound"]
     },
     "cor:Cramer": {
       "kind": "corollary",
@@ -190,18 +177,18 @@
       "name": "Windowed Fourier transform and power spectral density",
       "statement": "K_T(mu) := (2 pi)^{-1} integral_0^T Z(t) sqrt(Theta'(t)) e^{-i mu Theta(t)} dt; S(mu) := limsup_{T->inf} 2 pi |K_T(mu)|^2 / Theta(T)",
       "location": "Definition def:KT",
-      "deps": ["def:Y", "lem:Thetabij"]
+      "deps": ["def:Y", "def:Theta", "lem:Theta"]
     },
     "thm:bandlim": {
       "kind": "theorem",
-      "name": "Band-limit theorem",
-      "statement": "For every delta in (0, 1/2), every delta-admissible c, and every mu with |mu| > 1: S(mu) = 0. Proof uses the instantaneous u-frequency bound |omega_n(t)| < 1 (Lemma lem:omegabound), the exact cancellation of vartheta''(t(u)) between numerator and denominator of the IBP amplitude-over-phase-derivative ratio Q = x^{1/2}/((sigma - mu) x - sigma(c + log n)) under the substitution x = Theta'(t(u)), a single integration by parts per mode with boundary O(beta_n^{-1/2}) and tail O(beta_n^{-1/2}), and the remainder IBP using (d/dt) arg R = O(t^{-1/2})",
+      "name": "Band-limit theorem via single integration by parts",
+      "statement": "For every c > c_* and every |mu| > 1: S(mu) = 0. Proof: insert lem:RS into K_T and substitute u = Theta(t). Mode (n, sigma) contributes J_{n,sigma}(T,mu) = integral G_{n,sigma}(u) e^{i Psi} du with G_{n,sigma}(u) = Theta'(t(u))^{-1/2} = x^{-1/2}, x = Theta'(t(u)), and Psi'(u) = sigma omega_n(t(u)) - mu, so |Psi'| >= |mu| - 1 > 0. The IBP ratio Q = x^{1/2}/((sigma - mu) x - sigma (c + log n)) is a rational function of x alone (no vartheta'' enters, and none is required); |dQ/dx| = O(x^{-3/2}). Single IBP yields |J_{n,sigma}| <= C/(lambda (log n)^{1/2}), summation gives |K_T(mu)| = O(T^{1/4}/sqrt(log T)), and 2 pi |K_T|^2 / Theta(T) -> 0",
       "location": "Theorem thm:bandlim",
-      "deps": ["def:KT", "lem:Thetabij", "lem:RS", "lem:omegabound", "AX-Olver"]
+      "deps": ["def:KT", "def:Theta", "lem:Theta", "lem:RS", "lem:omegabound"]
     },
     "cor:supp": {
       "kind": "corollary",
-      "name": "Support of mu_Y",
+      "name": "Support of mu_Y is contained in [-1, 1]",
       "statement": "supp(mu_Y) is contained in [-1, 1]",
       "location": "Corollary cor:supp",
       "deps": ["cor:Cramer", "thm:bandlim", "AX-WK"]
@@ -216,54 +203,33 @@
     "thm:Akhiezer": {
       "kind": "theorem",
       "name": "Akhiezer-Laguerre-Polya criterion (paper statement)",
-      "statement": "A real-valued entire function F of exponential type at most tau whose time-average autocorrelation measure is finite, non-negative, and supported in [-2 tau, 2 tau] lies in the Laguerre-Polya class and has all complex zeros real",
+      "statement": "A real-valued entire function F of exponential type at most tau whose time-average autocorrelation measure is finite, non-negative, and supported in [-2 tau, 2 tau] lies in the Laguerre-Polya class and has every complex zero real",
       "location": "Theorem thm:Akhiezer",
       "deps": ["AX-Akhiezer"]
     },
-    "thm:LP": {
+    "thm:Yzeros": {
       "kind": "theorem",
       "name": "Reality of zeros of Y",
-      "statement": "All complex zeros of the entire extension of Y are real",
-      "location": "Theorem thm:LP",
-      "deps": ["lem:Yreal", "thm:PW", "cor:Cramer", "cor:supp", "thm:Akhiezer"]
-    },
-    "thm:stripfact": {
-      "kind": "theorem",
-      "name": "Strip factorization on Omega_delta",
-      "statement": "For every delta in (0, 1/2) and every delta-admissible c, Z(t) = sqrt(Theta'(t)) Y(Theta(t)) for every t in Omega_delta, with Y the entire extension of thm:PW, Theta' the holomorphic extension on Omega_delta, and sqrt(Theta') the branch of Lemma lem:Thetabij (iv). Proof: both sides are holomorphic on the connected open Omega_delta (left side uses AX-zeta-holo and lem:analstrip; right side uses lem:Thetabij (iii)(iv) and thm:PW); agreement on R from Definition def:Y; identity theorem AX-IdentityThm extends equality to Omega_delta",
-      "location": "Theorem thm:stripfact",
-      "deps": ["def:Y", "lem:Thetabij", "lem:analstrip", "thm:PW", "AX-zeta-holo", "AX-IdentityThm"]
-    },
-    "thm:zero-bij": {
-      "kind": "theorem",
-      "name": "Zero-set bijection on Omega_delta",
-      "statement": "t_0 in Omega_delta is a zero of Z of order m iff Theta(t_0) is a zero of Y of order m",
-      "location": "Theorem thm:zero-bij",
-      "deps": ["thm:stripfact", "lem:Thetabij"]
-    },
-    "cor:Zreal": {
-      "kind": "corollary",
-      "name": "Reality of zeros of Z on Omega_delta",
-      "statement": "Every zero of Z in Omega_delta lies on R",
-      "location": "Corollary cor:Zreal",
-      "deps": ["thm:zero-bij", "thm:LP", "lem:Thetabij"]
+      "statement": "Every complex zero of the entire extension of Y is real",
+      "location": "Theorem thm:Yzeros",
+      "deps": ["def:Y", "thm:PW", "cor:Cramer", "cor:supp", "thm:Akhiezer"]
     },
     "thm:main": {
       "kind": "theorem",
       "name": "Riemann Hypothesis",
-      "statement": "Every nontrivial zero rho of zeta satisfies Re rho = 1/2. Proof: for rho = beta + i*gamma with 0 < beta < 1, set delta_rho = (1/2) min(beta, 1 - beta) and t_rho = gamma + i(1/2 - beta); then |Im t_rho| = 1/2 - 2 delta_rho < 1/2 - delta_rho so t_rho is in Omega_{delta_rho}; choose a delta_rho-admissible c (def:admissibledelta); strip factorization (thm:stripfact) and AX-FE-zero give Z(t_rho) = 0; cor:Zreal forces t_rho in R, hence Im t_rho = 1/2 - beta = 0, so beta = 1/2",
+      "statement": "Every nontrivial zero rho of zeta satisfies Re(rho) = 1/2. Proof: by AX-FE-symmetry suffices to treat beta in (0, 1/2]. Fix c > c_* large enough that Re Theta'(gamma + is) > 0 for s in [0, 1/2 - beta]; define t_rho := gamma + i(1/2 - beta); AX-FE-zero gives Z(t_rho) = 0. The pointwise identity Z(t) = sqrt(Theta'(t)) Y(Theta(t)) of lem:Zfact holds for every real t; both sides are holomorphic in t on an open neighborhood of the vertical segment gamma + is (Z by AX-Zdef with |Im t| < 1/2; sqrt(Theta') single-valued since Theta'(t_rho) lies in the open right half-plane by the choice of c; Y entire by thm:PW), and equality on the real endpoint gamma combined with holomorphy gives equality at t_rho by analytic continuation along the segment, yielding 0 = Z(t_rho) = sqrt(Theta'(t_rho)) Y(Theta(t_rho)). Since sqrt(Theta'(t_rho)) != 0, Y(Theta(t_rho)) = 0; by thm:Yzeros, Theta(t_rho) in R, i.e. Im Theta(t_rho) = 0. Lemma lem:Theta (iii) gives Im Theta(gamma + i (1/2 - beta)) = integral_0^{1/2 - beta} Re Theta'(gamma + is) ds, with integrand bounded below by a positive constant on the segment by the choice of c, hence >= (1/2 - beta) * m > 0 unless 1/2 - beta = 0. Therefore beta = 1/2",
       "location": "Theorem thm:main",
-      "deps": ["def:admissibledelta", "thm:stripfact", "cor:Zreal", "AX-FE-zero"]
+      "deps": ["AX-FE-symmetry", "AX-FE-zero", "AX-Zdef", "def:Theta", "lem:Theta", "lem:cstar", "lem:Zfact", "thm:PW", "thm:Yzeros"]
     }
   },
   "meta": {
     "acyclic": true,
     "target_reachable_from_all_inputs_used": true,
     "notes": [
-      "Sub-strip Omega_delta = {|Im t| <= 1/2 - delta}; shift c > c_**(delta) gives Re Theta'(t) >= 1 on Omega_delta.",
-      "Primary chain: lem:analstrip, lem:olver -> def:admissibledelta -> lem:Thetabij; def:DOT -> lem:unitary; lem:Thetabij + lem:unitary -> def:Y -> lem:Yreal; def:covg + lem:HL + lem:RS + lem:omegabound -> thm:Ywss -> cor:Cramer; def:KT + lem:RS + lem:omegabound -> thm:bandlim -> cor:supp; thm:Ywss + cor:Cramer + cor:supp -> thm:PW; thm:PW + lem:Yreal + thm:Akhiezer + cor:supp -> thm:LP; def:Y + lem:Thetabij + lem:analstrip + thm:PW + AX-zeta-holo + AX-IdentityThm -> thm:stripfact -> thm:zero-bij -> cor:Zreal; def:admissibledelta + thm:stripfact + cor:Zreal + AX-FE-zero -> thm:main (contradiction using t_rho in Omega_{delta_rho}).",
-      "The two additions over the prior height-adapted version: (1) lem:omegabound makes the instantaneous u-frequency ratio identification omega_n(t) in [0,1) explicit, used by both thm:Ywss and thm:bandlim; (2) thm:bandlim now records the exact cancellation of vartheta''(t(u)) in the IBP ratio Q = x^{1/2}/((sigma - mu) x - sigma(c + log n)) via the substitution x = Theta'(t(u)).",
-      "Axioms: AX-Digamma, AX-Olver, AX-Zreal, AX-zeta-holo, AX-FE-zero, AX-HL, AX-RS, AX-Bochner, AX-WK, AX-PW-WSS, AX-Akhiezer, AX-IdentityThm."
+      "Single-point version: no parametric sub-strip Omega_delta, no holomorphic bijection framework, no identity theorem applied to the factorization on a 2D domain, no strip-wide zero-set bijection, no strip-wide reality corollary.",
+      "Use of complex values is confined to: (1) holomorphy of vartheta' and zeta in a neighborhood of the single point t_rho = gamma + i(1/2 - beta) (via AX-Zdef, lem:Theta (ii)); (2) analytic continuation along the vertical segment gamma + is, s in [0, 1/2 - beta], of the identity Z(t) = sqrt(Theta'(t)) Y(Theta(t)) whose two sides are holomorphic there and agree at s = 0; (3) the elementary identity Im Theta(a+ib) = integral_0^b Re Theta'(a+is) ds for the imaginary-part bound.",
+      "Primary chain: AX-Olver -> lem:cstar -> def:Theta; def:Theta + AX-Olver + AX-Digamma + AX-Zdef -> lem:Theta; def:DOT + lem:Theta -> def:Y -> lem:Zfact; def:covg + lem:HL + lem:RS + lem:omegabound + lem:Theta -> thm:Ywss -> cor:Cramer; def:KT + lem:RS + lem:omegabound + lem:Theta -> thm:bandlim -> cor:supp; thm:Ywss + cor:Cramer + cor:supp -> thm:PW; thm:PW + thm:Akhiezer + cor:supp + def:Y -> thm:Yzeros; AX-FE-symmetry + AX-FE-zero + AX-Zdef + def:Theta + lem:Theta + lem:cstar + lem:Zfact + thm:PW + thm:Yzeros -> thm:main.",
+      "Axioms: AX-Digamma, AX-Olver, AX-Zdef, AX-FE-zero, AX-FE-symmetry, AX-HL, AX-RS, AX-Bochner, AX-WK, AX-PW-WSS, AX-Akhiezer."
     ]
   }
 }

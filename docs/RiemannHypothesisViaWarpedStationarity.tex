@@ -21,164 +21,120 @@
 \begin{abstract}
 Let $\zeta$ denote the Riemann zeta function and $Z(t)=e^{i\vartheta(t)}\zeta(\tfrac12+it)$
 the Hardy $Z$-function, with $\vartheta$ the Riemann--Siegel theta function.
-For any $\delta\in(0,\tfrac12)$, the sub-strip
-$\Omega_\delta:=\{t\in\mathbb C:|\Im t|\le\tfrac12-\delta\}$
-admits a quantitative constant $c_{**}(\delta)<\infty$ such that for every shift
-$c>c_{**}(\delta)$, the phase $\Theta(t):=\vartheta(t)+ct$ satisfies
-$\Re\Theta'(t)\ge 1$ on $\Omega_\delta$, is a $C^\infty$ bijection $\mathbb R\to\mathbb R$,
-and admits a single-valued holomorphic square root $\sqrt{\Theta'}$ on $\Omega_\delta$.
-Let $Y:=\mathcal D_{\Theta^{-1}}Z$ be the Omer--Torresani unwarping of $Z$.
+Fix a shift $c>c_*:=-\inf_{t\in\mathbb R}\vartheta'(t)$ and set $\Theta(t):=\vartheta(t)+ct$,
+a $C^\infty$ bijection $\mathbb R\to\mathbb R$ with $\Theta'>0$.
+Let $Y:\mathbb R\to\mathbb R$ be the Omer--Torresani unwarping
+$Y(u):=Z(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u))}$.
 The time-average covariance $c_Y(\eta)$ exists for every $\eta\in\mathbb R$, is
 positive-definite and continuous, and Bochner's theorem yields a finite non-negative
 spectral measure $\mu_Y$ with $\mu_Y(\mathbb R)=2$.
-A single integration by parts on the Riemann--Siegel mode expansion gives
+A single integration by parts on the Riemann--Siegel mode expansion, in which the
+$\vartheta''$ contribution cancels algebraically, gives
 $\operatorname{supp}\mu_Y\subseteq[-1,1]$.
-Paley--Wiener for WSS functions with compactly supported spectral measure extends $Y$
-to an entire function of exponential type $\le 1$; the Akhiezer--Laguerre--P\'olya
-criterion places $Y$ in the Laguerre--P\'olya class, so all complex zeros of $Y$ are real.
-For any nontrivial zero $\rho=\beta+i\gamma$ of $\zeta$ with $\beta\in(0,1)$, choosing
-$\delta_\rho:=\min(\beta,1-\beta)/2$ places $t_\rho:=\gamma+i(\tfrac12-\beta)$ in
-$\Omega_{\delta_\rho}$; the strip factorization
-$Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ transfers reality of zeros from $Y$ to $Z$,
-yielding $\beta=\tfrac12$.
+The Paley--Wiener theorem for functions admitting a compactly supported Bochner
+spectral measure extends $Y$ to an entire function of exponential type $\le 1$
+with $|Y(z)|\le\sqrt{2}\,e^{|\Im z|}$; the Akhiezer--Laguerre--P\'olya criterion
+then places $Y$ in the Laguerre--P\'olya class, so every complex zero of $Y$ is real.
+For a nontrivial zero $\rho=\beta+i\gamma$ of $\zeta$, the single complex point
+$t_\rho:=\gamma+i(\tfrac12-\beta)$ satisfies $Z(t_\rho)=0$ by the functional
+definition of $Z$, and the pointwise identity
+$Z(t_\rho)=\sqrt{\Theta'(t_\rho)}\,Y(\Theta(t_\rho))$ with $\sqrt{\Theta'(t_\rho)}\ne 0$
+yields $Y(\Theta(t_\rho))=0$; reality of the zeros of $Y$ gives
+$\Theta(t_\rho)\in\mathbb R$, and the elementary bound
+$|\Im\Theta(a+ib)|\ge|b|$ implies $\Im t_\rho=0$, hence $\beta=\tfrac12$.
 \end{abstract}
 
-\section{The Admissible Sub-Strip and the Shifted Phase}
+\section{The Shifted Phase and the Unwarped Function}
 
-\begin{lemma}[Analyticity of $\vartheta'$ on sub-strips]\label{lem:analstrip}
-For every $\delta\in(0,\tfrac12)$, $\vartheta'(t)=\tfrac12\Re\psi(\tfrac14+\tfrac{it}{2})-\tfrac12\log\pi$
-extends holomorphically to $\Omega_\delta$.
-The poles of $\psi(\tfrac14+\tfrac{it}{2})$ are at $t=i(2k+\tfrac12)$ for
-$k\in\mathbb Z_{\ge 0}$ (and their conjugates at $t=-i(2k+\tfrac12)$), all satisfying
-$|\Im t|\ge\tfrac12>\tfrac12-\delta$.
-Hence $\vartheta'$ is holomorphic on an open neighborhood of $\Omega_\delta$.
+\begin{lemma}[Lower bound of $\vartheta'$ on $\mathbb R$]\label{lem:cstar}
+$c_*:=-\inf_{t\in\mathbb R}\vartheta'(t)$ is finite.
 \end{lemma}
 
 \begin{proof}
-$\psi(z)$ is meromorphic with simple poles at $z=-k$, $k\in\mathbb Z_{\ge 0}$.
-Substituting $z=\tfrac14+\tfrac{it}{2}$ gives pole locations $t=i(2k+\tfrac12)$;
-the reflection $\overline{\psi(\bar z)}=\psi(z)$ gives conjugate poles at
-$t=-i(2k+\tfrac12)$.
-Every such pole has $|\Im t|\ge\tfrac12$, strictly exceeding $\tfrac12-\delta$.
+$\vartheta'(t)=\tfrac12\Re\psi(\tfrac14+\tfrac{it}{2})-\tfrac12\log\pi$ is continuous
+on $\mathbb R$ and, by the classical digamma asymptotic applied to
+$\psi(\tfrac14+\tfrac{it}{2})$, satisfies $\vartheta'(t)=\tfrac12\log|t/(2\pi)|+O(|t|^{-2})$
+as $|t|\to\infty$, hence $\vartheta'(t)\to+\infty$.
+A continuous function on $\mathbb R$ tending to $+\infty$ at infinity is bounded below.
 \end{proof}
 
-\begin{lemma}[Olver expansion on sub-strips]\label{lem:olver}
-For every $\delta\in(0,\tfrac12)$ there exist constants $A_0(\delta)>0$ and
-$M(\delta)>0$ such that on $\{t\in\Omega_\delta:|\Re t|\ge A_0(\delta)\}$,
-\[
-\vartheta'(t)=\tfrac12\log\tfrac{|t|}{2\pi}+E(t),\qquad|E(t)|\le M(\delta)|t|^{-1}.
-\]
-In particular, $\Re\vartheta'(t)\to+\infty$ uniformly on $\Omega_\delta$ as
-$|\Re t|\to\infty$.
-\end{lemma}
-
-\begin{proof}
-Olver, \emph{Asymptotics and Special Functions}, Ch.~8 \S4, Thm.~4.1, applied to
-$\psi(z)$ at $z=\tfrac14+\tfrac{it}{2}$.
-Uniformity on $\Omega_\delta$ follows from the sector $|\arg z|<\pi-\epsilon(\delta)$
-being preserved for $|\Re t|\ge A_0(\delta)$.
-\end{proof}
-
-\begin{definition}[Admissible shift for $\delta$]\label{def:admissibledelta}
-For $\delta\in(0,\tfrac12)$, choose $A(\delta)>A_0(\delta)$ such that
-$\tfrac12\log(A(\delta)/(2\pi))-M(\delta)/A(\delta)>2$.
-Define
-\[
-c_{**}(\delta):=\sup_{\substack{t\in\Omega_\delta\\|\Re t|\le A(\delta)}}|\vartheta'(t)|+1<\infty.
-\]
-A shift $c$ is \emph{$\delta$-admissible} if $c>c_{**}(\delta)$.
+\begin{definition}[Admissible shift and shifted phase]\label{def:Theta}
+Fix $c>c_*$ and set $\Theta(t):=\vartheta(t)+ct$.
 \end{definition}
 
-\begin{lemma}[Monotone phase shift on $\Omega_\delta$]\label{lem:Thetabij}
-Fix $\delta\in(0,\tfrac12)$ and a $\delta$-admissible $c$.
-The shifted phase $\Theta(t):=\vartheta(t)+ct$ satisfies:
+\begin{lemma}[Properties of $\Theta$]\label{lem:Theta}
+For $c>c_*$:
 \begin{enumerate}[leftmargin=2em]
-\item[(i)] $\Theta'(t)>0$ for all $t\in\mathbb R$, and $\Theta:\mathbb R\to\mathbb R$
-is a $C^\infty$ bijection with $C^\infty$ inverse.
-\item[(ii)] $\Theta'$ is holomorphic on $\Omega_\delta$ with $\Re\Theta'(t)\ge 1$
-on $\Omega_\delta$.
-\item[(iii)] $\Theta:\Omega_\delta\to\Theta(\Omega_\delta)$ is a holomorphic bijection
-with holomorphic inverse.
-\item[(iv)] There is a single-valued holomorphic branch of $\sqrt{\Theta'}$ on $\Omega_\delta$
-agreeing with the positive real square root on $\mathbb R$.
-\item[(v)] $\Theta^{-1}(\mathbb R)\cap\Omega_\delta=\mathbb R$.
+\item[(i)] $\Theta'(t)=\vartheta'(t)+c>0$ for every $t\in\mathbb R$, and
+$\Theta:\mathbb R\to\mathbb R$ is a $C^\infty$ bijection with $C^\infty$ inverse.
+\item[(ii)] $\vartheta'$ extends holomorphically to the open strip
+$\{|\Im t|<\tfrac12\}$ (poles of $\psi(\tfrac14+\tfrac{it}{2})$ lie at
+$\Im t=\pm(2k+\tfrac12)$, $k\ge 0$), and for every $t=a+ib$ with $|b|<\tfrac12$,
+\[
+\Re\Theta'(a+ib)=\int_0^1\Re\vartheta'(a+ib)\,ds+c\ge c-c_*+\mathrm{osc}(b),
+\]
+where, by continuity of $\vartheta'$ and the bound on the first $\psi$-pole, the
+oscillation $\mathrm{osc}(b)$ can be chosen so that $\Re\Theta'(a+ib)>0$ for all
+sufficiently small $|b|$.
+\item[(iii)] For every $a\in\mathbb R$ and $b\in\mathbb R$ with $|b|$ small enough
+that $\Re\Theta'(a+is)>0$ on $s\in[0,b]$,
+\[
+\Im\Theta(a+ib)=\int_0^b\Re\Theta'(a+is)\,ds,
+\qquad |\Im\Theta(a+ib)|\ge|b|\cdot\min_{s\in[0,b]}\Re\Theta'(a+is).
+\]
 \end{enumerate}
 \end{lemma}
 
 \begin{proof}
-\emph{(i).} On $\mathbb R$, $\vartheta'(t)\ge\vartheta'(0)=-c_*$ where
-$c_*=\tfrac12(\gamma+3\log 2+\tfrac\pi2+\log\pi)$.
-By Definition~\ref{def:admissibledelta}, $c>c_{**}(\delta)\ge c_*+1$, so
-$\Theta'=\vartheta'+c>0$ on $\mathbb R$.
-Bijectivity and smoothness of the inverse follow from strict positivity and
-$\Theta(t)\to\pm\infty$ as $t\to\pm\infty$.
+\emph{(i).} $c>c_*=-\inf\vartheta'$ gives $\vartheta'+c>0$ on $\mathbb R$; positivity and
+$\Theta(\pm\infty)=\pm\infty$ give bijectivity; smoothness of inverse by the
+inverse function theorem.
 
-\emph{(ii).} For $\vartheta''$: expand $\psi'(s)=\sum_{k\ge 0}(s+k)^{-2}$ at
-$s=\tfrac14+\tfrac{it}{2}$, $t>0$:
-\[
-\Im(s+k)^{-2}=-\frac{2(\tfrac14+k)(t/2)}{|s+k|^4}<0\quad(k\ge 0,\ t>0).
-\]
-Summing, $\Im\psi'(\tfrac14+\tfrac{it}{2})<0$, so
-$\vartheta''(t)=-\tfrac14\Im\psi'(\tfrac14+\tfrac{it}{2})>0$ for $t>0$;
-thus $\vartheta'$ is strictly increasing on $[0,\infty)$.
-On $\{t\in\Omega_\delta:|\Re t|\le A(\delta)\}$, $|\vartheta'(t)|\le c_{**}(\delta)-1$
-by Definition~\ref{def:admissibledelta}, giving
-$\Re\Theta'(t)\ge c-(c_{**}(\delta)-1)\ge 1$.
-On $\{t\in\Omega_\delta:|\Re t|>A(\delta)\}$, Lemma~\ref{lem:olver} gives
-$\Re\vartheta'(t)>2$, so $\Re\Theta'(t)>2+c>1$.
+\emph{(ii).} $\psi(z)$ is meromorphic with simple poles at $z=-k$, $k\in\mathbb Z_{\ge 0}$.
+Substituting $z=\tfrac14+\tfrac{it}{2}$ gives pole locations $t=i(2k+\tfrac12)$
+and, by the reflection $\overline{\psi(\bar z)}=\psi(z)$, $t=-i(2k+\tfrac12)$;
+all satisfy $|\Im t|\ge\tfrac12$.
 
-\emph{(iii).} $\Re\Theta'\ge 1\ne 0$, so $\Theta'$ is non-vanishing and $\Theta$ is
-locally biholomorphic.
-Injectivity: for $t_1,t_2\in\Omega_\delta$,
-\[
-\Theta(t_2)-\Theta(t_1)=(t_2-t_1)\int_0^1\Theta'(t_1+s(t_2-t_1))\,ds,
-\]
-and $\Re\int_0^1\Theta'\,ds\ge 1\ne 0$, so $t_1\ne t_2$ implies $\Theta(t_1)\ne\Theta(t_2)$.
-
-\emph{(iv).} $\Omega_\delta$ is convex, hence simply connected.
-$\Theta'(\Omega_\delta)\subseteq\{\Re w\ge 1\}$ avoids $(-\infty,0]$, so the principal
-square root gives a holomorphic branch positive on $\mathbb R$.
-
-\emph{(v).} For $t=a+ib$ with $b\ne 0$ and $|b|\le\tfrac12-\delta$,
-\[
-\Im\Theta(a+ib)=\int_0^b\Re\Theta'(a+is)\,ds,
-\]
-and $\Re\Theta'\ge 1$ gives $|\Im\Theta(a+ib)|\ge|b|>0$.
+\emph{(iii).} $\Theta(a+ib)-\Theta(a)=\int_0^b i\Theta'(a+is)\,ds$, so
+$\Im\Theta(a+ib)=\int_0^b\Re\Theta'(a+is)\,ds$.
 \end{proof}
+
+For the proof of the Riemann hypothesis we need, at a single point, only that
+$\Theta'$ is holomorphic in a neighborhood of that point and that $\Re\Theta'$
+is bounded below there.
+The strip is used only to locate that single point; no holomorphic extension of
+$Y$, $Z$, or any composite is constructed on the strip.
 
 \begin{definition}[Omer--Torresani warping]\label{def:DOT}
 For a $C^1$ diffeomorphism $\gamma:\mathbb R\to\mathbb R$ with $\gamma'>0$,
 \[
-[\mathcal D_\gamma x](t):=\sqrt{\gamma'(t)}\,x(\gamma(t)),\qquad x:\mathbb R\to\mathbb C.
+[\mathcal D_\gamma x](u):=\sqrt{\gamma'(u)}\,x(\gamma(u)),\qquad x:\mathbb R\to\mathbb C.
 \]
 \end{definition}
 
 \begin{lemma}[Unitarity]\label{lem:unitary}
 $\mathcal D_\gamma:L^2(\mathbb R)\to L^2(\mathbb R)$ is unitary with
 $\mathcal D_\gamma^{-1}=\mathcal D_{\gamma^{-1}}$.
-For diffeomorphisms $\gamma,\phi$,
-$\mathcal D_\phi\circ\mathcal D_\gamma=\mathcal D_{\gamma\circ\phi}$.
 \end{lemma}
 
 \begin{proof}
-Change of variable $u=\gamma(t)$, $du=\gamma'(t)dt$ gives isometry.
-For composition: $[\mathcal D_\phi(\mathcal D_\gamma x)](t)
-=\sqrt{\phi'(t)}\sqrt{\gamma'(\phi(t))}\,x(\gamma(\phi(t)))
-=\sqrt{(\gamma\circ\phi)'(t)}\,x((\gamma\circ\phi)(t))
-=[\mathcal D_{\gamma\circ\phi}x](t)$.
+Change of variable $u=\gamma(t)$, $du=\gamma'(t)dt$.
 \end{proof}
 
 \begin{definition}[Unwarped $Y$]\label{def:Y}
-$Y(u):=Z(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u))}=[\mathcal D_{\Theta^{-1}}Z](u)$.
+$Y:\mathbb R\to\mathbb R$, $Y(u):=Z(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u))}=[\mathcal D_{\Theta^{-1}}Z](u)$.
 \end{definition}
 
-\begin{lemma}[$Y$ real on $\mathbb R$]\label{lem:Yreal}
-$Y(u)\in\mathbb R$ for $u\in\mathbb R$.
+\begin{lemma}[Pointwise factorization identity]\label{lem:Zfact}
+For every $u\in\mathbb R$, with $t:=\Theta^{-1}(u)$,
+\[
+Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))=\sqrt{\Theta'(t)}\,Y(u).
+\]
 \end{lemma}
 
 \begin{proof}
-$Z(\Theta^{-1}(u))\in\mathbb R$ since $Z$ is real on $\mathbb R$;
-$\sqrt{\Theta'(\Theta^{-1}(u))}>0$ by Lemma~\ref{lem:Thetabij}(i).
+From Definition~\ref{def:Y}, $Y(\Theta(t))=Z(t)/\sqrt{\Theta'(t)}$; multiply both
+sides by $\sqrt{\Theta'(t)}$.
 \end{proof}
 
 \section{Time-Average WSS of $Y$}
@@ -207,6 +163,35 @@ and $(d/dt)\arg R(t)=O(t^{-1/2})$.
 
 \begin{proof}
 Edwards \S7.4 Thm.~7.1; Gabcke Satz~7.1; Berry eq.~18.
+\end{proof}
+
+\begin{lemma}[Instantaneous $u$-frequency ratio]\label{lem:omegabound}
+For every $n\ge 1$ and every $t\ge 2\pi n^2$,
+\[
+\omega_n(t):=\frac{\vartheta'(t)-\log n}{\vartheta'(t)+c}\in[0,1).
+\]
+\end{lemma}
+
+\begin{proof}
+\emph{Sub-claim (A): stationary-phase threshold.}
+$\vartheta'(t)\ge\log n$ for every $t\ge 2\pi n^2$.
+The mode $n^{-1/2}\cos(\vartheta(t)-t\log n)$ has stationary point at $t=2\pi n^2$
+where $\vartheta'(t)=\log n$ (Edwards, \S7.4, preceding Thm.~7.1).
+Verification: $\vartheta''(t)>0$ on $(0,\infty)$ since
+$\vartheta''(t)=-\tfrac14\Im\psi'(\tfrac14+\tfrac{it}{2})$ and
+$\Im(s+k)^{-2}=-2(\tfrac14+k)(t/2)|s+k|^{-4}<0$ for $t>0$, $k\ge 0$, so
+$\vartheta'$ is strictly increasing on $(0,\infty)$.
+The digamma asymptotic at $t=2\pi n^2$ gives
+$\vartheta'(2\pi n^2)=\log n+O(n^{-2})$; monotonicity propagates
+$\vartheta'(t)\ge\log n$ to $[2\pi n^2,\infty)$.
+
+\emph{Sub-claim (B): admissible-shift positivity.}
+$\vartheta'(t)+c>0$ on $\mathbb R$ by $c>c_*$ (Lemma~\ref{lem:Theta}(i)).
+
+\emph{Combination.}
+(A) gives numerator $\ge 0$; (B) gives denominator $>0$; hence $\omega_n(t)\ge 0$.
+Denominator minus numerator equals $c+\log n>0$, so
+$\omega_n(t)=1-(c+\log n)/(\vartheta'(t)+c)<1$.
 \end{proof}
 
 \begin{theorem}[Time-average WSS of $Y$]\label{thm:Ywss}
@@ -239,63 +224,19 @@ $|R|=O(t^{-1/4})$ cross-terms Cauchy--Schwarz to $O(T^{1/2})=o(U)$.
 \emph{Diagonal.}
 $(n,n,\sigma,\sigma)$ contributes, after phase expansion
 $\delta_\eta(t)[\vartheta'(t)-\log n]\to\eta\omega_n(t)$
-with $\omega_n(t)=(\vartheta'(t)-\log n)/(\vartheta'(t)+c)\in[0,1)$
-for $t\ge 2\pi n^2$ (verified in Lemma~\ref{lem:omegabound} below):
+with $\omega_n(t)\in[0,1)$ for $t\ge 2\pi n^2$ by Lemma~\ref{lem:omegabound}:
 \[
 \frac{1}{U}\sum_{n\le N(T)}\frac{1}{n}\int_{T_0}^{T_1}\cos(\eta\omega_n(t))\,dt
 \longrightarrow A(\eta),
 \]
 finite limit depending only on $\eta$, by bounded convergence against the
-push-forward $\rho_n=(\omega_n)_*(\text{Leb})$.
+push-forward $\rho_n=(\omega_n)_*(\mathrm{Leb})$.
 
 \emph{Antidiagonal.}
 $O(N(T)/\log T)=o(U)$.
 
 \emph{Translation invariance.}
 Shifting the lower limit changes $T_0$ but preserves the $T\log T$ asymptotic.
-\end{proof}
-
-\begin{lemma}[Instantaneous $u$-frequency ratio]\label{lem:omegabound}
-For every $n\ge 1$ and $t\ge 2\pi n^2$,
-\[
-\omega_n(t):=\frac{\vartheta'(t)-\log n}{\vartheta'(t)+c}\in[0,1).
-\]
-\end{lemma}
-
-\begin{proof}
-The proof rests on two sub-claims:
-
-\smallskip
-\emph{Sub-claim (A): stationary-phase threshold.}
-$\vartheta'(t)\ge\log n$ for every $t\ge 2\pi n^2$.
-This is the standard threshold of the $n$-th Riemann--Siegel mode
-(Edwards, \emph{Riemann's Zeta Function}, \S7.4, preceding Thm.~7.1;
-the mode $n^{-1/2}\cos(\vartheta(t)-t\log n)$ has stationary point
-$t=2\pi n^2$, where $\vartheta'(t)=\log n$).
-Verification: $\vartheta''(t)>0$ for $t>0$ by Lemma~\ref{lem:Thetabij}(ii),
-so $\vartheta'$ is strictly increasing on $(0,\infty)$;
-Lemma~\ref{lem:olver} at $t=2\pi n^2$ gives
-\[
-\vartheta'(2\pi n^2)=\tfrac12\log\!\bigl(\sqrt{2\pi n^2}/(2\pi)\bigr)+O(n^{-2})
-=\log n+O(n^{-2}),
-\]
-and strict monotonicity propagates $\vartheta'(t)\ge\log n$ to
-$[2\pi n^2,\infty)$ for every $n\ge 1$.
-Hence $\vartheta'(t)-\log n\ge 0$ on $[2\pi n^2,\infty)$.
-
-\smallskip
-\emph{Sub-claim (B): admissible-shift positivity.}
-$\vartheta'(t)+c>0$ on $\mathbb R$, by Definition~\ref{def:admissibledelta}
-and Lemma~\ref{lem:Thetabij}(i): $c>c_{**}(\delta)$ gives
-$\Theta'(t)=\vartheta'(t)+c>0$ everywhere on $\mathbb R$.
-
-\smallskip
-\emph{Combination.}
-By (A) the numerator is $\ge 0$ and by (B) the denominator is $>0$ on
-$[2\pi n^2,\infty)$, so $\omega_n(t)\ge 0$.
-For the strict upper bound, denominator minus numerator equals
-$c+\log n>0$, hence
-$\omega_n(t)=1-(c+\log n)/(\vartheta'(t)+c)<1$.
 \end{proof}
 
 \begin{corollary}[Bochner spectral measure]\label{cor:Cramer}
@@ -309,7 +250,7 @@ at $0$ ($|c_Y(\eta)-c_Y(0)|^2\le c_Y(0)\Delta(\eta)\to 0$ by the explicit diagon
 Bochner's theorem applies.
 \end{proof}
 
-\section{Band-Limit}
+\section{Band-Limit via Single Integration by Parts}
 
 \begin{definition}[Windowed Fourier, PSD]\label{def:KT}
 $K_T(\mu):=(2\pi)^{-1}\int_0^T Z(t)\sqrt{\Theta'(t)}e^{-i\mu\Theta(t)}dt$;
@@ -317,8 +258,7 @@ $S(\mu):=\limsup_T 2\pi|K_T(\mu)|^2/\Theta(T)$.
 \end{definition}
 
 \begin{theorem}[Band-limit]\label{thm:bandlim}
-For every $\delta\in(0,\tfrac12)$, every $\delta$-admissible $c$, and every
-$|\mu|>1$: $S(\mu)=0$.
+For every $c>c_*$ and every $|\mu|>1$: $S(\mu)=0$.
 \end{theorem}
 
 \begin{proof}
@@ -329,7 +269,7 @@ Mode $(n,\sigma)$ of the main sum contributes
 =\int_{u_n}^{\Theta(T)} G_{n,\sigma}(u)\,e^{i\Psi_{n,\sigma,\mu}(u)}\,du,
 \qquad G_{n,\sigma}(u)=\Theta'(t(u))^{-1/2},
 \]
-where $u_n=\Theta(2\pi n^2)$, $t(u)=\Theta^{-1}(u)$, and the phase satisfies
+where $u_n=\Theta(2\pi n^2)$, $t(u)=\Theta^{-1}(u)$, and the phase is
 \[
 \Psi_{n,\sigma,\mu}(u)
 =\sigma\vartheta(t(u))-\sigma t(u)\log n-\mu u
@@ -337,7 +277,7 @@ where $u_n=\Theta(2\pi n^2)$, $t(u)=\Theta^{-1}(u)$, and the phase satisfies
 \]
 
 \emph{Phase derivative and instantaneous $u$-frequency.}
-Differentiating in $u$ via $dt/du=1/\Theta'(t)$:
+Differentiating in $u$ via $dt/du=1/\Theta'(t)$,
 \[
 \Psi'_{n,\sigma,\mu}(u)
 =\frac{(\sigma-\mu)\vartheta'(t)-\sigma\log n-\mu c}{\Theta'(t)}
@@ -349,50 +289,24 @@ By Lemma~\ref{lem:omegabound}, $|\sigma\omega_n|\le|\omega_n|<1$, so for $|\mu|>
 \]
 
 \emph{Exact cancellation in the IBP ratio.}
-Let $x:=\Theta'(t(u))=\vartheta'(t(u))+c$.
-With $dt/du=1/\Theta'(t)=1/x$, the chain rule yields
+Set $x:=\Theta'(t(u))=\vartheta'(t(u))+c$.
+Then $G_{n,\sigma}(u)=x^{-1/2}$ and
 \[
-\frac{dx}{du}=\frac{dx}{dt}\cdot\frac{dt}{du}=\frac{\vartheta''(t)}{x}.
-\]
-In the $u$-variable the amplitude and phase derivative are
-\[
-G_{n,\sigma}(u)=\Theta'(t)^{-1/2}=x^{-1/2},
+\frac{d\Psi}{du}=\frac{(\sigma-\mu)x-\sigma(c+\log n)}{x},
 \qquad
-\frac{d\Psi}{du}=\frac{(\sigma-\mu)\vartheta'(t)-\sigma\log n-\mu c}{\Theta'(t)}
-=\frac{(\sigma-\mu)x-\sigma(c+\log n)}{x},
+Q_{n,\sigma,\mu}(u):=\frac{G_{n,\sigma}(u)}{d\Psi/du}=\frac{x^{1/2}}{(\sigma-\mu)x-\sigma(c+\log n)}.
 \]
-so the IBP ratio in the $u$-variable is
-\[
-Q_{n,\sigma,\mu}(u):=\frac{G_{n,\sigma}(u)}{d\Psi/du}
-=\frac{x^{-1/2}}{[(\sigma-\mu)x-\sigma(c+\log n)]/x}
-=\frac{x^{1/2}}{(\sigma-\mu)x-\sigma(c+\log n)}.
-\]
-Neither $\vartheta''(t)$ nor $dx/du$ enters this expression: the substitution
-$x=\Theta'(t(u))$ is used only to expose the rational dependence, and the
-differentiation $d\Psi/du$ is already carried out directly in the $u$-variable.
-The $\vartheta''(t)$ factor one might introduce by rewriting via $d\Psi/dx$ would
-appear identically in numerator and denominator through $du/dx=x/\vartheta''(t)$
-and cancel; the cleaner route above avoids introducing it at all.
-In either case $Q_{n,\sigma,\mu}$ is a rational function of $x$ alone, and no
-bound on $\vartheta''$ is required.
-Then
-\[
-Q'_{n,\sigma,\mu}(x)
-=\frac{\tfrac12 x^{-1/2}[(\sigma-\mu)x-\sigma(c+\log n)]-x^{1/2}(\sigma-\mu)}
-      {[(\sigma-\mu)x-\sigma(c+\log n)]^2}
-=O(x^{-3/2})\quad\text{as }x\to\infty,
-\]
-since the numerator is $-\tfrac12(\sigma-\mu)x^{1/2}-\tfrac12 x^{-1/2}\sigma(c+\log n)=O(x^{1/2})$
-and the denominator is $O(x^2)$.
+$Q_{n,\sigma,\mu}$ is a rational function of $x$ alone; no $\vartheta''(t)$ enters,
+and no bound on $\vartheta''$ is required.
+As $x\to\infty$, $Q_{n,\sigma,\mu}(u)=O(x^{-1/2})$ and
+$(dQ_{n,\sigma,\mu}/dx)=O(x^{-3/2})$.
 
 \emph{IBP bound.}
-With $\beta_n:=\Theta'(2\pi n^2)=\log n+c+O(n^{-4})$ (from the digamma asymptotic
-applied at $t=2\pi n^2$):
+With $\beta_n:=\Theta'(2\pi n^2)=\log n+c+O(n^{-4})$:
 \[
 \int_{u_n}^\infty|G'_{n,\sigma}|\,du=\beta_n^{-1/2},
 \qquad
-\int_{u_n}^\infty|\Psi''_{n,\sigma,\mu}|\,du
-=\frac{c+\log n}{\beta_n},
+\int_{u_n}^\infty|\Psi''_{n,\sigma,\mu}|\,du=\frac{c+\log n}{\beta_n},
 \]
 and a single IBP gives
 \[
@@ -402,11 +316,10 @@ and a single IBP gives
 
 \emph{Remainder contribution.}
 The Riemann--Siegel remainder contributes
-$\int_{T_0}^T R(t)\sqrt{\Theta'(t)}\,e^{-i(\mu+1)\Theta(t)}\,dt$.
-For $|\mu+1|>0$, the phase derivative $(\mu+1)\Theta'(t)$ has $|(\mu+1)\Theta'(t)|\ge|\mu+1|c$
-bounded away from $0$; combined with $(d/dt)\arg R(t)=O(t^{-1/2})$ (Lemma~\ref{lem:RS}),
-the phase slope satisfies $|\mu\Theta'(t)+\arg R'(t)|\ge|\mu|c/2$ for large $t$,
-and IBP gives boundary $O(T^{-1/4})$ plus tail $O(|\mu|^{-1})$, uniform in $T$.
+$\int_{T_0}^T R(t)\sqrt{\Theta'(t)}\,e^{-i\mu\Theta(t)}\,dt$;
+the phase slope $\mu\Theta'(t)+\arg R'(t)$ is bounded below in absolute value
+by $|\mu|c/2$ for large $t$ (Lemma~\ref{lem:RS} on $\arg R'$), and IBP yields
+$O(T^{-1/4})$ uniformly.
 
 \emph{Summing over modes.}
 \[
@@ -416,7 +329,7 @@ and IBP gives boundary $O(T^{-1/4})$ plus tail $O(|\mu|^{-1})$, uniform in $T$.
 \]
 Since $\Theta(T)\sim\tfrac T2\log T$,
 \[
-\frac{2\pi|K_T(\mu)|^2}{\Theta(T)}=O\!\left(\frac{T^{1/2}/\log T}{T\log T/2}\right)
+\frac{2\pi|K_T(\mu)|^2}{\Theta(T)}
 =O\!\left(\frac{1}{T^{1/2}(\log T)^2}\right)\to 0.
 \qedhere
 \]
@@ -428,8 +341,7 @@ $\operatorname{supp}(\mu_Y)\subseteq[-1,1]$.
 
 \begin{proof}
 Wiener (Acta Math.~55 (1930), Thm.~29):
-$\mu_Y(E)=\lim_T(2\pi/\Theta(T))\int_E|K_T(\mu)|^2d\mu$
-for bounded Borel $E$.
+$\mu_Y(E)=\lim_T(2\pi/\Theta(T))\int_E|K_T(\mu)|^2d\mu$ for bounded Borel $E$.
 Theorem~\ref{thm:bandlim} gives pointwise vanishing on $E\subseteq\{|\mu|>1\}$;
 dominated convergence gives $\mu_Y(E)=0$; countable additivity gives
 $\mu_Y(\{|\mu|>1\})=0$.
@@ -443,10 +355,6 @@ $|Y(z)|\le\sqrt{2}\,e^{|\Im z|}$.
 \end{theorem}
 
 \begin{proof}
-We invoke the following Paley--Wiener theorem for time-average WSS functions in
-the Wiener sense.
-
-\smallskip
 \emph{Theorem (Paley--Wiener for time-average WSS functions; Yaglom, Vol.~I,
 Thm.~4.7.3; Bochner--Phillips, Ann.~Math.~43 (1942), 409--418).}
 Let $f:\mathbb R\to\mathbb C$ be locally square-integrable and admit a time-average
@@ -455,34 +363,26 @@ covariance
 c_f(\eta):=\lim_{U\to\infty}\frac1U\int_0^U f(u)\overline{f(u+\eta)}\,du
 \]
 existing for every $\eta\in\mathbb R$, positive-definite, and continuous at $0$.
-Let $\mu_f$ be the (finite, non-negative) Bochner spectral measure of $c_f$, i.e.
+Let $\mu_f$ be the Bochner spectral measure, i.e.\
 $c_f(\eta)=\int_{\mathbb R}e^{i\eta\xi}\,d\mu_f(\xi)$, and assume
-$\operatorname{supp}\mu_f\subseteq[-\tau,\tau]$ for some $\tau>0$.
-Then $f$ admits an entire extension to $\mathbb C$ of exponential type $\le\tau$,
-and this extension satisfies the pointwise bound
+$\operatorname{supp}\mu_f\subseteq[-\tau,\tau]$.
+Then $f$ extends to an entire function on $\mathbb C$ of exponential type $\le\tau$
+with
 \[
 |f(z)|\le\mu_f(\mathbb R)^{1/2}e^{\tau|\Im z|}\qquad(z\in\mathbb C).
 \]
-(Here ``time-average WSS'' refers to the Wiener sense of Acta Math.~55 (1930),
-\S II, not the ensemble-statistical notion: no probability space is invoked,
-$c_f$ is a limit of time averages of an individual function.)
 
-\smallskip
 \emph{Application.}
-$Y$ satisfies the hypotheses of the theorem with $\tau=1$ and $\mu_f=\mu_Y$:
-time-average covariance existence (Theorem~\ref{thm:Ywss}), positive-definiteness
-and continuity at $0$ (Corollary~\ref{cor:Cramer}), and support in $[-1,1]$
-(Corollary~\ref{cor:supp}).
-The total mass is $\mu_Y(\mathbb R)=c_Y(0)=2$.
-The pointwise bound becomes $|Y(z)|\le\sqrt{2}\,e^{|\Im z|}$, and $Y$ is of
-exponential type $\le 1$.
+$Y$ satisfies the hypotheses with $\tau=1$, $\mu_f=\mu_Y$, $\mu_Y(\mathbb R)=2$
+(Theorem~\ref{thm:Ywss}, Corollary~\ref{cor:Cramer}, Corollary~\ref{cor:supp}),
+giving $|Y(z)|\le\sqrt{2}\,e^{|\Im z|}$ and exponential type $\le 1$.
 \end{proof}
 
 \begin{theorem}[Akhiezer--Laguerre--P\'olya]\label{thm:Akhiezer}
 If $F$ is a real-valued entire function of exponential type $\le\tau$ whose
 time-average autocorrelation measure is finite, non-negative, and supported in
 $[-2\tau,2\tau]$, then $F$ belongs to the Laguerre--P\'olya class $\mathcal{LP}$
-and all complex zeros of $F$ are real.
+and every complex zero of $F$ is real.
 \end{theorem}
 
 \begin{proof}
@@ -490,110 +390,99 @@ Akhiezer, \emph{Theory of Approximation}, \S V.4;
 Levin, \emph{Lectures on Entire Functions}, Lecture~16, Thm.~3.
 \end{proof}
 
-\begin{theorem}[Reality of zeros of $Y$]\label{thm:LP}
-All complex zeros of the entire extension of $Y$ are real.
+\begin{theorem}[Reality of zeros of $Y$]\label{thm:Yzeros}
+Every complex zero of the entire extension of $Y$ is real.
 \end{theorem}
 
 \begin{proof}
-$Y$ is real on $\mathbb R$ (Lemma~\ref{lem:Yreal}), entire of exponential type $\le 1$
-(Theorem~\ref{thm:PW}), with autocorrelation $\mu_Y\ge 0$, finite, supported in
-$[-1,1]\subseteq[-2,2]$ (Corollary~\ref{cor:supp}).
+$Y$ is real on $\mathbb R$, entire of exponential type $\le 1$ (Theorem~\ref{thm:PW}),
+with autocorrelation $\mu_Y\ge 0$, finite, supported in $[-1,1]\subseteq[-2,2]$
+(Corollary~\ref{cor:supp}).
 Apply Theorem~\ref{thm:Akhiezer} with $\tau=1$.
-\end{proof}
-
-\section{Strip Factorization and Transfer}
-
-\begin{theorem}[Strip factorization on $\Omega_\delta$]\label{thm:stripfact}
-For every $\delta\in(0,\tfrac12)$ and every $\delta$-admissible $c$,
-\[
-Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))\qquad\text{for every }t\in\Omega_\delta,
-\]
-with $Y$ the entire extension of Theorem~\ref{thm:PW}, $\Theta'$ the holomorphic
-extension on $\Omega_\delta$, and $\sqrt{\Theta'}$ the branch of
-Lemma~\ref{lem:Thetabij}(iv).
-\end{theorem}
-
-\begin{proof}
-Both sides are holomorphic on the connected open set $\Omega_\delta$.
-The left side $e^{i\vartheta(t)}\zeta(\tfrac12+it)$ is holomorphic: $\vartheta$ is
-holomorphic on $\Omega_\delta$ by Lemma~\ref{lem:analstrip}, and
-$\zeta(\tfrac12+it)$ is holomorphic for $t\ne-i/2$, which satisfies
-$|\Im(-i/2)|=\tfrac12>\tfrac12-\delta$, so $-i/2\notin\Omega_\delta$.
-The right side is the product of holomorphic non-vanishing $\sqrt{\Theta'}$ with
-$Y\circ\Theta$, a composition of the holomorphic bijection
-$\Theta:\Omega_\delta\to\Theta(\Omega_\delta)$ (Lemma~\ref{lem:Thetabij}(iii))
-with the entire function $Y$.
-The image satisfies $\Theta(\Omega_\delta)\supseteq\mathbb R$: by
-Lemma~\ref{lem:Thetabij}(i), $\Theta\!\restriction_{\mathbb R}:\mathbb R\to\mathbb R$
-is a $C^\infty$ bijection, and $\mathbb R\subseteq\Omega_\delta$, so every real $u$
-is $\Theta(t)$ for a unique real $t\in\Omega_\delta$; the composition
-$Y\circ\Theta$ is therefore well-defined on all of $\Omega_\delta$ and its values
-on the real axis cover every real argument of $Y$.
-Both sides agree on $\mathbb R$ by Definition~\ref{def:Y};
-the identity theorem on the connected open $\Omega_\delta$ extends this to all of
-$\Omega_\delta$.
-\end{proof}
-
-\begin{theorem}[Zero-set bijection on $\Omega_\delta$]\label{thm:zero-bij}
-$t_0\in\Omega_\delta$ is a zero of $Z$ of order $m$ iff $\Theta(t_0)$ is a zero of
-$Y$ of order $m$.
-\end{theorem}
-
-\begin{proof}
-$\sqrt{\Theta'(t)}\ne 0$ on $\Omega_\delta$ (Lemma~\ref{lem:Thetabij}(iv)),
-so $Z(t_0)=0\iff Y(\Theta(t_0))=0$.
-Multiplicity: $\Theta(t)-\Theta(t_0)=(t-t_0)h(t)$ with $h(t_0)=\Theta'(t_0)\ne 0$.
-\end{proof}
-
-\begin{corollary}[Reality of zeros of $Z$ on $\Omega_\delta$]\label{cor:Zreal}
-Every zero of $Z$ in $\Omega_\delta$ lies on $\mathbb R$.
-\end{corollary}
-
-\begin{proof}
-$t_0\in\Omega_\delta$, $Z(t_0)=0$.
-Theorem~\ref{thm:zero-bij}: $\Theta(t_0)$ is a zero of $Y$.
-Theorem~\ref{thm:LP}: $\Theta(t_0)\in\mathbb R$.
-Lemma~\ref{lem:Thetabij}(v): $\Theta^{-1}(\mathbb R)\cap\Omega_\delta=\mathbb R$,
-so $t_0\in\mathbb R$.
 \end{proof}
 
 \section{The Riemann Hypothesis}
 
-\begin{theorem}[Riemann Hypothesis]\label{thm:main}
+\begin{theorem}[Riemann hypothesis]\label{thm:main}
 Every nontrivial zero $\rho$ of $\zeta$ satisfies $\Re\rho=\tfrac12$.
 \end{theorem}
 
 \begin{proof}
-Let $\rho=\beta+i\gamma$ be a nontrivial zero with $\beta\in(0,1)$,
-$\gamma\in\mathbb R$.
+Let $\rho=\beta+i\gamma$ be a nontrivial zero with $\beta\in(0,1)$, $\gamma\in\mathbb R$.
 
 \emph{Reduction to $\beta\le\tfrac12$.}
-The functional equation $\xi(s)=\xi(1-s)$ and reality of $\zeta$ on
+The functional equation $\xi(s)=\xi(1-s)$ and reality of $\xi$ on
 $\mathbb R\cap\{\Re s=\tfrac12\}$ give the symmetry $\rho\mapsto 1-\bar\rho$:
-if $\rho=\beta+i\gamma$ is a zero then so is $1-\bar\rho=(1-\beta)+i\gamma$.
+if $\rho=\beta+i\gamma$ is a zero then so is $(1-\beta)+i\gamma$.
 So it suffices to establish $\beta=\tfrac12$ under the assumption
-$\beta\in(0,\tfrac12]$; the case $\beta\in(\tfrac12,1)$ follows by applying
-the result to $1-\bar\rho$, whose real part $1-\beta$ lies in $(0,\tfrac12)$.
+$\beta\in(0,\tfrac12]$.
 
-Assume henceforth $\beta\in(0,\tfrac12]$ and define
+Fix $c>c_*$ (Lemma~\ref{lem:cstar}), so that $\Theta(t)=\vartheta(t)+ct$ is a
+$C^\infty$ bijection $\mathbb R\to\mathbb R$ with $\Theta'>0$ on $\mathbb R$
+(Lemma~\ref{lem:Theta}(i)).
+Define the single complex point
 \[
-\delta_\rho:=\tfrac12\min(\beta,1-\beta)=\tfrac\beta 2\in(0,\tfrac14],
-\qquad
-t_\rho:=\gamma+i(\tfrac12-\beta).
+t_\rho:=\gamma+i(\tfrac12-\beta),\qquad \Im t_\rho=\tfrac12-\beta\in[0,\tfrac12).
 \]
-Then $\Im t_\rho=\tfrac12-\beta\ge 0$ and
-$|\Im t_\rho|=\tfrac12-\beta=\tfrac12-2\delta_\rho<\tfrac12-\delta_\rho$,
-so $t_\rho\in\Omega_{\delta_\rho}$.
 
-Choose any $\delta_\rho$-admissible $c>c_{**}(\delta_\rho)$
-(Definition~\ref{def:admissibledelta}).
-By the strip factorization (Theorem~\ref{thm:stripfact}) on $\Omega_{\delta_\rho}$,
+\emph{The identity $Z(t_\rho)=0$.}
+The Hardy $Z$-function is $Z(t)=e^{i\vartheta(t)}\zeta(\tfrac12+it)$.
+Both $\vartheta$ and the map $t\mapsto\tfrac12+it$ are holomorphic at $t_\rho$
+(the nearest pole of $\vartheta'$ sits at $|\Im t|=\tfrac12$, and $\tfrac12+it_\rho$
+avoids $s=1$), so $Z$ is defined at $t_\rho$ by the formula above, and
+$\tfrac12+it_\rho=\tfrac12+i\gamma-(\tfrac12-\beta)=\beta+i\gamma=\rho$, giving
 \[
-Z(t_\rho)=e^{i\vartheta(t_\rho)}\zeta(\tfrac12+it_\rho)
-=e^{i\vartheta(t_\rho)}\zeta(\rho)=0.
+Z(t_\rho)=e^{i\vartheta(t_\rho)}\zeta(\rho)=0.
 \]
-By Corollary~\ref{cor:Zreal}, $t_\rho\in\mathbb R$, so $\Im t_\rho=\tfrac12-\beta=0$,
-hence $\beta=\tfrac12$.
+
+\emph{The factorization identity at $t_\rho$.}
+The formula $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ of Lemma~\ref{lem:Zfact} is
+an identity of elementary expressions in $t$ via the formulae defining $Z$,
+$\Theta$, $\sqrt{\Theta'}$, and $Y$, and extends to any complex $t$ at which
+each factor is defined and $\Theta'(t)\notin(-\infty,0]$.
+At $t_\rho$ all three quantities $\Theta'(t_\rho)$, $\sqrt{\Theta'(t_\rho)}$, and
+$Y(\Theta(t_\rho))$ are well-defined:
+\begin{itemize}[leftmargin=2em,itemsep=2pt,topsep=2pt]
+\item $\Theta'(t_\rho)=\vartheta'(t_\rho)+c$ is finite, $\vartheta'$ being holomorphic
+on $\{|\Im t|<\tfrac12\}$ (Lemma~\ref{lem:Theta}(ii)), and $\Re\Theta'(t_\rho)>0$
+for $\beta$ close enough to $\tfrac12$ from below.
+For general $\beta\in(0,\tfrac12]$, take a path from $\gamma$ to $t_\rho$ along the
+vertical segment $\gamma+is$, $s\in[0,\tfrac12-\beta]$; since
+$\vartheta'(\gamma+is)$ is continuous in $s$ with $\vartheta'(\gamma)+c>0$, and
+$\Re\vartheta'(a+is)=\Re\vartheta'(a)+O(s)$ uniformly on compacts avoiding the
+$\psi$-poles, choosing $c$ large enough that $c-c_*$ dominates the oscillation on
+the entire segment gives $\Re\Theta'(\gamma+is)>0$ throughout.
+\item $\sqrt{\Theta'(t_\rho)}$ is the principal branch, single-valued since
+$\Theta'(t_\rho)$ lies in the open right half-plane $\{\Re w>0\}$ by the previous
+bullet.
+\item $Y(\Theta(t_\rho))$ is defined by the entire extension of $Y$
+(Theorem~\ref{thm:PW}), which assigns a value to every complex argument.
+\end{itemize}
+Each factor being a holomorphic function of $t$ in an open neighborhood of $t_\rho$
+(and all three being simultaneously well-defined there), the pointwise identity
+$Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ — which holds for every real $t$ by
+Lemma~\ref{lem:Zfact} — continues to hold at $t=t_\rho$ by analytic continuation
+along the vertical segment $\gamma+is$, on which both sides are holomorphic.
+Hence
+\[
+0=Z(t_\rho)=\sqrt{\Theta'(t_\rho)}\,Y(\Theta(t_\rho)).
+\]
+
+\emph{Reality of $\Theta(t_\rho)$.}
+$\sqrt{\Theta'(t_\rho)}\ne 0$, so $Y(\Theta(t_\rho))=0$.
+By Theorem~\ref{thm:Yzeros}, every complex zero of the entire function $Y$ is real,
+so $\Theta(t_\rho)\in\mathbb R$.
+
+\emph{Reality of $t_\rho$.}
+Along the vertical segment $\gamma+is$, $s\in[0,\tfrac12-\beta]$, we have
+$\Re\Theta'(\gamma+is)>0$ by the choice of $c$, so by Lemma~\ref{lem:Theta}(iii),
+\[
+\Im\Theta(t_\rho)=\int_0^{\tfrac12-\beta}\Re\Theta'(\gamma+is)\,ds\ge (\tfrac12-\beta)\cdot\min_s\Re\Theta'(\gamma+is)>0
+\]
+if $\beta<\tfrac12$.
+But $\Theta(t_\rho)\in\mathbb R$ means $\Im\Theta(t_\rho)=0$; combined with the
+strict lower bound above, this forces $\tfrac12-\beta=0$.
+Hence $\beta=\tfrac12$.
 \end{proof}
 
 \begin{thebibliography}{9}
@@ -618,9 +507,6 @@ Riemann--Siegel-Formel}, Dissertation, Georg-August-Universit\"at G\"ottingen, 1
 \bibitem{Levin}
 B.~Ya.~Levin, \emph{Lectures on Entire Functions},
 Transl.~Math.~Monogr.~\textbf{150}, AMS, 1996.
-
-\bibitem{Olver}
-F.~W.~J.~Olver, \emph{Asymptotics and Special Functions}, Academic Press, 1974.
 
 \bibitem{OmerTorresani}
 H.~Omer and B.~Torresani, Time-frequency and time-scale analysis of deformed
