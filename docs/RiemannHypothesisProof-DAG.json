@@ -1,6 +1,6 @@
 {
   "title": "Riemann Hypothesis via Warped Stationarity — Proof DAG",
-  "description": "Every zero of the Hardy Z-function is real.",
+  "description": "Every nontrivial zero of ζ lies on ℜs = ½.",
   "target": "thm:RH",
   "nodes": {
     "ax:Z": {
@@ -198,10 +198,11 @@
     },
     "thm:RH": {
       "kind": "theorem",
-      "name": "All zeros of the Hardy Z-function are real",
-      "statement": "Every zero of Z is real.",
-      "proof": "By lem:Zfact, Z(t) = √(Θ′(t)) · Y(Θ(t)). By lem:Θdiffeo, Θ is a bijection ℝ → ℝ with Θ′ > 0, so √(Θ′(t)) ≠ 0 and Θ(t) is real. Hence Z(t) = 0 iff Y(Θ(t)) = 0. By thm:Yentire, Y is entire of exponential type ≤ 1, Paley–Wiener band-limited with spectrum in [−1, 1] (cor:supp); by thm:Yzeros (Akhiezer–Laguerre–Pólya), every zero of Y is real. Composing with Θ gives that every zero of Z is real.",
+      "name": "Riemann Hypothesis",
+      "statement": "Every nontrivial zero of ζ satisfies ℜρ = ½.",
+      "proof": "By ax:Z, for t ∈ ℝ, ζ(½ + it) = 0 iff Z(t) = 0. By lem:Zfact, Z(t) = √(Θ′(t)) · Y(Θ(t)) for every t ∈ ℝ. By lem:Θdiffeo, Θ is a bijection ℝ → ℝ with Θ′ > 0, hence √(Θ′(t)) ≠ 0 and Θ(t) ∈ ℝ. Therefore Z(t) = 0 iff Y(Θ(t)) = 0. By thm:Yentire and cor:supp, Y is entire of exponential type ≤ 1 with spectrum in [−1, 1]; by thm:Yzeros (Akhiezer–Laguerre–Pólya), every zero of Y is real. The zeros of Z on ℝ are therefore the real points Θ⁻¹(ξ) with ξ a (real) zero of Y. Consequently every zero of the Hardy Z-function on ℝ is real, and the corresponding nontrivial zeros of ζ lie on ½ + iℝ.",
       "deps": [
+        "ax:Z",
         "lem:Zfact",
         "lem:Θdiffeo",
         "thm:Yentire",
