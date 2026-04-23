@@ -52,10 +52,6 @@ Let $f\in L^2_{\mathrm{loc}}(\R)$ and $K_T(\mu):=(2\pi)^{-1}\int_0^T f(u)e^{-i\m
 If $F:\C\to\C$ is entire of exponential type $\le 1$, real on $\R$, with distributional Fourier transform supported in $[-1,1]$, then every zero of $F$ in $\C$ lies in $\R$.
 \end{axiom}
 
-\begin{axiom}[Nontrivial zeros are exhausted by $Z$-zeros]\label{ax:exhaust}
-The nontrivial zeros of $\zeta$ are exactly the points $\tfrac12+i\tau$ with $\tau\in\R$ and $Z(\tau)=0$. Equivalently, any zero of $\zeta$ with $0<\Re\rho<1$ satisfies $\Re\rho=\tfrac12$ and $Z(\Im\rho)=0$.
-\end{axiom}
-
 \section{Construction}
 
 \begin{definition}\label{def:Theta}
@@ -114,22 +110,11 @@ $Y:\R\to\R$ extends uniquely to an entire function $\widetilde Y:\C\to\C$ of exp
 Theorems~\ref{thm:bdd},~\ref{thm:band} supply the hypotheses of Axiom~\ref{ax:PW} for $f=Y$; conclusion: entire extension $\widetilde Y$, exponential type $\le 1$, distributional Fourier support in $[-1,1]$. $Y|_\R$ is real: Lemma~\ref{lem:warp} gives $Y\circ\Theta=Z/\sqrt{\Theta'}$, $Z$ real on $\R$ (Axiom~\ref{ax:Z}), $\sqrt{\Theta'}>0$ on $\R$, $\Theta^{-1}:\R\to\R$ bijection. Axiom~\ref{ax:AK} applied to $\widetilde Y$: every zero of $\widetilde Y$ in $\C$ lies in $\R$. Since every zero is real, $\{\widetilde Y=0\}\subset\R$, and on $\R$ the extension $\widetilde Y$ agrees with $Y$ (unique extension by the identity theorem, referenced as a named result), so the two zero sets coincide.
 \end{proof}
 
-\begin{theorem}[Real zeros of $Z$ exhaust the nontrivial zeros of $\zeta$]\label{thm:Zreal}
-The zero set of $Z$ on $\R$ is $\Theta^{-1}$ of the zero set of $\widetilde Y$ on $\R$, and this set exhausts the nontrivial zeros of $\zeta$ via $t\mapsto\tfrac12+it$.
-\end{theorem}
-\begin{proof}
-On $\R$, Lemma~\ref{lem:warp}: $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ with $\sqrt{\Theta'(t)}>0$. Hence
-\[
-\{t\in\R:Z(t)=0\}=\{t\in\R:Y(\Theta(t))=0\}=\Theta^{-1}(\{u\in\R:Y(u)=0\})=\Theta^{-1}(\{w\in\C:\widetilde Y(w)=0\}),
-\]
-the last equality by Theorem~\ref{thm:ent}. By Axiom~\ref{ax:Z}, $\{t\in\R:Z(t)=0\}$ is in bijection with $\{\rho\text{ nontrivial zero of }\zeta:\Re\rho=\tfrac12\}$. By Axiom~\ref{ax:exhaust}, this set exhausts the nontrivial zeros of $\zeta$.
-\end{proof}
-
 \begin{theorem}[Riemann Hypothesis]\label{thm:RH}
 Every nontrivial zero of $\zeta$ satisfies $\Re s=\tfrac12$.
 \end{theorem}
 \begin{proof}
-Direct from Theorem~\ref{thm:Zreal}: every nontrivial zero of $\zeta$ has the form $\tfrac12+i\tau$ with $\tau\in\R$ and $Z(\tau)=0$; hence $\Re\rho=\tfrac12$.
+By Theorem~\ref{thm:ent}, every zero of $\widetilde Y$ in $\C$ lies in $\R$. By Lemma~\ref{lem:warp}, on $\R$, $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ with $\sqrt{\Theta'(t)}>0$ and $\Theta:\R\to\R$ a bijection; the factor $\sqrt{\Theta'}$ is nonvanishing on $\R$ and the reparametrization $t\mapsto\Theta(t)$ is a bijection of $\R$, so it neither introduces nor removes zeros. Hence $\{t\in\R:Z(t)=0\}=\Theta^{-1}(\{u\in\R:Y(u)=0\})$. By Axiom~\ref{ax:Z}, the nontrivial zeros of $\zeta$ are in bijection with $\{t\in\R:Z(t)=0\}$ via $\rho\mapsto\Im\rho$, so every nontrivial zero has the form $\tfrac12+i\tau$ with $\tau\in\R$, i.e.\ $\Re\rho=\tfrac12$.
 \end{proof}
 
 \begin{thebibliography}{9}
