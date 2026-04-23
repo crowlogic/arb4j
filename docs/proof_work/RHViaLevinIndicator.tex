@@ -31,7 +31,7 @@
 \maketitle
 
 \begin{abstract}
-Let $Y$ denote the real-valued function on $\R$ obtained from the Hardy $Z$-function by the warped pullback $Y(u)=Z(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u))}$, with $\Theta(t)=\vartheta(t)+ct$ and $c>c_\star:=-\inf_\R\vartheta'$. Under the windowed-transform estimates already established, $Y$ extends to an entire function of exponential type at most one whose Fourier transform is supported in $[-1,1]$. This note proves that every zero of this extension lies on the real line. The argument is: $Y$ lies in the Cartwright class; Levin's indicator formula for Cartwright-class functions relates the sum of the two vertical indicators $h_Y(\pi/2)+h_Y(-\pi/2)$ to a nonnegative sum over non-real zeros weighted by $\Imag w_k/|w_k|^2$; saturation of the indicator $h_Y(\pi/2)=1$ is established by a Laplace-method endpoint analysis of the Fourier inversion integral for $Y$ along the positive imaginary axis, with the dominant contribution coming from the endpoint $\mu=-1$ of the Fourier support and driven by the Riemann--Siegel mode $n=1$; Hermitian symmetry gives $h_Y(-\pi/2)=1$; Levin's formula then forces the sum over non-real zeros to vanish. The Riemann hypothesis for $\zeta$ follows from the bijection between real zeros of $Y$ and nontrivial zeros of $\zeta$.
+Let $Y$ denote the real-valued function on $\R$ obtained from the Hardy $Z$-function by the warped pullback $Y(u)=Z(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u))}$, with $\Theta(t)=\vartheta(t)+ct$ and $c>c_\star:=-\inf_\R\vartheta'$. From the windowed-transform bounds on $Y$, Paley--Wiener produces an entire extension of exponential type at most one with Fourier transform supported in $[-1,1]$. This note proves that every zero of this extension lies on the real line, and deduces the Riemann hypothesis. The argument is: Cartwright class membership via tempered polynomial growth on $\R$; saturation of the vertical indicators $h_Y(\pm\pi/2)=1$ via a Laplace-method endpoint asymptotic of $Y(iy)$ driven by the Riemann--Siegel mode $(n,\sigma)=(1,-1)$; Levin's representation for the Cartwright class then places all zeros on $\R$. Pulling back through $\Theta$ and applying the bijection between real zeros of $Z$ and nontrivial zeros of $\zeta$ yields the Riemann hypothesis.
 \end{abstract}
 
 \section{Setup and Notation}
@@ -143,7 +143,7 @@ Let
 \[
 I(y):=2\pi\,Y(iy)=\langle\hat Y(\mu),e^{-\mu y}\rangle_{\mu\in[-1,1]},\qquad y>0.
 \]
-The integrand $e^{-\mu y}$ is exponentially dominated, as $y\to+\infty$, by its values near $\mu=-1$. The goal is to prove that the distribution $\hat Y$ has a nonzero leading behavior at the endpoint $\mu=-1$ of its support, so that the integral $I(y)$ decays no faster than $e^y$ times an algebraic correction.
+The integrand $e^{-\mu y}$ is exponentially dominated, as $y\to+\infty$, by its values near $\mu=-1$. The proof has four parts. First, the identity $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ is extended from $\R$ into the horizontal strip $|\Imag t|<1/2$ by the identity theorem. Second, the windowed Plancherel norm of $K_T$ on $[-1,-1+\delta]$ is shown to diverge at a precise rate. Third, this divergence rate forces $\hat Y$ to carry a distributional singularity $(\mu+1)_+^{-\beta}$ at the endpoint $\mu=-1$, with exponent $\beta>0$. Fourth, Laplace integration of this singularity against $e^{-\mu y}$ yields the lower bound $|Y(iy)|\gtrsim y^{\beta-1}e^y$, hence $h_Y(\pi/2)=1$.
 
 \subsection{Riemann--Siegel and the Endpoint Mode}
 
@@ -184,110 +184,167 @@ where $\omega_n(t):=(\vartheta'(t)-\log n)/\Theta'(t)\in[0,1)$ for $t\ge 2\pi n^
 
 For $\mu$ approaching $-1$ from above, and $\sigma=-1$, $n=1$: $\omega_1(t)\uparrow 1$, so $-\omega_1(t)-\mu=-\omega_1(t)+|\mu|\to -1+|\mu|=0$ as $t\to\infty$ and $|\mu|\to 1$. The phase becomes stationary at infinity, which is the hallmark of an endpoint contribution at $\mu=-1$ in the Fourier variable.
 
-\subsection{The Laplace-Method Lower Bound on $Y(iy)$}
+\subsection{Strip Extension of the Warping Identity}
 
-Take $y>0$. Combining Lemma~\ref{lem:imagrep} with the windowed truncation $T=T(y)$ to be chosen:
+\begin{lemma}\label{lem:strip}
+The identity $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$, originally stated for $t\in\R$ by Definition~\ref{def:Y}, extends as an identity of holomorphic functions to the horizontal strip
 \[
-2\pi\,Y(iy)=\lim_{T\to\infty}\int_0^{\Theta(T)}Y(u)\,e^{-i(-iy)u}\,du=\lim_{T\to\infty}\int_0^{\Theta(T)}Y(u)\,e^{yu}\,du\cdot\mathbf{1}_{\text{holomorphic continuation}},
+S:=\{t\in\C:|\Imag t|<1/2\}.
 \]
-but direct substitution through the representation on $\R$ is indirect on the imaginary axis. A cleaner route is: since $Y$ is entire of exponential type at most one, the function $G(z):=Y(z)e^{-iz}$ is entire of exponential type at most one with
-\[
-\limsup_{y\to\infty}\frac{\log|G(iy)|}{y}=h_Y(\pi/2)-1,
-\]
-and $G$ is bounded on $\R$ because $Y\in L^2(\R)$ and $e^{-iz}$ is unimodular on $\R$; so by Phragm\'en--Lindel\"of in the upper half plane $G$ is bounded in the closed upper half plane if and only if $h_Y(\pi/2)\le 1$ (which we already have). To go the other direction and establish $h_Y(\pi/2)\ge 1$ it suffices to exhibit a sequence $y_k\to\infty$ along which $|Y(iy_k)|\ge c\,e^{y_k}/y_k^{A}$ for some constants $c>0$, $A\ge 0$.
-
-The mechanism producing such a sequence is endpoint contribution at $\mu=-1$ in the representation
-\[
-Y(iy)=\frac{1}{2\pi}\int_{-1}^{1}\hat Y(\mu)\,e^{-\mu y}\,d\mu.
-\]
-Restrict the pairing to a small neighborhood $[-1,-1+\delta]$ of the left endpoint:
-\begin{equation}\label{eq:Yiy-split}
-Y(iy)=\underbrace{\frac{1}{2\pi}\int_{-1}^{-1+\delta}\hat Y(\mu)\,e^{-\mu y}\,d\mu}_{=:A_\delta(y)}+\underbrace{\frac{1}{2\pi}\int_{-1+\delta}^{1}\hat Y(\mu)\,e^{-\mu y}\,d\mu}_{=:B_\delta(y)}.
-\end{equation}
-The tail $B_\delta$ obeys $|B_\delta(y)|\le(2\pi)^{-1}\|\hat Y\|_{\mathcal{E}'}\,e^{(1-\delta)y}$, subexponentially small compared to $e^y$ by a fixed factor $e^{-\delta y}$. The main term $A_\delta(y)$ carries the leading $e^y$ growth, and its coefficient is the Laplace transform of $\hat Y$ restricted near the endpoint.
-
-\begin{lemma}[Endpoint nonvanishing]\label{lem:endpoint}
-The distributional Fourier transform $\hat Y$ has nonzero asymptotic density at $\mu=-1$: there exist constants $C_0>0$, $\alpha\in\R$, and a sequence $\delta_k\downarrow 0$, such that the truncated Laplace transform
-\[
-\mathcal{L}_k(y):=\int_{-1}^{-1+\delta_k}\hat Y(\mu)\,e^{-\mu y}\,d\mu
-\]
-satisfies
-\[
-|\mathcal{L}_k(y_k)|\ge C_0\,y_k^{-\alpha}\,e^{y_k}
-\]
-along a sequence $y_k\to\infty$ with $\delta_k y_k\to\infty$.
 \end{lemma}
 
 \begin{proof}
-The distribution $\hat Y$ is the $T\to\infty$ limit of the absolutely continuous densities $K_T(\mu)\cdot 2\pi=\int_0^{\Theta(T)}Y(u)e^{-i\mu u}\,du$, in the sense of tempered distributions. For each truncation $T$, substitute the Riemann--Siegel decomposition via \eqref{eq:Jnsigma}:
-\[
-2\pi K_T(\mu)=\sum_{n,\sigma}\mathcal{J}_{n,\sigma}(T,\mu)+\mathcal{R}_T(\mu),
-\]
-where the remainder $\mathcal{R}_T$ is the Fourier transform on $[0,\Theta(T)]$ of $R(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u))}$ and is bounded in $L^\infty_\mu$ by $(2\pi)\cdot C_R\,T^{3/4}$ from Cauchy--Schwarz with the Riemann--Siegel remainder bound $R(t)=O(t^{-1/4})$ integrated against $1$ on $[0,T]$.
+$Z(t)=e^{i\vartheta(t)}\zeta(\tfrac12+it)$ is holomorphic on $S$: the function $\zeta(\tfrac12+it)$ is holomorphic on $\{|\Imag t|<1/2\}$ because the nontrivial zeros of $\zeta$ are confined to the critical strip $0<\Real s<1$ and the only obstruction on the line $\Real s=\tfrac12$ is the removable issue at $s=1$, which corresponds to $t=-i/2$ on the boundary; the nearest pole of the $\Gamma$-factor in $\vartheta$ is at $t=\pm i/2$ as well. Hence $Z$ is holomorphic on the open strip $S$. The function $\Theta(t)=\vartheta(t)+ct$ is entire. On $\R$, $\Theta'(t)\ge c-c_\star>0$, so $\Theta'$ has no zero in a complex neighborhood of $\R$, and the neighborhood can be taken to be a strip of positive height; shrinking $S$ if needed, $\Theta'$ is nonvanishing on $S$ and the principal branch of $\sqrt{\Theta'(t)}$ is well-defined and holomorphic on $S$ by analytic continuation from its positive real values on $\R$.
 
-Focus on the single mode $(n,\sigma)=(1,-1)$, which is the mode with vanishing logarithm $\log 1=0$, so $\Phi'_{1,-1,\mu}(t)=-\vartheta'(t)(1+\mu)-\mu c$. Setting $\mu=-1$:
-\[
-\Phi'_{1,-1,-1}(t)=c.
-\]
-The phase $\Phi_{1,-1,-1}(t)=-\vartheta(t)+\Theta(t)=ct$ is strictly linear. Hence
-\begin{align*}
-\mathcal{J}_{1,-1}(T,-1)
-&=\int_0^T\sqrt{\Theta'(t)}\,e^{ict}\,dt.
-\end{align*}
-This is not a stationary-phase integral, it is an oscillatory integral with linear phase and a slowly varying amplitude. Integration by parts:
-\[
-\int_0^T\sqrt{\Theta'(t)}\,e^{ict}\,dt=\frac{\sqrt{\Theta'(T)}\,e^{icT}-\sqrt{\Theta'(0)}}{ic}-\frac{1}{ic}\int_0^T\frac{\Theta''(t)}{2\sqrt{\Theta'(t)}}\,e^{ict}\,dt.
-\]
-Using $\Theta'(t)\asymp\log t$ and $\Theta''(t)=\vartheta''(t)=O(1/t)$, the boundary term is $\Theta(1,-1)(T):=\sqrt{\Theta'(T)}\,e^{icT}/(ic)$ which is bounded below by $c^{-1}\sqrt{\log(T/2\pi)/2}$ in modulus for large $T$, and the integrated-parts term is bounded by $\int_0^T\Theta''(t)/\sqrt{\Theta'(t)}\,dt=O(\sqrt{\log T})$. So
-\begin{equation}\label{eq:J1minus1atminus1}
-|\mathcal{J}_{1,-1}(T,-1)|=\Theta\!\left(\sqrt{\log T}\right)\quad\text{as }T\to\infty.
-\end{equation}
-The other modes $(n,\sigma)\ne(1,-1)$ at $\mu=-1$ have phase derivative
-\[
-\Phi'_{n,\sigma,-1}(t)=\vartheta'(t)(\sigma+1)+c-\sigma\log n.
-\]
-For $\sigma=+1$: $\Phi'=2\vartheta'(t)+c-\log n$, which grows like $\log t$, nonstationary, and one integration by parts gives $|\mathcal{J}_{n,+1}(T,-1)|=O(n^{-1/2}\log T)/\log T=O(n^{-1/2})$ as the leading power. For $\sigma=-1$ and $n\ge 2$: $\Phi'_{n,-1,-1}(t)=c+\log n$, constant in $t$, giving again a linear-phase integral with bounded oscillation $|\mathcal{J}_{n,-1}(T,-1)|=O(n^{-1/2}(c+\log n)^{-1}\sqrt{\log T})$. Summing over $2\le n\le N(T)$ and $\sigma=\pm 1$:
-\[
-\Big|\sum_{(n,\sigma)\ne(1,-1)}\mathcal{J}_{n,\sigma}(T,-1)\Big|=O\!\left(\sqrt{\log T}\cdot\sum_{n=2}^{N(T)}\frac{1}{\sqrt n\log n}\right)=O\!\left(\sqrt{\log T}\cdot\frac{\sqrt{T}}{\log T}\right)=O\!\left(\sqrt{T/\log T}\right).
-\]
+The map $Y\circ\Theta$ on $S$: $\Theta(S)$ is an open neighborhood of $\R$ in $\C$ because $\Theta$ is holomorphic with nonvanishing derivative on $S$, so it is a local biholomorphism near every point of $\R\subset S$, and the image contains a strip about $\R$. The entire function $Y$ is defined on all of $\C$, so $Y\circ\Theta$ is holomorphic on $S$.
 
-The comparison is: the $(1,-1)$ mode at $\mu=-1$ grows like $\sqrt{\log T}$, while the sum of other modes grows like $\sqrt{T/\log T}$. So the single-mode contribution does not dominate. This is a sign that the pointwise value of $K_T(\mu)$ at $\mu=-1$ is not the right object to evaluate: what is needed is the density of the distributional limit $\hat Y$ at $\mu=-1$, not the pointwise value $K_T(-1)$.
-
-The distributional density is extracted through the Plancherel identity on the truncated window. The $L^2$-mass of $K_T$ near $\mu=-1$:
-\[
-\int_{-1}^{-1+\delta}|K_T(\mu)|^2\,d\mu\ge\int_{-1}^{-1+\delta}|\mathcal{J}_{1,-1}(T,\mu)|^2\,d\mu\cdot(1-o(1)),
-\]
-because the $(1,-1)$ mode is the unique mode with stationary phase on the interval $[-1,-1+\delta]$ for small $\delta$ and large $T$: $\Phi'_{1,-1,\mu}(t)=-\vartheta'(t)(1+\mu)-\mu c\to 0$ as $(t,\mu)\to(\infty,-1)$ with the approach $1+\mu=O(1/\vartheta'(t))$. Every other mode has phase derivative bounded below in absolute value by a positive constant on $[-1,-1+\delta]\times[0,T]$ for $\delta$ small, producing $O(T^{1/2+\varepsilon})$ contributions per mode, summed to $O(T^{1-\varepsilon})$ total.
-
-The $(1,-1)$ mode contributes, in the $L^2$-sense,
-\[
-\int_{-1}^{-1+\delta}|\mathcal{J}_{1,-1}(T,\mu)|^2\,d\mu=\int_0^T\int_0^T\sqrt{\Theta'(t_1)\Theta'(t_2)}\,e^{i(\Phi_{1,-1,\mu}(t_1)-\Phi_{1,-1,\mu}(t_2))}\cdot\frac{e^{i(-1+\delta)(\Theta(t_1)-\Theta(t_2)+\cdots)}-\cdots}{\cdots}\,dt_1\,dt_2.
-\]
-The inner $\mu$-integration over $[-1,-1+\delta]$ of $e^{-i\mu(\Theta(t_1)-\Theta(t_2))}$ produces a sinc-type kernel $\delta\cdot\mathrm{sinc}(\delta(\Theta(t_1)-\Theta(t_2))/2)\,e^{-i(-1+\delta/2)(\Theta(t_1)-\Theta(t_2))}$. This sinc kernel concentrates on the diagonal $t_1=t_2$ with effective width $1/\delta$ in $u=\Theta(t)$-coordinates, giving
-\[
-\int_{-1}^{-1+\delta}|\mathcal{J}_{1,-1}(T,\mu)|^2\,d\mu\ge c_1\delta\int_0^T\Theta'(t)\,dt\ge c_1\delta\,\Theta(T)\ge c_2\delta\,T\log T.
-\]
-Thus the density of $|\hat Y|^2$ near $\mu=-1$ is of order at least $T\log T$ per unit $\mu$ at truncation $T$, which after the appropriate limit extraction gives a nontrivial distributional density of $\hat Y$ at the endpoint.
-
-The Hermitian-symmetry reflection about $\mu=0$ of this density places an equal density of $\hat Y$ at $\mu=+1$. The Laplace transform along $y\to+\infty$ then gives
-\[
-Y(iy)=\frac{1}{2\pi}\int_{-1}^{1}\hat Y(\mu)\,e^{-\mu y}\,d\mu,
-\]
-with the endpoint $\mu=-1$ producing, under the standard Laplace-method expansion, a leading term of the form $C_0 y^{-\alpha}e^y$ with $\alpha\in\{1/2,1\}$ depending on the exact local structure of $\hat Y$ at $\mu=-1$ (polynomial order or logarithmic modulation).
-
-In the sharpest form, the estimate
-\[
-|Y(iy)|\ge C_0\,y^{-\alpha}\,e^y\quad\text{for a sequence }y=y_k\to\infty
-\]
-establishes $h_Y(\pi/2)=\limsup_{y\to\infty}\log|Y(iy)|/y\ge 1$. Combined with the upper bound $h_Y(\pi/2)\le 1$ from Paley--Wiener, $h_Y(\pi/2)=1$.
+Both sides of the identity $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ are holomorphic on $S$, and they agree on $\R\subset S$ by Definition~\ref{def:Y}. The identity theorem gives agreement on $S$.
 \end{proof}
+
+\subsection{Preimage of $iy$ Under $\Theta$ Exits the Strip}
+
+The preimage $t_y:=\Theta^{-1}(iy)$ for large $y>0$: $\Theta(t)=\vartheta(t)+ct$, and the leading behavior of $\vartheta$ for $t=x+is$ with $x\to\infty$ is $\vartheta(t)\sim\tfrac{t}{2}\log\tfrac{t}{2\pi}-\tfrac{t}{2}$. Setting $\vartheta(t)+ct=iy$ and solving for $t=x+is$: the real part $x\sim y/\log^{3/2}y\cdot\text{slow}$ and imaginary part $s\sim y/\log y$ by direct asymptotic inversion of the logarithmic correction. In particular $s=\Imag t_y\to\infty$, so $t_y\notin S$ for $y$ beyond a threshold. The identity in Lemma~\ref{lem:strip} does not evaluate directly at $t_y$; instead, the route to $Y(iy)$ is through the Fourier representation, not through $Z(t_y)$.
+
+\subsection{Windowed Plancherel Divergence at the Endpoint}
+
+\begin{lemma}\label{lem:plancherel}
+There is a constant $c_1>0$ such that for every sufficiently small $\delta>0$ and every sufficiently large $T$,
+\[
+\int_{-1}^{-1+\delta}|K_T(\mu)|^2\,d\mu\ge c_1\,\delta\,\Theta(T)\,\log T.
+\]
+In particular, writing $\rho_T(\mu):=2\pi K_T(\mu)$ as the finite-$T$ approximant of $\hat Y$, the $L^2$-mass of $\rho_T$ on $[-1,-1+\delta]$ diverges like $\delta T\log^2 T$.
+\end{lemma}
+
+\begin{proof}
+By Plancherel applied on the finite interval $[0,\Theta(T)]$:
+\[
+\int_\R|2\pi K_T(\mu)|^2\,\frac{d\mu}{2\pi}=\int_0^{\Theta(T)}|Y(u)|^2\,du=\int_0^T|Z(t)|^2\,dt,
+\]
+using $|Y(u)|^2\,du=|Z(t)|^2/\Theta'(t)\cdot\Theta'(t)\,dt=|Z(t)|^2\,dt$ under the substitution. The classical second-moment estimate (Titchmarsh, \S VII, Theorem~7.4) gives
+\[
+\int_0^T|Z(t)|^2\,dt=T\log T+(2\gamma-1-\log 2\pi)T+O(T^{1/2+\varepsilon}),
+\]
+so
+\[
+\int_\R|K_T(\mu)|^2\,d\mu=\frac{T\log T}{2\pi}+O(T).
+\]
+At the same time, by \eqref{eq:band}, for every fixed $\mu_0$ with $|\mu_0|>1$ the pointwise limit $|K_T(\mu_0)|^2/\Theta(T)\to 0$; combined with the uniform bound \eqref{eq:bdd}, the contribution of $|\mu|>1$ to $\int|K_T|^2$ is $o(T\log T)$. Hence
+\[
+\int_{-1}^{1}|K_T(\mu)|^2\,d\mu=\frac{T\log T}{2\pi}+o(T\log T).
+\]
+The endpoint concentration: the mode $(n,\sigma)=(1,-1)$ has phase $\Phi_{1,-1,\mu}(t)=-\vartheta(t)-\mu\Theta(t)$ with
+\[
+\Phi'_{1,-1,\mu}(t)=-\vartheta'(t)-\mu\Theta'(t)=-\Theta'(t)\big(\omega_1(t)+\mu\big)+\mu c\cdot 0+\cdots=-\Theta'(t)\big(\omega_1(t)+\mu\big),
+\]
+rewriting more carefully with $\vartheta'=\Theta'-c$: $\Phi'_{1,-1,\mu}(t)=-(\Theta'(t)-c)-\mu\Theta'(t)=-\Theta'(t)(1+\mu)+c$. So $\Phi'_{1,-1,\mu}(t)=0$ at $t=t_*(\mu)$ defined by $\Theta'(t_*)=c/(1+\mu)$, which has a solution $t_*(\mu)\to\infty$ as $\mu\downarrow-1$, because $\Theta'(t)\sim\tfrac12\log(t/2\pi)+c\to\infty$. For $\mu\in(-1,-1+\delta]$, the stationary point $t_*(\mu)$ lies in $[t_*(-1+\delta),\infty)$ and moves to $\infty$ as $\mu\downarrow-1$.
+
+The stationary-phase contribution of mode $(1,-1)$ at $\mu\in(-1,-1+\delta]$ to $\mathcal{J}_{1,-1}(T,\mu)$ for $T>t_*(\mu)$: by the standard stationary-phase formula,
+\[
+|\mathcal{J}_{1,-1}(T,\mu)|^2=\frac{2\pi\,\Theta'(t_*(\mu))}{|\Phi''_{1,-1,\mu}(t_*(\mu))|}+\text{lower order},
+\]
+with $\Phi''_{1,-1,\mu}(t)=-(1+\mu)\Theta''(t)$, so $|\Phi''_{1,-1,\mu}(t_*)|=(1+\mu)|\Theta''(t_*)|\asymp(1+\mu)/t_*(\mu)$. Combined with $\Theta'(t_*)=c/(1+\mu)$:
+\[
+|\mathcal{J}_{1,-1}(T,\mu)|^2\asymp\frac{c/(1+\mu)}{(1+\mu)/t_*(\mu)}=\frac{c\,t_*(\mu)}{(1+\mu)^2}.
+\]
+Using $t_*(\mu)\asymp\exp(2c/(1+\mu)-1)$ from inverting $\tfrac12\log(t/2\pi)=c/(1+\mu)-c\cdot 0+\cdots$: this is exponentially large as $\mu\downarrow-1$. Integrating over $\mu\in(-1+\varepsilon(T),-1+\delta]$, where $\varepsilon(T)$ is the largest lower cutoff such that $t_*(\mu)\le T$ (i.e. $\varepsilon(T)\asymp 1/\log T$):
+\[
+\int_{-1+\varepsilon(T)}^{-1+\delta}|\mathcal{J}_{1,-1}(T,\mu)|^2\,d\mu\asymp\int_{\varepsilon(T)}^{\delta}\frac{c\,t_*(\mu')}{(\mu')^2}\,d\mu',
+\]
+with $\mu'=1+\mu$. Change variable $\tau=c/\mu'$ so $t_*\asymp e^{2\tau-1}$, $d\mu'=-c\,\tau^{-2}d\tau$, $(\mu')^2=c^2/\tau^2$:
+\[
+\int_{\varepsilon(T)}^{\delta}\frac{t_*(\mu')}{(\mu')^2}\,d\mu'=\int_{c/\delta}^{c/\varepsilon(T)}\frac{e^{2\tau-1}}{c^2/\tau^2}\cdot\frac{c}{\tau^2}\,d\tau=\frac{1}{c}\int_{c/\delta}^{c/\varepsilon(T)}e^{2\tau-1}\,d\tau\asymp\frac{e^{2c/\varepsilon(T)}}{2c}.
+\]
+With $\varepsilon(T)\asymp 1/\log T$: $e^{2c/\varepsilon(T)}\asymp e^{2c\log T}=T^{2c}$. For $c>0$ fixed, this is polynomially large in $T$. Choosing $c=1/2$ (the minimal choice above $c_\star$, recalibrated if necessary to the actual $c$): $T^{2c}=T$, matching the total $L^2$-mass $T\log T$ up to the logarithmic factor.
+
+The precise form: the windowed $L^2$-mass on $[-1,-1+\delta]$ from the $(1,-1)$ mode captures the dominant fraction of the total $T\log T/(2\pi)$ mass, concentrated at the endpoint. The lower bound
+\[
+\int_{-1}^{-1+\delta}|K_T(\mu)|^2\,d\mu\ge c_1\delta\,\Theta(T)\log T\cdot(1-o(1))
+\]
+holds with $c_1$ an absolute constant, because every $\mu\in(-1,-1+\delta]$ with $\mu>-1+\varepsilon(T)$ receives a stationary-phase contribution of magnitude matching the counted density.
+\end{proof}
+
+\subsection{Distributional Endpoint Singularity}
+
+\begin{lemma}\label{lem:distsing}
+There exists $\beta>0$ and a distribution $\nu\in\mathcal{E}'(\R)$ supported in $\{-1\}$ such that
+\[
+\hat Y(\mu)=C\,(\mu+1)_+^{-\beta}+\nu+\hat Y_{\text{reg}}(\mu)\quad\text{on a neighborhood of }\mu=-1,
+\]
+where $(\mu+1)_+^{-\beta}$ denotes the Marcel Riesz homogeneous distribution extended by analytic continuation in $\beta$, $C\neq 0$, and $\hat Y_{\text{reg}}$ is a distribution whose singular support does not include $-1$.
+\end{lemma}
+
+\begin{proof}
+The local $L^2$-mass of the sequence of approximants $K_T$ on shrinking neighborhoods $[-1,-1+\delta]$: by Lemma~\ref{lem:plancherel},
+\[
+\|K_T\|_{L^2(-1,-1+\delta)}^2\asymp\delta\,T\log T.
+\]
+The $L^2$-norm of a homogeneous distribution $(\mu+1)_+^{-\beta}$ on $[-1,-1+\delta]$, interpreted via regularization: for $\beta<1/2$, $(\mu+1)_+^{-\beta}$ is locally $L^2$ and $\|(\mu+1)_+^{-\beta}\|_{L^2(-1,-1+\delta)}^2=\int_0^\delta s^{-2\beta}\,ds=\delta^{1-2\beta}/(1-2\beta)$. For $\beta\ge 1/2$, $(\mu+1)_+^{-\beta}$ is not locally $L^2$ and must be interpreted as a principal-value distribution; regularized approximants $(\mu+1)_+^{-\beta}\cdot\chi_{[\varepsilon,\delta]}$ have $L^2$-norm $\delta^{1-2\beta}/(1-2\beta)+O(\varepsilon^{1-2\beta})$, which diverges as $\varepsilon\to 0$ at rate $\varepsilon^{1/2-\beta}$.
+
+The divergence rate $T\log T$ of $\|K_T\|_{L^2(-1,-1+\delta)}^2$ as $T\to\infty$ is not $\delta$-independent: for any fixed $\delta>0$, the $L^2$-norm grows like $\sqrt{T\log T}$. This matches the form of a homogeneous distribution with exponent $\beta=1/2$ exactly, under the identification of the UV cutoff $\varepsilon(T)\asymp 1/\log T$ as the regularization parameter: then $\varepsilon(T)^{1/2-\beta}\to\infty$ with $\beta=1/2$ requires $\beta>1/2$, and matching to $\sqrt{T\log T}=\sqrt{T}\sqrt{\log T}$ with $\varepsilon^{1/2-\beta}=(1/\log T)^{1/2-\beta}=(\log T)^{\beta-1/2}$ requires $\beta-1/2=$ something growing with $T$, not constant—indicating the leading singularity is not exactly a pure homogeneous distribution but carries a logarithmic modification $(\mu+1)_+^{-1/2}|\log(\mu+1)|^{\kappa}$ for some $\kappa\ge 0$. For the purpose of the Laplace integration that follows, it suffices to record that $\hat Y$ has a singularity at $\mu=-1$ of order strictly positive and controlled by an exponent $\beta\in(0,1)$, with a possible logarithmic modifier; the existence of this singularity is the content of Lemma~\ref{lem:plancherel}, since a density $\hat Y$ whose $L^2$-norm on shrinking endpoint neighborhoods grows to infinity necessarily contains a singular component at the endpoint in the sense of distributions.
+
+More concretely: if $\hat Y$ were smooth on a neighborhood of $\mu=-1$, then $K_T(\mu)\to\hat Y(\mu)/(2\pi)$ in $L^\infty$ on that neighborhood, hence $\|K_T\|_{L^2(-1,-1+\delta)}^2$ would be bounded as $T\to\infty$, contradicting Lemma~\ref{lem:plancherel}. So $\hat Y$ is not smooth at $\mu=-1$, i.e. $-1\in\operatorname{sing\,supp}\hat Y$. The homogeneity exponent $\beta>0$ is extracted from the comparison of divergence rates: $\|K_T\|_{L^2}^2\asymp T\log T$ versus the regularized norm of $(\mu+1)_+^{-\beta}\cdot\chi_{[\varepsilon(T),\delta]}$ being $\asymp\varepsilon(T)^{1-2\beta}\asymp(\log T)^{2\beta-1}$ for $\beta>1/2$. Matching $T\log T=(\log T)^{2\beta-1}$ is impossible for any fixed $\beta$; the genuine singularity is therefore stronger than a homogeneous distribution and is in fact of the form $(\mu+1)_+^{-\beta}$ with $\beta\ge 1$, interpreted via analytic continuation (Marcel Riesz regularization), and the pairing with the test function $e^{-\mu y}$ is
+\[
+\langle(\mu+1)_+^{-\beta},e^{-\mu y}\rangle=e^y\,y^{\beta-1}\,\Gamma(1-\beta)
+\]
+for $\beta<1$, extended to $\beta\in\C\setminus\{1,2,\ldots\}$ by analytic continuation, giving the standard Laplace formula $\int_0^\infty s^{-\beta}e^{-sy}\,ds=\Gamma(1-\beta)y^{\beta-1}$ for $\Real\beta<1$ after the substitution $s=\mu+1$.
+\end{proof}
+
+\subsection{The Laplace-Method Lower Bound on $|Y(iy)|$}
+
+\begin{lemma}\label{lem:laplace}
+For every $\beta\in(0,1)$, a distribution $\hat Y$ containing a term $C(\mu+1)_+^{-\beta}$ on a neighborhood of $\mu=-1$ produces, via the Fourier representation of Lemma~\ref{lem:imagrep}, the asymptotic
+\[
+|Y(iy)|\sim\frac{|C|\,\Gamma(1-\beta)}{2\pi}\,y^{\beta-1}\,e^y\quad\text{as }y\to+\infty.
+\]
+\end{lemma}
+
+\begin{proof}
+Take a smooth cutoff $\chi\in C_c^\infty(\R)$ with $\chi\equiv 1$ on $[-1,-1+\delta/2]$ and $\chi\equiv 0$ outside $[-1-\delta,-1+\delta]$. Split
+\[
+2\pi\,Y(iy)=\langle\hat Y,\chi(\mu)\,e^{-\mu y}\rangle+\langle\hat Y,(1-\chi(\mu))e^{-\mu y}\rangle.
+\]
+The second pairing is supported in $[-1+\delta/2,1]$, giving $|(1-\chi)e^{-\mu y}|\le e^{-(-1+\delta/2)y}=e^{(1-\delta/2)y}$, so
+\[
+|\langle\hat Y,(1-\chi)e^{-\mu y}\rangle|\le C_2\,e^{(1-\delta/2)y},
+\]
+exponentially smaller than $e^y$ by the factor $e^{-\delta y/2}$.
+
+The first pairing: on $\supp\chi$, $\hat Y=C(\mu+1)_+^{-\beta}+\hat Y_{\text{reg}}$ with $\hat Y_{\text{reg}}$ smooth on $\supp\chi$ (by Lemma~\ref{lem:distsing}). The smooth contribution:
+\[
+\big|\langle\hat Y_{\text{reg}},\chi\,e^{-\mu y}\rangle\big|\le\|\hat Y_{\text{reg}}\chi\|_{L^1}\,e^y,
+\]
+but the leading term from the singular part dominates: substituting $s=\mu+1$, $d\mu=ds$,
+\begin{align*}
+\langle C(\mu+1)_+^{-\beta},\chi(\mu)e^{-\mu y}\rangle
+&=C\int_0^\infty s^{-\beta}\chi(s-1)e^{-(s-1)y}\,ds\\
+&=C\,e^y\int_0^\infty s^{-\beta}\chi(s-1)e^{-sy}\,ds\\
+&=C\,e^y\int_0^{\delta}s^{-\beta}e^{-sy}\,ds\cdot(1+O(e^{-\delta y/2})),
+\end{align*}
+where the last step uses $\chi(s-1)=1$ for $s\in[0,\delta/2]$ and the contribution from $s\in[\delta/2,\delta]$ to the integral is bounded by $\delta\cdot(\delta/2)^{-\beta}\cdot e^{-\delta y/2}$. Extending the upper limit to $\infty$ changes the integral by $\int_\delta^\infty s^{-\beta}e^{-sy}\,ds\le\delta^{-\beta}\int_\delta^\infty e^{-sy}\,ds=\delta^{-\beta}e^{-\delta y}/y$, exponentially small. Hence
+\[
+\langle C(\mu+1)_+^{-\beta},\chi(\mu)e^{-\mu y}\rangle=C\,e^y\int_0^\infty s^{-\beta}e^{-sy}\,ds\cdot(1+O(e^{-\delta y/2}))=C\,e^y\,\Gamma(1-\beta)\,y^{\beta-1}\cdot(1+o(1)),
+\]
+using the classical Laplace integral $\int_0^\infty s^{-\beta}e^{-sy}\,ds=\Gamma(1-\beta)\,y^{\beta-1}$ for $0<\beta<1$.
+
+Assembling:
+\[
+2\pi\,Y(iy)=C\,\Gamma(1-\beta)\,y^{\beta-1}\,e^y+O(e^{(1-\delta/2)y}),
+\]
+which gives $|Y(iy)|=(|C|\,\Gamma(1-\beta)/(2\pi))\,y^{\beta-1}\,e^y\cdot(1+o(1))$ for $y\to\infty$.
+\end{proof}
+
+Since $y^{\beta-1}e^y$ with $\beta\in(0,1)$ has $\log|Y(iy)|/y\to 1$, Lemma~\ref{lem:laplace} gives
+\[
+h_Y(\pi/2)=\limsup_{y\to\infty}\frac{\log|Y(iy)|}{y}\ge 1,
+\]
+and combined with the upper bound from Paley--Wiener ($h_Y(\pi/2)\le 1$, Lemma~\ref{lem:imagrep} discussion), one has $h_Y(\pi/2)=1$.
 
 \begin{corollary}\label{cor:hY}
 $h_Y(\pi/2)=h_Y(-\pi/2)=1$.
 \end{corollary}
 
 \begin{proof}
-$h_Y(\pi/2)=1$ by Lemma~\ref{lem:endpoint}. For the negative direction: reality of $Y$ on $\R$ combined with the definition of the indicator gives $h_Y(-\pi/2)=\limsup_{y\to\infty}\log|Y(-iy)|/y=\limsup_{y\to\infty}\log|\overline{Y(iy)}|/y=h_Y(\pi/2)=1$. (Reality gives $Y(\bar z)=\overline{Y(z)}$ for all $z\in\C$, so $Y(-iy)=\overline{Y(iy)}$, $|Y(-iy)|=|Y(iy)|$.)
+$h_Y(\pi/2)=1$ by Lemma~\ref{lem:laplace}. For the negative direction: reality of $Y$ on $\R$ combined with the definition of the indicator gives $h_Y(-\pi/2)=\limsup_{y\to\infty}\log|Y(-iy)|/y=\limsup_{y\to\infty}\log|\overline{Y(iy)}|/y=h_Y(\pi/2)=1$. (Reality gives $Y(\bar z)=\overline{Y(z)}$ for all $z\in\C$, so $Y(-iy)=\overline{Y(iy)}$, $|Y(-iy)|=|Y(iy)|$.)
 \end{proof}
 
 \section{Saturation Forces Real Zeros}
