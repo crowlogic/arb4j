@@ -86,10 +86,14 @@ $\vartheta'(t)\ge\log n$ iff $t\ge 2\pi n^2$ (Axiom~\ref{ax:dig}); then $0\le\va
 \section{Proof of RH}
 
 \begin{theorem}[Uniform $L^2$ bound]\label{thm:bdd}
-There is $M>0$ with $|K[T](\mu)|^2\le M\,\Theta(T)$ for every $T\ge 2$ and every $\mu\in\R$.
+For every $T\ge 2$ and every $\mu\in\R$, $|K[T](\mu)|^2\le M(T)\,\Theta(T)$, where
+\[
+M(T):=\frac{1}{(2\pi)^2}\cdot\frac{\int_0^T Z(t)^2\,dt}{\Theta(T)}.
+\]
+Moreover $M(T)\to 1/(2\pi^2)$ as $T\to\infty$, and $\sup_{T\ge 2}M(T)<\infty$.
 \end{theorem}
 \begin{proof}
-Cauchy--Schwarz: $|K[T](\mu)|^2\le(2\pi)^{-2}\Theta(T)\int_0^{\Theta(T)}Y^2\,du=(2\pi)^{-2}\Theta(T)\int_0^T Z^2\,dt$ by $u=\Theta(t)$. Hardy--Littlewood $\int_0^T Z^2=T\log T+O(T)=O(\Theta(T))$ via Axioms~\ref{ax:dig},~\ref{ax:RS}.
+Cauchy--Schwarz: $|K[T](\mu)|^2\le(2\pi)^{-2}\Theta(T)\int_0^{\Theta(T)}Y^2\,du$. Change of variable $u=\Theta(t)$, $du=\Theta'\,dt$, with $Y(\Theta(t))^2\Theta'(t)=Z(t)^2$ by Lemma~\ref{lem:warp}, gives $\int_0^{\Theta(T)}Y^2\,du=\int_0^T Z^2\,dt$. Substitution yields $|K[T](\mu)|^2\le M(T)\,\Theta(T)$ by definition of $M(T)$. Hardy--Littlewood (Axioms~\ref{ax:dig},~\ref{ax:RS}) gives $\int_0^T Z^2\,dt=T\log(T/2\pi)+(2\gamma-1)T+O(T^{1/2}\log T)$ and $\Theta(T)=\tfrac{T}{2}\log(T/2\pi)+(c-\tfrac12)T+O(T^{-1})$, so $\int_0^T Z^2/\Theta(T)\to 2$ and $M(T)\to 1/(2\pi^2)$. Continuity of $M$ on $[2,\infty)$ together with this limit gives $\sup M<\infty$.
 \end{proof}
 
 \begin{theorem}[Band-limit]\label{thm:band}
