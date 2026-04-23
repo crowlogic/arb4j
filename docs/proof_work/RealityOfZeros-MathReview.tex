@@ -1,0 +1,502 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{microtype}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\HH}{\mathcal{H}}
+
+\title{Mathematical Review: RealityOfZeros}
+\author{}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This is a mathematical review of the document
+\emph{Band-Limitedness and Reality of Zeros of the Inverse-Phase Pullback of the
+Hardy $Z$-Function} (file \texttt{RealityOfZeros.tex}, dated April~23, 2026),
+conducted according to the math-referee protocol.
+Auxiliary sources consulted: \texttt{BandLimitedness.tex}
+(establishes $\operatorname{supp}\rho\subseteq[-1,1]$)
+and \texttt{three\_missing\_theorems.pdf} (Theorem~B, diagonal-dominance identity
+for the whitened differential).
+The review covers mathematical content only.
+Every finding is classified as \textbf{Fixable} or \textbf{Not fixable} at the start
+of the finding.
+\end{abstract}
+
+\section*{Findings}
+
+%-----------------------------------------------------------------------
+\subsection*{Finding 1 — Fixable}
+
+\begin{description}[leftmargin=0pt]
+\item[Location:]
+Lemma~(HB reduction), proof, sentence beginning
+``bounded by~$1$ on~$\R$ \ldots\ hence by the maximum principle
+$|Y_+^*(z)/Y_+(z)|\le 1$ for $z\in\C^+$''.
+
+\item[Claim as written:]
+If $Y_+$ has no zeros in $\C^+$, then $Y_+^*/Y_+$ is holomorphic in $\C^+$,
+bounded by~$1$ on~$\R$, hence $|Y_+^*(z)/Y_+(z)|\le 1$ for $z\in\C^+$
+by the maximum principle.
+
+\item[What is relied on but not established in the text:]
+The maximum-principle step requires not only that $|Y_+^*/Y_+|\le 1$ on
+$\R$ but also that $Y_+^*/Y_+$ is \emph{bounded} in $\C^+$
+(i.e.\ belongs to $H^\infty(\C^+)$) or, alternatively, that it satisfies the
+hypotheses of the Phragm\'{e}n--Lindel\"{o}f principle on $\C^+$.
+The text asserts that $Y_+$ has mean type $0$ in $\C^+$, so $Y_+$ is bounded in
+$\C^+$, but $Y_+^*$ has mean type~$1$ in $\C^+$ (it grows like $e^{|y|}$ along
+$i\R^+$, as noted explicitly in Step~2 of the Main Structural Theorem).
+Consequently, $Y_+^*/Y_+$ is \emph{not} bounded in $\C^+$; it grows at most like
+$e^{|y|}$ in $\C^+$.
+The standard maximum principle (for bounded functions) therefore does not apply
+directly.
+What is needed is an explicit invocation of the Phragm\'{e}n--Lindel\"{o}f
+principle for the half-plane: if a function $f$ holomorphic in $\C^+$ satisfies
+$|f(z)|\le 1$ on $\R$ and $|f(z)|=O(e^{\tau|z|})$ in $\C^+$ for some
+$\tau<\infty$, then $|f(z)|\le 1$ throughout $\C^+$.
+The function $Y_+^*/Y_+$ satisfies the growth bound $|Y_+^*(z)/Y_+(z)|\le C e^{y}$
+for $z=x+iy\in\C^+$, and this is exactly the form required by the standard
+Phragm\'{e}n--Lindel\"{o}f theorem on the upper half-plane with exponent
+$\tau=1<\pi/(\pi)=1$ (i.e.\ at the boundary of applicability).
+The correct theorem is the Phragm\'{e}n--Lindel\"{o}f theorem for a half-plane with
+growth of order~$1$: a function holomorphic on $\C^+$, continuous on
+$\overline{\C^+}$, bounded by~$1$ on $\R$, and satisfying
+$\log|f(x+iy)|=O(y)$ as $y\to+\infty$, is bounded by~$1$ on all of $\C^+$.
+That this exponent is exactly order~$1$ means the classical form applies without
+additional logarithmic corrections, but the hypothesis $\log|f(z)|=O(|z|)$ must
+be verified (not just growth of order at most~$1$) and must be stated.
+
+\item[What would establish it:]
+Replace ``by the maximum principle'' with an explicit invocation of the
+Phragm\'{e}n--Lindel\"{o}f theorem for the half-plane
+(e.g.\ Titchmarsh, \emph{The Theory of Functions}, Theorem~5.63):
+state that $Y_+^*/Y_+$ is holomorphic in $\C^+$, continuous on $\overline{\C^+}$
+(which follows from $Y_+$ having no zeros in $\C^+$ and $Y_+$ being bounded there),
+satisfies $|Y_+^*(z)/Y_+(z)|\le 1$ on $\R$, and satisfies
+$\log|Y_+^*(z)/Y_+(z)|=O(\operatorname{Im}z)$ for $z\in\C^+$
+(which follows from the indicator bound: $Y_+^*$ has mean type~$1$ in $\C^+$
+and $Y_+$ is bounded away from zero on $\{|z|>R\}\cap\C^+$ for some $R$
+because $Y_+$ is outer in $\C^+$ and the Szeg\H{o} condition holds, so
+$|Y_+(iy)|\not\to 0$ faster than any exponential in $y$).
+Once these hypotheses are in place, the Phragm\'{e}n--Lindel\"{o}f conclusion
+$|Y_+^*(z)/Y_+(z)|\le 1$ for $z\in\C^+$ follows.
+\end{description}
+
+%-----------------------------------------------------------------------
+\subsection*{Finding 2 — Fixable}
+
+\begin{description}[leftmargin=0pt]
+\item[Location:]
+Main Structural Theorem, Step~1, sentence
+``Since $B$ and $O$ have nonneg\-a\-tive mean type in~$\C^+$, and
+$S(iy)=e^{-\alpha y}$ contributes mean type $-\alpha\le 0$, the only way for
+the total mean type to be~$0$ is $\alpha=0$''.
+
+\item[Claim as written:]
+The mean types of $B$, $S=e^{i\alpha z}$ ($\alpha\ge 0$), and $O$ in $\C^+$ sum
+to the mean type of $Y_+$ in $\C^+$, which equals~$0$; since $B$ and $O$ have
+nonneg\-a\-tive mean type, and $S$ has mean type $-\alpha\le 0$, we must have
+$\alpha=0$.
+
+\item[What is relied on but not established in the text:]
+The argument requires the claim that Blaschke products $B$ and outer functions $O$
+in $H^\infty(\C^+)$ have nonneg\-a\-tive mean type in $\C^+$.
+For the Blaschke product this is standard (Blaschke products have mean type~$0$
+in $\C^+$ under the Blaschke convergence condition, by Jensen's formula applied
+to the half-plane), and the document states ``Blaschke products have zero mean
+type'' in Step~2.
+For the outer factor $O$, the claim that outer functions in $H^\infty(\C^+)$ have
+nonneg\-a\-tive mean type in $\C^+$ is not a consequence of the definition of
+``outer'' alone: the mean type of an outer function can in principle be any real
+number.
+The statement that is true and sufficient is: for an entire function of exponential
+type with one-sided Fourier support $[0,\sigma]$, the mean type in $\C^+$ equals
+$-\inf\operatorname{supp}\hat f=0$, and the mean type in $\C^-$ equals
+$\sup\operatorname{supp}\hat f=\sigma$ (this is the content of the Krein--Akhiezer
+theorem cited in Step~3, but it is not invoked in Step~1).
+In Step~1 the document has not yet established the Fourier-support identification
+of Step~3; it is therefore relying on a fact (nonnegativity of the mean type of
+$O$ in $\C^+$) that is only justified later in the proof, creating a logical
+dependency that is not acknowledged.
+
+\item[What would establish it:]
+Reorder the argument so that the mean-type constraint in Step~1 is applied
+\emph{after} Step~3 establishes the Fourier support; or cite explicitly, already
+in Step~1, that the inner-outer factorization of an $H^\infty(\C^+)$ function that
+extends to an entire function of exponential type with indicator
+$h(\pi/2)=0$ forces $\operatorname{mean type}(O)\ge 0$ in $\C^+$ by the
+Paley--Wiener theorem applied to $O$ directly:
+since $O$ is outer and $|O|=|Y_+|$ on $\R$ with $Y_+$ bounded on $\R$,
+$O\in H^2(\C^+)\cap H^\infty(\C^+)$, and the indicator $h_O(\pi/2)\le h_{Y_+}(\pi/2)=0$
+gives the mean type in $\C^+$ equal to~$0$ (more precisely: mean type
+$=h(\pi/2)$ for functions of exponential type, by definition, and
+$h_O(\pi/2)\le h_{Y_+}(\pi/2)=0$ by the inner-outer factorization and $|B|\le 1$ on
+$i\R^+$).
+\end{description}
+
+%-----------------------------------------------------------------------
+\subsection*{Finding 3 — Fixable}
+
+\begin{description}[leftmargin=0pt]
+\item[Location:]
+Main Structural Theorem, Step~3, sentence
+``the outer factor of $Y_+$ has the same Fourier support $[0,1]$''.
+
+\item[Claim as written:]
+In the Cartwright--Levinson representation $Y_+=Ce^{iaz}B(z)O(z)$, the outer
+factor $O$ has Fourier support $[0,1]$.
+
+\item[What is relied on but not established in the text:]
+The document asserts that the Fourier support of $O$ is determined by the Szeg\H{o}
+construction from the boundary modulus $|O|=|Y_+|$ on $\R$.
+This appeal to ``Akhiezer's theorem'' (that the outer factor is the unique outer
+function with given boundary modulus, given the Szeg\H{o} condition) correctly
+identifies $O$ as the unique outer function with $|O(u)|=|Y_+(u)|$ on $\R$.
+However, the Fourier support of this outer function is $[0,1]$ only if the
+Fourier transform of $\log|Y_+|$ is supported in $[0,1]$ in the appropriate
+sense; more precisely, the Fourier support of an outer function $O\in H^2(\C^+)$
+is determined by its argument on $\R$ (via the Hilbert-transform relation between
+$\log|O|$ and $\arg O$ on $\R$), not by the support of $\log|O|$ alone.
+Knowing $|O(u)|=|Y_+(u)|$ on $\R$ determines $\log|O|$ on $\R$ but does not by
+itself force the Fourier support of $O$ (as a function) to equal $[0,1]$: $O$
+could have Fourier support $[-a,b]$ for various $a,b\ge 0$ with $a+b=1$, depending
+on the argument of $O$ on $\R$.
+The correct fact that would close this gap is the combination of:
+(a) $O$ is outer in $H^2(\C^+)$ with boundary value in $L^2(\R)$;
+(b) $O$ has exponential type $\le 1$ (inherited from $Y_+$);
+(c) $O$ is bounded on $\overline{\C^+}$ (as an $H^\infty$ outer factor);
+(d) $O$ has mean type~$0$ in $\C^+$ and mean type~$1$ in $\C^-$
+(established by the indicator argument in Step~3, since $a=0$ and $\tau(O)=1$).
+Items (b)--(d) together, by the Paley--Wiener theorem for functions of exponential
+type with indicator, force $\operatorname{supp}\hat O\subseteq[0,1]$.
+Showing $\operatorname{supp}\hat O=[0,1]$ (not a proper subset) requires that
+the spectral measure of $O$ charges a neighborhood of both endpoints $0$ and $1$,
+which follows from $|O|=|Y_+|$ on $\R$ and the fact that $Y_+$ has full support
+in $[0,1]$; this last fact is stated in the document but not proved.
+
+\item[What would establish it:]
+Invoke the Paley--Wiener theorem for entire functions of exponential type with
+given indicator: since $h_O(\pi/2)=0$ and $h_O(-\pi/2)=1$ (i.e., mean type~$0$ in
+$\C^+$ and $1$ in $\C^-$), any entire function $O$ of exponential type satisfying
+these indicator values has Fourier support contained in $[0,1]$
+(the lower bound $-h_O(\pi/2)=0$ and the upper bound $h_O(-\pi/2)=1$
+are exactly the Fourier-support endpoints by the Bohr--Carath\'{e}odory theorem
+for measures, see e.g.\ Levin, \emph{Lectures on Entire Functions}, Ch.~II).
+This argument is self-contained and does not require knowledge of $|O|$
+beyond what is already available.
+\end{description}
+
+%-----------------------------------------------------------------------
+\subsection*{Finding 4 — Fixable}
+
+\begin{description}[leftmargin=0pt]
+\item[Location:]
+Main Structural Theorem, Step~4, sentence beginning
+``Lower bound: $|Y_+(u)|\ge|Y(u)|$, and $|Y(u)|\ge$ the amplitude of the dominant
+Riemann--Siegel mode\ldots which is $\ge 2$\ldots So $\log|Y_+(u)|\ge 0$ on the set
+where $|Y(u)|\ge 1$, which has positive density in~$\R$ by the equidistribution
+of $\vartheta(t)$ modulo~$2\pi$''.
+
+\item[Claim as written:]
+The set $\{u:|Y(u)|\ge 1\}$ has positive density in $\R$ because
+$\vartheta(t)$ equidistributes modulo~$2\pi$.
+
+\item[What is relied on but not established in the text:]
+\begin{enumerate}
+\item The claim that the dominant Riemann--Siegel mode ($n=1$) has amplitude
+$\ge 2$ is a statement about $Y(u)$, not directly about $Z(t)$:
+the text writes $|Y(u)|\ge 2$ arising from ``the $n=1$ mode has amplitude~$2$''.
+More precisely, after the warp, the $n=1$ mode of $Y$ at $u=\Theta(t)$ is
+$2\cos(\vartheta(t)-0)/\sqrt{\Theta'(t)}\cdot\sqrt{\Theta'(t)}=2\cos(\vartheta(t))$,
+so the mode amplitude is $|2\cos(\vartheta(t))|$, which oscillates between~$0$
+and~$2$ rather than being uniformly $\ge 2$.
+The claim ``amplitude $\ge 2$'' is therefore imprecise as written;
+the amplitude equals $2|\cos(\vartheta(t))|$, which attains arbitrarily small
+values near $\vartheta(t)=\pi/2+k\pi$.
+
+\item The correct lower bound relevant to the Szeg\H{o} integral is not that
+$|Y_+(u)|\ge 2$ pointwise on a set of positive measure, but that
+$\int_\R\frac{\log|Y_+(u)|}{1+u^2}\,du>-\infty$, which requires controlling
+the \emph{integral} of $\log|Y_+(u)|$ rather than pointwise lower bounds.
+The argument as written uses a positive-density lower bound to conclude global
+integrability, but this step requires:
+(a) a quantitative lower bound on the measure of the set $\{|Y_+(u)|\ge c\}$
+for some $c>0$, which requires more than the qualitative equidistribution claim;
+(b) an upper bound on $\log^-|Y_+(u)|=\max(-\log|Y_+(u)|,0)$ valid near
+simultaneous near-zeros of $Y$ and $\HH[Y]$, which is asserted by
+``simultaneous zeros of $Y$ and $\HH[Y]$ are a codimension-$2$ condition
+on~$\R$, hence empty generically'' but this heuristic requires a proof that
+the integral $\int\log^-|Y_+|/(1+u^2)\,du$ is finite.
+
+\item The equidistribution of $\vartheta(t)\bmod 2\pi$ is invoked without
+reference. This is a standard consequence of Weyl's theorem and the asymptotics
+$\vartheta(t)\sim\frac{t}{2}\log\frac{t}{2\pi}$ (which grows without bound and
+has derivative $\frac{1}{2}\log\frac{t}{2\pi}\to\infty$), so Weyl's theorem
+applies and equidistribution holds. This step is routine but should be stated.
+\end{enumerate}
+
+\item[What would establish it:]
+Replace the heuristic amplitude argument with a direct Szeg\H{o}-condition proof:
+use the $L^\infty$ upper bound $|Y_+(u)|\le 2\|d\xi\|_{\mathrm{TV}}<\infty$
+(already noted in the document) to bound $\log^+|Y_+|/(1+u^2)$ uniformly, so
+$\int\log^+|Y_+|/(1+u^2)\,du<\infty$.
+For $\int\log^-|Y_+|/(1+u^2)\,du<\infty$: use Jensen's inequality applied to
+the representation $Y_+(z)=2\int_0^1 e^{i\mu z}d\xi(\mu)$; for $z=iy$ with
+$y>0$, $|Y_+(iy)|\ge 2|d\xi(\{0\})|$ if $\xi$ has an atom at~$0$; the general
+case (absolutely continuous $\rho$) uses the Szeg\H{o} theorem that $O$ exists
+and is nonzero exactly when $\int\log\rho'\,d\mu>-\infty$ (with $\rho'$ the
+Radon--Nikodym density of $\rho$), which is an independent condition on $\rho$
+that should be verified from the structure of the spectral measure of $Y$.
+Alternatively, one may invoke the fact that $Y_+\in H^2(\C^+)$ with
+$|Y_+(u)|^2=\rho'(u)$ (the spectral density), and verify that
+$\log\rho'\in L^1(\R,(1+u^2)^{-1}du)$ from the explicit form of $\rho'$.
+\end{description}
+
+%-----------------------------------------------------------------------
+\subsection*{Finding 5 — Fixable}
+
+\begin{description}[leftmargin=0pt]
+\item[Location:]
+Main Structural Theorem, Step~5, first paragraph, sentence
+``the outer factor $O$ is the unique entire outer function of exponential type~$1$
+with that modulus, its Fourier support is determined by the modulus alone,
+hence equals $[0,1]$''.
+
+\item[Claim as written:]
+The Fourier support of the outer factor $O$ is determined solely by its boundary
+modulus $|O|=|Y_+|$ on $\R$.
+
+\item[What is relied on but not established in the text:]
+The Fourier support of an outer function $O\in H^2(\C^+)$ is \emph{not} determined
+by its boundary modulus alone.
+Given $|O(u)|=f(u)$ for $u\in\R$, the outer function is uniquely determined
+(up to unimodular constant) by
+\[
+\log O(z)=\frac{i}{\pi}\int_\R\frac{\log f(u)}{u-z}\,du,\quad z\in\C^+,
+\]
+(the Herglotz/Poisson representation for the log), and the Fourier transform of
+$O$ depends on both $\log f$ \emph{and} the Hilbert transform of $\log f$
+(which gives $\arg O$ on $\R$).
+Therefore the statement ``its Fourier support is determined by the modulus alone''
+is not a consequence of the uniqueness of the outer function:
+uniqueness of $O$ given $|O|$ on $\R$ is correct, but that uniqueness implies
+uniqueness of the Fourier support (rather than just its determination by the
+modulus via the Hilbert transform) is the claim that needs proof.
+What \emph{is} true is that the indicator of $O$ (and hence its Fourier support
+as an entire function of exponential type) is determined by $|O|$ on $\R$ via
+the Paley--Wiener theorem and the indicator formula, but this is a nontrivial
+statement that requires the hypothesis that $O$ is entire of exponential type.
+The argument needed was already identified in Finding~3; the issue recurs here
+in the form of an unqualified assertion.
+
+\item[What would establish it:]
+State explicitly that the determination of the Fourier support proceeds via the
+indicator, not via the modulus directly:
+since $O$ is the unique outer function in $H^2(\C^+)$ with $|O|=|Y_+|$ on $\R$,
+and since $O$ extends to an entire function of exponential type (because $Y_+$ does
+and $O=Y_+/B$ with $B$ a Blaschke product that is entire of exponential type~$0$),
+the indicator of $O$ satisfies $h_O=h_{Y_+}$ (because $|B|=1$ on $\R$ and the
+indicator of a product equals the sum of indicators for entire functions of
+exponential type with the same type), giving
+$\operatorname{supp}\hat O=[0,1]$ by the Paley--Wiener theorem, not from the
+modulus alone.
+\end{description}
+
+%-----------------------------------------------------------------------
+\subsection*{Finding 6 — Fixable}
+
+\begin{description}[leftmargin=0pt]
+\item[Location:]
+Main Structural Theorem, Step~5, second paragraph, sentence
+``An entire Blaschke product on~$\C^+$ that is a ratio of two entire functions
+of the same exponential type and same modulus on~$\R$ must be a finite Blaschke
+product (by the Hadamard factorization of $Y_+$ and $O$: both have the same order
+and type, same modulus on~$\R$, differing only by a finite set of zeros in~$\C^+$)''.
+
+\item[Claim as written:]
+An entire function that is simultaneously a Blaschke product on~$\C^+$ and a ratio
+of two entire functions of the same exponential type and same boundary modulus
+on~$\R$ must be a finite Blaschke product.
+
+\item[What is relied on but not established in the text:]
+The parenthetical justification invokes Hadamard factorization and concludes that
+$Y_+$ and $O$ ``differ only by a finite set of zeros in~$\C^+$'', which is
+exactly the claim that $B$ is a finite Blaschke product --- the very thing that
+needs to be proved.
+The argument is circular as written: it assumes the conclusion in the justification.
+What a non-circular argument requires is:
+\begin{enumerate}
+\item Both $Y_+$ and $O$ are entire of exponential type~$1$, same order~$1$,
+same type~$1$ (by the indicator/Paley--Wiener argument).
+\item They have the same modulus on~$\R$, so $|Y_+(u)|=|O(u)|$ for all $u\in\R$.
+\item Their ratio $B=Y_+/O$ is a Blaschke product on~$\C^+$; as an entire function,
+$B$ satisfies $|B(u)|=1$ for all $u\in\R$ and is bounded by~$1$ on $\C^+$.
+\item A non-constant infinite Blaschke product $\prod_n(z-z_n)/(z-\bar z_n)$
+that is also entire must have its zeros $\{z_n\}$ in $\C^+$ satisfy the Blaschke
+condition $\sum_n\operatorname{Im}z_n/(1+|z_n|^2)<\infty$, but an entire function
+of exponential type~$\tau$ has at most $O(r)$ zeros in a disk of radius~$r$ by
+Jensen's formula, and the zeros of $B$ in $\C^+$ inherit the zero-counting bound
+of $Y_+$.
+The argument from Hadamard factorization that an \emph{infinite} Blaschke product
+of exponential type~$0$ (since $B$ has indicator~$0$ in all directions, as both
+$h_{Y_+}=h_O$ gives $h_B=0$) has only finitely many zeros requires an additional
+step: an entire function of exponential type~$0$ that is also a Blaschke product
+bounded by~$1$ on $\C^+$ is \emph{not} necessarily a finite Blaschke product
+from type considerations alone.
+The correct argument is that $B$ is entire and of exponential type~$0$, with
+$|B(u)|=1$ on~$\R$ and $|B(z)|\le 1$ on~$\C^+$: by the Phragm\'{e}n--Lindel\"{o}f
+principle applied to $B$ and $1/B$ (the latter is meromorphic on $\C^+$ with
+poles only at zeros of $B$, but $B$ is entire, so $1/B$ is meromorphic on all of
+$\C$), an entire function of exponential type~$0$ with $|f(u)|=1$ on~$\R$ must be
+a finite Blaschke product times a unimodular constant (this is a theorem in the
+theory of bounded analytic functions, e.g.\ Garnett, \emph{Bounded Analytic
+Functions}, Theorem~II.6.1 together with the exponential-type-$0$ hypothesis
+forcing the product to be finite).
+This chain of reasoning is not given in the text.
+\end{enumerate}
+
+\item[What would establish it:]
+Provide a non-circular argument: state that $B$ is entire of exponential type~$0$
+(since $h_B=h_{Y_+}-h_O=0$ by the indicator-subtraction property for products),
+with $|B(u)|=1$ on~$\R$; then cite the theorem that an entire function $f$ of
+exponential type satisfying $|f|=1$ on~$\R$ and $|f|\le 1$ on~$\C^+$ is a finite
+Blaschke product (a consequence of the Hadamard factorization of entire functions
+of order~$1$ with $|f|=1$ on~$\R$ and type~$0$, whose order-$1$ entire Hadamard
+factors with purely imaginary zeros cancel by the boundary condition, leaving only
+finitely many upper half-plane zeros contributing a finite Blaschke product and
+finitely many real zeros contributing real linear factors, and the product of real
+linear factors with modulus~$1$ on~$\R$ must be empty).
+\end{description}
+
+%-----------------------------------------------------------------------
+\subsection*{Finding 7 — Not fixable as stated}
+
+\begin{description}[leftmargin=0pt]
+\item[Location:]
+Main Structural Theorem, Step~6, sentences
+``The factorization $Y_+=B\cdot O$\ldots translates, under the Paley--Wiener
+isomorphism $L^2[0,1]\cong PW_1\cap H^2(\C^+)$, to a factorization of $d\xi$ as
+a convolution on $[0,1]$: $d\xi=\hat B\ast dO$'' and
+``Convolution with $\hat B\ne\delta_0$\ldots introduces correlations between
+increments of $d\xi$ at different frequencies, contradicting the Cram\'{e}r
+orthogonality''.
+
+\item[Claim as written:]
+The pointwise factorization $Y_+(z)=B(z)\cdot O(z)$ in $\C^+$ translates to a
+convolution $d\xi=\hat B\ast dO$ of random spectral measures on $[0,1]$, and this
+convolution introduces correlations in $d\xi$, contradicting the Cram\'{e}r
+orthogonality of $d\xi$.
+
+\item[What is relied on but not established in the text:]
+This is the crux argument of the paper, and it is not established.
+Two independent gaps are present.
+
+\smallskip
+\noindent\textbf{Gap (a): The convolution identity $d\xi=\hat B\ast dO$ is not established.}
+
+The Paley--Wiener isomorphism $L^2[0,1]\cong PW_1\cap H^2(\C^+)$ is a Hilbert
+space isomorphism between deterministic $L^2$ functions and deterministic entire
+functions in the Paley--Wiener class.
+The Cram\'{e}r spectral measure $d\xi$ is a \emph{random} measure on $[0,1]$: for
+each $f\in L^2[0,1]$ the stochastic integral $\int_0^1 f(\mu)\,d\xi(\mu)$
+is a mean-square-defined random variable.
+The product $Y_+(z)=B(z)O(z)$ is a \emph{deterministic} identity of entire
+functions (if $B$ is a fixed, deterministic Blaschke product and $O$ is the
+deterministic outer factor of $Y_+$).
+Under the Paley--Wiener isomorphism, this identity says
+$\hat Y_+=(\hat B)\cdot(\hat O)$ as $L^2$ functions (here $\hat{}$ denotes
+Fourier transform as a Paley--Wiener element), but this is a convolution of
+$L^2[0,1]$ functions, not of random measures.
+The Cram\'{e}r representation $Y_+(u)=2\int_0^1 e^{i\mu u}\,d\xi(\mu)$
+equates the deterministic function $Y_+$ with a stochastic integral.
+The text identifies the Fourier coefficient $\hat Y_+(\mu)$ with $d\xi(\mu)$, but
+$d\xi$ is a random orthogonal measure, not the Fourier transform of the
+deterministic function $Y_+$.
+The equation $d\xi=\hat B\ast dO$ (where $dO$ is described as ``the spectral
+representation of $O$'') conflates the deterministic Fourier coefficient of $O$
+with a random spectral increment of a process whose covariance spectral density
+is $|O|^2\,d\mu$.
+To make sense of $d\xi=\hat B\ast dO$ as a random measure identity, one would
+need to define $dO$ as a separate random measure and explain how it relates to
+$d\xi$; the text does not do this.
+
+\smallskip
+\noindent\textbf{Gap (b): Convolution does not in general destroy the
+orthogonal-increment property.}
+
+Even granting a formal interpretation of $d\xi=\hat B\ast dO$, the claim that
+``convolution with $\hat B\ne\delta_0$ introduces correlations between increments
+of $d\xi$ at different frequencies'' is not established.
+On the Fourier side, multiplication of two functions (i.e.\ pointwise product) of
+$L^2$ corresponds to convolution on the physical side.
+Here, $Y_+(z)=B(z)O(z)$ in frequency space (i.e.\ the Fourier transform of $Y_+$
+is the convolution of $\hat B$ and $\hat O$), so the \emph{spectral density} of
+$Y_+$ is $|\hat Y_+|^2=|\hat B|^2*|\hat O|^2$ (a convolution of spectral densities
+only if $\hat B$ and $\hat O$ have independent phases, which is not the case in
+general).
+For the \emph{spectral measure} $\rho$ of $Y$, we have
+$d\rho(\mu)=|Y_+(\mu)|^2\,d\mu=|B(\mu)|^2|O(\mu)|^2\,d\mu$ (since $|B|=1$ on
+$\R$, this equals $|O(\mu)|^2\,d\mu$).
+Therefore the spectral density of $Y$ equals $|O|^2$ regardless of whether $B$ is
+trivial or not, and the Cram\'{e}r orthogonal increment measure $d\xi$ satisfies
+$\mathbb{E}[|d\xi(\mu)|^2]=d\rho(\mu)=|O(\mu)|^2\,d\mu$ in both cases $B\equiv 1$
+and $B\not\equiv 1$.
+The Cram\'{e}r orthogonality $\mathbb{E}[d\xi(\mu)\overline{d\xi(\mu')}]=0$ for
+$\mu\ne\mu'$ is a property of the \emph{process} $Y$, not of the analytic
+function $Y_+$:
+$d\xi$ is orthogonal because $Y$ is (assumed to be) a stationary process with
+spectral representation, and the orthogonality is automatic for any weakly
+stationary process, irrespective of the Blaschke factor.
+A non-trivial $B$ would change the zeros of $Y_+$ in $\C^+$ but would not alter
+$|Y_+(u)|=|O(u)|$ on $\R$ (since $|B|=1$ on $\R$), and hence would not affect the
+spectral density $d\rho=|Y_+|^2\,d\mu=|O|^2\,d\mu$ of the process.
+Therefore the convolution $d\xi=\hat B\ast dO$, even if formally well-defined,
+does \emph{not} introduce correlations in the spectral measure of $Y$:
+the covariance kernel $R(\tau)=\int e^{i\mu\tau}\,d\rho(\mu)$ depends only on
+$d\rho=|Y_+|^2\,d\mu$, which is unchanged by a unimodular factor $B$ on $\R$.
+The text's claim that a nontrivial Blaschke factor produces a contradiction with
+Cram\'{e}r orthogonality is therefore not established by the given argument.
+
+\item[What would establish it:]
+A correct argument closing Step~6 would require a different route.
+One possible route: show directly that $B\equiv 1$ by exploiting the one-sidedness
+of the Fourier support of $Y_+$ together with a rigidity theorem for functions in
+the Hermite--Biehler class (e.g.\ de Branges's theorem that a function in the HB
+class with real zeros is a product of a real entire function and an exponential,
+but this does not immediately apply).
+Another possible route: use the fact that $B$ is entire and of exponential type~$0$
+with $|B|=1$ on~$\R$ and $|B|\le 1$ on~$\C^+$ to conclude directly that $B$ is a
+finite Blaschke product (as in Finding~6), and then show that a finite Blaschke
+product with zeros in $\C^+$ cannot be entire unless the product is trivial
+(which is false for finite products --- a finite Blaschke product is meromorphic
+with poles at the reflected zeros $\bar z_n$ in $\C^-$, but if both $Y_+$ and $O$
+are entire and $B=Y_+/O$, then $B$ has no poles, so $O$ must vanish at each
+$\bar z_n$ --- but $O$ is outer and nonzero in $\C^+$, and zeros of $O$ in $\C^-$
+are possible; this path requires a separate argument).
+The document does not provide any of these alternatives.
+\end{description}
+
+\bigskip
+\noindent
+All propositions in the document other than those addressed in Findings~1--7 are
+established by the document as written or by standard results whose hypotheses are
+clearly satisfied:
+the band-limitedness conclusion from \texttt{BandLimitedness.tex}
+($\operatorname{supp}\rho\subseteq[-1,1]$),
+the Cram\'{e}r spectral representation, the definition and entire-function property
+of $Y_+$, Lemma~(Indicator of $Y_+$), the inner-outer factorization in Step~1,
+and the Theorem~(Reality) as a consequence of the HB reduction and the Main
+Structural Theorem are all within the scope of what the document establishes
+subject to the gaps in Findings~1--7.
+Theorem~B of \texttt{three\_missing\_theorems.pdf} (the diagonal-dominance identity
+for the whitened differential) is not invoked in \texttt{RealityOfZeros.tex} and
+no gap arising from its absence was found.
+
+\end{document}

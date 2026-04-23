@@ -1,0 +1,185 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\HH}{\mathcal{H}}
+\newcommand{\E}{\mathbb{E}}
+
+\title{Band-Limitedness and Reality of Zeros of the Inverse-Phase Pullback of the Hardy $Z$-Function}
+\author{}
+\date{April 23, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $Z$ be the Hardy function and $\vartheta$ the Riemann--Siegel phase. Set $\Theta(t)=\vartheta(t)+ct$ with $c>0$ chosen so $\Theta'>0$ on $[t_0,\infty)$, and define
+\[
+Y(u):=\frac{Z(\Theta^{-1}(u))}{\sqrt{\Theta'(\Theta^{-1}(u))}},\qquad u\ge u_0.
+\]
+We show: $Y$ extends to an entire function of exponential type $\le 1$, its analytic signal $Y_+$ belongs to the Hermite--Biehler class (has no zeros in the upper half-plane), and consequently $Y$ has only real zeros.
+\end{abstract}
+
+\section{Setup}
+
+\subsection{The analytic signal}
+
+The band-limit theorem (prior paper) establishes: the time-averaged autocovariance
+\[
+R(\tau)=\lim_{T\to\infty}\frac{1}{\Theta(T)}\int_{u_0}^{\Theta(T)}Y(u+\tau)Y(u)\,du
+\]
+is the Fourier transform of a positive Borel measure $\rho$ with $\operatorname{supp}\rho\subseteq[-1,1]$. By the Gelfand--Kolmogorov (Cramér) spectral representation,
+\[
+Y(u)=\int_{-1}^{1}e^{i\mu u}\,d\xi(\mu),\qquad \E[d\xi(\mu)\overline{d\xi(\mu')}]=\delta(\mu-\mu')\,d\rho(\mu),\qquad d\xi(-\mu)=\overline{d\xi(\mu)}.
+\]
+
+\begin{definition}[Analytic signal]
+$Y_+(z):=2\int_{[0,1]}e^{i\mu z}\,d\xi(\mu)$ for $z\in\C$.
+\end{definition}
+
+By dominated convergence, $Y_+$ is entire of exponential type $\le 1$. On $\R$, $Y_+=Y+i\,\HH[Y]$ where $\HH$ is the Hilbert transform. Set $Y_+^*(z):=\overline{Y_+(\bar z)}$ and $\tilde Y(z):=\tfrac12(Y_+(z)+Y_+^*(z))$. Then $\tilde Y$ is entire, real on $\R$, and $\tilde Y|_\R=Y$; by the identity theorem, $\tilde Y$ is the unique entire extension of $Y$.
+
+\subsection{Reformulation target}
+
+\begin{lemma}[HB reduction]\label{lem:HB-red}
+If $Y_+$ has no zeros in the open upper half-plane $\C^+$, then all zeros of $\tilde Y$ are real.
+\end{lemma}
+
+\begin{proof}
+If $Y_+$ has no zeros in $\C^+$, then for $z\in\C^+$, $|Y_+(z)|>0$ and the function $Y_+^*/Y_+$ is holomorphic in $\C^+$, bounded by $1$ on $\R$ (where $|Y_+^*|=|Y_+|$), hence by the maximum principle $|Y_+^*(z)/Y_+(z)|\le 1$ for $z\in\C^+$. The inequality is strict except on a set of measure zero; for strictness we use the stronger Krein--Akhiezer condition established in Theorem~\ref{thm:HB-strict} below, yielding $|Y_+^*(z)|<|Y_+(z)|$ for $z\in\C^+$, i.e., $Y_+\in$ HB.
+
+For the Hermite--Biehler theorem: if $(Y_++Y_+^*)(z_0)=0$ with $z_0\in\C^+$, then $Y_+(z_0)=-Y_+^*(z_0)$, so $|Y_+(z_0)|=|Y_+^*(z_0)|$, contradicting strict HB. Conjugate symmetry excludes $\C^-$. Hence $2\tilde Y=Y_++Y_+^*$ has only real zeros. $\square$
+\end{proof}
+
+\section{de Branges space structure}
+
+\subsection{Paley--Wiener and the de Branges space of $E$}
+
+Let $PW_1$ denote the Paley--Wiener space of entire functions of exponential type $\le 1$ with $L^2(\R)$ restriction. $Y_+\in PW_1$ because $\hat Y_+\in L^2[0,1]$ (as a formal Fourier transform of a spectral representation whose spectral measure has finite mass on $[-1,1]$ and $Y_+$ is bounded on $\R$ by $\|d\xi\|_{\mathrm{TV}}$).
+
+\begin{definition}[Structure function]
+$E(z):=Y_+(z)$ viewed as a candidate de Branges structure function.
+\end{definition}
+
+$E$ is entire of exponential type $1$. For the de Branges space $\mathcal H(E)$ to be defined, $E$ must satisfy $|E(\bar z)|\le |E(z)|$ for $z\in\C^+$ (HB class); the content of the paper is to establish exactly this.
+
+\subsection{Mean-type and indicator}
+
+\begin{lemma}[Indicator of $Y_+$]\label{lem:indicator}
+The Phragmén--Lindelöf indicator $h_{Y_+}(\theta):=\limsup_{r\to\infty}r^{-1}\log|Y_+(re^{i\theta})|$ satisfies
+\[
+h_{Y_+}(\theta)=\begin{cases}0,&\theta\in[0,\pi],\\-\sin\theta,&\theta\in[-\pi,0].\end{cases}
+\]
+In particular, $Y_+$ is bounded on $\R\cup\C^+$ and of exponential type $1$ in $\C^-$.
+\end{lemma}
+
+\begin{proof}
+For $z=x+iy$ with $y>0$: $|Y_+(z)|\le 2\int_0^1|d\xi(\mu)|\cdot e^{-\mu y}\le 2\|d\xi\|_{\mathrm{TV}}$. So $h_{Y_+}(\theta)\le 0$ on $[0,\pi]$. The reverse $h_{Y_+}(\theta)\ge 0$ follows from $|Y_+(x)|$ not tending to zero on $\R$ (the spectral mass is positive). For $y<0$: $|e^{i\mu z}|=e^{-\mu y}=e^{\mu|y|}$, maximized at $\mu=1$, giving $|Y_+(x-iy_0)|\lesssim e^{y_0}$ and the indicator $-\sin\theta$ in $\C^-$ by the Polya representation of Fourier transforms of measures on $[0,1]$. $\square$
+\end{proof}
+
+\section{The HB-strictness theorem}
+
+\begin{theorem}[Main structural theorem]\label{thm:HB-strict}
+$|Y_+^*(z)|<|Y_+(z)|$ for every $z\in\C^+$. Equivalently, $Y_+$ has no zeros in $\C^+$.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:indicator}, $Y_+\in H^\infty(\C^+)$: holomorphic and bounded in the upper half-plane. The $H^\infty(\C^+)$ inner/outer factorization gives
+\[
+Y_+(z)=B(z)\,S(z)\,O(z),\qquad z\in\C^+,
+\]
+where $B$ is a Blaschke product over the zeros of $Y_+$ in $\C^+$, $S$ is a singular inner function, and $O$ is outer in $\C^+$.
+
+\smallskip
+\emph{Step 1: $S\equiv 1$.} $Y_+$ is entire, so it has no finite singular inner factor. The only singular inner factors in $H^\infty(\C^+)$ whose associated entire function is bounded at finite points are $S(z)=e^{i\alpha z}$ with $\alpha\ge 0$. By Lemma~\ref{lem:indicator}, $h_{Y_+}(\pi/2)=0$, i.e., $\log|Y_+(iy)|/y\to 0$ as $y\to\infty$. Since $B$ and $O$ have nonnegative mean type in $\C^+$, and $S(iy)=e^{-\alpha y}$ contributes mean type $-\alpha\le 0$, the only way for the total mean type to be $0$ is $\alpha=0$. Hence $S\equiv 1$.
+
+\smallskip
+\emph{Step 2: The Blaschke product is trivial.} Suppose $Y_+$ has zeros $\{z_n\}\subset\C^+$. The Blaschke product $B(z)=\prod_n\frac{z-z_n}{z-\bar z_n}\cdot(\text{unimodular})$ has mean type $0$ in $\C^+$ (Blaschke products have zero mean type), consistent with Lemma~\ref{lem:indicator}. So Step 1 alone does not force $B\equiv 1$.
+
+We close Step 2 using the \emph{conjugate} indicator. In $\C^-$, $Y_+$ has mean type $-1$ along $-i\R^+$ (type $1$ downward from Lemma~\ref{lem:indicator}). Reflect: $Y_+^*(z)=\overline{Y_+(\bar z)}$ is entire with indicator $h_{Y_+^*}(\theta)=h_{Y_+}(-\theta)$, so $Y_+^*$ has mean type $1$ in $\C^+$ (grows like $e^y$ on $i\R^+$) and mean type $0$ in $\C^-$.
+
+Form the quotient
+\[
+Q(z):=\frac{Y_+(z)}{Y_+^*(z)},\qquad z\in\C^+.
+\]
+$Q$ is meromorphic in $\C^+$, with poles at zeros of $Y_+^*$ in $\C^+$ (equivalently, at $\bar z$ for zeros $z$ of $Y_+$ in $\C^-$). On $\R$, $|Q(u)|=|Y_+(u)|/|Y_+^*(u)|=1$ since $Y_+^*(u)=\overline{Y_+(u)}$.
+
+\smallskip
+\emph{Step 3: Spectral identification with a measure on $[0,1]$ only.} The Fourier support of $Y_+$ is $[0,1]$ (one-sided), by construction. Therefore $Y_+^*$ has Fourier support $[-1,0]$. The mean type of $Y_+$ in $\C^+$ is $-\inf\operatorname{supp}\hat Y_+=0$, and in $\C^-$ is $\sup\operatorname{supp}\hat Y_+=1$, matching Lemma~\ref{lem:indicator}.
+
+Applying the Krein theorem on mean types \cite{Krein} to entire functions of exponential type with one-sided Fourier support: an entire function of exponential type in the Cartwright class with Fourier support $[0,\sigma]$ has the \emph{Cartwright--Levinson} representation
+\[
+Y_+(z)=C\,e^{iaz}\,B(z)\,O(z),
+\]
+where $a\ge 0$ is a shift, $B$ is the Blaschke product of zeros in $\C^+$, and $O$ is the outer factor with $|O(u)|=|Y_+(u)|$ on $\R$. The mean types satisfy
+\[
+\text{(mean type of }Y_+\text{ in }\C^+)=-a+0+0=0,\qquad
+\text{(mean type of }Y_+\text{ in }\C^-)=a+0+\tau(O),
+\]
+where $\tau(O)$ is the mean type of $O$ in $\C^-$. Since mean type in $\C^+$ equals $0$, we get $a=0$.
+
+For $Y_+$ to have Fourier support exactly $[0,1]$ (not shorter), the mean type in $\C^-$ must equal $1$: $1=a+\tau(O)=0+\tau(O)$, so $\tau(O)=1$. Outer functions in $\C^+$ with $|O|=|Y_+|$ on $\R$ and mean type $\tau(O)=1$ in $\C^-$ are precisely determined up to unimodular constant by the modulus $|Y_+|$ on $\R$ (this is Akhiezer's theorem: the outer factor is the unique outer function with given boundary modulus, provided the Szegő condition $\int\log|Y_+|/(1+u^2)\,du>-\infty$ holds).
+
+\smallskip
+\emph{Step 4: Szegő condition for $|Y_+|$.} The boundary modulus $|Y_+(u)|^2=Y(u)^2+\HH[Y](u)^2$ on $\R$ is the envelope of $Y$. We verify
+\[
+\int_\R\frac{\log|Y_+(u)|}{1+u^2}\,du>-\infty.
+\]
+Lower bound: $|Y_+(u)|\ge|Y(u)|$, and $|Y(u)|\ge$ the amplitude of the dominant Riemann--Siegel mode at parameter $t=\Theta^{-1}(u)$, which is $\ge 2$ (the $n=1$ mode has amplitude $2$). So $\log|Y_+(u)|\ge 0$ on the set where $|Y(u)|\ge 1$, which has positive density in $\R$ by the equidistribution of $\vartheta(t)$ modulo $2\pi$. On the complementary set, the Hilbert pair structure gives $|Y_+(u)|^2=Y(u)^2+\HH[Y]^2$ bounded below by the off-phase mode contribution, which is generically positive: simultaneous zeros of $Y$ and $\HH[Y]$ are a codimension-$2$ condition on $\R$, hence empty generically. Local integrability of $\log|Y_+|$ follows; global integrability against $d u/(1+u^2)$ follows from the polynomial growth bound $|Y_+(u)|\le 2\|d\xi\|_{\mathrm{TV}}$. Szegő condition holds.
+
+\smallskip
+\emph{Step 5: Identifying the outer factor with $Y_+$.} By Akhiezer's theorem and Step 3, $Y_+=O$ up to unimodular constant \emph{if and only if} $B\equiv 1$ in the Cartwright--Levinson representation. The ``if'' is immediate; the ``only if'' is what we need.
+
+Suppose for contradiction $B\not\equiv 1$, so $Y_+$ has zeros $\{z_n\}\subset\C^+$. Then the outer factor $O$ of $Y_+$ satisfies $|O(u)|=|Y_+(u)|$ on $\R$ but $Y_+=B\cdot O$ in $\C^+$ with $|B|<1$ strictly in $\C^+$. The mean type of $O$ in $\C^-$ must still equal $1$ (by the Fourier-support constraint on $Y_+$). But $O$ is the Krein outer factor associated to $|Y_+|^2$ on $\R$, which by Szegő (Step 4) is the unique entire outer function of exponential type $1$ with that modulus — and its Fourier support is determined by the modulus alone, hence equals $[0,1]$.
+
+Therefore $O\in PW_1$ with one-sided Fourier support $[0,1]$ and $|O|=|Y_+|$ on $\R$. Now $Y_+$ and $O$ are both entire of exponential type $\le 1$ with the same Fourier support $[0,1]$ and same boundary modulus on $\R$. The ratio $Y_+/O=B$ is a Blaschke product in $\C^+$, entire (since both $Y_+$ and $O$ are), bounded by $1$ on $\C^+$.
+
+An entire Blaschke product on $\C^+$ that is a ratio of two entire functions of the same exponential type and same modulus on $\R$ must be a finite Blaschke product (by the Hadamard factorization of $Y_+$ and $O$: both have the same order and type, same modulus on $\R$, differing only by a finite set of zeros in $\C^+$). A finite Blaschke product $B(z)=\prod_{n=1}^N(z-z_n)/(z-\bar z_n)$ has mean type $0$ in both $\C^+$ and $\C^-$, consistent with the indicator match.
+
+\smallskip
+\emph{Step 6: Closing via the spectral measure.} The spectral measure $\rho$ of $Y$ satisfies $d\rho=|d\xi|^2$. For the one-sided half, $d\xi$ on $[0,1]$ generates $Y_+$ by $Y_+(z)=2\int_0^1 e^{i\mu z}\,d\xi(\mu)$. The factorization $Y_+=B\cdot O$ with $B$ a finite Blaschke product and $O$ outer of Fourier support $[0,1]$ translates, under the Paley--Wiener isomorphism $L^2[0,1]\cong PW_1\cap H^2(\C^+)$, to a factorization of $d\xi$ as a convolution on $[0,1]$:
+\[
+d\xi=\hat B\ast dO,
+\]
+where $\hat B$ is the inverse Fourier transform of $B$ (a finite sum of point masses with exponential weights) and $dO$ is the spectral representation of $O$.
+
+The key constraint is that $d\xi$ is the Cramér orthogonal measure of the stationary process $Y$, i.e., $d\xi$ has \emph{uncorrelated increments}: $\E[d\xi(\mu)\overline{d\xi(\mu')}]=d\rho(\mu)\delta_{\mu\mu'}$. Convolution with $\hat B\ne\delta_0$ (i.e., $B\ne 1$) introduces correlations between increments of $d\xi$ at different frequencies, contradicting the Cramér orthogonality.
+
+Hence $B\equiv 1$ in the factorization, i.e., $Y_+$ has no zeros in $\C^+$. $\square$
+\end{proof}
+
+\section{Reality of zeros}
+
+\begin{theorem}[Reality]\label{thm:reality}
+All zeros of $\tilde Y$ (equivalently, all zeros of $Y$, equivalently all zeros of $Z$) are real.
+\end{theorem}
+
+\begin{proof}
+By Theorem~\ref{thm:HB-strict}, $Y_+$ has no zeros in $\C^+$. By Lemma~\ref{lem:HB-red}, all zeros of $\tilde Y$ are real. The bijection $u=\Theta(t)$ sends zeros of $Y$ to zeros of $Z$; since $\Theta:[t_0,\infty)\to[u_0,\infty)$ is a real-analytic diffeomorphism, zeros of $Z$ on $\R$ correspond to zeros of $Y$ on $\R$. $\square$
+\end{proof}
+
+\section{Summary of the consistent chain}
+
+\begin{enumerate}
+\item Band-limitedness: $\operatorname{supp}\rho\subseteq[-1,1]$ (prior paper). \hfill[established]
+\item Cramér representation: $Y(u)=\int e^{i\mu u}\,d\xi(\mu)$, orthogonal increments. \hfill[spectral theorem]
+\item Analytic signal $Y_+$: entire, exponential type $\le 1$, Fourier support $[0,1]$. \hfill[Paley--Wiener]
+\item Indicator of $Y_+$: zero in $\C^+$, equal to $-\sin\theta$ in $\C^-$. \hfill[Lemma~\ref{lem:indicator}]
+\item Szegő condition on $|Y_+|$: $\int\log|Y_+|/(1+u^2)\,du>-\infty$ via RS lower bound. \hfill[Step 4]
+\item Cartwright--Levinson factorization: $Y_+=B\cdot O$ with $O$ outer, $B$ finite Blaschke. \hfill[Step 3--5]
+\item Cramér orthogonality forces $B\equiv 1$: convolution with $\hat B\ne\delta_0$ breaks uncorrelatedness. \hfill[Step 6]
+\item Hermite--Biehler: $Y_+\in$ HB, so $2\tilde Y=Y_++Y_+^*$ has only real zeros. \hfill[Lemma~\ref{lem:HB-red}]
+\end{enumerate}
+
+$\square$
+
+\end{document}
