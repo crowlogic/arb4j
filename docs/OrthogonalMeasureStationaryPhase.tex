@@ -22,8 +22,6 @@
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\N}{\mathbb{N}}
 \DeclareMathOperator{\supp}{supp}
-\DeclareMathOperator{\Re}{Re}
-\DeclareMathOperator{\Im}{Im}
 \DeclareMathOperator{\Span}{span}
 
 \title{The Gelfand--Vilenkin Complex Orthogonal Measure\\
@@ -209,9 +207,101 @@ Under \eqref{eq:harm}, $\supp(d\Phi)\subseteq[-1,1]$. The numerical approximatio
 The assumed representation \eqref{eq:harm} places $\supp(d\Phi)\subseteq[-1,1]$ by hypothesis. For the second claim, $K[T](\xi) = \tfrac{1}{2\pi}\int_{\Theta(T_{\min})}^{\Theta(T)} Y(u)\,e^{-i\xi u}\,du$ is the standard truncated Fourier transform of $Y$, so $K[T]\to\tfrac{1}{2\pi}\widehat{Y}$ in $\mathscr{S}'(\R)$ and the support of $\widehat{Y}$ coincides with $\supp(d\Phi)$. Exhaustion of $[-1,1]$ by the finite bands is \ref{thm:edgelimit}.
 \end{proof}
 
-\section{The Rescaling $\eta=\xi/\xi_{\mathrm{edge}}(T)$}
+\section{The Clerc--Mallat Scaling Operator}\label{sec:CM}
 
-This section documents the rescaling used in the accompanying numerics. It is not a fit — the scaling factor is the closed-form expression \eqref{eq:edge}.
+This section identifies the rescaling $\eta=\xi/\xi_{\mathrm{edge}}(T)$ used in the accompanying numerics with the Clerc--Mallat scaling (dilation) operator on frequency associated to the warped-stationary framework \cite{ClercMallat}. It shows that the coordinate change employed in Section~\ref{sec:rescale} is the canonical scaling operator predicted by that theory, applied at the finite-$T$ instantaneous bandwidth.
+
+\subsection{The warping and dilation operators}
+
+\begin{definition}[Warping operator, \cite{ClercMallat} \S2.1]\label{def:Dgamma}
+For an increasing $C^1$ diffeomorphism $\gamma:I\to J$ with $\gamma'>0$, the warping operator $D_\gamma:L^2(J)\to L^2(I)$ is
+\[
+(D_\gamma X)(t) \;=\; \sqrt{\gamma'(t)}\,X\bigl(\gamma(t)\bigr) .
+\]
+It is a unitary isomorphism.
+\end{definition}
+
+\begin{definition}[Dilation / scaling operator, \cite{ClercMallat} \S2.2]\label{def:Da}
+For $a>0$, the dilation operator $\mathcal{D}_a$ on $L^2(\R)$ is
+\[
+(\mathcal{D}_a f)(\xi) \;=\; |a|^{-1/2}\,f(\xi/a) .
+\]
+It is unitary, with Fourier conjugate $\widehat{\mathcal{D}_a f}(u) = |a|^{1/2}\,\widehat f(au)$.
+\end{definition}
+
+\begin{proposition}[Instantaneous-frequency transformation law, \cite{ClercMallat} \S2.1]\label{prop:inst}
+If $X$ has spectral support $\supp\widehat X \subseteq \Omega_X$, then $Y=D_\gamma X$ has instantaneous-frequency support satisfying
+\[
+\omega_Y(t) \;=\; \gamma'(t)\,\omega_X\bigl(\gamma(t)\bigr),
+\]
+interpreted through windowed Fourier/wavelet analysis (local bandwidth at position $t$).
+\end{proposition}
+
+\subsection{Application to the warped Hardy $Z$ process}
+
+\begin{proposition}[Our warp is the Clerc--Mallat operator with $\gamma=\Theta^{-1}$]\label{prop:matchCM}
+Let $\gamma:[\Theta(T_{\min}),\infty)\to[T_{\min},\infty)$ be $\gamma=\Theta^{-1}$, so $\gamma'(u)=1/\Theta'(\Theta^{-1}(u))$. Then
+\[
+(D_\gamma Z)(u) \;=\; \sqrt{\gamma'(u)}\,Z(\gamma(u)) \;=\; \frac{Z(\Theta^{-1}(u))}{\sqrt{\Theta'(\Theta^{-1}(u))}} \;=\; Y(u),
+\]
+so the process $Y$ of Definition~2 is exactly the Clerc--Mallat warping of $Z$ by $\gamma=\Theta^{-1}$.
+\end{proposition}
+
+\begin{proof}
+Direct substitution into Definition~\ref{def:Dgamma}. Unitarity is inherited.
+\end{proof}
+
+\subsection{The band edge is the Clerc--Mallat local bandwidth}
+
+\begin{theorem}[$\xi_{\mathrm{edge}}(T)$ as local bandwidth]\label{thm:CMedge}
+Let $a(T)=\xi_{\mathrm{edge}}(T)=\vartheta'(T)/(\vartheta'(T)+c)$. Then $a(T)$ is the Clerc--Mallat instantaneous bandwidth of $Y$ at $u=\Theta(T)$, namely the image under Proposition~\ref{prop:inst} of the unit-frequency content of the underlying phase oscillator $t\mapsto e^{\pm i\vartheta(t)}$.
+\end{theorem}
+
+\begin{proof}
+Riemann--Siegel (Lemma~5) writes $Z(t)=e^{+i\vartheta(t)}+e^{-i\vartheta(t)}+\text{lower}$. The phase oscillator $e^{i\vartheta(t)}$ has instantaneous frequency $\vartheta'(t)$ in the $t$-variable. Under the change of coordinate $u=\Theta(t)=\vartheta(t)+ct$, the instantaneous frequency with respect to $u$ is
+\[
+\omega_Y(u) \;=\; \frac{d\vartheta(t)}{du}\bigg|_{t=\Theta^{-1}(u)} \;=\; \frac{\vartheta'(t)}{\Theta'(t)}\bigg|_{t=\Theta^{-1}(u)} \;=\; \frac{\vartheta'(t)}{\vartheta'(t)+c}\bigg|_{t=\Theta^{-1}(u)} .
+\]
+At $t=T$ this equals $a(T)=\xi_{\mathrm{edge}}(T)$. The symmetric $-\vartheta(t)$ branch gives $-a(T)$. By Proposition~\ref{prop:inst}, $\pm a(T)$ is the instantaneous-frequency support of $Y$ at $u=\Theta(T)$; by the stationary-phase analysis (Theorem~\ref{thm:edge}), it is also the outer edge of $\supp K[T]$. The two quantities coincide.
+\end{proof}
+
+\begin{remark}
+Theorem~\ref{thm:CMedge} gives two independent derivations of the same formula $\xi_{\mathrm{edge}}(T)=\vartheta'(T)/(\vartheta'(T)+c)$: one via stationary phase on the integrand of $K[T]$ (Theorem~\ref{thm:edge}), one via the Clerc--Mallat frequency-transformation law applied to the phase oscillator. That the two routes agree is a consistency check on the warped-stationarity picture.
+\end{remark}
+
+\begin{corollary}[The rescaling is a Clerc--Mallat dilation]\label{cor:rescaleCM}
+The rescaled density $\widetilde S_T$ of Section~\ref{sec:rescale} is related to the native density $\widehat S_T$ by the Clerc--Mallat dilation $\mathcal{D}_{a(T)}$:
+\[
+\widetilde{S}_T(\eta) \;=\; a(T)\,\widehat{S}_T\bigl(a(T)\,\eta\bigr) \;=\; \bigl|(\mathcal{D}_{a(T)^{-1}}\,K[T])(\eta)\bigr|^2\,\frac{2\pi}{\Theta(T)},
+\]
+up to the overall $\Theta(T)^{-1}$ energy-normalization. This is the canonical dilation that normalizes the finite-$T$ bandwidth to~$1$.
+\end{corollary}
+
+\begin{proof}
+By Definition~\ref{def:Da}, $(\mathcal{D}_{a^{-1}} f)(\eta) = a^{1/2} f(a\eta)$. Squaring the modulus gives $a|f(a\eta)|^2$. Applied to $f=K[T]$ and multiplied by $2\pi/\Theta(T)$ yields $a(T)\,\widehat S_T(a(T)\eta) = \widetilde S_T(\eta)$, matching Definition~12 verbatim.
+\end{proof}
+
+\subsection{Asymptotic Clerc--Mallat self-similarity}
+
+\begin{theorem}[Asymptotic triviality of the scaling operator]\label{thm:CMasymp}
+$\displaystyle \lim_{T\to\infty}\mathcal{D}_{a(T)} \;=\; \mathcal{D}_1 \;=\; \mathrm{id}_{L^2(\R)}$ in the strong operator topology.
+\end{theorem}
+
+\begin{proof}
+By Theorem~\ref{thm:edgelimit}, $a(T)\to 1$. The map $a\mapsto\mathcal{D}_a$ is strongly continuous on $L^2(\R)$ (this is classical: for $f\in C_c(\R)$, $\|\mathcal{D}_a f - \mathcal{D}_1 f\|_{L^2}\to 0$ as $a\to 1$ by dominated convergence; density of $C_c$ in $L^2$ and uniform boundedness $\|\mathcal{D}_a\|=1$ extends the convergence to all of $L^2(\R)$).
+\end{proof}
+
+\begin{corollary}[The warp alone stationarizes $Z$ in the limit]\label{cor:warpstat}
+In the Clerc--Mallat framework the warp $\Theta$ transports $Z$ to a weakly harmonizable band-limited process $Y$ on $[-1,1]$; no non-trivial scaling operator is required in the limit. Finite-$T$ observations of $Y$ require the correction $\mathcal{D}_{a(T)}$ to display the $[-1,1]$ band exactly, and that correction vanishes as $T\to\infty$.
+\end{corollary}
+
+\begin{proof}
+Combine Theorem~\ref{thm:CMedge}, Theorem~\ref{thm:consistency}, and Theorem~\ref{thm:CMasymp}.
+\end{proof}
+
+\section{The Rescaling $\eta=\xi/\xi_{\mathrm{edge}}(T)$}\label{sec:rescale}
+
+This section documents the rescaling used in the accompanying numerics. It is not a fit --- the scaling factor is the closed-form expression \eqref{eq:edge}, and by Section~\ref{sec:CM} it is the canonical Clerc--Mallat scaling operator $\mathcal{D}_{a(T)}$ applied at the finite-$T$ instantaneous bandwidth $a(T)=\xi_{\mathrm{edge}}(T)$.
 
 \begin{definition}[Rescaled coordinate]
 Let
@@ -273,6 +363,7 @@ The band-edge formula $\xi_{\mathrm{edge}}(T)=\vartheta'(T)/(\vartheta'(T)+c)$ i
 
 \begin{thebibliography}{9}
 \bibitem{Stein} E.~M.~Stein, \emph{Harmonic Analysis: Real-Variable Methods, Orthogonality, and Oscillatory Integrals}, Princeton University Press, 1993.
+\bibitem{ClercMallat} M.~Clerc and S.~Mallat, \emph{Estimating Deformations of Stationary Processes}, Annals of Statistics \textbf{31}(6):1772--1821, 2003. Available at \url{https://www.di.ens.fr/~mallat/papiers/WarpAnnStat.pdf}.
 \bibitem{Titchmarsh} E.~C.~Titchmarsh, \emph{The Theory of the Riemann Zeta-Function} (2nd ed.), Oxford University Press, 1986.
 \bibitem{Edwards} H.~M.~Edwards, \emph{Riemann's Zeta Function}, Academic Press, 1974.
 \end{thebibliography}
