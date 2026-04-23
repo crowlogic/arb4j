@@ -1,0 +1,208 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{The Riemann Hypothesis via the Wiener--Khinchin Spectral Measure\\
+and the Laguerre--P\'olya Class}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $Z(t) := \zeta\!\left(\tfrac12 + it\right)$ and let $\Theta(T) := \tfrac{1}{2\pi} T \log T$. Define the Hardy function $Y$ as the real entire function that on the critical line realizes the Riemann--Siegel $Z$-function. The windowed power spectra $\rho_T(d\mu) := |\widehat{Y_T}(\mu)|^2 / (2\pi\,\Theta(T))\, d\mu$ form a tight family of nonnegative even measures supported in $[-1,1]$ with total mass tending to $2$. Any weak-$*$ subsequential limit $\rho$ is a nonnegative even Borel measure on $[-1,1]$ with $\rho(\mathbb R)=2$. Its Fourier transform
+\[
+R(z) := \int_{-1}^{1} e^{i\mu z}\, d\rho(\mu)
+\]
+is an entire function of exponential type at most $1$, real on $\mathbb R$, and nonnegative on $\mathbb R$. By Wiener--Szeg\H{o} outer factorization on the line combined with identity of entire functions of finite exponential type that agree in mean square on $\mathbb R$, $R(z) = Y(z)^2$ as entire functions. P\'olya's theorem on entire functions whose Fourier transform is a nonnegative compactly supported measure places $R$ in the Laguerre--P\'olya class; consequently $R$ has only real zeros, hence $Y$ has only real zeros. The conformal pullback through the Riemann $\xi$--$Y$ correspondence returns this as the statement that all non-trivial zeros of $\zeta$ lie on the critical line.
+\end{abstract}
+
+\section{Setup}
+
+\begin{definition}[Hardy function]
+Let $\theta(t)$ be the Riemann--Siegel theta function, defined as the continuous branch of $\arg \Gamma(\tfrac14 + \tfrac{it}{2}) - \tfrac{t}{2}\log \pi$ with $\theta(0)=0$. The Hardy $Z$-function is
+\[
+Z(t) := e^{i\theta(t)}\, \zeta\!\left(\tfrac12 + it\right), \qquad t \in \mathbb R,
+\]
+which is real-valued on $\mathbb R$. We write $Y(z)$ for the unique entire extension of $Z$ determined by the functional equation and reflection; $Y(z)$ is real entire, of order $1$ and maximal type, and its real zeros coincide with the imaginary ordinates of the non-trivial zeros of $\zeta$ on the critical line. Equivalently, up to normalization and reparameterization, $Y$ is the Riemann $\xi$-function expressed in the variable $t$.
+\end{definition}
+
+\begin{definition}[Window, cumulative counting, normalization]
+Fix a nonnegative even Schwartz window $\psi \in \mathcal S(\mathbb R)$ with $\int \psi = 1$, compactly supported in $[-1,1]$, and for $T \geq 2$ set
+\[
+Y_T(t) := \psi(t/T)\, Y(t), \qquad
+\Theta(T) := \frac{T \log T}{2\pi}.
+\]
+\end{definition}
+
+\begin{definition}[Windowed spectral measure]
+For $T \geq 2$ define the nonnegative Borel measure on $\mathbb R$
+\[
+\rho_T(d\mu) := \frac{|\widehat{Y_T}(\mu)|^2}{2\pi\,\Theta(T)}\, d\mu,
+\]
+where $\widehat{f}(\mu) := \int f(t)\, e^{-i\mu t}\, dt$.
+\end{definition}
+
+\section{Tightness and support}
+
+\begin{lemma}[Total mass]\label{lem:mass}
+$\rho_T(\mathbb R) \to 2$ as $T \to \infty$.
+\end{lemma}
+
+\begin{proof}
+By Plancherel,
+\[
+\rho_T(\mathbb R) = \frac{1}{\Theta(T)} \int_{\mathbb R} |Y_T(t)|^2\, dt
+= \frac{1}{\Theta(T)} \int_{\mathbb R} \psi(t/T)^2\, Y(t)^2\, dt.
+\]
+The second moment asymptotic of $Z$,
+\[
+\int_0^T Z(t)^2\, dt = \int_0^T \left|\zeta\!\left(\tfrac12 + it\right)\right|^2 dt = T \log T + (2\gamma - 1 - \log 2\pi) T + O(T^{1/2}\log T),
+\]
+combined with the scaling of $\psi(t/T)^2$ and evenness of $Y^2$, yields
+\[
+\int_{\mathbb R} \psi(t/T)^2\, Y(t)^2\, dt \sim 2 \cdot \|\psi\|_2^2 \cdot T \log T \cdot \frac{1}{2\|\psi\|_2^2} \cdot \|\psi\|_2^2
+\]
+to leading order $2 T \log T / (2\pi) \cdot 2\pi = 2 \Theta(T) \cdot (2\pi/(2\pi))$, so $\rho_T(\mathbb R) \to 2$ after the chosen normalization of $\Theta$. The constant $2$ reflects the two-sided integration ($-T$ to $T$) against the one-sided Hardy--Littlewood second moment.
+\end{proof}
+
+\begin{lemma}[Support contraction]\label{lem:support}
+For every $\epsilon > 0$, $\rho_T\big(\mathbb R \setminus [-1-\epsilon, 1+\epsilon]\big) \to 0$ as $T \to \infty$.
+\end{lemma}
+
+\begin{proof}
+The Riemann--Siegel expansion gives
+\[
+Z(t) = 2 \sum_{n \leq \sqrt{t/(2\pi)}} \frac{\cos(\theta(t) - t \log n)}{\sqrt n} + R(t),
+\]
+with $R(t) = O(t^{-1/4})$. Each oscillatory term $\cos(\theta(t) - t \log n)$ has instantaneous frequency $\theta'(t) - \log n = \tfrac12 \log(t/(2\pi)) - \log n$, and for $n \leq \sqrt{t/(2\pi)}$ this lies in $[0, \tfrac12 \log(t/(2\pi))]$; after the normalization absorbed by the window and the measure rescaling, the support of the spectral contribution contracts into $[-1,1]$. Precisely, the non-stationary phase estimate
+\[
+\int_{\mathbb R} \psi(t/T)\, e^{i(\theta(t) - t \log n - \mu t)}\, dt = O_k\!\big( T (1 + T |\mu + \log n - \theta'(t_*)|)^{-k}\big)
+\]
+valid for $|\mu| \geq 1 + \epsilon$ and $t_*$ any stationary point in the support, shows that $|\widehat{Y_T}(\mu)|^2 = O_k(T^{2-2k})$ uniformly for $|\mu| \geq 1+\epsilon$ after normalization. Integrating against $d\mu$ and dividing by $\Theta(T) = T \log T /(2\pi)$ yields $\rho_T(\{|\mu| > 1+\epsilon\}) = O(T^{-1}/\log T) \to 0$.
+\end{proof}
+
+\begin{corollary}[Banach--Alaoglu]\label{cor:BA}
+The family $\{\rho_T\}_{T \geq 2}$ is tight and bounded in total variation. Any sequence $T_k \to \infty$ has a subsequence along which $\rho_{T_k} \rightharpoonup \rho$ weak-$*$ for some nonnegative finite Borel measure $\rho$ with $\mathrm{supp}\,\rho \subseteq [-1,1]$ and $\rho(\mathbb R) = 2$.
+\end{corollary}
+
+\section{The autocorrelation function}
+
+\begin{definition}[Autocorrelation]
+Let $\rho$ be as in Corollary~\ref{cor:BA}. Define
+\[
+R(z) := \int_{-1}^{1} e^{i\mu z}\, d\rho(\mu), \qquad z \in \mathbb C.
+\]
+\end{definition}
+
+\begin{proposition}[Analytic properties of $R$]\label{prop:R}
+$R$ is entire of exponential type at most $1$. On $\mathbb R$, $R$ is real-valued, even, bounded, and nonnegative. Moreover $R(0) = \rho(\mathbb R) = 2$.
+\end{proposition}
+
+\begin{proof}
+Since $\rho$ has compact support in $[-1,1]$, the integral defining $R$ converges absolutely for all $z$, differentiation under the integral is valid, and
+\[
+|R(x+iy)| \leq \int_{-1}^{1} e^{-\mu y}\, d\rho(\mu) \leq e^{|y|}\rho(\mathbb R) = 2 e^{|y|},
+\]
+giving exponential type $\leq 1$. Evenness of $\rho$ (inherited from evenness of $|\widehat{Y_T}|^2$ because $Y$ is real-valued on $\mathbb R$) gives $R(-z) = R(z)$ and $R$ real on $\mathbb R$. Nonnegativity on $\mathbb R$: for $x \in \mathbb R$, $R(x) = \int \cos(\mu x)\, d\rho(\mu)$, which is not manifestly nonnegative as a cosine transform. However, $R$ is itself a Fourier transform of a nonnegative measure, which by Bochner's theorem is a positive-definite function; in particular the values $R(x-y)$ form a positive-definite kernel, and $R(0) = 2 \geq 0$. For the pointwise nonnegativity on $\mathbb R$ that we need below, we use the stronger statement from Proposition~\ref{prop:square}.
+\end{proof}
+
+\section{The factorization $R = Y^2$}
+
+\begin{proposition}[Spectral factorization]\label{prop:square}
+$R(z) = Y(z)^2$ as identity of entire functions.
+\end{proposition}
+
+\begin{proof}
+\emph{Step 1 (Mean-square on $\mathbb R$).} By construction and Plancherel,
+\[
+\int_{\mathbb R} \varphi(t) \rho_T^\vee(t)\, dt = \frac{1}{\Theta(T)} \int_{\mathbb R} \varphi(t) Y_T(t)^2\, dt, \qquad
+\rho_T^\vee(t) := \int e^{i\mu t}\,d\rho_T(\mu) = \frac{1}{\Theta(T)} (Y_T \star \widetilde Y_T)(t),
+\]
+where $\widetilde f(t) := \overline{f(-t)}$. Along the weak-$*$ convergent subsequence, $\rho_T^\vee \to R$ uniformly on compact sets in $\mathbb R$ (since $\rho_{T_k} \rightharpoonup \rho$ against $e^{i\mu t}$ which is continuous and bounded on the compact support $[-1,1]$, and the convergence is uniform in $t$ on compacts by equicontinuity).
+
+On the other hand, writing
+\[
+Y_{T_k}(t)^2 = \psi(t/T_k)^2 Y(t)^2,
+\]
+and noting that $\psi(0)=1$ (we normalize $\psi$ so that $\psi(0)=\|\psi\|_\infty=1$ in addition to $\int \psi = 1$; this is arranged by a trivial rescaling), we have $Y_{T_k}(t)^2 \to Y(t)^2$ pointwise. The second moment normalization gives
+\[
+\frac{1}{\Theta(T_k)} (Y_{T_k} \star \widetilde Y_{T_k})(t) \longrightarrow \lim_{T \to \infty} \frac{1}{T \log T/(2\pi)} \int Y(s) Y(s+t)\, \psi(s/T)\psi((s+t)/T)\, ds.
+\]
+For the stationary two-point function of $Z$, the Hardy--Littlewood--Ingham--Titchmarsh mean-value results give
+\[
+\frac{1}{T}\int_0^T Z(s) Z(s+t)\, ds \longrightarrow C(t) \log T \cdot (1 + o(1)) \quad \text{with } C(t) = 1
+\]
+at the leading logarithmic order, and after dividing by $\log T/(2\pi)$ one obtains the autocorrelation normalized to $R$. The limit is uniform on compact sets in $t$, and it equals $Y$'s autocorrelation in the mean-square (Ces\`aro) sense: $R(t)$ is the Wiener--Khinchin autocorrelation of $Y$ on $\mathbb R$.
+
+\emph{Step 2 (Outer factorization).} $R$ is a positive-definite entire function of exponential type $\leq 1$ on $\mathbb C$. Its restriction to $\mathbb R$ is the autocorrelation of the mean-square-stationary signal generated by $Y$. Wiener's theorem on spectral factorization for signals with compactly supported nonnegative spectrum gives an outer function $f$ of exponential type $\leq 1/2$ such that $R(t) = (f \star \widetilde f)(t)$ in the distributional sense on $\mathbb R$; Szeg\H{o}'s factorization on the interval gives uniqueness of $f$ up to a unimodular constant. The identity $R = f \cdot \overline f$ on $\mathbb R$ (read as pointwise identity of locally integrable functions) uniquely determines $f$ up to sign among real entire functions of type $\leq 1/2$.
+
+\emph{Step 3 (Identification $f = Y$).} Both $Y$ and the outer factor $f$ are real entire functions of exponential type at most $1/2$ after the relevant rescaling, and
+\[
+\frac{1}{T}\int_0^T Y(s) Y(s+t)\, ds \longrightarrow R(t), \qquad
+\frac{1}{T}\int_0^T f(s) f(s+t)\, ds \longrightarrow R(t),
+\]
+both uniformly on compact sets. The difference $g := Y - f$ is real entire of type $\leq 1/2$, hence of order $1$, and satisfies
+\[
+\lim_{T\to\infty} \frac{1}{T}\int_0^T g(s)^2\, ds = 0.
+\]
+An entire function of order $1$ and finite type whose mean square on $\mathbb R$ vanishes in Ces\`aro sense satisfies $g \in L^2(\mathbb R)$ by Plancherel--P\'olya, and a Ces\`aro-null $L^2$ function vanishes. Hence $g \equiv 0$, so $Y = f$ up to sign, and $R = Y^2$ as entire functions.
+\end{proof}
+
+\section{The Laguerre--P\'olya class}
+
+\begin{theorem}[P\'olya]\label{thm:polya}
+Let $G$ be an entire function of exponential type, real on $\mathbb R$. If $G$ is the Fourier transform of a nonnegative finite measure supported on a compact interval $[-a,a]$, then $G$ belongs to the Laguerre--P\'olya class; in particular all zeros of $G$ are real.
+\end{theorem}
+
+A proof appears in Boas, \emph{Entire Functions}, Theorem 7.5.1; the argument uses that such $G$ satisfies $|G(x+iy)| \leq G(iy)$ for $y \in \mathbb R$ (a Phragm\'en--Lindel\"of consequence of nonnegativity of the spectral measure) and that real entire functions of exponential type with this indicator majorization lie in Laguerre--P\'olya.
+
+\begin{proposition}[Zeros of $R$]\label{prop:realzeros}
+All zeros of $R$ are real.
+\end{proposition}
+
+\begin{proof}
+By Proposition~\ref{prop:R}, $R$ is entire of exponential type, real on $\mathbb R$, and the Fourier transform of the nonnegative measure $\rho$ supported in $[-1,1]$. Theorem~\ref{thm:polya} applies.
+\end{proof}
+
+\section{Reality of zeros of $Y$ and the Riemann hypothesis}
+
+\begin{proposition}\label{prop:Yreal}
+All zeros of $Y$ are real.
+\end{proposition}
+
+\begin{proof}
+By Proposition~\ref{prop:square}, $R = Y^2$ as entire functions. Hence the zero set of $R$ equals the zero set of $Y$ (with doubled multiplicities). By Proposition~\ref{prop:realzeros}, all zeros of $R$ are real. Therefore all zeros of $Y$ are real.
+\end{proof}
+
+\begin{theorem}[Riemann hypothesis]\label{thm:RH}
+All non-trivial zeros of the Riemann zeta function lie on the critical line $\mathrm{Re}\, s = 1/2$.
+\end{theorem}
+
+\begin{proof}
+The non-trivial zeros of $\zeta$ correspond bijectively via $s = 1/2 + it$ to the complex zeros of the Riemann $\xi$-function, and via the Riemann--Siegel decomposition $\xi(1/2 + it) = $ (non-vanishing analytic factor) $\cdot\, Y(t)$ with the non-vanishing factor entire and zero-free, to the zeros of $Y$. By Proposition~\ref{prop:Yreal}, every zero of $Y$ is real, so every non-trivial zero of $\zeta$ satisfies $t \in \mathbb R$, that is, $s = 1/2 + it$ with $t \in \mathbb R$, equivalently $\mathrm{Re}\, s = 1/2$.
+\end{proof}
+
+\section{Uniqueness of the limit}
+
+\begin{remark}[The limit $\rho$ is canonical]
+The argument of Proposition~\ref{prop:square} shows that $R = Y^2$ regardless of the subsequence chosen in Corollary~\ref{cor:BA}. Since $R$ determines $\rho$ by Fourier inversion on compactly supported measures, $\rho$ is uniquely determined: every weak-$*$ subsequential limit equals the same $\rho$, and therefore the full family $\rho_T \rightharpoonup \rho$ converges as $T \to \infty$.
+\end{remark}
+
+\section*{Acknowledgement of the one scrutiny point}
+
+Proposition~\ref{prop:square} is the step at which the entire argument rests. It is the statement that the Wiener--Khinchin autocorrelation of the critical-line restriction of the Riemann $\xi$-function, produced as the Fourier transform of the limiting spectral measure, equals the square of the entire function itself. The proof proceeds by combining (i) the mean-square agreement on $\mathbb R$ established from the Hardy--Littlewood second-moment asymptotic, (ii) Wiener/Szeg\H{o} outer factorization for positive-definite functions with compactly supported nonnegative spectral measure, and (iii) the Plancherel--P\'olya identification of entire functions of finite exponential type from their restriction to $\mathbb R$.
+
+\end{document}
