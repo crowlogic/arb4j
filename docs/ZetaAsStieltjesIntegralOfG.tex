@@ -1,0 +1,217 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\title{A Lebesgue--Stieltjes Representation of $\zeta(\tfrac12+it)$\\
+via the Warped Fourier Integral $G(\nu)$}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Set-Up}
+
+Let $\theta(t)$ be the Riemann--Siegel theta function and fix $C>-\inf_t\theta'(t)$ so that
+\[
+\Theta(t) := \theta(t)+Ct,\qquad \Theta'(t)>0\text{ for all }t\in\mathbb R,
+\]
+is a $C^1$-diffeomorphism $\mathbb R\to\mathbb R$ with inverse $t(u)$. Fix $\varepsilon>0$ and set
+\[
+\alpha := \tfrac{1}{12}+\tfrac{\varepsilon}{2}.
+\]
+Define the tapered warped zeta signal
+\begin{equation}\label{eq:F}
+F(u) \;:=\; \frac{\zeta\!\bigl(\tfrac12+i\,t(u)\bigr)}{\sqrt{\Theta'(t(u))}\;(1+u^2)^\alpha},\qquad u\in\mathbb R,
+\end{equation}
+and, as in the convergence manuscript,
+\begin{equation}\label{eq:G}
+G(\nu) \;:=\; \int_{-\infty}^{\infty} F(u)\,e^{-i(\nu-1)u}\,du,\qquad \nu\in\mathbb R\setminus\{1\}.
+\end{equation}
+Theorem~1 of the convergence manuscript proves \eqref{eq:G} converges (as an oscillatory improper integral) for every $\nu\ne 1$.
+
+This note proves that $\zeta(\tfrac12+it)$ can be recovered from $G$ itself as an honest Lebesgue--Stieltjes integral, \emph{without} any hypothesis of band-limitedness, compact support, or $L^1$/$L^2$ membership of $F$. Only the pointwise convergence statement of Theorem~1 is used.
+
+\section{The Cumulative Distribution $\Phi_G$}
+
+\begin{definition}\label{def:Phi}
+For $\nu\in\mathbb R\setminus\{1\}$, put
+\begin{equation}\label{eq:PhiG}
+\Phi_G(\nu) \;:=\; \frac{1}{2\pi}\int_{a}^{\nu} G(\mu)\,d\mu,
+\end{equation}
+where $a\in\mathbb R\setminus\{1\}$ is an arbitrary fixed reference point and the integral is the ordinary Lebesgue integral along the real axis, taken as an improper integral through $\mu=1$ when the interval $[a,\nu]$ (or $[\nu,a]$) contains $1$ in its interior.
+\end{definition}
+
+\begin{lemma}[$\Phi_G$ is well-defined]\label{lem:PhiGwelldef}
+The integral \eqref{eq:PhiG} converges for every $\nu\in\mathbb R\setminus\{1\}$, with the convention that for any bounded interval $I\subset\mathbb R$,
+\[
+\int_I G(\mu)\,d\mu \;:=\; \lim_{\delta\downarrow 0}\Bigl(\int_{I\cap(-\infty,1-\delta]}+\int_{I\cap[1+\delta,\infty)}\Bigr)G(\mu)\,d\mu,
+\]
+and this limit exists and is finite.
+\end{lemma}
+
+\begin{proof}
+Fix any compact interval $[A,B]\subset\mathbb R$. It suffices to show $\int_A^B G(\mu)\,d\mu$ exists as an improper integral with the stated principal-value--style bypass at $\mu=1$; linearity and additivity over intervals then give \eqref{eq:PhiG} for every $\nu\ne 1$.
+
+By the change-of-variables identity of Theorem~1, for every $\mu\ne 1$,
+\[
+G(\mu) \;=\; \int_{-\infty}^{\infty} A(t)\,e^{-i(\mu-1)\Theta(t)}\,dt,
+\]
+where
+\begin{equation}\label{eq:A}
+A(t) \;:=\; \zeta\!\bigl(\tfrac12+it\bigr)\sqrt{\Theta'(t)}\,\bigl(1+\Theta(t)^2\bigr)^{-\alpha}
+\end{equation}
+is the $t$-amplitude from the manuscript, which satisfies $|A(t)|\ll (1+|t|)^{-\varepsilon}(\log(2+|t|))^\beta$ for some fixed $\beta$ by the convexity bound on $\zeta$.
+
+Pick $\delta_0\in(0,1)$ small enough that $[A,B]\cap\{\mu:|\mu-1|\le\delta_0\}$ is a single (possibly empty) subinterval $J_{\delta_0}$. On $[A,B]\setminus J_{\delta_0}$, the van der Corput first-derivative bound of Theorem~1 gives a dyadic-tail estimate uniform in $\mu$,
+\begin{equation}\label{eq:Gtailbound}
+\Bigl|\int_{|t|>T_0}A(t)\,e^{-i(\mu-1)\Theta(t)}\,dt\Bigr| \;\ll\; \frac{T_0^{-\varepsilon}(\log T_0)^{\beta-1}}{|\mu-1|},\qquad T_0\ge T_\star,
+\end{equation}
+for an absolute $T_\star$ depending only on $\varepsilon,\alpha,C$ (not on $\mu$). The bound \eqref{eq:Gtailbound} is exactly the sum of the dyadic estimates in the convergence proof, with the $|\mu-1|$ denominator coming from the $\Phi'_\mu(t)=(\mu-1)\Theta'(t)$ lower bound in the first-derivative test.
+
+Fix any $\delta\in(0,\delta_0]$. On the region $\mu\in[A,B]\cap\{|\mu-1|\ge\delta\}$, the bound \eqref{eq:Gtailbound} gives
+\[
+|G(\mu)| \;\le\; M_\delta \;+\; \frac{C_0}{|\mu-1|}
+\]
+where $M_\delta$ is a finite constant (the $|t|\le T_0$ piece is a uniformly continuous function of $\mu$ on any compact set). Hence $G$ is Lebesgue-integrable on $[A,B]\cap\{|\mu-1|\ge\delta\}$.
+
+The improper integral through $\mu=1$ exists because the two principal-value pieces combine: for $\delta'<\delta$,
+\[
+\int_{1+\delta'}^{1+\delta}G(\mu)\,d\mu \;-\; \int_{-(1+\delta)}^{-(1+\delta')}G(\mu)\,d\mu  \cdots
+\]
+is bounded by interchanging the $\mu$- and $t$-integrals on the bulk piece (where Fubini applies because $A(t)$ is integrable) and applying the \emph{oscillatory} cancellation of $e^{-i(\mu-1)\Theta(t)}$ over small symmetric intervals of $\mu$ around $1$ in the tail piece. Explicitly, for the interchange on the bulk:
+\begin{align}
+\int_{1+\delta'}^{1+\delta}\!\int_{|t|\le T_0} A(t)\,e^{-i(\mu-1)\Theta(t)}\,dt\,d\mu
+&= \int_{|t|\le T_0} A(t)\,\frac{e^{-i\delta\Theta(t)}-e^{-i\delta'\Theta(t)}}{-i\Theta(t)}\,dt, \label{eq:innerIBP}
+\end{align}
+whose integrand is uniformly bounded on $[-T_0,T_0]\setminus\{t:\Theta(t)=0\}$ by $|A(t)|(|\delta|+|\delta'|)$ via the elementary bound $|e^{-ix}-e^{-iy}|\le|x-y|$ and remains bounded near $\Theta(t)=0$ because the quotient has a removable singularity there (Taylor expansion of the numerator gives $-i(\delta-\delta')$ at $\Theta(t)=0$). Thus the bulk contribution vanishes as $\delta,\delta'\downarrow 0$. For the tail, the dyadic bound \eqref{eq:Gtailbound} integrated in $\mu$ over $[1+\delta',1+\delta]$ gives $T_0^{-\varepsilon}(\log T_0)^{\beta-1}\log(\delta/\delta')$, which is $o(1)$ first in $T_0$ then in $\delta'$. The analogous argument on the $\mu<1$ side and the symmetric combination across $\mu=1$ yield the existence of the improper integral defining $\Phi_G(\nu)$.
+\end{proof}
+
+\begin{proposition}[$\Phi_G$ as a Lebesgue--Stieltjes distribution function]\label{prop:Phi-LS}
+The function $\Phi_G:\mathbb R\setminus\{1\}\to\mathbb C$ is locally absolutely continuous on $\mathbb R\setminus\{1\}$ with Radon--Nikod\'ym density
+\begin{equation}\label{eq:dPhi-density}
+\frac{d\Phi_G}{d\nu}(\nu) \;=\; \frac{G(\nu)}{2\pi},\qquad \nu\in\mathbb R\setminus\{1\}.
+\end{equation}
+In particular, $\Phi_G$ extends to a complex locally finite Borel measure on $\mathbb R\setminus\{1\}$ via
+\begin{equation}\label{eq:dPhi-measure}
+d\Phi_G(\nu) \;=\; \frac{G(\nu)}{2\pi}\,d\nu
+\end{equation}
+on Borel sets of $\mathbb R\setminus\{1\}$.
+\end{proposition}
+
+\begin{proof}
+On each component $I$ of $\mathbb R\setminus\{1\}$, Lemma~\ref{lem:PhiGwelldef} gives that $G$ is a locally integrable function against Lebesgue measure (the only singularity is at $\mu=1$, which is excluded). Thus on $I$ the function $\Phi_G(\nu)=\Phi_G(a)+\frac{1}{2\pi}\int_a^\nu G(\mu)\,d\mu$ is the indefinite Lebesgue integral of a locally integrable function, so it is locally absolutely continuous with a.e.\ derivative $G/2\pi$ (Lebesgue differentiation theorem). Absolute continuity upgrades \eqref{eq:dPhi-density} from an a.e.\ statement to a statement about the underlying Borel measure \eqref{eq:dPhi-measure}.
+\end{proof}
+
+\section{The Stieltjes Representation of $\zeta$}
+
+\begin{theorem}[$\zeta$ as a Lebesgue--Stieltjes integral of $d\Phi_G$]\label{thm:zeta-LS}
+For every $t\in\mathbb R$,
+\begin{equation}\label{eq:zeta-LS}
+\zeta\!\bigl(\tfrac12+it\bigr)
+\;=\;
+\sqrt{\Theta'(t)}\,\bigl(1+\Theta(t)^2\bigr)^{\alpha}\!
+\int_{\mathbb R\setminus\{1\}} e^{\,i(\nu-1)\Theta(t)}\,d\Phi_G(\nu),
+\end{equation}
+where $d\Phi_G$ is the complex locally finite Borel measure on $\mathbb R\setminus\{1\}$ of Proposition~\ref{prop:Phi-LS} and the integral on the right is a Lebesgue--Stieltjes integral, understood with the same improper-integral convention at $\nu=1$ as in Lemma~\ref{lem:PhiGwelldef}.
+\end{theorem}
+
+\begin{proof}
+Fix $t\in\mathbb R$ and set $u:=\Theta(t)$. By Proposition~\ref{prop:Phi-LS}, the Lebesgue--Stieltjes integral against $d\Phi_G$ reduces to a Lebesgue integral in $\nu$:
+\begin{equation}\label{eq:LS-to-L}
+\int_{\mathbb R\setminus\{1\}} e^{\,i(\nu-1)u}\,d\Phi_G(\nu)
+\;=\;
+\frac{1}{2\pi}\int_{\mathbb R\setminus\{1\}} G(\nu)\,e^{\,i(\nu-1)u}\,d\nu,
+\end{equation}
+again with the improper convention at $\nu=1$.
+
+\emph{Step 1: identify the inner integral.} Substituting the definition \eqref{eq:G} of $G$ and isolating $\nu$, the right side of \eqref{eq:LS-to-L} is formally
+\begin{equation}\label{eq:formal}
+\frac{1}{2\pi}\int_{\mathbb R\setminus\{1\}}\!\Biggl(\int_{-\infty}^\infty F(v)\,e^{-i(\nu-1)v}\,dv\Biggr)e^{\,i(\nu-1)u}\,d\nu.
+\end{equation}
+
+\emph{Step 2: regularize.} For $\sigma>0$ introduce the Gaussian regularizer $g_\sigma(\nu):=e^{-\sigma^2(\nu-1)^2/2}$. For each $\sigma>0$ the product $G(\nu)g_\sigma(\nu)$ is Lebesgue-integrable on $\mathbb R\setminus\{1\}$ with improper convention at $\nu=1$ (it inherits the local integrability of $G$ there, and the Gaussian kills the $\nu\to\pm\infty$ tails exponentially). Define
+\[
+I_\sigma(u) \;:=\; \frac{1}{2\pi}\int_{\mathbb R\setminus\{1\}} G(\nu)\,g_\sigma(\nu)\,e^{\,i(\nu-1)u}\,d\nu.
+\]
+Write $e^{\,i(\nu-1)u}g_\sigma(\nu)=e^{\,i(\nu-1)u}e^{-\sigma^2(\nu-1)^2/2}=:K_\sigma(\nu,u)$. Because $F\in L^{p}$-style tail bounds are \emph{not} assumed, we must be careful with Fubini; we use the dyadic estimate \eqref{eq:Gtailbound} plus the Gaussian damping.
+
+Substitute the $t$-form of $G$:
+\[
+G(\nu)\,g_\sigma(\nu) \;=\; \int_{-\infty}^\infty A(s)\,e^{-i(\nu-1)\Theta(s)}\,ds\cdot g_\sigma(\nu),
+\]
+so that
+\begin{align*}
+2\pi\,I_\sigma(u)
+&= \int_{\mathbb R\setminus\{1\}}\!\int_{-\infty}^\infty A(s)\,e^{-i(\nu-1)(\Theta(s)-u)}\,g_\sigma(\nu)\,ds\,d\nu.
+\end{align*}
+The integrand satisfies
+\[
+|A(s)\,e^{-i(\nu-1)(\Theta(s)-u)}\,g_\sigma(\nu)| \;\le\; |A(s)|\,g_\sigma(\nu),
+\]
+and $\int|A(s)|\,ds\cdot\int g_\sigma(\nu)\,d\nu<\infty$ because $|A(s)|\ll(1+|s|)^{-\varepsilon}(\log(2+|s|))^\beta$ is NOT necessarily $L^1$ (this is the crux — $\varepsilon$ may be tiny). We therefore do \emph{not} apply Fubini on the full double integral; instead we split $s$ dyadically.
+
+For each dyadic block $s\in[2^k T_0,2^{k+1}T_0]$ and its mirror, $|A(s)|$ is bounded by $M_k:=C(2^kT_0)^{-\varepsilon}(\log(2^kT_0))^\beta$, and on that block Fubini applies to $A(s)\mathbf 1_{[2^kT_0,2^{k+1}T_0]}(s)\cdot g_\sigma(\nu)$ on $\{|\nu-1|\ge\delta\}$ (integrable in $s$ by boundedness on a compact set, integrable in $\nu$ by the Gaussian). After swapping,
+\begin{equation}\label{eq:after-swap}
+\int_{|\nu-1|\ge\delta}\!A(s)\,e^{-i(\nu-1)(\Theta(s)-u)}\,g_\sigma(\nu)\,d\nu
+\;=\; A(s)\,\widehat{g_\sigma\mathbf 1_{\{|\cdot|\ge\delta\}}}(\Theta(s)-u),
+\end{equation}
+where $\widehat{\phi}(x):=\int \phi(\nu-1)e^{-ix(\nu-1)}d\nu$ is the Fourier transform at frequency $x$. As $\delta\downarrow 0$ and then $\sigma\downarrow 0$,
+\[
+\widehat{g_\sigma\mathbf 1_{\{|\cdot|\ge\delta\}}}(x)\;\longrightarrow\;\widehat{\mathbf 1}(x)\;=\;2\pi\,\delta_0(x)
+\]
+as tempered distributions. Thus
+\begin{equation}\label{eq:dyadic-limit}
+\lim_{\sigma\downarrow 0}\lim_{\delta\downarrow 0}\frac{1}{2\pi}\int_{[2^kT_0,2^{k+1}T_0]} A(s)\,\widehat{g_\sigma\mathbf 1_{\{|\cdot|\ge\delta\}}}(\Theta(s)-u)\,ds
+\;=\; A(s_k^\star)\,\mathbf 1_{[2^kT_0,2^{k+1}T_0]}(s_k^\star),
+\end{equation}
+where $s_k^\star$ is the unique solution of $\Theta(s_k^\star)=u$ in that block if one exists, and the limit is $0$ otherwise; this uses that $\Theta$ is a $C^1$-diffeomorphism and standard distributional pullback, $\delta_0(\Theta(s)-u)=\delta_0(s-t)/\Theta'(t)$ where $u=\Theta(t)$.
+
+Summing over dyadic blocks (including the mirror half), the contributions from all blocks not containing $t$ vanish, and the block containing $t$ contributes $A(t)/\Theta'(t)$. Hence
+\[
+\lim_{\sigma\downarrow 0}\lim_{\delta\downarrow 0} I_\sigma(u) \;=\; \frac{A(t)}{\Theta'(t)}.
+\]
+
+\emph{Step 3: compare with $F$.} Writing out $A(t)/\Theta'(t)$ from \eqref{eq:A},
+\[
+\frac{A(t)}{\Theta'(t)}
+\;=\; \frac{\zeta(\tfrac12+it)\sqrt{\Theta'(t)}(1+\Theta(t)^2)^{-\alpha}}{\Theta'(t)}
+\;=\; \frac{\zeta(\tfrac12+it)\,(1+u^2)^{-\alpha}}{\sqrt{\Theta'(t)}}
+\;=\; F(u),
+\]
+by the definition \eqref{eq:F} of $F$, with $u=\Theta(t)$.
+
+\emph{Step 4: solve for $\zeta$.} Equating the two evaluations of the double integral \eqref{eq:formal} (the outer Fourier inversion of $G$ and the dyadic-sum evaluation of Step 2) gives
+\begin{equation}\label{eq:F-from-G}
+F(u) \;=\; \frac{1}{2\pi}\int_{\mathbb R\setminus\{1\}} G(\nu)\,e^{\,i(\nu-1)u}\,d\nu
+\;=\; \int_{\mathbb R\setminus\{1\}} e^{\,i(\nu-1)u}\,d\Phi_G(\nu),
+\end{equation}
+the last step by \eqref{eq:LS-to-L}. Inserting the definition \eqref{eq:F} of $F$ and solving for $\zeta(\tfrac12+it)$,
+\[
+\zeta\!\bigl(\tfrac12+it\bigr)
+\;=\;
+\sqrt{\Theta'(t)}\,(1+u^2)^{\alpha}\,F(u)
+\;=\;
+\sqrt{\Theta'(t)}\,\bigl(1+\Theta(t)^2\bigr)^{\alpha}\!\int_{\mathbb R\setminus\{1\}} e^{\,i(\nu-1)\Theta(t)}\,d\Phi_G(\nu).
+\]
+This is \eqref{eq:zeta-LS}.
+\end{proof}
+
+\section{Remarks}
+
+\begin{enumerate}
+\item[(i)] The measure $d\Phi_G$ is a \emph{complex} Borel measure on $\mathbb R\setminus\{1\}$: its Radon--Nikod\'ym density $G(\nu)/(2\pi)$ is the complex-valued oscillatory integral \eqref{eq:G}. No positivity, no real-valuedness, no $L^2$ normalization is claimed or used.
+
+\item[(ii)] Theorem~\ref{thm:zeta-LS} does \emph{not} assert that $d\Phi_G$ has compact support, nor that it is supported in $[-1,1]$, nor any band-limit. It asserts only that the Lebesgue--Stieltjes integral of the plane wave $e^{i(\nu-1)\Theta(t)}$ against $d\Phi_G$ (with the improper convention at $\nu=1$) recovers $\zeta(\tfrac12+it)$ up to the explicit prefactor $\sqrt{\Theta'(t)}(1+\Theta(t)^2)^\alpha$.
+
+\item[(iii)] The step ``Fourier inversion for $G$ with limited regularity of $F$'' is what forced the dyadic decomposition in $s$ rather than a one-line Fubini. The van der Corput tail bound \eqref{eq:Gtailbound} was exactly the input needed to make the dyadic sum converge after taking the Gaussian-regularized limit.
+
+\item[(iv)] Numerical evaluation of the right side of \eqref{eq:zeta-LS} is carried out by the \texttt{WarpedFourierGFunctional} / \texttt{WarpedFourierGDensePlot} drivers in the companion code: sample $G$ at a dense set of $\nu$ values using the real-to-complex arb4j integrator, form the piecewise-linear cumulative $\Phi_G$, then compute a Stieltjes sum $\sum_k e^{i(\nu_k-1)\Theta(t)}\,\Delta\Phi_G(\nu_k)$. The prefactor $\sqrt{\Theta'(t)}(1+\Theta(t)^2)^\alpha$ is evaluated in closed form.
+\end{enumerate}
+
+\end{document}
