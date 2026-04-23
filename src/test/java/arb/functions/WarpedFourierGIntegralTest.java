@@ -107,12 +107,12 @@ public class WarpedFourierGIntegralTest extends
   /**
    * Sweep ν across a window centered at the divergence point ν = 1 and print
    * G_T(ν) = 2·Re K_T(ν) at a fixed truncation T. The integrand is only
-   * conditionally convergent at the endpoints; we do not assert decay, only
-   * that every computed value is a finite real number.
-   *
-   * This is the numerical probe of the band-limited support statement
-   * supp G ⊆ [1-τ, 1+τ] of Theorem 3: for |ν-1| > τ the truncation should
-   * tend to 0 as T → ∞.
+   * conditionally convergent at the endpoints; we do not assert any
+   * particular behavior of the result, only that every computed value is a
+   * finite real number. Theorem 3 of the manuscript gives a conditional
+   * vanishing statement for |ν-1| large under extra analytic hypotheses on
+   * F(u) — those hypotheses are not verified here and nothing in this test
+   * asserts such vanishing.
    */
   public void testSweepFrequencyAroundOne()
   {
