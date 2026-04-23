@@ -191,11 +191,29 @@ Consequently, any weak-$*$ subsequential limit $\rho$ is a nonnegative even Bore
 \end{corollary}
 
 \begin{proof}
-Total mass by Corollary~\ref{cor:mass}. Off-band: by Theorem~\ref{thm:bandlimit}, for $|\mu| \geq 1+\epsilon$ in any bounded window $[-M, M]$,
+Total mass $\rho_T(\R) \to 2$ by Corollary~\ref{cor:mass}. Evenness of $\rho_T$ from $|\widehat{Y_T}(-\mu)| = |\widehat{Y_T}(\mu)|$ (reality of $Y$).
+
+\emph{Middle off-band window.} Fix $\epsilon > 0$ and $M > 1+\epsilon$. By Theorem~\ref{thm:bandlimit} with constants uniform on $[1+\epsilon, M]$,
 \[
-\rho_T\big([-M,-1-\epsilon] \cup [1+\epsilon, M]\big) = \int_{|\mu| \in [1+\epsilon, M]} \frac{|\widehat{Y_T}|^2}{2\pi\Theta(T)}\,d\mu = O_\epsilon\!\left(\frac{M}{T^{1/2}}\right) \to 0.
+\rho_T\big(\{1+\epsilon \leq |\mu| \leq M\}\big) \leq \int_{1+\epsilon \leq |\mu| \leq M} O_\epsilon(T^{-1/2})\, d\mu = O_\epsilon\!\left(\frac{M}{T^{1/2}}\right).
 \]
-For the tail $|\mu| > M$, use that total mass is bounded by $2 + o(1)$ and the in-band mass converges to $2$, so the tail mass vanishes as $T, M \to \infty$. Banach--Alaoglu gives the weak-$*$ limit; support and mass pass to the limit. Evenness from reality of $Y$: $\overline{\widehat{Y_T}(\mu)} = \widehat{Y_T}(-\mu)$, so $|\widehat{Y_T}(-\mu)| = |\widehat{Y_T}(\mu)|$.
+
+\emph{Tail $|\mu| > M$ via iterated integration by parts in $u$.} Since $Z$ is entire and $\Theta$ is a $C^\infty$ diffeomorphism with $\Theta' \geq c - c_\star > 0$, the function $Y$ is $C^\infty$ on $\R$. Integration by parts $k$ times in $u$ on the integral defining $\widehat{Y_T}(\mu) = \int_0^{\Theta(T)} Y(u) e^{-i\mu u}\,du$ gives
+\[
+|\widehat{Y_T}(\mu)| \leq \frac{C_k(T)}{|\mu|^k}, \qquad C_k(T) := \sum_{j=0}^{k-1}\big(|Y^{(j)}(0)| + |Y^{(j)}(\Theta(T))|\big) + \int_0^{\Theta(T)} |Y^{(k)}(u)|\, du.
+\]
+Each $Y^{(j)}$ is bounded on $[0, \Theta(T)]$ by a polynomial in $T$: the convexity bound $|Z(t)| = O(t^{1/4+\delta})$ and its derivative analogues give $|Y^{(j)}(u)| = O(T^{1/4+\delta})$ for $u \leq \Theta(T)$, hence $C_k(T) = O(T^{5/4 + \delta})$ for every fixed $k \geq 1$.
+
+Therefore, with $k \geq 2$ fixed,
+\[
+\int_{|\mu| > M} |\widehat{Y_T}(\mu)|^2\, d\mu \leq \frac{2\, C_k(T)^2}{(2k-1)\, M^{2k-1}}, \qquad \rho_T\big(\{|\mu| > M\}\big) \leq \frac{C_k(T)^2}{\pi\,(2k-1)\,\Theta(T)\, M^{2k-1}}.
+\]
+
+\emph{Cutoff choice.} Set $M = M(T) := T^{1/4}$. Middle off-band: $O_\epsilon(T^{1/4}/T^{1/2}) = O_\epsilon(T^{-1/4}) \to 0$. Tail, with $k = 10$ (say): $C_{10}(T)^2 = O(T^{5/2 + 2\delta})$, $M^{2k-1} = T^{19/4}$, $\Theta(T)\,M^{2k-1} \asymp T \log T \cdot T^{19/4} = T^{23/4}\log T$, giving $\rho_T(\{|\mu| > T^{1/4}\}) = O(T^{5/2 + 2\delta}/T^{23/4}\log T) = O(T^{-13/4 + 2\delta}/\log T) \to 0$.
+
+Hence $\rho_T(\{|\mu| > 1 + \epsilon\}) \to 0$ for every $\epsilon > 0$.
+
+\emph{Weak-$*$ limit.} Banach--Alaoglu extracts a weak-$*$ convergent subsequence $\rho_{T_k} \rightharpoonup \rho$. For $\varphi \in C_c(\R \setminus [-1,1])$ supported in $\{|\mu| > 1 + \epsilon\}$ for some $\epsilon > 0$, $\int\varphi\, d\rho = \lim \int\varphi\, d\rho_{T_k} = 0$ (since total off-band mass $\to 0$ dominates any bounded continuous test function supported there). Hence $\mathrm{supp}\,\rho \subseteq [-1,1]$. Total mass in the limit: $\rho([-1,1]) = \lim\rho_{T_k}([-1,1]) = \lim(\rho_{T_k}(\R) - \rho_{T_k}(\{|\mu|>1\})) = 2 - 0 = 2$. Evenness passes from $\rho_T$ to $\rho$.
 \end{proof}
 
 \begin{thebibliography}{9}
