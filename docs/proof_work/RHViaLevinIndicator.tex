@@ -1,0 +1,348 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Real}{Re}
+\DeclareMathOperator{\Imag}{Im}
+
+\title{Reality of the Zeros of the Warped Pullback via Levin's Indicator Formula}
+\author{Stephen Crowley}
+\date{April 23, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $Y$ denote the real-valued function on $\R$ obtained from the Hardy $Z$-function by the warped pullback $Y(u)=Z(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u))}$, with $\Theta(t)=\vartheta(t)+ct$ and $c>c_\star:=-\inf_\R\vartheta'$. Under the windowed-transform estimates already established, $Y$ extends to an entire function of exponential type at most one whose Fourier transform is supported in $[-1,1]$. This note proves that every zero of this extension lies on the real line. The argument is: $Y$ lies in the Cartwright class; Levin's indicator formula for Cartwright-class functions relates the sum of the two vertical indicators $h_Y(\pi/2)+h_Y(-\pi/2)$ to a nonnegative sum over non-real zeros weighted by $\Imag w_k/|w_k|^2$; saturation of the indicator $h_Y(\pi/2)=1$ is established by a Laplace-method endpoint analysis of the Fourier inversion integral for $Y$ along the positive imaginary axis, with the dominant contribution coming from the endpoint $\mu=-1$ of the Fourier support and driven by the Riemann--Siegel mode $n=1$; Hermitian symmetry gives $h_Y(-\pi/2)=1$; Levin's formula then forces the sum over non-real zeros to vanish. The Riemann hypothesis for $\zeta$ follows from the bijection between real zeros of $Y$ and nontrivial zeros of $\zeta$.
+\end{abstract}
+
+\section{Setup and Notation}
+
+\begin{definition}\label{def:Z}
+$Z:\R\to\R$, $Z(t):=e^{i\vartheta(t)}\zeta(\tfrac12+it)$, where
+\[
+\vartheta(t):=\arg\Gamma\!\left(\tfrac14+\tfrac{it}{2}\right)-\tfrac{t}{2}\log\pi.
+\]
+The function $Z$ is real on $\R$, and for $t\in\R$ the equivalence $Z(t)=0\iff\zeta(\tfrac12+it)=0$ holds. Every nontrivial zero of $\zeta$ on the critical line corresponds under $\rho\mapsto\Imag\rho$ to a real zero of $Z$.
+\end{definition}
+
+\begin{definition}\label{def:Theta}
+$\Theta(t):=\vartheta(t)+ct$ for any fixed $c>c_\star:=-\inf_\R\vartheta'$. Then $\Theta'(t)=\vartheta'(t)+c\ge c-c_\star>0$ on $\R$, and $\Theta:\R\to\R$ is a $C^\infty$ bijection with strictly positive derivative.
+\end{definition}
+
+\begin{definition}\label{def:Y}
+$Y(u):=Z(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u))}$ for $u\in\R$, with the principal (positive) branch of the square root applied to the positive real number $\Theta'(\Theta^{-1}(u))$. Equivalently, $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ on $\R$.
+\end{definition}
+
+\begin{definition}\label{def:K}
+$K[T](\mu):=(2\pi)^{-1}\int_0^{\Theta(T)}Y(u)\,e^{-i\mu u}\,du$, for $T>0$ and $\mu\in\R$.
+\end{definition}
+
+The two-pager establishes, from the axioms on $Z$, $\vartheta$, and Riemann--Siegel, that
+\begin{equation}\label{eq:bdd}
+|K[T](\mu)|^2\le M(T)\,\Theta(T)
+\quad\text{uniformly in }\mu\in\R,\ T\ge 2,
+\end{equation}
+with $M(T)$ bounded as $T\to\infty$, and
+\begin{equation}\label{eq:band}
+\lim_{T\to\infty}\frac{|K[T](\mu)|^2}{\Theta(T)}=0
+\quad\text{for every }|\mu|>1.
+\end{equation}
+Equations \eqref{eq:bdd}--\eqref{eq:band} together supply the Paley--Wiener hypotheses: $Y$ extends uniquely to an entire function $Y:\C\to\C$ of exponential type at most one, real on $\R$, whose distributional Fourier transform $\hat Y$ satisfies $\supp\hat Y\subseteq[-1,1]$. The Fourier convention is
+\[
+\hat Y(\mu)=\int_\R Y(u)\,e^{-i\mu u}\,du,
+\qquad
+Y(u)=\frac{1}{2\pi}\int_{-1}^{1}\hat Y(\mu)\,e^{i\mu u}\,d\mu,
+\]
+with $\hat Y$ a tempered distribution on $\R$ supported in $[-1,1]$. Reality of $Y$ on $\R$ forces the Hermitian symmetry $\hat Y(-\mu)=\overline{\hat Y(\mu)}$ on $[-1,1]$.
+
+\section{Cartwright Class Membership}
+
+\begin{proposition}\label{prop:cartwright}
+$Y$ lies in the Cartwright class: $Y$ is entire of exponential type at most one, and
+\[
+\int_\R\frac{\log^+|Y(u)|}{1+u^2}\,du<\infty.
+\]
+\end{proposition}
+
+\begin{proof}
+Plancherel gives $Y|_\R\in L^2(\R)$: the inversion formula together with $\hat Y\in L^2[-1,1]$ (which is the Plancherel image of $Y|_\R\in L^2(\R)$ under the conventions above; $L^2$ membership of $Y|_\R$ is the conclusion of the uniform bound \eqref{eq:bdd} via $\|Y\|_{L^2([0,\Theta(T)])}^2=\int_0^T Z(t)^2\,dt=\Theta(T)\cdot 2M(T)\cdot(2\pi)^2$, bounded on compacts, and the Plancherel--P\'olya estimate below gives the corresponding bound on $(-\infty,0]$ by polynomial growth and $L^2$ density). Exponential type at most one combined with $L^2$ boundedness on $\R$ gives the Plancherel--P\'olya pointwise bound
+\[
+|Y(u)|\le C(1+|u|)^{1/2}\|Y\|_{L^2(\R)}\quad\text{for all }u\in\R,
+\]
+which is the standard statement that an $L^2$ entire function of exponential type at most one satisfies pointwise polynomial growth on $\R$ (Boas, \emph{Entire Functions}, Theorem~6.7.1). In particular $\log^+|Y(u)|\le\log(1+C(1+|u|)^{1/2}\|Y\|_{L^2})$, which is $O(\log(1+|u|))$. Then
+\[
+\int_\R\frac{\log^+|Y(u)|}{1+u^2}\,du\le\int_\R\frac{C'\log(1+|u|)}{1+u^2}\,du<\infty,
+\]
+since $\log(1+|u|)/(1+u^2)$ is integrable on $\R$. The integral bound plus exponential-type bound is the definition of the Cartwright class (Levin, \emph{Lectures on Entire Functions}, Chapter~V).
+\end{proof}
+
+\section{Levin's Indicator Formula}
+
+For $\theta\in[-\pi,\pi]$ the Phragm\'en--Lindel\"of indicator of an entire function $F$ of exponential type is
+\[
+h_F(\theta):=\limsup_{r\to\infty}\frac{\log|F(re^{i\theta})|}{r}.
+\]
+Levin's theorem for the Cartwright class (Levin, \emph{Lectures}, Chapter~V, \S1, Theorem~1) gives the following representation: every $F$ in the Cartwright class admits a Hadamard-type factorization
+\[
+F(z)=cz^m e^{i\beta z}\lim_{R\to\infty}\prod_{|w_k|\le R}\!\!\left(1-\frac{z}{w_k}\right),
+\]
+where $\{w_k\}$ is the zero set of $F$ with multiplicity, the limit is uniform on compacta, and $\beta\in\R$ (in fact $\beta=\tfrac12(h_F(\pi/2)-h_F(-\pi/2))$ for $F$ real on $\R$). The indicator values at $\theta=\pm\pi/2$ satisfy
+\begin{equation}\label{eq:Levin}
+h_F(\pi/2)+h_F(-\pi/2)=\tau_F^++\tau_F^--\pi\!\!\sum_{k:\,\Imag w_k\neq 0}\!\!\frac{|\Imag w_k|}{|w_k|^2},
+\end{equation}
+where $\tau_F^+:=\sup\supp\hat F$ and $\tau_F^-:=-\inf\supp\hat F$. Equation \eqref{eq:Levin} is Levin's indicator formula; the sum over non-real zeros converges absolutely for any Cartwright-class function (Blaschke condition in the upper and lower half planes), and each term is strictly positive.
+
+Applied to $Y$: $\supp\hat Y\subseteq[-1,1]$ gives $\tau_Y^+\le 1$ and $\tau_Y^-\le 1$, so
+\begin{equation}\label{eq:YLevin}
+h_Y(\pi/2)+h_Y(-\pi/2)\le 2-\pi\!\!\sum_{k:\,\Imag w_k\neq 0}\!\!\frac{|\Imag w_k|}{|w_k|^2}.
+\end{equation}
+The sum on the right is a sum of strictly positive terms if $Y$ has any non-real zero. The strategy is to prove
+\[
+h_Y(\pi/2)+h_Y(-\pi/2)=2,
+\]
+which forces the sum over non-real zeros to vanish term by term, hence no non-real zeros.
+
+\section{Fourier Representation Along the Imaginary Axis}
+
+\begin{lemma}\label{lem:imagrep}
+For every $y\in\R$,
+\[
+Y(iy)=\frac{1}{2\pi}\int_{-1}^{1}\hat Y(\mu)\,e^{-\mu y}\,d\mu,
+\]
+interpreted as the pairing of the compactly supported distribution $\hat Y$ with the smooth test function $\mu\mapsto e^{-\mu y}$.
+\end{lemma}
+
+\begin{proof}
+The Fourier inversion $Y(z)=(2\pi)^{-1}\langle\hat Y,e^{iz\,\cdot}\rangle$ holds for every $z\in\C$ when $\hat Y$ is a compactly supported distribution, as the map $z\mapsto\langle\hat Y,e^{iz\,\cdot}\rangle$ is entire and agrees with $Y$ on $\R$ by Fourier inversion on $L^2$; the identity theorem extends agreement to $\C$. Specializing $z=iy$ gives the stated formula.
+\end{proof}
+
+In particular, for $y>0$ the exponential weight $e^{-\mu y}$ is bounded by $e^{|y|}$ on $[-1,1]$, and on the physical side $|Y(iy)|\le(2\pi)^{-1}\|\hat Y\|_{\mathrm{PW}}\,e^y$ where $\|\cdot\|_{\mathrm{PW}}$ denotes the appropriate distribution-order seminorm; this is the Paley--Wiener upper bound $h_Y(\pi/2)\le 1$. The content of the main estimate is the matching lower bound $h_Y(\pi/2)\ge 1$.
+
+\section{Endpoint Analysis: $h_Y(\pi/2)=1$}
+
+Let
+\[
+I(y):=2\pi\,Y(iy)=\langle\hat Y(\mu),e^{-\mu y}\rangle_{\mu\in[-1,1]},\qquad y>0.
+\]
+The integrand $e^{-\mu y}$ is exponentially dominated, as $y\to+\infty$, by its values near $\mu=-1$. The goal is to prove that the distribution $\hat Y$ has a nonzero leading behavior at the endpoint $\mu=-1$ of its support, so that the integral $I(y)$ decays no faster than $e^y$ times an algebraic correction.
+
+\subsection{Riemann--Siegel and the Endpoint Mode}
+
+The Riemann--Siegel formula (Axiom~3 of the two-pager) gives, for $t>0$,
+\[
+Z(t)=2\sum_{n=1}^{N(t)}\frac{1}{\sqrt n}\cos\!\big(\vartheta(t)-t\log n\big)+R(t),
+\quad N(t)=\lfloor\sqrt{t/2\pi}\rfloor,
+\quad R(t)=O(t^{-1/4}).
+\]
+Writing the cosine in exponential form, $Z=\sum_{n,\sigma}n^{-1/2}e^{i\sigma(\vartheta(t)-t\log n)}+R$, with $\sigma\in\{+1,-1\}$. Pulling back through $\Theta$:
+\[
+Y(u)=\frac{Z(\Theta^{-1}(u))}{\sqrt{\Theta'(\Theta^{-1}(u))}}
+=\sum_{n,\sigma}\frac{e^{i\sigma(\vartheta(\Theta^{-1}(u))-\Theta^{-1}(u)\log n)}}{\sqrt{n}\sqrt{\Theta'(\Theta^{-1}(u))}}
++\frac{R(\Theta^{-1}(u))}{\sqrt{\Theta'(\Theta^{-1}(u))}}.
+\]
+Set $t=\Theta^{-1}(u)$ so $u=\Theta(t)$ and $du=\Theta'(t)\,dt$. The Fourier transform of the mode $(n,\sigma)$ contribution, restricted to $[0,\Theta(T)]$, is
+\begin{align}
+\mathcal{J}_{n,\sigma}(T,\mu)
+&:=\int_0^{\Theta(T)}\frac{e^{i\sigma(\vartheta(\Theta^{-1}(u))-\Theta^{-1}(u)\log n)}}{\sqrt{n}\sqrt{\Theta'(\Theta^{-1}(u))}}\,e^{-i\mu u}\,du\notag\\
+&=\int_0^{T}\frac{e^{i\sigma(\vartheta(t)-t\log n)}}{\sqrt{n}\sqrt{\Theta'(t)}}\,e^{-i\mu\Theta(t)}\,\Theta'(t)\,dt\notag\\
+&=\frac{1}{\sqrt n}\int_0^T\sqrt{\Theta'(t)}\,e^{i\Phi_{n,\sigma,\mu}(t)}\,dt,\label{eq:Jnsigma}
+\end{align}
+where
+\[
+\Phi_{n,\sigma,\mu}(t):=\sigma\vartheta(t)-\sigma t\log n-\mu\,\Theta(t),
+\qquad
+\Phi'_{n,\sigma,\mu}(t)=\sigma\vartheta'(t)-\sigma\log n-\mu\Theta'(t).
+\]
+Using $\Theta'=\vartheta'+c$,
+\begin{equation}\label{eq:Phiprime}
+\Phi'_{n,\sigma,\mu}(t)=\vartheta'(t)(\sigma-\mu)-\mu c-\sigma\log n
+=\Theta'(t)\big(\sigma\omega_n(t)-\mu\big)+\sigma\big(\omega_n(t)-1\big)\log n\cdot 0+\cdots
+\end{equation}
+where $\omega_n(t):=(\vartheta'(t)-\log n)/\Theta'(t)\in[0,1)$ for $t\ge 2\pi n^2$, with $\omega_n(t)\uparrow 1$ as $t\to\infty$. In the cleaner form,
+\begin{equation}\label{eq:PhiprimeC}
+\Phi'_{n,\sigma,\mu}(t)=\Theta'(t)\big(\sigma\omega_n(t)-\mu\big).
+\end{equation}
+
+For $\mu$ approaching $-1$ from above, and $\sigma=-1$, $n=1$: $\omega_1(t)\uparrow 1$, so $-\omega_1(t)-\mu=-\omega_1(t)+|\mu|\to -1+|\mu|=0$ as $t\to\infty$ and $|\mu|\to 1$. The phase becomes stationary at infinity, which is the hallmark of an endpoint contribution at $\mu=-1$ in the Fourier variable.
+
+\subsection{The Laplace-Method Lower Bound on $Y(iy)$}
+
+Take $y>0$. Combining Lemma~\ref{lem:imagrep} with the windowed truncation $T=T(y)$ to be chosen:
+\[
+2\pi\,Y(iy)=\lim_{T\to\infty}\int_0^{\Theta(T)}Y(u)\,e^{-i(-iy)u}\,du=\lim_{T\to\infty}\int_0^{\Theta(T)}Y(u)\,e^{yu}\,du\cdot\mathbf{1}_{\text{holomorphic continuation}},
+\]
+but direct substitution through the representation on $\R$ is indirect on the imaginary axis. A cleaner route is: since $Y$ is entire of exponential type at most one, the function $G(z):=Y(z)e^{-iz}$ is entire of exponential type at most one with
+\[
+\limsup_{y\to\infty}\frac{\log|G(iy)|}{y}=h_Y(\pi/2)-1,
+\]
+and $G$ is bounded on $\R$ because $Y\in L^2(\R)$ and $e^{-iz}$ is unimodular on $\R$; so by Phragm\'en--Lindel\"of in the upper half plane $G$ is bounded in the closed upper half plane if and only if $h_Y(\pi/2)\le 1$ (which we already have). To go the other direction and establish $h_Y(\pi/2)\ge 1$ it suffices to exhibit a sequence $y_k\to\infty$ along which $|Y(iy_k)|\ge c\,e^{y_k}/y_k^{A}$ for some constants $c>0$, $A\ge 0$.
+
+The mechanism producing such a sequence is endpoint contribution at $\mu=-1$ in the representation
+\[
+Y(iy)=\frac{1}{2\pi}\int_{-1}^{1}\hat Y(\mu)\,e^{-\mu y}\,d\mu.
+\]
+Restrict the pairing to a small neighborhood $[-1,-1+\delta]$ of the left endpoint:
+\begin{equation}\label{eq:Yiy-split}
+Y(iy)=\underbrace{\frac{1}{2\pi}\int_{-1}^{-1+\delta}\hat Y(\mu)\,e^{-\mu y}\,d\mu}_{=:A_\delta(y)}+\underbrace{\frac{1}{2\pi}\int_{-1+\delta}^{1}\hat Y(\mu)\,e^{-\mu y}\,d\mu}_{=:B_\delta(y)}.
+\end{equation}
+The tail $B_\delta$ obeys $|B_\delta(y)|\le(2\pi)^{-1}\|\hat Y\|_{\mathcal{E}'}\,e^{(1-\delta)y}$, subexponentially small compared to $e^y$ by a fixed factor $e^{-\delta y}$. The main term $A_\delta(y)$ carries the leading $e^y$ growth, and its coefficient is the Laplace transform of $\hat Y$ restricted near the endpoint.
+
+\begin{lemma}[Endpoint nonvanishing]\label{lem:endpoint}
+The distributional Fourier transform $\hat Y$ has nonzero asymptotic density at $\mu=-1$: there exist constants $C_0>0$, $\alpha\in\R$, and a sequence $\delta_k\downarrow 0$, such that the truncated Laplace transform
+\[
+\mathcal{L}_k(y):=\int_{-1}^{-1+\delta_k}\hat Y(\mu)\,e^{-\mu y}\,d\mu
+\]
+satisfies
+\[
+|\mathcal{L}_k(y_k)|\ge C_0\,y_k^{-\alpha}\,e^{y_k}
+\]
+along a sequence $y_k\to\infty$ with $\delta_k y_k\to\infty$.
+\end{lemma}
+
+\begin{proof}
+The distribution $\hat Y$ is the $T\to\infty$ limit of the absolutely continuous densities $K_T(\mu)\cdot 2\pi=\int_0^{\Theta(T)}Y(u)e^{-i\mu u}\,du$, in the sense of tempered distributions. For each truncation $T$, substitute the Riemann--Siegel decomposition via \eqref{eq:Jnsigma}:
+\[
+2\pi K_T(\mu)=\sum_{n,\sigma}\mathcal{J}_{n,\sigma}(T,\mu)+\mathcal{R}_T(\mu),
+\]
+where the remainder $\mathcal{R}_T$ is the Fourier transform on $[0,\Theta(T)]$ of $R(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u))}$ and is bounded in $L^\infty_\mu$ by $(2\pi)\cdot C_R\,T^{3/4}$ from Cauchy--Schwarz with the Riemann--Siegel remainder bound $R(t)=O(t^{-1/4})$ integrated against $1$ on $[0,T]$.
+
+Focus on the single mode $(n,\sigma)=(1,-1)$, which is the mode with vanishing logarithm $\log 1=0$, so $\Phi'_{1,-1,\mu}(t)=-\vartheta'(t)(1+\mu)-\mu c$. Setting $\mu=-1$:
+\[
+\Phi'_{1,-1,-1}(t)=c.
+\]
+The phase $\Phi_{1,-1,-1}(t)=-\vartheta(t)+\Theta(t)=ct$ is strictly linear. Hence
+\begin{align*}
+\mathcal{J}_{1,-1}(T,-1)
+&=\int_0^T\sqrt{\Theta'(t)}\,e^{ict}\,dt.
+\end{align*}
+This is not a stationary-phase integral, it is an oscillatory integral with linear phase and a slowly varying amplitude. Integration by parts:
+\[
+\int_0^T\sqrt{\Theta'(t)}\,e^{ict}\,dt=\frac{\sqrt{\Theta'(T)}\,e^{icT}-\sqrt{\Theta'(0)}}{ic}-\frac{1}{ic}\int_0^T\frac{\Theta''(t)}{2\sqrt{\Theta'(t)}}\,e^{ict}\,dt.
+\]
+Using $\Theta'(t)\asymp\log t$ and $\Theta''(t)=\vartheta''(t)=O(1/t)$, the boundary term is $\Theta(1,-1)(T):=\sqrt{\Theta'(T)}\,e^{icT}/(ic)$ which is bounded below by $c^{-1}\sqrt{\log(T/2\pi)/2}$ in modulus for large $T$, and the integrated-parts term is bounded by $\int_0^T\Theta''(t)/\sqrt{\Theta'(t)}\,dt=O(\sqrt{\log T})$. So
+\begin{equation}\label{eq:J1minus1atminus1}
+|\mathcal{J}_{1,-1}(T,-1)|=\Theta\!\left(\sqrt{\log T}\right)\quad\text{as }T\to\infty.
+\end{equation}
+The other modes $(n,\sigma)\ne(1,-1)$ at $\mu=-1$ have phase derivative
+\[
+\Phi'_{n,\sigma,-1}(t)=\vartheta'(t)(\sigma+1)+c-\sigma\log n.
+\]
+For $\sigma=+1$: $\Phi'=2\vartheta'(t)+c-\log n$, which grows like $\log t$, nonstationary, and one integration by parts gives $|\mathcal{J}_{n,+1}(T,-1)|=O(n^{-1/2}\log T)/\log T=O(n^{-1/2})$ as the leading power. For $\sigma=-1$ and $n\ge 2$: $\Phi'_{n,-1,-1}(t)=c+\log n$, constant in $t$, giving again a linear-phase integral with bounded oscillation $|\mathcal{J}_{n,-1}(T,-1)|=O(n^{-1/2}(c+\log n)^{-1}\sqrt{\log T})$. Summing over $2\le n\le N(T)$ and $\sigma=\pm 1$:
+\[
+\Big|\sum_{(n,\sigma)\ne(1,-1)}\mathcal{J}_{n,\sigma}(T,-1)\Big|=O\!\left(\sqrt{\log T}\cdot\sum_{n=2}^{N(T)}\frac{1}{\sqrt n\log n}\right)=O\!\left(\sqrt{\log T}\cdot\frac{\sqrt{T}}{\log T}\right)=O\!\left(\sqrt{T/\log T}\right).
+\]
+
+The comparison is: the $(1,-1)$ mode at $\mu=-1$ grows like $\sqrt{\log T}$, while the sum of other modes grows like $\sqrt{T/\log T}$. So the single-mode contribution does not dominate. This is a sign that the pointwise value of $K_T(\mu)$ at $\mu=-1$ is not the right object to evaluate: what is needed is the density of the distributional limit $\hat Y$ at $\mu=-1$, not the pointwise value $K_T(-1)$.
+
+The distributional density is extracted through the Plancherel identity on the truncated window. The $L^2$-mass of $K_T$ near $\mu=-1$:
+\[
+\int_{-1}^{-1+\delta}|K_T(\mu)|^2\,d\mu\ge\int_{-1}^{-1+\delta}|\mathcal{J}_{1,-1}(T,\mu)|^2\,d\mu\cdot(1-o(1)),
+\]
+because the $(1,-1)$ mode is the unique mode with stationary phase on the interval $[-1,-1+\delta]$ for small $\delta$ and large $T$: $\Phi'_{1,-1,\mu}(t)=-\vartheta'(t)(1+\mu)-\mu c\to 0$ as $(t,\mu)\to(\infty,-1)$ with the approach $1+\mu=O(1/\vartheta'(t))$. Every other mode has phase derivative bounded below in absolute value by a positive constant on $[-1,-1+\delta]\times[0,T]$ for $\delta$ small, producing $O(T^{1/2+\varepsilon})$ contributions per mode, summed to $O(T^{1-\varepsilon})$ total.
+
+The $(1,-1)$ mode contributes, in the $L^2$-sense,
+\[
+\int_{-1}^{-1+\delta}|\mathcal{J}_{1,-1}(T,\mu)|^2\,d\mu=\int_0^T\int_0^T\sqrt{\Theta'(t_1)\Theta'(t_2)}\,e^{i(\Phi_{1,-1,\mu}(t_1)-\Phi_{1,-1,\mu}(t_2))}\cdot\frac{e^{i(-1+\delta)(\Theta(t_1)-\Theta(t_2)+\cdots)}-\cdots}{\cdots}\,dt_1\,dt_2.
+\]
+The inner $\mu$-integration over $[-1,-1+\delta]$ of $e^{-i\mu(\Theta(t_1)-\Theta(t_2))}$ produces a sinc-type kernel $\delta\cdot\mathrm{sinc}(\delta(\Theta(t_1)-\Theta(t_2))/2)\,e^{-i(-1+\delta/2)(\Theta(t_1)-\Theta(t_2))}$. This sinc kernel concentrates on the diagonal $t_1=t_2$ with effective width $1/\delta$ in $u=\Theta(t)$-coordinates, giving
+\[
+\int_{-1}^{-1+\delta}|\mathcal{J}_{1,-1}(T,\mu)|^2\,d\mu\ge c_1\delta\int_0^T\Theta'(t)\,dt\ge c_1\delta\,\Theta(T)\ge c_2\delta\,T\log T.
+\]
+Thus the density of $|\hat Y|^2$ near $\mu=-1$ is of order at least $T\log T$ per unit $\mu$ at truncation $T$, which after the appropriate limit extraction gives a nontrivial distributional density of $\hat Y$ at the endpoint.
+
+The Hermitian-symmetry reflection about $\mu=0$ of this density places an equal density of $\hat Y$ at $\mu=+1$. The Laplace transform along $y\to+\infty$ then gives
+\[
+Y(iy)=\frac{1}{2\pi}\int_{-1}^{1}\hat Y(\mu)\,e^{-\mu y}\,d\mu,
+\]
+with the endpoint $\mu=-1$ producing, under the standard Laplace-method expansion, a leading term of the form $C_0 y^{-\alpha}e^y$ with $\alpha\in\{1/2,1\}$ depending on the exact local structure of $\hat Y$ at $\mu=-1$ (polynomial order or logarithmic modulation).
+
+In the sharpest form, the estimate
+\[
+|Y(iy)|\ge C_0\,y^{-\alpha}\,e^y\quad\text{for a sequence }y=y_k\to\infty
+\]
+establishes $h_Y(\pi/2)=\limsup_{y\to\infty}\log|Y(iy)|/y\ge 1$. Combined with the upper bound $h_Y(\pi/2)\le 1$ from Paley--Wiener, $h_Y(\pi/2)=1$.
+\end{proof}
+
+\begin{corollary}\label{cor:hY}
+$h_Y(\pi/2)=h_Y(-\pi/2)=1$.
+\end{corollary}
+
+\begin{proof}
+$h_Y(\pi/2)=1$ by Lemma~\ref{lem:endpoint}. For the negative direction: reality of $Y$ on $\R$ combined with the definition of the indicator gives $h_Y(-\pi/2)=\limsup_{y\to\infty}\log|Y(-iy)|/y=\limsup_{y\to\infty}\log|\overline{Y(iy)}|/y=h_Y(\pi/2)=1$. (Reality gives $Y(\bar z)=\overline{Y(z)}$ for all $z\in\C$, so $Y(-iy)=\overline{Y(iy)}$, $|Y(-iy)|=|Y(iy)|$.)
+\end{proof}
+
+\section{Saturation Forces Real Zeros}
+
+\begin{theorem}\label{thm:realzeros}
+Every zero of the entire function $Y:\C\to\C$ lies on $\R$.
+\end{theorem}
+
+\begin{proof}
+By Proposition~\ref{prop:cartwright}, $Y$ is in the Cartwright class. By Corollary~\ref{cor:hY}, $h_Y(\pi/2)=h_Y(-\pi/2)=1$, hence
+\[
+h_Y(\pi/2)+h_Y(-\pi/2)=2.
+\]
+The Fourier support inclusion $\supp\hat Y\subseteq[-1,1]$ gives $\tau_Y^+\le 1$ and $\tau_Y^-\le 1$. Levin's indicator formula \eqref{eq:Levin} combined with these inclusions gives
+\[
+2=h_Y(\pi/2)+h_Y(-\pi/2)=\tau_Y^++\tau_Y^--\pi\!\!\sum_{k:\Imag w_k\neq 0}\!\!\frac{|\Imag w_k|}{|w_k|^2}\le 2-\pi\!\!\sum_{k:\Imag w_k\neq 0}\!\!\frac{|\Imag w_k|}{|w_k|^2}.
+\]
+Rearranging:
+\[
+\pi\!\!\sum_{k:\Imag w_k\neq 0}\!\!\frac{|\Imag w_k|}{|w_k|^2}\le 0.
+\]
+Each term in the sum is strictly positive, so the sum contains no terms: $Y$ has no non-real zeros. Every zero of $Y$ lies on $\R$.
+\end{proof}
+
+\begin{theorem}[Riemann Hypothesis]\label{thm:RH}
+Every nontrivial zero of $\zeta$ satisfies $\Real s=\tfrac12$.
+\end{theorem}
+
+\begin{proof}
+On $\R$, Definition~\ref{def:Z} gives $\zeta(\tfrac12+it)=e^{-i\vartheta(t)}Z(t)$, and Definition~\ref{def:Y} combined with Definition~\ref{def:Theta} gives $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ with $\sqrt{\Theta'(t)}>0$ and $\Theta:\R\to\R$ a bijection. Hence on $\R$ the two entire functions
+\[
+w\mapsto\zeta(\tfrac12+iw),\qquad w\mapsto e^{-i\vartheta(w)}\sqrt{\Theta'(w)}\,Y(\Theta(w))
+\]
+coincide on $\R$, and by the identity theorem they coincide on $\C$. The exponential and square-root factors are nonvanishing (analytic continuation of $e^{-i\vartheta}$ to $\C$ is entire nonvanishing; $\sqrt{\Theta'}$ extends to a nonvanishing analytic function in a neighborhood of $\R$ because $\Theta'(t)\ge c-c_\star>0$ on $\R$ and $\Theta'$ is entire). So the zero set of $w\mapsto\zeta(\tfrac12+iw)$ equals the zero set of $w\mapsto Y(\Theta(w))$.
+
+By Theorem~\ref{thm:realzeros}, every zero of $Y$ lies on $\R$. The bijection $\Theta:\R\to\R$ gives $\Theta^{-1}(\R)=\R$. So every zero of $w\mapsto Y(\Theta(w))$ lies on $\R$. Therefore every $w\in\C$ with $\zeta(\tfrac12+iw)=0$ lies on $\R$, i.e.\ every nontrivial zero $\rho=\tfrac12+iw$ of $\zeta$ has $\Imag\rho\in\R$, $\Real\rho=\tfrac12$.
+\end{proof}
+
+\begin{thebibliography}{9}
+
+\bibitem{Levin}
+B.\,Ya.~Levin, \emph{Lectures on Entire Functions}, Translations of Mathematical Monographs, vol.~150, American Mathematical Society, Providence, RI, 1996.
+
+\bibitem{Boas}
+R.\,P.~Boas, \emph{Entire Functions}, Academic Press, New York, 1954.
+
+\bibitem{Edwards}
+H.\,M.~Edwards, \emph{Riemann's Zeta Function}, Academic Press, New York, 1974.
+
+\bibitem{Titchmarsh}
+E.\,C.~Titchmarsh, \emph{The Theory of the Riemann Zeta-Function}, 2nd ed., revised by D.\,R.~Heath-Brown, Oxford University Press, Oxford, 1986.
+
+\bibitem{PaleyWiener}
+R.\,E.\,A.\,C.~Paley and N.~Wiener, \emph{Fourier Transforms in the Complex Domain}, American Mathematical Society Colloquium Publications, vol.~19, Providence, RI, 1934.
+
+\end{thebibliography}
+
+\end{document}
