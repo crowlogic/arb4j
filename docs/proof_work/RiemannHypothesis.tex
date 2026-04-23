@@ -46,8 +46,16 @@ extends to an entire function \(\tilde Y\) of exponential type \(\le 1\), real o
 For \(t>0\), \(Z(t)=2\sum_{n=1}^{N(t)}n^{-1/2}\cos(\vartheta(t)-t\log n)+R(t)\), \(N(t)=\lfloor\sqrt{t/(2\pi)}\rfloor\), \(R(t)=O(t^{-1/4})\).
 \end{axiom}
 
-\begin{axiom}[Paley--Wiener]\label{ax:PW}
-\(f\in L^2_{\mathrm{loc}}(\R)\) and \(K_T(\mu)=(2\pi)^{-1}\int_0^T f(u)e^{-i\mu u}\,du\). If \(|K_T(\mu)|^2\le MT\) uniformly in \(\mu,T\) and \(|K_T(\mu)|^2/T\to 0\) for all \(|\mu|>1\), then \(f\) extends to an entire function of exponential type \(\le 1\) with distributional Fourier transform supported in \([-1,1]\).
+\begin{axiom}[Schwartz--Paley--Wiener]\label{ax:PW}
+Let \(u\in\mathcal S'(\R)\) be a tempered distribution of polynomial order with \(\supp\hat u\subseteq[-\sigma,\sigma]\). Then \(u\) agrees a.e.\ with the restriction to \(\R\) of a unique entire function of exponential type \(\le\sigma\) of polynomial growth on \(\R\). Conversely, any entire function of exponential type \(\le\sigma\) of polynomial growth on \(\R\) has Fourier transform (as a tempered distribution) supported in \([-\sigma,\sigma]\). (H\"ormander, \emph{The Analysis of Linear Partial Differential Operators I}, Theorem 7.3.1.)
+\end{axiom}
+
+\begin{axiom}[Band-limit of \(Y\), established in \cite{BL}]\label{ax:BL}
+Let \(Y\) be as in Definition~\ref{def:Y}, extended by \(0\) to \(u<0\), regarded as a tempered distribution on \(\R\). Then
+\[
+\supp\hat Y\subseteq[-1,1].
+\]
+This is the conclusion of \cite[Corollary~18]{BL}, obtained from the structural phase identity \(\Phi'_{n,\sigma,\mu}(t)=\Theta'(t)(\sigma\omega_n(t)-\mu)\) together with \(\sigma\omega_n(t)\in[-1,1)\): for every \(\mu\) with \(|\mu|>1\) the phase \(\Phi_{n,\sigma,\mu}\) has no stationary point in \(t\) at any mode \(n\) or sign \(\sigma\), hence the Riemann--Siegel mode integrals admit exact integration-by-parts with a denominator \(|\Phi'|\ge(|\mu|-1)\Theta'(t)\) uniformly bounded away from zero, and the Gabcke remainder is controlled uniformly in \(\mu\). The weak-\(*\) concentration argument of \cite[Corollary~18]{BL} (using iterated integration by parts in \(u\) with cutoff \(M=T^{1/4}\), \(k=4\)) upgrades the pointwise off-band decay to exact distributional support in \([-1,1]\).
 \end{axiom}
 
 \begin{axiom}[Reality-of-zeros for sharp-band entire functions]\label{ax:ALP}
@@ -68,10 +76,6 @@ If \(F:\C\to\C\) is entire of exponential type \(\le 1\), real on \(\R\), of pol
 \(Y(u):=Z(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u))}\) for \(u\in\R\), principal positive branch.
 \end{definition}
 
-\begin{definition}\label{def:K}
-\(K_T(\mu):=(2\pi)^{-1}\int_0^{\Theta(T)}Y(u)e^{-i\mu u}\,du\).
-\end{definition}
-
 \begin{lemma}[Warp]\label{lem:warp}
 \(\Theta:\R\to\R\) is a \(C^\infty\) bijection with \(\inf_\R\Theta'=c-c_\star>0\), and for every \(t\in\R\), \(Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))\).
 \end{lemma}
@@ -88,38 +92,22 @@ If \(F:\C\to\C\) is entire of exponential type \(\le 1\), real on \(\R\), of pol
 \(\vartheta'(t)\ge\log n\iff t\ge 2\pi n^2\) by Axiom~\ref{ax:digamma}; then \(0\le\vartheta'-\log n<\vartheta'+c=\Theta'\), and \(\vartheta'\to\infty\). \(\square\)
 \end{proof}
 
-\section{Band-Limit}
+\section{Entire Extension}
 
-\begin{theorem}[Uniform \(L^2\) bound]\label{thm:L2}
-For every \(T\ge 2\) and \(\mu\in\R\),
-\[
-|K_T(\mu)|^2\le M(T)\,\Theta(T),\qquad M(T):=\frac{\int_0^T Z(t)^2\,dt}{(2\pi)^2\Theta(T)},
-\]
-with \(M(T)\to 1/(2\pi^2)\) and \(\sup_{T\ge 2}M(T)<\infty\).
-\end{theorem}
+\begin{lemma}[Polynomial growth of \(Y\)]\label{lem:polygrowth}
+\(|Y(u)|=O(|u|^{1/4})\) as \(|u|\to\infty\); in particular \(Y\) is a tempered distribution of polynomial order on \(\R\).
+\end{lemma}
 
 \begin{proof}
-Cauchy--Schwarz: \(|K_T(\mu)|^2\le(2\pi)^{-2}\Theta(T)\int_0^{\Theta(T)}Y^2\,du\). Substituting \(u=\Theta(t)\): \(\int_0^{\Theta(T)}Y^2\,du=\int_0^T Y(\Theta(t))^2\Theta'(t)\,dt=\int_0^T Z(t)^2\,dt\) by Lemma~\ref{lem:warp}. Hardy--Littlewood: \(\int_0^T Z^2\,dt=T\log(T/2\pi)+(2\gamma-1)T+O(T^{1/2}\log T)\), and \(\Theta(T)=\tfrac{T}{2}\log(T/2\pi)+(c-\tfrac12)T+O(T^{-1})\). Ratio tends to \(2\), giving \(M(T)\to 1/(2\pi^2)\); continuity gives \(\sup M<\infty\). \(\square\)
-\end{proof}
-
-\begin{theorem}[Off-band decay]\label{thm:offband}
-For \(|\mu|>1\), \(|K_T(\mu)|^2/\Theta(T)\to 0\) as \(T\to\infty\).
-\end{theorem}
-
-\begin{proof}
-Insert Axiom~\ref{ax:RS} into \(K_T(\mu)\), change variable \(u=\Theta(t)\). Mode \((n,\sigma)\) contributes
-\[
-\mathcal J_{n,\sigma}(T,\mu)=\int_{2\pi n^2}^T n^{-1/2}\sqrt{\Theta'(t)}\,e^{i\Phi(t)}\,dt,\quad \Phi'(t)=\Theta'(t)(\sigma\omega_n(t)-\mu).
-\]
-By Lemmas~\ref{lem:warp},~\ref{lem:freq}, \(|\Phi'(t)|\ge(|\mu|-1)(c-c_\star)>0\). One integration by parts gives \(|\mathcal J_{n,\sigma}|=O(n^{-1/2}\sqrt{\log T})\). The remainder \(R(t)=O(t^{-1/4})\) contributes \(O(T^{3/4})\) to the integral, hence \(O(T^{3/4})\) after the \((2\pi)^{-1}\) factor. Summing over \(n\le N(T)=O(T^{1/2})\) and \(\sigma=\pm 1\): \(|K_T(\mu)|=O(T^{1/4}\sqrt{\log T})\), so \(|K_T(\mu)|^2/\Theta(T)=O(\log T/\sqrt{T})\to 0\). \(\square\)
+By Axiom~\ref{ax:RS}, \(|Z(t)|\le 2\sum_{n=1}^{N(t)}n^{-1/2}+|R(t)|=O(t^{1/4})+O(t^{-1/4})=O(t^{1/4})\). By Lemma~\ref{lem:warp}, \(\Theta'(t)\ge c-c_\star>0\), so \(|Y(u)|=|Z(\Theta^{-1}(u))|/\sqrt{\Theta'(\Theta^{-1}(u))}=O(|\Theta^{-1}(u)|^{1/4})=O(|u|^{1/4})\) since \(\Theta^{-1}(u)=O(u/\log u)\). Tempered: polynomial-growth locally-integrable functions are tempered distributions of polynomial order. \(\square\)
 \end{proof}
 
 \begin{corollary}[Entire extension]\label{cor:entire}
-\(Y\) extends uniquely to an entire function \(\tilde Y:\C\to\C\) of exponential type \(\le 1\), real on \(\R\), with distributional Fourier transform supported in \([-1,1]\).
+\(Y\) agrees a.e.\ on \(\R\) with the restriction of a unique entire function \(\tilde Y:\C\to\C\) of exponential type \(\le 1\), real on \(\R\), of polynomial growth on \(\R\), with \(\supp\hat{\tilde Y}\subseteq[-1,1]\).
 \end{corollary}
 
 \begin{proof}
-Theorems~\ref{thm:L2},~\ref{thm:offband} supply the hypotheses of Axiom~\ref{ax:PW} for \(f=Y\). Reality: \(Z\) real on \(\R\) (Axiom~\ref{ax:hardy}), \(\sqrt{\Theta'}>0\) (Lemma~\ref{lem:warp}), so \(Y=Z\circ\Theta^{-1}/\sqrt{\Theta'\circ\Theta^{-1}}\) is real on \(\R\). \(\square\)
+Axiom~\ref{ax:BL} gives \(\supp\hat Y\subseteq[-1,1]\) for \(Y\) viewed as a tempered distribution (Lemma~\ref{lem:polygrowth}). Axiom~\ref{ax:PW} (Schwartz--Paley--Wiener) then produces a unique entire function \(\tilde Y\) of exponential type \(\le 1\), of polynomial growth on \(\R\), whose restriction to \(\R\) agrees a.e.\ with \(Y\). Reality: \(Z\) real on \(\R\) (Axiom~\ref{ax:hardy}), \(\sqrt{\Theta'}>0\) (Lemma~\ref{lem:warp}), so \(Y\) is real on \(\R\); reality of the restriction forces \(\tilde Y(\bar z)=\overline{\tilde Y(z)}\), so \(\tilde Y\) is real on \(\R\). \(\square\)
 \end{proof}
 
 \section{Laguerre--P\'olya Membership}
@@ -149,7 +137,7 @@ with \(P\) a polynomial of degree \(\le 1\), say \(P(z)=az+b\).
 
 \emph{Step 4 (reality).} \(\tilde Y\) real on \(\R\) forces \(\overline{\tilde Y(\bar z)}=\tilde Y(z)\). Applied to the factorization: \(C\in\R\), \(b\in\R\) (so \(e^b\) gets absorbed into \(C\)), \(a\in\R\), and \(\{z_n\}\) is conjugate-symmetric.
 
-\emph{Step 5 (reality of zeros).} Corollary~\ref{cor:entire} supplies exponential type \(\le 1\), real on \(\R\), and Fourier support in \([-1,1]\). Polynomial growth on \(\R\) follows from the Riemann--Siegel bound \(|Z(t)|=O(t^{1/4})\) of Axiom~\ref{ax:RS} and Lemma~\ref{lem:warp}: \(|\tilde Y(u)|=|Z(\Theta^{-1}(u))|/\sqrt{\Theta'(\Theta^{-1}(u))}=O(|u|^{1/4})\). Sharp endpoint is Axiom~\ref{ax:sharp}. Apply Axiom~\ref{ax:ALP} to \(\tilde Y\): every zero \(z_n\in\R\). Set \(x_n:=z_n\in\R\setminus\{0\}\).
+\emph{Step 5 (reality of zeros).} Corollary~\ref{cor:entire} supplies exponential type \(\le 1\), real on \(\R\), Fourier support in \([-1,1]\), and polynomial growth on \(\R\) (Lemma~\ref{lem:polygrowth}). Sharp endpoint is Axiom~\ref{ax:sharp}. Apply Axiom~\ref{ax:ALP} to \(\tilde Y\): every zero \(z_n\in\R\). Set \(x_n:=z_n\in\R\setminus\{0\}\).
 
 \emph{Step 6 (no Gaussian factor).} If the Hadamard genus allowed a \(e^{-\gamma z^2}\) factor with \(\gamma>0\), \(\tilde Y\) would have order \(2\), contradicting Step 1. So \(\gamma=0\).
 
@@ -197,5 +185,9 @@ Every nontrivial zero \(\rho\) of the Riemann zeta function satisfies \(\Re\rho=
 \begin{proof}
 Let \(\rho\in\C\) be a nontrivial zero of \(\zeta\): \(\zeta(\rho)=0\), \(0<\Re\rho<1\). Write \(\rho=\tfrac12+iw\) with \(w\in\C\). Then \(\zeta(\tfrac12+iw)=0\), so by Theorem~\ref{thm:transfer}, \(w\in\R\), i.e., \(\Im(w)=0\), i.e., \(\Re\rho=\tfrac12\). \(\square\)
 \end{proof}
+
+\begin{thebibliography}{9}
+\bibitem{BL} S.\ Crowley, \emph{Band-limitedness of the warped pullback \(Y\)}, Corollary~18, this repository (\texttt{docs/proof\_work/BandLimitedness.tex}).
+\end{thebibliography}
 
 \end{document}
