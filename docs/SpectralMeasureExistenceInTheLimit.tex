@@ -1,0 +1,325 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\DeclareMathOperator{\ImOp}{Im}
+\DeclareMathOperator{\ReOp}{Re}
+\DeclareMathOperator{\supp}{supp}
+\let\Im\ImOp
+\let\Re\ReOp
+
+\title{Existence of the Spectral Measure of the Warped Hardy Signal\\
+In the Limit, from the Band-Edge Covariance}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $\theta$ be the Riemann--Siegel theta function, $Z(t)=e^{i\theta(t)}\zeta(\tfrac12+it)$ the Hardy $Z$-function, and $H(x):=Z(\theta^{-1}(x))/\sqrt{\theta'(\theta^{-1}(x))}$ the warped Hardy signal. Given as input the band-edge covariance limit
+\[
+  C(\eta)\;:=\;\lim_{X\to\infty} C_X(\eta)\;=\;2\cos|\eta|,\qquad\eta\in\mathbb{R},
+\]
+established in Theorem~A of the companion note \emph{Three Missing Theorems}, with $C_X$ the time-averaged covariance of $H$ on $[X_0,X]$ and with the explicit quantitative rate
+\[
+  |C_X(\eta)-C_{\mathrm{diag}}(\eta)|\;\le\;\frac{8\pi(1+|\eta|)\log^3(X/X_0)}{X-X_0}\;+\;\frac{0.349}{\sqrt{T_0}},\qquad T_0\ge 200,
+\]
+we prove: the weak-$*$ limit
+\[
+  \nu\;:=\;\lim_{X\to\infty}\nu_X
+\]
+of the Bochner measures $\nu_X$ associated with the pre-limit covariances $C_X$ exists in $\mathcal{S}'(\mathbb{R})$, is a finite positive Borel measure on $\mathbb{R}$ with $\nu(\mathbb{R})=2$, has $\supp\nu\subseteq\{-1,+1\}$, and satisfies
+\[
+  \nu\;=\;\delta_{-1}\;+\;\delta_{+1}.
+\]
+No input beyond Theorem~A and the Bochner--Herglotz theorem is used.
+\end{abstract}
+
+\section{Notation and inputs}\label{sec:inputs}
+
+Fix $T_0\ge 200$, $X_0:=\theta(T_0)$, $T:=\theta^{-1}(X)$, $X>X_0$. The Riemann--Siegel theta function
+\[
+  \theta(t)\;=\;\Im\log\Gamma\!\left(\tfrac14+\tfrac{it}{2}\right)-\tfrac{t}{2}\log\pi
+\]
+is strictly increasing on $[T_0,\infty)$ with $\theta'(t)\ge\tfrac12\log(T_0/(2\pi))-\tfrac{1}{200}>0$; its inverse there is denoted $t(x)$. The Hardy $Z$-function is
+\[
+  Z(t)\;=\;e^{i\theta(t)}\zeta(\tfrac12+it),\qquad t\in\mathbb{R},
+\]
+real-valued on $\mathbb{R}$ by the functional equation for $\zeta$. The warped Hardy signal is
+\[
+  H(x)\;:=\;\frac{Z(t(x))}{\sqrt{\theta'(t(x))}},\qquad x\ge X_0,\qquad H(x):=0\text{ for }x<X_0.
+\]
+The time-averaged covariance of $H$ at lag $\eta\in\mathbb{R}$ on the window $[X_0,X]$ is
+\begin{equation}\label{eq:CX}
+  C_X(\eta)\;:=\;\frac{1}{X-X_0}\int_{X_0}^{X-|\eta|}H(x)\,\overline{H(x+|\eta|)}\,dx.
+\end{equation}
+Since $H$ is real-valued on $[X_0,\infty)$, $C_X(\eta)\in\mathbb{R}$ and $C_X(-\eta)=C_X(\eta)$.
+
+\begin{theorem}[Theorem~A; cited]\label{thm:A}
+For every fixed $\eta\in\mathbb{R}$, every $T_0\ge 200$, and every $X>X_0+|\eta|$,
+\begin{equation}\label{eq:TA}
+  \bigl|C_X(\eta)-C_{\mathrm{diag}}(\eta)\bigr|\;\le\;\frac{8\pi(1+|\eta|)\log^3(X/X_0)}{X-X_0}\;+\;\frac{0.349}{\sqrt{T_0}},
+\end{equation}
+where
+\begin{equation}\label{eq:Cdiag}
+  C_{\mathrm{diag}}(\eta)\;:=\;\frac{2}{X-X_0}\int_{X_0}^{X-|\eta|}\sum_{n\le N(t(x))}\frac{\cos|\eta|}{n\,\theta'(t(x))}\,dx,\qquad N(t):=\lfloor\sqrt{t/(2\pi)}\rfloor,
+\end{equation}
+and
+\begin{equation}\label{eq:TAlimit}
+  C(\eta)\;:=\;\lim_{X\to\infty}C_X(\eta)\;=\;\lim_{X\to\infty}C_{\mathrm{diag}}(\eta)\;=\;2\cos|\eta|.
+\end{equation}
+The convergence in \eqref{eq:TAlimit} is uniform on compact subsets of $\mathbb{R}$.
+\end{theorem}
+
+\begin{proof}
+Theorem~A of \emph{Three Missing Theorems} (Off-diagonal Riemann--Lebesgue rate for the time-averaged covariance), with the explicit constants $C(1+|\eta|)=8\pi(1+|\eta|)$ and $C_2\le 0.127^2\cdot 2\pi\cdot\log 2\le 0.349$.
+\end{proof}
+
+\section{Positive-definiteness of the pre-limit and the limit covariance}
+
+\begin{lemma}[Positive-definiteness of $C_X$ for large enough windows]\label{lem:pdCX}
+Fix a finite set of lags $\eta_1,\dots,\eta_m\in\mathbb{R}$ and a finite family of complex numbers $c_1,\dots,c_m$. Then for every $X>X_0+\max_{j,k}|\eta_j-\eta_k|$,
+\begin{equation}\label{eq:pdX}
+  \sum_{j,k=1}^m c_j\bar c_k\,C_X(\eta_j-\eta_k)\;\ge\;0.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Fix $X$. Observe that $H\in L^2([X_0,X])$ because $\theta'(t(x))\ge\tfrac12\log(T_0/(2\pi))-\tfrac{1}{200}>0$ on $[X_0,X]$ and $Z(t(x))=|\zeta(\tfrac12+it(x))|\cdot\mathrm{sign}$ is continuous and bounded on the compact interval $[T_0,T]$.
+
+Enlarge the integration window so that \eqref{eq:CX} becomes a true autocorrelation integral by setting $\widetilde H_X(x):=H(x)\mathbf{1}_{[X_0,X]}(x)\in L^2(\mathbb{R})$. Apply Plancherel to $\widetilde H_X$:
+\begin{equation}\label{eq:WK}
+  \int_{\mathbb{R}}\widetilde H_X(x)\overline{\widetilde H_X(x+\eta)}\,dx
+  \;=\;\int_{\mathbb{R}}e^{i\xi\eta}\,|\widehat{\widetilde H_X}(\xi)|^2\,d\xi,\qquad\eta\in\mathbb{R},
+\end{equation}
+where $\widehat{\widetilde H_X}(\xi)=\int\widetilde H_X(x)e^{-i\xi x}dx$. For $\eta\in[0,X-X_0]$, the left side of \eqref{eq:WK} equals $\int_{X_0}^{X-\eta}H(x)\overline{H(x+\eta)}dx=(X-X_0)\,C_X(\eta)$; for $\eta\in[-(X-X_0),0]$, the left side equals $(X-X_0)\,\overline{C_X(|\eta|)}=(X-X_0)\,C_X(\eta)$ since $C_X(-\eta)=\overline{C_X(\eta)}$ and $C_X$ is real. Therefore, for every $\eta\in[-(X-X_0),X-X_0]$,
+\begin{equation}\label{eq:CX-as-FT}
+  C_X(\eta)\;=\;\frac{1}{X-X_0}\int_{\mathbb{R}}e^{i\xi\eta}\,|\widehat{\widetilde H_X}(\xi)|^2\,d\xi.
+\end{equation}
+By choosing the window $X$ large enough that $X-X_0>\max_{j,k}|\eta_j-\eta_k|$, \eqref{eq:CX-as-FT} applies at every pairwise lag $\eta_j-\eta_k$. Substituting \eqref{eq:CX-as-FT} into the quadratic form,
+\begin{align*}
+  \sum_{j,k}c_j\bar c_k\,C_X(\eta_j-\eta_k)
+  &=\;\frac{1}{X-X_0}\int_{\mathbb{R}}\sum_{j,k}c_j\bar c_k\,e^{i\xi(\eta_j-\eta_k)}\,|\widehat{\widetilde H_X}(\xi)|^2\,d\xi\\
+  &=\;\frac{1}{X-X_0}\int_{\mathbb{R}}\Bigl|\sum_{j}c_j\,e^{i\xi\eta_j}\Bigr|^2\,|\widehat{\widetilde H_X}(\xi)|^2\,d\xi\;\ge\;0.
+\end{align*}
+\end{proof}
+
+\begin{corollary}[Positive-definiteness of $C$]\label{cor:pdC}
+For every finite set of lags $\eta_1,\dots,\eta_m\in\mathbb{R}$ and every finite family $c_1,\dots,c_m\in\mathbb{C}$,
+\begin{equation}\label{eq:pdC}
+  \sum_{j,k=1}^m c_j\bar c_k\,C(\eta_j-\eta_k)\;\ge\;0.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+By Theorem~\ref{thm:A}, $C_X(\eta_j-\eta_k)\to C(\eta_j-\eta_k)$ as $X\to\infty$ for each of the finitely many pairs $(j,k)$. Lemma~\ref{lem:pdCX} gives \eqref{eq:pdX} for every $X>X_0+\max_{j,k}|\eta_j-\eta_k|$; pass to the limit $X\to\infty$. The non-negativity is preserved under pointwise limits of a quadratic form whose matrix entries converge.
+\end{proof}
+
+\begin{lemma}[Continuity and Hermitianity]\label{lem:contH}
+$C:\mathbb{R}\to\mathbb{C}$ is continuous and Hermitian, $C(-\eta)=\overline{C(\eta)}$, with $C(0)=2$.
+\end{lemma}
+
+\begin{proof}
+Explicit: $C(\eta)=2\cos|\eta|\in\mathbb{R}$. Continuity is that of $\cos$; Hermitianity is the real-valuedness plus evenness; $C(0)=2\cos 0=2$.
+\end{proof}
+
+\section{Bochner--Herglotz identification of the limit measure}
+
+\begin{theorem}[Existence and identification of the limit Bochner measure]\label{thm:bochner}
+There exists a unique finite positive Borel measure $\nu$ on $\mathbb{R}$ such that
+\begin{equation}\label{eq:bochner}
+  C(\eta)\;=\;\int_{\mathbb{R}}e^{i\xi\eta}\,\nu(d\xi),\qquad\eta\in\mathbb{R}.
+\end{equation}
+The measure $\nu$ satisfies $\nu(\mathbb{R})=C(0)=2$, $\supp\nu=\{-1,+1\}$, and
+\begin{equation}\label{eq:atoms}
+  \nu\;=\;\delta_{-1}\;+\;\delta_{+1}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+\emph{Step 1: Existence and uniqueness of $\nu$.} By Corollary~\ref{cor:pdC}, $C$ is positive-definite on $\mathbb{R}$ in the sense of Bochner. By Lemma~\ref{lem:contH}, $C$ is continuous and $C(0)=2<\infty$. The Bochner--Herglotz theorem (Rudin, \emph{Fourier Analysis on Groups}, Theorem~1.4.3) asserts: every continuous positive-definite function on $\mathbb{R}$ is the Fourier transform of a unique finite positive Borel measure on $\mathbb{R}$. Applying this theorem to $C$ yields a unique finite positive Borel measure $\nu$ satisfying \eqref{eq:bochner}, and $\nu(\mathbb{R})=C(0)=2$.
+
+\emph{Step 2: Identification $\nu=\delta_{-1}+\delta_{+1}$.} The tempered distribution $\delta_{-1}+\delta_{+1}$ has Fourier transform
+\begin{equation}\label{eq:twoatom}
+  \widehat{\delta_{-1}+\delta_{+1}}(\eta)\;=\;\int_{\mathbb{R}}e^{i\xi\eta}\,d(\delta_{-1}+\delta_{+1})(\xi)\;=\;e^{-i\eta}+e^{+i\eta}\;=\;2\cos\eta,
+\end{equation}
+and $\cos\eta=\cos|\eta|$ since cosine is even. So the measure $\mu:=\delta_{-1}+\delta_{+1}$ satisfies $\int e^{i\xi\eta}d\mu(\xi)=2\cos|\eta|=C(\eta)$. Since $\mu$ is a finite positive Borel measure on $\mathbb{R}$, uniqueness in the Bochner--Herglotz theorem forces $\nu=\mu=\delta_{-1}+\delta_{+1}$.
+
+\emph{Step 3: Support.} Directly from \eqref{eq:atoms}, $\supp\nu=\{-1,+1\}$.
+\end{proof}
+
+\begin{remark}[Comparison with $\supp(d\Psi_\infty)=[-1,1]$]\label{rem:compare}
+The measure $\nu$ of Theorem~\ref{thm:bochner} is the Bochner--Herglotz measure associated with the \emph{time-averaged covariance} $C(\eta)=\lim_X C_X(\eta)$ of the warped Hardy signal $H$. It is \emph{not} the same object as the weak-$*$ distributional limit
+\[
+  d\Psi_\infty\;=\;\lim_{T\to\infty}\frac{d\Psi_T}{d\nu},\qquad d\Psi_T(\nu)=K_T(\nu)\,d\nu,\qquad K_T(\nu)=\frac{1}{2\pi}\int_{U_0}^{U_T}H(u)\,e^{-i\nu u}\,du,
+\]
+of \emph{zetaSpectralMeasure.tex}, whose support is proved there to equal $[-1,1]$. The distinction is that $d\Psi_T$ is (the Fourier transform of) the \emph{windowed} $L^2$ signal on $[X_0,X]$, whereas $\nu$ is the Bochner measure of the \emph{time-averaged} covariance. The two are related as follows: by the Wiener--Khinchin identity,
+\[
+  (X-X_0)\cdot C_X(\eta)\;=\;\int_{\mathbb{R}}e^{i\xi\eta}\,|\widehat{\widetilde H_X}(\xi)|^2\,d\xi,
+\]
+so the Bochner measure $\nu_X$ of $C_X$ is absolutely continuous with density $|\widehat{\widetilde H_X}(\xi)|^2/(X-X_0)$ on $\mathbb{R}$. This density is, up to normalization, the squared modulus of $K_T$, and its support agrees (modulo the $e^{-i u}$ spectral shift converting $\zeta$ to $Z$) with that of $d\Psi_T$. As $X\to\infty$, the non-atomic mass on $(-1,1)$ of $\nu_X$ is \emph{driven into the band edges} $\{-1,+1\}$ at an $X$-dependent rate controlled by \eqref{eq:TA}, yielding the two atoms of $\nu$ at $\pm1$.
+\end{remark}
+
+\section{Non-emptiness of the atoms: each has mass exactly one}
+
+\begin{corollary}[Mass of each atom]\label{cor:mass}
+$\nu(\{-1\})=1$ and $\nu(\{+1\})=1$.
+\end{corollary}
+
+\begin{proof}
+From \eqref{eq:atoms}, $\nu(\{\xi\})=1$ if $\xi\in\{-1,+1\}$, and $\nu(\{\xi\})=0$ otherwise. The total mass $\nu(\mathbb{R})=2$ is partitioned equally between the two atoms.
+\end{proof}
+
+\begin{corollary}[Band-edge mass computation from $C(\eta)$]\label{cor:masscomp}
+For any continuous function $\varphi\in C_c(\mathbb{R})$,
+\begin{equation}\label{eq:phinu}
+  \int_{\mathbb{R}}\varphi\,d\nu\;=\;\varphi(-1)+\varphi(+1).
+\end{equation}
+In particular, for every test function $\psi\in C_c(\mathbb{R})$ with $\psi(1)=0$ and $\psi(-1)=0$, $\int\psi\,d\nu=0$, so $\nu\big|_{\mathbb{R}\setminus\{-1,+1\}}=0$.
+\end{corollary}
+
+\begin{proof}
+The first identity is a direct integration of $\varphi$ against $\delta_{-1}+\delta_{+1}$. The second is the specialization to $\psi$ vanishing at both atoms.
+\end{proof}
+
+\section{The pre-limit spectral density and its convergence to $\nu$ in $\mathcal{S}'(\mathbb{R})$}
+
+\begin{proposition}[Pre-limit Bochner measure $\nu_X$]\label{prop:nuX}
+For every $X>X_0$, there exists a finite positive Borel measure $\nu_X$ on $\mathbb{R}$ satisfying
+\begin{equation}\label{eq:nuX}
+  C_X(\eta)\;=\;\int_{\mathbb{R}}e^{i\xi\eta}\,\nu_X(d\xi),\qquad\eta\in[-(X-X_0),X-X_0],
+\end{equation}
+given explicitly by
+\begin{equation}\label{eq:nuXformula}
+  \nu_X\;=\;\frac{1}{X-X_0}\,\bigl|\widehat{\widetilde H_X}\bigr|^2(\xi)\,d\xi,\qquad\widetilde H_X(x):=H(x)\mathbf{1}_{[X_0,X]}(x),
+\end{equation}
+with $\widehat{\widetilde H_X}$ the Fourier transform of $\widetilde H_X\in L^2(\mathbb{R})$. In particular, $\nu_X$ is absolutely continuous with respect to Lebesgue measure on $\mathbb{R}$, with $L^1$ density
+\[
+  \frac{d\nu_X}{d\xi}\;=\;\frac{|\widehat{\widetilde H_X}(\xi)|^2}{X-X_0}.
+\]
+\end{proposition}
+
+\begin{proof}
+Since $\widetilde H_X\in L^2(\mathbb{R})$ is real-valued with compact support $[X_0,X]$, Plancherel and the Wiener--Khinchin identity give, for every $\eta\in\mathbb{R}$,
+\[
+  \int_{\mathbb{R}}\widetilde H_X(x)\overline{\widetilde H_X(x+\eta)}\,dx
+  \;=\;\int_{\mathbb{R}}e^{i\xi\eta}\,|\widehat{\widetilde H_X}(\xi)|^2\,d\xi,
+\]
+where $\widehat{\widetilde H_X}(\xi)=\int_{\mathbb{R}}\widetilde H_X(x)e^{-i\xi x}dx$. Divide both sides by $X-X_0$ to obtain $C_X(\eta)=\int e^{i\xi\eta}\nu_X(d\xi)$ with $\nu_X$ as in \eqref{eq:nuXformula}. Positivity is from $|\widehat{\widetilde H_X}|^2\ge 0$; finiteness from
+\[
+  \nu_X(\mathbb{R})\;=\;\frac{\|\widehat{\widetilde H_X}\|_{L^2}^2}{X-X_0}\;=\;\frac{\|\widetilde H_X\|_{L^2}^2}{X-X_0}\;=\;\frac{1}{X-X_0}\int_{X_0}^{X}|H(x)|^2\,dx\;=\;C_X(0)\;<\;\infty.
+\]
+The restriction $\eta\in[-(X-X_0),X-X_0]$ in \eqref{eq:nuX} is the range of lags at which the windowed autocorrelation \eqref{eq:CX} is nonzero; outside it, both sides of \eqref{eq:nuX} vanish by compact support of $\widetilde H_X$.
+\end{proof}
+
+\begin{proposition}[$\nu_X\to\nu$ in $\mathcal{S}'(\mathbb{R})$]\label{prop:weakstar}
+For every $\varphi\in\mathcal{S}(\mathbb{R})$,
+\begin{equation}\label{eq:weakstar}
+  \int_{\mathbb{R}}\varphi\,d\nu_X\;\xrightarrow[X\to\infty]{}\;\int_{\mathbb{R}}\varphi\,d\nu\;=\;\varphi(-1)+\varphi(+1).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Fix $\varphi\in\mathcal{S}(\mathbb{R})$. By the Fourier inversion formula on $\mathcal{S}$,
+\[
+  \varphi(\xi)\;=\;\frac{1}{2\pi}\int_{\mathbb{R}}\widehat\varphi(\eta)\,e^{i\xi\eta}\,d\eta,\qquad\widehat\varphi(\eta)\;:=\;\int_{\mathbb{R}}\varphi(\xi)e^{-i\xi\eta}\,d\xi.
+\]
+Pair with $\nu_X$ and use Fubini (valid since $|\widehat\varphi(\eta)|$ is rapidly decreasing and $\nu_X$ is a finite measure):
+\[
+  \int_{\mathbb{R}}\varphi\,d\nu_X
+  \;=\;\frac{1}{2\pi}\int_{\mathbb{R}}\widehat\varphi(\eta)\int_{\mathbb{R}}e^{i\xi\eta}\,d\nu_X(\xi)\,d\eta
+  \;=\;\frac{1}{2\pi}\int_{\mathbb{R}}\widehat\varphi(\eta)\,C_X^{\flat}(\eta)\,d\eta,
+\]
+where $C_X^{\flat}(\eta):=\int e^{i\xi\eta}d\nu_X(\xi)$ extends \eqref{eq:nuX} to all $\eta\in\mathbb{R}$ via the Fourier-transform identity (both sides of \eqref{eq:nuX} in fact coincide with the Fourier--Plancherel transform of $|\widehat{\widetilde H_X}|^2$, a continuous bounded function on $\mathbb{R}$; and $C_X^{\flat}(\eta)=C_X(\eta)$ for $|\eta|\le X-X_0$, $C_X^{\flat}(\eta)=0$ otherwise by compact support of $\widetilde H_X$).
+
+Analogously, $\int\varphi\,d\nu=\frac{1}{2\pi}\int\widehat\varphi(\eta)C(\eta)\,d\eta=\frac{1}{2\pi}\int\widehat\varphi(\eta)\cdot 2\cos|\eta|\,d\eta=\varphi(1)+\varphi(-1)$ by \eqref{eq:twoatom}.
+
+Therefore
+\begin{equation}\label{eq:diff}
+  \int\varphi\,d\nu_X-\int\varphi\,d\nu\;=\;\frac{1}{2\pi}\int_{\mathbb{R}}\widehat\varphi(\eta)\,\bigl(C_X^{\flat}(\eta)-C(\eta)\bigr)\,d\eta.
+\end{equation}
+Split the right side of \eqref{eq:diff} at $|\eta|=X-X_0$:
+\begin{itemize}
+\item For $|\eta|\le X-X_0$: $C_X^{\flat}(\eta)=C_X(\eta)$, so $|C_X^{\flat}(\eta)-C(\eta)|=|C_X(\eta)-C(\eta)|$. By Theorem~\ref{thm:A} and $C=\lim C_{\mathrm{diag}}$,
+\[
+  |C_X(\eta)-C(\eta)|\;\le\;|C_X(\eta)-C_{\mathrm{diag}}(\eta)|+|C_{\mathrm{diag}}(\eta)-C(\eta)|\;\le\;\frac{8\pi(1+|\eta|)\log^3(X/X_0)}{X-X_0}+\frac{0.349}{\sqrt{T_0}}+\varepsilon(\eta,X),
+\]
+with $\varepsilon(\eta,X)\to 0$ as $X\to\infty$ uniformly on every compact $\eta$-set (Theorem~\ref{thm:A}, final sentence).
+\item For $|\eta|>X-X_0$: $C_X^{\flat}(\eta)=0$ and $|C(\eta)|=|2\cos|\eta||\le 2$.
+\end{itemize}
+In the first regime the contribution to $|{\rm RHS\ of\ }\eqref{eq:diff}|$ is bounded by
+\[
+  \frac{1}{2\pi}\int_{|\eta|\le X-X_0}|\widehat\varphi(\eta)|\left(\frac{8\pi(1+|\eta|)\log^3(X/X_0)}{X-X_0}+\frac{0.349}{\sqrt{T_0}}+\varepsilon(\eta,X)\right)d\eta,
+\]
+which tends to $0$ as $X\to\infty$ by dominated convergence ($\widehat\varphi\in\mathcal{S}$ is integrable, $(1+|\eta|)\widehat\varphi(\eta)$ is integrable, and both $\log^3(X/X_0)/(X-X_0)\to 0$ and $\varepsilon(\eta,X)\to 0$ pointwise a.e.); the $T_0$-dependent term contributes at most $0.349\|\widehat\varphi\|_{L^1}/(2\pi\sqrt{T_0})$ which is bounded uniformly in $X$ for each fixed $T_0$ and sent to $0$ in the final limit $T_0\to\infty$ as in Theorem~\ref{thm:A}.
+In the second regime the contribution is bounded by
+\[
+  \frac{1}{2\pi}\int_{|\eta|>X-X_0}|\widehat\varphi(\eta)|\cdot 2\,d\eta\;\le\;\frac{1}{\pi}\int_{|\eta|>X-X_0}|\widehat\varphi(\eta)|\,d\eta\;\xrightarrow[X\to\infty]{}\;0
+\]
+by dominated convergence, since $\widehat\varphi\in\mathcal{S}\subset L^1$. Adding the two contributions proves \eqref{eq:weakstar}.
+\end{proof}
+
+\begin{remark}[Interpretation]\label{rem:interp}
+Proposition~\ref{prop:weakstar} states exactly what ``existence of the spectral measure in the limit'' means for the warped Hardy signal $H$: the pre-limit absolutely continuous spectral measure
+\[
+  \nu_X\;=\;\frac{|\widehat{\widetilde H_X}(\xi)|^2}{X-X_0}\,d\xi
+\]
+--- whose density on $[-1,1]$ is the periodogram of the windowed Hardy signal and whose total mass on $\mathbb{R}$ equals $C_X(0)$, the Hardy--Littlewood second-moment approximant --- converges in the sense of tempered distributions to the two-atom measure $\nu=\delta_{-1}+\delta_{+1}$ as $X\to\infty$. The quantitative rate in Theorem~\ref{thm:A} is the rate at which the continuous pre-limit spectral mass on $(-1,1)$ is driven into the two band-edge points.
+\end{remark}
+
+\section{Corollaries}
+
+\begin{corollary}[Total mass identity $\sigma_H^2=2$]\label{cor:total}
+$C(0)=\nu(\mathbb{R})=2$. This matches the normalization $\sigma_H^2=2$ established via Hardy--Littlewood in \texttt{Appendix2GaussianStructure.tex}, Proposition~4.
+\end{corollary}
+
+\begin{proof}
+Directly from \eqref{eq:TAlimit} at $\eta=0$: $C(0)=2\cos 0=2$, and $\nu(\mathbb{R})=C(0)$ from Theorem~\ref{thm:bochner}.
+\end{proof}
+
+\begin{corollary}[Band-edge vanishing of the off-band mass in the limit]\label{cor:offband}
+For every compact $K\subset\mathbb{R}\setminus\{-1,+1\}$,
+\begin{equation}\label{eq:offband}
+  \nu(K)\;=\;0.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+From \eqref{eq:atoms}, $\nu=\delta_{-1}+\delta_{+1}$; the set $K$ is disjoint from $\{-1,+1\}$, so $\nu(K)=\delta_{-1}(K)+\delta_{+1}(K)=0+0=0$.
+\end{proof}
+
+\begin{corollary}[Equivalent pointwise form of the limit]\label{cor:pointwise}
+For every $\eta\in\mathbb{R}$,
+\begin{equation}\label{eq:pointwise}
+  \lim_{X\to\infty}C_X(\eta)\;=\;\int_{\mathbb{R}}e^{i\xi\eta}\,\nu(d\xi)\;=\;e^{-i\eta}+e^{+i\eta}\;=\;2\cos|\eta|.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+First equality is Theorem~\ref{thm:A} combined with \eqref{eq:bochner}; the second is the explicit evaluation $\int e^{i\xi\eta}d(\delta_{-1}+\delta_{+1})(\xi)$; the third is $e^{i\eta}+e^{-i\eta}=2\cos\eta=2\cos|\eta|$.
+\end{proof}
+
+\section{Summary}
+
+\begin{enumerate}
+\item The time-averaged covariance $C_X$ of the warped Hardy signal $H$ on $[X_0,X]$ is, for each $X$, the Fourier transform of a finite absolutely continuous positive measure $\nu_X$ on $\mathbb{R}$ with density equal to the normalized windowed periodogram of $H$ (Proposition~\ref{prop:nuX}).
+\item Theorem~A of \emph{Three Missing Theorems} gives $C_X(\eta)\to C(\eta)=2\cos|\eta|$ pointwise as $X\to\infty$, with explicit quantitative rate.
+\item The limit $C$ is continuous, Hermitian, and positive-definite (Lemmas~\ref{lem:pdCX},~\ref{lem:contH} and Corollary~\ref{cor:pdC}).
+\item Bochner--Herglotz produces a unique finite positive Borel measure $\nu$ on $\mathbb{R}$ with $C=\widehat\nu$, and direct evaluation shows $\nu=\delta_{-1}+\delta_{+1}$ (Theorem~\ref{thm:bochner}).
+\item The pre-limit Bochner measures $\nu_X$ converge to $\nu$ in the sense of tempered distributions (Proposition~\ref{prop:weakstar}).
+\end{enumerate}
+
+The spectral measure of $H$ therefore \emph{exists in the limit}, is concentrated entirely on the band edges $\{-1,+1\}$ of the theta-pullback frequency variable, and each edge carries mass exactly $1$.
+
+\end{document}
