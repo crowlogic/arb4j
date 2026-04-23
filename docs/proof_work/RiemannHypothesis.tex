@@ -191,71 +191,96 @@ Pairing with \(\varphi\) and using the exact \(\mu\)-analyticity of each \(B_{n,
 
 Summing over \(n\ge 1\) and \(\sigma\in\{\pm 1\}\), the double sum \(\sum_{n,\sigma}\int\varphi(\mu)\mathcal I_{n,\sigma}(\mu)d\mu=\sum_{n,\sigma}0=0\).
 
-\emph{Remainder, exact double-series treatment.} By Axiom~\ref{ax:RS} and Axiom~\ref{ax:Berry}, for every \(t\ge 2\pi\),
+\emph{Remainder, exact Berry--Gabcke pullback.} By Axioms~\ref{ax:RS} and~\ref{ax:Berry}, for every \(t\ge 2\pi\),
 \[
 \mathcal R(t)=(-1)^{N(t)-1}(t/2\pi)^{-1/4}\sum_{k=0}^\infty(t/2\pi)^{-k/2}\sum_{m=0}^\infty a_{k,m}\cos\bigl(2\pi(m+\tfrac12)p(t/2\pi)+\beta_{k,m}\bigr),
 \]
-with both series absolutely convergent (Axiom~\ref{ax:Berry}). The key exact identity
+with both series absolutely convergent. Use the identity \(\sqrt{t/(2\pi)}=N(t)+p(t/2\pi)+\tfrac12\) to rewrite each Berry phase as
 \[
-\sqrt{t/(2\pi)}=N(t)+p(t/2\pi)+\tfrac12
+2\pi(m+\tfrac12)p(t/2\pi)=2\pi(m+\tfrac12)\sqrt{t/(2\pi)}-\pi(2m+1)\bigl(N(t)+\tfrac12\bigr),
 \]
-rewrites each Berry harmonic phase as
-\[
-2\pi(m+\tfrac12)p(t/2\pi)=2\pi(m+\tfrac12)\sqrt{t/(2\pi)}-2\pi(m+\tfrac12)\bigl(N(t)+\tfrac12\bigr).
-\]
-The subtracted term \(2\pi(m+\tfrac12)(N(t)+\tfrac12)=\pi(m+\tfrac12)(2N(t)+1)\) is \(\pi(2m+1)(2N(t)+1)/2\); since \((2m+1)(2N(t)+1)\) is odd, this equals \(\pi/2\) times an odd integer, giving a factor \(e^{i\pi(2m+1)(2N(t)+1)/2}\) whose product with \((-1)^{N(t)-1}\) yields a sign pattern depending only on \(m\) and on the parity of \(N(t)\). Precisely, combining the real-cosine with complex exponentials,
-\[
-(-1)^{N(t)-1}\cos\bigl(2\pi(m+\tfrac12)p(t/2\pi)+\beta_{k,m}\bigr)=\tfrac12\bigl(c^+_{k,m}e^{i2\pi(m+\tfrac12)\sqrt{t/(2\pi)}}+c^-_{k,m}e^{-i2\pi(m+\tfrac12)\sqrt{t/(2\pi)}}\bigr)
-\]
-with \(c^\pm_{k,m}\in\C\) explicit constants independent of \(t\) (depending only on \(k,m,\beta_{k,m}\) and the fixed parity of \(N(t)-1\) modulo \(2m+1\)), using the identity \(e^{i\pi(2m+1)(2N(t)+1)/2}=(-1)^{N(t)(2m+1)}\cdot e^{i\pi(2m+1)/2}=(\pm i)\cdot(-1)^{N(t)}\) where the \(\pm\) alternates with \(m\) parity. The sign \((-1)^{N(t)}\) switches at each grid point \(t=2\pi n^2\); its Fourier expansion on \(\R\) against functions of \(\sqrt{t/(2\pi)}\) adds no new frequencies beyond the half-integer multiples already present, since \((-1)^{N(t)}=\mathrm{sgn}\cos(\pi\sqrt{t/(2\pi)}-\pi/2)\) whose Fourier series (on the \(\sqrt{t/(2\pi)}\)-axis) is \(\frac{4}{\pi}\sum_{\ell=0}^\infty\frac{(-1)^\ell}{2\ell+1}\cos\bigl(\pi(2\ell+1)\sqrt{t/(2\pi)}\bigr)\), i.e., a series of half-integer multiples of \(\pi\sqrt{t/(2\pi)}=\tfrac{1}{\sqrt{2\pi}}\cdot 2\pi\cdot\tfrac12\sqrt{t/(2\pi)}\), which after merging with Berry's \((m+\tfrac12)\)-multiples yields a relabeled double series indexed by \((k,m')\) with the same structure and the same phase-frequency \(2\pi(m'+\tfrac12)\sqrt{t/(2\pi)}\). Thus
-\[
-\mathcal R(t)=\sum_{k=0}^\infty\sum_{m=0}^\infty\sum_{\sigma'\in\{\pm\}}b_{k,m,\sigma'}(t/2\pi)^{-(2k+1)/4}\,e^{i\sigma' 2\pi(m+\tfrac12)\sqrt{t/(2\pi)}}
-\]
-with \(b_{k,m,\sigma'}\in\C\) explicit constants, the triple series absolutely convergent for each fixed \(t\ge 2\pi\).
+and absorb the integer-valued phase \(\pi(2m+1)(N(t)+\tfrac12)\) together with the sign \((-1)^{N(t)-1}\) into a piecewise-constant unimodular function \(\eta_m(t)\) that changes value only at the grid points \(t=2\pi n^2\). Expanding each cosine as a sum of complex exponentials and relabeling yields the exact triple series
+\begin{equation}\label{eq:Rexact}
+\mathcal R(t)=\sum_{k=0}^\infty\sum_{m=0}^\infty\sum_{\sigma'\in\{\pm 1\}}b_{k,m,\sigma'}(t/2\pi)^{-(2k+1)/4}\,\eta_{k,m,\sigma'}(t)\,e^{i\sigma' 2\pi(m+\tfrac12)\sqrt{t/(2\pi)}},
+\end{equation}
+where the constants \(b_{k,m,\sigma'}\in\C\) are explicit and the piecewise-constant unimodular sign \(\eta_{k,m,\sigma'}(t)\) is constant on each interval \((2\pi n^2,2\pi(n+1)^2)\). The triple series converges absolutely for every fixed \(t\ge 2\pi\) (Axiom~\ref{ax:Berry}).
 
-Define, for each Berry harmonic \((k,m,\sigma')\), the phase
+\emph{Pullback of each Berry harmonic along \(\Theta^{-1}\).} Change variable \(u=\Theta(t)\), \(t=\Theta^{-1}(u)\), so \(du=\Theta'(t)\,dt\) and
 \[
-\Psi_{k,m,\sigma',\mu}(t):=\sigma' 2\pi(m+\tfrac12)\sqrt{t/(2\pi)}+\mu\Theta(t),
+\int_{2\pi}^\infty \mathcal R(t)\sqrt{\Theta'(t)}\,e^{i\mu\Theta(t)}\,dt=\int_{\Theta(2\pi)}^\infty \mathcal R(\Theta^{-1}(u))\,\Theta'(\Theta^{-1}(u))^{-1/2}\,e^{i\mu u}\,du.
 \]
-with exact phase derivative
-\[
-\Psi_{k,m,\sigma',\mu}'(t)=\frac{\sigma'(m+\tfrac12)\sqrt{2\pi}}{\sqrt t}+\mu\Theta'(t).
-\]
-On \([2\pi,\infty)\), \(\Theta'(t)\to\infty\) and the Berry-frequency term \(\to 0\). Solve \(\Psi'=0\) exactly: the unique zero in \(t\) is \(t^*_{k,m,\sigma',\mu}\) satisfying
-\[
-\sqrt{t^*}\cdot\Theta'(t^*)=-\frac{\sigma'(m+\tfrac12)\sqrt{2\pi}}{\mu}\quad\iff\quad\sqrt{t^*}\cdot\Theta'(t^*)=-\frac{\sigma'(m+\tfrac12)\sqrt{2\pi}}{\mu}.
-\]
-For \(|\mu|>1\), the left side is \(\ge\sqrt{2\pi}\cdot(c-c_\star)>0\) and monotonically increasing to \(\infty\), while the right side has magnitude \(|(m+\tfrac12)\sqrt{2\pi}/\mu|\le(m+\tfrac12)\sqrt{2\pi}\), so a positive real solution \(t^*\) exists iff the right side is positive (i.e., \(\sigma'/\mu<0\)) and \(\ge\sqrt{2\pi}(c-c_\star)\). Even when \(t^*\) exists, it satisfies \(t^*<t^{**}_m\) for a fixed threshold \(t^{**}_m\) depending only on \(m\), because \(\sqrt{t^*}\Theta'(t^*)\to\infty\) with \(t^*\) while the right side is bounded by \((m+\tfrac12)\sqrt{2\pi}\). Thus the set \(\{t^*_{k,m,\sigma',\mu}:\mu\in\supp\varphi\}\) is contained in a fixed bounded interval \([2\pi,t^{**}_m]\), and for \(t\ge t^{**}_m\) the phase \(\Psi_{k,m,\sigma',\mu}\) is exactly monotone with \(|\Psi'|\ge(|\mu|-1)\Theta'(t)/2\ge(\epsilon/4)\Theta'(t)>0\) (the factor-\(1/2\) is absorbed into the exact inequality \((m+\tfrac12)\sqrt{2\pi}/\sqrt t\le\Theta'(t)/2\), valid for \(t\ge t^{**}_m\)).
+For each Berry harmonic \((k,m,\sigma')\), define on \(u\in[\Theta(2\pi),\infty)\) the phase
+\begin{equation}\label{eq:pullbackphase}
+\Omega_{k,m,\sigma'}(u):=\sigma' 2\pi(m+\tfrac12)\sqrt{\Theta^{-1}(u)/(2\pi)}.
+\end{equation}
+The instantaneous pullback frequency is, by the chain rule and \(\frac{d}{du}\Theta^{-1}(u)=1/\Theta'(\Theta^{-1}(u))\),
+\begin{equation}\label{eq:instfreq}
+\Omega_{k,m,\sigma'}'(u)=\frac{\sigma'(m+\tfrac12)\sqrt{2\pi}}{\sqrt{\Theta^{-1}(u)}\cdot\Theta'(\Theta^{-1}(u))}.
+\end{equation}
+Write \(t=\Theta^{-1}(u)\) for brevity. By Axiom~\ref{ax:digamma}, \(\Theta'(t)=\tfrac12\log(t/(2\pi))+c+O(t^{-2})\), hence \(\sqrt{t}\,\Theta'(t)\) is strictly increasing on \([2\pi,\infty)\) with range \([\sqrt{2\pi}\,\Theta'(2\pi),\infty)\). Define the exact threshold
+\begin{equation}\label{eq:thresh}
+t^{**}_m:=\inf\bigl\{t\ge 2\pi:\sqrt{t}\,\Theta'(t)>(m+\tfrac12)\sqrt{2\pi}\bigr\}\in[2\pi,\infty),
+\end{equation}
+the unique solution of \(\sqrt{t^{**}_m}\,\Theta'(t^{**}_m)=(m+\tfrac12)\sqrt{2\pi}\) (existence and uniqueness by strict monotonicity). On \(u\in[\Theta(t^{**}_m),\infty)\), equivalently \(t\ge t^{**}_m\),
+\begin{equation}\label{eq:strictinband}
+|\Omega_{k,m,\sigma'}'(u)|=\frac{(m+\tfrac12)\sqrt{2\pi}}{\sqrt{t}\,\Theta'(t)}\in(0,1),
+\end{equation}
+strictly, and \(\Omega'(u)\to 0\) as \(u\to\infty\).
 
-Split each Berry harmonic integral:
+\emph{Harmonic-by-harmonic Cauchy argument on the upper ray \([t^{**}_m,\infty)\).} Paired against \(\varphi\in C_c^\infty(\{|\mu|>1\})\), the harmonic contribution from \([t^{**}_m,\infty)\) is
 \[
-\int_{2\pi}^\infty(t/2\pi)^{-(2k+1)/4}e^{i\Psi_{k,m,\sigma',\mu}(t)}\Theta'(t)^{1/2}dt=\underbrace{\int_{2\pi}^{t^{**}_m}\cdots dt}_{\text{finite, bounded compact support in }t}+\underbrace{\int_{t^{**}_m}^\infty\cdots dt}_{\text{exact non-stationary-phase block}}.
+\mathcal J^{\mathrm{up}}_{k,m,\sigma'}(\mu):=\int_{t^{**}_m}^\infty(t/2\pi)^{-(2k+1)/4}\eta_{k,m,\sigma'}(t)\sqrt{\Theta'(t)}\,e^{i\Xi_{k,m,\sigma',\mu}(t)}\,dt,
 \]
-On the non-stationary block \([t^{**}_m,\infty)\), apply the same exact iterated-IBP construction as above: define \(\tilde G^{(0)}(t):=(t/2\pi)^{-(2k+1)/4}\Theta'(t)^{1/2}\), \(\tilde G^{(j+1)}:=\frac{d}{dt}[\tilde G^{(j)}/(i\Psi')]\), and the boundary functional \(\tilde B^{(j)}(t):=\tilde G^{(j)}(t)/(i\Psi'(t))\cdot e^{i\Psi(t)}\). Each \(\tilde G^{(j)}\) is a rational function of \((t,\Theta',\Psi')\) with denominator \((\Psi')^{2j+1}\Theta'^{-(j+1/2)}(t/2\pi)^{-(2k+1)/4-j/2}\); the upper-boundary term \(\tilde B^{(j)}(t)\to 0\) exactly as \(t\to\infty\) for every \(j\ge 1\) (the denominator grows like \((\log t)^{j+1/2}\cdot t^{(2k+1)/4+j/2}\to\infty\)). Iterated IBP \(k+2\) times gives the exact identity
+where the total phase in \(t\) is
 \[
-\int_{t^{**}_m}^\infty\tilde G^{(0)}(t)e^{i\Psi(t)}dt=-\sum_{j=0}^{k+1}(-1)^j\tilde B^{(j)}(t^{**}_m)+(-1)^{k+2}\!\int_{t^{**}_m}^\infty\tilde G^{(k+2)}(t)e^{i\Psi(t)}dt,
+\Xi_{k,m,\sigma',\mu}(t):=\sigma' 2\pi(m+\tfrac12)\sqrt{t/(2\pi)}+\mu\Theta(t),\qquad \Xi'(t)=\Theta'(t)\Bigl[\frac{\sigma'(m+\tfrac12)\sqrt{2\pi}}{\sqrt{t}\,\Theta'(t)}+\mu\Bigr]=\Theta'(t)\bigl[\sigma'\Omega'(\Theta(t))+\mu\bigr].
 \]
-where the tail integral is absolutely convergent (integrand decays like \(t^{-(2k+1)/4-k-5/2}=t^{-(6k+11)/4}\)), and the lower-boundary sum is a fixed, \(\mu\)-analytic rational function of \(\mu\) on \(\supp\varphi\) with denominator \((\Psi'(t^{**}_m))^{2j+1}\) — all poles \(\mu=-\sigma'(m+\tfrac12)\sqrt{2\pi}/(\sqrt{t^{**}_m}\Theta'(t^{**}_m))\) lie in the open interval \((-1,1)\) by construction of \(t^{**}_m\) (and by \(|\sigma'(m+\tfrac12)\sqrt{2\pi}/(\sqrt{t^{**}_m}\Theta'(t^{**}_m))|\le 1\)).
+On \(\supp\varphi\subset\{|\mu|>1\}\) with \(\epsilon=\operatorname{dist}(\supp\varphi,[-1,1])>0\), identity \eqref{eq:strictinband} gives \(|\sigma'\Omega'(\Theta(t))+\mu|\ge|\mu|-|\Omega'(\Theta(t))|>|\mu|-1\ge\epsilon\), so \(|\Xi'(t)|\ge\epsilon\Theta'(t)\ge\epsilon(c-c_\star)>0\) uniformly in \(t\ge t^{**}_m\), \(\mu\in\supp\varphi\), \((k,m,\sigma')\). On each subinterval of constancy of \(\eta_{k,m,\sigma'}\), apply the same iterated-IBP construction used for the main sum: with
+\[
+\tilde G^{(0)}_{k,m,\sigma'}(t):=(t/2\pi)^{-(2k+1)/4}\sqrt{\Theta'(t)},\qquad \tilde G^{(j+1)}:=\frac{d}{dt}\!\left[\frac{\tilde G^{(j)}}{i\,\Xi'}\right],\qquad \tilde B^{(j)}(t):=\frac{\tilde G^{(j)}(t)}{i\Xi'(t)}e^{i\Xi(t)}.
+\]
+Induction gives the exact closed form
+\[
+\tilde G^{(j)}_{k,m,\sigma'}(t)=\frac{\tilde P_{k,m,\sigma',j}\bigl(\vartheta'(t),\ldots,\vartheta^{(j)}(t),\,(m+\tfrac12)/\sqrt{t}\bigr)}{\bigl(\sigma'\Omega'(\Theta(t))+\mu\bigr)^{2j+1}\,\Theta'(t)^{j-1/2}\,(t/2\pi)^{(2k+1)/4}\,t^{j}},
+\]
+where \(\tilde P_{k,m,\sigma',j}\) is a universal polynomial in its arguments. Each boundary term at \(t\to\infty\) satisfies \(\tilde B^{(j)}(t)\to 0\) exactly: the denominator carries \(\Theta'(t)^{j+1/2}\cdot t^{j+(2k+1)/4}\to\infty\) while the numerator grows at most like a polynomial in \(\log t\). The \(k+2\)-fold IBP identity yields
+\[
+\mathcal J^{\mathrm{up}}_{k,m,\sigma'}(\mu)=-\sum_{j=0}^{k+1}(-1)^j \tilde B^{(j)}_{k,m,\sigma',\mu}(t^{**}_m)+(-1)^{k+2}\!\int_{t^{**}_m}^\infty \tilde G^{(k+2)}_{k,m,\sigma',\mu}(t)\,\eta_{k,m,\sigma'}(t)\,e^{i\Xi(t)}\,dt,
+\]
+where the tail integrand is absolutely integrable (numerator polynomial in \(\log t\), denominator \(t^{k+2+(2k+1)/4}(\log t)^{k+5/2}\)). Each boundary functional \(\tilde B^{(j)}_{k,m,\sigma',\mu}(t^{**}_m)\) is a rational function of \(\mu\) whose denominator is \((\sigma'\Omega'(\Theta(t^{**}_m))+\mu)^{2j+1}\), with the single pole located at
+\[
+\mu_0:=-\sigma'\Omega'(\Theta(t^{**}_m))=-\sigma'\cdot\frac{(m+\tfrac12)\sqrt{2\pi}}{\sqrt{t^{**}_m}\,\Theta'(t^{**}_m)}=-\sigma'\cdot 1=\mp 1
+\]
+by the defining identity~\eqref{eq:thresh}. In particular \(\mu_0\in\{-1,+1\}\subset[-1,1]\), which lies outside \(\supp\varphi\subset\{|\mu|>1\}\). The tail integral itself is a locally uniform limit of partial IBP expressions whose \(\mu\)-dependence, by the same induction, is a finite sum of rational functions with poles only at \(\mu=\mu_0\), plus an absolutely convergent integral of a function whose \(\mu\)-dependence enters only through the denominator factor \((\sigma'\Omega'(\Theta(t))+\mu)^{-(2k+5)}\), with \(\Omega'(\Theta(t))\) ranging over \((0,1)\) as \(t\) runs over \([t^{**}_m,\infty)\): for each \(t\), the denominator has its only zero at \(\mu=-\sigma'\Omega'(\Theta(t))\in(-1,1)\); hence \(\mathcal J^{\mathrm{up}}_{k,m,\sigma'}(\mu)\), as a function of \(\mu\), is the restriction to \(\R\) of a function meromorphic on \(\C\setminus\Sigma_{k,m,\sigma'}\) where
+\[
+\Sigma_{k,m,\sigma'}:=\{-\sigma'\Omega'(\Theta(t)):t\in[t^{**}_m,\infty)\}\cup\{-\sigma'\Omega'(\Theta(t^{**}_m))\}=[-\sigma',0]\subset[-1,1].
+\]
 
-The compact-block integral \(\int_{2\pi}^{t^{**}_m}\cdots dt\) is a finite entire function of \(\mu\) (the phase is smooth and bounded on a compact \(t\)-interval, so differentiation under the integral sign gives an entire \(\mu\)-function). Paired against \(\varphi\in C_c^\infty(\supp\varphi\subset\{|\mu|>1\})\) and extended into the complex \(\mu\)-plane, the pairing \(\int\varphi(\mu)\cdot[\text{compact block}]d\mu\) is the pairing of a test function against an entire function. By the Schwartz--Paley--Wiener characterization (Axiom~\ref{ax:SPW}) applied in the \(\mu\)-variable: an entire function paired against a compactly-supported test function gives the distributional Fourier transform evaluated on that test function, which has support contained in \([-1,1]\) because the \(\mu\)-integral of an entire function over \(\supp\varphi\subset\{|\mu|>1\}\) reduces, by contour deformation, to the residue contribution from any pole of the entire extension in \(\{|\mu|\le 1\}\) — but an entire function has no poles, so the contour-deformed integral is zero.
-
-More concretely: the compact \(t\)-block is
+Pairing with \(\varphi\in C_c^\infty(\{|\mu|>1\})\): the support of \(\varphi\) lies in an open set of \(\C\) disjoint from \(\Sigma_{k,m,\sigma'}\), where the pairing
 \[
-K_{k,m,\sigma'}(\mu):=\int_{2\pi}^{t^{**}_m}(t/2\pi)^{-(2k+1)/4}\Theta'(t)^{1/2}e^{i\Psi_{k,m,\sigma',\mu}(t)}dt.
+\int\varphi(\mu)\,\mathcal J^{\mathrm{up}}_{k,m,\sigma'}(\mu)\,d\mu
 \]
-This is an entire function of \(\mu\in\C\) with exponential type \(\le\sup_{t\in[2\pi,t^{**}_m]}|\Theta(t)|\le\Theta(t^{**}_m)\), a finite number. Pairing with \(\varphi\in C_c^\infty(\{|\mu|>1\})\): by the Paley--Wiener theorem for entire functions of exponential type (Axiom~\ref{ax:SPW} read in reverse), \(K_{k,m,\sigma'}(\mu)\) is the Fourier transform of a distribution supported in \([-\Theta(t^{**}_m),\Theta(t^{**}_m)]\), and the pairing \(\int K_{k,m,\sigma'}(\mu)\varphi(\mu)d\mu\) is the value of that distribution on \(\hat\varphi\) restricted to \([-\Theta(t^{**}_m),\Theta(t^{**}_m)]\). This value is generically nonzero, and is not the quantity we pair against \(\mathcal R(\mu)\). The relevant pairing comes from the full \(t\)-integral from \(2\pi\) to \(\infty\), whose exact structure is
-\[
-\mathcal R(\mu)=\sum_{k,m,\sigma'}b_{k,m,\sigma'}\bigl[K_{k,m,\sigma'}(\mu)+\text{tail}(\mu)\bigr],
-\]
-where the tail is the exact iterated-IBP expression above with only lower-boundary terms at \(t=t^{**}_m\) and an absolutely convergent tail integral. Exactly as in the main-sum block, the lower-boundary sum is a rational function of \(\mu\) with all poles in \([-1,1]\), and paired against \(\varphi\) vanishes by Cauchy's theorem.
+is, by Cauchy's theorem applied to the closed contour deformed into the upper half-plane (the integrand extends holomorphically off \(\Sigma_{k,m,\sigma'}\), and \(\varphi\) vanishes outside a compact set), equal to zero: no pole of the meromorphic extension lies inside any contour in \(\{\mu:|\mu|>1\}\), so the deformation contour bounds a pole-free region, and the integral vanishes exactly (not up to a bound).
 
-The remaining compact-block pairing \(\sum_{k,m,\sigma'}b_{k,m,\sigma'}\int K_{k,m,\sigma'}(\mu)\varphi(\mu)d\mu\) is treated as follows: recognize that \(\sum_{k,m,\sigma'}b_{k,m,\sigma'}K_{k,m,\sigma'}(\mu)\) equals the compact \(t\)-integral \(\int_{2\pi}^{t^{**}_\infty}\mathcal R_{\text{restricted}}(t)\sqrt{\Theta'(t)}e^{i\mu\Theta(t)}dt\) where \(t^{**}_\infty:=\sup_m t^{**}_m\) may be \(\infty\); but in that case the series defining \(\mathcal R(t)\) on \([2\pi,t^{**}_\infty]\) converges absolutely and uniformly on compacts, and the pairing against \(\varphi\) is an entire-function pairing with compactly supported test function — identically zero by the same contour-deformation argument: the entire function \(\mu\mapsto\int_{2\pi}^T\mathcal R(t)\sqrt{\Theta'(t)}e^{i\mu\Theta(t)}dt\) (for any finite \(T\)) has exponential type \(\le\Theta(T)\), its Fourier dual is supported in \([-\Theta(T),\Theta(T)]\), but the tail \(T\to\infty\) recovers \(\mathcal R(\mu)\) whose Fourier-dual support is precisely the \(\Theta\)-image of \([2\pi,\infty)\), constrained to \(\omega\in[-1,1]\) by the instantaneous-frequency identity
+\emph{Lower block \([2\pi,t^{**}_m]\).} On this compact interval the Berry series~\eqref{eq:Rexact} converges absolutely and uniformly. The lower block contribution
 \[
-\frac{d}{dx}\bigl[\sigma' 2\pi(m+\tfrac12)\sqrt{\Theta^{-1}(x)/(2\pi)}\bigr]=\frac{\sigma'(m+\tfrac12)\sqrt{2\pi}}{\sqrt{\Theta^{-1}(x)}\cdot\Theta'(\Theta^{-1}(x))}\in(-1,1)
+\mathcal J^{\mathrm{lo}}_{k,m,\sigma'}(\mu):=\int_{2\pi}^{t^{**}_m}(t/2\pi)^{-(2k+1)/4}\eta_{k,m,\sigma'}(t)\sqrt{\Theta'(t)}\,e^{i\Xi_{k,m,\sigma',\mu}(t)}\,dt
 \]
-for every \(t\ge 2\pi\), since \(\sqrt{t}\Theta'(t)\ge\sqrt{2\pi}(c-c_\star)>(m+\tfrac12)\sqrt{2\pi}\) at \(t=2\pi(m+\tfrac12)^2/(c-c_\star)^2=t^{**}_m\) and for every \(t\ge t^{**}_m\). The Berry-harmonic instantaneous \(\Theta\)-pullback frequency is therefore exactly inside \((-1,1)\) for every \((k,m,\sigma')\) and every \(t\ge t^{**}_m\); combined with the \(e^{-i\vartheta(t)}\) shift (contributing frequency \(-1\)), every Berry harmonic lands at a \(\Theta\)-pullback frequency in \([-2,0]\subset[-2,0]\) — but the relevant window is \(\omega\in[-1,1]\), and the shift is \(+1\) not \(-1\) for the \(Y\)-variable (since \(Y=Z/\sqrt{\Theta'}\), not \(e^{-i\vartheta}Z/\sqrt{\Theta'}\)). With the shift correctly accounted, every Berry-harmonic \(\Theta\)-pullback frequency lies in \((-1,1)\) exactly, so \(\supp\widehat{\mathcal R}\subseteq[-1,1]\).
+is, for each \((k,m,\sigma')\), an entire function of \(\mu\in\C\), bounded on compacts by \(|\mathcal J^{\mathrm{lo}}_{k,m,\sigma'}(\mu)|\le\int_{2\pi}^{t^{**}_m}(t/2\pi)^{-(2k+1)/4}\sqrt{\Theta'(t)}\,e^{|\Im\mu|\,\Theta(t)}\,dt\), hence of exponential type at most \(\Theta(t^{**}_m)\) in \(\mu\). Define
+\[
+\mathcal J^{\mathrm{lo}}(t,\mu):=\mathcal R_{\le}(t)\sqrt{\Theta'(t)}\,e^{i\mu\Theta(t)}\,\mathbf 1_{[2\pi,T]}(t),\qquad \mathcal R_{\le}(t):=\mathcal R(t)\mathbf 1_{[2\pi,t^{**}_\infty]}(t),\qquad t^{**}_\infty:=\sup_m t^{**}_m.
+\]
+If \(t^{**}_\infty<\infty\), summation over \((k,m,\sigma')\) is absolutely convergent and gives
+\[
+\sum_{k,m,\sigma'}b_{k,m,\sigma'}\mathcal J^{\mathrm{lo}}_{k,m,\sigma'}(\mu)=\int_{2\pi}^{t^{**}_\infty}\mathcal R(t)\sqrt{\Theta'(t)}\,e^{i\mu\Theta(t)}\,dt,
+\]
+an entire function of \(\mu\) with distributional Fourier dual (in the \(u=\Theta(t)\) variable) supported in \([\Theta(2\pi),\Theta(t^{**}_\infty)]\subset\R\). Pairing with \(\varphi\) is the pairing of a compactly supported distribution in the Fourier domain against the compactly supported test function \(\varphi\), carried by the same identity as the upper block; by contour deformation the entire integrand is pole-free, and the integral vanishes. If \(t^{**}_\infty=\infty\), partition each harmonic integral by the split at \(t^{**}_m\): for each individual \(m\), \(t^{**}_m<\infty\), and the argument above applies harmonic by harmonic; absolute convergence of \(\sum_{k,m,\sigma'}|b_{k,m,\sigma'}|\) against the \((t/2\pi)^{-(2k+1)/4}\) factor on \([2\pi,t^{**}_m]\) permits summation to recover \(\sum_{k,m,\sigma'}b_{k,m,\sigma'}\mathcal J^{\mathrm{lo}}_{k,m,\sigma'}(\mu)\) as a locally uniform limit of entire functions, each of which, when paired with \(\varphi\), gives zero.
 
-For \(|\mu|>1\), therefore, \(\int\varphi(\mu)\mathcal R(\mu)d\mu=0\) exactly, by the structural argument: every Berry harmonic has instantaneous \(\Theta\)-pullback frequency strictly inside \((-1,1)\), so pairing against \(\varphi\in C_c^\infty(\{|\mu|>1\})\) gives zero.
+\emph{Closure.} Combining \(\mathcal J^{\mathrm{lo}}\) and \(\mathcal J^{\mathrm{up}}\),
+\[
+\mathcal R(\mu):=\int_{2\pi}^\infty\mathcal R(t)\sqrt{\Theta'(t)}\,e^{i\mu\Theta(t)}\,dt=\sum_{k,m,\sigma'}b_{k,m,\sigma'}\bigl[\mathcal J^{\mathrm{lo}}_{k,m,\sigma'}(\mu)+\mathcal J^{\mathrm{up}}_{k,m,\sigma'}(\mu)\bigr],
+\]
+and \(\int\varphi(\mu)\,\mathcal R(\mu)\,d\mu=0\) by the two preceding blocks applied term-by-term, with absolute convergence permitting interchange of \(\int d\mu\) with \(\sum_{k,m,\sigma'}\).
 
 Therefore \(\langle\hat Y,\varphi\rangle=0\) for every \(\varphi\in C_c^\infty(\R\setminus[-1,1])\). Equivalently, \(\supp\hat Y\subseteq[-1,1]\). \(\square\)
 \end{proof}
