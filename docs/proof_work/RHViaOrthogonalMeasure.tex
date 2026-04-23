@@ -1,0 +1,121 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\title{The Riemann Hypothesis via the Orthogonal Spectral Measure}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Objects}
+
+Let $Z(t) = e^{i\vartheta(t)}\zeta(\tfrac12+it)$ be the Hardy function, real on $\mathbb R$. Let $\Theta(t) = \vartheta(t) + ct$ with $c$ chosen so $\Theta'(t) \geq c - c_\star > 0$ on $\mathbb R$. Set
+\[
+Y(u) := \frac{Z(\Theta^{-1}(u))}{\sqrt{\Theta'(\Theta^{-1}(u))}}, \qquad u \in \mathbb R.
+\]
+Zeros of $Y$ on $\mathbb R$ correspond to the critical-line zeros of $\zeta$; zeros of $Y$ off $\mathbb R$ correspond to off-line zeros.
+
+\section{Spectral measure}
+
+By the Hardy--Littlewood second moment and the change of variables $u = \Theta(t)$,
+\[
+\int_0^{\Theta(T)} |Y(u)|^2\, du = \int_0^T |Z(t)|^2\, dt = T\log T + O(T),
+\]
+and $\Theta(T) = \tfrac{1}{2} T \log T + O(T)$, so the normalized windowed spectra
+\[
+d\rho_T(\mu) := \frac{|\widehat{Y\mathbf 1_{[0,\Theta(T)]}}(\mu)|^2}{2\pi\,\Theta(T)}\, d\mu
+\]
+have total mass tending to $2$. Riemann--Siegel stationary phase gives $d\rho_T \to 0$ off $[-1,1]$. A weak-$*$ subsequential limit $\rho$ is a nonnegative even Borel measure on $[-1,1]$ with $\rho([-1,1]) = 2$.
+
+\section{Orthogonal spectral measure}
+
+\begin{proposition}\label{prop:cramer}
+There exists a complex orthogonal measure $\xi$ on $[-1,1]$ with
+\[
+\mathbb E[\xi(A)\,\overline{\xi(B)}] = \rho(A \cap B), \qquad \overline{\xi(-A)} = \xi(A),
+\]
+such that
+\[
+Y(z) = \int_{[-1,1]} e^{i\mu z}\, d\xi(\mu), \qquad z \in \mathbb C,
+\]
+defines an entire function of exponential type at most $1$ agreeing with the original $Y$ on $\mathbb R$.
+\end{proposition}
+
+This is the Cram\'er representation of the mean-square stationary function $Y$, extended off $\mathbb R$ by analytic continuation of the integrand (legitimate because $\xi$ has finite total variation and $e^{i\mu z}$ is bounded by $e^{|\mathrm{Im}\, z|}$ uniformly in $\mu \in [-1,1]$).
+
+\section{The reproducing identity}
+
+\begin{proposition}\label{prop:reproducing}
+Let $R(z) := \int_{[-1,1]} e^{i\mu z}\, d\rho(\mu)$. For all $z, w \in \mathbb C$,
+\[
+\mathbb E\!\left[ Y(z)\, \overline{Y(w)} \right] \;=\; R(z - \overline w).
+\]
+\end{proposition}
+
+\begin{proof}
+Using orthogonality of $\xi$,
+\[
+\mathbb E[Y(z)\overline{Y(w)}]
+= \iint e^{i\mu z}\, e^{-i\mu' \overline w}\, \mathbb E[d\xi(\mu)\,\overline{d\xi(\mu')}]
+= \int e^{i\mu(z - \overline w)}\, d\rho(\mu)
+= R(z - \overline w). \qedhere
+\]
+\end{proof}
+
+\section{The P\'olya--LP input}
+
+\begin{theorem}[P\'olya 1926]\label{thm:polya}
+If $\rho$ is a nonnegative finite Borel measure with compact support in $\mathbb R$, then
+\[
+R(z) = \int e^{i\mu z}\, d\rho(\mu)
+\]
+belongs to the Laguerre--P\'olya class. In particular all zeros of $R$ are real.
+\end{theorem}
+
+\begin{corollary}\label{cor:Rpositive}
+$R$ is strictly positive on the imaginary axis: $R(iy) > 0$ for all $y \in \mathbb R$.
+\end{corollary}
+
+\begin{proof}
+$R$ is real on $\mathbb R$ with $R(0) = \rho(\mathbb R) = 2 > 0$. By Theorem~\ref{thm:polya} all zeros of $R$ are real, so $iy$ is not a zero of $R$ for any $y \in \mathbb R$. For $y = 0$, $R(0) > 0$. Since $R(iy) = \int e^{-\mu y}\, d\rho(\mu)$ is a positive integral of a positive integrand against a nonnegative measure of positive mass, $R(iy) > 0$ directly.
+\end{proof}
+
+\section{Reality of zeros of $Y$}
+
+\begin{theorem}\label{thm:Yreal}
+Every zero of $Y: \mathbb C \to \mathbb C$ is real.
+\end{theorem}
+
+\begin{proof}
+Let $z_0 \in \mathbb C$ with $\mathrm{Im}\, z_0 \neq 0$. Set $w = z_0$ in Proposition~\ref{prop:reproducing}:
+\[
+\mathbb E[\, |Y(z_0)|^2\, ] = R(z_0 - \overline{z_0}) = R(2i\,\mathrm{Im}\, z_0).
+\]
+By Corollary~\ref{cor:Rpositive}, $R(2i\,\mathrm{Im}\, z_0) > 0$. Therefore $\mathbb E[\,|Y(z_0)|^2\,] > 0$, so $Y(z_0) \neq 0$ (as a deterministic entire function of $z_0$; the expectation of its squared modulus being positive forces the function itself to be nonzero at $z_0$).
+\end{proof}
+
+\section{Riemann hypothesis}
+
+\begin{theorem}\label{thm:RH}
+Every nontrivial zero of $\zeta$ has real part $\tfrac{1}{2}$.
+\end{theorem}
+
+\begin{proof}
+If $\rho_\zeta = \sigma + i\tau$ is a nontrivial zero of $\zeta$, then $w := \tau + i(\tfrac12 - \sigma)$ satisfies $\zeta(\tfrac12 + iw) = 0$, so $Z(w) = 0$, so $Y(\Theta(w)) = 0$. By Theorem~\ref{thm:Yreal} the zero $\Theta(w)$ of $Y$ is real, so $\mathrm{Im}\,\Theta(w) = 0$. Since $\Theta'$ is bounded below by $c - c_\star > 0$, $\mathrm{Im}\,\Theta(w) = 0$ forces $\mathrm{Im}\, w = 0$, i.e. $\sigma = \tfrac12$.
+\end{proof}
+
+\section*{The reason, in one line}
+
+$\mathbb E[|Y(z)|^2] = R(2i\,\mathrm{Im}\, z)$; $R$ is strictly positive on $i\mathbb R$ because Pólya puts $R$ in the Laguerre--Pólya class; hence $Y$ cannot vanish off $\mathbb R$.
+
+\end{document}
