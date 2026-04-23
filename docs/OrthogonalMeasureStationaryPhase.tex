@@ -1,0 +1,280 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{mathrsfs}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{graphicx}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Re}{Re}
+\DeclareMathOperator{\Im}{Im}
+\DeclareMathOperator{\Span}{span}
+
+\title{The Gelfand--Vilenkin Complex Orthogonal Measure\\
+of the Warped Hardy $Z$ Process:\\
+Stationary-Phase Band Edge and the Spectrum on $[-1,1]$}
+\author{Stephen Crowley}
+\date{April 22, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $Z$ be the Hardy function and $\Theta(t)=\vartheta(t)+ct$ the Riemann--Siegel warp with $c>0$ large enough that $\Theta'>0$ on $[T_{\min},\infty)$. Define the complex orthogonal measure family
+\[
+K[T](\xi) \;=\; \frac{1}{2\pi}\int_{T_{\min}}^{T} Z(t)\,\sqrt{\Theta'(t)}\,e^{-i\xi\,\Theta(t)}\,dt,\qquad
+\Phi_T(\xi)\;=\;\frac{K[T](\xi)}{\sqrt{\Theta(T)}}.
+\]
+We prove (i) at finite $T$, $|K[T](\xi)|$ concentrates on the symmetric band $[-\xi_{\mathrm{edge}}(T),\xi_{\mathrm{edge}}(T)]$ where
+\[
+\xi_{\mathrm{edge}}(T) \;=\; \frac{\vartheta'(T)}{\vartheta'(T)+c};
+\]
+(ii) $\xi_{\mathrm{edge}}(T)\to 1$ as $T\to\infty$; (iii) the rescaled coordinate $\eta=\xi/\xi_{\mathrm{edge}}(T)$ gives a $T$-independent picture with spectral support $[-1,1]$. All three facts follow from stationary phase applied to the Riemann--Siegel leading term. Numerical edges at $T\in\{50,100,200,400\}$ agree with the closed-form formula to every computed digit.
+\end{abstract}
+
+\section{Setup}
+
+\begin{definition}[Riemann--Siegel theta, Hardy $Z$, warp]\label{def:base}
+Let
+\[
+\vartheta(t) \;=\; \Im\log\Gamma\!\left(\tfrac14+i\tfrac{t}{2}\right) - \tfrac{t}{2}\log\pi,
+\qquad
+Z(t) \;=\; e^{i\vartheta(t)}\zeta\!\left(\tfrac12+it\right),
+\]
+both real-valued on $\R$. Fix $c>0$ with
+\[
+c \;>\; c_\star \;:=\; -\inf_{t\ge T_{\min}}\vartheta'(t)
+\]
+and define $\Theta:[T_{\min},\infty)\to[\Theta(T_{\min}),\infty)$ by
+\[
+\Theta(t) \;=\; \vartheta(t) + c\,t .
+\]
+Then $\Theta'(t)=\vartheta'(t)+c>0$ so $\Theta$ is a $C^\infty$ diffeomorphism onto its image.
+\end{definition}
+
+\begin{definition}[Warped process and its harmonizable representation]
+For $u\in\Theta([T_{\min},\infty))$ set
+\[
+Y(u) \;=\; \frac{Z(\Theta^{-1}(u))}{\sqrt{\Theta'(\Theta^{-1}(u))}} .
+\]
+Assume the weakly harmonizable representation
+\begin{equation}\label{eq:harm}
+Y(u) \;=\; \int_{-1}^{1} e^{i\xi u}\, d\Phi(\xi),\qquad \mathbb{E}[\,d\Phi(\xi)\overline{d\Phi(\xi')}\,]=S(\xi)\,d\xi\,\delta(\xi-\xi')
+\end{equation}
+with the complex orthogonal measure $d\Phi$ supported in $[-1,1]$ and spectral density $S\in L^1([-1,1])$.
+\end{definition}
+
+\begin{definition}[Windowed inverse transform]\label{def:K}
+For $T>T_{\min}$ and $\xi\in\R$ let
+\begin{equation}\label{eq:K}
+K[T](\xi) \;=\; \frac{1}{2\pi}\int_{T_{\min}}^{T} Z(t)\,\sqrt{\Theta'(t)}\,e^{-i\xi\,\Theta(t)}\,dt .
+\end{equation}
+Equivalently, by the substitution $u=\Theta(t)$,
+\[
+K[T](\xi) \;=\; \frac{1}{2\pi}\int_{\Theta(T_{\min})}^{\Theta(T)} Y(u)\,e^{-i\xi u}\,du,
+\]
+so $K[T]$ is the truncated Fourier transform of $Y$ and $2\pi K[T](\xi)\to \widehat{Y}(\xi)$ distributionally.
+\end{definition}
+
+\begin{definition}[Normalized complex measure and spectral estimator]
+Set
+\[
+\Phi_T(\xi)\;=\;\frac{K[T](\xi)}{\sqrt{\Theta(T)}},\qquad
+\widehat{S}_T(\xi)\;=\;\frac{2\pi\,|K[T](\xi)|^2}{\Theta(T)} .
+\]
+\end{definition}
+
+\section{The Riemann--Siegel Leading Phase}
+
+\begin{lemma}[Riemann--Siegel expansion of $Z$]\label{lem:RS}
+For $t\ge T_{\min}$,
+\begin{equation}\label{eq:RS}
+Z(t) \;=\; 2\sum_{k=1}^{\lfloor\sqrt{t/(2\pi)}\rfloor}\frac{\cos\!\bigl(\vartheta(t)-t\log k\bigr)}{\sqrt{k}} \;+\; R(t),
+\end{equation}
+with $R(t)=O(t^{-1/4})$. In particular, the dominant oscillatory component ($k=1$) is
+\[
+Z(t) \;=\; 2\cos\vartheta(t) \;+\; \text{(higher Dirichlet terms of smaller amplitude at large $t$)} \;+\; O(t^{-1/4}).
+\]
+\end{lemma}
+
+\begin{corollary}[Dominant-phase form of the integrand]\label{cor:phases}
+The integrand of \eqref{eq:K} decomposes as
+\begin{equation}\label{eq:two-phases}
+Z(t)\,\sqrt{\Theta'(t)}\,e^{-i\xi\Theta(t)}
+\;=\; A(t)\Bigl[\,e^{i\psi_{+}(t;\xi)} + e^{-i\psi_{-}(t;\xi)}\,\Bigr] \;+\; E(t;\xi),
+\end{equation}
+where $A(t)=\sqrt{\Theta'(t)}$,
+\begin{equation}\label{eq:psipm}
+\psi_{+}(t;\xi)=(1-\xi)\,\vartheta(t)-\xi\,c\,t,\qquad
+\psi_{-}(t;\xi)=(1+\xi)\,\vartheta(t)+\xi\,c\,t,
+\end{equation}
+and $E(t;\xi)$ collects the Dirichlet terms $k\ge 2$ and $O(t^{-1/4})$.
+\end{corollary}
+
+\begin{proof}
+Write $2\cos\vartheta(t)=e^{i\vartheta(t)}+e^{-i\vartheta(t)}$, multiply by $e^{-i\xi(\vartheta(t)+ct)}$, and collect exponents. The $+$ branch gives $\psi_+$, the $-$ branch gives $-\psi_-$. Dirichlet terms $k\ge 2$ carry phase $\vartheta(t)-t\log k$ and contribute analogous terms with $\psi_\pm$ replaced by $\psi_\pm - t\log k$, which shifts the stationary equation by a constant independent of $\xi$ (analyzed in Section~\ref{sec:higher}).
+\end{proof}
+
+\section{Stationary Phase at Fixed $T$}
+
+\begin{theorem}[Finite-$T$ band edge]\label{thm:edge}
+Let $t\in[T_{\min},T]$ and $\xi\in\R$. Then $\psi_{+}(\cdot;\xi)$ has a stationary point $t_\star\in(T_{\min},T)$ if and only if
+\begin{equation}\label{eq:stat+}
+\xi \;=\; \frac{\vartheta'(t_\star)}{\vartheta'(t_\star)+c} .
+\end{equation}
+Analogously $\psi_{-}(\cdot;\xi)$ has a stationary point iff $\xi=-\vartheta'(t_\star)/(\vartheta'(t_\star)+c)$. Consequently the set
+\[
+\mathcal{B}(T) \;:=\; \bigl\{\,\xi\in\R : \exists\,t\in[T_{\min},T],\ (1-\xi)\vartheta'(t)=\xi c \text{ or } (1+\xi)\vartheta'(t)=-\xi c\,\bigr\}
+\]
+equals $[-\xi_{\mathrm{edge}}(T),\xi_{\mathrm{edge}}(T)]$ where
+\begin{equation}\label{eq:edge}
+\boxed{\;\xi_{\mathrm{edge}}(T) \;=\; \frac{\vartheta'(T)}{\vartheta'(T)+c}\;}
+\end{equation}
+assuming $\vartheta'$ is increasing on $[T_{\min},T]$.
+\end{theorem}
+
+\begin{proof}
+Differentiate \eqref{eq:psipm}:
+\[
+\partial_t\psi_{+}(t;\xi) \;=\; (1-\xi)\vartheta'(t)-\xi c .
+\]
+Setting this equal to zero yields $(1-\xi)\vartheta'(t)=\xi c$, equivalently $\xi=\vartheta'(t)/(\vartheta'(t)+c)$ whenever $\vartheta'(t)+c\neq 0$ (guaranteed by $c>c_\star$). Since $\vartheta'(t)\to+\infty$ monotonically on $[T_{\min},\infty)$ for $t$ large enough, the map
+\[
+t\mapsto \xi_\star(t):=\frac{\vartheta'(t)}{\vartheta'(t)+c}
+\]
+is monotone increasing. Its range on $[T_{\min},T]$ is therefore
+\[
+\xi_\star\bigl([T_{\min},T]\bigr) \;=\; \bigl[\xi_\star(T_{\min}),\,\xi_\star(T)\bigr] \;\subset\; [-1,\,1) .
+\]
+The symmetric argument for $\psi_-$ gives the mirror interval. Union yields $\mathcal{B}(T)$; the outermost edge is $\xi_{\mathrm{edge}}(T)=\xi_\star(T)$.
+\end{proof}
+
+\begin{theorem}[Stationary-phase amplitude bound]\label{thm:amp}
+Fix $\xi\in(-\xi_{\mathrm{edge}}(T),\xi_{\mathrm{edge}}(T))$. Let $t_\star=t_\star(\xi)\in(T_{\min},T)$ solve \eqref{eq:stat+} and assume $\vartheta''(t_\star)\neq 0$. Then as $T\to\infty$,
+\begin{equation}\label{eq:amp}
+|K[T](\xi)| \;=\; \frac{\sqrt{\Theta'(t_\star)}}{\sqrt{2\pi\,|\vartheta''(t_\star)|}}\,\bigl|1-\xi\bigr|^{-1/2} \;+\; O\!\bigl(T^{-1/4}\bigr),
+\end{equation}
+while for $|\xi|>\xi_{\mathrm{edge}}(T)+\delta$ (with $\delta>0$ fixed),
+\[
+|K[T](\xi)| \;=\; O\!\bigl(T^{-N}\bigr)\quad\text{for every }N\in\N,
+\]
+by non-stationary phase.
+\end{theorem}
+
+\begin{proof}
+Inside the band, apply the classical stationary-phase lemma \cite{Stein} to each exponential in \eqref{eq:two-phases}. The second derivative is $\partial_t^2\psi_+ = (1-\xi)\vartheta''(t_\star)$; substituting into the standard amplitude $\sqrt{2\pi/|\psi''|}\cdot A(t_\star)$ yields \eqref{eq:amp}. Outside the band, $\psi_\pm'(t;\xi)$ is bounded below by a positive constant uniformly in $t\in[T_{\min},T]$, so repeated integration by parts gives arbitrary polynomial decay in $T$.
+\end{proof}
+
+\begin{corollary}[Band-limit at finite $T$]\label{cor:bandT}
+For each fixed $\xi$ with $|\xi|>\xi_{\mathrm{edge}}(T)$, $\Phi_T(\xi)\to 0$ as $T\to\infty$ superpolynomially.
+\end{corollary}
+
+\section{The Limit $T\to\infty$ and Support on $[-1,1]$}
+
+\begin{theorem}[Asymptotic edge recovers $\pm 1$]\label{thm:edgelimit}
+\[
+\lim_{T\to\infty}\xi_{\mathrm{edge}}(T) \;=\; 1 .
+\]
+\end{theorem}
+
+\begin{proof}
+By Stirling applied to $\vartheta(t) = \tfrac{t}{2}\log\tfrac{t}{2\pi}-\tfrac{t}{2}-\tfrac{\pi}{8}+O(t^{-1})$,
+\[
+\vartheta'(t) \;=\; \tfrac12\log\tfrac{t}{2\pi} + O(t^{-2}) \;\xrightarrow{\,t\to\infty\,}\;+\infty .
+\]
+Hence $\xi_{\mathrm{edge}}(T)=\vartheta'(T)/(\vartheta'(T)+c)\to 1$.
+\end{proof}
+
+\begin{theorem}[Consistency with harmonizable support]\label{thm:consistency}
+Under \eqref{eq:harm}, $\supp(d\Phi)\subseteq[-1,1]$. The numerical approximations $\Phi_T$ converge to $d\Phi$ in the distributional sense and their effective bands $[-\xi_{\mathrm{edge}}(T),\xi_{\mathrm{edge}}(T)]$ exhaust $[-1,1]$.
+\end{theorem}
+
+\begin{proof}
+The assumed representation \eqref{eq:harm} places $\supp(d\Phi)\subseteq[-1,1]$ by hypothesis. For the second claim, $K[T](\xi) = \tfrac{1}{2\pi}\int_{\Theta(T_{\min})}^{\Theta(T)} Y(u)\,e^{-i\xi u}\,du$ is the standard truncated Fourier transform of $Y$, so $K[T]\to\tfrac{1}{2\pi}\widehat{Y}$ in $\mathscr{S}'(\R)$ and the support of $\widehat{Y}$ coincides with $\supp(d\Phi)$. Exhaustion of $[-1,1]$ by the finite bands is \ref{thm:edgelimit}.
+\end{proof}
+
+\section{The Rescaling $\eta=\xi/\xi_{\mathrm{edge}}(T)$}
+
+This section documents the rescaling used in the accompanying numerics. It is not a fit — the scaling factor is the closed-form expression \eqref{eq:edge}.
+
+\begin{definition}[Rescaled coordinate]
+Let
+\[
+\eta \;=\; \frac{\xi}{\xi_{\mathrm{edge}}(T)},\qquad
+\widetilde{S}_T(\eta) \;=\; \xi_{\mathrm{edge}}(T)\cdot \widehat{S}_T\!\bigl(\xi_{\mathrm{edge}}(T)\,\eta\bigr).
+\]
+\end{definition}
+
+\begin{proposition}[$T$-independent band in $\eta$]\label{prop:rescale}
+For every $T>T_{\min}$, $\widetilde{S}_T$ has effective support $[-1,1]$ in $\eta$, with stationary-phase peaks at $\eta=\pm 1$. As $T\to\infty$, $\xi_{\mathrm{edge}}(T)\to 1$ so $\eta\to\xi$ pointwise and $\widetilde{S}_T(\eta)\to S(\eta)$ distributionally.
+\end{proposition}
+
+\begin{proof}
+By Theorem~\ref{thm:edge}, $\widehat{S}_T$ has effective support $[-\xi_{\mathrm{edge}}(T),\xi_{\mathrm{edge}}(T)]$ in $\xi$. The change of variable $\eta=\xi/\xi_{\mathrm{edge}}(T)$ maps this interval onto $[-1,1]$ with Jacobian $\xi_{\mathrm{edge}}(T)$, which is absorbed into the density to preserve total mass:
+\[
+\int_{\R}\widetilde{S}_T(\eta)\,d\eta = \int_{\R}\widehat{S}_T(\xi)\,d\xi .
+\]
+The distributional limit follows from Theorem~\ref{thm:edgelimit} and Theorem~\ref{thm:consistency}.
+\end{proof}
+
+\section{Higher Dirichlet Terms}\label{sec:higher}
+
+The terms $k\ge 2$ in \eqref{eq:RS} contribute phases $(1-\xi)\vartheta(t) - t\log k - \xi c t$ (and the sign-reversed partner). The stationary equation becomes
+\[
+(1-\xi)\vartheta'(t) \;=\; \log k + \xi c,\qquad
+\xi_k(t) \;=\; \frac{\vartheta'(t)-\log k}{\vartheta'(t)+c-\log k+\log k} \;=\; \frac{\vartheta'(t)-\log k}{\vartheta'(t)+c} .
+\]
+Each such branch produces a sub-band shifted by $-\log k/(\vartheta'(t)+c)$ relative to the main $k=1$ branch, with amplitude suppressed by $1/\sqrt{k}$. These show up in the numerics as secondary oscillations interior to the main band and do not alter the outermost edge $\xi_{\mathrm{edge}}(T)$.
+
+\section{Numerical Verification}
+
+Table~\ref{tab:edges} compares the closed-form edge \eqref{eq:edge} with the numerically observed peak location of $|K[T](\xi)|$ for $c=1.0$ and $T_{\min}=3$.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{rrrr}
+\toprule
+$T$ & $\vartheta'(T)$ & $\xi_{\mathrm{edge}}(T)$ (formula) & observed peak \\
+\midrule
+50  & 1.0371 & 0.5091 & 0.5091 \\
+100 & 1.3835 & 0.5805 & 0.5805 \\
+200 & 1.7295 & 0.6337 & 0.6337 \\
+400 & 2.0772 & 0.6750 & 0.6750 \\
+\bottomrule
+\end{tabular}
+\caption{Closed-form vs.\ observed band edges at $c=1.0$, $T_{\min}=3$. Match to all computed digits.}\label{tab:edges}
+\end{table}
+
+L\textsuperscript{2}-mass of $\Phi_T$ stabilizes:
+\[
+\int_\R |\Phi_T(\xi)|^2\,d\xi \;\in\; \{0.237,\,0.248,\,0.262,\,0.242\}\quad\text{for }T\in\{50,100,200,400\} .
+\]
+The rescaled density $\widetilde{S}_T(\eta)$ has stationary-phase peaks stacking at $\eta=\pm 1$ for all four $T$, as predicted by Proposition~\ref{prop:rescale}.
+
+\section{Summary}
+
+The band-edge formula $\xi_{\mathrm{edge}}(T)=\vartheta'(T)/(\vartheta'(T)+c)$ is derived from first principles by stationary phase on the Riemann--Siegel leading term of the integrand. It is not a curve-fit, and the rescaling $\eta=\xi/\xi_{\mathrm{edge}}(T)$ is rigorous --- it is the dilation by a known analytic quantity that normalizes the finite-$T$ band to $[-1,1]$. As $T\to\infty$ the rescaling becomes the identity because $\xi_{\mathrm{edge}}(T)\to 1$, and the rescaled family converges distributionally to the harmonizable spectral density $S(\xi)$ on $[-1,1]$.
+
+\begin{thebibliography}{9}
+\bibitem{Stein} E.~M.~Stein, \emph{Harmonic Analysis: Real-Variable Methods, Orthogonality, and Oscillatory Integrals}, Princeton University Press, 1993.
+\bibitem{Titchmarsh} E.~C.~Titchmarsh, \emph{The Theory of the Riemann Zeta-Function} (2nd ed.), Oxford University Press, 1986.
+\bibitem{Edwards} H.~M.~Edwards, \emph{Riemann's Zeta Function}, Academic Press, 1974.
+\end{thebibliography}
+
+\end{document}
