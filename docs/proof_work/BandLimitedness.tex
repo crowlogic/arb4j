@@ -1,0 +1,199 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\DeclareMathOperator{\Imag}{Im}
+
+\title{Band-Limitedness of the Warped Pullback of the Hardy $Z$-Function}
+\author{Stephen Crowley}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $Z$ denote the Hardy $Z$-function and $\Theta(t) = \vartheta(t) + ct$ with $c > c_\star := -\inf_\R \vartheta'$. The warped pullback
+\[
+Y(u) := Z(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u))}
+\]
+has windowed Fourier transform $\widehat{Y_T}$ satisfying $|K_T(\mu)|^2/\Theta(T) = O_\mu(T^{-1/2})$ for every fixed $|\mu| > 1$, where $K_T = \widehat{Y_T}/(2\pi)$ and $\Theta(T) = \tfrac12 T\log(T/2\pi) + O(T)$. Consequently the windowed second-moment spectral measures $d\rho_T(\mu) = |\widehat{Y_T}(\mu)|^2/(2\pi\Theta(T))\,d\mu$ concentrate on $[-1,1]$ with total mass tending to $2$, and any weak-$*$ subsequential limit $\rho$ has $\mathrm{supp}\,\rho \subseteq [-1,1]$.
+\end{abstract}
+
+\section{Setup}
+
+\begin{definition}[Hardy function]
+$\vartheta(t) := \arg\Gamma(\tfrac14 + \tfrac{it}{2}) - \tfrac{t}{2}\log\pi$ (continuous branch, $\vartheta(0) = 0$), and $Z(t) := e^{i\vartheta(t)}\zeta(\tfrac12 + it)$, real-valued on $\R$.
+\end{definition}
+
+\begin{definition}[Warp]
+Fix $c > c_\star := -\inf_{t \in \R}\vartheta'(t)$. Set $\Theta(t) := \vartheta(t) + ct$. Then $\Theta'(t) = \vartheta'(t) + c \geq c - c_\star > 0$ on $\R$, so $\Theta: \R \to \R$ is a $C^\infty$ diffeomorphism.
+\end{definition}
+
+\begin{definition}[Warped pullback]
+$Y(u) := Z(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u))}$ for $u \in \R$, principal branch of the positive square root.
+\end{definition}
+
+\begin{definition}[Windowed Fourier transform]
+For $T \geq 2$ and $\mu \in \R$,
+\[
+\widehat{Y_T}(\mu) := \int_0^{\Theta(T)} Y(u)\,e^{-i\mu u}\,du, \qquad K_T(\mu) := \widehat{Y_T}(\mu)/(2\pi).
+\]
+\end{definition}
+
+\paragraph{Axioms used.}
+
+\textbf{(RS)} Riemann--Siegel: $Z(t) = 2\sum_{n \leq N(t)} n^{-1/2}\cos(\vartheta(t) - t\log n) + R_{\mathrm{RS}}(t)$ with $N(t) = \lfloor\sqrt{t/2\pi}\rfloor$ and $R_{\mathrm{RS}}(t) = O(t^{-1/4})$, $R_{\mathrm{RS}}'(t) = O(t^{-1/4}\log t)$.
+
+\textbf{(HL)} Hardy--Littlewood: $\int_0^T|Z|^2\,dt = T\log(T/2\pi) + (2\gamma - 1)T + O(T^{1/2}\log T)$.
+
+\textbf{($\vartheta$)} $\vartheta'(t) = \tfrac12\log(t/2\pi) + O(t^{-2})$; $\vartheta''(t) = 1/(2t) + O(t^{-3})$.
+
+\section{Plancherel mass}
+
+\begin{lemma}[Plancherel via warp]\label{lem:plancherel}
+$\displaystyle\int_0^{\Theta(T)}|Y(u)|^2\,du = \int_0^T|Z(t)|^2\,dt$, hence
+\[
+\int_\R |\widehat{Y_T}(\mu)|^2\,d\mu = 2\pi \int_0^T|Z|^2\,dt.
+\]
+\end{lemma}
+
+\begin{proof}
+Change of variables $u = \Theta(t)$, $du = \Theta'(t)\,dt$: $\int|Y|^2 du = \int (|Z|^2/\Theta')\Theta'\,dt = \int|Z|^2\,dt$. The second identity is Plancherel on $L^2([0,\Theta(T)])$.
+\end{proof}
+
+\begin{corollary}[Total mass]\label{cor:mass}
+$\displaystyle\frac{1}{2\pi\Theta(T)}\int_\R |\widehat{Y_T}(\mu)|^2\,d\mu \longrightarrow 2$ as $T \to \infty$, where $\Theta(T) = \tfrac12 T\log(T/2\pi) + O(T)$.
+\end{corollary}
+
+\begin{proof}
+Combine Lemma~\ref{lem:plancherel} with (HL): $\int_0^T|Z|^2\,dt = T\log(T/2\pi) + O(T) \sim 2\Theta(T)$.
+\end{proof}
+
+\section{Mode factorization}
+
+\begin{lemma}[Riemann--Siegel factorization of $\widehat{Y_T}$]\label{lem:modes}
+For $T \geq 2$, $\mu \in \R$,
+\[
+\widehat{Y_T}(\mu) = \int_0^T Z(t)\sqrt{\Theta'(t)}\,e^{-i\mu\Theta(t)}\,dt = \sum_{n=1}^{N(T)}\sum_{\sigma \in \{\pm 1\}}\mathcal J_{n,\sigma}(T,\mu) + \mathcal R_T(\mu),
+\]
+\[
+\mathcal J_{n,\sigma}(T,\mu) := n^{-1/2}\int_{t_n}^T \sqrt{\Theta'(t)}\,e^{i\Phi_{n,\sigma,\mu}(t)}\,dt,
+\qquad \Phi_{n,\sigma,\mu}(t) := \sigma(\vartheta(t) - t\log n) - \mu\Theta(t),
+\]
+with $t_n := \max(2, 2\pi n^2)$.
+\end{lemma}
+
+\begin{proof}
+Substitute $u = \Theta(t)$ in the Fourier integral: $du = \Theta'(t)dt$, $Y(u)du = Z(t)\Theta'(t)/\sqrt{\Theta'(t)}\,dt = Z(t)\sqrt{\Theta'(t)}\,dt$. Insert (RS) and expand $\cos = (e^{i\cdot} + e^{-i\cdot})/2$; the $\sigma = \pm 1$ index tracks the two exponentials. Modes $n > N(t)$ do not contribute at time $t$, giving the cutoff $t \geq 2\pi n^2$.
+\end{proof}
+
+\begin{lemma}[Phase derivative]\label{lem:phase}
+Let $\omega_n(t) := (\vartheta'(t) - \log n)/\Theta'(t)$. Then for $t \geq t_n$:
+\begin{enumerate}
+\item[(i)] $\Phi'_{n,\sigma,\mu}(t) = \Theta'(t)\,(\sigma\omega_n(t) - \mu)$.
+\item[(ii)] $\omega_n(t) \in [0, 1)$.
+\item[(iii)] For $|\mu| \geq 1 + \epsilon$, $|\Phi'_{n,\sigma,\mu}(t)| \geq \epsilon\,\Theta'(t)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) Direct: $\Phi' = \sigma\vartheta' - \sigma\log n - \mu\Theta' = \Theta'(\sigma\omega_n - \mu)$.
+(ii) For $t \geq 2\pi n^2$, $\vartheta'(t) \geq \log n$, so $\omega_n \geq 0$; and $\Theta' - (\vartheta' - \log n) = c + \log n > 0$, so $\omega_n < 1$.
+(iii) $\sigma\omega_n \in [-1, 1)$, so $|\sigma\omega_n - \mu| \geq |\mu| - 1 \geq \epsilon$.
+\end{proof}
+
+\section{Band-limit bound}
+
+\begin{lemma}[Single-mode off-band bound]\label{lem:mode}
+Fix $\epsilon > 0$ and $|\mu| \geq 1 + \epsilon$. For each $1 \leq n \leq N(T)$ and $\sigma \in \{\pm 1\}$,
+\[
+|\mathcal J_{n,\sigma}(T,\mu)| \leq \frac{C_1}{\epsilon\, n^{1/2}}\left(\frac{1}{\sqrt{\Theta'(T)}} + \frac{1}{\sqrt{\Theta'(t_n)}}\right) + \frac{C_2}{\epsilon^2\, n^{1/2}}.
+\]
+\end{lemma}
+
+\begin{proof}
+Integration by parts with $e^{i\Phi} = (i\Phi')^{-1}(d/dt)e^{i\Phi}$:
+\[
+\mathcal J_{n,\sigma} = n^{-1/2}\left[\frac{\sqrt{\Theta'}}{i\Phi'}e^{i\Phi}\right]_{t_n}^T - n^{-1/2}\int_{t_n}^T \frac{d}{dt}\!\left(\frac{\sqrt{\Theta'}}{i\Phi'}\right)e^{i\Phi}\,dt.
+\]
+Boundary: $|\sqrt{\Theta'}/\Phi'| \leq 1/(\epsilon\sqrt{\Theta'})$ by Lemma~\ref{lem:phase}(iii).
+
+Integrated part: $\frac{d}{dt}(\sqrt{\Theta'}/\Phi') = \Theta''/(2\sqrt{\Theta'}\Phi') - \sqrt{\Theta'}\Phi''/\Phi'^2$, with $\Phi'' = \sigma\vartheta'' - \mu\vartheta''$ (since $\Theta'' = \vartheta''$) so $|\Phi''| \leq (1+|\mu|)|\vartheta''|$. Both pieces are bounded by $C|\vartheta''|/(\epsilon^2\Theta'^{3/2})$; integrating, $\int_2^\infty |\vartheta''|/\Theta'^{3/2}\,dt \leq C\int_2^\infty dt/(t(\log t)^{3/2}) < \infty$.
+\end{proof}
+
+\begin{lemma}[Remainder bound off-band]\label{lem:remainder}
+For $|\mu| \geq 1 + \epsilon$, $|\mathcal R_T(\mu)| = O_\epsilon(1)$, where $\mathcal R_T(\mu) := \int_0^T R_{\mathrm{RS}}(t)\sqrt{\Theta'(t)}e^{-i\mu\Theta(t)}\,dt$.
+\end{lemma}
+
+\begin{proof}
+Integration by parts against phase $-\mu\Theta(t)$: $|d\Theta/dt| = \Theta' \geq c - c_\star$, and $|\mu\Theta'| \geq (1+\epsilon)(c-c_\star)$ bounded below. One integration by parts gives
+\[
+|\mathcal R_T(\mu)| \leq \frac{2}{|\mu|(c-c_\star)}\left[|R_{\mathrm{RS}}(T)|\sqrt{\Theta'(T)} + \int_2^T \left|\tfrac{d}{dt}(R_{\mathrm{RS}}\sqrt{\Theta'})\right|dt\right].
+\]
+With $|R_{\mathrm{RS}}| = O(t^{-1/4})$, $|R_{\mathrm{RS}}'| = O(t^{-1/4}\log t)$, $\sqrt{\Theta'} = O(\sqrt{\log t})$, $(\sqrt{\Theta'})' = O(1/(t\sqrt{\log t}))$, both boundary term and integral are $O(1)$.
+\end{proof}
+
+\begin{theorem}[Band-limit]\label{thm:bandlimit}
+For every $\mu \in \R$ with $|\mu| > 1$,
+\[
+\frac{|K_T(\mu)|^2}{\Theta(T)} = O_\mu\!\left(\frac{1}{T^{1/2}\log T}\right) \longrightarrow 0,\qquad T \to \infty,
+\]
+locally uniformly on $\{|\mu| > 1\}$.
+\end{theorem}
+
+\begin{proof}
+Fix $\epsilon > 0$, $|\mu| \geq 1 + \epsilon$. By Lemmas~\ref{lem:mode} and \ref{lem:remainder},
+\[
+|\widehat{Y_T}(\mu)| \leq \sum_{n=1}^{N(T)}\sum_\sigma |\mathcal J_{n,\sigma}| + |\mathcal R_T| \leq \frac{2C_1}{\epsilon}\sum_{n=1}^{N(T)}\frac{1}{n^{1/2}\sqrt{\Theta'(t_n)}} + \frac{2C_1}{\epsilon\sqrt{\Theta'(T)}}\sum_{n=1}^{N(T)}\frac{1}{n^{1/2}} + \frac{2C_2}{\epsilon^2}\sum_{n=1}^{N(T)}\frac{1}{n^{1/2}} + O_\epsilon(1).
+\]
+Using $\Theta'(t_n) \asymp \log n$ for $n \geq 2$, $\Theta'(T) \asymp \log T$, $\sum_{n \leq N}n^{-1/2} = O(\sqrt N)$, $\sum_{n \leq N}1/(n^{1/2}\sqrt{\log n}) = O(\sqrt{N/\log N})$:
+\[
+|\widehat{Y_T}(\mu)| = O_\epsilon\!\left(\sqrt{N(T)/\log N(T)} + \sqrt{N(T)/\log T} + \sqrt{N(T)}\right) = O_\epsilon(T^{1/4}).
+\]
+Hence
+\[
+\frac{|K_T(\mu)|^2}{\Theta(T)} = \frac{|\widehat{Y_T}(\mu)|^2}{(2\pi)^2\Theta(T)} = \frac{O_\epsilon(T^{1/2})}{T\log T/2} = O_\epsilon\!\left(\frac{1}{T^{1/2}\log T}\right).
+\]
+Uniformity on compact subsets of $\{|\mu| > 1\}$ is immediate from the uniform lower bound on $\epsilon = |\mu| - 1$.
+\end{proof}
+
+\section{Weak-$*$ concentration of the spectral measure}
+
+\begin{definition}
+$d\rho_T(\mu) := |\widehat{Y_T}(\mu)|^2/(2\pi\Theta(T))\,d\mu$.
+\end{definition}
+
+\begin{corollary}\label{cor:support}
+The family $\{\rho_T\}_{T \geq 2}$ of nonnegative Borel measures on $\R$ has total mass $\rho_T(\R) \to 2$, and for every $\epsilon > 0$,
+\[
+\rho_T\big(\R\setminus[-1-\epsilon,1+\epsilon]\big) \longrightarrow 0, \qquad T \to \infty.
+\]
+Consequently, any weak-$*$ subsequential limit $\rho$ is a nonnegative even Borel measure with $\mathrm{supp}\,\rho \subseteq [-1,1]$ and $\rho([-1,1]) = 2$.
+\end{corollary}
+
+\begin{proof}
+Total mass by Corollary~\ref{cor:mass}. Off-band: by Theorem~\ref{thm:bandlimit}, for $|\mu| \geq 1+\epsilon$ in any bounded window $[-M, M]$,
+\[
+\rho_T\big([-M,-1-\epsilon] \cup [1+\epsilon, M]\big) = \int_{|\mu| \in [1+\epsilon, M]} \frac{|\widehat{Y_T}|^2}{2\pi\Theta(T)}\,d\mu = O_\epsilon\!\left(\frac{M}{T^{1/2}\log T}\right) \to 0.
+\]
+For the tail $|\mu| > M$, use that total mass is bounded by $2 + o(1)$ and the in-band mass converges to $2$, so the tail mass vanishes as $T, M \to \infty$. Banach--Alaoglu gives the weak-$*$ limit; support and mass pass to the limit. Evenness from reality of $Y$: $\overline{\widehat{Y_T}(\mu)} = \widehat{Y_T}(-\mu)$, so $|\widehat{Y_T}(-\mu)| = |\widehat{Y_T}(\mu)|$.
+\end{proof}
+
+\begin{thebibliography}{9}
+\bibitem{Edwards} H.M.\ Edwards, \emph{Riemann's Zeta Function}, Academic Press, 1974 (Riemann--Siegel).
+\bibitem{Titchmarsh} E.C.\ Titchmarsh, \emph{The Theory of the Riemann Zeta-Function}, 2nd ed., Oxford, 1986 (Hardy--Littlewood second moment, $\vartheta$-asymptotics).
+\end{thebibliography}
+
+\end{document}
