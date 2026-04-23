@@ -114,7 +114,7 @@ Theorems~\ref{thm:bdd},~\ref{thm:band} supply the hypotheses of Axiom~\ref{ax:PW
 Every nontrivial zero of $\zeta$ satisfies $\Re s=\tfrac12$.
 \end{theorem}
 \begin{proof}
-By Theorem~\ref{thm:ent}, every zero of $\widetilde Y$ in $\C$ lies in $\R$. By Lemma~\ref{lem:warp}, on $\R$, $Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))$ with $\sqrt{\Theta'(t)}>0$ and $\Theta:\R\to\R$ a bijection; the factor $\sqrt{\Theta'}$ is nonvanishing on $\R$ and the reparametrization $t\mapsto\Theta(t)$ is a bijection of $\R$, so it neither introduces nor removes zeros. Hence $\{t\in\R:Z(t)=0\}=\Theta^{-1}(\{u\in\R:Y(u)=0\})$. By Axiom~\ref{ax:Z}, the nontrivial zeros of $\zeta$ are in bijection with $\{t\in\R:Z(t)=0\}$ via $\rho\mapsto\Im\rho$, so every nontrivial zero has the form $\tfrac12+i\tau$ with $\tau\in\R$, i.e.\ $\Re\rho=\tfrac12$.
+On $\R$, Axiom~\ref{ax:Z} gives $\zeta(\tfrac12+it)=e^{-i\vartheta(t)}Z(t)$, and Lemma~\ref{lem:warp} gives $Z(t)=\sqrt{\Theta'(t)}\,\widetilde Y(\Theta(t))$ with $\sqrt{\Theta'(t)}>0$ and $\Theta:\R\to\R$ a bijection. Hence on $\R$ the entire functions $w\mapsto\zeta(\tfrac12+iw)$ and $w\mapsto e^{-i\vartheta(w)}\sqrt{\Theta'(w)}\,\widetilde Y(\Theta(w))$ coincide; by the identity theorem they coincide on $\C$. The exponential and square-root factors are nonvanishing, so the zero sets of the two sides coincide on $\C$. By Theorem~\ref{thm:ent}, every zero of $\widetilde Y$ lies in $\R$, and $\Theta^{-1}(\R)=\R$, so every zero of $w\mapsto\widetilde Y(\Theta(w))$ lies in $\R$. Therefore every $w\in\C$ with $\zeta(\tfrac12+iw)=0$ lies in $\R$, so every nontrivial zero $\rho$ of $\zeta$ has $\rho=\tfrac12+iw$ with $w\in\R$, i.e.\ $\Re\rho=\tfrac12$.
 \end{proof}
 
 \begin{thebibliography}{9}
