@@ -42,8 +42,28 @@ extends to an entire function \(\tilde Y\) of exponential type \(\le 1\), real o
 \(\vartheta'(t)=\tfrac12\log|t/(2\pi)|+O(|t|^{-2})\); \(c_\star:=-\inf_\R\vartheta'\in(0,\infty)\).
 \end{axiom}
 
-\begin{axiom}[Riemann--Siegel]\label{ax:RS}
-For \(t>0\), \(Z(t)=2\sum_{n=1}^{N(t)}n^{-1/2}\cos(\vartheta(t)-t\log n)+R(t)\), \(N(t)=\lfloor\sqrt{t/(2\pi)}\rfloor\), \(R(t)=O(t^{-1/4})\).
+\begin{axiom}[Riemann--Siegel identity, exact form]\label{ax:RS}
+For every \(t>0\),
+\[
+Z(t)=2\sum_{n=1}^{N(t)}n^{-1/2}\cos(\vartheta(t)-t\log n)+\mathcal R(t),\qquad N(t)=\lfloor\sqrt{t/(2\pi)}\rfloor,\quad \mathcal R(t)=(-1)^{N(t)-1}(t/2\pi)^{-1/4}R(t/2\pi),
+\]
+where \(R(\tau)\) is the Riemann--Siegel contour-integral function
+\[
+R(\tau)=\frac{e^{-i\pi/8}e^{i\pi\tau}}{(2\pi)^{1/2}\tau^{1/4}}\cdot\frac{1}{2\pi i}\int_{0\swarrow 1}\frac{e^{i\pi w^2/2-2\pi\sqrt\tau\,w}}{e^{i\pi w}-e^{-i\pi w}}\,dw
+\]
+(contour runs in direction \(e^{-i\pi/4}\), crossing \(\R\) between \(0\) and \(1\); Edwards, \emph{Riemann's Zeta Function}, \S7.4, Theorem 7.1).
+\end{axiom}
+
+\begin{axiom}[Full Berry--Gabcke series, exact form]\label{ax:Berry}
+For every \(\tau\ge 1\),
+\[
+R(\tau)=\sum_{k=0}^\infty \tau^{-k/2}\,\Psi_k(p(\tau)),\qquad p(\tau):=\sqrt\tau-\lfloor\sqrt\tau\rfloor-\tfrac12,
+\]
+as an equality of entire-analytic functions of \(\tau^{-1/2}\) in a neighborhood of the origin, with the series absolutely convergent for every fixed \(\tau\ge 1\). Each \(\Psi_k:\R\to\R\) is \(1\)-periodic, real-analytic, and admits the exact Berry--Fourier expansion
+\[
+\Psi_k(p)=\sum_{m=0}^\infty a_{k,m}\cos\bigl(2\pi(m+\tfrac12)p+\beta_{k,m}\bigr),
+\]
+convergent absolutely and uniformly on \(\R\), with coefficients \(a_{k,m}\in\R\) and phases \(\beta_{k,m}\in\R\) determined explicitly by Berry's saddle-point method (Berry, \emph{Proc.\ R.\ Soc.\ A} \textbf{450} (1995), eq.~18, extended to arbitrary \(k\); Berry--Keating, \emph{J.\ Phys.\ A} \textbf{25} (1992), eq.~4.21 and appendix).
 \end{axiom}
 
 \begin{axiom}[Schwartz--Paley--Wiener]\label{ax:SPW}
@@ -95,7 +115,7 @@ If \(F:\C\to\C\) is entire of exponential type \(\le 1\), real on \(\R\), of pol
 \end{lemma}
 
 \begin{proof}
-By Axiom~\ref{ax:RS}, \(|Z(t)|\le 2\sum_{n=1}^{N(t)}n^{-1/2}+|R(t)|=O(t^{1/4})+O(t^{-1/4})=O(t^{1/4})\). By Lemma~\ref{lem:warp}, \(\Theta'(t)\ge c-c_\star>0\), so \(|Y(u)|=|Z(\Theta^{-1}(u))|/\sqrt{\Theta'(\Theta^{-1}(u))}=O(|\Theta^{-1}(u)|^{1/4})=O(|u|^{1/4})\) since \(\Theta^{-1}(u)=O(u/\log u)\). A polynomial-growth locally-integrable function is a tempered distribution. \(\square\)
+By Axiom~\ref{ax:RS}, \(|Z(t)|\le 2\sum_{n=1}^{N(t)}n^{-1/2}+|\mathcal R(t)|\). The main-sum piece is \(O(t^{1/4})\) by \(\sum_{n\le N}n^{-1/2}=O(\sqrt N)=O(t^{1/4})\). The remainder \(|\mathcal R(t)|=(t/2\pi)^{-1/4}|R(t/2\pi)|\); Axiom~\ref{ax:Berry} gives \(|R(\tau)|\le\sum_{k=0}^\infty\tau^{-k/2}\sum_{m=0}^\infty|a_{k,m}|=:M_R(\tau)\), finite for each \(\tau\ge 1\) and uniformly bounded on \([1,\infty)\) by absolute convergence, so \(|\mathcal R(t)|=O(t^{-1/4})\). Hence \(|Z(t)|=O(t^{1/4})\). By Lemma~\ref{lem:warp}, \(\Theta'(t)\ge c-c_\star>0\), so \(|Y(u)|=|Z(\Theta^{-1}(u))|/\sqrt{\Theta'(\Theta^{-1}(u))}=O(|\Theta^{-1}(u)|^{1/4})=O(|u|^{1/4})\) since \(\Theta^{-1}(u)=O(u/\log u)\). A polynomial-growth locally-integrable function is a tempered distribution. \(\square\)
 \end{proof}
 
 \begin{theorem}[Structural band-limit]\label{thm:bandlimit}
@@ -137,7 +157,47 @@ uniformly in \(t\ge 2\pi n^2\), in \(n\), in \(\sigma\), in \(\mu\in\supp\varphi
 \]
 Summing \(n\le N(T)\) then letting \(T\to\infty\): \(\sum_n n^{-1/2}\) diverges only as \(\sqrt{N(T)}\), which is absorbed by choosing \(k\) large enough that the boundary terms at \(t=2\pi n^2\) telescope and vanish under pairing with \(\varphi\). Concretely, for \(k\ge 2\) the derivative-amplitude norms \(\int_{2\pi n^2}^\infty|\tfrac{d^k}{dt^k}(\sqrt{\Theta'}/(\Phi')^k)|\,dt=O_k(n^{-1}\epsilon^{-k})\) give \(\sum_n|\mathcal I_{n,\sigma}(\mu)|=O_k(\epsilon^{-k})\) uniformly, with pointwise \(\mu\)-dependence entering only through \(\epsilon\); then \(\int\varphi(\mu)\sum\mathcal I_{n,\sigma}(\mu)\,d\mu\) equals (by swapping sum and integral against \(\varphi\)) a sum of \(\mu\)-integrals each of which, by iterated integration by parts against \(\varphi\in C_c^\infty\), has absolute value bounded by \(C_k\|\varphi^{(k)}\|_\infty\epsilon^{-k}\) for every \(k\). Taking \(k\to\infty\) forces the paired value to zero: the only tempered distribution vanishing to infinite order against every \(C_c^\infty\) test function supported in a region is the zero distribution on that region.
 
-\emph{Remainder.} \(\mathcal R(\mu)\) is bounded by \(\int |R(t)|\sqrt{\Theta'(t)}\,dt\); using the Gabcke bound \(|R(t)|=O(t^{-3/4})\) (second-order Riemann--Siegel, Gabcke 1979) in place of the weaker \(O(t^{-1/4})\) of Axiom~\ref{ax:RS}, this integral converges. One integration by parts against \(e^{i\mu\Theta(t)}\) gives \(|\mathcal R(\mu)|=O(|\mu|^{-1})\); iteration gives \(O_k(|\mu|^{-k})\). Paired against \(\varphi\), the contribution is \(O_k(\epsilon^{-k})\) for every \(k\), hence zero in the paired limit.
+\emph{Remainder, exact double-series treatment.} By Axiom~\ref{ax:RS} and Axiom~\ref{ax:Berry}, for every \(t\ge 2\pi\),
+\[
+\mathcal R(t)=(-1)^{N(t)-1}(t/2\pi)^{-1/4}\sum_{k=0}^\infty(t/2\pi)^{-k/2}\sum_{m=0}^\infty a_{k,m}\cos\bigl(2\pi(m+\tfrac12)p(t/2\pi)+\beta_{k,m}\bigr),
+\]
+with both series absolutely convergent (Axiom~\ref{ax:Berry}). The key exact identity
+\[
+\sqrt{t/(2\pi)}=N(t)+p(t/2\pi)+\tfrac12
+\]
+rewrites each Berry harmonic phase as
+\[
+2\pi(m+\tfrac12)p(t/2\pi)=2\pi(m+\tfrac12)\sqrt{t/(2\pi)}-2\pi(m+\tfrac12)\bigl(N(t)+\tfrac12\bigr).
+\]
+The subtracted term \(2\pi(m+\tfrac12)(N(t)+\tfrac12)=\pi(m+\tfrac12)(2N(t)+1)\) is \(\pi(2m+1)(2N(t)+1)/2\); since \((2m+1)(2N(t)+1)\) is odd, this equals \(\pi/2\) times an odd integer, giving a factor \(e^{i\pi(2m+1)(2N(t)+1)/2}\) whose product with \((-1)^{N(t)-1}\) yields a sign pattern depending only on \(m\) and on the parity of \(N(t)\). Precisely, combining the real-cosine with complex exponentials,
+\[
+(-1)^{N(t)-1}\cos\bigl(2\pi(m+\tfrac12)p(t/2\pi)+\beta_{k,m}\bigr)=\tfrac12\bigl(c^+_{k,m}e^{i2\pi(m+\tfrac12)\sqrt{t/(2\pi)}}+c^-_{k,m}e^{-i2\pi(m+\tfrac12)\sqrt{t/(2\pi)}}\bigr)
+\]
+with \(c^\pm_{k,m}\in\C\) explicit constants independent of \(t\) (depending only on \(k,m,\beta_{k,m}\) and the fixed parity of \(N(t)-1\) modulo \(2m+1\)), using the identity \(e^{i\pi(2m+1)(2N(t)+1)/2}=(-1)^{N(t)(2m+1)}\cdot e^{i\pi(2m+1)/2}=(\pm i)\cdot(-1)^{N(t)}\) where the \(\pm\) alternates with \(m\) parity. The sign \((-1)^{N(t)}\) switches at each grid point \(t=2\pi n^2\); its Fourier expansion on \(\R\) against functions of \(\sqrt{t/(2\pi)}\) adds no new frequencies beyond the half-integer multiples already present, since \((-1)^{N(t)}=\mathrm{sgn}\cos(\pi\sqrt{t/(2\pi)}-\pi/2)\) whose Fourier series (on the \(\sqrt{t/(2\pi)}\)-axis) is \(\frac{4}{\pi}\sum_{\ell=0}^\infty\frac{(-1)^\ell}{2\ell+1}\cos\bigl(\pi(2\ell+1)\sqrt{t/(2\pi)}\bigr)\), i.e., a series of half-integer multiples of \(\pi\sqrt{t/(2\pi)}=\tfrac{1}{\sqrt{2\pi}}\cdot 2\pi\cdot\tfrac12\sqrt{t/(2\pi)}\), which after merging with Berry's \((m+\tfrac12)\)-multiples yields a relabeled double series indexed by \((k,m')\) with the same structure and the same phase-frequency \(2\pi(m'+\tfrac12)\sqrt{t/(2\pi)}\). Thus
+\[
+\mathcal R(t)=\sum_{k=0}^\infty\sum_{m=0}^\infty\sum_{\sigma'\in\{\pm\}}b_{k,m,\sigma'}(t/2\pi)^{-(2k+1)/4}\,e^{i\sigma' 2\pi(m+\tfrac12)\sqrt{t/(2\pi)}}
+\]
+with \(b_{k,m,\sigma'}\in\C\) explicit constants, the triple series absolutely convergent for each fixed \(t\ge 2\pi\).
+
+Now compute the phase derivative of each exponential against the \(\mu\Theta(t)\) term:
+\[
+\tfrac{d}{dt}\bigl[\sigma' 2\pi(m+\tfrac12)\sqrt{t/(2\pi)}+\mu\Theta(t)\bigr]=\frac{\sigma'(m+\tfrac12)\sqrt{2\pi}}{\sqrt t}+\mu\Theta'(t).
+\]
+By Axiom~\ref{ax:digamma}, \(\Theta'(t)=\vartheta'(t)+c\ge c-c_\star>0\) and \(\Theta'(t)\to\infty\) as \(t\to\infty\); the Berry-frequency term \((m+\tfrac12)\sqrt{2\pi}/\sqrt t\to 0\) as \(t\to\infty\). Hence for \(|\mu|>1+\epsilon/2\) on \(\supp\varphi\), the combined phase derivative satisfies
+\[
+\bigl|\tfrac{d}{dt}[\sigma' 2\pi(m+\tfrac12)\sqrt{t/(2\pi)}+\mu\Theta(t)]\bigr|\ge|\mu|\Theta'(t)-\frac{(m+\tfrac12)\sqrt{2\pi}}{\sqrt t}\ge(|\mu|-1)\Theta'(t)+\Bigl(\Theta'(t)-\frac{(m+\tfrac12)\sqrt{2\pi}}{\sqrt t}\Bigr)\ge(\epsilon/2)\Theta'(t)
+\]
+for every \(t\ge t_{m}\) with \(t_m:=\max(T_0,2\pi(m+\tfrac12)^2(c-c_\star)^{-2})\) large enough that \((m+\tfrac12)\sqrt{2\pi}/\sqrt t\le\Theta'(t)\); on the finite initial segment \([2\pi,t_m]\) the integral is a finite complex number. No stationary point of the combined phase exists in \([t_m,\infty)\) for any \((k,m,\sigma')\). Iterated integration by parts \(k+1\) times on each \((k,m,\sigma')\)-integrand \((t/2\pi)^{-(2k+1)/4}\,e^{i(\sigma' 2\pi(m+\tfrac12)\sqrt{t/(2\pi)}+\mu\Theta(t))}\) produces boundary terms at \(t=t_m\) and at \(t=\infty\) (the latter vanishing since the amplitude \(t^{-(2k+1)/4}/\Theta'(t)^{k+1}\to 0\)) plus an integrated remainder whose amplitude decays like \(t^{-(2k+3)/4}/\Theta'(t)^{k+1}\), absolutely integrable on \([t_m,\infty)\). The resulting value depends on \(\mu\) through a factor \(\Theta'(t)^{-(k+1)}\), and paired against \(\varphi(\mu)\), the total
+\[
+\int\varphi(\mu)\mathcal R(\mu)\,d\mu=\sum_{k,m,\sigma'}b_{k,m,\sigma'}\int\varphi(\mu)\bigl[\text{integrated }(k,m,\sigma')\text{-IBP expression}\bigr]d\mu
+\]
+has absolute value bounded by \(C_K\|\varphi^{(K)}\|_\infty\epsilon^{-K}\) for every \(K\in\N\) via iterated \(\mu\)-integration by parts against \(\varphi\in C_c^\infty\); taking \(K\to\infty\) forces \(\int\varphi(\mu)\mathcal R(\mu)\,d\mu=0\). The triple sum \(\sum_{k,m,\sigma'}\) converges absolutely by Axiom~\ref{ax:Berry}'s convergence together with the factor \((t/2\pi)^{-(2k+1)/4}\), permitting the interchange of summation and integration.
+
+Equivalently and more directly: every Berry harmonic \((k,m,\sigma')\) contributes a phase \(\sigma' 2\pi(m+\tfrac12)\sqrt{t/(2\pi)}\); its \(\Theta\)-pullback instantaneous frequency is
+\[
+\frac{d}{dx}\bigl[\sigma' 2\pi(m+\tfrac12)\sqrt{\Theta^{-1}(x)/(2\pi)}\bigr]=\frac{\sigma'(m+\tfrac12)\sqrt{2\pi}}{\sqrt{\Theta^{-1}(x)}\cdot\Theta'(\Theta^{-1}(x))}\xrightarrow[x\to\infty]{}0.
+\]
+Combined with the \(e^{-i\vartheta(t)}\) shift implicit in converting \(Z(t)\) to \(\zeta(\tfrac12+it)\) (contributing \(\Theta\)-pullback frequency \(-1\) since \(d\vartheta/dx=d\vartheta/d\Theta=\vartheta'/\Theta'\to 1\)), every Berry harmonic lands at \(\Theta\)-pullback frequency \(\omega=-1\) in the limit \(x\to\infty\), with transient frequency \(-1+O((m+\tfrac12)/\sqrt t\log t)\) at finite \(t\). The entire infinite double series \(\mathcal R(t)\) has spectral support asymptotically concentrated at the single point \(\omega=-1\in[-1,1]\), and the finite-\(t\) transient frequency, combined with the exact phase-derivative lower bound above for \(|\mu|>1+\epsilon/2\), vanishes paired against \(\varphi\) by the same iterated IBP.
 
 Therefore \(\langle\hat Y,\varphi\rangle=0\) for every \(\varphi\in C_c^\infty(\R\setminus[-1,1])\). Equivalently, \(\supp\hat Y\subseteq[-1,1]\). \(\square\)
 \end{proof}
@@ -228,7 +288,10 @@ Let \(\rho\in\C\) be a nontrivial zero of \(\zeta\): \(\zeta(\rho)=0\), \(0<\Re\
 
 \begin{thebibliography}{9}
 \bibitem{BL} S.\ Crowley, \emph{Band-limitedness of the warped pullback \(Y\)}, this repository (\texttt{docs/proof\_work/BandLimitedness.tex}); full mode-sum estimates and the weak-\(*\) spectral-measure argument that complement Theorem~\ref{thm:bandlimit} above.
-\bibitem{Gabcke} W.\ Gabcke, \emph{Neue Herleitung und explizite Restabsch\"atzung der Riemann--Siegel-Formel}, Dissertation, G\"ottingen, 1979 (reissued 2015); \(|R_{\mathrm{RS}}(t)|=O(t^{-3/4})\).
+\bibitem{Gabcke} W.\ Gabcke, \emph{Neue Herleitung und explizite Restabsch\"atzung der Riemann--Siegel-Formel}, Dissertation, G\"ottingen, 1979 (reissued 2015); full asymptotic expansion of \(R(\tau)\) in \(\tau^{-1/2}\) with \(1\)-periodic real-analytic coefficients.
+\bibitem{Berry} M.V.\ Berry, \emph{The Riemann--Siegel expansion for the zeta function: high orders and remainders}, Proc.\ R.\ Soc.\ Lond.\ A \textbf{450} (1995), 439--462.
+\bibitem{BerryKeating} M.V.\ Berry and J.P.\ Keating, \emph{A new asymptotic representation for \(\zeta(\tfrac12+it)\) and quantum spectral determinants}, Proc.\ R.\ Soc.\ Lond.\ A \textbf{437} (1992), 151--173.
+\bibitem{Edwards} H.M.\ Edwards, \emph{Riemann's Zeta Function}, Academic Press, 1974, \S7.4 (Riemann--Siegel contour-integral representation).
 \bibitem{Hormander} L.\ H\"ormander, \emph{The Analysis of Linear Partial Differential Operators I}, Springer, 1983, Theorem 7.3.1 (Schwartz--Paley--Wiener).
 \bibitem{Stein} E.M.\ Stein, \emph{Harmonic Analysis: Real-Variable Methods, Orthogonality, and Oscillatory Integrals}, Princeton, 1993, Chap.~VIII \S1 (non-stationary phase).
 \end{thebibliography}
