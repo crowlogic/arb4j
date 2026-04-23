@@ -128,9 +128,39 @@ def main():
         density = 2.0 * np.pi * np.abs(K)**2 / ThT     # approximates S(xi)
         results[T] = dict(K=K, Phi=Phi, density=density)
 
-    def _bandmarks(ax):
+    # ---------------------------------------------------------------------
+    # Stationary-phase band edge.
+    #
+    # The integrand Z(t) exp(-i xi Theta(t)) has asymptotic phase
+    #   (1 - xi) theta(t) - xi c t
+    # (using Z(t) ~ 2 cos(theta(t)) and Z(t) ~ 2 cos(-theta(t)) from Riemann--Siegel).
+    # Stationary points exist when (1 - xi) theta'(t) = xi c, i.e.
+    #   xi*(t) = theta'(t) / (theta'(t) + c).
+    # For t in [T_MIN, T], xi*(t) ranges over
+    #   [theta'(T_MIN)/(theta'(T_MIN)+c),  theta'(T)/(theta'(T)+c)].
+    # Since theta'(t) -> +infinity as t -> infinity, xi_edge(T) -> 1 as T -> infinity,
+    # so the spectrum approaches [-1, 1]. At finite T the effective support is
+    # [-xi_edge(T), xi_edge(T)] by symmetry (Z real => |Phi_T| even).
+    # ---------------------------------------------------------------------
+    def xi_edge(T):
+        tp = vartheta_prime(T)
+        return tp / (tp + C)
+
+    def _bandmarks(ax, per_T=None):
         ax.axvline(1.0,  linestyle=':', color='gray', linewidth=1)
         ax.axvline(-1.0, linestyle=':', color='gray', linewidth=1)
+        if per_T is not None:
+            colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
+            for i, T in enumerate(per_T):
+                e = xi_edge(T)
+                ax.axvline( e, linestyle='--', color=colors[i % len(colors)],
+                            linewidth=0.8, alpha=0.6)
+                ax.axvline(-e, linestyle='--', color=colors[i % len(colors)],
+                            linewidth=0.8, alpha=0.6)
+
+    print("\nStationary-phase band edges xi_edge(T) = theta'(T)/(theta'(T)+c):")
+    for T in T_vals:
+        print(f"  T = {int(T):4d}   theta'(T) = {vartheta_prime(T):.4f}   xi_edge = {xi_edge(T):.4f}")
 
     # ---------------------------------------------------------------------
     # Plot 1: |K[T](xi)| vs T (shows magnitude growth)
@@ -138,7 +168,7 @@ def main():
     fig, ax = plt.subplots(figsize=(11, 5))
     for T in T_vals:
         ax.plot(xi, np.abs(results[T]['K']), label=f"|K[{int(T)}]|", linewidth=1.3)
-    _bandmarks(ax)
+    _bandmarks(ax, per_T=T_vals)
     ax.set_title(r"$|K[T](\xi)|$ — unnormalized magnitude grows with $T$")
     ax.set_xlabel(r"$\xi$"); ax.set_ylabel(r"$|K[T](\xi)|$")
     ax.legend(ncol=4, loc='upper center', bbox_to_anchor=(0.5, 1.12), frameon=False)
@@ -152,8 +182,8 @@ def main():
     fig, ax = plt.subplots(figsize=(11, 5))
     for T in T_vals:
         ax.plot(xi, np.abs(results[T]['Phi']), label=f"T = {int(T)}", linewidth=1.3)
-    _bandmarks(ax)
-    ax.set_title(r"$|\Phi_T(\xi)| = |K[T](\xi)|/\sqrt{\Theta(T)}$ — normalized; support $\to[-1,1]$")
+    _bandmarks(ax, per_T=T_vals)
+    ax.set_title(r"$|\Phi_T(\xi)| = |K[T](\xi)|/\sqrt{\Theta(T)}$ — normalized; stationary-phase edges at $\pm\theta'(T)/(\theta'(T)+c)\to\pm1$")
     ax.set_xlabel(r"$\xi$"); ax.set_ylabel(r"$|\Phi_T(\xi)|$")
     ax.legend(ncol=4, loc='upper center', bbox_to_anchor=(0.5, 1.12), frameon=False)
     fig.tight_layout()
@@ -166,8 +196,8 @@ def main():
     fig, ax = plt.subplots(figsize=(11, 5))
     for T in T_vals:
         ax.plot(xi, results[T]['density'], label=f"T = {int(T)}", linewidth=1.3)
-    _bandmarks(ax)
-    ax.set_title(r"$2\pi\,|K[T](\xi)|^2/\Theta(T) \to S(\xi)$, supported on $[-1,1]$")
+    _bandmarks(ax, per_T=T_vals)
+    ax.set_title(r"$2\pi\,|K[T](\xi)|^2/\Theta(T) \to S(\xi)$; dashed = stationary-phase edges at finite $T$, dotted = $\pm 1$ (infinite $T$)")
     ax.set_xlabel(r"$\xi$"); ax.set_ylabel("spectral density (approx.)")
     ax.legend(ncol=4, loc='upper center', bbox_to_anchor=(0.5, 1.12), frameon=False)
     fig.tight_layout()
@@ -184,12 +214,31 @@ def main():
     ax.plot(xi, np.real(PhiBig), label=r"$\mathrm{Re}\,\Phi_T$", linewidth=1.2)
     ax.plot(xi, np.imag(PhiBig), label=r"$\mathrm{Im}\,\Phi_T$", linewidth=1.2)
     ax.plot(xi, np.abs(PhiBig),  label=r"$|\Phi_T|$", linewidth=1.2, linestyle='--', color='k')
-    _bandmarks(ax)
+    _bandmarks(ax, per_T=[T_big])
     ax.set_title(rf"Complex orthogonal measure $\Phi_T$ at $T = {int(T_big)}$ (real, imag, magnitude)")
     ax.set_xlabel(r"$\xi$"); ax.set_ylabel(r"$\Phi_T(\xi)$")
     ax.legend(ncol=3, loc='upper center', bbox_to_anchor=(0.5, 1.12), frameon=False)
     fig.tight_layout()
     fig.savefig("orthogonal_Phi_real_imag.png", bbox_inches='tight')
+    plt.close(fig)
+
+    # ---------------------------------------------------------------------
+    # Plot 5: rescaled spectral density in xi/xi_edge(T) coordinates.
+    # In these T-independent coordinates all curves share effective support [-1, 1].
+    # ---------------------------------------------------------------------
+    fig, ax = plt.subplots(figsize=(11, 5))
+    for T in T_vals:
+        e = xi_edge(T)
+        ax.plot(xi / e, results[T]['density'], label=f"T = {int(T)}  (edge = {e:.3f})",
+                linewidth=1.3)
+    ax.axvline(1.0,  linestyle=':', color='gray', linewidth=1)
+    ax.axvline(-1.0, linestyle=':', color='gray', linewidth=1)
+    ax.set_xlim(-2.5, 2.5)
+    ax.set_title(r"Spectral density in rescaled coordinate $\xi/\xi_\mathrm{edge}(T)$ — support converges to $[-1, 1]$")
+    ax.set_xlabel(r"$\xi / \xi_\mathrm{edge}(T)$"); ax.set_ylabel("spectral density (approx.)")
+    ax.legend(ncol=4, loc='upper center', bbox_to_anchor=(0.5, 1.12), frameon=False)
+    fig.tight_layout()
+    fig.savefig("orthogonal_spectral_density_rescaled.png", bbox_inches='tight')
     plt.close(fig)
 
     # ---------------------------------------------------------------------
@@ -206,10 +255,12 @@ def main():
         print(f"  T = {int(T):4d}   int |Phi_T|^2 dxi = {m:.5f}   sup |Phi_T| = {sup:.5f}")
 
     print("\nSaved:")
-    print("  orthogonal_K_unnormalized.png")
-    print("  orthogonal_Phi_normalized.png")
-    print("  orthogonal_spectral_density.png")
-    print("  orthogonal_Phi_real_imag.png")
+    for f in ["orthogonal_K_unnormalized.png",
+              "orthogonal_Phi_normalized.png",
+              "orthogonal_spectral_density.png",
+              "orthogonal_spectral_density_rescaled.png",
+              "orthogonal_Phi_real_imag.png"]:
+        print(f"  {f}")
 
 if __name__ == "__main__":
     main()
