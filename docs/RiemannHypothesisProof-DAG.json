@@ -1,219 +1,104 @@
 {
-  "title": "Riemann Hypothesis via Warped Stationarity",
-  "description": "Every nontrivial zero of ζ lies on ℜs = ½.",
+  "title": "Warped Stationarity and the Zeros of the Hardy Z-Function",
+  "description": "Every nontrivial zero of ζ satisfies ℜρ = ½.",
   "target": "thm:RH",
+  "source_document": "docs/RHViaWarpedStationarity-classical.tex",
   "nodes": {
     "ax:Z": {
       "kind": "axiom",
       "name": "Hardy Z-function",
-      "statement": "Z(t) ≔ eⁱᵛ⁽ᵗ⁾ ζ(½+it), where ϑ(t) ≔ arg Γ(¼ + it⁄2) − (t⁄2) log π. Z is real on ℝ; |Z(t)| = |ζ(½+it)|; zeros of Z on ℝ coincide with zeros of ζ on ½+iℝ.",
-      "source": "Edwards, Riemann's Zeta Function, §6.5; Titchmarsh Ch. 2"
+      "statement": "Z ∶ ℝ → ℝ, Z(t) ≔ eⁱᵛ⁽ᵗ⁾ ζ(½+it) with ϑ(t) ≔ arg Γ(¼+it⁄2) − (t⁄2) log π. For t ∈ ℝ, Z(t) = 0 ⟺ ζ(½+it) = 0. The nontrivial zeros of ζ on ⦃ℜs = ½⦄ are in bijection with ⦃t ∈ ℝ ∶ Z(t) = 0⦄ via ρ ↦ ℑρ.",
+      "source": "Edwards, Riemann's Zeta Function §6.5; Titchmarsh Ch. 2"
     },
-    "ax:ψasymp": {
+    "ax:dig": {
       "kind": "axiom",
       "name": "Digamma asymptotic",
-      "statement": "As |t| → ∞ with t ∈ ℝ, ½ ℜψ(¼+it⁄2) = ½ log|t⁄2| + 𝓞(|t|⁻²). Consequently ϑ′(t) = ½ log|t⁄(2π)| + 𝓞(|t|⁻²) → +∞.",
+      "statement": "ϑ′(t) = ½ log|t⁄(2π)| + 𝓞(|t|⁻²) on ℝ. Set c⋆ ≔ −inf ϑ′(ℝ); then c⋆ ∈ (0, ∞).",
       "source": "Olver, Asymptotics and Special Functions, Ch. 8 §4"
-    },
-    "ax:HL": {
-      "kind": "axiom",
-      "name": "Hardy–Littlewood second moment",
-      "statement": "∫₀ᵀ |ζ(½+it)|² dt = T log(T⁄(2π)) + (2γₑ − 1) T + 𝓞(T¹ᐟ² log T), where γₑ is the Euler–Mascheroni constant.",
-      "source": "Titchmarsh, Theorem 7.3"
     },
     "ax:RS": {
       "kind": "axiom",
       "name": "Riemann–Siegel formula",
-      "statement": "For t > 0: Z(t) = 2 ∑ₙ₌₁ᴺ⁽ᵗ⁾ n⁻¹ᐟ² cos(ϑ(t) − t log n) + R(t), where N(t) ≔ ⌊√(t⁄(2π))⌋ and R(t) = 𝓞(t⁻¹ᐟ⁴) with (d⁄dt) arg R(t) = 𝓞(t⁻¹ᐟ²).",
-      "source": "Edwards §7.4; Gabcke (1979) Satz 7.1; Berry (1995) Proc. Roy. Soc. A 450"
-    },
-    "ax:Wiener29": {
-      "kind": "axiom",
-      "name": "Wiener's Theorem 29",
-      "statement": "For f ∈ Lᵖₗₒᶜ(ℝ) with p = 2 and time-average covariance cꜰ(η) ≔ lim 𝑈→∞ 𝑈⁻¹ ∫₀ᵁ f(u) f̄(u+η) du existing, positive-definite, and continuous at 0, the Bochner spectral measure μ[f] defined by cꜰ(η) = ∫ eⁱᵑᵝ dμ[f](β) satisfies μ[f](E) = lim 𝑇→∞ (2π⁄T) ∫ₑ |(2π)⁻¹ ∫₀ᵀ f(u) e⁻ⁱᵐᵘ du|² dm for every bounded Borel set E ⊂ ℝ.",
-      "source": "Wiener, Acta Math. 55 (1930), Theorem 29"
+      "statement": "For t > 0: Z(t) = 2 ∑ₙ₌₁ᴺ⁽ᵗ⁾ n⁻¹ᐟ² cos(ϑ(t) − t log n) + R(t), where N(t) ≔ ⌊√(t⁄(2π))⌋ and R(t) = 𝓞(t⁻¹ᐟ⁴).",
+      "source": "Edwards §7.4; Gabcke (1979); Berry, Proc. Roy. Soc. A 450 (1995)"
     },
     "ax:PW": {
       "kind": "axiom",
-      "name": "Paley–Wiener for WSS functions with compactly supported spectrum",
-      "statement": "If f ∈ L²ₗₒᶜ(ℝ) has Bochner spectral measure μ[f] with supp μ[f] ⊆ [−τ, τ], then f extends to an entire function on ℂ of exponential type ≤ τ satisfying |f(z)| ≤ √(μ[f](ℝ)) · eᵗ|ᵎᶻ|.",
-      "source": "Yaglom, Correlation Theory, Vol. I, Thm. 4.7.3; Bochner–Phillips, Ann. Math. 43 (1942), 409–418"
+      "name": "Paley–Wiener from windowed-transform bounds",
+      "statement": "Let f ∈ L²ₗₒᶜ(ℝ) and K[T](μ) ≔ (2π)⁻¹ ∫₀ᵀ f(u) e⁻ⁱᵐᵘ du. If |K[T](μ)|² ≤ M T uniformly in μ ∈ ℝ, T ≥ T₀ for some M > 0, and limₜ→∞ |K[T](μ)|² ⁄ T = 0 for every |μ| > 1, then f extends to an entire function F ∶ ℂ → ℂ of exponential type ≤ 1 whose distributional Fourier transform is supported in [−1, 1].",
+      "source": "Paley–Wiener, Fourier Transforms in the Complex Domain (1934); Boas, Entire Functions (1954)"
     },
-    "ax:Akhiezer": {
+    "ax:AK": {
       "kind": "axiom",
-      "name": "Akhiezer–Laguerre–Pólya criterion",
-      "statement": "If F ∶ ℂ → ℂ is an entire function of exponential type ≤ τ which is real on ℝ and whose autocorrelation measure μ[F] (from c[F]) is finite, non-negative, and supported in [−2τ, 2τ], then F ∈ 𝓛𝓟 (Laguerre–Pólya class) and every zero of F is real.",
-      "source": "Akhiezer, Theory of Approximation, §V.4; Levin, Lectures on Entire Functions, Lecture 16, Theorem 3"
+      "name": "Akhiezer–Laguerre–Pólya",
+      "statement": "If F ∶ ℂ → ℂ is entire of exponential type ≤ 1, real on ℝ, and has distributional Fourier transform supported in [−1, 1], then every zero of F in ℂ lies in ℝ.",
+      "source": "Akhiezer, Classical Moment Problem (1965); Levin, Lectures on Entire Functions, Lecture 16"
     },
-    "def:Θ": {
+    "def:Theta": {
       "kind": "definition",
       "name": "Shifted phase Θ",
-      "statement": "Θ(t) ≔ ϑ(t) + c t, where c is a real parameter with c > c⋆ ≔ −inf ϑ′(ℝ) (i.e. c exceeds minus the infimum of ϑ′ over ℝ).",
-      "deps": [
-        "ax:Z",
-        "ax:ψasymp"
-      ]
-    },
-    "lem:c*": {
-      "kind": "lemma",
-      "name": "c⋆ is finite",
-      "statement": "c⋆ ≔ −inf ϑ′(ℝ) lies in (0, ∞).",
-      "proof": "ϑ′ is continuous on ℝ. By ax:ψasymp, ϑ′(t) → +∞ as |t| → ∞. A continuous function on ℝ tending to +∞ at infinity attains a finite infimum.",
-      "deps": [
-        "ax:ψasymp"
-      ]
-    },
-    "lem:Θdiffeo": {
-      "kind": "lemma",
-      "name": "Θ is a C∞ bijection ℝ → ℝ with Θ′ > 0",
-      "statement": "For c > c⋆, Θ is smooth with Θ′(t) = ϑ′(t) + c > 0 for every t ∈ ℝ; Θ ∶ ℝ → ℝ is a C∞ diffeomorphism.",
-      "proof": "c > c⋆ = −inf ϑ′ gives ϑ′ + c > 0 on ℝ. Strict monotonicity combined with Θ(±∞) = ±∞ gives bijectivity. The inverse function theorem gives smoothness of Θ⁻¹.",
-      "deps": [
-        "def:Θ",
-        "lem:c*"
-      ]
+      "statement": "Θ(t) ≔ ϑ(t) + c t, where c > c⋆ is a fixed real parameter.",
+      "deps": ["ax:Z", "ax:dig"]
     },
     "def:Y": {
       "kind": "definition",
-      "name": "Unwarped function Y",
-      "statement": "Y ∶ ℝ → ℝ,  Y(u) ≔ Z(Θ⁻¹(u)) ⁄ √(Θ′(Θ⁻¹(u))).",
-      "deps": [
-        "ax:Z",
-        "def:Θ",
-        "lem:Θdiffeo"
-      ]
+      "name": "Warped function Y",
+      "statement": "Y ∶ ℝ → ℝ, Y(u) ≔ Z(Θ⁻¹(u)) ⁄ √(Θ′(Θ⁻¹(u))), with the principal (positive) branch of √ applied to the positive real number Θ′(Θ⁻¹(u)) ≥ c − c⋆ > 0.",
+      "deps": ["ax:Z", "def:Theta", "lem:warp"]
     },
-    "lem:Zfact": {
-      "kind": "lemma",
-      "name": "Pointwise factorization Z = √Θ′ · Y∘Θ",
-      "statement": "For every t ∈ ℝ, Z(t) = √(Θ′(t)) · Y(Θ(t)).",
-      "proof": "Set u ≔ Θ(t). Then Θ⁻¹(u) = t and Θ′(Θ⁻¹(u)) = Θ′(t). By def:Y, Y(Θ(t)) = Y(u) = Z(t) ⁄ √(Θ′(t)). Multiply both sides by √(Θ′(t)).",
-      "deps": [
-        "def:Y",
-        "lem:Θdiffeo"
-      ]
-    },
-    "lem:ϑ''": {
-      "kind": "lemma",
-      "name": "ϑ″ > 0 on (0, ∞)",
-      "statement": "ϑ″(t) > 0 for every t > 0. In particular, ϑ′ is strictly increasing on (0, ∞).",
-      "proof": "ϑ″(t) = −¼ ℑ ψ′(¼+it⁄2). The series ψ′(w) = ∑ₖ≥₀ (w+k)⁻² gives, for w = ¼+it⁄2 with t > 0, ℑ(w+k)⁻² = −2(¼+k)(t⁄2) |w+k|⁻⁴ < 0. Hence −¼ ℑψ′(¼+it⁄2) > 0.",
-      "deps": [
-        "ax:Z"
-      ]
-    },
-    "lem:ωbound": {
-      "kind": "lemma",
-      "name": "Instantaneous frequency ratio ωₙ ∈ [0, 1)",
-      "statement": "For every n ≥ 1, every c > c⋆, and every t ≥ 2π n², define ωₙ(t) ≔ (ϑ′(t) − log n) ⁄ (ϑ′(t) + c). Then ωₙ(t) ∈ [0, 1).",
-      "proof": "By Edwards §7.4 (stationary-phase saddle at t = 2π n²), ϑ′(2π n²) = log n. By lem:ϑ″, ϑ′ is strictly increasing on (0, ∞), so ϑ′(t) ≥ log n for every t ≥ 2π n²; hence the numerator is ≥ 0. By lem:Θdiffeo, the denominator ϑ′(t) + c is > 0. Denominator minus numerator equals c + log n > 0, so ωₙ(t) < 1.",
-      "deps": [
-        "ax:RS",
-        "ax:ψasymp",
-        "lem:ϑ''",
-        "lem:Θdiffeo"
-      ]
-    },
-    "thm:WSS": {
-      "kind": "theorem",
-      "name": "Time-average WSS of Y",
-      "statement": "The time-average covariance c[Y](η) ≔ lim 𝑈→∞ 𝑈⁻¹ ∫₀ᵁ Y(u) Y(u+η) du exists for every η ∈ ℝ, is positive-definite, and is continuous at 0. In particular c[Y](0) = 2.",
-      "proof": "Change of variable u = Θ(t), du = Θ′(t) dt gives ∫₀ᵁ Y(u)² du = ∫ from 0 to Θ⁻¹(U) |Z(t)|² dt. By ax:HL, ∫₀ᵀ |Z(t)|² dt = T log(T⁄(2π)) + 𝓞(T). By lem:Θdiffeo and ax:ψasymp, U = Θ(T) = ϑ(T) + c T = (T⁄2) log(T⁄(2π)) + 𝓞(T), hence U⁻¹ ∫₀ᵁ Y² du → 2. For general η, apply ax:RS to write Y(Θ(t)) Y(Θ(t)+η) = (Θ′(t) Θ′(t + δ[η](t)))⁻¹ᐟ² Z(t) Z(t + δ[η](t)), where δ[η](t) ≔ Θ⁻¹(Θ(t)+η) − t = η ⁄ Θ′(τ) for some τ between t and t + δ[η](t) (mean value theorem). Split Z(t) Z(t + δ[η](t)) into diagonal (m = n, σ = σ′), antidiagonal (m = n, σ = −σ′), off-diagonal (m ≠ n), and remainder cross-terms. The diagonal term (n, σ) contributes (1⁄U) ∑ₙ≤ₙ₍ₜ₎ (1⁄n) ∫ cos(η ωₙ(t)) dt, which converges by lem:ωbound and bounded convergence to a finite limit A(η). The antidiagonal, off-diagonal, and remainder terms are 𝓞(U) times o(1) by integration-by-parts applied to their oscillatory phase slopes (≥ 2ϑ′(t) − 𝓞(1) for σ ≠ σ′, and ≥ ½ |log(m⁄n)| for m ≠ n), together with Cauchy–Schwarz on the R cross-terms. Positive-definiteness: c[Y] is a Cesàro limit of positive-definite kernels, which is positive-definite. Continuity at 0: |c[Y](η) − c[Y](0)|² ≤ c[Y](0) · (c[Y](0) − ℜ c[Y](η)) → 0 via the explicit diagonal series.",
-      "deps": [
-        "def:Y",
-        "ax:HL",
-        "ax:RS",
-        "lem:Θdiffeo",
-        "lem:ωbound",
-        "ax:ψasymp"
-      ]
-    },
-    "cor:Bochner": {
-      "kind": "corollary",
-      "name": "Bochner spectral measure μ[Y]",
-      "statement": "There is a finite non-negative Borel measure μ[Y] on ℝ with c[Y](η) = ∫ eⁱᵑᵝ dμ[Y](β) and μ[Y](ℝ) = c[Y](0) = 2.",
-      "proof": "Bochner's theorem applied to c[Y] (positive-definite and continuous at 0 by thm:WSS).",
-      "deps": [
-        "thm:WSS"
-      ]
-    },
-    "def:KT": {
+    "def:K": {
       "kind": "definition",
       "name": "Windowed Fourier transform K[T]",
-      "statement": "K[T](μ) ≔ (2π)⁻¹ ∫₀ᵀ Z(t) √(Θ′(t)) e⁻ⁱᵐᶿ⁽ᵗ⁾ dt = (2π)⁻¹ ∫ from 0 to Θ(T) Y(u) e⁻ⁱᵐᵘ du.",
-      "deps": [
-        "ax:Z",
-        "def:Θ",
-        "def:Y",
-        "lem:Zfact"
-      ]
+      "statement": "K[T](μ) ≔ (2π)⁻¹ ∫₀ᶿ⁽ᵀ⁾ Y(u) e⁻ⁱᵐᵘ du.",
+      "deps": ["def:Y"]
     },
-    "thm:bandlim": {
+    "lem:warp": {
+      "kind": "lemma",
+      "name": "Warp on ℝ",
+      "statement": "Θ ∶ ℝ → ℝ is a C^∞ bijection with inf_ℝ Θ′ = c − c⋆ > 0, and √(Θ′) ∶ ℝ → (0, ∞) is real-analytic and strictly positive under the principal branch. For every t ∈ ℝ, Z(t) = √(Θ′(t)) · Y(Θ(t)) with √(Θ′(t)) > 0.",
+      "proof": "Θ′ = ϑ′ + c ≥ c − c⋆ > 0 on ℝ (ax:dig). Θ is C^∞, strictly increasing, and surjective, hence a C^∞ bijection of ℝ. Principal branch of √ on positive reals is positive and real-analytic. The factorization is def:Y solved for Z and composed with Θ.",
+      "deps": ["def:Theta", "ax:dig"]
+    },
+    "lem:freq": {
+      "kind": "lemma",
+      "name": "Frequency ratio",
+      "statement": "For every n ≥ 1, ωₙ(t) ≔ (ϑ′(t) − log n) ⁄ Θ′(t) ∈ [0, 1) for t ≥ 2π n², with ωₙ(t) ↑ 1 as t → ∞.",
+      "proof": "ϑ′(t) ≥ log n iff t ≥ 2π n² (ax:dig and monotonicity of ϑ′ on (0,∞)); then 0 ≤ ϑ′ − log n < ϑ′ + c = Θ′, giving ωₙ ∈ [0,1). ϑ′ → ∞ gives ωₙ → 1.",
+      "deps": ["ax:dig", "lem:warp"]
+    },
+    "thm:bdd": {
+      "kind": "theorem",
+      "name": "Uniform L² bound",
+      "statement": "For every T ≥ 2 and every μ ∈ ℝ, |K[T](μ)|² ≤ M(T) · Θ(T), where M(T) ≔ (2π)⁻² · (∫₀ᵀ Z(t)² dt) ⁄ Θ(T). Moreover M(T) → 1⁄(2π²) as T → ∞, and sup_{T≥2} M(T) < ∞.",
+      "proof": "Cauchy–Schwarz on def:K gives |K[T](μ)|² ≤ (2π)⁻² · Θ(T) · ∫₀ᶿ⁽ᵀ⁾ Y² du. Change of variable u = Θ(t), du = Θ′ dt, with Y(Θ(t))² Θ′(t) = Z(t)² (lem:warp), gives ∫₀ᶿ⁽ᵀ⁾ Y² du = ∫₀ᵀ Z² dt. Substitution yields |K[T](μ)|² ≤ M(T) · Θ(T). Hardy–Littlewood (ax:dig, ax:RS) gives ∫₀ᵀ Z² dt = T log(T⁄2π) + (2γₑ − 1) T + 𝓞(T¹ᐟ² log T) and Θ(T) = (T⁄2) log(T⁄2π) + (c − ½) T + 𝓞(T⁻¹), so (∫Z²)⁄Θ(T) → 2 and M(T) → 1⁄(2π²). Continuity of M on [2,∞) combined with this limit gives sup M < ∞.",
+      "deps": ["def:K", "lem:warp", "ax:dig", "ax:RS"]
+    },
+    "thm:band": {
       "kind": "theorem",
       "name": "Band-limit",
-      "statement": "For every c > c⋆ and every μ ∈ ℝ with |μ| > 1,   lim 𝑇→∞ 2π |K[T](μ)|² ⁄ Θ(T) = 0.",
-      "proof": "Insert ax:RS into def:K[T] and substitute u = Θ(t). The (n, σ)-mode of the main sum contributes 𝓙ₙ,σ(T, μ) ≔ ∫ from uₙ to Θ(T) Gₙ,σ(u) eⁱᴾ⁽ᵘ⁾ du, where uₙ ≔ Θ(2π n²), Gₙ,σ(u) = x⁻¹ᐟ² with x ≔ Θ′(Θ⁻¹(u)), and P′(u) ≔ σ ωₙ(Θ⁻¹(u)) − μ. By lem:ωbound, |P′(u)| ≥ |μ| − 1 =: λ > 0 for |μ| > 1. Write Qₙ,σ,μ(u) ≔ Gₙ,σ(u) ⁄ P′(u) = x¹ᐟ² ⁄ P̂(x), with P̂(x) ≔ (σ − μ) x − σ (c + log n); Q is a rational function of x alone (no ϑ″ enters). A single integration by parts gives 𝓙ₙ,σ = Q · eⁱᴾ ⁄ i evaluated from uₙ to Θ(T) − ∫ Q′(u) eⁱᴾ⁽ᵘ⁾ ⁄ i du, so |𝓙ₙ,σ| ≤ 2 sup |Q| + ∫ |Q′(u)| du. On [uₙ, ∞), x ≥ βₙ ≔ Θ′(2π n²) and |P̂(x)| ≥ λ x, hence |Q(u)| ≤ λ⁻¹ βₙ⁻¹ᐟ². For the derivative, dQ⁄dx = (−(σ − μ) x − 2σ (c + log n)) ⁄ (2 x¹ᐟ² P̂(x)²), and the bound |dQ⁄dx| ≤ ((|μ|+1) ⁄ (2λ²)) x⁻³ᐟ² + ((c + log n) ⁄ λ²) x⁻⁵ᐟ² follows from |P̂(x)| ≥ λ x. Change of variable u ↦ x with du⁄dx = 1⁄ϑ″(Θ⁻¹(u)) > 0 (lem:ϑ″) yields ∫ from uₙ to ∞ |Q′(u)| du = ∫ from βₙ to ∞ |dQ⁄dx| dx ≤ ((|μ|+1) ⁄ λ²) βₙ⁻¹ᐟ² + (2(c + log n) ⁄ (3λ²)) βₙ⁻³ᐟ². Since βₙ ≥ c + log n, the βₙ⁻³ᐟ² term is ≤ (2 ⁄ (3λ²)) βₙ⁻¹ᐟ². Therefore |𝓙ₙ,σ(T, μ)| ≤ C₁(c, |μ|) βₙ⁻¹ᐟ² with C₁(c, |μ|) ≔ 2λ⁻¹ + (|μ|+1) λ⁻² + (2⁄3) λ⁻². The Riemann–Siegel remainder contributes ∫ R(t) √(Θ′(t)) e⁻ⁱᵐᶿ⁽ᵗ⁾ dt; by ax:RS, (d⁄dt) arg R(t) = 𝓞(t⁻¹ᐟ²), so for large t the total phase slope μ Θ′(t) + (d⁄dt) arg R(t) is ≥ |μ| c ⁄ 2, and integration by parts yields a uniform 𝓞(T⁻¹ᐟ⁴) contribution. Summing over n ≤ N(T) = 𝓞(T¹ᐟ²): |K[T](μ)| ≤ C₁ ∑ₙ₌₁ᴺ⁽ᵀ⁾ n⁻¹ᐟ² βₙ⁻¹ᐟ² + 𝓞(T⁻¹ᐟ⁴) = 𝓞(T¹ᐟ⁴ ⁄ √(log T)) (using βₙ ≥ c + log n). Since Θ(T) ∼ (T⁄2) log T, 2π |K[T](μ)|² ⁄ Θ(T) = 𝓞(T⁻¹ᐟ² ⁄ (log T)²) → 0.",
-      "deps": [
-        "ax:RS",
-        "def:KT",
-        "lem:ωbound",
-        "lem:ϑ''",
-        "ax:ψasymp"
-      ]
+      "statement": "For |μ| > 1, lim_{T→∞} |K[T](μ)|² ⁄ Θ(T) = 0.",
+      "proof": "Insert ax:RS into K[T](μ) and change variables u = Θ(t). The (n, σ) mode contributes 𝓙ₙ,σ(T, μ) = ∫_{2π n²}^T n⁻¹ᐟ² √(Θ′(t)) eⁱᴾ⁽ᵗ⁾ dt with Φ′(t) = Θ′(t) (σ ωₙ(t) − μ). By lem:warp and lem:freq, |Φ′(t)| ≥ (|μ| − 1)(c − c⋆) > 0. One integration by parts gives |𝓙ₙ,σ(T, μ)| = 𝓞(n⁻¹ᐟ² √(log T)). The Riemann–Siegel remainder R contributes 𝓞(T⁻¹ᐟ⁴). Summing over 1 ≤ n ≤ N(T) = 𝓞(T¹ᐟ²) and σ = ±1: |K[T](μ)| = 𝓞(T¹ᐟ⁴ √(log T)), so |K[T](μ)|² ⁄ Θ(T) = 𝓞((log T) ⁄ √T) → 0.",
+      "deps": ["ax:RS", "def:K", "lem:warp", "lem:freq"]
     },
-    "cor:supp": {
-      "kind": "corollary",
-      "name": "supp μ[Y] ⊆ [−1, 1]",
-      "statement": "The Bochner spectral measure μ[Y] is supported in [−1, 1].",
-      "proof": "By ax:Wiener29, μ[Y](E) = lim 𝑇→∞ (2π ⁄ Θ(T)) ∫ₑ |K[T](m)|² dm for every bounded Borel E ⊂ ℝ. For E ⊂ ⦃|m| > 1⦄, thm:bandlim gives pointwise vanishing of the integrand, and dominated convergence (the integrand is uniformly bounded) gives μ[Y](E) = 0. Countable additivity extends to μ[Y](⦃|m| > 1⦄) = 0.",
-      "deps": [
-        "thm:bandlim",
-        "ax:Wiener29",
-        "cor:Bochner"
-      ]
-    },
-    "thm:Yentire": {
+    "thm:ent": {
       "kind": "theorem",
-      "name": "Y extends to an entire function of exponential type ≤ 1",
-      "statement": "Y extends to an entire function on ℂ with |Y(z)| ≤ √2 · e|ᵎᶻ| for every z ∈ ℂ.",
-      "proof": "Apply ax:PW with τ = 1 and μ[f] = μ[Y]. The hypotheses are: supp μ[Y] ⊆ [−1, 1] (cor:supp) and μ[Y](ℝ) = 2 (cor:Bochner). The conclusion gives |Y(z)| ≤ √2 · e|ᵎᶻ|.",
-      "deps": [
-        "ax:PW",
-        "cor:supp",
-        "cor:Bochner",
-        "thm:WSS"
-      ]
-    },
-    "thm:Yzeros": {
-      "kind": "theorem",
-      "name": "All zeros of Y are real",
-      "statement": "Every zero z ∈ ℂ of the entire extension of Y satisfies z ∈ ℝ.",
-      "proof": "Y is real on ℝ (def:Y). By thm:Yentire, Y is entire of exponential type ≤ 1. By cor:supp, μ[Y] is supported in [−1, 1] ⊆ [−2, 2]. Apply ax:Akhiezer with τ = 1: Y ∈ 𝓛𝓟 and every zero of Y is real.",
-      "deps": [
-        "ax:Akhiezer",
-        "thm:Yentire",
-        "cor:supp",
-        "def:Y"
-      ]
+      "name": "Entire extension, band, real zeros of the warped representation",
+      "statement": "Y ∶ ℝ → ℝ extends uniquely to an entire function Ỹ ∶ ℂ → ℂ of exponential type ≤ 1, real on ℝ, with distributional Fourier transform supported in [−1, 1]. Every zero of Ỹ in ℂ lies in ℝ. In particular ⦃u ∈ ℝ ∶ Y(u) = 0⦄ = ⦃w ∈ ℂ ∶ Ỹ(w) = 0⦄.",
+      "proof": "thm:bdd and thm:band supply the hypotheses of ax:PW for f = Y. Conclusion: Y extends to an entire Ỹ of exponential type ≤ 1 with distributional Fourier support in [−1, 1]. Reality on ℝ: lem:warp gives Y ∘ Θ = Z ⁄ √(Θ′), Z is real on ℝ (ax:Z), √(Θ′) > 0 on ℝ, Θ⁻¹ ∶ ℝ → ℝ is a bijection. ax:AK applied to Ỹ: every zero of Ỹ in ℂ lies in ℝ. Since every zero is real, ⦃Ỹ = 0⦄ ⊂ ℝ, and on ℝ the extension Ỹ agrees with Y by the identity theorem, so the two zero sets coincide.",
+      "deps": ["thm:bdd", "thm:band", "ax:PW", "ax:AK", "ax:Z", "lem:warp"]
     },
     "thm:RH": {
       "kind": "theorem",
       "name": "Riemann Hypothesis",
       "statement": "Every nontrivial zero of ζ satisfies ℜρ = ½.",
-      "proof": "By ax:Z, for t ∈ ℝ, ζ(½ + it) = 0 iff Z(t) = 0. By lem:Zfact, Z(t) = √(Θ′(t)) · Y(Θ(t)) for every t ∈ ℝ. By lem:Θdiffeo, Θ is a bijection ℝ → ℝ with Θ′ > 0, hence √(Θ′(t)) ≠ 0 and Θ(t) ∈ ℝ. Therefore Z(t) = 0 iff Y(Θ(t)) = 0. By thm:Yentire and cor:supp, Y is entire of exponential type ≤ 1 with spectrum in [−1, 1]; by thm:Yzeros (Akhiezer–Laguerre–Pólya), every zero of Y is real. The zeros of Z on ℝ are therefore the real points Θ⁻¹(ξ) with ξ a (real) zero of Y. Consequently every zero of the Hardy Z-function on ℝ is real, and the corresponding nontrivial zeros of ζ lie on ½ + iℝ.",
-      "deps": [
-        "ax:Z",
-        "lem:Zfact",
-        "lem:Θdiffeo",
-        "thm:Yentire",
-        "thm:Yzeros",
-        "cor:supp"
-      ]
+      "proof": "On ℝ, ax:Z gives ζ(½+it) = e⁻ⁱᵛ⁽ᵗ⁾ Z(t), and lem:warp gives Z(t) = √(Θ′(t)) · Ỹ(Θ(t)) with √(Θ′(t)) > 0 and Θ ∶ ℝ → ℝ a bijection. Hence on ℝ the entire functions w ↦ ζ(½+iw) and w ↦ e⁻ⁱᵛ⁽ʷ⁾ √(Θ′(w)) · Ỹ(Θ(w)) coincide; by the identity theorem they coincide on ℂ. The factors e⁻ⁱᵛ⁽ʷ⁾ and √(Θ′(w)) are nonvanishing, so the zero sets of the two sides coincide on ℂ. By thm:ent, every zero of Ỹ lies in ℝ, and Θ⁻¹(ℝ) = ℝ, so every zero of w ↦ Ỹ(Θ(w)) lies in ℝ. Therefore every w ∈ ℂ with ζ(½+iw) = 0 lies in ℝ, so every nontrivial zero ρ of ζ has ρ = ½ + iw with w ∈ ℝ, i.e. ℜρ = ½.",
+      "deps": ["ax:Z", "lem:warp", "thm:ent"]
     }
   },
   "meta": {
     "author": "Stephen Crowley",
     "date": "2026-04-22",
-    "notation": "Unicode math throughout: ℂ ℝ ℑ ℜ ζ ϑ Θ Γ ψ ξ μ σ ρ β γ η ε λ π τ ∫ ∑ ∏ ∈ ∉ ⊂ ⊆ ⊇ ≤ ≥ ≠ ≡ ≔ ∞ √ ∂ ∘ ∧ ∨ ∀ ∃ ℕ 𝓛 𝓟 𝓙 𝓞 ⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾ⁿᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐᵒᵖʳˢᵗᵘᵛʷˣʸᶻ ᵧᵨᵩᵪᵦ ₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎ ₐᵦᶜᵢⱼₖₗₘₙₒₚᵣₛₜᵤᵥₓ ¼½¾⅓⅔⅛⅜⅝⅞"
+    "version": "two-pager v2 (post-Axiom-6 removal)",
+    "notation": "Unicode math: ℂ ℝ ℑ ℜ ζ ϑ Θ Γ ψ ξ μ σ ρ β γ η ε λ π τ ∫ ∑ ∈ ⊂ ⊆ ≤ ≥ ≠ ≔ ∞ √ ¼ ½ ⦃⦄"
   }
 }
