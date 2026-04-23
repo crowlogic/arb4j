@@ -39,11 +39,11 @@ Let $Z$ be the Hardy function and $\Theta(t)=\vartheta(t)+ct$ the Riemann--Siege
 K[T](\xi) \;=\; \frac{1}{2\pi}\int_{T_{\min}}^{T} Z(t)\,\sqrt{\Theta'(t)}\,e^{-i\xi\,\Theta(t)}\,dt,\qquad
 \Phi_T(\xi)\;=\;\frac{K[T](\xi)}{\sqrt{\Theta(T)}}.
 \]
-We prove (i) at finite $T$, $|K[T](\xi)|$ concentrates on the symmetric band $[-\xi_{\mathrm{edge}}(T),\xi_{\mathrm{edge}}(T)]$ where
+We prove (i) at finite $T$, the stationary-phase mass of $|K[T](\xi)|$ lies inside the symmetric band $[-\xi_{\mathrm{edge}}(T),\xi_{\mathrm{edge}}(T)]$ with
 \[
 \xi_{\mathrm{edge}}(T) \;=\; \frac{\vartheta'(T)}{\vartheta'(T)+c};
 \]
-(ii) $\xi_{\mathrm{edge}}(T)\to 1$ as $T\to\infty$; (iii) the rescaled coordinate $\eta=\xi/\xi_{\mathrm{edge}}(T)$ gives a $T$-independent picture with spectral support $[-1,1]$. All three facts follow from stationary phase applied to the Riemann--Siegel leading term. Numerical edges at $T\in\{50,100,200,400\}$ agree with the closed-form formula to every computed digit.
+here ``concentration'' means the fraction of $L^2$ energy in the band, $r(T)=E_{\mathrm{main}}(T)/E_{\mathrm{total}}(T)$, satisfies $r(T)\to 1$ as $T\to\infty$ with rate $1-r(T)=O((\log T)^2/\sqrt{T})$; it does \emph{not} mean strict compact support at finite $T$, since truncation of the integration interval produces Gibbs-type side lobes outside the band that decay only in ratio to $\Theta(T)$. (ii) $\xi_{\mathrm{edge}}(T)\to 1$ as $T\to\infty$. (iii) The rescaled coordinate $\eta=\xi/\xi_{\mathrm{edge}}(T)$ is the Clerc--Mallat dilation $\mathcal{D}_{\xi_{\mathrm{edge}}(T)}$; after rescaling, the main-lobe region is $[-1,1]$ at every $T$, and side lobes outside $[-1,1]$ are entirely truncation artifacts that vanish in ratio as $T\to\infty$. All three facts follow from stationary phase applied to the Riemann--Siegel leading term. Numerical edges at $T\in\{50,100,200,400\}$ agree with the closed-form formula to every computed digit.
 \end{abstract}
 
 \section{Setup}
