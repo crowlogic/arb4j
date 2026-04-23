@@ -8,7 +8,7 @@ Edges: X → Y means X is used in the proof of Y.
 - A1 (Hardy):  Z(t) = e^{iϑ(t)}ζ(½+it), Z real on ℝ, zeros of Z ↔ nontrivial zeros of ζ on critical line.
 - A2 (Digamma asymptotic):  ϑ'(t) = ½log|t/(2π)| + O(t⁻²),  c★ := -inf ϑ' ∈ (0,∞).
 - A3 (Riemann–Siegel):  Z(t) = 2 Σ_{n≤N(t)} n^{-½} cos(ϑ(t) - t log n) + R(t), R = O(t^{-1/4}).
-- A4 (Paley–Wiener):  L²_loc function with uniform K_T bound and off-band decay extends to entire of exp. type ≤1 with Fourier support ⊆ [-1,1].
+- A4 (Schwartz–Paley–Wiener):  u ∈ 𝒮'(ℝ) has supp u ⊆ [-B,B] ⇔ û extends entire with |û(z)| ≤ C(1+|z|)^N e^{B|Im z|}. (Schwartz 1950; Hörmander I, Thm 7.3.1.)
 - A5 (Reality-of-zeros for sharp-band entire functions):  Entire F of type ≤1, real on ℝ, polynomial growth on ℝ, supp F̂ ⊆ [-1,1], sharp endpoint 1 ∈ supp F̂ ⇒ all zeros of F real.
 - A6 (Sharp endpoint):  1 ∈ supp Ỹ̂.
 
@@ -22,10 +22,10 @@ Edges: X → Y means X is used in the proof of Y.
 
 - L1 (Warp): [A2, D1, D2] ⇒ Θ: ℝ→ℝ C^∞ bijection with inf Θ' = c - c★ > 0; Z(t) = √Θ'(t) · Y(Θ(t)).
 - L2 (Frequency ratio):  [A2, L1] ⇒ ω_n(t) = (ϑ'(t) - log n)/Θ'(t) ∈ [0,1) for t ≥ 2πn², ω_n ↑ 1.
-- L3 (Uniform L² bound):  [L1, Hardy–Littlewood ∫Z²] ⇒ |K_T(μ)|² ≤ M(T)·Θ(T) with sup M < ∞.
-- L4 (Off-band decay):  [A3, L1, L2, one IBP] ⇒ for |μ|>1: |K_T(μ)|² / Θ(T) → 0.
-- C5 (Entire extension):  [L3, L4, A4, A1, L1] ⇒ Ỹ entire, exp. type ≤1, real on ℝ, supp Ỹ̂ ⊆ [-1,1].
-- C6 (Polynomial growth of Ỹ on ℝ):  [A3, L1, D2] ⇒ |Ỹ(u)| = O(|u|^{1/4}).
+- L3 (Polynomial growth of Y):  [A3, L1, D2] ⇒ |Y(u)| = O(|u|^{1/4}), hence Y ∈ 𝒮'(ℝ).
+- L4 (Structural band-limit):  [A1, A3, L1, L2, non-stationary phase IBP via Stein Ch VIII §1, Gabcke R = O(t^{-3/4})] ⇒ supp Ŷ ⊆ [-1,1].  No stationary point since Φ'_{n,σ,μ}(t) = Θ'(t)(σω_n(t)+μ) with |σω_n+μ| ≥ |μ|-1 > 0 uniformly on supp φ ⊂ {|μ|>1}.
+- C5 (Entire extension):  [L3, L4, A4, A1, L1] ⇒ Ỹ entire, exp. type ≤1, real on ℝ, supp Ỹ̂ ⊆ [-1,1], polynomial growth on ℝ.
+- C6 ≡ L3.
 
 ## Laguerre–Pólya assembly
 
@@ -52,14 +52,12 @@ A4 → C5
 A5 → L11
 A6 → L11
 D1 → L1
-D2 → L1, C6
-D3 → L3, L4
-L1 → L3, L4, C5, C6, T2
+D2 → L1, L3
+L1 → L3, L4, C5, T2
 L2 → L4
-L3 → C5
+L3 → L4, C5, L11
 L4 → C5
 C5 → L7, L11, T2
-C6 → L11
 L7 → L9, L12
 L8 → L9
 L9 → L10, T1

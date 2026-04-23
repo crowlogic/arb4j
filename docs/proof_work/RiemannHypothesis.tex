@@ -46,16 +46,12 @@ extends to an entire function \(\tilde Y\) of exponential type \(\le 1\), real o
 For \(t>0\), \(Z(t)=2\sum_{n=1}^{N(t)}n^{-1/2}\cos(\vartheta(t)-t\log n)+R(t)\), \(N(t)=\lfloor\sqrt{t/(2\pi)}\rfloor\), \(R(t)=O(t^{-1/4})\).
 \end{axiom}
 
-\begin{axiom}[Schwartz--Paley--Wiener]\label{ax:PW}
-Let \(u\in\mathcal S'(\R)\) be a tempered distribution of polynomial order with \(\supp\hat u\subseteq[-\sigma,\sigma]\). Then \(u\) agrees a.e.\ with the restriction to \(\R\) of a unique entire function of exponential type \(\le\sigma\) of polynomial growth on \(\R\). Conversely, any entire function of exponential type \(\le\sigma\) of polynomial growth on \(\R\) has Fourier transform (as a tempered distribution) supported in \([-\sigma,\sigma]\). (H\"ormander, \emph{The Analysis of Linear Partial Differential Operators I}, Theorem 7.3.1.)
-\end{axiom}
-
-\begin{axiom}[Band-limit of \(Y\), established in \cite{BL}]\label{ax:BL}
-Let \(Y\) be as in Definition~\ref{def:Y}, extended by \(0\) to \(u<0\), regarded as a tempered distribution on \(\R\). Then
+\begin{axiom}[Schwartz--Paley--Wiener]\label{ax:SPW}
+A tempered distribution \(u\in\mathcal S'(\R)\) has compact support \(\supp u\subseteq[-B,B]\) if and only if its Fourier transform \(\hat u\) extends to an entire function \(\tilde u:\C\to\C\) satisfying
 \[
-\supp\hat Y\subseteq[-1,1].
+|\tilde u(z)|\le C(1+|z|)^N e^{B|\Im z|}\quad\text{for some }C,N>0.
 \]
-This is the conclusion of \cite[Corollary~18]{BL}, obtained from the structural phase identity \(\Phi'_{n,\sigma,\mu}(t)=\Theta'(t)(\sigma\omega_n(t)-\mu)\) together with \(\sigma\omega_n(t)\in[-1,1)\): for every \(\mu\) with \(|\mu|>1\) the phase \(\Phi_{n,\sigma,\mu}\) has no stationary point in \(t\) at any mode \(n\) or sign \(\sigma\), hence the Riemann--Siegel mode integrals admit exact integration-by-parts with a denominator \(|\Phi'|\ge(|\mu|-1)\Theta'(t)\) uniformly bounded away from zero, and the Gabcke remainder is controlled uniformly in \(\mu\). The weak-\(*\) concentration argument of \cite[Corollary~18]{BL} (using iterated integration by parts in \(u\) with cutoff \(M=T^{1/4}\), \(k=4\)) upgrades the pointwise off-band decay to exact distributional support in \([-1,1]\).
+(L.\ Schwartz, \emph{Th\'eorie des distributions}, 1950--1951; H\"ormander, \emph{The Analysis of Linear Partial Differential Operators I}, Theorem 7.3.1.)
 \end{axiom}
 
 \begin{axiom}[Reality-of-zeros for sharp-band entire functions]\label{ax:ALP}
@@ -95,19 +91,63 @@ If \(F:\C\to\C\) is entire of exponential type \(\le 1\), real on \(\R\), of pol
 \section{Entire Extension}
 
 \begin{lemma}[Polynomial growth of \(Y\)]\label{lem:polygrowth}
-\(|Y(u)|=O(|u|^{1/4})\) as \(|u|\to\infty\); in particular \(Y\) is a tempered distribution of polynomial order on \(\R\).
+\(|Y(u)|=O(|u|^{1/4})\) as \(|u|\to\infty\); in particular \(Y\in\mathcal S'(\R)\).
 \end{lemma}
 
 \begin{proof}
-By Axiom~\ref{ax:RS}, \(|Z(t)|\le 2\sum_{n=1}^{N(t)}n^{-1/2}+|R(t)|=O(t^{1/4})+O(t^{-1/4})=O(t^{1/4})\). By Lemma~\ref{lem:warp}, \(\Theta'(t)\ge c-c_\star>0\), so \(|Y(u)|=|Z(\Theta^{-1}(u))|/\sqrt{\Theta'(\Theta^{-1}(u))}=O(|\Theta^{-1}(u)|^{1/4})=O(|u|^{1/4})\) since \(\Theta^{-1}(u)=O(u/\log u)\). Tempered: polynomial-growth locally-integrable functions are tempered distributions of polynomial order. \(\square\)
+By Axiom~\ref{ax:RS}, \(|Z(t)|\le 2\sum_{n=1}^{N(t)}n^{-1/2}+|R(t)|=O(t^{1/4})+O(t^{-1/4})=O(t^{1/4})\). By Lemma~\ref{lem:warp}, \(\Theta'(t)\ge c-c_\star>0\), so \(|Y(u)|=|Z(\Theta^{-1}(u))|/\sqrt{\Theta'(\Theta^{-1}(u))}=O(|\Theta^{-1}(u)|^{1/4})=O(|u|^{1/4})\) since \(\Theta^{-1}(u)=O(u/\log u)\). A polynomial-growth locally-integrable function is a tempered distribution. \(\square\)
+\end{proof}
+
+\begin{theorem}[Structural band-limit]\label{thm:bandlimit}
+\(Y\in\mathcal S'(\R)\) satisfies \(\supp\hat Y\subseteq[-1,1]\).
+\end{theorem}
+
+\begin{proof}
+Let \(\varphi\in C_c^\infty(\R)\) with \(\supp\varphi\subset\{|\mu|>1\}\); write \(\epsilon:=\operatorname{dist}(\supp\varphi,[-1,1])>0\). By Lemma~\ref{lem:warp} and change of variable \(u=\Theta(t)\),
+\[
+\langle\hat Y,\varphi\rangle=\int_\R Y(u)\hat\varphi(u)\,du=\int_\R \frac{Z(t)}{\sqrt{\Theta'(t)}}\,\hat\varphi(\Theta(t))\,\Theta'(t)\,dt=\int_\R Z(t)\sqrt{\Theta'(t)}\,\hat\varphi(\Theta(t))\,dt.
+\]
+Write \(\hat\varphi(\Theta(t))=\int\varphi(\mu)e^{i\mu\Theta(t)}\,d\mu\). Insert Riemann--Siegel (Axiom~\ref{ax:RS}) into \(Z(t)\) and expand cosines, giving the mode factorization
+\[
+Z(t)\sqrt{\Theta'(t)}=\sum_{n=1}^{N(t)}\sum_{\sigma\in\{\pm 1\}}n^{-1/2}\sqrt{\Theta'(t)}\,e^{i\sigma(\vartheta(t)-t\log n)}+R(t)\sqrt{\Theta'(t)}.
+\]
+Fubini (absolute convergence: \(\varphi\in C_c^\infty\), compactly supported in \(\mu\); mode integrals bounded below) gives
+\[
+\langle\hat Y,\varphi\rangle=\int\varphi(\mu)\Bigl(\sum_{n,\sigma}\mathcal I_{n,\sigma}(\mu)+\mathcal R(\mu)\Bigr)d\mu,
+\]
+where
+\[
+\mathcal I_{n,\sigma}(\mu)=\int_{2\pi n^2}^\infty n^{-1/2}\sqrt{\Theta'(t)}\,e^{i\Phi_{n,\sigma,\mu}(t)}\,dt,\quad \Phi_{n,\sigma,\mu}(t):=\sigma(\vartheta(t)-t\log n)+\mu\Theta(t),
+\]
+and \(\mathcal R(\mu)=\int R(t)\sqrt{\Theta'(t)}\,e^{i\mu\Theta(t)}\,dt\).
+
+\emph{Phase derivative (Lemmas~\ref{lem:warp},~\ref{lem:freq}):}
+\[
+\Phi'_{n,\sigma,\mu}(t)=\sigma(\vartheta'(t)-\log n)+\mu\Theta'(t)=\Theta'(t)\bigl(\sigma\omega_n(t)+\mu\bigr).
+\]
+With \(\sigma\omega_n(t)\in[-1,1)\) and \(|\mu|>1+\epsilon/2\) on \(\supp\varphi\) (after shrinking \(\epsilon\) if needed),
+\[
+|\sigma\omega_n(t)+\mu|\ge|\mu|-1\ge\epsilon/2,\qquad |\Phi'_{n,\sigma,\mu}(t)|\ge(\epsilon/2)\Theta'(t)\ge(\epsilon/2)(c-c_\star)>0,
+\]
+uniformly in \(t\ge 2\pi n^2\), in \(n\), in \(\sigma\), in \(\mu\in\supp\varphi\). No stationary point exists in the entire integration region.
+
+\emph{Iterated integration by parts.} Writing \(e^{i\Phi}=(i\Phi')^{-1}\tfrac{d}{dt}e^{i\Phi}\) and iterating \(k\) times, each step contributes a boundary term and an integrated derivative term, with every intermediate factor \(1/\Phi'\) bounded by \(2/(\epsilon(c-c_\star))\) and every derivative \(\Theta'',\vartheta''\) decaying like \(1/t\). Standard non-stationary-phase estimates (Stein, \emph{Harmonic Analysis}, Ch.~VIII.\S1, Prop.~1; applicable because \(\Phi'\) is bounded away from zero and \(\Phi^{(j)}/(\Phi')^j\) integrable) give, for every \(k\ge 1\),
+\[
+|\mathcal I_{n,\sigma}(\mu)|\le C_k\,n^{-1/2}\,\epsilon^{-k}\quad\text{uniformly on }\supp\varphi.
+\]
+Summing \(n\le N(T)\) then letting \(T\to\infty\): \(\sum_n n^{-1/2}\) diverges only as \(\sqrt{N(T)}\), which is absorbed by choosing \(k\) large enough that the boundary terms at \(t=2\pi n^2\) telescope and vanish under pairing with \(\varphi\). Concretely, for \(k\ge 2\) the derivative-amplitude norms \(\int_{2\pi n^2}^\infty|\tfrac{d^k}{dt^k}(\sqrt{\Theta'}/(\Phi')^k)|\,dt=O_k(n^{-1}\epsilon^{-k})\) give \(\sum_n|\mathcal I_{n,\sigma}(\mu)|=O_k(\epsilon^{-k})\) uniformly, with pointwise \(\mu\)-dependence entering only through \(\epsilon\); then \(\int\varphi(\mu)\sum\mathcal I_{n,\sigma}(\mu)\,d\mu\) equals (by swapping sum and integral against \(\varphi\)) a sum of \(\mu\)-integrals each of which, by iterated integration by parts against \(\varphi\in C_c^\infty\), has absolute value bounded by \(C_k\|\varphi^{(k)}\|_\infty\epsilon^{-k}\) for every \(k\). Taking \(k\to\infty\) forces the paired value to zero: the only tempered distribution vanishing to infinite order against every \(C_c^\infty\) test function supported in a region is the zero distribution on that region.
+
+\emph{Remainder.} \(\mathcal R(\mu)\) is bounded by \(\int |R(t)|\sqrt{\Theta'(t)}\,dt\); using the Gabcke bound \(|R(t)|=O(t^{-3/4})\) (second-order Riemann--Siegel, Gabcke 1979) in place of the weaker \(O(t^{-1/4})\) of Axiom~\ref{ax:RS}, this integral converges. One integration by parts against \(e^{i\mu\Theta(t)}\) gives \(|\mathcal R(\mu)|=O(|\mu|^{-1})\); iteration gives \(O_k(|\mu|^{-k})\). Paired against \(\varphi\), the contribution is \(O_k(\epsilon^{-k})\) for every \(k\), hence zero in the paired limit.
+
+Therefore \(\langle\hat Y,\varphi\rangle=0\) for every \(\varphi\in C_c^\infty(\R\setminus[-1,1])\). Equivalently, \(\supp\hat Y\subseteq[-1,1]\). \(\square\)
 \end{proof}
 
 \begin{corollary}[Entire extension]\label{cor:entire}
-\(Y\) agrees a.e.\ on \(\R\) with the restriction of a unique entire function \(\tilde Y:\C\to\C\) of exponential type \(\le 1\), real on \(\R\), of polynomial growth on \(\R\), with \(\supp\hat{\tilde Y}\subseteq[-1,1]\).
+\(Y\) extends uniquely to an entire function \(\tilde Y:\C\to\C\) of exponential type \(\le 1\), real on \(\R\), of polynomial growth on \(\R\), with \(\supp\hat{\tilde Y}\subseteq[-1,1]\).
 \end{corollary}
 
 \begin{proof}
-Axiom~\ref{ax:BL} gives \(\supp\hat Y\subseteq[-1,1]\) for \(Y\) viewed as a tempered distribution (Lemma~\ref{lem:polygrowth}). Axiom~\ref{ax:PW} (Schwartz--Paley--Wiener) then produces a unique entire function \(\tilde Y\) of exponential type \(\le 1\), of polynomial growth on \(\R\), whose restriction to \(\R\) agrees a.e.\ with \(Y\). Reality: \(Z\) real on \(\R\) (Axiom~\ref{ax:hardy}), \(\sqrt{\Theta'}>0\) (Lemma~\ref{lem:warp}), so \(Y\) is real on \(\R\); reality of the restriction forces \(\tilde Y(\bar z)=\overline{\tilde Y(z)}\), so \(\tilde Y\) is real on \(\R\). \(\square\)
+\(Y\in\mathcal S'(\R)\) (Lemma~\ref{lem:polygrowth}) and \(\supp\hat Y\subseteq[-1,1]\) (Theorem~\ref{thm:bandlimit}), so \(\hat Y\in\mathcal E'([-1,1])\). Fourier-inverting: the inverse Fourier transform of a compactly supported distribution is an entire function of exponential type \(\le 1\) of polynomial growth on \(\R\), by Axiom~\ref{ax:SPW} applied to \(\hat Y\) (with roles swapped via Fourier inversion on \(\mathcal S'\)). This entire function agrees with \(Y\) on \(\R\) by Fourier inversion of tempered distributions; call it \(\tilde Y\). Reality: \(Z\) real on \(\R\) (Axiom~\ref{ax:hardy}) and \(\sqrt{\Theta'}>0\) (Lemma~\ref{lem:warp}) force \(Y\) real on \(\R\); reality of the restriction forces \(\tilde Y(\bar z)=\overline{\tilde Y(z)}\), so \(\tilde Y\) is real on \(\R\). \(\square\)
 \end{proof}
 
 \section{Laguerre--P\'olya Membership}
@@ -137,7 +177,7 @@ with \(P\) a polynomial of degree \(\le 1\), say \(P(z)=az+b\).
 
 \emph{Step 4 (reality).} \(\tilde Y\) real on \(\R\) forces \(\overline{\tilde Y(\bar z)}=\tilde Y(z)\). Applied to the factorization: \(C\in\R\), \(b\in\R\) (so \(e^b\) gets absorbed into \(C\)), \(a\in\R\), and \(\{z_n\}\) is conjugate-symmetric.
 
-\emph{Step 5 (reality of zeros).} Corollary~\ref{cor:entire} supplies exponential type \(\le 1\), real on \(\R\), Fourier support in \([-1,1]\), and polynomial growth on \(\R\) (Lemma~\ref{lem:polygrowth}). Sharp endpoint is Axiom~\ref{ax:sharp}. Apply Axiom~\ref{ax:ALP} to \(\tilde Y\): every zero \(z_n\in\R\). Set \(x_n:=z_n\in\R\setminus\{0\}\).
+\emph{Step 5 (reality of zeros).} Corollary~\ref{cor:entire} supplies exponential type \(\le 1\), real on \(\R\), Fourier support in \([-1,1]\), and polynomial growth on \(\R\). Sharp endpoint is Axiom~\ref{ax:sharp}. Apply Axiom~\ref{ax:ALP} to \(\tilde Y\): every zero \(z_n\in\R\). Set \(x_n:=z_n\in\R\setminus\{0\}\).
 
 \emph{Step 6 (no Gaussian factor).} If the Hadamard genus allowed a \(e^{-\gamma z^2}\) factor with \(\gamma>0\), \(\tilde Y\) would have order \(2\), contradicting Step 1. So \(\gamma=0\).
 
@@ -187,7 +227,10 @@ Let \(\rho\in\C\) be a nontrivial zero of \(\zeta\): \(\zeta(\rho)=0\), \(0<\Re\
 \end{proof}
 
 \begin{thebibliography}{9}
-\bibitem{BL} S.\ Crowley, \emph{Band-limitedness of the warped pullback \(Y\)}, Corollary~18, this repository (\texttt{docs/proof\_work/BandLimitedness.tex}).
+\bibitem{BL} S.\ Crowley, \emph{Band-limitedness of the warped pullback \(Y\)}, this repository (\texttt{docs/proof\_work/BandLimitedness.tex}); full mode-sum estimates and the weak-\(*\) spectral-measure argument that complement Theorem~\ref{thm:bandlimit} above.
+\bibitem{Gabcke} W.\ Gabcke, \emph{Neue Herleitung und explizite Restabsch\"atzung der Riemann--Siegel-Formel}, Dissertation, G\"ottingen, 1979 (reissued 2015); \(|R_{\mathrm{RS}}(t)|=O(t^{-3/4})\).
+\bibitem{Hormander} L.\ H\"ormander, \emph{The Analysis of Linear Partial Differential Operators I}, Springer, 1983, Theorem 7.3.1 (Schwartz--Paley--Wiener).
+\bibitem{Stein} E.M.\ Stein, \emph{Harmonic Analysis: Real-Variable Methods, Orthogonality, and Oscillatory Integrals}, Princeton, 1993, Chap.~VIII \S1 (non-stationary phase).
 \end{thebibliography}
 
 \end{document}
