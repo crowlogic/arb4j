@@ -708,14 +708,13 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
         currentOperandExpression.throwUnexpectedCharacterException("index variable name cannot be null or empty");
       }
       String extraFamilyIndexName = null;
-      if (currentOperandExpression.nextCharacterIs('['))
+      if (currentOperandExpression.nextCharacterIs('∶'))
       {
         extraFamilyIndexName = currentOperandExpression.parseName();
         if (extraFamilyIndexName == null || extraFamilyIndexName.isEmpty())
         {
           currentOperandExpression.throwUnexpectedCharacterException("family index name cannot be null or empty");
         }
-        currentOperandExpression.require(']');
       }
       currentOperandExpression.require('=');
       var extraLower = currentOperandExpression.resolve();
@@ -724,7 +723,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
       String innerOperandFieldName  = currentOperandExpression.getNextIntermediateVariableFieldName("operand", Function.class);
 
-      var    innerOperandExpression = newMultiIndex(currentOperandExpression, savedBody, extraName, innerOperandFieldName);
+      var    innerOperandExpression = newMultiIndex(currentOperandExpression, savedBody, extraName, extraFamilyIndexName, innerOperandFieldName);
 
       var innerLevel = newInnerOperand(currentOperandExpression, extraName, extraLower, extraUpper, innerOperandFieldName, innerOperandExpression);
       innerLevel.familyIndexName = extraFamilyIndexName;
@@ -772,6 +771,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   private Expression<Integer, R, Sequence<R>> newMultiIndex(Expression<Integer, R, Sequence<R>> currentOperandExpression,
                                                             Node<Integer, R, Sequence<R>> savedBody,
                                                             String extraName,
+                                                            String extraFamilyIndexName,
                                                             String innerOperandFieldName)
   {
     Expression<Integer, R, Sequence<R>> innerOperandExpression = currentOperandExpression.cloneExpression();
