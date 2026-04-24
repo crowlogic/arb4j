@@ -564,9 +564,21 @@ private void generateFamilyFunctionBodyCall(MethodVisitor mv,
 }
 
   @Override
+  @SuppressWarnings("unchecked")
   public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
-    throw new UnsupportedOperationException("spliceInto not implemented for WeightedPartitionEnumeratorNode");
+    var splicedOperandExpression = (Expression<Integer, S, Sequence<S>>) (Expression<?, ?, ?>) operandExpression;
+    return (Node<E, S, G>) new WeightedPartitionEnumeratorNode<E, S, G>(newExpression,
+                                                                        splicedOperandExpression,
+                                                                        familyName,
+                                                                        arrayFieldName,
+                                                                        familyMapping,
+                                                                        familyIndexName,
+                                                                        loNode.spliceInto(splicedOperandExpression),
+                                                                        hiNode.spliceInto(splicedOperandExpression),
+                                                                        bodyNode.spliceInto(splicedOperandExpression),
+                                                                        identity,
+                                                                        operation);
   }
 
   @Override
