@@ -1210,4 +1210,23 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     });
   }
 
+  /**
+   * Re-resolves any {@link FunctionNode}s in this subtree whose context mapping
+   * was not found when they were first parsed (because
+   * {@link Expression#deferVariableResolution} was true at that time and the
+   * function had not yet been registered). Called by
+   * {@link arb.expressions.nodes.nary.NAryOperationNode#parseOperatorLimitSpecifications()}
+   * after all family-index functions (e.g. {@code m∶ℓ}) have been registered
+   * into the context, so that forward references like {@code m(ℓ)} in the
+   * operand body are resolved correctly.
+   */
+  public void resolveFunctions()
+  {
+    nodeStream()
+      .filter(Node::isFunction)
+      .map(Node::asFunction)
+      .filter(fn -> fn.mapping == null && fn.expression.context != null)
+      .forEach(fn -> fn.lookupFunctionInContext());
+  }
+
 }

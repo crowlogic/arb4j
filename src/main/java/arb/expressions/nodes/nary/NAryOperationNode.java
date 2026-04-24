@@ -640,6 +640,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     if (resolveAfterMultisum)
     {
       operandExpression.rootNode.resolveVariables();
+      operandExpression.rootNode.resolveFunctions();
     }
 
     if (usedBrace)
