@@ -623,14 +623,14 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       indexVariableFieldName = specifiedName;
     }
 
-    if (operandExpression.deferVariableResolution)
+    boolean resolveAfterMultisum = operandExpression.deferVariableResolution;
+    if (resolveAfterMultisum)
     {
       operandExpression.deferVariableResolution = false;
       VariableNode<Integer, R, Sequence<R>> indexVar = new VariableNode<>(operandExpression,
                                                                           operandExpression.newVariableReference(indexVariableFieldName),
                                                                           false);
       operandExpression.assignInputVariable(indexVar);
-      operandExpression.rootNode.resolveVariables();
     }
 
     expression.require('=');
@@ -639,6 +639,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     parseUpperLimit();
 
     parseMultisumIndices();
+
+    if (resolveAfterMultisum)
+    {
+      operandExpression.rootNode.resolveVariables();
+    }
 
     if (usedBraceInLimitSpec)
     {
