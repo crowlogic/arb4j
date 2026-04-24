@@ -80,6 +80,16 @@ public class ExpressionClassLoader extends
       log.debug("findClass('{}') in Context#{}", name, System.identityHashCode(context));
     }
 
+    Class<?> already = compiledClasses.get(name);
+    if (already != null)
+    {
+      if (Expression.trace)
+      {
+        log.debug("findClass('{}') returning already-defined class from compiledClasses", name);
+      }
+      return already;
+    }
+
     byte[] bytecodes = pendingBytecodes.remove(name);
     if (bytecodes != null)
     {
