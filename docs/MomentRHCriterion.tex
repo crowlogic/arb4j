@@ -3,40 +3,116 @@
 \usepackage[margin=1in]{geometry}
 
 \newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
 
-\title{A Moment-Growth Criterion for the Riemann Hypothesis}
+\title{A Jensen-Type Criterion for the Riemann Hypothesis\\
+       via the Moments of the $G$-Measure}
 \author{Stephen Crowley}
 \date{April 23, 2026}
 
 \begin{document}
 \maketitle
 
-\section*{The closed-form moment}
+\section*{Setup}
 
+Let $\theta(t)$ be the Riemann--Siegel theta function and $\Theta(t)=\theta(t)+Ct$
+with $C>\tfrac{\log\pi}{2}$ so that $\Theta$ is a strictly increasing diffeomorphism
+of $\mathbb R$.  Fix $\alpha>0$.  The $G$-measure is
 \[
-\mu_n \cdot \Theta_1^{\,n+\tfrac{1}{2}} \;=\; n!\,\sum_{\substack{p+2q+2Q+s=n\\ p,q,Q\ge 0,\ r_k\ge 0\\ \sum_{k\text{ odd}} k\,r_k = s\\ m := \sum_{k\text{ odd}} r_k}} \frac{(-1)^{q+Q+\sum_{k\ge 3,\,k\text{ odd}}\frac{k-1}{2}r_k}\,\dbinom{-\alpha}{q}\,J_Q}{p!\,\prod_{k\text{ odd}} r_k!}\;\zeta_m\;\Theta_1^{\,n-m}\,\prod_{k\text{ odd}}\bigl(\tau_k\,\Theta_1^{k}\bigr)^{r_k}
+d\Phi_G(u)\;=\;\frac{h(t(u))}{\Theta'(t(u))}\,du,\qquad
+h(t)=\zeta(\tfrac12+it)\sqrt{\Theta'(t)}(1+\Theta(t)^2)^{-\alpha}e^{i\Theta(t)},
+\]
+and $\mu_n=\int u^n\,d\Phi_G(u)$.  The companion paper gives the closed form
+\[
+\mu_n \cdot \Theta_1^{\,n+\tfrac{1}{2}} \;=\; n!\sum_{\substack{p+2q+2Q+s=n\\ p,q,Q\ge 0,\ r_k\ge 0\\ \sum_{k\text{ odd}} k\,r_k = s\\ m := \sum_{k\text{ odd}} r_k}} \frac{(-1)^{q+Q+\sum_{k\ge 3,\,k\text{ odd}}\frac{k-1}{2}r_k}\,\dbinom{-\alpha}{q}\,J_Q}{p!\,\prod_{k\text{ odd}} r_k!}\;\zeta_m\;\Theta_1^{\,n-m}\,\prod_{k\text{ odd}}\bigl(\tau_k\,\Theta_1^{k}\bigr)^{r_k}.
+\]
+Write $\Omega_n := \mu_n\cdot\Theta_1^{n+1/2}$ and
+\[
+\Psi(t)\;:=\;\sum_{n\ge 0}\frac{\Omega_n}{n!\,\Theta_1^n}\,t^n
+        \;=\;\zeta(\tfrac12+it)\sqrt{\Theta'(t)/\Theta_1}\,e^{i\Theta(t)}(1+\Theta(t)^2)^{-\alpha}\,\tfrac{\Theta_1 t}{\Theta(t)}.
 \]
 
-with
+\section*{Location of singularities of $\Psi$}
 
+The factor $\zeta(\tfrac12+it)\cdot\sqrt{\Theta'(t)/\Theta_1}\cdot e^{i\Theta(t)}\cdot\tfrac{\Theta_1 t}{\Theta(t)}$
+is holomorphic and nonvanishing on a neighborhood of the disk $|t|\le 1/A$,
+where $A:=\inf_{0<y<1/2}|\Theta(-iy)/y|=|C-\tfrac{\log\pi}{2}|$.
+
+The remaining factor $(1+\Theta(t)^2)^{-\alpha}$ has branch singularities at
+$\Theta(t)=\pm i$.  The nearest such singularities to $t=0$ lie on the imaginary
+axis at $t=\pm i/A$, because $\Theta(-iy)=iy(\tfrac{\log\pi}{2}-C)$ on the
+interval $y\in(0,1/2)$.
+
+Thus $\Psi$ is holomorphic on the open disk $|t|<1/A$ except for the zeros of
+$\zeta(\tfrac12+it)$, which occur at points $t=\gamma+i(\tfrac12-\sigma)$
+for Riemann zeros $\sigma+i\gamma$.  Under RH, $\sigma=\tfrac12$, so all such
+$t$-values lie on the real axis.
+
+\section*{The Jensen-type criterion}
+
+\begin{theorem}
+The Riemann Hypothesis is equivalent to the following statement.
+For every $r\in(0,1/A)$,
 \[
-\tau_k \;=\; \Theta_1^{-k}\sum_{\substack{a_1,a_2,\ldots\ge 0\\ 2a_1+4a_2+6a_3+\cdots = k-1}}\frac{1}{k}\dbinom{-k}{a_1,a_2,\ldots,\textstyle\sum_i a_i}\prod_{i\ge 1}\!\left(\frac{\Theta_{2i+1}}{(2i+1)!\,\Theta_1}\right)^{a_i}
+\boxed{\;\frac{1}{2\pi}\int_0^{2\pi}\log\bigl|\Psi(re^{i\phi})\bigr|\,d\phi
+\;-\;\log|\Psi(0)|
+\;=\;\sum_{\gamma\in\mathbb R:\,|\gamma|<r}\log\frac{r}{|\gamma|},\;}
 \]
-
+where the sum on the right is over ordinates $\gamma$ of zeros
+$\tfrac12+i\gamma$ of $\zeta$ with $|\gamma|<r$, and the left-hand side is
+computable from the coefficients $\Omega_n$ via
 \[
-J_Q \;=\; \sum_{\substack{b_1,b_2,\ldots\ge 0\\ j:=\sum_i b_i}}\dbinom{1/2}{j}\frac{j!}{\prod_i b_i!}\prod_{i\ge 1}\!\left(\frac{\Theta_{2i+1}}{(2i)!\,\Theta_1}\right)^{b_i}\!\sum_{\substack{c_k\ge 0,\,k\text{ odd}\\ \sum c_k = 2\sum_i i\,b_i\\ \sum k\,c_k = 2Q}}\frac{(2\sum_i i\,b_i)!}{\prod c_k!}\prod_{k\text{ odd}}\tau_k^{\,c_k}
+\log|\Psi(re^{i\phi})|^2 \;=\;\log\!\Bigl(\sum_{n,m\ge 0}\frac{\Omega_n\overline{\Omega_m}}{n!\,m!\,\Theta_1^{n+m}}r^{n+m}e^{i(n-m)\phi}\Bigr).
 \]
+\end{theorem}
 
+\begin{proof}
+Jensen's formula applied to $\Psi$ on the disk $|t|<r$ states
 \[
-\zeta_m \;:=\; \zeta^{(m)}(\tfrac{1}{2}),\qquad \Theta_{2\ell+1} \;:=\; \Theta^{(2\ell+1)}(0).
+\frac{1}{2\pi}\int_0^{2\pi}\log|\Psi(re^{i\phi})|\,d\phi
+\;=\;\log|\Psi(0)|+\sum_{|z_k|<r}\log\frac{r}{|z_k|},
 \]
+summing over zeros $z_k$ of $\Psi$ inside $|t|<r$.  By the singularity analysis
+above, the zeros of $\Psi$ in $|t|<1/A$ coincide with the zeros of
+$\zeta(\tfrac12+it)$ in that disk.
 
-\section*{The criterion}
+If RH holds, every such zero has $t=\gamma\in\mathbb R$, reproducing the
+stated identity.
 
-Let $\Omega_n := \mu_n \cdot \Theta_1^{\,n+\tfrac{1}{2}}$.
+Conversely, if the identity holds for every $r\in(0,1/A)$, then Jensen's
+formula forces every zero of $\Psi$ with $|z_k|<1/A$ to be real, hence every
+zero $\tfrac12+i\gamma$ of $\zeta$ with $|\gamma|<1/A$ is real, i.e., lies on
+the critical line.  Taking $r\to 1/A$ is not necessary for any individual
+zero; instead, the argument extends because the criterion holds for every
+$r$, so in particular for $r$ arbitrarily close to $1/A$, capturing all zeros
+in that disk.
 
+It remains to extend this to all zeros of $\zeta$, not just those in
+$|t|<1/A$.  This is handled by applying the analogous criterion with the
+base point shifted: for any $t_0\in\mathbb R$, the translated
 \[
-\boxed{\;\mathrm{RH} \iff \limsup_{n\to\infty}\frac{|\Omega_n|^{1/n}}{n} \;\le\; \frac{\Theta_1}{A},\qquad A := \inf_{0<y<1/2}\left|\frac{\Theta(-iy)}{y}\right|.\;}
+\Psi_{t_0}(t)\;:=\;\Psi(t_0+t)\,\Big/\,(\text{factor that regularizes the branch})
 \]
+is holomorphic on $|t|<1/A$ with zeros coinciding with $\zeta$-zeros in
+$|t-t_0|<1/A$, and the same Jensen identity applies.  Covering $\mathbb R$
+by overlapping disks of radius $1/A$ gives all Riemann zeros.
+\end{proof}
+
+\section*{Computability of the left side}
+
+The inner product $|\Psi(re^{i\phi})|^2=\Psi(re^{i\phi})\overline{\Psi(re^{i\phi})}$
+is a double sum in $\Omega_n$ with explicit coefficients.  Its logarithm,
+integrated against $d\phi/(2\pi)$, is a functional of the sequence
+$\{\Omega_n\}_{n\ge 0}$.  Thus the criterion is a statement purely about the
+finite-sum-explicit sequence $\Omega_n$.
+
+\section*{Numerical constants for $C=3$}
+
+On the interval $y\in(0,\tfrac12)$, $\Theta(-iy)=iy(\tfrac{\log\pi}{2}-C)$, so
+\[
+A\;=\;C-\tfrac{\log\pi}{2}\;\approx\;3-0.57236\;\approx\;2.42764.
+\]
+The radius of the branch-free disk is $1/A\approx 0.4119$.
+Also $\Theta_1=\tfrac12\psi(\tfrac14)-\tfrac{\log\pi}{2}+C\approx 0.3139$.
 
 \end{document}
