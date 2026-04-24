@@ -590,8 +590,9 @@ private void generateFamilyFunctionBodyCall(MethodVisitor mv,
   @Override
   public boolean dependsOn(VariableNode<D, R, F> variable)
   {
-    throw new UnsupportedOperationException("replaceChild not implemented for WeightedPartitionEnumeratorNode");
-
+    return loNode.dependsOn(variable.spliceInto(operandExpression).asVariable())
+        || hiNode.dependsOn(variable.spliceInto(operandExpression).asVariable())
+        || bodyNode.dependsOn(variable.spliceInto(operandExpression).asVariable());
   }
 
   @Override

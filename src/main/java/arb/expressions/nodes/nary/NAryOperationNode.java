@@ -628,12 +628,14 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       this.lowerLimit = expression.resolve();
       expression.require('\u2026');
       this.upperLimit = expression.resolve();
+      this.indexVariableFieldName = firstFamilyIndexName;
       operandExpression.continueParsingFrom(expression);
       var loNode = this.lowerLimit.spliceInto(operandExpression);
       var hiNode = this.upperLimit.spliceInto(operandExpression);
       registerFamilyFunction(operandExpression, specifiedName, firstFamilyIndexName, loNode, hiNode, operandExpression.rootNode);
+      expression.continueParsingFrom(operandExpression);
       operandExpression.rootNode.resolveFunctions();
-      expression.context.functions.values().forEach(m -> { if (m.expression != null && m.expression.rootNode != null) m.expression.rootNode.resolveFunctions(); });
+      expression.context.functions.values().forEach(fm -> { if (fm.expression != null && fm.expression.rootNode != null) fm.expression.rootNode.resolveFunctions(); });
       parseMultisumIndices();
       if (expression.nextCharacterIs('}')) { }
       return this;
@@ -721,8 +723,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                                                  IntegerFunction.class,
                                                                  false,
                                                                  null,
-                                                                 familyName);
+                                                                 null);
 
+    familyMapping.functionFieldDescriptor(true);
     currentOperandExpression.registerReferencedFunction(familyName, familyMapping);
 
     var enumeratorNode = new WeightedPartitionEnumeratorNode<>(this.expression,
