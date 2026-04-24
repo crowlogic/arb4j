@@ -279,6 +279,106 @@ balance that both (i) makes $h$ integrable and (ii) preserves the infinite
 oscillation needed to encode the zeros. This is why $\Phi_{G}$ has finite
 moments of every order and why those moments encode the zero locations.
 
+\section{What is unique about this criterion}
+
+\begin{verbatim}
+Among RH-equivalent criteria expressible as families of exact
+finite-rational inequalities (Li; Bombieri-Lagarias; Weil; Riesz;
+Hardy-Littlewood; Baez-Duarte; Nyman-Beurling; Robin; Lagarias;
+de Bruijn-Newman; Hermite-Biehler / Polya on Xi), this criterion
+is singled out by the following combination of features.
+
+1. It is a positivity criterion on an actual candidate measure,
+   not on a derived functional. Li, Weil, Riesz, Hardy-Littlewood,
+   Baez-Duarte / Nyman-Beurling package RH as nonnegativity of a
+   number or of a functional one step removed from any measure.
+   Here the mu_n are the moments of a concrete named object -
+   the Theta-warped Stieltjes measure Theta(t)^n h(t) dt,
+   regularized by epsilon - and the criterion asks whether that
+   measure is genuinely a positive Borel measure on R. RH fails
+   iff the moment geometry of this specific measure fails.
+
+2. The mu_n are given by a closed-form finite sum, not by an
+   infinite series or a limit. Li's lambda_n are in principle
+   finite rational combinations of zeta-values and gamma, but
+   only after a calculation. Riesz, Hardy-Littlewood, Baez-Duarte
+   involve infinite series and limits. Weil involves a test
+   function against prime-power data. Here,
+
+     mu_n * Theta_1^(n+1/2) =
+       (-i)^n * n! *
+       sum over (a,b,c,k_3,k_5,...) with
+         a + b + 2c + sum_{l>=1} 2l*k_{2l+1} = n
+       of a finite product of zeta_a, M_b, N_{2c}, Theta_{2l+1},
+
+   a terminating sum over integer partitions of n. No limits,
+   no analytic continuation at the evaluation step, no infinite
+   series truncated in practice. This is exactly what makes the
+   criterion tractable by exact arbitrary-precision arithmetic
+   via the expression compiler.
+
+3. The criterion is a k-indexed ladder of polynomial
+   inequalities. Most RH criteria give a single real-number
+   inequality per index (lambda_n >= 0) or a growth/limit
+   statement (d_N -> 0, R(x) = O(x^{1/4+eps})). Here each
+   det H_k(mu) >= 0 is a polynomial in mu_0,...,mu_{2k}, hence
+   a polynomial in zeta_j, Theta_{2l+1}, epsilon. The
+   combinatorial input (integer partitions, weighted
+   compositions, multinomial coefficients) appears explicitly
+   in the coefficients.
+
+4. It cleanly separates arithmetic input (zeta-moments) from
+   geometry input (Theta-Taylor coefficients) and regularization
+   (epsilon). The mu_n formula factors as zeta-side x Theta-side
+   x epsilon-side. RH becomes a joint positivity statement over
+   these three inputs. No other criterion splits along a
+   zeta-arithmetic / geometry / regularization axis.
+
+5. The Theta warp is a free parameter, so this is a
+   parametrized family of criteria, not a single one. Li's
+   lambda_n are rigid. Here, each admissible Theta yields a
+   distinct moment sequence {mu_n^(Theta)} and a distinct
+   criterion RH <=> det H_k^(Theta) >= 0 for all k. Theta can
+   be tuned to simplify the mu_n, to sharpen the sign control
+   of det H_k, or to clean up the leading epsilon behaviour.
+
+6. The positivity tested is Hankel positivity - classical
+   moment theory - not bespoke analytic-number-theory
+   positivity. det H_k >= 0 for all k is the hypothesis of
+   Hamburger's theorem, which brings the entire classical
+   toolkit into play: orthogonal polynomials of the measure,
+   three-term recurrences, Jacobi matrices, continued
+   fractions, Pade approximants, spectral theory of
+   tridiagonal operators. None of Li, Weil, Riesz,
+   Baez-Duarte, Robin plugs into classical moment theory.
+
+7. The ladder is cumulative in a strong geometric sense.
+   det H_k >= 0 holding up to k = K means the first 2K+1
+   moments are compatible with some positive measure -
+   there exists a finitely supported positive measure
+   reproducing mu_0,...,mu_{2K}. Each passed step is a
+   truncated moment-problem success, not an isolated sign
+   condition. Li's lambda_n >= 0 up to n = N carries no
+   comparable structural interpretation.
+
+8. The combinatorics of the zeta-moments are explicit in the
+   formula being tested. The outer sum ranges over
+   (a,b,c,k_3,k_5,...) with a + b + 2c + sum 2l*k_{2l+1} = n;
+   the inner sums M_b, N_{2c} range over odd-part integer
+   partitions of b and 2c; multinomial multiplicities
+   b! / prod m_{2l+1}! and (2c)! / prod p_{2l+1}! appear
+   verbatim. No other RH criterion exposes this much
+   combinatorial structure inside the formula actually
+   evaluated.
+
+In one sentence: what is unique is the combination of
+closed-form finite-sum moments, a polynomial-inequality ladder,
+on a named candidate measure (not a derived functional),
+parametrized by a free Theta-warp, and factoring cleanly into
+zeta-arithmetic times Theta-geometry times epsilon-regularization,
+all testable exactly in arbitrary precision.
+\end{verbatim}
+
 \section{What remains to prove RH}
 
 By Theorem~\ref{thm:RH} the Riemann Hypothesis is equivalent to the
