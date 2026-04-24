@@ -5061,8 +5061,47 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return String.format("%s=%s->%s", functionClass.getSimpleName(), domainType.getSimpleName(), coDomainType.getSimpleName());
   }
 
+  public static final Set<String> BUILTIN_FUNCTION_NAMES = Set.of("int",
+                                                                  "sum",
+                                                                  "ℰ",
+                                                                  "MittagLeffler",
+                                                                  "mittagleffler",
+                                                                  "Z",
+                                                                  "ϑ",
+                                                                  "vartheta",
+                                                                  "ζ",
+                                                                  "zeta",
+                                                                  "when",
+                                                                  "fracdiff",
+                                                                  "diff",
+                                                                  "lim",
+                                                                  "limit",
+                                                                  "J",
+                                                                  "W",
+                                                                  "j",
+                                                                  "R",
+                                                                  "ℭ",
+                                                                  "binom",
+                                                                  "binomial",
+                                                                  "pFq",
+                                                                  "pfq",
+                                                                  "Beta",
+                                                                  "beta",
+                                                                  "Γ",
+                                                                  "Gamma",
+                                                                  "lnGamma",
+                                                                  "lnΓ",
+                                                                  "logGamma",
+                                                                  "logΓ",
+                                                                  "si");
+
   public Expression<D, C, F> registerReferencedFunction(String referencedFunctionName, FunctionMapping<?, ?, ?> referenceFunctionMapping)
   {
+    if (BUILTIN_FUNCTION_NAMES.contains(referencedFunctionName))
+    {
+      throw new CompilerException("cannot register a user-defined function named '" + referencedFunctionName
+                                  + "': that name is reserved for the built-in " + referencedFunctionName + ". Rename the function.");
+    }
     referencedFunctions.put(referencedFunctionName, referenceFunctionMapping);
     return this;
   }

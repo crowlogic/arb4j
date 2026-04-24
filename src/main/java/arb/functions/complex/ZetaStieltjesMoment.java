@@ -26,14 +26,14 @@ public class ZetaStieltjesMoment implements
                                       "j➔t➔diff(ϑ(t)+C·t,t^j)",
                                       context);
 
-  public final ComplexFunctionSequence ζ =
-      ComplexFunctionSequence.express("ζ",
+  public final ComplexFunctionSequence Ζ =
+      ComplexFunctionSequence.express("Ζ",
                                       "a➔s➔diff(ζ(1/2+ⅈ·s),s^a)",
                                       context);
 
   public final ComplexSequence μ =
       ComplexSequence.express("μ",
-                              "n→(-ⅈ)^n·n!/Θ(1)(0)^(n+1/2)·Σ ⅈ^a·ζ(a)(0)/a!·ⅈ^b·M[b]/b!·Π(-ε-j){j=0…c-1}·N[2c]/c!·Π(-(n+1)-j){j=0…K-1}/K!·Π(Θ(2q+1)(0)/((2q+1)!·Θ(1)(0)))^k/k!{q=1…(n-a-b-2c)/2,k∶q=0…(n-a-b-2c)/(2q)}{a=0…n,b=0…n-a,c=0…(n-a-b)/2}",
+                              "n→(-ⅈ)^n·n!/Θ(1)(0)^(n+1/2)·Σ ⅈ^a·Ζ(a)(0)/a!·ⅈ^b·M[b]/b!·Π(-ε-j){j=0…c-1}·N[2c]/c!·Π(-(n+1)-j){j=0…K-1}/K!·Π(Θ(2q+1)(0)/((2q+1)!·Θ(1)(0)))^k/k!{q=1…(n-a-b-2c)/2,k∶q=0…(n-a-b-2c)/(2q)}{a=0…n,b=0…n-a,c=0…(n-a-b)/2}",
                               context);
 
   @Override
