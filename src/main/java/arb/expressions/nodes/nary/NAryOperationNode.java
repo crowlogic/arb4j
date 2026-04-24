@@ -632,6 +632,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       var loNode = this.lowerLimit.spliceInto(operandExpression);
       var hiNode = this.upperLimit.spliceInto(operandExpression);
       registerFamilyFunction(operandExpression, specifiedName, firstFamilyIndexName, loNode, hiNode, operandExpression.rootNode);
+      operandExpression.rootNode.resolveFunctions();
+      expression.context.functions.values().forEach(m -> { if (m.expression != null && m.expression.rootNode != null) m.expression.rootNode.resolveFunctions(); });
       parseMultisumIndices();
       if (expression.nextCharacterIs('}')) { }
       return this;
