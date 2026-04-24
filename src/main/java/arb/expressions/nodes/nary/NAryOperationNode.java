@@ -624,12 +624,13 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     if (expression.nextCharacterIs('\u2236'))
     {
       String firstFamilyIndexName = expression.parseName();
+      expression.require('=');
+      this.lowerLimit = expression.resolve();
+      expression.require('\u2026');
+      this.upperLimit = expression.resolve();
       operandExpression.continueParsingFrom(expression);
-      operandExpression.require('=');
-      var loNode = operandExpression.resolve();
-      operandExpression.require('\u2026');
-      var hiNode = operandExpression.resolve();
-      expression.continueParsingFrom(operandExpression);
+      var loNode = this.lowerLimit.spliceInto(operandExpression);
+      var hiNode = this.upperLimit.spliceInto(operandExpression);
       registerFamilyFunction(operandExpression, specifiedName, firstFamilyIndexName, loNode, hiNode, operandExpression.rootNode);
       parseMultisumIndices();
       if (expression.nextCharacterIs('}')) { }
