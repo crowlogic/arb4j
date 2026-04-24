@@ -431,26 +431,32 @@ public class WeightedPartitionEnumeratorNode<D, R, F extends Function<? extends 
 
     // Descend to next position with updated remaining.
     // newRem = curRem - weight*curV
+    int newRemAscend = expression.allocateLocalVariableSlot();
     mv.visitVarInsn(ILOAD, curRemSlot);
     mv.visitVarInsn(ILOAD, weightSlot);
     mv.visitVarInsn(ILOAD, curVSlot);
     mv.visitInsn(IMUL);
     mv.visitInsn(ISUB);
+    mv.visitVarInsn(ISTORE, newRemAscend);
+
     // Push new frame: depth++
     mv.visitIincInsn(stackDepthSlot, 1);
+
+    // stackPos[depth] = curPos + 1
     mv.visitVarInsn(ALOAD, stackPosSlot);
     mv.visitVarInsn(ILOAD, stackDepthSlot);
     mv.visitVarInsn(ILOAD, curPosSlot);
     mv.visitInsn(ICONST_1);
     mv.visitInsn(IADD);
     mv.visitInsn(IASTORE);
+
+    // stackRem[depth] = newRem
     mv.visitVarInsn(ALOAD, stackRemSlot);
     mv.visitVarInsn(ILOAD, stackDepthSlot);
-    // newRem is still on stack from above
-    mv.visitInsn(SWAP);
-    mv.visitVarInsn(ILOAD, stackDepthSlot);
-    mv.visitInsn(SWAP);
+    mv.visitVarInsn(ILOAD, newRemAscend);
     mv.visitInsn(IASTORE);
+
+    // stackV[depth] = 0
     mv.visitVarInsn(ALOAD, stackVSlot);
     mv.visitVarInsn(ILOAD, stackDepthSlot);
     mv.visitInsn(ICONST_0);
