@@ -74,8 +74,8 @@ public class IntegerPartitionsTest extends
         }
         IntegerPartitions.count(n, flintCount);
         assertEquals("enumeration vs FLINT p(" + n + ")",
-                     flintCount.getSignedValue(),
-                     enumerated);
+                     java.lang.Integer.toString(enumerated),
+                     flintCount.toString());
       }
     }
   }

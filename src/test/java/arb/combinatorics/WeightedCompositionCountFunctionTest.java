@@ -33,7 +33,7 @@ public class WeightedCompositionCountFunctionTest extends
     {
       IntegerPolynomial in = new IntegerPolynomial();
       f.evaluate(in, 0, 64, res);
-      assertEquals(1L, res.getSignedValue());
+      assertEquals("1", res.toString());
     }
   }
 
@@ -45,7 +45,7 @@ public class WeightedCompositionCountFunctionTest extends
     {
       IntegerPolynomial in = polyOf(5, 2);
       f.evaluate(in, 0, 64, res);
-      assertEquals(0L, res.getSignedValue());
+      assertEquals("0", res.toString());
     }
   }
 
@@ -68,8 +68,8 @@ public class WeightedCompositionCountFunctionTest extends
         IntegerPolynomial in = polyOf(coeffs);
         f.evaluate(in, 0, 64, res);
         assertEquals("count for n=" + n,
-                     ODD_PART_COUNT[n],
-                     res.getSignedValue());
+                     java.lang.Integer.toString(ODD_PART_COUNT[n]),
+                     res.toString());
       }
     }
   }
@@ -102,7 +102,9 @@ public class WeightedCompositionCountFunctionTest extends
         }
         IntegerPolynomial in = polyOf(coeffs);
         f.evaluate(in, 0, 64, res);
-        assertEquals("p(" + k + ")", pk[k], res.getSignedValue());
+        assertEquals("p(" + k + ")",
+                     java.lang.Integer.toString(pk[k]),
+                     res.toString());
       }
     }
   }

@@ -49,16 +49,27 @@ public final class WeightedCompositionCountFunction implements
       res.set(1L);
       return res;
     }
-    int total = input.get(0).getSignedValue();
-    if (total < 0)
+    long totalL = Long.parseLong(input.get(0).toString());
+    if (totalL < 0)
     {
-      throw new IllegalArgumentException("total must be non-negative: " + total);
+      throw new IllegalArgumentException("total must be non-negative: " + totalL);
     }
+    if (totalL > java.lang.Integer.MAX_VALUE)
+    {
+      throw new IllegalArgumentException("total exceeds int range: " + totalL);
+    }
+    int total = (int) totalL;
     int k = len - 1;
     int[] weights = new int[k];
     for (int i = 0; i < k; i++)
     {
-      int w = input.get(i + 1).getSignedValue();
+      long wL = Long.parseLong(input.get(i + 1).toString());
+      if (wL > java.lang.Integer.MAX_VALUE)
+      {
+        throw new IllegalArgumentException("weight exceeds int range at index "
+                                           + (i + 1) + ": " + wL);
+      }
+      int w = (int) wL;
       if (w <= 0)
       {
         throw new IllegalArgumentException("allowed weights must be positive at index "

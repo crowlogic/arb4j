@@ -16,7 +16,7 @@ public class MultinomialCoefficientTest extends
     try (Integer res = new Integer())
     {
       MultinomialCoefficient.of(new long[0], res);
-      assertEquals(1L, res.getSignedValue());
+      assertEquals("1", res.toString());
     }
   }
 
@@ -30,8 +30,8 @@ public class MultinomialCoefficientTest extends
         MultinomialCoefficient.of(new long[]
         { n }, res);
         assertEquals("(" + n + ")!/" + n + "! = 1",
-                     1L,
-                     res.getSignedValue());
+                     "1",
+                     res.toString());
       }
     }
   }
@@ -43,15 +43,15 @@ public class MultinomialCoefficientTest extends
       // C(5, 3) = 10
       MultinomialCoefficient.of(new long[]
       { 3, 2 }, res);
-      assertEquals(10L, res.getSignedValue());
+      assertEquals("10", res.toString());
       // C(8, 4) = 70
       MultinomialCoefficient.of(new long[]
       { 4, 4 }, res);
-      assertEquals(70L, res.getSignedValue());
+      assertEquals("70", res.toString());
       // With a zero: (5, 0) => 5!/(5! 0!) = 1
       MultinomialCoefficient.of(new long[]
       { 5, 0 }, res);
-      assertEquals(1L, res.getSignedValue());
+      assertEquals("1", res.toString());
     }
   }
 
@@ -62,7 +62,7 @@ public class MultinomialCoefficientTest extends
     {
       MultinomialCoefficient.of(new long[]
       { 2, 2, 2 }, res);
-      assertEquals(90L, res.getSignedValue());
+      assertEquals("90", res.toString());
     }
   }
 
@@ -73,7 +73,7 @@ public class MultinomialCoefficientTest extends
     {
       MultinomialCoefficient.of(new long[]
       { 1, 0, 1, 1 }, res);
-      assertEquals(6L, res.getSignedValue());
+      assertEquals("6", res.toString());
     }
   }
 
@@ -107,7 +107,7 @@ public class MultinomialCoefficientTest extends
     {
       MultinomialCoefficient.of(new int[]
       { 3, 2 }, res);
-      assertEquals(10L, res.getSignedValue());
+      assertEquals("10", res.toString());
     }
   }
 
