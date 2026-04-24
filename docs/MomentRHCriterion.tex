@@ -86,4 +86,16 @@ equivalently
 \;=\;\sum_{\gamma\in\Gamma(r)}\log\frac{r}{|\gamma|}\qquad\text{for every }r\in(0,\,1/A).
 \]
 
+\section*{Remark on the role of $\sqrt{\Theta'(t)}$}
+
+Since $h(t)=e^{\,iCt}\sqrt{\Theta'(t)}\,(1+\Theta(t)^{2})^{-\varepsilon}Z(t)$, one has
+\[
+|h(t)|\;=\;\sqrt{\Theta'(t)}\,\bigl(1+\Theta(t)^{2}\bigr)^{-\varepsilon}\,|Z(t)|,
+\]
+so pointwise $h$ is {\em larger} than $Z$ by the factor $\sqrt{\Theta'(t)}\sim\sqrt{(\log t)/2}$, yet $h\in L^{1}(\mathbb{R})\cap L^{2}(\mathbb{R})$ for every $\varepsilon>0$ while $Z$ is not integrable.
+
+The $\sqrt{\Theta'}$ prefactor is the Riemann--von Mangoldt Jacobian: it rescales $t$-arclength to $\Theta$-arclength, under which the zeros of $\zeta(\tfrac12+it)$ become asymptotically uniformly distributed in the variable $u=\Theta(t)$ with density $1/(2\pi)$. The pushforward measure $\Phi_{G}$ therefore lives on $\mathbb{R}$ with uniform zero density, and the damping $(1+u^{2})^{-\varepsilon}$ is exactly what the uniform spacing can tolerate to yield finite moments of every order.
+
+Without the $\sqrt{\Theta'}$ compensation, damping $Z$ directly by $(1+t^{2})^{-\varepsilon}$ suppresses amplitude faster than the zero density $(\log t)/(2\pi)$ accumulates; the damped function would run out of oscillation and lose the spectral information about $\zeta$. The combined weight $\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}$ is the unique balance that both (i) makes $h$ integrable, and (ii) preserves the infinite oscillation needed to encode the zeros.
+
 \end{document}
