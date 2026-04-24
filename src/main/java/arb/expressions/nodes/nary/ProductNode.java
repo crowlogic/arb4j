@@ -7,16 +7,17 @@ import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 
 /**
- * Computes the product operator where the syntax is Πf(k){k=a…b} and the
- * characters between the Π and { characters are compiled as a sub-expression as
- * a function from the {@link Integer} index variable to whatever type is output
- * by default or requested by whatever is requesting its generation
- * 
+ * Computes the product operator where the syntax is Π{k=a…b}f(k): the limit
+ * specification {k=a…b} comes first, binding the index variable k and its lower
+ * and upper limits, followed by the operand body f(k), which is compiled as a
+ * sub-expression as a function from the {@link Integer} index variable to
+ * whatever type is output by default or requested by whatever is requesting its
+ * generation.
+ *
  * @param <D> domain
  * @param <C> codomain
  * @param <F> {@link Function}
- * 
- * 
+ *
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
