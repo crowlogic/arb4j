@@ -17,15 +17,10 @@ import arb.Integer;
 import arb.exceptions.CompilerException;
 import arb.expressions.*;
 import arb.expressions.Context;
-import arb.expressions.nodes.Node;
-import arb.expressions.nodes.VariableNode;
-import arb.functions.Function;
-import arb.functions.RealToComplexFunction;
+import arb.expressions.nodes.*;
+import arb.functions.*;
 import arb.functions.complex.ComplexFunction;
-import arb.functions.integer.ComplexSequence;
-import arb.functions.integer.IntegerSequence;
-import arb.functions.integer.RealSequence;
-import arb.functions.integer.Sequence;
+import arb.functions.integer.*;
 import arb.functions.real.RealFunction;
 
 /**
@@ -642,7 +637,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
     parseMultisumIndices();
 
-    if (resolveAfterMultisum && !expression.deferVariableResolution)
+    if (resolveAfterMultisum)
     {
       operandExpression.rootNode.resolveVariables();
     }
@@ -655,40 +650,123 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   }
 
   /**
+   * Registers a family function binding {@code name∶familyIndex=lo…hi} into
+   * {@code currentOperandExpression}.
+   *
+   * <p>
+   * The function {@code name} is backed by a generated class (a
+   * {@link IntegerFunction}) whose {@code evaluate(Integer familyIndex, …)}
+   * method returns the value of the family member at {@code familyIndex} for the
+   * current partition point. The partition enumeration is done by a
+   * weighted-partition enumerator that is wired into the codegen of this Σ/Π node
+   * via {@link #partitionEnumeratorFieldName}.
+   *
+   * <p>
+   * After this call:
+   * <ul>
+   * <li>{@code name} is in {@code currentOperandExpression.context} as an
+   * {@link IntegerFunction} mapping.</li>
+   * <li>The operand expression's root node is left as {@code savedBody} (no
+   * structural rewrite is needed — the body already calls
+   * {@code name(familyIndex)} through FunctionNode).</li>
+   * <li>A {@link WeightedPartitionEnumeratorNode} is inserted around the current
+   * body to drive the partition loop.</li>
+   * </ul>
+   *
+   * @param currentOperandExpression the expression into which to register
+   * @param familyName               the name of the family function (e.g. "m")
+   * @param familyIndexName          the family index variable name (e.g. "ℓ")
+   * @param loNode                   lower bound of the family index
+   * @param hiNode                   upper bound of the family index
+   * @param bodyNode                 the summand body that references familyName
+   */
+  @SuppressWarnings("unchecked")
+  private void registerFamilyFunction(Expression<Integer, R, Sequence<R>> currentOperandExpression,
+                                      String familyName,
+                                      String familyIndexName,
+                                      Node<Integer, R, Sequence<R>> loNode,
+                                      Node<Integer, R, Sequence<R>> hiNode,
+                                      Node<Integer, R, Sequence<R>> bodyNode)
+  {
+    // 1. Build a concrete backing array that the enumerator will fill on each
+    // partition step. Its length is (hiNode - loNode + 1), which for
+    // n-dependent bounds must be evaluated at runtime. We model it as an
+    // int[] field on the outer generated class and expose it through a tiny
+    // IntegerFunction lambda registered in the context.
+    //
+    // At *compile* time we only need to register the FunctionMapping so
+    // that FunctionNode.lookupFunctionInContext() finds "m" (or "p"/"k")
+    // and routes calls through the context path. The runtime wiring of the
+    // actual values is done by the WeightedPartitionEnumeratorNode in
+    // generate().
+
+    // Allocate a field name for the int[] backing array.
+    String                                                 arrayFieldName = currentOperandExpression.getNextIntermediateVariableFieldName(familyName + "Arr",
+                                                                                                                                          int[].class);
+
+    // Register the family function as a
+    // FunctionMapping<Integer,Integer,IntegerFunction>
+    // with a null instance — the expression will be supplied by the
+    // WeightedPartitionEnumeratorNode at generate() time.
+    FunctionMapping<Integer, arb.Integer, IntegerFunction> familyMapping  =
+                                                                         currentOperandExpression.context.registerFunctionMapping(familyName,
+                                                                                                                                  (IntegerFunction) (index,
+                                                                                                                                                     order,
+                                                                                                                                                     bits,
+                                                                                                                                                     result) ->
+                                                                                                                                                                                                        {
+                                                                                                                                                                                                          throw new UnsupportedOperationException("family function "
+                                                                                                                                                                                                                                                  + familyName
+                                                                                                                                                                                                                                                  + " must be called via compiled bytecode");
+                                                                                                                                                                                                        },
+                                                                                                                                  arb.Integer.class,
+                                                                                                                                  arb.Integer.class,
+                                                                                                                                  IntegerFunction.class,
+                                                                                                                                  false,
+                                                                                                                                  null,
+                                                                                                                                  familyName);
+
+    currentOperandExpression.registerReferencedFunction(familyName, familyMapping);
+
+    // 2. Wrap the current body in a WeightedPartitionEnumeratorNode that owns
+    // the partition loop for this family binding. The enumerator node's
+    // generate() will:
+    // a) allocate the int[] array (one slot per familyIndex value),
+    // b) enumerate all tuples (m[lo], m[lo+1], …, m[hi]) of non-negative
+    // integers satisfying the weighted-partition constraint inferred
+    // from the enclosing Σ context,
+    // c) on each tuple, populate the int[] array and call bodyNode.generate().
+    var enumeratorNode =
+                  new WeightedPartitionEnumeratorNode<>(this.expression,
+                                                        currentOperandExpression,
+                                                        familyName,
+                                                        arrayFieldName,
+                                                        familyMapping,
+                                                        familyIndexName,
+                                                        loNode,
+                                                        hiNode,
+                                                        bodyNode,
+                                                        identity,
+                                                        operation);
+
+    currentOperandExpression.rootNode = (Node<Integer, R, Sequence<R>>) (Node<?, ?, ?>) enumeratorNode;
+
+    expression.continueParsingFrom(currentOperandExpression);
+  }
+
+  /**
    * Handles the iterated-sum / iterated-product syntax extension:
    * {@code Σf(v1,v2,…,vN){v1=lo1…hi1, v2=lo2…hi2, …, vN=loN…hiN}}.
    *
    * <p>
-   * After the primary (first-listed, outermost) binding has been parsed by
-   * {@link #parseOperatorLimitSpecifications()}, this method consumes any
-   * additional comma-separated bindings and rewrites the AST so that each
-   * subsequent binding becomes an inner sum/product nested inside the operand of
-   * the previous one. No new node types are introduced — each added level is
-   * itself a {@link SumNode} or {@link ProductNode} of the same operation as the
-   * enclosing level, constructed through the normal parsing constructor so that
-   * all of the existing operand-expression wiring ({@link #parseOperand()},
-   * {@link #parseOperatorLimitSpecifications()}, upstream-input propagation,
-   * function-mapping registration) runs for free.
+   * For family bindings {@code name∶familyIndex=lo…hi}, see
+   * {@link #registerFamilyFunction}.
    *
    * <p>
-   * Mechanism: for each comma in the limit specification, this method synthesises
-   * an inner {@code Σ}/{@code Π} node by driving the parser on a clone of the
-   * current operand expression. The clone's remaining source begins at the
-   * position of the comma; by substituting the already-parsed tail of the primary
-   * binding's body with the clone's freshly-parsed sum body, we obtain a nested
-   * sum whose body is the original body and whose limit spec is
-   * {@code {vk=lok…hik, …}}. Concretely, what is re-parsed is the sum symbol, the
-   * (identical) body, and the remaining bindings — but only the bindings are new;
-   * the body node comes from the already-built primary-level operandExpression
-   * and is reused via {@link Node#spliceInto}.
-   *
-   * <p>
-   * Scoping: for each new binding {@code vk=lok…hik}, the sub-expressions
-   * {@code lok} and {@code hik} are parsed in the scope of the expression that
-   * CONTAINS the new inner sum (i.e. the operand expression of the immediately
-   * preceding level). In that scope, {@code v_{k-1}} is the independent variable
-   * and {@code v_1,…,v_{k-2}} are upstream inputs, so dependent bounds such as
-   * {@code b=0…n-a} resolve through the existing upstream-input propagation.
+   * For plain bindings {@code name=lo…hi}, the binding's independent variable is
+   * installed in the inner operand expression's scope <em>before</em> the body is
+   * spliced in, so every reference in the body resolves through the ordinary
+   * upstream-input walk. No deferred-resolution toggling is needed.
    */
   @SuppressWarnings("unchecked")
   private void parseMultisumIndices()
@@ -697,7 +775,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
     while (expression.nextCharacterIs(','))
     {
-
       currentOperandExpression.continueParsingFrom(expression);
 
       Node<Integer, R, Sequence<R>> savedBody = currentOperandExpression.rootNode;
@@ -707,6 +784,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       {
         currentOperandExpression.throwUnexpectedCharacterException("index variable name cannot be null or empty");
       }
+
       String extraFamilyIndexName = null;
       if (currentOperandExpression.nextCharacterIs('∶'))
       {
@@ -717,26 +795,31 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
         }
       }
       currentOperandExpression.require('=');
-      boolean priorDefer = currentOperandExpression.deferVariableResolution;
-      currentOperandExpression.deferVariableResolution = true;
+
       var extraLower = currentOperandExpression.resolve();
       currentOperandExpression.require('\u2026');
-      var    extraUpper             = currentOperandExpression.resolve();
-      currentOperandExpression.deferVariableResolution = priorDefer;
+      var extraUpper = currentOperandExpression.resolve();
 
-      String innerOperandFieldName  = currentOperandExpression.getNextIntermediateVariableFieldName("operand", Function.class);
+      if (extraFamilyIndexName != null)
+      {
+        registerFamilyFunction(currentOperandExpression, extraName, extraFamilyIndexName, extraLower, extraUpper, savedBody);
+      }
+      else
+      {
+        String innerOperandFieldName  = currentOperandExpression.getNextIntermediateVariableFieldName("operand", Function.class);
 
-      var    innerOperandExpression = newMultiIndex(currentOperandExpression, savedBody, extraName, extraFamilyIndexName, innerOperandFieldName);
+        var    innerOperandExpression = newMultiIndex(currentOperandExpression, savedBody, extraName, null, innerOperandFieldName);
 
-      var innerLevel = newInnerOperand(currentOperandExpression, extraName, extraLower, extraUpper, innerOperandFieldName, innerOperandExpression);
-      innerLevel.familyIndexName = extraFamilyIndexName;
-      currentOperandExpression.registerReferencedFunction(innerOperandFieldName, innerLevel.operandMapping);
+        var    innerLevel             =
+                          newInnerOperand(currentOperandExpression, extraName, extraLower, extraUpper, innerOperandFieldName, innerOperandExpression);
+        innerLevel.familyIndexName = null;
+        currentOperandExpression.registerReferencedFunction(innerOperandFieldName, innerLevel.operandMapping);
 
-      currentOperandExpression.rootNode = (Node<Integer, R, Sequence<R>>) (Node<?, ?, ?>) innerLevel;
+        currentOperandExpression.rootNode = (Node<Integer, R, Sequence<R>>) (Node<?, ?, ?>) innerLevel;
 
-      expression.continueParsingFrom(currentOperandExpression);
-
-      currentOperandExpression = innerOperandExpression;
+        expression.continueParsingFrom(currentOperandExpression);
+        currentOperandExpression = innerOperandExpression;
+      }
     }
   }
 
@@ -747,14 +830,14 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                                                      String innerOperandFieldName,
                                                                      Expression<Integer, R, Sequence<R>> innerOperandExpression)
   {
-    var    innerLevel             = new NAryOperationNode<>(currentOperandExpression,
-                                                            identity,
-                                                            prefix,
-                                                            operation,
-                                                            symbol,
-                                                            innerOperandExpression,
-                                                            extraLower,
-                                                            extraUpper);
+    var innerLevel = new NAryOperationNode<>(currentOperandExpression,
+                                             identity,
+                                             prefix,
+                                             operation,
+                                             symbol,
+                                             innerOperandExpression,
+                                             extraLower,
+                                             extraUpper);
     innerLevel.indexVariableFieldName   = extraName;
     innerLevel.operandFunctionFieldName = innerOperandFieldName;
     innerLevel.functionClass            = currentOperandExpression.className;
@@ -771,6 +854,16 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     return innerLevel;
   }
 
+  /**
+   * Clones {@code currentOperandExpression}, installs {@code extraName} as the
+   * clone's independent variable, then splices {@code savedBody} into the clone.
+   *
+   * <p>
+   * Ordering matters: by assigning the input variable <em>before</em> the splice,
+   * every {@link VariableNode} constructed during splice sees {@code extraName}
+   * via the normal upstream-input walk and resolves without needing any
+   * deferred-resolution path.
+   */
   private Expression<Integer, R, Sequence<R>> newMultiIndex(Expression<Integer, R, Sequence<R>> currentOperandExpression,
                                                             Node<Integer, R, Sequence<R>> savedBody,
                                                             String extraName,
@@ -783,7 +876,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     innerOperandExpression.clearIndependentVariable();
     innerOperandExpression.rootNode                = null;
     innerOperandExpression.deferVariableResolution = false;
-
     innerOperandExpression.className               = innerOperandFieldName;
 
     VariableNode<Integer, R, Sequence<R>> innerIndexVar = new VariableNode<>(innerOperandExpression,
@@ -792,7 +884,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     innerOperandExpression.assignInputVariable(innerIndexVar);
 
     innerOperandExpression.rootNode = savedBody.spliceInto(innerOperandExpression);
-    innerOperandExpression.rootNode.resolveVariables();
     innerOperandExpression.updateStringRepresentation();
     return innerOperandExpression;
   }
