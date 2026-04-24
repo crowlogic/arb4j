@@ -766,26 +766,19 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       currentOperandExpression.require('\u2026');
       var extraUpper = currentOperandExpression.resolve();
 
-      if (extraFamilyIndexName != null)
-      {
-        registerFamilyFunction(currentOperandExpression, extraName, extraFamilyIndexName, extraLower, extraUpper, savedBody);
-      }
-      else
-      {
-        String innerOperandFieldName  = currentOperandExpression.getNextIntermediateVariableFieldName("operand", Function.class);
+      String innerOperandFieldName  = currentOperandExpression.getNextIntermediateVariableFieldName("operand", Function.class);
 
-        var    innerOperandExpression = newMultiIndex(currentOperandExpression, savedBody, extraName, null, innerOperandFieldName);
+      var    innerOperandExpression = newMultiIndex(currentOperandExpression, savedBody, extraName, extraFamilyIndexName, innerOperandFieldName);
 
-        var    innerLevel             =
-                          newInnerOperand(currentOperandExpression, extraName, extraLower, extraUpper, innerOperandFieldName, innerOperandExpression);
-        innerLevel.familyIndexName = null;
-        currentOperandExpression.registerReferencedFunction(innerOperandFieldName, innerLevel.operandMapping);
+      var    innerLevel             =
+                        newInnerOperand(currentOperandExpression, extraName, extraLower, extraUpper, innerOperandFieldName, innerOperandExpression);
+      innerLevel.familyIndexName = extraFamilyIndexName;
+      currentOperandExpression.registerReferencedFunction(innerOperandFieldName, innerLevel.operandMapping);
 
-        currentOperandExpression.rootNode = (Node<Integer, R, Sequence<R>>) (Node<?, ?, ?>) innerLevel;
+      currentOperandExpression.rootNode = (Node<Integer, R, Sequence<R>>) (Node<?, ?, ?>) innerLevel;
 
-        expression.continueParsingFrom(currentOperandExpression);
-        currentOperandExpression = innerOperandExpression;
-      }
+      expression.continueParsingFrom(currentOperandExpression);
+      currentOperandExpression = innerOperandExpression;
     }
   }
 
