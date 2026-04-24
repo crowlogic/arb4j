@@ -92,6 +92,16 @@ public interface Function<D, CO> extends
     throw new UnsupportedOperationException("TODO: " + getClass() + " should implement derivative()");
   }
 
+  public default Function<D, CO> derivative(int n)
+  {
+    Function<D, CO> result = this;
+    for (int i = 0; i < n; i++)
+    {
+      result = result.derivative();
+    }
+    return result;
+  }
+
   public default Function<D, CO> integral()
   {
     assert false : "TODO: " + getClass() + " should implement this";

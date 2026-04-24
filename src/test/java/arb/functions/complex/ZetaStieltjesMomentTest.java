@@ -15,7 +15,7 @@ public class ZetaStieltjesMomentTest extends
   {
     ZetaStieltjesMoment moment = new ZetaStieltjesMoment();
     System.out.println("Θ = " + moment.Θ);
-    System.out.println("h = " + moment.h);
+    System.out.println("ζ = " + moment.ζ);
     System.out.println("μ = " + moment.μ);
   }
 

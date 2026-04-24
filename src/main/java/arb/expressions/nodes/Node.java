@@ -708,6 +708,16 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public abstract Node<D, R, F> differentiate(VariableNode<D, R, F> variable);
 
+  public Node<D, R, F> differentiate(VariableNode<D, R, F> variable, int n)
+  {
+    Node<D, R, F> result = this;
+    for (int i = 0; i < n; i++)
+    {
+      result = result.differentiate(variable);
+    }
+    return result.simplify();
+  }
+
   public Node<D, R, F> digamma()
   {
     return apply("digamma");
