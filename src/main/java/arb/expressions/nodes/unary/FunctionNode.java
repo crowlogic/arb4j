@@ -352,7 +352,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       lookupFunctionInContext();
     }
-    if (generatedType == null)
+    if (generatedType == null && !expression.deferVariableResolution)
     {
       generatedType = resultTypeFor(this.functionName);
     }

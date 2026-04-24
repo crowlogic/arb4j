@@ -33,7 +33,7 @@ public class ZetaStieltjesMoment implements
 
   public final ComplexSequence μ =
       ComplexSequence.express("μ",
-                              "n→(-ⅈ)^n·n!/Θ(1)(0)^(n+1/2)·Σ ⅈ^a·Ζ(a)(0)/a!·ⅈ^b·M[b]/b!·Π(-ε-j){j=0…c-1}·N[2c]/c!·Π(-(n+1)-j){j=0…K-1}/K!·Π(Θ(2q+1)(0)/((2q+1)!·Θ(1)(0)))^k/k!{q=1…(n-a-b-2c)/2,k∶q=0…(n-a-b-2c)/(2q)}{a=0…n,b=0…n-a,c=0…(n-a-b)/2}",
+                              "n→(-ⅈ)^n·n!/Θ(1)(0)^(n+1/2)·Σ ⅈ^a·Ζ(a)(0)/a!·ⅈ^b·M[b]/b!·Π(-ε-j){j=0…c-1}·N[2·c]/c!·Π(-(n+1)-j){j=0…K-1}/K!·Π(Θ(2·q+1)(0)/((2·q+1)!·Θ(1)(0)))^k/k!{q=1…(n-a-b-2·c)/2,k∶q=0…(n-a-b-2·c)/(2·q)}{a=0…n,b=0…n-a,c=0…(n-a-b)/2}",
                               context);
 
   @Override
