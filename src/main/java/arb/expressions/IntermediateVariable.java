@@ -40,7 +40,7 @@ public class IntermediateVariable<D, R, F extends Function<? extends D, ? extend
 
   public MethodVisitor generateInitializer(MethodVisitor methodVisitor)
   {
-    if (initialize && !type.isInterface())
+    if (initialize && !type.isInterface() && !type.isArray() && !type.isPrimitive())
     {
       loadThisOntoStack(methodVisitor);
       String intermediateTypeInternalName = Type.getInternalName(type);
