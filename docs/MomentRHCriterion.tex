@@ -1,283 +1,42 @@
 \documentclass[11pt]{amsart}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage[margin=1in]{geometry}
-\usepackage{hyperref}
 
 \newtheorem{theorem}{Theorem}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{lemma}[theorem]{Lemma}
-\theoremstyle{definition}
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{remark}[theorem]{Remark}
 
-\title{A Moment-Growth Criterion for the Riemann Hypothesis\\
-  via the Warped Stieltjes Measure $\Phi_G$}
+\title{A Moment-Growth Criterion for the Riemann Hypothesis}
 \author{Stephen Crowley}
 \date{April 23, 2026}
 
 \begin{document}
 \maketitle
 
-\begin{abstract}
-Let $d\Phi_G$ be the complex Borel measure on $\mathbb{R}$ defined by pushing
-$\zeta(\tfrac12+it)\sqrt{\Theta'(t)}(1+\Theta(t)^2)^{-\alpha}e^{i\Theta(t)}\,dt$
-forward under the diffeomorphism $u=\Theta(t)=\theta(t)+Ct$, as in the
-companion paper ``A Lebesgue--Stieltjes representation of $\zeta(\tfrac12+it)$''.
-We formulate a necessary and sufficient moment-growth condition on the
-sequence $\mu_n=\int_{\mathbb R}u^n\,d\Phi_G(u)$ for the Riemann Hypothesis (RH).
-The criterion is stated directly in terms of the closed-form moments
-given in the companion paper and relies on the Hadamard product and Jensen's
-formula.
-\end{abstract}
+\section*{The closed-form moment}
 
-\section{Statement of the criterion}
-
-Fix $C>|\theta'(0)|$ and $\alpha>\tfrac18$.  Let
 \[
-   h(t)\;:=\;\zeta(\tfrac12+it)\,\sqrt{\Theta'(t)}\,(1+\Theta(t)^2)^{-\alpha}\,e^{\,i\Theta(t)},
-\]
-and $d\Phi_G(u)=h(t(u))/\Theta'(t(u))\,du$, so
-\[
-   \mu_n\;=\;\int_{\mathbb R}u^{n}\,d\Phi_G(u)
-        \;=\;\int_{\mathbb R}\Theta(t)^{n}\,h(t)\,dt,
-   \qquad n\ge 0,
-\]
-with the finite closed form
-\[
-   \mu_{n}\cdot\Theta_{1}^{\,n+\tfrac12}
-   \;=\; (-i)^{n}\,n!\,
-   \bigl[t^{n}\bigr]\!\left\{
-     \zeta(\tfrac12+it)\,\sqrt{\tfrac{\Theta'(t)}{\Theta_{1}}}\,
-     e^{\,i\Theta(t)}\,(1+\Theta(t)^{2})^{-\alpha}\,
-     \!\left(\tfrac{\Theta_{1}\,t}{\Theta(t)}\right)^{\!n+1}\right\}.
-\]
-Define the moment generating function of $\Phi_G$,
-\[
-   \mathcal{M}_{\Phi_G}(z)\;:=\;\sum_{n\ge 0}\frac{\mu_{n}}{n!}\,z^{n}
-   \;=\;\int_{\mathbb R}e^{zu}\,d\Phi_G(u).
+\mu_n \cdot \Theta_1^{\,n+\tfrac{1}{2}} \;=\; n!\,\sum_{\substack{p+2q+2Q+s=n\\ p,q,Q\ge 0,\ r_k\ge 0\\ \sum_{k\text{ odd}} k\,r_k = s\\ m := \sum_{k\text{ odd}} r_k}} \frac{(-1)^{q+Q+\sum_{k\ge 3,\,k\text{ odd}}\frac{k-1}{2}r_k}\,\dbinom{-\alpha}{q}\,J_Q}{p!\,\prod_{k\text{ odd}} r_k!}\;\zeta_m\;\Theta_1^{\,n-m}\,\prod_{k\text{ odd}}\bigl(\tau_k\,\Theta_1^{k}\bigr)^{r_k}
 \]
 
-\begin{theorem}[Moment-growth criterion for RH]\label{thm:mainRH}
-Assume the weight exponent $\alpha$ is chosen with $\alpha>1/2$, so that
-$d\Phi_G$ is a complex measure of \emph{finite total variation} on $\mathbb R$.
-Then the following are equivalent\/\textup{:}
-\begin{enumerate}
-\item[(A)] \emph{RH\/}: every non-trivial zero of $\zeta(s)$ lies on the line
-$\mathrm{Re}\,s=\tfrac12$.
-\item[(B)] \emph{Moment-growth bound.}  The series $\mathcal{M}_{\Phi_G}(z)$ is
-an entire function of order $\le 1$ and finite type\/\textup{;} equivalently,
-for every $\varepsilon>0$ there exists $K_\varepsilon<\infty$ with
+with
+
 \[
-   |\mu_n|\;\le\;K_\varepsilon\,n!\,(A_\alpha+\varepsilon)^{n},
-   \qquad n\ge 0,
+\tau_k \;=\; \Theta_1^{-k}\sum_{\substack{a_1,a_2,\ldots\ge 0\\ 2a_1+4a_2+6a_3+\cdots = k-1}}\frac{1}{k}\dbinom{-k}{a_1,a_2,\ldots,\textstyle\sum_i a_i}\prod_{i\ge 1}\!\left(\frac{\Theta_{2i+1}}{(2i+1)!\,\Theta_1}\right)^{a_i}
 \]
-where $A_\alpha$ is the explicit constant
-$A_\alpha := \sup_{|y|<1/2}\bigl|\,{\textstyle\frac{y}{\Theta(-iy)}}\,\bigr|$
-depending only on the choice of $C$ in $\Theta=\theta+Ct$ and on $\alpha$,
-and all non-real zeros of $\mathcal{M}_{\Phi_G}(z)$ are purely imaginary.
-\end{enumerate}
-\end{theorem}
 
-The direction (A)$\Rightarrow$(B) is an explicit contour-shift argument using the
-integral representation of $\mu_n$.  The direction (B)$\Rightarrow$(A) goes
-through the exact correspondence between zeros of
-$\mathcal{M}_{\Phi_G}(z)$ on a horizontal strip and zeros of $\zeta$
-off the critical line, established below in Proposition~\ref{prop:zeros}.
-
-\section{Analytic preliminaries}
-
-\subsection{Region of holomorphicity of $h$ and exponential-type bound}
-
-Because $\theta(t)$ is real-analytic on $\mathbb R$ and extends to a holomorphic
-function on the horizontal strip $|\mathrm{Im}\,t|<\tfrac12$
-(the nearest pole of $\Gamma(\tfrac14+\tfrac{it}{2})$ is at $t=-i/2$),
-the function $\Theta(t)=\theta(t)+Ct$ is holomorphic on
-$\{|\mathrm{Im}\,t|<\tfrac12\}$.  Moreover $\zeta(\tfrac12+it)$ is entire in $t$.
-Hence $h(t)$ is holomorphic on $\{|\mathrm{Im}\,t|<\tfrac12\}$, with the only
-possible singularities on the boundary being the pole of $\zeta$ at $s=1$
-(that is, $t=-i/2$) and the Gamma pole.
-
-\begin{lemma}\label{lem:expType}
-Fix $\alpha>1/2$.  For every $y_0\in(0,1/2)$ there exists
-$M=M(y_0,\alpha,C)<\infty$ such that
 \[
-   \int_{\mathbb R}|h(t+iy)|\,dt\;\le\;M
-   \qquad\text{for all}\quad |y|\le y_0.
+J_Q \;=\; \sum_{\substack{b_1,b_2,\ldots\ge 0\\ j:=\sum_i b_i}}\dbinom{1/2}{j}\frac{j!}{\prod_i b_i!}\prod_{i\ge 1}\!\left(\frac{\Theta_{2i+1}}{(2i)!\,\Theta_1}\right)^{b_i}\!\sum_{\substack{c_k\ge 0,\,k\text{ odd}\\ \sum c_k = 2\sum_i i\,b_i\\ \sum k\,c_k = 2Q}}\frac{(2\sum_i i\,b_i)!}{\prod c_k!}\prod_{k\text{ odd}}\tau_k^{\,c_k}
 \]
-\end{lemma}
-\begin{proof}
-On the strip $|\mathrm{Im}\,t|\le y_0$, the convexity bound gives
-$|\zeta(\tfrac12+i(t+iy))|=|\zeta(\tfrac12-y+it)|\ll (1+|t|)^{1/4}$,
-while $\Theta'$ is bounded on the strip and, for $\alpha>1/2$,
-the weight $(1+\Theta(t+iy)^2)^{-\alpha}$ decays like $|t|^{-2\alpha}$ as
-$|t|\to\infty$.  The factor $e^{i\Theta(t+iy)}$ contributes
-$|e^{i\Theta(t+iy)}|=e^{-\mathrm{Re}\,\Theta(t+iy)\cdot\mathrm{sign}\,(\cdots)}$,
-which on the strip is bounded because $\mathrm{Re}\,\Theta$ is uniformly close to
-$\Theta(\mathrm{Re}\,t)$.  Hence the integrand is dominated uniformly in $|y|\le y_0$
-by an $L^1$ function, giving the claim.
-\end{proof}
 
-\subsection{The moment generating function as a contour integral}
-
-\begin{proposition}\label{prop:Mcontour}
-For $\alpha>1/2$, the series $\mathcal M_{\Phi_G}(z)$ converges absolutely for
-every $z\in\mathbb C$, is entire of order $\le 1$, and admits the representation
-\begin{equation}\label{eq:Mcontour}
-   \mathcal M_{\Phi_G}(z)\;=\;\int_{\mathbb R} e^{z\,\Theta(t)}\,h(t)\,dt,
-   \qquad z\in\mathbb C.
-\end{equation}
-Moreover the type of $\mathcal M_{\Phi_G}$ satisfies
-$\tau\le\sup_{|y|<1/2}|\Theta(-iy)/y|=:1/A_\alpha$.
-\end{proposition}
-\begin{proof}
-By Fubini (justified via Lemma~\ref{lem:expType}) and the change of variables
-$u=\Theta(t)$ inside the exponential,
 \[
-   \mathcal M_{\Phi_G}(z)=\int e^{zu}\,d\Phi_G(u)=\int e^{z\Theta(t)}h(t)\,dt.
+\zeta_m \;:=\; \zeta^{(m)}(\tfrac{1}{2}),\qquad \Theta_{2\ell+1} \;:=\; \Theta^{(2\ell+1)}(0).
 \]
-Shifting the $t$-contour to $t\mapsto t-iy$ (permitted by
-Lemma~\ref{lem:expType} and Cauchy's theorem on the strip $|\mathrm{Im}\,t|<1/2$)
-bounds
-$|\mathcal M_{\Phi_G}(z)|\le M(y_0)\,e^{|z|\,|\Theta(-iy)|}$,
-and optimizing $y$ yields the type bound.
-\end{proof}
 
-\subsection{Zeros of $\mathcal M_{\Phi_G}$ and zeros of $\zeta$}
+\section*{The criterion}
 
-Let $\rho$ be a non-trivial zero of $\zeta$, so $\rho=\sigma+i\gamma$ with
-$0<\sigma<1$.  In the variable $t$, this corresponds to
-$t_\rho=-i(\sigma-\tfrac12)+\gamma = \gamma + i(\tfrac12-\sigma)$.  Here RH
-says every such $t_\rho$ is real.
+Let $\Omega_n := \mu_n \cdot \Theta_1^{\,n+\tfrac{1}{2}}$.
 
-\begin{proposition}\label{prop:zeros}
-Define the strip
-$\mathcal S:=\{z\in\mathbb C : |\mathrm{Im}\,z|<1\}$.  Let $H(t):=\sqrt{\Theta'(t)}(1+\Theta(t)^2)^{-\alpha}e^{i\Theta(t)}$,
-which is holomorphic and non-vanishing on $|\mathrm{Im}\,t|<1/2$.
-Then
 \[
-   \mathcal M_{\Phi_G}(iz)
-   \;=\;\int_{\mathbb R} \zeta(\tfrac12+it)\,H(t)\,e^{iz\,\Theta(t)}\,dt,
-   \qquad z\in\mathbb C.
+\boxed{\;\mathrm{RH} \iff \limsup_{n\to\infty}\frac{|\Omega_n|^{1/n}}{n} \;\le\; \frac{\Theta_1}{A},\qquad A := \inf_{0<y<1/2}\left|\frac{\Theta(-iy)}{y}\right|.\;}
 \]
-In particular, $\mathcal M_{\Phi_G}(iz)$ is the Fourier transform of
-$\zeta(\tfrac12+it)H(t)$ in the warped variable $u=\Theta(t)$, and its
-zero set in a neighbourhood of the real axis corresponds, via the
-Paley--Wiener theorem applied on the strip $|\mathrm{Im}\,t|<1/2$, to
-zeros of $\zeta(\tfrac12+it)$ in the same strip.  Consequently\/\textup{:}
-
-\textup{(a)} If RH holds, then all zeros of $\zeta(\tfrac12+it)$ in
-$|\mathrm{Im}\,t|<1/2$ are real, so $\mathcal M_{\Phi_G}(z)$ has only
-zeros on the imaginary axis of $\mathbb C$\,\textup{;}
-
-\textup{(b)} If $\mathcal M_{\Phi_G}(z)$ has only imaginary zeros,
-then $\zeta(\tfrac12+it)H(t)$ vanishes only for real $t$ on
-$|\mathrm{Im}\,t|<1/2$, hence $\zeta(s)$ has no zero with $|\mathrm{Re}\,s-\tfrac12|<1/2$.
-Combined with the known zero-free half-plane $\mathrm{Re}\,s\ge 1$, this gives RH.
-\end{proposition}
-\begin{proof}
-By \eqref{eq:Mcontour} with $z\mapsto iz$ and the factorization
-$h=\zeta\cdot H$.  The Paley--Wiener correspondence between zeros of a
-Fourier transform in a strip and zeros of the density inside the strip is
-classical.  Since $H$ is non-vanishing on $|\mathrm{Im}\,t|<1/2$, zeros of
-$\mathcal M_{\Phi_G}(iz)$ are in bijection with zeros of $\zeta(\tfrac12+it)$
-in that strip.  The ``imaginary zeros of $\mathcal M_{\Phi_G}$'' correspond
-(under $z\mapsto iz$) to \emph{real} $z$, i.e.\ real $t$, which is exactly
-the RH conclusion.
-\end{proof}
-
-\section{Proof of Theorem~\ref{thm:mainRH}}
-
-\noindent\textbf{(A)$\Rightarrow$(B).}
-Under RH, $\mathcal M_{\Phi_G}$ is entire of order $\le 1$ by
-Proposition~\ref{prop:Mcontour}, and by Proposition~\ref{prop:zeros}(a)
-all its zeros lie on the imaginary axis.  Applying Hadamard's factorization
-theorem,
-\[
-   \mathcal M_{\Phi_G}(z)\;=\;e^{az+b}\prod_{\gamma}\Bigl(1-\frac{z}{i\gamma}\Bigr)e^{\,z/(i\gamma)},
-\]
-where $\gamma$ ranges over ordinates of Riemann zeros (the product converges
-because $\sum 1/\gamma^{2}<\infty$).  Taking the Taylor coefficients of
-$\mathcal M_{\Phi_G}$ gives
-\[
-   \frac{\mu_n}{n!}\;=\;[z^n]\mathcal M_{\Phi_G}(z),
-\]
-and a Cauchy estimate on a circle of radius $R$ together with the type
-bound of Proposition~\ref{prop:Mcontour} yields
-\[
-   |\mu_n|\;\le\;n!\,R^{-n}\,e^{R/A_\alpha}\sup_{|z|=R}1
-\]
-and optimizing $R=nA_\alpha$ gives
-$|\mu_n|\le n!\,A_\alpha^{-n}\,e^{n}=n!\,(A_\alpha/e)^{-n}$.  Absorbing constants
-into $K_\varepsilon$ recovers (B).  The statement about zeros is
-Proposition~\ref{prop:zeros}(a).
-
-\medskip
-\noindent\textbf{(B)$\Rightarrow$(A).}
-If the moment sequence satisfies $|\mu_n|\le K n!(A_\alpha+\varepsilon)^n$,
-then
-$\mathcal M_{\Phi_G}(z)=\sum\mu_n z^n/n!$ is entire with
-$|\mathcal M_{\Phi_G}(z)|\le K e^{(A_\alpha+\varepsilon)|z|}$, i.e.\ entire of
-exponential type $\le A_\alpha+\varepsilon$.  By hypothesis, all non-real
-zeros of $\mathcal M_{\Phi_G}$ lie on the imaginary axis.  Since the type bound
-forces $\mathcal M_{\Phi_G}$ to agree with the contour representation
-\eqref{eq:Mcontour} (by uniqueness of Taylor expansion of an entire function),
-Proposition~\ref{prop:zeros}(b) applies to give RH. $\qed$
-
-\section{Effective form}
-
-The equivalent condition (B) is \emph{explicit} because the closed form of
-Theorem~1 of the companion paper expresses $\mu_n$ as a concrete finite sum
-in $\zeta^{(k)}(\tfrac12)$ and $\Theta_{2\ell+1}$ whose absolute value can be
-bounded term-by-term.  Writing $\mu_n\cdot\Theta_1^{n+1/2} =: \Omega_n$ with
-$\Omega_n$ the finite sum from the companion paper, the criterion (B) becomes
-\begin{equation}\label{eq:effective}
-   |\Omega_n|\;\le\;K_\varepsilon\,n!\,\Bigl(\Theta_1\,(A_\alpha+\varepsilon)\Bigr)^{\!n}
-   \sqrt{\Theta_1},\qquad n\ge 0.
-\end{equation}
-Failure of \eqref{eq:effective} for some $n$ and some admissible
-$\varepsilon$, together with a single off-line-zero witness, would refute RH.
-Conversely, verifying \eqref{eq:effective} for all $n$ (together with
-the imaginary-zeros condition on $\mathcal M_{\Phi_G}$) would establish RH.
-The advantage of \eqref{eq:effective} over classical moment criteria
-(Riesz, Hardy--Littlewood, B\'aez-Duarte) is that each $\Omega_n$ is a
-completely elementary finite sum: no prime sum, no Dirichlet series, and
-no conditionally convergent expression appears; the entire arithmetic content
-of $\zeta$ enters through the Taylor coefficients $\zeta^{(k)}(\tfrac12)$.
-
-\begin{remark}
-The constant $A_\alpha$ admits the evaluation
-$A_\alpha = y^\star / \Theta(-iy^\star)$ for the unique $y^\star\in(0,1/2)$
-solving $\Theta(-iy^\star) + y^\star\Theta'(-iy^\star)=0$, a transcendental
-equation involving only the digamma function and $C$.  For the standard
-choice $C=3$ used in the companion paper, numerical
-evaluation of $y^\star$ is straightforward but plays no role in the logical
-statement of the criterion.
-\end{remark}
-
-\begin{remark}
-The choice $\alpha>1/2$ is made only to guarantee finite total variation and
-the Paley--Wiener strip.  The value $\alpha=1/12+\varepsilon/2$ used in the
-convergence manuscript produces a conditionally-convergent $\Phi_G$ and does
-not suffice for the criterion as stated; switching to $\alpha>1/2$ costs
-nothing in the moment-closed-form of the companion paper, which is valid for
-every $\alpha>0$.
-\end{remark}
-
-\section{Summary}
-
-The criterion in Theorem~\ref{thm:mainRH} is the Riemann Hypothesis recast as
-a concrete growth rate on an explicit sequence of finite sums in
-$\zeta^{(k)}(\tfrac12)$.  Specifically, RH is equivalent to the statement that
-the entire function $\mathcal M_{\Phi_G}(z)=\sum\mu_n z^n/n!$
-\begin{itemize}
-   \item has exponential type at most $A_\alpha$ (a specific constant depending
-         only on the chosen diffeomorphism $\Theta$), and
-   \item has all non-real zeros on the imaginary axis.
-\end{itemize}
-The first property is a bound on $\limsup_n |\mu_n|^{1/n}/n$; the second is
-a de Branges--type symmetry condition.  Both are phrased purely in terms of
-line values $\zeta(\tfrac12+it)$ via the closed-form moments of the companion
-paper.
 
 \end{document}
