@@ -1089,7 +1089,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       Class<?> type = mapping.type();
       if (type == null || type.isInterface())
       {
-        System.err.println( "Instantiating " + mapping );
         mapping.instantiate();
         type = mapping.type();
       }
