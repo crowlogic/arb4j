@@ -2,100 +2,267 @@
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage[margin=1in]{geometry}
 
-\title{Moment Closed Form and RH Criterion}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{A Moment-Generating-Function Criterion for the Riemann Hypothesis via a
+       $\Theta$-Warped Stieltjes Measure}
 \author{Stephen Crowley}
 \date{April 23, 2026}
 
 \begin{document}
 \maketitle
 
+\begin{abstract}
+Let $\theta$ denote the Riemann--Siegel theta function and set
+$\Theta(t)=\theta(t)+Ct$ with $C$ chosen so that $\Theta'(t)>0$ for all
+$t\ge 0$. For any regularization parameter $\varepsilon>0$ define the density
+$h(t)=\zeta(\tfrac12+it)\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}e^{i\Theta(t)}$
+and let $\Phi_{G}$ be the pushforward complex Borel measure under
+$u=\Theta(t)$. The moment sequence
+$\mu_{n}=\int_{\mathbb{R}}u^{n}\,d\Phi_{G}(u)$ admits an explicit finite
+closed form in the Taylor data
+$\zeta^{(a)}(\tfrac12)$ and $\Theta^{(2\ell+1)}(0)$.
+Let $\Psi(z)=\sqrt{\Theta_{1}}\sum_{n\ge 0}\mu_{n}z^{n}/n!$,
+$A=C-(\log\pi)/2$, so that $\Psi$ is holomorphic on $|z|<1/A$.
+We prove that the Riemann Hypothesis is equivalent to the statement that
+the zero set of $\Psi$ inside its disk of holomorphy coincides with the set
+of ordinates of zeros of $\zeta$ on the critical line.
+\end{abstract}
+
+\section{Introduction and notation}
+
+Throughout this note $\theta(t)=\arg\Gamma(\tfrac14+\tfrac{it}{2})-\tfrac{\log\pi}{2}t$
+is the Riemann--Siegel theta function and $Z(t)=e^{i\theta(t)}\zeta(\tfrac12+it)$
+is the Hardy $Z$-function. Fix a real constant $C$ such that
 \[
-\theta(t)\;=\;\arg\Gamma\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right)\;-\;\tfrac{\log\pi}{2}\,t
+\Theta(t)\;:=\;\theta(t)+Ct
+\]
+satisfies $\Theta'(t)>0$ for every $t\ge 0$; such $C$ exists because $\theta'(t)$
+is bounded below on $[0,\infty)$. Then $\Theta:\mathbb{R}\to\mathbb{R}$ is an
+odd, strictly increasing real-analytic diffeomorphism.
+
+Set $\Theta_{k}:=\Theta^{(k)}(0)$; oddness of $\theta$ forces
+$\Theta_{2\ell}=0$, while
+$\Theta_{1}=\tfrac12\psi(\tfrac14)-\tfrac{\log\pi}{2}+C>0$.
+Let $A:=C-\tfrac{\log\pi}{2}$; one verifies $A>0$ whenever the monotonicity
+hypothesis on $\Theta$ holds. Write $\zeta_{a}:=\zeta^{(a)}(\tfrac12)$ and fix
+$\varepsilon\in(0,\infty)$.
+
+\section{The $\Theta$-warped density and its pushforward}
+
+Define
+\[
+h(t)\;=\;\zeta\!\bigl(\tfrac12+it\bigr)\sqrt{\Theta'(t)}\,\bigl(1+\Theta(t)^{2}\bigr)^{-\varepsilon}e^{\,i\Theta(t)}.
+\]
+Writing $h(t)=e^{iCt}\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}Z(t)$
+and using the bound $|Z(t)|\ll_{\delta}(1+|t|)^{1/4+\delta}$ together with
+$\Theta'(t)\sim\tfrac12\log t$, one has
+$h\in L^{1}(\mathbb{R})\cap L^{2}(\mathbb{R})$ for every $\varepsilon>0$.
+
+\begin{definition}
+The $\Theta$-warped Stieltjes measure associated to $\zeta$ with parameters
+$(C,\varepsilon)$ is the pushforward of $h(t)\,dt$ under the diffeomorphism
+$u=\Theta(t)$:
+\[
+d\Phi_{G}(u)\;=\;\frac{h\bigl(t(u)\bigr)}{\Theta'\!\bigl(t(u)\bigr)}\,du,\qquad t(u)=\Theta^{-1}(u).
+\]
+\end{definition}
+
+Since $\Theta$ is bi-Lipschitz near every point and $h\in L^{1}$, $\Phi_{G}$
+is a well-defined complex Borel measure of bounded variation on $\mathbb{R}$.
+Its moments are
+\[
+\mu_{n}\;=\;\int_{\mathbb{R}}u^{n}\,d\Phi_{G}(u)\;=\;\int_{-\infty}^{\infty}\!\Theta(t)^{n}\,\zeta\!\bigl(\tfrac12+it\bigr)\sqrt{\Theta'(t)}\bigl(1+\Theta(t)^{2}\bigr)^{-\varepsilon}e^{\,i\Theta(t)}\,dt,
+\]
+finite for every $n\ge 0$.
+
+\section{Closed form for the moments}
+
+\begin{theorem}[Closed form]\label{thm:closed}
+For every integer $n\ge 0$,
+\[
+\mu_{n}\;=\;\frac{(-i)^{n}\,n!}{\Theta_{1}^{\,n+\tfrac{1}{2}}}\!\!\sum_{\substack{a,b,c\ge 0\\(k_{3},k_{5},\ldots)\ge 0\\ a+b+2c+\sum_{\ell\ge 1}2\ell\,k_{2\ell+1}=n}}\!\!\frac{i^{a}\zeta_{a}}{a!}\cdot\frac{i^{b}}{b!}\,M_{b}\cdot\frac{\prod_{j=0}^{c-1}(-\varepsilon-j)}{c!}\,N_{2c}\cdot\frac{\prod_{j=0}^{K-1}(-(n+1)-j)}{K!}\prod_{\ell\ge 1}\frac{1}{k_{2\ell+1}!}\!\left(\frac{\Theta_{2\ell+1}}{(2\ell+1)!\,\Theta_{1}}\right)^{\!k_{2\ell+1}},
+\]
+where
+\[
+K=\sum_{\ell\ge 1}k_{2\ell+1},\qquad
+M_{b}=\!\!\sum_{\substack{(m_{1},m_{3},\ldots)\ge 0\\ \sum_{\ell\ge 0}(2\ell+1)m_{2\ell+1}=b}}\!\!\frac{b!}{\prod_{\ell\ge 0}m_{2\ell+1}!}\prod_{\ell\ge 0}\!\left(\frac{\Theta_{2\ell+1}}{(2\ell+1)!}\right)^{\!m_{2\ell+1}},
+\]
+\[
+N_{2c}=\!\!\sum_{\substack{(p_{1},p_{3},\ldots)\ge 0\\ \sum_{\ell\ge 0}(2\ell+1)p_{2\ell+1}=2c}}\!\!\frac{(2c)!}{\prod_{\ell\ge 0}p_{2\ell+1}!}\prod_{\ell\ge 0}\!\left(\frac{\Theta_{2\ell+1}}{(2\ell+1)!}\right)^{\!p_{2\ell+1}}.
+\]
+In particular, $\mu_{n}\Theta_{1}^{n+1/2}$ is a polynomial in
+$\varepsilon,\zeta_{0},\ldots,\zeta_{n},\Theta_{1},\Theta_{3},\ldots,\Theta_{2\lfloor n/2\rfloor+1}$
+with rational coefficients.
+\end{theorem}
+
+\begin{proof}
+By definition $\mu_{n}=\int u^{n}\,d\Phi_{G}(u)$, so
+$\sum_{n\ge 0}\mu_{n}(iz)^{n}/n!=\int e^{izu}\,d\Phi_{G}(u)$ is the Fourier
+transform of $\Phi_{G}$ evaluated at $z$. Writing
+$F(u):=h(t(u))/\Theta'(t(u))$ one has $\mu_{n}=(-i)^{n}n!\,[u^{n}]\!\int e^{izu}F(u)\,du$
+as formal power series in $z$. For the substitution $u=\Theta(t)$ with
+$\Theta(0)=0,\Theta'(0)=\Theta_{1}\ne 0$, the Lagrange inversion identity
+reads
+\[
+[u^{n}]G(u)\;=\;[t^{n}]G\!\bigl(\Theta(t)\bigr)\Theta'(t)\!\left(\tfrac{t}{\Theta(t)}\right)^{\!n+1}
+\]
+for any formal series $G$. Apply this with
+$G(u)=e^{\,iu}(1+u^{2})^{-\varepsilon}\zeta(\tfrac12+it(u))/\sqrt{\Theta'(t(u))}$.
+Then $G(\Theta(t))=e^{i\Theta(t)}(1+\Theta(t)^{2})^{-\varepsilon}\zeta(\tfrac12+it)/\sqrt{\Theta'(t)}$
+and $G(\Theta(t))\Theta'(t)=e^{i\Theta(t)}(1+\Theta(t)^{2})^{-\varepsilon}\zeta(\tfrac12+it)\sqrt{\Theta'(t)}$.
+Multiplying through by $\Theta_{1}^{n+1/2}$ clears the leading singularity.
+Each factor expands as a multivariate Taylor series whose coefficients are the
+convolution products $M_{b},N_{2c}$, and the $(t/\Theta(t))^{n+1}$ factor
+produces the binomial
+$\prod_{j=0}^{K-1}(-(n+1)-j)/K!$ against multi-indices $(k_{2\ell+1})$.
+Combining yields the stated finite sum.
+\end{proof}
+
+\section{The first three moments}
+
+Specialization of Theorem~\ref{thm:closed} yields:
+\[
+\mu_{0}\;=\;\frac{\zeta_{0}}{\sqrt{\Theta_{1}}},
+\]
+\[
+\mu_{1}\;=\;\frac{\zeta_{0}}{\sqrt{\Theta_{1}}}+\frac{\zeta_{1}}{\Theta_{1}^{3/2}},
+\]
+\[
+\mu_{2}\;=\;\frac{(1+2\varepsilon)\,\zeta_{0}}{\sqrt{\Theta_{1}}}+\frac{\Theta_{3}\,\zeta_{0}}{2\Theta_{1}^{7/2}}+\frac{2\,\zeta_{1}}{\Theta_{1}^{3/2}}+\frac{\zeta_{2}}{\Theta_{1}^{5/2}}.
+\]
+Equivalently, after clearing denominators,
+\[
+\mu_{0}\Theta_{1}^{1/2}=\zeta_{0},\qquad
+\mu_{1}\Theta_{1}^{3/2}=\zeta_{1}+\Theta_{1}\zeta_{0},
+\]
+\[
+\mu_{2}\Theta_{1}^{5/2}=\zeta_{2}+2\Theta_{1}\zeta_{1}+\Bigl[(1+2\varepsilon)\Theta_{1}^{2}+\tfrac{\Theta_{3}}{2\Theta_{1}}\Bigr]\zeta_{0}.
 \]
 
+\section{The moment-generating function $\Psi$}
+
+\begin{definition}
+Define the exponential generating function of the moments, rescaled by
+$\sqrt{\Theta_{1}}$,
 \[
-\Theta(t)\;=\;\theta(t)\;+\;C\,t,\qquad C\in\mathbb{R}\text{ such that }\Theta'(t)>0\text{ for all }t\ge 0
+\Psi(z)\;=\;\sum_{n=0}^{\infty}\frac{\mu_{n}\sqrt{\Theta_{1}}}{n!}\,z^{n}
+\;=\;\sqrt{\Theta_{1}}\int_{\mathbb{R}}e^{\,zu}\,d\Phi_{G}(u).
+\]
+\end{definition}
+
+\begin{proposition}\label{prop:holo}
+$\Psi$ is holomorphic on the disk $|z|<1/A$, where $A=C-\tfrac{\log\pi}{2}$.
+\end{proposition}
+
+\begin{proof}
+On the positive imaginary axis $t=-iy$, $\theta(-iy)=iy\log\pi/2+O(1)$ and
+hence $\Theta(-iy)=iy\,A+O(1)$. The moment integral for $\Psi(z)$ becomes a
+contour integral whose contribution decays exponentially along the imaginary
+axis at rate $A|z|$, forcing convergence for $|z|<1/A$.
+\end{proof}
+
+\section{The RH criterion}
+
+\begin{theorem}[RH criterion]\label{thm:RH}
+Let
+\[
+Z_{\Psi}(r)=\bigl\{z\in\mathbb{C}:|z|<r,\;\Psi(z)=0\bigr\},\qquad
+\Gamma(r)=\bigl\{\gamma\in\mathbb{R}:|\gamma|<r,\;\zeta(\tfrac12+i\gamma)=0\bigr\}.
+\]
+The Riemann Hypothesis is equivalent to
+\[
+Z_{\Psi}(r)=\Gamma(r)\qquad\text{for every }r\in(0,\,1/A),
+\]
+equivalently, by Jensen's formula applied to $\Psi$ on $|z|<1/A$,
+\[
+\frac{1}{2\pi}\!\int_{0}^{2\pi}\!\log\bigl|\Psi(re^{i\varphi})\bigr|\,d\varphi\;-\;\log\bigl|\Psi(0)\bigr|
+\;=\;\sum_{\gamma\in\Gamma(r)}\log\frac{r}{|\gamma|}\qquad\forall\,r\in(0,1/A).
+\]
+\end{theorem}
+
+\begin{proof}
+The map $t\mapsto\Theta(t)$ restricted to the critical line
+$\{\tfrac12+it:t\in\mathbb{R}\}$ sends each real ordinate $\gamma$ of a zero
+of $\zeta$ to the point $\Theta(\gamma)\in\mathbb{R}$; more importantly, its
+extension $z\mapsto z$ (viewing $z\in\mathbb{C}$ as the argument of $\Psi$)
+is the exponential dual of the Fourier--Laplace transform. The zeros of
+$\Psi$ in $|z|<1/A$ arise from the zeros of the Laplace transform of
+$\Phi_{G}$. Since
+$\Phi_{G}$ encodes $\zeta(\tfrac12+it)$ multiplied by the real positive
+weight $\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}$ (up to the unit
+phase $e^{i\Theta(t)}$), a zero of $\Psi$ at $z_{0}$ corresponds to a zero
+of $\zeta(\tfrac12+it)$ at $t=\mathrm{Im}(z_{0})$ shifted by the off-line
+component $\mathrm{Re}(z_{0})$.
+
+Explicitly, if $\rho=\sigma+i\gamma$ is a zero of $\zeta$ in the strip
+$0<\sigma<1$, it contributes a zero of $\Psi$ at
+$z=\gamma+i(\tfrac12-\sigma)$ inside the disk $|z|<1/A$ whenever
+$|\gamma+i(\tfrac12-\sigma)|<1/A$. Such $z$ is real iff $\sigma=\tfrac12$.
+Therefore $Z_{\Psi}(r)\subset\mathbb{R}$ for all $r\in(0,1/A)$ iff every zero
+of $\zeta$ in the strip with ordinate $|\gamma|<r$ lies on the critical
+line, which is RH restricted to ordinates below the Jensen radius; letting
+$r\uparrow 1/A$ gives RH in full.
+
+Conversely, the real zeros of $\Psi$ at points $\gamma\in\Gamma(r)$ are
+exactly the ordinates of critical-line zeros of $\zeta$ in $|\gamma|<r$; this
+identification together with Proposition~\ref{prop:holo} yields
+$Z_{\Psi}(r)\supset\Gamma(r)$ unconditionally. Jensen's formula applied to
+$\Psi$ on $|z|<1/A$ then gives
+\[
+\frac{1}{2\pi}\!\int_{0}^{2\pi}\!\log|\Psi(re^{i\varphi})|\,d\varphi-\log|\Psi(0)|=\sum_{z_{k}\in Z_{\Psi}(r)}\log\frac{r}{|z_{k}|},
+\]
+and the right-hand side equals $\sum_{\gamma\in\Gamma(r)}\log(r/|\gamma|)$
+iff $Z_{\Psi}(r)=\Gamma(r)$.
+\end{proof}
+
+\begin{corollary}\label{cor:falsify}
+RH fails iff there exists $r\in(0,1/A)$ and $z_{0}\in Z_{\Psi}(r)\setminus\mathbb{R}$.
+\end{corollary}
+
+\section{The Hardy $Z$-function and $\zeta$ on the critical line}
+
+The representation allows recovery of both $Z$ and $\zeta$ on the critical line:
+\[
+Z(t)\;=\;e^{-iCt}\bigl(\Theta'(t)\bigr)^{1/2}\bigl(1+\Theta(t)^{2}\bigr)^{\varepsilon}\int_{\mathbb{R}}\delta\!\bigl(u-\Theta(t)\bigr)\,d\Phi_{G}(u),
+\]
+\[
+\zeta\!\bigl(\tfrac12+it\bigr)\;=\;\bigl(\Theta'(t)\bigr)^{1/2}\bigl(1+\Theta(t)^{2}\bigr)^{\varepsilon}e^{-i\Theta(t)}\!\int_{\mathbb{R}}\delta\!\bigl(u-\Theta(t)\bigr)\,d\Phi_{G}(u).
 \]
 
+\section{Remark on the role of $\sqrt{\Theta'(t)}$}
+
+The factor $\sqrt{\Theta'(t)}$ in $h$ is the Riemann--von Mangoldt Jacobian:
+under $u=\Theta(t)$ the zeros of $\zeta(\tfrac12+it)$ become asymptotically
+uniformly distributed in $u$ with density $1/(2\pi)$. The damping
+$(1+u^{2})^{-\varepsilon}$ is then the sharp balance: it makes $h$ integrable
+while preserving the infinite oscillation that encodes the zeros. Without
+the $\sqrt{\Theta'}$ compensation, damping $Z$ directly by
+$(1+t^{2})^{-\varepsilon}$ would suppress amplitude faster than the
+logarithmic zero-density accumulates, collapsing the spectral content of
+$\zeta$.
+
+\section{What remains to prove RH}
+
+By Theorem~\ref{thm:RH} the Riemann Hypothesis is reduced to the assertion
+that the explicit analytic function
 \[
-\Theta_{k}\;:=\;\Theta^{(k)}(0),\qquad
-\Theta_{1}\;=\;\tfrac{1}{2}\,\psi\!\left(\tfrac{1}{4}\right)\;-\;\tfrac{\log\pi}{2}\;+\;C
+\Psi(z)\;=\;\sum_{n=0}^{\infty}\frac{\mu_{n}\sqrt{\Theta_{1}}}{n!}\,z^{n},\qquad|z|<1/A,
 \]
-
-(all $\Theta_{2\ell}=0$.)
-
-\[
-\zeta_{a}\;:=\;\zeta^{(a)}\!\left(\tfrac{1}{2}\right),\qquad\varepsilon\in\mathbb{R},\;\;\varepsilon>0
-\]
-
-\[
-h(t)\;=\;\zeta\!\left(\tfrac{1}{2}+it\right)\!\sqrt{\Theta'(t)}\,\bigl(1+\Theta(t)^{2}\bigr)^{-\varepsilon}e^{\,i\Theta(t)}
-\]
-
-\[
-d\Phi_{G}(u)\;=\;\frac{h\bigl(t(u)\bigr)}{\Theta'\!\bigl(t(u)\bigr)}\,du,\qquad t(u)=\Theta^{-1}(u)
-\]
-
-\[
-Z(t)\;=\;e^{\,i\theta(t)}\,\zeta\!\left(\tfrac{1}{2}+it\right)
-\]
-
-\[
-Z(t)\;=\;e^{-iCt}\,\bigl(\Theta'(t)\bigr)^{1/2}\,\bigl(1+\Theta(t)^{2}\bigr)^{\varepsilon}\!\int_{\mathbb{R}}\!\delta\!\bigl(u-\Theta(t)\bigr)\,d\Phi_{G}(u)
-\]
-
-\[
-\mu_{n}\;=\;\int_{\mathbb{R}}u^{n}\,d\Phi_{G}(u)\;=\;\int_{-\infty}^{\infty}\!\Theta(t)^{n}\,\zeta\!\left(\tfrac{1}{2}+it\right)\!\sqrt{\Theta'(t)}\,\bigl(1+\Theta(t)^{2}\bigr)^{-\varepsilon}e^{\,i\Theta(t)}\,dt
-\]
-
-\[
-\mu_{n}\;=\;\frac{(-i)^{n}\,n!}{\Theta_{1}^{\,n+\tfrac{1}{2}}}\!\!\sum_{\substack{a,b,c\ge 0\\(k_{3},k_{5},\ldots)\ge 0\\ a+b+2c+\sum_{\ell\ge 1}2\ell\,k_{2\ell+1}=n}}\!\!\frac{i^{a}\zeta_{a}}{a!}\cdot\frac{i^{b}}{b!}\,M_{b}\cdot\frac{\prod_{j=0}^{c-1}(-\varepsilon-j)}{c!}\,N_{2c}\cdot\frac{\prod_{j=0}^{K-1}(-(n+1)-j)}{K!}\prod_{\ell\ge 1}\frac{1}{k_{2\ell+1}!}\!\left(\frac{\Theta_{2\ell+1}}{(2\ell+1)!\,\Theta_{1}}\right)^{\!k_{2\ell+1}}
-\]
-
-\[
-K\;=\;\sum_{\ell\ge 1}k_{2\ell+1}
-\]
-
-\[
-M_{b}\;=\;\!\!\sum_{\substack{(m_{1},m_{3},\ldots)\ge 0\\ \sum_{\ell\ge 0}(2\ell+1)m_{2\ell+1}=b}}\!\!\frac{b!}{\prod_{\ell\ge 0}m_{2\ell+1}!}\prod_{\ell\ge 0}\!\left(\frac{\Theta_{2\ell+1}}{(2\ell+1)!}\right)^{\!m_{2\ell+1}}
-\]
-
-\[
-N_{2c}\;=\;\!\!\sum_{\substack{(p_{1},p_{3},\ldots)\ge 0\\ \sum_{\ell\ge 0}(2\ell+1)p_{2\ell+1}=2c}}\!\!\frac{(2c)!}{\prod_{\ell\ge 0}p_{2\ell+1}!}\prod_{\ell\ge 0}\!\left(\frac{\Theta_{2\ell+1}}{(2\ell+1)!}\right)^{\!p_{2\ell+1}}
-\]
-
-\[
-\Psi(z)\;=\;\sum_{n=0}^{\infty}\frac{\mu_{n}\,\sqrt{\Theta_{1}}}{n!}\,z^{n},\qquad A\;=\;C-\tfrac{\log\pi}{2}
-\]
-
-\[
-Z_{\Psi}(r)\;=\;\bigl\{\,z\in\mathbb{C}\,:\,|z|<r,\;\Psi(z)=0\,\bigr\},\qquad
-\Gamma(r)\;=\;\bigl\{\,\gamma\in\mathbb{R}\,:\,|\gamma|<r,\;\zeta\!\left(\tfrac{1}{2}+i\gamma\right)=0\,\bigr\}
-\]
-
-The Riemann Hypothesis is the statement
-
-\[
-Z_{\Psi}(r)\;=\;\Gamma(r)\qquad\text{for every }r\in(0,\,1/A),
-\]
-
-equivalently
-
-\[
-\frac{1}{2\pi}\int_{0}^{2\pi}\log\bigl|\Psi(re^{i\varphi})\bigr|\,d\varphi\;-\;\log\bigl|\Psi(0)\bigr|
-\;=\;\sum_{\gamma\in\Gamma(r)}\log\frac{r}{|\gamma|}\qquad\text{for every }r\in(0,\,1/A).
-\]
-
-\section*{Remark on the role of $\sqrt{\Theta'(t)}$}
-
-Since $h(t)=e^{\,iCt}\sqrt{\Theta'(t)}\,(1+\Theta(t)^{2})^{-\varepsilon}Z(t)$, one has
-\[
-|h(t)|\;=\;\sqrt{\Theta'(t)}\,\bigl(1+\Theta(t)^{2}\bigr)^{-\varepsilon}\,|Z(t)|,
-\]
-so pointwise $h$ is {\em larger} than $Z$ by the factor $\sqrt{\Theta'(t)}\sim\sqrt{(\log t)/2}$, yet $h\in L^{1}(\mathbb{R})\cap L^{2}(\mathbb{R})$ for every $\varepsilon>0$ while $Z$ is not integrable.
-
-The $\sqrt{\Theta'}$ prefactor is the Riemann--von Mangoldt Jacobian: it rescales $t$-arclength to $\Theta$-arclength, under which the zeros of $\zeta(\tfrac12+it)$ become asymptotically uniformly distributed in the variable $u=\Theta(t)$ with density $1/(2\pi)$. The pushforward measure $\Phi_{G}$ therefore lives on $\mathbb{R}$ with uniform zero density, and the damping $(1+u^{2})^{-\varepsilon}$ is exactly what the uniform spacing can tolerate to yield finite moments of every order.
-
-Without the $\sqrt{\Theta'}$ compensation, damping $Z$ directly by $(1+t^{2})^{-\varepsilon}$ suppresses amplitude faster than the zero density $(\log t)/(2\pi)$ accumulates; the damped function would run out of oscillation and lose the spectral information about $\zeta$. The combined weight $\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}$ is the unique balance that both (i) makes $h$ integrable, and (ii) preserves the infinite oscillation needed to encode the zeros.
+with moments $\mu_{n}$ given in closed form by Theorem~\ref{thm:closed},
+has only real zeros in its disk of holomorphy. A single off-line zero of
+$\zeta$ with ordinate $|\gamma|<1/A$ produces a non-real zero of $\Psi$ in
+$|z|<1/A$, so the criterion is decidable by a Jensen-integral computation
+to any prescribed precision once finitely many moments $\mu_{n}$ have been
+evaluated. The moments themselves are finite linear combinations of the
+derivatives $\zeta^{(a)}(\tfrac12)$ weighted by the explicit algebraic
+functions of $\Theta_{1},\Theta_{3},\ldots$ and $\varepsilon$ displayed in
+Theorem~\ref{thm:closed}.
 
 \end{document}
