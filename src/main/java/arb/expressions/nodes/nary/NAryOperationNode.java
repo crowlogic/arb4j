@@ -135,6 +135,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   public String                                   indexVariableFieldName;
 
+  public String                                   familyIndexName;
+
   public final String                             operation;
 
   public boolean                                  parsed                         = false;
@@ -705,6 +707,16 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       {
         currentOperandExpression.throwUnexpectedCharacterException("index variable name cannot be null or empty");
       }
+      String extraFamilyIndexName = null;
+      if (currentOperandExpression.nextCharacterIs('['))
+      {
+        extraFamilyIndexName = currentOperandExpression.parseName();
+        if (extraFamilyIndexName == null || extraFamilyIndexName.isEmpty())
+        {
+          currentOperandExpression.throwUnexpectedCharacterException("family index name cannot be null or empty");
+        }
+        currentOperandExpression.require(']');
+      }
       currentOperandExpression.require('=');
       var extraLower = currentOperandExpression.resolve();
       currentOperandExpression.require('\u2026');
@@ -715,6 +727,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       var    innerOperandExpression = newMultiIndex(currentOperandExpression, savedBody, extraName, innerOperandFieldName);
 
       var innerLevel = newInnerOperand(currentOperandExpression, extraName, extraLower, extraUpper, innerOperandFieldName, innerOperandExpression);
+      innerLevel.familyIndexName = extraFamilyIndexName;
       currentOperandExpression.registerReferencedFunction(innerOperandFieldName, innerLevel.operandMapping);
 
       currentOperandExpression.rootNode = (Node<Integer, R, Sequence<R>>) (Node<?, ?, ?>) innerLevel;
