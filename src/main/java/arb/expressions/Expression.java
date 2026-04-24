@@ -2072,6 +2072,24 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
 
     Compiler.generateReturnFromMethod(mv);
+
+    if (!functionClass.equals(Function.class))
+    {
+      String functionDescriptor       = Compiler.getMethodDescriptor(Function.class);
+      String concreteDescriptor       = Compiler.getMethodDescriptor(functionClass);
+      var    bridge                   = classVisitor.visitMethod(Opcodes.ACC_PUBLIC | Opcodes.ACC_BRIDGE | Opcodes.ACC_SYNTHETIC,
+                                                                  func,
+                                                                  functionDescriptor,
+                                                                  null,
+                                                                  null);
+      bridge.visitCode();
+      bridge.visitVarInsn(Opcodes.ALOAD, 0);
+      bridge.visitMethodInsn(Opcodes.INVOKEVIRTUAL, className, func, concreteDescriptor, false);
+      bridge.visitInsn(Opcodes.ARETURN);
+      bridge.visitMaxs(0, 0);
+      bridge.visitEnd();
+    }
+
     return classVisitor;
   }
 
