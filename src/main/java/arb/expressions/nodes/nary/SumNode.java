@@ -9,17 +9,16 @@ import arb.functions.integer.Sequence;
 
 /**
  * Parse represent and generate bytecodes for the sum operator where the syntax
- * is Σf(k){k=a…b} and the characters between the Σ and { characters are
- * compiled as a sub-expression as a function from the {@link Integer} index
- * variable to whatever type is output by default or requested by whatever is
- * requesting its generation
- * 
- * 
+ * is Σ{k=a…b}f(k): the limit specification {k=a…b} comes first, binding the
+ * index variable k and its lower and upper limits, followed by the operand body
+ * f(k), which is compiled as a sub-expression as a function from the
+ * {@link Integer} index variable to whatever type is output by default or
+ * requested by whatever is requesting its generation.
+ *
  * @param <D> domain
  * @param <C> codomain
  * @param <F> {@link Function}
- * 
- * 
+ *
  * @author Stephen Crowley ©2024-2025
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
@@ -66,7 +65,6 @@ public class SumNode<D, C, F extends Function<? extends D, ? extends C>> extends
   @Override
   public Node<D, C, F> integral(VariableNode<D, C, F> variable)
   {
-    // Clone the operand expression and integrate its body
     Expression<Integer, C, Sequence<C>> integratedOperand =
       (Expression<Integer, C, Sequence<C>>) (Expression<?, ?, ?>) operandExpression.cloneExpression();
     VariableNode<Integer, C, Sequence<C>> splicedVar =
@@ -97,7 +95,6 @@ public class SumNode<D, C, F extends Function<? extends D, ? extends C>> extends
   @Override
   public Node<D, C, F> differentiate(VariableNode<D, C, F> variable)
   {
-    // Clone the operand expression and differentiate its body
     Expression<Integer, C, Sequence<C>> differentiatedOperand =
       (Expression<Integer, C, Sequence<C>>) (Expression<?, ?, ?>) operandExpression.cloneExpression();
     VariableNode<Integer, C, Sequence<C>> splicedVar =
