@@ -516,10 +516,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   private void parseUpperLimit()
   {
     upperLimit = expression.resolve();
-    if (usedBraceInLimitSpec)
-    {
-      expression.require('}');
-    }
+    // The closing '}' is consumed by parseOperatorLimitSpecifications AFTER any
+    // additional comma-separated bindings have been processed, not here.
   }
 
   /**
@@ -641,7 +639,145 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     usedBraceInLimitSpec = usedBrace;
     parseLowerLimit();
     parseUpperLimit();
+
+    parseAdditionalBindings();
+
+    if (usedBraceInLimitSpec)
+    {
+      expression.require('}');
+    }
     return this;
+  }
+
+  /**
+   * Handles the iterated-sum / iterated-product syntax extension:
+   * {@code Σf(v1,v2,…,vN){v1=lo1…hi1, v2=lo2…hi2, …, vN=loN…hiN}}.
+   *
+   * <p>After the primary (first-listed, outermost) binding has been parsed by
+   * {@link #parseOperatorLimitSpecifications()}, this method consumes any
+   * additional comma-separated bindings and rewrites the AST so that each
+   * subsequent binding becomes an inner sum/product nested inside the operand of
+   * the previous one. No new node types are introduced — each added level is
+   * itself a {@link SumNode} or {@link ProductNode} of the same operation as the
+   * enclosing level, constructed through the normal parsing constructor so that
+   * all of the existing operand-expression wiring ({@link #parseOperand()},
+   * {@link #parseOperatorLimitSpecifications()}, upstream-input propagation,
+   * function-mapping registration) runs for free.
+   *
+   * <p>Mechanism: for each comma in the limit specification, this method
+   * synthesises an inner {@code Σ}/{@code Π} node by driving the parser on a
+   * clone of the current operand expression. The clone's remaining source
+   * begins at the position of the comma; by substituting the already-parsed
+   * tail of the primary binding's body with the clone's freshly-parsed sum
+   * body, we obtain a nested sum whose body is the original body and whose
+   * limit spec is {@code {vk=lok…hik, …}}. Concretely, what is re-parsed is
+   * the sum symbol, the (identical) body, and the remaining bindings — but
+   * only the bindings are new; the body node comes from the already-built
+   * primary-level operandExpression and is reused via {@link Node#spliceInto}.
+   *
+   * <p>Scoping: for each new binding {@code vk=lok…hik}, the sub-expressions
+   * {@code lok} and {@code hik} are parsed in the scope of the expression that
+   * CONTAINS the new inner sum (i.e. the operand expression of the
+   * immediately preceding level). In that scope, {@code v_{k-1}} is the
+   * independent variable and {@code v_1,…,v_{k-2}} are upstream inputs, so
+   * dependent bounds such as {@code b=0…n-a} resolve through the existing
+   * upstream-input propagation.
+   */
+  @SuppressWarnings("unchecked")
+  private void parseAdditionalBindings()
+  {
+    Expression<Integer, R, Sequence<R>> currentOperandExpression = this.operandExpression;
+
+    while (expression.nextCharacterIs(','))
+    {
+      // Transfer the cursor into the current operand expression so the next
+      // binding's name/limits are parsed in the scope where the prior binding's
+      // index variable is the independent variable.
+      currentOperandExpression.continueParsingFrom(expression);
+
+      // Save the already-parsed body node for the current level. We will
+      // splice a clone of it into the NEW (inner) operand expression as its
+      // body, leaving the CURRENT level's body replaced by the freshly-built
+      // inner NAryOperationNode.
+      Node<Integer, R, Sequence<R>> savedBody = currentOperandExpression.rootNode;
+
+      // Parse the next binding's name.
+      String extraName = currentOperandExpression.parseName();
+      if (extraName == null || extraName.isEmpty())
+      {
+        currentOperandExpression.throwUnexpectedCharacterException("index variable name cannot be null or empty");
+      }
+      currentOperandExpression.require('=');
+      Node<Integer, R, Sequence<R>> extraLower = currentOperandExpression.resolve();
+      currentOperandExpression.require('\u2026');
+      Node<Integer, R, Sequence<R>> extraUpper = currentOperandExpression.resolve();
+
+      // Clone the current operand expression to host the inner level's operand
+      // body. Clear its rootNode and re-use the saved body by splicing it in
+      // under the cloned expression, assigning the new binding's name as the
+      // independent variable.
+      Expression<Integer, R, Sequence<R>> innerOperandExpression = currentOperandExpression.cloneExpression();
+      innerOperandExpression.superExpression        = currentOperandExpression;
+      innerOperandExpression.context                = currentOperandExpression.context;
+      innerOperandExpression.clearIndependentVariable();
+      innerOperandExpression.rootNode               = null;
+      innerOperandExpression.deferVariableResolution = false;
+
+      // Allocate a unique className/field-name for the inner operand on the
+      // outer expression; the non-parsing NAryOperationNode constructor below
+      // does not itself name the operand field, so we do it here the same way
+      // assignFieldNamesIfNecessary does for the primary binding.
+      String innerOperandFieldName = currentOperandExpression.getNextIntermediateVariableFieldName("operand",
+                                                                                                    Function.class);
+      innerOperandExpression.className = innerOperandFieldName;
+
+      VariableNode<Integer, R, Sequence<R>> innerIndexVar = new VariableNode<>(innerOperandExpression,
+                                                                               innerOperandExpression.newVariableReference(extraName),
+                                                                               false);
+      innerOperandExpression.assignInputVariable(innerIndexVar);
+
+      innerOperandExpression.rootNode = savedBody.spliceInto(innerOperandExpression);
+      innerOperandExpression.rootNode.resolveVariables();
+      innerOperandExpression.updateStringRepresentation();
+
+      // Construct the new inner-level NAryOperationNode via the non-parsing
+      // constructor. It lives as a node in currentOperandExpression's tree.
+      NAryOperationNode<Integer, R, Sequence<R>> innerLevel = new NAryOperationNode<>(currentOperandExpression,
+                                                                                      identity,
+                                                                                      prefix,
+                                                                                      operation,
+                                                                                      symbol,
+                                                                                      innerOperandExpression,
+                                                                                      extraLower,
+                                                                                      extraUpper);
+      innerLevel.indexVariableFieldName   = extraName;
+      innerLevel.operandFunctionFieldName = innerOperandFieldName;
+      innerLevel.functionClass            = currentOperandExpression.className;
+      innerLevel.assignFieldNamesIfNecessary(innerOperandExpression.coDomainType);
+
+      // Register the inner operand expression as a function mapping on the
+      // shared context and on the current level's referencedFunctions, exactly
+      // as registerOperand() does for the primary binding.
+      innerLevel.operandMapping = currentOperandExpression.context.registerFunctionMapping(innerOperandFieldName,
+                                                                                           null,
+                                                                                           Integer.class,
+                                                                                           innerOperandExpression.coDomainType,
+                                                                                           Sequence.class,
+                                                                                           true,
+                                                                                           innerOperandExpression,
+                                                                                           innerOperandFieldName);
+      currentOperandExpression.registerReferencedFunction(innerOperandFieldName, innerLevel.operandMapping);
+
+      // Replace the current level's body with the newly built inner sum/product.
+      currentOperandExpression.rootNode = (Node<Integer, R, Sequence<R>>) (Node<?, ?, ?>) innerLevel;
+
+      // Hand the cursor back to the outer expression so the next iteration
+      // (or the final '}' check) sees the right position.
+      expression.continueParsingFrom(currentOperandExpression);
+
+      // Descend for the next binding.
+      currentOperandExpression = innerOperandExpression;
+    }
   }
 
   protected void propagateContextVariablesToOperand()
