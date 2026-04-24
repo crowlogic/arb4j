@@ -218,11 +218,16 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public void accept(Consumer<Node<D, R, F>> t)
   {
     lowerLimit.accept(t);
     upperLimit.accept(t);
+    if (operandExpression != null && operandExpression.rootNode != null)
+    {
+      operandExpression.rootNode.accept(node -> t.accept((Node<D, R, F>) (Node<?, ?, ?>) node));
+    }
     t.accept(this);
   }
 
