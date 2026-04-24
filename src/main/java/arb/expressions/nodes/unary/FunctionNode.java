@@ -363,7 +363,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   }
 
-  void lookupFunctionInContext()
+  public void lookupFunctionInContext()
   {
     mapping    = expression.context.getFunctionMapping(functionName);
     contextual = mapping != null;

@@ -35,6 +35,22 @@ When `res` and `this` are the same object, `res.set(a)` destroys `this` before t
 
 See [#911](https://github.com/crowlogic/arb4j/issues/911) for a full audit of this pattern.
 
+## Environment Setup (fresh machine)
+
+The build requires **JDK 25**, **Maven**, and **en_US.UTF-8** locale. On a fresh
+Debian/Ubuntu box run these once:
+
+```bash
+# 1. Install JDK 25 and Maven
+sudo apt-get update
+sudo apt-get install -y openjdk-25-jdk-headless maven
+
+# 2. Enable en_US.UTF-8 locale (required — Maven source files contain Unicode)
+sudo sed -i 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
+sudo locale-gen
+# Verify: locale -a | grep en_US
+```
+
 ## Build & Test
 
 ```bash
