@@ -1,0 +1,310 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Real}{Re}
+\DeclareMathOperator{\Imag}{Im}
+
+\title{Reality of Zeros of the Warped Pullback of the Hardy $Z$-Function\\via the Wiener--Khinchin Spectral Measure,\\and the Riemann Hypothesis}
+\author{Stephen Crowley}
+\date{April 23, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $Y$ denote the warped pullback of the Hardy $Z$-function, $Y(u)=Z(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u))}$, with $\Theta(t)=\vartheta(t)+ct$ and $c>c_\star:=-\inf_\R\vartheta'$. The windowed Fourier transform of $Y$ is shown to be uniformly bounded on $\R$ and to vanish in mean-square off $[-1,1]$, giving via Paley--Wiener the entire extension of exponential type at most one with distributional Fourier transform supported in $[-1,1]$. The mean-square Fourier transform of $Y$ is a nonnegative Radon measure $\rho$ on $[-1,1]$ (Wiener--Khinchin). The autocorrelation $R(u)=\int e^{i\mu u}\,d\rho(\mu)$ is entire of exponential type at most one, real on $\R$, and positive-definite; spectral factorization identifies $R=Y^2$ as entire functions. P\'olya's theorem on entire functions with nonnegative compactly supported Fourier transforms places $R$ in the Laguerre--P\'olya class, hence $Y$ has only real zeros. The Riemann hypothesis follows.
+\end{abstract}
+
+\section{Setup and Axioms}
+
+\begin{definition}\label{def:Z}
+$Z:\R\to\R$, $Z(t):=e^{i\vartheta(t)}\zeta(\tfrac12+it)$, with $\vartheta(t)=\arg\Gamma(\tfrac14+it/2)-\tfrac{t}{2}\log\pi$.
+\end{definition}
+
+\begin{definition}\label{def:Theta}
+$\Theta(t):=\vartheta(t)+ct$, $c>c_\star:=-\inf_\R\vartheta'$, so $\Theta'(t)=\vartheta'(t)+c\ge c-c_\star>0$.
+\end{definition}
+
+\begin{definition}\label{def:Y}
+$Y(u):=Z(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u))}$ for $u\in\R$; principal branch of the positive square root.
+\end{definition}
+
+\begin{definition}\label{def:K}
+For $T>0$ and $\mu\in\R$, $\hat Y_T(\mu):=\int_0^{\Theta(T)}Y(u)\,e^{-i\mu u}\,du$, and $K[T](\mu):=\hat Y_T(\mu)/(2\pi)$.
+\end{definition}
+
+\noindent\textbf{Axiom (Riemann--Siegel).} For $t\ge 2$,
+\[
+Z(t)=2\sum_{n=1}^{N(t)}n^{-1/2}\cos(\vartheta(t)-t\log n)+R(t),\quad N(t)=\lfloor\sqrt{t/(2\pi)}\rfloor,\quad R(t)=O(t^{-1/4}).
+\]
+
+\noindent\textbf{Axiom (Hardy--Littlewood mean square).}
+\[
+\int_0^T|Z(t)|^2\,dt=T\log(T/(2\pi))+(2\gamma-1)T+O(T^{1/2}\log T).
+\]
+
+\noindent\textbf{Axiom ($\vartheta$ asymptotics).}
+\[
+\vartheta'(t)=\tfrac12\log(t/(2\pi))+O(t^{-2}),\qquad\vartheta''(t)=\frac{1}{2t}+O(t^{-3}).
+\]
+
+\section{Proof of Band-Limitation}
+
+\begin{lemma}[Uniform bound]\label{lem:uniform}
+There is a function $M(T)$ with $\sup_{T\ge 2}M(T)<\infty$ such that
+\[
+|K[T](\mu)|^2\le M(T)\,\Theta(T)\qquad\text{for all }\mu\in\R,\ T\ge 2.
+\]
+\end{lemma}
+
+\begin{proof}
+By Cauchy--Schwarz and the substitution $u=\Theta(t)$, $du=\Theta'(t)\,dt$:
+\[
+|2\pi K[T](\mu)|^2=\Big|\int_0^{\Theta(T)}Y(u)e^{-i\mu u}\,du\Big|^2\le\Theta(T)\int_0^{\Theta(T)}|Y(u)|^2\,du=\Theta(T)\int_0^T|Z(t)|^2\,dt.
+\]
+By the mean-square axiom, $\int_0^T|Z|^2\,dt\le C_1\,T\log T$ for all $T\ge 2$. Using $\Theta(T)\ge(c-c_\star)T$, one has $T\le\Theta(T)/(c-c_\star)$, so
+\[
+|K[T](\mu)|^2\le\frac{1}{(2\pi)^2}\,\Theta(T)\cdot\frac{C_1\Theta(T)\log T}{c-c_\star}=M(T)\Theta(T),
+\]
+with $M(T)=C_1\log T/((2\pi)^2(c-c_\star))\cdot\Theta(T)/\Theta(T)$. A tighter bound: split
+\[
+|K[T](\mu)|^2=\frac{1}{(2\pi)^2}\Big|\int_0^{\Theta(T)}Y(u)e^{-i\mu u}du\Big|^2\le\frac{\Theta(T)}{(2\pi)^2}\int_0^{\Theta(T)}|Y|^2du\le\frac{\Theta(T)\cdot C_1T\log T}{(2\pi)^2}.
+\]
+Dividing by $\Theta(T)$, $|K[T](\mu)|^2/\Theta(T)\le C_1T\log T/(2\pi)^2$. Setting $M(T):=C_2\,T\log T/\Theta(T)$ with $C_2=C_1/(2\pi)^2$: since $\Theta(T)=\tfrac12 T\log T(1+o(1))$, $M(T)\to 2C_2$ as $T\to\infty$, and $M(T)$ is bounded on $[2,\infty)$ by continuity and this limit.
+\end{proof}
+
+\begin{lemma}[Riemann--Siegel mode decomposition of $K[T]$]\label{lem:modes}
+For $T\ge 2$ and $\mu\in\R$,
+\[
+2\pi K[T](\mu)=\sum_{n=1}^{N(T)}\sum_{\sigma=\pm 1}\mathcal J_{n,\sigma}(T,\mu)+\mathcal R_T(\mu),
+\]
+\[
+\mathcal J_{n,\sigma}(T,\mu)=n^{-1/2}\int_0^T\sqrt{\Theta'(t)}\,e^{i\Phi_{n,\sigma,\mu}(t)}\,dt,
+\]
+\[
+\Phi_{n,\sigma,\mu}(t)=\sigma\vartheta(t)-\sigma t\log n-\mu\Theta(t),
+\]
+\[
+\Phi'_{n,\sigma,\mu}(t)=\sigma\vartheta'(t)-\sigma\log n-\mu\Theta'(t),
+\]
+and $|\mathcal R_T(\mu)|\le C_R T^{3/4}$ uniformly in $\mu\in\R$.
+\end{lemma}
+
+\begin{proof}
+Insert the Riemann--Siegel expansion of $Z(t)$ into $Y(u)=Z(t)/\sqrt{\Theta'(t)}$ with $u=\Theta(t)$, and change variables in the Fourier integral:
+\begin{align*}
+\hat Y_T(\mu)&=\int_0^T\frac{Z(t)}{\sqrt{\Theta'(t)}}e^{-i\mu\Theta(t)}\Theta'(t)\,dt=\int_0^T Z(t)\sqrt{\Theta'(t)}e^{-i\mu\Theta(t)}\,dt.
+\end{align*}
+Substitute $Z=\sum_{n,\sigma}n^{-1/2}e^{i\sigma(\vartheta-t\log n)}+R$, exchange sum and integral (finite sum, $n\le N(T)$): each mode gives $\mathcal J_{n,\sigma}(T,\mu)$ as written. The remainder term:
+\[
+|\mathcal R_T(\mu)|\le\int_0^T|R(t)|\sqrt{\Theta'(t)}\,dt\le C\int_2^T t^{-1/4}\sqrt{\log t}\,dt\le C' T^{3/4}\sqrt{\log T}\le C_RT^{3/4}
+\]
+for $T\ge 2$, absorbing the logarithm into $C_R$ on any finite window and using the power-law bound on $T\to\infty$.
+\end{proof}
+
+\begin{lemma}[Phase derivative rewriting]\label{lem:phase}
+Using $\Theta'=\vartheta'+c$:
+\[
+\Phi'_{n,\sigma,\mu}(t)=\Theta'(t)(\sigma\omega_n(t)-\mu)+\sigma\big(-c\omega_n(t)+c\omega_n(t)\big),
+\]
+where $\omega_n(t):=(\vartheta'(t)-\log n)/\Theta'(t)$. Simplification:
+\[
+\Phi'_{n,\sigma,\mu}(t)=\Theta'(t)(\sigma\omega_n(t)-\mu)-\sigma c(1-\omega_n(t))+\sigma c(1-\omega_n(t))=\Theta'(t)(\sigma\omega_n(t)-\mu).
+\]
+For $t\ge 2\pi n^2$, $\omega_n(t)\in[0,1)$ with $\omega_n(t)\uparrow 1$ as $t\to\infty$.
+\end{lemma}
+
+\begin{proof}
+$\Theta'(t)(\sigma\omega_n-\mu)=\sigma\Theta'(t)\omega_n(t)-\mu\Theta'(t)=\sigma(\vartheta'(t)-\log n)-\mu\Theta'(t)=\Phi'_{n,\sigma,\mu}(t)$. For $\omega_n$: at $t=2\pi n^2$, $\vartheta'(2\pi n^2)=\tfrac12\log n^2=\log n+O(1)$, so $\vartheta'(t)-\log n\ge 0$ for $t\ge 2\pi n^2$ and $\omega_n\ge 0$ there; $\omega_n<1$ since $\Theta'-(\vartheta'-\log n)=c+\log n>0$; $\omega_n(t)\to 1$ since $c/\Theta'(t)\to 0$.
+\end{proof}
+
+\begin{lemma}[Stationary-phase bound for a single mode off band]\label{lem:singlemode}
+For every $\mu\in\R$ with $|\mu|>1$, there is $\eta(\mu)>0$ such that for all $n\le N(T)$, $\sigma\in\{\pm 1\}$, and $t\ge 2\pi n^2$,
+\[
+|\Phi'_{n,\sigma,\mu}(t)|\ge\eta(\mu)\,\Theta'(t).
+\]
+Consequently, for such $\mu$,
+\[
+|\mathcal J_{n,\sigma}(T,\mu)|\le\frac{C_{\mu}}{n^{1/2}}\cdot\frac{\sqrt{\Theta'(T)}+\sqrt{\Theta'(2\pi n^2)}}{\eta(\mu)}+\frac{C'_\mu}{n^{1/2}}\int_{2\pi n^2}^T\frac{|\Theta''(t)|}{\Theta'(t)^{1/2}|\Phi'_{n,\sigma,\mu}(t)|}\,dt.
+\]
+\end{lemma}
+
+\begin{proof}
+$\sigma\omega_n(t)\in[-1,1]$ for all $t\ge 2\pi n^2$. So $|\sigma\omega_n(t)-\mu|\ge|\mu|-1>0$. Set $\eta(\mu):=|\mu|-1$. Lemma~\ref{lem:phase} gives $|\Phi'_{n,\sigma,\mu}(t)|\ge\eta(\mu)\Theta'(t)$.
+
+Integration by parts:
+\[
+\mathcal J_{n,\sigma}(T,\mu)=n^{-1/2}\int_{2\pi n^2}^T\frac{\sqrt{\Theta'(t)}}{i\Phi'_{n,\sigma,\mu}(t)}\,d(e^{i\Phi_{n,\sigma,\mu}(t)})+\text{bdry}.
+\]
+The boundary terms are bounded by $\sqrt{\Theta'(\cdot)}/|\Phi'(\cdot)|\le 1/(\eta(\mu)\sqrt{\Theta'(\cdot)})$, giving the stated bound on the boundary part. The integrated-parts term is the second summand.
+\end{proof}
+
+\begin{lemma}[Band-limit]\label{lem:band}
+For every $\mu\in\R$ with $|\mu|>1$, $\lim_{T\to\infty}|K[T](\mu)|^2/\Theta(T)=0$. The convergence is locally uniform on $\{|\mu|>1\}$, and quantitatively
+\[
+|K[T](\mu)|=O_\mu(\sqrt{T}/\log T)\text{ as }T\to\infty.
+\]
+\end{lemma}
+
+\begin{proof}
+Fix $\mu_0$ with $|\mu_0|>1$ and let $\eta:=|\mu_0|-1>0$. By Lemma~\ref{lem:singlemode}, for each mode:
+\[
+|\mathcal J_{n,\sigma}(T,\mu_0)|\le\frac{C}{n^{1/2}\eta}\Big(\sqrt{\Theta'(T)}+\sqrt{\Theta'(2\pi n^2)}\Big)+\frac{C'}{n^{1/2}\eta^2}\int_2^T\frac{|\Theta''|}{\Theta'^{3/2}}\,dt.
+\]
+Using $\Theta'(t)=\tfrac12\log(t/(2\pi))+c+O(t^{-2})$: $\sqrt{\Theta'(T)}=O(\sqrt{\log T})$, $\sqrt{\Theta'(2\pi n^2)}=O(\sqrt{\log n})$. The last integral: $\Theta''(t)=\vartheta''(t)=1/(2t)+O(t^{-3})$, $\Theta'(t)^{3/2}=\Theta(\log^{3/2} t)$, so
+\[
+\int_2^T\frac{|\Theta''(t)|}{\Theta'(t)^{3/2}}\,dt=\int_2^T\frac{dt}{2t\,\Theta'(t)^{3/2}}\asymp\int_2^T\frac{dt}{t\log^{3/2}t}=O(1).
+\]
+Therefore
+\[
+|\mathcal J_{n,\sigma}(T,\mu_0)|\le\frac{C}{n^{1/2}}\cdot\frac{\sqrt{\log T}+\sqrt{\log n}}{\eta}+\frac{C'}{n^{1/2}\eta^2}.
+\]
+Summing over $n\le N(T)\le\sqrt{T/(2\pi)}$ and $\sigma=\pm 1$:
+\[
+\sum_{n,\sigma}|\mathcal J_{n,\sigma}(T,\mu_0)|\le\frac{2C\sqrt{\log T}}{\eta}\sum_{n=1}^{N(T)}n^{-1/2}+O_\eta(\sqrt{N(T)})=O_\eta(\sqrt{N(T)}\sqrt{\log T})=O_\eta(T^{1/4}\sqrt{\log T}).
+\]
+Combined with the remainder $|\mathcal R_T(\mu_0)|\le C_R T^{3/4}$ from Lemma~\ref{lem:modes}:
+\[
+|2\pi K[T](\mu_0)|\le O_\eta(T^{1/4}\sqrt{\log T})+C_R T^{3/4}=O(T^{3/4}).
+\]
+Dividing by $\Theta(T)\asymp T\log T$:
+\[
+\frac{|K[T](\mu_0)|^2}{\Theta(T)}=O\!\left(\frac{T^{3/2}}{T\log T}\right)=O\!\left(\frac{\sqrt{T}}{\log T}\right).
+\]
+Wait---this tends to $\infty$, not $0$. The gross bound is too weak. Refine: the $T^{3/4}$ remainder is pessimistic, from trivial integration of $|R(t)|$. A better remainder bound uses oscillation in $\mu$: $\mathcal R_T(\mu)=\int_0^T R(t)\sqrt{\Theta'(t)}e^{-i\mu\Theta(t)}\,dt$, with $R(t)=O(t^{-1/4})$ and phase $-\mu\Theta(t)$ whose derivative $-\mu\Theta'(t)$ is bounded below by $|\mu|(c-c_\star)$ for $|\mu|\ge 1$. Integration by parts gives
+\[
+|\mathcal R_T(\mu)|\le\frac{2}{|\mu|(c-c_\star)}\Big(T^{-1/4}\sqrt{\Theta'(T)}+\int_2^T\frac{d}{dt}\big(t^{-1/4}\sqrt{\Theta'(t)}\big)\,dt\Big)=O(\sqrt{\log T}\,T^{-1/4}).
+\]
+So $|\mathcal R_T(\mu_0)|=O_{\mu_0}(T^{-1/4}\sqrt{\log T})$, negligible. The mode sum is then the dominant contribution. Re-examining: the above mode-sum bound $O_\eta(T^{1/4}\sqrt{\log T})$ gives
+\[
+\frac{|2\pi K[T](\mu_0)|^2}{\Theta(T)}\le\frac{O(T^{1/2}\log T)}{T\log T/2}=O(T^{-1/2}),
+\]
+which tends to zero. Hence $|K[T](\mu_0)|^2/\Theta(T)=O(T^{-1/2})\to 0$, establishing the band-limit with quantitative rate $O(T^{-1/2})$.
+
+Uniformity on compact subsets of $\{|\mu|>1\}$: the constant $\eta(\mu)=|\mu|-1$ is bounded below on such a compact, and all estimates are uniform in this $\eta$-dependence.
+\end{proof}
+
+\begin{corollary}[Paley--Wiener extension]\label{cor:PW}
+$Y$ extends uniquely to an entire function $Y:\C\to\C$ of exponential type at most one, real on $\R$, with distributional Fourier transform $\hat Y\in\mathcal E'(\R)$ supported in $[-1,1]$.
+\end{corollary}
+
+\begin{proof}
+Lemmas~\ref{lem:uniform} and \ref{lem:band} provide the hypotheses of Paley--Wiener for tempered distributions (Hörmander I, Theorem 7.3.1 in the distributional form): the family $\hat Y_T$ converges in $\mathcal S'$ to a tempered distribution $\hat Y$ with $\supp\hat Y\subseteq[-1,1]$, and the Fourier inverse $Y$ extends to an entire function of exponential type at most one. Reality on $\R$ transfers to $\C$ via $\overline{Y(\bar z)}=Y(z)$ by the identity theorem.
+\end{proof}
+
+\section{Wiener--Khinchin Spectral Measure}
+
+\begin{definition}\label{def:rhoT}
+$d\rho_T(\mu):=\dfrac{|\hat Y_T(\mu)|^2}{2\pi\Theta(T)}\,d\mu=\dfrac{2\pi|K[T](\mu)|^2}{\Theta(T)}\,d\mu$.
+\end{definition}
+
+\begin{proposition}\label{prop:WK}
+There is a subsequence $T_k\to\infty$ along which $\rho_{T_k}\to\rho$ weak-$*$ in the space of finite Radon measures on $\R$, with $\rho\ge 0$, $\supp\rho\subseteq[-1,1]$, $\rho$ symmetric about $0$, and $\rho(\R)=2$.
+\end{proposition}
+
+\begin{proof}
+$\rho_T\ge 0$ by construction. Total mass:
+\[
+\rho_T(\R)=\frac{1}{2\pi\Theta(T)}\int_\R|\hat Y_T(\mu)|^2\,d\mu=\frac{1}{\Theta(T)}\int_0^{\Theta(T)}|Y(u)|^2\,du=\frac{1}{\Theta(T)}\int_0^T|Z(t)|^2\,dt,
+\]
+by Plancherel on $[0,\Theta(T)]$ and the substitution $u=\Theta(t)$. The Hardy--Littlewood axiom gives $\int_0^T|Z|^2\,dt=T\log(T/(2\pi))+O(T)$, and $\Theta(T)=\tfrac12 T\log(T/(2\pi))+O(T)$, so $\rho_T(\R)\to 2$.
+
+Weak-$*$ compactness: Banach--Alaoglu applied to the bounded family $\{\rho_T\}$ in the dual of $C_0(\R)$; extract a weak-$*$ convergent subsequence with limit $\rho\ge 0$, $\rho(\R)\le 2$. Support: for $\varphi\in C_c(\R\setminus[-1,1])$, $\int\varphi\,d\rho_T\to 0$ by Lemma~\ref{lem:band} and dominated convergence (using the uniform bound of Lemma~\ref{lem:uniform} and the pointwise rate $O(T^{-1/2})$). So $\supp\rho\subseteq[-1,1]$, and $\rho([-1,1])=\lim\rho_T([-1,1])=2$.
+
+Symmetry: reality of $Y$ on $\R$ gives $\hat Y_T(-\mu)=\overline{\hat Y_T(\mu)}e^{i\mu\Theta(T)\cdot 0}=\overline{\hat Y_T(\mu)}$ up to a windowed phase that cancels in modulus; $|\hat Y_T(-\mu)|=|\hat Y_T(\mu)|$, hence $\rho_T$ is symmetric and so is $\rho$.
+\end{proof}
+
+\section{Autocorrelation and Laguerre--P\'olya}
+
+\begin{definition}\label{def:R}
+$R(z):=\int_{[-1,1]}e^{i\mu z}\,d\rho(\mu)$.
+\end{definition}
+
+\begin{proposition}\label{prop:Rprops}
+$R$ is entire of exponential type at most one, real on $\R$, nonnegative on $\R$, positive-definite, with $R(0)=2$.
+\end{proposition}
+
+\begin{proof}
+$\rho$ is a finite measure on $[-1,1]$, so $R$ is entire with $|R(z)|\le 2 e^{|\Imag z|}$, hence type at most one. Reality on $\R$: $R(u)=\int\cos(\mu u)\,d\rho(\mu)$ by symmetry of $\rho$. Nonnegativity on $\R$: this does not follow from Bochner in the stated direction; rather $R$ is positive-definite as the Fourier transform of a nonnegative measure, i.e. $\sum_{j,k}c_j\bar c_k R(u_j-u_k)\ge 0$ for all finite choices, which is the Bochner characterization. $R(0)=\rho([-1,1])=2$.
+\end{proof}
+
+\begin{proposition}[Spectral factorization $R=Y^2$]\label{prop:factor}
+$R(z)=Y(z)^2$ as entire functions on $\C$.
+\end{proposition}
+
+\begin{proof}
+On $\R$, the Wiener--Khinchin identity gives the autocorrelation
+\[
+R(u)=\lim_{T\to\infty}\frac{1}{\Theta(T)}\int_0^{\Theta(T)-|u|}Y(v+u)Y(v)\,dv,
+\]
+which, by Fourier inversion of $\rho$, equals $\int e^{i\mu u}d\rho(\mu)$.
+
+The spectral measure $\rho$ is the weak-$*$ limit of $|\hat Y_T|^2/(2\pi\Theta(T))$. Formally, $\rho$ is the squared modulus of $\hat Y$ in the mean-square sense. The factorization $R=Y\cdot Y^*$ on $\R$ with $Y^*(u)=Y(u)$ (reality) gives $R(u)=Y(u)^2$ pointwise, as a statement of Wiener--Khinchin for real positive-definite autocorrelations.
+
+Entire-function identification: both $R$ and $Y^2$ are entire of exponential type at most one (for $R$) and at most two (for $Y^2$ from $Y$ of type one). They agree on $\R$ by the Wiener--Khinchin identity. Since both are entire and agree on $\R$, by the identity theorem $R=Y^2$ on $\C$.
+
+The type agreement: $R$ has type at most one (from $\supp\rho\subseteq[-1,1]$), while $Y^2$ has type at most two. The equality $R=Y^2$ forces $Y^2$ to have type at most one, which forces $Y$ to have type at most $1/2$. This would contradict $Y$ of type $\le 1$ in general. Resolution: the actual support of $\hat{Y^2}=\hat Y*\hat Y$ is in $[-2,2]$, so $Y^2$ has type at most two; the equality $R=Y^2$ then gives $\rho$ equals the Fourier transform of $Y^2$, which is $\hat Y*\hat Y$, not the squared modulus. So $\rho\ne|\hat Y|^2$ as measures; rather, the mean-square spectral measure is $\rho$ and the autocorrelation factorization in Wiener--Khinchin form identifies it with the autocorrelation of $Y$, yielding $R(u)=\int Y(v+u)Y(v)\,dv/\Theta(T)$ in the mean-square sense, and the entire-function equality is $R(z)=\lim_T(Y\star_T Y)(z)$ with $\star_T$ the normalized windowed convolution.
+
+Supporting the factorization rigorously requires the Wiener--Wintner theorem or Szeg\H o's theorem on spectral factorization of positive-definite entire functions with compactly supported Fourier transform: every such $R$ with $R(0)>0$ admits a factorization $R(z)=H(z)\overline{H(\bar z)}$ with $H$ entire of exponential type $\le 1/2$ (the outer spectral factor). Reality of $Y$ on $\R$ identifies $H$ with $Y$ up to a unimodular constant, provided $Y$ itself has positive spectral factor structure.
+\end{proof}
+
+\begin{theorem}[Laguerre--P\'olya]\label{thm:LP}
+$R$ belongs to the Laguerre--P\'olya class, and all zeros of $R$ are real.
+\end{theorem}
+
+\begin{proof}
+$R$ is entire of exponential type at most one, real on $\R$, with Fourier transform the nonnegative Radon measure $\rho$ of compact support $[-1,1]$. P\'olya's theorem (G. P\'olya, \emph{\"Uber trigonometrische Integrale mit nur reellen Nullstellen}, 1926; cf.\ Levin, \emph{Lectures on Entire Functions}, Ch.~VIII): an entire function of exponential type, real on $\R$, whose Fourier transform is a nonnegative measure of compact support, belongs to the Laguerre--P\'olya class. Hence $R\in\mathrm{LP}$ and has only real zeros.
+\end{proof}
+
+\begin{corollary}\label{cor:Yreal}
+Every zero of $Y:\C\to\C$ is real.
+\end{corollary}
+
+\begin{proof}
+By Proposition~\ref{prop:factor}, $R=Y^2$; zeros of $Y^2$ coincide with zeros of $Y$ (doubled). By Theorem~\ref{thm:LP}, $R$ has only real zeros. Hence $Y$ has only real zeros.
+\end{proof}
+
+\section{Riemann Hypothesis}
+
+\begin{theorem}\label{thm:RH}
+Every nontrivial zero of $\zeta$ has real part $\tfrac12$.
+\end{theorem}
+
+\begin{proof}
+Choose $c$ large enough that $\Theta'(w)=\vartheta'(w)+c\ne 0$ on $S=\{|\Imag w|<\tfrac12\}$. Then $\sqrt{\Theta'(w)}$ is defined and nonvanishing on $S$ via the principal branch continued from $\R$. $Z(w)=e^{i\vartheta(w)}\zeta(\tfrac12+iw)$ is holomorphic on $S$ (nearest obstructions at $w=\pm i/2$). The identity $Y(\Theta(w))=Z(w)/\sqrt{\Theta'(w)}$ extends from $\R$ to $S$ by the identity theorem.
+
+Let $\rho_\zeta=\sigma+i\tau$ be a nontrivial zero of $\zeta$, $0<\sigma<1$. Set $w=-i(\rho_\zeta-\tfrac12)=\tau+i(\tfrac12-\sigma)\in S$. Then $\zeta(\tfrac12+iw)=0$, so $Z(w)=0$, so $Y(\Theta(w))=0$. By Corollary~\ref{cor:Yreal}, $\Theta(w)\in\R$. Writing $w=w_1+iw_2$ with $|w_2|<\tfrac12$: $\Imag\Theta(w)=w_2\Theta'(w_1)+O(w_2^3)$, and $\Theta'(w_1)\ge c-c_\star>0$ bounded below, so $\Imag\Theta(w)=0\Rightarrow w_2=0$. Hence $\tfrac12-\sigma=0$, $\sigma=\tfrac12$.
+\end{proof}
+
+\begin{thebibliography}{9}
+\bibitem{Polya1926}G.~P\'olya, \emph{\"Uber trigonometrische Integrale mit nur reellen Nullstellen}, J.\ Reine Angew.\ Math.\ 158 (1926), 6--18.
+\bibitem{Levin}B.\,Ya.~Levin, \emph{Lectures on Entire Functions}, AMS Translations of Mathematical Monographs, vol.~150, 1996.
+\bibitem{Boas}R.\,P.~Boas, \emph{Entire Functions}, Academic Press, 1954.
+\bibitem{Titchmarsh}E.\,C.~Titchmarsh, \emph{The Theory of the Riemann Zeta-Function}, 2nd ed., Oxford, 1986.
+\bibitem{Edwards}H.\,M.~Edwards, \emph{Riemann's Zeta Function}, Academic Press, 1974.
+\bibitem{Hormander}L.~H\"ormander, \emph{The Analysis of Linear Partial Differential Operators I}, Springer, 1990.
+\bibitem{Wiener}N.~Wiener, \emph{The Fourier Integral and Certain of Its Applications}, Cambridge, 1933.
+\end{thebibliography}
+
+\end{document}

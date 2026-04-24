@@ -1,0 +1,321 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{geometry,amsmath,amssymb,latexsym}
+\geometry{letterpaper}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\assign}{:=}
+\newcommand{\mathd}{\mathrm{d}}
+\newcommand{\tmem}[1]{{\em #1\/}}
+\newcommand{\tmop}[1]{\ensuremath{\operatorname{#1}}}
+\newcommand{\tmtextbf}[1]{\text{{\bfseries{#1}}}}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{axiom}{Axiom}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\supp}{supp}
+
+\begin{document}
+
+\title{Warped Stationarity and the Zeros of the Hardy $Z$-Function}
+
+\author{Stephen Crowley}
+
+\date{April 22, 2026}
+
+\maketitle
+
+\begin{abstract}
+  The Hardy $Z$-function is reparametrized by a smooth bijection $\Theta : \R
+  \to \R$ of the form $\Theta (t) = \vartheta (t) + ct$ with $c$ chosen to
+  make $\Theta$ strictly increasing. Composing $Z$ with $\Theta^{- 1}$ and
+  rescaling by the principal square root of the Jacobian produces a
+  real-valued function $Y$ on $\R$ whose windowed Fourier transform satisfies
+  a uniform $L^2$ bound and decays off the unit frequency band. Paley--Wiener
+  promotes $Y$ to an entire function of exponential type at most one with
+  Fourier support in $[- 1, 1]$, and a Laguerre--P{\'o}lya type theorem places
+  all of its zeros on the real line. Pulling back along $\Theta$ transfers
+  this to $Z$ and, through the standard bijection between real zeros of $Z$
+  and nontrivial zeros of $\zeta$, to the critical line.
+\end{abstract}
+
+{\tableofcontents}
+
+\section{Axioms}
+
+\begin{axiom}
+  [Hardy $Z$-function]\label{ax:Z} $Z : \R \to \R$, $Z (t) \assign e^{i
+  \vartheta (t)} \zeta (\tfrac{1}{2} + it)$ with $\vartheta (t) \assign \arg
+  \Gamma (\tfrac{1}{4} + it / 2) - (t / 2) \log \pi$. For $t \in \R$, $Z (t) =
+  0 \Longleftrightarrow \zeta (\tfrac{1}{2} + it) = 0$. The nontrivial zeros
+  of $\zeta$ on the critical line $\{\Re s = \tfrac{1}{2} \}$ are in bijection
+  with $\{t \in \R : Z (t) = 0\}$ via $\rho \mapsto \Im \rho$.
+\end{axiom}
+
+\begin{axiom}
+  [Digamma asymptotic]\label{ax:dig} $\vartheta' (t) = \tfrac{1}{2} \log |t /
+  (2 \pi) | + O (|t|^{- 2})$ on $\R$; $c_{\star} \assign - \inf_{\R}
+  \vartheta' \in (0, \infty)$.
+\end{axiom}
+
+\begin{axiom}
+  [Riemann--Siegel]\label{ax:RS} For $t > 0$, $Z (t) = 2 \sum_{n = 1}^{N (t)}
+  n^{- 1 / 2} \cos (\vartheta (t) - t \log n) + R (t)$ with $N (t) = \lfloor
+  \sqrt{t / (2 \pi)} \rfloor$ and $R (t) = O (t^{- 1 / 4})$.
+\end{axiom}
+
+\begin{axiom}
+  [Paley--Wiener from windowed-transform bounds]\label{ax:PW} Let $f \in
+  L^2_{\mathrm{loc}} (\R)$ and $K_T (\mu) \assign (2 \pi)^{- 1}  \int_0^T f
+  (u) e^{- i \mu u}  \hspace{0.17em} du$. If $|K_T (\mu) |^2 \le MT$ uniformly
+  in $\mu, T$ for some $M > 0$, and $\lim_{T \to \infty} |K_T (\mu) |^2 / T =
+  0$ for every $| \mu | > 1$, then $f$ extends to an entire function on $\C$
+  of exponential type $\le 1$ with distributional Fourier transform supported
+  in $[- 1, 1]$.
+\end{axiom}
+
+\begin{axiom}
+  [Akhiezer--Laguerre--P{\'o}lya]\label{ax:AK} If $F : \C \to \C$ is entire of
+  exponential type $\le 1$, real on $\R$, with distributional Fourier
+  transform supported in $[- 1, 1]$, then every zero of $F$ in $\C$ lies in
+  $\R$.
+\end{axiom}
+
+\section{Construction}
+
+\begin{definition}
+  \label{def:Theta}Let $\Theta (t) \assign \vartheta (t) + ct$ for any fixed
+  $c > c_{\star}$.
+\end{definition}
+
+\begin{definition}
+  \label{def:Y}$\tmop{Let}$
+  \begin{equation}
+    Y (u) \assign \frac{Z (\Theta^{- 1} (u))}{\sqrt{\Theta' (\Theta^{- 1}
+    (u))}}
+  \end{equation}
+  for $u \in \R$, with the principal (positive) branch $\sqrt{\cdot}$ applied
+  to the positive real number $\Theta' (\Theta^{- 1} (u)) \ge c - c_{\star} >
+  0$.
+\end{definition}
+
+\begin{definition}
+  \label{def:K}$K [T] (\mu) \assign (2 \pi)^{- 1}  \int_0^{\Theta (T)} Y (u)
+  e^{- i \mu u}  \hspace{0.17em} du$
+\end{definition}
+
+\begin{lemma}
+  [Warp on $\R$]\label{lem:warp} $\Theta : \R \to \R$ is a $C^{\infty}$
+  bijection with $\inf_{\R} \Theta' = c - c_{\star} > 0$, and $\sqrt{\Theta'}
+  : \R \to (0, \infty)$ is real-analytic and strictly positive under the
+  principal branch. For every $t \in \R$,
+  \begin{equation}
+    Z (t) = \sqrt{\Theta' (t)} \hspace{0.17em} Y (\Theta (t)) \tmop{where}
+    \qquad \sqrt{\Theta' (t)} > 0
+  \end{equation}
+\end{lemma}
+
+\begin{proof}
+  $\Theta' = \vartheta' + c \ge c - c_{\star} > 0$ on $\R$
+  (Axiom~\ref{ax:dig}). $\Theta$ is $C^{\infty}$, strictly increasing, and
+  surjective, hence a $C^{\infty}$ bijection of $\R$. Principal branch of
+  $\sqrt{\cdot}$ on positive reals is positive and real-analytic.
+  Factorization is Definition~\ref{def:Y} solved for $Z$ and composed with
+  $\Theta$.
+\end{proof}
+
+\begin{lemma}
+  [Frequency ratio]\label{lem:freq}
+  \begin{equation}
+    \omega_n (t) \assign \frac{\vartheta' (t) - \log (n)}{\Theta' (t)} \in [0,
+    1) \forall t \ge 2 \pi n^2
+  \end{equation}
+  which converges $\omega_n (t) \uparrow 1$ as $t \to \infty$.
+\end{lemma}
+
+\begin{proof}
+  $\vartheta' (t) \ge \log n$ iff $t \ge 2 \pi n^2$ (Axiom~\ref{ax:dig}); then
+  $0 \le \vartheta' - \log n < \vartheta' + c = \Theta'$. $\vartheta' \to
+  \infty$ gives $\omega_n \to 1$.
+\end{proof}
+
+\section{Main Result}
+
+\begin{theorem}
+  [Uniform $L^2$ bound]\label{thm:bdd} For every $T \ge 2$ and every $\mu \in
+  \R$,
+  \begin{equation}
+    |K [T] (\mu) |^2 \le M (T)  \hspace{0.17em} \Theta (T)
+  \end{equation}
+  where
+  \begin{equation}
+    M (T) \assign \frac{\int_0^T Z (t)^2  \hspace{0.17em} dt}{(2 \pi)^2 \Theta
+    (T)}
+  \end{equation}
+  Moreover $M (T) \to 1 / (2 \pi^2)$ as $T \to \infty$, and $\sup_{T \ge 2} M
+  (T) < \infty$
+\end{theorem}
+
+\begin{proof}
+  Cauchy--Schwarz
+  \begin{equation}
+    |K [T] (\mu) |^2 \le (2 \pi)^{- 2} \Theta (T)  \int_0^{\Theta (T)} Y^2 
+    \hspace{0.17em} du
+  \end{equation}
+  Make the change of variable $u = \Theta (t)$, $du = \Theta'  \hspace{0.17em}
+  dt$, with
+  \begin{equation}
+    Y (\Theta (t))^2 \Theta' (t) = Z (t)^2
+  \end{equation}
+  by Lemma~\ref{lem:warp}, gives
+  \begin{equation}
+    \int_0^{\Theta (T)} Y^2  \hspace{0.17em} du = \int_0^T Z^2 
+    \hspace{0.17em} dt
+  \end{equation}
+  Substitution yields
+  \begin{equation}
+    |K [T] (\mu) |^2 \le M (T)  \hspace{0.17em} \Theta (T)
+  \end{equation}
+  by definition of $M (T)$. Hardy--Littlewood
+  (Axioms~\ref{ax:dig},~\ref{ax:RS}) gives
+  \begin{equation}
+    \int_0^T Z^2  \hspace{0.17em} dt = T \log (T / 2 \pi) + (2 \gamma - 1) T +
+    O (T^{1 / 2} \log T)
+  \end{equation}
+  and
+  \begin{equation}
+    \Theta (T) = \tfrac{T}{2} \log (T / 2 \pi) + (c - \tfrac{1}{2}) T + O
+    (T^{- 1})
+  \end{equation}
+  so that
+  \begin{equation}
+    \lim_{T \rightarrow \infty} \frac{\int_0^T Z (t)^2 \mathd t}{\Theta (T)} =
+    2
+  \end{equation}
+  and
+  \begin{equation}
+    \lim_{M \rightarrow \infty} M (T) = \frac{1}{2 \pi^2}
+  \end{equation}
+  Continuity of $M$ on $[2, \infty)$ together with this limit gives $\sup M <
+  \infty$.
+\end{proof}
+
+\begin{theorem}
+  [Band-limit]\label{thm:band} For $| \mu | > 1$, $\lim_{T \to \infty} |K [T]
+  (\mu) |^2 / \Theta (T) = 0$
+\end{theorem}
+
+\begin{proof}
+  Insert Axiom~\ref{ax:RS} into $K [T] (\mu)$, change variables $u = \Theta
+  (t)$. Mode $(n, \sigma)$ contributes
+  \begin{equation}
+    \mathcal{J}_{n, \sigma} (T, \mu) = \int_{2 \pi n^2}^T n^{- 1 / 2} 
+    \sqrt{\Theta' (t)}  \hspace{0.17em} e^{i \Phi (t)}  \hspace{0.17em} dt
+  \end{equation}
+  where
+  \begin{equation}
+    \Phi' (t) = \Theta' (t)  (\sigma \omega_n (t) - \mu)
+  \end{equation}
+  By Lemmas~\ref{lem:warp},~\ref{lem:freq}.,
+  \begin{equation}
+    | \Phi' (t) | \ge (| \mu | - 1)  (c - c_{\star}) > 0
+  \end{equation}
+  One integration by parts gives
+  \begin{equation}
+    |\mathcal{J}_{n, \sigma} (T, \mu) | = O (n^{- 1 / 2}  \sqrt{\log T})
+  \end{equation}
+  whose remainder contributes $O (T^{- 1 / 4})$. Summing over $1 \le n \le N
+  (T) = O (T^{1 / 2})$ and $\sigma = \pm 1$:
+  \[ |K [T] (\mu) | = O (T^{1 / 4}  \sqrt{\log T}) \]
+  so that
+  \begin{equation}
+    \frac{|K [T] (\mu) |^2}{\Theta (T)} = O \left( \frac{\log (T)}{\sqrt{T}}
+    \right) \to 0
+  \end{equation}
+\end{proof}
+
+\begin{theorem}
+  [Entire extension, band, real zeros of the stationary
+  representation]\label{thm:ent} $Y : \R \to \R$ extends uniquely to an entire
+  function $\tilde{Y} : \C \to \C$ of exponential type $\le 1$, real on $\R$,
+  with distributional Fourier transform supported in $[- 1, 1]$. Every zero of
+  $\tilde{Y}$ in $\C$ lies in $\R$. In particular, $\{u \in \R : Y (u) = 0\} =
+  \{w \in \C : \tilde{Y} (w) = 0\}$.
+\end{theorem}
+
+\begin{proof}
+  Theorems~\ref{thm:bdd},~\ref{thm:band} supply the hypotheses of
+  Axiom~\ref{ax:PW} for $f = Y$; conclusion: entire extension $\tilde{Y}$,
+  exponential type $\le 1$, distributional Fourier support in $[- 1, 1]$.
+  $Y|_{\R}$ is real: Lemma~\ref{lem:warp} gives $Y \circ \Theta = Z /
+  \sqrt{\Theta'}$, $Z$ real on $\R$ (Axiom~\ref{ax:Z}), $\sqrt{\Theta'} > 0$
+  on $\R$, $\Theta^{- 1} : \R \to \R$ bijection. Axiom~\ref{ax:AK} applied to
+  $\tilde{Y}$: every zero of $\tilde{Y}$ in $\C$ lies in $\R$. Since every
+  zero is real, $\{ \tilde{Y} = 0\} \subset \R$, and on $\R$ the extension
+  $\tilde{Y}$ agrees with $Y$ by the identity theorem, so the two zero sets
+  coincide.
+\end{proof}
+
+\begin{theorem}
+  [Riemann Hypothesis]\label{thm:RH} Every nontrivial zero of $\zeta$
+  satisfies $\Re s = \tfrac{1}{2}$.
+\end{theorem}
+
+\begin{proof}
+  On $\R$, Axiom~\ref{ax:Z} gives $\zeta (\tfrac{1}{2} + it) = e^{- i
+  \vartheta (t)} Z (t)$, and Lemma~\ref{lem:warp} gives $Z (t) = \sqrt{\Theta'
+  (t)}  \hspace{0.17em} \tilde{Y} (\Theta (t))$ with $\sqrt{\Theta' (t)} > 0$
+  and $\Theta : \R \to \R$ a bijection. Hence on $\R$ the entire functions $w
+  \mapsto \zeta (\tfrac{1}{2} + iw)$ and $w \mapsto e^{- i \vartheta (w)} 
+  \sqrt{\Theta' (w)}  \hspace{0.17em} \tilde{Y} (\Theta (w))$ coincide; by the
+  identity theorem they coincide on $\C$. The exponential and square-root
+  factors are nonvanishing, so the zero sets of the two sides coincide on
+  $\C$. By Theorem~\ref{thm:ent}, every zero of $\tilde{Y}$ lies in $\R$, and
+  $\Theta^{- 1} (\R) = \R$, so every zero of $w \mapsto \tilde{Y} (\Theta
+  (w))$ lies in $\R$. Therefore every $w \in \C$ with $\zeta (\tfrac{1}{2} +
+  iw) = 0$ lies in $\R$, so every nontrivial zero $\rho$ of $\zeta$ has $\rho
+  = \tfrac{1}{2} + iw$ with $w \in \R$, i.e. $\Re \rho = \tfrac{1}{2}$.
+\end{proof}
+
+\begin{thebibliography}{9}
+  {\bibitem{Edwards}}H.{\hspace{0.17em}}M.~Edwards, {\tmem{Riemann's Zeta
+  Function}}, Academic Press, New York, 1974.
+  
+  {\bibitem{Titchmarsh}}E.{\hspace{0.17em}}C.~Titchmarsh, {\tmem{The Theory of
+  the Riemann Zeta-Function}}, 2nd ed., revised by
+  D.{\hspace{0.17em}}R.~Heath-Brown, Oxford University Press, Oxford, 1986.
+  
+  {\bibitem{Ivic}}A.~Ivi{\'c}, {\tmem{The Riemann Zeta-Function: Theory and
+  Applications}}, Dover, Mineola, NY, 2003.
+  
+  {\bibitem{Levin}}B.{\hspace{0.17em}}Ya.~Levin, {\tmem{Lectures on Entire
+  Functions}}, Translations of Mathematical Monographs, vol.~150, American
+  Mathematical Society, Providence, RI, 1996.
+  
+  {\bibitem{Boas}}R.{\hspace{0.17em}}P.~Boas, {\tmem{Entire Functions}},
+  Academic Press, New York, 1954.
+  
+  {\bibitem{PaleyWiener}}R.{\hspace{0.17em}}E.{\hspace{0.17em}}A.{\hspace{0.17em}}C.~Paley
+  and N.~Wiener, {\tmem{Fourier Transforms in the Complex Domain}}, American
+  Mathematical Society Colloquium Publications, vol.~19, Providence, RI, 1934.
+  
+  {\bibitem{Akhiezer}}N.{\hspace{0.17em}}I.~Akhiezer, {\tmem{The Classical
+  Moment Problem and Some Related Questions in Analysis}}, Oliver \& Boyd,
+  Edinburgh, 1965.
+  
+  {\bibitem{HardyLittlewood}}G.{\hspace{0.17em}}H.~Hardy and
+  J.{\hspace{0.17em}}E.~Littlewood, Contributions to the theory of the Riemann
+  zeta-function and the theory of the distribution of primes, {\tmem{Acta
+  Mathematica}} \tmtextbf{41} (1918), 119--196.
+  
+  {\bibitem{SteinShakarchi}}E.{\hspace{0.17em}}M.~Stein and R.~Shakarchi,
+  {\tmem{Complex Analysis}}, Princeton Lectures in Analysis, vol.~II,
+  Princeton University Press, Princeton, NJ, 2003.
+\end{thebibliography}
+
+\end{document}

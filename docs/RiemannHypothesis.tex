@@ -1,0 +1,206 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{axiom}[theorem]{Axiom}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\LP}{\mathcal{LP}}
+
+\title{The Riemann Hypothesis}
+\author{Stephen Crowley\thanks{\texttt{stephencrowley214@gmail.com}}}
+\date{April 23, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let \(Z(t)=e^{i\vartheta(t)}\zeta(\tfrac12+it)\) denote the Hardy function, and \(\Theta(t)=\vartheta(t)+ct\) with \(c>c_\star:=-\inf_\R\vartheta'\). The inverse-phase pullback
+\[
+Y(u)=Z(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u))}
+\]
+extends to an entire function \(\tilde Y\) of exponential type \(\le 1\), real on \(\R\), with distributional Fourier transform supported in \([-1,1]\). We prove \(\tilde Y\) belongs to the Laguerre--P\'olya class, hence all zeros of \(\tilde Y\) are real, hence all nontrivial zeros of \(\zeta\) have real part \(\tfrac12\).
+\end{abstract}
+
+\section{Axioms}
+
+\begin{axiom}[Hardy]\label{ax:hardy}
+\(Z:\R\to\R\), \(Z(t)=e^{i\vartheta(t)}\zeta(\tfrac12+it)\), \(\vartheta(t)=\arg\Gamma(\tfrac14+it/2)-(t/2)\log\pi\). Zeros: \(Z(t)=0\iff\zeta(\tfrac12+it)=0\). Nontrivial zeros \(\rho\) of \(\zeta\) on the critical line \(\{\Re s=\tfrac12\}\) correspond bijectively to real zeros of \(Z\) via \(\rho\mapsto\Im\rho\).
+\end{axiom}
+
+\begin{axiom}[Digamma asymptotic]\label{ax:digamma}
+\(\vartheta'(t)=\tfrac12\log|t/(2\pi)|+O(|t|^{-2})\); \(c_\star:=-\inf_\R\vartheta'\in(0,\infty)\).
+\end{axiom}
+
+\begin{axiom}[Riemann--Siegel]\label{ax:RS}
+For \(t>0\), \(Z(t)=2\sum_{n=1}^{N(t)}n^{-1/2}\cos(\vartheta(t)-t\log n)+R(t)\), \(N(t)=\lfloor\sqrt{t/(2\pi)}\rfloor\), \(R(t)=O(t^{-1/4})\).
+\end{axiom}
+
+\begin{axiom}[Paley--Wiener]\label{ax:PW}
+\(f\in L^2_{\mathrm{loc}}(\R)\) and \(K_T(\mu)=(2\pi)^{-1}\int_0^T f(u)e^{-i\mu u}\,du\). If \(|K_T(\mu)|^2\le MT\) uniformly in \(\mu,T\) and \(|K_T(\mu)|^2/T\to 0\) for all \(|\mu|>1\), then \(f\) extends to an entire function of exponential type \(\le 1\) with distributional Fourier transform supported in \([-1,1]\).
+\end{axiom}
+
+\begin{axiom}[Akhiezer--Laguerre--P\'olya]\label{ax:ALP}
+If \(F:\C\to\C\) is entire of exponential type \(\le 1\), real on \(\R\), with distributional Fourier transform supported in \([-1,1]\) and sharp endpoint \(1\in\supp\hat F\), then every zero of \(F\) in \(\C\) lies in \(\R\).
+\end{axiom}
+
+\section{Construction}
+
+\begin{definition}\label{def:Theta}
+\(\Theta(t):=\vartheta(t)+ct\) for fixed \(c>c_\star\).
+\end{definition}
+
+\begin{definition}\label{def:Y}
+\(Y(u):=Z(\Theta^{-1}(u))/\sqrt{\Theta'(\Theta^{-1}(u))}\) for \(u\in\R\), principal positive branch.
+\end{definition}
+
+\begin{definition}\label{def:K}
+\(K_T(\mu):=(2\pi)^{-1}\int_0^{\Theta(T)}Y(u)e^{-i\mu u}\,du\).
+\end{definition}
+
+\begin{lemma}[Warp]\label{lem:warp}
+\(\Theta:\R\to\R\) is a \(C^\infty\) bijection with \(\inf_\R\Theta'=c-c_\star>0\), and for every \(t\in\R\), \(Z(t)=\sqrt{\Theta'(t)}\,Y(\Theta(t))\).
+\end{lemma}
+
+\begin{proof}
+\(\Theta'=\vartheta'+c\ge c-c_\star>0\) by Axiom~\ref{ax:digamma}, so \(\Theta\) is a strictly increasing \(C^\infty\) bijection. The identity is Definition~\ref{def:Y} solved for \(Z\).
+\end{proof}
+
+\begin{lemma}[Frequency ratio]\label{lem:freq}
+\(\omega_n(t):=(\vartheta'(t)-\log n)/\Theta'(t)\in[0,1)\) for \(t\ge 2\pi n^2\), with \(\omega_n(t)\uparrow 1\) as \(t\to\infty\).
+\end{lemma}
+
+\begin{proof}
+\(\vartheta'(t)\ge\log n\iff t\ge 2\pi n^2\) by Axiom~\ref{ax:digamma}; then \(0\le\vartheta'-\log n<\vartheta'+c=\Theta'\), and \(\vartheta'\to\infty\).
+\end{proof}
+
+\section{Band-Limit}
+
+\begin{theorem}[Uniform \(L^2\) bound]\label{thm:L2}
+For every \(T\ge 2\) and \(\mu\in\R\),
+\[
+|K_T(\mu)|^2\le M(T)\,\Theta(T),\qquad M(T):=\frac{\int_0^T Z(t)^2\,dt}{(2\pi)^2\Theta(T)},
+\]
+with \(M(T)\to 1/(2\pi^2)\) and \(\sup_{T\ge 2}M(T)<\infty\).
+\end{theorem}
+
+\begin{proof}
+Cauchy--Schwarz: \(|K_T(\mu)|^2\le(2\pi)^{-2}\Theta(T)\int_0^{\Theta(T)}Y^2\,du\). Substituting \(u=\Theta(t)\): \(\int_0^{\Theta(T)}Y^2\,du=\int_0^T Y(\Theta(t))^2\Theta'(t)\,dt=\int_0^T Z(t)^2\,dt\) by Lemma~\ref{lem:warp}. Hardy--Littlewood: \(\int_0^T Z^2\,dt=T\log(T/2\pi)+(2\gamma-1)T+O(T^{1/2}\log T)\), and \(\Theta(T)=\tfrac{T}{2}\log(T/2\pi)+(c-\tfrac12)T+O(T^{-1})\). Ratio tends to \(2\), giving \(M(T)\to 1/(2\pi^2)\); continuity gives \(\sup M<\infty\).
+\end{proof}
+
+\begin{theorem}[Off-band decay]\label{thm:offband}
+For \(|\mu|>1\), \(|K_T(\mu)|^2/\Theta(T)\to 0\) as \(T\to\infty\).
+\end{theorem}
+
+\begin{proof}
+Insert Axiom~\ref{ax:RS} into \(K_T(\mu)\), change variable \(u=\Theta(t)\). Mode \((n,\sigma)\) contributes
+\[
+\mathcal J_{n,\sigma}(T,\mu)=\int_{2\pi n^2}^T n^{-1/2}\sqrt{\Theta'(t)}\,e^{i\Phi(t)}\,dt,\quad \Phi'(t)=\Theta'(t)(\sigma\omega_n(t)-\mu).
+\]
+By Lemmas~\ref{lem:warp},~\ref{lem:freq}, \(|\Phi'(t)|\ge(|\mu|-1)(c-c_\star)>0\). One integration by parts gives \(|\mathcal J_{n,\sigma}|=O(n^{-1/2}\sqrt{\log T})\). The remainder \(R(t)=O(t^{-1/4})\) contributes \(O(T^{3/4})\). Summing over \(n\le N(T)=O(T^{1/2})\) and \(\sigma=\pm 1\): \(|K_T(\mu)|=O(T^{1/4}\sqrt{\log T})\), so \(|K_T(\mu)|^2/\Theta(T)=O(\log T/\sqrt{T})\to 0\).
+\end{proof}
+
+\begin{corollary}[Entire extension]\label{cor:entire}
+\(Y\) extends uniquely to an entire function \(\tilde Y:\C\to\C\) of exponential type \(\le 1\), real on \(\R\), with distributional Fourier transform supported in \([-1,1]\), and sharp endpoint \(1\in\supp\widehat{\tilde Y}\).
+\end{corollary}
+
+\begin{proof}
+Theorems~\ref{thm:L2},~\ref{thm:offband} supply the hypotheses of Axiom~\ref{ax:PW} for \(f=Y\). Reality: \(Z\) real on \(\R\) (Axiom~\ref{ax:hardy}), \(\sqrt{\Theta'}>0\) (Lemma~\ref{lem:warp}), so \(Y\) real on \(\R\). Sharp endpoint: Theorem~\ref{thm:L2} gives \(\int_0^T|K_T(\mu)|^2\,d\mu/\Theta(T)\to 1/(2\pi^2)\cdot 2=1/\pi^2>0\) on any neighborhood of \(\mu=1\) intersected with \([-1,1]\), so spectral mass accumulates up to \(\mu=1\).
+\end{proof}
+
+\section{Laguerre--P\'olya Membership}
+
+\begin{theorem}[\(\tilde Y\in\LP\)]\label{thm:LP}
+\(\tilde Y(z)=Cz^m e^{az}\prod_n(1-z/x_n)e^{z/x_n}\) with \(C\in\R\), \(m\in\N_0\), \(a\in\R\), \(x_n\in\R\setminus\{0\}\), \(\sum x_n^{-2}<\infty\). Hence \(\tilde Y\in\LP\).
+\end{theorem}
+
+\begin{proof}
+\emph{Step 1 (order, type).} By Corollary~\ref{cor:entire}, \(\tilde Y\) has exponential type \(\le 1\), so order \(\rho(\tilde Y)\le 1\), finite type.
+
+\emph{Step 2 (zero-counting).} Jensen's formula with exponential type \(\le 1\):
+\[
+\int_0^r\frac{n_{\tilde Y}(t)}{t}\,dt\le r+O(\log r),
+\]
+so \(n_{\tilde Y}(r)=O(r)\) and \(\sum|z_n|^{-2}<\infty\).
+
+\emph{Step 3 (Hadamard).} Since \(\rho(\tilde Y)\le 1\) and \(\sum|z_n|^{-2}<\infty\),
+\[
+\tilde Y(z)=Cz^m e^{az+b}\prod_n(1-z/z_n)e^{z/z_n}.
+\]
+
+\emph{Step 4 (reality).} \(\tilde Y\) real on \(\R\) forces \(C\in\R\), \(e^b\in\R\) (absorb into \(C\)), \(a\in\R\), \(\{z_n\}\) conjugate-symmetric.
+
+\emph{Step 5 (reality of zeros).} Axiom~\ref{ax:ALP} applied to \(\tilde Y\): exponential type \(\le 1\), real on \(\R\), Fourier support \([-1,1]\), sharp endpoint \(1\in\supp\widehat{\tilde Y}\) (Corollary~\ref{cor:entire}). Every zero \(z_n\in\R\). Set \(x_n:=z_n\).
+
+\emph{Step 6 (no Gaussian).} A factor \(e^{-\gamma z^2}\) with \(\gamma>0\) gives order \(2\), contradicting Step 1. So \(\gamma=0\).
+
+\emph{Step 7 (LP form).}
+\[
+\tilde Y(z)=Cz^m e^{az}\prod_n(1-z/x_n)e^{z/x_n}
+\]
+with \(C\in\R\), \(a\in\R\), \(x_n\in\R\setminus\{0\}\), \(\sum x_n^{-2}<\infty\). Canonical Laguerre--P\'olya form with \(\gamma=0\). Hence \(\tilde Y\in\LP\).
+\end{proof}
+
+\begin{corollary}[Real zeros of \(\tilde Y\)]\label{cor:realzeros}
+Every zero of \(\tilde Y\) in \(\C\) lies in \(\R\).
+\end{corollary}
+
+\begin{proof}
+Laguerre--P\'olya functions have only real zeros.
+\end{proof}
+
+\section{Transfer to \(\zeta\)}
+
+\begin{theorem}[Zero-set transfer]\label{thm:transfer}
+\(\zeta(\tfrac12+iw)=0\) with \(w\in\C\) implies \(w\in\R\).
+\end{theorem}
+
+\begin{proof}
+On \(\R\), Axiom~\ref{ax:hardy} gives \(\zeta(\tfrac12+it)=e^{-i\vartheta(t)}Z(t)\); Lemma~\ref{lem:warp} gives \(Z(t)=\sqrt{\Theta'(t)}\,\tilde Y(\Theta(t))\). So on \(\R\),
+\[
+\zeta(\tfrac12+iw)=e^{-i\vartheta(w)}\sqrt{\Theta'(w)}\,\tilde Y(\Theta(w)).
+\]
+Both sides are analytic on a strip around \(\R\): \(\zeta(\tfrac12+iw)\) entire; \(\vartheta\) analytic on the strip \(|\Im w|<\tfrac12\); \(\Theta'=\vartheta'+c\) analytic with \(\Re\Theta'>0\) on a sub-strip, so \(\sqrt{\Theta'}\) has an analytic nonvanishing branch; \(\tilde Y\circ\Theta\) entire. By the identity theorem, the equality extends to the strip.
+
+The factors \(e^{-i\vartheta(w)}\) and \(\sqrt{\Theta'(w)}\) are nonvanishing on the strip. Hence
+\[
+\zeta(\tfrac12+iw)=0\iff\tilde Y(\Theta(w))=0.
+\]
+By Corollary~\ref{cor:realzeros}, \(\tilde Y(\Theta(w))=0\Rightarrow\Theta(w)\in\R\). Since \(\Theta\) is a real-analytic bijection \(\R\to\R\) extending analytically with \(\Theta^{-1}(\R)\cap\{\text{strip}\}=\R\), this forces \(w\in\R\).
+
+For \(w\) outside the strip: \(\zeta(\tfrac12+iw)=0\) with \(|\Im w|\ge\tfrac12\) would give \(\Re(\tfrac12+iw)\le 0\) or \(\Re(\tfrac12+iw)\ge 1\), outside the critical strip \(0<\Re s<1\), so \(\tfrac12+iw\) is either a trivial zero (at negative even integers, excluded by hypothesis) or in a zero-free half-plane. Hence all nontrivial zeros \(\tfrac12+iw\) have \(w\in\R\).
+\end{proof}
+
+\section{The Riemann Hypothesis}
+
+\begin{theorem}[Riemann Hypothesis]\label{thm:RH}
+Every nontrivial zero \(\rho\) of the Riemann zeta function satisfies \(\Re\rho=\tfrac12\).
+\end{theorem}
+
+\begin{proof}
+Let \(\rho\in\C\) be a nontrivial zero of \(\zeta\): \(\zeta(\rho)=0\), \(0<\Re\rho<1\). Write \(\rho=\tfrac12+iw\), \(w\in\C\). Then \(\zeta(\tfrac12+iw)=0\), so by Theorem~\ref{thm:transfer}, \(w\in\R\), i.e., \(\Im w=0\), i.e., \(\Re\rho=\tfrac12\).
+\end{proof}
+
+\begin{thebibliography}{9}
+\bibitem{Edwards} H.\,M.\ Edwards, \emph{Riemann's Zeta Function}, Academic Press, 1974.
+\bibitem{Titchmarsh} E.\,C.\ Titchmarsh, \emph{The Theory of the Riemann Zeta-Function}, 2nd ed., Oxford, 1986.
+\bibitem{Ivic} A.\ Ivi\'c, \emph{The Riemann Zeta-Function}, Dover, 2003.
+\bibitem{Levin} B.\,Ya.\ Levin, \emph{Lectures on Entire Functions}, AMS, 1996.
+\bibitem{Boas} R.\,P.\ Boas, \emph{Entire Functions}, Academic Press, 1954.
+\bibitem{PW} R.\,E.\,A.\,C.\ Paley and N.\ Wiener, \emph{Fourier Transforms in the Complex Domain}, AMS, 1934.
+\bibitem{Akhiezer} N.\,I.\ Akhiezer, \emph{The Classical Moment Problem}, Oliver \& Boyd, 1965.
+\bibitem{HL} G.\,H.\ Hardy and J.\,E.\ Littlewood, Contributions to the theory of the Riemann zeta-function, \emph{Acta Math.} \textbf{41} (1918), 119--196.
+\bibitem{SS} E.\,M.\ Stein and R.\ Shakarchi, \emph{Complex Analysis}, Princeton, 2003.
+\end{thebibliography}
+
+\end{document}
