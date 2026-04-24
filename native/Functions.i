@@ -12,6 +12,7 @@
 #include <flint/fexpr.h>
 #include <flint/qqbar.h>
 #include <flint/arb_fmpz_poly.h>
+#include <flint/arith.h>
 #include <X11/Xlib.h>
 #include <X11/X.h>
 #include <unistd.h>
@@ -46,6 +47,8 @@ void arb_cot(arb_t y, const arb_t x, slong prec);
 
 void fmpz_fac_ui(fmpz_t f, ulong n);
 void fmpz_bin_uiui(fmpz_t res, ulong n, ulong k);
+
+void arith_number_of_partitions(fmpz_t x, ulong n);
 
 void arb_fmpz_poly_evaluate_arb(arb_t res, const fmpz_poly_t f, const arb_t a, slong prec);
 

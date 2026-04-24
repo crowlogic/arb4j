@@ -24,6 +24,7 @@
 #include <arb_mat.h>
 #include <arb_poly.h>
 #include <acb_mat.h>
+#include <flint/arith.h>
 #include <sys/mman.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -113,6 +114,13 @@ typedef long int		mp_size_t;
 #endif
 
 #define flint_bitcnt_t ulong
+
+/* The installed FLINT arb_mat_struct / acb_mat_struct use `arb_ptr *rows` /
+ * `acb_ptr *rows` instead of the `slong stride` field declared in
+ * TypesAndStructures.i. This remap makes SWIG-generated accessors for the
+ * struct member named `stride` redirect to the actual member `rows`, keeping
+ * the .i description stable across FLINT versions that renamed the field. */
+#define stride rows
 
 %}
 
