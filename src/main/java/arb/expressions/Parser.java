@@ -75,7 +75,6 @@ public class Parser
   }
 
   public static HashSet<Character> greekAndBlackLetterChars = new HashSet<Character>(Arrays.asList('ℰ',
-                                                                                                   'ℓ',
                                                                                                    'ℭ',
                                                                                                    'Γ',
                                                                                                    'Δ',
