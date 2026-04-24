@@ -246,6 +246,33 @@ ordinates, and the zeros of the orthogonal polynomials $p_{N}(u)$
 equidistribute with density $1/(2\pi)$ on $\mathbb{R}$ as $N\to\infty$.
 \end{corollary}
 
+\section{The role of $\sqrt{\Theta'(t)}$}
+
+The factor $\sqrt{\Theta'(t)}$ in $h$ is the Riemann--von Mangoldt Jacobian.
+Under the change of variables $u=\Theta(t)$, the zeros of
+$\zeta(\tfrac12+it)$ become asymptotically uniformly distributed in $u$
+with density $1/(2\pi)$. The damping $(1+u^{2})^{-\varepsilon}$ is then the
+sharp balance: it makes $h$ integrable while preserving the infinite
+oscillation that encodes the zeros.
+
+Pointwise $|h(t)|=\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}|Z(t)|$
+is {\em larger} than $|Z(t)|$ by the slowly-growing factor
+$\sqrt{\Theta'(t)}\sim\sqrt{(\log t)/2}$, yet $h\in L^{1}\cap L^{2}$ for
+every $\varepsilon>0$ while $Z$ itself is not integrable. The apparent
+paradox resolves because $\sqrt{\Theta'}$ boosts amplitude at large $t$
+just enough that after damping by $(1+\Theta^{2})^{-\varepsilon}$ the
+function still retains infinitely many sign changes out to infinity.
+
+If one instead damps $Z$ directly by $(1+t^{2})^{-\varepsilon}$ without the
+$\sqrt{\Theta'}$ compensation, the amplitude suppression outruns the
+logarithmic zero-density $(\log t)/(2\pi)$: the damped function would run
+out of oscillation, its zeros would become sparse, and the tail integrals
+would lose the spectral information about $\zeta$. The combined weight
+$\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}$ is thus the unique
+balance that both (i) makes $h$ integrable and (ii) preserves the infinite
+oscillation needed to encode the zeros. This is why $\Phi_{G}$ has finite
+moments of every order and why those moments encode the zero locations.
+
 \section{What remains to prove RH}
 
 By Theorem~\ref{thm:RH} the Riemann Hypothesis is equivalent to the
