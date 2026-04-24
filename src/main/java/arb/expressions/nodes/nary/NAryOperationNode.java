@@ -511,15 +511,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     getFieldFromThis(methodVisitor, expression.className, fieldName, generatedType);
   }
 
-  private boolean usedBraceInLimitSpec;
-
   private void parseUpperLimit()
   {
     upperLimit = expression.resolve();
-    if (usedBraceInLimitSpec)
-    {
-      expression.require('}');
-    }
   }
 
   /**
@@ -638,9 +632,14 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
 
     expression.require('=');
-    usedBraceInLimitSpec = usedBrace;
     parseLowerLimit();
     parseUpperLimit();
+
+    if (usedBrace)
+    {
+      expression.require('}');
+    }
+
     return this;
   }
 
