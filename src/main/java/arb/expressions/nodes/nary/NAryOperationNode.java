@@ -621,6 +621,19 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       indexVariableFieldName = specifiedName;
     }
 
+    if (expression.nextCharacterIs('\u2236'))
+    {
+      String firstFamilyIndexName = expression.parseName();
+      expression.require('=');
+      var loNode = operandExpression.resolve();
+      operandExpression.require('\u2026');
+      var hiNode = operandExpression.resolve();
+      registerFamilyFunction(operandExpression, specifiedName, firstFamilyIndexName, loNode, hiNode, operandExpression.rootNode);
+      parseMultisumIndices();
+      if (expression.nextCharacterIs('}')) { }
+      return this;
+    }
+
     boolean resolveAfterMultisum = operandExpression.deferVariableResolution;
     if (resolveAfterMultisum)
     {
