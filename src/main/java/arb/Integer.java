@@ -166,6 +166,21 @@ public class Integer implements
     return result;
   }
 
+  /**
+   * The number of integer partitions {@code p(n)} via FLINT's
+   * Hardy–Ramanujan–Rademacher evaluator.
+   *
+   * @param n      non-negative argument
+   * @param result receives {@code p(n)}
+   * @return result
+   */
+  public static Integer numberOfPartitions(long n, Integer result)
+  {
+    assert n >= 0 : "n must be non-negative: " + n;
+    arblib.arith_number_of_partitions(result.swigCPtr, n);
+    return result;
+  }
+
   public static long getCPtr(Integer obj)
   {
     return (obj == null) ? 0 : obj.swigCPtr;
