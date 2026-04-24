@@ -215,11 +215,16 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public void accept(Consumer<Node<D, R, F>> t)
   {
     lowerLimit.accept(t);
     upperLimit.accept(t);
+    if (operandExpression != null && operandExpression.rootNode != null)
+    {
+      operandExpression.rootNode.accept(node -> t.accept((Node<D, R, F>) (Node<?, ?, ?>) node));
+    }
     t.accept(this);
   }
 
@@ -507,13 +512,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     getFieldFromThis(methodVisitor, expression.className, fieldName, generatedType);
   }
 
-  private boolean usedBraceInLimitSpec;
-
   private void parseUpperLimit()
   {
     upperLimit = expression.resolve();
-    // The closing '}' is consumed by parseOperatorLimitSpecifications AFTER any
-    // additional comma-separated bindings have been processed, not here.
   }
 
   /**
@@ -631,7 +632,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
 
     expression.require('=');
-    usedBraceInLimitSpec = usedBrace;
     parseLowerLimit();
     parseUpperLimit();
 
@@ -642,10 +642,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       operandExpression.rootNode.resolveVariables();
     }
 
-    if (usedBraceInLimitSpec)
+    if (usedBrace)
     {
       expression.require('}');
     }
+
     return this;
   }
 
